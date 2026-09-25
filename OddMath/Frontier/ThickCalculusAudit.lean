@@ -2,8 +2,9 @@ import OddMath.Frontier.ZeroHecke
 import OddMath.Frontier.OnhReflection
 import OddMath.Frontier.StrandCrossing
 import OddMath.Frontier.ThickDots
+import OddMath.Frontier.ThickBubble
 
-/-! Audit for EKL arXiv:1111.1320v1 §3.2–§3.3 and §4.1–§4.2: headline statements restated on the
+/-! Audit for EKL arXiv:1111.1320v1 §3.2–§3.3 and §4.1–§4.2 and Prop 4.11: headline statements restated on the
 presented ring `NilHeckeAction.Presented n` (= ONH_{n+2}), plus transitive axioms. -/
 namespace OddMath.Frontier.ThickCalculusAudit
 open NilHeckeAction NilCoxeterWords NilHeckeRightBasis
@@ -68,5 +69,8 @@ example (n a b : ℕ) (hab : a+b = n+2) :
 #print axioms ThickDots.thick_mul
 #print axioms ThickDots.projector_schur_projector
 #print axioms ThickDots.projector_dualSchur_projector
+#print axioms ThickBubble.prop_4_11
+#print axioms ThickBubble.eq_4_54
+#print axioms ThickBubble.eq_4_55
 
 end OddMath.Frontier.ThickCalculusAudit

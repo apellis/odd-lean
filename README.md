@@ -99,6 +99,9 @@ formalized.
 | Def 4.3, (4.8)–(4.11) | `ThickDots.projector_poly_projector`, `ThickDots.projector_poly_projector_eq`, `ThickDots.thick_mul` |
 | (4.19), (4.20) | `ThickDots.schur_eq`, `ThickDots.skewSign_delta` |
 | (4.21)–(4.22); Def 4.10 and the identity after it | `ThickDots.projector_schur_projector`, `ThickDots.projector_dualSchur_projector` |
+| (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
+| Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
+| (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
 
 ### [EKL], §4.3.1 (every rank)
 

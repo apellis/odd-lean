@@ -111,6 +111,7 @@ import OddMath.Frontier.PbwNormalization
 import OddMath.Frontier.PbwRealization
 import OddMath.Frontier.PlacticEvaluation
 import OddMath.Frontier.PrefixEmbedding
+import OddMath.Frontier.ProjectorRank
 import OddMath.Frontier.RowBump
 import OddMath.Frontier.SchubertBasis
 import OddMath.Frontier.ShuffleLemma
@@ -159,6 +160,7 @@ import OddMath.Frontier.TableauStripCorners
 import OddMath.Frontier.TableauStripSigns
 import OddMath.Frontier.TableauStripUniqueness
 import OddMath.Frontier.TableauWordInsertion
+import OddMath.Frontier.ThickBubble
 import OddMath.Frontier.ThickDots
 import OddMath.Frontier.TwistedLeibniz
 import OddMath.Frontier.VariableEmbedding
