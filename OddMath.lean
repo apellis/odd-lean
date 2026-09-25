@@ -124,6 +124,10 @@ import OddMath.Frontier.OddCategorificationRank
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination
+import OddMath.Frontier.OddLRPlacticBasis
+import OddMath.Frontier.OddLRPlacticCor39
+import OddMath.Frontier.OddLRPlacticFactor
+import OddMath.Frontier.OddLRPlacticPieri
 import OddMath.Frontier.OddLRThm38
 import OddMath.Frontier.OddLRVerticalPieri
 import OddMath.Frontier.OddPlactic
@@ -157,6 +161,12 @@ import OddMath.Frontier.ShuffleLemma
 import OddMath.Frontier.SignedKostkaInvertibility
 import OddMath.Frontier.SignedPermutation
 import OddMath.Frontier.SignedSwap
+import OddMath.Frontier.SmallRank
+import OddMath.Frontier.SmallRankCyclotomic
+import OddMath.Frontier.SmallRankLimit
+import OddMath.Frontier.SmallRankONH
+import OddMath.Frontier.SmallRankSeries
+import OddMath.Frontier.SmallRankTensor
 import OddMath.Frontier.StaircaseEvaluation
 import OddMath.Frontier.StaircaseIndependence
 import OddMath.Frontier.StaircaseLeft
