@@ -151,7 +151,7 @@ theorem diag_cast {a b a' b' : Obj sig} (f : a ⟶ b) (ha : a = a') (hb : b = b'
 /-- The `ℤ`-linear structure of the presented category coming from the presentation. For
 `R = ℤ` it is not definitionally the generic `ℤ`-linear structure of a preadditive category,
 so lemmas about the scalar action of `Presentation.hom_induction_layers` must name it. -/
-abbrev presLinear : Linear ℤ (ONH ℤ) := Presentation.instLinearQuotientFreeObjHomRel (pres ℤ)
+abbrev presLinear : Linear ℤ (ONH ℤ) := Presentation.instLinear (pres ℤ)
 
 /-- The induction predicate for surjectivity: morphisms between objects of different widths
 vanish, and endomorphisms of `n + 2` strands lie in the image of `toDiagrams n`. -/
