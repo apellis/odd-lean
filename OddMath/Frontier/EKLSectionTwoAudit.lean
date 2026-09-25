@@ -4,6 +4,8 @@ import OddMath.Frontier.EKLSectionTwoC
 import OddMath.Frontier.EKLSectionTwoD
 import OddMath.Frontier.EKLSectionTwoE
 import OddMath.Frontier.EKLSectionTwoF
+import OddMath.Frontier.EKLSectionTwoG
+import OddMath.Frontier.EKLSectionTwoH
 import OddMath.Frontier.Categorification
 import OddMath.Frontier.OddCategorification
 
@@ -48,4 +50,17 @@ open OddMath.Frontier
 #print axioms OddCategorification.eq_6_2_K0
 #print axioms OddCategorification.basisE
 #print axioms OddCategorification.rankEquiv_Eclass
+#print axioms EKLSectionTwo.reverse_sK
+#print axioms EKLSectionTwo.psi3_not_diagonal
+#print axioms EKLSectionTwo.left_vertical_pieri
+#print axioms EKLSectionTwo.left_horizontal_pieri
+#print axioms EKLSectionTwo.left_vertical_pieri_Q
+#print axioms EKLSectionTwo.eq_2_49_printed_fails
+#print axioms EKLSectionTwo.eq_2_49_sum_from_zero
+#print axioms EKLSectionTwo.eq_2_50_printed_fails
+#print axioms EKLSectionTwo.eq_2_50_sum_from_zero
+#print axioms EKLSectionTwo.eq_2_51
+#print axioms EKLSectionTwo.eq_2_63
+#print axioms EKLSectionTwo.eq_2_53
+#print axioms EKLSectionTwo.cor_2_6_rank_two
 end OddMath.Frontier.EKLSectionTwoAudit

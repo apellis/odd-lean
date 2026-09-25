@@ -50,6 +50,8 @@ import OddMath.Frontier.EKLSectionTwoC
 import OddMath.Frontier.EKLSectionTwoD
 import OddMath.Frontier.EKLSectionTwoE
 import OddMath.Frontier.EKLSectionTwoF
+import OddMath.Frontier.EKLSectionTwoG
+import OddMath.Frontier.EKLSectionTwoH
 import OddMath.Frontier.EKLemma311Cond
 import OddMath.Frontier.EKMixedPairing
 import OddMath.Frontier.EKNondegeneracy

@@ -91,6 +91,8 @@ formalized.
 | (2.34), corrected index | `EKLSectionTwo.complete_last` |
 | (2.6), (2.11), (2.45); Remark 2.17; (2.59) | `EKLSectionTwo.divided_even_power_sum`, `EKLSectionTwo.psi_homotopy`, `EKLSectionTwo.schubert_identity_action`, `EKLSectionTwo.s_elementary_one_not_mem`, `EKLSectionTwo.dividedPair_elementary_one` |
 | (2.72), Remark 2.27 (horizontal Pieri) | `EKLSectionTwo.horizontal_pieri`, `EKLSectionTwo.horizontal_pieri_Q` |
+| (2.73)–(2.74), with η_α made precise (erratum 27) | `EKLSectionTwo.reverse_sK`, `EKLSectionTwo.left_vertical_pieri`, `EKLSectionTwo.left_horizontal_pieri` (and `…_Q` in OΛ) |
+| (2.49)–(2.51), corrected (erratum 28); (2.63); (2.53) for OPol_a over OΛ_a; Cor 2.6 at a = 2 | `EKLSectionTwo.eq_2_49_sum_from_zero`, `EKLSectionTwo.eq_2_50_first`, `EKLSectionTwo.eq_2_50_sum_from_zero`, `EKLSectionTwo.eq_2_51`, `EKLSectionTwo.eq_2_63`, `EKLSectionTwo.eq_2_53`, `EKLSectionTwo.cor_2_6_rank_two` |
 | Remark 2.28: (2.76) corrected (erratum 22); ε_4 not generated; no naive Jacobi–Trudi | `EKLSectionTwo.schur_two_two`, `EKLSectionTwo.complete_two_two`, `EKLSectionTwo.complete_three_one`, `EKLSectionTwo.elementary_four_not_mem`, `EKLSectionTwo.schur_ne_elementary_determinant`, `EKLSectionTwo.schur_ne_complete_determinant` |
 
 ### [EKL], §§3–4 (rank a = n+2 ≥ 2 unless noted)
@@ -270,6 +272,19 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
     with coefficient 1 (`EKLSectionTwo.printed_leading_term_false`).
 25. **(2.34) [M].** The index k is unbound; with h_{m−j} the formula holds
     (`EKLSectionTwo.complete_last`).
+
+27. **Remark 2.27, (2.73)–(2.74) [G].** η_α is not defined in [EK], and ψ₃ does not act diagonally
+    on Schur functions (`EKLSectionTwo.psi3_not_diagonal`). With η_λ defined by R(s_λ) = η_λ s_λ for
+    the anti-involution R fixing every h_n (`EKLSectionTwo.reverse_sK`), both identities hold as
+    printed, in OΛ and in every OΛ_a (`EKLSectionTwo.left_vertical_pieri`,
+    `EKLSectionTwo.left_horizontal_pieri`).
+28. **(2.49)–(2.51) [M, G].** In (2.49) and in the second equality of (2.50) the sums must start at
+    k = 0 (f = 1 is a counterexample: `EKLSectionTwo.eq_2_49_printed_fails`,
+    `EKLSectionTwo.eq_2_50_printed_fails`; corrected: `EKLSectionTwo.eq_2_49_sum_from_zero`,
+    `EKLSectionTwo.eq_2_50_sum_from_zero`). The step "h·x_{a−1}^i ∈ H_{a−1}" in the proof of (2.51)
+    is false for H of (2.46); (2.51) holds (`EKLSectionTwo.eq_2_51`).
+29. **(2.63) [M].** In the case ℓ = j − i the word should read s_{i+1}⋯s_{j−1}s_{i,j}; the identity
+    holds for all g, h ∈ OΛ_a (`EKLSectionTwo.eq_2_63`).
 
 ### [EKL] arXiv:1111.1320v1, §4
 
