@@ -5,6 +5,7 @@ import OddMath.Frontier.ThickDots
 import OddMath.Frontier.ThickBubble
 import OddMath.Frontier.ThickDecomposition
 import OddMath.Frontier.ThickMatrixUnits
+import OddMath.Frontier.ThickRelations
 
 /-! Audit for EKL arXiv:1111.1320v1 §3.2–§3.3 and §4.1–§4.2 and Prop 4.11: headline statements restated on the
 presented ring `NilHeckeAction.Presented n` (= ONH_{n+2}), plus transitive axioms. -/
@@ -93,5 +94,22 @@ example (n : ℕ) : ∑ ℓ ∈ BoxPartitionCount.Sq (n+2), ThickMatrixUnits.ide
 #print axioms ThickMatrixUnits.lemma_4_14
 #print axioms ThickMatrixUnits.thm_4_15_orthogonal
 #print axioms ThickMatrixUnits.thm_4_15_sum
+
+#print axioms ThickRelations.lemma_3_1
+#print axioms ThickRelations.lemma_3_2
+#print axioms ThickRelations.lemma_3_3
+#print axioms ThickRelations.eq_3_29
+#print axioms ThickRelations.remark_3_4
+#print axioms ThickRelations.eq_3_40
+#print axioms ThickRelations.eq_3_44
+#print axioms ThickRelations.eq_4_2
+#print axioms ThickRelations.prop_4_1_split
+#print axioms ThickRelations.prop_4_1_merge
+#print axioms ThickRelations.prop_4_2_left
+#print axioms ThickRelations.prop_4_2_right
+#print axioms ThickRelations.eq_4_13
+#print axioms ThickRelations.eq_4_42
+#print axioms ThickRelations.eq_4_46
+#print axioms ThickRelations.remark_4_12
 
 end OddMath.Frontier.ThickCalculusAudit

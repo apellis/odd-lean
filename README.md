@@ -94,12 +94,17 @@ formalized.
 | Prop 3.6 | `ZeroHecke.DElem_mul_zeroHecke`, `ZeroHecke.DElem_mul_projector`, `ZeroHecke.projector_mul_projector` |
 | Prop 3.7 | `StrandCrossing.prop_3_7` |
 | (3.42) | `StrandCrossing.crossing_3_42` |
+| Lemmas 3.1–3.3 (on any window) | `ThickRelations.lemma_3_1`, `ThickRelations.lemma_3_2`, `ThickRelations.lemma_3_3` |
+| (3.28), (3.29), (3.31); Remark 3.4 ((3.30) fails) | `ThickRelations.eq_3_28`, `ThickRelations.eq_3_29`, `ThickRelations.eq_3_31`, `ThickRelations.remark_3_4` |
+| (3.40), (3.43), (3.44) | `ThickRelations.eq_3_40`, `ThickRelations.eq_3_43`, `ThickRelations.eq_3_44` |
 | §3.3, σ; (3.46)–(3.50), (3.52)–(3.54) | `OnhReflection.sigma`, `OnhReflection.eq_3_50`, `OnhReflection.eq_3_52`, `OnhReflection.eq_3_53`, `OnhReflection.eq_3_54` |
 | (3.51), corrected (erratum 18) | `OnhReflection.eq_3_51` |
 | Def 4.3, (4.8)–(4.11) | `ThickDots.projector_poly_projector`, `ThickDots.projector_poly_projector_eq`, `ThickDots.thick_mul` |
 | (4.19), (4.20) | `ThickDots.schur_eq`, `ThickDots.skewSign_delta` |
 | (4.21)–(4.22); Def 4.10 and the identity after it | `ThickDots.projector_schur_projector`, `ThickDots.projector_dualSchur_projector` |
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
+| (4.2) thick crossing; Prop 4.1 (4.3)–(4.4); Prop 4.2 (4.5)–(4.6) | `ThickRelations.eq_4_2`, `ThickRelations.prop_4_1_split`, `ThickRelations.prop_4_1_merge`, `ThickRelations.prop_4_2_left`, `ThickRelations.prop_4_2_right` |
+| Explosions (4.13)–(4.16); (4.42); (4.46); Remark 4.12 | `ThickRelations.eq_4_13`, `ThickRelations.eq_4_14`, `ThickRelations.eq_4_15`, `ThickRelations.eq_4_16`, `ThickRelations.eq_4_42`, `ThickRelations.eq_4_46`, `ThickRelations.remark_4_12` |
 | Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
 | (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
 | (4.41) | `ThickMatrixUnits.eq_4_41` |
