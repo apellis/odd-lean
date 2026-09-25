@@ -84,6 +84,22 @@ formalized.
 | Cor 2.23, (2.66) | `LongestReversal.action_D` |
 | Prop 2.26, (2.71) | `OddSchurPieri.right_pieri` |
 
+### [EKL], §§3–4.2 (rank a = n+2 ≥ 2 unless noted)
+
+| Result | Declaration |
+|---|---|
+| (3.17)–(3.18), 0-Hecke relations | `ZeroHecke.zeroHecke_sq`, `ZeroHecke.zeroHecke_braid`, `ZeroHecke.zeroHecke_distant` |
+| e_a = ∂̄_{w0} is independent of the reduced word | `ZeroHecke.projector_eq_of_reduced` |
+| Prop 3.5 | `ZeroHecke.prop_3_5` |
+| Prop 3.6 | `ZeroHecke.DElem_mul_zeroHecke`, `ZeroHecke.DElem_mul_projector`, `ZeroHecke.projector_mul_projector` |
+| Prop 3.7 | `StrandCrossing.prop_3_7` |
+| (3.42) | `StrandCrossing.crossing_3_42` |
+| §3.3, σ; (3.46)–(3.50), (3.52)–(3.54) | `OnhReflection.sigma`, `OnhReflection.eq_3_50`, `OnhReflection.eq_3_52`, `OnhReflection.eq_3_53`, `OnhReflection.eq_3_54` |
+| (3.51), corrected (erratum 18) | `OnhReflection.eq_3_51` |
+| Def 4.3, (4.8)–(4.11) | `ThickDots.projector_poly_projector`, `ThickDots.projector_poly_projector_eq`, `ThickDots.thick_mul` |
+| (4.19), (4.20) | `ThickDots.schur_eq`, `ThickDots.skewSign_delta` |
+| (4.21)–(4.22); Def 4.10 and the identity after it | `ThickDots.projector_schur_projector`, `ThickDots.projector_dualSchur_projector` |
+
 ### [EKL], §4.3.1 (every rank)
 
 | Result | Declaration |
@@ -191,6 +207,11 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
     from `j = 3` on; the formula fails for `m = 0, k = 7` (`ShuffleLemma.big_shuffle_false`).
     Correct coefficient: `(−1)^{binom(j,2) + (m+1)(j+1)}`, all `m` and odd `k`
     (`ShuffleLemma.big_shuffle`). Lemma 4.4, Props 4.5–4.7 and Lemmas 4.8–4.9 hold as printed.
+
+18. **(3.51) [F→T].** `D_a = σ(D_a)` holds, but `ψ(D_a) = (−1)^{binom(a,4)} D_a` (and likewise
+    for `ψσ(D_a)`), not `(−1)^{binom(a−1,4)}`; the printed sign fails at `a = 4`
+    (`OnhReflection.eq_3_51_false`, `OnhReflection.eq_3_51_printed_false`). Corrected:
+    `OnhReflection.eq_3_51`. (3.52)–(3.54) hold as printed.
 
 These errata arose during the formalization; they are not a complete review of the
 papers.
