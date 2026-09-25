@@ -131,6 +131,8 @@ import OddMath.Frontier.OmissionCanonical
 import OddMath.Frontier.OmissionWord
 import OddMath.Frontier.OnhPolynomial
 import OddMath.Frontier.OnhReflection
+import OddMath.Frontier.OnhStructure
+import OddMath.Frontier.OnhStructure2
 import OddMath.Frontier.OnhWindow
 import OddMath.Frontier.OwlBraid
 import OddMath.Frontier.OwlDirect

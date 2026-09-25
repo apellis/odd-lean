@@ -145,6 +145,10 @@ formalized.
 
 | Result | Declaration |
 |---|---|
+| e_a ONH_a e_a ≅ OΛ_a; End(ONH_a e_a) ≅ OΛ_a^op (Morita equivalence ONH_a ∼ OΛ_a, abstract, §1.2) | `OnhStructure.cornerEquiv`, `OnhStructure.endProjectorEquiv` |
+| p. 42: Mat_{a!}(OΛ_a) ≅ ONH_a, (ℓ, ℓ')-entry x ↦ σ_ℓ (e_a x e_a) λ_ℓ' | `OnhStructure.matrixEquiv` |
+| e_a is primitive; ONH_a e_a is indecomposable (§6) | `OnhStructure.projector_primitive`, `OnhStructure.leftIdeal_projector_indecomposable` |
+| ONH_a ⊗ ONH_b ⊂ ONH_{a+b} (§6, p. 46): injective, with the super sign rule (a, b ≥ 2) | `OnhStructure.tensorMap_injective`, `OnhStructure.tensorMap_mul` |
 | (6.1): ONH_a ≅ ⊕_{ℓ∈Sq(a)} ONH_a e_a as left modules, with degrees | `Categorification.eq_6_1`, `Categorification.eq_6_1_hasDegree` |
 | (6.2): ONH_{a+b}(e_a ⊗ e_b) ≅ ⊕_{α∈P(a,b)} ONH_{a+b} e_{a+b}, with degrees | `Categorification.eq_6_2`, `Categorification.eq_6_2_hasDegree` |
 | ONH_a^N = 0 for N < a (p. 47) | `Categorification.cyclotomic_vanish` |
