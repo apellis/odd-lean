@@ -9,13 +9,12 @@ Sources (numbering below refers to these arXiv versions):
   arXiv:1107.5610v2.
 - **[EKL]** A. P. Ellis, M. Khovanov, A. D. Lauda, *The odd nilHecke algebra and its
   diagrammatics*, arXiv:1111.1320v1.
-- **[E]** A. P. Ellis, *The odd Littlewood-Richardson rule*, arXiv:1111.3932v1.
+- **[E]** A. P. Ellis, *The odd Littlewood–Richardson rule*, arXiv:1111.3932v1.
 
 The library builds with no `sorry` and no added axioms. The printed axiom closures of
 the results listed below contain only `propext`, `Classical.choice` and `Quot.sound`.
-The [EK] results are formalized at $`q = -1`$ over $`\mathbb{Z}`$ (Section 2.1 also at
-general $`q`$). Signs are taken exactly as printed; every corrected statement is a
-separate declaration.
+The [EK] results are formalized at q = −1 over ℤ (§2.1 also at general q). Signs are
+taken exactly as printed; every corrected statement is a separate declaration.
 
 ## Formalized results
 
@@ -37,32 +36,32 @@ All names are in `OddMath.Frontier`; module `M` is `OddMath/Frontier/M.lean`.
 | Prop 3.4 | `EKCenterPower.center_iff` |
 | (3.3) | `EKDualBases.h_eq_M_f` |
 | (3.4), corrected (erratum 6) | `EKDeterminantCorrected.det_M`, `EKDeterminantCorrected.printed_iff` |
-| Section 2.1 at general $`q`$; Prop 2.2, (2.3) | `EKGeneralQ.ek_sec21_general_q`, `EKGeneralQ.adjointness` |
+| §2.1 at general q; Prop 2.2, (2.3) | `EKGeneralQ.ek_sec21_general_q`, `EKGeneralQ.adjointness` |
 | Prop 2.6 | `EKMixedPairing.proposition_2_6` |
-| Prop 2.11, (2.16) and (2.17) | `EKQuotientRelations.mixed_even`, `EKQuotientRelations.mixed_odd` |
-| Prop 2.14, (2.20) and (2.21) | `EKSemiorthogonality.proposition_2_14_diagonal`, `EKSemiorthogonality.proposition_2_14_vanishing` |
+| Prop 2.11, (2.16)–(2.17) | `EKQuotientRelations.mixed_even`, `EKQuotientRelations.mixed_odd` |
+| Prop 2.14, (2.20)–(2.21) | `EKSemiorthogonality.proposition_2_14_diagonal`, `EKSemiorthogonality.proposition_2_14_vanishing` |
 | Lemma 2.16 | `EKTriangular.psi3_triangular_remainder` |
 | (2.24), corrected (erratum 3) | `EKAutomorphisms.psi3_hWord_source` |
 | (2.25) | `EKAntipode.S_hWord` |
 | Thm 4.1 | `EKClassicalPlactic.theorem_4_1` |
 | Thm 4.3, corrected contents (erratum 10) | `EKRskBijection.rsk_bijective` |
 | (4.4) | `EKRskBijection.ek_eq_4_4` |
-| Appendix, Sections 5.1 and 5.2, degrees at most 5 | module `EKAppendixData` |
+| Appendix §§5.1–5.2, degrees ≤ 5 | module `EKAppendixData` |
 
-Not fully formalized: Lemma 2.15 (the $`e`$-side restricted nondegeneracy is proved for
-every $`\lambda`$ as `EKProp310.eAbove_restricted_nondeg`; the $`h`$-side is not). No
-result above depends on it.
+Not fully formalized: Lemma 2.15 (the e-side restricted nondegeneracy is proved for
+every λ as `EKProp310.eAbove_restricted_nondeg`; the h-side is not). No result above
+depends on it.
 
 ### [E]
 
 | Result | Declaration |
 |---|---|
-| Thm 3.8: $`s^K_\lambda = s^p_\lambda = s^s_\lambda`$ for $`N \ge 2`$ variables and $`\lambda`$ with at most $`N`$ rows | `OddLRThm38.thm38` |
-| Companion statement for $`\lambda`$ with more than $`N`$ rows | `OddLRThm38.thm38_tall` |
+| Thm 3.8: s^K_λ = s^p_λ = s^s_λ, for N ≥ 2 variables and λ with at most N rows | `OddLRThm38.thm38` |
+| Companion statement for λ with more than N rows | `OddLRThm38.thm38_tall` |
 | (3.10), vertical Pieri rule | `OddLRVerticalPieri.vertical_pieri` |
-| $`\pi_N s^K_\lambda = s^p_\lambda`$ (identification with [EK]) | `OddLREKIdentification.piN_schurK` |
+| π_N s^K_λ = s^p_λ (identification with [EK]) | `OddLREKIdentification.piN_schurK` |
 
-Cor 3.9 and Section 4 of [E] (including the odd Littlewood-Richardson rule) are not
+Cor 3.9 and Section 4 of [E] (including the odd Littlewood–Richardson rule) are not
 formalized.
 
 ### [EKL], Section 2 (selection)
@@ -88,44 +87,42 @@ checks and axiom printouts, not results.
 
 ## Errata
 
-Codes: **M** misprint; **F-T** false as printed, true corrected statement given;
+Codes: **M** misprint; **F→T** false as printed, true corrected statement given;
 **G** gap in the proof of a true statement; **X** false as printed, no correction
 given here. A declaration name means the item is Lean-checked; otherwise it is marked
 *not formalized*.
 
 ### [EK] arXiv:1107.5610v2
 
-1. **Prop 2.11 proof, p. 15, even-case recurrence [M].** Uses $`e_k`$ where the other
+1. **Prop 2.11 proof, p. 15, even-case recurrence [M].** Uses `e_k` where the other
    generator is needed; correct recurrence `EKQuotientRelations.pairing_he_strip`.
-   (2.16) and (2.17) are unaffected. Numerical counterexample *not formalized*.
-2. **Example $`\ell(w_{(4,4,2,1)})`$, p. 16 [M].** 23 inversions (sign $`-1`$), not 22.
+   (2.16)–(2.17) are unaffected. Numerical counterexample *not formalized*.
+2. **Example ℓ(w_(4,4,2,1)), p. 16 [M].** 23 inversions (sign −1), not 22.
    *Not formalized.*
-3. **(2.24) [M].** Exponent $`\lambda_j \lambda_j`$ should be
-   $`\sum_{i \lt j} \lambda_i \lambda_j`$; `EKAutomorphisms.psi3_hWord_source`.
-4. **Step before (2.26), p. 21 [G].** One transformation is omitted when $`\psi_3`$ is
-   applied to (2.5); (2.26) is unaffected. *Not formalized.*
-5. **Lemma 2.15 proof, p. 18 [G].** The equality $`(H_{\ge\lambda})^{\perp} = E_{\gt \lambda^T}`$
-   (lexicographic order) used in the proof is false at $`\lambda = (3,3)`$:
-   `EKRestrictedPairing.complement_equality_false`. The $`e`$-side conclusion is proved
-   independently (`EKProp310.eAbove_restricted_nondeg`); the $`h`$-side is not formalized.
-6. **(3.4), p. 23 [F-T].** False as printed: $`\det M_2 = -1`$
+3. **(2.24) [M].** Exponent `λ_j λ_j` should be `Σ_{i<j} λ_i λ_j`;
+   `EKAutomorphisms.psi3_hWord_source`.
+4. **Step before (2.26), p. 21 [G].** One transformation is omitted when ψ₃ is applied
+   to (2.5); (2.26) is unaffected. *Not formalized.*
+5. **Lemma 2.15 proof, p. 18 [G].** The equality `(H_{≥λ})^⊥ = E_{>λᵀ}` (lexicographic
+   order) used in the proof is false at λ = (3,3):
+   `EKRestrictedPairing.complement_equality_false`. The e-side conclusion is proved
+   independently (`EKProp310.eAbove_restricted_nondeg`); the h-side is not formalized.
+6. **(3.4), p. 23 [F→T].** False as printed: `det M₂ = −1`
    (`EKDeterminant.equation_3_4_counterexample`), independent of ordering
-   (`EKDeterminant.counterexample_under_every_order`). Correct formula, for all $`d`$,
-   $`\det M_d = (-1)^{(p(d)-\mathrm{sc}(d))/2} \prod_{\lambda = \lambda^T} (-1)^{\ell(w_\lambda)}`$,
-   where $`p(d)`$ is the number of partitions of $`d`$ and $`\mathrm{sc}(d)`$ the number
-   of self-conjugate ones (`EKDeterminantCorrected.det_M`). The printed formula holds
-   exactly when $`(p(d)-\mathrm{sc}(d))/2`$ is even (`EKDeterminantCorrected.printed_iff`).
+   (`EKDeterminant.counterexample_under_every_order`). Correct formula, all d:
+   `det M_d = (−1)^{(p(d)−sc(d))/2} · Π_{λ=λᵀ} (−1)^{ℓ(w_λ)}`, where sc(d) counts
+   self-conjugate partitions (`EKDeterminantCorrected.det_M`). The printed formula
+   holds exactly when `(p(d)−sc(d))/2` is even (`EKDeterminantCorrected.printed_iff`).
 7. **Uniqueness of Schur functions via Lemma 2.15, p. 29 [G].** The cited argument
    fails (item 5); uniqueness holds: `EKSchurOrthonormal.schur_val_unique`.
 8. **Prop 3.10 proof, p. 29 [G].** The intersection claimed one-dimensional has
-   dimension at least 2 at $`\lambda = (3,3)`$ (*not formalized*). Prop 3.10 holds:
+   dimension ≥ 2 at λ = (3,3) (*not formalized*). Prop 3.10 holds:
    `EKClosureComposition.proposition_3_10`.
-9. **Lemma 3.11 proof, pp. 29-30 [G, M].** Same one-dimensionality failure at
-   $`\lambda = (2,2,2)`$; swapped indices; $`h_\mu`$ for $`e_\mu`$. The lemma holds:
+9. **Lemma 3.11 proof, pp. 29–30 [G, M].** Same one-dimensionality failure at
+   λ = (2,2,2); swapped indices; `h_μ` for `e_μ`. The lemma holds:
    `EKFinalClosure.lemma_3_11`. Misprint readings *not formalized*.
-10. **(4.3) and Example 4.5 [F-T].** The printed codomain
-    ($`\mathrm{cont}(P) = \mu`$, $`\mathrm{cont}(Q) = \rho`$) is impossible when
-    $`\mu \ne \rho`$ (`EKRskBijection.printed_codomain_obstruction`,
+10. **(4.3) and Example 4.5 [F→T].** The printed codomain (cont P = μ, cont Q = ρ) is
+    impossible when μ ≠ ρ (`EKRskBijection.printed_codomain_obstruction`,
     `EKRskBijection.ex45_printed_obstruction`). With the contents swapped, Thm 4.3
     holds (`EKRskBijection.rsk_bijective`). (4.4) holds as printed.
 11. **(3.8) [M].** Same label swap as item 10; the sign identity holds
@@ -133,22 +130,21 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 
 ### [EKL] arXiv:1111.1320v1
 
-12. **(2.43) [F-T].** Selector $`w = u^{-1}`$ should be $`w = u`$
+12. **(2.43) [F→T].** Selector w = u⁻¹ should be w = u
     (`OddSchubertAction.action_additive`).
 13. **At (2.65) [M].** Extra staircase factor in the leftmost argument; correct:
     `OddSymmetrizer.S_eq_self`.
 14. **Prop 2.15, centre as squared variables [X].** Counterexample in three variables:
     `NilHeckeCenter.kernel_center_counterexample`.
-15. **Lemma 2.18 (OWL) for an arbitrary reduced word of $`w_0`$ [X].** Counterexample in
+15. **Lemma 2.18 (OWL) for an arbitrary reduced word of w₀ [X].** Counterexample in
     5 variables, word `[0,1,0,3,2,1,0,3,2,1]`: `OwlDirect.owl_trichotomy_false`. The
     lemma holds for the printed block word (`OmissionCanonical.trichotomy`), which is
     the case used for (2.64); (2.64), Cor 2.22 and Cor 2.23 are proved.
 
 ### [E] arXiv:1111.3932v1
 
-16. **Lemma 3.5 [F-T].** The lexicographic order must be taken on $`\lambda^T`$; with
-    row-lex the statement fails (`OddLREliminationControls.row_lex_variant_fails`).
-    Thm 3.8 holds.
+16. **Lemma 3.5 [F→T].** The lexicographic order must be taken on λᵀ; with row-lex the
+    statement fails (`OddLREliminationControls.row_lex_variant_fails`). Thm 3.8 holds.
 
 These errata arose during the formalization; they are not a complete review of the
 papers.
