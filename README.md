@@ -141,6 +141,18 @@ formalized.
 | (6.1): ONH_a ≅ ⊕_{ℓ∈Sq(a)} ONH_a e_a as left modules, with degrees | `Categorification.eq_6_1`, `Categorification.eq_6_1_hasDegree` |
 | (6.2): ONH_{a+b}(e_a ⊗ e_b) ≅ ⊕_{α∈P(a,b)} ONH_{a+b} e_{a+b}, with degrees | `Categorification.eq_6_2`, `Categorification.eq_6_2_hasDegree` |
 | ONH_a^N = 0 for N < a (p. 47) | `Categorification.cyclotomic_vanish` |
+| K_0(ONH_a) ≅ ℤ[q,q⁻¹], free on [E^{(a)}], E^{(a)} = ONH_a e_a with its shift (every a ≥ 0) | `OddCategorification.basisE`, `OddCategorification.rankEquiv_Eclass` |
+| (6.1) in K_0, shifts corrected (erratum 26): [ONH_a] = [a]! [E^{(a)}] | `OddCategorification.eq_6_1_K0`, `OddCategorification.eq_6_1_qFact` |
+| (6.2) in K_0: [E^{(a)}E^{(b)}] = [a+b, a] [E^{(a+b)}] | `OddCategorification.eq_6_2_K0`, `OddCategorification.indClass_eq` |
+| (6.3): U_q^+(sl_2)_A ≅ K_0(ONH) as ℤ[q,q⁻¹]-algebras, ϑ^{(a)} ↦ [E^{(a)}] | `OddCategorification.eq_6_3`, `OddCategorification.eq_6_3_UA` |
+
+Here K_0 is the Grothendieck group of finitely generated graded projective modules, presented by
+graded idempotent matrices up to Murray–von Neumann equivalence (`GradedK0`); every such module is
+a sum of shifts of E^{(a)} with determined multiplicities (classification over the connected
+graded ring OΛ_a and graded Morita invariance, which replace the paper's appeal to graded
+locality). The product on K_0(ONH) is induction realized on the indecomposables: E^{(a)} ⊠ E^{(b)}
+induces to ONH_{a+b}(e_a ⊗ e_b); induction is not constructed as a functor on all graded
+projective modules. U_q^+(sl_2)_A is Lusztig's integral form (`QuantumSl2Plus.UA`).
 
 ### [EKL], §4.3.1 (every rank)
 
@@ -287,6 +299,12 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 21. **Proof of Prop 5.4 [G].** It uses that OH_{a,N} is a free ℤ-module without proof. Prop 5.4
     holds, and OH_{a,N} is free of rank C(N,a) (`OddGrassmannSchur.proposition_5_4`,
     `OddGrassmannSchur.finrank_OH`).
+
+### [EKL] arXiv:1111.1320v1, §6
+
+26. **(6.1) [M].** The grading shifts of the summands are C(a,2) − 2|ℓ| (the exponents of [a]!),
+    not a − 1 − 2|ℓ|; the printed shifts fail at a = 3 for either sign convention
+    (`OddCategorification.eq_6_1_printed_false`). Corrected: `OddCategorification.eq_6_1_K0`.
 
 These errata arose during the formalization; they are not a complete review of the
 papers.

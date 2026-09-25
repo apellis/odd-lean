@@ -5,8 +5,9 @@ import OddMath.Frontier.EKLSectionTwoD
 import OddMath.Frontier.EKLSectionTwoE
 import OddMath.Frontier.EKLSectionTwoF
 import OddMath.Frontier.Categorification
+import OddMath.Frontier.OddCategorification
 
-/-! Audit for EKL arXiv:1111.1320v1 §2 (remaining items) and §6 (6.1)–(6.2): transitive axioms. -/
+/-! Audit for EKL arXiv:1111.1320v1 §2 (remaining items) and §6 (6.1)–(6.3): transitive axioms. -/
 namespace OddMath.Frontier.EKLSectionTwoAudit
 open OddMath.Frontier
 #print axioms EKLSectionTwo.qrk_symmetric
@@ -39,4 +40,12 @@ open OddMath.Frontier
 #print axioms Categorification.eq_6_1_row_mul_col
 #print axioms Categorification.eq_6_2_col_mul_row
 #print axioms Categorification.cyclotomic_vanish
+#print axioms OddCategorification.eq_6_3
+#print axioms OddCategorification.eq_6_3_UA
+#print axioms OddCategorification.eq_6_1_K0
+#print axioms OddCategorification.eq_6_1_qFact
+#print axioms OddCategorification.eq_6_1_printed_false
+#print axioms OddCategorification.eq_6_2_K0
+#print axioms OddCategorification.basisE
+#print axioms OddCategorification.rankEquiv_Eclass
 end OddMath.Frontier.EKLSectionTwoAudit

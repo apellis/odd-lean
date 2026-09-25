@@ -102,6 +102,10 @@ import OddMath.Frontier.NilHeckeRightBasis
 import OddMath.Frontier.NilHeckeRightKernel
 import OddMath.Frontier.NilHeckeSmallRank
 import OddMath.Frontier.NonadjacentDivided
+import OddMath.Frontier.OddCategorification
+import OddMath.Frontier.OddCategorificationBasic
+import OddMath.Frontier.OddCategorificationInduction
+import OddMath.Frontier.OddCategorificationRank
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination
