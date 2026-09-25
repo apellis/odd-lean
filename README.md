@@ -102,6 +102,10 @@ formalized.
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
 | Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
 | (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
+| (4.41) | `ThickMatrixUnits.eq_4_41` |
+| Lemma 4.13 | `ThickMatrixUnits.lemma_4_13` |
+| Lemma 4.14 | `ThickMatrixUnits.lemma_4_14` |
+| Thm 4.15 | `ThickMatrixUnits.thm_4_15_orthogonal`, `ThickMatrixUnits.thm_4_15_sum` |
 | Thm 4.16, (4.56)–(4.57) (all a, b ≥ 0) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
 
 ### [EKL], §4.3.1 (every rank)

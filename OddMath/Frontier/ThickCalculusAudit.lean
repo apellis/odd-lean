@@ -4,6 +4,7 @@ import OddMath.Frontier.StrandCrossing
 import OddMath.Frontier.ThickDots
 import OddMath.Frontier.ThickBubble
 import OddMath.Frontier.ThickDecomposition
+import OddMath.Frontier.ThickMatrixUnits
 
 /-! Audit for EKL arXiv:1111.1320v1 §3.2–§3.3 and §4.1–§4.2 and Prop 4.11: headline statements restated on the
 presented ring `NilHeckeAction.Presented n` (= ONH_{n+2}), plus transitive axioms. -/
@@ -82,5 +83,15 @@ example (n a b : ℕ) (hab : a + b = n+2) :
 
 #print axioms ThickDecomposition.thm_4_16
 #print axioms ThickDecomposition.eq_4_57
+
+/-- Theorem 4.15: the `a!` idempotents `e_ℓ = σ_ℓ λ_ℓ`, `ℓ ∈ Sq(a)`, sum to `1`. -/
+example (n : ℕ) : ∑ ℓ ∈ BoxPartitionCount.Sq (n+2), ThickMatrixUnits.idem (n := n) ℓ = 1 :=
+  ThickMatrixUnits.thm_4_15_sum
+
+#print axioms ThickMatrixUnits.eq_4_41
+#print axioms ThickMatrixUnits.lemma_4_13
+#print axioms ThickMatrixUnits.lemma_4_14
+#print axioms ThickMatrixUnits.thm_4_15_orthogonal
+#print axioms ThickMatrixUnits.thm_4_15_sum
 
 end OddMath.Frontier.ThickCalculusAudit
