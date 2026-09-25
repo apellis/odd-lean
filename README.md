@@ -243,3 +243,7 @@ by Lean:
 - GPT-6 Astra
 - Muse Spark 1.3
 - Claude Opus 5.5
+
+## License
+
+Released under the Apache License 2.0; see [`LICENSE`](LICENSE).
