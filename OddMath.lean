@@ -161,6 +161,7 @@ import OddMath.Frontier.TableauStripSigns
 import OddMath.Frontier.TableauStripUniqueness
 import OddMath.Frontier.TableauWordInsertion
 import OddMath.Frontier.ThickBubble
+import OddMath.Frontier.ThickDecomposition
 import OddMath.Frontier.ThickDots
 import OddMath.Frontier.TwistedLeibniz
 import OddMath.Frontier.VariableEmbedding

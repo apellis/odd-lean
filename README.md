@@ -84,7 +84,7 @@ formalized.
 | Cor 2.23, (2.66) | `LongestReversal.action_D` |
 | Prop 2.26, (2.71) | `OddSchurPieri.right_pieri` |
 
-### [EKL], §§3–4.2 (rank a = n+2 ≥ 2 unless noted)
+### [EKL], §§3–4 (rank a = n+2 ≥ 2 unless noted)
 
 | Result | Declaration |
 |---|---|
@@ -102,6 +102,7 @@ formalized.
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
 | Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
 | (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
+| Thm 4.16, (4.56)–(4.57) (all a, b ≥ 0) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
 
 ### [EKL], §4.3.1 (every rank)
 

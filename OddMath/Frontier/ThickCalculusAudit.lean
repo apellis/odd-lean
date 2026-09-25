@@ -3,6 +3,7 @@ import OddMath.Frontier.OnhReflection
 import OddMath.Frontier.StrandCrossing
 import OddMath.Frontier.ThickDots
 import OddMath.Frontier.ThickBubble
+import OddMath.Frontier.ThickDecomposition
 
 /-! Audit for EKL arXiv:1111.1320v1 §3.2–§3.3 and §4.1–§4.2 and Prop 4.11: headline statements restated on the
 presented ring `NilHeckeAction.Presented n` (= ONH_{n+2}), plus transitive axioms. -/
@@ -72,5 +73,14 @@ example (n a b : ℕ) (hab : a+b = n+2) :
 #print axioms ThickBubble.prop_4_11
 #print axioms ThickBubble.eq_4_54
 #print axioms ThickBubble.eq_4_55
+
+/-- Theorem 4.16: `e_a ⊗ e_b = Σ_{α ∈ P(a,b)} e_α`, every `a, b`. -/
+example (n a b : ℕ) (hab : a + b = n+2) :
+    ThickBubble.blockE n 0 a * ThickBubble.blockE n a b =
+      ∑ α ∈ BoxPartitionCount.box a b, ThickBubble.idem n a b hab α :=
+  ThickDecomposition.thm_4_16 hab
+
+#print axioms ThickDecomposition.thm_4_16
+#print axioms ThickDecomposition.eq_4_57
 
 end OddMath.Frontier.ThickCalculusAudit
