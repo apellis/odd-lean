@@ -75,7 +75,9 @@ formalized.
 | Prop 2.11 | `NilCoxeterPresentation.action_injective`, `OddSchubertAction.left_relation_coefficients` |
 | (2.42), corrected selector (erratum 12) | `OddSchubertAction.action_additive` |
 | Prop 2.13 | `SchubertBasis.left_kernel_decomposition_unique`, `SchubertBasis.right_kernel_decomposition_unique` |
+| Prop 2.15, corrected (erratum 14) | `CenterCorrected.center_oddSymmetric`, `CenterCorrected.center_nilHecke` |
 | Lemma 2.18, for the printed block word | `OmissionCanonical.trichotomy` |
+| Lemma 2.18, corrected (erratum 15) | `OwlGeneral.owl_general`, `OwlGeneral.left_kernel_owl_class` |
 | Lemma 2.19(2), (2.61) | `NonadjacentDivided.anticommutation` |
 | (2.64) | `OddSymmetrizer.D_left_kernel` |
 | Cor 2.22 | `OddSymmetrizer.S_eq_self`, `OddSymmetrizer.S_idempotent` |
@@ -134,12 +136,30 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
     (`OddSchubertAction.action_additive`).
 13. **At (2.65) [M].** Extra staircase factor in the leftmost argument; correct:
     `OddSymmetrizer.S_eq_self`.
-14. **Prop 2.15, centre as squared variables [X].** Counterexample in three variables:
-    `NilHeckeCenter.kernel_center_counterexample`.
-15. **Lemma 2.18 (OWL) for an arbitrary reduced word of w₀ [X].** Counterexample in
+14. **Prop 2.15, centre of OΛ_N and ONH_N [F→T].** The printed description (symmetric
+    polynomials in x₁², …, x_N²) is correct exactly for even N
+    (`CenterCorrected.printed_iff_even`, `CenterCorrected.printed_iff_even_nilHecke`); for
+    N = 3, x₁x₂x₃ is central but not of that form
+    (`NilHeckeCenter.kernel_center_counterexample`). The first step of the proof ("doing this
+    for each j separately") fails: xᵃ commutes with every xⱼ iff |a| − aⱼ is even for all j,
+    which for odd N also allows all exponents odd (`CenterPoly.mem_center_iff`). Correct
+    statement, every N ≥ 2: the centre of OΛ_N is {a + x₁⋯x_N·b : a, b symmetric in
+    x₁², …, x_N²}, with b = 0 for even N, and the centre of ONH_N is its image under the dot
+    inclusion (`CenterCorrected.center_oddSymmetric`, `CenterCorrected.center_nilHecke`).
+15. **Lemma 2.18 (OWL) for an arbitrary reduced word of w₀ [F→T].** Counterexample in
     5 variables, word `[0,1,0,3,2,1,0,3,2,1]`: `OwlDirect.owl_trichotomy_false`. The
-    lemma holds for the printed block word (`OmissionCanonical.trichotomy`), which is
-    the case used for (2.64); (2.64), Cor 2.22 and Cor 2.23 are proved.
+    proof reorders the D_a termwise; distant commutations preserve OWL, but a single
+    braid move need not (`OwlBraid.braid_transport_false`). Corrected statement, every
+    N ≥ 2 (letters 0, …, N−2): OWL, and the kernel identity (2.64), hold for every word in
+    `OwlGeneral.OwlClass` (`OwlGeneral.owl_general`, `OwlGeneral.left_kernel_owl_class`).
+    This class is built from the empty word by (i) prepending the chain
+    (N−2, N−3, …, N−2−r) to a class word on the top r+1 strands, and (ii) the flip
+    i ↦ 2N−3−r−i of the top r+1 strands, and is closed under distant commutations. Its
+    words are reduced words of w₀ (`OwlGeneral.owlClass_reduced_longest`); it contains
+    the printed block word, which is the case used for (2.64)
+    (`OwlGeneral.blockClass_owlClass`, `OmissionCanonical.trichotomy`), and is strictly
+    larger (`OwlGeneral.not_blockClass_stageExample`). Whether OWL holds for words
+    outside this class is open. (2.64), Cor 2.22 and Cor 2.23 are proved.
 
 ### [E] arXiv:1111.3932v1
 
