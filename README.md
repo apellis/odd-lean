@@ -91,6 +91,8 @@ formalized.
 | (2.33) | `EKLSectionTwo.mixed_even`, `EKLSectionTwo.mixed_odd` |
 | (2.34), corrected index | `EKLSectionTwo.complete_last` |
 | (2.6), (2.11), (2.45); Remark 2.17; (2.59) | `EKLSectionTwo.divided_even_power_sum`, `EKLSectionTwo.psi_homotopy`, `EKLSectionTwo.schubert_identity_action`, `EKLSectionTwo.s_elementary_one_not_mem`, `EKLSectionTwo.dividedPair_elementary_one` |
+| OPol_a is left and right Noetherian (p. 4) | `EKLMisc.left_noetherian`, `EKLMisc.right_noetherian` |
+| (2.44) as a Laurent series | `EKLMisc.eq_2_44` |
 | (2.72), Remark 2.27 (horizontal Pieri) | `EKLSectionTwo.horizontal_pieri`, `EKLSectionTwo.horizontal_pieri_Q` |
 | (2.73)–(2.74), with η_α made precise (erratum 27) | `EKLSectionTwo.reverse_sK`, `EKLSectionTwo.left_vertical_pieri`, `EKLSectionTwo.left_horizontal_pieri` (and `…_Q` in OΛ) |
 | (2.49)–(2.51), corrected (erratum 28); (2.63); (2.53) for OPol_a over OΛ_a; Cor 2.6 at a = 2 | `EKLSectionTwo.eq_2_49_sum_from_zero`, `EKLSectionTwo.eq_2_50_first`, `EKLSectionTwo.eq_2_50_sum_from_zero`, `EKLSectionTwo.eq_2_51`, `EKLSectionTwo.eq_2_63`, `EKLSectionTwo.eq_2_53`, `EKLSectionTwo.cor_2_6_rank_two` |
@@ -115,6 +117,7 @@ formalized.
 | (4.19), (4.20) | `ThickDots.schur_eq`, `ThickDots.skewSign_delta` |
 | (4.21)–(4.22); Def 4.10 and the identity after it | `ThickDots.projector_schur_projector`, `ThickDots.projector_dualSchur_projector` |
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
+| χ^a_{(1^r)} closed form (p. 34) | `EKLMisc.chi_col`, `EKLMisc.chi_col_div` |
 | (4.2) thick crossing; Prop 4.1 (4.3)–(4.4); Prop 4.2 (4.5)–(4.6) | `ThickRelations.eq_4_2`, `ThickRelations.prop_4_1_split`, `ThickRelations.prop_4_1_merge`, `ThickRelations.prop_4_2_left`, `ThickRelations.prop_4_2_right` |
 | Explosions (4.13)–(4.16); (4.42); (4.46); Remark 4.12 | `ThickRelations.eq_4_13`, `ThickRelations.eq_4_14`, `ThickRelations.eq_4_15`, `ThickRelations.eq_4_16`, `ThickRelations.eq_4_42`, `ThickRelations.eq_4_46`, `ThickRelations.remark_4_12` |
 | Prop 4.11 (all a, b with a + b ≥ 2) | `ThickBubble.prop_4_11` |
@@ -164,7 +167,7 @@ projective modules. U_q^+(sl_2)_A is Lusztig's integral form (`QuantumSl2Plus.UA
 |---|---|
 | Lemma 4.4 (Shuffle Lemma) | `ShuffleLemma.shuffle_one`, `ShuffleLemma.shuffle_even`, `ShuffleLemma.shuffle_odd` |
 | (4.27), corrected (erratum 17) | `ShuffleLemma.big_shuffle` |
-| Prop 4.5, in `m` variables | `StaircaseEvaluation.prop_4_5` |
+| Prop 4.5 (in m variables, and inside rank a ≥ m) | `StaircaseEvaluation.prop_4_5`, `EKLMisc.prop_4_5_rank` |
 | Prop 4.6 | `StaircaseEvaluation.prop_4_6` |
 | Prop 4.7 | `MonomialReversal.prop_4_7` |
 | Lemma 4.8 | `StaircaseEvaluation.lemma_4_8` |
@@ -313,6 +316,13 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
     (`OnhReflection.eq_3_51_false`, `OnhReflection.eq_3_51_printed_false`). Corrected:
     `OnhReflection.eq_3_51`. (3.52)–(3.54) hold as printed.
 
+### [EKL] arXiv:1111.1320v1, §4 (continued)
+
+30. **(4.52) [M].** X^{a,1}_{(1^r)} ≡ a(a−r) + C(a−r+1,2) holds only mod 2
+    (`EKLMisc.signX_col_mod_two`, `EKLMisc.signX_col_exact`; the integer equality fails:
+    `EKLMisc.eq_4_52_false`), and X^{a,1}_{(1^a)} is even, not 1 (`EKLMisc.signX_col_self_even`,
+    `EKLMisc.neg_one_pow_signX_col_self`). Lemma 4.14 and Thm 4.15 are unaffected.
+
 ### [EKL] arXiv:1111.1320v1, §5
 
 19. **Lemma 5.1, (5.4) [F→T].** For the action of Corollary 2.14 (on OPol_a as a right
@@ -329,6 +339,17 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 21. **Proof of Prop 5.4 [G].** It uses that OH_{a,N} is a free ℤ-module without proof. Prop 5.4
     holds, and OH_{a,N} is free of rank C(N,a) (`OddGrassmannSchur.proposition_5_4`,
     `OddGrassmannSchur.finrank_OH`).
+
+31. **p. 44 [M].** "The ε_λ form a basis of OΛ_a just like the h_λ": in OΛ_a the family of all
+    h_λ is linearly dependent (h_3 = h_1³ for a = 2: `EKLMisc.complete_parts_not_basis`); the
+    statement holds for OΛ (`EKIntegralBases`) and, for OΛ_a, for the ε_λ with parts ≤ a
+    (`EKLMisc.elementary_basis`).
+32. **Minor slips (not formalized).** (5.1): "a_i a_j = a_j a_j" should read "a_i a_j = a_j a_i";
+    Lemma 3.3 is an identity in ONH_{a+1}, not ONH_a; in the proof of Lemma 5.1 the sum runs to
+    j = a; §1.1 speaks of the negative half of U_q(sl_2) where the abstract and §6 (and (6.3))
+    use the positive half; the idempotent 1_n in (6.2) is stray. The proof of Thm 4.16 appeals
+    to ONH_a ≅ Mat(OΛ_a) without the needed rank argument; `ThickDecomposition.thm_4_16`
+    supplies it by a graded trace count.
 
 ### [EKL] arXiv:1111.1320v1, §6
 

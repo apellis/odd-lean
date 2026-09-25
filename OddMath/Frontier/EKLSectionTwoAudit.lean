@@ -8,6 +8,8 @@ import OddMath.Frontier.EKLSectionTwoG
 import OddMath.Frontier.EKLSectionTwoH
 import OddMath.Frontier.Categorification
 import OddMath.Frontier.OddCategorification
+import OddMath.Frontier.EKLMisc
+import OddMath.Frontier.EKLMisc2
 
 /-! Audit for EKL arXiv:1111.1320v1 §2 (remaining items) and §6 (6.1)–(6.3): transitive axioms. -/
 namespace OddMath.Frontier.EKLSectionTwoAudit
@@ -63,4 +65,14 @@ open OddMath.Frontier
 #print axioms EKLSectionTwo.eq_2_63
 #print axioms EKLSectionTwo.eq_2_53
 #print axioms EKLSectionTwo.cor_2_6_rank_two
+#print axioms EKLMisc.prop_4_5_rank
+#print axioms EKLMisc.left_noetherian
+#print axioms EKLMisc.right_noetherian
+#print axioms EKLMisc.eq_2_44
+#print axioms EKLMisc.chi_col
+#print axioms EKLMisc.signX_col_mod_two
+#print axioms EKLMisc.eq_4_52_false
+#print axioms EKLMisc.signX_col_self_even
+#print axioms EKLMisc.complete_parts_not_basis
+#print axioms EKLMisc.elementary_basis
 end OddMath.Frontier.EKLSectionTwoAudit
