@@ -55,6 +55,8 @@ import OddMath.Frontier.EKLSectionTwoC
 import OddMath.Frontier.EKLSectionTwoD
 import OddMath.Frontier.EKLSectionTwoE
 import OddMath.Frontier.EKLSectionTwoF
+import OddMath.Frontier.EKLSectionTwoG
+import OddMath.Frontier.EKLSectionTwoH
 import OddMath.Frontier.EKLemma311Cond
 import OddMath.Frontier.EKMixedPairing
 import OddMath.Frontier.EKNondegeneracy
@@ -107,6 +109,10 @@ import OddMath.Frontier.NilHeckeRightBasis
 import OddMath.Frontier.NilHeckeRightKernel
 import OddMath.Frontier.NilHeckeSmallRank
 import OddMath.Frontier.NonadjacentDivided
+import OddMath.Frontier.OddCategorification
+import OddMath.Frontier.OddCategorificationBasic
+import OddMath.Frontier.OddCategorificationInduction
+import OddMath.Frontier.OddCategorificationRank
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination

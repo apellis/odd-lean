@@ -4,9 +4,12 @@ import OddMath.Frontier.EKLSectionTwoC
 import OddMath.Frontier.EKLSectionTwoD
 import OddMath.Frontier.EKLSectionTwoE
 import OddMath.Frontier.EKLSectionTwoF
+import OddMath.Frontier.EKLSectionTwoG
+import OddMath.Frontier.EKLSectionTwoH
 import OddMath.Frontier.Categorification
+import OddMath.Frontier.OddCategorification
 
-/-! Audit for EKL arXiv:1111.1320v1 §2 (remaining items) and §6 (6.1)–(6.2): transitive axioms. -/
+/-! Audit for EKL arXiv:1111.1320v1 §2 (remaining items) and §6 (6.1)–(6.3): transitive axioms. -/
 namespace OddMath.Frontier.EKLSectionTwoAudit
 open OddMath.Frontier
 #print axioms EKLSectionTwo.qrk_symmetric
@@ -39,4 +42,25 @@ open OddMath.Frontier
 #print axioms Categorification.eq_6_1_row_mul_col
 #print axioms Categorification.eq_6_2_col_mul_row
 #print axioms Categorification.cyclotomic_vanish
+#print axioms OddCategorification.eq_6_3
+#print axioms OddCategorification.eq_6_3_UA
+#print axioms OddCategorification.eq_6_1_K0
+#print axioms OddCategorification.eq_6_1_qFact
+#print axioms OddCategorification.eq_6_1_printed_false
+#print axioms OddCategorification.eq_6_2_K0
+#print axioms OddCategorification.basisE
+#print axioms OddCategorification.rankEquiv_Eclass
+#print axioms EKLSectionTwo.reverse_sK
+#print axioms EKLSectionTwo.psi3_not_diagonal
+#print axioms EKLSectionTwo.left_vertical_pieri
+#print axioms EKLSectionTwo.left_horizontal_pieri
+#print axioms EKLSectionTwo.left_vertical_pieri_Q
+#print axioms EKLSectionTwo.eq_2_49_printed_fails
+#print axioms EKLSectionTwo.eq_2_49_sum_from_zero
+#print axioms EKLSectionTwo.eq_2_50_printed_fails
+#print axioms EKLSectionTwo.eq_2_50_sum_from_zero
+#print axioms EKLSectionTwo.eq_2_51
+#print axioms EKLSectionTwo.eq_2_63
+#print axioms EKLSectionTwo.eq_2_53
+#print axioms EKLSectionTwo.cor_2_6_rank_two
 end OddMath.Frontier.EKLSectionTwoAudit

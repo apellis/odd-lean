@@ -91,6 +91,8 @@ formalized.
 | (2.34), corrected index | `EKLSectionTwo.complete_last` |
 | (2.6), (2.11), (2.45); Remark 2.17; (2.59) | `EKLSectionTwo.divided_even_power_sum`, `EKLSectionTwo.psi_homotopy`, `EKLSectionTwo.schubert_identity_action`, `EKLSectionTwo.s_elementary_one_not_mem`, `EKLSectionTwo.dividedPair_elementary_one` |
 | (2.72), Remark 2.27 (horizontal Pieri) | `EKLSectionTwo.horizontal_pieri`, `EKLSectionTwo.horizontal_pieri_Q` |
+| (2.73)–(2.74), with η_α made precise (erratum 27) | `EKLSectionTwo.reverse_sK`, `EKLSectionTwo.left_vertical_pieri`, `EKLSectionTwo.left_horizontal_pieri` (and `…_Q` in OΛ) |
+| (2.49)–(2.51), corrected (erratum 28); (2.63); (2.53) for OPol_a over OΛ_a; Cor 2.6 at a = 2 | `EKLSectionTwo.eq_2_49_sum_from_zero`, `EKLSectionTwo.eq_2_50_first`, `EKLSectionTwo.eq_2_50_sum_from_zero`, `EKLSectionTwo.eq_2_51`, `EKLSectionTwo.eq_2_63`, `EKLSectionTwo.eq_2_53`, `EKLSectionTwo.cor_2_6_rank_two` |
 | Remark 2.28: (2.76) corrected (erratum 22); ε_4 not generated; no naive Jacobi–Trudi | `EKLSectionTwo.schur_two_two`, `EKLSectionTwo.complete_two_two`, `EKLSectionTwo.complete_three_one`, `EKLSectionTwo.elementary_four_not_mem`, `EKLSectionTwo.schur_ne_elementary_determinant`, `EKLSectionTwo.schur_ne_complete_determinant` |
 
 ### [EKL], §§3–4 (rank a = n+2 ≥ 2 unless noted)
@@ -141,6 +143,18 @@ formalized.
 | (6.1): ONH_a ≅ ⊕_{ℓ∈Sq(a)} ONH_a e_a as left modules, with degrees | `Categorification.eq_6_1`, `Categorification.eq_6_1_hasDegree` |
 | (6.2): ONH_{a+b}(e_a ⊗ e_b) ≅ ⊕_{α∈P(a,b)} ONH_{a+b} e_{a+b}, with degrees | `Categorification.eq_6_2`, `Categorification.eq_6_2_hasDegree` |
 | ONH_a^N = 0 for N < a (p. 47) | `Categorification.cyclotomic_vanish` |
+| K_0(ONH_a) ≅ ℤ[q,q⁻¹], free on [E^{(a)}], E^{(a)} = ONH_a e_a with its shift (every a ≥ 0) | `OddCategorification.basisE`, `OddCategorification.rankEquiv_Eclass` |
+| (6.1) in K_0, shifts corrected (erratum 26): [ONH_a] = [a]! [E^{(a)}] | `OddCategorification.eq_6_1_K0`, `OddCategorification.eq_6_1_qFact` |
+| (6.2) in K_0: [E^{(a)}E^{(b)}] = [a+b, a] [E^{(a+b)}] | `OddCategorification.eq_6_2_K0`, `OddCategorification.indClass_eq` |
+| (6.3): U_q^+(sl_2)_A ≅ K_0(ONH) as ℤ[q,q⁻¹]-algebras, ϑ^{(a)} ↦ [E^{(a)}] | `OddCategorification.eq_6_3`, `OddCategorification.eq_6_3_UA` |
+
+Here K_0 is the Grothendieck group of finitely generated graded projective modules, presented by
+graded idempotent matrices up to Murray–von Neumann equivalence (`GradedK0`); every such module is
+a sum of shifts of E^{(a)} with determined multiplicities (classification over the connected
+graded ring OΛ_a and graded Morita invariance, which replace the paper's appeal to graded
+locality). The product on K_0(ONH) is induction realized on the indecomposables: E^{(a)} ⊠ E^{(b)}
+induces to ONH_{a+b}(e_a ⊗ e_b); induction is not constructed as a functor on all graded
+projective modules. U_q^+(sl_2)_A is Lusztig's integral form (`QuantumSl2Plus.UA`).
 
 ### [EKL], §4.3.1 (every rank)
 
@@ -259,6 +273,19 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 25. **(2.34) [M].** The index k is unbound; with h_{m−j} the formula holds
     (`EKLSectionTwo.complete_last`).
 
+27. **Remark 2.27, (2.73)–(2.74) [G].** η_α is not defined in [EK], and ψ₃ does not act diagonally
+    on Schur functions (`EKLSectionTwo.psi3_not_diagonal`). With η_λ defined by R(s_λ) = η_λ s_λ for
+    the anti-involution R fixing every h_n (`EKLSectionTwo.reverse_sK`), both identities hold as
+    printed, in OΛ and in every OΛ_a (`EKLSectionTwo.left_vertical_pieri`,
+    `EKLSectionTwo.left_horizontal_pieri`).
+28. **(2.49)–(2.51) [M, G].** In (2.49) and in the second equality of (2.50) the sums must start at
+    k = 0 (f = 1 is a counterexample: `EKLSectionTwo.eq_2_49_printed_fails`,
+    `EKLSectionTwo.eq_2_50_printed_fails`; corrected: `EKLSectionTwo.eq_2_49_sum_from_zero`,
+    `EKLSectionTwo.eq_2_50_sum_from_zero`). The step "h·x_{a−1}^i ∈ H_{a−1}" in the proof of (2.51)
+    is false for H of (2.46); (2.51) holds (`EKLSectionTwo.eq_2_51`).
+29. **(2.63) [M].** In the case ℓ = j − i the word should read s_{i+1}⋯s_{j−1}s_{i,j}; the identity
+    holds for all g, h ∈ OΛ_a (`EKLSectionTwo.eq_2_63`).
+
 ### [EKL] arXiv:1111.1320v1, §4
 
 17. **(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
@@ -287,6 +314,12 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 21. **Proof of Prop 5.4 [G].** It uses that OH_{a,N} is a free ℤ-module without proof. Prop 5.4
     holds, and OH_{a,N} is free of rank C(N,a) (`OddGrassmannSchur.proposition_5_4`,
     `OddGrassmannSchur.finrank_OH`).
+
+### [EKL] arXiv:1111.1320v1, §6
+
+26. **(6.1) [M].** The grading shifts of the summands are C(a,2) − 2|ℓ| (the exponents of [a]!),
+    not a − 1 − 2|ℓ|; the printed shifts fail at a = 3 for either sign convention
+    (`OddCategorification.eq_6_1_printed_false`). Corrected: `OddCategorification.eq_6_1_K0`.
 
 These errata arose during the formalization; they are not a complete review of the
 papers.
