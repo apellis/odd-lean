@@ -1,6 +1,7 @@
 import OddMath.Frontier.CyclotomicMatrix
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddSymmetricLimit
+import OddMath.Frontier.CyclotomicGraded
 
 /-! Audit for EKL arXiv:1111.1320v1 §5: headline statements with transitive axioms. -/
 namespace OddMath.Frontier.CyclotomicAudit
@@ -32,5 +33,10 @@ example (n b : ℕ) :
 #print axioms OddGrassmannSchur.conjecture_5_3
 #print axioms OddGrassmannSchur.proposition_5_4
 #print axioms OddGrassmannSchur.finrank_OH
+
+#print axioms Cyclotomic.prop_5_2_degree_iff
+#print axioms Cyclotomic.ohConnected
+#print axioms Cyclotomic.onhCycK0Equiv
+#print axioms Cyclotomic.finrank_K0Cyc
 
 end OddMath.Frontier.CyclotomicAudit

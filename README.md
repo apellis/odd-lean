@@ -73,7 +73,8 @@ formalized.
 | Prop 2.2 | `ElementaryGeneration.kernel_eq_elementaryClosure` |
 | Lemma 2.10 | `LongestDivided.D_staircase` |
 | Prop 2.11 | `NilCoxeterPresentation.action_injective`, `OddSchubertAction.left_relation_coefficients` |
-| (2.42), corrected selector (erratum 12) | `OddSchubertAction.action_additive` |
+| (2.42) | `OddSchubertAction.action_additive`, `OddSchubertAction.action_nonadditive` |
+| (2.43), corrected selector (erratum 12) | `OddSchubertAction.action_self`, `OddSchubertAction.action_same_length_distinct`, `OddSchubertAction.action_shorter` |
 | Prop 2.13 | `SchubertBasis.left_kernel_decomposition_unique`, `SchubertBasis.right_kernel_decomposition_unique` |
 | Prop 2.15, corrected (erratum 14) | `CenterCorrected.center_oddSymmetric`, `CenterCorrected.center_nilHecke` |
 | Lemma 2.18, for the printed block word | `OmissionCanonical.trichotomy` |
@@ -116,13 +117,13 @@ formalized.
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
 | (4.2) thick crossing; Prop 4.1 (4.3)–(4.4); Prop 4.2 (4.5)–(4.6) | `ThickRelations.eq_4_2`, `ThickRelations.prop_4_1_split`, `ThickRelations.prop_4_1_merge`, `ThickRelations.prop_4_2_left`, `ThickRelations.prop_4_2_right` |
 | Explosions (4.13)–(4.16); (4.42); (4.46); Remark 4.12 | `ThickRelations.eq_4_13`, `ThickRelations.eq_4_14`, `ThickRelations.eq_4_15`, `ThickRelations.eq_4_16`, `ThickRelations.eq_4_42`, `ThickRelations.eq_4_46`, `ThickRelations.remark_4_12` |
-| Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
+| Prop 4.11 (all a, b with a + b ≥ 2) | `ThickBubble.prop_4_11` |
 | (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
 | (4.41) | `ThickMatrixUnits.eq_4_41` |
 | Lemma 4.13 | `ThickMatrixUnits.lemma_4_13` |
 | Lemma 4.14 | `ThickMatrixUnits.lemma_4_14` |
 | Thm 4.15 | `ThickMatrixUnits.thm_4_15_orthogonal`, `ThickMatrixUnits.thm_4_15_sum` |
-| Thm 4.16, (4.56)–(4.57) (all a, b ≥ 0) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
+| Thm 4.16, (4.56)–(4.57) (all a, b with a + b ≥ 2) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
 
 ### [EKL], §5 (rank a = n+2 ≥ 2)
 
@@ -132,9 +133,10 @@ formalized.
 | (5.3) and the inverse limit (p. 44) | `OddSymmetricLimit.equation_5_3`, `OddSymmetricLimit.transition`, `OddSymmetricLimit.inverse_limit` |
 | (5.5)–(5.7) | `Cyclotomic.supercentral_inverse`, `Cyclotomic.supercentral_inverse_unique`, `Cyclotomic.span_grassmannRelations` |
 | Lemma 5.1, corrected (erratum 19) | `Cyclotomic.lemma_5_1`, `Cyclotomic.lemma_5_1_left` |
-| Prop 5.2 (ungraded) | `Cyclotomic.prop_5_2` |
+| Prop 5.2, graded | `Cyclotomic.prop_5_2`, `Cyclotomic.prop_5_2_degree_iff` |
 | Conj 5.3 (a theorem for a ≥ 2) | `OddGrassmannSchur.conjecture_5_3` |
 | Prop 5.4 | `OddGrassmannSchur.proposition_5_4`, `OddGrassmannSchur.toOHQ_sK_eq_zero`, `OddGrassmannSchur.finrank_OH` |
+| §6, p. 47: OH_{a,N} is connected graded (degree 0 = ℤ); K_0(ONH^N) is free of rank N+1 over ℤ[q,q⁻¹] | `Cyclotomic.ohConnected`, `Cyclotomic.onhCycK0Equiv`, `Cyclotomic.finrank_K0Cyc` |
 
 ### [EKL], §6 (rank a = n+2 ≥ 2)
 
@@ -237,7 +239,7 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 ### [EKL] arXiv:1111.1320v1
 
 12. **(2.43) [F→T].** Selector w = u⁻¹ should be w = u
-    (`OddSchubertAction.action_additive`).
+    (`OddSchubertAction.action_self`, `OddSchubertAction.action_same_length_distinct`).
 13. **At (2.65) [M].** Extra staircase factor in the leftmost argument; correct:
     `OddSymmetrizer.S_eq_self`.
 14. **Prop 2.15, centre of OΛ_N and ONH_N [F→T].** The printed description (symmetric
@@ -301,7 +303,7 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 
 ### [EKL] arXiv:1111.1320v1, §4
 
-17. **(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
+17. **(4.26)–(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
     from `j = 3` on; the formula fails for `m = 0, k = 7` (`ShuffleLemma.big_shuffle_false`).
     Correct coefficient: `(−1)^{binom(j,2) + (m+1)(j+1)}`, all `m` and odd `k`
     (`ShuffleLemma.big_shuffle`). Lemma 4.4, Props 4.5–4.7 and Lemmas 4.8–4.9 hold as printed.

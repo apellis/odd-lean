@@ -22,6 +22,7 @@ import OddMath.Frontier.CompleteElementary
 import OddMath.Frontier.CompleteTableauExpansion
 import OddMath.Frontier.Cyclotomic
 import OddMath.Frontier.CyclotomicAudit
+import OddMath.Frontier.CyclotomicGraded
 import OddMath.Frontier.CyclotomicMatrix
 import OddMath.Frontier.DegreeShapes
 import OddMath.Frontier.DiagramTranslation
