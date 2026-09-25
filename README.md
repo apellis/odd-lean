@@ -83,6 +83,15 @@ formalized.
 | Cor 2.22 | `OddSymmetrizer.S_eq_self`, `OddSymmetrizer.S_idempotent` |
 | Cor 2.23, (2.66) | `LongestReversal.action_D` |
 | Prop 2.26, (2.71) | `OddSchurPieri.right_pieri` |
+| Prop 2.2 in q-series form (2.18), (2.20); (2.52); (2.67) | `EKLSectionTwo.qrk_symmetric`, `EKLSectionTwo.symRank_mul_qPoch`, `EKLSectionTwo.qfactorial_eq`, `EKLSectionTwo.box_qcard` |
+| (2.19), corrected (erratum 23) | `EKLSectionTwo.qrkPol_eq` |
+| (2.13), (2.27): reduction mod 2 | `EKLSectionTwo.polynomialModTwo`, `EKLSectionTwo.symmetricModTwo` |
+| (2.25) | `EKLSectionTwo.reorder_even`, `EKLSectionTwo.reorder_odd` |
+| (2.33) | `EKLSectionTwo.mixed_even`, `EKLSectionTwo.mixed_odd` |
+| (2.34), corrected index | `EKLSectionTwo.complete_last` |
+| (2.6), (2.11), (2.45); Remark 2.17; (2.59) | `EKLSectionTwo.divided_even_power_sum`, `EKLSectionTwo.psi_homotopy`, `EKLSectionTwo.schubert_identity_action`, `EKLSectionTwo.s_elementary_one_not_mem`, `EKLSectionTwo.dividedPair_elementary_one` |
+| (2.72), Remark 2.27 (horizontal Pieri) | `EKLSectionTwo.horizontal_pieri`, `EKLSectionTwo.horizontal_pieri_Q` |
+| Remark 2.28: (2.76) corrected (erratum 22); ε_4 not generated; no naive Jacobi–Trudi | `EKLSectionTwo.schur_two_two`, `EKLSectionTwo.complete_two_two`, `EKLSectionTwo.complete_three_one`, `EKLSectionTwo.elementary_four_not_mem`, `EKLSectionTwo.schur_ne_elementary_determinant`, `EKLSectionTwo.schur_ne_complete_determinant` |
 
 ### [EKL], §§3–4 (rank a = n+2 ≥ 2 unless noted)
 
@@ -124,6 +133,14 @@ formalized.
 | Prop 5.2 (ungraded) | `Cyclotomic.prop_5_2` |
 | Conj 5.3 (a theorem for a ≥ 2) | `OddGrassmannSchur.conjecture_5_3` |
 | Prop 5.4 | `OddGrassmannSchur.proposition_5_4`, `OddGrassmannSchur.toOHQ_sK_eq_zero`, `OddGrassmannSchur.finrank_OH` |
+
+### [EKL], §6 (rank a = n+2 ≥ 2)
+
+| Result | Declaration |
+|---|---|
+| (6.1): ONH_a ≅ ⊕_{ℓ∈Sq(a)} ONH_a e_a as left modules, with degrees | `Categorification.eq_6_1`, `Categorification.eq_6_1_hasDegree` |
+| (6.2): ONH_{a+b}(e_a ⊗ e_b) ≅ ⊕_{α∈P(a,b)} ONH_{a+b} e_{a+b}, with degrees | `Categorification.eq_6_2`, `Categorification.eq_6_2_hasDegree` |
+| ONH_a^N = 0 for N < a (p. 47) | `Categorification.cyclotomic_vanish` |
 
 ### [EKL], §4.3.1 (every rank)
 
@@ -225,6 +242,22 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 
 16. **Lemma 3.5 [F→T].** The lexicographic order must be taken on λᵀ; with row-lex the
     statement fails (`OddLREliminationControls.row_lex_variant_fails`). Thm 3.8 holds.
+
+### [EKL] arXiv:1111.1320v1, §2 (continued)
+
+22. **Remark 2.28, (2.76) and the h-expansions [F→T].** s₂₂ = −ε₂₂ + ε₃₁ + 2ε₄ for a ≥ 4
+    (`EKLSectionTwo.schur_two_two`), not ε₂₂ + ε₃₁ − 2ε₄, nor its negative
+    (`EKLSectionTwo.printed_schur_two_two_false`, `…_false_neg`); h₂₂ = ε₂₂ + 2ε₂₁₁ + ε₁₁₁₁ and
+    h₃₁ = ε₃₁ + ε₁₁₁₁ (`EKLSectionTwo.complete_two_two`, `EKLSectionTwo.complete_three_one`;
+    printed forms refuted: `EKLSectionTwo.printed_complete_determinant_false`). The conclusions of
+    the Remark hold (`EKLSectionTwo.schur_ne_elementary_determinant`,
+    `EKLSectionTwo.schur_ne_complete_determinant`, `EKLSectionTwo.elementary_four_not_mem`).
+23. **(2.19) [M].** The exponent is q^{2ℓ(σ)}, not q^{ℓ(σ)}: `EKLSectionTwo.qrkPol_eq`; printed form
+    refuted by `EKLSectionTwo.printed_qrk_quotient_false`.
+24. **Proof of Prop 2.2, p. 8 [M].** The leading term of ε_α is x^{αᵀ} with coefficient ±1, not x^α
+    with coefficient 1 (`EKLSectionTwo.printed_leading_term_false`).
+25. **(2.34) [M].** The index k is unbound; with h_{m−j} the formula holds
+    (`EKLSectionTwo.complete_last`).
 
 ### [EKL] arXiv:1111.1320v1, §4
 
