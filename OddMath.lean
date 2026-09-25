@@ -162,6 +162,8 @@ import OddMath.Frontier.SignedKostkaInvertibility
 import OddMath.Frontier.SignedPermutation
 import OddMath.Frontier.SignedSwap
 import OddMath.Frontier.SmallRank
+import OddMath.Frontier.SmallRank2
+import OddMath.Frontier.SmallRank2Cyclotomic
 import OddMath.Frontier.SmallRankCyclotomic
 import OddMath.Frontier.SmallRankLimit
 import OddMath.Frontier.SmallRankONH
