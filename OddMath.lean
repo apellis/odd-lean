@@ -3,6 +3,11 @@ import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
 import OddMath.Diagrammatics.Even
 import OddMath.Diagrammatics.OddDots
+import OddMath.Diagrams.OddNilHecke.Action
+import OddMath.Diagrams.OddNilHecke.Basic
+import OddMath.Diagrams.OddNilHecke.Comparison
+import OddMath.Diagrams.OddNilHecke.Relations
+import OddMath.Diagrams.OddNilHecke
 import OddMath.DividedDifferences
 import OddMath.Frontier.AllRankDivided
 import OddMath.Frontier.BoxComplement
