@@ -73,7 +73,8 @@ formalized.
 | Prop 2.2 | `ElementaryGeneration.kernel_eq_elementaryClosure` |
 | Lemma 2.10 | `LongestDivided.D_staircase` |
 | Prop 2.11 | `NilCoxeterPresentation.action_injective`, `OddSchubertAction.left_relation_coefficients` |
-| (2.42), corrected selector (erratum 12) | `OddSchubertAction.action_additive` |
+| (2.42) | `OddSchubertAction.action_additive`, `OddSchubertAction.action_nonadditive` |
+| (2.43), corrected selector (erratum 12) | `OddSchubertAction.action_self`, `OddSchubertAction.action_same_length_distinct`, `OddSchubertAction.action_shorter` |
 | Prop 2.13 | `SchubertBasis.left_kernel_decomposition_unique`, `SchubertBasis.right_kernel_decomposition_unique` |
 | Prop 2.15, corrected (erratum 14) | `CenterCorrected.center_oddSymmetric`, `CenterCorrected.center_nilHecke` |
 | Lemma 2.18, for the printed block word | `OmissionCanonical.trichotomy` |
@@ -90,6 +91,8 @@ formalized.
 | (2.33) | `EKLSectionTwo.mixed_even`, `EKLSectionTwo.mixed_odd` |
 | (2.34), corrected index | `EKLSectionTwo.complete_last` |
 | (2.6), (2.11), (2.45); Remark 2.17; (2.59) | `EKLSectionTwo.divided_even_power_sum`, `EKLSectionTwo.psi_homotopy`, `EKLSectionTwo.schubert_identity_action`, `EKLSectionTwo.s_elementary_one_not_mem`, `EKLSectionTwo.dividedPair_elementary_one` |
+| OPol_a is left and right Noetherian (p. 4) | `EKLMisc.left_noetherian`, `EKLMisc.right_noetherian` |
+| (2.44) as a Laurent series | `EKLMisc.eq_2_44` |
 | (2.72), Remark 2.27 (horizontal Pieri) | `EKLSectionTwo.horizontal_pieri`, `EKLSectionTwo.horizontal_pieri_Q` |
 | (2.73)–(2.74), with η_α made precise (erratum 27) | `EKLSectionTwo.reverse_sK`, `EKLSectionTwo.left_vertical_pieri`, `EKLSectionTwo.left_horizontal_pieri` (and `…_Q` in OΛ) |
 | (2.49)–(2.51), corrected (erratum 28); (2.63); (2.53) for OPol_a over OΛ_a; Cor 2.6 at a = 2 | `EKLSectionTwo.eq_2_49_sum_from_zero`, `EKLSectionTwo.eq_2_50_first`, `EKLSectionTwo.eq_2_50_sum_from_zero`, `EKLSectionTwo.eq_2_51`, `EKLSectionTwo.eq_2_63`, `EKLSectionTwo.eq_2_53`, `EKLSectionTwo.cor_2_6_rank_two` |
@@ -114,15 +117,16 @@ formalized.
 | (4.19), (4.20) | `ThickDots.schur_eq`, `ThickDots.skewSign_delta` |
 | (4.21)–(4.22); Def 4.10 and the identity after it | `ThickDots.projector_schur_projector`, `ThickDots.projector_dualSchur_projector` |
 | (4.1), (4.51), (4.53): splitters, σ_α, λ_α | `ThickBubble.splitter`, `ThickBubble.sigma`, `ThickBubble.lam` |
+| χ^a_{(1^r)} closed form (p. 34) | `EKLMisc.chi_col`, `EKLMisc.chi_col_div` |
 | (4.2) thick crossing; Prop 4.1 (4.3)–(4.4); Prop 4.2 (4.5)–(4.6) | `ThickRelations.eq_4_2`, `ThickRelations.prop_4_1_split`, `ThickRelations.prop_4_1_merge`, `ThickRelations.prop_4_2_left`, `ThickRelations.prop_4_2_right` |
 | Explosions (4.13)–(4.16); (4.42); (4.46); Remark 4.12 | `ThickRelations.eq_4_13`, `ThickRelations.eq_4_14`, `ThickRelations.eq_4_15`, `ThickRelations.eq_4_16`, `ThickRelations.eq_4_42`, `ThickRelations.eq_4_46`, `ThickRelations.remark_4_12` |
-| Prop 4.11 (all a, b ≥ 0) | `ThickBubble.prop_4_11` |
+| Prop 4.11 (all a, b with a + b ≥ 2) | `ThickBubble.prop_4_11` |
 | (4.54), (4.55) | `ThickBubble.eq_4_54`, `ThickBubble.eq_4_55` |
 | (4.41) | `ThickMatrixUnits.eq_4_41` |
 | Lemma 4.13 | `ThickMatrixUnits.lemma_4_13` |
 | Lemma 4.14 | `ThickMatrixUnits.lemma_4_14` |
 | Thm 4.15 | `ThickMatrixUnits.thm_4_15_orthogonal`, `ThickMatrixUnits.thm_4_15_sum` |
-| Thm 4.16, (4.56)–(4.57) (all a, b ≥ 0) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
+| Thm 4.16, (4.56)–(4.57) (all a, b with a + b ≥ 2) | `ThickDecomposition.thm_4_16`, `ThickDecomposition.eq_4_57` |
 
 ### [EKL], §5 (rank a = n+2 ≥ 2)
 
@@ -132,14 +136,19 @@ formalized.
 | (5.3) and the inverse limit (p. 44) | `OddSymmetricLimit.equation_5_3`, `OddSymmetricLimit.transition`, `OddSymmetricLimit.inverse_limit` |
 | (5.5)–(5.7) | `Cyclotomic.supercentral_inverse`, `Cyclotomic.supercentral_inverse_unique`, `Cyclotomic.span_grassmannRelations` |
 | Lemma 5.1, corrected (erratum 19) | `Cyclotomic.lemma_5_1`, `Cyclotomic.lemma_5_1_left` |
-| Prop 5.2 (ungraded) | `Cyclotomic.prop_5_2` |
+| Prop 5.2, graded | `Cyclotomic.prop_5_2`, `Cyclotomic.prop_5_2_degree_iff` |
 | Conj 5.3 (a theorem for a ≥ 2) | `OddGrassmannSchur.conjecture_5_3` |
 | Prop 5.4 | `OddGrassmannSchur.proposition_5_4`, `OddGrassmannSchur.toOHQ_sK_eq_zero`, `OddGrassmannSchur.finrank_OH` |
+| §6, p. 47: OH_{a,N} is connected graded (degree 0 = ℤ); K_0(ONH^N) is free of rank N+1 over ℤ[q,q⁻¹] | `Cyclotomic.ohConnected`, `Cyclotomic.onhCycK0Equiv`, `Cyclotomic.finrank_K0Cyc` |
 
 ### [EKL], §6 (rank a = n+2 ≥ 2)
 
 | Result | Declaration |
 |---|---|
+| e_a ONH_a e_a ≅ OΛ_a; End(ONH_a e_a) ≅ OΛ_a^op (Morita equivalence ONH_a ∼ OΛ_a, abstract, §1.2) | `OnhStructure.cornerEquiv`, `OnhStructure.endProjectorEquiv` |
+| p. 42: Mat_{a!}(OΛ_a) ≅ ONH_a, (ℓ, ℓ')-entry x ↦ σ_ℓ (e_a x e_a) λ_ℓ' | `OnhStructure.matrixEquiv` |
+| e_a is primitive; ONH_a e_a is indecomposable (§6) | `OnhStructure.projector_primitive`, `OnhStructure.leftIdeal_projector_indecomposable` |
+| ONH_a ⊗ ONH_b ⊂ ONH_{a+b} (§6, p. 46): injective, with the super sign rule (a, b ≥ 2) | `OnhStructure.tensorMap_injective`, `OnhStructure.tensorMap_mul` |
 | (6.1): ONH_a ≅ ⊕_{ℓ∈Sq(a)} ONH_a e_a as left modules, with degrees | `Categorification.eq_6_1`, `Categorification.eq_6_1_hasDegree` |
 | (6.2): ONH_{a+b}(e_a ⊗ e_b) ≅ ⊕_{α∈P(a,b)} ONH_{a+b} e_{a+b}, with degrees | `Categorification.eq_6_2`, `Categorification.eq_6_2_hasDegree` |
 | ONH_a^N = 0 for N < a (p. 47) | `Categorification.cyclotomic_vanish` |
@@ -162,7 +171,7 @@ projective modules. U_q^+(sl_2)_A is Lusztig's integral form (`QuantumSl2Plus.UA
 |---|---|
 | Lemma 4.4 (Shuffle Lemma) | `ShuffleLemma.shuffle_one`, `ShuffleLemma.shuffle_even`, `ShuffleLemma.shuffle_odd` |
 | (4.27), corrected (erratum 17) | `ShuffleLemma.big_shuffle` |
-| Prop 4.5, in `m` variables | `StaircaseEvaluation.prop_4_5` |
+| Prop 4.5 (in m variables, and inside rank a ≥ m) | `StaircaseEvaluation.prop_4_5`, `EKLMisc.prop_4_5_rank` |
 | Prop 4.6 | `StaircaseEvaluation.prop_4_6` |
 | Prop 4.7 | `MonomialReversal.prop_4_7` |
 | Lemma 4.8 | `StaircaseEvaluation.lemma_4_8` |
@@ -258,7 +267,7 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 ### [EKL] arXiv:1111.1320v1
 
 12. **(2.43) [F→T].** Selector w = u⁻¹ should be w = u
-    (`OddSchubertAction.action_additive`).
+    (`OddSchubertAction.action_self`, `OddSchubertAction.action_same_length_distinct`).
 13. **At (2.65) [M].** Extra staircase factor in the leftmost argument; correct:
     `OddSymmetrizer.S_eq_self`.
 14. **Prop 2.15, centre of OΛ_N and ONH_N [F→T].** The printed description (symmetric
@@ -322,7 +331,7 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 
 ### [EKL] arXiv:1111.1320v1, §4
 
-17. **(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
+17. **(4.26)–(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
     from `j = 3` on; the formula fails for `m = 0, k = 7` (`ShuffleLemma.big_shuffle_false`).
     Correct coefficient: `(−1)^{binom(j,2) + (m+1)(j+1)}`, all `m` and odd `k`
     (`ShuffleLemma.big_shuffle`). Lemma 4.4, Props 4.5–4.7 and Lemmas 4.8–4.9 hold as printed.
@@ -331,6 +340,13 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
     for `ψσ(D_a)`), not `(−1)^{binom(a−1,4)}`; the printed sign fails at `a = 4`
     (`OnhReflection.eq_3_51_false`, `OnhReflection.eq_3_51_printed_false`). Corrected:
     `OnhReflection.eq_3_51`. (3.52)–(3.54) hold as printed.
+
+### [EKL] arXiv:1111.1320v1, §4 (continued)
+
+30. **(4.52) [M].** X^{a,1}_{(1^r)} ≡ a(a−r) + C(a−r+1,2) holds only mod 2
+    (`EKLMisc.signX_col_mod_two`, `EKLMisc.signX_col_exact`; the integer equality fails:
+    `EKLMisc.eq_4_52_false`), and X^{a,1}_{(1^a)} is even, not 1 (`EKLMisc.signX_col_self_even`,
+    `EKLMisc.neg_one_pow_signX_col_self`). Lemma 4.14 and Thm 4.15 are unaffected.
 
 ### [EKL] arXiv:1111.1320v1, §5
 
@@ -348,6 +364,17 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 21. **Proof of Prop 5.4 [G].** It uses that OH_{a,N} is a free ℤ-module without proof. Prop 5.4
     holds, and OH_{a,N} is free of rank C(N,a) (`OddGrassmannSchur.proposition_5_4`,
     `OddGrassmannSchur.finrank_OH`).
+
+31. **p. 44 [M].** "The ε_λ form a basis of OΛ_a just like the h_λ": in OΛ_a the family of all
+    h_λ is linearly dependent (h_3 = h_1³ for a = 2: `EKLMisc.complete_parts_not_basis`); the
+    statement holds for OΛ (`EKIntegralBases`) and, for OΛ_a, for the ε_λ with parts ≤ a
+    (`EKLMisc.elementary_basis`).
+32. **Minor slips (not formalized).** (5.1): "a_i a_j = a_j a_j" should read "a_i a_j = a_j a_i";
+    Lemma 3.3 is an identity in ONH_{a+1}, not ONH_a; in the proof of Lemma 5.1 the sum runs to
+    j = a; §1.1 speaks of the negative half of U_q(sl_2) where the abstract and §6 (and (6.3))
+    use the positive half; the idempotent 1_n in (6.2) is stray. The proof of Thm 4.16 appeals
+    to ONH_a ≅ Mat(OΛ_a) without the needed rank argument; `ThickDecomposition.thm_4_16`
+    supplies it by a graded trace count.
 
 ### [EKL] arXiv:1111.1320v1, §6
 
