@@ -84,6 +84,25 @@ formalized.
 | Cor 2.23, (2.66) | `LongestReversal.action_D` |
 | Prop 2.26, (2.71) | `OddSchurPieri.right_pieri` |
 
+### [EKL], §4.3.1 (every rank)
+
+| Result | Declaration |
+|---|---|
+| Lemma 4.4 (Shuffle Lemma) | `ShuffleLemma.shuffle_one`, `ShuffleLemma.shuffle_even`, `ShuffleLemma.shuffle_odd` |
+| (4.27), corrected (erratum 17) | `ShuffleLemma.big_shuffle` |
+| Prop 4.5, in `m` variables | `StaircaseEvaluation.prop_4_5` |
+| Prop 4.6 | `StaircaseEvaluation.prop_4_6` |
+| Prop 4.7 | `MonomialReversal.prop_4_7` |
+| Lemma 4.8 | `StaircaseEvaluation.lemma_4_8` |
+| Lemma 4.9, with Ω as in (4.34) | `StaircaseEvaluation.lemma_4_9` |
+
+Lemmas 4.8–4.9 are proved by a different route from the printed one: if every exponent is at
+most `N−1` and the degree is not `binom(N,2)`, then `D_N(x^γ) = 0`
+(`StaircaseSorting.D_monomial_eq_zero_of_bounded`); and for a monomial whose exponents strictly
+decrease and then strictly increase, `D_N(x^γ)` in degree `binom(N,2)` is `0` unless the
+exponents are distinct, and then `(−1)^{binom(N,3) + Σ binom(v,3)}`, the sum over the exponents
+of the increasing part (`StaircaseValley.top_valley`).
+
 Files named `*Controls.lean`, `*Audit.lean` and `OddMath/Tests/*` contain finite
 checks and axiom printouts, not results.
 
@@ -165,6 +184,13 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
 
 16. **Lemma 3.5 [F→T].** The lexicographic order must be taken on λᵀ; with row-lex the
     statement fails (`OddLREliminationControls.row_lex_variant_fails`). Thm 3.8 holds.
+
+### [EKL] arXiv:1111.1320v1, §4
+
+17. **(4.27), "big odd shuffle" [F→T].** The printed coefficient `(−1)^{m(j+1)}` is wrong
+    from `j = 3` on; the formula fails for `m = 0, k = 7` (`ShuffleLemma.big_shuffle_false`).
+    Correct coefficient: `(−1)^{binom(j,2) + (m+1)(j+1)}`, all `m` and odd `k`
+    (`ShuffleLemma.big_shuffle`). Lemma 4.4, Props 4.5–4.7 and Lemmas 4.8–4.9 hold as printed.
 
 These errata arose during the formalization; they are not a complete review of the
 papers.
