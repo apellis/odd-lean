@@ -175,6 +175,19 @@ decrease and then strictly increase, `D_N(x^γ)` in degree `binom(N,2)` is `0` u
 exponents are distinct, and then `(−1)^{binom(N,3) + Σ binom(v,3)}`, the sum over the exponents
 of the increasing part (`StaircaseValley.top_valley`).
 
+### [EKL], §2: diagrammatic presentation (every rank)
+
+Using [string-diagrams-lean](https://github.com/apellis/string-diagrams-lean), the odd nilHecke
+category is presented by an odd dot and an odd crossing subject only to the square, braid and
+two mixed relations of Prop 2.1; the anticommutation relations are consequences of the super
+interchange law.
+
+| Result | Declaration |
+|---|---|
+| Relations (2.7)–(2.10) at every width | `Diagrams.OddNilHecke.ψ_mul_ψ`, `ψ_braid`, `x_mul_ψ_add_ψ_mul_x`, `ψ_mul_x_add_x_mul_ψ`, `x_mul_x_add_x_mul_x`, `ψ_mul_ψ_add_ψ_mul_ψ`, `x_mul_ψ_add_ψ_mul_x_of_ne` |
+| Skew polynomial action of the diagram category | `Diagrams.OddNilHecke.polyFunctor`, `realize`, `realize_injective` |
+| `ONH_{n+2}` ≅ endomorphisms of `n+2` strands | `Diagrams.OddNilHecke.presentedEquivEnd` |
+
 Files named `*Controls.lean`, `*Audit.lean` and `OddMath/Tests/*` contain finite
 checks and axiom printouts, not results.
 
@@ -328,7 +341,8 @@ papers.
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain
 `leanprover/lean4:v4.19.0` and Mathlib `c44e0c8ee63ca166450922a373c7409c5d26b00b` are
-pinned.
+pinned. The diagrammatic modules depend on string-diagrams-lean at a pinned revision
+(see `lakefile.lean`).
 
 ```sh
 lake exe cache get
