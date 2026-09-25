@@ -188,6 +188,27 @@ interchange law.
 | Skew polynomial action of the diagram category | `Diagrams.OddNilHecke.polyFunctor`, `realize`, `realize_injective` |
 | `ONH_{n+2}` ≅ endomorphisms of `n+2` strands | `Diagrams.OddNilHecke.presentedEquivEnd` |
 
+### [EQ], §3.2: the local differential (every rank)
+
+**[EQ]** A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2.
+The differential `d(x_i) = x_i²`, `d(∂_i) = 1` is constructed intrinsically on the diagrammatic
+category, as the derivation induced by a local derivation compatible with the defining
+relations, over any commutative ring; it is then transported to `Presented n` (rank `n+2`).
+Indices start at `0`, and `{m} = m mod 2`.
+
+| Result | Declaration |
+|---|---|
+| Compatibility of `δ(dot) = x²`, `δ(crossing) = 1` with the relations | `Diagrams.OddNilHecke.compatible` |
+| `d(x_i) = x_i²`, `d(∂_i) = 1`, Leibniz (2.3), `d² = 0`, `d` odd | `Diagrams.OddNilHecke.d_x`, `d_ψ`, `d_mul_of_mem`, `d_d`, `deriv_mem_homDeg` |
+| The same on `Presented n` | `Diagrams.OddNilHecke.dONH_dot`, `dONH_crossing`, `dONH_mul`, `dONH_dONH`, `dONH_mem_parity` |
+| Prop 3.3, intrinsic variant: the ansatz (3.7) is compatible iff `a = 1`, `b = c = 0` (over ℤ) | `Diagrams.OddNilHecke.ansatz_compatible_iff` |
+| Lemma 3.4, (3.13) | `Diagrams.OddNilHecke.d_longest`, `dONH_DElem` |
+| Lemma 3.5, (3.16) and (3.17) | `Diagrams.OddNilHecke.d_idem`, `d_staircase`, `dONH_eqIdempotent` |
+
+Prop 3.3 as printed concerns the differential induced from a dg module `OPol_n(α)`; the
+formalized statement instead characterizes the local ansatz by compatibility with the defining
+relations. Its linear constraints coincide with (3.9)–(3.10) after substituting (3.8).
+
 Files named `*Controls.lean`, `*Audit.lean` and `OddMath/Tests/*` contain finite
 checks and axiom printouts, not results.
 

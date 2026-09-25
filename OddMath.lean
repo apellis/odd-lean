@@ -6,6 +6,11 @@ import OddMath.Diagrammatics.OddDots
 import OddMath.Diagrams.OddNilHecke.Action
 import OddMath.Diagrams.OddNilHecke.Basic
 import OddMath.Diagrams.OddNilHecke.Comparison
+import OddMath.Diagrams.OddNilHecke.Differential
+import OddMath.Diagrams.OddNilHecke.DifferentialAnsatz
+import OddMath.Diagrams.OddNilHecke.DifferentialComparison
+import OddMath.Diagrams.OddNilHecke.DifferentialLongest
+import OddMath.Diagrams.OddNilHecke.DifferentialLongestComparison
 import OddMath.Diagrams.OddNilHecke.Relations
 import OddMath.Diagrams.OddNilHecke
 import OddMath.DividedDifferences
