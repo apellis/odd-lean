@@ -110,12 +110,8 @@ given here. A declaration name means the item is Lean-checked; otherwise it is m
    independently (`EKProp310.eAbove_restricted_nondeg`); the $`h`$-side is not formalized.
 6. **(3.4), p. 23 [F-T].** False as printed: $`\det M_2 = -1`$
    (`EKDeterminant.equation_3_4_counterexample`), independent of ordering
-   (`EKDeterminant.counterexample_under_every_order`). Correct formula, all $`d`$:
-
-   ```math
-   \det M_d = (-1)^{(p(d)-\mathrm{sc}(d))/2} \prod_{\lambda = \lambda^T} (-1)^{\ell(w_\lambda)}
-   ```
-
+   (`EKDeterminant.counterexample_under_every_order`). Correct formula, for all $`d`$,
+   $`\det M_d = (-1)^{(p(d)-\mathrm{sc}(d))/2} \prod_{\lambda = \lambda^T} (-1)^{\ell(w_\lambda)}`$,
    where $`p(d)`$ is the number of partitions of $`d`$ and $`\mathrm{sc}(d)`$ the number
    of self-conjugate ones (`EKDeterminantCorrected.det_M`). The printed formula holds
    exactly when $`(p(d)-\mathrm{sc}(d))/2`$ is even (`EKDeterminantCorrected.printed_iff`).
