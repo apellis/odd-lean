@@ -10,7 +10,7 @@ require mathlib from git
 
 require StringDiagrams from git
   "https://github.com/apellis/string-diagrams-lean.git" @
-  "48238575551b768fa6cb6cdd82180e86d3520b9c"
+  "066a2b292770ea80a2b0c78ba4f7257ea8b75885"
 
 @[default_target]
 lean_lib OddMath where
