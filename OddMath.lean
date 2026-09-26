@@ -44,6 +44,12 @@ import OddMath.Frontier.EKCenterPower
 import OddMath.Frontier.EKClassicalPlactic
 import OddMath.Frontier.EKClosureComposition
 import OddMath.Frontier.EKCoideal
+import OddMath.Frontier.EKCompleteDomino
+import OddMath.Frontier.EKCompleteErrata
+import OddMath.Frontier.EKCompleteHopf
+import OddMath.Frontier.EKCompleteKostka
+import OddMath.Frontier.EKCompleteLemma215
+import OddMath.Frontier.EKCompleteProp33
 import OddMath.Frontier.EKDeterminant
 import OddMath.Frontier.EKDeterminantCorrected
 import OddMath.Frontier.EKDualBases
