@@ -172,6 +172,11 @@ import OddMath.Frontier.OddCategorification
 import OddMath.Frontier.OddCategorificationBasic
 import OddMath.Frontier.OddCategorificationInduction
 import OddMath.Frontier.OddCategorificationRank
+import OddMath.Frontier.OddCyclotomicAction
+import OddMath.Frontier.OddCyclotomicActionBasis
+import OddMath.Frontier.OddCyclotomicActionF
+import OddMath.Frontier.OddCyclotomicActionPoly
+import OddMath.Frontier.OddCyclotomicActionRes
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination
