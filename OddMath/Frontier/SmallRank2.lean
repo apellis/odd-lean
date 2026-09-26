@@ -73,7 +73,7 @@ theorem eq_2_42_small {a : ℕ} (ha : a ≤ 1) (u w : Equiv.Perm (Fin a)) :
   refine ⟨by rw [inversions_small ha, inversions_small ha, inversions_small ha], ?_⟩
   rw [dividedSmall, LinearMap.id_apply, schubertSmall_eq_one ha, schubertSmall_eq_one ha]
 
-/-- **EKL (2.43)** (corrected selector, erratum 12), `a ≤ 1`: `∂_w s_w = 1`; there are no `u ≠ w`
+/-- **EKL (2.43)** (corrected selector; see ERRATA.md), `a ≤ 1`: `∂_w s_w = 1`; there are no `u ≠ w`
 of equal or larger length. For `a ≥ 2` see `OddSchubertAction.action_self`. -/
 theorem eq_2_43_small {a : ℕ} (ha : a ≤ 1) (w : Equiv.Perm (Fin a)) :
     dividedSmall a w (schubertSmall a w) = 1 ∧ ∀ u : Equiv.Perm (Fin a), u = w := by

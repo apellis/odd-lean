@@ -9,7 +9,7 @@ EKL arXiv:1111.1320v1, §5, pp. 44–46, and §6, p. 47, completing `SmallRankCy
 
 * Gradings on `OH_{0,N} ≅ ℤ` and `OH_{1,N} ≅ ℤ[x]/(x^N)`, transported from `ℤ` (degree `0`) and
   from `ONH_1^N` (`Cyclotomic.onh1Grading`, `x` of degree `2`) along `OH_zero_equiv`,
-  `OH_one_equiv` (`ohZeroGrading`, `ohOneGrading`). Both are connected, "graded local" (p. 47)
+  `OH_one_equiv` (`ohZeroGrading`, `ohOneGrading`). Both are connected (the property used for "graded local", p. 47)
   (`ohZeroConnected`; `ohOneConnected` for `N ≥ 1`), `OH_{1,N}` is a direct sum of its pieces
   (`ohOneDecomposition`), and `K₀(OH_{a,N}) ≅ ℤ[q,q⁻¹]` (`ohZeroK0Equiv`, `ohOneK0Equiv`).
 * **Prop 5.2, graded**, `a ≤ 1` (`prop_5_2_zero_degree_iff`, `prop_5_2_one_degree_iff`): the
@@ -73,7 +73,7 @@ theorem ohZeroConnected (N : ℕ) : GradedK0.Connected (ohZeroGrading N) :=
     have := congrArg (OH_zero_equiv N) h
     simpa only [map_intCast] using this
 
-/-- `OH_{1,N}` is connected for `N ≥ 1` ("graded local", EKL p. 47). -/
+/-- `OH_{1,N}` is connected for `N ≥ 1` (cf. "graded local", EKL p. 47). -/
 theorem ohOneConnected {N : ℕ} (hN : 1 ≤ N) : GradedK0.Connected (ohOneGrading N) :=
   Cyclotomic.imageGrading_connected _ (Cyclotomic.onh1Connected hN) fun a b h => by
     have := congrArg (fun y => Cyclotomic.constONH1 hN (OH_one_equiv N y)) h

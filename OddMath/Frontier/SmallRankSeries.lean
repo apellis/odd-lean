@@ -62,7 +62,7 @@ theorem qrk_symmetric_small {N : ℕ} (hN : N ≤ 1) :
   rw [qfactorial_small hN, mul_one, qrkPol, h, choose_two_small hN]
   rfl
 
-/-- **EKL (2.19)** (corrected, erratum 23) and (2.52), `a ≤ 1`: `qrk(OPol_a) = qrk(OΛ_a)
+/-- **EKL (2.19)** (corrected; see ERRATA.md) and (2.52), `a ≤ 1`: `qrk(OPol_a) = qrk(OΛ_a)
 Σ_{σ ∈ S_a} q^{2ℓ(σ)}`; here `OΛ_a = OPol_a` and `S_a` is trivial. For `a ≥ 2` see
 `EKLSectionTwo.qrkPol_eq`. -/
 theorem qrkPol_eq_small {N : ℕ} (hN : N ≤ 1) :

@@ -11,7 +11,8 @@ Gradings in the paper normalization (a dot of degree `2`, a crossing of degree `
   (`ohDecomposition`, `onhCycDecomposition`, from `UniqueDecomposition.image`).
 * `prop_5_2_degree_iff`: Proposition 5.2 is graded; `x` has degree `d` iff the entry `(v, w)` has
   degree `d + 2ℓ(w) − 2ℓ(v)`. The reversal `rev = w₀` of EKL (2.55) preserves degrees.
-* `ohConnected`: for `a ≤ N`, `OH_{a,N}` is connected ("graded local", p. 47): it vanishes in
+* `ohConnected`: for `a ≤ N`, `OH_{a,N}` is connected (EKL p. 47 says "graded local", which fails over `ℤ`;
+  connectedness is what the `K₀` argument uses): it vanishes in
   negative degrees, its degree `0` part is `ℤ · 1` (detected by the constant term,
   `eq_constOHN_of_mem`), and `ℤ → OH_{a,N}` is injective.
 * `onhCycK0Equiv`: `K₀(ONH_a^N) ≃ ℤ[q,q⁻¹]` for `2 ≤ a ≤ N` (graded Morita invariance and the
@@ -428,8 +429,8 @@ theorem intCast_OH_injective (n N : ℕ) (h : n+2 ≤ N) :
     Function.Injective (Int.cast : ℤ → OH n N) := fun a b hab => by
   simpa using congrArg (constOHN n N h) hab
 
-/-- **`OH_{a,N}` is graded local** (EKL §6, p. 47), made precise over `ℤ`: for `a ≤ N` the grading
-is connected (nothing in negative degrees, degree `0` is `ℤ · 1`, and `ℤ → OH_{a,N}` is
+/-- **`OH_{a,N}` is connected** (the property used for "graded local" in EKL §6, p. 47): for
+`a ≤ N` the grading is connected (nothing in negative degrees, degree `0` is `ℤ · 1`, and `ℤ → OH_{a,N}` is
 injective). -/
 theorem ohConnected (n N : ℕ) (h : n+2 ≤ N) : Connected (ohGrading n N) :=
   imageGrading_connected _ (kerConnected n) (intCast_OH_injective n N h)
