@@ -121,6 +121,10 @@ import OddMath.Frontier.ElementaryBasis
 import OddMath.Frontier.ElementaryBranching
 import OddMath.Frontier.ElementaryGeneration
 import OddMath.Frontier.ElementaryRelations
+import OddMath.Frontier.ErrataChecksE
+import OddMath.Frontier.ErrataChecksEK
+import OddMath.Frontier.ErrataChecksEKL
+import OddMath.Frontier.ErrataChecksEKSchur
 import OddMath.Frontier.FiniteCompleteElementary
 import OddMath.Frontier.GradedK0
 import OddMath.Frontier.GradedK0Basic
