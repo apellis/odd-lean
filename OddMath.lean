@@ -190,6 +190,12 @@ import OddMath.Frontier.OddLRExamples
 import OddMath.Frontier.OddLRExamplesLemma47
 import OddMath.Frontier.OddLRExamplesSmallRank
 import OddMath.Frontier.OddLRExamplesTools
+import OddMath.Frontier.OddLRGapsCancel
+import OddMath.Frontier.OddLRGapsHive
+import OddMath.Frontier.OddLRGapsHopf
+import OddMath.Frontier.OddLRGapsPlactic
+import OddMath.Frontier.OddLRGapsSkew
+import OddMath.Frontier.OddLRGapsTableau
 import OddMath.Frontier.OddLRHive
 import OddMath.Frontier.OddLRHiveFinal
 import OddMath.Frontier.OddLRHiveTableau
