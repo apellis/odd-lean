@@ -145,6 +145,11 @@ import OddMath.Frontier.OddBialgebraKron
 import OddMath.Frontier.OddBialgebraRes
 import OddMath.Frontier.OddBialgebraRestrict
 import OddMath.Frontier.OddBialgebraShuffle
+import OddMath.Frontier.OddBialgebraSmallBlocks
+import OddMath.Frontier.OddBialgebraSmallCases
+import OddMath.Frontier.OddBialgebraSmallCorner
+import OddMath.Frontier.OddBialgebraSmallFree
+import OddMath.Frontier.OddBialgebraSmallShuffle
 import OddMath.Frontier.OddBialgebraWindow
 import OddMath.Frontier.OddCategorification
 import OddMath.Frontier.OddCategorificationBasic
