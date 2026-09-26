@@ -180,6 +180,16 @@ import OddMath.Frontier.OddCyclotomicActionRes
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination
+import OddMath.Frontier.OddLREvenExample
+import OddMath.Frontier.OddLREvenPieri
+import OddMath.Frontier.OddLREvenPlactic
+import OddMath.Frontier.OddLREvenPlacticRing
+import OddMath.Frontier.OddLREvenRule
+import OddMath.Frontier.OddLREvenSchur
+import OddMath.Frontier.OddLRExamples
+import OddMath.Frontier.OddLRExamplesLemma47
+import OddMath.Frontier.OddLRExamplesSmallRank
+import OddMath.Frontier.OddLRExamplesTools
 import OddMath.Frontier.OddLRHive
 import OddMath.Frontier.OddLRHiveFinal
 import OddMath.Frontier.OddLRHiveTableau
