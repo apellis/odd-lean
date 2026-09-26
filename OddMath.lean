@@ -131,11 +131,15 @@ import OddMath.Frontier.NilHeckeRightBasis
 import OddMath.Frontier.NilHeckeRightKernel
 import OddMath.Frontier.NilHeckeSmallRank
 import OddMath.Frontier.NonadjacentDivided
+import OddMath.Frontier.OddBialgebraAction
 import OddMath.Frontier.OddBialgebraCoproduct
+import OddMath.Frontier.OddBialgebraCorner
+import OddMath.Frontier.OddBialgebraCornerB
 import OddMath.Frontier.OddBialgebraFree
 import OddMath.Frontier.OddBialgebraInd
 import OddMath.Frontier.OddBialgebraKron
 import OddMath.Frontier.OddBialgebraRes
+import OddMath.Frontier.OddBialgebraRestrict
 import OddMath.Frontier.OddBialgebraShuffle
 import OddMath.Frontier.OddBialgebraWindow
 import OddMath.Frontier.OddCategorification
