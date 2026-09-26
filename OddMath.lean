@@ -54,6 +54,7 @@ import OddMath.Frontier.EKDeterminant
 import OddMath.Frontier.EKDeterminantCorrected
 import OddMath.Frontier.EKDualBases
 import OddMath.Frontier.EKElementaryQuotient
+import OddMath.Frontier.EKFinal7Cert
 import OddMath.Frontier.EKFinalBaseChange
 import OddMath.Frontier.EKFinalClosure
 import OddMath.Frontier.EKFinalDet56
@@ -65,6 +66,7 @@ import OddMath.Frontier.EKFinalIrred50
 import OddMath.Frontier.EKFinalIrredBig
 import OddMath.Frontier.EKFinalNSym
 import OddMath.Frontier.EKFinalPrinted
+import OddMath.Frontier.EKFinalQSym
 import OddMath.Frontier.EKFinalRibbonDet
 import OddMath.Frontier.EKFreeCoproduct
 import OddMath.Frontier.EKGeneralQ
