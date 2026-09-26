@@ -72,6 +72,12 @@ import OddMath.Frontier.EKGeneralQTable
 import OddMath.Frontier.EKInfiniteSymmetry
 import OddMath.Frontier.EKIntegralBases
 import OddMath.Frontier.EKKostkaValues
+import OddMath.Frontier.EKLGapsCyclotomic
+import OddMath.Frontier.EKLGapsMorita
+import OddMath.Frontier.EKLGapsProjectives
+import OddMath.Frontier.EKLGapsSectionThree
+import OddMath.Frontier.EKLGapsSectionTwo
+import OddMath.Frontier.EKLGapsZeroHecke
 import OddMath.Frontier.EKLMisc
 import OddMath.Frontier.EKLMisc2
 import OddMath.Frontier.EKLSectionTwo
