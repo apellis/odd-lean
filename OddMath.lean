@@ -58,12 +58,16 @@ import OddMath.Frontier.EKFinalClosure
 import OddMath.Frontier.EKFreeCoproduct
 import OddMath.Frontier.EKGeneralQ
 import OddMath.Frontier.EKGeneralQBaseChange
+import OddMath.Frontier.EKGeneralQClassical
+import OddMath.Frontier.EKGeneralQCoideal
 import OddMath.Frontier.EKGeneralQCommutative
+import OddMath.Frontier.EKGeneralQCounterexample
 import OddMath.Frontier.EKGeneralQCrossing
 import OddMath.Frontier.EKGeneralQIdeal
 import OddMath.Frontier.EKGeneralQNondeg
 import OddMath.Frontier.EKGeneralQSign
 import OddMath.Frontier.EKGeneralQSpecial
+import OddMath.Frontier.EKGeneralQSymmetric
 import OddMath.Frontier.EKGeneralQTable
 import OddMath.Frontier.EKInfiniteSymmetry
 import OddMath.Frontier.EKIntegralBases

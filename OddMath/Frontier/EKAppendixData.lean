@@ -17,8 +17,9 @@ Every printed entry of
 * Sec. 5.2 unspecialized-q tables, degrees 1-4 (compositions, printed order): the
   printed polynomial evaluated at q = -1 is proved equal to the existing
   `EKRadicalQuotient.quotientPairing` of the printed composition words
-  (`EKMixedPairing.mixed`, all colours h). Only q = -1 is existing; the general-q
-  identity itself is NOT claimed here (no existing general-q object).
+  (`EKMixedPairing.mixed`, all colours h). This file records only the q = -1
+  specialisation; the table itself, at arbitrary q over an arbitrary commutative
+  ring, is proved for `EKGeneralQ.form` in `EKGeneralQTable` (`table1`-`table4`).
 
 Method (no `native_decide`): two generic certified evaluators proved once from the
 existing definitions,
