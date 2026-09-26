@@ -137,6 +137,8 @@ import OddMath.Frontier.OddCategorificationRank
 import OddMath.Frontier.OddGrassmannSchur
 import OddMath.Frontier.OddLREKIdentification
 import OddMath.Frontier.OddLRElimination
+import OddMath.Frontier.OddLRHive
+import OddMath.Frontier.OddLRMisc
 import OddMath.Frontier.OddLRPlacticBasis
 import OddMath.Frontier.OddLRPlacticCor39
 import OddMath.Frontier.OddLRPlacticFactor
