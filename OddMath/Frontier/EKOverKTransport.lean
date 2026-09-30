@@ -58,9 +58,11 @@ theorem baseChangeAlgEquiv_symm_psiRing (z : QZ) :
 `c • ψ(z)` holds everywhere. -/
 theorem induction_psi {P : LamK k → Prop} (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
     (hsm : ∀ (c : k) (z : QZ), P (c • psiRing z)) (x : LamK k) : P x := by
+  by_cases hx : x = 0
+  · exact hx.symm ▸ h0
+  clear hx
   obtain ⟨t, rfl⟩ := (baseChangeEquiv (k := k)).surjective x
-  induction t using TensorProduct.induction_on with
-  | zero => rw [LinearEquiv.map_zero]; exact h0
+  induction t using TensorProduct.inductionOn with
   | tmul c z =>
     change P (baseChangeMap (c ⊗ₜ[ℤ] z))
     rw [baseChangeMap_tmul]; exact hsm c z
@@ -230,8 +232,10 @@ def bcAlg (f : QZ →+* QZ) : LamK k →ₐ[k] LamK k :=
 
 @[simp] theorem bcAlg_psiRing (f : QZ →+* QZ) (z : QZ) :
     bcAlg k f (psiRing z) = psiRing (f z) := by
-  simp only [bcAlg, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe,
-    baseChangeAlgEquiv_symm_psiRing, Algebra.TensorProduct.map_tmul, AlgHom.id_apply,
+  change EKFinal.baseChangeAlgEquiv k
+    ((Algebra.TensorProduct.map (AlgHom.id k k) f.toIntAlgHom)
+      ((EKFinal.baseChangeAlgEquiv k).symm (psiRing z))) = _
+  simp only [baseChangeAlgEquiv_symm_psiRing, Algebra.TensorProduct.map_tmul, AlgHom.id_apply,
     RingHom.toIntAlgHom_apply, EKFinal.baseChangeAlgEquiv_tmul, one_smul]
 
 theorem algHom_ext {F G : LamK k →ₐ[k] LamK k} (h : ∀ z : QZ, F (psiRing z) = G (psiRing z)) :
@@ -265,14 +269,14 @@ def bcEquiv (f : QZ ≃+* QZ) : LamK k ≃ₐ[k] LamK k :=
 
 theorem algEquiv_ext {F G : LamK k ≃ₐ[k] LamK k}
     (h : ∀ z : QZ, F (psiRing z) = G (psiRing z)) : F = G :=
-  AlgEquiv.coe_algHom_injective (algHom_ext h)
+  AlgEquiv.coe_toAlgHom_injective (algHom_ext h)
 
 variable (k) in
 /-- Base change as a group homomorphism `Aut(Λ_ℤ) → Aut_k(Λ_k)`. -/
 def bcHom : (QZ ≃+* QZ) →* (LamK k ≃ₐ[k] LamK k) where
   toFun := bcEquiv k
-  map_one' := algEquiv_ext fun z => by simp; rfl
-  map_mul' f g := algEquiv_ext fun z => by simp; rfl
+  map_one' := algEquiv_ext fun z => by simp
+  map_mul' f g := algEquiv_ext fun z => by simp
 
 @[simp] theorem bcHom_apply (f : QZ ≃+* QZ) : bcHom k f = bcEquiv k f := rfl
 
@@ -288,14 +292,12 @@ variable (k) in
 /-- `Λ'_ℤ ⊗ Λ'_ℤ → Λ'_k ⊗ Λ'_k`, `x ⊗ y ↦ ι x ⊗ ι y`. -/
 def iotaT : LL ℤ →ₗ[ℤ] LL k :=
   TensorProduct.lift (LinearMap.mk₂ ℤ (fun x y => iota k x ⊗ₜ[k] iota k y)
-    (fun x x' y => by dsimp only; rw [map_add, TensorProduct.add_tmul])
+    (fun x x' y => by rw [map_add, TensorProduct.add_tmul])
     (fun c x y => by
-      dsimp only
       rw [map_zsmul]
       exact map_zsmul ((TensorProduct.mk k (L k) (L k)).flip (iota k y)) c (iota k x))
-    (fun x y y' => by dsimp only; rw [map_add, TensorProduct.tmul_add])
+    (fun x y y' => by rw [map_add, TensorProduct.tmul_add])
     (fun c x y => by
-      dsimp only
       rw [map_zsmul]
       exact map_zsmul ((TensorProduct.mk k (L k) (L k)) (iota k x)) c (iota k y)))
 
@@ -332,10 +334,10 @@ theorem iotaT_coproduct (x : L ℤ) :
     rw [map_zsmul, map_zsmul, map_zsmul, map_zsmul]
     congr 1
     induction w using FreeMonoid.recOn with
-    | h0 =>
+    | one =>
       rw [wordBasis_one, coproduct_one, map_one, coproduct_one, tensorOne, tensorOne,
         iotaT_tmul, map_one]
-    | ih i w ih =>
+    | of_mul i w ih =>
       rw [wordBasis_mul, wordBasis_of, coproduct_mul, iotaT_tensorMul, ih, map_mul,
         iota_h, coproduct_mul, coproduct_h, coproduct_h, map_sum]
       simp only [iotaT_tmul, iota_h, iota_wordBasis]
@@ -344,14 +346,12 @@ variable (k) in
 /-- `Λ_ℤ ⊗ Λ_ℤ → Λ_k ⊗ Λ_k`, `y ⊗ z ↦ ψ(y) ⊗ ψ(z)`. -/
 def psiT : QZ ⊗[ℤ] QZ →ₗ[ℤ] LamK k ⊗[k] LamK k :=
   TensorProduct.lift (LinearMap.mk₂ ℤ (fun x y => psiRing (k := k) x ⊗ₜ[k] psiRing y)
-    (fun x x' y => by dsimp only; rw [map_add, TensorProduct.add_tmul])
+    (fun x x' y => by rw [map_add, TensorProduct.add_tmul])
     (fun c x y => by
-      dsimp only
       rw [map_zsmul]
       exact map_zsmul ((TensorProduct.mk k (LamK k) (LamK k)).flip (psiRing y)) c (psiRing x))
-    (fun x y y' => by dsimp only; rw [map_add, TensorProduct.tmul_add])
+    (fun x y y' => by rw [map_add, TensorProduct.tmul_add])
     (fun c x y => by
-      dsimp only
       rw [map_zsmul]
       exact map_zsmul ((TensorProduct.mk k (LamK k) (LamK k)) (psiRing x)) c (psiRing y)))
 
@@ -359,8 +359,7 @@ def psiT : QZ ⊗[ℤ] QZ →ₗ[ℤ] LamK k ⊗[k] LamK k :=
 
 theorem psiT_quotientTensorMap (t : EKFreeCoproduct.T) :
     psiT k (EKCoideal.quotientTensorMap t) = quotientTensorMap (-1 : k) (iotaT k t) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp
+  induction t using TensorProduct.inductionOn with
   | tmul x y => rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
@@ -402,8 +401,7 @@ theorem tensorMulK_psiT (u v : QZ ⊗[ℤ] QZ) :
 /-- Tensor products of base-changed maps are base changes. -/
 theorem map_bcLin_psiT (f g : QZ →ₗ[ℤ] QZ) (u : QZ ⊗[ℤ] QZ) :
     TensorProduct.map (bcLin k f) (bcLin k g) (psiT k u) = psiT k (TensorProduct.map f g u) := by
-  induction u using TensorProduct.induction_on with
-  | zero => simp
+  induction u using TensorProduct.inductionOn with
   | tmul x y => simp
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
@@ -411,8 +409,7 @@ theorem map_bcLin_psiT (f g : QZ →ₗ[ℤ] QZ) (u : QZ ⊗[ℤ] QZ) :
 theorem mul_psiT (u : QZ ⊗[ℤ] QZ) :
     TensorProduct.lift (LinearMap.mul k (LamK k)) (psiT k u) =
       psiRing (TensorProduct.lift (LinearMap.mul ℤ QZ) u) := by
-  induction u using TensorProduct.induction_on with
-  | zero => simp
+  induction u using TensorProduct.inductionOn with
   | tmul x y => simp
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 

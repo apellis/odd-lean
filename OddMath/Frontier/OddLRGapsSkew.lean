@@ -54,7 +54,7 @@ instance degreeSet_finite (n d : ℕ) : Finite {a : Fin n → ℕ | ∑ i, a i =
 
 /-- The monomial basis of the degree-`d` part. -/
 noncomputable def degreeBasis (n d : ℕ) :
-    Basis {a : Fin n → ℕ | ∑ i, a i = d} ℤ (degreePart n d) :=
+    Module.Basis {a : Fin n → ℕ | ∑ i, a i = d} ℤ (degreePart n d) :=
   (Finsupp.basisSingleOne).map (Finsupp.supportedEquivFinsupp _).symm
 
 /-- E §2.1, p. 3: each degree part of `OPol_n` is a free `ℤ`-module … -/
@@ -77,7 +77,7 @@ theorem monomial_mem_degreePart {n : ℕ} (a : Fin n → ℕ) (c : ℤ) :
 
 theorem generator_mem_degreePart {n : ℕ} (i : Fin n) : generator i ∈ degreePart n 1 := by
   have h := monomial_mem_degreePart (expSingle i) 1
-  rwa [OddMath.SkewPolynomial.sum_expSingle, if_pos (Finset.mem_univ _)] at h
+  rwa [OddMath.SkewPolynomial.sum_expSingle, ite_eq_left (Finset.mem_univ _)] at h
 
 /-- The degree parts multiply as a grading. -/
 theorem degreePart_mul {n d e : ℕ} {f g : SkewPolynomial n} (hf : f ∈ degreePart n d)
@@ -214,7 +214,7 @@ theorem generator_mul_ne_zero {m : ℕ} (a b : Fin m) : generator a * generator 
 /-- `∂_i(x_i x_{i+1}) = 0`. -/
 theorem divided_x_mul_x (i : Fin (n+1)) :
     divided i (generator i.castSucc * generator i.succ) = 0 := by
-  rw [divided_left_mul, divided_generator, if_pos (Or.inr rfl), mul_one, sub_self]
+  rw [divided_left_mul, divided_generator, ite_eq_left (Or.inr rfl), mul_one, sub_self]
 
 /-- `s_i(x_i x_{i+1}) = -x_i x_{i+1}`. -/
 theorem s_x_mul_x (i : Fin (n+1)) :
@@ -234,7 +234,7 @@ theorem s_x_add_x (i : Fin (n+1)) :
 /-- `∂_i(x_i + x_{i+1}) = 2 ≠ 0`. -/
 theorem divided_x_add_x (i : Fin (n+1)) :
     divided i (generator i.castSucc + generator i.succ) = (2 : ℤ) • (1 : SkewPolynomial (n+2)) := by
-  rw [map_add, divided_generator, divided_generator, if_pos (Or.inl rfl), if_pos (Or.inr rfl),
+  rw [map_add, divided_generator, divided_generator, ite_eq_left (Or.inl rfl), ite_eq_left (Or.inr rfl),
     two_smul]
 
 theorem divided_x_add_x_ne_zero (i : Fin (n+1)) :

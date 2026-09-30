@@ -33,8 +33,8 @@ theorem mem_rowCellsOf {w : List ℕ} {p : ℕ × ℕ} :
   · rintro ⟨i, hi, j, hj, rfl⟩; exact ⟨hi, hj⟩
   · intro h; exact ⟨p.1, h.1, p.2, h.2, rfl⟩
 
-theorem rowCellsOf_sorted (w : List ℕ) : (rowCellsOf w).Sorted RowLE := by
-  unfold rowCellsOf List.Sorted
+theorem rowCellsOf_sorted (w : List ℕ) : (rowCellsOf w).Pairwise RowLE := by
+  unfold rowCellsOf
   rw [List.pairwise_flatMap, List.pairwise_reverse]
   refine ⟨fun i _ => ?_, ?_⟩
   · rw [List.pairwise_map]
@@ -56,8 +56,8 @@ theorem rowCellsOf_nodup (w : List ℕ) : (rowCellsOf w).Nodup := by
   simp only [Prod.mk.injEq] at h'
   omega
 
-theorem mem_ofRowLens_iff {w : List ℕ} {hw : w.Sorted (· ≥ ·)} {p : ℕ × ℕ} :
-    p ∈ YoungDiagram.ofRowLens w hw ↔ p.1 < w.length ∧ p.2 < w.getD p.1 0 := by
+theorem mem_ofRowLens_iff {w : List ℕ} {hw : w.Pairwise (· ≥ ·)} {p : ℕ × ℕ} :
+    p ∈ YoungDiagram.ofRowLens w hw.sortedGE ↔ p.1 < w.length ∧ p.2 < w.getD p.1 0 := by
   rw [YoungDiagram.mem_ofRowLens]
   constructor
   · rintro ⟨h, h'⟩
@@ -66,14 +66,14 @@ theorem mem_ofRowLens_iff {w : List ℕ} {hw : w.Sorted (· ≥ ·)} {p : ℕ ×
     exact ⟨h, by rw [List.getD_eq_getElem _ _ h] at h'; exact h'⟩
 
 /-- The reading order of `ofRowLens w` is `rowCellsOf w`. -/
-theorem rowCells_ofRowLens (w : List ℕ) (hw : w.Sorted (· ≥ ·)) :
-    rowCells (YoungDiagram.ofRowLens w hw) = rowCellsOf w := by
-  apply List.eq_of_perm_of_sorted (r := RowLE)
-  · apply (List.perm_ext_iff_of_nodup (rowCells_nodup _) (rowCellsOf_nodup w)).mpr
-    intro p
-    rw [mem_rowCells, mem_rowCellsOf, YoungDiagram.mem_cells, mem_ofRowLens_iff]
+theorem rowCells_ofRowLens (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) :
+    rowCells (YoungDiagram.ofRowLens w hw.sortedGE) = rowCellsOf w := by
+  apply List.Perm.eq_of_pairwise' (r := RowLE)
   · exact rowCells_sorted _
   · exact rowCellsOf_sorted w
+  · apply (List.perm_ext_iff_of_nodup (rowCells_nodup _) (rowCellsOf_nodup w)).mpr
+    intro p
+    rw [mem_rowCells, mem_rowCellsOf, YoungDiagram.mem_cells, mem_ofRowLens_iff (hw := hw)]
 
 /-! ## Skew tableaux with a prescribed row word -/
 
@@ -120,7 +120,7 @@ def ofWord (lam mu : YoungDiagram) (L : List (ℕ × ℕ)) (hL : cellsL lam mu =
     have hb := skew_mem_L hL h h2'
     have := hv.2.2.1 (idx L (i, j₁)) (idx_lt ha) (idx L (i, j₂)) (idx_lt hb)
       (by rw [L_getD_idx ha, L_getD_idx hb]) (by rw [L_getD_idx ha, L_getD_idx hb]; exact hj)
-    simp only [wordEntry, if_pos (And.intro h1' h1), if_pos (And.intro h h2')]
+    simp only [wordEntry, ite_eq_left (And.intro h1' h1), ite_eq_left (And.intro h h2')]
     exact this
   col_strict := by
     intro i₁ i₂ j hi h h1
@@ -130,14 +130,14 @@ def ofWord (lam mu : YoungDiagram) (L : List (ℕ × ℕ)) (hL : cellsL lam mu =
     have hb := skew_mem_L hL h h2'
     have := hv.2.2.2 (idx L (i₁, j)) (idx_lt ha) (idx L (i₂, j)) (idx_lt hb)
       (by rw [L_getD_idx ha, L_getD_idx hb]) (by rw [L_getD_idx ha, L_getD_idx hb]; exact hi)
-    simp only [wordEntry, if_pos (And.intro h1' h1), if_pos (And.intro h h2')]
+    simp only [wordEntry, ite_eq_left (And.intro h1' h1), ite_eq_left (And.intro h h2')]
     exact this
   zeros_out := by intro i j h; simp [wordEntry, h]
   zeros_in := by intro i j h; simp [wordEntry, h]
   positive := by
     intro i j h h'
     have ha := skew_mem_L hL h h'
-    simp only [wordEntry, if_pos (And.intro h h')]
+    simp only [wordEntry, ite_eq_left (And.intro h h')]
     have hl : idx L (i, j) < v.length := by rw [hv.1]; exact idx_lt ha
     rw [getD_eq _ _ _ hl]
     exact hv.2.1 _ (List.getElem_mem hl)
@@ -153,7 +153,7 @@ theorem rowWord_ofWord (hL : cellsL lam mu = L) (hsub : mu.cells ⊆ lam.cells) 
     have hm' : L[n]'(by simpa using h1) ∈ cellsL lam mu := hL ▸ hm
     obtain ⟨hl, hmu⟩ := mem_cellsL.mp hm'
     change wordEntry lam mu L v _ _ = _
-    rw [wordEntry, if_pos ⟨hl, hmu⟩]
+    rw [wordEntry, ite_eq_left ⟨hl, hmu⟩]
     have hn : L.Nodup := hL ▸ cellsL_nodup lam mu
     rw [idx_getElem hn, getD_eq _ _ _ h2]
 
@@ -282,30 +282,30 @@ def lrCountL (L : List (ℕ × ℕ)) (B : ℕ) (nw : List ℕ) : ℕ :=
   ((words B L.length).filter (fun v => decide (ValidW L v) &&
     (decide (∀ c < B, v.count (c + 1) = nw.getD c 0) && yamB B v))).length
 
-theorem shapeContent_ofRowLens (nw : List ℕ) (hnw : nw.Sorted (· ≥ ·)) (c : ℕ) :
-    TableauDominance.shapeContent (YoungDiagram.ofRowLens nw hnw) (c + 1) = nw.getD c 0 := by
+theorem shapeContent_ofRowLens (nw : List ℕ) (hnw : nw.Pairwise (· ≥ ·)) (c : ℕ) :
+    TableauDominance.shapeContent (YoungDiagram.ofRowLens nw hnw.sortedGE) (c + 1) = nw.getD c 0 := by
   rw [shapeContent_succ]
   by_cases h : c < nw.length
   · rw [List.getD_eq_getElem _ _ h]
-    exact YoungDiagram.rowLen_ofRowLens (w := nw) (hw := hnw) ⟨c, h⟩
+    exact YoungDiagram.rowLen_ofRowLens (w := nw) (hw := hnw.sortedGE) ⟨c, h⟩
   · rw [List.getD_eq_default _ _ (by omega)]
     apply rowLen_eq_zero
     by_contra h'
-    push_neg at h'
+    push Not at h'
     have := (mem_ofRowLens_iff (hw := hnw) (p := (c, 0))).mp
       (YoungDiagram.mem_iff_lt_colLen.mpr h')
     exact h this.1
 
 theorem shapeContent_zero' (nu : YoungDiagram) : TableauDominance.shapeContent nu 0 = 0 := by
-  simp [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp [TableauDominance.shapeContent, Finsupp.finsetSum_apply]
 
 /-- **Littlewood–Richardson counts by computation**: for `λ/μ` with cells `L` in reading order
 and `ν` with row lengths `nw`, `#LR(λ/μ, ν) = lrCountL L ℓ(ν) nw`. -/
 theorem card_lrTableaux_eq {lam mu : YoungDiagram} {L : List (ℕ × ℕ)} (hL : cellsL lam mu = L)
-    (hsub : mu.cells ⊆ lam.cells) (nw : List ℕ) (hnw : nw.Sorted (· ≥ ·)) :
-    (lrTableaux lam mu (YoungDiagram.ofRowLens nw hnw)).card = lrCountL L nw.length nw := by
+    (hsub : mu.cells ⊆ lam.cells) (nw : List ℕ) (hnw : nw.Pairwise (· ≥ ·)) :
+    (lrTableaux lam mu (YoungDiagram.ofRowLens nw hnw.sortedGE)).card = lrCountL L nw.length nw := by
   set B := nw.length
-  set nu := YoungDiagram.ofRowLens nw hnw
+  set nu := YoungDiagram.ofRowLens nw hnw.sortedGE
   -- contents in terms of row words
   have hcont : ∀ S : SkewTableau lam mu, S.content = TableauDominance.shapeContent nu ↔
       (∀ x ∈ S.rowWord, 0 < x ∧ x ≤ B) ∧ ∀ c < B, S.rowWord.count (c + 1) = nw.getD c 0 := by
@@ -318,19 +318,19 @@ theorem card_lrTableaux_eq {lam mu : YoungDiagram} {L : List (ℕ × ℕ)} (hL :
         obtain ⟨h1, h2⟩ := mem_cellsL.mp hp
         exact S.positive h1 h2
       · by_contra hxB
-        push_neg at hxB
+        push Not at hxB
         have hc := List.count_pos_iff.mpr hx
         rw [← skew_content_eq_count, h, show x = (x - 1) + 1 by omega,
           shapeContent_ofRowLens nw hnw, List.getD_eq_default _ _ (by omega)] at hc
         exact lt_irrefl _ hc
-      · rw [← skew_content_eq_count, h, shapeContent_ofRowLens]
+      · rw [← skew_content_eq_count, h, shapeContent_ofRowLens nw hnw]
     · rintro ⟨hb, hc⟩
       ext c
       rw [skew_content_eq_count]
       rcases c with _ | c
       · rw [shapeContent_zero', List.count_eq_zero_of_not_mem (fun hm => by
           have := (hb 0 hm).1; omega)]
-      · rw [shapeContent_ofRowLens]
+      · rw [shapeContent_ofRowLens nw hnw]
         by_cases hcB : c < B
         · exact hc c hcB
         · rw [List.getD_eq_default _ _ (by omega), List.count_eq_zero_of_not_mem (fun hm => by
@@ -362,9 +362,9 @@ theorem card_lrTableaux_eq {lam mu : YoungDiagram} {L : List (ℕ × ℕ)} (hL :
       exact (yamB_iff B v (fun x hx => (hb x hx).2)).mp hy
 
 /-- `cellsL` of explicit diagrams, for computation. -/
-theorem cellsL_ofRowLens (lw : List ℕ) (hlw : lw.Sorted (· ≥ ·)) (mu : YoungDiagram) :
-    cellsL (YoungDiagram.ofRowLens lw hlw) mu = (rowCellsOf lw).filter (fun p => p ∉ mu.cells) := by
-  rw [cellsL, rowCells_ofRowLens]
+theorem cellsL_ofRowLens (lw : List ℕ) (hlw : lw.Pairwise (· ≥ ·)) (mu : YoungDiagram) :
+    cellsL (YoungDiagram.ofRowLens lw hlw.sortedGE) mu = (rowCellsOf lw).filter (fun p => p ∉ mu.cells) := by
+  rw [cellsL, rowCells_ofRowLens lw hlw]
 
 /-! ## Enumerating partitions -/
 
@@ -374,7 +374,7 @@ def partsF : ℕ → ℕ → ℕ → List (List ℕ)
   | f + 1, m, n => if n = 0 then [[]] else
       (List.range (min m n)).flatMap (fun a => (partsF f (a + 1) (n - (a + 1))).map ((a + 1) :: ·))
 
-theorem mem_partsF : ∀ (f m n : ℕ) (l : List ℕ), l.Sorted (· ≥ ·) → (∀ x ∈ l, 0 < x ∧ x ≤ m) →
+theorem mem_partsF : ∀ (f m n : ℕ) (l : List ℕ), l.Pairwise (· ≥ ·) → (∀ x ∈ l, 0 < x ∧ x ≤ m) →
     l.sum = n → n ≤ f → l ∈ partsF f m n
   | f, m, n, [], _, _, hs, _ => by
     simp only [List.sum_nil] at hs
@@ -387,10 +387,10 @@ theorem mem_partsF : ∀ (f m n : ℕ) (l : List ℕ), l.Sorted (· ≥ ·) → 
     have hx := hp x List.mem_cons_self
     simp only [List.sum_cons] at hs
     have hn : n ≠ 0 := by omega
-    simp only [partsF, if_neg hn, List.mem_flatMap, List.mem_range, List.mem_map]
+    simp only [partsF, ite_eq_right hn, List.mem_flatMap, List.mem_range, List.mem_map]
     refine ⟨x - 1, by omega, l, ?_, by rw [show x - 1 + 1 = x by omega]⟩
     rw [show x - 1 + 1 = x by omega]
-    have hsort' := List.sorted_cons.mp hsort
+    have hsort' := List.pairwise_cons.mp hsort
     apply mem_partsF f x (n - x) l hsort'.2
     · intro y hy
       exact ⟨(hp y (List.mem_cons_of_mem _ hy)).1, hsort'.1 y hy⟩
@@ -399,7 +399,7 @@ theorem mem_partsF : ∀ (f m n : ℕ) (l : List ℕ), l.Sorted (· ≥ ·) → 
 
 /-- Every Young diagram with `n` cells has row lengths in `partsF n n n`. -/
 theorem rowLens_mem_partsF (lam : YoungDiagram) : lam.rowLens ∈ partsF lam.card lam.card lam.card := by
-  apply mem_partsF _ _ _ _ lam.rowLens_sorted
+  apply mem_partsF _ _ _ _ lam.rowLens_sorted.pairwise
   · intro x hx
     refine ⟨lam.pos_of_mem_rowLens x hx, ?_⟩
     rw [← EKIntegralBases.rowLens_sum]
@@ -408,9 +408,9 @@ theorem rowLens_mem_partsF (lam : YoungDiagram) : lam.rowLens ∈ partsF lam.car
   · exact le_rfl
 
 theorem eq_ofRowLens_of_rowLens {lam : YoungDiagram} {w : List ℕ} (h : lam.rowLens = w) :
-    ∃ hw : w.Sorted (· ≥ ·), lam = YoungDiagram.ofRowLens w hw := by
+    ∃ hw : w.Pairwise (· ≥ ·), lam = YoungDiagram.ofRowLens w hw.sortedGE := by
   subst h
-  exact ⟨lam.rowLens_sorted, YoungDiagram.ofRowLens_to_rowLens_eq_self.symm⟩
+  exact ⟨lam.rowLens_sorted.pairwise, YoungDiagram.ofRowLens_to_rowLens_eq_self.symm⟩
 
 /-! ## Tableaux given by their rows -/
 
@@ -419,14 +419,14 @@ def rowsEntry (rows : List (List ℕ)) (i j : ℕ) : ℕ := (rows.getD i []).get
 
 /-- The semistandard tableau with rows `rows` (shape `ofRowLens (rows.map length)`), the
 conditions being checked on the bounding box `R × C`. -/
-def posTab (rows : List (List ℕ)) (hw : (rows.map List.length).Sorted (· ≥ ·)) (R C : ℕ)
-    (hbox : ∀ p ∈ (YoungDiagram.ofRowLens _ hw).cells, p.1 < R ∧ p.2 < C)
-    (hrow : ∀ i < R, ∀ j₂ < C, ∀ j₁ < j₂, (i, j₂) ∈ YoungDiagram.ofRowLens _ hw →
+def posTab (rows : List (List ℕ)) (hw : (rows.map List.length).Pairwise (· ≥ ·)) (R C : ℕ)
+    (hbox : ∀ p ∈ (YoungDiagram.ofRowLens _ hw.sortedGE).cells, p.1 < R ∧ p.2 < C)
+    (hrow : ∀ i < R, ∀ j₂ < C, ∀ j₁ < j₂, (i, j₂) ∈ YoungDiagram.ofRowLens _ hw.sortedGE →
       rowsEntry rows i j₁ ≤ rowsEntry rows i j₂)
-    (hcol : ∀ i₂ < R, ∀ j < C, ∀ i₁ < i₂, (i₂, j) ∈ YoungDiagram.ofRowLens _ hw →
+    (hcol : ∀ i₂ < R, ∀ j < C, ∀ i₁ < i₂, (i₂, j) ∈ YoungDiagram.ofRowLens _ hw.sortedGE →
       rowsEntry rows i₁ j < rowsEntry rows i₂ j)
-    (hpos : ∀ i < R, ∀ j < C, (i, j) ∈ YoungDiagram.ofRowLens _ hw → 0 < rowsEntry rows i j) :
-    PositiveTableau (YoungDiagram.ofRowLens _ hw) where
+    (hpos : ∀ i < R, ∀ j < C, (i, j) ∈ YoungDiagram.ofRowLens _ hw.sortedGE → 0 < rowsEntry rows i j) :
+    PositiveTableau (YoungDiagram.ofRowLens _ hw.sortedGE) where
   entry := rowsEntry rows
   row_weak' := by
     intro i j₁ j₂ hj h
@@ -438,7 +438,7 @@ def posTab (rows : List (List ℕ)) (hw : (rows.map List.length).Sorted (· ≥ 
     exact hcol i₂ this.1 j this.2 i₁ hi h
   zeros' := by
     intro i j h
-    rw [mem_ofRowLens_iff] at h
+    rw [mem_ofRowLens_iff (hw := hw)] at h
     unfold rowsEntry
     simp only [List.length_map] at h
     by_cases hi : i < rows.length
@@ -461,7 +461,7 @@ theorem posTab_entry (rows : List (List ℕ)) (hw) (R C) (hbox hrow hcol hpos) (
 theorem rowWord_posTab (rows : List (List ℕ)) (hw) (R C) (hbox hrow hcol hpos) :
     rowWord (posTab rows hw R C hbox hrow hcol hpos) =
       (rowCellsOf (rows.map List.length)).map (fun p => rowsEntry rows p.1 p.2) := by
-  rw [rowWord, rowCells_ofRowLens]
+  rw [rowWord, rowCells_ofRowLens _ hw]
   rfl
 
 end OddMath.Frontier.OddLRExamples

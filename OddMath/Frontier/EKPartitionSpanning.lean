@@ -79,7 +79,7 @@ theorem cost_replace (p q : List ℕ) {a b u v : ℕ}
 
 /-- A nonsorted word contains an adjacent strict ascent. -/
 theorem sorted_or_ascent (w : List ℕ) :
-    w.Sorted (· ≥ ·) ∨ ∃ p q a b, w=p++a::b::q ∧ a<b := by
+    w.Pairwise (· ≥ ·) ∨ ∃ p q a b, w=p++a::b::q ∧ a<b := by
   induction w with
   | nil => exact Or.inl (by simp)
   | cons a w ih =>
@@ -88,14 +88,14 @@ theorem sorted_or_ascent (w : List ℕ) :
       | nil => exact Or.inl (by simp)
       | cons b q =>
         by_cases hba : b ≤ a
-        · exact Or.inl (List.Sorted.cons hba hs)
+        · exact Or.inl ((List.pairwise_cons_cons_iff_of_trans).mpr ⟨hba, hs⟩)
         · exact Or.inr ⟨[],q,a,b,rfl,by omega⟩
     · exact Or.inr ⟨a::p,q,b,d,by simp [hw],hbd⟩
 
 /-- All words of a given weight lie in any submodule containing the sorted
 words of that weight. The induction is over an actual natural measure. -/
 theorem word_mem_of_sorted (c : Bool) (S : Submodule ℤ Q) (d : ℕ)
-    (hs : ∀ w : List ℕ, w.Sorted (· ≥ ·) → w.sum=d → word c w ∈ S)
+    (hs : ∀ w : List ℕ, w.Pairwise (· ≥ ·) → w.sum=d → word c w ∈ S)
     (w : List ℕ) (hd : w.sum=d) : word c w ∈ S := by
   induction h : cost w using Nat.strong_induction_on generalizing w with
   | h n ih =>
@@ -128,8 +128,8 @@ theorem card_cellsOfRowLens (w : List ℕ) :
       have he := congrArg Prod.fst hh
       simp at he
 
-theorem card_ofRowLens (w : List ℕ) (hw : w.Sorted (· ≥ ·)) :
-    (YoungDiagram.ofRowLens w hw).card = w.sum := card_cellsOfRowLens w
+theorem card_ofRowLens (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) :
+    (YoungDiagram.ofRowLens w hw.sortedGE).card = w.sum := card_cellsOfRowLens w
 
 /-- Removing zero generators preserves both the product and its exact weight. -/
 theorem erase_zeros (c : Bool) (w : List ℕ) :
@@ -143,16 +143,16 @@ theorem erase_zeros (c : Bool) (w : List ℕ) :
     · simp [ha, ih.1, ih.2]
 
 /-- Sorted words, with arbitrary zero padding, are literal partition words. -/
-theorem sorted_is_partition (c : Bool) (w : List ℕ) (hw : w.Sorted (· ≥ ·)) :
+theorem sorted_is_partition (c : Bool) (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) :
     ∃ μ : YoungDiagram, μ.card=w.sum ∧ word c μ.rowLens=word c w := by
   let v := w.filter (fun a => a != 0)
-  have hv : v.Sorted (· ≥ ·) := hw.filter _
+  have hv : v.Pairwise (· ≥ ·) := hw.filter _
   have hp : ∀ a ∈ v, 0<a := by
     intro a ha
     simp only [v, List.mem_filter, bne_iff_ne, ne_eq] at ha
     omega
-  refine ⟨YoungDiagram.ofRowLens v hv, ?_, ?_⟩
-  · rw [card_ofRowLens]
+  refine ⟨YoungDiagram.ofRowLens v hv.sortedGE, ?_, ?_⟩
+  · rw [card_ofRowLens v hv]
     exact (erase_zeros c w).2
   · rw [YoungDiagram.rowLens_ofRowLens_eq_self hp]
     exact (erase_zeros c w).1
@@ -173,7 +173,7 @@ theorem word_expansion (c : Bool) (w : List ℕ) :
     ∃ a : DegreeShapes.DegreeShape w.sum → ℤ,
       word c w = ∑ μ, a μ • word c μ.val.rowLens := by
   classical
-  letI := DegreeShapes.degreeFintype w.sum
+  let := DegreeShapes.degreeFintype w.sum
   obtain ⟨a, ha⟩ := (Submodule.mem_span_range_iff_exists_fun ℤ).mp
     (word_mem_degree_span c w)
   exact ⟨a, ha.symm⟩

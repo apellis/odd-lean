@@ -55,11 +55,11 @@ theorem realize_apply_one (r s t : ℤ) (F : End ((pres ℤ).obj (strands 2))) :
     realize 2 (r • x ℤ 2 0 + s • x ℤ 2 1 - t • (F * ψ ℤ 2 0)) 1 =
       r • generator (0 : Fin 2) + s • generator (1 : Fin 2) := by
   simp only [Algebra.smul_def, algebraMap_int_eq, Int.coe_castRingHom, map_sub, map_add,
-    map_mul, map_intCast]
+    map_mul]
   have h0 := realize_x 0 (0 : Fin 2)
   have h1 := realize_x 0 (1 : Fin 2)
   have hψ := realize_ψ 0 (0 : Fin 1)
-  simp only [Fin.val_zero, Fin.val_one, zero_add] at h0 h1 hψ
+  simp only [Fin.val_zero, Fin.val_one] at h0 h1 hψ
   rw [h0, h1, hψ]
   simp [AllRankDivided.divided_one, Module.End.intCast_apply]
 
@@ -70,7 +70,7 @@ theorem generator_apply_expSingle (i j : Fin 2) :
     · intro h
       have := congrFun h i
       by_contra hij
-      simp only [expSingle, if_true, if_neg (Ne.symm hij)] at this
+      simp only [expSingle, ite_true, ite_eq_right (Ne.symm hij)] at this
       exact one_ne_zero this
     · rintro rfl; rfl
   simp only [generator, OddMath.SkewPolynomial.monomial, Finsupp.single_apply, this]

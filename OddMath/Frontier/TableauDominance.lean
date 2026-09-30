@@ -21,17 +21,17 @@ noncomputable def shapeContent (μ : YoungDiagram) : ℕ →₀ ℕ :=
 def canonicalTableau (μ : YoungDiagram) : PositiveTableau μ where
   entry i j := if (i, j) ∈ μ then i + 1 else 0
   row_weak' hj hp := by
-    rw [if_pos hp, if_pos (μ.up_left_mem le_rfl (Nat.le_of_lt hj) hp)]
+    rw [ite_eq_left hp, ite_eq_left (μ.up_left_mem le_rfl (Nat.le_of_lt hj) hp)]
   col_strict' hi hp := by
-    rw [if_pos hp, if_pos (μ.up_left_mem (Nat.le_of_lt hi) le_rfl hp)]
+    rw [ite_eq_left hp, ite_eq_left (μ.up_left_mem (Nat.le_of_lt hi) le_rfl hp)]
     omega
-  zeros' hp := if_neg hp
-  positive hp := by simp only [if_pos hp]; omega
+  zeros' hp := ite_eq_right hp
+  positive hp := by simp only [ite_eq_left hp]; omega
 
 @[simp] theorem canonical_entry {p : ℕ × ℕ} (hp : p ∈ μ.cells) :
     (canonicalTableau μ).entry p.1 p.2 = p.1 + 1 := by
   change (if (p.1, p.2) ∈ μ then p.1 + 1 else 0) = p.1 + 1
-  exact if_pos (by simpa using hp)
+  exact ite_eq_left (by simpa using hp)
 
 @[simp] theorem content_canonical (μ : YoungDiagram) :
     content (canonicalTableau μ) = shapeContent μ := by
@@ -72,8 +72,8 @@ theorem contentPrefix_eq_card (T : PositiveTableau μ) (k : ℕ) :
   have he (j : ℕ) : (T.entry p.1 p.2 = j + 1) ↔ j = T.entry p.1 p.2 - 1 := by omega
   simp only [he, Finset.sum_ite_eq', Finset.mem_range]
   by_cases hle : T.entry p.1 p.2 ≤ k
-  · rw [if_pos hle, if_pos (show T.entry p.1 p.2 - 1 < k by omega)]
-  · rw [if_neg hle, if_neg (show ¬ T.entry p.1 p.2 - 1 < k by omega)]
+  · rw [ite_eq_left hle, ite_eq_left (show T.entry p.1 p.2 - 1 < k by omega)]
+  · rw [ite_eq_right hle, ite_eq_right (show ¬ T.entry p.1 p.2 - 1 < k by omega)]
 
 /-- Every small label lies in the first k rows. -/
 theorem prefix_cells_subset (T : PositiveTableau μ) (k : ℕ) :
@@ -103,7 +103,7 @@ theorem fiber_empty_of_prefix (μ : YoungDiagram) (c : ℕ →₀ ℕ)
     (h : ∃ k, shapePrefix μ k < contentPrefix c k) :
     tableauxOfContent μ c = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   obtain ⟨k, hk⟩ := h
   have hc := content_dominance T k

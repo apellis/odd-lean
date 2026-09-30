@@ -40,7 +40,7 @@ noncomputable def qFact (n : ℕ) : A := ∏ i ∈ range n, qInt (i + 1)
 noncomputable def qBinom (a b : ℕ) : A := ∑ α ∈ box a b, T (2 * ((∑ i, α i : ℕ) : ℤ) - a * b)
 
 theorem T_injective : Function.Injective (T : ℤ → A) :=
-  Finsupp.single_left_injective one_ne_zero
+  AddMonoidAlgebra.single_left_injective one_ne_zero
 
 @[simp] theorem qInt_zero : qInt 0 = 0 := by simp [qInt]
 
@@ -178,7 +178,7 @@ theorem single_eq_smul (a : ℕ) (r : A) : single a r = r • θ a := by
   rw [θ, smul_single, mul_one]
 
 /-- The standard basis `{ϑ^{(a)}}`. -/
-noncomputable def basis : Basis ℕ A DivPowAlg := Finsupp.basisSingleOne
+noncomputable def basis : Module.Basis ℕ A DivPowAlg := Finsupp.basisSingleOne
 
 @[simp] theorem basis_apply (a : ℕ) : basis a = θ a := rfl
 
@@ -224,7 +224,7 @@ private theorem mul_assoc' (f g h : DivPowAlg) : f * g * h = f * (g * h) := by
       | hadd h h' hh hh' => simp only [mul_def, map_add] at *; rw [hh, hh']
       | hs c t =>
         simp only [single_mul_single, add_assoc]
-        congr 1
+        apply congrArg (single (a + (b + c)))
         linear_combination r * s * t * qBinom_assoc a b c
 
 private theorem mul_comm' (f g : DivPowAlg) : f * g = g * f := by
@@ -284,7 +284,7 @@ theorem map_mul_of_law (f : DivPowAlg →ₗ[A] B)
     | hs b s =>
       rw [single_mul_single, single_eq_smul, single_eq_smul, single_eq_smul, map_smul, map_smul,
         map_smul, smul_mul_assoc, mul_smul_comm, hmul, smul_smul, smul_smul]
-      congr 1
+      apply congrArg (fun r : A => r • f (θ (a + b)))
       ring
 
 /-- A linear map out of `DivPowAlg` with `1 ↦ 1` whose values on the `ϑ^{(a)}` satisfy the
@@ -300,22 +300,22 @@ noncomputable def ofLinearMap (f : DivPowAlg →ₗ[A] B) (h1 : f 1 = 1)
 /-- The `A`-algebra map `ϑ^{(a)} ↦ e a`, for `e` satisfying `e 0 = 1` and the product law. -/
 noncomputable def lift (e : ℕ → B) (h0 : e 0 = 1)
     (hmul : ∀ a b, e a * e b = qBinom a b • e (a + b)) : DivPowAlg →ₐ[A] B :=
-  ofLinearMap (basis.constr A e) (by rw [one_def, ← basis_apply, Basis.constr_basis, h0])
-    (fun a b => by simp only [← basis_apply, Basis.constr_basis, hmul])
+  ofLinearMap (basis.constr A e) (by rw [one_def, ← basis_apply, Module.Basis.constr_basis, h0])
+    (fun a b => by simp only [← basis_apply, Module.Basis.constr_basis, hmul])
 
 @[simp] theorem lift_θ (e : ℕ → B) (h0 : e 0 = 1)
     (hmul : ∀ a b, e a * e b = qBinom a b • e (a + b)) (a : ℕ) : lift e h0 hmul (θ a) = e a := by
-  rw [lift, ofLinearMap_apply, ← basis_apply, Basis.constr_basis]
+  rw [lift, ofLinearMap_apply, ← basis_apply, Module.Basis.constr_basis]
 
 theorem algHom_ext {f g : DivPowAlg →ₐ[A] B} (h : ∀ a, f (θ a) = g (θ a)) : f = g :=
   AlgHom.toLinearMap_injective (basis.ext fun a => h a)
 
 end DivPowAlg
 
-section Basis
+section Module.Basis
 
 variable {ι R M N : Type*} [Semiring R] [AddCommMonoid M] [Module R M] [AddCommMonoid N]
-  [Module R N] (b : Basis ι R M) (f : M →ₗ[R] N)
+  [Module R N] (b : Module.Basis ι R M) (f : M →ₗ[R] N)
 
 /-- A linear map is injective iff it maps a basis to a linearly independent family. -/
 theorem injective_iff_of_basis :
@@ -337,7 +337,7 @@ theorem bijective_iff_of_basis : Function.Bijective f ↔
     LinearIndependent R (fun i => f (b i)) ∧ Submodule.span R (Set.range fun i => f (b i)) = ⊤ := by
   rw [Function.Bijective, injective_iff_of_basis b, ← range_eq_of_basis b, LinearMap.range_eq_top]
 
-end Basis
+end Module.Basis
 
 namespace DivPowAlg
 
@@ -356,19 +356,19 @@ theorem lift_bijective_iff (e : ℕ → B) (h0 : e 0 = 1)
 
 theorem lift_bijective_iff_basis (e : ℕ → B) (h0 : e 0 = 1)
     (hmul : ∀ a b, e a * e b = qBinom a b • e (a + b)) :
-    Function.Bijective (lift e h0 hmul) ↔ ∃ b : Basis ℕ A B, ⇑b = e := by
+    Function.Bijective (lift e h0 hmul) ↔ ∃ b : Module.Basis ℕ A B, ⇑b = e := by
   rw [lift_bijective_iff]
-  refine ⟨fun h => ⟨Basis.mk h.1 h.2.ge, Basis.coe_mk _ _⟩, ?_⟩
+  refine ⟨fun h => ⟨Module.Basis.mk h.1 h.2.ge, Module.Basis.coe_mk _ _⟩, ?_⟩
   rintro ⟨b, rfl⟩
   exact ⟨b.linearIndependent, b.span_eq⟩
 
 /-- The algebra isomorphism `ϑ^{(a)} ↦ e a` onto `B`, for a basis `e` of `B` satisfying the
 product law. -/
-noncomputable def liftEquiv (e : Basis ℕ A B) (h0 : e 0 = 1)
+noncomputable def liftEquiv (e : Module.Basis ℕ A B) (h0 : e 0 = 1)
     (hmul : ∀ a b, e a * e b = qBinom a b • e (a + b)) : DivPowAlg ≃ₐ[A] B :=
   AlgEquiv.ofBijective (lift e h0 hmul) ((lift_bijective_iff_basis e h0 hmul).2 ⟨e, rfl⟩)
 
-@[simp] theorem liftEquiv_θ (e : Basis ℕ A B) (h0 : e 0 = 1)
+@[simp] theorem liftEquiv_θ (e : Module.Basis ℕ A B) (h0 : e 0 = 1)
     (hmul : ∀ a b, e a * e b = qBinom a b • e (a + b)) (a : ℕ) :
     liftEquiv e h0 hmul (θ a) = e a :=
   lift_θ _ h0 hmul a
@@ -428,8 +428,8 @@ theorem linearIndependent_dp : LinearIndependent A dp := by
   rw [linearIndependent_iff']
   intro s g hg i hi
   have h := congrArg (fun p : Polynomial K => p.coeff i) hg
-  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_smul, coeff_dp, smul_ite, smul_zero,
-    sum_ite_eq, hi, if_true, Polynomial.coeff_zero] at h
+  simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, coeff_dp, smul_ite, smul_zero,
+    sum_ite_eq, hi, ite_true, Polynomial.coeff_zero] at h
   rw [Algebra.smul_def, mul_eq_zero] at h
   exact (IsFractionRing.injective A K) (h.resolve_right (inv_ne_zero
     (algebraMap_qFact_ne_zero i)) |>.trans (map_zero _).symm)
@@ -467,7 +467,8 @@ theorem UA_eq_range : UA = ιE.range := by
 theorem toSubmodule_UA : Subalgebra.toSubmodule UA = Submodule.span A (Set.range dp) := by
   have h : (fun a => ιE.toLinearMap (DivPowAlg.basis a)) = dp := funext fun a => ιE_θ a
   have h' : Subalgebra.toSubmodule ιE.range = LinearMap.range ιE.toLinearMap :=
-    Submodule.ext fun x => (AlgHom.mem_range _).trans LinearMap.mem_range.symm
+    Submodule.ext fun x => (AlgHom.mem_range _).trans
+      (LinearMap.mem_range (f := ιE.toLinearMap) (x := x)).symm
   rw [UA_eq_range, h', range_eq_of_basis DivPowAlg.basis, h]
 
 /-- `DivPowAlg ≃ₐ[A] U^+_A`, `ϑ^{(a)} ↦ E^{(a)}`. -/
@@ -481,7 +482,7 @@ noncomputable def DivPowAlg.equivUA : DivPowAlg ≃ₐ[A] UA :=
 namespace UA
 
 /-- The basis `{E^{(a)}}` of `U^+_A`. -/
-noncomputable def basis : Basis ℕ A UA := DivPowAlg.basis.map DivPowAlg.equivUA.toLinearEquiv
+noncomputable def basis : Module.Basis ℕ A UA := DivPowAlg.basis.map DivPowAlg.equivUA.toLinearEquiv
 
 @[simp] theorem basis_apply (a : ℕ) : (basis a : Polynomial K) = dp a := by
   simp [basis]

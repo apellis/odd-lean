@@ -42,12 +42,12 @@ def resCoeff : KONH (m+2+m'+2) →ₗ[L] L :=
 theorem resCoeff_Eclass : resCoeff m m' (Eclass (m+2+m'+2)) =
     T (-(((m+2) * (m'+2) : ℕ) : ℤ)) := by
   show ((K0B.basis m m').coord 0) (res m m' (K0.of (divE (m+2+m')))) = _
-  rw [res_divE_exact, map_smul, ← K0B.basis_apply m m' 0, Basis.coord_apply, Basis.repr_self,
+  rw [res_divE_exact, map_smul, ← K0B.basis_apply m m' 0, Module.Basis.coord_apply, Module.Basis.repr_self,
     Finsupp.single_eq_same, smul_eq_mul, mul_one]
 
 theorem coprodK0_single (n : ℕ) :
     coprodK0 (DFinsupp.single n (Eclass n)) = coprodVal n := by
-  rw [coprodK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe,
+  rw [coprodK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_apply,
     AlgEquiv.symm_apply_apply, coprod_θ]
 
 theorem coeffAt_coprodVal (n a b : ℕ) :
@@ -59,11 +59,11 @@ theorem coeffAt_coprodVal (n a b : ℕ) :
   · rw [Finset.sum_eq_single (a, b)]
     · simp
     · rintro ⟨c, d⟩ _ hne
-      rw [if_neg hne]
+      rw [ite_eq_right hne]
     · intro hn
-      exact absurd (Finset.mem_antidiagonal.2 h) hn
-  · refine Finset.sum_eq_zero fun p hp => if_neg fun hpe => h ?_
-    rw [Finset.mem_antidiagonal] at hp
+      exact absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hn
+  · refine Finset.sum_eq_zero fun p hp => ite_eq_right fun hpe => h ?_
+    rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
     obtain ⟨h1, h2⟩ := Prod.mk.inj hpe
     omega
 
@@ -78,8 +78,8 @@ theorem coprodK0_coeff_eq_res (x : K0ONH) :
       coprodK0_single, coeffAt_coprodVal, DFinsupp.lapply_apply]
     by_cases hn : n = m+2+m'+2
     · subst hn
-      rw [if_pos (by omega), DFinsupp.single_eq_same, resCoeff_Eclass]
-    · rw [if_neg (by omega), DFinsupp.single_eq_of_ne hn, map_zero]
+      rw [ite_eq_left (by omega), DFinsupp.single_eq_same, resCoeff_Eclass]
+    · rw [ite_eq_right (by omega), DFinsupp.single_eq_of_ne (Ne.symm hn), map_zero]
   exact DFunLike.congr_fun h x
 
 /-- For `a = 0` restriction is the identity of `K₀(ONH_n)` and `E^{(0)} ⊠ E^{(n)} = E^{(n)}`: the
@@ -93,9 +93,9 @@ theorem coprodK0_coeff_zero_left (n : ℕ) (x : K0ONH) :
       coprodK0_single, coeffAt_coprodVal, DFinsupp.lapply_apply]
     by_cases hk : k = n
     · subst hk
-      rw [if_pos (zero_add k), DFinsupp.single_eq_same, ← basisE_apply k 0, Basis.coord_apply,
-        Basis.repr_self, Finsupp.single_eq_same, zero_mul, Nat.cast_zero, neg_zero, T_zero]
-    · rw [if_neg (by omega), DFinsupp.single_eq_of_ne hk, map_zero]
+      rw [ite_eq_left (zero_add k), DFinsupp.single_eq_same, ← basisE_apply k 0, Module.Basis.coord_apply,
+        Module.Basis.repr_self, Finsupp.single_eq_same, zero_mul, Nat.cast_zero, neg_zero, T_zero]
+    · rw [ite_eq_right (by omega), DFinsupp.single_eq_of_ne (Ne.symm hk), map_zero]
   exact DFunLike.congr_fun h x
 
 /-- For `b = 0` restriction is the identity: the coefficient of `ϑ^{(n)} ⊗ ϑ^{(0)}` in `Δ(x)` is the
@@ -109,9 +109,9 @@ theorem coprodK0_coeff_zero_right (n : ℕ) (x : K0ONH) :
       coprodK0_single, coeffAt_coprodVal, DFinsupp.lapply_apply]
     by_cases hk : k = n
     · subst hk
-      rw [if_pos (add_zero k), DFinsupp.single_eq_same, ← basisE_apply k 0, Basis.coord_apply,
-        Basis.repr_self, Finsupp.single_eq_same, mul_zero, Nat.cast_zero, neg_zero, T_zero]
-    · rw [if_neg (by omega), DFinsupp.single_eq_of_ne hk, map_zero]
+      rw [ite_eq_left (add_zero k), DFinsupp.single_eq_same, ← basisE_apply k 0, Module.Basis.coord_apply,
+        Module.Basis.repr_self, Finsupp.single_eq_same, mul_zero, Nat.cast_zero, neg_zero, T_zero]
+    · rw [ite_eq_right (by omega), DFinsupp.single_eq_of_ne (Ne.symm hk), map_zero]
   exact DFunLike.congr_fun h x
 
 end OddMath.Frontier.OddBialgebra

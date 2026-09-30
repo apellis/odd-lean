@@ -17,7 +17,7 @@ theorem rankTwo_units :
     action 0 e01 1 = 0 ∧ action 0 e01 (generator 0) = 1 ∧
     action 0 e10 1 = generator 0 ∧ action 0 e10 (generator 0) = 0 ∧
     action 0 e11 1 = 0 ∧ action 0 e11 (generator 0) = generator 0 := by
-  simp [e00, e01, e10, e11, action_mul_apply, action_dot_apply,
+  simp [e00, e01, e10, e11,
     action_crossing, divided_one, divided_generator]
 
 theorem rankTwo_projector (k l : OddSymmetricKernel.kernelSubring 0) :

@@ -12,7 +12,7 @@ open EKRadicalQuotient EKElementaryQuotient
 theorem degree_zero : h 0 = 1 ∧ e 0 = 1 := by simp [h, e]
 theorem degree_one : e 1 = h 1 := by
   simp [e, h, CompleteElementary.elementary, CompleteElementary.ekSign,
-    CompleteElementary.inverseCoeff, Fin.sum_univ_succ]
+    CompleteElementary.inverseCoeff]
 theorem degree_two : e 2 = h 2 - h 1 * h 1 :=
   EKIntegralBasesControls.elementary_two
 

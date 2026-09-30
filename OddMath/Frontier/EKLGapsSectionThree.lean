@@ -64,7 +64,7 @@ theorem owl_Dprime_printed_iff (n : ℕ) :
       neg_one_pow_eq_pow_mod_two (R := ℤ) (n := (n+2).choose 3)] at h'
     rcases Nat.mod_two_eq_zero_or_one ((n+2).choose 3) with h3 | h3 <;>
       rcases Nat.mod_two_eq_zero_or_one ((n+2).choose 4) with h4 | h4 <;>
-      rw [h3, h4] at h' ⊢ <;> norm_num at h' ⊢
+      simp_all
   · intro h
     rw [neg_one_pow_eq_pow_mod_two (R := ℤ) (n := (n+2).choose 3), h,
       ← neg_one_pow_eq_pow_mod_two]
@@ -144,7 +144,7 @@ theorem eq_3_49_printed_false (n : ℕ) (E : Fin (n+3) → ℕ) (hE : E ⟨n+1, 
     rw [hE] at this
     simp at this
   simp only [monomial, Finsupp.smul_apply, Finsupp.single_eq_same,
-    Finsupp.single_eq_of_ne hne, smul_zero] at h3
+    Finsupp.single_eq_of_ne hne.symm, smul_zero] at h3
   exact one_ne_zero h3
 
 theorem eq_3_49_printed_false' (n : ℕ) (c : ℤ) :
@@ -222,7 +222,7 @@ theorem eq_4_26_printed_false : ¬ ∀ m k : ℕ, Odd k → 3 ≤ k → Printed_
 theorem eq_4_26_printed_tilde_false (hi : Even i.val) :
     ¬ ∀ m k : ℕ, Odd k → 3 ≤ k → Printed_4_26_tilde i m k := by
   have ht : PlacticEvaluation.tildeGenerator (n := n+2) i.castSucc = xl := by
-    rw [PlacticEvaluation.tildeGenerator, Fin.coe_castSucc, hi.neg_one_pow, one_smul]
+    rw [PlacticEvaluation.tildeGenerator, Fin.val_castSucc, hi.neg_one_pow, one_smul]
   intro H
   exact eq_4_26_printed_false i fun m k hk h3 => by
     have := H m k hk h3

@@ -107,7 +107,7 @@ theorem spectator_outside_local_domain (g : SkewPolynomial 2) :
     rw [ha] at h2
     exact absurd h2 (by decide)
   have h0 : (embed (crossingStrands 1 0) g) (expSingle 2) = 0 :=
-    Finsupp.embDomain_notin_range
+    Finsupp.embDomain_of_notMem_range
       ⟨expEmbed (crossingStrands 1 0), expEmbed_injective _⟩ g (expSingle 2) hnot
   rw [h] at h0
   have h1 : (generator (2 : Fin (1 + 2))) (expSingle 2) = 1 := Finsupp.single_eq_same

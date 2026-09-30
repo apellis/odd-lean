@@ -75,11 +75,11 @@ theorem toDiagramsFree_relator (n : ℕ) (w : NilHeckeAction.Free n) (hw : Relat
     exact ψ_mul_ψ_add_ψ_mul_ψ ℤ h
   | mixedRight i =>
     simp only [map_sub, map_add, map_mul, map_one, toDiagramsFree_dot, toDiagramsFree_crossing,
-      Fin.coe_castSucc, Fin.val_succ, sub_eq_zero]
+      Fin.val_castSucc, Fin.val_succ, sub_eq_zero]
     exact x_mul_ψ_add_ψ_mul_x ℤ (by omega)
   | mixedLeft i =>
     simp only [map_sub, map_add, map_mul, map_one, toDiagramsFree_dot, toDiagramsFree_crossing,
-      Fin.coe_castSucc, Fin.val_succ, sub_eq_zero]
+      Fin.val_castSucc, Fin.val_succ, sub_eq_zero]
     exact ψ_mul_x_add_x_mul_ψ ℤ (by omega)
   | spectator i j hl hr =>
     simp only [map_add, map_mul, toDiagramsFree_dot, toDiagramsFree_crossing]
@@ -233,7 +233,8 @@ theorem inImage (n : ℕ) {a b : Obj sig} (g : (pres ℤ).obj a ⟶ (pres ℤ).o
       exact h.symm
     · rw [@Linear.smul_comp ℤ _ _ _ _ presLinear, @Linear.comp_smul ℤ _ _ _ _ presLinear]
       convert (toDiagrams n).range.zsmul_mem (hf.2 ha hb) r using 1
-      exact int_smul_eq_zsmul (@Linear.homModule ℤ _ _ _ _ presLinear _ _) r _
+      congr 1
+      exact _root_.int_smul_eq_zsmul (presLinear.homModule _ _) r _
 
 theorem toDiagrams_surjective (n : ℕ) : Function.Surjective (toDiagrams n) := by
   intro f

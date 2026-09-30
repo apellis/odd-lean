@@ -71,8 +71,8 @@ theorem gram_vecMul_zero {ι : Type*} [Fintype ι] (g : ι → Q) (c : ι → �
     Matrix.vecMul c (Matrix.of fun i j => quotientPairing (g i) (g j)) = 0 := by
   funext j
   have hj := horth (g j) (Submodule.subset_span ⟨j, rfl⟩)
-  simp only [map_sum, map_smul, LinearMap.coeFn_sum, Finset.sum_apply,
-    LinearMap.smul_apply, smul_eq_mul] at hj
+  simp only [map_sum, map_smul, LinearMap.sum_apply,
+    LinearMap.smul_apply] at hj
   simpa [Matrix.vecMul, dotProduct] using hj
 
 /-- Gram-determinant criterion on the span of an arbitrary finite family. -/
@@ -235,7 +235,7 @@ def partsF : ℕ → ℕ → ℕ → List (List ℕ)
 
 /-- Completeness: every weakly decreasing positive list of sum `n`, parts `≤ m`,
 is enumerated (for all such lists, not a sample). -/
-theorem mem_partsF : ∀ (l : List ℕ) (f n m : ℕ), l.Sorted (· ≥ ·) → (∀ x ∈ l, 0 < x) →
+theorem mem_partsF : ∀ (l : List ℕ) (f n m : ℕ), l.Pairwise (· ≥ ·) → (∀ x ∈ l, 0 < x) →
     (∀ x ∈ l, x ≤ m) → l.sum = n → n ≤ f → l ∈ partsF f n m
   | [], f, n, m, _, _, _, hs, _ => by
       cases f <;> simp_all [partsF]
@@ -245,20 +245,20 @@ theorem mem_partsF : ∀ (l : List ℕ) (f n m : ℕ), l.Sorted (· ≥ ·) → 
       simp only [List.sum_cons] at hs
       obtain ⟨f, rfl⟩ : ∃ g, f = g + 1 := ⟨f - 1, by omega⟩
       have hn : n ≠ 0 := by omega
-      have ht := mem_partsF t f (n - a) a (List.sorted_cons.mp hl).2
+      have ht := mem_partsF t f (n - a) a (List.pairwise_cons.mp hl).2
         (fun x hx => hp x (by simp [hx]))
-        (fun x hx => (List.sorted_cons.mp hl).1 x hx) (by omega) (by omega)
-      simp only [partsF, if_neg hn, List.mem_flatMap, List.mem_range]
+        (fun x hx => (List.pairwise_cons.mp hl).1 x hx) (by omega) (by omega)
+      simp only [partsF, ite_eq_right hn, List.mem_flatMap, List.mem_range]
       refine ⟨a - 1, by omega, ?_⟩
       have e : a - 1 + 1 = a := by omega
-      rw [e, if_pos (by omega)]
+      rw [e, ite_eq_left (by omega)]
       exact List.mem_map.mpr ⟨t, ht, rfl⟩
 
 /-- Every Young diagram of size `d` has its row list in `partsF d d d`. -/
 theorem rowLens_mem_parts (d : ℕ) (ν : YoungDiagram) (h : ν.card = d) :
     ν.rowLens ∈ partsF d d d := by
   have hs : ν.rowLens.sum = d := by rw [EKIntegralBases.rowLens_sum, h]
-  apply mem_partsF _ _ _ _ ν.rowLens_sorted ν.pos_of_mem_rowLens _ hs le_rfl
+  apply mem_partsF _ _ _ _ ν.rowLens_sorted.pairwise ν.pos_of_mem_rowLens _ hs le_rfl
   intro x hx
   rw [← hs]
   exact List.le_sum_of_mem hx

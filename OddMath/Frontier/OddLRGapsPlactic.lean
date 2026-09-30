@@ -143,16 +143,16 @@ theorem resLetter_respects (n : ℕ) : RespectsKnuthInf (resLetter n) := by
   constructor
   · intro x y z hxy hyz
     by_cases hz : z < n
-    · simp only [resLetter, dif_pos hz, dif_pos (show y < n by omega),
-        dif_pos (show x < n by omega)]
+    · simp only [resLetter, dite_eq_left hz, dite_eq_left (show y < n by omega),
+        dite_eq_left (show x < n by omega)]
       exact OddPlactic.knuth_left n _ _ _ (Fin.mk_lt_mk.mpr hxy) (Fin.mk_le_mk.mpr hyz)
-    · simp [resLetter, dif_neg hz]
+    · simp [resLetter, dite_eq_right hz]
   · intro x y z hxy hyz
     by_cases hz : z < n
-    · simp only [resLetter, dif_pos hz, dif_pos (show y < n by omega),
-        dif_pos (show x < n by omega)]
+    · simp only [resLetter, dite_eq_left hz, dite_eq_left (show y < n by omega),
+        dite_eq_left (show x < n by omega)]
       exact OddPlactic.knuth_right n _ _ _ (Fin.mk_le_mk.mpr hxy) (Fin.mk_lt_mk.mpr hyz)
-    · simp [resLetter, dif_neg hz]
+    · simp [resLetter, dite_eq_right hz]
 
 /-- The restriction `ℤPl → ℤPl_n` killing the letters above `n`. -/
 def res (n : ℕ) : PlacticInf →+* OddPlactic.Plactic n := liftInf (resLetter n) (resLetter_respects n)
@@ -162,7 +162,7 @@ theorem res_emb (n : ℕ) (x : OddPlactic.Plactic n) : res n (emb n x) = x := by
     apply OddPlactic.hom_ext
     intro i
     simp only [RingHom.comp_apply, emb, OddPlactic.lift_q, res, liftInf_q, resLetter,
-      dif_pos i.isLt, RingHom.id_apply]
+      dite_eq_left i.isLt, RingHom.id_apply]
   exact congrArg (fun f : OddPlactic.Plactic n →+* OddPlactic.Plactic n => f x) h
 
 theorem emb_injective (n : ℕ) : Function.Injective (emb n) :=
@@ -286,11 +286,11 @@ theorem span_tabWord : Submodule.span ℤ (Set.range tabWord) = ⊤ := by
 
 /-- **E §3.1, p. 8**, for the alphabet `A = ℤ_{>0}`: the row words `w_r(T)` of all semistandard
 Young tableaux `T` with entries in `ℤ_{>0}` form a `ℤ`-basis of `ℤPl`. -/
-def tableauBasis : Basis Tab ℤ PlacticInf :=
-  Basis.mk tabWord_linearIndependent span_tabWord.ge
+def tableauBasis : Module.Basis Tab ℤ PlacticInf :=
+  Module.Basis.mk tabWord_linearIndependent span_tabWord.ge
 
 @[simp] theorem tableauBasis_apply (T : Tab) : tableauBasis T = tabWord T :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 /-- Compatibility with the finite alphabets `{1, …, n}`. -/
 theorem emb_tableauBasis {n : ℕ} (S : OddLRPlactic.State n) :

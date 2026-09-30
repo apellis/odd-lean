@@ -50,7 +50,9 @@ theorem swapTokens_lt {r c : ℕ} (M : Raw r c) (a b : Tokens M)
   rcases hs with hsame | hsame
   · dsimp at hsame; subst i'
     have h' : (toLex ⟨j,k⟩ : Σₗ j : Fin c, Fin (M i j)) < toLex ⟨j',k'⟩ := by
-      simpa only [Sigma.Lex.lt_def, lt_self_iff_false, false_or, exists_const] using h
+      rcases Sigma.Lex.lt_def.mp h with hi | ⟨hi, hk⟩
+      · exact (lt_irrefl i hi).elim
+      · exact hk
     rcases Sigma.Lex.lt_def.mp h' with hj | ⟨hj,hk⟩
     · exact Sigma.Lex.left _ _ hj
     · change j = j' at hj; subst j'
@@ -99,7 +101,7 @@ theorem canonical_matrix {n r c : ℕ} (M : Raw r c)
   simp only [Fintype.sum_sigma]
   change (∑ j' : Fin c, ∑ i' : Fin r, ∑ _k : Fin (M i' j'),
     if i' = i ∧ j' = j then (1 : ℕ) else 0) = M i j
-  simp [Finset.sum_const, mul_ite, ite_and]
+  simp [Finset.sum_const, ite_and]
 
 /-- The total number of endpoints determined by the row margins. -/
 theorem mat_total {r c : ℕ} {β : Fin r → ℕ} {α : Fin c → ℕ} (M : Mat β α) :
@@ -114,7 +116,7 @@ theorem count_ofFn {A : Type*} [DecidableEq A] {n : ℕ} (f : Fin n → A) (x : 
   | zero => simp
   | succ n ih =>
     rw [List.ofFn_succ, List.count_cons, Fin.sum_univ_succ, ih]
-    simp only [beq_iff_eq, eq_comm]
+    simp only [eq_comm]
     split_ifs <;> simp_all [Nat.add_comm]
 
 /-- A weakly increasing tuple is determined by its multiplicities. -/
@@ -123,7 +125,7 @@ theorem monotone_eq_counts {A : Type*} [LinearOrder A] {n : ℕ} {f g : Fin n �
     (h : ∀ x, (∑ a, if f a = x then (1 : ℕ) else 0) =
       ∑ a, if g a = x then 1 else 0) : f = g := by
   apply List.ofFn_injective
-  apply List.eq_of_perm_of_sorted _ hf.ofFn_sorted hg.ofFn_sorted
+  apply List.Perm.eq_of_pairwise' hf.sortedLE_ofFn.pairwise hg.sortedLE_ofFn.pairwise
   apply List.perm_iff_count.mpr
   intro x
   simpa only [count_ofFn] using h x
@@ -170,15 +172,13 @@ theorem matrix_injective {n r c : ℕ} :
   have hT : D.topPlatform = E.topPlatform := by
     refine monotone_eq_counts (A := Fin r) D.top_monotone E.top_monotone ?_
     intro i
-    convert (congrFun D.toMat.property.1 i).symm.trans
-      ((congrArg (fun M => rowSum M i) hm).trans (congrFun E.toMat.property.1 i)) using 1 <;>
-      apply Finset.sum_congr rfl <;> intro a _ <;> split_ifs <;> rfl
+    exact (congrFun D.toMat.property.1 i).symm.trans
+      ((congrArg (fun M => rowSum M i) hm).trans (congrFun E.toMat.property.1 i))
   have hB : D.bottomPlatform = E.bottomPlatform := by
     refine monotone_eq_counts (A := Fin c) D.bottom_monotone E.bottom_monotone ?_
     intro j
-    convert (congrFun D.toMat.property.2 j).symm.trans
-      ((congrArg (fun M => colSum M j) hm).trans (congrFun E.toMat.property.2 j)) using 1 <;>
-      apply Finset.sum_congr rfl <;> intro a _ <;> split_ifs <;> rfl
+    exact (congrFun D.toMat.property.2 j).symm.trans
+      ((congrArg (fun M => colSum M j) hm).trans (congrFun E.toMat.property.2 j))
   have hK : (fun a => (toLex (D.bottomPlatform a, D.topPlatform (D.perm a)) :
       Fin c ×ₗ Fin r)) = (fun a => toLex (E.bottomPlatform a, E.topPlatform (E.perm a))) := by
     refine monotone_eq_counts (A := Fin c ×ₗ Fin r) (bottom_keys_monotone D)
@@ -292,7 +292,7 @@ theorem endpoint_count {n r : ℕ} (β : Fin r → ℕ) (h : (∑ i, β i) = n) 
   change (∑ x : (i : Fin r) × Fin (β i), if x.1 = i then (1 : ℕ) else 0) = β i
   simp only [Fintype.sum_sigma]
   change (∑ j : Fin r, ∑ _k : Fin (β j), if j = i then (1 : ℕ) else 0) = β i
-  simp [mul_ite]
+  simp
 
 /-- Explicit contiguity: a platform occupies an interval of ordered endpoints. -/
 theorem endpoint_contiguous {n r : ℕ} (β : Fin r → ℕ) (h : (∑ i, β i) = n)
@@ -306,8 +306,7 @@ theorem endpoint_unique {n r : ℕ} (β : Fin r → ℕ) (h : (∑ i, β i) = n)
     (hc : ∀ i, (∑ a, if T a = i then (1 : ℕ) else 0) = β i) : T = endpoint β h := by
   refine monotone_eq_counts (A := Fin r) hT (endpoint_monotone β h) ?_
   intro i
-  convert (hc i).trans (endpoint_count β h i).symm using 1 <;>
-    apply Finset.sum_congr rfl <;> intro a _ <;> split_ifs <;> rfl
+  exact (hc i).trans (endpoint_count β h i).symm
 
 /-- The source condition on an actual permutation with fixed endpoint maps. -/
 def NoWithin {n r c : ℕ} (T : Fin n → Fin r) (B : Fin n → Fin c)
@@ -450,7 +449,7 @@ theorem crossing_eq_inversions_iff {n r c : ℕ} {T : Fin n → Fin r} {B : Fin 
     have hba := lt_of_le_of_ne (le_of_not_gt hn) hne
     have hzero : forced T B σ a b = 0 := by
       rcases hw with hw | hw <;> simp [forced, hw]
-    simp only [hzero, hab, hba, and_self, if_true] at hterm
+    simp only [hzero, hab, hba, and_self, ite_true] at hterm
     omega
   · intro hn
     exact (show PlatformDiagram n r c from ⟨T,B,hT,hB,σ,hn⟩).crossing_eq_length
@@ -475,17 +474,15 @@ theorem exists_noWithin_representative {n r c : ℕ} {T : Fin n → Fin r} {B : 
     have hrow : rowSum (permMatrix T B σ) i = ∑ a, if T a = i then (1 : ℕ) else 0 := by
       rw [permMatrix, strandMatrix_rowSum]
       exact Equiv.sum_comp σ (fun a => if T a = i then (1 : ℕ) else 0)
-    convert (congrFun D.toMat.property.1 i).symm.trans
-      ((congrArg (fun M => rowSum M i) hm).trans hrow) using 1 <;>
-      apply Finset.sum_congr rfl <;> intro a _ <;> split_ifs <;> rfl
+    exact (congrFun D.toMat.property.1 i).symm.trans
+      ((congrArg (fun M => rowSum M i) hm).trans hrow)
   have hb : D.bottomPlatform = B := by
     refine monotone_eq_counts (A := Fin c) D.bottom_monotone hB ?_
     intro j
     have hcol : colSum (permMatrix T B σ) j = ∑ a, if B a = j then (1 : ℕ) else 0 :=
       strandMatrix_colSum _ _ j
-    convert (congrFun D.toMat.property.2 j).symm.trans
-      ((congrArg (fun M => colSum M j) hm).trans hcol) using 1 <;>
-      apply Finset.sum_congr rfl <;> intro a _ <;> split_ifs <;> rfl
+    exact (congrFun D.toMat.property.2 j).symm.trans
+      ((congrArg (fun M => colSum M j) hm).trans hcol)
   refine ⟨D.perm, ?_, ?_⟩
   · apply sameDoubleCoset_of_matrix
     simpa only [PlatformDiagram.matrix, permMatrix, ht, hb] using hm.symm

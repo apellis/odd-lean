@@ -90,7 +90,8 @@ def expEquiv : (Fin 1 → ℕ) ≃ ℕ := Equiv.funUnique (Fin 1) ℕ
 
 /-- The additive identification `OPol_1 ≃ ℤ[X]`, `x^k ↦ X^k`. -/
 def rankOneAdd : SkewPolynomial 1 ≃+ Polynomial ℤ :=
-  (Finsupp.domCongr expEquiv).trans (Polynomial.toFinsuppIso ℤ).symm.toAddEquiv
+  (Finsupp.domCongr expEquiv).trans
+    (AddMonoidAlgebra.coeffAddEquiv.symm.trans (Polynomial.toFinsuppIso ℤ).symm.toAddEquiv)
 
 theorem rankOneAdd_monomial (a : Fin 1 → ℕ) (c : ℤ) :
     rankOneAdd (monomial a c) = Polynomial.monomial (a 0) c := by

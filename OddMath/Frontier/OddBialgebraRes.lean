@@ -113,10 +113,10 @@ variable {m m' : ℕ}
 theorem isShuffle_one : IsShuffle (1 : Perm (m+2+m')) :=
   ⟨fun k k' h => by
     show (Fin.castAdd (m'+2) k : Fin (m+2+m'+2)) < Fin.castAdd (m'+2) k'
-    exact Fin.lt_def.2 (by simp only [Fin.coe_castAdd]; exact Fin.lt_def.1 h),
+    exact Fin.lt_def.2 (by simp only [Fin.val_castAdd]; exact Fin.lt_def.1 h),
    fun k k' h => by
     show (Fin.natAdd (m+2) k : Fin (m+2+m'+2)) < Fin.natAdd (m+2) k'
-    exact Fin.lt_def.2 (by simp only [Fin.coe_natAdd]; have := Fin.lt_def.1 h; omega)⟩
+    exact Fin.lt_def.2 (by simp only [Fin.val_natAdd]; have := Fin.lt_def.1 h; omega)⟩
 
 instance : Nonempty (Shuffle m m') := ⟨⟨1, isShuffle_one⟩⟩
 

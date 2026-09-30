@@ -30,37 +30,37 @@ def toFull (S : SkewTableau lam mu) : PositiveTableau lam where
   row_weak' := by
     intro i j₁ j₂ hj h
     by_cases h2 : (i, j₂) ∈ mu
-    · rw [if_pos (mu.up_left_mem le_rfl hj.le h2), if_pos h2]
-    · rw [if_neg h2, if_pos h]
+    · rw [ite_eq_left (mu.up_left_mem le_rfl hj.le h2), ite_eq_left h2]
+    · rw [ite_eq_right h2, ite_eq_left h]
       by_cases h1 : (i, j₁) ∈ mu
-      · rw [if_pos h1]; have := row_lt_colLen h1; omega
-      · rw [if_neg h1, if_pos (lam.up_left_mem le_rfl hj.le h)]
+      · rw [ite_eq_left h1]; have := row_lt_colLen h1; omega
+      · rw [ite_eq_right h1, ite_eq_left (lam.up_left_mem le_rfl hj.le h)]
         have := S.row_weak hj h h1; omega
   col_strict' := by
     intro i₁ i₂ j hi h
     by_cases h2 : (i₂, j) ∈ mu
-    · rw [if_pos (mu.up_left_mem hi.le le_rfl h2), if_pos h2]; omega
-    · rw [if_neg h2, if_pos h]
+    · rw [ite_eq_left (mu.up_left_mem hi.le le_rfl h2), ite_eq_left h2]; omega
+    · rw [ite_eq_right h2, ite_eq_left h]
       by_cases h1 : (i₁, j) ∈ mu
-      · rw [if_pos h1]; have := row_lt_colLen h1; have := S.positive h h2; omega
-      · rw [if_neg h1, if_pos (lam.up_left_mem hi.le le_rfl h)]
+      · rw [ite_eq_left h1]; have := row_lt_colLen h1; have := S.positive h h2; omega
+      · rw [ite_eq_right h1, ite_eq_left (lam.up_left_mem hi.le le_rfl h)]
         have := S.col_strict hi h h1; omega
   zeros' := by
     intro i j h
-    rw [if_neg (fun hm => h (mem_of_le S.sub hm)), if_neg h]
+    rw [ite_eq_right (fun hm => h (mem_of_le S.sub hm)), ite_eq_right h]
   positive := by
     intro i j h
     by_cases h1 : (i, j) ∈ mu
-    · rw [if_pos h1]; omega
-    · rw [if_neg h1, if_pos h]; have := S.positive h h1; omega
+    · rw [ite_eq_left h1]; omega
+    · rw [ite_eq_right h1, ite_eq_left h]; have := S.positive h h1; omega
 
 theorem toFull_entry_mu (S : SkewTableau lam mu) {i j : ℕ} (h : (i, j) ∈ mu) :
-    (toFull S).entry i j = i + 1 := if_pos h
+    (toFull S).entry i j = i + 1 := ite_eq_left h
 
 theorem toFull_entry_skew (S : SkewTableau lam mu) {i j : ℕ} (h : (i, j) ∈ lam) (h' : (i, j) ∉ mu) :
     (toFull S).entry i j = S.entry i j + mu.colLen 0 := by
   change (if (i, j) ∈ mu then i + 1 else if (i, j) ∈ lam then S.entry i j + mu.colLen 0 else 0) = _
-  rw [if_neg h', if_pos h]
+  rw [ite_eq_right h', ite_eq_left h]
 
 /-- Tableaux of shape `λ` restricting to `T_μ` on `μ` and exceeding `ℓ(μ)` on `λ/μ`. -/
 def FullCond (mu : YoungDiagram) (T : PositiveTableau lam) : Prop :=
@@ -78,20 +78,20 @@ def fromFull (T : PositiveTableau lam) (hT : FullCond mu T) : SkewTableau lam mu
   row_weak := by
     intro i j₁ j₂ hj h h1
     have h2 : (i, j₂) ∉ mu := fun hm => h1 (mu.up_left_mem le_rfl hj.le hm)
-    rw [if_pos ⟨lam.up_left_mem le_rfl hj.le h, h1⟩, if_pos ⟨h, h2⟩]
+    rw [ite_eq_left ⟨lam.up_left_mem le_rfl hj.le h, h1⟩, ite_eq_left ⟨h, h2⟩]
     have := T.row_weak' hj h; omega
   col_strict := by
     intro i₁ i₂ j hi h h1
     have h2 : (i₂, j) ∉ mu := fun hm => h1 (mu.up_left_mem hi.le le_rfl hm)
-    rw [if_pos ⟨lam.up_left_mem hi.le le_rfl h, h1⟩, if_pos ⟨h, h2⟩]
+    rw [ite_eq_left ⟨lam.up_left_mem hi.le le_rfl h, h1⟩, ite_eq_left ⟨h, h2⟩]
     have := T.col_strict' hi h
     have := hT.2.2 i₁ j (lam.up_left_mem hi.le le_rfl h) h1
     omega
-  zeros_out := by intro i j h; rw [if_neg (fun h' => h h'.1)]
-  zeros_in := by intro i j h; rw [if_neg (fun h' => h'.2 h)]
+  zeros_out := by intro i j h; rw [ite_eq_right (fun h' => h h'.1)]
+  zeros_in := by intro i j h; rw [ite_eq_right (fun h' => h'.2 h)]
   positive := by
     intro i j h h'
-    rw [if_pos ⟨h, h'⟩]; have := hT.2.2 i j h h'; omega
+    rw [ite_eq_left ⟨h, h'⟩]; have := hT.2.2 i j h h'; omega
 
 theorem toFull_fromFull (T : PositiveTableau lam) (hT : FullCond mu T) :
     toFull (fromFull T hT) = T := by
@@ -102,7 +102,7 @@ theorem toFull_fromFull (T : PositiveTableau lam) (hT : FullCond mu T) :
   · rw [toFull_entry_mu _ hm, hT.2.1 _ _ hm]
   · rw [toFull_entry_skew _ hp' hm]
     change (if (p.1, p.2) ∈ lam ∧ (p.1, p.2) ∉ mu then T.entry p.1 p.2 - mu.colLen 0 else 0) + _ = _
-    rw [if_pos ⟨hp', hm⟩]
+    rw [ite_eq_left ⟨hp', hm⟩]
     have := hT.2.2 _ _ hp' hm; omega
 
 theorem fromFull_toFull (S : SkewTableau lam mu) : fromFull (toFull S) (fullCond_toFull S) = S := by
@@ -111,7 +111,7 @@ theorem fromFull_toFull (S : SkewTableau lam mu) : fromFull (toFull S) (fullCond
   obtain ⟨hl, hm⟩ := mem_skewCells.mp hp
   change (if (p.1, p.2) ∈ lam ∧ (p.1, p.2) ∉ mu then (toFull S).entry p.1 p.2 - mu.colLen 0
     else 0) = _
-  rw [if_pos ⟨hl, hm⟩, toFull_entry_skew S hl hm]; omega
+  rw [ite_eq_left ⟨hl, hm⟩, toFull_entry_skew S hl hm]; omega
 
 theorem toFull_injective : Function.Injective (toFull (lam := lam) (mu := mu)) := by
   intro S S' h
@@ -214,7 +214,8 @@ theorem inversions_split (m : ℕ) (P : ℕ × ℕ → Prop) [DecidablePred P] (
 theorem rowCells_filter (h : mu ≤ lam) :
     (TableauRowWord.rowCells lam).filter (fun p => decide (p ∈ mu.cells)) =
       TableauRowWord.rowCells mu := by
-  apply List.eq_of_perm_of_sorted (r := TableauRowWord.RowLE)
+  apply List.Perm.eq_of_pairwise' (r := TableauRowWord.RowLE)
+    ((TableauRowWord.rowCells_sorted lam).filter _) (TableauRowWord.rowCells_sorted mu)
   · apply (List.perm_ext_iff_of_nodup ((TableauRowWord.rowCells_nodup lam).filter _)
       (TableauRowWord.rowCells_nodup mu)).mpr
     intro p
@@ -223,10 +224,8 @@ theorem rowCells_filter (h : mu ≤ lam) :
     · exact fun h' => h'.2
     · intro h'
       exact ⟨YoungDiagram.cells_subset_iff.mpr h h', h'⟩
-  · exact (TableauRowWord.rowCells_sorted lam).filter _
-  · exact TableauRowWord.rowCells_sorted mu
 
-instance : IsAntisymm (ℕ × ℕ) TableauRowWord.RowLE :=
+instance : Std.Antisymm TableauRowWord.RowLE :=
   ⟨by intro a b h1 h2; unfold TableauRowWord.RowLE at h1 h2; ext <;> omega⟩
 
 /-- `sign(T_S) = (-1)^{N(μ)} sign(S)`, `sign(S) = (-1)^{N^<(Ŝ)}` (E §4.2). -/

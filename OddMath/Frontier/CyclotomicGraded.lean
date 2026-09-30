@@ -128,12 +128,13 @@ theorem hK_mem_kerGrading (n m : ℕ) : hK n m ∈ kerGrading n (2*(m : ℤ)) :=
 
 /-- `x̃_1^N` is homogeneous of degree `2N`. -/
 theorem firstDot_pow_mem (n N : ℕ) : firstDot n ^ N ∈ onhGrading n (2*(N : ℤ)) := by
+  change firstDot n ^ N ∈ degreePiece n (2 * (N : ℤ))
   induction N with
   | zero => simpa using unit_mem (n := n)
   | succ N ih =>
     rw [pow_succ]
     have h := degreePiece_mul ih (dot_mem (n := n) 0)
-    convert h using 2
+    simpa only [firstDot, Nat.cast_add, Nat.cast_one, mul_add, mul_one] using h
 
 end Homogeneity
 
@@ -207,7 +208,7 @@ theorem dec_of_mem {x : R} {e : ℤ} (hx : x ∈ A e) : hA.dec x = Finsupp.singl
   by_cases h : e = d
   · subst h
     rwa [Finsupp.single_eq_same]
-  · rw [Finsupp.single_eq_of_ne h]
+  · rw [Finsupp.single_eq_of_ne (Ne.symm h)]
     exact zero_mem _
 
 /-- The homogeneous components, as an additive map. -/
@@ -266,7 +267,7 @@ theorem dec_mem_span {G : Set R} (hG : ∀ g ∈ G, ∃ e, g ∈ A e) {x : R}
   have hle : I ≤ I' := by
     rw [TwoSidedIdeal.span_le]
     intro g hg
-    rw [SetLike.mem_coe, TwoSidedIdeal.mem_mk', Set.mem_setOf_eq]
+    rw [SetLike.mem_coe, TwoSidedIdeal.mem_mk', Set.mem_ofPred_eq]
     intro d
     obtain ⟨e, he⟩ := hG g hg
     rw [hA.dec_of_mem he, Finsupp.single_apply]
@@ -293,7 +294,7 @@ theorem image (π : R →+* S) (hπ : Function.Surjective π) {G : Set R}
   · choose ℓ hℓ hℓf using hf
     replace hℓf : ∀ d, π (ℓ d) = f d := hℓf
     let F : ℤ →₀ R := Finsupp.onFinset f.support (fun d => if d ∈ f.support then ℓ d else 0)
-      (fun d h => by by_contra hd; exact h (if_neg hd))
+      (fun d h => by by_contra hd; exact h (ite_eq_right hd))
     have hF (d : ℤ) : F d = if d ∈ f.support then ℓ d else 0 := Finsupp.onFinset_apply
     have hFm (d : ℤ) : F d ∈ A d := by
       rw [hF]
@@ -302,14 +303,14 @@ theorem image (π : R →+* S) (hπ : Function.Surjective π) {G : Set R}
       · exact zero_mem _
     have hFs : π (F.sum fun _ y => y) = 0 := by
       rw [Finsupp.onFinset_sum _ (fun _ => rfl), map_sum, ← hs, Finsupp.sum]
-      exact Finset.sum_congr rfl fun d hd => by rw [if_pos hd, hℓf]
+      exact Finset.sum_congr rfl fun d hd => by rw [ite_eq_left hd, hℓf]
     have hdec := hA.dec_eq hFm rfl
     ext d
     rw [Finsupp.zero_apply]
     by_cases hd : d ∈ f.support
     · have h := (hker _).2 (hA.dec_mem_span hG ((hker _).1 hFs) d)
-      rwa [hdec, hF, if_pos hd, hℓf] at h
-    · exact Finsupp.not_mem_support_iff.1 hd
+      rwa [hdec, hF, ite_eq_left hd, hℓf] at h
+    · exact Finsupp.notMem_support_iff.1 hd
 
 end Ring
 end UniqueDecomposition
@@ -523,12 +524,13 @@ instance (N : ℕ) : SetLike.GradedMonoid (onh1Grading N) := imageGrading.graded
 /-- `x^N` is homogeneous of degree `2N`. -/
 theorem generator_pow_mem (N : ℕ) :
     (generator 0 : SkewPolynomial 1) ^ N ∈ opolGrading (2*(N : ℤ)) := by
+  change (generator 0 : SkewPolynomial 1) ^ N ∈ polynomialPiece 1 (2 * (N : ℤ))
   induction N with
   | zero => simpa using NilHeckeGradedEnd.one_mem 1
   | succ N ih =>
     rw [pow_succ]
     have h := polynomial_mul ih (generator_mem (0 : Fin 1))
-    convert h using 2
+    simpa only [Nat.cast_add, Nat.cast_one, mul_add, mul_one] using h
 
 /-- `OPol` is graded by polynomial degree. -/
 theorem polynomialDecomposition (N : ℕ) :
@@ -542,7 +544,7 @@ theorem polynomialDecomposition (N : ℕ) :
       split_ifs with h
       · exact h ▸ monomial_mem a (f a)
       · exact zero_mem _
-    · rw [← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+    · rw [← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
       simp only [Finsupp.sum_single_index]
       exact Finsupp.sum_single f
   · have hc (d : ℤ) (a : Fin N → ℕ) (h : pdegree a ≠ d) : F d a = 0 := hF d a h
@@ -551,9 +553,9 @@ theorem polynomialDecomposition (N : ℕ) :
     by_cases h : pdegree a = d
     · subst h
       have := congrArg (fun g : SkewPolynomial N => g a) hs
-      simp only [Finsupp.sum, Finsupp.finset_sum_apply, Finsupp.zero_apply] at this
+      simp only [Finsupp.sum, Finsupp.finsetSum_apply, Finsupp.zero_apply] at this
       rwa [Finset.sum_eq_single (pdegree a) (fun e _ he => hc e a (Ne.symm he))
-        (fun hn => by rw [Finsupp.not_mem_support_iff.1 hn, Finsupp.zero_apply])] at this
+        (fun hn => by rw [Finsupp.notMem_support_iff.1 hn, Finsupp.zero_apply])] at this
     · exact hc d a h
 
 /-- The grading of `ONH_1^N` is a direct sum decomposition. -/
@@ -614,7 +616,7 @@ theorem KCyc_subsingleton (N : ℕ) : ∀ a, N < a → Subsingleton (KCyc N a)
   | 0, h => absurd h (Nat.not_lt_zero N)
   | 1, h => by
     obtain rfl : N = 0 := by omega
-    haveI := ONH1_zero_subsingleton
+    have := ONH1_zero_subsingleton
     exact K0_subsingleton (onh1Grading 0)
   | _+2, h => onhCycK0_subsingleton h
 
@@ -622,9 +624,9 @@ theorem KCyc_subsingleton (N : ℕ) : ∀ a, N < a → Subsingleton (KCyc N a)
 abbrev K0Cyc (N : ℕ) : Type := Π₀ a : Fin (N+1), KCyc N a
 
 /-- A `ℤ[q,q⁻¹]`-basis of `K₀(ONH^N)` with one vector for each `a ≤ N`. -/
-def basisK0Cyc (N : ℕ) : Basis (Fin (N+1)) L (K0Cyc N) :=
+def basisK0Cyc (N : ℕ) : Module.Basis (Fin (N+1)) L (K0Cyc N) :=
   (DFinsupp.basis fun a : Fin (N+1) =>
-    (Basis.singleton (Fin 1) L).map (cycRankEquiv N a (Nat.lt_succ_iff.mp a.isLt)).symm).reindex
+    (Module.Basis.singleton (Fin 1) L).map (cycRankEquiv N a (Nat.lt_succ_iff.mp a.isLt)).symm).reindex
     (Equiv.sigmaUnique (Fin (N+1)) fun _ => Fin 1)
 
 instance (N : ℕ) : Module.Free L (K0Cyc N) := Module.Free.of_basis (basisK0Cyc N)

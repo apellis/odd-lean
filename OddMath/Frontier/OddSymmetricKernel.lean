@@ -1,3 +1,4 @@
+import Mathlib.Tactic.NoncommRing
 import OddMath.Frontier.AllRankDivided
 import OddMath.Frontier.FiniteCompleteElementary
 
@@ -15,11 +16,11 @@ def singleKernel {n : ℕ} (i : Fin (n+1)) : Subring (SkewPolynomial (n+2)) wher
   carrier := {f | divided i f = 0}
   zero_mem' := map_zero _
   one_mem' := divided_one i
-  add_mem' := by intro f g hf hg; simp only [Set.mem_setOf_eq] at *; rw [map_add, hf, hg, add_zero]
-  neg_mem' := by intro f hf; simp only [Set.mem_setOf_eq] at *; rw [map_neg, hf, neg_zero]
+  add_mem' := by intro f g hf hg; simp only [Set.mem_ofPred_eq] at *; rw [map_add, hf, hg, add_zero]
+  neg_mem' := by intro f hf; simp only [Set.mem_ofPred_eq] at *; rw [map_neg, hf, neg_zero]
   mul_mem' := by
     intro f g hf hg
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     rw [divided_mul, hf, hg]
     simp
 
@@ -67,7 +68,7 @@ theorem strictSum_mem_front {m : ℕ} (x : Fin (m+2) → R)
     (ha : x 0 + x 1 ∈ S) (hm : x 0 * x 1 ∈ S) (k : ℕ) :
     strictSum x k ∈ S := by
   cases k with
-  | zero => simpa using S.one_mem
+  | zero => simp
   | succ k =>
     cases k with
     | zero =>
@@ -112,7 +113,7 @@ theorem strictSum_mem_pair {m : ℕ} (x : Fin (m+2) → R) (i : Fin (m+1))
         (by intro h; have := congrArg Fin.val h; simp at this)
         (Fin.succ_ne_zero _).symm
       cases k with
-      | zero => simpa using S.one_mem
+      | zero => simp
       | succ k =>
         rw [strictSum_succ]
         exact S.add_mem (S.mul_mem h0 (ih (fun j => x j.succ) i ht' ha hm k))
@@ -153,13 +154,13 @@ theorem complete_mem (n k : ℕ) : completePoly (n+2) k ∈ kernelSubring n := b
   induction k using Nat.strong_induction_on with
   | h k ih =>
     cases k with
-    | zero => simpa using (kernelSubring n).one_mem
+    | zero => simp
     | succ k =>
       have he := elementary_complete_inverse (n+2) (k+1) (by omega)
       rw [Finset.sum_range_succ'] at he
-      norm_num only [Nat.sub_zero, elementaryPoly_zero, one_smul, one_mul,
+      norm_num only [Nat.sub_zero, elementaryPoly_zero, one_smul, _root_.one_mul,
         Nat.add_sub_add_right] at he
-      simp only [show Nat.choose 1 2 = 0 from rfl, pow_zero, one_smul, _root_.one_mul] at he
+      simp only [show Nat.choose 1 2 = 0 from rfl, pow_zero, one_smul] at he
       have hs : (∑ j ∈ Finset.range (k+1), (-1 : ℤ) ^ ((j+2).choose 2) •
           (elementaryPoly (n+2) (j+1) * completePoly (n+2) (k-j))) ∈ kernelSubring n := by
         apply (kernelSubring n).sum_mem

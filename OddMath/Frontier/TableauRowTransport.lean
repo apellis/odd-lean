@@ -18,7 +18,7 @@ private theorem readRows_cons {n : ℕ} (w : List (Fin n)) (ws : List (List (Fin
 
 /-- Recursive quotient transport; the only row hypothesis is weak sorting. -/
 theorem runRows_word (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·)) :
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·)) :
     OddPlactic.word n (readRows rs ++ [a]) =
       (-1 : ℤ) ^ (runRows n rs a).crossings •
         OddPlactic.word n (readRows (runRows n rs a).output) := by
@@ -45,7 +45,7 @@ theorem runRows_word (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
 
 /-- Arbitrary surrounding words, including any changed upper-row suffix. -/
 theorem runRows_word_context (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·)) (l z : List (Fin n)) :
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·)) (l z : List (Fin n)) :
     OddPlactic.word n (l ++ ((readRows rs ++ [a]) ++ z)) =
       (-1 : ℤ) ^ (runRows n rs a).crossings •
         OddPlactic.word n (l ++ (readRows (runRows n rs a).output ++ z)) := by

@@ -73,7 +73,7 @@ theorem strictSum_last {R : Type*} [Ring R] (N k : ℕ) (x : Fin (N+1) → R) :
         FiniteWords.strictSum_succ (fun i : Fin (N+1) => x i.castSucc)]
       simp only [FiniteWords.strictSum_zero, mul_one, one_mul]
       rw [ih 0 (fun i => x i.succ)]
-      simp [add_assoc, Fin.succ_castSucc]
+      simp [add_assoc]
     | succ k =>
       rw [FiniteWords.strictSum_succ, ih k (fun i => x i.succ),
         ih (k+1) (fun i => x i.succ),
@@ -142,7 +142,7 @@ theorem adjoin_last_eq (N : ℕ) :
     apply Subring.closure_le.mpr
     rintro f ⟨k,rfl⟩
     cases k with
-    | zero => simpa using B.one_mem
+    | zero => simp
     | succ k => rw [elementary_succ]; exact B.add_mem (hpB _) (B.mul_mem (hpB _) htB)
   have heA (k : ℕ) : elementaryPoly (N+1) k ∈ A :=
     Subring.subset_closure (Or.inl (Subring.subset_closure ⟨k,rfl⟩))
@@ -175,7 +175,7 @@ theorem E_eq_elementaryClosure (n : ℕ) :
   · apply Subring.closure_le.mpr
     rintro f ⟨k,rfl⟩
     by_cases hz : k=0
-    · subst k; simpa using (ElementaryGeneration.elementaryClosure n).one_mem
+    · subst k; simp
     by_cases hk : k ≤ n+2
     · exact Subring.subset_closure ⟨k,by omega,hk,rfl⟩
     · rw [elementaryPoly_eq_zero_of_lt (by omega)]

@@ -264,7 +264,9 @@ def ofEquiv {ι : Type*} [Fintype ι] (s : ι → ℤ) (e : Matrix ι ι R) (hom
 theorem mvn_ofEquiv {ι : Type*} [Fintype ι] (s : ι → ℤ) (e : Matrix ι ι R)
     (hom : IsHom A s s e) (idem : e * e = e) {n : ℕ} (σ : ι ≃ Fin n) :
     MvN A s e (ofEquiv s e hom idem σ).s (ofEquiv s e hom idem σ).e :=
-  MvN.of_equiv σ hom idem (fun i => by simp [ofEquiv]) (fun i j => by simp [ofEquiv])
+  MvN.of_equiv σ hom idem
+    (fun i => congrArg s (σ.symm_apply_apply i))
+    (fun i j => congrArg₂ e (σ.symm_apply_apply i) (σ.symm_apply_apply j))
 
 /-- The graded free module `R^m{t}`. -/
 def free {m : ℕ} (t : Fin m → ℤ) : GIdem A := ⟨m, t, 1, IsHom.one, mul_one 1⟩
@@ -350,7 +352,7 @@ theorem shift_zero' (P : GIdem A) : P.shift 0 ≈ P :=
 
 theorem shift_shift (a b : ℤ) (P : GIdem A) : (P.shift b).shift a ≈ P.shift (a + b) :=
   MvN.of_equiv (Equiv.refl _) ((P.shift b).shift a).hom P.idem
-    (fun i => by simp only [shift, Equiv.refl_apply]; ring) (fun _ _ => rfl)
+    (fun i => by change P.s i + (a + b) = (P.s i + b) + a; ring) (fun _ _ => rfl)
 
 theorem shift_zero_module (k : ℤ) : (zero (A := A)).shift k ≈ zero :=
   MvN.of_equiv (Equiv.refl _) ((zero (A := A)).shift k).hom (zero (A := A)).idem
@@ -468,10 +470,10 @@ def lift (f : M →+ G) : GrothendieckGroup M →+ G :=
 
 @[simp] theorem lift_of (f : M →+ G) (a : M) : lift f (of a) = f a := by
   show QuotientAddGroup.lift _ _ _ (QuotientAddGroup.mk _) = _
-  rw [QuotientAddGroup.lift_mk, FreeAbelianGroup.lift.of]
+  rw [QuotientAddGroup.lift_mk, FreeAbelianGroup.lift_apply_of]
 
 theorem hom_ext {f g : GrothendieckGroup M →+ G} (h : ∀ a, f (of a) = g (of a)) : f = g :=
-  QuotientAddGroup.addMonoidHom_ext _ (FreeAbelianGroup.lift.ext _ _ h)
+  QuotientAddGroup.addMonoidHom_ext _ (FreeAbelianGroup.lift_ext _ _ h)
 
 variable {N : Type*} [AddCommMonoid N]
 
@@ -516,10 +518,10 @@ instance : AddCommGroup (K0 A) := inferInstanceAs (AddCommGroup (GrothendieckGro
 def of (P : GIdem A) : K0 A := GrothendieckGroup.of (GProj.mk P)
 
 theorem of_sum (P Q : GIdem A) : of (P.sum Q) = of P + of Q := by
-  simp only [of, ← GProj.mk_add, map_add]
+  exact map_add GrothendieckGroup.of (GProj.mk P) (GProj.mk Q)
 
 theorem of_eq {P Q : GIdem A} (h : P ≈ Q) : of P = of Q := by
-  simp only [of, GProj.mk_eq_mk.2 h]
+  exact congrArg GrothendieckGroup.of (GProj.mk_eq_mk.2 h)
 
 theorem hom_ext {G : Type*} [AddCommGroup G] {f g : K0 A →+ G} (h : ∀ P, f (of P) = g (of P)) :
     f = g :=
@@ -551,10 +553,10 @@ def shiftRep : Multiplicative ℤ →* Module.End ℤ (K0 A) where
 
 /-- `K₀` is a `ℤ[T;T⁻¹]`-module, `T k` acting by the shift `{k}`. -/
 instance : Module (LaurentPolynomial ℤ) (K0 A) :=
-  Module.compHom (K0 A) (AddMonoidAlgebra.lift ℤ ℤ (Module.End ℤ (K0 A)) shiftRep).toRingHom
+  Module.compHom (K0 A) (AddMonoidAlgebra.lift ℤ (Module.End ℤ (K0 A)) ℤ shiftRep).toRingHom
 
 theorem smul_def (p : LaurentPolynomial ℤ) (x : K0 A) :
-    p • x = AddMonoidAlgebra.lift ℤ ℤ (Module.End ℤ (K0 A)) shiftRep p x := rfl
+    p • x = AddMonoidAlgebra.lift ℤ (Module.End ℤ (K0 A)) ℤ shiftRep p x := rfl
 
 theorem T_smul (k : ℤ) (x : K0 A) : (LaurentPolynomial.T k : LaurentPolynomial ℤ) • x =
     shift k x := by
@@ -612,7 +614,7 @@ theorem map_smul_of_shift {M : Type*} [AddCommGroup M] [Module (LaurentPolynomia
   induction p using LaurentPolynomial.induction_on' with
   | add p q hp hq => rw [add_smul, map_add, hp, hq, add_smul]
   | C_mul_T n a =>
-    rw [MulAction.mul_smul, C_smul, T_smul, map_zsmul, h, MulAction.mul_smul,
+    rw [mul_smul, C_smul, T_smul, map_zsmul, h, mul_smul,
       ← mul_one (LaurentPolynomial.C a), ← LaurentPolynomial.smul_eq_C_mul, smul_assoc,
       one_smul]
 

@@ -57,7 +57,7 @@ theorem linearIndependent_of_leading {N : ℕ} {ι : Type*} (v : ι → SkewPoly
   have hc0 : c ≠ 0 := by intro h; rw [h] at hc; norm_num at hc
   have he := congrArg (fun f : SkewPolynomial N => f (L a)) hz
   simp only [Finsupp.coe_zero, Pi.zero_apply] at he
-  rw [Finsupp.finset_sum_apply, Finset.sum_eq_single a] at he
+  rw [Finsupp.finsetSum_apply, Finset.sum_eq_single a] at he
   · rw [Finsupp.smul_apply, hl.2, smul_eq_mul] at he
     exact (Finset.mem_filter.mp ha).2 ((mul_eq_zero.mp he).resolve_right hc0)
   · intro b hb hba
@@ -99,7 +99,7 @@ theorem sum_range_ite_lt (c m : ℕ) (h : m ≤ c) :
         apply List.map_congr_left
         intro i hi
         rw [List.mem_range] at hi
-        rw [if_pos (by omega)]
+        rw [ite_eq_left (by omega)]
       rw [h2]
       simp
 
@@ -113,8 +113,8 @@ theorem columnExponent_rowLens {N : ℕ} (μ : YoungDiagram) (j : Fin N) :
     have : j.val < μ.rowLen i ↔ i < μ.colLen j.val := by
       rw [← YoungDiagram.mem_iff_lt_rowLen, ← YoungDiagram.mem_iff_lt_colLen]
     by_cases hi : i < μ.colLen j.val
-    · rw [if_pos (this.mpr hi), if_pos hi]
-    · rw [if_neg (fun h => hi (this.mp h)), if_neg hi]
+    · rw [ite_eq_left (this.mpr hi), ite_eq_left hi]
+    · rw [ite_eq_right (fun h => hi (this.mp h)), ite_eq_right hi]
   rw [h]
   exact sum_range_ite_lt _ _ (μ.colLen_anti 0 j.val (Nat.zero_le _))
 
@@ -403,7 +403,7 @@ theorem transition_unique (n : ℕ)
 theorem degree_e_expand (d : ℕ) (x : EKIntegralBases.degreePiece d) :
     letI := DegreeShapes.degreeFintype d
     (x : Q) = ∑ μ, (EKIntegralBases.degreeEBasis d).repr x μ • ePartition μ.val := by
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   have h := congrArg (fun z : EKIntegralBases.degreePiece d => (z : Q))
     ((EKIntegralBases.degreeEBasis d).sum_repr x)
   simp only [Submodule.coe_sum, Submodule.coe_smul, EKIntegralBases.degreeEBasis_apply] at h
@@ -413,7 +413,7 @@ theorem degree_e_expand (d : ℕ) (x : EKIntegralBases.degreePiece d) :
 theorem piN_homogeneous (N d : ℕ) (x : EKIntegralBases.degreePiece d) :
     ElementaryBasis.Homogeneous d (piN N x) := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   rw [degree_e_expand d x, map_sum]
   apply ElementaryBasis.homogeneous_sum
   intro μ _
@@ -437,14 +437,14 @@ theorem degreeMap_surjective (n d : ℕ) : Function.Surjective (degreeMap n d) :
   rw [← LinearMap.range_eq_top, eq_top_iff, ← (ElementaryBasis.gradedBasis n d).span_eq,
     Submodule.span_le]
   rintro _ ⟨α, rfl⟩
-  have hw : (ElementaryBasis.columns α.1).Sorted (· ≥ ·) := ElementaryBasis.columns_descending α.1
+  have hw : (ElementaryBasis.columns α.1).Pairwise (· ≥ ·) := ElementaryBasis.columns_descending α.1
   have hpos : ∀ x ∈ ElementaryBasis.columns α.1, 0 < x :=
     fun x hx => (ElementaryBasis.columns_valid α.1 x hx).1
-  have hμr : (YoungDiagram.ofRowLens _ hw).rowLens = ElementaryBasis.columns α.1 :=
+  have hμr : (YoungDiagram.ofRowLens _ (List.sortedGE_iff_pairwise.mpr hw)).rowLens = ElementaryBasis.columns α.1 :=
     YoungDiagram.rowLens_ofRowLens_eq_self hpos
-  have hμc : (YoungDiagram.ofRowLens _ hw).card = d := by
+  have hμc : (YoungDiagram.ofRowLens _ (List.sortedGE_iff_pairwise.mpr hw)).card = d := by
     rw [← EKIntegralBases.rowLens_sum, hμr, ElementaryBasis.columns_sum α.1 α.2.1, α.2.2]
-  refine ⟨⟨ePartition (YoungDiagram.ofRowLens _ hw), ?_⟩, ?_⟩
+  refine ⟨⟨ePartition (YoungDiagram.ofRowLens _ (List.sortedGE_iff_pairwise.mpr hw)), ?_⟩, ?_⟩
   · have := (EKIntegralBases.degreeEBasis d ⟨_, hμc⟩).2
     rwa [EKIntegralBases.degreeEBasis_apply] at this
   · apply Subtype.ext
@@ -453,7 +453,7 @@ theorem degreeMap_surjective (n d : ℕ) : Function.Surjective (degreeMap n d) :
 /-- `π_a` is injective in degrees `d ≤ a`. -/
 theorem degreeMap_injective (n d : ℕ) (hd : d ≤ n+2) : Function.Injective (degreeMap n d) := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   rw [injective_iff_map_eq_zero]
   intro x hx
   have h0 : piN (n+2) x = 0 := congrArg Subtype.val hx
@@ -549,8 +549,8 @@ theorem linearIndependent_of_span_eq {M : Type*} [AddCommGroup M] {ι κ : Type*
     LinearIndependent ℤ u := by
   classical
   let P := Submodule.span ℤ (Set.range v)
-  let b : Basis ι ℤ P := Basis.span hv
-  haveI : Module.Finite ℤ P := Module.Finite.of_basis b
+  let b : Module.Basis ι ℤ P := Module.Basis.span hv
+  have : Module.Finite ℤ P := Module.Finite.of_basis b
   have hu : ∀ k, u k ∈ P := fun k => by
     show u k ∈ Submodule.span ℤ (Set.range v)
     rw [← hspan]
@@ -591,12 +591,12 @@ theorem schurK_linearIndependent (d : ℕ) : LinearIndependent ℤ (schurK d) :=
   exact EKProp310.schur_span d
 
 /-- The odd Schur basis `{s^H_λ : λ ⊢ d}` of the degree-`d` piece of OΛ. -/
-def schurBasis (d : ℕ) : Basis (DegreeShape d) ℤ (EKIntegralBases.degreePiece d) :=
-  Basis.mk (schurK_linearIndependent d) (EKProp310.schur_span d).ge
+def schurBasis (d : ℕ) : Module.Basis (DegreeShape d) ℤ (EKIntegralBases.degreePiece d) :=
+  Module.Basis.mk (schurK_linearIndependent d) (EKProp310.schur_span d).ge
 
 @[simp] theorem schurBasis_apply (d : ℕ) (lam : DegreeShape d) :
     schurBasis d lam = schurK d lam :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 theorem sK_eq (d : ℕ) (lam : DegreeShape d) : sK lam.val = (schurK d lam : Q) := by
   obtain ⟨l, rfl⟩ := lam

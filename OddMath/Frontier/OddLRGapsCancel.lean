@@ -90,12 +90,12 @@ def lrWords (L : List (ℕ × ℕ)) (nw : List ℕ) : List (List ℕ) :=
     decide (∀ c < nw.length, v.count (c + 1) = nw.getD c 0) && decide (ValidW L v))
 
 theorem sum_lrTableaux_eq {lam mu : YoungDiagram} {L : List (ℕ × ℕ)} (hL : cellsL lam mu = L)
-    (hsub : mu.cells ⊆ lam.cells) (nw : List ℕ) (hnw : nw.Sorted (· ≥ ·)) (G : List ℕ → ℤ) :
-    ∑ S ∈ lrTableaux lam mu (YoungDiagram.ofRowLens nw hnw), G S.rowWord =
+    (hsub : mu.cells ⊆ lam.cells) (nw : List ℕ) (hnw : nw.Pairwise (· ≥ ·)) (G : List ℕ → ℤ) :
+    ∑ S ∈ lrTableaux lam mu (YoungDiagram.ofRowLens nw hnw.sortedGE), G S.rowWord =
       ((lrWords L nw).map G).sum := by
   classical
   set B := nw.length
-  set nu := YoungDiagram.ofRowLens nw hnw
+  set nu := YoungDiagram.ofRowLens nw hnw.sortedGE
   have hcont : ∀ S : SkewTableau lam mu, S.content = TableauDominance.shapeContent nu ↔
       (∀ x ∈ S.rowWord, 0 < x ∧ x ≤ B) ∧ ∀ c < B, S.rowWord.count (c + 1) = nw.getD c 0 := by
     intro S
@@ -107,19 +107,19 @@ theorem sum_lrTableaux_eq {lam mu : YoungDiagram} {L : List (ℕ × ℕ)} (hL : 
         obtain ⟨h1, h2⟩ := mem_cellsL.mp hp
         exact S.positive h1 h2
       · by_contra hxB
-        push_neg at hxB
+        push Not at hxB
         have hc := List.count_pos_iff.mpr hx
         rw [← skew_content_eq_count, h, show x = (x - 1) + 1 by omega,
           shapeContent_ofRowLens nw hnw, List.getD_eq_default _ _ (by omega)] at hc
         exact lt_irrefl _ hc
-      · rw [← skew_content_eq_count, h, shapeContent_ofRowLens]
+      · rw [← skew_content_eq_count, h, shapeContent_ofRowLens nw hnw]
     · rintro ⟨hb, hc⟩
       ext c
       rw [skew_content_eq_count]
       rcases c with _ | c
       · rw [shapeContent_zero', List.count_eq_zero_of_not_mem (fun hm => by
           have := (hb 0 hm).1; omega)]
-      · rw [shapeContent_ofRowLens]
+      · rw [shapeContent_ofRowLens nw hnw]
         by_cases hcB : c < B
         · exact hc c hcB
         · rw [List.getD_eq_default _ _ (by omega), List.count_eq_zero_of_not_mem (fun hm => by
@@ -164,36 +164,36 @@ def cellsOf (lw mw : List ℕ) : List (ℕ × ℕ) := (rowCellsOf lw).filter (fu
 def hatOf (lw mw : List ℕ) (v : List ℕ) : List ℕ :=
   (rowCellsOf lw).map (fun p => if inMu mw p then 0 else v.getD (idx (cellsOf lw mw) p) 0)
 
-theorem inMu_iff {mw : List ℕ} (hmw : mw.Sorted (· ≥ ·)) (p : ℕ × ℕ) :
-    inMu mw p = true ↔ p ∈ YoungDiagram.ofRowLens mw hmw := by
-  rw [mem_ofRowLens_iff, inMu, decide_eq_true_iff]
+theorem inMu_iff {mw : List ℕ} (hmw : mw.Pairwise (· ≥ ·)) (p : ℕ × ℕ) :
+    inMu mw p = true ↔ p ∈ YoungDiagram.ofRowLens mw hmw.sortedGE := by
+  rw [mem_ofRowLens_iff (hw := hmw), inMu, decide_eq_true_iff]
 
-theorem cellsL_eq_cellsOf {lw mw : List ℕ} (hlw : lw.Sorted (· ≥ ·)) (hmw : mw.Sorted (· ≥ ·)) :
-    cellsL (YoungDiagram.ofRowLens lw hlw) (YoungDiagram.ofRowLens mw hmw) = cellsOf lw mw := by
-  rw [cellsL_ofRowLens, cellsOf]
+theorem cellsL_eq_cellsOf {lw mw : List ℕ} (hlw : lw.Pairwise (· ≥ ·)) (hmw : mw.Pairwise (· ≥ ·)) :
+    cellsL (YoungDiagram.ofRowLens lw hlw.sortedGE) (YoungDiagram.ofRowLens mw hmw.sortedGE) = cellsOf lw mw := by
+  rw [cellsL_ofRowLens lw hlw, cellsOf]
   apply List.filter_congr
   intro p _
   have hi := inMu_iff hmw p
   by_cases h : inMu mw p = true
-  · have hp : p ∈ (YoungDiagram.ofRowLens mw hmw).cells := (YoungDiagram.mem_cells _).mpr (hi.mp h)
+  · have hp : p ∈ (YoungDiagram.ofRowLens mw hmw.sortedGE).cells := (YoungDiagram.mem_cells _).mpr (hi.mp h)
     simp [h, hp]
-  · have hp : p ∉ (YoungDiagram.ofRowLens mw hmw).cells :=
+  · have hp : p ∉ (YoungDiagram.ofRowLens mw hmw.sortedGE).cells :=
       fun hp => h (hi.mpr ((YoungDiagram.mem_cells _).mp hp))
     simp [h, hp]
 
-theorem hatWord_eq {lw mw : List ℕ} (hlw : lw.Sorted (· ≥ ·)) (hmw : mw.Sorted (· ≥ ·))
-    (S : SkewTableau (YoungDiagram.ofRowLens lw hlw) (YoungDiagram.ofRowLens mw hmw)) :
+theorem hatWord_eq {lw mw : List ℕ} (hlw : lw.Pairwise (· ≥ ·)) (hmw : mw.Pairwise (· ≥ ·))
+    (S : SkewTableau (YoungDiagram.ofRowLens lw hlw.sortedGE) (YoungDiagram.ofRowLens mw hmw.sortedGE)) :
     S.hatWord = hatOf lw mw S.rowWord := by
   unfold SkewTableau.hatWord hatOf
-  rw [rowCells_ofRowLens]
+  rw [rowCells_ofRowLens lw hlw]
   apply List.map_congr_left
   intro p hp
-  have hpl : p ∈ YoungDiagram.ofRowLens lw hlw := mem_ofRowLens_iff.mpr (mem_rowCellsOf.mp hp)
+  have hpl : p ∈ YoungDiagram.ofRowLens lw hlw.sortedGE := (mem_ofRowLens_iff (hw := hlw)).mpr (mem_rowCellsOf.mp hp)
   by_cases hm : inMu mw p = true
-  · rw [if_pos hm]
+  · rw [ite_eq_left hm]
     exact S.zeros_in ((inMu_iff hmw p).mp hm)
-  · rw [if_neg hm]
-    have hpm : p ∉ YoungDiagram.ofRowLens mw hmw := fun h => hm ((inMu_iff hmw p).mpr h)
+  · rw [ite_eq_right hm]
+    have hpm : p ∉ YoungDiagram.ofRowLens mw hmw.sortedGE := fun h => hm ((inMu_iff hmw p).mpr h)
     have hL := cellsL_eq_cellsOf hlw hmw
     have hpL : p ∈ cellsOf lw mw := hL ▸ mem_cellsL.mpr ⟨hpl, hpm⟩
     have hi := idx_lt hpL
@@ -207,20 +207,20 @@ def signedL (lw mw nw : List ℕ) : ℤ :=
 def countL (lw mw nw : List ℕ) : ℤ :=
   ((lrWords (cellsOf lw mw) nw).map (fun _ => (1 : ℤ))).sum
 
-theorem sum_sign_eq {lw mw nw : List ℕ} (hlw : lw.Sorted (· ≥ ·)) (hmw : mw.Sorted (· ≥ ·))
-    (hnw : nw.Sorted (· ≥ ·))
-    (hsub : (YoungDiagram.ofRowLens mw hmw).cells ⊆ (YoungDiagram.ofRowLens lw hlw).cells) :
-    ∑ S ∈ lrTableaux (YoungDiagram.ofRowLens lw hlw) (YoungDiagram.ofRowLens mw hmw)
-      (YoungDiagram.ofRowLens nw hnw), S.sign = signedL lw mw nw := by
+theorem sum_sign_eq {lw mw nw : List ℕ} (hlw : lw.Pairwise (· ≥ ·)) (hmw : mw.Pairwise (· ≥ ·))
+    (hnw : nw.Pairwise (· ≥ ·))
+    (hsub : (YoungDiagram.ofRowLens mw hmw.sortedGE).cells ⊆ (YoungDiagram.ofRowLens lw hlw.sortedGE).cells) :
+    ∑ S ∈ lrTableaux (YoungDiagram.ofRowLens lw hlw.sortedGE) (YoungDiagram.ofRowLens mw hmw.sortedGE)
+      (YoungDiagram.ofRowLens nw hnw.sortedGE), S.sign = signedL lw mw nw := by
   rw [signedL, ← sum_lrTableaux_eq (cellsL_eq_cellsOf hlw hmw) hsub nw hnw]
   refine Finset.sum_congr rfl fun S _ => ?_
-  rw [SkewTableau.sign, SkewTableau.Nlt, hatWord_eq]
+  rw [SkewTableau.sign, SkewTableau.Nlt, hatWord_eq hlw hmw]
 
-theorem card_eq_countL {lw mw nw : List ℕ} (hlw : lw.Sorted (· ≥ ·)) (hmw : mw.Sorted (· ≥ ·))
-    (hnw : nw.Sorted (· ≥ ·))
-    (hsub : (YoungDiagram.ofRowLens mw hmw).cells ⊆ (YoungDiagram.ofRowLens lw hlw).cells) :
-    ((lrTableaux (YoungDiagram.ofRowLens lw hlw) (YoungDiagram.ofRowLens mw hmw)
-      (YoungDiagram.ofRowLens nw hnw)).card : ℤ) = countL lw mw nw := by
+theorem card_eq_countL {lw mw nw : List ℕ} (hlw : lw.Pairwise (· ≥ ·)) (hmw : mw.Pairwise (· ≥ ·))
+    (hnw : nw.Pairwise (· ≥ ·))
+    (hsub : (YoungDiagram.ofRowLens mw hmw.sortedGE).cells ⊆ (YoungDiagram.ofRowLens lw hlw.sortedGE).cells) :
+    ((lrTableaux (YoungDiagram.ofRowLens lw hlw.sortedGE) (YoungDiagram.ofRowLens mw hmw.sortedGE)
+      (YoungDiagram.ofRowLens nw hnw.sortedGE)).card : ℤ) = countL lw mw nw := by
   rw [countL, ← sum_lrTableaux_eq (cellsL_eq_cellsOf hlw hmw) hsub nw hnw, Finset.card_eq_sum_ones,
     Nat.cast_sum, Nat.cast_one]
 
@@ -243,9 +243,9 @@ theorem checkN_eq_true : ∀ n ≤ 6, checkN n = true := by
   · decide +kernel
   · decide +kernel
 
-theorem key {lam mu nu : YoungDiagram} {n k : ℕ} {lw mw nw : List ℕ} (hlw : lw.Sorted (· ≥ ·))
-    (hmw : mw.Sorted (· ≥ ·)) (hnw : nw.Sorted (· ≥ ·)) (hlam : lam = YoungDiagram.ofRowLens lw hlw)
-    (hmu : mu = YoungDiagram.ofRowLens mw hmw) (hnu : nu = YoungDiagram.ofRowLens nw hnw)
+theorem key {lam mu nu : YoungDiagram} {n k : ℕ} {lw mw nw : List ℕ} (hlw : lw.Pairwise (· ≥ ·))
+    (hmw : mw.Pairwise (· ≥ ·)) (hnw : nw.Pairwise (· ≥ ·)) (hlam : lam = YoungDiagram.ofRowLens lw hlw.sortedGE)
+    (hmu : mu = YoungDiagram.ofRowLens mw hmw.sortedGE) (hnu : nu = YoungDiagram.ofRowLens nw hnw.sortedGE)
     (hn6 : n ≤ 6) (hk : k ≤ n) (hl : lw ∈ partsF n n n) (hm : mw ∈ partsF k k k)
     (hn : nw ∈ partsF (n - k) (n - k) (n - k)) (hsub : mu.cells ⊆ lam.cells) :
     |∑ S ∈ lrTableaux lam mu nu, S.sign| = ((lrTableaux lam mu nu).card : ℤ) ↔
@@ -276,9 +276,9 @@ theorem first_cancellation (lam mu nu : YoungDiagram) (h6 : lam.card ≤ 6) :
   rw [thm_4_8, OddLREven.thm_4_1, lrSignedCount, abs_mul, abs_pow, abs_neg, abs_one, one_pow,
     one_mul]
   have hc321 : OddLRRule.shape321.card = 6 := by
-    rw [OddLRRule.shape321, EKPartitionSpanning.card_ofRowLens]; rfl
+    rw [OddLRRule.shape321, EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl
   have hc21 : OddLRRule.shape21.card = 3 := by
-    rw [OddLRRule.shape21, EKPartitionSpanning.card_ofRowLens]; rfl
+    rw [OddLRRule.shape21, EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl
   have hsub21 : OddLRRule.shape21.cells ⊆ OddLRRule.shape321.cells := by decide
   by_cases hsub : mu.cells ⊆ lam.cells
   swap
@@ -297,7 +297,7 @@ theorem first_cancellation (lam mu nu : YoungDiagram) (h6 : lam.card ≤ 6) :
   have hnu : nu.rowLens ∈ partsF (lam.card - mu.card) (lam.card - mu.card) (lam.card - mu.card) := by
     rw [show lam.card - mu.card = nu.card by omega]
     exact rowLens_mem_partsF nu
-  rw [key (n := lam.card) (k := mu.card) lam.rowLens_sorted mu.rowLens_sorted nu.rowLens_sorted
+  rw [key (n := lam.card) (k := mu.card) lam.rowLens_sorted.pairwise mu.rowLens_sorted.pairwise nu.rowLens_sorted.pairwise
       YoungDiagram.ofRowLens_to_rowLens_eq_self.symm YoungDiagram.ofRowLens_to_rowLens_eq_self.symm
       YoungDiagram.ofRowLens_to_rowLens_eq_self.symm h6 hmu (rowLens_mem_partsF lam)
       (rowLens_mem_partsF mu) hnu hsub,

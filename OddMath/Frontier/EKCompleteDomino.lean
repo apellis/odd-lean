@@ -239,7 +239,11 @@ theorem stdTiling_vert (μ : YoungDiagram) : 2 * colBound μ ≤ vert (double μ
   rw [← hS]
   refine Finset.card_le_card_of_injOn (fun p => (2 * p.2, p.1)) ?_ ?_
   · rintro ⟨j, r⟩ hp
+    change (⟨j, r⟩ : (_ : ℕ) × ℕ) ∈ S at hp
+    dsimp only [S] at hp
     rw [Finset.mem_sigma, Finset.mem_range, Finset.mem_range, double_colLen] at hp
+    change j < (double μ).rowLen 0 ∧ r < μ.colLen (j / 2) / 2 at hp
+    change (2 * r, j) ∈ (double μ).cells.filter (fun c => stdTiling μ c = (c.1 + 1, c.2))
     rw [Finset.mem_filter, YoungDiagram.mem_cells]
     refine ⟨?_, ?_⟩
     · rw [mem_double, YoungDiagram.mem_iff_lt_colLen]; omega
@@ -308,7 +312,7 @@ theorem transposeChoose_eq (μ : YoungDiagram) :
 theorem norm_schur_spin (d : ℕ) (lam : DegreeShape d) :
     quotientPairing (EKSchurOrthonormal.schur d lam : Q) (EKSchurOrthonormal.schur d lam : Q) =
       (-1 : ℤ) ^ (twiceSpinMax (double lam.val) / 2) := by
-  rw [EKClosureComposition.corollary_3_9, if_pos rfl, twiceSpinMax_double,
+  rw [EKClosureComposition.corollary_3_9, ite_eq_left rfl, twiceSpinMax_double,
     Nat.mul_div_cancel_left _ (by norm_num), transposeChoose_eq, colBound,
     ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_pow_eq_pow_sum]
   exact Finset.prod_congr rfl fun t _ => neg_one_pow_choose_two _

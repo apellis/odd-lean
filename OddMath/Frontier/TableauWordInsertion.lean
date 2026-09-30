@@ -22,7 +22,7 @@ def spec (n : ℕ) (S : State n) (w : List (Fin n)) : Prop :=
   R.2.length = w.length ∧ R.2.Nodup ∧ S.1.cells ⊆ R.1.1.cells ∧
     R.2.toFinset = R.1.1.cells \ S.1.cells
 def horizontal (n : ℕ) (S : State n) (w : List (Fin n)) : Prop :=
-  w.Sorted (· ≤ ·) →
+  w.Pairwise (· ≤ ·) →
   let R := run n S w
   R.2.Pairwise (fun p q => p.2 < q.2) ∧
     (∀ p ∈ R.1.1.cells \ S.1.cells, ∀ q ∈ R.1.1.cells \ S.1.cells,
@@ -70,7 +70,7 @@ theorem run_spec (n : ℕ) (S : State n) (w : List (Fin n)) : spec n S w := by
       · exact Or.inr ⟨hp, fun h => h.elim he hn⟩
 
 private theorem run_columns (n : ℕ) (S : State n) (w : List (Fin n))
-    (hw : w.Sorted (· ≤ ·)) :
+    (hw : w.Pairwise (· ≤ ·)) :
     (run n S w).2.Pairwise (fun p q => p.2 < q.2) := by
   induction w generalizing S with
   | nil => simp [run]

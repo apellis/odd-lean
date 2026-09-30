@@ -10,7 +10,7 @@ local instance (d : ℕ) : Fintype (DegreeShape d) := degreeFintype d
 local instance (d : ℕ) : DecidableEq (DegreeShape d) := Classical.decEq _
 
 def oneShape : DegreeShape 1 :=
-  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 
 @[simp] theorem one_rows : oneShape.val.rowLens = [1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by simp)
@@ -43,7 +43,7 @@ theorem one_matrix (μ ν : DegreeShape 1) : M 1 μ ν = 1 := by
   rw [degree_one_shape μ, degree_one_shape ν]
   have he : EKElementaryQuotient.e 1 = EKElementaryQuotient.h 1 := by
     simp [EKElementaryQuotient.e, EKElementaryQuotient.h, CompleteElementary.elementary,
-      CompleteElementary.ekSign, CompleteElementary.inverseCoeff, Fin.sum_univ_succ, pow_succ]
+      CompleteElementary.ekSign, CompleteElementary.inverseCoeff, pow_succ]
   simpa [M, EKPartitionSpanning.ePartition, EKPartitionSpanning.hPartition, he] using degree_one
 
 theorem row2_transpose : row2.val.transpose = col2.val := by apply YoungDiagram.ext; decide

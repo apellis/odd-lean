@@ -18,7 +18,7 @@ attribute [local instance] Classical.propDecidable
 abbrev W := FreeMonoid ℕ
 abbrev T := A ⊗[ℤ] A
 
-def wordBasis : Basis W ℤ A := FreeAlgebra.basisFreeMonoid ℤ ℕ
+def wordBasis : Module.Basis W ℤ A := FreeAlgebra.basisFreeMonoid ℤ ℕ
 
 def degree (w : W) : ℕ := (w.toList.map (· + 1)).sum
 
@@ -44,7 +44,7 @@ theorem wordBasis_eq (w : W) : wordBasis w =
     (FreeAlgebra.ι ℤ i)
   simp
 
-def tensorBasis : Basis (W × W) ℤ T := wordBasis.tensorProduct wordBasis
+def tensorBasis : Module.Basis (W × W) ℤ T := wordBasis.tensorProduct wordBasis
 @[simp] theorem tensorBasis_apply (u v : W) :
     tensorBasis (u,v) = wordBasis u ⊗ₜ[ℤ] wordBasis v := by
   simp [tensorBasis]
@@ -77,9 +77,9 @@ def tensorMul (x y : T) : T := tensorMulLinear x y
 @[simp] theorem tensorMul_smul_right (r : ℤ) (x y : T) :
     tensorMul x (r • y) = r • tensorMul x y := by simp [tensorMul]
 
-/-- Basis induction used only to extend the source word laws by linearity. -/
+/-- Module.Basis induction used only to extend the source word laws by linearity. -/
 private theorem basis_induction {M I : Type*} [AddCommGroup M]
-    (b : Basis I ℤ M) (P : M → Prop) (hz : P 0)
+    (b : Module.Basis I ℤ M) (P : M → Prop) (hz : P 0)
     (ha : ∀ x y, P x → P y → P (x+y))
     (hb : ∀ i (r : ℤ), P (r • b i)) (x : M) : P x := by
   obtain ⟨f, rfl⟩ := b.repr.symm.surjective x
@@ -93,7 +93,7 @@ theorem tensorMul_assoc (x y z : T) :
     tensorMul (tensorMul x y) z = tensorMul x (tensorMul y z) := by
   induction x using basis_induction tensorBasis with
   | hz => simp
-  | ha x y hx hy => simp only [tensorMul_add_left, tensorMul_add_right, hx, hy]
+  | ha x y hx hy => simp only [tensorMul_add_left, hx, hy]
   | hb p r =>
     induction y using basis_induction tensorBasis with
     | hz => simp
@@ -101,10 +101,10 @@ theorem tensorMul_assoc (x y z : T) :
     | hb q s =>
       induction z using basis_induction tensorBasis with
       | hz => simp
-      | ha x y hx hy => simp only [tensorMul_add_left, tensorMul_add_right, hx, hy]
+      | ha x y hx hy => simp only [tensorMul_add_right, hx, hy]
       | hb t u =>
         simp only [tensorMul_smul_left, tensorMul_smul_right, tensorMul_basis,
-          degree_mul, smul_smul, Prod.fst, Prod.snd, mul_assoc]
+          degree_mul, smul_smul, mul_assoc]
         congr 1
         simp only [pow_add, Nat.add_mul, Nat.mul_add]
         ring
@@ -142,7 +142,7 @@ instance : Ring SignedTensor where
   right_distrib := tensorMul_add_left
   zero_mul := tensorMul_zero_left
   mul_zero := tensorMul_zero_right
-  __ := inferInstanceAs (AddCommGroup T)
+  toAddCommGroup := inferInstanceAs (AddCommGroup T)
 
 /-- The algebra structure uses integer scaling; it does not change tensor addition. -/
 instance : Algebra ℤ SignedTensor := Ring.toIntAlgebra SignedTensor
@@ -223,8 +223,8 @@ def counit : A →ₗ[ℤ] ℤ := counitAlg.toLinearMap
 
 @[simp] theorem counit_word (w : W) : counit (wordBasis w) = if w = 1 then 1 else 0 := by
   induction w using FreeMonoid.recOn with
-  | h0 => simp
-  | ih i w ih => simp [counit_mul, wordBasis_mul, counit_h_succ]
+  | one => simp
+  | of_mul i w ih => simp [counit_mul, wordBasis_mul, counit_h_succ]
 
 def leftCounit : T →ₗ[ℤ] A :=
   (TensorProduct.lid ℤ A).toLinearMap.comp (TensorProduct.map counit LinearMap.id)
@@ -250,10 +250,10 @@ def rightCounit : T →ₗ[ℤ] A :=
       rcases q with ⟨c,d⟩
       simp only [tensorMul_smul_left, tensorMul_smul_right, tensorMul_basis]
       simp only [map_smul, tensorBasis_apply, wordBasis_mul, leftCounit_tmul,
-        counit_mul, counit_word, Prod.fst, Prod.snd]
+        counit_mul, counit_word]
       by_cases ha : a = 1 <;> by_cases hc : c = 1 <;>
-        simp only [ha, hc, if_pos, if_neg, degree_one, zero_mul, mul_zero,
-          pow_zero, one_smul, zero_smul, smul_zero, one_mul, mul_one,
+        simp only [ha, hc, ite_eq_left, degree_one, zero_mul, mul_zero,
+          pow_zero, one_smul, zero_smul, smul_zero, mul_one,
           smul_mul_assoc, mul_smul_comm, ite_false]
 
 @[simp] theorem rightCounit_mul (x y : T) :
@@ -270,10 +270,10 @@ def rightCounit : T →ₗ[ℤ] A :=
       rcases q with ⟨c,d⟩
       simp only [tensorMul_smul_left, tensorMul_smul_right, tensorMul_basis]
       simp only [map_smul, tensorBasis_apply, wordBasis_mul, rightCounit_tmul,
-        counit_mul, counit_word, Prod.fst, Prod.snd]
+        counit_mul, counit_word]
       by_cases hb : b = 1 <;> by_cases hd : d = 1 <;>
-        simp only [hb, hd, if_pos, if_neg, degree_one, zero_mul, mul_zero,
-          pow_zero, one_smul, zero_smul, smul_zero, one_mul, mul_one,
+        simp only [hb, hd, ite_eq_left, degree_one, zero_mul, mul_zero,
+          pow_zero, one_smul, zero_smul, smul_zero, mul_one,
           smul_mul_assoc, mul_smul_comm, ite_false]
 
 @[simp] theorem counit_h (n : ℕ) : counit (h n) = if n=0 then 1 else 0 := by
@@ -285,7 +285,7 @@ def rightCounit : T →ₗ[ℤ] A :=
   rw [Finset.sum_eq_single (0 : Fin (n+1))]
   · simp
   · intro b _ hb
-    rw [if_neg]
+    rw [ite_eq_right]
     exact fun h => hb (Fin.ext h)
   · simp
 
@@ -295,7 +295,7 @@ def rightCounit : T →ₗ[ℤ] A :=
   rw [Finset.sum_eq_single (Fin.last n)]
   · simp
   · intro b _ hb
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     apply hb
     apply Fin.ext
@@ -313,8 +313,8 @@ theorem counit_laws (x : A) : leftCounit (coproduct x) = x ∧ rightCounit (copr
         rightCounit (coproduct (wordBasis w)) = wordBasis w by
       simp only [map_smul, hw.1, hw.2, and_self]
     induction w using FreeMonoid.recOn with
-    | h0 => simp [tensorOne]
-    | ih i w ih =>
+    | one => simp [tensorOne]
+    | of_mul i w ih =>
       simp only [wordBasis_mul, wordBasis_of, coproduct_mul, leftCounit_mul,
         rightCounit_mul, leftCounit_coproduct_h, rightCounit_coproduct_h, ih.1, ih.2,
         and_self]
@@ -382,15 +382,15 @@ private theorem coproduct_h_degree (n : ℕ) : coproduct (h n) ∈ tensorDegree 
 /-- Degree preservation on every genuine free-algebra basis word. -/
 theorem coproduct_word_degree (w : W) : coproduct (wordBasis w) ∈ tensorDegree (degree w) := by
   induction w using FreeMonoid.recOn with
-  | h0 =>
+  | one =>
     simpa only [wordBasis_one, coproduct_one, degree_one, zero_add,
       tensorBasis_apply, tensorOne] using tensorDegree_basis (1,1)
-  | ih i w ih =>
+  | of_mul i w ih =>
     rw [wordBasis_mul, wordBasis_of, coproduct_mul, degree_mul]
     exact tensorDegree_mul (coproduct_h_degree (i+1)) ih
 
 abbrev T3 := A ⊗[ℤ] T
-private def tripleBasis : Basis (W × (W × W)) ℤ T3 := wordBasis.tensorProduct tensorBasis
+private def tripleBasis : Module.Basis (W × (W × W)) ℤ T3 := wordBasis.tensorProduct tensorBasis
 private def tripleMulLinear : T3 →ₗ[ℤ] T3 →ₗ[ℤ] T3 :=
   tripleBasis.constr ℤ fun p => tripleBasis.constr ℤ fun q =>
     ((-1 : ℤ)^(degree p.2.1 * degree q.1 + degree p.2.2 * (degree q.1 + degree q.2.1))) •
@@ -465,7 +465,7 @@ private theorem appendTensor_mul (b d : W) (x y : T) (n : ℕ) (hy : y ∈ tenso
       simp only [map_smul, tripleMul_smul_left, tensorMul_smul_left]
       rw [appendTensor_basis, appendTensor_basis, tripleMul_basis, tensorMul_basis,
         map_smul, appendTensor_basis]
-      simp only [smul_smul, Prod.fst, Prod.snd, ← hq]
+      simp only [smul_smul, ← hq]
       congr 1
       simp only [pow_add]
       ring
@@ -492,7 +492,7 @@ private theorem prependTensor_mul (a c : W) (x y : T) (m : ℕ) (hx : x ∈ tens
       simp only [map_smul, tripleMul_smul_right, tensorMul_smul_right]
       rw [prependTensor_basis, prependTensor_basis, tripleMul_basis, tensorMul_basis,
         map_smul, prependTensor_basis]
-      simp only [smul_smul, Prod.fst, Prod.snd, ← hp]
+      simp only [smul_smul, ← hp]
       congr 1
       simp only [Nat.add_mul, Nat.mul_add, pow_add]
       ring
@@ -570,7 +570,7 @@ private theorem coassociativity_h (n : ℕ) :
     leftDelta (coproduct (h n)) = rightDelta (coproduct (h n)) := by
   simp only [coproduct_h, map_sum, leftDelta, rightDelta, LinearMap.comp_apply,
     LinearEquiv.coe_coe, TensorProduct.map_tmul, LinearMap.id_apply]
-  simp only [coproduct_h, TensorProduct.sum_tmul, TensorProduct.tmul_sum, map_sum,
+  simp only [TensorProduct.sum_tmul, TensorProduct.tmul_sum, map_sum,
     TensorProduct.assoc_tmul]
   exact split_sum n (fun i j k => h i ⊗ₜ[ℤ] (h j ⊗ₜ[ℤ] h k))
 
@@ -586,8 +586,8 @@ theorem coassociativity (x : A) :
     simp only [map_smul]
     congr 1
     induction w using FreeMonoid.recOn with
-    | h0 => simpa only [wordBasis_one, h_zero] using coassociativity_h 0
-    | ih i w ih =>
+    | one => simpa only [wordBasis_one, h_zero] using coassociativity_h 0
+    | of_mul i w ih =>
       simp only [wordBasis_mul, wordBasis_of, coproduct_mul, leftDelta_mul,
         rightDelta_mul, coassociativity_h, ih]
 

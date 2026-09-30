@@ -25,7 +25,7 @@ def pairing : A →ₗ[ℤ] A →ₗ[ℤ] ℤ :=
     pairing (wordBasis v) (wordBasis w) = EKPairingMatrices.pairing (parts v) (parts w) := by
   simp [pairing]
 
-theorem basis_induction {I X : Type*} [AddCommGroup X] (b : Basis I ℤ X)
+theorem basis_induction {I X : Type*} [AddCommGroup X] (b : Module.Basis I ℤ X)
     (P : X → Prop) (hz : P 0) (ha : ∀ x y, P x → P y → P (x+y))
     (hb : ∀ i (r : ℤ), P (r • b i)) (x : X) : P x := by
   obtain ⟨f, rfl⟩ := b.repr.symm.surjective x
@@ -81,8 +81,8 @@ theorem vWord_erase_zero {n : ℕ} (α : Fin (n+1) → ℕ) (p : Fin (n+1)) (hp 
   congr 1
   clear hl
   induction w using FreeMonoid.recOn with
-  | h0 => rfl
-  | ih i w ih => simpa [partWord] using congrArg (FreeMonoid.of i * ·) ih
+  | one => rfl
+  | of_mul i w ih => simpa [partWord] using congrArg (FreeMonoid.of i * ·) ih
 
 theorem partWord_positive (α : List ℕ) (hα : ∀ a ∈ α, 0 < a) :
     (partWord α).toList = α.map Nat.pred := by
@@ -101,7 +101,7 @@ theorem pairing_vWord_positive {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → 
   have ha := partWord_positive (List.ofFn α) (by simpa using hα)
   rw [vWord, vWord, ← partWord_value, ← partWord_value, pairing_basis]
   unfold parts
-  simp only [hb, ha, List.length_map, List.length_ofFn, List.get_eq_getElem,
+  simp only [hb, ha, List.get_eq_getElem,
     List.getElem_map, List.getElem_ofFn]
   congr 1
   · simp [hb]
@@ -157,7 +157,7 @@ def tensorPairing : T →ₗ[ℤ] T →ₗ[ℤ] ℤ := TensorProduct.lift
           change pairing a x * pairing (r • b) y = r • (pairing a x * pairing b y)
           simp only [map_smul, LinearMap.smul_apply, smul_eq_mul]
           ring }
-    map_add' := by intros a b; ext c x y; simp [add_mul]
+    map_add' := by intros a b; ext c x y; simp
     map_smul' := by
       intros r a; ext b x y
       change pairing (r • a) x * pairing b y = r • (pairing a x * pairing b y)
@@ -173,10 +173,13 @@ theorem vWord_join {r s : ℕ} (β : Fin r → ℕ) (γ : Fin s → ℕ) :
   have hw (a b : List ℕ) : hWord (a ++ b) = hWord a * hWord b := by
     induction a with
     | nil => simp [hWord]
-    | cons n a ih => simp [hWord, ih, mul_assoc]
+    | cons n a ih => simp [hWord, mul_assoc]
   unfold vWord
   rw [List.ofFn_add]
-  simpa using hw (List.ofFn β) (List.ofFn γ)
+  change hWord (List.ofFn (fun i => Fin.addCases β γ (Fin.castAdd s i)) ++
+    List.ofFn (fun i => Fin.addCases β γ (Fin.natAdd r i))) = _
+  simpa only [Fin.addCases_left, Fin.addCases_right] using
+    hw (List.ofFn β) (List.ofFn γ)
 
 @[simp] theorem vWord_singleton (n : ℕ) : vWord (fun _ : Fin 1 => n) = h n := by
   simp [vWord, List.ofFn_succ, hWord]
@@ -194,7 +197,7 @@ theorem crossCols_succ {n : ℕ} (u v : Fin (n+1) → ℕ) :
       (∑ j : Fin n, u j.succ) * v 0 +
         EKPairingMatrices.crossCols (fun j => u j.succ) (fun j => v j.succ) := by
   simp only [EKPairingMatrices.crossCols, Fin.sum_univ_succ, Fin.not_lt_zero,
-    if_false, Finset.sum_const_zero, zero_add, Fin.succ_pos, if_true,
+    ite_false, Finset.sum_const_zero, zero_add, Fin.succ_pos, ite_true,
     Fin.succ_lt_succ_iff, Finset.sum_add_distrib, Finset.sum_mul]
 
 /-- All coordinate splits, with the crossings forced by signed multiplication. -/
@@ -220,7 +223,7 @@ theorem coproduct_vWord {c : ℕ} (α : Fin c → ℕ) :
     simp only [vWord_singleton, Fin.sum_univ_one] at hm
     rw [hm]
     simp only [Fin.insertNthEquiv, Equiv.coe_fn_mk, Fin.insertNth_zero, crossCols_succ,
-      Fin.cons_zero, Fin.cons_succ, vWord_succ, pow_add, smul_smul]
+      vWord_succ, pow_add, smul_smul]
     congr 1
     change (-1 : ℤ)^EKPairingMatrices.crossCols (EKPairingMatrices.upper u) (EKPairingMatrices.lower u) *
       (-1)^((α 0-i.val)*(∑ j, (u j).val)) =
@@ -286,15 +289,15 @@ theorem pairing_one_one : pairing (1 : A) 1 = 1 := by
 theorem pairing_one_basis (w : W) : pairing 1 (wordBasis w) = counit (wordBasis w) := by
   by_cases hw : w = 1
   · subst w; simpa using pairing_one_one
-  · rw [counit_word, if_neg hw]
+  · rw [counit_word, ite_eq_right hw]
     rw [← wordBasis_one]
     apply pairing_degree_mismatch
     have hd : degree w ≠ 0 := by
       intro he
       apply hw
       induction w using FreeMonoid.recOn with
-      | h0 => rfl
-      | ih i w ih =>
+      | one => rfl
+      | of_mul i w ih =>
         simp only [degree_mul] at he
         have hi : degree (FreeMonoid.of i) = i+1 := rfl
         rw [hi] at he
@@ -332,12 +335,10 @@ theorem pairing_product_h (y₁ y₂ : A) (n : ℕ) :
   simp only [map_sum, tensorPairing_tmul]
 
 theorem tensorPairing_symm (x y : T) : tensorPairing x y = tensorPairing y x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
+  induction x using TensorProduct.inductionOn with
   | add x z hx hz => simp only [map_add, LinearMap.add_apply, hx, hz]
   | tmul a b =>
-    induction y using TensorProduct.induction_on with
-    | zero => simp
+    induction y using TensorProduct.inductionOn with
     | add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]
     | tmul c d => simp only [tensorPairing_tmul, pairing_symm a c, pairing_symm b d]
 

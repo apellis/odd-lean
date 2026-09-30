@@ -116,7 +116,7 @@ def addedSign (lam : Partition) (row newCol : Nat) : Int :=
 theorem vertStrip_refl (lam : Partition) : isVertStrip lam lam = true := by
   induction lam with
   | nil => rfl
-  | cons l ls ih => simp [isVertStrip, Nat.le_refl, Nat.le_succ, ih]
+  | cons l ls ih => simp [isVertStrip, Nat.le_succ, ih]
 
 /-- The empty strip adds no boxes. -/
 theorem stripSize_self (lam : Partition) : stripSize lam lam = 0 := by

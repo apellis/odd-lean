@@ -35,7 +35,7 @@ variable {k : Type*} [CommRing k] (q : k)
 
 /-! ## Perfectness of the pairing -/
 
-theorem M_eq_basis (v : W) : M k v = (Finsupp.basisSingleOne : Basis W k (QSym k)) v := by
+theorem M_eq_basis (v : W) : M k v = (Finsupp.basisSingleOne : Module.Basis W k (QSym k)) v := by
   simp [M]
 
 theorem qsym_ext {F G : QSym k} (h : ∀ x : L k, pair k x F = pair k x G) : F = G := by
@@ -55,7 +55,7 @@ def pair2 : LL k →ₗ[k] QSym k →ₗ[k] QSym k →ₗ[k] k :=
   TensorProduct.lift (LinearMap.mk₂ k (fun a b => (pair k a).smulRight (pair k b))
     (fun a a' b => by ext F G; simp [add_mul])
     (fun c a b => by ext F G; simp [mul_assoc])
-    (fun a b b' => by ext F G; simp [mul_add])
+    (fun a b b' => by ext F G; simp)
     (fun c a b => by ext F G; simp; ring))
 
 @[simp] theorem pair2_tmul (a b : L k) (F G : QSym k) :
@@ -68,7 +68,7 @@ def pair3 : L k ⊗[k] LL k →ₗ[k] QSym k →ₗ[k] QSym k →ₗ[k] QSym k �
   TensorProduct.lift (LinearMap.mk₂ k (fun a z => (pair k a).smulRight (pair2 k z))
     (fun a a' z => by ext F G H; simp [add_mul])
     (fun c a z => by ext F G H; simp [mul_assoc])
-    (fun a z z' => by ext F G H; simp [mul_add])
+    (fun a z z' => by ext F G H; simp)
     (fun c a z => by ext F G H; simp; ring))
 
 @[simp] theorem pair3_tmul (a : L k) (z : LL k) (F G H : QSym k) :
@@ -83,7 +83,7 @@ theorem pair2_basis (z : LL k) (v₁ v₂ : W) :
       Finsupp.add_apply]
   | hb p r =>
     rw [map_smul, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, map_smul,
-      Finsupp.smul_apply, smul_eq_mul, Basis.repr_self, tensorBasis, Basis.tensorProduct_apply,
+      Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, tensorBasis, Module.Basis.tensorProduct_apply,
       pair2_tmul, pair_wordBasis_M, pair_wordBasis_M, Finsupp.single_apply]
     congr 1
     rcases p with ⟨a, b⟩
@@ -101,8 +101,7 @@ theorem pair_qMul (x : L k) (F G : QSym k) :
 theorem pair3_assoc_tmul (y : LL k) (b : L k) (F G H : QSym k) :
     pair3 k (TensorProduct.assoc k (L k) (L k) (L k) (y ⊗ₜ b)) F G H =
       pair2 k y F G * pair k b H := by
-  induction y using TensorProduct.induction_on with
-  | zero => simp
+  induction y using TensorProduct.inductionOn with
   | tmul a c => simp [mul_assoc]
   | add y y' hy hy' =>
     rw [TensorProduct.add_tmul, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply,
@@ -112,8 +111,7 @@ theorem pair2_qMul_left (z : LL k) (F G H : QSym k) :
     pair2 k z (qMul q F G) H =
       pair3 k (TensorProduct.assoc k (L k) (L k) (L k)
         (TensorProduct.map (coproduct q) LinearMap.id z)) F G H := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a b =>
     rw [pair2_tmul, TensorProduct.map_tmul, LinearMap.id_apply, pair3_assoc_tmul, pair_qMul]
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
@@ -121,8 +119,7 @@ theorem pair2_qMul_left (z : LL k) (F G H : QSym k) :
 theorem pair2_qMul_right (z : LL k) (F G H : QSym k) :
     pair2 k z F (qMul q G H) =
       pair3 k (TensorProduct.map LinearMap.id (coproduct q) z) F G H := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a b =>
     rw [pair2_tmul, TensorProduct.map_tmul, LinearMap.id_apply, pair3_tmul, pair_qMul]
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
@@ -164,30 +161,30 @@ abbrev QQ := QSym k ⊗[k] QSym k
 
 variable (k) in
 /-- The basis `M_a ⊗ M_b` of `QΛ_q ⊗ QΛ_q`. -/
-def B2 : Basis (W × W) k (QQ k) :=
-  (Finsupp.basisSingleOne : Basis W k (QSym k)).tensorProduct Finsupp.basisSingleOne
+def B2 : Module.Basis (W × W) k (QQ k) :=
+  (Finsupp.basisSingleOne : Module.Basis W k (QSym k)).tensorProduct Finsupp.basisSingleOne
 
 variable (k) in
 /-- The basis `M_a ⊗ (M_b ⊗ M_c)` of `QΛ_q ⊗ (QΛ_q ⊗ QΛ_q)`. -/
-def B3 : Basis (W × (W × W)) k (QSym k ⊗[k] QQ k) :=
-  (Finsupp.basisSingleOne : Basis W k (QSym k)).tensorProduct (B2 k)
+def B3 : Module.Basis (W × (W × W)) k (QSym k ⊗[k] QQ k) :=
+  (Finsupp.basisSingleOne : Module.Basis W k (QSym k)).tensorProduct (B2 k)
 
 theorem B2_apply (a b : W) : B2 k (a, b) = M k a ⊗ₜ M k b := by
   simp [B2, M_eq_basis]
 
 theorem B2_repr_tmul (F G : QSym k) (a b : W) : (B2 k).repr (F ⊗ₜ G) (a, b) = F a * G b := by
-  rw [B2, Basis.tensorProduct_repr_tmul_apply]
+  rw [B2, Module.Basis.tensorProduct_repr_tmul_apply]
   simp [mul_comm]
 
 theorem B3_repr_tmul (F : QSym k) (Y : QQ k) (a : W) (bc : W × W) :
     (B3 k).repr (F ⊗ₜ Y) (a, bc) = F a * (B2 k).repr Y bc := by
-  rw [B3, Basis.tensorProduct_repr_tmul_apply]
+  rw [B3, Module.Basis.tensorProduct_repr_tmul_apply]
   simp [mul_comm]
 
 variable (k) in
 /-- The coproduct of `QΛ_q`: deconcatenation `M_w ↦ Σ_{w = w₁w₂} M_{w₁} ⊗ M_{w₂}`. -/
 def qCoprod : QSym k →ₗ[k] QQ k :=
-  (Finsupp.basisSingleOne : Basis W k (QSym k)).constr k fun w =>
+  (Finsupp.basisSingleOne : Module.Basis W k (QSym k)).constr k fun w =>
     ((splitsW w).map fun p => M k p.1 ⊗ₜ M k p.2).sum
 
 variable (k) in
@@ -196,7 +193,7 @@ def qCounit : QSym k →ₗ[k] k := Finsupp.lapply 1
 
 theorem qCoprod_M (w : W) :
     qCoprod k (M k w) = ((splitsW w).map fun p => M k p.1 ⊗ₜ M k p.2).sum := by
-  rw [qCoprod, M_eq_basis, Basis.constr_basis]
+  rw [qCoprod, M_eq_basis, Module.Basis.constr_basis]
 
 theorem M_apply (v w : W) : M k v w = if v = w then 1 else 0 := by
   rw [M, Finsupp.single_apply]
@@ -220,8 +217,7 @@ theorem repr_qCoprod (F : QSym k) (a b : W) : (B2 k).repr (qCoprod k F) (a, b) =
 theorem B3_assoc (Y : QQ k) (H : QSym k) (a b c : W) :
     (B3 k).repr (TensorProduct.assoc k (QSym k) (QSym k) (QSym k) (Y ⊗ₜ H)) (a, (b, c)) =
       (B2 k).repr Y (a, b) * H c := by
-  induction Y using TensorProduct.induction_on with
-  | zero => simp
+  induction Y using TensorProduct.inductionOn with
   | tmul F G => rw [TensorProduct.assoc_tmul, B3_repr_tmul, B2_repr_tmul, B2_repr_tmul, mul_assoc]
   | add Y Y' h h' =>
     rw [TensorProduct.add_tmul, map_add, map_add, Finsupp.add_apply, h, h', map_add,
@@ -237,16 +233,14 @@ theorem qCoprod_coassoc (F : QSym k) :
   have hl : ∀ Z : QQ k, (B3 k).repr (TensorProduct.assoc k (QSym k) (QSym k) (QSym k)
       (TensorProduct.map (qCoprod k) LinearMap.id Z)) (a, (b, c)) = (B2 k).repr Z (a * b, c) := by
     intro Z
-    induction Z using TensorProduct.induction_on with
-    | zero => simp
+    induction Z using TensorProduct.inductionOn with
     | tmul G H => rw [TensorProduct.map_tmul, LinearMap.id_apply, B3_assoc, repr_qCoprod,
         B2_repr_tmul]
     | add Z Z' h h' => simp only [map_add, Finsupp.add_apply, h, h']
   have hr : ∀ Z : QQ k, (B3 k).repr (TensorProduct.map LinearMap.id (qCoprod k) Z) (a, (b, c)) =
       (B2 k).repr Z (a, b * c) := by
     intro Z
-    induction Z using TensorProduct.induction_on with
-    | zero => simp
+    induction Z using TensorProduct.inductionOn with
     | tmul G H => rw [TensorProduct.map_tmul, LinearMap.id_apply, B3_repr_tmul, repr_qCoprod,
         B2_repr_tmul]
     | add Z Z' h h' => simp only [map_add, Finsupp.add_apply, h, h']
@@ -259,8 +253,7 @@ theorem qCounit_left (F : QSym k) :
   have h : ∀ Z : QQ k, (TensorProduct.lid k (QSym k)
       (TensorProduct.map (qCounit k) LinearMap.id Z)) v = (B2 k).repr Z (1, v) := by
     intro Z
-    induction Z using TensorProduct.induction_on with
-    | zero => simp
+    induction Z using TensorProduct.inductionOn with
     | tmul G H => simp [B2_repr_tmul, qCounit]
     | add Z Z' h h' => simp only [map_add, Finsupp.add_apply, h, h']
   rw [h, repr_qCoprod, one_mul]
@@ -271,8 +264,7 @@ theorem qCounit_right (F : QSym k) :
   have h : ∀ Z : QQ k, (TensorProduct.rid k (QSym k)
       (TensorProduct.map LinearMap.id (qCounit k) Z)) v = (B2 k).repr Z (v, 1) := by
     intro Z
-    induction Z using TensorProduct.induction_on with
-    | zero => simp
+    induction Z using TensorProduct.inductionOn with
     | tmul G H => simp [B2_repr_tmul, qCounit, mul_comm]
     | add Z Z' h h' => simp only [map_add, Finsupp.add_apply, h, h']
   rw [h, repr_qCoprod, mul_one]
@@ -323,7 +315,7 @@ theorem repr_tensorMul (X Y : LL k) (u v : W) :
       congr 1; funext s t; simp only [map_add, Finsupp.add_apply]; ring
     | hb p' r' =>
       rw [tensorMul_smul_left, tensorMul_smul_right, tensorMul_basis]
-      simp only [map_smul, Finsupp.smul_apply, smul_eq_mul, Basis.repr_self, Finsupp.single_apply]
+      simp only [map_smul, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply]
       have key : ∀ s t : W × W,
           q ^ (degree s.2 * degree t.1) * (r * (if p = (s.1, t.1) then 1 else 0) *
             (r' * if p' = (s.2, t.2) then 1 else 0)) =
@@ -346,11 +338,11 @@ theorem repr_tensorMul (X Y : LL k) (u v : W) :
       by_cases hu : p.1 * p'.1 = u <;> by_cases hv : p.2 * p'.2 = v
       · subst hu; subst hv; simp; ring
       · have : ¬ (p.1 * p'.1, p.2 * p'.2) = (u, v) := fun h => hv (Prod.ext_iff.mp h).2
-        rw [if_neg this, if_neg hv]; ring
+        rw [ite_eq_right this, ite_eq_right hv]; ring
       · have : ¬ (p.1 * p'.1, p.2 * p'.2) = (u, v) := fun h => hu (Prod.ext_iff.mp h).1
-        rw [if_neg this, if_neg hu]; ring
+        rw [ite_eq_right this, ite_eq_right hu]; ring
       · have : ¬ (p.1 * p'.1, p.2 * p'.2) = (u, v) := fun h => hu (Prod.ext_iff.mp h).1
-        rw [if_neg this, if_neg hu]; ring
+        rw [ite_eq_right this, ite_eq_right hu]; ring
 
 variable (k) in
 /-- The twisted product on `QΛ_q ⊗ QΛ_q`:
@@ -361,7 +353,7 @@ def qTensorMul : QQ k →ₗ[k] QQ k →ₗ[k] QQ k :=
 
 theorem qTensorMul_B2 (p r : W × W) : qTensorMul k q (B2 k p) (B2 k r) =
     q ^ (degree p.2 * degree r.1) • (qMul q (M k p.1) (M k r.1) ⊗ₜ qMul q (M k p.2) (M k r.2)) := by
-  rw [qTensorMul, Basis.constr_basis, Basis.constr_basis]
+  rw [qTensorMul, Module.Basis.constr_basis, Module.Basis.constr_basis]
 
 theorem qTensorMul_tmul (a b c d : W) : qTensorMul k q (M k a ⊗ₜ M k b) (M k c ⊗ₜ M k d) =
     q ^ (degree b * degree c) • (qMul q (M k a) (M k c) ⊗ₜ qMul q (M k b) (M k d)) := by
@@ -389,9 +381,12 @@ theorem list_sum_apply₂ {α : Type*} (l : List α) (g : α → QQ k) (f : QQ k
 theorem qCoprod_mul (F G : QSym k) :
     qCoprod k (qMul q F G) = qTensorMul k q (qCoprod k F) (qCoprod k G) := by
   have h : (qMul q).compr₂ (qCoprod k) = (qTensorMul k q).compl₁₂ (qCoprod k) (qCoprod k) := by
-    refine qsym_linear_ext (N := QSym k →ₗ[k] QQ k) (fun u => ?_)
-    refine qsym_linear_ext (N := QQ k) (fun v => ?_)
-    rw [LinearMap.compr₂_apply, LinearMap.compl₁₂_apply]
+    apply Finsupp.basisSingleOne.ext
+    intro u
+    apply Finsupp.basisSingleOne.ext
+    intro v
+    change qCoprod k (qMul q (M k u) (M k v)) =
+      qTensorMul k q (qCoprod k (M k u)) (qCoprod k (M k v))
     apply (B2 k).repr.injective
     ext ⟨x, y⟩
     rw [repr_qCoprod, qMul_coord, wordBasis_mul, coproduct_mul, tensorMul, ← tensorMul,
@@ -431,6 +426,6 @@ theorem qsym_bialgebra :
     qCounit k (M k 1) = 1 :=
   ⟨qMul_assoc q, fun F => ⟨qMul_one_left q F, qMul_one_right q F⟩, qCoprod_coassoc,
     fun F => ⟨qCounit_left F, qCounit_right F⟩, qCoprod_mul q, qCoprod_one, qCounit_mul q,
-    by rw [qCounit_M, if_pos rfl]⟩
+    by rw [qCounit_M, ite_eq_left rfl]⟩
 
 end OddMath.Frontier.EKFinal

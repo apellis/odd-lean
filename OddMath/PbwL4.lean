@@ -47,12 +47,12 @@ open OddMath.SkewPolynomial
 /-- L4a: a unit vector has no self-crossing (equal indices do not cross). -/
 theorem self_cross (n : ℕ) (i : Fin n) :
     OddMath.crossingCount (expSingle i) (expSingle i) = 0 := by
-  rw [crossingCount_expSingle, if_neg (lt_irrefl _)]
+  rw [crossingCount_expSingle, ite_eq_right (lt_irrefl _)]
 
 /-- L4b: the unit-vector sign is `+1` on ordered pairs. -/
 theorem ordered_sign (n : ℕ) (i j : Fin n) (h : i ≤ j) :
     OddMath.skewSign (expSingle i) (expSingle j) = 1 := by
-  rw [skewSign_expSingle, if_neg (not_lt.mpr h)]
+  rw [skewSign_expSingle, ite_eq_right (not_lt.mpr h)]
 
 /-- L4c: ordered generator pairs are ordered monomials with coeff `1`. -/
 theorem ordered_pair (n : ℕ) (i j : Fin n) (h : i ≤ j) :
@@ -64,7 +64,7 @@ theorem ordered_pair (n : ℕ) (i j : Fin n) (h : i ≤ j) :
 theorem reversed_pair (n : ℕ) (i j : Fin n) (h : j < i) :
     OddMath.SkewPolynomial.mul (generator i) (generator j)
       = monomial (expSingle i + expSingle j) (-1) := by
-  rw [mul_generator, skewSign_expSingle, if_pos h]
+  rw [mul_generator, skewSign_expSingle, ite_eq_left h]
 
 /-- L4e: every reversed word reduces to the negated ordered monomial (the
 degree-two normal-form rewrite, sign-correct by `skewSign`). -/

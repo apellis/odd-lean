@@ -32,7 +32,7 @@ theorem epsilon_longest (N : ℕ) : epsilon (longest N) = (-1 : ℤ) ^ N.choose 
       have h (i : Fin N) (hij : i ∈ Finset.Iio j) : ¬ longest N i < longest N j := by
         simp only [Finset.mem_Iio] at hij
         simpa using not_lt_of_ge (Fin.rev_le_rev.mpr (le_of_lt hij))
-      simp only [Finset.prod_congr rfl (fun i hi => if_neg (h i hi))]
+      simp only [Finset.prod_congr rfl (fun i hi => ite_eq_right (h i hi))]
       simp
     simp_rw [hi]
     rw [Finset.prod_pow_eq_pow_sum]
@@ -61,7 +61,7 @@ theorem action_tilde {N : ℕ} (i : Fin N) :
     rw [he, pow_add, pow_mul]
     norm_num
   simp only [tildeGenerator, map_zsmul, action_generator, epsilon_longest,
-    longest_apply, smul_smul, Nat.add_sub_cancel, Nat.succ_sub_one]
+    longest_apply, smul_smul, Nat.succ_sub_one]
   rw [← pow_add, ← pow_add, hp]
 
 /-- Reverse both the positions and the alphabet. -/
@@ -108,7 +108,7 @@ theorem ofFn_rev {α : Type*} {k : ℕ} (f : Fin k → α) :
     simp only [List.getElem_reverse, List.length_ofFn, List.getElem_ofFn, Fin.rev]
     congr 1
     apply Fin.ext
-    simp only [Fin.val_mk]
+    simp only []
     omega
 
 /-- The signed action on an arbitrary word, before any sorting. -/
@@ -167,8 +167,8 @@ theorem action_mem_kernel (n : ℕ) (f : SkewPolynomial (n+2))
     rw [action_elementary]
     apply Subring.zsmul_mem
     exact Subring.subset_closure ⟨k, hk, hkn, rfl⟩
-  | zero => simpa using (ElementaryGeneration.elementaryClosure n).zero_mem
-  | one => simpa using (ElementaryGeneration.elementaryClosure n).one_mem
+  | zero => simp
+  | one => simp
   | add x y hx hy ihx ihy =>
     simpa using (ElementaryGeneration.elementaryClosure n).add_mem ihx ihy
   | neg x hx ih => simpa using (ElementaryGeneration.elementaryClosure n).neg_mem ih

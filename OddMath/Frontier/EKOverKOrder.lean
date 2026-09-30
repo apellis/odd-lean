@@ -154,10 +154,10 @@ theorem isOfFinOrder_psi1K_of_nilpotent (h : IsNilpotent (2 : k)) : IsOfFinOrder
 /-! ## Characters of `Λ_ℤ` of parity type -/
 
 theorem g_hod (G : PowerSeries ℤ) (a b : ℕ) (hab : Even (a + b)) :
-    coeff ℤ (a / 2) G * coeff ℤ ((b + 1) / 2) G +
-        (-1 : ℤ) ^ a • (coeff ℤ ((b + 1) / 2) G * coeff ℤ (a / 2) G) =
-      (-1 : ℤ) ^ a • (coeff ℤ ((a + 1) / 2) G * coeff ℤ (b / 2) G) +
-        coeff ℤ (b / 2) G * coeff ℤ ((a + 1) / 2) G := by
+    coeff (a / 2) G * coeff ((b + 1) / 2) G +
+        (-1 : ℤ) ^ a • (coeff ((b + 1) / 2) G * coeff (a / 2) G) =
+      (-1 : ℤ) ^ a • (coeff ((a + 1) / 2) G * coeff (b / 2) G) +
+        coeff (b / 2) G * coeff ((a + 1) / 2) G := by
   rcases Nat.even_or_odd a with ha | ha
   · have hb : Even b := by
       rcases Nat.even_or_odd b with hb | hb
@@ -172,12 +172,12 @@ theorem g_hod (G : PowerSeries ℤ) (a b : ℕ) (hab : Even (a + b)) :
     ring
 
 /-- The character `χ_G : Λ_ℤ → ℤ`, `h_{2j}, h_{2j+1} ↦ [u^j] G` (it respects (2.11)–(2.12)). -/
-def chiG (G : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1) : QZ →+* ℤ :=
-  EKAutomorphisms.descend (fun n => coeff ℤ (n / 2) G) (by simpa using hG)
+def chiG (G : PowerSeries ℤ) (hG : constantCoeff G = 1) : QZ →+* ℤ :=
+  EKAutomorphisms.descend (fun n => coeff (n / 2) G) (by simpa using hG)
     (fun a b _ => mul_comm _ _) (g_hod G)
 
-@[simp] theorem chiG_h (G : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1) (n : ℕ) :
-    chiG G hG (h n) = coeff ℤ (n / 2) G :=
+@[simp] theorem chiG_h (G : PowerSeries ℤ) (hG : constantCoeff G = 1) (n : ℕ) :
+    chiG G hG (h n) = coeff (n / 2) G :=
   EKAutomorphisms.descend_h _ _ _ _ n
 
 theorem s_two_mul (l : ℕ) : s (2 * l) = (-1 : ℤ) ^ l := by
@@ -202,32 +202,32 @@ theorem sum_range_two_mul {M : Type*} [AddCommMonoid M] (f : ℕ → M) (m : ℕ
 /-- The parity sum is a coefficient of `(1 - u) A(-u) B(u)`. -/
 theorem paritySum_even (A B : PowerSeries ℤ) (j : ℕ) :
     ∑ i ∈ Finset.range (2 * j + 1),
-        s i * coeff ℤ (i / 2) A * coeff ℤ ((2 * j - i) / 2) B =
-      coeff ℤ j ((1 - PowerSeries.X) * (rescale (-1) A * B)) := by
+        s i * coeff (i / 2) A * coeff ((2 * j - i) / 2) B =
+      coeff j ((1 - PowerSeries.X) * (rescale (-1) A * B)) := by
   rw [Finset.sum_range_succ, sum_range_two_mul, sub_mul, one_mul, map_sub]
-  have hc : ∀ n, coeff ℤ n (rescale (-1) A * B) =
-      ∑ l ∈ Finset.range (n + 1), (-1 : ℤ) ^ l * coeff ℤ l A * coeff ℤ (n - l) B := by
+  have hc : ∀ n, coeff n (rescale (-1) A * B) =
+      ∑ l ∈ Finset.range (n + 1), (-1 : ℤ) ^ l * coeff l A * coeff (n - l) B := by
     intro n
     rw [PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
     refine Finset.sum_congr rfl fun l _ => ?_
     rw [PowerSeries.coeff_rescale, mul_assoc]
   cases j with
-  | zero => simp [hc, EKComplete.s_add_two]
+  | zero => simp [hc]
   | succ j =>
     rw [PowerSeries.coeff_succ_X_mul, hc, hc, Finset.sum_range_succ (n := j + 1)]
     simp only [Finset.sum_add_distrib, s_two_mul, s_two_mul_add_one]
     have e1 : ∀ l ∈ Finset.range (j + 1),
-        (-1 : ℤ) ^ l * coeff ℤ (2 * l / 2) A * coeff ℤ ((2 * (j + 1) - 2 * l) / 2) B =
-          (-1 : ℤ) ^ l * coeff ℤ l A * coeff ℤ (j + 1 - l) B := by
+        (-1 : ℤ) ^ l * coeff (2 * l / 2) A * coeff ((2 * (j + 1) - 2 * l) / 2) B =
+          (-1 : ℤ) ^ l * coeff l A * coeff (j + 1 - l) B := by
       intro l hl
       have hl' : l ≤ j := Nat.lt_succ_iff.mp (Finset.mem_range.mp hl)
       have a1 : 2 * l / 2 = l := by omega
       have a2 : (2 * (j + 1) - 2 * l) / 2 = j + 1 - l := by omega
       rw [a1, a2]
     have e2 : ∀ l ∈ Finset.range (j + 1),
-        -(-1 : ℤ) ^ l * coeff ℤ ((2 * l + 1) / 2) A *
-            coeff ℤ ((2 * (j + 1) - (2 * l + 1)) / 2) B =
-          -((-1 : ℤ) ^ l * coeff ℤ l A * coeff ℤ (j - l) B) := by
+        -(-1 : ℤ) ^ l * coeff ((2 * l + 1) / 2) A *
+            coeff ((2 * (j + 1) - (2 * l + 1)) / 2) B =
+          -((-1 : ℤ) ^ l * coeff l A * coeff (j - l) B) := by
       intro l hl
       have hl' : l ≤ j := Nat.lt_succ_iff.mp (Finset.mem_range.mp hl)
       have a1 : (2 * l + 1) / 2 = l := by omega
@@ -242,7 +242,7 @@ theorem paritySum_even (A B : PowerSeries ℤ) (j : ℕ) :
 
 theorem paritySum_odd (A B : PowerSeries ℤ) (j : ℕ) :
     ∑ i ∈ Finset.range (2 * j + 1 + 1),
-        s i * coeff ℤ (i / 2) A * coeff ℤ ((2 * j + 1 - i) / 2) B = 0 := by
+        s i * coeff (i / 2) A * coeff ((2 * j + 1 - i) / 2) B = 0 := by
   rw [show 2 * j + 1 + 1 = 2 * (j + 1) by ring, sum_range_two_mul]
   apply Finset.sum_eq_zero
   intro l hl
@@ -272,8 +272,8 @@ theorem character_relation (χ : QZ →+* ℤ) (n : ℕ) (hn : 0 < n) :
 
 /-- **The step `χ ↦ χ ∘ ψ₁` on parity characters:** if `(1+u) G(-u) G'(u) = 1`, then
 `χ_G ∘ ψ₁ = χ_{G'}`. -/
-theorem chiG_comp_psi1 (G G' : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1)
-    (hG' : constantCoeff ℤ G' = 1)
+theorem chiG_comp_psi1 (G G' : PowerSeries ℤ) (hG : constantCoeff G = 1)
+    (hG' : constantCoeff G' = 1)
     (hrel : (1 + PowerSeries.X) * rescale (-1) G * G' = 1) :
     (chiG G hG).comp psi1.toRingHom = chiG G' hG' := by
   apply EKAutomorphisms.hom_ext_h
@@ -286,13 +286,13 @@ theorem chiG_comp_psi1 (G G' : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1)
     rw [map_mul, map_mul, rescale_one_add_X, rescale_rescale_neg_one, map_one] at this
     linear_combination this
   have key' : ∀ m, 0 < m →
-      ∑ i ∈ Finset.range (m + 1), s i * coeff ℤ (i / 2) G' * coeff ℤ ((m - i) / 2) G = 0 := by
+      ∑ i ∈ Finset.range (m + 1), s i * coeff (i / 2) G' * coeff ((m - i) / 2) G = 0 := by
     intro m hm
     obtain ⟨j, rfl | rfl⟩ := Nat.even_or_odd' m
-    · rw [paritySum_even, hrel', PowerSeries.coeff_one, if_neg (by omega)]
+    · rw [paritySum_even, hrel', PowerSeries.coeff_one, ite_eq_right (by omega)]
     · exact paritySum_odd G' G j
   have keyd : ∀ m, 0 < m →
-      ∑ i ∈ Finset.range (m + 1), s i * chiG G hG (e i) * coeff ℤ ((m - i) / 2) G = 0 := by
+      ∑ i ∈ Finset.range (m + 1), s i * chiG G hG (e i) * coeff ((m - i) / 2) G = 0 := by
     intro m hm
     have := character_relation (chiG G hG) m hm
     simpa only [chiG_h] using this
@@ -304,27 +304,27 @@ theorem chiG_comp_psi1 (G G' : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1)
     · have h1 := keyd n hn
       have h2 := key' n hn
       rw [Finset.sum_range_succ] at h1 h2
-      have hsum : ∑ i ∈ Finset.range n, s i * chiG G hG (e i) * coeff ℤ ((n - i) / 2) G =
-          ∑ i ∈ Finset.range n, s i * coeff ℤ (i / 2) G' * coeff ℤ ((n - i) / 2) G := by
+      have hsum : ∑ i ∈ Finset.range n, s i * chiG G hG (e i) * coeff ((n - i) / 2) G =
+          ∑ i ∈ Finset.range n, s i * coeff (i / 2) G' * coeff ((n - i) / 2) G := by
         refine Finset.sum_congr rfl fun i hi => ?_
         rw [ih i (Finset.mem_range.mp hi)]
       rw [hsum, Nat.sub_self, Nat.zero_div] at h1
       rw [Nat.sub_self, Nat.zero_div] at h2
-      have hc : coeff ℤ 0 G = 1 := by simpa using hG
+      have hc : coeff 0 G = 1 := by simpa using hG
       rw [hc, mul_one] at h1 h2
-      have h3 : s n * chiG G hG (e n) = s n * coeff ℤ (n / 2) G' := by linarith
+      have h3 : s n * chiG G hG (e n) = s n * coeff (n / 2) G' := by linarith
       exact mul_left_cancel₀ (EKComplete.s_ne_zero n) h3
 
 /-! ## The orbit of the character `h₁ ↦ 1`, `h_n ↦ 0` (`n ≥ 2`) -/
 
-theorem constantCoeff_step (G : PowerSeries ℤ) (hG : constantCoeff ℤ G = 1) :
-    constantCoeff ℤ ((1 + PowerSeries.X) * rescale (-1) G) = ((1 : ℤˣ) : ℤ) := by
+theorem constantCoeff_step (G : PowerSeries ℤ) (hG : constantCoeff G = 1) :
+    constantCoeff ((1 + PowerSeries.X) * rescale (-1) G) = ((1 : ℤˣ) : ℤ) := by
   rw [map_mul, map_add, map_one, PowerSeries.constantCoeff_X, add_zero, one_mul,
     ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero,
     one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, hG, Units.val_one]
 
 /-- The series `G_m` of `χ₁ ∘ ψ₁^m`, and `constantCoeff G_m = 1`. -/
-def Gs : ℕ → {G : PowerSeries ℤ // constantCoeff ℤ G = 1}
+def Gs : ℕ → {G : PowerSeries ℤ // constantCoeff G = 1}
   | 0 => ⟨1, map_one _⟩
   | m + 1 => ⟨PowerSeries.invOfUnit ((1 + PowerSeries.X) * rescale (-1) (Gs m).1) 1, by
       rw [PowerSeries.constantCoeff_invOfUnit, inv_one, Units.val_one]⟩
@@ -371,14 +371,14 @@ theorem Gs_closed (N : ℕ) :
 /-! ## Infinite order when `2` is not nilpotent -/
 
 theorem coeff_one_add_X_pow' {R : Type*} [CommRing R] (N j : ℕ) :
-    coeff R j ((1 + PowerSeries.X) ^ N) = (N.choose j : R) := by
+    coeff (R := R) j ((1 + PowerSeries.X) ^ N) = (N.choose j : R) := by
   have : ((1 + PowerSeries.X) ^ N : PowerSeries R) = (((1 + Polynomial.X) ^ N : Polynomial R) :
       PowerSeries R) := by
     rw [Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_one, Polynomial.coe_X]
   rw [this, Polynomial.coeff_coe, Polynomial.coeff_one_add_X_pow]
 
 theorem coeff_one_sub_X_pow' {R : Type*} [CommRing R] (N j : ℕ) :
-    coeff R j ((1 - PowerSeries.X) ^ N) = (-1 : R) ^ j * (N.choose j : R) := by
+    coeff (R := R) j ((1 - PowerSeries.X) ^ N) = (-1 : R) ^ j * (N.choose j : R) := by
   have : ((1 - PowerSeries.X) ^ N : PowerSeries R) = rescale (-1 : R) ((1 + PowerSeries.X) ^ N) := by
     rw [map_pow, map_add, map_one, PowerSeries.rescale_neg_one_X, sub_eq_add_neg]
   rw [this, PowerSeries.coeff_rescale, coeff_one_add_X_pow']
@@ -386,7 +386,7 @@ theorem coeff_one_sub_X_pow' {R : Type*} [CommRing R] (N j : ℕ) :
 /-- If `ψ₁^{2N} = 1` on `Λ_k` (`N ≥ 1`), then `2·C(N,j) = 0` in `k` for every odd `j`. -/
 theorem two_choose_eq_zero_of_pow {N : ℕ} (hN : (psi1K k) ^ (2 * N) = 1) (j : ℕ) (hj : Odd j) :
     ((2 * N.choose j : ℕ) : k) = 0 := by
-  have hcoef : ∀ i, ((coeff ℤ i (Gs (2 * N)).1 : ℤ) : k) = ((coeff ℤ i (1 : PowerSeries ℤ) : ℤ) : k) := by
+  have hcoef : ∀ i, ((coeff i (Gs (2 * N)).1 : ℤ) : k) = ((coeff i (1 : PowerSeries ℤ) : ℤ) : k) := by
     intro i
     have := congrArg (bcChar k chi1) (congrArg (fun f : LamK k ≃ₐ[k] LamK k => f (hK k (2 * i))) hN)
     simp only [AlgEquiv.one_apply] at this
@@ -401,7 +401,7 @@ theorem two_choose_eq_zero_of_pow {N : ℕ} (hN : (psi1K k) ^ (2 * N) = 1) (j : 
   have h := congrArg (PowerSeries.map (Int.castRingHom k)) (Gs_closed N).1
   rw [map_mul, hmap, one_mul, map_pow, map_pow, map_add, map_sub, map_one,
     PowerSeries.map_X] at h
-  have hc := congrArg (coeff k j) h
+  have hc := congrArg (coeff (R := k) j) h
   rw [coeff_one_add_X_pow', coeff_one_sub_X_pow', Odd.neg_one_pow hj] at hc
   push_cast
   linear_combination hc
@@ -426,7 +426,7 @@ theorem choose_prime_pow_mul (q : ℕ) [Fact q.Prime] (v m : ℕ) :
 /-- For an odd prime `q` and `N ≥ 1` some `C(N, j)`, `j` odd, is prime to `q`. -/
 theorem exists_odd_choose_not_dvd {q : ℕ} (hq : q.Prime) (hq2 : q ≠ 2) {N : ℕ} (hN : 0 < N) :
     ∃ j, Odd j ∧ ¬ q ∣ N.choose j := by
-  haveI := Fact.mk hq
+  have := Fact.mk hq
   obtain ⟨v, m, hm, rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hN.ne' q hq.one_lt.ne'
   refine ⟨q ^ v, (hq.odd_of_ne_two hq2).pow, fun hd => hm ?_⟩
   have := (choose_prime_pow_mul q v m).symm
@@ -478,7 +478,7 @@ theorem orderOf_psi1K_zmod_odd (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
   intro hn
   have h0 : (2 : ZMod p) = 0 := hn.eq_zero
   have : ((2 : ℕ) : ZMod p) = 0 := by exact_mod_cast h0
-  rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at this
+  rw [ZMod.natCast_eq_zero_iff] at this
   exact hp ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).mp this)
 
 /-- Over `𝔽₂`, ψ₁ has order `2`. -/
@@ -493,7 +493,7 @@ theorem F2_orderOf_psi1K : orderOf (psi1K (ZMod 2)) = 2 := by
     rw [pow_one, h1, AlgEquiv.one_apply, Nat.cast_one, one_smul, eq_comm, sub_eq_self,
       ← hBasisK_yd11] at this
     have h := congrArg (fun x => (hBasisK (k := ZMod 2)).repr x yd11) this
-    simp only [Basis.repr_self, Finsupp.single_eq_same, map_zero, Finsupp.coe_zero,
+    simp only [Module.Basis.repr_self, Finsupp.single_eq_same, map_zero, Finsupp.coe_zero,
       Pi.zero_apply] at h
     exact one_ne_zero h
 

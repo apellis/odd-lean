@@ -78,7 +78,7 @@ theorem belowCount_eq_belowRows (lam : YoungDiagram) (a : ℕ) :
       simp only at h1 h2
       exact hab (h2 ▸ h1)
   · rintro ⟨i, j⟩ hq
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, YoungDiagram.mem_cells] at hq
+    simp only [Finset.coe_filter, Set.mem_ofPred_eq, YoungDiagram.mem_cells] at hq
     simp only [Finset.coe_range, Set.mem_Iio]
     rw [← YoungDiagram.mem_iff_lt_colLen]
     exact lam.up_left_mem le_rfl (Nat.zero_le _) hq.1
@@ -100,7 +100,7 @@ theorem rowLen_of_vertical {lam mu : YoungDiagram} (h : Vertical lam mu) (a : �
   unfold OddLRElimination.rowInc
   have hle : lam.rowLen a ≤ mu.rowLen a := by
     by_contra hn
-    push_neg at hn
+    push Not at hn
     have h1 : (a, mu.rowLen a) ∈ lam := YoungDiagram.mem_iff_lt_rowLen.mpr hn
     have h2 : (a, mu.rowLen a) ∈ mu :=
       (YoungDiagram.mem_cells _).mp (h.1 ((YoungDiagram.mem_cells _).mpr h1))
@@ -120,7 +120,7 @@ theorem rowLen_of_vertical {lam mu : YoungDiagram} (h : Vertical lam mu) (a : �
       · rw [YoungDiagram.mem_iff_lt_rowLen]; exact lt_irrefl _
   have hup : mu.rowLen a ≤ lam.rowLen a + 1 := by
     by_contra hn
-    push_neg at hn
+    push Not at hn
     have p1 : (a, lam.rowLen a) ∈ mu.cells \ lam.cells := by
       simp only [Finset.mem_sdiff, YoungDiagram.mem_cells, YoungDiagram.mem_iff_lt_rowLen]
       omega
@@ -164,8 +164,8 @@ theorem mem_addStrip_sdiff (hI : I ∈ stripRows lam k) (p : ℕ × ℕ) :
   simp only [Finset.mem_sdiff, YoungDiagram.mem_cells, OddLRElimination.mem_addStrip _ _ hI,
     YoungDiagram.mem_iff_lt_rowLen, OddLRElimination.rowInc]
   by_cases ha : a ∈ I
-  · simp only [ha, if_true, true_and]; omega
-  · simp only [ha, if_false, false_and, iff_false, add_zero]; omega
+  · simp only [ha, ite_true, true_and]; omega
+  · simp only [ha, ite_false, false_and, iff_false, add_zero]; omega
 
 theorem subset_addStrip (hI : I ∈ stripRows lam k) : lam.cells ⊆ (addStrip lam k I).cells := by
   rintro ⟨a, b⟩ hp
@@ -206,7 +206,7 @@ end addStrip
 theorem rowsOf_mem {lam mu : YoungDiagram} {k : ℕ} (h : Vertical lam mu)
     (hc : mu.card = lam.card + k) : rowsOf lam mu ∈ stripRows lam k := by
   apply OddLRElimination.stripRows_complete
-  · rw [card_rowsOf h, Finset.card_sdiff h.1]
+  · rw [card_rowsOf h, Finset.card_sdiff_of_subset h.1]
     change mu.cells.card = lam.cells.card + k at hc
     omega
   · have : rowInc lam (rowsOf lam mu) = mu.rowLen := funext (fun a => (rowLen_of_vertical h a).symm)
@@ -228,7 +228,7 @@ Derived from `OddLRVerticalPieri.vertical_pieri` by the vertical-strip ↔ row-s
 bijection above; signs agree term by term (`stripBelow_of_vertical`). -/
 theorem pieri310 (N : ℕ) : OddLRElimination.Pieri310 N := by
   intro lam k
-  letI := DegreeShapes.degreeFintype (lam.card + k)
+  let := DegreeShapes.degreeFintype (lam.card + k)
   have hv := OddLRVerticalPieri.vertical_pieri N lam k
   rw [column_eq_columnShape] at hv
   rw [hv, ← Finset.sum_filter]

@@ -48,7 +48,7 @@ theorem e3_kernel : e3 ∈ OddSymmetricKernel.kernelSubring 3 := by
 theorem suffix_e1 :
     OmissionWord.hybrid ([(0,false),(3,false),(2,false),(1,false)] : OmissionWord.Marked 3) e1 =
       x 0 + x 1 - x 2 + x 3 - x 4 := by
-  simp only [OmissionWord.hybrid, Bool.false_eq_true, if_false, e1]
+  simp only [OmissionWord.hybrid, Bool.false_eq_true, ite_false, e1]
   owl_expand
   abel
 
@@ -57,7 +57,7 @@ theorem suffix_e1 :
 theorem one_divided_step :
     OmissionWord.hybrid ([(1,true),(0,false),(3,false),(2,false),(1,false)] :
       OmissionWord.Marked 3) e1 = 0 := by
-  simp only [OmissionWord.hybrid, Bool.false_eq_true, if_false, if_true, e1]
+  simp only [OmissionWord.hybrid, Bool.false_eq_true, ite_false, ite_true, e1]
   owl_expand
   abel
 

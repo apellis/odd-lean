@@ -35,7 +35,7 @@ open NonadjacentDivided IntervalAnnihilation in
 theorem annihilate_length_rel (u : Fin (n+2)) (k : ℕ) (hv : u.val+k+1 < n+2)
     (f : SkewPolynomial (n+2)) (hf : ∀ i : Fin (n+1), u.val ≤ i.val → divided i f = 0) :
     ascending (u.val+1) k (by omega)
-      (dividedPair u ⟨u.val+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; simp only [Fin.val_mk] at this; omega) f) = 0 := by
+      (dividedPair u ⟨u.val+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; change u.val = u.val+k+1 at this; omega) f) = 0 := by
   induction k with
   | zero =>
     let i : Fin (n+1) := ⟨u.val, by omega⟩
@@ -51,6 +51,7 @@ theorem annihilate_length_rel (u : Fin (n+2)) (k : ℕ) (hv : u.val+k+1 < n+2)
     have hbc : b ≠ c := by intro h; have := congrArg Fin.val h; dsimp [b,c] at this; omega
     have ha : dividedPair b c hbc = AllRankDivided.divided i := by
       convert adjacent i using 1
+      congr 1
     have ht := triangle u b c hub huc hbc f
     rw [ha, hf i (by dsimp [i]; omega), map_zero, add_zero] at ht
     have ht' := eq_neg_of_add_eq_zero_left ht
@@ -202,14 +203,14 @@ theorem flipL_flipL {r : ℕ} (i : Fin (n+1)) (hi : n+1-r ≤ i.val) :
 theorem rho_castSucc {r : ℕ} (h : r ≤ n+1) (i : Fin (n+1)) (hi : n+1-r ≤ i.val) :
     rho n r h i.castSucc = (flipL n r i).succ := by
   apply Fin.ext
-  rw [rho_val, Fin.val_succ, flipL_val i hi, Fin.coe_castSucc]
+  rw [rho_val, Fin.val_succ, flipL_val i hi, Fin.val_castSucc]
   have := i.isLt
   split_ifs <;> omega
 
 theorem rho_succ {r : ℕ} (h : r ≤ n+1) (i : Fin (n+1)) (hi : n+1-r ≤ i.val) :
     rho n r h i.succ = (flipL n r i).castSucc := by
   apply Fin.ext
-  rw [rho_val, Fin.val_succ, Fin.coe_castSucc, flipL_val i hi]
+  rw [rho_val, Fin.val_succ, Fin.val_castSucc, flipL_val i hi]
   have := i.isLt
   split_ifs <;> omega
 
@@ -266,8 +267,8 @@ theorem psi_divided {r : ℕ} (h : r ≤ n+1) (i : Fin (n+1)) (hi : n+1-r ≤ i.
         rw [rho_eq_iff, rho_eq_iff, rho_castSucc h i hi, rho_succ h i hi]
         exact Or.comm
       by_cases hj : j = (flipL n r i).castSucc ∨ j = (flipL n r i).succ
-      · rw [if_pos (hiff.mpr hj), if_pos hj, map_one]
-      · rw [if_neg (mt hiff.mp hj), if_neg hj, map_zero]
+      · rw [ite_eq_left (hiff.mpr hj), ite_eq_left hj, map_one]
+      · rw [ite_eq_right (mt hiff.mp hj), ite_eq_right hj, map_zero]
     · intro f g
       show epsR n r h • psi n r h (divided i (psi n r h (f*g))) =
         epsR n r h • psi n r h (divided i (psi n r h f)) * g +
@@ -340,14 +341,13 @@ theorem hybrid_flipR {r : ℕ} (h : r ≤ n+1) (m : Marked n) (hm : InRange n r 
       obtain ⟨c, hc, e⟩ := ih hm'
       cases b
       · refine ⟨c, hc, ?_⟩
-        simp only [flipMarkedR, List.map_cons, hybrid, if_true, if_false,
+        simp only [flipMarkedR, List.map_cons, hybrid, ite_false,
           Bool.false_eq_true] at e ⊢
         rw [e, map_zsmul, psi_s h i hi]
       · refine ⟨c * epsR n r h, ?_, ?_⟩
         · calc c * epsR n r h * (c * epsR n r h) = (c * c) * (epsR n r h * epsR n r h) := by ring
             _ = 1 := by rw [hc, epsR_sq, one_mul]
-        · simp only [flipMarkedR, List.map_cons, hybrid, if_true, if_false,
-            Bool.false_eq_true] at e ⊢
+        · simp only [flipMarkedR, List.map_cons, hybrid, ite_true] at e ⊢
           rw [e, map_zsmul, psi_divided h i hi, smul_smul]
 
 theorem simple_flipL {r : ℕ} (h : r ≤ n+1) (i : Fin (n+1)) (hi : n+1-r ≤ i.val) :
@@ -399,7 +399,7 @@ theorem length_conj_rho {r : ℕ} (h : r ≤ n+1) (p : Perm n)
           (rho n r h * p * rho n r h) (rho n r h b) < (rho n r h * p * rho n r h) (rho n r h a)
         then (1 : ℕ) else 0) = (if b < a ∧ p a < p b then 1 else 0) := by
     intro a b
-    simp only [Equiv.Perm.mul_apply, rho_apply_rho, Fin.lt_iff_val_lt_val, rho_val]
+    simp only [Equiv.Perm.mul_apply, rho_apply_rho, Fin.lt_def, rho_val]
     have ha := a.isLt; have hb := b.isLt
     have hpa := (p a).isLt; have hpb := (p b).isLt
     by_cases ha' : a.val < n+1-r <;> by_cases hb' : b.val < n+1-r
@@ -442,11 +442,11 @@ theorem omission_subset (m : Marked n) {i : Fin (n+1)} (hi : i ∈ omission m) :
   | cons a m ih =>
       rcases a with ⟨j, b⟩
       cases b
-      · simp only [omission, Bool.false_eq_true, if_false, List.mem_cons] at hi
+      · simp only [omission, Bool.false_eq_true, ite_false, List.mem_cons] at hi
         rcases hi with rfl | hi
         · simp
         · simp [ih hi]
-      · simp only [omission, if_true] at hi
+      · simp only [omission, ite_true] at hi
         simp [ih hi]
 
 /-- The signed partial reversal transports the relative property. -/

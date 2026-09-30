@@ -12,7 +12,7 @@ noncomputable section
 theorem left_nonconstant :
     action 0 (dot 0 0 * crossing 0 0) (generator 0) = generator 0 := by
   rw [action_mul_apply, action_crossing_apply, divided_generator]
-  simp [action_dot_apply]
+  simp []
 
 theorem right_nonconstant :
     action 0 (crossing 0 0 * dot 0 0) (generator 0) = generator 0 - generator 1 := by

@@ -53,11 +53,11 @@ def IsPrimitive (x : Q) : Prop :=
 
 /-- The one-row shape `(n)`. -/
 def rowShape (n : ℕ) : DegreeShape n :=
-  ⟨YoungDiagram.ofRowLens [n] (List.sorted_singleton n), by
-    rw [EKPartitionSpanning.card_ofRowLens]; simp⟩
+  ⟨YoungDiagram.ofRowLens [n] (by simp [List.sortedGE_iff_pairwise]), by
+    rw [EKPartitionSpanning.card_ofRowLens _ (by simp)]; simp⟩
 
 theorem rowShape_rows {n : ℕ} (hn : 0 < n) : (rowShape n).val.rowLens = [n] :=
-  YoungDiagram.rowLens_ofRowLens_eq_self (hw := List.sorted_singleton n) (by simpa using hn)
+  YoungDiagram.rowLens_ofRowLens_eq_self (hw := by simp [List.sortedGE_iff_pairwise]) (by simpa using hn)
 
 theorem eq_rowShape {n : ℕ} (hn : 0 < n) (μ : DegreeShape n) (h : μ.val.rowLens = [n]) :
     μ = rowShape n := by
@@ -134,7 +134,7 @@ theorem prim_deriv {x : Q} (hx : IsPrimitive x) (a b : Q) :
     quotientPairing_right_one, quotientPairing_symm x b, quotientPairing_symm x a]
 
 theorem counit_h_pos {k : ℕ} (hk : 0 < k) : quotientCounit (h k) = 0 := by
-  rw [h, quotientCounit_pi, EKFreeCoproduct.counit_h, if_neg (by omega)]
+  rw [h, quotientCounit_pi, EKFreeCoproduct.counit_h, ite_eq_right (by omega)]
 
 theorem counit_prod_pos (t : List ℕ) (ht : ∀ k ∈ t, 0 < k) (hne : t ≠ []) :
     quotientCounit ((t.map h).prod) = 0 := by
@@ -212,7 +212,7 @@ theorem cval_odd_relator (n a b : ℕ) (hn : n = 1 ∨ Even n) (hab : Odd (a + b
       · exact Or.inr (Nat.even_iff.mp hn)
     have key : cval n a * cval n b = cval n (a + 1) * cval n (b - 1) := by
       unfold cval
-      split_ifs <;> simp_all [eps_sq] <;> omega
+      split_ifs <;> simp_all [] <;> omega
     rw [mul_comm (cval n b), key, mul_comm (cval n (b - 1))]
     abel
   · rw [ha.neg_one_pow, neg_one_smul, neg_one_smul, mul_comm (cval n b),
@@ -293,8 +293,8 @@ theorem Phi_word (n : ℕ) (hn : n = 1 ∨ Even n) (w : List ℕ) (hw : ∀ k �
     by_cases ht : t = []
     · subst ht; simp [show k ≠ 0 by omega]
     · have hne : k :: t ≠ [n] := by intro e; simp at e; exact ht e.2
-      simp only [ht, if_false, List.cons_ne_nil, hne, show k ≠ 0 by omega]
-      split_ifs <;> simp [eps_sq]
+      simp only [ht, ite_false, List.cons_ne_nil, hne, show k ≠ 0 by omega]
+      split_ifs <;> simp []
 
 theorem phi_hPartition (n : ℕ) (hn : n = 1 ∨ Even n) (μ : YoungDiagram) :
     phi n hn (hPartition μ) = if μ.rowLens = [n] then 1 else 0 := by
@@ -318,7 +318,7 @@ theorem pairing_mRow (n : ℕ) (hn : n = 1 ∨ Even n) (hpos : 0 < n) (y : Q) :
       · intro e; rw [← rowShape_rows hpos, ← e]
       · intro e; exact eq_rowShape hpos _ e
     · rw [pairing_degree_orth hc (hPartition_mem μ) (mRow n).property]
-      rw [if_neg]
+      rw [ite_eq_right]
       intro e
       apply hc
       rw [← rowLens_sum, e]; simp
@@ -424,7 +424,7 @@ theorem hrepr_eq_pairing (n : ℕ) (x : degreePiece n) (μ : DegreeShape n) :
     (degreeHBasis n).repr x μ = quotientPairing x.val (mBasis n μ).val := by
   have e := congrArg (fun f : Module.Dual ℤ (degreePiece n) => f x)
     ((pairingEquiv n).apply_symm_apply ((degreeHBasis n).dualBasis μ))
-  simp only [pairingEquiv_apply, Basis.dualBasis_apply] at e
+  simp only [pairingEquiv_apply, Module.Basis.dualBasis_apply] at e
   rw [← e]; rfl
 
 theorem hcoord_row_of_sq (n : ℕ) (hpos : 0 < n) (hn : n = 1 ∨ Even n) (x : degreePiece n)
@@ -457,7 +457,7 @@ def nonRowSpan (n : ℕ) : Submodule ℤ (degreePiece n) :=
 
 theorem nonRowSpan_iff (n : ℕ) (x : degreePiece n) :
     x ∈ nonRowSpan n ↔ (degreeHBasis n).repr x (rowShape n) = 0 := by
-  rw [nonRowSpan, Basis.mem_span_image]
+  rw [nonRowSpan, Module.Basis.mem_span_image]
   constructor
   · intro hs
     by_contra hne

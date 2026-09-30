@@ -1,4 +1,5 @@
 import OddMath.Frontier.OddSymmetricKernel
+import Mathlib.Tactic.LinearCombination
 
 /-! EKL 1111.1320v1, Lemma 2.3. Literal finite elementary sums. -/
 namespace OddMath.Frontier.ElementaryRelations
@@ -169,7 +170,7 @@ theorem elementary_odd (n i j : ℕ) (h : Even (i+j)) :
 theorem elementary_one_even (n m : ℕ) :
     elementaryPoly n 1*elementaryPoly n (2*m)+elementaryPoly n (2*m)*elementaryPoly n 1 =
     (2:ℤ) • elementaryPoly n (2*m+1) := by
-  have hh := elementary_odd n 0 (2*m) (by simp [even_two_mul])
+  have hh := elementary_odd n 0 (2*m) (by simp [])
   simpa only [elementaryPoly_zero, one_mul, mul_one, pow_zero, one_smul,
     Nat.zero_add, two_zsmul] using hh.symm
 

@@ -27,8 +27,8 @@ theorem lemma_4_9_example : D 3 (monomial ![1, 0, 2] 1) = (-1 : ℤ) • 1 := by
     (by intro k; fin_cases k <;> decide)
     (by intro i j _; fin_cases i; fin_cases j; decide)
     (by intro k; fin_cases k; decide)
-  rw [exps_example, hat_example', if_pos rfl, omega_example] at h
-  simpa using h
+  rw [exps_example, hat_example', ite_eq_left rfl, omega_example] at h
+  simpa [omega] using h
 
 /-- Hand computation in rank two: `D_2 x_1 = ∂_1 x_1 = 1`, matching Lemma 4.9 at `a = b = 1`. -/
 theorem rank_two_hand : D 2 (generator 0) = 1 := by
@@ -45,7 +45,7 @@ theorem rank_two_lemma : D 2 (monomial ![1, 0] 1) = (1 : ℤ) • 1 := by
   have he : exps (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ) = ![1, 0] := by
     funext i; fin_cases i <;> rfl
   have hh : hat 1 (![0] : Fin 1 → ℕ) = ![1] := by funext k; fin_cases k; decide
-  rw [he, hh, if_pos rfl] at h
-  simpa using h
+  rw [he, hh, ite_eq_left rfl] at h
+  simpa [omega] using h
 
 end OddMath.Frontier.StaircaseEvaluationControls

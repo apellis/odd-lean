@@ -116,26 +116,26 @@ theorem eq_of_pair_hL {d : ℕ} {x y : Q} (hx : x ∈ degreePiece d) (hy : y ∈
   exact LinearMap.congr_fun hlin z
 
 /-- `(h_ν, p_k) = δ_{ν,(k)}` on `h`-words of partitions. -/
-theorem pair_hL_p {k : ℕ} (hk : 0 < k) (l : List ℕ) (hs : l.Sorted (· ≥ ·))
+theorem pair_hL_p {k : ℕ} (hk : 0 < k) (l : List ℕ) (hs : l.Pairwise (· ≥ ·))
     (hp : ∀ x ∈ l, 0 < x) :
     quotientPairing (hL l) (EKCenterPower.p k) = if l = [k] then 1 else 0 := by
   classical
-  have hr := YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs) hp
-  have hl : hL l = EKPartitionSpanning.hPartition (YoungDiagram.ofRowLens l hs) := by
+  have hr := YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs.sortedGE) hp
+  have hl : hL l = EKPartitionSpanning.hPartition (YoungDiagram.ofRowLens l hs.sortedGE) := by
     rw [EKPartitionSpanning.hPartition, hr]; rfl
   rw [hl, EKCenterPower.pair_hPartition_p]
-  have := EKCenterPower.rows_iff k hk (YoungDiagram.ofRowLens l hs)
+  have := EKCenterPower.rows_iff k hk (YoungDiagram.ofRowLens l hs.sortedGE)
   rw [hr] at this
   by_cases h1 : l = [k]
-  · rw [if_pos (this.mp h1), if_pos h1]
-  · rw [if_neg (fun h2 => h1 (this.mpr h2)), if_neg h1]
+  · rw [ite_eq_left (this.mp h1), ite_eq_left h1]
+  · rw [ite_eq_right (fun h2 => h1 (this.mpr h2)), ite_eq_right h1]
 
 theorem p_mem (k : ℕ) : EKCenterPower.p k ∈ degreePiece k :=
   (mBasis k (EKCenterPower.rowShape k)).property
 
 /-- Identification of `p_k` with an explicit combination, from a kernel check. -/
 theorem p_eq_comb {k : ℕ} (hk : 0 < k) (c : List (ℤ × List ℕ)) (hc : ∀ t ∈ c, t.2.sum = k)
-    (hshape : ∀ l ∈ partsF k k k, l.Sorted (· ≥ ·) ∧ ∀ x ∈ l, 0 < x)
+    (hshape : ∀ l ∈ partsF k k k, l.Pairwise (· ≥ ·) ∧ ∀ x ∈ l, 0 < x)
     (hval : ∀ l ∈ partsF k k k,
       (c.map fun t => t.1 * evL false false l t.2).sum = if l = [k] then 1 else 0) :
     EKCenterPower.p k = comb c := by
@@ -245,8 +245,8 @@ theorem f3_eq :
     change quotientPairing (eL ν.val.rowLens) (comb _) = _
     rw [pair_eL_comb, hval _ hν]
     by_cases h1 : ν.val.rowLens = [3]
-    · rw [if_pos h1, if_pos (hiff.mpr h1)]
-    · rw [if_neg h1, if_neg (fun h2 => h1 (hiff.mp h2))]
+    · rw [ite_eq_left h1, ite_eq_left (hiff.mpr h1)]
+    · rw [ite_eq_right h1, ite_eq_right (fun h2 => h1 (hiff.mp h2))]
   rw [← key]
 
 /-- **N7.** `ψ₁ψ₂(m₃) ≠ ±f₃`, so applying `ψ₁ψ₂` to (3.10) does not give the second

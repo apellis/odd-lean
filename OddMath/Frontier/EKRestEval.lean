@@ -120,7 +120,7 @@ theorem sum_splitsB {c : ℕ} (α : Fin c → ℕ) (b : ℕ) (G : List ℕ → �
       simp only [Finset.mem_range] at hi
       have hib : i ≤ b := by omega
       have hia : i < α 0 + 1 := by omega
-      rw [dif_pos hia]
+      rw [dite_eq_left hia]
       have := ih (fun j => α j.succ) (b - i) (fun l => G (i :: l))
       simp only [List.map_map, Function.comp_def] at this ⊢
       rw [← this]
@@ -129,16 +129,15 @@ theorem sum_splitsB {c : ℕ} (α : Fin c → ℕ) (b : ℕ) (G : List ℕ → �
       rw [Fin.sum_univ_succ, List.ofFn_succ]
       simp only [Fin.insertNth_apply_same, ← Fin.succAbove_zero, Fin.insertNth_apply_succAbove]
       by_cases h : ∑ j : Fin c, (u j : ℕ) = b - i
-      · rw [if_pos (by omega), if_pos h]
-      · rw [if_neg (by omega), if_neg h]
+      · rw [ite_eq_left (by omega), ite_eq_left h]
+      · rw [ite_eq_right (by omega), ite_eq_right h]
     · intro i hi
       split_ifs with hia
       · apply Finset.sum_eq_zero
         intro u _
-        rw [if_neg]
+        rw [ite_eq_right]
         rw [Fin.sum_univ_succ]
         simp only [Fin.insertNth_apply_same]
-        simp only [Fin.val_mk] at *
         omega
       · rfl
 
@@ -151,7 +150,7 @@ theorem pairing_word_fastEval {r c : ℕ} (β : Fin r → ℕ) (η : Fin r → B
   | zero =>
     rw [word_zero, ← gen_zero false, pairing_gen_word, List.ofFn_zero, fastEval, List.sum_ofFn]
     by_cases h : ∑ j, α j = 0
-    · rw [if_pos h.symm, if_pos h]
+    · rw [ite_eq_left h.symm, ite_eq_left h]
       apply Finset.prod_eq_one
       intro j _
       have : α j = 0 := by
@@ -159,7 +158,7 @@ theorem pairing_word_fastEval {r c : ℕ} (β : Fin r → ℕ) (η : Fin r → B
           (Finset.mem_univ j)
         omega
       rw [this, cell_zero]
-    · rw [if_neg (Ne.symm h), if_neg h]
+    · rw [ite_eq_right (Ne.symm h), ite_eq_right h]
   | succ r ih =>
     rw [word_succ, pairing_word_mul, List.ofFn_succ, List.ofFn_succ, fastEval]
     simp only [List.headD_cons, List.tail_cons]
@@ -168,8 +167,8 @@ theorem pairing_word_fastEval {r c : ℕ} (β : Fin r → ℕ) (η : Fin r → B
     intro u _
     rw [pairing_gen_word, ih, zipWith_ofFn]
     by_cases hs : β 0 = ∑ j, (u j : ℕ)
-    · rw [if_pos hs, if_pos hs.symm, crossCols_ofFn, cellsL_ofFn]
-    · rw [if_neg hs, if_neg (Ne.symm hs)]
+    · rw [ite_eq_left hs, ite_eq_left hs.symm, crossCols_ofFn, cellsL_ofFn]
+    · rw [ite_eq_right hs, ite_eq_right (Ne.symm hs)]
       ring
 
 /-- EK Proposition 2.6 evaluated: the quotient pairing of two mixed words is `fastEval`. -/

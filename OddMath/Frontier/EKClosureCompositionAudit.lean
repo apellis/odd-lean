@@ -109,8 +109,8 @@ theorem degree_two_norms_agree :
     quotientPairing (EKSchurOrthonormal.schur 2 EKSchurOrthonormalControls.sh2 : Q)
         (EKSchurOrthonormal.schur 2 EKSchurOrthonormalControls.sh2 : Q) = 1 := by
   refine ⟨?_, ?_⟩
-  · rw [corollary_3_9, if_pos rfl, EKSchurOrthonormalControls.sh11_signs.1]; norm_num
-  · rw [corollary_3_9, if_pos rfl, EKSchurOrthonormalControls.sh2_signs.1]; norm_num
+  · rw [corollary_3_9, ite_eq_left rfl, EKSchurOrthonormalControls.sh11_signs.1]; norm_num
+  · rw [corollary_3_9, ite_eq_left rfl, EKSchurOrthonormalControls.sh2_signs.1]; norm_num
 
 /-- Independent confirmation: the hand-computed norms coincide with the composed theorem. -/
 theorem composed_matches_hand :
@@ -119,7 +119,7 @@ theorem composed_matches_hand :
       else 0) =
       quotientPairing (EKSchurOrthonormal.schur 2 EKSchurOrthonormalControls.sh11 : Q)
         (EKSchurOrthonormal.schur 2 EKSchurOrthonormalControls.sh11 : Q) := by
-  rw [EKSchurOrthonormal.degree_two_schur_norms.2.1, if_pos rfl,
+  rw [EKSchurOrthonormal.degree_two_schur_norms.2.1, ite_eq_left rfl,
     EKSchurOrthonormalControls.sh11_signs.1]; norm_num
 
 end OddMath.Frontier.EKClosureCompositionAudit

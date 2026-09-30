@@ -104,7 +104,7 @@ theorem rel_sum (n : ℕ) (i j : Fin n) (h : i ≠ j) :
         (FreeAlgebra.ι ℤ i * FreeAlgebra.ι ℤ j
           + FreeAlgebra.ι ℤ j * FreeAlgebra.ι ℤ i) := by
     unfold q
-    rw [map_add, map_mul, map_mul]
+    simp only [map_add, map_mul]
   rw [e]; exact h0
 
 /-- L2c: anticommute form of the imposed relations. -/

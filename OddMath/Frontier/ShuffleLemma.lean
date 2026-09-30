@@ -1,4 +1,5 @@
 import OddMath.Frontier.LongestDivided
+import Mathlib.Tactic.LinearCombination
 import Mathlib.Algebra.BigOperators.Intervals
 
 /-! # The shuffle lemma
@@ -84,10 +85,10 @@ theorem divided_shift (i : Fin (n+1)) (m a b : ℕ) :
 /-! ### Kernel elements -/
 
 theorem divided_castSucc (i : Fin (n+1)) : divided i (generator i.castSucc) = 1 := by
-  rw [divided_generator, if_pos (Or.inl rfl)]
+  rw [divided_generator, ite_eq_left (Or.inl rfl)]
 
 theorem divided_succ (i : Fin (n+1)) : divided i (generator i.succ) = 1 := by
-  rw [divided_generator, if_pos (Or.inr rfl)]
+  rw [divided_generator, ite_eq_left (Or.inr rfl)]
 
 theorem divided_sub_generator (i : Fin (n+1)) :
     divided i (generator i.castSucc - generator i.succ) = 0 := by
@@ -248,7 +249,7 @@ theorem pair_monomial (i : Fin (n+1)) (p q : ℕ) :
   · right
     have hb : i.succ ≠ b := by
       rintro rfl
-      rw [ha, Fin.lt_iff_val_lt_val] at hba
+      rw [ha, Fin.lt_def] at hba
       simp at hba
     simp [OddMath.SkewPolynomial.expSingle, hb]
   · left
@@ -328,8 +329,8 @@ theorem big_shuffle (i : Fin (n+1)) (m k : ℕ) (hk : Odd k) :
       (2 : ℤ) • ∑ j ∈ Finset.Icc 1 (k/2), (-1 : ℤ)^(j.choose 2 + (m+1)*(j+1)) •
         divided i (generator i.castSucc ^ (m+k-j) * generator i.succ ^ (m+j)) := by
   obtain ⟨r, rfl⟩ := hk
-  rw [show (2*r+1)/2 = r by omega, ← Nat.Ico_succ_right, Finset.sum_Ico_eq_sum_range,
-    Nat.succ_sub_one, big_shuffle_range i r m]
+  rw [show (2*r+1)/2 = r by omega, ← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range,
+    Nat.add_sub_cancel, big_shuffle_range i r m]
   simp only [add_comm 1]
 
 /-! ### Ascents are combinations of descents -/
@@ -381,10 +382,10 @@ theorem exponent_decompose (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
       γ i.succ • OddMath.SkewPolynomial.expSingle i.succ) + highPart i γ := by
   funext j
   simp only [lowPart, highPart, Pi.add_apply, Pi.smul_apply, OddMath.SkewPolynomial.expSingle,
-    smul_eq_mul, Fin.lt_iff_val_lt_val, Fin.ext_iff, Fin.coe_castSucc, Fin.val_succ]
+    smul_eq_mul, Fin.lt_def, Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
   split_ifs <;> first | omega |
     (simp only [zero_add, add_zero, mul_one, mul_zero]; congr 1; ext
-     simp only [Fin.coe_castSucc, Fin.val_succ]; omega)
+     simp only [Fin.val_castSucc, Fin.val_succ]; omega)
 
 theorem monomial_decompose (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
     monomial γ 1 = monomial (lowPart i γ) 1 *
@@ -398,10 +399,10 @@ theorem monomial_decompose (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
       have ha : i.succ < a := lt_trans hb hba
       have ha1 : a ≠ i.castSucc := by
         rintro rfl
-        rw [Fin.lt_iff_val_lt_val] at ha
+        rw [Fin.lt_def] at ha
         simp at ha
       simp [lowPart, OddMath.SkewPolynomial.expSingle, ha.ne, ha1.symm,
-        not_lt_of_gt (lt_trans (Fin.castSucc_lt_succ i) ha)]
+        not_lt_of_gt (lt_trans (Fin.castSucc_lt_succ (i := i)) ha)]
     · right
       simp [highPart, hb]
   · intro a b hba
@@ -410,7 +411,7 @@ theorem monomial_decompose (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
       have hb : b < i.castSucc := lt_trans hba ha
       have hb1 : i.succ ≠ b := by
         rintro rfl
-        exact absurd (lt_trans hb (Fin.castSucc_lt_succ i)) (lt_irrefl _)
+        exact absurd (lt_trans hb (Fin.castSucc_lt_succ (i := i))) (lt_irrefl _)
       simp [OddMath.SkewPolynomial.expSingle, hb.ne', hb1]
     · left
       simp [lowPart, ha]
@@ -430,7 +431,7 @@ theorem divided_monomial_spectator (i : Fin (n+1)) (d : ℕ) : ∀ σ : Fin (n+2
       intro σ hd hl hr
       obtain ⟨j, hj⟩ : ∃ j, σ j ≠ 0 := by
         by_contra h
-        push_neg at h
+        push Not at h
         simp [h] at hd
       let σ' := Function.update σ j (σ j - 1)
       have hσ : σ = σ' + OddMath.SkewPolynomial.expSingle j := by
@@ -451,7 +452,7 @@ theorem divided_monomial_spectator (i : Fin (n+1)) (d : ℕ) : ∀ σ : Fin (n+2
         ih σ' hsum (by simp [σ', Function.update_of_ne hjl.symm, hl])
           (by simp [σ', Function.update_of_ne hjr.symm, hr])
       have hg : divided i (generator j) = 0 := by
-        rw [divided_generator, if_neg (by tauto)]
+        rw [divided_generator, ite_eq_right (by tauto)]
       have hprod := divided_mul_eq_zero i h' hg
       have hm : monomial σ' 1 * generator j =
           OddMath.skewSign σ' (OddMath.SkewPolynomial.expSingle j) • monomial σ 1 := by
@@ -470,7 +471,7 @@ theorem divided_monomial_eq (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
     divided i (monomial γ 1) = s i (monomial (lowPart i γ) 1) *
       (divided i (generator i.castSucc ^ (γ i.castSucc) * generator i.succ ^ (γ i.succ)) *
         monomial (highPart i γ) 1) := by
-  have hlt : ¬ i.succ < i.castSucc := not_lt_of_gt (Fin.castSucc_lt_succ i)
+  have hlt : ¬ i.succ < i.castSucc := not_lt_of_gt (Fin.castSucc_lt_succ (i := i))
   have hL : divided i (monomial (lowPart i γ) 1) = 0 :=
     divided_monomial_spectator i _ _ rfl (by simp [lowPart])
       (by simp [lowPart, hlt])
@@ -518,15 +519,15 @@ theorem divided_monomial_ascent_mem_span (i : Fin (n+1)) (γ : Fin (n+2) → ℕ
   have hlow : lowPart i γ' = lowPart i γ := by
     funext j
     by_cases hj : j < i.castSucc
-    · simp only [lowPart, if_pos hj]
-      exact hoff j hj.ne (lt_trans hj (Fin.castSucc_lt_succ i)).ne
-    · simp only [lowPart, if_neg hj]
+    · simp only [lowPart, ite_eq_left hj]
+      exact hoff j hj.ne (lt_trans hj (Fin.castSucc_lt_succ (i := i))).ne
+    · simp only [lowPart, ite_eq_right hj]
   have hhigh : highPart i γ' = highPart i γ := by
     funext j
     by_cases hj : i.succ < j
-    · simp only [highPart, if_pos hj]
-      exact hoff j (lt_trans (Fin.castSucc_lt_succ i) hj).ne' hj.ne'
-    · simp only [highPart, if_neg hj]
+    · simp only [highPart, ite_eq_left hj]
+      exact hoff j (lt_trans (Fin.castSucc_lt_succ (i := i)) hj).ne' hj.ne'
+    · simp only [highPart, ite_eq_right hj]
   simp only [divided_monomial_eq i γ', hlow, hhigh, hc, hs, hTapp]
 
 end OddMath.Frontier.ShuffleLemma

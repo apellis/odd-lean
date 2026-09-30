@@ -75,7 +75,7 @@ theorem zeroHecke_distant (i j : Fin (n+1)) (h : i.val+1 < j.val ∨ j.val+1 < i
   have ne (a b : Fin (n+1)) (hab : a.val+1 < b.val ∨ b.val+1 < a.val) :
       b.castSucc ≠ a.castSucc ∧ b.castSucc ≠ a.succ := by
     constructor <;> intro e <;> have hv := congrArg Fin.val e <;>
-      simp only [Fin.coe_castSucc, Fin.val_succ] at hv <;> omega
+      simp only [Fin.val_castSucc, Fin.val_succ] at hv <;> omega
   have key (a b : Fin (n+1)) (hab : a.val+1 < b.val ∨ b.val+1 < a.val) :
       zeroHecke n a * zeroHecke n b =
         -(dot n a.castSucc * dot n b.castSucc * (crossing n a * crossing n b)) := by
@@ -94,10 +94,10 @@ theorem zeroHecke_braid (i j : Fin (n+1)) (h : j.val = i.val+1) :
       -(dot n i.castSucc * (crossing n j * x)) := by
     intro x
     have hl : i.castSucc ≠ j.castSucc := by
-      intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc] at hv; omega
+      intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc] at hv; omega
     have hr : i.castSucc ≠ j.succ := by
       intro e; have hv := congrArg Fin.val e
-      simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
+      simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
     rw [← mul_assoc, crossing_dot_other j _ hl hr, neg_mul, mul_assoc]
   have h2 : ∀ x, crossing n i * (dot n i.castSucc * x) =
       x - dot n i.succ * (crossing n i * x) := by
@@ -114,8 +114,8 @@ theorem zeroHecke_braid (i j : Fin (n+1)) (h : j.val = i.val+1) :
   have h6 : crossing n j * (crossing n i * crossing n j) =
       crossing n i * (crossing n j * crossing n i) := by
     simpa only [mul_assoc] using (crossing_braid i j h).symm
-  simp only [zeroHecke, hij, mul_assoc, h1, h2, h3, h4, h5, h6, mul_sub, sub_mul, mul_neg,
-    neg_mul, neg_neg, mul_zero, sub_zero, neg_zero, crossing_square]
+  simp only [zeroHecke, hij, mul_assoc, h1, h2, h3, h4, h6, mul_sub, sub_mul, mul_neg,
+    neg_neg, mul_zero, crossing_square]
   abel
 
 /-! ## Matsumoto for 0-Hecke products -/
@@ -410,7 +410,7 @@ theorem count_downDots (k : ℕ) (h : k ≤ n+2) (j : Fin (n+2)) :
       · have : (⟨k, by omega⟩ : Fin (n+2)) = j := Fin.ext hj.symm
         simp [this, hj]
       · have : (⟨k, by omega⟩ : Fin (n+2)) ≠ j := fun e => hj (by rw [← e])
-        simp only [beq_iff_eq, this, if_false, add_zero]
+        simp only [beq_iff_eq, this, ite_false, add_zero]
         split_ifs <;> omega
 
 theorem count_stairDots (k : ℕ) (h : k ≤ n+2) (j : Fin (n+2)) :
@@ -444,7 +444,7 @@ theorem sComm_downDots (k : ℕ) (h : k ≤ n+2) (i : Fin (n+1)) (hi : i.val+1 <
       by_cases hk : i.val+1 < k
       · apply SComm.mul_right _ (ih (by omega) hk)
         apply sComm_crossing_dot <;> intro e <;> have hv := congrArg Fin.val e <;>
-          simp only [Fin.coe_castSucc, Fin.val_succ] at hv <;> omega
+          simp only [Fin.val_castSucc, Fin.val_succ] at hv <;> omega
       · obtain ⟨m, rfl⟩ : ∃ m, k = m+1 := ⟨k-1, by omega⟩
         have hm : i.val = m := by omega
         rw [downDots, dotWord_cons, ← mul_assoc]
@@ -456,7 +456,7 @@ theorem sComm_downDots (k : ℕ) (h : k ≤ n+2) (i : Fin (n+1)) (hi : i.val+1 <
         intro j hj
         have := mem_downDots hj
         constructor <;> intro e <;> have hv := congrArg Fin.val e <;>
-          simp only [Fin.coe_castSucc, Fin.val_succ] at hv <;> omega
+          simp only [Fin.val_castSucc, Fin.val_succ] at hv <;> omega
 
 theorem sweep_signed (k : ℕ) (h : k ≤ n+1) :
     Signed (zeroHeckeProduct (sweepWord n k h))
@@ -470,7 +470,7 @@ theorem sweep_signed (k : ℕ) (h : k ≤ n+1) :
         intro j hj
         have := mem_downDots hj
         constructor <;> intro e <;> have hv := congrArg Fin.val e <;>
-          simp only [Fin.coe_castSucc, Fin.val_succ] at hv <;> omega
+          simp only [Fin.val_castSucc, Fin.val_succ] at hv <;> omega
       have h1 := (Signed.refl (zeroHecke n ⟨k, by omega⟩)).mul (ih (by omega))
       have h2 := ((Signed.refl (dot n ⟨k, by omega⟩)).mul hs).mul
         (Signed.refl (product (sweepWord n k (by omega))))
@@ -487,7 +487,7 @@ theorem partial_signed (k : ℕ) (h : k ≤ n+2) :
     Signed (zeroHeckeProduct (LongestDivided.wordIn n k h))
       (dotWord (stairDots n k h) * product (LongestDivided.wordIn n k h)) := by
   induction k with
-  | zero => simpa [stairDots, product] using Signed.refl (1 : Presented n)
+  | zero => simpa [stairDots, product, LongestDivided.wordIn, LongestDivided.coxeterWord, zeroHeckeProduct] using Signed.refl (1 : Presented n)
   | succ k ih =>
       rw [wordIn_succ, zeroHeckeProduct_append, product_append, stairDots, dotWord_append]
       have hc : SComm (product (LongestDivided.wordIn n k (by omega)))
@@ -505,7 +505,7 @@ theorem projector_signed : Signed (projector n) (staircaseElem n * DElem n) := b
   rw [dotWord_normalize, smul_mul_assoc] at h
   have hc : (fun j => (stairDots n (n+2) le_rfl).count j) = fun j : Fin (n+2) => n+1-j.val := by
     funext j
-    rw [count_stairDots, if_pos j.isLt]
+    rw [count_stairDots, ite_eq_left j.isLt]
     omega
   rw [hc] at h
   exact h.trans (signed_sign_smul _ _)

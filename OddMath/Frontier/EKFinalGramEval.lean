@@ -36,7 +36,7 @@ theorem counit_vWord {c : ℕ} (α : Fin c → ℕ) :
     rw [vWord_succ, counit_mul, counit_h, ih, Fin.sum_univ_succ]
     by_cases h0 : α 0 = 0
     · simp [h0]
-    · rw [if_neg h0, zero_mul, if_neg (by omega)]
+    · rw [ite_eq_right h0, zero_mul, ite_eq_right (by omega)]
 
 theorem form_vWord_fastQ (t : ℤ) {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) :
     form t (vWord ℤ β) (vWord ℤ α) = fastQ t (List.ofFn β) (List.ofFn α) := by
@@ -51,7 +51,7 @@ theorem form_vWord_fastQ (t : ℤ) {r c : ℕ} (β : Fin r → ℕ) (α : Fin c 
         if (∑ j, (u j : ℕ)) = β 0 then 1 else 0 := by
       intro u
       rw [← vWord_singleton (k := ℤ) (β 0), form_vWord, matForm_single_row]
-    simp only [hsingle, ih, EKRest.zipWith_ofFn]
+    simp only [hsingle, ih]
     rw [← EKRest.sum_splitsB]
     apply Finset.sum_congr rfl
     intro u _

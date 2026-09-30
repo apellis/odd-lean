@@ -183,15 +183,18 @@ theorem coeffUnitNegOne_eq_sign (wt : Nat) (i j : Fin (shapeCount wt)) :
   unfold coeffDiag
   rw [diagNegOne_eq_sign_apply wt i]
 
+set_option maxRecDepth 10000
+
 /- Executable spot-values (compiled execution evidence; outputs appear in
    the isolated build log). Index `0` reuses the B9 census witness
    `idx0_lt` (composition evidence, not a new proof); the off-diagonal
-   second index uses `by native_decide` at the same scale B7/B11 already
-   evaluate (`shapeCount 4 = 5`); proofs are erased at runtime. -/
+   second index uses kernel-checked `decide` at the same scale B7/B11
+   already evaluate (`shapeCount 4 = 5`). The increased recursion limit
+   supports reduction of the census. -/
 #eval ("u1", diagOne 4 ⟨0, idx0_lt 4 (by decide)⟩)
 #eval ("un", diagNegOne 4 ⟨0, idx0_lt 4 (by decide)⟩)
 #eval ("cu11", coeffDiag 4 (diagOne 4) ⟨0, idx0_lt 4 (by decide)⟩ ⟨0, idx0_lt 4 (by decide)⟩)
-#eval ("cu10", coeffDiag 4 (diagOne 4) ⟨0, idx0_lt 4 (by decide)⟩ ⟨1, by native_decide⟩)
+#eval ("cu10", coeffDiag 4 (diagOne 4) ⟨0, idx0_lt 4 (by decide)⟩ ⟨1, by decide⟩)
 #eval ("cun11", coeffDiag 4 (diagNegOne 4) ⟨0, idx0_lt 4 (by decide)⟩ ⟨0, idx0_lt 4 (by decide)⟩)
 #eval ("dz", coeffDiag 4 (diagOne 4) ⟨0, idx0_lt 4 (by decide)⟩ ⟨0, idx0_lt 4 (by decide)⟩ != coeffZero 4 ⟨0, idx0_lt 4 (by decide)⟩ ⟨0, idx0_lt 4 (by decide)⟩)
 #eval ("sg", decide (diagOne 4 ⟨0, idx0_lt 4 (by decide)⟩ = diagSign 4 (fun _ => true) ⟨0, idx0_lt 4 (by decide)⟩))

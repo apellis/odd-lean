@@ -113,8 +113,8 @@ theorem schur_pair_linearIndependent {d : ℕ} {a b : DegreeShape d} (hab : a �
   have hb := hpair b
   simp only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
     map_zero, LinearMap.zero_apply] at ha hb
-  rw [h311, h311, if_pos rfl, if_neg (Ne.symm hab), mul_zero, add_zero] at ha
-  rw [h311, h311, if_pos rfl, if_neg hab, mul_zero, zero_add] at hb
+  rw [h311, h311, ite_eq_left rfl, ite_eq_right (Ne.symm hab), mul_zero, add_zero] at ha
+  rw [h311, h311, ite_eq_left rfl, ite_eq_right hab, mul_zero, zero_add] at hb
   have hs : (-1 : ℤ) ^ EKProp310Controls.transposeChoose a.val ≠ 0 := pow_ne_zero _ (by norm_num)
   have ht : (-1 : ℤ) ^ EKProp310Controls.transposeChoose b.val ≠ 0 := pow_ne_zero _ (by norm_num)
   exact ⟨(mul_eq_zero.mp ha).resolve_right hs, (mul_eq_zero.mp hb).resolve_right ht⟩
@@ -292,7 +292,7 @@ theorem lemma_3_11_printed_not_mem :
       exact EKProp310.pair_schur_e_vanish 6 sh33 ⟨ν, hν⟩ hlt
     exact hle hz
   have hself := horth _ hE
-  rw [EKClosureComposition.identity311 6 sh33 sh33, if_pos rfl] at hself
+  rw [EKClosureComposition.identity311 6 sh33 sh33, ite_eq_left rfl] at hself
   exact pow_ne_zero _ (by norm_num) hself
 
 /-- [EK] proof of Lemma 3.11 at `λ = (2,2,2)`, printed indices: the printed intersection

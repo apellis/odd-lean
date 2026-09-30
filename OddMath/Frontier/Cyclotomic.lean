@@ -131,8 +131,8 @@ theorem supercentral_inverse (n m : ℕ) (hm : 0 < m) :
   have h := elementary_complete_inverse (n+2) m hm
   have h2 := congrArg (fun p => (-1 : ℤ)^((m+1).choose 2) • p) h
   simp only [smul_zero, Finset.smul_sum, smul_smul] at h2
-  simp only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, Subring.coe_mul, eK_val, zK,
-    hK_val, ZeroMemClass.coe_zero, mul_smul_comm, smul_smul]
+  simp only [AddSubmonoidClass.coe_finsetSum, zK,
+    ZeroMemClass.coe_zero, mul_smul_comm, smul_smul]
   rw [← h2]
   apply Finset.sum_congr rfl
   intro k hk
@@ -217,7 +217,7 @@ theorem span_grassmannRelations (n N : ℕ) (hN : n+2 ≤ N) :
       have hR : grassmannRelation n N m ∈ J := TwoSidedIdeal.subset_span ⟨m, hm0, rfl⟩
       rw [grassmannRelation_eq n N m hm0, Finset.sum_range_succ'] at hR
       have hc : ¬ (0 ≤ n+2 ∧ m - 0 ≤ N - (n+2)) := by omega
-      simp only [hc, if_false, Nat.zero_mul, pow_zero, one_smul, eK_zero, one_mul,
+      simp only [Nat.zero_mul, pow_zero, one_smul, eK_zero, one_mul,
         Nat.sub_zero] at hR
       have hrest : (∑ k ∈ Finset.range m, if k+1 ≤ n+2 ∧ m - (k+1) ≤ N - (n+2) then 0 else
           (-1 : ℤ)^((k+1)*(m-(k+1))) • (eK n (k+1) * zK n (m-(k+1)))) ∈ J := by
@@ -369,14 +369,14 @@ theorem lemma_5_1 (n d : ℕ) (y : SkewPolynomial (n+2))
     (hy : x1 n * y = (-1 : ℤ)^d • (y * x1 n)) (k : Fin (n+2)) :
     x1 n * basisB n y k = ∑ i, basisB n y i * (rightMatrix n d i k : SkewPolynomial (n+2)) := by
   by_cases hk : k.val = 0
-  · simp only [basisB, rightMatrix, hk, if_true, Nat.sub_zero]
+  · simp only [basisB, rightMatrix, hk, ite_true, Nat.sub_zero]
     rw [← mul_assoc, ← pow_succ', lemma_5_1_right n d y hy,
       ← Fin.sum_univ_eq_sum_range (fun j => x1 n ^ (n+1-j) * y *
         ((-1 : ℤ)^((j+1)*(d+1)+1) • elementaryPoly (n+2) (j+1)))]
     rfl
   · have hk1 : k.val - 1 < n+2 := by omega
     rw [Finset.sum_eq_single ⟨k.val - 1, hk1⟩]
-    · simp only [basisB, rightMatrix, hk, if_false, show k.val - 1 + 1 = k.val by omega, if_true,
+    · simp only [basisB, rightMatrix, hk, ite_false, show k.val - 1 + 1 = k.val by omega, ite_true,
         OneMemClass.coe_one, mul_one]
       rw [← mul_assoc, ← pow_succ']
       congr 2
@@ -391,7 +391,7 @@ theorem lemma_5_1_span (n d : ℕ) (y : SkewPolynomial (n+2))
     (hy : x1 n * y = (-1 : ℤ)^d • (y * x1 n)) (c : Fin (n+2) → K n) :
     x1 n * ∑ k, basisB n y k * (c k : SkewPolynomial (n+2)) =
       ∑ i, basisB n y i * ((∑ k, rightMatrix n d i k * c k : K n) : SkewPolynomial (n+2)) := by
-  simp only [Finset.mul_sum, AddSubmonoidClass.coe_finset_sum, Subring.coe_mul]
+  simp only [Finset.mul_sum, AddSubmonoidClass.coe_finsetSum, Subring.coe_mul]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro k _
@@ -411,8 +411,7 @@ theorem lemma_5_1_printed_false :
   intro h
   have ht := lemma_5_1 0 0 1 (by simp) 0
   rw [ht, Fin.sum_univ_two, Fin.sum_univ_two] at h
-  simp only [basisB, rightMatrix, printedMatrix, if_true, Fin.val_zero, Fin.val_one,
-    SetLike.val_smul, eK_val] at h
+  simp only [basisB, rightMatrix, printedMatrix, ite_true, Fin.val_zero, Fin.val_one] at h
   norm_num at h
   have e2 : elementaryPoly (0+2) 2 = -(generator (0 : Fin 2) * generator 1) :=
     elementaryPoly_two_two
@@ -494,15 +493,15 @@ def constTerm (N : ℕ) : SkewPolynomial N →+* ℤ where
           · have : a + b ≠ 0 := by
               intro h; apply hb; funext i; have := congrFun h i
               simp only [Pi.add_apply, Pi.zero_apply] at this; show b i = 0; omega
-            simp [this, hb, Ne.symm]
+            simp [this, hb]
         · have : a + b ≠ 0 := by
             intro h; apply ha; funext i; have := congrFun h i
             simp only [Pi.add_apply, Pi.zero_apply] at this; show a i = 0; omega
-          simp [this, ha, Ne.symm]
+          simp [this, ha]
 
 @[simp] theorem constTerm_generator {N : ℕ} (i : Fin N) : constTerm N (generator i) = 0 := by
   change (monomial _ 1 : SkewPolynomial N) 0 = 0
-  rw [monomial, Finsupp.single_apply, if_neg]
+  rw [monomial, Finsupp.single_apply, ite_eq_right]
   intro h
   have := congrFun h i
   simp [OddMath.SkewPolynomial.expSingle] at this
@@ -561,14 +560,14 @@ theorem sub_constTerm_mem (n : ℕ) (x : K n) :
     have h := I.add_mem (ihf (hle hf)) (ihg (hle hg))
     convert h using 1
     apply Subtype.ext
-    simp only [map_add, add_smul, Subring.coe_add, AddSubgroupClass.coe_sub, SetLike.val_smul]
+    simp only [map_add, add_smul, Subring.coe_add, AddSubgroupClass.coe_sub]
     abel
   | neg f hf ihf =>
     intro _
     have h := I.neg_mem (ihf (hle hf))
     convert h using 1
     apply Subtype.ext
-    simp only [map_neg, neg_smul, AddSubgroupClass.coe_sub, SetLike.val_smul, Subring.coe_neg]
+    simp only [map_neg, neg_smul, AddSubgroupClass.coe_sub, Subring.coe_neg]
     abel
   | mul f g hf hg ihf ihg =>
     intro _
@@ -576,8 +575,8 @@ theorem sub_constTerm_mem (n : ℕ) (x : K n) :
       (I.zsmul_mem (constTerm (n+2) f) (ihg (hle hg)))
     convert h using 1
     apply Subtype.ext
-    simp only [map_mul, AddSubgroupClass.coe_sub, SetLike.val_smul, Subring.coe_mul,
-      Subring.coe_add, OneMemClass.coe_one, sub_mul, smul_mul_assoc, one_mul, smul_sub, mul_smul]
+    simp only [map_mul, AddSubgroupClass.coe_sub, Subring.coe_mul,
+      Subring.coe_add, sub_mul, smul_mul_assoc, one_mul, smul_sub, mul_smul]
     abel
 
 /-- The constant term on `OΛ_a`. -/
@@ -638,8 +637,8 @@ theorem eq_5_8_false :
   simp [sq, Matrix.mulVec, dotProduct, Matrix.mul_apply, Fin.sum_univ_two, printedMatrix,
     Pi.single_apply] at h
   have h2 := congrArg (fun k : K 0 => ((k : SkewPolynomial 2)) ![1, 1]) h
-  simp only [Subring.coe_add, Subring.coe_mul, Subring.coe_neg, eK_val, AddSubgroupClass.coe_sub,
-    Finsupp.add_apply, Finsupp.neg_apply, Finsupp.sub_apply] at h2
+  simp only [Subring.coe_neg, eK_val,
+    Finsupp.neg_apply] at h2
   have e2 : elementaryPoly (0+2) 2 = -(generator (0 : Fin 2) * generator 1) :=
     elementaryPoly_two_two
   have h11 : (generator (0 : Fin 2) * generator 1 : SkewPolynomial 2) ![1, 1] = 1 :=
@@ -652,7 +651,7 @@ theorem grassmannRelation_first (n m : ℕ) :
     grassmannRelation n (n+2+m) (m+1) = -zK n (m+1) := by
   rw [grassmannRelation_eq n _ _ (by omega), Finset.sum_range_succ', neg_inj]
   have hc : ¬ (0 ≤ n+2 ∧ m + 1 - 0 ≤ n + 2 + m - (n+2)) := by omega
-  rw [if_neg hc]
+  rw [ite_eq_right hc]
   simp only [Nat.zero_mul, pow_zero, one_smul, eK_zero, one_mul, Nat.sub_zero]
   rw [add_eq_right]
   apply Finset.sum_eq_zero
@@ -666,9 +665,9 @@ theorem grassmannRelation_first (n m : ℕ) :
 theorem grassmannRelation_top (n m : ℕ) :
     grassmannRelation n (n+2+m+1) (n+2+m+1) = (-1 : ℤ)^((n+2)*(m+1)) • (eK n (n+2) * zK n (m+1)) := by
   rw [grassmannRelation, Finset.sum_eq_single (n+2)]
-  · rw [if_pos (by omega), show n + 2 + m + 1 - (n+2) = m+1 by omega]
+  · rw [ite_eq_left (by omega), show n + 2 + m + 1 - (n+2) = m+1 by omega]
   · intro k _ hk
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
   · intro h; exact absurd (Finset.mem_range.mpr (by omega)) h
 
 /-- (5.9), second case, corrected: `f_{a,N-a+1} = -(-1)^{a(N-a+1)} ε_a f_{1,N-a}`
@@ -686,7 +685,7 @@ theorem coeff_e2_h3 :
   rw [elementaryPoly_two_two, completePoly_eq_weakSum]
   simp only [weakSum_succ, weakSum_zero, weakSum_empty, tildeGenerator]
   simp only [gen_eq, mul_one, add_zero, Fin.val_zero, Fin.succ_zero_eq_one, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul,
-    mul_add, add_mul, neg_mul, mul_neg, MonomialReversal.monomial_mul_monomial, Finsupp.add_apply, Finsupp.neg_apply]
+    mul_add, neg_mul, mul_neg, MonomialReversal.monomial_mul_monomial, Finsupp.add_apply, Finsupp.neg_apply]
   simp only [monomial, Finsupp.single_apply]
   decide
 

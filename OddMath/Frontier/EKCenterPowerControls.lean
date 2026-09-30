@@ -85,7 +85,7 @@ local instance (d : ℕ) : Fintype (DegreeShape d) := degreeFintype d
 local instance (d : ℕ) : DecidableEq (DegreeShape d) := Classical.decEq _
 
 def row1 : DegreeShape 1 :=
-  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 
 @[simp] theorem row1_rows : row1.val.rowLens = [1] :=
   by exact YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by simp)

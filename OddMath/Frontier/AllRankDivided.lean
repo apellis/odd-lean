@@ -1,6 +1,6 @@
 import OddMath.Frontier.SignedPermutation
 import OddMath.Frontier.TwistedLeibniz
-import Mathlib.Data.Matrix.Notation
+import Mathlib.LinearAlgebra.Matrix.Notation
 
 /-! # Genuine all-rank odd divided differences
 EKL arXiv:1111.1320v1 §2.1.1 (2.1)–(2.5), pp.3–4.
@@ -42,8 +42,7 @@ theorem freeMatrix_entries (i : Fin (n+1)) (w : FreeAlgebra ℤ (Fin (n+2))) :
     (freeMatrix i w) 1 1 = Ideal.Quotient.mk (relIdeal (n+2)) w := by
   induction w using FreeAlgebra.induction with
   | grade0 r =>
-      simp [Algebra.algebraMap_eq_smul_one, Matrix.one_apply,
-        ← Matrix.diagonal_intCast, Matrix.diagonal_apply]
+      simp [← Matrix.diagonal_intCast]
   | grade1 j =>
       simp [matrixGenerator, SignedPermutation.quotientEval_ι,
         SignedPermutation.epsilon, Equiv.Perm.sign_swap (adjacent_ne i), q]
@@ -61,9 +60,9 @@ theorem matrixGenerator_rel (i : Fin (n+1)) (j k : Fin (n+2)) (h : j ≠ k) :
         (Equiv.swap i.castSucc i.succ k) ((Equiv.swap _ _).injective.ne h)
   · by_cases hjl : j = i.castSucc <;> by_cases hjr : j = i.succ <;>
       by_cases hkl : k = i.castSucc <;> by_cases hkr : k = i.succ <;>
-      simp_all [matrixGenerator, delta, Matrix.mul_apply, Fin.sum_univ_two,
+      simp_all [matrixGenerator, delta,
         Equiv.swap_apply_def, adjacent_ne]
-  · simp [matrixGenerator, Matrix.mul_apply, Fin.sum_univ_two]
+  · simp [matrixGenerator]
   · simpa [matrixGenerator, Matrix.mul_apply, Fin.sum_univ_two] using rel_sum (n+2) j k h
 
 theorem freeMatrix_kill_mem (i : Fin (n+1)) (w : FreeAlgebra ℤ (Fin (n+2)))
@@ -132,7 +131,7 @@ noncomputable def presentedDivided (i : Fin (n+1)) : Presented (n+2) →ₗ[ℤ]
 
 @[simp] theorem presentedDivided_one (i : Fin (n+1)) : presentedDivided i 1 = 0 := by
   change presentedMatrix i 1 0 1 = 0
-  simp [Matrix.one_apply]
+  simp
 
 @[simp] theorem presentedDivided_q (i : Fin (n+1)) (j : Fin (n+2)) :
     presentedDivided i (q (n+2) j) = delta i j := by
@@ -206,7 +205,7 @@ theorem divided_unique (i : Fin (n+1))
 noncomputable def rankTwoLinear : SkewPolynomial 2 →ₗ[ℤ] SkewPolynomial 2 where
   toFun := DividedDifferences.div1
   map_add' := DividedDifferences.div1_add
-  map_smul' c f := (TwistedLeibniz.D.map_zsmul f c)
+  map_smul' c f := (TwistedLeibniz.D.map_zsmul c f)
 
 theorem rankTwo_eq_div1 (f : SkewPolynomial 2) :
     divided (0 : Fin 1) f = DividedDifferences.div1 f := by

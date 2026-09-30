@@ -132,7 +132,7 @@ theorem IsPrimitiveIdem.leftIdeal_indecomposable {e : R} (he : IsPrimitiveIdem e
 `σ_i λ_i` is a primitive idempotent. -/
 theorem splitting_primitive {P e : R} {I : Type*} [Fintype I] [DecidableEq I]
     (S : Splitting P e I) (he : IsPrimitiveIdem e) (i : I) : IsPrimitiveIdem (S.σ i * S.lam i) :=
-  he.transfer (by rw [S.orth, if_pos rfl]) (S.mul_lam i)
+  he.transfer (by rw [S.orth, ite_eq_left rfl]) (S.mul_lam i)
 
 end Primitive
 
@@ -322,8 +322,8 @@ theorem onhToKer_projE :
   subst hm
   have ht : t 0 = c := by
     rw [Fin.sum_univ_one] at hg
-    have := congrArg (fun p : LaurentPolynomial ℤ => p (t 0)) hg
-    simp only [LaurentPolynomial.T_apply, if_true] at this
+    have := congrArg (fun p : LaurentPolynomial ℤ => p.coeff (t 0)) hg
+    simp only [LaurentPolynomial.T_apply, ite_true] at this
     split_ifs at this with hc
     · exact hc.symm
     · exact absurd this one_ne_zero
@@ -402,8 +402,8 @@ theorem projE_equiv_iff (k k' : ℤ) : projE n k ≈ projE n k' ↔ k = k' := by
   · intro h
     have h1 := congrArg (onhK0Equiv n) (K0.of_eq h)
     rw [onhK0Equiv_projE', onhK0Equiv_projE', ← T_add, ← T_add] at h1
-    have := congrArg (fun p : LaurentPolynomial ℤ => p (k + -(2 * (((n+2).choose 2 : ℕ) : ℤ)))) h1
-    simp only [LaurentPolynomial.T_apply, if_true] at this
+    have := congrArg (fun p : LaurentPolynomial ℤ => p.coeff (k + -(2 * (((n+2).choose 2 : ℕ) : ℤ)))) h1
+    simp only [LaurentPolynomial.T_apply, ite_true] at this
     split_ifs at this with hc
     · omega
     · exact absurd this one_ne_zero
@@ -426,7 +426,7 @@ def rowModule (e : Matrix ι ι R) : Submodule R (ι → R) where
   zero_mem' := zero_vecMul e
   smul_mem' r x hx := by
     change vecMul (r • x) e = r • x
-    rw [vecMul_smul, hx]
+    rw [smul_vecMul, hx]
 
 theorem mem_rowModule {e : Matrix ι ι R} {x : ι → R} : x ∈ rowModule e ↔ vecMul x e = x := Iff.rfl
 
@@ -441,7 +441,7 @@ def rowMap {e : Matrix ι ι R} {f : Matrix κ κ R} (u : Matrix ι κ R) (hf : 
         _ = u := by rw [Matrix.mul_assoc, hf, hu]
     rw [mem_rowModule, vecMul_vecMul, huf]⟩
   map_add' x y := Subtype.ext (add_vecMul _ _ _)
-  map_smul' r x := Subtype.ext (vecMul_smul _ _ _)
+  map_smul' r x := Subtype.ext (smul_vecMul _ _ _)
 
 /-- A Murray–von Neumann equivalence of idempotent matrices gives an isomorphism of the left
 modules `R^ι e ≅ R^κ f`. -/

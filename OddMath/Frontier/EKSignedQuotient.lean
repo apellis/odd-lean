@@ -21,7 +21,7 @@ def twist (n : ℕ) : A →ₗ[ℤ] A :=
 theorem parts_sum (w : W) : (∑ i, parts w i) = degree w := by
   rw [← List.sum_ofFn]
   congr 1
-  exact List.ext_get (by simp [parts]) (by intro i h₁ h₂; simp [parts])
+  exact List.ext_get (by simp ) (by intro i h₁ h₂; simp [parts])
 
 theorem pairing_degree_zero (v w : W) (h : degree v ≠ degree w) :
     pairing (wordBasis v) (wordBasis w) = 0 := by
@@ -62,13 +62,12 @@ theorem tensorMul_basis_tmul (a b : W) (x y : A) :
     induction y using basis_induction wordBasis with
     | hz => simp
     | ha y z hy hz => simp only [TensorProduct.tmul_add, tensorMul_add_right,
-        map_add, mul_add, hy, hz]
+        mul_add, hy, hz]
     | hb d s =>
       simp only [map_smul, twist_basis, mul_smul_comm, TensorProduct.smul_tmul,
         TensorProduct.tmul_smul, tensorMul_smul_right]
       rw [← tensorBasis_apply, tensorMul_basis]
-      simp only [tensorBasis_apply, wordBasis_mul, Prod.fst, Prod.snd,
-        TensorProduct.smul_tmul, TensorProduct.tmul_smul, smul_smul]
+      simp only [tensorBasis_apply, wordBasis_mul, smul_smul]
       rw [Nat.mul_comm (degree c) (degree b)]
 
 /-- Multiply a basis tensor on the right; y crosses the first right factor. -/
@@ -78,7 +77,7 @@ theorem tensorMul_tmul_basis (x y : A) (c d : W) :
   induction x using basis_induction wordBasis with
   | hz => simp
   | ha x z hx hz => simp only [TensorProduct.add_tmul, tensorMul_add_left,
-      map_add, add_mul, hx, hz]
+      add_mul, hx, hz]
   | hb a r =>
     induction y using basis_induction wordBasis with
     | hz => simp
@@ -88,8 +87,7 @@ theorem tensorMul_tmul_basis (x y : A) (c d : W) :
       simp only [map_smul, twist_basis, smul_mul_assoc, TensorProduct.smul_tmul,
         TensorProduct.tmul_smul, tensorMul_smul_left]
       rw [← tensorBasis_apply, tensorMul_basis]
-      simp only [tensorBasis_apply, wordBasis_mul, Prod.fst, Prod.snd,
-        TensorProduct.smul_tmul, TensorProduct.tmul_smul, smul_smul]
+      simp only [tensorBasis_apply, wordBasis_mul, smul_smul]
       congr 1
       ring
 
@@ -103,14 +101,12 @@ theorem kills_tensor_kernel {M : Type*} [AddCommGroup M] [Module ℤ M]
     apply sup_le
     · rintro _ ⟨t, rfl⟩
       change f (TensorProduct.map (radical.restrictScalars ℤ).subtype LinearMap.id t) = 0
-      induction t using TensorProduct.induction_on with
-      | zero => simp
+      induction t using TensorProduct.inductionOn with
       | tmul x y => simpa using h₁ x x.property y
       | add a b ha hb => simp only [map_add, ha, hb, add_zero]
     · rintro _ ⟨t, rfl⟩
       change f (TensorProduct.map LinearMap.id (radical.restrictScalars ℤ).subtype t) = 0
-      induction t using TensorProduct.induction_on with
-      | zero => simp
+      induction t using TensorProduct.inductionOn with
       | tmul x y => simpa using h₂ y y.property x
       | add a b ha hb => simp only [map_add, ha, hb, add_zero]
   exact hle ((quotientTensorMap_eq_zero_iff z).mp hz)
@@ -155,8 +151,7 @@ theorem tensor_kernel_mul_left {z : T} (hz : quotientTensorMap z = 0) (y : T) :
 
 theorem quotientTensorMap_surjective : Function.Surjective quotientTensorMap := by
   intro z
-  induction z using TensorProduct.induction_on with
-  | zero => exact ⟨0, map_zero _⟩
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     obtain ⟨a, rfl⟩ := pi_surjective x
     obtain ⟨b, rfl⟩ := pi_surjective y

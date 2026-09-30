@@ -157,12 +157,12 @@ def toH : Sym →ₗ[ℤ] Sym :=
     (fun β => ∑ ν : DegreeShape β.card, K β.card ν ⟨β, rfl⟩ • hE ν.val)
 
 theorem toS_hE (β : YoungDiagram) : toS (hE β) = sE β := by
-  rw [← hBasisOne_eq, toS, Basis.constr_basis]
+  rw [← hBasisOne_eq, toS, Module.Basis.constr_basis]
 
 theorem toH_hE (d : ℕ) (β : DegreeShape d) :
     toH (hE β.val) = ∑ ν : DegreeShape d, K d ν β • hE ν.val := by
   obtain ⟨β, rfl⟩ := β
-  rw [← hBasisOne_eq, toH, Basis.constr_basis]
+  rw [← hBasisOne_eq, toH, Module.Basis.constr_basis]
 
 theorem toS_toH (x : Sym) : toS (toH x) = x := by
   have : toS ∘ₗ toH = LinearMap.id := by
@@ -185,13 +185,13 @@ theorem toH_toS (x : Sym) : toH (toS x) = x := by
 
 /-- `h_β ↦ s_β` as a linear automorphism of `Λ₁`. -/
 def toSEquiv : Sym ≃ₗ[ℤ] Sym :=
-  LinearEquiv.ofLinear toS toH (LinearMap.ext toS_toH) (LinearMap.ext toH_toS)
+  LinearEquiv.ofLinearMap toS toH (LinearMap.ext toS_toH) (LinearMap.ext toH_toS)
 
 /-- The even Schur functions form a `ℤ`-basis of `Λ₁`. -/
-def sBasisE : Basis YoungDiagram ℤ Sym := (EKGeneralQ.hBasisOne (k := ℤ)).map toSEquiv
+def sBasisE : Module.Basis YoungDiagram ℤ Sym := (EKGeneralQ.hBasisOne (k := ℤ)).map toSEquiv
 
 @[simp] theorem sBasisE_apply (lam : YoungDiagram) : sBasisE lam = sE lam := by
-  rw [sBasisE, Basis.map_apply, hBasisOne_eq]
+  rw [sBasisE, Module.Basis.map_apply, hBasisOne_eq]
   exact toS_hE lam
 
 /-- The even Littlewood–Richardson coefficient `c^λ_{μν}` (E §4.1, p.12): the coefficient of
@@ -215,7 +215,7 @@ open EKRskBijection (kostka0 compContent)
 theorem kostka0_eq_zero_of_card {m : ℕ} (la : YoungDiagram) (f : Fin m → ℕ)
     (h : la.card ≠ ∑ i, f i) : kostka0 la f = 0 := by
   unfold kostka0
-  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
   intro T hT
   rw [mem_tableauxOfContent] at hT
   have := content_total T
@@ -273,14 +273,17 @@ theorem exists_perm_of_ofFn_perm {n : ℕ} (f g : Fin n → ℕ)
   have hf := (Tuple.sort f).ofFn_comp_perm f
   have hg := (Tuple.sort g).ofFn_comp_perm g
   have hs : List.ofFn (f ∘ Tuple.sort f) = List.ofFn (g ∘ Tuple.sort g) :=
-    List.eq_of_perm_of_sorted (hf.trans (h.trans hg.symm))
-      (List.sorted_le_ofFn_iff.mpr (Tuple.monotone_sort f))
-      (List.sorted_le_ofFn_iff.mpr (Tuple.monotone_sort g))
+    List.Perm.eq_of_pairwise'
+      (List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort f)).pairwise
+      (List.sortedLE_ofFn_iff.mpr (Tuple.monotone_sort g)).pairwise
+      (hf.trans (h.trans hg.symm))
   have he := List.ofFn_injective hs
   refine ⟨Tuple.sort f * (Tuple.sort g)⁻¹, ?_⟩
   funext i
   have := congrFun he ((Tuple.sort g)⁻¹ i)
-  simp only [Function.comp_apply, Equiv.Perm.apply_inv_self] at this
+  simp only [Function.comp_apply] at this
+  rw [show (Tuple.sort g) ((Tuple.sort g)⁻¹ i) = i from
+    (Tuple.sort g).apply_symm_apply i] at this
   simp only [Function.comp_apply, Equiv.Perm.coe_mul]
   exact this.symm
 
@@ -331,7 +334,7 @@ theorem W0_zero (lam : YoungDiagram) : W0 mu c 0 lam = if lam = mu then 1 else 0
     exact h2 (shapeContent_apply_gt mu h1)
   by_cases hl : lam = mu
   · subst hl
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     have hcan : ∀ T : MF lam c 0 lam, T.1 = TableauDominance.canonicalTableau lam := by
       intro T
       apply ext_cells
@@ -343,12 +346,12 @@ theorem W0_zero (lam : YoungDiagram) : W0 mu c 0 lam = if lam = mu then 1 else 0
       refine ⟨⟨le_rfl, fun i j h => ?_, fun i j h h' => absurd h h'⟩, ?_⟩
       · exact TableauDominance.canonical_entry (p := (i, j)) (by simpa using h)
       · rw [TableauDominance.content_canonical, hc0]
-    letI : Unique (MF lam c 0 lam) :=
+    let : Unique (MF lam c 0 lam) :=
       { default := ⟨_, hmem⟩
         uniq := fun T => Subtype.ext (hcan T) }
     rw [W0, Fintype.card_unique]
-  · rw [if_neg hl, W0]
-    haveI : IsEmpty (MF mu c 0 lam) := ⟨fun T => hl (hshape T)⟩
+  · rw [ite_eq_right hl, W0]
+    have : IsEmpty (MF mu c 0 lam) := ⟨fun T => hl (hshape T)⟩
     exact Fintype.card_eq_zero
 
 /-- Fibres of `T_S` are skew tableaux (`OddLRRule.mfEquiv`). -/
@@ -406,16 +409,15 @@ theorem prefixContent_snocC (β : YoungDiagram) (k : ℕ) :
   unfold prefixContent
   apply Finset.sum_congr rfl
   intro i hi
-  rw [snocC, if_neg (by have := Finset.mem_range.mp hi; omega)]
+  rw [snocC, ite_eq_right (by have := Finset.mem_range.mp hi; omega)]
 
 theorem prefixDegree_snocC (β : YoungDiagram) (k : ℕ) :
     prefixDegree (snocC β k) (β.colLen 0) = β.card := by
   have h := congrArg (fun f : ℕ →₀ ℕ => f.sum (fun _ n => n)) (prefixContent_snocC β k)
-  simp only at h
   rw [← TableauDominance.content_canonical, content_total] at h
   rw [← h]
   unfold prefixContent prefixDegree
-  rw [← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+  rw [← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
   simp only [Finsupp.sum_single_index (h := fun _ n : ℕ => n) rfl]
 
 theorem compContent_snocC (β : YoungDiagram) (k : ℕ) :
@@ -430,24 +432,24 @@ theorem ofFn_snocC (β : YoungDiagram) (k : ℕ) :
   congr 1
   · apply List.ext_getElem (by simp)
     intro i h1 h2
-    simp only [List.getElem_ofFn, Fin.coe_castSucc, YoungDiagram.get_rowLens]
+    simp only [List.getElem_ofFn, Fin.val_castSucc, YoungDiagram.get_rowLens]
     simp only [List.length_ofFn] at h1
-    rw [snocC, if_neg (by omega), rowC]
+    rw [snocC, ite_eq_right (by omega), rowC]
     rfl
   · simp [snocC]
 
 /-- The row lengths of `β ∪ (k)`: `k` inserted into the row lengths of `β`. -/
 def insRows (β : YoungDiagram) (k : ℕ) : List ℕ := β.rowLens.orderedInsert (· ≥ ·) k
 
-theorem insRows_sorted (β : YoungDiagram) (k : ℕ) : (insRows β k).Sorted (· ≥ ·) :=
-  List.Sorted.orderedInsert k _ β.rowLens_sorted
+theorem insRows_sorted (β : YoungDiagram) (k : ℕ) : (insRows β k).Pairwise (· ≥ ·) :=
+  List.Pairwise.orderedInsert k _ β.rowLens_sorted.pairwise
 
 theorem insRows_perm (β : YoungDiagram) (k : ℕ) : (insRows β k).Perm (β.rowLens ++ [k]) :=
   (List.perm_orderedInsert _ k _).trans (List.perm_append_singleton k _).symm
 
 /-- The partition `β ∪ (k)`. -/
 def insShape (β : YoungDiagram) (k : ℕ) : YoungDiagram :=
-  YoungDiagram.ofRowLens (insRows β k) (insRows_sorted β k)
+  YoungDiagram.ofRowLens (insRows β k) (insRows_sorted β k).sortedGE
 
 theorem insShape_rowLens (β : YoungDiagram) {k : ℕ} (hpos : 0 < k) :
     (insShape β k).rowLens = insRows β k := by
@@ -458,7 +460,7 @@ theorem insShape_rowLens (β : YoungDiagram) {k : ℕ} (hpos : 0 < k) :
   · rw [List.mem_singleton.mp h]; exact hpos
 
 theorem insShape_card (β : YoungDiagram) (k : ℕ) : (insShape β k).card = β.card + k := by
-  rw [insShape, EKPartitionSpanning.card_ofRowLens, (insRows_perm β k).sum_eq, List.sum_append,
+  rw [insShape, EKPartitionSpanning.card_ofRowLens _ (insRows_sorted β k), (insRows_perm β k).sum_eq, List.sum_append,
     EKIntegralBases.rowLens_sum]
   simp
 
@@ -497,7 +499,7 @@ theorem K_insShape (d k : ℕ) (hpos : 0 < k) (β : DegreeShape d) (w : DegreeSh
   have hm : mdeg ⊥ (snocC β.val k) (β.val.colLen 0) = d := by
     rw [mdeg_bot, prefixDegree_snocC, β.property]
   have hm' : mdeg ⊥ (snocC β.val k) (β.val.colLen 0 + 1) = d + k := by
-    rw [mdeg_bot, prefixDegree_succ, prefixDegree_snocC, β.property, snocC, if_pos rfl]
+    rw [mdeg_bot, prefixDegree_succ, prefixDegree_snocC, β.property, snocC, ite_eq_left rfl]
   have := W0_succ (mu := ⊥) (c := snocC β.val k) (β.val.colLen 0) ⟨w.val, w.property.trans hm'.symm⟩
   rw [this]
   rw [sum_degreeShape_eq hm (fun u => if Horizontal u w.val then
@@ -512,9 +514,9 @@ theorem sE_mul_hk (d k : ℕ) (α : DegreeShape d) :
   rcases Nat.eq_zero_or_pos k with rfl | hpos
   · rw [hk_zero, mul_one]
     rw [Fintype.sum_eq_single (α := DegreeShape (d + 0)) ⟨α.val, α.property⟩]
-    · rw [if_pos ⟨subset_refl _, fun p hp => by simp at hp⟩]
+    · rw [ite_eq_left ⟨subset_refl _, fun p hp => by simp at hp⟩]
     · intro w hw
-      rw [if_neg]
+      rw [ite_eq_right]
       intro hh
       apply hw
       apply Subtype.ext

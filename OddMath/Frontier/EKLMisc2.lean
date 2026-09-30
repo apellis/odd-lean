@@ -31,7 +31,7 @@ open FiniteCompleteElementary ElementaryGeneration ElementaryBasis
 each degree piece of `OΛ_a`, `a = n+2` (EKL Prop 2.2; `ElementaryBasis.gradedBasis`). The index
 `r ∈ Index a d` is a partition of `d` with at most `a` rows; the factors are its column heights. -/
 theorem elementary_basis (n d : ℕ) :
-    ∃ b : Basis (Index (n+2) d) ℤ (degreePiece n d), ∀ r,
+    ∃ b : Module.Basis (Index (n+2) d) ℤ (degreePiece n d), ∀ r,
       (b r : SkewPolynomial (n+2)) = elementaryWord (n+2) (columns r.1) ∧
         (columns r.1).sum = d ∧ ∀ k ∈ columns r.1, 1 ≤ k ∧ k ≤ n+2 :=
   ⟨gradedBasis n d, fun r => ⟨gradedBasis_apply n d r, (columns_sum r.1 r.2.1).trans r.2.2,
@@ -67,7 +67,7 @@ theorem complete_parts_not_linearIndependent :
   apply h.injective
   have e1 : partThree.parts.sort (· ≥ ·) = [3] := Multiset.sort_singleton _ _
   have e2 : partOneOneOne.parts.sort (· ≥ ·) = [1, 1, 1] := by
-    show Multiset.sort _ (1 ::ₘ 1 ::ₘ {1}) = _
+    show Multiset.sort (1 ::ₘ 1 ::ₘ {1}) _ = _
     rw [Multiset.sort_cons _ _ _ (by simp), Multiset.sort_cons _ _ _ (by simp),
       Multiset.sort_singleton]
   simp only [completePart, e1, e2, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil,
@@ -76,7 +76,7 @@ theorem complete_parts_not_linearIndependent :
 
 /-- Hence no basis of the degree-3 piece of `OΛ_2` consists of the `h_λ`, `λ ⊢ 3`. -/
 theorem complete_parts_not_basis :
-    ¬ ∃ b : Basis (Nat.Partition 3) ℤ (degreePiece 0 3),
+    ¬ ∃ b : Module.Basis (Nat.Partition 3) ℤ (degreePiece 0 3),
       ∀ l, (b l : SkewPolynomial 2) = completePart 2 l := by
   rintro ⟨b, hb⟩
   apply complete_parts_not_linearIndependent
@@ -135,8 +135,8 @@ theorem completeFamily_linearIndependent : LinearIndependent ℤ completeFamily 
   have hne := rowsThreeZero_ne_rowsTwoOne
   have h1 := congrArg (fun x => (gradedBasis 0 3).repr x rowsThreeZero) hst
   have h2 := congrArg (fun x => (gradedBasis 0 3).repr x rowsTwoOne) hst
-  simp only [map_add, map_smul, Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
-    Finsupp.single_apply, if_pos, hne, hne.symm, if_false, map_zero, Finsupp.coe_zero,
+  simp only [map_add, map_smul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
+    Finsupp.single_apply, ite_eq_left, hne, hne.symm, ite_false, map_zero, Finsupp.coe_zero,
     Pi.zero_apply, smul_eq_mul, mul_one, mul_zero, add_zero, zero_add] at h1 h2
   omega
 
@@ -156,19 +156,19 @@ theorem completeFamily_span : ⊤ ≤ Submodule.span ℤ (Set.range completeFami
 in the smallest case where not all partitions qualify: `a = 2`, degree `3`. The degree-3 piece of
 `OΛ_2` has the `ℤ`-basis `h_{(2,1)}, h_{(1,1,1)}`, and `h_{(1,1,1)} = h_{(3)}`. -/
 theorem complete_basis_rank_two :
-    ∃ b : Basis (Fin 2) ℤ (degreePiece 0 3),
+    ∃ b : Module.Basis (Fin 2) ℤ (degreePiece 0 3),
       (b 0 : SkewPolynomial 2) = completePoly 2 2 * completePoly 2 1 ∧
       (b 1 : SkewPolynomial 2) = completePoly 2 1 * completePoly 2 1 * completePoly 2 1 ∧
       (b 1 : SkewPolynomial 2) = completePoly 2 3 := by
   have e1 : ((completeFamily 1 : degreePiece 0 3) : SkewPolynomial 2) =
       completePoly 2 1 * completePoly 2 1 * completePoly 2 1 := by
     rw [completeFamily_one, gradedBasis_threeZero, EKLSectionTwo.complete_one]
-  refine ⟨Basis.mk completeFamily_linearIndependent completeFamily_span, ?_, ?_, ?_⟩
-  · rw [Basis.mk_apply, completeFamily_zero, Submodule.coe_add,
+  refine ⟨Module.Basis.mk completeFamily_linearIndependent completeFamily_span, ?_, ?_, ?_⟩
+  · rw [Module.Basis.mk_apply, completeFamily_zero, Submodule.coe_add,
       gradedBasis_threeZero, gradedBasis_twoOne, EKLSectionTwo.complete_two,
       EKLSectionTwo.complete_one, add_mul]
-  · rw [Basis.mk_apply, e1]
-  · rw [Basis.mk_apply, e1, complete_three_rank_two]
+  · rw [Module.Basis.mk_apply, e1]
+  · rw [Module.Basis.mk_apply, e1, complete_three_rank_two]
 
 end Bases
 
@@ -212,12 +212,12 @@ noncomputable def squareMonomial : Multiplicative ((Fin N) →₀ ℕ) →* Skew
 
 /-- `ℤ[y_1, …, y_N] → OPol_N`, `y_i ↦ x_i²`. -/
 noncomputable def squares : MvPolynomial (Fin N) ℤ →ₐ[ℤ] SkewPolynomial N :=
-  AddMonoidAlgebra.lift ℤ ((Fin N) →₀ ℕ) (SkewPolynomial N) (squareMonomial N)
+  AddMonoidAlgebra.lift ℤ (SkewPolynomial N) ((Fin N) →₀ ℕ) (squareMonomial N)
 
 theorem squares_monomial (m : (Fin N) →₀ ℕ) (c : ℤ) :
     squares N (MvPolynomial.monomial m c) = monomial (fun i => 2 * m i) c := by
-  show AddMonoidAlgebra.lift ℤ ((Fin N) →₀ ℕ) (SkewPolynomial N) (squareMonomial N)
-    (Finsupp.single m c) = _
+  show AddMonoidAlgebra.lift ℤ (SkewPolynomial N) ((Fin N) →₀ ℕ) (squareMonomial N)
+    (AddMonoidAlgebra.single m c) = _
   rw [AddMonoidAlgebra.lift_single]
   show c • monomial _ 1 = _
   rw [Finsupp.smul_single, smul_eq_mul, mul_one]
@@ -239,7 +239,7 @@ theorem squares_central (p : MvPolynomial (Fin N) ℤ) (x : SkewPolynomial N) :
   | add p q hp hq => rw [map_add, add_mul, mul_add, hp, hq]
 
 /-- `OPol_N` as an algebra over `ℤ[y_1, …, y_N]` through `squares`. -/
-noncomputable def squaresAlgebra : Algebra (MvPolynomial (Fin N) ℤ) (SkewPolynomial N) :=
+@[instance_reducible] noncomputable def squaresAlgebra : Algebra (MvPolynomial (Fin N) ℤ) (SkewPolynomial N) :=
   (squares N).toRingHom.toAlgebra' fun p x => squares_central N p x
 
 attribute [local instance] squaresAlgebra
@@ -264,7 +264,7 @@ theorem squares_span :
         mul_one]
       congr 1
       funext i
-      simp only [Pi.add_apply, m, ε, Finsupp.equivFunOnFinite_symm_apply_toFun]
+      simp only [Pi.add_apply, m, ε, Finsupp.equivFunOnFinite_symm_apply_apply]
       omega
     rw [e]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨ε, rfl⟩)
@@ -281,7 +281,7 @@ theorem left_noetherian : IsNoetherianRing (SkewPolynomial N) :=
 
 /-- EKL p. 4: `OPol_N` is right Noetherian. -/
 theorem right_noetherian : IsNoetherianRing (SkewPolynomial N)ᵐᵒᵖ := by
-  haveI : IsNoetherian (MvPolynomial (Fin N) ℤ) (SkewPolynomial N)ᵐᵒᵖ :=
+  have : IsNoetherian (MvPolynomial (Fin N) ℤ) (SkewPolynomial N)ᵐᵒᵖ :=
     isNoetherian_of_linearEquiv (MulOpposite.opLinearEquiv (MvPolynomial (Fin N) ℤ))
   exact isNoetherian_of_tower (MvPolynomial (Fin N) ℤ) inferInstance
 

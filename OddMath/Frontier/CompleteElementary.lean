@@ -55,7 +55,7 @@ theorem elementary_complete_inverse (n : ℕ) :
     ∑ k : Fin (n + 2), ekSign k * elementary k * h (n + 1 - k) = 0 := by
   simp only [sign_elementary]
   rw [Fin.sum_univ_castSucc]
-  simp only [Fin.coe_castSucc, Fin.val_last, Nat.sub_self, h_zero, mul_one]
+  simp only [Fin.val_castSucc, Fin.val_last, Nat.sub_self, h_zero, mul_one]
   rw [inverseCoeff]
   exact add_neg_cancel _
 
@@ -106,7 +106,7 @@ theorem composition_complete (α : List ℕ) (hp : ∀ a ∈ α, 0 < a) :
     refine ⟨⟨α.sum, by omega⟩, Finset.mem_univ _, ?_⟩
     apply Finset.mem_image.mpr
     refine ⟨α, hh, ?_⟩
-    simp only [Fin.val_mk]
+    simp only
     congr 2
     omega
 

@@ -162,7 +162,7 @@ theorem printed_complete_two_two_false (n : ℕ) :
     have := sub_eq_zero.mpr hp
     rw [← this]; module
   have hc := congrArg (fun f : SkewPolynomial (n+2) => f (columnExponent (n+2) [2, 1, 1])) h4
-  dsimp only at hc
+
   rw [Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply,
     ← elementaryWord_three] at hc
   exact word_coeff_unit (n+2) [2, 1, 1] (by simp) (by linarith)
@@ -287,10 +287,10 @@ theorem below_mem {c : ℕ} {I : Finset (Fin (n+4))}
   classical
   have hle : r n (t.val - 1) (by omega) ≤ t := Fin.le_def.mpr (by simp)
   have := hA hle
-  simp only [increment, column, ht, if_true, r_val] at this
+  simp only [increment, column, ht, ite_true, r_val] at this
   by_contra hne
-  rw [if_neg hne] at this
-  split_ifs at this <;> (try simp only [r_val] at *) <;> omega
+  rw [ite_eq_right hne] at this
+  split_ifs at this <;> omega
 
 theorem top_mem {c : ℕ} {I : Finset (Fin (n+4))}
     (hA : Antitone (increment (column (n+2) c).val I)) (t : Fin (n+4)) (ht : t ∈ I)
@@ -298,10 +298,10 @@ theorem top_mem {c : ℕ} {I : Finset (Fin (n+4))}
   classical
   have hle : r n 0 (by omega) ≤ t := Fin.le_def.mpr (by simp)
   have := hA hle
-  simp only [increment, column, ht, if_true, r_val] at this
+  simp only [increment, column, ht, ite_true, r_val] at this
   by_contra hne
-  rw [if_neg hne] at this
-  split_ifs at this <;> (try simp only [r_val] at *) <;> omega
+  rw [ite_eq_right hne] at this
+  split_ifs at this <;> omega
 
 variable (n)
 
@@ -354,7 +354,7 @@ theorem strip_column_two (I : Finset (Fin (n+4))) :
     · refine ⟨Finset.card_pair (by simp [Fin.ext_iff]), fun i j hij => ?_⟩
       have hij' : i.val ≤ j.val := hij
       simp only [increment, column, Finset.mem_insert, Finset.mem_singleton, Fin.ext_iff, r_val]
-      split_ifs <;> (try simp only [r_val] at *) <;> omega
+      split_ifs <;> omega
 
 theorem strip_column_three (I : Finset (Fin (n+4))) :
     (I.card = 1 ∧ Antitone (increment (column (n+2) 3).val I)) ↔
@@ -381,7 +381,7 @@ theorem strip_column_three (I : Finset (Fin (n+4))) :
     · refine ⟨Finset.card_singleton _, fun i j hij => ?_⟩
       have hij' : i.val ≤ j.val := hij
       simp only [increment, column, Finset.mem_singleton, Fin.ext_iff, r_val]
-      split_ifs <;> (try simp only [r_val] at *) <;> omega
+      split_ifs <;> omega
 
 /-- Proposition 2.26 for `s₁₁ · s₁₁`: `s₁₁s₁₁ = -s₂₂ - s₂₁₁ + s₁₁₁₁`. -/
 theorem pieri_eleven_eleven :
@@ -483,7 +483,7 @@ theorem printed_schur_two_two_false :
       (4 : ℤ) • elementaryPoly (n+4) 4 = 0 := by
     rw [← sub_eq_zero.mpr hp.symm]; module
   have hc := congrArg (fun f : SkewPolynomial (n+4) => f (columnExponent (n+4) [2, 2])) h0
-  dsimp only at hc
+
   rw [Finsupp.sub_apply, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul,
     Finsupp.coe_zero, Pi.zero_apply, ← elementaryWord_two, ← elementaryWord_one] at hc
   have hlt : toLex (columnExponent (n+4) [4]) < toLex (columnExponent (n+4) [2, 2]) := by
@@ -501,7 +501,7 @@ theorem printed_schur_two_two_false_neg :
   have h0 : (2 : ℤ) • (elementaryPoly (n+4) 3 * elementaryPoly (n+4) 1) = 0 := by
     rw [← sub_eq_zero.mpr hp]; module
   have hc := congrArg (fun f : SkewPolynomial (n+4) => f (columnExponent (n+4) [3, 1])) h0
-  dsimp only at hc
+
   rw [Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply,
     ← elementaryWord_two] at hc
   exact word_coeff_unit (n+4) [3, 1] (by simp) (by linarith)

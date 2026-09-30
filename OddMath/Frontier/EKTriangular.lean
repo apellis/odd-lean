@@ -10,8 +10,8 @@ open EKRadicalQuotient EKElementaryQuotient EKPartitionSpanning EKIntegralBases
 def normal (w : List ℕ) : List ℕ :=
   (w.filter (· != 0)).insertionSort (· ≥ ·)
 
-theorem normal_sorted (w : List ℕ) : (normal w).Sorted (· ≥ ·) :=
-  List.sorted_insertionSort _ _
+theorem normal_sorted (w : List ℕ) : (normal w).Pairwise (· ≥ ·) :=
+  List.pairwise_insertionSort _ _
 
 theorem normal_positive (w : List ℕ) : ∀ a ∈ normal w, 0 < a := by
   intro a ha
@@ -19,7 +19,7 @@ theorem normal_positive (w : List ℕ) : ∀ a ∈ normal w, 0 < a := by
   omega
 
 theorem normal_perm {w v : List ℕ} (hp : w.Perm v) : normal w = normal v := by
-  apply List.eq_of_perm_of_sorted _ (normal_sorted w) (normal_sorted v)
+  apply List.Perm.eq_of_pairwise' (normal_sorted w) (normal_sorted v)
   exact (List.perm_insertionSort _ _).trans
     ((hp.filter _).trans (List.perm_insertionSort _ _).symm)
 
@@ -104,24 +104,24 @@ theorem normal_sum (w : List ℕ) : (normal w).sum = w.sum := by
   rw [normal, (List.perm_insertionSort _ _).sum_eq]
   exact (erase_zeros false w).2
 
-def shape (w : List ℕ) : YoungDiagram := YoungDiagram.ofRowLens (normal w) (normal_sorted w)
+def shape (w : List ℕ) : YoungDiagram := YoungDiagram.ofRowLens (normal w) (normal_sorted w).sortedGE
 @[simp] theorem shape_rows (w : List ℕ) : (shape w).rowLens = normal w :=
   YoungDiagram.rowLens_ofRowLens_eq_self (normal_positive w)
 @[simp] theorem shape_card (w : List ℕ) : (shape w).card = w.sum := by
-  rw [shape, card_ofRowLens, normal_sum]
+  rw [shape, card_ofRowLens _ (normal_sorted w), normal_sum]
 
-theorem normal_of_sorted {w : List ℕ} (hw : w.Sorted (· ≥ ·)) :
+theorem normal_of_sorted {w : List ℕ} (hw : w.Pairwise (· ≥ ·)) :
     normal w = w.filter (· != 0) := (hw.filter _).insertionSort_eq
 
 theorem normal_partition (μ : YoungDiagram) : normal μ.rowLens = μ.rowLens := by
-  rw [normal_of_sorted μ.rowLens_sorted]
+  rw [normal_of_sorted μ.rowLens_sorted.pairwise]
   apply List.filter_eq_self.mpr
   intro a ha
   have hp := μ.pos_of_mem_rowLens a ha
   simp only [bne_iff_ne, ne_eq]
   omega
 
-theorem sorted_word_shape {w : List ℕ} (hw : w.Sorted (· ≥ ·)) :
+theorem sorted_word_shape {w : List ℕ} (hw : w.Pairwise (· ≥ ·)) :
     word false w = hPartition (shape w) := by
   change word false w = word false (shape w).rowLens
   rw [shape_rows, normal_of_sorted hw, (erase_zeros false w).1]
@@ -168,7 +168,7 @@ def invExp : List ℕ → ℕ
   | [] => 0
   | a::w => (w.map (cross a)).sum + invExp w
 
-theorem invExp_sorted {w : List ℕ} (hw : w.Sorted (· ≥ ·)) : invExp w=0 := by
+theorem invExp_sorted {w : List ℕ} (hw : w.Pairwise (· ≥ ·)) : invExp w=0 := by
   induction w with
   | nil => rfl
   | cons a w ih =>
@@ -176,7 +176,7 @@ theorem invExp_sorted {w : List ℕ} (hw : w.Sorted (· ≥ ·)) : invExp w=0 :=
     apply List.sum_eq_zero
     intro x hx
     obtain ⟨b,hb,rfl⟩ := List.mem_map.mp hx
-    have hab := List.rel_of_sorted_cons hw b hb
+    have hab := List.rel_of_pairwise_cons hw hb
     simp [cross, show ¬ a<b from by omega]
 
 theorem invExp_swap (p q : List ℕ) {a b : ℕ} (hab : a<b) :
@@ -184,7 +184,7 @@ theorem invExp_swap (p q : List ℕ) {a b : ℕ} (hab : a<b) :
   induction p with
   | nil =>
     simp only [List.nil_append, invExp, List.map_cons, List.sum_cons]
-    simp only [cross, hab, show ¬ b<a from by omega, if_true, if_false]
+    simp only [cross, hab, show ¬ b<a from by omega, ite_true, ite_false]
     omega
   | cons c p ih =>
     simp only [List.cons_append, invExp, List.map_append, List.sum_append,
@@ -288,10 +288,10 @@ theorem invExp_append_singleton (w : List ℕ) (a : ℕ) :
 
 theorem cross_parity (a b : ℕ) (hb : b≤a) : (a*b+cross b a)%2=b%2 := by
   rcases lt_or_eq_of_le hb with hb | rfl
-  · simp only [cross, hb, if_true]
+  · simp only [cross, hb, ite_true]
     rw [Nat.mul_comm a b]
     omega
-  · simp only [cross, lt_self_iff_false, if_false, add_zero]
+  · simp only [cross, lt_self_iff_false, ite_false, add_zero]
     rw [Nat.mul_mod]
     rcases Nat.mod_two_eq_zero_or_one b with ha | ha <;> simp [ha]
 
@@ -308,7 +308,7 @@ theorem cross_sum_parity (a : ℕ) (w : List ℕ) (hw : ∀ b∈w, b≤a) :
     rw [he, Nat.add_mod, hb, ht, ← Nat.add_mod]
 
 /-- The super sign and straightening sign combine to the row-index statistic. -/
-theorem reversal_sign {w : List ℕ} (hw : w.Sorted (· ≥ ·)) :
+theorem reversal_sign {w : List ℕ} (hw : w.Pairwise (· ≥ ·)) :
     (-1 : ℤ)^(EKAutomorphisms.pairExponent w + invExp w.reverse)=(-1 : ℤ)^(cost w) := by
   suffices he : (EKAutomorphisms.pairExponent w + invExp w.reverse)%2=cost w%2 by
     rw [neg_one_pow_eq_pow_mod_two, he, ← neg_one_pow_eq_pow_mod_two]
@@ -316,7 +316,7 @@ theorem reversal_sign {w : List ℕ} (hw : w.Sorted (· ≥ ·)) :
   | nil => rfl
   | cons a w ih =>
     have ht := ih hw.of_cons
-    have hc := cross_sum_parity a w (List.rel_of_sorted_cons hw)
+    have hc := cross_sum_parity a w (fun _ hb => List.rel_of_pairwise_cons hw hb)
     simp only [EKAutomorphisms.pairExponent, List.reverse_cons, invExp_append_singleton,
       List.map_reverse, List.sum_reverse, cost]
     have he : a*w.sum + EKAutomorphisms.pairExponent w +
@@ -397,7 +397,7 @@ theorem psi3_triangular_remainder (μ : YoungDiagram) :
     shape_perm hp, shape_partition] at hm
   have hh := (strictSpan μ.card μ.rowLens).smul_mem
     ((-1 : ℤ)^(EKAutomorphisms.pairExponent μ.rowLens)) hm
-  rw [smul_sub, smul_smul, ← pow_add, reversal_sign μ.rowLens_sorted, ← b_transpose μ] at hh
+  rw [smul_sub, smul_smul, ← pow_add, reversal_sign μ.rowLens_sorted.pairwise, ← b_transpose μ] at hh
   change EKAutomorphisms.psi3 ((μ.rowLens.map h).prod) - _ ∈ _
   rw [EKAutomorphisms.psi3_hWord]
   exact hh
@@ -452,7 +452,7 @@ theorem upper_coordinate_zero {d : ℕ} {l : List ℕ} {x : Q}
     simp [h_coordinates_partition, hne]
   | zero => simp
   | add x y _ _ hx hy => simp [map_add, hx, hy]
-  | smul r x _ hx => simp only [map_smul, map_zsmul, Finsupp.smul_apply, smul_eq_mul, hx, mul_zero]
+  | smul r x _ hx => simp only [map_smul, Finsupp.smul_apply, smul_eq_mul, hx, mul_zero]
 
 theorem strict_coordinate_zero {d : ℕ} {l : List ℕ} {x : Q}
     (hx : x ∈ strictSpan d l) (ν : YoungDiagram) (hn : ν.rowLens≤l) :
@@ -467,7 +467,7 @@ theorem strict_coordinate_zero {d : ℕ} {l : List ℕ} {x : Q}
     simp [h_coordinates_partition, hne]
   | zero => simp
   | add x y _ _ hx hy => simp [map_add, hx, hy]
-  | smul r x _ hx => simp only [map_smul, map_zsmul, Finsupp.smul_apply, smul_eq_mul, hx, mul_zero]
+  | smul r x _ hx => simp only [map_smul, Finsupp.smul_apply, smul_eq_mul, hx, mul_zero]
 
 /-- The leading coefficient is the specified source sign, not a chosen unit. -/
 theorem psi3_diagonal (μ : YoungDiagram) :
@@ -498,13 +498,12 @@ theorem psi3_expansion (μ : YoungDiagram) :
   let c := hBasis.repr (EKAutomorphisms.psi3 (hPartition μ))
   refine ⟨c.erase μ, ?_, ?_⟩
   · have he := congrArg (fun z => hBasis.repr.symm z) (Finsupp.erase_add_single μ c)
-    dsimp only at he
-    rw [map_add, Basis.repr_symm_single, hBasis_apply] at he
+    rw [map_add, Module.Basis.repr_symm_single, hBasis_apply] at he
     change hBasis.repr.symm (c.erase μ) +
       hBasis.repr (EKAutomorphisms.psi3 (hPartition μ)) μ • hPartition μ = _ at he
     rw [psi3_diagonal] at he
     have hs : hBasis.repr.symm (c.erase μ) = (c.erase μ).sum (fun ν z => z • hPartition ν) := by
-      simp only [Basis.repr_symm_apply, Finsupp.linearCombination_apply, hBasis_apply]
+      simp only [Module.Basis.repr_symm_apply, Finsupp.linearCombination_apply, hBasis_apply]
     rw [hs] at he
     simpa only [c, LinearEquiv.symm_apply_apply, add_comm] using he.symm
   · intro ν hn

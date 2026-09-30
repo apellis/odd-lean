@@ -58,7 +58,7 @@ theorem natWord_map_shift (l : List ℕ) (hl : ∀ j ∈ l, j < m+1) :
       obtain ⟨hj, hl⟩ := List.forall_mem_cons.mp hl
       have hj' : j < n+1 := by omega
       change (List.filterMap _ (j :: l)).map _ = List.filterMap _ (j :: l)
-      simp only [List.filterMap_cons, dif_pos hj, dif_pos hj', List.map_cons]
+      simp only [List.filterMap_cons, dite_eq_left hj, dite_eq_left hj', List.map_cons]
       exact congrArg₂ List.cons (Fin.ext rfl) (ih hl)
 
 theorem windowHom_blockE {k : ℕ} (hk : k ≤ m+2) :
@@ -171,7 +171,7 @@ theorem blockE_mul_blockE_le {k K : ℕ} (hkK : k ≤ K) (hK : K ≤ n+2) :
 /-- The thin strand `ν` supercommutes past anything on `[0, ν)`: even `e_ν` commutes. -/
 theorem dotAt_pow_mul_blockE {ν : ℕ} (hν : ν < n+2) (c : ℕ) :
     dotAt n ν ^ c * blockE n 0 ν = blockE n 0 ν * dotAt n ν ^ c := by
-  rw [dotAt, dif_pos hν]
+  rw [dotAt, dite_eq_left hν]
   exact (homog_comm_of_even (homog_blockE (by omega : 0 + ν ≤ n+2))
     (homog_pow (IsGen.dot (l := ν) (r := ν+1) ⟨ν, hν⟩ le_rfl (Nat.lt_succ_self ν)) c) (by omega)
     (Nat.even_mul.mpr (Or.inl (even_two_mul _)))).symm
@@ -199,15 +199,14 @@ theorem sum_col {ν k : ℕ} (hk : k ≤ ν) : ∑ i, col ν k i = k := by
 
 theorem epsWin_eq {ν k : ℕ} (hν : 1 ≤ ν) (h : 0 + ν ≤ n+2) (hk : k ≤ ν) :
     epsWin n ν k = (-1 : ℤ)^(k.choose 2) • blockSchur n 0 ν h (col ν k) := by
-  rw [epsWin, dif_pos h]
+  rw [epsWin, dite_eq_left h]
   match ν, hν, h, hk with
   | 1, _, h, hk =>
       rcases (by omega : k = 0 ∨ k = 1) with rfl | rfl
       · simp [blockSchur_one, col]
       · rw [(blockSchur_one h _).1]
-        simp [col, FiniteCompleteElementary.elementaryPoly, PlacticEvaluation.tildeGenerator,
-          ProjectorRank.place_generator, polyElem_generator]
-        rw [if_pos (Subsingleton.strictMono _), ProjectorRank.place_generator, polyElem_generator]
+        simp [col, FiniteCompleteElementary.elementaryPoly, PlacticEvaluation.tildeGenerator]
+        rw [ite_eq_left (Subsingleton.strictMono _), ProjectorRank.place_generator, polyElem_generator]
         rfl
   | m+2, _, h, hk =>
       have hs := OddSchurPieri.schur_column m k hk
@@ -231,7 +230,7 @@ theorem prop_4_11_one {ν : ℕ} (hν : 1 ≤ ν) (h : ν + 1 ≤ n+2) {α : Fin
   simp only [map_mul, map_zsmul, map_pow, windowHom_dot] at H
   rw [← blockE_eq h0, windowHom_blockE h0 (by omega), windowHom_blockSchur h0 _ (by omega),
     windowHom_crossWord h0 (by omega)] at H
-  rw [dotAt, dif_pos (by omega), splitOne]
+  rw [dotAt, dite_eq_left (by omega), splitOne]
   exact H
 
 /-! ## The bubble (4.41) -/
@@ -242,8 +241,8 @@ theorem neg_one_pow_congr {X Y : ℕ} (h : X % 2 = Y % 2) : (-1 : ℤ)^X = (-1 :
 theorem sum_range_ite_lt (f : ℕ → ℕ) {k ν : ℕ} (hk : k ≤ ν) :
     ∑ i ∈ Finset.range ν, (if i < k then f i else 0) = ∑ i ∈ Finset.range k, f i := by
   induction ν, hk using Nat.le_induction with
-  | base => exact Finset.sum_congr rfl fun i hi => if_pos (Finset.mem_range.mp hi)
-  | succ ν hkν ih => rw [Finset.sum_range_succ, ih, if_neg (by omega), add_zero]
+  | base => exact Finset.sum_congr rfl fun i hi => ite_eq_left (Finset.mem_range.mp hi)
+  | succ ν hkν ih => rw [Finset.sum_range_succ, ih, ite_eq_right (by omega), add_zero]
 
 theorem hat_col (ν k : ℕ) : hat 1 (col ν k) = fun _ => ν - k := by
   funext j
@@ -341,7 +340,7 @@ theorem eq_4_41 {ν k c : ℕ} (hν : 1 ≤ ν) (h : ν + 1 ≤ n+2) (hk : k ≤
   have h0 : 0 + ν ≤ n+2 := by omega
   set T := blockE n 0 ν * blockSchur n 0 ν h0 (col ν k) * blockE n 0 ν with hT
   have hx : Homog ν (ν+1) c (dotAt n ν ^ c) := by
-    rw [dotAt, dif_pos (by omega)]
+    rw [dotAt, dite_eq_left (by omega)]
     exact homog_pow (IsGen.dot (l := ν) (r := ν+1) ⟨ν, by omega⟩ le_rfl (Nat.lt_succ_self ν)) c
   have hsw := homog_supercomm_zsmul (homog_thickSchur h0 hk) hx (by omega)
   have hswap : dotAt n ν ^ c * T = (-1 : ℤ)^((2 * ν.choose 2 + (ν.choose 2 + k) +
@@ -352,7 +351,7 @@ theorem eq_4_41 {ν k c : ℕ} (hν : 1 ≤ ν) (h : ν + 1 ≤ n+2) (hk : k ≤
     prop_4_11_one hν h (col_antitone ν k) (col_le ν k) hc, hat_col, smul_smul]
   by_cases hck : c + k = ν
   · have hfun : (fun _ : Fin 1 => c) = fun _ => ν - k := funext fun _ => by omega
-    rw [if_pos hfun, if_pos hck, smul_smul, ← pow_add]
+    rw [ite_eq_left hfun, ite_eq_left hck, smul_smul, ← pow_add]
     congr 1
     obtain rfl := hck
     rw [← pow_add]
@@ -365,7 +364,7 @@ theorem eq_4_41 {ν k c : ℕ} (hν : 1 ≤ ν) (h : ν + 1 ≤ n+2) (hk : k ≤
     exact this
   · have hfun : ¬ (fun _ : Fin 1 => c) = fun _ => ν - k :=
       fun e => hck (by have := congrFun e 0; omega)
-    rw [if_neg hfun, if_neg hck, zero_smul, smul_zero]
+    rw [ite_eq_right hfun, ite_eq_right hck, zero_smul, smul_zero]
 
 /-! ## Lemma 4.13 -/
 
@@ -400,23 +399,23 @@ theorem lambda_sigma_upTo (ℓ ℓ' : ℕ → ℕ) :
       have hstep := eq_4_41 (n := n) (ν := j+1) (k := ℓ j) (c := j+1 - ℓ' j) (by omega) hj
         (hℓ j (by omega)) (by omega)
       by_cases hprev : ∀ i < j, ℓ' i = ℓ i
-      · rw [if_pos hprev, mul_smul_comm, smul_mul_assoc, smul_mul_assoc,
+      · rw [ite_eq_left hprev, mul_smul_comm, smul_mul_assoc, smul_mul_assoc,
           mul_assoc _ (blockE n 0 (j+1)), blockE_mul_thickElem _ _ (by omega), hstep]
         by_cases hj' : ℓ' j = ℓ j
         · have hall : ∀ i < j+1, ℓ' i = ℓ i := fun i hi => by
             rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hi | rfl
             · exact hprev i hi
             · exact hj'
-          rw [if_pos (by have := hℓ' j (by omega); omega), if_pos hall, smul_smul, ← pow_add]
+          rw [ite_eq_left (by have := hℓ' j (by omega); omega), ite_eq_left hall, smul_smul, ← pow_add]
           congr 2
           rw [show j + 1 + 1 = (j+1) + 1 from rfl, Nat.choose_succ_succ' (j+1) 2]
           simp only [Nat.reduceAdd]
           ring
         · have hnot : ¬ ∀ i < j+1, ℓ' i = ℓ i := fun hall => hj' (hall j (by omega))
-          rw [if_neg (by have := hℓ' j (by omega); have := hℓ j (by omega); omega), if_neg hnot,
+          rw [ite_eq_right (by have := hℓ' j (by omega); have := hℓ j (by omega); omega), ite_eq_right hnot,
             smul_zero]
       · have hnot : ¬ ∀ i < j+1, ℓ' i = ℓ i := fun hall => hprev fun i hi => hall i (by omega)
-        rw [if_neg hprev, if_neg hnot, mul_zero, zero_mul, zero_mul]
+        rw [ite_eq_right hprev, ite_eq_right hnot, mul_zero, zero_mul, zero_mul]
 
 /-- EKL Lemma 4.13 (4.39): `λ_{ℓ'} σ_ℓ = δ_{ℓ ℓ'} e_a` for `ℓ, ℓ' ∈ Sq(a)`. -/
 theorem lemma_4_13 {ℓ ℓ' : Fin (n+1) → ℕ} (hℓ : ∀ ν, ℓ ν ≤ ν.val + 1)
@@ -424,7 +423,7 @@ theorem lemma_4_13 {ℓ ℓ' : Fin (n+1) → ℕ} (hℓ : ∀ ν, ℓ ν ≤ ν.
     lam ℓ' * sigma ℓ = if ℓ' = ℓ then projector n else 0 := by
   have ext_le : ∀ (m : Fin (n+1) → ℕ), (∀ ν : Fin (n+1), m ν ≤ ν.val + 1) →
       ∀ i < n+1, extend m i ≤ i + 1 := fun m hm i hi => by
-    rw [extend, dif_pos hi]; exact hm _
+    rw [extend, dite_eq_left hi]; exact hm _
   have H := lambda_sigma_upTo (n := n) (extend ℓ) (extend ℓ') (n+1) le_rfl (ext_le ℓ hℓ)
     (ext_le ℓ' hℓ')
   rw [blockE_n] at H
@@ -433,13 +432,13 @@ theorem lemma_4_13 {ℓ ℓ' : Fin (n+1) → ℕ} (hℓ : ∀ ν, ℓ ν ≤ ν.
     constructor
     · intro hall; funext ν
       have := hall ν.val ν.isLt
-      simp only [extend, dif_pos ν.isLt] at this
+      simp only [extend, dite_eq_left ν.isLt] at this
       exact this
     · rintro rfl i _; rfl
   by_cases he : ℓ' = ℓ
-  · rw [if_pos (hiff.mpr he), if_pos he, smul_smul, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩,
+  · rw [ite_eq_left (hiff.mpr he), ite_eq_left he, smul_smul, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩,
       one_smul]
-  · rw [if_neg (fun h => he (hiff.mp h)), if_neg he, smul_zero]
+  · rw [ite_eq_right (fun h => he (hiff.mp h)), ite_eq_right he, smul_zero]
 
 /-! ## Theorem 4.15: orthogonality -/
 
@@ -453,8 +452,8 @@ theorem thm_4_15_orthogonal {ℓ ℓ' : Fin (n+1) → ℕ} (hℓ : ∀ ν, ℓ �
   rw [idem, idem, mul_assoc, ← mul_assoc (lam ℓ), lemma_4_13 hℓ' hℓ]
   by_cases he : ℓ = ℓ'
   · subst he
-    rw [if_pos rfl, if_pos rfl, projector_mul_lam]
-  · rw [if_neg he, if_neg he, zero_mul, mul_zero]
+    rw [ite_eq_left rfl, ite_eq_left rfl, projector_mul_lam]
+  · rw [ite_eq_right he, ite_eq_right he, zero_mul, mul_zero]
 
 /-! ## Degrees in the polynomial representation -/
 
@@ -536,7 +535,7 @@ theorem hasDegree_dotsUpTo (ℓ : ℕ → ℕ) :
   | 0, _, _ => by simpa [sigmaDeg, dotsUpTo] using hasDegree_action_one (n := n)
   | j+1, hj, hℓ => by
       have ih := hasDegree_dotsUpTo ℓ j (by omega) fun i hi => hℓ i (by omega)
-      have hd : dotAt n (j+1) = dot n ⟨j+1, by omega⟩ := dif_pos (by omega)
+      have hd : dotAt n (j+1) = dot n ⟨j+1, by omega⟩ := dite_eq_left (by omega)
       have := hasDegree_action_mul (hasDegree_dot_pow (n := n) ⟨j+1, by omega⟩ (j+1 - ℓ j)) ih
       rw [← hd] at this
       refine hasDegree_congr this ?_
@@ -572,11 +571,11 @@ theorem sigmaDeg_extend (ℓ : Fin (n+1) → ℕ) :
   rw [← Fin.sum_univ_eq_sum_range (fun i => (extend ℓ i : ℤ)) (n+1)]
   push_cast
   refine Finset.sum_congr rfl fun ν _ => ?_
-  simp [extend]
+  simp [extend, ν.isLt]
 
 theorem ext_le {ℓ : Fin (n+1) → ℕ} (hℓ : ∀ ν : Fin (n+1), ℓ ν ≤ ν.val + 1) :
     ∀ i < n+1, extend ℓ i ≤ i + 1 := fun i hi => by
-  rw [extend, dif_pos hi]; exact hℓ _
+  rw [extend, dite_eq_left hi]; exact hℓ _
 
 theorem hasDegree_sigma {ℓ : Fin (n+1) → ℕ} (hℓ : ∀ ν : Fin (n+1), ℓ ν ≤ ν.val + 1) :
     HasDegree (Vd (n+2)) (sigmaDeg (extend ℓ) (n+1)) (action n (sigma ℓ)) :=
@@ -596,13 +595,13 @@ theorem finrank_count (d : ℤ) :
         (action n (projector n))) := by
   rw [map_one, Module.End.one_eq_id, Submodule.map_id, finrank_Vd]
   simp only [finrank_map_projector, sigmaDeg_extend]
-  rcases lt_or_le d 0 with hd | hd
+  rcases lt_or_ge d 0 with hd | hd
   · have : expSet (n+2) d = ∅ := by
       rw [expSet, Finset.filter_false_of_mem fun _ _ => by omega]
     rw [this, Finset.card_empty]
     symm
     refine Finset.sum_eq_zero fun i _ => ?_
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
   · obtain ⟨D, rfl⟩ : ∃ D : ℕ, d = D := ⟨d.toNat, by omega⟩
     rw [expSet, Finset.filter_true_of_mem fun _ _ => by omega, Int.toNat_natCast,
       BoxPartitionCount.monomial_count, Finset.sum_filter,
@@ -610,10 +609,10 @@ theorem finrank_count (d : ℤ) :
     refine Finset.sum_congr rfl fun i _ => ?_
     have e : (∑ ν : Fin (n+1), i.1 ν) = ∑ ν : Fin (n+2-1), i.1 ν := rfl
     by_cases hi : ∑ ν, i.1 ν ≤ D
-    · rw [if_pos hi, if_pos (by omega), card_index]
+    · rw [ite_eq_left hi, ite_eq_left (by omega), card_index]
       congr 1
       omega
-    · rw [if_neg hi, if_neg (by omega)]
+    · rw [ite_eq_right hi, ite_eq_right (by omega)]
 
 /-- EKL Theorem 4.15 (4.48), second half: `∑_{ℓ ∈ Sq(a)} e_ℓ = 1` in `ONH_a`. -/
 theorem thm_4_15_sum : ∑ ℓ ∈ BoxPartitionCount.Sq (n+2), idem (n := n) ℓ = 1 := by
@@ -625,10 +624,10 @@ theorem thm_4_15_sum : ∑ ℓ ∈ BoxPartitionCount.Sq (n+2), idem (n := n) ℓ
     (iSup_Vd (n+2)) hasDegree_action_one hasDegree_projector
     (fun i => hasDegree_sigma (hb i)) (fun i => hasDegree_lam (hb i))
     (by rw [← Module.End.mul_eq_comp, ← map_mul, one_mul]) projector_idem
-    (fun i => by rw [← Module.End.mul_eq_comp, ← map_mul, lemma_4_13 (hb i) (hb i), if_pos rfl])
+    (fun i => by rw [← Module.End.mul_eq_comp, ← map_mul, lemma_4_13 (hb i) (hb i), ite_eq_left rfl])
     (fun i j hij => by
       rw [← Module.End.mul_eq_comp, ← map_mul, lemma_4_13 (hb i) (hb j),
-        if_neg fun e => hij (Subtype.ext e).symm, map_zero])
+        ite_eq_right fun e => hij (Subtype.ext e).symm, map_zero])
     (fun i => by rw [← Module.End.mul_eq_comp, ← map_mul, one_mul])
     (fun i => by rw [← Module.End.mul_eq_comp, ← map_mul, mul_one])
     (fun i => by
@@ -669,7 +668,7 @@ theorem col_sum {ν : ℕ} {α : Fin ν → ℕ} (hα : Antitone α) (hα1 : ∀
   funext i
   simp only [col]
   rcases (by have := hα1 i; omega : α i = 0 ∨ α i = 1) with h0 | h1
-  · rw [if_neg, h0]
+  · rw [ite_eq_right, h0]
     rw [hsum, not_lt]
     calc (Finset.univ.filter fun j => α j = 1).card ≤ (Finset.Iio i).card := by
           refine Finset.card_le_card fun j hj => ?_
@@ -678,7 +677,7 @@ theorem col_sum {ν : ℕ} {α : Fin ν → ℕ} (hα : Antitone α) (hα1 : ∀
           have := hα (not_lt.mp hji)
           omega
       _ = i.val := Fin.card_Iio i
-  · rw [if_pos, h1]
+  · rw [ite_eq_left, h1]
     rw [hsum]
     calc i.val < i.val + 1 := Nat.lt_succ_self _
       _ = (Finset.Iic i).card := (Fin.card_Iic i).symm
@@ -720,7 +719,7 @@ theorem lemma_4_14 :
   have hk' : k ≤ n+1 := by have := Finset.mem_range.mp hk; omega
   rw [show n + 2 - 1 - k = n+1-k by omega, thickElem_eq (by omega) (by omega) (by omega),
     ThickBubble.idem, ThickBubble.sigma, ThickBubble.lam,
-    hat_col, blockE_one, (blockSchur_one _ _).2, splitOne, dotAt, dif_pos (by omega),
+    hat_col, blockE_one, (blockSchur_one _ _).2, splitOne, dotAt, dite_eq_left (by omega),
     show n+1-(n+1-k) = k by omega]
   simp only [mul_one, one_mul, smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [← pow_add, neg_one_pow_congr (X := signX (n+1) 1 (col (n+1) (n+1-k)))

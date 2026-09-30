@@ -102,8 +102,8 @@ def OH_zero_equiv (N : ℕ) : OH 0 N ≃+* ℤ :=
       rfl))
 
 /-- **EKL Prop 5.4**, `a = 0`: `OH_{0,N}` is free on `1`. -/
-def basis_OH_zero (N : ℕ) : Basis (Fin 1) ℤ (OH 0 N) :=
-  (Basis.singleton (Fin 1) ℤ).map (OH_zero_equiv N).symm.toAddEquiv.toIntLinearEquiv
+def basis_OH_zero (N : ℕ) : Module.Basis (Fin 1) ℤ (OH 0 N) :=
+  (Module.Basis.singleton (Fin 1) ℤ).map (OH_zero_equiv N).symm.toAddEquiv.toIntLinearEquiv
 
 theorem finrank_OH_zero (N : ℕ) : Module.finrank ℤ (OH 0 N) = N.choose 0 := by
   rw [Module.finrank_eq_card_basis (basis_OH_zero N), Fintype.card_fin, Nat.choose_zero_right]
@@ -184,7 +184,7 @@ def ONH1Equiv (N : ℕ) : Cyclotomic.ONH1 N ≃+* AdjoinRoot (Polynomial.X ^ N :
       rw [RingEquiv.symm_apply_apply]))
 
 /-- **EKL Prop 5.4**, `a = 1`: `OH_{1,N} ≅ ℤ[x]/(x^N)` is free on `1, x, …, x^{N-1}`. -/
-def basis_OH_one (N : ℕ) : Basis (Fin N) ℤ (OH 1 N) :=
+def basis_OH_one (N : ℕ) : Module.Basis (Fin N) ℤ (OH 1 N) :=
   let pb := AdjoinRoot.powerBasis' (Polynomial.monic_X_pow (R := ℤ) N)
   (pb.basis.map ((OH_one_equiv N).trans (ONH1Equiv N)).symm.toAddEquiv.toIntLinearEquiv).reindex
     (finCongr (by simp [pb, AdjoinRoot.powerBasis']))
@@ -197,10 +197,10 @@ theorem OH_one_equiv_trans_apply (N : ℕ) (i : ℕ) :
 
 theorem basis_OH_one_apply (N : ℕ) (i : Fin N) :
     basis_OH_one N i = toOH 1 N (toOLamOne (generator 0 ^ i.val)) := by
-  simp only [basis_OH_one, Basis.reindex_apply, Basis.map_apply, PowerBasis.coe_basis,
+  simp only [basis_OH_one, Module.Basis.reindex_apply, Module.Basis.map_apply, PowerBasis.coe_basis,
     AdjoinRoot.powerBasis'_gen]
   change ((OH_one_equiv N).trans (ONH1Equiv N)).symm _ = _
-  rw [finCongr_symm_apply, Fin.coe_cast, ← OH_one_equiv_trans_apply, RingEquiv.symm_apply_apply]
+  rw [finCongr_symm_apply, Fin.val_cast, ← OH_one_equiv_trans_apply, RingEquiv.symm_apply_apply]
 
 theorem finrank_OH_one (N : ℕ) : Module.finrank ℤ (OH 1 N) = N.choose 1 := by
   rw [Module.finrank_eq_card_basis (basis_OH_one N), Fintype.card_fin, Nat.choose_one_right]

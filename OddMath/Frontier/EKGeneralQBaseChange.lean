@@ -45,8 +45,8 @@ def iota : L ℤ →ₐ[ℤ] L k := FreeAlgebra.lift ℤ (fun i => FreeAlgebra.�
 
 theorem iota_wordBasis (w : W) : iota k (wordBasis ℤ w) = wordBasis k w := by
   induction w using FreeMonoid.recOn with
-  | h0 => simp
-  | ih i w ih => rw [wordBasis_mul, wordBasis_mul, map_mul, ih, wordBasis_of, wordBasis_of, iota_h]
+  | one => simp
+  | of_mul i w ih => rw [wordBasis_mul, wordBasis_mul, map_mul, ih, wordBasis_of, wordBasis_of, iota_h]
 
 theorem iota_hWord (β : List ℕ) : iota k (hWord ℤ β) = hWord k β := by
   simp [hWord, map_list_prod, List.map_map, Function.comp_def]
@@ -169,8 +169,8 @@ theorem pairing_hPartition_mBasis (ν μ : YoungDiagram) :
     rw [this]
     by_cases h : ν = μ
     · subst h; simp
-    · rw [if_neg (fun e => h (congrArg Subtype.val e)), if_neg h]
-  · rw [pairing_hPartition_degreePiece ν hd (EKDualBases.mBasis μ.card ⟨μ, rfl⟩).2, if_neg]
+    · rw [ite_eq_right (fun e => h (congrArg Subtype.val e)), ite_eq_right h]
+  · rw [pairing_hPartition_degreePiece ν hd (EKDualBases.mBasis μ.card ⟨μ, rfl⟩).2, ite_eq_right]
     rintro rfl
     exact hd rfl
 
@@ -202,7 +202,7 @@ theorem hFamilyK_linearIndependent :
 theorem baseChangeMap_basis (μ : YoungDiagram) :
     baseChangeMap ((EKIntegralBases.hBasis.baseChange k) μ) =
       piQ (-1 : k) (hWord k μ.rowLens) := by
-  rw [Basis.baseChange_apply, baseChangeMap_tmul, one_smul, EKIntegralBases.hBasis_apply,
+  rw [Module.Basis.baseChange_apply, baseChangeMap_tmul, one_smul, EKIntegralBases.hBasis_apply,
     psi_hPartition]
 
 theorem baseChangeMap_injective : Function.Injective (baseChangeMap (k := k)) := by
@@ -211,7 +211,7 @@ theorem baseChangeMap_injective : Function.Injective (baseChangeMap (k := k)) :=
         (EKIntegralBases.hBasis.baseChange k).repr.toLinearMap := by
     apply (EKIntegralBases.hBasis.baseChange k).ext
     intro μ
-    rw [LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.repr_self,
+    rw [LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.repr_self,
       Finsupp.linearCombination_single, one_smul, baseChangeMap_basis]
   rw [he, LinearMap.coe_comp]
   exact Function.Injective.comp hFamilyK_linearIndependent
@@ -229,12 +229,10 @@ def baseChangeEquiv : k ⊗[ℤ] EKRadicalQuotient.Q ≃ₗ[k] Lam (-1 : k) :=
 /-- The comparison is multiplicative, so `Λ_k ≅ k ⊗ Λ_ℤ` as `k`-algebras. -/
 theorem baseChangeEquiv_mul (x y : k ⊗[ℤ] EKRadicalQuotient.Q) :
     baseChangeEquiv (x * y) = baseChangeEquiv x * baseChangeEquiv y := by
-  induction x using TensorProduct.induction_on with
-  | zero => rw [zero_mul, LinearEquiv.map_zero, zero_mul]
+  induction x using TensorProduct.inductionOn with
   | add a b ha hb => rw [add_mul, LinearEquiv.map_add, LinearEquiv.map_add, ha, hb, add_mul]
   | tmul a z =>
-    induction y using TensorProduct.induction_on with
-    | zero => rw [mul_zero, LinearEquiv.map_zero, mul_zero]
+    induction y using TensorProduct.inductionOn with
     | add c d hc hd => rw [mul_add, LinearEquiv.map_add, LinearEquiv.map_add, hc, hd, mul_add]
     | tmul b w =>
       rw [Algebra.TensorProduct.tmul_mul_tmul]
@@ -246,24 +244,24 @@ theorem baseChangeEquiv_one : baseChangeEquiv (1 : k ⊗[ℤ] EKRadicalQuotient.
   simp
 
 /-- EK Corollary 2.12 over `k`: `{h_λ}` is a `k`-basis of `Λ_k`. -/
-def hBasisK : Basis YoungDiagram k (Lam (-1 : k)) :=
+def hBasisK : Module.Basis YoungDiagram k (Lam (-1 : k)) :=
   (EKIntegralBases.hBasis.baseChange k).map baseChangeEquiv
 
 @[simp] theorem hBasisK_apply (μ : YoungDiagram) :
     hBasisK μ = piQ (-1 : k) (hWord k μ.rowLens) := by
-  rw [hBasisK, Basis.map_apply]
+  rw [hBasisK, Module.Basis.map_apply]
   exact baseChangeMap_basis μ
 
 /-- The odd elementary function `e_n` over `k`: the image of the integral `e_n` of (2.5). -/
 def eK (n : ℕ) : Lam (-1 : k) := piQ (-1 : k) (iota k (CompleteElementary.elementary n))
 
 /-- EK Corollary 2.12 over `k`: `{e_λ}` is a `k`-basis of `Λ_k`. -/
-def eBasisK : Basis YoungDiagram k (Lam (-1 : k)) :=
+def eBasisK : Module.Basis YoungDiagram k (Lam (-1 : k)) :=
   (EKIntegralBases.eBasis.baseChange k).map baseChangeEquiv
 
 @[simp] theorem eBasisK_apply (μ : YoungDiagram) :
     eBasisK μ = (μ.rowLens.map (eK (k := k))).prod := by
-  rw [eBasisK, Basis.map_apply, Basis.baseChange_apply, EKIntegralBases.eBasis_apply]
+  rw [eBasisK, Module.Basis.map_apply, Module.Basis.baseChange_apply, EKIntegralBases.eBasis_apply]
   change baseChangeMap _ = _
   rw [baseChangeMap_tmul, one_smul, EKPartitionSpanning.ePartition, map_list_prod, List.map_map]
   rfl
@@ -334,19 +332,19 @@ theorem degreePieceK_eq_span (n : ℕ) :
     exact Submodule.subset_span ⟨μ, rfl⟩
 
 /-- EK Corollary 2.12 over `k`, degreewise: `Λ_{k,n}` is free with basis `h_λ`, `λ ⊢ n`. -/
-def degreeHBasisK (n : ℕ) : Basis (DegreeShapes.DegreeShape n) k (degreePieceK k n) :=
-  (Basis.span (hBasisK.linearIndependent.comp (fun μ : DegreeShapes.DegreeShape n => μ.val)
+def degreeHBasisK (n : ℕ) : Module.Basis (DegreeShapes.DegreeShape n) k (degreePieceK k n) :=
+  (Module.Basis.span (hBasisK.linearIndependent.comp (fun μ : DegreeShapes.DegreeShape n => μ.val)
     Subtype.val_injective)).map (LinearEquiv.ofEq _ _ (degreePieceK_eq_span n).symm)
 
 @[simp] theorem degreeHBasisK_apply (n : ℕ) (μ : DegreeShapes.DegreeShape n) :
     (degreeHBasisK (k := k) n μ : Lam (-1 : k)) = piQ (-1 : k) (hWord k μ.val.rowLens) := by
-  simp only [degreeHBasisK, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeHBasisK, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   exact hBasisK_apply _
 
 
 theorem eBasisK_eq_psi (μ : YoungDiagram) :
     eBasisK (k := k) μ = psiRing (EKPartitionSpanning.ePartition μ) := by
-  rw [eBasisK, Basis.map_apply, Basis.baseChange_apply, EKIntegralBases.eBasis_apply]
+  rw [eBasisK, Module.Basis.map_apply, Module.Basis.baseChange_apply, EKIntegralBases.eBasis_apply]
   change baseChangeMap _ = _
   rw [baseChangeMap_tmul, one_smul]
 
@@ -387,13 +385,13 @@ theorem degreePieceK_eq_espan (n : ℕ) :
     exact Submodule.subset_span ⟨μ, rfl⟩
 
 /-- EK Corollary 2.12 over `k`, degreewise: `Λ_{k,n}` is free with basis `e_λ`, `λ ⊢ n`. -/
-def degreeEBasisK (n : ℕ) : Basis (DegreeShapes.DegreeShape n) k (degreePieceK k n) :=
-  (Basis.span (eBasisK.linearIndependent.comp (fun μ : DegreeShapes.DegreeShape n => μ.val)
+def degreeEBasisK (n : ℕ) : Module.Basis (DegreeShapes.DegreeShape n) k (degreePieceK k n) :=
+  (Module.Basis.span (eBasisK.linearIndependent.comp (fun μ : DegreeShapes.DegreeShape n => μ.val)
     Subtype.val_injective)).map (LinearEquiv.ofEq _ _ (degreePieceK_eq_espan n).symm)
 
 @[simp] theorem degreeEBasisK_apply (n : ℕ) (μ : DegreeShapes.DegreeShape n) :
     (degreeEBasisK (k := k) n μ : Lam (-1 : k)) = (μ.val.rowLens.map (eK (k := k))).prod := by
-  simp only [degreeEBasisK, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeEBasisK, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   exact eBasisK_apply _
 
 attribute [local instance] DegreeShapes.degreeFintype in

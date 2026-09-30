@@ -70,10 +70,10 @@ def eL (m : ℕ) : LamN n := mkN n (eF n m)
 theorem eF_zero : eF n 0 = 1 := by simp [eF]
 
 theorem eF_big {m : ℕ} (hm : n < m) : eF n m = 0 := by
-  unfold eF; rw [dif_neg (by omega), dif_neg (by omega)]
+  unfold eF; rw [dite_eq_right (by omega), dite_eq_right (by omega)]
 
 theorem eF_succ {i : ℕ} (hi : i < n) : eF n (i + 1) = FreeAlgebra.ι ℤ (⟨i, hi⟩ : Fin n) := by
-  unfold eF; rw [dif_neg (by omega), dif_pos (by omega)]; rfl
+  unfold eF; rw [dite_eq_right (by omega), dite_eq_left (by omega)]; rfl
 
 theorem eL_zero : eL n 0 = 1 := by simp [eL, eF_zero, mkN]
 
@@ -85,13 +85,13 @@ theorem prel_zero {r : FreeE n} (hr : PRel n r) : mkN n r = 0 :=
 theorem rel_even {i j : ℕ} (hi : 1 ≤ i) (hin : i ≤ n) (hj : 1 ≤ j) (hjn : j ≤ n)
     (h : Even (i + j)) : eL n i * eL n j = eL n j * eL n i := by
   have := prel_zero n (PRel.even i j hi hin hj hjn h)
-  simpa only [map_sub, map_mul, sub_eq_zero] using this
+  simpa only [eL, map_sub, map_mul, sub_eq_zero] using this
 
 theorem rel_odd {i j : ℕ} (hi : 1 ≤ i) (hin : i ≤ n) (hj : 1 ≤ j) (hjn : j ≤ n)
     (h : Odd (i + j)) : eL n i * eL n j + (-1 : ℤ) ^ i • (eL n j * eL n i) =
       eL n (j - 1) * eL n (i + 1) + (-1 : ℤ) ^ i • (eL n (i + 1) * eL n (j - 1)) := by
   have := prel_zero n (PRel.odd i j hi hin hj hjn h)
-  simpa only [map_sub, map_add, map_mul, map_zsmul, sub_eq_zero] using this
+  simpa only [eL, map_sub, map_add, map_mul, map_zsmul, sub_eq_zero] using this
 
 theorem neg_one_pow_eq_of_even {a b : ℕ} (h : Even (a + b)) : (-1 : ℤ) ^ a = (-1 : ℤ) ^ b := by
   rcases Nat.even_or_odd a with ha | ha
@@ -326,7 +326,10 @@ theorem toQuot_toLam : (toQuot n).comp (toLam n) = RingHom.id _ := by
 
 /-- [EK] p. 3: `Λ₋₁(n) ≅ Λ/⟨e_m : m > n⟩`, `e_i ↦ e_i`, for every `n`. -/
 def presentationEquivN : LamN n ≃+* Q ⧸ (elemIdeal n).asIdeal :=
-  RingEquiv.ofHomInv (toQuot n) (toLam n) (toLam_toQuot n) (toQuot_toLam n)
+  { toQuot n with
+    invFun := toLam n
+    left_inv := fun x => RingHom.congr_fun (toLam_toQuot n) x
+    right_inv := fun x => RingHom.congr_fun (toQuot_toLam n) x }
 
 theorem presentationEquivN_e (m : ℕ) :
     presentationEquivN n (eL n m) = mkE n (EKElementaryQuotient.e m) := toQuot_eL n m

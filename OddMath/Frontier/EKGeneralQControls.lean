@@ -203,7 +203,7 @@ theorem integrated_h1h1 : pairing (h 1 * h 1) (h 1 * h 1) =
     simpa [vWord, List.ofFn_succ, hWord] using this
   have h11' : pairing (h 1) (h 1) = 1 := pairing_h_self 1
   rw [form_h1h1_at_neg_one, ← adjointness, coproduct_two]
-  simp [Fin.sum_univ_succ, h01, h10, h11, h11', -zsmul_eq_mul, neg_smul, one_smul]
+  simp [Fin.sum_univ_succ, h01, h11, -zsmul_eq_mul, neg_smul, one_smul]
 
 open CompleteElementary EKPairingAdjoint in
 /-- Existing q=-1 form: `(h₂, h₂) = 1`. -/

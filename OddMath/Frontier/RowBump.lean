@@ -17,7 +17,7 @@ open OddPlactic
 
 /-- Move the insertion letter through the larger sorted tail using K′. -/
 private theorem bump_tail (n : ℕ) (v : List (Fin n)) (a b : Fin n)
-    (hs : (b :: v).Sorted (· ≤ ·)) (hab : a < b) :
+    (hs : (b :: v).Pairwise (· ≤ ·)) (hab : a < b) :
     word n ((b :: v) ++ [a]) =
       (-1 : ℤ) ^ v.length • word n (b :: a :: v) := by
   induction v generalizing b with
@@ -36,11 +36,11 @@ private theorem bump_tail (n : ℕ) (v : List (Fin n)) (a b : Fin n)
         rfl
       _ = (-1 : ℤ) ^ v.length • (-word n (b :: a :: c :: v)) := by rw [hk]
       _ = (-1 : ℤ) ^ (c :: v).length • word n (b :: a :: c :: v) := by
-        simp [pow_succ, mul_smul]
+        simp [pow_succ]
 
 /-- Move the bumped letter through the smaller sorted prefix using K′′. -/
 private theorem bump_prefix (n : ℕ) (u : List (Fin n)) (a b : Fin n)
-    (hs : u.Sorted (· ≤ ·)) (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
+    (hs : u.Pairwise (· ≤ ·)) (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
     word n (u ++ [b, a]) =
       (-1 : ℤ) ^ u.length • word n (b :: (u ++ [a])) := by
   induction u generalizing a with
@@ -66,11 +66,11 @@ private theorem bump_prefix (n : ℕ) (u : List (Fin n)) (a b : Fin n)
         rfl
       _ = (-1 : ℤ) ^ u.length • (-word n (b :: x :: (u ++ [a]))) := by rw [hk]
       _ = (-1 : ℤ) ^ (x :: u).length • word n (b :: ((x :: u) ++ [a])) := by
-        simp [pow_succ, mul_smul]
+        simp [pow_succ]
 
 /-- The arbitrary-length first-greater split law in the actual plactic quotient. -/
 theorem row_bump (n : ℕ) (u v : List (Fin n)) (a b : Fin n)
-    (hs : (u ++ (b :: v)).Sorted (· ≤ ·))
+    (hs : (u ++ (b :: v)).Pairwise (· ≤ ·))
     (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
     word n ((u ++ (b :: v)) ++ [a]) =
       (-1 : ℤ) ^ (u.length + v.length) • word n (b :: (u ++ (a :: v))) := by
@@ -91,9 +91,9 @@ theorem row_bump (n : ℕ) (u v : List (Fin n)) (a b : Fin n)
 
 /-- Replacing the first greater letter preserves weak row order. -/
 theorem row_bump_sorted (n : ℕ) (u v : List (Fin n)) (a b : Fin n)
-    (hs : (u ++ (b :: v)).Sorted (· ≤ ·))
+    (hs : (u ++ (b :: v)).Pairwise (· ≤ ·))
     (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
-    (u ++ (a :: v)).Sorted (· ≤ ·) := by
+    (u ++ (a :: v)).Pairwise (· ≤ ·) := by
   have hp := List.pairwise_append.mp hs
   have hv := List.pairwise_cons.mp hp.2.1
   apply List.pairwise_append.mpr
@@ -107,7 +107,7 @@ theorem row_bump_sorted (n : ℕ) (u v : List (Fin n)) (a b : Fin n)
 
 /-- Substitute the row identity in arbitrary literal contexts. -/
 theorem row_bump_context (n : ℕ) (l r u v : List (Fin n)) (a b : Fin n)
-    (hs : (u ++ (b :: v)).Sorted (· ≤ ·))
+    (hs : (u ++ (b :: v)).Pairwise (· ≤ ·))
     (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
     word n (l ++ (((u ++ (b :: v)) ++ [a]) ++ r)) =
       (-1 : ℤ) ^ (u.length + v.length) • word n (l ++ ((b :: (u ++ (a :: v))) ++ r)) := by
@@ -117,7 +117,7 @@ theorem row_bump_context (n : ℕ) (l r u v : List (Fin n)) (a b : Fin n)
 
 /-- Forward transport along the existing plactic-to-skew ring map. -/
 theorem row_bump_toSkew (n : ℕ) (l r u v : List (Fin n)) (a b : Fin n)
-    (hs : (u ++ (b :: v)).Sorted (· ≤ ·))
+    (hs : (u ++ (b :: v)).Pairwise (· ≤ ·))
     (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
     PlacticEvaluation.toSkew n (word n (l ++ (((u ++ (b :: v)) ++ [a]) ++ r))) =
       (-1 : ℤ) ^ (u.length + v.length) •
@@ -130,7 +130,7 @@ theorem rowPolynomial_bump (n : ℕ) (μ : YoungDiagram)
     (T : TableauSign.PositiveTableau μ) (hT : TableauEvaluation.InAlphabet n T)
     (l u v : List (Fin n)) (a b : Fin n)
     (hsplit : TableauEvaluation.rowFinWord n T hT = l ++ (u ++ (b :: v)))
-    (hs : (u ++ (b :: v)).Sorted (· ≤ ·))
+    (hs : (u ++ (b :: v)).Pairwise (· ≤ ·))
     (hu : ∀ x ∈ u, x ≤ a) (hab : a < b) :
     TableauEvaluation.rowPolynomial n T hT * PlacticEvaluation.tildeGenerator a =
       (-1 : ℤ) ^ (u.length + v.length) •
@@ -147,8 +147,8 @@ theorem row_append (n : Nat) (w : List (Fin n)) (a : Fin n) :
     word n (w ++ [a]) = word n w * q n a := by simp
 
 theorem row_append_sorted (n : Nat) (w : List (Fin n)) (a : Fin n)
-    (hs : w.Sorted (· ≤ ·)) (ha : ∀ x ∈ w, x ≤ a) :
-    (w ++ [a]).Sorted (· ≤ ·) := by
+    (hs : w.Pairwise (· ≤ ·)) (ha : ∀ x ∈ w, x ≤ a) :
+    (w ++ [a]).Pairwise (· ≤ ·) := by
   apply List.pairwise_append.mpr
   refine ⟨hs, by simp, ?_⟩
   intro x hx y hy

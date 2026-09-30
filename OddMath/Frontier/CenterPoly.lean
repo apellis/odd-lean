@@ -1,6 +1,7 @@
 import OddMath.Frontier.NilHeckeCenter
 import Mathlib.RingTheory.MvPolynomial.Symmetric.Defs
 import Mathlib.GroupTheory.Perm.Sign
+import Mathlib.Tactic.LinearCombination
 
 /-! The corrected center of EKL arXiv:1111.1320v1, Prop. 2.15, p. 13 (polynomial side).
 
@@ -57,7 +58,7 @@ theorem sum_translate_apply {m : ℕ} (f : SkewPolynomial m) (b c : Fin m → �
   rw [Finsupp.sum_apply, Finsupp.sum_eq_single c]
   · simp
   · intro a _ hac
-    rw [Finsupp.single_apply, if_neg]
+    rw [Finsupp.single_apply, ite_eq_right]
     intro h
     exact hac (add_right_cancel h)
   · intro _
@@ -76,7 +77,7 @@ theorem crossing_unit_left {m : ℕ} (j : Fin m) (c : Fin m → ℕ) :
     OddMath.crossingCount (expSingle j) c = ∑ k, if k < j then c k else 0 := by
   simp only [OddMath.crossingCount, expSingle, ite_mul, one_mul, zero_mul,
     Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq, Finset.mem_univ,
-    if_true]
+    ite_true]
   rw [Finset.sum_filter]
 
 theorem crossing_unit_right {m : ℕ} (j : Fin m) (c : Fin m → ℕ) :
@@ -105,7 +106,7 @@ theorem crossing_unit_total {m : ℕ} (j : Fin m) (c : Fin m → ℕ) :
 theorem neg_one_pow_eq_iff (x y : ℕ) : ((-1 : ℤ) ^ x = (-1) ^ y) ↔ Even (x + y) := by
   rcases Nat.even_or_odd x with hx | hx <;> rcases Nat.even_or_odd y with hy | hy <;>
     simp [hx.neg_one_pow, hy.neg_one_pow, Nat.even_add, hx, hy,
-      Nat.not_even_iff_odd.mpr, Nat.not_odd_iff_even.mpr]
+      Nat.not_even_iff_odd.mpr]
 
 theorem parity_iff {m : ℕ} (c A : Fin m → ℕ) (hA : ∀ j, A j + c j = ∑ k, c k) :
     (∀ j, Even (A j)) ↔ (∀ j, Even (c j)) ∨ (Odd m ∧ ∀ j, Odd (c j)) := by
@@ -117,28 +118,28 @@ theorem parity_iff {m : ℕ} (c A : Fin m → ℕ) (hA : ∀ j, A j + c j = ∑ 
     have hc : ∀ j, (c j : ZMod 2) = ((∑ k, c k : ℕ) : ZMod 2) := by
       intro j
       have := key j
-      rw [ZMod.eq_zero_iff_even.mpr (h j), zero_add] at this
+      rw [ZMod.natCast_eq_zero_iff_even.mpr (h j), zero_add] at this
       exact this
     rcases (show ∀ x : ZMod 2, x = 0 ∨ x = 1 by decide) ((∑ k, c k : ℕ) : ZMod 2) with h0 | h1
     · left
       intro j
-      exact ZMod.eq_zero_iff_even.mp ((hc j).trans h0)
+      exact ZMod.natCast_eq_zero_iff_even.mp ((hc j).trans h0)
     · right
-      refine ⟨?_, fun j => ZMod.eq_one_iff_odd.mp ((hc j).trans h1)⟩
-      apply ZMod.eq_one_iff_odd.mp
+      refine ⟨?_, fun j => ZMod.natCast_eq_one_iff_odd.mp ((hc j).trans h1)⟩
+      apply ZMod.natCast_eq_one_iff_odd.mp
       rw [← h1, hS, Finset.sum_congr rfl (fun k _ => (hc k).trans h1)]
       simp
   · rintro (h | ⟨hm, h⟩) j
-    · rw [← ZMod.eq_zero_iff_even]
-      have hc0 : ∀ k, (c k : ZMod 2) = 0 := fun k => ZMod.eq_zero_iff_even.mpr (h k)
+    · rw [← ZMod.natCast_eq_zero_iff_even]
+      have hc0 : ∀ k, (c k : ZMod 2) = 0 := fun k => ZMod.natCast_eq_zero_iff_even.mpr (h k)
       have hS0 : ((∑ k, c k : ℕ) : ZMod 2) = 0 := by rw [hS]; simp [hc0]
       linear_combination key j - hc0 j + hS0
-    · rw [← ZMod.eq_zero_iff_even]
-      have hc1 : ∀ k, (c k : ZMod 2) = 1 := fun k => ZMod.eq_one_iff_odd.mpr (h k)
+    · rw [← ZMod.natCast_eq_zero_iff_even]
+      have hc1 : ∀ k, (c k : ZMod 2) = 1 := fun k => ZMod.natCast_eq_one_iff_odd.mpr (h k)
       have hS1 : ((∑ k, c k : ℕ) : ZMod 2) = 1 := by
         rw [hS]; simp only [hc1, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
           nsmul_eq_mul, mul_one]
-        exact ZMod.eq_one_iff_odd.mpr hm
+        exact ZMod.natCast_eq_one_iff_odd.mpr hm
       linear_combination key j - hc1 j + hS1
 
 /-! ### First claim: the center of the skew polynomial ring -/
@@ -179,7 +180,6 @@ theorem commute_generator_iff {m : ℕ} (z : SkewPolynomial m) (j : Fin m) :
   constructor
   · intro h c hc
     have := congrArg (fun f => f (c + expSingle j)) h
-    simp only at this
     rw [sum_translate_apply _ _ _ _ (fun a => by simp),
       sum_translate_apply _ _ _ _ (fun a => by simp)] at this
     have hs : OddMath.skewSign c (expSingle j) = OddMath.skewSign (expSingle j) c := by
@@ -330,20 +330,20 @@ theorem squareHom_eq_sum (p : MvPolynomial (Fin (n+2)) ℤ) :
 
 theorem squareHom_apply_dbl (p : MvPolynomial (Fin (n+2)) ℤ) (m : Fin (n+2) →₀ ℕ) :
     squareHom p (dbl m) = p.coeff m := by
-  rw [squareHom_eq_sum, Finsupp.finset_sum_apply, Finset.sum_eq_single m]
+  rw [squareHom_eq_sum, Finsupp.finsetSum_apply, Finset.sum_eq_single m]
   · simp
   · intro b _ hb
-    rw [Finsupp.single_apply, if_neg (fun h => hb (dbl_injective h))]
+    rw [Finsupp.single_apply, ite_eq_right (fun h => hb (dbl_injective h))]
   · intro hm
-    rw [MvPolynomial.not_mem_support_iff.mp hm]
+    rw [MvPolynomial.notMem_support_iff.mp hm]
     simp
 
 theorem squareHom_apply_of_not_even (p : MvPolynomial (Fin (n+2)) ℤ) (a : Fin (n+2) → ℕ)
     (j : Fin (n+2)) (hj : ¬ Even (a j)) : squareHom p a = 0 := by
-  rw [squareHom_eq_sum, Finsupp.finset_sum_apply]
+  rw [squareHom_eq_sum, Finsupp.finsetSum_apply]
   apply Finset.sum_eq_zero
   intro b _
-  rw [Finsupp.single_apply, if_neg]
+  rw [Finsupp.single_apply, ite_eq_right]
   rintro rfl
   exact hj (dbl_even b j)
 
@@ -388,12 +388,12 @@ theorem prefix_prod_eq {m : ℕ} (k : ℕ) (hk : k ≤ m) :
     rw [hz, pow_zero, mul_one, mul_one]
     congr 1
     funext j
-    simp only [Pi.add_apply, expSingle, Fin.ext_iff, Fin.coe_castLE, Fin.val_last]
+    simp only [Pi.add_apply, expSingle, Fin.ext_iff, Fin.val_castLE, Fin.val_last]
     split_ifs <;> omega
 
 theorem V_eq_monomial : V n = monomial (fun _ => 1) 1 := by
   have := prefix_prod_eq (m := n+2) (n+2) le_rfl
-  simp only [Fin.castLE_rfl, id_eq, Fin.is_lt, if_true] at this
+  simp only [Fin.castLE_rfl, id_eq, Fin.is_lt, ite_true] at this
   exact this
 
 theorem V_mul_monomial_dbl (m : Fin (n+2) →₀ ℕ) (c : ℤ) :
@@ -450,7 +450,7 @@ theorem divided_spectator_monomial (i : Fin (n+1)) :
     have hsum : ∑ k, a' k = d := by
       have := congrArg (fun f : Fin (n+2) → ℕ => ∑ k, f k) hsplit
       simp only [Pi.add_apply, Finset.sum_add_distrib, expSingle, Finset.sum_ite_eq,
-        Finset.mem_univ, if_true] at this
+        Finset.mem_univ, ite_true] at this
       omega
     rw [hsplit, monomial_split, divided_spectator_mul i j hjl hjr,
       ih a' hsum (by simp [a', hl]) (by simp [a', hr]), mul_zero]
@@ -485,7 +485,7 @@ theorem s_fix_of_central_kernel (i : Fin (n+1)) (z : SkewPolynomial (n+2))
   have hc : generator i.castSucc * z = z * generator i.castSucc :=
     Subring.mem_center_iff.mp hz _
   have h1 := divided_left_mul i z
-  rw [hc, divided_mul, hd, divided_generator, if_pos (Or.inl rfl)] at h1
+  rw [hc, divided_mul, hd, divided_generator, ite_eq_left (Or.inl rfl)] at h1
   simpa using h1
 
 theorem s_V (hN : Odd (n+2)) (i : Fin (n+1)) : s i (V n) = V n :=
@@ -498,13 +498,13 @@ def half (a : Fin (n+2) → ℕ) : Fin (n+2) →₀ ℕ := Finsupp.equivFunOnFin
 
 theorem dbl_half_even (a : Fin (n+2) → ℕ) (h : ∀ j, Even (a j)) : dbl (half a) = a := by
   funext j
-  simp only [dbl, half, Finsupp.equivFunOnFinite_symm_apply_toFun]
+  simp only [dbl, half, Finsupp.coe_equivFunOnFinite_symm]
   exact Nat.two_mul_div_two_of_even (h j)
 
 theorem one_add_dbl_half_odd (a : Fin (n+2) → ℕ) (h : ∀ j, Odd (a j)) :
     (fun _ => 1) + dbl (half a) = a := by
   funext j
-  simp only [dbl, half, Pi.add_apply, Finsupp.equivFunOnFinite_symm_apply_toFun]
+  simp only [dbl, half, Pi.add_apply, Finsupp.coe_equivFunOnFinite_symm]
   have := Nat.odd_iff.mp (h j)
   omega
 
@@ -566,15 +566,15 @@ theorem divided_sq (i : Fin (n+1)) (j : Fin (n+2)) :
   by_cases h1 : j = i.castSucc
   · subst h1
     refine ⟨1, ?_⟩
-    rw [if_pos (Or.inl rfl), Equiv.swap_apply_left, map_one, L]
+    rw [ite_eq_left (Or.inl rfl), Equiv.swap_apply_left, map_one, L]
     noncomm_ring
   · by_cases h2 : j = i.succ
     · subst h2
       refine ⟨-1, ?_⟩
-      rw [if_pos (Or.inr rfl), Equiv.swap_apply_right, map_neg, map_one, L]
+      rw [ite_eq_left (Or.inr rfl), Equiv.swap_apply_right, map_neg, map_one, L]
       noncomm_ring
     · refine ⟨0, ?_⟩
-      rw [if_neg (by tauto), map_zero]
+      rw [ite_eq_right (by tauto), map_zero]
       simp
 
 /-- Divided differences of squared-variable polynomials are divisible by `x_i - x_{i+1}`. -/
@@ -605,13 +605,13 @@ theorem T_sq (i : Fin (n+1)) (j : Fin (n+2)) :
   rw [map_pow (s i), s_generator, neg_sq, pow_two, divided_mul, divided_generator, s_generator]
   by_cases h1 : j = i.castSucc
   · subst h1
-    rw [if_pos (Or.inl rfl), Equiv.swap_apply_left]
+    rw [ite_eq_left (Or.inl rfl), Equiv.swap_apply_left]
     noncomm_ring
   · by_cases h2 : j = i.succ
     · subst h2
-      rw [if_pos (Or.inr rfl), Equiv.swap_apply_right]
+      rw [ite_eq_left (Or.inr rfl), Equiv.swap_apply_right]
       noncomm_ring
-    · rw [if_neg (by tauto), Equiv.swap_apply_of_ne_of_ne h1 h2]
+    · rw [ite_eq_right (by tauto), Equiv.swap_apply_of_ne_of_ne h1 h2]
       simp [pow_two]
 
 theorem T_step {R : Type*} [Ring R] (x x' f sf Df y sy Dy : R) (hsc : x*sf = sf*x)
@@ -679,10 +679,10 @@ theorem V_mul_squareHom_eq_sum (q : MvPolynomial (Fin (n+2)) ℤ) :
 
 theorem V_mul_squareHom_apply_dbl (q : MvPolynomial (Fin (n+2)) ℤ) (m : Fin (n+2) →₀ ℕ) :
     (V n * squareHom q) (dbl m) = 0 := by
-  rw [V_mul_squareHom_eq_sum, Finsupp.finset_sum_apply]
+  rw [V_mul_squareHom_eq_sum, Finsupp.finsetSum_apply]
   apply Finset.sum_eq_zero
   intro b _
-  rw [monomial_eq_single, Finsupp.single_apply, if_neg]
+  rw [monomial_eq_single, Finsupp.single_apply, ite_eq_right]
   intro h
   have := congrFun h 0
   simp only [Pi.add_apply, dbl] at this
@@ -690,14 +690,14 @@ theorem V_mul_squareHom_apply_dbl (q : MvPolynomial (Fin (n+2)) ℤ) (m : Fin (n
 
 theorem V_mul_squareHom_apply_odd (q : MvPolynomial (Fin (n+2)) ℤ) (m : Fin (n+2) →₀ ℕ) :
     (V n * squareHom q) ((fun _ => 1) + dbl m) = q.coeff m := by
-  rw [V_mul_squareHom_eq_sum, Finsupp.finset_sum_apply, Finset.sum_eq_single m]
+  rw [V_mul_squareHom_eq_sum, Finsupp.finsetSum_apply, Finset.sum_eq_single m]
   · rw [monomial_eq_single, Finsupp.single_eq_same]
   · intro b _ hb
-    rw [monomial_eq_single, Finsupp.single_apply, if_neg]
+    rw [monomial_eq_single, Finsupp.single_apply, ite_eq_right]
     intro h
     exact hb (dbl_injective (add_left_cancel h))
   · intro hm
-    rw [MvPolynomial.not_mem_support_iff.mp hm]
+    rw [MvPolynomial.notMem_support_iff.mp hm]
     simp
 
 theorem squareHom_apply_odd (p : MvPolynomial (Fin (n+2)) ℤ) (m : Fin (n+2) →₀ ℕ) :
@@ -775,7 +775,7 @@ theorem kernel_inter_center (n : ℕ) (z : SkewPolynomial (n+2)) :
       · have := hfix i
         rw [hz, s_squareHom] at this
         exact squareHom_injective this
-      · rw [if_neg (Nat.not_odd_iff_even.mpr hev), add_zero, hz]
+      · rw [ite_eq_right (Nat.not_odd_iff_even.mpr hev), add_zero, hz]
     · have hsym : ∀ i : Fin (n+1),
           MvPolynomial.rename (Equiv.swap i.castSucc i.succ) p = p ∧
           MvPolynomial.rename (Equiv.swap i.castSucc i.succ) q = q := fun i => by
@@ -784,7 +784,7 @@ theorem kernel_inter_center (n : ℕ) (z : SkewPolynomial (n+2)) :
         exact separate _ _ _ _ this
       refine ⟨squareHom p, (mem_sq _).mpr ⟨p, symmetric_of_adjacent p (fun i => (hsym i).1), rfl⟩,
         squareHom q, (mem_sq _).mpr ⟨q, symmetric_of_adjacent q (fun i => (hsym i).2), rfl⟩, ?_⟩
-      rw [if_pos hodd, hz]
+      rw [ite_eq_left hodd, hz]
   · rintro ⟨a, ha, b, hb, rfl⟩
     obtain ⟨p, hp, rfl⟩ := (mem_sq _).mp ha
     obtain ⟨q, hq, rfl⟩ := (mem_sq _).mp hb
@@ -808,7 +808,7 @@ theorem even_rank (n : ℕ) (h : Even (n+2)) (z : SkewPolynomial (n+2)) :
     (z ∈ kernelSubring n ∧ z ∈ Subring.center (SkewPolynomial (n+2))) ↔ z ∈ sq n := by
   have hno : ¬ Odd (n+2) := Nat.not_odd_iff_even.mpr h
   rw [kernel_inter_center]
-  simp only [hno, if_false, add_zero]
+  simp only [hno, ite_false, add_zero]
   constructor
   · rintro ⟨a, ha, b, _, rfl⟩
     exact ha

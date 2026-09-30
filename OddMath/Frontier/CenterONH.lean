@@ -57,13 +57,13 @@ theorem intertwine (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
         rw [PbwL3.evalAlg_ι, s_generator, divided_generator]
         by_cases ha : j = i.castSucc
         · subst ha
-          rw [Equiv.swap_apply_left, if_pos (Or.inl rfl)]
+          rw [Equiv.swap_apply_left, ite_eq_left (Or.inl rfl)]
           noncomm_ring
         · by_cases hb : j = i.succ
           · subst hb
-            rw [Equiv.swap_apply_right, if_pos (Or.inr rfl)]
+            rw [Equiv.swap_apply_right, ite_eq_left (Or.inr rfl)]
             noncomm_ring
-          · rw [Equiv.swap_apply_of_ne_of_ne ha hb, if_neg (by tauto), mul_zero]
+          · rw [Equiv.swap_apply_of_ne_of_ne ha hb, ite_eq_right (by tauto), mul_zero]
             have h1 : generator i.castSucc * generator j = -(generator j * generator i.castSucc) :=
               generator_anticommute i.castSucc j (Ne.symm ha)
             have h2 : generator i.succ * generator j = -(generator j * generator i.succ) :=

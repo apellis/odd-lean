@@ -18,13 +18,13 @@ private theorem last_cons (cs : List ℕ) (k : ℕ) (h : cs ≠ []) :
   | cons j js => simp
 
 theorem reverse_after_runRows (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·)) (hn : ∀ w ∈ rs, w ≠ []) :
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·)) (hn : ∀ w ∈ rs, w ≠ []) :
     reverseRows n (runRows n rs a).output (newCell n rs a).1 (newCell n rs a).2 =
       some ⟨rs, a, (runRows n rs a).columns⟩ := by
   induction rs generalizing a with
   | nil => simp [runRows, newCell, reverseRows]
   | cons w ws ih =>
-    have hst : ∀ z ∈ ws, z.Sorted (· ≤ ·) := fun z hz => hs z (by simp [hz])
+    have hst : ∀ z ∈ ws, z.Pairwise (· ≤ ·) := fun z hz => hs z (by simp [hz])
     have hnt : ∀ z ∈ ws, z ≠ [] := fun z hz => hn z (by simp [hz])
     have hw : w.length ≠ 0 := by simpa using hn w (by simp)
     have hl := reverse_after_forward n w a (hs w (by simp))
@@ -63,7 +63,7 @@ private theorem split_last {n : ℕ} (w : List (Fin n)) (c : ℕ)
 -- The recursion itself needs no column relation; the public theorem retains
 -- the installed six-premise contract and uses its geometry for the new corner.
 private theorem reconstruct (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
-    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hn : ∀ w ∈ rs, w ≠ []) (hr : r < rs.length)
     (he : (rs[r]?.getD []).length = c+1) (hb : (rs[r+1]?.getD []).length ≤ c)
     (hq : reverseRows n rs r c = some q) :
@@ -87,11 +87,11 @@ private theorem reconstruct (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
             exact False.elim (hv (List.length_eq_zero_iff.mp hvz))
         subst ws
         subst c
-        simp only [reverseRows, hget, if_pos rfl, Option.some.injEq] at hq
+        simp only [reverseRows, hget, Option.some.injEq] at hq
         cases hq
         have hw' : w = [b] := by simpa using hw
         simp [runRows,hw']
-      · simp only [reverseRows, hget, if_neg hz, Option.some.injEq] at hq
+      · simp only [reverseRows, hget, ite_eq_right hz, Option.some.injEq] at hq
         cases hq
         have hle : ∀ x ∈ w.take c, x ≤ b := by
           have hsorted := hs w (by simp)
@@ -103,7 +103,7 @@ private theorem reconstruct (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
     cases rs with
     | nil => simp at hr
     | cons w ws =>
-      have hst : ∀ z ∈ ws, z.Sorted (· ≤ ·) := fun z hz => hs z (by simp [hz])
+      have hst : ∀ z ∈ ws, z.Pairwise (· ≤ ·) := fun z hz => hs z (by simp [hz])
       have hnt : ∀ z ∈ ws, z ≠ [] := fun z hz => hn z (by simp [hz])
       cases ht : reverseRows n ws r c with
       | none => simp [reverseRows,ht] at hq
@@ -127,7 +127,7 @@ private theorem reconstruct (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
             simpa [runRows,hd,hout,hk] using hi
 
 theorem runRows_after_reverse (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
-    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ j, ColumnBelow (rs[j]?.getD []) (rs[j+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) (hr : r < rs.length)
     (he : (rs[r]?.getD []).length = c+1) (hb : (rs[r+1]?.getD []).length ≤ c)
@@ -143,7 +143,7 @@ theorem runRows_after_reverse (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
   simp [newCell,hcols,hlen,hlast]
 
 theorem reverseRows_count (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
-    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (q : ReverseRun n) (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ j, ColumnBelow (rs[j]?.getD []) (rs[j+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) (hr : r < rs.length)
     (he : (rs[r]?.getD []).length = c+1) (hb : (rs[r+1]?.getD []).length ≤ c)

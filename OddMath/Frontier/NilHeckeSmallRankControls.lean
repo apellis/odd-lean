@@ -14,37 +14,35 @@ open scoped BigOperators
 
 /-- N = 0: no relator words over the empty generator set. -/
 theorem relSet_empty_zero : OddMath.PbwL2.relSet 0 = ∅ := by
-  rw [Set.eq_empty_iff_forall_not_mem]
+  rw [Set.eq_empty_iff_forall_notMem]
   intro w hw
   obtain ⟨i, _, _, _⟩ := hw
   exact i.elim0
 
 /-- N = 0: no relator index pairs. -/
 theorem relPairs_empty_zero : OddMath.PbwL2.relPairs 0 = ∅ := by
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   intro x _
   exact x.1.elim0
 
 /-- N = 0: every exponent vector has polynomial degree zero. -/
 theorem pdegree_zero_all (a : Fin 0 → ℕ) :
     OddMath.Frontier.NilHeckeGradedEnd.pdegree a = 0 := by
-  have hU : (Finset.univ : Finset (Fin 0)) = ∅ :=
-    Finset.eq_empty_iff_forall_not_mem.mpr fun i _ => i.elim0
-  simp [OddMath.Frontier.NilHeckeGradedEnd.pdegree, hU]
+  simp [OddMath.Frontier.NilHeckeGradedEnd.pdegree]
 
 /-- N = 1: no relator words; every alleged relator needs distinct generators. -/
 theorem relSet_empty_one : OddMath.PbwL2.relSet 1 = ∅ := by
-  rw [Set.eq_empty_iff_forall_not_mem]
+  rw [Set.eq_empty_iff_forall_notMem]
   intro w hw
   obtain ⟨i, j, h, _⟩ := hw
   exact h (Subsingleton.elim i j)
 
 /-- N = 1: no relator index pairs. -/
 theorem relPairs_empty_one : OddMath.PbwL2.relPairs 1 = ∅ := by
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   intro x hx
   rw [OddMath.PbwL2.relPairs] at hx
-  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ,
+  simp only [Finset.mem_filter, Finset.mem_univ,
     true_and] at hx
   exact hx (Subsingleton.elim x.1 x.2)
 

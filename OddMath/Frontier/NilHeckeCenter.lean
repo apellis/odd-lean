@@ -48,10 +48,10 @@ theorem volume_commutes_generators (j : Fin 3) :
 theorem volume_signed_fixed (i : Fin 2) : s i volume = volume := by
   fin_cases i <;> simp only [volume, map_mul, s_generator] <;>
     norm_num [Equiv.swap_apply_def] <;>
-    simp only [neg_mul, mul_neg, neg_neg, generator, mm] <;>
+    simp only [generator, mm] <;>
     simp [monomial, expSingle, OddMath.skewSign, OddMath.crossingCount,
-      Fin.sum_univ_three, Fin.sum_univ_two, Finset.sum_filter,
-    Finsupp.single_apply, Pi.add_apply, Fin.ext_iff]
+      Fin.sum_univ_three, Finset.sum_filter,
+    Pi.add_apply, Fin.ext_iff]
     <;> congr 1 <;> funext k <;> fin_cases k <;> decide
 
 theorem rankTwo_kernel : generator (0 : Fin 2) * generator 1 ∈ kernelSubring 0 := by
@@ -78,7 +78,7 @@ theorem rankTwo_not_central :
 def dotVolume : Presented 1 := dot 1 0 * dot 1 1 * dot 1 2
 
 theorem dotVolume_action (f : SkewPolynomial 3) : action 1 dotVolume f = volume * f := by
-  simp [dotVolume, volume, action_mul_apply, action_dot_apply, mul_assoc]
+  simp [dotVolume, volume, mul_assoc]
 
 theorem dotVolume_commutes_dots (j : Fin 3) : dotVolume * dot 1 j = dot 1 j * dotVolume := by
   apply OddMath.Frontier.NilHeckeBasis.action_injective 1
@@ -178,7 +178,10 @@ def evenSubring : Subring (SkewPolynomial 3) where
   add_mem' := evenSpan.add_mem
   neg_mem' := evenSpan.neg_mem
   mul_mem' := evenSpan_mul
-  one_mem' := by simpa only [mul_zero] using even_monomial_mem 0
+  one_mem' := by
+    have hm := even_monomial_mem 0
+    simp only [Pi.zero_apply, mul_zero] at hm
+    exact hm
 
 theorem square_mem_even (j : Fin 3) : generator j ^ 2 ∈ evenSubring := by
   rw [pow_two]
@@ -203,7 +206,7 @@ theorem evenSpan_odd_coefficient {p : SkewPolynomial 3} (hp : p ∈ evenSpan)
       intro he
       have hj := congrFun he j
       omega
-    simp [monomial, Finsupp.single_apply, hne]
+    simp [monomial, hne]
   | zero => rfl
   | add p q _ _ hp hq => simp only [Finsupp.add_apply, hp, hq, add_zero]
   | smul z p _ hp => simp only [Finsupp.smul_apply, hp, smul_zero]

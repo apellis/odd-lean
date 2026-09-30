@@ -45,7 +45,7 @@ theorem prim_deriv {x : Q} (hx : IsPrim x) (a b : Q) :
     quotientPairing_right_one, quotientPairing_symm x b, quotientPairing_symm x a]
 
 theorem counit_h_pos {k : ℕ} (hk : 0 < k) : quotientCounit (h k) = 0 := by
-  rw [h, quotientCounit_pi, EKFreeCoproduct.counit_h, if_neg (by omega)]
+  rw [h, quotientCounit_pi, EKFreeCoproduct.counit_h, ite_eq_right (by omega)]
 
 theorem counit_prod_pos (t : List ℕ) (ht : ∀ k ∈ t, 0 < k) (hne : t ≠ []) :
     quotientCounit ((t.map h).prod) = 0 := by
@@ -84,7 +84,7 @@ theorem shape_cases {n : ℕ} (hn : 0 < n) (μ : DegreeShape n) :
 theorem h1_primitive : IsPrim (h 1) := by
   unfold IsPrim h
   rw [quotientCoproduct_pi, EKFreeCoproduct.coproduct_h]
-  simp [Fin.sum_univ_two, add_comm]
+  simp [Fin.sum_univ_two]
 
 theorem m1_eq_h1 : (mBasis 1 oneShape : Q) = h 1 := by
   have hm := m_unique 1 oneShape (degreeHBasis 1 oneShape) (by
@@ -101,10 +101,9 @@ theorem h11_primitive : IsPrim (h 1 * h 1) := by
   unfold IsPrim h
   rw [← pi.map_mul, quotientCoproduct_pi, EKFreeCoproduct.coproduct_two]
   simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Fin.val_zero, Fin.val_succ,
-    Nat.sub_zero, Nat.sub_self, zero_add, add_zero, Fin.succ_zero_eq_one, Fin.val_one]
+    Nat.sub_zero, Nat.sub_self, zero_add, add_zero]
   norm_num [map_add, map_zsmul, quotientTensorMap_tmul, CompleteElementary.h_zero,
     TensorProduct.neg_tmul]
-  abel
 
 theorem m2_primitive : IsPrim (mBasis 2 row2 : Q) := by
   rw [degree_two_duals.1]; exact h11_primitive
@@ -154,7 +153,7 @@ theorem degree_three_no_primitive (x : degreePiece 3) (hx : IsPrim x.val) : x = 
 /-! ### degree 4 -/
 
 def row4 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 
 @[simp] theorem row4_rows : row4.val.rowLens = [4] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by simp)

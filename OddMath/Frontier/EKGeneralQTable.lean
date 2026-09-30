@@ -91,7 +91,7 @@ theorem matSet_sum {M : Type*} [AddCommMonoid M] {r c : ℕ} (β : Fin r → ℕ
     · funext j
       have h := congrArg (fun l => l[j.val]?) hcol
       simp only [EKAppendixData.colSumsL, List.getElem?_map, List.getElem?_range j.isLt,
-        List.getElem?_ofFn, Option.map_some'] at h
+        List.getElem?_ofFn, Option.map_some] at h
       have h' : ((List.range L.length).map (fun i => EKAppendixData.ent L i j)).sum = α j := by
         simpa using h
       rw [EKAppendixData.list_sum_range, hlen,
@@ -138,27 +138,27 @@ theorem form_eval (bl al cs : List ℕ)
   congr 2
   have h := congrArg (fun l => l.getD n 0) hc.2
   simp only [List.getD_eq_getElem?_getD, List.getElem?_map,
-    List.getElem?_range (Finset.mem_range.mp hn), Option.map_some', Option.getD_some] at h
+    List.getElem?_range (Finset.mem_range.mp hn), Option.map_some] at h
   exact h
 /-- EK §5.2 p.38, degree 1: `(h_1, h_1) = 1`. -/
 theorem table1_1_1 : form q (hWord k [1]) (hWord k [1]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 2: `(h_11, h_11) = [2]`. -/
 theorem table2_11_11 : form q (hWord k [1, 1]) (hWord k [1, 1]) = qnum q 2 := by
   rw [form_eval q _ _ [1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 2: `(h_11, h_2) = 1`. -/
 theorem table2_11_2 : form q (hWord k [1, 1]) (hWord k [2]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 2: `(h_2, h_2) = 1`. -/
 theorem table2_2_2 : form q (hWord k [2]) (hWord k [2]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 3: `(h_111, h_111) = [3]!`. -/
 theorem table3_111_111 : form q (hWord k [1, 1, 1]) (hWord k [1, 1, 1]) = qfact q 3 := by
@@ -169,47 +169,47 @@ theorem table3_111_111 : form q (hWord k [1, 1, 1]) (hWord k [1, 1, 1]) = qfact 
 /-- EK §5.2 p.38, degree 3: `(h_111, h_12) = [3]`. -/
 theorem table3_111_12 : form q (hWord k [1, 1, 1]) (hWord k [1, 2]) = qnum q 3 := by
   rw [form_eval q _ _ [1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 3: `(h_111, h_21) = [3]`. -/
 theorem table3_111_21 : form q (hWord k [1, 1, 1]) (hWord k [2, 1]) = qnum q 3 := by
   rw [form_eval q _ _ [1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 3: `(h_111, h_3) = 1`. -/
 theorem table3_111_3 : form q (hWord k [1, 1, 1]) (hWord k [3]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 3: `(h_12, h_12) = [2]`. -/
 theorem table3_12_12 : form q (hWord k [1, 2]) (hWord k [1, 2]) = qnum q 2 := by
   rw [form_eval q _ _ [1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 3: `(h_12, h_21) = 1 + q^2`. -/
 theorem table3_12_21 : form q (hWord k [1, 2]) (hWord k [2, 1]) = 1 + q^2 := by
   rw [form_eval q _ _ [1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 3: `(h_12, h_3) = 1`. -/
 theorem table3_12_3 : form q (hWord k [1, 2]) (hWord k [3]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 3: `(h_21, h_21) = [2]`. -/
 theorem table3_21_21 : form q (hWord k [2, 1]) (hWord k [2, 1]) = qnum q 2 := by
   rw [form_eval q _ _ [1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 3: `(h_21, h_3) = 1`. -/
 theorem table3_21_3 : form q (hWord k [2, 1]) (hWord k [3]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 3: `(h_3, h_3) = 1`. -/
 theorem table3_3_3 : form q (hWord k [3]) (hWord k [3]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_1111) = [4]!`. -/
 theorem table4_1111_1111 : form q (hWord k [1, 1, 1, 1]) (hWord k [1, 1, 1, 1]) = qfact q 4 := by
@@ -220,189 +220,189 @@ theorem table4_1111_1111 : form q (hWord k [1, 1, 1, 1]) (hWord k [1, 1, 1, 1]) 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_112) = [4] * [3]`. -/
 theorem table4_1111_112 : form q (hWord k [1, 1, 1, 1]) (hWord k [1, 1, 2]) = qnum q 4 * qnum q 3 := by
   rw [form_eval q _ _ [1, 2, 3, 3, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_121) = [4] * [3]`. -/
 theorem table4_1111_121 : form q (hWord k [1, 1, 1, 1]) (hWord k [1, 2, 1]) = qnum q 4 * qnum q 3 := by
   rw [form_eval q _ _ [1, 2, 3, 3, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_211) = [4] * [3]`. -/
 theorem table4_1111_211 : form q (hWord k [1, 1, 1, 1]) (hWord k [2, 1, 1]) = qnum q 4 * qnum q 3 := by
   rw [form_eval q _ _ [1, 2, 3, 3, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_22) = [5] + q^2`. -/
 theorem table4_1111_22 : form q (hWord k [1, 1, 1, 1]) (hWord k [2, 2]) = qnum q 5 + q^2 := by
   rw [form_eval q _ _ [1, 1, 2, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_13) = [4]`. -/
 theorem table4_1111_13 : form q (hWord k [1, 1, 1, 1]) (hWord k [1, 3]) = qnum q 4 := by
   rw [form_eval q _ _ [1, 1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_31) = [4]`. -/
 theorem table4_1111_31 : form q (hWord k [1, 1, 1, 1]) (hWord k [3, 1]) = qnum q 4 := by
   rw [form_eval q _ _ [1, 1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_1111, h_4) = 1`. -/
 theorem table4_1111_4 : form q (hWord k [1, 1, 1, 1]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_112) = [5] + q * [2]`. -/
 theorem table4_112_112 : form q (hWord k [1, 1, 2]) (hWord k [1, 1, 2]) = qnum q 5 + q * qnum q 2 := by
   rw [form_eval q _ _ [1, 2, 2, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_121) = [5] + q^2 * [2]`. -/
 theorem table4_112_121 : form q (hWord k [1, 1, 2]) (hWord k [1, 2, 1]) = qnum q 5 + q^2 * qnum q 2 := by
   rw [form_eval q _ _ [1, 1, 2, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_211) = [6] + q^2`. -/
 theorem table4_112_211 : form q (hWord k [1, 1, 2]) (hWord k [2, 1, 1]) = qnum q 6 + q^2 := by
   rw [form_eval q _ _ [1, 1, 2, 1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_22) = [3] + q^4`. -/
 theorem table4_112_22 : form q (hWord k [1, 1, 2]) (hWord k [2, 2]) = qnum q 3 + q^4 := by
   rw [form_eval q _ _ [1, 1, 1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_13) = [3]`. -/
 theorem table4_112_13 : form q (hWord k [1, 1, 2]) (hWord k [1, 3]) = qnum q 3 := by
   rw [form_eval q _ _ [1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_31) = [1] + q^2 * [2]`. -/
 theorem table4_112_31 : form q (hWord k [1, 1, 2]) (hWord k [3, 1]) = qnum q 1 + q^2 * qnum q 2 := by
   rw [form_eval q _ _ [1, 0, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_112, h_4) = 1`. -/
 theorem table4_112_4 : form q (hWord k [1, 1, 2]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_121) = [4] + q + q^3 + q^5`. -/
 theorem table4_121_121 : form q (hWord k [1, 2, 1]) (hWord k [1, 2, 1]) = qnum q 4 + q + q^3 + q^5 := by
   rw [form_eval q _ _ [1, 2, 1, 2, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_211) = [5] + q^2 * [2]`. -/
 theorem table4_121_211 : form q (hWord k [1, 2, 1]) (hWord k [2, 1, 1]) = qnum q 5 + q^2 * qnum q 2 := by
   rw [form_eval q _ _ [1, 1, 2, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_22) = 1 + 2*q^2 + q^3`. -/
 theorem table4_121_22 : form q (hWord k [1, 2, 1]) (hWord k [2, 2]) = 1 + 2*q^2 + q^3 := by
   rw [form_eval q _ _ [1, 0, 2, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_13) = [2] + q^3`. -/
 theorem table4_121_13 : form q (hWord k [1, 2, 1]) (hWord k [1, 3]) = qnum q 2 + q^3 := by
   rw [form_eval q _ _ [1, 1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_31) = [2] + q^3`. -/
 theorem table4_121_31 : form q (hWord k [1, 2, 1]) (hWord k [3, 1]) = qnum q 2 + q^3 := by
   rw [form_eval q _ _ [1, 1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_121, h_4) = 1`. -/
 theorem table4_121_4 : form q (hWord k [1, 2, 1]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_211, h_211) = [5] + q * [2]`. -/
 theorem table4_211_211 : form q (hWord k [2, 1, 1]) (hWord k [2, 1, 1]) = qnum q 5 + q * qnum q 2 := by
   rw [form_eval q _ _ [1, 2, 2, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_211, h_22) = [3] + q^4`. -/
 theorem table4_211_22 : form q (hWord k [2, 1, 1]) (hWord k [2, 2]) = qnum q 3 + q^4 := by
   rw [form_eval q _ _ [1, 1, 1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_211, h_13) = 1 + q^2 * [2]`. -/
 theorem table4_211_13 : form q (hWord k [2, 1, 1]) (hWord k [1, 3]) = 1 + q^2 * qnum q 2 := by
   rw [form_eval q _ _ [1, 0, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
   ring
 
 /-- EK §5.2 p.38, degree 4: `(h_211, h_31) = [3]`. -/
 theorem table4_211_31 : form q (hWord k [2, 1, 1]) (hWord k [3, 1]) = qnum q 3 := by
   rw [form_eval q _ _ [1, 1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_211, h_4) = 1`. -/
 theorem table4_211_4 : form q (hWord k [2, 1, 1]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_22, h_22) = [2] + q^4`. -/
 theorem table4_22_22 : form q (hWord k [2, 2]) (hWord k [2, 2]) = qnum q 2 + q^4 := by
   rw [form_eval q _ _ [1, 1, 0, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_22, h_13) = 1 + q^2`. -/
 theorem table4_22_13 : form q (hWord k [2, 2]) (hWord k [1, 3]) = 1 + q^2 := by
   rw [form_eval q _ _ [1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_22, h_31) = 1 + q^2`. -/
 theorem table4_22_31 : form q (hWord k [2, 2]) (hWord k [3, 1]) = 1 + q^2 := by
   rw [form_eval q _ _ [1, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_22, h_4) = 1`. -/
 theorem table4_22_4 : form q (hWord k [2, 2]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_13, h_13) = [2]`. -/
 theorem table4_13_13 : form q (hWord k [1, 3]) (hWord k [1, 3]) = qnum q 2 := by
   rw [form_eval q _ _ [1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_13, h_31) = 1 + q^3`. -/
 theorem table4_13_31 : form q (hWord k [1, 3]) (hWord k [3, 1]) = 1 + q^3 := by
   rw [form_eval q _ _ [1, 0, 0, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_13, h_4) = 1`. -/
 theorem table4_13_4 : form q (hWord k [1, 3]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_31, h_31) = [2]`. -/
 theorem table4_31_31 : form q (hWord k [3, 1]) (hWord k [3, 1]) = qnum q 2 := by
   rw [form_eval q _ _ [1, 1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp [qnum, Finset.sum_range_succ]
 
 /-- EK §5.2 p.38, degree 4: `(h_31, h_4) = 1`. -/
 theorem table4_31_4 : form q (hWord k [3, 1]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 /-- EK §5.2 p.38, degree 4: `(h_4, h_4) = 1`. -/
 theorem table4_4_4 : form q (hWord k [4]) (hWord k [4]) = 1 := by
   rw [form_eval q _ _ [1] (by decide +kernel)]
-  simp [qnum, qfact, Finset.sum_range_succ, Finset.prod_range_succ]
+  simp []
 
 
 /-! ## The printed tables as matrices, all entries (the `∗` entries by symmetry) -/
@@ -507,7 +507,7 @@ theorem det_gram3_not_monic :
   have hdeg : (-(X ^ 5 * (X - 1) * (X + 1)) : ℤ[X]).natDegree = 7 := by
     have h1 : (X - 1 : ℤ[X]).natDegree = 1 := by simpa using natDegree_X_sub_C (1 : ℤ)
     have h0 : (X - 1 : ℤ[X]) ≠ 0 := by simpa using X_sub_C_ne_zero (1 : ℤ)
-    have h2 : (X + 1 : ℤ[X]).natDegree = 1 := by simpa using natDegree_X_add_C (1 : ℤ)
+    have h2 : (X + 1 : ℤ[X]).natDegree = 1 := by simp
     have h3 : (X + 1 : ℤ[X]) ≠ 0 := by simpa using X_add_C_ne_zero (1 : ℤ)
     rw [natDegree_neg, natDegree_mul, natDegree_mul, natDegree_X_pow, h1, h2]
     · exact pow_ne_zero _ X_ne_zero

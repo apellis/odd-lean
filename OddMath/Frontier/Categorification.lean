@@ -73,11 +73,11 @@ include hsum horth
 
 theorem mul_sigma_eq (j : I) : P * σ j = σ j * e := by
   rw [← hsum, Finset.sum_mul]
-  simp_rw [mul_assoc, horth, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp_rw [mul_assoc, horth, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
 
 theorem lam_mul_eq (i : I) : lam i * P = e * lam i := by
   rw [← hsum, Finset.mul_sum]
-  simp_rw [← mul_assoc, horth, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp_rw [← mul_assoc, horth, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
 
 end Orth
 
@@ -114,7 +114,7 @@ def equiv : leftIdeal P ≃ₗ[R] (I → leftIdeal e) where
   right_inv y := funext fun j => Subtype.ext <| by
     change (∑ i, (y i).1 * S.lam i) * S.σ j = (y j).1
     rw [Finset.sum_mul]
-    simp_rw [mul_assoc, S.orth, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    simp_rw [mul_assoc, S.orth, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
     exact (y j).2
 
 theorem equiv_apply (x : leftIdeal P) (i : I) : (S.equiv x i : R) = x.1 * S.σ i := rfl
@@ -171,7 +171,7 @@ variable {n : ℕ}
 theorem hasDegree_sum {ι : Type*} (s : Finset ι) {k : ℤ} (f : ι → Presented n)
     (h : ∀ i ∈ s, HasDegree (Vd (n+2)) k (action n (f i))) :
     HasDegree (Vd (n+2)) k (action n (∑ i ∈ s, f i)) := fun d v hv => by
-  rw [map_sum, LinearMap.coeFn_sum, Finset.sum_apply]
+  rw [map_sum, LinearMap.sum_apply]
   exact Submodule.sum_mem _ fun i hi => h i hi d v hv
 
 /-! ## (6.1) -/

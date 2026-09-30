@@ -6,7 +6,7 @@ abbrev State (n : ℕ) := TableauWordInsertion.State n
 
 def spec (n : ℕ) (S : State n) (ps : List (ℕ × ℕ)) : Prop :=
   ps.Pairwise (fun p q => q.2 < p.2) →
-    ∀ Q, TableauReverseWord.reverseRun n S ps = some Q → Q.2.Sorted (· ≤ ·)
+    ∀ Q, TableauReverseWord.reverseRun n S ps = some Q → Q.2.Pairwise (· ≤ ·)
 
 /-!
 Fulton, Young Tableaux §1.1, printed p11 / frozen PDF23, lines794–799.
@@ -34,7 +34,7 @@ private theorem earlier_le (n : ℕ) (ps : List (ℕ × ℕ)) :
     by_cases hq : TableauCorner.IsCorner S'.1 q
     · let U := TableauReverseOutput.remove n S'.1 S'.2.1 S'.2.2 q hq
       let S'' : State n := ⟨TableauCorner.eraseShape S'.1 q hq, ⟨U.tableau,U.bounded⟩⟩
-      simp only [TableauReverseWord.reverseRun, dif_pos hq] at hQ
+      simp only [TableauReverseWord.reverseRun, dite_eq_left hq] at hQ
       change (TableauReverseWord.reverseRun n S'' qs).map
         (fun P => (P.1,P.2 ++ [U.letter])) = some Q at hQ
       cases ht : TableauReverseWord.reverseRun n S'' qs with
@@ -62,13 +62,13 @@ theorem reverse_order (n : ℕ) (S : State n) (ps : List (ℕ × ℕ)) : spec n 
     intro hps Q hQ
     simp only [TableauReverseWord.reverseRun, Option.some.injEq] at hQ
     subst Q
-    exact List.sorted_nil
+    exact List.Pairwise.nil
   | cons p ps ih =>
     intro hps Q hQ
     by_cases hp : TableauCorner.IsCorner S.1 p
     · let R := TableauReverseOutput.remove n S.1 S.2.1 S.2.2 p hp
       let S' : State n := ⟨TableauCorner.eraseShape S.1 p hp, ⟨R.tableau,R.bounded⟩⟩
-      simp only [TableauReverseWord.reverseRun, dif_pos hp] at hQ
+      simp only [TableauReverseWord.reverseRun, dite_eq_left hp] at hQ
       change (TableauReverseWord.reverseRun n S' ps).map
         (fun P => (P.1,P.2 ++ [R.letter])) = some Q at hQ
       cases ht : TableauReverseWord.reverseRun n S' ps with

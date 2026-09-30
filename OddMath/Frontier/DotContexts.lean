@@ -69,7 +69,7 @@ theorem denote_neg {n : ℕ} (word : DotSeq n) (f : SkewPolynomial n) :
 
 theorem denote_zsmul {n : ℕ} (word : DotSeq n) (z : ℤ) (f : SkewPolynomial n) :
     denote word (z • f) = z • denote word f :=
-  (denoteAddHom word).map_zsmul f z
+  (denoteAddHom word).map_zsmul z f
 
 /-- Vertical composition: below is applied before above. -/
 theorem denote_append {n : ℕ} (below above : DotSeq n) (f : SkewPolynomial n) :

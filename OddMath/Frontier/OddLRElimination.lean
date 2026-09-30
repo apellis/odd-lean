@@ -37,14 +37,14 @@ theorem rowFun_antitone {n : ℕ} (α : PartitionExponent n) : Antitone (rowFun 
   unfold rowFun
   by_cases hb : b < n+2
   · have ha : a < n+2 := lt_of_le_of_lt hab hb
-    rw [dif_pos hb, dif_pos ha]
+    rw [dite_eq_left hb, dite_eq_left ha]
     exact α.property (show (⟨a, ha⟩ : Fin (n+2)) ≤ ⟨b, hb⟩ from hab)
-  · rw [dif_neg hb]; exact Nat.zero_le _
+  · rw [dite_eq_right hb]; exact Nat.zero_le _
 
 theorem rowFun_pos {n : ℕ} (α : PartitionExponent n) {a : ℕ} (h : 0 < rowFun α a) : a < n+2 := by
   unfold rowFun at h
   by_contra hn
-  rw [dif_neg hn] at h
+  rw [dite_eq_right hn] at h
   exact lt_irrefl 0 h
 
 /-- The cells of the row-length diagram. -/
@@ -80,9 +80,9 @@ theorem toYoung_column (n k : ℕ) (hk : k ≤ n+2) :
   rw [mem_toYoung, TableauExtremal.mem_columnShape]
   simp only [rowFun, column]
   by_cases ha : a < n+2
-  · rw [dif_pos ha]
+  · rw [dite_eq_left ha]
     split_ifs <;> omega
-  · rw [dif_neg ha]
+  · rw [dite_eq_right ha]
     omega
 
 /-- Diagrams with at most n+2 rows, read back as padded row lengths. -/
@@ -97,8 +97,8 @@ theorem toYoung_ofYoung {n : ℕ} (μ : YoungDiagram) (hμ : μ.colLen 0 ≤ n+2
   rw [mem_toYoung, YoungDiagram.mem_iff_lt_rowLen]
   simp only [rowFun, ofYoung]
   by_cases ha : a < n+2
-  · rw [dif_pos ha]
-  · rw [dif_neg ha]
+  · rw [dite_eq_left ha]
+  · rw [dite_eq_right ha]
     have h0 : ¬ (a, 0) ∈ μ := by
       rw [YoungDiagram.mem_iff_lt_colLen]; omega
     rw [YoungDiagram.mem_iff_lt_rowLen] at h0
@@ -236,10 +236,10 @@ theorem strip_lex {n r : ℕ} (α : PartitionExponent n) (hα : α.val 0 = r) (h
       rw [hν i]
       by_cases hi : i ∈ I.val
       · have hne' : min (α.val i) (r - 1) ≠ j := fun h => hnP ⟨i, hi, h, hj⟩
-        rw [if_pos hi]
+        rw [ite_eq_left hi]
         rw [Nat.min_def] at hne' ⊢
         split_ifs at hne' ⊢ <;> omega
-      · rw [if_neg hi, Nat.min_def]
+      · rw [ite_eq_right hi, Nat.min_def]
         split_ifs <;> omega
     refine ⟨⟨Nat.find hP, by omega⟩, ?_, ?_⟩
     · intro j hj
@@ -250,7 +250,7 @@ theorem strip_lex {n r : ℕ} (α : PartitionExponent n) (hα : α.val 0 = r) (h
       rw [Finset.ssubset_iff_of_subset]
       · refine ⟨i0, ?_, ?_⟩
         · simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-          rw [hν i0, if_pos hi0, hbi0]; omega
+          rw [hν i0, ite_eq_left hi0, hbi0]; omega
         · simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt]
           rw [Nat.min_def] at hbi0
           split_ifs at hbi0 <;> omega
@@ -258,7 +258,7 @@ theorem strip_lex {n r : ℕ} (α : PartitionExponent n) (hα : α.val 0 = r) (h
         simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
         rw [hν i, Nat.min_def]
         split_ifs <;> omega
-  · push_neg at hA
+  · push Not at hA
     exfalso
     apply hne
     have hIν : ∀ i, (stripPartition I).val i = r ↔ i ∈ I.val := by
@@ -266,11 +266,11 @@ theorem strip_lex {n r : ℕ} (α : PartitionExponent n) (hα : α.val 0 = r) (h
       rw [hν i]
       by_cases hi : i ∈ I.val
       · have := hA i hi
-        rw [if_pos hi]
+        rw [ite_eq_left hi]
         simp only [hi, iff_true]
         rw [Nat.min_def] at this ⊢
         split_ifs at this ⊢ <;> omega
-      · rw [if_neg hi, Nat.min_def]
+      · rw [ite_eq_right hi, Nat.min_def]
         simp only [hi, iff_false]
         split_ifs <;> omega
     have hItop : ∀ i, α.val i = r ↔ i ∈ topSet α := by
@@ -319,7 +319,7 @@ theorem column_zero_eq {n : ℕ} (α : PartitionExponent n) (h : α.val 0 = 0) :
   apply Subtype.ext
   funext i
   have := le_width α i
-  simp only [column, Nat.not_lt_zero, if_false]
+  simp only [column, Nat.not_lt_zero, ite_false]
   omega
 
 /-- Isolate the λ-term of the Pieri step `s_{trunc λ} · s_{(1^c)}`. -/
@@ -437,7 +437,7 @@ def diagramOf (f : ℕ → ℕ) (hf : Antitone f) (B : ℕ) : YoungDiagram where
   isLowerSet := by
     intro a b hab hb
     simp only [Finset.coe_filter, Finset.mem_product, Finset.mem_range,
-      Set.mem_setOf_eq] at hb ⊢
+      Set.mem_ofPred_eq] at hb ⊢
     refine ⟨⟨lt_of_le_of_lt hab.1 hb.1.1, lt_of_le_of_lt hab.2 hb.1.2⟩, ?_⟩
     exact lt_of_le_of_lt hab.2 (lt_of_lt_of_le hb.2 (hf hab.1))
 
@@ -476,15 +476,15 @@ theorem stripRows_bound {k : ℕ} (lam : YoungDiagram) (I : Finset ℕ) (hc : I.
     (hI : Antitone (rowInc lam I)) : ∀ a ∈ I, a < lam.colLen 0 + k := by
   intro a ha
   by_contra hn
-  push_neg at hn
+  push Not at hn
   have hsub : Finset.Icc (lam.colLen 0) a ⊆ I := by
     intro b hb
     rw [Finset.mem_Icc] at hb
     have h1 := hI hb.2
-    simp only [rowInc, if_pos ha] at h1
+    simp only [rowInc, ite_eq_left ha] at h1
     rw [rowLen_beyond hb.1] at h1
     by_contra hbI
-    rw [if_neg hbI] at h1
+    rw [ite_eq_right hbI] at h1
     omega
   have := Finset.card_le_card hsub
   rw [Nat.card_Icc] at this
@@ -499,7 +499,7 @@ theorem mem_addStrip (lam : YoungDiagram) (k : ℕ) {I : Finset ℕ} (hI : I ∈
     (p : ℕ × ℕ) : p ∈ addStrip lam k I ↔ p.2 < rowInc lam I p.1 := by
   simp only [stripRows, Finset.mem_filter, Finset.mem_powerset] at hI
   unfold addStrip
-  rw [dif_pos hI.2.2, mem_diagramOf]
+  rw [dite_eq_left hI.2.2, mem_diagramOf]
   intro a ha
   unfold rowInc at ha
   by_cases hr : 0 < lam.rowLen a
@@ -537,7 +537,7 @@ theorem rowLen_toYoung {n : ℕ} (α : PartitionExponent n) (a : ℕ) :
 
 theorem colLen_toYoung {n : ℕ} (α : PartitionExponent n) : (toYoung α).colLen 0 ≤ n+2 := by
   by_contra hn
-  push_neg at hn
+  push Not at hn
   have := (YoungDiagram.mem_iff_lt_colLen (μ := toYoung α) (i := n+2) (j := 0)).mpr hn
   rw [mem_toYoung] at this
   simp [rowFun] at this
@@ -546,7 +546,7 @@ theorem belowRows_toYoung {n : ℕ} (α : PartitionExponent n) (i : Fin (n+2)) :
     belowRows (toYoung α) i.val = ∑ j ∈ Finset.univ.filter (i < ·), α.val j := by
   unfold belowRows
   have hsub : Finset.range ((toYoung α).colLen 0) ⊆ Finset.range (n+2) :=
-    Finset.range_subset.mpr (colLen_toYoung α)
+    Finset.range_mono (colLen_toYoung α)
   rw [Finset.sum_subset hsub (by
     intro b _ hb
     rw [Finset.mem_range, not_lt] at hb
@@ -555,7 +555,7 @@ theorem belowRows_toYoung {n : ℕ} (α : PartitionExponent n) (i : Fin (n+2)) :
   rw [← Fin.sum_univ_eq_sum_range (fun b => if i.val < b then rowFun α b else 0), Finset.sum_filter]
   apply Finset.sum_congr rfl
   intro j _
-  simp only [rowFun, dif_pos j.isLt, Fin.lt_def]
+  simp only [rowFun, dite_eq_left j.isLt, Fin.lt_def]
 
 /-- The strip rows of a bounded strip, on ℕ. -/
 def strRows {n k : ℕ} {α : PartitionExponent n} (J : VerticalStrip n k α) : Finset ℕ :=
@@ -567,18 +567,18 @@ theorem rowInc_strRows {n k : ℕ} {α : PartitionExponent n} (J : VerticalStrip
   rw [rowLen_toYoung]
   unfold rowFun
   by_cases ha : a < n+2
-  · rw [dif_pos ha, dif_pos ha]
+  · rw [dite_eq_left ha, dite_eq_left ha]
     change _ = α.val ⟨a, ha⟩ + (if (⟨a, ha⟩ : Fin (n+2)) ∈ J.val then 1 else 0)
     congr 1
     simp only [Finset.mem_map, Fin.valEmbedding_apply]
     by_cases hj : (⟨a, ha⟩ : Fin (n+2)) ∈ J.val
-    · rw [if_pos hj, if_pos ⟨_, hj, rfl⟩]
-    · rw [if_neg hj, if_neg]
+    · rw [ite_eq_left hj, ite_eq_left ⟨_, hj, rfl⟩]
+    · rw [ite_eq_right hj, ite_eq_right]
       rintro ⟨j, hj', rfl⟩
       exact hj hj'
-  · rw [dif_neg ha, dif_neg ha]
+  · rw [dite_eq_right ha, dite_eq_right ha]
     simp only [Finset.mem_map, Fin.valEmbedding_apply, zero_add]
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨j, _, rfl⟩
     exact ha j.isLt
 
@@ -621,7 +621,7 @@ theorem finRows_strip {n k : ℕ} {α : PartitionExponent n} (I : Finset ℕ)
     have h := hI1.2.2 (show i.val ≤ j.val from hij)
     unfold rowInc at h
     rw [rowLen_toYoung, rowLen_toYoung] at h
-    simp only [rowFun, dif_pos i.isLt, dif_pos j.isLt] at h
+    simp only [rowFun, dite_eq_left i.isLt, dite_eq_left j.isLt] at h
     simpa only [increment, finRows, Finset.mem_filter, Finset.mem_univ, true_and] using h
 
 /-- Bridge: the all-shapes printed (3.10) implies the bounded row-set form. -/

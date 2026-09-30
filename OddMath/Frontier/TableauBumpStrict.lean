@@ -58,7 +58,7 @@ private theorem run_pair_gt (n : ℕ) (rs : List (List (Fin n))) (a b : Fin n)
       | bump p c q hs hp hbc =>
         have hc := split_compare n w [] p q a c b hs hp hba ha
         have hn := List.length_pos_iff.mpr (runRows_columns_nonempty n ws c)
-        simp only [runRows, hfirst, hsecond, List.length_singleton, List.length_cons,
+        simp only [runRows, hfirst, hsecond, List.length_cons,
           List.length_nil]
         refine ⟨by omega, ?_⟩
         intro r hr

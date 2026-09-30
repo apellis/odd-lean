@@ -29,7 +29,7 @@ theorem reverseStep_none (n : ℕ) (w : List (Fin n)) (b : Fin n) :
     cases he : reverseStep n xs b with
     | none =>
       have ht := ih.mp he
-      simp [reverseStep, he, ht, not_lt]
+      simp [reverseStep, he, not_lt]
       exact fun _ => ht
     | some t =>
       have ht : ¬ (∀ y ∈ xs, b ≤ y) := by
@@ -56,7 +56,7 @@ theorem reverseStep_spec (n : ℕ) (w v : List (Fin n)) (b a : Fin n) (c : ℕ)
     cases he : reverseStep n xs b with
     | none =>
       by_cases hx : x < b
-      · simp only [reverseStep, he, hx, if_true, Option.some.injEq, Prod.mk.injEq] at h
+      · simp only [reverseStep, he, hx, ite_true, Option.some.injEq, Prod.mk.injEq] at h
         rcases h with ⟨rfl,rfl,rfl⟩
         exact ⟨[],xs,rfl,rfl,rfl,hx,(reverseStep_none n xs b).mp he⟩
       · simp [reverseStep, he, hx] at h
@@ -71,8 +71,8 @@ theorem reverseStep_spec (n : ℕ) (w v : List (Fin n)) (b a : Fin n) (c : ℕ)
       · simp only [List.length_cons, hc]
 
 theorem reverseStep_sorted (n : ℕ) (w v : List (Fin n)) (b a : Fin n) (c : ℕ)
-    (hs : w.Sorted (· ≤ ·)) (h : reverseStep n w b = some (v,a,c)) :
-    v.Sorted (· ≤ ·) := by
+    (hs : w.Pairwise (· ≤ ·)) (h : reverseStep n w b = some (v,a,c)) :
+    v.Pairwise (· ≤ ·) := by
   obtain ⟨u,z,rfl,rfl,_,hab,hz⟩ := reverseStep_spec n w v b a c h
   have hp := List.pairwise_append.mp hs
   have ht := List.pairwise_cons.mp hp.2.1
@@ -84,7 +84,7 @@ theorem reverseStep_sorted (n : ℕ) (w v : List (Fin n)) (b a : Fin n) (c : ℕ
   · exact hp.2.2 x hx y (by simp [hy])
 
 theorem reverse_after_forward (n : ℕ) (w : List (Fin n)) (a : Fin n)
-    (hs : w.Sorted (· ≤ ·)) :
+    (hs : w.Pairwise (· ≤ ·)) :
     match firstGreater n w a with
     | .append _ => True
     | .bump u b v _ _ _ => reverseStep n (u ++ (a :: v)) b = some (w,a,u.length) := by
@@ -116,7 +116,7 @@ private theorem firstGreater_split (n : ℕ) (u v : List (Fin n)) (a b : Fin n)
       exact ⟨rfl,rfl,rfl⟩
 
 theorem forward_after_reverse (n : ℕ) (w v : List (Fin n)) (b a : Fin n) (c : ℕ)
-    (hs : w.Sorted (· ≤ ·)) (h : reverseStep n w b = some (v,a,c)) :
+    (hs : w.Pairwise (· ≤ ·)) (h : reverseStep n w b = some (v,a,c)) :
     match firstGreater n v a with
     | .append _ => False
     | .bump u d z _ _ _ => u ++ (a :: z) = w ∧ d = b ∧ u.length = c := by

@@ -78,7 +78,7 @@ theorem inversions_map [DecidableEq α] (lt : α → α → Prop) [DecidableRel 
     rw [List.map_cons, inversions, inversions_map lt hasymm f t hL.2 hN.2, List.toFinset_cons,
       Finset.sum_insert (by simpa using hN.1)]
     congr 1
-    · rw [Finset.filter_insert, if_neg (by simp [hirr])]
+    · rw [Finset.filter_insert, ite_eq_right (by simp [hirr])]
       rw [List.filter_map, List.length_map]
       rw [← List.toFinset_card_of_nodup (hN.2.filter _), List.toFinset_filter]
       congr 1
@@ -88,7 +88,7 @@ theorem inversions_map [DecidableEq α] (lt : α → α → Prop) [DecidableRel 
       · rintro ⟨hq, h⟩; exact ⟨hq, hL.1 q hq, h⟩
       · rintro ⟨hq, -, h⟩; exact ⟨hq, h⟩
     · refine Finset.sum_congr rfl fun p hp => ?_
-      rw [Finset.filter_insert, if_neg]
+      rw [Finset.filter_insert, ite_eq_right]
       rintro ⟨h, -⟩
       exact hasymm a p (hL.1 p (List.mem_toFinset.mp hp)) h
 
@@ -133,16 +133,16 @@ theorem sum_cells_rows_n {M : Type*} [AddCommMonoid M] (lam : YoungDiagram) {n :
 theorem shapeContent_apply (nu : YoungDiagram) (k : ℕ) :
     TableauDominance.shapeContent nu (k+1) = nu.rowLen k := by
   classical
-  simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply]
   rw [Finset.sum_boole, Nat.cast_id, YoungDiagram.rowLen_eq_card, YoungDiagram.row]
   congr 1
   ext p
-  simp only [mem_filter, YoungDiagram.mem_cells, YoungDiagram.mem_row_iff, add_left_inj]
+  simp only [mem_filter, YoungDiagram.mem_cells, add_left_inj]
 
 theorem shapeContent_zero (nu : YoungDiagram) : TableauDominance.shapeContent nu 0 = 0 := by
   classical
-  simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
-  exact Finset.sum_eq_zero fun p _ => if_neg (by omega)
+  simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply]
+  exact Finset.sum_eq_zero fun p _ => ite_eq_right (by omega)
 
 /-! ## Rows of a skew tableau -/
 
@@ -178,14 +178,14 @@ theorem mem_of_le (h : mu ≤ lam) {p : ℕ × ℕ} (hp : p ∈ mu) : p ∈ lam 
 
 theorem rowLen_le_of_le (h : mu ≤ lam) (r : ℕ) : mu.rowLen r ≤ lam.rowLen r := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   have := YoungDiagram.mem_iff_lt_rowLen.mp
     (mem_of_le h (YoungDiagram.mem_iff_lt_rowLen.mpr hc : (r, lam.rowLen r) ∈ mu))
   omega
 
 theorem colLen_le_of_le (h : mu ≤ lam) : mu.colLen 0 ≤ lam.colLen 0 := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   have := YoungDiagram.mem_iff_lt_colLen.mp
     (mem_of_le h (YoungDiagram.mem_iff_lt_colLen.mpr hc : (lam.colLen 0, 0) ∈ mu))
   omega
@@ -230,7 +230,7 @@ theorem rowLe_eq_sum (r : ℕ) : ∀ i, rowLe S i r = ∑ v ∈ range (i+1), row
       ← card_union_of_disjoint (disjoint_filter.mpr fun c _ h1 h2 => by omega), ← filter_or]
     congr 1
     ext c
-    simp only [mem_filter, ← and_or_left, Nat.le_add_one_iff]
+    simp only [mem_filter, Nat.le_add_one_iff]
 
 theorem entry_le_iff {r c : ℕ} (hc : c < lam.rowLen r) (i : ℕ) :
     S.entry r c ≤ i ↔ c < rowLe S i r :=
@@ -333,19 +333,19 @@ theorem upperCount_eq (r₀ c₀ b : ℕ) :
           (fun c => c₀ ≤ c ∧ S.entry r₀ c = b)).card else 0) := by
     intro r _
     rcases lt_trichotomy r r₀ with h | rfl | h
-    · rw [if_pos h, if_neg (by omega), add_zero, rowCount, Finset.card_filter]
+    · rw [ite_eq_left h, ite_eq_right (by omega), add_zero, rowCount, Finset.card_filter]
       refine Finset.sum_congr rfl fun c _ => ?_
       simp only [RowLE, h, true_or, true_and]
-    · rw [if_neg (lt_irrefl _), if_pos rfl, zero_add, Finset.card_filter]
+    · rw [ite_eq_right (lt_irrefl _), ite_eq_left rfl, zero_add, Finset.card_filter]
       refine Finset.sum_congr rfl fun c _ => ?_
       simp only [RowLE, lt_irrefl, true_and, false_or]
-    · rw [if_neg (by omega), if_neg (by omega), add_zero]
+    · rw [ite_eq_right (by omega), ite_eq_right (by omega), add_zero]
       refine Finset.sum_eq_zero fun c _ => ?_
-      rw [if_neg]
+      rw [ite_eq_right]
       simp only [RowLE, not_and]
       omega
   rw [Finset.sum_congr rfl hr, Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_ite_eq',
-    if_pos (by simp; omega)]
+    ite_eq_left (by simp; omega)]
   congr 1
   apply Finset.sum_congr _ (fun _ _ => rfl)
   ext r
@@ -366,7 +366,7 @@ open SkewTab
 theorem rowLe_succ_le (S : SkewTableau lam mu) (i r : ℕ) :
     rowLe S (i+1) (r+1) ≤ rowLe S i r := by
   by_contra h
-  push_neg at h
+  push Not at h
   set Y := rowLe S i r
   have hX : rowLe S (i+1) (r+1) ≤ lam.rowLen (r+1) := by
     rw [rowLe]; exact (card_filter_le _ _).trans (card_range _).le
@@ -390,7 +390,7 @@ theorem entry_le_of_isLR (S : SkewTableau lam mu) (hS : IsLR S) :
   swap
   · rw [S.zeros_out (fun h => hc (YoungDiagram.mem_iff_lt_rowLen.mp h))]; exact Nat.zero_le _
   by_contra hb
-  push_neg at hb
+  push Not at hb
   obtain ⟨a, ha⟩ : ∃ a, S.entry r c = a + 1 := ⟨S.entry r c - 1, by omega⟩
   have hU : 0 < upperCount S (r, c) (a+1) :=
     card_pos.mpr ⟨(r, c), mem_filter.mpr ⟨(YoungDiagram.mem_cells _).mpr
@@ -434,12 +434,12 @@ theorem coord_AS (n : ℕ) (S : SkewTableau lam mu) {i j : ℕ} (hij : i ≤ j) 
   rw [coord_mk _ hij hj]; rfl
 
 theorem coord_AS_zero (n : ℕ) (S : SkewTableau lam mu) : coord (AS n S) 0 0 = 0 := by
-  rw [coord_AS n S le_rfl (Nat.zero_le _), if_pos rfl]
+  rw [coord_AS n S le_rfl (Nat.zero_le _), ite_eq_left rfl]
 
 theorem coord_AS_succ (n : ℕ) (S : SkewTableau lam mu) (hS : IsLR S) (i : ℕ) {j : ℕ}
     (hj : j + 1 ≤ n) : coord (AS n S) i (j+1) = rowCount S i j := by
   by_cases hij : i ≤ j + 1
-  · rw [coord_AS n S hij hj, if_neg (Nat.succ_ne_zero j), Nat.add_sub_cancel]
+  · rw [coord_AS n S hij hj, ite_eq_right (Nat.succ_ne_zero j), Nat.add_sub_cancel]
   · rw [coord_of_lt _ (by omega), rowCount_eq_zero_of_isLR S hS (by omega), Nat.cast_zero]
 
 theorem coord_AS_nonneg (n : ℕ) (S : SkewTableau lam mu) (i j : ℕ) : 0 ≤ coord (AS n S) i j := by
@@ -451,7 +451,7 @@ theorem coord_AS_nonneg (n : ℕ) (S : SkewTableau lam mu) (i j : ℕ) : 0 ≤ c
 
 theorem sum_Icc_shift {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a m : ℕ) :
     ∑ q ∈ Icc (a+1) m, f (q-1) = ∑ r ∈ Ico a m, f r := by
-  rw [← Nat.Ico_succ_right, ← Finset.sum_Ico_add' (fun q => f (q-1)) a m 1]
+  rw [← Finset.Ico_succ_right_eq_Icc, Nat.succ_eq_succ, Nat.succ_eq_add_one, ← Finset.sum_Ico_add' (fun q => f (q-1)) a m 1]
   simp
 
 theorem sum_Ico_eq_range {M : Type*} [AddCommMonoid M] (f : ℕ → M) {a m : ℕ}
@@ -508,7 +508,7 @@ theorem AS_mem (n : ℕ) (S : SkewTableau lam mu) (hS : S ∈ lrTableaux lam mu 
     have e1 : ∑ q ∈ Icc (i+1+1) (j+1), coord (AS n S) (i+1+1) q =
         ∑ r ∈ range (j+1), (rowCount S (i+2) r : ℤ) := by
       rw [← sum_Ico_eq_range (fun r => (rowCount S (i+2) r : ℤ)) (a := i+1) (fun r hr => by
-          simp only; rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
+          rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
         ← sum_Icc_shift (fun r => (rowCount S (i+2) r : ℤ))]
       refine Finset.sum_congr rfl fun q hq => ?_
       simp only [mem_Icc] at hq
@@ -516,7 +516,7 @@ theorem AS_mem (n : ℕ) (S : SkewTableau lam mu) (hS : S ∈ lrTableaux lam mu 
       rw [coord_AS_succ n S hLR _ (by omega), Nat.add_sub_cancel]
     have e2 : ∑ q ∈ Icc (i+1) j, coord (AS n S) (i+1) q = ∑ r ∈ range j, (rowCount S (i+1) r : ℤ) := by
       rw [← sum_Ico_eq_range (fun r => (rowCount S (i+1) r : ℤ)) (a := i) (fun r hr => by
-          simp only; rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
+          rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
         ← sum_Icc_shift (fun r => (rowCount S (i+1) r : ℤ))]
       refine Finset.sum_congr rfl fun q hq => ?_
       simp only [mem_Icc] at hq
@@ -542,7 +542,7 @@ theorem AS_mem (n : ℕ) (S : SkewTableau lam mu) (hS : S ∈ lrTableaux lam mu 
       · rintro ⟨h1, h3⟩
         refine ⟨h1, ?_, h3⟩
         by_contra h
-        push_neg at h
+        push Not at h
         have := (entry_le_iff S h1 (i+1)).mpr h
         omega
     rw [hz, add_zero, ht, ← Finset.sum_range_succ] at hU
@@ -556,7 +556,7 @@ theorem AS_mem (n : ℕ) (S : SkewTableau lam mu) (hS : S ∈ lrTableaux lam mu 
     · have e : ∑ q ∈ Icc (j+1) n, coord (AS n S) (j+1) q =
           ∑ r ∈ range n, (rowCount S (j+1) r : ℤ) := by
         rw [← sum_Ico_eq_range (fun r => (rowCount S (j+1) r : ℤ)) (a := j) (fun r hr => by
-            simp only; rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
+            rw [rowCount_eq_zero_of_isLR S hLR (by omega), Nat.cast_zero]),
           ← sum_Icc_shift (fun r => (rowCount S (j+1) r : ℤ))]
         refine Finset.sum_congr rfl fun q hq => ?_
         simp only [mem_Icc] at hq
@@ -591,7 +591,6 @@ theorem AS_injective (n : ℕ) (hl : lam.colLen 0 ≤ n) {S T : SkewTableau lam 
   have hcnt : ∀ v, rowCount S v r = rowCount T v r := by
     intro v
     have := congrArg (fun A => coord A v (r+1)) h
-    simp only at this
     rw [coord_AS_succ n S hS v hr, coord_AS_succ n T hT v hr] at this
     exact_mod_cast this
   have hle : ∀ i, S.entry r c ≤ i ↔ T.entry r c ≤ i := by
@@ -625,9 +624,9 @@ theorem diag_nonneg {A : V ℤ n} (hA : A ∈ triangles n (part lam) (part mu) (
 /-- Entries `a_{p,q}`, `p ≥ 1`, of an LR triangle are nonnegative (using `ν_n ≥ 0`). -/
 theorem coord_nonneg_of_mem {A : V ℤ n} (hA : A ∈ triangles n (part lam) (part mu) (part nu))
     {p q : ℕ} (hp : 1 ≤ p) : 0 ≤ coord A p q := by
-  rcases lt_or_le q p with hqp | hpq
+  rcases lt_or_ge q p with hqp | hpq
   · rw [coord_of_lt A hqp]
-  rcases lt_or_le n q with hnq | hqn
+  rcases lt_or_ge n q with hnq | hqn
   · rw [coord_of_gt A hnq]
   rcases Nat.lt_or_ge p q with hlt | hge
   · exact hA.1.nonneg p q hp hlt hqn
@@ -706,13 +705,13 @@ theorem tabEntry_le_iff (hl : lam.colLen 0 ≤ n) (hm : mu.colLen 0 ≤ n) {r c 
   classical
   have hcl : (r, c) ∈ lam := YoungDiagram.mem_iff_lt_rowLen.mpr hc
   by_cases hcm : (r, c) ∈ mu
-  · rw [tabEntry, dif_neg (fun h => h.2 hcm)]
+  · rw [tabEntry, dite_eq_right (fun h => h.2 hcm)]
     simp only [Nat.zero_le, true_iff]
     have h1 := C_mono hA r (Nat.zero_le i)
     rw [C_zero hA hm] at h1
     have := YoungDiagram.mem_iff_lt_rowLen.mp hcm
     omega
-  · rw [tabEntry, dif_pos ⟨hcl, hcm⟩, Nat.find_le_iff]
+  · rw [tabEntry, dite_eq_left ⟨hcl, hcm⟩, Nat.find_le_iff]
     constructor
     · rintro ⟨m, hm', h⟩
       exact lt_of_lt_of_le h (C_mono hA r hm')
@@ -774,8 +773,8 @@ noncomputable def tabOf (hl : lam.colLen 0 ≤ n) (hm : mu.colLen 0 ≤ n) :
   sub := mu_le_lam hA hl hm
   row_weak := fun h12 h2 _ => tabEntry_row hA hl hm h12 h2
   col_strict := fun h12 h2 h1 => tabEntry_col_strict hA hl hm h12 h2 h1
-  zeros_out := fun h => by rw [tabEntry, dif_neg (fun h' => h h'.1)]
-  zeros_in := fun h => by rw [tabEntry, dif_neg (fun h' => h'.2 h)]
+  zeros_out := fun h => by rw [tabEntry, dite_eq_right (fun h' => h h'.1)]
+  zeros_in := fun h => by rw [tabEntry, dite_eq_right (fun h' => h'.2 h)]
   positive := fun h1 h2 => tabEntry_pos hA hl hm h1 h2
 
 open SkewTab
@@ -851,7 +850,7 @@ theorem tabOf_isLR (hl : lam.colLen 0 ≤ n) (hm : mu.colLen 0 ≤ n) : IsLR (ta
   have hX : ((range (lam.rowLen r₀)).filter (fun c => c₀ ≤ c ∧ T.entry r₀ c = a+1)).card ≤
       rowCount T (a+1) r₀ := by
     rw [rowCount]
-    exact card_le_card (monotone_filter_right _ fun c h => h.2)
+    exact card_le_card (monotone_filter_right _ fun c _ h => h.2)
   have key : ∑ r ∈ range (r₀+1), rowCount T (a+1) r ≤ ∑ r ∈ range r₀, rowCount T a r := by
     have hZ : (∑ r ∈ range (r₀+1), (rowCount T (a+1) r : ℤ)) ≤
         ∑ r ∈ range r₀, (rowCount T a r : ℤ) := by
@@ -908,7 +907,7 @@ theorem rowLt_eq_sum (S : SkewTableau lam mu) (r : ℕ) : ∀ v,
       ← card_union_of_disjoint (disjoint_filter.mpr fun c _ h1 h2 => by omega), ← filter_or]
     congr 1
     ext c
-    simp only [mem_filter, ← and_or_left, Nat.lt_add_one_iff, Nat.le_iff_lt_or_eq]
+    simp only [mem_filter, Nat.lt_add_one_iff, Nat.le_iff_lt_or_eq]
 
 /-- Grouping a row by values. -/
 theorem sum_row_values (S : SkewTableau lam mu) (hS : IsLR S) {n r : ℕ} (hr : r < n)
@@ -968,7 +967,7 @@ theorem Nlt_eq_sum (S : SkewTableau lam mu) (hS : IsLR S) {n : ℕ} (hl : lam.co
       · rw [← rowLt_eq_sum, card_filter]
         refine Finset.sum_congr rfl fun c _ => ?_
         simp only [h, true_and]
-      · exact Finset.sum_eq_zero fun c _ => if_neg (fun h' => h h'.1)
+      · exact Finset.sum_eq_zero fun c _ => ite_eq_right (fun h' => h h'.1)
     rw [Finset.sum_congr rfl hr, ← Finset.sum_filter]
     apply Finset.sum_congr _ (fun _ _ => rfl)
     ext r'
@@ -1003,8 +1002,8 @@ theorem Nlt_eq_Qtri (n : ℕ) (S : SkewTableau lam mu) (hS : IsLR S) (hl : lam.c
       (rowCount S i r : ℤ) * Y (AS n S) i (r+1) := by
     rw [Qtri]
     refine Finset.sum_congr rfl fun i _ => ?_
-    rw [← Nat.Ico_succ_right, sum_Ico_eq_range (fun j => coord (AS n S) i j * Y (AS n S) i j)
-      (fun j hj => by simp only; rw [coord_of_lt _ hj, zero_mul]), Finset.sum_range_succ']
+    rw [← Finset.Ico_succ_right_eq_Icc, Nat.succ_eq_succ, Nat.succ_eq_add_one, sum_Ico_eq_range (fun j => coord (AS n S) i j * Y (AS n S) i j)
+      (fun j hj => by rw [coord_of_lt _ hj, zero_mul]), Finset.sum_range_succ']
     have h0 : coord (AS n S) i 0 = 0 := by
       rcases i with _ | i
       · exact coord_AS_zero n S
@@ -1105,7 +1104,7 @@ theorem lrSignedCount_eq_triangles (hl : lam.colLen 0 ≤ n) (hm : mu.colLen 0 �
     obtain ⟨S, hS, rfl⟩ := hb.surjOn (mem_trianglePoints.mp hA)
     exact ⟨S, hS, rfl⟩
   · intro S hS
-    rw [SkewTableau.sign, ← Nlt_eq_Qtri n S (mem_lrTableaux.mp hS).2 hl, Int.natAbs_ofNat]
+    rw [SkewTableau.sign, ← Nlt_eq_Qtri n S (mem_lrTableaux.mp hS).2 hl, Int.natAbs_natCast]
 
 /-- E (4.20), p. 19, right side of Theorem 4.8 as a hive sum (corrected Definition 4.11 (3)):
 `(-1)^{N(μ)+N(λ)} Σ_{H ∈ 𝔥(λ,μ,ν) ∩ V_ℤ} (-1)^{Q_𝔥(H)}`. -/
@@ -1156,11 +1155,11 @@ def shape22 : YoungDiagram := YoungDiagram.ofRowLens [2, 2] (by decide)
 theorem rowLen_eq {κ : YoungDiagram} {i k : ℕ} (h : ∀ j, (i, j) ∈ κ ↔ j < k) : κ.rowLen i = k := by
   apply le_antisymm
   · by_contra hc
-    push_neg at hc
+    push Not at hc
     have := (h k).mp (YoungDiagram.mem_iff_lt_rowLen.mpr hc)
     omega
   · by_contra hc
-    push_neg at hc
+    push Not at hc
     have := YoungDiagram.mem_iff_lt_rowLen.mp ((h (κ.rowLen i)).mpr hc)
     omega
 
@@ -1201,7 +1200,7 @@ theorem triangles_22 : triangles 2 (part shape22) (part (TableauExtremal.rowShap
     (part (OddLRVerticalPieri.column 2)) = triangles 2 lam22 mu2 nu11 := by
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := parts_22
   ext A
-  simp only [triangles, Set.mem_setOf_eq]
+  simp only [triangles, Set.mem_ofPred_eq]
   refine and_congr_right fun _ => forall_congr' fun j => imp_congr_right fun hj1 =>
     imp_congr_right fun hj2 => ?_
   interval_cases j <;> simp [h1, h2, h3, h4, h5, h6, lam22, mu2, nu11]
@@ -1211,7 +1210,7 @@ theorem trianglesPrinted_22 : trianglesPrinted 2 (part shape22)
     trianglesPrinted 2 lam22 mu2 nu11 := by
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := parts_22
   ext A
-  simp only [trianglesPrinted, Set.mem_setOf_eq]
+  simp only [trianglesPrinted, Set.mem_ofPred_eq]
   refine and_congr_right fun _ => forall_congr' fun j => imp_congr_right fun hj1 =>
     imp_congr_right fun hj2 => ?_
   interval_cases j <;> simp [h1, h2, h3, h4, h5, h6, lam22, mu2, nu11]
@@ -1219,7 +1218,7 @@ theorem trianglesPrinted_22 : trianglesPrinted 2 (part shape22)
 /-- There is no LR tableau of shape `(2,2)/(2)` and content `(1,1)`. -/
 theorem lrTableaux_22 :
     lrTableaux shape22 (TableauExtremal.rowShape 2) (OddLRVerticalPieri.column 2) = ∅ := by
-  apply Finset.eq_empty_of_forall_not_mem
+  apply Finset.eq_empty_of_forall_notMem
   intro S hS
   have := AS_mem 2 S hS colLen_shape22
   rw [triangles_22, corrected_empty] at this
@@ -1238,13 +1237,13 @@ theorem not_vertical_22 : ¬ OddLRVerticalPieri.Vertical (TableauExtremal.rowSha
 /-- `c^{(2,2)}_{(2),(1,1)} = 0` (E Remark before Lemma 4.7: the Pieri rule). -/
 theorem oddLR_22 : oddLR shape22 (TableauExtremal.rowShape 2) (OddLRVerticalPieri.column 2) = 0 := by
   classical
-  letI := DegreeShapes.degreeFintype ((TableauExtremal.rowShape 2).card + 2)
+  let := DegreeShapes.degreeFintype ((TableauExtremal.rowShape 2).card + 2)
   unfold oddLR
-  rw [EKLSectionTwo.vertical_pieri_Q, map_sum, Finsupp.finset_sum_apply]
+  rw [EKLSectionTwo.vertical_pieri_Q, map_sum, Finsupp.finsetSum_apply]
   refine Finset.sum_eq_zero fun κ _ => ?_
   split_ifs with hv
-  · rw [map_zsmul, Finsupp.smul_apply, ← OddGrassmannSchur.sBasis_apply, Basis.repr_self,
-      Finsupp.single_apply, if_neg, smul_zero]
+  · rw [map_zsmul, Finsupp.smul_apply, ← OddGrassmannSchur.sBasis_apply, Module.Basis.repr_self,
+      Finsupp.single_apply, ite_eq_right, smul_zero]
     intro he
     rw [he] at hv
     exact not_vertical_22 hv
@@ -1264,10 +1263,10 @@ theorem printed_lemma_4_12_fails :
   intro h
   have hc : cex ∈ trianglesPrinted 2 (part shape22) (part (TableauExtremal.rowShape 2))
       (part (OddLRVerticalPieri.column 2)) ∩ {A | coord A 0 0 = 0} :=
-    ⟨trianglesPrinted_22 ▸ cex_mem_printed, by rw [Set.mem_setOf_eq, coord_cex]; rfl⟩
+    ⟨trianglesPrinted_22 ▸ cex_mem_printed, by rw [Set.mem_ofPred_eq, coord_cex]; rfl⟩
   obtain ⟨S, hS, -⟩ := h hc
   rw [Finset.mem_coe, lrTableaux_22] at hS
-  exact Finset.not_mem_empty S hS
+  exact Finset.notMem_empty S hS
 
 /-- E (4.14) fails for the printed Definition 4.11 (3): for `n = 2`, `λ = (2,2)`, `μ = (2)`,
 `ν = (1,1)`, the printed `△_LR(λ, μ, ν) ∩ V_ℤ ∩ {a_{0,0} = 0}` is `{cex}` and the printed
@@ -1281,7 +1280,7 @@ theorem printed_4_14_fails :
       lrSignedCount shape22 (TableauExtremal.rowShape 2) (OddLRVerticalPieri.column 2) = 0 := by
   refine ⟨?_, ?_, oddLR_22, ?_⟩
   · ext A
-    simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_singleton_iff]
+    simp only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_singleton_iff]
     constructor
     · rintro ⟨h1, h2⟩; exact printed_points A h1 h2
     · rintro rfl

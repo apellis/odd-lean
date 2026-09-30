@@ -117,7 +117,7 @@ theorem contentPolynomial_family_independent (lam : I → YoungDiagram)
     funext j
     have h := congrArg (fun f : SkewPolynomial.SkewPolynomial n =>
       f (fun a : Fin n => shapeContent (lam j) (a.val + 1))) (hz j)
-    simp only [contentPolynomial_eq_signedKostka n _ (lam j) (hb j), Finsupp.finset_sum_apply,
+    simp only [contentPolynomial_eq_signedKostka n _ (lam j) (hb j), Finsupp.finsetSum_apply,
       Finsupp.smul_apply, smul_eq_mul, SkewPolynomial.monomial,
       Finsupp.single_eq_same, Finsupp.zero_apply] at h
     have he : (-1 : ℤ) ^ (∑ a : Fin n, a.val * shapeContent (lam j) (a.val + 1)) *

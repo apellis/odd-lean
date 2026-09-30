@@ -22,7 +22,7 @@ theorem sum_initial (n b : ℕ) :
   | zero => simp
   | succ n ih =>
     rw [Fin.sum_univ_castSucc]
-    simp only [Fin.coe_castSucc, Fin.val_last, ih]
+    simp only [Fin.val_castSucc, Fin.val_last, ih]
     split_ifs <;> omega
 
 /-- If earlier columns are Ferrers columns, a row already full cannot accept
@@ -137,12 +137,12 @@ private theorem sum_cells (μ : YoungDiagram) (f : ℕ × ℕ → ℕ) :
       Finset.mem_range.mpr (lt_of_lt_of_le hc (μ.rowLen_anti 0 p.1 (Nat.zero_le _)))⟩
   calc
     _ = ∑ p ∈ μ.cells, if p ∈ μ then f p else 0 := by
-      apply Finset.sum_congr rfl; intro p hp; exact (if_pos hp).symm
+      apply Finset.sum_congr rfl; intro p hp; exact (ite_eq_left hp).symm
     _ = ∑ p ∈ Finset.range (μ.colLen 0) ×ˢ Finset.range (μ.rowLen 0),
         if p ∈ μ then f p else 0 := by
       apply Finset.sum_subset hsub
       intro p _ hp
-      exact if_neg hp
+      exact ite_eq_right hp
     _ = _ := by
       rw [Finset.sum_product]
       rw [Finset.sum_range]
@@ -290,9 +290,9 @@ theorem proposition_2_14_vanishing (μ : YoungDiagram) (α : List ℕ)
     ⟨j,hj⟩ hprev' hlt'
   constructor
   · rw [hPartition_eq_mixed]
-    simpa only [← list_word_eq_mixed, Bool.not_false, Bool.true_eq, if_true] using h0
+    simpa only [← list_word_eq_mixed, Bool.not_false, Bool.true_eq, ite_true] using h0
   · rw [ePartition_eq_mixed]
-    simpa only [← list_word_eq_mixed, Bool.not_true, Bool.false_eq_true, if_false] using h1
+    simpa only [← list_word_eq_mixed, Bool.not_true, Bool.false_eq_true, ite_false] using h1
 
 private theorem transpose_rowLens_injective :
     Function.Injective (fun μ : YoungDiagram => μ.transpose.rowLens) := by

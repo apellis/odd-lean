@@ -103,13 +103,13 @@ private theorem inv_swap_term {n : ℕ} (p : Perm n) (i : Fin (n+1)) (a b : Fin 
     (if a = i.castSucc ∧ b = i.succ ∧ p i.succ < p i.castSucc then 1 else 0) := by
   by_cases ha : a = i.castSucc <;> by_cases hb : a = i.succ <;>
     by_cases hc : b = i.castSucc <;> by_cases hd : b = i.succ
-  all_goals simp only [simple, Equiv.swap_apply_def, ha, hb, hc, hd, if_pos, if_neg]
+  all_goals simp only [simple, Equiv.swap_apply_def, ha, hb, hc, hd, ite_eq_left]
   all_goals subst_vars
-  all_goals simp only [Fin.ext_iff, Fin.lt_def, Fin.coe_castSucc, Fin.val_succ] at *
+  all_goals simp only [Fin.ext_iff, Fin.lt_def, Fin.val_castSucc, Fin.val_succ] at *
   all_goals have hl : i.castSucc.val = i.val := rfl
   all_goals have hr : i.succ.val = i.val+1 := rfl
-  all_goals simp only [ite_true, ite_false, true_and, false_and, and_false] at *
-  all_goals split_ifs <;> simp only [true_and, false_and, and_false, not_true_eq_false] at * <;> omega
+  all_goals simp only [ite_false, true_and, false_and, and_false] at *
+  all_goals split_ifs <;> omega
 
 /-- Exact adjacent-change law for the ordinary inversion count. -/
 theorem length_mul_simple {n : ℕ} (p : Perm n) (i : Fin (n+1)) :
@@ -138,7 +138,7 @@ theorem length_mul_simple {n : ℕ} (p : Perm n) (i : Fin (n+1)) :
 theorem values_ne {n : ℕ} (p : Perm n) (i : Fin (n+1)) : p i.castSucc ≠ p i.succ := by
   intro h
   have := congrArg Fin.val (p.injective h)
-  simp only [Fin.coe_castSucc, Fin.val_succ] at this
+  simp only [Fin.val_castSucc, Fin.val_succ] at this
   omega
 
 theorem length_descend {n : ℕ} (p : Perm n) (i : Fin (n+1)) (h : Descent p i) :
@@ -146,7 +146,7 @@ theorem length_descend {n : ℕ} (p : Perm n) (i : Fin (n+1)) (h : Descent p i) 
   have he := length_mul_simple p i
   have hn : ¬p i.castSucc < p i.succ := not_lt_of_gt h
   unfold Descent at h
-  rw [if_neg hn, if_pos h] at he
+  rw [ite_eq_right hn, ite_eq_left h] at he
   omega
 
 theorem length_ascend {n : ℕ} (p : Perm n) (i : Fin (n+1)) (h : ¬Descent p i) :
@@ -154,7 +154,7 @@ theorem length_ascend {n : ℕ} (p : Perm n) (i : Fin (n+1)) (h : ¬Descent p i)
   have ht : p i.castSucc < p i.succ := lt_of_le_of_ne (le_of_not_gt h) (values_ne p i)
   have he := length_mul_simple p i
   unfold Descent at h
-  rw [if_pos ht, if_neg h] at he
+  rw [ite_eq_left ht, ite_eq_right h] at he
   omega
 
 theorem eq_one_of_no_descent {n : ℕ} (p : Perm n) (h : ∀ i, ¬Descent p i) : p = 1 := by
@@ -165,7 +165,7 @@ theorem eq_one_of_no_descent {n : ℕ} (p : Perm n) (h : ∀ i, ¬Descent p i) :
 
 theorem exists_descent {n : ℕ} (p : Perm n) (h : p ≠ 1) : ∃ i, Descent p i := by
   by_contra hn
-  push_neg at hn
+  push Not at hn
   exact h (eq_one_of_no_descent p hn)
 
 @[simp] theorem permutation_singleton {n : ℕ} (i : Fin (n+1)) :
@@ -242,9 +242,9 @@ end Signed
 
 theorem simple_distant {n : ℕ} (i j : Fin (n+1))
     (h : i.val+1 < j.val ∨ j.val+1 < i.val) : simple i * simple j = simple j * simple i := by
-  have h₁ : j.castSucc ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc] at hv; omega
-  have h₂ : j.castSucc ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
-  have h₃ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
+  have h₁ : j.castSucc ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc] at hv; omega
+  have h₂ : j.castSucc ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
+  have h₃ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
   have h₄ : j.succ ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_succ] at hv; omega
   change simple i * Equiv.swap j.castSucc j.succ = Equiv.swap j.castSucc j.succ * simple i
   rw [Equiv.mul_swap_eq_swap_mul, simple_apply_other i _ h₁ h₂, simple_apply_other i _ h₃ h₄]
@@ -252,24 +252,24 @@ theorem simple_distant {n : ℕ} (i j : Fin (n+1))
 theorem simple_braid {n : ℕ} (i j : Fin (n+1)) (h : j.val = i.val+1) :
     simple i * simple j * simple i = simple j * simple i * simple j := by
   have hij : i.succ = j.castSucc := Fin.ext (by simpa using h.symm)
-  have h₁ : i.castSucc ≠ j.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc] at hv; omega
-  have h₂ : i.castSucc ≠ j.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
-  have h₃ : j.castSucc ≠ j.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
+  have h₁ : i.castSucc ≠ j.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc] at hv; omega
+  have h₂ : i.castSucc ≠ j.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
+  have h₃ : j.castSucc ≠ j.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
   ext a
   simp only [Equiv.Perm.mul_apply, simple, hij]
   by_cases ha : a = i.castSucc
-  · subst a; simp [Equiv.swap_apply_def, h₁, h₂, h₃, Ne.symm h₁, Ne.symm h₂, Ne.symm h₃]
+  · subst a; simp [Equiv.swap_apply_def, h₁, h₂, Ne.symm h₂, Ne.symm h₃]
   · by_cases hb : a = j.castSucc
-    · subst a; simp [Equiv.swap_apply_def, h₁, h₂, h₃, Ne.symm h₁, Ne.symm h₂, Ne.symm h₃]
+    · subst a; simp [Equiv.swap_apply_def, h₁, h₂, Ne.symm h₂, Ne.symm h₃]
     · by_cases hc : a = j.succ
-      · subst a; simp [Equiv.swap_apply_def, h₁, h₂, h₃, Ne.symm h₁, Ne.symm h₂, Ne.symm h₃]
+      · subst a; simp [Equiv.swap_apply_def, h₁, h₂, Ne.symm h₂, Ne.symm h₃]
       · simp [Equiv.swap_apply_def, ha,hb,hc]
 
 theorem descent_distant {n : ℕ} (p : Perm n) (i j : Fin (n+1))
     (h : i.val+1 < j.val ∨ j.val+1 < i.val) : Descent (p * simple i) j ↔ Descent p j := by
-  have h₁ : j.castSucc ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc] at hv; omega
-  have h₂ : j.castSucc ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
-  have h₃ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
+  have h₁ : j.castSucc ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc] at hv; omega
+  have h₂ : j.castSucc ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
+  have h₃ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
   have h₄ : j.succ ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_succ] at hv; omega
   simp [Descent, Equiv.Perm.mul_apply, simple_apply_other i j.castSucc h₁ h₂,
     simple_apply_other i j.succ h₃ h₄]
@@ -278,9 +278,9 @@ theorem descent_adjacent {n : ℕ} (p : Perm n) (i j : Fin (n+1))
     (h : j.val = i.val+1) (hi : Descent p i) (hj : Descent p j) :
     Descent (p * simple i) j ∧ Descent (p * simple i * simple j) i := by
   have hij : i.succ = j.castSucc := Fin.ext (by simpa using h.symm)
-  have h₁ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at hv; omega
+  have h₁ : j.succ ≠ i.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at hv; omega
   have h₂ : j.succ ≠ i.succ := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_succ] at hv; omega
-  have h₃ : i.castSucc ≠ j.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.coe_castSucc] at hv; omega
+  have h₃ : i.castSucc ≠ j.castSucc := by intro e; have hv := congrArg Fin.val e; simp only [Fin.val_castSucc] at hv; omega
   have h₄ : i.castSucc ≠ j.succ := h₁.symm
   have hji : j.castSucc = i.succ := hij.symm
   constructor
@@ -538,8 +538,8 @@ private theorem pair_count (N : ℕ) :
   | succ N ih =>
       rw [Fin.sum_univ_succ]
       simp only [Fin.sum_univ_succ, Fin.succ_lt_succ_iff, Fin.succ_pos, Fin.not_lt_zero,
-        if_true, if_false, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-        smul_eq_mul, mul_one, zero_add, add_zero]
+        ite_true, ite_false, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+        smul_eq_mul, mul_one, zero_add]
       rw [ih, Nat.choose_succ_succ, Nat.choose_one_right]
 
 theorem length_le_max {n : ℕ} (p : Perm n) : length p ≤ (n+2).choose 2 := by

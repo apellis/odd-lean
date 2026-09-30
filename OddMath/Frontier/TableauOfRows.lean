@@ -15,7 +15,7 @@ private theorem lengths_anti (n : ℕ) (rs : List (List (Fin n)))
 
 theorem lengths_sorted (n : ℕ) (rs : List (List (Fin n)))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) :
-    (rs.map List.length).Sorted (· ≥ ·) := by
+    (rs.map List.length).Pairwise (· ≥ ·) := by
   apply List.pairwise_iff_get.mpr
   intro i j hij
   have hi : i.val < rs.length := by simpa using i.isLt
@@ -25,15 +25,15 @@ theorem lengths_sorted (n : ℕ) (rs : List (List (Fin n)))
 
 noncomputable def shape (n : ℕ) (rs : List (List (Fin n)))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) : YoungDiagram :=
-  YoungDiagram.ofRowLens (rs.map List.length) (lengths_sorted n rs hc)
+  YoungDiagram.ofRowLens (rs.map List.length) (lengths_sorted n rs hc).sortedGE
 
 theorem shape_mem (n : ℕ) (rs : List (List (Fin n)))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) (r c : ℕ) :
     (r,c) ∈ shape n rs hc ↔ c < (rs[r]?.getD []).length := by
   rw [shape, YoungDiagram.mem_ofRowLens]
   by_cases hr : r < rs.length
-  · simp [List.getElem?_eq_getElem, hr]
-  · simp [List.getElem?_eq_none (by omega : rs.length ≤ r), hr]
+  · simp [hr]
+  · simp [hr]
 
 private def label {n : ℕ} (rs : List (List (Fin n))) (r c : ℕ) : ℕ :=
   (((rs[r]?.getD [])[c]?).map (fun x : Fin n => x.val + 1)).getD 0
@@ -41,7 +41,7 @@ private def label {n : ℕ} (rs : List (List (Fin n))) (r c : ℕ) : ℕ :=
 private theorem label_at {n : ℕ} (rs : List (List (Fin n))) (r c : ℕ)
     (h : c < (rs[r]?.getD []).length) :
     label rs r c = (rs[r]?.getD [])[c].val + 1 := by
-  simp [label, List.getElem?_eq_getElem, h]
+  simp [label, h]
 
 private theorem all_columns (n : ℕ) (rs : List (List (Fin n)))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD []))
@@ -60,7 +60,7 @@ private theorem all_columns (n : ℕ) (rs : List (List (Fin n)))
     · exact lt_trans (ih (by omega) hj) hl
 
 noncomputable def tableau (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) :
     PositiveTableau (shape n rs hc) where
   entry := label rs
@@ -71,7 +71,7 @@ noncomputable def tableau (n : ℕ) (rs : List (List (Fin n)))
     have hr : r < rs.length := by
       by_contra h
       simp [List.getElem?_eq_none (by omega : rs.length ≤ r)] at hd'
-    have hs' : (rs[r]?.getD []).Sorted (· ≤ ·) := by
+    have hs' : (rs[r]?.getD []).Pairwise (· ≤ ·) := by
       simpa [List.getElem?_eq_getElem, hr] using hs rs[r] (List.getElem_mem hr)
     have hle := List.pairwise_iff_get.mp hs' ⟨c, hc'⟩ ⟨d, hd'⟩ hcd
     rw [label_at rs r c hc', label_at rs r d hd']
@@ -91,13 +91,13 @@ noncomputable def tableau (n : ℕ) (rs : List (List (Fin n)))
     omega
 
 theorem tableau_entry (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) (r c : ℕ) :
     (tableau n rs hs hc).entry r c =
       (((rs[r]?.getD [])[c]?).map (fun x : Fin n => x.val + 1)).getD 0 := rfl
 
 theorem bounded (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) :
     InAlphabet n (tableau n rs hs hc) := by
   intro p hp
@@ -125,7 +125,7 @@ private theorem shape_rowLen (n : ℕ) (rs : List (List (Fin n)))
   omega
 
 private theorem extracted_row (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) (r : ℕ) :
     row n (tableau n rs hs hc) (bounded n rs hs hc) r = rs[r]?.getD [] := by
   apply (List.map_inj_right (f := fun i : Fin n => i.val + 1)
@@ -135,10 +135,11 @@ private theorem extracted_row (n : ℕ) (rs : List (List (Fin n)))
   · simp [shape_rowLen]
   · intro c hc₁ hc₂
     have hc' : c < (rs[r]?.getD []).length := by simpa using hc₂
-    simpa [List.get_eq_getElem, tableau] using label_at rs r c hc'
+    simp only [List.get_eq_getElem, List.getElem_map, List.getElem_range]
+    exact label_at rs r c hc'
 
 theorem rows_tableau (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) :
     rows n (tableau n rs hs hc) (bounded n rs hs hc) = rs := by
@@ -152,7 +153,7 @@ theorem rows_tableau (n : ℕ) (rs : List (List (Fin n)))
       extracted_row n rs hs hc r
 
 theorem rowFinWord_tableau (n : ℕ) (rs : List (List (Fin n)))
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) :
     rowFinWord n (tableau n rs hs hc) (bounded n rs hs hc) = readRows rs := by
@@ -163,7 +164,7 @@ private theorem genuine_row_default (n : ℕ) (μ : YoungDiagram)
     (rows n T hT)[r]?.getD [] = row n T hT r := by
   by_cases hr : r < μ.colLen 0
   · have hr' : r < (rows n T hT).length := by simpa only [rows_length] using hr
-    simp [List.getElem?_eq_getElem, hr', rows_get n μ T hT r hr]
+    simp [hr', rows_get n μ T hT r hr]
   · have hzero : μ.rowLen r = 0 := by
       have hm : (r,0) ∉ μ := by simpa only [YoungDiagram.mem_iff_lt_colLen] using hr
       rw [YoungDiagram.mem_iff_lt_rowLen] at hm
@@ -205,7 +206,7 @@ private theorem genuine_label (n : ℕ) (μ : YoungDiagram)
 
 theorem genuine_roundtrip (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) :
-    ∃ (hs : ∀ w ∈ rows n T hT, w.Sorted (· ≤ ·))
+    ∃ (hs : ∀ w ∈ rows n T hT, w.Pairwise (· ≤ ·))
       (hc : ∀ r : ℕ, ColumnBelow ((rows n T hT)[r]?.getD []) ((rows n T hT)[r+1]?.getD []))
       (_hn : ∀ w ∈ rows n T hT, w ≠ []),
       shape n (rows n T hT) hc = μ ∧

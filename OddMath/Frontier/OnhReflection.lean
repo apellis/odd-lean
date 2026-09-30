@@ -151,7 +151,7 @@ theorem DElem_ne_zero (n : ℕ) : DElem n ≠ 0 := by
   rcases neg_one_pow_eq_or ℤ ((n+2).choose 3) with h | h <;> simp [h] at hz
 
 theorem smul_DElem_inj {a b : ℤ} (h : a • DElem n = b • DElem n) : a = b := by
-  haveI := (NilHeckeBasis.basis n).noZeroSMulDivisors
+  have := (NilHeckeBasis.basis n).isTorsionFree
   have h2 : (a - b) • DElem n = 0 := by rw [sub_smul, h, sub_self]
   rcases smul_eq_zero.mp h2 with h3 | h3
   · omega

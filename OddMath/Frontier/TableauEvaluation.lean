@@ -43,7 +43,7 @@ noncomputable def tildeWeight (n : ℕ) (T : PositiveTableau μ) : ℕ :=
 
 /-- Ordered insertion crosses precisely the smaller letters of a sorted suffix. -/
 theorem insertCrossings_eq_filter {n : ℕ} (i : Fin n) (w : List (Fin n))
-    (hw : w.Sorted (· ≤ ·)) :
+    (hw : w.Pairwise (· ≤ ·)) :
     PbwNormalization.insertCrossings i w = (w.filter (fun j => j < i)).length := by
   induction w with
   | nil => rfl
@@ -65,7 +65,7 @@ theorem sortCrossings_eq_inversions {n : ℕ} (w : List (Fin n)) :
   | nil => rfl
   | cons i w ih =>
     rw [PbwNormalization.sortCrossings, insertCrossings_eq_filter _ _
-      (List.sorted_insertionSort (· ≤ ·) w), ih]
+      (List.pairwise_insertionSort (· ≤ ·) w), ih]
     have hc := ((List.perm_insertionSort (· ≤ ·) w).filter
       (fun j => j < i)).length_eq
     simp only [List.map_cons, inversions, List.filter_map, List.length_map]
@@ -81,7 +81,7 @@ theorem rowFinWord_labels (n : ℕ) (T : PositiveTableau μ) (h : InAlphabet n T
     funext k
     have hk := rowWord_bounds n T h k.property
     omega
-  simpa only [Function.comp_def, he, List.map_id] using
+  simpa only [Function.comp_def, he, List.map_id, id] using
     (List.attach_map_val (l := rowWord T) (f := id))
 
 theorem rowFinWord_count (n : ℕ) (T : PositiveTableau μ) (h : InAlphabet n T)
@@ -117,7 +117,7 @@ theorem sum_vals_eq_counts {n : ℕ} (w : List (Fin n)) :
     simp only [List.map_cons, List.sum_cons, ih, List.count_cons]
     simp only [Nat.mul_add, Finset.sum_add_distrib]
     simp only [mul_ite, Nat.mul_one, Nat.mul_zero, beq_iff_eq,
-      Finset.sum_ite_eq, Finset.mem_univ, if_true]
+      Finset.sum_ite_eq, Finset.mem_univ, ite_true]
     exact Nat.add_comm _ _
 
 /-- Extract exactly the source tilde sign, before any normal ordering. -/
@@ -185,6 +185,6 @@ theorem contentPolynomial_eq (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ ℕ)
     (fun T => (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T))]
   rw [Finset.mul_sum]
   simp only [mul_comm ((-1 : ℤ) ^ (∑ i : Fin n, i.val * c (i.val + 1)))]
-  exact (Finsupp.single_finset_sum _ _ _).symm
+  exact (Finsupp.single_finsetSum _ _ _).symm
 
 end OddMath.Frontier.TableauEvaluation

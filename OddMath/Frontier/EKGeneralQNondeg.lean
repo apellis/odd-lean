@@ -213,7 +213,7 @@ theorem coeff_gram (β α : Composition n) (e : ℕ) :
     (gram (X : ℤ[X]) n β α).coeff e =
       (Finset.univ.filter (fun M : Mat β.blocks.get α.blocks.get => crossing M.val = e)).card := by
   classical
-  rw [gram_apply, matForm, finset_sum_coeff]
+  rw [gram_apply, matForm, finsetSum_coeff]
   simp only [coeff_X_pow]
   rw [Finset.card_filter]
   push_cast
@@ -225,7 +225,7 @@ theorem gram_reverse_monic (β : Composition n) :
     (gram (X : ℤ[X]) n β.reverse β).Monic ∧
       (gram (X : ℤ[X]) n β.reverse β).natDegree = wt β.blocks := by
   have hle := natDegree_gram_le β.reverse β
-  rw [if_pos (Composition.reverse_reverse β).symm, Composition.reverse_blocks, wt_reverse] at hle
+  rw [ite_eq_left (Composition.reverse_reverse β).symm, Composition.reverse_blocks, wt_reverse] at hle
   have hle' : (gram (X : ℤ[X]) n β.reverse β).natDegree ≤ wt β.blocks := by omega
   have hc : (gram (X : ℤ[X]) n β.reverse β).coeff (wt β.blocks) = 1 := by
     rw [coeff_gram, card_top_crossing]
@@ -255,7 +255,7 @@ theorem natDegree_term_lt (σ : Equiv.Perm (Composition n)) (hσ : σ ≠ revPer
     (∏ i, gram (X : ℤ[X]) n (σ i) i).natDegree < degD n := by
   obtain ⟨i₀, hi₀⟩ : ∃ i, σ i ≠ revPerm n i := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hσ (Equiv.ext h)
   have hsum : 2 * (∑ i, (gram (X : ℤ[X]) n (σ i) i).natDegree) + 1 ≤ 2 * degD n := by
     have hb : ∀ i, 2 * (gram (X : ℤ[X]) n (σ i) i).natDegree +
@@ -268,7 +268,7 @@ theorem natDegree_term_lt (σ : Equiv.Perm (Composition n)) (hσ : σ ≠ revPer
       Equiv.sum_comp σ (fun i => wt i.blocks)] at h1
     have h2 : 1 ≤ ∑ i, (if i = (σ i).reverse then 0 else 1) := by
       have : (if i₀ = (σ i₀).reverse then 0 else 1) = 1 := by
-        rw [if_neg]
+        rw [ite_eq_right]
         intro h
         apply hi₀
         have h' := congrArg Composition.reverse h
@@ -296,7 +296,7 @@ theorem term_rev_monic :
 theorem coeff_gram_det (m : ℕ) (hm : degD n ≤ m) :
     (gram (X : ℤ[X]) n).det.coeff m =
       (Equiv.Perm.sign (revPerm n) : ℤ) * (∏ i, gram (X : ℤ[X]) n (revPerm n i) i).coeff m := by
-  rw [Matrix.det_apply', finset_sum_coeff, Finset.sum_eq_single (revPerm n)]
+  rw [Matrix.det_apply', finsetSum_coeff, Finset.sum_eq_single (revPerm n)]
   · rw [coeff_intCast_mul, Int.cast_id]
   · intro σ _ hσ
     rw [coeff_intCast_mul, coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le
@@ -381,8 +381,8 @@ theorem toList_partWord (l : List ℕ) (hl : ∀ a ∈ l, 0 < a) :
 
 theorem partWord_toList (w : W) : partWord (w.toList.map (· + 1)) = w := by
   induction w using FreeMonoid.recOn with
-  | h0 => rfl
-  | ih i w ih =>
+  | one => rfl
+  | of_mul i w ih =>
     simp only [FreeMonoid.toList_mul, FreeMonoid.toList_of, List.singleton_append,
       List.map_cons, partWord, ih]
 
@@ -415,21 +415,21 @@ theorem degreeProj_eq_sum (n : ℕ) (x : L k) :
   | hz => simp
   | ha x y hx hy => simp only [map_add, Finsupp.add_apply, add_smul, Finset.sum_add_distrib, hx, hy]
   | hb u r =>
-    simp only [map_smul, degreeProj_basis, Basis.repr_self, Finsupp.smul_apply,
+    simp only [map_smul, degreeProj_basis, Module.Basis.repr_self, Finsupp.smul_apply,
       Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_smul, zero_smul]
     by_cases hu : degree u = n
-    · rw [if_pos hu, Finset.sum_eq_single ⟨u, hu⟩]
+    · rw [ite_eq_left hu, Finset.sum_eq_single ⟨u, hu⟩]
       · simp
       · intro w _ hw
-        rw [if_neg]
+        rw [ite_eq_right]
         intro h
         exact hw (Subtype.ext h.symm)
       · simp
-    · rw [if_neg hu, smul_zero]
+    · rw [ite_eq_right hu, smul_zero]
       symm
       apply Finset.sum_eq_zero
       intro w _
-      rw [if_neg]
+      rw [ite_eq_right]
       intro h
       exact hu (h ▸ w.2)
 
@@ -452,7 +452,7 @@ theorem form_nondegenerate_of_det [IsDomain k] (q : k) (hdet : ∀ n, (gram q n)
       simp only [Matrix.vecMul, dotProduct, map_smul, LinearMap.smul_apply, smul_eq_mul, v, gram,
         Matrix.of_apply]
     have h2 : degreeProj k n (hWord k α.blocks) = hWord k α.blocks := by
-      rw [hWord_blocks, degreeProj_basis, if_pos (by rw [partWord_degree, α.blocks_sum])]
+      rw [hWord_blocks, degreeProj_basis, ite_eq_left (by rw [partWord_degree, α.blocks_sum])]
     rw [h1, form_degreeProj, h2, hx]
     rfl
   have hv0 : v = 0 := by

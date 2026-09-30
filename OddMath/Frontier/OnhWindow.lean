@@ -225,13 +225,13 @@ theorem IsGen.anticomm {l r l' r' : ℕ} {x y : Presented n} (hx : IsGen l r x)
           intro he; subst he; omega
       | crossing i' hi₁' hi₂' =>
           rw [crossing_dot_other i' j, neg_neg]
-          · intro he; rw [Fin.ext_iff, Fin.coe_castSucc] at he; omega
+          · intro he; rw [Fin.ext_iff, Fin.val_castSucc] at he; omega
           · intro he; rw [Fin.ext_iff, Fin.val_succ] at he; omega
   | crossing i hi₁ hi₂ =>
       cases hy with
       | dot j' hj₁' hj₂' =>
           refine crossing_dot_other i j' ?_ ?_
-          · intro he; rw [Fin.ext_iff, Fin.coe_castSucc] at he; omega
+          · intro he; rw [Fin.ext_iff, Fin.val_castSucc] at he; omega
           · intro he; rw [Fin.ext_iff, Fin.val_succ] at he; omega
       | crossing i' hi₁' hi₂' => exact crossing_distant i i' (Or.inl (by omega))
 
@@ -248,9 +248,9 @@ inductive Homog (l r : ℕ) : ℕ → Presented n → Prop
 theorem Homog.zsmul {l r k : ℕ} {x : Presented n} (hx : Homog l r k x) (c : ℤ) :
     Homog l r k (c • x) := by
   induction c using Int.induction_on with
-  | hz => simpa using Homog.zero k
-  | hp c ih => rw [add_zsmul, one_zsmul]; exact ih.add hx
-  | hn c ih => rw [sub_zsmul, one_zsmul]; exact ih.add hx.neg
+  | zero => simpa using Homog.zero k
+  | succ c ih => rw [add_zsmul, one_zsmul]; exact ih.add hx
+  | pred c ih => rw [sub_zsmul, one_zsmul]; exact ih.add hx.neg
 
 /-- A product of `k` generators supported in `[l, r)`. -/
 theorem Homog.list_prod {l r : ℕ} (xs : List (Presented n)) (hx : ∀ x ∈ xs, IsGen l r x) :

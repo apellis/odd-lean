@@ -34,7 +34,7 @@ def matrixDegree {n : ℕ} (d : ℤ) (M : Matrix (Perm n) (Perm n) (K n)) : Prop
 theorem monomial_mem {N : ℕ} (a : Fin N → ℕ) (z : ℤ) :
     monomial a z ∈ polynomialPiece N (pdegree a) := by
   intro b hb
-  exact Finsupp.single_eq_of_ne (fun he => hb (congrArg pdegree he.symm))
+  exact Finsupp.single_eq_of_ne (fun he => hb (congrArg pdegree he))
 
 theorem polynomial_negative (N : ℕ) (d : ℤ) (hd : d < 0) : polynomialPiece N d = ⊥ := by
   apply le_antisymm _ bot_le
@@ -88,12 +88,13 @@ theorem polynomial_mul {N : ℕ} {d e : ℤ} {f g : SkewPolynomial N}
     monomial_mem (a+b) (f a*g b*OddMath.skewSign a b)
 
 theorem one_mem (N : ℕ) : (1 : SkewPolynomial N) ∈ polynomialPiece N 0 := by
+  change monomial 0 1 ∈ _
   simpa only [pdegree, Pi.zero_apply, Finset.sum_const_zero, Nat.cast_zero, mul_zero] using
     monomial_mem (0 : Fin N → ℕ) 1
 
 theorem generator_mem {N : ℕ} (j : Fin N) : generator j ∈ polynomialPiece N 2 := by
   have h : pdegree (expSingle j)=2 := by simp [pdegree, expSingle]
-  simpa only [h] using monomial_mem (expSingle j) 1
+  simpa only [h, generator] using monomial_mem (expSingle j) 1
 
 /-- Word homogeneity is proved on the actual quotient evaluation. -/
 theorem polynomial_word_mem {N : ℕ} (w : List (Fin N)) :
@@ -149,6 +150,7 @@ theorem applyWord_mem {n : ℕ} (w : Word n) {d : ℤ} {f : SkewPolynomial (n+2)
   | nil => simpa using hf
   | cons i w ih =>
     have h := divided_mem i ih
+    change AllRankDivided.divided i (LongestDivided.applyWord w f) ∈ _
     convert h using 1
     congr 1
     simp only [List.length_cons, Nat.cast_add, Nat.cast_one]
@@ -170,13 +172,14 @@ theorem staircase_mem (N : ℕ) : LongestDivided.staircase N ∈ polynomialPiece
         omega
       _ = ∑ i : Fin N, i.val := Equiv.sum_comp (LongestElementary.longest N) Fin.val
       _ = _ := by rw [Fin.sum_univ_eq_sum_range (fun i : ℕ => i), Finset.sum_range_id, Nat.choose_two_right]
-  simpa only [pdegree, hs] using monomial_mem (fun i : Fin N => N-1-i.val) 1
+  simpa only [pdegree, hs, LongestDivided.staircase] using monomial_mem (fun i : Fin N => N-1-i.val) 1
 
 /-- The literal (2.41) polynomial, with the inherited chosen reduced word. -/
 theorem schubert_mem {n : ℕ} (w : Perm n) :
     schubert w ∈ polynomialPiece (n+2) (2*(length w : ℤ)) := by
   have h := dividedElement_mem (w⁻¹ * LongestElementary.longest (n+2)) (staircase_mem (n+2))
   have hc := complement_length w
+  change dividedElementOperator _ (LongestDivided.staircase (n+2)) ∈ _
   convert h using 1
   congr 1
   omega
@@ -368,10 +371,11 @@ theorem matrixEquiv_degree_iff (n : ℕ) (T : rightKernelEnd n) (d : ℤ) :
     intro i _
     have hcoeff : ((∑ j, toMatrix n T i j * coordinates n f j : K n) : SkewPolynomial (n+2)) ∈
         polynomialPiece (n+2) (e+d-2*(length i : ℤ)) := by
-      simp only [AddSubmonoidClass.coe_finset_sum, Subring.coe_mul]
+      simp only [AddSubmonoidClass.coe_finsetSum, Subring.coe_mul]
       apply Submodule.sum_mem
       intro j _
       have hm := polynomial_mul (h i j) (coordinates_mem hf j)
+      change (toMatrix n T i j : SkewPolynomial (n+2)) * _ ∈ _ at hm
       convert hm using 1
       congr 1
       ring
@@ -398,7 +402,8 @@ theorem schubert_rank_polynomial (n : ℕ) : schubertRankPolynomial n =
 theorem schubert_physical_rank {R : Type*} [CommSemiring R] (q : R) (n : ℕ) :
     (∑ w : Perm n, q^(2*length w)) =
       ∏ j ∈ Finset.range (n+2), ∑ k ∈ Finset.range (j+1), q^(2*k) := by
-  simpa only [pow_mul] using NilHeckeGrading.inversion_generating (q^2) (n+2)
+  simp only [pow_mul]
+  exact NilHeckeGrading.inversion_generating (q^2) (n+2)
 
 /-- Prop2.13's LEFT homogeneous basis, retaining the source multiplication side.
 Uniqueness is inherited; homogeneity is supplied here, not assumed. -/

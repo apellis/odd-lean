@@ -64,7 +64,7 @@ def join {r s c : ℕ} (U : Raw r c) (V : Raw s c) : Raw (r+s) c := Fin.addCases
     (∑ i, ∑ k, ∑ j, ∑ l, if l < j then U i j * V k l else 0) =
       crossCols (colSum U) (colSum V) := by
   unfold crossCols colSum
-  simp only [Finset.sum_mul, Finset.mul_sum, Finset.sum_ite_irrel]
+  simp only [Finset.sum_mul, Finset.mul_sum]
   conv_lhs =>
     arg 2; ext i; rw [Finset.sum_comm]
   rw [Finset.sum_comm]
@@ -80,15 +80,15 @@ def join {r s c : ℕ} (U : Raw r c) (V : Raw s c) : Raw (r+s) c := Fin.addCases
     crossing (join U V) = crossing U + crossing V +
       crossCols (colSum U) (colSum V) := by
   have lr (i : Fin r) (k : Fin s) : Fin.castAdd s i < Fin.natAdd r k := by
-    simp only [Fin.lt_def, Fin.coe_castAdd, Fin.coe_natAdd]; omega
+    simp only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]; omega
   have rl (i : Fin s) (k : Fin r) : ¬ Fin.natAdd r i < Fin.castAdd s k := by
-    simp only [Fin.lt_def, Fin.coe_castAdd, Fin.coe_natAdd]; omega
+    simp only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]; omega
   have ll (i k : Fin r) : (Fin.castAdd s i < Fin.castAdd s k) = (i < k) := rfl
   have rr (i k : Fin s) : (Fin.natAdd r i < Fin.natAdd r k) = (i < k) := by
-    simp only [Fin.lt_def, Fin.coe_natAdd, Nat.add_lt_add_iff_left]
+    simp only [Fin.lt_def, Fin.val_natAdd, Nat.add_lt_add_iff_left]
   simp only [crossing, Fin.sum_univ_add, join_left, join_right,
-    ll, rr, lr, rl, if_true, if_false,
-    Finset.sum_add_distrib, Finset.sum_const_zero, zero_add]
+    ll, rr, lr, rl, ite_true, ite_false,
+    Finset.sum_add_distrib, Finset.sum_const_zero]
   rw [cross_blocks]
   omega
 
@@ -104,7 +104,7 @@ noncomputable def pairing {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) 
 
  theorem pairing_degree_mismatch {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ)
     (h : (∑ i, β i) ≠ ∑ j, α j) : pairing β α = 0 := by
-  haveI : IsEmpty (Mat β α) := ⟨fun M => h (total_eq M)⟩
+  have : IsEmpty (Mat β α) := ⟨fun M => h (total_eq M)⟩
   exact Finset.sum_eq_zero (fun M _ => isEmptyElim M)
 
 /-- Every coordinate split 0 ≤ u_j ≤ α_j, including zero and empty cases. -/
@@ -321,7 +321,7 @@ def insertZeroMat {r c : ℕ} {β : Fin (r+1) → ℕ} {α : Fin c → ℕ}
     · funext j
       unfold colSum
       rw [Fin.sum_univ_succAbove _ p]
-      simpa only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, zero_add]
+      simpa only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, zero_add, colSum]
         using congrFun M.property.2 j⟩
 
 def eraseZeroEquiv {r c : ℕ} (β : Fin (r+1) → ℕ) (α : Fin c → ℕ)
@@ -460,13 +460,13 @@ theorem strandMatrix_rowSum {n r c : ℕ} (T : Fin n → Fin r) (B : Fin n → F
     rowSum (strandMatrix T B) i = ∑ a, if T a = i then 1 else 0 := by
   have h := sum_strandMatrix T B (fun k _ => if k = i then 1 else 0)
   simpa only [mul_ite, mul_one, mul_zero, Finset.sum_ite_irrel, Finset.sum_const_zero,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true, rowSum] using h
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true, rowSum] using h
 
 theorem strandMatrix_colSum {n r c : ℕ} (T : Fin n → Fin r) (B : Fin n → Fin c) (j : Fin c) :
     colSum (strandMatrix T B) j = ∑ a, if B a = j then 1 else 0 := by
   have h := sum_strandMatrix T B (fun _ l => if l = j then 1 else 0)
   simpa only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
-    if_true, colSum] using h
+    ite_true, colSum] using h
 
 /-- Actual endpoint platform cardinalities; the row count is independent of σ. -/
 def PlatformDiagram.toMat {n r c : ℕ} (D : PlatformDiagram n r c) :

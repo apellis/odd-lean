@@ -45,7 +45,7 @@ example : knuthCon = conGen (fun a b : FreeMonoid ℕ =>
 
 example : Function.Bijective tabToPl := tabToPl_bijective
 
-noncomputable example : Basis (Σ μ : YoungDiagram, PositiveTableau μ) ℤ (MonoidAlgebra ℤ Pl) :=
+noncomputable example : Module.Basis (Σ μ : YoungDiagram, PositiveTableau μ) ℤ (MonoidAlgebra ℤ Pl) :=
   tableauBasis
 
 example (S : Σ μ : YoungDiagram, PositiveTableau μ) :
@@ -62,7 +62,7 @@ example : P [5, 3, 4, 2, 2, 3, 3, 1, 1, 1, 2] = [[1, 1, 1, 2], [2, 2, 3, 3], [3,
 example : Valid [[1, 1, 1, 2], [2, 2, 3, 3], [3, 4], [5]] ∧
     P (readR [[1, 1, 1, 2], [2, 2, 3, 3], [3, 4], [5]]) = [[1, 1, 1, 2], [2, 2, 3, 3], [3, 4], [5]] := by
   refine ⟨?_, P_readR _ ?_⟩ <;>
-    simp [Valid, Dom, List.Sorted, List.pairwise_cons]
+    simp [Valid, Dom, List.pairwise_cons]
 
 example (S : Σ μ : YoungDiagram, PositiveTableau μ) :
     tabToPl S = 1 ↔ TableauRowWord.rowWord S.2 = [] := tabToPl_eq_one_iff S
@@ -82,11 +82,11 @@ example (S : {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.row
     ((tabEquivPlNonunital S : PlNonunital) : Pl) = tabToPl S.1 := tabEquivPlNonunital_apply S
 
 noncomputable example :
-    Basis {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []} ℤ
+    Module.Basis {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []} ℤ
       (MonoidAlgebra ℤ PlNonunital) := tableauBasisNonunital
 
 example (S : {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []}) :
-    tableauBasisNonunital S = Finsupp.single (tabEquivPlNonunital S) (1 : ℤ) :=
+    tableauBasisNonunital S = MonoidAlgebra.single (tabEquivPlNonunital S) (1 : ℤ) :=
   tableauBasisNonunital_apply S
 
 /-- Non-vacuity of the non-unital index set: the one-box tableau `[1]` has row word `[1]`. -/

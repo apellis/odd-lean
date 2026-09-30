@@ -35,14 +35,14 @@ theorem kstep_filter_gt (m : ℕ) {w w' : List ℕ} (h : KStep w w') :
     · refine Relation.EqvGen.rel _ _ ⟨u.filter (fun a => decide (m < a)), v.filter (fun a => decide (m < a)), x, y, z, Or.inl ⟨h1, h2, ?_, ?_⟩⟩
       · simp [hx, show m < y by omega, show m < z by omega]
       · simp [hx, show m < y by omega, show m < z by omega]
-    · simp only [if_neg hx, List.append_nil, List.nil_append]
+    · simp only [ite_eq_right hx, List.append_nil]
       exact knuth_refl _
   · simp only [List.filter_append, filter_gt_triple]
     by_cases hx : m < x
     · refine Relation.EqvGen.rel _ _ ⟨u.filter (fun a => decide (m < a)), v.filter (fun a => decide (m < a)), x, y, z, Or.inr ⟨h1, h2, ?_, ?_⟩⟩
       · simp [hx, show m < y by omega, show m < z by omega]
       · simp [hx, show m < y by omega, show m < z by omega]
-    · simp only [if_neg hx, List.append_nil, List.nil_append]
+    · simp only [ite_eq_right hx, List.append_nil]
       exact knuth_refl _
 
 theorem knuth_filter_gt (m : ℕ) {w w' : List ℕ} (h : KnuthEquiv w w') :
@@ -62,7 +62,7 @@ theorem bump1_map_add (m : ℕ) : ∀ (R : List ℕ) (a : ℕ),
     by_cases h : a < x
     · simp [bump1, h]
     · have h' : ¬ a + m < x + m := by omega
-      simp only [List.map_cons, bump1, h, h', if_false]
+      simp only [List.map_cons, bump1, h, h', ite_false]
       rw [bump1_map_add m R a]
 
 theorem ins_map_add (m : ℕ) : ∀ (rs : List (List ℕ)) (a : ℕ),
@@ -312,7 +312,7 @@ theorem readR_canonRows_succ (ℓ : ℕ → ℕ) (n : ℕ) :
 theorem count_readR_canonRows (ℓ : ℕ → ℕ) (a : ℕ) : ∀ n,
     (readR (canonRows ℓ n)).count a = if 0 < a ∧ a ≤ n then ℓ (a - 1) else 0
   | 0 => by
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
     simp [canonRows, readR]
   | n + 1 => by
     have hc : (List.replicate (ℓ n) (n + 1)).count a = if a = n + 1 then ℓ n else 0 := by
@@ -341,7 +341,7 @@ theorem yamR_canonRows (ℓ : ℕ → ℕ) (hℓ : Antitone ℓ) : ∀ n, YamR (
     rw [List.count_append, List.count_append, hcu, hcu, count_readR_canonRows,
       count_readR_canonRows, Nat.add_sub_cancel]
     have h1 := hℓ (show a - 1 ≤ a from by omega)
-    rcases le_or_lt (a - 1) n with h2 | h2
+    rcases le_or_gt (a - 1) n with h2 | h2
     · have h3 := hℓ h2
       split_ifs <;> omega
     · split_ifs <;> omega

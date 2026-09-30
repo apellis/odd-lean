@@ -68,7 +68,7 @@ private theorem transpose_rows_injective' (d : ℕ) :
 
 theorem triangular_det (d : ℕ) :
     (triangularMatrix d).det = ∏ μ : DegreeShape d, (-1 : ℤ)^EKSemiorthogonality.ell μ.val := by
-  letI : LinearOrder (DegreeShape d) := LinearOrder.lift'
+  let : LinearOrder (DegreeShape d) := LinearOrder.lift'
     (fun μ : DegreeShape d => μ.val.transpose.rowLens) (transpose_rows_injective' d)
   have ht : (triangularMatrix d).BlockTriangular OrderDual.toDual := by
     intro μ ν hlt
@@ -76,7 +76,7 @@ theorem triangular_det (d : ℕ) :
     rw [triangularMatrix_apply]
     exact (EKSemiorthogonality.proposition_2_14_vanishing μ.val ν.val.transpose.rowLens
       ν.val.transpose.pos_of_mem_rowLens hlt).1
-  rw [Matrix.det_of_lowerTriangular _ ht]
+  rw [Matrix.det_of_isLowerTriangular _ ht]
   exact Finset.prod_congr rfl (fun μ _ => triangularMatrix_diag d μ)
 
 /-! ### Step 3: sign of an involution -/
@@ -108,7 +108,7 @@ theorem sign_involution {α : Type*} [Fintype α] [DecidableEq α] (σ : Equiv.P
     have hs : σ.support = Finset.univ.filter (fun x => ¬ σ x = x) := by
       ext x
       simp [Equiv.Perm.mem_support]
-    rw [hs, Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_univ]
+    rw [hs, Finset.card_filter_add_card_filter_not, Finset.card_univ]
   have hexp : (Fintype.card α - (Finset.univ.filter (fun x => σ x = x)).card)/2 =
       Multiset.card σ.cycleType := by
     omega
@@ -147,7 +147,7 @@ theorem p_sub_sc_even (d : ℕ) : Even (p d - sc d) := by
         Finset.univ.filter (fun μ => ¬ transposeShape d μ = μ) := by
       ext μ
       simp [Equiv.Perm.mem_support]
-    rw [hs', Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_univ]
+    rw [hs', Finset.card_filter_add_card_filter_not, Finset.card_univ]
     rfl
   have hev : Even (Equiv.Perm.support (transposeShape d)).card := by
     have hmem : ∀ n ∈ Equiv.Perm.cycleType (transposeShape d), n = 2 := by

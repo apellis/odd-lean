@@ -15,11 +15,11 @@ theorem degree_zero : psi1 (h 0) = 1 ∧ psi2 (h 0) = 1 ∧ S (h 0) = 1 := by
   simp [h]
 
 theorem degree_one : psi1 (h 1) = h 1 ∧ psi2 (h 1) = -h 1 ∧ S (h 1) = -h 1 := by
-  simp [psi1_h, EKPresentationControls.degree_one, s, S_h_one]
+  simp [psi1_h, EKPresentationControls.degree_one, s]
 
 theorem degree_two : psi1 (h 2) = h 2-h 1*h 1 ∧ psi2 (h 2) = -h 2 ∧
     S (h 2) = h 1*h 1-h 2 ∧ S (h 1*h 1) = -(h 1*h 1) := by
-  simp [psi1_h, EKPresentationControls.degree_two, s, S_h_two, S_square_word]
+  simp [psi1_h, EKPresentationControls.degree_two, s, S_square_word]
 
 theorem second_step : psi1 (psi1 (h 2)) = h 2-(2 : ℤ) • (h 1*h 1) ∧
     S (S (h 2)) = h 2-(2 : ℤ) • (h 1*h 1) := by

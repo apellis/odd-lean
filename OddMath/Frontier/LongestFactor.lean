@@ -56,7 +56,7 @@ theorem longest_descent (n : ℕ) (i : Fin (n+1)) :
     Descent (LongestElementary.longest (n+2)) i := by
   unfold Descent
   simp only [LongestElementary.longest_apply]
-  exact Fin.rev_lt_rev.mpr (Fin.castSucc_lt_succ i)
+  exact Fin.rev_lt_rev.mpr (Fin.castSucc_lt_succ (i := i))
 
 /-- A reduced expression of the longest permutation ending with any prescribed letter. -/
 theorem exists_reduced_ending (n : ℕ) (i : Fin (n+1)) :
@@ -95,21 +95,21 @@ noncomputable def chain (m p : ℕ) : ℕ → SkewPolynomial (m+2)
   | k+1 => letter m p * chain m (p+1) k
 
 theorem cross_letter_self (m p : ℕ) (hp : p < m+1) : cross m p (letter m p) = 1 := by
-  simp only [cross, letter, dif_pos hp, dif_pos (show p < m+2 by omega)]
+  simp only [cross, letter, dite_eq_left hp, dite_eq_left (show p < m+2 by omega)]
   rw [AllRankDivided.divided_generator]
-  exact if_pos (Or.inl rfl)
+  exact ite_eq_left (Or.inl rfl)
 
 theorem cross_letter_succ (m p : ℕ) (hp : p < m+1) : cross m p (letter m (p+1)) = 1 := by
-  simp only [cross, letter, dif_pos hp, dif_pos (show p+1 < m+2 by omega)]
+  simp only [cross, letter, dite_eq_left hp, dite_eq_left (show p+1 < m+2 by omega)]
   rw [AllRankDivided.divided_generator]
-  exact if_pos (Or.inr rfl)
+  exact ite_eq_left (Or.inr rfl)
 
 theorem cross_pair (m j : ℕ) (hj : j < m+1) :
     cross m j (letter m j * letter m (j+1)) = 0 := by
   have h := divided_balanced (⟨j, hj⟩ : Fin (m+1)) 1
   simp only [pow_one] at h
-  simp only [cross, letter, dif_pos hj, dif_pos (show j < m+2 by omega),
-    dif_pos (show j+1 < m+2 by omega)]
+  simp only [cross, letter, dite_eq_left hj, dite_eq_left (show j < m+2 by omega),
+    dite_eq_left (show j+1 < m+2 by omega)]
   exact h
 
 theorem cross_chain_tail (m j q k : ℕ) (hj : j < m+1) (hq : j+1 < q) (hb : q+k ≤ m+2) :
@@ -334,7 +334,7 @@ theorem piece_zero_eq {N : ℕ} {f : SkewPolynomial N} (hf : f ∈ polynomialPie
   by_cases ha : a = 0
   · subst ha
     simp
-  · rw [Finsupp.single_eq_of_ne (Ne.symm ha), mul_zero]
+  · rw [Finsupp.single_eq_of_ne ha, mul_zero]
     apply hf a
     intro hd
     apply ha
@@ -365,8 +365,8 @@ theorem applyWord_monomial_top {n : ℕ} (w : Word n) (γ : Fin (n+2) → ℕ) (
 theorem D_mem (N : ℕ) {d : ℤ} {f : SkewPolynomial N} (hf : f ∈ polynomialPiece N d) :
     LongestDivided.D N f ∈ polynomialPiece N (d - 2*(N.choose 2 : ℤ)) := by
   rcases N with _ | _ | n
-  · simpa using hf
-  · simpa using hf
+  · simpa [LongestDivided.D] using hf
+  · simpa [LongestDivided.D] using hf
   · rw [D_eq_inherited, ← sourceWord_length n]
     exact applyWord_mem _ hf
 

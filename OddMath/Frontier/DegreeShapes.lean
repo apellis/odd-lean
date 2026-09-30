@@ -28,7 +28,7 @@ theorem cell_lt_card (μ : YoungDiagram) (p : ℕ × ℕ)
 
 /-- Every degree-`d` diagram injects by its actual cells into the finite powerset
 of the `d` by `d` grid. No enumeration or coverage hypothesis is an input. -/
-noncomputable def degreeFintype (d : ℕ) : Fintype (DegreeShape d) := by
+@[instance_reducible] noncomputable def degreeFintype (d : ℕ) : Fintype (DegreeShape d) := by
   classical
   let f : DegreeShape d → ↥((Finset.range d ×ˢ Finset.range d).powerset) :=
     fun μ => ⟨μ.val.cells, Finset.mem_powerset.mpr (by
@@ -49,7 +49,7 @@ theorem degree_unique_solution (d : ℕ) (b : DegreeShape d → ℤ) :
     ∃! c : DegreeShape d → ℤ, ∀ j,
       ∑ i, c i * TableauDominance.signedKostka i.val j.val = b j := by
   classical
-  letI := degreeFintype d
+  let := degreeFintype d
   exact SignedKostkaInvertibility.kostka_unique_solution
     (fun μ : DegreeShape d => μ.val) Subtype.val_injective b
 

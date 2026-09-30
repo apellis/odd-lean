@@ -58,7 +58,7 @@ theorem conv_single_single {n : ℕ} (a b e : Fin n → ℕ) (r s : ℤ) :
   classical
   unfold conv
   by_cases h : a + b = e
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     have hle : ∀ j, a j < e j + 1 := fun j => by
       have := congrFun h j
       simp only [Pi.add_apply] at this
@@ -80,10 +80,10 @@ theorem conv_single_single {n : ℕ} (a b e : Fin n → ℕ) (r s : ℤ) :
         funext j
         apply Fin.ext
         exact (congrFun hua j).symm
-      rw [Finsupp.single_apply, if_neg hua]
+      rw [Finsupp.single_apply, ite_eq_right hua]
       simp
     · simp
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     apply Finset.sum_eq_zero
     intro u _
     rw [Finsupp.single_apply, Finsupp.single_apply]
@@ -127,7 +127,7 @@ theorem sum_exponents {n : ℕ} (w : List (Fin n)) : ∑ i, exponents w i = w.le
   | cons j w ih =>
     rw [exponents_cons, List.length_cons]
     simp only [Pi.add_apply, Finset.sum_add_distrib, ih, expSingle, Finset.sum_ite_eq,
-      Finset.mem_univ, if_true]
+      Finset.mem_univ, ite_true]
     omega
 
 theorem tilde_expSingle {n : ℕ} (j : Fin n) : tilde (expSingle j) = (-1 : ℤ) ^ j.val := by
@@ -135,13 +135,13 @@ theorem tilde_expSingle {n : ℕ} (j : Fin n) : tilde (expSingle j) = (-1 : ℤ)
   congr 1
   simp
 
-theorem sorted_word_prod {n : ℕ} (w : List (Fin n)) (hw : w.Sorted (· ≤ ·)) :
+theorem sorted_word_prod {n : ℕ} (w : List (Fin n)) (hw : w.Pairwise (· ≤ ·)) :
     (w.map PlacticEvaluation.tildeGenerator).prod =
       monomial (exponents w) (tilde (exponents w)) := by
   induction w with
   | nil => simp [tilde]; rfl
   | cons j w ih =>
-    obtain ⟨hj, hw'⟩ := List.sorted_cons.mp hw
+    obtain ⟨hj, hw'⟩ := List.pairwise_cons.mp hw
     rw [List.map_cons, List.prod_cons, ih hw', exponents_cons]
     change ((-1 : ℤ) ^ j.val • monomial (expSingle j) 1) * monomial _ _ = _
     rw [smul_mul_assoc]
@@ -171,24 +171,23 @@ theorem exponents_count {n : ℕ} (w : List (Fin n)) (a : Fin n) : exponents w a
 theorem monotone_unique {n k : ℕ} (f g : Fin k → Fin n) (hf : Monotone f) (hg : Monotone g)
     (h : exponents (List.ofFn f) = exponents (List.ofFn g)) : f = g := by
   have hp : List.Perm (List.ofFn f) (List.ofFn g) := List.perm_iff_count.mpr (fun a => congrFun h a)
-  have he := List.eq_of_perm_of_sorted hp (List.sorted_le_ofFn_iff.mpr hf)
-    (List.sorted_le_ofFn_iff.mpr hg)
+  have he := List.Perm.eq_of_pairwise' hf.sortedLE_ofFn.pairwise hg.sortedLE_ofFn.pairwise hp
   exact List.ofFn_injective he
 
 theorem monotone_exists {n k : ℕ} (b : Fin n → ℕ) (hb : ∑ i, b i = k) :
     ∃ f : Fin k → Fin n, Monotone f ∧ exponents (List.ofFn f) = b := by
   classical
   let s : Multiset (Fin n) := ∑ i, Multiset.replicate (b i) i
-  let L : List (Fin n) := Multiset.sort (· ≤ ·) s
+  let L : List (Fin n) := Multiset.sort s (· ≤ ·)
   have hlen : L.length = k := by
     simp only [L, Multiset.length_sort, s, Multiset.card_sum, Multiset.card_replicate, hb]
-  have hsorted : L.Sorted (· ≤ ·) := Multiset.sort_sorted _ _
+  have hsorted : L.Pairwise (· ≤ ·) := Multiset.pairwise_sort _ _
   have hcount (a : Fin n) : L.count a = b a := by
     rw [← Multiset.coe_count, Multiset.sort_eq]
     show Multiset.count a (∑ i, Multiset.replicate (b i) i) = b a
     rw [Multiset.count_sum']
-    simp only [Multiset.count_replicate, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ,
-      if_true]
+    simp only [Multiset.count_replicate, Finset.sum_ite_eq', Finset.mem_univ,
+      ite_true]
   refine ⟨fun t => L.get (Fin.cast hlen.symm t), ?_, ?_⟩
   · intro s t hst
     exact hsorted.rel_get_of_le (show (Fin.cast hlen.symm s).val ≤ (Fin.cast hlen.symm t).val from hst)
@@ -204,7 +203,7 @@ theorem completePoly_apply (n k : ℕ) (b : Fin n → ℕ) :
     FiniteCompleteElementary.completePoly n k b = if ∑ i, b i = k then tilde b else 0 := by
   classical
   unfold FiniteCompleteElementary.completePoly
-  rw [Finsupp.finset_sum_apply]
+  rw [Finsupp.finsetSum_apply]
   have hterm (f : Fin k → Fin n) :
       ((if Monotone f then (List.ofFn (fun i => PlacticEvaluation.tildeGenerator (f i))).prod
         else 0 : SkewPolynomial n) b) =
@@ -212,26 +211,26 @@ theorem completePoly_apply (n k : ℕ) (b : Fin n → ℕ) :
     by_cases hf : Monotone f
     · have hm : (List.ofFn fun i => PlacticEvaluation.tildeGenerator (f i)) =
           (List.ofFn f).map PlacticEvaluation.tildeGenerator := by rw [List.map_ofFn]; rfl
-      rw [if_pos hf, hm, sorted_word_prod _ (List.sorted_le_ofFn_iff.mpr hf)]
+      rw [ite_eq_left hf, hm, sorted_word_prod _ (hf.sortedLE_ofFn.pairwise)]
       simp only [monomial, Finsupp.single_apply]
       by_cases he : exponents (List.ofFn f) = b
-      · rw [if_pos he, if_pos ⟨hf, he⟩, he]
-      · rw [if_neg he, if_neg (fun h => he h.2)]
-    · rw [if_neg hf, if_neg (fun h => hf h.1)]
+      · rw [ite_eq_left he, ite_eq_left ⟨hf, he⟩, he]
+      · rw [ite_eq_right he, ite_eq_right (fun h => he h.2)]
+    · rw [ite_eq_right hf, ite_eq_right (fun h => hf h.1)]
       rfl
   simp only [hterm]
   split_ifs with hb
   · obtain ⟨f₀, hf₀, he₀⟩ := monotone_exists b hb
     rw [Finset.sum_eq_single f₀]
-    · rw [if_pos ⟨hf₀, he₀⟩]
+    · rw [ite_eq_left ⟨hf₀, he₀⟩]
     · intro g _ hg
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨hgm, hge⟩
       exact hg (monotone_unique g f₀ hgm hf₀ (hge.trans he₀.symm))
     · simp
   · apply Finset.sum_eq_zero
     intro f _
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨_, he⟩
     apply hb
     rw [← he, sum_exponents, List.length_ofFn]
@@ -246,11 +245,11 @@ noncomputable def prodH (n : ℕ) {r : ℕ} (β : Fin r → ℕ) : SkewPolynomia
 theorem pairing_nil {n : ℕ} (β : Fin 0 → ℕ) (e : Fin n → ℕ) :
     pairing β e = if e = 0 then 1 else 0 := by
   by_cases he : e = 0
-  · rw [if_pos he]
+  · rw [ite_eq_left he]
     have hβ : β = fun _ => 0 := funext (fun i => Fin.elim0 i)
     subst hβ; subst he
     exact pairing_zero_zero 0 n
-  · rw [if_neg he]
+  · rw [ite_eq_right he]
     apply pairing_degree_mismatch
     intro h
     apply he
@@ -261,9 +260,9 @@ theorem pairing_nil {n : ℕ} (β : Fin 0 → ℕ) (e : Fin n → ℕ) :
 theorem pairing_one_row {n : ℕ} (k : ℕ) (α : Fin n → ℕ) :
     pairing (fun _ : Fin 1 => k) α = if ∑ j, α j = k then 1 else 0 := by
   by_cases h : ∑ j, α j = k
-  · rw [if_pos h, ← h]
+  · rw [ite_eq_left h, ← h]
     exact pairing_single_row α
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     apply pairing_degree_mismatch
     simpa [eq_comm] using h
 
@@ -279,8 +278,8 @@ theorem prodH_apply (n : ℕ) : ∀ {r : ℕ} (β : Fin r → ℕ) (e : Fin n �
     change (Finsupp.single (0 : Fin n → ℕ) (1 : ℤ)) e = _
     rw [Finsupp.single_apply]
     by_cases he : e = 0
-    · rw [if_pos he.symm, if_pos he, he]; simp [tilde]
-    · rw [if_neg (Ne.symm he), if_neg he]; simp
+    · rw [ite_eq_left he.symm, ite_eq_left he, he]; simp [tilde]
+    · rw [ite_eq_right (Ne.symm he), ite_eq_right he]; simp
   | r+1, β, e => by
     have hsplit : prodH n β = prodH n (fun i : Fin r => β i.castSucc) *
         FiniteCompleteElementary.completePoly n (β (Fin.last r)) := by
@@ -320,8 +319,8 @@ attribute [local instance] DegreeShapes.degreeFintype
 theorem H_eq_prodH (n : ℕ) (μ : YoungDiagram) :
     H n μ = prodH n (EKSemiorthogonality.rows μ) := by
   unfold H prodH YoungDiagram.rowLens EKSemiorthogonality.rows
-  rw [List.ofFn_eq_map, ← List.map_coe_finRange, List.map_map, List.map_map]
-  rfl
+  congr 1
+  apply List.ext_getElem <;> simp
 
 theorem Mh_eq_pairing (d : ℕ) (ν μ : DegreeShape d) :
     EKDualBases.Mh d ν μ = pairing (EKSemiorthogonality.rows ν.val) (EKSemiorthogonality.rows μ.val) := by
@@ -357,12 +356,10 @@ theorem Mh_eq_sum_kostka (d : ℕ) (μ ρ : DegreeShape d) :
       (-1 : ℤ) ^ directNorth lam.val * signedKostka lam.val μ.val * signedKostka lam.val ρ.val := by
   have h1 := congrArg (fun p => p (EKSemiorthogonality.rows μ.val))
     (complete_tableau_expansion (μ.val.colLen 0) d ρ)
-  simp only at h1
-  rw [H_eq_prodH, prodH_apply, pairing_transpose, ← Mh_eq_pairing, Finsupp.finset_sum_apply] at h1
+  rw [H_eq_prodH, prodH_apply, pairing_transpose, ← Mh_eq_pairing, Finsupp.finsetSum_apply] at h1
   simp only [Finsupp.smul_apply, sp_coeff, smul_eq_mul] at h1
   have ht := tilde_mul_self (EKSemiorthogonality.rows μ.val)
   have h2 := congrArg (fun z => tilde (EKSemiorthogonality.rows μ.val) * z) h1
-  simp only at h2
   rw [← _root_.mul_assoc, ht, _root_.one_mul, Finset.mul_sum] at h2
   rw [h2]
   apply Finset.sum_congr rfl
@@ -381,7 +378,9 @@ theorem directNorth_eq_sum_row (lam : YoungDiagram) :
   have he : lam.cells.filter (fun q => q.1 < p.1 ∧ q.2 = p.2) =
       (Finset.range p.1).map ⟨fun i => (i, p.2), fun a b h => by simpa using h⟩ := by
     ext q
-    simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]
+    simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_range]
+    change (q ∈ lam.cells ∧ q.1 < p.1 ∧ q.2 = p.2) ↔
+      ∃ i, i < p.1 ∧ (i, p.2) = q
     constructor
     · rintro ⟨_, h1, h2⟩
       exact ⟨q.1, h1, by rw [← h2]⟩
@@ -448,8 +447,8 @@ theorem sign_eq_even_rows (lam : YoungDiagram) :
   intro i _
   rw [pow_mul]
   rcases Nat.mod_two_eq_zero_or_one i with h | h
-  · rw [if_neg (by omega), (Nat.even_iff.mpr h).neg_one_pow, one_pow]
-  · rw [if_pos h, (Nat.odd_iff.mpr h).neg_one_pow]
+  · rw [ite_eq_right (by omega), (Nat.even_iff.mpr h).neg_one_pow, one_pow]
+  · rw [ite_eq_left h, (Nat.odd_iff.mpr h).neg_one_pow]
 
 /-- (3.9) with the printed sign (-1)^(λ₂+λ₄+⋯). -/
 theorem Mh_eq_sum_kostka_printed (d : ℕ) (μ ρ : DegreeShape d) :

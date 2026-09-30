@@ -98,26 +98,26 @@ def Hk (n k : ℕ) : EPl n :=
   ∑ w : TableauHorizontalPieri.Weak n k,
     MonoidAlgebra.single (toPl (OddLRPlactic.P (List.ofFn w.val))) (1 : ℤ)
 
-theorem smul_apply' {n : ℕ} (a : ℤ) (f : EPl n) (S : PlM n) : (a • f) S = a * f S := rfl
+theorem smul_apply' {n : ℕ} (a : ℤ) (f : EPl n) (S : PlM n) : (a • f).coeff S = a * f.coeff S := rfl
 
 theorem shatE_apply (n : ℕ) (lam : YoungDiagram) (S : PlM n) :
-    shatE n lam S = if S.1 = lam then 1 else 0 := by
+    (shatE n lam).coeff S = if S.1 = lam then 1 else 0 := by
   obtain ⟨sig, T0⟩ := S
   unfold shatE
-  rw [Finsupp.finset_sum_apply]
+  rw [MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
   by_cases h : sig = lam
   · subst h
-    rw [if_pos rfl, Finset.sum_eq_single T0]
-    · simp [MonoidAlgebra.single_apply]
+    rw [ite_eq_left rfl, Finset.sum_eq_single T0]
+    · simp
     · intro T _ hT
-      rw [MonoidAlgebra.single_apply, if_neg]
+      rw [MonoidAlgebra.coeff_single, Finsupp.single_apply, ite_eq_right]
       intro he
       exact hT (eq_of_heq (Sigma.mk.inj_iff.mp he).2)
     · intro h; exact absurd (Finset.mem_univ _) h
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     apply Finset.sum_eq_zero
     intro T _
-    rw [MonoidAlgebra.single_apply, if_neg]
+    rw [MonoidAlgebra.coeff_single, Finsupp.single_apply, ite_eq_right]
     intro he
     exact h (Sigma.mk.inj_iff.mp he).1.symm
 
@@ -129,7 +129,7 @@ theorem shatE_bot (n : ℕ) : shatE n ⊥ = 1 := by
     apply ext_cells
     intro p hp
     exact absurd hp (by simp)
-  letI : Unique (TabOf n ⊥) := ⟨⟨_⟩, hu⟩
+  let : Unique (TabOf n ⊥) := ⟨⟨_⟩, hu⟩
   rw [shatE, Fintype.sum_unique, MonoidAlgebra.one_def]
   rfl
 
@@ -175,9 +175,9 @@ theorem pieri_iterE (n : ℕ) (mu : YoungDiagram) (c : ℕ → ℕ) (t : ℕ) :
       simp [OddLRRule.mdeg, CompleteTableauExpansion.prefixDegree]
     symm
     rw [Fintype.sum_eq_single (α := DegreeShape (OddLRRule.mdeg mu c 0)) ⟨mu, hd.symm⟩ ?_]
-    · rw [W0_zero, if_pos rfl]; simp
+    · rw [W0_zero, ite_eq_left rfl]; simp
     · intro b hb
-      rw [W0_zero, if_neg (fun h => hb (Subtype.ext h))]; simp
+      rw [W0_zero, ite_eq_right (fun h => hb (Subtype.ext h))]; simp
   | succ t ih =>
     rw [List.range_succ, List.map_append, List.prod_append, List.map_singleton, List.prod_singleton,
       ← mul_assoc, ih, Finset.sum_mul]
@@ -276,13 +276,13 @@ def pairCountE (n : ℕ) (mu nu : YoungDiagram) (S : PlM n) : ℕ :=
     toPl ⟨mu, x.1⟩ * toPl ⟨nu, x.2⟩ = S)).card
 
 theorem shatE_mul_shatE_apply (n : ℕ) (mu nu : YoungDiagram) (S : PlM n) :
-    (shatE n mu * shatE n nu) S = pairCountE n mu nu S := by
+    (shatE n mu * shatE n nu).coeff S = pairCountE n mu nu S := by
   unfold shatE pairCountE
   rw [Finset.sum_mul_sum]
   simp only [MonoidAlgebra.single_mul_single, mul_one]
   rw [← Fintype.sum_prod_type' (f := fun (U : TabOf n mu) (V : TabOf n nu) =>
-    MonoidAlgebra.single (toPl ⟨mu, U⟩ * toPl ⟨nu, V⟩) (1 : ℤ)), Finsupp.finset_sum_apply]
-  simp only [MonoidAlgebra.single_apply]
+    MonoidAlgebra.single (toPl ⟨mu, U⟩ * toPl ⟨nu, V⟩) (1 : ℤ)), MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
+  simp only [MonoidAlgebra.coeff_single, Finsupp.single_apply]
   rw [Finset.sum_boole]
 
 /-- **Factorization lemma (Fulton, *Young Tableaux*, §5.1)**: the number of factorizations
@@ -294,12 +294,12 @@ theorem pairCountE_shape (n : ℕ) (mu nu : YoungDiagram) {S S' : PlM n}
   obtain ⟨c, hc⟩ := (Finsupp.mem_span_range_iff_exists_finsupp).mp hm
   have key : ∀ T : PlM n, (pairCountE n mu nu T : ℤ) = c T.1 := by
     intro T
-    rw [← shatE_mul_shatE_apply, ← hc, Finsupp.sum, Finsupp.finset_sum_apply]
+    rw [← shatE_mul_shatE_apply, ← hc, Finsupp.sum, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
     simp only [smul_apply', shatE_apply, mul_ite, mul_one, mul_zero]
     rw [Finset.sum_ite_eq]
     split_ifs with h
     · rfl
-    · rw [Finsupp.not_mem_support_iff.mp h]
+    · rw [Finsupp.notMem_support_iff.mp h]
   have := (key S).trans ((congrArg c h).trans (key S').symm)
   exact_mod_cast this
 
@@ -307,7 +307,7 @@ theorem pairCountE_shape (n : ℕ) (mu nu : YoungDiagram) {S S' : PlM n}
 
 theorem colLen_le_of_tab {n : ℕ} {lam : YoungDiagram} (T : TabOf n lam) : lam.colLen 0 ≤ n := by
   by_contra h
-  push_neg at h
+  push Not at h
   have hm : (n, 0) ∈ lam := YoungDiagram.mem_iff_lt_colLen.mpr h
   have h1 := T.2 (n, 0) (by simpa using hm)
   have h2 := TableauDominance.entry_ge_row T.1 hm
@@ -366,7 +366,7 @@ theorem pairCountE_of_card (n : ℕ) (mu nu : YoungDiagram) (S : PlM n)
 theorem evenLR_eq_zero_of_not_le {lam mu nu : YoungDiagram} (h : ¬ nu ≤ lam) :
     evenLR lam mu nu = 0 := by
   have he : lrTableaux lam nu mu = ∅ := by
-    rw [Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.eq_empty_iff_forall_notMem]
     intro S _
     exact h S.sub
   rw [thm_4_1, card_lrTableaux_comm, he]
@@ -377,11 +377,11 @@ theorem shatE_mul_shatE (n : ℕ) (mu nu : YoungDiagram) :
     shatE n mu * shatE n nu =
       ∑ lam : DegreeShape (mu.card + nu.card), evenLR lam.val mu nu • shatE n lam.val := by
   ext S
-  rw [shatE_mul_shatE_apply, Finsupp.finset_sum_apply]
+  rw [shatE_mul_shatE_apply, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
   simp only [smul_apply', shatE_apply, mul_ite, mul_one, mul_zero]
   by_cases hd : S.1.card = mu.card + nu.card
   · rw [Fintype.sum_eq_single (α := DegreeShape (mu.card + nu.card)) ⟨S.1, hd⟩ ?_]
-    · rw [if_pos rfl]
+    · rw [ite_eq_left rfl]
       by_cases hn : nu.colLen 0 ≤ n
       · exact (eq_4_1 n S.1 mu nu S.2 hn).symm
       · have hl := colLen_le_of_tab S.2
@@ -397,12 +397,12 @@ theorem shatE_mul_shatE (n : ℕ) (mu nu : YoungDiagram) :
         intro x _ _
         exact hn (colLen_le_of_tab x.2)
     · intro lam hne
-      rw [if_neg (fun he => hne (Subtype.ext he.symm))]
+      rw [ite_eq_right (fun he => hne (Subtype.ext he.symm))]
   · rw [pairCountE_of_card n mu nu S hd, Nat.cast_zero]
     symm
     apply Finset.sum_eq_zero
     intro lam _
-    rw [if_neg (fun he => hd (by rw [he]; exact lam.property))]
+    rw [ite_eq_right (fun he => hd (by rw [he]; exact lam.property))]
 
 /-! ## `s_λ ↦ Σ_T T` and `s_λ ↦ Σ_T x^{w_r(T)}` -/
 
@@ -431,7 +431,7 @@ theorem sE_bot : sE ⊥ = 1 := by
 def placticLin (n : ℕ) : Sym →ₗ[ℤ] EPl n := sBasisE.constr ℤ (shatE n)
 
 theorem placticLin_sE (n : ℕ) (lam : YoungDiagram) : placticLin n (sE lam) = shatE n lam := by
-  rw [← sBasisE_apply, placticLin, Basis.constr_basis]
+  rw [← sBasisE_apply, placticLin, Module.Basis.constr_basis]
 
 theorem placticLin_mul (n : ℕ) (x y : Sym) :
     placticLin n (x * y) = placticLin n x * placticLin n y := by
@@ -484,7 +484,7 @@ def xw (n : ℕ) : PlM n →* MvPolynomial (Fin n) ℤ where
 /-- The specialization `Λ₁ → ℤ[x₁, …, x_n]`: `ℤPl_n → ℤ[x₁, …, x_n]` (commuting the letters)
 after `placticHom`. -/
 def evalN (n : ℕ) : Sym →+* MvPolynomial (Fin n) ℤ :=
-  (MonoidAlgebra.lift ℤ (PlM n) (MvPolynomial (Fin n) ℤ) (xw n)).toRingHom.comp (placticHom n)
+  (MonoidAlgebra.lift ℤ (MvPolynomial (Fin n) ℤ) (PlM n) (xw n)).toRingHom.comp (placticHom n)
 
 /-- **E §4.1, p.12: `s_λ = Σ_{T ∈ SSYT(λ)} x^{w_r(T)}`**, in `ℤ[x₁, …, x_n]` (tableaux with
 entries at most `n`). -/
@@ -494,7 +494,9 @@ theorem evalN_sE (n : ℕ) (lam : YoungDiagram) :
   rw [evalN, RingHom.comp_apply, placticHom_sE, shatE, map_sum]
   apply Finset.sum_congr rfl
   intro T _
-  rw [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MonoidAlgebra.lift_single, one_smul]
+  change MonoidAlgebra.lift ℤ (MvPolynomial (Fin n) ℤ) (PlM n) (xw n)
+    (MonoidAlgebra.single (toPl ⟨lam, T⟩) 1) = _
+  rw [MonoidAlgebra.lift_single, one_smul]
   rfl
 
 /-- `h_k ↦ Σ_{T ∈ SSYT((k))} x^{w_r(T)}`, the complete homogeneous symmetric polynomial of

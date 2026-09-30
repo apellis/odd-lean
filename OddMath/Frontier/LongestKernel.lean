@@ -22,7 +22,7 @@ theorem cross_sq (n j : ℕ) (f : SkewPolynomial (n+2)) :
 theorem cross_distant (n i j : ℕ) (hi : i < n+1) (hj : j < n+1)
     (hd : i+1<j ∨ j+1<i) (f : SkewPolynomial (n+2)) :
     cross n i (cross n j f) = -cross n j (cross n i f) := by
-  simp only [cross, dif_pos hi, dif_pos hj]
+  simp only [cross, dite_eq_left hi, dite_eq_left hj]
   exact DividedDistant.divided_distant_neg ⟨i,hi⟩ ⟨j,hj⟩ hd f
 
 /-- Natural-index braid without any arbitrary-word hypothesis; consumer `D_killed`. -/
@@ -33,7 +33,7 @@ theorem cross_braid (n j : ℕ) (hj : j+1 < n+1) (f : SkewPolynomial (n+2)) :
   | zero => omega
   | succ n =>
       have hj0 : j < n+1+1 := by omega
-      simp only [cross, dif_pos hj, dif_pos hj0]
+      simp only [cross, dite_eq_left hj, dite_eq_left hj0]
       exact (DividedBraid.divided_braid (⟨j, by omega⟩ : Fin (n+1)) f).symm
 
 /-- Commuting one distant crossing through a concrete word, including every sign.
@@ -115,7 +115,7 @@ theorem D_killed (n : ℕ) (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
     divided i (D (n+2) f) = 0 := by
   rw [D_eq_actNat]
   have h := word_killed n (n+2) le_rfl i.val (by omega) f
-  simpa only [cross, dif_pos i.isLt] using h
+  simpa only [cross, dite_eq_left i.isLt] using h
 
 theorem D_mem_kernel (n : ℕ) (f : SkewPolynomial (n+2)) :
     D (n+2) f ∈ OddSymmetricKernel.kernelSubring n := fun i => D_killed n i f

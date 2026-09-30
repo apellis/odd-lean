@@ -58,17 +58,17 @@ theorem mBasis_val {d k : ℕ} (S : Fin k → DegreeShape d) (pl : Fin k → Lis
 /-- Printed degree-6 h-basis, printed order
 h111111, h21111, h2211, h222, h3111, h321, h33, h411, h42, h51, h6. -/
 def hshapes6 : Fin 11 → DegreeShape 6 := ![
-  ⟨YoungDiagram.ofRowLens [1,1,1,1,1,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,1,1,1,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,2,1,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,2,2] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,1,1,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,2,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,3] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [4,1,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [4,2] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [5,1] (by decide), card_yd _ _ 6 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [6] (by decide), card_yd _ _ 6 rfl⟩]
+  ⟨YoungDiagram.ofRowLens [1,1,1,1,1,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,1,1,1,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,2,1,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,2,2] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,1,1,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,2,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,3] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [4,1,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [4,2] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [5,1] (by decide), card_yd _ (by decide) 6 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [6] (by decide), card_yd _ (by decide) 6 rfl⟩]
 
 def pl6 : Fin 11 → List ℕ := ![[1,1,1,1,1,1], [2,1,1,1,1], [2,2,1,1], [2,2,2], [3,1,1,1],
   [3,2,1], [3,3], [4,1,1], [4,2], [5,1], [6]]
@@ -144,8 +144,8 @@ theorem example_2_8 : quotientPairing (e 2 * h 2) (e 2 * h 2) = -2 := by
 
 /-! ## §3.1, p. 24: Example 3.2 -/
 
-def shape32 : DegreeShape 5 := ⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩
-def shape221 : DegreeShape 5 := ⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩
+def shape32 : DegreeShape 5 := ⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩
+def shape221 : DegreeShape 5 := ⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩
 
 theorem shape32_rows : shape32.val.rowLens = [3,2] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)

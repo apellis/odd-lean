@@ -50,7 +50,7 @@ theorem output_shape (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
     (r,c) ≠ p ∧ (r,c) ∈ μ
   rw [old_row_length, YoungDiagram.mem_iff_lt_rowLen]
   by_cases hr : r = p.1
-  · simp only [hr, if_pos, Prod.ext_iff, true_and, ne_eq]
+  · simp only [hr, ite_eq_left, Prod.ext_iff, true_and, ne_eq]
     rw [corner_rowLen μ p hp]
     omega
   · simp [Prod.ext_iff,hr]
@@ -83,12 +83,12 @@ private theorem chosen_spec (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau �
     (hT : InAlphabet n T) (p : ℕ × ℕ) (hp : IsCorner μ p) :
     let q := chosen n μ T hT p hp
     reverseRows n (rows n T hT) p.1 p.2 = some q ∧
-      (∀ w ∈ q.output, w.Sorted (· ≤ ·)) ∧
+      (∀ w ∈ q.output, w.Pairwise (· ≤ ·)) ∧
       (∀ j : ℕ, ColumnBelow (q.output[j]?.getD []) (q.output[j+1]?.getD [])) ∧
       (∀ w ∈ q.output, w ≠ []) ∧
       (∀ j : ℕ, (q.output[j]?.getD []).length =
         if j = p.1 then p.2 else ((rows n T hT)[j]?.getD []).length) ∧
-      q.columns.length = p.1+1 ∧ q.columns.Sorted (· ≥ ·) ∧
+      q.columns.length = p.1+1 ∧ q.columns.Pairwise (· ≥ ·) ∧
       q.columns.getLast? = some p.2 ∧ q.output.drop (p.1+1) = (rows n T hT).drop (p.1+1) :=
   Classical.choose_spec (tableau_reverseRows_geometry n μ T hT p hp)
 
@@ -147,7 +147,7 @@ theorem remove_rowFinWord (q : ReverseRun n)
   rw [← readRows_rows, remove_rows n μ T hT p hp q hq]
 
 theorem remove_path : (remove n μ T hT p hp).columns.length = p.1+1 ∧
-    (remove n μ T hT p hp).columns.Sorted (· ≥ ·) ∧
+    (remove n μ T hT p hp).columns.Pairwise (· ≥ ·) ∧
     (remove n μ T hT p hp).columns.getLast? = some p.2 := by
   have hg := (chosen_spec n μ T hT p hp).2.2.2.2.2
   exact ⟨hg.1,hg.2.1,hg.2.2.1⟩

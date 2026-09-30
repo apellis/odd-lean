@@ -102,7 +102,7 @@ theorem mul_monomial {n : ℕ} (a b : Fin n → ℕ) (r s : ℤ) :
         = (monomial b s).sum (fun _ _ => (0 : SkewPolynomial n)) :=
           Finsupp.sum_congr
             (fun b' _ => monomial_coeff_zero_left a b' ((monomial b s) b'))
-      _ = 0 := Finsupp.sum_zero
+      _ = 0 := by simp [Finsupp.sum]
   show (Finsupp.single a r).sum (fun a' r' => (monomial b s).sum
       (fun b' s' => monomial (a' + b') (r' * s' * OddMath.skewSign a' b')))
       = monomial (a + b) (r * s * OddMath.skewSign a b)
@@ -128,7 +128,7 @@ theorem mul_zero {n : ℕ} (f : SkewPolynomial n) : mul f 0 = 0 := by
           (fun b s => monomial (a + b) (r * s * OddMath.skewSign a b)))
       = f.sum (fun _ _ => (0 : SkewPolynomial n)) :=
         Finsupp.sum_congr (fun _ _ => Finsupp.sum_zero_index)
-    _ = 0 := Finsupp.sum_zero
+    _ = 0 := by simp [Finsupp.sum]
 
 theorem add_mul {n : ℕ} (f₁ f₂ g : SkewPolynomial n) :
     mul (f₁ + f₂) g = mul f₁ g + mul f₂ g := by
@@ -139,7 +139,7 @@ theorem add_mul {n : ℕ} (f₁ f₂ g : SkewPolynomial n) :
           = g.sum (fun _ _ => (0 : SkewPolynomial n)) :=
             Finsupp.sum_congr
               (fun b _ => monomial_coeff_zero_left a b (g b))
-        _ = 0 := Finsupp.sum_zero
+        _ = 0 := by simp [Finsupp.sum]
   have hadd : ∀ (a : Fin n → ℕ) (r₁ r₂ : ℤ),
       g.sum (fun b s => monomial (a + b) ((r₁ + r₂) * s * OddMath.skewSign a b))
         = g.sum (fun b s => monomial (a + b) (r₁ * s * OddMath.skewSign a b))
@@ -305,7 +305,7 @@ theorem one_mul {n : ℕ} (f : SkewPolynomial n) : mul one f = f := by
         = f.sum (fun _ _ => (0 : SkewPolynomial n)) :=
           Finsupp.sum_congr
             (fun b _ => monomial_coeff_zero_left 0 b (f b))
-      _ = 0 := Finsupp.sum_zero
+      _ = 0 := by simp [Finsupp.sum]
   have hpt : ∀ (b : Fin n → ℕ) (s : ℤ),
       monomial ((0 : Fin n → ℕ) + b) (1 * s * OddMath.skewSign 0 b)
         = monomial b s := by
@@ -351,7 +351,7 @@ theorem mul_one {n : ℕ} (f : SkewPolynomial n) : mul f one = f := by
 /-- A unit vector sums to `1` over any finset containing its index. -/
 theorem sum_expSingle {n : ℕ} (j : Fin n) (s : Finset (Fin n)) :
     (∑ k ∈ s, expSingle j k) = if j ∈ s then 1 else 0 := by
-  simp only [expSingle, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp only [expSingle, Finset.sum_ite_eq]
 
 /-- Crossing count of two unit vectors: `1` iff the pair is out of order. -/
 theorem crossingCount_expSingle {n : ℕ} (i j : Fin n) :
@@ -363,7 +363,7 @@ theorem crossingCount_expSingle {n : ℕ} (i j : Fin n) :
     by_cases h : i = i'
     · subst h
       simp
-    · rw [if_neg h, if_neg h]
+    · rw [ite_eq_right h, ite_eq_right h]
       simp
   simp only [OddMath.crossingCount, ← Finset.mul_sum, sum_expSingle,
     Finset.mem_filter, Finset.mem_univ, true_and]
@@ -395,20 +395,20 @@ theorem generator_anticommute {n : ℕ} (i j : Fin n) (h : i ≠ j) :
     cases lt_or_gt_of_ne h with
     | inl h_ij =>
         have h1 : ¬ j < i := not_lt_of_gt h_ij
-        rw [if_neg h1, if_pos h_ij]
+        rw [ite_eq_right h1, ite_eq_left h_ij]
         exact _root_.one_mul _
     | inr h_ji =>
         have h2 : j < i := h_ji
         have h3 : ¬ i < j := not_lt_of_gt h_ji
-        rw [if_pos h2, if_neg h3]
+        rw [ite_eq_left h2, ite_eq_right h3]
         exact _root_.mul_one _
   have hsq : OddMath.skewSign (expSingle j) (expSingle i)
       * OddMath.skewSign (expSingle j) (expSingle i) = 1 := by
     rw [skewSign_expSingle]
     by_cases hlt : i < j
-    · rw [if_pos hlt]
+    · rw [ite_eq_left hlt]
       decide
-    · rw [if_neg hlt]
+    · rw [ite_eq_right hlt]
       exact _root_.mul_one _
   have hsign : OddMath.skewSign (expSingle i) (expSingle j)
       = -OddMath.skewSign (expSingle j) (expSingle i) := by

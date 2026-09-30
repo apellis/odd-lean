@@ -59,7 +59,7 @@ theorem word_insert (i : Fin n) (w : List (Fin n)) :
     by_cases h : i ≤ j
     · simp [List.orderedInsert, insertCrossings, h]
     · have hne : i ≠ j := fun e => h (e ▸ le_refl j)
-      simp only [List.orderedInsert, insertCrossings, if_neg h, word_cons]
+      simp only [List.orderedInsert, insertCrossings, ite_eq_right h, word_cons]
       rw [← mul_assoc, rel_anticommute n i j hne, neg_mul, mul_assoc, ih]
       rw [mul_smul_comm, pow_succ, mul_smul]
       simp only [neg_one_smul, smul_neg]
@@ -73,10 +73,11 @@ theorem word_sort (w : List (Fin n)) :
   | cons i w ih =>
     simp only [word_cons, List.insertionSort, sortCrossings]
     rw [ih, mul_smul_comm, word_insert, smul_smul, ← pow_add]
+    rfl
 
 /-- Canonical words are weakly increasing, retaining all repeated indices. -/
 theorem canonicalWord_sorted (a : Fin n → ℕ) :
-    (canonicalWord a).Sorted (· ≤ ·) := by
+    (canonicalWord a).Pairwise (· ≤ ·) := by
   apply List.pairwise_flatMap.mpr
   constructor
   · intro i _
@@ -105,13 +106,12 @@ private theorem count_repeated (a : Fin n → ℕ) (i : Fin n) (l : List (Fin n)
 an unspecified permutation with the same multiplicities. -/
 theorem sort_eq_canonicalWord (w : List (Fin n)) :
     w.insertionSort (· ≤ ·) = canonicalWord (fun i => w.count i) := by
-  apply List.eq_of_perm_of_sorted (r := (· ≤ ·))
-  · apply List.perm_iff_count.mpr
-    intro i
-    rw [canonicalWord_count]
-    exact (List.perm_insertionSort (· ≤ ·) w).count_eq i
-  · exact List.sorted_insertionSort (· ≤ ·) w
-  · exact canonicalWord_sorted _
+  apply List.Perm.eq_of_pairwise' (List.pairwise_insertionSort (· ≤ ·) w)
+    (canonicalWord_sorted _)
+  apply List.perm_iff_count.mpr
+  intro i
+  rw [canonicalWord_count]
+  exact (List.perm_insertionSort (· ≤ ·) w).count_eq i
 
 /-- Arbitrary-length normal ordering in the presented algebra. -/
 theorem word_normalize (w : List (Fin n)) :
@@ -162,7 +162,7 @@ theorem mem_orderedSpan (x : Presented n) : x ∈ orderedSpan n := by
     have h := (orderedSpan n).smul_mem r (word_mem_orderedSpan ([] : List (Fin n)))
     simpa [zsmul_eq_mul] using h
   | grade1 i =>
-    simpa only [word_cons, word_nil, mul_one] using word_mem_orderedSpan [i]
+    simpa only [word_cons, word_nil, mul_one, q] using word_mem_orderedSpan [i]
   | mul a b ha hb =>
     rw [map_mul]
     exact orderedSpan_mul_mem ha hb

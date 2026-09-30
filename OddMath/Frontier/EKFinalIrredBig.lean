@@ -163,7 +163,7 @@ theorem dotPack_eq (hs : List ℕ) (T : List (List ℕ)) (hlen : hs.length = T.l
     | cons t T =>
       simp only [List.length_cons, add_left_inj] at hlen
       rw [List.map_cons, dotPack, ih T hlen, List.length_cons, Finset.sum_range_succ', packN_eq]
-      simp [eval_finset_sum]
+      simp [eval_finsetSum]
       ring
 
 theorem mulmodK_spec {R : Type*} [CommRing R] (α : R) {p : ℕ} (hp : (p : R) = 0) (hp0 : 0 < p)
@@ -220,7 +220,7 @@ theorem mulmodK_spec {R : Type*} [CommRing R] (α : R) {p : ℕ} (hp : (p : R) =
       exact (hbnd _).1
   have hQc : ∀ j, Q.coeff j ≤ 2 * n * p ^ 2 * (1 + n * p) := by
     intro j
-    rw [hQ, coeff_add, finset_sum_coeff]
+    rw [hQ, coeff_add, finsetSum_coeff]
     have h1 : (ofListN ((List.range n).map Pm.coeff)).coeff j ≤ 2 * n * p ^ 2 := by
       rw [coeff_ofListN, List.getD_eq_getElem?_getD]
       cases h : ((List.range n).map Pm.coeff)[j]? with
@@ -244,7 +244,7 @@ theorem mulmodK_spec {R : Type*} [CommRing R] (α : R) {p : ℕ} (hp : (p : R) =
     omega
   have hQ0 : ∀ j, n ≤ j → Q.coeff j = 0 := by
     intro j hj
-    rw [hQ, coeff_add, finset_sum_coeff, coeff_ofListN_eq_zero _ _ (by simpa using hj), zero_add]
+    rw [hQ, coeff_add, finsetSum_coeff, coeff_ofListN_eq_zero _ _ (by simpa using hj), zero_add]
     apply Finset.sum_eq_zero
     intro i _
     rw [coeff_C_mul, coeff_ofListN_eq_zero _ _ (le_trans (hTget i).2 hj), mul_zero]
@@ -355,16 +355,16 @@ theorem powBits_spec (a : List ℕ) (ha : GoodR p n a) (bits : List Bool) :
     · subst hb
       obtain ⟨hm, hmg⟩ := mulmodK_good α hp hp0 hn T hTl hT hTe hBw hsqg ha
       obtain ⟨hv, hg⟩ := ih _ hmg
-      simp only [powBits, if_true] at hv hg ⊢
+      simp only [powBits, ite_true] at hv hg ⊢
       refine ⟨?_, hg⟩
-      rw [hv, hm, hsq, bitsNum, if_pos rfl, List.length_cons, pow_succ, pow_mul, pow_add]
+      rw [hv, hm, hsq, bitsNum, ite_eq_left rfl, List.length_cons, pow_succ, pow_mul, pow_add]
       ring
     · simp only [Bool.not_eq_true] at hb
       subst hb
       obtain ⟨hv, hg⟩ := ih _ hsqg
-      simp only [powBits, Bool.false_eq_true, if_false] at hv hg ⊢
+      simp only [powBits, Bool.false_eq_true, ite_false] at hv hg ⊢
       refine ⟨?_, hg⟩
-      rw [hv, hsq, bitsNum, if_neg (by simp), zero_add, List.length_cons, pow_succ, pow_mul]
+      rw [hv, hsq, bitsNum, ite_eq_right (by simp), zero_add, List.length_cons, pow_succ, pow_mul]
       ring
 
 omit hp hp0 hTl hT hTe hBw in
@@ -398,7 +398,7 @@ theorem chkK_spec (hp1 : 1 < p) (hn2 : 2 ≤ n) (bits : List Bool) (hbits : bits
         · rw [hpg.1]; simp; omega
       have := (mulmodK_good α hp hp0 hn T hTl hT hTe hBw hsub ⟨hwl, hwe⟩).1
       rw [hw, evN_oneP, subXK, ← subXP, evN_subXP α hp (by omega), hs'] at this
-      exact isUnit_of_mul_eq_one _ _ this.symm
+      exact IsUnit.of_mul_eq_one _ this.symm
     | succ i =>
       have := ih (powBits p n (T.map packN) s bits (oneP n)) (j + 1) hs' hpg hrest i
         (by simpa using hi)

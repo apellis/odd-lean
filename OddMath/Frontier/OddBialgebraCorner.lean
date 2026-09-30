@@ -89,7 +89,7 @@ theorem mvn_conj {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq ι] {s :
   · simp only [Matrix.mul_assoc, k1, hEE]
   · simp only [Matrix.mul_assoc, k2]
   · simp only [Matrix.mul_assoc, k1', k2]
-  · simp only [Matrix.mul_assoc, k1, k2, hEE]
+  · simp only [Matrix.mul_assoc, k1, hEE]
 
 end Conj
 
@@ -220,7 +220,7 @@ theorem colS_mul_mul_rowS {n : ℕ} (E : Matrix (Fin n) (Fin n) R) :
     colS S n * E * rowS S n = (cj he S E).map (cval he) := by
   ext ⟨k, i⟩ ⟨l, j⟩
   simp only [mul_apply, colS, rowS, map_apply, cval_apply, cj_val, ite_mul, zero_mul, mul_ite,
-    mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_ite_eq']
+    mul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true, Finset.sum_ite_eq']
 
 omit [SetLike.GradedMonoid A] [Fact (e ∈ A 0)] hlam in
 theorem isHom_rowS {n : ℕ} (s : Fin n → ℤ) :
@@ -274,7 +274,7 @@ theorem rowC_mul_colC (n : ℕ) : rowC he S n * colC he S n = 1 := by
   rw [Finset.sum_eq_single k (fun b _ hb => by simp [Ne.symm hb]) (by simp)]
   by_cases h : k = l
   · subst h
-    simp only [if_true, cval_apply, cval_mul, cval_one]
+    simp only [ite_true, cval_apply, cval_mul, cval_one]
     rw [show ∑ j, e * S.σ j * (S.lam j * e) = e * (∑ j, S.σ j * S.lam j) * e by
       rw [Finset.mul_sum, Finset.sum_mul]; simp only [mul_assoc], S.sum_eq, mul_one, he.eq]
   · simp [h]
@@ -285,7 +285,7 @@ theorem colC_mul_mul_rowC {n : ℕ} (F : Matrix (Fin n) (Fin n) he.Corner) :
   ext ⟨k, i⟩ ⟨l, j⟩
   apply Subtype.ext
   simp only [mul_apply, colC, rowC, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq,
-    Finset.mem_univ, if_true, Finset.sum_ite_eq', cj_val, map_apply, cval_apply, cval_mul]
+    Finset.mem_univ, ite_true, Finset.sum_ite_eq', cj_val, map_apply, cval_apply, cval_mul]
   simp only [mul_assoc]
   rw [← mul_assoc e (F k l).1, corner_left, ← mul_assoc (F k l).1 e, corner_right]
 
@@ -379,7 +379,6 @@ def K0.cornerEquiv (S : Categorification.Splitting (1 : R) e I) {dσ : I → ℤ
         simp only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, E]
         rw [K0.shift_of]
         erw [GrothendieckGroup.mapEquiv_of, GrothendieckGroup.mapEquiv_of]
-        exact K0.shift_of k (fromCorner he P) |>.symm
     exact DFunLike.congr_fun this x)
 
 variable {he} in

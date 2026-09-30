@@ -193,7 +193,7 @@ noncomputable def Phi (n : ℕ) :
 /-- L3d: `Φ` sends each quotient generator to the model generator. -/
 theorem Phi_q (n : ℕ) (i : Fin n) :
     Phi n (OddMath.PbwL2.q n i) = OddMath.SkewPolynomial.generator i := by
-  simp only [Phi, OddMath.PbwL2.q, Ideal.Quotient.lift_mk]
+  simp only [Phi, OddMath.PbwL2.q]
   show ⇑(evalAlg n) _ = _
   exact evalAlg_ι n i
 

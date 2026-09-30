@@ -60,7 +60,7 @@ theorem freeZero_leftInv :
       ⇑(FreeAlgebra.lift ℤ (fun i : Fin 0 => i.elim0)) := by
   intro x
   induction x using FreeAlgebra.induction with
-  | grade0 r => simp [AlgHom.commutes]
+  | grade0 r => simp
   | grade1 i => exact i.elim0
   | mul a b ha hb => rw [map_mul, map_mul, ha, hb]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
@@ -70,7 +70,7 @@ theorem freeZero_rightInv :
     Function.RightInverse (algebraMap ℤ (FreeAlgebra ℤ (Fin 0)))
       ⇑(FreeAlgebra.lift ℤ (fun i : Fin 0 => i.elim0)) := by
   intro r
-  simp [AlgHom.commutes]
+  simp
 
 /-- N = 0: the free algebra on no generators is the base ring as algebras. -/
 noncomputable def freeZeroAlgEquiv : FreeAlgebra ℤ (Fin 0) ≃ₐ[ℤ] ℤ :=
@@ -89,17 +89,17 @@ theorem presented_zero_scalar (a : OddMath.PbwL2.Presented 0) :
 /-- N = 0: the presented module has rank one (PBW fiber over the empty word). -/
 theorem finrank_presented_zero :
     Module.finrank ℤ (OddMath.PbwL2.Presented 0) = 1 := by
-  haveI : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
-  haveI := Unique.fintype (α := Fin 0 → ℕ)
+  have : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
+  have := Unique.fintype (α := Fin 0 → ℕ)
   rw [Module.finrank_eq_card_basis
     (OddMath.Frontier.PbwEquivalence.orderedBasis 0), Fintype.card_unique]
 
 /-- N = 0: endomorphisms form a rank-one module (1x1 matrices over scalars). -/
 theorem finrank_end_zero :
     Module.finrank ℤ (Module.End ℤ (OddMath.PbwL2.Presented 0)) = 1 := by
-  haveI : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
-  haveI := Unique.fintype (α := Fin 0 → ℕ)
-  haveI := Classical.decEq (Fin 0 → ℕ)
+  have : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
+  have := Unique.fintype (α := Fin 0 → ℕ)
+  have := Classical.decEq (Fin 0 → ℕ)
   have h1 := LinearEquiv.finrank_eq (LinearMap.toMatrix
     (OddMath.Frontier.PbwEquivalence.orderedBasis 0)
     (OddMath.Frontier.PbwEquivalence.orderedBasis 0))
@@ -141,8 +141,7 @@ theorem polynomial_piece_zero {d : ℤ} (hd : d ≠ 0) :
 theorem polynomial_piece_zero_top :
     OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 0 0 = ⊤ := by
   rw [eq_top_iff]
-  intro f _
-  intro a ha
+  intro f _ a ha
   exact absurd (OddMath.Frontier.NilHeckeSmallRankControls.pdegree_zero_all a) ha
 
 /-- N = 0: coordinates read through the inherited PBW basis. -/
@@ -187,7 +186,7 @@ noncomputable def presented_one_equiv_free :
 theorem relPairs_one_vacuous (p : Fin 1 × Fin 1) :
     p ∉ OddMath.PbwL2.relPairs 1 := by
   rw [OddMath.Frontier.NilHeckeSmallRankControls.relPairs_empty_one]
-  exact Finset.not_mem_empty p
+  exact Finset.notMem_empty p
 
 /-- N = 1: the PBW comparison map is bijective (entry point to the inherited
 equivalence; consumed by the degree correspondence below). -/
@@ -203,7 +202,7 @@ theorem coord_read_one (x : OddMath.PbwL2.Presented 1) :
 /-- N = 1: polynomial degree counts the single generator twice. -/
 theorem pdegree_one (a : Fin 1 → ℕ) :
     OddMath.Frontier.NilHeckeGradedEnd.pdegree a = 2 * ((a 0 : ℕ) : ℤ) := by
-  simp [OddMath.Frontier.NilHeckeGradedEnd.pdegree, Fin.sum_univ_one]
+  simp [OddMath.Frontier.NilHeckeGradedEnd.pdegree]
 
 /-- N = 1: the degree-`d` fiber over the single generator. -/
 def fiber (d : ℤ) : Type :=
@@ -222,7 +221,7 @@ theorem fiber_odd_empty {d : ℤ} (hd : d % 2 ≠ 0) : IsEmpty (fiber d) := by
   omega
 
 /-- N = 1: even-degree fibers hold exactly the expected monomial. -/
-def fiber_even_unique (k : ℕ) : Unique (fiber (2 * (k : ℤ))) := by
+@[instance_reducible] def fiber_even_unique (k : ℕ) : Unique (fiber (2 * (k : ℤ))) := by
   refine ⟨⟨fun _ => k, ?_⟩, fun ⟨a, ha⟩ => ?_⟩
   · simp [pdegree_one]
   · apply Subtype.ext

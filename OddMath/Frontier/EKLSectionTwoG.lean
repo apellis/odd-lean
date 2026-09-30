@@ -71,8 +71,8 @@ theorem reverse_eWord (w : List ℕ) :
   induction w with
   | nil => simp
   | cons a w ih => simp only [List.map_cons, List.prod_cons, EKAutomorphisms.reverse_mul, reverse_e,
-      ih, List.reverse_cons, List.map_append, List.prod_append, List.map_singleton,
-      List.prod_singleton, List.map_nil, List.prod_nil, mul_one]
+      ih, List.reverse_cons, List.map_append, List.prod_append,
+      List.map_nil, List.prod_nil, mul_one]
 
 /-- `R` commutes with EK's involution `ψ₁ψ₂`. -/
 theorem reverse_psi12 (x : Q) : reverseLinear (psi12 x) = psi12 (reverseLinear x) := by
@@ -398,7 +398,7 @@ on EK's Schur functions: `R(s_λ) = η_λ s_λ`. -/
 theorem reverse_sK (lam : YoungDiagram) : reverseLinear (sK lam) = eta lam • sK lam := by
   have hxd := EKAutomorphisms.reverse_degree (sK_mem_degree lam)
   have hexp := congrArg Subtype.val (EKLemma311Cond.expansion lam.card (schurOrthonormal _) ⟨_, hxd⟩)
-  simp only [Subtype.coe_mk] at hexp
+  change reverseLinear (sK lam) = _ at hexp
   rw [hexp, Submodule.coe_sum]
   simp only [Submodule.coe_smul, schur_eq_sK]
   refine (Finset.sum_eq_single_of_mem (⟨lam, rfl⟩ : DegreeShape lam.card)
@@ -494,7 +494,7 @@ theorem eta_row (k : ℕ) : eta (column k).transpose = 1 := by
   have hlen : (column k).transpose.rowLens.length ≤ 1 := by
     rw [YoungDiagram.length_rowLens, YoungDiagram.colLen_transpose]
     by_contra h
-    push_neg at h
+    push Not at h
     have hm : (0, 1) ∈ column k := YoungDiagram.mem_iff_lt_rowLen.mpr h
     exact one_ne_zero ((OddLRVerticalPieri.mem_column k (0, 1)).mp hm).2
   unfold eta
@@ -512,7 +512,7 @@ theorem left_vertical_pieri_Q (α : YoungDiagram) (k : ℕ) :
     eta α • (sK (column k) * sK α) =
       ∑ mu : DegreeShape (α.card + k), if Vertical α mu.val then
         ((-1 : ℤ) ^ stripBelow α mu.val * eta mu.val) • sK mu.val else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have hv := congrArg reverseLinear (vertical_pieri_Q α k)
   rw [EKAutomorphisms.reverse_mul, reverse_sK, reverse_sK, eta_column, one_smul, map_sum,
     mul_smul_comm] at hv
@@ -531,7 +531,7 @@ theorem left_horizontal_pieri_Q (α : YoungDiagram) (k : ℕ) :
       ∑ mu : DegreeShape (α.card + k), if Horizontal α mu.val then
         ((-1 : ℤ) ^ ell mu.val * (-1 : ℤ) ^ stripRight α mu.val * eta mu.val) • sK mu.val
       else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have hv := congrArg reverseLinear (horizontal_pieri_Q α k)
   rw [map_zsmul, EKAutomorphisms.reverse_mul, reverse_sK, reverse_sK, eta_row, one_smul,
     map_sum, mul_smul_comm, smul_smul] at hv
@@ -548,7 +548,7 @@ theorem left_vertical_pieri (n : ℕ) (α : YoungDiagram) (k : ℕ) :
     eta α • (schurA n (column k) * schurA n α) =
       ∑ mu : DegreeShape (α.card + k), if Vertical α mu.val then
         ((-1 : ℤ) ^ stripBelow α mu.val * eta mu.val) • schurA n mu.val else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have h := congrArg (OddLREKIdentification.piN (n+2)) (left_vertical_pieri_Q α k)
   simp only [map_zsmul, map_mul, map_sum, piN_sK_eq_schurA] at h
   rw [h]
@@ -564,7 +564,7 @@ theorem left_horizontal_pieri (n : ℕ) (α : YoungDiagram) (k : ℕ) :
       ∑ mu : DegreeShape (α.card + k), if Horizontal α mu.val then
         ((-1 : ℤ) ^ ell mu.val * (-1 : ℤ) ^ stripRight α mu.val * eta mu.val) • schurA n mu.val
       else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have h := congrArg (OddLREKIdentification.piN (n+2)) (left_horizontal_pieri_Q α k)
   simp only [map_zsmul, map_mul, map_sum, piN_sK_eq_schurA] at h
   rw [h]

@@ -18,9 +18,9 @@ example (n : ℕ) (d : ℤ) : ONC.degreePiece n d = Submodule.span ℤ
 example (n : ℕ) (d : ℤ) : degreePiece n d = leftPiece n d := degreePiece_eq_leftPiece n d
 example (n : ℕ) (d : ℤ) : degreePiece n d = rightPiece n d := degreePiece_eq_rightPiece n d
 example (n : ℕ) (d : ℤ) : ONC.degreePiece n d = ONC.basisPiece n d := ONC.degreePiece_eq_basisPiece n d
-example (n : ℕ) (d : ℤ) : Basis (DegreeIndex n d) ℤ (degreePiece n d) := degreeLeftBasis n d
-example (n : ℕ) (d : ℤ) : Basis (DegreeIndex n d) ℤ (degreePiece n d) := degreeRightBasis n d
-example (n : ℕ) (d : ℤ) : Basis (ONC.DegreeIndex n d) ℤ (ONC.degreePiece n d) := ONC.degreeBasis n d
+example (n : ℕ) (d : ℤ) : Module.Basis (DegreeIndex n d) ℤ (degreePiece n d) := degreeLeftBasis n d
+example (n : ℕ) (d : ℤ) : Module.Basis (DegreeIndex n d) ℤ (degreePiece n d) := degreeRightBasis n d
+example (n : ℕ) (d : ℤ) : Module.Basis (ONC.DegreeIndex n d) ℤ (ONC.degreePiece n d) := ONC.degreeBasis n d
 example (n : ℕ) (d : ℤ) (w : ONC.DegreeIndex n d) :
     (ONC.degreeBasis n d w : ONC.Q n)=NilCoxeterPresentation.dividedElement w.val := ONC.degreeBasis_apply d w
 example (n : ℕ) (d : ℤ) : Module.Free ℤ (degreePiece n d) := inferInstance
@@ -86,8 +86,8 @@ run_cmd do
       ``NilHeckeGradingControls.arbitrary_ONC_product] do
     unless owned.any (fun (name,_) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compilerName := (name.toString.splitOn ".").any (fun s =>

@@ -34,29 +34,29 @@ universe u v
 section MatrixMorita
 variable {R : Type u} [Ring R] {ι : Type} [Fintype ι] [DecidableEq ι] (i₀ : ι)
 
-local notation "E" => Matrix.stdBasisMatrix
+local notation "E" => Matrix.single
 
 omit [Fintype ι] in
 theorem E_apply (i j : ι) (r : R) (a b : ι) : E i j r a b = if i = a ∧ j = b then r else 0 := rfl
 
 theorem E_mul_E (i j k : ι) (r s : R) : E i j r * E j k s = E i k (r * s) :=
-  StdBasisMatrix.mul_same (c := r) i j k s
+  Matrix.single_mul_single_same (c := r) i j k s
 
 theorem E_mul_E_of_ne {i j j' k : ι} (h : j ≠ j') (r s : R) : E i j r * E j' k s = 0 :=
-  StdBasisMatrix.mul_of_ne (c := r) i j j' h s
+  Matrix.single_mul_single_of_ne (c := r) i j j' h s
 
 theorem sum_E_diag : ∑ j : ι, E j j (1 : R) = 1 := by
   ext a b
-  simp only [Matrix.sum_apply, stdBasisMatrix, Matrix.of_apply, Matrix.one_apply]
+  simp only [Matrix.sum_apply, single, Matrix.of_apply, Matrix.one_apply]
   by_cases h : a = b
   · subst h
     simp
-  · rw [if_neg h]
-    exact Finset.sum_eq_zero fun j _ => if_neg fun e => h (e.1.symm.trans e.2)
+  · rw [ite_eq_right h]
+    exact Finset.sum_eq_zero fun j _ => ite_eq_right fun e => h (e.1.symm.trans e.2)
 
 theorem E_row_mul (j : ι) (A : Matrix ι ι R) : E i₀ j 1 * A = ∑ k, E i₀ k (A j k) := by
   ext a b
-  simp only [Matrix.mul_apply, Matrix.sum_apply, stdBasisMatrix, Matrix.of_apply]
+  simp only [Matrix.mul_apply, Matrix.sum_apply, single, Matrix.of_apply]
   by_cases ha : i₀ = a
   · subst ha
     simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
@@ -82,22 +82,22 @@ variable {R}
 
 theorem E_smul_mem (r : R) (m : M) : E i₀ i₀ r • m ∈ corner R i₀ M := by
   change E i₀ i₀ (1 : R) • (E i₀ i₀ r • m) = E i₀ i₀ r • m
-  rw [← MulAction.mul_smul, E_mul_E, one_mul]
+  rw [← mul_smul, E_mul_E, one_mul]
 
 instance cornerModule : Module R (corner R i₀ M) where
   smul r m := ⟨E i₀ i₀ r • (m : M), E_smul_mem i₀ M r m⟩
   one_smul m := Subtype.ext m.2
   mul_smul r s m := Subtype.ext (by
     change E i₀ i₀ (r * s) • (m : M) = E i₀ i₀ r • E i₀ i₀ s • (m : M)
-    rw [← MulAction.mul_smul, E_mul_E])
+    rw [← mul_smul, E_mul_E])
   smul_zero r := Subtype.ext (smul_zero _)
   smul_add r m m' := Subtype.ext (smul_add _ _ _)
   add_smul r s m := Subtype.ext (by
     change E i₀ i₀ (r + s) • (m : M) = E i₀ i₀ r • (m : M) + E i₀ i₀ s • (m : M)
-    rw [← add_smul, stdBasisMatrix_add])
+    rw [← add_smul, single_add])
   zero_smul m := Subtype.ext (by
     change E i₀ i₀ (0 : R) • (m : M) = 0
-    rw [stdBasisMatrix_zero, zero_smul])
+    rw [single_zero, zero_smul])
 
 theorem corner_smul_val (r : R) (m : corner R i₀ M) : ((r • m : corner R i₀ M) : M) = E i₀ i₀ r • (m : M) :=
   rfl
@@ -118,7 +118,7 @@ instance colModule (N : Type v) [AddCommGroup N] [Module R N] : Module (Matrix �
     simp [Matrix.one_apply]
   mul_smul A B v := funext fun i => by
     change ∑ j, (A * B) i j • (v : ι → N) j = ∑ k, A i k • ∑ j, B k j • (v : ι → N) j
-    simp only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, MulAction.mul_smul]
+    simp only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]
     exact Finset.sum_comm
   smul_zero A := funext fun i => by
     change ∑ j, A i j • (0 : N) = 0
@@ -171,26 +171,26 @@ variable (M : Type v) [AddCommGroup M] [Module (Matrix ι ι R) M]
 def unitEquiv : M ≃ₗ[Matrix ι ι R] Col ι (corner R i₀ M) where
   toFun m := fun j => ⟨E i₀ j (1 : R) • m, by
     change E i₀ i₀ (1 : R) • E i₀ j (1 : R) • m = E i₀ j (1 : R) • m
-    rw [← MulAction.mul_smul, E_mul_E, one_mul]⟩
+    rw [← mul_smul, E_mul_E, one_mul]⟩
   map_add' m m' := funext fun j => Subtype.ext (smul_add _ _ _)
   map_smul' A m := funext fun j => Subtype.ext (by
     change E i₀ j (1 : R) • A • m = ((∑ k, A j k • _ : corner R i₀ M) : M)
-    rw [AddSubmonoidClass.coe_finset_sum]
-    simp only [corner_smul_val, ← MulAction.mul_smul, E_mul_E, one_mul, mul_one, RingHom.id_apply]
+    rw [AddSubmonoidClass.coe_finsetSum]
+    simp only [corner_smul_val, ← mul_smul, E_mul_E, mul_one]
     rw [← Finset.sum_smul, ← E_row_mul])
   invFun v := ∑ j, E j i₀ (1 : R) • ((v : ι → corner R i₀ M) j : M)
   left_inv m := by
     change ∑ j, E j i₀ (1 : R) • E i₀ j (1 : R) • m = m
-    simp only [← MulAction.mul_smul, E_mul_E, one_mul]
+    simp only [← mul_smul, E_mul_E, one_mul]
     rw [← Finset.sum_smul, sum_E_diag, one_smul]
   right_inv v := funext fun k => Subtype.ext (by
     change E i₀ k (1 : R) • ∑ j, E j i₀ (1 : R) • ((v : ι → corner R i₀ M) j : M) =
       ((v : ι → corner R i₀ M) k : M)
     rw [Finset.smul_sum, Finset.sum_eq_single k]
-    · rw [← MulAction.mul_smul, E_mul_E, one_mul]
+    · rw [← mul_smul, E_mul_E, one_mul]
       exact ((v : ι → corner R i₀ M) k).2
     · intro j _ hj
-      rw [← MulAction.mul_smul, E_mul_E_of_ne (Ne.symm hj), zero_smul]
+      rw [← mul_smul, E_mul_E_of_ne (Ne.symm hj), zero_smul]
     · simp)
 
 end Unit
@@ -205,9 +205,9 @@ def counitEquiv : corner R i₀ (Col ι N) ≃ₗ[R] N where
   map_smul' r v := by
     change (∑ j, E i₀ i₀ r i₀ j • (v.1 : ι → N) j) = r • (v.1 : ι → N) i₀
     rw [Finset.sum_eq_single i₀]
-    · rw [StdBasisMatrix.apply_same]
+    · rw [Matrix.single_apply_same]
     · intro j _ hj
-      rw [E_apply, if_neg (fun e : i₀ = i₀ ∧ i₀ = j => hj e.2.symm), zero_smul]
+      rw [E_apply, ite_eq_right (fun e : i₀ = i₀ ∧ i₀ = j => hj e.2.symm), zero_smul]
     · simp
   invFun n := ⟨(Pi.single i₀ n : ι → N), by
     change (fun i => ∑ j, E i₀ i₀ (1 : R) i j • (Pi.single i₀ n : ι → N) j) = Pi.single i₀ n
@@ -215,7 +215,7 @@ def counitEquiv : corner R i₀ (Col ι N) ≃ₗ[R] N where
     rw [Finset.sum_eq_single i₀]
     · by_cases hi : i = i₀
       · subst hi; simp
-      · rw [E_apply, if_neg (fun e : i₀ = i ∧ i₀ = i₀ => hi e.1.symm), zero_smul,
+      · rw [E_apply, ite_eq_right (fun e : i₀ = i ∧ i₀ = i₀ => hi e.1.symm), zero_smul,
           Pi.single_eq_of_ne hi]
     · intro j _ hj
       rw [Pi.single_eq_of_ne hj, smul_zero]
@@ -229,7 +229,7 @@ def counitEquiv : corner R i₀ (Col ι N) ≃ₗ[R] N where
     · subst hi; simp
     · rw [Pi.single_eq_of_ne hi, ← congrFun hv i]
       refine (Finset.sum_eq_zero fun j _ => ?_).symm
-      rw [E_apply, if_neg (fun e : i₀ = i ∧ i₀ = j => hi e.1.symm), zero_smul])
+      rw [E_apply, ite_eq_right (fun e : i₀ = i ∧ i₀ = j => hi e.1.symm), zero_smul])
   right_inv n := by simp
 
 end Counit
@@ -259,7 +259,7 @@ def matrixMorita : MoritaEquivalence ℤ (Matrix ι ι R) R where
       have hm : E i₀ i₀ (1 : R) • f.hom m.1 = f.hom m.1 := by
         rw [← f.hom.map_smul]; exact congrArg f.hom m.2
       conv_lhs => rw [← hm]
-      rw [← MulAction.mul_smul]
+      rw [← mul_smul]
       congr 1
       rw [Matrix.algebraMap_eq_diagonal]
       ext a b

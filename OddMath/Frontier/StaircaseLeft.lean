@@ -143,11 +143,11 @@ theorem reverse_elementary (N k : ℕ) :
   apply Finset.sum_congr rfl
   intro f _
   by_cases hf : StrictMono f
-  · rw [if_pos hf]
+  · rw [ite_eq_left hf]
     have hn : (List.ofFn f).Nodup := List.nodup_ofFn.mpr hf.injective
     have hh := reverse_tilde_word (List.ofFn f) hn
     simpa only [List.map_ofFn, Function.comp_def, List.length_ofFn] using hh
-  · simp only [if_neg hf, map_zero, smul_zero]
+  · simp only [ite_eq_right hf, map_zero, smul_zero]
 
 /-- Preservation is proved from elementary generators, not from left freeness. -/
 theorem reverse_mem_E {N : ℕ} (f : SkewPolynomial N) (hf : f ∈ E N) :

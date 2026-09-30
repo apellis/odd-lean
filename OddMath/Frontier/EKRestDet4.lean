@@ -85,12 +85,12 @@ theorem mobU_mul_zeta (n : ℕ) : mobU n * zeta n = 1 := by
   rw [Finset.sum_congr rfl (fun T _ => e T), h, Matrix.one_apply]
   by_cases hRS : R = S
   · subst hRS; simp
-  · rw [if_neg (fun h => hRS (Subtype.ext h)), if_neg (Ne.symm hRS)]
+  · rw [ite_eq_right (fun h => hRS (Subtype.ext h)), ite_eq_right (Ne.symm hRS)]
 
 theorem det_mobU_sq (n : ℕ) : (mobU n).det ^ 2 = 1 := by
   have h := congrArg Matrix.det (mobU_mul_zeta n)
   rw [Matrix.det_mul, Matrix.det_one] at h
-  rcases Int.isUnit_iff.mp (isUnit_of_mul_eq_one _ _ h) with h1 | h1 <;> rw [h1] <;> norm_num
+  rcases Int.isUnit_iff.mp (IsUnit.of_mul_eq_one _ h) with h1 | h1 <;> rw [h1] <;> norm_num
 
 theorem gramHt_eq (n : ℕ) :
     gramHt q n = (mobU n).map (Int.cast : ℤ → k) * gramH q n *

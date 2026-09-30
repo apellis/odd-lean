@@ -70,13 +70,13 @@ theorem sign_revPerm_four : Equiv.Perm.sign (revPerm 4) = 1 := by
   rw [sign_revPerm_of_list (n := 4) [[1,1,1,1], [1,1,2], [1,2,1], [2,1,1], [2,2], [1,3], [3,1], [4]]
     (by decide) (by decide) (by decide) (by decide)
     (Equiv.swap (1 : Fin 8) 3 * Equiv.swap 5 6) (by decide)]
-  simp [Equiv.Perm.sign_mul, Equiv.Perm.sign_swap]
+  simp [Equiv.Perm.sign_mul]
 
 theorem sign_revPerm_five : Equiv.Perm.sign (revPerm 5) = 1 := by
   rw [sign_revPerm_of_list (n := 5) comps5 (by decide) (by decide) (by decide) (by decide)
     (Equiv.swap (1 : Fin 16) 4 * Equiv.swap 2 3 * Equiv.swap 5 7 * Equiv.swap 8 10 *
       Equiv.swap 11 12 * Equiv.swap 13 14) (by decide)]
-  simp [Equiv.Perm.sign_mul, Equiv.Perm.sign_swap]
+  simp [Equiv.Perm.sign_mul]
 
 /-- EK §5.2 p.40, "this determinant is monic in `q`": true for `n = 1, 2, 4, 5`; false for
 `n = 3` (`gram_det_three`). -/

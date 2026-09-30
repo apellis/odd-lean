@@ -22,7 +22,7 @@ private theorem colorEquiv_h (c : Bool) (n : ℕ) :
 private theorem colorEquiv_word (c : Bool) (w : W) :
     colorEquiv c (wordBasis w) = word (parts w) (fun _ => c) := by
   rw [← vWord_parts w]
-  simp only [vWord, hWord, map_list_prod, List.map_map, List.map_ofFn,
+  simp only [vWord, hWord, map_list_prod, List.map_ofFn,
     Function.comp_def, colorEquiv_h, word]
 
 /-- Arbitrary monochromatic words of either color separate the actual Q.
@@ -43,7 +43,7 @@ theorem quotient_ext_words (c : Bool) (x y : Q)
   | hb w r =>
     simp only [map_smul, colorEquiv_word, map_zsmul]
     have he := hh _ (parts w)
-    simp only [map_sub, LinearMap.sub_apply, LinearMap.smul_apply, he, sub_self, smul_zero]
+    simp only [map_sub, LinearMap.sub_apply, he, sub_self, smul_zero]
 
 /-- Adjointness against an arbitrary residual element, with arbitrary platform
 colors. This is the unspecialized recurrence used by the source's cancellation. -/
@@ -101,7 +101,7 @@ theorem pairing_same_strip_succ (c : Bool) (a b k : ℕ) (x : A) :
       (if k = 2 then (-1 : ℤ)^a * EKPairingAdjoint.pairing (gen c a*gen c b) x else 0) := by
   rw [pairing_two_strip]
   simp only [cell_opposite]
-  simp [Fin.sum_univ_succ, Nat.add_sub_cancel]
+  simp [Fin.sum_univ_succ]
   split_ifs <;> ring
 
 theorem pairing_single_strip_succ (c : Bool) (a k : ℕ) (x : A) :
@@ -125,7 +125,7 @@ private theorem pairing_two_one (c : Bool) (a b : ℕ) :
   · have ha : a=0 := by omega
     have hb : b=0 := by omega
     simp [ha,hb]
-  · simp only [if_neg hab, if_neg (Ne.symm hab)]
+  · simp only [ite_eq_right hab, ite_eq_right (Ne.symm hab)]
 
 private theorem sign_same {a b : ℕ} (h : Even (a+b)) :
     (-1 : ℤ)^a = (-1 : ℤ)^b := by
@@ -171,7 +171,7 @@ theorem pairing_same_relations (c : Bool) {r : ℕ} (α : Fin r → ℕ) :
         change 2 * EKPairingAdjoint.pairing (gen c (b+1+1)) _ = _
         rw [pairing_single_strip_succ, pairing_same_strip_succ c 0 b,
           pairing_same_strip_succ c b 0]
-        simp only [gen_zero, one_mul, mul_one, pow_zero, pow_one, sb', sb]
+        simp only [gen_zero, one_mul, mul_one, pow_zero, sb', sb]
         split_ifs <;> dsimp [x] at * <;> omega
     constructor
     · intro a b hab
@@ -262,7 +262,7 @@ theorem elementary_odd (a b : ℕ) (hb : 0 < b) (hab : Odd (a+b)) :
 theorem same_one_even (c : Bool) (k : ℕ) :
     pi (gen c 1)*pi (gen c (2*k)) + pi (gen c (2*k))*pi (gen c 1) =
       (2 : ℤ) • pi (gen c (2*k+1)) := by
-  have hh := same_odd_succ c 0 (2*k) (by simp [even_two_mul])
+  have hh := same_odd_succ c 0 (2*k) (by simp)
   simpa only [gen_zero, map_one, one_mul, mul_one, pow_zero, one_smul,
     Nat.zero_add, two_zsmul] using hh.symm
 
@@ -280,17 +280,17 @@ private theorem sum_fin_match (a k : ℕ) (f : ℕ → ℤ) :
       if k ≤ a then f k else 0 := by
   classical
   by_cases hk : k ≤ a
-  · rw [if_pos hk, Finset.sum_eq_single (⟨k, by omega⟩ : Fin (a+1))]
+  · rw [ite_eq_left hk, Finset.sum_eq_single (⟨k, by omega⟩ : Fin (a+1))]
     · simp
     · intro i _ hi
-      rw [if_neg]
+      rw [ite_eq_right]
       intro hh
       exact hi (Fin.ext hh.symm)
     · simp
-  · rw [if_neg hk]
+  · rw [ite_eq_right hk]
     apply Finset.sum_eq_zero
     intro i _
-    rw [if_neg]
+    rw [ite_eq_right]
     have := i.isLt
     omega
 
@@ -309,7 +309,7 @@ theorem pairing_he_strip (a b k : ℕ) (x : A) :
       (if k+1=i.val then EKPairingAdjoint.pairing (gen false (a-i.val)*gen true (b+1)) x else 0) +
       (if k=i.val then (-1 : ℤ)^(a-i.val)*
         EKPairingAdjoint.pairing (gen false (a-i.val)*gen true b) x else 0) := by
-    simp [Fin.sum_univ_succ, cell, Nat.add_sub_cancel, mul_ite, ite_mul]
+    simp [Fin.sum_univ_succ, cell, mul_ite, ite_mul]
   simp_rw [row]
   rw [Finset.sum_add_distrib,
     sum_fin_match a (k+1) (fun j => EKPairingAdjoint.pairing (gen false (a-j)*gen true (b+1)) x),
@@ -330,14 +330,14 @@ theorem pairing_eh_strip (a b k : ℕ) (x : A) :
         EKPairingAdjoint.pairing (gen true (b+1)*gen false (a-i.val)) x else 0) +
       (if k=i.val then (-1 : ℤ)^(i.val*b)*
         EKPairingAdjoint.pairing (gen true b*gen false (a-i.val)) x else 0) := by
-    simp [Fin.sum_univ_succ, cell, Nat.add_sub_cancel, mul_ite, ite_mul, Nat.add_comm]
+    simp [Fin.sum_univ_succ, cell, mul_ite, ite_mul, Nat.add_comm]
   simp_rw [row]
   rw [Finset.sum_add_distrib,
     sum_fin_match a (k+1) (fun j => (-1 : ℤ)^(j*(b+1))*EKPairingAdjoint.pairing (gen true (b+1)*gen false (a-j)) x),
     sum_fin_match a k (fun j => (-1 : ℤ)^(j*b)*EKPairingAdjoint.pairing (gen true b*gen false (a-j)) x)]
 
 private theorem gen_one_eq : gen true 1 = gen false 1 := by
-  simp [gen, elementary, inverseCoeff, ekSign, Fin.sum_univ_succ]
+  simp [gen, elementary, inverseCoeff, ekSign]
 
 private theorem pairing_same_odd_any (c : Bool) (a b : ℕ) (hab : Even (a+b)) (x : A) :
     EKPairingAdjoint.pairing (gen c a*gen c (b+1)) x +
@@ -361,7 +361,7 @@ private theorem pairing_two_one_colors (c d : Bool) (a b : ℕ) :
   · have ha : a=0 := by omega
     have hb : b=0 := by omega
     simp [ha,hb]
-  · simp only [if_neg hab, if_neg (Ne.symm hab)]
+  · simp only [ite_eq_right hab, ite_eq_right (Ne.symm hab)]
 
 theorem pairing_mixed_relations {r : ℕ} (α : Fin r → ℕ) :
     (∀ a b, Even (a+b) →
@@ -395,7 +395,7 @@ theorem pairing_mixed_relations {r : ℕ} (α : Fin r → ℕ) :
           · obtain ⟨u, rfl⟩ : ∃u, a=u+k+1 := ⟨a-(k+1), by omega⟩
             have hsub : u+k+1-(k+1)=u := by omega
             have hsub' : u+k+1-k=u+1 := by omega
-            simp only [if_pos hka, if_pos (show k ≤ u+k+1 by omega), hsub, hsub']
+            simp only [ite_eq_left hka, ite_eq_left (show k ≤ u+k+1 by omega), hsub, hsub']
             rcases Nat.even_or_odd k with hkE | hkO
             · have hp : Even (u+b) := by
                 rw [Nat.even_iff] at *; omega
@@ -409,14 +409,14 @@ theorem pairing_mixed_relations {r : ℕ} (α : Fin r → ℕ) :
               have h2 := he (u+1) b (by simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hp)
               have ss : (-1 : ℤ)^(u+1)=(-1 : ℤ)^b :=
                 sign_same (by simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hp)
-              simp only [pow_add, pow_mul, hkO.neg_one_pow, neg_one_sq, one_pow, pow_one] at *
+              simp only [pow_add, pow_mul, hkO.neg_one_pow, pow_one] at *
               rw [ss]
               rw [h1,h2]
               norm_num
           · by_cases hka' : k ≤ a
             · have ha : a=k := by omega
               subst a
-              simp only [if_neg hka, if_pos hka', Nat.sub_self, pow_zero, one_mul,
+              simp only [ite_eq_right hka, ite_eq_left hka', Nat.sub_self, pow_zero, one_mul,
                 gen_zero, mul_one, zero_add]
               have hs : (-1 : ℤ)^(k*b)=1 := by
                 have hh : Even k ∨ Even b := by simp only [Nat.even_iff] at *; omega
@@ -448,9 +448,9 @@ theorem pairing_mixed_relations {r : ℕ} (α : Fin r → ℕ) :
               have hsub' : u+k+1-k=u+1 := by omega
               have hsub'' : u+k+1+1-(k+1)=u+1 := by omega
               have hsub''' : u+k+1+1-k=u+1+1 := by omega
-              simp only [if_pos (show k+1 ≤ u+k+1 by omega),
-                if_pos (show k ≤ u+k+1 by omega), if_pos (show k+1 ≤ u+k+1+1 by omega),
-                if_pos (show k ≤ u+k+1+1 by omega), hsub,hsub',hsub'',hsub''']
+              simp only [ite_eq_left (show k+1 ≤ u+k+1 by omega),
+                ite_eq_left (show k ≤ u+k+1 by omega), ite_eq_left (show k+1 ≤ u+k+1+1 by omega),
+                ite_eq_left (show k ≤ u+k+1+1 by omega), hsub,hsub',hsub'',hsub''']
               rcases Nat.even_or_odd k with hkE | hkO
               · have hp : Even (u+b) := by
                   rw [Nat.even_iff] at *; omega
@@ -467,28 +467,29 @@ theorem pairing_mixed_relations {r : ℕ} (α : Fin r → ℕ) :
                 simp only [pow_add, pow_mul, hkO.neg_one_pow, pow_one] at h1 h2 ss ⊢
                 rcases neg_one_pow_eq_or ℤ u with hs | hs <;>
                   rcases neg_one_pow_eq_or ℤ b with ht | ht <;>
-                  norm_num [hs,ht] at h1 h2 ss ⊢ <;> omega
+                  norm_num [hs, ht] at ss <;>
+                  norm_num [hs, ht] at h1 h2 ⊢ <;> omega
             · have hcases : k=a+1 ∨ k=a+2 ∨ a+2<k := by omega
               rcases hcases with rfl | rfl | hlarge
               · have hp : Even (a+b) := by rw [Nat.even_iff] at *; omega
                 have ss := sign_same hp
-                simp only [if_neg (show ¬a+1+1 ≤ a+1 by omega),
-                  if_pos (show a+1 ≤ a+1 by omega), if_pos (show a+1+1 ≤ a+1+1 by omega),
-                  if_pos (show a+1 ≤ a+1+1 by omega), Nat.sub_self,
+                simp only [ite_eq_right (show ¬a+1+1 ≤ a+1 by omega),
+                  ite_eq_left (show a+1 ≤ a+1 by omega), ite_eq_left (show a+1+1 ≤ a+1+1 by omega),
+                  ite_eq_left (show a+1 ≤ a+1+1 by omega), Nat.sub_self,
                   show a+1+1-(a+1)=1 by omega, gen_zero, one_mul, mul_one, pow_zero, pow_one]
                 rcases Nat.even_or_odd b with hbE | hbO
                 · have hh := ho 0 b (by simpa using hbE)
                   simp only [Nat.zero_add, gen_zero, one_mul, mul_one, pow_zero, one_mul] at hh
-                  simp only [pow_add, pow_mul, pow_one, ss, hbE.neg_one_pow, one_pow]
+                  simp only [pow_add, pow_mul, pow_one, ss, hbE.neg_one_pow]
                   norm_num [hbE.neg_one_pow]
                   omega
                 · have hh := he 1 b (by rw [Nat.even_iff]; have := Nat.odd_iff.mp hbO; omega)
                   simp only [pow_add, pow_mul, pow_one, ss, hbO.neg_one_pow]
                   norm_num [hbO.neg_one_pow]
                   omega
-              · simp only [if_neg (show ¬a+2+1 ≤ a+1 by omega),
-                  if_neg (show ¬a+2 ≤ a+1 by omega), if_neg (show ¬a+2+1 ≤ a+1+1 by omega),
-                  if_pos (show a+2 ≤ a+1+1 by omega), show a+1+1-(a+2)=0 by omega,
+              · simp only [ite_eq_right (show ¬a+2+1 ≤ a+1 by omega),
+                  ite_eq_right (show ¬a+2 ≤ a+1 by omega), ite_eq_right (show ¬a+2+1 ≤ a+1+1 by omega),
+                  ite_eq_left (show a+2 ≤ a+1+1 by omega), show a+1+1-(a+2)=0 by omega,
                   gen_zero, one_mul, mul_one, pow_zero, zero_add, mul_zero]
                 have ss : (-1 : ℤ)^a = (-1 : ℤ)^b := sign_same (by rw [Nat.even_iff] at *; omega)
                 simp only [pow_add, pow_mul, pow_one, ss]

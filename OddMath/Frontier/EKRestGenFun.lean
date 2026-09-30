@@ -95,7 +95,7 @@ theorem superCoeff_eq (n : ℕ) :
 theorem eq_2_23 (n : ℕ) : superCoeff n = if n = 0 then 1 else 0 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp [superCoeff, EKElementaryQuotient.e, EKElementaryQuotient.h]
-  · rw [if_neg (by omega), superCoeff_eq, eq_2_22 n hn]
+  · rw [ite_eq_right (by omega), superCoeff_eq, eq_2_22 n hn]
 
 /-- EK p. 19: "(2.22) is equivalent to (2.23)". -/
 theorem eq_2_23_iff : (∀ n, superCoeff n = if n = 0 then 1 else 0) ↔
@@ -103,11 +103,11 @@ theorem eq_2_23_iff : (∀ n, superCoeff n = if n = 0 then 1 else 0) ↔
       (-1 : ℤ) ^ (k * (n - k)) • (psi2 (e (n - k)) * h k) = 0) := by
   constructor
   · intro H n hn
-    rw [← superCoeff_eq, H n, if_neg (by omega)]
+    rw [← superCoeff_eq, H n, ite_eq_right (by omega)]
   · intro H n
     rcases Nat.eq_zero_or_pos n with rfl | hn
     · exact eq_2_23 0
-    · rw [if_neg (by omega), superCoeff_eq, H n hn]
+    · rw [ite_eq_right (by omega), superCoeff_eq, H n hn]
 
 /-- The `ℤ/2`-degree of `h_n` (EK p. 19): `0` for `n ≡ 0, 3`, `1` for `n ≡ 1, 2 (mod 4)`. -/
 def zdeg (n : ℕ) : ℕ := if n % 4 = 1 ∨ n % 4 = 2 then 1 else 0

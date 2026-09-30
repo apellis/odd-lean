@@ -57,7 +57,7 @@ theorem wrong_positive_degree_rejected : crossing 0 0 ∉ degreePiece 0 2 := by
       · intro e
         by_cases he : d=e
         · subst e; simpa using hd
-        · simp [Finsupp.single_eq_of_ne he]
+        · simp [Finsupp.single_eq_of_ne (Ne.symm he)]
       · simp
     have he := (hsingle (-2) (crossing_mem 0)).trans (hsingle 2 h).symm
     have hz : crossing 0 0=0 := by
@@ -75,29 +75,28 @@ theorem rankTwo_rank_negative : Module.finrank ℤ (degreePiece 0 (-2))=1 := by
   rw [Finset.sum_pair (by decide : (1 : Perm 0) ≠ simple 0)]
   have h0 : length (1 : Perm 0)=0 := by decide
   have h1 : length (simple (n:=0) 0)=1 := by decide
-  norm_num [admissible, h0, h1, Int.toNat_ofNat]
+  norm_num [admissible, h0, h1]
 
 theorem rankTwo_rank_zero : Module.finrank ℤ (degreePiece 0 0)=3 := by
   rw [degree_finrank_binomial, rankTwo_permutations]
   rw [Finset.sum_pair (by decide : (1 : Perm 0) ≠ simple 0)]
   have h0 : length (1 : Perm 0)=0 := by decide
   have h1 : length (simple (n:=0) 0)=1 := by decide
-  norm_num [admissible, h0, h1, Int.toNat_ofNat]
+  norm_num [admissible, h0, h1]
 
 theorem rankTwo_rank_two : Module.finrank ℤ (degreePiece 0 2)=5 := by
   rw [degree_finrank_binomial, rankTwo_permutations]
   rw [Finset.sum_pair (by decide : (1 : Perm 0) ≠ simple 0)]
   have h0 : length (1 : Perm 0)=0 := by decide
   have h1 : length (simple (n:=0) 0)=1 := by decide
-  norm_num [admissible, h0, h1, Int.toNat_ofNat]
-  decide
+  norm_num [admissible, h0, h1]
 
 theorem rankTwo_rank_below : Module.finrank ℤ (degreePiece 0 (-4))=0 := by
   rw [degree_finrank_binomial, rankTwo_permutations]
   rw [Finset.sum_pair (by decide : (1 : Perm 0) ≠ simple 0)]
   have h0 : length (1 : Perm 0)=0 := by decide
   have h1 : length (simple (n:=0) 0)=1 := by decide
-  norm_num [admissible, h0, h1, Int.toNat_ofNat]
+  norm_num [admissible, h0, h1]
 
 theorem rankTwo_ONC_polynomial :
     (∑ w : Perm 0, (Polynomial.X : Polynomial ℤ)^length w) = 1+Polynomial.X := by

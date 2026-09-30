@@ -80,18 +80,18 @@ theorem mem_column_cells (k : ℕ) (p : ℕ × ℕ) : p ∈ (column k).cells ↔
 theorem column_colLen (k : ℕ) : (column k).colLen 0 = k := by
   apply le_antisymm
   · by_contra h
-    push_neg at h
+    push Not at h
     have hm : (k, 0) ∈ column k := YoungDiagram.mem_iff_lt_colLen.mpr h
     exact lt_irrefl k ((mem_column k _).mp hm).1
   · by_contra h
-    push_neg at h
+    push Not at h
     have hm : ((column k).colLen 0, 0) ∈ column k := (mem_column k _).mpr ⟨h, rfl⟩
     exact lt_irrefl _ (YoungDiagram.mem_iff_lt_colLen.mp hm)
 
 theorem column_rowLen (k r : ℕ) (hr : r < k) : (column k).rowLen r = 1 := by
   apply le_antisymm
   · by_contra h
-    push_neg at h
+    push Not at h
     have hm : (r, 1) ∈ column k := YoungDiagram.mem_iff_lt_rowLen.mpr h
     exact one_ne_zero ((mem_column k (r, 1)).mp hm).2
   · have hm : (r, 0) ∈ column k := (mem_column k _).mpr ⟨hr, rfl⟩
@@ -161,7 +161,7 @@ theorem column_ext (n k : ℕ) (V W : Tab n (column k))
   rw [column_word_labels, column_word_labels] at hl
   have hr := List.reverse_injective hl
   have he := congrArg (fun l : List ℕ => l[p.1]?) hr
-  simp only [List.getElem?_map, List.getElem?_range hpk, Option.map_some'] at he
+  simp only [List.getElem?_map, List.getElem?_range hpk, Option.map_some] at he
   rw [hp0]
   exact Option.some.inj he
 
@@ -187,7 +187,7 @@ def columnTableau (n k : ℕ) (w : List (Fin n)) (hw : w.Pairwise (· > ·)) (hk
       rw [List.pairwise_reverse]; exact hw
     have hlt := List.pairwise_iff_getElem.mp hp i1 i2 hl1 hl hi
     simp only [columnEntry, ↓reduceIte, List.getElem?_eq_getElem hl1, List.getElem?_eq_getElem hl,
-      Option.map_some', Option.getD_some]
+      Option.map_some, Option.getD_some]
     change w.reverse[i1].val < w.reverse[i2].val at hlt
     omega
   zeros' := by
@@ -211,7 +211,7 @@ theorem columnTableau_bounded (n k : ℕ) (w : List (Fin n)) (hw : w.Pairwise (�
   obtain ⟨hi, hj⟩ := (mem_column k _).mp hp
   have hl : p.1 < w.reverse.length := by simpa [hk] using hi
   change columnEntry w p.1 p.2 ≤ n
-  simp only [columnEntry, hj, ↓reduceIte, List.getElem?_eq_getElem hl, Option.map_some',
+  simp only [columnEntry, hj, ↓reduceIte, List.getElem?_eq_getElem hl, Option.map_some,
     Option.getD_some]
   exact w.reverse[p.1].isLt
 
@@ -318,9 +318,9 @@ theorem run_card (n : ℕ) (S : State n) (w : List (Fin n)) :
 /-- Conversely, a top-to-bottom history forces a strictly decreasing word (weak Row Bumping). -/
 theorem word_chain_of_rows (n : ℕ) (S : State n) (w : List (Fin n))
     (h : (TableauWordInsertion.run n S w).2.Pairwise (fun p q => p.1 < q.1)) :
-    w.Chain' (· > ·) := by
+    w.IsChain (· > ·) := by
   induction w generalizing S with
-  | nil => exact List.chain'_nil
+  | nil => exact List.isChain_nil
   | cons a w ih =>
     let I := TableauInsertion.insert n S.1 S.2.1 S.2.2 a
     let S' : State n := ⟨I.shape, ⟨I.tableau, I.bounded⟩⟩
@@ -328,17 +328,17 @@ theorem word_chain_of_rows (n : ℕ) (S : State n) (w : List (Fin n))
       (fun p q => p.1 < q.1) at h
     have ht := ih S' (List.pairwise_cons.mp h).2
     cases w with
-    | nil => exact List.chain'_singleton a
+    | nil => exact List.isChain_singleton a
     | cons b v =>
       let J := TableauInsertion.insert n S'.1 S'.2.1 S'.2.2 b
       let S'' : State n := ⟨J.shape, ⟨J.tableau, J.bounded⟩⟩
       change (I.newCell :: J.newCell :: (TableauWordInsertion.run n S'' v).2).Pairwise
         (fun p q => p.1 < q.1) at h
       have hij : I.newCell.1 < J.newCell.1 := (List.pairwise_cons.mp h).1 J.newCell (by simp)
-      apply List.chain'_cons.mpr
+      apply List.isChain_cons_cons.mpr
       refine ⟨?_, ht⟩
       by_contra hab
-      have hab' : a ≤ b := le_of_not_lt hab
+      have hab' : a ≤ b := not_lt.mp hab
       have hle := (TableauBumpMonotone.insert_pair_le n S.1 S.2.1 S.2.2 a b hab').2.2.2
       change J.newCell.1 ≤ I.newCell.1 at hle
       omega
@@ -346,7 +346,7 @@ theorem word_chain_of_rows (n : ℕ) (S : State n) (w : List (Fin n))
 theorem word_decreasing_of_rows (n : ℕ) (S : State n) (w : List (Fin n))
     (h : (TableauWordInsertion.run n S w).2.Pairwise (fun p q => p.1 < q.1)) :
     w.Pairwise (· > ·) :=
-  List.chain'_iff_pairwise.mp (word_chain_of_rows n S w h)
+  List.isChain_iff_pairwise.mp (word_chain_of_rows n S w h)
 
 /-! ## Uniqueness of the preimage -/
 
@@ -600,10 +600,10 @@ theorem insert_northEast (mu nu : YoungDiagram) (p : ℕ × ℕ)
     · have hx2 : x.2 < p.2 := by
         have hn := no_southeast mu p hf x hx
         omega
-      rw [if_pos ⟨hx1, hx2⟩, if_pos hx1, Finset.card_insert_of_not_mem]
+      rw [ite_eq_left ⟨hx1, hx2⟩, ite_eq_left hx1, Finset.card_insert_of_notMem]
       intro hm
       exact hf (Finset.mem_filter.mp hm).1
-    · rw [if_neg (fun h => hx1 h.1), if_neg hx1]
+    · rw [ite_eq_right (fun h => hx1 h.1), ite_eq_right hx1]
       rfl
   rw [hp, hr, Finset.sum_congr rfl hsplit, Finset.sum_add_distrib]
   unfold belowCount
@@ -721,7 +721,7 @@ abbrev Indexed (n : ℕ) (lam : YoungDiagram) (k : ℕ) := Σ nu : Outer lam k, 
 
 def outputMap (n : ℕ) (lam : YoungDiagram) (k : ℕ) (y : Indexed n lam k) : VOutputs n lam k :=
   ⟨⟨y.1.val.val, y.2⟩, y.1.property, by
-    rw [Finset.card_sdiff y.1.property.1]
+    rw [Finset.card_sdiff_of_subset y.1.property.1]
     change y.1.val.val.card - lam.card = k
     rw [y.1.val.property]; omega⟩
 
@@ -793,7 +793,7 @@ theorem output_sum (n : ℕ) (lam : YoungDiagram) (k : ℕ) :
         (-1 : ℤ) ^ stripBelow lam nu.val • sp n nu.val
       else 0 := by
   classical
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   rw [Fintype.sum_sigma]
   have hv : ∀ nu : Outer lam k, ∑ T : Tab n nu.val.val,
       outputValue n lam (outputMap n lam k ⟨nu, T⟩).val =
@@ -821,7 +821,7 @@ theorem vertical_pieri (n : ℕ) (lam : YoungDiagram) (k : ℕ) :
         (-1 : ℤ) ^ stripBelow lam mu.val • sp n mu.val
       else 0 := by
   classical
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   rw [input_sum, ← output_sum]
   exact Fintype.sum_equiv (aggregateEquiv n lam k) _ _ (pointwise n lam k)
 

@@ -26,9 +26,9 @@ def sourceRHS (d : ℕ) : ℤ :=
 def degreeTwoEquiv : Fin 2 ≃ DegreeShape 2 where
   toFun i := if i = 0 then row2 else col2
   invFun μ := if μ = row2 then 0 else 1
-  left_inv i := by fin_cases i <;> simp [row2_ne_col2, Ne.symm row2_ne_col2]
+  left_inv i := by fin_cases i <;> simp [Ne.symm row2_ne_col2]
   right_inv μ := by rcases degree_two_shapes μ with rfl | rfl <;>
-                     simp [row2_ne_col2, Ne.symm row2_ne_col2]
+                     simp [Ne.symm row2_ne_col2]
 
 /-- Same enumeration for rows AND columns: this is M itself up to conjugate reindexing. -/
 theorem degree_two_matrix :
@@ -47,7 +47,7 @@ theorem degree_two_det : (M 2).det = -1 := by
 /-- There are no self-transpose diagrams of size two. -/
 theorem degree_two_filter :
     Finset.univ.filter (fun μ : DegreeShape 2 => μ.val.transpose = μ.val) = ∅ := by
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro μ h
   exact two_no_self μ (Finset.mem_filter.mp h).2
 
@@ -89,7 +89,7 @@ theorem one_sided_not_M_det : (triangularMatrix 2).det ≠ (M 2).det := by
 
 /-- Zero and one are agreement controls, not excluded by the target. -/
 theorem degree_zero_control : (M 0).det = 1 ∧ sourceRHS 0 = 1 := by
-  letI : Unique (DegreeShape 0) := ⟨⟨emptyShape⟩, degree_zero_shape⟩
+  let : Unique (DegreeShape 0) := ⟨⟨emptyShape⟩, degree_zero_shape⟩
   constructor
   · rw [Matrix.det_unique]; exact zero_matrix _ _
   · apply Finset.prod_eq_one
@@ -97,7 +97,7 @@ theorem degree_zero_control : (M 0).det = 1 ∧ sourceRHS 0 = 1 := by
     rw [degree_zero_shape μ, zero_ell, pow_zero]
 
 theorem degree_one_control : (M 1).det = 1 ∧ sourceRHS 1 = 1 := by
-  letI : Unique (DegreeShape 1) := ⟨⟨oneShape⟩, degree_one_shape⟩
+  let : Unique (DegreeShape 1) := ⟨⟨oneShape⟩, degree_one_shape⟩
   constructor
   · rw [Matrix.det_unique]; exact one_matrix _ _
   · apply Finset.prod_eq_one

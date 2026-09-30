@@ -342,7 +342,9 @@ theorem free_mul_mem {n : ℕ} (a : Free n) (x : Presented n) (hx : x ∈ wordSp
 theorem mem_wordSpan {n : ℕ} (x : Presented n) : x ∈ wordSpan n := by
   obtain ⟨a,rfl⟩ := Ideal.Quotient.mk_surjective x
   have h1 : (1 : Presented n) ∈ wordSpan n := word_mem []
-  simpa only [mul_one] using free_mul_mem a 1 h1
+  have hm := free_mul_mem a 1 h1
+  rw [mul_one] at hm
+  exact hm
 
 def basisSpan (n : ℕ) : Submodule ℤ (Presented n) :=
   Submodule.span ℤ (Set.range (@dividedElement n))
@@ -385,12 +387,12 @@ theorem dividedElement_linearIndependent (n : ℕ) : LinearIndependent ℤ (@div
   apply (linearIndependent_iff'.mp (image_linearIndependent n)) s c
   simpa only [map_sum, map_zsmul, map_zero] using congrArg (toNilHecke n) hc
 
-/-- A genuine integral permutation Basis of the separately presented ring. -/
-def basis (n : ℕ) : Basis (Perm n) ℤ (Presented n) :=
-  Basis.mk (dividedElement_linearIndependent n) (by rw [← basisSpan_eq_top n]; exact le_rfl)
+/-- A genuine integral permutation Module.Basis of the separately presented ring. -/
+def basis (n : ℕ) : Module.Basis (Perm n) ℤ (Presented n) :=
+  Module.Basis.mk (dividedElement_linearIndependent n) (by rw [← basisSpan_eq_top n]; exact le_rfl)
 
 @[simp] theorem basis_apply {n : ℕ} (p : Perm n) : basis n p = dividedElement p :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 theorem expansion_unique {n : ℕ} (c d : Perm n →₀ ℤ)
     (h : c.sum (fun p a => a • dividedElement p) = d.sum (fun p a => a • dividedElement p)) :

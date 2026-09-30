@@ -38,7 +38,7 @@ def transposeShape (d : ℕ) : DegreeShape d ≃ DegreeShape d where
   left_inv μ := by apply Subtype.ext; simp
   right_inv μ := by apply Subtype.ext; simp
 
-def transposeEBasis (d : ℕ) : Basis (DegreeShape d) ℤ (degreePiece d) :=
+def transposeEBasis (d : ℕ) : Module.Basis (DegreeShape d) ℤ (degreePiece d) :=
   (degreeEBasis d).reindex (transposeShape d)
 
 @[simp] theorem transposeEBasis_apply (d : ℕ) (μ : DegreeShape d) :
@@ -69,7 +69,7 @@ private theorem transpose_rows_injective (d : ℕ) :
 
 /-- Integral unimodularity, using the mixed semiorthogonality and unit diagonal. -/
 theorem triangularMatrix_det_unit (d : ℕ) : IsUnit (triangularMatrix d).det := by
-  letI : LinearOrder (DegreeShape d) := LinearOrder.lift'
+  let : LinearOrder (DegreeShape d) := LinearOrder.lift'
     (fun μ : DegreeShape d => μ.val.transpose.rowLens) (transpose_rows_injective d)
   have ht : (triangularMatrix d).BlockTriangular OrderDual.toDual := by
     intro μ ν hlt
@@ -77,7 +77,7 @@ theorem triangularMatrix_det_unit (d : ℕ) : IsUnit (triangularMatrix d).det :=
     rw [triangularMatrix_apply]
     exact (EKSemiorthogonality.proposition_2_14_vanishing μ.val ν.val.transpose.rowLens
       ν.val.transpose.pos_of_mem_rowLens hlt).1
-  rw [Matrix.det_of_lowerTriangular _ ht]
+  rw [Matrix.det_of_isLowerTriangular _ ht]
   apply IsUnit.prod_iff.mpr
   intro μ _
   rw [triangularMatrix_diag]
@@ -103,7 +103,7 @@ theorem pairingInverse_right (d : ℕ) :
 
 /-- Perfectness over Z of the actual homogeneous quotient pairing, all d including zero. -/
 def pairingEquiv (d : ℕ) : degreePiece d ≃ₗ[ℤ] Module.Dual ℤ (degreePiece d) :=
-  LinearEquiv.ofLinear (pairingMap d) (pairingInverse d)
+  LinearEquiv.ofLinearMap (pairingMap d) (pairingInverse d)
     (pairingInverse_right d) (pairingInverse_left d)
 
 @[simp] theorem pairingEquiv_apply (d : ℕ) (x y : degreePiece d) :
@@ -123,35 +123,35 @@ theorem unique_representative (d : ℕ) (l : Module.Dual ℤ (degreePiece d)) :
       ((pairingEquiv d).apply_symm_apply l)).symm
 
 /-- The odd monomial basis, INSIDE the actual homogeneous piece. -/
-def mBasis (d : ℕ) : Basis (DegreeShape d) ℤ (degreePiece d) :=
+def mBasis (d : ℕ) : Module.Basis (DegreeShape d) ℤ (degreePiece d) :=
   (degreeHBasis d).dualBasis.map (pairingEquiv d).symm
 
 /-- The odd forgotten basis, INSIDE the same homogeneous piece. -/
-def fBasis (d : ℕ) : Basis (DegreeShape d) ℤ (degreePiece d) :=
+def fBasis (d : ℕ) : Module.Basis (DegreeShape d) ℤ (degreePiece d) :=
   (degreeEBasis d).dualBasis.map (pairingEquiv d).symm
 
 @[simp] theorem h_m (d : ℕ) (ν μ : DegreeShape d) :
     quotientPairing (hPartition ν.val) (mBasis d μ).val = if ν = μ then 1 else 0 := by
   have he := congrArg (fun f : Module.Dual ℤ (degreePiece d) => f (degreeHBasis d ν))
     ((pairingEquiv d).apply_symm_apply ((degreeHBasis d).dualBasis μ))
-  simpa only [mBasis, Basis.map_apply, pairingEquiv_apply, degreeHBasis_apply,
-    Basis.dualBasis_apply_self] using he
+  simpa only [mBasis, Module.Basis.map_apply, pairingEquiv_apply, degreeHBasis_apply,
+    Module.Basis.dualBasis_apply_self] using he
 
 @[simp] theorem e_f (d : ℕ) (ν μ : DegreeShape d) :
     quotientPairing (ePartition ν.val) (fBasis d μ).val = if ν = μ then 1 else 0 := by
   have he := congrArg (fun f : Module.Dual ℤ (degreePiece d) => f (degreeEBasis d ν))
     ((pairingEquiv d).apply_symm_apply ((degreeEBasis d).dualBasis μ))
-  simpa only [fBasis, Basis.map_apply, pairingEquiv_apply, degreeEBasis_apply,
-    Basis.dualBasis_apply_self] using he
+  simpa only [fBasis, Module.Basis.map_apply, pairingEquiv_apply, degreeEBasis_apply,
+    Module.Basis.dualBasis_apply_self] using he
 
 /-- Genuine arbitrary-element consumers: coordinates are the source pairings. -/
 @[simp] theorem m_coordinates (d : ℕ) (x : degreePiece d) (μ : DegreeShape d) :
     (mBasis d).repr x μ = quotientPairing (hPartition μ.val) x.val := by
-  simp [mBasis, Basis.map_repr]
+  simp [mBasis, Module.Basis.map_repr]
 
 @[simp] theorem f_coordinates (d : ℕ) (x : degreePiece d) (μ : DegreeShape d) :
     (fBasis d).repr x μ = quotientPairing (ePartition μ.val) x.val := by
-  simp [fBasis, Basis.map_repr]
+  simp [fBasis, Module.Basis.map_repr]
 
 theorem reconstruct_m (d : ℕ) (x : degreePiece d) :
     x = ∑ μ, quotientPairing (hPartition μ.val) x.val • mBasis d μ := by
@@ -289,7 +289,7 @@ theorem proposition_3_1_M (d : ℕ) (ν μ : DegreeShape d) :
     Equiv.subtypeEquivRight (fun _ => by simp [EKMixedPairing.Admissible])
   apply Fintype.sum_equiv e
   intro A
-  simp only [EKMixedPairing.blackPairs, Bool.true_and, Bool.false_eq_true, if_false,
+  simp only [EKMixedPairing.blackPairs, Bool.true_and, Bool.false_eq_true, ite_false,
     Finset.sum_const_zero, add_zero]
   rfl
 

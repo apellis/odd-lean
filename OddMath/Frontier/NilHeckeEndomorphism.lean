@@ -201,7 +201,7 @@ def matrixHom (n : ℕ) : rightKernelEnd n →+* Matrix (Perm n) (Perm n) (K n) 
     funext i j
     change coordinates n (schubert j) i = (1 : Matrix (Perm n) (Perm n) (K n)) i j
     rw [coordinates_schubert]
-    simp [Pi.single_apply, Matrix.one_apply, eq_comm]
+    simp [Pi.single_apply, Matrix.one_apply]
   map_mul' T U := by
     funext i j
     exact coefficient_evaluation n T (U.val (schubert j)) i

@@ -28,7 +28,7 @@ noncomputable section
 open LaurentPolynomial Matrix
 
 namespace OddMath.Frontier.OddCyclotomicAction
-open GradedK0 OddCategorification Cyclotomic OddBialgebra
+open GradedK0 OddCategorification OddMath.Frontier.Cyclotomic OddBialgebra
 open OddMath.SkewPolynomial (SkewPolynomial generator monomial)
 open NilHeckeAction NilCoxeterWords NilHeckeEndomorphism OddSchubertAction
 
@@ -73,6 +73,8 @@ theorem xl_pow_mem (k : ℕ) :
     rw [pow_succ]
     have h := NilHeckeGradedEnd.polynomial_mul ih (NilHeckeGradedEnd.generator_mem (Fin.last (m+1)))
     convert h using 2
+    push_cast
+    ring
 
 theorem betaVec_mem (w : Perm m) (k : ℕ) :
     betaVec N w k ∈ onhCycGrading m N (2 * (k : ℤ) - 2 * (length w : ℤ)) := by
@@ -106,12 +108,12 @@ def relBasisOfTheta (E : A') (hE : E * E = E)
         actV m N (∑ p, ψ (c p) * betaVec N p.1 p.2) (Submodule.Quotient.mk (schubert w')) =
           theta ψ b fun k => c (w', k) := by
       intro c w'
-      rw [map_sum, LinearMap.coeFn_sum, Finset.sum_apply, Fintype.sum_prod_type,
+      rw [map_sum, LinearMap.sum_apply, Fintype.sum_prod_type,
         Finset.sum_eq_single w' (fun w _ hw => Finset.sum_eq_zero fun k _ => by
-          rw [map_mul, Module.End.mul_apply, actV_betaVec, if_neg (Ne.symm hw), map_zero])
+          rw [map_mul, Module.End.mul_apply, actV_betaVec, ite_eq_right (Ne.symm hw), map_zero])
           (fun h => absurd (Finset.mem_univ _) h), theta_apply]
       refine Finset.sum_congr rfl fun k _ => ?_
-      rw [map_mul, Module.End.mul_apply, actV_betaVec, if_pos rfl]
+      rw [map_mul, Module.End.mul_apply, actV_betaVec, ite_eq_left rfl]
     refine ⟨fun p => α p.1 p.2, ⟨fun p => (hα p.1).1 p.2, eq_of_act fun w' => ?_⟩, ?_⟩
     · rw [hval]
       exact (hα w').2
@@ -167,31 +169,31 @@ theorem prop_5_2_Ecyc (v w : Perm n) :
     prop_5_2 n N (Ecyc n N) v w = if v = 1 ∧ w = 1 then 1 else 0 := by
   rw [Ecyc, prop_5_2_apply, cor214_apply, action_Etil_schubert]
   by_cases hw : w = 1
-  · rw [if_pos hw, coordinates_schubert]
+  · rw [ite_eq_left hw, coordinates_schubert]
     by_cases hv : v = 1
-    · rw [hv, Pi.single_eq_same, map_one, map_one, if_pos ⟨rfl, hw⟩]
-    · rw [Pi.single_eq_of_ne hv, map_zero, map_zero, if_neg (fun h => hv h.1)]
-  · rw [if_neg hw, map_zero, Pi.zero_apply, map_zero, map_zero, if_neg (fun h => hw h.2)]
+    · rw [hv, Pi.single_eq_same, map_one, map_one, ite_eq_left ⟨rfl, hw⟩]
+    · rw [Pi.single_eq_of_ne hv, map_zero, map_zero, ite_eq_right (fun h => hv h.1)]
+  · rw [ite_eq_right hw, map_zero, Pi.zero_apply, map_zero, map_zero, ite_eq_right (fun h => hw h.2)]
 
 theorem prop_5_2_mul_Ecyc (α : ONH n N) (v w : Perm n) :
     prop_5_2 n N (α * Ecyc n N) v w = if w = 1 then prop_5_2 n N α v 1 else 0 := by
   rw [map_mul, Matrix.mul_apply]
   simp_rw [prop_5_2_Ecyc]
   by_cases hw : w = 1
-  · rw [if_pos hw, Finset.sum_eq_single 1 (fun u _ hu => by rw [if_neg (fun h => hu h.1),
-      mul_zero]) (fun h => absurd (Finset.mem_univ _) h), if_pos ⟨rfl, hw⟩, mul_one]
-  · rw [if_neg hw]
-    exact Finset.sum_eq_zero fun u _ => by rw [if_neg (fun h => hw h.2), mul_zero]
+  · rw [ite_eq_left hw, Finset.sum_eq_single 1 (fun u _ hu => by rw [ite_eq_right (fun h => hu h.1),
+      mul_zero]) (fun h => absurd (Finset.mem_univ _) h), ite_eq_left ⟨rfl, hw⟩, mul_one]
+  · rw [ite_eq_right hw]
+    exact Finset.sum_eq_zero fun u _ => by rw [ite_eq_right (fun h => hw h.2), mul_zero]
 
 /-- `ONH_a^N E`, the elements `α` with `α E = α`. -/
 def AEsub : Submodule ℤ (ONH n N) where
   carrier := {α | α * Ecyc n N = α}
   add_mem' {α β} hα hβ := by
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     rw [add_mul, hα, hβ]
   zero_mem' := zero_mul _
   smul_mem' c α hα := by
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     rw [smul_mul_assoc, hα]
 
 theorem mem_AEsub {α : ONH n N} : α ∈ AEsub n N ↔ α * Ecyc n N = α := Iff.rfl
@@ -300,18 +302,18 @@ end General
 /-! ### `ONH_1^N = ℤ[x]/(x^N)` -/
 
 /-- `ONH_1^N = ℤ[x]/(x^N)` is free on `1, x, …, x^{N-1}`. -/
-def onh1Basis (N : ℕ) : Basis (Fin N) ℤ (ONH1 N) :=
+def onh1Basis (N : ℕ) : Module.Basis (Fin N) ℤ (ONH1 N) :=
   let pb := AdjoinRoot.powerBasis' (Polynomial.monic_X_pow (R := ℤ) N)
   (pb.basis.map (SmallRank.ONH1Equiv N).symm.toAddEquiv.toIntLinearEquiv).reindex
     (finCongr (by simp [pb, AdjoinRoot.powerBasis']))
 
 theorem onh1Basis_apply (N : ℕ) (i : Fin N) :
     onh1Basis N i = toONH1 N (generator 0 ^ (i : ℕ)) := by
-  simp only [onh1Basis, Basis.reindex_apply, Basis.map_apply, PowerBasis.coe_basis,
+  simp only [onh1Basis, Module.Basis.reindex_apply, Module.Basis.map_apply, PowerBasis.coe_basis,
     AdjoinRoot.powerBasis'_gen]
   change (SmallRank.ONH1Equiv N).symm _ = _
   apply (SmallRank.ONH1Equiv N).injective
-  rw [RingEquiv.apply_symm_apply, finCongr_symm_apply, Fin.coe_cast]
+  rw [RingEquiv.apply_symm_apply, finCongr_symm_apply, Fin.val_cast]
   change _ = AdjoinRoot.mk _ (SmallRank.rankOneEquiv (generator 0 ^ (i : ℕ)))
   rw [map_pow, SmallRank.rankOneEquiv_generator, map_pow, AdjoinRoot.mk_X]
 
@@ -347,8 +349,8 @@ theorem thetaS_bijective_1 (h : 2 ≤ N) :
     Function.Bijective (thetaS (incCyc1 N) (N - 1) (⊤ : Submodule ℤ (ONH1 N))) := by
   obtain ⟨h1, h2, h3⟩ := onh1_free_finite N
   obtain ⟨h4, h5, h6⟩ := vmod_free_finite (m := 0) (N := N) h
-  haveI : Module.Free ℤ (⊤ : Submodule ℤ (ONH1 N)) := Module.Free.of_equiv Submodule.topEquiv.symm
-  haveI : Module.Finite ℤ (⊤ : Submodule ℤ (ONH1 N)) := Module.Finite.equiv Submodule.topEquiv.symm
+  have : Module.Free ℤ (⊤ : Submodule ℤ (ONH1 N)) := Module.Free.of_equiv Submodule.topEquiv.symm
+  have : Module.Finite ℤ (⊤ : Submodule ℤ (ONH1 N)) := Module.Finite.equiv Submodule.topEquiv.symm
   refine bijective_of_surjective_of_finrank_eq _ (thetaS_surjective_1 N) ?_
   rw [Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, finrank_top,
     h3, h6, smul_eq_mul]
@@ -384,7 +386,7 @@ def relBasis0 : RelBasis (Int.castRingHom (ONH1 N)) (1 : ℤ) (Fin N) where
       exact (onh1Basis N).sum_equivFun y
     · rintro c ⟨-, hc⟩
       simp_rw [_root_.eq_intCast, ← zsmul_eq_mul, ← onh1Basis_apply] at hc
-      rw [← hc, ← Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
+      rw [← hc, ← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
 
 theorem relBasis0_vec (k : Fin N) : (relBasis0 N).vec k = toONH1 N (generator 0 ^ (k : ℕ)) := rfl
 
@@ -397,7 +399,7 @@ theorem intDecomposition : UniqueDecomposition intGrading := by
   · by_cases hd : d = 0
     · subst hd
       exact Or.inr rfl
-    · rw [Finsupp.single_eq_of_ne (Ne.symm hd)]
+    · rw [Finsupp.single_eq_of_ne hd]
       exact Or.inl rfl
   · rintro f ⟨hf, hfx⟩
     have hf0 : f = Finsupp.single 0 (f 0) := by
@@ -405,7 +407,7 @@ theorem intDecomposition : UniqueDecomposition intGrading := by
       by_cases hd : d = 0
       · subst hd
         rw [Finsupp.single_eq_same]
-      · rw [Finsupp.single_eq_of_ne (Ne.symm hd)]
+      · rw [Finsupp.single_eq_of_ne hd]
         exact (hf d).resolve_right hd
     rw [hf0, Finsupp.sum_single_index rfl] at hfx
     rw [hf0, hfx]

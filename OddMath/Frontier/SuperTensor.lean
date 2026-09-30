@@ -110,14 +110,14 @@ theorem tensorMul_smul_left {m n : ℕ} (r : ℤ) (x y : Tensor m n) :
   (show Tensor m n →+ Tensor m n from
     { toFun := fun x => tensorMul x y
       map_zero' := tensorMul_zero_left y
-      map_add' := fun x z => tensorMul_add_left x z y }).map_zsmul x r
+      map_add' := fun x z => tensorMul_add_left x z y }).map_zsmul r x
 
 theorem tensorMul_smul_right {m n : ℕ} (r : ℤ) (x y : Tensor m n) :
     tensorMul x (r • y) = r • tensorMul x y :=
   (show Tensor m n →+ Tensor m n from
     { toFun := tensorMul x
       map_zero' := tensorMul_zero_right x
-      map_add' := tensorMul_add_right x }).map_zsmul y r
+      map_add' := tensorMul_add_right x }).map_zsmul r y
 
 /-- Explicit integer-bilinear multiplication on the genuine tensor module. -/
 def tensorMulLinear (m n : ℕ) : Tensor m n →ₗ[ℤ] Tensor m n →ₗ[ℤ] Tensor m n where
@@ -166,7 +166,7 @@ theorem tmul_eq_sum {m n : ℕ} (f : SkewPolynomial m) (g : SkewPolynomial n) :
       monomial a r ⊗ₜ[ℤ] monomial b s)) := by
   calc
     f ⊗ₜ[ℤ] g = (f.sum monomial) ⊗ₜ[ℤ] (g.sum monomial) := by
-      simp only [monomial, Finsupp.sum_single]
+      simp only [Finsupp.sum_single]
     _ = _ := by
       simp only [Finsupp.sum]
       rw [TensorProduct.sum_tmul]

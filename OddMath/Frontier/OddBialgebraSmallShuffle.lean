@@ -41,7 +41,7 @@ theorem IsYoung.mul {y y' : Perm n} (hy : IsYoung p y) (hy' : IsYoung p y') : Is
   fun x => (hy (y' x)).trans (hy' x)
 
 theorem IsYoung.inv {y : Perm n} (hy : IsYoung p y) : IsYoung p y⁻¹ := fun x => by
-  rw [← hy, Equiv.Perm.apply_inv_self]
+  rw [← hy, Equiv.Perm.inv_def, y.apply_symm_apply]
 
 theorem inBlk_lt {x z : Fin (n+2)} (hx : InBlk p x) (hz : ¬ InBlk p z) : x < z := by
   unfold InBlk at hx hz; exact Fin.lt_def.2 (by omega)
@@ -63,11 +63,11 @@ theorem IsShuf.lt_iff {u : Perm n} (hu : IsShuf p u) {i j : Fin (n+2)}
     · exact h'
     · exact absurd (u.injective h') (ne_of_lt hij)
     · have := hu _ _ h' h.symm
-      simp only [Equiv.Perm.inv_apply_self] at this
+      simp only [Equiv.Perm.inv_def, u.symm_apply_apply] at this
       exact absurd hij (not_lt.2 this.le)
   · intro h'
     have := hu _ _ h' h
-    simpa only [Equiv.Perm.inv_apply_self] using this
+    simpa only [Equiv.Perm.inv_def, u.symm_apply_apply] using this
 
 /-- `ℓ(y u) = ℓ(y) + ℓ(u)` for `y` in the Young subgroup and `u` a shuffle. -/
 theorem length_young_mul {y u : Perm n} (hy : IsYoung p y) (hu : IsShuf p u) :
@@ -79,10 +79,10 @@ theorem length_young_mul {y u : Perm n} (hy : IsYoung p y) (hu : IsShuf p u) :
     intro i j
     by_cases hs : InBlk p (u i) ↔ InBlk p (u j)
     · have h1 := hu.lt_iff hs
-      rw [if_neg (show ¬(i < j ∧ u j < u i) from fun h => lt_asymm (h1.1 h.1) h.2), add_zero]
+      rw [ite_eq_right (show ¬(i < j ∧ u j < u i) from fun h => lt_asymm (h1.1 h.1) h.2), add_zero]
       simp only [h1]
     · have h3 : y (u j) < y (u i) ↔ u j < u i := hy.lt_iff (fun h => hs h.symm)
-      rw [if_neg (show ¬(u i < u j ∧ y (u j) < y (u i)) from fun h => lt_asymm h.1 (h3.1 h.2)),
+      rw [ite_eq_right (show ¬(u i < u j ∧ y (u j) < y (u i)) from fun h => lt_asymm h.1 (h3.1 h.2)),
         zero_add]
       simp only [h3]
   change (∑ i, ∑ j, if i < j ∧ y (u j) < y (u i) then 1 else 0) = _
@@ -107,7 +107,7 @@ theorem isYoung_simple {i : Fin (n+1)} (h : InBlk p i.castSucc ↔ InBlk p i.suc
 theorem exists_adjacent_descent {w : Perm n} (hw : ¬ IsShuf p w) :
     ∃ i : Fin (n+1), (InBlk p i.castSucc ↔ InBlk p i.succ) ∧ Descent w⁻¹ i := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   apply hw
   have hadj : ∀ i : Fin (n+1), (InBlk p i.castSucc ↔ InBlk p i.succ) →
       w⁻¹ i.castSucc < w⁻¹ i.succ := fun i hi => by
@@ -161,9 +161,9 @@ theorem young_factor_unique {y y' u u' : Perm n} (hy : IsYoung p y) (hy' : IsYou
     intro x x' hxx'
     by_cases hs : InBlk p x ↔ InBlk p x'
     · have hij := hu x x' hxx' hs
-      have e1 : z x = u' (u⁻¹ x) := by rw [← hzu, Equiv.Perm.mul_apply, Equiv.Perm.apply_inv_self]
+      have e1 : z x = u' (u⁻¹ x) := by rw [← hzu, Equiv.Perm.mul_apply, Equiv.Perm.inv_def, u.apply_symm_apply]
       have e2 : z x' = u' (u⁻¹ x') := by
-        rw [← hzu, Equiv.Perm.mul_apply, Equiv.Perm.apply_inv_self]
+        rw [← hzu, Equiv.Perm.mul_apply, Equiv.Perm.inv_def, u.apply_symm_apply]
       rw [e1, e2]
       refine (hu'.lt_iff ?_).1 hij
       rw [← e1, ← e2, hz, hz]

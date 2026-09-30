@@ -16,20 +16,20 @@ open OddMath.Frontier.NilHeckeSmallRank
 
 /-- N = 1: negative-degree dot pieces vanish. -/
 theorem dotPiece_neg_bot {d : ℤ} (hd : d < 0) : dotPiece d = ⊥ := by
-  haveI := fiber_neg_empty hd
+  have := fiber_neg_empty hd
   rw [dotPiece, Set.range_eq_empty, Submodule.span_empty]
 
 /-- N = 1: odd-degree dot pieces vanish. -/
 theorem dotPiece_odd_bot {d : ℤ} (hd : d % 2 ≠ 0) : dotPiece d = ⊥ := by
-  haveI := fiber_odd_empty hd
+  have := fiber_odd_empty hd
   rw [dotPiece, Set.range_eq_empty, Submodule.span_empty]
 
 /-- N = 1: every even nonnegative dot piece is free of rank exactly one
 (graded dimension `t^k` at `t = q^2`, read coefficientwise over `ℤ`). -/
 theorem dotPiece_even_finrank (k : ℕ) :
     Module.finrank ℤ (dotPiece (2 * (k : ℤ))) = 1 := by
-  letI := fiber_even_unique k
-  haveI : Fintype (fiber (2 * (k : ℤ))) := Unique.fintype
+  let := fiber_even_unique k
+  have : Fintype (fiber (2 * (k : ℤ))) := Unique.fintype
   rw [dotPiece, finrank_span_eq_card (fiber_linear_independent _),
     Fintype.card_unique]
 

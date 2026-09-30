@@ -34,21 +34,21 @@ open TableauSign TableauRowWord OddLRTableau OddLREven
 
 /-! ## Row lengths of explicit diagrams -/
 
-theorem rowLen_ofRowLens' (w : List ℕ) (hw : w.Sorted (· ≥ ·)) (r : ℕ) :
-    (YoungDiagram.ofRowLens w hw).rowLen r = w.getD r 0 := by
+theorem rowLen_ofRowLens' (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) (r : ℕ) :
+    (YoungDiagram.ofRowLens w hw.sortedGE).rowLen r = w.getD r 0 := by
   apply le_antisymm
   · by_contra h
-    push_neg at h
+    push Not at h
     have := (mem_ofRowLens_iff (hw := hw) (p := (r, w.getD r 0))).mp
       (YoungDiagram.mem_iff_lt_rowLen.mpr h)
     exact lt_irrefl _ this.2
   · by_contra h
-    push_neg at h
+    push Not at h
     have hr : r < w.length := by
       by_contra hr
       rw [List.getD_eq_default _ _ (by omega)] at h
       omega
-    have := (mem_ofRowLens_iff (hw := hw) (p := (r, (YoungDiagram.ofRowLens w hw).rowLen r))).mpr
+    have := (mem_ofRowLens_iff (hw := hw) (p := (r, (YoungDiagram.ofRowLens w hw.sortedGE).rowLen r))).mpr
       ⟨hr, h⟩
     exact lt_irrefl _ (YoungDiagram.mem_iff_lt_rowLen.mp this)
 
@@ -67,10 +67,10 @@ theorem sign_example :
   refine ⟨h, by rw [h]; decide, ?_⟩
   rw [TableauDominance.tableauSign, h]; decide
 
-theorem rowWord_canonical (w : List ℕ) (hw : w.Sorted (· ≥ ·)) :
-    rowWord (TableauDominance.canonicalTableau (YoungDiagram.ofRowLens w hw)) =
-      (rowCellsOf w).map (fun p => if p ∈ YoungDiagram.ofRowLens w hw then p.1 + 1 else 0) := by
-  rw [rowWord, rowCells_ofRowLens]
+theorem rowWord_canonical (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) :
+    rowWord (TableauDominance.canonicalTableau (YoungDiagram.ofRowLens w hw.sortedGE)) =
+      (rowCellsOf w).map (fun p => if p ∈ YoungDiagram.ofRowLens w hw.sortedGE then p.1 + 1 else 0) := by
+  rw [rowWord, rowCells_ofRowLens w hw]
   rfl
 
 /-- E §2.1, p.6: `T_{(21)} = 11/2`, `w_r(T_{(21)}) = 211`, `sign(T_{(21)}) = (-1)^2 = 1`. -/
@@ -79,7 +79,7 @@ theorem sign_T21 :
       inversions (rowWord (TableauDominance.canonicalTableau (yd [2, 1]))) = 2 ∧
       TableauDominance.tableauSign (TableauDominance.canonicalTableau (yd [2, 1])) = 1 := by
   have h : rowWord (TableauDominance.canonicalTableau (yd [2, 1])) = [2, 1, 1] := by
-    rw [rowWord_canonical]; decide
+    rw [rowWord_canonical _ (by decide)]; decide
   refine ⟨h, by rw [h]; decide, ?_⟩
   rw [TableauDominance.tableauSign, h]; decide
 
@@ -89,7 +89,7 @@ theorem sign_T311 :
       inversions (rowWord (TableauDominance.canonicalTableau (yd [3, 1, 1]))) = 7 ∧
       TableauDominance.tableauSign (TableauDominance.canonicalTableau (yd [3, 1, 1])) = -1 := by
   have h : rowWord (TableauDominance.canonicalTableau (yd [3, 1, 1])) = [3, 2, 1, 1, 1] := by
-    rw [rowWord_canonical]; decide
+    rw [rowWord_canonical _ (by decide)]; decide
   refine ⟨h, by rw [h]; decide, ?_⟩
   rw [TableauDominance.tableauSign, h]; decide
 
@@ -142,7 +142,7 @@ theorem example_3_2 :
 
 /-- `S = ::1/:12/:2/3` of shape `(3,3,2,1)/(2,1,1)`, E Example 4.4, given by its row word `32121`. -/
 def S44 : SkewTableau (yd [3, 3, 2, 1]) (yd [2, 1, 1]) :=
-  ofWord _ _ [(3, 0), (2, 1), (1, 1), (1, 2), (0, 2)] (by rw [cellsL_ofRowLens]; decide)
+  ofWord _ _ [(3, 0), (2, 1), (1, 1), (1, 2), (0, 2)] (by rw [cellsL_ofRowLens _ (by decide)]; decide)
     (by decide) [3, 2, 1, 2, 1] (by decide)
 
 /-- **E Example 4.4**: `Ŝ = 001/012/02/3` (row word `302012001`), `N^<(Ŝ) = 18`, so
@@ -151,7 +151,7 @@ theorem example_4_4 :
     S44.hatWord = [3, 0, 2, 0, 1, 2, 0, 0, 1] ∧ S44.Nlt = 18 ∧ S44.sign = 1 := by
   have h : S44.hatWord = [3, 0, 2, 0, 1, 2, 0, 0, 1] := by
     unfold SkewTableau.hatWord
-    rw [rowCells_ofRowLens]
+    rw [rowCells_ofRowLens _ (by decide)]
     decide
   have h2 : S44.Nlt = 18 := by unfold SkewTableau.Nlt; rw [h]; decide
   exact ⟨h, h2, by rw [SkewTableau.sign, h2]; norm_num⟩
@@ -166,11 +166,11 @@ theorem validW_single (p : ℕ × ℕ) {a : ℕ} (ha : 0 < a) : ValidW [p] [a] :
 
 /-- The skew tableau of shape `(1,1)/(1)` with entry `a`. -/
 def Scol (a : ℕ) (ha : 0 < a) : SkewTableau (yd [1, 1]) (yd [1]) :=
-  ofWord _ _ [(1, 0)] (by rw [cellsL_ofRowLens]; decide) (by decide) [a] (validW_single _ ha)
+  ofWord _ _ [(1, 0)] (by rw [cellsL_ofRowLens _ (by decide)]; decide) (by decide) [a] (validW_single _ ha)
 
 /-- The skew tableau of shape `(2)/(1)` with entry `a`. -/
 def Srow (a : ℕ) (ha : 0 < a) : SkewTableau (yd [2]) (yd [1]) :=
-  ofWord _ _ [(0, 1)] (by rw [cellsL_ofRowLens]; decide) (by decide) [a] (validW_single _ ha)
+  ofWord _ _ [(0, 1)] (by rw [cellsL_ofRowLens _ (by decide)]; decide) (by decide) [a] (validW_single _ ha)
 
 /-- **E Remark 4.5**: `(1,1)/(1)` and `(2)/(1)` both consist of a single box, but filled with
 equal entries the two skew tableaux have opposite signs: `Ŝ = 0/a` has `N^< = 1` and
@@ -179,23 +179,23 @@ theorem remark_4_5 (a : ℕ) (ha : 0 < a) :
     (Scol a ha).sign = -1 ∧ (Srow a ha).sign = 1 ∧ (Scol a ha).sign = -(Srow a ha).sign := by
   have h1 : (Scol a ha).hatWord = [a, 0] := by
     unfold SkewTableau.hatWord
-    rw [rowCells_ofRowLens, show rowCellsOf [1, 1] = [(1, 0), (0, 0)] by decide]
+    rw [rowCells_ofRowLens _ (by decide), show rowCellsOf [1, 1] = [(1, 0), (0, 0)] by decide]
     simp only [List.map_cons, List.map_nil]
     have he : ∀ i j, (Scol a ha).entry i j = wordEntry (yd [1, 1]) (yd [1]) [(1, 0)] [a] i j :=
       fun _ _ => rfl
     simp only [he]
     unfold wordEntry
-    rw [if_pos (by decide), if_neg (by decide), show idx [(1, 0)] (1, 0) = 0 by decide]
+    rw [ite_eq_left (by decide), ite_eq_right (by decide), show idx [(1, 0)] (1, 0) = 0 by decide]
     rfl
   have h2 : (Srow a ha).hatWord = [0, a] := by
     unfold SkewTableau.hatWord
-    rw [rowCells_ofRowLens, show rowCellsOf [2] = [(0, 0), (0, 1)] by decide]
+    rw [rowCells_ofRowLens _ (by decide), show rowCellsOf [2] = [(0, 0), (0, 1)] by decide]
     simp only [List.map_cons, List.map_nil]
     have he : ∀ i j, (Srow a ha).entry i j = wordEntry (yd [2]) (yd [1]) [(0, 1)] [a] i j :=
       fun _ _ => rfl
     simp only [he]
     unfold wordEntry
-    rw [if_neg (by decide), if_pos (by decide), show idx [(0, 1)] (0, 1) = 0 by decide]
+    rw [ite_eq_right (by decide), ite_eq_left (by decide), show idx [(0, 1)] (0, 1) = 0 by decide]
     rfl
   have e1 : (Scol a ha).sign = -1 := by
     rw [SkewTableau.sign, SkewTableau.Nlt, h1]
@@ -214,7 +214,7 @@ theorem example_4_13_tableau :
       (OddLRRule.exS2.Nlt : ℤ) = OddLRHive.Qtri (OddLRHive.AS 3 OddLRRule.exS2) := by
   have hA : OddLRHive.AS 3 OddLRRule.exS2 = OddLRHive.exA := by
     funext x
-    simp only [OddLRHive.AS, OddLRHive.SkewTab.rowCount, OddLRRule.shape321, rowLen_ofRowLens']
+    simp only [OddLRHive.AS, OddLRHive.SkewTab.rowCount, OddLRRule.shape321, rowLen_ofRowLens' [3, 2, 1] (by decide)]
     revert x
     decide
   have hlr : IsLR OddLRRule.exS2 := by
@@ -224,7 +224,7 @@ theorem example_4_13_tableau :
   refine ⟨hA, by rw [hA]; exact OddLRHive.example_4_13, ?_⟩
   refine OddLRHive.Nlt_eq_Qtri 3 _ hlr ?_
   by_contra h
-  push_neg at h
+  push Not at h
   exact absurd (YoungDiagram.mem_iff_lt_colLen.mpr h) (by decide)
 
 /-! ## `sign(x₁x₂x₃, x₁x₃x₂) = -1` -/
@@ -257,6 +257,6 @@ theorem signBetween_example :
     intro h
     have := Finsupp.single_injective _ h
     omega
-  rw [if_neg hne, if_pos (by rw [monomial_neg, neg_neg])]
+  rw [ite_eq_right hne, ite_eq_left (by rw [monomial_neg, neg_neg])]
 
 end OddMath.Frontier.OddLRExamples

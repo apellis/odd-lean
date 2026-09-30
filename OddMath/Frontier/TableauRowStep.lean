@@ -62,19 +62,20 @@ private theorem region_labels (n : ℕ) {μ : YoungDiagram}
   have hv := List.attach_map_val (l := rowCells μ) (f := id)
   have h := congrArg (fun l : List (ℕ × ℕ) =>
       (l.filter (fun c => p c.1)).map (fun c => T.entry c.1 c.2)) hv
-  simpa only [List.filter_map, List.map_map, Function.comp_def, List.map_id] using h
+  simpa only [List.filter_map, List.map_map, Function.comp_def, List.map_id, id] using h
 
 theorem rowCells_row (μ : YoungDiagram) (r : ℕ) :
     (rowCells μ).filter (fun p => decide (p.1 = r)) =
       (List.range (μ.rowLen r)).map (fun c => (r, c)) := by
-  letI : IsAntisymm (ℕ × ℕ) RowLE := ⟨by
+  let : Std.Antisymm RowLE := ⟨by
     intro a b hab hba
     rcases a with ⟨i,j⟩
     rcases b with ⟨k,l⟩
     unfold RowLE at hab hba
     simp only [Prod.mk.injEq]
     constructor <;> omega⟩
-  apply List.eq_of_perm_of_sorted (r := RowLE)
+  refine List.Perm.eq_of_pairwise' (r := RowLE) ?_ ?_ ?_
+  rotate_left 2
   · apply (List.perm_ext_iff_of_nodup ((rowCells_nodup μ).filter _)
       ((List.nodup_range).map (by intro a b h; simpa using h))).mpr
     intro p
@@ -106,8 +107,8 @@ theorem row_length (n : ℕ) (μ : YoungDiagram)
 
 theorem row_sorted (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) (r : ℕ) :
-    (row n T hT r).Sorted (· ≤ ·) := by
-  have hs : ((List.range (μ.rowLen r)).map (fun c => T.entry r c)).Sorted (· ≤ ·) := by
+    (row n T hT r).Pairwise (· ≤ ·) := by
+  have hs : ((List.range (μ.rowLen r)).map (fun c => T.entry r c)).Pairwise (· ≤ ·) := by
     apply List.pairwise_map.mpr
     apply (List.pairwise_lt_range (n := μ.rowLen r)).imp_of_mem
     intro a b _ hb hab
@@ -119,20 +120,20 @@ theorem row_sorted (n : ℕ) (μ : YoungDiagram)
   exact hs.imp (by intro a b h; exact Nat.le_of_add_le_add_right h)
 
 -- The three filters are consecutive only because the cells are RowLE-sorted.
-private theorem cells_split (l : List (ℕ × ℕ)) (r : ℕ) (hs : l.Sorted RowLE) :
+private theorem cells_split (l : List (ℕ × ℕ)) (r : ℕ) (hs : l.Pairwise RowLE) :
     l = l.filter (fun c => decide (r < c.1)) ++
       (l.filter (fun c => decide (c.1 = r)) ++
         l.filter (fun c => decide (c.1 < r))) := by
   induction l with
   | nil => rfl
   | cons c l ih =>
-    obtain ⟨ho, ht⟩ := List.sorted_cons.mp hs
+    obtain ⟨ho, ht⟩ := List.pairwise_cons.mp hs
     have hi := ih ht
     by_cases hb : r < c.1
     · have he : c.1 ≠ r := by omega
       have ha : ¬ c.1 < r := by omega
       simpa only [List.filter_cons, hb, he, ha, decide_true, decide_false,
-        Bool.true_eq, Bool.false_eq_true, if_true, if_false, List.cons_append] using
+        Bool.true_eq, Bool.false_eq_true, ite_true, ite_false, List.cons_append] using
         congrArg (List.cons c) hi
     · have hz : l.filter (fun d => decide (r < d.1)) = [] := by
         apply List.filter_eq_nil_iff.mpr
@@ -144,7 +145,7 @@ private theorem cells_split (l : List (ℕ × ℕ)) (r : ℕ) (hs : l.Sorted Row
       by_cases he : c.1 = r
       · have ha : ¬ c.1 < r := by omega
         simpa only [List.filter_cons, hb, he, ha, decide_true, decide_false,
-          Bool.true_eq, Bool.false_eq_true, if_true, if_false, List.cons_append,
+          Bool.true_eq, Bool.false_eq_true, ite_true, ite_false, List.cons_append,
           Nat.lt_irrefl, hz, List.nil_append] using congrArg (List.cons c) hi
       · have ha : c.1 < r := by omega
         have hez : l.filter (fun d => decide (d.1 = r)) = [] := by
@@ -155,7 +156,7 @@ private theorem cells_split (l : List (ℕ × ℕ)) (r : ℕ) (hs : l.Sorted Row
           simp only [decide_eq_true_eq]
           omega
         simpa only [List.filter_cons, hb, he, ha, decide_true, decide_false,
-          Bool.true_eq, Bool.false_eq_true, if_true, if_false, List.cons_append,
+          Bool.true_eq, Bool.false_eq_true, ite_true, ite_false, List.cons_append,
           hz, hez, List.nil_append] using congrArg (List.cons c) hi
 
 theorem rowFinWord_split (n : ℕ) (μ : YoungDiagram)
@@ -210,12 +211,12 @@ theorem topRow_step (n : ℕ) (μ : YoungDiagram)
     let l := below n T hT 0
     let w := row n T hT 0
     ((∀ x ∈ w, x ≤ a) ∧
-      (w ++ [a]).Sorted (· ≤ ·) ∧
+      (w ++ [a]).Pairwise (· ≤ ·) ∧
       rowPolynomial n T hT * PlacticEvaluation.tildeGenerator a =
         PlacticEvaluation.toSkew n (OddPlactic.word n (l ++ (w ++ [a])))) ∨
     (∃ (u : List (Fin n)) (b : Fin n) (v : List (Fin n)),
       w = u ++ (b :: v) ∧ (∀ x ∈ u, x ≤ a) ∧ a < b ∧
-      (u ++ (a :: v)).Sorted (· ≤ ·) ∧
+      (u ++ (a :: v)).Pairwise (· ≤ ·) ∧
       rowPolynomial n T hT * PlacticEvaluation.tildeGenerator a =
         (-1 : ℤ) ^ (u.length + v.length) •
           PlacticEvaluation.toSkew n
@@ -231,7 +232,7 @@ theorem topRow_step (n : ℕ) (μ : YoungDiagram)
     simp only [OddPlactic.word_append, OddPlactic.word_cons, OddPlactic.word_nil,
       mul_one, mul_assoc]
   | bump u b v hsplit hu hab =>
-    have hs' : (u ++ (b :: v)).Sorted (· ≤ ·) := hsplit ▸ hs
+    have hs' : (u ++ (b :: v)).Pairwise (· ≤ ·) := hsplit ▸ hs
     refine Or.inr ⟨u, b, v, hsplit, hu, hab,
       RowBump.row_bump_sorted n u v a b hs' hu hab, ?_⟩
     exact RowBump.rowPolynomial_bump n μ T hT (below n T hT 0) u v a b

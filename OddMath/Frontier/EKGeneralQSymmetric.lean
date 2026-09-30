@@ -56,10 +56,10 @@ theorem prod_X_eq_monomial {σ : Type*} [DecidableEq σ] (s : Multiset σ) :
   | empty => simp
   | cons a s ih =>
     rw [Multiset.map_cons, Multiset.prod_cons, ih, ← Multiset.singleton_add,
-      Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, X, monomial_mul, one_mul]
+      Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, X, monomial_mul_monomial, one_mul]
 
 theorem coeff_hsymm (N a : ℕ) (d : Fin N →₀ ℕ) :
-    coeff d (hsymm (Fin N) k a) = if (∑ j, d j) = a then 1 else 0 := by
+    (hsymm (Fin N) k a).coeff d = if (∑ j, d j) = a then 1 else 0 := by
   classical
   rw [hsymm, coeff_sum]
   simp only [prod_X_eq_monomial, coeff_monomial]
@@ -70,9 +70,9 @@ theorem coeff_hsymm (N a : ℕ) (d : Fin N →₀ ℕ) :
   split_ifs with hs
   · let s0 : Sym (Fin N) a := ⟨Finsupp.toMultiset d, hcard.trans hs⟩
     rw [Finset.sum_eq_single s0]
-    · rw [if_pos]; simp [s0]
+    · rw [ite_eq_left]; simp [s0]
     · intro s _ hne
-      rw [if_neg]
+      rw [ite_eq_right]
       intro he
       apply hne
       apply Sym.ext
@@ -81,7 +81,7 @@ theorem coeff_hsymm (N a : ℕ) (d : Fin N →₀ ℕ) :
     · simp
   · apply Finset.sum_eq_zero
     intro s _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     apply hs
     rw [← hcard, ← he, Multiset.toFinsupp_toMultiset]
@@ -144,7 +144,7 @@ theorem matForm_snoc (q : k) {r c : ℕ} (β : Fin (r + 1) → ℕ) (α : Fin c 
 /-- The coefficient of `x^d` in `φ(h_β)` is the number of `ℕ`-matrices with row sums `β` and
 column sums `d`. -/
 theorem coeff_phi_vWord (N : ℕ) {r : ℕ} (β : Fin r → ℕ) (d : Fin N →₀ ℕ) :
-    coeff d (phi k N (vWord k β)) = matForm (1 : k) β ⇑d := by
+    (phi k N (vWord k β)).coeff d = matForm (1 : k) β ⇑d := by
   induction r generalizing d with
   | zero =>
     rw [vWord_nil, map_one, coeff_one]
@@ -155,7 +155,7 @@ theorem coeff_phi_vWord (N : ℕ) {r : ℕ} (β : Fin r → ℕ) (d : Fin N →�
     rw [e, h0]
     by_cases hd : d = 0
     · subst hd; simp
-    · rw [if_neg (Ne.symm hd), if_neg]
+    · rw [ite_eq_right (Ne.symm hd), ite_eq_right]
       intro hs
       apply hd
       ext j
@@ -164,17 +164,17 @@ theorem coeff_phi_vWord (N : ℕ) {r : ℕ} (β : Fin r → ℕ) (d : Fin N →�
   | succ r ih =>
     rw [vWord_snoc, map_mul, phi_h, coeff_mul, matForm_snoc]
     have e1 : ∑ x ∈ Finset.antidiagonal d,
-        coeff x.1 (phi k N (vWord k (Fin.init β))) * coeff x.2 (hsymm (Fin N) k (β (Fin.last r))) =
+        (phi k N (vWord k (Fin.init β))).coeff x.1 * (hsymm (Fin N) k (β (Fin.last r))).coeff x.2 =
         ∑ x ∈ Finset.antidiagonal d, (fun a b =>
-          coeff (Finsupp.equivFunOnFinite.symm a) (phi k N (vWord k (Fin.init β))) *
-          coeff (Finsupp.equivFunOnFinite.symm b) (hsymm (Fin N) k (β (Fin.last r))))
+          (phi k N (vWord k (Fin.init β))).coeff (Finsupp.equivFunOnFinite.symm a) *
+          (hsymm (Fin N) k (β (Fin.last r))).coeff (Finsupp.equivFunOnFinite.symm b))
             ⇑x.1 ⇑x.2 := by
       apply Finset.sum_congr rfl
       intro x _
       simp
     rw [e1, sum_antidiagonal_eq_splits d (fun a b =>
-      coeff (Finsupp.equivFunOnFinite.symm a) (phi k N (vWord k (Fin.init β))) *
-        coeff (Finsupp.equivFunOnFinite.symm b) (hsymm (Fin N) k (β (Fin.last r))))]
+      (phi k N (vWord k (Fin.init β))).coeff (Finsupp.equivFunOnFinite.symm a) *
+        (hsymm (Fin N) k (β (Fin.last r))).coeff (Finsupp.equivFunOnFinite.symm b))]
     apply Finset.sum_congr rfl
     intro u _
     rw [ih, coeff_hsymm, matForm_single_row, one_pow, one_mul]
@@ -191,7 +191,7 @@ theorem sum_castLE {c c' : ℕ} (hc : c' ≤ c) (f : Fin c → ℕ) (hf : ∀ j 
   intro j _ hj
   apply hf
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   exact hj (Finset.mem_image.mpr ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
 /-- Deleting trailing zero columns does not change the set of margin matrices. -/
@@ -213,19 +213,19 @@ def matTrailingEquiv {r c c' : ℕ} (hc : c' ≤ c) (β : Fin r → ℕ) (α : F
     · funext i
       rw [← congrFun M.property.1 i]
       change (∑ j : Fin c, if h : j.val < c' then M i ⟨j.val, h⟩ else 0) = _
-      rw [sum_castLE hc _ (fun j hj => dif_neg (by omega))]
+      rw [sum_castLE hc _ (fun j hj => dite_eq_right (by omega))]
       apply Finset.sum_congr rfl
       intro j _
-      rw [dif_pos (show (Fin.castLE hc j).val < c' from j.isLt)]
+      rw [dite_eq_left (show (Fin.castLE hc j).val < c' from j.isLt)]
       rfl
     · funext j
       change (∑ i, if h : j.val < c' then M i ⟨j.val, h⟩ else 0) = α j
       by_cases hj : j.val < c'
-      · simp only [dif_pos hj]
+      · simp only [dite_eq_left hj]
         have := congrFun M.property.2 ⟨j.val, hj⟩
         rw [← h1] at this
         exact this
-      · simp only [dif_neg hj, Finset.sum_const_zero]
+      · simp only [dite_eq_right hj, Finset.sum_const_zero]
         exact (h2 j (by omega)).symm⟩
   left_inv M := by
     apply Subtype.ext
@@ -238,7 +238,7 @@ def matTrailingEquiv {r c c' : ℕ} (hc : c' ≤ c) (β : Fin r → ℕ) (α : F
     apply Subtype.ext
     funext i j
     change (if h : (Fin.castLE hc j).val < c' then M i ⟨(Fin.castLE hc j).val, h⟩ else 0) = M i j
-    rw [dif_pos (show (Fin.castLE hc j).val < c' from j.isLt)]
+    rw [dite_eq_left (show (Fin.castLE hc j).val < c' from j.isLt)]
     rfl
 
 theorem matForm_one_card {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) :
@@ -260,10 +260,10 @@ theorem matForm_expo {r : ℕ} (N : ℕ) (β : Fin r → ℕ) (μ : YoungDiagram
 
 /-- The Hall pairing: the coefficient of `x^μ` in `φ(x)` is `(x, h_μ)` at `q = 1`. -/
 theorem coeff_phi_expo (N : ℕ) (μ : YoungDiagram) (hN : μ.colLen 0 ≤ N) (x : L k) :
-    coeff (expo N μ) (phi k N x) = form (1 : k) x (hWord k μ.rowLens) := by
+    (phi k N x).coeff (expo N μ) = form (1 : k) x (hWord k μ.rowLens) := by
   induction x using basis_induction k (wordBasis k) with
   | hz => simp
-  | ha x y hx hy => rw [map_add, coeff_add, hx, hy, map_add, LinearMap.add_apply]
+  | ha x y hx hy => rw [map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hx, hy, map_add, LinearMap.add_apply]
   | hb w r =>
     rw [map_smul, coeff_smul, map_smul, LinearMap.smul_apply, ← vWord_parts,
       coeff_phi_vWord, matForm_expo N _ μ hN, hWord_rows, form_vWord]
@@ -292,20 +292,20 @@ theorem exists_antitone_perm {N : ℕ} (d : Fin N → ℕ) :
 
 theorem coeff_perm_of_symmetric {N : ℕ} {p : MvPolynomial (Fin N) k} (hp : p.IsSymmetric)
     (d : Fin N →₀ ℕ) (σ : Equiv.Perm (Fin N)) :
-    coeff d p = coeff (Finsupp.equivFunOnFinite.symm (d ∘ σ)) p := by
+    p.coeff d = p.coeff (Finsupp.equivFunOnFinite.symm (d ∘ σ)) := by
   have h := coeff_rename_mapDomain σ σ.injective p (Finsupp.equivFunOnFinite.symm (d ∘ σ))
   rw [hp σ] at h
   rw [← h]
   congr 1
   ext j
   have e : j = σ (σ.symm j) := (σ.apply_symm_apply j).symm
-  rw [e, Finsupp.mapDomain_apply σ.injective]
+  rw [e, Finsupp.mapDomain_apply_of_injective σ.injective]
   simp
 
 /-- A symmetric polynomial is determined by its coefficients at antitone exponents. -/
 theorem symmetric_ext {N : ℕ} {p p' : MvPolynomial (Fin N) k} (hp : p.IsSymmetric)
     (hp' : p'.IsSymmetric)
-    (h : ∀ g : Fin N →₀ ℕ, Antitone ⇑g → coeff g p = coeff g p') : p = p' := by
+    (h : ∀ g : Fin N →₀ ℕ, Antitone ⇑g → p.coeff g = p'.coeff g) : p = p' := by
   ext d
   obtain ⟨σ, hσ⟩ := exists_antitone_perm ⇑d
   rw [coeff_perm_of_symmetric hp d σ, coeff_perm_of_symmetric hp' d σ]
@@ -340,7 +340,6 @@ def ydOf {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) : YoungDiagram where
     have h2 : b' ≤ b := hle.2
     refine ⟨by omega, ?_⟩
     have := hg (show (⟨a', by omega⟩ : Fin N) ≤ ⟨a, h⟩ from h1)
-    simp only at this ⊢
     omega
 
 theorem mem_ydOf {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) (p : ℕ × ℕ) :
@@ -351,13 +350,13 @@ theorem rowLen_ydOf {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) (i : Fin N) 
     (ydOf g hg).rowLen i.val = g i := by
   apply le_antisymm
   · by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have := YoungDiagram.mem_iff_lt_rowLen.mpr hlt
     rw [mem_ydOf] at this
     obtain ⟨_, h⟩ := this
     exact lt_irrefl _ h
   · by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have hm : (i.val, (ydOf g hg).rowLen i.val) ∈ ydOf g hg := by
       rw [mem_ydOf]; exact ⟨i.isLt, hlt⟩
     exact lt_irrefl _ (YoungDiagram.mem_iff_lt_rowLen.mp hm)
@@ -365,7 +364,7 @@ theorem rowLen_ydOf {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) (i : Fin N) 
 theorem colLen_ydOf_le {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) :
     (ydOf g hg).colLen 0 ≤ N := by
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   have := YoungDiagram.mem_iff_lt_colLen.mpr hlt
   rw [mem_ydOf] at this
   obtain ⟨h, _⟩ := this
@@ -377,7 +376,7 @@ theorem expo_ydOf {N : ℕ} (g : Fin N →₀ ℕ) (hg : Antitone ⇑g) : expo N
 
 /-- For an antitone exponent `g`, the coefficient of `x^g` in `φ(x)` is `(x, h_{μ(g)})`. -/
 theorem coeff_phi_antitone (N : ℕ) (g : Fin N →₀ ℕ) (hg : Antitone ⇑g) (x : L k) :
-    coeff g (phi k N x) = form (1 : k) x (hWord k (ydOf ⇑g hg).rowLens) := by
+    (phi k N x).coeff g = form (1 : k) x (hWord k (ydOf ⇑g hg).rowLens) := by
   conv_lhs => rw [← expo_ydOf g hg]
   exact coeff_phi_expo N _ (colLen_ydOf_le _ hg) x
 
@@ -408,7 +407,7 @@ theorem rows_ydOf_le_one {N : ℕ} (g : Fin N → ℕ) (hg : Antitone g) :
 /-! ## Elementary symmetric polynomials -/
 
 theorem coeff_esymm (N m : ℕ) (d : Fin N →₀ ℕ) :
-    coeff d (esymm (Fin N) k m) = if (∀ j, d j ≤ 1) ∧ (∑ j, d j) = m then 1 else 0 := by
+    (esymm (Fin N) k m).coeff d = if (∀ j, d j ≤ 1) ∧ (∑ j, d j) = m then 1 else 0 := by
   classical
   rw [esymm_eq_sum_monomial, coeff_sum]
   simp only [coeff_monomial]
@@ -417,12 +416,12 @@ theorem coeff_esymm (N m : ℕ) (d : Fin N →₀ ℕ) :
     intro t
     constructor
     · rintro rfl j
-      simp [Finsupp.finset_sum_apply, Finsupp.single_apply]
+      simp [Finsupp.finsetSum_apply, Finsupp.single_apply]
     · intro h
       ext j
-      simp [Finsupp.finset_sum_apply, Finsupp.single_apply, h j]
+      simp [Finsupp.finsetSum_apply, Finsupp.single_apply, h j]
   by_cases hd : (∀ j, d j ≤ 1) ∧ (∑ j, d j) = m
-  · rw [if_pos hd]
+  · rw [ite_eq_left hd]
     let t0 := Finset.univ.filter (fun j => d j = 1)
     have ht0 : ∀ j, d j = if j ∈ t0 then 1 else 0 := by
       intro j
@@ -439,9 +438,9 @@ theorem coeff_esymm (N m : ℕ) (d : Fin N →₀ ℕ) :
       · simp [h]
       · simp [h]; omega
     rw [Finset.sum_eq_single t0]
-    · rw [if_pos ((hind t0).mpr ht0)]
+    · rw [ite_eq_left ((hind t0).mpr ht0)]
     · intro t _ hne
-      rw [if_neg]
+      rw [ite_eq_right]
       intro he
       apply hne
       ext j
@@ -450,10 +449,10 @@ theorem coeff_esymm (N m : ℕ) (d : Fin N →₀ ℕ) :
       by_cases hj : j ∈ t <;> by_cases hj' : j ∈ t0 <;> simp_all
     · intro h
       exact absurd (Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hcard⟩) h
-  · rw [if_neg hd]
+  · rw [ite_eq_right hd]
     apply Finset.sum_eq_zero
     intro t ht
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     apply hd
     have h1 := (hind t).mp he
@@ -502,8 +501,8 @@ theorem hsymm_isHomogeneous (N a : ℕ) : (hsymm (Fin N) k a).IsHomogeneous a :=
 theorem phi_word_isHomogeneous (N : ℕ) (w : W) :
     (phi k N (wordBasis k w)).IsHomogeneous (degree w) := by
   induction w using FreeMonoid.recOn with
-  | h0 => rw [wordBasis_one, map_one]; exact isHomogeneous_one _ _
-  | ih i w ih =>
+  | one => rw [wordBasis_one, map_one]; exact isHomogeneous_one _ _
+  | of_mul i w ih =>
     rw [wordBasis_mul, wordBasis_of, map_mul, phi_h, EKFreeCoproduct.degree_mul]
     exact (hsymm_isHomogeneous N (i + 1)).mul ih
 
@@ -518,8 +517,8 @@ theorem phi_degreeProj (N n : ℕ) (x : L k) :
       homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr
         (phi_word_isHomogeneous N w))]
     by_cases hw : degree w = n
-    · rw [if_pos hw, if_pos hw.symm]
-    · rw [if_neg hw, if_neg (Ne.symm hw), map_zero]
+    · rw [ite_eq_left hw, ite_eq_left hw.symm]
+    · rw [ite_eq_right hw, ite_eq_right (Ne.symm hw), map_zero]
 
 theorem degreeProj_idem (n : ℕ) (x : L k) : degreeProj k n (degreeProj k n x) = degreeProj k n x := by
   induction x using basis_induction k (wordBasis k) with
@@ -528,7 +527,7 @@ theorem degreeProj_idem (n : ℕ) (x : L k) : degreeProj k n (degreeProj k n x) 
   | hb w r =>
     rw [map_smul, map_smul, degreeProj_basis]
     split_ifs with h
-    · rw [degreeProj_basis, if_pos h]
+    · rw [degreeProj_basis, ite_eq_left h]
     · rw [map_zero]
 
 /-! ## Injectivity in degrees `n ≤ N` -/
@@ -561,8 +560,9 @@ theorem phi_injective_degree {n N : ℕ} (hn : n ≤ N) (x : L k) (hx : degreePr
         have := colLen_le_card (sortComp β).val
         rw [(sortComp β).2] at this
         omega
-      rw [← coeff_phi_expo N _ hc, h0, coeff_zero]
-    · rw [← hx, form_degreeProj, degreeProj_basis, if_neg hw, map_zero]
+      rw [← coeff_phi_expo N _ hc, h0, AddMonoidAlgebra.coeff_zero]
+      rfl
+    · rw [← hx, form_degreeProj, degreeProj_basis, ite_eq_right hw, map_zero]
 
 /-! ## The induced map on `Λ₁` -/
 
@@ -590,7 +590,7 @@ theorem ek_q1_symmetric_iso {n N : ℕ} (hn : n ≤ N) :
     refine ⟨degreeProj k n y, degreeProj_idem n y, ?_⟩
     have hy' : phi k N y = p := hy
     rw [phiBar_pi, phi_degreeProj, hy']
-    rw [homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hph), if_pos rfl]
+    rw [homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hph), ite_eq_left rfl]
   · intro z
     obtain ⟨x, rfl⟩ := piQ_surjective (1 : k) z
     exact phi_isSymmetric N x
@@ -604,7 +604,7 @@ def partOf {n : ℕ} (μ : DegreeShape n) : n.Partition where
   parts_sum := by rw [Multiset.sum_coe, EKIntegralBases.rowLens_sum, μ.2]
 
 theorem coeff_msymm {N n : ℕ} (p : n.Partition) (d : Fin N →₀ ℕ) :
-    coeff d (msymm (Fin N) k p) =
+    (msymm (Fin N) k p).coeff d =
       if h : Multiset.card (Finsupp.toMultiset d) = n then
         (if Nat.Partition.ofSym (⟨Finsupp.toMultiset d, h⟩ : Sym (Fin N) n) = p then 1 else 0)
       else 0 := by
@@ -614,9 +614,9 @@ theorem coeff_msymm {N n : ℕ} (p : n.Partition) (d : Fin N →₀ ℕ) :
   split_ifs with h hp
   · let s0 : {a : Sym (Fin N) n // Nat.Partition.ofSym a = p} := ⟨⟨_, h⟩, hp⟩
     rw [Finset.sum_eq_single s0]
-    · rw [if_pos]; simp [s0]
+    · rw [ite_eq_left]; simp [s0]
     · intro s _ hne
-      rw [if_neg]
+      rw [ite_eq_right]
       intro he
       apply hne
       apply Subtype.ext
@@ -626,7 +626,7 @@ theorem coeff_msymm {N n : ℕ} (p : n.Partition) (d : Fin N →₀ ℕ) :
     · simp
   · apply Finset.sum_eq_zero
     intro s _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     apply hp
     have : (⟨Finsupp.toMultiset d, h⟩ : Sym (Fin N) n) = s.1 := by
@@ -637,7 +637,7 @@ theorem coeff_msymm {N n : ℕ} (p : n.Partition) (d : Fin N →₀ ℕ) :
     exact s.2
   · apply Finset.sum_eq_zero
     intro s _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     apply h
     rw [← he, Multiset.toFinsupp_toMultiset]
@@ -657,7 +657,7 @@ theorem support_antitone {N : ℕ} (g : Fin N →₀ ℕ) (hg : Antitone ⇑g) :
   · rintro ⟨i, rfl⟩
     have hm : (i.val, 0) ∈ ydOf ⇑g hg := YoungDiagram.mem_iff_lt_colLen.mpr i.isLt
     have := YoungDiagram.mem_iff_lt_rowLen.mp hm
-    simp only [Fin.coe_castLE]
+    simp only [Fin.val_castLE]
     omega
 
 /-- The multiset of nonzero entries of an antitone exponent is the list of its row lengths. -/
@@ -689,8 +689,8 @@ theorem ydOf_eq_iff {N n : ℕ} (g : Fin N →₀ ℕ) (hg : Antitone ⇑g)
     rw [parts_ofSym_antitone g hg h] at hp
     change (↑(ydOf ⇑g hg).rowLens : Multiset ℕ) = ↑μ.val.rowLens at hp
     have hl : (ydOf ⇑g hg).rowLens = μ.val.rowLens :=
-      List.eq_of_perm_of_sorted (Multiset.coe_eq_coe.mp hp) (YoungDiagram.rowLens_sorted _)
-        (YoungDiagram.rowLens_sorted _)
+      List.Perm.eq_of_pairwise' (YoungDiagram.rowLens_sorted _).pairwise
+        (YoungDiagram.rowLens_sorted _).pairwise (Multiset.coe_eq_coe.mp hp)
     apply YoungDiagram.equivListRowLens.injective
     exact Subtype.ext hl
   · intro he
@@ -715,8 +715,8 @@ theorem phi_dualOne (N : ℕ) {n : ℕ} (μ : DegreeShape n) :
   by_cases hν : ydOf ⇑g hg = μ.val
   · have hc : Multiset.card (Finsupp.toMultiset g) = n := by
       rw [card_toMultiset_antitone g hg, hν, μ.2]
-    rw [if_pos hν, dif_pos hc, if_pos ((ydOf_eq_iff g hg hc μ).mpr hν)]
-  · rw [if_neg hν]
+    rw [ite_eq_left hν, dite_eq_left hc, ite_eq_left ((ydOf_eq_iff g hg hc μ).mpr hν)]
+  · rw [ite_eq_right hν]
     split_ifs with hc h2
     · exact absurd ((ydOf_eq_iff g hg hc μ).mp h2) hν
     · rfl
@@ -735,18 +735,18 @@ theorem phi_eq_sum_msymm (N n : ℕ) (x : L k) (hx : degreeProj k n x = x) :
   by_cases hc : Multiset.card (Finsupp.toMultiset g) = n
   · have hν : (ydOf ⇑g hg).card = n := by rw [← card_toMultiset_antitone g hg, hc]
     rw [Finset.sum_eq_single ⟨ydOf ⇑g hg, hν⟩]
-    · rw [dif_pos hc, if_pos ((ydOf_eq_iff g hg hc _).mpr rfl), mul_one]
+    · rw [dite_eq_left hc, ite_eq_left ((ydOf_eq_iff g hg hc _).mpr rfl), mul_one]
     · intro μ _ hne
-      rw [dif_pos hc, if_neg, mul_zero]
+      rw [dite_eq_left hc, ite_eq_right, mul_zero]
       intro he
       apply hne
       exact Subtype.ext ((ydOf_eq_iff g hg hc μ).mp he).symm
     · simp
-  · rw [Finset.sum_eq_zero (fun μ _ => by rw [dif_neg hc, mul_zero])]
+  · rw [Finset.sum_eq_zero (fun μ _ => by rw [dite_eq_right hc, mul_zero])]
     rw [← hx, form_degreeProj, ← partWord_value]
     have hd : degree (partWord (ydOf ⇑g hg).rowLens) ≠ n := by
       rw [partWord_degree, EKIntegralBases.rowLens_sum, ← card_toMultiset_antitone g hg]
       exact hc
-    rw [degreeProj_basis, if_neg hd, map_zero]
+    rw [degreeProj_basis, ite_eq_right hd, map_zero]
 
 end OddMath.Frontier.EKGeneralQ

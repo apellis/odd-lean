@@ -69,7 +69,7 @@ theorem bounded_single {n : ℕ} (a : Exp n) (c : ℤ) : Bounded (monomial a c) 
   intro b hb
   by_cases h : a = b
   · subst b; exact le_rfl
-  · exact False.elim (hb (Finsupp.single_eq_of_ne h))
+  · exact False.elim (hb (Finsupp.single_eq_of_ne (Ne.symm h)))
 
 theorem bounded_add {n : ℕ} {f g : SkewPolynomial n} {a : Exp n}
     (hf : Bounded f a) (hg : Bounded g a) : Bounded (f+g) a := by
@@ -109,7 +109,7 @@ theorem mul_coeff {n : ℕ} (f g : SkewPolynomial n) (w : Exp n) :
       if u+v=w then f u*g v*OddMath.skewSign u v else 0 := by
   classical
   change (f.sum fun u r => g.sum fun v s => monomial (u+v) (r*s*OddMath.skewSign u v)) w = _
-  simp only [Finsupp.sum, Finsupp.finset_sum_apply, monomial, Finsupp.single_apply]
+  simp only [Finsupp.sum, Finsupp.finsetSum_apply, monomial, Finsupp.single_apply]
 
 theorem add_eq_of_bounded {n : ℕ} {u v a b : Exp n}
     (hu : toLex u ≤ toLex a) (hv : toLex v ≤ toLex b) (he : u+v=a+b) : u=a ∧ v=b := by
@@ -133,20 +133,20 @@ theorem leading_mul {n : ℕ} {f g : SkewPolynomial n} {a b : Exp n} {c d : ℤ}
   · rw [Finset.sum_eq_single b]
     · simp [hf.2, hg.2]
     · intro v hv hne
-      apply if_neg
+      apply ite_eq_right
       intro he
       exact hne (add_left_cancel he)
     · intro hb
-      simp [Finsupp.not_mem_support_iff.mp hb, ← hg.2]
+      simp [Finsupp.notMem_support_iff.mp hb]
   · intro u hu hne
     apply Finset.sum_eq_zero
     intro v hv
-    apply if_neg
+    apply ite_eq_right
     intro he
     exact hne (add_eq_of_bounded (hf.1 u (Finsupp.mem_support_iff.mp hu))
       (hg.1 v (Finsupp.mem_support_iff.mp hv)) he).1
   · intro ha
-    simp [Finsupp.not_mem_support_iff.mp ha, ← hf.2]
+    simp [Finsupp.notMem_support_iff.mp ha]
 
 /-- Squares commute with every generator, using only distinct anticommutation. -/
 theorem square_comm_generator {n : ℕ} (i j : Fin n) :
@@ -302,14 +302,14 @@ theorem s_coeff_nonzero {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
   conv_lhs => rw [hf]
   rw [map_sum]
   change (∑ b ∈ f.support, s i (monomial b (f b))) (a ∘ σ) ≠ 0
-  rw [Finsupp.finset_sum_apply, Finset.sum_eq_single a]
+  rw [Finsupp.finsetSum_apply, Finset.sum_eq_single a]
   · rw [he, Finsupp.single_eq_same]
     exact mul_ne_zero hc0 ha
   · intro b hb hba
     obtain ⟨d,_,hd⟩ := s_monomial i b (f b)
     rw [hd]
     apply Finsupp.single_eq_of_ne
-    exact fun h => hba (inj h)
+    exact fun h => hba (inj h.symm)
   · intro h
     exact False.elim (h (Finsupp.mem_support_iff.mpr ha))
 
@@ -343,7 +343,7 @@ theorem leading_difference {n : ℕ} (i j : Fin n) (h : i < j) :
     exact bounded_mono (bounded_single _ _) hji.le
   · change (Finsupp.single (expSingle i) (1:ℤ) -
       Finsupp.single (expSingle j) 1 : SkewPolynomial n) (expSingle i) = 1
-    simp [Finsupp.single_apply, hne]
+    simp [hne]
 
 /-- The intertwiner bounds the genuine signed swap by the same leading exponent.
 This does not assert that a kernel polynomial is fixed by the swap. -/
@@ -396,7 +396,7 @@ theorem strictMono_val_ge {n k : ℕ} (f : Fin k → Fin n) (hf : StrictMono f)
     induction j using Fin.induction with
     | zero => exact Nat.zero_le _
     | succ j ih =>
-      have h := hf (Fin.castSucc_lt_succ j)
+      have h := hf (Fin.castSucc_lt_succ (i := j))
       change (f j.castSucc).val < (f j.succ).val at h
       change j.val ≤ (f j.castSucc).val at ih
       change j.val + 1 ≤ _
@@ -408,9 +408,9 @@ theorem exponents_ofFn_injective {n k : ℕ} (f : Fin k → Fin n)
   classical
   change (List.ofFn f).count j = _
   by_cases h : j ∈ Set.range f
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     exact List.count_eq_one_of_mem (List.nodup_ofFn.mpr hf) (List.mem_ofFn.mpr h)
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     exact List.count_eq_zero.mpr (fun hm => h (List.mem_ofFn.mp hm))
 
 theorem exponents_initial {n k : ℕ} (hk : k ≤ n) :
@@ -431,12 +431,12 @@ theorem strict_exponents_lt {n k : ℕ} (hk : k ≤ n) (f : Fin k → Fin n)
     toLex (PbwRealization.exponents (List.ofFn f)) < toLex (prefixExp n k) := by
   classical
   have hex : ∃ j, f j ≠ Fin.castLE hk j := Function.ne_iff.mp hne
-  obtain ⟨j,hj,hmin⟩ := (Set.toFinite {j | f j ≠ Fin.castLE hk j}).exists_minimal_wrt
-    id {j | f j ≠ Fin.castLE hk j} (by simpa using hex)
+  obtain ⟨j,hj,hmin⟩ := (Set.toFinite {j | f j ≠ Fin.castLE hk j}).exists_minimal
+    (by obtain ⟨j, hj⟩ := hex; exact ⟨j, hj⟩)
   have before : ∀ r, r < j → f r = Fin.castLE hk r := by
     intro r hr
     by_contra h
-    exact (ne_of_lt hr) (hmin r h hr.le).symm
+    exact (not_le_of_gt hr) (hmin h hr.le)
   have hjlt : j.val < (f j).val := by
     have hle := strictMono_val_ge f hf j
     have hne' : j.val ≠ (f j).val := by
@@ -449,7 +449,7 @@ theorem strict_exponents_lt {n k : ℕ} (hk : k ≤ n) (f : Fin k → Fin n)
     let r : Fin k := ⟨t.val, lt_trans htj j.isLt⟩
     have hrj : r < j := htj
     have hfr : f r = t := (before r hrj).trans (Fin.ext rfl)
-    rw [exponents_ofFn_injective _ hf.injective, if_pos ⟨r,hfr⟩]
+    rw [exponents_ofFn_injective _ hf.injective, ite_eq_left ⟨r,hfr⟩]
     simp [prefixExp, lt_trans htj j.isLt]
   · change PbwRealization.exponents (List.ofFn f) (Fin.castLE hk j) <
       prefixExp n k (Fin.castLE hk j)
@@ -464,7 +464,7 @@ theorem strict_exponents_lt {n k : ℕ} (hk : k ≤ n) (f : Fin k → Fin n)
         rw [hr] at hh
         change (f j).val ≤ j.val at hh
         omega
-    rw [exponents_ofFn_injective _ hf.injective, if_neg hnot]
+    rw [exponents_ofFn_injective _ hf.injective, ite_eq_right hnot]
     simp [prefixExp]
 
 /-- Any actual tilde word is a unit-coefficient monomial at its multiplicities. -/
@@ -502,31 +502,31 @@ theorem elementary_leading (n k : ℕ) (hk : k ≤ n) :
   obtain ⟨c,hc,he⟩ := tildeWord_monomial (List.ofFn f₀)
   rw [exponents_initial hk] at he
   have he' : (List.ofFn (fun i => PlacticEvaluation.tildeGenerator (f₀ i))).prod =
-      monomial (prefixExp n k) c := by simpa only [List.map_ofFn] using he
+      monomial (prefixExp n k) c := by simpa only [List.map_ofFn, Function.comp_def] using he
   refine ⟨c,hc,?_,?_⟩
   · unfold elementaryPoly
     apply bounded_sum
     intro f _
     by_cases hf : StrictMono f
-    · rw [if_pos hf]
+    · rw [ite_eq_left hf]
       by_cases hh : f=f₀
       · subst f; rw [he']; exact bounded_single _ _
       · obtain ⟨d,_,hd⟩ := tildeWord_monomial (List.ofFn f)
         simp only [List.map_ofFn, Function.comp_def] at hd
         rw [hd]
         exact bounded_mono (bounded_single _ _) (strict_exponents_lt hk f hf hh).le
-    · rw [if_neg hf]; exact bounded_zero _
+    · rw [ite_eq_right hf]; exact bounded_zero _
   · unfold elementaryPoly
-    rw [Finsupp.finset_sum_apply, Finset.sum_eq_single f₀]
-    · rw [if_pos hf₀,he',Finsupp.single_eq_same]
+    rw [Finsupp.finsetSum_apply, Finset.sum_eq_single f₀]
+    · rw [ite_eq_left hf₀,he',Finsupp.single_eq_same]
     · intro f _ hne
       by_cases hf : StrictMono f
-      · rw [if_pos hf]
+      · rw [ite_eq_left hf]
         obtain ⟨d,_,hd⟩ := tildeWord_monomial (List.ofFn f)
         simp only [List.map_ofFn, Function.comp_def] at hd
         rw [hd]
         apply Finsupp.single_eq_of_ne
-        exact fun h => (ne_of_lt (strict_exponents_lt hk f hf hne)) (congrArg toLex h)
+        exact fun h => (ne_of_lt (strict_exponents_lt hk f hf hne)) (congrArg toLex h.symm)
       · simp [hf]
     · simp
 
@@ -604,8 +604,8 @@ theorem elementaryWord_leading (n : ℕ) (a : Exp n) (ha : Antitone a) :
       funext j
       simp only [Pi.add_apply,prefixExp,b]
       by_cases hj : 0 < a j
-      · rw [if_pos ((hk j).mpr hj)]; omega
-      · rw [if_neg (fun hh => hj ((hk j).mp hh))]; omega
+      · rw [ite_eq_left ((hk j).mpr hj)]; omega
+      · rw [ite_eq_right (fun hh => hj ((hk j).mp hh))]; omega
     obtain ⟨w,hw,hew,c,hc,hl⟩ := ih _ hsum b hba rfl
     obtain ⟨e,he,hle⟩ := elementary_leading n k hkn
     refine ⟨k::w,?_,?_, e*c*OddMath.skewSign (prefixExp n k) b,?_,?_⟩

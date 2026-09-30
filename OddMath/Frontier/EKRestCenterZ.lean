@@ -68,7 +68,7 @@ theorem phi22_hshape (j : Fin 5) : phi22 (EKPartitionSpanning.hPartition (hshape
   rw [phi22, LinearMap.flip_apply, h_m]
   by_cases hj : j = 2
   · subst hj; simp
-  · rw [if_neg (fun h => hj (inj4 h)), if_neg hj]
+  · rw [ite_eq_right (fun h => hj (inj4 h)), ite_eq_right hj]
 
 theorem p_two_sq : EKCenterPower.p 2 = EKElementaryQuotient.h 1 * EKElementaryQuotient.h 1 :=
   EKCenterPowerControls.p2_fixture

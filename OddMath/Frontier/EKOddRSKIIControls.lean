@@ -27,6 +27,7 @@ Bridge C's single-row and zero-row lemmas reproduce private proofs of the inheri
 `EKMixedPairing`.  Finite checks are controls only.
 -/
 noncomputable section
+set_option maxRecDepth 10000
 set_option maxHeartbeats 4000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKOddRSKIIControls
@@ -94,13 +95,13 @@ private theorem map_find : ∀ (cs : List (ℕ × ℕ)) (w : List ℕ),
   | _ :: _, [], _, h => by simp at h
   | c :: cs, a :: w, hn, hl => by
     rw [List.nodup_cons] at hn
-    simp only [List.map_cons, find, if_pos rfl]
+    simp only [List.map_cons, find]
     congr 1
     conv_rhs => rw [← map_find cs w hn.2 (by simpa using hl)]
     apply List.map_congr_left
     intro p hp
     have : p ≠ c := fun h => hn.1 (h ▸ hp)
-    simp [find, this]
+    simp [this]
 
 private theorem mem_zip_map : ∀ (cs : List (ℕ × ℕ)) (e : ℕ × ℕ → ℕ) (x : (ℕ × ℕ) × ℕ),
     x ∈ cs.zip (cs.map e) → x.1 ∈ cs ∧ x.2 = e x.1
@@ -119,23 +120,23 @@ private noncomputable def ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validF
   row_weak' := by
     intro i j1 j2 hj hp
     have hp1 : (i, j1) ∈ μ := μ.up_left_mem le_rfl hj.le hp
-    simp only [if_pos hp1, if_pos hp]
+    simp only [ite_eq_left hp1, ite_eq_left hp]
     have m1 := find_mem_zip (rowCells μ) w (i, j1) hv.1 ((mem_rowCells μ _).2 hp1)
     have m2 := find_mem_zip (rowCells μ) w (i, j2) hv.1 ((mem_rowCells μ _).2 hp)
     exact ((hv.2 _ m1).2 _ m2).1 rfl hj
   col_strict' := by
     intro i1 i2 j hi hp
     have hp1 : (i1, j) ∈ μ := μ.up_left_mem hi.le le_rfl hp
-    simp only [if_pos hp1, if_pos hp]
+    simp only [ite_eq_left hp1, ite_eq_left hp]
     have m1 := find_mem_zip (rowCells μ) w (i1, j) hv.1 ((mem_rowCells μ _).2 hp1)
     have m2 := find_mem_zip (rowCells μ) w (i2, j) hv.1 ((mem_rowCells μ _).2 hp)
     exact ((hv.2 _ m1).2 _ m2).2 rfl hi
   zeros' := by
     intro i j hp
-    exact if_neg hp
+    exact ite_eq_right hp
   positive := by
     intro i j hp
-    simp only [if_pos hp]
+    simp only [ite_eq_left hp]
     exact (hv.2 _ (find_mem_zip (rowCells μ) w (i, j) hv.1 ((mem_rowCells μ _).2 hp))).1
 
 private theorem rowWord_ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validFill (rowCells μ) w) :
@@ -146,7 +147,7 @@ private theorem rowWord_ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validFil
   intro p hp
   have hp' : (p.1, p.2) ∈ μ := by simpa using (mem_rowCells μ p).1 hp
   change (if (p.1, p.2) ∈ μ then find (rowCells μ) w (p.1, p.2) else 0) = _
-  rw [if_pos hp']
+  rw [ite_eq_left hp']
 
 private theorem canonical_rowWord (μ : YoungDiagram) :
     rowWord (canonicalTableau μ) = (rowCells μ).map (fun p => p.1 + 1) := by
@@ -207,14 +208,14 @@ theorem signedKostka_eq_KW (lam mu : YoungDiagram) :
 
 /-! ## Exhaustive shapes, d ≤ 4 -/
 
-instance : IsAntisymm (ℕ × ℕ) RowLE := ⟨by
+instance : Std.Antisymm RowLE := ⟨by
   intro a b h1 h2
   unfold RowLE at h1 h2
   exact Prod.ext (by omega) (by omega)⟩
 
-theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Sorted RowLE)
+theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Pairwise RowLE)
     (hn : l.Nodup) (hc : l.toFinset = μ.cells) : rowCells μ = l := by
-  apply List.eq_of_perm_of_sorted _ (rowCells_sorted μ) hs
+  apply List.Perm.eq_of_pairwise' (rowCells_sorted μ) hs
   apply List.perm_of_nodup_nodup_toFinset_eq (rowCells_nodup μ) hn
   ext p
   simp [hc]
@@ -222,7 +223,7 @@ theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Sorte
 /-! ## Exhaustive shapes, d ≤ 4 (literal Young diagrams from row lengths) -/
 
 noncomputable def sh0 : DegreeShape 0 :=
-  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh0_rows : sh0.val.rowLens = [] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh0_cells : rowCells sh0.val = [] :=
@@ -235,7 +236,7 @@ theorem sh0_signs : transposeChoose sh0.val = 0 ∧ evenParts sh0.val.rowLens = 
   unfold transposeChoose; rw [sh0_transpose, sh0_rows]; decide
 
 noncomputable def sh1 : DegreeShape 1 :=
-  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh1_rows : sh1.val.rowLens = [1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh1_cells : rowCells sh1.val = [(0,0)] :=
@@ -248,7 +249,7 @@ theorem sh1_signs : transposeChoose sh1.val = 0 ∧ evenParts sh1.val.rowLens = 
   unfold transposeChoose; rw [sh1_transpose, sh1_rows]; decide
 
 noncomputable def sh2 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh2_rows : sh2.val.rowLens = [2] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh2_cells : rowCells sh2.val = [(0,0), (0,1)] :=
@@ -261,7 +262,7 @@ theorem sh2_signs : transposeChoose sh2.val = 0 ∧ evenParts sh2.val.rowLens = 
   unfold transposeChoose; rw [sh2_transpose, sh2_rows]; decide
 
 noncomputable def sh11 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh11_rows : sh11.val.rowLens = [1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh11_cells : rowCells sh11.val = [(1,0), (0,0)] :=
@@ -274,7 +275,7 @@ theorem sh11_signs : transposeChoose sh11.val = 1 ∧ evenParts sh11.val.rowLens
   unfold transposeChoose; rw [sh11_transpose, sh11_rows]; decide
 
 noncomputable def sh3 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [3] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [3] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh3_rows : sh3.val.rowLens = [3] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh3_cells : rowCells sh3.val = [(0,0), (0,1), (0,2)] :=
@@ -287,7 +288,7 @@ theorem sh3_signs : transposeChoose sh3.val = 0 ∧ evenParts sh3.val.rowLens = 
   unfold transposeChoose; rw [sh3_transpose, sh3_rows]; decide
 
 noncomputable def sh21 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [2,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh21_rows : sh21.val.rowLens = [2,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh21_cells : rowCells sh21.val = [(1,0), (0,0), (0,1)] :=
@@ -300,7 +301,7 @@ theorem sh21_signs : transposeChoose sh21.val = 1 ∧ evenParts sh21.val.rowLens
   unfold transposeChoose; rw [sh21_transpose, sh21_rows]; decide
 
 noncomputable def sh111 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh111_rows : sh111.val.rowLens = [1,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh111_cells : rowCells sh111.val = [(2,0), (1,0), (0,0)] :=
@@ -313,7 +314,7 @@ theorem sh111_signs : transposeChoose sh111.val = 3 ∧ evenParts sh111.val.rowL
   unfold transposeChoose; rw [sh111_transpose, sh111_rows]; decide
 
 noncomputable def sh4 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh4_rows : sh4.val.rowLens = [4] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh4_cells : rowCells sh4.val = [(0,0), (0,1), (0,2), (0,3)] :=
@@ -326,7 +327,7 @@ theorem sh4_signs : transposeChoose sh4.val = 0 ∧ evenParts sh4.val.rowLens = 
   unfold transposeChoose; rw [sh4_transpose, sh4_rows]; decide
 
 noncomputable def sh31 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [3,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [3,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh31_rows : sh31.val.rowLens = [3,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh31_cells : rowCells sh31.val = [(1,0), (0,0), (0,1), (0,2)] :=
@@ -339,7 +340,7 @@ theorem sh31_signs : transposeChoose sh31.val = 1 ∧ evenParts sh31.val.rowLens
   unfold transposeChoose; rw [sh31_transpose, sh31_rows]; decide
 
 noncomputable def sh22 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [2,2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh22_rows : sh22.val.rowLens = [2,2] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh22_cells : rowCells sh22.val = [(1,0), (1,1), (0,0), (0,1)] :=
@@ -352,7 +353,7 @@ theorem sh22_signs : transposeChoose sh22.val = 2 ∧ evenParts sh22.val.rowLens
   unfold transposeChoose; rw [sh22_transpose, sh22_rows]; decide
 
 noncomputable def sh211 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [2,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh211_rows : sh211.val.rowLens = [2,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh211_cells : rowCells sh211.val = [(2,0), (1,0), (0,0), (0,1)] :=
@@ -365,7 +366,7 @@ theorem sh211_signs : transposeChoose sh211.val = 3 ∧ evenParts sh211.val.rowL
   unfold transposeChoose; rw [sh211_transpose, sh211_rows]; decide
 
 noncomputable def sh1111 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh1111_rows : sh1111.val.rowLens = [1,1,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh1111_cells : rowCells sh1111.val = [(3,0), (2,0), (1,0), (0,0)] :=
@@ -470,7 +471,7 @@ theorem shape_eq_iff {d : ℕ} {μ ν : DegreeShape d} : μ = ν ↔ μ.val.rowL
   ⟨fun h => h ▸ rfl, fun h => Subtype.ext (YoungDiagram.equivListRowLens.injective (Subtype.ext h))⟩
 
 /-- Every partition list of size at most four, with no enumeration hypothesis. -/
-theorem small_partition (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x)
+theorem small_partition (l : List ℕ) (hs : l.Pairwise (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x)
     (hl : l.sum ≤ 4) :
     l = [] ∨ l = [1] ∨ l = [2] ∨ l = [1,1] ∨ l = [3] ∨ l = [2,1] ∨ l = [1,1,1] ∨
       l = [4] ∨ l = [3,1] ∨ l = [2,2] ∨ l = [2,1,1] ∨ l = [1,1,1,1] := by
@@ -481,17 +482,17 @@ theorem small_partition (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x �
     have : a ≤ 4 := by omega
     interval_cases a <;> simp
   · have ha := hp a (by simp); have hb := hp b (by simp)
-    simp only [List.sorted_cons, List.mem_cons, List.mem_singleton, forall_eq_or_imp,
-      forall_eq, List.not_mem_nil, false_implies, implies_true, and_true,
-      List.sorted_nil] at hs
+    simp only [List.pairwise_cons, List.mem_cons, forall_eq_or_imp,
+      List.not_mem_nil, false_implies, implies_true, and_true,
+      List.Pairwise.nil] at hs
     simp only [List.sum_cons, List.sum_nil] at hl
     have : a ≤ 4 := by omega
     have : b ≤ 4 := by omega
     interval_cases a <;> interval_cases b <;> simp_all
   · have ha := hp a (by simp); have hb := hp b (by simp); have hc := hp c (by simp)
-    simp only [List.sorted_cons, List.mem_cons, List.mem_singleton, forall_eq_or_imp,
-      forall_eq, List.not_mem_nil, false_implies, implies_true, and_true,
-      List.sorted_nil] at hs
+    simp only [List.pairwise_cons, List.mem_cons, forall_eq_or_imp,
+      List.not_mem_nil, false_implies, implies_true, and_true,
+      List.Pairwise.nil] at hs
     simp only [List.sum_cons, List.sum_nil] at hl
     have : a ≤ 4 := by omega
     have : b ≤ 4 := by omega
@@ -518,7 +519,7 @@ theorem sum_list {d : ℕ} {M : Type*} [AddCommMonoid M] (l : List (DegreeShape 
 
 theorem exhaust0 (μ : DegreeShape 0) : μ = sh0 := by
   have hs : μ.val.rowLens.sum = 0 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -535,7 +536,7 @@ theorem sum0 {M : Type*} [AddCommMonoid M] (f : DegreeShape 0 → M) :
 
 theorem exhaust1 (μ : DegreeShape 1) : μ = sh1 := by
   have hs : μ.val.rowLens.sum = 1 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -552,7 +553,7 @@ theorem sum1 {M : Type*} [AddCommMonoid M] (f : DegreeShape 1 → M) :
 
 theorem exhaust2 (μ : DegreeShape 2) : μ = sh2 ∨ μ = sh11 := by
   have hs : μ.val.rowLens.sum = 2 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -569,7 +570,7 @@ theorem sum2 {M : Type*} [AddCommMonoid M] (f : DegreeShape 2 → M) :
 
 theorem exhaust3 (μ : DegreeShape 3) : μ = sh3 ∨ μ = sh21 ∨ μ = sh111 := by
   have hs : μ.val.rowLens.sum = 3 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -586,7 +587,7 @@ theorem sum3 {M : Type*} [AddCommMonoid M] (f : DegreeShape 3 → M) :
 
 theorem exhaust4 (μ : DegreeShape 4) : μ = sh4 ∨ μ = sh31 ∨ μ = sh22 ∨ μ = sh211 ∨ μ = sh1111 := by
   have hs : μ.val.rowLens.sum = 4 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -624,7 +625,7 @@ theorem ms_singleton {c : ℕ} (m : ℕ) (b : Bool)
       if m = ∑ j, α j then ∏ j, cell b (ε j) (α j) else 0 := by
   classical
   by_cases h : m = ∑ j, α j
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     let N0 : Mat (fun _ : Fin 1 => m) α := ⟨fun _ j => α j, by
       constructor
       · funext i; exact h.symm
@@ -639,7 +640,7 @@ theorem ms_singleton {c : ℕ} (m : ℕ) (b : Bool)
     · simp [N0, matrixWeight, crossing]
     · intro N _ hne; exact (hne (unique N)).elim
     · simp
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     exact matrixSum_mismatch _ _ _ _ (by simpa using h)
 
 theorem ms_zeroRows {c : ℕ} (β : Fin 0 → ℕ) (η : Fin 0 → Bool)
@@ -647,7 +648,7 @@ theorem ms_zeroRows {c : ℕ} (β : Fin 0 → ℕ) (η : Fin 0 → Bool)
     matrixSum β η α ε = if (∑ j, α j) = 0 then 1 else 0 := by
   classical
   by_cases h : (∑ j, α j) = 0
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     have hz (j : Fin c) : α j = 0 := (Finset.sum_eq_zero_iff.mp h) j (Finset.mem_univ j)
     let N0 : Mat β α := ⟨fun i => Fin.elim0 i, by
       constructor
@@ -659,7 +660,7 @@ theorem ms_zeroRows {c : ℕ} (β : Fin 0 → ℕ) (η : Fin 0 → Bool)
     · intro N _ hne
       exact (hne (Subtype.ext (funext fun i => Fin.elim0 i))).elim
     · simp
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     exact matrixSum_mismatch _ _ _ _ (by simpa [eq_comm] using h)
 
 private theorem split_last {X : Type} {r : ℕ} (β : Fin (r+1) → X) :
@@ -671,7 +672,7 @@ private theorem split_last {X : Type} {r : ℕ} (β : Fin (r+1) → X) :
     congr 1
     apply Fin.ext
     have := k.isLt
-    simp only [Fin.coe_natAdd, Fin.val_last]
+    simp only [Fin.val_natAdd, Fin.val_last]
     omega
 
 theorem matrixSum_eq_PM : ∀ (r : ℕ) (β : Fin r → ℕ) (η : Fin r → Bool) {c : ℕ}
@@ -792,7 +793,7 @@ theorem second_of_dual (d : ℕ)
   intro ν
   simp only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_zsmul, smul_eq_mul,
     pair_e_sC d _ hX, e_f, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ,
-    if_true, lam.property, ν.property]
+    ite_true, lam.property, ν.property]
   unfold Xsrc sigmaSrc Esrc
   rw [← mul_assoc, ← mul_assoc, neg_one_sq, one_mul]
 
@@ -836,7 +837,7 @@ theorem dual0 (ν j : DegreeShape 0) :
   simp only [sum0]
   rcases exhaust0 ν with rfl
   all_goals rcases exhaust0 j with rfl
-  all_goals simp only [sh0_T, sh0_ell, sh0_rc, sh0_cc, sh0_ev, K_0_0, Me_0_0, Meh_0_0]
+  all_goals simp only [sh0_T, sh0_ell, sh0_rc, sh0_cc, K_0_0, Meh_0_0]
   all_goals decide
 
 /-- Degree 0: the numeric content of the first (3.14) equation after pairing with e_ν. -/
@@ -847,7 +848,7 @@ theorem first0 (ν μ : DegreeShape 0) :
   simp only [sum0]
   rcases exhaust0 ν with rfl
   all_goals rcases exhaust0 μ with rfl
-  all_goals simp only [sh0_T, sh0_ell, sh0_rc, sh0_cc, sh0_ev, K_0_0, Me_0_0, Meh_0_0]
+  all_goals simp only [sh0_T, sh0_ell, sh0_rc, sh0_cc, K_0_0, Me_0_0]
   all_goals decide
 
 /-- Degree 0: (3.15), both printed equalities, literal entries of `EKDualBases.Me`. -/
@@ -862,7 +863,7 @@ theorem odd_rsk_II_0 (μ ρ : DegreeShape 0) :
   simp only [sum0]
   rcases exhaust0 μ with rfl
   all_goals rcases exhaust0 ρ with rfl
-  all_goals simp only [sh0_T, sh0_ell, sh0_rc, sh0_cc, sh0_ev, K_0_0, Me_0_0, Meh_0_0]
+  all_goals simp only [sh0_T, sh0_rc, sh0_cc, sh0_ev, K_0_0, Me_0_0]
   all_goals decide
 
 
@@ -888,7 +889,7 @@ theorem dual1 (ν j : DegreeShape 1) :
   simp only [sum1]
   rcases exhaust1 ν with rfl
   all_goals rcases exhaust1 j with rfl
-  all_goals simp only [sh1_T, sh1_ell, sh1_rc, sh1_cc, sh1_ev, K_1_1, Me_1_1, Meh_1_1]
+  all_goals simp only [sh1_T, sh1_ell, sh1_rc, sh1_cc, K_1_1, Meh_1_1]
   all_goals decide
 
 /-- Degree 1: the numeric content of the first (3.14) equation after pairing with e_ν. -/
@@ -899,7 +900,7 @@ theorem first1 (ν μ : DegreeShape 1) :
   simp only [sum1]
   rcases exhaust1 ν with rfl
   all_goals rcases exhaust1 μ with rfl
-  all_goals simp only [sh1_T, sh1_ell, sh1_rc, sh1_cc, sh1_ev, K_1_1, Me_1_1, Meh_1_1]
+  all_goals simp only [sh1_T, sh1_ell, sh1_rc, sh1_cc, K_1_1, Me_1_1]
   all_goals decide
 
 /-- Degree 1: (3.15), both printed equalities, literal entries of `EKDualBases.Me`. -/
@@ -914,7 +915,7 @@ theorem odd_rsk_II_1 (μ ρ : DegreeShape 1) :
   simp only [sum1]
   rcases exhaust1 μ with rfl
   all_goals rcases exhaust1 ρ with rfl
-  all_goals simp only [sh1_T, sh1_ell, sh1_rc, sh1_cc, sh1_ev, K_1_1, Me_1_1, Meh_1_1]
+  all_goals simp only [sh1_T, sh1_rc, sh1_cc, sh1_ev, K_1_1, Me_1_1]
   all_goals decide
 
 
@@ -960,7 +961,7 @@ theorem dual2 (ν j : DegreeShape 2) :
   simp only [sum2]
   rcases exhaust2 ν with rfl|rfl
   all_goals rcases exhaust2 j with rfl|rfl
-  all_goals simp only [sh2_T, sh2_ell, sh2_rc, sh2_cc, sh2_ev, sh11_T, sh11_ell, sh11_rc, sh11_cc, sh11_ev, K_2_2, Me_2_2, Meh_2_2, K_2_11, Me_2_11, Meh_2_11, K_11_2, Me_11_2, Meh_11_2, K_11_11, Me_11_11, Meh_11_11]
+  all_goals simp only [sh2_T, sh2_ell, sh2_rc, sh2_cc, sh11_T, sh11_ell, sh11_rc, sh11_cc, K_2_2, Meh_2_2, K_2_11, Meh_2_11, K_11_2, Meh_11_2, K_11_11, Meh_11_11]
   all_goals decide
 
 /-- Degree 2: the numeric content of the first (3.14) equation after pairing with e_ν. -/
@@ -971,7 +972,7 @@ theorem first2 (ν μ : DegreeShape 2) :
   simp only [sum2]
   rcases exhaust2 ν with rfl|rfl
   all_goals rcases exhaust2 μ with rfl|rfl
-  all_goals simp only [sh2_T, sh2_ell, sh2_rc, sh2_cc, sh2_ev, sh11_T, sh11_ell, sh11_rc, sh11_cc, sh11_ev, K_2_2, Me_2_2, Meh_2_2, K_2_11, Me_2_11, Meh_2_11, K_11_2, Me_11_2, Meh_11_2, K_11_11, Me_11_11, Meh_11_11]
+  all_goals simp only [sh2_T, sh2_ell, sh2_rc, sh2_cc, sh11_T, sh11_ell, sh11_rc, sh11_cc, K_2_2, Me_2_2, K_2_11, Me_2_11, K_11_2, Me_11_2, K_11_11, Me_11_11]
   all_goals decide
 
 /-- Degree 2: (3.15), both printed equalities, literal entries of `EKDualBases.Me`. -/
@@ -986,7 +987,7 @@ theorem odd_rsk_II_2 (μ ρ : DegreeShape 2) :
   simp only [sum2]
   rcases exhaust2 μ with rfl|rfl
   all_goals rcases exhaust2 ρ with rfl|rfl
-  all_goals simp only [sh2_T, sh2_ell, sh2_rc, sh2_cc, sh2_ev, sh11_T, sh11_ell, sh11_rc, sh11_cc, sh11_ev, K_2_2, Me_2_2, Meh_2_2, K_2_11, Me_2_11, Meh_2_11, K_11_2, Me_11_2, Meh_11_2, K_11_11, Me_11_11, Meh_11_11]
+  all_goals simp only [sh2_T, sh2_rc, sh2_cc, sh2_ev, sh11_T, sh11_rc, sh11_cc, sh11_ev, K_2_2, Me_2_2, K_2_11, Me_2_11, K_11_2, Me_11_2, K_11_11, Me_11_11]
   all_goals decide
 
 
@@ -1060,7 +1061,7 @@ theorem dual3 (ν j : DegreeShape 3) :
   simp only [sum3]
   rcases exhaust3 ν with rfl|rfl|rfl
   all_goals rcases exhaust3 j with rfl|rfl|rfl
-  all_goals simp only [sh3_T, sh3_ell, sh3_rc, sh3_cc, sh3_ev, sh21_T, sh21_ell, sh21_rc, sh21_cc, sh21_ev, sh111_T, sh111_ell, sh111_rc, sh111_cc, sh111_ev, K_3_3, Me_3_3, Meh_3_3, K_3_21, Me_3_21, Meh_3_21, K_3_111, Me_3_111, Meh_3_111, K_21_3, Me_21_3, Meh_21_3, K_21_21, Me_21_21, Meh_21_21, K_21_111, Me_21_111, Meh_21_111, K_111_3, Me_111_3, Meh_111_3, K_111_21, Me_111_21, Meh_111_21, K_111_111, Me_111_111, Meh_111_111]
+  all_goals simp only [sh3_T, sh3_ell, sh3_rc, sh3_cc, sh21_T, sh21_ell, sh21_rc, sh21_cc, sh111_T, sh111_ell, sh111_rc, sh111_cc, K_3_3, Meh_3_3, K_3_21, Meh_3_21, K_3_111, Meh_3_111, K_21_3, Meh_21_3, K_21_21, Meh_21_21, K_21_111, Meh_21_111, K_111_3, Meh_111_3, K_111_21, Meh_111_21, K_111_111, Meh_111_111]
   all_goals decide
 
 /-- Degree 3: the numeric content of the first (3.14) equation after pairing with e_ν. -/
@@ -1071,7 +1072,7 @@ theorem first3 (ν μ : DegreeShape 3) :
   simp only [sum3]
   rcases exhaust3 ν with rfl|rfl|rfl
   all_goals rcases exhaust3 μ with rfl|rfl|rfl
-  all_goals simp only [sh3_T, sh3_ell, sh3_rc, sh3_cc, sh3_ev, sh21_T, sh21_ell, sh21_rc, sh21_cc, sh21_ev, sh111_T, sh111_ell, sh111_rc, sh111_cc, sh111_ev, K_3_3, Me_3_3, Meh_3_3, K_3_21, Me_3_21, Meh_3_21, K_3_111, Me_3_111, Meh_3_111, K_21_3, Me_21_3, Meh_21_3, K_21_21, Me_21_21, Meh_21_21, K_21_111, Me_21_111, Meh_21_111, K_111_3, Me_111_3, Meh_111_3, K_111_21, Me_111_21, Meh_111_21, K_111_111, Me_111_111, Meh_111_111]
+  all_goals simp only [sh3_T, sh3_ell, sh3_rc, sh3_cc, sh21_T, sh21_ell, sh21_rc, sh21_cc, sh111_T, sh111_ell, sh111_rc, sh111_cc, K_3_3, Me_3_3, K_3_21, Me_3_21, K_3_111, Me_3_111, K_21_3, Me_21_3, K_21_21, Me_21_21, K_21_111, Me_21_111, K_111_3, Me_111_3, K_111_21, Me_111_21, K_111_111, Me_111_111]
   all_goals decide
 
 /-- Degree 3: (3.15), both printed equalities, literal entries of `EKDualBases.Me`. -/
@@ -1086,7 +1087,7 @@ theorem odd_rsk_II_3 (μ ρ : DegreeShape 3) :
   simp only [sum3]
   rcases exhaust3 μ with rfl|rfl|rfl
   all_goals rcases exhaust3 ρ with rfl|rfl|rfl
-  all_goals simp only [sh3_T, sh3_ell, sh3_rc, sh3_cc, sh3_ev, sh21_T, sh21_ell, sh21_rc, sh21_cc, sh21_ev, sh111_T, sh111_ell, sh111_rc, sh111_cc, sh111_ev, K_3_3, Me_3_3, Meh_3_3, K_3_21, Me_3_21, Meh_3_21, K_3_111, Me_3_111, Meh_3_111, K_21_3, Me_21_3, Meh_21_3, K_21_21, Me_21_21, Meh_21_21, K_21_111, Me_21_111, Meh_21_111, K_111_3, Me_111_3, Meh_111_3, K_111_21, Me_111_21, Meh_111_21, K_111_111, Me_111_111, Meh_111_111]
+  all_goals simp only [sh3_T, sh3_rc, sh3_cc, sh3_ev, sh21_T, sh21_rc, sh21_cc, sh21_ev, sh111_T, sh111_rc, sh111_cc, sh111_ev, K_3_3, Me_3_3, K_3_21, Me_3_21, K_3_111, Me_3_111, K_21_3, Me_21_3, K_21_21, Me_21_21, K_21_111, Me_21_111, K_111_3, Me_111_3, K_111_21, Me_111_21, K_111_111, Me_111_111]
   all_goals decide
 
 
@@ -1240,7 +1241,7 @@ theorem dual4 (ν j : DegreeShape 4) :
   simp only [sum4]
   rcases exhaust4 ν with rfl|rfl|rfl|rfl|rfl
   all_goals rcases exhaust4 j with rfl|rfl|rfl|rfl|rfl
-  all_goals simp only [sh4_T, sh4_ell, sh4_rc, sh4_cc, sh4_ev, sh31_T, sh31_ell, sh31_rc, sh31_cc, sh31_ev, sh22_T, sh22_ell, sh22_rc, sh22_cc, sh22_ev, sh211_T, sh211_ell, sh211_rc, sh211_cc, sh211_ev, sh1111_T, sh1111_ell, sh1111_rc, sh1111_cc, sh1111_ev, K_4_4, Me_4_4, Meh_4_4, K_4_31, Me_4_31, Meh_4_31, K_4_22, Me_4_22, Meh_4_22, K_4_211, Me_4_211, Meh_4_211, K_4_1111, Me_4_1111, Meh_4_1111, K_31_4, Me_31_4, Meh_31_4, K_31_31, Me_31_31, Meh_31_31, K_31_22, Me_31_22, Meh_31_22, K_31_211, Me_31_211, Meh_31_211, K_31_1111, Me_31_1111, Meh_31_1111, K_22_4, Me_22_4, Meh_22_4, K_22_31, Me_22_31, Meh_22_31, K_22_22, Me_22_22, Meh_22_22, K_22_211, Me_22_211, Meh_22_211, K_22_1111, Me_22_1111, Meh_22_1111, K_211_4, Me_211_4, Meh_211_4, K_211_31, Me_211_31, Meh_211_31, K_211_22, Me_211_22, Meh_211_22, K_211_211, Me_211_211, Meh_211_211, K_211_1111, Me_211_1111, Meh_211_1111, K_1111_4, Me_1111_4, Meh_1111_4, K_1111_31, Me_1111_31, Meh_1111_31, K_1111_22, Me_1111_22, Meh_1111_22, K_1111_211, Me_1111_211, Meh_1111_211, K_1111_1111, Me_1111_1111, Meh_1111_1111]
+  all_goals simp only [sh4_T, sh4_ell, sh4_rc, sh4_cc, sh31_T, sh31_ell, sh31_rc, sh31_cc, sh22_T, sh22_ell, sh22_rc, sh22_cc, sh211_T, sh211_ell, sh211_rc, sh211_cc, sh1111_T, sh1111_ell, sh1111_rc, sh1111_cc, K_4_4, Meh_4_4, K_4_31, Meh_4_31, K_4_22, Meh_4_22, K_4_211, Meh_4_211, K_4_1111, Meh_4_1111, K_31_4, Meh_31_4, K_31_31, Meh_31_31, K_31_22, Meh_31_22, K_31_211, Meh_31_211, K_31_1111, Meh_31_1111, K_22_4, Meh_22_4, K_22_31, Meh_22_31, K_22_22, Meh_22_22, K_22_211, Meh_22_211, K_22_1111, Meh_22_1111, K_211_4, Meh_211_4, K_211_31, Meh_211_31, K_211_22, Meh_211_22, K_211_211, Meh_211_211, K_211_1111, Meh_211_1111, K_1111_4, Meh_1111_4, K_1111_31, Meh_1111_31, K_1111_22, Meh_1111_22, K_1111_211, Meh_1111_211, K_1111_1111, Meh_1111_1111]
   all_goals decide
 
 /-- Degree 4: the numeric content of the first (3.14) equation after pairing with e_ν. -/
@@ -1251,7 +1252,7 @@ theorem first4 (ν μ : DegreeShape 4) :
   simp only [sum4]
   rcases exhaust4 ν with rfl|rfl|rfl|rfl|rfl
   all_goals rcases exhaust4 μ with rfl|rfl|rfl|rfl|rfl
-  all_goals simp only [sh4_T, sh4_ell, sh4_rc, sh4_cc, sh4_ev, sh31_T, sh31_ell, sh31_rc, sh31_cc, sh31_ev, sh22_T, sh22_ell, sh22_rc, sh22_cc, sh22_ev, sh211_T, sh211_ell, sh211_rc, sh211_cc, sh211_ev, sh1111_T, sh1111_ell, sh1111_rc, sh1111_cc, sh1111_ev, K_4_4, Me_4_4, Meh_4_4, K_4_31, Me_4_31, Meh_4_31, K_4_22, Me_4_22, Meh_4_22, K_4_211, Me_4_211, Meh_4_211, K_4_1111, Me_4_1111, Meh_4_1111, K_31_4, Me_31_4, Meh_31_4, K_31_31, Me_31_31, Meh_31_31, K_31_22, Me_31_22, Meh_31_22, K_31_211, Me_31_211, Meh_31_211, K_31_1111, Me_31_1111, Meh_31_1111, K_22_4, Me_22_4, Meh_22_4, K_22_31, Me_22_31, Meh_22_31, K_22_22, Me_22_22, Meh_22_22, K_22_211, Me_22_211, Meh_22_211, K_22_1111, Me_22_1111, Meh_22_1111, K_211_4, Me_211_4, Meh_211_4, K_211_31, Me_211_31, Meh_211_31, K_211_22, Me_211_22, Meh_211_22, K_211_211, Me_211_211, Meh_211_211, K_211_1111, Me_211_1111, Meh_211_1111, K_1111_4, Me_1111_4, Meh_1111_4, K_1111_31, Me_1111_31, Meh_1111_31, K_1111_22, Me_1111_22, Meh_1111_22, K_1111_211, Me_1111_211, Meh_1111_211, K_1111_1111, Me_1111_1111, Meh_1111_1111]
+  all_goals simp only [sh4_T, sh4_ell, sh4_rc, sh4_cc, sh31_T, sh31_ell, sh31_rc, sh31_cc, sh22_T, sh22_ell, sh22_rc, sh22_cc, sh211_T, sh211_ell, sh211_rc, sh211_cc, sh1111_T, sh1111_ell, sh1111_rc, sh1111_cc, K_4_4, Me_4_4, K_4_31, Me_4_31, K_4_22, Me_4_22, K_4_211, Me_4_211, K_4_1111, Me_4_1111, K_31_4, Me_31_4, K_31_31, Me_31_31, K_31_22, Me_31_22, K_31_211, Me_31_211, K_31_1111, Me_31_1111, K_22_4, Me_22_4, K_22_31, Me_22_31, K_22_22, Me_22_22, K_22_211, Me_22_211, K_22_1111, Me_22_1111, K_211_4, Me_211_4, K_211_31, Me_211_31, K_211_22, Me_211_22, K_211_211, Me_211_211, K_211_1111, Me_211_1111, K_1111_4, Me_1111_4, K_1111_31, Me_1111_31, K_1111_22, Me_1111_22, K_1111_211, Me_1111_211, K_1111_1111, Me_1111_1111]
   all_goals decide
 
 /-- Degree 4: (3.15), both printed equalities, literal entries of `EKDualBases.Me`. -/
@@ -1266,7 +1267,7 @@ theorem odd_rsk_II_4 (μ ρ : DegreeShape 4) :
   simp only [sum4]
   rcases exhaust4 μ with rfl|rfl|rfl|rfl|rfl
   all_goals rcases exhaust4 ρ with rfl|rfl|rfl|rfl|rfl
-  all_goals simp only [sh4_T, sh4_ell, sh4_rc, sh4_cc, sh4_ev, sh31_T, sh31_ell, sh31_rc, sh31_cc, sh31_ev, sh22_T, sh22_ell, sh22_rc, sh22_cc, sh22_ev, sh211_T, sh211_ell, sh211_rc, sh211_cc, sh211_ev, sh1111_T, sh1111_ell, sh1111_rc, sh1111_cc, sh1111_ev, K_4_4, Me_4_4, Meh_4_4, K_4_31, Me_4_31, Meh_4_31, K_4_22, Me_4_22, Meh_4_22, K_4_211, Me_4_211, Meh_4_211, K_4_1111, Me_4_1111, Meh_4_1111, K_31_4, Me_31_4, Meh_31_4, K_31_31, Me_31_31, Meh_31_31, K_31_22, Me_31_22, Meh_31_22, K_31_211, Me_31_211, Meh_31_211, K_31_1111, Me_31_1111, Meh_31_1111, K_22_4, Me_22_4, Meh_22_4, K_22_31, Me_22_31, Meh_22_31, K_22_22, Me_22_22, Meh_22_22, K_22_211, Me_22_211, Meh_22_211, K_22_1111, Me_22_1111, Meh_22_1111, K_211_4, Me_211_4, Meh_211_4, K_211_31, Me_211_31, Meh_211_31, K_211_22, Me_211_22, Meh_211_22, K_211_211, Me_211_211, Meh_211_211, K_211_1111, Me_211_1111, Meh_211_1111, K_1111_4, Me_1111_4, Meh_1111_4, K_1111_31, Me_1111_31, Meh_1111_31, K_1111_22, Me_1111_22, Meh_1111_22, K_1111_211, Me_1111_211, Meh_1111_211, K_1111_1111, Me_1111_1111, Meh_1111_1111]
+  all_goals simp only [sh4_T, sh4_rc, sh4_cc, sh4_ev, sh31_T, sh31_rc, sh31_cc, sh31_ev, sh22_T, sh22_rc, sh22_cc, sh22_ev, sh211_T, sh211_rc, sh211_cc, sh211_ev, sh1111_T, sh1111_rc, sh1111_cc, sh1111_ev, K_4_4, Me_4_4, K_4_31, Me_4_31, K_4_22, Me_4_22, K_4_211, Me_4_211, K_4_1111, Me_4_1111, K_31_4, Me_31_4, K_31_31, Me_31_31, K_31_22, Me_31_22, K_31_211, Me_31_211, K_31_1111, Me_31_1111, K_22_4, Me_22_4, K_22_31, Me_22_31, K_22_22, Me_22_22, K_22_211, Me_22_211, K_22_1111, Me_22_1111, K_211_4, Me_211_4, K_211_31, Me_211_31, K_211_22, Me_211_22, K_211_211, Me_211_211, K_211_1111, Me_211_1111, K_1111_4, Me_1111_4, K_1111_31, Me_1111_31, K_1111_22, Me_1111_22, K_1111_211, Me_1111_211, K_1111_1111, Me_1111_1111]
   all_goals decide
 
 
@@ -1335,8 +1336,8 @@ theorem omitted_transpose_3_14_fails :
   simp only [Submodule.coe_add, map_add, Submodule.coe_smul, map_zsmul, smul_eq_mul,
     pair_e_sC 2 _ dual2, degreeEBasis_apply, pair_ee] at h1
   unfold Xsrc sigmaSrc Esrc at h1
-  simp only [sh2.property, sh11.property, sh2_T, sh11_T, sh2_ell, sh11_ell, sh2_rc, sh11_rc,
-    sh2_cc, sh11_cc, K_2_2, K_2_11, K_11_2, K_11_11, Me_2_2] at h1
+  simp only [sh2.property, sh11.property, sh2_T, sh11_T, sh2_ell, sh11_ell, sh2_rc,
+    sh2_cc, sh11_cc, K_2_2, K_11_2, Me_2_2] at h1
   revert h1
   decide
 

@@ -50,7 +50,7 @@ theorem eq_intCast_of_mem {N : ℕ} {f : SkewPolynomial N} (hf : f ∈ polynomia
   by_cases ha : a = 0
   · subst ha
     rw [Finsupp.single_eq_same]
-  · rw [Finsupp.single_eq_of_ne (Ne.symm ha)]
+  · rw [Finsupp.single_eq_of_ne ha]
     exact hf a fun h => ha (pdegree_eq_zero h)
 
 theorem intCast_skew_injective (N : ℕ) : Function.Injective (Int.cast : ℤ → SkewPolynomial N) :=
@@ -196,7 +196,7 @@ theorem blockE_pair_mem (n a b : ℕ) :
     ThickBubble.blockE n 0 a * ThickBubble.blockE n a b ∈ onhGrading n 0 := by
   have h := degreePiece_mul (mem_of_hasDegree (ThickDecomposition.hasDegree_blockE (n := n) 0 a))
     (mem_of_hasDegree (ThickDecomposition.hasDegree_blockE (n := n) a b))
-  simpa using h
+  simpa [onhGrading] using h
 
 /-- `σ_ℓ` of (6.1) has degree `2(|ℓ| - C(a,2))`. -/
 theorem sigma61_mem {n : ℕ} {ℓ : Fin (n+1) → ℕ} (hℓ : ∀ ν : Fin (n+1), ℓ ν ≤ ν.val + 1) :
@@ -245,7 +245,7 @@ theorem sum_Sq_eq_prod (a : ℕ) :
   rw [← Polynomial.coe_inj]
   have hX : (1 - PowerSeries.X : PowerSeries ℤ) ^ a ≠ 0 := by
     refine pow_ne_zero _ fun h => ?_
-    have := congrArg (PowerSeries.constantCoeff ℤ) h
+    have := congrArg (PowerSeries.constantCoeff (R := ℤ)) h
     simp at this
   refine mul_right_cancel₀ hX ?_
   have h1 : ((∑ ℓ ∈ Sq a, Polynomial.X ^ (∑ ν, ℓ ν) : Polynomial ℤ) : PowerSeries ℤ) =
@@ -273,7 +273,7 @@ theorem sum_T_length_eq (n : ℕ) :
       ∑ ℓ : Sq (n+2), T (-(2 * ((∑ ν, ℓ.1 ν : ℕ) : ℤ))) := by
   have h := congrArg (Polynomial.eval₂ (Int.castRingHom (LaurentPolynomial ℤ))
     (T (-2) : LaurentPolynomial ℤ)) (sum_length_eq_sum_Sq n)
-  simp only [Polynomial.eval₂_finset_sum, Polynomial.eval₂_X_pow, T_pow] at h
+  simp only [Polynomial.eval₂_finsetSum, Polynomial.eval₂_X_pow, T_pow] at h
   rw [Finset.sum_coe_sort (Sq (n+2)) fun ℓ => (T (-(2 * ((∑ ν, ℓ ν : ℕ) : ℤ))) :
     LaurentPolynomial ℤ)]
   convert h using 2 with w _ ℓ _
@@ -370,10 +370,10 @@ theorem negOne_zpow_two : ((-1 : ℤˣ) ^ (2 : ℤ)) = 1 := by
   rw [zpow_two, neg_one_mul, neg_neg]
 
 theorem negAug_T_even (m : ℤ) : negAug (T (2 * m)) = 1 := by
-  simp [negAug, _root_.zpow_mul, negOne_zpow_two]
+  simp [negAug, _root_.zpow_mul]
 
 theorem negAug_T_odd (m : ℤ) : negAug (T (2 * m + 1)) = -1 := by
-  simp [negAug, _root_.zpow_add, _root_.zpow_mul, negOne_zpow_two]
+  simp [negAug, _root_.zpow_add, _root_.zpow_mul]
 
 /-- **Erratum to (6.1).** The printed decomposition `ONH_a ≅ ⊕_{ℓ ∈ Sq(a)} E^{(a)}{a-1-2|ℓ|}`
 fails in `K₀` for `a = 3` (`n = 1`), for either sign convention of the shift (`ε = ±1`; the

@@ -87,7 +87,7 @@ theorem ascending_pair_zero (a k : ℕ) (h : a+k ≤ n+1)
   induction k generalizing f with
   | zero =>
     change f = 0 at hf
-    simp only [ascending_zero, hf, map_zero]
+    simp only [hf, map_zero]
   | succ k ih =>
     let i : Fin (n+1) := ⟨a+k, by omega⟩
     obtain ⟨h₁,h₂,h₃,h₄⟩ := hd i (by dsimp [i]; omega) (by dsimp [i]; omega)
@@ -105,7 +105,7 @@ theorem ascending_pair_zero (a k : ℕ) (h : a+k ≤ n+1)
 theorem annihilate_length (u : Fin (n+2)) (k : ℕ) (hv : u.val+k+1 < n+2)
     (f : SkewPolynomial (n+2)) (hf : f ∈ OddSymmetricKernel.kernelSubring n) :
     ascending (u.val+1) k (by omega)
-      (dividedPair u ⟨u.val+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; simp only [Fin.val_mk] at this; omega) f) = 0 := by
+      (dividedPair u ⟨u.val+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; simp only [] at this; omega) f) = 0 := by
   induction k with
   | zero =>
     let i : Fin (n+1) := ⟨u.val, by omega⟩
@@ -120,7 +120,10 @@ theorem annihilate_length (u : Fin (n+2)) (k : ℕ) (hv : u.val+k+1 < n+2)
     have huc : u ≠ c := by intro h; have := congrArg Fin.val h; dsimp [c] at this; omega
     have hbc : b ≠ c := by intro h; have := congrArg Fin.val h; dsimp [b,c] at this; omega
     have ha : dividedPair b c hbc = AllRankDivided.divided i := by
-      convert adjacent i using 1
+      have hb : b = i.castSucc := Fin.ext rfl
+      have hc : c = i.succ := Fin.ext (by dsimp [c, i]; omega)
+      subst b c
+      exact adjacent i
     have ht := triangle u b c hub huc hbc f
     rw [ha, hf i, map_zero, add_zero] at ht
     have ht' := eq_neg_of_add_eq_zero_left ht

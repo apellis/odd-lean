@@ -45,7 +45,7 @@ def h : ℕ → L k
 /-- Ordered products `h_α = h_{a₁}⋯h_{a_k}` (zero parts are units). -/
 def hWord (α : List ℕ) : L k := (α.map (h k)).prod
 
-def wordBasis : Basis W k (L k) := FreeAlgebra.basisFreeMonoid k ℕ
+def wordBasis : Module.Basis W k (L k) := FreeAlgebra.basisFreeMonoid k ℕ
 
 theorem wordBasis_eq (w : W) : wordBasis k w =
     (FreeAlgebra.equivMonoidAlgebraFreeMonoid : L k ≃ₐ[k] MonoidAlgebra k W).symm
@@ -72,7 +72,7 @@ theorem wordBasis_eq (w : W) : wordBasis k w =
   | cons n α ih =>
     cases n <;> simp [partWord, ih, hWord]
 
-def tensorBasis : Basis (W × W) k (LL k) := (wordBasis k).tensorProduct (wordBasis k)
+def tensorBasis : Module.Basis (W × W) k (LL k) := (wordBasis k).tensorProduct (wordBasis k)
 
 @[simp] theorem tensorBasis_apply (u v : W) :
     tensorBasis k (u,v) = wordBasis k u ⊗ₜ[k] wordBasis k v := by
@@ -80,7 +80,7 @@ def tensorBasis : Basis (W × W) k (LL k) := (wordBasis k).tensorProduct (wordBa
 
 /-- Linear extension from a basis (any ring). -/
 theorem basis_induction {M I : Type*} [AddCommGroup M] [Module k M]
-    (b : Basis I k M) (P : M → Prop) (hz : P 0)
+    (b : Module.Basis I k M) (P : M → Prop) (hz : P 0)
     (ha : ∀ x y, P x → P y → P (x+y))
     (hb : ∀ i (r : k), P (r • b i)) (x : M) : P x := by
   obtain ⟨f, rfl⟩ := b.repr.symm.surjective x
@@ -130,7 +130,7 @@ theorem tensorMul_assoc (x y z : LL k) :
     tensorMul q (tensorMul q x y) z = tensorMul q x (tensorMul q y z) := by
   induction x using basis_induction k (tensorBasis k) with
   | hz => simp
-  | ha x y hx hy => simp only [tensorMul_add_left, tensorMul_add_right, hx, hy]
+  | ha x y hx hy => simp only [tensorMul_add_left, hx, hy]
   | hb p r =>
     induction y using basis_induction k (tensorBasis k) with
     | hz => simp
@@ -138,7 +138,7 @@ theorem tensorMul_assoc (x y z : LL k) :
     | hb s u =>
       induction z using basis_induction k (tensorBasis k) with
       | hz => simp
-      | ha x y hx hy => simp only [tensorMul_add_left, tensorMul_add_right, hx, hy]
+      | ha x y hx hy => simp only [tensorMul_add_right, hx, hy]
       | hb t v =>
         simp only [tensorMul_smul_left, tensorMul_smul_right, tensorMul_basis,
           degree_mul, smul_smul, mul_assoc]
@@ -183,7 +183,7 @@ instance : Ring (QTensor q) where
   right_distrib := tensorMul_add_left q
   zero_mul := tensorMul_zero_left q
   mul_zero := tensorMul_zero_right q
-  __ := inferInstanceAs (AddCommGroup (LL k))
+  toAddCommGroup := inferInstanceAs (AddCommGroup (LL k))
 
 /-- The q-twisted tensor algebra is a genuine `k`-algebra. -/
 instance : Algebra k (QTensor q) :=
@@ -248,8 +248,8 @@ def counit : L k →ₗ[k] k := (counitAlg k).toLinearMap
 @[simp] theorem counit_word (w : W) :
     counit k (wordBasis k w) = if w = 1 then 1 else 0 := by
   induction w using FreeMonoid.recOn with
-  | h0 => simp
-  | ih i w ih => simp [counit_mul, wordBasis_mul, counit_h_succ]
+  | one => simp
+  | of_mul i w ih => simp [counit_mul, wordBasis_mul, counit_h_succ]
 
 @[simp] theorem counit_h (n : ℕ) : counit k (h k n) = if n=0 then 1 else 0 := by
   cases n <;> simp
@@ -282,7 +282,7 @@ def rightCounit : LL k →ₗ[k] L k :=
       simp only [map_smul, tensorBasis_apply, wordBasis_mul, leftCounit_tmul,
         counit_mul, counit_word]
       by_cases ha : a = 1 <;> by_cases hc : c = 1 <;>
-        simp [ha, hc, smul_smul, mul_comm, mul_left_comm, mul_assoc]
+        simp [ha, hc, smul_smul, mul_comm]
 
 @[simp] theorem rightCounit_mul (x y : LL k) :
     rightCounit k (tensorMul q x y) = rightCounit k x * rightCounit k y := by
@@ -300,7 +300,7 @@ def rightCounit : LL k →ₗ[k] L k :=
       simp only [map_smul, tensorBasis_apply, wordBasis_mul, rightCounit_tmul,
         counit_mul, counit_word]
       by_cases hb : b = 1 <;> by_cases hd : d = 1 <;>
-        simp [hb, hd, smul_smul, mul_comm, mul_left_comm, mul_assoc]
+        simp [hb, hd, smul_smul, mul_comm]
 
 @[simp] theorem leftCounit_coproduct_h (n : ℕ) :
     leftCounit k (coproduct q (h k n)) = h k n := by
@@ -309,7 +309,7 @@ def rightCounit : LL k →ₗ[k] L k :=
   rw [Finset.sum_eq_single (0 : Fin (n+1))]
   · simp
   · intro b _ hb
-    rw [if_neg]
+    rw [ite_eq_right]
     exact fun h => hb (Fin.ext h)
   · simp
 
@@ -320,7 +320,7 @@ def rightCounit : LL k →ₗ[k] L k :=
   rw [Finset.sum_eq_single (Fin.last n)]
   · simp
   · intro b _ hb
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     apply hb
     apply Fin.ext
@@ -339,8 +339,8 @@ theorem counit_laws (x : L k) :
         rightCounit k (coproduct q (wordBasis k w)) = wordBasis k w by
       simp only [map_smul, hw.1, hw.2, and_self]
     induction w using FreeMonoid.recOn with
-    | h0 => simp [tensorOne]
-    | ih i w ih =>
+    | one => simp [tensorOne]
+    | of_mul i w ih =>
       simp only [wordBasis_mul, wordBasis_of, coproduct_mul, leftCounit_mul,
         rightCounit_mul, leftCounit_coproduct_h, rightCounit_coproduct_h, ih.1, ih.2,
         and_self]
@@ -405,10 +405,10 @@ theorem coproduct_h_degree (n : ℕ) : coproduct q (h k n) ∈ tensorDegree k n 
 theorem coproduct_word_degree (w : W) :
     coproduct q (wordBasis k w) ∈ tensorDegree k (degree w) := by
   induction w using FreeMonoid.recOn with
-  | h0 =>
+  | one =>
     simpa only [wordBasis_one, coproduct_one, degree_one, zero_add,
       tensorBasis_apply, tensorOne] using tensorDegree_basis (k := k) (1,1)
-  | ih i w ih =>
+  | of_mul i w ih =>
     rw [wordBasis_mul, wordBasis_of, coproduct_mul, degree_mul]
     exact tensorDegree_mul q (coproduct_h_degree q (i+1)) ih
 
@@ -416,7 +416,7 @@ variable (k) in
 abbrev T3 := L k ⊗[k] LL k
 
 variable (k) in
-def tripleBasis : Basis (W × (W × W)) k (T3 k) := (wordBasis k).tensorProduct (tensorBasis k)
+def tripleBasis : Module.Basis (W × (W × W)) k (T3 k) := (wordBasis k).tensorProduct (tensorBasis k)
 
 def tripleMulLinear : T3 k →ₗ[k] T3 k →ₗ[k] T3 k :=
   (tripleBasis k).constr k fun p => (tripleBasis k).constr k fun r =>
@@ -599,7 +599,7 @@ theorem coassociativity_h (n : ℕ) :
     leftDelta q (coproduct q (h k n)) = rightDelta q (coproduct q (h k n)) := by
   simp only [coproduct_h, map_sum, leftDelta, rightDelta, LinearMap.comp_apply,
     LinearEquiv.coe_coe, TensorProduct.map_tmul, LinearMap.id_apply]
-  simp only [coproduct_h, TensorProduct.sum_tmul, TensorProduct.tmul_sum, map_sum,
+  simp only [TensorProduct.sum_tmul, TensorProduct.tmul_sum, map_sum,
     TensorProduct.assoc_tmul]
   exact split_sum n (fun i j l => h k i ⊗ₜ[k] (h k j ⊗ₜ[k] h k l))
 
@@ -616,8 +616,8 @@ theorem coassociativity (x : L k) :
     simp only [map_smul]
     congr 1
     induction w using FreeMonoid.recOn with
-    | h0 => simpa only [wordBasis_one, h_zero] using coassociativity_h q 0
-    | ih i w ih =>
+    | one => simpa only [wordBasis_one, h_zero] using coassociativity_h q 0
+    | of_mul i w ih =>
       simp only [wordBasis_mul, wordBasis_of, coproduct_mul, leftDelta_mul,
         rightDelta_mul, coassociativity_h, ih]
 
@@ -646,7 +646,7 @@ def matForm {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) : k :=
 
 theorem matForm_degree_mismatch {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ)
     (hd : (∑ i, β i) ≠ ∑ j, α j) : matForm q β α = 0 := by
-  haveI : IsEmpty (Mat β α) := ⟨fun M => hd (total_eq M)⟩
+  have : IsEmpty (Mat β α) := ⟨fun M => hd (total_eq M)⟩
   exact Finset.sum_eq_zero (fun M _ => isEmptyElim M)
 
 theorem sourceForm_eq_matForm {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ)
@@ -768,8 +768,8 @@ theorem vWord_erase_zero {n : ℕ} (α : Fin (n+1) → ℕ) (p : Fin (n+1)) (hp 
   congr 1
   clear hl
   induction w using FreeMonoid.recOn with
-  | h0 => rfl
-  | ih i w ih => simpa [partWord] using congrArg (FreeMonoid.of i * ·) ih
+  | one => rfl
+  | of_mul i w ih => simpa [partWord] using congrArg (FreeMonoid.of i * ·) ih
 
 theorem form_vWord_positive {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ)
     (hβ : ∀ i, 0 < β i) (hα : ∀ i, 0 < α i) :
@@ -778,7 +778,7 @@ theorem form_vWord_positive {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ
   have ha := EKPairingAdjoint.partWord_positive (List.ofFn α) (by simpa using hα)
   rw [vWord, vWord, ← partWord_value, ← partWord_value, form_basis_mat]
   unfold parts EKPairingAdjoint.parts
-  simp only [hb, ha, List.length_map, List.length_ofFn, List.get_eq_getElem,
+  simp only [hb, ha, List.get_eq_getElem,
     List.getElem_map, List.getElem_ofFn]
   congr 1
   · simp [hb]
@@ -842,7 +842,7 @@ def tensorFormAux (q : k) : LL k →ₗ[k] LL k →ₗ[k] k := TensorProduct.lif
           change form q a x * form q (r • b) y = r • (form q a x * form q b y)
           simp only [map_smul, LinearMap.smul_apply, smul_eq_mul]
           ring }
-    map_add' := by intros a b; ext c x y; simp [add_mul]
+    map_add' := by intros a b; ext c x y; simp
     map_smul' := by
       intros r a; ext b x y
       change form q (r • a) x * form q b y = r • (form q a x * form q b y)
@@ -856,12 +856,10 @@ def tensorForm : LL k →ₗ[k] LL k →ₗ[k] k := tensorFormAux k q
   simp [tensorForm, tensorFormAux]
 
 theorem tensorForm_symm (x y : LL k) : tensorForm q x y = tensorForm q y x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
+  induction x using TensorProduct.inductionOn with
   | add x z hx hz => simp only [map_add, LinearMap.add_apply, hx, hz]
   | tmul a b =>
-    induction y using TensorProduct.induction_on with
-    | zero => simp
+    induction y using TensorProduct.inductionOn with
     | add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]
     | tmul c d => simp only [tensorForm_tmul, form_symm q a c, form_symm q b d]
 
@@ -870,10 +868,13 @@ theorem vWord_join {r s : ℕ} (β : Fin r → ℕ) (γ : Fin s → ℕ) :
   have hw (a b : List ℕ) : hWord k (a ++ b) = hWord k a * hWord k b := by
     induction a with
     | nil => simp [hWord]
-    | cons n a ih => simp [hWord, ih, mul_assoc]
+    | cons n a ih => simp [hWord, mul_assoc]
   unfold vWord
   rw [List.ofFn_add]
-  simpa using hw (List.ofFn β) (List.ofFn γ)
+  change hWord k (List.ofFn (fun i => Fin.addCases β γ (Fin.castAdd s i)) ++
+    List.ofFn (fun i => Fin.addCases β γ (Fin.natAdd r i))) = _
+  simpa only [Fin.addCases_left, Fin.addCases_right] using
+    hw (List.ofFn β) (List.ofFn γ)
 
 @[simp] theorem vWord_singleton (n : ℕ) : vWord k (fun _ : Fin 1 => n) = h k n := by
   simp [vWord, List.ofFn_succ, hWord]
@@ -909,7 +910,7 @@ theorem coproduct_vWord {c : ℕ} (α : Fin c → ℕ) :
     simp only [vWord_singleton, Fin.sum_univ_one] at hm
     rw [hm]
     simp only [Fin.insertNthEquiv, Equiv.coe_fn_mk, Fin.insertNth_zero,
-      EKPairingAdjoint.crossCols_succ, Fin.cons_zero, Fin.cons_succ, vWord_succ, pow_add,
+      EKPairingAdjoint.crossCols_succ, vWord_succ, pow_add,
       smul_smul]
     congr 1
     change q^crossCols (upper u) (lower u) * q^((α 0-i.val)*(∑ j, (u j).val)) =
@@ -1015,8 +1016,8 @@ theorem coproduct_neg_one (x : L ℤ) :
     rw [map_smul, map_smul]
     congr 1
     induction w using FreeMonoid.recOn with
-    | h0 => rw [wordBasis_one, coproduct_one, EKFreeCoproduct.coproduct_one]; rfl
-    | ih i w ih =>
+    | one => rw [wordBasis_one, coproduct_one, EKFreeCoproduct.coproduct_one]; rfl
+    | of_mul i w ih =>
       rw [wordBasis_mul, wordBasis_of, coproduct_mul, ih, tensorMul_neg_one,
         coproduct_h, h_int]
       change _ = EKFreeCoproduct.coproduct
@@ -1042,7 +1043,7 @@ theorem form_neg_one (x y : L ℤ) : form (-1 : ℤ) x y = EKPairingAdjoint.pair
   | hb v r =>
     induction y using basis_induction ℤ (wordBasis ℤ) with
     | hz => simp
-    | ha y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]
+    | ha y z hy hz => simp only [map_add, hy, hz]
     | hb w t =>
       simp only [map_smul, LinearMap.smul_apply, form_basis_mat, matForm_neg_one]
       rw [show wordBasis ℤ = EKFreeCoproduct.wordBasis from rfl,
@@ -1050,13 +1051,11 @@ theorem form_neg_one (x y : L ℤ) : form (-1 : ℤ) x y = EKPairingAdjoint.pair
 
 theorem tensorForm_neg_one (x y : LL ℤ) :
     tensorForm (-1 : ℤ) x y = EKPairingAdjoint.tensorPairing x y := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
+  induction x using TensorProduct.inductionOn with
   | add x z hx hz => simp only [map_add, LinearMap.add_apply, hx, hz]
   | tmul a b =>
-    induction y using TensorProduct.induction_on with
-    | zero => simp
-    | add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]
+    induction y using TensorProduct.inductionOn with
+    | add y z hy hz => simp only [map_add, hy, hz]
     | tmul c d =>
       rw [tensorForm_tmul, EKPairingAdjoint.tensorPairing_tmul, form_neg_one, form_neg_one]
 

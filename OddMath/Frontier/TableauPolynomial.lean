@@ -30,7 +30,7 @@ theorem alphabetEncoding_injective (n : ℕ) :
 
 theorem finite_inAlphabet (n : ℕ) (μ : YoungDiagram) :
     Set.Finite {T : PositiveTableau μ | InAlphabet n T} := by
-  haveI : Finite {T : PositiveTableau μ // InAlphabet n T} :=
+  have : Finite {T : PositiveTableau μ // InAlphabet n T} :=
     Finite.of_injective (alphabetEncoding n) (alphabetEncoding_injective n)
   exact Set.finite_coe_iff.mp (show Finite {T : PositiveTableau μ // InAlphabet n T}
     from inferInstance)
@@ -73,7 +73,7 @@ theorem exponents_eq_iff_content (n : ℕ) (T : PositiveTableau μ)
         simpa only [exponents, Nat.sub_add_cancel (by omega : 1 ≤ k)] using hh
       · have ht : k ∉ (content T).support := fun hk => hkn (content_bounded n T hT k hk)
         have hc' : k ∉ c.support := fun hk => hkn (hc k hk)
-        simp only [Finsupp.not_mem_support_iff.mp ht, Finsupp.not_mem_support_iff.mp hc']
+        simp only [Finsupp.notMem_support_iff.mp ht, Finsupp.notMem_support_iff.mp hc']
   · intro he
     funext i
     exact congrArg (fun d : ℕ →₀ ℕ => d (i.val + 1)) he
@@ -112,7 +112,7 @@ theorem coeff_tableauPolynomial (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ �
           (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T) := by
   classical
   rw [tableauPolynomial_eq_sum]
-  simp only [Finsupp.finset_sum_apply, monomial, Finsupp.single_apply]
+  simp only [Finsupp.finsetSum_apply, monomial, Finsupp.single_apply]
   rw [← Finset.sum_filter, filter_exponents n μ c h0 hc, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro T hT
@@ -141,10 +141,10 @@ theorem content_relation_of_full_relation {I : Type*} [Fintype I]
   · subst e
     have h := congrArg (fun f : SkewPolynomial n =>
       f (fun i : Fin n => c (i.val + 1))) hz
-    simp only [Finsupp.finset_sum_apply, Finsupp.smul_apply, Finsupp.zero_apply] at h ⊢
+    simp only [Finsupp.finsetSum_apply, Finsupp.smul_apply, Finsupp.zero_apply] at h ⊢
     simpa only [coeff_eq_contentPolynomial n _ c h0 hc] using h
-  · simp only [contentPolynomial_eq, Finsupp.finset_sum_apply, Finsupp.smul_apply,
-      monomial, Finsupp.single_apply, if_neg (Ne.symm he), smul_zero,
+  · simp only [contentPolynomial_eq, Finsupp.finsetSum_apply, Finsupp.smul_apply,
+      monomial, Finsupp.single_apply, ite_eq_right (Ne.symm he), smul_zero,
       Finset.sum_const_zero, Finsupp.zero_apply]
 
 /-- Integral independence of the RAW full polynomials. The parent's actual
@@ -184,12 +184,12 @@ theorem tableauPolynomial_independent {I : Type*} [Fintype I] [DecidableEq I]
 theorem tableauxInAlphabet_zero_of_ne_empty (μ : YoungDiagram) (hμ : μ ≠ ⊥) :
     tableauxInAlphabet 0 μ = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   have h := (mem_tableauxInAlphabet 0 T).mp hT
   apply hμ
   apply YoungDiagram.ext
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro p hp
   have hpos := T.positive ((YoungDiagram.mem_cells p).mp hp)
   have hle := h p hp

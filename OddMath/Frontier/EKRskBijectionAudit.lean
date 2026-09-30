@@ -98,8 +98,8 @@ run_cmd do
       ``EKRskBijection.ex45a_P_content_is_columns, ``EKRskBijection.allSmall_images_nodup] do
     unless owned.any (fun (name, _) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compiler := (name.toString.splitOn ".").any (fun s =>

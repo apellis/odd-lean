@@ -66,7 +66,7 @@ theorem tailSum_top (C : Fin n → Fin n → Int) (F : Fin n → M) (i : Fin n)
   apply Finset.sum_eq_zero
   intro j _
   have hlt := j.isLt
-  rw [if_neg (by omega)]
+  rw [ite_eq_right (by omega)]
 
 /-- Tails agree when all larger shapes agree (each summand is either shared
 or off). -/

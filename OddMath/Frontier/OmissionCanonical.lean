@@ -15,7 +15,7 @@ theorem permutation_reverse {n : ℕ} (w : Word n) :
   induction w with
   | nil => simp [permutation]
   | cons i w ih =>
-    simp only [List.reverse_cons, permutation_append, permutation_singleton, ih, permutation,
+    simp only [List.reverse_cons, permutation_append, ih, permutation,
       mul_inv_rev]
     congr 1
 
@@ -59,12 +59,12 @@ theorem length_inverse {n : ℕ} (p : Perm n) : length p⁻¹ = length p := by
   unfold length
   rw [← Equiv.sum_comp p (fun a => ∑ b : Fin (n+2),
     if a < b ∧ p⁻¹ b < p⁻¹ a then (1 : ℕ) else 0)]
-  simp only [Equiv.Perm.inv_apply_self]
+  simp only [show ∀ x, p⁻¹ (p x) = x from p.symm_apply_apply]
   conv_lhs =>
     arg 2
     ext a
     rw [← Equiv.sum_comp p (fun b => if p a < b ∧ p⁻¹ b < a then (1 : ℕ) else 0)]
-  simp only [Equiv.Perm.inv_apply_self]
+  simp only [show ∀ x, p⁻¹ (p x) = x from p.symm_apply_apply]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro a _
@@ -117,7 +117,7 @@ theorem permutation_fix_of_support {n : ℕ} (w : Word n) (x : Fin (n+2))
     rw [ih (fun j hj => h j (List.mem_cons_of_mem _ hj))]
     apply simple_apply_other
     · intro he; have hx := congrArg Fin.val he; have := h i (by simp)
-      simp only [Fin.coe_castSucc] at hx; omega
+      simp only [Fin.val_castSucc] at hx; omega
     · intro he; have hx := congrArg Fin.val he; have := h i (by simp)
       simp only [Fin.val_succ] at hx; omega
 
@@ -218,7 +218,7 @@ theorem down_values (n k r : ℕ) (h : k+r ≤ n+1) :
   induction r with
   | zero => rfl
   | succ r ih =>
-    simp only [down, List.map_cons, Fin.val_mk, ih, List.range_succ_eq_map,
+    simp only [down, List.map_cons, ih, List.range_succ_eq_map,
       List.map_map, Function.comp_def, List.map_cons, Nat.sub_zero]
     congr 1
     apply List.map_congr_left
@@ -247,7 +247,7 @@ theorem word_blocks (n : ℕ) : word n = blocks n (n+1) le_rfl := by
   rw [List.map_map]
   calc
     _ = ((wordIn n (n+2) le_rfl).reverse.map Fin.val).map (fun j => n-j) := by
-      simp only [List.map_map, Function.comp_def, Fin.val_rev, Nat.add_sub_cancel]
+      simp only [List.map_map, Function.comp_def, Fin.val_rev]
       apply List.map_congr_left
       intro j _
       omega
@@ -259,18 +259,18 @@ theorem down_apply {n k r : ℕ} (h : k+r ≤ n+1) (x : Fin (n+2)) :
     (permutation (down n k r h) x).val =
       if x.val = k then k+r else if k < x.val ∧ x.val ≤ k+r then x.val-1 else x.val := by
   induction r with
-  | zero => simp [down, permutation]; split_ifs <;> omega
+  | zero => simp [down, permutation]; try split_ifs <;> omega
   | succ r ih =>
     simp only [down, permutation, Equiv.Perm.mul_apply, simple, Equiv.swap_apply_def,
-      Fin.ext_iff, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk]
+      Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
     have hp := ih (by omega)
-    split_ifs at hp ⊢ <;> (try simp only [Fin.val_succ, Fin.val_mk, Fin.coe_castSucc]) <;> omega
+    split_ifs at hp ⊢ <;> (try simp only [Fin.val_succ, Fin.val_castSucc]) <;> omega
 
 theorem blocks_apply {n r : ℕ} (h : r ≤ n+1) (x : Fin (n+2)) :
     (permutation (blocks n r h) x).val =
       if x.val < n+1-r then x.val else n+1+(n+1-r)-x.val := by
   induction r with
-  | zero => simp [blocks, permutation]; split_ifs <;> have := x.isLt <;> omega
+  | zero => simp [blocks, permutation]; have := x.isLt; omega
   | succ r ih =>
     simp only [blocks, permutation_append, Equiv.Perm.mul_apply, down_apply]
     have hp := ih (by omega)
@@ -286,7 +286,7 @@ theorem blocks_inverse {n r : ℕ} (h : r ≤ n+1) :
   simp only [Equiv.Perm.mul_apply, Equiv.Perm.one_apply]
   rw [blocks_apply, blocks_apply]
   have hx := x.isLt
-  split_ifs <;> omega
+  try split_ifs <;> omega
 
 theorem blocks_descents {n r : ℕ} (h : r ≤ n+1) (i : Fin (n+1))
     (hi : n-r < i.val) : Descent (permutation (blocks n r h))⁻¹ i := by
@@ -294,9 +294,9 @@ theorem blocks_descents {n r : ℕ} (h : r ≤ n+1) (i : Fin (n+1))
   change (permutation (blocks n r h) i.succ).val <
     (permutation (blocks n r h) i.castSucc).val
   rw [blocks_apply, blocks_apply]
-  simp only [Fin.val_succ, Fin.coe_castSucc]
+  simp only [Fin.val_succ, Fin.val_castSucc]
   have hb := i.isLt
-  split_ifs <;> omega
+  try split_ifs <;> omega
 
 open SignedPermutation NonadjacentDivided in
 /-- Actual signed covariance through a whole ordinary word. -/
@@ -313,7 +313,7 @@ theorem pair_word_covariance {n : ℕ} (w : Word n) (u v : Fin (n+2)) (huv : u �
     change dividedPair u v huv (s i.castSucc i.succ (skewAction (permutation w) f)) = _
     rw [covariance _ _ _ _ _ (AllRankDivided.adjacent_ne i), ih]
     simp only [s, map_zsmul, List.length_cons, pow_succ, mul_neg, mul_one,
-      neg_smul, map_neg, simple, mul_inv_rev, Equiv.swap_inv, Equiv.Perm.mul_apply]
+      neg_smul, simple, mul_inv_rev, Equiv.swap_inv, Equiv.Perm.mul_apply]
 
 theorem down_append_low (n k r : ℕ) (h : k+(r+1) ≤ n+1) :
     down n k (r+1) h = down n (k+1) r (by omega) ++ [⟨k, by omega⟩] := by
@@ -346,7 +346,7 @@ theorem down_inverse_apply {n k r : ℕ} (h : k+r ≤ n+1) (x : Fin (n+2)) :
       if x.val = k+r then k else if k ≤ x.val ∧ x.val < k+r then x.val+1 else x.val := by
   let y := (permutation (down n k r h))⁻¹ x
   have hy := down_apply h y
-  have he : permutation (down n k r h) y = x := Equiv.Perm.apply_inv_self _ _
+  have he : permutation (down n k r h) y = x := Equiv.apply_symm_apply _ _
   rw [he] at hy
   change y.val = _
   split_ifs at hy ⊢ <;> omega
@@ -360,15 +360,15 @@ theorem block_inverse_low (n r t : ℕ) (hr : r+1 ≤ n+1) (ht : t ≤ r) :
       ⟨n-r, by omega⟩ := by
   apply Fin.ext
   simp only [blockPermutation, permutation_append, mul_inv_rev, Equiv.Perm.mul_apply,
-    blocks_inverse, blocks_apply, down_inverse_apply, Fin.val_mk]
-  split_ifs <;> omega
+    blocks_inverse, blocks_apply, down_inverse_apply]
+  try split_ifs <;> omega
 
 theorem block_inverse_high (n r t : ℕ) (hr : r+1 ≤ n+1) (ht : t ≤ r)
     (x : Fin (n+2)) (hx : n-r+t < x.val) :
     ((blockPermutation n r t hr (by omega))⁻¹ x).val = n+1+(n-r+1)-x.val := by
   simp only [blockPermutation, permutation_append, mul_inv_rev, Equiv.Perm.mul_apply,
     blocks_inverse, blocks_apply, down_inverse_apply]
-  split_ifs <;> omega
+  try split_ifs <;> omega
 
 open SignedPermutation IntervalAnnihilation in
 /-- A descending divided run becomes an ascending run under actual reversing
@@ -389,13 +389,13 @@ theorem run_covariance {n : ℕ} (w : Word n) (j q c : ℕ)
     have h₁ : (permutation w)⁻¹ i.castSucc = z.succ := by
       apply Fin.ext
       have hh := hp i.castSucc (by simp [i]) (by simp [i])
-      simp only [Fin.coe_castSucc, Fin.val_succ] at *
+      simp only [Fin.val_castSucc, Fin.val_succ] at *
       dsimp [i,z] at *
       omega
     have h₂ : (permutation w)⁻¹ i.succ = z.castSucc := by
       apply Fin.ext
       have hh := hp i.succ (by dsimp [i]; omega) (by dsimp [i]; omega)
-      simp only [Fin.coe_castSucc, Fin.val_succ] at *
+      simp only [Fin.val_castSucc, Fin.val_succ] at *
       dsimp [i,z] at *
       omega
     have cov (g : SkewPolynomial (n+2)) :

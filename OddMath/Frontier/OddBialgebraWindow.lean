@@ -40,7 +40,7 @@ theorem word_mem_winPiece {l r : ℕ} (w : List (Letter n)) (hw : ∀ g ∈ w, I
   Submodule.subset_span ⟨w, ⟨rfl, hw⟩, rfl⟩
 
 theorem winPiece_le (l r : ℕ) (d : ℤ) : winPiece n l r d ≤ degreePiece n d :=
-  Submodule.span_mono (Set.image_subset _ fun _ hw => hw.1)
+  Submodule.span_mono (Set.image_mono fun _ hw => hw.1)
 
 theorem wordValue_cons (g : Letter n) (w : List (Letter n)) :
     wordValue (g :: w) = letterValue g * wordValue w := by
@@ -156,10 +156,10 @@ theorem windowHom_mem {m p : ℕ} (h : p + (m+2) ≤ n+2) {d : ℤ} {x : Present
     refine word_mem_winPiece _ fun g hg => ?_
     obtain ⟨g, -, rfl⟩ := List.mem_map.1 hg
     cases g with
-    | inl j => exact ⟨by simp [shiftLetter], by simp [shiftLetter]; omega⟩
+    | inl j => exact ⟨by simp, by simp; omega⟩
     | inr i =>
       have := i.isLt
-      exact ⟨by simp [shiftLetter], by simp [shiftLetter]; omega⟩
+      exact ⟨by simp, by simp; omega⟩
   | zero => rw [map_zero]; exact zero_mem _
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_zsmul]; exact Submodule.smul_mem _ c hx

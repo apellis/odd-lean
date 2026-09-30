@@ -70,7 +70,7 @@ theorem pair_decompose {e d : ℕ} {y : Q} (hy : y ∈ degreePiece e) (x : Q) :
     · intro b _ hb
       exact pairing_degree_orth (Ne.symm hb) hy (decompose_mem x b)
     · intro he
-      rw [Finsupp.not_mem_support_iff.mp he, map_zero]
+      rw [Finsupp.notMem_support_iff.mp he, map_zero]
   · exact pairing_degree_orth hed hy (decompose_mem x d)
 
 theorem defect_decompose {p r d : ℕ} {a b : Q} (ha : a ∈ degreePiece p)

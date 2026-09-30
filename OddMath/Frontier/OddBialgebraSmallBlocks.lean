@@ -83,7 +83,7 @@ theorem simple_shiftR1 (i : Fin (m'+1)) :
   rw [shiftR, simple, simple, Equiv.Perm.sumCongr_one_swap, Equiv.permCongr_def,
     Equiv.symm_trans_swap_trans, finSumFinEquiv_apply_right, finSumFinEquiv_apply_right]
   congr 1 <;> exact Fin.ext (by
-    simp only [Fin.coe_castSucc, Fin.val_succ, Fin.coe_natAdd, shiftIndex_val]; omega)
+    simp only [Fin.val_castSucc, Fin.val_succ, Fin.val_natAdd, shiftIndex_val]; omega)
 
 theorem permutation_mapR1 (u : Word m') :
     permutation (u.map (shiftIndex (hR m'))) = shiftR (permutation u) := by
@@ -95,17 +95,17 @@ theorem length_shiftR (v : Perm m') : length (shiftR v) = length v := by
   change (∑ a : Fin (1 + (m'+2)), ∑ b : Fin (1 + (m'+2)),
     if a < b ∧ shiftR v b < shiftR v a then 1 else 0) = _
   simp only [Fin.sum_univ_add (a := 1) (b := m'+2), shiftR_castAdd, shiftR_natAdd,
-    Fin.lt_iff_val_lt_val, Fin.coe_castAdd, Fin.coe_natAdd, Nat.add_lt_add_iff_left]
+    Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd, Nat.add_lt_add_iff_left]
   have h₁ : ∀ (i : Fin 1) (j : Fin (m'+2)),
       (if (i : ℕ) < 1 + j ∧ 1 + (v j : ℕ) < i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := i.isLt; omega
+    ite_eq_right fun h => by have := i.isLt; omega
   have h₂ : ∀ (i : Fin (m'+2)) (j : Fin 1),
       (if 1 + (i : ℕ) < j ∧ (j : ℕ) < 1 + v i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := j.isLt; omega
+    ite_eq_right fun h => by have := j.isLt; omega
   have h₀ : ∀ (i j : Fin 1), (if (i : ℕ) < j ∧ (j : ℕ) < i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by omega
+    ite_eq_right fun h => by omega
   simp only [h₀, h₁, h₂, Finset.sum_const_zero, add_zero, zero_add, length,
-    Fin.lt_iff_val_lt_val]
+    Fin.lt_def]
 
 theorem windowHom_dividedR (v : Perm m') :
     Signed (windowHom m' (1 + m') 1 (hR m') (dividedElement v)) (dividedElement (shiftR v)) := by
@@ -138,10 +138,9 @@ theorem dotHom_mul_windowHom_dotMonomial (a : Fin 1 → ℕ) (A : Fin (m'+2) →
     dotHom (1 + m') 0 (Finsupp.single a 1) * windowHom m' (1 + m') 1 (hR m') (dotMonomial A) =
       dotMonomial (Fin.append a A : Fin (1 + (m'+2)) → ℕ) := by
   rw [dotHom_single, one_smul, dotMonomial_eq_prod_ofFn, dotMonomial_eq_prod_ofFn,
-    List.ofFn_add (m := 1) (n := m'+2), List.prod_append, map_list_prod, List.map_ofFn]
+    List.ofFn_add (n := 1) (m := m'+2), List.prod_append, map_list_prod, List.map_ofFn]
   congr 1
   · rw [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one]
-    simp only [Fin.append_left]
     rfl
   · refine congrArg List.prod (congrArg List.ofFn (funext fun j => ?_))
     simp only [Function.comp_apply, map_pow, windowHom_dot, Fin.append_right]
@@ -203,16 +202,16 @@ theorem length_shiftL (v : Perm m) : length (shiftL v) = length v := by
   change (∑ a : Fin ((m+2) + 1), ∑ b : Fin ((m+2) + 1),
     if a < b ∧ shiftL v b < shiftL v a then 1 else 0) = _
   simp only [Fin.sum_univ_add (a := m+2) (b := 1), shiftL_castAdd, shiftL_natAdd,
-    Fin.lt_iff_val_lt_val, Fin.coe_castAdd, Fin.coe_natAdd, Nat.add_lt_add_iff_left]
+    Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd, Nat.add_lt_add_iff_left]
   have h₁ : ∀ (i : Fin (m+2)) (j : Fin 1),
       (if (i : ℕ) < m+2+j ∧ m+2+(j : ℕ) < v i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := (v i).isLt; omega
+    ite_eq_right fun h => by have := (v i).isLt; omega
   have h₂ : ∀ (i : Fin 1) (j : Fin (m+2)),
       (if m+2+(i : ℕ) < j ∧ (v j : ℕ) < m+2+i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := j.isLt; omega
+    ite_eq_right fun h => by have := j.isLt; omega
   have h₀ : ∀ (i j : Fin 1), (if (i : ℕ) < j ∧ (j : ℕ) < i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by omega
-  simp only [h₀, h₁, h₂, Finset.sum_const_zero, add_zero, length, Fin.lt_iff_val_lt_val]
+    ite_eq_right fun h => by omega
+  simp only [h₀, h₁, h₂, Finset.sum_const_zero, add_zero, length, Fin.lt_def]
 
 theorem windowHom_dividedL (v : Perm m) :
     Signed (windowHom m (m+1) 0 (hL m) (dividedElement v)) (dividedElement (shiftL v)) := by
@@ -248,10 +247,11 @@ theorem windowHom_dotMonomial_mul_dotHom (A : Fin (m+2) → ℕ) (b : Fin 1 → 
     windowHom m (m+1) 0 (hL m) (dotMonomial A) * dotHom (m+1) (lastFin m) (Finsupp.single b 1) =
       dotMonomial (Fin.append A b : Fin ((m+2) + 1) → ℕ) := by
   rw [dotHom_single, one_smul, dotMonomial_eq_prod_ofFn, dotMonomial_eq_prod_ofFn,
-    List.ofFn_add (m := m+2) (n := 1), List.prod_append, map_list_prod, List.map_ofFn]
+    List.ofFn_add (n := m+2) (m := 1), List.prod_append, map_list_prod, List.map_ofFn]
   congr 1
   · refine congrArg List.prod (congrArg List.ofFn (funext fun j => ?_))
-    simp only [Function.comp_apply, map_pow, windowHom_dot, Fin.append_left]
+    simp only [Function.comp_apply, map_pow, windowHom_dot]
+    rw [show j.castLE (Nat.le_add_right (m+2) 1) = j.castAdd 1 from rfl, Fin.append_left]
     congr 2
   · rw [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one]
     simp only [Fin.append_right]

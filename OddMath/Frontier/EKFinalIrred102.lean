@@ -342,7 +342,7 @@ theorem bigCheck_f102 : bigCheck 89 f102Lower [true, false, true, true, false, f
 
 /-- **The printed degree-102 polynomial is irreducible over `ℚ`.** -/
 theorem f102_irreducible : Irreducible (f102.map (Int.castRingHom ℚ)) := by
-  haveI : Fact (Nat.Prime 89) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 89) := ⟨by norm_num⟩
   rw [f102_split]
   exact irreducible_of_bigCheck 89 f102Lower [true, false, true, true, false, false, true] cert102 (by decide) (by decide +kernel)
     (by decide +kernel) (by unfold Bw; decide +kernel) bigCheck_f102

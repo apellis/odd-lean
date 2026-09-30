@@ -98,8 +98,8 @@ private theorem parity (n : ℕ) (f : ℕ → ℕ) :
   intro i _
   rw [pow_mul]
   rcases Nat.mod_two_eq_zero_or_one i with h | h
-  · rw [if_neg (by omega), (Nat.even_iff.2 h).neg_one_pow, one_pow, pow_zero]
-  · rw [if_pos h, (Nat.odd_iff.2 h).neg_one_pow]
+  · rw [ite_eq_right (by omega), (Nat.even_iff.2 h).neg_one_pow, one_pow, pow_zero]
+  · rw [ite_eq_left h, (Nat.odd_iff.2 h).neg_one_pow]
 
 /-- Source (3.9), second equality: `(-1)^{C(λᵀ,2)} = (-1)^{λ₂+λ₄+λ₆+…}`, all λ. -/
 theorem sign_bridge (μ : YoungDiagram) :
@@ -189,18 +189,17 @@ theorem corollary_3_9 (d : ℕ) (h39 : Identity39 d) (lam μ : DegreeShape d) :
   have hc (ν : DegreeShape d) : ∑ l, quotientPairing (schur d l : Q) (schur d μ : Q) *
       signedKostka l.val ν.val = σ * signedKostka μ.val ν.val := by
     rw [← hpair, ← degreeHBasis_apply, schur_defining, Submodule.coe_sum, map_sum,
-      LinearMap.coeFn_sum, Finset.sum_apply]
+      LinearMap.sum_apply]
     apply Finset.sum_congr rfl
     intro l _
     rw [Submodule.coe_smul, map_zsmul, LinearMap.smul_apply, smul_eq_mul, mul_comm]
   have hc' (ν : DegreeShape d) : ∑ l, (if l = μ then σ else 0) * signedKostka l.val ν.val =
       σ * signedKostka μ.val ν.val := by
-    simp only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    simp only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
   have hu := (DegreeShapes.degree_unique_solution d (fun ν => σ * signedKostka μ.val ν.val)).unique
     (y₁ := fun l => quotientPairing (schur d l : Q) (schur d μ : Q))
     (y₂ := fun l => if l = μ then σ else 0) hc hc'
   have h := congrFun hu lam
-  simp only at h
   rw [h]
   split_ifs with hl
   · subst hl; rfl

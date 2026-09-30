@@ -48,7 +48,7 @@ private theorem below_cons {n : ℕ} (x y : Fin n) (xs ys : List (Fin n)) :
     refine ⟨?_, ⟨by simpa using hl, ?_⟩⟩
     · simpa using hp 0 (by simp)
     · intro c hc
-      simpa using hp (c+1) (by simpa using hc)
+      exact hp (c+1) (by simpa using hc)
   · rintro ⟨hxy, hl, hp⟩
     refine ⟨by simpa using hl, ?_⟩
     intro c hc

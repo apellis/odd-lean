@@ -81,7 +81,6 @@ theorem wrong_elementary_sign_rejected : e 2 ≠ h 2 + h 1 * h 1 := by
   have hn : row2 ≠ col2 := by
     intro hrc
     exact distinct_degree_two_partitions (congrArg hPartition hrc)
-  dsimp only at hh
   rw [degree_two_coordinates, ← row2_value, ← col2_value, map_add,
     h_coordinates_partition, h_coordinates_partition] at hh
   simp [hn] at hh
@@ -97,7 +96,6 @@ theorem wrong_degree_three_swap_rejected : h 1 * h 2 ≠ h 2 * h 1 := by
     have hc := congrArg YoungDiagram.rowLens heq
     rw [hr, hs] at hc
     contradiction
-  dsimp only at hh
   rw [degree_three_coordinates, ← shape21_value, h_coordinates_partition] at hh
   simp [hn] at hh
 

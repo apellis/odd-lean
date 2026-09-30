@@ -317,11 +317,13 @@ theorem blockMono_mul_blockMono {a b : ℕ} (hab : a + b = n+2) (A : Fin a → �
   congr 2
   · congr 1
     funext i
-    simp only [Fin.cast_trans, Fin.cast_eq_self, Fin.append_left]
+    simp only [Fin.cast_cast, Fin.cast_eq_self]
     congr 2
+    change A i = Fin.append A B (Fin.castAdd b i)
+    rw [Fin.append_left]
   · congr 1
     funext j
-    simp only [Fin.cast_trans, Fin.cast_eq_self, Fin.append_right]
+    simp only [Fin.cast_cast, Fin.cast_eq_self, Fin.append_right]
     congr 2
     all_goals exact Fin.ext (by simp [shiftFin, Nat.add_comm])
 
@@ -473,11 +475,11 @@ theorem bubble {a b : ℕ} (hab : a + b = n+2) {α : Fin a → ℕ} {β : Fin b 
   congr 1
   by_cases hc : β = hat b α
   · subst hc
-    rw [if_pos rfl, if_pos (hat_hat hα hαb).symm, sum_expB]
+    rw [ite_eq_left rfl, ite_eq_left (hat_hat hα hαb).symm, sum_expB]
     simp only [← pow_add, bubbleSign]
     congr 1
     ring
-  · rw [if_neg hc, if_neg fun h => hc ((eq_hat_iff hα hαb hβ hβa).mpr h), mul_zero, mul_zero]
+  · rw [ite_eq_right hc, ite_eq_right fun h => hc ((eq_hat_iff hα hαb hβ hβa).mpr h), mul_zero, mul_zero]
 
 /-! ## Splitters and Proposition 4.11 -/
 
@@ -596,12 +598,12 @@ theorem eq_4_54 {a b : ℕ} (hab : a + b = n+2) {α β : Fin a → ℕ}
     bubble hab hα hαb hat_antitone hat_le]
   · by_cases hc : β = α
     · subst hc
-      rw [if_pos rfl, if_pos rfl, smul_smul, smul_smul, ← pow_add, ← pow_add, signX,
+      rw [ite_eq_left rfl, ite_eq_left rfl, smul_smul, smul_smul, ← pow_add, ← pow_add, signX,
         Even.neg_one_pow ⟨(∑ k, β k) * (∑ j, hat b β j) + bubbleSign a b β, by ring⟩, one_smul]
     · have hne : ¬ hat b β = hat b α := fun h => hc (by
         have := congrArg (hat a) h
         rwa [hat_hat hβ hβb, hat_hat hα hαb] at this)
-      rw [if_neg hne, if_neg hc, zero_smul, smul_zero, smul_zero]
+      rw [ite_eq_right hne, ite_eq_right hc, zero_smul, smul_zero, smul_zero]
   · rw [← mul_assoc, ← mul_assoc, blockE_mul_blockE hL]
   · rw [mul_assoc, blockE_mul_blockE hR]
 
@@ -612,8 +614,8 @@ theorem eq_4_55 {a b : ℕ} (hab : a + b = n+2) {α β : Fin a → ℕ}
   rw [idem, idem, mul_assoc, ← mul_assoc (lam n a b hab β), eq_4_54 hab hα hαb hβ hβb]
   by_cases hc : β = α
   · subst hc
-    rw [if_pos rfl, if_pos rfl, projector_mul_lam]
-  · rw [if_neg hc, if_neg hc, zero_mul, mul_zero]
+    rw [ite_eq_left rfl, ite_eq_left rfl, projector_mul_lam]
+  · rw [ite_eq_right hc, ite_eq_right hc, zero_mul, mul_zero]
 
 end
 

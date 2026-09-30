@@ -109,7 +109,7 @@ theorem lexLt_self : ∀ (l : List Nat), lexLt l l = false := by
   | cons a as ih =>
     rw [lexLt_cons_cons]
     have hab : ¬ a < a := by omega
-    rw [if_neg hab, if_neg hab]
+    rw [ite_eq_right hab, ite_eq_right hab]
     exact ih
 
 /-- The lexicographic order is transitive. -/
@@ -146,37 +146,37 @@ theorem lexLt_trans : ∀ (x y z : List Nat),
       | cons c cs =>
         rw [lexLt_cons_cons] at hyz ⊢
         by_cases hab : a < b
-        · rw [if_pos hab] at hxy
+        · rw [ite_eq_left hab] at hxy
           by_cases hbc : b < c
-          · rw [if_pos hbc] at hyz
+          · rw [ite_eq_left hbc] at hyz
             have hac : a < c := by omega
-            rw [if_pos hac]
-          · rw [if_neg hbc] at hyz
+            rw [ite_eq_left hac]
+          · rw [ite_eq_right hbc] at hyz
             by_cases hcb : c < b
-            · rw [if_pos hcb] at hyz
+            · rw [ite_eq_left hcb] at hyz
               simp at hyz
-            · rw [if_neg hcb] at hyz
+            · rw [ite_eq_right hcb] at hyz
               have hac : a < c := by omega
-              rw [if_pos hac]
-        · rw [if_neg hab] at hxy
+              rw [ite_eq_left hac]
+        · rw [ite_eq_right hab] at hxy
           by_cases hba : b < a
-          · rw [if_pos hba] at hxy
+          · rw [ite_eq_left hba] at hxy
             simp at hxy
-          · rw [if_neg hba] at hxy
+          · rw [ite_eq_right hba] at hxy
             have hab_eq : a = b := by omega
             by_cases hbc : b < c
-            · rw [if_pos hbc] at hyz
+            · rw [ite_eq_left hbc] at hyz
               have hac : a < c := by omega
-              rw [if_pos hac]
-            · rw [if_neg hbc] at hyz
+              rw [ite_eq_left hac]
+            · rw [ite_eq_right hbc] at hyz
               by_cases hcb : c < b
-              · rw [if_pos hcb] at hyz
+              · rw [ite_eq_left hcb] at hyz
                 simp at hyz
-              · rw [if_neg hcb] at hyz
+              · rw [ite_eq_right hcb] at hyz
                 have hac_eq : a = c := by omega
                 rw [hac_eq]
                 have hcc : ¬ c < c := by omega
-                rw [if_neg hcc, if_neg hcc]
+                rw [ite_eq_right hcc, ite_eq_right hcc]
                 exact ih bs cs hxy hyz
 
 /-- Trichotomy: any two lists are lex-ordered one way or equal. -/
@@ -196,17 +196,17 @@ theorem lexLt_total : ∀ (a b : List Nat),
     | cons c cs =>
       rw [lexLt_cons_cons]
       by_cases hac : a < c
-      · rw [if_pos hac]
+      · rw [ite_eq_left hac]
         exact Or.inl rfl
-      · rw [if_neg hac]
+      · rw [ite_eq_right hac]
         by_cases hca : c < a
         · have hba : lexLt (c :: cs) (a :: as) = true := by
-            rw [lexLt_cons_cons, if_pos hca]
+            rw [lexLt_cons_cons, ite_eq_left hca]
           exact Or.inr (Or.inr hba)
         · have e : a = c := by omega
           subst e
           have haa : ¬ a < a := by omega
-          rw [if_neg haa]
+          rw [ite_eq_right haa]
           have h := ih cs
           cases h with
           | inl hlt => exact Or.inl hlt
@@ -217,7 +217,7 @@ theorem lexLt_total : ∀ (a b : List Nat),
               exact Or.inr (Or.inl rfl)
             | inr hlt =>
               have hrev : lexLt (a :: cs) (a :: as) = true := by
-                rw [lexLt_cons_cons, if_neg haa, if_neg haa]
+                rw [lexLt_cons_cons, ite_eq_right haa, ite_eq_right haa]
                 exact hlt
               exact Or.inr (Or.inr hrev)
 
@@ -329,11 +329,11 @@ theorem lexRel_acc_step (K : Nat)
         rw [lexLt_cons_cons] at hlex
         by_cases hcb : c < b
         · exact innerIH c hcb w hw
-        · rw [if_neg hcb] at hlex
+        · rw [ite_eq_right hcb] at hlex
           by_cases hbc : b < c
-          · rw [if_pos hbc] at hlex
+          · rw [ite_eq_left hbc] at hlex
             simp at hlex
-          · rw [if_neg hbc] at hlex
+          · rw [ite_eq_right hbc] at hlex
             have hc_eq : c = b := by omega
             subst hc_eq
             exact ihAcc w ⟨hw, hu, hlex⟩ c innerIH hw)
@@ -431,10 +431,10 @@ theorem posOf_lt_length : ∀ (t : List (List Nat)) (l : List Nat),
     simp only [List.mem_cons] at hm
     show (if a = l then 0 else posOf t' l + 1) < (a :: t').length
     by_cases heq : a = l
-    · rw [if_pos heq]
+    · rw [ite_eq_left heq]
       show (0 : Nat) < t'.length + 1
       omega
-    · rw [if_neg heq]
+    · rw [ite_eq_right heq]
       cases hm with
       | inl heq2 => exact absurd heq2.symm heq
       | inr hmem =>
@@ -463,12 +463,12 @@ theorem atPos_posOf : ∀ (t : List (List Nat)) (l : List Nat),
     · subst heq
       have hpos : posOf (a :: t') a = 0 := by
         show (if a = a then (0 : Nat) else posOf t' a + 1) = 0
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
       rw [hpos]
       rfl
     · have hpos : posOf (a :: t') l = posOf t' l + 1 := by
         show (if a = l then (0 : Nat) else posOf t' l + 1) = posOf t' l + 1
-        rw [if_neg heq]
+        rw [ite_eq_right heq]
       rw [hpos]
       cases hm with
       | inl heq2 => exact absurd heq2.symm heq
@@ -610,7 +610,7 @@ theorem sorted_map_prefix (a : Nat) :
             have hlex' : lexLt (a :: y) (a :: b) = true := by
               rw [lexLt_cons_cons]
               have haa : ¬ a < a := by omega
-              rw [if_neg haa, if_neg haa]
+              rw [ite_eq_right haa, ite_eq_right haa]
               exact hlex
             rw [shapeOrder_eq]
             exact Or.inl (Or.inr ⟨hlen', hlex'⟩)
@@ -702,7 +702,7 @@ theorem allLists_sorted : ∀ (k m : Nat), SortedOrder (allLists k m) := by
         show y'.length + 1 = k + 1
         omega
       have hlex : lexLt x y = true := by
-        rw [← hx', ← hy', lexLt_cons_cons, if_pos hab]
+        rw [← hx', ← hy', lexLt_cons_cons, ite_eq_left hab]
       exact Or.inl (Or.inr ⟨by omega, hlex⟩)
 
 /-- The bounded generator enumerates in order (shorter lengths first). -/

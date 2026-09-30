@@ -96,7 +96,7 @@ theorem remove_content (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
     · have hk : n < k := by omega
       have hne : R.letter.val+1 ≠ k := by have h := R.letter.isLt; omega
       rw [content_above n _ R.tableau R.bounded k hk,
-        content_above n μ T hT k hk, if_neg hne]
+        content_above n μ T hT k hk, ite_eq_right hne]
       rfl
 
 /-- Evaluation at an arbitrary alphabet letter, derived from full content equality. -/

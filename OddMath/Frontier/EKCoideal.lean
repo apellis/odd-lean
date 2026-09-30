@@ -52,9 +52,9 @@ of its independent basis vectors; pairing twice kills each coefficient. -/
 theorem tensor_separation (z : Q ⊗[ℤ] Q)
     (hz : ∀ a b : Q, tensorTest a b z = 0) : z = 0 := by
   classical
-  obtain ⟨M, hM, hm⟩ := TensorProduct.exists_finite_submodule_left_of_finite
+  obtain ⟨M, hM, hm⟩ := TensorProduct.exists_finite_submodule_left_of_setFinite
     ({z} : Set (Q ⊗[ℤ] Q)) (Set.finite_singleton z)
-  letI : Module.Finite ℤ M := hM
+  let : Module.Finite ℤ M := hM
   obtain ⟨w, hw⟩ := hm (Set.mem_singleton z)
   obtain ⟨n, B⟩ := Module.basisOfFiniteTypeTorsionFree' (R := ℤ) (M := M)
   obtain ⟨c, hc⟩ := TensorProduct.eq_repr_basis_left B w
@@ -80,9 +80,7 @@ theorem tensor_separation (z : Q ⊗[ℤ] Q)
 /-- Evaluation commutes with quotienting both tensor factors. -/
 theorem tensorTest_map (a b : A) (z : T) :
     tensorTest (pi a) (pi b) (quotientTensorMap z) = tensorPairing z (a ⊗ₜ[ℤ] b) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y => simp
   | add x y hx hy => simp [hx, hy]
 
@@ -109,11 +107,9 @@ theorem quotientTensorMap_eq_zero_iff (z : T) :
   let e := TensorProduct.quotientTensorQuotientEquiv
     (radical.restrictScalars ℤ) (radical.restrictScalars ℤ)
   have he : e (quotientTensorMap z) = Submodule.Quotient.mk z := by
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+    induction z using TensorProduct.inductionOn with
     | tmul x y => rfl
-    | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, RingHom.map_add, hx, hy, Submodule.Quotient.mk_add]
+    | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, hx, hy, Submodule.Quotient.mk_add]
   rw [← e.map_eq_zero_iff, he]
   exact Submodule.Quotient.mk_eq_zero coidealSubmodule
 
@@ -134,34 +130,28 @@ private theorem assoc_quotient (t : T) (y : A) :
     TensorProduct.assoc ℤ Q Q Q (quotientTensorMap t ⊗ₜ[ℤ] pi y) =
     TensorProduct.map piAlg.toLinearMap quotientTensorMap
       (TensorProduct.assoc ℤ A A A (t ⊗ₜ[ℤ] y)) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction t using TensorProduct.inductionOn with
   | tmul a b => simp
-  | add a b ha hb => simp only [LinearMap.map_add, LinearEquiv.map_add, RingHom.map_add, TensorProduct.add_tmul, ha, hb]
+  | add a b ha hb => simp only [LinearMap.map_add, LinearEquiv.map_add, TensorProduct.add_tmul, ha, hb]
 
 private theorem left_iterated_map (z : T) :
     TensorProduct.assoc ℤ Q Q Q
       (TensorProduct.map quotientCoproduct LinearMap.id (quotientTensorMap z)) =
     TensorProduct.map piAlg.toLinearMap quotientTensorMap
       (TensorProduct.assoc ℤ A A A (TensorProduct.map coproduct LinearMap.id z)) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simpa only [quotientTensorMap_tmul, TensorProduct.map_tmul,
       quotientCoproduct_pi, LinearMap.id_apply] using assoc_quotient (coproduct x) y
-  | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, RingHom.map_add, hx, hy]
+  | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, hx, hy]
 
 private theorem right_iterated_map (z : T) :
     TensorProduct.map LinearMap.id quotientCoproduct (quotientTensorMap z) =
     TensorProduct.map piAlg.toLinearMap quotientTensorMap
       (TensorProduct.map LinearMap.id coproduct z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y => simp
-  | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, RingHom.map_add, hx, hy]
+  | add x y hx hy => simp only [LinearMap.map_add, hx, hy]
 
 /-- Coassociativity with the genuine tensor associator, on every quotient class. -/
 theorem quotient_coassociativity (x : Q) :
@@ -176,9 +166,7 @@ private theorem left_counit_map (z : T) :
     TensorProduct.lid ℤ Q
       (TensorProduct.map quotientCounit.toLinearMap LinearMap.id (quotientTensorMap z)) =
     pi (leftCounit z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
       quotientCounit_pi, LinearMap.id_apply, TensorProduct.lid_tmul, leftCounit_tmul]
@@ -189,9 +177,7 @@ private theorem right_counit_map (z : T) :
     TensorProduct.rid ℤ Q
       (TensorProduct.map LinearMap.id quotientCounit.toLinearMap (quotientTensorMap z)) =
     pi (rightCounit z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, RingHom.map_zero,
-      TensorProduct.zero_tmul, LinearMap.zero_apply, Submodule.Quotient.mk_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
       quotientCounit_pi, LinearMap.id_apply, TensorProduct.rid_tmul, rightCounit_tmul]

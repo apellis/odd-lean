@@ -50,7 +50,7 @@ theorem h_succ (n : ℕ) :
   rw [Fin.sum_univ_succ] at hh
   simp only [Fin.val_zero, ekSign, Nat.zero_add, Nat.choose_eq_zero_of_lt (by decide : 1 < 2),
     pow_zero, elementary_zero, one_mul, Nat.sub_zero, Fin.val_succ] at hh
-  simpa only [Nat.add_sub_add_right] using eq_neg_of_add_eq_zero_left hh
+  simpa only [Nat.add_sub_add_right, ekSign] using eq_neg_of_add_eq_zero_left hh
 
 /-- The defining recovered sequence satisfies the same ordered convolution. -/
 theorem recovered_convolution (n : ℕ) :
@@ -93,7 +93,7 @@ theorem ordered_convolution_unique {R : Type*} [Ring R]
       have hf' := hf n
       have hg' := hg n
       rw [Fin.sum_univ_castSucc] at hf' hg'
-      simp only [Fin.coe_castSucc, Fin.val_last, Nat.sub_self, hr, mul_one] at hf' hg'
+      simp only [Fin.val_castSucc, Fin.val_last, Nat.sub_self, hr, mul_one] at hf' hg'
       have hs : (∑ k : Fin (n + 1), f k * r (n + 1 - k)) =
           ∑ k : Fin (n + 1), g k * r (n + 1 - k) := by
         apply Finset.sum_congr rfl

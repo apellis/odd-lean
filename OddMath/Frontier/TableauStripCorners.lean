@@ -28,14 +28,14 @@ theorem rightmost_corner (μ ν : YoungDiagram) (p : ℕ × ℕ)
       exact hpμ (μ.up_left_mem (Nat.le_succ _) le_rfl hbμ)
     have he := h.2 (p.1 + 1, p.2) (Finset.mem_sdiff.mpr ⟨hb, hbμ⟩) p hp rfl
     have hf := congrArg Prod.fst he
-    simp only [Prod.fst] at hf
+    simp only [] at hf
     omega
   · intro hr
     have hrμ : (p.1, p.2 + 1) ∉ μ.cells := by
       intro hrμ
       exact hpμ (μ.up_left_mem le_rfl (Nat.le_succ _) hrμ)
     have hc := hm (p.1, p.2 + 1) (Finset.mem_sdiff.mpr ⟨hr, hrμ⟩)
-    simp only [Prod.snd] at hc
+    simp only [] at hc
     omega
 
 private theorem erase_horizontal (μ ν : YoungDiagram) (p : ℕ × ℕ)

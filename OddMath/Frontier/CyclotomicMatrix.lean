@@ -23,22 +23,22 @@ def entryIdeal (M : Matrix ι ι R) : TwoSidedIdeal R :=
 
 /-- In `Mat_ι(R)`, `⟨M⟩ = Mat_ι(⟨entries of M⟩)`. -/
 theorem span_singleton_eq_matricesOver (M : Matrix ι ι R) :
-    TwoSidedIdeal.span {M} = (entryIdeal M).matricesOver ι := by
+    TwoSidedIdeal.span {M} = (entryIdeal M).matrix ι := by
   apply le_antisymm
   · rw [TwoSidedIdeal.span_le, Set.singleton_subset_iff, SetLike.mem_coe,
-      TwoSidedIdeal.mem_matricesOver]
+      TwoSidedIdeal.mem_matrix]
     intro i j
     exact TwoSidedIdeal.subset_span ⟨(i, j), rfl⟩
-  · set J' := TwoSidedIdeal.equivMatricesOver.symm (TwoSidedIdeal.span {M})
-    have hJ' : J'.matricesOver ι = TwoSidedIdeal.span {M} :=
-      TwoSidedIdeal.equivMatricesOver.apply_symm_apply _
+  · set J' := TwoSidedIdeal.equivMatrix.symm (TwoSidedIdeal.span {M})
+    have hJ' : J'.matrix ι = TwoSidedIdeal.span {M} :=
+      TwoSidedIdeal.equivMatrix.apply_symm_apply _
     have hle : entryIdeal M ≤ J' := by
       rw [entryIdeal, TwoSidedIdeal.span_le]
       rintro _ ⟨⟨i, j⟩, rfl⟩
-      have hM : M ∈ J'.matricesOver ι := by rw [hJ']; exact TwoSidedIdeal.subset_span rfl
-      exact (TwoSidedIdeal.mem_matricesOver _ _ _).mp hM i j
+      have hM : M ∈ J'.matrix ι := by rw [hJ']; exact TwoSidedIdeal.subset_span rfl
+      exact (TwoSidedIdeal.mem_matrix _ _ _).mp hM i j
     rw [← hJ']
-    exact TwoSidedIdeal.matricesOver_monotone ι hle
+    exact TwoSidedIdeal.matrix_monotone ι hle
 
 omit [DecidableEq ι] [Nonempty ι] in
 theorem mem_span_singleton_equiv (e : A ≃+* Matrix ι ι R) (x a : A) :
@@ -66,7 +66,7 @@ theorem ker_entrywise (e : A ≃+* Matrix ι ι R) (θ : R →+* S) (x : A)
     RingHom.ker (entrywise e θ) = (TwoSidedIdeal.span {x}).asIdeal := by
   ext a
   rw [RingHom.mem_ker, TwoSidedIdeal.mem_asIdeal, mem_span_singleton_equiv e,
-    span_singleton_eq_matricesOver, TwoSidedIdeal.mem_matricesOver]
+    span_singleton_eq_matricesOver, TwoSidedIdeal.mem_matrix]
   constructor
   · intro h i j
     have := congrFun (congrFun h i) j
@@ -172,7 +172,7 @@ theorem kernel_mem_rightSpan_iff (n : ℕ) (I : TwoSidedIdeal (K n)) (k : K n) :
     rw [hco]
     by_cases hw : w = 1
     · subst hw; simpa using TwoSidedIdeal.zsmul_mem I c h
-    · simp [hw, TwoSidedIdeal.zero_mem]
+    · simp [hw]
 
 /-- `x̃_1` is a normal element of `OPol_a`: `x̃_1 f = g x̃_1` (it anticommutes with the other
 variables). -/
@@ -238,7 +238,7 @@ theorem weakSum_mem_of_strictSum_mem {R : Type*} [Ring R] (S : Subring R) {m : �
   induction k using Nat.strong_induction_on with
   | _ k ih =>
     rcases k with _ | k
-    · simpa using S.one_mem
+    · simp
     have h := convolution x hx k
     rw [Finset.sum_range_succ'] at h
     simp only [signedStrict_zero, one_mul, Nat.sub_zero] at h
@@ -327,14 +327,14 @@ theorem divided_revComplete (n q m : ℕ) (hq : q < n+1) :
   rw [revComplete_succ n (q+1) m (by omega), map_add, AllRankDivided.divided_mul, hg, mul_zero,
     add_zero] at hk
   have ht : tildeGenerator (⟨q+1, by omega⟩ : Fin (n+2)) = (-1 : ℤ)^(q+1) • generator i.succ := rfl
-  rw [ht, map_zsmul, AllRankDivided.divided_generator, if_pos (Or.inr rfl), smul_mul_assoc,
+  rw [ht, map_zsmul, AllRankDivided.divided_generator, ite_eq_left (Or.inr rfl), smul_mul_assoc,
     one_mul] at hk
   rw [eq_neg_of_add_eq_zero_right hk, pow_succ, mul_neg_one, neg_smul, neg_neg]
 
 theorem revAlphabet_full (n : ℕ) (j : Fin (n+2)) :
     revAlphabet n (n+2) j = tildeGenerator j.rev := by
   have hj : n + 2 - 1 - j.val < n+2 := by omega
-  simp only [revAlphabet, hj, dif_pos]
+  simp only [revAlphabet, hj, dite_eq_left]
   congr 1
   apply Fin.ext
   simp only [Fin.val_rev]
@@ -367,7 +367,7 @@ theorem revK_hK (n m : ℕ) :
   apply Finset.sum_congr rfl
   intro f _
   by_cases hf : Monotone f
-  · simp only [hf, if_true]
+  · simp only [hf, ite_true]
     have h := LongestElementary.action_tildeWord (List.ofFn f)
     simp only [List.map_ofFn, List.length_ofFn] at h
     rw [show (List.ofFn fun i => tildeGenerator (f i)) = List.ofFn (tildeGenerator ∘ f) from rfl, h]
@@ -506,7 +506,7 @@ theorem prop_5_2_apply (n N : ℕ) (T : Presented n) (v w : Perm n) :
 
 /-- `ONH_a^N` vanishes unless `a ≤ N`. -/
 theorem ONH_subsingleton {n N : ℕ} (h : N < n+2) : Subsingleton (ONH n N) := by
-  haveI := OH_subsingleton h
+  have := OH_subsingleton h
   exact (prop_5_2 n N).toEquiv.subsingleton
 
 end Prop52

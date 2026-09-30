@@ -12,7 +12,7 @@ EKL arXiv:1111.1320v1, §6, pp. 46–47: restriction along `ONH_a ⊗ ONH_b ⊂ 
   over the shuffles), is a bijection of `ℤ`-modules: it carries the tensor PBW basis to `±` the PBW basis
   of `ONH_{a+b}`, `x^{A₁}∂_{y₁} ⊗ x^{A₂}∂_{y₂} ⊗ u ↦ ± x^{A₁ ⊔ A₂} ∂_{(y₁ × y₂)u}` (Prop 2.11,
   `exists_factor`, `factor_unique`, `length_blockPerm_mul`).
-* `freeBasis : Basis (Shuffle m m') B ONH_{a+b}`, `u ↦ ∂_u`: `ONH_{a+b}` is a free left
+* `freeBasis : Module.Basis (Shuffle m m') B ONH_{a+b}`, `u ↦ ∂_u`: `ONH_{a+b}` is a free left
   `B`-module of rank `C(a+b, a)` (`card_shuffle`).
 * The coordinates are graded: for `x` of degree `d`, the `∂_u`-coordinate of `x` has degree
   `d + 2ℓ(u)` (`coord_mem`), for the grading `gradB` of `B` restricted from `ONH_{a+b}`.
@@ -80,7 +80,7 @@ theorem psi_single (u : Shuffle m m') (t : Presented m ⊗[ℤ] Presented m') :
 
 /-- The `ℤ`-basis of `⊕_u ONH_a ⊗ ONH_b`. -/
 def tensorShufBasis :
-    Basis (Σ _ : Shuffle m m', ((Fin (m+2) → ℕ) × Perm m) × ((Fin (m'+2) → ℕ) × Perm m')) ℤ
+    Module.Basis (Σ _ : Shuffle m m', ((Fin (m+2) → ℕ) × Perm m) × ((Fin (m'+2) → ℕ) × Perm m')) ℤ
       (Shuffle m m' →₀ Presented m ⊗[ℤ] Presented m') :=
   Finsupp.basis fun _ => (basis m).tensorProduct (basis m')
 
@@ -88,12 +88,12 @@ theorem psi_basis (x : Σ _ : Shuffle m m', ((Fin (m+2) → ℕ) × Perm m) ×
     ((Fin (m'+2) → ℕ) × Perm m')) :
     Signed (psi (tensorShufBasis x)) (basis (m+2+m') (shufIndex x)) := by
   obtain ⟨u, ⟨A, w⟩, ⟨A', v⟩⟩ := x
-  rw [tensorShufBasis, Finsupp.coe_basis, psi_single, Basis.tensorProduct_apply]
+  rw [tensorShufBasis, Finsupp.coe_basis, psi_single, Module.Basis.tensorProduct_apply]
   exact signed_mul_dshuf A w A' v u
 
 /-- A linear map carrying a basis to `±` a basis along a surjection is surjective. -/
 theorem surjective_of_signed_basis {ι ι' M M' : Type*} [AddCommGroup M] [AddCommGroup M']
-    (b : Basis ι ℤ M) (b' : Basis ι' ℤ M') (T : M →ₗ[ℤ] M') (φ : ι → ι')
+    (b : Module.Basis ι ℤ M) (b' : Module.Basis ι' ℤ M') (T : M →ₗ[ℤ] M') (φ : ι → ι')
     (hφ : Function.Surjective φ) (hT : ∀ i, Signed (T (b i)) (b' (φ i))) :
     Function.Surjective T := by
   rw [← LinearMap.range_eq_top, eq_top_iff, ← b'.span_eq, Submodule.span_le]
@@ -166,8 +166,8 @@ theorem lcomb_bijective : Function.Bijective (lcomb (m := m) (m' := m')) := by
 
 /-- **`ONH_{a+b}` is a free left module over `ONH_a ⊗ ONH_b`**, with basis `∂_u`, `u` a shuffle
 (`C(a+b, a)` elements, `card_shuffle`). -/
-def freeBasis : Basis (Shuffle m m') (tensorImage m m') (Presented (m+2+m')) :=
-  Basis.ofRepr (LinearEquiv.ofBijective (lcomb (m := m) (m' := m')) lcomb_bijective).symm
+def freeBasis : Module.Basis (Shuffle m m') (tensorImage m m') (Presented (m+2+m')) :=
+  Module.Basis.ofRepr (LinearEquiv.ofBijective (lcomb (m := m) (m' := m')) lcomb_bijective).symm
 
 theorem freeBasis_apply (u : Shuffle m m') : freeBasis u = dshuf u := by
   have h := (freeBasis (m := m) (m' := m')).repr_symm_single u 1
@@ -177,7 +177,7 @@ theorem freeBasis_apply (u : Shuffle m m') : freeBasis u = dshuf u := by
   rw [lcomb_single, OneMemClass.coe_one, one_mul]
 
 theorem freeBasis_repr_symm (l : Shuffle m m' →₀ tensorImage m m') :
-    freeBasis.repr.symm l = lcomb l := rfl
+    (freeBasis (m := m) (m' := m')).repr.symm l = lcomb l := rfl
 
 /-! ### Gradings -/
 
@@ -221,7 +221,7 @@ theorem repr_psi_basis (x : Σ _ : Shuffle m m', ((Fin (m+2) → ℕ) × Perm m)
       Finsupp.single x.1 (toB (basis m x.2.1 ⊗ₜ basis m' x.2.2)) := by
   rw [← lcomb_mapRange, ← freeBasis_repr_symm, LinearEquiv.apply_symm_apply, tensorShufBasis,
     Finsupp.coe_basis, Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
-    Basis.tensorProduct_apply]
+    Module.Basis.tensorProduct_apply]
 
 /-- **The coordinates are graded**: for `x` of degree `e`, its `∂_u`-coordinate has degree
 `e + 2ℓ(u)`. -/
@@ -248,8 +248,8 @@ theorem coord_mem {e : ℤ} {x : Presented (m+2+m')} (hx : x ∈ onhGrading (m+2
       · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_same]
         exact neg_mem hmem
     · rcases hs with h | h <;> rw [h]
-      · rw [repr_psi_basis, Finsupp.single_eq_of_ne hu]; exact zero_mem _
-      · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_of_ne hu, neg_zero]
+      · rw [repr_psi_basis, Finsupp.single_eq_of_ne (Ne.symm hu)]; exact zero_mem _
+      · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_of_ne (Ne.symm hu), neg_zero]
         exact zero_mem _
   | zero => rw [map_zero, Finsupp.zero_apply]; exact zero_mem _
   | add x y _ _ hx hy => rw [map_add, Finsupp.add_apply]; exact add_mem hx hy
@@ -261,7 +261,7 @@ theorem coord_mem {e : ℤ} {x : Presented (m+2+m')} (hx : x ∈ onhGrading (m+2
 /-! ### The regular representation over `B` -/
 
 theorem repr_dshuf (u : Shuffle m m') : freeBasis.repr (dshuf u) = Finsupp.single u 1 := by
-  rw [← freeBasis_apply, Basis.repr_self]
+  rw [← freeBasis_apply, Module.Basis.repr_self]
 
 /-- Right multiplication on `ONH_{a+b} = ⊕_u B ∂_u`: `ρ(x)_{uv}` is the `∂_v`-coordinate of
 `∂_u x`. A ring map `ONH_{a+b} → Mat_{Shuffle}(B)`. -/
@@ -275,7 +275,7 @@ def rho (m m' : ℕ) :
     ext u w
     rw [Matrix.mul_apply, ← mul_assoc]
     conv_lhs => rw [← freeBasis.sum_repr (dshuf u * x), Finset.sum_mul]
-    simp only [smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply,
+    simp only [smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply,
       Finsupp.smul_apply, smul_eq_mul, freeBasis_apply]
   map_zero' := by
     ext u v

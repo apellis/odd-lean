@@ -192,13 +192,13 @@ def splitB : Categorification.Splitting (1 : tensorImage m m') (eB m m') (IdxB m
     · by_cases h2 : x.2 = y.2
       · have hxy : x = y := Prod.ext h1 h2
         subst hxy
-        rw [if_pos rfl, if_pos rfl, if_pos rfl, sgnB, ← Int.negOnePow_add,
+        rw [ite_eq_left rfl, ite_eq_left rfl, ite_eq_left rfl, sgnB, ← Int.negOnePow_add,
           show Categorification.deg61 x.1.1 * Categorification.deg61 x.2.1 +
             Categorification.deg61 x.1.1 * -Categorification.deg61 x.2.1 = 0 by ring,
           Int.negOnePow_zero, one_smul]
         rfl
-      · rw [if_neg h2, map_zero, mul_zero, smul_zero, if_neg (fun h => h2 (congrArg Prod.snd h))]
-    · rw [if_neg h1, map_zero, zero_mul, smul_zero, if_neg (fun h => h1 (congrArg Prod.fst h))]
+      · rw [ite_eq_right h2, map_zero, mul_zero, smul_zero, ite_eq_right (fun h => h2 (congrArg Prod.snd h))]
+    · rw [ite_eq_right h1, map_zero, zero_mul, smul_zero, ite_eq_right (fun h => h1 (congrArg Prod.fst h))]
   mul_sigma _ := one_mul _
   lam_mul _ := mul_one _
 
@@ -264,7 +264,7 @@ theorem cornerCond_tensor {w w' : ℤ} {x : Presented m} {x' : Presented m'}
   have zr : 2 * j < 0 → projector m' * x' * projector m' = 0 :=
     projector_mul_mul_projector_neg hx'
   refine ⟨fun hd => ?_, fun hd => ?_⟩
-  · rcases lt_or_le (2 * i) 0 with h | h
+  · rcases lt_or_ge (2 * i) 0 with h | h
     · rw [zl h, map_zero, zero_mul]
     · rw [zr (by omega), map_zero, mul_zero]
   · rcases lt_trichotomy (2 * i) 0 with h | h | h
@@ -306,20 +306,20 @@ theorem repr_tensorMap_basis (p q : ((Fin (m+2) → ℕ) × Perm m) × ((Fin (m'
   have hne : tIndex q ≠ tIndex p := fun h => hpq (blockIndex_injective h)
   rw [tensorMap_tmul, basis_apply, basis_apply]
   rcases incL_mul_incR_basis q.1.1 q.1.2 q.2.1 q.2.2 with h | h <;> rw [h]
-  · rw [← basis_apply, Basis.repr_self, Finsupp.single_apply]
-    exact if_neg hne
-  · rw [map_neg, ← basis_apply, Basis.repr_self, Finsupp.neg_apply, Finsupp.single_apply,
+  · rw [← basis_apply, Module.Basis.repr_self, Finsupp.single_apply]
+    exact ite_eq_right hne
+  · rw [map_neg, ← basis_apply, Module.Basis.repr_self, Finsupp.neg_apply, Finsupp.single_apply,
       neg_eq_zero]
-    exact if_neg hne
+    exact ite_eq_right hne
 
 theorem repr_tensorMap_basis_self
     (p : ((Fin (m+2) → ℕ) × Perm m) × ((Fin (m'+2) → ℕ) × Perm m')) :
     (basis (m+2+m')).repr (tensorMap m m' (basis m p.1 ⊗ₜ basis m' p.2)) (tIndex p) ≠ 0 := by
   rw [tensorMap_tmul, basis_apply, basis_apply]
   rcases incL_mul_incR_basis p.1.1 p.1.2 p.2.1 p.2.2 with h | h <;> rw [h]
-  · rw [← basis_apply, Basis.repr_self, Finsupp.single_apply]
+  · rw [← basis_apply, Module.Basis.repr_self, Finsupp.single_apply]
     simp [tIndex]
-  · rw [map_neg, ← basis_apply, Basis.repr_self, Finsupp.neg_apply, Finsupp.single_apply]
+  · rw [map_neg, ← basis_apply, Module.Basis.repr_self, Finsupp.neg_apply, Finsupp.single_apply]
     simp [tIndex]
 
 /-- **The corner `(e_a ⊗ e_b) B (e_a ⊗ e_b)` vanishes in negative degrees and is `ℤ (e_a ⊗ e_b)` in
@@ -335,7 +335,7 @@ theorem cornerCond_sandwich {d : ℤ} {y : tensorImage m m'} (hy : y ∈ gradB m
     conv_lhs => rw [← bT.linearCombination_repr t]
     rw [Finsupp.linearCombination_apply, map_finsuppSum, Finsupp.sum]
     refine Finset.sum_congr rfl fun q _ => ?_
-    rw [map_zsmul, Basis.tensorProduct_apply]
+    rw [map_zsmul, Module.Basis.tensorProduct_apply]
   have hy' : y = ∑ q ∈ c.support,
       c q • ((pairB m m').ι₁ (basis m q.1) * (pairB m m').ι₂ (basis m' q.2)) := by
     apply Subtype.ext
@@ -347,10 +347,10 @@ theorem cornerCond_sandwich {d : ℤ} {y : tensorImage m m'} (hy : y ∈ gradB m
       NilHeckeGrading.weight q.1 + NilHeckeGrading.weight q.2 = d := by
     intro p hp
     rw [← weight_tIndex]
-    have hsupp := (Basis.mem_span_image (basis (m+2+m'))).1
+    have hsupp := (Module.Basis.mem_span_image (basis (m+2+m'))).1
       (mem_span_weight (show (y : Presented (m+2+m')) ∈ onhGrading _ d from hy))
     refine hsupp (Finsupp.mem_support_iff.2 ?_)
-    rw [ht', map_sum, Finsupp.finset_sum_apply]
+    rw [ht', map_sum, Finsupp.finsetSum_apply]
     simp only [map_zsmul, Finsupp.smul_apply, smul_eq_mul]
     rw [Finset.sum_eq_single p (fun q _ hq => by rw [repr_tensorMap_basis p q hq, mul_zero])
       (fun h => absurd hp h)]
@@ -392,7 +392,7 @@ theorem eB_ne_zero : (eB m m' : Presented (m+2+m')) ≠ 0 := by
   have h1 : S.lam α = 0 :=
     ((S.lam_mul α).symm.trans (congrArg (S.lam α * ·) h)).trans (mul_zero _)
   have h2 := S.orth α α
-  rw [if_pos rfl, h1, zero_mul] at h2
+  rw [ite_eq_left rfl, h1, zero_mul] at h2
   exact OnhStructure.projector_ne_zero (m+2+m') h2.symm
 
 theorem zsmul_eB_injective {z w : ℤ} (h : z • eB m m' = w • eB m m') : z = w := by
@@ -440,12 +440,12 @@ theorem K0B.classify_boxE : K0B.classify m m' (K0.of (boxE m m')) = T (boxShift 
   rw [K0.of_eq (boxE_equiv m m'), K0B.classify_gelem]
 
 /-- `[E^{(a)} ⊠ E^{(b)}]` is a `ℤ[q,q⁻¹]`-basis of `K₀(ONH_a ⊗ ONH_b)`. -/
-def K0B.basis : Basis (Fin 1) (LaurentPolynomial ℤ) (K0 (gradB m m')) :=
-  ((Basis.singleton (Fin 1) (LaurentPolynomial ℤ)).map (K0B.classify m m').symm).unitsSMul
+def K0B.basis : Module.Basis (Fin 1) (LaurentPolynomial ℤ) (K0 (gradB m m')) :=
+  ((Module.Basis.singleton (Fin 1) (LaurentPolynomial ℤ)).map (K0B.classify m m').symm).unitsSMul
     fun _ => (isUnit_T (boxShift m m')).unit
 
 theorem K0B.basis_apply (i : Fin 1) : K0B.basis m m' i = K0.of (boxE m m') := by
-  rw [K0B.basis, Basis.unitsSMul_apply, Basis.map_apply, Basis.singleton_apply, Units.smul_def,
+  rw [K0B.basis, Module.Basis.unitsSMul_apply, Module.Basis.map_apply, Module.Basis.singleton_apply, Units.smul_def,
     IsUnit.unit_spec, ← map_smul, smul_eq_mul, mul_one, LinearEquiv.symm_apply_eq,
     K0B.classify_boxE]
 

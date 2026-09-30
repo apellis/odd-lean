@@ -35,7 +35,7 @@ theorem inversions_one {n : ℕ} : inversions (1 : Equiv.Perm (Fin n)) = 0 := by
   intro a _
   apply Finset.sum_eq_zero
   intro b _
-  rw [if_neg]
+  rw [ite_eq_right]
   rintro ⟨h1, h2⟩
   exact absurd (lt_trans h1 h2) (lt_irrefl a)
 
@@ -48,7 +48,7 @@ theorem eq_one_of_inversions_eq_zero {n : ℕ} (σ : Equiv.Perm (Fin n))
     by_contra hn
     have hne : σ a ≠ σ b := fun he => (ne_of_lt hab) (σ.injective he)
     have hlt : σ b < σ a := lt_of_le_of_ne (le_of_not_gt hn) (Ne.symm hne)
-    rw [if_pos ⟨hab, hlt⟩] at hz'
+    rw [ite_eq_left ⟨hab, hlt⟩] at hz'
     exact one_ne_zero hz'
   let e : Fin n ≃o Fin n := StrictMono.orderIsoOfSurjective σ hmono σ.surjective
   have he : e = OrderIso.refl (Fin n) := Subsingleton.elim _ _
@@ -101,9 +101,9 @@ theorem form_zero_hWords (β α : List ℕ) :
     form (0 : k) (hWord k β) (hWord k α) = if β.sum = α.sum then 1 else 0 := by
   rw [form_hWords, sourceFormAll]
   by_cases hd : (∑ i, β.get i) = ∑ j, α.get j
-  · rw [dif_pos hd, if_pos (by simpa only [sum_get] using hd), sourceForm]
+  · rw [dite_eq_left hd, ite_eq_left (by simpa only [sum_get] using hd), sourceForm]
     exact sum_zero_pow_cosetLength _ _
-  · rw [dif_neg hd, if_neg (by simpa only [sum_get] using hd)]
+  · rw [dite_eq_right hd, ite_eq_right (by simpa only [sum_get] using hd)]
 
 theorem hWord_partWord (w : W) : ∃ β : List ℕ, wordBasis k w = hWord k β ∧ β.sum = degree w :=
   ⟨List.ofFn (parts w), by rw [← vWord, vWord_parts], by
@@ -155,7 +155,7 @@ theorem degreePiece0_eq_span (n : ℕ) :
 
 theorem form_zero_h_self (n : ℕ) : form (0 : k) (h k n) (h k n) = 1 := by
   obtain ⟨w, _, he⟩ := h_eq_wordBasis (k := k) n
-  rw [he, form_zero_basis, if_pos rfl]
+  rw [he, form_zero_basis, ite_eq_left rfl]
 
 /-- `hₙ` as an element of the degree-`n` part of `Λ₀`. -/
 def hElem0 (n : ℕ) : degreePiece0 k n :=
@@ -185,8 +185,8 @@ theorem hElem0_span (n : ℕ) :
   exact Submodule.smul_mem _ r (Submodule.subset_span ⟨0, rfl⟩)
 
 /-- EK p.8, `q = 0`: `Λₙ` is free of rank one, with basis `hₙ` (any `k`). -/
-def degreeBasis0 (n : ℕ) : Basis (Fin 1) k (degreePiece0 k n) :=
-  Basis.mk (hElem0_linearIndependent n) (hElem0_span n)
+def degreeBasis0 (n : ℕ) : Module.Basis (Fin 1) k (degreePiece0 k n) :=
+  Module.Basis.mk (hElem0_linearIndependent n) (hElem0_span n)
 
 theorem degreePiece0_finrank [Nontrivial k] (n : ℕ) :
     Module.finrank k (degreePiece0 k n) = 1 := by
@@ -211,7 +211,7 @@ theorem form_zero_degenerate [Nontrivial k] :
 theorem form_one_hWords (β α : List ℕ) (hd : (∑ i, β.get i) = ∑ j, α.get j) :
     form (1 : k) (hWord k β) (hWord k α) =
       Fintype.card (DoubleCosets (endpoint β.get rfl) (endpoint α.get hd.symm)) := by
-  rw [form_hWords, sourceFormAll, dif_pos hd, sourceForm]
+  rw [form_hWords, sourceFormAll, dite_eq_left hd, sourceForm]
   simp
 
 /-- The same count, as the number of `ℕ`-matrices with row sums `β`, column sums `α`
@@ -264,8 +264,8 @@ theorem cocommutative_one (x : L k) :
     simp only [map_smul]
     congr 1
     induction w using FreeMonoid.recOn with
-    | h0 => simpa using comm_coproduct_h (1 : k) 0
-    | ih i w ih =>
+    | one => simpa using comm_coproduct_h (1 : k) 0
+    | of_mul i w ih =>
       rw [wordBasis_mul, wordBasis_of, coproduct_mul, comm_tensorMul_one, ih,
         comm_coproduct_h]
 
@@ -280,7 +280,7 @@ theorem coproduct_h2_h1 (q : k) :
       tensorBasis k (FreeMonoid.of 1 * FreeMonoid.of 0, 1) := by
   rw [coproduct_two]
   simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, tensorBasis_apply, wordBasis_mul,
-    wordBasis_of, wordBasis_one, Fin.val_zero, Fin.val_succ, Fin.val_one, Fin.succ_zero_eq_one]
+    wordBasis_of, wordBasis_one, Fin.val_zero, Fin.val_succ]
   norm_num
   abel
 
@@ -293,15 +293,14 @@ theorem cocommutative_iff (q : k) :
       (hc (h k 2 * h k 1))
     rw [coproduct_h2_h1] at h
     simp only [map_add, map_smul, tensorBasis_apply, TensorProduct.comm_tmul] at h
-    simp only [← tensorBasis_apply, Basis.coord_apply, Basis.repr_self,
-      Finsupp.single_apply] at h
+    simp only [← tensorBasis_apply, Module.Basis.coord_apply, Module.Basis.repr_self] at h
     have e1 : (1 : W) ≠ FreeMonoid.of 0 := w_ne (by simp)
     have e2 : FreeMonoid.of 1 * FreeMonoid.of 0 ≠ FreeMonoid.of 0 := w_ne (by simp)
     have e3 : FreeMonoid.of 1 ≠ FreeMonoid.of 0 * FreeMonoid.of 0 := w_ne (by simp)
     have e4 : FreeMonoid.of 0 ≠ FreeMonoid.of 0 * FreeMonoid.of 0 := w_ne (by simp)
     have e5 : FreeMonoid.of (1 : ℕ) ≠ FreeMonoid.of 0 := w_ne (by simp)
     have e6 : (1 : W) ≠ FreeMonoid.of 0 * FreeMonoid.of 0 := w_ne (by simp)
-    simp [e1, e2, e3, e4, e5, e6, e1.symm, e2.symm, e3.symm, e4.symm, e5.symm, e6.symm] at h
+    simp [e4, e1.symm, e2.symm, e3.symm, e4.symm, e5.symm, e6.symm] at h
     exact h
   · rintro rfl
     exact cocommutative_one
@@ -311,8 +310,7 @@ theorem cocommutative_iff (q : k) :
 theorem tensorForm_comm (a b : L k) (t : LL k) (q : k) :
     tensorForm q (a ⊗ₜ[k] b) (TensorProduct.comm k (L k) (L k) t) =
       tensorForm q (b ⊗ₜ[k] a) t := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp
+  induction t using TensorProduct.inductionOn with
   | tmul c d => simp [mul_comm]
   | add u v hu hv => simp only [map_add, hu, hv]
 

@@ -57,9 +57,9 @@ theorem mul_apply_zero (f g : SkewPolynomial N) : (f * g) 0 = f 0 * g 0 := by
     · rw [OddMath.SkewPolynomial.skewSign_zero_left, add_zero, mul_one]
       exact Finsupp.single_eq_same
     · intro b _ hb
-      exact Finsupp.single_eq_of_ne (by simpa using hb)
+      exact Finsupp.single_eq_of_ne (by simpa using Ne.symm hb)
     · intro hb
-      rw [Finsupp.not_mem_support_iff.mp hb]
+      rw [Finsupp.notMem_support_iff.mp hb]
       simp
   · intro a _ ha
     rw [Finsupp.sum_apply, Finsupp.sum]
@@ -68,7 +68,7 @@ theorem mul_apply_zero (f g : SkewPolynomial N) : (f * g) 0 = f 0 * g 0 := by
     exact ha (funext fun i => by
       have := congrFun h i; simp only [Pi.add_apply, Pi.zero_apply] at this ⊢; omega)
   · intro ha
-    rw [Finsupp.not_mem_support_iff.mp ha, Finsupp.sum_apply, Finsupp.sum]
+    rw [Finsupp.notMem_support_iff.mp ha, Finsupp.sum_apply, Finsupp.sum]
     refine Finset.sum_eq_zero fun b _ => ?_
     simp
 
@@ -269,7 +269,7 @@ theorem lam_mul_sigma (ℓ' ℓ : Idx n) :
   rw [lemma_4_13 (mem_Sq' ℓ) (mem_Sq' ℓ')]
   by_cases h : ℓ' = ℓ
   · subst h; simp
-  · rw [if_neg (fun e => h (Subtype.ext e)), if_neg h]
+  · rw [ite_eq_right (fun e => h (Subtype.ext e)), ite_eq_right h]
 
 theorem sum_sigma_lam : ∑ ℓ : Idx n, sigma ℓ.1 * lam ℓ.1 = 1 := by
   rw [← thm_4_15_sum (n := n)]
@@ -283,7 +283,7 @@ theorem matrixUnit_zero (ℓ ℓ' : Idx n) : matrixUnit ℓ ℓ' 0 = 0 := by
 
 theorem matrixUnit_sum (ℓ ℓ' : Idx n) {ι : Type*} (s : Finset ι) (f : ι → K n) :
     matrixUnit ℓ ℓ' (∑ i ∈ s, f i) = ∑ i ∈ s, matrixUnit ℓ ℓ' (f i) := by
-  simp only [matrixUnit, thick, AddSubmonoidClass.coe_finset_sum, map_sum, Finset.mul_sum,
+  simp only [matrixUnit, thick, AddSubmonoidClass.coe_finsetSum, map_sum, Finset.mul_sum,
     Finset.sum_mul]
 
 theorem matrixUnit_mul (ℓ ℓ' m m' : Idx n) (f g : K n) :
@@ -300,7 +300,7 @@ theorem lam_matrixUnit_sigma (m ℓ ℓ' m' : Idx n) (f : K n) :
   simp only [matrixUnit, mul_assoc]
   rw [← mul_assoc (lam m.1), lam_mul_sigma, lam_mul_sigma]
   by_cases h₁ : m = ℓ <;> by_cases h₂ : ℓ' = m' <;> simp [h₁, h₂, projector_mul_thick,
-    thick_mul_projector, ← mul_assoc]
+    thick_mul_projector]
 
 /-- `M ↦ ∑_{ℓ,ℓ'} σ_ℓ (e_a M_{ℓℓ'} e_a) λ_ℓ'`. -/
 def toOnh (M : Matrix (Idx n) (Idx n) (K n)) : Presented n := ∑ ℓ, ∑ ℓ', matrixUnit ℓ ℓ' (M ℓ ℓ')
@@ -310,13 +310,13 @@ theorem lam_toOnh_sigma (M : Matrix (Idx n) (Idx n) (K n)) (m m' : Idx n) :
     lam m.1 * toOnh M * sigma m'.1 = thick n (M m m') := by
   simp only [toOnh, Finset.mul_sum, Finset.sum_mul, lam_matrixUnit_sigma]
   rw [Finset.sum_eq_single m (fun ℓ _ h => by simp [Ne.symm h]) (by simp),
-    Finset.sum_eq_single m' (fun ℓ' _ h => by simp [h]) (by simp), if_pos ⟨rfl, rfl⟩]
+    Finset.sum_eq_single m' (fun ℓ' _ h => by simp [h]) (by simp), ite_eq_left ⟨rfl, rfl⟩]
 
 theorem matrixUnit_mul_toOnh (ℓ ℓ' : Idx n) (f : K n) (N : Matrix (Idx n) (Idx n) (K n)) :
     matrixUnit ℓ ℓ' f * toOnh N = ∑ m', matrixUnit ℓ m' (f * N ℓ' m') := by
   rw [toOnh, Finset.mul_sum, Finset.sum_eq_single ℓ']
   · rw [Finset.mul_sum]
-    simp only [matrixUnit_mul, if_true]
+    simp only [matrixUnit_mul, ite_true]
   · intro m _ h
     rw [Finset.mul_sum]
     simp [matrixUnit_mul, Ne.symm h]
@@ -336,7 +336,7 @@ theorem toOnh_mul (M N : Matrix (Idx n) (Idx n) (K n)) : toOnh (M * N) = toOnh M
 theorem toOnh_one : toOnh (1 : Matrix (Idx n) (Idx n) (K n)) = 1 := by
   simp only [toOnh, Matrix.one_apply, apply_ite (matrixUnit _ _), matrixUnit_zero,
     Finset.sum_ite_eq,
-    Finset.mem_univ, if_true]
+    Finset.mem_univ, ite_true]
   rw [← sum_sigma_lam]
   refine Finset.sum_congr rfl fun ℓ _ => ?_
   rw [matrixUnit, OneMemClass.coe_one, thick_one, mul_assoc, ThickMatrixUnits.projector_mul_lam]

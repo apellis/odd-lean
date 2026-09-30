@@ -63,15 +63,15 @@ theorem e_expand (d : ℕ) (ν : DegreeShape d) :
 
 theorem eToH_eq_transpose (d : ℕ) :
     eToH d = ((degreeHBasis d).toMatrix (degreeEBasis d)).transpose := by
-  ext ν μ; simp [eToH, Basis.toMatrix_apply]
+  ext ν μ; simp [eToH, Module.Basis.toMatrix_apply]
 
 theorem hToE_eq_transpose (d : ℕ) :
     hToE d = ((degreeEBasis d).toMatrix (degreeHBasis d)).transpose := by
-  ext ν μ; simp [hToE, Basis.toMatrix_apply]
+  ext ν μ; simp [hToE, Module.Basis.toMatrix_apply]
 
 theorem det_eToH_mul_det_hToE (d : ℕ) : (eToH d).det * (hToE d).det = 1 := by
   rw [eToH_eq_transpose, hToE_eq_transpose, Matrix.det_transpose, Matrix.det_transpose,
-    ← Matrix.det_mul, Basis.toMatrix_mul_toMatrix_flip, Matrix.det_one]
+    ← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.det_one]
 
 /-- The two changes of basis have the same determinant. -/
 theorem det_eToH_eq_det_hToE (d : ℕ) : (eToH d).det = (hToE d).det := by
@@ -235,7 +235,7 @@ theorem m_seven_f_expansion :
   ext ν
   obtain ⟨j, rfl⟩ := exhaust7 ν
   rw [f_coordinates, pairing_e_m7]
-  simp only [map_add, map_zsmul, Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
+  simp only [map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
     Finsupp.single_apply, smul_eq_mul]
   have e : ∀ i : Fin 15, (hshapes7 i = hshapes7 j) ↔ i = j := fun i => inj7.eq_iff
   simp only [e]
@@ -251,7 +251,7 @@ theorem f_seven_m_seven_independent (a b : ℤ) :
   have hc := fun i => congrArg (fun x => (fBasis 7).repr x (hshapes7 i)) h
   have h10 := hc 10
   have h14 := hc 14
-  simp only [map_add, map_zsmul, Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
+  simp only [map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
     Finsupp.single_apply, smul_eq_mul, smul_add, inj7.eq_iff] at h10 h14
   norm_num at h10 h14
   omega

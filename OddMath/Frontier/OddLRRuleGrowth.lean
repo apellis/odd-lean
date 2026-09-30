@@ -156,7 +156,7 @@ theorem res_ins_gt (j : ℕ) : ∀ (rs : List (List ℕ)) (a : ℕ), j < a →
     · rw [ins_cons_some he]
       refine eqv_cons_iff.mpr ⟨?_, res_ins_gt j rs b (by omega)⟩
       subst hR
-      simp [List.filter_append, List.filter_cons, show ¬ a ≤ j by omega, show ¬ b ≤ j by omega]
+      simp [List.filter_append, show ¬ a ≤ j by omega, show ¬ b ≤ j by omega]
 
 theorem res_ins_le (j : ℕ) : ∀ (rs : List (List ℕ)) (a : ℕ), RowsSorted rs → a ≤ j →
     Eqv (res j (ins rs a)) (ins (res j rs) a)
@@ -165,7 +165,7 @@ theorem res_ins_le (j : ℕ) : ∀ (rs : List (List ℕ)) (a : ℕ), RowsSorted 
     simp [res, ha]
     exact Eqv.refl _
   | R :: rs, a, hs, ha => by
-    have hR : R.Sorted (· ≤ ·) := hs R List.mem_cons_self
+    have hR : R.Pairwise (· ≤ ·) := hs R List.mem_cons_self
     have hrs : RowsSorted rs := fun S hS => hs S (List.mem_cons_of_mem _ hS)
     have hres : res j (R :: rs) = R.filter (fun x => decide (x ≤ j)) :: res j rs := rfl
     rcases bump1_spec R a with ⟨hall, he⟩ | ⟨u, b, v, hR', hu, hab, he⟩
@@ -188,7 +188,7 @@ theorem res_ins_le (j : ℕ) : ∀ (rs : List (List ℕ)) (a : ℕ), RowsSorted 
       · have hv : ∀ x ∈ v, j < x := by
           intro x hx
           have := List.pairwise_append.mp hR
-          have h2 := (List.sorted_cons.mp this.2.1).1 x hx
+          have h2 := (List.pairwise_cons.mp this.2.1).1 x hx
           omega
         have hf : (u ++ b :: v).filter (fun x => decide (x ≤ j)) = u := by
           simp [List.filter_append, filter_le_of_le u huj, hbj, filter_le_of_gt v hv]
@@ -279,7 +279,7 @@ theorem newRow_ins_le : ∀ (rs : List (List ℕ)) (a b : ℕ), RowsSorted rs �
     rw [ins_nil, newRow_cons_none (bump1_le_all [a] (by simpa using hab))]
     simp
   | R :: rs, a, b, hs, hab => by
-    have hR : R.Sorted (· ≤ ·) := hs R List.mem_cons_self
+    have hR : R.Pairwise (· ≤ ·) := hs R List.mem_cons_self
     have hrs : RowsSorted rs := fun S hS => hs S (List.mem_cons_of_mem _ hS)
     rcases bump1_spec R a with ⟨hall, he⟩ | ⟨u, c, v, hR', hu, hac, he⟩
     · rw [ins_cons_none he, newRow_cons_none he]
@@ -306,7 +306,7 @@ theorem newRow_ins_le : ∀ (rs : List (List ℕ)) (a b : ℕ), RowsSorted rs �
           subst hR'
           have hv : ∀ x ∈ v, c ≤ x := by
             have := List.pairwise_append.mp hR
-            exact (List.sorted_cons.mp this.2.1).1
+            exact (List.pairwise_cons.mp this.2.1).1
           rcases bump1_spec v b with ⟨_, he'⟩ | ⟨u', d', v'', hv', _, _, he'⟩
           · rw [hbv] at he'; simp at he'
           · rw [hbv] at he'
@@ -392,7 +392,7 @@ theorem sh_split (J : ℕ) {rs : List (List ℕ)} (h : Bnd (J + 1) rs) (k : ℕ)
   exact length_split J _ (bnd_rowAt h k)
 
 /-- A weakly increasing row with entries `≤ J + 1` is its `≤ J` part followed by `J + 1`s. -/
-theorem row_split (J : ℕ) (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (h : ∀ y ∈ R, y ≤ J + 1) :
+theorem row_split (J : ℕ) (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) (h : ∀ y ∈ R, y ≤ J + 1) :
     R = R.filter (fun x => decide (x ≤ J)) ++ List.replicate (R.count (J + 1)) (J + 1) := by
   obtain ⟨L, G, rfl, hL, hG, _, _⟩ := sorted_split R hR J
   have hG' : G = List.replicate G.length (J + 1) := by
@@ -421,9 +421,9 @@ theorem cnt_ins (J : ℕ) : ∀ (rs : List (List ℕ)) (x : ℕ), RowsSorted rs 
       cnt J rs k +
       (if k = newRow (res J rs) x + 1 ∧ 0 < cnt J rs (newRow (res J rs) x) then 1 else 0)
   | [], x, _, _, hx, k => by
-    cases k <;> simp [cnt, ins_nil, newRow, res_nil, List.count_singleton', show x ≠ J + 1 by omega]
+    cases k <;> simp [cnt, ins_nil, newRow, res_nil, show x ≠ J + 1 by omega]
   | R :: rs, x, hs, hb, hx, k => by
-    have hR : R.Sorted (· ≤ ·) := hs R List.mem_cons_self
+    have hR : R.Pairwise (· ≤ ·) := hs R List.mem_cons_self
     have hRb : ∀ y ∈ R, y ≤ J + 1 := hb R List.mem_cons_self
     have hrs : RowsSorted rs := fun S hS => hs S (List.mem_cons_of_mem _ hS)
     have hrb : Bnd (J + 1) rs := fun S hS => hb S (List.mem_cons_of_mem _ hS)
@@ -444,7 +444,7 @@ theorem cnt_ins (J : ℕ) : ∀ (rs : List (List ℕ)) (x : ℕ), RowsSorted rs 
         cases k with
         | zero =>
           simp [cnt, List.count_append, count_top_zero R' hR'J, show x ≠ J + 1 by omega]
-        | succ k => simp [cnt, hsplit, hnot]
+        | succ k => simp [cnt, hnot]
       · rw [hcz] at hsplit
         have hbump : bump1 R x = (R' ++ x :: List.replicate c' (J + 1), some (J + 1)) := by
           rw [hsplit, bump1_append_le _ _ hall, List.replicate_succ, bump1_cons_lt _ (by omega)]
@@ -473,7 +473,7 @@ theorem cnt_ins (J : ℕ) : ∀ (rs : List (List ℕ)) (x : ℕ), RowsSorted rs 
         have hu' : J + 1 ∉ u := fun hm => hnot (by rw [hR'']; simp [hm])
         have hv' : J + 1 ∉ v := fun hm => hnot (by rw [hR'']; simp [hm])
         simp [cnt, List.count_append, List.count_eq_zero_of_not_mem hu',
-          List.count_eq_zero_of_not_mem hv', List.count_cons, show x ≠ J + 1 by omega, ← hc]
+          List.count_eq_zero_of_not_mem hv', show x ≠ J + 1 by omega, ← hc]
       | succ k =>
         have := cnt_ins J rs b hrsR hrb hbJ k
         simp only [cnt, rowAt_cons_succ] at this ⊢
@@ -511,31 +511,31 @@ theorem inv_step (J : ℕ) (c0 ρ : ℕ → ℕ) (rs : List (List ℕ)) (x : ℕ
   · subst hkq
     have hIk := hI k
     by_cases hk0 : k = 0
-    · rw [if_pos hk0] at hIk ⊢
+    · rw [ite_eq_left hk0] at hIk ⊢
       split_ifs at hc ⊢ <;> omega
-    · rw [if_neg hk0] at hIk ⊢
+    · rw [ite_eq_right hk0] at hIk ⊢
       rw [hq1 hk0] at hIk
       split_ifs at hc ⊢ <;> omega
   · by_cases hkq1 : k = q + 1
     · subst hkq1
       have hIk := hI (q + 1)
       have hIq := hI q
-      simp only [Nat.add_sub_cancel, show q + 1 ≠ 0 by omega, show q + 1 ≠ q by omega, if_false,
-        if_true, add_zero, false_and, true_and] at hIk hc hρk1 ⊢
+      simp only [Nat.add_sub_cancel, show q + 1 ≠ 0 by omega, show q + 1 ≠ q by omega, ite_false,
+        ite_true, add_zero, false_and, true_and] at hIk hc hρk1 ⊢
       by_cases hq0 : q = 0
-      · rw [if_pos hq0] at hIq
+      · rw [ite_eq_left hq0] at hIq
         split_ifs at hc ⊢ <;> omega
-      · rw [if_neg hq0, hq1 hq0] at hIq
+      · rw [ite_eq_right hq0, hq1 hq0] at hIq
         split_ifs at hc ⊢ <;> omega
     · have hIk := hI k
       by_cases hk0 : k = 0
-      · rw [if_pos hk0] at hIk ⊢
+      · rw [ite_eq_left hk0] at hIk ⊢
         split_ifs at hc ⊢ <;> omega
-      · rw [if_neg hk0] at hIk ⊢
+      · rw [ite_eq_right hk0] at hIk ⊢
         split_ifs at hc ⊢ <;> omega
 
 theorem inv_iter (J : ℕ) (c0 ρ : ℕ → ℕ) : ∀ (w : List ℕ) (rs : List (List ℕ)) (r : ℕ),
-    RowsSorted rs → Bnd (J + 1) rs → w.Sorted (· ≤ ·) → (∀ x ∈ w, x ≤ J) →
+    RowsSorted rs → Bnd (J + 1) rs → w.Pairwise (· ≤ ·) → (∀ x ∈ w, x ≤ J) →
     (∀ x ∈ w.head?, newRow (res J rs) x ≤ r) → Inv J c0 ρ rs →
     (∀ k, ρ k ≤ sh (res J rs) k) → (∀ k < r, sh (res J rs) k = ρ k) →
     Inv J c0 ρ (insW rs w) ∧ ∀ k, ρ k ≤ sh (res J (insW rs w)) k
@@ -545,7 +545,7 @@ theorem inv_iter (J : ℕ) (c0 ρ : ℕ → ℕ) : ∀ (w : List ℕ) (rs : List
     have hqr : newRow (res J rs) x ≤ r := hhead x rfl
     obtain ⟨hI', hρ'⟩ := inv_step J c0 ρ rs x hs hb hxJ hI hρ
       (fun k hk => htop k (by omega))
-    obtain ⟨hxw, hw'⟩ := List.sorted_cons.mp hw
+    obtain ⟨hxw, hw'⟩ := List.pairwise_cons.mp hw
     refine inv_iter J c0 ρ w (ins rs x) (newRow (res J rs) x) (ins_sorted rs hs x)
       (bnd_ins rs x hb (by omega)) hw' (fun y hy => hwJ y (List.mem_cons_of_mem _ hy)) ?_ hI' hρ' ?_
     · intro y hy
@@ -553,7 +553,7 @@ theorem inv_iter (J : ℕ) (c0 ρ : ℕ → ℕ) : ∀ (w : List ℕ) (rs : List
       rw [newRow_eqv (res_ins_le J rs x hs hxJ)]
       exact newRow_ins_le _ x y (res_sorted J hs) (hxw y hyw)
     · intro k hk
-      rw [sh_res_ins J rs x hs hxJ, if_neg (by omega)]
+      rw [sh_res_ins J rs x hs hxJ, ite_eq_right (by omega)]
       exact htop k (by omega)
 
 theorem cnt_insW_top (J : ℕ) (a : ℕ) : ∀ rs : List (List ℕ), Bnd (J + 1) rs →
@@ -580,7 +580,7 @@ theorem Fsh_comm (ρ μ ν : ℕ → ℕ) (a k : ℕ) : Fsh ρ μ ν a k = Fsh �
 /-- The local rule: inserting `x` (weakly increasing, letters `≤ J`) and then `a` copies of
 `J + 1` into a tableau with letters `≤ J + 1`. -/
 theorem local_rule (J : ℕ) (T : List (List ℕ)) (hs : RowsSorted T) (hb : Bnd (J + 1) T)
-    (x : List ℕ) (hx : x.Sorted (· ≤ ·)) (hxJ : ∀ y ∈ x, y ≤ J) (a k : ℕ) :
+    (x : List ℕ) (hx : x.Pairwise (· ≤ ·)) (hxJ : ∀ y ∈ x, y ≤ J) (a k : ℕ) :
     sh (insW T (x ++ List.replicate a (J + 1))) k =
       Fsh (sh (res J T)) (sh T) (sh (insW (res J T) x)) a k := by
   set ρ := sh (res J T)
@@ -643,7 +643,7 @@ theorem mem_word {A : ℕ → ℕ → ℕ} {i j y : ℕ} (hy : y ∈ word A i j)
   obtain ⟨p, _, hy⟩ := hy
   exact mem_rowW hy
 
-theorem rowW_sorted (A : ℕ → ℕ → ℕ) (p : ℕ) : ∀ j, (rowW A p j).Sorted (· ≤ ·)
+theorem rowW_sorted (A : ℕ → ℕ → ℕ) (p : ℕ) : ∀ j, (rowW A p j).Pairwise (· ≤ ·)
   | 0 => by simp [rowW]
   | j + 1 => by
     rw [rowW_succ]
@@ -707,7 +707,7 @@ termination_by i j => (i, j)
 /-! ## A row-sorted tableau is determined by its restriction shapes -/
 
 theorem rowAt_sorted {rs : List (List ℕ)} (h : RowsSorted rs) (k : ℕ) :
-    (rowAt rs k).Sorted (· ≤ ·) := by
+    (rowAt rs k).Pairwise (· ≤ ·) := by
   induction rs generalizing k with
   | nil => simp
   | cons R rs ih =>
@@ -749,7 +749,7 @@ theorem eqv_of_sh_res {rs rs' : List (List ℕ)} (hs : RowsSorted rs) (hs' : Row
   have hl : ∀ j, ((rowAt rs k).filter (fun x => decide (x ≤ j))).length =
       ((rowAt rs' k).filter (fun x => decide (x ≤ j))).length := by
     intro j; have := h j k; simpa only [sh, rowAt_res] using this
-  apply List.eq_of_perm_of_sorted _ (rowAt_sorted hs k) (rowAt_sorted hs' k)
+  apply List.Perm.eq_of_pairwise' (rowAt_sorted hs k) (rowAt_sorted hs' k)
   rw [List.perm_iff_count]
   intro y
   cases y with

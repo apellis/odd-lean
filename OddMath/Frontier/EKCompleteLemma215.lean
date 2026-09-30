@@ -55,7 +55,7 @@ theorem gram_det_isUnit {ι : Type*} [Fintype ι] [DecidableEq ι] (v w : ι →
     ext i j
     rw [Matrix.diagonal_apply, ← hG i j, hw i, hw j]
     simp only [Matrix.mul_apply, Matrix.transpose_apply, gram, Matrix.of_apply, map_sum,
-      map_zsmul, LinearMap.coeFn_sum, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul,
+      map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
       Finset.sum_mul, Finset.mul_sum]
     refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
     ring
@@ -136,7 +136,7 @@ theorem schur_mem_hSpan {d : ℕ} {P : DegreeShape d → Prop} (hP : LexUpClosed
   have h1 := hle (EKProp310.schur_sub_mem_upS d ν.val)
   have h2 : hFam d P ν ∈ T := Submodule.subset_span ⟨ν, rfl⟩
   have h3 := T.add_mem h1 h2
-  simp only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub,
+  simp only [Submodule.subtype_apply, Submodule.coe_sub,
     degreeHBasis_apply] at h3
   rw [hFam, sub_add_cancel] at h3
   exact h3
@@ -148,18 +148,18 @@ theorem schurT_mem_eSpan {d : ℕ} {P : DegreeShape d → Prop} (hP : LexUpClose
   set ρ := transposeShape d ν.val with hρ
   have hρT : transposeShape d ρ = ν.val := by
     apply Subtype.ext
-    simp [hρ, EKProp310.transposeShape_val, YoungDiagram.transpose_transpose]
+    simp [hρ, YoungDiagram.transpose_transpose]
   have hle : EKProp310.EAbove d ρ.val.transpose ≤ T.comap (degreePiece d).subtype := by
     rw [EKProp310.EAbove, Submodule.span_le]
     rintro _ ⟨μ, hμ, rfl⟩
     have hν : ρ.val.transpose = ν.val.val := by rw [← EKProp310.transposeShape_val, hρT]
-    rw [Set.mem_setOf_eq, hν] at hμ
+    rw [Set.mem_ofPred_eq, hν] at hμ
     exact Submodule.subset_span ⟨⟨μ, hP _ _ ν.property hμ⟩, by
       simp [eFam, degreeEBasis_apply]⟩
   have h1 := hle (EKProp310.schur_sub_e_mem d (EKClosureComposition.identity311 d) ρ)
   have h2 : eFam d P ν ∈ T := Submodule.subset_span ⟨ν, rfl⟩
   have h3 := T.add_mem h1 (T.smul_mem (EKProp310.sgn ρ.val) h2)
-  simp only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub,
+  simp only [Submodule.subtype_apply, Submodule.coe_sub,
     Submodule.coe_smul, degreeEBasis_apply, hρT] at h3
   rw [eFam, sub_add_cancel] at h3
   exact h3
@@ -399,7 +399,7 @@ theorem schur_pair_h_gt (d : ℕ) (lam μ : DegreeShape d)
       · rw [he] at h; exact lt_irrefl (α := List ℕ) _ h
       · exact lt_asymm (α := List ℕ) h hl
     rw [hK, zero_mul]
-  · rw [if_neg hk, mul_zero]
+  · rw [ite_eq_right hk, mul_zero]
 
 /-- `s_λ − h_λ ∈ H_{>λ}`. -/
 theorem schur_sub_mem_Hgt (d : ℕ) (lam : DegreeShape d) :
@@ -414,7 +414,7 @@ theorem schur_sub_mem_Hgt (d : ℕ) (lam : DegreeShape d) :
     · exact Submodule.subset_span ⟨⟨ρ, hl⟩, by simp [hFam, degreeHBasis_apply]⟩
   have h1 := hle (EKProp310.schur_sub_mem_upS d lam)
   simpa only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub,
-    degreeHBasis_apply] using h1
+    degreeHBasis_apply, EKProp310.schur, EKSchurOrthonormal.schur] using h1
 
 theorem schur_isSchurChar (d : ℕ) (lam : DegreeShape d) :
     IsSchurChar d lam (EKSchurOrthonormal.schur d lam : Q) := by
@@ -427,7 +427,7 @@ theorem schur_isSchurChar (d : ℕ) (lam : DegreeShape d) :
   rw [Finset.sum_subtype _ (p := PGt d lam.val) (fun μ => by simp [PGt])]
   refine Finset.sum_congr rfl fun i _ => ?_
   have hi : List.Lex (· < ·) lam.val.rowLens i.val.val.rowLens := i.property
-  simp only [hi, dif_pos, hFam]
+  simp only [hi, dite_eq_left, hFam]
 
 /-- **p. 28–29: properties (1)–(2) characterise `s_λ`.** An element `x ∈ Λ` satisfies
 `(x, h_μ) = 0` for all `μ > λ` and `x ∈ h_λ + Σ_{μ>λ} ℤ h_μ` if and only if `x = s_λ`. -/

@@ -105,7 +105,7 @@ theorem layer_ext {L₁ L₂ : Layer sig} (hl : L₁.left.length = L₂.left.len
 
 /-- Every layer preserves the number of strands. -/
 theorem layer_cod_length (L : Layer sig) : L.cod.word.length = L.dom.word.length := by
-  simp
+  rfl
 
 /-- Every diagram preserves the number of strands. -/
 theorem chain_length_eq {a b : Obj sig} {ls : List (Layer sig)} (h : Chain a ls b) :
@@ -121,10 +121,10 @@ def lay (n i : ℕ) (g : Gen) : Layer sig :=
 theorem lay_valid (n i : ℕ) (g : Gen) : (lay n i g).Valid := Layer.valid_of_subsingleton _
 
 theorem lay_dom {n i : ℕ} {g : Gen} (h : i + g.arity ≤ n) : (lay n i g).dom = strands n :=
-  obj_ext (by simp [lay, Layer.dom, strands, sig]; omega)
+  obj_ext (by simp only [lay, Layer.dom, strands, sig, List.length_append, List.length_replicate]; omega)
 
 theorem lay_cod {n i : ℕ} {g : Gen} (h : i + g.arity ≤ n) : (lay n i g).cod = strands n :=
-  obj_ext (by simp [lay, Layer.cod, strands, sig]; omega)
+  obj_ext (by simp only [lay, Layer.cod, strands, sig, List.length_append, List.length_replicate]; omega)
 
 /-- The layer `lay n i g` as an endomorphism of `n` strands in the free 2-category. -/
 def dlay {n i : ℕ} {g : Gen} (h : i + g.arity ≤ n) : strands n ⟶ strands n :=
@@ -193,14 +193,14 @@ def x (n i : ℕ) : End ((pres R).obj (strands n)) :=
 def ψ (n i : ℕ) : End ((pres R).obj (strands n)) :=
   if h : i + 1 < n then (pres R).diag (dlay (g := .cross) h) else 0
 
-theorem x_def {n i : ℕ} (h : i < n) : x R n i = (pres R).diag (dlay (g := .dot) h) := dif_pos h
+theorem x_def {n i : ℕ} (h : i < n) : x R n i = (pres R).diag (dlay (g := .dot) h) := dite_eq_left h
 
 theorem ψ_def {n i : ℕ} (h : i + 1 < n) : ψ R n i = (pres R).diag (dlay (g := .cross) h) :=
-  dif_pos h
+  dite_eq_left h
 
-theorem x_of_le {n i : ℕ} (h : n ≤ i) : x R n i = 0 := dif_neg (by omega)
+theorem x_of_le {n i : ℕ} (h : n ≤ i) : x R n i = 0 := dite_eq_right (by omega)
 
-theorem ψ_of_le {n i : ℕ} (h : n ≤ i + 1) : ψ R n i = 0 := dif_neg (by omega)
+theorem ψ_of_le {n i : ℕ} (h : n ≤ i + 1) : ψ R n i = 0 := dite_eq_right (by omega)
 
 end OddMath.Diagrams.OddNilHecke
 

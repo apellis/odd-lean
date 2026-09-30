@@ -79,8 +79,8 @@ private def I : PowerSeries A := PowerSeries.mk inverseCoeff
 
 private theorem coeff_mul_fin {R : Type*} [Semiring R]
     (f g : PowerSeries R) (n : ℕ) :
-    PowerSeries.coeff R n (f*g) =
-      ∑ i : Fin (n+1), PowerSeries.coeff R i f * PowerSeries.coeff R (n-i) g := by
+    PowerSeries.coeff (R := R) n (f*g) =
+      ∑ i : Fin (n+1), PowerSeries.coeff (R := R) i f * PowerSeries.coeff (R := R) (n-i) g := by
   rw [PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
     ← Fin.sum_univ_eq_sum_range]
 
@@ -92,8 +92,8 @@ private theorem I_mul_H : I * H = 1 := by
   cases n with
   | zero => simp [inverseCoeff]
   | succ n =>
-    rw [if_neg (Nat.succ_ne_zero n), Fin.sum_univ_castSucc]
-    simp only [Fin.coe_castSucc, Fin.val_last, Nat.sub_self,
+    rw [ite_eq_right (Nat.succ_ne_zero n), Fin.sum_univ_castSucc]
+    simp only [Fin.val_castSucc, Fin.val_last, Nat.sub_self,
       CompleteElementary.h_zero, mul_one]
     rw [inverseCoeff]
     exact add_neg_cancel _
@@ -190,7 +190,7 @@ private theorem tensorMul_reverse {m n : ℕ} {a b : A}
 private theorem coproduct_inverseCoeff (n : ℕ) :
     coproduct (inverseCoeff n) = ∑ i : Fin (n+1),
       (-1 : ℤ)^(i.val*(n-i.val)) • (inverseCoeff (n-i.val) ⊗ₜ[ℤ] inverseCoeff i.val) := by
-  have hh := congrArg (PowerSeries.coeff SignedTensor n) delta_I
+  have hh := congrArg (PowerSeries.coeff (R := SignedTensor) n) delta_I
   rw [coeff_mul_fin] at hh
   simp only [PowerSeries.coeff_map, I, PowerSeries.coeff_mk] at hh
   change coproduct (inverseCoeff n) = _ at hh
@@ -261,8 +261,8 @@ private theorem character_h (n : ℕ) : character (CompleteElementary.h n) = 1 :
 
 private theorem character_word (w : W) : character (wordBasis w) = 1 := by
   induction w using FreeMonoid.recOn with
-  | h0 => simp
-  | ih i w ih => rw [wordBasis_mul, map_mul, wordBasis_of, character_h, ih, one_mul]
+  | one => simp
+  | of_mul i w ih => rw [wordBasis_mul, map_mul, wordBasis_of, character_h, ih, one_mul]
 
 private theorem pairing_h_weight {n : ℕ} {x : A} (hx : x ∈ weight n) :
     pairing (CompleteElementary.h n) x = character x := by
@@ -285,7 +285,7 @@ private theorem character_I : PowerSeries.map character.toRingHom I = 1 - PowerS
     intro n
     rw [mul_sub, mul_one, map_sub]
     cases n with
-    | zero => simp [C, H, PowerSeries.coeff_map, PowerSeries.coeff_zero_mul_X, character_h]
+    | zero => simp [C, H, PowerSeries.coeff_map, PowerSeries.coeff_zero_mul_X]
     | succ n =>
       rw [PowerSeries.coeff_succ_mul_X]
       simp [C, H, PowerSeries.coeff_map, PowerSeries.coeff_mk, character_h,
@@ -297,7 +297,7 @@ private theorem character_I : PowerSeries.map character.toRingHom I = 1 - PowerS
 
 private theorem character_elementary (n : ℕ) :
     character (elementary n) = if n ≤ 1 then 1 else 0 := by
-  have hh := congrArg (PowerSeries.coeff ℤ n) character_I
+  have hh := congrArg (PowerSeries.coeff (R := ℤ) n) character_I
   simp only [PowerSeries.coeff_map, I, PowerSeries.coeff_mk, map_sub,
     PowerSeries.coeff_one, PowerSeries.coeff_X] at hh
   change character (inverseCoeff n) = _ at hh
@@ -316,9 +316,9 @@ theorem pairing_h_elementary (m n : ℕ) :
   · subst m
     rw [pairing_h_weight (elementary_weight n), character_elementary]
     simp
-  · rw [if_neg (fun hh => hm hh.1)]
+  · rw [ite_eq_right (fun hh => hm hh.1)]
     apply pairing_homogeneous_orthogonal hm
-    · simpa [hWord] using hWord_weight [m]
+    · simpa [hWord, weight] using hWord_weight [m]
     · exact elementary_weight n
 
 /-- Multiplication adjointness plus the proved coproduct gives the actual recursion. -/
@@ -349,27 +349,27 @@ theorem pairing_hWord_elementary (α : List ℕ) (hp : ∀ a ∈ α, 0 < a) (n :
     · subst m
       cases n with
       | zero =>
-        simp only [Fin.sum_univ_one, Fin.val_zero, Nat.sub_zero, pairing_h_elementary]
+        simp only [pairing_h_elementary]
         simp
       | succ n =>
         rw [Finset.sum_eq_single (⟨1, by omega⟩ : Fin (n+1+1))]
-        · simp only [Fin.val_mk, pairing_h_elementary, le_refl, and_self, ↓reduceIte,
+        · simp only [pairing_h_elementary, le_refl, and_self, ↓reduceIte,
             one_mul, Nat.add_sub_cancel]
           rw [ih hα]
           have he : (1 + α.sum = n + 1) ↔ α.sum = n := by omega
           simp [he]
         · intro i _ hi
-          rw [pairing_h_elementary, if_neg, zero_mul]
+          rw [pairing_h_elementary, ite_eq_right, zero_mul]
           intro hh
           apply hi
           apply Fin.ext
           exact hh.1.symm
         · simp
     · have hbad : ¬ (∀ a ∈ m :: α, a = 1) := fun hh => hm1 (hh m (by simp))
-      rw [if_neg (fun hh => hbad hh.2)]
+      rw [ite_eq_right (fun hh => hbad hh.2)]
       apply Finset.sum_eq_zero
       intro i _
-      rw [pairing_h_elementary, if_neg, zero_mul]
+      rw [pairing_h_elementary, ite_eq_right, zero_mul]
       rintro ⟨he, hi⟩
       omega
 
@@ -437,17 +437,17 @@ theorem quotientPairing_strip (m n : ℕ) (hm : 0 < m) (x : Q) :
   rw [quotient_pairing_product_e]
   by_cases he : m = 1
   · subst m
-    rw [if_pos rfl, Finset.sum_eq_single (⟨1, by omega⟩ : Fin (n+1+1))]
+    rw [ite_eq_left rfl, Finset.sum_eq_single (⟨1, by omega⟩ : Fin (n+1+1))]
     · simp
     · intro i _ hi
-      rw [if_neg, zero_mul]
+      rw [ite_eq_right, zero_mul]
       intro hh
       exact hi (Fin.ext hh.1.symm)
     · simp
-  · rw [if_neg he]
+  · rw [ite_eq_right he]
     apply Finset.sum_eq_zero
     intro i _
-    rw [if_neg, zero_mul]
+    rw [ite_eq_right, zero_mul]
     rintro ⟨hh, hi⟩
     omega
 

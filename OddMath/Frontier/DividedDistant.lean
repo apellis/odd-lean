@@ -1,3 +1,4 @@
+import Mathlib.Tactic.NoncommRing
 import OddMath.Frontier.AllRankDivided
 
 /-! # Actual all-rank distant divided anticommutation
@@ -45,13 +46,13 @@ theorem separated_endpoints (i j : Fin (n+1))
     i.castSucc ≠ j.castSucc ∧ i.castSucc ≠ j.succ ∧
       i.succ ≠ j.castSucc ∧ i.succ ≠ j.succ := by
   constructor
-  · intro e; have := congrArg Fin.val e; simp only [Fin.coe_castSucc] at this; omega
+  · intro e; have := congrArg Fin.val e; simp only [Fin.val_castSucc] at this; omega
   constructor
   · intro e; have := congrArg Fin.val e
-    simp only [Fin.coe_castSucc, Fin.val_succ] at this; omega
+    simp only [Fin.val_castSucc, Fin.val_succ] at this; omega
   constructor
   · intro e; have := congrArg Fin.val e
-    simp only [Fin.coe_castSucc, Fin.val_succ] at this; omega
+    simp only [Fin.val_castSucc, Fin.val_succ] at this; omega
   · intro e; have := congrArg Fin.val e; simp only [Fin.val_succ] at this; omega
 
 /-- The anticommutator passes through every generator with the unsigned

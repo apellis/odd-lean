@@ -110,7 +110,7 @@ theorem sum_map_eq_count {c : ℕ} (xs : List (Fin c)) (g : Fin c → ℕ) :
   | cons a xs ih =>
     simp only [List.map_cons, List.sum_cons, ih, List.count_cons, add_mul,
       Finset.sum_add_distrib]
-    simp [beq_iff_eq, Finset.sum_ite_eq', Nat.add_comm]
+    simp [beq_iff_eq, Nat.add_comm]
 
 theorem length_filter_lt_eq {c : ℕ} (ys : List (Fin c)) (x : Fin c) :
     (ys.filter (fun y => y < x)).length = ∑ l, if l < x then ys.count l else 0 := by
@@ -118,7 +118,7 @@ theorem length_filter_lt_eq {c : ℕ} (ys : List (Fin c)) (x : Fin c) :
     induction ys with
     | nil => rfl
     | cons y ys ih =>
-      by_cases hy : y < x <;> simp [List.filter_cons, hy, ih, Nat.add_comm]
+      by_cases hy : y < x <;> simp [hy, ih, Nat.add_comm]
   rw [h, sum_map_eq_count]
   apply Finset.sum_congr rfl
   intro l _
@@ -182,14 +182,14 @@ theorem count_rowV (a : Fin c → ℕ) (j : Fin c) : (rowV a).count j = a j := b
 theorem count_flatMap_rowV (A : Raw r c) (l : Fin c) :
     ((List.finRange r).flatMap fun i => rowV (A i)).count l = ∑ k, A k l := by
   rw [List.count_flatMap, ← Fin.sum_univ_def]
-  simp [Function.comp_def, count_rowV]
+  simp [count_rowV]
 
 theorem crossing_succ (A : Raw (r + 1) c) :
     crossing A = crossing (fun i => A i.succ) +
       ∑ k : Fin r, ∑ j, ∑ l, if l < j then A 0 j * A k.succ l else 0 := by
   unfold crossing
-  simp only [Fin.sum_univ_succ, lt_irrefl, if_false, Fin.succ_pos, if_true,
-    Fin.not_lt_zero, Fin.succ_lt_succ_iff, Finset.sum_const_zero, zero_add]
+  simp only [Fin.sum_univ_succ, ite_false, Fin.succ_pos, ite_true,
+    Fin.not_lt_zero, Fin.succ_lt_succ_iff, zero_add]
   omega
 
 theorem inversions_flatMap_rowV (A : Raw r c) :
@@ -250,7 +250,7 @@ theorem twoLine_sorted (A : Raw r c) : (twoLine A).Pairwise LexLE := by
 
 /-! ## Row-reading cells: inserting an outer corner -/
 
-instance rowLE_antisymm : IsAntisymm (ℕ × ℕ) RowLE := ⟨by
+instance rowLE_antisymm : Std.Antisymm RowLE := ⟨by
   intro a b h1 h2
   unfold RowLE at h1 h2
   exact Prod.ext (by omega) (by omega)⟩
@@ -261,7 +261,7 @@ theorem rowCells_insert (μ ν : YoungDiagram) (N : ℕ × ℕ) (hN : N ∉ μ.c
     rowCells ν = (rowCells μ).filter (fun q => decide (RowLE q N)) ++
       N :: (rowCells μ).filter (fun q => !decide (RowLE q N)) := by
   classical
-  apply List.eq_of_perm_of_sorted (r := RowLE)
+  apply fun hp h₁ h₂ => List.Perm.eq_of_pairwise' (r := RowLE) h₁ h₂ hp
   · refine (rowCells_perm ν).trans ?_
     rw [hν]
     refine (Finset.toList_insert hN).trans ?_
@@ -269,7 +269,6 @@ theorem rowCells_insert (μ ν : YoungDiagram) (N : ℕ × ℕ) (hN : N ∉ μ.c
     exact List.Perm.cons _ ((List.filter_append_perm _ _).trans (rowCells_perm μ)).symm
   · exact rowCells_sorted ν
   · have hs := rowCells_sorted μ
-    unfold List.Sorted at hs ⊢
     rw [List.pairwise_append, List.pairwise_cons]
     refine ⟨hs.filter _, ⟨?_, hs.filter _⟩, ?_⟩
     · intro b hb
@@ -290,11 +289,10 @@ theorem rowCells_insert (μ ν : YoungDiagram) (N : ℕ × ℕ) (hN : N ∉ μ.c
 theorem rowCells_split (μ : YoungDiagram) (N : ℕ × ℕ) :
     rowCells μ = (rowCells μ).filter (fun q => decide (RowLE q N)) ++
       (rowCells μ).filter (fun q => !decide (RowLE q N)) := by
-  apply List.eq_of_perm_of_sorted (r := RowLE)
+  apply fun hp h₁ h₂ => List.Perm.eq_of_pairwise' (r := RowLE) h₁ h₂ hp
   · exact (List.filter_append_perm _ _).symm
   · exact rowCells_sorted μ
   · have hs := rowCells_sorted μ
-    unfold List.Sorted at hs ⊢
     rw [List.pairwise_append]
     refine ⟨hs.filter _, hs.filter _, ?_⟩
     intro a ha b hb
@@ -527,7 +525,7 @@ theorem good2_of (s : St r c) (x : Fin r × Fin c) (hs : GoodQ s)
   · intro i j hij
     have h1 : (i, j) ≠ N := fun h => hij ((hmem _).mpr (Or.inl h))
     have h2 : (i, j) ∉ s.shape := fun h => hij ((hmem _).mpr (Or.inr h))
-    rw [hQ, if_neg h1]
+    rw [hQ, ite_eq_right h1]
     exact hs.1 i j h2
   · intro i j hij
     rw [hQ]
@@ -538,7 +536,7 @@ theorem good2_of (s : St r c) (x : Fin r × Fin c) (hs : GoodQ s)
       · exact hs.2.1 i j h'
   · intro i j1 j2 hj h2
     have h1 := hold_left hj h2
-    rw [hQ, hQ, if_neg (hne h1)]
+    rw [hQ, hQ, ite_eq_right (hne h1)]
     split_ifs with he
     · exact hb (i, j1) ((YoungDiagram.mem_cells _).mpr h1)
     · rcases (hmem _).mp h2 with h' | h'
@@ -546,7 +544,7 @@ theorem good2_of (s : St r c) (x : Fin r × Fin c) (hs : GoodQ s)
       · exact hs.2.2.1 i j1 j2 hj h'
   · intro i1 i2 j hi h2
     have h1 := hold_up hi h2
-    rw [hQ, hQ, if_neg (hne h1)]
+    rw [hQ, hQ, ite_eq_right (hne h1)]
     split_ifs with he
     · apply habove i1 j h1
       have := congrArg Prod.fst he
@@ -630,14 +628,14 @@ theorem inv_step (s : St r c) (x : Fin r × Fin c) (pre : List (Fin r × Fin c))
     have hp' : p ∈ (step s x).shape.cells := by
       change p ∈ I.shape.cells; rw [hc.2]; exact Finset.mem_insert_of_mem hp
     have := h2.2.1 p hp'
-    rwa [hQ, if_neg (fun h : (p.1, p.2) = N => hc.1 (by rw [← h]; exact hp))] at this
+    rwa [hQ, ite_eq_right (fun h : (p.1, p.2) = N => hc.1 (by rw [← h]; exact hp))] at this
   have habove : ∀ p ∈ s.shape.cells, p.1 < N.1 → s.Q p.1 p.2 < x.1.val + 1 := by
     intro p hp hlt
     have hp' : p ∈ (step s x).shape.cells := by
       change p ∈ I.shape.cells; rw [hc.2]; exact Finset.mem_insert_of_mem hp
     have h1 : (step s x).Q p.1 p.2 ≤ x.1.val + 1 := h2.2.1 p hp'
     have h3 : (step s x).Q p.1 p.2 = x.1.val + 1 → N.1 ≤ p.1 := h2.2.2 p hp'
-    rw [hQ, if_neg (fun h : (p.1, p.2) = N => hc.1 (by rw [← h]; exact hp))] at h1 h3
+    rw [hQ, ite_eq_right (fun h : (p.1, p.2) = N => hc.1 (by rw [← h]; exact hp))] at h1 h3
     by_contra hcon
     have := h3 (by omega)
     omega
@@ -655,12 +653,12 @@ theorem inv_step (s : St r c) (x : Fin r × Fin c) (pre : List (Fin r × Fin c))
     congr 1
     · apply List.map_congr_left
       intro q hq
-      rw [hQ, if_neg (hmemL q (List.mem_filter.mp hq).1)]
-    · rw [hQ, if_pos rfl]
+      rw [hQ, ite_eq_right (hmemL q (List.mem_filter.mp hq).1)]
+    · rw [hQ, ite_eq_left rfl]
       congr 1
       apply List.map_congr_left
       intro q hq
-      rw [hQ, if_neg (hmemL q (List.mem_filter.mp hq).1)]
+      rw [hQ, ite_eq_right (hmemL q (List.mem_filter.mp hq).1)]
   have hqold : qWord s = L1.map (fun p => s.Q p.1 p.2) ++ L2.map (fun p => s.Q p.1 p.2) := by
     unfold qWord
     conv_lhs => rw [hsplitμ]
@@ -735,9 +733,9 @@ theorem main_ind (w : List (Fin r × Fin c)) : ∀ (s : St r c) (x : Fin r × Fi
 
 theorem init_good : GoodQ (init : St r c) := by
   refine ⟨fun _ _ _ => rfl, ?_, ?_, ?_, fun _ _ => Nat.zero_le _⟩
-  · intro i j h; exact absurd h (YoungDiagram.not_mem_bot _)
-  · intro i j1 j2 _ h; exact absurd h (YoungDiagram.not_mem_bot _)
-  · intro i1 i2 j _ h; exact absurd h (YoungDiagram.not_mem_bot _)
+  · intro i j h; exact absurd h (YoungDiagram.notMem_bot _)
+  · intro i j1 j2 _ h; exact absurd h (YoungDiagram.notMem_bot _)
+  · intro i1 i2 j _ h; exact absurd h (YoungDiagram.notMem_bot _)
 
 theorem init_inv : Inv (init : St r c) [] := by
   have hc : rowCells (⊥ : YoungDiagram) = [] := by

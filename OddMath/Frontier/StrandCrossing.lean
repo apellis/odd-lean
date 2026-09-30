@@ -63,7 +63,7 @@ def Far (i j : ℕ) : Prop := i+1 < j ∨ j+1 < i
 
 theorem cross_zero (j : ℕ) (h : n+1 ≤ j) : cross n j = 0 := by
   unfold cross
-  rw [dif_neg (by omega)]
+  rw [dite_eq_right (by omega)]
 
 /-- Distant crossings anticommute; no range hypothesis. -/
 theorem cross_far {i j : ℕ} (h : Far i j) : SignComm (cross n i) (cross n j) 1 := by
@@ -332,7 +332,7 @@ theorem natWord_values (l : List ℕ) (hl : ∀ j ∈ l, j < n+1) :
   | cons j l ih =>
       obtain ⟨hj, hl⟩ := List.forall_mem_cons.mp hl
       change (List.filterMap _ (j :: l)).map Fin.val = j :: l
-      simp only [List.filterMap_cons, dif_pos hj, List.map_cons]
+      simp only [List.filterMap_cons, dite_eq_left hj, List.map_cons]
       exact congrArg (j :: ·) (ih hl)
 
 theorem action_natWord (l : List ℕ) (hl : ∀ j ∈ l, j < n+1) :

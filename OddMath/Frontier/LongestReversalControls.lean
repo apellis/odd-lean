@@ -54,7 +54,7 @@ theorem rank_two_input_not_kernel :
     generator (0 : Fin 2) ∉ OddSymmetricKernel.kernelSubring 0 := by
   intro h
   have hz := (OddSymmetricKernel.mem_kernelSubring _).mp h (0 : Fin 1)
-  simp only [divided_generator, Fin.castSucc_zero, true_or, if_true] at hz
+  simp only [divided_generator, Fin.castSucc_zero, true_or, ite_true] at hz
   have hc := congrArg (fun f : SkewPolynomial 2 => f 0) hz
   change (Finsupp.single (0 : Fin 2 → ℕ) (1 : ℤ)) 0 = 0 at hc
   norm_num at hc

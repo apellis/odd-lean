@@ -37,7 +37,7 @@ noncomputable section
 open LaurentPolynomial
 
 namespace OddMath.Frontier.OddCyclotomicAction
-open GradedK0 OddCategorification Cyclotomic OddBialgebra QuantumSl2Plus
+open GradedK0 OddCategorification OddMath.Frontier.Cyclotomic OddBialgebra QuantumSl2Plus
 
 local notation "L" => LaurentPolynomial ℤ
 
@@ -59,7 +59,7 @@ theorem FN_cycBasis (N a : ℕ) (ha : a < N) :
     FN N (cycBasis N ⟨a+1, by omega⟩) = qInt (N - a) • cycBasis N ⟨a, by omega⟩ := by
   rw [cycBasis_apply, cycBasis_apply, FN, DFinsupp.lsum_single]
   show Fdown N (a+1) (vCyc N (a+1)) = _
-  rw [Fdown, dif_pos ha, LinearMap.comp_apply, cycF_vCyc, DFinsupp.lsingle_apply,
+  rw [Fdown, dite_eq_left ha, LinearMap.comp_apply, cycF_vCyc, DFinsupp.lsingle_apply,
     DFinsupp.single_smul]
 
 /-- `F [E^{(0)}] = 0`. -/
@@ -110,7 +110,7 @@ theorem KN_EN (N : ℕ) : KN N ∘ₗ EN N = (T 2 : L) • (EN N ∘ₗ KN N) :=
       congr 1
       rw [← T_add, mul_comm]
       congr 2
-      simp only [Fin.val_mk]
+      dsimp only
       push_cast
       ring
     · obtain rfl : a = Fin.last N := Fin.ext (by have := a.isLt; simp; omega)
@@ -127,7 +127,7 @@ theorem KN_FN (N : ℕ) : KN N ∘ₗ FN N = (T (-2) : L) • (FN N ∘ₗ KN N)
       congr 1
       rw [← T_add, mul_comm]
       congr 2
-      simp only [Fin.val_mk]
+      dsimp only
       push_cast
       ring
 
@@ -176,7 +176,7 @@ theorem EN_FN_cycBasis (N : ℕ) (a : Fin (N+1)) :
     congr 1
     rw [mul_comm]
     congr 2
-    simp only [Fin.val_mk]
+    dsimp only
     omega
 
 /-- `FE w_a = [a+1][N-a] w_a`. -/
@@ -244,23 +244,23 @@ theorem EN_pow_cycBasis (N k : ℕ) (a : Fin (N+1)) :
     (EN N ^ k) (cycBasis N a) = qFact k • EdivN N k (cycBasis N a) := by
   induction k with
   | zero =>
-    rw [pow_zero, Module.End.one_apply, EdivN_cycBasis, dif_pos (by omega), qBinom_comm,
+    rw [pow_zero, Module.End.one_apply, EdivN_cycBasis, dite_eq_left (by omega), qBinom_comm,
       qBinom_zero_left, one_smul]
     simp [qFact]
   | succ k ih =>
     rw [pow_succ', Module.End.mul_apply, ih, EdivN_cycBasis, EdivN_cycBasis]
     by_cases h : (a : ℕ) + (k + 1) ≤ N
-    · rw [dif_pos (by omega : (a : ℕ) + k ≤ N), dif_pos h, map_smul, map_smul,
+    · rw [dite_eq_left (by omega : (a : ℕ) + k ≤ N), dite_eq_left h, map_smul, map_smul,
         EN_cycBasis N ⟨a + k, by omega⟩ (by simp; omega), smul_smul, smul_smul, smul_smul]
       congr 1
-      simp only [Fin.val_mk]
+      dsimp only
       rw [mul_comm (qFact (k+1)), ← qBinom_step]
       ring
     · by_cases h' : (a : ℕ) + k ≤ N
       · have hlast : (⟨a + k, by omega⟩ : Fin (N+1)) = Fin.last N := Fin.ext (by simp; omega)
-        rw [dif_pos h', dif_neg h, map_smul, map_smul, hlast, EN_cycBasis_last, smul_zero,
+        rw [dite_eq_left h', dite_eq_right h, map_smul, map_smul, hlast, EN_cycBasis_last, smul_zero,
           smul_zero, smul_zero]
-      · rw [dif_neg h', dif_neg h, smul_zero, map_zero, smul_zero]
+      · rw [dite_eq_right h', dite_eq_right h, smul_zero, map_zero, smul_zero]
 
 /-- **`E^k = [k]! E^{(k)}`**: the divided powers of `E` preserve `K₀(ONH^N)`. -/
 theorem qFact_smul_EdivN (N k : ℕ) : qFact k • EdivN N k = EN N ^ k :=
@@ -270,13 +270,13 @@ theorem FN_pow_cycBasis (N k : ℕ) (a : Fin (N+1)) :
     (FN N ^ k) (cycBasis N a) = qFact k • FdivN N k (cycBasis N a) := by
   induction k with
   | zero =>
-    rw [pow_zero, Module.End.one_apply, FdivN_cycBasis, dif_pos (Nat.zero_le _),
+    rw [pow_zero, Module.End.one_apply, FdivN_cycBasis, dite_eq_left (Nat.zero_le _),
       qBinom_zero_left, one_smul]
     simp [qFact]
   | succ k ih =>
     rw [pow_succ', Module.End.mul_apply, ih, FdivN_cycBasis, FdivN_cycBasis]
     by_cases h : k + 1 ≤ (a : ℕ)
-    · rw [dif_pos (by omega : k ≤ (a : ℕ)), dif_pos h, map_smul, map_smul]
+    · rw [dite_eq_left (by omega : k ≤ (a : ℕ)), dite_eq_left h, map_smul, map_smul]
       have hb : (⟨(a : ℕ) - k, by omega⟩ : Fin (N+1)) = ⟨(a - (k+1)) + 1, by omega⟩ :=
         Fin.ext (by simp; omega)
       rw [hb, FN_cycBasis N (a - (k+1)) (by omega), smul_smul, smul_smul, smul_smul]
@@ -286,9 +286,9 @@ theorem FN_pow_cycBasis (N k : ℕ) (a : Fin (N+1)) :
         ring
     · by_cases h' : k ≤ (a : ℕ)
       · have h0 : (⟨(a : ℕ) - k, by omega⟩ : Fin (N+1)) = 0 := Fin.ext (by simp; omega)
-        rw [dif_pos h', dif_neg h, map_smul, map_smul, h0, FN_cycBasis_zero, smul_zero,
+        rw [dite_eq_left h', dite_eq_right h, map_smul, map_smul, h0, FN_cycBasis_zero, smul_zero,
           smul_zero, smul_zero]
-      · rw [dif_neg h', dif_neg h, smul_zero, map_zero, smul_zero]
+      · rw [dite_eq_right h', dite_eq_right h, smul_zero, map_zero, smul_zero]
 
 /-- **`F^k = [k]! F^{(k)}`**: the divided powers of `F` preserve `K₀(ONH^N)`. -/
 theorem qFact_smul_FdivN (N k : ℕ) : qFact k • FdivN N k = FN N ^ k :=
@@ -334,31 +334,31 @@ def cycIso (N : ℕ) : K0Cyc N ≃ₗ[L] VN N :=
   (cycBasis N).equiv (Pi.basisFun L (Fin (N+1))) (Equiv.refl _)
 
 theorem cycIso_cycBasis (N : ℕ) (a : Fin (N+1)) : cycIso N (cycBasis N a) = vn N a := by
-  rw [cycIso, Basis.equiv_apply, Equiv.refl_apply, Pi.basisFun_apply]
+  rw [cycIso, Module.Basis.equiv_apply, Equiv.refl_apply, Pi.basisFun_apply]
 
 theorem constr_vn (N : ℕ) (f : Fin (N+1) → VN N) (a : Fin (N+1)) :
     (Pi.basisFun L (Fin (N+1))).constr L f (vn N a) = f a := by
   have h : vn N a = Pi.basisFun L (Fin (N+1)) a := (Pi.basisFun_apply L (Fin (N+1)) a).symm
-  rw [h, Basis.constr_basis]
+  rw [h, Module.Basis.constr_basis]
 
 /-- `K₀(ONH^N) ≅ V(N)_A` intertwines `E`. -/
 theorem cycIso_EN (N : ℕ) : cycIso N ∘ₗ EN N = stdE N ∘ₗ (cycIso N).toLinearMap :=
   (cycBasis N).ext fun a => by
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, cycIso_cycBasis, stdE, constr_vn]
     by_cases ha : (a : ℕ) < N
-    · rw [EN_cycBasis N a ha, map_smul, cycIso_cycBasis, dif_pos ha]
+    · rw [EN_cycBasis N a ha, map_smul, cycIso_cycBasis, dite_eq_left ha]
     · obtain rfl : a = Fin.last N := Fin.ext (by have := a.isLt; simp; omega)
-      rw [EN_cycBasis_last, map_zero, dif_neg ha]
+      rw [EN_cycBasis_last, map_zero, dite_eq_right ha]
 
 /-- `K₀(ONH^N) ≅ V(N)_A` intertwines `F`. -/
 theorem cycIso_FN (N : ℕ) : cycIso N ∘ₗ FN N = stdF N ∘ₗ (cycIso N).toLinearMap :=
   (cycBasis N).ext fun a => by
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, cycIso_cycBasis, stdF, constr_vn]
     rcases a with ⟨_ | a, ha⟩
-    · rw [show (⟨0, ha⟩ : Fin (N+1)) = 0 from rfl, FN_cycBasis_zero, map_zero, dif_neg (by simp)]
-    · rw [FN_cycBasis N a (by omega), map_smul, cycIso_cycBasis, dif_pos (by simp)]
+    · rw [show (⟨0, ha⟩ : Fin (N+1)) = 0 from rfl, FN_cycBasis_zero, map_zero, dite_eq_right (by simp)]
+    · rw [FN_cycBasis N a (by omega), map_smul, cycIso_cycBasis, dite_eq_left (by simp)]
       congr 1
-      simp only [Fin.val_mk]
+      dsimp only
       congr 1
       omega
 

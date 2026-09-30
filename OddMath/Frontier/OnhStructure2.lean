@@ -54,11 +54,13 @@ theorem incL_dotMonomial_mul_incR (A : Fin (m+2) → ℕ) (B : Fin (m'+2) → �
     incL m m' (dotMonomial A) * incR m m' (dotMonomial B) =
       dotMonomial (appendExp A B) := by
   rw [dotMonomial_eq_prod_ofFn, dotMonomial_eq_prod_ofFn, dotMonomial_eq_prod_ofFn,
-    List.ofFn_add (m := m+2) (n := m'+2), List.prod_append, map_list_prod, map_list_prod,
+    List.ofFn_add (m := m'+2) (n := m+2), List.prod_append, map_list_prod, map_list_prod,
     List.map_ofFn, List.map_ofFn]
   congr 1
   · refine congrArg List.prod (congrArg List.ofFn (funext fun i => ?_))
-    simp only [Function.comp_apply, map_pow, incL, windowHom_dot, appendExp, Fin.append_left]
+    simp only [Function.comp_apply, map_pow, incL, windowHom_dot, appendExp]
+    change dot _ _ ^ A i = dot _ _ ^ Fin.append A B (Fin.castAdd (m'+2) i)
+    rw [Fin.append_left]
     congr 2
   · refine congrArg List.prod (congrArg List.ofFn (funext fun j => ?_))
     simp only [Function.comp_apply, map_pow, incR, windowHom_dot, appendExp, Fin.append_right]
@@ -105,7 +107,7 @@ theorem simple_shiftR (i : Fin (m'+1)) :
   rw [blockPerm, simple, simple, Equiv.Perm.sumCongr_one_swap, Equiv.permCongr_def,
     Equiv.symm_trans_swap_trans, finSumFinEquiv_apply_right, finSumFinEquiv_apply_right]
   congr 1 <;> exact Fin.ext (by
-    simp only [Fin.coe_castSucc, Fin.val_succ, Fin.coe_natAdd, shiftIndex_val]; omega)
+    simp only [Fin.val_castSucc, Fin.val_succ, Fin.val_natAdd, shiftIndex_val]; omega)
 
 theorem permutation_mapL (u : Word m) :
     permutation (u.map (shiftIndex (window_left_le m m'))) =
@@ -129,14 +131,14 @@ theorem length_blockPerm (w : Perm m) (v : Perm m') :
   change (∑ a : Fin ((m+2)+(m'+2)), ∑ b : Fin ((m+2)+(m'+2)),
     if a < b ∧ blockPerm w v b < blockPerm w v a then 1 else 0) = _
   simp only [Fin.sum_univ_add (a := m+2) (b := m'+2), blockPerm_castAdd, blockPerm_natAdd,
-    Fin.lt_iff_val_lt_val, Fin.coe_castAdd, Fin.coe_natAdd, Nat.add_lt_add_iff_left]
+    Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd, Nat.add_lt_add_iff_left]
   have h₁ : ∀ (i : Fin (m+2)) (j : Fin (m'+2)),
       (if (i : ℕ) < m+2+j ∧ m+2+(v j : ℕ) < w i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := (w i).isLt; omega
+    ite_eq_right fun h => by have := (w i).isLt; omega
   have h₂ : ∀ (i : Fin (m'+2)) (j : Fin (m+2)),
       (if m+2+(i : ℕ) < j ∧ (w j : ℕ) < m+2+v i then 1 else 0) = 0 := fun i j =>
-    if_neg fun h => by have := j.isLt; omega
-  simp only [h₁, h₂, Finset.sum_const_zero, add_zero, zero_add, length, Fin.lt_iff_val_lt_val]
+    ite_eq_right fun h => by have := j.isLt; omega
+  simp only [h₁, h₂, Finset.sum_const_zero, add_zero, zero_add, length, Fin.lt_def]
 
 /-- `ι_L(∂_w) ι_R(∂_v) = ± ∂_{w × v}`. -/
 theorem incL_mul_incR_divided (w : Perm m) (v : Perm m') :
@@ -219,7 +221,7 @@ theorem incL_mul_incR_basis (A : Fin (m+2) → ℕ) (w : Perm m) (B : Fin (m'+2)
 
 /-- A linear map sending a basis to `±` an injectively indexed part of a basis is injective. -/
 theorem injective_of_signed_basis {ι ι' M M' : Type*} [AddCommGroup M] [AddCommGroup M']
-    (b : Basis ι ℤ M) (b' : Basis ι' ℤ M') (T : M →ₗ[ℤ] M') (φ : ι → ι')
+    (b : Module.Basis ι ℤ M) (b' : Module.Basis ι' ℤ M') (T : M →ₗ[ℤ] M') (φ : ι → ι')
     (hφ : Function.Injective φ) (hT : ∀ i, Signed (T (b i)) (b' (φ i))) :
     Function.Injective T := by
   have hu : ∀ i, ∃ u : ℤˣ, T (b i) = u • b' (φ i) := by
@@ -274,7 +276,7 @@ theorem tensorMap_injective (m m' : ℕ) : Function.Injective (tensorMap m m') :
   refine injective_of_signed_basis ((basis m).tensorProduct (basis m')) (basis (m+2+m'))
     (tensorMap m m') _ blockIndex_injective ?_
   rintro ⟨⟨A, w⟩, ⟨B, v⟩⟩
-  rw [Basis.tensorProduct_apply, tensorMap_tmul, basis_apply, basis_apply, basis_apply]
+  rw [Module.Basis.tensorProduct_apply, tensorMap_tmul, basis_apply, basis_apply, basis_apply]
   exact incL_mul_incR_basis A w B v
 
 /-! ## The super tensor product rule -/
@@ -359,12 +361,10 @@ def tensorImage (m m' : ℕ) : Subring (Presented (m+2+m')) where
         | hhom k' x' hx' =>
           rw [tensorMap_mul hy hx']
           exact hsign _ _ ⟨_, rfl⟩
-    induction s using TensorProduct.induction_on with
-    | zero => simp only [map_zero, zero_mul]; exact R.zero_mem
+    induction s using TensorProduct.inductionOn with
     | add s₁ s₂ h₁ h₂ => simp only [map_add, add_mul]; exact R.add_mem h₁ h₂
     | tmul x y =>
-      induction t using TensorProduct.induction_on with
-      | zero => simp only [map_zero, mul_zero]; exact R.zero_mem
+      induction t using TensorProduct.inductionOn with
       | add t₁ t₂ h₁ h₂ => simp only [map_add, mul_add]; exact R.add_mem h₁ h₂
       | tmul x' y' => exact key x y x' y'
 

@@ -51,7 +51,7 @@ theorem prefixContent_rowC (β : YoungDiagram) :
     prefixContent (rowC β) (β.colLen 0) = TableauDominance.shapeContent β := by
   ext k
   rcases k with _ | i
-  · simp [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  · simp [TableauDominance.shapeContent, Finsupp.finsetSum_apply]
   · rw [prefixContent_apply_succ, shapeContent_succ]
     split_ifs with h
     · rfl
@@ -74,19 +74,19 @@ theorem sK_mul_hPartition (mu β : YoungDiagram) :
 
 theorem lrTableaux_eq_empty {lam mu nu : YoungDiagram} (h : lam.card ≠ mu.card + nu.card) :
     lrTableaux lam mu nu = ∅ := by
-  apply Finset.eq_empty_of_forall_not_mem
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro S hS
   obtain ⟨hc, -⟩ := mem_lrTableaux.mp hS
   apply h
   have h1 : (S.content).sum (fun _ n => n) = (skewCells lam mu).card := by
     classical
-    rw [SkewTableau.content, ← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+    rw [SkewTableau.content, ← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
     simp only [Finsupp.sum_single_index (h := fun _ n : ℕ => n) rfl, Finset.sum_const, smul_eq_mul,
       mul_one]
   rw [hc, ← TableauDominance.content_canonical, content_total] at h1
   have h2 : (skewCells lam mu).card = lam.card - mu.card := by
     unfold skewCells
-    rw [Finset.card_sdiff (YoungDiagram.cells_subset_iff.mpr S.sub)]
+    rw [Finset.card_sdiff_of_subset (YoungDiagram.cells_subset_iff.mpr S.sub)]
   have h3 : mu.card ≤ lam.card := Finset.card_le_card (YoungDiagram.cells_subset_iff.mpr S.sub)
   omega
 
@@ -138,18 +138,18 @@ set_option synthInstance.maxHeartbeats 200000 in
 theorem thm_4_8 (lam mu nu : YoungDiagram) : oddLR lam mu nu = lrSignedCount lam mu nu := by
   unfold oddLR
   rw [sK_mul_sK, map_sum]
-  simp_rw [map_zsmul, ← OddGrassmannSchur.sBasis_apply, Basis.repr_self, Finsupp.coe_finset_sum,
+  simp_rw [map_zsmul, ← OddGrassmannSchur.sBasis_apply, Module.Basis.repr_self, Finsupp.coe_finsetSum,
     Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one,
     mul_zero]
   by_cases h : lam.card = mu.card + nu.card
   · rw [Fintype.sum_eq_single (α := DegreeShape (mu.card + nu.card)) ⟨lam, h⟩ ?_]
     · simp
     · intro x hx
-      rw [if_neg (fun h' => hx (Subtype.ext h'))]
+      rw [ite_eq_right (fun h' => hx (Subtype.ext h'))]
   · rw [lrSignedCount_eq_zero h]
     apply Finset.sum_eq_zero
     intro x _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h'
     exact h (h' ▸ x.property)
 

@@ -63,8 +63,8 @@ theorem prod_ofFn_monomial : ∀ {N : ℕ} (f : Fin N → Fin n → ℕ) (c : Fi
     rw [List.ofFn_succ, List.prod_cons, prod_ofFn_monomial, monomial_mul_monomial,
       Fin.sum_univ_succ (f := f)]
     congr 1
-    simp only [Fin.sum_univ_succ, Fin.prod_univ_succ, lt_irrefl, Fin.succ_pos,
-      Fin.succ_lt_succ_iff, Fin.not_lt_zero, if_true, if_false, zero_add,
+    simp only [Fin.sum_univ_succ, Fin.prod_univ_succ, Fin.succ_pos,
+      Fin.succ_lt_succ_iff, Fin.not_lt_zero, ite_true, ite_false, zero_add,
       OddMath.skewSign, crossingCount_sum_right, pow_add]
     ring
 
@@ -98,7 +98,7 @@ theorem action_monomial (σ : Equiv.Perm (Fin n)) (γ : Fin n → ℕ) (c : ℤ)
   rw [prod_ofFn_monomial, Finset.prod_pow_eq_pow_sum]
   have he : (∑ p, γ p • expSingle (σ p)) = fun t => γ (σ.symm t) := by
     funext t
-    simp [Finset.sum_apply, expSingle, Equiv.apply_eq_iff_eq_symm_apply]
+    simp [Finset.sum_apply, expSingle, ← Equiv.eq_symm_apply]
   simp only [he, crossingCount_power, ite_and, Finsupp.smul_single, smul_eq_mul]
   rw [mul_comm c]
 
@@ -122,7 +122,7 @@ theorem sum_rev_val : ∀ N : ℕ, ∑ j : Fin N, (N - 1 - j.val) = N.choose 2
     simp
 
 theorem mul_choose_two (N : ℕ) : N * N.choose 2 = N.choose 3 + 2 * (N+1).choose 3 := by
-  have h1 := Nat.succ_mul_choose_eq N 2
+  have h1 := Nat.add_one_mul_choose_eq N 2
   have h2 := Nat.choose_succ_succ' N 2
   linarith
 
@@ -136,8 +136,8 @@ theorem even_pairSum_add_choose_four : ∀ N : ℕ,
         if i < j then (N + 1 - 1 - i.val) * (N + 1 - 1 - j.val) else 0) =
         N * N.choose 2 + ∑ i : Fin N, ∑ j : Fin N,
           if i < j then (N - 1 - i.val) * (N - 1 - j.val) else 0 := by
-      simp only [Fin.sum_univ_succ, lt_irrefl, Fin.succ_pos, Fin.succ_lt_succ_iff,
-        Fin.not_lt_zero, if_true, if_false, zero_add, Fin.val_zero, Fin.val_succ]
+      simp only [Fin.sum_univ_succ, Fin.succ_pos, Fin.succ_lt_succ_iff,
+        Fin.not_lt_zero, ite_true, ite_false, zero_add, Fin.val_zero, Fin.val_succ]
       rw [← sum_rev_val N, Finset.mul_sum]
       congr 1
       · exact Finset.sum_congr rfl fun j _ => by congr 1; omega

@@ -18,10 +18,10 @@ open OddLRTableau OddLRExamples
 noncomputable section
 
 /-- The partition with row lengths `w`. -/
-abbrev yd (w : List ℕ) (h : w.Sorted (· ≥ ·) := by decide) : YoungDiagram :=
-  YoungDiagram.ofRowLens w h
+abbrev yd (w : List ℕ) (h : w.Pairwise (· ≥ ·) := by decide) : YoungDiagram :=
+  YoungDiagram.ofRowLens w (List.sortedGE_iff_pairwise.mpr h)
 
-theorem rowLens_yd (w : List ℕ) (h : w.Sorted (· ≥ ·)) (hpos : ∀ x ∈ w, 0 < x) :
+theorem rowLens_yd (w : List ℕ) (h : w.Pairwise (· ≥ ·)) (hpos : ∀ x ∈ w, 0 < x) :
     (yd w h).rowLens = w :=
   YoungDiagram.rowLens_ofRowLens_eq_self hpos
 
@@ -33,31 +33,31 @@ theorem eq_iff_rowLens (a b : YoungDiagram) : a = b ↔ a.rowLens = b.rowLens :=
       ← YoungDiagram.ofRowLens_to_rowLens_eq_self (μ := b)]
     congr 1
 
-theorem eq_yd {lam : YoungDiagram} {w : List ℕ} (h : lam.rowLens = w) (hw : w.Sorted (· ≥ ·)) :
-    lam = YoungDiagram.ofRowLens w hw := by
+theorem eq_yd {lam : YoungDiagram} {w : List ℕ} (h : lam.rowLens = w) (hw : w.Pairwise (· ≥ ·)) :
+    lam = YoungDiagram.ofRowLens w (List.sortedGE_iff_pairwise.mpr hw) := by
   subst h
   exact YoungDiagram.ofRowLens_to_rowLens_eq_self.symm
 
 theorem repr_sE (a lam : YoungDiagram) :
     sBasisE.repr (sE a) lam = if a.rowLens = lam.rowLens then 1 else 0 := by
   classical
-  rw [← sBasisE_apply, Basis.repr_self, Finsupp.single_apply]
+  rw [← sBasisE_apply, Module.Basis.repr_self, Finsupp.single_apply]
   by_cases h : a = lam
-  · rw [if_pos h, if_pos ((eq_iff_rowLens a lam).mp h)]
-  · rw [if_neg h, if_neg (fun h' => h ((eq_iff_rowLens a lam).mpr h'))]
+  · rw [ite_eq_left h, ite_eq_left ((eq_iff_rowLens a lam).mp h)]
+  · rw [ite_eq_right h, ite_eq_right (fun h' => h ((eq_iff_rowLens a lam).mpr h'))]
 
 theorem repr_sE_of_card {a lam : YoungDiagram} (h : a.card ≠ lam.card) :
     sBasisE.repr (sE a) lam = 0 := by
-  rw [repr_sE, if_neg]
+  rw [repr_sE, ite_eq_right]
   intro h'
   exact h (by rw [(eq_iff_rowLens a lam).mpr h'])
 
-theorem card_yd (w : List ℕ) (h : w.Sorted (· ≥ ·)) : (yd w h).card = w.sum :=
+theorem card_yd (w : List ℕ) (h : w.Pairwise (· ≥ ·)) : (yd w h).card = w.sum :=
   EKPartitionSpanning.card_ofRowLens w h
 
 theorem card_lrTableaux_of_not_sub {lam mu nu : YoungDiagram} (h : ¬ mu.cells ⊆ lam.cells) :
     (lrTableaux lam mu nu).card = 0 := by
-  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
   intro S _
   exact h (YoungDiagram.cells_subset_iff.mpr S.sub)
 
@@ -83,10 +83,10 @@ theorem example_4_3 :
     rcases hmem with h | h | h | h | h | h | h | h | h | h | h <;>
     · rw [h, eq_yd h (by decide), thm_4_1]
       first
-        | (rw [card_lrTableaux_eq (cellsL_ofRowLens _ _ _) (by decide) [2, 1] (by decide)]; decide)
+        | (rw [card_lrTableaux_eq (cellsL_ofRowLens _ (by decide) _) (by decide) [2, 1] (by decide)]; decide)
         | (rw [card_lrTableaux_of_not_sub (by decide)]; decide)
   · rw [evenLR_eq_zero (by rw [card_yd]; simpa using hc)]
-    have hz : ∀ (w : List ℕ) (h : w.Sorted (· ≥ ·)), w.sum = 6 →
+    have hz : ∀ (w : List ℕ) (h : w.Pairwise (· ≥ ·)), w.sum = 6 →
         sBasisE.repr (sE (yd w h)) lam = 0 :=
       fun w h hs => repr_sE_of_card (by rw [card_yd, hs]; exact fun e => hc e.symm)
     rw [hz [2, 2, 1, 1] _ rfl, hz [2, 2, 2] _ rfl, hz [3, 1, 1, 1] _ rfl, hz [3, 2, 1] _ rfl,

@@ -203,7 +203,7 @@ theorem toSkew_injOn (N : ℕ) {x : OddPlactic.Plactic N} (hx : x ∈ shatSpan N
     unfold OddSymmetricLimit.tallSpan
     congr 1
     ext x
-    simp only [Set.mem_setOf_eq, Set.mem_image]
+    simp only [Set.mem_ofPred_eq, Set.mem_image]
     constructor
     · rintro ⟨lam, hl, rfl⟩; exact ⟨lam, hl, rfl⟩
     · rintro ⟨lam, hl, rfl⟩; exact ⟨lam, hl, rfl⟩

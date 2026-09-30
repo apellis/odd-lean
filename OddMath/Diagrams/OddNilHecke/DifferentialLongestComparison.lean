@@ -43,8 +43,10 @@ theorem presentedEquivEnd_DElem (n : ℕ) :
 
 theorem presentedEquivEnd_staircaseElem (n : ℕ) :
     presentedEquivEnd n (ZeroHecke.staircaseElem n) = staircase ℤ (n + 2) (n + 2) := by
+  have hr : (List.finRange (n+2)).map Fin.val = List.range (n+2) := by
+    apply List.ext_getElem <;> simp
   rw [ZeroHecke.staircaseElem, NilHeckeBasis.dotMonomial, map_list_prod, List.map_map, staircase,
-    dotMono, ← List.map_coe_finRange, List.map_map]
+    dotMono, ← hr, List.map_map]
   congr 2
   funext i
   simp only [Function.comp_apply, map_pow, presentedEquivEnd_dot]

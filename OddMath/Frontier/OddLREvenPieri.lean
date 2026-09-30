@@ -47,11 +47,11 @@ theorem rowLens_row {k : ℕ} (hk : 0 < k) : (rowShape k).rowLens = [k] := by
   have hr : (rowShape k).rowLen 0 = k := by
     apply le_antisymm
     · by_contra h
-      push_neg at h
+      push Not at h
       have := (TableauExtremal.mem_rowShape k 0 k).mp (YoungDiagram.mem_iff_lt_rowLen.mpr h)
       omega
     · by_contra h
-      push_neg at h
+      push Not at h
       have := (TableauExtremal.mem_rowShape k 0 ((rowShape k).rowLen 0)).mpr ⟨rfl, h⟩
       exact lt_irrefl _ (YoungDiagram.mem_iff_lt_rowLen.mp this)
   unfold YoungDiagram.rowLens
@@ -110,7 +110,7 @@ theorem K_row (k : ℕ) (nu : DegreeShape k) :
     · refine ⟨1, ?_⟩
       rw [TableauDominance.shapeContent_prefix]
       by_contra hn
-      push_neg at hn
+      push Not at hn
       apply h
       apply eq_row_of_prefix nu.property
       have : TableauDominance.shapePrefix (rowShape k) 1 = k := by
@@ -125,9 +125,9 @@ theorem K_row (k : ℕ) (nu : DegreeShape k) :
 theorem hk_eq_sE_row (k : ℕ) : hk k = sE (rowShape k) := by
   rw [← hE_row, hE_expand k ⟨rowShape k, card_row k⟩]
   rw [Fintype.sum_eq_single (α := DegreeShape k) ⟨rowShape k, card_row k⟩]
-  · rw [K_row, if_pos rfl, one_smul]
+  · rw [K_row, ite_eq_left rfl, one_smul]
   · intro nu hnu
-    rw [K_row, if_neg (fun h => hnu (Subtype.ext h)), zero_smul]
+    rw [K_row, ite_eq_right (fun h => hnu (Subtype.ext h)), zero_smul]
 
 /-- **E (4.3), the even Pieri rule**: `s_μ s_{(k)} = Σ_{λ/μ horizontal strip} s_λ`. -/
 theorem pieri_row (mu : YoungDiagram) (k : ℕ) :
@@ -144,8 +144,8 @@ theorem repr_sum_ite {d : ℕ} (P : YoungDiagram → Prop) (lam : YoungDiagram) 
       if w.val = lam ∧ P lam then 1 else 0 := by
     intro w
     split_ifs with h1 h2 h2
-    · rw [← sBasisE_apply, Basis.repr_self, Finsupp.single_apply, if_pos h2.1]
-    · rw [← sBasisE_apply, Basis.repr_self, Finsupp.single_apply, if_neg]
+    · rw [← sBasisE_apply, Module.Basis.repr_self, Finsupp.single_apply, ite_eq_left h2.1]
+    · rw [← sBasisE_apply, Module.Basis.repr_self, Finsupp.single_apply, ite_eq_right]
       intro h
       exact h2 ⟨h, by rw [← h]; exact h1⟩
     · exact absurd (by rw [h2.1]; exact h2.2) h1
@@ -155,11 +155,11 @@ theorem repr_sum_ite {d : ℕ} (P : YoungDiagram → Prop) (lam : YoungDiagram) 
   · rw [Fintype.sum_eq_single (α := DegreeShape d) ⟨lam, hd⟩]
     · simp [hd]
     · intro w hw
-      rw [if_neg (fun h => hw (Subtype.ext h.1))]
-  · rw [if_neg (fun h => hd h.2)]
+      rw [ite_eq_right (fun h => hw (Subtype.ext h.1))]
+  · rw [ite_eq_right (fun h => hd h.2)]
     apply Finset.sum_eq_zero
     intro w _
-    rw [if_neg (fun h => hd (by rw [← h.1]; exact w.property))]
+    rw [ite_eq_right (fun h => hd (by rw [← h.1]; exact w.property))]
 
 /-- E Example 4.2: `c^λ_{μ(k)} = 1` if `λ/μ` is a horizontal strip of size `k`, else `0`. -/
 theorem evenLR_row (lam mu : YoungDiagram) (k : ℕ) :
@@ -197,7 +197,7 @@ theorem nodup_desc (m : ℕ) : (desc m).Nodup := by
   exact (List.nodup_reverse.mpr List.nodup_range).map (fun a b h => by omega)
 
 theorem count_desc (m a : ℕ) : (desc m).count a = if 0 < a ∧ a ≤ m then 1 else 0 := by
-  rw [List.count_eq_of_nodup (nodup_desc m)]
+  rw [List.Nodup.count (nodup_desc m)]
   simp [mem_desc]
 
 theorem getElem_desc (m i : ℕ) (h : i < (desc m).length) : (desc m)[i] = m - i := by
@@ -238,7 +238,7 @@ theorem eq_desc : ∀ (w : List ℕ), w.Nodup → (∀ a ∈ w, 0 < a) → Yaman
       exact mem_desc
     have hle : a ≤ w.length + 1 := by
       by_contra hlt
-      push_neg at hlt
+      push Not at hlt
       have h1 := hy (a :: w) (List.suffix_refl _) (w.length + 1) a (by omega) hlt
       have h2 : (a :: w).count a = 1 := by
         simp [List.count_cons_self, List.count_eq_zero_of_not_mem hnot]
@@ -262,7 +262,7 @@ def cellsL (lam mu : YoungDiagram) : List (ℕ × ℕ) :=
 theorem cellsL_nodup (lam mu : YoungDiagram) : (cellsL lam mu).Nodup :=
   (TableauRowWord.rowCells_nodup lam).filter _
 
-theorem cellsL_sorted (lam mu : YoungDiagram) : (cellsL lam mu).Sorted TableauRowWord.RowLE :=
+theorem cellsL_sorted (lam mu : YoungDiagram) : (cellsL lam mu).Pairwise TableauRowWord.RowLE :=
   (TableauRowWord.rowCells_sorted lam).filter _
 
 theorem mem_cellsL {lam mu : YoungDiagram} {p : ℕ × ℕ} : p ∈ cellsL lam mu ↔ p ∈ lam ∧ p ∉ mu := by
@@ -273,7 +273,7 @@ theorem length_cellsL {lam mu : YoungDiagram} (h : mu ≤ lam) :
   rw [← List.toFinset_card_of_nodup (cellsL_nodup lam mu)]
   have : (cellsL lam mu).toFinset = skewCells lam mu := by
     ext p; simp [mem_cellsL, mem_skewCells]
-  rw [this, skewCells, Finset.card_sdiff (YoungDiagram.cells_subset_iff.mpr h)]
+  rw [this, skewCells, Finset.card_sdiff_of_subset (YoungDiagram.cells_subset_iff.mpr h)]
 
 theorem rowWord_eq_map (S : SkewTableau lam mu) :
     S.rowWord = (cellsL lam mu).map (fun p => S.entry p.1 p.2) := rfl
@@ -283,18 +283,21 @@ def idx (l : List (ℕ × ℕ)) (p : ℕ × ℕ) : ℕ :=
   letI : BEq (ℕ × ℕ) := instBEqOfDecidableEq
   l.idxOf p
 
-theorem idx_lt {l : List (ℕ × ℕ)} {p : ℕ × ℕ} (hp : p ∈ l) : idx l p < l.length :=
-  List.idxOf_lt_length_iff.mpr hp
+theorem idx_lt {l : List (ℕ × ℕ)} {p : ℕ × ℕ} (hp : p ∈ l) : idx l p < l.length := by
+  let : BEq (ℕ × ℕ) := instBEqOfDecidableEq
+  exact List.idxOf_lt_length_iff.mpr hp
 
 theorem getElem_idx {l : List (ℕ × ℕ)} {p : ℕ × ℕ} (h : idx l p < l.length) :
-    l[idx l p] = p :=
-  List.getElem_idxOf h
+    l[idx l p] = p := by
+  let : BEq (ℕ × ℕ) := instBEqOfDecidableEq
+  exact List.getElem_idxOf h
 
 theorem idx_getElem {l : List (ℕ × ℕ)} (hn : l.Nodup) (i : ℕ) (h : i < l.length) :
-    idx l l[i] = i :=
-  List.idxOf_getElem hn i h
+    idx l l[i] = i := by
+  let : BEq (ℕ × ℕ) := instBEqOfDecidableEq
+  exact List.Nodup.idxOf_getElem hn i h
 
-theorem idxOf_lt_of_rowLE {l : List (ℕ × ℕ)} (hs : l.Sorted TableauRowWord.RowLE)
+theorem idxOf_lt_of_rowLE {l : List (ℕ × ℕ)} (hs : l.Pairwise TableauRowWord.RowLE)
     {p q : ℕ × ℕ} (hp : p ∈ l) (hq : q ∈ l) (hpq : TableauRowWord.RowLE p q)
     (hne : p ≠ q) : idx l p < idx l q := by
   have hip := idx_lt hp
@@ -317,7 +320,7 @@ theorem entry_eq_getElem (S : SkewTableau lam mu) {p : ℕ × ℕ} (hp : p ∈ c
 
 theorem content_column (k a : ℕ) :
     TableauDominance.shapeContent (columnShape k) a = if 0 < a ∧ a ≤ k then 1 else 0 := by
-  simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply]
   rw [← Finset.card_filter]
   split_ifs with h
   · rw [Finset.card_eq_one]
@@ -413,7 +416,7 @@ def colTab (lam mu : YoungDiagram) (k : ℕ) (hv : Vertical mu lam) (hk : lam.ca
     have hlt := idxOf_lt_of_rowLE (cellsL_sorted lam mu) hp2 hp1
       (Or.inl hi) (fun h => by simp only [Prod.mk.injEq] at h; omega)
     have := idxOf_lt_k hsub hk hp1
-    simp only [colEntry, if_pos (And.intro h1' h1), if_pos (And.intro h h2')]
+    simp only [colEntry, ite_eq_left (And.intro h1' h1), ite_eq_left (And.intro h h2')]
     omega
   zeros_out := by
     intro i j h
@@ -424,7 +427,7 @@ def colTab (lam mu : YoungDiagram) (k : ℕ) (hv : Vertical mu lam) (hk : lam.ca
   positive := by
     intro i j h h'
     have := idxOf_lt_k (YoungDiagram.cells_subset_iff.mp hv.1) hk (mem_cellsL.mpr ⟨h, h'⟩)
-    simp only [colEntry, if_pos (And.intro h h')]
+    simp only [colEntry, ite_eq_left (And.intro h h')]
     omega
 
 theorem rowWord_colTab (lam mu : YoungDiagram) (k : ℕ) (hv : Vertical mu lam)
@@ -440,7 +443,7 @@ theorem rowWord_colTab (lam mu : YoungDiagram) (k : ℕ) (hv : Vertical mu lam)
         cellsL lam mu := List.getElem_mem _
     obtain ⟨hl, hm'⟩ := mem_cellsL.mp hm
     change colEntry lam mu k _ _ = _
-    rw [colEntry, if_pos ⟨hl, hm'⟩, idx_getElem (cellsL_nodup lam mu)]
+    rw [colEntry, ite_eq_left ⟨hl, hm'⟩, idx_getElem (cellsL_nodup lam mu)]
 
 theorem colTab_mem (lam mu : YoungDiagram) (k : ℕ) (hv : Vertical mu lam)
     (hk : lam.card = mu.card + k) : colTab lam mu k hv hk ∈ lrTableaux lam mu (columnShape k) := by
@@ -474,7 +477,7 @@ theorem card_lr_column (lam mu : YoungDiagram) (k : ℕ) :
   · rw [Finset.card_eq_one]
     exact ⟨colTab lam mu k h.1 h.2, Finset.eq_singleton_iff_unique_mem.mpr
       ⟨colTab_mem lam mu k h.1 h.2, fun S hS => eq_of_lr_column hS (colTab_mem lam mu k h.1 h.2)⟩⟩
-  · rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  · rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
     intro S hS
     apply h
     refine ⟨vertical_of_lr_column hS, ?_⟩

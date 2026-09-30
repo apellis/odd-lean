@@ -127,17 +127,17 @@ section coord
 variable [Zero R]
 
 theorem coord_idx (A : V R n) (x : Idx n) : coord A x.i x.j = A x := by
-  rw [coord, dif_pos ⟨x.i_le_j, x.j_le⟩, Idx.mk_self]
+  rw [coord, dite_eq_left ⟨x.i_le_j, x.j_le⟩, Idx.mk_self]
 
 theorem coord_of_lt (A : V R n) {i j : ℕ} (h : j < i) : coord A i j = 0 := by
-  rw [coord, dif_neg (by omega)]
+  rw [coord, dite_eq_right (by omega)]
 
 theorem coord_of_gt (A : V R n) {i j : ℕ} (h : n < j) : coord A i j = 0 := by
-  rw [coord, dif_neg (by omega)]
+  rw [coord, dite_eq_right (by omega)]
 
 theorem coord_mk (A : V R n) {i j : ℕ} (hij : i ≤ j) (hj : j ≤ n) :
     coord A i j = A (Idx.mk i j hij hj) := by
-  rw [coord, dif_pos ⟨hij, hj⟩]
+  rw [coord, dite_eq_left ⟨hij, hj⟩]
 
 theorem ext_coord {A B : V R n} (h : ∀ i j, i ≤ j → j ≤ n → coord A i j = coord B i j) :
     A = B := by
@@ -305,12 +305,12 @@ theorem phiMatrix_lower : (phiMatrix R n).BlockTriangular OrderDual.toDual := by
   intro x y hxy
   have hxy' : x < y := hxy
   simp only [phiMatrix]
-  rw [if_neg]
+  rw [ite_eq_right]
   rintro ⟨hi, hj⟩
   exact absurd (Idx.le_of_le_le hi hj) (not_le.mpr hxy')
 
 theorem det_phiMatrix : (phiMatrix R n).det = 1 := by
-  rw [Matrix.det_of_lowerTriangular _ phiMatrix_lower]
+  rw [Matrix.det_of_isLowerTriangular _ phiMatrix_lower]
   simp [phiMatrix]
 
 /-- E Theorem 4.15, p. 18: `Φ` has determinant `1`. -/
@@ -533,11 +533,11 @@ theorem QH_phi (A : V R n) (h0 : coord A 0 0 = 0) : QH (phi R n A) = Qtri A := b
     intro i hi j hj
     simp only [mem_range, mem_Icc] at hi hj
     rcases Nat.eq_or_lt_of_le hj.1 with rfl | hlt
-    · simp only [if_true, Nat.add_sub_cancel]
+    · simp only [ite_true, Nat.add_sub_cancel]
       rw [coord_of_lt H (Nat.lt_succ_self i), phi_rec_diag A hi, coord_phi A le_rfl (by omega)]
       ring
     · obtain ⟨j, rfl⟩ : ∃ j', j = j' + 1 := ⟨j - 1, by omega⟩
-      rw [if_neg (by omega), Nat.add_sub_cancel, add_zero]
+      rw [ite_eq_right (by omega), Nat.add_sub_cancel, add_zero]
       have hD : coord H (i+1) (j+1) - coord H i (j+1) - coord H (i+1) j + coord H i j =
           coord A (i+1) (j+1) := by
         rw [← phi_rhombus A (i := i) (j := j) (by omega) (by omega)]
@@ -551,7 +551,7 @@ theorem QH_phi (A : V R n) (h0 : coord A 0 0 = 0) : QH (phi R n A) = Qtri A := b
   have hdiag : ∀ i ∈ range n, (if i + 1 ∈ Icc (i+1) n then coord H i i ^ 2 else 0) =
       coord H i i ^ 2 := by
     intro i hi
-    rw [if_pos (by simp at hi ⊢; omega)]
+    rw [ite_eq_left (by simp at hi ⊢; omega)]
   rw [Finset.sum_congr rfl hdiag]
   rcases n with _ | m
   · simp

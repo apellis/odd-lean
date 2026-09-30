@@ -89,7 +89,7 @@ def rank (μ : YoungDiagram) : ℕ :=
 theorem diagonal_iff (μ : YoungDiagram) (i : ℕ) : (i,i) ∈ μ ↔ i < rank μ := by
   unfold rank
   rw [Nat.lt_find_iff]
-  push_neg
+  push Not
   exact ⟨fun h j hj => μ.up_left_mem hj hj h, fun h => h i le_rfl⟩
 
 def frameOf (μ : YoungDiagram) : Frame where
@@ -414,13 +414,13 @@ theorem sign_identity (μ : YoungDiagram) (hμ : μ.transpose = μ) :
   exact list_half_sign _ (fun a ha => (hooks_positive_odd μ a ha).2)
 
 /-- Existing finite enumeration of every degree-n shape, restricted to self-transposes. -/
-def selfTransposeFintype (n : ℕ) : Fintype (SelfTranspose n) := by
+@[instance_reducible] def selfTransposeFintype (n : ℕ) : Fintype (SelfTranspose n) := by
   classical
   letI := DegreeShapes.degreeFintype n
   exact Subtype.fintype _
 
 /-- No separate enumeration assumption: transport the genuine diagram enumeration. -/
-def distinctOddPartsFintype (n : ℕ) : Fintype (DistinctOddParts n) := by
+@[instance_reducible] def distinctOddPartsFintype (n : ℕ) : Fintype (DistinctOddParts n) := by
   letI := selfTransposeFintype n
   exact Fintype.ofEquiv (SelfTranspose n) (diagonalHookEquiv n)
 
@@ -431,8 +431,8 @@ theorem sign_product_transport (n : ℕ) :
     (∏ μ : SelfTranspose n, (-1 : ℤ)^EKSemiorthogonality.ell μ.val.val) =
       ∏ p : DistinctOddParts n, (-1 : ℤ)^(p.val.countP (fun a => a % 4 = 3)) := by
   classical
-  letI := selfTransposeFintype n
-  letI := distinctOddPartsFintype n
+  let := selfTransposeFintype n
+  let := distinctOddPartsFintype n
   calc
     _ = ∏ μ : SelfTranspose n,
         (-1 : ℤ)^((hooks μ.val.val).countP (fun a => a % 4 = 3)) := by

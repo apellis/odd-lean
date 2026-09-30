@@ -76,7 +76,7 @@ theorem kostkaMat_eq_zero (d : ℕ) (nu mu : DegreeShape d)
   have hne : ∃ k, TableauDominance.shapePrefix nu.val k <
       TableauDominance.contentPrefix (TableauDominance.shapeContent mu.val) k := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     exact hdom (fun k => by simpa using hc k)
   rw [TableauDominance.fiber_empty_of_prefix _ _ hne]
   rfl
@@ -89,7 +89,7 @@ theorem rows_injective (d : ℕ) :
   exact Subtype.ext h
 
 theorem kostkaMat_det (d : ℕ) : (kostkaMat d).det = 1 := by
-  letI : LinearOrder (DegreeShape d) :=
+  let : LinearOrder (DegreeShape d) :=
     LinearOrder.lift' (fun μ : DegreeShape d => μ.val.rowLens) (rows_injective d)
   have ht : (kostkaMat d).BlockTriangular OrderDual.toDual := by
     intro nu mu hlt
@@ -98,7 +98,7 @@ theorem kostkaMat_det (d : ℕ) : (kostkaMat d).det = 1 := by
     rintro (h | h)
     · subst h; exact lt_irrefl _ hlt
     · exact lt_asymm hlt h
-  rw [Matrix.det_of_lowerTriangular _ ht]
+  rw [Matrix.det_of_isLowerTriangular _ ht]
   exact Finset.prod_eq_one (fun μ _ => kostkaMat_diag d μ)
 
 theorem sum_rowLens_get (μ : YoungDiagram) : (∑ i, μ.rowLens.get i) = μ.card := by
@@ -154,7 +154,7 @@ theorem smul_mem_commutatorIdeal (r : k) {z : L k} (hz : z ∈ commutatorIdeal k
 theorem hWord_perm_sub_mem {l₁ l₂ : List ℕ} (hp : l₁.Perm l₂) :
     hWord k l₁ - hWord k l₂ ∈ commutatorIdeal k := by
   induction hp with
-  | nil => simp [TwoSidedIdeal.zero_mem]
+  | nil => simp
   | cons a _ ih =>
     have := TwoSidedIdeal.mul_mem_left _ (h k a) _ ih
     simpa [hWord, mul_sub] using this
@@ -183,12 +183,12 @@ theorem commutatorIdeal_le_radical {x : L k} (hx : x ∈ commutatorIdeal k) :
 /-- The partition obtained by sorting the blocks of a composition. -/
 def sortComp (β : Composition n) : DegreeShape n :=
   ⟨YoungDiagram.ofRowLens (β.blocks.insertionSort (· ≥ ·))
-      (List.sorted_insertionSort _ _), by
-    rw [EKPartitionSpanning.card_ofRowLens, (List.perm_insertionSort _ _).sum_eq, β.blocks_sum]⟩
+      ((List.pairwise_insertionSort _ _).sortedGE), by
+    rw [EKPartitionSpanning.card_ofRowLens _ (List.pairwise_insertionSort _ _), (List.perm_insertionSort _ _).sum_eq, β.blocks_sum]⟩
 
 theorem sortComp_rowLens (β : Composition n) :
     (sortComp β).val.rowLens = β.blocks.insertionSort (· ≥ ·) :=
-  YoungDiagram.rowLens_ofRowLens_eq_self (hw := List.sorted_insertionSort _ _) (fun _ ha =>
+  YoungDiagram.rowLens_ofRowLens_eq_self (hw := (List.pairwise_insertionSort _ _).sortedGE) (fun _ ha =>
     β.blocks_pos ((List.perm_insertionSort _ _).mem_iff.mp ha))
 
 theorem hWord_sort_sub_mem (β : Composition n) :
@@ -255,7 +255,7 @@ theorem sum_degreeProj (x : L k) :
   apply Finset.sum_congr rfl
   intro w hw
   rw [Finset.sum_ite_eq]
-  rw [if_pos (Finset.mem_image_of_mem _ hw)]
+  rw [ite_eq_left (Finset.mem_image_of_mem _ hw)]
 
 /-! ## The theorem -/
 
@@ -278,17 +278,17 @@ theorem commutatorIdeal_eq_span_generators :
     have hgen : ∀ (n : ℕ) (x : L k), x * h k n - h k n * x ∈ J := by
       intro n x
       induction x using basis_induction k (wordBasis k) with
-      | hz => simp [TwoSidedIdeal.zero_mem]
+      | hz => simp
       | ha a b ha hb =>
         have := TwoSidedIdeal.add_mem _ ha hb
         simpa [add_mul, mul_add, add_sub_add_comm] using this
       | hb w r =>
         suffices hw : wordBasis k w * h k n - h k n * wordBasis k w ∈ J by
           have := smul_mem_span_twoSided r hw
-          simpa [smul_sub, smul_mul_assoc, mul_smul_comm] using this
+          simpa [J, smul_sub, smul_mul_assoc, mul_smul_comm] using this
         induction w using FreeMonoid.recOn with
-        | h0 => simp [TwoSidedIdeal.zero_mem]
-        | ih i w ih =>
+        | one => simp
+        | of_mul i w ih =>
           rw [wordBasis_mul, wordBasis_of]
           have e : h k (i+1) * wordBasis k w * h k n - h k n * (h k (i+1) * wordBasis k w) =
               h k (i+1) * (wordBasis k w * h k n - h k n * wordBasis k w) +
@@ -297,17 +297,17 @@ theorem commutatorIdeal_eq_span_generators :
           exact TwoSidedIdeal.add_mem _ (TwoSidedIdeal.mul_mem_left _ _ _ ih)
             (TwoSidedIdeal.mul_mem_right _ _ _ (TwoSidedIdeal.subset_span ⟨i+1, n, rfl⟩))
     induction y using basis_induction k (wordBasis k) with
-    | hz => simp [TwoSidedIdeal.zero_mem]
+    | hz => simp
     | ha a b ha hb =>
       have := TwoSidedIdeal.add_mem _ ha hb
       simpa [add_mul, mul_add, add_sub_add_comm] using this
     | hb w r =>
       suffices hw : x * wordBasis k w - wordBasis k w * x ∈ J by
         have := smul_mem_span_twoSided r hw
-        simpa [smul_sub, smul_mul_assoc, mul_smul_comm] using this
+        simpa [J, smul_sub, smul_mul_assoc, mul_smul_comm] using this
       induction w using FreeMonoid.recOn with
-      | h0 => simp [TwoSidedIdeal.zero_mem]
-      | ih i w ih =>
+      | one => simp
+      | of_mul i w ih =>
         rw [wordBasis_mul, wordBasis_of]
         have e : x * (h k (i+1) * wordBasis k w) - h k (i+1) * wordBasis k w * x =
             (x * h k (i+1) - h k (i+1) * x) * wordBasis k w +
@@ -360,7 +360,7 @@ theorem form_dualOne (la mu : YoungDiagram) :
   by_cases hd : la.card = mu.card
   · have hunit : IsUnit (classicalGram mu.card).det := by rw [classicalGram_det]; exact isUnit_one
     have hm := congrFun (congrFun (Matrix.mul_nonsing_inv _ hunit) ⟨la, hd⟩) ⟨mu, rfl⟩
-    rw [Matrix.mul_apply] at hm
+    erw [Matrix.mul_apply] at hm
     have e : ∀ ν : DegreeShape mu.card, form (1 : k) (hWord k la.rowLens) (hWord k ν.val.rowLens) =
         ((classicalGram mu.card ⟨la, hd⟩ ν : ℤ) : k) := fun ν =>
       form_one_partitions (k := k) mu.card ⟨la, hd⟩ ν
@@ -376,11 +376,11 @@ theorem form_dualOne (la mu : YoungDiagram) :
     simp only [hsymm] at hm'
     rw [Finset.sum_congr rfl (fun ν _ => mul_comm _ _), hm']
     by_cases h : la = mu
-    · subst h; simp [Matrix.one_apply]
+    · subst h; simp
     · have hne : (⟨la, hd⟩ : DegreeShape mu.card) ≠ ⟨mu, rfl⟩ :=
         fun e => h (congrArg Subtype.val e)
-      simp [Matrix.one_apply_ne hne, h]
-  · rw [if_neg (fun e => hd (by rw [e]))]
+      simp [h]
+  · rw [ite_eq_right (fun e => hd (by rw [e]))]
     apply Finset.sum_eq_zero
     intro ν _
     rw [form_hWord_partition_ne (fun e => hd (e.trans ν.2)), mul_zero]
@@ -423,10 +423,10 @@ theorem hFamilyOne_span :
 
 /-- EK p.8, `q = 1`: `Λ₁` is a free `k`-module with basis `h_λ` (all partitions), i.e. the ring
 of symmetric functions `k[h₁, h₂, …]` (any commutative ring `k`). -/
-def hBasisOne : Basis YoungDiagram k (Lam (1 : k)) :=
-  Basis.mk hFamilyOne_linearIndependent hFamilyOne_span
+def hBasisOne : Module.Basis YoungDiagram k (Lam (1 : k)) :=
+  Module.Basis.mk hFamilyOne_linearIndependent hFamilyOne_span
 
 @[simp] theorem hBasisOne_apply (μ : YoungDiagram) :
-    hBasisOne (k := k) μ = piQ (1 : k) (hWord k μ.rowLens) := Basis.mk_apply _ _ _
+    hBasisOne (k := k) μ = piQ (1 : k) (hWord k μ.rowLens) := Module.Basis.mk_apply _ _ _
 
 end OddMath.Frontier.EKGeneralQ

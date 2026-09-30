@@ -103,8 +103,11 @@ theorem ψ_braid (n i : ℕ) :
       Presentation.lin_of, sub_eq_zero] at key
     rw [ψ_def R (show i + 1 < n by omega), ψ_def R h]
     simp only [End.mul_def, ← Presentation.diag_comp]
-    convert key using 1 <;> apply Presentation.diag_eq_of_layers_eq <;>
-      simp [dlay, lay, shift, Layer.whisker, Gen.arity, Rel.width] <;> omega
+    convert key using 1 <;> first
+    | rfl
+    | apply Presentation.diag_eq_of_layers_eq
+      simp [dlay, lay, shift, Layer.whisker, Gen.arity, Rel.width]
+      omega
   · by_cases h' : i + 1 < n
     · rw [ψ_of_le R (n := n) (i := i + 1) (by omega)]; simp
     · rw [ψ_of_le R (n := n) (i := i) (by omega)]; simp

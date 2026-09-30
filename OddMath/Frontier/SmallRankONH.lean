@@ -296,7 +296,7 @@ def endProjectorEquiv_small {a : ℕ} (ha : a ≤ 1) : Module.End (ONH a) (ONH a
 theorem proj_primitive_small {a : ℕ} (ha : a ≤ 1) (y : ONH a)
     (h : proj a * y * proj a * (proj a * y * proj a) = proj a * y * proj a) :
     proj a * y * proj a = 0 ∨ proj a * y * proj a = proj a := by
-  haveI := ONH_noZeroDivisors ha
+  have := ONH_noZeroDivisors ha
   rw [proj_small ha] at h ⊢
   set z := 1 * y * 1
   have : z * (z - 1) = 0 := by rw [mul_sub, h, mul_one, sub_self]
@@ -308,9 +308,9 @@ theorem proj_primitive_small {a : ℕ} (ha : a ≤ 1) (y : ONH a)
 (`OnhStructure.leftIdeal_projector_indecomposable` for `a ≥ 2`). -/
 theorem leftIdeal_indecomposable_small {a : ℕ} (ha : a ≤ 1) (N₁ N₂ : Submodule (ONH a) (ONH a))
     (hinf : N₁ ⊓ N₂ = ⊥) : N₁ = ⊥ ∨ N₂ = ⊥ := by
-  haveI := ONH_noZeroDivisors ha
+  have := ONH_noZeroDivisors ha
   by_contra hne
-  push_neg at hne
+  push Not at hne
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne.1
   obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne.2
   have h1 : y * x ∈ N₁ := N₁.smul_mem y hx
@@ -322,6 +322,7 @@ theorem leftIdeal_indecomposable_small {a : ℕ} (ha : a ≤ 1) (N₁ N₂ : Sub
 /-! ## (6.1) and (6.2) as module isomorphisms for small ranks -/
 
 /-- A one-element finset, as a `Unique` type. -/
+@[instance_reducible]
 def uniqueOfCardOne {α : Type*} (s : Finset α) (h : s.card = 1) : Unique s :=
   let x := (Finset.card_eq_one.mp h).choose
   have hx : s = {x} := (Finset.card_eq_one.mp h).choose_spec

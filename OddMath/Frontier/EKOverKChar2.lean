@@ -55,9 +55,9 @@ theorem s_cast_of_two (h2 : (2 : k) = 0) (n : ℕ) : ((s n : ℤ) : k) = 1 := by
 /-! ## Some `h`-basis vectors -/
 
 /-- The Young diagram with the given (weakly decreasing, positive) row lengths. -/
-def yd (l : List ℕ) (hl : l.Sorted (· ≥ ·)) : YoungDiagram := YoungDiagram.ofRowLens l hl
+def yd (l : List ℕ) (hl : l.Pairwise (· ≥ ·)) : YoungDiagram := YoungDiagram.ofRowLens l hl.sortedGE
 
-theorem hBasisK_yd (l : List ℕ) (hl : l.Sorted (· ≥ ·)) (hpos : ∀ a ∈ l, 0 < a) :
+theorem hBasisK_yd (l : List ℕ) (hl : l.Pairwise (· ≥ ·)) (hpos : ∀ a ∈ l, 0 < a) :
     hBasisK (k := k) (yd l hl) = (l.map (hK k)).prod := by
   rw [hBasisK_apply, yd, YoungDiagram.rowLens_ofRowLens_eq_self hpos, hWord, map_list_prod,
     List.map_map]
@@ -93,7 +93,7 @@ theorem yd21_ne_yd3 : yd21 ≠ yd3 := by
 theorem smul_hBasisK_eq_zero {c : k} {μ : YoungDiagram} (h : c • hBasisK (k := k) μ = 0) :
     c = 0 := by
   have := congrArg (fun x => (hBasisK (k := k)).repr x μ) h
-  simp only [map_smul, Basis.repr_self, map_zero, Finsupp.smul_apply, Finsupp.single_eq_same,
+  simp only [map_smul, Module.Basis.repr_self, map_zero, Finsupp.smul_apply, Finsupp.single_eq_same,
     smul_eq_mul, mul_one, Finsupp.coe_zero, Pi.zero_apply] at this
   exact this
 
@@ -128,8 +128,8 @@ theorem commutative_iff : (∀ x y : LamK k, x * y = y * x) ↔ (2 : k) = 0 := b
   have h := h2h1_add_h1h2 (k := k)
   rw [hc (hK k 1), ← two_smul k, ← hBasisK_yd21, ← hBasisK_yd3] at h
   have := congrArg (fun x => (hBasisK (k := k)).repr x yd21) h
-  simp only [map_smul, Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same,
-    Finsupp.single_eq_of_ne yd21_ne_yd3.symm, smul_eq_mul, mul_one, mul_zero] at this
+  simp only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same,
+    Finsupp.single_eq_of_ne yd21_ne_yd3, smul_eq_mul, mul_one, mul_zero] at this
   exact this
 
 /-- `Λ_k` is supercommutative (`xy = (-1)^{|x||y|} yx` on homogeneous elements) iff `2 = 0`. -/
@@ -149,8 +149,7 @@ theorem supercommutative_iff :
 /-- Dual pairing of the flip of a tensor. -/
 theorem tensorTest_comm (a b : LamK k) (z : LamK k ⊗[k] LamK k) :
     tensorTest (-1 : k) a b (TensorProduct.comm k _ _ z) = tensorTest (-1 : k) b a z := by
-  induction z using TensorProduct.induction_on with
-  | zero => rw [LinearEquiv.map_zero, LinearMap.map_zero, LinearMap.map_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y => rw [TensorProduct.comm_tmul, tensorTest_tmul, tensorTest_tmul, mul_comm]
   | add u v hu hv => rw [LinearEquiv.map_add, LinearMap.map_add, hu, hv, LinearMap.map_add]
 
@@ -249,7 +248,7 @@ theorem psi3K_e_iff (n : ℕ) : psi3K k (eK' k n) = eK' k n ↔ n ≤ 1 ∨ (2 :
     have hc := congrArg (bcChar k EKComplete.chi) h
     rw [psi3K, eK', bcLin_psiRing, bcChar_psiRing, bcChar_psiRing] at hc
     change ((EKComplete.fpsi n : ℤ) : k) = _ at hc
-    rw [EKComplete.fpsi_eq, EKComplete.chi_e, if_neg hn, if_neg hn] at hc
+    rw [EKComplete.fpsi_eq, EKComplete.chi_e, ite_eq_right hn, ite_eq_right hn] at hc
     norm_num at hc
     exact hc
   · rintro (hn | h2)

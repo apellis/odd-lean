@@ -46,14 +46,14 @@ def incWords (n : ℕ) : ℕ → ℕ → List (List (Fin n))
   | k+1, lo => (List.finRange n).flatMap
       (fun a => if lo ≤ a.val then (incWords n k a.val).map (a :: ·) else [])
 
-theorem mem_incWords (n : ℕ) : ∀ (w : List (Fin n)) (lo : ℕ), w.Sorted (· ≤ ·) →
+theorem mem_incWords (n : ℕ) : ∀ (w : List (Fin n)) (lo : ℕ), w.Pairwise (· ≤ ·) →
     (∀ a ∈ w, lo ≤ a.val) → w ∈ incWords n w.length lo
   | [], _, _, _ => by simp [incWords]
   | a :: w, lo, hs, hlo => by
-    have hs' := List.sorted_cons.mp hs
+    have hs' := List.pairwise_cons.mp hs
     have ih := mem_incWords n w a.val hs'.2 (fun b hb => hs'.1 b hb)
     simp only [List.length_cons, incWords, List.mem_flatMap, List.mem_finRange, true_and]
-    exact ⟨a, by rw [if_pos (hlo a (by simp))]; exact List.mem_map.mpr ⟨w, ih, rfl⟩⟩
+    exact ⟨a, by rw [ite_eq_left (hlo a (by simp))]; exact List.mem_map.mpr ⟨w, ih, rfl⟩⟩
 
 /-- All row lists with prescribed row lengths and weakly increasing rows. -/
 def rowCands (n : ℕ) (r : ℕ) : List ℕ → List (List (List (Fin n)))
@@ -62,7 +62,7 @@ def rowCands (n : ℕ) (r : ℕ) : List ℕ → List (List (List (Fin n)))
 
 /-- Decidable validity of a row list: shape `wl`, content `cl` (label i+1 used cl[i] times). -/
 def Valid (n : ℕ) (wl cl : List ℕ) (rs : List (List (Fin n))) : Prop :=
-  (∀ w ∈ rs, w.Sorted (· ≤ ·)) ∧
+  (∀ w ∈ rs, w.Pairwise (· ≤ ·)) ∧
   (∀ r < rs.length, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) ∧
   rs.map List.length = wl ∧ (∀ w ∈ rs, w ≠ []) ∧
   ∀ i : Fin n, (readRows rs).count i = cl.getD i.val 0
@@ -80,7 +80,7 @@ def kEval (n : ℕ) (wl cl : List ℕ) : ℤ :=
 
 
 theorem mem_rowCands (n : ℕ) : ∀ (rs : List (List (Fin n))) (r : ℕ),
-    (∀ w ∈ rs, w.Sorted (· ≤ ·)) →
+    (∀ w ∈ rs, w.Pairwise (· ≤ ·)) →
     (∀ k (hk : k < rs.length), ∀ a ∈ rs[k], r + k ≤ a.val) →
     rs ∈ rowCands n r (rs.map List.length)
   | [], _, _, _ => by simp [rowCands]
@@ -248,9 +248,9 @@ theorem signedKostka_eval (lam mu : YoungDiagram) :
     rw [← fiberSum_shape lam lam _ le_rfl, TableauDominance.diagonal_fiber, Finset.sum_singleton]
   rw [TableauDominance.signedKostka, hc, fiberSum_shape lam mu _ le_rfl]
 
-theorem signedKostka_ofRowLens (w v : List ℕ) (hw : w.Sorted (· ≥ ·)) (hv : v.Sorted (· ≥ ·))
+theorem signedKostka_ofRowLens (w v : List ℕ) (hw : w.Pairwise (· ≥ ·)) (hv : v.Pairwise (· ≥ ·))
     (hwp : ∀ x ∈ w, 0 < x) (hvp : ∀ x ∈ v, 0 < x) :
-    TableauDominance.signedKostka (YoungDiagram.ofRowLens w hw) (YoungDiagram.ofRowLens v hv) =
+    TableauDominance.signedKostka (YoungDiagram.ofRowLens w hw.sortedGE) (YoungDiagram.ofRowLens v hv.sortedGE) =
       kEval w.length w w * kEval v.length w v := by
   rw [signedKostka_eval, YoungDiagram.rowLens_ofRowLens_eq_self hwp,
     YoungDiagram.rowLens_ofRowLens_eq_self hvp]
@@ -381,7 +381,7 @@ theorem mat_sum {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) (F : List 
     · funext j
       have h := congrArg (fun l => l[j.val]?) hcol
       simp only [colSumsL, List.getElem?_map, List.getElem?_range j.isLt, List.getElem?_ofFn,
-        Option.map_some'] at h
+        Option.map_some] at h
       have h' : ((List.range L.length).map (fun i => ent L i j)).sum = α j := by
         simpa using h
       rw [list_sum_range, hlen, ← Fin.sum_univ_eq_sum_range (fun i => ent L i j) r] at h'
@@ -412,12 +412,12 @@ theorem Mh_eval (d : ℕ) (ν μ : DegreeShape d) : Mh d ν μ = mhEval ν.val.r
 
 
 open EKDualBases DegreeShapes in
-theorem Mh_ofRowLens (d : ℕ) (w v : List ℕ) (hw : w.Sorted (· ≥ ·)) (hv : v.Sorted (· ≥ ·))
+theorem Mh_ofRowLens (d : ℕ) (w v : List ℕ) (hw : w.Pairwise (· ≥ ·)) (hv : v.Pairwise (· ≥ ·))
     (hwp : ∀ x ∈ w, 0 < x) (hvp : ∀ x ∈ v, 0 < x)
-    (hwd : (YoungDiagram.ofRowLens w hw).card = d) (hvd : (YoungDiagram.ofRowLens v hv).card = d) :
-    Mh d ⟨YoungDiagram.ofRowLens w hw, hwd⟩ ⟨YoungDiagram.ofRowLens v hv, hvd⟩ = mhEval w v := by
+    (hwd : (YoungDiagram.ofRowLens w hw.sortedGE).card = d) (hvd : (YoungDiagram.ofRowLens v hv.sortedGE).card = d) :
+    Mh d ⟨YoungDiagram.ofRowLens w hw.sortedGE, hwd⟩ ⟨YoungDiagram.ofRowLens v hv.sortedGE, hvd⟩ = mhEval w v := by
   rw [Mh_eval]
-  show mhEval (YoungDiagram.ofRowLens w hw).rowLens (YoungDiagram.ofRowLens v hv).rowLens = _
+  show mhEval (YoungDiagram.ofRowLens w hw.sortedGE).rowLens (YoungDiagram.ofRowLens v hv.sortedGE).rowLens = _
   rw [YoungDiagram.rowLens_ofRowLens_eq_self hwp, YoungDiagram.rowLens_ofRowLens_eq_self hvp]
 
 /-- Composition words (all colours h): the existing quotient pairing is the
@@ -430,9 +430,9 @@ theorem compPairing_eval {r c : ℕ} (β : Fin r → ℕ) (α : Fin c → ℕ) :
   congr 1; funext A
   simp [EKMixedPairing.cell]
 
-theorem card_yd (w : List ℕ) (hw : w.Sorted (· ≥ ·)) (d : ℕ) (h : w.sum = d) :
-    (YoungDiagram.ofRowLens w hw).card = d := by
-  rw [EKPartitionSpanning.card_ofRowLens, h]
+theorem card_yd (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) (d : ℕ) (h : w.sum = d) :
+    (YoungDiagram.ofRowLens w hw.sortedGE).card = d := by
+  rw [EKPartitionSpanning.card_ofRowLens w hw, h]
 
 /-! ## Printed data, Sec. 5.1: odd Kostka numbers (rows = shape, columns = content) -/
 
@@ -441,7 +441,7 @@ def shapes1 : Fin 1 → YoungDiagram := ![YoungDiagram.ofRowLens [1] (by decide)
 /-- Printed Sec. 5.1 degree-1 odd Kostka table, verbatim. -/
 def printedKostka1 : Matrix (Fin 1) (Fin 1) ℤ := !![1]
 theorem kostka1_1_1 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1] (by decide)) (YoungDiagram.ofRowLens [1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.1 degree 1: every printed entry equals the existing `signedKostka`. -/
 theorem kostka_table1 : ∀ i j, TableauDominance.signedKostka (shapes1 i) (shapes1 j) = printedKostka1 i j := by
   intro i j; fin_cases i; fin_cases j
@@ -453,13 +453,13 @@ def shapes2 : Fin 2 → YoungDiagram := ![YoungDiagram.ofRowLens [1,1] (by decid
 def printedKostka2 : Matrix (Fin 2) (Fin 2) ℤ := !![1, 0;
     1, 1]
 theorem kostka2_11_11 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1] (by decide)) (YoungDiagram.ofRowLens [1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka2_11_2 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1] (by decide)) (YoungDiagram.ofRowLens [2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka2_2_11 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2] (by decide)) (YoungDiagram.ofRowLens [1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka2_2_2 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2] (by decide)) (YoungDiagram.ofRowLens [2] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.1 degree 2: every printed entry equals the existing `signedKostka`. -/
 theorem kostka_table2 : ∀ i j, TableauDominance.signedKostka (shapes2 i) (shapes2 j) = printedKostka2 i j := by
   intro i j; fin_cases i <;> fin_cases j
@@ -472,23 +472,23 @@ def printedKostka3 : Matrix (Fin 3) (Fin 3) ℤ := !![1, 0, 0;
     0, 1, 0;
     1, 1, 1]
 theorem kostka3_111_111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_111_21 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_111_3 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1] (by decide)) (YoungDiagram.ofRowLens [3] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_21_111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_21_21 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1] (by decide)) (YoungDiagram.ofRowLens [2,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_21_3 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1] (by decide)) (YoungDiagram.ofRowLens [3] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_3_111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3] (by decide)) (YoungDiagram.ofRowLens [1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_3_21 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3] (by decide)) (YoungDiagram.ofRowLens [2,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka3_3_3 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3] (by decide)) (YoungDiagram.ofRowLens [3] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.1 degree 3: every printed entry equals the existing `signedKostka`. -/
 theorem kostka_table3 : ∀ i j, TableauDominance.signedKostka (shapes3 i) (shapes3 j) = printedKostka3 i j := by
   intro i j; fin_cases i <;> fin_cases j
@@ -503,55 +503,55 @@ def printedKostka4 : Matrix (Fin 5) (Fin 5) ℤ := !![1, 0, 0, 0, 0;
     1, 0, (-1), 1, 0;
     1, 1, 1, 1, 1]
 theorem kostka4_1111_1111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_1111_211 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_1111_22 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_1111_31 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [3,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_1111_4 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [4] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_211_1111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_211_211 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_211_22 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1] (by decide)) (YoungDiagram.ofRowLens [2,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_211_31 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1] (by decide)) (YoungDiagram.ofRowLens [3,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_211_4 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1] (by decide)) (YoungDiagram.ofRowLens [4] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_22_1111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_22_211 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2] (by decide)) (YoungDiagram.ofRowLens [2,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_22_22 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2] (by decide)) (YoungDiagram.ofRowLens [2,2] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_22_31 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2] (by decide)) (YoungDiagram.ofRowLens [3,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_22_4 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2] (by decide)) (YoungDiagram.ofRowLens [4] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_31_1111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_31_211 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_31_22 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1] (by decide)) (YoungDiagram.ofRowLens [2,2] (by decide)) = (-1) := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_31_31 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1] (by decide)) (YoungDiagram.ofRowLens [3,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_31_4 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1] (by decide)) (YoungDiagram.ofRowLens [4] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_4_1111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_4_211 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4] (by decide)) (YoungDiagram.ofRowLens [2,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_4_22 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4] (by decide)) (YoungDiagram.ofRowLens [2,2] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_4_31 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4] (by decide)) (YoungDiagram.ofRowLens [3,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka4_4_4 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4] (by decide)) (YoungDiagram.ofRowLens [4] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.1 degree 4: every printed entry equals the existing `signedKostka`. -/
 theorem kostka_table4 : ∀ i j, TableauDominance.signedKostka (shapes4 i) (shapes4 j) = printedKostka4 i j := by
   intro i j; fin_cases i <;> fin_cases j
@@ -568,103 +568,103 @@ def printedKostka5 : Matrix (Fin 7) (Fin 7) ℤ := !![1, 0, 0, 0, 0, 0, 0;
     0, 1, 2, 0, (-1), 1, 0;
     1, 1, 1, 1, 1, 1, 1]
 theorem kostka5_11111_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_11111_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_2111_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = (-1) := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_221_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [2,2,1] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 2 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = (-1) := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_311_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,1,1] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_32_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [3,2] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 2 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = (-1) := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_41_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [4,1] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 0 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_11111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [1,1,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_2111 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [2,1,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_221 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [2,2,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_311 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [3,1,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_32 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [3,2] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_41 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [4,1] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem kostka5_5_5 : TableauDominance.signedKostka (YoungDiagram.ofRowLens [5] (by decide)) (YoungDiagram.ofRowLens [5] (by decide)) = 1 := by
-  rw [signedKostka_ofRowLens _ _ _ _ (by decide) (by decide)]; decide +kernel
+  rw [signedKostka_ofRowLens _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.1 degree 5: every printed entry equals the existing `signedKostka`. -/
 theorem kostka_table5 : ∀ i j, TableauDominance.signedKostka (shapes5 i) (shapes5 j) = printedKostka5 i j := by
   intro i j; fin_cases i <;> fin_cases j
@@ -673,128 +673,128 @@ theorem kostka_table5 : ∀ i j, TableauDominance.signedKostka (shapes5 i) (shap
 /-! ## Printed data, Sec. 5.2: q = -1 bilinear form on the quotient (h-basis) -/
 
 /-- Printed degree-1 h-basis, printed order h1. -/
-def hshapes1 : Fin 1 → DegreeShapes.DegreeShape 1 := ![(⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ _ 1 rfl⟩ : DegreeShapes.DegreeShape 1)]
+def hshapes1 : Fin 1 → DegreeShapes.DegreeShape 1 := ![(⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ (by decide) 1 rfl⟩ : DegreeShapes.DegreeShape 1)]
 /-- Printed Sec. 5.2 degree-1 q = -1 quotient table, verbatim. -/
 def printedGram1 : Matrix (Fin 1) (Fin 1) ℤ := !![1]
-theorem gram1_1_1 : EKDualBases.Mh 1 (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ _ 1 rfl⟩ : DegreeShapes.DegreeShape 1) (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ _ 1 rfl⟩ : DegreeShapes.DegreeShape 1) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gram1_1_1 : EKDualBases.Mh 1 (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ (by decide) 1 rfl⟩ : DegreeShapes.DegreeShape 1) (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ (by decide) 1 rfl⟩ : DegreeShapes.DegreeShape 1) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.2 degree 1: the printed q = -1 table is the existing Gram matrix `Mh`. -/
 theorem gram_table1 : ∀ i j, EKDualBases.Mh 1 (hshapes1 i) (hshapes1 j) = printedGram1 i j := by
   intro i j; fin_cases i; fin_cases j
   exacts [gram1_1_1]
 
 /-- Printed degree-2 h-basis, printed order h11, h2. -/
-def hshapes2 : Fin 2 → DegreeShapes.DegreeShape 2 := ![(⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2), (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2)]
+def hshapes2 : Fin 2 → DegreeShapes.DegreeShape 2 := ![(⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2), (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2)]
 /-- Printed Sec. 5.2 degree-2 q = -1 quotient table, verbatim. -/
 def printedGram2 : Matrix (Fin 2) (Fin 2) ℤ := !![0, 1;
     1, 1]
-theorem gram2_11_11 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram2_11_2 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram2_2_11 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram2_2_2 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gram2_11_11 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram2_11_2 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram2_2_11 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram2_2_2 : EKDualBases.Mh 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.2 degree 2: the printed q = -1 table is the existing Gram matrix `Mh`. -/
 theorem gram_table2 : ∀ i j, EKDualBases.Mh 2 (hshapes2 i) (hshapes2 j) = printedGram2 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gram2_11_11, gram2_11_2, gram2_2_11, gram2_2_2]
 
 /-- Printed degree-3 h-basis, printed order h111, h21, h3. -/
-def hshapes3 : Fin 3 → DegreeShapes.DegreeShape 3 := ![(⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3), (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3), (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3)]
+def hshapes3 : Fin 3 → DegreeShapes.DegreeShape 3 := ![(⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3), (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3), (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3)]
 /-- Printed Sec. 5.2 degree-3 q = -1 quotient table, verbatim. -/
 def printedGram3 : Matrix (Fin 3) (Fin 3) ℤ := !![0, 1, 1;
     1, 0, 1;
     1, 1, 1]
-theorem gram3_111_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_111_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_111_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_21_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_21_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_21_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_3_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_3_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram3_3_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gram3_111_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_111_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_111_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_21_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_21_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_21_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_3_111 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_3_21 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram3_3_3 : EKDualBases.Mh 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.2 degree 3: the printed q = -1 table is the existing Gram matrix `Mh`. -/
 theorem gram_table3 : ∀ i j, EKDualBases.Mh 3 (hshapes3 i) (hshapes3 j) = printedGram3 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gram3_111_111, gram3_111_21, gram3_111_3, gram3_21_111, gram3_21_21, gram3_21_3, gram3_3_111, gram3_3_21, gram3_3_3]
 
 /-- Printed degree-4 h-basis, printed order h1111, h211, h22, h31, h4. -/
-def hshapes4 : Fin 5 → DegreeShapes.DegreeShape 4 := ![(⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4)]
+def hshapes4 : Fin 5 → DegreeShapes.DegreeShape 4 := ![(⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4), (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4)]
 /-- Printed Sec. 5.2 degree-4 q = -1 quotient table, verbatim. -/
 def printedGram4 : Matrix (Fin 5) (Fin 5) ℤ := !![0, 0, 2, 0, 1;
     0, 1, 2, 1, 1;
     2, 2, 1, 2, 1;
     0, 1, 2, 0, 1;
     1, 1, 1, 1, 1]
-theorem gram4_1111_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_1111_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_1111_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_1111_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_1111_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_211_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_211_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_211_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_211_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_211_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_22_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_22_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_22_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_22_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_22_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_31_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_31_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_31_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_31_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_31_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_4_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_4_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_4_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_4_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram4_4_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gram4_1111_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_1111_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_1111_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_1111_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_1111_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_211_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_211_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_211_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_211_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_211_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_22_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_22_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_22_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_22_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_22_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_31_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_31_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_31_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_31_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_31_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_4_1111 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_4_211 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_4_22 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_4_31 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram4_4_4 : EKDualBases.Mh 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.2 degree 4: the printed q = -1 table is the existing Gram matrix `Mh`. -/
 theorem gram_table4 : ∀ i j, EKDualBases.Mh 4 (hshapes4 i) (hshapes4 j) = printedGram4 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gram4_1111_1111, gram4_1111_211, gram4_1111_22, gram4_1111_31, gram4_1111_4, gram4_211_1111, gram4_211_211, gram4_211_22, gram4_211_31, gram4_211_4, gram4_22_1111, gram4_22_211, gram4_22_22, gram4_22_31, gram4_22_4, gram4_31_1111, gram4_31_211, gram4_31_22, gram4_31_31, gram4_31_4, gram4_4_1111, gram4_4_211, gram4_4_22, gram4_4_31, gram4_4_4]
 
 /-- Printed degree-5 h-basis, printed order h11111, h2111, h221, h311, h32, h41, h5. -/
-def hshapes5 : Fin 7 → DegreeShapes.DegreeShape 5 := ![(⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5)]
+def hshapes5 : Fin 7 → DegreeShapes.DegreeShape 5 := ![(⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5), (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5)]
 /-- Printed Sec. 5.2 degree-5 q = -1 quotient table, verbatim. -/
 def printedGram5 : Matrix (Fin 7) (Fin 7) ℤ := !![0, 0, 2, 0, 2, 1, 1;
     0, 1, 0, 1, 3, 0, 1;
@@ -803,104 +803,104 @@ def printedGram5 : Matrix (Fin 7) (Fin 7) ℤ := !![0, 0, 2, 0, 2, 1, 1;
     2, 3, 3, 2, 1, 2, 1;
     1, 0, (-1), 1, 2, 0, 1;
     1, 1, 1, 1, 1, 1, 1]
-theorem gram5_11111_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_11111_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_2111_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-3) := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-1) := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_221_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_311_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_32_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-1) := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_41_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gram5_5_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ _ 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
-  rw [Mh_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_11111_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_2111_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-3) := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-1) := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_221_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_311_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 3 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_32_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = (-1) := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 2 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 0 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_41_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_11111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [1,1,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_2111 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,1,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_221 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [2,2,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_311 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,1,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_32 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [3,2] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_41 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [4,1] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gram5_5_5 : EKDualBases.Mh 5 (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) (⟨YoungDiagram.ofRowLens [5] (by decide), card_yd _ (by decide) 5 rfl⟩ : DegreeShapes.DegreeShape 5) = 1 := by
+  rw [Mh_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 /-- Sec. 5.2 degree 5: the printed q = -1 table is the existing Gram matrix `Mh`. -/
 theorem gram_table5 : ∀ i j, EKDualBases.Mh 5 (hshapes5 i) (hshapes5 j) = printedGram5 i j := by
   intro i j; fin_cases i <;> fin_cases j
@@ -1204,12 +1204,12 @@ theorem M_eval (d : ℕ) (ν μ : DegreeShape d) : M d ν μ = mEval ν.val.rowL
   rw [h, mEval, EKSemiorthogonality.rowLens_eq_ofFn, EKSemiorthogonality.rowLens_eq_ofFn,
     List.length_ofFn, List.length_ofFn]
 
-theorem M_ofRowLens (d : ℕ) (w v : List ℕ) (hw : w.Sorted (· ≥ ·)) (hv : v.Sorted (· ≥ ·))
+theorem M_ofRowLens (d : ℕ) (w v : List ℕ) (hw : w.Pairwise (· ≥ ·)) (hv : v.Pairwise (· ≥ ·))
     (hwp : ∀ x ∈ w, 0 < x) (hvp : ∀ x ∈ v, 0 < x)
-    (hwd : (YoungDiagram.ofRowLens w hw).card = d) (hvd : (YoungDiagram.ofRowLens v hv).card = d) :
-    M d ⟨YoungDiagram.ofRowLens w hw, hwd⟩ ⟨YoungDiagram.ofRowLens v hv, hvd⟩ = mEval w v := by
+    (hwd : (YoungDiagram.ofRowLens w hw.sortedGE).card = d) (hvd : (YoungDiagram.ofRowLens v hv.sortedGE).card = d) :
+    M d ⟨YoungDiagram.ofRowLens w hw.sortedGE, hwd⟩ ⟨YoungDiagram.ofRowLens v hv.sortedGE, hvd⟩ = mEval w v := by
   rw [M_eval]
-  show mEval (YoungDiagram.ofRowLens w hw).rowLens (YoungDiagram.ofRowLens v hv).rowLens = _
+  show mEval (YoungDiagram.ofRowLens w hw.sortedGE).rowLens (YoungDiagram.ofRowLens v hv.sortedGE).rowLens = _
   rw [YoungDiagram.rowLens_ofRowLens_eq_self hwp, YoungDiagram.rowLens_ofRowLens_eq_self hvp]
 
 /-! ## Exhaustive partition lists (all degree-d shapes) -/
@@ -1221,7 +1221,7 @@ def partL : ℕ → ℕ → ℕ → List (List ℕ)
   | f+1, s+1, m => (List.range (min (s+1) m)).flatMap
       (fun b => (partL f (s - b) (b+1)).map ((b+1) :: ·))
 
-theorem mem_partL : ∀ (l : List ℕ) (f s m : ℕ), l.Sorted (· ≥ ·) → (∀ x ∈ l, 0 < x) →
+theorem mem_partL : ∀ (l : List ℕ) (f s m : ℕ), l.Pairwise (· ≥ ·) → (∀ x ∈ l, 0 < x) →
     (∀ x ∈ l, x ≤ m) → l.sum = s → l.length ≤ f → l ∈ partL f s m
   | [], f, s, m, _, _, _, hs, _ => by subst hs; cases f <;> simp [partL]
   | a :: l, f, s, m, hso, hp, hm, hs, hf => by
@@ -1230,7 +1230,7 @@ theorem mem_partL : ∀ (l : List ℕ) (f s m : ℕ), l.Sorted (· ≥ ·) → (
     have ham := hm a (by simp)
     simp only [List.sum_cons] at hs
     obtain ⟨s, rfl⟩ : ∃ s', s = s' + 1 := ⟨s - 1, by omega⟩
-    have hso' := List.sorted_cons.mp hso
+    have hso' := List.pairwise_cons.mp hso
     have ih := mem_partL l f (s - (a-1)) a hso'.2 (fun x hx => hp x (by simp [hx]))
       (fun x hx => hso'.1 x hx) (by omega) (by simp at hf; omega)
     simp only [partL, List.mem_flatMap, List.mem_range, List.mem_map]
@@ -1238,11 +1238,11 @@ theorem mem_partL : ∀ (l : List ℕ) (f s m : ℕ), l.Sorted (· ≥ ·) → (
 
 theorem rowLens_sum (μ : YoungDiagram) : μ.rowLens.sum = μ.card := by
   conv_rhs => rw [← YoungDiagram.ofRowLens_to_rowLens_eq_self (μ := μ)]
-  rw [EKPartitionSpanning.card_ofRowLens]
+  rw [EKPartitionSpanning.card_ofRowLens _ μ.rowLens_sorted.pairwise]
 
 theorem rowLens_mem_partL (d : ℕ) (ν : DegreeShape d) : ν.val.rowLens ∈ partL d d d := by
   have hs : ν.val.rowLens.sum = d := by rw [rowLens_sum]; exact ν.property
-  apply mem_partL _ _ _ _ (YoungDiagram.rowLens_sorted _) (YoungDiagram.pos_of_mem_rowLens _)
+  apply mem_partL _ _ _ _ (YoungDiagram.rowLens_sorted _).pairwise (YoungDiagram.pos_of_mem_rowLens _)
   · intro x hx; have := List.le_sum_of_mem hx; omega
   · exact hs
   · have := List.length_le_sum_of_one_le _ (YoungDiagram.pos_of_mem_rowLens ν.val); omega
@@ -1275,7 +1275,7 @@ theorem m_of_table {d k : ℕ} (S : Fin k → DegreeShape d) (hex : ∀ ν, ∃ 
   refine Eq.trans key ?_
   by_cases hji : j = i
   · subst hji; simp
-  · rw [if_neg hji, if_neg (fun h => hji (hinj h))]
+  · rw [ite_eq_right hji, ite_eq_right (fun h => hji (hinj h))]
 
 theorem f_of_table {d k : ℕ} (S : Fin k → DegreeShape d) (hex : ∀ ν, ∃ j, ν = S j)
     (hinj : Function.Injective S) (G : Matrix (Fin k) (Fin k) ℤ)
@@ -1291,7 +1291,7 @@ theorem f_of_table {d k : ℕ} (S : Fin k → DegreeShape d) (hex : ∀ ν, ∃ 
   refine Eq.trans key ?_
   by_cases hji : j = i
   · subst hji; simp
-  · rw [if_neg hji, if_neg (fun h => hji (hinj h))]
+  · rw [ite_eq_right hji, ite_eq_right (fun h => hji (hinj h))]
 
 theorem kostka_inverse_relation {k : ℕ} {V : Type*} [AddCommGroup V]
     (K S : Matrix (Fin k) (Fin k) ℤ) (h : Fin k → V)
@@ -1312,8 +1312,8 @@ theorem exhaust1 : ∀ ν, ∃ j, ν = hshapes1 j := exhaust hshapes1 pl1 hs1 (b
 theorem inj1 : Function.Injective hshapes1 := inj_of_rowLens hshapes1 pl1 hs1 (by decide)
 /-- Existing e/h Gram matrix `M` in degree 1 (values kernel-proved entrywise below; not printed in EK). -/
 def gramM1 : Matrix (Fin 1) (Fin 1) ℤ := !![1]
-theorem gramM1_1_1 : EKDualBases.M 1 (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ _ 1 rfl⟩ : DegreeShapes.DegreeShape 1) (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ _ 1 rfl⟩ : DegreeShapes.DegreeShape 1) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gramM1_1_1 : EKDualBases.M 1 (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ (by decide) 1 rfl⟩ : DegreeShapes.DegreeShape 1) (⟨YoungDiagram.ofRowLens [1] (by decide), card_yd _ (by decide) 1 rfl⟩ : DegreeShapes.DegreeShape 1) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem gramM_table1 : ∀ i j, EKDualBases.M 1 (hshapes1 i) (hshapes1 j) = gramM1 i j := by
   intro i j; fin_cases i; fin_cases j
   exacts [gramM1_1_1]
@@ -1341,14 +1341,14 @@ theorem inj2 : Function.Injective hshapes2 := inj_of_rowLens hshapes2 pl2 hs2 (b
 /-- Existing e/h Gram matrix `M` in degree 2 (values kernel-proved entrywise below; not printed in EK). -/
 def gramM2 : Matrix (Fin 2) (Fin 2) ℤ := !![0, 1;
     1, 0]
-theorem gramM2_11_11 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM2_11_2 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM2_2_11 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM2_2_2 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ _ 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gramM2_11_11 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM2_11_2 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM2_2_11 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [1,1] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM2_2_2 : EKDualBases.M 2 (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) (⟨YoungDiagram.ofRowLens [2] (by decide), card_yd _ (by decide) 2 rfl⟩ : DegreeShapes.DegreeShape 2) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem gramM_table2 : ∀ i j, EKDualBases.M 2 (hshapes2 i) (hshapes2 j) = gramM2 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gramM2_11_11, gramM2_11_2, gramM2_2_11, gramM2_2_2]
@@ -1384,24 +1384,24 @@ theorem inj3 : Function.Injective hshapes3 := inj_of_rowLens hshapes3 pl3 hs3 (b
 def gramM3 : Matrix (Fin 3) (Fin 3) ℤ := !![0, 1, 1;
     1, (-1), 0;
     1, 0, 0]
-theorem gramM3_111_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_111_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_111_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_21_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_21_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = (-1) := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_21_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_3_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_3_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM3_3_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ _ 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gramM3_111_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_111_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_111_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_21_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_21_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = (-1) := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_21_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_3_111 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [1,1,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_3_21 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [2,1] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM3_3_3 : EKDualBases.M 3 (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) (⟨YoungDiagram.ofRowLens [3] (by decide), card_yd _ (by decide) 3 rfl⟩ : DegreeShapes.DegreeShape 3) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem gramM_table3 : ∀ i j, EKDualBases.M 3 (hshapes3 i) (hshapes3 j) = gramM3 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gramM3_111_111, gramM3_111_21, gramM3_111_3, gramM3_21_111, gramM3_21_21, gramM3_21_3, gramM3_3_111, gramM3_3_21, gramM3_3_3]
@@ -1446,56 +1446,56 @@ def gramM4 : Matrix (Fin 5) (Fin 5) ℤ := !![0, 0, 2, 0, 1;
     2, 0, (-1), 0, 0;
     0, 1, 0, 0, 0;
     1, 0, 0, 0, 0]
-theorem gramM4_1111_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_1111_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_1111_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_1111_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_1111_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_211_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_211_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_211_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_211_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_211_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_22_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_22_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_22_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = (-1) := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_22_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_22_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_31_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_31_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_31_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_31_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_31_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_4_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_4_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_4_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_4_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
-theorem gramM4_4_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ _ 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
-  rw [M_ofRowLens _ _ _ _ _ (by decide) (by decide)]; decide +kernel
+theorem gramM4_1111_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_1111_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_1111_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_1111_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_1111_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_211_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_211_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_211_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_211_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_211_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_22_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 2 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_22_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_22_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = (-1) := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_22_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_22_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_31_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_31_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_31_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_31_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_31_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_4_1111 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 1 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_4_211 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,1,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_4_22 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [2,2] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_4_31 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [3,1] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
+theorem gramM4_4_4 : EKDualBases.M 4 (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) (⟨YoungDiagram.ofRowLens [4] (by decide), card_yd _ (by decide) 4 rfl⟩ : DegreeShapes.DegreeShape 4) = 0 := by
+  rw [M_ofRowLens _ _ _ (by decide) (by decide) (by decide) (by decide)]; decide +kernel
 theorem gramM_table4 : ∀ i j, EKDualBases.M 4 (hshapes4 i) (hshapes4 j) = gramM4 i j := by
   intro i j; fin_cases i <;> fin_cases j
   exacts [gramM4_1111_1111, gramM4_1111_211, gramM4_1111_22, gramM4_1111_31, gramM4_1111_4, gramM4_211_1111, gramM4_211_211, gramM4_211_22, gramM4_211_31, gramM4_211_4, gramM4_22_1111, gramM4_22_211, gramM4_22_22, gramM4_22_31, gramM4_22_4, gramM4_31_1111, gramM4_31_211, gramM4_31_22, gramM4_31_31, gramM4_31_4, gramM4_4_1111, gramM4_4_211, gramM4_4_22, gramM4_4_31, gramM4_4_4]

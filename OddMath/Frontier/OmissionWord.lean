@@ -55,11 +55,11 @@ theorem markings_nodup {n : ℕ} (w : Word n) : (markings w).Nodup := by
   | cons i w ih =>
       rw [markings, List.nodup_append]
       refine ⟨ih.map (fun _ _ h => (List.cons.inj h).2), ih.map (fun _ _ h => (List.cons.inj h).2), ?_⟩
-      intro a ha hb
+      intro a ha b hb he
       simp only [List.mem_map] at ha hb
       obtain ⟨x, _, rfl⟩ := ha
-      obtain ⟨y, _, h⟩ := hb
-      simp at h
+      obtain ⟨y, _, rfl⟩ := hb
+      simp at he
 
 /-- Full generalized Leibniz, with every marking and the printed factor order. -/
 theorem generalized_leibniz {n : ℕ} (w : Word n) (f g : SkewPolynomial (n+2)) :
@@ -70,8 +70,8 @@ theorem generalized_leibniz {n : ℕ} (w : Word n) (f g : SkewPolynomial (n+2)) 
   | cons i w ih =>
       rw [applyWord_cons, ih]
       simp only [markings, List.map_append, List.sum_append, List.map_map,
-        Function.comp_def, hybrid, omission, Bool.true_eq, if_true, Bool.false_eq_true,
-        if_false, applyWord_cons]
+        Function.comp_def, hybrid, omission, ite_true, Bool.false_eq_true,
+        ite_false, applyWord_cons]
       induction markings w with
       | nil => simp
       | cons m ms ihs =>
@@ -107,7 +107,7 @@ theorem hybrid_allFalse {n : ℕ} (w : Word n) (f : SkewPolynomial (n+2)) :
   induction w with
   | nil => simp [allFalse, hybrid, permutation]
   | cons i w ih =>
-      simp only [allFalse, List.map_cons, hybrid, Bool.false_eq_true, if_false,
+      simp only [allFalse, List.map_cons, hybrid, Bool.false_eq_true, ite_false,
         permutation, SignedPermutation.action_mul]
       rw [show hybrid (List.map (fun i => (i,false)) w) f =
         SignedPermutation.skewAction (permutation w) f from ih]

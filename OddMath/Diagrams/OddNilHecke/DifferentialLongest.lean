@@ -1,3 +1,4 @@
+import Mathlib.Tactic.LinearCombination
 import OddMath.Diagrams.OddNilHecke.Differential
 import OddMath.Frontier.NilCoxeterWords
 
@@ -240,7 +241,7 @@ theorem d_ψw_mul (l : List ℕ) (hl : ∀ a ∈ l, a + 1 < N) (Y : End ((pres R
     have ha : a + 1 < N := hl a (by simp)
     have ih' := ih (fun b hb => hl b (by simp [hb]))
     rw [ψw_cons, mul_assoc, d_ψ_mul R ha, d_ψ_mul R ha, ih', List.length_cons, pow_succ]
-    simp only [mul_add, sub_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]
+    simp only [mul_add, sub_mul, mul_smul_comm, mul_assoc]
     module
 
 /-- The derivative of a descending product of crossings: the alternating sum of the words
@@ -252,7 +253,7 @@ theorem d_dn (a b : ℕ) (h : a + b < N) :
   | zero => rw [dn_zero, d_one, Finset.sum_range_zero]
   | succ b ih =>
     rw [dn_succ, d_ψ_mul R (by omega), ih (by omega), Finset.sum_range_succ', Finset.mul_sum]
-    simp only [pow_zero, one_smul, dn_zero, one_mul, Nat.sub_zero,
+    simp only [pow_zero, one_smul, dn_zero, one_mul,
       show a + (b + 1) - 0 = a + b + 1 by omega, show b + 1 - 1 - 0 = b by omega]
     rw [sub_eq_add_neg, add_comm, ← Finset.sum_neg_distrib]
     congr 1
@@ -349,7 +350,7 @@ theorem d_longest {k : ℕ} (hk : k ≤ N) :
         rw [smul_mul_assoc, mul_assoc, longest_mul_x_mul_dn R N (Finset.mem_range.mp hi) hkN,
           smul_sub, smul_comm u, smul_ite, smul_zero]
       rw [Finset.sum_congr rfl e, Finset.sum_sub_distrib, ← Finset.smul_sum,
-        Finset.sum_ite_eq' (Finset.range k) 0, if_pos (Finset.mem_range.mpr hk1), Nat.sub_zero]
+        Finset.sum_ite_eq' (Finset.range k) 0, ite_eq_left (Finset.mem_range.mpr hk1), Nat.sub_zero]
     have hB' : B = L' * x R N 0 - (-1 : R) ^ (k + 1).choose 2 • (x R N k * L') :=
       longest_mul_dn_one R N hk1 hkN
     conv_lhs => rw [hL', longest_succ]

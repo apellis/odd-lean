@@ -123,7 +123,9 @@ def ext (A : Fin R → Fin C → ℕ) (p q : ℕ) : ℕ :=
 
 theorem flatMap_finRange {α : Type*} (n : ℕ) (f : Fin n → List α) (g : ℕ → List α)
     (h : ∀ i : Fin n, f i = g i.val) : (List.finRange n).flatMap f = (List.range n).flatMap g := by
-  rw [← List.map_coe_finRange, List.flatMap_map]
+  have hr : (List.finRange n).map Fin.val = List.range n := by
+    apply List.ext_getElem <;> simp
+  rw [← hr, List.flatMap_map]
   exact List.flatMap_congr (fun i _ => h i)
 
 theorem colword_eq_word (A : Fin R → Fin C → ℕ) : colword A = word (ext A) R C := by
@@ -136,7 +138,7 @@ theorem colword_eq_word (A : Fin R → Fin C → ℕ) : colword A = word (ext A)
   apply flatMap_finRange
   intro j
   simp only [List.map_replicate, lab, ext]
-  rw [dif_pos (by omega)]
+  rw [dite_eq_left (by omega)]
   rfl
 
 /-! ## `P(A)` is the insertion tableau of the column word -/
@@ -149,7 +151,7 @@ theorem nrows_run (n : ℕ) (S : TableauWordInsertion.State n) (w : List (Fin n)
 theorem nrows_empty : nrows (TableauContent.emptyTableau) = [] := by
   have h : (⊥ : YoungDiagram).colLen 0 = 0 := by
     by_contra hne
-    exact YoungDiagram.not_mem_bot (0, 0)
+    exact YoungDiagram.notMem_bot (0, 0)
       (YoungDiagram.mem_iff_lt_colLen.mpr (Nat.pos_of_ne_zero hne))
   simp [nrows, h]
 
@@ -201,16 +203,16 @@ theorem word_stable {B : ℕ → ℕ → ℕ} {R : ℕ} (hB : ∀ p, R < p → �
 theorem ext_zero (A : Fin R → Fin C → ℕ) : ∀ p, R < p → ∀ q, ext A p q = 0 := by
   intro p hp q
   simp only [ext]
-  rw [dif_neg (by omega)]
+  rw [dite_eq_right (by omega)]
 
 theorem ext_init (A : Fin (R + 1) → Fin C → ℕ) : ∀ p, 0 < p → p ≤ R → ∀ q,
     ext (Fin.init A) p q = ext A p q := by
   intro p hp hpR q
   simp only [ext]
   by_cases hq : 0 < q ∧ q ≤ C
-  · rw [dif_pos (by omega), dif_pos (by omega)]
+  · rw [dite_eq_left (by omega), dite_eq_left (by omega)]
     rfl
-  · rw [dif_neg (by omega), dif_neg (by omega)]
+  · rw [dite_eq_right (by omega), dite_eq_right (by omega)]
 
 theorem rowLen_le_of_subset {mu nu : YoungDiagram} (h : mu.cells ⊆ nu.cells) (k : ℕ) :
     mu.rowLen k ≤ nu.rowLen k := by
@@ -308,8 +310,8 @@ theorem ext_transpose (A : Fin R → Fin C → ℕ) (p q : ℕ) :
     ext (fun j i => A i j) p q = ext A q p := by
   simp only [ext]
   by_cases h : 0 < p ∧ p ≤ C ∧ 0 < q ∧ q ≤ R
-  · rw [dif_pos h, dif_pos (by omega)]
-  · rw [dif_neg h, dif_neg (by omega)]
+  · rw [dite_eq_left h, dite_eq_left (by omega)]
+  · rw [dite_eq_right h, dite_eq_right (by omega)]
 
 theorem sh_res_P_word (B : ℕ → ℕ → ℕ) (a b i k : ℕ) :
     sh (res i (P (word B a b))) k = G B a (min i b) k := by

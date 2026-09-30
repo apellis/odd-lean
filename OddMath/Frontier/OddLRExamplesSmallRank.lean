@@ -53,7 +53,7 @@ theorem state_unique {N : ℕ} (hN : N ≤ 1) {S S' : State N} (h : S.1 = S'.1) 
 
 theorem tabWord_eq_shat {N : ℕ} (hN : N ≤ 1) (S : State N) :
     tabWord N S = (-1 : ℤ) ^ eta S.1 • shat N S.1 := by
-  haveI : Subsingleton (TabOf N S.1) := ⟨tabOf_subsingleton hN S.1⟩
+  have : Subsingleton (TabOf N S.1) := ⟨tabOf_subsingleton hN S.1⟩
   have h : shat N S.1 = (-1 : ℤ) ^ eta S.1 • ∑ T : TabOf N S.1, tabWord N ⟨S.1, T⟩ := rfl
   rw [h, Fintype.sum_subsingleton _ S.2, smul_smul, ← mul_pow]
   norm_num
@@ -81,21 +81,21 @@ theorem pairCount_shape_all (N : ℕ) (mu nu : YoungDiagram) {S S' : State N} (h
 theorem lrCoeff_eq_all (N : ℕ) (mu nu : YoungDiagram) (S : State N) :
     lrCoeff N mu nu S.1 = (-1 : ℤ) ^ (eta mu + eta nu + eta S.1) * pairCount mu nu S := by
   have h : ∃ S' : State N, S'.1 = S.1 := ⟨S, rfl⟩
-  rw [lrCoeff, dif_pos h, pairCount_shape_all N mu nu h.choose_spec]
+  rw [lrCoeff, dite_eq_left h, pairCount_shape_all N mu nu h.choose_spec]
 
 /-- `ŝ_μ ŝ_ν = Σ_{|λ|=|μ|+|ν|} c^λ_{μν} ŝ_λ` in `ℤPl_N`, every rank. -/
 theorem shat_mul_shat_all (N : ℕ) (mu nu : YoungDiagram) :
     letI := degreeFintype (mu.card + nu.card)
     shat N mu * shat N nu =
       ∑ lam : DegreeShape (mu.card + nu.card), lrCoeff N mu nu lam.val • shat N lam.val := by
-  letI := degreeFintype (mu.card + nu.card)
-  apply (Basis.ext_elem_iff (tableauBasis N)).mpr
+  let := degreeFintype (mu.card + nu.card)
+  apply (Module.Basis.ext_elem_iff (tableauBasis N)).mpr
   intro S
-  rw [repr_shat_mul, map_sum, Finsupp.finset_sum_apply]
+  rw [repr_shat_mul, map_sum, Finsupp.finsetSum_apply]
   simp only [map_zsmul, Finsupp.smul_apply, repr_shat, smul_eq_mul, mul_ite, mul_zero]
   by_cases hd : S.1.card = mu.card + nu.card
   · rw [Fintype.sum_eq_single (show DegreeShape (mu.card + nu.card) from ⟨S.1, hd⟩)]
-    · rw [if_pos rfl]
+    · rw [ite_eq_left rfl]
       dsimp only
       rw [lrCoeff_eq_all]
       have hu := neg_one_pow_mul_self (eta S.1)
@@ -103,14 +103,14 @@ theorem shat_mul_shat_all (N : ℕ) (mu nu : YoungDiagram) :
             ((-1) ^ eta S.1 * (-1) ^ eta S.1) := by rw [hu, mul_one]
         _ = _ := by rw [pow_add]; ring
     · intro lam hne
-      rw [if_neg]
+      rw [ite_eq_right]
       intro he
       exact hne (Subtype.ext he.symm)
   · rw [pairCount_of_card _ mu nu S hd, mul_zero]
     symm
     apply Finset.sum_eq_zero
     intro lam _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     exact hd (he ▸ lam.property)
 
@@ -121,7 +121,7 @@ theorem coeff_unique_all (N d : ℕ) (a b : DegreeShape d → ℤ)
       ∑ lam : DegreeShape d, a lam • CompleteTableauExpansion.sp N lam.val =
       ∑ lam : DegreeShape d, b lam • CompleteTableauExpansion.sp N lam.val)
     (lam : DegreeShape d) (hl : lam.val.colLen 0 ≤ N) : a lam = b lam := by
-  letI := degreeFintype d
+  let := degreeFintype d
   set x : OddPlactic.Plactic N := ∑ mu : DegreeShape d, (a mu - b mu) • shat N mu.val
   have hx : x ∈ shatSpan N :=
     sum_mem fun mu _ => Submodule.smul_mem _ _ (shat_mem_shatSpan _ _)
@@ -131,14 +131,14 @@ theorem coeff_unique_all (N d : ℕ) (a b : DegreeShape d → ℤ)
   have hx0 := toSkew_injOn N hx h0
   have hr := congrArg (fun y => (tableauBasis N).repr y
     (⟨lam.val, _, canonical_inAlphabet N lam.val hl⟩ : State N)) hx0
-  simp only [x, map_sum, map_zsmul, Finsupp.finset_sum_apply, Finsupp.smul_apply, repr_shat,
+  simp only [x, map_sum, map_zsmul, Finsupp.finsetSum_apply, Finsupp.smul_apply, repr_shat,
     smul_eq_mul, mul_ite, mul_zero, map_zero, Finsupp.coe_zero, Pi.zero_apply] at hr
   rw [Finset.sum_eq_single lam] at hr
-  · rw [if_pos rfl] at hr
+  · rw [ite_eq_left rfl] at hr
     have := (mul_eq_zero.mp hr).resolve_right (pow_ne_zero _ (by norm_num))
     omega
   · intro mu _ hne
-    rw [if_neg]
+    rw [ite_eq_right]
     intro he
     exact hne (Subtype.ext he.symm)
   · intro h; exact absurd (Finset.mem_univ _) h
@@ -153,7 +153,7 @@ theorem lrCoeff_of_sK_all (N : ℕ) (mu nu : YoungDiagram)
       sK mu * sK nu = ∑ lam : DegreeShape (mu.card + nu.card), c lam • sK lam.val)
     (lam : DegreeShape (mu.card + nu.card)) (hl : lam.val.colLen 0 ≤ N) :
     c lam = lrCoeff N mu nu lam.val := by
-  letI := degreeFintype (mu.card + nu.card)
+  let := degreeFintype (mu.card + nu.card)
   apply coeff_unique_all N _ c (fun lam => lrCoeff N mu nu lam.val) _ lam hl
   have h := congrArg (piN N) hc
   simp only [map_mul, map_sum, map_zsmul, OddLRThm38.sK_eq_sp] at h

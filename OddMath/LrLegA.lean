@@ -219,15 +219,15 @@ theorem perBox (T : Tableau) (B : TBox) :
       by_cases hN : isNorth A B = true
       · by_cases hE : isEast A B = true
         · by_cases hL : isLtEntry A B = true
-          · simp only [hN, hE, hL, if_true, if_false, Bool.false_eq_true]
+          · simp only [hN, hE, hL, ite_true]
             omega
-          · simp only [hN, hE, hL, if_true, if_false, Bool.false_eq_true]
+          · simp only [hN, hE, hL, ite_true, ite_false, Bool.false_eq_true]
             omega
         · have hEf : isEast A B = false := bool_false_of_not_true hE
           have hL : isLtEntry A B = true := H A Hmem hN hEf
-          simp only [hN, hE, hL, if_true, if_false, Bool.false_eq_true]
+          simp only [hN, hE, hL, ite_true, ite_false, Bool.false_eq_true]
           omega
-      · simp only [hN, if_true, if_false, Bool.false_eq_true]
+      · simp only [hN, ite_false, Bool.false_eq_true]
         omega
 
 /-- Summed Leg A parity identity over a box list (take `Bs = T`). -/

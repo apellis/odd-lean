@@ -18,6 +18,7 @@ Compiled BEFORE `EKSchurOrthonormal`; nothing here mentions the production `s_λ
   including norms +1 for s_(2) and -1 for s_(1,1) and the sign (-1)^{C(λᵀ,2)} at λ=(1,1).
 -/
 noncomputable section
+set_option maxRecDepth 10000
 set_option maxHeartbeats 1000000
 open scoped BigOperators
 namespace OddMath.Frontier.EKSchurOrthonormalControls
@@ -51,8 +52,8 @@ def PL (L M : List ℕ) : ℤ := P L.length (fun i => L.get i) (c := M.length) (
 private theorem single_row {c : ℕ} (b : ℕ) (α : Fin c → ℕ) :
     pairing (fun _ : Fin 1 => b) α = if ∑ j, α j = b then 1 else 0 := by
   by_cases h : ∑ j, α j = b
-  · rw [if_pos h, ← h]; exact pairing_single_row α
-  · rw [if_neg h]
+  · rw [ite_eq_left h, ← h]; exact pairing_single_row α
+  · rw [ite_eq_right h]
     apply pairing_degree_mismatch
     simpa using fun h' => h h'.symm
 
@@ -61,13 +62,13 @@ theorem pairing_eq_P : ∀ (r : ℕ) (β : Fin r → ℕ) {c : ℕ} (α : Fin c 
   | 0, β, c, α => by
     simp only [P]
     by_cases h : ∀ j, α j = 0
-    · rw [if_pos h]
+    · rw [ite_eq_left h]
       have hα : α = fun _ => 0 := funext h
       have hβ : β = fun _ => 0 := funext (fun i => Fin.elim0 i)
       subst hα; subst hβ
       exact pairing_zero_zero 0 c
-    · rw [if_neg h]
-      push_neg at h
+    · rw [ite_eq_right h]
+      push Not at h
       obtain ⟨j, hj⟩ := h
       apply pairing_degree_mismatch
       have := Finset.single_le_sum (fun k (_ : k ∈ Finset.univ) => Nat.zero_le (α k))
@@ -84,7 +85,7 @@ theorem pairing_eq_P : ∀ (r : ℕ) (β : Fin r → ℕ) {c : ℕ} (α : Fin c 
         congr 1
         apply Fin.ext
         have := k.isLt
-        simp only [Fin.coe_natAdd, Fin.val_last]
+        simp only [Fin.val_natAdd, Fin.val_last]
         omega
     conv_lhs => rw [hβ]
     rw [pairing_convolution]
@@ -159,13 +160,13 @@ private theorem map_find : ∀ (cs : List (ℕ × ℕ)) (w : List ℕ),
   | _ :: _, [], _, h => by simp at h
   | c :: cs, a :: w, hn, hl => by
     rw [List.nodup_cons] at hn
-    simp only [List.map_cons, find, if_pos rfl]
+    simp only [List.map_cons, find]
     congr 1
     conv_rhs => rw [← map_find cs w hn.2 (by simpa using hl)]
     apply List.map_congr_left
     intro p hp
     have : p ≠ c := fun h => hn.1 (h ▸ hp)
-    simp [find, this]
+    simp [this]
 
 private theorem mem_zip_map : ∀ (cs : List (ℕ × ℕ)) (e : ℕ × ℕ → ℕ) (x : (ℕ × ℕ) × ℕ),
     x ∈ cs.zip (cs.map e) → x.1 ∈ cs ∧ x.2 = e x.1
@@ -184,23 +185,23 @@ private def ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validFill (rowCells 
   row_weak' := by
     intro i j1 j2 hj hp
     have hp1 : (i, j1) ∈ μ := μ.up_left_mem le_rfl hj.le hp
-    simp only [if_pos hp1, if_pos hp]
+    simp only [ite_eq_left hp1, ite_eq_left hp]
     have m1 := find_mem_zip (rowCells μ) w (i, j1) hv.1 ((mem_rowCells μ _).2 hp1)
     have m2 := find_mem_zip (rowCells μ) w (i, j2) hv.1 ((mem_rowCells μ _).2 hp)
     exact ((hv.2 _ m1).2 _ m2).1 rfl hj
   col_strict' := by
     intro i1 i2 j hi hp
     have hp1 : (i1, j) ∈ μ := μ.up_left_mem hi.le le_rfl hp
-    simp only [if_pos hp1, if_pos hp]
+    simp only [ite_eq_left hp1, ite_eq_left hp]
     have m1 := find_mem_zip (rowCells μ) w (i1, j) hv.1 ((mem_rowCells μ _).2 hp1)
     have m2 := find_mem_zip (rowCells μ) w (i2, j) hv.1 ((mem_rowCells μ _).2 hp)
     exact ((hv.2 _ m1).2 _ m2).2 rfl hi
   zeros' := by
     intro i j hp
-    exact if_neg hp
+    exact ite_eq_right hp
   positive := by
     intro i j hp
-    simp only [if_pos hp]
+    simp only [ite_eq_left hp]
     exact (hv.2 _ (find_mem_zip (rowCells μ) w (i, j) hv.1 ((mem_rowCells μ _).2 hp))).1
 
 private theorem rowWord_ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validFill (rowCells μ) w) :
@@ -211,7 +212,7 @@ private theorem rowWord_ofWord (μ : YoungDiagram) (w : List ℕ) (hv : validFil
   intro p hp
   have hp' : (p.1, p.2) ∈ μ := by simpa using (mem_rowCells μ p).1 hp
   change (if (p.1, p.2) ∈ μ then find (rowCells μ) w (p.1, p.2) else 0) = _
-  rw [if_pos hp']
+  rw [ite_eq_left hp']
 
 private theorem canonical_rowWord (μ : YoungDiagram) :
     rowWord (canonicalTableau μ) = (rowCells μ).map (fun p => p.1 + 1) := by
@@ -272,14 +273,14 @@ theorem signedKostka_eq_KW (lam mu : YoungDiagram) :
 
 /-! ## Exhaustive shapes, d ≤ 4 -/
 
-instance : IsAntisymm (ℕ × ℕ) RowLE := ⟨by
+instance : Std.Antisymm RowLE := ⟨by
   intro a b h1 h2
   unfold RowLE at h1 h2
   exact Prod.ext (by omega) (by omega)⟩
 
-theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Sorted RowLE)
+theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Pairwise RowLE)
     (hn : l.Nodup) (hc : l.toFinset = μ.cells) : rowCells μ = l := by
-  apply List.eq_of_perm_of_sorted _ (rowCells_sorted μ) hs
+  apply List.Perm.eq_of_pairwise' (rowCells_sorted μ) hs
   apply List.perm_of_nodup_nodup_toFinset_eq (rowCells_nodup μ) hn
   ext p
   simp [hc]
@@ -287,7 +288,7 @@ theorem rowCells_eq_of (μ : YoungDiagram) (l : List (ℕ × ℕ)) (hs : l.Sorte
 /-! ## Exhaustive shapes, d ≤ 4 (literal Young diagrams from row lengths) -/
 
 def sh0 : DegreeShape 0 :=
-  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh0_rows : sh0.val.rowLens = [] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh0_cells : rowCells sh0.val = [] :=
@@ -300,7 +301,7 @@ theorem sh0_signs : transposeChoose sh0.val = 0 ∧ evenParts sh0.val.rowLens = 
   unfold transposeChoose; rw [sh0_transpose, sh0_rows]; decide
 
 def sh1 : DegreeShape 1 :=
-  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh1_rows : sh1.val.rowLens = [1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh1_cells : rowCells sh1.val = [(0,0)] :=
@@ -313,7 +314,7 @@ theorem sh1_signs : transposeChoose sh1.val = 0 ∧ evenParts sh1.val.rowLens = 
   unfold transposeChoose; rw [sh1_transpose, sh1_rows]; decide
 
 def sh2 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh2_rows : sh2.val.rowLens = [2] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh2_cells : rowCells sh2.val = [(0,0), (0,1)] :=
@@ -326,7 +327,7 @@ theorem sh2_signs : transposeChoose sh2.val = 0 ∧ evenParts sh2.val.rowLens = 
   unfold transposeChoose; rw [sh2_transpose, sh2_rows]; decide
 
 def sh11 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh11_rows : sh11.val.rowLens = [1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh11_cells : rowCells sh11.val = [(1,0), (0,0)] :=
@@ -339,7 +340,7 @@ theorem sh11_signs : transposeChoose sh11.val = 1 ∧ evenParts sh11.val.rowLens
   unfold transposeChoose; rw [sh11_transpose, sh11_rows]; decide
 
 def sh3 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [3] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [3] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh3_rows : sh3.val.rowLens = [3] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh3_cells : rowCells sh3.val = [(0,0), (0,1), (0,2)] :=
@@ -352,7 +353,7 @@ theorem sh3_signs : transposeChoose sh3.val = 0 ∧ evenParts sh3.val.rowLens = 
   unfold transposeChoose; rw [sh3_transpose, sh3_rows]; decide
 
 def sh21 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [2,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh21_rows : sh21.val.rowLens = [2,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh21_cells : rowCells sh21.val = [(1,0), (0,0), (0,1)] :=
@@ -365,7 +366,7 @@ theorem sh21_signs : transposeChoose sh21.val = 1 ∧ evenParts sh21.val.rowLens
   unfold transposeChoose; rw [sh21_transpose, sh21_rows]; decide
 
 def sh111 : DegreeShape 3 :=
-  ⟨YoungDiagram.ofRowLens [1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh111_rows : sh111.val.rowLens = [1,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh111_cells : rowCells sh111.val = [(2,0), (1,0), (0,0)] :=
@@ -378,7 +379,7 @@ theorem sh111_signs : transposeChoose sh111.val = 3 ∧ evenParts sh111.val.rowL
   unfold transposeChoose; rw [sh111_transpose, sh111_rows]; decide
 
 def sh4 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [4] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh4_rows : sh4.val.rowLens = [4] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh4_cells : rowCells sh4.val = [(0,0), (0,1), (0,2), (0,3)] :=
@@ -391,7 +392,7 @@ theorem sh4_signs : transposeChoose sh4.val = 0 ∧ evenParts sh4.val.rowLens = 
   unfold transposeChoose; rw [sh4_transpose, sh4_rows]; decide
 
 def sh31 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [3,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [3,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh31_rows : sh31.val.rowLens = [3,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh31_cells : rowCells sh31.val = [(1,0), (0,0), (0,1), (0,2)] :=
@@ -404,7 +405,7 @@ theorem sh31_signs : transposeChoose sh31.val = 1 ∧ evenParts sh31.val.rowLens
   unfold transposeChoose; rw [sh31_transpose, sh31_rows]; decide
 
 def sh22 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [2,2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh22_rows : sh22.val.rowLens = [2,2] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh22_cells : rowCells sh22.val = [(1,0), (1,1), (0,0), (0,1)] :=
@@ -417,7 +418,7 @@ theorem sh22_signs : transposeChoose sh22.val = 2 ∧ evenParts sh22.val.rowLens
   unfold transposeChoose; rw [sh22_transpose, sh22_rows]; decide
 
 def sh211 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [2,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh211_rows : sh211.val.rowLens = [2,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh211_cells : rowCells sh211.val = [(2,0), (1,0), (0,0), (0,1)] :=
@@ -430,7 +431,7 @@ theorem sh211_signs : transposeChoose sh211.val = 3 ∧ evenParts sh211.val.rowL
   unfold transposeChoose; rw [sh211_transpose, sh211_rows]; decide
 
 def sh1111 : DegreeShape 4 :=
-  ⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1,1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 @[simp] theorem sh1111_rows : sh1111.val.rowLens = [1,1,1,1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
 theorem sh1111_cells : rowCells sh1111.val = [(3,0), (2,0), (1,0), (0,0)] :=
@@ -615,7 +616,7 @@ theorem shape_eq_iff {d : ℕ} {μ ν : DegreeShape d} : μ = ν ↔ μ.val.rowL
   ⟨fun h => h ▸ rfl, fun h => Subtype.ext (YoungDiagram.equivListRowLens.injective (Subtype.ext h))⟩
 
 /-- Every partition list of size at most four, with no enumeration hypothesis. -/
-theorem small_partition (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x)
+theorem small_partition (l : List ℕ) (hs : l.Pairwise (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x)
     (hl : l.sum ≤ 4) :
     l = [] ∨ l = [1] ∨ l = [2] ∨ l = [1,1] ∨ l = [3] ∨ l = [2,1] ∨ l = [1,1,1] ∨
       l = [4] ∨ l = [3,1] ∨ l = [2,2] ∨ l = [2,1,1] ∨ l = [1,1,1,1] := by
@@ -626,17 +627,17 @@ theorem small_partition (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x �
     have : a ≤ 4 := by omega
     interval_cases a <;> simp
   · have ha := hp a (by simp); have hb := hp b (by simp)
-    simp only [List.sorted_cons, List.mem_cons, List.mem_singleton, forall_eq_or_imp,
-      forall_eq, List.not_mem_nil, false_implies, implies_true, and_true,
-      List.sorted_nil] at hs
+    simp only [List.pairwise_cons, List.mem_cons, forall_eq_or_imp,
+      List.not_mem_nil, false_implies, implies_true, and_true,
+      List.Pairwise.nil] at hs
     simp only [List.sum_cons, List.sum_nil] at hl
     have : a ≤ 4 := by omega
     have : b ≤ 4 := by omega
     interval_cases a <;> interval_cases b <;> simp_all
   · have ha := hp a (by simp); have hb := hp b (by simp); have hc := hp c (by simp)
-    simp only [List.sorted_cons, List.mem_cons, List.mem_singleton, forall_eq_or_imp,
-      forall_eq, List.not_mem_nil, false_implies, implies_true, and_true,
-      List.sorted_nil] at hs
+    simp only [List.pairwise_cons, List.mem_cons, forall_eq_or_imp,
+      List.not_mem_nil, false_implies, implies_true, and_true,
+      List.Pairwise.nil] at hs
     simp only [List.sum_cons, List.sum_nil] at hl
     have : a ≤ 4 := by omega
     have : b ≤ 4 := by omega
@@ -663,7 +664,7 @@ theorem sum_list {d : ℕ} {M : Type*} [AddCommMonoid M] (l : List (DegreeShape 
 
 theorem exhaust0 (μ : DegreeShape 0) : μ = sh0 := by
   have hs : μ.val.rowLens.sum = 0 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -689,7 +690,7 @@ theorem identity39_0 (μ ρ : DegreeShape 0) :
 
 theorem exhaust1 (μ : DegreeShape 1) : μ = sh1 := by
   have hs : μ.val.rowLens.sum = 1 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -715,7 +716,7 @@ theorem identity39_1 (μ ρ : DegreeShape 1) :
 
 theorem exhaust2 (μ : DegreeShape 2) : μ = sh2 ∨ μ = sh11 := by
   have hs : μ.val.rowLens.sum = 2 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -741,7 +742,7 @@ theorem identity39_2 (μ ρ : DegreeShape 2) :
 
 theorem exhaust3 (μ : DegreeShape 3) : μ = sh3 ∨ μ = sh21 ∨ μ = sh111 := by
   have hs : μ.val.rowLens.sum = 3 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -767,7 +768,7 @@ theorem identity39_3 (μ ρ : DegreeShape 3) :
 
 theorem exhaust4 (μ : DegreeShape 4) : μ = sh4 ∨ μ = sh31 ∨ μ = sh22 ∨ μ = sh211 ∨ μ = sh1111 := by
   have hs : μ.val.rowLens.sum = 4 := (rowLens_sum μ.val).trans μ.property
-  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _)
+  rcases small_partition μ.val.rowLens (YoungDiagram.rowLens_sorted _).pairwise
     (YoungDiagram.pos_of_mem_rowLens _) (by omega) with h|h|h|h|h|h|h|h|h|h|h|h
   all_goals (rw [h] at hs; simp at hs)
   all_goals simp [shape_eq_iff, h]
@@ -836,20 +837,20 @@ theorem hand1_defining (μ : DegreeShape 1) :
     hPartition μ.val = ∑ lam, signedKostka lam.val μ.val • hand1 lam := by
   rw [sum1]
   rcases exhaust1 μ with rfl
-  simp [hand1, K_1_1]
+  simp [hand1]
 
 theorem hand2_defining (μ : DegreeShape 2) :
     hPartition μ.val = ∑ lam, signedKostka lam.val μ.val • hand2 lam := by
   rw [sum2]
   rcases exhaust2 μ with rfl|rfl
-  all_goals simp [hand2, K_2_2, K_2_11, K_11_2, K_11_11]
+  all_goals simp [hand2, K_2_11, K_11_2]
 
 theorem hand3_defining (μ : DegreeShape 3) :
     hPartition μ.val = ∑ lam, signedKostka lam.val μ.val • hand3 lam := by
   rw [sum3]
   rcases exhaust3 μ with rfl|rfl|rfl
-  all_goals simp [hand3, K_3_3, K_3_21, K_3_111, K_21_3, K_21_21, K_21_111, K_111_3,
-    K_111_21, K_111_111]
+  all_goals simp [hand3, K_3_21, K_3_111, K_21_3, K_21_111, K_111_3,
+    K_111_21]
 
 theorem pair_hh {d : ℕ} (ν μ : DegreeShape d) :
     quotientPairing (hPartition ν.val) (hPartition μ.val) = Mh d ν μ := rfl
@@ -887,9 +888,9 @@ theorem degree_two_norms :
     quotientPairing (hand2 sh2) (hand2 sh2) = 1 ∧ quotientPairing (hand2 sh11) (hand2 sh11) = -1 ∧
     quotientPairing (hand2 sh2) (hand2 sh11) = 0 := by
   refine ⟨?_, ?_, ?_⟩
-  · rw [hand2_gram, if_pos rfl, sh2_signs.1]; rfl
-  · rw [hand2_gram, if_pos rfl, sh11_signs.1]; rfl
-  · rw [hand2_gram, if_neg (by rw [shape_eq_iff]; simp)]
+  · rw [hand2_gram, ite_eq_left rfl, sh2_signs.1]; rfl
+  · rw [hand2_gram, ite_eq_left rfl, sh11_signs.1]; rfl
+  · rw [hand2_gram, ite_eq_right (by rw [shape_eq_iff]; simp)]
 
 /-! ## Negative controls (each would-be simplification is REJECTED in actual Q) -/
 

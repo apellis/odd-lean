@@ -40,8 +40,8 @@ def tsq : ℤ⟦X⟧ →+* ℤ⟦X⟧ :=
       (HahnSeries.toPowerSeries (R := ℤ)).symm.toRingHom)
 
 theorem coeff_tsq (f : ℤ⟦X⟧) (m : ℕ) :
-    coeff ℤ m (tsq f) = if Even m then coeff ℤ (m / 2) f else 0 := by
-  change coeff ℤ m (HahnSeries.toPowerSeries (HahnSeries.embDomain _ _)) = _
+    coeff (R := ℤ) m (tsq f) = if Even m then coeff (R := ℤ) (m / 2) f else 0 := by
+  change coeff (R := ℤ) m (HahnSeries.toPowerSeries (HahnSeries.embDomain _ _)) = _
   rw [HahnSeries.coeff_toPowerSeries]
   split_ifs with hm
   · obtain ⟨k, rfl⟩ := hm
@@ -51,7 +51,7 @@ theorem coeff_tsq (f : ℤ⟦X⟧) (m : ℕ) :
     rw [HahnSeries.coeff_toPowerSeries_symm]
     congr 1
     simp [twiceHom]
-  · rw [HahnSeries.embDomain_notin_range]
+  · rw [HahnSeries.embDomain_of_notMem_range]
     rintro ⟨k, hk⟩
     apply hm
     exact ⟨k, by simp [twiceHom] at hk; omega⟩
@@ -61,7 +61,7 @@ theorem tsq_X : tsq X = X ^ 2 := by
   rw [coeff_tsq, coeff_X_pow, coeff_X]
   by_cases hm : m = 2
   · subst hm; simp
-  · rw [if_neg hm]
+  · rw [ite_eq_right hm]
     split_ifs with h1 h2
     · obtain ⟨k, rfl⟩ := h1; omega
     · rfl
@@ -130,7 +130,7 @@ theorem qrkSym_mul_qPoch (n : ℕ) :
     qrkSym n * ∏ i ∈ Finset.range (n+2), (1 - X ^ (2 * (i+1))) = 1 := by
   have h := congrArg tsq (symRank_mul_qPoch n)
   rw [map_mul, map_one, qPoch, map_prod] at h
-  simpa [tsq_X, ← pow_mul] using h
+  simpa [qrkSym, tsq_X, ← pow_mul] using h
 
 /-- (2.19) corrected: `qrk(OPol_a) = qrk(OΛ_a) · Σ_{σ ∈ S_a} q^{2ℓ(σ)}`. -/
 theorem qrkPol_eq (n : ℕ) :
@@ -138,8 +138,8 @@ theorem qrkPol_eq (n : ℕ) :
   rw [qrkPol, qrkSym, polRank_eq_mul, map_mul, lengthSeries, map_sum]
   simp [tsq_X, ← pow_mul]
 
-theorem coeff_zero_symRank (n : ℕ) : coeff ℤ 0 (symRank n) = 1 := by
-  have h := congrArg (constantCoeff ℤ) (symRank_mul_qPoch n)
+theorem coeff_zero_symRank (n : ℕ) : coeff (R := ℤ) 0 (symRank n) = 1 := by
+  have h := congrArg (constantCoeff (R := ℤ)) (symRank_mul_qPoch n)
   rw [map_mul, map_one, qPoch, map_prod] at h
   simpa using h
 
@@ -148,8 +148,8 @@ theorem length_simple (n : ℕ) (i : Fin (n+1)) :
   have h := NilCoxeterWords.length_ascend (1 : NilCoxeterWords.Perm n) i (by
     simp [NilCoxeterWords.Descent, Fin.lt_def])
   rw [one_mul] at h
-  rw [h, Nat.add_left_eq_self]
-  refine Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => if_neg fun hab => ?_
+  rw [h, Nat.add_eq_right]
+  refine Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ite_eq_right fun hab => ?_
   exact lt_asymm hab.1 hab.2
 
 /-- The printed (2.19), `qrk(Λ_a) = qrk(Pol_a) / Σ_σ q^{ℓ(σ)}`, fails for every `a ≥ 2`
@@ -158,16 +158,16 @@ the coefficients of `q¹` differ. -/
 theorem printed_qrk_quotient_false (n : ℕ) :
     qrkSym n * ∑ w : NilCoxeterWords.Perm n, X ^ NilCoxeterWords.length w ≠ qrkPol (n+2) := by
   intro h
-  have hc := congrArg (coeff ℤ 1) h
+  have hc := congrArg (coeff (R := ℤ) 1) h
   rw [qrkPol, coeff_tsq, coeff_mul, Finset.Nat.sum_antidiagonal_succ,
     Finset.Nat.antidiagonal_zero, Finset.sum_singleton, qrkSym, coeff_tsq, coeff_tsq] at hc
-  simp only [Even.zero, if_true, Nat.zero_div, Nat.not_even_one, if_false, zero_add,
+  simp only [Even.zero, ite_true, Nat.zero_div, Nat.not_even_one, ite_false, zero_add,
     zero_mul, add_zero, coeff_zero_symRank, one_mul, map_sum, coeff_X_pow] at hc
   have hpos : (1 : ℤ) ≤ ∑ w : NilCoxeterWords.Perm n,
       (if 1 = NilCoxeterWords.length w then (1 : ℤ) else 0) := by
     have := Finset.single_le_sum (f := fun w : NilCoxeterWords.Perm n =>
       if 1 = NilCoxeterWords.length w then (1 : ℤ) else 0)
-      (fun w _ => by dsimp only; split_ifs <;> norm_num) (Finset.mem_univ (NilCoxeterWords.simple 0))
+      (fun w _ => by split_ifs <;> norm_num) (Finset.mem_univ (NilCoxeterWords.simple 0))
     simpa [length_simple] using this
   omega
 
@@ -276,7 +276,7 @@ theorem gauss_tfact (a b : ℕ) : gauss a b * tfact a * tfact b = tfact (a + b) 
   have hne : ((1 - X : ℤ⟦X⟧) ^ (a + b)) ≠ 0 := by
     apply pow_ne_zero
     intro h0
-    have := congrArg (constantCoeff ℤ) h0
+    have := congrArg (constantCoeff (R := ℤ)) h0
     simp at this
   apply mul_right_cancel₀ hne
   rw [← h, pow_add]
@@ -302,7 +302,7 @@ theorem box_qcard (a b : ℕ) :
     have h2 := Nat.div_mul_cancel (Nat.even_mul_pred_self b).two_dvd
     have h3 := Nat.div_mul_cancel (Nat.even_mul_pred_self (a + b)).two_dvd
     have : (a + b) * (a + b - 1) = a * (a - 1) + b * (b - 1) + 2 * (a * b) := by
-      cases a <;> cases b <;> simp [Nat.succ_sub_one]
+      cases a <;> cases b <;> simp
       ring
     omega
   have hq : qpow (-((a + b).choose 2 : ℕ) : ℤ) =

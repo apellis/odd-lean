@@ -112,7 +112,6 @@ theorem psi1_psi3_not_commute : psi3 (psi1 (h 2)) ≠ psi1 (psi3 (h 2)) := by
   have h2 : (2 : ℤ) • (h 1 * h 1) = 0 := by
     rw [two_smul]
     have := congrArg (fun x => x - h 2 + h 1 * h 1) hc
-    simp only at this
     abel_nf at this ⊢
     simpa using this
   have h0 := EKInfiniteSymmetry.square_smul_injective
@@ -182,10 +181,10 @@ theorem psi2_not_coalgebra : quotientCoproduct (psi2 (h 2)) ≠ psi2Tensor (quot
   have s0 : s 0 = 1 := by simp [EKAutomorphisms.s]
   have s1 : s 1 = -1 := by simp [EKAutomorphisms.s]
   have s2 : s 2 = -1 := by simp [EKAutomorphisms.s, Nat.choose]
-  simp only [EKAutomorphisms.psi2_h, map_zsmul, EKAutomorphisms.coproduct_h, map_sum,
+  simp only [EKAutomorphisms.psi2_h, map_zsmul, EKAutomorphisms.coproduct_h,
     Fin.sum_univ_succ, Fin.sum_univ_zero, map_add, map_zero, psi2Tensor, TensorProduct.map_tmul,
-    EKAntipode.multiplication_tmul, hl, Fin.val_zero, Fin.val_succ, Fin.succ_zero_eq_one,
-    Fin.val_one, s2] at hm
+    EKAntipode.multiplication_tmul, hl, Fin.val_zero, Fin.val_succ,
+    s2] at hm
   norm_num [s0, s1, s2, hq_zero] at hm
   exact EKAutomorphismsControls.super_square_not_ordinary hm
 
@@ -210,9 +209,9 @@ theorem cross_cast {a b : ℕ} (hab : a ≤ b) :
   · push_cast; rfl
   · obtain rfl : a = b := by omega
     have hev : ((a * a + a : ℕ) : ZMod 2) = 0 :=
-      (ZMod.eq_zero_iff_even).mpr (by
+      (ZMod.natCast_eq_zero_iff _ _).mpr (even_iff_two_dvd.mp (by
         have := Nat.even_mul_succ_self a
-        rwa [Nat.mul_succ] at this)
+        rwa [Nat.mul_succ] at this))
     push_cast at hev ⊢
     rw [hev]
 
@@ -420,7 +419,7 @@ theorem psi3_coproduct (x : Q) :
   | hz => simp
   | ha x y hx hy => simp only [map_add, hx, hy]
   | hb μ r =>
-    simp only [map_zsmul, map_smul, EKIntegralBases.hBasis_apply]
+    simp only [map_smul, EKIntegralBases.hBasis_apply]
     exact congrArg (fun x : Q ⊗[ℤ] Q => r • x) (psi3_coproduct_word μ.rowLens)
 
 /-! ### The ordinary anti-involution `R` is not a coalgebra homomorphism -/
@@ -428,12 +427,12 @@ theorem psi3_coproduct (x : Q) :
 theorem hrepr_degree {d : ℕ} {x : Q} (hx : x ∈ degreePiece d) {ν : YoungDiagram}
     (hν : ν.card ≠ d) : EKIntegralBases.hBasis.repr x ν = 0 := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   obtain ⟨a, ha, -⟩ := EKIntegralBases.degree_h_unique_coordinates d ⟨x, hx⟩
-  rw [← show _ = x from ha, map_sum, Finsupp.finset_sum_apply]
+  rw [← show _ = x from ha, map_sum, Finsupp.finsetSum_apply]
   refine Finset.sum_eq_zero fun μ _ => ?_
   rw [map_zsmul, EKIntegralBases.h_coordinates_partition, Finsupp.smul_apply,
-    Finsupp.single_apply, if_neg, smul_zero]
+    Finsupp.single_apply, ite_eq_right, smul_zero]
   intro he
   apply hν
   rw [← he]
@@ -482,7 +481,7 @@ theorem reverse_not_coalgebra :
   have c0 : EKIntegralBases.hBasis.repr (1 : Q) shape1 = 0 :=
     coord1_of_degree EKIntegralBases.unit_mem_degree_zero (by norm_num)
   have c1 : EKIntegralBases.hBasis.repr (h 1) shape1 = 1 := by
-    rw [← hBasis_shape1, Basis.repr_self, Finsupp.single_eq_same]
+    rw [← hBasis_shape1, Module.Basis.repr_self, Finsupp.single_eq_same]
   have c2 : EKIntegralBases.hBasis.repr (h 2) shape1 = 0 :=
     coord1_of_degree (h_mem_degree 2) (by norm_num)
   have c11 : EKIntegralBases.hBasis.repr (h 1 * h 1) shape1 = 0 :=
@@ -495,7 +494,7 @@ theorem reverse_not_coalgebra :
     EKSignedQuotient.quotient_coproduct_mul, EKAutomorphisms.coproduct_h, Fin.sum_univ_succ,
     Fin.sum_univ_zero, map_add, map_zero, LinearMap.add_apply, LinearMap.zero_apply, tmul_h,
     map_zsmul, reverseTensor, TensorProduct.map_tmul, leftCoord_tmul, Fin.val_zero,
-    Fin.val_succ, Fin.succ_zero_eq_one, Fin.val_one] at hm
+    Fin.val_succ] at hm
   norm_num [hq_zero, EKAutomorphisms.reverse_mul, c0, c1, c2, c11, c21] at hm
   rw [add_comm, add_left_cancel_iff] at hm
   exact EKAutomorphismsControls.super_square_not_ordinary hm.symm

@@ -47,10 +47,10 @@ theorem rev_generator_zero :
   rfl
 
 theorem divided_zero_x0 : divided (0 : Fin 2) (generator (0 : Fin 3)) = 1 := by
-  rw [divided_generator, if_pos (by decide)]
+  rw [divided_generator, ite_eq_left (by decide)]
 
 theorem divided_one_x2 : divided (1 : Fin 2) (generator (2 : Fin 3)) = 1 := by
-  rw [divided_generator, if_pos (by decide)]
+  rw [divided_generator, ite_eq_left (by decide)]
 
 /-- Hand-checked instance of the flip conjugation `∂_{rev i} ∘ φ = ε • φ ∘ ∂_i`
 (`i = 0`, `N = 3`, input `x₀`): both sides equal `-1`. -/

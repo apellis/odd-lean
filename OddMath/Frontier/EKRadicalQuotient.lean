@@ -18,15 +18,13 @@ open CompleteElementary EKFreeCoproduct EKPairingAdjoint
 /-- Vanishing against all tensors follows by genuine tensor induction. -/
 private theorem tensor_annihilates_left {x : A} (hx : ∀ y, pairing x y = 0)
     (a : A) (z : T) : tensorPairing (x ⊗ₜ[ℤ] a) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul b c => simp [hx]
   | add u v hu hv => simp only [map_add, hu, hv, add_zero]
 
 private theorem tensor_annihilates_right {x : A} (hx : ∀ y, pairing x y = 0)
     (a : A) (z : T) : tensorPairing (a ⊗ₜ[ℤ] x) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul b c => simp [hx]
   | add u v hu hv => simp only [map_add, hu, hv, add_zero]
 
@@ -152,8 +150,7 @@ theorem quotientPairing_right_one (x : Q) : quotientPairing x 1 = quotientCounit
 radicals, and no descended coproduct or bialgebra structure, is asserted. -/
 theorem coproduct_radical_annihilates {x : A} (hx : x ∈ radical) (z : T) :
     tensorPairing (coproduct x) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a b =>
     rw [tensorPairing_symm, adjointness, pairing_symm]
     exact hx (a*b)

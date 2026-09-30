@@ -7,13 +7,13 @@ abbrev State (n : ℕ) := TableauWordInsertion.State n
 def reconstruction (n : ℕ) (μ : YoungDiagram) (S : State n) : Prop :=
   TableauStripCorners.Horizontal μ S.1 →
     ∃! Q : State n × List (Fin n),
-      Q.1.1 = μ ∧ Q.2.Sorted (· ≤ ·) ∧
+      Q.1.1 = μ ∧ Q.2.Pairwise (· ≤ ·) ∧
       Q.2.length = (S.1.cells \ μ.cells).card ∧
       (TableauWordInsertion.run n Q.1 Q.2).1 = S
 
 def Inputs (n : ℕ) (μ : YoungDiagram) (r : ℕ) :=
   {Q : State n × List (Fin n) //
-    Q.1.1 = μ ∧ Q.2.Sorted (· ≤ ·) ∧ Q.2.length = r}
+    Q.1.1 = μ ∧ Q.2.Pairwise (· ≤ ·) ∧ Q.2.length = r}
 
 def Outputs (n : ℕ) (μ : YoungDiagram) (r : ℕ) :=
   {S : State n // TableauStripCorners.Horizontal μ S.1 ∧

@@ -82,6 +82,7 @@ theorem counit_psi3 (x : Q) : quotientCounit (psi3 x) = quotientCounit x := by
       have h1 : EKPartitionSpanning.hPartition μ = 1 := by
         rw [EKPartitionSpanning.hPartition, hnil]; rfl
       have h2 : psi3 (1 : Q) = 1 := by
+        change EKAutomorphisms.psi3Linear 1 = 1
         have := EKAutomorphisms.psi3_word []
         simpa [wordSign] using this
       rw [h1, h2]
@@ -177,7 +178,7 @@ def twistFree : A →ₗ[ℤ] A :=
   wordBasis.constr ℤ (fun w => s (EKFreeCoproduct.degree w) • wordBasis w)
 
 theorem twistFree_hWord (α : List ℕ) : twistFree (hWord α) = s α.sum • hWord α := by
-  rw [← EKFreeCoproduct.partWord_value, twistFree, Basis.constr_basis,
+  rw [← EKFreeCoproduct.partWord_value, twistFree, Module.Basis.constr_basis,
     EKFreeCoproduct.partWord_degree]
 
 /-- Lift of `ψ₃` to `Λ′` ([EK] p. 19): degree twist after reversal after `ψ₂`. -/

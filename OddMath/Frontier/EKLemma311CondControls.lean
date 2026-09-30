@@ -61,7 +61,7 @@ example : ℕ → Prop := Identity311
 
 /-- (verbatim, predecessor controls lines 228-229) -/
 def sh1 : DegreeShape 1 :=
-  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 /-- (verbatim, predecessor controls lines 230-231) -/
 @[simp] theorem sh1_rows : sh1.val.rowLens = [1] :=
   YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)

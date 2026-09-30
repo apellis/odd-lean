@@ -124,7 +124,7 @@ theorem qcoef_nil_target (I J : List ℕ) (hI : ∀ a ∈ I, 0 < a) (hJ : ∀ a 
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨p, hp, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     intro hp0
     have hs := qsh_sum I J p hp
     rw [hp0, List.sum_nil] at hs
@@ -226,7 +226,7 @@ theorem T_zero (c : ℕ) (hc : 0 < c) (K I J : List ℕ) :
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨u, _, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨-, h⟩
     rw [Nat.sub_zero, compress_cons_pos hc] at h
     exact List.cons_ne_nil _ _ h
@@ -234,7 +234,7 @@ theorem T_zero (c : ℕ) (hc : 0 < c) (K I J : List ℕ) :
     simp only [Nat.sub_zero, compress_cons_zero, compress_cons_pos hc, List.cons.injEq]
     by_cases hb : b = c
     · subst hb
-      rw [if_pos rfl, splitCoef, ← sum_ite_mul]
+      rw [ite_eq_left rfl, splitCoef, ← sum_ite_mul]
       congr 1
       apply List.map_congr_left
       intro u _
@@ -244,12 +244,12 @@ theorem T_zero (c : ℕ) (hc : 0 < c) (K I J : List ℕ) :
         · rw [← sum_compress u, h1, pow_add]
         · rfl
       · simp [h1]
-    · rw [if_neg hb]
+    · rw [ite_eq_right hb]
       apply List.sum_eq_zero
       intro x hx
       simp only [List.mem_map] at hx
       obtain ⟨u, _, rfl⟩ := hx
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨-, h, -⟩
       exact hb h.symm
 
@@ -266,7 +266,7 @@ theorem T_top (c : ℕ) (hc : 0 < c) (K I J : List ℕ) :
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨u, _, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h, -⟩
     rw [compress_cons_pos hc] at h
     exact List.cons_ne_nil _ _ h
@@ -275,17 +275,17 @@ theorem T_top (c : ℕ) (hc : 0 < c) (K I J : List ℕ) :
       zero_mul, zero_add]
     by_cases ha : a = c
     · subst ha
-      rw [if_pos rfl, splitCoef]
+      rw [ite_eq_left rfl, splitCoef]
       congr 1
       apply List.map_congr_left
       intro u _
       simp
-    · rw [if_neg ha]
+    · rw [ite_eq_right ha]
       apply List.sum_eq_zero
       intro x hx
       simp only [List.mem_map] at hx
       obtain ⟨u, _, rfl⟩ := hx
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨⟨h, -⟩, -⟩
       exact ha h.symm
 
@@ -303,7 +303,7 @@ theorem T_mid (c i : ℕ) (hi : 0 < i) (hic : i < c) (K I J : List ℕ) :
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨u, _, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h, -⟩
     rw [compress_cons_pos hi] at h
     exact List.cons_ne_nil _ _ h
@@ -312,14 +312,14 @@ theorem T_mid (c i : ℕ) (hi : 0 < i) (hic : i < c) (K I J : List ℕ) :
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨u, _, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨-, h⟩
     rw [compress_cons_pos hci] at h
     exact List.cons_ne_nil _ _ h
   simp only [compress_cons_pos hi, compress_cons_pos hci, List.cons.injEq]
   by_cases hab : a = i ∧ b = c - i
   · obtain ⟨rfl, rfl⟩ := hab
-    rw [if_pos ⟨rfl, rfl⟩, splitCoef, ← sum_ite_mul]
+    rw [ite_eq_left ⟨rfl, rfl⟩, splitCoef, ← sum_ite_mul]
     congr 1
     apply List.map_congr_left
     intro u _
@@ -329,12 +329,12 @@ theorem T_mid (c i : ℕ) (hi : 0 < i) (hic : i < c) (K I J : List ℕ) :
       · rw [← sum_compress u, h1, pow_add]
       · rfl
     · simp [h1]
-  · rw [if_neg hab]
+  · rw [ite_eq_right hab]
     apply List.sum_eq_zero
     intro x hx
     simp only [List.mem_map] at hx
     obtain ⟨u, _, rfl⟩ := hx
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨⟨h1, -⟩, ⟨h2, -⟩⟩
     exact hab ⟨h1.symm, h2.symm⟩
 
@@ -355,15 +355,15 @@ theorem T_mid_sum (c : ℕ) (K I J : List ℕ) (hI : ∀ a ∈ I, 0 < a) (hJ : �
   have hb := hJ b (by simp)
   simp only
   by_cases habc : a + b = c
-  · rw [if_pos habc, Finset.sum_eq_single a]
-    · rw [if_pos ⟨rfl, by omega⟩, show c - a = b by omega]
-    · intro i _ hia; rw [if_neg]; rintro ⟨h, -⟩; exact hia h.symm
+  · rw [ite_eq_left habc, Finset.sum_eq_single a]
+    · rw [ite_eq_left ⟨rfl, by omega⟩, show c - a = b by omega]
+    · intro i _ hia; rw [ite_eq_right]; rintro ⟨h, -⟩; exact hia h.symm
     · intro h; exact absurd (Finset.mem_Ioo.mpr ⟨ha, by omega⟩) h
-  · rw [if_neg habc]
+  · rw [ite_eq_right habc]
     apply Finset.sum_eq_zero
     intro i hi
     rw [Finset.mem_Ioo] at hi
-    rw [if_neg]; rintro ⟨rfl, h⟩; omega
+    rw [ite_eq_right]; rintro ⟨rfl, h⟩; omega
 
 /-- **The combinatorial core of §2.4:** the coefficient of `h_I ⊗ h_J` in `Δ(h_K)` is the
 quantum quasi-shuffle structure constant `c_q(I, J; K)`. -/
@@ -387,24 +387,24 @@ theorem splitCoef_eq_qcoef (K I J : List ℕ) (hK : ∀ a ∈ K, 0 < a) (hI : �
     rcases I with _ | ⟨a, I'⟩ <;> rcases J with _ | ⟨b, J'⟩
     · simp [qcoef, qsh]
     · have hb := hJ b (by simp)
-      simp only [add_zero, Finset.sum_const_zero, List.sum_nil, mul_zero, zero_mul]
+      simp only [add_zero, List.sum_nil, mul_zero]
       rw [qcoef_nil_left]
       by_cases hbc : b = c
       · subst hbc
-        rw [if_pos rfl, ih [] J' hK' (by simp) (fun x hx => hJ x (by simp [hx])),
+        rw [ite_eq_left rfl, ih [] J' hK' (by simp) (fun x hx => hJ x (by simp [hx])),
           qcoef_nil_left]
         simp
-      · rw [if_neg hbc, if_neg]; intro h; exact hbc (List.cons.inj h).1
+      · rw [ite_eq_right hbc, ite_eq_right]; intro h; exact hbc (List.cons.inj h).1
     · have ha := hI a (by simp)
-      simp only [zero_add, Finset.sum_const_zero, add_zero]
+      simp only [zero_add, add_zero]
       rw [qcoef_nil_right]
       by_cases hac : a = c
       · subst hac
-        rw [if_pos rfl, ih I' [] hK' (fun x hx => hI x (by simp [hx])) (by simp)]
+        rw [ite_eq_left rfl, ih I' [] hK' (fun x hx => hI x (by simp [hx])) (by simp)]
         cases I' with
         | nil => rw [qcoef_nil_left]; simp
         | cons a' I'' => rw [qcoef_nil_right]; simp
-      · rw [if_neg hac, if_neg]; intro h; exact hac (List.cons.inj h).1
+      · rw [ite_eq_right hac, ite_eq_right]; intro h; exact hac (List.cons.inj h).1
     · have ha := hI a (by simp)
       have hb := hJ b (by simp)
       have hI' : ∀ x ∈ I', 0 < x := fun x hx => hI x (by simp [hx])
@@ -427,7 +427,7 @@ theorem coproduct_hWord_list (K : List ℕ) :
     have hw : hWord k (c :: K) = h k c * hWord k K := by simp [hWord]
     rw [hw, coproduct_mul, coproduct_h, ih, splitsAll, List.map_flatMap, list_sum_flatMap_gen,
       EKAppendixData.list_sum_range, ← Fin.sum_univ_eq_sum_range]
-    simp only [tensorMul, map_sum, LinearMap.sum_apply, list_map_sum_gen]
+    simp only [tensorMul, map_sum, LinearMap.sum_apply]
     apply Finset.sum_congr rfl
     intro i _
     rw [map_list_sum, List.map_map, List.map_map]
@@ -546,7 +546,7 @@ def qMul : QSym k →ₗ[k] QSym k →ₗ[k] QSym k :=
 
 theorem qMul_M (v₁ v₂ : W) : qMul q (M k v₁) (M k v₂) = qMulB q v₁ v₂ := by
   have h1 : ∀ v : W, M k v = Finsupp.basisSingleOne v := fun v => by simp [M]
-  rw [qMul, h1, h1, Basis.constr_basis, Basis.constr_basis]
+  rw [qMul, h1, h1, Module.Basis.constr_basis, Module.Basis.constr_basis]
 
 variable (k) in
 /-- The pairing `Λ′ × QΛ_q → k`, `⟨h_α, M_β⟩ = δ_{αβ}`. -/
@@ -554,7 +554,7 @@ def pair : L k →ₗ[k] QSym k →ₗ[k] k :=
   (wordBasis k).constr k fun v => Finsupp.lapply v
 
 theorem pair_wordBasis (v : W) (f : QSym k) : pair k (wordBasis k v) f = f v := by
-  simp [pair, Basis.constr_basis]
+  simp [pair, Module.Basis.constr_basis]
 
 theorem pair_wordBasis_M (v w : W) : pair k (wordBasis k v) (M k w) = if w = v then 1 else 0 := by
   rw [pair_wordBasis, M, Finsupp.single_apply]
@@ -580,13 +580,13 @@ theorem pair_coproduct (x : L k) (v₁ v₂ : W) :
       apply List.map_congr_left
       intro u _
       simp only [Function.comp_apply, Finsupp.applyAddHom_apply, map_smul]
-      rw [← partWord_value, ← partWord_value, ← Basis.tensorProduct_apply,
-        show (wordBasis k).tensorProduct (wordBasis k) = tensorBasis k from rfl, Basis.repr_self,
+      rw [← partWord_value, ← partWord_value, ← Module.Basis.tensorProduct_apply,
+        show (wordBasis k).tensorProduct (wordBasis k) = tensorBasis k from rfl, Module.Basis.repr_self,
         Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]
       by_cases h : compress u = wl v₁ ∧ compress (subL (wl w) u) = wl v₂
-      · rw [if_pos h, if_pos (by rw [Prod.mk.injEq, partWord_eq_iff, partWord_eq_iff]; exact h),
+      · rw [ite_eq_left h, ite_eq_left (by rw [Prod.mk.injEq, partWord_eq_iff, partWord_eq_iff]; exact h),
           mul_one]
-      · rw [if_neg h, if_neg (by rw [Prod.mk.injEq, partWord_eq_iff, partWord_eq_iff]; exact h),
+      · rw [ite_eq_right h, ite_eq_right (by rw [Prod.mk.injEq, partWord_eq_iff, partWord_eq_iff]; exact h),
           mul_zero]
     have hr : ((qsh (wl v₁) (wl v₂)).map ((Finsupp.applyAddHom w) ∘
         fun p => q ^ p.2 • M k (partWord p.1))).sum = qcoef q (wl v₁) (wl v₂) (wl w) := by
@@ -602,8 +602,8 @@ theorem pair_coproduct (x : L k) (v₁ v₂ : W) :
         · intro h; rw [← h, wl_partWord _ hpos]
         · intro h; rw [h, partWord_wl]
       by_cases h : p.1 = wl w
-      · rw [if_pos (this.mpr h), if_pos h, mul_one]
-      · rw [if_neg (fun h' => h (this.mp h')), if_neg h, mul_zero]
+      · rw [ite_eq_left (this.mpr h), ite_eq_left h, mul_one]
+      · rw [ite_eq_right (fun h' => h (this.mp h')), ite_eq_right h, mul_zero]
     rw [hl, hr, splitCoef_eq_qcoef q _ _ _ (wl_pos w) (wl_pos v₁) (wl_pos v₂)]
   exact LinearMap.congr_fun hlin x
 
@@ -617,12 +617,12 @@ theorem sum_splitsW (a b w : W) :
       if a * b = w then 1 else 0 := by
   rw [splitsW, List.map_map, EKAppendixData.list_sum_range]
   by_cases hw : a * b = w
-  · rw [if_pos hw, Finset.sum_eq_single a.toList.length]
+  · rw [ite_eq_left hw, Finset.sum_eq_single a.toList.length]
     · subst hw
       simp [FreeMonoid.toList_mul]
     · intro i hi hia
       simp only [Function.comp_apply]
-      rw [if_neg, zero_mul]
+      rw [ite_eq_right, zero_mul]
       intro h
       apply hia
       have := congrArg (fun v : W => v.toList.length) h
@@ -633,7 +633,7 @@ theorem sum_splitsW (a b w : W) :
       exfalso; apply h
       rw [Finset.mem_range, ← hw, FreeMonoid.toList_mul, List.length_append]
       omega
-  · rw [if_neg hw]
+  · rw [ite_eq_right hw]
     apply Finset.sum_eq_zero
     intro i _
     simp only [Function.comp_apply]
@@ -643,8 +643,8 @@ theorem sum_splitsW (a b w : W) :
         apply FreeMonoid.toList.injective
         rw [FreeMonoid.toList_mul, h1, h2, FreeMonoid.toList_ofList, FreeMonoid.toList_ofList,
           List.take_append_drop]
-      · rw [if_neg h2, mul_zero]
-    · rw [if_neg h1, zero_mul]
+      · rw [ite_eq_right h2, mul_zero]
+    · rw [ite_eq_right h1, zero_mul]
 
 /-- **§2.4, product:** the product of `Λ′` is the transpose of the deconcatenation coproduct
 of `QΛ_q`: `⟨xy, M_w⟩ = Σ_{w = w₁w₂} ⟨x, M_{w₁}⟩⟨y, M_{w₂}⟩`. -/
@@ -753,7 +753,7 @@ theorem parts_pos {n : ℕ} (hn : 0 < n) (S : Finset (Fin n)) (i : Fin (ncut S +
     (by rw [blk_last S _ (by simp; omega)]; exact Nat.lt_succ_iff.mp i.isLt)
   unfold EKRest.parts
   have hb : blockMap S a = i := Fin.ext ha
-  calc 0 < (if blockMap S a = i then 1 else 0) := by rw [if_pos hb]; norm_num
+  calc 0 < (if blockMap S a = i then 1 else 0) := by rw [ite_eq_left hb]; norm_num
     _ ≤ _ := Finset.single_le_sum (f := fun a => if blockMap S a = i then 1 else 0)
         (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)
 
@@ -813,7 +813,7 @@ theorem pair_hS_Rfund {n : ℕ} (T : Finset (Fin n)) (hT : ∀ s ∈ T, 0 < s.va
   · split_ifs <;> simp [pair_wordBasis_M]
   · intro U _ hU
     split_ifs
-    · rw [pair_wordBasis_M, if_neg]
+    · rw [pair_wordBasis_M, ite_eq_right]
       intro h
       exact hU (Subtype.ext (wordOfCut_inj _ _ U.2 hT h))
     · simp
@@ -834,8 +834,8 @@ theorem pair_hT_Rfund {n : ℕ} (S S' : Cut n) :
   rw [Finset.sum_congr rfl h1, ← Int.cast_sum, incl_excl]
   have : (S'.1 = S.1) ↔ (S = S') := ⟨fun h => (Subtype.ext h).symm, fun h => by rw [h]⟩
   by_cases h : S = S'
-  · rw [if_pos (this.mpr h), if_pos h]; simp
-  · rw [if_neg (fun h' => h (this.mp h')), if_neg h]; simp
+  · rw [ite_eq_left (this.mpr h), ite_eq_left h]; simp
+  · rw [ite_eq_right (fun h' => h (this.mp h')), ite_eq_right h]; simp
 
 end Ribbon
 

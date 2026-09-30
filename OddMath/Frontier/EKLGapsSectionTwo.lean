@@ -49,7 +49,6 @@ theorem qL_pow_ne_one {m : ℕ} (hm : m ≠ 0) : qL ^ m ≠ 1 := by
   rw [qL_pow_eq_single]
   intro h
   have := congrArg (fun f : QL => f.coeff 0) h
-  simp only at this
   rw [HahnSeries.coeff_single_of_ne (by exact_mod_cast (Ne.symm hm))] at this
   simp at this
 
@@ -143,8 +142,8 @@ theorem rank218MiddlePrinted_two :
   simp only [pow_one] at h1
   simp only [rank218MiddlePrinted, rank218Middle, Finset.prod_range_succ, Finset.prod_range_zero,
     one_mul, pow_zero, zero_add, pow_one]
-  field_simp
-  ring
+  generalize qL⁻¹ = y at *
+  field_simp [h1, h2]
 
 /-- **EKL (2.18), middle expression, as printed, is false**: at `a = 2`,
 `∏_{i=1}^{a} 1/(1-q^{2i}) ≠ (1-q²)^{-a} ∏_{i=1}^{a} q^{-i+1}(q-q^{-1})/(q^a-q^{-a})`
@@ -272,7 +271,16 @@ theorem three_cycle_ne_inv (n : ℕ) :
     calc _ = (simple (n := n+1) 0 * simple 1)⁻¹ * (simple 0 * simple 1) := by rw [h]
       _ = 1 := inv_mul_cancel _
   have := congrArg (fun p : Perm (n+1) => (p 0).val) h2
-  simp [simple, Equiv.swap_apply_def, Fin.ext_iff] at this
+  have h02 : (0 : Fin (n+1+2)) ≠ 2 := by
+    intro he
+    have hv := congrArg Fin.val he
+    norm_num [Nat.mod_eq_of_lt (by omega : 2 < n+1+2)] at hv
+  have h21 : (2 : Fin (n+1+2)) ≠ 1 := by
+    intro he
+    have hv := congrArg Fin.val he
+    norm_num [Nat.mod_eq_of_lt (by omega : 2 < n+1+2)] at hv
+  norm_num [simple, Equiv.swap_apply_def, h02, h02.symm, h21,
+    Nat.mod_eq_of_lt (by omega : 2 < n+1+2)] at this
 
 /-- **The printed (2.43) is false for every `a ≥ 3`**: for the 3-cycle `u = s_1 s_2` one has
 `u ≠ u⁻¹`, and `∂_u(s_u) = ±1 ≠ 0`. -/

@@ -133,7 +133,7 @@ theorem prefix_divided_and_s {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2)
       s i.castSucc (prefixHom (n+2) f) = prefixHom (n+2) (s i f) := by
   induction f using induction_generators with
   | hconst r =>
-      simp only [prefixHom_const, map_zsmul, divided_one, smul_zero, map_one, map_zero, and_self]
+      simp only [map_zsmul, divided_one, smul_zero, map_one, map_zero, and_self]
   | hgen j =>
       rw [prefixHom_generator, divided_generator, divided_generator, s_generator,
         s_generator, map_neg, prefixHom_generator, swap_castSucc]
@@ -288,7 +288,7 @@ theorem shift_divided_and_s {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
       s i.succ (shiftHom (n+2) f) = shiftHom (n+2) (s i f) := by
   induction f using induction_generators with
   | hconst r =>
-      simp only [shiftHom_const, map_zsmul, divided_one, smul_zero, map_one, map_zero, and_self]
+      simp only [map_zsmul, divided_one, smul_zero, map_one, map_zero, and_self]
   | hgen j =>
       rw [shiftHom_generator, divided_generator, divided_generator, s_generator,
         s_generator, map_neg, shiftHom_generator, swap_succ]

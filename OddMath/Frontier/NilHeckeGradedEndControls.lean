@@ -46,7 +46,7 @@ theorem inhomogeneous_not_pure :
     have := congrFun he 0
     simp [expSingle] at this
   change Finsupp.single (0 : Fin 2 → ℕ) (1 : ℤ) 0 + Finsupp.single (expSingle (0 : Fin 2)) (1 : ℤ) 0 = 0 at hh
-  rw [Finsupp.single_eq_of_ne hn] at hh
+  rw [Finsupp.single_eq_of_ne (Ne.symm hn)] at hh
   norm_num at hh
 
 theorem inhomogeneous_inverse :
@@ -67,7 +67,7 @@ theorem raisingMatrix_degree : matrixDegree 2 raisingMatrix := by
     change (1 : SkewPolynomial 2) ∈ polynomialPiece 2 (2+2*0-2*1)
     norm_num
     exact one_mem 2
-  · simp only [raisingMatrix, if_neg h]
+  · simp only [raisingMatrix, ite_eq_right h]
     exact (kernelPiece 0 _).zero_mem
 
 theorem reversed_shift_rejected : ¬(∀ i j : Perm 0,

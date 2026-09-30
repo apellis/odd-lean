@@ -56,7 +56,7 @@ theorem pairing_values_odd (n : ℕ) (hn3 : 3 ≤ n) (hn : Odd n) :
   rw [pairing_mul_two, pairing_mul_two]
   constructor
   · rw [Fintype.sum_eq_single (Fin.last n)]
-    · simp [Fin.sum_univ_two, pairing_h_two, phiP_k hP (by omega),
+    · simp [Fin.sum_univ_two, phiP_k hP (by omega),
         phiP_mismatch hP n 1 (by omega)]
     · intro i hi
       have hik : i.val < n := by
@@ -68,12 +68,12 @@ theorem pairing_values_odd (n : ℕ) (hn3 : 3 ≤ n) (hn : Odd n) :
       have := j.isLt
       rw [pairing_h_two]
       rcases (show j.val = 0 ∨ j.val = 1 by omega) with hj | hj
-      · rw [if_neg (by omega)]; simp
+      · rw [ite_eq_right (by omega)]; simp
       · by_cases h1 : i.val = n - 1
         · rw [hj, h1, phiP_km1 hP (by omega)]; simp
-        · rw [if_neg (by omega)]; simp
+        · rw [ite_eq_right (by omega)]; simp
   · rw [Fintype.sum_eq_single 0]
-    · simp [Fin.sum_univ_two, pairing_h_two, phiP_k hP (by omega), hn.neg_one_pow,
+    · simp [Fin.sum_univ_two, phiP_k hP (by omega), hn.neg_one_pow,
         phiP_mismatch hP n 1 (by omega)]
     · intro i hi
       have hi0 : i.val ≠ 0 := fun h => hi (Fin.ext h)
@@ -84,8 +84,8 @@ theorem pairing_values_odd (n : ℕ) (hn3 : 3 ≤ n) (hn : Odd n) :
       rcases (show j.val = 0 ∨ j.val = 1 by omega) with hj | hj
       · by_cases h1 : i.val = 1
         · rw [hj, h1]; simp [phiP_km1 hP (k := n) (by omega)]
-        · rw [if_neg (by omega)]; simp
-      · rw [if_neg (by omega)]; simp
+        · rw [ite_eq_right (by omega)]; simp
+      · rw [ite_eq_right (by omega)]; simp
 
 theorem p_one : p 1 = EKElementaryQuotient.h 1 := by
   rw [p, rowShape_one]
@@ -97,8 +97,8 @@ theorem two_eq_zero_of_h1h2_comm (h : hK k 1 * hK k 2 = hK k 2 * hK k 1) : (2 : 
   have h' := h2h1_add_h1h2 (k := k)
   rw [h, ← two_smul k, ← hBasisK_yd21, ← hBasisK_yd3] at h'
   have := congrArg (fun x => (hBasisK (k := k)).repr x yd21) h'
-  simp only [map_smul, Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same,
-    Finsupp.single_eq_of_ne yd21_ne_yd3.symm, smul_eq_mul, mul_one, mul_zero] at this
+  simp only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same,
+    Finsupp.single_eq_of_ne yd21_ne_yd3, smul_eq_mul, mul_one, mul_zero] at this
   exact this
 
 /-- Central images: if `z` is central in `Λ_ℤ`, then `ψ(z)` is central in `Λ_k`. -/
@@ -116,7 +116,7 @@ theorem proposition_3_4_K (n : ℕ) (hn : 1 ≤ n) :
   constructor
   · intro hc
     by_contra hne
-    push_neg at hne
+    push Not at hne
     obtain ⟨hodd, h2⟩ := hne
     have ho : Odd n := Nat.not_even_iff_odd.mp hodd
     by_cases h1 : n = 1
@@ -194,8 +194,7 @@ theorem thetaInvK_ratToK (w : LamK ℚ) : thetaInvK k (ratToK k w) = (1 : k) ⊗
   exact LinearMap.congr_fun h w
 
 theorem thetaInvK_thetaK (x : k ⊗[ℚ] LamK ℚ) : thetaInvK k (thetaK k x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
+  induction x using TensorProduct.inductionOn with
   | tmul c w =>
     rw [thetaK_tmul, map_smul, thetaInvK_ratToK, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
@@ -218,8 +217,7 @@ def pAlgK : Subalgebra k (LamK k) :=
 
 theorem tmul_one_commute {B : Type*} [Ring B] [Algebra ℚ B] (c : k) (u : k ⊗[ℚ] B) :
     u * (c ⊗ₜ[ℚ] (1 : B)) = (c ⊗ₜ[ℚ] (1 : B)) * u := by
-  induction u using TensorProduct.induction_on with
-  | zero => simp
+  induction u using TensorProduct.inductionOn with
   | tmul a b =>
     rw [Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one,
       one_mul, mul_comm]
@@ -229,8 +227,7 @@ theorem tmul_one_commute {B : Type*} [Ring B] [Algebra ℚ B] (c : k) (u : k ⊗
 theorem central_of_commute_includeRight {B : Type*} [Ring B] [Algebra ℚ B]
     {w : k ⊗[ℚ] B} (hw : ∀ b : B, w * ((1 : k) ⊗ₜ[ℚ] b) = ((1 : k) ⊗ₜ[ℚ] b) * w)
     (y : k ⊗[ℚ] B) : w * y = y * w := by
-  induction y using TensorProduct.induction_on with
-  | zero => simp
+  induction y using TensorProduct.inductionOn with
   | tmul c b =>
     have hcb : c ⊗ₜ[ℚ] b = (c ⊗ₜ[ℚ] (1 : B)) * ((1 : k) ⊗ₜ[ℚ] b) := by
       rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
@@ -242,7 +239,7 @@ abbrev pTensor : Subalgebra ℚ (k ⊗[ℚ] LamK ℚ) :=
   (Algebra.TensorProduct.map (AlgHom.id ℚ k) (EKFinal.pAlg).val).range
 
 theorem center_tensor_iff (w : k ⊗[ℚ] LamK ℚ) : (∀ y, w * y = y * w) ↔ w ∈ pTensor := by
-  haveI : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
+  have : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
   have hc := Subalgebra.centralizer_range_includeRight_eq_center_tensorProduct ℚ k (LamK ℚ)
   rw [EKFinal.center_eq] at hc
   rw [pTensor, ← hc, Subalgebra.mem_centralizer_iff]
@@ -270,8 +267,7 @@ theorem ratToK_mem_pAlgK {s : LamK ℚ} (hs : s ∈ EKFinal.pAlg) : ratToK k s �
 theorem thetaK_mem_of_mem {v : k ⊗[ℚ] LamK ℚ} (hv : v ∈ pTensor) : thetaK k v ∈ pAlgK k := by
   obtain ⟨x, rfl⟩ := (AlgHom.mem_range _).mp hv
   clear hv
-  induction x using TensorProduct.induction_on with
-  | zero => rw [map_zero, map_zero]; exact zero_mem _
+  induction x using TensorProduct.inductionOn with
   | tmul c s =>
     rw [Algebra.TensorProduct.map_tmul, thetaK_tmul]
     exact Subalgebra.smul_mem _ (ratToK_mem_pAlgK s.2) c
@@ -332,11 +328,10 @@ def pcK (j : ℕ) : Subalgebra.center k (LamK k) := ⟨pK k (2 * (j + 1)), pK_ev
 theorem map_id_injective {B C : Type*} [Ring B] [Ring C] [Algebra ℚ B] [Algebra ℚ C]
     (f : B →ₐ[ℚ] C) (hf : Function.Injective f) :
     Function.Injective (Algebra.TensorProduct.map (AlgHom.id k k) f) := by
-  haveI : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
+  have : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
   have he : ⇑(Algebra.TensorProduct.map (AlgHom.id k k) f) = ⇑(f.toLinearMap.lTensor k) := by
     funext x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
+    induction x using TensorProduct.inductionOn with
     | tmul a b => simp
     | add a b ha hb => rw [map_add, map_add, ha, hb]
   rw [he]
@@ -348,8 +343,7 @@ theorem map_center_central (x : k ⊗[ℚ] Subalgebra.center ℚ (LamK ℚ)) (y 
       y * Algebra.TensorProduct.map (AlgHom.id k k) (Subalgebra.center ℚ (LamK ℚ)).val x := by
   apply central_of_commute_includeRight
   intro b
-  induction x using TensorProduct.induction_on with
-  | zero => simp
+  induction x using TensorProduct.inductionOn with
   | tmul c z =>
     have hz : b * (z : LamK ℚ) = z * b := Subalgebra.mem_center_iff.mp z.2 b
     simp only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Subalgebra.coe_val,
@@ -392,9 +386,14 @@ theorem algebraicIndependent_pK : AlgebraicIndependent k (pcK k) := by
     apply MvPolynomial.algHom_ext
     intro j
     apply Subtype.ext
-    simp only [F, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe,
-      MvPolynomial.algebraTensorAlgEquiv_symm_X, Algebra.TensorProduct.map_tmul,
-      AlgHom.id_apply, MvPolynomial.aeval_X]
+    change ((centerMapK (Algebra.TensorProduct.map (AlgHom.id k k)
+      (MvPolynomial.aeval EKFinal.pcK)
+      ((MvPolynomial.algebraTensorAlgEquiv ℚ k).symm (MvPolynomial.X j)))) : LamK k) = _
+    rw [MvPolynomial.algebraTensorAlgEquiv_symm_X, Algebra.TensorProduct.map_tmul,
+      AlgHom.id_apply, MvPolynomial.aeval_X, MvPolynomial.aeval_X]
+    change thetaK k (Algebra.TensorProduct.map (AlgHom.id k k)
+      (Subalgebra.center ℚ (LamK ℚ)).val ((1 : k) ⊗ₜ[ℚ] EKFinal.pcK j)) = _
+    rw [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
     change thetaK k ((1 : k) ⊗ₜ[ℚ] EKFinal.pQ (2 * (j + 1))) = pK k (2 * (j + 1))
     rw [thetaK_tmul, one_smul, ratToK_pQ]
   have hinj : Function.Injective F :=
@@ -444,7 +443,7 @@ theorem decomposeK_psiRing (x : QZ) (d : ℕ) :
       EKIntegralBases.decompose_hPartition]
     by_cases hd : μ.card = d
     · subst hd; rw [Finsupp.single_eq_same, Finsupp.single_eq_same, hBasisK_eq_psiRing]
-    · rw [Finsupp.single_eq_of_ne hd, Finsupp.single_eq_of_ne hd, map_zero]
+    · rw [Finsupp.single_eq_of_ne (Ne.symm hd), Finsupp.single_eq_of_ne (Ne.symm hd), map_zero]
 
 theorem psiRing_rat_injective : Function.Injective (psiRing (k := ℚ)) := by
   intro x y h
@@ -476,13 +475,13 @@ theorem superCentral_odd_rat (m : ℕ) (w : LamK ℚ) (hw : w ∈ degreePieceK �
       intro d hd
       apply psiRing_rat_injective
       rw [← decomposeK_psiRing, ← hx, map_smul, decomposeK_piece hw, Finsupp.smul_apply,
-        Finsupp.single_eq_of_ne (Ne.symm hd), smul_zero, map_zero]
+        Finsupp.single_eq_of_ne hd, smul_zero, map_zero]
     have hx' : x = EKIntegralBases.decompose x (2 * m + 1) := by
       conv_lhs => rw [← EKIntegralBases.recompose_decompose x]
       rw [EKIntegralBases.recompose_apply, Finsupp.sum]
       rw [Finset.sum_eq_single (2 * m + 1)]
       · intro d _ hd; exact hdec d hd
-      · intro h0; exact (Finsupp.not_mem_support_iff.mp h0)
+      · intro h0; exact (Finsupp.notMem_support_iff.mp h0)
     rw [hx']
     exact EKIntegralBases.decompose_mem x _
   have hsc' : EKRest.SuperCentral (2 * m + 1) x := by
@@ -549,7 +548,7 @@ theorem dualMap_repr (φ : Module.Dual ℚ k) (x : LamK k) (μ : YoungDiagram) :
 /-- **EK p. 26 over every commutative `ℚ`-algebra `k`:** a homogeneous supercentral element of
 odd degree is `0`. -/
 theorem superCentralK_odd (m : ℕ) (z : LamK k) (hz : SuperCentralK (2 * m + 1) z) : z = 0 := by
-  haveI : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
+  have : Module.Free ℚ k := Module.Free.of_divisionRing ℚ k
   apply (hBasisK (k := k)).repr.injective
   ext μ
   rw [map_zero, Finsupp.coe_zero, Pi.zero_apply]

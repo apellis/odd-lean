@@ -32,11 +32,11 @@ local instance (d : ℕ) : DecidableEq (DegreeShape d) := Classical.decEq _
 
 /-- The one-row shape `(k)`. -/
 def rowShape (k : ℕ) : DegreeShape k :=
-  ⟨YoungDiagram.ofRowLens [k] (List.sorted_singleton k),
-    by rw [EKPartitionSpanning.card_ofRowLens]; simp⟩
+  ⟨YoungDiagram.ofRowLens [k] ((by simp [List.sortedGE_iff_pairwise])),
+    by rw [EKPartitionSpanning.card_ofRowLens _ (by simp)]; simp⟩
 
 theorem rowShape_rows (k : ℕ) (hk : 0 < k) : (rowShape k).val.rowLens = [k] :=
-  YoungDiagram.rowLens_ofRowLens_eq_self (hw := List.sorted_singleton k) (by simp [hk])
+  YoungDiagram.rowLens_ofRowLens_eq_self (hw := (by simp [List.sortedGE_iff_pairwise])) (by simp [hk])
 
 /-- `p_k = m_(k)`, the integral dual of `h_(k)`. -/
 def p (k : ℕ) : Q := (mBasis k (rowShape k)).val
@@ -88,11 +88,11 @@ theorem pair_hPartition_p (k : ℕ) (μ : YoungDiagram) :
   by_cases hc : μ.card = k
   · have he := h_m k ⟨μ, hc⟩ (rowShape k)
     by_cases hμ : μ = (rowShape k).val
-    · rw [if_pos (Subtype.ext hμ)] at he
-      rw [if_pos hμ]; exact he
-    · rw [if_neg (fun h => hμ (congrArg Subtype.val h))] at he
-      rw [if_neg hμ]; exact he
-  · rw [if_neg]
+    · rw [ite_eq_left (Subtype.ext hμ)] at he
+      rw [ite_eq_left hμ]; exact he
+    · rw [ite_eq_right (fun h => hμ (congrArg Subtype.val h))] at he
+      rw [ite_eq_right hμ]; exact he
+  · rw [ite_eq_right]
     · exact orth hc (hPartition_mem μ) (mBasis k (rowShape k)).property
     · intro he; apply hc; rw [he]; exact (rowShape k).property
 
@@ -118,11 +118,11 @@ theorem psi_relator (k : ℕ) (hk : Even k) (r : A) (hr : EKPresentation.Relator
     rcases Nat.even_or_odd a with ha | ha
     · have ha2 := Nat.even_iff.mp ha
       have h1 : psi k (CompleteElementary.h b) = 0 := by
-        rw [psi_h, if_neg (by omega), if_neg (by omega)]
+        rw [psi_h, ite_eq_right (by omega), ite_eq_right (by omega)]
       have h2 : psi k (CompleteElementary.h (a + 1)) = 0 := by
-        rw [psi_h, if_neg (by omega), if_neg (by omega)]
+        rw [psi_h, ite_eq_right (by omega), ite_eq_right (by omega)]
       simp [h1, h2]
-    · simp only [map_sub, map_add, map_mul, map_zsmul, ha.neg_one_pow, neg_smul, one_smul, map_neg]
+    · simp only [map_sub, map_add, map_mul, ha.neg_one_pow, neg_smul, one_smul, map_neg]
       ring
 
 theorem psi_relIdeal (k : ℕ) (hk : Even k) (r : A) (hr : r ∈ EKPresentation.relIdeal) :
@@ -161,7 +161,7 @@ theorem psi_list (k : ℕ) (ℓ : List ℕ) (hpos : ∀ a ∈ ℓ, 0 < a) :
   | cons a t ih =>
     have ha : 0 < a := hpos a (by simp)
     rw [List.map_cons, List.prod_cons, ih (fun b hb => hpos b (by simp [hb])), psi_h k a,
-      if_neg (by omega)]
+      ite_eq_right (by omega)]
     by_cases hak : a = k
     · subst hak
       by_cases ht : t = []
@@ -186,8 +186,8 @@ theorem delta_eq (k : ℕ) (hk0 : 0 < k) (hk : Even k) :
   rw [hBasis_apply, LinearMap.flip_apply, pair_hPartition_p, hPartition_eq,
     delta_hWord k hk _ (fun a ha => μ.pos_of_mem_rowLens a ha)]
   by_cases hμ : μ = (rowShape k).val
-  · rw [if_pos hμ, if_pos ((rows_iff k hk0 μ).mpr hμ)]
-  · rw [if_neg hμ, if_neg (fun h => hμ ((rows_iff k hk0 μ).mp h))]
+  · rw [ite_eq_left hμ, ite_eq_left ((rows_iff k hk0 μ).mpr hμ)]
+  · rw [ite_eq_right hμ, ite_eq_right (fun h => hμ ((rows_iff k hk0 μ).mp h))]
 
 /-- Even `k`: pairing against `p k` is `snd ∘ ψ`. -/
 theorem phi_pi (k : ℕ) (hk0 : 0 < k) (hk : Even k) (x : A) :
@@ -210,11 +210,11 @@ theorem support {r : ℕ} (k : ℕ) (γ : Fin r → ℕ)
     (hne : (psi k (EKMixedPairing.word γ (fun _ => false))).snd ≠ 0) (j : Fin r) :
     γ j = 0 ∨ γ j = k := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   apply hne
   rw [psi_word, Finset.prod_eq_zero (Finset.mem_univ j)]
   · simp
-  · rw [psi_h, if_neg hc.1, if_neg hc.2]
+  · rw [psi_h, ite_eq_right hc.1, ite_eq_right hc.2]
 
 theorem even_sum' {ι : Type*} (s : Finset ι) (f : ι → ℕ) (h : ∀ i ∈ s, Even (f i)) :
     Even (∑ i ∈ s, f i) := by
@@ -317,20 +317,20 @@ theorem phiP_k {k : ℕ} {P : A} (hP : pi P = p k) (hk : 0 < k) :
   rw [pairing_lift hP]
   have he : pi (CompleteElementary.h k) = hPartition (rowShape k).val := by
     rw [hPartition_eq, rowShape_rows k hk]; simp [hWord]
-  rw [he, pair_hPartition_p, if_pos rfl]
+  rw [he, pair_hPartition_p, ite_eq_left rfl]
 
 theorem phiP_km1 {k : ℕ} {P : A} (hP : pi P = p k) (hk : 2 ≤ k) :
     pairing P (CompleteElementary.h (k - 1) * CompleteElementary.h 1) = 0 := by
   rw [pairing_lift hP]
-  have hs : List.Sorted (· ≥ ·) [k - 1, 1] := by
-    refine List.sorted_cons.mpr ⟨?_, List.sorted_singleton 1⟩
+  have hs : List.Pairwise (· ≥ ·) [k - 1, 1] := by
+    refine List.pairwise_cons.mpr ⟨?_, (by simp)⟩
     intro b hb; simp at hb; omega
-  let μ := YoungDiagram.ofRowLens [k - 1, 1] hs
+  let μ := YoungDiagram.ofRowLens [k - 1, 1] hs.sortedGE
   have hμ : μ.rowLens = [k - 1, 1] :=
-    YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs) (by intro x hx; simp at hx; omega)
+    YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs.sortedGE) (by intro x hx; simp at hx; omega)
   have he : pi (CompleteElementary.h (k - 1) * CompleteElementary.h 1) = hPartition μ := by
     rw [hPartition_eq, hμ]; simp [hWord]
-  rw [he, pair_hPartition_p, if_neg]
+  rw [he, pair_hPartition_p, ite_eq_right]
   intro hc
   have := (rows_iff k (by omega) μ).mpr hc
   rw [hμ] at this
@@ -351,7 +351,7 @@ theorem not_central_odd (k : ℕ) (hk3 : 3 ≤ k) (hk : Odd k) :
         pairing (CompleteElementary.h 1)
           (CompleteElementary.h (k - i.val) * CompleteElementary.h (1 - j.val))) = 1 := by
     rw [Fintype.sum_eq_single (Fin.last k)]
-    · simp [Fin.sum_univ_two, pairing_h_two, phiP_k hP (by omega),
+    · simp [Fin.sum_univ_two, phiP_k hP (by omega),
         phiP_mismatch hP k 1 (by omega)]
     · intro i hi
       have hik : i.val < k := by
@@ -363,15 +363,15 @@ theorem not_central_odd (k : ℕ) (hk3 : 3 ≤ k) (hk : Odd k) :
       have := j.isLt
       rw [pairing_h_two]
       rcases (show j.val = 0 ∨ j.val = 1 by omega) with hj | hj
-      · rw [if_neg (by omega)]; simp
+      · rw [ite_eq_right (by omega)]; simp
       · by_cases h1 : i.val = k - 1
         · rw [hj, h1, phiP_km1 hP (by omega)]; simp
-        · rw [if_neg (by omega)]; simp
+        · rw [ite_eq_right (by omega)]; simp
   have hR : ∑ i : Fin (k+1), ∑ j : Fin (1+1), (-1 : ℤ) ^ (j.val * (k - i.val)) *
       (pairing (CompleteElementary.h 1) (CompleteElementary.h i.val * CompleteElementary.h j.val) *
         pairing P (CompleteElementary.h (k - i.val) * CompleteElementary.h (1 - j.val))) = -1 := by
     rw [Fintype.sum_eq_single 0]
-    · simp [Fin.sum_univ_two, pairing_h_two, phiP_k hP (by omega), hk.neg_one_pow,
+    · simp [Fin.sum_univ_two, phiP_k hP (by omega), hk.neg_one_pow,
         phiP_mismatch hP k 1 (by omega)]
     · intro i hi
       have hi0 : i.val ≠ 0 := fun h => hi (Fin.ext h)
@@ -382,8 +382,8 @@ theorem not_central_odd (k : ℕ) (hk3 : 3 ≤ k) (hk : Odd k) :
       rcases (show j.val = 0 ∨ j.val = 1 by omega) with hj | hj
       · by_cases h1 : i.val = 1
         · rw [hj, h1]; simp [phiP_km1 hP (k := k) (by omega)]
-        · rw [if_neg (by omega)]; simp
-      · rw [if_neg (by omega)]; simp
+        · rw [ite_eq_right (by omega)]; simp
+      · rw [ite_eq_right (by omega)]; simp
   rw [hL, hR] at h2
   norm_num at h2
 

@@ -312,7 +312,7 @@ theorem divMonomial_zero_left (b : ℕ) : divMonomial 0 b = powDiv2 b := by
 
 theorem divMonomial_zero_right (a : ℕ) : divMonomial a 0 = powDiv1 a := by
   have hexp : ![0, 0] = (0 : Fin 2 → ℕ) := by decide
-  simp only [divMonomial, powDiv2_zero, mul_zero, add_zero, hexp, _root_.pow_zero]
+  simp only [divMonomial, powDiv2_zero, mul_zero, add_zero, hexp]
   show mul (powDiv1 a) one = powDiv1 a
   exact mul_one _
 
@@ -458,7 +458,7 @@ theorem divMonomial_three_one : divMonomial 3 1
       _root_.mul_one, _root_.mul_one]
   have hcu : (-1 : ℤ) ^ (3 : ℕ) = -1 := by decide
   simp only [divMonomial, powDiv1_three, powDiv2_one, hcu, hx, monomial_neg,
-    add_mul, mul_one, neg_mul, k0, k1, k2]
+    add_mul, mul_one, k0, k1, k2]
   rw [add_assoc, add_neg_cancel, add_zero]
 
 /-- EKL (2.4): `d_1(x_1x_2^3) = -(x_1^2x_2 + x_1x_2^2)`. JSON: dd-13. -/

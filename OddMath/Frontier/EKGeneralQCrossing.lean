@@ -117,8 +117,8 @@ private theorem weight_identity (i k : Fin r) (j l : Fin c) (x : ℤ) :
   rcases lt_trichotomy j l with hjl | hjl | hjl
   all_goals
     simp only [hik, hjl, lt_irrefl, ne_eq, not_true_eq_false, not_false_eq_true, and_true,
-      and_false, true_and, false_and, if_true, if_false, ne_of_lt, ne_of_gt,
-      not_lt_of_gt, lt_asymm, Nat.cast_add, Nat.cast_ofNat, Nat.cast_one, Nat.cast_zero]
+      and_false, ite_true, ite_false, ne_of_lt, ne_of_gt,
+      lt_asymm, Nat.cast_add, Nat.cast_ofNat, Nat.cast_one, Nat.cast_zero]
   all_goals ring
 
 /-- `2n² - Σβᵢ² - Σαⱼ² = 4·crossing + defect`. -/
@@ -212,14 +212,14 @@ theorem eq_antidiag_of_defect_eq_zero {β : Fin r → ℕ} {α : Fin c → ℕ} 
   have hex : ∀ i, ∃ j, 0 < M.val i j := by
     intro i
     by_contra h
-    push_neg at h
+    push Not at h
     have h0 : rowSum M.val i = 0 := Finset.sum_eq_zero (fun j _ => Nat.le_zero.mp (h j))
     rw [M.property.1] at h0
     exact absurd h0 (Nat.pos_iff_ne_zero.mp (hβ i))
   have hexc : ∀ j, ∃ i, 0 < M.val i j := by
     intro j
     by_contra h
-    push_neg at h
+    push Not at h
     have h0 : colSum M.val j = 0 := Finset.sum_eq_zero (fun i _ => Nat.le_zero.mp (h i))
     rw [M.property.2] at h0
     exact absurd h0 (Nat.pos_iff_ne_zero.mp (hα j))
@@ -284,7 +284,7 @@ theorem eq_antidiag_of_defect_eq_zero {β : Fin r → ℕ} {α : Fin c → ℕ} 
       · simp
     rw [← M.property.2]
     change colSum M.val j = β i
-    rw [hs, hentry, if_pos hj]
+    rw [hs, hentry, ite_eq_left hj]
 
 theorem defect_antidiag (β : Fin r → ℕ) : defect (antidiag (c := r) β) = 0 := by
   apply (defect_eq_zero_iff _).mpr
@@ -292,23 +292,23 @@ theorem defect_antidiag (β : Fin r → ℕ) : defect (antidiag (c := r) β) = 0
   unfold antidiag cellWeight
   by_cases h1 : j.val + i.val + 1 = r
   · by_cases h2 : l.val + k.val + 1 = r
-    · rw [if_pos h1, if_pos h2]
+    · rw [ite_eq_left h1, ite_eq_left h2]
       have e1 : i = k ↔ j = l := by
         constructor
         · intro h; subst h; apply Fin.ext; omega
         · intro h; subst h; apply Fin.ext; omega
       have e2 : i < k ↔ l < j := by
-        rw [Fin.lt_iff_val_lt_val, Fin.lt_iff_val_lt_val]; omega
+        rw [Fin.lt_def, Fin.lt_def]; omega
       have e3 : k < i ↔ j < l := by
-        rw [Fin.lt_iff_val_lt_val, Fin.lt_iff_val_lt_val]; omega
+        rw [Fin.lt_def, Fin.lt_def]; omega
       have w1 : ¬ (i = k ∧ j ≠ l) := fun h => h.2 (e1.mp h.1)
       have w2 : ¬ (j = l ∧ i ≠ k) := fun h => h.2 (e1.mpr h.1)
       have w3 : ¬ (i < k ∧ j < l) := fun h => absurd (e2.mp h.1) (not_lt.mpr (le_of_lt h.2))
       have w4 : ¬ (k < i ∧ l < j) := fun h => absurd (e3.mp h.1) (not_lt.mpr (le_of_lt h.2))
-      rw [if_neg w1, if_neg w2, if_neg w3, if_neg w4]
+      rw [ite_eq_right w1, ite_eq_right w2, ite_eq_right w3, ite_eq_right w4]
       simp
-    · rw [if_neg h2]; simp
-  · rw [if_neg h1]; simp
+    · rw [ite_eq_right h2]; simp
+  · rw [ite_eq_right h1]; simp
 
 /-- The antidiagonal matrix lies in `Mat β α` when `αⱼ = β_{r-1-j}`. -/
 def antidiagMat (β : Fin r → ℕ) (α : Fin r → ℕ)
@@ -318,18 +318,18 @@ def antidiagMat (β : Fin r → ℕ) (α : Fin r → ℕ)
     · funext i
       unfold rowSum antidiag
       rw [Finset.sum_eq_single (Fin.rev i)]
-      · rw [if_pos (by simp only [Fin.val_rev]; omega)]
+      · rw [ite_eq_left (by simp only [Fin.val_rev]; omega)]
       · intro j _ hj
-        rw [if_neg]
+        rw [ite_eq_right]
         intro h; apply hj; apply Fin.ext; simp only [Fin.val_rev]; omega
       · simp
     · funext j
       unfold colSum antidiag
       rw [Finset.sum_eq_single (Fin.rev j)]
-      · rw [if_pos (by simp only [Fin.val_rev]; omega)]
+      · rw [ite_eq_left (by simp only [Fin.val_rev]; omega)]
         exact (hα j (Fin.rev j) (by simp only [Fin.val_rev]; omega)).symm
       · intro i _ hi
-        rw [if_neg]
+        rw [ite_eq_right]
         intro h; apply hi; apply Fin.ext; simp only [Fin.val_rev]; omega
       · simp⟩
 

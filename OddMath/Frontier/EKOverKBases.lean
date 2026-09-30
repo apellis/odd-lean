@@ -40,8 +40,8 @@ theorem hBasisK_eq_psiRing (μ : YoungDiagram) :
 /-- The `h`-coordinates of an image of `Λ_ℤ` are the images of the integral coordinates. -/
 theorem hBasisK_repr_psiRing (z : QZ) (ν : YoungDiagram) :
     (hBasisK (k := k)).repr (psiRing z) ν = ((EKIntegralBases.hBasis.repr z ν : ℤ) : k) := by
-  rw [hBasisK, Basis.map_repr, LinearEquiv.trans_apply, baseChangeEquiv_symm_psiRing,
-    Basis.baseChange_repr_tmul, zsmul_eq_mul, mul_one]
+  rw [hBasisK, Module.Basis.map_repr, LinearEquiv.trans_apply, baseChangeEquiv_symm_psiRing,
+    Module.Basis.baseChange_repr_tmul, zsmul_eq_mul, mul_one]
 
 /-- **EK Lemma 2.16 over every commutative ring `k`.**  In the basis `{h_λ}` of `Λ_k`,
 `ψ₃(h_λ) = (-1)^{b(λᵀ)} h_λ + (a combination of h_ν with |ν| = |λ| and ν >_lex λ)`. -/
@@ -94,9 +94,9 @@ theorem form_eBasisK_fK (ν μ : YoungDiagram) :
     rw [h]
     by_cases hνμ : ν = μ
     · subst hνμ; simp
-    · rw [if_neg (fun e => hνμ (congrArg Subtype.val e)), if_neg hνμ, Int.cast_zero]
+    · rw [ite_eq_right (fun e => hνμ (congrArg Subtype.val e)), ite_eq_right hνμ, Int.cast_zero]
   · rw [EKCenterPower.orth hd (mem_degreePiece_card ν)
-      (EKDualBases.fBasis μ.card ⟨μ, rfl⟩).2, Int.cast_zero, if_neg]
+      (EKDualBases.fBasis μ.card ⟨μ, rfl⟩).2, Int.cast_zero, ite_eq_right]
     rintro rfl; exact hd rfl
 
 theorem fK_linearIndependent : LinearIndependent k (fK k) := by
@@ -130,8 +130,8 @@ theorem fK_span : Submodule.span k (Set.range (fK k)) = ⊤ := by
 
 variable (k) in
 /-- **EK §3.1 over `k`:** the odd forgotten functions `{f_λ}` form a `k`-basis of `Λ_k`. -/
-def fBasisK : Basis YoungDiagram k (LamK k) :=
-  Basis.mk fK_linearIndependent (by rw [fK_span])
+def fBasisK : Module.Basis YoungDiagram k (LamK k) :=
+  Module.Basis.mk fK_linearIndependent (by rw [fK_span])
 
 @[simp] theorem fBasisK_apply (μ : YoungDiagram) : fBasisK k μ = fK k μ := by
   simp [fBasisK]
@@ -167,9 +167,9 @@ theorem corollary_3_9_K (lam μ : YoungDiagram) :
     rw [h]
     by_cases hlm : lam = μ
     · subst hlm; simp
-    · rw [if_neg (fun e => hlm (congrArg Subtype.val e)), if_neg hlm, Int.cast_zero]
+    · rw [ite_eq_right (fun e => hlm (congrArg Subtype.val e)), ite_eq_right hlm, Int.cast_zero]
   · rw [EKCenterPower.orth hd (EKOddRSKII.schur lam.card ⟨lam, rfl⟩).2
-      (EKOddRSKII.schur μ.card ⟨μ, rfl⟩).2, Int.cast_zero, if_neg]
+      (EKOddRSKII.schur μ.card ⟨μ, rfl⟩).2, Int.cast_zero, ite_eq_right]
     rintro rfl; exact hd rfl
 
 theorem sK_linearIndependent : LinearIndependent k (sK k) := by
@@ -207,8 +207,8 @@ theorem sK_span : Submodule.span k (Set.range (sK k)) = ⊤ := by
 
 variable (k) in
 /-- **EK §3.3 over `k`:** the odd Schur functions `{s_λ}` form a `k`-basis of `Λ_k`. -/
-def sBasisK : Basis YoungDiagram k (LamK k) :=
-  Basis.mk sK_linearIndependent (by rw [sK_span])
+def sBasisK : Module.Basis YoungDiagram k (LamK k) :=
+  Module.Basis.mk sK_linearIndependent (by rw [sK_span])
 
 @[simp] theorem sBasisK_apply (μ : YoungDiagram) : sBasisK k μ = sK k μ := by
   simp [sBasisK]

@@ -42,7 +42,9 @@ theorem CommStep.symm {u v : Word n} (h : CommStep u v) : CommStep v u := by
   exact ⟨p, q, j, i, hd.symm, rfl, rfl⟩
 
 theorem CommEquiv.symm {u v : Word n} (h : CommEquiv u v) : CommEquiv v u :=
-  Relation.ReflTransGen.symmetric (fun _ _ h => CommStep.symm h) h
+by
+  let : Std.Symm (@CommStep n) := ⟨fun _ _ h => CommStep.symm h⟩
+  exact Relation.ReflTransGen.stdSymm.symm _ _ h
 
 theorem CommEquiv.trans {u v w : Word n} (h : CommEquiv u v) (h' : CommEquiv v w) :
     CommEquiv u w :=
@@ -170,8 +172,8 @@ theorem phi_divided (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
           (j = i.rev.castSucc ∨ j = i.rev.succ) := by
         rw [rev_eq_castSucc, rev_eq_succ]; exact Or.comm
       by_cases h : j = i.rev.castSucc ∨ j = i.rev.succ
-      · rw [if_pos (hiff.mpr h), if_pos h, map_one]
-      · rw [if_neg (mt hiff.mp h), if_neg h, map_zero]
+      · rw [ite_eq_left (hiff.mpr h), ite_eq_left h, map_one]
+      · rw [ite_eq_right (mt hiff.mp h), ite_eq_right h, map_zero]
     · intro f g
       show eps n • phi (divided i (phi (f*g))) =
         eps n • phi (divided i (phi f)) * g + s i.rev f * (eps n • phi (divided i (phi g)))
@@ -219,14 +221,13 @@ theorem hybrid_flip (m : Marked n) (f : SkewPolynomial (n+2)) :
       rcases a with ⟨i, b⟩
       cases b
       · refine ⟨c, hc, ?_⟩
-        simp only [flipMarked, List.map_cons, hybrid, if_true, if_false,
+        simp only [flipMarked, List.map_cons, hybrid, ite_false,
           Bool.false_eq_true] at h ⊢
         rw [h, map_zsmul, phi_s]
       · refine ⟨c * eps n, ?_, ?_⟩
         · calc c * eps n * (c * eps n) = (c * c) * (eps n * eps n) := by ring
             _ = 1 := by rw [hc, eps_sq, one_mul]
-        · simp only [flipMarked, List.map_cons, hybrid, if_true, if_false,
-            Bool.false_eq_true] at h ⊢
+        · simp only [flipMarked, List.map_cons, hybrid, ite_true] at h ⊢
           rw [h, map_zsmul, phi_divided, smul_smul]
 
 theorem length_reflect (p : Perm n) :

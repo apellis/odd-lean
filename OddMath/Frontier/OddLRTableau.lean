@@ -79,7 +79,7 @@ noncomputable def content (S : SkewTableau lam mu) : ℕ →₀ ℕ :=
 theorem content_apply (S : SkewTableau lam mu) (k : ℕ) :
     S.content k = ((skewCells lam mu).filter (fun p => S.entry p.1 p.2 = k)).card := by
   classical
-  simp only [content, Finsupp.finset_sum_apply, Finsupp.single_apply, Finset.card_filter]
+  simp only [content, Finsupp.finsetSum_apply, Finsupp.single_apply, Finset.card_filter]
 
 theorem entry_mem_support (S : SkewTableau lam mu) {p : ℕ × ℕ} (hp : p ∈ skewCells lam mu) :
     S.entry p.1 p.2 ∈ S.content.support := by

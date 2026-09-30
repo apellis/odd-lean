@@ -104,8 +104,8 @@ private theorem parity (n : ℕ) (f : ℕ → ℕ) :
   intro i _
   rw [pow_mul]
   rcases Nat.mod_two_eq_zero_or_one i with h | h
-  · rw [if_neg (by omega), (Nat.even_iff.2 h).neg_one_pow, one_pow, pow_zero]
-  · rw [if_pos h, (Nat.odd_iff.2 h).neg_one_pow]
+  · rw [ite_eq_right (by omega), (Nat.even_iff.2 h).neg_one_pow, one_pow, pow_zero]
+  · rw [ite_eq_left h, (Nat.odd_iff.2 h).neg_one_pow]
 
 /-- `(-1)^{(λᵀ 2)} = (-1)^{λ₂+λ₄+λ₆+…}` for every diagram (second equality of (3.15)). -/
 theorem sign_bridge (μ : YoungDiagram) :
@@ -267,7 +267,6 @@ theorem lemma311_of_first312 (d : ℕ) (h : First312 d) : Lemma311 d := by
       rw [hμ, ← Equiv.sum_comp (transposeShape d)]
       apply Finset.sum_congr rfl
       intro κ _
-      beta_reduce
       rw [smul_smul]
       congr 1
       change (-1 : ℤ) ^ (EKSemiorthogonality.ell κ.val.transpose + κ.val.transpose.card) *
@@ -298,7 +297,7 @@ theorem pair_e_schur_of_second (d : ℕ) (h : Second312 d) (ν lam : DegreeShape
     quotientPairing (ePartition ν.val) (schur d lam : Q) = Xsrc d ν lam := by
   have h1 := congrArg (fun x : degreePiece d => quotientPairing (ePartition ν.val) (x : Q)) (h lam)
   simp only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_zsmul, smul_eq_mul, e_f,
-    mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h1
+    mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true] at h1
   have h2 := congrArg (fun z : ℤ =>
     (-1 : ℤ) ^ (EKSemiorthogonality.ell lam.val + transposeChoose lam.val + lam.val.card) * z) h1
   simp only [← mul_assoc, EKOddRSKIIControls.neg_one_sq, one_mul] at h2
@@ -328,8 +327,8 @@ theorem pair_e_schur_of_first_cor39 (d : ℕ) (h1 : First312 d) (h311 : Cor39 d)
   simp only [Cor39] at h311
   have hν := congrArg (fun x : degreePiece d => quotientPairing (x : Q) (schur d κ : Q)) (h1 ν)
   simp only [Submodule.coe_sum, Submodule.coe_smul, degreeEBasis_apply, map_sum, map_zsmul,
-    LinearMap.smul_apply, LinearMap.coeFn_sum, Finset.sum_apply, smul_eq_mul, h311,
-    mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hν
+    LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul,
+    LinearMap.smul_apply, smul_eq_mul, h311, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true] at hν
   have h2 := congrArg (fun z : ℤ => (-1 : ℤ) ^ (rowChoose ν.val + ν.val.card) * z) hν
   simp only [← mul_assoc, EKOddRSKIIControls.neg_one_sq, one_mul] at h2
   rw [h2]
@@ -354,7 +353,6 @@ theorem oddRSKII_of_first_cor39 (d : ℕ) (h1 : First312 d) (h311 : Cor39 d) : O
     simp only [Submodule.coe_sum, Submodule.coe_smul, degreeEBasis_apply, map_sum, map_zsmul,
       smul_eq_mul, pair_ee, pair_e_schur_of_first_cor39 d h1 h311] at hρ
     have h2 := congrArg (fun z : ℤ => (-1 : ℤ) ^ (rowChoose μ.val + μ.val.card) * z) hρ
-    simp only at h2
     rw [pow_add, mul_assoc, h2, Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro lam _
@@ -393,8 +391,8 @@ theorem first312_of_second312_cor39 (d : ℕ) (h2 : Second312 d) (h311 : Cor39 d
     intro κ
     have hp := congrArg (fun x : Q => quotientPairing x (schur d κ : Q)) ha
     simp only [degreeEBasis_apply, pair_e_schur_of_second d h2, map_sum, map_zsmul,
-      LinearMap.smul_apply, LinearMap.coeFn_sum, Finset.sum_apply, smul_eq_mul, h311',
-      mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hp
+      LinearMap.sum_apply,
+      LinearMap.smul_apply, smul_eq_mul, h311', mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true] at hp
     rw [hp, mul_comm, mul_assoc, EKOddRSKIIControls.neg_one_sq, mul_one]
   apply Subtype.ext
   simp only [Submodule.coe_sum, Submodule.coe_smul]

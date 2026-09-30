@@ -55,7 +55,7 @@ theorem card_expSet_small {k : ℕ} (hk : k ≤ 1) (i : ℕ) :
 /-- `∑_{i+j=d} p_a(i - C_a) p_b(j - C_b) = ∑_{α ∈ P(a,b)} p_{a+b}(d - C_a - C_b - |α|)`, with
 `C_k = C(k,2)` and terms with a negative argument omitted. -/
 theorem count_identity (a b d : ℕ) :
-    ∑ ij ∈ Finset.antidiagonal d,
+    ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal d,
       (if a.choose 2 ≤ ij.1 then BoxPartitionCount.pcount a (ij.1 - a.choose 2) else 0) *
         (if b.choose 2 ≤ ij.2 then BoxPartitionCount.pcount b (ij.2 - b.choose 2) else 0) =
       ∑ α ∈ BoxPartitionCount.box a b, if a.choose 2 + b.choose 2 + ∑ i, α i ≤ d then
@@ -64,51 +64,51 @@ theorem count_identity (a b d : ℕ) :
   set Cb := b.choose 2
   by_cases hd : Ca + Cb ≤ d
   · obtain ⟨J, rfl⟩ := Nat.exists_eq_add_of_le hd
-    have hL : ∑ ij ∈ Finset.antidiagonal (Ca + Cb + J),
+    have hL : ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal (Ca + Cb + J),
         (if Ca ≤ ij.1 then BoxPartitionCount.pcount a (ij.1 - Ca) else 0) *
           (if Cb ≤ ij.2 then BoxPartitionCount.pcount b (ij.2 - Cb) else 0) =
-        ∑ ij ∈ Finset.antidiagonal J,
+        ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal J,
           BoxPartitionCount.pcount a ij.1 * BoxPartitionCount.pcount b ij.2 := by
       rw [← Finset.sum_filter_of_ne (p := fun ij : ℕ × ℕ => Ca ≤ ij.1 ∧ Cb ≤ ij.2)
         (fun ij _ hne => by
           by_contra hc
           refine hne ?_
           by_cases h1 : Ca ≤ ij.1
-          · rw [if_neg fun h2 => hc ⟨h1, h2⟩, mul_zero]
-          · rw [if_neg h1, zero_mul])]
+          · rw [ite_eq_right fun h2 => hc ⟨h1, h2⟩, mul_zero]
+          · rw [ite_eq_right h1, zero_mul])]
       refine Finset.sum_nbij' (fun ij => (ij.1 - Ca, ij.2 - Cb)) (fun ij => (ij.1 + Ca, ij.2 + Cb))
         ?_ ?_ ?_ ?_ ?_
       · intro ij hij
-        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_antidiagonal] at hij ⊢
+        simp only [Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at hij ⊢
         omega
       · intro ij hij
-        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_antidiagonal] at hij ⊢
+        simp only [Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at hij ⊢
         omega
       · intro ij hij
-        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_antidiagonal] at hij
+        simp only [Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal] at hij
         ext <;> simp <;> omega
       · intro ij _
         simp
       · intro ij hij
         simp only [Finset.mem_filter] at hij
-        rw [if_pos hij.2.1, if_pos hij.2.2]
+        rw [ite_eq_left hij.2.1, ite_eq_left hij.2.2]
     rw [hL, Finset.Nat.sum_antidiagonal_eq_sum_range_succ
       (fun i j => BoxPartitionCount.pcount a i * BoxPartitionCount.pcount b j),
       BoxPartitionCount.sum_pcount_mul, Finset.sum_filter]
     refine Finset.sum_congr rfl fun α _ => ?_
     by_cases hα : ∑ i, α i ≤ J
-    · rw [if_pos hα, if_pos (by omega)]
+    · rw [ite_eq_left hα, ite_eq_left (by omega)]
       congr 1
       omega
-    · rw [if_neg hα, if_neg (by omega)]
+    · rw [ite_eq_right hα, ite_eq_right (by omega)]
   · rw [Finset.sum_eq_zero, Finset.sum_eq_zero]
     · intro α _
-      rw [if_neg (by omega)]
+      rw [ite_eq_right (by omega)]
     · intro ij hij
-      rw [Finset.mem_antidiagonal] at hij
+      rw [Finset.HasAntidiagonal.mem_antidiagonal] at hij
       by_cases h1 : Ca ≤ ij.1
-      · rw [if_neg (show ¬ Cb ≤ ij.2 by omega), mul_zero]
-      · rw [if_neg h1, zero_mul]
+      · rw [ite_eq_right (show ¬ Cb ≤ ij.2 by omega), mul_zero]
+      · rw [ite_eq_right h1, zero_mul]
 
 /-! ## Block operators on a window -/
 
@@ -134,7 +134,8 @@ theorem sum_coeff_blockOp (k i : ℕ) :
       rw [card_expSet_small (by omega)]
       simp
   | m+2 =>
-      rw [← trace_res_eq, trace_projector, card_index]
+      change ∑ γ ∈ expSet (m+2) i, action m (ZeroHecke.projector m) (monomial γ 1) γ = _
+      rw [← trace_res_eq hasDegree_projector, trace_projector, card_index]
       split_ifs with h1 h2 h2
       · congr 2
         omega
@@ -276,8 +277,8 @@ theorem coeff_place_mul_place (F : SkewPolynomial a) (G : SkewPolynomial b)
           by_cases hγ : γ' = γ
           · by_cases hη : η' = η
             · simp [hγ, hη]
-            · rw [if_neg fun e => hη (joinExp_inj hab e).2, if_neg hη, mul_zero]
-          · rw [if_neg fun e => hγ (joinExp_inj hab e).1, if_neg hγ, zero_mul]
+            · rw [ite_eq_right fun e => hη (joinExp_inj hab e).2, ite_eq_right hη, mul_zero]
+          · rw [ite_eq_right fun e => hγ (joinExp_inj hab e).1, ite_eq_right hγ, zero_mul]
 
 /-- Diagonal coefficient of `e_a ⊗ e_b` on `x^{γ ⊕ η}`. -/
 theorem coeff_blockE_blockE (γ : Fin a → ℕ) (η : Fin b → ℕ) :
@@ -324,7 +325,7 @@ include hab in
 theorem trace_blockE_blockE (d : ℕ) :
     trace ℤ (Vd (n+2) d) ((hasDegree_blockE_blockE (n := n) (a := a) (b := b)).res d d
       (add_zero _)) =
-      ∑ ij ∈ Finset.antidiagonal d,
+      ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal d,
         (∑ γ ∈ expSet a ij.1, blockOp a (monomial γ 1) γ) *
           ∑ η ∈ expSet b ij.2, blockOp b (monomial η 1) η := by
   classical
@@ -341,9 +342,9 @@ theorem trace_blockE_blockE (d : ℕ) :
     rw [← joinExp_split hab ζ, ← joinExp_split hab ζ', e.2.1, e.2.2]
   have hmem : ∀ q : (ℕ × ℕ) × ((Fin a → ℕ) × (Fin b → ℕ)),
       q ∈ (expSet (n+2) d).image S ↔
-        q.1 ∈ Finset.antidiagonal d ∧ q.2 ∈ expSet a q.1.1 ×ˢ expSet b q.1.2 := by
+        q.1 ∈ Finset.HasAntidiagonal.antidiagonal d ∧ q.2 ∈ expSet a q.1.1 ×ˢ expSet b q.1.2 := by
     rintro ⟨⟨i, j⟩, γ, η⟩
-    simp only [Finset.mem_image, Finset.mem_antidiagonal, Finset.mem_product, mem_expSet, S,
+    simp only [Finset.mem_image, Finset.HasAntidiagonal.mem_antidiagonal, Finset.mem_product, mem_expSet, S,
       Prod.mk.injEq, Nat.cast_inj]
     constructor
     · rintro ⟨ζ, hζ, ⟨rfl, rfl⟩, rfl, rfl⟩
@@ -358,11 +359,11 @@ theorem trace_blockE_blockE (d : ℕ) :
   refine (Finset.sum_congr rfl fun ζ _ => hφ ζ).trans ?_
   calc ∑ ζ ∈ expSet (n+2) d, A (splitLeft hab ζ) * B (splitRight hab ζ)
       = ∑ q ∈ (expSet (n+2) d).image S, A q.2.1 * B q.2.2 := by rw [Finset.sum_image hinj]
-    _ = ∑ ij ∈ Finset.antidiagonal d,
+    _ = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal d,
           ∑ q ∈ expSet a ij.1 ×ˢ expSet b ij.2, A q.1 * B q.2 :=
-        Finset.sum_finset_product (f := fun q => A q.2.1 * B q.2.2) _ (Finset.antidiagonal d)
+        Finset.sum_finset_product (f := fun q => A q.2.1 * B q.2.2) _ (Finset.HasAntidiagonal.antidiagonal d)
           (fun ij => expSet a ij.1 ×ˢ expSet b ij.2) hmem
-    _ = ∑ ij ∈ Finset.antidiagonal d, (∑ γ ∈ expSet a ij.1, A γ) *
+    _ = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal d, (∑ γ ∈ expSet a ij.1, A γ) *
           ∑ η ∈ expSet b ij.2, B η :=
         Finset.sum_congr rfl fun ij _ => by rw [Finset.sum_product, Finset.sum_mul_sum]
 
@@ -485,17 +486,17 @@ theorem trace_identity (hab : a + b = n+2) (d : ℤ) :
   have hC : (n+2).choose 2 = a.choose 2 + b.choose 2 + a * b := by
     rw [← hab, choose_two_add]
   simp only [trace_projector, card_index, hC]
-  rcases lt_or_le d 0 with hd | hd
+  rcases lt_or_ge d 0 with hd | hd
   · have he : expSet (n+2) d = ∅ := Finset.filter_false_of_mem fun _ _ => not_le.2 hd
     rw [trace_res_eq, he, Finset.sum_empty, eq_comm]
-    refine Finset.sum_eq_zero fun α _ => if_neg ?_
+    refine Finset.sum_eq_zero fun α _ => ite_eq_right ?_
     simp only [shift]
     generalize a * b = m
     omega
   · obtain ⟨d', rfl⟩ := Int.eq_ofNat_of_zero_le hd
     rw [trace_blockE_blockE hab]
     simp only [sum_coeff_blockOp]
-    calc ∑ ij ∈ Finset.antidiagonal d',
+    calc ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal d',
           ((if a.choose 2 ≤ ij.1 then BoxPartitionCount.pcount a (ij.1 - a.choose 2) else 0 : ℕ)
             : ℤ) *
           ((if b.choose 2 ≤ ij.2 then BoxPartitionCount.pcount b (ij.2 - b.choose 2) else 0 : ℕ)
@@ -537,11 +538,11 @@ theorem thm_4_16 (hab : a + b = n+2) :
     (by rw [← Module.End.mul_eq_comp, ← map_mul, blockE_pair_idem hab])
     (fun α => by
       rw [← Module.End.mul_eq_comp, ← map_mul,
-        eq_4_54 hab (hbox α).1 (hbox α).2 (hbox α).1 (hbox α).2, if_pos rfl])
+        eq_4_54 hab (hbox α).1 (hbox α).2 (hbox α).1 (hbox α).2, ite_eq_left rfl])
     (fun α β hne => by
       rw [← Module.End.mul_eq_comp, ← map_mul,
         eq_4_54 hab (hbox α).1 (hbox α).2 (hbox β).1 (hbox β).2,
-        if_neg fun h => hne (Subtype.ext h.symm), map_zero])
+        ite_eq_right fun h => hne (Subtype.ext h.symm), map_zero])
     (fun α => by rw [← Module.End.mul_eq_comp, ← map_mul, blockE_mul_sigma])
     (fun α => by rw [← Module.End.mul_eq_comp, ← map_mul, lam_mul_blockE])
     (fun α => by simp only [← Module.End.mul_eq_comp, ← map_mul, projector_mul_lam])

@@ -20,21 +20,21 @@ def pl7 : Fin 15 → List ℕ := ![[1,1,1,1,1,1,1], [2,1,1,1,1,1], [2,2,1,1,1], 
   [6,1], [7]]
 
 def hshapes7 : Fin 15 → DegreeShape 7 := ![
-  ⟨YoungDiagram.ofRowLens [1,1,1,1,1,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,1,1,1,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,2,1,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [2,2,2,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,1,1,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,2,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,2,2] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [3,3,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [4,1,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [4,2,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [4,3] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [5,1,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [5,2] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [6,1] (by decide), card_yd _ _ 7 rfl⟩,
-  ⟨YoungDiagram.ofRowLens [7] (by decide), card_yd _ _ 7 rfl⟩]
+  ⟨YoungDiagram.ofRowLens [1,1,1,1,1,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,1,1,1,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,2,1,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [2,2,2,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,1,1,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,2,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,2,2] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [3,3,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [4,1,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [4,2,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [4,3] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [5,1,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [5,2] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [6,1] (by decide), card_yd _ (by decide) 7 rfl⟩,
+  ⟨YoungDiagram.ofRowLens [7] (by decide), card_yd _ (by decide) 7 rfl⟩]
 
 theorem hs7 : ∀ j, (hshapes7 j).val.rowLens = pl7 j := by
   intro j; fin_cases j <;> exact YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by decide)
@@ -61,10 +61,14 @@ def gram7 : Matrix (Fin 15) (Fin 15) ℤ := !![
   1, 0, -1, -2, 1, 2, 3, 1, 0, -1, 0, 1, 2, 0, 1;
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-theorem gram7_symm : ∀ i j, gram7 i j = gram7 j i := by decide
+theorem gram7_symm : ∀ i j, gram7 i j = gram7 j i := by
+  intro i j
+  fin_cases i <;> fin_cases j <;> decide
 
+set_option maxHeartbeats 2000000 in
 theorem fast_table7 : ∀ i j, i ≤ j → fastH (pl7 i) (pl7 j) = gram7 i j := by
-  decide +kernel
+  intro i j
+  fin_cases i <;> fin_cases j <;> decide +kernel
 
 theorem gram_table7 : ∀ i j, Mh 7 (hshapes7 i) (hshapes7 j) = gram7 i j := by
   intro i j

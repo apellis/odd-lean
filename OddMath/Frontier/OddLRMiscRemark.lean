@@ -43,11 +43,11 @@ theorem repr_reverse (x : Q) (lam : YoungDiagram) :
     refine sBasis.ext fun mu => ?_
     simp only [L₁, L₂, LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe,
       Finsupp.lapply_apply, OddGrassmannSchur.sBasis_apply]
-    rw [EKLSectionTwo.reverse_sK, map_zsmul, ← OddGrassmannSchur.sBasis_apply, Basis.repr_self,
+    rw [EKLSectionTwo.reverse_sK, map_zsmul, ← OddGrassmannSchur.sBasis_apply, Module.Basis.repr_self,
       Finsupp.smul_apply, smul_eq_mul, smul_eq_mul]
     by_cases hm : mu = lam
     · subst hm; rfl
-    · rw [Finsupp.single_eq_of_ne hm, mul_zero, mul_zero]
+    · rw [Finsupp.single_eq_of_ne (Ne.symm hm), mul_zero, mul_zero]
   exact LinearMap.congr_fun h x
 
 /-- `ψ₁ψ₂` in the `s^K` coordinates: `[ψ₁ψ₂ x]_{λᵀ} = (-1)^{ℓ(w_λ)+|λ|} [x]_λ`. -/
@@ -63,21 +63,21 @@ theorem repr_psi12 (x : Q) (lam : YoungDiagram) :
     simp only [L₁, L₂, LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe,
       Finsupp.lapply_apply, OddGrassmannSchur.sBasis_apply]
     change (sBasis.repr (psi12 (sK mu))) lam.transpose = _
-    rw [OddGrassmannSchur.psi12_sK, map_zsmul, ← OddGrassmannSchur.sBasis_apply, Basis.repr_self,
-      ← OddGrassmannSchur.sBasis_apply, Basis.repr_self, Finsupp.smul_apply, smul_eq_mul,
+    rw [OddGrassmannSchur.psi12_sK, map_zsmul, ← OddGrassmannSchur.sBasis_apply, Module.Basis.repr_self,
+      ← OddGrassmannSchur.sBasis_apply, Module.Basis.repr_self, Finsupp.smul_apply, smul_eq_mul,
       smul_eq_mul]
     by_cases hm : mu = lam
     · subst hm; simp
     · have ht : mu.transpose ≠ lam.transpose := fun he => hm (by
         rw [← YoungDiagram.transpose_transpose mu, he, YoungDiagram.transpose_transpose])
-      rw [Finsupp.single_eq_of_ne ht, Finsupp.single_eq_of_ne hm, mul_zero, mul_zero]
+      rw [Finsupp.single_eq_of_ne (Ne.symm ht), Finsupp.single_eq_of_ne (Ne.symm hm), mul_zero, mul_zero]
   exact LinearMap.congr_fun h x
 
 /-- E Definition 4.6, p. 13: `c^λ_{μν} = 0` if `|μ| + |ν| ≠ |λ|`. -/
 theorem oddLR_eq_zero_of_card (lam mu nu : YoungDiagram) (h : lam.card ≠ mu.card + nu.card) :
     oddLR lam mu nu = 0 := by
   classical
-  letI := DegreeShapes.degreeFintype (mu.card + nu.card)
+  let := DegreeShapes.degreeFintype (mu.card + nu.card)
   have hx : sK mu * sK nu ∈ EKIntegralBases.degreePiece (mu.card + nu.card) :=
     EKIntegralBases.degreePiece_mul (EKLSectionTwo.sK_mem_degree mu)
       (EKLSectionTwo.sK_mem_degree nu)

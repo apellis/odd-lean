@@ -17,7 +17,6 @@ theorem generator_signs :
 theorem super_square_not_ordinary : -(h 1*h 1) ≠ h 1*h 1 := by
   intro he
   have hh := congrArg (fun x : Q => EKIntegralBases.hBasis.repr x EKIntegralBasesControls.col2) he
-  dsimp only at hh
   rw [← EKIntegralBasesControls.col2_value, map_neg,
     EKIntegralBases.h_coordinates_partition] at hh
   simp at hh

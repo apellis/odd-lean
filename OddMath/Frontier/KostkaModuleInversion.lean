@@ -23,7 +23,7 @@ def transform (d : ℕ) (S : DegreeShapes.DegreeShape d → V) :
 def recover (d : ℕ) (H : DegreeShapes.DegreeShape d → V) :
     DegreeShapes.DegreeShape d → V := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   let K := SignedKostkaInvertibility.kostkaMatrix (fun i : DegreeShapes.DegreeShape d => i.val)
   exact fun i => ∑ j, (K⁻¹) j i • H j
 
@@ -47,7 +47,7 @@ private theorem identity_action {I : Type*} [Fintype I] [DecidableEq I]
 theorem leftInverse (d : ℕ) (S : DegreeShapes.DegreeShape d → V) :
     recover d (transform d S) = S := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   let K := SignedKostkaInvertibility.kostkaMatrix (fun i : DegreeShapes.DegreeShape d => i.val)
   have hu : IsUnit K.det := by
     have hd := SignedKostkaInvertibility.kostkaMatrix_det
@@ -63,7 +63,7 @@ theorem leftInverse (d : ℕ) (S : DegreeShapes.DegreeShape d → V) :
 theorem rightInverse (d : ℕ) (H : DegreeShapes.DegreeShape d → V) :
     transform d (recover d H) = H := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   let K := SignedKostkaInvertibility.kostkaMatrix (fun i : DegreeShapes.DegreeShape d => i.val)
   have hu : IsUnit K.det := by
     have hd := SignedKostkaInvertibility.kostkaMatrix_det
@@ -86,7 +86,7 @@ theorem submoduleTarget (d : ℕ) (A : Submodule ℤ V)
     (S : DegreeShapes.DegreeShape d → V) :
     (∀ j, transform d S j ∈ A) ↔ ∀ i, S i ∈ A := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   constructor
   · intro h i
     rw [← leftInverse d S]

@@ -32,6 +32,7 @@ identification `K₀(ONH_a ⊗ ONH_b) ≅ K₀(ONH_a) ⊗ K₀(ONH_b)` is not fo
 -/
 
 noncomputable section
+set_option maxHeartbeats 800000
 open LaurentPolynomial Finset
 open scoped TensorProduct
 
@@ -53,8 +54,14 @@ instance : AddCommGroup (TwTensor Q) := inferInstanceAs (AddCommGroup (ℕ × �
 
 instance : Module A (TwTensor Q) := inferInstanceAs (Module A (ℕ × ℕ →₀ A))
 
-instance : NoZeroSMulDivisors A (TwTensor Q) :=
-  inferInstanceAs (NoZeroSMulDivisors A (ℕ × ℕ →₀ A))
+instance : NoZeroSMulDivisors A (TwTensor Q) where
+  eq_zero_or_eq_zero_of_smul_eq_zero {c x} h := by
+    by_cases hc : c = 0
+    · exact Or.inl hc
+    · right
+      apply Finsupp.ext
+      intro i
+      exact (mul_eq_zero.mp (congrArg (fun f : ℕ × ℕ →₀ A => f i) h)).resolve_left hc
 
 /-- `r ϑ^{(a)} ⊗ ϑ^{(b)}`. -/
 def single (a b : ℕ) (r : A) : TwTensor Q := Finsupp.single (a, b) r
@@ -64,7 +71,7 @@ def tw (a b : ℕ) : TwTensor Q := single a b 1
 
 variable (Q) in
 /-- The basis `ϑ^{(a)} ⊗ ϑ^{(b)}`. -/
-def basis : Basis (ℕ × ℕ) A (TwTensor Q) := Finsupp.basisSingleOne
+def basis : Module.Basis (ℕ × ℕ) A (TwTensor Q) := Finsupp.basisSingleOne
 
 theorem basis_apply (p : ℕ × ℕ) : basis Q p = tw p.1 p.2 := by
   exact congrFun (Finsupp.coe_basisSingleOne (R := A) (ι := ℕ × ℕ)) p
@@ -101,8 +108,8 @@ theorem qBinom_one (a : ℕ) : qBinom a 1 = qInt (a + 1) := by
 
 theorem tw_mul_tw (a b c d : ℕ) :
     (tw a b : TwTensor Q) * tw c d = coeff Q a b c d • tw (a + c) (b + d) := by
-  rw [mul_def, ← basis_apply (a, b), ← basis_apply (c, d), mulL, Basis.constr_basis,
-    Basis.constr_basis]
+  rw [mul_def, ← basis_apply (a, b), ← basis_apply (c, d), mulL, Module.Basis.constr_basis,
+    Module.Basis.constr_basis]
 
 theorem single_mul_single (a b c d : ℕ) (r s : A) :
     (single a b r : TwTensor Q) * single c d s =
@@ -214,7 +221,7 @@ theorem coprodVal_zero : coprodVal 0 = 1 := by
   simp [coprodVal, TwTensor.one_def]
 
 theorem coprodVal_one : coprodVal 1 = tw 1 0 + tw 0 1 := by
-  rw [coprodVal, Nat.sum_antidiagonal_succ', antidiagonal_zero, sum_singleton]
+  rw [coprodVal, Nat.sum_antidiagonal_succ', HasAntidiagonal.antidiagonal_zero, sum_singleton]
   simp
 
 theorem coprodVal_mul_one (n : ℕ) :
@@ -226,7 +233,7 @@ theorem coprodVal_mul_one (n : ℕ) :
         T (-((q.1 * q.2 : ℕ) : ℤ)) : A) • (tw q.1 q.2 : TwTensor (T (-2))) := by
     rw [coprodVal, smul_sum, ← sum_add_distrib]
     refine sum_congr rfl fun q hq => ?_
-    rw [mem_antidiagonal] at hq
+    rw [HasAntidiagonal.mem_antidiagonal] at hq
     rw [smul_smul, ← add_smul, ← hq, add_comm q.1 q.2, qInt_add]
     congr 1
     ring
@@ -259,7 +266,7 @@ theorem coprodVal_mul (a b : ℕ) :
   simp only
   rw [← smul_mul_smul_comm, ← coprodVal_one_pow, ← coprodVal_one_pow, ← pow_add,
     coprodVal_one_pow, smul_smul, ← qBinom_mul_qFact a b]
-  congr 1
+  apply congrArg (fun r : A => r • coprodVal (a + b))
   ring
 
 /-- **The coproduct** `Δ : U_q^+(sl_2)_A → U ⊗ U` (twisted product, parameter `q^{-2}`),
@@ -286,7 +293,7 @@ theorem tw_eq_basis {Q : A} (a b : ℕ) : (tw a b : TwTensor Q) = basis Q (a, b)
 
 theorem constr_tw {Q : A} {M : Type*} [AddCommGroup M] [Module A M] (f : ℕ × ℕ → M) (a b : ℕ) :
     (basis Q).constr A f (tw a b) = f (a, b) := by
-  rw [tw_eq_basis, Basis.constr_basis]
+  rw [tw_eq_basis, Module.Basis.constr_basis]
 
 /-! ### Counit laws -/
 
@@ -305,14 +312,14 @@ theorem counitLeft_coprod (x : DivPowAlg) : counitLeft (coprod x) = x := by
       rw [LinearMap.comp_apply, AlgHom.toLinearMap_apply, DivPowAlg.basis_apply, coprod_θ,
         coprodVal, map_sum, LinearMap.id_apply]
       rw [sum_eq_single (0, n)]
-      · rw [map_smul, counitLeft, constr_tw, counit_θ, if_pos rfl, one_smul]
+      · rw [map_smul, counitLeft, constr_tw, counit_θ, ite_eq_left rfl, one_smul]
         simp
       · rintro ⟨a, b⟩ _ hab
-        rw [map_smul, counitLeft, constr_tw, counit_θ, if_neg, zero_smul, smul_zero]
+        rw [map_smul, counitLeft, constr_tw, counit_θ, ite_eq_right, zero_smul, smul_zero]
         rintro rfl
         simp_all
       · intro h
-        exact absurd (mem_antidiagonal.2 (zero_add n)) h
+        exact absurd (HasAntidiagonal.mem_antidiagonal.2 (zero_add n)) h
   exact DFunLike.congr_fun h x
 
 /-- `(id ⊗ ε) ∘ Δ = id`. -/
@@ -322,15 +329,15 @@ theorem counitRight_coprod (x : DivPowAlg) : counitRight (coprod x) = x := by
       rw [LinearMap.comp_apply, AlgHom.toLinearMap_apply, DivPowAlg.basis_apply, coprod_θ,
         coprodVal, map_sum, LinearMap.id_apply]
       rw [sum_eq_single (n, 0)]
-      · rw [map_smul, counitRight, constr_tw, counit_θ, if_pos rfl, one_smul]
+      · rw [map_smul, counitRight, constr_tw, counit_θ, ite_eq_left rfl, one_smul]
         simp
       · rintro ⟨a, b⟩ hab hne
-        rw [map_smul, counitRight, constr_tw, counit_θ, if_neg, zero_smul, smul_zero]
+        rw [map_smul, counitRight, constr_tw, counit_θ, ite_eq_right, zero_smul, smul_zero]
         rintro rfl
-        simp only [mem_antidiagonal, add_zero] at hab
+        simp only [HasAntidiagonal.mem_antidiagonal, add_zero] at hab
         exact hne (Prod.ext hab rfl)
       · intro h
-        exact absurd (mem_antidiagonal.2 (add_zero n)) h
+        exact absurd (HasAntidiagonal.mem_antidiagonal.2 (add_zero n)) h
   exact DFunLike.congr_fun h x
 
 /-! ### Coassociativity -/
@@ -362,23 +369,23 @@ theorem coassoc (x : DivPowAlg) : coprodLeft (coprod x) = coprodRight (coprod x)
       refine sum_nbij' (fun x => ⟨(x.2.1, x.2.2 + x.1.2), (x.2.2, x.1.2)⟩)
         (fun x => ⟨(x.1.1 + x.2.1, x.2.2), (x.1.1, x.2.1)⟩) ?_ ?_ ?_ ?_ ?_
       · rintro ⟨⟨a, b⟩, ⟨i, j⟩⟩ hx
-        simp only [mem_sigma, mem_antidiagonal, and_true] at hx ⊢
+        simp only [mem_sigma, HasAntidiagonal.mem_antidiagonal, and_true] at hx ⊢
         omega
       · rintro ⟨⟨a, b⟩, ⟨i, j⟩⟩ hx
-        simp only [mem_sigma, mem_antidiagonal, and_true] at hx ⊢
+        simp only [mem_sigma, HasAntidiagonal.mem_antidiagonal, and_true] at hx ⊢
         omega
       · rintro ⟨⟨a, b⟩, ⟨i, j⟩⟩ hx
-        simp only [mem_sigma, mem_antidiagonal] at hx
+        simp only [mem_sigma, HasAntidiagonal.mem_antidiagonal] at hx
         obtain ⟨h1, h2⟩ := hx
         subst h2
-        simp only [Sigma.mk.injEq, Prod.mk.injEq, heq_eq_eq, and_true]
+        rfl
       · rintro ⟨⟨a, b⟩, ⟨i, j⟩⟩ hx
-        simp only [mem_sigma, mem_antidiagonal] at hx
+        simp only [mem_sigma, HasAntidiagonal.mem_antidiagonal] at hx
         obtain ⟨h1, h2⟩ := hx
         subst h2
-        simp only [Sigma.mk.injEq, Prod.mk.injEq, heq_eq_eq, and_true]
+        rfl
       · rintro ⟨⟨a, b⟩, ⟨i, j⟩⟩ hx
-        simp only [mem_sigma, mem_antidiagonal] at hx
+        simp only [mem_sigma, HasAntidiagonal.mem_antidiagonal] at hx
         obtain ⟨rfl, rfl⟩ := hx
         simp only
         rw [← T_add, ← T_add]
@@ -427,7 +434,7 @@ theorem qInt_two_not_dvd : ¬ qInt 2 ∣ 1 + -(T (-2) : A) := by
   rintro ⟨c, hc⟩
   have h := congrArg φ hc
   have e1 : φ (qInt 2) = 0 := by
-    simp only [φ, qInt, sum_range_succ, range_zero, sum_empty, map_add, map_zero, zero_add,
+    simp only [φ, qInt, sum_range_succ, range_zero, sum_empty, map_add, zero_add,
       eval₂_T]
     norm_num
     decide
@@ -452,7 +459,7 @@ def tensorEquiv (Q : A) : TwTensor Q ≃ₗ[A] K0ONH ⊗[A] K0ONH :=
 theorem tensorEquiv_tw (Q : A) (a b : ℕ) :
     tensorEquiv Q (tw a b) =
       (DFinsupp.single a (Eclass a) : K0ONH) ⊗ₜ[A] (DFinsupp.single b (Eclass b) : K0ONH) := by
-  rw [tensorEquiv, ← basisK0_apply, ← basisK0_apply, ← Basis.tensorProduct_apply]
+  rw [tensorEquiv, ← basisK0_apply, ← basisK0_apply, ← Module.Basis.tensorProduct_apply]
   exact (basisK0.tensorProduct basisK0).repr_symm_single (a, b) 1 |>.trans (one_smul _ _)
 
 /-- The coproduct of `K₀(ONH)` (on the basis `[E^{(a)}]`, through (6.3)). -/
@@ -466,14 +473,12 @@ theorem coprodK0_E (n : ℕ) :
       ∑ p ∈ antidiagonal n, (T (-((p.1 * p.2 : ℕ) : ℤ)) : A) •
         (DFinsupp.single p.1 (Eclass p.1) : K0ONH) ⊗ₜ[A]
           (DFinsupp.single p.2 (Eclass p.2) : K0ONH) := by
-  rw [coprodK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe,
-    AlgEquiv.symm_apply_apply, coprod_θ, coprodVal, ← LinearEquiv.coe_toLinearMap, map_sum]
+  rw [coprodK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_apply, AlgEquiv.symm_apply_apply, coprod_θ, coprodVal, ← LinearEquiv.coe_toLinearMap, map_sum]
   refine sum_congr rfl fun p _ => ?_
   rw [LinearMap.map_smul, LinearEquiv.coe_toLinearMap, tensorEquiv_tw]
 
 theorem counitK0_E (n : ℕ) :
     counitK0 (DFinsupp.single n (Eclass n)) = if n = 0 then 1 else 0 := by
-  rw [counitK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe,
-    AlgEquiv.symm_apply_apply, counit_θ]
+  rw [counitK0, AlgHom.comp_apply, ← eq_6_3_θ, AlgEquiv.toAlgHom_apply, AlgEquiv.symm_apply_apply, counit_θ]
 
 end OddMath.Frontier.OddBialgebra

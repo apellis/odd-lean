@@ -144,15 +144,17 @@ theorem coeffDiag_one_ne_zero (wt : Nat) (i : Fin (shapeCount wt)) :
   rw [coeffDiag_self, coeffZero_apply] at hc
   exact (by decide : (1 : Int) ≠ 0) hc
 
+set_option maxRecDepth 10000
+
 /- Executable spot-values (compiled execution evidence; outputs appear in
-   the isolated build log). Index-validity proofs are `by native_decide`
-   compiled evaluations at the same scale B7 already evaluates
-   (`shapeCount 4 = 5`); proofs are erased at runtime. -/
-#eval ("cz00", coeffZero 4 ⟨0, by native_decide⟩ ⟨0, by native_decide⟩)
-#eval ("rz0", rhsZero 4 ⟨0, by native_decide⟩)
-#eval ("dg11", coeffDiag 4 (fun _ => 1) ⟨0, by native_decide⟩ ⟨0, by native_decide⟩)
-#eval ("dg10", coeffDiag 4 (fun _ => 1) ⟨0, by native_decide⟩ ⟨1, by native_decide⟩)
-#eval ("dz", coeffDiag 4 (fun _ => 1) ⟨0, by native_decide⟩ ⟨0, by native_decide⟩ != coeffZero 4 ⟨0, by native_decide⟩ ⟨0, by native_decide⟩)
+   the isolated build log). Index-validity proofs use kernel-checked
+   `decide` at the same scale B7 already evaluates (`shapeCount 4 = 5`);
+   the increased recursion limit supports reduction of the census. -/
+#eval ("cz00", coeffZero 4 ⟨0, by decide⟩ ⟨0, by decide⟩)
+#eval ("rz0", rhsZero 4 ⟨0, by decide⟩)
+#eval ("dg11", coeffDiag 4 (fun _ => 1) ⟨0, by decide⟩ ⟨0, by decide⟩)
+#eval ("dg10", coeffDiag 4 (fun _ => 1) ⟨0, by decide⟩ ⟨1, by decide⟩)
+#eval ("dz", coeffDiag 4 (fun _ => 1) ⟨0, by decide⟩ ⟨0, by decide⟩ != coeffZero 4 ⟨0, by decide⟩ ⟨0, by decide⟩)
 #eval ("cnt4", shapeCount 4)
 
 /- Axiom audit (outputs appear in the isolated build log; expected: the

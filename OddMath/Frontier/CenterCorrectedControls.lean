@@ -46,7 +46,7 @@ theorem rankTwo_psum_kernel_center :
       (generator (0 : Fin 2) ^ 2 + generator 1 ^ 2) ∈ Subring.center (SkewPolynomial 2) :=
   (CenterPoly.kernel_inter_center 0 _).mpr
     ⟨_, rankTwo_psum_mem_sq, 0, zero_mem _, by
-      rw [if_neg (by decide), add_zero]⟩
+      rw [ite_eq_right (by decide), add_zero]⟩
 
 /-- Rank two: `x_0^2 + x_1^2`, as an element of `OΛ_2`, is central in `OΛ_2`. -/
 theorem rankTwo_psum_center_kernel :
@@ -75,7 +75,7 @@ theorem rankThree_volume_not_sq : CenterPoly.V 1 ∉ CenterPoly.sq 1 :=
 theorem rankThree_volume_corrected_form :
     ∃ a ∈ CenterPoly.sq 1, ∃ b ∈ CenterPoly.sq 1,
       CenterPoly.V 1 = a + (if Odd (1+2) then CenterPoly.V 1 * b else 0) :=
-  ⟨0, zero_mem _, 1, one_mem _, by rw [if_pos (by decide), mul_one, zero_add]⟩
+  ⟨0, zero_mem _, 1, one_mem _, by rw [ite_eq_left (by decide), mul_one, zero_add]⟩
 
 /-- Rank three: the dot image of `V` is central in `ONH_3`. -/
 theorem rankThree_dotVolume_center :

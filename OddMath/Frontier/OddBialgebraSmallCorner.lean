@@ -107,12 +107,12 @@ def splitS : Categorification.Splitting (1 : D.Bsub) (D.eS F₁ F₂) (F₁.I ×
     · by_cases h2 : x.2 = y.2
       · have hxy : x = y := Prod.ext h1 h2
         subst hxy
-        rw [if_pos rfl, if_pos rfl, if_pos rfl, ← Int.negOnePow_add,
+        rw [ite_eq_left rfl, ite_eq_left rfl, ite_eq_left rfl, ← Int.negOnePow_add,
           show F₁.k x.1 * F₂.k x.2 + F₁.k x.1 * -F₂.k x.2 = 0 by ring, Int.negOnePow_zero,
           one_smul]
         rfl
-      · rw [if_neg h2, map_zero, mul_zero, smul_zero, if_neg (fun h => h2 (congrArg Prod.snd h))]
-    · rw [if_neg h1, map_zero, zero_mul, smul_zero, if_neg (fun h => h1 (congrArg Prod.fst h))]
+      · rw [ite_eq_right h2, map_zero, mul_zero, smul_zero, ite_eq_right (fun h => h2 (congrArg Prod.snd h))]
+    · rw [ite_eq_right h1, map_zero, zero_mul, smul_zero, ite_eq_right (fun h => h1 (congrArg Prod.fst h))]
   mul_sigma _ := one_mul _
   lam_mul _ := mul_one _
 
@@ -161,7 +161,7 @@ theorem cornerCondS_tensor {i j : ℤ} {x : R₁} {x' : R₂} (hx : x ∈ A₁ (
       (D.eS F₁ F₂ * (D.pairS.ι₁ x * D.pairS.ι₂ x') * D.eS F₁ F₂) := by
   rw [D.eS_sandwich_tensor F₁ F₂ hx hx']
   refine ⟨fun hd => ?_, fun hd => ?_⟩
-  · rcases lt_or_le (2 * i) 0 with h | h
+  · rcases lt_or_ge (2 * i) 0 with h | h
     · rw [F₁.neg hx h, map_zero, zero_mul]
     · rw [F₂.neg hx' (by omega), map_zero, mul_zero]
   · rcases lt_trichotomy (2 * i) 0 with h | h | h
@@ -179,15 +179,15 @@ theorem repr_tmap_bT (ij kl : D.I₁ × D.I₂) (hne : kl ≠ ij) :
   have hφ : D.φ kl ≠ D.φ ij := fun h => hne (D.inj h)
   rw [tmap_bT]
   rcases D.sign kl.1 kl.2 with h | h <;> rw [h]
-  · rw [Basis.repr_self, Finsupp.single_eq_of_ne hφ]
-  · rw [map_neg, Basis.repr_self, Finsupp.neg_apply, Finsupp.single_eq_of_ne hφ, neg_zero]
+  · rw [Module.Basis.repr_self, Finsupp.single_eq_of_ne (Ne.symm hφ)]
+  · rw [map_neg, Module.Basis.repr_self, Finsupp.neg_apply, Finsupp.single_eq_of_ne (Ne.symm hφ), neg_zero]
 
 theorem repr_tmap_bT_self (ij : D.I₁ × D.I₂) :
     (basis n).repr (D.tmap (D.bT ij)) (D.φ ij) ≠ 0 := by
   rw [tmap_bT]
   rcases D.sign ij.1 ij.2 with h | h <;> rw [h]
-  · rw [Basis.repr_self, Finsupp.single_eq_same]; exact one_ne_zero
-  · rw [map_neg, Basis.repr_self, Finsupp.neg_apply, Finsupp.single_eq_same]
+  · rw [Module.Basis.repr_self, Finsupp.single_eq_same]; exact one_ne_zero
+  · rw [map_neg, Module.Basis.repr_self, Finsupp.neg_apply, Finsupp.single_eq_same]
     exact neg_ne_zero.2 one_ne_zero
 
 /-- **The corner `ẽ B ẽ` vanishes in negative degrees and is `ℤ ẽ` in degree `0`.** -/
@@ -210,10 +210,10 @@ theorem cornerCondS_sandwich {d : ℤ} {y : D.Bsub} (hy : y ∈ D.gradS d) :
   have hw : ∀ q ∈ c.support, 2 * D.wt₁ q.1 + 2 * D.wt₂ q.2 = d := by
     intro q hq
     rw [← D.weight q]
-    have hsupp := (Basis.mem_span_image (basis n)).1
+    have hsupp := (Module.Basis.mem_span_image (basis n)).1
       (mem_span_weight (show (y : Presented n) ∈ onhGrading n d from hy))
     refine hsupp (Finsupp.mem_support_iff.2 ?_)
-    rw [ht', map_sum, Finsupp.finset_sum_apply]
+    rw [ht', map_sum, Finsupp.finsetSum_apply]
     simp only [map_zsmul, Finsupp.smul_apply, smul_eq_mul]
     rw [Finset.sum_eq_single q (fun k _ hk => by rw [D.repr_tmap_bT q k hk, mul_zero])
       (fun h => absurd hq h)]

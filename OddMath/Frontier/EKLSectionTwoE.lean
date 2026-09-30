@@ -99,8 +99,8 @@ theorem psi_homotopy {n : ℕ} (i : Fin (n+1)) (k : ℕ) (f : SkewPolynomial (n+
     divided i (psi i (k+1) * f) + psi i k * divided i f = f := by
   unfold psi
   rcases Nat.even_or_odd k with hk | hk
-  · rw [if_neg (Nat.not_even_iff_odd.mpr hk.add_one), if_pos hk, divided_right_mul]; abel
-  · rw [if_pos hk.add_one, if_neg (Nat.not_even_iff_odd.mpr hk), divided_left_mul]; abel
+  · rw [ite_eq_right (Nat.not_even_iff_odd.mpr hk.add_one), ite_eq_left hk, divided_right_mul]; abel
+  · rw [ite_eq_left hk.add_one, ite_eq_right (Nat.not_even_iff_odd.mpr hk), divided_left_mul]; abel
 
 /-- (2.11) in degree 0: `∂_i ψ_0 = id` on constants. -/
 theorem psi_homotopy_zero {n : ℕ} (i : Fin (n+1)) (c : ℤ) :
@@ -108,8 +108,8 @@ theorem psi_homotopy_zero {n : ℕ} (i : Fin (n+1)) (c : ℤ) :
   have h := psi_homotopy i 0 (c • 1 : SkewPolynomial (n+2))
   rw [map_smul, divided_one, smul_zero, mul_zero, add_zero] at h
   unfold psi at h ⊢
-  rw [if_neg (by decide)] at h
-  rw [if_pos (by decide), divided_left_mul, map_smul, divided_one, smul_zero, mul_zero,
+  rw [ite_eq_right (by decide)] at h
+  rw [ite_eq_left (by decide), divided_left_mul, map_smul, divided_one, smul_zero, mul_zero,
     sub_zero]
 
 /-! ### The leading term in the proof of Proposition 2.2 -/
@@ -118,7 +118,7 @@ theorem psi_homotopy_zero {n : ℕ} (i : Fin (n+1)) (c : ℤ) :
 theorem elementary_two_coeff_pair (n : ℕ) :
     elementaryPoly (n+2) 2 (fun j => if j.val < 2 then 1 else 0) = -1 := by
   classical
-  rw [OddSchurPieri.elementary_subsets, Finsupp.finset_sum_apply,
+  rw [OddSchurPieri.elementary_subsets, Finsupp.finsetSum_apply,
     Finset.sum_eq_single (OddSchurPieri.initial (n+2) 2)]
   · rw [OddSchurPieri.subsetTilde, OddSchurPieri.initial_weight _ _ (by omega)]
     have : OddSchurPieri.subsetExp (OddSchurPieri.initial (n+2) 2) =
@@ -127,7 +127,7 @@ theorem elementary_two_coeff_pair (n : ℕ) :
     rw [this, Finsupp.smul_apply, Finsupp.single_eq_same]
     norm_num
   · intro I hI hne
-    rw [OddSchurPieri.subsetTilde, Finsupp.smul_apply, Finsupp.single_apply, if_neg, smul_zero]
+    rw [OddSchurPieri.subsetTilde, Finsupp.smul_apply, Finsupp.single_apply, ite_eq_right, smul_zero]
     intro he
     apply hne
     ext j
@@ -164,7 +164,7 @@ theorem applyWord_const (n : ℕ) (c : ℤ) (w : List (Fin (n+1))) :
   induction w with
   | nil => rfl
   | cons i w ih =>
-    rw [LongestDivided.applyWord_cons, ih, if_neg (List.cons_ne_nil i w)]
+    rw [LongestDivided.applyWord_cons, ih, ite_eq_right (List.cons_ne_nil i w)]
     split_ifs
     · rw [map_smul, divided_one, smul_zero]
     · exact map_zero _
@@ -189,7 +189,7 @@ theorem elementary_one_eq (N : ℕ) :
   refine Finset.sum_congr rfl fun j _ => ?_
   have hm : StrictMono ((Equiv.funUnique (Fin 1) (Fin N)).symm j) := fun a b h => by
     rw [Subsingleton.elim a b] at h; exact absurd h (lt_irrefl _)
-  rw [if_pos hm]
+  rw [ite_eq_left hm]
   simp
 
 theorem swap_val {n : ℕ} (j : Fin (n+1)) (k : Fin (n+2)) :
@@ -205,7 +205,7 @@ theorem divided_s_tilde {n : ℕ} (m j : Fin (n+1)) (k : Fin (n+2)) :
       then -((-1 : ℤ) ^ k.val • 1) else 0 := by
   rw [PlacticEvaluation.tildeGenerator, map_zsmul, s_generator, smul_neg, map_neg, map_zsmul,
     divided_generator]
-  simp only [Fin.ext_iff, Fin.coe_castSucc, Fin.val_succ]
+  simp only [Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
   split_ifs <;> simp
 
 theorem smul_one_ne_zero {N : ℕ} {c : ℤ} (hc : c ≠ 0) : (c • 1 : SkewPolynomial N) ≠ 0 := by
@@ -222,10 +222,10 @@ theorem divided_s_elementary_one {n : ℕ} (m j : Fin (n+1)) (a b : Fin (n+2)) (
     divided m (s j (elementaryPoly (n+2) 1)) = (-(2 * (-1 : ℤ) ^ a.val)) • 1 := by
   classical
   rw [elementary_one_eq, map_sum, map_sum, Fintype.sum_eq_add a b hab]
-  · rw [divided_s_tilde, divided_s_tilde, if_pos ((hin a).mpr (Or.inl rfl)),
-      if_pos ((hin b).mpr (Or.inr rfl)), ← hpar, ← neg_add, ← add_smul, ← two_mul, neg_smul]
+  · rw [divided_s_tilde, divided_s_tilde, ite_eq_left ((hin a).mpr (Or.inl rfl)),
+      ite_eq_left ((hin b).mpr (Or.inr rfl)), ← hpar, ← neg_add, ← add_smul, ← two_mul, neg_smul]
   · rintro k ⟨hka, hkb⟩
-    rw [divided_s_tilde, if_neg]
+    rw [divided_s_tilde, ite_eq_right]
     rw [hin k]
     rintro (h | h) <;> contradiction
 
@@ -262,7 +262,7 @@ theorem sum_squares_factorizations (n : ℕ) :
       (generator (0 : Fin (n+2)) + generator 1) ^ 2 =
         generator (0 : Fin (n+2)) ^ 2 + generator 1 ^ 2 := by
   have hc : generator (0 : Fin (n+2)) * generator 1 = -(generator 1 * generator 0) :=
-    OddMath.SkewPolynomial.generator_anticommute (0 : Fin (n+2)) 1 (by simp [Fin.ext_iff])
+    OddMath.SkewPolynomial.generator_anticommute (0 : Fin (n+2)) 1 (by simp)
   constructor
   · rw [sq, sq, sq, sub_mul, mul_sub, mul_sub, hc]; abel
   · rw [sq, sq, sq, add_mul, mul_add, mul_add, hc]; abel
@@ -275,7 +275,7 @@ theorem factors_not_associate (n : ℕ) (u : ℤ) (hu : u = 1 ∨ u = -1) :
   have hne : expSingle (0 : Fin (n+2)) ≠ expSingle 1 := by
     intro he
     have := congrFun he 0
-    simp [expSingle, Fin.ext_iff] at this
+    simp [expSingle] at this
   simp only [generator, Finsupp.sub_apply, Finsupp.add_apply, Finsupp.smul_apply,
     Finsupp.single_eq_same, Finsupp.single_eq_of_ne hne, Finsupp.single_eq_of_ne hne.symm,
     smul_eq_mul] at h0 h1
@@ -294,7 +294,7 @@ theorem dividedPair_elementary_one (n : ℕ) :
     simp [two_smul]
   · rintro k ⟨h0, h2⟩
     simp only [PlacticEvaluation.tildeGenerator, map_zsmul, NonadjacentDivided.divided_generator,
-      if_neg (not_or.mpr ⟨h0, h2⟩), smul_zero]
+      ite_eq_right (not_or.mpr ⟨h0, h2⟩), smul_zero]
 
 theorem elementary_one_not_mem_ker_pair (n : ℕ) :
     NonadjacentDivided.dividedPair (0 : Fin (n+3)) ⟨2, by omega⟩ (by simp [Fin.ext_iff])

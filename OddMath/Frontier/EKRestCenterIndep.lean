@@ -50,9 +50,9 @@ theorem psi_prod {r : ℕ} (k : ℕ) (hk : 0 < k) (γ : Fin r → ℕ) :
           refine ⟨j.succ, ?_⟩
           funext i
           refine Fin.cases ?_ (fun i => ?_) i
-          · simp [h0, Pi.single_apply, (Fin.succ_ne_zero j).symm]
-          · have := congrFun hj i; simp only at this; rw [this]; simp [Pi.single_apply, Fin.succ_inj]
-      simp only [h0, if_true, one_mul, e1, e2]
+          · simp [h0, (Fin.succ_ne_zero j).symm]
+          · have := congrFun hj i; rw [this]; simp [Pi.single_apply, Fin.succ_inj]
+      simp only [h0, ite_true, one_mul, e1, e2]
     · by_cases hk' : γ 0 = k
       · have e1 : ¬ ∀ i, γ i = 0 := fun h => h0 (h 0)
         have e2 : (∃ j, γ = Pi.single j k) ↔ ∀ i : Fin r, γ i.succ = 0 := by
@@ -61,20 +61,20 @@ theorem psi_prod {r : ℕ} (k : ℕ) (hk : 0 < k) (γ : Fin r → ℕ) :
             have hj0 : j = 0 := by
               by_contra hne
               have := congrFun hj 0
-              rw [Pi.single_apply, if_neg (Ne.symm hne)] at this
+              rw [Pi.single_apply, ite_eq_right (Ne.symm hne)] at this
               exact h0 this
             subst hj0
-            rw [hj]; simp [Pi.single_apply, Fin.succ_ne_zero]
+            rw [hj]; simp [Fin.succ_ne_zero]
           · intro h
             refine ⟨0, ?_⟩
             funext i
             refine Fin.cases ?_ (fun i => ?_) i
             · simp [hk']
-            · simp [h i, Pi.single_apply, Fin.succ_ne_zero]
-        rw [if_neg h0, if_pos hk', if_neg e1]
+            · simp [h i, Fin.succ_ne_zero]
+        rw [ite_eq_right h0, ite_eq_left hk', ite_eq_right e1]
         by_cases hall : ∀ i : Fin r, γ i.succ = 0
-        · rw [if_pos hall, if_pos (e2.mpr hall)]; simp
-        · rw [if_neg hall, if_neg (fun h => hall (e2.mp h))]
+        · rw [ite_eq_left hall, ite_eq_left (e2.mpr hall)]; simp
+        · rw [ite_eq_right hall, ite_eq_right (fun h => hall (e2.mp h))]
           split_ifs <;> simp [DualNumber.eps_mul_eps]
       · have e1 : ¬ ∀ i, γ i = 0 := fun h => h0 (h 0)
         have e2 : ¬ ∃ j, γ = Pi.single j k := by
@@ -82,7 +82,7 @@ theorem psi_prod {r : ℕ} (k : ℕ) (hk : 0 < k) (γ : Fin r → ℕ) :
           have := congrFun hj 0
           rw [Pi.single_apply] at this
           split_ifs at this <;> omega
-        rw [if_neg h0, if_neg hk', if_neg e1, if_neg e2, zero_mul]
+        rw [ite_eq_right h0, ite_eq_right hk', ite_eq_right e1, ite_eq_right e2, zero_mul]
 
 theorem snd_psi_word {r : ℕ} (k : ℕ) (hk : 0 < k) (γ : Fin r → ℕ) :
     (psi k (EKMixedPairing.word γ (fun _ => false))).snd =
@@ -94,15 +94,15 @@ theorem snd_psi_word {r : ℕ} (k : ℕ) (hk : 0 < k) (γ : Fin r → ℕ) :
       have := congrFun hj j
       rw [h1 j, Pi.single_eq_same] at this
       omega
-    rw [if_pos h1, if_neg this]; rfl
-  · rw [if_neg h1]
+    rw [ite_eq_left h1, ite_eq_right this]; rfl
+  · rw [ite_eq_right h1]
     split_ifs <;> rfl
 
 theorem single_inj {r k : ℕ} (hk : 0 < k) {i j : Fin r}
     (h : (Pi.single i k : Fin r → ℕ) = Pi.single j k) : i = j := by
   by_contra hne
   have := congrFun h i
-  rw [Pi.single_eq_same, Pi.single_apply, if_neg hne] at this
+  rw [Pi.single_eq_same, Pi.single_apply, ite_eq_right hne] at this
   omega
 
 theorem split_sum_single {r : ℕ} (β : Fin r → ℕ) (k : ℕ) (j : Fin r) (G : (Fin r → ℕ) → ℤ) :
@@ -110,7 +110,7 @@ theorem split_sum_single {r : ℕ} (β : Fin r → ℕ) (k : ℕ) (j : Fin r) (G
       if k ≤ β j then G (Function.update β j (β j - k)) else 0 := by
   classical
   by_cases hkj : k ≤ β j
-  · rw [if_pos hkj]
+  · rw [ite_eq_left hkj]
     have hle : ∀ i, (Pi.single j k : Fin r → ℕ) i < β i + 1 := by
       intro i
       rw [Pi.single_apply]
@@ -120,7 +120,7 @@ theorem split_sum_single {r : ℕ} (β : Fin r → ℕ) (k : ℕ) (j : Fin r) (G
     let u0 : Splits β := fun i => ⟨(Pi.single j k : Fin r → ℕ) i, hle i⟩
     have hu0 : upper u0 = Pi.single j k := rfl
     rw [Fintype.sum_eq_single u0]
-    · rw [if_pos hu0]
+    · rw [ite_eq_left hu0]
       congr 1
       funext i
       simp only [lower, u0, Function.update_apply, Pi.single_apply]
@@ -128,16 +128,16 @@ theorem split_sum_single {r : ℕ} (β : Fin r → ℕ) (k : ℕ) (j : Fin r) (G
       · subst h; rfl
       · simp
     · intro u hu
-      rw [if_neg]
+      rw [ite_eq_right]
       intro h
       apply hu
       funext i
       apply Fin.ext
       exact congrFun h i
-  · rw [if_neg hkj]
+  · rw [ite_eq_right hkj]
     apply Finset.sum_eq_zero
     intro u _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     have h1 := congrFun h j
     have h2 := (u j).isLt
@@ -164,8 +164,8 @@ theorem pairing_p_mul (a : ℕ) (ha : 0 < a) (Y : Q) {r : ℕ} (β : Fin r → �
     intro u
     by_cases hex : ∃ j, upper u = Pi.single j (2 * a)
     · obtain ⟨j0, hj0⟩ := hex
-      rw [if_pos ⟨j0, hj0⟩, Finset.sum_eq_single j0]
-      · rw [if_pos hj0, one_mul]
+      rw [ite_eq_left ⟨j0, hj0⟩, Finset.sum_eq_single j0]
+      · rw [ite_eq_left hj0, one_mul]
         have he : Even (crossCols (upper u) (lower u)) := by
           apply EKCenterPower.crossCols_even_left
           intro i
@@ -175,15 +175,15 @@ theorem pairing_p_mul (a : ℕ) (ha : 0 < a) (Y : Q) {r : ℕ} (β : Fin r → �
           · exact Even.zero
         rw [he.neg_one_pow, one_mul]
       · intro j _ hj
-        rw [if_neg]
+        rw [ite_eq_right]
         intro h
         exact hj (single_inj hk (h.symm.trans hj0))
       · simp
-    · rw [if_neg hex, zero_mul, mul_zero]
+    · rw [ite_eq_right hex, zero_mul, mul_zero]
       symm
       apply Finset.sum_eq_zero
       intro j _
-      rw [if_neg (fun h => hex ⟨j, h⟩)]
+      rw [ite_eq_right (fun h => hex ⟨j, h⟩)]
   rw [Finset.sum_congr rfl (fun u _ => step u), Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j _
@@ -201,11 +201,11 @@ theorem pairN_nil {r : ℕ} (β : Fin r → ℕ) : pairN [] β = if ∑ j, β j 
   rw [pairN, pL, List.map_nil, List.prod_nil, hw, ← map_one pi, quotientPairing_pi,
     ← EKMixedPairing.gen_zero false, EKMixedPairing.pairing_gen_word]
   by_cases h : ∑ j, β j = 0
-  · rw [if_pos h.symm, if_pos h]
+  · rw [ite_eq_left h.symm, ite_eq_left h]
     apply Finset.prod_eq_one
     intro j _
     simp [EKMixedPairing.cell]
-  · rw [if_neg (Ne.symm h), if_neg h]
+  · rw [ite_eq_right (Ne.symm h), ite_eq_right h]
 
 theorem pairN_cons (a : ℕ) (ha : 0 < a) (L : List ℕ) {r : ℕ} (β : Fin r → ℕ) :
     pairN (a :: L) β =
@@ -241,7 +241,7 @@ theorem nz_update_zero {r : ℕ} (β : Fin r → ℕ) (j : Fin r) (hj : β j ≠
     · subst h; simp [hj]
     · simp [h]
   have hnot : j ∉ Finset.univ.filter (fun i => Function.update β j 0 i ≠ 0) := by simp
-  rw [nz, nz, hs, Finset.insert_val_of_not_mem hnot, Multiset.map_cons]
+  rw [nz, nz, hs, Finset.insert_val_of_notMem hnot, Multiset.map_cons]
   congr 1
   apply Multiset.map_congr rfl
   intro i hi
@@ -272,7 +272,7 @@ theorem pairN_support (L : List ℕ) (hL : ∀ a ∈ L, 0 < a) {r : ℕ} (β : F
   induction L generalizing β with
   | nil =>
     rw [pairN_nil] at hN
-    have h0 : ∑ j, β j = 0 := by by_contra h; rw [if_neg h] at hN; exact hN rfl
+    have h0 : ∑ j, β j = 0 := by by_contra h; rw [ite_eq_right h] at hN; exact hN rfl
     have hall : ∀ j, β j = 0 := fun j => (Finset.sum_eq_zero_iff.mp h0) j (Finset.mem_univ j)
     rw [nz_zero β hall]
     simp
@@ -281,8 +281,8 @@ theorem pairN_support (L : List ℕ) (hL : ∀ a ∈ L, 0 < a) {r : ℕ} (β : F
     have hL' : ∀ b ∈ L, 0 < b := fun b hb => hL b (by simp [hb])
     rw [pairN_cons a ha] at hN
     obtain ⟨j, _, hj⟩ := Finset.exists_ne_zero_of_sum_ne_zero hN
-    have hle : 2 * a ≤ β j := by by_contra h; rw [if_neg h] at hj; exact hj rfl
-    rw [if_pos hle] at hj
+    have hle : 2 * a ≤ β j := by by_contra h; rw [ite_eq_right h] at hj; exact hj rfl
+    rw [ite_eq_left hle] at hj
     obtain ⟨ih1, ih2⟩ := ih hL' _ hj
     have hbj : β j ≠ 0 := by omega
     by_cases hz : β j - 2 * a = 0
@@ -334,7 +334,7 @@ theorem pairN_diag_pos (L : List ℕ) (hL : ∀ a ∈ L, 0 < a) : 0 < pairN L (t
     let z0 : Fin (a :: L).length := ⟨0, by simp⟩
     refine lt_of_lt_of_le ?_ (Finset.single_le_sum hterm (Finset.mem_univ z0))
     have h0 : twoVec (a :: L) z0 = 2 * a := rfl
-    rw [if_pos (le_of_eq h0.symm)]
+    rw [ite_eq_left (le_of_eq h0.symm)]
     have hv : Function.update (twoVec (a :: L)) z0 (twoVec (a :: L) z0 - 2 * a) =
         (Fin.cons 0 (twoVec L) : Fin (L.length + 1) → ℕ) := by
       funext i
@@ -360,7 +360,7 @@ theorem rowLens_eq_of_map_two {μ ν : YoungDiagram}
   have h' := Multiset.map_injective (f := (2 * ·)) (fun a b hab => by simpa using hab) h
   have hp : μ.rowLens.Perm ν.rowLens := Multiset.coe_eq_coe.mp h'
   apply YoungDiagram.equivListRowLens.injective
-  exact Subtype.ext (List.eq_of_perm_of_sorted hp μ.rowLens_sorted ν.rowLens_sorted)
+  exact Subtype.ext (List.Perm.eq_of_pairwise' μ.rowLens_sorted.pairwise ν.rowLens_sorted.pairwise hp)
 
 /-- **Linear independence of the `p_{2λ}`**, `λ` over all partitions (all degrees). -/
 theorem pP_linearIndependent : LinearIndependent ℤ pP := by
@@ -419,9 +419,9 @@ theorem finsupp_prod_eq (s : ℕ →₀ ℕ) :
       Multiset.prod_nsmul, Multiset.prod_singleton]
 
 /-- The partition with `s k` parts equal to `k + 1`. -/
-def sortL (s : ℕ →₀ ℕ) : List ℕ := Multiset.sort (· ≥ ·) (s.toMultiset.map (· + 1))
+def sortL (s : ℕ →₀ ℕ) : List ℕ := Multiset.sort (s.toMultiset.map (· + 1)) (· ≥ ·)
 
-theorem sortL_sorted (s : ℕ →₀ ℕ) : (sortL s).Sorted (· ≥ ·) := Multiset.sort_sorted _ _
+theorem sortL_sorted (s : ℕ →₀ ℕ) : (sortL s).Pairwise (· ≥ ·) := Multiset.pairwise_sort _ _
 
 theorem sortL_coe (s : ℕ →₀ ℕ) : ((sortL s : List ℕ) : Multiset ℕ) = s.toMultiset.map (· + 1) :=
   Multiset.sort_eq _ _
@@ -432,7 +432,7 @@ theorem sortL_pos (s : ℕ →₀ ℕ) : ∀ a ∈ sortL s, 0 < a := by
   obtain ⟨b, _, rfl⟩ := ha
   omega
 
-def shapeOf (s : ℕ →₀ ℕ) : YoungDiagram := YoungDiagram.ofRowLens (sortL s) (sortL_sorted s)
+def shapeOf (s : ℕ →₀ ℕ) : YoungDiagram := YoungDiagram.ofRowLens (sortL s) (sortL_sorted s).sortedGE
 
 theorem shapeOf_rowLens (s : ℕ →₀ ℕ) : (shapeOf s).rowLens = sortL s :=
   YoungDiagram.rowLens_ofRowLens_eq_self (sortL_pos s)
@@ -470,7 +470,6 @@ theorem algebraicIndependent_p : AlgebraicIndependent ℤ pc := by
     pP_linearIndependent.comp shapeOf shapeOf_injective
   have hsum : ∑ s ∈ P.support, P.coeff s • pP (shapeOf s) = 0 := by
     have h := congrArg (fun z : Subring.center Q => (z : Q)) hP
-    simp only at h
     rw [P.as_sum, map_sum] at h
     simp only [MvPolynomial.aeval_monomial, Subring.coe_zero] at h
     rw [← h]
@@ -478,7 +477,7 @@ theorem algebraicIndependent_p : AlgebraicIndependent ℤ pc := by
     apply Finset.sum_congr rfl
     intro s _
     rw [← monomial_coe, Algebra.algebraMap_eq_smul_one]
-    simp only [Subring.coe_mul, zsmul_eq_mul, Subring.coe_intCast, mul_one]
+    simp only [zsmul_eq_mul, Subring.coe_intCast, mul_one]
   ext s
   by_cases hs : s ∈ P.support
   · exact linearIndependent_iff'.mp hli P.support (fun s => P.coeff s) hsum s hs

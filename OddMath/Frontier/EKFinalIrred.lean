@@ -42,23 +42,23 @@ theorem cyclo_prime (p : ℕ) [Fact p.Prime] :
     cyclotomic p ℤ = ∑ i ∈ Finset.range p, (X : ℤ[X]) ^ i := cyclotomic_prime ℤ p
 
 theorem cyclo_3 : cyclotomic 3 ℤ = X ^ 2 + X + 1 := by
-  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 3) := ⟨by norm_num⟩
   rw [cyclo_prime]; simp [Finset.sum_range_succ]; ring
 
 theorem cyclo_5 : cyclotomic 5 ℤ = X ^ 4 + X ^ 3 + X ^ 2 + X + 1 := by
-  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   rw [cyclo_prime]; simp [Finset.sum_range_succ]; ring
 
 theorem cyclo_7 : cyclotomic 7 ℤ = X ^ 6 + X ^ 5 + X ^ 4 + X ^ 3 + X ^ 2 + X + 1 := by
-  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   rw [cyclo_prime]; simp [Finset.sum_range_succ]; ring
 
 theorem cyclo_11 : cyclotomic 11 ℤ = ∑ i ∈ Finset.range 11, (X : ℤ[X]) ^ i := by
-  haveI : Fact (Nat.Prime 11) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 11) := ⟨by norm_num⟩
   exact cyclo_prime 11
 
 theorem cyclo_17 : cyclotomic 17 ℤ = phi17 := by
-  haveI : Fact (Nat.Prime 17) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 17) := ⟨by norm_num⟩
   rw [cyclo_prime, phi17_eq]
 
 theorem cyclo_4 : cyclotomic 4 ℤ = X ^ 2 + 1 := by
@@ -130,7 +130,7 @@ theorem irreducible_of_frob (f : (ZMod p)[X]) (hm : f.Monic) (hd : 0 < f.natDegr
       IsUnit ((AdjoinRoot.root f) ^ (p ^ d) - AdjoinRoot.root f)) : Irreducible f := by
   refine ⟨Polynomial.not_isUnit_of_natDegree_pos f hd, fun a b hab => ?_⟩
   by_contra hne
-  push_neg at hne
+  push Not at hne
   obtain ⟨hna, hnb⟩ := hne
   have ha0 : a ≠ 0 := by rintro rfl; rw [zero_mul] at hab; exact hm.ne_zero hab
   have hb0 : b ≠ 0 := by rintro rfl; rw [mul_zero] at hab; exact hm.ne_zero hab
@@ -146,17 +146,17 @@ theorem irreducible_of_frob (f : (ZMod p)[X]) (hm : f.Monic) (hd : 0 < f.natDegr
   have hg0 : g ≠ 0 := hg.ne_zero
   have hgd : 0 < g.natDegree := hg.natDegree_pos
   have hgle : g.natDegree ≤ c.natDegree := natDegree_le_of_dvd hgc hc0
-  haveI : Fact (Irreducible g) := ⟨hg⟩
+  have : Fact (Irreducible g) := ⟨hg⟩
   have hroot : aeval (AdjoinRoot.root g) f = 0 := by
     obtain ⟨t, ht⟩ := hgf
     rw [ht, map_mul, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, zero_mul]
-  let φ := AdjoinRoot.liftHom f (AdjoinRoot.root g) hroot
+  let φ := AdjoinRoot.lift (algebraMap (ZMod p) (AdjoinRoot g)) (AdjoinRoot.root g) hroot
   have hu := (h g.natDegree hgd (by omega)).map φ
-  rw [map_sub, map_pow, AdjoinRoot.liftHom_root] at hu
+  rw [map_sub, map_pow, AdjoinRoot.lift_root] at hu
   let pb := AdjoinRoot.powerBasis hg0
-  haveI : Module.Finite (ZMod p) (AdjoinRoot g) := pb.finite
-  haveI : Finite (AdjoinRoot g) := Module.finite_of_finite (ZMod p)
-  letI : Fintype (AdjoinRoot g) := Fintype.ofFinite _
+  have : Module.Finite (ZMod p) (AdjoinRoot g) := pb.finite
+  have : Finite (AdjoinRoot g) := Module.finite_of_finite (ZMod p)
+  let : Fintype (AdjoinRoot g) := Fintype.ofFinite _
   have hcard : Fintype.card (AdjoinRoot g) = p ^ g.natDegree := by
     rw [Module.card_eq_pow_finrank (K := ZMod p), ZMod.card, pb.finrank]
     rfl
@@ -263,7 +263,7 @@ theorem evN_mulX (α : R) (hp : (p : R) = 0) {n : ℕ} (r : List ℕ) (hr : evN 
   have hne : a ≠ [] := by rintro rfl; simp at ha; omega
   have hsplit := List.dropLast_append_getLast hne
   have hlast : a.getLastD 0 = a.getLast hne := by
-    rw [List.getLastD_eq_getLast?, List.getLast?_eq_getLast hne]; rfl
+    rw [List.getLastD_eq_getLast?, List.getLast?_eq_some_getLast hne]; rfl
   rw [mulX, evN_addP α hp, evN_scaleP α hp, hr, hlast]
   conv_rhs => rw [← hsplit, evN_append]
   have hl : a.dropLast.length = n - 1 := by rw [List.length_dropLast, ha]
@@ -335,7 +335,7 @@ theorem chkP_spec (α : R) (hp : (p : R) = 0) (hp1 : 1 ≤ p) {n : ℕ} (r : Lis
     | zero =>
       have := (mulmodP_spec α hp r hr hrl hn w hwl (subXP p n (powP p r s p))).1
       rw [hw, evN_oneP, evN_subXP α hp hp1, hs'] at this
-      exact isUnit_of_mul_eq_one _ _ this.symm
+      exact IsUnit.of_mul_eq_one _ this.symm
     | succ i =>
       have := ih (powP p r s p) (j + 1) hs' hpl hrest i (by simpa using hi)
       rwa [show j + 1 + i + 1 = j + (i + 1) + 1 by ring] at this
@@ -471,7 +471,7 @@ theorem f6_irreducible : Irreducible (f6.map (Int.castRingHom ℚ)) := by
 
 /-- **The printed degree-18 polynomial is irreducible over `ℚ`** (it is irreducible mod `5`). -/
 theorem f18_irreducible : Irreducible (f18.map (Int.castRingHom ℚ)) := by
-  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   rw [f18_split]
   exact irreducible_of_chk 5 f18Lower cert18 (by decide) (by decide +kernel) (by decide)
 
@@ -493,7 +493,7 @@ theorem cyclotomic_eval_one_cases (N : ℕ) (hN : 0 < N) :
       simp [cyclotomic_one]
     | succ k =>
       right; left
-      haveI : Fact ℓ.Prime := ⟨hℓ⟩
+      have : Fact ℓ.Prime := ⟨hℓ⟩
       refine ⟨ℓ, k, hℓ, hk.symm, ?_⟩
       rw [← hk, eval_one_cyclotomic_prime_pow]
   · right; right

@@ -63,7 +63,7 @@ theorem shat_bot (n : ℕ) : shat n ⊥ = 1 := by
     apply TableauContent.ext_cells
     intro p hp
     exact absurd hp (by simp)
-  letI : Unique (TabOf n ⊥) := ⟨⟨_⟩, hu⟩
+  let : Unique (TabOf n ⊥) := ⟨⟨_⟩, hu⟩
   have hd : directNorth ⊥ + north ⊥ = 0 := by simp [directNorth, north]
   rw [shat, hd, pow_zero, one_smul, Fintype.sum_unique]
   exact tabWord_empty n
@@ -134,7 +134,7 @@ theorem output_sum (n : ℕ) (lam : YoungDiagram) (k : ℕ) :
       ∑ nu : DegreeShape (lam.card + k), if Vertical lam nu.val then
         (-1 : ℤ) ^ stripBelow lam nu.val • shat n nu.val
       else 0 := by
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   rw [Fintype.sum_sigma]
   have hv : ∀ nu : OddLRVerticalPieri.Outer lam k, ∑ T : TabOf n nu.val.val,
       outputValue n lam (OddLRVerticalPieri.outputMap n lam k ⟨nu, T⟩).val =
@@ -159,7 +159,7 @@ theorem vertical_pieri (n : ℕ) (lam : YoungDiagram) (k : ℕ) :
       ∑ mu : DegreeShape (lam.card + k), if Vertical lam mu.val then
         (-1 : ℤ) ^ stripBelow lam mu.val • shat n mu.val
       else 0 := by
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   rw [input_sum, ← output_sum]
   exact Fintype.sum_equiv (OddLRVerticalPieri.aggregateEquiv n lam k) _ _ (pointwise n lam k)
 
@@ -172,7 +172,7 @@ open OddLRThm38 (rowsOf vertical_addStrip rowsOf_mem rowsOf_addStrip addStrip_ro
 theorem pieri_rows (N : ℕ) (lam : YoungDiagram) (k : ℕ) :
     shat N lam * shat N (TableauExtremal.columnShape k) =
       ∑ I ∈ stripRows lam k, (-1 : ℤ) ^ (∑ a ∈ I, belowRows lam a) • shat N (addStrip lam k I) := by
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   have hv := vertical_pieri N lam k
   rw [OddLRThm38.column_eq_columnShape] at hv
   rw [hv, ← Finset.sum_filter]

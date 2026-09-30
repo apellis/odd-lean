@@ -17,20 +17,20 @@ theorem ePartition_identification (μ : YoungDiagram) :
     ePartition μ = EKSemiorthogonality.ePartition μ := rfl
 
 /-- Literal complete-partition basis of the actual quotient. -/
-def hBasis : Basis YoungDiagram ℤ Q :=
-  Basis.mk EKSemiorthogonality.hPartition_linearIndependent
+def hBasis : Module.Basis YoungDiagram ℤ Q :=
+  Module.Basis.mk EKSemiorthogonality.hPartition_linearIndependent
     (by rw [show EKSemiorthogonality.hPartition = hPartition from rfl,
       EKPartitionSpanning.h_span])
 /-- Literal elementary-partition basis of the actual quotient. -/
-def eBasis : Basis YoungDiagram ℤ Q :=
-  Basis.mk EKSemiorthogonality.ePartition_linearIndependent
+def eBasis : Module.Basis YoungDiagram ℤ Q :=
+  Module.Basis.mk EKSemiorthogonality.ePartition_linearIndependent
     (by rw [show EKSemiorthogonality.ePartition = ePartition from rfl,
       EKPartitionSpanning.e_span])
 
 @[simp] theorem hBasis_apply (μ : YoungDiagram) : hBasis μ = hPartition μ :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 @[simp] theorem eBasis_apply (μ : YoungDiagram) : eBasis μ = ePartition μ :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 @[simp] theorem h_coordinates_partition (μ : YoungDiagram) :
     hBasis.repr (hPartition μ) = Finsupp.single μ 1 := by
@@ -48,7 +48,7 @@ theorem h_unique_coordinates (x : Q) :
   · simpa only [Finsupp.linearCombination_apply, hBasis_apply] using hBasis.linearCombination_repr x
   · intro a ha
     apply hBasis.repr.symm.injective
-    simpa only [LinearEquiv.symm_apply_apply, Basis.repr_symm_apply, Finsupp.linearCombination_apply, hBasis_apply] using ha
+    simpa only [LinearEquiv.symm_apply_apply, Module.Basis.repr_symm_apply, Finsupp.linearCombination_apply, hBasis_apply] using ha
 
 theorem e_unique_coordinates (x : Q) :
     ∃! a : YoungDiagram →₀ ℤ, a.sum (fun μ z => z • ePartition μ) = x := by
@@ -56,10 +56,10 @@ theorem e_unique_coordinates (x : Q) :
   · simpa only [Finsupp.linearCombination_apply, eBasis_apply] using eBasis.linearCombination_repr x
   · intro a ha
     apply eBasis.repr.symm.injective
-    simpa only [LinearEquiv.symm_apply_apply, Basis.repr_symm_apply, Finsupp.linearCombination_apply, eBasis_apply] using ha
+    simpa only [LinearEquiv.symm_apply_apply, Module.Basis.repr_symm_apply, Finsupp.linearCombination_apply, eBasis_apply] using ha
 
 theorem rowLens_sum (μ : YoungDiagram) : μ.rowLens.sum = μ.card := by
-  have h := EKPartitionSpanning.card_ofRowLens μ.rowLens μ.rowLens_sorted
+  have h := EKPartitionSpanning.card_ofRowLens μ.rowLens μ.rowLens_sorted.pairwise
   rw [YoungDiagram.ofRowLens_to_rowLens_eq_self] at h
   exact h.symm
 
@@ -85,7 +85,7 @@ theorem partitionPiece_mul (c : Bool) {a b : ℕ} {x y : Q}
       obtain ⟨ν, rfl⟩ := hy
       rw [← EKPartitionSpanning.word_append]
       have hd : (μ.val.rowLens ++ ν.val.rowLens).sum = a+b := by
-        simp [rowLens_sum, μ.property, ν.property]
+        simp [μ.property, ν.property]
       simpa only [hd] using word_mem_partitionPiece c (μ.val.rowLens ++ ν.val.rowLens)
     | zero => simp
     | add y z _ _ hy hz => simpa only [mul_add] using (partitionPiece c (a+b)).add_mem hy hz
@@ -116,11 +116,11 @@ theorem degreePiece_eq_hPartition_span (d : ℕ) :
   apply le_antisymm
   · apply Submodule.span_le.mpr
     rintro _ ⟨w, rfl⟩
-    simpa only [w.property] using wordBasis_partitionPiece w.val
+    simpa only [SetLike.mem_coe, w.property] using wordBasis_partitionPiece w.val
   · apply Submodule.span_le.mpr
     rintro _ ⟨μ, rfl⟩
     have hd : μ.val.rowLens.sum = d := by rw [rowLens_sum, μ.property]
-    simpa only [hd] using hWord_mem_degreePiece μ.val.rowLens
+    simpa only [SetLike.mem_coe, hd] using hWord_mem_degreePiece μ.val.rowLens
 
 theorem degreePiece_mul {a b : ℕ} {x y : Q}
     (hx : x ∈ degreePiece a) (hy : y ∈ degreePiece b) : x*y ∈ degreePiece (a+b) := by
@@ -132,7 +132,7 @@ theorem one_mem (c : Bool) : (1 : Q) ∈ partitionPiece c 0 :=
 
 theorem generator_mem (c : Bool) (n : ℕ) :
     pi (EKMixedPairing.gen c n) ∈ partitionPiece c n := by
-  simpa using word_mem_partitionPiece c [n]
+  simpa [EKPartitionSpanning.g] using word_mem_partitionPiece c [n]
 
 /-- Multiplication by a source sign is scalar multiplication, preserving the piece. -/
 theorem sign_mul_mem (S : Submodule ℤ Q) (n : ℕ) {x : Q} (hx : x ∈ S) :
@@ -161,7 +161,7 @@ theorem elementary_mem_hPiece (n : ℕ) :
       have hm := partitionPiece_mul false
         (sign_mul_mem _ k (ih k k.isLt)) (generator_mem false (n+1-k))
       have hd : (k : ℕ)+(n+1-k)=n+1 := by omega
-      simpa only [hd] using hm
+      simpa [hd, EKElementaryQuotient.e, EKElementaryQuotient.h, EKMixedPairing.gen] using hm
 
 /-- Conversely each complete generator is in the exact elementary degree span. -/
 theorem complete_mem_ePiece (n : ℕ) :
@@ -181,7 +181,7 @@ theorem complete_mem_ePiece (n : ℕ) :
         (sign_mul_mem _ (j+1) (generator_mem true (j+1)))
         (ih (n-j) (by omega))
       have hd : ((j : ℕ)+1)+(n-j)=n+1 := by omega
-      simpa only [hd] using hm
+      simpa [hd, EKElementaryQuotient.e, EKElementaryQuotient.h, EKMixedPairing.gen] using hm
 
 theorem word_mem_otherPiece (c : Bool) (α : List ℕ) :
     word c α ∈ partitionPiece (!c) α.sum := by
@@ -198,10 +198,10 @@ theorem partitionPiece_color_eq (d : ℕ) : partitionPiece false d = partitionPi
   apply le_antisymm <;> apply Submodule.span_le.mpr
   · rintro _ ⟨μ, rfl⟩
     have hd : μ.val.rowLens.sum = d := by rw [rowLens_sum, μ.property]
-    simpa only [hd] using word_mem_otherPiece false μ.val.rowLens
+    simpa only [SetLike.mem_coe, Bool.not_false, Bool.not_true, hd] using word_mem_otherPiece false μ.val.rowLens
   · rintro _ ⟨μ, rfl⟩
     have hd : μ.val.rowLens.sum = d := by rw [rowLens_sum, μ.property]
-    simpa only [hd] using word_mem_otherPiece true μ.val.rowLens
+    simpa only [SetLike.mem_coe, Bool.not_false, Bool.not_true, hd] using word_mem_otherPiece true μ.val.rowLens
 
 theorem degreePiece_eq_ePartition_span (d : ℕ) :
     degreePiece d = partitionPiece true d :=
@@ -209,37 +209,37 @@ theorem degreePiece_eq_ePartition_span (d : ℕ) :
 
 /-- Degree-d complete basis, transported only across the proved equality of
 actual submodules of Q. -/
-def degreeHBasis (d : ℕ) : Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) :=
-  (Basis.span (EKSemiorthogonality.degree_hPartition_linearIndependent d)).map
+def degreeHBasis (d : ℕ) : Module.Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) :=
+  (Module.Basis.span (EKSemiorthogonality.degree_hPartition_linearIndependent d)).map
     (LinearEquiv.ofEq _ _ (degreePiece_eq_hPartition_span d).symm)
 
 /-- Degree-d elementary basis on exactly the same actual submodule. -/
-def degreeEBasis (d : ℕ) : Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) :=
-  (Basis.span (EKSemiorthogonality.degree_ePartition_linearIndependent d)).map
+def degreeEBasis (d : ℕ) : Module.Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) :=
+  (Module.Basis.span (EKSemiorthogonality.degree_ePartition_linearIndependent d)).map
     (LinearEquiv.ofEq _ _ (degreePiece_eq_ePartition_span d).symm)
 
 @[simp] theorem degreeHBasis_apply (d : ℕ) (μ : DegreeShapes.DegreeShape d) :
     (degreeHBasis d μ : Q) = hPartition μ.val := by
-  simp only [degreeHBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeHBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   rfl
 
 @[simp] theorem degreeEBasis_apply (d : ℕ) (μ : DegreeShapes.DegreeShape d) :
     (degreeEBasis d μ : Q) = ePartition μ.val := by
-  simp only [degreeEBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeEBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   rfl
 
 instance degree_free (d : ℕ) : Module.Free ℤ (degreePiece d) :=
   Module.Free.of_basis (degreeHBasis d)
 
 instance degree_finite (d : ℕ) : Module.Finite ℤ (degreePiece d) := by
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   exact Module.Finite.of_basis (degreeHBasis d)
 
 /-- Corollary 2.12's rank: all partitions of d, with no bound on d. -/
 theorem degree_finrank (d : ℕ) :
     letI := DegreeShapes.degreeFintype d
     Module.finrank ℤ (degreePiece d) = Fintype.card (DegreeShapes.DegreeShape d) := by
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   exact Module.finrank_eq_card_basis (degreeHBasis d)
 
 theorem degree_h_unique_coordinates (d : ℕ) (x : degreePiece d) :
@@ -247,13 +247,13 @@ theorem degree_h_unique_coordinates (d : ℕ) (x : degreePiece d) :
     ∃! a : DegreeShapes.DegreeShape d → ℤ,
       ∑ μ, a μ • hPartition μ.val = (x : Q) := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   refine ⟨fun μ => (degreeHBasis d).repr x μ, ?_, ?_⟩
   · have h := congrArg (fun z : degreePiece d => (z : Q)) ((degreeHBasis d).sum_repr x)
-    simpa using h
+    simpa only [Submodule.coe_sum, Submodule.coe_smul, degreeHBasis_apply, degreeEBasis_apply] using h
   · intro a ha
     apply (EKSemiorthogonality.degree_hPartition_linearIndependent d).fintypeLinearCombination_injective
-    simpa using ha.trans (congrArg (fun z : degreePiece d => (z : Q))
+    simpa only [Fintype.linearCombination_apply, Submodule.coe_sum, Submodule.coe_smul, degreeHBasis_apply, degreeEBasis_apply, hPartition, ePartition, EKSemiorthogonality.hPartition, EKSemiorthogonality.ePartition] using ha.trans (congrArg (fun z : degreePiece d => (z : Q))
       ((degreeHBasis d).sum_repr x)).symm
 
 theorem degree_e_unique_coordinates (d : ℕ) (x : degreePiece d) :
@@ -261,13 +261,13 @@ theorem degree_e_unique_coordinates (d : ℕ) (x : degreePiece d) :
     ∃! a : DegreeShapes.DegreeShape d → ℤ,
       ∑ μ, a μ • ePartition μ.val = (x : Q) := by
   classical
-  letI := DegreeShapes.degreeFintype d
+  let := DegreeShapes.degreeFintype d
   refine ⟨fun μ => (degreeEBasis d).repr x μ, ?_, ?_⟩
   · have h := congrArg (fun z : degreePiece d => (z : Q)) ((degreeEBasis d).sum_repr x)
-    simpa using h
+    simpa only [Submodule.coe_sum, Submodule.coe_smul, degreeHBasis_apply, degreeEBasis_apply] using h
   · intro a ha
     apply (EKSemiorthogonality.degree_ePartition_linearIndependent d).fintypeLinearCombination_injective
-    simpa using ha.trans (congrArg (fun z : degreePiece d => (z : Q))
+    simpa only [Fintype.linearCombination_apply, Submodule.coe_sum, Submodule.coe_smul, degreeHBasis_apply, degreeEBasis_apply, hPartition, ePartition, EKSemiorthogonality.hPartition, EKSemiorthogonality.ePartition] using ha.trans (congrArg (fun z : degreePiece d => (z : Q))
       ((degreeEBasis d).sum_repr x)).symm
 
 /-- The actual finite homogeneous decomposition, formed by collecting the
@@ -277,7 +277,7 @@ def decompose : Q →ₗ[ℤ] (ℕ →₀ Q) :=
 
 @[simp] theorem decompose_hPartition (μ : YoungDiagram) :
     decompose (hPartition μ) = Finsupp.single μ.card (hPartition μ) := by
-  simpa only [hBasis_apply] using hBasis.constr_basis ℤ
+  simpa only [decompose, hBasis_apply] using hBasis.constr_basis ℤ
     (fun μ => Finsupp.single μ.card (hPartition μ)) μ
 
 /-- Coercion sum back into the original Q. -/
@@ -320,7 +320,7 @@ theorem decompose_mem (x : Q) (d : ℕ) : decompose x d ∈ degreePiece d := by
     · subst d
       rw [Finsupp.single_eq_same, degreePiece_eq_hPartition_span]
       exact Submodule.subset_span ⟨⟨μ, rfl⟩, rfl⟩
-    · rw [Finsupp.single_eq_of_ne hd]
+    · rw [Finsupp.single_eq_of_ne (Ne.symm hd)]
       exact Submodule.zero_mem _
 
 theorem decompose_recompose (f : ℕ →₀ Q) (hf : ∀ d, f d ∈ degreePiece d) :
@@ -348,7 +348,7 @@ theorem degree_disjoint {a b : ℕ} (hab : a ≠ b) :
   intro x hx hy
   have he := (decompose_piece hx).symm.trans (decompose_piece hy)
   have hc := congrArg (fun f : ℕ →₀ Q => f a) he
-  simpa [Finsupp.single_eq_of_ne hab.symm] using hc
+  simpa [Finsupp.single_eq_of_ne hab] using hc
 
 theorem unit_mem_degree_zero : (1 : Q) ∈ degreePiece 0 := by
   rw [degreePiece_eq_hPartition_span]

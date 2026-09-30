@@ -76,7 +76,7 @@ def reprVd (N : ℕ) (d : ℤ) : Vd N d ≃ₗ[ℤ] (expSet N d →₀ ℤ) :=
   (LinearEquiv.ofEq _ _ (Vd_eq_supported N d)).trans (Finsupp.supportedEquivFinsupp _)
 
 /-- The monomial basis of `V_d`. -/
-def monomialBasis (N : ℕ) (d : ℤ) : Basis (expSet N d) ℤ (Vd N d) := Basis.ofRepr (reprVd N d)
+def monomialBasis (N : ℕ) (d : ℤ) : Module.Basis (expSet N d) ℤ (Vd N d) := Module.Basis.ofRepr (reprVd N d)
 
 @[simp] theorem monomialBasis_repr (N : ℕ) (d : ℤ) (v : Vd N d) (γ : expSet N d) :
     (monomialBasis N d).repr v γ = (v : SkewPolynomial N) γ := rfl
@@ -90,7 +90,7 @@ def monomialBasis (N : ℕ) (d : ℤ) : Basis (expSet N d) ℤ (Vd N d) := Basis
   suffices monomialBasis N d γ = ⟨_, hγ⟩ from congrArg Subtype.val this
   apply (monomialBasis N d).repr.injective
   ext δ
-  rw [Basis.repr_self, monomialBasis_repr]
+  rw [Module.Basis.repr_self, monomialBasis_repr]
   simp only [Finsupp.single_apply, Subtype.ext_iff, monomial]
 
 instance (N : ℕ) (d : ℤ) : Module.Free ℤ (Vd N d) := Module.Free.of_basis (monomialBasis N d)
@@ -105,7 +105,7 @@ theorem trace_res_eq {N : ℕ} {T : SkewPolynomial N →ₗ[ℤ] SkewPolynomial 
     (hT : HasDegree (Vd N) 0 T) (d : ℤ) :
     trace ℤ (Vd N d) (hT.res d d (add_zero d)) = ∑ γ ∈ expSet N d, T (monomial γ 1) γ := by
   rw [trace_eq_matrix_trace ℤ (monomialBasis N d), Matrix.trace]
-  simp only [Matrix.diag, toMatrix_apply, monomialBasis_repr, restrict_coe_apply,
+  simp only [Matrix.diag, toMatrix_apply, monomialBasis_repr, coe_restrict_apply,
     monomialBasis_apply]
   exact Finset.sum_coe_sort (expSet N d) fun γ => T (monomial γ 1) γ
 
@@ -241,7 +241,7 @@ theorem monomial_mul_apply_add (a γ : Fin N → ℕ) (g : SkewPolynomial N) :
       by_cases h : b = γ
       · subst h; simp [monomial, mul_comm]
       · have h' : a + b ≠ a + γ := fun e => h (add_left_cancel e)
-        simp [monomial, Finsupp.single_eq_of_ne h', Finsupp.single_eq_of_ne h]
+        simp [monomial, Finsupp.single_eq_of_ne (Ne.symm h'), Finsupp.single_eq_of_ne (Ne.symm h)]
 
 /-- Left multiplication by a monomial is injective. -/
 theorem mulLeft_monomial_injective (a : Fin N → ℕ) :
@@ -385,7 +385,7 @@ theorem expEmbed_expSingle (p : ℕ) (h : p + a ≤ N) (j : Fin a) :
   · obtain ⟨i, rfl⟩ := ht
     simp [OddMath.SkewPolynomial.expSingle, (shiftEmb p h).injective.eq_iff]
   · rw [VariableEmbedding.expEmbed_not_mem_range _ _ _ ht, OddMath.SkewPolynomial.expSingle,
-      if_neg fun e => ht ⟨j, e⟩]
+      ite_eq_right fun e => ht ⟨j, e⟩]
 
 theorem place_generator (p : ℕ) (h : p + a ≤ N) (j : Fin a) :
     place p h (generator j) = generator (shiftEmb p h j) := by
@@ -641,8 +641,8 @@ theorem coeff_placeL_mul_placeR (F : SkewPolynomial (m₁+2)) (G : SkewPolynomia
           by_cases hγ : γ' = γ
           · by_cases hη : η' = η
             · simp [hγ, hη]
-            · rw [if_neg fun e => hη (join_inj h e).2, if_neg hη, mul_zero]
-          · rw [if_neg fun e => hγ (join_inj h e).1, if_neg hγ, zero_mul]
+            · rw [ite_eq_right fun e => hη (join_inj h e).2, ite_eq_right hη, mul_zero]
+          · rw [ite_eq_right fun e => hγ (join_inj h e).1, ite_eq_right hγ, zero_mul]
 
 /-- Diagonal coefficient of `e_a ⊗ e_b` on `x^{γ ⊕ η}`. -/
 theorem coeff_twoWindow (γ : Fin (m₁+2) → ℕ) (η : Fin (m₂+2) → ℕ) :
@@ -731,7 +731,7 @@ theorem trace_twoWindow (d : ℕ) :
     constructor
     · rintro ⟨ζ, hζ, ⟨rfl, rfl⟩, rfl, rfl⟩
       refine ⟨?_, rfl, rfl⟩
-      rw [← weight_join, join_split hN]
+      rw [← weight_join hN.le, join_split hN]
       exact_mod_cast hζ
     · rintro ⟨hij, rfl, rfl⟩
       refine ⟨join hN.le γ η, ?_, ?_⟩

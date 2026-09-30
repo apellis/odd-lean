@@ -63,8 +63,8 @@ theorem prop_2_11_printed_even_instance :
   simp only [h_eq_pi, e_eq_pi, ← map_mul, ← map_zsmul, ← map_add, quotientPairing_pi]
   constructor
   · rw [pairing_two_strip]
-    simp [Fin.sum_univ_succ, pairing_gen_two, pairing_gen_self, cell]
-  · simp [pairing_gen_two, cell, gen_zero, pairing_gen_self]
+    simp [Fin.sum_univ_succ, pairing_gen_two, cell]
+  · simp [pairing_gen_two, pairing_gen_self, cell, gen_zero]
 
 /-- [EK] p. 15, proof of Prop. 2.11: the printed even-case recurrence with test generator
 `e_k` is false. -/
@@ -89,7 +89,7 @@ theorem prop_2_11_corrected_even_instance :
     simp only [h_eq_pi, e_eq_pi, ← map_mul, quotientPairing_pi]
     have hh := pairing_he_strip 2 1 1 (gen false 2)
     rw [hh]
-    simp [pairing_gen_two, cell, gen_zero, pairing_gen_self]
+    simp [pairing_gen_two, pairing_gen_self, cell, gen_zero]
   refine ⟨?_, hc⟩
   rw [hc, prop_2_11_printed_even_instance.2]
 
@@ -224,7 +224,7 @@ def P5 : List (ℤ × List ℕ) :=
 /-- [EK] p. 25: the printed expansion of `p₅ = m₅` holds. -/
 theorem p_five : EKCenterPower.p 5 = comb P5 := by
   refine eq_of_pair_hL (p_mem 5) (comb_mem 5 P5 (by decide)) fun l hl => ?_
-  have hshape : ∀ l ∈ partsF 5 5 5, l.Sorted (· ≥ ·) ∧ ∀ x ∈ l, 0 < x := by decide
+  have hshape : ∀ l ∈ partsF 5 5 5, l.Pairwise (· ≥ ·) ∧ ∀ x ∈ l, 0 < x := by decide
   have hval : ∀ l ∈ partsF 5 5 5,
       (P5.map fun t => t.1 * fastH l t.2).sum = if l = [5] then 1 else 0 := by decide +kernel
   rw [pair_hL_comb_fast, hval l hl, pair_hL_p (by decide) l (hshape l hl).1 (hshape l hl).2]

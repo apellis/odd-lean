@@ -18,7 +18,7 @@ def RowLE (a b : ℕ × ℕ) : Prop := b.1 < a.1 ∨ (a.1 = b.1 ∧ a.2 ≤ b.2)
 
 instance : DecidableRel RowLE := fun _ _ => inferInstanceAs (Decidable (_ ∨ _))
 
-instance : IsTotal (ℕ × ℕ) RowLE := ⟨by intro a b; unfold RowLE; omega⟩
+instance : Std.Total RowLE := ⟨by intro a b; unfold RowLE; omega⟩
 instance : IsTrans (ℕ × ℕ) RowLE := ⟨by intro a b c; unfold RowLE; omega⟩
 
 /-- Sort the actual finite shape cells, not the arbitrary inherited box list. -/
@@ -46,8 +46,8 @@ theorem rowCells_nodup (μ : YoungDiagram) : (rowCells μ).Nodup :=
     p ∈ rowCells μ ↔ p ∈ μ.cells := by
   rw [(rowCells_perm μ).mem_iff, Finset.mem_toList]
 
-theorem rowCells_sorted (μ : YoungDiagram) : List.Sorted RowLE (rowCells μ) :=
-  List.sorted_mergeSort' RowLE _
+theorem rowCells_sorted (μ : YoungDiagram) : List.Pairwise RowLE (rowCells μ) :=
+  List.pairwise_mergeSort' RowLE _
 
 theorem rowWord_length (T : PositiveTableau μ) : (rowWord T).length = μ.card := by
   simp only [rowWord, List.length_map]
@@ -59,7 +59,7 @@ theorem rowWord_count (T : PositiveTableau μ) (k : ℕ) :
     (rowWord T).count k = TableauContent.content T k := by
   classical
   rw [TableauContent.content_apply]
-  simp only [rowWord, List.count_eq_countP, List.countP_map, List.countP_eq_length_filter]
+  simp only [rowWord, List.count_eq_countP, List.countP_eq_length_filter]
   let l := (rowCells μ).filter (fun p => T.entry p.1 p.2 == k)
   have hn : l.Nodup := (rowCells_nodup μ).filter _
   have he : l.toFinset = μ.cells.filter (fun p => T.entry p.1 p.2 = k) := by
@@ -146,13 +146,13 @@ theorem totalNorthLt_cons_of_no_north (A : TBox) (as bs : Tableau)
 
 /-- The list recursion agrees with the box statistic for any sorted cell sublist. -/
 theorem inversions_sorted_cells (T : PositiveTableau μ) (l : List (ℕ × ℕ))
-    (hm : ∀ p ∈ l, p ∈ μ.cells) (hs : List.Sorted RowLE l) :
+    (hm : ∀ p ∈ l, p ∈ μ.cells) (hs : List.Pairwise RowLE l) :
     inversions (l.map (fun p => T.entry p.1 p.2)) =
       totalNorthLt (l.map (box T)) (l.map (box T)) := by
   induction l with
   | nil => rfl
   | cons a l ih =>
-    obtain ⟨ho, hs⟩ := List.sorted_cons.mp hs
+    obtain ⟨ho, hs⟩ := List.pairwise_cons.mp hs
     have hm' : ∀ p ∈ l, p ∈ μ.cells := fun p hp => hm p (by simp [hp])
     have ht := ih hm' hs
     have hz : ∀ B ∈ l.map (box T), ¬ (box T a).row < B.row := by

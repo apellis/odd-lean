@@ -25,13 +25,13 @@ theorem dots_anticommute (i j : Fin (n+2)) (h : i ≠ j) :
 theorem crossing_dot_left (i : Fin (n+1)) :
     crossing n i * dot n i.castSucc = 1 - dot n i.succ * crossing n i := by
   have h := relator_zero _ (Relator.mixedLeft i)
-  simp only [map_sub, map_add, map_mul, map_one, dot, crossing, sub_eq_zero] at h
+  simp only [map_sub, map_add, map_mul, map_one, sub_eq_zero] at h
   exact eq_sub_of_add_eq h
 
 theorem crossing_dot_right (i : Fin (n+1)) :
     crossing n i * dot n i.succ = 1 - dot n i.castSucc * crossing n i := by
   have h := relator_zero _ (Relator.mixedRight i)
-  simp only [map_sub, map_add, map_mul, map_one, dot, crossing, sub_eq_zero] at h
+  simp only [map_sub, map_add, map_mul, map_one, sub_eq_zero] at h
   rw [add_comm] at h
   exact eq_sub_of_add_eq h
 
@@ -39,7 +39,7 @@ theorem crossing_dot_other (i : Fin (n+1)) (j : Fin (n+2))
     (hl : j ≠ i.castSucc) (hr : j ≠ i.succ) :
     crossing n i * dot n j = -(dot n j * crossing n i) := by
   have h := relator_zero _ (Relator.spectator i j hl hr)
-  simp only [map_add, map_mul, dot, crossing] at h
+  simp only [map_add, map_mul] at h
   exact eq_neg_of_add_eq_zero_right h
 
 /-- Unsorted dot word, with repeated generators retained. -/
@@ -114,7 +114,9 @@ theorem free_mul_mem (a : Free n) (x : Presented n) (hx : x ∈ mixedSpan n) :
 theorem mem_mixedSpan (x : Presented n) : x ∈ mixedSpan n := by
   obtain ⟨a,rfl⟩ := Ideal.Quotient.mk_surjective x
   have h1 : (1 : Presented n) ∈ mixedSpan n := by simpa [product] using mixed_mem [] []
-  simpa only [mul_one] using free_mul_mem a 1 h1
+  have hm := free_mul_mem a 1 h1
+  rw [mul_one] at hm
+  exact hm
 
 /-- Literal increasing-index product in (2.38); no commutative Finset product. -/
 def dotMonomial (A : Fin (n+2) → ℕ) : Presented n :=
@@ -246,11 +248,11 @@ theorem basisElement_linearIndependent (n : ℕ) :
   exact relation_coefficients
 
 /-- The actual integral LEFT PBW basis of the presented odd nilHecke ring. -/
-def basis (n : ℕ) : Basis ((Fin (n+2) → ℕ) × Perm n) ℤ (Presented n) :=
-  Basis.mk (basisElement_linearIndependent n) (by rw [← basisSpan_eq_top n]; exact le_rfl)
+def basis (n : ℕ) : Module.Basis ((Fin (n+2) → ℕ) × Perm n) ℤ (Presented n) :=
+  Module.Basis.mk (basisElement_linearIndependent n) (by rw [← basisSpan_eq_top n]; exact le_rfl)
 
 @[simp] theorem basis_apply (i : (Fin (n+2) → ℕ) × Perm n) :
-    basis n i = basisElement i := Basis.mk_apply _ _ _
+    basis n i = basisElement i := Module.Basis.mk_apply _ _ _
 
 theorem expansion_unique (c d : ((Fin (n+2) → ℕ) × Perm n) →₀ ℤ)
     (h : c.sum (fun i a => a • basisElement i) = d.sum (fun i a => a • basisElement i)) :
@@ -276,7 +278,6 @@ theorem action_injective (n : ℕ) : Function.Injective (action n) := by
       c.sum (fun i a => a • (monomial i.1 1 * dividedElementOperator i.2 f)) = 0 := by
     intro f
     have h := congrArg (fun a => action n a f) hc
-    dsimp only at h
     rw [hx, LinearMap.zero_apply] at h
     simpa only [Finsupp.sum, map_sum, map_zsmul, action_basisElement,
       LinearMap.sum_apply, LinearMap.smul_apply, OddSchubertAction.leftOperator_apply] using h

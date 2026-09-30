@@ -1,3 +1,4 @@
+import Mathlib.Tactic.NoncommRing
 import OddMath.Diagrams.OddNilHecke.Relations
 import StringDiagrams.Derivation
 import StringDiagrams.Grading
@@ -151,7 +152,7 @@ theorem lin_derivDiag_cross {n i : ℕ} (h : i + Gen.arity .cross ≤ n) :
     End.one_def, ← Presentation.diag_id]
   refine congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_ <;> refine congrArg _ ?_ <;>
     apply Presentation.diag_eq_of_layers_eq <;>
-    simp [lay, Layer.whisker, Signature.genLayer, Gen.arity] <;> first | rfl | omega
+    simp [lay, Layer.whisker, Gen.arity] <;> first | rfl | omega
 
 end Layers
 
@@ -404,22 +405,22 @@ theorem deriv_cross :
 theorem d_x (n i : ℕ) : d R n (x R n i) = x R n i * x R n i := by
   by_cases h : i < n
   · rw [x_def R h, Presentation.derivEnd_apply, Presentation.deriv_diag, ← x_def R h]
-    exact lin_derivDiag_dot 1 0 0 (n := n) (i := i) (by simpa [Gen.arity] using h)
-  · rw [x, dif_neg h, map_zero, mul_zero]
+    exact lin_derivDiag_dot 1 0 0 (n := n) (i := i) (by simp only [Gen.arity]; omega)
+  · rw [x, dite_eq_right h, map_zero, mul_zero]
 
 /-- `d(ψ_i) = 1` (Ellis–Qi, Proposition 3.3: `d(∂_i) = 1`). -/
 theorem d_ψ {n i : ℕ} (h : i + 1 < n) : d R n (ψ R n i) = 1 := by
   rw [ψ_def R h, Presentation.derivEnd_apply, Presentation.deriv_diag]
-  refine (lin_derivDiag_cross 1 0 0 (n := n) (i := i) (by simpa [Gen.arity] using h)).trans ?_
+  refine (lin_derivDiag_cross 1 0 0 (n := n) (i := i) (by simp only [Gen.arity]; omega)).trans ?_
   simp
 
 theorem x_eq_lin {n i : ℕ} (h : i < n) :
-    (pres R).lin (LinDiagram.of (dlay (g := .dot) (n := n) (i := i) (by simpa [Gen.arity] using h))) =
+    (pres R).lin (LinDiagram.of (dlay (g := .dot) (n := n) (i := i) (by simp only [Gen.arity]; omega))) =
       x R n i :=
   (x_def R h).symm
 
 theorem ψ_eq_lin {n i : ℕ} (h : i + 1 < n) :
-    (pres R).lin (LinDiagram.of (dlay (g := .cross) (n := n) (i := i) (by simpa [Gen.arity] using h))) =
+    (pres R).lin (LinDiagram.of (dlay (g := .cross) (n := n) (i := i) (by simp only [Gen.arity]; omega))) =
       ψ R n i :=
   (ψ_def R h).symm
 
@@ -436,7 +437,7 @@ theorem d_x_mul (n i : ℕ) (g : End ((pres R).obj (strands n))) :
   by_cases h : i < n
   · rw [d_mul R _ g (LinDiagram.hasParity_of (p := 1) (by rw [oddCount_dlay])) (x_eq_lin R h), d_x,
       pow_one, neg_one_smul, sub_eq_add_neg]
-  · simp [x, dif_neg h]
+  · simp [x, dite_eq_right h]
 
 /-- `d(ψ_i g) = g - ψ_i d(g)`. -/
 theorem d_ψ_mul {n i : ℕ} (h : i + 1 < n) (g : End ((pres R).obj (strands n))) :
@@ -475,7 +476,7 @@ theorem sum_map_parityDeg (ls : List (Layer sig)) :
   | nil => rfl
   | cons L ls ih =>
     rw [List.map_cons, List.sum_cons, ih, oddCountList_cons, oddCountList_singleton]
-    simp [parityDeg, sig, add_comm]
+    simp [parityDeg, sig]
 
 /-- The parity degree of a diagram is its number of odd generators modulo `2`. -/
 theorem degree_parityDeg {a b : Obj sig} (f : a ⟶ b) :
@@ -591,13 +592,13 @@ theorem x_mem_endDeg (n i : ℕ) : x R n i ∈ (pres R).endDeg parityDeg (strand
   by_cases h : i < n
   · rw [x_def R h]
     exact Presentation.diag_mem_homDeg' (by rw [degree_parityDeg, oddCount_dlay]; rfl)
-  · rw [x, dif_neg h]; exact Submodule.zero_mem _
+  · rw [x, dite_eq_right h]; exact Submodule.zero_mem _
 
 theorem ψ_mem_endDeg (n i : ℕ) : ψ R n i ∈ (pres R).endDeg parityDeg (strands n) 1 := by
   by_cases h : i + 1 < n
   · rw [ψ_def R h]
     exact Presentation.diag_mem_homDeg' (by rw [degree_parityDeg, oddCount_dlay]; rfl)
-  · rw [ψ, dif_neg h]; exact Submodule.zero_mem _
+  · rw [ψ, dite_eq_right h]; exact Submodule.zero_mem _
 
 /-- The super Leibniz rule, Ellis–Qi (2.3), for `f` of parity `k` in the parity grading
 `(pres R).endDeg parityDeg`: `d(f g) = d(f) g + (-1)^k f d(g)`. -/

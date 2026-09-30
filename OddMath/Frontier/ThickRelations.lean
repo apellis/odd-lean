@@ -177,13 +177,13 @@ theorem lemma_3_3 (p a : ℕ) (h : p + a + 1 ≤ n + 2) :
 
 theorem product_natWord_cons (j : ℕ) (l : List ℕ) (hj : j < n+1) :
     product (natWord n (j :: l)) = crossing n ⟨j, hj⟩ * product (natWord n l) := by
-  simp only [natWord, List.filterMap_cons, dif_pos hj]
+  simp only [natWord, List.filterMap_cons, dite_eq_left hj]
   rfl
 
 theorem zeroHeckeProduct_natWord_cons (j : ℕ) (l : List ℕ) (hj : j < n+1) :
     zeroHeckeProduct (natWord n (j :: l)) =
       zeroHecke n ⟨j, hj⟩ * zeroHeckeProduct (natWord n l) := by
-  simp only [natWord, List.filterMap_cons, dif_pos hj]
+  simp only [natWord, List.filterMap_cons, dite_eq_left hj]
   rfl
 
 theorem natWord_append (l₁ l₂ : List ℕ) : natWord n (l₁ ++ l₂) = natWord n l₁ ++ natWord n l₂ :=
@@ -196,9 +196,9 @@ theorem downList_succ (p k : ℕ) : downList p (k+1) = downList (p+1) k ++ [p] :
 theorem zeroHecke_crossing_far (i j : Fin (n+1)) (h : i.val+1 < j.val ∨ j.val+1 < i.val) :
     zeroHecke n i * crossing n j = crossing n j * zeroHecke n i := by
   have hl : i.castSucc ≠ j.castSucc := by
-    intro e; have := congrArg Fin.val e; simp only [Fin.coe_castSucc] at this; omega
+    intro e; have := congrArg Fin.val e; simp only [Fin.val_castSucc] at this; omega
   have hr : i.castSucc ≠ j.succ := by
-    intro e; have := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at this; omega
+    intro e; have := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at this; omega
   have hc : dot n i.castSucc * crossing n j = -(crossing n j * dot n i.castSucc) := by
     rw [crossing_dot_other j _ hl hr, neg_neg]
   rw [zeroHecke, mul_assoc, crossing_distant i j h, mul_neg, ← mul_assoc, hc, neg_mul, neg_neg,
@@ -210,9 +210,9 @@ theorem eq_3_28 (i j : Fin (n+1)) (h : j.val = i.val+1) :
     crossing n j * crossing n i * zeroHecke n j = zeroHecke n i * crossing n j * crossing n i := by
   have hij : j.castSucc = i.succ := Fin.ext (by simp [h])
   have hl : i.castSucc ≠ j.castSucc := by
-    intro e; have := congrArg Fin.val e; simp only [Fin.coe_castSucc] at this; omega
+    intro e; have := congrArg Fin.val e; simp only [Fin.val_castSucc] at this; omega
   have hr : i.castSucc ≠ j.succ := by
-    intro e; have := congrArg Fin.val e; simp only [Fin.coe_castSucc, Fin.val_succ] at this; omega
+    intro e; have := congrArg Fin.val e; simp only [Fin.val_castSucc, Fin.val_succ] at this; omega
   calc crossing n j * crossing n i * zeroHecke n j
         = crossing n j * (crossing n i * dot n i.succ) * crossing n j := by
           rw [zeroHecke, hij]; simp only [mul_assoc]
@@ -315,7 +315,7 @@ theorem remark_3_4 :
   simp only [zeroHecke, map_mul, Module.End.mul_apply, action_crossing_apply,
     action_dot_apply] at e
   simp [AllRankDivided.divided_mul, AllRankDivided.divided_generator, AllRankDivided.s_generator,
-    Equiv.swap_apply_def, Fin.ext_iff, AllRankDivided.divided_one,
+    Equiv.swap_apply_def, Fin.ext_iff,
     ThickDecomposition.skew_mul_zero, ThickDecomposition.skew_zero_mul] at e
 
 /-! ## Blocks on strand windows -/
@@ -378,7 +378,7 @@ theorem natWord_map_shift_gen {m p : ℕ} (h : p + (m+2) ≤ n+2) (l : List ℕ)
       obtain ⟨hj, hl⟩ := List.forall_mem_cons.mp hl
       have hj' : j + p < n+1 := by omega
       change (List.filterMap _ (j :: l)).map _ = List.filterMap _ ((j + p) :: l.map (· + p))
-      simp only [List.filterMap_cons, dif_pos hj, dif_pos hj', List.map_cons]
+      simp only [List.filterMap_cons, dite_eq_left hj, dite_eq_left hj', List.map_cons]
       exact congrArg₂ List.cons (Fin.ext rfl) (ih hl)
 
 theorem windowHom_blockE_gen {m p : ℕ} (h : p + (m+2) ≤ n+2) (q k : ℕ) (hk : q + k ≤ m+2) :
@@ -759,10 +759,10 @@ theorem eq_4_46 {ν x : ℕ} (hν : 1 ≤ ν) (h : ν + 1 ≤ n+2) (hx : x < ν)
     (ThickMatrixUnits.col_le ν 0) hx.le
   have hS : blockSchur n 0 ν h0 (ThickMatrixUnits.col ν 0) = 1 := by
     have e := ThickMatrixUnits.epsWin_eq (n := n) hν h0 (Nat.zero_le ν)
-    rw [ThickMatrixUnits.epsWin, dif_pos h0, FiniteCompleteElementary.elementaryPoly_zero,
+    rw [ThickMatrixUnits.epsWin, dite_eq_left h0, FiniteCompleteElementary.elementaryPoly_zero,
       map_one, map_one, Nat.choose_zero_succ, pow_zero, one_smul] at e
     exact e.symm
-  rw [ThickMatrixUnits.hat_col, if_neg (fun e => by have := congrFun e 0; simp only at this; omega),
+  rw [ThickMatrixUnits.hat_col, ite_eq_right (fun e => by have := congrFun e 0; omega),
     zero_smul, hS, mul_one, blockE_mul_blockE h0,
     (blockE_absorb (n := n) (q := 0) (k := ν) le_rfl (by omega) (by omega)).2] at H
   exact H
@@ -780,7 +780,7 @@ theorem remark_4_12_zero :
     have := congrFun e 0
     revert this
     decide
-  rw [if_neg hne, zero_smul] at h
+  rw [ite_eq_right hne, zero_smul] at h
   have hx : StaircaseEvaluation.exps (![2, 0] : Fin 2 → ℕ) ![2, 0] = ![3, 0, 0, 3] := by
     funext i; fin_cases i <;> rfl
   rw [hx] at h
@@ -796,7 +796,6 @@ theorem remark_4_12_value : D 4 (monomial ![3, 0, 3, 0] 1) = (-2 : ℤ) • 1 :=
   let T : SkewPolynomial 4 →+ SkewPolynomial 4 :=
     AddMonoidHom.mk' (fun g => s (1 : Fin 3) (monomial ![3, 0, 0, 0] 1) * (g * monomial 0 1))
       (fun a b => by
-        simp only
         rw [ThickDecomposition.skew_add_mul, ThickDecomposition.skew_mul_add])
   have hγ : ∀ (γ : Fin 4 → ℕ) (p q : ℕ), γ 0 = 3 → γ 3 = 0 → γ 1 = p → γ 2 = q →
       divided (1 : Fin 3) (monomial γ 1) =
@@ -873,7 +872,7 @@ theorem thickElem_eq_left (μ k : ℕ) (h : 0 + μ ≤ n+2) :
   | 0, h => rw [thickElem, blockE_zero, mul_one]
   | 1, h => rw [thickElem, blockE_one, mul_one]
   | m+2, h =>
-      rw [thickElem, epsWin, dif_pos h, ← windowHom_polyElem h, blockE_eq h, ← map_mul, ← map_mul,
+      rw [thickElem, epsWin, dite_eq_left h, ← windowHom_polyElem h, blockE_eq h, ← map_mul, ← map_mul,
         ThickDots.projector_poly_projector_eq _ (OddSymmetricKernel.elementary_mem m k)]
 
 /-- The odd elementary polynomials split off the last strand (EKL (2.23)), inside `ONH`:
@@ -882,7 +881,7 @@ theorem epsWin_succ (ν k : ℕ) (h : ν + 1 ≤ n+2) :
     epsWin n (ν+1) (k+1) = epsWin n ν (k+1) + (-1 : ℤ)^ν • (epsWin n ν k * dotAt n ν) := by
   have h₀ : 0 + ν ≤ n+2 := by omega
   have h₁ : 0 + (ν+1) ≤ n+2 := by omega
-  rw [epsWin, dif_pos h₁, epsWin, dif_pos h₀, epsWin, dif_pos h₀, dotAt, dif_pos (by omega),
+  rw [epsWin, dite_eq_left h₁, epsWin, dite_eq_left h₀, epsWin, dite_eq_left h₀, dotAt, dite_eq_left (by omega),
     ElementaryBranching.elementary_succ, map_add, map_add, map_mul, map_mul, place_prefix h₀ h₁,
     place_prefix h₀ h₁, ElementaryBranching.lastTilde, PlacticEvaluation.tildeGenerator,
     map_zsmul, map_zsmul, ProjectorRank.place_generator, OnhPolynomial.polyElem_generator,
@@ -911,8 +910,8 @@ theorem eq_4_42_zero (ν : ℕ) (h : ν + 1 ≤ n+2) :
   have hab := (blockE_absorb (n := n) (p := 0) (K := ν+1) (q := 0) (k := ν) le_rfl (by omega)
     (by omega)).2
   rw [thickElem_eq_left _ _ (by omega), thickElem_eq_left _ _ (by omega), epsWin,
-    dif_pos (by omega),
-    epsWin, dif_pos (by omega), FiniteCompleteElementary.elementaryPoly_zero,
+    dite_eq_left (by omega),
+    epsWin, dite_eq_left (by omega), FiniteCompleteElementary.elementaryPoly_zero,
     FiniteCompleteElementary.elementaryPoly_zero]
   simp only [map_one, mul_one]
   rw [blockE_mul_blockE (by omega), hab]

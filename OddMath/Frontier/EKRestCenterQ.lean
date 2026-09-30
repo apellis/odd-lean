@@ -135,7 +135,6 @@ theorem algebraicIndependent_pQ : AlgebraicIndependent ℚ pcQ := by
       (pP_linearIndependent.comp shapeOf shapeOf_injective)
   have hsum : ∑ s ∈ P.support, P.coeff s • iota (pP (shapeOf s)) = 0 := by
     have h := congrArg (fun z : Subalgebra.center ℚ LQ => (z : LQ)) hP
-    simp only at h
     rw [P.as_sum, map_sum, ZeroMemClass.coe_zero] at h
     simp only [MvPolynomial.aeval_monomial] at h
     rw [← h]

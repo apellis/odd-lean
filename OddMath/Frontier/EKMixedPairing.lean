@@ -54,7 +54,7 @@ theorem elementary_norm (n : ℕ) :
       simp
     · intro α ha hne
       rw [EKElementaryQuotient.pairing_hWord_elementary α (composition_sound n α ha).1]
-      rw [if_neg, mul_zero]
+      rw [ite_eq_right, mul_zero]
       rintro ⟨hs, hall⟩
       apply hne
       have he : α = List.replicate α.length 1 := List.eq_replicate_iff.mpr ⟨rfl, hall⟩
@@ -166,7 +166,7 @@ theorem coproduct_word {c : ℕ} (α : Fin c → ℕ) (ε : Fin c → Bool) :
     change tensorMul _ _ = _
     rw [tensorMul_smul_right, tensorMul_weight _ _ (gen_weight _ _) (word_weight _ _)]
     simp only [Fin.insertNthEquiv, Equiv.coe_fn_mk, Fin.insertNth_zero, crossCols_succ,
-      Fin.cons_zero, Fin.cons_succ, word_succ, pow_add, smul_smul]
+      word_succ, pow_add, smul_smul]
     congr 1
     change (-1 : ℤ)^crossCols (upper u) (lower u) *
       (-1)^((α 0-i.val)*(∑ j, (u j).val)) =
@@ -211,8 +211,8 @@ theorem pairing_gen_self (b e : Bool) (n : ℕ) :
 theorem pairing_gen (b e : Bool) (m n : ℕ) :
     EKPairingAdjoint.pairing (gen b m) (gen e n) = if m = n then cell b e n else 0 := by
   by_cases h : m = n
-  · subst m; simp only [if_pos rfl]; exact pairing_gen_self b e n
-  · rw [if_neg h]
+  · subst m; simp only; exact pairing_gen_self b e n
+  · rw [ite_eq_right h]
     exact pairing_homogeneous_orthogonal h (gen_weight b m) (gen_weight e n)
 
 /-- Pairing a single platform with any mixed word, at equal total weight. -/
@@ -235,7 +235,7 @@ theorem pairing_gen_word_total {c : ℕ} (α : Fin c → ℕ) (ε : Fin c → Bo
     · intro i _ hi
       have hne : α 0 ≠ i.val := by
         intro h; apply hi; exact Fin.ext h.symm
-      rw [pairing_gen, if_neg hne, zero_mul]
+      rw [pairing_gen, ite_eq_right hne, zero_mul]
     · simp
 
 theorem pairing_gen_word {c : ℕ} (m : ℕ) (b : Bool)
@@ -243,8 +243,8 @@ theorem pairing_gen_word {c : ℕ} (m : ℕ) (b : Bool)
     EKPairingAdjoint.pairing (gen b m) (word α ε) =
       if m = ∑ j, α j then ∏ j, cell b (ε j) (α j) else 0 := by
   by_cases h : m = ∑ j, α j
-  · rw [if_pos h, h, pairing_gen_word_total]
-  · rw [if_neg h]
+  · rw [ite_eq_left h, h, pairing_gen_word_total]
+  · rw [ite_eq_right h]
     exact pairing_homogeneous_orthogonal h (gen_weight b m) (word_weight α ε)
 
 /-- Matrix summand with forbidden mixed cells given zero weight. -/
@@ -284,7 +284,7 @@ theorem matrixSum_convolution {r s c : ℕ} (β : Fin r → ℕ) (η : Fin r →
 theorem matrixSum_mismatch {r c : ℕ} (β : Fin r → ℕ) (η : Fin r → Bool)
     (α : Fin c → ℕ) (ε : Fin c → Bool) (hne : (∑ i, β i) ≠ ∑ j, α j) :
     matrixSum β η α ε = 0 := by
-  haveI : IsEmpty (Mat β α) := ⟨fun M => hne (total_eq M)⟩
+  have : IsEmpty (Mat β α) := ⟨fun M => hne (total_eq M)⟩
   exact Finset.sum_eq_zero (fun M _ => isEmptyElim M)
 
 private theorem matrixSum_singleton {c : ℕ} (m : ℕ) (b : Bool)
@@ -293,7 +293,7 @@ private theorem matrixSum_singleton {c : ℕ} (m : ℕ) (b : Bool)
       if m = ∑ j, α j then ∏ j, cell b (ε j) (α j) else 0 := by
   classical
   by_cases h : m = ∑ j, α j
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     let M : Mat (fun _ : Fin 1 => m) α := ⟨fun _ j => α j, by
       constructor
       · funext i; exact h.symm
@@ -308,20 +308,23 @@ private theorem matrixSum_singleton {c : ℕ} (m : ℕ) (b : Bool)
     · simp [M, matrixWeight, crossing]
     · intro N _ hne; exact (hne (unique N)).elim
     · simp
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     exact matrixSum_mismatch _ _ _ _ (by simpa using h)
 
 private theorem word_join {r s : ℕ} (β : Fin r → ℕ) (η : Fin r → Bool)
     (γ : Fin s → ℕ) (θ : Fin s → Bool) :
     word (Fin.addCases β γ) (Fin.addCases η θ) = word β η * word γ θ := by
-  simp only [word, List.ofFn_add, Fin.addCases_left, Fin.addCases_right, List.prod_append]
+  simp only [word, List.ofFn_add, Fin.addCases_right, List.prod_append]
+  change (List.ofFn (fun i => gen (Fin.addCases η θ (Fin.castAdd s i))
+    (Fin.addCases β γ (Fin.castAdd s i)))).prod * _ = _
+  simp only [Fin.addCases_left]
 
 private theorem matrixSum_zeroRows {c : ℕ} (β : Fin 0 → ℕ) (η : Fin 0 → Bool)
     (α : Fin c → ℕ) (ε : Fin c → Bool) :
     matrixSum β η α ε = if (∑ j, α j) = 0 then 1 else 0 := by
   classical
   by_cases h : (∑ j, α j) = 0
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     have hz (j : Fin c) : α j = 0 := (Finset.sum_eq_zero_iff.mp h) j (Finset.mem_univ j)
     let M : Mat β α := ⟨fun i => Fin.elim0 i, by
       constructor
@@ -333,7 +336,7 @@ private theorem matrixSum_zeroRows {c : ℕ} (β : Fin 0 → ℕ) (η : Fin 0 �
     · intro N _ hne
       exact (hne (Subtype.ext (funext fun i => Fin.elim0 i))).elim
     · simp
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     exact matrixSum_mismatch _ _ _ _ (by simpa [eq_comm] using h)
 
 /-- General mixed pairing formula on the actual free algebra. -/
@@ -402,7 +405,7 @@ private theorem matrixWeight_admissible {r c : ℕ} (η : Fin r → Bool) (ε : 
     matrixWeight η ε M = (-1 : ℤ)^(crossing M + blackPairs η ε M) := by
   have hc (i : Fin r) (j : Fin c) : cell (η i) (ε j) (M i j) =
       (-1 : ℤ)^(if η i && ε j then (M i j).choose 2 else 0) := by
-    apply if_neg
+    apply ite_eq_right
     rintro ⟨hne, hlt⟩
     have := h i j hne
     omega
@@ -411,10 +414,10 @@ private theorem matrixWeight_admissible {r c : ℕ} (η : Fin r → Bool) (ε : 
 private theorem matrixWeight_forbidden {r c : ℕ} (η : Fin r → Bool) (ε : Fin c → Bool)
     (M : Raw r c) (h : ¬ Admissible η ε M) : matrixWeight η ε M = 0 := by
   classical
-  simp only [Admissible, not_forall, not_le, _root_.not_imp] at h
+  simp only [Admissible, not_forall, not_le] at h
   obtain ⟨i,j,hne,hlt⟩ := h
   unfold matrixWeight
-  have hc : cell (η i) (ε j) (M i j) = 0 := if_pos ⟨hne,hlt⟩
+  have hc : cell (η i) (ε j) (M i j) = 0 := ite_eq_left ⟨hne,hlt⟩
   have hz : (∏ i, ∏ j, cell (η i) (ε j) (M i j)) = 0 := by
     apply Finset.prod_eq_zero (Finset.mem_univ i)
     exact Finset.prod_eq_zero (Finset.mem_univ j) hc

@@ -94,7 +94,7 @@ theorem generator_mul_pow {N : ℕ} (i j : Fin N) (h : i ≠ j) (b : ℕ) :
   | succ b ih =>
       rw [pow_succ', ← mul_assoc, hc, neg_mul,
         mul_assoc, ih, mul_smul_comm, ← mul_assoc, ← pow_succ']
-      simp [pow_succ, mul_smul]
+      simp [pow_succ]
 
 /-- The balanced adjacent monomial is killed by the genuine operator. -/
 theorem divided_balanced {n : ℕ} (i : Fin (n+1)) (b : ℕ) :
@@ -138,13 +138,13 @@ noncomputable def actNat (n : ℕ) : List ℕ → SkewPolynomial (n+2) →ₗ[�
 
 theorem cross_mul (n j : ℕ) (hj : j < n+1) (f g : SkewPolynomial (n+2)) :
     cross n j (f*g) = cross n j f*g + s ⟨j,hj⟩ f * cross n j g := by
-  simp only [cross, dif_pos hj]
+  simp only [cross, dite_eq_left hj]
   exact divided_mul _ _ _
 
 theorem cross_letter_spectator (n j p : ℕ) (hj : j < n+1)
     (hp : p < n+2) (hpl : p ≠ j) (hpr : p ≠ j+1) (f : SkewPolynomial (n+2)) :
     cross n j (letter n p * f) = -letter n p * cross n j f := by
-  simp only [cross, dif_pos hj, letter, dif_pos hp]
+  simp only [cross, dite_eq_left hj, letter, dite_eq_left hp]
   apply divided_spectator_mul <;> intro h <;>
     have hh := congrArg Fin.val h
   · exact hpl hh
@@ -158,7 +158,7 @@ theorem cross_pow_spectator (n j p : ℕ) (hj : j < n+1)
   | zero => simp
   | succ b ih =>
       rw [pow_succ', mul_assoc, cross_letter_spectator n j p hj hp hpl hpr, ih]
-      simp only [pow_succ, mul_smul, neg_one_smul, smul_neg, neg_mul,
+      simp only [pow_succ, smul_neg, neg_mul,
         mul_smul_comm, mul_neg, mul_assoc, mul_one, neg_smul]
 
 /-- Recursive product of the consecutive descending powers, with no reordering. -/
@@ -192,7 +192,7 @@ theorem cross_pair_step (n p k : ℕ) (hp : p < n+1) :
       letter n p ^ k * letter n (p+1) ^ k := by
   have hp0 : p < n+2 := by omega
   have hp1 : p+1 < n+2 := by omega
-  simp only [cross, dif_pos hp, letter, dif_pos hp0, dif_pos hp1]
+  simp only [cross, dite_eq_left hp, letter, dite_eq_left hp0, dite_eq_left hp1]
   exact divided_step ⟨p,hp⟩ k
 
 theorem cross_stairs_start (n p k : ℕ) (hb : p+(k+2) ≤ n+2) :
@@ -279,7 +279,7 @@ theorem actNat_map_fin (n : ℕ) (w : List (Fin (n+1))) (f : SkewPolynomial (n+2
   | cons i w ih =>
       change cross n i.val (actNat n (w.map Fin.val) f) = divided i (applyWord w f)
       rw [ih]
-      simp only [cross, dif_pos i.isLt]
+      simp only [cross, dite_eq_left i.isLt]
 
 theorem wordIn_values (n k : ℕ) (h : k ≤ n+2) :
     (wordIn n k h).map Fin.val = coxeterWord k := by
@@ -306,7 +306,7 @@ theorem stairsExp_succ (n p k : ℕ) (hp : p < n+2) :
         stairsExp (n+2) (p+1) k := by
   funext j
   simp only [stairsExp, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
-    OddMath.SkewPolynomial.expSingle, Fin.mk.injEq]
+    OddMath.SkewPolynomial.expSingle]
   by_cases he : (⟨p,hp⟩ : Fin (n+2)) = j
   · subst j
     simp
@@ -325,7 +325,7 @@ theorem stairsExp_cross (n p k : ℕ) (hp : p < n+2) :
   have hji : j.val < i.val := (Finset.mem_filter.mp hj).2
   by_cases he : (⟨p,hp⟩ : Fin (n+2)) = i
   · subst i
-    have hno : ¬ p+1 ≤ j.val := by simp only [Fin.val_mk] at hji; omega
+    have hno : ¬ p+1 ≤ j.val := by simp only [] at hji; omega
     simp [stairsExp, hno]
   · simp [OddMath.SkewPolynomial.expSingle, he]
 
@@ -338,7 +338,7 @@ theorem stairs_monomial (n p k : ℕ) (hb : p+k ≤ n+2) :
   | succ k ih =>
       have hp : p < n+2 := by omega
       rw [stairs, ih (p+1) (by omega)]
-      simp only [letter, dif_pos hp]
+      simp only [letter, dite_eq_left hp]
       rw [PbwL4.pow_form]
       change OddMath.SkewPolynomial.mul _ _ = _
       rw [OddMath.SkewPolynomial.mul_monomial]

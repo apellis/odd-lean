@@ -72,7 +72,7 @@ theorem crossingStrands_strictMono (k : ℕ) (i : Fin (k + 1)) :
     StrictMono (![i.castSucc, i.succ] : Fin 2 → Fin (k + 2)) :=
   Fin.strictMono_iff_lt_succ.mpr fun j => by
     rw [Subsingleton.elim j 0]
-    exact Fin.castSucc_lt_succ i
+    exact Fin.castSucc_lt_succ
 
 /-- The two strands of `Expr.swap k i`, as an order embedding
 `Fin 2 ↪o Fin (k+2)`: `0 ↦ i` (left slot), `1 ↦ i+1`. -/

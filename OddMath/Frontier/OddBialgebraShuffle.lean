@@ -85,18 +85,18 @@ theorem IsShuffle.lt_iff {u : Perm (m+2+m')} (hu : IsShuffle u) {i j : Fin (m+2+
     (h : IsLeft m (u i) ↔ IsLeft m (u j)) : i < j ↔ u i < u j := by
   rcases cases_block (u i) with ⟨k, hk⟩ | ⟨k, hk⟩ <;>
     rcases cases_block (u j) with ⟨k', hk'⟩ | ⟨k', hk'⟩
-  · have hi : i = u⁻¹ (Fin.castAdd (m'+2) k) := by rw [← hk, Equiv.Perm.inv_apply_self]
-    have hj : j = u⁻¹ (Fin.castAdd (m'+2) k') := by rw [← hk', Equiv.Perm.inv_apply_self]
+  · have hi : i = u⁻¹ (Fin.castAdd (m'+2) k) := by rw [← hk]; exact (u.symm_apply_apply i).symm
+    have hj : j = u⁻¹ (Fin.castAdd (m'+2) k') := by rw [← hk']; exact (u.symm_apply_apply j).symm
     rw [hk, hk', hi, hj]
     refine (hu.1.lt_iff_lt (a := k) (b := k')).trans ?_
-    simp only [Fin.lt_def, Fin.coe_castAdd]
+    simp only [Fin.lt_def, Fin.val_castAdd]
   · exact absurd (h.1 (hk ▸ isLeft_castAdd k)) (hk' ▸ not_isLeft_natAdd k')
   · exact absurd (h.2 (hk' ▸ isLeft_castAdd k')) (hk ▸ not_isLeft_natAdd k)
-  · have hi : i = u⁻¹ (Fin.natAdd (m+2) k) := by rw [← hk, Equiv.Perm.inv_apply_self]
-    have hj : j = u⁻¹ (Fin.natAdd (m+2) k') := by rw [← hk', Equiv.Perm.inv_apply_self]
+  · have hi : i = u⁻¹ (Fin.natAdd (m+2) k) := by rw [← hk]; exact (u.symm_apply_apply i).symm
+    have hj : j = u⁻¹ (Fin.natAdd (m+2) k') := by rw [← hk']; exact (u.symm_apply_apply j).symm
     rw [hk, hk', hi, hj]
     refine (hu.2.lt_iff_lt (a := k) (b := k')).trans ?_
-    simp only [Fin.lt_def, Fin.coe_natAdd, Nat.add_lt_add_iff_left]
+    simp only [Fin.lt_def, Fin.val_natAdd, Nat.add_lt_add_iff_left]
 
 /-- **Length additivity**: `ℓ((y₁ × y₂) u) = ℓ(y₁ × y₂) + ℓ(u)` for a shuffle `u`. -/
 theorem length_blockPerm_mul (w : Perm m) (v : Perm m') {u : Perm (m+2+m')}
@@ -109,10 +109,10 @@ theorem length_blockPerm_mul (w : Perm m) (v : Perm m') {u : Perm (m+2+m')}
     intro i j
     by_cases hs : IsLeft m (u i) ↔ IsLeft m (u j)
     · have h1 := hu.lt_iff hs
-      rw [if_neg (show ¬(i < j ∧ u j < u i) from fun h => lt_asymm (h1.1 h.1) h.2), add_zero]
+      rw [ite_eq_right (show ¬(i < j ∧ u j < u i) from fun h => lt_asymm (h1.1 h.1) h.2), add_zero]
       simp only [h1]
     · have h3 : Y (u j) < Y (u i) ↔ u j < u i := blockPerm_lt_iff w v (fun h => hs h.symm)
-      rw [if_neg (show ¬(u i < u j ∧ Y (u j) < Y (u i)) from fun h => lt_asymm h.1 (h3.1 h.2)),
+      rw [ite_eq_right (show ¬(u i < u j ∧ Y (u j) < Y (u i)) from fun h => lt_asymm h.1 (h3.1 h.2)),
         zero_add]
       simp only [h3]
   change (∑ i, ∑ j, if i < j ∧ Y (u j) < Y (u i) then 1 else 0) = _
@@ -152,7 +152,7 @@ theorem exists_factor (w : Perm (m+2+m')) :
     · exact ⟨(1, 1), w, hw, by rw [blockPerm_one, one_mul]⟩
     rw [IsShuffle, Fin.strictMono_iff_lt_succ, Fin.strictMono_iff_lt_succ, not_and_or] at hw
     rcases hw with hw | hw
-    · push_neg at hw
+    · push Not at hw
       obtain ⟨k, hk⟩ := hw
       set i := shiftIndex (window_left_le m m') k
       have hc : i.castSucc = Fin.castAdd (m'+2) k.castSucc := Fin.ext (by simp [i])
@@ -163,7 +163,7 @@ theorem exists_factor (w : Perm (m+2+m')) :
       rw [show blockPerm (simple k * y.1) y.2 = blockPerm (simple k) 1 * blockPerm y.1 y.2 by
         rw [← blockPerm_mul, one_mul], ← simple_shiftL, mul_assoc, ← hy, ← mul_assoc,
         simple_mul_simple, one_mul]
-    · push_neg at hw
+    · push Not at hw
       obtain ⟨k, hk⟩ := hw
       set i := shiftIndex (window_right_le m m') k
       have hc : i.castSucc = Fin.natAdd (m+2) k.castSucc := Fin.ext (by simp [i]; omega)
@@ -176,7 +176,7 @@ theorem exists_factor (w : Perm (m+2+m')) :
         simple_mul_simple, one_mul]
 
 theorem eq_one_of_strictMono {k : ℕ} {σ : Equiv.Perm (Fin k)} (h : StrictMono σ) : σ = 1 := by
-  have := (h.range_inj strictMono_id).1 (by rw [σ.surjective.range_eq, Set.range_id])
+  have := (h.range_inj_of_wellFoundedLT strictMono_id).1 (by rw [σ.surjective.range_eq, Set.range_id])
   exact Equiv.ext fun x => congrFun this x
 
 /-- A block permutation carrying a shuffle to a shuffle is trivial. -/

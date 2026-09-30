@@ -63,7 +63,7 @@ theorem monomial_mem {n : ℕ} {p : Parity} (a : Fin n → ℕ) (r : ℤ)
   by_cases h : a = b
   · subst b
     exact ha
-  · exact False.elim (hb (Finsupp.single_eq_of_ne h))
+  · exact False.elim (hb (Finsupp.single_eq_of_ne (Ne.symm h)))
 
 /-- Each summand has the desired parity; sums may cancel without harming containment. -/
 theorem mul_mem {n : ℕ} {p q : Parity} {f g : SkewPolynomial n}

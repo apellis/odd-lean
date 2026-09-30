@@ -125,7 +125,7 @@ theorem desL_pl {n : ℕ} (σ : Equiv.Perm (Fin n)) : desL (pl σ) = mask (Des �
   | zero => simp
   | succ m =>
     rw [Fin.sum_univ_succ]
-    simp only [Fin.val_zero, lt_irrefl, false_and, if_false, zero_add, Nat.add_sub_cancel]
+    simp only [Fin.val_zero, lt_irrefl, false_and, ite_false, zero_add]
     apply Finset.sum_congr rfl
     intro k _
     have h1 : (pl σ).getD (k.val + 1) 0 = σ k.succ := pl_getD σ k.succ
@@ -142,7 +142,7 @@ theorem posL_pl {n : ℕ} (σ : Equiv.Perm (Fin n)) : posL (pl σ) = pl σ⁻¹ 
     have hv : v < n := by simpa [posL, pl_length] using h1
     have hpos : (σ⁻¹ ⟨v, hv⟩ : ℕ) < (pl σ).length := by rw [pl_length]; exact (σ⁻¹ ⟨v, hv⟩).isLt
     have hval : (pl σ)[(σ⁻¹ ⟨v, hv⟩ : ℕ)] = v := by simp [pl]
-    have := List.idxOf_getElem (pl_nodup σ) _ hpos
+    have := List.Nodup.idxOf_getElem (pl_nodup σ) _ hpos
     rw [hval] at this
     rw [this]
     simp [pl]
@@ -185,7 +185,7 @@ theorem mask_eq_image {n : ℕ} (S : Finset (Fin n)) (hS : ∀ s ∈ S, 0 < s.va
   intro s hs t ht h
   have := hS s hs
   have := hS t ht
-  exact Fin.ext (by omega)
+  exact Fin.ext (by dsimp at h; omega)
 
 theorem mask_lt {n : ℕ} (S : Finset (Fin n)) (hS : ∀ s ∈ S, 0 < s.val) : mask S < 2 ^ (n - 1) := by
   rw [mask_eq_image S hS]
@@ -204,7 +204,7 @@ theorem cutOfMask_mask {n : ℕ} (S : Finset (Fin n)) (hS : ∀ s ∈ S, 0 < s.v
   have hbits : ∀ b, b ∈ (∑ b ∈ S.image (fun s : Fin n => s.val - 1), 2 ^ b).bitIndices ↔
       b ∈ S.image (fun s : Fin n => s.val - 1) := by
     intro b
-    rw [← List.mem_toFinset, Finset.toFinset_bitIndices_twoPowSum]
+    rw [← List.mem_toFinset, Finset.toFinset_bitIndices_sum_two_pow]
   rw [hbits]
   simp only [Finset.mem_univ, true_and, Finset.mem_image]
   constructor
@@ -229,26 +229,26 @@ theorem mask_cutOfMask {n i : ℕ} (hi : i < 2 ^ (n - 1)) : mask (cutOfMask n i)
     have := (Nat.pow_lt_pow_iff_right (by norm_num : 1 < 2)).mp h2
     omega
   rw [mask]
-  conv_rhs => rw [← Finset.twoPowSum_toFinset_bitIndices i]
+  conv_rhs => rw [← Finset.sum_toFinset_bitIndices_two_pow i]
   apply Finset.sum_nbij' (fun s => s.val - 1)
     (fun b => if h : b + 1 < m + 1 then (⟨b + 1, h⟩ : Fin (m + 1)) else 0)
   · intro s hs
-    simp only [cutOfMask, Finset.mem_filter, Finset.mem_coe] at hs
+    simp only [cutOfMask, Finset.mem_filter] at hs
     simpa using hs.2.2
   · intro b hb
-    simp only [Finset.mem_coe, List.mem_toFinset] at hb
-    simp only [cutOfMask, Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]
-    rw [dif_pos (hbnd _ hb)]
+    simp only [List.mem_toFinset] at hb
+    simp only [cutOfMask, Finset.mem_filter, Finset.mem_univ, true_and]
+    rw [dite_eq_left (hbnd _ hb)]
     simpa using hb
   · intro s hs
-    simp only [cutOfMask, Finset.mem_filter, Finset.mem_coe] at hs
+    simp only [cutOfMask, Finset.mem_filter] at hs
     have h0 := hs.2.1
     have hlt : s.val - 1 + 1 < m + 1 := by have := s.isLt; omega
-    rw [dif_pos hlt]
+    rw [dite_eq_left hlt]
     ext; simp; omega
   · intro b hb
-    simp only [Finset.mem_coe, List.mem_toFinset] at hb
-    rw [dif_pos (hbnd _ hb)]
+    simp only [List.mem_toFinset] at hb
+    rw [dite_eq_left (hbnd _ hb)]
     simp
   · intro s _; rfl
 
@@ -286,7 +286,7 @@ theorem gramHt_NN {n : ℕ} (S R : Cut n) : NN (gramHt (X : ℤ[X]) n S R) := by
   classical
   rw [gramHt_perm]
   intro e
-  rw [finset_sum_coeff]
+  rw [finsetSum_coeff]
   apply Finset.sum_nonneg
   intro σ _
   split_ifs
@@ -296,7 +296,7 @@ theorem gramHt_NN {n : ℕ} (S R : Cut n) : NN (gramHt (X : ℤ[X]) n S R) := by
 theorem eval_gramHt (t : ℤ) {n : ℕ} (S R : Cut n) :
     (gramHt (X : ℤ[X]) n S R).eval t = gramHt t n S R := by
   classical
-  rw [gramHt_perm, gramHt_perm, eval_finset_sum]
+  rw [gramHt_perm, gramHt_perm, eval_finsetSum]
   apply Finset.sum_congr rfl
   intro σ _
   split_ifs <;> simp
@@ -393,10 +393,10 @@ def zeroLL (N : ℕ) : List (List ℤ) := List.replicate N (List.replicate N 0)
 theorem getE_zeroLL (N a b : ℕ) : getE (zeroLL N) a b = 0 := by
   simp only [getE, zeroLL, List.getD_eq_getElem?_getD, List.getElem?_replicate]
   by_cases ha : a < N
-  · rw [if_pos ha]
+  · rw [ite_eq_left ha]
     simp only [Option.getD_some, List.getElem?_replicate]
     split_ifs <;> rfl
-  · rw [if_neg ha]; rfl
+  · rw [ite_eq_right ha]; rfl
 
 theorem getE_foldl (N : ℕ) (r c : List ℕ → ℕ) (w : List ℕ → ℤ) (ps : List (List ℕ))
     (hps : ∀ p ∈ ps, r p < N ∧ c p < N) (M : List (List ℤ)) (hMl : M.length = N)
@@ -436,8 +436,8 @@ theorem ribbonLL_spec (n K : ℕ) (a b : Fin (2 ^ (n - 1))) :
   have e1 := mask_eq_iff _ (des_pos σ⁻¹) a
   have e2 := mask_eq_iff _ (des_pos σ) b
   by_cases h : Des σ = ((cutEquiv n) b).1 ∧ Des σ⁻¹ = ((cutEquiv n) a).1
-  · rw [if_pos h, if_pos ⟨e1.mpr h.2, e2.mpr h.1⟩]
-  · rw [if_neg h, if_neg (fun h' => h ⟨e2.mp h'.2, e1.mp h'.1⟩)]
+  · rw [ite_eq_left h, ite_eq_left ⟨e1.mpr h.2, e2.mpr h.1⟩]
+  · rw [ite_eq_right h, ite_eq_right (fun h' => h ⟨e2.mp h'.2, e1.mp h'.1⟩)]
 
 theorem det_gramHt_ribbon (n K : ℕ) :
     (gramHt ((2 : ℤ) ^ K) n).det = (ofLL (2 ^ (n - 1)) (ribbonLL n K)).det := by

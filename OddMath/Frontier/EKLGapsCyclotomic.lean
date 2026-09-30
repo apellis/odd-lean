@@ -69,7 +69,7 @@ theorem Augmented.eps_sum (f : ℤ →₀ R) (hf : ∀ d, f d ∈ A d) :
   · rw [Finset.sum_eq_single_of_mem 0 h0]
     intro d _ hd
     exact h.vanish d hd _ (hf d)
-  · rw [Finsupp.not_mem_support_iff.mp h0, map_zero]
+  · rw [Finsupp.notMem_support_iff.mp h0, map_zero]
     exact Finset.sum_eq_zero fun d hd => h.vanish d (fun e => h0 (e ▸ hd)) _ (hf d)
 
 theorem Augmented.eps_of_mem_zero {x : R} (hx : x ∈ A 0) : ((ε x : ℤ) : R) = x := by
@@ -101,7 +101,7 @@ theorem augIdeal_maximal {p : ℤ} (hp : Prime p) (J : Ideal R) (hJ : augIdeal �
     (hne : J ≠ augIdeal ε p) : J = ⊤ := by
   obtain ⟨x, hxJ, hxI⟩ : ∃ x ∈ J, x ∉ augIdeal ε p := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hne (le_antisymm h hJ)
   rw [mem_augIdeal] at hxI
   obtain ⟨u, v, huv⟩ := (hp.irreducible.coprime_iff_not_dvd).mpr hxI
@@ -118,7 +118,7 @@ theorem augIdeal_maximal {p : ℤ} (hp : Prime p) (J : Ideal R) (hJ : augIdeal �
   exact J.add_mem (J.mul_mem_left _ hpJ) (J.mul_mem_left _ hεJ)
 
 theorem Augmented.augIdeal_isMax {p : ℤ} (hp : Prime p) : IsMaxGradedIdeal A (augIdeal ε p) :=
-  ⟨h.augIdeal_graded p, augIdeal_ne_top hp.not_unit, fun J _ hJ => by
+  ⟨h.augIdeal_graded p, augIdeal_ne_top hp.not_isUnit, fun J _ hJ => by
     by_cases hne : J = augIdeal ε p
     · exact Or.inl hne
     · exact Or.inr (augIdeal_maximal hp J hJ hne)⟩
@@ -154,7 +154,7 @@ theorem Augmented.isMax_iff (I : Ideal R) :
       exact hpg.trans h0
     rcases hmax _ (h.augIdeal_graded p) hle with e | e
     · exact ⟨p, hp, e.symm⟩
-    · exact absurd e (augIdeal_ne_top hp.not_unit)
+    · exact absurd e (augIdeal_ne_top hp.not_isUnit)
   · rintro ⟨p, hp, rfl⟩
     exact h.augIdeal_isMax hp
 
@@ -183,7 +183,7 @@ end General
 
 /-! ### `OH_{a,N}` -/
 
-open Cyclotomic
+open _root_.OddMath.Frontier.Cyclotomic
 
 theorem constTerm_eq_zero {N : ℕ} {d : ℤ} (hd : d ≠ 0) {f : OddMath.SkewPolynomial.SkewPolynomial N}
     (hf : f ∈ NilHeckeGradedEnd.polynomialPiece N d) : f 0 = 0 :=
@@ -213,7 +213,7 @@ theorem ohZeroAugmented (N : ℕ) :
     · subst hd
       rw [Finsupp.single_eq_same, SmallRank.mem_ohZeroGrading_iff]
       exact Or.inr rfl
-    · rw [Finsupp.single_eq_of_ne (Ne.symm hd)]; exact zero_mem _,
+    · rw [Finsupp.single_eq_of_ne hd]; exact zero_mem _,
     Finsupp.sum_single_index rfl⟩
 
 /-- `OH_{1,N} ≅ ℤ[x]/(x^N)`, `N ≥ 1`, with its constant term. -/
@@ -253,7 +253,7 @@ theorem ohOne_not_gradedLocal {N : ℕ} (hN : 1 ≤ N) : ¬ IsGradedLocal (Small
 
 /-- For `a > N`, `OH_{a,N} = 0` has no proper ideal, so it is not graded local either. -/
 theorem oh_not_gradedLocal_of_lt (n N : ℕ) (h : N < n+2) : ¬ IsGradedLocal (ohGrading n N) := by
-  haveI := OH_subsingleton h
+  have := OH_subsingleton h
   exact not_gradedLocal_of_subsingleton
 
 section FieldCase
@@ -276,7 +276,7 @@ theorem FieldAugmented.eps_sum (f : ℤ →₀ S) (hf : ∀ d, f d ∈ A d) :
   · rw [Finset.sum_eq_single_of_mem 0 h0]
     intro d _ hd
     exact h.vanish d hd _ (hf d)
-  · rw [Finsupp.not_mem_support_iff.mp h0, map_zero]
+  · rw [Finsupp.notMem_support_iff.mp h0, map_zero]
     exact Finset.sum_eq_zero fun d hd => h.vanish d (fun e => h0 (e ▸ hd)) _ (hf d)
 
 /-- The augmentation ideal `ker ε`. -/
@@ -310,11 +310,11 @@ theorem FieldAugmented.isMax_iff (I : Ideal S) : IsMaxGradedIdeal A I ↔ I = au
     intro J hJ hne
     obtain ⟨x, hxJ, hxI⟩ : ∃ x ∈ J, x ∉ augKer ε := by
       by_contra hc
-      push_neg at hc
+      push Not at hc
       exact hne (le_antisymm hc hJ)
     rw [mem_augKer] at hxI
     have hd : x - algebraMap k S (ε x) ∈ J := hJ (by
-      rw [mem_augKer, map_sub, AlgHom.commutes, Algebra.id.map_eq_self, sub_self])
+      rw [mem_augKer, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self])
     have hc : algebraMap k S (ε x) ∈ J := by
       have := J.sub_mem hxJ hd
       rwa [sub_sub_cancel] at this
@@ -379,22 +379,21 @@ theorem Augmented.baseChange {ε : R →+* ℤ} (h : Augmented A ε) :
       obtain ⟨c, x, hx, rfl⟩ := hy
       obtain ⟨z, rfl⟩ := h.conn.zero x hx
       rw [bcAug_tmul, map_intCast, Int.cast_id, Algebra.TensorProduct.algebraMap_apply,
-        Algebra.id.map_eq_self, ← Int.smul_one_eq_cast (R := R) z, TensorProduct.tmul_smul,
+        Algebra.algebraMap_self, RingHom.id_apply, ← Int.smul_one_eq_cast (R := R) z, TensorProduct.tmul_smul,
         TensorProduct.smul_tmul', zsmul_eq_mul, mul_comm]
-    | one => simp
-    | mul y y' _ _ hy hy' => rw [map_add, map_add, hy, hy']
-    | inv y _ hy => rw [map_neg, map_neg, hy]
+    | zero => simp
+    | add y y' _ _ hy hy' => rw [map_add, map_add, hy, hy']
+    | neg y _ hy => rw [map_neg, map_neg, hy]
   vanish d hd y hy := by
     induction hy using AddSubgroup.closure_induction with
     | mem y hy =>
       obtain ⟨c, x, hx, rfl⟩ := hy
       rw [bcAug_tmul, h.vanish d hd x hx, Int.cast_zero, mul_zero]
-    | one => simp
-    | mul y y' _ _ hy hy' => rw [map_add, hy, hy', add_zero]
-    | inv y _ hy => rw [map_neg, hy, neg_zero]
+    | zero => simp
+    | add y y' _ _ hy hy' => rw [map_add, hy, hy', add_zero]
+    | neg y _ hy => rw [map_neg, hy, neg_zero]
   span y := by
-    induction y using TensorProduct.induction_on with
-    | zero => exact ⟨0, fun d => zero_mem _, Finsupp.sum_zero_index⟩
+    induction y using TensorProduct.inductionOn with
     | tmul c x =>
       obtain ⟨f, hf, rfl⟩ := h.span x
       refine ⟨f.mapRange (fun r => c ⊗ₜ[ℤ] r) (TensorProduct.tmul_zero R c), fun d => ?_, ?_⟩
@@ -437,17 +436,17 @@ theorem printedMatrix_mulVec (n : ℕ) (w : Fin (n+2) → K n) (i : Fin (n+2)) :
       (-1 : ℤ)^(i.val.choose 2) • eK n (i.val+1) * w 0 +
         if h : i.val + 1 < n+2 then w ⟨i.val+1, h⟩ else 0 := by
   rw [Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
-  simp only [printedMatrix, Fin.val_zero, if_true, Fin.val_succ, Nat.succ_ne_zero, if_false]
+  simp only [printedMatrix, Fin.val_zero, ite_true, Fin.val_succ, Nat.succ_ne_zero, ite_false]
   congr 1
   split_ifs with h
   · rw [Finset.sum_eq_single ⟨i.val, by omega⟩]
-    · simp only [if_true, one_mul]
+    · simp only [ite_true, one_mul]
       congr 1
     · intro b _ hb
-      rw [if_neg (fun e => hb (Fin.ext (by simp; omega))), zero_mul]
+      rw [ite_eq_right (fun e => hb (Fin.ext (by simp; omega))), zero_mul]
     · simp
   · refine Finset.sum_eq_zero fun b _ => ?_
-    rw [if_neg (fun e => h (by have := b.isLt; omega)), zero_mul]
+    rw [ite_eq_right (fun e => h (by have := b.isLt; omega)), zero_mul]
 
 /-- **(5.8), corrected** (the matrix-multiplication step in the proof of Proposition 5.2):
 let `M` be the matrix (5.4), `a = n+2`, `m = N-a`, and `f_{j,m}` the relations (5.6) for `N`.
@@ -511,8 +510,8 @@ theorem prop_5_2_claim_base_false :
   simp only [Fin.val_zero, Pi.single_eq_same, mul_one, Nat.choose_zero_succ, pow_zero, one_smul]
   intro h
   have h2 := congrArg (fun k : K 0 => ((k : OddMath.SkewPolynomial.SkewPolynomial 2)) ![1, 0]) h
-  simp only [Subring.coe_add, Finsupp.add_apply, eK_zero_one_coeff] at h2
-  norm_num [Pi.single_apply, eK_zero_one_coeff] at h2
+  simp only [Subring.coe_add, Finsupp.add_apply] at h2
+  norm_num [Pi.single_apply] at h2
   have e : (FiniteCompleteElementary.elementaryPoly (0+2) 1) ![1, 0] = 1 := eK_zero_one_coeff
   rw [e] at h2
   norm_num at h2

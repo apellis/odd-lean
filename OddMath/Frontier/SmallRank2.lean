@@ -49,7 +49,7 @@ theorem inversions_small {a : ℕ} (ha : a ≤ 1) (w : Equiv.Perm (Fin a)) :
   rw [perm_small ha w]
   simp only [NilHeckeGrading.inversions, Equiv.Perm.coe_one, id_eq]
   exact Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ =>
-    if_neg fun h => absurd (h.1.trans h.2) (lt_irrefl _)
+    ite_eq_right fun h => absurd (h.1.trans h.2) (lt_irrefl _)
 
 /-- The odd divided difference operator `∂_u` of EKL (2.36) in rank `a ≤ 1`: `u = e`, `∂_e = id`. -/
 def dividedSmall (a : ℕ) (_u : Equiv.Perm (Fin a)) : SkewPolynomial a →ₗ[ℤ] SkewPolynomial a :=
@@ -171,7 +171,7 @@ theorem eq_2_53_small {N : ℕ} (hN : N ≤ 1) (d : ℤ) :
       Module.finrank ℤ (kernelPieceAll N (d + 2 * (NilHeckeGrading.inversions j : ℤ) -
         2 * (NilHeckeGrading.inversions i : ℤ))) := by
   have hu : ∀ w : Equiv.Perm (Fin N), w = 1 := perm_small hN
-  haveI : Unique (Equiv.Perm (Fin N)) := ⟨⟨1⟩, hu⟩
+  have : Unique (Equiv.Perm (Fin N)) := ⟨⟨1⟩, hu⟩
   rw [Fintype.sum_unique, Fintype.sum_unique, inversions_small hN, Nat.cast_zero, mul_zero,
     add_zero, sub_zero, (endPieceSmallEquiv hN d).finrank_eq]
 

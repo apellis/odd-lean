@@ -1,5 +1,6 @@
 import OddMath.Frontier.GradedK0
 import Mathlib.Algebra.Ring.NegOnePow
+import Mathlib.Tactic.LinearCombination
 
 /-!
 # Induction of graded idempotents along a super pair
@@ -199,7 +200,7 @@ theorem mvn_signConj [SetLike.GradedMonoid B] [DecidableEq ι] {s : ι → ℤ}
   · simp only [Matrix.mul_assoc, k1, hee]
   · simp only [he', Matrix.mul_assoc, k2]
   · simp only [he', Matrix.mul_assoc, k1, k2]
-  · simp only [he', Matrix.mul_assoc, k1, k2, hee]
+  · simp only [he', Matrix.mul_assoc, k1, hee]
 
 end MvN
 

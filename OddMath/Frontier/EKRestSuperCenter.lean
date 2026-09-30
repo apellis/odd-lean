@@ -156,7 +156,7 @@ theorem superCentral_odd (m : ℕ) (z : Q) (hz : SuperCentral (2 * m + 1) z) : z
     (CenterCorrected.center_oddSymmetric (2 * m) g).mp hgc
   have hodd : ¬ Odd (2 * m + 2) := by
     rw [Nat.not_odd_iff_even]; exact ⟨m + 1, by ring⟩
-  rw [if_neg hodd, add_zero] at heq
+  rw [ite_eq_right hodd, add_zero] at heq
   obtain ⟨P, _, hPa⟩ := (CenterPoly.mem_sq _).mp ha
   have hf0 : f = 0 := by
     ext c
@@ -172,7 +172,7 @@ theorem superCentral_odd (m : ℕ) (z : Q) (hz : SuperCentral (2 * m + 1) z) : z
       rcases Classical.em (∃ j, c j = 0) with h | hall
       · exact h
       exfalso
-      push_neg at hall
+      push Not at hall
       have : ∑ i, (1 : ℕ) ≤ ∑ i, c i := Finset.sum_le_sum (fun i _ => Nat.one_le_iff_ne_zero.mpr (hall i))
       simp at this
       omega

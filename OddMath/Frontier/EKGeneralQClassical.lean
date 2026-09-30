@@ -111,10 +111,10 @@ theorem alt_sum_coord (s : ℕ) :
         if s + 1 - (Fin.castSucc (Fin.castSucc t)).val ≤ 1 then 1 else 0) = 0 := by
       intro t
       have := t.isLt
-      rw [if_neg (by simp; omega), mul_zero]
+      rw [ite_eq_right (by simp; omega), mul_zero]
     rw [Finset.sum_eq_zero (fun t _ => hz t)]
-    simp only [Fin.coe_castSucc, Fin.val_last, zero_add]
-    rw [if_pos (by omega), if_pos (by omega), if_neg (by omega), pow_succ]
+    simp only [Fin.val_castSucc, Fin.val_last, zero_add]
+    rw [ite_eq_left (by omega), ite_eq_left (by omega), ite_eq_right (by omega), pow_succ]
     ring
 
 /-- Inclusion–exclusion over splits: `Σ_u (-1)^{|u|} [v - u ≤ 1] = [v = 0]`. -/
@@ -128,8 +128,8 @@ theorem alt_sum_splits {c : ℕ} (v : Fin c → ℕ) :
     rw [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Fintype.prod_boole]
     congr 1
     by_cases h : ∀ j, lower u j ≤ 1
-    · rw [if_pos h, if_pos (show ∀ i, v i - (u i).val ≤ 1 from h)]
-    · rw [if_neg h, if_neg (show ¬ ∀ i, v i - (u i).val ≤ 1 from h)]
+    · rw [ite_eq_left h, ite_eq_left (show ∀ i, v i - (u i).val ≤ 1 from h)]
+    · rw [ite_eq_right h, ite_eq_right (show ¬ ∀ i, v i - (u i).val ≤ 1 from h)]
   rw [Finset.sum_congr rfl (fun u _ => hf u)]
   rw [← Fintype.prod_sum (κ := fun j => Fin (v j + 1))
     (fun j t => ((-1 : k) ^ t.val * if v j - t.val ≤ 1 then 1 else 0))]
@@ -158,35 +158,35 @@ theorem eOne_comb (m : ℕ) {c : ℕ} (v : Fin c → ℕ) :
       intro u
       have hsp := sum_split u
       by_cases h0 : (∑ j, upper u j) = 0
-      · rw [if_pos h0, h0, pow_zero, one_mul, sub_self]
+      · rw [ite_eq_left h0, h0, pow_zero, one_mul, sub_self]
         apply Finset.sum_eq_zero
         intro i _
-        rw [if_neg (by omega), zero_mul, mul_zero]
-      · rw [if_neg h0, zero_sub]
+        rw [ite_eq_right (by omega), zero_mul, mul_zero]
+      · rw [ite_eq_right h0, zero_sub]
         obtain ⟨s, hs⟩ : ∃ s, (∑ j, upper u j) = s + 1 :=
           ⟨(∑ j, upper u j) - 1, by omega⟩
         have hsm : s < m + 1 := by omega
         rw [Finset.sum_eq_single ⟨s, hsm⟩]
-        · rw [if_pos hs, one_mul, hs]
+        · rw [ite_eq_left hs, one_mul, hs]
           have ht : (∑ j, lower u j) = m - s := by omega
           by_cases hL : ∀ j, lower u j ≤ 1
-          · rw [if_pos ⟨hL, ht⟩, if_pos hL, pow_succ]; ring
-          · rw [if_neg (fun h => hL h.1), if_neg hL]; ring
+          · rw [ite_eq_left ⟨hL, ht⟩, ite_eq_left hL, pow_succ]; ring
+          · rw [ite_eq_right (fun h => hL h.1), ite_eq_right hL]; ring
         · intro i _ hi
-          rw [if_neg, zero_mul, mul_zero]
+          rw [ite_eq_right, zero_mul, mul_zero]
           intro h; apply hi; apply Fin.ext; simp only; omega
         · simp
     rw [Finset.sum_congr rfl (fun u _ => hin u), Finset.sum_sub_distrib, alt_sum_splits]
     rw [Finset.sum_eq_single (fun j => (0 : Fin (v j + 1)))]
     · have hv : ¬ ∀ j, v j = 0 := by
         intro h; rw [(sum_eq_zero_iff_all v).mpr h] at hS; omega
-      rw [if_neg hv, sub_zero, if_pos (by simp [upper])]
+      rw [ite_eq_right hv, sub_zero, ite_eq_left (by simp [upper])]
       simp only [lower, Fin.val_zero, Nat.sub_zero]
       by_cases h1 : ∀ j, v j ≤ 1
-      · rw [if_pos h1, if_pos ⟨h1, hS⟩]
-      · rw [if_neg h1, if_neg (fun h => h1 h.1)]
+      · erw [ite_eq_left h1, ite_eq_left ⟨h1, hS⟩]
+      · erw [ite_eq_right h1, ite_eq_right (fun h => h1 h.1)]
     · intro u _ hu
-      rw [if_neg]
+      rw [ite_eq_right]
       intro h0
       apply hu
       funext j
@@ -194,18 +194,18 @@ theorem eOne_comb (m : ℕ) {c : ℕ} (v : Fin c → ℕ) :
       have := (Finset.sum_eq_zero_iff.mp h0) j (Finset.mem_univ j)
       simpa [upper] using this
     · simp
-  · rw [if_neg (fun h => hS h.2)]
+  · rw [ite_eq_right (fun h => hS h.2)]
     apply Finset.sum_eq_zero
     intro u _
     apply Finset.sum_eq_zero
     intro i _
     have hsp := sum_split u
     by_cases h1 : (∑ j, upper u j) = i.val + 1
-    · rw [if_pos h1, one_mul, if_neg, mul_zero]
+    · rw [ite_eq_left h1, one_mul, ite_eq_right, mul_zero]
       rintro ⟨-, h2⟩
       have := i.isLt
       omega
-    · rw [if_neg h1, zero_mul, mul_zero]
+    · rw [ite_eq_right h1, zero_mul, mul_zero]
 
 /-- `(e_m, h_v) = [every vⱼ ≤ 1 and |v| = m]` at `q = 1`, for every sequence `v`. -/
 theorem form_eOne_vWord (m : ℕ) {c : ℕ} (v : Fin c → ℕ) :
@@ -217,9 +217,9 @@ theorem form_eOne_vWord (m : ℕ) {c : ℕ} (v : Fin c → ℕ) :
     | zero =>
       rw [eOne_zero, ← h_zero k, form_h_vWord]
       by_cases hs : (∑ j, v j) = 0
-      · rw [if_pos hs, if_pos ⟨fun j => by
+      · rw [ite_eq_left hs, ite_eq_left ⟨fun j => by
           have := (sum_eq_zero_iff_all v).mp hs j; omega, hs⟩]
-      · rw [if_neg hs, if_neg (fun h => hs h.2)]
+      · rw [ite_eq_right hs, ite_eq_right (fun h => hs h.2)]
     | succ m =>
       rw [eOne_succ, map_sum, LinearMap.sum_apply]
       have hterm : ∀ i : Fin (m + 1),
@@ -245,11 +245,11 @@ def zo {r c : ℕ} (ρ : Fin r → ℕ) (β : Fin c → ℕ) : k :=
 theorem zo_summand {r c : ℕ} {ρ : Fin r → ℕ} {β : Fin c → ℕ} (M : Mat ρ β) :
     (∏ i, ∏ j, if M i j ≤ 1 then (1 : k) else 0) = if ∀ i j, M i j ≤ 1 then 1 else 0 := by
   split_ifs with h
-  · exact Finset.prod_eq_one (fun i _ => Finset.prod_eq_one (fun j _ => if_pos (h i j)))
-  · push_neg at h
+  · exact Finset.prod_eq_one (fun i _ => Finset.prod_eq_one (fun j _ => ite_eq_left (h i j)))
+  · push Not at h
     obtain ⟨i, j, hij⟩ := h
     exact Finset.prod_eq_zero (Finset.mem_univ i)
-      (Finset.prod_eq_zero (Finset.mem_univ j) (if_neg (by omega)))
+      (Finset.prod_eq_zero (Finset.mem_univ j) (ite_eq_right (by omega)))
 
 theorem zo_eq_card {r c : ℕ} (ρ : Fin r → ℕ) (β : Fin c → ℕ) :
     zo (k := k) ρ β = Fintype.card {M : Mat ρ β // ∀ i j, M i j ≤ 1} := by
@@ -269,11 +269,11 @@ theorem zo_single_row {c : ℕ} (a : ℕ) (w : Fin c → ℕ) :
       simpa [colSum, Subsingleton.elim i 0] using h
     rw [Finset.sum_eq_single Z]
     · by_cases hw : ∀ j, w j ≤ 1
-      · rw [if_pos (fun _ => hw), if_pos ⟨hw, hs⟩]
-      · rw [if_neg (fun h => hw (h ⟨0, Nat.one_pos⟩)), if_neg (fun h => hw h.1)]
+      · rw [ite_eq_left (fun _ => hw), ite_eq_left ⟨hw, hs⟩]
+      · rw [ite_eq_right (fun h => hw (h ⟨0, Nat.one_pos⟩)), ite_eq_right (fun h => hw h.1)]
     · intro M _ h; exact (h (hz M)).elim
     · simp
-  · rw [if_neg (fun h => hs h.2)]
+  · rw [ite_eq_right (fun h => hs h.2)]
     apply Finset.sum_eq_zero
     intro M _
     exfalso
@@ -303,7 +303,9 @@ theorem eWordV_join {r s : ℕ} (β : Fin r → ℕ) (γ : Fin s → ℕ) :
     eWordV k (Fin.addCases β γ) = eWordV k β * eWordV k γ := by
   unfold eWordV
   rw [List.ofFn_add, List.prod_append]
-  simp
+  have hl (i : Fin r) : Fin.addCases β γ (Fin.castLE (Nat.le_add_right r s) i) = β i :=
+    Fin.addCases_left i
+  simp only [hl, Fin.addCases_right]
 
 theorem eWordV_single (a : ℕ) : eWordV k (fun _ : Fin 1 => a) = eOne k a := by
   simp [eWordV]
@@ -325,7 +327,7 @@ theorem form_eWordV_vWord {r c : ℕ} (ρ : Fin r → ℕ) (β : Fin c → ℕ) 
     have h1 : eWordV k ρ = h k 0 := by simp [eWordV]
     rw [h1, form_h_vWord, zo_eq_card]
     by_cases hs : (∑ j, β j) = 0
-    · rw [if_pos hs]
+    · rw [ite_eq_left hs]
       have hb : ∀ j, β j = 0 := (sum_eq_zero_iff_all β).mp hs
       let Z : Mat ρ β := ⟨fun i => Fin.elim0 i, funext fun i => Fin.elim0 i, by
         funext j; simp [colSum, hb j]⟩
@@ -333,7 +335,7 @@ theorem form_eWordV_vWord {r c : ℕ} (ρ : Fin r → ℕ) (β : Fin c → ℕ) 
         { default := ⟨Z, fun i => Fin.elim0 i⟩
           uniq := fun M => Subtype.ext (Subtype.ext (funext fun i => Fin.elim0 i)) }
       rw [Fintype.card_unique]; simp
-    · rw [if_neg hs]
+    · rw [ite_eq_right hs]
       have : IsEmpty {M : Mat ρ β // ∀ i j, M i j ≤ 1} :=
         ⟨fun M => hs (by have := total_eq M.val; simp at this; omega)⟩
       rw [Fintype.card_eq_zero]; simp
@@ -445,7 +447,7 @@ theorem ek_q1_det (n : ℕ) [LinearOrder (DegreeShape n)]
     (hrefine : ∀ lam μ : DegreeShape n, EKProp310.Dom lam.val μ.val → lam ≤ μ) :
     (unitriMatrix (k := k) n).det = 1 := by
   obtain ⟨ht, hd⟩ := ek_q1_unitriangular (k := k) n hrefine
-  rw [Matrix.det_of_upperTriangular ht]
+  rw [Matrix.det_of_isUpperTriangular ht]
   exact Finset.prod_eq_one (fun lam _ => hd lam)
 
 end OddMath.Frontier.EKGeneralQ

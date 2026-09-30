@@ -40,7 +40,7 @@ theorem six_sum_choose_two (a r : ℕ) (hr : r ≤ a) :
   | succ r ih =>
     obtain ⟨m, hm⟩ : ∃ m, a - r = m + 1 := ⟨a - r - 1, by omega⟩
     have hc : ((m + 1).choose 2 : ℤ) * 2 = (m + 1) * m := by
-      have := Nat.succ_mul_choose_eq m 1
+      have := Nat.add_one_mul_choose_eq m 1
       rw [Nat.choose_one_right] at this
       exact_mod_cast this.symm
     have ha : (a : ℤ) = r + m + 1 := by omega
@@ -91,7 +91,7 @@ theorem signX_col_exact {a r : ℕ} (ha : 1 ≤ a) (hr : r ≤ a) :
   simp only [signX, bubbleSign, blockChi_col ha hr, hat_col, StaircaseEvaluation.omega,
     Finset.univ_unique, Finset.sum_singleton, sum_col hr]
   simp only [blockChi, Nat.add_sub_cancel, Fin.default_eq_zero, Fin.val_zero, zero_add,
-    Fin.rev_zero, Nat.choose_eq_zero_of_lt (by norm_num : 1 < 2), add_zero]
+    Nat.choose_eq_zero_of_lt (by norm_num : 1 < 2), add_zero]
   have F1 := hockey r c
   have F1' : ∑ i ∈ Finset.range r, (c + r - i).choose 2 =
       ∑ i ∈ Finset.range r, (r + c - i).choose 2 :=
@@ -192,7 +192,7 @@ theorem prop_4_5_rank (n N p : ℕ) (hN : n ≤ N) (hp1 : N+2-(n+1) ≤ p) (hp2 
   refine prop_4_5_prefix n (N+2) p (by omega) hp1 (by omega) N hN _ fun i => ?_
   refine Fin.lastCases ?_ (fun i => ?_) i
   · simp
-  · simp only [Fin.coe_castLE, Fin.coe_castSucc, Fin.snoc_castSucc, i.isLt, if_true]
+  · simp only [Fin.val_castLE, Fin.val_castSucc, Fin.snoc_castSucc, i.isLt, ite_true]
     omega
 
 end Prop45
@@ -216,7 +216,7 @@ noncomputable def onhRank (n : ℕ) : LS where
     rw [Function.mem_support, Nat.cast_ne_zero, NilHeckeGrading.degree_finrank_binomial] at hd
     obtain ⟨w, -, hw⟩ := Finset.exists_ne_zero_of_sum_ne_zero hd
     have ha : NilHeckeGrading.admissible d w := by
-      by_contra h; exact hw (if_neg h)
+      by_contra h; exact hw (ite_eq_right h)
     have hle : length w ≤ Finset.univ.sup fun w : Perm n => length w :=
       Finset.le_sup (f := fun w : Perm n => length w) (Finset.mem_univ w)
     have := ha.1
@@ -257,19 +257,19 @@ theorem invOneSubSq_mul (n : ℕ) : invOneSubSq n * (1 - qpow 2) ^ (n+2) = 1 := 
 theorem invOneSubSq_coeff (n : ℕ) (m : ℤ) :
     (invOneSubSq n).coeff m =
       if 0 ≤ m ∧ m % 2 = 0 then (((m / 2).toNat + n + 1).choose (n+1) : ℤ) else 0 := by
-  rcases le_or_lt 0 m with hm | hm
+  rcases le_or_gt 0 m with hm | hm
   · obtain ⟨k, rfl⟩ := Int.eq_ofNat_of_zero_le hm
     rw [invOneSubSq, HahnSeries.ofPowerSeries_apply_coeff, coeff_tsq,
       invOneSubPow_val_succ_eq_mk_add_choose, coeff_mk]
     by_cases hk : Even k
-    · rw [if_pos hk, if_pos ⟨hm, by obtain ⟨t, rfl⟩ := hk; omega⟩]
+    · rw [ite_eq_left hk, ite_eq_left ⟨hm, by obtain ⟨t, rfl⟩ := hk; omega⟩]
       congr 2
       omega
-    · rw [if_neg hk, if_neg fun h => hk (Nat.even_iff.mpr (by omega))]
-  · rw [if_neg (by omega), invOneSubSq, HahnSeries.ofPowerSeries_apply,
-      HahnSeries.embDomain_notin_range]
+    · rw [ite_eq_right hk, ite_eq_right fun h => hk (Nat.even_iff.mpr (by omega))]
+  · rw [ite_eq_right (by omega), invOneSubSq, HahnSeries.ofPowerSeries_apply,
+      HahnSeries.embDomain_of_notMem_range]
     rintro ⟨k, hk⟩
-    simp only [RelEmbedding.coe_mk, Function.Embedding.coeFn_mk] at hk
+    change (k : ℤ) = m at hk
     omega
 
 /-- EKL (2.44), p. 11, second line, for `a = n+2`:

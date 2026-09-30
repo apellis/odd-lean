@@ -35,15 +35,13 @@ variable {k : Type*} [CommRing k] (q : k)
 
 theorem tensorForm_annihilates_left {x : L k} (hx : ∀ y, form q x y = 0) (a : L k)
     (z : LL k) : tensorForm q (x ⊗ₜ[k] a) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul b c => simp [hx]
   | add u v hu hv => simp only [map_add, hu, hv, add_zero]
 
 theorem tensorForm_annihilates_right {x : L k} (hx : ∀ y, form q x y = 0) (a : L k)
     (z : LL k) : tensorForm q (a ⊗ₜ[k] x) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul b c => simp [hx]
   | add u v hu hv => simp only [map_add, hu, hv, add_zero]
 
@@ -215,8 +213,8 @@ theorem degree_eq_zero_iff (w : W) : degree w = 0 ↔ w = 1 := by
   constructor
   · intro he
     induction w using FreeMonoid.recOn with
-    | h0 => rfl
-    | ih i w _ =>
+    | one => rfl
+    | of_mul i w ih =>
       simp only [degree_mul] at he
       have hi : degree (FreeMonoid.of i) = i+1 := rfl
       rw [hi] at he
@@ -233,9 +231,9 @@ theorem form_right_one (x : L k) : form q x 1 = counit k x := by
     congr 1
     by_cases hw : w = 1
     · subst hw
-      rw [if_pos rfl, ← wordBasis_one, form_basis_mat]
+      rw [ite_eq_left rfl, ← wordBasis_one, form_basis_mat]
       exact matForm_zero_zero q _ _
-    · rw [if_neg hw, ← wordBasis_one]
+    · rw [ite_eq_right hw, ← wordBasis_one]
       exact form_degree_ne q w 1 (by rw [degree_one]; exact (degree_eq_zero_iff w).not.mpr hw)
 
 theorem counit_radical {x : L k} (hx : x ∈ radical q) : counit k x = 0 := by
@@ -269,8 +267,7 @@ theorem quotientTensorMap_eq_zero_iff (z : LL k) :
   let e := TensorProduct.quotientTensorQuotientEquiv
     ((radical q).restrictScalars k) ((radical q).restrictScalars k)
   have he : e (quotientTensorMap q z) = Submodule.Quotient.mk z := by
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [map_zero, Submodule.Quotient.mk_zero]
+    induction z using TensorProduct.inductionOn with
     | tmul x y => rfl
     | add x y hx hy => simp only [map_add, hx, hy, Submodule.Quotient.mk_add]
   rw [← e.map_eq_zero_iff, he]
@@ -287,15 +284,13 @@ def tensorTest (a b : Lam q) : Lam q ⊗[k] Lam q →ₗ[k] k :=
 theorem tensorTest_map (a b : L k) (z : LL k) :
     tensorTest q (piQ q a) (piQ q b) (quotientTensorMap q z) =
       tensorForm q z (a ⊗ₜ[k] b) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul x y => simp
   | add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]
 
 theorem coproduct_radical_annihilates {x : L k} (hx : x ∈ radical q) (z : LL k) :
     tensorForm q (coproduct q x) z = 0 := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a b =>
     rw [tensorForm_symm, adjointness, form_symm]
     exact hx (a*b)
@@ -343,13 +338,12 @@ theorem tensorMul_basis_tmul (a b : W) (x y : L k) :
     induction y using basis_induction k (wordBasis k) with
     | hz => simp
     | ha y z hy hz => simp only [TensorProduct.tmul_add, tensorMul_add_right,
-        map_add, mul_add, hy, hz]
+        mul_add, hy, hz]
     | hb d s =>
       simp only [map_smul, twist_basis, mul_smul_comm, TensorProduct.smul_tmul,
         TensorProduct.tmul_smul, tensorMul_smul_right]
       rw [← tensorBasis_apply, tensorMul_basis]
-      simp only [tensorBasis_apply, wordBasis_mul, TensorProduct.smul_tmul,
-        TensorProduct.tmul_smul, smul_smul]
+      simp only [tensorBasis_apply, wordBasis_mul, smul_smul]
       rw [Nat.mul_comm (degree c) (degree b)]
 
 theorem tensorMul_tmul_basis (x y : L k) (c d : W) :
@@ -358,7 +352,7 @@ theorem tensorMul_tmul_basis (x y : L k) (c d : W) :
   induction x using basis_induction k (wordBasis k) with
   | hz => simp
   | ha x z hx hz => simp only [TensorProduct.add_tmul, tensorMul_add_left,
-      map_add, add_mul, hx, hz]
+      add_mul, hx, hz]
   | hb a r =>
     induction y using basis_induction k (wordBasis k) with
     | hz => simp
@@ -368,8 +362,7 @@ theorem tensorMul_tmul_basis (x y : L k) (c d : W) :
       simp only [map_smul, twist_basis, smul_mul_assoc, TensorProduct.smul_tmul,
         TensorProduct.tmul_smul, tensorMul_smul_left]
       rw [← tensorBasis_apply, tensorMul_basis]
-      simp only [tensorBasis_apply, wordBasis_mul, TensorProduct.smul_tmul,
-        TensorProduct.tmul_smul, smul_smul]
+      simp only [tensorBasis_apply, wordBasis_mul, smul_smul]
       congr 1
       ring
 
@@ -382,14 +375,12 @@ theorem kills_tensor_kernel {M : Type*} [AddCommGroup M] [Module k M]
     apply sup_le
     · rintro _ ⟨t, rfl⟩
       change f (TensorProduct.map ((radical q).restrictScalars k).subtype LinearMap.id t) = 0
-      induction t using TensorProduct.induction_on with
-      | zero => simp
+      induction t using TensorProduct.inductionOn with
       | tmul x y => simpa using h₁ x x.property y
       | add a b ha hb => simp only [map_add, ha, hb, add_zero]
     · rintro _ ⟨t, rfl⟩
       change f (TensorProduct.map LinearMap.id ((radical q).restrictScalars k).subtype t) = 0
-      induction t using TensorProduct.induction_on with
-      | zero => simp
+      induction t using TensorProduct.inductionOn with
       | tmul x y => simpa using h₂ y y.property x
       | add a b ha hb => simp only [map_add, ha, hb, add_zero]
   exact hle ((quotientTensorMap_eq_zero_iff q z).mp hz)
@@ -436,8 +427,7 @@ theorem tensor_kernel_mul_left {z : LL k} (hz : quotientTensorMap q z = 0) (y : 
 
 theorem quotientTensorMap_surjective : Function.Surjective (quotientTensorMap q) := by
   intro z
-  induction z using TensorProduct.induction_on with
-  | zero => exact ⟨0, map_zero _⟩
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     obtain ⟨a, rfl⟩ := piQ_surjective q x
     obtain ⟨b, rfl⟩ := piQ_surjective q y
@@ -490,8 +480,10 @@ private def mulToQuotient : LL k →ₗ[k] (Lam q ⊗[k] Lam q) →ₗ[k] Lam q 
 
 /-- EK p.5 product `(x₁⊗x₂)(y₁⊗y₂) = q^{deg x₂ deg y₁} x₁y₁ ⊗ x₂y₂`, on `Λ ⊗ Λ`. -/
 def quotientTensorMul : (Lam q ⊗[k] Lam q) →ₗ[k] (Lam q ⊗[k] Lam q) →ₗ[k] Lam q ⊗[k] Lam q :=
-  descendTensor q (mulToQuotient q) (by
+  descendTensor q (M := (Lam q ⊗[k] Lam q) →ₗ[k] Lam q ⊗[k] Lam q)
+    (mulToQuotient q) (by
     intro x hx
+    change mulToQuotient q x = 0
     apply LinearMap.ext
     intro y
     obtain ⟨y, rfl⟩ := quotientTensorMap_surjective q y
@@ -559,9 +551,9 @@ instance quotient_noZeroSMulDivisors : NoZeroSMulDivisors k (Lam q) where
 theorem tensor_separation (z : Lam q ⊗[k] Lam q)
     (hz : ∀ a b : Lam q, tensorTest q a b z = 0) : z = 0 := by
   classical
-  obtain ⟨M, hM, hm⟩ := TensorProduct.exists_finite_submodule_left_of_finite
+  obtain ⟨M, hM, hm⟩ := TensorProduct.exists_finite_submodule_left_of_setFinite
     ({z} : Set (Lam q ⊗[k] Lam q)) (Set.finite_singleton z)
-  letI : Module.Finite k M := hM
+  let : Module.Finite k M := hM
   obtain ⟨w, hw⟩ := hm (Set.mem_singleton z)
   obtain ⟨n, B⟩ := Module.basisOfFiniteTypeTorsionFree' (R := k) (M := M)
   obtain ⟨c, hc⟩ := TensorProduct.eq_repr_basis_left B w
@@ -611,9 +603,7 @@ private theorem assoc_quotient (t : LL k) (y : L k) :
     TensorProduct.assoc k (Lam q) (Lam q) (Lam q) (quotientTensorMap q t ⊗ₜ[k] piQ q y) =
     TensorProduct.map (piQ q).toLinearMap (quotientTensorMap q)
       (TensorProduct.assoc k (L k) (L k) (L k) (t ⊗ₜ[k] y)) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero]
+  induction t using TensorProduct.inductionOn with
   | tmul a b => simp
   | add a b ha hb => simp only [LinearMap.map_add, LinearEquiv.map_add, TensorProduct.add_tmul, ha, hb]
 
@@ -622,9 +612,7 @@ private theorem left_iterated_map (z : LL k) :
       (TensorProduct.map (quotientCoproduct q) LinearMap.id (quotientTensorMap q z)) =
     TensorProduct.map (piQ q).toLinearMap (quotientTensorMap q)
       (TensorProduct.assoc k (L k) (L k) (L k) (TensorProduct.map (coproduct q) LinearMap.id z)) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simpa only [quotientTensorMap_tmul, TensorProduct.map_tmul,
       quotientCoproduct_pi, LinearMap.id_apply] using assoc_quotient q (coproduct q x) y
@@ -634,11 +622,9 @@ private theorem right_iterated_map (z : LL k) :
     TensorProduct.map LinearMap.id (quotientCoproduct q) (quotientTensorMap q z) =
     TensorProduct.map (piQ q).toLinearMap (quotientTensorMap q)
       (TensorProduct.map LinearMap.id (coproduct q) z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero]
+  induction z using TensorProduct.inductionOn with
   | tmul x y => simp
-  | add x y hx hy => simp only [LinearMap.map_add, LinearEquiv.map_add, hx, hy]
+  | add x y hx hy => simp only [LinearMap.map_add, hx, hy]
 
 theorem quotient_coassociativity (x : Lam q) :
     TensorProduct.assoc k (Lam q) (Lam q) (Lam q)
@@ -652,9 +638,7 @@ private theorem left_counit_map (z : LL k) :
     TensorProduct.lid k (Lam q)
       (TensorProduct.map (quotientCounit q).toLinearMap LinearMap.id (quotientTensorMap q z)) =
     piQ q (leftCounit k z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero, map_zero (piQ q)]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
       quotientCounit_pi, LinearMap.id_apply, TensorProduct.lid_tmul, leftCounit_tmul]
@@ -666,9 +650,7 @@ private theorem right_counit_map (z : LL k) :
     TensorProduct.rid k (Lam q)
       (TensorProduct.map LinearMap.id (quotientCounit q).toLinearMap (quotientTensorMap q z)) =
     piQ q (rightCounit k z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero, map_zero (piQ q)]
+  induction z using TensorProduct.inductionOn with
   | tmul x y =>
     simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
       quotientCounit_pi, LinearMap.id_apply, TensorProduct.rid_tmul, rightCounit_tmul]

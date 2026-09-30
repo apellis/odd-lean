@@ -81,7 +81,7 @@ theorem mono_sum_mem {N : ℕ} (R : Subring (SkewPolynomial N))
     (s : Finset (Fin N)) (a : Fin N → Fin N → ℕ)
     (h : ∀ j ∈ s, monomial (a j) 1 ∈ R) : monomial (∑ j ∈ s, a j) 1 ∈ R := by
   induction s using Finset.induction_on with
-  | empty => simpa using R.one_mem
+  | empty => rw [Finset.sum_empty]; exact R.one_mem
   | @insert j s hj ih =>
     rw [Finset.sum_insert hj]
     exact mono_add_mem R _ _ (h j (by simp)) (ih (fun l hl => h l (by simp [hl])))
@@ -138,7 +138,7 @@ theorem invalid_adjacent {n : ℕ} (α : PartitionExponent n) (I : Finset (Fin (
   dsimp [increment] at hi
   refine ⟨i, ?_⟩
   by_cases h₀ : i.castSucc ∈ I <;> by_cases h₁ : i.succ ∈ I
-  all_goals simp only [h₀, h₁, if_true, if_false] at hi
+  all_goals simp only [h₀, h₁, ite_true, ite_false] at hi
   all_goals first | omega | exact ⟨by omega, h₀, h₁⟩
 
 /-- Exactly the invalid terms in the source Pieri proof vanish under S. -/
@@ -150,7 +150,7 @@ theorem S_invalid {n : ℕ} (α : PartitionExponent n) (I : Finset (Fin (n+2)))
   have hz : D (n+2) (monomial (increment α.val I + fun j => n+2-1-j.val) 1) = 0 := by
     apply D_of_divided_zero i
     apply divided_equal
-    simp only [Pi.add_apply, increment, if_neg h₀, if_pos h₁, Fin.coe_castSucc, Fin.val_succ]
+    simp only [Pi.add_apply, increment, ite_eq_right h₀, ite_eq_left h₁, Fin.val_castSucc, Fin.val_succ]
     have := i.isLt
     omega
   rw [hz, map_zero, smul_zero, smul_zero]
@@ -164,7 +164,7 @@ def subsetTilde {N : ℕ} (I : Finset (Fin N)) : SkewPolynomial N :=
   (-1 : ℤ)^tildeWeight I • monomial (subsetExp I) 1
 
 /-- The literal increasing tilde product in coefficient normal form. -/
-theorem sorted_tilde {N : ℕ} (w : List (Fin N)) (hw : w.Sorted (· ≤ ·)) :
+theorem sorted_tilde {N : ℕ} (w : List (Fin N)) (hw : w.Pairwise (· ≤ ·)) :
     (w.map PlacticEvaluation.tildeGenerator).prod =
       (-1 : ℤ)^(w.map Fin.val).sum • monomial (PbwRealization.exponents w) 1 := by
   induction w with
@@ -183,7 +183,7 @@ theorem strict_tilde {N k : ℕ} (f : Fin k → Fin N) (hf : StrictMono f) :
     (List.ofFn (fun i => PlacticEvaluation.tildeGenerator (f i))).prod =
       subsetTilde (Finset.univ.image f) := by
   classical
-  have hw : (List.ofFn f).Sorted (· ≤ ·) := List.pairwise_ofFn.mpr (fun i j hij => (hf hij).le)
+  have hw : (List.ofFn f).Pairwise (· ≤ ·) := List.pairwise_ofFn.mpr (fun i j hij => (hf hij).le)
   have he : PbwRealization.exponents (List.ofFn f) = subsetExp (Finset.univ.image f) := by
     funext j
     rw [ElementaryGeneration.exponents_ofFn_injective f hf.injective]
@@ -194,7 +194,7 @@ theorem strict_tilde {N k : ℕ} (f : Fin k → Fin N) (hf : StrictMono f) :
     rfl
   have hh := sorted_tilde (List.ofFn f) hw
   rw [he, hs] at hh
-  simpa only [List.map_ofFn, Function.comp_def] using hh
+  simpa only [List.map_ofFn, Function.comp_def, subsetTilde] using hh
 
 /-- Reindex increasing words by actual k-element subsets, not tableaux. -/
 theorem sum_strict_subsets {N k : ℕ} {A : Type*} [AddCommMonoid A]
@@ -209,7 +209,7 @@ theorem sum_strict_subsets {N k : ℕ} {A : Type*} [AddCommMonoid A]
     rw [Finset.card_image_of_injective _ hf.injective, Finset.card_univ, Fintype.card_fin]
   · intro f hf g hg he
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hf hg
-    apply hf.range_inj hg |>.mp
+    apply hf.range_inj_of_wellFoundedLT hg |>.mp
     have hh := congrArg (fun s : Finset (Fin N) => (s : Set (Fin N))) he
     simpa using hh
   · intro I hI
@@ -230,7 +230,7 @@ theorem elementary_subsets (N k : ℕ) :
   apply Finset.sum_congr rfl
   intro f _
   by_cases hf : StrictMono f
-  · simp only [hf, if_true, strict_tilde f hf]
+  · simp only [hf, ite_true, strict_tilde f hf]
   · simp [hf]
 
 /-- An antitone zero-one exponent is an initial column. -/
@@ -244,7 +244,7 @@ theorem antitone_subset {N : ℕ} (I : Finset (Fin N)) (h : Antitone (subsetExp 
       have hs : Finset.Iic j ⊆ I := by
         intro l hl
         have hh := h (Finset.mem_Iic.mp hl)
-        simp only [subsetExp, if_pos hj] at hh
+        simp only [subsetExp, ite_eq_left hj] at hh
         by_contra hn
         simp [hn] at hh
       have hc := Finset.card_le_card hs
@@ -290,7 +290,7 @@ theorem initial_weight (N k : ℕ) (hk : k ≤ N) : tildeWeight (initial N k) = 
   | zero => simp
   | succ k ih =>
     rw [Fin.sum_univ_castSucc]
-    simp only [Fin.coe_castSucc, Fin.val_last]
+    simp only [Fin.val_castSucc, Fin.val_last]
     rw [ih, Nat.choose_succ_succ, Nat.choose_one_right, Nat.add_comm]
 
 /-- EKL Lemma 2.25 (2.70), including the empty column. -/
@@ -356,8 +356,8 @@ theorem cross_right_subset {N : ℕ} (a : Fin N → ℕ) (I : Finset (Fin N)) :
       apply Finset.sum_congr rfl
       intro i _
       by_cases hi : i ∈ I
-      · simp only [hi, if_true]
-      · simp only [hi, if_false, ite_self, Finset.sum_const_zero]
+      · simp only [hi, ite_true]
+      · simp only [hi, ite_false, ite_self, Finset.sum_const_zero]
     _ = _ := by rw [← Finset.sum_filter]; simp
 
 theorem cross_left_subset {N : ℕ} (a : Fin N → ℕ) (I : Finset (Fin N)) :
@@ -510,10 +510,10 @@ theorem right_pieri (n k : ℕ) (hk : k ≤ n+2) (α : PartitionExponent n) :
   intro I _
   by_cases hc : I.card = k
   · by_cases ha : Antitone (increment α.val I)
-    · simp only [hc, ha, and_self, dite_true, if_true]
-    · simp only [hc, ha, and_false, dite_false, if_true, if_false]
+    · simp only [hc, ha, and_self, ite_true]
+    · simp only [hc, ha, and_false, ite_true, ite_false]
       rw [S_invalid α I ha, smul_zero]
-  · simp only [hc, false_and, dite_false, if_false]
+  · simp only [hc, false_and, ite_false]
 
 end
 end OddMath.Frontier.OddSchurPieri

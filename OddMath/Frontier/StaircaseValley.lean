@@ -31,7 +31,6 @@ theorem smul_one_apply_zero {N : ℕ} (r : ℤ) : (r • (1 : SkewPolynomial N))
 theorem smul_one_injective {N : ℕ} {r s : ℤ} (h : r • (1 : SkewPolynomial N) = s • 1) :
     r = s := by
   have := congrArg (fun f : SkewPolynomial N => f 0) h
-  simp only at this
   rwa [smul_one_apply_zero, smul_one_apply_zero] at this
 
 /-- The value of `D_N` on a top-degree monomial. -/
@@ -208,17 +207,17 @@ theorem armSum_cons {N : ℕ} (γ : Fin (N+1) → ℕ) (k : ℕ) (hk : 1 ≤ k) 
     armSum γ k = armSum (Fin.tail γ) (k-1) := by
   rw [armSum, armSum, Fin.sum_univ_succ]
   simp only [Fin.val_zero, Fin.val_succ, Fin.tail]
-  rw [if_neg (by omega), zero_add]
+  rw [ite_eq_right (by omega), zero_add]
   exact Finset.sum_congr rfl fun j _ => by
     by_cases h : k ≤ j.val + 1
-    · rw [if_pos h, if_pos (by omega)]
-    · rw [if_neg h, if_neg (by omega)]
+    · rw [ite_eq_left h, ite_eq_left (by omega)]
+    · rw [ite_eq_right h, ite_eq_right (by omega)]
 
 theorem armSum_snoc {N : ℕ} (γ : Fin (N+1) → ℕ) (k : ℕ) (hk : k ≤ N) :
     armSum γ k = armSum (Fin.init γ) k + (γ (Fin.last N)).choose 3 := by
   rw [armSum, armSum, Fin.sum_univ_castSucc]
-  simp only [Fin.coe_castSucc, Fin.val_last, Fin.init]
-  rw [if_pos hk]
+  simp only [Fin.val_castSucc, Fin.val_last, Fin.init]
+  rw [ite_eq_left hk]
 
 /-- Distinct naturals indexed by `Fin m` sum to at least `binom(m,2)`. -/
 theorem choose_two_le_sum_of_injective : ∀ {m : ℕ} (γ : Fin m → ℕ), Function.Injective γ →
@@ -232,7 +231,7 @@ theorem choose_two_le_sum_of_injective : ∀ {m : ℕ} (γ : Fin m → ℕ), Fun
       rw [Fin.sum_univ_succAbove γ j0]
       have hmax : m ≤ γ j0 := by
         by_contra hlt
-        push_neg at hlt
+        push Not at hlt
         have hinj : Function.Injective (fun j : Fin (m+1) => (⟨γ j, by
             have := hj0 j (Finset.mem_univ _); omega⟩ : Fin m)) := by
           intro a b h
@@ -249,13 +248,12 @@ theorem lt_of_injective_of_sum {m : ℕ} (γ : Fin m → ℕ) (hγ : Function.In
   rcases m with _ | m
   · exact j.elim0
   by_contra hge
-  push_neg at hge
+  push Not at hge
   have h := choose_two_le_sum_of_injective (fun i => γ (j.succAbove i))
     (hγ.comp Fin.succAbove_right_injective)
   rw [Fin.sum_univ_succAbove γ j] at hs
   have hc : (m+1).choose 2 = m.choose 2 + m := by
     rw [Nat.choose_succ_succ', Nat.choose_one_right, add_comm]
-  simp only at h
   omega
 
 theorem snoc_injective_iff {N : ℕ} (p : Fin N → ℕ) (x : ℕ) :
@@ -288,14 +286,14 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
       have hγ : γ = 0 := Subsingleton.elim _ _
       subst hγ
       have hi : Function.Injective (0 : Fin 0 → ℕ) := fun a => a.elim0
-      rw [if_pos hi]
+      rw [ite_eq_left hi]
       change (Finsupp.single (0 : Fin 0 → ℕ) (1 : ℤ)) 0 = _
       simp [armSum]
   | 1, γ, k, _, hs => by
       have hγ : γ = 0 := by funext j; fin_cases j; simpa using hs
       subst hγ
       have : Function.Injective (0 : Fin 1 → ℕ) := fun a b _ => Subsingleton.elim a b
-      rw [if_pos this]
+      rw [ite_eq_left this]
       change (Finsupp.single (0 : Fin 1 → ℕ) (1 : ℤ)) 0 = _
       simp [armSum, Nat.choose_eq_zero_of_lt]
   | 2, γ, k, _, hs => by
@@ -309,7 +307,7 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
       have hinj : Function.Injective γ := by
         intro a b h
         fin_cases a <;> fin_cases b <;> simp_all <;> omega
-      rw [if_pos hinj]
+      rw [ite_eq_left hinj]
       rcases Nat.eq_zero_or_pos (γ 1) with h1 | h1
       · have hγ : γ = fun i => 2-1-i.val := by
           funext j; fin_cases j <;> simp <;> omega
@@ -335,7 +333,7 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
             fun a b h => hinj (by simpa using congrArg Fin.val h)
           have := Fintype.card_le_of_injective _ hinj'
           simp at this
-        rw [hz, if_neg hni]
+        rw [hz, ite_eq_right hni]
       rcases le_total (γ (Fin.last (n+2))) (γ 0) with hlr | hrl
       · -- the maximum is the first exponent
         have h0 : n+2 ≤ γ 0 := by omega
@@ -353,7 +351,7 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
           have hni : ¬ Function.Injective γ := fun hinj => by
             have := choose_two_le_sum_of_injective (Fin.tail γ) (hinj.comp (Fin.succ_injective _))
             omega
-          rw [hz, if_neg hni]
+          rw [hz, ite_eq_right hni]
         · have hs2 : ∑ j, Fin.tail γ j = (n+2).choose 2 := by omega
           have hcons : (Fin.cons (n+2) (Fin.tail γ) : Fin (n+3) → ℕ) = γ := by
             funext j
@@ -373,10 +371,10 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
               omega
           rw [hpeel]
           by_cases hi : Function.Injective (Fin.tail γ)
-          · rw [if_pos hi, if_pos (hiff.mpr hi), armSum_cons γ k hk, ← pow_add, hc3]
+          · rw [ite_eq_left hi, ite_eq_left (hiff.mpr hi), armSum_cons γ k hk, ← pow_add, hc3]
             congr 1
             ring
-          · rw [if_neg hi, if_neg (fun h => hi (hiff.mp h)), mul_zero]
+          · rw [ite_eq_right hi, ite_eq_right (fun h => hi (hiff.mp h)), mul_zero]
       · -- the maximum is the last exponent
         have hl : n+2 ≤ γ (Fin.last (n+2)) := by omega
         have hk : k ≤ n+2 := by
@@ -394,7 +392,7 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
             have := choose_two_le_sum_of_injective (Fin.init γ)
               (hinj.comp (Fin.castSucc_injective _))
             omega
-          rw [hz, if_neg hni]
+          rw [hz, ite_eq_right hni]
         · have hs2 : ∑ j, Fin.init γ j = (n+2).choose 2 := by omega
           have hsnoc : (Fin.snoc (Fin.init γ) (n+2) : Fin (n+3) → ℕ) = γ := by
             funext j
@@ -415,8 +413,8 @@ theorem top_valley : ∀ (N : ℕ) (γ : Fin N → ℕ) (k : ℕ), IsValley γ k
               rwa [hsnoc] at this
           rw [hpeel]
           by_cases hi : Function.Injective (Fin.init γ)
-          · rw [if_pos hi, if_pos (hiff.mpr hi), armSum_snoc γ k hk, ← heq, ← pow_add]
+          · rw [ite_eq_left hi, ite_eq_left (hiff.mpr hi), armSum_snoc γ k hk, ← heq, ← pow_add]
             congr 1
             ring
-          · rw [if_neg hi, if_neg (fun h => hi (hiff.mp h)), mul_zero]
+          · rw [ite_eq_right hi, ite_eq_right (fun h => hi (hiff.mp h)), mul_zero]
 end OddMath.Frontier.StaircaseValley

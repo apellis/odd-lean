@@ -65,10 +65,9 @@ theorem sumSquares_kernel :
   have h0 := divided_mul_left (0 : Fin 1) (generator 0)
   have h1 := divided_mul_right (0 : Fin 1) (generator 1)
   simp only [Fin.castSucc_zero, Fin.succ_zero_eq_one, divided_generator, s_generator] at h0 h1
-  simp only [Fin.zero_eta, Fin.isValue, Fin.castSucc_zero, Fin.succ_zero_eq_one] at *
+  simp only [Fin.zero_eta, Fin.isValue] at *
   rw [h0, h1]
   simp [Equiv.swap_apply_left, Equiv.swap_apply_right]
-  abel
 
 theorem sumSquares_central (f : SkewPolynomial 2) :
     ((generator 0 : SkewPolynomial 2) ^ 2 + generator 1 ^ 2) * f =

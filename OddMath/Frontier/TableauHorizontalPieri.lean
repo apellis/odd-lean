@@ -25,7 +25,8 @@ instance tabFinite (n : ℕ) (μ : YoungDiagram) : Fintype (Tab n μ) :=
 
 def inputMap (n : ℕ) (μ : YoungDiagram) (k : ℕ) (x : Tab n μ × Weak n k) :
     Inputs n μ k :=
-  ⟨(⟨μ,x.1⟩, List.ofFn x.2.val), rfl, x.2.property.ofFn_sorted, List.length_ofFn⟩
+  ⟨(⟨μ,x.1⟩, List.ofFn x.2.val), rfl,
+    List.pairwise_ofFn.mpr (fun _ _ h => x.2.property h.le), List.length_ofFn⟩
 
 theorem inputMap_bijective (n : ℕ) (μ : YoungDiagram) (k : ℕ) :
     Function.Bijective (inputMap n μ k) := by
@@ -40,9 +41,7 @@ theorem inputMap_bijective (n : ℕ) (μ : YoungDiagram) (k : ℕ) :
     dsimp only at hμ hk hw
     subst ν
     subst k
-    let f : Weak n w.length := ⟨w.get, by
-      apply List.sorted_le_ofFn_iff.mp
-      simpa only [List.ofFn_get] using hw⟩
+    let f : Weak n w.length := ⟨w.get, fun _ _ h => hw.rel_get_of_le h⟩
     refine ⟨(T,f), Subtype.ext ?_⟩
     change ((⟨μ,T⟩ : TableauWordInsertion.State n),List.ofFn w.get) = _
     rw [List.ofFn_get]
@@ -58,7 +57,7 @@ abbrev Indexed (n : ℕ) (μ : YoungDiagram) (k : ℕ) := Σ ν : Outer μ k, Ta
 def outputMap (n : ℕ) (μ : YoungDiagram) (k : ℕ) (y : Indexed n μ k) :
     Outputs n μ k :=
   ⟨⟨y.1.val.val,y.2⟩, y.1.property, by
-    rw [Finset.card_sdiff y.1.property.1]
+    rw [Finset.card_sdiff_of_subset y.1.property.1]
     change y.1.val.val.card - μ.card = k
     rw [y.1.val.property]; omega⟩
 
@@ -110,7 +109,8 @@ theorem pointwise (n : ℕ) (μ : YoungDiagram) (k : ℕ) (x : Tab n μ × Weak 
       insertionEquiv n μ k (inputMap n μ k x) :=
     (outputEquiv n μ k).apply_symm_apply _
   rw [he, insertionEquiv_apply]
-  have h := run_polynomial n ⟨μ,x.1⟩ (List.ofFn x.2.val) x.2.property.ofFn_sorted
+  have h := run_polynomial n ⟨μ,x.1⟩ (List.ofFn x.2.val)
+    (List.pairwise_ofFn.mpr (fun _ _ h => x.2.property h.le))
   dsimp only at h
   rw [run_stripCount n ⟨μ,x.1⟩ (List.ofFn x.2.val)] at h
   exact h
@@ -147,7 +147,7 @@ theorem output_sum (n : ℕ) (μ : YoungDiagram) (k : ℕ) :
         (-1 : ℤ) ^ (shapeExponent ν.val + stripCount μ ν.val) • tableauPolynomial n ν.val
       else 0 := by
   classical
-  letI := degreeFintype (μ.card + k)
+  let := degreeFintype (μ.card + k)
   rw [Fintype.sum_sigma]
   simp only [outputValue, outputMap]
   simp_rw [← Finset.smul_sum, ← tableau_sum]
@@ -163,7 +163,7 @@ theorem horizontal_pieri (n : ℕ) (μ : YoungDiagram) (k : ℕ) :
         (-1 : ℤ) ^ (shapeExponent ν.val + stripCount μ ν.val) • tableauPolynomial n ν.val
       else 0 := by
   classical
-  letI := degreeFintype (μ.card + k)
+  let := degreeFintype (μ.card + k)
   rw [input_sum, ← output_sum]
   exact Fintype.sum_equiv (aggregateEquiv n μ k) _ _ (pointwise n μ k)
 

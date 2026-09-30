@@ -21,7 +21,7 @@ Exact values below are machine-checked from the existing definitions. -/
 namespace OddMath.Frontier.EKKostkaValuesControls
 open TableauStripSigns EKDualBases EKDualBasesControls
 
-def dg (w : List ℕ) (hw : w.Sorted (· ≥ ·)) : YoungDiagram := YoungDiagram.ofRowLens w hw
+def dg (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) : YoungDiagram := YoungDiagram.ofRowLens w hw.sortedGE
 
 /-- λ=(2,2): directNorth = Σ_j C(λᵀ_j,2) = 2. -/
 theorem directNorth_22 : directNorth (dg [2,2] (by decide)) = 2 := by decide

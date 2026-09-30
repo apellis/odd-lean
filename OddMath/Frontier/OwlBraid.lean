@@ -56,7 +56,7 @@ private theorem distant_ne {i j : Fin (n+1)} (h : Distant i j) :
     i.castSucc ≠ j.castSucc ∧ i.castSucc ≠ j.succ ∧ i.succ ≠ j.castSucc ∧ i.succ ≠ j.succ := by
   unfold Distant at h
   refine ⟨?_, ?_, ?_, ?_⟩ <;> intro e <;> have hv := congrArg Fin.val e <;>
-    simp only [Fin.coe_castSucc, Fin.val_succ] at hv <;> omega
+    simp only [Fin.val_castSucc, Fin.val_succ] at hv <;> omega
 
 /-- `divided i ∘ s j = -(s j ∘ divided i)` for distant letters: EKL (2.60) with
 disjoint endpoints, on the actual operators. -/
@@ -77,7 +77,7 @@ theorem s_s_distant (i j : Fin (n+1)) (h : Distant i j) (f : SkewPolynomial (n+2
 theorem op_swap (i j : Fin (n+1)) (h : Distant i j) (b c : Bool) (f : SkewPolynomial (n+2)) :
     hybrid [(i,b),(j,c)] f = hybrid [(j,c),(i,b)] f ∨
       hybrid [(i,b),(j,c)] f = -hybrid [(j,c),(i,b)] f := by
-  cases b <;> cases c <;> simp only [hybrid, if_true, if_false, Bool.false_eq_true]
+  cases b <;> cases c <;> simp only [hybrid, ite_true, ite_false, Bool.false_eq_true]
   · left; exact s_s_distant i j h f
   · right; rw [divided_s_distant j i h.symm f, neg_neg]
   · right; exact divided_s_distant i j h f
@@ -110,7 +110,7 @@ theorem omission_reduced_swap (p q : Marked n) (i j : Fin (n+1)) (h : Distant i 
     Reduced (omission (p ++ (j,c)::(i,b)::q)) := by
   rw [omission_append] at hr ⊢
   cases b <;> cases c <;>
-    simp only [omission, if_true, if_false, Bool.false_eq_true] at hr ⊢
+    simp only [omission, ite_true, ite_false, Bool.false_eq_true] at hr ⊢
   · exact reduced_swap _ _ i j h hr
   all_goals exact hr
 
@@ -283,7 +283,7 @@ set_option maxRecDepth 8000
 
 macro "chain_eval" : tactic => `(tactic| (
   simp (config := {decide := true}) only [map_add, map_sub, map_neg, map_mul, divided_mul,
-    s_generator, divided_generator, Equiv.swap_apply_def, neg_neg, if_true, if_false,
+    s_generator, divided_generator, Equiv.swap_apply_def, neg_neg, ite_true, ite_false,
     zero_mul, one_mul, mul_zero, mul_one, neg_zero, add_zero, zero_add, sub_zero, zero_sub,
     divided_one, map_one, map_zero, neg_mul, mul_neg] <;> norm_num))
 
@@ -332,10 +332,10 @@ theorem hybrid_value : hybrid tm (E3 * E2) = (-4 : ℤ) • 1 := by
   rw [hybrid_unfold, sig_mul]
   generalize sig E3 = A at a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 ⊢
   generalize sig E2 = B at b0 b1 b2 b3 b4 b5 b6 b7 b8 ⊢
-  simp only [divided_mul, map_add, map_mul, map_zero, zero_mul, zero_add, add_zero, mul_zero,
-    a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, b0, b1, b2, b3, b4, b5, b6, b7, b8,
+  simp only [divided_mul, map_add, map_mul, zero_mul, zero_add, add_zero, mul_zero,
+    a0, a1, a2, a3, a6, a8, b0, b1, b3, b5, b6, b7, b8,
     map_zsmul, divided_one, map_one, smul_zero]
-  simp only [smul_mul_smul_comm, one_mul, map_zsmul, map_one, smul_smul]
+  simp only [smul_mul_smul_comm, one_mul]
   norm_num
 
 theorem neg_four_ne_zero : ((-4 : ℤ) • (1 : SkewPolynomial 5)) ≠ 0 := by

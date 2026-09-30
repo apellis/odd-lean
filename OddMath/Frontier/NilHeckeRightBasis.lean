@@ -38,7 +38,7 @@ theorem reverseFree_relator (r : Free n) (h : Relator n r) : reverseFree n r = 0
   | mixedRight i =>
       simp [NilHeckeBasis.crossing_dot_left]
   | mixedLeft i =>
-      simp [NilHeckeBasis.crossing_dot_right, add_comm]
+      simp [NilHeckeBasis.crossing_dot_right]
   | spectator i j hl hr =>
       simp [NilHeckeBasis.crossing_dot_other i j hl hr]
 
@@ -210,11 +210,11 @@ theorem rightBasisElement_linearIndependent (n : ℕ) :
   exact hε i
 
 /-- The actual integral RIGHT PBW basis (EKL (2.39)). -/
-def basis (n : ℕ) : Basis ((Fin (n+2) → ℕ) × Perm n) ℤ (Presented n) :=
-  Basis.mk (rightBasisElement_linearIndependent n) (by rw [← rightSpan_eq_top n]; exact le_rfl)
+def basis (n : ℕ) : Module.Basis ((Fin (n+2) → ℕ) × Perm n) ℤ (Presented n) :=
+  Module.Basis.mk (rightBasisElement_linearIndependent n) (by rw [← rightSpan_eq_top n]; exact le_rfl)
 
 @[simp] theorem basis_apply (i : (Fin (n+2) → ℕ) × Perm n) :
-    basis n i = rightBasisElement i := Basis.mk_apply _ _ _
+    basis n i = rightBasisElement i := Module.Basis.mk_apply _ _ _
 
 theorem expansion_unique (c d : ((Fin (n+2) → ℕ) × Perm n) →₀ ℤ)
     (h : c.sum (fun i a => a • rightBasisElement i) =

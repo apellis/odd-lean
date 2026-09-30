@@ -89,7 +89,7 @@ theorem last_le_head (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
 -- Raw-row induction: row sorting propagates the bumped-letter inequality;
 -- column geometry is used only when the second route terminates first.
 theorem run_pair_le (n : ℕ) (rs : List (List (Fin n))) (a b : Fin n)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD []))
     (hab : a ≤ b) :
     let q1 := runRows n rs a
@@ -108,7 +108,7 @@ theorem run_pair_le (n : ℕ) (rs : List (List (Fin n))) (a b : Fin n)
     simp
   | cons w ws ih =>
     have hw := hs w (by simp)
-    have hst : ∀ z ∈ ws, z.Sorted (· ≤ ·) :=
+    have hst : ∀ z ∈ ws, z.Pairwise (· ≤ ·) :=
       fun z hz => hs z (List.mem_cons_of_mem w hz)
     have hct : ∀ r : ℕ, ColumnBelow (ws[r]?.getD []) (ws[r+1]?.getD []) := by
       intro r
@@ -130,7 +130,7 @@ theorem run_pair_le (n : ℕ) (rs : List (List (Fin n))) (a b : Fin n)
       simp
     | bump u c v hsplit hu hac =>
       have hv : ∀ x ∈ v, c ≤ x :=
-        (List.sorted_cons.mp (List.pairwise_append.mp (hsplit ▸ hw)).2.1).1
+        (List.pairwise_cons.mp (List.pairwise_append.mp (hsplit ▸ hw)).2.1).1
       have hm := modified_step n u v a b c hu hab hv
       have hlast := le_trans (last_le_head n ws c hct)
         (next_head_le n u v a c ws (hsplit ▸ hh) hu hac)

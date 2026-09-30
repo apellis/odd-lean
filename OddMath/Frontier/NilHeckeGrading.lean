@@ -120,7 +120,7 @@ theorem crossing_mul_mixed (i : Fin (n+1)) {d : ℤ} {x : Presented n}
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨⟨v,w⟩, hvw, rfl⟩ := hx
-    simpa only [show 2*(v.length : ℤ)-2*(w.length : ℤ)=d from hvw] using crossing_mixed i v w
+    simpa only [SetLike.mem_coe, show 2*(v.length : ℤ)-2*(w.length : ℤ)=d from hvw] using crossing_mixed i v w
   | zero => simp
   | add x y _ _ hx hy => simpa only [mul_add] using (mixedPiece n (-2+d)).add_mem hx hy
   | smul r x _ hx => simpa only [mul_smul_comm] using (mixedPiece n (-2+d)).smul_mem r hx
@@ -167,7 +167,7 @@ theorem degreePiece_le_leftPiece (d : ℤ) : degreePiece n d ≤ leftPiece n d :
   have hm : mixedPiece n d ≤ leftPiece n d := by
     apply Submodule.span_le.mpr
     rintro _ ⟨⟨v,w⟩,h,rfl⟩
-    simpa only [show 2*(v.length : ℤ)-2*(w.length : ℤ)=d from h] using mixed_mem_left v w
+    simpa only [SetLike.mem_coe, show 2*(v.length : ℤ)-2*(w.length : ℤ)=d from h] using mixed_mem_left v w
   apply Submodule.span_le.mpr
   rintro _ ⟨w,h,rfl⟩
   exact hm (by simpa only [show wordDegree w = d from h] using word_mem_mixed w)
@@ -178,6 +178,7 @@ theorem dotWord_mem (v : List (Fin (n+2))) :
   | nil => exact unit_mem
   | cons j v ih =>
     have h := degreePiece_mul (dot_mem j) ih
+    simp only [dotWord, List.map_cons, List.prod_cons] at *
     convert h using 1
     congr 1
     simp only [List.length_cons, Nat.cast_add, Nat.cast_one]
@@ -188,6 +189,7 @@ theorem product_mem (w : Word n) : product w ∈ degreePiece n (-2*(w.length : �
   | nil => exact unit_mem
   | cons i w ih =>
     have h := degreePiece_mul (crossing_mem i) ih
+    simp only [product] at *
     convert h using 1
     congr 1
     simp only [List.length_cons, Nat.cast_add, Nat.cast_one]
@@ -202,7 +204,7 @@ theorem dotMonomial_mem (A : Fin (n+2) → ℕ) :
 
 theorem dividedElement_mem (w : Perm n) :
     dividedElement w ∈ degreePiece n (-2*(length w : ℤ)) := by
-  simpa only [chosenWord_length] using product_mem (chosenWord w)
+  simpa only [dividedElement, chosenWord_length] using product_mem (chosenWord w)
 
 theorem basisElement_mem (i : Index n) : basisElement i ∈ degreePiece n (weight i) := by
   simpa only [weight, basisElement, sub_eq_add_neg, neg_mul] using
@@ -212,7 +214,7 @@ theorem degreePiece_eq_leftPiece (n : ℕ) (d : ℤ) : degreePiece n d = leftPie
   apply le_antisymm (degreePiece_le_leftPiece d)
   apply Submodule.span_le.mpr
   rintro _ ⟨i,rfl⟩
-  simpa only [i.property] using basisElement_mem i.val
+  simpa only [SetLike.mem_coe, i.property] using basisElement_mem i.val
 
 def rightPiece (n : ℕ) (d : ℤ) : Submodule ℤ (Presented n) :=
   Submodule.span ℤ (Set.range (fun i : DegreeIndex n d => NilHeckeRightBasis.rightBasisElement i.val))
@@ -271,21 +273,21 @@ theorem degreePiece_eq_rightPiece (n : ℕ) (d : ℤ) : degreePiece n d = rightP
     exact hm
 
 /-- Literal restrictions of the integral bases to the actual source degree piece. -/
-def degreeLeftBasis (n : ℕ) (d : ℤ) : Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
-  (Basis.span ((basisElement_linearIndependent n).comp Subtype.val Subtype.val_injective)).map
+def degreeLeftBasis (n : ℕ) (d : ℤ) : Module.Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
+  (Module.Basis.span ((basisElement_linearIndependent n).comp Subtype.val Subtype.val_injective)).map
     (LinearEquiv.ofEq _ _ (degreePiece_eq_leftPiece n d).symm)
-def degreeRightBasis (n : ℕ) (d : ℤ) : Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
-  (Basis.span ((NilHeckeRightBasis.rightBasisElement_linearIndependent n).comp
+def degreeRightBasis (n : ℕ) (d : ℤ) : Module.Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
+  (Module.Basis.span ((NilHeckeRightBasis.rightBasisElement_linearIndependent n).comp
     Subtype.val Subtype.val_injective)).map
     (LinearEquiv.ofEq _ _ (degreePiece_eq_rightPiece n d).symm)
 
 @[simp] theorem degreeLeftBasis_apply (d : ℤ) (i : DegreeIndex n d) :
     (degreeLeftBasis n d i : Presented n) = basisElement i.val := by
-  simp only [degreeLeftBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeLeftBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   rfl
 @[simp] theorem degreeRightBasis_apply (d : ℤ) (i : DegreeIndex n d) :
     (degreeRightBasis n d i : Presented n) = NilHeckeRightBasis.rightBasisElement i.val := by
-  simp only [degreeRightBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeRightBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   rfl
 
 namespace ONC
@@ -328,7 +330,7 @@ theorem degreePiece_mul {a b : ℤ} {x y : Q n}
       refine ⟨u++v,?_,rfl⟩
       change -2*(u.length : ℤ)=a at hu
       change -2*(v.length : ℤ)=b at hv
-      simp only [Set.mem_setOf_eq, List.length_append, Nat.cast_add]
+      simp only [Set.mem_ofPred_eq, List.length_append, Nat.cast_add]
       omega
     | zero => simp
     | add x y _ _ hx hy => simpa only [mul_add] using (degreePiece n (a+b)).add_mem hx hy
@@ -338,7 +340,7 @@ theorem degreePiece_mul {a b : ℤ} {x y : Q n}
   | smul r x _ hx => simpa only [smul_mul_assoc] using (degreePiece n (a+b)).smul_mem r hx
 
 theorem divided_mem (w : Perm n) : NilCoxeterPresentation.dividedElement w ∈ degreePiece n (weight w) := by
-  simpa only [chosenWord_length, weight] using word_mem (chosenWord w)
+  simpa only [NilCoxeterPresentation.dividedElement, NilCoxeterPresentation.product, chosenWord_length, weight] using word_mem (chosenWord w)
 
 theorem degreePiece_eq_basisPiece (n : ℕ) (d : ℤ) : degreePiece n d = basisPiece n d := by
   apply le_antisymm
@@ -359,15 +361,15 @@ theorem degreePiece_eq_basisPiece (n : ℕ) (d : ℤ) : degreePiece n d = basisP
       exact Submodule.zero_mem _
   · apply Submodule.span_le.mpr
     rintro _ ⟨w,rfl⟩
-    simpa only [w.property] using divided_mem w.val
+    simpa only [SetLike.mem_coe, w.property] using divided_mem w.val
 
-def degreeBasis (n : ℕ) (d : ℤ) : Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
-  (Basis.span ((NilCoxeterPresentation.dividedElement_linearIndependent n).comp
+def degreeBasis (n : ℕ) (d : ℤ) : Module.Basis (DegreeIndex n d) ℤ (degreePiece n d) :=
+  (Module.Basis.span ((NilCoxeterPresentation.dividedElement_linearIndependent n).comp
     Subtype.val Subtype.val_injective)).map
     (LinearEquiv.ofEq _ _ (degreePiece_eq_basisPiece n d).symm)
 @[simp] theorem degreeBasis_apply (d : ℤ) (w : DegreeIndex n d) :
     (degreeBasis n d w : Q n) = NilCoxeterPresentation.dividedElement w.val := by
-  simp only [degreeBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [degreeBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
   rfl
 instance degree_free (n : ℕ) (d : ℤ) : Module.Free ℤ (degreePiece n d) :=
   Module.Free.of_basis (degreeBasis n d)
@@ -384,7 +386,7 @@ end ONC
 /-- The degree decomposition argument used twice in Proposition 2.11. The carrier
 is the original module, not a replacement direct-sum algebra. -/
 theorem basis_homogeneous_decomposition {I X : Type*} [AddCommGroup X]
-    (b : Basis I ℤ X) (wt : I → ℤ) (piece : ℤ → Submodule ℤ X)
+    (b : Module.Basis I ℤ X) (wt : I → ℤ) (piece : ℤ → Submodule ℤ X)
     (heq : ∀ d, piece d = Submodule.span ℤ (Set.range (fun i : {i // wt i=d} => b i.val)))
     (x : X) : ∃! f : ℤ →₀ X, (∀ d, f d ∈ piece d) ∧ f.sum (fun _ y => y) = x := by
   classical
@@ -414,13 +416,13 @@ theorem basis_homogeneous_decomposition {I X : Type*} [AddCommGroup X]
     | zero => simp
     | add c e hc he => simpa using (piece d).add_mem hc he
     | single i r =>
-      simp only [map_smul, Basis.repr_symm_apply, Finsupp.linearCombination_single]
+      simp only [map_smul, Module.Basis.repr_symm_apply, Finsupp.linearCombination_single]
       rw [hdec, Finsupp.smul_apply]
       apply Submodule.smul_mem
       by_cases h : wt i = d
       · rw [h, Finsupp.single_eq_same, heq]
         exact Submodule.subset_span ⟨⟨i,h⟩,rfl⟩
-      · rw [Finsupp.single_eq_of_ne h]
+      · rw [Finsupp.single_eq_of_ne (Ne.symm h)]
         exact Submodule.zero_mem _
   have hdr (f : ℤ →₀ X) (hf : ∀ d, f d ∈ piece d) : dec (f.sum (fun _ y => y)) = f := by
     simp only [Finsupp.sum, map_sum]
@@ -438,13 +440,13 @@ theorem unique_homogeneous_decomposition (x : Presented n) :
     ∃! f : ℤ →₀ Presented n, (∀ d, f d ∈ degreePiece n d) ∧ f.sum (fun _ y => y)=x := by
   apply basis_homogeneous_decomposition (NilHeckeBasis.basis n) weight (degreePiece n) _ x
   intro d
-  simpa only [NilHeckeBasis.basis_apply] using degreePiece_eq_leftPiece n d
+  simpa only [NilHeckeBasis.basis_apply, leftPiece] using degreePiece_eq_leftPiece n d
 
 theorem ONC.unique_homogeneous_decomposition (x : ONC.Q n) :
     ∃! f : ℤ →₀ ONC.Q n, (∀ d, f d ∈ ONC.degreePiece n d) ∧ f.sum (fun _ y => y)=x := by
   apply basis_homogeneous_decomposition (NilCoxeterPresentation.basis n) ONC.weight (ONC.degreePiece n) _ x
   intro d
-  simpa only [NilCoxeterPresentation.basis_apply] using ONC.degreePiece_eq_basisPiece n d
+  simpa only [NilCoxeterPresentation.basis_apply, ONC.basisPiece] using ONC.degreePiece_eq_basisPiece n d
 
 /-- Exponent fiber appearing in the literal coefficient of the Laurent rational rank. -/
 abbrev ExponentFiber (n : ℕ) (d : ℤ) (w : Perm n) :=
@@ -470,13 +472,13 @@ instance degreeIndex_finite (n : ℕ) (d : ℤ) : Finite (DegreeIndex n d) :=
 instance degree_free (n : ℕ) (d : ℤ) : Module.Free ℤ (degreePiece n d) :=
   Module.Free.of_basis (degreeLeftBasis n d)
 instance degree_finite (n : ℕ) (d : ℤ) : Module.Finite ℤ (degreePiece n d) := by
-  letI := Fintype.ofFinite (DegreeIndex n d)
+  let := Fintype.ofFinite (DegreeIndex n d)
   exact Module.Finite.of_basis (degreeLeftBasis n d)
 
 /-- Coefficient identity at EVERY integer d, not merely a basis-cardinality statement. -/
 theorem degree_finrank_coefficient (n : ℕ) (d : ℤ) :
     Module.finrank ℤ (degreePiece n d) = ∑ w : Perm n, Nat.card (ExponentFiber n d w) := by
-  letI := Fintype.ofFinite (DegreeIndex n d)
+  let := Fintype.ofFinite (DegreeIndex n d)
   rw [Module.finrank_eq_card_basis (degreeLeftBasis n d), ← Nat.card_eq_fintype_card,
     Nat.card_congr (degreeIndexEquiv n d), Nat.card_sigma]
 
@@ -509,14 +511,14 @@ theorem exponentFiber_card (n : ℕ) (d : ℤ) (w : Perm n) :
       if admissible d w then (((d+2*(length w : ℤ))/2).toNat+n+1).choose (n+1) else 0 := by
   classical
   by_cases h : admissible d w
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     have he : ExponentFiber n d w ≃
         {A : Fin (n+2) → ℕ // ∑ j, A j=((d+2*(length w : ℤ))/2).toNat} :=
       Equiv.subtypeEquivRight (fun A => by
         rcases h with ⟨hpos,hmod⟩
         omega)
     rw [Nat.card_congr he, exponent_sum_card]
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     have hempty : IsEmpty (ExponentFiber n d w) := ⟨fun A => by
       have ha := A.property
       apply h
@@ -586,13 +588,13 @@ theorem count_below (m r : ℕ) (hr : r ≤ m) :
   | succ m ih =>
     rw [Fin.sum_univ_castSucc]
     by_cases h : r ≤ m
-    · simp only [Fin.coe_castSucc, Fin.val_last, if_neg (by omega : ¬m<r), add_zero]
+    · simp only [Fin.val_castSucc, Fin.val_last, ite_eq_right (by omega : ¬m<r), add_zero]
       exact ih h
     · have he : r=m+1 := by omega
       subst r
-      simp only [Fin.coe_castSucc, Fin.val_last, Nat.lt_succ_self, if_true]
+      simp only [Fin.val_castSucc, Fin.val_last, Nat.lt_succ_self, ite_true]
       have hall : (∑ i : Fin m, if i.val < m+1 then 1 else 0 : ℕ)=m := by
-        simp only [show ∀ i : Fin m, i.val < m+1 from fun i => by omega, if_true,
+        simp only [show ∀ i : Fin m, i.val < m+1 from fun i => by omega, ite_true,
           Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
       rw [hall]
 
@@ -603,7 +605,7 @@ theorem inversions_insert {m : ℕ} (p : Fin (m+1)) (w : Equiv.Perm (Fin m)) :
   have hfirst : (∑ b : Fin (m+1), if (0 : Fin (m+1)) < b ∧ insertPerm p w b < insertPerm p w 0
       then 1 else 0 : ℕ)=p.val := by
     rw [Fin.sum_univ_succ]
-    simp only [lt_self_iff_false, false_and, if_false, Fin.succ_pos, true_and,
+    simp only [lt_self_iff_false, false_and, ite_false, Fin.succ_pos, true_and,
       insertPerm_succ, insertPerm_zero, Fin.succAbove_lt_iff_castSucc_lt, zero_add]
     change (∑ b : Fin m, if (w b).val < p.val then 1 else 0 : ℕ)=p.val
     rw [Equiv.sum_comp w (fun i => if i.val < p.val then (1 : ℕ) else 0)]
@@ -613,7 +615,7 @@ theorem inversions_insert {m : ℕ} (p : Fin (m+1)) (w : Equiv.Perm (Fin m)) :
   apply Finset.sum_congr rfl
   intro a _
   rw [Fin.sum_univ_succ]
-  simp only [Fin.not_lt_zero, false_and, if_false, zero_add, Fin.succ_lt_succ_iff,
+  simp only [Fin.not_lt_zero, false_and, ite_false, zero_add, Fin.succ_lt_succ_iff,
     insertPerm_succ, (Fin.strictMono_succAbove p).lt_iff_lt]
 
 /-- Inversion generating polynomial; specialize R=ℤ[t] for a literal polynomial identity. -/
@@ -643,7 +645,8 @@ theorem ONC.inversion_generating_polynomial (n : ℕ) :
 theorem ONC.q_rank_numerator {K : Type*} [Field K] (q : K) (n : ℕ) :
     (∑ w : Perm n, (q⁻¹)^(2*length w)) =
       ∏ j ∈ Finset.range (n+2), ∑ k ∈ Finset.range (j+1), (q⁻¹)^(2*k) := by
-  simpa only [pow_mul] using inversion_generating ((q⁻¹)^2) (n+2)
+  simp only [pow_mul]
+  exact inversion_generating ((q⁻¹)^2) (n+2)
 
 /-- No odd integer degree exists: paper parity follows from the actual word grading. -/
 theorem degreePiece_odd (n : ℕ) (d : ℤ) (hd : d % 2 ≠ 0) : degreePiece n d = ⊥ := by

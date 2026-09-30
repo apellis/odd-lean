@@ -34,7 +34,7 @@ theorem revPerm_zero (N : ℕ) : revPerm N 0 (by omega) = 1 := by
 theorem revPerm_full (N : ℕ) : revPerm N N le_rfl = LongestElementary.longest N := by
   ext i
   change (if i.val < N then N-1-i.val else i.val) = N-(i.val+1)
-  rw [if_pos i.isLt]
+  rw [ite_eq_left i.isLt]
   omega
 
 /-- The ascending simple-transposition block as an actual permutation. -/
@@ -59,11 +59,11 @@ theorem rot_succ (n k : ℕ) (hk : k+2 ≤ n+2) :
   apply Fin.ext
   by_cases h₀ : i = (⟨k, by omega⟩ : Fin (n+2))
   · subst i
-    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_left, rot_val, Fin.val_mk]
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_left, rot_val]
     split_ifs <;> omega
   by_cases h₁ : i = (⟨k+1, by omega⟩ : Fin (n+2))
   · subst i
-    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_right, rot_val, Fin.val_mk]
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_right, rot_val]
     split_ifs <;> omega
   have hv₀ : i.val ≠ k := fun h => h₀ (Fin.ext h)
   have hv₁ : i.val ≠ k+1 := fun h => h₁ (Fin.ext h)
@@ -82,7 +82,7 @@ theorem pair_covariance {n : ℕ} (σ : Equiv.Perm (Fin (n+2)))
     have hp : Equiv.swap a b * σ = σ * Equiv.swap (σ⁻¹ a) (σ⁻¹ b) := by
       apply Equiv.ext
       intro i
-      simpa only [Equiv.Perm.mul_apply, Equiv.Perm.apply_inv_self] using
+      simpa only [Equiv.Perm.mul_apply, Equiv.Perm.inv_def, Equiv.apply_symm_apply] using
         (σ.injective.map_swap (σ⁻¹ a) (σ⁻¹ b) i).symm
     simpa only [NonadjacentDivided.s, action_mul] using
       congrArg (fun p => skewAction p g) hp
@@ -92,8 +92,8 @@ theorem pair_covariance {n : ℕ} (σ : Equiv.Perm (Fin (n+2)))
   | hgen j =>
       rw [action_generator, map_smul, NonadjacentDivided.divided_generator,
         NonadjacentDivided.divided_generator]
-      have ha : σ j = a ↔ j = σ⁻¹ a := σ.apply_eq_iff_eq_symm_apply
-      have hb : σ j = b ↔ j = σ⁻¹ b := σ.apply_eq_iff_eq_symm_apply
+      have ha : σ j = a ↔ j = σ⁻¹ a := σ.eq_symm_apply.symm
+      have hb : σ j = b ↔ j = σ⁻¹ b := σ.eq_symm_apply.symm
       simp only [ha, hb]
       split_ifs <;> simp
   | hadd f g hf hg => simp only [map_add, hf, hg, smul_add]
@@ -111,14 +111,14 @@ theorem sweep_pair_zero (n p k : ℕ) (hb : p+k ≤ n+1)
   induction k generalizing p f with
   | zero =>
       change f = 0 at hf
-      simp only [sweep, LinearMap.id_apply, hf, map_zero]
+      simp only [sweep, hf, map_zero]
   | succ k ih =>
       let i : Fin (n+1) := ⟨p, by omega⟩
       obtain ⟨h₁,h₂,h₃,h₄⟩ := hd i (by rfl) (by dsimp [i]; omega)
       have hc (g : SkewPolynomial (n+2)) :
           cross n p (NonadjacentDivided.dividedPair u v huv g) =
             -NonadjacentDivided.dividedPair u v huv (cross n p g) := by
-        simp only [cross, dif_pos (show p < n+1 by omega)]
+        simp only [cross, dite_eq_left (show p < n+1 by omega)]
         rw [← NonadjacentDivided.adjacent i]
         exact NonadjacentDivided.anticommutation _ _ _ _ _ huv h₁ h₂ h₃ h₄ g
       change sweep n (p+1) k (cross n p (NonadjacentDivided.dividedPair u v huv f)) = 0
@@ -132,7 +132,7 @@ Consumer: the error tails in the fixed longest-word Leibniz expansion. -/
 theorem reverse_interval_zero (n p k : ℕ) (hv : p+k+1 < n+2)
     (f : SkewPolynomial (n+2)) (hf : f ∈ OddSymmetricKernel.kernelSubring n) :
     sweep n p k (NonadjacentDivided.dividedPair
-      ⟨p, by omega⟩ ⟨p+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; simp only [Fin.val_mk] at this; omega) f) = 0 := by
+      ⟨p, by omega⟩ ⟨p+k+1, hv⟩ (by intro h; have := congrArg Fin.val h; simp only [] at this; omega) f) = 0 := by
   induction k generalizing p with
   | zero =>
       change NonadjacentDivided.dividedPair
@@ -148,12 +148,12 @@ theorem reverse_interval_zero (n p k : ℕ) (hv : p+k+1 < n+2)
       have hbc : b ≠ c := by intro h; have := congrArg Fin.val h; dsimp [b,c] at this; omega
       have ha : NonadjacentDivided.dividedPair b a hab.symm = cross n p := by
         rw [NonadjacentDivided.symmetric]
-        simp only [cross, dif_pos (show p < n+1 by omega)]
+        simp only [cross, dite_eq_left (show p < n+1 by omega)]
         exact NonadjacentDivided.adjacent ⟨p, by omega⟩
       have ht := IntervalAnnihilation.triangle c b a hbc.symm hac.symm hab.symm f
       rw [ha, NonadjacentDivided.symmetric c a, NonadjacentDivided.symmetric c b] at ht
       have hp : cross n p f = 0 := by
-        simp only [cross, dif_pos (show p < n+1 by omega)]
+        simp only [cross, dite_eq_left (show p < n+1 by omega)]
         exact hf _
       rw [hp, map_zero, add_zero] at ht
       change sweep n (p+1) k (cross n p (NonadjacentDivided.dividedPair a c hac f)) = 0
@@ -164,7 +164,7 @@ theorem reverse_interval_zero (n p k : ℕ) (hv : p+k+1 < n+2)
         dsimp [a,c]
         repeat' constructor
         all_goals intro h; have := congrArg Fin.val h
-        all_goals simp only [Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at this
+        all_goals simp only [Fin.val_castSucc, Fin.val_succ] at this
         all_goals omega
       · simpa only [b, c, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using ih (p+1) (by omega)
 
@@ -255,7 +255,7 @@ theorem cross_covariance (n i u : ℕ) (hi : i < n+1) (hu : u < n+1)
     (h₁ : σ⁻¹ (⟨i+1, by omega⟩ : Fin (n+2)) = ⟨u, by omega⟩)
     (f : SkewPolynomial (n+2)) :
     cross n i (skewAction σ f) = epsilon σ • skewAction σ (cross n u f) := by
-  simp only [cross, dif_pos hi, dif_pos hu]
+  simp only [cross, dite_eq_left hi, dite_eq_left hu]
   rw [← NonadjacentDivided.adjacent (⟨i,hi⟩ : Fin (n+1)), pair_covariance]
   change epsilon σ • skewAction σ
     (NonadjacentDivided.dividedPair (σ⁻¹ ⟨i, by omega⟩) (σ⁻¹ ⟨i+1, by omega⟩) _ f) = _
@@ -292,19 +292,19 @@ theorem tail_zero (n k j : ℕ) (hk : k+1 ≤ n+2) (hj : j < k)
       σ⁻¹ (⟨i, by omega⟩ : Fin (n+2)) = ⟨k-1-i, by omega⟩ := by
     apply Fin.ext
     simp only [σ, mul_inv_rev, inv_inv, revPerm_inv, Equiv.Perm.mul_apply,
-      revPerm_val, rot_val, Fin.val_mk]
+      revPerm_val, rot_val]
     split_ifs <;> omega
   have hedge : σ⁻¹ (⟨j+1, by omega⟩ : Fin (n+2)) = ⟨k, by omega⟩ := by
     apply Fin.ext
     simp only [σ, mul_inv_rev, inv_inv, revPerm_inv, Equiv.Perm.mul_apply,
-      revPerm_val, rot_val, Fin.val_mk]
+      revPerm_val, rot_val]
     split_ifs <;> omega
   let u : Fin (n+2) := ⟨k-1-j, by omega⟩
   let v : Fin (n+2) := ⟨k, by omega⟩
   have huv : u ≠ v := by intro h; have := congrArg Fin.val h; dsimp [u,v] at this; omega
   have hc : cross n j (skewAction σ f) =
       epsilon σ • skewAction σ (NonadjacentDivided.dividedPair u v huv f) := by
-    simp only [cross, dif_pos (show j < n+1 by omega)]
+    simp only [cross, dite_eq_left (show j < n+1 by omega)]
     rw [← NonadjacentDivided.adjacent (⟨j, by omega⟩ : Fin (n+1)), pair_covariance]
     change epsilon σ • skewAction σ
       (NonadjacentDivided.dividedPair (σ⁻¹ ⟨j, by omega⟩) (σ⁻¹ ⟨j+1, by omega⟩) _ f) = _

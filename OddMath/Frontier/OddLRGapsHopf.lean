@@ -46,7 +46,7 @@ def superFlip : Q ⊗[ℤ] Q →ₗ[ℤ] Q ⊗[ℤ] Q :=
 
 theorem superFlip_basis (μ ν : YoungDiagram) :
     superFlip (hBasis μ ⊗ₜ[ℤ] hBasis ν) = (-1 : ℤ) ^ (μ.card * ν.card) • (hBasis ν ⊗ₜ[ℤ] hBasis μ) := by
-  rw [← Basis.tensorProduct_apply, superFlip, Basis.constr_basis]
+  rw [← Module.Basis.tensorProduct_apply, superFlip, Module.Basis.constr_basis]
 
 theorem word_eq_hBasis {d : ℕ} (μ : DegreeShapes.DegreeShape d) :
     EKPartitionSpanning.word false μ.val.rowLens = hBasis μ.val := by
@@ -83,7 +83,7 @@ theorem coord_one : hBasis.repr (1 : Q) shape1 = 0 :=
   coord1_of_degree EKIntegralBases.unit_mem_degree_zero (by norm_num)
 
 theorem coord_h1 : hBasis.repr (h 1) shape1 = 1 := by
-  rw [← hBasis_shape1, Basis.repr_self, Finsupp.single_eq_same]
+  rw [← hBasis_shape1, Module.Basis.repr_self, Finsupp.single_eq_same]
 
 theorem coord_h2 : hBasis.repr (h 2) shape1 = 0 :=
   coord1_of_degree (h_mem_degree 2) (by norm_num)

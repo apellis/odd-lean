@@ -31,7 +31,7 @@ noncomputable section
 open LaurentPolynomial Matrix
 
 namespace OddMath.Frontier.OddCyclotomicAction
-open GradedK0 OddCategorification Cyclotomic OddBialgebra
+open GradedK0 OddCategorification OddMath.Frontier.Cyclotomic OddBialgebra
 open OddMath.SkewPolynomial (SkewPolynomial generator monomial)
 open NilHeckeAction NilCoxeterWords NilHeckeEndomorphism OddSchubertAction
 open PlacticEvaluation FiniteCompleteElementary
@@ -76,7 +76,7 @@ def actPre (m N : ℕ) : Presented m →+* Module.End ℤ (VMod m N) where
   map_mul' T U := by
     apply Submodule.linearMap_qext
     ext f
-    simp [action_mul_apply]
+    simp
   map_zero' := by
     apply Submodule.linearMap_qext
     ext f
@@ -184,12 +184,12 @@ theorem one_eq_smul_schubert (m : ℕ) :
 
 theorem action_Etil_one (m : ℕ) : action m (Etil m) 1 = 1 := by
   obtain ⟨c, _, h1⟩ := one_eq_smul_schubert m
-  rw [h1, map_zsmul, action_Etil_schubert, if_pos rfl]
+  rw [h1, map_zsmul, action_Etil_schubert, ite_eq_left rfl]
 
 theorem Etil_mul_self (m : ℕ) : Etil m * Etil m = Etil m := ext_schubert fun w => by
   rw [action_mul_apply, action_Etil_schubert]
   split_ifs
-  · rw [action_Etil_schubert, if_pos rfl]
+  · rw [action_Etil_schubert, ite_eq_left rfl]
   · rw [map_zero]
 
 theorem Etil_mem (m : ℕ) : Etil m ∈ onhGrading m 0 := ofCols_mem fun w => by
@@ -360,7 +360,7 @@ theorem revComplete_expand (k : ℕ) :
 
 theorem revAlphabet_mem_range (i : Fin (m+1)) : revAlphabet m (m+1) i ∈ (pl m).range := by
   have hi : m + 1 - 1 - i.val < m + 1 := by omega
-  rw [revAlphabet, dif_pos (by omega : m + 1 - 1 - i.val < m + 2)]
+  rw [revAlphabet, dite_eq_left (by omega : m + 1 - 1 - i.val < m + 2)]
   refine ⟨tildeGenerator ⟨m + 1 - 1 - i.val, hi⟩, ?_⟩
   rw [tildeGenerator, tildeGenerator, map_zsmul, pl_generator]
   rfl
@@ -415,7 +415,7 @@ theorem pl_mul_xl_pow_mem {N : ℕ} (M : ℕ) (f : SkewPolynomial (m+1)) :
         rw [Finset.sum_eq_single ⟨M, hM⟩]
         · simp
         · intro k _ hk
-          rw [if_neg (fun e => hk (Fin.ext e)), map_zero, zero_mul]
+          rw [ite_eq_right (fun e => hk (Fin.ext e)), map_zero, zero_mul]
         · intro h
           exact absurd (Finset.mem_univ _) h
       show pl m f * xl m ^ M - ∑ k : Fin (N - (m+1)),

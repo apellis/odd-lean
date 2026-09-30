@@ -73,11 +73,11 @@ theorem dChain_succ' (a k : ℕ) (f : SkewPolynomial (n+2)) :
 theorem dN_eq (t : ℕ) (h : t + 1 < n + 2) :
     (dN t : SkewPolynomial (n+2) →ₗ[ℤ] _) =
       dividedPair ⟨t, by omega⟩ ⟨t+1, h⟩ (fun e => by simp [Fin.ext_iff] at e) := by
-  rw [dN, dif_pos h]
+  rw [dN, dite_eq_left h]
 
 theorem sN_eq (t : ℕ) (h : t + 1 < n + 2) :
     (sN t : SkewPolynomial (n+2) ≃+* _) = s ⟨t, by omega⟩ ⟨t+1, h⟩ := by
-  rw [sN, dif_pos h]
+  rw [sN, dite_eq_left h]
 
 theorem dN_eq_divided (t : ℕ) (h : t < n + 1) :
     (dN t : SkewPolynomial (n+2) →ₗ[ℤ] _) = AllRankDivided.divided ⟨t, h⟩ := by
@@ -217,15 +217,19 @@ theorem eq_2_63 (U V : Fin (n+2)) (hUV : U ≠ V) (g h : SkewPolynomial (n+2))
         dN_kernel q (by omega) h hh, map_zero, neg_zero, map_zero, smul_zero]
     rw [dChain_mul_right (U.val+1) m (by omega) _ _ hD]
     have hPU : (⟨U.val+1+m, by omega⟩ : Fin (n+2)) ≠ U := fun e => by
-      have := congrArg Fin.val e; simp only [Fin.val_mk] at this; omega
+      have he := congrArg Fin.val e
+      change U.val + 1 + m = U.val at he
+      omega
     have hS : dN (U.val+1+m) (sChain (U.val+1+m+1) r (s U V g)) =
         (-1 : ℤ) ^ r • sChain (U.val+1+m+1) r (-s U V (dividedPair _ U hPU g)) := by
       rw [dN_eq (U.val+1+m) hp, divided_sChain (U.val+1+m) (U.val+1+m+1) r (by omega) (by omega)]
       congr 2
       have hPV : (⟨U.val+1+m, by omega⟩ : Fin (n+2)) ≠ V := fun e => by
-        have := congrArg Fin.val e; simp only [Fin.val_mk] at this; omega
+        have he := congrArg Fin.val e
+        change U.val + 1 + m = V.val at he
+        omega
       rw [dividedPair_congr rfl (show (⟨U.val+1+m+1+r, by omega⟩ : Fin (n+2)) = V from
-        Fin.ext (by simp only [Fin.val_mk]; omega)) _ hPV]
+        Fin.ext (by omega)) _ hPV]
       rw [covariance _ _ _ _ _ hUV]
       have h1 : Equiv.swap U V ⟨U.val+1+m, by omega⟩ = ⟨U.val+1+m, by omega⟩ :=
         Equiv.swap_apply_of_ne_of_ne hPU hPV
@@ -235,10 +239,10 @@ theorem eq_2_63 (U V : Fin (n+2)) (hUV : U ≠ V) (g h : SkewPolynomial (n+2))
       (by omega) (by omega) (dividedPair _ U hPU g)
     have hz : dChain (U.val+1) m (dividedPair _ U hPU g) = 0 := by
       have hi := IntervalAnnihilation.annihilate U ⟨U.val+1+m, by omega⟩
-        (by rw [Fin.lt_def]; simp only [Fin.val_mk]; omega) g hg
+        (by change U.val < U.val + 1 + m; omega) g hg
       simp only [IntervalAnnihilation.interval, LinearMap.comp_apply] at hi
       rw [← dChain_eq_ascending] at hi
-      simp only [Fin.val_mk, show U.val + 1 + m - (U.val + 1) = m by omega] at hi
+      simp only [show U.val + 1 + m - (U.val + 1) = m by omega] at hi
       rw [symmetric]
       exact hi
     rw [map_neg, hε, hz, map_zero, map_zero, smul_zero, neg_zero, smul_zero, zero_mul]
@@ -310,8 +314,8 @@ theorem mul_pow_generator_zero {N : ℕ} (p : SkewPolynomial N) (j : Fin N) (k :
   refine Finset.sum_eq_zero fun u _ => Finset.sum_eq_zero fun v hv => ?_
   have hv' : v = k • OddMath.SkewPolynomial.expSingle j := by
     by_contra hne
-    exact (Finsupp.mem_support_iff.mp hv) (Finsupp.single_eq_of_ne (Ne.symm hne))
-  rw [if_neg]
+    exact (Finsupp.mem_support_iff.mp hv) (Finsupp.single_eq_of_ne hne)
+  rw [ite_eq_right]
   intro he
   have := congrFun he j
   simp [hv', OddMath.SkewPolynomial.expSingle] at this
@@ -402,7 +406,6 @@ theorem eq_2_51 (N : ℕ) (f : SkewPolynomial (N+1)) :
       congr 1
       refine congrArg List.ofFn (funext fun j => ?_)
       simp [ElementaryBranching.prefix_generator]
-    simp only [Function.comp_def] at hP ⊢
     rw [hP]
     obtain ⟨q', hq'⟩ := prefix_mul_pow_last N (e (Fin.last N))
       (List.ofFn fun j : Fin N => generator j ^ e j.castSucc).prod
@@ -522,8 +525,8 @@ theorem longest_mem_E (N : ℕ) (f : SkewPolynomial N) (hf : f ∈ E N) :
     obtain ⟨k, rfl⟩ := hf
     rw [LongestElementary.action_elementary]
     exact (E N).zsmul_mem (Subring.subset_closure ⟨k, rfl⟩) _
-  | zero => simpa using (E N).zero_mem
-  | one => simpa using (E N).one_mem
+  | zero => simp
+  | one => simp
   | add f g _ _ hf hg => simpa only [map_add] using (E N).add_mem hf hg
   | neg f _ hf => simpa only [map_neg] using (E N).neg_mem hf
   | mul f g _ _ hf hg => simpa only [map_mul] using (E N).mul_mem hf hg
@@ -725,8 +728,10 @@ local instance (n : ℕ) (e : ℤ) : Module.Finite ℤ (kernelPiece n e) :=
   Module.Finite.of_injective _ (kernelPieceToDegree_injective n e)
 
 local instance (n : ℕ) (e : ℤ) : Module.Free ℤ (kernelPiece n e) := by
-  haveI : NoZeroSMulDivisors ℤ (kernelPiece n e) :=
-    Function.Injective.noZeroSMulDivisors _ (kernelPieceToDegree_injective n e) (map_zero _)
+  have : Module.Free ℤ (ElementaryBasis.degreePiece n (e.toNat / 2)) :=
+    Module.Free.of_basis (ElementaryBasis.gradedBasis n (e.toNat / 2))
+  have : Module.IsTorsionFree ℤ (kernelPiece n e) :=
+    Function.Injective.moduleIsTorsionFree _ (kernelPieceToDegree_injective n e)
       (fun c x => map_zsmul _ c x)
   exact Module.free_of_finite_type_torsion_free'
 
@@ -758,8 +763,7 @@ def endMatEquiv (n : ℕ) (d : ℤ) : endPiece n d ≃ₗ[ℤ] matPiece n d :=
       exact (matrixEquiv_degree_iff n T d).mp hT
     · intro hM
       refine ⟨(matrixEquiv n).symm M, (matrixEquiv_degree_iff n _ d).mpr ?_, ?_⟩
-      · change matrixDegree d (matrixEquiv n ((matrixEquiv n).symm M))
-        rw [RingEquiv.apply_symm_apply]; exact hM
+      · rw [RingEquiv.apply_symm_apply]; exact hM
       · change matrixEquiv n ((matrixEquiv n).symm M) = M
         rw [RingEquiv.apply_symm_apply])
 

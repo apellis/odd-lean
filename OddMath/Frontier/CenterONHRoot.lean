@@ -204,12 +204,12 @@ theorem pi_generator (m : ℕ) (j : Fin (m+1)) :
   simp [piFree]
 
 theorem pi_tilde_succ (m : ℕ) (j : Fin m) : pi m (tildeGenerator j.succ) = 0 := by
-  rw [tildeGenerator, map_zsmul, pi_generator, if_neg (Fin.succ_ne_zero j), smul_zero]
+  rw [tildeGenerator, map_zsmul, pi_generator, ite_eq_right (Fin.succ_ne_zero j), smul_zero]
 
 theorem pi_elementary_succ (n k : ℕ) :
     pi (n+1) (elementaryPoly (n+2) (k+1)) = if k = 0 then Polynomial.X else 0 := by
   rw [elementaryPoly_eq_strictSum, FiniteWords.strictSum_succ, map_add, map_mul,
-    map_strictSum, map_strictSum, tilde_zero, pi_generator, if_pos rfl]
+    map_strictSum, map_strictSum, tilde_zero, pi_generator, ite_eq_left rfl]
   simp only [pi_tilde_succ, strictSum_zero_family]
   split <;> simp_all
 
@@ -227,9 +227,9 @@ theorem commutator_pow {N : ℕ} (i : Fin N) (z : SkewPolynomial N) (m : ℕ) :
     exact ((Commute.pow_left (show Commute (generator i ^ 2) z from
       square_comm i z) k)).eq
   rcases Nat.even_or_odd' m with ⟨k, rfl | rfl⟩
-  · rw [parityFactor, if_pos (even_two_mul k), zero_mul, pow_mul, hsq, sub_self]
+  · rw [parityFactor, ite_eq_left (even_two_mul k), zero_mul, pow_mul, hsq, sub_self]
   · have hne : ¬ Even (2 * k + 1) := Nat.not_even_iff_odd.mpr (odd_two_mul_add_one k)
-    rw [parityFactor, if_neg hne, Nat.add_sub_cancel, pow_succ, pow_mul, ← mul_assoc,
+    rw [parityFactor, ite_eq_right hne, Nat.add_sub_cancel, pow_succ, pow_mul, ← mul_assoc,
       ← hsq, mul_sub, mul_assoc, mul_assoc]
 
 theorem pi_parityFactor (n m : ℕ) :
@@ -251,9 +251,9 @@ theorem pi_leftFactor (n : ℕ) :
       (elementaryPoly (n+2) (r+1+1) *
         parityFactor (generator (0 : Fin (n+2))) (n + 2 - (r+1+1)))) = 0 := by
     intro r _
-    rw [map_zsmul, map_mul, pi_elementary_succ, if_neg (Nat.succ_ne_zero r), zero_mul, smul_zero]
+    rw [map_zsmul, map_mul, pi_elementary_succ, ite_eq_right (Nat.succ_ne_zero r), zero_mul, smul_zero]
   rw [Finset.sum_eq_zero hrest, zero_add]
-  rw [map_zsmul, map_zsmul, map_mul, map_mul, pi_elementary_succ, if_pos rfl,
+  rw [map_zsmul, map_zsmul, map_mul, map_mul, pi_elementary_succ, ite_eq_left rfl,
     pi_parityFactor, pi_parityFactor]
   have h0 : elementaryPoly (n+2) 0 = 1 := by
     rw [elementaryPoly_eq_strictSum, FiniteWords.strictSum_zero]
@@ -262,11 +262,11 @@ theorem pi_leftFactor (n : ℕ) :
   by_cases hn : Even n
   · have h1 : ¬ Even (n+1) := by simpa [Nat.even_add_one] using hn
     have h2 : Even (n+2) := by simpa [Nat.even_add] using hn
-    rw [if_pos h2, if_neg h1, if_pos hn, Nat.add_sub_cancel, ← pow_succ']
+    rw [ite_eq_left h2, ite_eq_right h1, ite_eq_left hn, Nat.add_sub_cancel, ← pow_succ']
     simp
   · have h1 : Even (n+1) := by simpa [Nat.even_add_one] using hn
     have h2 : ¬ Even (n+2) := by simpa [Nat.even_add] using hn
-    rw [if_neg h2, if_pos h1, if_neg hn]
+    rw [ite_eq_right h2, ite_eq_left h1, ite_eq_right hn]
     simp
 
 theorem leftFactor_ne_zero (n : ℕ) : leftFactor n ≠ 0 := by

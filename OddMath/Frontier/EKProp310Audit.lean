@@ -100,7 +100,7 @@ theorem instances :
 theorem schur_ne_neg (d : ℕ) (hd : d ≤ 4) (lam : DegreeShape d) : schur d lam ≠ -schur d lam := by
   intro h
   have h311 := identity311_le_four d hd lam lam
-  rw [if_pos rfl] at h311
+  rw [ite_eq_left rfl] at h311
   have h2 := congrArg (fun z : degreePiece d => quotientPairing (schur d lam : Q) (z : Q)) h
   simp only [Submodule.coe_neg, map_neg] at h2
   rw [h311] at h2

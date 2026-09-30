@@ -135,7 +135,7 @@ def P6 : List (ℤ × List ℕ) :=
 /-- [EK] p. 25: `p₆ = m₆ = h₁₁₁₁₁₁ + 3h₂₂₁₁ − 3h₃₃ − 6h₄₁₁ + 6h₅₁`, as printed. -/
 theorem p_six : EKCenterPower.p 6 = comb P6 := by
   refine eq_of_pair_hL (p_mem 6) (comb_mem 6 P6 (by decide)) fun l hl => ?_
-  have hshape : ∀ l ∈ partsF 6 6 6, l.Sorted (· ≥ ·) ∧ ∀ x ∈ l, 0 < x := by decide
+  have hshape : ∀ l ∈ partsF 6 6 6, l.Pairwise (· ≥ ·) ∧ ∀ x ∈ l, 0 < x := by decide
   have hval : ∀ l ∈ partsF 6 6 6,
       (P6.map fun t => t.1 * fastH l t.2).sum = if l = [6] then 1 else 0 := by decide +kernel
   rw [pair_hL_comb_fast, hval l hl, pair_hL_p (by decide) l (hshape l hl).1 (hshape l hl).2]

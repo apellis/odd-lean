@@ -147,7 +147,7 @@ theorem Maj.le_eval_one {P M : ℤ[X]} (h : Maj P M) (e : ℕ) : |P.coeff e| ≤
 theorem abs_coeff_det_le {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℤ[X])
     (hM : ∀ i j, NN (M i j)) (e : ℕ) :
     |M.det.coeff e| ≤ ∏ j, ∑ i, (M i j).eval 1 := by
-  rw [Matrix.det_apply', finset_sum_coeff]
+  rw [Matrix.det_apply', finsetSum_coeff]
   refine le_trans (Finset.abs_sum_le_sum_abs _ _) ?_
   have hNN : ∀ σ : Equiv.Perm ι, NN (∏ i, M (σ i) i) :=
     fun σ => NN.prod _ _ (fun i _ => hM _ _)
@@ -198,7 +198,7 @@ theorem eq_zero_of_eval_eq_zero (t : ℤ) (ht : 0 < t) (P : ℤ[X])
       · rw [hP, divX_zero]
       have hpos : 0 < P.natDegree := by
         by_contra hz
-        push_neg at hz
+        push Not at hz
         have : P = C (P.coeff 0) := eq_C_of_natDegree_le_zero hz
         rw [h0, C_0] at this
         exact hP this
@@ -321,7 +321,7 @@ theorem prod_range_eq (N : ℕ) (f : ℕ → ℤ) :
 
 theorem det_ofLL_lower {N : ℕ} {M : List (List ℤ)} (h : lowerOK N M = true) :
     (ofLL N M).det = diagProd N M := by
-  rw [Matrix.det_of_lowerTriangular, diagProd, prod_range_eq]
+  rw [Matrix.det_of_isLowerTriangular, diagProd, prod_range_eq]
   · rfl
   · intro i j hij
     simp only [lowerOK, List.all_eq_true, List.mem_range, Bool.or_eq_true, decide_eq_true_eq,
@@ -331,7 +331,7 @@ theorem det_ofLL_lower {N : ℕ} {M : List (List ℤ)} (h : lowerOK N M = true) 
 
 theorem det_ofLL_upper {N : ℕ} {M : List (List ℤ)} (h : upperOK N M = true) :
     (ofLL N M).det = diagProd N M := by
-  rw [Matrix.det_of_upperTriangular, diagProd, prod_range_eq]
+  rw [Matrix.det_of_isUpperTriangular, diagProd, prod_range_eq]
   · rfl
   · intro i j hij
     simp only [upperOK, List.all_eq_true, List.mem_range, Bool.or_eq_true, decide_eq_true_eq,

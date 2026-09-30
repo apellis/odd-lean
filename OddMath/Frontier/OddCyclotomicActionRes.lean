@@ -24,7 +24,7 @@ noncomputable section
 open LaurentPolynomial Matrix
 
 namespace OddMath.Frontier.OddCyclotomicAction
-open GradedK0 OddCategorification Cyclotomic
+open GradedK0 OddCategorification OddMath.Frontier.Cyclotomic
 
 local notation "L" => LaurentPolynomial ℤ
 
@@ -192,8 +192,8 @@ theorem rho_one [DecidableEq ι] : b.rho 1 = diagonal fun _ => E := by
   ext i j
   rw [rho_apply, mul_one, b.coeff_vec, diagonal_apply]
   rcases eq_or_ne i j with rfl | h
-  · rw [Pi.single_eq_same, if_pos rfl]
-  · rw [Pi.single_eq_of_ne (Ne.symm h), if_neg h]
+  · rw [Pi.single_eq_same, ite_eq_left rfl]
+  · rw [Pi.single_eq_of_ne (Ne.symm h), ite_eq_right h]
 
 /-! #### Gradings -/
 
@@ -209,7 +209,7 @@ theorem dec_map_mul (hA : UniqueDecomposition A) (hB : UniqueDecomposition B)
     ((hA.dec r).mapRange (fun x => φ x * v) (by simp))
   have hg : ∀ t, g t = φ (hA.dec r (t - s)) * v := fun t => by
     have ht : t = addRightEmbedding s (t - s) := by simp
-    rw [ht, Finsupp.embDomain_apply, Finsupp.mapRange_apply]
+    rw [ht, Finsupp.embDomain_apply_self, Finsupp.mapRange_apply]
     simp
   have hdec : hB.dec (φ r * v) = g := by
     refine hB.dec_eq (fun t => ?_) ?_
@@ -246,7 +246,7 @@ theorem coeff_mem (hA : UniqueDecomposition A) (hB : UniqueDecomposition B)
     intro t
     conv_lhs => rw [← b.sum_coeff y]
     rw [show hB.dec (∑ j, φ (c j) * b.vec j) = ∑ j, hB.dec (φ (c j) * b.vec j) from
-      map_sum hB.decHom _ _, Finsupp.finset_sum_apply]
+      map_sum hB.decHom _ _, Finsupp.finsetSum_apply]
     exact Finset.sum_congr rfl fun j _ => dec_map_mul hA hB hφ (hvec j) (c j) t
   -- off degree `d`, all components vanish
   have hzero : ∀ e, e ≠ d - s i → hA.dec (c i) e = 0 := by
@@ -260,7 +260,7 @@ theorem coeff_mem (hA : UniqueDecomposition A) (hB : UniqueDecomposition B)
     exact this.symm
   have hsum := hA.dec_sum (c i)
   rw [Finsupp.sum, Finset.sum_eq_single (d - s i) (fun e _ he => hzero e he)
-    (fun h => Finsupp.not_mem_support_iff.1 h)] at hsum
+    (fun h => Finsupp.notMem_support_iff.1 h)] at hsum
   rw [← hsum]
   exact hA.dec_mem _ _
 
@@ -287,7 +287,8 @@ theorem res_single [DecidableEq ι] [Nonempty ι] (hA : UniqueDecomposition A)
     (hvec : ∀ i, b.vec i ∈ B (s i)) (k : ℤ) :
     b.res hA hB hφ hE s hvec (K0.of (GIdem.single k : GIdem B)) =
       ∑ i, (T (k + s i) : L) • K0.of (gelem hE b.idem 0) := by
-  rw [res, LinearMap.comp_apply, k0MapNU_of, LinearEquiv.coe_coe, K0.morita_of]
+  rw [res, LinearMap.comp_apply, k0MapNU_of (B := B) (C := matGrading A (fun i => -s i))
+    (hρ := fun {_ _} h => b.rho_mem hA hB hφ hE s hvec h), LinearEquiv.coe_coe, K0.morita_of]
   let σ := Fintype.equivFin (Fin 1 × ι)
   set P := GIdem.mapNU b.rho (b.rho_mem hA hB hφ hE s hvec) (GIdem.single k : GIdem B)
   have hPe : ∀ x y : Fin P.n × ι, flat P.e x y = if x.2 = y.2 then E else 0 := by
@@ -315,7 +316,7 @@ theorem res_single [DecidableEq ι] [Nonempty ι] (hA : UniqueDecomposition A)
       obtain rfl : a' = 0 := by omega
       by_cases h : i = j
       · subst h; simp
-      · rw [if_neg h, if_neg]
+      · rw [ite_eq_right h, ite_eq_right]
         intro e
         exact h (congrArg Prod.snd (σ.injective e))
   rw [K0.of_eq h1, of_diag]

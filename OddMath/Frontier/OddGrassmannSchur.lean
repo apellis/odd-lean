@@ -57,8 +57,8 @@ theorem conjecture_5_3 (n : ℕ) (lam : YoungDiagram) :
 /-- In each degree `d`, the odd Schur polynomials `s_λ = π_a(s^H_λ)` with at most `a` rows form a
 ℤ-basis of the degree-`d` piece of OΛ_a (`a = n+2`). -/
 def oddSchurPolynomialBasis (n d : ℕ) :
-    Basis {lam : DegreeShape d // lam.val.colLen 0 ≤ n+2} ℤ (ElementaryBasis.degreePiece n d) :=
-  Basis.mk (v := fun lam => degreeMap n d (schurK d lam.1))
+    Module.Basis {lam : DegreeShape d // lam.val.colLen 0 ≤ n+2} ℤ (ElementaryBasis.degreePiece n d) :=
+  Module.Basis.mk (v := fun lam => degreeMap n d (schurK d lam.1))
     (LinearIndependent.of_comp (ElementaryBasis.degreePiece n d).subtype
       (piN_schurK_degree_linearIndependent (n+2) d))
     (by
@@ -80,7 +80,7 @@ theorem oddSchurPolynomialBasis_apply (n d : ℕ)
     (lam : {lam : DegreeShape d // lam.val.colLen 0 ≤ n+2}) :
     (oddSchurPolynomialBasis n d lam : SkewPolynomial (n+2)) =
       OddSymmetrizer.schur n (OddLREKIdentification.toExponent n lam.1.val) := by
-  rw [oddSchurPolynomialBasis, Basis.mk_apply, degreeMap_coe, ← sK_eq]
+  rw [oddSchurPolynomialBasis, Module.Basis.mk_apply, degreeMap_coe, ← sK_eq]
   exact OddLRThm38.sK_eq_schur n lam.1.val lam.2
 
 /-! ## The odd Schur basis of OΛ -/
@@ -133,9 +133,9 @@ theorem sK_span : ⊤ ≤ Submodule.span ℤ (Set.range sK) := by
   exact h
 
 /-- The odd Schur functions `s^H_λ` form a ℤ-basis of OΛ (EKL p. 46). -/
-def sBasis : Basis YoungDiagram ℤ Q := Basis.mk sK_linearIndependent sK_span
+def sBasis : Module.Basis YoungDiagram ℤ Q := Module.Basis.mk sK_linearIndependent sK_span
 
-@[simp] theorem sBasis_apply (lam : YoungDiagram) : sBasis lam = sK lam := Basis.mk_apply _ _ _
+@[simp] theorem sBasis_apply (lam : YoungDiagram) : sBasis lam = sK lam := Module.Basis.mk_apply _ _ _
 
 /-- The ℤ-span of the `s^H_λ` with `λ` in a set `S` is detected by `s^H`-coordinates. -/
 theorem mem_span_sK_iff (P : YoungDiagram → Prop) (x : Q) :
@@ -143,9 +143,9 @@ theorem mem_span_sK_iff (P : YoungDiagram → Prop) (x : Q) :
       ∀ lam, ¬ P lam → sBasis.repr x lam = 0 := by
   have e : {y | ∃ lam, P lam ∧ y = sK lam} = sBasis '' {lam | P lam} := by
     ext y
-    simp only [Set.mem_setOf_eq, Set.mem_image, sBasis_apply]
+    simp only [Set.mem_ofPred_eq, Set.mem_image, sBasis_apply]
     exact ⟨fun ⟨l, h, e⟩ => ⟨l, h, e.symm⟩, fun ⟨l, h, e⟩ => ⟨l, h, e.symm⟩⟩
-  rw [e, Basis.mem_span_image]
+  rw [e, Module.Basis.mem_span_image]
   constructor
   · intro h lam hl
     by_contra hne
@@ -273,7 +273,7 @@ theorem mem_boxIdeal_iff_repr (a b : ℕ) (x : Q) :
     x ∈ boxIdeal a b ↔ ∀ lam, ¬ Outside a b lam → sBasis.repr x lam = 0 :=
   (mem_boxIdeal_iff a b x).trans (mem_span_sK_iff _ x)
 
-open Cyclotomic in
+open OddMath.Frontier.Cyclotomic in
 /-- OΛ → OΛ_a → OH_{a,N}, `a = n+2`, `N = a+b`. -/
 def toOHQ (n b : ℕ) : Q →+* OH n (n+2+b) := (toOH n (n+2+b)).comp (piA n)
 
@@ -350,13 +350,13 @@ theorem oddSchur_linearIndependent (n b : ℕ) :
   have h2 := (mem_boxIdeal_iff_repr _ _ _).mp ((toOHQ_eq_zero_iff n b _).mp h1) i.1
     (not_outside _ _ i)
   rw [map_sum] at h2
-  simp only [map_zsmul, ← sBasis_apply, Basis.repr_self, Finsupp.coe_finset_sum,
+  simp only [map_zsmul, ← sBasis_apply, Module.Basis.repr_self, Finsupp.coe_finsetSum,
     Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, Finsupp.single_apply, smul_eq_mul,
     mul_ite, _root_.mul_one, MulZeroClass.mul_zero] at h2
   rw [Finset.sum_eq_single i] at h2
   · simpa using h2
   · intro j _ hji
-    rw [if_neg (fun h => hji (Subtype.ext h))]
+    rw [ite_eq_right (fun h => hji (Subtype.ext h))]
   · intro h; exact absurd hi h
 
 theorem oddSchur_span (n b : ℕ) :
@@ -380,12 +380,12 @@ theorem oddSchur_span (n b : ℕ) :
 of the odd Schur functions `s^H_λ` with `λ ⊆ a × (N − a)` form a ℤ-basis of `OH_{a,N}`.
 No freeness of `OH_{a,N}` is assumed: the kernel of OΛ → OH_{a,N} is computed as the ℤ-span of
 the remaining `s^H_λ` (`mem_boxIdeal_iff`). -/
-def proposition_5_4 (n b : ℕ) : Basis (BoxShape (n+2) b) ℤ (Cyclotomic.OH n (n+2+b)) :=
-  Basis.mk (oddSchur_linearIndependent n b) (oddSchur_span n b)
+def proposition_5_4 (n b : ℕ) : Module.Basis (BoxShape (n+2) b) ℤ (Cyclotomic.OH n (n+2+b)) :=
+  Module.Basis.mk (oddSchur_linearIndependent n b) (oddSchur_span n b)
 
 theorem proposition_5_4_apply (n b : ℕ) (lam : BoxShape (n+2) b) :
     proposition_5_4 n b lam = Cyclotomic.toOH n (n+2+b) (piA n (sK lam.1)) :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 /-- The basis vectors are the images of the odd Schur polynomials `s_λ ∈ OΛ_a` (EKL (2.69)),
 which are homogeneous of degree `|λ|`. -/
@@ -432,7 +432,7 @@ def ofRows {a : ℕ} (α : Fin a → ℕ) (hα : Antitone α) : YoungDiagram whe
   isLowerSet := by
     classical
     rintro ⟨i, j⟩ ⟨i', j'⟩ hle hmem
-    simp only [Finset.coe_filter, Finset.mem_product, Finset.mem_range, Set.mem_setOf_eq] at hmem ⊢
+    simp only [Finset.coe_filter, Finset.mem_product, Finset.mem_range, Set.mem_ofPred_eq] at hmem ⊢
     obtain ⟨⟨_, _⟩, h, hj⟩ := hmem
     obtain ⟨hi', hj'⟩ := hle
     simp only at hi' hj'
@@ -468,12 +468,12 @@ def boxEquiv (a b : ℕ) : BoxShape a b ≃ BoxPartitionCount.box a b where
   invFun α := ⟨ofRows α.1 (BoxPartitionCount.mem_box.mp α.2).1, by
     constructor
     · by_contra h
-      push_neg at h
+      push Not at h
       have := (mem_ofRows _ _ a 0).mp (YoungDiagram.mem_iff_lt_colLen.mpr h)
       obtain ⟨h1, _⟩ := this
       omega
     · by_contra h
-      push_neg at h
+      push Not at h
       obtain ⟨h1, h2⟩ := (mem_ofRows _ _ 0 b).mp (YoungDiagram.mem_iff_lt_rowLen.mpr h)
       have := (BoxPartitionCount.mem_box.mp α.2).2 ⟨0, h1⟩
       omega⟩

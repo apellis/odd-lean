@@ -49,9 +49,9 @@ private theorem sum_lt_eq_range (i : Fin (n+2)) :
     ∑ j ∈ Finset.univ.filter (fun j : Fin (n+2) => j < i), (n+1-j.val) =
       ∑ j ∈ Finset.range i.val, (n+1-j) := by
   rw [Finset.sum_filter]
-  simp only [Fin.lt_iff_val_lt_val]
+  simp only [Fin.lt_def]
   rw [Fin.sum_univ_eq_sum_range (fun j => if j < i.val then n+1-j else 0), ← Finset.sum_filter,
-    Finset.range_eq_Ico, Finset.Ico_filter_lt, min_eq_right (by omega)]
+    Finset.range_eq_Ico, Finset.Ico_filter_lt, min_eq_right (by omega), Finset.range_eq_Ico]
 
 theorem crossingCount_delta (α : Fin (n+2) → ℕ) :
     OddMath.crossingCount α (delta n) + ∑ k, α k * (n+2-k.val).choose 2 =

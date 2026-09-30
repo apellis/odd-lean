@@ -23,7 +23,7 @@ noncomputable section
 open LaurentPolynomial Matrix
 
 namespace OddMath.Frontier.OddCyclotomicAction
-open GradedK0 OddCategorification Cyclotomic OddBialgebra QuantumSl2Plus
+open GradedK0 OddCategorification OddMath.Frontier.Cyclotomic OddBialgebra QuantumSl2Plus
 open OddMath.SkewPolynomial (SkewPolynomial generator monomial)
 open NilHeckeAction NilCoxeterWords
 
@@ -82,13 +82,13 @@ theorem nonempty_G (h : n+3 ≤ N) : Nonempty (Perm (n+1) × Fin (N - (n+2))) :=
 
 /-- **Restriction** `K₀(ONH_{a+1}^N) → K₀(ONH_a^N)`, `a = n+2 < N`. -/
 def resG (h : n+3 ≤ N) : K0 (onhCycGrading (n+1) N) →ₗ[L] K0 (onhCycGrading n N) :=
-  haveI := nonempty_G n N h
+  have := nonempty_G n N h
   (relBasisG n N h).res (onhCycDecomposition n N) (onhCycDecomposition (n+1) N) incCyc_mem
     (Ecyc_mem n N) sβ (fun p => betaVec_mem p.1 p.2)
 
-theorem prop_5_2_Ecyc_eq : prop_5_2 n N (Ecyc n N) = stdBasisMatrix 1 1 1 := by
+theorem prop_5_2_Ecyc_eq : prop_5_2 n N (Ecyc n N) = single 1 1 1 := by
   ext v w
-  rw [prop_5_2_Ecyc, stdBasisMatrix, Matrix.of_apply]
+  rw [prop_5_2_Ecyc, single, Matrix.of_apply]
   simp only [eq_comm]
 
 /-- `[ONH_a^N E] = q^{C(a,2)} [E^{(a)}]`. -/
@@ -109,7 +109,7 @@ theorem of_gelem_Ecyc (h : n+2 ≤ N) :
     change j < 1 at hj
     obtain rfl : i = 0 := by omega
     obtain rfl : j = 0 := by omega
-    show stdBasisMatrix (1 : Perm n) 1 (1 : OH n N) =
+    show single (1 : Perm n) 1 (1 : OH n N) =
       ((diagonal fun _ : Fin 1 => Ecyc n N).map (prop_5_2 n N)) 0 0
     rw [Matrix.map_apply, diagonal_apply_eq, prop_5_2_Ecyc_eq]
   rw [K0.of_eq hc, K0.morita_corner, K0.classify_single]
@@ -118,7 +118,7 @@ theorem of_gelem_Ecyc (h : n+2 ≤ N) :
 theorem resG_vCyc (h : n+3 ≤ N) :
     resG n N h (vCyc N (n+3)) =
       (T ((N : ℤ) - 2 * ((n+2 : ℕ) : ℤ) - 1) * qInt (N - (n+2))) • vCyc N (n+2) := by
-  haveI := nonempty_G n N h
+  have := nonempty_G n N h
   have hB := cyc_single_eq N (n+1)
   have hres := (relBasisG n N h).res_single (onhCycDecomposition n N)
     (onhCycDecomposition (n+1) N) incCyc_mem (Ecyc_mem n N) sβ (fun p => betaVec_mem p.1 p.2) 0
@@ -164,7 +164,7 @@ theorem one_mem_onh1 : (1 : ONH1 N) ∈ onh1Grading N 0 := SetLike.GradedOne.one
 
 /-- **Restriction** `K₀(ONH_2^N) → K₀(ONH_1^N)`, `1 < N`. -/
 def res1 (h : 2 ≤ N) : K0 (onhCycGrading 0 N) →ₗ[L] K0 (onh1Grading N) :=
-  haveI := nonempty_1 N h
+  have := nonempty_1 N h
   (relBasis1 N h).res (onh1Decomposition N) (onhCycDecomposition 0 N) incCyc1_mem
     (one_mem_onh1 N) sβ (fun p => betaVec_mem p.1 p.2)
 
@@ -176,7 +176,7 @@ theorem of_gelem_one_onh1 :
 
 theorem res1_vCyc (h : 2 ≤ N) :
     res1 N h (vCyc N 2) = (T ((N : ℤ) - 2 * ((1 : ℕ) : ℤ) - 1) * qInt (N - 1)) • vCyc N 1 := by
-  haveI := nonempty_1 N h
+  have := nonempty_1 N h
   have hB := cyc_single_eq N 0
   have hres := (relBasis1 N h).res_single (onh1Decomposition N) (onhCycDecomposition 0 N)
     incCyc1_mem (one_mem_onh1 N) sβ (fun p => betaVec_mem p.1 p.2) 0
@@ -213,7 +213,7 @@ theorem toONH1_pow_mem (k : ℕ) :
 
 /-- **Restriction** `K₀(ONH_1^N) → K₀(ONH_0^N) = K₀(ℤ)`, `0 < N`. -/
 def res0 (h : 1 ≤ N) : K0 (onh1Grading N) →ₗ[L] K0 intGrading :=
-  haveI := nonempty_0 N h
+  have := nonempty_0 N h
   (relBasis0 N).res intDecomposition (onh1Decomposition N) intCast_onh1_mem one_mem_int
     (fun k : Fin N => 2 * (k : ℤ)) (fun k => toONH1_pow_mem N k)
 
@@ -224,7 +224,7 @@ theorem of_gelem_one_int :
 
 theorem res0_vCyc (h : 1 ≤ N) :
     res0 N h (vCyc N 1) = (T ((N : ℤ) - 2 * ((0 : ℕ) : ℤ) - 1) * qInt (N - 0)) • vCyc N 0 := by
-  haveI := nonempty_0 N h
+  have := nonempty_0 N h
   have hres := (relBasis0 N).res_single intDecomposition (onh1Decomposition N) intCast_onh1_mem
     one_mem_int (fun k : Fin N => 2 * (k : ℤ)) (fun k => toONH1_pow_mem N k) 0
   rw [← toKCyc_single_one] at hres

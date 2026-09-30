@@ -136,10 +136,10 @@ theorem tensorOneOne_injective : Function.Injective tensorOneOne := by
   · rintro ⟨a, b⟩ ⟨a', b'⟩ h
     have h0 := congrArg (fun p => p.1 0) h
     have h1 := congrArg (fun p => p.1 1) h
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h0 h1
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at h0 h1
     simp only [Prod.mk.injEq]
     exact ⟨funext fun i => by fin_cases i; exact h0, funext fun i => by fin_cases i; exact h1⟩
-  · rw [Basis.tensorProduct_apply, tensorOneOne_tmul, basis_apply, basisElement_two]
+  · rw [Module.Basis.tensorProduct_apply, tensorOneOne_tmul, basis_apply, basisElement_two]
     simp only [Finsupp.coe_basisSingleOne]
     change dotEval _ (monomial p.1 1) * dotEval _ (monomial p.2 1) = _
     rw [dotEval_monomial, dotEval_monomial, Int.cast_one, one_mul, one_mul]
@@ -167,8 +167,7 @@ def shiftOne (m' : ℕ) : Presented (m'+1) →+* Presented (0+2+m') := windowHom
 
 theorem shiftOne_tensorOneLeft (m' : ℕ) (t : SkewPolynomial 1 ⊗[ℤ] Presented m') :
     shiftOne m' (tensorOneLeft m' t) = tensorMap 0 m' (LinearMap.rTensor _ (dotTwo 1) t) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp
+  induction t using TensorProduct.inductionOn with
   | tmul f y =>
     rw [tensorOneLeft_tmul, LinearMap.rTensor_tmul, tensorMap_tmul, map_mul, dotTwo_apply,
       map_dotEval, map_dotEval, shiftOne, windowHom_dot, incL, windowHom_dot, incR1, incR,
@@ -209,8 +208,7 @@ def extendOne (m : ℕ) : Presented (m+1) →+* Presented (m+2+0) :=
 
 theorem extendOne_tensorOneRight (m : ℕ) (t : Presented m ⊗[ℤ] SkewPolynomial 1) :
     extendOne m (tensorOneRight m t) = tensorMap m 0 (LinearMap.lTensor _ (dotTwo 0) t) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp
+  induction t using TensorProduct.inductionOn with
   | tmul y f =>
     rw [tensorOneRight_tmul, LinearMap.lTensor_tmul, tensorMap_tmul, map_mul, dotTwo_apply,
       map_dotEval, map_dotEval, extendOne, windowHom_dot, incR, windowHom_dot, incL1, incL,

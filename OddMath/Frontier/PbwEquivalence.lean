@@ -27,6 +27,7 @@ lists need not agree definitionally, and no such equality is used here. -/
   have he : PbwRealization.exponents (canonicalWord a) = a := by
     funext i
     exact canonicalWord_count a i
+  change Phi n (orderedMonomial a) = monomial (PbwRealization.exponents (canonicalWord a)) 1 at h
   simpa only [he] using h
 
 /-- Explicit finite coefficient-linear combination in the actual quotient. -/
@@ -91,7 +92,7 @@ noncomputable def coefficientEquiv (n : ℕ) : Presented n ≃ₗ[ℤ] SkewPolyn
   map_smul' := fun c x => map_zsmul (Phi n) c x
 
 /-- Transport the genuine coefficient basis, not an assumed quotient basis. -/
-noncomputable def orderedBasis (n : ℕ) : Basis (Fin n → ℕ) ℤ (Presented n) :=
+noncomputable def orderedBasis (n : ℕ) : Module.Basis (Fin n → ℕ) ℤ (Presented n) :=
   Finsupp.basisSingleOne.map (coefficientEquiv n).symm
 
 @[simp] theorem orderedBasis_apply (a : Fin n → ℕ) :

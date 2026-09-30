@@ -55,16 +55,16 @@ theorem pointwise_col (hσ : IsTiling ν σ) {c : ℕ × ℕ} (hc : c ∈ ν) :
   rcases hσ.adj c hc with h | h | h | h
   · have hu : IsUp σ c := h
     have hd : ¬ IsDown σ c := by unfold IsDown; rw [h]; omega
-    rw [if_pos hu, if_neg hd, h, colSign, colSign]; ring
+    rw [ite_eq_left hu, ite_eq_right hd, h, colSign, colSign]; ring
   · have hu : ¬ IsUp σ c := by unfold IsUp; rw [h]; simp
     have hd : ¬ IsDown σ c := by unfold IsDown; rw [h]; simp
-    rw [if_neg hu, if_neg hd, h, colSign, colSign, pow_succ]; ring
+    rw [ite_eq_right hu, ite_eq_right hd, h, colSign, colSign, pow_succ]; ring
   · have hu : ¬ IsUp σ c := by unfold IsUp; intro h'; rw [h'] at h; dsimp only at h; omega
     have hd : IsDown σ c := h
-    rw [if_neg hu, if_pos hd, colSign, colSign, ← h.2]; ring
+    rw [ite_eq_right hu, ite_eq_left hd, colSign, colSign, ← h.2]; ring
   · have hu : ¬ IsUp σ c := by unfold IsUp; intro h'; rw [h'] at h; dsimp only at h; omega
     have hd : ¬ IsDown σ c := by unfold IsDown; omega
-    rw [if_neg hu, if_neg hd, colSign, colSign, h.2, pow_succ]; ring
+    rw [ite_eq_right hu, ite_eq_right hd, colSign, colSign, h.2, pow_succ]; ring
 
 theorem pointwise_checker (hσ : IsTiling ν σ) {c : ℕ × ℕ} (hc : c ∈ ν) :
     checker c + checker (σ c) = 0 := by
@@ -92,11 +92,11 @@ theorem sum_down_eq_sum_up (hσ : IsTiling ν σ) :
   have hinv := hσ.invol c hc'
   by_cases hu : IsUp σ c
   · have hd : IsDown σ (σ c) := by unfold IsDown; rw [hinv, hu]; simp
-    rw [if_pos hd, if_pos hu, colSign, colSign, hu]
+    rw [ite_eq_left hd, ite_eq_left hu, colSign, colSign, hu]
   · have hd : ¬ IsDown σ (σ c) := by
       unfold IsDown; rw [hinv]; intro h; apply hu; unfold IsUp
       exact Prod.ext (by simpa using h.1) (by simpa using h.2)
-    rw [if_neg hd, if_neg hu]
+    rw [ite_eq_right hd, ite_eq_right hu]
 
 /-- `Σ_ν (−1)^{col} = 2 Σ_{upper vertical cells} (−1)^{col}`. -/
 theorem sum_col_sign_eq (hσ : IsTiling ν σ) :
@@ -117,11 +117,11 @@ theorem sum_sign_parity (s : Finset (ℕ × ℕ)) (p : ℕ × ℕ → Prop) [Dec
     obtain ⟨m, hm⟩ := ih
     rw [Finset.sum_insert ha, hm, Finset.filter_insert]
     by_cases hp : p a
-    · rw [if_pos hp, if_pos hp, Finset.card_insert_of_not_mem (fun h => ha (Finset.mem_filter.mp h).1)]
+    · rw [ite_eq_left hp, ite_eq_left hp, Finset.card_insert_of_notMem (fun h => ha (Finset.mem_filter.mp h).1)]
       rcases neg_one_pow_eq_or ℤ a.2 with h | h
       · exact ⟨m, by rw [colSign, h]; push_cast; ring⟩
       · exact ⟨m - 1, by rw [colSign, h]; push_cast; ring⟩
-    · rw [if_neg hp, if_neg hp]; exact ⟨m, by ring⟩
+    · rw [ite_eq_right hp, ite_eq_right hp]; exact ⟨m, by ring⟩
 
 theorem vert_eq_filter (σ : ℕ × ℕ → ℕ × ℕ) : vert ν σ = (ν.cells.filter (IsUp σ)).card := rfl
 
@@ -154,7 +154,7 @@ theorem sum_checker_parity (s : Finset (ℕ × ℕ)) :
   | empty => exact ⟨0, by simp⟩
   | @insert a s ha ih =>
     obtain ⟨m, hm⟩ := ih
-    rw [Finset.sum_insert ha, hm, Finset.card_insert_of_not_mem ha]
+    rw [Finset.sum_insert ha, hm, Finset.card_insert_of_notMem ha]
     rcases neg_one_pow_eq_or ℤ (a.1 + a.2) with h | h
     · exact ⟨m, by rw [checker, h]; push_cast; ring⟩
     · exact ⟨m - 1, by rw [checker, h]; push_cast; ring⟩
@@ -170,7 +170,7 @@ theorem ek_p30_even_necessary (hσ : IsTiling ν σ) : Even ν.card := by
 def staircase321 : YoungDiagram := YoungDiagram.ofRowLens [3, 2, 1] (by decide)
 
 theorem staircase321_card : staircase321.card = 6 := by
-  rw [staircase321, EKPartitionSpanning.card_ofRowLens]; rfl
+  rw [staircase321, EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl
 
 theorem staircase321_checker : ∑ c ∈ staircase321.cells, checker c = 2 := by
   have hc : staircase321.cells = {(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (2, 0)} := by

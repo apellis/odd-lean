@@ -92,13 +92,13 @@ theorem psi4_apply (x : L (ZMod 4)) :
   | hz => simp
   | ha x y hx hy => simp only [map_add, hx, hy, Finsupp.add_apply]
   | hb w r =>
-    simp only [map_smul, psi4, Basis.constr_basis, Basis.repr_self, Finsupp.smul_apply,
-      Finsupp.single_apply, smul_eq_mul]
+    simp only [map_smul, psi4, Module.Basis.constr_basis, Module.Basis.repr_self, Finsupp.smul_apply,
+      smul_eq_mul]
     by_cases h : w.toList = [0, 0]
     · have hw : w = partWord [1, 1] := FreeMonoid.toList.injective h
-      subst hw; rw [if_pos h]; simp [Algebra.smul_def]; rfl
+      subst hw; rw [ite_eq_left h]; simp [Algebra.smul_def]; rfl
     · have hw : w ≠ partWord [1, 1] := fun e => h (by rw [e]; rfl)
-      rw [if_neg h]; simp [Finsupp.single_apply, hw, Ne.symm hw]
+      rw [ite_eq_right h]; simp [Ne.symm hw]
 
 /-- The two compositions of `2`. -/
 def comps2L : List (List ℕ) := [[1, 1], [2]]
@@ -124,7 +124,7 @@ theorem psi4_radical {x : L (ZMod 4)} (hx : x ∈ radical (2 : ZMod 4)) : psi4 x
           form (2 : ZMod 4) (hWord (ZMod 4) [2]) (hWord (ZMod 4) l) := by
     intro l hl
     have h1 : degreeProj (ZMod 4) 2 (hWord (ZMod 4) l) = hWord (ZMod 4) l := by
-      rw [← partWord_value, degreeProj_basis, if_pos (by rw [degree_partWord, hl])]
+      rw [← partWord_value, degreeProj_basis, ite_eq_left (by rw [degree_partWord, hl])]
     rw [← h1, ← form_degreeProj, degreeProj_two]
     simp only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, h1]
   have e1 := hp [1, 1] rfl
@@ -151,14 +151,13 @@ def psi4TensorL : LL (ZMod 4) →ₗ[ZMod 4] ZMod 2 :=
 
 theorem psi4Tensor_map (z : LL (ZMod 4)) :
     psi4Tensor (quotientTensorMap (2 : ZMod 4) z) = psi4TensorL z := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a b => rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
 theorem psi4_vWord {c : ℕ} (v : Fin c → ℕ) :
     psi4 (vWord (ZMod 4) v) = if (partWord (List.ofFn v)).toList = [0, 0] then 1 else 0 := by
-  rw [vWord, ← partWord_value, psi4, Basis.constr_basis]
+  rw [vWord, ← partWord_value, psi4, Module.Basis.constr_basis]
 
 theorem psi4TensorL_coproduct (l : List ℕ) :
     psi4TensorL (coproduct (2 : ZMod 4) (hWord (ZMod 4) l)) =

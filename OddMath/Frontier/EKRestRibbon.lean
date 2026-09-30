@@ -110,7 +110,7 @@ theorem blockMap_eq_iff {n : ℕ} (S : Finset (Fin n)) {a b : Fin n} (hab : a �
     · rintro ⟨ht, ht0, htb⟩
       refine ⟨ht, ht0, ?_⟩
       by_contra hc
-      exact h t ht ht0 ⟨lt_of_not_le hc, htb⟩
+      exact h t ht ht0 ⟨lt_of_not_ge hc, htb⟩
 
 /-- The descent set `{k : σ(k) < σ(k-1)}` (cut set of the descent composition `C(σ)`). -/
 def Des {n : ℕ} (σ : Equiv.Perm (Fin n)) : Finset (Fin n) :=
@@ -176,8 +176,8 @@ theorem noWithin_iff {n : ℕ} (S R : Finset (Fin n)) (σ : Equiv.Perm (Fin n)) 
       by_contra hkS
       simp only [Des, Finset.mem_filter, Finset.mem_univ, true_and] at hk
       have := h (σ⁻¹ k) (σ⁻¹ (pred' k)) hk.2 (Or.inr (by
-        simp only [Equiv.Perm.apply_inv_self]; exact ((blockMap_pred S hk.1).mpr hkS).symm))
-      simp only [Equiv.Perm.apply_inv_self] at this
+        simp only [Equiv.Perm.inv_def, Equiv.apply_symm_apply]; exact ((blockMap_pred S hk.1).mpr hkS).symm))
+      simp only [Equiv.Perm.inv_def, Equiv.apply_symm_apply] at this
       exact absurd this (not_lt.mpr (le_of_lt (pred'_lt hk.1)))
   · rintro ⟨hR, hS⟩ a b hab hw
     rcases hw with hw | hw
@@ -191,7 +191,7 @@ theorem noWithin_iff {n : ℕ} (S R : Finset (Fin n)) (σ : Equiv.Perm (Fin n)) 
       have := chain (⇑(σ⁻¹)) (σ b) (σ a) hlt (fun k hk1 hk2 => by
         have hk0 : 0 < k.val := by rw [Fin.lt_def] at hk1; omega
         exact incr_of_not_des σ⁻¹ hk0 (fun hd => not_mem_of_same S hlt hw.symm hk1 hk2 (hS hd)))
-      simp only [Equiv.Perm.inv_apply_self] at this
+      simp only [Equiv.Perm.inv_def, Equiv.symm_apply_apply] at this
       exact absurd hab (not_lt.mpr (le_of_lt this))
 
 /-! ## The form on `h_α` and on `h̃_α` -/
@@ -224,7 +224,7 @@ theorem incl_excl {α : Type*} [DecidableEq α] (S D : Finset α) :
         (if D ⊆ T then 1 else 0) = -((-1 : ℤ) ^ (S.card - T.card) * (if D ⊆ T then 1 else 0)) := by
       intro T hT
       have hTS := Finset.card_le_card (Finset.mem_powerset.mp hT)
-      rw [Finset.card_insert_of_not_mem ha, show S.card + 1 - T.card = (S.card - T.card) + 1 by omega,
+      rw [Finset.card_insert_of_notMem ha, show S.card + 1 - T.card = (S.card - T.card) + 1 by omega,
         pow_succ]
       ring
     have h2 : ∀ T ∈ S.powerset, (-1 : ℤ) ^ ((insert a S).card - (insert a T).card) *
@@ -232,7 +232,7 @@ theorem incl_excl {α : Type*} [DecidableEq α] (S D : Finset α) :
           (-1 : ℤ) ^ (S.card - T.card) * (if D.erase a ⊆ T then 1 else 0) := by
       intro T hT
       have haT : a ∉ T := fun h => ha (Finset.mem_powerset.mp hT h)
-      rw [Finset.card_insert_of_not_mem ha, Finset.card_insert_of_not_mem haT,
+      rw [Finset.card_insert_of_notMem ha, Finset.card_insert_of_notMem haT,
         Nat.add_sub_add_right]
       simp only [Finset.subset_insert_iff]
     rw [Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, Finset.sum_neg_distrib, ih, ih]
@@ -242,13 +242,13 @@ theorem incl_excl {α : Type*} [DecidableEq α] (S D : Finset α) :
         constructor
         · intro h; rw [← h, Finset.insert_erase haD]
         · intro h; rw [h, Finset.erase_insert ha]
-      rw [if_neg e1]
+      rw [ite_eq_right e1]
       by_cases h3 : D = insert a S
-      · rw [if_pos (e2.mpr h3), if_pos h3]; ring
-      · rw [if_neg (fun h => h3 (e2.mp h)), if_neg h3]; ring
-    · rw [Finset.erase_eq_of_not_mem haD]
+      · rw [ite_eq_left (e2.mpr h3), ite_eq_left h3]; ring
+      · rw [ite_eq_right (fun h => h3 (e2.mp h)), ite_eq_right h3]; ring
+    · rw [Finset.erase_eq_of_notMem haD]
       have : D ≠ insert a S := fun h => haD (h ▸ Finset.mem_insert_self a S)
-      rw [if_neg this]
+      rw [ite_eq_right this]
       split_ifs <;> ring
 
 /-- (2.31): `h̃_α = Σ_{β ≤ α} (-1)^{ℓ(α)-ℓ(β)} h_β`, `S = S(α)`. -/
@@ -268,7 +268,7 @@ theorem eq_2_33 {n : ℕ} (S R : Finset (Fin n)) :
         ((-1 : ℤ) ^ (R.card - R'.card) * (if Des σ ⊆ R' then 1 else 0))) • q ^ inversions σ := by
     intro T R' σ
     by_cases h1 : Des σ ⊆ R' <;> by_cases h2 : Des σ⁻¹ ⊆ T <;>
-      simp [h1, h2, smul_smul, zsmul_eq_mul]
+      simp [h1, h2, zsmul_eq_mul]
     ring
   simp only [hT, map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, form_hS,
     Finset.smul_sum, step]

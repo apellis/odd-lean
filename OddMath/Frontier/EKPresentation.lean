@@ -150,7 +150,7 @@ open EKPartitionSpanning (cost cost_replace sorted_or_ascent card_ofRowLens)
 /-- All words of a given weight lie in any submodule containing the sorted
 words of that weight. The induction is over an actual natural measure. -/
 theorem word_mem_of_sorted (S : Submodule ℤ Presented) (d : ℕ)
-    (hs : ∀ w : List ℕ, w.Sorted (· ≥ ·) → w.sum=d → word w ∈ S)
+    (hs : ∀ w : List ℕ, w.Pairwise (· ≥ ·) → w.sum=d → word w ∈ S)
     (w : List ℕ) (hd : w.sum=d) : word w ∈ S := by
   induction h : cost w using Nat.strong_induction_on generalizing w with
   | h n ih =>
@@ -179,16 +179,16 @@ theorem erase_zeros (w : List ℕ) :
     · simp [ha, ih.1, ih.2]
 
 /-- Sorted words, with arbitrary zero padding, are literal partition words. -/
-theorem sorted_is_partition (w : List ℕ) (hw : w.Sorted (· ≥ ·)) :
+theorem sorted_is_partition (w : List ℕ) (hw : w.Pairwise (· ≥ ·)) :
     ∃ μ : YoungDiagram, μ.card=w.sum ∧ word μ.rowLens=word w := by
   let v := w.filter (fun a => a != 0)
-  have hv : v.Sorted (· ≥ ·) := hw.filter _
+  have hv : v.Pairwise (· ≥ ·) := hw.filter _
   have hp : ∀ a ∈ v, 0<a := by
     intro a ha
     simp only [v, List.mem_filter, bne_iff_ne, ne_eq] at ha
     omega
-  refine ⟨YoungDiagram.ofRowLens v hv, ?_, ?_⟩
-  · rw [card_ofRowLens]
+  refine ⟨YoungDiagram.ofRowLens v hv.sortedGE, ?_, ?_⟩
+  · rw [card_ofRowLens v hv]
     exact (erase_zeros w).2
   · rw [YoungDiagram.rowLens_ofRowLens_eq_self hp]
     exact (erase_zeros w).1
@@ -217,7 +217,7 @@ theorem word_mem_partition_span (w : List ℕ) :
     mk (EKFreeCoproduct.wordBasis w) = word (List.ofFn (EKPairingAdjoint.parts w)) := by
   rw [← EKPairingAdjoint.vWord_parts w]
   simp only [EKPairingAdjoint.vWord, CompleteElementary.hWord, map_list_prod,
-    List.map_map, Function.comp_def, word, h]
+    List.map_map, Function.comp_def, word]
   rfl
 
 theorem partition_span : Submodule.span ℤ (Set.range partition) = ⊤ := by
@@ -249,8 +249,10 @@ theorem exists_expansion (x : Presented) :
 theorem image_linearIndependent (c : Bool) :
     LinearIndependent ℤ (fun μ : YoungDiagram => toColor c (partition μ)) := by
   cases c
-  · simpa only [toColor_partition] using EKSemiorthogonality.hPartition_linearIndependent
-  · simpa only [toColor_partition] using EKSemiorthogonality.ePartition_linearIndependent
+  · simp only [toColor_partition]
+    exact EKSemiorthogonality.hPartition_linearIndependent
+  · simp only [toColor_partition]
+    exact EKSemiorthogonality.ePartition_linearIndependent
 
 /-- No rank argument: every presented element has a literal partition expansion,
 and its image has unique integral coordinates in Q. -/

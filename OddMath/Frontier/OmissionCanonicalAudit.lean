@@ -41,8 +41,8 @@ run_cmd do
       ``OddMath.Frontier.OmissionCanonicalControls.n3_exception_nonreduced] do
     unless owned.any (fun (name,_) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compilerName := (name.toString.splitOn ".").any (fun s =>

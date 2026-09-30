@@ -45,31 +45,32 @@ theorem decompose_mul_right (x y : Q) {k : ℕ} (hy : y ∈ degreePiece k) (d : 
     decompose (x * y) (d + k) = decompose x d * y := by
   classical
   conv_lhs => rw [← recompose_decompose x]
-  rw [recompose_apply, Finsupp.sum, Finset.sum_mul, map_sum, Finsupp.finset_sum_apply]
+  rw [recompose_apply, Finsupp.sum, Finset.sum_mul, map_sum, Finsupp.finsetSum_apply]
   rw [Finset.sum_congr rfl (fun d' _ => by
     rw [decompose_piece (degreePiece_mul (decompose_mem x d') hy)])]
   simp only [Finsupp.single_apply, add_left_inj]
   rw [Finset.sum_ite_eq']
   split_ifs with h
   · rfl
-  · rw [Finsupp.not_mem_support_iff.mp h, zero_mul]
+  · rw [Finsupp.notMem_support_iff.mp h, zero_mul]
 
 theorem decompose_mul_left (x y : Q) {k : ℕ} (hy : y ∈ degreePiece k) (d : ℕ) :
     decompose (y * x) (k + d) = y * decompose x d := by
   classical
   conv_lhs => rw [← recompose_decompose x]
-  rw [recompose_apply, Finsupp.sum, Finset.mul_sum, map_sum, Finsupp.finset_sum_apply]
+  rw [recompose_apply, Finsupp.sum, Finset.mul_sum, map_sum, Finsupp.finsetSum_apply]
   rw [Finset.sum_congr rfl (fun d' _ => by
     rw [decompose_piece (degreePiece_mul hy (decompose_mem x d'))])]
   simp only [Finsupp.single_apply, add_right_inj]
   rw [Finset.sum_ite_eq']
   split_ifs with h
   · rfl
-  · rw [Finsupp.not_mem_support_iff.mp h, mul_zero]
+  · rw [Finsupp.notMem_support_iff.mp h, mul_zero]
 
 theorem hPartition_mem' (μ : YoungDiagram) : hPartition μ ∈ degreePiece μ.card := by
   have := (degreeHBasis μ.card ⟨μ, rfl⟩).property
-  rwa [degreeHBasis_apply] at this
+  erw [degreeHBasis_apply] at this
+  exact this
 
 /-- An element commuting with every `h_μ` is central. -/
 theorem central_of_hPartition {z : Q} (h : ∀ μ, z * hPartition μ = hPartition μ * z) :
@@ -117,7 +118,7 @@ theorem antitone_getD {N : ℕ} (f : Fin N → ℕ) (hf : Antitone f) (j : Fin N
 /-- The partition of the nonzero entries of an antitone exponent vector. -/
 def partOf {N : ℕ} (f : Fin N → ℕ) (hf : Antitone f) : YoungDiagram :=
   YoungDiagram.ofRowLens ((List.ofFn f).filter (· ≠ 0))
-    ((List.sorted_ge_ofFn_iff.mpr hf).filter _)
+    (hf.sortedGE_ofFn.pairwise.filter _).sortedGE
 
 theorem partOf_rowLens {N : ℕ} (f : Fin N → ℕ) (hf : Antitone f) :
     (partOf f hf).rowLens = (List.ofFn f).filter (· ≠ 0) :=
@@ -134,7 +135,7 @@ theorem sum_filter_ne_zero (l : List ℕ) : (l.filter (· ≠ 0)).sum = l.sum :=
 
 theorem partOf_card {N : ℕ} (f : Fin N → ℕ) (hf : Antitone f) :
     (partOf f hf).card = ∑ i, f i := by
-  rw [partOf, EKPartitionSpanning.card_ofRowLens, sum_filter_ne_zero, List.sum_ofFn]
+  rw [partOf, EKPartitionSpanning.card_ofRowLens _ (hf.sortedGE_ofFn.pairwise.filter _), sum_filter_ne_zero, List.sum_ofFn]
 
 /-! ## Central elements of even degree are determined by `2λ`-coefficients -/
 
@@ -166,7 +167,7 @@ theorem piN_mem_sq (m : ℕ) {x : Q} (hx : x ∈ Subring.center Q) :
     (CenterCorrected.center_oddSymmetric (2 * m) (piA (2 * m) x)).mp (piA_central hx)
   have hodd : ¬ Odd (2 * m + 2) := by
     rw [Nat.not_odd_iff_even]; exact ⟨m + 1, by ring⟩
-  rw [if_neg hodd, add_zero, piA_coe] at heq
+  rw [ite_eq_right hodd, add_zero, piA_coe] at heq
   rw [heq]; exact ha
 
 /-- A central element of degree `2m` with vanishing `Psi` is zero. -/
@@ -178,7 +179,7 @@ theorem eq_zero_of_Psi (m : ℕ) (x : degreePiece (2 * m)) (hx : (x : Q) ∈ Sub
     (MvPolynomial.mem_symmetricSubalgebra P).mp hPsym
   have hP0 : P = 0 := by
     ext e
-    rw [MvPolynomial.coeff_zero, ← CenterPoly.squareHom_apply_dbl, hPx]
+    rw [AddMonoidAlgebra.coeff_zero, ← CenterPoly.squareHom_apply_dbl, hPx]
     by_cases hw : ElementaryBasis.weight (CenterPoly.dbl e) = 2 * m
     · let f : Fin (2 * m + 2) → ℕ := fun j => e j
       let τ : Equiv.Perm (Fin (2 * m + 2)) := Tuple.sort f * Fin.revPerm
@@ -227,7 +228,7 @@ theorem eq_zero_of_odd (m : ℕ) (x : degreePiece (2 * m + 1)) (hx : (x : Q) ∈
     by_cases hw : ElementaryBasis.weight a = 2 * m + 1
     · have hodd : ∃ j, ¬ Even (a j) := by
         by_contra hall
-        push_neg at hall
+        push Not at hall
         have : Even (ElementaryBasis.weight a) := Finset.even_sum _ (fun j _ => hall j)
         rw [hw] at this
         exact Nat.not_even_two_mul_add_one m this

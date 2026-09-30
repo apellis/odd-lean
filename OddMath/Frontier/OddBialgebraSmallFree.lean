@@ -14,7 +14,7 @@ EKL arXiv:1111.1320v1, §6, pp. 46–47. A uniform interface for the inclusions
 * `tmap`, `Bsub`: the image `B` of `R₁ ⊗ R₂`, a subring; `gradS`, its grading;
   `pairS : R₁ → B ← R₂`.
 * `psi_bijective`: `⊕_u R₁ ⊗ R₂ → ONH_{n+2}`, `(t_u) ↦ ∑ t_u ∂_u` (`u` a shuffle), is bijective;
-  `freeBasis : Basis (ShufT n p) B ONH_{n+2}`, `u ↦ ∂_u`.
+  `freeBasis : Module.Basis (ShufT n p) B ONH_{n+2}`, `u ↦ ∂_u`.
 * `coord_mem`: the `∂_u`-coordinate of an element of degree `e` has degree `e + 2ℓ(u)`.
 * `rho : ONH_{n+2} →+* Mat_{Shuffle}(B)`, graded (`rho_mem`); `resIdem`, `res`: restriction
   `K₀(ONH_{n+2}) → K₀(B)`; `res_one`: `Res [ONH_{n+2}] = ∑_u q^{-2ℓ(u)} [B]`.
@@ -42,9 +42,9 @@ structure WinData {R₁ R₂ : Type*} [Ring R₁] [Ring R₂] (A₁ : ℤ → Ad
   /-- Index of the basis of `R₂`. -/
   I₂ : Type
   /-- A homogeneous basis of `R₁`. -/
-  b₁ : Basis I₁ ℤ R₁
+  b₁ : Module.Basis I₁ ℤ R₁
   /-- A homogeneous basis of `R₂`. -/
-  b₂ : Basis I₂ ℤ R₂
+  b₂ : Module.Basis I₂ ℤ R₂
   /-- Half-degrees of `b₁`. -/
   wt₁ : I₁ → ℤ
   /-- Half-degrees of `b₂`. -/
@@ -75,11 +75,11 @@ def tmap : R₁ ⊗[ℤ] R₂ →ₗ[ℤ] Presented n :=
 @[simp] theorem tmap_tmul (x : R₁) (y : R₂) : D.tmap (x ⊗ₜ y) = D.P.ι₁ x * D.P.ι₂ y := rfl
 
 /-- The tensor basis of `R₁ ⊗ R₂`. -/
-def bT : Basis (D.I₁ × D.I₂) ℤ (R₁ ⊗[ℤ] R₂) := D.b₁.tensorProduct D.b₂
+def bT : Module.Basis (D.I₁ × D.I₂) ℤ (R₁ ⊗[ℤ] R₂) := D.b₁.tensorProduct D.b₂
 
 theorem tmap_bT (ij : D.I₁ × D.I₂) :
     D.tmap (D.bT ij) = D.P.ι₁ (D.b₁ ij.1) * D.P.ι₂ (D.b₂ ij.2) := by
-  rw [bT, Basis.tensorProduct_apply, tmap_tmul]
+  rw [bT, Module.Basis.tensorProduct_apply, tmap_tmul]
 
 theorem tmap_injective : Function.Injective D.tmap :=
   OnhStructure.injective_of_signed_basis D.bT (basis n) D.tmap D.φ D.inj fun ij => by
@@ -172,7 +172,7 @@ theorem psi_single (u : ShufT n p) (t : R₁ ⊗[ℤ] R₂) :
   simp [psi]
 
 /-- The `ℤ`-basis of `⊕_u R₁ ⊗ R₂`. -/
-def tsBasis : Basis (Σ _ : ShufT n p, D.I₁ × D.I₂) ℤ (ShufT n p →₀ R₁ ⊗[ℤ] R₂) :=
+def tsBasis : Module.Basis (Σ _ : ShufT n p, D.I₁ × D.I₂) ℤ (ShufT n p →₀ R₁ ⊗[ℤ] R₂) :=
   Finsupp.basis fun _ => D.bT
 
 /-- The PBW index `(A, y u)` of `x^A ∂_y ∂_u`. -/
@@ -260,8 +260,8 @@ theorem lcomb_bijective : Function.Bijective D.lcomb := by
     exact ⟨_, D.lcomb_mapRange f⟩
 
 /-- **`ONH_{n+2}` is a free left `B`-module** with basis the `∂_u`, `u` a shuffle. -/
-def freeBasis : Basis (ShufT n p) D.Bsub (Presented n) :=
-  Basis.ofRepr (LinearEquiv.ofBijective D.lcomb D.lcomb_bijective).symm
+def freeBasis : Module.Basis (ShufT n p) D.Bsub (Presented n) :=
+  Module.Basis.ofRepr (LinearEquiv.ofBijective D.lcomb D.lcomb_bijective).symm
 
 theorem freeBasis_apply (u : ShufT n p) : D.freeBasis u = dsh u := by
   have h := D.freeBasis.repr_symm_single u 1
@@ -318,8 +318,8 @@ theorem coord_mem {e : ℤ} {x : Presented n} (hx : x ∈ onhGrading n e) (u : S
       · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_same]
         exact neg_mem hmem
     · rcases hs with h | h <;> rw [h]
-      · rw [repr_psi_basis, Finsupp.single_eq_of_ne hu]; exact zero_mem _
-      · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_of_ne hu, neg_zero]
+      · rw [repr_psi_basis, Finsupp.single_eq_of_ne (Ne.symm hu)]; exact zero_mem _
+      · rw [map_neg, Finsupp.neg_apply, repr_psi_basis, Finsupp.single_eq_of_ne (Ne.symm hu), neg_zero]
         exact zero_mem _
   | zero => rw [map_zero, Finsupp.zero_apply]; exact zero_mem _
   | add x y _ _ hx hy => rw [map_add, Finsupp.add_apply]; exact add_mem hx hy
@@ -331,7 +331,7 @@ theorem coord_mem {e : ℤ} {x : Presented n} (hx : x ∈ onhGrading n e) (u : S
 /-! ### Restriction -/
 
 theorem repr_dsh (u : ShufT n p) : D.freeBasis.repr (dsh u) = Finsupp.single u 1 := by
-  rw [← D.freeBasis_apply, Basis.repr_self]
+  rw [← D.freeBasis_apply, Module.Basis.repr_self]
 
 /-- Right multiplication on `ONH_{n+2} = ⊕_u B ∂_u`: `ρ(x)_{uv}` is the `∂_v`-coordinate of
 `∂_u x`. -/
@@ -344,7 +344,7 @@ def rho : Presented n →+* Matrix (ShufT n p) (ShufT n p) D.Bsub where
     ext u w
     rw [Matrix.mul_apply, ← mul_assoc]
     conv_lhs => rw [← D.freeBasis.sum_repr (dsh u * x), Finset.sum_mul]
-    simp only [smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply,
+    simp only [smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply,
       Finsupp.smul_apply, smul_eq_mul, D.freeBasis_apply]
   map_zero' := by
     ext u v

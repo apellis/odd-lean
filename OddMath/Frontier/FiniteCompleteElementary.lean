@@ -286,7 +286,7 @@ theorem mul_word {n k : ℕ} (a : R) (x : Fin n → R)
     have hw : word x f = x (f 0) * word x (fun i => f i.succ) := by
       simp [word, List.ofFn_succ]
     rw [hw, ← _root_.mul_assoc, ha, neg_mul, _root_.mul_assoc, ih]
-    simp only [pow_succ, mul_neg_one, neg_smul, mul_smul_comm, smul_mul_assoc, _root_.mul_assoc]
+    simp only [pow_succ, mul_neg_one, neg_smul, mul_smul_comm, _root_.mul_assoc]
 
 theorem mul_strictSum {n : ℕ} (a : R) (x : Fin n → R)
     (ha : ∀ i, a * x i = -(x i * a)) (k : ℕ) :
@@ -316,7 +316,7 @@ theorem sign_step (k : ℕ) :
   calc
     ((-1 : ℤ) ^ k * -1 * (-1) ^ ((k + 1).choose 2)) * (-1) ^ k =
         -((-1) ^ ((k + 1).choose 2)) * ((-1) ^ k * (-1) ^ k) := by
-      simp only [mul_neg_one, neg_mul, mul_neg]
+      simp only [neg_mul, mul_neg]
       congr 1
       ac_rfl
     _ = _ := by rw [hs, _root_.mul_one]

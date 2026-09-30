@@ -14,7 +14,7 @@ local instance (d : ℕ) : DecidableEq (DegreeShape d) := Classical.decEq _
 
 -- The quotient, the pairing, the degree piece and the bases are the existing ones.
 example : Q = ((FreeAlgebra ℤ ℕ) ⧸ radical) := rfl
-example (d : ℕ) : Basis (DegreeShape d) ℤ (degreePiece d) := mBasis d
+example (d : ℕ) : Module.Basis (DegreeShape d) ℤ (degreePiece d) := mBasis d
 example (d : ℕ) (ν : DegreeShape d) : (degreeHBasis d ν : Q) = hPartition ν.val :=
   degreeHBasis_apply d ν
 -- Source M′ = (h,h) is `Mh`, NOT the (e,h) matrix `M`.
@@ -115,8 +115,8 @@ run_cmd do
       ``EKSchurOrthonormalControls.example_3_5, ``EKSchurOrthonormalControls.example_3_6] do
     unless owned.any (fun (name, _) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compiler := (name.toString.splitOn ".").any (fun s =>

@@ -59,11 +59,11 @@ local instance (d : ℕ) : DecidableEq (DegreeShape d) := Classical.decEq _
 
 /-- Literal empty and the two exhaustive degree-two partitions. -/
 def emptyShape : DegreeShape 0 :=
-  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 def row2 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [2] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 def col2 : DegreeShape 2 :=
-  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens]; rfl⟩
+  ⟨YoungDiagram.ofRowLens [1,1] (by decide), by rw [EKPartitionSpanning.card_ofRowLens _ (by decide)]; rfl⟩
 
 @[simp] theorem empty_rows : emptyShape.val.rowLens = [] :=
   by exact YoungDiagram.rowLens_ofRowLens_eq_self (hw := by decide) (by simp)
@@ -129,7 +129,7 @@ theorem row2_ne_col2 : row2 ≠ col2 := by
 @[simp] theorem e_col2 : ePartition col2.val = h 1 * h 1 := by
   have he : e 1 = h 1 := by
     simp [e, h, CompleteElementary.elementary, CompleteElementary.ekSign,
-      CompleteElementary.inverseCoeff, Fin.sum_univ_succ, pow_succ]
+      CompleteElementary.inverseCoeff, pow_succ]
   simp [ePartition, he]
 
 theorem h2_h11 : quotientPairing (h 2) (h 1 * h 1) = 1 := by
@@ -151,7 +151,7 @@ theorem degree_two_gram :
     M 2 row2 row2 = 0 ∧ M 2 row2 col2 = 1 ∧ M 2 col2 row2 = 1 ∧ M 2 col2 col2 = 0 ∧
     Mh 2 row2 row2 = 1 ∧ Mh 2 row2 col2 = 1 ∧ Mh 2 col2 row2 = 1 ∧ Mh 2 col2 col2 = 0 ∧
     Me 2 row2 row2 = -1 ∧ Me 2 row2 col2 = 1 ∧ Me 2 col2 row2 = 1 ∧ Me 2 col2 col2 = 0 := by
-  simp [M, Mh, Me, degree_two_eh, degree_two_hh, degree_two_ee, h2_h11, h11_h11,
+  simp [M, Mh, Me, degree_two_hh, h2_h11, h11_h11,
     elementary_two, quotientPairing_symm (h 1 * h 1) (h 2)]
 
 theorem empty_dual_unit : (mBasis 0 emptyShape : Q) = 1 ∧ (fBasis 0 emptyShape : Q) = 1 := by
@@ -170,15 +170,15 @@ theorem degree_two_duals :
     (fBasis 2 col2 : Q) = h 2 := by
   have hm2 : degreeHBasis 2 col2 = mBasis 2 row2 := m_unique 2 row2 _ (by
     intro μ; rcases degree_two_shapes μ with rfl | rfl <;>
-      simp [h2_h11, h11_h11, row2_ne_col2, Ne.symm row2_ne_col2])
+      simp [h2_h11, h11_h11, Ne.symm row2_ne_col2])
   have hm11 : degreeEBasis 2 row2 = mBasis 2 col2 := m_unique 2 col2 _ (by
     intro μ; rcases degree_two_shapes μ with rfl | rfl <;>
       simp [elementary_two, degree_two_hh, h2_h11, h11_h11,
         quotientPairing_symm (h 1 * h 1) (h 2), row2_ne_col2])
   have hf2 : degreeHBasis 2 col2 = fBasis 2 row2 := f_unique 2 row2 _ (by
     intro μ; rcases degree_two_shapes μ with rfl | rfl <;>
-      simp [elementary_two, degree_two_hh, h2_h11, h11_h11,
-        row2_ne_col2, Ne.symm row2_ne_col2])
+      simp [elementary_two, h2_h11, h11_h11,
+        Ne.symm row2_ne_col2])
   have hf11 : degreeHBasis 2 row2 = fBasis 2 col2 := f_unique 2 col2 _ (by
     intro μ; rcases degree_two_shapes μ with rfl | rfl <;>
       simp [degree_two_eh, quotientPairing_symm (h 1 * h 1) (h 2), h2_h11, row2_ne_col2])

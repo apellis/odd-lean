@@ -86,7 +86,7 @@ theorem phi_e (n : ℕ) (hpos : 0 < n) (hn : n = 1 ∨ Even n) :
     · subst h1; simp
     · simp [hne, h1]
   rw [Finset.sum_congr rfl hterm, Finset.sum_ite_eq']
-  rw [if_pos ((CompleteElementary.mem_compositions_iff n [n]).mpr ⟨by simp [hpos], by simp⟩)]
+  rw [ite_eq_left ((CompleteElementary.mem_compositions_iff n [n]).mpr ⟨by simp [hpos], by simp⟩)]
   simp
 
 /-- EK p. 25: `c_n` is the coefficient of `h_n` in the h-basis expansion of `e_n`. -/
@@ -108,10 +108,10 @@ theorem f_eq_smul_m (n : ℕ) (hpos : 0 < n) (hn : n = 1 ∨ Even n) :
   intro ν
   rw [Submodule.coe_smul, map_zsmul, smul_eq_mul, pairing_mRow n hn hpos]
   rcases EKPrimitives.shape_cases hpos ν with h1 | h2
-  · rw [eq_rowShape hpos ν h1, if_pos rfl, ePartition_row hpos, phi_e n hpos hn]
+  · rw [eq_rowShape hpos ν h1, ite_eq_left rfl, ePartition_row hpos, phi_e n hpos hn]
     rw [neg_mul_neg, ← pow_add, ← two_mul, pow_mul]
     simp
-  · rw [phi_ePartition_long n hn _ h2, mul_zero, if_neg]
+  · rw [phi_ePartition_long n hn _ h2, mul_zero, ite_eq_right]
     intro he
     rw [he, rowShape_rows hpos] at h2
     simp at h2
@@ -178,14 +178,14 @@ theorem e7_m7 : quotientPairing (EKElementaryQuotient.e 7) (mRow 7).val = 5 := b
   change quotientPairing ((mBasis 7 (rowShape 7) : degreePiece 7) : Q) _ = 5
   rw [mBasis_val hshapes7 pl7 hs7 _ m7coeff m_seven, map_sum, LinearMap.sum_apply]
   simp only [map_zsmul, LinearMap.smul_apply, smul_eq_mul, h_e7]
-  simp [Fin.sum_univ_succ, m7coeff]
+  simp [m7coeff]
 
 /-- **EK p. 25, "`f_n = ±m_n`", is false for `n = 7`:** `f₇` is not an integer multiple
 of `m₇`. -/
 theorem f_seven_ne (c : ℤ) : fBasis 7 (rowShape 7) ≠ c • mRow 7 := by
   intro h
   have h1 := e_f 7 (rowShape 7) (rowShape 7)
-  rw [if_pos rfl, h, Submodule.coe_smul, map_zsmul, smul_eq_mul,
+  rw [ite_eq_left rfl, h, Submodule.coe_smul, map_zsmul, smul_eq_mul,
     ePartition_row (by decide), e7_m7] at h1
   omega
 

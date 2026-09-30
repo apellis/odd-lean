@@ -71,13 +71,13 @@ theorem mem_ohZeroGrading_iff (N : ℕ) (d : ℤ) (x : OH 0 N) :
 theorem ohZeroConnected (N : ℕ) : GradedK0.Connected (ohZeroGrading N) :=
   Cyclotomic.imageGrading_connected _ intConnected fun a b h => by
     have := congrArg (OH_zero_equiv N) h
-    simpa only [map_intCast] using this
+    simpa only [map_intCast, Int.cast_id] using this
 
 /-- `OH_{1,N}` is connected for `N ≥ 1` (cf. "graded local", EKL p. 47). -/
 theorem ohOneConnected {N : ℕ} (hN : 1 ≤ N) : GradedK0.Connected (ohOneGrading N) :=
   Cyclotomic.imageGrading_connected _ (Cyclotomic.onh1Connected hN) fun a b h => by
     have := congrArg (fun y => Cyclotomic.constONH1 hN (OH_one_equiv N y)) h
-    simpa only [map_intCast] using this
+    simpa only [map_intCast, Int.cast_id] using this
 
 /-- `OH_{1,N}` is the direct sum of its graded pieces. -/
 theorem ohOneDecomposition (N : ℕ) : Cyclotomic.UniqueDecomposition (ohOneGrading N) :=
@@ -144,7 +144,7 @@ theorem supercentral_inverse_all (a m : ℕ) (hm : 0 < m) :
   have h := elementary_complete_inverse a m hm
   have h2 := congrArg (fun p => (-1 : ℤ)^((m+1).choose 2) • p) h
   simp only [smul_zero, Finset.smul_sum, smul_smul] at h2
-  simp only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, Subring.coe_mul, zAll,
+  simp only [AddSubmonoidClass.coe_finsetSum, zAll,
     ZeroMemClass.coe_zero, mul_smul_comm, smul_smul]
   rw [← h2]
   apply Finset.sum_congr rfl
@@ -231,7 +231,7 @@ theorem span_grassRelations (a N : ℕ) (hN : a ≤ N) :
       have hR : grassRelation a N m ∈ J := TwoSidedIdeal.subset_span ⟨m, hm0, rfl⟩
       rw [grassRelation_eq a N m hm0, Finset.sum_range_succ'] at hR
       have hc : ¬ (0 ≤ a ∧ m - 0 ≤ N - a) := by omega
-      simp only [hc, if_false, Nat.zero_mul, pow_zero, one_smul, eAll_zero, one_mul,
+      simp only [Nat.zero_mul, pow_zero, one_smul, eAll_zero, one_mul,
         Nat.sub_zero] at hR
       have hrest : (∑ k ∈ Finset.range m, if k+1 ≤ a ∧ m - (k+1) ≤ N - a then 0 else
           (-1 : ℤ)^((k+1)*(m-(k+1))) • (eAll a (k+1) * zAll a (m-(k+1)))) ∈ J := by

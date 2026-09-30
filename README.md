@@ -106,14 +106,28 @@ over any commutative ring; it is then transported to `Presented n` (rank `n+2`).
 
 ## Building
 
-Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.19.0` and Mathlib
-`c44e0c8ee63ca166450922a373c7409c5d26b00b` are pinned. The diagrammatic modules depend on
-string-diagrams-lean at a pinned revision (see `lakefile.lean`).
+Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
+`v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
+string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884` (see `lakefile.lean` and
+`lake-manifest.json`).
 
 ```sh
 lake exe cache get
-lake build
+lake --wfail build
+python3 scripts/audit_axioms.py
 ```
+
+`lakefile.lean` keeps warnings as errors and preserves the pre-4.34 elaborator
+implicit-argument unfolding via `backward.isDefEq.respectTransparency=false` and
+`backward.isDefEq.respectTransparency.types=false`; these do not change kernel checking.
+The audit inventories every local `OddMath` source module and traverses the transitive axiom
+closure of every declaration owned by those modules, including private/generated declarations
+and declarations in other namespaces. It fails on any axiom other than `propext`,
+`Classical.choice`, or `Quot.sound`, missing modules, or source changes during the audit.
+Standalone audit modules with colliding local-instance names are checked in separate import
+environments rather than being omitted. Reports, source hashes, and a per-declaration axiom
+inventory are written to `.verification/axioms/`. This checks proof trust, not whether a theorem
+has the same mathematical statement as a prior version.
 
 ## Models used
 

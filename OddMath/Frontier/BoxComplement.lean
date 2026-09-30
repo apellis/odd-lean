@@ -135,7 +135,7 @@ theorem disjoint_iff_eq_hat {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ
     have h2 := image_expA_eq hat_antitone hat_le hβ hβa (expA_hat_ne hβ)
     have hr : Set.range (expA α) = Set.range (expA (hat a β)) := by
       rw [← Set.image_univ, ← Set.image_univ, ← coe_univ, ← coe_image, ← coe_image, h1, h2]
-    have he := ((expA_strictAnti hα).range_inj (expA_strictAnti hat_antitone)).mp hr
+    have he := ((expA_strictAnti hα).range_inj_of_wellFoundedGT (expA_strictAnti hat_antitone)).mp hr
     funext k
     have := congrFun he k
     simp only [expA] at this

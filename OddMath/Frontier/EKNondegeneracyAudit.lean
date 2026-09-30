@@ -70,12 +70,12 @@ def NE : Matrix (Fin 7) (Fin 7) ℤ :=
 theorem GH_mul_NH : GH * NH = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [GH, NH, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply]
+    simp [GH, NH, Matrix.mul_apply, Fin.sum_univ_succ]
 
 theorem GE_mul_NE : GE * NE = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [GE, NE, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply]
+    simp [GE, NE, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /-- Conditional: a family with actual Gram matrix `GH` spans a
 restricted-nondegenerate submodule. -/
@@ -127,27 +127,27 @@ theorem classifyH : ∀ l ∈ partsF 6 6 6, (l = [3,3] ∨ List.Lex (· < ·) [3
 theorem classifyE : ∀ l ∈ partsF 6 6 6, List.Lex (· < ·) [2,2,2] l →
     ∃ i, eRows i = l := by decide
 
-theorem hRows_ok : ∀ i, (hRows i).Sorted (· ≥ ·) ∧ (∀ x ∈ hRows i, 0 < x) ∧
+theorem hRows_ok : ∀ i, (hRows i).Pairwise (· ≥ ·) ∧ (∀ x ∈ hRows i, 0 < x) ∧
     (hRows i).sum = 6 ∧ (hRows i = [3,3] ∨ List.Lex (· < ·) [3,3] (hRows i)) := by decide
 
-theorem eRows_ok : ∀ i, (eRows i).Sorted (· ≥ ·) ∧ (∀ x ∈ eRows i, 0 < x) ∧
+theorem eRows_ok : ∀ i, (eRows i).Pairwise (· ≥ ·) ∧ (∀ x ∈ eRows i, 0 < x) ∧
     (eRows i).sum = 6 ∧ List.Lex (· < ·) [2,2,2] (eRows i) := by decide
 
-theorem hL_mem (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x) (hsum : l.sum = 6)
+theorem hL_mem (l : List ℕ) (hs : l.Pairwise (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x) (hsum : l.sum = 6)
     (hlex : l = [3,3] ∨ List.Lex (· < ·) [3,3] l) : hL l ∈ Hge lam33 := by
   apply Submodule.subset_span
-  refine ⟨YoungDiagram.ofRowLens l hs, ?_, ?_, ?_⟩
-  · rw [EKPartitionSpanning.card_ofRowLens, hsum, lam33_card]
+  refine ⟨YoungDiagram.ofRowLens l hs.sortedGE, ?_, ?_, ?_⟩
+  · rw [EKPartitionSpanning.card_ofRowLens l hs, hsum, lam33_card]
   · rcases hlex with rfl | h
     · left; rfl
     · right; rw [lam33_rows, YoungDiagram.rowLens_ofRowLens_eq_self hp]; exact h
   · rw [EKPartitionSpanning.hPartition, YoungDiagram.rowLens_ofRowLens_eq_self hp]; rfl
 
-theorem eL_mem (l : List ℕ) (hs : l.Sorted (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x) (hsum : l.sum = 6)
+theorem eL_mem (l : List ℕ) (hs : l.Pairwise (· ≥ ·)) (hp : ∀ x ∈ l, 0 < x) (hsum : l.sum = 6)
     (hlex : List.Lex (· < ·) [2,2,2] l) : eL l ∈ Egt 6 lam33 := by
   apply Submodule.subset_span
-  refine ⟨YoungDiagram.ofRowLens l hs, ?_, ?_, ?_⟩
-  · rw [EKPartitionSpanning.card_ofRowLens, hsum]
+  refine ⟨YoungDiagram.ofRowLens l hs.sortedGE, ?_, ?_, ?_⟩
+  · rw [EKPartitionSpanning.card_ofRowLens l hs, hsum]
   · rw [transpose33, lamT222_rows, YoungDiagram.rowLens_ofRowLens_eq_self hp]; exact hlex
   · rw [EKSemiorthogonality.ePartition, YoungDiagram.rowLens_ofRowLens_eq_self hp]; rfl
 

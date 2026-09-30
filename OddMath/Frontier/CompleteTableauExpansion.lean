@@ -35,7 +35,9 @@ theorem entry_mono (T : PositiveTableau nu) {p q : ℕ × ℕ}
   have hm := nu.up_left_mem hq.1 le_rfl hp
   have hr := T.toSemistandardYoungTableau.row_weak_of_le hq.2 hm
   rcases hq.1.eq_or_lt with he | he
-  · simpa only [he] using hr
+  · change T.entry q.1 q.2 ≤ T.entry q.1 p.2 at hr
+    rw [he] at hr
+    simpa only [he] using hr
   · exact hr.trans (T.col_strict' he hp).le
 
 /-- The actual cells carrying labels at most r, not an arbitrary shape chain. -/
@@ -54,19 +56,19 @@ def prefixShape (T : PositiveTableau nu) (r : ℕ) : YoungDiagram where
 def prefixTableau (T : PositiveTableau nu) (r : ℕ) : PositiveTableau (prefixShape T r) where
   entry i j := if (i,j) ∈ prefixShape T r then T.entry i j else 0
   row_weak' hj hp := by
-    rw [if_pos hp, if_pos ((prefixShape T r).up_left_mem le_rfl hj.le hp)]
+    rw [ite_eq_left hp, ite_eq_left ((prefixShape T r).up_left_mem le_rfl hj.le hp)]
     exact T.row_weak' hj (Finset.mem_filter.mp hp).1
   col_strict' hi hp := by
-    rw [if_pos hp, if_pos ((prefixShape T r).up_left_mem hi.le le_rfl hp)]
+    rw [ite_eq_left hp, ite_eq_left ((prefixShape T r).up_left_mem hi.le le_rfl hp)]
     exact T.col_strict' hi (Finset.mem_filter.mp hp).1
-  zeros' hp := if_neg hp
+  zeros' hp := ite_eq_right hp
   positive hp := by
-    rw [if_pos hp]
+    rw [ite_eq_left hp]
     exact T.positive (Finset.mem_filter.mp hp).1
 
 @[simp] theorem prefix_entry (T : PositiveTableau nu) (r : ℕ) {p : ℕ × ℕ}
     (hp : p ∈ (prefixShape T r).cells) : (prefixTableau T r).entry p.1 p.2 = T.entry p.1 p.2 :=
-  if_pos hp
+  ite_eq_left hp
 
 theorem prefix_bounded (T : PositiveTableau nu) (r : ℕ) : InAlphabet r (prefixTableau T r) := by
   intro p hp
@@ -104,9 +106,9 @@ def extendTableau (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
   row_weak' := by
     intro i a b hab hp
     by_cases hm : (i,b) ∈ mu
-    · rw [if_pos hm, if_pos (mu.up_left_mem le_rfl hab.le hm)]
+    · rw [ite_eq_left hm, ite_eq_left (mu.up_left_mem le_rfl hab.le hm)]
       exact T.row_weak' hab hm
-    · rw [if_neg hm, if_pos hp]
+    · rw [ite_eq_right hm, ite_eq_left hp]
       split_ifs with ha
       · exact (hb (i,a) ha).trans (Nat.le_succ r)
       · omega
@@ -114,7 +116,7 @@ def extendTableau (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
   col_strict' := by
     intro a b j hab hp
     by_cases hm : (b,j) ∈ mu
-    · rw [if_pos hm, if_pos (mu.up_left_mem hab.le le_rfl hm)]
+    · rw [ite_eq_left hm, ite_eq_left (mu.up_left_mem hab.le le_rfl hm)]
       exact T.col_strict' hab hm
     · have ha : (a,j) ∈ mu := by
         by_contra hn
@@ -122,21 +124,21 @@ def extendTableau (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
           (b,j) (Finset.mem_sdiff.mpr ⟨hp,hm⟩) rfl
         have := congrArg Prod.fst eq
         omega
-      rw [if_pos ha, if_neg hm, if_pos hp]
+      rw [ite_eq_left ha, ite_eq_right hm, ite_eq_left hp]
       exact Nat.lt_succ_of_le (hb (a,j) ha)
   zeros' := by
     intro i j hp
     have hn : (i,j) ∉ mu := fun hm => hp (hh.1 hm)
-    rw [if_neg hn, if_neg hp]
+    rw [ite_eq_right hn, ite_eq_right hp]
   positive := by
     intro i j hp
     by_cases hm : (i,j) ∈ mu
-    · rw [if_pos hm]; exact T.positive hm
-    · rw [if_neg hm, if_pos hp]; omega
+    · rw [ite_eq_left hm]; exact T.positive hm
+    · rw [ite_eq_right hm, ite_eq_left hp]; omega
 
 @[simp] theorem extend_old (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
     (hh : Horizontal mu nu) {p : ℕ × ℕ} (hp : p ∈ mu.cells) :
-    (extendTableau T r hb hh).entry p.1 p.2 = T.entry p.1 p.2 := if_pos hp
+    (extendTableau T r hb hh).entry p.1 p.2 = T.entry p.1 p.2 := ite_eq_left hp
 
 @[simp] theorem extend_new (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
     (hh : Horizontal mu nu) {p : ℕ × ℕ} (hp : p ∈ nu.cells \ mu.cells) :
@@ -144,7 +146,7 @@ def extendTableau (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
   rcases p with ⟨i,j⟩
   have hn : (i,j) ∉ mu := (Finset.mem_sdiff.mp hp).2
   have hm : (i,j) ∈ nu := (Finset.mem_sdiff.mp hp).1
-  simp only [extendTableau, if_neg hn, if_pos hm]
+  simp only [extendTableau, ite_eq_right hn, ite_eq_left hm]
 
 theorem extend_bounded (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
     (hh : Horizontal mu nu) : InAlphabet (r+1) (extendTableau T r hb hh) := by
@@ -168,7 +170,7 @@ theorem extend_content (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
         apply Finset.sum_congr rfl
         intro p hp
         rw [extend_new T r hb hh hp]
-      _ = _ := by simp [← Finsupp.single_smul]
+      _ = _ := by simp
 
 theorem prefix_extend_shape (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
     (hh : Horizontal mu nu) : prefixShape (extendTableau T r hb hh) r = mu := by
@@ -243,15 +245,15 @@ def prefixDegree (c : ℕ → ℕ) (r : ℕ) : ℕ := ∑ i ∈ Finset.range r, 
 
 theorem prefixContent_above (c : ℕ → ℕ) {r k : ℕ} (hk : r < k) : prefixContent c r k = 0 := by
   unfold prefixContent
-  simp only [Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [Finsupp.finsetSum_apply, Finsupp.single_apply]
   apply Finset.sum_eq_zero
   intro i hi
-  rw [if_neg (by have := Finset.mem_range.mp hi; omega)]
+  rw [ite_eq_right (by have := Finset.mem_range.mp hi; omega)]
 
 theorem prefixContent_total (c : ℕ → ℕ) (r : ℕ) :
     (prefixContent c r).sum (fun _ k => k) = prefixDegree c r := by
   unfold prefixContent prefixDegree
-  rw [← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+  rw [← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
   simp only [Finsupp.sum_single_index (h := fun _ k : ℕ => k) rfl]
 
 abbrev Fiber (c : ℕ → ℕ) (r : ℕ) (nu : YoungDiagram) :=
@@ -279,7 +281,7 @@ theorem content_above (T : PositiveTableau nu) (r : ℕ) (hb : InAlphabet r T)
 theorem prefix_content_apply (T : PositiveTableau nu) (r k : ℕ) :
     content (prefixTableau T r) k = if k ≤ r then content T k else 0 := by
   by_cases hk : k ≤ r
-  · rw [if_pos hk, content_apply, content_apply]
+  · rw [ite_eq_left hk, content_apply, content_apply]
     congr 1
     ext p
     simp only [Finset.mem_filter, mem_prefix]
@@ -290,7 +292,7 @@ theorem prefix_content_apply (T : PositiveTableau nu) (r k : ℕ) :
     · rintro ⟨hp,he⟩
       have hr : T.entry p.1 p.2 ≤ r := he ▸ hk
       exact ⟨⟨hp,hr⟩, by rw [prefix_entry T r (Finset.mem_filter.mpr ⟨hp,hr⟩), he]⟩
-  · rw [if_neg hk]
+  · rw [ite_eq_right hk]
     exact content_above _ r (prefix_bounded T r) (by omega)
 
 theorem fiber_prefix_content (c : ℕ → ℕ) (r : ℕ) (T : Fiber c (r+1) nu) :
@@ -299,8 +301,8 @@ theorem fiber_prefix_content (c : ℕ → ℕ) (r : ℕ) (T : Fiber c (r+1) nu) 
   rw [prefix_content_apply, T.property, prefixContent_succ, Finsupp.add_apply,
     Finsupp.single_apply]
   by_cases hk : k ≤ r
-  · rw [if_pos hk, if_neg (by omega : r+1 ≠ k), Nat.add_zero]
-  · rw [if_neg hk, prefixContent_above c (by omega : r < k)]
+  · rw [ite_eq_left hk, ite_eq_right (by omega : r+1 ≠ k), Nat.add_zero]
+  · rw [ite_eq_right hk, prefixContent_above c (by omega : r < k)]
 
 theorem fiber_prefix_degree (c : ℕ → ℕ) (r : ℕ) (T : Fiber c (r+1) nu) :
     (prefixShape T.val r).card = prefixDegree c r := by
@@ -314,7 +316,7 @@ abbrev FiberStep (c : ℕ → ℕ) (r : ℕ) (nu : YoungDiagram) :=
 theorem step_card (c : ℕ → ℕ) (r : ℕ)
     (u : DegreeShape (prefixDegree c r)) (v : DegreeShape (prefixDegree c (r+1)))
     (hh : Horizontal u.val v.val) : (v.val.cells \ u.val.cells).card = c (r+1) := by
-  rw [Finset.card_sdiff hh.1]
+  rw [Finset.card_sdiff_of_subset hh.1]
   change v.val.card - u.val.card = _
   rw [u.property, v.property, prefixDegree_succ, Nat.add_sub_cancel_left]
 
@@ -438,7 +440,7 @@ private theorem countNELt_sum (as : Tableau) (B : TBox) :
   induction as with
   | nil => rfl
   | cons A as ih =>
-    simp [countNELt,isNorth,isEast,isLtEntry,ih,and_assoc]
+    simp [countNELt,isNorth,isEast,isLtEntry,ih]
     split_ifs <;> simp_all
 
 private theorem countNorthLt_sum (as : Tableau) (B : TBox) :
@@ -553,7 +555,7 @@ theorem degree_zero_unique (u : DegreeShape 0) : u = degreeZero := by
   exact Finset.card_eq_zero.mp u.property
 
 theorem recordCoeff_empty (c : ℕ → ℕ) : recordCoeff c 0 ⊥ = 1 := by
-  letI : Unique (Fiber c 0 ⊥) :=
+  let : Unique (Fiber c 0 ⊥) :=
     { default := ⟨emptyTableau, by simp [content,prefixContent]⟩
       uniq := by intro T; apply Subtype.ext; apply ext_cells; simp }
   rw [recordCoeff, Fintype.sum_unique]
@@ -563,7 +565,7 @@ theorem recordCoeff_empty (c : ℕ → ℕ) : recordCoeff c 0 ⊥ = 1 := by
 theorem prefix_expansion_zero (n : ℕ) (c : ℕ → ℕ) :
     prefixProduct n c 0 = ∑ u : DegreeShape (prefixDegree c 0), recordCoeff c 0 u.val • pieriSp n u.val := by
   change 1 = ∑ u : DegreeShape 0, recordCoeff c 0 u.val • pieriSp n u.val
-  letI : Unique (DegreeShape 0) := { default := degreeZero, uniq := degree_zero_unique }
+  let : Unique (DegreeShape 0) := { default := degreeZero, uniq := degree_zero_unique }
   rw [Fintype.sum_unique]
   change 1 = recordCoeff c 0 ⊥ • pieriSp n ⊥
   simp [recordCoeff_empty,pieriSp,shapeExponent,directNorth,north,northEast]
@@ -589,11 +591,11 @@ theorem prefix_expansion (n : ℕ) (c : ℕ → ℕ) (r : ℕ) :
     split_ifs <;> simp only [smul_smul, smul_zero, zero_smul]
 
 @[simp] theorem prefixContent_zero_apply (c : ℕ → ℕ) (r : ℕ) : prefixContent c r 0 = 0 := by
-  simp [prefixContent,Finsupp.finset_sum_apply,Finsupp.single_apply]
+  simp [prefixContent,Finsupp.finsetSum_apply]
 
 theorem prefixContent_apply_succ (c : ℕ → ℕ) (r k : ℕ) :
     prefixContent c r (k+1) = if k < r then c (k+1) else 0 := by
-  simp [prefixContent,Finsupp.finset_sum_apply,Finsupp.single_apply]
+  simp [prefixContent,Finsupp.finsetSum_apply,Finsupp.single_apply]
 
 theorem prefixContent_eq (c : ℕ →₀ ℕ) (r : ℕ) (h0 : c 0 = 0)
     (hb : ∀ k ∈ c.support, k ≤ r) : prefixContent c r = c := by
@@ -605,7 +607,7 @@ theorem prefixContent_eq (c : ℕ →₀ ℕ) (r : ℕ) (h0 : c 0 = 0)
     split_ifs with hk
     · rfl
     · symm
-      apply Finsupp.not_mem_support_iff.mp
+      apply Finsupp.notMem_support_iff.mp
       intro hm
       have := hb (k+1) hm
       omega

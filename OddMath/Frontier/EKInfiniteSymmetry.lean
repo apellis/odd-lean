@@ -50,7 +50,7 @@ theorem h_one_ne_zero : h 1 ≠ 0 := by
 theorem h_one_ne_neg : h 1 ≠ -h 1 := by
   intro he
   have hh := congrArg (fun x : Q => x*h 1) he
-  dsimp only at hh
+
   rw [neg_mul] at hh
   exact EKAutomorphismsControls.super_square_not_ordinary hh.symm
 
@@ -80,7 +80,7 @@ theorem psi1_infinite_order : orderOf psi1 = 0 := by
   rw [orderOf_eq_zero_iff']
   intro k hk he
   have hh := congrArg (fun f : Q ≃+* Q => f (h 2)) he
-  dsimp only at hh
+
   rw [psi1_pow_apply, psi1_iterate_h_two] at hh
   change h 2-(k : ℤ) • (h 1*h 1) = h 2 at hh
   have hz : (k : ℤ) = 0 := translation_injective (by simpa only [zero_smul, sub_zero] using hh)

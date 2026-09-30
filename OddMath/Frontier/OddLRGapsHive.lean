@@ -47,16 +47,16 @@ theorem coord_negTri (R : Type*) [CommRing R] (i j : ℕ) (hij : i ≤ j) (hj : 
   rfl
 
 theorem negTri_isLR (R : Type*) [CommRing R] [PartialOrder R] : IsLRTriangle (negTri R) where
-  zero := by rw [coord_negTri R 0 0 le_rfl zero_le_one, if_pos rfl]
+  zero := by rw [coord_negTri R 0 0 le_rfl zero_le_one, ite_eq_left rfl]
   nonneg := fun i j h1 h2 h3 => by omega
   column := fun i j h1 h2 h3 => by omega
   lattice := fun i j h1 h2 h3 => by omega
 
 theorem coord_negTri_01 (R : Type*) [CommRing R] : coord (negTri R) 0 1 = -1 := by
-  rw [coord_negTri R 0 1 zero_le_one le_rfl, if_neg one_ne_zero]
+  rw [coord_negTri R 0 1 zero_le_one le_rfl, ite_eq_right one_ne_zero]
 
 theorem coord_negTri_11 (R : Type*) [CommRing R] : coord (negTri R) 1 1 = -1 := by
-  rw [coord_negTri R 1 1 le_rfl le_rfl, if_neg one_ne_zero]
+  rw [coord_negTri R 1 1 le_rfl le_rfl, ite_eq_right one_ne_zero]
 
 /-- E Definition 4.11: an integral LR triangle with `a_{0,j} < 0` and `a_{j,j} < 0`. -/
 theorem lrTriangle_neg_int :
@@ -204,7 +204,7 @@ theorem lrK_zero : ∀ p ∈ lrK n, p.2 = 0 := by
 theorem mem_cut_lrK (A : V ℝ n) : A ∈ cut (lrK n) ↔ IsLRTriangle A := by
   simp only [lrK, mem_cut_union, mem_cut_eqCut, mem_cut_biUnion, mem_cut_single, mem_idxSet,
     coordL_apply, LinearMap.neg_apply, neg_nonpos, colL, latL, LinearMap.sub_apply,
-    LinearMap.coeFn_sum, Finset.sum_apply, sub_nonpos, and_imp, Prod.forall]
+    LinearMap.sum_apply, sub_nonpos, and_imp, Prod.forall]
   constructor
   · rintro ⟨⟨⟨h0, h1⟩, h2⟩, h3⟩
     exact ⟨h0, fun i j hi hij hj => h1 i j (by omega) hj hi hij,
@@ -228,7 +228,7 @@ theorem mem_cut_shapeK (lam mu nu : ℕ → ℝ) (A : V ℝ n) :
     A ∈ cut (shapeK n lam mu nu) ↔
       ∀ j, 1 ≤ j → j ≤ n → lamT A j = lam j ∧ muT A j = mu j ∧ nuT A j = nu j := by
   simp only [shapeK, mem_cut_biUnion, mem_cut_union, mem_cut_eqCut, Finset.mem_Icc, lamL, nuL,
-    LinearMap.coeFn_sum, Finset.sum_apply, coordL_apply, lamT, muT, nuT, and_imp, and_assoc]
+    LinearMap.sum_apply, coordL_apply, lamT, muT, nuT, and_imp, and_assoc]
 
 theorem triangles_eq_cut (lam mu nu : ℕ → ℝ) :
     triangles n lam mu nu = cut (lrK n ∪ shapeK n lam mu nu) := by
@@ -345,8 +345,14 @@ theorem triangles_isPolytope (lam mu nu : ℕ → ℝ) : IsPolytope (triangles n
 
 theorem hives_eq_preimage (lam mu nu : ℕ → ℝ) :
     hives n lam mu nu = (phiEquiv ℝ n).symm ⁻¹' triangles n lam mu nu := by
-  rw [← (phi_bijOn (n := n) lam mu nu).image_eq, ← LinearEquiv.image_eq_preimage]
-  rfl
+  rw [← (phi_bijOn (n := n) lam mu nu).image_eq]
+  ext x
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    simpa only [Set.mem_preimage, show phi ℝ n = (phiEquiv ℝ n).toLinearMap from rfl,
+      LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] using hy
+  · intro hx
+    exact ⟨(phiEquiv ℝ n).symm x, hx, (phiEquiv ℝ n).apply_symm_apply x⟩
 
 /-- E §4.3, p. 18: `H(λ, μ, ν)` is a convex polytope in `V`. -/
 theorem hives_isPolytope (lam mu nu : ℕ → ℝ) : IsPolytope (hives n lam mu nu) := by
@@ -354,7 +360,7 @@ theorem hives_isPolytope (lam mu nu : ℕ → ℝ) : IsPolytope (hives n lam mu 
       fun p => (p.1.comp (phiEquiv ℝ n).symm.toLinearMap, p.2), ?_⟩, ?_⟩
   · rw [hives_eq_preimage, triangles_eq_cut, ← LinearEquiv.coe_toLinearMap, preimage_cut]
   · rw [← (phi_bijOn (n := n) lam mu nu).image_eq]
-    exact (LinearMap.toContinuousLinearMap (phi ℝ n)).lipschitz.isBounded_image
+    exact (LinearMap.toContinuousLinearMap (phi ℝ n)).lipschitzWith.isBounded_image
       (triangles_isBounded lam mu nu)
 
 theorem triangles_convex (lam mu nu : ℕ → ℝ) : Convex ℝ (triangles n lam mu nu) :=
@@ -389,7 +395,7 @@ def NBil (n : ℕ) (m l : ℕ → V R n →ₗ[R] R) : LinearMap.BilinForm R (V 
 
 theorem NBil_apply (n : ℕ) (m l : ℕ → V R n →ₗ[R] R) (X : V R n) :
     NBil R n m l X X = ∑ j ∈ Icc 1 n, (m j X * ∑ k ∈ Ico 1 j, m k X + l j X * ∑ k ∈ Ico 1 j, l k X) := by
-  simp only [NBil, LinearMap.coeFn_sum, Finset.sum_apply, LinearMap.add_apply,
+  simp only [NBil, LinearMap.sum_apply, LinearMap.add_apply,
     LinearMap.compl₁₂_apply, LinearMap.mul_apply', Finset.mul_sum, Finset.sum_add_distrib]
 
 /-- E §4.3, p. 19: `N(μ) + N(λ)` as a quadratic form in the triangle coordinates `a_{i,j}`. -/

@@ -53,7 +53,7 @@ theorem rowW_filter_gt (X : ℕ → ℕ → ℕ) (m p : ℕ) : ∀ r,
   | r + 1 => by
     rw [show m + (r + 1) = (m + r) + 1 by omega, rowW_succ, List.filter_append,
       rowW_filter_gt X m p r, rowW_succ, List.map_append,
-      List.filter_eq_self.mpr (fun a ha => by rw [List.eq_of_mem_replicate ha]; simp; omega),
+      List.filter_eq_self.mpr (fun a ha => by rw [List.eq_of_mem_replicate ha]; simp),
       List.map_replicate, show r + 1 + m = m + r + 1 by omega]
 
 theorem word_filter_gt (X : ℕ → ℕ → ℕ) (m i r : ℕ) :
@@ -74,7 +74,7 @@ theorem colword_transpose_filter {m r C : ℕ} (U : Fin m → Fin C → ℕ) (V 
   intro p hp hpC q hq hqr
   simp only [ext_transpose]
   simp only [ext]
-  rw [dif_pos (by omega), dif_pos (by omega)]
+  rw [dite_eq_left (by omega), dite_eq_left (by omega)]
   have : (⟨q + m - 1, by omega⟩ : Fin (m + r)) = Fin.natAdd m ⟨q - 1, by omega⟩ := by
     ext; simp; omega
   rw [this, EKPairingMatrices.join_right]
@@ -353,7 +353,7 @@ theorem skew_content_eq_count (S : SkewTableau lam mu) (k : ℕ) :
     S.content k = S.rowWord.count k := by
   classical
   rw [SkewTableau.content_apply]
-  simp only [SkewTableau.rowWord, List.count_eq_countP, List.countP_map,
+  simp only [SkewTableau.rowWord, List.count_eq_countP,
     List.countP_eq_length_filter]
   let l := ((TableauRowWord.rowCells lam).filter (fun p => p ∉ mu.cells)).filter
     (fun p => S.entry p.1 p.2 == k)
@@ -374,7 +374,7 @@ theorem content_QV (S : SkR lam mu r) : content (zV S).2.2.1 = S.1.content := by
 theorem shapeContent_succ (ν : YoungDiagram) (i : ℕ) :
     TableauDominance.shapeContent ν (i + 1) = ν.rowLen i := by
   classical
-  simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply,
+  simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply,
     Finset.sum_boole, Nat.cast_id]
   have : ν.cells.filter (fun p => p.1 + 1 = i + 1) =
       (Finset.range (ν.rowLen i)).image (fun j => (i, j)) := by

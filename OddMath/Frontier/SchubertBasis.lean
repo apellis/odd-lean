@@ -26,7 +26,7 @@ theorem monomial_mem_box {N : ℕ} (a b : Fin N → ℕ) (c : ℤ)
   intro d hd
   have he : a = d := by
     by_contra hn
-    exact hd (Finsupp.single_eq_of_ne hn)
+    exact hd (Finsupp.single_eq_of_ne (Ne.symm hn))
   simpa only [← he] using h
 
 theorem H_eq_box (N : ℕ) : H N = Box (fun i => N-1-i.val) := by
@@ -100,13 +100,13 @@ theorem square_coeff_same {N : ℕ} (i : Fin N) (f : SkewPolynomial N) (a : Fin 
   classical
   have he := (Finsupp.sum_single f).symm
   conv_lhs => rw [he]
-  simp only [Finsupp.sum, Finset.mul_sum, square_monomial, Finsupp.finset_sum_apply]
+  simp only [Finsupp.sum, Finset.mul_sum, square_monomial, Finsupp.finsetSum_apply]
   rw [Finset.sum_eq_single a]
   · exact Finsupp.single_eq_same
   · intro b _ hba
-    exact Finsupp.single_eq_of_ne (fun h => hba (add_left_cancel h))
+    exact Finsupp.single_eq_of_ne (fun h => hba (add_left_cancel h.symm))
   · intro ha
-    simp [Finsupp.not_mem_support_iff.mp ha]
+    simp [Finsupp.notMem_support_iff.mp ha]
 
 theorem square_coeff_nonzero {N : ℕ} (i : Fin N) (f : SkewPolynomial N) (a : Fin N → ℕ)
     (ha : (generator i ^ 2 * f) a ≠ 0) :
@@ -114,11 +114,11 @@ theorem square_coeff_nonzero {N : ℕ} (i : Fin N) (f : SkewPolynomial N) (a : F
   classical
   have he := (Finsupp.sum_single f).symm
   rw [he] at ha
-  simp only [Finsupp.sum, Finset.mul_sum, square_monomial, Finsupp.finset_sum_apply] at ha
+  simp only [Finsupp.sum, Finset.mul_sum, square_monomial, Finsupp.finsetSum_apply] at ha
   obtain ⟨b,hb,hc⟩ := Finset.exists_ne_zero_of_sum_ne_zero ha
   refine ⟨b, Finsupp.mem_support_iff.mp hb, ?_⟩
   by_contra hn
-  exact hc (Finsupp.single_eq_of_ne hn)
+  exact hc (Finsupp.single_eq_of_ne (Ne.symm hn))
 
 /-- Extremal-support cancellation: the square difference cannot hide a bound violation.
 This avoids the false assertion that every individual exponent decreases under ∂. -/
@@ -138,15 +138,15 @@ theorem square_difference_bound {N : ℕ} (p q k : Fin N) (hpq : p ≠ q)
     by_contra hn
     obtain ⟨c,hc,he⟩ := square_coeff_nonzero q f (twice p+b) hn
     have hep := congrFun he p
-    simp only [Pi.add_apply, twice_apply, if_neg hpq.symm, ite_true, zero_add] at hep
+    simp only [Pi.add_apply, twice_apply, ite_eq_right hpq.symm, ite_true, zero_add] at hep
     have hcb : c ∈ bad := by
       apply Finset.mem_filter.mpr
       refine ⟨Finsupp.mem_support_iff.mpr hc, ?_⟩
       rcases hk with rfl | ⟨hkp,hkq⟩
-      · simp only [if_pos rfl] at hbb ⊢
+      · simp only [] at hbb ⊢
         omega
       · have hek := congrFun he k
-        simp only [Pi.add_apply, twice_apply, if_neg (Ne.symm hkp), if_neg hkq.symm,
+        simp only [Pi.add_apply, twice_apply, ite_eq_right (Ne.symm hkp), ite_eq_right hkq.symm,
           zero_add] at hek
         simpa only [hek] using hbb
     have hm : c p ≤ b p := hmax c hcb
@@ -159,7 +159,7 @@ theorem square_difference_bound {N : ℕ} (p q k : Fin N) (hpq : p ≠ q)
   · subst k
     simp only [ite_true] at hbnd hbb
     omega
-  · simp only [if_neg hkp, if_neg (Ne.symm hkp)] at hbnd hbb
+  · simp only [ite_eq_right hkp, ite_eq_right (Ne.symm hkp)] at hbnd hbb
     omega
 
 theorem s_box {n : ℕ} (i : Fin (n+1)) (b : Fin (n+2) → ℕ)
@@ -193,7 +193,7 @@ theorem divided_mem_H {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
   have h₁ : ∀ k, e k + b k ≤ B k := by
     intro k
     by_cases hl : k=i.castSucc
-    · subst k; simp [e, expSingle, hi, hi.symm, B, b, Fin.val_succ]; omega
+    · subst k; simp [e, expSingle, hi, hi.symm, B, b]; omega
     · by_cases hr : k=i.succ
       · subst k; simp [e, expSingle, hi, hi.symm, B, b, Fin.val_succ]; omega
       · simp [e, expSingle, Ne.symm hl, Ne.symm hr, B, hl, hr]
@@ -202,7 +202,7 @@ theorem divided_mem_H {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
     by_cases hl : k=i.castSucc
     · subst k; simp [e, expSingle, hi, hi.symm, B, b, Fin.val_succ]; omega
     · by_cases hr : k=i.succ
-      · subst k; simp [e, expSingle, hi, hi.symm, B, b, Fin.val_succ]; omega
+      · subst k; simp [e, expSingle, hi, hi.symm, B, b]; omega
       · simp [e, expSingle, Ne.symm hl, Ne.symm hr, B, hl, hr,
           Equiv.swap_apply_of_ne_of_ne hl hr]
   have hR : (generator i.castSucc ^ 2 - generator i.succ ^ 2) * divided i f ∈ Box B := by
@@ -231,7 +231,7 @@ theorem divided_mem_H {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
       omega
     · have h := square_difference_bound i.castSucc i.succ k hi (Or.inr ⟨hl,hr⟩)
         (divided i f) (B k) (fun a ha => (mem_box _ _).mp hR a ha _) a ha
-      simpa only [if_neg hl, add_zero, B, hl, hr, false_or, ite_false, b] using h
+      simpa only [ite_eq_right hl, add_zero, B, hl, hr, false_or, ite_false, b] using h
 
 theorem applyWord_mem_H {n : ℕ} (w : Word n) (f : SkewPolynomial (n+2))
     (hf : f ∈ H (n+2)) : LongestDivided.applyWord w f ∈ H (n+2) := by
@@ -368,13 +368,13 @@ theorem H_eq_schubertSpan (n : ℕ) :
   exact hgf ▸ hg
 
 /-- Lemma 2.12: an actual integral basis of the literal H. -/
-def schubertBasis (n : ℕ) : Basis (Perm n) ℤ (H (n+2)) :=
-  (Basis.span (schubert_linearIndependent n)).map
+def schubertBasis (n : ℕ) : Module.Basis (Perm n) ℤ (H (n+2)) :=
+  (Module.Basis.span (schubert_linearIndependent n)).map
     (LinearEquiv.ofEq _ _ (H_eq_schubertSpan n).symm)
 
 @[simp] theorem schubertBasis_val (n : ℕ) (w : Perm n) :
     (schubertBasis n w : SkewPolynomial (n+2)) = schubert w := by
-  simp only [schubertBasis, Basis.map_apply, LinearEquiv.coe_ofEq_apply, Basis.span_apply]
+  simp only [schubertBasis, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
 
 /-- Universal unique integer expansion in the literal Schubert polynomials. -/
 theorem integer_expansion_unique {n : ℕ} (f : SkewPolynomial (n+2)) (hf : f ∈ H (n+2)) :
@@ -392,23 +392,24 @@ theorem integer_expansion_unique {n : ℕ} (f : SkewPolynomial (n+2)) (hf : f �
     simpa only [(schubertBasis n).repr_sum_self] using
       (congrArg (fun z => (schubertBasis n).repr z w) he).symm
 
-def stairBasis (N : ℕ) : Basis (StairIndex N) ℤ (H N) :=
-  Basis.span ((Finsupp.linearIndependent_single_one ℤ (Fin N → ℕ) :
+def stairBasis (N : ℕ) : Module.Basis (StairIndex N) ℤ (H N) :=
+  Module.Basis.span ((Finsupp.linearIndependent_single_one ℤ (Fin N → ℕ) :
     LinearIndependent ℤ (fun a : Fin N → ℕ => monomial a (1 : ℤ))).comp
       (fun a : StairIndex N => a.val) Subtype.val_injective)
 
 @[simp] theorem stairBasis_val (N : ℕ) (a : StairIndex N) :
-    (stairBasis N a : SkewPolynomial N) = stairMonomial a := Basis.span_apply _ _
+    (stairBasis N a : SkewPolynomial N) = stairMonomial a := by
+  exact congrArg Subtype.val (Module.Basis.span_apply _ _)
 
 /-- Scalar extension of a proved integral basis change. Used for both kernel sides. -/
 def changeCoeffs {V M α β : Type*} [AddCommGroup V]
     [AddCommGroup M] [Fintype α] [Fintype β]
-    (b : Basis α ℤ V) (d : Basis β ℤ V) (c : α → M) : β → M :=
+    (b : Module.Basis α ℤ V) (d : Module.Basis β ℤ V) (c : α → M) : β → M :=
   fun j => ∑ i, d.repr (b i) j • c i
 
 theorem changeCoeffs_inverse {V M α β : Type*} [AddCommGroup V]
     [AddCommGroup M] [Fintype α] [Fintype β]
-    (b : Basis α ℤ V) (d : Basis β ℤ V) (c : α → M) :
+    (b : Module.Basis α ℤ V) (d : Module.Basis β ℤ V) (c : α → M) :
     changeCoeffs d b (changeCoeffs b d c) = c := by
   classical
   funext k
@@ -442,7 +443,7 @@ theorem right_change {n : ℕ} (c : Perm n → K n) :
       ∑ w, schubert w * (c w : SkewPolynomial (n+2)) := by
   classical
   dsimp only [toStair, changeCoeffs]
-  simp only [ AddSubmonoidClass.coe_finset_sum, AddSubgroupClass.coe_zsmul, Finset.mul_sum,
+  simp only [ AddSubmonoidClass.coe_finsetSum, AddSubgroupClass.coe_zsmul, Finset.mul_sum,
     mul_smul_comm]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -454,7 +455,7 @@ theorem left_change {n : ℕ} (c : Perm n → K n) :
       ∑ w, (c w : SkewPolynomial (n+2)) * schubert w := by
   classical
   dsimp only [toStair, changeCoeffs]
-  simp only [ AddSubmonoidClass.coe_finset_sum, AddSubgroupClass.coe_zsmul, Finset.sum_mul,
+  simp only [ AddSubmonoidClass.coe_finsetSum, AddSubgroupClass.coe_zsmul, Finset.sum_mul,
     smul_mul_assoc]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl

@@ -12,8 +12,8 @@ example : Q = ((FreeAlgebra ℤ ℕ) ⧸ radical) := rfl
 example (d : ℕ) : degreePiece d ≃ₗ[ℤ] Module.Dual ℤ (degreePiece d) := pairingEquiv d
 example (d : ℕ) (x y : degreePiece d) :
     pairingEquiv d x y = quotientPairing y.val x.val := rfl
-example (d : ℕ) : Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) := mBasis d
-example (d : ℕ) : Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) := fBasis d
+example (d : ℕ) : Module.Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) := mBasis d
+example (d : ℕ) : Module.Basis (DegreeShapes.DegreeShape d) ℤ (degreePiece d) := fBasis d
 example (d : ℕ) (l : Module.Dual ℤ (degreePiece d)) :
     ∃! x : degreePiece d, ∀ y : degreePiece d, quotientPairing y.val x.val = l y :=
   unique_representative d l
@@ -72,8 +72,8 @@ run_cmd do
       ``EKDualBasesControls.southwest_northeast_sign_control] do
     unless owned.any (fun (name, _) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compiler := (name.toString.splitOn ".").any (fun s =>

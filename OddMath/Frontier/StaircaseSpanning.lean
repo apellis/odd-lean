@@ -49,7 +49,7 @@ theorem tailE_expand (N k : ℕ) :
         (X N ^ (j+1) * elementaryPoly (N+1) (k-j))) =
         -(X N * ∑ j ∈ Finset.range (k+1), (-1:ℤ)^j •
           (X N ^ j * elementaryPoly (N+1) (k-j))) := by
-      simp only [pow_succ', mul_neg, mul_one, neg_one_mul, neg_smul, Finset.mul_sum,
+      simp only [pow_succ', neg_one_mul, neg_smul, Finset.mul_sum,
         mul_smul_comm, mul_assoc, Finset.sum_neg_distrib]
     rw [hs]
     exact sub_eq_neg_add _ _
@@ -82,7 +82,7 @@ theorem firstSpan_term (N j : ℕ) (hj : j < N+1) (c : E (N+1)) :
     X N ^ j * (c : SkewPolynomial (N+1)) ∈ firstSpan N := by
   classical
   refine ⟨fun i => if i = ⟨j,hj⟩ then c else 0, ?_⟩
-  simp only [apply_ite, Subring.coe_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp only [apply_ite, Subring.coe_zero, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
 
 theorem firstSpan_coeff (N : ℕ) (c : E (N+1)) :
     (c : SkewPolynomial (N+1)) ∈ firstSpan N := by
@@ -112,7 +112,7 @@ theorem first_power_mem (N : ℕ) : X N ^ (N+1) ∈ firstSpan N := by
   have hunit : (-1:ℤ)^(N+1) * (-1:ℤ)^(N+1) = 1 := by
     rw [← pow_add, ← two_mul, pow_mul]; norm_num
   have hh := (firstSpan N).zsmul_mem ht ((-1:ℤ)^(N+1))
-  simpa only [smul_smul, hunit, one_smul] using hh
+  simpa only [tailE, smul_smul, hunit, one_smul] using hh
 
 theorem firstSpan_left_X (N : ℕ) {p : SkewPolynomial (N+1)}
     (hp : p ∈ firstSpan N) : X N * p ∈ firstSpan N := by
@@ -156,7 +156,7 @@ theorem tailE_mul_X (N k : ℕ) :
   have hunit : (-1:ℤ)^k * (-1:ℤ)^k = 1 := by
     rw [← pow_add, ← two_mul, pow_mul]; norm_num
   have h' := congrArg (fun p => (-1:ℤ)^k • p) h
-  simpa only [smul_smul, hunit, one_smul] using h'.symm
+  simpa only [tailE, smul_smul, hunit, one_smul] using h'.symm
 
 theorem tailE_power_mem (N k j : ℕ) : tailE N k * X N ^ j ∈ firstSpan N := by
   induction j with
@@ -230,7 +230,7 @@ theorem shift_E_left_mem (N : ℕ) (e : E N) {p : SkewPolynomial (N+1)}
       intro p hp
       rw [shift_elementary, smul_mul_assoc]
       exact (firstSpan N).zsmul_mem (tailE_left_mem N k hp) _
-    | zero => intro p _; simpa using (firstSpan N).zero_mem
+    | zero => intro p _; simp
     | one => intro p hp; simpa using hp
     | add a b _ _ ha hb =>
       intro p hp
@@ -269,8 +269,8 @@ theorem rightSpan_term {N : ℕ} (a : StairIndex N) (c : E N) :
     stairMonomial a * (c : SkewPolynomial N) ∈ rightSpan N := by
   classical
   refine ⟨fun b => if b=a then c else 0, ?_⟩
-  simp only [apply_ite, Subring.coe_zero, mul_ite, mul_zero,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp only [apply_ite, Subring.coe_zero, mul_zero,
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true]
 
 /-- Prepending a bounded first power gives EXACTLY the next staircase. -/
 def prependIndex {N : ℕ} (j : Fin (N+1)) (a : StairIndex N) : StairIndex (N+1) :=
@@ -307,7 +307,7 @@ theorem shift_monomial_mul_power (N : ℕ) (a : Fin N → ℕ) (j : ℕ) :
       simp [Pi.add_apply, hz, expSingle]
     | succ i =>
       have hi := VariableEmbedding.expEmbed_apply (Fin.succOrderEmb N) a i
-      simpa [Pi.add_apply, expSingle] using hi
+      simpa [Pi.add_apply, expSingle, (Fin.succ_ne_zero i).symm] using hi
   rw [he]
   simp [monomial, Finsupp.smul_single]
 

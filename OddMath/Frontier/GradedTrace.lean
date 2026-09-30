@@ -97,9 +97,9 @@ theorem eq_sum_of_trace (hspan : ⨆ d, Vd d = ⊤)
       rw [Finset.mul_sum, Finset.sum_eq_single i (fun j _ hj => by
         rw [mul_assoc, ← mul_assoc (ρ i), horth j i hj, zero_mul, mul_zero])
         (by simp), mul_assoc, ← mul_assoc (ρ i), hdiag, hσe]
-    simp only [Q, sub_mul, mul_sub, hPP, hPE, hEP, hEE, sub_self, sub_zero]
+    simp only [sub_mul, mul_sub, hPP, hPE, hEP, hEE, sub_self, sub_zero]
   have hQ : HasDegree Vd 0 Q := fun d v hv => by
-    simp only [Q, sub_apply, coeFn_sum, Finset.sum_apply, comp_apply]
+    simp only [Q, LinearMap.sub_apply, LinearMap.sum_apply, comp_apply]
     refine sub_mem (hP d v hv) (Submodule.sum_mem _ fun i _ => ?_)
     exact (hσ i).mem (by abel) ((hρ i).mem (d := d) (d' := d - s i) (by abel) hv)
   suffices h : ∀ d, ∀ v ∈ Vd d, Q v = 0 by
@@ -113,7 +113,7 @@ theorem eq_sum_of_trace (hspan : ⨆ d, Vd d = ⊤)
         ∑ i, (hσ i).res (d - s i) d (sub_add_cancel d (s i)) ∘ₗ
           (hρ i).res d (d - s i) (sub_eq_add_neg d (s i)).symm := by
       ext w
-      simp only [Q, restrict_coe_apply, sub_apply, coeFn_sum, Finset.sum_apply, comp_apply,
+      simp only [Q, coe_restrict_apply, LinearMap.sub_apply, LinearMap.sum_apply, comp_apply,
         Submodule.coe_sub, Submodule.coe_sum]
     rw [hsplit, map_sub, map_sum, htr, sub_eq_zero]
     refine Finset.sum_congr rfl fun i _ => ?_

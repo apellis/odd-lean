@@ -51,7 +51,7 @@ theorem reduceAdd_mul_monomial {N : ℕ} (a b : Fin N → ℕ) (r s : ℤ) :
       reduceAdd N (monomial a r) * reduceAdd N (monomial b s) := by
   change reduceAdd N (OddMath.SkewPolynomial.mul _ _) = _
   rw [OddMath.SkewPolynomial.mul_monomial, reduceAdd_monomial, reduceAdd_monomial,
-    reduceAdd_monomial, MvPolynomial.monomial_mul, expFinsupp_add]
+    reduceAdd_monomial, MvPolynomial.monomial_mul_monomial, expFinsupp_add]
   push_cast [skewSign_cast]
   rw [mul_one]
 
@@ -80,16 +80,16 @@ theorem reduce_monomial {N : ℕ} (a : Fin N → ℕ) (c : ℤ) :
   reduceAdd_monomial a c
 
 theorem coeff_reduce {N : ℕ} (f : SkewPolynomial N) (a : Fin N → ℕ) :
-    MvPolynomial.coeff (expFinsupp a) (reduce N f) = (f a : ZMod 2) := by
+    (reduce N f).coeff (expFinsupp a) = (f a : ZMod 2) := by
   classical
   induction f using Finsupp.induction_linear with
   | zero => simp
-  | add f g hf hg => rw [map_add, MvPolynomial.coeff_add, hf, hg, Finsupp.add_apply, Int.cast_add]
+  | add f g hf hg => rw [map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hf, hg, Finsupp.add_apply, Int.cast_add]
   | single b c =>
     rw [show Finsupp.single b c = monomial b c from rfl, reduce_monomial, MvPolynomial.coeff_monomial]
     by_cases h : b = a
     · subst h; simp
-    · rw [if_neg (fun e => h (expFinsupp_injective e)), Finsupp.single_eq_of_ne h, Int.cast_zero]
+    · rw [ite_eq_right (fun e => h (expFinsupp_injective e)), Finsupp.single_eq_of_ne (Ne.symm h), Int.cast_zero]
 
 theorem reduce_two_smul {N : ℕ} (g : SkewPolynomial N) : reduce N ((2 : ℤ) • g) = 0 := by
   rw [map_zsmul, two_zsmul, CharTwo.add_self_eq_zero]
@@ -102,7 +102,7 @@ theorem reduce_eq_zero_iff {N : ℕ} (f : SkewPolynomial N) :
     have hd : ∀ a, (2 : ℤ) ∣ f a := by
       intro a
       have := coeff_reduce f a
-      rw [hf, MvPolynomial.coeff_zero] at this
+      rw [hf, AddMonoidAlgebra.coeff_zero] at this
       exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp this.symm
     refine ⟨Finsupp.mapRange (fun z => z / 2) (by simp) f, ?_⟩
     ext a
@@ -147,7 +147,7 @@ theorem reduce_subsetTilde {N : ℕ} (I : Finset (Fin N)) :
   rw [OddSchurPieri.subsetTilde, map_zsmul, reduce_monomial]
   have he : expFinsupp (OddSchurPieri.subsetExp I) = ∑ i ∈ I, Finsupp.single i 1 := by
     ext j
-    simp [expFinsupp, OddSchurPieri.subsetExp, Finsupp.finset_sum_apply, Finsupp.single_apply]
+    simp [expFinsupp, OddSchurPieri.subsetExp, Finsupp.finsetSum_apply, Finsupp.single_apply]
   rw [he, Int.cast_one, MvPolynomial.monomial_sum_one, zsmul_eq_mul]
   push_cast
   rw [CharTwo.neg_eq, one_pow, one_mul]

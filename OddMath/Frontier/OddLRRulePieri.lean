@@ -93,13 +93,13 @@ theorem muContent_succ (t : ℕ) :
   simp [muContent, Finset.sum_range_succ, add_assoc]
 
 theorem muContent_apply_gt (t : ℕ) {k : ℕ} (hk : mu.colLen 0 + t < k) : muContent mu c t k = 0 := by
-  simp only [muContent, Finsupp.add_apply, Finsupp.finset_sum_apply, Finsupp.single_apply]
-  rw [Finset.sum_eq_zero (fun i hi => by rw [if_neg (by have := Finset.mem_range.mp hi; omega)])]
-  simp only [add_zero, TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [muContent, Finsupp.add_apply, Finsupp.finsetSum_apply, Finsupp.single_apply]
+  rw [Finset.sum_eq_zero (fun i hi => by rw [ite_eq_right (by have := Finset.mem_range.mp hi; omega)])]
+  simp only [add_zero, TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply]
   apply Finset.sum_eq_zero
   intro p hp
   have := row_lt_colLen (show (p.1, p.2) ∈ mu from by simpa using hp)
-  rw [if_neg (by omega)]
+  rw [ite_eq_right (by omega)]
 
 theorem mf_bounded {t : ℕ} {lam : YoungDiagram} (T : MF mu c t lam) :
     InAlphabet (mu.colLen 0 + t) T.1 := by
@@ -114,7 +114,7 @@ theorem sum_muContent (t : ℕ) : (muContent mu c t).sum (fun _ n => n) = mdeg m
   rw [Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]
   congr 1
   · rw [← TableauDominance.content_canonical, content_total]
-  · rw [← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+  · rw [← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
     simp only [Finsupp.sum_single_index (h := fun _ n : ℕ => n) rfl]
     rfl
 
@@ -165,7 +165,7 @@ theorem fullCond_prefix {lam : YoungDiagram} (T : PositiveTableau lam) (r : ℕ)
 
 theorem step_card' (t : ℕ) (u : DegreeShape (mdeg mu c t)) (v : DegreeShape (mdeg mu c (t + 1)))
     (hh : Horizontal u.val v.val) : (v.val.cells \ u.val.cells).card = c (t + 1) := by
-  rw [Finset.card_sdiff hh.1]
+  rw [Finset.card_sdiff_of_subset hh.1]
   change v.val.card - u.val.card = _
   rw [u.property, v.property, mdeg, mdeg, prefixDegree_succ]
   omega
@@ -181,8 +181,8 @@ theorem mf_prefix_content (t : ℕ) {lam : YoungDiagram} (T : MF mu c (t + 1) la
   ext k
   rw [prefix_content_apply, T.2.2, muContent_succ, Finsupp.add_apply, Finsupp.single_apply]
   by_cases hk : k ≤ mu.colLen 0 + t
-  · rw [if_pos hk, if_neg (by omega), Nat.add_zero]
-  · rw [if_neg hk, muContent_apply_gt t (by omega)]
+  · rw [ite_eq_left hk, ite_eq_right (by omega), Nat.add_zero]
+  · rw [ite_eq_right hk, muContent_apply_gt t (by omega)]
 
 theorem mfStepMap_bijective (t : ℕ) (v : DegreeShape (mdeg mu c (t + 1))) :
     Function.Bijective (mfStepMap t v) := by
@@ -265,11 +265,11 @@ theorem neLess_canonical (mu : YoungDiagram) :
 
 theorem shapeContent_apply_gt (mu : YoungDiagram) {k : ℕ} (hk : mu.colLen 0 < k) :
     TableauDominance.shapeContent mu k = 0 := by
-  simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply]
   apply Finset.sum_eq_zero
   intro p hp
   have := row_lt_colLen (show (p.1, p.2) ∈ mu from by simpa using hp)
-  rw [if_neg (by omega)]
+  rw [ite_eq_right (by omega)]
 
 theorem W_zero (lam : YoungDiagram) :
     W mu c 0 lam = if lam = mu then (-1 : ℤ) ^ TableauStripSigns.northEast mu else 0 := by
@@ -286,7 +286,7 @@ theorem W_zero (lam : YoungDiagram) :
     exact h2 (shapeContent_apply_gt mu h1)
   by_cases hl : lam = mu
   · subst hl
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     have hcan : ∀ T : MF lam c 0 lam, T.1 = TableauDominance.canonicalTableau lam := by
       intro T
       apply ext_cells
@@ -298,14 +298,14 @@ theorem W_zero (lam : YoungDiagram) :
       refine ⟨⟨le_rfl, fun i j h => ?_, fun i j h h' => absurd h h'⟩, ?_⟩
       · exact TableauDominance.canonical_entry (p := (i, j)) (by simpa using h)
       · rw [TableauDominance.content_canonical, hc0]
-    letI : Unique (MF lam c 0 lam) :=
+    let : Unique (MF lam c 0 lam) :=
       { default := ⟨_, hmem⟩
         uniq := fun T => Subtype.ext (hcan T) }
     rw [W, Fintype.sum_unique]
     change (-1 : ℤ) ^ neLess (TableauDominance.canonicalTableau lam) = _
     rw [neLess_canonical]
-  · rw [if_neg hl, W]
-    haveI : IsEmpty (MF mu c 0 lam) := ⟨fun T => hl (hshape T)⟩
+  · rw [ite_eq_right hl, W]
+    have : IsEmpty (MF mu c 0 lam) := ⟨fun T => hl (hshape T)⟩
     exact Finset.sum_of_isEmpty _
 
 theorem ell_eq_northEast' (lam : YoungDiagram) :
@@ -355,9 +355,9 @@ theorem pieri_iter (t : ℕ) :
     have hd : mdeg mu c 0 = mu.card := by simp [mdeg, prefixDegree]
     symm
     rw [Fintype.sum_eq_single (α := DegreeShape (mdeg mu c 0)) ⟨mu, hd.symm⟩ ?_]
-    · rw [W_zero, if_pos rfl, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_smul]
+    · rw [W_zero, ite_eq_left rfl, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_smul]
     · intro b hb
-      rw [W_zero, if_neg (fun h => hb (Subtype.ext h)), mul_zero, zero_smul]
+      rw [W_zero, ite_eq_right (fun h => hb (Subtype.ext h)), mul_zero, zero_smul]
   | succ t ih =>
     rw [List.range_succ, List.map_append, List.prod_append, List.map_singleton, List.prod_singleton,
       ← mul_assoc, ih, Finset.sum_mul]
@@ -411,7 +411,7 @@ theorem content_toFull_apply {lam : YoungDiagram} (S : SkewTableau lam mu) (k : 
   have hsk : ∀ p ∈ skewCells lam mu, (toFull S).entry p.1 p.2 = S.entry p.1 p.2 + mu.colLen 0 :=
     fun p hp => toFull_entry_skew S (mem_skewCells.mp hp).1 (mem_skewCells.mp hp).2
   have hshape : TableauDominance.shapeContent mu k = (mu.cells.filter (fun p => p.1 + 1 = k)).card := by
-    simp only [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply,
+    simp only [TableauDominance.shapeContent, Finsupp.finsetSum_apply, Finsupp.single_apply,
       Finset.card_filter]
   split_ifs with hk
   · have e : (skewCells lam mu).filter (fun p => (toFull S).entry p.1 p.2 = k) = ∅ := by
@@ -437,20 +437,20 @@ theorem content_toFull_apply {lam : YoungDiagram} (S : SkewTableau lam mu) (k : 
 theorem muContent_apply (t k : ℕ) :
     muContent mu c t k = if k ≤ mu.colLen 0 then TableauDominance.shapeContent mu k
       else prefixContent c t (k - mu.colLen 0) := by
-  simp only [muContent, Finsupp.add_apply, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  simp only [muContent, Finsupp.add_apply, Finsupp.finsetSum_apply, Finsupp.single_apply]
   split_ifs with hk
-  · rw [Finset.sum_eq_zero (fun i _ => by rw [if_neg (by omega)]), add_zero]
+  · rw [Finset.sum_eq_zero (fun i _ => by rw [ite_eq_right (by omega)]), add_zero]
   · rw [shapeContent_apply_gt mu (by omega), zero_add]
     obtain ⟨j, rfl⟩ : ∃ j, k = mu.colLen 0 + j + 1 := ⟨k - mu.colLen 0 - 1, by omega⟩
     rw [show mu.colLen 0 + j + 1 - mu.colLen 0 = j + 1 by omega, prefixContent_apply_succ]
     by_cases hj : j < t
-    · rw [if_pos hj, Finset.sum_eq_single j]
-      · rw [if_pos rfl]
-      · intro i _ hi; rw [if_neg (by omega)]
+    · rw [ite_eq_left hj, Finset.sum_eq_single j]
+      · rw [ite_eq_left rfl]
+      · intro i _ hi; rw [ite_eq_right (by omega)]
       · intro hj'; exact absurd (Finset.mem_range.mpr hj) hj'
-    · rw [if_neg hj]
+    · rw [ite_eq_right hj]
       exact Finset.sum_eq_zero (fun i hi => by
-        rw [if_neg (by have := Finset.mem_range.mp hi; omega)])
+        rw [ite_eq_right (by have := Finset.mem_range.mp hi; omega)])
 
 theorem content_toFull_iff {lam : YoungDiagram} (S : SkewTableau lam mu) (t : ℕ) :
     content (toFull S) = muContent mu c t ↔ S.content = prefixContent c t := by
@@ -464,7 +464,7 @@ theorem content_toFull_iff {lam : YoungDiagram} (S : SkewTableau lam mu) (t : �
       intro p hp
       exact (S.positive (mem_skewCells.mp hp).1 (mem_skewCells.mp hp).2).ne'
     · have := congrArg (fun f => f (j + mu.colLen 0)) h
-      simp only [content_toFull_apply, muContent_apply, if_neg (show ¬ j + mu.colLen 0 ≤ mu.colLen 0
+      simp only [content_toFull_apply, muContent_apply, ite_eq_right (show ¬ j + mu.colLen 0 ≤ mu.colLen 0
         by omega), Nat.add_sub_cancel] at this
       exact this
   · intro h

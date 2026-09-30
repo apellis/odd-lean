@@ -20,7 +20,7 @@ noncomputable abbrev M (a b : ℕ) : P := monomial ![a,b] 1
 
 lemma sign_two (a b : Fin 2 → ℕ) : OddMath.skewSign a b = (-1 : ℤ) ^ (a 1 * b 0) := by
   simp [OddMath.skewSign, OddMath.crossingCount, Fin.sum_univ_two,
-    Finset.sum_filter, Fin.forall_fin_two]
+    Finset.sum_filter]
 
 lemma vec_add (a b c d : ℕ) : (![a,b] + ![c,d] : Fin 2 → ℕ) = ![a+c,b+d] := by
   ext i

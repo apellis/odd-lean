@@ -24,7 +24,7 @@ noncomputable section
 open LaurentPolynomial
 
 namespace OddMath.Frontier.OddBialgebra
-open GradedK0 NilHeckeAction OnhWindow OddCategorification QuantumSl2Plus Cyclotomic
+open GradedK0 NilHeckeAction OnhWindow OddCategorification QuantumSl2Plus OddMath.Frontier.Cyclotomic
 open OddMath.SkewPolynomial (SkewPolynomial)
 
 local notation "L" => LaurentPolynomial ℤ
@@ -241,23 +241,23 @@ theorem cycE_vCyc_top (N : ℕ) : cycE N N (vCyc N N) = 0 :=
 theorem Fin.le_of_lt_succ' {N : ℕ} (a : Fin (N+1)) : (a : ℕ) ≤ N := Nat.lt_succ_iff.mp a.isLt
 
 /-- The basis `{[E^{(a)}]}` of `K₀(ONH_a^N)`, `a ≤ N`. -/
-def cycBasisComp (N : ℕ) (a : Fin (N+1)) : Basis (Fin 1) L (KCyc N a) :=
-  ((Basis.singleton (Fin 1) L).map (cycRankEquiv N a (Fin.le_of_lt_succ' a)).symm).unitsSMul
+def cycBasisComp (N : ℕ) (a : Fin (N+1)) : Module.Basis (Fin 1) L (KCyc N a) :=
+  ((Module.Basis.singleton (Fin 1) L).map (cycRankEquiv N a (Fin.le_of_lt_succ' a)).symm).unitsSMul
     fun _ => (isUnit_T (-((((a : ℕ)).choose 2 : ℕ) : ℤ))).unit
 
 theorem cycBasisComp_apply (N : ℕ) (a : Fin (N+1)) (i : Fin 1) :
     cycBasisComp N a i = vCyc N a := by
-  rw [cycBasisComp, Basis.unitsSMul_apply, Basis.map_apply, Basis.singleton_apply, Units.smul_def,
+  rw [cycBasisComp, Module.Basis.unitsSMul_apply, Module.Basis.map_apply, Module.Basis.singleton_apply, Units.smul_def,
     IsUnit.unit_spec, ← map_smul, smul_eq_mul, mul_one, LinearEquiv.symm_apply_eq,
     cycRankEquiv_vCyc]
 
 /-- The basis `{[E^{(a)}] : 0 ≤ a ≤ N}` of `K₀(ONH^N) = ⊕_{a ≤ N} K₀(ONH_a^N)`. -/
-def cycBasis (N : ℕ) : Basis (Fin (N+1)) L (K0Cyc N) :=
+def cycBasis (N : ℕ) : Module.Basis (Fin (N+1)) L (K0Cyc N) :=
   (DFinsupp.basis (cycBasisComp N)).reindex (Equiv.sigmaUnique (Fin (N+1)) fun _ => Fin 1)
 
 theorem cycBasis_apply (N : ℕ) (a : Fin (N+1)) :
     cycBasis N a = DFinsupp.single a (vCyc N a) := by
-  rw [cycBasis, Basis.reindex_apply]
+  rw [cycBasis, Module.Basis.reindex_apply]
   simp [DFinsupp.basis, sigmaFinsuppLequivDFinsupp, cycBasisComp_apply]
 
 /-- `E` on `K₀(ONH^N)`: induction `K₀(ONH_a^N) → K₀(ONH_{a+1}^N)` in each weight. -/
@@ -269,11 +269,11 @@ def EN (N : ℕ) : K0Cyc N →ₗ[L] K0Cyc N :=
 /-- **`E` on `K₀(ONH^N)`**: `E [E^{(a)}] = [a+1] [E^{(a+1)}]` for `a < N`. -/
 theorem EN_cycBasis (N : ℕ) (a : Fin (N+1)) (ha : (a : ℕ) < N) :
     EN N (cycBasis N a) = qInt (a + 1) • cycBasis N ⟨a + 1, by omega⟩ := by
-  rw [cycBasis_apply, cycBasis_apply, EN, DFinsupp.lsum_single, dif_pos ha, LinearMap.comp_apply,
+  rw [cycBasis_apply, cycBasis_apply, EN, DFinsupp.lsum_single, dite_eq_left ha, LinearMap.comp_apply,
     cycE_vCyc, DFinsupp.lsingle_apply, DFinsupp.single_smul]
 
 /-- `E [E^{(N)}] = 0`. -/
 theorem EN_cycBasis_last (N : ℕ) : EN N (cycBasis N (Fin.last N)) = 0 := by
-  rw [cycBasis_apply, EN, DFinsupp.lsum_single, dif_neg (by simp), LinearMap.zero_apply]
+  rw [cycBasis_apply, EN, DFinsupp.lsum_single, dite_eq_right (by simp), LinearMap.zero_apply]
 
 end OddMath.Frontier.OddBialgebra

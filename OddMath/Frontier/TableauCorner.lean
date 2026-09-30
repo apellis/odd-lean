@@ -47,26 +47,26 @@ noncomputable def eraseTableau (n : ℕ) (μ : YoungDiagram)
   row_weak' := by
     intro r c d hcd hd
     have hc := (eraseShape μ p hp).up_left_mem le_rfl hcd.le hd
-    rw [if_neg ((erase_mem μ p hp _).mp hc).1,
-      if_neg ((erase_mem μ p hp _).mp hd).1]
+    rw [ite_eq_right ((erase_mem μ p hp _).mp hc).1,
+      ite_eq_right ((erase_mem μ p hp _).mp hd).1]
     exact T.row_weak' hcd ((erase_mem μ p hp _).mp hd).2
   col_strict' := by
     intro r s c hrs hs
     have hr := (eraseShape μ p hp).up_left_mem hrs.le le_rfl hs
-    rw [if_neg ((erase_mem μ p hp _).mp hr).1,
-      if_neg ((erase_mem μ p hp _).mp hs).1]
+    rw [ite_eq_right ((erase_mem μ p hp _).mp hr).1,
+      ite_eq_right ((erase_mem μ p hp _).mp hs).1]
     exact T.col_strict' hrs ((erase_mem μ p hp _).mp hs).2
   zeros' := by
     intro r c hc
     by_cases he : (r,c)=p
     · simp [he]
-    · rw [if_neg he]
+    · rw [ite_eq_right he]
       apply T.zeros'
       intro hm
       exact hc ((erase_mem μ p hp _).mpr ⟨he,hm⟩)
   positive := by
     intro r c hc
-    rw [if_neg ((erase_mem μ p hp _).mp hc).1]
+    rw [ite_eq_right ((erase_mem μ p hp _).mp hc).1]
     exact T.positive ((erase_mem μ p hp _).mp hc).2
 
 theorem erase_entry (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
@@ -77,7 +77,7 @@ theorem erase_bounded (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
     (hT : InAlphabet n T) (p : ℕ × ℕ) (hp : IsCorner μ p) :
     InAlphabet n (eraseTableau n μ T hT p hp) := by
   intro q hq
-  rw [erase_entry, if_neg ((erase_mem μ p hp q).mp hq).1]
+  rw [erase_entry, ite_eq_right ((erase_mem μ p hp q).mp hq).1]
   exact hT q ((erase_mem μ p hp q).mp hq).2
 
 theorem erase_card (μ : YoungDiagram) (p : ℕ × ℕ) (hp : IsCorner μ p) :
@@ -98,7 +98,7 @@ private theorem erase_rowLen (μ : YoungDiagram) (p : ℕ × ℕ)
     rw [← YoungDiagram.mem_iff_lt_rowLen, erase_mem]
     rw [YoungDiagram.mem_iff_lt_rowLen]
     by_cases hr : r = p.1
-    · simp only [hr, if_pos, ne_eq, Prod.ext_iff, Prod.fst, Prod.snd, true_and,
+    · simp only [hr, ite_eq_left, ne_eq, Prod.ext_iff, true_and,
         corner_rowLen μ p hp, eq_self]
       omega
     · simp [Prod.ext_iff, hr]
@@ -114,21 +114,21 @@ theorem erase_row (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
     (by intro a b h; apply Fin.ext; change a.val+1 = b.val+1 at h; omega)).mp
   rw [row_labels]
   by_cases hr : r = p.1
-  · rw [if_pos hr, List.map_take, row_labels, ← List.map_take]
+  · rw [ite_eq_left hr, List.map_take, row_labels, ← List.map_take]
     rw [List.take_range, hr, corner_rowLen μ p hp]
-    simp only [erase_rowLen, hr, if_pos, Nat.min_eq_left (Nat.le_succ _)]
+    simp only [erase_rowLen, ite_eq_left, Nat.min_eq_left (Nat.le_succ _)]
     apply List.map_congr_left
     intro c hc
-    rw [erase_entry, if_neg]
+    rw [erase_entry, ite_eq_right]
     have hc' := List.mem_range.mp hc
     intro he
     have he' := congrArg Prod.snd he
-    simp only [Prod.snd] at he'
+    simp only [] at he'
     omega
-  · rw [if_neg hr, row_labels, erase_rowLen, if_neg hr]
+  · rw [ite_eq_right hr, row_labels, erase_rowLen, ite_eq_right hr]
     apply List.map_congr_left
     intro c _
-    rw [erase_entry, if_neg]
+    rw [erase_entry, ite_eq_right]
     intro he
     exact hr (congrArg Prod.fst he)
 

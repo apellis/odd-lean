@@ -84,7 +84,9 @@ theorem eq_exTab (S : SkewTableau shape321 shape21) :
   rcases hp' with rfl | rfl | rfl <;> simp [exTab, exEntry, Prod.ext_iff]
 
 theorem rowCells_ex : TableauRowWord.rowCells shape321 = [(2, 0), (1, 0), (1, 1), (0, 0), (0, 1), (0, 2)] := by
-  apply List.eq_of_perm_of_sorted (r := TableauRowWord.RowLE)
+  apply List.Perm.eq_of_pairwise' (r := TableauRowWord.RowLE)
+  · exact TableauRowWord.rowCells_sorted _
+  · decide
   · apply (List.perm_ext_iff_of_nodup (TableauRowWord.rowCells_nodup _) (by decide)).mpr
     intro p
     rw [TableauRowWord.mem_rowCells]
@@ -92,15 +94,12 @@ theorem rowCells_ex : TableauRowWord.rowCells shape321 = [(2, 0), (1, 0), (1, 1)
     · intro hp
       have hb := bound321 (show (p.1, p.2) ∈ shape321 from by simpa using hp)
       obtain ⟨i, j⟩ := p
-      simp only at hb
       obtain ⟨hi, hj⟩ := hb
       revert hp
       interval_cases i <;> interval_cases j <;> decide
     · intro hp
       simp only [List.mem_cons, List.mem_nil_iff, or_false] at hp
       rcases hp with rfl | rfl | rfl | rfl | rfl | rfl <;> decide
-  · exact TableauRowWord.rowCells_sorted _
-  · decide
 
 theorem rowWord_exTab (a b c : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) :
     (exTab a b c ha hb hc).rowWord = [c, b, a] := by
@@ -126,12 +125,12 @@ theorem content_exTab (a b c : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (k : 
 theorem shapeContent21 (k : ℕ) :
     TableauDominance.shapeContent shape21 k = if k = 1 then 2 else if k = 2 then 1 else 0 := by
   rcases k with _ | i
-  · simp [TableauDominance.shapeContent, Finsupp.finset_sum_apply, Finsupp.single_apply]
+  · simp [TableauDominance.shapeContent, Finsupp.finsetSum_apply]
   · rw [shapeContent_succ]
     rcases i with _ | _ | i
     · exact YoungDiagram.rowLen_ofRowLens (w := [2, 1]) (hw := by decide) ⟨0, by simp⟩
     · exact YoungDiagram.rowLen_ofRowLens (w := [2, 1]) (hw := by decide) ⟨1, by simp⟩
-    · rw [if_neg (by omega), if_neg (by omega)]
+    · rw [ite_eq_right (by omega), ite_eq_right (by omega)]
       apply rowLen_eq_zero
       have h2 : ((2, 0) : ℕ × ℕ) ∉ shape21 := by decide
       have a2 : ¬ (2 < shape21.colLen 0) := fun h => h2 (YoungDiagram.mem_iff_lt_colLen.mpr h)

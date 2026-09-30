@@ -76,10 +76,10 @@ theorem action_additive {n : ℕ} (u w : Perm n)
     ((action_length_iff u w).mpr h)
   rcases hs with hs | hs
   · left
-    simpa only [schubert, mul_inv_rev, inv_inv, mul_assoc] using
+    simpa only [schubert, mul_inv_rev, inv_inv, mul_assoc, Module.End.mul_apply, LinearMap.neg_apply] using
       congrArg (fun L : Module.End ℤ (SkewPolynomial (n+2)) => L (LongestDivided.staircase (n+2))) hs
   · right
-    simpa only [schubert, mul_inv_rev, inv_inv, mul_assoc] using
+    simpa only [schubert, mul_inv_rev, inv_inv, mul_assoc, Module.End.mul_apply, LinearMap.neg_apply] using
       congrArg (fun L : Module.End ℤ (SkewPolynomial (n+2)) => L (LongestDivided.staircase (n+2))) hs
 
 /-- The zero branch; no truncated natural subtraction is used. -/
@@ -163,7 +163,7 @@ theorem left_relation_coefficients {n : ℕ}
     | h k ih =>
       intro i hi hik
       have he := congrArg (fun f : SkewPolynomial (n+2) => f i.1) (h (schubert i.2))
-      simp only [Finsupp.finset_sum_apply, Finsupp.zero_apply] at he
+      simp only [Finsupp.finsetSum_apply, Finsupp.zero_apply] at he
       have hz (j) (hj : j ∈ s) (hji : j ≠ i) :
           (c j • leftOperator j (schubert i.2)) i.1 = 0 := by
         by_cases hlt : length j.2 < length i.2
@@ -171,7 +171,7 @@ theorem left_relation_coefficients {n : ℕ}
         · by_cases hp : j.2 = i.2
           · have ha : j.1 ≠ i.1 := fun hh => hji (Prod.ext hh hp)
             rcases action_self i.2 with hs | hs <;>
-              simp [leftOperator_apply, hp, hs, monomial, Finsupp.single_apply, ha, Ne.symm ha]
+              simp [leftOperator_apply, hp, hs, monomial, Ne.symm ha]
           · have hop : dividedElementOperator j.2 (schubert i.2) = 0 := by
               by_cases heq : length i.2 = length j.2
               · exact action_same_length_distinct j.2 i.2 heq (Ne.symm hp)
@@ -204,7 +204,7 @@ theorem left_relation_iff {n : ℕ}
     ext i
     by_cases hi : i ∈ c.support
     · exact hc i hi
-    · exact Finsupp.not_mem_support_iff.mp hi
+    · exact Finsupp.notMem_support_iff.mp hi
   · rintro rfl
     simp
 

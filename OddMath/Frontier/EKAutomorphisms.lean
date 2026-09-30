@@ -147,8 +147,8 @@ private def H : PowerSeries Q := PowerSeries.mk h
 private def I : PowerSeries Q := PowerSeries.mk (fun n => s n • e n)
 private theorem coeff_mul_fin {R : Type*} [Semiring R]
     (f g : PowerSeries R) (n : ℕ) :
-    PowerSeries.coeff R n (f*g) =
-      ∑ i : Fin (n+1), PowerSeries.coeff R i f * PowerSeries.coeff R (n-i) g := by
+    PowerSeries.coeff (R := R) n (f*g) =
+      ∑ i : Fin (n+1), PowerSeries.coeff (R := R) i f * PowerSeries.coeff (R := R) (n-i) g := by
   rw [PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
     ← Fin.sum_univ_eq_sum_range]
 
@@ -160,7 +160,7 @@ private theorem I_H : I*H = 1 := by
   cases n with
   | zero => simp [e, h]
   | succ n =>
-    rw [if_neg (Nat.succ_ne_zero n)]
+    rw [ite_eq_right (Nat.succ_ne_zero n)]
     have hh := congrArg pi (CompleteElementary.elementary_complete_inverse n)
     simpa only [map_sum, map_mul, map_zero, CompleteElementary.ekSign,
       map_pow, map_neg, map_one, e, h, s, zsmul_eq_mul, Int.cast_pow,
@@ -185,7 +185,7 @@ private theorem map_I : PowerSeries.map psi12.toRingHom I = H := by
 /-- Equation (2.25) for elementary generators, proved by inverse-series
 uniqueness rather than assumed on the quotient. -/
 @[simp] theorem psi12_e (n : ℕ) : psi12 (e n) = s n • h n := by
-  have hh := congrArg (PowerSeries.coeff Q n) map_I
+  have hh := congrArg (PowerSeries.coeff (R := Q) n) map_I
   simp only [PowerSeries.coeff_map, I, H, PowerSeries.coeff_mk,
     RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, map_zsmul] at hh
   have hs := congrArg (fun x : Q => s n • x) hh
@@ -277,8 +277,8 @@ theorem reverse_word (w : List ℕ) :
   induction w with
   | nil => simp
   | cons a w ih => simp only [List.map_cons, List.prod_cons, reverse_mul, reverse_h,
-      ih, List.reverse_cons, List.map_append, List.prod_append, List.map_singleton,
-      List.prod_singleton, List.map_nil, List.prod_nil, mul_one]
+      ih, List.reverse_cons, List.map_append, List.prod_append,
+      List.map_nil, List.prod_nil, mul_one]
 
 /-- Linear diagonal twist by total degree; not asserted multiplicative. -/
 def degreeTwist : Q →ₗ[ℤ] Q := EKIntegralBases.hBasis.constr ℤ
@@ -354,6 +354,7 @@ def psi3 : Q ≃ₗ[ℤ] Q :=
     right_inv := psi3Linear_involutive }
 @[simp] theorem psi3_involutive (x : Q) : psi3 (psi3 x) = x := psi3Linear_involutive x
 @[simp] theorem psi3_h (n : ℕ) : psi3 (h n) = h n := by
+  change psi3Linear (h n) = h n
   have hh := psi3_word [n]
   simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one,
     List.sum_cons, List.sum_nil, add_zero, wordSign, List.reverse_singleton,
@@ -370,6 +371,7 @@ private theorem preserves_degree_of_words (f : Q →ₗ[ℤ] Q)
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨μ, rfl⟩ := hx
+    change f ((μ.val.rowLens.map h).prod) ∈ EKIntegralBases.degreePiece d
     have hh := hf μ.val.rowLens
     simpa only [EKIntegralBases.rowLens_sum, μ.property] using hh
   | zero => simp
@@ -437,7 +439,7 @@ theorem psi3_mul {a b : ℕ} {x y : Q}
   rw [psi3_homogeneous (EKIntegralBases.degreePiece_mul hx hy), map_mul, reverse_mul,
     psi3_homogeneous hx, psi3_homogeneous hy]
   simp only [smul_mul_assoc, mul_smul_comm, smul_smul, s_add,
-    mul_comm, mul_left_comm, mul_assoc]
+    mul_comm]
 
 /-- The literal sum over pairs i<j, expressed recursively by the first part. -/
 def pairExponent : List ℕ → ℕ
@@ -488,32 +490,32 @@ theorem tensorMul_homogeneous {a b c d : ℕ} {x y z t : Q}
             EKSignedQuotient.quotientTensorMul_hWords μ.val.rowLens ν.val.rowLens ρ.val.rowLens σ.val.rowLens
         | zero => simp
         | add u v _ _ hu hv =>
-          simp only [TensorProduct.add_tmul, TensorProduct.tmul_add, map_add, LinearMap.add_apply,
-            add_mul, mul_add, smul_add, hu, hv]
+          simp only [TensorProduct.tmul_add, map_add,
+            mul_add, smul_add, hu, hv]
         | smul r u _ hu =>
-          simp only [← TensorProduct.smul_tmul', TensorProduct.tmul_smul, map_smul, LinearMap.smul_apply,
-            smul_mul_assoc, mul_smul_comm, RingHom.id_apply, hu, smul_comm r]
+          simp only [TensorProduct.tmul_smul, map_smul,
+            mul_smul_comm, hu, smul_comm r]
       | zero => simp
       | add u v _ _ hu hv =>
-        simp only [TensorProduct.add_tmul, TensorProduct.tmul_add, map_add, LinearMap.add_apply,
-          add_mul, mul_add, smul_add, hu, hv]
+        simp only [TensorProduct.add_tmul, map_add,
+          mul_add, smul_add, hu, hv]
       | smul r u _ hu =>
-        simp only [← TensorProduct.smul_tmul', TensorProduct.tmul_smul, map_smul, LinearMap.smul_apply,
-          smul_mul_assoc, mul_smul_comm, RingHom.id_apply, hu, smul_comm r]
+        simp only [← TensorProduct.smul_tmul', map_smul,
+          mul_smul_comm, hu, smul_comm r]
     | zero => simp
     | add u v _ _ hu hv =>
-      simp only [TensorProduct.add_tmul, TensorProduct.tmul_add, map_add, LinearMap.add_apply,
-        add_mul, mul_add, smul_add, hu, hv]
+      simp only [TensorProduct.tmul_add, map_add, LinearMap.add_apply,
+        add_mul, smul_add, hu, hv]
     | smul r u _ hu =>
-      simp only [← TensorProduct.smul_tmul', TensorProduct.tmul_smul, map_smul, LinearMap.smul_apply,
-        smul_mul_assoc, mul_smul_comm, RingHom.id_apply, hu, smul_comm r]
+      simp only [TensorProduct.tmul_smul, map_smul, LinearMap.smul_apply,
+        smul_mul_assoc, hu, smul_comm r]
   | zero => simp
   | add u v _ _ hu hv =>
-    simp only [TensorProduct.add_tmul, TensorProduct.tmul_add, map_add, LinearMap.add_apply,
-      add_mul, mul_add, smul_add, hu, hv]
+    simp only [TensorProduct.add_tmul, map_add, LinearMap.add_apply,
+      add_mul, smul_add, hu, hv]
   | smul r u _ hu =>
-    simp only [← TensorProduct.smul_tmul', TensorProduct.tmul_smul, map_smul, LinearMap.smul_apply,
-      smul_mul_assoc, mul_smul_comm, RingHom.id_apply, hu, smul_comm r]
+    simp only [← TensorProduct.smul_tmul', map_smul, LinearMap.smul_apply,
+      smul_mul_assoc, hu, smul_comm r]
 
 /-- Tensor action on the exact tensor product carrying inherited signed multiplication. -/
 def psi1Tensor : (Q ⊗[ℤ] Q) →ₗ[ℤ] (Q ⊗[ℤ] Q) := TensorProduct.map psi1L psi1L
@@ -530,7 +532,9 @@ private theorem psi1Tensor_homogeneous {a b c d : ℕ} {x y z t : Q}
     tensorMul_homogeneous (psi1_degree hx) (psi1_degree hy) (psi1_degree hz) (psi1_degree ht)]
 
 private theorem hBasis_degree (μ : YoungDiagram) : EKIntegralBases.hBasis μ ∈ degreePiece μ.card := by
-  simpa only [EKIntegralBases.hBasis_apply, EKIntegralBases.rowLens_sum] using hWord_degree μ.rowLens
+  rw [EKIntegralBases.hBasis_apply]
+  change (μ.rowLens.map h).prod ∈ degreePiece μ.card
+  simpa only [EKIntegralBases.rowLens_sum] using hWord_degree μ.rowLens
 
 /-- Multiplicativity here is for the inherited SIGNED tensor multiplication. -/
 theorem psi1Tensor_mul (u v : Q ⊗[ℤ] Q) :
@@ -545,7 +549,7 @@ theorem psi1Tensor_mul (u v : Q ⊗[ℤ] Q) :
     | hz => simp
     | ha u v hu hv => simp only [map_add, hu, hv]
     | hb q s =>
-      simp only [map_smul, LinearMap.smul_apply, RingHom.id_apply, Basis.tensorProduct_apply']
+      simp only [map_smul, LinearMap.smul_apply, Module.Basis.tensorProduct_apply']
       exact congrArg (fun v : Q ⊗[ℤ] Q => s • r • v)
         (psi1Tensor_homogeneous (hBasis_degree p.1) (hBasis_degree p.2)
           (hBasis_degree q.1) (hBasis_degree q.2))
@@ -588,7 +592,7 @@ theorem counit_hWord (w : List ℕ) :
   | nil => simp
   | cons a w ih =>
     simp only [List.map_cons, List.prod_cons, map_mul, counit_h, ih, List.sum_cons,
-      Nat.add_eq_zero]
+      Nat.add_eq_zero_iff]
     split_ifs <;> simp_all
 
 theorem counit_positive {d : ℕ} {x : Q} (hd : d ≠ 0) (hx : x ∈ degreePiece d) :
@@ -598,7 +602,7 @@ theorem counit_positive {d : ℕ} {x : Q} (hd : d ≠ 0) (hx : x ∈ degreePiece
   | mem x hx =>
     obtain ⟨μ, rfl⟩ := hx
     change quotientCounit ((μ.val.rowLens.map h).prod) = 0
-    rw [counit_hWord, EKIntegralBases.rowLens_sum, μ.property, if_neg hd]
+    rw [counit_hWord, EKIntegralBases.rowLens_sum, μ.property, ite_eq_right hd]
   | zero => simp
   | add x y _ _ hx hy => simp only [map_add, hx, hy, add_zero]
   | smul r x _ hx => simp only [map_smul, hx, smul_zero]
@@ -606,7 +610,7 @@ theorem counit_positive {d : ℕ} {x : Q} (hd : d ≠ 0) (hx : x ∈ degreePiece
 theorem counit_e (n : ℕ) : quotientCounit (e n) = if n=0 then 1 else 0 := by
   by_cases hn : n=0
   · subst n; simp [e]
-  · rw [if_neg hn]
+  · rw [ite_eq_right hn]
     apply counit_positive hn
     rw [EKIntegralBases.degreePiece_eq_ePartition_span]
     exact EKIntegralBases.generator_mem true n
@@ -650,7 +654,7 @@ theorem pairExponent_positions (w : List ℕ) :
     have get_succ (i : Fin w.length) : (a::w).get i.succ = w.get i := rfl
     simp only [pairExponent, List.length_cons, Fin.sum_univ_succ, List.get_cons_zero,
       get_succ, Fin.succ_lt_succ_iff, Fin.not_lt_zero, ↓reduceIte,
-      Fin.succ_pos, zero_add, add_zero]
+      Fin.succ_pos, zero_add]
     rw [← Finset.mul_sum]
     have hh : (∑ i : Fin w.length, w.get i) = w.sum := by
       simpa only [List.ofFn_get] using (List.sum_ofFn (f := w.get)).symm

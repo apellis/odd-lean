@@ -78,9 +78,9 @@ theorem exps_injective_iff {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ}
 theorem armSum_exps {a b : ℕ} (α : Fin a → ℕ) (β : Fin b → ℕ) :
     armSum (exps α β) a = omega β := by
   rw [armSum, exps, Fin.sum_univ_add, omega]
-  simp only [Fin.coe_castAdd, Fin.coe_natAdd, Fin.append_right]
-  rw [Finset.sum_eq_zero fun i _ => if_neg (by omega), zero_add]
-  exact Finset.sum_congr rfl fun j _ => by rw [if_pos (by omega)]; rfl
+  simp only [Fin.val_castAdd, Fin.val_natAdd, Fin.append_right]
+  rw [Finset.sum_eq_zero fun i _ => ite_eq_right (by omega), zero_add]
+  exact Finset.sum_congr rfl fun j _ => by rw [ite_eq_left (by omega)]; rfl
 
 theorem exps_lt {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ} (hαb : ∀ k, α k ≤ b)
     (hβa : ∀ j, β j ≤ a) (i : Fin (a+b)) : exps α β i < a + b := by
@@ -104,7 +104,7 @@ theorem lemma_4_9 {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ}
       rintro rfl
       have := sum_hat (a := a) hβa
       omega
-    rw [if_neg hne, zero_smul]
+    rw [ite_eq_right hne, zero_smul]
     -- off the top degree every exponent is `≤ a+b−1`, so the sorting lemma applies
     rcases Nat.lt_or_ge (a+b) 2 with hsmall | hbig
     · exfalso
@@ -123,7 +123,7 @@ theorem lemma_4_9 {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ}
 theorem lemma_4_8 {a b : ℕ} {α : Fin a → ℕ} {β : Fin b → ℕ}
     (hα : Antitone α) (hαb : ∀ k, α k ≤ b) (hβ : Antitone β) (hβa : ∀ j, β j ≤ a)
     (h : ∑ k, α k + ∑ j, β j ≠ a * b) : D (a+b) (monomial (exps α β) 1) = 0 := by
-  rw [lemma_4_9 hα hαb hβ hβa, if_neg, zero_smul]
+  rw [lemma_4_9 hα hαb hβ hβa, ite_eq_right, zero_smul]
   rintro rfl
   exact h (sum_hat hβa)
 

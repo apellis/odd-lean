@@ -81,8 +81,8 @@ run_cmd do
       ``NilHeckeGradedEndControls.arbitrary_matrix] do
     unless owned.any (fun (name,_) => name == required) do
       throwError "Missing acceptance declaration {required}"
-  let mut logical := 0
-  let mut stages := 0
+  let mut logical : Nat := 0
+  let mut stages : Nat := 0
   for (name, info) in owned do
     let axioms ← Lean.collectAxioms name
     let compilerName := (name.toString.splitOn ".").any (fun s =>

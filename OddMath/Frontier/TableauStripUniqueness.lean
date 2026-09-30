@@ -8,7 +8,7 @@ def enumeration (ps qs : List (ℕ × ℕ)) : Prop :=
     qs.Pairwise (fun p q => q.2 < p.2) → ps.toFinset = qs.toFinset → ps = qs
 
 def preimage (n : ℕ) (A B : State n) (u v : List (Fin n)) : Prop :=
-  A.1 = B.1 → u.Sorted (· ≤ ·) → v.Sorted (· ≤ ·) →
+  A.1 = B.1 → u.Pairwise (· ≤ ·) → v.Pairwise (· ≤ ·) →
     (TableauWordInsertion.run n A u).1 = (TableauWordInsertion.run n B v).1 →
       (A, u) = (B, v)
 

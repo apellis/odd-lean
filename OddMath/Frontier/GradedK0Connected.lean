@@ -1,5 +1,5 @@
 import OddMath.Frontier.GradedK0Basic
-import Mathlib.Algebra.GeomSum
+import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.ToLin
@@ -49,7 +49,7 @@ open Classical in
 def intPart (x : R) : ℤ := if h : ∃ z : ℤ, (z : R) = x then h.choose else 0
 
 theorem intPart_spec {x : R} (h : ∃ z : ℤ, (z : R) = x) : (intPart x : R) = x := by
-  rw [intPart, dif_pos h]
+  rw [intPart, dite_eq_left h]
   exact h.choose_spec
 
 theorem intPart_intCast (hinj : Function.Injective (Int.cast : ℤ → R)) (z : ℤ) :
@@ -175,8 +175,8 @@ theorem diagPart_mul [Fintype ι] (hA : Connected A) {x y : Matrix ι ι R} (hx 
   split_ifs with hik
   · refine Finset.sum_congr rfl fun j _ => ?_
     by_cases hij : s i = s j
-    · rw [if_pos hij, if_pos (hij ▸ hik)]
-    · rw [if_neg hij, zero_mul]
+    · rw [ite_eq_left hij, ite_eq_left (hij ▸ hik)]
+    · rw [ite_eq_right hij, zero_mul]
       rcases lt_or_gt_of_ne hij with h | h
       · rw [hx.eq_zero_of_lt hA h, zero_mul]
       · rw [hy.eq_zero_of_lt hA (by omega), mul_zero]
@@ -191,7 +191,7 @@ theorem exists_pow_eq_zero [Fintype ι] [DecidableEq ι] (hA : Connected A) {x :
     rcases hij.lt_or_eq with h | h
     · exact hx.eq_zero_of_lt hA h
     · have := congrFun (congrFun h0 i) j
-      rwa [diagPart_apply, if_pos h] at this
+      rwa [diagPart_apply, ite_eq_left h] at this
   have key : ∀ k : ℕ, ∀ i j, s i - s j < k → (x ^ k) i j = 0 := by
     intro k
     induction k with
@@ -340,7 +340,7 @@ theorem map_intCast_mem [SetLike.GradedMonoid A] {α β : Type*} (M : Matrix α 
   exact intCast_mem _
 
 theorem intMat_eq_zero {s : ι → ℤ} {e : Matrix ι ι R} {i j : ι} (h : s i ≠ s j) :
-    intMat s e i j = 0 := if_neg h
+    intMat s e i j = 0 := ite_eq_right h
 
 variable (hA : Connected A)
 include hA
@@ -483,10 +483,11 @@ theorem gdimAux_shift (s : ι → ℤ) (e : Matrix ι ι R) (k : ℤ) :
   rw [mul_smul_comm, LaurentPolynomial.T_add, mul_comm]
 
 theorem gdimAux_apply (s : ι → ℤ) (e : Matrix ι ι R) (k : ℤ) :
-    gdimAux s e k = ∑ i ∈ Finset.univ.filter (fun i => s i = k), intPart (e i i) := by
-  rw [Finset.sum_filter, gdimAux, Finsupp.finset_sum_apply]
+    (gdimAux s e).coeff k = ∑ i ∈ Finset.univ.filter (fun i => s i = k), intPart (e i i) := by
+  rw [Finset.sum_filter, gdimAux, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Finsupp.smul_apply, LaurentPolynomial.T_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
+  rw [AddMonoidAlgebra.coeff_smul_apply, LaurentPolynomial.T_apply, smul_eq_mul, mul_ite,
+    mul_one, mul_zero]
 
 variable [SetLike.GradedMonoid A] (hA : Connected A)
 include hA
@@ -531,7 +532,7 @@ theorem card_shift_eq {P : GIdem A} {m : ℕ} {t : Fin m → ℤ} (h : P ≈ GId
     (k : ℤ) :
     (Finset.univ.filter fun a => t a = k).card =
       Module.finrank ℤ (LinearMap.range (toLin' (intBlock P.s P.e k))) := by
-  have h1 := congrArg (fun p : LaurentPolynomial ℤ => p k) (gdimAux_eq_of_mvn hA h)
+  have h1 := congrArg (fun p : LaurentPolynomial ℤ => p.coeff k) (gdimAux_eq_of_mvn hA h)
   simp only [gdimAux_apply] at h1
   have h2 : (intBlock P.s P.e k).trace =
       ∑ i ∈ Finset.univ.filter (fun i => P.s i = k), intPart (P.e i i) := by
@@ -550,7 +551,7 @@ theorem card_shift_eq {P : GIdem A} {m : ℕ} {t : Fin m → ℤ} (h : P ≈ GId
 theorem card_shift_eq_of_free {m m' : ℕ} {t : Fin m → ℤ} {t' : Fin m' → ℤ}
     (h : (GIdem.free t : GIdem A) ≈ GIdem.free t') (k : ℤ) :
     (Finset.univ.filter fun a => t a = k).card = (Finset.univ.filter fun a => t' a = k).card := by
-  have h1 := congrArg (fun p : LaurentPolynomial ℤ => p k) (gdimAux_eq_of_mvn hA h)
+  have h1 := congrArg (fun p : LaurentPolynomial ℤ => p.coeff k) (gdimAux_eq_of_mvn hA h)
   simp only [gdimAux_apply] at h1
   have h4 : ∀ {n} (t : Fin n → ℤ), ∑ a ∈ Finset.univ.filter (fun a => t a = k),
       intPart ((1 : Matrix (Fin n) (Fin n) R) a a) = (Finset.univ.filter fun a => t a = k).card :=
@@ -609,7 +610,7 @@ theorem gdim_single (k : ℤ) :
 /-- `K₀` of a connected graded ring is `ℤ[T;T⁻¹]`: the graded rank is an isomorphism of
 `ℤ[T;T⁻¹]`-modules with inverse `p ↦ p • [R]`. -/
 def classify : K0 A ≃ₗ[LaurentPolynomial ℤ] LaurentPolynomial ℤ :=
-  LinearEquiv.ofLinear
+  LinearEquiv.ofLinearMap
     { toFun := gdim hA
       map_add' := map_add _
       map_smul' := map_smul_of_shift (gdim hA) fun k x => by rw [gdim_shift, smul_eq_mul] }
@@ -641,11 +642,11 @@ theorem classify_symm_apply (p : LaurentPolynomial ℤ) :
     (classify hA).symm p = p • of (GIdem.single 0 : GIdem A) := rfl
 
 /-- `K₀` of a connected graded ring is free of rank one over `ℤ[T;T⁻¹]` on `[R]`. -/
-def basis : Basis (Fin 1) (LaurentPolynomial ℤ) (K0 A) :=
-  (Basis.singleton (Fin 1) (LaurentPolynomial ℤ)).map (classify hA).symm
+def basis : Module.Basis (Fin 1) (LaurentPolynomial ℤ) (K0 A) :=
+  (Module.Basis.singleton (Fin 1) (LaurentPolynomial ℤ)).map (classify hA).symm
 
 theorem basis_apply (i : Fin 1) : basis hA i = of (GIdem.single 0 : GIdem A) := by
-  rw [basis, Basis.map_apply, Basis.singleton_apply, classify_symm_apply, one_smul]
+  rw [basis, Module.Basis.map_apply, Module.Basis.singleton_apply, classify_symm_apply, one_smul]
 
 end K0
 

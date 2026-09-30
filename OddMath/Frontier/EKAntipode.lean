@@ -58,7 +58,7 @@ theorem generator_left (n : ℕ) :
   cases n with
   | zero => simp [h]
   | succ n =>
-    rw [if_neg (Nat.succ_ne_zero n)]
+    rw [ite_eq_right (Nat.succ_ne_zero n)]
     simp only [S_h, smul_mul_assoc]
     have hh := congrArg pi (CompleteElementary.elementary_complete_inverse n)
     simpa only [ map_sum, map_mul, map_zero, CompleteElementary.ekSign,
@@ -78,7 +78,7 @@ theorem generator_right (n : ℕ) :
 private theorem h_degree (n : ℕ) : h n ∈ degreePiece n := by
   simpa using hWord_degree [n]
 private theorem basis_degree (μ : YoungDiagram) : hBasis μ ∈ degreePiece μ.card := by
-  simpa only [EKIntegralBases.hBasis_apply, EKIntegralBases.rowLens_sum] using hWord_degree μ.rowLens
+  simpa only [EKIntegralBases.hBasis_apply, EKPartitionSpanning.hPartition, EKIntegralBases.rowLens_sum] using hWord_degree μ.rowLens
 
 /-- The two Koszul signs combine independently of the generator split. -/
 private theorem split_sign (n a : ℕ) (i : Fin (n+1)) :
@@ -97,7 +97,7 @@ private theorem left_generator_tensor {a b : ℕ} {x y : Q}
     simp only [smul_mul_assoc, smul_smul, split_sign, mul_assoc]
   simp_rw [he]
   rw [← Finset.smul_sum, ← Finset.sum_mul, ← Finset.mul_sum, generator_left,
-    if_neg hn, mul_zero, zero_mul, smul_zero]
+    ite_eq_right hn, mul_zero, zero_mul, smul_zero]
 
 private theorem right_generator_tensor {a b : ℕ} {x y : Q}
     (hx : x ∈ degreePiece a) (hy : y ∈ degreePiece b) (n : ℕ) (hn : n ≠ 0) :
@@ -114,7 +114,7 @@ private theorem right_generator_tensor {a b : ℕ} {x y : Q}
     simp only [mul_assoc]
   simp_rw [he]
   rw [← Finset.smul_sum, ← Finset.sum_mul, ← Finset.mul_sum, generator_right,
-    if_neg hn, mul_zero, zero_mul, smul_zero]
+    ite_eq_right hn, mul_zero, zero_mul, smul_zero]
 
 /-- Cancellation after a positive complete generator, for EVERY actual tensor.
 The basis induction supplies homogeneity; no Sweedler decomposition is assumed. -/
@@ -124,7 +124,7 @@ theorem left_generator_all (n : ℕ) (hn : n ≠ 0) (z : Q ⊗[ℤ] Q) :
   | hz => simp
   | ha x y hx hy => simp only [map_add, hx, hy, add_zero]
   | hb p r =>
-    simp only [map_smul, Basis.tensorProduct_apply',
+    simp only [map_smul, Module.Basis.tensorProduct_apply',
       left_generator_tensor (basis_degree p.1) (basis_degree p.2) n hn, smul_zero]
 
 /-- The other cancellation, with the positive generator on the RIGHT. -/
@@ -134,7 +134,7 @@ theorem right_generator_all (n : ℕ) (hn : n ≠ 0) (z : Q ⊗[ℤ] Q) :
   | hz => simp
   | ha x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy, add_zero]
   | hb p r =>
-    simp only [map_smul, LinearMap.smul_apply, RingHom.id_apply, Basis.tensorProduct_apply',
+    simp only [map_smul, LinearMap.smul_apply, Module.Basis.tensorProduct_apply',
       right_generator_tensor (basis_degree p.1) (basis_degree p.2) n hn, smul_zero]
 
 /-- Left convolution on all words, with zero letters handled as units. -/
@@ -149,7 +149,7 @@ theorem left_hWord (w : List ℕ) :
     · subst n
       simpa only [show h 0 = 1 from by simp [h], one_mul] using ih
     · rw [EKSignedQuotient.quotient_coproduct_mul, left_generator_all n hn,
-        map_mul, counit_h, if_neg hn, zero_mul, zero_smul]
+        map_mul, counit_h, ite_eq_right hn, zero_mul, zero_smul]
 
 /-- Right convolution uses the LAST letter; this is not inferred from left convolution. -/
 theorem right_hWord (w : List ℕ) :
@@ -163,7 +163,7 @@ theorem right_hWord (w : List ℕ) :
     · subst n
       simpa only [show h 0 = 1 from by simp [h], mul_one] using ih
     · rw [EKSignedQuotient.quotient_coproduct_mul, right_generator_all n hn,
-        map_mul, counit_h, if_neg hn, mul_zero, zero_smul]
+        map_mul, counit_h, ite_eq_right hn, mul_zero, zero_smul]
 
 /-- First antipode identity, for arbitrary (also inhomogeneous) actual quotient elements. -/
 theorem convolution_left (x : Q) :

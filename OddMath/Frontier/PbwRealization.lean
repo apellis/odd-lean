@@ -41,10 +41,10 @@ theorem crossingCount_head {n : ℕ} (i : Fin n) (l : List (Fin n))
   | nil => simp [exponents_nil, crossingCount_zero_right]
   | cons j l ih =>
     rw [exponents_cons, OddMath.crossingCount_add_right, crossingCount_expSingle,
-      if_neg (not_lt.mpr (h j (by simp))), ih (fun k hk => h k (by simp [hk]))]
+      ite_eq_right (not_lt.mpr (h j (by simp))), ih (fun k hk => h k (by simp [hk]))]
 
 /-- Every nondecreasing word evaluates to its multiplicity monomial with sign +1. -/
-theorem Phi_word_of_sorted {n : ℕ} (l : List (Fin n)) (h : l.Sorted (· ≤ ·)) :
+theorem Phi_word_of_sorted {n : ℕ} (l : List (Fin n)) (h : l.Pairwise (· ≤ ·)) :
     OddMath.PbwL3.Phi n (word l) = monomial (exponents l) 1 := by
   induction l with
   | nil =>
@@ -68,8 +68,8 @@ def orderedList {n : ℕ} (a : Fin n → ℕ) : List (Fin n) :=
     (fun i j => decide (i ≤ j))
 
 theorem orderedList_sorted {n : ℕ} (a : Fin n → ℕ) :
-    (orderedList a).Sorted (· ≤ ·) :=
-  List.sorted_mergeSort' (· ≤ ·) _
+    (orderedList a).Pairwise (· ≤ ·) :=
+  List.pairwise_mergeSort' (· ≤ ·) _
 
 /-- Every exponent vector, not merely square-free vectors, is realized. -/
 theorem exponents_orderedList {n : ℕ} (a : Fin n → ℕ) :
@@ -82,13 +82,13 @@ theorem exponents_orderedList {n : ℕ} (a : Fin n → ℕ) :
     rw [← List.sum_toFinset _ (List.nodup_finRange n), List.toFinset_finRange]
     congr 1
     funext j
-    simp [Function.comp_def, List.count_replicate]
+    simp [List.count_replicate]
   rw [h]
   simp
 
 /-- Uniform ordered-word realization of each unit-coefficient monomial. -/
 theorem exists_ordered_word {n : ℕ} (a : Fin n → ℕ) :
-    ∃ l : List (Fin n), l.Sorted (· ≤ ·) ∧ exponents l = a ∧
+    ∃ l : List (Fin n), l.Pairwise (· ≤ ·) ∧ exponents l = a ∧
       OddMath.PbwL3.Phi n (word l) = monomial a 1 := by
   refine ⟨orderedList a, orderedList_sorted a, exponents_orderedList a, ?_⟩
   rw [Phi_word_of_sorted _ (orderedList_sorted a), exponents_orderedList]

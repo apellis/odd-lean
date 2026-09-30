@@ -23,7 +23,7 @@ private theorem below_cons {n : ℕ} (x y : Fin n) (xs ys : List (Fin n)) :
     refine ⟨?_, ⟨by simpa using hl, ?_⟩⟩
     · simpa using hp 0 (by simp)
     · intro c hc
-      simpa using hp (c+1) (by simpa using hc)
+      exact hp (c+1) (by simpa using hc)
   · rintro ⟨hxy,hl,hp⟩
     refine ⟨by simpa using hl, ?_⟩
     intro c hc
@@ -53,7 +53,7 @@ private theorem reverse_below_bound (n : ℕ) (upper lower v : List (Fin n))
       cases he : reverseStep n xs b with
       | none =>
         by_cases hx : x < b
-        · simp only [reverseStep, he, hx, if_true, Option.some.injEq, Prod.mk.injEq] at hr
+        · simp only [reverseStep, he, hx, ite_true, Option.some.injEq, Prod.mk.injEq] at hr
           obtain ⟨rfl,rfl,rfl⟩ := hr
           exact (below_cons b y xs ys).mpr ⟨hy,hcols⟩
         · simp [reverseStep, he, hx] at hr
@@ -120,20 +120,20 @@ private theorem bump_raw (n : ℕ) (upper u z : List (Fin n)) (b d : Fin n)
         (below_cons x y v (ys ++ (d::z))).mpr ⟨hxy,hv⟩⟩
 
 theorem reverse_terminal_boundary (n : ℕ) (upper lower : List (Fin n)) (b : Fin n)
-    (hs : upper.Sorted (· ≤ ·)) (hc : ColumnBelow upper (lower ++ [b])) :
+    (hs : upper.Pairwise (· ≤ ·)) (hc : ColumnBelow upper (lower ++ [b])) :
     ∃ v a c, reverseStep n upper b = some (v,a,c) ∧
-      lower.length ≤ c ∧ ColumnBelow v lower ∧ v.Sorted (· ≤ ·) ∧
+      lower.length ≤ c ∧ ColumnBelow v lower ∧ v.Pairwise (· ≤ ·) ∧
       v.length = upper.length := by
   obtain ⟨v,a,c,hr,hc',hv⟩ := terminal_raw n upper lower b hc
   exact ⟨v,a,c,hr,hc',hv,reverseStep_sorted n upper v b a c hs hr,
     reverse_length n upper v b a c hr⟩
 
 theorem reverse_bump_boundary (n : ℕ) (upper lower lower' : List (Fin n))
-    (d b : Fin n) (j : ℕ) (hs : upper.Sorted (· ≤ ·))
+    (d b : Fin n) (j : ℕ) (hs : upper.Pairwise (· ≤ ·))
     (hc : ColumnBelow upper lower)
     (hr : reverseStep n lower d = some (lower',b,j)) :
     ∃ v a c, reverseStep n upper b = some (v,a,c) ∧
-      j ≤ c ∧ ColumnBelow v lower' ∧ v.Sorted (· ≤ ·) ∧
+      j ≤ c ∧ ColumnBelow v lower' ∧ v.Pairwise (· ≤ ·) ∧
       v.length = upper.length := by
   obtain ⟨u,z,rfl,rfl,rfl,hbd,hz⟩ := reverseStep_spec n lower lower' d b j hr
   obtain ⟨v,a,c,he,hc',hv⟩ := bump_raw n upper u z b d hc hbd hz
@@ -156,7 +156,7 @@ theorem tableau_corner_start (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau 
     (b : Fin n) (hb : b.val + 1 = T.entry (r+1) c) :
     ∃ v a k, reverseStep n (row n T hT r) b = some (v,a,k) ∧
       c ≤ k ∧ ColumnBelow v ((row n T hT (r+1)).take c) ∧
-      v.Sorted (· ≤ ·) ∧ v.length = μ.rowLen r := by
+      v.Pairwise (· ≤ ·) ∧ v.length = μ.rowLen r := by
   have hcol : ColumnBelow (row n T hT r) ((row n T hT (r+1)).take c ++ [b]) := by
     rw [← corner_row_split n μ T hT r c hp b hb]
     exact rows_columnBelow n μ T hT r
@@ -170,7 +170,7 @@ theorem tableau_reverse_boundary (n : ℕ) (μ : YoungDiagram) (T : PositiveTabl
     (hT : InAlphabet n T) (r : ℕ) (lower' : List (Fin n)) (d b : Fin n)
     (j : ℕ) (hr : reverseStep n (row n T hT (r+1)) d = some (lower',b,j)) :
     ∃ v a c, reverseStep n (row n T hT r) b = some (v,a,c) ∧
-      j ≤ c ∧ ColumnBelow v lower' ∧ v.Sorted (· ≤ ·) ∧
+      j ≤ c ∧ ColumnBelow v lower' ∧ v.Pairwise (· ≤ ·) ∧
       v.length = μ.rowLen r := by
   obtain ⟨v,a,c,he,hc,hv,hs,hl⟩ := reverse_bump_boundary n (row n T hT r)
     (row n T hT (r+1)) lower' d b j (row_sorted n μ T hT r)

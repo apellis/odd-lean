@@ -42,13 +42,13 @@ block-diagonal premise audited above. -/
 theorem det_unit_step (a b : ℤ) (h : a * b = 1 ∨ a * b = -1) :
     (a = 1 ∨ a = -1) ∧ (b = 1 ∨ b = -1) := by
   rcases h with h | h
-  · exact ⟨Int.isUnit_iff.mp (isUnit_of_mul_eq_one a b h),
-      Int.isUnit_iff.mp (isUnit_of_mul_eq_one b a (by rw [mul_comm]; exact h))⟩
+  · exact ⟨Int.isUnit_iff.mp (IsUnit.of_mul_eq_one b h),
+      Int.isUnit_iff.mp (IsUnit.of_mul_eq_one a (by rw [mul_comm]; exact h))⟩
   · have ha : IsUnit a :=
-      isUnit_of_mul_eq_one a (-b) (by rw [mul_neg, h, neg_neg])
+      IsUnit.of_mul_eq_one (-b) (by rw [mul_neg, h, neg_neg])
     have h' : b * a = -1 := by rw [mul_comm]; exact h
     have hb : IsUnit b :=
-      isUnit_of_mul_eq_one b (-a) (by rw [mul_neg, h', neg_neg])
+      IsUnit.of_mul_eq_one (-a) (by rw [mul_neg, h', neg_neg])
     exact ⟨Int.isUnit_iff.mp ha, Int.isUnit_iff.mp hb⟩
 
 end OddMath.Frontier.EKRestrictedPairingAudit

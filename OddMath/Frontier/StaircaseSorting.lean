@@ -34,7 +34,7 @@ theorem weight_lt_of_swap (i : Fin (n+1)) (γ γ' : Fin (n+2) → ℕ)
     intro δ
     rw [weight, ← Finset.add_sum_erase _ _ (Finset.mem_univ i.castSucc),
       ← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨hne.symm, Finset.mem_univ i.succ⟩)]
-    simp only [Fin.coe_castSucc, Fin.val_succ]
+    simp only [Fin.val_castSucc, Fin.val_succ]
     have : n+1-(i.val+1) = n-i.val := by omega
     rw [this]; ring
   have hrest : (∑ j ∈ (Finset.univ.erase i.castSucc).erase i.succ, (n+1-j.val) * γ' j) =
@@ -72,7 +72,7 @@ theorem D_monomial_eq_zero_of_no_strict (Bd : ℕ) (γ : Fin (n+2) → ℕ) (hγ
   -- not strictly decreasing: find a non-descent at some adjacent pair
   have : ∃ i : Fin (n+1), γ i.castSucc ≤ γ i.succ := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     apply hsd
     exact Fin.strictAnti_iff_succ_lt.mpr fun i => hcon i
   obtain ⟨i, hi⟩ := this
@@ -144,8 +144,8 @@ theorem strictAnti_bounded_eq (δ : Fin (n+2) → ℕ) (hδ : ∀ j, δ j ≤ n+
     induction j using Fin.induction with
     | zero => simpa using hδ 0
     | succ j ih =>
-        have := hs (Fin.castSucc_lt_succ j)
-        simp only [Fin.coe_castSucc] at ih
+        have := hs (Fin.castSucc_lt_succ (i := j))
+        simp only [Fin.val_castSucc] at ih
         simp only [Fin.val_succ]
         omega
   intro j

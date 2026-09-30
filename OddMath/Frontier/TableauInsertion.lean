@@ -81,7 +81,7 @@ private theorem run_length_at (rs : List (List (Fin n))) (a : Fin n) (r : ℕ) :
         rw [ih b r]
         have hi : (r = (runRows n ws b).columns.length - 1) ↔
             (r + 1 = (runRows n ws b).columns.length) := by omega
-        simp only [Nat.succ_eq_add_one, hi]
+        simp only [hi]
 
 private theorem old_row_length (r : ℕ) :
     ((rows n T hT)[r]?.getD []).length = μ.rowLen r := by
@@ -115,7 +115,7 @@ theorem insert_cells : (insert n μ T hT a).newCell ∉ μ.cells ∧
       p = (insert n μ T hT a).newCell ∨ p ∈ μ
     rw [YoungDiagram.mem_iff_lt_rowLen, Prod.ext_iff]
     by_cases hr : p.1 = (insert n μ T hT a).newCell.1
-    · simp only [hr, if_pos, true_and]
+    · simp only [hr, ite_eq_left, true_and]
       rw [← hc]
       omega
     · simp [hr]
@@ -124,7 +124,7 @@ theorem insert_card : (insert n μ T hT a).shape.card = μ.card + 1 := by
   have h := insert_cells n μ T hT a
   change (insert n μ T hT a).shape.cells.card = μ.cells.card + 1
   rw [h.2]
-  exact Finset.card_insert_of_not_mem h.1
+  exact Finset.card_insert_of_notMem h.1
 
 private theorem readRows_count (rs : List (List (Fin n))) (i : Fin n) :
     (readRows rs).count i = rs.flatten.count i := by

@@ -37,11 +37,11 @@ theorem eq_zero_of_piN (x : Q) (h : ∀ N, piN N x = 0) : x = 0 := by
     unfold OddSymmetricLimit.wideSpan
     congr 1
     ext y
-    simp only [Set.mem_setOf_eq, Set.mem_image, EKIntegralBases.eBasis_apply]
+    simp only [Set.mem_ofPred_eq, Set.mem_image, EKIntegralBases.eBasis_apply]
     constructor
     · rintro ⟨μ, hμ, rfl⟩; exact ⟨μ, hμ, rfl⟩
     · rintro ⟨μ, hμ, rfl⟩; exact ⟨μ, hμ, rfl⟩
-  rw [hs, Basis.mem_span_image] at hw
+  rw [hs, Module.Basis.mem_span_image] at hw
   have hc : c = 0 := by
     ext μ
     by_contra hne
@@ -59,7 +59,7 @@ theorem vertical_pieri_Q (lam : YoungDiagram) (k : ℕ) :
     sK lam * sK (column k) =
       ∑ mu : DegreeShape (lam.card + k), if Vertical lam mu.val then
         (-1 : ℤ) ^ stripBelow lam mu.val • sK mu.val else 0 := by
-  letI := degreeFintype (lam.card + k)
+  let := degreeFintype (lam.card + k)
   rw [← sub_eq_zero]
   apply eq_zero_of_piN
   intro N
@@ -96,9 +96,9 @@ theorem vertical_transpose_iff (α μ : YoungDiagram) :
     · have := hsub ((mem_transpose_cells α p.swap).mpr (by simpa using hp))
       simpa [mem_transpose_cells] using this
     · simp only [Finset.mem_sdiff, YoungDiagram.mem_cells] at hp hq
-      have := huniq p.swap (by simp [Finset.mem_sdiff, mem_transpose_cells, hp.1, hp.2,
+      have := huniq p.swap (by simp [Finset.mem_sdiff, hp.1, hp.2,
           YoungDiagram.mem_cells])
-        q.swap (by simp [Finset.mem_sdiff, mem_transpose_cells, hq.1, hq.2, YoungDiagram.mem_cells])
+        q.swap (by simp [Finset.mem_sdiff, hq.1, hq.2, YoungDiagram.mem_cells])
         (by simpa using hpq)
       simpa using congrArg Prod.swap this
   · rintro ⟨hsub, huniq⟩
@@ -120,7 +120,6 @@ theorem stripBelow_transpose (α μ : YoungDiagram) :
   · intro p _; simp
   · intro p _; simp
   · intro p _
-    dsimp only
     rw [cells_transpose, Finset.filter_map, Finset.card_map]
     congr 1
 
@@ -147,7 +146,7 @@ theorem horizontal_pieri_Q (α : YoungDiagram) (k : ℕ) :
     (-1 : ℤ) ^ ell α • (sK α * sK (column k).transpose) =
       ∑ mu : DegreeShape (α.card + k), if Horizontal α mu.val then
         ((-1 : ℤ) ^ ell mu.val * (-1 : ℤ) ^ stripRight α mu.val) • sK mu.val else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have hv := vertical_pieri_Q α.transpose k
   rw [card_transpose] at hv
   have hp := congrArg EKAutomorphisms.psi12 hv
@@ -194,7 +193,7 @@ theorem horizontal_pieri (n : ℕ) (α : YoungDiagram) (k : ℕ) :
     (-1 : ℤ) ^ ell α • (schurA n α * schurA n (column k).transpose) =
       ∑ mu : DegreeShape (α.card + k), if Horizontal α mu.val then
         ((-1 : ℤ) ^ ell mu.val * (-1 : ℤ) ^ stripRight α mu.val) • schurA n mu.val else 0 := by
-  letI := degreeFintype (α.card + k)
+  let := degreeFintype (α.card + k)
   have h := congrArg (piN (n+2)) (horizontal_pieri_Q α k)
   simp only [map_zsmul, map_mul, map_sum, piN_sK_eq_schurA] at h
   rw [h]

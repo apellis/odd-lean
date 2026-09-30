@@ -344,7 +344,7 @@ theorem nodup_filter (p : α → Bool) (l : List α)
         have hex := (List.mem_filter.mp hcon).1
         exact hcons.1 hex
       exact (List.nodup_cons.mpr ⟨hmem, ih hcons.2⟩)
-    · simp only [List.filter_cons, hp, ↓reduceIte]
+    · simp only [List.filter_cons, hp]
       exact ih hcons.2
 
 /-- the design specification S1 justification: the census has no duplicates. -/

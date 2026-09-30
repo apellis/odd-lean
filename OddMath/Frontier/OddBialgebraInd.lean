@@ -51,10 +51,10 @@ theorem SuperPair.ind_gelem (P : SuperPair A₁ A₂ B) {e : R₁} {f : R₂} {g
   generalize finProdFinEquiv.symm j = y
   obtain ⟨a, b⟩ := x
   obtain ⟨a', b'⟩ := y
-  rw [diagonal_apply, if_pos (Subsingleton.elim (α := Fin 1) _ _), SuperPair.kron_apply]
+  rw [diagonal_apply, ite_eq_left (Subsingleton.elim (α := Fin 1) _ _), SuperPair.kron_apply]
   simp only [gelem, gdiag]
-  rw [diagonal_apply, if_pos (Subsingleton.elim (α := Fin 1) _ _), diagonal_apply,
-    if_pos (Subsingleton.elim (α := Fin 1) _ _), Int.negOnePow_even _ (Even.mul_right ⟨_, rfl⟩ _),
+  rw [diagonal_apply, ite_eq_left (Subsingleton.elim (α := Fin 1) _ _), diagonal_apply,
+    ite_eq_left (Subsingleton.elim (α := Fin 1) _ _), Int.negOnePow_even _ (Even.mul_right ⟨_, rfl⟩ _),
     one_smul, hefg]
 
 end Gelem

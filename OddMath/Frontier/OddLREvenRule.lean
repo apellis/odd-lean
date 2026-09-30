@@ -39,9 +39,9 @@ theorem pieri_iter0 (mu : YoungDiagram) (c : ℕ → ℕ) (t : ℕ) :
     have hd : mdeg mu c 0 = mu.card := by simp [mdeg, prefixDegree]
     symm
     rw [Fintype.sum_eq_single (α := DegreeShape (mdeg mu c 0)) ⟨mu, hd.symm⟩ ?_]
-    · rw [W0_zero, if_pos rfl]; simp
+    · rw [W0_zero, ite_eq_left rfl]; simp
     · intro b hb
-      rw [W0_zero, if_neg (fun h => hb (Subtype.ext h))]; simp
+      rw [W0_zero, ite_eq_right (fun h => hb (Subtype.ext h))]; simp
   | succ t ih =>
     rw [List.range_succ, List.map_append, List.prod_append, List.map_singleton, List.prod_singleton,
       ← mul_assoc, ih, Finset.sum_mul]
@@ -157,7 +157,7 @@ theorem card_lr (ν : YoungDiagram) (hr : ν.card ≤ r) :
 
 theorem tableauxOfContent_eq_empty {ν β : YoungDiagram} (h : ν.card ≠ β.card) :
     tableauxOfContent ν (TableauDominance.shapeContent β) = ∅ := by
-  apply Finset.eq_empty_of_forall_not_mem
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   rw [mem_tableauxOfContent] at hT
   have := content_total T
@@ -172,7 +172,7 @@ theorem skew_kostka_lr0 (lam mu β : YoungDiagram) :
         (tableauxOfContent ν.val (TableauDominance.shapeContent β)).card := by
   have hc := shapeContent_le_card β
   have e0 := card_ofContent_eq (lam := lam) (mu := mu) (r := β.card) _ hc (fun _ => True)
-  simp only [Finset.filter_True] at e0
+  simp only [Finset.filter_true] at e0
   rw [e0, card_cFin _ hc]
   have hlr : ∀ ν : DegreeShape β.card, (lrTableaux lam mu ν.val).card =
       ((keys lam mu β.card).filter (fun k => k.2.1 = ν.val)).card :=
@@ -185,7 +185,7 @@ theorem skew_kostka_lr0 (lam mu β : YoungDiagram) :
   · rw [Fintype.sum_eq_single (α := DegreeShape β.card) ⟨k.2.1, hd⟩ ?_]
     · simp
     · intro ν hν
-      rw [if_neg (fun h => hν (Subtype.ext h.symm)), zero_mul]
+      rw [ite_eq_right (fun h => hν (Subtype.ext h.symm)), zero_mul]
   · rw [tableauxOfContent_eq_empty hd, Finset.card_empty]
     symm
     apply Finset.sum_eq_zero
@@ -234,18 +234,18 @@ theorem thm_4_1 (lam mu nu : YoungDiagram) :
     evenLR lam mu nu = (lrTableaux lam mu nu).card := by
   unfold evenLR
   rw [sE_mul_sE, map_sum]
-  simp_rw [map_zsmul, ← sBasisE_apply, Basis.repr_self, Finsupp.coe_finset_sum,
+  simp_rw [map_zsmul, ← sBasisE_apply, Module.Basis.repr_self, Finsupp.coe_finsetSum,
     Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one,
     mul_zero]
   by_cases h : lam.card = mu.card + nu.card
   · rw [Fintype.sum_eq_single (α := DegreeShape (mu.card + nu.card)) ⟨lam, h⟩ ?_]
     · simp
     · intro x hx
-      rw [if_neg (fun h' => hx (Subtype.ext h'))]
+      rw [ite_eq_right (fun h' => hx (Subtype.ext h'))]
   · rw [lrTableaux_eq_empty h, Finset.card_empty, Nat.cast_zero]
     apply Finset.sum_eq_zero
     intro x _
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h'
     exact h (h' ▸ x.property)
 

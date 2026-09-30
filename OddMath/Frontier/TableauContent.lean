@@ -25,7 +25,7 @@ noncomputable def content (T : PositiveTableau μ) : ℕ →₀ ℕ :=
 theorem content_apply (T : PositiveTableau μ) (k : ℕ) :
     content T k = (μ.cells.filter (fun p => T.entry p.1 p.2 = k)).card := by
   classical
-  simp only [content, Finsupp.finset_sum_apply, Finsupp.single_apply, Finset.card_filter]
+  simp only [content, Finsupp.finsetSum_apply, Finsupp.single_apply, Finset.card_filter]
 
 /-- Positivity excludes label zero. -/
 @[simp] theorem content_zero (T : PositiveTableau μ) : content T 0 = 0 := by
@@ -40,7 +40,7 @@ theorem content_apply (T : PositiveTableau μ) (k : ℕ) :
 theorem content_total (T : PositiveTableau μ) :
     (content T).sum (fun _ n => n) = μ.card := by
   classical
-  rw [content, ← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+  rw [content, ← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
   simp only [Finsupp.sum_single_index (h := fun _ n : ℕ => n) rfl, Finset.sum_const, smul_eq_mul,
     mul_one, YoungDiagram.card]
 
@@ -83,7 +83,7 @@ theorem contentEncoding_injective (c : ℕ →₀ ℕ) :
 /-- Finiteness is proved only for the content fiber, never assumed globally. -/
 theorem finite_content (μ : YoungDiagram) (c : ℕ →₀ ℕ) :
     Set.Finite {T : PositiveTableau μ | content T = c} := by
-  haveI : Finite {T : PositiveTableau μ // content T = c} :=
+  have : Finite {T : PositiveTableau μ // content T = c} :=
     Finite.of_injective (contentEncoding c) (contentEncoding_injective c)
   exact Set.finite_coe_iff.mp (show Finite {T : PositiveTableau μ // content T = c}
     from inferInstance)
@@ -101,7 +101,7 @@ noncomputable def tableauxOfContent (μ : YoungDiagram) (c : ℕ →₀ ℕ) :
 theorem tableauxOfContent_eq_empty_of_zero_ne (μ : YoungDiagram) (c : ℕ →₀ ℕ)
     (hc : c 0 ≠ 0) : tableauxOfContent μ c = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   have h := (mem_tableauxOfContent T c).mp hT
   exact hc (h ▸ content_zero T)
@@ -110,7 +110,7 @@ theorem tableauxOfContent_eq_empty_of_zero_ne (μ : YoungDiagram) (c : ℕ →�
 theorem tableauxOfContent_eq_empty_of_total_ne (μ : YoungDiagram) (c : ℕ →₀ ℕ)
     (hc : c.sum (fun _ n => n) ≠ μ.card) : tableauxOfContent μ c = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   have h := (mem_tableauxOfContent T c).mp hT
   exact hc (h ▸ content_total T)
@@ -122,10 +122,10 @@ theorem mem_own_content (T : PositiveTableau μ) : T ∈ tableauxOfContent μ (c
 /-- The empty shape has the unique empty filling, including zeros off-shape. -/
 def emptyTableau : PositiveTableau ⊥ where
   entry _ _ := 0
-  row_weak' _ h := (YoungDiagram.not_mem_bot _ h).elim
-  col_strict' _ h := (YoungDiagram.not_mem_bot _ h).elim
+  row_weak' _ h := (YoungDiagram.notMem_bot _ h).elim
+  col_strict' _ h := (YoungDiagram.notMem_bot _ h).elim
   zeros' _ := rfl
-  positive h := (YoungDiagram.not_mem_bot _ h).elim
+  positive h := (YoungDiagram.notMem_bot _ h).elim
 
 @[simp] theorem content_empty (T : PositiveTableau ⊥) : content T = 0 := by
   classical
@@ -138,13 +138,13 @@ theorem tableauxOfContent_empty_zero :
   ext T
   simp only [mem_tableauxOfContent, content_empty, Finset.mem_singleton, true_iff]
   apply ext_cells
-  simp only [YoungDiagram.cells_bot, Finset.not_mem_empty, false_implies, implies_true]
+  simp only [YoungDiagram.cells_bot, Finset.notMem_empty, false_implies, implies_true]
 
 /-- Nonzero content cannot be realized on the empty shape. -/
 theorem tableauxOfContent_empty_ne_zero (c : ℕ →₀ ℕ) (hc : c ≠ 0) :
     tableauxOfContent ⊥ c = ∅ := by
   classical
-  apply Finset.eq_empty_iff_forall_not_mem.mpr
+  apply Finset.eq_empty_iff_forall_notMem.mpr
   intro T hT
   exact hc ((mem_tableauxOfContent T c).mp hT |>.symm.trans (content_empty T))
 

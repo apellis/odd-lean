@@ -34,12 +34,12 @@ termination_by structural rs
 
 private def Geometry {n : ℕ} (rs : List (List (Fin n))) (r c : ℕ)
     (q : ReverseRun n) : Prop :=
-  (∀ w ∈ q.output, w.Sorted (· ≤ ·)) ∧
+  (∀ w ∈ q.output, w.Pairwise (· ≤ ·)) ∧
   (∀ j : ℕ, ColumnBelow (q.output[j]?.getD []) (q.output[j+1]?.getD [])) ∧
   (∀ w ∈ q.output, w ≠ []) ∧
   (∀ j : ℕ, (q.output[j]?.getD []).length =
     if j = r then c else (rs[j]?.getD []).length) ∧
-  q.columns.length = r+1 ∧ q.columns.Sorted (· ≥ ·) ∧
+  q.columns.length = r+1 ∧ q.columns.Pairwise (· ≥ ·) ∧
   q.columns.getLast? = some c ∧ q.output.drop (r+1) = rs.drop (r+1)
 
 -- Information needed by the immediately preceding row, proved from execution.
@@ -69,14 +69,14 @@ private theorem split_last {n : ℕ} (w : List (Fin n)) (c : ℕ)
 
 
 private theorem base_geometry (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin n)))
-    (c : ℕ) (hs : ∀ z ∈ w :: ws, z.Sorted (· ≤ ·))
+    (c : ℕ) (hs : ∀ z ∈ w :: ws, z.Pairwise (· ≤ ·))
     (hc : ∀ j : ℕ, ColumnBelow ((w::ws)[j]?.getD []) ((w::ws)[j+1]?.getD []))
     (hn : ∀ z ∈ w::ws, z ≠ []) (he : w.length = c+1)
     (hb : (ws[0]?.getD []).length ≤ c) :
     ∃ q, reverseRows n (w::ws) 0 c = some q ∧
       Geometry (w::ws) 0 c q ∧ HeadWitness (w::ws) 0 c q := by
   obtain ⟨b,hb',hw⟩ := split_last w c he
-  have hs' : (w.take c).Sorted (· ≤ ·) := (hs w (by simp)).take
+  have hs' : (w.take c).Pairwise (· ≤ ·) := (hs w (by simp)).take
   have hl : (w.take c).length = c := by simp [List.length_take, he]
   have ht : ∀ j : ℕ, ColumnBelow (ws[j]?.getD []) (ws[j+1]?.getD []) := by
     intro j; simpa using hc (j+1)
@@ -90,12 +90,12 @@ private theorem base_geometry (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin
         simp only [List.getElem?_cons_zero, Option.getD_some, Nat.le_zero] at hb
         exact False.elim (hv (List.length_eq_zero_iff.mp hb))
     subst ws
-    refine ⟨⟨[],b,[0]⟩, by simp [reverseRows,he,hb'], ?_, ?_⟩
+    refine ⟨⟨[],b,[0]⟩, by simp [reverseRows,he]; exact (List.getElem_of_getElem? hb').choose_spec, ?_, ?_⟩
     · simp [Geometry, below_nil]
       intro j
       cases j <;> simp
     · simpa [HeadWitness] using hw
-  · refine ⟨⟨w.take c :: ws,b,[c]⟩, by simp [reverseRows,he,hb',hz], ?_, ?_⟩
+  · refine ⟨⟨w.take c :: ws,b,[c]⟩, by simp [reverseRows,he,hz]; exact (List.getElem_of_getElem? hb').choose_spec, ?_, ?_⟩
     · refine ⟨?_, ?_, ?_, ?_, by simp, by simp, by simp, by simp⟩
       · intro z hz'
         rcases List.mem_cons.mp hz' with rfl | hz'
@@ -115,7 +115,7 @@ private theorem base_geometry (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin
     · simpa [HeadWitness] using hw
 
 
-private theorem path_bound (cs : List ℕ) (j k : ℕ) (hs : cs.Sorted (· ≥ ·))
+private theorem path_bound (cs : List ℕ) (j k : ℕ) (hs : cs.Pairwise (· ≥ ·))
     (hh : cs.head? = some j) (hjk : j ≤ k) : ∀ i ∈ cs, i ≤ k := by
   cases cs with
   | nil => simp at hh
@@ -125,15 +125,15 @@ private theorem path_bound (cs : List ℕ) (j k : ℕ) (hs : cs.Sorted (· ≥ �
     intro i hi
     rcases List.mem_cons.mp hi with rfl | hi
     · exact hjk
-    · exact le_trans ((List.sorted_cons.mp hs).1 i hi) hjk
+    · exact le_trans ((List.pairwise_cons.mp hs).1 i hi) hjk
 
 private theorem preceding_step (n : ℕ) (w : List (Fin n)) (ws : List (List (Fin n)))
-    (r c : ℕ) (q : ReverseRun n) (hs : w.Sorted (· ≤ ·))
+    (r c : ℕ) (q : ReverseRun n) (hs : w.Pairwise (· ≤ ·))
     (hc : ColumnBelow w (ws[0]?.getD []))
     (he : (ws[r]?.getD []).length = c+1)
     (hg : Geometry ws r c q) (hw : HeadWitness ws r c q) :
     ∃ v a k, reverseStep n w q.letter = some (v,a,k) ∧
-      ColumnBelow v (q.output[0]?.getD []) ∧ v.Sorted (· ≤ ·) ∧
+      ColumnBelow v (q.output[0]?.getD []) ∧ v.Pairwise (· ≤ ·) ∧
       v.length = w.length ∧ (∀ j ∈ q.columns, j ≤ k) := by
   cases r with
   | zero =>
@@ -152,7 +152,7 @@ private theorem preceding_step (n : ℕ) (w : List (Fin n)) (ws : List (List (Fi
     exact ⟨v,a,k,hv,hcol,hvs,hvl,path_bound q.columns j k hg.2.2.2.2.2.1 hj hk⟩
 
 private theorem reverse_geometry_aux (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ j : ℕ, ColumnBelow (rs[j]?.getD []) (rs[j+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) (hr : r < rs.length)
     (he : (rs[r]?.getD []).length = c+1)
@@ -167,7 +167,7 @@ private theorem reverse_geometry_aux (n : ℕ) (rs : List (List (Fin n))) (r c :
     cases rs with
     | nil => simp at hr
     | cons w ws =>
-      have hst : ∀ v ∈ ws, v.Sorted (· ≤ ·) := fun v hv => hs v (by simp [hv])
+      have hst : ∀ v ∈ ws, v.Pairwise (· ≤ ·) := fun v hv => hs v (by simp [hv])
       have hnt : ∀ v ∈ ws, v ≠ [] := fun v hv => hn v (by simp [hv])
       have hct : ∀ j : ℕ, ColumnBelow (ws[j]?.getD []) (ws[j+1]?.getD []) := by
         intro j; simpa using hc (j+1)
@@ -199,25 +199,25 @@ private theorem reverse_geometry_aux (n : ℕ) (rs : List (List (Fin n))) (r c :
           | zero => simpa using hvl
           | succ j => simpa using hql j
         · simpa using congrArg Nat.succ hcl
-        · exact List.sorted_cons.mpr ⟨hpath,hcs⟩
+        · exact List.pairwise_cons.mpr ⟨hpath,hcs⟩
         · simp [List.getLast?_cons, hce]
         · simpa using hqt
       · exact ⟨q.letter,k,by simpa using hv,by simp⟩
 
 
 theorem reverseRows_geometry (n : ℕ) (rs : List (List (Fin n))) (r c : ℕ)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·))
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·))
     (hc : ∀ j : ℕ, ColumnBelow (rs[j]?.getD []) (rs[j+1]?.getD []))
     (hn : ∀ w ∈ rs, w ≠ []) (hr : r < rs.length)
     (he : (rs[r]?.getD []).length = c+1)
     (hb : (rs[r+1]?.getD []).length ≤ c) :
     ∃ q, reverseRows n rs r c = some q ∧
-      (∀ w ∈ q.output, w.Sorted (· ≤ ·)) ∧
+      (∀ w ∈ q.output, w.Pairwise (· ≤ ·)) ∧
       (∀ j : ℕ, ColumnBelow (q.output[j]?.getD []) (q.output[j+1]?.getD [])) ∧
       (∀ w ∈ q.output, w ≠ []) ∧
       (∀ j : ℕ, (q.output[j]?.getD []).length =
         if j = r then c else (rs[j]?.getD []).length) ∧
-      q.columns.length = r+1 ∧ q.columns.Sorted (· ≥ ·) ∧
+      q.columns.length = r+1 ∧ q.columns.Pairwise (· ≥ ·) ∧
       q.columns.getLast? = some c ∧ q.output.drop (r+1) = rs.drop (r+1) := by
   obtain ⟨q,heq,hg,_⟩ := reverse_geometry_aux n rs r c hs hc hn hr he hb
   exact ⟨q,heq,hg⟩
@@ -242,12 +242,12 @@ theorem tableau_reverseRows_geometry (n : ℕ) (μ : YoungDiagram) (T : Positive
     let r := p.1
     let c := p.2
     ∃ q, reverseRows n rs r c = some q ∧
-      (∀ w ∈ q.output, w.Sorted (· ≤ ·)) ∧
+      (∀ w ∈ q.output, w.Pairwise (· ≤ ·)) ∧
       (∀ j : ℕ, ColumnBelow (q.output[j]?.getD []) (q.output[j+1]?.getD [])) ∧
       (∀ w ∈ q.output, w ≠ []) ∧
       (∀ j : ℕ, (q.output[j]?.getD []).length =
         if j = r then c else (rs[j]?.getD []).length) ∧
-      q.columns.length = r+1 ∧ q.columns.Sorted (· ≥ ·) ∧
+      q.columns.length = r+1 ∧ q.columns.Pairwise (· ≥ ·) ∧
       q.columns.getLast? = some c ∧ q.output.drop (r+1) = rs.drop (r+1) := by
   apply reverseRows_geometry n (rows n T hT) p.1 p.2
     (rows_sorted n μ T hT) (TableauRunGeometry.rows_columns n μ T hT)

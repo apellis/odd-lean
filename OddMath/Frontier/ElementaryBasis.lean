@@ -68,8 +68,8 @@ def columns {N : ℕ} (a : Exp N) : List ℕ := columnsAux (weight a) a
   funext i
   simp only [Pi.add_apply, prefixExp, predRows, he]
   by_cases hi : 0 < a i
-  · rw [if_pos ((h i).mpr hi)]; omega
-  · rw [if_neg (fun hh => hi ((h i).mp hh))]; omega
+  · rw [ite_eq_left ((h i).mpr hi)]; omega
+  · rw [ite_eq_right (fun hh => hi ((h i).mp hh))]; omega
 
  theorem columnsAux_valid {N : ℕ} (d : ℕ) (a : Exp N) :
     ∀ k ∈ columnsAux d a, 1 ≤ k ∧ k ≤ height a := by
@@ -153,7 +153,7 @@ def degreePiece (n d : ℕ) : Submodule ℤ (SkewPolynomial (n+2)) where
  theorem homogeneous_monomial {N : ℕ} (a : Exp N) (c : ℤ) :
     Homogeneous (weight a) (monomial a c) := by
   intro b hb
-  exact Finsupp.single_eq_of_ne (fun h => hb (congrArg weight h.symm))
+  exact Finsupp.single_eq_of_ne (fun h => hb (congrArg weight h))
 
  theorem homogeneous_mul {N d e : ℕ} {f g : SkewPolynomial N}
     (hf : Homogeneous d f) (hg : Homogeneous e g) : Homogeneous (d+e) (f*g) := by
@@ -164,7 +164,7 @@ def degreePiece (n d : ℕ) : Submodule ℤ (SkewPolynomial (n+2)) where
   intro u hu
   apply Finset.sum_eq_zero
   intro v hv
-  apply if_neg
+  apply ite_eq_right
   intro h
   have hud : weight u = d := by by_contra hh; exact Finsupp.mem_support_iff.mp hu (hf u hh)
   have hve : weight v = e := by by_contra hh; exact Finsupp.mem_support_iff.mp hv (hg v hh)
@@ -175,7 +175,7 @@ def degreePiece (n d : ℕ) : Submodule ℤ (SkewPolynomial (n+2)) where
  theorem homogeneous_sum {N d : ℕ} {ι : Type*} (s : Finset ι) (f : ι → SkewPolynomial N)
     (h : ∀ i ∈ s, Homogeneous d (f i)) : Homogeneous d (∑ i ∈ s, f i) := by
   intro a ha
-  simp only [Finsupp.finset_sum_apply]
+  simp only [Finsupp.finsetSum_apply]
   exact Finset.sum_eq_zero (fun i hi => h i hi a ha)
 
  theorem weight_exponents {N : ℕ} (w : List (Fin N)) :
@@ -273,7 +273,7 @@ def basisVector (n d : ℕ) (a : Index (n+2) d) : degreePiece n d :=
   have hc0 : c ≠ 0 := by intro h; rw [h] at hc; norm_num at hc
   have he := congrArg (fun f : SkewPolynomial (n+2) => f a.1) hz
   change (∑ b ∈ s, z b • (basisVector n d b).1) a.1 = 0 at he
-  rw [Finsupp.finset_sum_apply, Finset.sum_eq_single a] at he
+  rw [Finsupp.finsetSum_apply, Finset.sum_eq_single a] at he
   · rw [Finsupp.smul_apply] at he
     change z a * (basisVector n d a).1 a.1 = 0 at he
     rw [hl.2] at he
@@ -348,13 +348,13 @@ The correcting scalar is an integer, since the diagonal squares to one. -/
   exact elimination (toLex a) g hl.1
 
 /-- An actual integral basis, not a rank-equality or mod-two lifting argument. -/
-noncomputable def gradedBasis (n d : ℕ) : Basis (Index (n+2) d) ℤ (degreePiece n d) :=
-  Basis.mk (basisVector_independent n d) (basisVector_spanning n d)
+noncomputable def gradedBasis (n d : ℕ) : Module.Basis (Index (n+2) d) ℤ (degreePiece n d) :=
+  Module.Basis.mk (basisVector_independent n d) (basisVector_spanning n d)
 
  theorem gradedBasis_apply (n d : ℕ) (a : Index (n+2) d) :
     ((gradedBasis n d a : degreePiece n d) : SkewPolynomial (n+2)) =
       elementaryWord (n+2) (columns a.1) := by
-  rw [gradedBasis, Basis.mk_apply]; rfl
+  rw [gradedBasis, Module.Basis.mk_apply]; rfl
 
  theorem graded_rank (n d : ℕ) :
     Module.finrank ℤ (degreePiece n d) = Fintype.card (Index (n+2) d) :=
@@ -399,7 +399,7 @@ def multiplicitiesOf : {N : ℕ} → Exp N → Exp N
       · exact le_rfl
       · exact (Fin.castSucc_le_succ i).trans hj
   have hn : i.castSucc ∉ Finset.Ici i.succ := by
-    simp only [Finset.mem_Ici, Fin.le_iff_val_le_val, Fin.val_succ, Fin.coe_castSucc]; omega
+    simp only [Finset.mem_Ici, Fin.le_iff_val_le_val, Fin.val_succ, Fin.val_castSucc]; omega
   simp only [rowsOf, h, Finset.sum_insert hn]
 
  theorem multiplicitiesOf_rowsOf {N : ℕ} (m : Exp N) : multiplicitiesOf (rowsOf m) = m := by
@@ -426,7 +426,7 @@ def multiplicitiesOf : {N : ℕ} → Exp N → Exp N
 
  theorem weight_rowsOf {N : ℕ} (m : Exp N) : weight (rowsOf m) = ∑ j, (j.val+1)*m j := by
   classical
-  simp only [weight, rowsOf, ← Finset.sum_filter]
+  simp only [weight, rowsOf]
   have h : ∀ i : Fin N, (Finset.univ.filter (fun j => i ≤ j)) = Finset.Ici i := by
     intro i; ext j; simp
   simp_rw [← h, Finset.sum_filter]

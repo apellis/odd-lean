@@ -116,7 +116,7 @@ theorem runRows_nonempty (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
 
 private theorem lengths_sorted (n : ℕ) (rs : List (List (Fin n)))
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) :
-    (rs.map List.length).Sorted (· ≥ ·) := by
+    (rs.map List.length).Pairwise (· ≥ ·) := by
   have hstep : ∀ r : ℕ, (rs[r+1]?.getD []).length ≤ (rs[r]?.getD []).length :=
     fun r => (hc r).1
   have hanti : Antitone (fun r => (rs[r]?.getD []).length) :=
@@ -129,7 +129,7 @@ private theorem lengths_sorted (n : ℕ) (rs : List (List (Fin n)))
 
 theorem runRows_length_sorted (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
     (hc : ∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) :
-    ((runRows n rs a).output.map List.length).Sorted (· ≥ ·) :=
+    ((runRows n rs a).output.map List.length).Pairwise (· ≥ ·) :=
   lengths_sorted n _ (runRows_columns n rs a hc)
 
 theorem newCell_column (n : ℕ) (rs : List (List (Fin n))) (a : Fin n) :
@@ -160,10 +160,10 @@ theorem newCell_column (n : ℕ) (rs : List (List (Fin n))) (a : Fin n) :
 theorem tableau_run_geometry (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
     (hT : InAlphabet n T) (a : Fin n) :
     let q := runRows n (rows n T hT) a
-    (∀ w ∈ q.output, w.Sorted (· ≤ ·)) ∧
+    (∀ w ∈ q.output, w.Pairwise (· ≤ ·)) ∧
     (∀ r : ℕ, ColumnBelow (q.output[r]?.getD []) (q.output[r+1]?.getD [])) ∧
     (∀ w ∈ q.output, w ≠ []) ∧
-    (q.output.map List.length).Sorted (· ≥ ·) := by
+    (q.output.map List.length).Pairwise (· ≥ ·) := by
   exact ⟨runRows_sorted n _ a (rows_sorted n μ T hT),
     runRows_columns n _ a (rows_columns n μ T hT),
     runRows_nonempty n _ a (rows_nonempty n μ T hT),

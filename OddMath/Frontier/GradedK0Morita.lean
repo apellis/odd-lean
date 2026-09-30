@@ -176,7 +176,7 @@ theorem incl_mul_proj (n : ℕ) (a₀ : κ) :
     incl n a₀ * proj n a₀ = (1 : Matrix (Fin n) (Fin n) R) := by
   ext i j
   simp only [incl, proj, mul_apply, of_apply, ite_mul, one_mul, zero_mul,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true, one_apply, Prod.mk.injEq, and_true]
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true, one_apply, Prod.mk.injEq, and_true]
 
 omit [Fintype κ] in
 theorem isHom_incl {n : ℕ} (s : Fin n → ℤ) (a₀ : κ) :
@@ -234,9 +234,9 @@ variable (d) in
 def corner (a : κ) : GIdem (matGrading A d) where
   n := 1
   s _ := 0
-  e := Matrix.of fun _ _ => stdBasisMatrix a a 1
+  e := Matrix.of fun _ _ => Matrix.single a a 1
   hom _ _ b c := by
-    simp only [of_apply, stdBasisMatrix]
+    simp only [Matrix.single, of_apply]
     split_ifs with h
     · obtain ⟨rfl, rfl⟩ := h
       exact mem_of_deg_eq SetLike.GradedOne.one_mem (by ring)
@@ -254,9 +254,9 @@ theorem corner_equiv_embed (a : κ) : corner d a ≈ embed d a (single (A := A) 
   obtain rfl : j = 0 := Nat.lt_one_iff.1 hj
   ext b c
   show (proj 1 a * (1 : Matrix (Fin 1) (Fin 1) R) * incl 1 a :
-      Matrix (Fin 1 × κ) (Fin 1 × κ) R) (0, b) (0, c) = stdBasisMatrix a a (1 : R) b c
+      Matrix (Fin 1 × κ) (Fin 1 × κ) R) (0, b) (0, c) = Matrix.single a a (1 : R) b c
   rw [Matrix.mul_one, mul_apply, Fin.sum_univ_one]
-  simp only [proj, incl, of_apply, stdBasisMatrix, Prod.mk.injEq, true_and]
+  simp only [proj, incl, Matrix.single, of_apply, Prod.mk.injEq, true_and]
   rcases eq_or_ne b a with rfl | hb <;> rcases eq_or_ne c b with rfl | hc <;>
     simp_all [Ne.symm]
 

@@ -80,12 +80,12 @@ theorem rankEquiv_Eclass : ∀ a, rankEquiv a (Eclass a) = T (-((a.choose 2 : �
   | n+2 => onhK0Equiv_divE n
 
 /-- `[E^{(a)}]` is a `ℤ[q,q⁻¹]`-basis of `K₀(ONH_a)`. -/
-def basisE (a : ℕ) : Basis (Fin 1) L (KONH a) :=
-  ((Basis.singleton (Fin 1) L).map (rankEquiv a).symm).unitsSMul
+def basisE (a : ℕ) : Module.Basis (Fin 1) L (KONH a) :=
+  ((Module.Basis.singleton (Fin 1) L).map (rankEquiv a).symm).unitsSMul
     fun _ => (isUnit_T (-((a.choose 2 : ℕ) : ℤ))).unit
 
 theorem basisE_apply (a : ℕ) (i : Fin 1) : basisE a i = Eclass a := by
-  rw [basisE, Basis.unitsSMul_apply, Basis.map_apply, Basis.singleton_apply, Units.smul_def,
+  rw [basisE, Module.Basis.unitsSMul_apply, Module.Basis.map_apply, Module.Basis.singleton_apply, Units.smul_def,
     IsUnit.unit_spec, ← map_smul, smul_eq_mul, mul_one, LinearEquiv.symm_apply_eq,
     rankEquiv_Eclass]
 
@@ -124,11 +124,11 @@ theorem indClass_eq (a b : ℕ) : indClass a b = qBinom a b • Eclass (a + b) :
 abbrev K0ONH : Type := Π₀ a, KONH a
 
 /-- The basis `{[E^{(a)}]}` of `K₀(ONH)`. -/
-def basisK0 : Basis ℕ L K0ONH :=
+def basisK0 : Module.Basis ℕ L K0ONH :=
   (DFinsupp.basis basisE).reindex (Equiv.sigmaUnique ℕ fun _ => Fin 1)
 
 theorem basisK0_apply (a : ℕ) : basisK0 a = DFinsupp.single a (Eclass a) := by
-  rw [basisK0, Basis.reindex_apply]
+  rw [basisK0, Module.Basis.reindex_apply]
   simp [DFinsupp.basis, sigmaFinsuppLequivDFinsupp, basisE_apply]
 
 /-- The `ℤ[q,q⁻¹]`-bilinear product of `K₀(ONH)`, determined on the basis by
@@ -138,7 +138,7 @@ def mulK0 : K0ONH →ₗ[L] K0ONH →ₗ[L] K0ONH :=
 
 theorem mulK0_basis (a b : ℕ) :
     mulK0 (basisK0 a) (basisK0 b) = DFinsupp.single (a + b) (indClass a b) := by
-  rw [mulK0, Basis.constr_basis, Basis.constr_basis]
+  rw [mulK0, Module.Basis.constr_basis, Module.Basis.constr_basis]
 
 theorem mulK0_basis_eq (a b : ℕ) :
     mulK0 (basisK0 a) (basisK0 b) = qBinom a b • basisK0 (a + b) := by
@@ -148,7 +148,7 @@ theorem mulK0_basis_eq (a b : ℕ) :
 def basisEquiv : DivPowAlg ≃ₗ[L] K0ONH := DivPowAlg.basis.equiv basisK0 (Equiv.refl ℕ)
 
 theorem basisEquiv_θ (a : ℕ) : basisEquiv (DivPowAlg.θ a) = basisK0 a := by
-  rw [basisEquiv, ← DivPowAlg.basis_apply, Basis.equiv_apply, Equiv.refl_apply]
+  rw [basisEquiv, ← DivPowAlg.basis_apply, Module.Basis.equiv_apply, Equiv.refl_apply]
 
 theorem mulK0_basisEquiv (x y : DivPowAlg) :
     mulK0 (basisEquiv x) (basisEquiv y) = basisEquiv (x * y) := by

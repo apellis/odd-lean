@@ -16,18 +16,18 @@ private theorem braid_generator (i : Fin (n+1)) (j : Fin (n+3))
   have h01 : i.castSucc.castSucc ≠ i.succ.castSucc := by
     intro e
     have e' := congrArg Fin.val e
-    simp only [Fin.coe_castSucc, Fin.val_succ] at e'
+    simp only [Fin.val_castSucc, Fin.val_succ] at e'
     omega
   have h02 : i.castSucc.castSucc ≠ i.succ.succ := by
     intro e
     have e' := congrArg Fin.val e
-    simp only [Fin.coe_castSucc, Fin.val_succ] at e'
+    simp only [Fin.val_castSucc, Fin.val_succ] at e'
     omega
   have h20 : i.succ.succ ≠ i.castSucc.castSucc := Ne.symm h02
   have h21 : i.succ.succ ≠ i.castSucc.succ := by
     intro e
     have e' := congrArg Fin.val e
-    simp only [Fin.coe_castSucc, Fin.val_succ] at e'
+    simp only [Fin.val_castSucc, Fin.val_succ] at e'
     omega
   have haL (g : SkewPolynomial (n+3)) := divided_left_mul i.castSucc g
   have haM (g : SkewPolynomial (n+3)) := divided_right_mul i.castSucc g
@@ -41,20 +41,19 @@ private theorem braid_generator (i : Fin (n+1)) (j : Fin (n+3))
         g - generator i.castSucc.succ * divided i.succ g := divided_right_mul i.succ g
   by_cases hl : j = i.castSucc.castSucc
   · subst j
-    simp only [haL, haM, haR, hbL, hbM, hbR,
-      neg_mul, map_neg, map_sub, divided_sq_zero, map_zero]
+    simp only [haL, haR, hbL, hbM, neg_mul, map_neg, map_sub, divided_sq_zero]
     rw [h]
     abel
   · by_cases hm : j = i.castSucc.succ
     · subst j
       simp only [haL, haM, haR, hbL, hbM, hbR,
-        neg_mul, map_neg, map_sub, divided_sq_zero, map_zero]
+        neg_mul, map_neg, map_sub]
       rw [h]
       abel
     · by_cases hr : j = i.succ.succ
       · subst j
-        simp only [haL, haM, haR, hbL, hbM, hbR,
-          neg_mul, map_neg, map_sub, divided_sq_zero, map_zero]
+        simp only [haM, haR, hbL, hbR,
+          neg_mul, map_neg, map_sub, divided_sq_zero]
         rw [h]
         abel
       · simp only [divided_spectator_mul i.castSucc j hl hm,

@@ -29,7 +29,7 @@ noncomputable section
 theorem length_one' (n : ℕ) : length (1 : Perm n) = 0 := by
   unfold length
   exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ =>
-    if_neg fun h => lt_asymm h.1 h.2
+    ite_eq_right fun h => lt_asymm h.1 h.2
 
 theorem reduced_nil {n : ℕ} : Reduced ([] : Word n) := by
   unfold Reduced
@@ -277,7 +277,7 @@ theorem zeroHecke_lead (w : Word n) :
         (dot_mul_lenFilt _ (crossing_mul_lenFilt i hg))
     · rw [ZeroHecke.zeroHeckeProduct_cons, ZeroHecke.zeroHecke, hz, mul_assoc, mul_add,
         mul_smul_comm, hc, dotWord_cons]
-      simp only [mul_add, mul_smul_comm, mul_assoc, smul_add, smul_smul, List.length_cons]
+      simp only [mul_add, mul_smul_comm, mul_assoc, smul_add, smul_smul]
       module
 
 theorem dotWord_mul_product_basis (v : List (Fin (n+2))) (w : Word n) (hw : Reduced w) :
@@ -299,7 +299,7 @@ theorem repr_lenFilt {L : ℕ} {x : Presented n} (hx : x ∈ lenFilt n L) (A : F
       obtain ⟨v, w, hw, rfl⟩ := hx
       by_cases hr : Reduced w
       · obtain ⟨ε, -, he⟩ := dotWord_mul_product_basis v w hr
-        rw [he, map_zsmul, Basis.repr_self, Finsupp.smul_apply,
+        rw [he, map_zsmul, Module.Basis.repr_self, Finsupp.smul_apply,
           Finsupp.single_eq_of_ne (fun e => by
             have := congrArg (fun p => length p.2) e
             simp only at this
@@ -329,7 +329,7 @@ theorem zeroHeckeProduct_linearIndependent (n : ℕ) :
   rw [linearIndependent_iff']
   intro s c hsum
   by_contra hne
-  push_neg at hne
+  push Not at hne
   obtain ⟨p1, hp1s, hp1⟩ := hne
   set s' := s.filter (fun q => c q ≠ 0)
   have hs' : s'.Nonempty := ⟨p1, Finset.mem_filter.mpr ⟨hp1s, hp1⟩⟩
@@ -337,10 +337,10 @@ theorem zeroHeckeProduct_linearIndependent (n : ℕ) :
   obtain ⟨hp0s, hc0⟩ := Finset.mem_filter.mp hp0
   obtain ⟨A0, ε0, hε0, g0, hg0, hz0⟩ := zeroHecke_lead_basis p0
   have key := congrArg (fun x => (basis n).repr x (A0, p0)) hsum
-  simp only [map_sum, map_zsmul, Finsupp.coe_finset_sum, Finset.sum_apply,
+  simp only [map_sum, map_zsmul, Finsupp.coe_finsetSum, Finset.sum_apply,
     Finsupp.smul_apply, map_zero, Finsupp.zero_apply] at key
   rw [Finset.sum_eq_single_of_mem p0 hp0s] at key
-  · rw [hz0, map_add, map_zsmul, Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
+  · rw [hz0, map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
       Finsupp.single_eq_same, repr_lenFilt hg0 A0 p0 le_rfl, add_zero, smul_eq_mul,
       smul_eq_mul, mul_one] at key
     rcases mul_eq_zero.mp key with h | h
@@ -351,8 +351,8 @@ theorem zeroHeckeProduct_linearIndependent (n : ℕ) :
     · rw [hcq, zero_smul]
     · have hle := hmax q (Finset.mem_filter.mpr ⟨hqs, hcq⟩)
       obtain ⟨A, ε, -, g, hg, hz⟩ := zeroHecke_lead_basis q
-      rw [hz, map_add, map_zsmul, Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
-        Finsupp.single_eq_of_ne (fun e => hq (congrArg Prod.snd e)),
+      rw [hz, map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
+        Finsupp.single_eq_of_ne (fun e => hq (congrArg Prod.snd e).symm),
         repr_lenFilt hg A0 p0 hle, smul_zero, add_zero, smul_zero]
 
 end Filtration
@@ -478,8 +478,8 @@ theorem zeroHeckeToONH_injective (n : ℕ) : Function.Injective (zeroHeckeToONH 
   simp [hc]
 
 /-- `H_0(S_a)` is free over `ℤ` with basis `T_w`, `w ∈ S_a`. -/
-def zeroHeckeBasis (n : ℕ) : Basis (Perm n) ℤ (ZeroHeckeAlg n) :=
-  Basis.mk (LinearIndependent.of_comp (zeroHeckeToONH n).toLinearMap (by
+def zeroHeckeBasis (n : ℕ) : Module.Basis (Perm n) ℤ (ZeroHeckeAlg n) :=
+  Module.Basis.mk (LinearIndependent.of_comp (zeroHeckeToONH n).toLinearMap (by
       simpa [Function.comp_def, zeroHeckeToONH_wordProd] using
         zeroHeckeProduct_linearIndependent n))
     (span_chosen_eq_top n).ge

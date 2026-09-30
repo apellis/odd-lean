@@ -234,9 +234,9 @@ theorem skew_kostka_lr (lam mu β : YoungDiagram) :
   simp_rw [hg]
   by_cases hd : k.2.1.card = β.card
   · rw [Fintype.sum_eq_single (α := DegreeShape β.card) ⟨k.2.1, hd⟩ ?_]
-    · rw [if_pos rfl, mul_assoc]
+    · rw [ite_eq_left rfl, mul_assoc]
     · intro ν hν
-      rw [if_neg (fun h => hν (Subtype.ext h.symm))]
+      rw [ite_eq_right (fun h => hν (Subtype.ext h.symm))]
   · rw [signedKostka_eq_zero_of_card hd, mul_zero, mul_zero]
     symm
     apply Finset.sum_eq_zero

@@ -59,7 +59,7 @@ def rowTableau {n k : ℕ} (f : Weak n k) : PositiveTableau (rowShape k) where
     omega
   zeros' := by
     intro i j h
-    simpa only [mem_rowShape] using (dif_neg (by simpa using h))
+    simpa only [mem_rowShape] using (dite_eq_right (by simpa using h))
   positive := by
     intro i j h
     have h := (mem_rowShape k i j).mp h
@@ -80,7 +80,7 @@ def columnTableau {n k : ℕ} (f : Strict n k) : PositiveTableau (columnShape k)
       (show (f.val ⟨a,ha⟩).val < (f.val ⟨b,hbk⟩).val from f.property hab) 1
   zeros' := by
     intro i j h
-    simpa only [mem_columnShape] using (dif_neg (by simpa using h))
+    simpa only [mem_columnShape] using (dite_eq_right (by simpa using h))
   positive := by
     intro i j h
     have h := (mem_columnShape k i j).mp h
@@ -149,7 +149,7 @@ def rowEquiv (n k : ℕ) : Bounded n (rowShape k) ≃ Weak n k where
     rintro ⟨i,j⟩ h
     obtain ⟨rfl,hj⟩ := (mem_rowShape k i j).mp h
     have hp := T.val.positive ((mem_rowShape k 0 j).mpr ⟨rfl,hj⟩)
-    simp only [rowTableau, rowLetters, and_self, true_and, hj, dif_pos,
+    simp only [rowTableau, rowLetters, and_self, hj, dite_eq_left,
       Nat.sub_add_cancel (by omega : 1 ≤ T.val.entry 0 j)]
   right_inv f := by
     apply Subtype.ext
@@ -167,7 +167,7 @@ def columnEquiv (n k : ℕ) : Bounded n (columnShape k) ≃ Strict n k where
     rintro ⟨i,j⟩ h
     obtain ⟨rfl,hi⟩ := (mem_columnShape k i j).mp h
     have hp := T.val.positive ((mem_columnShape k i 0).mpr ⟨rfl,hi⟩)
-    simp only [columnTableau, columnLetters, and_self, true_and, hi, dif_pos,
+    simp only [columnTableau, columnLetters, and_self, hi, dite_eq_left,
       Nat.sub_add_cancel (by omega : 1 ≤ T.val.entry i 0)]
   right_inv f := by
     apply Subtype.ext
@@ -177,13 +177,14 @@ def columnEquiv (n k : ℕ) : Bounded n (columnShape k) ≃ Strict n k where
     rw [columnTableau_entry, Nat.add_sub_cancel]
 
 /-- Reading order is antisymmetric as well as total. -/
-instance rowLE_antisymm : IsAntisymm (ℕ × ℕ) RowLE := ⟨by
+instance rowLE_antisymm : Std.Antisymm RowLE := ⟨by
   intro a b hab hba
   apply Prod.ext <;> unfold RowLE at hab hba <;> omega⟩
 
 theorem rowCells_row (k : ℕ) : rowCells (rowShape k) =
     List.ofFn (fun j : Fin k => (0,j.val)) := by
-  apply List.eq_of_perm_of_sorted _ (rowCells_sorted _) _
+  refine List.Perm.eq_of_pairwise' (rowCells_sorted _) ?_ ?_
+  rotate_left
   · apply (List.perm_ext_iff_of_nodup (rowCells_nodup _) (List.nodup_ofFn.mpr ?_)).mpr
     · rintro ⟨i,j⟩
       simp only [mem_rowCells, YoungDiagram.mem_cells, mem_rowShape, List.mem_ofFn,
@@ -195,13 +196,14 @@ theorem rowCells_row (k : ℕ) : rowCells (rowShape k) =
         exact ⟨ha.symm,hj ▸ a.isLt⟩
     · intro a b h
       exact Fin.ext (congrArg Prod.snd h)
-  · apply List.sorted_ofFn_iff.mpr
+  · apply List.pairwise_ofFn.mpr
     intro a b hab
     exact Or.inr ⟨rfl,le_of_lt hab⟩
 
 theorem rowCells_column (k : ℕ) : rowCells (columnShape k) =
     (List.ofFn (fun i : Fin k => (i.val,0))).reverse := by
-  apply List.eq_of_perm_of_sorted _ (rowCells_sorted _) _
+  refine List.Perm.eq_of_pairwise' (rowCells_sorted _) ?_ ?_
+  rotate_left
   · apply (List.perm_ext_iff_of_nodup (rowCells_nodup _) (List.nodup_reverse.mpr
       (List.nodup_ofFn.mpr ?_))).mpr
     · rintro ⟨i,j⟩
@@ -215,7 +217,7 @@ theorem rowCells_column (k : ℕ) : rowCells (columnShape k) =
     · intro a b h
       exact Fin.ext (congrArg Prod.fst h)
   · apply List.pairwise_reverse.mpr
-    apply List.sorted_ofFn_iff.mpr
+    apply List.pairwise_ofFn.mpr
     intro a b hab
     exact Or.inl hab
 
@@ -251,7 +253,7 @@ theorem rowFinWord_column {n k : ℕ} (f : Strict n k) :
   rfl
 
 /-- Weakly increasing words have no strict inversions, even with repetitions. -/
-theorem inversions_of_sorted (l : List ℕ) (hl : l.Sorted (· ≤ ·)) : inversions l = 0 := by
+theorem inversions_of_sorted (l : List ℕ) (hl : l.Pairwise (· ≤ ·)) : inversions l = 0 := by
   induction l with
   | nil => rfl
   | cons a l ih =>
@@ -263,7 +265,7 @@ theorem inversions_of_sorted (l : List ℕ) (hl : l.Sorted (· ≤ ·)) : invers
     simp [inversions,hf,ih hl]
 
 /-- Every pair in a strictly decreasing word contributes exactly one inversion. -/
-theorem inversions_of_strictAnti (l : List ℕ) (hl : l.Sorted (· > ·)) :
+theorem inversions_of_strictAnti (l : List ℕ) (hl : l.Pairwise (· > ·)) :
     inversions l = l.length.choose 2 := by
   induction l with
   | nil => simp [inversions]
@@ -281,13 +283,13 @@ theorem reverse_tildeProduct {n k : ℕ} (f : Strict n k) :
     (((List.ofFn f.val).reverse).map PlacticEvaluation.tildeGenerator).prod =
       (-1 : ℤ) ^ (k.choose 2) •
         (List.ofFn (fun i => PlacticEvaluation.tildeGenerator (f.val i))).prod := by
-  have hs : (List.ofFn (fun i => (f.val i).val)).Sorted (· ≤ ·) := by
-    apply List.sorted_ofFn_iff.mpr
+  have hs : (List.ofFn (fun i => (f.val i).val)).Pairwise (· ≤ ·) := by
+    apply List.pairwise_ofFn.mpr
     intro i j hij
     exact f.property.monotone (le_of_lt hij)
-  have hr : (List.ofFn (fun i => (f.val i).val)).reverse.Sorted (· > ·) := by
+  have hr : (List.ofFn (fun i => (f.val i).val)).reverse.Pairwise (· > ·) := by
     apply List.pairwise_reverse.mpr
-    apply List.sorted_ofFn_iff.mpr
+    apply List.pairwise_ofFn.mpr
     intro i j hij
     exact f.property hij
   rw [← PlacticEvaluation.toSkew_word,wordPolynomial_eq]

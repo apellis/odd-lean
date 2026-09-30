@@ -53,7 +53,7 @@ def canonState (N : ℕ) (lam : YoungDiagram) (hl : lam.colLen 0 ≤ N) : State 
 theorem sK_mul_sK_degree (mu nu : YoungDiagram) :
     letI := degreeFintype (mu.card + nu.card)
     sK mu * sK nu = ∑ lam : DegreeShape (mu.card + nu.card), oddLR lam.val mu nu • sK lam.val := by
-  letI := degreeFintype (mu.card + nu.card)
+  let := degreeFintype (mu.card + nu.card)
   set x := sK mu * sK nu
   conv_lhs => rw [← OddGrassmannSchur.sBasis.linearCombination_repr x]
   rw [Finsupp.linearCombination_apply, Finsupp.sum]
@@ -67,7 +67,7 @@ theorem sK_mul_sK_degree (mu nu : YoungDiagram) :
       exact Finset.mem_univ (α := DegreeShape (mu.card + nu.card)) _
     · exact absurd (OddLRMisc.oddLR_eq_zero_of_card lam mu nu hd) hlam
   rw [Finset.sum_subset hsub (fun lam _ h => by
-    rw [Finsupp.not_mem_support_iff.mp h, zero_smul]), Finset.sum_map]
+    rw [Finsupp.notMem_support_iff.mp h, zero_smul]), Finset.sum_map]
   apply Finset.sum_congr rfl
   intro lam _
   simp only [Function.Embedding.coeFn_mk, OddGrassmannSchur.sBasis_apply]
@@ -102,7 +102,7 @@ theorem signBetween_smul {M : Type*} [AddCommGroup M] {Y : M} (hY : Y ≠ -Y) {�
   unfold signBetween
   rcases hε with rfl | rfl
   · simp
-  · rw [neg_smul, one_smul, if_neg (fun h => hY h.symm), if_pos rfl]
+  · rw [neg_smul, one_smul, ite_eq_right (fun h => hY h.symm), ite_eq_left rfl]
 
 theorem pairSign_sq {N : ℕ} {mu nu : YoungDiagram} (x : TabOf N mu × TabOf N nu) :
     pairSign x = 1 ∨ pairSign x = -1 := by
@@ -187,7 +187,7 @@ theorem eq_4_5_second (N : ℕ) (lam mu nu : YoungDiagram) (hl : lam.colLen 0 �
     have hx' := (Finset.mem_filter.mp hx).2
     refine ⟨x.1, ?_, ?_⟩
     · have h2 : x.2 = canonTab N nu hn := Subtype.ext (eq_canonical_of_prodState hl x hx')
-      simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]
+      simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq]
       rw [← h2]
       exact hx'
     · exact Prod.ext rfl (Subtype.ext (eq_canonical_of_prodState hl x hx').symm)
@@ -271,7 +271,7 @@ theorem sum_filter_eq_lemma47Set (N : ℕ) (lam mu nu : YoungDiagram) (hl : lam.
   · intro U hU
     have hb := (TableauPolynomial.mem_tableauxInAlphabet _ U).mp (Finset.mem_filter.mp hU).1
     refine ⟨⟨U, fun p hp => le_trans (hb p hp) hl⟩, ?_, rfl⟩
-    simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]
+    simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq]
     exact (mem_lemma47Set_iff hl hn _).mp hU
   · intro U _
     rfl

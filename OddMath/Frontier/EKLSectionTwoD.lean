@@ -94,7 +94,8 @@ theorem reorder_even (k ℓ : ℕ) (hk : Even k) (hkl : Odd (k + ℓ)) :
       (2 : ℤ) • ∑ i ∈ Finset.Icc 1 k, (-1 : ℤ) ^ i.choose 2 • (e (ℓ+i) * e (k-i)) := by
   have hsum : ∑ i ∈ Finset.range k, reorderSign k i • (e (ℓ+1+i) * e (k-1-i)) =
       ∑ i ∈ Finset.Icc 1 k, (-1 : ℤ) ^ i.choose 2 • (e (ℓ+i) * e (k-i)) := by
-    rw [← Nat.Ico_succ_right, Finset.sum_Ico_eq_sum_range, Nat.succ_sub_one]
+    rw [← Finset.Ico_succ_right_eq_Icc, Finset.sum_Ico_eq_sum_range,
+      show Order.succ k - 1 = k from Nat.add_sub_cancel k 1]
     refine Finset.sum_congr rfl fun i _ => ?_
     exact reorder_even_term N k ℓ hk i
   rw [reorder N k ℓ hkl, hk.neg_one_pow, one_smul, hsum]
@@ -116,7 +117,8 @@ theorem reorder_odd (k ℓ : ℕ) (hk : Odd k) (hkl : Odd (k + ℓ)) :
       (2 : ℤ) • ∑ i ∈ Finset.Icc 1 k, (-1 : ℤ) ^ (i-1).choose 2 • (e (ℓ+i) * e (k-i)) := by
   have hsum : ∑ i ∈ Finset.range k, reorderSign k i • (e (ℓ+1+i) * e (k-1-i)) =
       ∑ i ∈ Finset.Icc 1 k, (-1 : ℤ) ^ (i-1).choose 2 • (e (ℓ+i) * e (k-i)) := by
-    rw [← Nat.Ico_succ_right, Finset.sum_Ico_eq_sum_range, Nat.succ_sub_one]
+    rw [← Finset.Ico_succ_right_eq_Icc, Finset.sum_Ico_eq_sum_range,
+      show Order.succ k - 1 = k from Nat.add_sub_cancel k 1]
     refine Finset.sum_congr rfl fun i _ => ?_
     exact reorder_odd_term N k ℓ hk i
   rw [reorder N k ℓ hkl, hk.neg_one_pow, neg_one_smul, hsum]

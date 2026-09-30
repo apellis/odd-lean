@@ -172,7 +172,7 @@ theorem sum_map_count (g : ℕ → ℕ) (L : ℕ) : ∀ w : List ℕ, (∀ x ∈
     rw [Finset.sum_eq_single i]
     · simp
     · intro b _ hb
-      rw [if_neg (fun h' => hb (by omega)), zero_mul]
+      rw [ite_eq_right (fun h' => hb (by omega)), zero_mul]
     · intro hi; exact absurd (Finset.mem_range.mpr (by omega)) hi
 
 theorem count_rowWord_canonical (κ : YoungDiagram) (i : ℕ) :

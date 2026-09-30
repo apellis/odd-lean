@@ -85,7 +85,7 @@ theorem kostka_row {n : ℕ} (lam μ : YoungDiagram) (hl : lam.rowLens = [n]) (h
       Finset.sum_eq_single L]
     · rw [Submodule.coe_smul, map_zsmul, hε, smul_eq_mul, mul_one]
     · intro κ _ hκ
-      rw [Submodule.coe_smul, map_zsmul, EKClosureComposition.corollary_3_9, if_neg (Ne.symm hκ),
+      rw [Submodule.coe_smul, map_zsmul, EKClosureComposition.corollary_3_9, ite_eq_right (Ne.symm hκ),
         smul_zero]
     · intro h; exact absurd (Finset.mem_univ L) h
   rw [← hK, hs, ← hμ]
@@ -188,7 +188,7 @@ theorem chi_e (n : ℕ) : chi (e n) = if n ≤ 1 then 1 else 0 := by
     have h2 := hrel (m + 2) (by omega)
     have h1 := hrel (m + 1) (by omega)
     rw [Finset.sum_range_succ, h1, zero_add] at h2
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
     exact (mul_eq_zero.mp h2).resolve_left (s_ne_zero _)
 
 /-- `f_n = χ(ψ₃(e_n))`. -/
@@ -230,7 +230,7 @@ theorem fpsi_eq (n : ℕ) : fpsi n = if n ≤ 1 then 1 else 2 := by
     simp only [V, S, PowerSeries.coeff_mk, PowerSeries.coeff_one]
     rcases Nat.eq_zero_or_pos m with rfl | hm
     · simp [fpsi_zero]
-    · rw [if_neg (by omega)]
+    · rw [ite_eq_right (by omega)]
       exact fpsi_rel m hm
   have hS : S * (1 + PowerSeries.X ^ 2) = 1 - PowerSeries.X := by
     ext m
@@ -241,13 +241,13 @@ theorem fpsi_eq (n : ℕ) : fpsi n = if n ≤ 1 then 1 else 2 := by
     | 0 => simp
     | 1 => simp [s]
     | m + 2 =>
-      rw [if_pos (by omega), if_neg (by omega), if_neg (by omega), Nat.add_sub_cancel,
+      rw [ite_eq_left (by omega), ite_eq_right (by omega), ite_eq_right (by omega), Nat.add_sub_cancel,
         s_add_two]
       ring
   have hV : V * (1 - PowerSeries.X) = 1 + PowerSeries.X ^ 2 := by
     rw [← hS, ← mul_assoc, hVS, one_mul]
   have hstep (m : ℕ) : fpsi (m + 1) - fpsi m = if m + 1 = 2 then 1 else 0 := by
-    have := congrArg (PowerSeries.coeff ℤ (m + 1)) hV
+    have := congrArg (PowerSeries.coeff (R := ℤ) (m + 1)) hV
     rw [mul_sub, mul_one, map_sub, PowerSeries.coeff_succ_mul_X, map_add,
       PowerSeries.coeff_one, PowerSeries.coeff_X_pow] at this
     simpa [V] using this
@@ -259,19 +259,19 @@ theorem fpsi_eq (n : ℕ) : fpsi n = if n ≤ 1 then 1 else 2 := by
     | zero => exact h2
     | succ m ih =>
       have := hstep (m + 2)
-      rw [if_neg (by omega), ih] at this
+      rw [ite_eq_right (by omega), ih] at this
       rw [show m + 1 + 2 = m + 2 + 1 by ring]
       linarith
   match n with
   | 0 => simp [fpsi_zero]
   | 1 => simp [h1]
-  | m + 2 => rw [hge m, if_neg (by omega)]
+  | m + 2 => rw [hge m, ite_eq_right (by omega)]
 
 /-- **EK p. 19: `ψ₃(e_n) ≠ e_n` for every `n ≥ 2`.** -/
 theorem psi3_e_ne (n : ℕ) (hn : 2 ≤ n) : psi3 (e n) ≠ e n := by
   intro heq
   have h1 := fpsi_eq n
-  rw [fpsi, heq, chi_e, if_neg (by omega), if_neg (by omega)] at h1
+  rw [fpsi, heq, chi_e, ite_eq_right (by omega), ite_eq_right (by omega)] at h1
   exact absurd h1 (by decide)
 
 /-- The exact set: `ψ₃(e_n) = e_n ↔ n ≤ 1`. -/

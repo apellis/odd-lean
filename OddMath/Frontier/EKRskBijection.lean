@@ -72,8 +72,8 @@ theorem pairs_ext {n m : ℕ} {z w : Pairs n m} (hp : z.pState = w.pState)
 
 /-! ## Words of matrix rows -/
 
-theorem rowWord_sorted {n : ℕ} (r : Fin n → ℕ) : (rowWord r).Sorted (· ≤ ·) := by
-  unfold rowWord List.Sorted
+theorem rowWord_sorted {n : ℕ} (r : Fin n → ℕ) : (rowWord r).Pairwise (· ≤ ·) := by
+  unfold rowWord
   rw [List.pairwise_flatMap]
   refine ⟨fun a _ => ?_, ?_⟩
   · rw [List.pairwise_replicate]; exact Or.inr le_rfl
@@ -103,9 +103,9 @@ theorem rowWord_injective {n : ℕ} : Function.Injective (rowWord (n := n)) := b
   funext j
   rw [← rowWord_count r j, ← rowWord_count r' j, h]
 
-theorem rowWord_count_eq {n : ℕ} (w : List (Fin n)) (hw : w.Sorted (· ≤ ·)) :
+theorem rowWord_count_eq {n : ℕ} (w : List (Fin n)) (hw : w.Pairwise (· ≤ ·)) :
     rowWord (fun j => w.count j) = w := by
-  apply List.eq_of_perm_of_sorted _ (rowWord_sorted _) hw
+  apply List.Perm.eq_of_pairwise' (rowWord_sorted _) hw
   rw [List.perm_iff_count]
   intro a
   rw [rowWord_count]
@@ -119,10 +119,10 @@ noncomputable def compContent {k : ℕ} (c : Fin k → ℕ) : ℕ →₀ ℕ :=
 theorem compContent_apply {k : ℕ} (c : Fin k → ℕ) (i : Fin k) :
     compContent c (i.val + 1) = c i := by
   unfold compContent
-  rw [Finsupp.finset_sum_apply, Finset.sum_eq_single i]
+  rw [Finsupp.finsetSum_apply, Finset.sum_eq_single i]
   · simp
   · intro b _ hb
-    rw [Finsupp.single_apply, if_neg]
+    rw [Finsupp.single_apply, ite_eq_right]
     intro h
     exact hb (Fin.ext (by omega))
   · simp
@@ -135,17 +135,17 @@ theorem compContent_injective {k : ℕ} : Function.Injective (compContent (k := 
 theorem compContent_above {k : ℕ} (c : Fin k → ℕ) {e : ℕ} (he : k < e ∨ e = 0) :
     compContent c e = 0 := by
   unfold compContent
-  rw [Finsupp.finset_sum_apply]
+  rw [Finsupp.finsetSum_apply]
   apply Finset.sum_eq_zero
   intro i _
-  rw [Finsupp.single_apply, if_neg]
+  rw [Finsupp.single_apply, ite_eq_right]
   have := i.isLt
   omega
 
 theorem compContent_total {k : ℕ} (c : Fin k → ℕ) :
     (compContent c).sum (fun _ x => x) = ∑ i, c i := by
   unfold compContent
-  rw [← Finsupp.sum_finset_sum_index (fun _ => rfl) (fun _ _ _ => rfl)]
+  rw [← Finsupp.sum_finsetSum_index (fun _ => rfl) (fun _ _ _ => rfl)]
   simp only [Finsupp.sum_single_index (h := fun _ x : ℕ => x) rfl]
 
 /-- A tableau whose content is a composition of length `k` has entries `≤ k`. -/
@@ -177,7 +177,7 @@ theorem word_content {n : ℕ} (w : List (Fin n)) :
     rw [Finset.sum_eq_single a]
     · simp
     · intro b _ hb
-      rw [if_neg (Ne.symm hb)]
+      rw [ite_eq_right (Ne.symm hb)]
       simp
     · simp
 
@@ -194,12 +194,12 @@ theorem insert_content_eq (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
       congr 1
       by_cases h : (⟨i, hi⟩ : Fin n) = a
       · subst h; simp
-      · rw [if_neg h, if_neg]
+      · rw [ite_eq_right h, ite_eq_right]
         intro h'
         exact h (Fin.ext (by simp at h' ⊢; omega))
     · have ha := a.isLt
       rw [CompleteTableauExpansion.content_above _ n (TableauInsertion.insert n μ T hT a).bounded
-        (by omega), CompleteTableauExpansion.content_above _ n hT (by omega), if_neg (by omega)]
+        (by omega), CompleteTableauExpansion.content_above _ n hT (by omega), ite_eq_right (by omega)]
       simp
 
 theorem run_content (n : ℕ) (S : St n) (w : List (Fin n)) :
@@ -253,7 +253,7 @@ noncomputable def rskRec (n : ℕ) : (m : ℕ) → (Fin m → Fin n → ℕ) →
 theorem step_Q_content (n m : ℕ) (z : Pairs n m) (r : Fin n → ℕ) :
     content (step n m z r).2.2.1 = content z.2.2.1 + Finsupp.single (m + 1) (∑ j, r j) := by
   show content (extendTableau z.2.2.1 m z.2.2.2 (run_horizontal' n z.pState r)) = _
-  rw [extend_content]
+  erw [extend_content]
   congr 2
   exact (run_card n z.pState (rowWord r)).trans (rowWord_length r)
 
@@ -312,7 +312,7 @@ theorem pre_step (n m : ℕ) (z : Pairs n m) (r : Fin n → ℕ) :
     exact hp
   change (prefixTableau (extendTableau z.2.2.1 m z.2.2.2 (run_horizontal' n z.pState r)) m).entry
     p.1 p.2 = z.2.2.1.entry p.1 p.2
-  rw [prefix_entry _ _ hp, extend_old _ _ _ _ hp']
+  erw [prefix_entry _ _ hp, extend_old _ _ _ _ hp']
 
 theorem step_injective (n m : ℕ) {z z' : Pairs n m} {r r' : Fin n → ℕ}
     (h : step n m z r = step n m z' r') : z = z' ∧ r = r' := by
@@ -355,7 +355,7 @@ theorem step_surjective (n m : ℕ) (y : Pairs n (m + 1)) :
     · show (extendTableau (prefixTableau Q.1 m) m (prefix_bounded Q.1 m)
         (run_horizontal' n ⟨prefixShape Q.1 m, T'⟩ (fun j => w.count j))).entry p.1 p.2 =
         Q.1.entry p.1 p.2
-      rw [extend_new _ _ _ _ (Finset.mem_sdiff.mpr ⟨hp, hm⟩)]
+      erw [extend_new _ _ _ _ (Finset.mem_sdiff.mpr ⟨hp, hm⟩)]
       have hp' : p ∈ la.cells := by
         have : p ∈ (TableauWordInsertion.run n ⟨prefixShape Q.1 m, T'⟩
           (rowWord fun j => w.count j)).1.1.cells := hp
@@ -370,7 +370,7 @@ theorem pairs_zero_eq (n : ℕ) (z : Pairs n 0) : z = emptyPairs n := by
   have hbot : z.1 = ⊥ := by
     apply YoungDiagram.ext
     ext p
-    simp only [YoungDiagram.cells_bot, Finset.not_mem_empty, iff_false]
+    simp only [YoungDiagram.cells_bot, Finset.notMem_empty, iff_false]
     intro hp
     have h1 := z.2.2.1.positive (i := p.1) (j := p.2) hp
     have h2 := z.2.2.2 p hp
@@ -484,14 +484,14 @@ theorem rsk_eq_frozen (n : ℕ) : ∀ (m : ℕ) (A : Fin m → Fin n → ℕ),
       rw [← List.mem_toFinset, hs]
       rfl
     by_cases hold : p ∈ (rskRec n m (Fin.init A)).1.cells
-    · rw [extend_old _ _ _ _ hold, if_neg (fun h => (Finset.mem_sdiff.mp (hmem.mp h)).2 hold)]
+    · erw [extend_old _ _ _ _ hold, ite_eq_right (fun h => (Finset.mem_sdiff.mp (hmem.mp h)).2 hold)]
     · by_cases hnew : p ∈ (TableauWordInsertion.run n (rskRec n m (Fin.init A)).pState
           (rowWord (A (Fin.last m)))).1.1.cells
-      · rw [extend_new _ _ _ _ (Finset.mem_sdiff.mpr ⟨hnew, hold⟩),
-          if_pos (hmem.mpr (Finset.mem_sdiff.mpr ⟨hnew, hold⟩))]
-      · rw [if_neg (fun h => hnew (Finset.mem_sdiff.mp (hmem.mp h)).1)]
+      · erw [extend_new _ _ _ _ (Finset.mem_sdiff.mpr ⟨hnew, hold⟩),
+          ite_eq_left (hmem.mpr (Finset.mem_sdiff.mpr ⟨hnew, hold⟩))]
+      · rw [ite_eq_right (fun h => hnew (Finset.mem_sdiff.mp (hmem.mp h)).1)]
         rw [(rskRec n m (Fin.init A)).2.2.1.zeros' (by simpa using hold)]
-        rw [(extendTableau (rskRec n m (Fin.init A)).2.2.1 m _ _).zeros' (by simpa using hnew)]
+        erw [(extendTableau (rskRec n m (Fin.init A)).2.2.1 m _ _).zeros' (by simpa using hnew)]
 
 /-! ## Agreement with the computable list-level mirror used by the controls -/
 
@@ -517,7 +517,7 @@ theorem mirrorRel_step (n : ℕ) (s : St n × (ℕ × ℕ → ℕ))
     rw [List.reverse_append]
     by_cases hp : p = TableauRowRecursion.newCell n t.1 x.2
     · subst hp; simp
-    · rw [if_neg hp, h2 p]
+    · rw [ite_eq_right hp, h2 p]
       unfold qLook
       have hne : ¬ (TableauRowRecursion.newCell n t.1 x.2 = p) := fun h => hp h.symm
       simp [hne]
@@ -534,7 +534,7 @@ theorem rskFold_mirror {m n : ℕ} (A : Fin m → Fin n → ℕ) :
   constructor
   · have h0 : (⊥ : YoungDiagram).colLen 0 = 0 := by
       have : ¬ (0 < (⊥ : YoungDiagram).colLen 0) := fun h =>
-        YoungDiagram.not_mem_bot _ (YoungDiagram.mem_iff_lt_colLen.mpr h)
+        YoungDiagram.notMem_bot _ (YoungDiagram.mem_iff_lt_colLen.mpr h)
       omega
     simp [TableauRowRecursion.rows, h0]
   · intro p; simp [qLook]
@@ -668,7 +668,7 @@ theorem rsk_bijective (μ : Fin m → ℕ) (ρ : Fin n → ℕ) : Function.Bijec
       have h' := compContent_injective (h.symm.trans P.2)
       exact fun j => congrFun h' j
     refine ⟨⟨A, hrow, hcol⟩, Target.raw_injective ?_⟩
-    rw [rsk_raw]
+    erw [rsk_raw]
     change (rskRec n m A).raw = z.raw
     rw [hA]
 
@@ -688,7 +688,6 @@ theorem printed_codomain_obstruction (μ : Fin m → ℕ) (ρ : Fin n → ℕ)
 theorem ex45_contents_ne : compContent (![2, 2] : Fin 2 → ℕ) ≠ compContent (![2, 1, 1] : Fin 3 → ℕ) := by
   intro h
   have h3 := congrArg (fun c : ℕ →₀ ℕ => c 3) h
-  simp only at h3
   rw [compContent_above _ (Or.inl (by norm_num)), show (3 : ℕ) = (2 : Fin 3).val + 1 from rfl,
     compContent_apply] at h3
   simp at h3

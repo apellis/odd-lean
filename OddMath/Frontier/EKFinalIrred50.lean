@@ -108,7 +108,7 @@ theorem bigCheck_f50 : bigCheck 269 f50Lower [true, false, false, false, false, 
 
 /-- **The printed degree-50 polynomial is irreducible over `ℚ`.** -/
 theorem f50_irreducible : Irreducible (f50.map (Int.castRingHom ℚ)) := by
-  haveI : Fact (Nat.Prime 269) := ⟨by norm_num⟩
+  have : Fact (Nat.Prime 269) := ⟨by norm_num⟩
   rw [f50_split]
   exact irreducible_of_bigCheck 269 f50Lower [true, false, false, false, false, true, true, false, true] cert50 (by decide) (by decide +kernel)
     (by decide +kernel) (by unfold Bw; decide +kernel) bigCheck_f50

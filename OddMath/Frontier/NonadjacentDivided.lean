@@ -1,3 +1,4 @@
+import Mathlib.Tactic.NoncommRing
 import OddMath.Frontier.AllRankDivided
 
 /-! EKL 1111.1320v1 p15 (2.59)--(2.61). Arbitrary distinct endpoints.
@@ -35,8 +36,7 @@ theorem freeMatrix_entries (u v : Fin (n+2)) (huv : u ≠ v) (w : FreeAlgebra �
     (freeMatrix u v huv w) 1 1 = Ideal.Quotient.mk (relIdeal (n+2)) w := by
   induction w using FreeAlgebra.induction with
   | grade0 r =>
-      simp [Algebra.algebraMap_eq_smul_one, Matrix.one_apply,
-        ← Matrix.diagonal_intCast, Matrix.diagonal_apply]
+      simp [← Matrix.diagonal_intCast]
   | grade1 j =>
       simp [matrixGenerator, SignedPermutation.quotientEval_ι,
         SignedPermutation.epsilon, Equiv.Perm.sign_swap huv, q]
@@ -54,9 +54,8 @@ theorem matrixGenerator_rel (u v : Fin (n+2)) (huv : u ≠ v) (j k : Fin (n+2)) 
         (Equiv.swap u v k) ((Equiv.swap _ _).injective.ne h)
   · by_cases hjl : j = u <;> by_cases hjr : j = v <;>
       by_cases hkl : k = u <;> by_cases hkr : k = v <;>
-      simp_all [matrixGenerator, delta, Matrix.mul_apply, Fin.sum_univ_two,
-        Equiv.swap_apply_def, huv]
-  · simp [matrixGenerator, Matrix.mul_apply, Fin.sum_univ_two]
+      simp_all [matrixGenerator, delta, Equiv.swap_apply_def]
+  · simp [matrixGenerator]
   · simpa [matrixGenerator, Matrix.mul_apply, Fin.sum_univ_two] using rel_sum (n+2) j k h
 
 theorem freeMatrix_kill_mem (u v : Fin (n+2)) (huv : u ≠ v) (w : FreeAlgebra ℤ (Fin (n+2)))
@@ -125,7 +124,7 @@ noncomputable def presentedDivided (u v : Fin (n+2)) (huv : u ≠ v) : Presented
 
 @[simp] theorem presentedDivided_one (u v : Fin (n+2)) (huv : u ≠ v) : presentedDivided u v huv 1 = 0 := by
   change presentedMatrix u v huv 1 0 1 = 0
-  simp [Matrix.one_apply]
+  simp []
 
 @[simp] theorem presentedDivided_q (u v : Fin (n+2)) (huv : u ≠ v) (j : Fin (n+2)) :
     presentedDivided u v huv (q (n+2) j) = delta u v huv j := by

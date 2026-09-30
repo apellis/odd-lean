@@ -184,7 +184,7 @@ private theorem rightCount_insert (μ ν : YoungDiagram) (p : ℕ × ℕ)
 
 set_option maxHeartbeats 1600000 in
 theorem run_crossings_shape (n : ℕ) (S : State n) (w : List (Fin n))
-    (hw : w.Sorted (· ≤ ·)) :
+    (hw : w.Pairwise (· ≤ ·)) :
     let R := TableauWordInsertion.run n S w
     northWest S.1 + crossings n S w = northWest R.1.1 + stripRight S.1 R.2 := by
   induction w generalizing S with
@@ -219,7 +219,7 @@ private theorem shape_sign (μ : YoungDiagram) :
   norm_num
 
 theorem run_polynomial (n : ℕ) (S : State n) (w : List (Fin n))
-    (hw : w.Sorted (· ≤ ·)) :
+    (hw : w.Pairwise (· ≤ ·)) :
     let R := TableauWordInsertion.run n S w
     (-1 : ℤ) ^ (directNorth S.1 + north S.1 + northEast S.1) •
       (TableauEvaluation.rowPolynomial n S.2.1 S.2.2 *

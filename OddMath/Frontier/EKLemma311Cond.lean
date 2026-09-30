@@ -110,7 +110,7 @@ theorem lex_le_of_dom {μ ν : YoungDiagram} (h : Dom μ ν) : μ = ν ∨ LexLT
   right
   have hex : ∃ j, μ.rowLen j ≠ ν.rowLen j := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     apply he
     apply YoungDiagram.ext
     ext ⟨r, c⟩
@@ -197,7 +197,7 @@ theorem dom_transpose {μ ν : YoungDiagram} (hc : μ.card = ν.card) (h : Dom �
       (τ.cells.filter (fun p => p.1 < r ∧ ¬ p.2 < k)).card +
       (τ.cells.filter (fun p => p.1 < r ∧ p.2 < k)).card := by
     unfold shapePrefix
-    rw [← Finset.filter_card_add_filter_neg_card_eq_card (fun p : ℕ × ℕ => p.2 < k),
+    rw [← Finset.card_filter_add_card_filter_not (fun p : ℕ × ℕ => p.2 < k),
       Finset.filter_filter, Finset.filter_filter, add_comm]
   have hμ := hsplit μ
   have hν := hsplit ν
@@ -214,8 +214,8 @@ theorem dom_transpose {μ ν : YoungDiagram} (hc : μ.card = ν.card) (h : Dom �
   have hμA : (μ.cells.filter (fun p => ¬ p.2 < k)).card ≤
       (ν.cells.filter (fun p => ¬ p.2 < k)).card := by
     rw [hA]; omega
-  have htμ := Finset.filter_card_add_filter_neg_card_eq_card (s := μ.cells) (fun p : ℕ × ℕ => p.2 < k)
-  have htν := Finset.filter_card_add_filter_neg_card_eq_card (s := ν.cells) (fun p : ℕ × ℕ => p.2 < k)
+  have htμ := Finset.card_filter_add_card_filter_not (s := μ.cells) (fun p : ℕ × ℕ => p.2 < k)
+  have htν := Finset.card_filter_add_card_filter_not (s := ν.cells) (fun p : ℕ × ℕ => p.2 < k)
   unfold colPrefix
   change _ = μ.card at htμ
   change _ = ν.card at htν
@@ -257,13 +257,13 @@ instance (d : ℕ) : IsTrans (DegreeShape d) (Above d) :=
     rintro rfl
     exact h1.2 (Subtype.ext (dom_antisymm h1.1 h2.1)).symm⟩⟩
 
-instance (d : ℕ) : IsIrrefl (DegreeShape d) (Above d) := ⟨fun _ h => h.2 rfl⟩
+instance (d : ℕ) : Std.Irrefl (Above d) := ⟨fun _ h => h.2 rfl⟩
 
 theorem above_wf (d : ℕ) : WellFounded (Above d) := Finite.wellFounded_of_trans_of_irrefl _
 
 theorem up_of_upS {d : ℕ} {lam : DegreeShape d} (h : schur d lam - degreeHBasis d lam ∈ UpS d lam) :
     schur d lam ∈ Up d lam := by
-  have h1 : UpS d lam ≤ Up d lam := Submodule.span_mono (Set.image_subset _ (fun ν hν => hν.1))
+  have h1 : UpS d lam ≤ Up d lam := Submodule.span_mono (Set.image_mono (fun ν hν => hν.1))
   have h2 : degreeHBasis d lam ∈ Up d lam := Submodule.subset_span ⟨lam, fun _ => le_rfl, rfl⟩
   have := Submodule.add_mem _ (h1 h) h2
   simpa using this
@@ -322,8 +322,8 @@ theorem pair_schur_e_diag (d : ℕ) (lam : DegreeShape d) :
     · exact absurd (Subtype.ext (YoungDiagram.transpose_eq_iff.mp he)) hne
     · exact hl
   have h1 := hle (schur_sub_mem_upS d lam)
-  simp only [LinearMap.mem_ker, pairingMap_apply, Submodule.coe_sub, map_sub,
-    LinearMap.sub_apply, degreeHBasis_apply, degreeEBasis_apply, transposeShape_val] at h1
+  simp only [LinearMap.mem_ker, pairingMap_apply, map_sub,
+    degreeHBasis_apply, degreeEBasis_apply, transposeShape_val] at h1
   rw [← pair_h_e_diag]
   omega
 
@@ -350,7 +350,7 @@ theorem expansion (d : ℕ) (h311 : Identity311 d) (x : degreePiece d) :
     rw [← hc, Submodule.coe_sum, map_sum]
     simp only [Submodule.coe_smul, map_zsmul, h', smul_eq_mul, mul_ite, mul_zero]
     rw [Finset.sum_ite_eq]
-    simp only [Finset.mem_univ, if_true]
+    simp only [Finset.mem_univ, ite_true]
     rw [mul_left_comm, sign_mul_self, mul_one]
   simp only [hcoef]
   exact hc.symm
@@ -361,7 +361,7 @@ def EAbove (d : ℕ) (κ : YoungDiagram) : Submodule ℤ (degreePiece d) :=
 def TAbove (d : ℕ) (a b : DegreeShape d) : Prop := LexLT b.val.transpose a.val.transpose
 
 instance (d : ℕ) : IsTrans (DegreeShape d) (TAbove d) := ⟨fun _ _ _ h1 h2 => lt_trans h2 h1⟩
-instance (d : ℕ) : IsIrrefl (DegreeShape d) (TAbove d) := ⟨fun _ h => lt_irrefl _ h⟩
+instance (d : ℕ) : Std.Irrefl (TAbove d) := ⟨fun _ h => lt_irrefl _ h⟩
 theorem tabove_wf (d : ℕ) : WellFounded (TAbove d) := Finite.wellFounded_of_trans_of_irrefl _
 
 /-- The Proposition 3.10 sign `(-1)^{ℓ(w_λ) + C(λᵀ,2)}`. -/
@@ -370,7 +370,7 @@ def sgn (lam : YoungDiagram) : ℤ := (-1 : ℤ) ^ (EKSemiorthogonality.ell lam 
 theorem sgn_sq (lam : YoungDiagram) : sgn lam * sgn lam = 1 := sign_mul_self _
 
 theorem eAbove_mono (d : ℕ) {a b : YoungDiagram} (h : LexLT a b) : EAbove d b ≤ EAbove d a :=
-  Submodule.span_mono (Set.image_subset _ (fun _ hμ => lt_trans h hμ))
+  Submodule.span_mono (Set.image_mono (fun _ hμ => lt_trans h hμ))
 
 /-- Triangular inversion: `s_λ - sgn(λ) e_{λᵀ} ∈ span{e_μ : μ > λᵀ}`. -/
 theorem schur_sub_e_mem (d : ℕ) (h311 : Identity311 d) (lam : DegreeShape d) :
@@ -430,7 +430,6 @@ theorem rowLen_eq_zero_of_colLen_le (μ : YoungDiagram) {j : ℕ} (hj : μ.colLe
 theorem sum_range_eq_fin (f : ℕ → ℕ) (c k : ℕ) (hf : ∀ j, c ≤ j → f j = 0) :
     ∑ j ∈ Finset.range k, f j = ∑ j : Fin c, if j.val < k then f j.val else 0 := by
   have h2 := Fin.sum_univ_eq_sum_range (fun j => if j < k then f j else 0) c
-  simp only at h2
   rw [h2, ← Finset.sum_filter]
   have h1 : ∑ j ∈ Finset.range k, f j = ∑ j ∈ Finset.range k, if j < c then f j else 0 := by
     refine Finset.sum_congr rfl fun j _ => ?_
@@ -488,7 +487,7 @@ theorem gale_ryser (ν μ : YoungDiagram) (A : ZeroOneMatrices ν μ) : Dom μ �
         rw [show (∑ i, A i j) = μ.rowLen j from congrFun A.property.2 j]
     _ = ∑ j : Fin (μ.colLen 0), ∑ i, if j.val < k then A i j else 0 := by
         refine Finset.sum_congr rfl fun j _ => ?_
-        split_ifs with h <;> simp [h]
+        split_ifs with h <;> simp []
     _ = ∑ i, ∑ j : Fin (μ.colLen 0), if j.val < k then A i j else 0 := Finset.sum_comm
     _ ≤ ∑ i : Fin (ν.colLen 0), min k (ν.rowLen i) :=
         Finset.sum_le_sum fun i _ => row_bound A h01 i k
@@ -533,7 +532,7 @@ theorem pair_schur_h (d : ℕ) (h311 : Identity311 d) (rho μ : DegreeShape d) :
   rw [hdef, Submodule.coe_sum, map_sum]
   simp only [Submodule.coe_smul, map_zsmul, h' rho, smul_eq_mul, mul_ite, mul_zero]
   rw [Finset.sum_ite_eq]
-  simp only [Finset.mem_univ, if_true]
+  simp only [Finset.mem_univ, ite_true]
   ring
 
 /-! ## New: ψ1ψ2 transport -/
@@ -645,16 +644,16 @@ theorem pair_schur_psi12_schur (d : ℕ) (h311 : Identity311 d) (lam rho : Degre
       · exact lt_irrefl _ (lt_trans hl hlex)
     have hne : rho ≠ transposeShape d lam := by
       rintro rfl; exact lt_irrefl _ hlex
-    rw [if_neg hne]
+    rw [ite_eq_right hne]
     exact pair_psi12_up d lam rho hnd _ hup
   · by_cases heq : rho = transposeShape d lam
-    · rw [if_pos heq, hsplit, map_add,
+    · rw [ite_eq_left heq, hsplit, map_add,
         pair_psi12_eAbove d h311 lam rho hlex _ (schur_sub_e_mem d h311 lam), zero_add,
         map_zsmul, pair_schur_h d h311, smul_eq_mul]
       subst heq
       rw [signedKostka_diag]
       ring
-    · rw [if_neg heq]
+    · rw [ite_eq_right heq]
       by_cases hd2 : Dom rho.val lam.val.transpose
       · rw [hsplit, map_add,
           pair_psi12_eAbove d h311 lam rho hlex _ (schur_sub_e_mem d h311 lam), zero_add,
@@ -674,13 +673,13 @@ theorem lemma_3_11_of_identity311 (d : ℕ) (h311 : Identity311 d) (lam : Degree
         (schur d (transposeShape d lam) : Q) := by
   have hxd := psi12_degree (schur d lam).property
   have hexp := congrArg Subtype.val (expansion d h311 ⟨_, hxd⟩)
-  simp only [Subtype.coe_mk] at hexp
+  simp only [] at hexp
   rw [hexp, Submodule.coe_sum]
   simp only [Submodule.coe_smul, pair_schur_psi12_schur d h311 lam]
   rw [Finset.sum_eq_single (transposeShape d lam)]
-  · rw [if_pos rfl, mul_left_comm, sign_mul_self, mul_one, sign_identity]
+  · rw [ite_eq_left rfl, mul_left_comm, sign_mul_self, mul_one, sign_identity]
   · intro b _ hb
-    rw [if_neg hb, mul_zero, zero_smul]
+    rw [ite_eq_right hb, mul_zero, zero_smul]
   · intro h
     exact absurd (Finset.mem_univ _) h
 

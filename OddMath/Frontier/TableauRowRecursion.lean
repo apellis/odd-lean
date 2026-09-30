@@ -41,19 +41,19 @@ theorem rows_get (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
   simp [rows]
 
 theorem rows_sorted (n : ℕ) (μ : YoungDiagram) (T : PositiveTableau μ)
-    (hT : InAlphabet n T) : ∀ w ∈ rows n T hT, w.Sorted (· ≤ ·) := by
+    (hT : InAlphabet n T) : ∀ w ∈ rows n T hT, w.Pairwise (· ≤ ·) := by
   intro w hw
   obtain ⟨r, _, rfl⟩ := List.mem_map.mp hw
   exact row_sorted n μ T hT r
 
 private theorem partition_top (l : List (ℕ × ℕ)) (k : ℕ)
-    (hs : l.Sorted RowLE) (hb : ∀ c ∈ l, c.1 ≤ k) :
+    (hs : l.Pairwise RowLE) (hb : ∀ c ∈ l, c.1 ≤ k) :
     l = l.filter (fun c => decide (c.1 = k)) ++
       l.filter (fun c => decide (c.1 < k)) := by
   induction l with
   | nil => rfl
   | cons c l ih =>
-    obtain ⟨ho, ht⟩ := List.sorted_cons.mp hs
+    obtain ⟨ho, ht⟩ := List.pairwise_cons.mp hs
     have hc := hb c (by simp)
     have hi := ih ht (fun d hd => hb d (by simp [hd]))
     by_cases he : c.1 = k
@@ -74,7 +74,7 @@ private theorem partition_top (l : List (ℕ × ℕ)) (k : ℕ)
       simpa [he, hc', hz] using congrArg (List.cons c) hi
 
 private theorem reconstruct_cells (k : ℕ) (l : List (ℕ × ℕ))
-    (hs : l.Sorted RowLE) (hb : ∀ c ∈ l, c.1 < k) :
+    (hs : l.Pairwise RowLE) (hb : ∀ c ∈ l, c.1 < k) :
     ((List.range k).reverse.map (fun r => l.filter (fun c => decide (c.1 = r)))).flatten = l := by
   induction k generalizing l with
   | zero =>
@@ -154,12 +154,12 @@ theorem runRows_count (n : ℕ) (rs : List (List (Fin n))) (a i : Fin n) :
   | nil =>
     simp only [runRows, List.flatten_cons, List.flatten_nil, List.append_nil,
       List.count_cons, List.count_nil, beq_iff_eq, Nat.zero_add]
-    by_cases h : a = i <;> simp [h, Ne.symm, eq_comm]
+    by_cases h : a = i <;> simp [h, Ne.symm]
   | cons w ws ih =>
     simp only [runRows]
     split
     · simp only [List.flatten_cons, List.count_append, List.count_cons, List.count_nil,
-        beq_iff_eq, Nat.zero_add, Nat.add_zero]
+        beq_iff_eq, Nat.zero_add]
       split_ifs <;> omega
     · rename_i u b v hs hu hab hdecision
       simp only [List.flatten_cons, List.count_append, List.count_cons, hs, ih]
@@ -203,8 +203,8 @@ theorem runRows_suffix (n : ℕ) (rs : List (List (Fin n))) (a : Fin n) :
       simpa [he] using ih b
 
 theorem runRows_sorted (n : ℕ) (rs : List (List (Fin n))) (a : Fin n)
-    (hs : ∀ w ∈ rs, w.Sorted (· ≤ ·)) :
-    ∀ w ∈ (runRows n rs a).output, w.Sorted (· ≤ ·) := by
+    (hs : ∀ w ∈ rs, w.Pairwise (· ≤ ·)) :
+    ∀ w ∈ (runRows n rs a).output, w.Pairwise (· ≤ ·) := by
   induction rs generalizing a with
   | nil => simp [runRows]
   | cons w ws ih =>

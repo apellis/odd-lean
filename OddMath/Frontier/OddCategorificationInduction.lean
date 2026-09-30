@@ -126,7 +126,7 @@ theorem sum_Sq_eq_qFact (a : ℕ) :
       qFact a := by
   have h := congrArg (Polynomial.eval₂ (Int.castRingHom (LaurentPolynomial ℤ))
     (T (-2) : LaurentPolynomial ℤ)) (sum_Sq_eq_prod a)
-  simp only [Polynomial.eval₂_finset_sum, Polynomial.eval₂_finset_prod, Polynomial.eval₂_X_pow,
+  simp only [Polynomial.eval₂_finsetSum, Polynomial.eval₂_finsetProd, Polynomial.eval₂_X_pow,
     T_pow] at h
   have h' := congrArg (fun p => (T ((a.choose 2 : ℕ) : ℤ) : LaurentPolynomial ℤ) * p) h
   simp only [Finset.mul_sum, ← T_add] at h'

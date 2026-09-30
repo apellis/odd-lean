@@ -49,7 +49,7 @@ def opolFactor : FactorCorner opolGrading where
     { σ := fun _ => 1
       lam := fun _ => 1
       sum_eq := by simp
-      orth := fun i j => by rw [if_pos (Subsingleton.elim i j), one_mul]
+      orth := fun i j => by rw [ite_eq_left (Subsingleton.elim i j), one_mul]
       mul_sigma := fun _ => one_mul 1
       lam_mul := fun _ => mul_one 1 }
   k := fun _ => 0
@@ -93,7 +93,7 @@ theorem onhFactor_class (m : ℕ) :
 /-! ### Bases -/
 
 /-- The monomial basis of `OPol_1`. -/
-def opolBasis : Basis (Fin 1 → ℕ) ℤ (SkewPolynomial 1) := Finsupp.basisSingleOne
+def opolBasis : Module.Basis (Fin 1 → ℕ) ℤ (SkewPolynomial 1) := Finsupp.basisSingleOne
 
 theorem opolBasis_apply (a : Fin 1 → ℕ) : opolBasis a = Finsupp.single a 1 :=
   congrFun (Finsupp.coe_basisSingleOne (R := ℤ) (ι := Fin 1 → ℕ)) a
@@ -101,7 +101,7 @@ theorem opolBasis_apply (a : Fin 1 → ℕ) : opolBasis a = Finsupp.single a 1 :
 theorem opolBasis_mem (a : Fin 1 → ℕ) : opolBasis a ∈ opolGrading (2 * (a 0 : ℤ)) := by
   rw [opolBasis_apply]
   have := NilHeckeGradedEnd.monomial_mem a 1
-  simpa [NilHeckeGradedEnd.pdegree] using this
+  simpa [NilHeckeGradedEnd.pdegree, opolGrading, SkewPolynomial.monomial] using this
 
 /-- Half the weight of a PBW index. -/
 def hw {n : ℕ} (i : (Fin (n+2) → ℕ) × Perm n) : ℤ := (∑ j, i.1 j : ℕ) - (length i.2 : ℤ)
@@ -121,7 +121,7 @@ theorem blockE_pair_ne_zero {n a b : ℕ} (hab : a + b = n+2) :
   have h1 : S.lam α = 0 :=
     ((S.lam_mul α).symm.trans (congrArg (S.lam α * ·) h)).trans (mul_zero _)
   have h2 := S.orth α α
-  rw [if_pos rfl, h1, zero_mul] at h2
+  rw [ite_eq_left rfl, h1, zero_mul] at h2
   exact OnhStructure.projector_ne_zero n h2.symm
 
 theorem sum_append_one {k : ℕ} (a : Fin 1 → ℕ) (A : Fin k → ℕ) :
@@ -243,10 +243,10 @@ end WinR
 theorem length_one' {n : ℕ} : length (1 : Perm n) = 0 := by
   unfold length
   exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ =>
-    if_neg fun h => lt_asymm h.1 (by simpa using h.2)
+    ite_eq_right fun h => lt_asymm h.1 (by simpa using h.2)
 
 theorem signed_dividedElement_one {n : ℕ} : Signed (1 : Presented n) (dividedElement 1) :=
-  reduced_dividedElement [] (by simp [Reduced, permutation, length_one'])
+  reduced_dividedElement [] (by simp [Reduced, permutation])
 
 theorem young_eq_one_11 {y : Perm 0} (hy : IsYoung 1 y) : y = 1 := by
   obtain ⟨a, b, h⟩ := exists_sumCongr_of_young (P := 1) (Q := 1) y hy
@@ -262,7 +262,7 @@ theorem dotHom_mul_dotHom (a b : Fin 1 → ℕ) :
   rw [dotHom_single, dotHom_single, one_smul, one_smul, dotMonomial_eq_prod_ofFn,
     List.ofFn_add (m := 1) (n := 1), List.prod_append]
   simp only [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one,
-    Fin.append_left, Fin.append_right]
+    Fin.append_right]
   rfl
 
 /-- Window data for `OPol_1 ⊗ OPol_1 ⊂ ONH_2`. -/
@@ -333,7 +333,7 @@ theorem sum_young_R (m : ℕ) :
 theorem sum_young_11 : ∑ y : YoungT 0 1, (T (-(2 * (length y.1 : ℤ))) : L) = 1 := by
   rw [Finset.sum_eq_single ⟨1, isYoung_one⟩ (fun y _ hy => absurd (Subtype.ext
     (young_eq_one_11 y.2)) hy) (by simp)]
-  simp [length_one']
+  simp
 
 /-! ### Exact restriction and the coproduct -/
 
@@ -462,9 +462,9 @@ theorem coprodK0_coeff_eq_resL (x : K0ONH) :
     erw [DFinsupp.lapply_apply]
     by_cases hk : k = 1 + (m'+2)
     · subst hk
-      rw [if_pos rfl, DFinsupp.single_eq_same]
+      rw [ite_eq_left rfl, DFinsupp.single_eq_same]
       exact (resCoeffL_divE m').symm
-    · rw [if_neg (Ne.symm hk), DFinsupp.single_eq_of_ne hk, map_zero]
+    · rw [ite_eq_right (Ne.symm hk), DFinsupp.single_eq_of_ne (Ne.symm hk), map_zero]
   exact DFunLike.congr_fun h x
 
 /-- **The coproduct is induced by restriction, `b = 1`**. -/
@@ -478,9 +478,9 @@ theorem coprodK0_coeff_eq_resR (x : K0ONH) :
     erw [DFinsupp.lapply_apply]
     by_cases hk : k = m+2+1
     · subst hk
-      rw [if_pos rfl, DFinsupp.single_eq_same]
+      rw [ite_eq_left rfl, DFinsupp.single_eq_same]
       exact (resCoeffR_divE m).symm
-    · rw [if_neg (Ne.symm hk), DFinsupp.single_eq_of_ne hk, map_zero]
+    · rw [ite_eq_right (Ne.symm hk), DFinsupp.single_eq_of_ne (Ne.symm hk), map_zero]
   exact DFunLike.congr_fun h x
 
 /-- **The coproduct is induced by restriction, `a = b = 1`**. -/
@@ -494,9 +494,9 @@ theorem coprodK0_coeff_eq_res11 (x : K0ONH) :
     erw [DFinsupp.lapply_apply]
     by_cases hk : k = 2
     · subst hk
-      rw [if_pos rfl, DFinsupp.single_eq_same]
+      rw [ite_eq_left rfl, DFinsupp.single_eq_same]
       exact resCoeff11_divE.symm
-    · rw [if_neg (Ne.symm hk), DFinsupp.single_eq_of_ne hk, map_zero]
+    · rw [ite_eq_right (Ne.symm hk), DFinsupp.single_eq_of_ne (Ne.symm hk), map_zero]
   exact DFunLike.congr_fun h x
 
 end Main

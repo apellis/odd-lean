@@ -44,7 +44,7 @@ theorem mem_partitions {k n : ℕ} {l : Fin k → ℕ} :
   simp [partitions, Finset.Nat.mem_antidiagonalTuple, and_comm]
 
 theorem mem_box {a b : ℕ} {α : Fin a → ℕ} : α ∈ box a b ↔ Antitone α ∧ ∀ i, α i ≤ b := by
-  simp [box, Nat.lt_succ_iff, and_comm]
+  simp [box, and_comm]
 
 theorem mem_Sq {a : ℕ} {l : Fin (a - 1) → ℕ} : l ∈ Sq a ↔ ∀ ν, l ν ≤ ν.val + 1 := by
   simp [Sq, Nat.lt_succ_iff]
@@ -64,9 +64,9 @@ theorem pcount_succ (m n : ℕ) :
       exact (Nat.one_le_iff_ne_zero.2 hl.2).trans (hl.1.1 (Fin.le_last i))
   have hsum : ∀ l : Fin (m + 1) → ℕ, ∑ i, (l i + 1) = ∑ i, l i + (m + 1) := fun l => by
     simp [sum_add_distrib]
-  rw [pcount, ← filter_card_add_filter_neg_card_eq_card (fun l => l (Fin.last m) = 0)]
+  rw [pcount, ← card_filter_add_card_filter_not (fun l => l (Fin.last m) = 0)]
   congr 1
-  · refine card_nbij' Fin.init (fun μ => Fin.snoc μ 0) ?_ ?_ ?_ ?_
+  · refine card_bij' (fun l _ => Fin.init l) (fun μ _ => Fin.snoc μ 0) ?_ ?_ ?_ ?_
     · intro l hl
       simp only [mem_filter, mem_partitions] at hl ⊢
       refine ⟨hl.1.1.comp_monotone Fin.strictMono_castSucc.monotone, ?_⟩
@@ -88,7 +88,7 @@ theorem pcount_succ (m n : ℕ) :
     · intro μ _
       exact Fin.init_snoc _ _
   · split_ifs with h
-    · refine card_nbij' (fun l i => l i - 1) (fun ν i => ν i + 1) ?_ ?_ ?_ ?_
+    · refine card_bij' (fun l _ i => l i - 1) (fun ν _ i => ν i + 1) ?_ ?_ ?_ ?_
       · intro l hl
         have h1 := hpos l hl
         simp only [mem_filter, mem_partitions] at hl ⊢
@@ -155,7 +155,7 @@ theorem sum_box_succ {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a b : ℕ) :
       · cases i using Fin.cases <;> cases j using Fin.cases
         · exact le_rfl
         · simpa using hβ.2 _
-        · exact absurd hij (by simp [Fin.le_def])
+        · exact absurd hij (by simp)
         · simpa using hβ.1 (Fin.succ_le_succ_iff.1 hij)
       · cases i using Fin.cases
         · simp
@@ -301,7 +301,7 @@ theorem mgf_eq_qfact_mul (a : ℕ) : mgf a = qfact a * pgf a := by
     qfact a * pgf a * mgf_mul a
 
 theorem coeff_sum_X_pow_mul {ι : Type*} (s : Finset ι) (w : ι → ℕ) (f : ℕ → ℤ) (j : ℕ) :
-    coeff ℤ j ((∑ x ∈ s, X ^ w x) * PowerSeries.mk f) =
+    coeff (R := ℤ) j ((∑ x ∈ s, X ^ w x) * PowerSeries.mk f) =
       ∑ x ∈ s.filter (fun x => w x ≤ j), f (j - w x) := by
   rw [sum_mul, map_sum, sum_filter]
   exact sum_congr rfl fun x _ => by rw [coeff_X_pow_mul', coeff_mk]
@@ -313,7 +313,7 @@ theorem sum_pcount_mul (a b j : ℕ) :
     ∑ i ∈ range (j + 1), pcount a i * pcount b (j - i) =
       ∑ α ∈ (box a b).filter (fun α => ∑ i, α i ≤ j), pcount (a + b) (j - ∑ i, α i) := by
   apply Nat.cast_injective (R := ℤ)
-  have h := congrArg (coeff ℤ j) (pgf_mul_pgf a b)
+  have h := congrArg (coeff (R := ℤ) j) (pgf_mul_pgf a b)
   rw [coeff_mul, Nat.sum_antidiagonal_eq_sum_range_succ_mk, gauss] at h
   simp only [pgf] at h
   rw [coeff_sum_X_pow_mul] at h
@@ -331,7 +331,7 @@ theorem sum_pcount_mul_boxWeights (a b j : ℕ) :
 theorem card_monomials {a : ℕ} (ha : 0 < a) (d : ℕ) :
     (Finset.Nat.antidiagonalTuple a d).card = (d + a - 1).choose (a - 1) := by
   obtain ⟨c, rfl⟩ : ∃ c, a = c + 1 := ⟨a - 1, by omega⟩
-  have h := congrArg (coeff ℤ d) (mgf_eq (c + 1))
+  have h := congrArg (coeff (R := ℤ) d) (mgf_eq (c + 1))
   rw [mk_one_pow_eq_mk_choose_add] at h
   simp only [mgf, coeff_mk, Nat.cast_inj] at h
   rw [h, Nat.add_sub_cancel, show d + (c + 1) - 1 = c + d by omega]
@@ -342,7 +342,7 @@ theorem monomial_count (a d : ℕ) :
     (Finset.Nat.antidiagonalTuple a d).card =
       ∑ l ∈ (Sq a).filter (fun l => ∑ ν, l ν ≤ d), pcount a (d - ∑ ν, l ν) := by
   apply Nat.cast_injective (R := ℤ)
-  have h := congrArg (coeff ℤ d) (mgf_eq_qfact_mul a)
+  have h := congrArg (coeff (R := ℤ) d) (mgf_eq_qfact_mul a)
   rw [qfact, pgf, coeff_sum_X_pow_mul] at h
   push_cast
   simpa [mgf] using h

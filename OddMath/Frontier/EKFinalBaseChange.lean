@@ -86,7 +86,7 @@ theorem map_pAlgQ : EKRest.pAlgQ.map (baseChangeAlgEquiv ℚ).toAlgHom = pAlg :=
   have : (⇑(baseChangeAlgEquiv ℚ).toAlgHom ∘ fun j : ℕ => EKRest.iota (EKCenterPower.p (2 * (j + 1))))
       = fun j => pQ (2 * (j + 1)) := by
     funext j
-    simp only [Function.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, ratEquiv_iota, pQ]
+    exact ratEquiv_iota _
   rw [this]
 
 theorem center_map_iff (v : EKRest.LQ) :
@@ -530,7 +530,7 @@ theorem proposition_3_3_K (h2 : ∀ c : k, 2 * c = 0 → c = 0) (x : Lam (-1 : k
           · -- `m` is odd and at least `3`
             have hodd : ¬ (m = 1 ∨ Even m) := fun h' =>
               hmN (Finset.mem_filter.mpr ⟨hS, hm, h'⟩)
-            push_neg at hodd
+            push Not at hodd
             obtain ⟨j, hj⟩ := Nat.odd_iff.mpr (Nat.not_even_iff.mp hodd.2)
             subst hj
             exact h2 _ (prim_odd hx (by omega))
@@ -674,7 +674,7 @@ theorem Phi3_word (w : List ℕ) (hw : ∀ j ∈ w, 0 < j) :
     by_cases ht : t = []
     · subst ht; simp [show j ≠ 0 by omega]
     · have hne : j :: t ≠ [3] := by intro e; simp at e; exact ht e.2
-      simp only [ht, if_false, List.cons_ne_nil, hne, show j ≠ 0 by omega]
+      simp only [ht, ite_false, List.cons_ne_nil, hne, show j ≠ 0 by omega]
       split_ifs <;> simp [DualNumber.eps_mul_eps]
 
 theorem Phi3_hPartition (μ : YoungDiagram) :
@@ -695,7 +695,7 @@ theorem pairing_hPartition_m3 (μ : YoungDiagram) :
     · intro e; rw [← EKPrimitives.rowShape_rows (by norm_num : 0 < 3), ← e]
     · intro e; exact EKPrimitives.eq_rowShape (by norm_num) _ e
   · rw [EKPrimitives.pairing_degree_orth hc (EKPrimitives.hPartition_mem μ)
-      (EKPrimitives.mRow 3).property, if_neg]
+      (EKPrimitives.mRow 3).property, ite_eq_right]
     intro e
     apply hc
     rw [← EKIntegralBases.rowLens_sum, e]; simp
@@ -746,7 +746,7 @@ theorem proposition_3_3_fails_F2 :
       induction hz using Submodule.span_induction with
       | mem y hy =>
         obtain ⟨n, hpos, hn, rfl⟩ := hy
-        rw [hBasisK_mK hn hpos, hν, if_neg]
+        rw [hBasisK_mK hn hpos, hν, ite_eq_right]
         intro e
         have : n = 3 := (List.singleton_inj.mp e).symm
         subst this
@@ -757,7 +757,7 @@ theorem proposition_3_3_fails_F2 :
       | add y z _ _ hy hz => rw [map_add, hy, hz, add_zero]
       | smul c y _ hy => rw [map_smul, hy, smul_zero]
     have h1 := hzero _ hmem
-    rw [← psiRing_hPartition, mK, quotientForm_psiRing, pairing_hPartition_m3, if_pos hν] at h1
+    rw [← psiRing_hPartition, mK, quotientForm_psiRing, pairing_hPartition_m3, ite_eq_left hν] at h1
     exact one_ne_zero (by exact_mod_cast h1)
 
 end F2

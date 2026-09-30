@@ -241,7 +241,7 @@ theorem conj_mapChain {m : ℕ} (ls : List (Layer sig)) :
     have hL' : L.cod.word.length = m := by rw [layer_cod_length]; exact hL
     have ih' := ih h.2.2 hL' hb
     rw [opList_cons, ofHom_mul, ← ih', ← transport_layerOp hL]
-    simp only [conj, Interpretation.mapChain, interp, Category.assoc, eqToHom_trans,
+    simp only [conj, Interpretation.mapChain, interp, Category.assoc,
       eqToHom_trans_assoc]
 
 /-- The image of a diagram between objects of width `m`, transported to `polyModule m`. -/
@@ -288,12 +288,13 @@ theorem respects_rel (r : Rel) (u : Obj sig) (v : List sig.Colour)
     simp; omega
   apply freeLift_map_eq_zero hm hm
   cases r <;>
-    simp [relation, LinDiagram.whisker_add, LinDiagram.whisker_sub, dlay, lay, Layer.whisker,
-      Rel.width, linOp, Finsupp.linearCombination_single]
+    simp [relation, LinDiagram.whisker_add, LinDiagram.whisker_sub, dlay, lay,
+      Rel.width] <;>
+    simp [linOp, Finsupp.linearCombination_single, Layer.whisker]
   · exact op_square (by omega)
-  · exact op_braid (by omega)
-  · exact op_mixedRight (by omega)
-  · exact op_mixedLeft (by omega)
+  · exact op_braid (p := u.word.length) (m := u.word.length + 3 + v.length) (by omega)
+  · exact op_mixedRight (p := u.word.length) (m := u.word.length + 2 + v.length) (by omega)
+  · exact op_mixedLeft (p := u.word.length) (m := u.word.length + 2 + v.length) (by omega)
 
 theorem respects_interchange (d : InterchangeData sig) (hd : d.Valid) (u : Obj sig)
     (v : List sig.Colour) (hw : d.dom.WhiskerOK u v) :

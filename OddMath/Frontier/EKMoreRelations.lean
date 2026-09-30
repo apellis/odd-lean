@@ -72,7 +72,7 @@ theorem repr_mul_h_one (x : L k) (w : W) :
     simp only [LinearMap.comp_apply, LinearMap.mulRight_apply, LinearEquiv.coe_coe,
       Finsupp.lapply_apply]
     rw [show h k 1 = wordBasis k (FreeMonoid.of (0 : ℕ)) from (wordBasis_of k 0).symm,
-      ← wordBasis_mul, Basis.repr_self, Basis.repr_self, Finsupp.single_apply,
+      ← wordBasis_mul, Module.Basis.repr_self, Module.Basis.repr_self, Finsupp.single_apply,
       Finsupp.single_apply]
     by_cases hv : v = w
     · simp [hv]
@@ -89,7 +89,7 @@ theorem repr_h_one_mul (x : L k) (w : W) :
     simp only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearEquiv.coe_coe,
       Finsupp.lapply_apply]
     rw [show h k 1 = wordBasis k (FreeMonoid.of (0 : ℕ)) from (wordBasis_of k 0).symm,
-      ← wordBasis_mul, Basis.repr_self, Basis.repr_self, Finsupp.single_apply,
+      ← wordBasis_mul, Module.Basis.repr_self, Module.Basis.repr_self, Finsupp.single_apply,
       Finsupp.single_apply]
     by_cases hv : v = w
     · simp [hv]

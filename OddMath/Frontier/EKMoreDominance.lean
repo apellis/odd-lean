@@ -121,7 +121,7 @@ def ldom (n : ℕ) (v w : List ℕ) : Bool :=
   (List.range (n + 1)).all fun k => decide (pre v k ≤ pre w k)
 
 theorem ldom_iff {n : ℕ} {v w : List ℕ} : ldom n v w = true ↔ ∀ k ≤ n, pre v k ≤ pre w k := by
-  simp [ldom, Nat.lt_succ_iff]
+  simp [ldom]
 
 theorem dom_iff_ldom {n : ℕ} (a b : DegreeShape n) :
     Dom a.val b.val ↔ ldom n a.val.rowLens b.val.rowLens = true := by
@@ -134,14 +134,14 @@ theorem rowLens_mem_P {n : ℕ} (a : DegreeShape n) : a.val.rowLens ∈ P n :=
   EKNondegeneracy.rowLens_mem_parts n a.val a.property
 
 /-- The shape with row lengths `w`. -/
-def mk {n : ℕ} (w : List ℕ) (hs : w.Sorted (· ≥ ·)) (hsum : w.sum = n) : DegreeShape n :=
-  ⟨YoungDiagram.ofRowLens w hs, by rw [EKPartitionSpanning.card_ofRowLens, hsum]⟩
+def mk {n : ℕ} (w : List ℕ) (hs : w.Pairwise (· ≥ ·)) (hsum : w.sum = n) : DegreeShape n :=
+  ⟨YoungDiagram.ofRowLens w hs.sortedGE, by rw [EKPartitionSpanning.card_ofRowLens _ hs, hsum]⟩
 
-theorem mk_rowLens {n : ℕ} {w : List ℕ} {hs : w.Sorted (· ≥ ·)} {hsum : w.sum = n}
+theorem mk_rowLens {n : ℕ} {w : List ℕ} {hs : w.Pairwise (· ≥ ·)} {hsum : w.sum = n}
     (hp : ∀ x ∈ w, 0 < x) : (mk w hs hsum).val.rowLens = w :=
-  YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs) hp
+  YoungDiagram.rowLens_ofRowLens_eq_self (hw := hs.sortedGE) hp
 
-theorem mk_rowLen {n : ℕ} {w : List ℕ} {hs : w.Sorted (· ≥ ·)} {hsum : w.sum = n}
+theorem mk_rowLen {n : ℕ} {w : List ℕ} {hs : w.Pairwise (· ≥ ·)} {hsum : w.sum = n}
     (hp : ∀ x ∈ w, 0 < x) (i : ℕ) : (mk w hs hsum).val.rowLen i = w.getD i 0 := by
   rw [rowLen_eq_getD, mk_rowLens hp]
 
@@ -151,7 +151,7 @@ def conjL (w : List ℕ) : List ℕ := (List.range (w.headD 0)).map fun i => (w.
 /-- Every row-length list of a partition of `n` is weakly decreasing and positive with sum `n`,
 and its conjugate describes the transposed diagram. -/
 abbrev Cert (n : ℕ) : Prop :=
-  ∀ w ∈ P n, w.Sorted (· ≥ ·) ∧ (∀ x ∈ w, 0 < x) ∧ w.sum = n ∧ (conjL w).Sorted (· ≥ ·) ∧
+  ∀ w ∈ P n, w.Pairwise (· ≥ ·) ∧ (∀ x ∈ w, 0 < x) ∧ w.sum = n ∧ (conjL w).Pairwise (· ≥ ·) ∧
     (∀ x ∈ conjL w, 0 < x) ∧
     (Equiv.prodComm ℕ ℕ).finsetCongr (YoungDiagram.cellsOfRowLens w) =
       YoungDiagram.cellsOfRowLens (conjL w)
@@ -169,9 +169,9 @@ theorem mkP_rowLens {n : ℕ} (hc : Cert n) (w : List ℕ) (hw : w ∈ P n) :
 theorem transpose_rowLens {n : ℕ} (hc : Cert n) (a : DegreeShape n) :
     a.val.transpose.rowLens = conjL a.val.rowLens := by
   have hw := hc _ (rowLens_mem_P a)
-  have e1 : a.val = YoungDiagram.ofRowLens a.val.rowLens hw.1 :=
+  have e1 : a.val = YoungDiagram.ofRowLens a.val.rowLens hw.1.sortedGE :=
     YoungDiagram.ofRowLens_to_rowLens_eq_self.symm
-  have e2 : a.val.transpose = YoungDiagram.ofRowLens (conjL a.val.rowLens) hw.2.2.2.1 := by
+  have e2 : a.val.transpose = YoungDiagram.ofRowLens (conjL a.val.rowLens) hw.2.2.2.1.sortedGE := by
     rw [congrArg YoungDiagram.transpose e1]
     apply YoungDiagram.ext
     exact hw.2.2.2.2.2
@@ -186,17 +186,17 @@ theorem total_of_list {n : ℕ} (h : ∀ v ∈ P n, ∀ w ∈ P n, ldom n v w = 
     DomTotal n := fun a b => by
   rw [dom_iff_ldom, dom_iff_ldom]; exact h _ (rowLens_mem_P a) _ (rowLens_mem_P b)
 
-theorem sorted_of_chain (w : List ℕ) (h : w.Chain' (· ≥ ·)) : w.Sorted (· ≥ ·) :=
-  List.chain'_iff_pairwise.mp h
+theorem sorted_of_chain (w : List ℕ) (h : w.IsChain (· ≥ ·)) : w.Pairwise (· ≥ ·) :=
+  h.pairwise
 
 theorem not_total {n : ℕ} (hn : 6 ≤ n) : ¬ DomTotal n := by
   intro h
   have hp1 : ∀ x ∈ [n - 3, 1, 1, 1], 0 < x := by simp; omega
   have hp2 : ∀ x ∈ [n - 4, 2, 2], 0 < x := by simp; omega
   let a : DegreeShape n := mk [n - 3, 1, 1, 1]
-    (sorted_of_chain _ (by simp [List.chain'_cons] ; omega)) (by simp; omega)
+    (sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)) (by simp; omega)
   let b : DegreeShape n := mk [n - 4, 2, 2]
-    (sorted_of_chain _ (by simp [List.chain'_cons] ; omega)) (by simp; omega)
+    (sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)) (by simp; omega)
   rcases h a b with h1 | h1
   · have := h1 1
     rw [shapePrefix_eq_pre, shapePrefix_eq_pre, mk_rowLens hp1, mk_rowLens hp2] at this
@@ -261,7 +261,6 @@ theorem lcov_of_cov {n : ℕ} (hc : Cert n) {a b : DegreeShape n} (h : DomCovBy 
     · right; rw [← e, hc']
   · left
     by_contra hne
-    simp only [Bool.not_eq_false] at hne
     exact hd ⟨by cases h' : ldom n a.val.rowLens u <;> simp_all,
       by cases h' : ldom n u b.val.rowLens <;> simp_all⟩
 
@@ -328,11 +327,11 @@ theorem rowLen_tail {c : YoungDiagram} (w : List ℕ) (hw : w.length ≤ 4)
 section Chains
 variable (k : ℕ)
 
-theorem sx : [3 + k, 2, 1, 1].Sorted (· ≥ ·) := sorted_of_chain _ (by simp [List.chain'_cons] ; omega)
-theorem sm : [4 + k, 1, 1, 1].Sorted (· ≥ ·) := sorted_of_chain _ (by simp [List.chain'_cons] ; omega)
-theorem sy : [4 + k, 2, 1].Sorted (· ≥ ·) := sorted_of_chain _ (by simp [List.chain'_cons] ; omega)
-theorem sp : [3 + k, 2, 2].Sorted (· ≥ ·) := sorted_of_chain _ (by simp [List.chain'_cons] ; omega)
-theorem sq : [3 + k, 3, 1].Sorted (· ≥ ·) := sorted_of_chain _ (by simp [List.chain'_cons])
+theorem sx : [3 + k, 2, 1, 1].Pairwise (· ≥ ·) := sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)
+theorem sm : [4 + k, 1, 1, 1].Pairwise (· ≥ ·) := sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)
+theorem sy : [4 + k, 2, 1].Pairwise (· ≥ ·) := sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)
+theorem sp : [3 + k, 2, 2].Pairwise (· ≥ ·) := sorted_of_chain _ (by simp [List.isChain_cons_cons] ; omega)
+theorem sq : [3 + k, 3, 1].Pairwise (· ≥ ·) := sorted_of_chain _ (by simp [List.isChain_cons_cons])
 
 /-- `(3+k,2,1,1)`. -/
 def shX : DegreeShape (k + 7) := mk [3 + k, 2, 1, 1] (sx k) (by simp; omega)
@@ -505,7 +504,7 @@ def RefinesDom {n : ℕ} (L : List (DegreeShape n)) : Prop :=
   ∀ i j (hi : i < L.length) (hj : j < L.length), Dom (L[i]).val (L[j]).val → i ≤ j
 
 /-- The listing is in increasing lexicographic order. -/
-def LexSorted {n : ℕ} (L : List (DegreeShape n)) : Prop := L.Sorted fun a b => LexLT a.val b.val
+def LexSorted {n : ℕ} (L : List (DegreeShape n)) : Prop := L.Pairwise fun a b => LexLT a.val b.val
 
 /-- No listing of partitions of `n` swaps transposes when there are two distinct self-transpose
 partitions: both would occupy the middle position. -/
@@ -530,9 +529,9 @@ theorem no_listing_rev_swaps {n : ℕ} {a b : DegreeShape n} (hab : a ≠ b)
 theorem getD_rep (r i : ℕ) : (List.replicate r 1).getD i 0 = if i < r then 1 else 0 := by
   simp [List.getD_eq_getElem?_getD, List.getElem?_replicate]; split_ifs <;> simp
 
-theorem mem_ofRowLens_getD {w : List ℕ} {hw : w.Sorted (· ≥ ·)} {i j : ℕ} :
-    (i, j) ∈ YoungDiagram.ofRowLens w hw ↔ j < w.getD i 0 := by
-  rw [OddLRExamples.mem_ofRowLens_iff]
+theorem mem_ofRowLens_getD {w : List ℕ} {hw : w.Pairwise (· ≥ ·)} {i j : ℕ} :
+    (i, j) ∈ YoungDiagram.ofRowLens w hw.sortedGE ↔ j < w.getD i 0 := by
+  rw [OddLRExamples.mem_ofRowLens_iff (hw := hw)]
   constructor
   · exact fun h => h.2
   · intro h
@@ -541,17 +540,17 @@ theorem mem_ofRowLens_getD {w : List ℕ} {hw : w.Sorted (· ≥ ·)} {i j : ℕ
     rw [List.getD_eq_default _ _ (by simpa using hi)] at h
     omega
 
-theorem transpose_self_of {w : List ℕ} (hw : w.Sorted (· ≥ ·))
+theorem transpose_self_of {w : List ℕ} (hw : w.Pairwise (· ≥ ·))
     (h : ∀ i j, i < w.getD j 0 ↔ j < w.getD i 0) :
-    (YoungDiagram.ofRowLens w hw).transpose = YoungDiagram.ofRowLens w hw := by
+    (YoungDiagram.ofRowLens w hw.sortedGE).transpose = YoungDiagram.ofRowLens w hw.sortedGE := by
   apply YoungDiagram.ext
   ext ⟨i, j⟩
   rw [YoungDiagram.mem_cells, YoungDiagram.mem_cells, YoungDiagram.mem_transpose, Prod.swap_prod_mk,
-    mem_ofRowLens_getD, mem_ofRowLens_getD, h]
+    mem_ofRowLens_getD (hw := hw), mem_ofRowLens_getD (hw := hw), h]
 
-theorem sorted_append_rep (l : List ℕ) (hl : l.Sorted (· ≥ ·)) (h1 : ∀ x ∈ l, 1 ≤ x) (r : ℕ) :
-    (l ++ List.replicate r 1).Sorted (· ≥ ·) := by
-  rw [List.Sorted, List.pairwise_append]
+theorem sorted_append_rep (l : List ℕ) (hl : l.Pairwise (· ≥ ·)) (h1 : ∀ x ∈ l, 1 ≤ x) (r : ℕ) :
+    (l ++ List.replicate r 1).Pairwise (· ≥ ·) := by
+  rw [List.pairwise_append]
   refine ⟨hl, by rw [List.pairwise_replicate]; simp, ?_⟩
   intro a ha b hb
   rw [List.eq_of_mem_replicate hb]
@@ -562,11 +561,11 @@ theorem two_self_transpose {n : ℕ} (hn : 8 ≤ n) :
     ∃ a b : DegreeShape n, a ≠ b ∧ a.val.transpose = a.val ∧ b.val.transpose = b.val := by
   rcases Nat.even_or_odd' n with ⟨m, rfl | rfl⟩
   · -- `(m, 2, 1^{m-2})` and `(m-1, 3, 2, 1^{m-4})`
-    have hsA : ([m, 2] ++ List.replicate (m - 2) 1).Sorted (· ≥ ·) :=
-      sorted_append_rep _ (sorted_of_chain _ (by simp [List.chain'_cons]; omega))
+    have hsA : ([m, 2] ++ List.replicate (m - 2) 1).Pairwise (· ≥ ·) :=
+      sorted_append_rep _ (sorted_of_chain _ (by simp [List.isChain_cons_cons]; omega))
         (by simp; omega) _
-    have hsB : ([m - 1, 3, 2] ++ List.replicate (m - 4) 1).Sorted (· ≥ ·) :=
-      sorted_append_rep _ (sorted_of_chain _ (by simp [List.chain'_cons]; omega))
+    have hsB : ([m - 1, 3, 2] ++ List.replicate (m - 4) 1).Pairwise (· ≥ ·) :=
+      sorted_append_rep _ (sorted_of_chain _ (by simp [List.isChain_cons_cons]; omega))
         (by simp; omega) _
     have hpA : ∀ x ∈ [m, 2] ++ List.replicate (m - 2) 1, 0 < x := by
       simp [List.mem_replicate]; omega
@@ -588,10 +587,10 @@ theorem two_self_transpose {n : ℕ} (hn : 8 ≤ n) :
         simp only [List.cons_append, List.nil_append, List.getD_cons_zero, List.getD_cons_succ,
           getD_rep] <;> (try split_ifs) <;> omega
   · -- `(m+1, 1^m)` and `(m-1, 3, 3, 1^{m-4})`
-    have hsA : ([m + 1] ++ List.replicate m 1).Sorted (· ≥ ·) :=
+    have hsA : ([m + 1] ++ List.replicate m 1).Pairwise (· ≥ ·) :=
       sorted_append_rep _ (by simp) (by simp) _
-    have hsB : ([m - 1, 3, 3] ++ List.replicate (m - 4) 1).Sorted (· ≥ ·) :=
-      sorted_append_rep _ (sorted_of_chain _ (by simp [List.chain'_cons]; omega))
+    have hsB : ([m - 1, 3, 3] ++ List.replicate (m - 4) 1).Pairwise (· ≥ ·) :=
+      sorted_append_rep _ (sorted_of_chain _ (by simp [List.isChain_cons_cons]; omega))
         (by simp; omega) _
     have hpA : ∀ x ∈ [m + 1] ++ List.replicate m 1, 0 < x := by
       simp [List.mem_replicate]
@@ -672,27 +671,27 @@ theorem listing_refines_of {n : ℕ} (hc : Cert n) (Q : List (List ℕ)) (hQ : �
   exact h i _ j _ hd
 
 /-- The lexicographic listing is in increasing lexicographic order. -/
-theorem listing_lexSorted {n : ℕ} (hc : Cert n) (hs : (P n).Sorted (· < ·)) :
+theorem listing_lexSorted {n : ℕ} (hc : Cert n) (hs : (P n).Pairwise (· < ·)) :
     LexSorted (listing hc (P n) (fun _ h => h)) := by
-  rw [LexSorted, List.Sorted, List.pairwise_iff_getElem]
+  rw [LexSorted, List.pairwise_iff_getElem]
   intro i j hi hj hij
   unfold LexLT
   rw [listing_get, listing_get]
   exact (List.pairwise_iff_getElem.mp hs) i j _ _ hij
 
-instance lexAntisymm (n : ℕ) : IsAntisymm (DegreeShape n) (fun a b => LexLT a.val b.val) :=
+instance lexAntisymm (n : ℕ) : Std.Antisymm (fun a b : DegreeShape n => LexLT a.val b.val) :=
   ⟨fun _ _ h1 h2 => absurd h2 (lt_asymm h1)⟩
 
 /-- A lexicographically sorted listing is the lexicographic listing. -/
-theorem lex_listing_unique {n : ℕ} (hc : Cert n) (hs : (P n).Sorted (· < ·))
+theorem lex_listing_unique {n : ℕ} (hc : Cert n) (hs : (P n).Pairwise (· < ·))
     {L : List (DegreeShape n)} (hL : IsListing L) (hLs : LexSorted L) (hnd : (P n).Nodup) :
     L = listing hc (P n) (fun _ h => h) := by
   have hM := listing_isListing hc (P n) (fun _ h => h) hnd (fun _ h => h)
-  apply List.eq_of_perm_of_sorted _ hLs (listing_lexSorted hc hs)
+  apply List.Perm.eq_of_pairwise' hLs (listing_lexSorted hc hs)
   rw [List.perm_ext_iff_of_nodup hL.1 hM.1]
   exact fun a => ⟨fun _ => hM.2 a, fun _ => hL.2 a⟩
 
-abbrev LexCert (n : ℕ) : Prop := (P n).Sorted (· < ·) ∧ (P n).Nodup
+abbrev LexCert (n : ℕ) : Prop := (P n).Pairwise (· < ·) ∧ (P n).Nodup
 
 theorem lexCert_le {n : ℕ} (hn : n ≤ 7) : LexCert n := by
   interval_cases n <;> decide

@@ -72,13 +72,13 @@ theorem bump1_spec (R : List ℕ) (a : ℕ) :
         · exact hu p hp
 
 /-- A weakly increasing row splits at any threshold. -/
-theorem sorted_split (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (t : ℕ) :
+theorem sorted_split (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) (t : ℕ) :
     ∃ L G, R = L ++ G ∧ (∀ p ∈ L, p ≤ t) ∧ (∀ q ∈ G, t < q) ∧
-      L.Sorted (· ≤ ·) ∧ G.Sorted (· ≤ ·) := by
+      L.Pairwise (· ≤ ·) ∧ G.Pairwise (· ≤ ·) := by
   induction R with
-  | nil => exact ⟨[], [], rfl, by simp, by simp, List.sorted_nil, List.sorted_nil⟩
+  | nil => exact ⟨[], [], rfl, by simp, by simp, List.Pairwise.nil, List.Pairwise.nil⟩
   | cons r R ih =>
-    obtain ⟨hr, hR'⟩ := List.sorted_cons.mp hR
+    obtain ⟨hr, hR'⟩ := List.pairwise_cons.mp hR
     by_cases h : r ≤ t
     · obtain ⟨L, G, hs, hL, hG, hLs, hGs⟩ := ih hR'
       refine ⟨r :: L, G, by rw [hs]; rfl, ?_, hG, ?_, hGs⟩
@@ -86,27 +86,27 @@ theorem sorted_split (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (t : ℕ) :
         rcases List.mem_cons.mp hp with rfl | hp
         · exact h
         · exact hL p hp
-      · refine List.sorted_cons.mpr ⟨fun p hp => hr p ?_, hLs⟩
+      · refine List.pairwise_cons.mpr ⟨fun p hp => hr p ?_, hLs⟩
         rw [hs]; exact List.mem_append_left _ hp
-    · refine ⟨[], r :: R, rfl, by simp, ?_, List.sorted_nil, hR⟩
+    · refine ⟨[], r :: R, rfl, by simp, ?_, List.Pairwise.nil, hR⟩
       intro q hq
       rcases List.mem_cons.mp hq with rfl | hq
       · omega
       · have := hr q hq; omega
 
-theorem bump1_sorted (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (a : ℕ) :
-    (bump1 R a).1.Sorted (· ≤ ·) := by
+theorem bump1_sorted (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) (a : ℕ) :
+    (bump1 R a).1.Pairwise (· ≤ ·) := by
   obtain ⟨L, G, rfl, hL, hG, hLs, hGs⟩ := sorted_split R hR a
   rw [bump1_append_le L G hL]
   rcases G with _ | ⟨g, G⟩
   · simp only [bump1_nil]
-    refine List.pairwise_append.mpr ⟨hLs, List.sorted_singleton _, ?_⟩
+    refine List.pairwise_append.mpr ⟨hLs, (by simp), ?_⟩
     intro p hp q hq
     rw [List.mem_singleton.mp hq]; exact hL p hp
   · have hg := hG g List.mem_cons_self
     rw [bump1_cons_lt _ hg]
-    obtain ⟨hg', hGs'⟩ := List.sorted_cons.mp hGs
-    refine List.pairwise_append.mpr ⟨hLs, List.sorted_cons.mpr ⟨?_, hGs'⟩, ?_⟩
+    obtain ⟨hg', hGs'⟩ := List.pairwise_cons.mp hGs
+    refine List.pairwise_append.mpr ⟨hLs, List.pairwise_cons.mpr ⟨?_, hGs'⟩, ?_⟩
     · intro q hq; have := hg' q hq; omega
     · intro p hp q hq
       have := hL p hp
@@ -115,11 +115,11 @@ theorem bump1_sorted (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (a : ℕ) :
       · have := hG q (List.mem_cons_of_mem _ hq); omega
 
 /-- All rows weakly increasing. -/
-def RowsSorted (rs : List (List ℕ)) : Prop := ∀ R ∈ rs, R.Sorted (· ≤ ·)
+def RowsSorted (rs : List (List ℕ)) : Prop := ∀ R ∈ rs, R.Pairwise (· ≤ ·)
 
 theorem ins_sorted (rs : List (List ℕ)) (h : RowsSorted rs) (a : ℕ) : RowsSorted (ins rs a) := by
   induction rs generalizing a with
-  | nil => intro R hR; simp [ins] at hR; subst hR; exact List.sorted_singleton _
+  | nil => intro R hR; simp [ins] at hR; subst hR; exact (by simp)
   | cons R rs ih =>
     have hR := h R List.mem_cons_self
     have hrs : RowsSorted rs := fun S hS => h S (List.mem_cons_of_mem _ hS)
@@ -187,10 +187,10 @@ theorem E3_length {w w' : List ℕ} (h : E3 w w') : w.length = 3 := by
   | [_, _, _], [_, _, _], _ => rfl
 
 /-- Four-segment decomposition of a weakly increasing row at thresholds `x ≤ y ≤ z`. -/
-theorem sorted_split4 (R : List ℕ) (hR : R.Sorted (· ≤ ·)) (x y z : ℕ) :
+theorem sorted_split4 (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) (x y z : ℕ) :
     ∃ A B C D, R = A ++ (B ++ (C ++ D)) ∧ (∀ p ∈ A, p ≤ x) ∧
       (∀ p ∈ B, x < p ∧ p ≤ y) ∧ (∀ p ∈ C, x < p ∧ y < p ∧ p ≤ z) ∧
-      (∀ p ∈ D, x < p ∧ y < p ∧ z < p) ∧ C.Sorted (· ≤ ·) ∧ D.Sorted (· ≤ ·) := by
+      (∀ p ∈ D, x < p ∧ y < p ∧ z < p) ∧ C.Pairwise (· ≤ ·) ∧ D.Pairwise (· ≤ ·) := by
   obtain ⟨A, G1, rfl, hA, hG1, _, hG1s⟩ := sorted_split R hR x
   obtain ⟨B, G2, rfl, hB, hG2, _, hG2s⟩ := sorted_split G1 hG1s y
   obtain ⟨C, D, rfl, hC, hD, hCs, hDs⟩ := sorted_split G2 hG2s z
@@ -222,8 +222,8 @@ macro "ek_row_cases" : tactic => `(tactic|
     ek_split hD <;>
     ek_split hB <;> ek_split hBy <;> ek_split hBz <;> ek_split hC <;> ek_split hCz <;>
     ek_split hD <;>
-    (try simp only [List.sorted_cons, List.forall_mem_cons] at hCs) <;>
-    (try simp only [List.sorted_cons, List.forall_mem_cons] at hDs) <;>
+    (try simp only [List.pairwise_cons, List.forall_mem_cons] at hCs) <;>
+    (try simp only [List.pairwise_cons, List.forall_mem_cons] at hDs) <;>
     (try obtain ⟨⟨_, -⟩, -⟩ := hCs) <;> (try obtain ⟨⟨_, -⟩, -⟩ := hDs) <;>
     simp (disch := ek_row_disch) only [rowIns, bump1_append_le, bump1_le_all, bump1_cons_lt, bump1_cons_le,
       bump1_nil, List.append_assoc, List.cons_append, List.nil_append, List.append_nil,
@@ -234,7 +234,7 @@ macro "ek_row_cases" : tactic => `(tactic|
 end RowMacros
 
 /-- One-row lemma for (K″): `xzy → zxy`, `x ≤ y < z`. -/
-theorem row_K2 (R : List ℕ) (hR : R.Sorted (· ≤ ·)) {x y z : ℕ} (hxy : x ≤ y) (hyz : y < z) :
+theorem row_K2 (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) {x y z : ℕ} (hxy : x ≤ y) (hyz : y < z) :
     (rowIns R [x, z, y]).1 = (rowIns R [z, x, y]).1 ∧
       ((rowIns R [x, z, y]).2 = (rowIns R [z, x, y]).2 ∨
         E3 (rowIns R [x, z, y]).2 (rowIns R [z, x, y]).2) := by
@@ -242,14 +242,14 @@ theorem row_K2 (R : List ℕ) (hR : R.Sorted (· ≤ ·)) {x y z : ℕ} (hxy : x
   ek_row_cases
 
 /-- One-row lemma for (K′): `yzx → yxz`, `x < y ≤ z`. -/
-theorem row_K1 (R : List ℕ) (hR : R.Sorted (· ≤ ·)) {x y z : ℕ} (hxy : x < y) (hyz : y ≤ z) :
+theorem row_K1 (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) {x y z : ℕ} (hxy : x < y) (hyz : y ≤ z) :
     (rowIns R [y, z, x]).1 = (rowIns R [y, x, z]).1 ∧
       ((rowIns R [y, z, x]).2 = (rowIns R [y, x, z]).2 ∨
         E3 (rowIns R [y, z, x]).2 (rowIns R [y, x, z]).2) := by
   obtain ⟨A, B, C, D, rfl, hA, hB, hC, hD, hCs, hDs⟩ := sorted_split4 R hR x y z
   ek_row_cases
 
-theorem row_E3 (R : List ℕ) (hR : R.Sorted (· ≤ ·)) {w w' : List ℕ} (h : E3 w w') :
+theorem row_E3 (R : List ℕ) (hR : R.Pairwise (· ≤ ·)) {w w' : List ℕ} (h : E3 w w') :
     (rowIns R w).1 = (rowIns R w').1 ∧
       ((rowIns R w).2 = (rowIns R w').2 ∨ E3 (rowIns R w).2 (rowIns R w').2) := by
   match w, w', h with
@@ -281,7 +281,7 @@ theorem insW_E3 (rs : List (List ℕ)) (hrs : RowsSorted rs) {w w' : List ℕ} (
     have hl' := E3_length (E3_symm h)
     rw [insW_nil_eq w (by rintro rfl; simp at hl), insW_nil_eq w' (by rintro rfl; simp at hl'),
       insW_cons_rows, insW_cons_rows]
-    obtain ⟨h1, h2⟩ := row_E3 [] List.sorted_nil h
+    obtain ⟨h1, h2⟩ := row_E3 [] List.Pairwise.nil h
     rw [h1]
     rcases h2 with h2 | h2
     · rw [h2]
@@ -358,33 +358,33 @@ theorem knuth_K2 {x y z : ℕ} (h1 : x ≤ y) (h2 : y < z) (p s : List ℕ) :
 
 /-- Move `a` left through a weakly increasing run `c :: v` of letters `> a`, using (K′). -/
 theorem knuth_move_right_part (a : ℕ) :
-    ∀ (c : ℕ) (v : List ℕ), a < c → (c :: v).Sorted (· ≤ ·) →
+    ∀ (c : ℕ) (v : List ℕ), a < c → (c :: v).Pairwise (· ≤ ·) →
       KnuthEquiv (c :: v ++ [a]) (c :: a :: v) := by
   intro c v
   induction v generalizing c with
   | nil => intro _ _; exact knuth_refl _
   | cons d v ih =>
     intro hac hs
-    obtain ⟨hcd, hs'⟩ := List.sorted_cons.mp hs
+    obtain ⟨hcd, hs'⟩ := List.pairwise_cons.mp hs
     have hcd' := hcd d List.mem_cons_self
     have h1 := knuth_context (ih d (by omega) hs') [c] []
-    simp only [List.singleton_append, List.append_nil, List.cons_append] at h1
+    simp only [List.append_nil, List.cons_append] at h1
     refine knuth_trans h1 ?_
     simpa using knuth_K1 (x := a) (y := c) (z := d) hac hcd' [] v
 
 /-- Move `b` left through a weakly increasing run `u` of letters `≤ t < b`, using (K″). -/
 theorem knuth_move_left_part (b t : ℕ) (rest : List ℕ) (htb : t < b) :
-    ∀ (u : List ℕ), u.Sorted (· ≤ ·) → (∀ p ∈ u, p ≤ t) →
+    ∀ (u : List ℕ), u.Pairwise (· ≤ ·) → (∀ p ∈ u, p ≤ t) →
       KnuthEquiv (u ++ b :: t :: rest) (b :: (u ++ t :: rest)) := by
   intro u
   induction u with
   | nil => intro _ _; exact knuth_refl _
   | cons p u ih =>
     intro hs hu
-    obtain ⟨hpu, hs'⟩ := List.sorted_cons.mp hs
+    obtain ⟨hpu, hs'⟩ := List.pairwise_cons.mp hs
     have hpt := hu p List.mem_cons_self
     have h1 := knuth_context (ih hs' (fun q hq => hu q (List.mem_cons_of_mem _ hq))) [p] []
-    simp only [List.singleton_append, List.append_nil, List.cons_append] at h1
+    simp only [List.append_nil, List.cons_append] at h1
     refine knuth_trans h1 ?_
     -- next letter after `b` is the head `q` of `u ++ t :: rest`, with `p ≤ q < b`
     cases u with
@@ -396,13 +396,13 @@ theorem knuth_move_left_part (b t : ℕ) (rest : List ℕ) (htb : t < b) :
       simpa using knuth_K2 (x := p) (y := q) (z := b) hpq (by omega) [] (u ++ t :: rest)
 
 /-- Fulton's row bumping in the plactic monoid: `R · a ≡ b · R'`. -/
-theorem knuth_row_bump (u v : List ℕ) (a b : ℕ) (hs : (u ++ b :: v).Sorted (· ≤ ·))
+theorem knuth_row_bump (u v : List ℕ) (a b : ℕ) (hs : (u ++ b :: v).Pairwise (· ≤ ·))
     (hu : ∀ p ∈ u, p ≤ a) (hab : a < b) :
     KnuthEquiv (u ++ b :: v ++ [a]) (b :: (u ++ a :: v)) := by
-  have hus : u.Sorted (· ≤ ·) := (List.pairwise_append.mp hs).1
-  have hbv : (b :: v).Sorted (· ≤ ·) := (List.pairwise_append.mp hs).2.1
+  have hus : u.Pairwise (· ≤ ·) := (List.pairwise_append.mp hs).1
+  have hbv : (b :: v).Pairwise (· ≤ ·) := (List.pairwise_append.mp hs).2.1
   have h1 := knuth_context (knuth_move_right_part a b v hab hbv) u []
-  simp only [List.append_nil, List.append_assoc] at h1
+  simp only [List.append_nil] at h1
   refine knuth_trans (by simpa using h1) ?_
   exact knuth_move_left_part b a v hab u hus hu
 
@@ -422,22 +422,21 @@ theorem knuth_ins (rs : List (List ℕ)) (hrs : RowsSorted rs) (a : ℕ) :
       subst hs
       have h1 := knuth_context (knuth_row_bump u v a b hR hu hab) (rs.reverse.flatten) []
       have h2 := knuth_context (ih hrs' b) [] (u ++ a :: v)
-      simp only [List.append_nil, List.nil_append, List.append_assoc, List.cons_append,
-        List.singleton_append] at h1 h2 ⊢
+      simp only [List.append_nil, List.nil_append, List.append_assoc, List.cons_append] at h1 h2 ⊢
       exact knuth_trans h1 h2
 
 /-- Existence: every word is Knuth-equivalent to the row word of its insertion tableau. -/
 theorem knuth_readR_insW (rs : List (List ℕ)) (hrs : RowsSorted rs) (w : List ℕ) :
     KnuthEquiv (readR rs ++ w) (readR (insW rs w)) := by
   induction w generalizing rs with
-  | nil => simpa using knuth_refl (readR rs)
+  | nil => simpa only [insW, List.foldl_nil, List.append_nil] using knuth_refl (readR rs)
   | cons a w ih =>
     have h1 := knuth_context (knuth_ins rs hrs a) [] w
     simp only [List.nil_append, List.append_assoc, List.singleton_append] at h1
     exact knuth_trans h1 (ih (ins rs a) (ins_sorted rs hrs a))
 
 theorem knuth_readR_P (w : List ℕ) : KnuthEquiv w (readR (P w)) := by
-  simpa [readR] using knuth_readR_insW [] (by simp [RowsSorted]) w
+  simpa [readR, P] using knuth_readR_insW [] (by simp [RowsSorted]) w
 
 /-! ## Uniqueness: insertion recovers a tableau from its row word -/
 
@@ -452,10 +451,10 @@ theorem dom_nil (a : List ℕ) : Dom a [] := by cases a <;> trivial
 /-- A semistandard tableau given by its rows, top row first. -/
 def Valid : List (List ℕ) → Prop
   | [] => True
-  | R :: rs => R ≠ [] ∧ R.Sorted (· ≤ ·) ∧ Dom R (rs.headD []) ∧ Valid rs
+  | R :: rs => R ≠ [] ∧ R.Pairwise (· ≤ ·) ∧ Dom R (rs.headD []) ∧ Valid rs
 
 /-- Inserting a row `a` into a row `p ++ b` it dominates bumps out exactly `b`. -/
-theorem rowIns_dom : ∀ (a b p : List ℕ), a.Sorted (· ≤ ·) → (∀ q ∈ p, ∀ x ∈ a, q ≤ x) →
+theorem rowIns_dom : ∀ (a b p : List ℕ), a.Pairwise (· ≤ ·) → (∀ q ∈ p, ∀ x ∈ a, q ≤ x) →
     Dom a b → rowIns (p ++ b) a = (p ++ a, b) := by
   intro a
   induction a with
@@ -466,7 +465,7 @@ theorem rowIns_dom : ∀ (a b p : List ℕ), a.Sorted (· ≤ ·) → (∀ q ∈
     | cons _ _ => exact absurd hd (by simp [Dom])
   | cons x a ih =>
     intro b p hs hp hd
-    obtain ⟨hxa, hs'⟩ := List.sorted_cons.mp hs
+    obtain ⟨hxa, hs'⟩ := List.pairwise_cons.mp hs
     have hpx : ∀ q ∈ p, q ≤ x := fun q hq => hp q hq x List.mem_cons_self
     have hp' : ∀ q ∈ p ++ [x], ∀ y ∈ a, q ≤ y := by
       intro q hq y hy
@@ -600,14 +599,14 @@ theorem run_rows (n : ℕ) (S : TableauWordInsertion.State n) (w : List (Fin n))
 /-- The empty tableau. -/
 def emptyTableau : PositiveTableau ⊥ where
   entry := fun _ _ => 0
-  row_weak' := fun _ h => absurd h (YoungDiagram.not_mem_bot _)
-  col_strict' := fun _ h => absurd h (YoungDiagram.not_mem_bot _)
+  row_weak' := fun _ h => absurd h (YoungDiagram.notMem_bot _)
+  col_strict' := fun _ h => absurd h (YoungDiagram.notMem_bot _)
   zeros' := fun _ => rfl
-  positive := fun h => absurd h (YoungDiagram.not_mem_bot _)
+  positive := fun h => absurd h (YoungDiagram.notMem_bot _)
 
 theorem emptyTableau_inAlphabet (n : ℕ) : InAlphabet n emptyTableau := by
   intro p hp
-  exact absurd (show p ∈ (⊥ : YoungDiagram) from hp) (YoungDiagram.not_mem_bot _)
+  exact absurd (show p ∈ (⊥ : YoungDiagram) from hp) (YoungDiagram.notMem_bot _)
 
 /-- The empty insertion state. -/
 def emptyState (n : ℕ) : TableauWordInsertion.State n :=
@@ -616,7 +615,7 @@ def emptyState (n : ℕ) : TableauWordInsertion.State n :=
 theorem rows_empty (n : ℕ) : rows n (emptyState n).2.1 (emptyState n).2.2 = [] := by
   have h : (⊥ : YoungDiagram).colLen 0 = 0 := by
     by_contra hne
-    exact YoungDiagram.not_mem_bot (0, 0)
+    exact YoungDiagram.notMem_bot (0, 0)
       (YoungDiagram.mem_iff_lt_colLen.mpr (Nat.pos_of_ne_zero hne))
   simp [rows, emptyState, h]
 
@@ -658,7 +657,7 @@ theorem dom_of_columnBelow {n : ℕ} :
       simpa using this
 
 theorem valid_of_rows {n : ℕ} : ∀ (rs : List (List (Fin n))),
-    (∀ w ∈ rs, w.Sorted (· ≤ ·)) →
+    (∀ w ∈ rs, w.Pairwise (· ≤ ·)) →
     (∀ r : ℕ, ColumnBelow (rs[r]?.getD []) (rs[r+1]?.getD [])) →
     (∀ w ∈ rs, w ≠ []) → Valid (rs.map (List.map lab))
   | [], _, _, _ => trivial
@@ -807,7 +806,7 @@ theorem knuthCon_eq_conGen :
       | symm x y _ ih => exact (conGen _).symm ih
       | trans x y z _ _ ih₁ ih₂ => exact (conGen _).trans ih₁ ih₂
     exact key _ _ h
-  · exact Con.conGen_le fun x y h => Relation.EqvGen.rel _ _ h
+  · exact Con.conGen_le.mpr fun x y h => Relation.EqvGen.rel _ _ h
 
 /-- Positive words: the alphabet `A = ℤ_{>0}` of EK Sec. 4.1. -/
 def PosWord (w : List ℕ) : Prop := ∀ a ∈ w, 0 < a
@@ -860,14 +859,14 @@ noncomputable def tabEquivPl : (Σ μ : YoungDiagram, PositiveTableau μ) ≃ Pl
 
 /-- EK, after Thm 4.1: the semistandard tableaux (via their row words) form a `ℤ`-basis
 of the plactic ring `ℤPl`. -/
-noncomputable def tableauBasis : Basis (Σ μ : YoungDiagram, PositiveTableau μ) ℤ ZPl :=
-  (Finsupp.basisSingleOne : Basis Pl ℤ (Pl →₀ ℤ)).reindex tabEquivPl.symm
+noncomputable def tableauBasis : Module.Basis (Σ μ : YoungDiagram, PositiveTableau μ) ℤ ZPl :=
+  (MonoidAlgebra.basis Pl ℤ).reindex tabEquivPl.symm
 
 theorem tableauBasis_apply (S : Σ μ : YoungDiagram, PositiveTableau μ) :
     tableauBasis S = MonoidAlgebra.of ℤ Pl (tabToPl S) := by
-  change ((Finsupp.basisSingleOne : Basis Pl ℤ (Pl →₀ ℤ)).reindex tabEquivPl.symm) S =
-    Finsupp.single (tabToPl S) (1 : ℤ)
-  rw [Basis.reindex_apply, Equiv.symm_symm, Finsupp.coe_basisSingleOne]
+  change ((MonoidAlgebra.basis Pl ℤ).reindex tabEquivPl.symm) S =
+    MonoidAlgebra.single (tabToPl S) (1 : ℤ)
+  rw [Module.Basis.reindex_apply, Equiv.symm_symm, MonoidAlgebra.basis_apply]
   rfl
 
 /-- Knuth moves preserve length, so the class of the empty word is `{[]}`: the printed
@@ -945,16 +944,16 @@ theorem tabEquivPlNonunital_apply
 /-- EK, after Thm 4.1, for the printed non-unital `ℤPl`: the (nonempty) semistandard
 tableaux form a `ℤ`-basis. -/
 noncomputable def tableauBasisNonunital :
-    Basis {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []} ℤ
+    Module.Basis {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []} ℤ
       ZPlNonunital :=
-  (Finsupp.basisSingleOne : Basis PlNonunital ℤ (PlNonunital →₀ ℤ)).reindex
+  (MonoidAlgebra.basis PlNonunital ℤ).reindex
     tabEquivPlNonunital.symm
 
 theorem tableauBasisNonunital_apply
     (S : {S : Σ μ : YoungDiagram, PositiveTableau μ // TableauRowWord.rowWord S.2 ≠ []}) :
-    tableauBasisNonunital S = Finsupp.single (tabEquivPlNonunital S) (1 : ℤ) := by
-  change ((Finsupp.basisSingleOne : Basis PlNonunital ℤ (PlNonunital →₀ ℤ)).reindex
+    tableauBasisNonunital S = MonoidAlgebra.single (tabEquivPlNonunital S) (1 : ℤ) := by
+  change ((MonoidAlgebra.basis PlNonunital ℤ).reindex
     tabEquivPlNonunital.symm) S = _
-  rw [Basis.reindex_apply, Equiv.symm_symm, Finsupp.coe_basisSingleOne]
+  rw [Module.Basis.reindex_apply, Equiv.symm_symm, MonoidAlgebra.basis_apply]
 
 end OddMath.Frontier.EKClassicalPlactic

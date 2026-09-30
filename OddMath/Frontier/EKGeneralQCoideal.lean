@@ -81,9 +81,7 @@ private theorem assoc_quotient' (t : LL k) (y : L k) :
     TensorProduct.assoc k (Lam q) (Lam q) (Lam q) (quotientTensorMap q t ⊗ₜ[k] piQ q y) =
     TensorProduct.map (piQ q).toLinearMap (quotientTensorMap q)
       (TensorProduct.assoc k (L k) (L k) (L k) (t ⊗ₜ[k] y)) := by
-  induction t using TensorProduct.induction_on with
-  | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, TensorProduct.zero_tmul,
-      TensorProduct.tmul_zero]
+  induction t using TensorProduct.inductionOn with
   | tmul a b => simp
   | add a b ha hb => simp only [LinearMap.map_add, LinearEquiv.map_add, TensorProduct.add_tmul,
       ha, hb]
@@ -99,8 +97,7 @@ theorem sep_coassociativity (x : Lam q) :
         (TensorProduct.assoc k (L k) (L k) (L k)
           (TensorProduct.map (coproduct q) LinearMap.id z)) := by
     intro z
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero]
+    induction z using TensorProduct.inductionOn with
     | tmul a b =>
       simpa only [quotientTensorMap_tmul, TensorProduct.map_tmul, sepCoproduct_pi,
         LinearMap.id_apply] using assoc_quotient' (coproduct q a) b
@@ -110,8 +107,7 @@ theorem sep_coassociativity (x : Lam q) :
       TensorProduct.map (piQ q).toLinearMap (quotientTensorMap q)
         (TensorProduct.map LinearMap.id (coproduct q) z) := by
     intro z
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [LinearMap.map_zero]
+    induction z using TensorProduct.inductionOn with
     | tmul a b => simp
     | add a b ha hb => simp only [LinearMap.map_add, ha, hb]
   rw [sepCoproduct_pi, hl, hr, coassociativity]
@@ -124,8 +120,7 @@ theorem sep_counit_left (x : Lam q) :
       (TensorProduct.map (quotientCounit q).toLinearMap LinearMap.id (quotientTensorMap q z)) =
       piQ q (leftCounit k z) := by
     intro z
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, map_zero (piQ q)]
+    induction z using TensorProduct.inductionOn with
     | tmul a b =>
       simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
         quotientCounit_pi, LinearMap.id_apply, TensorProduct.lid_tmul, leftCounit_tmul]
@@ -141,8 +136,7 @@ theorem sep_counit_right (x : Lam q) :
       (TensorProduct.map LinearMap.id (quotientCounit q).toLinearMap (quotientTensorMap q z)) =
       piQ q (rightCounit k z) := by
     intro z
-    induction z using TensorProduct.induction_on with
-    | zero => simp only [LinearMap.map_zero, LinearEquiv.map_zero, map_zero (piQ q)]
+    induction z using TensorProduct.inductionOn with
     | tmul a b =>
       simp only [quotientTensorMap_tmul, TensorProduct.map_tmul, AlgHom.toLinearMap_apply,
         quotientCounit_pi, LinearMap.id_apply, TensorProduct.rid_tmul, rightCounit_tmul]
@@ -195,7 +189,7 @@ theorem separating_of_pid [IsDomain k] [IsPrincipalIdealRing k] (q : k) : Separa
   tensor_separation q
 
 /-- If `Λ` has a basis `b` and a family `d` with `(bᵢ, dⱼ) = δᵢⱼ`, pure tensors separate. -/
-theorem separating_of_dual (q : k) {ι : Type*} (b : Basis ι k (Lam q)) (d : ι → Lam q)
+theorem separating_of_dual (q : k) {ι : Type*} (b : Module.Basis ι k (Lam q)) (d : ι → Lam q)
     (hd : ∀ i j, quotientForm q (b i) (d j) = if i = j then 1 else 0) : Separating q := by
   classical
   intro z hz
@@ -210,7 +204,7 @@ theorem separating_of_dual (q : k) {ι : Type*} (b : Basis ι k (Lam q)) (d : ι
     rw [Finset.sum_eq_single j] at h
     · simpa using h
     · intro i _ hij; simp [hij]
-    · intro hj; simp [Finsupp.not_mem_support_iff.mp hj]
+    · intro hj; simp [Finsupp.notMem_support_iff.mp hj]
   have : c = 0 := Finsupp.ext hc
   simp [this]
 

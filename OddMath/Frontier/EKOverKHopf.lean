@@ -84,7 +84,7 @@ theorem decomposeK_mem (x : LamK k) (d : ℕ) : decomposeK x d ∈ degreePieceK 
     · subst d
       rw [Finsupp.single_eq_same]
       exact hBasisK_mem μ
-    · rw [Finsupp.single_eq_of_ne hd]
+    · rw [Finsupp.single_eq_of_ne (Ne.symm hd)]
       exact Submodule.zero_mem _
 
 theorem sum_decomposeK (x : LamK k) : (decomposeK x).sum (fun _ y => y) = x := by

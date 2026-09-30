@@ -77,11 +77,11 @@ theorem grade_monomial_mul {N : ℕ} (a : Exp N) (f : SkewPolynomial N) (d : ℕ
     have hw : weight (a+b) = weight a + weight b := by
       simp only [weight, Pi.add_apply, Finset.sum_add_distrib]
     by_cases ha : weight a ≤ d
-    · rw [if_pos ha]
+    · rw [ite_eq_left ha]
       by_cases hb : weight b = d-weight a
-      · rw [if_pos hb, if_pos (by omega), hm]
-      · rw [if_neg hb, if_neg (by omega), mul_zero]
-    · rw [if_neg ha, if_neg (by omega)]
+      · rw [ite_eq_left hb, ite_eq_left (by omega), hm]
+      · rw [ite_eq_right hb, ite_eq_right (by omega), mul_zero]
+    · rw [ite_eq_right ha, ite_eq_right (by omega)]
 
 /-- Each literal elementary word belongs to the assigned elementary subring. -/
 theorem word_mem_E (N : ℕ) (w : List ℕ) : elementaryWord N w ∈ E N := by
@@ -134,7 +134,7 @@ theorem grade_mem_E {N : ℕ} (d : ℕ) (f : SkewPolynomial N) (hf : f ∈ E N) 
     split_ifs
     · exact word_mem_E N w
     · exact (E N).zero_mem
-  | zero => simpa using (E N).zero_mem
+  | zero => simp
   | add f g _ _ hf hg => simpa only [map_add] using (E N).add_mem hf hg
   | smul z f _ hf => simpa only [map_smul] using (E N).zsmul_mem hf z
 
@@ -176,7 +176,7 @@ theorem insertMin_lt_before {N : ℕ} (j : Fin (N+1)) (k : ℕ) (b : Exp N)
     | zero => simp at hi
     | succ j =>
       cases i using Fin.cases with
-      | zero => simp [insertMin]; omega
+      | zero => simp [insertMin]
       | succ i => simpa [insertMin] using ih j (fun i => b i.succ) i (Fin.succ_lt_succ_iff.mp hi)
 
 theorem insertMin_b_injective {N : ℕ} (j : Fin (N+1)) (k : ℕ) :
@@ -230,7 +230,7 @@ theorem insertMin_injective {N : ℕ} {j l : Fin (N+1)} {k h : ℕ} {b c : Exp N
 theorem weight_insertMin {N : ℕ} (j : Fin (N+1)) (k : ℕ) (b : Exp N) :
     weight (insertMin j k b) = weight b + (N+1)*k + j.val := by
   induction N with
-  | zero => simp [weight, insertMin, Fin.sum_univ_succ]
+  | zero => simp [weight, insertMin]
   | succ N ih =>
     cases j using Fin.cases with
     | zero => simp [insertMin, weight, Fin.sum_univ_succ, Finset.sum_add_distrib]; ring
@@ -351,7 +351,7 @@ theorem pairVector_homogeneous (N d : ℕ) (a : PairIndex N d) :
     Homogeneous d (pairVector N d a) := by
   have h := homogeneous_mul (homogeneous_monomial a.val.1.val (1:ℤ))
     (columns_homogeneous a.val.2 a.property.1)
-  simpa only [a.property.2] using h
+  simpa only [pairVector, stairMonomial, a.property.2] using h
 
 /-- The actual degree-d polynomial piece has its finite monomial coordinates. -/
 abbrev polyPiece (N d : ℕ) := Finsupp.supported ℤ ℤ {a : Exp N | weight a = d}
@@ -375,13 +375,13 @@ theorem pair_span (n d : ℕ) (f : SkewPolynomial (n+2)) (hf : Homogeneous d f) 
   let S := Submodule.span ℤ (Set.range (pairVector (n+2) d))
   obtain ⟨c,hc⟩ := right_span (n+2) f
   have he := congrArg (grade d) hc
-  rw [grade_of_homogeneous hf, if_pos rfl, map_sum] at he
+  rw [grade_of_homogeneous hf, ite_eq_left rfl, map_sum] at he
   rw [he]
   apply S.sum_mem
   intro a _
   rw [stairMonomial, grade_monomial_mul]
   by_cases ha : weight a.val ≤ d
-  · rw [if_pos ha]
+  · rw [ite_eq_left ha]
     let e := d-weight a.val
     let g : degreePiece n e := ⟨grade e (c a), by
       constructor
@@ -406,7 +406,7 @@ theorem pair_span (n d : ℕ) (f : SkewPolynomial (n+2)) (hf : Homogeneous d f) 
       dsimp [e] at hp
       omega⟩
     exact Submodule.subset_span ⟨ap,rfl⟩
-  · rw [if_neg ha]
+  · rw [ite_eq_right ha]
     exact S.zero_mem
 
 theorem mulMap_surjective (n d : ℕ) : Function.Surjective (mulMap (n+2) d) := by
@@ -474,7 +474,7 @@ def coeffPiece (n e : ℕ) (c : E (n+2)) : degreePiece n e :=
 theorem coeffPiece_expand (n e : ℕ) (c : E (n+2)) :
     grade e (c : SkewPolynomial (n+2)) = ∑ p : Index (n+2) e,
       ((gradedBasis n e).repr (coeffPiece n e c)) p • elementaryWord (n+2) (columns p.val) := by
-  simpa only [Submodule.coe_sum, Submodule.coe_smul, gradedBasis_apply] using
+  simpa only [Submodule.coe_sum, Submodule.coe_smul, gradedBasis_apply, coeffPiece] using
     (congrArg (fun q : degreePiece n e => (q : SkewPolynomial (n+2)))
       ((gradedBasis n e).sum_repr (coeffPiece n e c))).symm
 

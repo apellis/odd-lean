@@ -225,11 +225,11 @@ theorem coord_tabWord {n : ℕ} (S : State n) :
 
 theorem tabWord_linearIndependent (n : ℕ) : LinearIndependent ℤ (tabWord n) := by
   apply LinearIndependent.of_comp (coord n)
-  have he : (coord n) ∘ (tabWord n) = (Finsupp.basisSingleOne : Basis (State n) ℤ (Free n)) := by
+  have he : (coord n) ∘ (tabWord n) = (Finsupp.basisSingleOne : Module.Basis (State n) ℤ (Free n)) := by
     funext S
     rw [Function.comp_apply, coord_tabWord, Finsupp.coe_basisSingleOne]
   rw [he]
-  exact Basis.linearIndependent _
+  exact Module.Basis.linearIndependent _
 
 /-! ## Spanning -/
 
@@ -285,17 +285,17 @@ theorem span_tabWord (n : ℕ) : Submodule.span ℤ (Set.range (tabWord n)) = �
 
 /-- **E §3.1, p. 8** (after Theorem 3.1): the row words `w_r(T)` of the semistandard tableaux
 `T` with entries in `{1, …, n}` form a ℤ-basis of the odd plactic ring ℤPl_n. -/
-def tableauBasis (n : ℕ) : Basis (State n) ℤ (OddPlactic.Plactic n) :=
-  Basis.mk (tabWord_linearIndependent n) (span_tabWord n).ge
+def tableauBasis (n : ℕ) : Module.Basis (State n) ℤ (OddPlactic.Plactic n) :=
+  Module.Basis.mk (tabWord_linearIndependent n) (span_tabWord n).ge
 
 @[simp] theorem tableauBasis_apply {n : ℕ} (S : State n) : tableauBasis n S = tabWord n S :=
-  Basis.mk_apply _ _ _
+  Module.Basis.mk_apply _ _ _
 
 /-- The coordinates in the tableau basis are computed by insertion. -/
 theorem tableauBasis_repr (n : ℕ) : (tableauBasis n).repr.toLinearMap = coord n := by
   apply (tableauBasis n).ext
   intro S
-  rw [LinearEquiv.coe_coe, Basis.repr_self, tableauBasis_apply, coord_tabWord]
+  rw [LinearEquiv.coe_coe, Module.Basis.repr_self, tableauBasis_apply, coord_tabWord]
 
 theorem repr_word {n : ℕ} (w : List (Fin n)) :
     (tableauBasis n).repr (OddPlactic.word n w) = Finsupp.single (P w) (insSign (empty n) w) := by
