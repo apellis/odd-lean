@@ -141,6 +141,13 @@ permutation action):
   `osymDG`), `OPol_n(α)` for `α ∈ {0,1}ⁿ` as a left dg module (Prop 3.1, `OPolAlpha.instDGModule`), and `Z_n`
   as a dg `(OPol_n, OPol_n)`-bimodule and, by restriction, a dg `(OPol_n, OΛ_n)`-bimodule (Prop 3.7, Def 3.8,
   `Zn.instDGBimodule`, `Zn.dgBimoduleOsym`).
+- `ONH_n` (rank `n + 2`) as a dg ring (`Frontier.EQOnhDG*`): the half-`q`-degree grading
+  (`EQOnhDG.grading`, compared with the library's `q`-grading in `grading_eq_degreePiece`), `EQOnhDG.ONH.instDGRing`,
+  `d(x_j) = x_j²`, `d(∂_i) = 1` (`ONH.d_x`, `ONH.d_del`), the dg inclusion of `OPol_{n+2}` (`ONH.polyHom`), Prop 3.16 (2)
+  (`ONH.isAcyclic`, and every object of `D(ONH_n)` is zero: `ONH.isZero_derivedCategory`), `Z_n` as a dg
+  `(ONH_n, OΛ_n)`-bimodule (`ONH.instDGBimoduleZn`), and Cor 3.9 as an isomorphism of dg algebras with dg-lean's
+  endomorphism dg algebra (`ONH.toENDZnEquiv`; dg-lean's `END` acts on the right, so the statement is for the
+  opposite of `ONH_n`).
 
 ## Building
 
