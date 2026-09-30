@@ -35,18 +35,8 @@ allowlist `propext`, `Classical.choice`, `Quot.sound`; a failed build is not a s
 
 Sources, lockfiles, and `.verification/*.log` are durable. `.lake/build` is regenerable output;
 `.lake/packages` may point to shared dependencies and must not be swept. Reuse the installed
-toolchain/cache rather than allocating another Mathlib build. On the shared formalization host,
-serialize builds and reserve headroom:
-
-```sh
-mkdir -p .verification
-flock .verification/build.lock \
-  python3 /home/hermes/.hermes/scripts/disk_lifecycle.py run \
-    --path "$PWD" --project odd-core-upgrade --reserve-gib 2 -- \
-    env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 lake --wfail build < /dev/null
-```
-
-Do not bypass a reservation refusal. Retirement uses the host maintenance command
-`python3 /home/hermes/.hermes/scripts/disk_lifecycle_maintenance.py --apply`; only its explicitly
-classified inactive rebuild outputs may be removed. Preserve sources, evidence, shared targets,
-and active builds.
+toolchain/cache rather than allocating another Mathlib build (`lake exe cache get`). On a
+machine shared with other builds, serialize full builds (e.g. with `flock
+.verification/build.lock`), limit parallelism with `LEAN_NUM_THREADS`, and run `lake` with
+stdin redirected from `/dev/null`. Machine-specific disk and scheduling tooling belongs in
+private configuration, not in this repository.
