@@ -34,7 +34,7 @@ This file isolates the homological algebra, independently of polynomials.
   critical shapes.
 * `hypercube`: the hypercube complex `Y_α` (urns indexed by a finite type `α`, arbitrary signs
   with `d² = 0`) as a box system; `hypercube_contractible`: it is contractible when `α` is
-  nonempty, i.e. `Y_k` is contractible for `k ≥ 1`, and `hypercube_homology_empty`: `Y_0 ≅ k`.
+  nonempty, i.e. `Y_k` is contractible for `k ≥ 1`, and `hypercube_homology_isEmpty`: `Y_0 ≅ k`.
 
 The paper works over a field `k`; everything here is over an arbitrary commutative ring, since
 the coefficients `c p b` are units (they are `±1` for the odd Schur differential).

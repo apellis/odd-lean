@@ -6,7 +6,7 @@ import OddMath.Frontier.NilCoxeterWords
 # The differential of the longest odd divided difference
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*,
-arXiv:1504.01712v2, §2.3 ((2.39), Lemma 2.17) and §3.2 (Lemma 3.4 with its proof (3.13)–(3.15),
+arXiv:1504.01712v2, §2.4 ((2.39), Lemma 2.17) and §3.2 (Lemma 3.4 with its proof (3.13)–(3.15),
 Lemma 3.5 with (3.16)–(3.17)).
 
 In the diagrammatic endomorphism algebra of `N` strands (any commutative ring `R`), let

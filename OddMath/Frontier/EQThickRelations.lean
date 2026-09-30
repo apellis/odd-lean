@@ -11,8 +11,8 @@ arXiv:1504.01712v2, §4.1 and §4.2.1 (displayed equations; printed numbering).
 Ambient ring `ONH_{n+2} = NilHeckeAction.Presented n`, `N = n + 2`, `0`-indexed strands, a written
 product `x * y` is `x` drawn on top of `y`, `e_N = (-1)^{C(N,3)} ∂_{w_0} x^δ` (`eqIdempotent`), and
 `w_0` is the plain permutation action `x_i ↦ x_{N-1-i}` (`EQSkewDifferential.longestPerm`,
-Ellis–Qi §2.3).  The twisted odd elementary polynomials `ẽ_k = θ(e_k)` are EKL's
-`elementaryPoly N k` (Ellis–Qi Remark 2.9), and `OΛ̃_N` is the joint kernel `K n` of the `∂_i`.
+Ellis–Qi §2.4).  The twisted odd elementary polynomials `ẽ_k = θ(e_k)` are EKL's
+`elementaryPoly N k` (Ellis–Qi Remark 2.14), and `OΛ̃_N` is the joint kernel `K n` of the `∂_i`.
 
 * `thick_mul_thick` (§4.1): `e_N f e_N g e_N = e_N f g e_N` for `g ∈ OΛ̃_N` (any `f`).
 * §4.1, "Equation (2.64) of [EKL] implies `∂_{w_0} f = w_0(f) ∂_{w_0}`": with Ellis–Qi's plain

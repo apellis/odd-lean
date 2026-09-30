@@ -9,7 +9,7 @@ import Mathlib.Tactic.Module
 # The local differential on skew polynomials
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§2.3 ((2.44), Lemma 2.18) and §3.1–§3.2 (Proposition 3.1, Lemma 3.2, Proposition 3.7,
+§2.4 ((2.41), Lemma 2.18) and §3.1–§3.2 (Proposition 3.1, Lemma 3.2, Proposition 3.7,
 Definition 3.8).
 
 On `OPol_n = SkewPolynomial n` (integer coefficients, generators `x_i`, strands numbered from
@@ -17,7 +17,7 @@ On `OPol_n = SkewPolynomial n` (integer coefficients, generators `x_i`, strands 
 
 * `skewLift`: the universal property of `OPol_n` (a ring map is determined by images of the
   generators which pairwise anticommute);
-* `parityInv` (`ι`, `ι(x_i) = -x_i`), `theta` (the twisting `θ(x_i) = (-1)^i x_i` of (2.35),
+* `parityInv` (`ι`, `ι(x_i) = -x_i`), `theta` (the twisting `θ(x_i) = (-1)^i x_i` of (2.19),
   0-indexed), `longestPerm` (`w₀(x_i) = x_{n-1-i}`, the plain permutation action) and
   `twistRev = θ ∘ w₀`;
 * `d`, the local differential `d(x_i) = x_i²` of §3.1, with the super Leibniz rule
@@ -301,7 +301,7 @@ theorem parityInv_parityInv (f : SkewPolynomial n) : parityInv n (parityInv n f)
     ringHom_ext fun j => by simp
   exact RingHom.congr_fun h f
 
-/-- The twisting `θ(x_i) = (-1)^i x_i` of Ellis–Qi (2.35) (strands numbered from `0`). -/
+/-- The twisting `θ(x_i) = (-1)^i x_i` of Ellis–Qi (2.19) (strands numbered from `0`). -/
 def theta (n : ℕ) : SkewPolynomial n →+* SkewPolynomial n :=
   skewLift (fun j => (-1 : ℤ) ^ j.val • generator (Equiv.refl _ j))
     (fun i j h => smul_generator_anticomm (fun j => (-1 : ℤ) ^ j.val) (Equiv.refl _) i j h)
@@ -311,7 +311,7 @@ def theta (n : ℕ) : SkewPolynomial n →+* SkewPolynomial n :=
   simp [theta]
 
 /-- The longest element `w₀(x_i) = x_{n-1-i}`, acting by permuting indices (the plain
-permutation action of Ellis–Qi §2.3, not EKL's signed action). -/
+permutation action of Ellis–Qi §2.4, not EKL's signed action). -/
 def longestPerm (n : ℕ) : SkewPolynomial n →+* SkewPolynomial n :=
   skewLift (fun j => (1 : ℤ) • generator (Fin.revPerm j))
     (fun i j h => smul_generator_anticomm (fun _ => 1) Fin.revPerm i j h)
@@ -320,7 +320,7 @@ def longestPerm (n : ℕ) : SkewPolynomial n →+* SkewPolynomial n :=
     longestPerm n (generator j) = generator j.rev := by
   simp [longestPerm]
 
-/-- `φ = θ ∘ w₀`, the map in the right action `1_z f = (θ ∘ w₀)(f) 1_z` of Ellis–Qi (3.24). -/
+/-- `φ = θ ∘ w₀`, the map in the right action `1_z f = (θ ∘ w₀)(f) 1_z` of Ellis–Qi (3.19). -/
 def twistRev (n : ℕ) : SkewPolynomial n →+* SkewPolynomial n := (theta n).comp (longestPerm n)
 
 @[simp] theorem twistRev_generator (j : Fin n) :
@@ -416,7 +416,7 @@ theorem d_d (f : SkewPolynomial n) : d n (d n f) = 0 := by
 /-! ## Lemma 3.2 -/
 
 /-- The untwisted odd elementary polynomial `e_k = Σ_{i_1<⋯<i_k} x_{i_1}⋯x_{i_k}` of
-Ellis–Qi §2.3. -/
+Ellis–Qi §2.4. -/
 def elementary (n k : ℕ) : SkewPolynomial n := FiniteWords.strictSum (generator (n := n)) k
 
 theorem parityInv_elementary (k : ℕ) :

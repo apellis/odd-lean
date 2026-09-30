@@ -673,7 +673,7 @@ theorem untwisted_one_eq : untwisted 2 ![1, 0] = generator 0 + generator 1 := by
   rw [h0, AllRankDivided.divided_left_mul, AllRankDivided.divided_generator]
   simp [sub_eq_add_neg, add_comm]
 
-/-- `N = 2`: `s̃_{(1)} = θ(s_{(1)}) = x_1 - x_2`, the twisted `ẽ_1` (Ellis–Qi §2.3). -/
+/-- `N = 2`: `s̃_{(1)} = θ(s_{(1)}) = x_1 - x_2`, the twisted `ẽ_1` (Ellis–Qi §2.4). -/
 theorem twisted_one_eq : twisted 2 ![1, 0] = generator 0 - generator 1 := by
   rw [twisted_eq_theta_untwisted, untwisted_one_eq, map_add, theta_generator, theta_generator]
   simp [sub_eq_add_neg]

@@ -176,7 +176,7 @@ theorem eqIdempotent_etElem_eqIdempotent :
     (Subring.mul_mem _ (OddSymmetricKernel.elementary_mem m 1) (action_eqIdempotent_mem f)),
     action_mul_apply, action_etElem]
 
-/-- `ẽ_1 ∂_{w_0} = (-1)^{C(n-1,2)} ∂_{w_0} ẽ_1` (EKL (2.64) and Lemma 2.16). -/
+/-- `ẽ_1 ∂_{w_0} = (-1)^{C(n-1,2)} ∂_{w_0} ẽ_1` (EKL (2.64) and EKL Lemma 2.16). -/
 theorem etElem_mul_DElem (m : ℕ) :
     etElem m * DElem m = (-1 : ℤ) ^ (m + 1).choose 2 • (DElem m * etElem m) := by
   have h := OnhPolynomial.DElem_poly_kernel (elementaryPoly (m + 2) 1)

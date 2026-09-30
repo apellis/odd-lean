@@ -3,6 +3,7 @@ import OddMath.Frontier.EQOnhDGAcyclic
 import OddMath.Frontier.EQZnFiniteCell
 import OddMath.Frontier.SmallRank
 import DG.Homotopy.Lifting
+import DG.Homotopy.Regular
 
 /-!
 # Cofibrancy of `Z_n` over `ONH_n` (Proposition 3.17)
@@ -36,11 +37,10 @@ crossings: the odd nilHecke algebra on `N ≤ 1` strands is the polynomial algeb
 
 ## Contents
 
-* `uliftDGModule`: the universe lift `ULift M` of a dg module;
-  `isContractible_of_isKProjective`: an acyclic K-projective dg module is contractible
-  (`id ≃ 0`), for test modules in any universe; `isContractible_of_hasLiftingProperty`:
-  likewise for cofibrant ones.
-* `hasLiftingProperty_self`: the regular dg module `A` is cofibrant.
+* The generic inputs come from the `DG` library: `DG.isContractible_of_isKProjective` (an
+  acyclic K-projective dg module is contractible, for test modules in any universe, via the
+  universe lift `ULift M`) and `DG.isGradedProjective_self`, `DG.hasLiftingProperty_self` (the
+  regular dg module `A` is cofibrant).
 * `ONH.zn_not_isContractible`: `Z_{n+2}` is not contractible as a left dg `ONH_{n+2}`-module;
   a null-homotopy of the identity would be an odd left `OPol_{n+2}`-linear null-homotopy,
   excluded by `EQZn.zn_not_contractible`.
@@ -81,116 +81,6 @@ local instance (priority := high) cofibZnNUNASemiring (m : ℕ) :
 local instance (priority := high) cofibZnNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
   @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
-
-/-! ## General facts -/
-
-section General
-
-variable {A : Type*} [Ring A] [DG.DGAddCommGroup A]
-
-/-! ### Universe lifts of dg modules -/
-
-section ULift
-
-universe u
-
-variable (M : Type u) [AddCommGroup M] [DG.DGAddCommGroup M] [Module A M] [DG.DGModule A M]
-
-/-- `ULift.down`, as an additive map. -/
-def uliftDown : ULift.{w} M →+ M where
-  toFun := ULift.down
-  map_zero' := rfl
-  map_add' _ _ := rfl
-
-/-- `ULift.up`, as an additive map. -/
-def uliftUp : M →+ ULift.{w} M where
-  toFun := ULift.up
-  map_zero' := rfl
-  map_add' _ _ := rfl
-
-/-- `ULift M` with the grading and differential of `M`. -/
-@[instance_reducible]
-def uliftDG : DG.DGAddCommGroup (ULift.{w} M) :=
-  DG.DGAddCommGroup.ofInjective (uliftDown M) (fun _ _ h => ULift.ext _ _ h)
-    ((uliftUp M).comp ((DG.d : M →+ M).comp (uliftDown M))) (fun _ => rfl)
-    fun _ _ => ⟨ULift.up _, rfl⟩
-
-attribute [local instance] uliftDG
-
-theorem ulift_mem_grading_iff {n : ℤ} {x : ULift.{w} M} :
-    x ∈ DG.grading n ↔ x.down ∈ DG.grading n := Iff.rfl
-
-theorem ulift_d_down (x : ULift.{w} M) : (DG.d x).down = DG.d x.down := rfl
-
-/-- `ULift M` is a dg `A`-module. -/
-theorem uliftDGModule : DG.DGModule A (ULift.{w} M) where
-  smul_mem _ _ _ _ ha hx := DG.smul_mem_grading (M := M) ha ((ulift_mem_grading_iff M).mp hx)
-  d_smul' ha x := ULift.ext _ _ (DG.d_smul ha x.down)
-
-attribute [local instance] uliftDGModule
-
-/-- `ULift.up` as a morphism of dg modules. -/
-def uliftUpHom : M →ᵈᵍ[A] ULift.{w} M where
-  toFun := ULift.up
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  map_mem' h := h
-  map_d' _ := rfl
-
-/-- `ULift.down` as a morphism of dg modules. -/
-def uliftDownHom : ULift.{w} M →ᵈᵍ[A] M where
-  toFun := ULift.down
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  map_mem' h := h
-  map_d' _ := rfl
-
-variable {M}
-
-/-- An acyclic K-projective dg module is contractible: `id_P` is a morphism to an acyclic module
-(in the universe of the test modules, after a universe lift), hence null-homotopic. -/
-theorem isContractible_of_isKProjective (hP : DG.IsKProjective.{max u w} A M) (hac : DG.IsAcyclic M) :
-    DG.IsContractible A M := by
-  have hac' : DG.IsAcyclic (ULift.{w} M) := DG.isAcyclic_iff.mpr fun k x hx hdx => by
-    obtain ⟨y, hy, hdy⟩ := hac.exists_d_eq ((ulift_mem_grading_iff M).mp hx)
-      (congrArg ULift.down hdx)
-    exact ⟨ULift.up y, hy, ULift.ext _ _ hdy⟩
-  have h := (hP (ULift.{w} M) hac' (uliftUpHom M)).comp_right (uliftDownHom M)
-  rwa [DG.DGModuleHom.comp_zero] at h
-
-/-- An acyclic cofibrant dg module (lifting property against surjective quasi-isomorphisms) is
-contractible. -/
-theorem isContractible_of_hasLiftingProperty [DG.DGRing A]
-    (hP : DG.HasLiftingProperty.{max u w} A M)
-    (hac : DG.IsAcyclic M) : DG.IsContractible A M :=
-  isContractible_of_isKProjective hP.isKProjective hac
-
-end ULift
-
-end General
-
-section Regular
-
-variable {A : Type*} [Ring A] [DG.DGAddCommGroup A] [DG.DGRing A]
-
-/-- The regular dg module is graded-projective: a graded map `f : A → N` of degree `0` is
-determined by `f 1`, which lifts along a surjection. -/
-theorem isGradedProjective_self : DG.IsGradedProjective.{w} A A := by
-  intro M N _ _ _ _ _ _ _ _ p hp f
-  have h1 : f 1 ∈ DG.grading (M := N) (-0) := by
-    simpa using f.map_mem (DG.one_mem_grading (A := A))
-  obtain ⟨x, hx, hpx⟩ := p.exists_mem_grading_of_surjective hp h1
-  refine ⟨DG.Cochain.ofElement x hx, DG.Cochain.ext fun a => ?_⟩
-  rw [DG.Cochain.comp_apply, DG.Cochain.ofHom_apply, DG.Cochain.eq_ofElement f,
-    DG.Cochain.ofElement_apply, DG.Cochain.ofElement_apply]
-  rw [DG.Shift.twist_zero, _root_.map_smul, hpx]
-
-/-- The regular dg module `A` is cofibrant: it has the lifting property against surjective
-quasi-isomorphisms. -/
-theorem hasLiftingProperty_self : DG.HasLiftingProperty.{w} A A :=
-  DG.IsKProjective.hasLiftingProperty (DG.isKProjective_self (A := A)) isGradedProjective_self
-
-end Regular
 
 /-! ## `N ≥ 2`: `Z_N` is not cofibrant over `ONH_N` -/
 
@@ -243,7 +133,8 @@ theorem zn_not_isContractible : ¬ DG.IsContractible (ONH n) (Zn (n + 2)) := by
 as a left dg `ONH_{n+2}`-module. It is acyclic (Proposition 3.16(2)), so K-projectivity would
 make it contractible, contradicting `zn_not_isContractible`. -/
 theorem zn_not_isKProjective : ¬ DG.IsKProjective.{w} (ONH n) (Zn (n + 2)) := fun h =>
-  zn_not_isContractible (isContractible_of_isKProjective h (ONH.isAcyclic_module (n := n) (Zn (n + 2))))
+  zn_not_isContractible
+    (DG.isContractible_of_isKProjective h (ONH.isAcyclic_module (n := n) (Zn (n + 2))))
 
 /-- **Ellis–Qi, Proposition 3.17** (`n ≥ 2`): `Z_{n+2}` is not cofibrant as a left dg
 `ONH_{n+2}`-module (it does not have the lifting property against surjective
@@ -319,8 +210,8 @@ theorem zn_hasLiftingProperty_small (hN : N ≤ 1) : DG.HasLiftingProperty.{w} (
   DG.hasLiftingProperty_iff.mpr
     ⟨DG.IsKProjective.of_retract (DG.isKProjective_self (A := OPol N)) (znToRegular hN)
         (regularToZn hN) (DG.Homotopic.of_eq hri),
-      DG.IsGradedProjective.of_retract isGradedProjective_self (znToRegular hN) (regularToZn hN)
-        hri⟩
+      DG.IsGradedProjective.of_retract (DG.isGradedProjective_self (OPol N)) (znToRegular hN)
+        (regularToZn hN) hri⟩
 
 end Small
 

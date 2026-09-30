@@ -157,6 +157,12 @@ import OddMath.Frontier.EQAppVabZab
 import OddMath.Frontier.EQAppZn
 import OddMath.Frontier.EQCofibZn
 import OddMath.Frontier.EQDGStructures
+import OddMath.Frontier.EQFixFiniteCell
+import OddMath.Frontier.EQFixNullHomotopy
+import OddMath.Frontier.EQFixProp33
+import OddMath.Frontier.EQFixW0
+import OddMath.Frontier.EQFixZabCells
+import OddMath.Frontier.EQFixZnCells
 import OddMath.Frontier.EQLimaAllRanks
 import OddMath.Frontier.EQLimaLR
 import OddMath.Frontier.EQLimaLimit

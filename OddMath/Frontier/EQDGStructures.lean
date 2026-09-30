@@ -6,7 +6,7 @@ import DG.Algebra.Constructions
 # `OPol_n`, `OΛ_n`, `OPol_n(α)` and `Z_n` as dg objects
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§2.2 (conventions (2.1)–(2.4)), §3.1–§3.2 (Proposition 3.1, Lemma 3.2, Proposition 3.7,
+§2.2 (conventions (2.3)–(2.5)), §3.1–§3.2 (Proposition 3.1, Lemma 3.2, Proposition 3.7,
 Definition 3.8).
 
 This file packages the constructions of `OddMath.Frontier.EQSkewDifferential` with the dg
@@ -502,7 +502,7 @@ theorem indicator_oddStrands : indicator (oddStrands n) = zAlpha n := by
   rcases Nat.mod_two_eq_zero_or_one i.val with h | h <;> simp [h]
 
 /-- `Z_n = OPol_n(0,1,0,1,…)`, a dg `(OPol_n, OPol_n)`-bimodule with the right action
-`g 1_z · f = g (θ ∘ w₀)(f) 1_z` (Ellis–Qi (3.24)–(3.25)). -/
+`g 1_z · f = g (θ ∘ w₀)(f) 1_z` (Ellis–Qi (3.18)–(3.20)). -/
 abbrev Zn (n : ℕ) : Type := OPolAlpha n (oddStrands n)
 
 namespace Zn

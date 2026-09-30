@@ -359,7 +359,7 @@ open SignedPermutation (skewAction)
 open LongestElementary (longest)
 open StaircaseSpanning (StairIndex stairMonomial)
 
-/-- Reversal of exponent vectors exchanges the reversed staircase and the staircase (2.46). -/
+/-- Reversal of exponent vectors exchanges the reversed staircase and the staircase (EKL (2.46)). -/
 def revEquiv (N : ℕ) : RevStair N ≃ StairIndex N where
   toFun A := ⟨fun i => A.val i.rev, fun i => by
     have := A.property i.rev; simp only [Fin.val_rev] at this ⊢; omega⟩

@@ -5,7 +5,7 @@ import OddMath.Diagrams.OddNilHecke.Comparison
 # The Ellis–Qi differential on odd-lean's presented odd nilHecke ring
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*,
-arXiv:1504.01712v2, §2.2 ((2.1)–(2.4)) and §3.2 (Proposition 3.3).
+arXiv:1504.01712v2, §2.2 ((2.3)–(2.5)) and §3.2 (Proposition 3.3).
 
 The differential `d ℤ (n + 2)` of `OddMath.Diagrams.OddNilHecke.Differential` is transported
 along the ring isomorphism `presentedEquivEnd n : Presented n ≃+* End (strands (n + 2))` to

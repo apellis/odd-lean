@@ -312,10 +312,12 @@ In progress; strands are numbered from `0` in Lean.
    Appendix A.2, `0 ≤ a_i ≤ i − 1`, is the correct one: its span `U_n` is `d`-stable for every `n`
    (`EQZn.dAlpha_mem_Hrev`), `B'_n` is a basis of `Z_n` as a right `OΛ_n`-module (`EQZn.zn_right_basis`),
    `Z_n ≅ U_n ⊗ OΛ_n` as in (3.38) (`EQZn.eq_3_38`), and Prop 3.16 (1) holds (`EQZn.prop_3_16_1`).
-4. **§3.4, remark after Cor 3.15 [F→T].** `∂/∂x_2` is a null-homotopy of the identity of `Z_n`
-   "(considered as a left `OPol_n`-module)": it is a null-homotopy of the underlying complex
-   (`EQSkewDifferential.cor_3_15`), but no odd left `OPol_n`-linear null-homotopy of the identity of `Z_n`
-   exists for any `n` (`EQZn.zn_not_contractible`).
+4. **§3.4, Cor 3.15 and the remark after it [F→T].** With null-homotopies of dg `OPol_n`-modules in the sense of
+   §2.2 (module maps of degree `−1`), the identity of `OPol_n(α)` is never null-homotopic, for any `n` and `α`
+   (`EQFix.cor_3_15_dg_false`, also without the grading: `EQFix.cor_3_15_superLinear_false`, `cor_3_15_linear_false`), and
+   likewise for `Z_n` (`EQZn.zn_not_contractible`), contrary to "(considered as a left `OPol_n`-module)" in the remark. What
+   holds is the statement for the underlying complex: `∂/∂x_i` is a null-homotopy of the identity of the complex
+   `OPol_n(α)` when `α_i = 1` (`EQSkewDifferential.cor_3_15`).
 5. **§4.1, the reduced expression for `w_{a,b}` [M].** The printed word
    `(s_b s_{b−1} ⋯ s_1)(s_{b+1} s_a ⋯ s_2) ⋯ (s_{a+b−1} s_{a+b} ⋯ s_a)` has index slips (the second and last
    factors should read `s_{b+1} s_b ⋯ s_2` and `s_{a+b−1} s_{a+b−2} ⋯ s_a`; `s_{a+b}` does not exist on `a + b`

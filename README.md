@@ -96,6 +96,8 @@ over any commutative ring; it is then transported to `Presented n` (rank `n+2`).
 - `d(x_i) = x_i²`, `d(∂_i) = 1`, Leibniz (2.3), `d² = 0`, `d` odd: `Diagrams.OddNilHecke.d_x`,
   `d_ψ`, `d_mul_of_mem`, `d_d`, `deriv_mem_homDeg`; on `Presented n`: `Diagrams.OddNilHecke.dONH_dot`, `dONH_crossing`,
   `dONH_mul`, `dONH_dONH`, `dONH_mem_parity`.
+- Prop 3.3 as printed (the differential induced from `OPol_n(α)` is local iff `α ∈ {(0,1,0,1,…), (1,0,1,0,…)}`, and then
+  `d(∂_i) = 1`): `EQFix.prop_3_3`, `prop_3_3_iff`. (2.20), (2.22): `EQFix.longestPerm_elementary`, `eq_2_22`.
 - Prop 3.3, intrinsic variant: the ansatz (3.7) is compatible iff `a = 1`, `b = c = 0` (over ℤ):
   `Diagrams.OddNilHecke.ansatz_compatible_iff`. Prop 3.3 as printed concerns the differential induced
   from a dg module `OPol_n(α)`; the formalized statement instead characterizes the local ansatz by
@@ -172,6 +174,10 @@ permutation action):
   bialternants); the theorem of A.4: `H_{/k}(Sym_n) = 0` for `k > 0` (`thmA4_1_pos`), `H_{/0}(Sym_n)` has basis the
   `p`-Lima Schur polynomials (`thmA4_1_zero`), and `k[e_p^p, e_{2p}^p, …] ↪ Sym_n` is a quasi-isomorphism (`thmA4_2`).
   The inverse limit `Sym` is not formalized.
+- Finite-cell filtrations in dg-lean form (`DG.FiniteCellFiltration`, from a generic triangular-basis criterion
+  `EQFix.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
+  `zn_isKProjective_osym`) and `Z_{a,b}` over `OΛ_{a+b}` with `binom(a+b,b)` cells (Cor 4.8, `EQFix.zabFiniteCellFiltration`,
+  `zab_hasLiftingProperty`).
 - Scope of the dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   (Prop 3.16 (2), Prop 3.17) are statements about such modules; modules whose parity is independent of the `q`-degree

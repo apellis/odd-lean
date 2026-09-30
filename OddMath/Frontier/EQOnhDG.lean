@@ -4,7 +4,7 @@ import OddMath.Diagrams.OddNilHecke.DifferentialComparison
 # The dg odd nilHecke algebra `(ONH_n, d)` as a dg ring
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§2.2 ((2.1)–(2.4)), §3.2 (Proposition 3.3, Corollary 3.9) and Proposition 3.16(2).
+§2.2 ((2.3)–(2.5)), §3.2 (Proposition 3.3, Corollary 3.9) and Proposition 3.16(2).
 
 Ellis–Qi equip the odd nilHecke algebra `ONH_n` with the differential `d(x_i) = x_i²`,
 `d(∂_i) = 1`. The grading is the `q`-grading (`deg x_i = 2`, `deg ∂_i = -2`) together with the

@@ -8,7 +8,7 @@ import Mathlib.Data.ZMod.Basic
 # The local differential on the diagrammatic odd nilHecke category
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*,
-arXiv:1504.01712v2, §3.2, Proposition 3.3, with the conventions of §2.2 ((2.1)–(2.4)) and
+arXiv:1504.01712v2, §3.2, Proposition 3.3, with the conventions of §2.2 ((2.3)–(2.5)) and
 §2.3.
 
 Ellis–Qi equip the odd nilHecke algebra `ONH_n` with the differential determined by

@@ -5,14 +5,14 @@ import OddMath.Frontier.OddSymmetrizer
 # The right `OΛ_n`-action on `ONH_n e_n` (Lemma 2.18, Proposition 3.7)
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§2.3 (Lemma 2.17 (1), Lemma 2.18 (2.44)) and §3.2 (Proposition 3.7).
+§2.4 (Lemma 2.17 (1), Lemma 2.18 (2.41)) and §3.2 (Proposition 3.7).
 
 Rank `N = n + 2`, strands numbered from `0`, `x^δ = x_0^{N-1} x_1^{N-2} ⋯ x_{N-2}`
 (`LongestDivided.staircase`), `e_N = (-1)^{binom(N,3)} ∂_{w₀} x^δ` (`eqIdempotent`).
 
 * `staircase_mul` (Lemma 2.17 (1)): `x^δ f = θ'(f) x^δ` for every `f ∈ OPol_N`, where
   `θ'(x_i) = (-1)^{binom(N-1,2)} (-1)^i x_i`; equivalently `f x^δ = ± x^δ θ(f)` for homogeneous `f`.
-* `eqIdempotent_mul_polyElem` (**Lemma 2.18**, (2.44)): `e_N f = (θ ∘ w₀)(f) e_N` in `ONH_N` for
+* `eqIdempotent_mul_polyElem` (**Lemma 2.18**, (2.41)): `e_N f = (θ ∘ w₀)(f) e_N` in `ONH_N` for
   every untwisted odd symmetric `f ∈ OΛ_N`.
 * `proposition_3_7`: `OPol_N e_N` is a dg `(OPol_N, OΛ_N)`-bimodule isomorphic to
   `Z_N = OPol_N(0,1,0,1,…)` with right action `g e_N · f = g (θ ∘ w₀)(f) e_N`.
@@ -128,7 +128,7 @@ theorem D_staircase_mul_osym {f : SkewPolynomial (n+2)} (hf : f ∈ osym (n+2))
   | neg x _ hx => rw [neg_mul, mul_neg, map_neg, hx, map_neg, neg_mul]
   | mul x y _ _ hx hy => rw [mul_assoc, hx, hy, map_mul (twistRev (n+2)) x y, mul_assoc]
 
-/-- **Ellis–Qi, Lemma 2.18** (2.44): `e_N f = (θ ∘ w₀)(f) e_N` in `ONH_N` for every untwisted odd
+/-- **Ellis–Qi, Lemma 2.18** (2.41): `e_N f = (θ ∘ w₀)(f) e_N` in `ONH_N` for every untwisted odd
 symmetric polynomial `f ∈ OΛ_N`. -/
 theorem eqIdempotent_mul_polyElem {f : SkewPolynomial (n+2)} (hf : f ∈ osym (n+2)) :
     eqIdempotent n * OnhPolynomial.polyElem n f =
