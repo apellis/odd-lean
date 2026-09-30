@@ -345,12 +345,23 @@ In progress; strands are numbered from `0` in Lean.
    (`EQLima.oddLR_comm_of_lima`, `HQ.instCommRing`), (A.1) holds in cohomology with leading coefficient `±1` and lower terms
    in dominance order (`EQLima.tri_mul`), and Prop A.3 follows for both generating sets
    (`EQLima.prop_A_3_columns`, `prop_A_3_rows`; the generators are indexed by `k ≥ 1`, since `s_∅ = 1`).
-11. **Appendix A.4, definition of slash cohomology [M].** As printed,
+11. **Appendix A.2, the urn description of `U_n` [M].** A factor `x_i^{a_i}` with `i ≡ a_i + 1 (mod 2)` is a full urn only
+   if `a_i ≥ 1`; `x_i^0` with `i` odd is not an urn (nothing can be removed) (`EQApp.notMem_uRemovable_of_zero`). With this
+   reading `U_n` is a direct sum of hypercube complexes (`EQApp.uDecompEquiv_dU`), the initial vectors are the `x^a` with
+   `a_i ∈ {0} ∪ {a ≤ i − 1 : a ≡ i mod 2}` (`EQApp.init_iff`, matching the printed `n = 5, 6` cases, `init_five`), and
+   `H(U_n) = 0` for `n ≥ 2` (`EQApp.homology_U_subsingleton`).
+12. **Appendix A.3, the cohomology of `V_{a,b}` for `a` odd [F→T].** The printed claim `H(V_{a,b}) = 0` for `a` odd fails when
+   `b` is even: the class of `s_{(a^b)} 1_z` is nonzero (`EQApp.homologyVT_rectangle_ne_zero`); the smallest case is
+   `a = 1`, `b = 2`, where `H ≅ ℤ [s_{(1,1)} 1_z]`. Inside the `b × a` box the rectangle has no addable box and its only
+   removable box has content `a − b`, which is odd. Correct: for `a` odd, `H(V_{a,b}) = 0` if `b` is odd
+   (`EQApp.homologyVT_odd_odd`), and for `b` even it has basis the partitions whose rows `2k, 2k+1` are equal and odd
+   (`EQApp.homologyVT_odd`); for `a` even the printed Lima description holds (`EQApp.homologyVT_even`).
+13. **Appendix A.4, definition of slash cohomology [M].** As printed,
    `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
    (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
    `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
    (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
-12. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+14. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
    `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent

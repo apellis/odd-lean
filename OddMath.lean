@@ -151,6 +151,10 @@ import OddMath.Frontier.EKSelfTranspose
 import OddMath.Frontier.EKSemiorthogonality
 import OddMath.Frontier.EKSignedQuotient
 import OddMath.Frontier.EKTriangular
+import OddMath.Frontier.EQAppHypercube
+import OddMath.Frontier.EQAppVab
+import OddMath.Frontier.EQAppVabZab
+import OddMath.Frontier.EQAppZn
 import OddMath.Frontier.EQCofibZn
 import OddMath.Frontier.EQDGStructures
 import OddMath.Frontier.EQLimaAllRanks
