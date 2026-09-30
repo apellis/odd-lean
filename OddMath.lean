@@ -153,6 +153,8 @@ import OddMath.Frontier.EKSignedQuotient
 import OddMath.Frontier.EKTriangular
 import OddMath.Frontier.EQDGStructures
 import OddMath.Frontier.EQOddDerivatives
+import OddMath.Frontier.EQSchurDifferential
+import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential
 import OddMath.Frontier.ElementaryBasis
 import OddMath.Frontier.ElementaryBranching
