@@ -142,6 +142,12 @@ permutation action):
   §4.1 displays: `e_n f e_n g e_n = e_n fg e_n` (`thick_mul_thick`), exploders (`exploder_composition`, `exploder_schur`),
   Remark 4.1 (`remark_4_1`), and, corrected (see [ERRATA.md](ERRATA.md)), `∂_{w_0} f = ± w_0(f) ∂_{w_0}` (`DElem_mul_poly`),
   the relation `e_n x_1⋯x_k e_n = (−1)^{binom(k,2)} ẽ_k e_n` (`convenient_relation`) and the slider relation (`slider`).
+- §4.3 (`Frontier.EQZab*`; `Z_{a,b}` modelled on `OΛ_a ⊠ OΛ_b ⊆ OPol_{a+b}`): Def 4.6 (`EQZab.dZ_dZ`, `dZ_one`, `dT_right`,
+  compatibility with the right action for all of `OPol_{a+b}`), the Pieri rule (4.23) (`pieri_twisted`), Lemma 4.7
+  (`lemma_4_7_box_twisted`), Cor 4.8 (basis `zab_span_twisted`, `zab_indep_twisted`; a finite-cell filtration with
+  `binom(a+b, a)` cells, `cor_4_8`), Cor 4.11 (the dual `Z^∨_{a,b}` is free of rank `binom(a+b,a)` with a cell-by-cell
+  `d`-stable basis, `cor_4_11`), and Lemma 4.5 corrected (see [ERRATA.md](ERRATA.md)). Not yet formalized: Lemma 4.4,
+  Cor 4.10, Prop 4.12, Prop 4.13 for three or more blocks.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on

@@ -183,6 +183,14 @@ import OddMath.Frontier.EQThickBlocks
 import OddMath.Frontier.EQThickRelations
 import OddMath.Frontier.EQThickSlider
 import OddMath.Frontier.EQThickSplitters
+import OddMath.Frontier.EQZabBasis
+import OddMath.Frontier.EQZabCell
+import OddMath.Frontier.EQZabDual
+import OddMath.Frontier.EQZabFiltration
+import OddMath.Frontier.EQZabHat
+import OddMath.Frontier.EQZabModule
+import OddMath.Frontier.EQZabReverse
+import OddMath.Frontier.EQZabSchur
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
 import OddMath.Frontier.EQZnFiniteCell

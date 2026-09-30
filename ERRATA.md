@@ -328,12 +328,21 @@ In progress; strands are numbered from `0` in Lean.
    proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
    printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
    as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
-8. **Appendix A.4, definition of slash cohomology [M].** As printed,
+8. **§4.3, Lemma 4.5 and the formula for `s̃̂_λ` after it [F→T].** With the printed definitions of `s̃̂_λ` and `ŝ_λ`
+   (via `η^n_λ`), the horizontal arrows of Lemma 4.5 and the displayed `s̃̂_λ = (−1)^{Σ_{i<j} λ_iλ_j} ∂_{w_0}(x^λ x^δ)` fail
+   for `n = 2`, `λ = (1)` (`EQZab.lemma_4_5_bottom_false`, `lemma_4_5_top_false`, `hat_formula_false`). They hold after
+   multiplying by `(−1)^{binom(n+1,4) + Σ_j λ_j (n−j)}` (`EQZab.lemma_4_5_bottom`, `lemma_4_5_top`, `twistedHat_eq_D`); the
+   vertical arrows are correct (`EQZab.untwistedHat_eq_theta`, `EQSchur.twisted_eq_theta_untwisted`).
+9. **§4.3, Prop 4.13 (1) [F→T].** For a composition `(a_1, a_2)` with `a_1, a_2 ≥ 1` the printed set (with `λ_i` in an
+   `(a_1 + ⋯ + a_{i−1}) × a_i` box and the product ending at `λ_{k−1}`) reduces to `{z}`, which does not span `Z_{a_1,a_2}`
+   (`EQZab.prop_4_13_one_printed_false`). For two blocks the correct basis is `{s̃_μ(y) z : μ ∈ Par(b,a)}` of Cor 4.8
+   (`EQZab.zab_span_twisted`, `zab_indep_twisted`), with `d`-stable span (`EQZab.cor_4_8_stable_twisted`).
+10. **Appendix A.4, definition of slash cohomology [M].** As printed,
    `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
    (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
    `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
    (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
-9. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+11. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
    `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent
