@@ -153,6 +153,12 @@ import OddMath.Frontier.EKSignedQuotient
 import OddMath.Frontier.EKTriangular
 import OddMath.Frontier.EQCofibZn
 import OddMath.Frontier.EQDGStructures
+import OddMath.Frontier.EQLimaAllRanks
+import OddMath.Frontier.EQLimaLR
+import OddMath.Frontier.EQLimaLimit
+import OddMath.Frontier.EQLimaPoly
+import OddMath.Frontier.EQLimaPolyAlg
+import OddMath.Frontier.EQLimaRefute
 import OddMath.Frontier.EQLimaCohomology
 import OddMath.Frontier.EQLimaCounting
 import OddMath.Frontier.EQLimaHypercube

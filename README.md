@@ -153,7 +153,10 @@ permutation action):
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
   which `d` acts by (3.29) (`prop_A_2_one`), Prop A.2 (2) for `OΛ_N`, `N ≥ 2`, over `ℤ` (`prop_A_2_two'`,
   `cocycle_eq'`, `lima_independent'`; the untwisted odd Schur polynomials form a `ℤ`-basis of `OΛ_N`:
-  `osymSchurBasis`). Prop A.3 is not yet formalized.
+  `osymSchurBasis`); in every rank `N`: `prop_A_2_two_all`. The limit `OΛ` (the library's `Q`, twisted by `θ`) as a super dg
+  ring with `d` compatible with the projections (`EQLima.DQ`, `piN_DQ`), Prop A.2 (1) for `OΛ` (`HQ_basis`), `H(OΛ)`
+  commutative (`HQ.instCommRing`), and Prop A.3 for both generating sets (`prop_A_3_columns`, `prop_A_3_rows`); two claims
+  in the printed proof are refuted (see [ERRATA.md](ERRATA.md)).
 - Appendix A.4 (`Frontier.EQPdg*`; `n` variables over a field of characteristic `p`): slash cohomology and (A.4)
   (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`); the `p`-differential `d(x_i) = x_i²` with `d^p = 0` (`pd_pow_char`), the
   formulas for `d(e_k)`, `d(h_k)` (corrected, see [ERRATA.md](ERRATA.md)) and `d(s_λ)` (`pd_schur`, Schur polynomials as

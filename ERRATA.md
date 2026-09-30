@@ -337,12 +337,20 @@ In progress; strands are numbered from `0` in Lean.
    `(a_1 + ⋯ + a_{i−1}) × a_i` box and the product ending at `λ_{k−1}`) reduces to `{z}`, which does not span `Z_{a_1,a_2}`
    (`EQZab.prop_4_13_one_printed_false`). For two blocks the correct basis is `{s̃_μ(y) z : μ ∈ Par(b,a)}` of Cor 4.8
    (`EQZab.zab_span_twisted`, `zab_indep_twisted`), with `d`-stable span (`EQZab.cor_4_8_stable_twisted`).
-10. **Appendix A.4, definition of slash cohomology [M].** As printed,
+10. **Appendix A.1, proof of Prop A.3 [G].** Two claims in the proof are false, although Prop A.3 holds: (i) "for Lima
+   partitions the odd Littlewood–Richardson coefficients equal the even ones" fails for the Lima partitions `μ = ν = (2,2)`,
+   with odd coefficient `−1` and even coefficient `1` at `λ = (4,3,1)` (`EQLima.printed_oddLR_eq_evenLR_fails`); in
+   particular the coefficients `a_μ` in (A.1) are not all non-negative; (ii) "Lima Schur functions pairwise commute" fails in
+   `OΛ` for `(4,4,2,2)` and `(2,2)` (`EQLima.lima_schur_not_comm`). Their classes do commute in `H(OΛ)`
+   (`EQLima.oddLR_comm_of_lima`, `HQ.instCommRing`), (A.1) holds in cohomology with leading coefficient `±1` and lower terms
+   in dominance order (`EQLima.tri_mul`), and Prop A.3 follows for both generating sets
+   (`EQLima.prop_A_3_columns`, `prop_A_3_rows`; the generators are indexed by `k ≥ 1`, since `s_∅ = 1`).
+11. **Appendix A.4, definition of slash cohomology [M].** As printed,
    `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
    (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
    `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
    (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
-11. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+12. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
    `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent
