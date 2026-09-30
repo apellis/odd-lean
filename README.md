@@ -133,8 +133,9 @@ permutation action):
   (`proposition_3_7`); (3.37) `dAlpha_zAlpha_monomial`, the basis `B'_n` with the corrected exponent range
   (see [ERRATA.md](ERRATA.md)) `zn_right_basis`, (3.38) `eq_3_38`, Prop 3.16 (1) (a finite filtration by
   `d`-stable right submodules with the cell differential) `prop_3_16_1`, Prop 3.16 (2) `dONH_acyclic`,
-  Prop 3.17 (acyclicity of `Z_n` iff `n ≥ 2`) `prop_3_17_acyclic_iff`. The cofibrancy part of Prop 3.17 is
-  reduced to `zn_not_contractible` (no odd `OPol_n`-linear null-homotopy) and is not yet formalized.
+  Prop 3.17 (acyclicity of `Z_n` iff `n ≥ 2`) `prop_3_17_acyclic_iff`. Prop 3.17 as printed, with "cofibrant" the lifting
+  property of §2.2 (`DG.HasLiftingProperty`): `EQCofib.prop_3_17`; for `n ≥ 2`, `Z_n` is not even K-projective
+  (`EQCofib.ONH.zn_not_isKProjective`); ranks `0, 1` use `ONH_0 = OPol_0 ≅ ℤ`, `ONH_1 = OPol_1`.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
