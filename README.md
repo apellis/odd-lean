@@ -104,6 +104,10 @@ over any commutative ring; it is then transported to `Presented n` (rank `n+2`).
 - Lemma 3.4, (3.13): `Diagrams.OddNilHecke.d_longest`, `dONH_DElem`.
 - Lemma 3.5, (3.16) and (3.17): `Diagrams.OddNilHecke.d_idem`, `d_staircase`, `dONH_eqIdempotent`.
 
+§2.1 (`Frontier.EQQuantum*`, over `ℤ[√−1]`): `U⁺` and `u⁺` at `q = √−1`, (2.1), the coproduct (2.2) with twist `−1`
+(the printed `√−1`-twist admits no coproduct; see [ERRATA.md](ERRATA.md)), coassociativity, `u⁺ ↪ U⁺`, and the comparison
+with the [EKL] q-bialgebra at `q = √−1` (`EQQuantum.rU_mapDP`).
+
 On skew polynomials (`Frontier.EQSkewDifferential`, `Frontier.EQOddDerivatives`; `OPol_n` with integer
 coefficients, strands numbered from `0`, `ι` the parity involution, `θ(x_i) = (-1)^i x_i`, `w₀` the plain
 permutation action):
@@ -168,6 +172,10 @@ permutation action):
   bialternants); the theorem of A.4: `H_{/k}(Sym_n) = 0` for `k > 0` (`thmA4_1_pos`), `H_{/0}(Sym_n)` has basis the
   `p`-Lima Schur polynomials (`thmA4_1_zero`), and `k[e_p^p, e_{2p}^p, …] ↪ Sym_n` is a quasi-isomorphism (`thmA4_2`).
   The inverse limit `Sym` is not formalized.
+- Scope of the dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
+  homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
+  (Prop 3.16 (2), Prop 3.17) are statements about such modules; modules whose parity is independent of the `q`-degree
+  (the half-graded setting of §2.2.4) are not covered yet.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,

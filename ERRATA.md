@@ -293,51 +293,63 @@ These errata are what the formalization turned up; they are not a complete revie
 
 In progress; strands are numbered from `0` in Lean.
 
-1. **§3.4, basis `B'_n` before (3.37)–(3.38) [F→T].** The printed basis
+1. **§2.1, the twist of `U⁺ ⊗ U⁺` [F→T].** With the displayed twist `(b₁⊗b₂)(b₁'⊗b₂') = v^{|b₂||b₁'|} b₁b₁' ⊗ b₂b₂'`,
+   `v = √−1`, no algebra map `r` with `r(E) = E⊗1 + 1⊗E` exists, on `u⁺` or on `U⁺`
+   (`EQQuantum.printed_twist_no_coproduct`, `small_printed_twist_no_coproduct`; `(E⊗1 + 1⊗E)² = (1 + t) E⊗E` for twist
+   `t`, `EQQuantum.tw_sq`). Such an `r` exists iff the twist is `−1`, i.e. `(−1)^{|b₂||b₁'|}`
+   (`EQQuantum.twisted_coproduct_exists_iff`, `small_twisted_coproduct_exists_iff`); with it, (2.1) and (2.2) hold as printed
+   (`EQQuantum.eq_2_1`, `eq_2_2`, `rU`, coassociative, `rU_coassoc`), `u⁺ ↪ U⁺` is a map of twisted bialgebras
+   (`EQQuantum.rU_iota`), and `r` is the specialisation at `q = √−1` of the q-bialgebra of [EKL] §6 (braiding `q^{−2} ↦ −1`;
+   `EQQuantum.rU_mapDP`). Equivalently: Lusztig's `v^{(|b₂|,|b₁'|)}` with `(E,E) = 2`, or the Koszul sign for the parity
+   `|E^{(n)}| = n`.
+2. **§2.1, "[a+b choose a] is zero if a+b is even" [F→T].** False: at `q = √−1`, `[4 choose 2] = 2`
+   (`EQQuantum.printed_zero_claim_false`). Correct: `[a+b choose a]_{√−1} = 0` iff `a` and `b` are both odd
+   (`EQQuantum.evI_qBinom_eq_zero_iff`), with the closed form `EQQuantum.evI_qBinom`.
+3. **§3.4, basis `B'_n` before (3.37)–(3.38) [F→T].** The printed basis
    `B'_n = {x^a 1_z : 0 ≤ a_i ≤ n − i}` together with the claim `d(x_i^{n−i} 1_z) = 0` does not give a
    `d`-stable span for even `n`: the span of the printed monomials is `d`-stable iff `n = 0` or `n` is odd
    (`EQZn.staircase_span_stable_iff`); for `n = 2`, `d(x_1 1_z) = x_1² 1_z − x_1x_2 1_z`. The range printed in
    Appendix A.2, `0 ≤ a_i ≤ i − 1`, is the correct one: its span `U_n` is `d`-stable for every `n`
    (`EQZn.dAlpha_mem_Hrev`), `B'_n` is a basis of `Z_n` as a right `OΛ_n`-module (`EQZn.zn_right_basis`),
    `Z_n ≅ U_n ⊗ OΛ_n` as in (3.38) (`EQZn.eq_3_38`), and Prop 3.16 (1) holds (`EQZn.prop_3_16_1`).
-2. **§3.4, remark after Cor 3.15 [F→T].** `∂/∂x_2` is a null-homotopy of the identity of `Z_n`
+4. **§3.4, remark after Cor 3.15 [F→T].** `∂/∂x_2` is a null-homotopy of the identity of `Z_n`
    "(considered as a left `OPol_n`-module)": it is a null-homotopy of the underlying complex
    (`EQSkewDifferential.cor_3_15`), but no odd left `OPol_n`-linear null-homotopy of the identity of `Z_n`
    exists for any `n` (`EQZn.zn_not_contractible`).
-3. **§4.1, the reduced expression for `w_{a,b}` [M].** The printed word
+5. **§4.1, the reduced expression for `w_{a,b}` [M].** The printed word
    `(s_b s_{b−1} ⋯ s_1)(s_{b+1} s_a ⋯ s_2) ⋯ (s_{a+b−1} s_{a+b} ⋯ s_a)` has index slips (the second and last
    factors should read `s_{b+1} s_b ⋯ s_2` and `s_{a+b−1} s_{a+b−2} ⋯ s_a`; `s_{a+b}` does not exist on `a + b`
    strands). The formalization uses the reversed word of EKL (3.41), `EQThick.crossEQ`; a different reduced
    expression changes `∂_{w_{a,b}}` only by a sign, and Prop 4.2 is linear in it.
-4. **§4.1, `∂_{w_0} f = w_0(f) ∂_{w_0}` for `f ∈ OΛ̃_n` [F→T].** With Ellis–Qi's plain permutation action `w_0` this
+6. **§4.1, `∂_{w_0} f = w_0(f) ∂_{w_0}` for `f ∈ OΛ̃_n` [F→T].** With Ellis–Qi's plain permutation action `w_0` this
    fails: in rank 2, `∂ ẽ_1 = ẽ_1 ∂` while `w_0(ẽ_1) = −ẽ_1` (`EQThick.DElem_mul_poly_printed_false`). Correct: for `f`
    of parity `k`, `∂_{w_0} f = (−1)^{binom(n,2) k} w_0(f) ∂_{w_0}` (`EQThick.DElem_mul_poly`). The same parity-dependent
    sign is the correct form of the identity cited from EKL (2.64) in the proof of Lemma 2.18; Lemma 2.18 itself
    holds (`EQZn.eqIdempotent_mul_polyElem`), and so does the consequence `e_n f e_n g e_n = e_n f g e_n`
    (`EQThick.thick_mul_thick`).
-5. **§4.1, `e_n x_1 ⋯ x_k e_n = ẽ_k e_n` [F→T].** Off by the sign `(−1)^{binom(k,2)}`; false for `n = k = 2`
+7. **§4.1, `e_n x_1 ⋯ x_k e_n = ẽ_k e_n` [F→T].** Off by the sign `(−1)^{binom(k,2)}`; false for `n = k = 2`
    (`EQThick.convenient_relation_printed_false`). Correct: `e_n x_1⋯x_k e_n = (−1)^{binom(k,2)} ẽ_k e_n`
    (`EQThick.convenient_relation`). For `k ≤ 1`, the case used in Prop 4.2, the printed form is correct.
-6. **§4.1, the slider relation [F→T].** The printed factor `(−1)^{binom(s,2)}` (with the right-leg coupon drawn above
+8. **§4.1, the slider relation [F→T].** The printed factor `(−1)^{binom(s,2)}` (with the right-leg coupon drawn above
    the left) is wrong: the printed relation fails in `ONH_3` for `a = 2`, `b = 1`, `s = 2`
    (`EQThick.slider_printed_false`). Correct: moving `ẽ_s` through a splitter gives
    `Σ_{l=0}^{s} (−1)^{a l} (ẽ_{s−l} ⊗ ẽ_l)` with the left coupon above the right and no further sign (`EQThick.slider`,
    from the coproduct formula `EQThick.elementary_coproduct`). For `s ≤ 1` the two agree.
-7. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
+9. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
    of Lemma 2.2 on idempotent truncations, `e d(−)` with `e` the idempotent at the top of the diagram (as the
    proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
    printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
    as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
-8. **§4.3, Lemma 4.5 and the formula for `s̃̂_λ` after it [F→T].** With the printed definitions of `s̃̂_λ` and `ŝ_λ`
+10. **§4.3, Lemma 4.5 and the formula for `s̃̂_λ` after it [F→T].** With the printed definitions of `s̃̂_λ` and `ŝ_λ`
    (via `η^n_λ`), the horizontal arrows of Lemma 4.5 and the displayed `s̃̂_λ = (−1)^{Σ_{i<j} λ_iλ_j} ∂_{w_0}(x^λ x^δ)` fail
    for `n = 2`, `λ = (1)` (`EQZab.lemma_4_5_bottom_false`, `lemma_4_5_top_false`, `hat_formula_false`). They hold after
    multiplying by `(−1)^{binom(n+1,4) + Σ_j λ_j (n−j)}` (`EQZab.lemma_4_5_bottom`, `lemma_4_5_top`, `twistedHat_eq_D`); the
    vertical arrows are correct (`EQZab.untwistedHat_eq_theta`, `EQSchur.twisted_eq_theta_untwisted`).
-9. **§4.3, Prop 4.13 (1) [F→T].** For a composition `(a_1, a_2)` with `a_1, a_2 ≥ 1` the printed set (with `λ_i` in an
+11. **§4.3, Prop 4.13 (1) [F→T].** For a composition `(a_1, a_2)` with `a_1, a_2 ≥ 1` the printed set (with `λ_i` in an
    `(a_1 + ⋯ + a_{i−1}) × a_i` box and the product ending at `λ_{k−1}`) reduces to `{z}`, which does not span `Z_{a_1,a_2}`
    (`EQZab.prop_4_13_one_printed_false`). For two blocks the correct basis is `{s̃_μ(y) z : μ ∈ Par(b,a)}` of Cor 4.8
    (`EQZab.zab_span_twisted`, `zab_indep_twisted`), with `d`-stable span (`EQZab.cor_4_8_stable_twisted`).
-10. **Appendix A.1, proof of Prop A.3 [G].** Two claims in the proof are false, although Prop A.3 holds: (i) "for Lima
+12. **Appendix A.1, proof of Prop A.3 [G].** Two claims in the proof are false, although Prop A.3 holds: (i) "for Lima
    partitions the odd Littlewood–Richardson coefficients equal the even ones" fails for the Lima partitions `μ = ν = (2,2)`,
    with odd coefficient `−1` and even coefficient `1` at `λ = (4,3,1)` (`EQLima.printed_oddLR_eq_evenLR_fails`); in
    particular the coefficients `a_μ` in (A.1) are not all non-negative; (ii) "Lima Schur functions pairwise commute" fails in
@@ -345,23 +357,23 @@ In progress; strands are numbered from `0` in Lean.
    (`EQLima.oddLR_comm_of_lima`, `HQ.instCommRing`), (A.1) holds in cohomology with leading coefficient `±1` and lower terms
    in dominance order (`EQLima.tri_mul`), and Prop A.3 follows for both generating sets
    (`EQLima.prop_A_3_columns`, `prop_A_3_rows`; the generators are indexed by `k ≥ 1`, since `s_∅ = 1`).
-11. **Appendix A.2, the urn description of `U_n` [M].** A factor `x_i^{a_i}` with `i ≡ a_i + 1 (mod 2)` is a full urn only
+13. **Appendix A.2, the urn description of `U_n` [M].** A factor `x_i^{a_i}` with `i ≡ a_i + 1 (mod 2)` is a full urn only
    if `a_i ≥ 1`; `x_i^0` with `i` odd is not an urn (nothing can be removed) (`EQApp.notMem_uRemovable_of_zero`). With this
    reading `U_n` is a direct sum of hypercube complexes (`EQApp.uDecompEquiv_dU`), the initial vectors are the `x^a` with
    `a_i ∈ {0} ∪ {a ≤ i − 1 : a ≡ i mod 2}` (`EQApp.init_iff`, matching the printed `n = 5, 6` cases, `init_five`), and
    `H(U_n) = 0` for `n ≥ 2` (`EQApp.homology_U_subsingleton`).
-12. **Appendix A.3, the cohomology of `V_{a,b}` for `a` odd [F→T].** The printed claim `H(V_{a,b}) = 0` for `a` odd fails when
+14. **Appendix A.3, the cohomology of `V_{a,b}` for `a` odd [F→T].** The printed claim `H(V_{a,b}) = 0` for `a` odd fails when
    `b` is even: the class of `s_{(a^b)} 1_z` is nonzero (`EQApp.homologyVT_rectangle_ne_zero`); the smallest case is
    `a = 1`, `b = 2`, where `H ≅ ℤ [s_{(1,1)} 1_z]`. Inside the `b × a` box the rectangle has no addable box and its only
    removable box has content `a − b`, which is odd. Correct: for `a` odd, `H(V_{a,b}) = 0` if `b` is odd
    (`EQApp.homologyVT_odd_odd`), and for `b` even it has basis the partitions whose rows `2k, 2k+1` are equal and odd
    (`EQApp.homologyVT_odd`); for `a` even the printed Lima description holds (`EQApp.homologyVT_even`).
-13. **Appendix A.4, definition of slash cohomology [M].** As printed,
+15. **Appendix A.4, definition of slash cohomology [M].** As printed,
    `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
    (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
    `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
    (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
-14. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+16. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
    `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent

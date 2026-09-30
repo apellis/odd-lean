@@ -186,6 +186,9 @@ import OddMath.Frontier.EQPdgPoly
 import OddMath.Frontier.EQPdgSlash
 import OddMath.Frontier.EQPdgTheorem
 import OddMath.Frontier.EQPdgTheorem2
+import OddMath.Frontier.EQQuantumBialgebra
+import OddMath.Frontier.EQQuantumBinomial
+import OddMath.Frontier.EQQuantumGroups
 import OddMath.Frontier.EQSchurDifferential
 import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential
