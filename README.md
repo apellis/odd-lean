@@ -146,6 +146,12 @@ permutation action):
   which `d` acts by (3.29) (`prop_A_2_one`), Prop A.2 (2) for `OΛ_N`, `N ≥ 2`, over `ℤ` (`prop_A_2_two'`,
   `cocycle_eq'`, `lima_independent'`; the untwisted odd Schur polynomials form a `ℤ`-basis of `OΛ_N`:
   `osymSchurBasis`). Prop A.3 is not yet formalized.
+- Appendix A.4 (`Frontier.EQPdg*`; `n` variables over a field of characteristic `p`): slash cohomology and (A.4)
+  (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`); the `p`-differential `d(x_i) = x_i²` with `d^p = 0` (`pd_pow_char`), the
+  formulas for `d(e_k)`, `d(h_k)` (corrected, see [ERRATA.md](ERRATA.md)) and `d(s_λ)` (`pd_schur`, Schur polynomials as
+  bialternants); the theorem of A.4: `H_{/k}(Sym_n) = 0` for `k > 0` (`thmA4_1_pos`), `H_{/0}(Sym_n)` has basis the
+  `p`-Lima Schur polynomials (`thmA4_1_zero`), and `k[e_p^p, e_{2p}^p, …] ↪ Sym_n` is a quasi-isomorphism (`thmA4_2`).
+  The inverse limit `Sym` is not formalized.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,

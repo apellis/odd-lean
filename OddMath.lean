@@ -167,6 +167,15 @@ import OddMath.Frontier.EQOnhDGEndIso
 import OddMath.Frontier.EQOnhDGPoly
 import OddMath.Frontier.EQOnhDGRing
 import OddMath.Frontier.EQOnhDGZn
+import OddMath.Frontier.EQPdgAlt
+import OddMath.Frontier.EQPdgExt
+import OddMath.Frontier.EQPdgHomotopy
+import OddMath.Frontier.EQPdgLima
+import OddMath.Frontier.EQPdgLimaPart
+import OddMath.Frontier.EQPdgPoly
+import OddMath.Frontier.EQPdgSlash
+import OddMath.Frontier.EQPdgTheorem
+import OddMath.Frontier.EQPdgTheorem2
 import OddMath.Frontier.EQSchurDifferential
 import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential

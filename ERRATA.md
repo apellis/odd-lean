@@ -314,3 +314,13 @@ In progress; strands are numbered from `0` in Lean.
    proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
    printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
    as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
+5. **Appendix A.4, definition of slash cohomology [M].** As printed,
+   `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
+   (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
+   `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
+   (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
+6. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+   `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
+   `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
+   `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent
+   with the printed `d(s_λ)` (`EQPdg.pd_schur`).
