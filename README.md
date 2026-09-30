@@ -126,6 +126,15 @@ permutation action):
   `sz_relation_right`; Remark 3.10 (the twisted ones are EKL's odd Schur polynomials) `twisted_eq_schurAll`.
 - Prop 3.11 (`d(s_λ)`, every rank): `EQSchur.prop_3_11`, with the all-exponent form `d_untwisted`. On `Z_n`:
   `d(∂_i) = 1` (`EQSchur.dZ_divided_add`) and Lemma 3.5 acting on `Z_n` (`dZ_D_staircase`).
+- The action of `ONH_n` on `Z_n` (`Frontier.EQZn*`, rank `N = n + 2` for `ONH`): `d(∂_i) = 1` on `Z_n`
+  (`EQZn.dAlpha_divided_anticomm`), right `OΛ_n`-linearity of `∂_i` (`divided_mul_twistRev`), Cor 3.9
+  (`ONH_n ≅ END_{OΛ_n^op}(Z_n)` as dg rings: `EQZn.onhEndEquiv`, `corollary_3_9`), Cor 3.6
+  (`corollary_3_6`), Lemma 2.17 (1) and Lemma 2.18 (`staircase_mul`, `eqIdempotent_mul_polyElem`), Prop 3.7
+  (`proposition_3_7`); (3.37) `dAlpha_zAlpha_monomial`, the basis `B'_n` with the corrected exponent range
+  (see [ERRATA.md](ERRATA.md)) `zn_right_basis`, (3.38) `eq_3_38`, Prop 3.16 (1) (a finite filtration by
+  `d`-stable right submodules with the cell differential) `prop_3_16_1`, Prop 3.16 (2) `dONH_acyclic`,
+  Prop 3.17 (acyclicity of `Z_n` iff `n ≥ 2`) `prop_3_17_acyclic_iff`. The cofibrancy part of Prop 3.17 is
+  reduced to `zn_not_contractible` (no odd `OPol_n`-linear null-homotopy) and is not yet formalized.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,

@@ -288,3 +288,19 @@ These errata are what the formalization turned up; they are not a complete revie
 9. **Remark after (4.18) [M].** "(R) makes the parenthesized term non-negative" holds only for
    j > i (`ErrataChecks.eq_4_18_term_nonneg`); for i = j it can be negative on a hive
    (`ErrataChecks.hexH_isHive`, `ErrataChecks.eq_4_18_diagonal_term_neg`).
+
+## [EQ] A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
+
+In progress; strands are numbered from `0` in Lean.
+
+1. **§3.4, basis `B'_n` before (3.37)–(3.38) [F→T].** The printed basis
+   `B'_n = {x^a 1_z : 0 ≤ a_i ≤ n − i}` together with the claim `d(x_i^{n−i} 1_z) = 0` does not give a
+   `d`-stable span for even `n`: the span of the printed monomials is `d`-stable iff `n = 0` or `n` is odd
+   (`EQZn.staircase_span_stable_iff`); for `n = 2`, `d(x_1 1_z) = x_1² 1_z − x_1x_2 1_z`. The range printed in
+   Appendix A.2, `0 ≤ a_i ≤ i − 1`, is the correct one: its span `U_n` is `d`-stable for every `n`
+   (`EQZn.dAlpha_mem_Hrev`), `B'_n` is a basis of `Z_n` as a right `OΛ_n`-module (`EQZn.zn_right_basis`),
+   `Z_n ≅ U_n ⊗ OΛ_n` as in (3.38) (`EQZn.eq_3_38`), and Prop 3.16 (1) holds (`EQZn.prop_3_16_1`).
+2. **§3.4, remark after Cor 3.15 [F→T].** `∂/∂x_2` is a null-homotopy of the identity of `Z_n`
+   "(considered as a left `OPol_n`-module)": it is a null-homotopy of the underlying complex
+   (`EQSkewDifferential.cor_3_15`), but no odd left `OPol_n`-linear null-homotopy of the identity of `Z_n`
+   exists for any `n` (`EQZn.zn_not_contractible`).

@@ -156,6 +156,9 @@ import OddMath.Frontier.EQOddDerivatives
 import OddMath.Frontier.EQSchurDifferential
 import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential
+import OddMath.Frontier.EQZnAction
+import OddMath.Frontier.EQZnBimodule
+import OddMath.Frontier.EQZnFiniteCell
 import OddMath.Frontier.ElementaryBasis
 import OddMath.Frontier.ElementaryBranching
 import OddMath.Frontier.ElementaryGeneration
