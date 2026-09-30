@@ -304,3 +304,13 @@ In progress; strands are numbered from `0` in Lean.
    "(considered as a left `OPol_n`-module)": it is a null-homotopy of the underlying complex
    (`EQSkewDifferential.cor_3_15`), but no odd left `OPol_n`-linear null-homotopy of the identity of `Z_n`
    exists for any `n` (`EQZn.zn_not_contractible`).
+3. **§4.1, the reduced expression for `w_{a,b}` [M].** The printed word
+   `(s_b s_{b−1} ⋯ s_1)(s_{b+1} s_a ⋯ s_2) ⋯ (s_{a+b−1} s_{a+b} ⋯ s_a)` has index slips (the second and last
+   factors should read `s_{b+1} s_b ⋯ s_2` and `s_{a+b−1} s_{a+b−2} ⋯ s_a`; `s_{a+b}` does not exist on `a + b`
+   strands). The formalization uses the reversed word of EKL (3.41), `EQThick.crossEQ`; a different reduced
+   expression changes `∂_{w_{a,b}}` only by a sign, and Prop 4.2 is linear in it.
+4. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
+   of Lemma 2.2 on idempotent truncations, `e d(−)` with `e` the idempotent at the top of the diagram (as the
+   proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
+   printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
+   as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).

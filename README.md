@@ -136,6 +136,10 @@ permutation action):
   Prop 3.17 (acyclicity of `Z_n` iff `n ≥ 2`) `prop_3_17_acyclic_iff`. Prop 3.17 as printed, with "cofibrant" the lifting
   property of §2.2 (`DG.HasLiftingProperty`): `EQCofib.prop_3_17`; for `n ≥ 2`, `Z_n` is not even K-projective
   (`EQCofib.ONH.zn_not_isKProjective`); ranks `0, 1` use `ONH_0 = OPol_0 ≅ ℤ`, `ONH_1 = OPol_1`.
+- §4.1–§4.2 (`Frontier.EQThick*`, rank `n + 2`): the differential `e d(−)` of Lemma 2.2 on idempotent truncations
+  (`EQThick.thickD`), the §4.2.1 displays (`eqIdempotent_mul_dONH`, `thickD_thick`), Prop 4.2 for splitters and mergers
+  (`prop_4_2_splitter`, `prop_4_2_merger`, for all `a` and `b ≥ 1`), Cor 4.3 (`cor_4_3_split`, `cor_4_3_merge`), and the
+  §4.1 relation `e_n x_1 e_n = ẽ_1 e_n` (`EQThickBlocks`). The other §4.1 displays are not yet formalized.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on

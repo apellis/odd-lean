@@ -170,6 +170,8 @@ import OddMath.Frontier.EQOnhDGZn
 import OddMath.Frontier.EQSchurDifferential
 import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential
+import OddMath.Frontier.EQThickBlocks
+import OddMath.Frontier.EQThickSplitters
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
 import OddMath.Frontier.EQZnFiniteCell
