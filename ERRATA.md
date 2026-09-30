@@ -309,17 +309,31 @@ In progress; strands are numbered from `0` in Lean.
    factors should read `s_{b+1} s_b ⋯ s_2` and `s_{a+b−1} s_{a+b−2} ⋯ s_a`; `s_{a+b}` does not exist on `a + b`
    strands). The formalization uses the reversed word of EKL (3.41), `EQThick.crossEQ`; a different reduced
    expression changes `∂_{w_{a,b}}` only by a sign, and Prop 4.2 is linear in it.
-4. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
+4. **§4.1, `∂_{w_0} f = w_0(f) ∂_{w_0}` for `f ∈ OΛ̃_n` [F→T].** With Ellis–Qi's plain permutation action `w_0` this
+   fails: in rank 2, `∂ ẽ_1 = ẽ_1 ∂` while `w_0(ẽ_1) = −ẽ_1` (`EQThick.DElem_mul_poly_printed_false`). Correct: for `f`
+   of parity `k`, `∂_{w_0} f = (−1)^{binom(n,2) k} w_0(f) ∂_{w_0}` (`EQThick.DElem_mul_poly`). The same parity-dependent
+   sign is the correct form of the identity cited from EKL (2.64) in the proof of Lemma 2.18; Lemma 2.18 itself
+   holds (`EQZn.eqIdempotent_mul_polyElem`), and so does the consequence `e_n f e_n g e_n = e_n f g e_n`
+   (`EQThick.thick_mul_thick`).
+5. **§4.1, `e_n x_1 ⋯ x_k e_n = ẽ_k e_n` [F→T].** Off by the sign `(−1)^{binom(k,2)}`; false for `n = k = 2`
+   (`EQThick.convenient_relation_printed_false`). Correct: `e_n x_1⋯x_k e_n = (−1)^{binom(k,2)} ẽ_k e_n`
+   (`EQThick.convenient_relation`). For `k ≤ 1`, the case used in Prop 4.2, the printed form is correct.
+6. **§4.1, the slider relation [F→T].** The printed factor `(−1)^{binom(s,2)}` (with the right-leg coupon drawn above
+   the left) is wrong: the printed relation fails in `ONH_3` for `a = 2`, `b = 1`, `s = 2`
+   (`EQThick.slider_printed_false`). Correct: moving `ẽ_s` through a splitter gives
+   `Σ_{l=0}^{s} (−1)^{a l} (ẽ_{s−l} ⊗ ẽ_l)` with the left coupon above the right and no further sign (`EQThick.slider`,
+   from the coproduct formula `EQThick.elementary_coproduct`). For `s ≤ 1` the two agree.
+7. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
    of Lemma 2.2 on idempotent truncations, `e d(−)` with `e` the idempotent at the top of the diagram (as the
    proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
    printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
    as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
-5. **Appendix A.4, definition of slash cohomology [M].** As printed,
+8. **Appendix A.4, definition of slash cohomology [M].** As printed,
    `H_{/k}(V) = Ker(d^k)/(Im(d^{p−k−1}) + Ker(d^{k+1}))` is always zero since `Ker d^k ⊆ Ker d^{k+1}`
    (`EQPdg.printedSlash_subsingleton`). The cited definition of Khovanov–Qi,
    `Ker(d^{k+1})/(Im(d^{p−k−1}) + Ker(d^k))`, is used (`EQPdg.SlashCohomology`); with it (A.4) holds
    (`EQPdg.slash_shiftV_pos`, `slash_shiftV_zero`).
-6. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
+9. **Appendix A.4, `d(e_k)` and `d(h_k)` [M].** The printed `d(e_k) = e_1 e_k − e_{k+1}` and
    `d(h_k) = h_{k+1} − h_1 h_k` miss the factor `k + 1` (`EQPdg.pd_esymm_printed_false`,
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent

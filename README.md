@@ -139,7 +139,9 @@ permutation action):
 - §4.1–§4.2 (`Frontier.EQThick*`, rank `n + 2`): the differential `e d(−)` of Lemma 2.2 on idempotent truncations
   (`EQThick.thickD`), the §4.2.1 displays (`eqIdempotent_mul_dONH`, `thickD_thick`), Prop 4.2 for splitters and mergers
   (`prop_4_2_splitter`, `prop_4_2_merger`, for all `a` and `b ≥ 1`), Cor 4.3 (`cor_4_3_split`, `cor_4_3_merge`), and the
-  §4.1 relation `e_n x_1 e_n = ẽ_1 e_n` (`EQThickBlocks`). The other §4.1 displays are not yet formalized.
+  §4.1 displays: `e_n f e_n g e_n = e_n fg e_n` (`thick_mul_thick`), exploders (`exploder_composition`, `exploder_schur`),
+  Remark 4.1 (`remark_4_1`), and, corrected (see [ERRATA.md](ERRATA.md)), `∂_{w_0} f = ± w_0(f) ∂_{w_0}` (`DElem_mul_poly`),
+  the relation `e_n x_1⋯x_k e_n = (−1)^{binom(k,2)} ẽ_k e_n` (`convenient_relation`) and the slider relation (`slider`).
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on

@@ -180,6 +180,8 @@ import OddMath.Frontier.EQSchurDifferential
 import OddMath.Frontier.EQSchurModule
 import OddMath.Frontier.EQSkewDifferential
 import OddMath.Frontier.EQThickBlocks
+import OddMath.Frontier.EQThickRelations
+import OddMath.Frontier.EQThickSlider
 import OddMath.Frontier.EQThickSplitters
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
