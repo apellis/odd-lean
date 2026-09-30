@@ -14,6 +14,10 @@ require StringDiagrams from git
   "https://github.com/apellis/string-diagrams-lean.git" @
   "fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884"
 
+require DG from git
+  "https://github.com/apellis/dg-lean.git" @
+  "8ba7d751a0451de98eb4e49dcf25e791131a4fce"
+
 @[default_target]
 lean_lib OddMath where
   globs := #[.andSubmodules `OddMath]

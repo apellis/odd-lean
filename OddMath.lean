@@ -151,6 +151,8 @@ import OddMath.Frontier.EKSelfTranspose
 import OddMath.Frontier.EKSemiorthogonality
 import OddMath.Frontier.EKSignedQuotient
 import OddMath.Frontier.EKTriangular
+import OddMath.Frontier.EQOddDerivatives
+import OddMath.Frontier.EQSkewDifferential
 import OddMath.Frontier.ElementaryBasis
 import OddMath.Frontier.ElementaryBranching
 import OddMath.Frontier.ElementaryGeneration

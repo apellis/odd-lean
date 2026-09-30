@@ -104,12 +104,31 @@ over any commutative ring; it is then transported to `Presented n` (rank `n+2`).
 - Lemma 3.4, (3.13): `Diagrams.OddNilHecke.d_longest`, `dONH_DElem`.
 - Lemma 3.5, (3.16) and (3.17): `Diagrams.OddNilHecke.d_idem`, `d_staircase`, `dONH_eqIdempotent`.
 
+On skew polynomials (`Frontier.EQSkewDifferential`, `Frontier.EQOddDerivatives`; `OPol_n` with integer
+coefficients, strands numbered from `0`, `ι` the parity involution, `θ(x_i) = (-1)^i x_i`, `w₀` the plain
+permutation action):
+
+- The local differential `d(x_i) = x_i²` on `OPol_n` with `d(fg) = d(f) g + ι(f) d(g)` and `d² = 0`:
+  `EQSkewDifferential.d`, `d_mul`, `d_d`.
+- Lemma 3.2: `d(e_k) = e_1 e_k - {k+1} e_{k+1}` for the untwisted odd elementary polynomials, and `d`
+  preserves `OΛ_n`: `EQSkewDifferential.d_elementary`, `d_mem_osym` (the identity is proved for any family of
+  anticommuting odd elements in a ring with an odd derivation, `D_strictSum`).
+- Prop 3.1, left and right modules: `EQSkewDifferential.prop_3_1_left`, `prop_3_1_right`.
+- Prop 3.7 / Def 3.8: the right action `1_z f = (θ ∘ w₀)(f) 1_z` on `Z_n = OPol_n(0,1,0,1,…)` is
+  compatible with the differential, `EQSkewDifferential.dAlpha_mul_twistRev`. This is proved for all
+  `f ∈ OPol_n`, not only `f ∈ OΛ_n`, from `d(φ f) = φ(d f) + s φ(f) - ι(φ f) s` (`d_twistRev`).
+- Lemma 3.12 (odd partial derivatives form an exterior algebra; `d = Σ x_i² ∂/∂x_i`):
+  `EQSkewDifferential.pd_pd`, `pd_pd_add`, `d_eq_sum`. Remark 3.13: `dAlpha_eq_sum_iff`.
+  Lemma 3.14: `lemma_3_14`. Cor 3.15 (a null-homotopy of the identity of the complex `OPol_n(α)` when
+  `α_i = 1`): `cor_3_15`, `acyclic`.
+
 ## Building
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884` (see `lakefile.lean` and
-`lake-manifest.json`).
+string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
+[dg-lean](https://github.com/apellis/dg-lean) at `8ba7d751a0451de98eb4e49dcf25e791131a4fce` (see
+`lakefile.lean` and `lake-manifest.json`).
 
 ```sh
 lake exe cache get
