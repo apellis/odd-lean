@@ -152,6 +152,11 @@ import OddMath.Frontier.EKSemiorthogonality
 import OddMath.Frontier.EKSignedQuotient
 import OddMath.Frontier.EKTriangular
 import OddMath.Frontier.EQDGStructures
+import OddMath.Frontier.EQLimaCohomology
+import OddMath.Frontier.EQLimaCounting
+import OddMath.Frontier.EQLimaHypercube
+import OddMath.Frontier.EQLimaOsym
+import OddMath.Frontier.EQLimaPartitions
 import OddMath.Frontier.EQOddDerivatives
 import OddMath.Frontier.EQOnhDG
 import OddMath.Frontier.EQOnhDGAcyclic

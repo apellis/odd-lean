@@ -135,6 +135,12 @@ permutation action):
   `d`-stable right submodules with the cell differential) `prop_3_16_1`, Prop 3.16 (2) `dONH_acyclic`,
   Prop 3.17 (acyclicity of `Z_n` iff `n ≥ 2`) `prop_3_17_acyclic_iff`. The cofibrancy part of Prop 3.17 is
   reduced to `zn_not_contractible` (no odd `OPol_n`-linear null-homotopy) and is not yet formalized.
+- Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
+  (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
+  removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
+  which `d` acts by (3.29) (`prop_A_2_one`), Prop A.2 (2) for `OΛ_N`, `N ≥ 2`, over `ℤ` (`prop_A_2_two'`,
+  `cocycle_eq'`, `lima_independent'`; the untwisted odd Schur polynomials form a `ℤ`-basis of `OΛ_N`:
+  `osymSchurBasis`). Prop A.3 is not yet formalized.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,
