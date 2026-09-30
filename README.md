@@ -121,6 +121,12 @@ permutation action):
   `EQSkewDifferential.pd_pd`, `pd_pd_add`, `d_eq_sum`. Remark 3.13: `dAlpha_eq_sum_iff`.
   Lemma 3.14: `lemma_3_14`. Cor 3.15 (a null-homotopy of the identity of the complex `OPol_n(α)` when
   `α_i = 1`): `cor_3_15`, `acyclic`.
+- dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
+  is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
+  `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,
+  `osymDG`), `OPol_n(α)` for `α ∈ {0,1}ⁿ` as a left dg module (Prop 3.1, `OPolAlpha.instDGModule`), and `Z_n`
+  as a dg `(OPol_n, OPol_n)`-bimodule and, by restriction, a dg `(OPol_n, OΛ_n)`-bimodule (Prop 3.7, Def 3.8,
+  `Zn.instDGBimodule`, `Zn.dgBimoduleOsym`).
 
 ## Building
 
