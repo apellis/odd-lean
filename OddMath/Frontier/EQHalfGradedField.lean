@@ -64,4 +64,28 @@ theorem even_super_relation_ne_zero :
   have hh := congrArg (fun x => (Field.K0Basis K 2).repr x (0 : Fin 4)) h'
   simp at hh
 
+/-- The square of the internal unit shift is the translation up to parity.
+This is an odd natural isomorphism, not an even one after deleting `Π`. -/
+def internalShiftSquaredOddIso :
+    CatModule.DerivedCategory.internalShift.{u, u} (degreeZero K (2 : ℤ)).Regraded 1 ⋙
+      CatModule.DerivedCategory.internalShift (degreeZero K (2 : ℤ)).Regraded 1 ≅
+    shiftFunctor _ (1 : ℤ) ⋙ parityShiftD (degreeZero K (2 : ℤ)) :=
+  internalShiftOneOneOddIso (degreeZero K (2 : ℤ)) rfl
+
+/-- Even isomorphisms cannot identify the twice-internally-shifted regular compact
+object with its translation; the parity factor in the odd comparison is essential. -/
+theorem no_even_shiftTwo_translation_regular :
+    ¬ Nonempty
+      ((((CatModule.DerivedCategory.compactInternalShiftAction
+        (degreeZero K (2 : ℤ)).Regraded).functor 2).obj
+        (⟨Field.obj K 2 0, Field.isCompact_obj 0⟩ : (Field.compacts K 2).FullSubcategory)) ≅
+        (⟨Field.obj K 2 0, Field.isCompact_obj 0⟩ :
+          (Field.compacts K 2).FullSubcategory)⟦(1 : ℤ)⟧) := by
+  rintro ⟨e⟩
+  have h := K0.mk_eq_of_iso e
+  rw [← CatModule.DerivedCategory.T_smul_mk_compact, K0.mk_shift_one] at h
+  change (T 2 : LaurentPolynomial ℤ) • Field.cls K 2 0 = -Field.cls K 2 0 at h
+  apply even_super_relation_ne_zero K
+  rw [_root_.add_smul, one_smul, h, add_neg_cancel]
+
 end OddMath.Frontier.EQHalfGraded

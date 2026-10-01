@@ -183,6 +183,9 @@ permutation action):
   (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
   internal shift `⟨1⟩` representing `√-1` (`superK0EquivGaussian_shift_regular`). In contrast,
   `(1 + q²)[K] ≠ 0` in the ordinary even Grothendieck group (`even_super_relation_ne_zero`).
+  The comparison `⟨1⟩ ⋙ ⟨1⟩ ≅ ⟦1⟧ ⋙ Π` is an odd natural isomorphism
+  (`internalShiftSquaredOddIso`); an even isomorphism between the twice-internally-shifted
+  regular compact object and its translation is impossible (`no_even_shiftTwo_translation_regular`).
   This does not assert tensor-product multiplicativity, the case over `ℤ`, or the later
   nilHecke categorification theorems.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
