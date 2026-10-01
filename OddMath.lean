@@ -226,9 +226,11 @@ import OddMath.Frontier.EQZabCell
 import OddMath.Frontier.EQZabDual
 import OddMath.Frontier.EQZabFiltration
 import OddMath.Frontier.EQZabHat
+import OddMath.Frontier.EQZabHatFormulas
 import OddMath.Frontier.EQZabModule
 import OddMath.Frontier.EQZabReverse
 import OddMath.Frontier.EQZabSchur
+import OddMath.Frontier.EQZabTrace
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
 import OddMath.Frontier.EQZnFiniteCell
