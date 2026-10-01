@@ -178,10 +178,18 @@ permutation action):
   `EQFix.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
   `zn_isKProjective_osym`) and `Z_{a,b}` over `OΛ_{a+b}` with `binom(a+b,b)` cells (Cor 4.8, `EQFix.zabFiniteCellFiltration`,
   `zab_hasLiftingProperty`).
-- Scope of the dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
+- §2.2.4 over a field (`Frontier.EQHalfGradedField`): the compact super Grothendieck group of
+  dg-lean's half-graded derived category is additively equivalent to the Gaussian integers
+  (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
+  internal shift `⟨1⟩` representing `√-1` (`superK0EquivGaussian_shift_regular`). In contrast,
+  `(1 + q²)[K] ≠ 0` in the ordinary even Grothendieck group (`even_super_relation_ne_zero`).
+  This does not assert tensor-product multiplicativity, the case over `ℤ`, or the later
+  nilHecke categorification theorems.
+- Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   (Prop 3.16 (2), Prop 3.17) are statements about such modules; modules whose parity is independent of the `q`-degree
-  (the half-graded setting of §2.2.4) are not covered yet.
+  are not covered by these nilHecke constructions yet. The half-graded field computation above
+  does not supply the diagonal-grading or extension-of-scalars bridge needed to extend them.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,
@@ -201,7 +209,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `8ba7d751a0451de98eb4e49dcf25e791131a4fce` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `dbb7558a14c942ddc5ef3b611b5de6a8fd15f006` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
