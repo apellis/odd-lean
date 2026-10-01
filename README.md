@@ -183,11 +183,20 @@ permutation action):
   (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
   internal shift `⟨1⟩` representing `√-1` (`superK0EquivGaussian_shift_regular`). In contrast,
   `(1 + q²)[K] ≠ 0` in the ordinary even Grothendieck group (`even_super_relation_ne_zero`).
+  `superK0GaussianLinearEquiv` upgrades the same comparison to a Gaussian-linear equivalence:
+  scalar compatibility holds for every super class, and every integer internal shift of any
+  compact object acts by the corresponding power of `i`. In particular, the regular object's
+  negative unit shift represents `-i` (`superK0GaussianLinearEquiv_negShift_regular`).
   The comparison `⟨1⟩ ⋙ ⟨1⟩ ≅ ⟦1⟧ ⋙ Π` is an odd natural isomorphism
   (`internalShiftSquaredOddIso`); an even isomorphism between the twice-internally-shifted
   regular compact object and its translation is impossible (`no_even_shiftTwo_translation_regular`).
   This does not assert tensor-product multiplicativity, the case over `ℤ`, or the later
   nilHecke categorification theorems.
+- The diagonal half-grading on the existing integral odd nilHecke dg ring (`Frontier.EQDiagonal`):
+  `EQDiagonal.onh n` places `ONH_{n+2}`'s ordinary degree `k` at `(2k, k mod 2)`; its actual dots
+  and crossings have bidegrees `(2,1)` and `(-2,1)`. The original differential is unchanged,
+  including `d(xᵢ) = xᵢ²`, `d(∂ᵢ) = 1`, and bidegree `(2,1)`. This is a ring-level bridge,
+  not a derived module comparison, compact-generator result, or integral nilHecke K₀ computation.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   (Prop 3.16 (2), Prop 3.17) are statements about such modules; modules whose parity is independent of the `q`-degree
@@ -212,7 +221,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `dbb7558a14c942ddc5ef3b611b5de6a8fd15f006` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `46993f63c1c660253b9d0a344632982e80870fbe` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
