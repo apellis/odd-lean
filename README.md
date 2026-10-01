@@ -201,7 +201,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `8ba7d751a0451de98eb4e49dcf25e791131a4fce` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `dbb7558a14c942ddc5ef3b611b5de6a8fd15f006` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
