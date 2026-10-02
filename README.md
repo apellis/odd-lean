@@ -201,7 +201,15 @@ permutation action):
   the crossing contracts every weight, with no parity-versus-degree support restriction:
   `isAcyclic_halfGraded`, `isZero_halfGraded_derivedCategory`. Both ordinary and super Grothendieck
   groups of compact objects vanish (`compactK0_eq_zero`, `superK0c_eq_zero`). These statements cover
-  ranks at least two only; the integral ranks zero and one and tensor multiplicativity remain open.
+  ranks at least two only; the integral half-graded compact Grothendieck-group calculation in
+  ranks zero and one and tensor multiplicativity remain open.
+- Integral ordinary dg cohomology in ranks zero and one (`Frontier.EQSmallRankDG`): for the
+  actual `OPol_N` dg ring with `N ≤ 1`, `cohomologyZeroEquivInt` identifies `H⁰` with `ℤ`,
+  taking the actual constant class to its integer, and `cohomology_eq_zero_of_ne_zero` proves
+  vanishing in every nonzero cohomological degree. The existing Lima theorem supplies a
+  boundary-plus-constant normal form with a unique integral constant; homogeneous projection
+  supplies genuine graded boundaries. This does not yet construct a dg-ring quasi-isomorphism,
+  half-graded derived equivalence, integral compact `K₀` comparison, or tensor-product formula.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
