@@ -228,13 +228,20 @@ permutation action):
   and one, not only diagonal modules. The forward functor commutes with cohomological shift
   and preserves distinguished triangles. Its equivalence of ordinary compact `K₀` groups
   sends each weight representable to the representable at that same weight. Numerical
-  compact `K₀`, comparison of the super-`K₀` quotients, and tensor multiplicativity remain open.
+  compact `K₀` and tensor multiplicativity remain open; the super-`K₀` comparison is below.
 - `Frontier.EQHalfGradedUnitParity` proves that actual derived restriction along the unit
   commutes with every internal shift and the existing parity shift in every rank. In ranks
   zero and one, the unit and counit of Keller's equivalence give these comparisons for
   actual derived induction as well. Neither shift is defined by transport. Restriction
-  of these comparisons to compact objects and descent through the parity relations of super-`K₀` remain open;
+  to compact objects and descent to super-`K₀` are supplied by the next module;
   these natural isomorphisms do not assert parity-involution coherence or a numerical formula.
+- `Frontier.EQHalfGradedUnitSuperK0` restricts the actual internal-shift and parity
+  comparisons to compact objects for `N ≤ 1`. The original `compactK0Equiv` maps the
+  actual parity-relation subgroup onto its target counterpart, giving `superK0cEquiv`
+  between the existing compact super Grothendieck groups. Every compact object class
+  maps to its actual perfect induction. No replacement quotient or transported shift
+  is used. Numerical calculations, tensor multiplicativity, and parity-involution
+  coherence remain open.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
