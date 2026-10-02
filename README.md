@@ -245,9 +245,10 @@ permutation action):
   restriction along the integral unit respects both existing parity involutions.
   The proof uses preservation of the inverse periodic unit, and gives the complete
   natural-isomorphism square and its image under the actual localization functor `Q`.
-  Module and source-localization universes remain independent. Derived restriction
-  and low-rank induction parity-involution coherence remain open; the localization
-  comparison prerequisite is supplied by the separate module below.
+  Module and source-localization universes remain independent. The separate modules
+  below identify the derived comparison and prove its involution coherence, under
+  that original comparison's source-universe constraint. Low-rank induction
+  parity-involution coherence remains open.
 - `Frontier.EQHalfGradedRestrictionCoherence` computes the existing derived
   restriction-composition isomorphism on actual localized modules, using the original
   module comparison. It also proves coherent-shift compatibility of the existing
@@ -259,10 +260,16 @@ permutation action):
   through the original localization isomorphisms, in every rank. It retains the
   original equality of source Hom and module universes, with independent target
   Hom universe. It also computes the original `parityShiftDIso` on localized modules
-  with independent module/derived Hom universes. Pasting these formulas with the
-  module involution square and descending to all derived objects remains open:
-  no full derived restriction-involution square or low-rank induction coherence
-  is claimed, and no comparison or involution is replaced.
+  with independent module/derived Hom universes.
+- `Frontier.EQHalfGradedUnitDerivedParityInvolution` pastes those formulas with the
+  actual module involution square and descends by the localization universal property.
+  The original `restrictParityIso` consequently intertwines the original derived
+  `parityShiftDIso` involutions on every derived target object, in every rank. Both
+  the full natural-isomorphism square and its component formula are proved. The
+  source derived Hom universe equals the module universe, as in the original
+  comparison; the target Hom universe is independent. No comparison or involution
+  is replaced. Low-rank induction coherence, numerical calculations, and tensor
+  multiplicativity remain separate open work.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result

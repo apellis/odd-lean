@@ -194,6 +194,7 @@ import OddMath.Frontier.EQHalfGradedUnitParity
 import OddMath.Frontier.EQHalfGradedUnitParityCoherence
 import OddMath.Frontier.EQHalfGradedRestrictionCoherence
 import OddMath.Frontier.EQHalfGradedUnitDerivedParityCoherence
+import OddMath.Frontier.EQHalfGradedUnitDerivedParityInvolution
 import OddMath.Frontier.EQHalfGradedUnitSuperK0
 import OddMath.Frontier.EQOnhDGZn
 import OddMath.Frontier.EQPdgAlt
