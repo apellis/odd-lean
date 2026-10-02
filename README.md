@@ -248,6 +248,13 @@ permutation action):
   Module and source-localization universes remain independent. This does not yet
   identify the existing derived `restrictParityIso` with the localized module comparison:
   derived restriction and low-rank induction parity-involution coherence remain open.
+- `Frontier.EQHalfGradedRestrictionCoherence` computes the existing derived
+  restriction-composition isomorphism on actual localized modules, using the original
+  module comparison. It also proves coherent-shift compatibility of the existing
+  module-localization restriction comparison. The consumer checks both compositions
+  of the integral unit with actual weight translations, in every rank and with
+  independent source/target localization universes. Identifying `restrictParityIso`
+  with the localized module parity comparison and its involution coherence remain open.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
