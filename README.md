@@ -229,6 +229,12 @@ permutation action):
   and preserves distinguished triangles. Its equivalence of ordinary compact `K₀` groups
   sends each weight representable to the representable at that same weight. Numerical
   compact `K₀`, comparison of the super-`K₀` quotients, and tensor multiplicativity remain open.
+- `Frontier.EQHalfGradedUnitParity` proves that actual derived restriction along the unit
+  commutes with every internal shift and the existing parity shift in every rank. In ranks
+  zero and one, the unit and counit of Keller's equivalence give these comparisons for
+  actual derived induction as well. Neither shift is defined by transport. Restriction
+  of these comparisons to compact objects and descent through the parity relations of super-`K₀` remain open;
+  these natural isomorphisms do not assert parity-involution coherence or a numerical formula.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
