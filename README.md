@@ -196,12 +196,17 @@ permutation action):
   `EQDiagonal.onh n` places `ONH_{n+2}`'s ordinary degree `k` at `(2k, k mod 2)`; its actual dots
   and crossings have bidegrees `(2,1)` and `(-2,1)`. The original differential is unchanged,
   including `d(xᵢ) = xᵢ²`, `d(∂ᵢ) = 1`, and bidegree `(2,1)`. This is a ring-level bridge,
-  not a derived module comparison, compact-generator result, or integral nilHecke K₀ computation.
+  not by itself a derived module comparison or compact-generator result.
+- For the entire half-graded module category of integral `ONH_{n+2}` (`Frontier.EQHalfGradedAcyclic`),
+  the crossing contracts every weight, with no parity-versus-degree support restriction:
+  `isAcyclic_halfGraded`, `isZero_halfGraded_derivedCategory`. Both ordinary and super Grothendieck
+  groups of compact objects vanish (`compactK0_eq_zero`, `superK0c_eq_zero`). These statements cover
+  ranks at least two only; the integral ranks zero and one and tensor multiplicativity remain open.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
-  (Prop 3.16 (2), Prop 3.17) are statements about such modules; modules whose parity is independent of the `q`-degree
-  are not covered by these nilHecke constructions yet. The half-graded field computation above
-  does not supply the diagonal-grading or extension-of-scalars bridge needed to extend them.
+  for these constructions are statements about such modules. The new half-graded vanishing result
+  extends Prop 3.16 (2) to parity-independent modules in ranks at least two. The broader cofibrancy
+  and K-projectivity comparisons and the extension-of-scalars bridge are not supplied by it.
 - dg structures (`Frontier.EQDGStructures`, on [dg-lean](https://github.com/apellis/dg-lean)); the `ℤ`-grading
   is half the `q`-degree (`x_i` in degree `1`), so the Koszul sign is the Ellis–Qi parity:
   `OPol_n` as a dg ring (`EQSkewDifferential.OPol.instDGRing`), `OΛ_n` as a dg subring (Lemma 3.2,

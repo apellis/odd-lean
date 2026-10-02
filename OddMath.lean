@@ -184,6 +184,7 @@ import OddMath.Frontier.EQOnhDGEndIso
 import OddMath.Frontier.EQOnhDGPoly
 import OddMath.Frontier.EQOnhDGRing
 import OddMath.Frontier.EQDiagonal
+import OddMath.Frontier.EQHalfGradedAcyclic
 import OddMath.Frontier.EQOnhDGZn
 import OddMath.Frontier.EQPdgAlt
 import OddMath.Frontier.EQPdgExt
