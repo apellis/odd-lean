@@ -248,7 +248,7 @@ permutation action):
   Module and source-localization universes remain independent. The separate modules
   below identify the derived comparison and prove its involution coherence, under
   that original comparison's source-universe constraint. Low-rank induction
-  parity-involution coherence remains open.
+  parity-involution coherence is supplied by the induction module below.
 - `Frontier.EQHalfGradedRestrictionCoherence` computes the existing derived
   restriction-composition isomorphism on actual localized modules, using the original
   module comparison. It also proves coherent-shift compatibility of the existing
@@ -268,8 +268,16 @@ permutation action):
   the full natural-isomorphism square and its component formula are proved. The
   source derived Hom universe equals the module universe, as in the original
   comparison; the target Hom universe is independent. No comparison or involution
-  is replaced. Low-rank induction coherence, numerical calculations, and tensor
-  multiplicativity remain separate open work.
+  is replaced.
+- `Frontier.EQHalfGradedUnitInductionParityInvolution` proves the componentwise and
+  full natural-isomorphism involution squares for actual derived induction when
+  `N ≤ 1`, using the original `derivedEquivalenceParityIso` and both original
+  `parityShiftDIso` involutions. Its unit mate identity is proved from the existing
+  equivalence unit/counit, not assumed; restriction faithfulness and the published
+  restriction square then give induction coherence on every source derived object.
+  The source derived Hom universe remains the module universe and the target Hom
+  universe is independent. Numerical calculations and tensor multiplicativity
+  remain open; no all-rank induction equivalence is asserted.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
