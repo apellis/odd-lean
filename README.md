@@ -217,9 +217,13 @@ permutation action):
 - `Frontier.EQHalfGradedUnit` constructs the actual integral unit dg functor on the weight
   categories of the diagonal half-gradings, in every rank. It maps placed integer components
   to the corresponding polynomial components, preserving multiplication, differential,
-  cohomological degree, weight, and both periodicity units. The required low-rank weightwise
-  cohomology comparison and quasi-equivalence are not yet proved; they do not follow merely
-  by naming the ordinary quasi-isomorphism.
+  cohomological degree, weight, and both periodicity units.
+- `Frontier.EQHalfGradedUnitQuasiEquivalence` proves that this actual unit functor is a dg
+  quasi-equivalence for ranks zero and one. Its Hom-cohomology map is bijective in every
+  degree and between arbitrary weights: homogeneous ordinary representatives and actual
+  primitives are placed at the appropriate half-graded indices, and unsupported coefficients
+  vanish. Identity cocycles witness essential surjectivity on weight objects. Half-graded
+  derived equivalences, compact `K₀` calculations and tensor multiplicativity remain separate.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
