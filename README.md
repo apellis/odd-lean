@@ -222,8 +222,13 @@ permutation action):
   quasi-equivalence for ranks zero and one. Its Hom-cohomology map is bijective in every
   degree and between arbitrary weights: homogeneous ordinary representatives and actual
   primitives are placed at the appropriate half-graded indices, and unsupported coefficients
-  vanish. Identity cocycles witness essential surjectivity on weight objects. Half-graded
-  derived equivalences, compact `K₀` calculations and tensor multiplicativity remain separate.
+  vanish. Identity cocycles witness essential surjectivity on weight objects.
+- `Frontier.EQHalfGradedUnitDerived` applies Keller's theorem to this same functor, giving
+  derived induction/restriction as an equivalence on all half-graded modules in ranks zero
+  and one, not only diagonal modules. The forward functor commutes with cohomological shift
+  and preserves distinguished triangles. Its equivalence of ordinary compact `K₀` groups
+  sends each weight representable to the representable at that same weight. Numerical
+  compact `K₀`, comparison of the super-`K₀` quotients, and tensor multiplicativity remain open.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
