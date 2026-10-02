@@ -240,8 +240,14 @@ permutation action):
   actual parity-relation subgroup onto its target counterpart, giving `superK0cEquiv`
   between the existing compact super Grothendieck groups. Every compact object class
   maps to its actual perfect induction. No replacement quotient or transported shift
-  is used. Numerical calculations, tensor multiplicativity, and parity-involution
-  coherence remain open.
+  is used. Numerical calculations and tensor multiplicativity remain open.
+- `Frontier.EQHalfGradedUnitParityCoherence` proves, in every rank, that actual module
+  restriction along the integral unit respects both existing parity involutions.
+  The proof uses preservation of the inverse periodic unit, and gives the complete
+  natural-isomorphism square and its image under the actual localization functor `Q`.
+  Module and source-localization universes remain independent. This does not yet
+  identify the existing derived `restrictParityIso` with the localized module comparison:
+  derived restriction and low-rank induction parity-involution coherence remain open.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
