@@ -208,8 +208,12 @@ permutation action):
   taking the actual constant class to its integer, and `cohomology_eq_zero_of_ne_zero` proves
   vanishing in every nonzero cohomological degree. The existing Lima theorem supplies a
   boundary-plus-constant normal form with a unique integral constant; homogeneous projection
-  supplies genuine graded boundaries. This does not yet construct a dg-ring quasi-isomorphism,
-  half-graded derived equivalence, integral compact `K₀` comparison, or tensor-product formula.
+  supplies genuine graded boundaries. `Frontier.EQSmallRankQuasiIso` proves the actual unit
+  inclusion `ℤ → OPol_N` is a dg-ring quasi-isomorphism (`intInclusion_isQuasiIso`). Keller's
+  theorem gives the ordinary derived equivalence and the ordinary compact `K₀` equivalence
+  (`derivedEquivalence`, `compactK0Equiv`), taking the regular integral class to the regular
+  polynomial class (`compactK0Equiv_self`). This does not compute `K₀(ℤ)` numerically or supply
+  the half-graded derived equivalence, half-graded compact `K₀` calculation, or tensor formula.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
