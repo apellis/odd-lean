@@ -214,6 +214,12 @@ permutation action):
   (`derivedEquivalence`, `compactK0Equiv`), taking the regular integral class to the regular
   polynomial class (`compactK0Equiv_self`). This does not compute `K₀(ℤ)` numerically or supply
   the half-graded derived equivalence, half-graded compact `K₀` calculation, or tensor formula.
+- `Frontier.EQHalfGradedUnit` constructs the actual integral unit dg functor on the weight
+  categories of the diagonal half-gradings, in every rank. It maps placed integer components
+  to the corresponding polynomial components, preserving multiplication, differential,
+  cohomological degree, weight, and both periodicity units. The required low-rank weightwise
+  cohomology comparison and quasi-equivalence are not yet proved; they do not follow merely
+  by naming the ordinary quasi-isomorphism.
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
