@@ -152,8 +152,11 @@ permutation action):
   compatibility with the right action for all of `OPol_{a+b}`), the Pieri rule (4.23) (`pieri_twisted`), Lemma 4.7
   (`lemma_4_7_box_twisted`), Cor 4.8 (basis `zab_span_twisted`, `zab_indep_twisted`; a finite-cell filtration with
   `binom(a+b, a)` cells, `cor_4_8`), Cor 4.11 (the dual `Z^∨_{a,b}` is free of rank `binom(a+b,a)` with a cell-by-cell
-  `d`-stable basis, `cor_4_11`), and Lemma 4.5 corrected (see [ERRATA.md](ERRATA.md)). Not yet formalized: Lemma 4.4,
-  Cor 4.10, Prop 4.12, Prop 4.13 for three or more blocks.
+  `d`-stable basis, `cor_4_11`), Lemma 4.5 corrected (see [ERRATA.md](ERRATA.md)), the displays after it: (4.18)
+  (`hat_sz`) and, corrected, (4.19) (`hat_pieri_partition`) and (4.20) (`hat_d_partition`), the orthogonality (4.22) with
+  the sign of EKL (4.35) (`pairing`), and Cor 4.10 (`cor_4_10`) for the trace `z^∨ = θ ∘ ∂_{a,b}` of (4.24), which is
+  `w_0`-semilinear rather than linear (`trace_mul_twistRev`, `trace_not_linear`). Not yet formalized: Lemma 4.4,
+  Prop 4.12, Prop 4.13 for three or more blocks.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
@@ -162,7 +165,9 @@ permutation action):
   `osymSchurBasis`); in every rank `N`: `prop_A_2_two_all`. The limit `OΛ` (the library's `Q`, twisted by `θ`) as a super dg
   ring with `d` compatible with the projections (`EQLima.DQ`, `piN_DQ`), Prop A.2 (1) for `OΛ` (`HQ_basis`), `H(OΛ)`
   commutative (`HQ.instCommRing`), and Prop A.3 for both generating sets (`prop_A_3_columns`, `prop_A_3_rows`); two claims
-  in the printed proof are refuted (see [ERRATA.md](ERRATA.md)).
+  in the printed proof are refuted (see [ERRATA.md](ERRATA.md)). The display before Prop A.3: `d(e_2²) = −2e_4e_1 + 2e_5`
+  in `OΛ_N` and in `OΛ`, nonzero in `OΛ` (`d_elementary_two_sq`, `DQ_e_two_sq`, `DQ_e_two_sq_ne_zero`), and the
+  characteristic 2 statement `H(Sym) = k[e_2², e_4², …]` (`EQPdg.cohomology_char_two`).
 - Appendix A.2–A.3 (`Frontier.EQApp*`): the hypercube decomposition of any box system (`EQApp.decompEquiv_delta`); `U_n` as a
   direct sum of hypercube complexes with its initial vectors (`uDecompEquiv_dU`, `init_iff`), `H(U_n) = 0` for `n ≥ 2`, and
   `Z_n ≅ (⊕ Y_q) ⊗ OΛ_n` compatibly with `d` (`zDecompEquiv_d`); the cohomology of `V_{a,b}`: Lima basis for `a` even
@@ -173,7 +178,10 @@ permutation action):
   formulas for `d(e_k)`, `d(h_k)` (corrected, see [ERRATA.md](ERRATA.md)) and `d(s_λ)` (`pd_schur`, Schur polynomials as
   bialternants); the theorem of A.4: `H_{/k}(Sym_n) = 0` for `k > 0` (`thmA4_1_pos`), `H_{/0}(Sym_n)` has basis the
   `p`-Lima Schur polynomials (`thmA4_1_zero`), and `k[e_p^p, e_{2p}^p, …] ↪ Sym_n` is a quasi-isomorphism (`thmA4_2`).
-  The inverse limit `Sym` is not formalized.
+  The limit `Sym` (`EQPdg.SymLim`, the graded inverse limit along `x_{n+1} ↦ 0`, with `d` and `d^p = 0`, `dLim_pow_char`),
+  (A.5)–(A.7) in `Sym` (`dLim_eLim`, `dLim_hLim`, `dLim_sLim`), and Theorem A.4 as printed, for `Sym`: `H_{/k}(Sym) = 0`
+  for `k > 0` (`thmA4_1_pos_lim`), the `p`-Lima Schur functions form a basis of `H_{/0}(Sym)` (`thmA4_1_zero_lim`), and
+  `k[e_p^p, e_{2p}^p, …] ↪ Sym` is a quasi-isomorphism onto a polynomial algebra (`thmA4_2_lim`, `evELim_injective`).
 - Finite-cell filtrations in dg-lean form (`DG.FiniteCellFiltration`, from a generic triangular-basis criterion
   `EQFix.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
   `zn_isKProjective_osym`) and `Z_{a,b}` over `OΛ_{a+b}` with `binom(a+b,b)` cells (Cor 4.8, `EQFix.zabFiniteCellFiltration`,

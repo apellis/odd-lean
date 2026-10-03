@@ -380,3 +380,16 @@ In progress; strands are numbered from `0` in Lean.
    `pd_hsymm_printed_false`; the printed forms hold iff `k e_{k+1} = 0`, resp. `k h_{k+1} = 0`). Correct:
    `d(e_k) = e_1 e_k − (k+1) e_{k+1}` and `d(h_k) = (k+1) h_{k+1} − h_1 h_k` (`EQPdg.pd_esymm`, `pd_hsymm`), consistent
    with the printed `d(s_λ)` (`EQPdg.pd_schur`).
+17. **§4.3, the hat Pieri rule (4.19) [F→T].** The printed sign `(−1)^{binom(n−1,2) + |λ/i|}` is wrong: for `n = 2`,
+   `λ = ∅`, `ẽ_1 = −s̃̂_{(1)}` (`EQZab.hat_pieri_printed_false`). Correct:
+   `ẽ_1 s̃̂_λ = Σ_{μ = λ + □_i} (−1)^{binom(n,2) + |i/λ|} s̃̂_μ` (`EQZab.hat_pieri_partition`; for every exponent vector,
+   `EQZab.hat_pieri`). The hat SZ relation (4.18) holds as printed (`EQZab.hat_sz`).
+18. **§4.3, the differential of `ŝ_λ` (4.20) [F→T].** The printed formula fails for `n = 2`, `λ = (1)`
+   (`EQZab.hat_d_printed_false`). Correct: `d(ŝ_λ) = Σ_{μ = λ + □_i} (−1)^{binom(n,2) + |i/λ|} {ct(□_i)} ŝ_μ`
+   (`EQZab.hat_d_partition`; for every exponent vector, `EQZab.hat_d`), i.e. the printed sign `(−1)^{binom(n−1,2) + i − 1}`
+   is replaced by `(−1)^{binom(n,2)}`.
+19. **§4.3, linearity of the trace (4.24) [F→T].** For the right action `z · h = (θ ∘ w_0)(h) z` of Definition 4.6,
+   `z^∨ = θ ∘ ∂_{a,b}` is not right `OΛ_{a+b}`-linear (`EQZab.trace_not_linear`, with `h = e_2`); it is `w_0`-semilinear,
+   `z^∨(f z · h) = z^∨(f z) w_0(h)` (`EQZab.trace_mul_twistRev`), and `w_0 ∘ θ ∘ ∂_{a,b}` is linear (`EQZab.trace_linear`).
+   Corollary 4.10 holds as printed for `z^∨ = θ ∘ ∂_{a,b}` (`EQZab.cor_4_10`) and hence also for `w_0 ∘ z^∨`, since
+   `d ∘ w_0 = w_0 ∘ d`.
