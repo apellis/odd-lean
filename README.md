@@ -177,7 +177,19 @@ permutation action):
 - Finite-cell filtrations in dg-lean form (`DG.FiniteCellFiltration`, from a generic triangular-basis criterion
   `EQFix.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
   `zn_isKProjective_osym`) and `Z_{a,b}` over `OΛ_{a+b}` with `binom(a+b,b)` cells (Cor 4.8, `EQFix.zabFiniteCellFiltration`,
-  `zab_hasLiftingProperty`).
+  `zab_hasLiftingProperty`), and the dual bimodule `Z^∨_{a,b}` over `OΛ_{a+b}` (Cor 4.11, `EQFunctor.zdualFiniteCellFiltration`,
+  `zdual_isKProjective`), built from a generic graded dual `EQFunctor.RightDual A M = HOM_A(M, A)` of a right dg module
+  (a dg `(A, B)`-bimodule for a dg `(B, A)`-bimodule `M`; the dual of a finite triangular right basis is a triangular
+  left basis, `RightBasis.dualTriangular`).
+- §4.4, Definitions 4.14 and 4.15 on `ℤ`-graded derived categories (`Frontier.EQFunctor*`; `OΛ_a ⊗ OΛ_b` is the dg subring
+  `EQFunctor.osymABDG a b` of `OPol_{a+b}`): the multiplication functor `I_{a,b} = Z^∨_{a,b} ⊗^L_{OΛ_a ⊗ OΛ_b} (−)`
+  (`EQFunctor.mult`, via the derived tensor product with a dg bimodule over dg rings, `bimoduleDerivedTensor`) and the
+  comultiplication functor `R_{a,b}`, derived induction along `OΛ_{a+b} ⊆ OΛ_a ⊗ OΛ_b` (`EQFunctor.comult`, left adjoint to
+  restriction, `comultAdjunction`), both triangulated and preserving compact objects; `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z^∨_{a,b}`
+  and `R_{a,b}(OΛ_{a+b}) ≅ OΛ_a ⊗ OΛ_b` (`multSelfIso`, `comultSelfIso`); on `K₀`,
+  `[I_{a,b}(OΛ_a ⊗ OΛ_b)] = Σ_{μ ∈ Par(b,a)} (−1)^{|μ|} [OΛ_{a+b}]` and `[R_{a,b}(OΛ_{a+b})] = [OΛ_a ⊗ OΛ_b]`
+  (`K0Mult_self`, `K0Comult_self`), the `ℤ`-graded form of the two computations in the proof of Thm 4.17. The
+  `ℤ × ℤ/2`-graded setting, the `ℤ[√−1]`-module structure on `K₀` and Thm 4.17 itself are not formalized.
 - §2.2.4 over a field (`Frontier.EQHalfGradedField`): the compact super Grothendieck group of
   dg-lean's half-graded derived category is additively equivalent to the Gaussian integers
   (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
