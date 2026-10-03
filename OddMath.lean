@@ -163,6 +163,11 @@ import OddMath.Frontier.EQFixProp33
 import OddMath.Frontier.EQFixW0
 import OddMath.Frontier.EQFixZabCells
 import OddMath.Frontier.EQFixZnCells
+import OddMath.Frontier.EQFunctorBimodule
+import OddMath.Frontier.EQFunctorDerived
+import OddMath.Frontier.EQFunctorDual
+import OddMath.Frontier.EQFunctorRightDual
+import OddMath.Frontier.EQFunctorRing
 import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks
 import OddMath.Frontier.EQLimaLR
