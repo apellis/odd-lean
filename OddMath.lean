@@ -167,6 +167,7 @@ import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks
 import OddMath.Frontier.EQLimaLR
 import OddMath.Frontier.EQLimaLimit
+import OddMath.Frontier.EQLimaNaive
 import OddMath.Frontier.EQLimaPoly
 import OddMath.Frontier.EQLimaPolyAlg
 import OddMath.Frontier.EQLimaRefute
@@ -203,6 +204,9 @@ import OddMath.Frontier.EQPdgExt
 import OddMath.Frontier.EQPdgHomotopy
 import OddMath.Frontier.EQPdgLima
 import OddMath.Frontier.EQPdgLimaPart
+import OddMath.Frontier.EQPdgLimit
+import OddMath.Frontier.EQPdgLimitProj
+import OddMath.Frontier.EQPdgLimitTheorem
 import OddMath.Frontier.EQPdgPoly
 import OddMath.Frontier.EQPdgSlash
 import OddMath.Frontier.EQPdgTheorem
