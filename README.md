@@ -157,8 +157,10 @@ permutation action):
   the sign of EKL (4.35) (`pairing`), and Cor 4.10 (`cor_4_10`) for the trace `z^∨ = θ ∘ ∂_{a,b}` of (4.24), which is
   `w_0`-semilinear rather than linear (`trace_mul_twistRev`, `trace_not_linear`). Lemma 4.4 (`Frontier.EQBorelPresentation`):
   `γ : OH_{a,a+b} → (OΛ_a ⊠ OΛ_b)/M` is well defined and bijective for all `a, b` and `w_0`-semilinear rather than linear
-  (`EQBorel.lemma_4_4`, `gamma_smul`, `lemma_4_4_printed_false`; see [ERRATA.md](ERRATA.md)). Not yet formalized:
-  Prop 4.12, Prop 4.13 for three or more blocks.
+  (`EQBorel.lemma_4_4`, `gamma_smul`, `lemma_4_4_printed_false`; see [ERRATA.md](ERRATA.md)). Prop 4.12 (1)
+  (`Frontier.EQZabREnd`): `Hom_D(Z, Z⟦n⟧) ≅ Hⁿ(END(Z))` for `Z_{a,b}` and `Z_{a,b}^∨` (`prop_4_12_one`,
+  `prop_4_12_one_dual`, from the generic `homShiftAddEquivOfIsKProjective`). Not yet formalized: Prop 4.12 (2) (the
+  source defines `E_{a,b}` only diagrammatically), Prop 4.13 for three or more blocks.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
