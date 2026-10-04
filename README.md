@@ -168,7 +168,9 @@ permutation action):
   `ℤ`-span of that basis is stable under the differential `dB a = τ ∘ d_α ∘ τ` of `Z_a`, `EQBlocks.prop_4_13_two`,
   with `d 1_z` as printed, `dB_one_cons`). Prop 4.13 (3) without gradings
   (`Frontier.EQZabBlocksHom`: right `OΛ̃_n`-linear maps `Z_a → Z_b` are `Idx a × Idx b` matrices over `OΛ̃_n`,
-  `EQBlocks.prop_4_13_three`, from the basis `basisTBN`). Not yet formalized: the graded ranks in Prop 4.13 (3).
+  `EQBlocks.prop_4_13_three`, from the basis `basisTBN`). Graded ranks (`Frontier.EQZabBlocksRank`): `grank HOM(Z_a, Z_b) =
+  q^{D_b − D_a} [n; a]_q [n; b]_q` (`EQBlocks.grankHom_eq`), the printed value only when `D_a = D_b` (see
+  [ERRATA.md](ERRATA.md)).
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
