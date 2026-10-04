@@ -239,6 +239,7 @@ import OddMath.Frontier.EQZabTrace
 import OddMath.Frontier.EQBorelPresentation
 import OddMath.Frontier.EQZabREnd
 import OddMath.Frontier.EQFunctorEmbedding
+import OddMath.Frontier.EQFunctorEmbeddingSmall
 import OddMath.Frontier.EQZabBlocks
 import OddMath.Frontier.EQZabEndRankOne
 import OddMath.Frontier.EQZabBlocksDiff
