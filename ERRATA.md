@@ -350,7 +350,9 @@ In progress; strands are numbered from `0` in Lean.
 11. **§4.3, Prop 4.13 (1) [F→T].** For a composition `(a_1, a_2)` with `a_1, a_2 ≥ 1` the printed set (with `λ_i` in an
    `(a_1 + ⋯ + a_{i−1}) × a_i` box and the product ending at `λ_{k−1}`) reduces to `{z}`, which does not span `Z_{a_1,a_2}`
    (`EQZab.prop_4_13_one_printed_false`). For two blocks the correct basis is `{s̃_μ(y) z : μ ∈ Par(b,a)}` of Cor 4.8
-   (`EQZab.zab_span_twisted`, `zab_indep_twisted`), with `d`-stable span (`EQZab.cor_4_8_stable_twisted`).
+   (`EQZab.zab_span_twisted`, `zab_indep_twisted`), with `d`-stable span (`EQZab.cor_4_8_stable_twisted`). For `r` blocks
+   the correct basis of `OΛ̃_{a_1} ⊠ ⋯ ⊠ OΛ̃_{a_r}` over `OΛ̃_n` is `{s̃_{λ_1}(X_1) ⋯ s̃_{λ_r}(X_r)}`, `X_i` the `i`-th block of
+   variables and `λ_i` in an `a_i × (a_1 + ⋯ + a_{i−1})` box (`EQBlocks.prop_4_13_one_span`, `prop_4_13_one_indep`).
 12. **Appendix A.1, proof of Prop A.3 [G].** Two claims in the proof are false, although Prop A.3 holds: (i) "for Lima
    partitions the odd Littlewood–Richardson coefficients equal the even ones" fails for the Lima partitions `μ = ν = (2,2)`,
    with odd coefficient `−1` and even coefficient `1` at `λ = (4,3,1)` (`EQLima.printed_oddLR_eq_evenLR_fails`); in

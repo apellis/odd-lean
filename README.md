@@ -159,8 +159,10 @@ permutation action):
   `γ : OH_{a,a+b} → (OΛ_a ⊠ OΛ_b)/M` is well defined and bijective for all `a, b` and `w_0`-semilinear rather than linear
   (`EQBorel.lemma_4_4`, `gamma_smul`, `lemma_4_4_printed_false`; see [ERRATA.md](ERRATA.md)). Prop 4.12 (1)
   (`Frontier.EQZabREnd`): `Hom_D(Z, Z⟦n⟧) ≅ Hⁿ(END(Z))` for `Z_{a,b}` and `Z_{a,b}^∨` (`prop_4_12_one`,
-  `prop_4_12_one_dual`, from the generic `homShiftAddEquivOfIsKProjective`). Not yet formalized: Prop 4.12 (2) (the
-  source defines `E_{a,b}` only diagrammatically), Prop 4.13 for three or more blocks.
+  `prop_4_12_one_dual`, from the generic `homShiftAddEquivOfIsKProjective`). Prop 4.13 (1) for every composition
+  (`Frontier.EQZabBlocks`: basis `s̃_{λ_1}(X_1) ⋯ s̃_{λ_r}(X_r)` over `OΛ̃_n`, `EQBlocks.prop_4_13_one_span`,
+  `prop_4_13_one_indep`, `card_Idx`). Not yet formalized: Prop 4.12 (2) (the source defines `E_{a,b}` only
+  diagrammatically), Prop 4.13 (2)–(3) for three or more blocks.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
   removable white box iff Lima: `whiteSystem_crit_iff`), Prop A.2 (1) for any module with a partition basis on
