@@ -16,7 +16,7 @@ require StringDiagrams from git
 
 require DG from git
   "https://github.com/apellis/dg-lean.git" @
-  "23a7a0893e31ec1f371bf727a0532394d5b9b397"
+  "c9251886b60e839f6ea69272baa56100d03499d8"
 
 @[default_target]
 lean_lib OddMath where
