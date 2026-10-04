@@ -237,6 +237,7 @@ import OddMath.Frontier.EQZabReverse
 import OddMath.Frontier.EQZabSchur
 import OddMath.Frontier.EQZabTrace
 import OddMath.Frontier.EQBorelPresentation
+import OddMath.Frontier.EQZabREnd
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
 import OddMath.Frontier.EQZnFiniteCell
