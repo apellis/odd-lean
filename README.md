@@ -200,7 +200,10 @@ permutation action):
   restriction, `comultAdjunction`), both triangulated and preserving compact objects; `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z^∨_{a,b}`
   and `R_{a,b}(OΛ_{a+b}) ≅ OΛ_a ⊗ OΛ_b` (`multSelfIso`, `comultSelfIso`); on `K₀`,
   `[I_{a,b}(OΛ_a ⊗ OΛ_b)] = Σ_{μ ∈ Par(b,a)} (−1)^{|μ|} [OΛ_{a+b}]` and `[R_{a,b}(OΛ_{a+b})] = [OΛ_a ⊗ OΛ_b]`
-  (`K0Mult_self`, `K0Comult_self`), the `ℤ`-graded form of the two computations in the proof of Thm 4.17. The
+  (`K0Mult_self`, `K0Comult_self`), the `ℤ`-graded form of the two computations in the proof of Thm 4.17. Def 4.18
+  for `N ≥ 2` (`Frontier.EQFunctorEmbedding`): `J_N = Z_N^∨ ⊗^L_{ONH_N} (−) : D(ONH_N) → D(OΛ_N)` (`EQFunctor.J`, with
+  `Z_N^∨` finite-cell over `OΛ_N`, `znDual_isKProjective`), fully faithful since `D(ONH_N) = 0` (Cor 4.19 for `N ≥ 2`,
+  `jFullyFaithful`); the components `N ≤ 1` and the `⊠` form of Def 4.14 are not formalized. The
   `ℤ × ℤ/2`-graded setting, the `ℤ[√−1]`-module structure on `K₀` and Thm 4.17 itself are not formalized.
 - §2.2.4 over a field (`Frontier.EQHalfGradedField`): the compact super Grothendieck group of
   dg-lean's half-graded derived category is additively equivalent to the Gaussian integers
