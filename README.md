@@ -155,7 +155,9 @@ permutation action):
   `d`-stable basis, `cor_4_11`), Lemma 4.5 corrected (see [ERRATA.md](ERRATA.md)), the displays after it: (4.18)
   (`hat_sz`) and, corrected, (4.19) (`hat_pieri_partition`) and (4.20) (`hat_d_partition`), the orthogonality (4.22) with
   the sign of EKL (4.35) (`pairing`), and Cor 4.10 (`cor_4_10`) for the trace `z^∨ = θ ∘ ∂_{a,b}` of (4.24), which is
-  `w_0`-semilinear rather than linear (`trace_mul_twistRev`, `trace_not_linear`). Not yet formalized: Lemma 4.4,
+  `w_0`-semilinear rather than linear (`trace_mul_twistRev`, `trace_not_linear`). Lemma 4.4 (`Frontier.EQBorelPresentation`):
+  `γ : OH_{a,a+b} → (OΛ_a ⊠ OΛ_b)/M` is well defined and bijective for all `a, b` and `w_0`-semilinear rather than linear
+  (`EQBorel.lemma_4_4`, `gamma_smul`, `lemma_4_4_printed_false`; see [ERRATA.md](ERRATA.md)). Not yet formalized:
   Prop 4.12, Prop 4.13 for three or more blocks.
 - Appendix A.1 (`Frontier.EQLima*`): hypercube complexes with arbitrary signs are contractible
   (`EQLima.hypercube_contractible`), Lemma A.1 (`lemma_A_1`), Lima partitions (`isLima_iff_printed`; no addable or
