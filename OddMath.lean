@@ -242,6 +242,7 @@ import OddMath.Frontier.EQFunctorEmbedding
 import OddMath.Frontier.EQZabBlocks
 import OddMath.Frontier.EQZabEndRankOne
 import OddMath.Frontier.EQZabBlocksDiff
+import OddMath.Frontier.EQZabBlocksHom
 import OddMath.Frontier.EQZnAction
 import OddMath.Frontier.EQZnBimodule
 import OddMath.Frontier.EQZnFiniteCell
