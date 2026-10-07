@@ -216,8 +216,32 @@ permutation action):
   `jFullyFaithful`); for `N ≤ 1` (`Frontier.EQFunctorEmbeddingSmall`, `ONH_N = OPol_N`) `J_N` is an equivalence, since
   `Z_N^∨ ≅ OΛ_N` and `J_N ≅` derived induction along the isomorphism `OPol_N ≅ OΛ_N` (`jSmall_isEquivalence`,
   `jSmallFullyFaithful`; generic `bimoduleDerivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The `⊠` form of
-  Def 4.14 is not formalized. The
-  `ℤ × ℤ/2`-graded setting, the `ℤ[√−1]`-module structure on `K₀` and Thm 4.17 itself are not formalized.
+  Def 4.14 is not formalized.
+- `OΛ_{a,b} = OΛ_a ⊗ OΛ_b` (`Frontier.EQFunctorRingTensor`): `f ⊗ g ↦ f(x) g(y)` is an isomorphism of dg rings from
+  dg-lean's graded tensor product (Koszul sign rule) onto `EQFunctor.osymABDG a b` (`EQFunctor.tensorToOsymAB`,
+  `tensorToOsymAB_bijective`, `tensorEquivOsymAB`), from the block supercommutation `g(y) u(x) = (-1)^{ij} u(x) g(y)`
+  (`inclY_mul_inclX_of_mem`).
+- §4.4 and §3.6 Grothendieck groups over a field `K` (`Frontier.EQK0*`), in the half-graded setting of §2.2.4: the dg
+  rings are base changed to `K` (dg-lean's `ExtendScalars K`) and given the diagonal half-grading (degree `k` in
+  bidegree `(2k, k mod 2)`); `K₀` is the compact super Grothendieck group (classes up to isomorphisms of either parity),
+  a `ℤ[√−1]`-module with `√−1` acting by the internal shift `⟨1⟩`. For every dg ring connected over `ℤ`
+  (`EQK0.IsConnectedInt`: zero in negative degrees, `ℤ · 1` in degree `0`), `K₀ ≅ ℤ[√−1]` with the regular class `1`
+  (`EQK0.superK0GaussianOfConnected`); this applies to `OPol_n` and its dg subrings (`isConnectedInt_dgSubring`), giving
+  `K₀(D(OΛ_a)) ≅ ℤ[√−1]` (`superK0OsymEquiv`), the same for `OΛ_{a,b}` and for `ONH_n = OPol_n`, `n ≤ 1`
+  (`superK0OPolEquiv`), and `K₀(D(ONH_{n+2})) = 0` (`superK0c_onh_subsingleton`); Lemma 4.16 with
+  `[OΛ_a] ⊗ [OΛ_b] ↦ [OΛ_{a,b}]` (`lemma_4_16`, `lemma_4_16_tmul_self`). The comultiplication of Thm 4.17
+  (`Frontier.EQK0Coproduct`): `R_{a,b}` on half-graded modules is derived induction along the morphism of half-graded
+  dg rings induced by `K ⊗ (OΛ_{a+b} ⊆ OΛ_{a,b})`; its symbol followed by Lemma 4.16 sends
+  `E^{(a+b)} = [OΛ_{a+b}⟨-binom(a+b,2)⟩]` to `(-√−1)^{ab} E^{(a)} ⊗ E^{(b)}` (`EQK0.comultK0_ePowClass`), the
+  `(a, b)`-term of (2.2) with the twist `−1` of [ERRATA.md](ERRATA.md) [EQ] 1. Not yet formalized: the multiplication
+  of Thm 4.17 on half-graded modules over `K`, the assembled bialgebra isomorphisms of Thm 3.18 and Thm 4.17, and
+  the integral versions (see the next item).
+- Ground ring of §4.4 (footnote 5 asserts that the results hold over `ℤ`, by formality and Thm 2.7): the
+  functors,
+  bimodules and `K₀` classes above are integral, but the integral `K₀` computation is open. Corollary 2.6
+  (`K₀(A) ≅ K₀(A⁰)`) assumes `A⁰` semisimple, and formality replaces `OΛ_n` by its cohomology, which again has degree-`0`
+  part `ℤ`; so the footnote's argument does not by itself give `K₀(D(OΛ_n)) ≅ ℤ[√−1]` over `ℤ`. For ranks `0` and `1`
+  of Thm 3.18 the missing input is `K₀` of the compact derived category of `ℤ`.
 - §2.2.4 over a field (`Frontier.EQHalfGradedField`): the compact super Grothendieck group of
   dg-lean's half-graded derived category is additively equivalent to the Gaussian integers
   (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
@@ -342,7 +366,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `46993f63c1c660253b9d0a344632982e80870fbe` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `c9251886b60e839f6ea69272baa56100d03499d8` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
