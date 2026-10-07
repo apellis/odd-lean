@@ -4,6 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
@@ -14,9 +15,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
         with:
+          build: false
+          test: false
+          lint: false
           use-mathlib-cache: true
-          build-args: --wfail
+          use-github-cache: false
+      # One cache entry per run attempt. Restores fall back to the newest entry for the same
+      # toolchain and manifest, then to the newest entry for the toolchain (oleans of modules
+      # unaffected by a dependency bump stay valid; Lake rebuilds the rest).
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      - name: Build
+        # Bounded so that a long cold build stops early and its partial results are saved below;
+        # a re-run then resumes from them.
+        run: timeout 18m lake build --wfail < /dev/null
       - name: Axiom audit
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+      - name: Save build cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
