@@ -216,7 +216,10 @@ permutation action):
   `jFullyFaithful`); for `N ≤ 1` (`Frontier.EQFunctorEmbeddingSmall`, `ONH_N = OPol_N`) `J_N` is an equivalence, since
   `Z_N^∨ ≅ OΛ_N` and `J_N ≅` derived induction along the isomorphism `OPol_N ≅ OΛ_N` (`jSmall_isEquivalence`,
   `jSmallFullyFaithful`; generic `bimoduleDerivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The `⊠` form of
-  Def 4.14 is not formalized.
+  Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
+  tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
+  (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
+  `[I_{a,b}(OΛ_a, OΛ_b)] = Σ_{μ ∈ Par(b,a)} (-1)^{|μ|} [OΛ_{a+b}]` (`K0MultBox_mk`, `K0MultBox_self`).
 - `OΛ_{a,b} = OΛ_a ⊗ OΛ_b` (`Frontier.EQFunctorRingTensor`): `f ⊗ g ↦ f(x) g(y)` is an isomorphism of dg rings from
   dg-lean's graded tensor product (Koszul sign rule) onto `EQFunctor.osymABDG a b` (`EQFunctor.tensorToOsymAB`,
   `tensorToOsymAB_bijective`, `tensorEquivOsymAB`), from the block supercommutation `g(y) u(x) = (-1)^{ij} u(x) g(y)`
@@ -233,9 +236,14 @@ permutation action):
   (`Frontier.EQK0Coproduct`): `R_{a,b}` on half-graded modules is derived induction along the morphism of half-graded
   dg rings induced by `K ⊗ (OΛ_{a+b} ⊆ OΛ_{a,b})`; its symbol followed by Lemma 4.16 sends
   `E^{(a+b)} = [OΛ_{a+b}⟨-binom(a+b,2)⟩]` to `(-√−1)^{ab} E^{(a)} ⊗ E^{(b)}` (`EQK0.comultK0_ePowClass`), the
-  `(a, b)`-term of (2.2) with the twist `−1` of [ERRATA.md](ERRATA.md) [EQ] 1. Not yet formalized: the multiplication
-  of Thm 4.17 on half-graded modules over `K`, the assembled bialgebra isomorphisms of Thm 3.18 and Thm 4.17, and
-  the integral versions (see the next item).
+  `(a, b)`-term of (2.2) with the twist `−1` of [ERRATA.md](ERRATA.md) [EQ] 1. The multiplication of Thm 4.17
+  (`Frontier.EQK0Mult`): over `K`, `I_{a,b} = (K ⊗ Z^∨_{a,b}) ⊗^L (-)` (`EQK0.multK`, dg-lean's base change of dg
+  bimodules), with `[I_{a,b}(K ⊗ OΛ_{a,b})] = Σ_μ (-1)^{|μ|} [K ⊗ OΛ_{a+b}]` (`K0MultK_self`); on half-graded modules it
+  is dg-lean's diagonal transport of this functor (`multKHalf`, acting by `I_{a,b}` on the four weight blocks and
+  commuting with the internal shift; it is not identified with the derived tensor product by the regraded bimodule).
+  Its symbol composed with Lemma 4.16 gives (2.1), `E^{(a)} E^{(b)} = [a+b, a]_{√−1} E^{(a+b)}` (`EQK0.multK0_ePowClass`).
+  Not yet formalized: the assembled bialgebra isomorphisms of Thm 3.18 and Thm 4.17 and the integral versions (see the
+  next item).
 - Ground ring of §4.4 (footnote 5 asserts that the results hold over `ℤ`, by formality and Thm 2.7): the
   functors,
   bimodules and `K₀` classes above are integral, but the integral `K₀` computation is open. Corollary 2.6
@@ -366,7 +374,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `c9251886b60e839f6ea69272baa56100d03499d8` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `6cf0ba0d4f19bdceed05f3caf8b83e5b0929d243` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
