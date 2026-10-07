@@ -13,6 +13,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Several of the heaviest modules compiled concurrently exceed the runner's memory; the
+      # job is then terminated with SIGTERM before any later step (including the cache save)
+      # can run. Limit Lake to two concurrent Lean processes.
+      LEAN_NUM_THREADS: 2
     steps:
       - uses: actions/checkout@v4
       - name: Set up Lean and fetch the Mathlib cache
