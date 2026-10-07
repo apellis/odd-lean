@@ -239,8 +239,10 @@ permutation action):
   `(a, b)`-term of (2.2) with the twist `−1` of [ERRATA.md](ERRATA.md) [EQ] 1. The multiplication of Thm 4.17
   (`Frontier.EQK0Mult`): over `K`, `I_{a,b} = (K ⊗ Z^∨_{a,b}) ⊗^L (-)` (`EQK0.multK`, dg-lean's base change of dg
   bimodules), with `[I_{a,b}(K ⊗ OΛ_{a,b})] = Σ_μ (-1)^{|μ|} [K ⊗ OΛ_{a+b}]` (`K0MultK_self`); on half-graded modules it
-  is dg-lean's diagonal transport of this functor (`multKHalf`, acting by `I_{a,b}` on the four weight blocks and
-  commuting with the internal shift; it is not identified with the derived tensor product by the regraded bimodule).
+  is `(K ⊗ Z^∨_{a,b})ᵈ ⊗^L (-)`, the derived tensor product with the diagonally regraded bimodule (`multKHalf`,
+  dg-lean's `Diagonal.derivedTensor`), which is the diagonal transport of `I_{a,b}` (`multKHalfTransportIso`: it acts
+  by `I_{a,b}` on the four weight blocks and commutes with the internal shift) and extends `I_{a,b}` along the
+  diagonal functors (`multKHalfToDerivedIso`).
   Its symbol composed with Lemma 4.16 gives (2.1), `E^{(a)} E^{(b)} = [a+b, a]_{√−1} E^{(a+b)}` (`EQK0.multK0_ePowClass`).
   **Thm 4.17** (`Frontier.EQThm417`, over a field `K`, with the conventions above): `U⁺ ≅ ⨁_n K₀(D(OΛ_n))` as
   `ℤ[√−1]`-modules, `E^{(n)} ↦ [OΛ_n⟨-binom(n,2)⟩]` (`EQK0.thm_4_17_equiv`), intertwining the product of `U⁺` with

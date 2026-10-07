@@ -3,6 +3,7 @@ import OddMath.Frontier.EQK0Coproduct
 import OddMath.Frontier.EQQuantumBinomial
 import DG.Positive.ScalarExtensionTensor
 import DG.HalfGraded.DiagonalTransport
+import DG.HalfGraded.DiagonalTensor
 
 /-!
 # The multiplication functor of Definition 4.14 over a field
@@ -22,8 +23,10 @@ and compact as a left dg `OΛ_{a+b}`-module by Corollary 4.11) is base changed t
   multiplication by `Σ_{μ ∈ Par(b,a)} (-1)^{|μ|}`.
 
 On half-graded dg modules (the setting of Ellis–Qi §2.2.4 and Theorem 4.17) the multiplication functor
-is dg-lean's diagonal transport of `multK` (`DG.Diagonal.transport`, acting by `multK` on the four
-weight blocks, triangulated and commuting with the internal shift; `multKHalf`), and:
+is literally `(K ⊗ Z_{a,b}^∨)ᵈ ⊗^L (-)`, the derived tensor product with the diagonally regraded
+bimodule (`multKHalf`, `DG.Diagonal.derivedTensor`); it is the diagonal transport of `multK`
+(`multKHalfTransportIso`: it acts by `multK` on the four weight blocks and commutes with the internal
+shift), extends `multK` along the diagonal functors (`multKHalfToDerivedIso`), and:
 
 * `multK0 K a b : K₀(D(OΛ_a)) ⊗_{ℤ[√−1]} K₀(D(OΛ_b)) → K₀(D(OΛ_{a+b}))`, its symbol composed with the
   Künneth isomorphism of Lemma 4.16;
@@ -204,18 +207,51 @@ variable (K : Type) [Field K] (a b : ℕ)
   [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
   [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)]
 
-/-- **The multiplication functor on half-graded dg modules** over `K`: the diagonal transport of
-`multK K a b`. -/
+omit [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
+  [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
+  [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)] in
+/-- **The multiplication functor on half-graded dg modules** over `K` (Definition 4.14):
+`(K ⊗ Z_{a,b}^∨)ᵈ ⊗^L (-)`, the derived tensor product with the diagonally regraded bimodule
+(`DG.Diagonal.derivedTensor`). -/
 abbrev multKHalf :=
-  Diagonal.transport.{0, 0, 0, 0, 0, 0, 0, 0} (ExtendScalars K (osymABDG a b))
-    (ExtendScalars K (osymDG (a+b))) (multK K a b)
+  Diagonal.derivedTensor (ExtendScalars K (osymDG (a+b))) (ExtendScalars K (osymABDG a b))
+    (DegreeZeroRing K ⊗[ℤ] ZDual a b) (zdualK_isKProjective K a b)
 
+omit [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
+  [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
+  [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)] in
+/-- The half-graded multiplication functor is the diagonal transport of the `ℤ`-graded one
+(`DG.Diagonal.derivedTensorTransportIso`): it acts by `multK` on the four weight blocks. -/
+def multKHalfTransportIso :
+    multKHalf K a b ≅ Diagonal.transport.{0, 0, 0, 0, 0, 0, 0, 0} (ExtendScalars K (osymABDG a b))
+      (ExtendScalars K (osymDG (a+b))) (multK K a b) :=
+  Diagonal.derivedTensorTransportIso _ _ _ _
+
+omit [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
+  [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
+  [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)] in
+/-- The half-graded multiplication functor extends `multK` along the diagonal functors. -/
+def multKHalfToDerivedIso (Y : DG.DerivedCategory.{0, 0} (ExtendScalars K (osymABDG a b))) :
+    (multKHalf K a b).obj ((Diagonal.toDerived.{0, 0, 0} _).obj Y) ≅
+      (Diagonal.toDerived.{0, 0, 0} _).obj ((multK K a b).obj Y) :=
+  Diagonal.derivedTensorToDerivedIso _ _ _ _ Y
+
+omit [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
+  [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
+  [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)] in
+/-- The symbol of the half-graded multiplication functor on `K₀` of compact objects. -/
+def multKHalfK0Map :=
+  Diagonal.derivedTensorK0 (ExtendScalars K (osymDG (a+b))) (ExtendScalars K (osymABDG a b))
+    (DegreeZeroRing K ⊗[ℤ] ZDual a b) (zdualK_isKProjective K a b) (isCompact_zdualK K a b)
+
+omit [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
+  [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymABDG a b))]
+  [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{0, 0} (osymABDG a b)] in
 /-- Its symbol on compact super Grothendieck groups. -/
 def multKHalfK0 (s : HalfGradedDGRing.SuperK0c.{0, 0}
       (HalfGradedDGRing.ofDGRing (ExtendScalars K (osymABDG a b)))) :
     HalfGradedDGRing.SuperK0c.{0, 0} (HalfGradedDGRing.ofDGRing (ExtendScalars K (osymDG (a+b)))) :=
-  HalfGradedDGRing.superK0cMap _ _
-    (Diagonal.transportK0 _ _ (multK K a b) fun _ h => isCompact_multK_obj K a b h) s
+  HalfGradedDGRing.superK0cMap _ _ (multKHalfK0Map K a b) s
 
 /-- Under `K₀ ≅ ℤ[√−1]`, the symbol of the half-graded multiplication functor is multiplication by
 `Σ_{μ ∈ Par(b,a)} (-1)^{|μ|}`. -/
@@ -224,7 +260,7 @@ theorem superK0OsymEquiv_multKHalfK0 (s : HalfGradedDGRing.SuperK0c.{0, 0}
     superK0OsymEquiv.{0} K (a+b) (multKHalfK0 K a b s) =
       (signSum a b : GaussianInt) * superK0OsymABEquiv.{0} K a b s :=
   superK0GaussianOfBase_of_lTensor _ _ _ (K0MultK K a b) (signSum a b)
-    (fun s => Diagonal.superK0LinearEquiv_transport _ _ (multK K a b) _ s)
+    (fun s => Diagonal.superK0LinearEquiv_derivedTensor _ _ _ _ (isCompact_zdualK K a b) s)
     (baseK0EquivInt_K0MultK K a b) s
 
 end HalfGradedMult
