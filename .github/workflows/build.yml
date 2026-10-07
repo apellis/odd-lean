@@ -14,10 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Several of the heaviest modules compiled concurrently exceed the runner's memory; the
-      # job is then terminated with SIGTERM before any later step (including the cache save)
-      # can run. Limit Lake to two concurrent Lean processes.
-      LEAN_NUM_THREADS: 2
+      # Some modules need more than 11 GB to compile (e.g. OddMath.Frontier.EKMoreGram), and two
+      # such processes together exceed the runner's 16 GB; the job is then terminated with
+      # SIGTERM before any later step (including the cache save) can run. Compile one Lean
+      # file at a time.
+      LEAN_NUM_THREADS: 1
     steps:
       - uses: actions/checkout@v4
       - name: Set up Lean and fetch the Mathlib cache
