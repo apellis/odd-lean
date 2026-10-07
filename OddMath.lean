@@ -172,6 +172,8 @@ import OddMath.Frontier.EQFunctorRingTensor
 import OddMath.Frontier.EQK0Gaussian
 import OddMath.Frontier.EQK0Field
 import OddMath.Frontier.EQK0Coproduct
+import OddMath.Frontier.EQK0Mult
+import OddMath.Frontier.EQFunctorBox
 import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks
 import OddMath.Frontier.EQLimaLR
