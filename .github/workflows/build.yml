@@ -45,7 +45,13 @@ jobs:
       - name: Build
         # Bounded so that a long cold build stops early and its partial results are saved below;
         # a re-run then resumes from them.
-        run: timeout 18m lake build --wfail < /dev/null
+        run: |
+          # Memory diagnostics: used/total memory and the Lean files being compiled.
+          ( while sleep 20; do
+              echo "mem $(free -m | awk '/Mem/{print $3"/"$2" MB"}'):" \
+                $(ps -eo rss,args | awk '/[.]lean( |$)/ && !/awk/ {for (i=2;i<=NF;i++) if ($i ~ /[.]lean$/) f=$i; printf "%s(%d MB) ", f, $1/1024}')
+            done ) &
+          timeout 18m lake build --wfail < /dev/null
       - name: Axiom audit
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       - name: Save build cache
