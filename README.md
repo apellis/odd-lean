@@ -225,7 +225,11 @@ permutation action):
   endomorphisms, `EQFunctor.FullAction`) and dg-lean's Morita equivalence from invertible bimodules. On the
   components `ONH_a ⊗ ONH_b` (`a, b ≥ 2`, `Frontier.EQFunctorEmbeddingTensor`): `J^A`, `J^H` with
   `M ↦ (Z_a^∨ ⊠ Z_b^∨) ⊗_{ONH_a ⊗ ONH_b} M` (`EQFunctor.JA2`, `JH2`), from dg-lean's external tensor product of
-  dg bimodules and its interchange isomorphism. The `⊠` form of
+  dg bimodules and its interchange isomorphism. The bimodule behind the induction half of Cor 4.21
+  (`Frontier.EQInductionBimodule`, ranks `a, b ≥ 2`): `(Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z_{a,b} ≅ ι^* Z_{a+b}` as dg
+  `(ONH_a ⊗ ONH_b, OΛ_{a+b})`-bimodules, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`EQFunctor.indEquiv`), for `Z_{a,b}` with
+  `OΛ_a ⊗ OΛ_b` acting through `θ ∘ w₀` on each factor (`EQFunctor.ZabTw`); for the action through `θ_a ⊗ θ_b`
+  no such isomorphism exists (`EQFunctor.no_indEquiv_untwisted`, `a = b = 2`; ERRATA [EQ] 23). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
