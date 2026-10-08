@@ -263,8 +263,10 @@ permutation action):
   `EQK0.baseK0OPolInt`) and `K₀(D(ONH_N)) ≅ ℤ[√−1]` (`superK0OPolIntEquiv`); `K₀(D(ONH_n)) = 0` for `n ≥ 2`
   (`superK0c_onh_int_eq_zero`); with the Künneth isomorphism (3.39) for `m + n ≤ 1` (`kunnethInt`) the same
   structure constants hold (`thm_3_18_int_*`). For `E · E` the Künneth map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]`
-  (`kunnethMapInt`) is used without claiming it is an isomorphism over `ℤ` (that is `K₀(D(OPol_2)^c) ≅ ℤ[√−1]` over
-  `ℤ`; not settled here, though the argument of the §4.4 item below should apply to `OPol_2 ≅ OPol_1 ⊗ OPol_1`); the product lands in `K₀(D(ONH_2)) = 0` regardless.
+  (`kunnethMapInt`) suffices, since the product lands in `K₀(D(ONH_2)) = 0`; it is in fact the Künneth
+  isomorphism over `ℤ` (`Frontier.EQKunnethInt`: `OPol_1 ⊗ OPol_1` has `Z¹ = 0` and torsion-free `H²`, so
+  `K₀(D(OPol_1 ⊗ OPol_1)^c) ≅ ℤ`; `EQK0Int.kunnethOneOneInt`, `kunnethMapInt_one_one_eq`), so (3.39) holds over `ℤ`
+  for all `m, n ≤ 1`.
 - Ground ring of §4.4 (footnote 5 asserts that the results hold over `ℤ`, by formality and Thm 2.7). Status:
   **Thm 4.17 is proved over `ℤ`** (`Frontier.EQThm417Int`, the integral dg rings `OΛ_n`, `OΛ_{a,b}` themselves), by
   a different argument than the footnote's. The footnote's route has a gap: Corollary 2.6 (`K₀(A) ≅ K₀(A⁰)`) assumes

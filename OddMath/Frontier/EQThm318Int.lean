@@ -23,8 +23,9 @@ super Grothendieck group, a `ℤ[√−1]`-module.
   Grothendieck group of `ONH_N = OPol_N` (`N ≤ 1`) is `ℤ[√−1]` on the regular class.
   For `N ≥ 2` it vanishes (`EQDiagonal.superK0c_eq_zero`, Proposition 3.16 (2)).
 * `kunnethInt` (`m + n ≤ 1`): the Künneth isomorphism (3.39) on regular classes;
-  `kunnethMapInt 1 1`: the `ℤ[√−1]`-linear map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]` (whether it is an
-  isomorphism over `ℤ` is not needed: its composite with `[Ind_{1,1}]` lands in `K₀(D(ONH_2)) = 0`).
+  `kunnethMapInt 1 1`: the `ℤ[√−1]`-linear map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]` (that it is an
+  isomorphism over `ℤ` is not needed here, since its composite with `[Ind_{1,1}]` lands in
+  `K₀(D(ONH_2)) = 0`; it is proved in `OddMath.Frontier.EQKunnethInt`).
 
 **Theorem 3.18 over `ℤ`** (`thm_3_18_int_*`): `1 · 1 = 1`, `1 · E = E · 1 = E`, `E · E = 0`,
 `r(1) = 1 ⊗ 1`, `r(E) = E ⊗ 1 + 1 ⊗ E` in `K₀(D(ONH)) = ⨁_N K₀(D(ONH_N))`, free over `ℤ[√−1]` on
