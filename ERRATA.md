@@ -425,4 +425,5 @@ In progress (Thm 3.18 and Thm 4.17 are proved; see the README); strands are numb
    `EQFunctor.no_indEquiv_untwisted`). If `f ⊗ g` acts through `θ ∘ w₀` on each factor (the map through which `OΛ_n`
    acts on `Z_n` on the right), the isomorphism exists, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`EQFunctor.indEquiv`, for
    `a, b ≥ 2`). The differentials need no further sign or automorphism: `s_{α_b}(y) + {a} θ_b(e_1)(y)` is the
-   `y`-part of `s_{α_{a+b}}` (`EQFunctor.sAlpha_zAlpha_eq`).
+   `y`-part of `s_{α_{a+b}}` (`EQFunctor.sAlpha_zAlpha_eq`). With this `Z_{a,b}`, the induction half of Corollary 4.21
+   holds on abelian, homotopy and derived categories (`EQFunctor.indIsoA`, `indIsoH`, `indIsoD`).

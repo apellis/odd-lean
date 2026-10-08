@@ -229,7 +229,12 @@ permutation action):
   (`Frontier.EQInductionBimodule`, ranks `a, b ≥ 2`): `(Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z_{a,b} ≅ ι^* Z_{a+b}` as dg
   `(ONH_a ⊗ ONH_b, OΛ_{a+b})`-bimodules, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`EQFunctor.indEquiv`), for `Z_{a,b}` with
   `OΛ_a ⊗ OΛ_b` acting through `θ ∘ w₀` on each factor (`EQFunctor.ZabTw`); for the action through `θ_a ⊗ θ_b`
-  no such isomorphism exists (`EQFunctor.no_indEquiv_untwisted`, `a = b = 2`; ERRATA [EQ] 23). The `⊠` form of
+  no such isomorphism exists (`EQFunctor.no_indEquiv_untwisted`, `a = b = 2`; ERRATA [EQ] 23). With it, the induction
+  half of Cor 4.21 (`Frontier.EQInductionFunctor`): `J^A ∘ Ind ≅ I ∘ J^A` on abelian categories (`EQFunctor.indIsoA`,
+  `Ind` = extension of scalars along `ι`, `I = Z_{a,b}^∨ ⊗ (-)`), on homotopy categories (`indIsoH`) and on derived
+  categories (`indIsoD`; `D(ONH_a ⊗ ONH_b) = 0`, `onhTensor_isZero_derivedCategory`), from the adjunctions `Ind ⊣ Res`
+  and `Z_{a,b}^∨ ⊗ (-) ⊣ Z_{a,b} ⊗ (-)` (generic: `Frontier.EQDualAdjunction`, `RightBasis.dualAdjunction`, for a
+  bimodule with a finite right basis). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
