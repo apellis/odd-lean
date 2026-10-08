@@ -291,7 +291,7 @@ These errata are what the formalization turned up; they are not a complete revie
 
 ## [EQ] A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
 
-In progress; strands are numbered from `0` in Lean.
+In progress (Thm 3.18 and Thm 4.17 are proved; see the README); strands are numbered from `0` in Lean.
 
 1. **§2.1, the twist of `U⁺ ⊗ U⁺` [F→T].** With the displayed twist `(b₁⊗b₂)(b₁'⊗b₂') = v^{|b₂||b₁'|} b₁b₁' ⊗ b₂b₂'`,
    `v = √−1`, no algebra map `r` with `r(E) = E⊗1 + 1⊗E` exists, on `u⁺` or on `U⁺`

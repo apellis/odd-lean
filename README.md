@@ -11,7 +11,8 @@ Sources (numbering refers to these arXiv versions):
   diagrammatics*, arXiv:1111.1320v1.
 - **[E]** A. P. Ellis, *The odd Littlewood–Richardson rule*, arXiv:1111.3932v1.
 - **[EQ]** A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
-  (in progress).
+  (in progress: Thm 3.18 and Thm 4.17 are proved, over every field and over `ℤ`; see the [EQ] status
+  below).
 
 The library builds with no `sorry` and no added axioms; the axiom closures of the results contain
 only `propext`, `Classical.choice` and `Quot.sound`.
@@ -295,8 +296,9 @@ permutation action):
   The comparison `⟨1⟩ ⋙ ⟨1⟩ ≅ ⟦1⟧ ⋙ Π` is an odd natural isomorphism
   (`internalShiftSquaredOddIso`); an even isomorphism between the twice-internally-shifted
   regular compact object and its translation is impossible (`no_even_shiftTwo_translation_regular`).
-  This does not assert tensor-product multiplicativity, the case over `ℤ`, or the later
-  nilHecke categorification theorems.
+  This does not assert tensor-product multiplicativity or the case over `ℤ`; the nilHecke
+  categorification theorems (Thm 3.18, Thm 4.17) are proved in `Frontier.EQThm318*` and
+  `Frontier.EQThm417*` (above).
 - The diagonal half-grading on the existing integral odd nilHecke dg ring (`Frontier.EQDiagonal`):
   `EQDiagonal.onh n` places `ONH_{n+2}`'s ordinary degree `k` at `(2k, k mod 2)`; its actual dots
   and crossings have bidegrees `(2,1)` and `(-2,1)`. The original differential is unchanged,
