@@ -173,6 +173,10 @@ import OddMath.Frontier.EQK0Gaussian
 import OddMath.Frontier.EQK0Field
 import OddMath.Frontier.EQK0Coproduct
 import OddMath.Frontier.EQK0Mult
+import OddMath.Frontier.EQK0Assembly
+import OddMath.Frontier.EQThm417
+import OddMath.Frontier.EQOPolTensor
+import OddMath.Frontier.EQThm318
 import OddMath.Frontier.EQFunctorBox
 import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks

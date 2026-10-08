@@ -242,7 +242,19 @@ permutation action):
   is dg-lean's diagonal transport of this functor (`multKHalf`, acting by `I_{a,b}` on the four weight blocks and
   commuting with the internal shift; it is not identified with the derived tensor product by the regraded bimodule).
   Its symbol composed with Lemma 4.16 gives (2.1), `E^{(a)} E^{(b)} = [a+b, a]_{√−1} E^{(a+b)}` (`EQK0.multK0_ePowClass`).
-  Not yet formalized: the assembled bialgebra isomorphisms of Thm 3.18 and Thm 4.17 and the integral versions (see the
+  **Thm 4.17** (`Frontier.EQThm417`, over a field `K`, with the conventions above): `U⁺ ≅ ⨁_n K₀(D(OΛ_n))` as
+  `ℤ[√−1]`-modules, `E^{(n)} ↦ [OΛ_n⟨-binom(n,2)⟩]` (`EQK0.thm_4_17_equiv`), intertwining the product of `U⁺` with
+  the multiplication `[I]` (Lemma 4.16 followed by the symbols of `I_{a,b}`; `thm_4_17_mul`) and the coproduct (2.2)
+  for the twist `−1` with the comultiplication `[R]` (symbols of `R_{a,b}` followed by Lemma 4.16; `thm_4_17_comul`);
+  so `K₀(D(OΛ))` with `[I]`, `[R]` is a twisted bialgebra isomorphic to `U⁺` (the algebra bookkeeping is
+  `Frontier.EQK0Assembly`). **Thm 3.18** (`Frontier.EQThm318`, same conventions): `ONH_0 = OPol_0`, `ONH_1 = OPol_1`
+  have `K₀ ≅ ℤ[√−1]` and `K₀(D(ONH_n)) = 0` for `n ≥ 2`; with `ι_{m,n}` the dg ring isomorphism
+  `OPol_m ⊗ OPol_n ≅ OPol_{m+n}` (`EQFunctor.opolTensorDG`, `opolTensorEquiv`; followed by `OPol_2 ⊆ ONH_2` for
+  `ι_{1,1}`) and the Künneth isomorphism (3.39) (`EQK0.kunneth`), the symbols of `Ind_{m,n}` and `Res_{m,n}` give the
+  structure constants of `u⁺`: `1·1 = 1`, `1·E = E·1 = E`, `E·E = 0`, `r(1) = 1 ⊗ 1`, `r(E) = E ⊗ 1 + 1 ⊗ E`
+  (`thm_3_18_mul_one_one`, `thm_3_18_mul_one_E`, `thm_3_18_mul_E_one`, `thm_3_18_mul_E_E`, `thm_3_18_comul_one`,
+  `thm_3_18_comul_E_left`, `thm_3_18_comul_E_right`); all other components have source or target `0`. `Res_{m,n}`
+  for `m + n ≤ 1` is computed as derived induction along `ι_{m,n}^{-1}`. The integral versions are open (see the
   next item).
 - Ground ring of §4.4 (footnote 5 asserts that the results hold over `ℤ`, by formality and Thm 2.7): the
   functors,
