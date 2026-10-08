@@ -180,6 +180,7 @@ import OddMath.Frontier.EQThm417Int
 import OddMath.Frontier.EQKunnethInt
 import OddMath.Frontier.EQKunnethIntAll
 import OddMath.Frontier.EQOPolTensor
+import OddMath.Frontier.EQOnhTensor
 import OddMath.Frontier.EQThm318
 import OddMath.Frontier.EQThm318Int
 import OddMath.Frontier.EQFunctorBox
