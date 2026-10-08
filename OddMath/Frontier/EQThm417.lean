@@ -119,8 +119,7 @@ variable [∀ a b, CatModule.HasDerivedCategory.{0, 0} (SingleObj (ExtendScalars
 /-- The `(a, b)`-component of `[I]`: Lemma 4.16 followed by the symbol of the half-graded
 multiplication functor (`EQK0.multK0`), as a `ℤ[√−1]`-linear map. -/
 def multK0Lin (a b : ℕ) : K0n K a ⊗[GaussianInt] K0n K b →ₗ[GaussianInt] K0n K (a+b) :=
-  (superK0cGaussianMap (Diagonal.transportK0 _ _ (multK K a b)
-    fun _ h => isCompact_multK_obj K a b h)) ∘ₗ (lemma_4_16.{0} K a b).toLinearMap
+  (superK0cGaussianMap (multKHalfK0Map K a b)) ∘ₗ (lemma_4_16.{0} K a b).toLinearMap
 
 /-- **The multiplication `[I]` on `K₀(D(OΛ))`**: on the `(a, b)`-component, the Künneth isomorphism
 of Lemma 4.16 followed by the symbol of the multiplication functor `I_{a,b}` (Definition 4.14). -/
