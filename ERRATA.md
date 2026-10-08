@@ -416,3 +416,13 @@ In progress (Thm 3.18 and Thm 4.17 are proved; see the README); strands are numb
    (every cocycle in degree not divisible by 4 is a coboundary, `osym_eq_d_of_cocycle`, by Prop A.2 (2)), so their compact
    derived categories have `K₀ ≃ ℤ` (`baseK0OsymInt`, `baseK0OsymABInt`, from `DG.DGRing.K0.equivIntOfIsConnectedInt` in
    dg-lean), and Theorem 4.17 holds over ℤ (`thm_4_17_int_equiv`, `thm_4_17_int_mul`, `thm_4_17_int_comul`).
+23. **§4.3, Definition 4.6, and §4.4, the induction half of Corollary 4.21 [G].** Definition 4.6 calls
+   `Z_{a,b} = OΛ̃_a ⊠ OΛ̃_b · z` an `(OΛ_{a,b}, OΛ_{a+b})`-bimodule without saying how `OΛ_{a,b} = OΛ_a ⊗ OΛ_b`
+   acts on it, and the proof of the induction half of Corollary 4.21 is omitted ("similar and easier"). That half
+   needs an isomorphism of dg `(ONH_a ⊗ ONH_b, OΛ_{a+b})`-bimodules `(Z_a ⊠ Z_b) ⊗_{OΛ_{a,b}} Z_{a,b} ≅ ι^* Z_{a+b}`.
+   If `f ⊗ g` acts by multiplication by `θ(f) ⊠ θ(g)`, no such isomorphism exists: for `a = b = 2` it would force
+   `(w₀ × w₀)(φ(e_2)) = φ(e_2)`, where `z · h = φ(h) z` (`EQFunctor.untwisted_constraint`,
+   `EQFunctor.no_indEquiv_untwisted`). If `f ⊗ g` acts through `θ ∘ w₀` on each factor (the map through which `OΛ_n`
+   acts on `Z_n` on the right), the isomorphism exists, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`EQFunctor.indEquiv`, for
+   `a, b ≥ 2`). The differentials need no further sign or automorphism: `s_{α_b}(y) + {a} θ_b(e_1)(y)` is the
+   `y`-part of `s_{α_{a+b}}` (`EQFunctor.sAlpha_zAlpha_eq`).

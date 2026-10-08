@@ -13,7 +13,8 @@ Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXi
   diagram on the strands `[p, p + m + 2)`) as a morphism of dg rings: it preserves the grading
   (`EQOnhDGCompare`) and the differential (`d x = x²`, `d ∂ = 1` on generators,
   `ONH.map_d_of_generators`).
-* `ONH.iota a' b' : ONH_{a'+2} ⊗ ONH_{b'+2} → ONH_{a'+b'+4}`, `g ⊗ h ↦ g h` with `g` on the first
+* `ONH.iota a' b' : ONH_{a'+2} ⊗ ONH_{b'+2} → ONH_{a'+b'+4}` (the target is indexed as
+  `ONH (a' + 2 + b')`, of rank `(a' + 2) + (b' + 2)`), `g ⊗ h ↦ g h` with `g` on the first
   `a' + 2` strands and `h` on the last `b' + 2`, a morphism of dg rings out of dg-lean's graded tensor
   product (Koszul sign rule), well defined since diagrams on disjoint windows supercommute
   (`OddBialgebra.winPiece_supercomm`).
@@ -123,33 +124,33 @@ variable (a b : ℕ)
 local notation "𝒜" => DGAlgebra.gradingSubmodule ℤ (ONH a)
 local notation "ℬ" => DGAlgebra.gradingSubmodule ℤ (ONH b)
 
-theorem le_left : 0 + (a + 2) ≤ (a + b + 2) + 2 := by omega
-theorem le_right : (a + 2) + (b + 2) ≤ (a + b + 2) + 2 := by omega
+theorem le_left : 0 + (a + 2) ≤ (a + 2 + b) + 2 := by omega
+theorem le_right : (a + 2) + (b + 2) ≤ (a + 2 + b) + 2 := by omega
 
 /-- The left block `ONH_{a+2} → ONH_{a+b+4}` (strands `[0, a + 2)`). -/
-abbrev iotaL : ONH a →ᵈᵍ+* ONH (a + b + 2) := windowDG a (a + b + 2) 0 (le_left a b)
+abbrev iotaL : ONH a →ᵈᵍ+* ONH (a + 2 + b) := windowDG a (a + 2 + b) 0 (le_left a b)
 
 /-- The right block `ONH_{b+2} → ONH_{a+b+4}` (strands `[a + 2, a + b + 4)`). -/
-abbrev iotaR : ONH b →ᵈᵍ+* ONH (a + b + 2) := windowDG b (a + b + 2) (a + 2) (le_right a b)
+abbrev iotaR : ONH b →ᵈᵍ+* ONH (a + 2 + b) := windowDG b (a + 2 + b) (a + 2) (le_right a b)
 
 theorem iotaL_mul_iotaR {i j : ℤ} (f : 𝒜 i) (g : ℬ j) :
     (iotaL a b).toIntAlgHom (f : ONH a) * (iotaR a b).toIntAlgHom (g : ONH b) =
       (-1 : ℤˣ) ^ (j * i) •
         ((iotaR a b).toIntAlgHom (g : ONH b) * (iotaL a b).toIntAlgHom (f : ONH a)) := by
-  have hx := windowRing_mem_winPiece a (a + b + 2) 0 (le_left a b) f.2
-  have hy := windowRing_mem_winPiece b (a + b + 2) (a + 2) (le_right a b) g.2
-  have hc : windowRing b (a + b + 2) (a + 2) (le_right a b) g *
-      windowRing a (a + b + 2) 0 (le_left a b) f = (i * j).negOnePow •
-        (windowRing a (a + b + 2) 0 (le_left a b) f *
-          windowRing b (a + b + 2) (a + 2) (le_right a b) g) :=
+  have hx := windowRing_mem_winPiece a (a + 2 + b) 0 (le_left a b) f.2
+  have hy := windowRing_mem_winPiece b (a + 2 + b) (a + 2) (le_right a b) g.2
+  have hc : windowRing b (a + 2 + b) (a + 2) (le_right a b) g *
+      windowRing a (a + 2 + b) 0 (le_left a b) f = (i * j).negOnePow •
+        (windowRing a (a + 2 + b) 0 (le_left a b) f *
+          windowRing b (a + 2 + b) (a + 2) (le_right a b) g) :=
     winPiece_supercomm hx hy (by omega)
-  change windowRing a (a + b + 2) 0 (le_left a b) f * windowRing b (a + b + 2) (a + 2) (le_right a b) g =
-    koszulSign (j * i) • (windowRing b (a + b + 2) (a + 2) (le_right a b) g *
-      windowRing a (a + b + 2) 0 (le_left a b) f)
+  change windowRing a (a + 2 + b) 0 (le_left a b) f * windowRing b (a + 2 + b) (a + 2) (le_right a b) g =
+    koszulSign (j * i) • (windowRing b (a + 2 + b) (a + 2) (le_right a b) g *
+      windowRing a (a + 2 + b) 0 (le_left a b) f)
   rw [hc, smul_smul, mul_comm j i, Int.units_mul_self, one_smul]
 
 /-- `g ⊗ h ↦ g h`, `ONH_{a+2} ⊗ ONH_{b+2} → ONH_{a+b+4}` (an algebra morphism over `ℤ`). -/
-def iotaAlgHom : (𝒜 ᵍ⊗[ℤ] ℬ) →ₐ[ℤ] ONH (a + b + 2) :=
+def iotaAlgHom : (𝒜 ᵍ⊗[ℤ] ℬ) →ₐ[ℤ] ONH (a + 2 + b) :=
   GradedTensorProduct.lift _ _ (iotaL a b).toIntAlgHom (iotaR a b).toIntAlgHom
     fun _ _ f g => iotaL_mul_iotaR a b f g
 
@@ -158,9 +159,9 @@ theorem iotaAlgHom_tmul (f : ONH a) (g : ONH b) :
   GradedTensorProduct.lift_tmul _ _ _ _ _ f g
 
 theorem iotaAlgHom_mem_grading {k : ℤ} {t : 𝒜 ᵍ⊗[ℤ] ℬ} (ht : t ∈ DG.grading k) :
-    iotaAlgHom a b t ∈ DG.grading (M := ONH (a + b + 2)) k := by
+    iotaAlgHom a b t ∈ DG.grading (M := ONH (a + 2 + b)) k := by
   refine GradedTensorProduct.grading_induction _ _ ht
-    (motive := fun t => iotaAlgHom a b t ∈ DG.grading (M := ONH (a + b + 2)) k)
+    (motive := fun t => iotaAlgHom a b t ∈ DG.grading (M := ONH (a + 2 + b)) k)
     (by rw [map_zero]; exact zero_mem _) ?_ ?_
   · rintro i j f g rfl
     rw [iotaAlgHom_tmul]
@@ -178,7 +179,7 @@ theorem iotaAlgHom_d (t : 𝒜 ᵍ⊗[ℤ] ℬ) : iotaAlgHom a b (DG.d t) = DG.d
   | add x y hx hy => rw [d_add, map_add, hx, hy, map_add, d_add]
 
 /-- **`ι_{a,b} : ONH_a ⊗ ONH_b → ONH_{a+b}`** (`a, b ≥ 2`) as a morphism of dg rings. -/
-def iota : (𝒜 ᵍ⊗[ℤ] ℬ) →ᵈᵍ+* ONH (a + b + 2) where
+def iota : (𝒜 ᵍ⊗[ℤ] ℬ) →ᵈᵍ+* ONH (a + 2 + b) where
   __ := (iotaAlgHom a b).toRingHom
   map_mem' ht := iotaAlgHom_mem_grading a b ht
   map_d' t := iotaAlgHom_d a b t
