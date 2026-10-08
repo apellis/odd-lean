@@ -175,6 +175,8 @@ import OddMath.Frontier.EQK0Coproduct
 import OddMath.Frontier.EQK0Mult
 import OddMath.Frontier.EQK0Assembly
 import OddMath.Frontier.EQThm417
+import OddMath.Frontier.EQK0Int
+import OddMath.Frontier.EQThm417Int
 import OddMath.Frontier.EQOPolTensor
 import OddMath.Frontier.EQThm318
 import OddMath.Frontier.EQThm318Int
