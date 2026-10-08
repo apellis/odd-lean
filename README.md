@@ -266,8 +266,11 @@ permutation action):
   structure constants hold (`thm_3_18_int_*`). For `E · E` the Künneth map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]`
   (`kunnethMapInt`) suffices, since the product lands in `K₀(D(ONH_2)) = 0`; it is in fact the Künneth
   isomorphism over `ℤ` (`Frontier.EQKunnethInt`: `OPol_1 ⊗ OPol_1` has `Z¹ = 0` and torsion-free `H²`, so
-  `K₀(D(OPol_1 ⊗ OPol_1)^c) ≅ ℤ`; `EQK0Int.kunnethOneOneInt`, `kunnethMapInt_one_one_eq`), so (3.39) holds over `ℤ`
-  for all `m, n ≤ 1`.
+  `K₀(D(OPol_1 ⊗ OPol_1)^c) ≅ ℤ`; `EQK0Int.kunnethOneOneInt`, `kunnethMapInt_one_one_eq`). **The Künneth
+  isomorphism (3.39) holds over `ℤ` for all `m, n`** (`Frontier.EQKunnethIntAll`, `EQK0Int.kunnethIntAll`,
+  `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]` by `kunnethIntAll_reg`, with `ONH_N` = `EQK0Int.ONHAll N` for every
+  `N` and `ONH_m ⊗ ONH_n` dg-lean's graded tensor product over `ℤ`): for `m ≥ 2` or `n ≥ 2` the dg ring
+  `ONH_m ⊗ ONH_n` is acyclic (`d (∂₁ ⊗ 1) = 1`, resp. `d (1 ⊗ ∂₁) = 1`), so both sides vanish.
 - Ground ring of §4.4 (footnote 5 asserts that the results hold over `ℤ`, by formality and Thm 2.7). Status:
   **Thm 4.17 is proved over `ℤ`** (`Frontier.EQThm417Int`, the integral dg rings `OΛ_n`, `OΛ_{a,b}` themselves), by
   a different argument than the footnote's. The footnote's route has a gap: Corollary 2.6 (`K₀(A) ≅ K₀(A⁰)`) assumes
