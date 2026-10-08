@@ -410,3 +410,9 @@ In progress; strands are numbered from `0` in Lean.
    `invert_grankHom_eq_printed_iff`), and differ for `a = (1, 1)`, `b = (2)` (`EQBlocks.prop_4_13_three_printed_false`).
    The printed formula is the graded rank after placing the generator of each `Z_a` in degree `−D_a`, the normalization
    under which `Z_a` itself has the symmetric graded rank `[n; a]_q` (as stated for `Z_{a,b}` before Cor 4.11).
+22. **§4.4, footnote 5, the results over ℤ [G].** The footnote derives the statements of §4.4 over ℤ from formality and
+   Theorem 2.7, but Corollary 2.6 needs a semisimple degree-0 part, which formality does not supply over ℤ. The statements
+   hold over ℤ by a different route: `OΛ_n` and `OΛ_{a,b}` are connected over ℤ with `Z¹ = 0` and torsion-free `H²`
+   (every cocycle in degree not divisible by 4 is a coboundary, `osym_eq_d_of_cocycle`, by Prop A.2 (2)), so their compact
+   derived categories have `K₀ ≃ ℤ` (`baseK0OsymInt`, `baseK0OsymABInt`, from `DG.DGRing.K0.equivIntOfIsConnectedInt` in
+   dg-lean), and Theorem 4.17 holds over ℤ (`thm_4_17_int_equiv`, `thm_4_17_int_mul`, `thm_4_17_int_comul`).
