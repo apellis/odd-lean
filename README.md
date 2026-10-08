@@ -216,7 +216,13 @@ permutation action):
   `Z_N^∨` finite-cell over `OΛ_N`, `znDual_isKProjective`), fully faithful since `D(ONH_N) = 0` (Cor 4.19 for `N ≥ 2`,
   `jFullyFaithful`); for `N ≤ 1` (`Frontier.EQFunctorEmbeddingSmall`, `ONH_N = OPol_N`) `J_N` is an equivalence, since
   `Z_N^∨ ≅ OΛ_N` and `J_N ≅` derived induction along the isomorphism `OPol_N ≅ OΛ_N` (`jSmall_isEquivalence`,
-  `jSmallFullyFaithful`; generic `bimoduleDerivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The `⊠` form of
+  `jSmallFullyFaithful`; generic `bimoduleDerivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The abelian and
+  homotopy Morita equivalences (4.30)–(4.31) (`Frontier.EQFunctorEmbeddingAbelian`): `J^A_N : ONH_N-dmod ≌ OΛ_N-dmod`,
+  `M ↦ Z_N^∨ ⊗_{ONH_N} M`, with quasi-inverse `Z_N ⊗_{OΛ_N} (-)` (`EQFunctor.JA`; `JASmall` for `N ≤ 1`), and
+  `J^H_N : H(ONH_N) ≌ H(OΛ_N)` (`JH`, `JHSmall`), from the bimodule isomorphisms `Z_N ⊗_{OΛ_N} Z_N^∨ ≅ ONH_N` and
+  `Z_N^∨ ⊗_{ONH_N} Z_N ≅ OΛ_N` (`Frontier.EQZnMorita`: `znTensorDualEquiv`, `znDualTensorEquiv`; generic
+  `Frontier.EQMoritaBasis`: a module with a finite right basis on which `E` acts faithfully by all right-linear
+  endomorphisms, `EQFunctor.FullAction`) and dg-lean's Morita equivalence from invertible bimodules. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
@@ -412,7 +418,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `6cf0ba0d4f19bdceed05f3caf8b83e5b0929d243` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `41353a4e6b88ed95b004b5f23d18fdc8abcfab08` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
