@@ -13,12 +13,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      # Some modules need more than 11 GB to compile (e.g. OddMath.Frontier.EKMoreGram), and two
-      # such processes together exceed the runner's 16 GB; the job is then terminated with
-      # SIGTERM before any later step (including the cache save) can run. Compile one Lean
-      # file at a time.
-      LEAN_NUM_THREADS: 1
+    # A cold build takes a few hours with the memory limits below; the build cache saved at the end
+    # makes later runs incremental.
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
       - name: Set up Lean and fetch the Mathlib cache
@@ -43,16 +40,21 @@ jobs:
           restore-keys: |
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      # OddMath.Frontier.EKMoreGram needs about 11 GB to compile; other large modules need up to
+      # about 6 GB, and the runner has 16 GB. Build its dependencies with two concurrent Lean
+      # processes, then the module alone, then the rest with two concurrent Lean processes.
+      - name: Build dependencies of EKMoreGram
+        env:
+          LEAN_NUM_THREADS: 2
+        run: lake build --wfail OddMath.Frontier.EKRestForgotten OddMath.Frontier.EKGeneralQNondeg OddMath.Frontier.EKRestDegree < /dev/null
+      - name: Build EKMoreGram
+        env:
+          LEAN_NUM_THREADS: 1
+        run: lake build --wfail OddMath.Frontier.EKMoreGram < /dev/null
       - name: Build
-        # Bounded so that a long cold build stops early and its partial results are saved below;
-        # a re-run then resumes from them.
-        run: |
-          # Memory diagnostics: used/total memory and the Lean files being compiled.
-          ( while sleep 20; do
-              echo "mem $(free -m | awk '/Mem/{print $3"/"$2" MB"}'):" \
-                $(ps -eo rss,args | awk '/[.]lean( |$)/ && !/awk/ {for (i=2;i<=NF;i++) if ($i ~ /[.]lean$/) f=$i; printf "%s(%d MB) ", f, $1/1024}')
-            done ) &
-          timeout 18m lake build --wfail < /dev/null
+        env:
+          LEAN_NUM_THREADS: 2
+        run: lake build --wfail < /dev/null
       - name: Axiom audit
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       - name: Save build cache
