@@ -4,6 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
@@ -12,11 +13,56 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # A cold build takes a few hours with the memory limits below; the build cache saved at the end
+    # makes later runs incremental.
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
+      - name: Set up Lean and fetch the Mathlib cache
+        uses: leanprover/lean-action@v1
         with:
+          build: false
+          test: false
+          lint: false
           use-mathlib-cache: true
-          build-args: --wfail
+          use-github-cache: false
+      # One cache entry per run attempt. Restores fall back to the newest entry for the same
+      # toolchain and manifest, then to the newest entry for the toolchain (oleans of modules
+      # unaffected by a dependency bump stay valid; Lake rebuilds the rest).
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      # OddMath.Frontier.EKMoreGram needs about 11 GB to compile; other large modules need up to
+      # about 6 GB, and the runner has 16 GB. Build its dependencies with two concurrent Lean
+      # processes, then the module alone, then the rest with two concurrent Lean processes.
+      - name: Build dependencies of EKMoreGram
+        env:
+          LEAN_NUM_THREADS: 2
+        run: lake build --wfail OddMath.Frontier.EKRestForgotten OddMath.Frontier.EKGeneralQNondeg OddMath.Frontier.EKRestDegree < /dev/null
+      - name: Build EKMoreGram
+        env:
+          LEAN_NUM_THREADS: 1
+        run: lake build --wfail OddMath.Frontier.EKMoreGram < /dev/null
+      - name: Build
+        env:
+          LEAN_NUM_THREADS: 2
+        run: lake build --wfail < /dev/null
       - name: Axiom audit
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+      - name: Save build cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .lake/build
+            .lake/packages/DG/.lake/build
+            .lake/packages/StringDiagrams/.lake/build
+          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
