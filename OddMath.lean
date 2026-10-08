@@ -259,6 +259,7 @@ import OddMath.Frontier.EQFunctorEmbeddingSmall
 import OddMath.Frontier.EQMoritaBasis
 import OddMath.Frontier.EQZnMorita
 import OddMath.Frontier.EQFunctorEmbeddingAbelian
+import OddMath.Frontier.EQFunctorEmbeddingTensor
 import OddMath.Frontier.EQZabBlocks
 import OddMath.Frontier.EQZabEndRankOne
 import OddMath.Frontier.EQZabBlocksDiff

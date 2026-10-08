@@ -222,7 +222,10 @@ permutation action):
   `J^H_N : H(ONH_N) ≌ H(OΛ_N)` (`JH`, `JHSmall`), from the bimodule isomorphisms `Z_N ⊗_{OΛ_N} Z_N^∨ ≅ ONH_N` and
   `Z_N^∨ ⊗_{ONH_N} Z_N ≅ OΛ_N` (`Frontier.EQZnMorita`: `znTensorDualEquiv`, `znDualTensorEquiv`; generic
   `Frontier.EQMoritaBasis`: a module with a finite right basis on which `E` acts faithfully by all right-linear
-  endomorphisms, `EQFunctor.FullAction`) and dg-lean's Morita equivalence from invertible bimodules. The `⊠` form of
+  endomorphisms, `EQFunctor.FullAction`) and dg-lean's Morita equivalence from invertible bimodules. On the
+  components `ONH_a ⊗ ONH_b` (`a, b ≥ 2`, `Frontier.EQFunctorEmbeddingTensor`): `J^A`, `J^H` with
+  `M ↦ (Z_a^∨ ⊠ Z_b^∨) ⊗_{ONH_a ⊗ ONH_b} M` (`EQFunctor.JA2`, `JH2`), from dg-lean's external tensor product of
+  dg bimodules and its interchange isomorphism. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
@@ -420,7 +423,7 @@ permutation action):
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
 string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `41353a4e6b88ed95b004b5f23d18fdc8abcfab08` (see
+[dg-lean](https://github.com/apellis/dg-lean) at `aa7f594c90a5a8de8200ad23656140d3d8aceee7` (see
 `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
