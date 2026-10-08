@@ -259,7 +259,9 @@ permutation action):
   `Frontier.EQK0Assembly`). **Thm 3.18** (`Frontier.EQThm318`, same conventions): `ONH_0 = OPol_0`, `ONH_1 = OPol_1`
   have `K₀ ≅ ℤ[√−1]` and `K₀(D(ONH_n)) = 0` for `n ≥ 2`; with `ι_{m,n}` the dg ring isomorphism
   `OPol_m ⊗ OPol_n ≅ OPol_{m+n}` (`EQFunctor.opolTensorDG`, `opolTensorEquiv`; followed by `OPol_2 ⊆ ONH_2` for
-  `ι_{1,1}`) and the Künneth isomorphism (3.39) (`EQK0.kunneth`), the symbols of `Ind_{m,n}` and `Res_{m,n}` give the
+  `ι_{1,1}`; for `m, n ≥ 2`, `ι_{m,n} : ONH_m ⊗ ONH_n → ONH_{m+n}` is the strand-window morphism of dg rings
+  `EQOnhDG.ONH.iota`, `Frontier.EQOnhTensor`) and the Künneth isomorphism (3.39) (`EQK0.kunneth`), the symbols of
+  `Ind_{m,n}` and `Res_{m,n}` give the
   structure constants of `u⁺`: `1·1 = 1`, `1·E = E·1 = E`, `E·E = 0`, `r(1) = 1 ⊗ 1`, `r(E) = E ⊗ 1 + 1 ⊗ E`
   (`thm_3_18_mul_one_one`, `thm_3_18_mul_one_E`, `thm_3_18_mul_E_one`, `thm_3_18_mul_E_E`, `thm_3_18_comul_one`,
   `thm_3_18_comul_E_left`, `thm_3_18_comul_E_right`); all other components have source or target `0`. `Res_{m,n}`
