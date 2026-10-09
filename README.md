@@ -276,7 +276,13 @@ permutation action):
   it defines `ι_{a,b} : ONH_a ⊗ ONH_b → ONH_{a+b}` (`EQLift.iotaAll`, a morphism of dg rings acting on
   `Z_{a+b} = Z_a ⊠ Z_b` factorwise, `iotaAll_smul_polyHom`; for `a, b ≥ 2` it is `ONH.iota`, `iotaAll_eq_iota`).
   Generic for full actions (`EQLift.indIsoAg`, `indIsoHg`); for `ONH`: `J^A ∘ Ind ≅ I ∘ J^A` and `J^H ∘ Ind ≅ I ∘ J^H`
-  for all `a`, `b` (`EQLift.indIsoAll`, `indIsoHAll`). The `⊠` form of
+  for all `a`, `b` (`EQLift.indIsoAll`, `indIsoHAll`).
+  The restriction half in all ranks (`Frontier.EQLiftRestrictionPoly`, `EQLiftRestriction`, `EQLiftResFunctor`): the
+  polynomial identities for `P^a` (`PAG_mul`, `dAlpha_PAG`, `tau_blockRev_swapG`) in every rank; for full actions,
+  `P^a ∈ E_{a+b}` (`PwG`; for `a, b ≥ 2` it is `Pw`, `PwG_eq_Pw`), `ONH^♮` as the right ideal `P^a E_{a+b}` regraded
+  (`ONHNatG`; stability under `ι(E_a ⊗ E_b)` comes from the bimodule map, no sign twist needed), the bimodule
+  isomorphism `((Z_a ⊠ Z_b) ⊗ Z^♮_{a,b}) ⊗ Z^∨_{a+b} ≅ ONH^♮_{a+b}` (`gEquivG`) and `R ∘ J^A ≅ J^A ∘ Res^♮`,
+  `R ∘ J^H ≅ J^H ∘ Res^♮` (`resIsoAg`, `resIsoHg`); for `ONH`, all `a`, `b`: `EQLift.resIsoAll`, `resIsoHAll`. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
