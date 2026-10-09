@@ -282,7 +282,14 @@ permutation action):
   `P^a ∈ E_{a+b}` (`PwG`; for `a, b ≥ 2` it is `Pw`, `PwG_eq_Pw`), `ONH^♮` as the right ideal `P^a E_{a+b}` regraded
   (`ONHNatG`; stability under `ι(E_a ⊗ E_b)` comes from the bimodule map, no sign twist needed), the bimodule
   isomorphism `((Z_a ⊠ Z_b) ⊗ Z^♮_{a,b}) ⊗ Z^∨_{a+b} ≅ ONH^♮_{a+b}` (`gEquivG`) and `R ∘ J^A ≅ J^A ∘ Res^♮`,
-  `R ∘ J^H ≅ J^H ∘ Res^♮` (`resIsoAg`, `resIsoHg`); for `ONH`, all `a`, `b`: `EQLift.resIsoAll`, `resIsoHAll`. The `⊠` form of
+  `R ∘ J^H ≅ J^H ∘ Res^♮` (`resIsoAg`, `resIsoHg`); for `ONH`, all `a`, `b`: `EQLift.resIsoAll`, `resIsoHAll`.
+  Derived categories in all ranks (`Frontier.EQLiftDerived`): the functors `J`, `J_2`, `Ind`, `I`, `R` for all `a`, `b`
+  (`JDAll`, `J2DAll`, `IndDAll`, `IDAll`, `RDAll`); `D(ONH_N) = 0` for `N ≥ 2` and `D(ONH_a ⊗ ONH_b) = 0` for `a ≥ 2` or
+  `b ≥ 2`; for `a + b ≥ 2`, `ONH^♮_{a+b}` is contractible, hence K-projective, over `ONH_a ⊗ ONH_b` and
+  `Res^♮ = ONH^♮ ⊗^L (-)` (`ResNatDAll`), with `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoDAll`); the induction half for `a ≥ 2`
+  or `b ≥ 2` (`indIsoDAll_of_two`). Derived induction along a composite of dg ring maps (`derivedInductionCompIso`).
+  Open: the derived level for `(a, b) ∈ {(0,0), (0,1), (1,0)}` (both halves) and the induction half for
+  `(a, b) = (1, 1)`, where `D(ONH_1 ⊗ ONH_1) ≠ 0` and `I_{1,1}` has to vanish. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
