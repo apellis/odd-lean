@@ -243,7 +243,12 @@ permutation action):
   `((Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z^♮_{a,b}) ⊗_{OΛ_{a+b}} Z_{a+b}^∨ ≅ ONH^♮_{a+b}` (`gEquiv`, `gEquiv_op_smul`), and
   `R ∘ J^A ≅ J^A ∘ Res^♮` on abelian categories (`resIsoA`; `Res^♮ = ONH^♮ ⊗ (-)`, `R = Z^♮_{a,b} ⊗ (-)`), on
   homotopy categories (`resIsoH`) and on derived categories (`resIsoD`, for every functor `D(ONH_{a+b}) → D(ONH_a ⊗ ONH_b)`,
-  both categories being zero). The `⊠` form of
+  both categories being zero). Definition 4.20 on derived categories (`Frontier.EQRestrictionDerived`):
+  `Res^♮ = ONH^♮ ⊗^L_{ONH_{a+b}} (-)` (`EQFunctor.ResNatD`, the derived tensor product with a dg bimodule), which needs
+  `ONH^♮` to be K-projective as a left `ONH_a ⊗ ONH_b`-module; it is even contractible, by the homotopy
+  `m ↦ (-1)^{|m|} m ∂_1` (generic: a dg `(A, B)`-bimodule is contractible as a left `A`-module as soon as `d t = 1` for
+  some `t ∈ B` of degree `-1`, `isContractible_of_d_op_smul_eq_one`; `onhNat_isKProjective`), so no resolution is
+  needed; with it `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoD`). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
