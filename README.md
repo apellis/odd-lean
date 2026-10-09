@@ -268,7 +268,15 @@ permutation action):
   `ONH^♮` to be K-projective as a left `ONH_a ⊗ ONH_b`-module; it is even contractible, by the homotopy
   `m ↦ (-1)^{|m|} m ∂_1` (generic: a dg `(A, B)`-bimodule is contractible as a left `A`-module as soon as `d t = 1` for
   some `t ∈ B` of degree `-1`, `isContractible_of_d_op_smul_eq_one`; `onhNat_isKProjective`), so no resolution is
-  needed; with it `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoD`). The `⊠` form of
+  needed; with it `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoD`).
+  The induction half of Cor 4.21 in all ranks `a, b ≥ 0` (`Frontier.EQLiftInduction`, `EQLiftFunctor`, `EQLiftAll`):
+  `ONH_N = EQK0Int.ONHAll N` (`OPol_N` for `N ≤ 1`) acts fully on `Z_N` for every `N` (`EQLift.fullActionAll`); the
+  bijection `Ψ : (Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z_{a,b} → Z_{a+b}`, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`gIndHom`), is compatible
+  with gradings, differentials and the right `OΛ_{a+b}`-actions in every rank, and transporting the left action along
+  it defines `ι_{a,b} : ONH_a ⊗ ONH_b → ONH_{a+b}` (`EQLift.iotaAll`, a morphism of dg rings acting on
+  `Z_{a+b} = Z_a ⊠ Z_b` factorwise, `iotaAll_smul_polyHom`; for `a, b ≥ 2` it is `ONH.iota`, `iotaAll_eq_iota`).
+  Generic for full actions (`EQLift.indIsoAg`, `indIsoHg`); for `ONH`: `J^A ∘ Ind ≅ I ∘ J^A` and `J^H ∘ Ind ≅ I ∘ J^H`
+  for all `a`, `b` (`EQLift.indIsoAll`, `indIsoHAll`). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with

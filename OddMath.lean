@@ -271,6 +271,9 @@ import OddMath.Frontier.EQRestrictionFunctor
 import OddMath.Frontier.EQRestrictionDerived
 import OddMath.Frontier.EQActionCompare
 import OddMath.Frontier.EQActionCompareRes
+import OddMath.Frontier.EQLiftInduction
+import OddMath.Frontier.EQLiftFunctor
+import OddMath.Frontier.EQLiftAll
 import OddMath.Frontier.EQZabBlocks
 import OddMath.Frontier.EQZabEndRankOne
 import OddMath.Frontier.EQZabBlocksDiff
