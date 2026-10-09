@@ -92,7 +92,7 @@ instance ZnDual.instDGBimodule (n : ℕ) : DGBimodule (osymDG (n+2)) (ONH n) (Zn
   RightDual.instDGBimodule
 
 /-- The dual basis of `Z_N^∨`, ordered by increasing `|A|`, is triangular. -/
-def znDualTriangular (N : ℕ) : EQFix.TriangularBasis (osymDG N) (RightDual (osymDG N) (Zn N)) :=
+def znDualTriangular (N : ℕ) : DG.TriangularBasis (osymDG N) (RightDual (osymDG N) (Zn N)) :=
   (znRightBasis N).dualTriangular (fun A => -totalDeg A.val) fun l i h => znRightBasis_key l i h
 
 /-- `Z_N^∨` is K-projective (finite-cell) as a left dg `OΛ_N`-module. -/
@@ -109,7 +109,7 @@ variable (n : ℕ) [CatModule.HasDerivedCategory.{w₁, 0} (SingleObj (ONH n))]
 /-- **Ellis–Qi, Definition 4.18**: `J_{n+2} = Z_{n+2}^∨ ⊗^L_{ONH_{n+2}} (-) :
 D(ONH_{n+2}) → D(OΛ_{n+2})`. -/
 abbrev J : DG.DerivedCategory (ONH n) ⥤ DG.DerivedCategory (osymDG (n+2)) :=
-  bimoduleDerivedTensor.{w₁, w₂, w₃, w₄} (osymDG (n+2)) (ONH n) (ZnDual n)
+  DGBimodule.derivedTensor.{w₁, w₂, w₃, w₄} (osymDG (n+2)) (ONH n) (ZnDual n)
     (znDual_isKProjective (n+2))
 
 /-- **Ellis–Qi, Corollary 4.19** (`N = n + 2 ≥ 2`): `J_{n+2}` is fully faithful, because

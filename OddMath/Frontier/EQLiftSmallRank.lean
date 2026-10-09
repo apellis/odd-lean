@@ -1,3 +1,4 @@
+import DG.Algebra.HomInv
 import OddMath.Frontier.EQLiftOneOne
 
 /-!
@@ -404,27 +405,6 @@ end Iota
 
 /-! ### Bijectivity in ranks `a + b ≤ 1` -/
 
-section Inv
-
-variable {R S : Type*} [Ring R] [DGAddCommGroup R] [Ring S] [DGAddCommGroup S] (f : R →ᵈᵍ+* S)
-  (hf : Function.Bijective f)
-
-/-- The inverse of a bijective morphism of dg rings. -/
-def dgRingHomInv : S →ᵈᵍ+* R where
-  toFun := Function.surjInv hf.2
-  map_one' := hf.1 (by rw [Function.surjInv_eq hf.2, map_one])
-  map_mul' x y := hf.1 (by rw [Function.surjInv_eq hf.2, map_mul, Function.surjInv_eq hf.2, Function.surjInv_eq hf.2])
-  map_zero' := hf.1 (by rw [Function.surjInv_eq hf.2, map_zero])
-  map_add' x y := hf.1 (by rw [Function.surjInv_eq hf.2, map_add, Function.surjInv_eq hf.2, Function.surjInv_eq hf.2])
-  map_mem' {n x} hx := DG.mem_grading_of_injective f.toRingHom.toAddMonoidHom (fun h => f.map_mem h) hf.1
-    (by change f (Function.surjInv hf.2 x) ∈ _; rwa [Function.surjInv_eq hf.2])
-  map_d' x := hf.1 (by rw [Function.surjInv_eq hf.2, f.map_d, Function.surjInv_eq hf.2])
-
-theorem apply_dgRingHomInv (x : S) : f (dgRingHomInv f hf x) = x := Function.surjInv_eq hf.2 x
-
-theorem dgRingHomInv_apply (a : R) : dgRingHomInv f hf (f a) = a := hf.1 (apply_dgRingHomInv f hf _)
-
-end Inv
 
 section ChiBij
 
@@ -459,8 +439,8 @@ variable {A B : ℕ} (hA : A ≤ 1) (hB : B ≤ 1) {EA EB : Type} [Ring EA] [DGA
 include HA HB in
 /-- `χ_A ⊗ χ_B` is bijective. -/
 theorem tChi_bijective : Function.Bijective (tChi hA hB EA EB) := by
-  let iA := dgRingHomInv _ (chiE_bijective hA HA)
-  let iB := dgRingHomInv _ (chiE_bijective hB HB)
+  let iA := DGRingHom.invOfBijective _ (chiE_bijective hA HA)
+  let iB := DGRingHom.invOfBijective _ (chiE_bijective hB HB)
   let t' : LABg A B →ᵈᵍ+* EAB EA EB :=
     (GradedTensorProduct.map (OddMath.Frontier.EQK0.intDGAlgHom iA)
       (OddMath.Frontier.EQK0.intDGAlgHom iB)).toDGRingHom
@@ -470,12 +450,12 @@ theorem tChi_bijective : Function.Bijective (tChi hA hB EA EB) := by
   · induction s using GradedTensorProduct.induction_on_tmul with
     | zero => rw [map_zero, map_zero]
     | @tmul i j a ha b hb =>
-      rw [tChi_tmul, ht', dgRingHomInv_apply, dgRingHomInv_apply]
+      rw [tChi_tmul, ht', DGRingHom.invOfBijective_apply, DGRingHom.invOfBijective_apply]
     | add s s' hs hs' => rw [map_add, map_add, hs, hs']
   · induction r using GradedTensorProduct.induction_on_tmul with
     | zero => rw [map_zero, map_zero]
     | @tmul i j a ha b hb =>
-      rw [ht', tChi_tmul, apply_dgRingHomInv, apply_dgRingHomInv]
+      rw [ht', tChi_tmul, DGRingHom.apply_invOfBijective, DGRingHom.apply_invOfBijective]
     | add r r' hr hr' => rw [map_add, map_add, hr, hr']
 
 end TChiBij
@@ -538,14 +518,14 @@ theorem gIota_bijective : Function.Bijective (gIota EA EB HN) := by
 
 include hA hB hAB HA HB in
 /-- `ι⁻¹ : E_{A+B} → E_A ⊗ E_B`. -/
-def gIotaInv : EN →ᵈᵍ+* EAB EA EB := dgRingHomInv _ (gIota_bijective hA hB hAB HA HB HN)
+def gIotaInv : EN →ᵈᵍ+* EAB EA EB := DGRingHom.invOfBijective _ (gIota_bijective hA hB hAB HA HB HN)
 
 /-- `swap ∘ χ_{A+B} = (χ_A ⊗ χ_B) ∘ ι⁻¹`. -/
 theorem swapDGG_comp_chiE :
     (swapDGG A B).comp (chiE hAB EN) = (tChi hA hB EA EB).comp (gIotaInv hA hB hAB HA HB HN) :=
   DGRingHom.ext fun e => by
     obtain ⟨s, rfl⟩ := (gIota_bijective hA hB hAB HA HB HN).2 e
-    rw [DGRingHom.comp_apply, DGRingHom.comp_apply, gIotaInv, dgRingHomInv_apply]
+    rw [DGRingHom.comp_apply, DGRingHom.comp_apply, gIotaInv, DGRingHom.invOfBijective_apply]
     have := congrArg (fun φ => swapDGG A B (φ s)) (chiE_comp_gIota hA hB hAB HN)
     simp only [DGRingHom.comp_apply] at this
     rw [this, swapDGG_psiSmall]
@@ -590,10 +570,10 @@ theorem mem_natSubG_small (x : IONHG A B EA EB HN) : x ∈ natSubG A B EA EB HN 
   ⟨x, by rw [PwG_small hAB HN, one_mul]⟩
 
 theorem gIota_gIotaInv (e : EN) : gIota EA EB HN (gIotaInv hA hB hAB HA HB HN e) = e :=
-  apply_dgRingHomInv _ _ e
+  DGRingHom.apply_invOfBijective _ _ e
 
 theorem gIotaInv_gIota (s : EAB EA EB) : gIotaInv hA hB hAB HA HB HN (gIota EA EB HN s) = s :=
-  dgRingHomInv_apply _ _ s
+  DGRingHom.invOfBijective_apply _ _ s
 
 /-- `ONH^♮ ≅ E_A ⊗ E_B`, `x ↦ ι⁻¹(x)`, for `a + b ≤ 1` (`P^A = 1`, `ι` bijective). -/
 def natEquivSmall : ONHNatG A B EA EB HN ≃+ EAB EA EB where

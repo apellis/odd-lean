@@ -1,5 +1,6 @@
 import OddMath.Frontier.EQInductionBimodule
-import OddMath.Frontier.EQDualAdjunction
+import OddMath.Frontier.EQZabEndRankOne
+import DG.Homotopy.DualAdjunction
 import OddMath.Frontier.EQFunctorEmbedding
 import OddMath.Frontier.EQOnhDGAcyclic
 import DG.Homotopy.ExternalTensorKProjective
@@ -223,11 +224,11 @@ variable
 
 /-- `J` on `(ONH_a ⊗ ONH_b)`-modules: `(Z_a^∨ ⊠ Z_b^∨) ⊗^L_{ONH_a ⊗ ONH_b} (-)`. -/
 abbrev J2D : DG.DerivedCategory.{w₂, 0} (𝒪a ᵍ⊗[ℤ] 𝒪b) ⥤ DG.DerivedCategory.{w₂, 0} (Λa ᵍ⊗[ℤ] Λb) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (Λa ᵍ⊗[ℤ] Λb) (𝒪a ᵍ⊗[ℤ] 𝒪b) (ZZDual a b) (zzDual_isKProjective a b)
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (Λa ᵍ⊗[ℤ] Λb) (𝒪a ᵍ⊗[ℤ] 𝒪b) (ZZDual a b) (zzDual_isKProjective a b)
 
 /-- **Definition 4.14**: `I = Z_{a,b}^∨ ⊗^L_{OΛ_a ⊗ OΛ_b} (-)` (twisted left action, ERRATA [EQ] 23). -/
 abbrev ID : DG.DerivedCategory.{w₂, 0} (Λa ᵍ⊗[ℤ] Λb) ⥤ DG.DerivedCategory.{w₂, 0} (osymDG ((a + 2) + (b + 2))) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (osymDG ((a + 2) + (b + 2))) (Λa ᵍ⊗[ℤ] Λb) (ZabTwDual a b)
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (osymDG ((a + 2) + (b + 2))) (Λa ᵍ⊗[ℤ] Λb) (ZabTwDual a b)
     (zabTwDual_isKProjective a b)
 
 /-- **Ellis–Qi, Corollary 4.21, the induction half on derived categories**: `J ∘ Ind ≅ I ∘ J` on

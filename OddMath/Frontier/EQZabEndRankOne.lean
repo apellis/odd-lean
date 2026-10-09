@@ -11,7 +11,7 @@ The source builds endomorphisms of `Z_{a,b}` from the trace pairing,
 calls the algebra they span `E_{a,b}` (defined only diagrammatically), and asserts
 `E_{a,b} ≅ END(Z_{a,b})` "by a graded rank count". What is formalized:
 
-* generic (`RightBasis.eq_sum_rankOne`, `RightBasis.rankOne_injective`): for a right module `M`
+* dg-lean (`DG.RightBasis.eq_sum_rankOne`, `DG.RightBasis.rankOne_injective`): for a right module `M`
   with a finite basis `(b_i)` and dual basis `δ_i` (the coefficient maps, `RightBasis.coeffHom`),
   every right-linear additive endomorphism `f` of `M` is `Σ_i f(b_i) · δ_i(−)`, a sum of rank-one
   maps `m · φ(−)` (`rankOne m φ`), and the `m_i` in `Σ_i m_i · δ_i(−)` are unique; so the trace
@@ -26,45 +26,6 @@ namespace OddMath.Frontier.EQFunctor
 
 open DG MulOpposite
 
-section Generic
-
-variable {A : Type*} [Ring A] {M : Type*} [AddCommGroup M] [DGAddCommGroup M] [Module Aᵐᵒᵖ M]
-
-/-- The rank-one map `x ↦ m · φ(x)`. -/
-def rankOne (m : M) (φ : M →+ A) : M →+ M where
-  toFun x := op (φ x) • m
-  map_zero' := by rw [map_zero, op_zero, zero_smul]
-  map_add' x y := by rw [map_add, op_add, add_smul]
-
-omit [DGAddCommGroup M] in
-@[simp] theorem rankOne_apply (m : M) (φ : M →+ A) (x : M) : rankOne m φ x = op (φ x) • m := rfl
-
-variable {ι : Type*} [Fintype ι] (R : RightBasis A M ι)
-
-/-- Every right-linear additive endomorphism is `Σ_i f(b_i) · δ_i(−)`. -/
-theorem RightBasis.eq_sum_rankOne (f : M →+ M) (hf : ∀ (a : A) (x : M), f (op a • x) = op a • f x) :
-    f = ∑ i, rankOne (f (R.b i)) (R.coeffHom i) := by
-  ext x
-  conv_lhs => rw [← R.sum_coeff x]
-  rw [map_sum, AddMonoidHom.finsetSum_apply]
-  exact Finset.sum_congr rfl fun i _ => by rw [hf]; rfl
-
-/-- The coefficients `m_i` of `Σ_i m_i · δ_i(−)` are unique. -/
-theorem RightBasis.rankOne_injective [DecidableEq ι] (m m' : ι → M)
-    (h : ∑ i, rankOne (m i) (R.coeffHom i) = ∑ i, rankOne (m' i) (R.coeffHom i)) : m = m' := by
-  funext j
-  have key : ∀ m : ι → M, (∑ i, rankOne (m i) (R.coeffHom i)) (R.b j) = m j := by
-    intro m
-    rw [AddMonoidHom.finsetSum_apply, Finset.sum_eq_single j]
-    · rw [rankOne_apply, RightBasis.coeffHom_apply, R.coeff_basis, Pi.single_eq_same, op_one,
-        one_smul]
-    · intro i _ hij
-      rw [rankOne_apply, RightBasis.coeffHom_apply, R.coeff_basis, Pi.single_eq_of_ne hij,
-        op_zero, zero_smul]
-    · intro hj; exact absurd (Finset.mem_univ j) hj
-  rw [← key m, h, key m']
-
-end Generic
 
 variable (a b : ℕ)
 

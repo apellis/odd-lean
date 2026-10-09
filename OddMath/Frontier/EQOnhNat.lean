@@ -1,6 +1,6 @@
 import OddMath.Frontier.EQRestrictionPoly
 import OddMath.Frontier.EQInductionBimodule
-import OddMath.Frontier.EQRegrade
+import DG.Module.Regrade
 import DG.Module.Sub
 
 /-!

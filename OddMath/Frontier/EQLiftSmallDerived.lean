@@ -52,20 +52,20 @@ include hAB
 
 /-- `J ≅ χ^*` for `a + b ≤ 1`. -/
 def jDAllIsoChi : JDAll.{0, w₂} a b ≅ (chiE hAB (ONHAll (a + b))).derivedInduction.{0, 0, w₂, w₂} :=
-  bimoduleDerivedTensorIsoInduction (chiE hAB (ONHAll (a + b))) (znDual_isKProjective (a + b)) (znDualEquiv hAB)
+  DGBimodule.derivedTensorIsoInduction (chiE hAB (ONHAll (a + b))) (znDual_isKProjective (a + b)) (znDualEquiv hAB)
     (znDualEquiv_mem_iff hAB) (znDualEquiv_d hAB) (znDualEquiv_smul hAB) (znDualEquiv_op_smul_chiE hAB _)
 
 /-- `J ≅ (χ_a ⊗ χ_b)^*` on `D(ONH_a ⊗ ONH_b)` for `a + b ≤ 1`. -/
 def j2DAllIsoChi :
     J2DAll.{0, w₂} a b ≅
       (tChi (A := a) (B := b) (by omega) (by omega) (ONHAll a) (ONHAll b)).derivedInduction.{0, 0, w₂, w₂} :=
-  bimoduleDerivedTensorIsoInduction _ _ (zzDualEquivSmall (by omega) (by omega))
+  DGBimodule.derivedTensorIsoInduction _ _ (zzDualEquivSmall (by omega) (by omega))
     (zzDualEquivSmall_mem_iff _ _) (zzDualEquivSmall_d _ _) (zzDualEquivSmall_smul _ _)
     (zzDualEquivSmall_op_smul _ _ (ONHAll a) (ONHAll b))
 
 /-- `I ≅ ψ^*` for `a + b ≤ 1`. -/
 def iDAllIsoPsi : IDAll.{0, w₂} a b ≅ (psiSmall hAB).derivedInduction.{0, 0, w₂, w₂} :=
-  bimoduleDerivedTensorIsoInduction (psiSmall hAB) _ (zabDualEquivSmall hAB) (zabDualEquivSmall_mem_iff hAB)
+  DGBimodule.derivedTensorIsoInduction (psiSmall hAB) _ (zabDualEquivSmall hAB) (zabDualEquivSmall_mem_iff hAB)
     (zabDualEquivSmall_d hAB) (zabDualEquivSmall_smul hAB) (zabDualEquivSmall_op_smul hAB)
 
 theorem chiE_comp_iotaAll :
@@ -78,9 +78,9 @@ theorem chiE_comp_iotaAll :
 def indIsoDAllSmall :
     IndDAll.{0, w₂} a b ⋙ JDAll.{0, w₂} a b ≅ J2DAll.{0, w₂} a b ⋙ IDAll.{0, w₂} a b :=
   Functor.isoWhiskerLeft _ (jDAllIsoChi a b hAB) ≪≫
-    (derivedInductionCompIso (iotaAll a b) (chiE hAB (ONHAll (a + b)))).symm ≪≫
+    (DGRingHom.derivedInductionCompIso (iotaAll a b) (chiE hAB (ONHAll (a + b)))).symm ≪≫
     eqToIso (congrArg (fun φ => DGRingHom.derivedInduction.{0, 0, w₂, w₂} φ) (chiE_comp_iotaAll a b hAB)) ≪≫
-    derivedInductionCompIso _ (psiSmall hAB) ≪≫
+    DGRingHom.derivedInductionCompIso _ (psiSmall hAB) ≪≫
     Functor.isoWhiskerRight (j2DAllIsoChi a b hAB).symm _ ≪≫
     Functor.isoWhiskerLeft _ (iDAllIsoPsi a b hAB).symm
 
@@ -98,12 +98,12 @@ theorem onhNatAll_isKProjective_small : IsKProjective.{0} (ONHTensor a b) (ONHNa
 /-- **Definition 4.20** for `a + b ≤ 1`: `Res^♮ = ONH^♮ ⊗^L (-)`. -/
 abbrev ResNatDAllSmall :
     DG.DerivedCategory.{w₂, 0} (ONHAll (a + b)) ⥤ DG.DerivedCategory.{w₂, 0} (ONHTensor a b) :=
-  bimoduleDerivedTensor.{0, 0, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
+  DGBimodule.derivedTensor.{0, 0, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
     (onhNatAll_isKProjective_small a b hAB)
 
 /-- `Res^♮ ≅ (ι⁻¹)^*` for `a + b ≤ 1`. -/
 def resNatDAllSmallIso : ResNatDAllSmall.{w₂} a b hAB ≅ (iotaInvAll a b hAB).derivedInduction.{0, 0, w₂, w₂} :=
-  bimoduleDerivedTensorIsoInduction (iotaInvAll a b hAB) _ (natEquivSmall _ _ _ _ _ _) (natEquivSmall_mem_iff _ _ _ _ _ _)
+  DGBimodule.derivedTensorIsoInduction (iotaInvAll a b hAB) _ (natEquivSmall _ _ _ _ _ _) (natEquivSmall_mem_iff _ _ _ _ _ _)
     (natEquivSmall_d _ _ _ _ _ _) (natEquivSmall_smul _ _ _ _ _ _) (natEquivSmall_op_smul _ _ _ _ _ _)
 
 /-- **Ellis–Qi, Corollary 4.21, the restriction half on derived categories for `a + b ≤ 1`**: `R ∘ J ≅ J ∘ Res^♮`
@@ -111,11 +111,11 @@ on `D(ONH_{a+b})`, from `swap ∘ χ = (χ_a ⊗ χ_b) ∘ ι⁻¹` (`swapDGG_co
 def resNatIsoDAllSmall :
     JDAll.{0, w₂} a b ⋙ RDAll.{0, w₂} a b ≅ ResNatDAllSmall.{w₂} a b hAB ⋙ J2DAll.{0, w₂} a b :=
   Functor.isoWhiskerRight (jDAllIsoChi a b hAB) _ ≪≫
-    (derivedInductionCompIso (chiE hAB (ONHAll (a + b))) (swapDGG a b)).symm ≪≫
+    (DGRingHom.derivedInductionCompIso (chiE hAB (ONHAll (a + b))) (swapDGG a b)).symm ≪≫
     eqToIso (congrArg (fun φ => DGRingHom.derivedInduction.{0, 0, w₂, w₂} φ)
       (swapDGG_comp_chiE (A := a) (B := b) (by omega) (by omega) hAB (fullActionAll a) (fullActionAll b)
         (fullActionAll (a + b)))) ≪≫
-    derivedInductionCompIso (iotaInvAll a b hAB) _ ≪≫
+    DGRingHom.derivedInductionCompIso (iotaInvAll a b hAB) _ ≪≫
     Functor.isoWhiskerRight (resNatDAllSmallIso a b hAB).symm _ ≪≫
     Functor.isoWhiskerLeft _ (j2DAllIsoChi a b hAB).symm
 
@@ -133,7 +133,7 @@ theorem onhNatAll_isKProjective_all : IsKProjective.{0} (ONHTensor a b) (ONHNatA
 /-- **Definition 4.20** in all ranks: `Res^♮ = ONH^♮ ⊗^L (-) : D(ONH_{a+b}) → D(ONH_a ⊗ ONH_b)`. -/
 abbrev ResNatDAllAny :
     DG.DerivedCategory.{w₂, 0} (ONHAll (a + b)) ⥤ DG.DerivedCategory.{w₂, 0} (ONHTensor a b) :=
-  bimoduleDerivedTensor.{0, 0, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
+  DGBimodule.derivedTensor.{0, 0, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
     (onhNatAll_isKProjective_all a b)
 
 /-- **Ellis–Qi, Corollary 4.21, the restriction half on derived categories, all `a`, `b`**:

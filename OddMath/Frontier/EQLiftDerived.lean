@@ -99,12 +99,12 @@ variable
 
 /-- **Definition 4.18** in rank `a + b`: `J = Z^∨ ⊗^L_{ONH} (-)`. -/
 abbrev JDAll : DG.DerivedCategory.{w₂, 0} (ONHAll (a + b)) ⥤ DG.DerivedCategory.{w₂, 0} (osymDG (a + b)) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (osymDG (a + b)) (ONHAll (a + b)) (RightDual (osymDG (a + b)) (Zn (a + b)))
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (osymDG (a + b)) (ONHAll (a + b)) (RightDual (osymDG (a + b)) (Zn (a + b)))
     (znDual_isKProjective (a + b))
 
 /-- `J` on `D(ONH_a ⊗ ONH_b)`: `(Z_a^∨ ⊠ Z_b^∨) ⊗^L (-)`. -/
 abbrev J2DAll : DG.DerivedCategory.{w₂, 0} (ONHTensor a b) ⥤ DG.DerivedCategory.{w₂, 0} (LABg a b) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (LABg a b) (ONHTensor a b) (ZZDualg a b)
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (LABg a b) (ONHTensor a b) (ZZDualg a b)
     (ExternalTensor.isKProjective (znDual_isKProjective a) (znDual_isKProjective b))
 
 /-- `Ind`: derived induction along `ι_{a,b}` ((3.40)). -/
@@ -113,7 +113,7 @@ abbrev IndDAll : DG.DerivedCategory.{w₂, 0} (ONHTensor a b) ⥤ DG.DerivedCate
 
 /-- **Definition 4.14**: `I = Z_{a,b}^∨ ⊗^L_{OΛ_a ⊗ OΛ_b} (-)`. -/
 abbrev IDAll : DG.DerivedCategory.{w₂, 0} (LABg a b) ⥤ DG.DerivedCategory.{w₂, 0} (osymDG (a + b)) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (osymDG (a + b)) (LABg a b) (ZabDualG a b) (zdual_isKProjective (a := a) (b := b))
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (osymDG (a + b)) (LABg a b) (ZabDualG a b) (zdual_isKProjective (a := a) (b := b))
 
 /-- **Definition 4.15**: `R = Z^♮_{a,b} ⊗^L (-)`, derived induction along the block swap. -/
 abbrev RDAll : DG.DerivedCategory.{w₂, 0} (osymDG (a + b)) ⥤ DG.DerivedCategory.{w₂, 0} (LABg a b) :=
@@ -122,7 +122,7 @@ abbrev RDAll : DG.DerivedCategory.{w₂, 0} (osymDG (a + b)) ⥤ DG.DerivedCateg
 /-- **Definition 4.20** for `a + b ≥ 2`: `Res^♮ = ONH^♮ ⊗^L (-)`. -/
 abbrev ResNatDAll (h : 2 ≤ a + b) :
     DG.DerivedCategory.{w₂, 0} (ONHAll (a + b)) ⥤ DG.DerivedCategory.{w₂, 0} (ONHTensor a b) :=
-  bimoduleDerivedTensor.{w₁, w₁, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
+  DGBimodule.derivedTensor.{w₁, w₁, w₂, w₂} (ONHTensor a b) (ONHAll (a + b)) (ONHNatAll a b)
     (onhNatAll_isKProjective a b h)
 
 /-- **Corollary 4.21, the restriction half on derived categories, `a + b ≥ 2`**: `R ∘ J ≅ J ∘ Res^♮` for every

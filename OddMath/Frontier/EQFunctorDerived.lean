@@ -81,7 +81,7 @@ variable [CatModule.HasDerivedCategory.{w₁, 0} (SingleObj (osymABDG a b))]
 D(OΛ_a ⊗ OΛ_b) → D(OΛ_{a+b})` (Ellis–Qi, Definition 4.14): the derived tensor product with the dual
 bimodule `Z_{a,b}^∨`, which is K-projective as a left dg `OΛ_{a+b}`-module (Corollary 4.11). -/
 abbrev mult : DG.DerivedCategory (osymABDG a b) ⥤ DG.DerivedCategory (osymDG (a+b)) :=
-  bimoduleDerivedTensor.{w₁, w₂, w₃, w₄} (osymDG (a+b)) (osymABDG a b) (ZDual a b)
+  DGBimodule.derivedTensor.{w₁, w₂, w₃, w₄} (osymDG (a+b)) (osymABDG a b) (ZDual a b)
     zdual_isKProjective
 
 /-- `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z_{a,b}^∨` in `D(OΛ_{a+b})`. -/
@@ -89,7 +89,7 @@ def multSelfIso :
     (mult.{w₁, w₂, w₃, w₄} a b).obj
         (DG.DerivedCategory.Q.obj (DGModuleCat.of (osymABDG a b) (osymABDG a b))) ≅
       DG.DerivedCategory.Q.obj (DGModuleCat.of (osymDG (a+b)) (ZDual a b)) :=
-  bimoduleDerivedTensorSelfIso _ _ _ _
+  DGBimodule.derivedTensorSelfIso _ _ _ _
 
 /-- `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z_{a,b}^∨` is compact (Corollary 4.11: `Z_{a,b}^∨` is finite-cell). -/
 theorem isCompact_mult_self :
@@ -106,8 +106,8 @@ theorem K0_zdual [DG.HasDerivedCategory.{w₄, 0} (osymDG (a+b))] :
         (zdualFiniteCellFiltration a b).isCompact_Q_obj⟩ :
           PerfectDerivedCategory.{w₄, 0} (osymDG (a+b))) =
       ∑ μ : ParIdx a b, (totalDeg μ.1).negOnePow • DGRing.K0.self.{w₄} (osymDG (a+b)) := by
-  rw [EQFix.TriangularBasis.K0_mk (zdualTriangular a b)]
-  refine ((EQFix.FreeBasis.order fun μ : ParIdx a b => -(-totalDeg μ.1)).sum_comp
+  rw [DG.TriangularBasis.K0_mk (zdualTriangular a b)]
+  refine ((DG.FreeBasis.order fun μ : ParIdx a b => -(-totalDeg μ.1)).sum_comp
     (fun μ : ParIdx a b => (-totalDeg μ.1).negOnePow • DGRing.K0.self.{w₄} (osymDG (a+b)))).trans ?_
   simp only [Int.negOnePow_neg]
 
@@ -120,7 +120,7 @@ variable [CatModule.HasDerivedCategory.{w₁, 0} (SingleObj (osymABDG a b))]
 /-- `I_{a,b}` preserves compact objects. -/
 theorem isCompact_mult_obj {X : DG.DerivedCategory.{0, 0} (osymABDG a b)} (hX : IsCompact.{0} X) :
     IsCompact.{0} ((mult.{w₁, w₂, 0, 0} a b).obj X) :=
-  isCompact_obj_of_isCompact_self _ (isCompact_mult_self a b) hX
+  DG.DerivedCategory.isCompact_obj_of_isCompact_self _ (isCompact_mult_self a b) hX
 
 /-- The map `K₀(OΛ_a ⊗ OΛ_b) → K₀(OΛ_{a+b})` induced by the multiplication functor `I_{a,b}`. -/
 def K0Mult : DGRing.K0.{0, 0} (osymABDG a b) →+ DGRing.K0.{0, 0} (osymDG (a+b)) :=
@@ -191,7 +191,7 @@ variable [CatModule.HasDerivedCategory.{0, 0} (SingleObj (osymDG (a+b)))]
 /-- `R_{a,b}` preserves compact objects. -/
 theorem isCompact_comult_obj {X : DG.DerivedCategory.{0, 0} (osymDG (a+b))}
     (hX : IsCompact.{0} X) : IsCompact.{0} ((comult.{0, w₂, 0, 0} a b).obj X) :=
-  isCompact_obj_of_isCompact_self _
+  DG.DerivedCategory.isCompact_obj_of_isCompact_self _
     (DG.DerivedCategory.isCompact_Q_self.of_iso (comultSelfIso a b)) hX
 
 /-- The map `K₀(OΛ_{a+b}) → K₀(OΛ_a ⊗ OΛ_b)` induced by the comultiplication functor `R_{a,b}`. -/

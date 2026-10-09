@@ -1,3 +1,4 @@
+import DG.Module.RestrictScalars
 import OddMath.Frontier.EQInductionPoly
 import OddMath.Frontier.EQFunctorEmbeddingTensor
 import OddMath.Frontier.EQOnhTensor
@@ -51,28 +52,6 @@ open OddMath.Frontier.EQZab (inclX inclY osymAB)
 open OddMath.Frontier.EQOnhDG (ONH)
 open DG MulOpposite TensorProductOver.RightAction
 
-/-! ### Restriction of the left action of a dg bimodule -/
-
-section Restrict
-
-variable {A B C : Type*} [Ring A] [DGAddCommGroup A] [Ring B] [DGAddCommGroup B] [Ring C]
-  [DGAddCommGroup C] (φ : A →ᵈᵍ+* B) (M : Type*) [AddCommGroup M] [DGAddCommGroup M] [Module B M]
-  [Module Cᵐᵒᵖ M]
-
-instance restrictModuleOp : Module Cᵐᵒᵖ (RestrictScalars φ M) := inferInstanceAs (Module Cᵐᵒᵖ M)
-
-instance restrictDGRightModule [DGRightModule C M] : DGRightModule C (RestrictScalars φ M) :=
-  inferInstanceAs (DGRightModule C M)
-
-instance restrictSMulCommClass [SMulCommClass B Cᵐᵒᵖ M] :
-    SMulCommClass A Cᵐᵒᵖ (RestrictScalars φ M) where
-  smul_comm a c m := smul_comm (φ a) c (show M from m)
-
-/-- Restricting the left action of a dg `(B, C)`-bimodule along `φ : A →ᵈᵍ+* B`. -/
-instance restrictDGBimodule [DGBimodule B C M] : DGBimodule A C (RestrictScalars φ M) :=
-  DGBimodule.mk'
-
-end Restrict
 
 variable (a b : ℕ)
 

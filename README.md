@@ -198,12 +198,12 @@ permutation action):
   for `k > 0` (`thmA4_1_pos_lim`), the `p`-Lima Schur functions form a basis of `H_{/0}(Sym)` (`thmA4_1_zero_lim`), and
   `k[e_p^p, e_{2p}^p, …] ↪ Sym` is a quasi-isomorphism onto a polynomial algebra (`thmA4_2_lim`, `evELim_injective`).
 - Finite-cell filtrations in dg-lean form (`DG.FiniteCellFiltration`, from a generic triangular-basis criterion
-  `EQFix.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
+  `DG.TriangularBasis.finiteCellFiltration`): `Z_n` over `OΛ_n` (Prop 3.16 (1), `EQFix.znFiniteCellFiltration`,
   `zn_isKProjective_osym`) and `Z_{a,b}` over `OΛ_{a+b}` with `binom(a+b,b)` cells (Cor 4.8, `EQFix.zabFiniteCellFiltration`,
   `zab_hasLiftingProperty`), and the dual bimodule `Z^∨_{a,b}` over `OΛ_{a+b}` (Cor 4.11, `EQFunctor.zdualFiniteCellFiltration`,
-  `zdual_isKProjective`), built from a generic graded dual `EQFunctor.RightDual A M = HOM_A(M, A)` of a right dg module
+  `zdual_isKProjective`), built from dg-lean's graded dual `DG.RightDual A M = HOM_A(M, A)` of a right dg module
   (a dg `(A, B)`-bimodule for a dg `(B, A)`-bimodule `M`; the dual of a finite triangular right basis is a triangular
-  left basis, `RightBasis.dualTriangular`).
+  left basis, `DG.RightBasis.dualTriangular`).
 - **Conventions for Definitions 4.6 and 4.15** (one functor `I` and one functor `R`, used both in Theorem 4.17 and in
   Corollary 4.21). Ellis–Qi do not say how `OΛ_a ⊗ OΛ_b` acts on `Z_{a,b}` (Def 4.6) or how `OΛ_{a+b}` acts on `Z^♮_{a,b}`
   (Def 4.15). Here `g ∈ OΛ_{a,b}` acts on `Z_{a,b} = OΛ_a ⊠ OΛ_b · z` by left multiplication with `(w₀ × w₀)(g)`
@@ -225,7 +225,7 @@ permutation action):
   variables are not dg (`parityInv_not_dg`), so they give no dg bimodule at all.
 - §4.4, Definitions 4.14 and 4.15 on `ℤ`-graded derived categories (`Frontier.EQFunctor*`; `OΛ_a ⊗ OΛ_b` is the dg subring
   `EQFunctor.osymABDG a b` of `OPol_{a+b}`): the multiplication functor `I_{a,b} = Z^∨_{a,b} ⊗^L_{OΛ_a ⊗ OΛ_b} (−)`
-  (`EQFunctor.mult`, via the derived tensor product with a dg bimodule over dg rings, `bimoduleDerivedTensor`) and the
+  (`EQFunctor.mult`, via the derived tensor product with a dg bimodule over dg rings, `DG.DGBimodule.derivedTensor`) and the
   comultiplication functor `R_{a,b}`, derived induction along the block swap `OΛ_{a+b} → OΛ_a ⊗ OΛ_b`,
   `f(x, y) ↦ f(y, x)` (`EQFunctor.swapOsym`, `EQFunctor.comult`, left adjoint to
   restriction, `comultAdjunction`), both triangulated and preserving compact objects; `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z^∨_{a,b}`
@@ -236,13 +236,13 @@ permutation action):
   `Z_N^∨` finite-cell over `OΛ_N`, `znDual_isKProjective`), fully faithful since `D(ONH_N) = 0` (Cor 4.19 for `N ≥ 2`,
   `jFullyFaithful`); for `N ≤ 1` (`Frontier.EQFunctorEmbeddingSmall`, `ONH_N = OPol_N`) `J_N` is an equivalence, since
   `Z_N^∨ ≅ OΛ_N` and `J_N ≅` derived induction along the isomorphism `OPol_N ≅ OΛ_N` (`jSmall_isEquivalence`,
-  `jSmallFullyFaithful`; generic `bimoduleDerivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The abelian and
+  `jSmallFullyFaithful`; dg-lean's `DG.DGBimodule.derivedTensorIsoInduction`), so Cor 4.19 holds in every rank. The abelian and
   homotopy Morita equivalences (4.30)–(4.31) (`Frontier.EQFunctorEmbeddingAbelian`): `J^A_N : ONH_N-dmod ≌ OΛ_N-dmod`,
   `M ↦ Z_N^∨ ⊗_{ONH_N} M`, with quasi-inverse `Z_N ⊗_{OΛ_N} (-)` (`EQFunctor.JA`; `JASmall` for `N ≤ 1`), and
   `J^H_N : H(ONH_N) ≌ H(OΛ_N)` (`JH`, `JHSmall`), from the bimodule isomorphisms `Z_N ⊗_{OΛ_N} Z_N^∨ ≅ ONH_N` and
-  `Z_N^∨ ⊗_{ONH_N} Z_N ≅ OΛ_N` (`Frontier.EQZnMorita`: `znTensorDualEquiv`, `znDualTensorEquiv`; generic
-  `Frontier.EQMoritaBasis`: a module with a finite right basis on which `E` acts faithfully by all right-linear
-  endomorphisms, `EQFunctor.FullAction`) and dg-lean's Morita equivalence from invertible bimodules. On the
+  `Z_N^∨ ⊗_{ONH_N} Z_N ≅ OΛ_N` (`Frontier.EQZnMorita`: `znTensorDualEquiv`, `znDualTensorEquiv`; from dg-lean's
+  `DG.FullAction.mulEquiv`, `DG.FullAction.evEquiv` for a module with a finite right basis on which `E` acts
+  faithfully by all right-linear endomorphisms) and dg-lean's Morita equivalence from invertible bimodules. On the
   components `ONH_a ⊗ ONH_b` (`a, b ≥ 2`, `Frontier.EQFunctorEmbeddingTensor`): `J^A`, `J^H` with
   `M ↦ (Z_a^∨ ⊠ Z_b^∨) ⊗_{ONH_a ⊗ ONH_b} M` (`EQFunctor.JA2`, `JH2`), from dg-lean's external tensor product of
   dg bimodules and its interchange isomorphism. The bimodule behind the induction half of Cor 4.21
@@ -253,12 +253,12 @@ permutation action):
   half of Cor 4.21 (`Frontier.EQInductionFunctor`): `J^A ∘ Ind ≅ I ∘ J^A` on abelian categories (`EQFunctor.indIsoA`,
   `Ind` = extension of scalars along `ι`, `I = Z_{a,b}^∨ ⊗ (-)`), on homotopy categories (`indIsoH`) and on derived
   categories (`indIsoD`; `D(ONH_a ⊗ ONH_b) = 0`, `onhTensor_isZero_derivedCategory`), from the adjunctions `Ind ⊣ Res`
-  and `Z_{a,b}^∨ ⊗ (-) ⊣ Z_{a,b} ⊗ (-)` (generic: `Frontier.EQDualAdjunction`, `RightBasis.dualAdjunction`, for a
+  and `Z_{a,b}^∨ ⊗ (-) ⊣ Z_{a,b} ⊗ (-)` (dg-lean's `DG.RightBasis.dualAdjunction`, for a
   bimodule with a finite right basis). The restriction half of Cor 4.21 (`Frontier.EQRestrictionFunctor`, ranks
   `a, b ≥ 2`): `ONH^♮_{a+b}` of (4.32) as the right ideal `P^a ONH_{a+b}`, `P = x_{a+1} ⋯ x_{a+b}`, regraded so that
   `1^♮ = P^a` has degree `0` (`Frontier.EQOnhNat`: `EQFunctor.ONHNat`; it is stable under left multiplication by
-  `ι(ONH_a ⊗ ONH_b)`, `iota_mul_Pw`, and `d(P^a) = {a} e_1(y) P^a`, `d_Pw`; ERRATA [EQ] 24; generic regrading
-  `Frontier.EQRegrade`), `Z^♮_{a,b}` of Def 4.15 with `OΛ_{a+b}` acting through the block swap
+  `ι(ONH_a ⊗ ONH_b)`, `iota_mul_Pw`, and `d(P^a) = {a} e_1(y) P^a`, `d_Pw`; ERRATA [EQ] 24; regrading by dg-lean's
+  `DG.Regrade`), `Z^♮_{a,b}` of Def 4.15 with `OΛ_{a+b}` acting through the block swap
   `swapDG : OΛ_{a+b} → OΛ_a ⊗ OΛ_b`, `f(x, y) ↦ f(y, x)` (`EQFunctor.ZNat`), the bimodule isomorphism
   `((Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z^♮_{a,b}) ⊗_{OΛ_{a+b}} Z_{a+b}^∨ ≅ ONH^♮_{a+b}` (`gEquiv`, `gEquiv_op_smul`), and
   `R ∘ J^A ≅ J^A ∘ Res^♮` on abelian categories (`resIsoA`; `Res^♮ = ONH^♮ ⊗ (-)`, `R = Z^♮_{a,b} ⊗ (-)`), on
@@ -266,8 +266,8 @@ permutation action):
   both categories being zero). Definition 4.20 on derived categories (`Frontier.EQRestrictionDerived`):
   `Res^♮ = ONH^♮ ⊗^L_{ONH_{a+b}} (-)` (`EQFunctor.ResNatD`, the derived tensor product with a dg bimodule), which needs
   `ONH^♮` to be K-projective as a left `ONH_a ⊗ ONH_b`-module; it is even contractible, by the homotopy
-  `m ↦ (-1)^{|m|} m ∂_1` (generic: a dg `(A, B)`-bimodule is contractible as a left `A`-module as soon as `d t = 1` for
-  some `t ∈ B` of degree `-1`, `isContractible_of_d_op_smul_eq_one`; `onhNat_isKProjective`), so no resolution is
+  `m ↦ (-1)^{|m|} m ∂_1` (a dg `(A, B)`-bimodule is contractible as a left `A`-module as soon as `d t = 1` for
+  some `t ∈ B` of degree `-1`, dg-lean's `DG.isContractible_of_d_op_smul_eq_one`; `onhNat_isKProjective`), so no resolution is
   needed; with it `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoD`).
   The induction half of Cor 4.21 in all ranks `a, b ≥ 0` (`Frontier.EQLiftInduction`, `EQLiftFunctor`, `EQLiftAll`):
   `ONH_N = EQK0Int.ONHAll N` (`OPol_N` for `N ≤ 1`) acts fully on `Z_N` for every `N` (`EQLift.fullActionAll`); the
@@ -287,11 +287,11 @@ permutation action):
   (`JDAll`, `J2DAll`, `IndDAll`, `IDAll`, `RDAll`); `D(ONH_N) = 0` for `N ≥ 2` and `D(ONH_a ⊗ ONH_b) = 0` for `a ≥ 2` or
   `b ≥ 2`; for `a + b ≥ 2`, `ONH^♮_{a+b}` is contractible, hence K-projective, over `ONH_a ⊗ ONH_b` and
   `Res^♮ = ONH^♮ ⊗^L (-)` (`ResNatDAll`), with `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoDAll`); the induction half for `a ≥ 2`
-  or `b ≥ 2` (`indIsoDAll_of_two`). Derived induction along a composite of dg ring maps (`derivedInductionCompIso`).
+  or `b ≥ 2` (`indIsoDAll_of_two`). Derived induction along a composite of dg ring maps (dg-lean's `DG.DGRingHom.derivedInductionCompIso`).
   For `(a, b) = (1, 1)`, where `D(ONH_1 ⊗ ONH_1) ≠ 0` (`Frontier.EQLiftOneOne`): `Z_{1,1} ≅ Z_2` as right dg
   `OΛ_2`-modules, so `Z_{1,1}^∨ ≅ Z_2^∨` is acyclic (`∂_1` acts on `Z_2^∨` on the right with `d ∂_1 = 1`) and
-  `I_{1,1} = Z_{1,1}^∨ ⊗^L (-)` vanishes (generic, `Frontier.EQLiftVanish`: the derived tensor product with a
-  K-projective acyclic bimodule is zero, `bimoduleDerivedTensor_isZero_obj`), giving `J ∘ Ind ≅ I ∘ J`
+  `I_{1,1} = Z_{1,1}^∨ ⊗^L (-)` vanishes (the derived tensor product with a
+  K-projective acyclic bimodule is zero, dg-lean's `DG.DGBimodule.derivedTensor_isZero_obj`), giving `J ∘ Ind ≅ I ∘ J`
   (`indIsoDOneOne`). For `a + b ≤ 1` (`Frontier.EQLiftSmallRank`, `EQLiftSmallDerived`): any dg ring `E` acting on
   `Z_N`, `N ≤ 1`, acts through a morphism `χ : E → OΛ_N`, `e 1_z = 1_z χ(e)` (`chiE`, bijective for full actions),
   every bimodule involved is a ring through a dg ring map (`Z_{a,b}^∨ ≅ OΛ_{a+b}` through `ψ(f ⊗ g) = f(x) g(y)`,
@@ -302,7 +302,7 @@ permutation action):
   **Both halves of Cor 4.21 on derived categories, all `a`, `b`**: `EQLift.indIsoDAny`, `resNatIsoDAny`, with
   `Res^♮ = ONH^♮ ⊗^L (-)` in every rank (`ResNatDAllAny`; `ONH^♮` is K-projective over `ONH_a ⊗ ONH_b` in every rank,
   `onhNatAll_isKProjective_all`); the auxiliary `CatModule.HasDerivedCategory` instances are taken at universe `0`,
-  as `bimoduleDerivedTensorIsoInduction` requires. The `⊠` form of
+  as `DG.DGBimodule.derivedTensorIsoInduction` requires. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with

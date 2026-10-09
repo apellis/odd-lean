@@ -1,5 +1,5 @@
 import OddMath.Frontier.EQFunctorRing
-import OddMath.Frontier.EQFunctorRightDual
+import DG.Derived.RightDual
 import OddMath.Frontier.EQInductionPoly
 
 /-!
@@ -21,7 +21,7 @@ bimodule over `(OΛ_{a+b}, OΛ_{a,b})`, `OΛ_{a,b} = OΛ_a ⊗ OΛ_b`. Here `Z_{
 * `zabRightBasis`: the basis `{s̃_μ(y) z : μ ∈ Par(b,a)}` of the right `OΛ_{a+b}`-module `Z_{a,b}`
   ((4.21), Corollary 4.8), `s̃_μ(y) z` of degree `|μ|`, with `d(s̃_μ(y) z)` in the span of the
   `s̃_ν(y) z`, `|ν| = |μ| + 1` (Lemma 4.7; `zabRightBasis_key`).
-* `ZDual a b`: `Z_{a,b}^∨`, the graded dual `EQFunctor.RightDual` of the right dg
+* `ZDual a b`: `Z_{a,b}^∨`, the graded dual `DG.RightDual` of the right dg
   `OΛ_{a+b}`-module `Z_{a,b}`: the right `OΛ_{a+b}`-linear maps `Z_{a,b} → OΛ_{a+b}` with the
   Hom-complex differential, the left action `(c f)(F) = c f(F)` of `OΛ_{a+b}` and the right action
   `(f g)(F) = f(g F)` of `OΛ_{a,b}`. It is a dg `(OΛ_{a+b}, OΛ_{a,b})`-bimodule in the sense of the
@@ -212,7 +212,7 @@ end ZDual
 /-- **Ellis–Qi, Corollary 4.11** (basis): the dual basis `δ_μ` (`δ_μ(s̃_ν(y) z) = δ_{μν}`), of
 degree `-|μ|`, ordered by increasing `|μ|`, is a triangular basis of the left dg
 `OΛ_{a+b}`-module `Z_{a,b}^∨`. -/
-def zdualTriangular (a b : ℕ) : EQFix.TriangularBasis (osymDG (a+b)) (ZDual a b) :=
+def zdualTriangular (a b : ℕ) : DG.TriangularBasis (osymDG (a+b)) (ZDual a b) :=
   (zabRightBasis a b).dualTriangular (fun μ => -totalDeg μ.1) fun l i h =>
     zabRightBasis_key l i h
 
@@ -229,7 +229,7 @@ theorem zdualFiniteCellFiltration_length :
 
 /-- The cells of the filtration of Corollary 4.11 are the regular module `OΛ_{a+b}`. -/
 theorem zdualFiniteCellFiltration_e (j : Fin (zdualFiniteCellFiltration a b).length) :
-    (zdualFiniteCellFiltration a b).e j = EQFix.oneIdempotent (osymDG (a+b)) := rfl
+    (zdualFiniteCellFiltration a b).e j = DGIdempotent.one (osymDG (a+b)) := rfl
 
 /-- **Ellis–Qi, Corollary 4.11** ("cofibrant"): `Z_{a,b}^∨` is K-projective as a left dg
 `OΛ_{a+b}`-module. -/

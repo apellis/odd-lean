@@ -1,4 +1,5 @@
-import OddMath.Frontier.EQLiftVanish
+import OddMath.Frontier.EQLiftDerived
+import DG.Category.Derived.DGBimoduleVanish
 
 /-!
 # The induction half of Corollary 4.21 on derived categories for `a = b = 1`
@@ -11,11 +12,11 @@ Here `D(ONH_1 ⊗ ONH_1) = D(OPol_1 ⊗ OPol_1)` is not zero, but `D(ONH_2) = 0`
 
 * `zabOneOneEquiv`: `Z_{1,1} ≅ Z_2` as right dg `OΛ_2`-modules (`F ↦ (θ_1 ⊗ θ_1)(F) 1_z`; `OΛ_{1,1} = OPol_2`,
   `osymAB_one_one_eq_top`);
-* `RightDual.precompDGAddEquiv` (generic): an isomorphism of right dg modules induces one of graded duals;
+* `DG.RightDual.precompDGAddEquiv` (dg-lean): an isomorphism of right dg modules induces one of graded duals;
 * `Z_2^∨` is a dg `(OΛ_2, ONH_2)`-bimodule, hence contractible, hence acyclic, as a left `OΛ_2`-module
   (`∂_1` acts on the right with `d ∂_1 = 1`, `isContractible_of_d_op_smul_eq_one`), and so is `Z_{1,1}^∨`
   (`zabDualOneOne_isAcyclic`);
-* `Z_{1,1}^∨ ⊗^L (-) = 0` (`bimoduleDerivedTensor_isZero_obj`), and **`indIsoDOneOne`**: `J ∘ Ind ≅ I ∘ J` on
+* `Z_{1,1}^∨ ⊗^L (-) = 0` (`DGBimodule.derivedTensor_isZero_obj`), and **`indIsoDOneOne`**: `J ∘ Ind ≅ I ∘ J` on
   `D(ONH_1 ⊗ ONH_1)`.
 -/
 
@@ -36,66 +37,6 @@ open OddMath.Frontier.EQK0Int (ONHAll ONHTensor)
 open OddMath.Frontier.EQFunctor
 open DG MulOpposite
 
-/-! ### Duals of isomorphic right modules -/
-
-section Precomp
-
-variable {A M M' : Type*} [Ring A] [DGAddCommGroup A] [DGRing A] [AddCommGroup M] [DGAddCommGroup M]
-  [Module Aᵐᵒᵖ M] [DGRightModule A M] [AddCommGroup M'] [DGAddCommGroup M'] [Module Aᵐᵒᵖ M']
-  [DGRightModule A M'] (e : DGAddEquiv M M') (he : ∀ (a : A) (m : M), e (op a • m) = op a • e m)
-
-include he
-
-omit he in
-theorem gradeSign_dgAddEquiv (j : ℤ) (m : M) : e (gradeSign M j m) = gradeSign M' j (e m) := by
-  induction m using DG.induction_on with
-  | h_zero => rw [map_zero, map_zero, map_zero]
-  | @h_homogeneous i m =>
-    rw [gradeSign_of_mem j m.2, gradeSign_of_mem j (e.map_mem m.2), Units.smul_def, Units.smul_def, map_zsmul]
-  | h_add m m' hm hm' => rw [map_add, map_add, hm, hm', map_add, map_add]
-
-theorem precomp_mem_dualPiece {k : ℤ} {g : M' →+ A} (hg : g ∈ dualPiece A M' k) :
-    g.comp e.toAddMonoidHom ∈ dualPiece A M k :=
-  ⟨fun a m => by
-    change g (e (op a • m)) = g (e m) * a
-    rw [he, hg.1], fun i m hm => hg.2 i (e m) (e.map_mem hm)⟩
-
-theorem precomp_mem_dualSubgroup {g : M' →+ A} (hg : g ∈ dualSubgroup A M') :
-    g.comp e.toAddMonoidHom ∈ dualSubgroup A M := by
-  induction hg using AddSubgroup.iSup_induction' with
-  | hp k g hg => exact AddSubgroup.mem_iSup_of_mem k (precomp_mem_dualPiece e he hg)
-  | h1 => exact zero_mem _
-  | hadd g g' _ _ hg hg' => rw [AddMonoidHom.add_comp]; exact add_mem hg hg'
-
-/-- `f ↦ f ∘ e : M'^∨ → M^∨`. -/
-def precompHom : RightDual A M' →+ RightDual A M where
-  toFun f := RightDual.mk ((RightDual.toHom f).comp e.toAddMonoidHom)
-    (precomp_mem_dualSubgroup e he (RightDual.toHom_mem f))
-  map_zero' := RightDual.ext fun _ => rfl
-  map_add' _ _ := RightDual.ext fun _ => rfl
-
-theorem toHom_precompHom (f : RightDual A M') (m : M) :
-    RightDual.toHom (precompHom e he f) m = RightDual.toHom f (e m) := rfl
-
-/-- **An isomorphism of right dg modules induces an isomorphism of graded duals** (by precomposition). -/
-def precompDGAddEquiv : DGAddEquiv (RightDual A M') (RightDual A M) where
-  toFun := precompHom e he
-  invFun := precompHom e.symm fun a m => by
-    apply e.injective
-    rw [he, DGAddEquiv.apply_symm_apply, DGAddEquiv.apply_symm_apply]
-  left_inv f := RightDual.ext fun m => by
-    rw [toHom_precompHom, toHom_precompHom, DGAddEquiv.apply_symm_apply]
-  right_inv f := RightDual.ext fun m => by
-    rw [toHom_precompHom, toHom_precompHom, DGAddEquiv.symm_apply_apply]
-  map_add' := map_add _
-  map_mem' {k f} hf := fun i m hm => hf i (e m) (e.map_mem hm)
-  map_d' f := RightDual.ext fun m => by
-    change RightDual.toHom (DG.d f) (e m) = RightDual.toHom (DG.d (precompHom e he f)) m
-    rw [RightDual.toHom_d, RightDual.toHom_d, dualD_apply, dualD_apply, toHom_precompHom, ← e.map_d,
-      ← gradeSign_dgAddEquiv]
-    rfl
-
-end Precomp
 
 /-! ### `Z_{1,1} ≅ Z_2` -/
 
@@ -175,7 +116,7 @@ theorem znDual_two_isAcyclic : DG.IsAcyclic (ZnDual 0) :=
     (EQOnhDG.ONH.del_mem_grading (n := 0) 0) (EQOnhDG.ONH.d_del 0))
 
 theorem zabDualOneOne_isAcyclic : DG.IsAcyclic (ZabDualG 1 1) :=
-  IsAcyclic.of_dgAddEquiv (precompDGAddEquiv (A := osymDG (1 + 1)) zabOneOneEquiv.symm fun a z => by
+  IsAcyclic.of_dgAddEquiv (RightDual.precompDGAddEquiv (A := osymDG (1 + 1)) zabOneOneEquiv.symm fun a z => by
       apply zabOneOneEquiv.injective
       rw [DGAddEquiv.apply_symm_apply, zabOneOneEquiv_op_smul, DGAddEquiv.apply_symm_apply])
     znDual_two_isAcyclic
@@ -195,7 +136,7 @@ variable
 /-- `I_{1,1} = Z_{1,1}^∨ ⊗^L (-)` vanishes. -/
 theorem IDAll_one_one_isZero (Y : DG.DerivedCategory.{w₂, 0} (LABg 1 1)) :
     IsZero ((IDAll.{0, w₂} 1 1).obj Y) :=
-  bimoduleDerivedTensor_isZero_obj _ _ zabDualOneOne_isAcyclic Y
+  DGBimodule.derivedTensor_isZero_obj _ _ zabDualOneOne_isAcyclic Y
 
 /-- **Ellis–Qi, Corollary 4.21, the induction half on derived categories for `a = b = 1`**:
 `J ∘ Ind ≅ I ∘ J` on `D(ONH_1 ⊗ ONH_1)`; both sides vanish (`D(ONH_2) = 0`, `I_{1,1} = 0`). -/
