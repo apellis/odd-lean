@@ -234,7 +234,16 @@ permutation action):
   `Ind` = extension of scalars along `ι`, `I = Z_{a,b}^∨ ⊗ (-)`), on homotopy categories (`indIsoH`) and on derived
   categories (`indIsoD`; `D(ONH_a ⊗ ONH_b) = 0`, `onhTensor_isZero_derivedCategory`), from the adjunctions `Ind ⊣ Res`
   and `Z_{a,b}^∨ ⊗ (-) ⊣ Z_{a,b} ⊗ (-)` (generic: `Frontier.EQDualAdjunction`, `RightBasis.dualAdjunction`, for a
-  bimodule with a finite right basis). The `⊠` form of
+  bimodule with a finite right basis). The restriction half of Cor 4.21 (`Frontier.EQRestrictionFunctor`, ranks
+  `a, b ≥ 2`): `ONH^♮_{a+b}` of (4.32) as the right ideal `P^a ONH_{a+b}`, `P = x_{a+1} ⋯ x_{a+b}`, regraded so that
+  `1^♮ = P^a` has degree `0` (`Frontier.EQOnhNat`: `EQFunctor.ONHNat`; it is stable under left multiplication by
+  `ι(ONH_a ⊗ ONH_b)`, `iota_mul_Pw`, and `d(P^a) = {a} e_1(y) P^a`, `d_Pw`; ERRATA [EQ] 24; generic regrading
+  `Frontier.EQRegrade`), `Z^♮_{a,b}` of Def 4.15 with `OΛ_{a+b}` acting through the block swap
+  `swapDG : OΛ_{a+b} → OΛ_a ⊗ OΛ_b`, `f(x, y) ↦ f(y, x)` (`EQFunctor.ZNat`), the bimodule isomorphism
+  `((Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z^♮_{a,b}) ⊗_{OΛ_{a+b}} Z_{a+b}^∨ ≅ ONH^♮_{a+b}` (`gEquiv`, `gEquiv_op_smul`), and
+  `R ∘ J^A ≅ J^A ∘ Res^♮` on abelian categories (`resIsoA`; `Res^♮ = ONH^♮ ⊗ (-)`, `R = Z^♮_{a,b} ⊗ (-)`), on
+  homotopy categories (`resIsoH`) and on derived categories (`resIsoD`, for every functor `D(ONH_{a+b}) → D(ONH_a ⊗ ONH_b)`,
+  both categories being zero). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
