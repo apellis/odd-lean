@@ -149,6 +149,205 @@ theorem sAlpha_zAlpha_eq :
       · rw [ha, show (a + j.val) % 2 = 1 by omega]; norm_num
       · rw [ha, show (a + j.val) % 2 = 0 by omega]; norm_num
 
+
+section BlockRevRing
+
+open DG
+open OddMath.Frontier.EQZab (osymAB)
+
+variable {a b : ℕ}
+
+/-! ### The block reversal on `OΛ_a ⊗ OΛ_b` -/
+
+variable (a b) in
+theorem parityInv_blockRev (f : SkewPolynomial (a + b)) :
+    parityInv (a + b) (blockRev a b f) = blockRev a b (parityInv (a + b) f) := by
+  have h : (parityInv (a + b)).comp (blockRev a b) = (blockRev a b).comp (parityInv (a + b)) :=
+    ringHom_ext fun j => by simp [blockRev_generator]
+  exact RingHom.congr_fun h f
+
+variable (a b) in
+theorem d_blockRev (f : SkewPolynomial (a + b)) :
+    d (a + b) (blockRev a b f) = blockRev a b (d (a + b) f) := by
+  let D : SkewPolynomial (a + b) →+ SkewPolynomial (a + b) :=
+    (d (a + b)).comp (blockRev a b).toAddMonoidHom
+  let E : SkewPolynomial (a + b) →+ SkewPolynomial (a + b) :=
+    (blockRev a b).toAddMonoidHom.comp (d (a + b))
+  exact EQZab.deriv_ext (D := D) (E := E) ((parityInv (a + b)).comp (blockRev a b)) (blockRev a b)
+    (fun f g => by simp [D, EQSkewDifferential.d_mul])
+    (fun f g => by simp [E, EQSkewDifferential.d_mul, parityInv_blockRev])
+    (fun j => by simp [D, E, blockRev_generator]) f
+
+variable (a b) in
+theorem blockRev_blockRev (f : SkewPolynomial (a + b)) : blockRev a b (blockRev a b f) = f := by
+  have h : (blockRev a b).comp (blockRev a b) = RingHom.id _ :=
+    ringHom_ext fun j => by
+      rw [RingHom.comp_apply, blockRev_generator, blockRev_generator, RingHom.id_apply]
+      refine Fin.addCases (fun i => ?_) (fun i => ?_) j
+      · rw [blockRevPerm_castAdd, blockRevPerm_castAdd, Fin.rev_rev]
+      · rw [blockRevPerm_natAdd, blockRevPerm_natAdd, Fin.rev_rev]
+  exact RingHom.congr_fun h f
+
+variable (a b) in
+theorem blockRev_mem {f : SkewPolynomial (a + b)} (hf : f ∈ osymAB a b) : blockRev a b f ∈ osymAB a b := by
+  refine EQZab.osymAB_induction (P := fun f => blockRev a b f ∈ osymAB a b) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hf
+  · intro k
+    rw [blockRev_inclX]
+    exact EQZab.inclX_mem (EQZab.longestPerm_mem_osym (EQZab.elementary_mem a k))
+  · intro k
+    rw [blockRev_inclY]
+    exact EQZab.inclY_mem (EQZab.longestPerm_mem_osym (EQZab.elementary_mem b k))
+  · rw [map_zero]; exact zero_mem _
+  · rw [map_one]; exact one_mem _
+  · intro f g hf hg; rw [map_add]; exact add_mem hf hg
+  · intro f hf; rw [map_neg]; exact neg_mem hf
+  · intro f g hf hg; rw [map_mul]; exact mul_mem hf hg
+
+variable (a b) in
+theorem blockRev_mem_grading {k : ℤ} {f : SkewPolynomial (a + b)} (hf : f ∈ grading (a + b) k) :
+    blockRev a b f ∈ grading (a + b) k :=
+  ringHom_mem_grading _ (fun j => by rw [blockRev_generator]; exact generator_mem_grading _) hf
+
+variable (a b) in
+/-- `w₀ × w₀` as a ring endomorphism of `OΛ_{a,b}`. -/
+def blockRevRing : osymABDG a b →+* osymABDG a b where
+  toFun g := ⟨OPol.equiv _ (blockRev a b ((OPol.equiv _).symm g)), mem_osymABDG.mpr (by
+    rw [RingEquiv.symm_apply_apply]; exact blockRev_mem a b (mem_osymABDG.mp g.2))⟩
+  map_one' := Subtype.ext (by simp)
+  map_mul' g g' := Subtype.ext (by simp)
+  map_zero' := Subtype.ext (by simp)
+  map_add' g g' := Subtype.ext (by simp)
+
+variable (a b) in
+/-- **`w₀ × w₀ : OΛ_{a,b} → OΛ_{a,b}`** as a morphism of dg rings (the plain permutation reversing
+each block of variables). -/
+def blockRevDG : osymABDG a b →ᵈᵍ+* osymABDG a b where
+  __ := blockRevRing a b
+  map_mem' {k g} hg := (DGSubring.mem_grading_iff _).mpr (OPol.equiv_mem_grading_iff.mpr
+    (blockRev_mem_grading a b (OPol.equiv_mem_grading_iff.mp ((DGSubring.mem_grading_iff _).mp hg))))
+  map_d' g := Subtype.ext (by
+    change OPol.equiv _ (blockRev a b ((OPol.equiv _).symm (DG.d (g : OPol (a + b))))) =
+      DG.d (OPol.equiv _ (blockRev a b ((OPol.equiv _).symm (g : OPol (a + b)))))
+    rw [OPol.symm_d, ← d_blockRev]
+    rfl)
+
+theorem blockRevDG_val (g : osymABDG a b) :
+    (OPol.equiv _).symm ((blockRevDG a b g : osymABDG a b) : OPol (a + b)) =
+      blockRev a b ((OPol.equiv _).symm (g : OPol (a + b))) := rfl
+
+
+end BlockRevRing
+
+/-! ### The block swap `OPol_{A+B} → OPol_{A+B}` -/
+
+section Swap
+
+open DG
+open OddMath.Frontier.EQZab (osymAB)
+
+variable (A B : ℕ)
+
+/-- `j ↦ a + j` for `j < b`, `j ↦ j - b` otherwise: the variables `x_1, …, x_{a+b}` sent to
+`y_1, …, y_b, x_1, …, x_a`. -/
+def swapFin (j : Fin (A + B)) : Fin (A + B) :=
+  if h : j.val < B then ⟨A + j.val, by omega⟩ else ⟨j.val - B, by omega⟩
+
+theorem swapFin_injective : Function.Injective (swapFin A B) := by
+  intro i j h
+  unfold swapFin at h
+  split_ifs at h <;> simp [Fin.ext_iff] at h <;> exact Fin.ext (by omega)
+
+theorem swapFin_append (j : Fin (B + A)) :
+    generator (swapFin A B (Fin.cast (Nat.add_comm B A) j)) =
+      Fin.append (fun j : Fin B => generator (Fin.natAdd A j))
+        (fun i : Fin A => generator (Fin.castAdd B i)) j := by
+  refine Fin.addCases (fun j => ?_) (fun i => ?_) j
+  · rw [Fin.append_left]
+    congr 1
+    simp [swapFin, Fin.ext_iff, j.isLt]
+  · rw [Fin.append_right]
+    congr 1
+    simp [swapFin, Fin.ext_iff]
+
+/-- The block swap `f(x) ↦ f(y, x)`. -/
+def swapPoly : SkewPolynomial (A + B) →+* SkewPolynomial (A + B) :=
+  skewLift (fun j => generator (swapFin A B j))
+    (EQZab.generator_anticomm_of_injective _ (swapFin_injective A B))
+
+variable {A B}
+
+theorem swapPoly_generator (j : Fin (A + B)) : swapPoly A B (generator j) = generator (swapFin A B j) := by
+  simp [swapPoly]
+
+theorem swapPoly_elementary (k : ℕ) :
+    swapPoly A B (elementary (A + B) k) =
+      ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k,
+        inclY A B (elementary B p.1) * inclX A B (elementary A p.2) := by
+  rw [elementary, EQZab.ringHom_strictSum]
+  simp only [swapPoly_generator]
+  have h : (fun j : Fin (A + B) => generator (swapFin A B j)) =
+      fun j => (Fin.append (fun j : Fin B => inclY A B (generator j))
+        (fun i : Fin A => inclX A B (generator i))) (Fin.cast (Nat.add_comm A B) j) := by
+    funext j
+    rw [show j = Fin.cast (Nat.add_comm B A) (Fin.cast (Nat.add_comm A B) j) from Fin.ext rfl,
+      swapFin_append]
+    simp only [EQZab.inclY_generator, EQZab.inclX_generator]
+    rfl
+  rw [h, EQZab.strictSum_cast, EQZab.strictSum_append]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  rw [elementary, elementary, EQZab.ringHom_strictSum, EQZab.ringHom_strictSum]
+
+theorem swapPoly_mem {f : SkewPolynomial (A + B)} (hf : f ∈ osym (A + B)) : swapPoly A B f ∈ osymAB A B := by
+  induction hf using Subring.closure_induction with
+  | mem x hx =>
+    obtain ⟨k, rfl⟩ := hx
+    rw [swapPoly_elementary]
+    exact Subring.sum_mem _ fun p _ =>
+      mul_mem (EQZab.inclY_mem (EQZab.elementary_mem B p.1)) (EQZab.inclX_mem (EQZab.elementary_mem A p.2))
+  | zero => rw [map_zero]; exact zero_mem _
+  | one => rw [map_one]; exact one_mem _
+  | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
+  | neg x _ hx => rw [map_neg]; exact neg_mem hx
+  | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
+
+theorem parityInv_swapPoly (f : SkewPolynomial (A + B)) :
+    parityInv (A + B) (swapPoly A B f) = swapPoly A B (parityInv (A + B) f) := by
+  have h : (parityInv (A + B)).comp (swapPoly A B) = (swapPoly A B).comp (parityInv (A + B)) :=
+    ringHom_ext fun j => by simp [swapPoly_generator]
+  exact RingHom.congr_fun h f
+
+theorem d_swapPoly (f : SkewPolynomial (A + B)) :
+    d (A + B) (swapPoly A B f) = swapPoly A B (d (A + B) f) := by
+  let D : SkewPolynomial (A + B) →+ SkewPolynomial (A + B) := (d (A + B)).comp (swapPoly A B).toAddMonoidHom
+  let E : SkewPolynomial (A + B) →+ SkewPolynomial (A + B) := (swapPoly A B).toAddMonoidHom.comp (d (A + B))
+  exact EQZab.deriv_ext (D := D) (E := E) ((parityInv (A + B)).comp (swapPoly A B)) (swapPoly A B)
+    (fun f g => by simp [D, EQSkewDifferential.d_mul])
+    (fun f g => by simp [E, EQSkewDifferential.d_mul, parityInv_swapPoly])
+    (fun j => by simp [D, E, swapPoly_generator]) f
+
+theorem swapPoly_mem_grading {k : ℤ} {f : SkewPolynomial (A + B)} (hf : f ∈ grading (A + B) k) :
+    swapPoly A B f ∈ grading (A + B) k :=
+  ringHom_mem_grading _ (fun j => by rw [swapPoly_generator]; exact generator_mem_grading _) hf
+
+variable (A B) in
+/-- The block swap `OΛ_{A+B} → OΛ_{A,B}` as a morphism of dg rings. -/
+def swapOsym : osymDG (A + B) →ᵈᵍ+* osymABDG A B where
+  toFun h := ⟨OPol.equiv _ (swapPoly A B ((OPol.equiv _).symm h)), mem_osymABDG.mpr (by
+    rw [RingEquiv.symm_apply_apply]; exact swapPoly_mem (mem_osymDG.mp h.2))⟩
+  map_one' := Subtype.ext (by simp)
+  map_mul' g g' := Subtype.ext (by simp)
+  map_zero' := Subtype.ext (by simp)
+  map_add' g g' := Subtype.ext (by simp)
+  map_mem' {k g} hg := (DGSubring.mem_grading_iff _).mpr (OPol.equiv_mem_grading_iff.mpr
+    (swapPoly_mem_grading (OPol.equiv_mem_grading_iff.mp ((DGSubring.mem_grading_iff _).mp hg))))
+  map_d' g := Subtype.ext (by
+    change OPol.equiv _ (swapPoly A B ((OPol.equiv _).symm (DG.d (g : OPol (A + B))))) =
+      DG.d (OPol.equiv _ (swapPoly A B ((OPol.equiv _).symm (g : OPol (A + B)))))
+    rw [OPol.symm_d, ← d_swapPoly]
+    rfl)
+
+end Swap
+
 end
 
 end OddMath.Frontier.EQFunctor

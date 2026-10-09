@@ -204,10 +204,19 @@ permutation action):
   `zdual_isKProjective`), built from a generic graded dual `EQFunctor.RightDual A M = HOM_A(M, A)` of a right dg module
   (a dg `(A, B)`-bimodule for a dg `(B, A)`-bimodule `M`; the dual of a finite triangular right basis is a triangular
   left basis, `RightBasis.dualTriangular`).
+- **Conventions for Definitions 4.6 and 4.15** (one functor `I` and one functor `R`, used both in Theorem 4.17 and in
+  Corollary 4.21). Ellis–Qi do not say how `OΛ_a ⊗ OΛ_b` acts on `Z_{a,b}` (Def 4.6) or how `OΛ_{a+b}` acts on `Z^♮_{a,b}`
+  (Def 4.15). Here `g ∈ OΛ_{a,b}` acts on `Z_{a,b} = OΛ_a ⊠ OΛ_b · z` by left multiplication with `(w₀ × w₀)(g)`
+  (`EQFunctor.Zab.instModuleAB`; in Ellis–Qi's model `OΛ̃_a ⊠ OΛ̃_b · z` this is the action through `θ ∘ w₀` on each
+  factor), and `h ∈ OΛ_{a+b}` acts on `Z^♮_{a,b} = OΛ_{a,b}` by right multiplication with `h(y, x)` (the block swap
+  `EQFunctor.swapOsym`). These are the actions for which the two halves of Corollary 4.21 hold
+  ([ERRATA.md](ERRATA.md) [EQ] 23, 24). The `K₀` statements of Theorem 4.17 do not depend on the choice: they only use
+  the left `OΛ_{a+b}`-module `Z^∨_{a,b}` and the regular module `R_{a,b}(OΛ_{a+b}) ≅ OΛ_{a,b}`.
 - §4.4, Definitions 4.14 and 4.15 on `ℤ`-graded derived categories (`Frontier.EQFunctor*`; `OΛ_a ⊗ OΛ_b` is the dg subring
   `EQFunctor.osymABDG a b` of `OPol_{a+b}`): the multiplication functor `I_{a,b} = Z^∨_{a,b} ⊗^L_{OΛ_a ⊗ OΛ_b} (−)`
   (`EQFunctor.mult`, via the derived tensor product with a dg bimodule over dg rings, `bimoduleDerivedTensor`) and the
-  comultiplication functor `R_{a,b}`, derived induction along `OΛ_{a+b} ⊆ OΛ_a ⊗ OΛ_b` (`EQFunctor.comult`, left adjoint to
+  comultiplication functor `R_{a,b}`, derived induction along the block swap `OΛ_{a+b} → OΛ_a ⊗ OΛ_b`,
+  `f(x, y) ↦ f(y, x)` (`EQFunctor.swapOsym`, `EQFunctor.comult`, left adjoint to
   restriction, `comultAdjunction`), both triangulated and preserving compact objects; `I_{a,b}(OΛ_a ⊗ OΛ_b) ≅ Z^∨_{a,b}`
   and `R_{a,b}(OΛ_{a+b}) ≅ OΛ_a ⊗ OΛ_b` (`multSelfIso`, `comultSelfIso`); on `K₀`,
   `[I_{a,b}(OΛ_a ⊗ OΛ_b)] = Σ_{μ ∈ Par(b,a)} (−1)^{|μ|} [OΛ_{a+b}]` and `[R_{a,b}(OΛ_{a+b})] = [OΛ_a ⊗ OΛ_b]`
@@ -267,7 +276,7 @@ permutation action):
   (`superK0OPolEquiv`), and `K₀(D(ONH_{n+2})) = 0` (`superK0c_onh_subsingleton`); Lemma 4.16 with
   `[OΛ_a] ⊗ [OΛ_b] ↦ [OΛ_{a,b}]` (`lemma_4_16`, `lemma_4_16_tmul_self`). The comultiplication of Thm 4.17
   (`Frontier.EQK0Coproduct`): `R_{a,b}` on half-graded modules is derived induction along the morphism of half-graded
-  dg rings induced by `K ⊗ (OΛ_{a+b} ⊆ OΛ_{a,b})`; its symbol followed by Lemma 4.16 sends
+  dg rings induced by `K ⊗ swapOsym` (`EQK0.extendSwapDG`); its symbol followed by Lemma 4.16 sends
   `E^{(a+b)} = [OΛ_{a+b}⟨-binom(a+b,2)⟩]` to `(-√−1)^{ab} E^{(a)} ⊗ E^{(b)}` (`EQK0.comultK0_ePowClass`), the
   `(a, b)`-term of (2.2) with the twist `−1` of [ERRATA.md](ERRATA.md) [EQ] 1. The multiplication of Thm 4.17
   (`Frontier.EQK0Mult`): over `K`, `I_{a,b} = (K ⊗ Z^∨_{a,b}) ⊗^L (-)` (`EQK0.multK`, dg-lean's base change of dg

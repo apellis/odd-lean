@@ -30,7 +30,7 @@ is twisted by the block reversal `w₀ × w₀` (`blockRev`):
 * **`indEquiv a b : (Z_a ⊠ Z_b) ⊗_{OΛ_a ⊗ OΛ_b} Z^{tw}_{a,b} ≅ ι^* Z_{a+b}`**, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)`,
   an isomorphism of dg `(ONH_a ⊗ ONH_b, OΛ_{a+b})`-bimodules (`indEquiv_op_smul`);
 * `no_indEquiv_untwisted`: for the untwisted left action of Definition 4.6 (multiplication in
-  `OΛ_a ⊠ OΛ_b`, `EQFunctor.Zab.instDGBimodule`) and `a = b = 2`, there is **no** isomorphism of dg
+  `OΛ_a ⊠ OΛ_b`, `ZabU`) and `a = b = 2`, there is **no** isomorphism of dg
   `(ONH_2 ⊗ ONH_2, OΛ_4)`-bimodules `(Z_2 ⊠ Z_2) ⊗ Z_{2,2} ≅ ι^* Z_4`.
 
 In Ellis–Qi's twisted model `Z_{a,b} = OΛ̃_a ⊠ OΛ̃_b · z` (identified with the model here by
@@ -353,90 +353,13 @@ def polyEquiv : ZZ a b ≃+ SkewPolynomial ((a + 2) + (b + 2)) :=
 
 theorem polyEquiv_apply (y : ZZ a b) : polyEquiv y = polyHom y := rfl
 
-/-! ### The block reversal on `OΛ_a ⊗ OΛ_b` -/
-
-variable (a b) in
-theorem parityInv_blockRev (f : SkewPolynomial (a + b)) :
-    parityInv (a + b) (blockRev a b f) = blockRev a b (parityInv (a + b) f) := by
-  have h : (parityInv (a + b)).comp (blockRev a b) = (blockRev a b).comp (parityInv (a + b)) :=
-    ringHom_ext fun j => by simp [blockRev_generator]
-  exact RingHom.congr_fun h f
-
-variable (a b) in
-theorem d_blockRev (f : SkewPolynomial (a + b)) :
-    d (a + b) (blockRev a b f) = blockRev a b (d (a + b) f) := by
-  let D : SkewPolynomial (a + b) →+ SkewPolynomial (a + b) :=
-    (d (a + b)).comp (blockRev a b).toAddMonoidHom
-  let E : SkewPolynomial (a + b) →+ SkewPolynomial (a + b) :=
-    (blockRev a b).toAddMonoidHom.comp (d (a + b))
-  exact EQZab.deriv_ext (D := D) (E := E) ((parityInv (a + b)).comp (blockRev a b)) (blockRev a b)
-    (fun f g => by simp [D, EQSkewDifferential.d_mul])
-    (fun f g => by simp [E, EQSkewDifferential.d_mul, parityInv_blockRev])
-    (fun j => by simp [D, E, blockRev_generator]) f
-
-variable (a b) in
-theorem blockRev_blockRev (f : SkewPolynomial (a + b)) : blockRev a b (blockRev a b f) = f := by
-  have h : (blockRev a b).comp (blockRev a b) = RingHom.id _ :=
-    ringHom_ext fun j => by
-      rw [RingHom.comp_apply, blockRev_generator, blockRev_generator, RingHom.id_apply]
-      refine Fin.addCases (fun i => ?_) (fun i => ?_) j
-      · rw [blockRevPerm_castAdd, blockRevPerm_castAdd, Fin.rev_rev]
-      · rw [blockRevPerm_natAdd, blockRevPerm_natAdd, Fin.rev_rev]
-  exact RingHom.congr_fun h f
-
-variable (a b) in
-theorem blockRev_mem {f : SkewPolynomial (a + b)} (hf : f ∈ osymAB a b) : blockRev a b f ∈ osymAB a b := by
-  refine EQZab.osymAB_induction (P := fun f => blockRev a b f ∈ osymAB a b) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hf
-  · intro k
-    rw [blockRev_inclX]
-    exact EQZab.inclX_mem (EQZab.longestPerm_mem_osym (EQZab.elementary_mem a k))
-  · intro k
-    rw [blockRev_inclY]
-    exact EQZab.inclY_mem (EQZab.longestPerm_mem_osym (EQZab.elementary_mem b k))
-  · rw [map_zero]; exact zero_mem _
-  · rw [map_one]; exact one_mem _
-  · intro f g hf hg; rw [map_add]; exact add_mem hf hg
-  · intro f hf; rw [map_neg]; exact neg_mem hf
-  · intro f g hf hg; rw [map_mul]; exact mul_mem hf hg
-
-variable (a b) in
-theorem blockRev_mem_grading {k : ℤ} {f : SkewPolynomial (a + b)} (hf : f ∈ grading (a + b) k) :
-    blockRev a b f ∈ grading (a + b) k :=
-  ringHom_mem_grading _ (fun j => by rw [blockRev_generator]; exact generator_mem_grading _) hf
-
-variable (a b) in
-/-- `w₀ × w₀` as a ring endomorphism of `OΛ_{a,b}`. -/
-def blockRevRing : osymABDG a b →+* osymABDG a b where
-  toFun g := ⟨OPol.equiv _ (blockRev a b ((OPol.equiv _).symm g)), mem_osymABDG.mpr (by
-    rw [RingEquiv.symm_apply_apply]; exact blockRev_mem a b (mem_osymABDG.mp g.2))⟩
-  map_one' := Subtype.ext (by simp)
-  map_mul' g g' := Subtype.ext (by simp)
-  map_zero' := Subtype.ext (by simp)
-  map_add' g g' := Subtype.ext (by simp)
-
-variable (a b) in
-/-- **`w₀ × w₀ : OΛ_{a,b} → OΛ_{a,b}`** as a morphism of dg rings (the plain permutation reversing
-each block of variables). -/
-def blockRevDG : osymABDG a b →ᵈᵍ+* osymABDG a b where
-  __ := blockRevRing a b
-  map_mem' {k g} hg := (DGSubring.mem_grading_iff _).mpr (OPol.equiv_mem_grading_iff.mpr
-    (blockRev_mem_grading a b (OPol.equiv_mem_grading_iff.mp ((DGSubring.mem_grading_iff _).mp hg))))
-  map_d' g := Subtype.ext (by
-    change OPol.equiv _ (blockRev a b ((OPol.equiv _).symm (DG.d (g : OPol (a + b))))) =
-      DG.d (OPol.equiv _ (blockRev a b ((OPol.equiv _).symm (g : OPol (a + b)))))
-    rw [OPol.symm_d, ← d_blockRev]
-    rfl)
-
-theorem blockRevDG_val (g : osymABDG a b) :
-    (OPol.equiv _).symm ((blockRevDG a b g : osymABDG a b) : OPol (a + b)) =
-      blockRev a b ((OPol.equiv _).symm (g : OPol (a + b))) := rfl
-
 /-! ### The bimodules -/
 
 variable (a b) in
-/-- `OΛ_a ⊗ OΛ_b → OΛ_{a,b}`, `f ⊗ g ↦ (w₀ f)(x) (w₀ g)(y)`. -/
+/-- `OΛ_a ⊗ OΛ_b → OΛ_{a,b}`, `f ⊗ g ↦ f(x) g(y)`, through which `OΛ_a ⊗ OΛ_b` acts on `Z_{a,b}`
+(an element `g ∈ OΛ_{a,b}` acts by `(w₀ × w₀)(g)`, `EQFunctor.Zab.instModuleAB`). -/
 def rhoTw : (Λa ᵍ⊗[ℤ] Λb) →ᵈᵍ+* osymABDG (a + 2) (b + 2) :=
-  (blockRevDG (a + 2) (b + 2)).comp (tensorToOsymAB (a + 2) (b + 2))
+  tensorToOsymAB (a + 2) (b + 2)
 
 variable (a b) in
 /-- **`Z^{tw}_{a,b}`**: the dg `(OΛ_a ⊗ OΛ_b, OΛ_{a+b})`-bimodule `Z_{a,b}` of Definition 4.6
@@ -677,8 +600,9 @@ section Untwisted
 
 variable (a b) in
 /-- `Z_{a,b}` of Definition 4.6 with the untwisted left action of `OΛ_a ⊗ OΛ_b`: `f ⊗ g` acts by
-multiplication by `f(x) g(y)` (`EQFunctor.Zab.instDGBimodule`, through `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}`). -/
-abbrev ZabU : Type := RestrictScalars (tensorToOsymAB (a + 2) (b + 2)) (EQFix.Zab (a + 2) (b + 2))
+multiplication by `f(x) g(y)` (the action of `EQFunctor.Zab.instModuleAB` precomposed with `w₀ × w₀`). -/
+abbrev ZabU : Type :=
+  RestrictScalars ((blockRevDG (a + 2) (b + 2)).comp (tensorToOsymAB (a + 2) (b + 2))) (EQFix.Zab (a + 2) (b + 2))
 
 /-- The underlying skew polynomial of an element of `ZabU`. -/
 def uVal (F : ZabU a b) : SkewPolynomial ((a + 2) + (b + 2)) :=
@@ -686,7 +610,9 @@ def uVal (F : ZabU a b) : SkewPolynomial ((a + 2) + (b + 2)) :=
 
 theorem uVal_add (F F' : ZabU a b) : uVal (F + F') = uVal F + uVal F' := rfl
 
-theorem uVal_smul (r : Λa ᵍ⊗[ℤ] Λb) (F : ZabU a b) : uVal (r • F) = rHat r * uVal F := rfl
+theorem uVal_smul (r : Λa ᵍ⊗[ℤ] Λb) (F : ZabU a b) : uVal (r • F) = rHat r * uVal F := by
+  change blockRev (a + 2) (b + 2) (blockRev (a + 2) (b + 2) (rHat r)) * uVal F = _
+  rw [blockRev_blockRev]
 
 theorem uVal_op_smul (h : osymDG ((a + 2) + (b + 2))) (F : ZabU a b) :
     uVal (op h • F) = uVal F * EQZab.phiAB _ _ (EQFix.toSkew h) := rfl
@@ -816,8 +742,8 @@ theorem untwisted_constraint
     rw [rHat, ← coe_tensorToOsymAB, hr]
     rfl
   have hop : op h • uOne a b = r • uOne a b := EQFix.Zab.ext (by
-    change uVal (uOne a b) * _ = rHat r * uVal (uOne a b)
-    rw [uVal_one, hrHat, sp_one_mul', sp_mul_one']
+    change uVal (uOne a b) * _ = uVal (r • uOne a b)
+    rw [uVal_smul, uVal_one, hrHat, sp_one_mul', sp_mul_one']
     rfl)
   obtain ⟨s, hs⟩ := exists_smul_yOne (op r • yOne a b)
   have hL : op h • t0U a b = TensorProductOver.tmul _ (s • yOne a b) (uOne a b) := by

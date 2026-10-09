@@ -19,7 +19,7 @@ rest of the argument is unchanged:
 * `superK0OsymIntEquiv n : K₀(D(OΛ_n)) ≃ ℤ[√−1]`, `[OΛ_n] ↦ 1`; the same for `OΛ_{a,b}`;
 * `lemma_4_16_int`: Lemma 4.16 over `ℤ`;
 * `comultK0Int_ePowClass`: `[R]_{a,b}(E^{(a+b)}) = (-√−1)^{ab} E^{(a)} ⊗ E^{(b)}`, `R_{a,b}` derived
-  induction along `OΛ_{a+b} ⊆ OΛ_{a,b}` on half-graded modules;
+  induction along the block swap `OΛ_{a+b} → OΛ_{a,b}` on half-graded modules;
 * `multK0Int_ePowClass`: `E^{(a)} E^{(b)} = [a+b, a]_{√−1} E^{(a+b)}`, the multiplication functor
   `I_{a,b}` being `(Z_{a,b}^∨)ᵈ ⊗^L (-)` on half-graded modules (`DG.Diagonal.derivedTensor`);
 * **Theorem 4.17 over `ℤ`**: `thm_4_17_int_equiv : U⁺ ≃ K₀(D(OΛ))` (`E^{(n)} ↦ [OΛ_n⟨-binom(n,2)⟩]`),
@@ -35,7 +35,7 @@ namespace OddMath.Frontier.EQK0Int
 open DG DG.HalfGradedDGRing
 open OddMath.Frontier.EQK0
 open OddMath.Frontier.EQSkewDifferential (osymDG totalDeg)
-open OddMath.Frontier.EQFunctor (osymABDG inclDG ZDual zdual_isKProjective zdualFiniteCellFiltration)
+open OddMath.Frontier.EQFunctor (osymABDG swapOsym ZDual zdual_isKProjective zdualFiniteCellFiltration)
 open OddMath.Frontier.EQFix (ParIdx)
 open OddMath.Frontier.QuantumSl2Plus (qBinom)
 open OddMath.Frontier.EQQuantum (UPlus evI rU)
@@ -116,11 +116,11 @@ variable (a b : ℕ) [DG.HasDerivedCategory.{0, 0} (osymDG (a+b))]
   [DG.HasDerivedCategory.{0, 0} (osymABDG a b)]
   [CatModule.HasDerivedCategory.{0, 0} (WeightCategory (ofDGRing (osymABDG a b)).Regraded)]
 
-/-- The symbol of `R_{a,b}` (derived induction along `OΛ_{a+b} ⊆ OΛ_{a,b}`) on half-graded dg
+/-- The symbol of `R_{a,b}` (derived induction along the block swap `OΛ_{a+b} → OΛ_{a,b}`) on half-graded dg
 modules over `ℤ` is the identity of `ℤ[√−1]`. -/
 theorem superK0OsymABIntEquiv_comult (s : SuperK0c.{0, 0} (ofDGRing (osymDG (a+b)))) :
     superK0OsymABIntEquiv a b
-        (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (inclDG a b)).K0Map s) =
+        (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (swapOsym a b)).K0Map s) =
       superK0OsymIntEquiv (a+b) s :=
   superK0GaussianOfBase_superK0cMap _ _ _
     (baseK0_map_eq _ _ _ (baseK0OsymInt_self _) (baseK0OsymABInt_self a b)) s
@@ -135,7 +135,7 @@ Lemma 4.16. -/
 def comultK0Int (s : SuperK0c.{0, 0} (ofDGRing (osymDG (a+b)))) :
     SuperK0c.{0, 0} (ofDGRing (osymDG a)) ⊗[GaussianInt] SuperK0c.{0, 0} (ofDGRing (osymDG b)) :=
   (lemma_4_16_int a b).symm
-    (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (inclDG a b)).K0Map s)
+    (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (swapOsym a b)).K0Map s)
 
 /-- **`[R]_{a,b}(E^{(a+b)}) = (-√−1)^{ab} E^{(a)} ⊗ E^{(b)}`** over `ℤ`. -/
 theorem comultK0Int_ePowClass :
@@ -294,7 +294,7 @@ def comultK0IntLin (a b n : ℕ) (h : a + b = n) :
     K0nInt n →ₗ[GaussianInt] K0nInt a ⊗[GaussianInt] K0nInt b := by
   subst h
   exact (lemma_4_16_int a b).symm.toLinearMap ∘ₗ
-    superK0cGaussianMap (HalfGradedDGRing.Hom.ofDGRingHom (inclDG a b)).K0Map
+    superK0cGaussianMap (HalfGradedDGRing.Hom.ofDGRingHom (swapOsym a b)).K0Map
 
 /-- **The comultiplication `[R]` on `K₀(D(OΛ))` over `ℤ`**. -/
 def comultK0OLamInt : K0OLamInt →ₗ[GaussianInt] K0OLamInt ⊗[GaussianInt] K0OLamInt :=
