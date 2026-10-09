@@ -292,7 +292,17 @@ permutation action):
   `OΛ_2`-modules, so `Z_{1,1}^∨ ≅ Z_2^∨` is acyclic (`∂_1` acts on `Z_2^∨` on the right with `d ∂_1 = 1`) and
   `I_{1,1} = Z_{1,1}^∨ ⊗^L (-)` vanishes (generic, `Frontier.EQLiftVanish`: the derived tensor product with a
   K-projective acyclic bimodule is zero, `bimoduleDerivedTensor_isZero_obj`), giving `J ∘ Ind ≅ I ∘ J`
-  (`indIsoDOneOne`). Open: the derived level for `(a, b) ∈ {(0,0), (0,1), (1,0)}` (both halves). The `⊠` form of
+  (`indIsoDOneOne`). For `a + b ≤ 1` (`Frontier.EQLiftSmallRank`, `EQLiftSmallDerived`): any dg ring `E` acting on
+  `Z_N`, `N ≤ 1`, acts through a morphism `χ : E → OΛ_N`, `e 1_z = 1_z χ(e)` (`chiE`, bijective for full actions),
+  every bimodule involved is a ring through a dg ring map (`Z_{a,b}^∨ ≅ OΛ_{a+b}` through `ψ(f ⊗ g) = f(x) g(y)`,
+  `zabDualEquivSmall`; `Z_a^∨ ⊠ Z_b^∨ ≅ OΛ_a ⊗ OΛ_b` through `χ_a ⊗ χ_b`, `zzDualEquivSmall`), `ι` is bijective
+  (`gIota_bijective`), `P^a = 1` and `ONH^♮` is free of rank one (`natDGEquivSmall`), so every functor is a derived
+  induction; `χ ∘ ι = ψ ∘ (χ_a ⊗ χ_b)` (`chiE_comp_gIota`) and `swap ∘ χ = (χ_a ⊗ χ_b) ∘ ι^{-1}`
+  (`swapDGG_comp_chiE`) give `J ∘ Ind ≅ I ∘ J` and `R ∘ J ≅ J ∘ Res^♮` (`indIsoDAllSmall`, `resNatIsoDAllSmall`).
+  **Both halves of Cor 4.21 on derived categories, all `a`, `b`**: `EQLift.indIsoDAny`, `resNatIsoDAny`, with
+  `Res^♮ = ONH^♮ ⊗^L (-)` in every rank (`ResNatDAllAny`; `ONH^♮` is K-projective over `ONH_a ⊗ ONH_b` in every rank,
+  `onhNatAll_isKProjective_all`); the auxiliary `CatModule.HasDerivedCategory` instances are taken at universe `0`,
+  as `bimoduleDerivedTensorIsoInduction` requires. The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
