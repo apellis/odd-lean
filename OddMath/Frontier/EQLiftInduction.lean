@@ -12,7 +12,7 @@ Definition 4.6 (`OΛ_A ⊗ OΛ_B` acting through `w₀ × w₀`, `ZabTwG`), the 
 `Ψ : (Z_A ⊠ Z_B) ⊗_{OΛ_A ⊗ OΛ_B} Z_{A,B} → Z_{A+B}`, `y ⊗ F ↦ y (θ_A ⊗ θ_B)(F)` (`gIndHom`), is a bijection
 (`gIndInv`) compatible with the gradings, the differentials and the right actions of `OΛ_{A+B}`.
 
-Let `E_A`, `E_B`, `E_N` (`N = A + B`) be dg rings acting fully on `Z_A`, `Z_B`, `Z_N` (`EQFunctor.FullAction`;
+Let `E_A`, `E_B`, `E_N` (`N = A + B`) be dg rings acting fully on `Z_A`, `Z_B`, `Z_N` (`DG.FullAction`;
 for `E_N = ONH_N` this is Corollary 3.9, for `N ≤ 1` it is `OPol_N`). Since `E_N` consists of all right
 `OΛ_N`-linear endomorphisms of `Z_N`, transporting the left action of `E_A ⊗ E_B` along `Ψ` defines a morphism of
 dg rings `gIota : E_A ⊗ E_B → E_N` (`ι(s) z = Ψ(s · Ψ⁻¹(z))`), and `Ψ` is an isomorphism of dg

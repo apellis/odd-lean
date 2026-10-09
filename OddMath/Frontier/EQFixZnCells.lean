@@ -1,4 +1,4 @@
-import OddMath.Frontier.EQFixFiniteCell
+import DG.Derived.TriangularBasis
 import OddMath.Frontier.EQZnFiniteCell
 import OddMath.Frontier.EQDGStructures
 import DG.Module.Opposite

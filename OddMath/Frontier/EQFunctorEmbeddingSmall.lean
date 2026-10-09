@@ -1,3 +1,4 @@
+import DG.Category.Derived.DGBimoduleVanish
 import OddMath.Frontier.EQFunctorEmbedding
 import DG.Category.Derived.TensorIso
 import OddMath.Frontier.EQBorelPresentation
@@ -9,7 +10,7 @@ Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXi
 §4.4, Definition 4.18 and Corollary 4.19 ("one only has to prove the result for the components
 `J_0` and `J_1`, in which cases the result is clear").
 
-* generic (`catBimoduleIsoOfFunctor`, `bimoduleDerivedTensorIsoInduction`): if a dg
+* dg-lean (`DG.DGBimodule.catBimoduleIsoOfFunctor`, `DG.DGBimodule.derivedTensorIsoInduction`): if a dg
   `(A, B)`-bimodule `M` is isomorphic to `A` with right action through a morphism of dg rings
   `φ : B → A`, then `M ⊗^L_B - ≅ φ^*` (derived induction), via dg-lean's
   `DG.CatModule.DerivedCategory.derivedTensorIso`;
@@ -33,39 +34,6 @@ open DG MulOpposite
 
 noncomputable section
 
-/-! ## Bimodules isomorphic to a ring through a ring morphism -/
-
-section Generic
-
-variable {A B : Type v} [Ring A] [DGAddCommGroup A] [DGRing A] [Ring B] [DGAddCommGroup B]
-  [DGRing B] (φ : B →ᵈᵍ+* A) {M : Type v} [AddCommGroup M] [DGAddCommGroup M] [Module A M]
-  [Module Bᵐᵒᵖ M] [DGBimodule A B M]
-
-/-- An isomorphism of `M` with `A` (left action by multiplication, right action through `φ`)
-as an isomorphism of dg bimodules over the one-object dg categories. -/
-def catBimoduleIsoOfFunctor (e : M ≃+ A)
-    (he : ∀ {n : ℤ} {m : M}, e m ∈ grading n ↔ m ∈ grading n)
-    (hd : ∀ m : M, e (d m) = d (e m)) (hl : ∀ (a : A) (m : M), e (a • m) = a * e m)
-    (hr : ∀ (b : B) (m : M), e (op b • m) = e m * φ b) :
-    CatBimodule.Iso (catBimodule A B M) (CatBimodule.ofFunctor φ.singleObjFunctor) where
-  left _ := CatModule.isoMk (fun _ => e) he hd (fun f m => hl f m)
-  ract g _ x := hr g x
-
-variable [CatModule.HasDerivedCategory.{v, v} (SingleObj B)]
-  [CatModule.HasDerivedCategory.{w₂, v} (SingleObj A)]
-  [DG.HasDerivedCategory.{w₃, v} B] [DG.HasDerivedCategory.{w₄, v} A]
-
-/-- **`M ⊗^L_B - ≅ φ^*`** for `M ≅ A` as above. -/
-def bimoduleDerivedTensorIsoInduction (hM : DG.IsKProjective.{v} A M) (e : M ≃+ A)
-    (he : ∀ {n : ℤ} {m : M}, e m ∈ grading n ↔ m ∈ grading n)
-    (hd : ∀ m : M, e (d m) = d (e m)) (hl : ∀ (a : A) (m : M), e (a • m) = a * e m)
-    (hr : ∀ (b : B) (m : M), e (op b • m) = e m * φ b) :
-    bimoduleDerivedTensor.{v, w₂, w₃, w₄} A B M hM ≅ φ.derivedInduction.{v, w₂, w₃, w₄} :=
-  Functor.isoWhiskerLeft _ (Functor.isoWhiskerRight
-    (CatModule.DerivedCategory.derivedTensorIso (catBimoduleIsoOfFunctor φ e he hd hl hr) _ _) _) ≪≫
-    (φ.derivedInductionIsoDerivedTensor).symm
-
-end Generic
 
 /-! ## Ranks `N ≤ 1` -/
 
@@ -208,7 +176,7 @@ abbrev JSmall (N : ℕ) [CatModule.HasDerivedCategory.{0, 0} (SingleObj (OPol N)
     [CatModule.HasDerivedCategory.{w₂, 0} (SingleObj (osymDG N))]
     [DG.HasDerivedCategory.{w₃, 0} (OPol N)] [DG.HasDerivedCategory.{w₄, 0} (osymDG N)] :
     DG.DerivedCategory (OPol N) ⥤ DG.DerivedCategory (osymDG N) :=
-  bimoduleDerivedTensor.{0, w₂, w₃, w₄} (osymDG N) (OPol N) (RightDual (osymDG N) (Zn N))
+  DGBimodule.derivedTensor.{0, w₂, w₃, w₄} (osymDG N) (OPol N) (RightDual (osymDG N) (Zn N))
     (znDual_isKProjective N)
 
 section Small2
@@ -219,7 +187,7 @@ variable {N : ℕ} (hN : N ≤ 1) [CatModule.HasDerivedCategory.{0, 0} (SingleOb
 
 /-- `J_N ≅ φ^*` for the isomorphism of dg rings `φ : OPol_N → OΛ_N`, `N ≤ 1`. -/
 def jSmallIsoInduction : JSmall.{w₂, w₃, w₄} N ≅ (toOsym hN).derivedInduction.{0, w₂, w₃, w₄} :=
-  bimoduleDerivedTensorIsoInduction (toOsym hN) (znDual_isKProjective N) (znDualEquiv hN)
+  DGBimodule.derivedTensorIsoInduction (toOsym hN) (znDual_isKProjective N) (znDualEquiv hN)
     (znDualEquiv_mem_iff hN) (znDualEquiv_d hN) (znDualEquiv_smul hN) (znDualEquiv_op_smul hN)
 
 include hN in

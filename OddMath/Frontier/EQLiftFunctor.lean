@@ -6,7 +6,7 @@ import OddMath.Frontier.EQInductionFunctor
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
 §4.4, (4.30)–(4.31) and Corollary 4.21 ("`J^A` intertwines `I` with `Ind`"), for dg rings `E_A`, `E_B`,
-`E_{A+B}` acting fully on `Z_A`, `Z_B`, `Z_{A+B}` (`EQFunctor.FullAction`; `E_N = ONH_N` in every rank).
+`E_{A+B}` acting fully on `Z_A`, `Z_B`, `Z_{A+B}` (`DG.FullAction`; `E_N = ONH_N` in every rank).
 
 * `JAg H : E-dmod ≌ OΛ_N-dmod`, `M ↦ Z_N^∨ ⊗_E M` (the Morita equivalence (4.30) of a full action), `JHg H` on
   homotopy categories; `JA2g HA HB` on `(E_A ⊗ E_B)`-modules, `M ↦ (Z_A^∨ ⊠ Z_B^∨) ⊗ M`, and `JH2g`;

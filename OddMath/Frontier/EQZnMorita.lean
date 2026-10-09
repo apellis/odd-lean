@@ -1,4 +1,5 @@
-import OddMath.Frontier.EQMoritaBasis
+import OddMath.Frontier.EQZabEndRankOne
+import DG.Derived.RightBasisMorita
 import OddMath.Frontier.EQFunctorEmbedding
 import OddMath.Frontier.EQOnhDGEndIso
 import OddMath.Frontier.EQFunctorEmbeddingSmall
@@ -13,7 +14,7 @@ Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXi
 * `ONH.ofRightLinear φ`: every right `OΛ_N`-linear additive endomorphism `φ` of `Z_N` is the action
   of an element of `ONH_N` (Corollary 3.9 in the form of EKL's `ONH_N ≅ End_{OΛ̃_N}(OPol_N)`,
   `EQZn.onhEndEquiv`), without any homogeneity assumption.
-* `ONH.fullAction n`: `ONH_N` acts fully on `Z_N` in the sense of `EQFunctor.FullAction`
+* `ONH.fullAction n`: `ONH_N` acts fully on `Z_N` in the sense of `DG.FullAction`
   (faithfully, by all right `OΛ_N`-linear endomorphisms, detecting degrees).
 * `znTensorDualEquiv n : Z_N ⊗_{OΛ_N} Z_N^∨ ≅ ONH_N`, `z ⊗ f ↦ (w ↦ z f(w))`, an isomorphism of dg
   `(ONH_N, ONH_N)`-bimodules (`znTensorDualEquiv_op_smul`);
@@ -87,7 +88,7 @@ theorem ofRightLinear_smul (φ : Zn (n + 2) →+ Zn (n + 2))
   rfl
 
 /-- `ONH_{n+2}` acts fully on `Z_{n+2}` (Corollary 3.9). -/
-theorem fullAction (n : ℕ) : EQFunctor.FullAction (ONH n) (osymDG (n + 2)) (Zn (n + 2)) where
+theorem fullAction (n : ℕ) : DG.FullAction (ONH n) (osymDG (n + 2)) (Zn (n + 2)) where
   faithful _ h := eq_zero_of_forall_smul_eq_zero h
   full φ hφ := ⟨ofRightLinear φ hφ, ofRightLinear_smul φ hφ⟩
   mem_grading _ _ h := mem_grading_of_smul_mem fun {j z} hz => h j z hz

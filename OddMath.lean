@@ -157,7 +157,6 @@ import OddMath.Frontier.EQAppVabZab
 import OddMath.Frontier.EQAppZn
 import OddMath.Frontier.EQCofibZn
 import OddMath.Frontier.EQDGStructures
-import OddMath.Frontier.EQFixFiniteCell
 import OddMath.Frontier.EQFixNullHomotopy
 import OddMath.Frontier.EQFixProp33
 import OddMath.Frontier.EQFixW0
@@ -166,7 +165,6 @@ import OddMath.Frontier.EQFixZnCells
 import OddMath.Frontier.EQFunctorBimodule
 import OddMath.Frontier.EQFunctorDerived
 import OddMath.Frontier.EQFunctorDual
-import OddMath.Frontier.EQFunctorRightDual
 import OddMath.Frontier.EQFunctorRing
 import OddMath.Frontier.EQFunctorRingTensor
 import OddMath.Frontier.EQK0Gaussian
@@ -256,16 +254,13 @@ import OddMath.Frontier.EQBorelPresentation
 import OddMath.Frontier.EQZabREnd
 import OddMath.Frontier.EQFunctorEmbedding
 import OddMath.Frontier.EQFunctorEmbeddingSmall
-import OddMath.Frontier.EQMoritaBasis
 import OddMath.Frontier.EQZnMorita
 import OddMath.Frontier.EQFunctorEmbeddingAbelian
 import OddMath.Frontier.EQFunctorEmbeddingTensor
 import OddMath.Frontier.EQInductionPoly
 import OddMath.Frontier.EQInductionBimodule
-import OddMath.Frontier.EQDualAdjunction
 import OddMath.Frontier.EQInductionFunctor
 import OddMath.Frontier.EQRestrictionPoly
-import OddMath.Frontier.EQRegrade
 import OddMath.Frontier.EQOnhNat
 import OddMath.Frontier.EQRestrictionFunctor
 import OddMath.Frontier.EQRestrictionDerived
@@ -278,8 +273,6 @@ import OddMath.Frontier.EQLiftRestrictionPoly
 import OddMath.Frontier.EQLiftRestriction
 import OddMath.Frontier.EQLiftResFunctor
 import OddMath.Frontier.EQLiftDerived
-import OddMath.Frontier.EQLiftDerivedSmall
-import OddMath.Frontier.EQLiftVanish
 import OddMath.Frontier.EQLiftOneOne
 import OddMath.Frontier.EQLiftSmallRank
 import OddMath.Frontier.EQLiftSmallDerived
