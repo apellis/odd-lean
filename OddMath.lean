@@ -264,6 +264,10 @@ import OddMath.Frontier.EQInductionPoly
 import OddMath.Frontier.EQInductionBimodule
 import OddMath.Frontier.EQDualAdjunction
 import OddMath.Frontier.EQInductionFunctor
+import OddMath.Frontier.EQRestrictionPoly
+import OddMath.Frontier.EQRegrade
+import OddMath.Frontier.EQOnhNat
+import OddMath.Frontier.EQRestrictionFunctor
 import OddMath.Frontier.EQZabBlocks
 import OddMath.Frontier.EQZabEndRankOne
 import OddMath.Frontier.EQZabBlocksDiff
