@@ -1,5 +1,6 @@
 import OddMath.Frontier.EQK0Field
 import OddMath.Frontier.EQQuantumGroups
+import OddMath.Frontier.EQInductionPoly
 
 /-!
 # The comultiplication of Ellis–Qi Theorem 4.17 on `K₀`
@@ -12,10 +13,11 @@ of `K ⊗ OΛ_{a,b}`; `K₀(D(OΛ_n)) = SuperK0c H_n ≅ ℤ[√−1]` (`EQK0.su
 identify `E^{(n)}` with the class of the rank-one free module `OΛ_n⟨-binom(n,2)⟩`
 (`EQK0.ePowClass K n`, `√−1` acting by the internal shift `⟨1⟩`).
 
-The comultiplication functor `R_{a,b}` of Definition 4.15 is derived induction along the inclusion
-`OΛ_{a+b} ⊆ OΛ_{a,b}` (`EQFunctor.comult`, with `Z^♮_{a,b} ≅ OΛ_{a,b}`); on half-graded dg modules it is
-derived induction along the induced morphism of half-graded dg rings `H_{a+b} → H_{a,b}`
-(`DG.HalfGradedDGRing.Hom.ofDGRingHom` of `K ⊗ inclDG a b`, `EQK0.extendInclDG`). Its symbol, followed by
+The comultiplication functor `R_{a,b}` of Definition 4.15 is derived induction along the block swap
+`OΛ_{a+b} → OΛ_{a,b}`, `f(x, y) ↦ f(y, x)` (`EQFunctor.comult`, with `Z^♮_{a,b} ≅ OΛ_{a,b}`, the right
+action forced by Corollary 4.21); on half-graded dg modules it is derived induction along the induced
+morphism of half-graded dg rings `H_{a+b} → H_{a,b}` (`DG.HalfGradedDGRing.Hom.ofDGRingHom` of
+`K ⊗ swapOsym a b`, `EQK0.extendSwapDG`). Its symbol, followed by
 the Künneth isomorphism of Lemma 4.16, is the `(a, b)`-component
 `EQK0.comultK0 K a b : K₀(D(OΛ_{a+b})) → K₀(D(OΛ_a)) ⊗_{ℤ[√−1]} K₀(D(OΛ_b))` of the comultiplication
 `[R]`.
@@ -33,14 +35,14 @@ namespace OddMath.Frontier.EQK0
 
 open DG DG.HalfGradedDGRing
 open OddMath.Frontier.EQSkewDifferential (osymDG)
-open OddMath.Frontier.EQFunctor (osymABDG inclDG)
+open OddMath.Frontier.EQFunctor (osymABDG swapOsym)
 
 variable (K : Type) [Field K]
 
-/-- `K ⊗ OΛ_{a+b} → K ⊗ OΛ_{a,b}`, the scalar extension of the inclusion `OΛ_{a+b} ⊆ OΛ_{a,b}`. -/
-def extendInclDG (a b : ℕ) : ExtendScalars K (osymDG (a+b)) →ᵈᵍ+* ExtendScalars K (osymABDG a b) :=
+/-- `K ⊗ OΛ_{a+b} → K ⊗ OΛ_{a,b}`, the scalar extension of the block swap `OΛ_{a+b} → OΛ_{a,b}`. -/
+def extendSwapDG (a b : ℕ) : ExtendScalars K (osymDG (a+b)) →ᵈᵍ+* ExtendScalars K (osymABDG a b) :=
   (GradedTensorProduct.map (DGAlgHom.id : DegreeZeroRing K →ᵈᵍₐ[ℤ] DegreeZeroRing K)
-    (intDGAlgHom (inclDG a b))).toDGRingHom
+    (intDGAlgHom (swapOsym a b))).toDGRingHom
 
 /-- The class `[OΛ_n] ∈ K₀(D(OΛ_n))` of the regular module (its diagonal image). -/
 abbrev regClass (n : ℕ) [HasDerivedCategory.{0, 0} (ExtendScalars K (osymDG n))]
@@ -85,7 +87,7 @@ variable (a b : ℕ) [HasDerivedCategory.{0, 0} (ExtendScalars K (osymDG (a+b)))
 `[R_{a,b}] [OΛ_{a+b}] = [OΛ_{a,b}]`. -/
 theorem superK0OsymABEquiv_comult (s : SuperK0c.{0, 0} (ofDGRing (ExtendScalars K (osymDG (a+b))))) :
     superK0OsymABEquiv.{0} K a b
-        (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (extendInclDG K a b)).K0Map s) =
+        (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (extendSwapDG K a b)).K0Map s) =
       superK0OsymEquiv.{0} K (a+b) s :=
   superK0GaussianOfBase_superK0cMap _ _ _
     (baseK0_map_eq _ _ _ (baseK0EquivInt_self K _) (baseK0EquivInt_self K _)) s
@@ -104,7 +106,7 @@ def comultK0 (s : SuperK0c.{0, 0} (ofDGRing (ExtendScalars K (osymDG (a+b))))) :
     SuperK0c.{0, 0} (ofDGRing (ExtendScalars K (osymDG a))) ⊗[GaussianInt]
       SuperK0c.{0, 0} (ofDGRing (ExtendScalars K (osymDG b))) :=
   (lemma_4_16.{0} K a b).symm
-    (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (extendInclDG K a b)).K0Map s)
+    (superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (extendSwapDG K a b)).K0Map s)
 
 theorem neg_ii_eq : (-EQQuantum.ii : GaussianInt) = ((GaussianQuot.unitI⁻¹ : GaussianIntˣ) : GaussianInt) :=
   rfl

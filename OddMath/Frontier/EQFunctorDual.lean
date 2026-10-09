@@ -1,5 +1,6 @@
 import OddMath.Frontier.EQFunctorRing
 import OddMath.Frontier.EQFunctorRightDual
+import OddMath.Frontier.EQInductionPoly
 
 /-!
 # The dual bimodule `Z_{a,b}^∨` as a dg `(OΛ_{a+b}, OΛ_a ⊗ OΛ_b)`-bimodule
@@ -86,52 +87,66 @@ theorem skg_d (g : osymABDG a b) : skg (DG.d g) = d (a+b) (skg g) := rfl
 
 namespace Zab
 
-/-- Left multiplication by `g ∈ OΛ_a ⊠ OΛ_b` on `Z_{a,b}`. -/
-def lsmul (g : osymABDG a b) (F : Zab a b) : Zab a b :=
-  Zab.mk (skg g * F.val) (mul_mem (skg_mem g) F.mem)
+/-- `(w₀ × w₀)(g)` for `g ∈ OΛ_a ⊠ OΛ_b`: the element through which `g` acts on `Z_{a,b}`. -/
+def skw (g : osymABDG a b) : SkewPolynomial (a+b) := blockRev a b (skg g)
 
-@[simp] theorem val_lsmul (g : osymABDG a b) (F : Zab a b) : (lsmul g F).val = skg g * F.val :=
+theorem skw_mem (g : osymABDG a b) : skw g ∈ osymAB a b := blockRev_mem a b (skg_mem g)
+
+theorem skw_mem_grading {i : ℤ} {g : osymABDG a b} (hg : g ∈ DG.grading i) :
+    skw g ∈ grading (a+b) i := blockRev_mem_grading a b (skg_mem_grading hg)
+
+theorem skw_d (g : osymABDG a b) : skw (DG.d g) = d (a+b) (skw g) := by
+  rw [skw, skw, skg_d, d_blockRev]
+
+/-- Left multiplication by `(w₀ × w₀)(g)`, `g ∈ OΛ_a ⊠ OΛ_b`, on `Z_{a,b}`. -/
+def lsmul (g : osymABDG a b) (F : Zab a b) : Zab a b :=
+  Zab.mk (skw g * F.val) (mul_mem (skw_mem g) F.mem)
+
+@[simp] theorem val_lsmul (g : osymABDG a b) (F : Zab a b) : (lsmul g F).val = skw g * F.val :=
   rfl
 
-/-- The left `OΛ_a ⊗ OΛ_b`-module structure of `Z_{a,b}`: `(f ⊗ g) · F z = f(x) g(y) F z`. -/
+/-- The left `OΛ_a ⊗ OΛ_b`-module structure of `Z_{a,b}`:
+`(f ⊗ g) · F z = (w₀ f)(x) (w₀ g)(y) F z` (Definition 4.6 with the action forced by Corollary 4.21,
+ERRATA [EQ] 23; in Ellis–Qi's model `OΛ̃_a ⊠ OΛ̃_b · z` this is the action through `θ ∘ w₀` on each
+factor). -/
 instance instModuleAB : Module (osymABDG a b) (Zab a b) where
   smul := lsmul
   one_smul F := Zab.ext (by
-    change skg (1 : osymABDG a b) * F.val = F.val
-    rw [skg_one, sk_one_mul])
+    change blockRev a b (skg (1 : osymABDG a b)) * F.val = F.val
+    rw [skg_one, map_one, sk_one_mul])
   mul_smul g g' F := Zab.ext (by
-    change skg (g * g') * F.val = skg g * (skg g' * F.val)
-    rw [skg_mul]; exact EQFix.sp_mul_assoc _ _ _)
+    change blockRev a b (skg (g * g')) * F.val = blockRev a b (skg g) * (blockRev a b (skg g') * F.val)
+    rw [skg_mul, map_mul]; exact EQFix.sp_mul_assoc _ _ _)
   smul_zero g := Zab.ext (by
-    change skg g * (0 : SkewPolynomial (a+b)) = 0
+    change skw g * (0 : SkewPolynomial (a+b)) = 0
     exact EQFix.sp_mul_zero _)
   smul_add g F G := Zab.ext (by
-    change skg g * (F.val + G.val) = skg g * F.val + skg g * G.val
+    change skw g * (F.val + G.val) = skw g * F.val + skw g * G.val
     rw [mul_add])
   add_smul g g' F := Zab.ext (by
-    change skg (g + g') * F.val = skg g * F.val + skg g' * F.val
-    rw [skg_add, add_mul])
+    change blockRev a b (skg (g + g')) * F.val = blockRev a b (skg g) * F.val + blockRev a b (skg g') * F.val
+    rw [skg_add, map_add, add_mul])
   zero_smul F := Zab.ext (by
-    change skg (0 : osymABDG a b) * F.val = 0
-    rw [skg_zero]; exact EQFix.sp_zero_mul _)
+    change blockRev a b (skg (0 : osymABDG a b)) * F.val = 0
+    rw [skg_zero, map_zero]; exact EQFix.sp_zero_mul _)
 
-theorem val_smul (g : osymABDG a b) (F : Zab a b) : (g • F).val = skg g * F.val := rfl
+theorem val_smul (g : osymABDG a b) (F : Zab a b) : (g • F).val = skw g * F.val := rfl
 
 /-- **Ellis–Qi, Definition 4.6**: `Z_{a,b}` is a left dg module over `OΛ_a ⊗ OΛ_b`. -/
 instance instDGModuleAB : DGModule (osymABDG a b) (Zab a b) where
   smul_mem i j g F hg hF := by
     rw [vadd_eq_add, Zab.mem_grading_iff, val_smul]
-    exact mul_mem_grading' (skg_mem_grading hg) (Zab.mem_grading_iff.mp hF)
+    exact mul_mem_grading' (skw_mem_grading hg) (Zab.mem_grading_iff.mp hF)
   d_smul' {n g} hg F := by
     apply Zab.ext
     simp only [Zab.val_d, val_smul, Zab.val_add, Units.smul_def, Zab.val_zsmul]
-    rw [EQZab.dZ_mul, skg_d, parityInv_of_mem (skg_mem_grading hg), smul_mul_assoc]
+    rw [EQZab.dZ_mul, skw_d, parityInv_of_mem (skw_mem_grading hg), smul_mul_assoc]
 
 instance instSMulCommClassAB :
     SMulCommClass (osymABDG a b) (osymDG (a+b))ᵐᵒᵖ (Zab a b) where
   smul_comm g c F := Zab.ext (by
-    change skg g * (F.val * phiAB a b (toSkew (unop c))) =
-      skg g * F.val * phiAB a b (toSkew (unop c))
+    change skw g * (F.val * phiAB a b (toSkew (unop c))) =
+      skw g * F.val * phiAB a b (toSkew (unop c))
     exact (EQFix.sp_mul_assoc _ _ _).symm)
 
 /-- **Ellis–Qi, Definition 4.6**: `Z_{a,b}` is a dg `(OΛ_a ⊗ OΛ_b, OΛ_{a+b})`-bimodule. -/

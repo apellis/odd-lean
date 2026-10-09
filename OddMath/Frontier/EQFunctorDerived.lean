@@ -34,9 +34,10 @@ which is K-projective as a left dg `OΛ_{a+b}`-module by Corollary 4.11. Ellis�
 Ellis–Qi's `Z^♮_{a,b} = (OΛ̃_a ⊗ OΛ̃_b) · z^♮`, `d(z^♮) = 0`, is free of rank one as a left dg
 module over `OΛ_{a,b}` on a closed generator of degree `0`; its right `OΛ_{a+b}`-action is not
 printed, and the proof of Corollary 4.21 uses `Z^♮_{a,b} ≅ OΛ_a ⊗ OΛ_b`. We take this as the
-definition: `Z^♮_{a,b}` is `OΛ_{a,b}` as an `(OΛ_{a,b}, OΛ_{a+b})`-bimodule through the inclusion
-`OΛ_{a+b} ⊆ OΛ_{a,b}` (`EQFunctor.inclDG`). Then `R_{a,b} = Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (-)` is derived
-induction along this inclusion. (The printed Definition 4.15(2) writes `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`;
+definition: `Z^♮_{a,b}` is `OΛ_{a,b}` as an `(OΛ_{a,b}, OΛ_{a+b})`-bimodule through the block swap
+`OΛ_{a+b} → OΛ_{a,b}`, `f(x, y) ↦ f(y, x)` (`EQFunctor.swapOsym`), the right action for which the
+restriction half of Corollary 4.21 holds (`EQFunctor.resIsoA`, ERRATA [EQ] 24). Then `R_{a,b} = Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (-)` is derived
+induction along this map. (The printed Definition 4.15(2) writes `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`;
 the tensor product is over `OΛ_{a+b}`, as in the displayed functor.)
 
 * `comult a b`: `R_{a,b} : D(OΛ_{a+b}) → D(OΛ_{a,b})` (`DG.DGRingHom.derivedInduction`), a triangulated
@@ -144,10 +145,10 @@ variable [CatModule.HasDerivedCategory.{w₁, 0} (SingleObj (osymDG (a+b)))]
   [DG.HasDerivedCategory.{w₃, 0} (osymDG (a+b))] [DG.HasDerivedCategory.{w₄, 0} (osymABDG a b)]
 
 /-- **The comultiplication functor** `R_{a,b} = Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (-) :
-D(OΛ_{a+b}) → D(OΛ_a ⊗ OΛ_b)` (Ellis–Qi, Definition 4.15): derived induction along the inclusion
-of dg rings `OΛ_{a+b} ⊆ OΛ_a ⊗ OΛ_b`. -/
+D(OΛ_{a+b}) → D(OΛ_a ⊗ OΛ_b)` (Ellis–Qi, Definition 4.15): derived induction along the block swap
+`OΛ_{a+b} → OΛ_a ⊗ OΛ_b`, `f(x, y) ↦ f(y, x)`. -/
 abbrev comult : DG.DerivedCategory (osymDG (a+b)) ⥤ DG.DerivedCategory (osymABDG a b) :=
-  (inclDG a b).derivedInduction.{w₁, w₂, w₃, w₄}
+  (swapOsym a b).derivedInduction.{w₁, w₂, w₃, w₄}
 
 /-- `R_{a,b}` is the derived tensor product with the `(OΛ_{a,b}, OΛ_{a+b})`-bimodule
 `Z^♮_{a,b} = OΛ_{a,b}`. -/
@@ -155,14 +156,14 @@ def comultIsoDerivedTensor :
     comult.{w₁, w₂, w₃, w₄} a b ≅
       (CatModule.DerivedCategory.singleObjEquivalence (osymDG (a+b))).inverse ⋙
         CatModule.DerivedCategory.derivedTensor.{w₁, w₂, 0}
-          (CatBimodule.ofFunctor (inclDG a b).singleObjFunctor)
-          (CatBimodule.isKProjective_ofFunctor_left (inclDG a b).singleObjFunctor) ⋙
+          (CatBimodule.ofFunctor (swapOsym a b).singleObjFunctor)
+          (CatBimodule.isKProjective_ofFunctor_left (swapOsym a b).singleObjFunctor) ⋙
         (CatModule.DerivedCategory.singleObjEquivalence (osymABDG a b)).functor :=
-  (inclDG a b).derivedInductionIsoDerivedTensor
+  (swapOsym a b).derivedInductionIsoDerivedTensor
 
-/-- `R_{a,b}` is left adjoint to restriction of scalars along `OΛ_{a+b} ⊆ OΛ_a ⊗ OΛ_b`. -/
-def comultAdjunction : comult.{w₁, w₂, w₃, w₄} a b ⊣ (inclDG a b).derivedRestriction :=
-  (inclDG a b).derivedInductionAdjunction
+/-- `R_{a,b}` is left adjoint to restriction of scalars along the block swap. -/
+def comultAdjunction : comult.{w₁, w₂, w₃, w₄} a b ⊣ (swapOsym a b).derivedRestriction :=
+  (swapOsym a b).derivedInductionAdjunction
 
 end Comultiplication
 
@@ -177,7 +178,7 @@ def comultSelfIso :
     (comult.{0, w₂, w₃, w₄} a b).obj
         (DG.DerivedCategory.Q.obj (DGModuleCat.of (osymDG (a+b)) (osymDG (a+b)))) ≅
       DG.DerivedCategory.Q.obj (DGModuleCat.of (osymABDG a b) (osymABDG a b)) :=
-  derivedInductionSelfIso (inclDG a b)
+  derivedInductionSelfIso (swapOsym a b)
 
 end ComultiplicationSelf
 

@@ -92,7 +92,7 @@ def comultK0Lin (a b n : ℕ) (h : a + b = n) :
     K0n K n →ₗ[GaussianInt] K0n K a ⊗[GaussianInt] K0n K b := by
   subst h
   exact (lemma_4_16.{0} K a b).symm.toLinearMap ∘ₗ
-    superK0cGaussianMap (HalfGradedDGRing.Hom.ofDGRingHom (extendInclDG K a b)).K0Map
+    superK0cGaussianMap (HalfGradedDGRing.Hom.ofDGRingHom (extendSwapDG K a b)).K0Map
 
 /-- **The comultiplication `[R]` on `K₀(D(OΛ))`**: on `K₀(D(OΛ_n))`, `Σ_{a+b=n}` of the symbol of
 `R_{a,b}` (Definition 4.15) followed by the inverse of Lemma 4.16. -/
