@@ -288,8 +288,11 @@ permutation action):
   `b ≥ 2`; for `a + b ≥ 2`, `ONH^♮_{a+b}` is contractible, hence K-projective, over `ONH_a ⊗ ONH_b` and
   `Res^♮ = ONH^♮ ⊗^L (-)` (`ResNatDAll`), with `R ∘ J ≅ J ∘ Res^♮` (`resNatIsoDAll`); the induction half for `a ≥ 2`
   or `b ≥ 2` (`indIsoDAll_of_two`). Derived induction along a composite of dg ring maps (`derivedInductionCompIso`).
-  Open: the derived level for `(a, b) ∈ {(0,0), (0,1), (1,0)}` (both halves) and the induction half for
-  `(a, b) = (1, 1)`, where `D(ONH_1 ⊗ ONH_1) ≠ 0` and `I_{1,1}` has to vanish. The `⊠` form of
+  For `(a, b) = (1, 1)`, where `D(ONH_1 ⊗ ONH_1) ≠ 0` (`Frontier.EQLiftOneOne`): `Z_{1,1} ≅ Z_2` as right dg
+  `OΛ_2`-modules, so `Z_{1,1}^∨ ≅ Z_2^∨` is acyclic (`∂_1` acts on `Z_2^∨` on the right with `d ∂_1 = 1`) and
+  `I_{1,1} = Z_{1,1}^∨ ⊗^L (-)` vanishes (generic, `Frontier.EQLiftVanish`: the derived tensor product with a
+  K-projective acyclic bimodule is zero, `bimoduleDerivedTensor_isZero_obj`), giving `J ∘ Ind ≅ I ∘ J`
+  (`indIsoDOneOne`). Open: the derived level for `(a, b) ∈ {(0,0), (0,1), (1,0)}` (both halves). The `⊠` form of
   Def 4.14 (`Frontier.EQFunctorBox`): `I_{a,b}(M, N) = Z^∨_{a,b} ⊗^L_{OΛ_{a,b}} (M ⊠ N)` with dg-lean's derived external
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
