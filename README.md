@@ -309,6 +309,23 @@ permutation action):
   tensor product transported along `OΛ_a ⊗ OΛ_b ≅ OΛ_{a,b}` (`EQFunctor.multBox`), `I_{a,b}(OΛ_a, OΛ_b) ≅ Z^∨_{a,b}`
   (`multBoxSelfIso`), and its symbol `[M] ⊗ [N] ↦ [I_{a,b}(M, N)]` with
   `[I_{a,b}(OΛ_a, OΛ_b)] = Σ_{μ ∈ Par(b,a)} (-1)^{|μ|} [OΛ_{a+b}]` (`K0MultBox_mk`, `K0MultBox_self`).
+- §4.4 on half-graded modules (`Frontier.EQHalfGradedLift`, over `ℤ`), the setting of Theorems 3.18, 4.17 and
+  Lemma 4.16: the functors of Definitions 4.14, 4.15, 4.18, 4.20 and (3.40) as derived tensor products with the diagonally
+  regraded bimodules over the weight dg categories (dg-lean's `DG.Diagonal.derivedTensor`): `EQLift.JH`, `J2H`, `IH`,
+  `RH`, `IndH`, `ResNatH` (for `R` and `Ind` the bimodule is the ring through the dg ring map, dg-lean's
+  `DG.DGRingHom.Bimodule`). Each is the diagonal transport of the `ℤ`-graded functor (`jHTransportIso`, `iHTransportIso`,
+  `rHTransportIso`, `indHTransportIso`, `resNatHTransportIso`; dg-lean's `DG.Diagonal.derivedTensorTransportIso`), and
+  transport is functorial (dg-lean's `DG.Diagonal.transportCompIso`, `transportMapIso`), so **Corollary 4.21 holds on
+  half-graded derived categories** in all ranks (`EQLift.indIsoH`, `resIsoH`), and **Corollary 4.19**: `J` is fully
+  faithful on half-graded derived categories in every rank (`jHFullyFaithful`; for `N ≥ 2` the half-graded derived
+  category of a dg ring with `d t = 1`, `t` of degree `-1`, is zero, `isZero_halfGraded_of_d_eq_one`; for `N ≤ 1`,
+  `J ≅ χ^*` is a triangulated equivalence and the transport of an equivalence is one,
+  `transportFullyFaithfulOfIsEquivalence`). The `ℤ`-graded statements above are the restrictions along the diagonal
+  functors. **Corollary 4.19 on `K₀`** (`Frontier.EQCor419K0`): the symbol `[J] : K₀(D(ONH)) → K₀(D(OΛ))` of the
+  half-graded `J` (`EQK0.jK0Int` over `ℤ`, `EQK0.jK0` over a field; `[J_N]` is the identity under `K₀ ≅ ℤ[√−1]` for
+  `N ≤ 1`, since `Z_N^∨ ≅ OΛ_N`) is, under the isomorphisms of Theorems 3.18 and 4.17, the inclusion `ι : u⁺ ↪ U⁺`,
+  `E ↦ E^{(1)}` (`cor_4_19_int_K0`, `cor_4_19_K0`); hence it is injective and a map of twisted bialgebras
+  (`cor_4_19_int_mul`, `cor_4_19_int_comul`; `cor_4_19_mul`, `cor_4_19_comul`).
 - `OΛ_{a,b} = OΛ_a ⊗ OΛ_b` (`Frontier.EQFunctorRingTensor`): `f ⊗ g ↦ f(x) g(y)` is an isomorphism of dg rings from
   dg-lean's graded tensor product (Koszul sign rule) onto `EQFunctor.osymABDG a b` (`EQFunctor.tensorToOsymAB`,
   `tensorToOsymAB_bijective`, `tensorEquivOsymAB`), from the block supercommutation `g(y) u(x) = (-1)^{ij} u(x) g(y)`
@@ -574,17 +591,17 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | Corollary 4.11 | `Z^∨_{a,b}` cofibrant of graded rank `[a+b, a]_q` | `Frontier.EQZabDual` (`cor_4_11`), `Frontier.EQFunctorDual` | formalized |
 | Proposition 4.12 | `REND = END` for `Z_{a,b}`, `Z^∨_{a,b}`; `E_{a,b} ≅ END(Z_{a,b}) ≅ END(Z^∨_{a,b})` | `Frontier.EQZabREnd`, `Frontier.EQZabEndRankOne`; dg-lean `Derived.RightDualEnd` | formalized: (1); (2) `END(Z_{a,b})` is the algebra spanned by the trace-pairing maps (`prop_4_12_two`), and transposition is an isomorphism of dg algebras `END(Z_{a,b}) ≅ END(Z^∨_{a,b})` (`prop_4_12_two_dual`, into the graded opposite in the library's right-action convention for `END`) |
 | (4.27), Proposition 4.13 | `Z_a` for compositions: basis, `d`-stability, `HOM(Z_a, Z_b)` | `Frontier.EQZabBlocks`, `…BlocksDiff`, `…BlocksHom`, `…BlocksRank` | formalized ((1) and the graded rank in (3) corrected, [EQ] 11, 21) |
-| Definition 4.14 | the multiplication functor | `Frontier.EQFunctorDerived` (`mult`), `Frontier.EQFunctorBox`, `Frontier.EQK0Mult` (`multKHalf`) | formalized |
-| Definition 4.15 | `Z^♮_{a,b}` and the comultiplication functor | `Frontier.EQFunctorDerived` (`comult`), `Frontier.EQRestrictionFunctor` (`ZNat`) | formalized (right action not printed and forced, [EQ] 24; misprint [EQ] 25) |
+| Definition 4.14 | the multiplication functor | `Frontier.EQFunctorDerived` (`mult`), `Frontier.EQFunctorBox`, `Frontier.EQK0Mult` (`multKHalf`), `Frontier.EQHalfGradedLift` (`IH`) | formalized, on `ℤ`-graded and on half-graded modules |
+| Definition 4.15 | `Z^♮_{a,b}` and the comultiplication functor | `Frontier.EQFunctorDerived` (`comult`), `Frontier.EQRestrictionFunctor` (`ZNat`), `Frontier.EQHalfGradedLift` (`RH`) | formalized, on `ℤ`-graded and on half-graded modules (right action not printed and forced, [EQ] 24; misprint [EQ] 25) |
 | Lemma 4.16 | `K₀(D(OΛ ⊗ OΛ)) ≅ K₀(OΛ) ⊗ K₀(OΛ)` | `Frontier.EQK0Field` (`lemma_4_16`), `Frontier.EQThm417Int` (`lemma_4_16_int`) | formalized over every field and over `ℤ` |
 | Theorem 4.17 | `K₀(D(OΛ)) ≅ U⁺` as twisted bialgebras | `Frontier.EQThm417`, `Frontier.EQThm417Int`, `Frontier.EQK0Assembly` | formalized over every field and over `ℤ` (twist `−1`, [EQ] 1; footnote 5, [EQ] 22) |
 | (4.28), (4.29) | module and homotopy categories of `ONH`, `OΛ` as direct sums | — | notation (all statements are componentwise) |
-| Definition 4.18 | the functors `J^A`, `J^H`, `J` | `Frontier.EQFunctorEmbedding*`, `Frontier.EQLiftDerived` (`JDAll`) | formalized |
-| Corollary 4.19 | `J` fully faithful; on `K₀` it categorifies `u⁺ ⊂ U⁺` | `Frontier.EQFunctorEmbedding` (`jFullyFaithful`), `Frontier.EQFunctorEmbeddingSmall` (`jSmall_isEquivalence`) | **partial**: full faithfulness formalized in every rank; the Grothendieck-group statement is not formalized |
+| Definition 4.18 | the functors `J^A`, `J^H`, `J` | `Frontier.EQFunctorEmbedding*`, `Frontier.EQLiftDerived` (`JDAll`), `Frontier.EQHalfGradedLift` (`JH`) | formalized, on `ℤ`-graded and on half-graded modules |
+| Corollary 4.19 | `J` fully faithful; on `K₀` it categorifies `u⁺ ⊂ U⁺` | `Frontier.EQFunctorEmbedding` (`jFullyFaithful`), `Frontier.EQFunctorEmbeddingSmall` (`jSmall_isEquivalence`), `Frontier.EQHalfGradedLift` (`jHFullyFaithful`), `Frontier.EQCor419K0` | formalized: fully faithful in every rank, on `ℤ`-graded and half-graded derived categories; on `K₀`, `[J]` is `ι : u⁺ ↪ U⁺` under Theorems 3.18 and 4.17, injective and a map of twisted bialgebras, over `ℤ` and over every field (`cor_4_19_int_*`, `cor_4_19_*`) |
 | (4.30), (4.31) | the Morita equivalences `J^A_n`, `J^H_n` | `Frontier.EQFunctorEmbeddingAbelian`, `Frontier.EQZnMorita` | formalized |
 | (4.32) | the bimodule `ONH^♮_{a+b}` | `Frontier.EQOnhNat` (`ONHNat`, `d_Pw`), `Frontier.EQRestrictionPoly` | corrected ([EQ] 24) |
-| Definition 4.20 | `Res^♮ = ONH^♮ ⊗^L (−)` | `Frontier.EQRestrictionDerived`, `Frontier.EQLiftSmallDerived` (`ResNatDAllAny`) | formalized |
-| Corollary 4.21 | `J` intertwines `I` with `Ind` and `R` with `Res^♮` | `Frontier.EQInductionFunctor`, `Frontier.EQRestrictionFunctor`, `Frontier.EQLift*` | formalized in all ranks on abelian, homotopy and derived categories ([EQ] 23, 24) |
+| Definition 4.20 | `Res^♮ = ONH^♮ ⊗^L (−)` | `Frontier.EQRestrictionDerived`, `Frontier.EQLiftSmallDerived` (`ResNatDAllAny`), `Frontier.EQHalfGradedLift` (`ResNatH`) | formalized, on `ℤ`-graded and on half-graded modules |
+| Corollary 4.21 | `J` intertwines `I` with `Ind` and `R` with `Res^♮` | `Frontier.EQInductionFunctor`, `Frontier.EQRestrictionFunctor`, `Frontier.EQLift*`, `Frontier.EQHalfGradedLift` (`indIsoH`, `resIsoH`) | formalized in all ranks on abelian, homotopy, derived and half-graded derived categories ([EQ] 23, 24) |
 | Lemma A.1 | adding or removing boxes of one colour | `Frontier.EQLimaPartitions` (`lemma_A_1`) | formalized |
 | Proposition A.2 | Lima bases of `H(OΛ)`, `H(OΛ_n)` | `Frontier.EQLimaCohomology`, `Frontier.EQLimaOsym`, `Frontier.EQLimaAllRanks`, `Frontier.EQLimaLimit` | formalized |
 | Proposition A.3, (A.1) | `H(OΛ)` is a polynomial algebra | `Frontier.EQLimaPolyAlg` (`prop_A_3_columns`, `prop_A_3_rows`, `tri_mul`) | formalized (two claims of the proof refuted, [EQ] 12) |
@@ -592,9 +609,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | (A.5)–(A.7) | `d(e_k)`, `d(h_k)`, `d(s_λ)` in the `p`-dg setting | `Frontier.EQPdgPoly`, `Frontier.EQPdgAlt`, `Frontier.EQPdgLimit` | formalized ((A.5), (A.6) corrected, [EQ] 16) |
 | Theorem A.4 | slash cohomology of `Sym_n` and `Sym` | `Frontier.EQPdgTheorem`, `Frontier.EQPdgTheorem2`, `Frontier.EQPdgLimitTheorem` | formalized |
 
-Not formalized: the Grothendieck-group statement of Corollary 4.19 and the freeness claim of Definition 4.9.
-Remarks 2.1, 2.9, 2.15 and Examples 2.10–2.12 are not targets. Corollaries 4.19 and 4.21 and Definitions 4.18 and 4.20 are formalized for
-the `ℤ`-graded dg modules of the scope note above, not for all half-graded modules.
+Not formalized: the freeness claim of Definition 4.9. Remarks 2.1, 2.9, 2.15 and Examples 2.10–2.12 are not targets.
 
 ### [BE2] (in progress)
 
