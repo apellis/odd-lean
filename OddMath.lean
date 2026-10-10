@@ -9,6 +9,7 @@ import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
+import OddMath.CoveringQuantum.SerreIdeal
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.PreF.WordGauge
 import OddMath.CoveringQuantum.PreF.GaugeForm
@@ -17,6 +18,7 @@ import OddMath.CoveringQuantum.Twistor.Scalars
 import OddMath.CoveringQuantum.Twistor.Form
 import OddMath.CoveringQuantum.Twistor.Integers
 import OddMath.CoveringQuantum.Twistor.Serre
+import OddMath.CoveringQuantum.Twistor.Nondegenerate
 import OddMath.CoveringQuantum.UDot.Basic
 import OddMath.CoveringQuantum.UDot.Blocks
 import OddMath.CoveringQuantum.UDot.Rho
