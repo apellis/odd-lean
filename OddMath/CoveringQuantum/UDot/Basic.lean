@@ -131,8 +131,10 @@ open UDot
 
 variable (k : Type*) [CommRing k] {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 
-/-- The covering quantum group `U̇_{q,π}(𝔤)` of [BE2] §9 (with an adjoined unit, see the module
-docstring). -/
+/-- The unital envelope of the covering quantum group in [BE2] §9. The paper's nonunital
+modified algebra is `UDot.modified` (defined in `UDot.Blocks`), the internal sum of
+the weight blocks `1_μ CoveringUDot 1_λ`. The scalar identity here is adjoined, not a
+finite sum of all weight idempotents. -/
 abbrev CoveringUDot (D : RootDatum I X) (q : kˣ) (π : k) := RingQuot (UDot.Rel D q π)
 
 namespace UDot
