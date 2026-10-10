@@ -30,6 +30,7 @@ import OddMath.CoveringQuantum.UDot.HalfMaps
 import OddMath.CoveringQuantum.UDot.HalfWeights
 import OddMath.CoveringQuantum.UDot.Rho
 import OddMath.CoveringQuantum.UDot.Symmetries
+import OddMath.CoveringQuantum.UDot.Triangular
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
