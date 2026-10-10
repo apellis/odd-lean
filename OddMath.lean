@@ -5,6 +5,8 @@ import OddMath.CoveringQuantum.PreF.Basic
 import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.Serre
+import OddMath.CoveringQuantum.UDot.Basic
+import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
