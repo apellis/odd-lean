@@ -38,6 +38,54 @@ theorem braidEq_aux2 (a b X Y Q fx fy fp fq : ZMod 2) (h1 : fp + X + Y * X + fx 
       a * (1 + b) + (a * (fp + Y + 1) + b * fq) := by
   revert a b X Y Q fx fy fp fq; decide
 
+/-! ## Images of the sideways crossing and of the components of (1.13), (1.14) -/
+
+/-- The layers of the image under `ω` of `σ : Eⱼ Fᵢ → Fᵢ Eⱼ`. -/
+def omegaSigma (i j : I) : List (LayerData I) :=
+  whL [up i, dn j] [] ([], Shape.cup i, []) ::
+    ((dcrossL j i).map (whL [up i] [up i]) ++ [whL [] [dn j, up i] ([], Shape.cap i, [])])
+
+theorem sChain_omegaSigma (i j : I) : SChain [up i, dn j] (omegaSigma i j) [dn j, up i] := by
+  have h := (sChain_dcrossL j i).whisk [up i] [up i]
+  refine ⟨rfl, ?_⟩
+  refine SChain.append (t' := [up i] ++ [dn i, dn j] ++ [up i]) (by simpa [whL, Shape.cod] using h) ?_
+  exact ⟨rfl, rfl⟩
+
+variable (Sc) in
+/-- `ω(σᵢⱼ)` is `σⱼᵢ` up to the scalar `-(-1)^{|i||j|}` (here the layers, without scalars):
+(2.5) moves the downward crossing through the cup, then the zigzag (1.10) straightens. -/
+theorem cl_omegaSigma (μ : X) (i j : I) :
+    cl D Sc μ [up i, dn j] [dn j, up i] (omegaSigma i j) =
+      cl D Sc μ [up i, dn j] [dn j, up i] (sigmaL j i) := by
+  have E := (eq_2_5_a Sc i j (wt D μ [])).symm
+  have h1 := cl_step (D := D) (Sc := Sc) μ (s₀ := [up i, dn j]) (t₀ := [dn j, up i]) []
+    [([], Shape.cap i, [dn j, up i])] [up i] [] E (by simp) ⟨by simp [Shape.dom], rfl⟩
+    (L := omegaSigma i j)
+    (L' := [] ++ ([([], Shape.cup i, [dn j])] ++ (sigmaL j i).map (whL [dn i] [])).map
+      (whL [up i] []) ++ [([], Shape.cap i, [dn j, up i])])
+    (by simp [omegaSigma, whL]) rfl
+  rw [h1]
+  have h2 := (cl_ixc_even (D := D) (Sc := Sc) (μ := μ) (S := [up i, dn j]) (T := [dn j, up i])
+    [([up i], Shape.cup i, [dn j])] [] [] [] [] (A := [([], Shape.cap i, [])])
+    (s := [up i, dn i]) (s' := []) ⟨rfl, rfl⟩ (sChain_sigmaL j i)
+    (Or.inl (by simp [parsum, Shape.parity]))).symm
+  simp [whL] at h2 ⊢
+  rw [h2]
+  exact cl_step (D := D) (Sc := Sc) μ [] (sigmaL j i) [] [dn j] (cl_zigE Sc i (wt D μ [dn j]))
+    (by simp) (by simpa using sChain_sigmaL j i) (by simp [whL]) rfl
+
+theorem cl_cons_congr {μ : X} {s m t : List (Letter I)} (x : LayerData I) {B B' : List (LayerData I)}
+    (hx : SChain s [x] m) (hB : SChain m B t) (hB' : SChain m B' t) (c : k)
+    (h : cl D Sc μ m t B = c • cl D Sc μ m t B') :
+    cl D Sc μ s t (x :: B) = c • cl D Sc μ s t (x :: B') := by
+  rw [show x :: B = [x] ++ B from rfl, ← cl_comp hx hB, h, Linear.comp_smul, cl_comp hx hB']; rfl
+
+theorem cl_append_congr {μ : X} {s m t : List (Letter I)} {A A' : List (LayerData I)}
+    (C : List (LayerData I)) (hA : SChain s A m) (hA' : SChain s A' m) (hC : SChain m C t) (c : k)
+    (h : cl D Sc μ s m A = c • cl D Sc μ s m A') :
+    cl D Sc μ s t (A ++ C) = c • cl D Sc μ s t (A' ++ C) := by
+  rw [← cl_comp hA hC, h, Linear.smul_comp, cl_comp hA' hC]
+
 theorem omega_zigE (i : I) (ν : X) :
     omegaLin Sc ν [up i] [up i] (relation D Sc (.zigE i ν)) = 0 := by
   simp only [relation]
@@ -297,5 +345,61 @@ theorem omega_braidEq (i j : I) (ν : X) (hij : i ≠ j) :
     generalize D.parity i = a; generalize D.parity j = b; revert a b; decide
   rw [hc1, hc2]
   linear_combination (norm := module) zsign k (D.parity i * (1 + D.parity j)) • key
+
+theorem omega_invNe₁ (i j : I) (ν : X) (hij : i ≠ j) :
+    omegaLin Sc ν [up j, dn i] [up j, dn i] (relation D Sc (.invNe₁ i j ν hij)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invNe₂ (i j : I) (ν : X) (hij : i ≠ j) :
+    omegaLin Sc ν [dn i, up j] [dn i, up j] (relation D Sc (.invNe₂ i j ν hij)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invP₁ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
+    omegaLin Sc ν [up i, dn i] [up i, dn i] (relation D Sc (.invP₁ i ν hh)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invP₂ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
+    omegaLin Sc ν [dn i, up i] [dn i, up i] (relation D Sc (.invP₂ i ν hh)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invP₃ (i : I) (ν : X) (m : ℕ) (hm : (m : ℤ) < D.h i ν) :
+    omegaLin Sc ν [dn i, up i] [] (relation D Sc (.invP₃ i ν m hm)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invP₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < D.h i ν) :
+    omegaLin Sc ν [] [dn i, up i] (relation D Sc (.invP₄ i ν n hn)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
+
+theorem omega_invP₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < D.h i ν) (hn : (n : ℤ) < D.h i ν) :
+    omegaLin Sc ν [] [] (relation D Sc (.invP₅ i ν m n hm hn)) = 0 := by
+  simp only [relation]
+  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  try erw [omegaLin_idg]
+  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
+  done
 
 end OddMath.SKM
