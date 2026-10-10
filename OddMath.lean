@@ -498,6 +498,11 @@ import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.Grading
 import OddMath.SKM.Lemma31Rot
+import OddMath.SKM.Lemma32
+import OddMath.SKM.Lemma33
+import OddMath.SKM.Lemma33Rot
+import OddMath.SKM.MateBlock
+import OddMath.SKM.MateN
 import OddMath.SKM.Mates
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.Presentation
