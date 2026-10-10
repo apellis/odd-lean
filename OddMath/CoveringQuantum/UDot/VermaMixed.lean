@@ -27,7 +27,7 @@ private theorem pii_pow_sub_cartan (hπ : π ^ 2 = 1) (i j : I) (n : ℤ) :
       ← Nat.div_add_mod n.natAbs 2, pow_add, pow_add, pow_mul, pow_mul,
       D.pii_sq π hπ i, one_pow, one_pow, one_mul, one_mul, heq]
 
-private theorem pii_pow_sub_word (hπ : π ^ 2 = 1) (i : I) (n : ℤ) (w : List I) :
+theorem pii_pow_sub_word (hπ : π ^ 2 = 1) (i : I) (n : ℤ) (w : List I) :
     D.pii π i ^ (n - D.h i (halfWeight D true (wordWeight w))).natAbs =
       D.pii π i ^ n.natAbs := by
   induction w generalizing n with
@@ -37,7 +37,7 @@ private theorem pii_pow_sub_word (hπ : π ^ 2 = 1) (i : I) (n : ℤ) (w : List 
       show halfRoot D true j = D.α j from rfl, map_add, D.h_α, ← sub_sub]
     rw [ih, pii_pow_sub_cartan D π hπ]
 
-private theorem weightTwist_monomial (i : I) (w : List I) :
+theorem weightTwist_monomial (i : I) (w : List I) :
     weightTwist D.toSuperCartanDatum q i (monomial k w) =
       ((D.qi q i ^ D.h i (halfWeight D true (wordWeight w)) : kˣ) : k) • monomial k w := by
   induction w with
@@ -64,7 +64,7 @@ private theorem parity_twist_twist' (hπ : π ^ 2 = 1) (i : I) (x : PreF k I) :
   rw [hc]
   rfl
 
-private theorem denominator_qpInt (hπ : π ^ 2 = 1) (i : I) (n : ℤ) :
+theorem denominator_qpInt (hπ : π ^ 2 = 1) (i : I) (n : ℤ) :
     vermaDenominator D.toSuperCartanDatum q π i * qpInt (D.qi q i) (D.pii π i) n =
       ((D.qi q i ^ n : kˣ) : k) - D.pii π i ^ n.natAbs * ((D.qi q i ^ (-n) : kˣ) : k) := by
   rcases Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩
