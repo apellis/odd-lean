@@ -121,7 +121,8 @@ private theorem gen_mul_triangularSpan (g : Gen I X) {x : CoveringUDot k D q π}
     | add x y hx hy ihx ihy => rw [mul_add]; exact Submodule.add_mem _ ihx ihy
     | smul c x hx ih => rw [mul_smul_comm]; exact Submodule.smul_mem _ c ih
 
-private theorem mul_one_mem_triangularSpan (x : CoveringUDot k D q π) (μ : X) :
+/-- Right multiplication by a weight idempotent lands in the triangular span. -/
+theorem mul_one_mem_triangularSpan (x : CoveringUDot k D q π) (μ : X) :
     x * one D q π μ ∈ triangularSpan D q π := by
   obtain ⟨x, rfl⟩ := mk_surjective D q π x
   induction x using PreF.induction_left with
