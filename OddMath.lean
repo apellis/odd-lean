@@ -6,6 +6,7 @@ import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.UDot.Basic
+import OddMath.CoveringQuantum.UDot.Blocks
 import OddMath.CoveringQuantum.UDot.Rho
 import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.Diagrammatics.Even.Basic
