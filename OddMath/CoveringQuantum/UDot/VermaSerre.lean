@@ -47,7 +47,8 @@ private theorem parity_twist_twist (hπ : π ^ 2 = 1) (i : I) (x : PreF k I) :
   rfl
 
 omit [DecidableEq I] in
-private theorem serre_inv (hπ : π ^ 2 = 1) {i j : I} (hij : i ≠ j) :
+/-- Inverting the parameter preserves each covering Serre element. -/
+theorem serreElt_inv_q (hπ : π ^ 2 = 1) {i j : I} (hij : i ≠ j) :
     C.serreElt q⁻¹ π i j = C.serreElt q π i j := by
   unfold SuperCartanDatum.serreElt
   apply Finset.sum_congr rfl
@@ -137,8 +138,8 @@ theorem numeratorEval_serre (hπ : π ^ 2 = 1) (a b : I → k)
   | θ_mul l y hy =>
     rw [numeratorEval_mixed C q π hπ,
       C.rDeriv_serreElt q π hπ hij,
-      ← serre_inv C q π hπ hij, C.rDeriv_serreElt q⁻¹ π hπ hij,
-      serre_inv C q π hπ hij]
+      ← serreElt_inv_q C q π hπ hij, C.rDeriv_serreElt q⁻¹ π hπ hij,
+      serreElt_inv_q C q π hπ hij]
     simp only [parityTwist, C.diagTwist_serreElt, map_smul,
       LinearMap.smul_apply, hy, map_zero, LinearMap.zero_apply, smul_zero,
       mul_zero, add_zero, sub_zero]
