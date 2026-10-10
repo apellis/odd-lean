@@ -586,7 +586,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | Lemma 4.7, (4.23) | `d` on the basis of `Z_{a,b}`; Pieri rule | `Frontier.EQZabSchur` (`lemma_4_7_box_twisted`, `pieri_twisted`) | formalized |
 | Corollary 4.8 | `d`-stable basis; `Z_{a,b}` finite-cell over `OΛ_{a+b}` | `Frontier.EQZabCell`, `Frontier.EQZabFiltration`, `Frontier.EQFixZabCells` | formalized |
 | (4.24), (4.25) | the trace `z^∨` and `Z^∨_{a,b}` | `Frontier.EQZabTrace`, `Frontier.EQFunctorDual` (`ZDual`) | definitions (`z^∨` is only `w₀`-semilinear, [EQ] 19) |
-| Definition 4.9, (4.26) | `Z^∨_{a,b} ≅ z^∨ · (OΛ_a ⊗ OΛ_b)`, `d(z^∨)` | `Frontier.EQZabTrace` | **partial**: the formula for `d(z^∨)` is used (as the reading of Cor 4.10); that `Z^∨_{a,b}` is free of rank one over `OΛ_a ⊗ OΛ_b` on `z^∨` is not formalized |
+| Definition 4.9, (4.26) | `Z^∨_{a,b} ≅ z^∨ · (OΛ_a ⊗ OΛ_b)`, `d(z^∨)` | `Frontier.EQZabFree` (`def_4_9_mem`, `def_4_9_free`), `Frontier.EQZabFrobenius`, `Frontier.EQZabTrace` (`cor_4_10`) | formalized for `a + b ≥ 2` with the corrected generator `w₀ ∘ z^∨` ([EQ] 19): every right `OΛ_{a+b}`-linear map `Z_{a,b} → OΛ_{a+b}` is `x ↦ w₀ z^∨(g x)` for a unique `g ∈ OΛ̃_a ⊠ OΛ̃_b`, so `Z^∨_{a,b}` is free of rank one over `OΛ_a ⊗ OΛ_b` on `w₀ ∘ z^∨`; (4.26) is Cor 4.10. For `a + b ≤ 1`, `OΛ_a ⊗ OΛ_b = OΛ_{a+b}` and the claim is trivial |
 | Corollary 4.10 | compatibility of `z^∨` with the dg bimodule structure | `Frontier.EQZabTrace` (`cor_4_10`) | formalized ([EQ] 19) |
 | Corollary 4.11 | `Z^∨_{a,b}` cofibrant of graded rank `[a+b, a]_q` | `Frontier.EQZabDual` (`cor_4_11`), `Frontier.EQFunctorDual` | formalized |
 | Proposition 4.12 | `REND = END` for `Z_{a,b}`, `Z^∨_{a,b}`; `E_{a,b} ≅ END(Z_{a,b}) ≅ END(Z^∨_{a,b})` | `Frontier.EQZabREnd`, `Frontier.EQZabEndRankOne`; dg-lean `Derived.RightDualEnd` | formalized: (1); (2) `END(Z_{a,b})` is the algebra spanned by the trace-pairing maps (`prop_4_12_two`), and transposition is an isomorphism of dg algebras `END(Z_{a,b}) ≅ END(Z^∨_{a,b})` (`prop_4_12_two_dual`, into the graded opposite in the library's right-action convention for `END`) |
@@ -609,7 +609,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | (A.5)–(A.7) | `d(e_k)`, `d(h_k)`, `d(s_λ)` in the `p`-dg setting | `Frontier.EQPdgPoly`, `Frontier.EQPdgAlt`, `Frontier.EQPdgLimit` | formalized ((A.5), (A.6) corrected, [EQ] 16) |
 | Theorem A.4 | slash cohomology of `Sym_n` and `Sym` | `Frontier.EQPdgTheorem`, `Frontier.EQPdgTheorem2`, `Frontier.EQPdgLimitTheorem` | formalized |
 
-Not formalized: the freeness claim of Definition 4.9. Remarks 2.1, 2.9, 2.15 and Examples 2.10–2.12 are not targets.
+Remarks 2.1, 2.9, 2.15 and Examples 2.10–2.12 are not targets.
 
 ### [BE2] (in progress)
 

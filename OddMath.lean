@@ -254,6 +254,8 @@ import OddMath.Frontier.EQZabModule
 import OddMath.Frontier.EQZabReverse
 import OddMath.Frontier.EQZabSchur
 import OddMath.Frontier.EQZabTrace
+import OddMath.Frontier.EQZabFrobenius
+import OddMath.Frontier.EQZabFree
 import OddMath.Frontier.EQBorelPresentation
 import OddMath.Frontier.EQZabREnd
 import OddMath.Frontier.EQFunctorEmbedding
