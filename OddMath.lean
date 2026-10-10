@@ -181,6 +181,8 @@ import OddMath.Frontier.EQOPolTensor
 import OddMath.Frontier.EQOnhTensor
 import OddMath.Frontier.EQThm318
 import OddMath.Frontier.EQThm318Int
+import OddMath.Frontier.EQThm318Assembly
+import OddMath.Frontier.EQK0AssemblySmall
 import OddMath.Frontier.EQFunctorBox
 import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks
