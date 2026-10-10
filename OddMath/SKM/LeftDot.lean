@@ -12,21 +12,25 @@ import OddMath.SKM.MateBlock
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, Proposition 4.1
 (TeX label `leftdot`), relations (4.1) (`leftcross1`), (4.2) (`leftcross2`), (4.3) (`leftclub`).
 
-Here, for `i = j` and `n = 1`:
+Here, for `i = j` and `n = 1`, for all `λ`:
 
-* (4.1) with `⟨hᵢ, λ⟩ ≥ 0` (`lemma41_eq1_one`): on `Fᵢ Eᵢ 1_λ`, a downward dot followed by the
-  leftward crossing, minus `(-1)^{|i|}` times the leftward crossing followed by a downward dot,
-  is `ε' ≫ η'`;
-* (4.2) with `⟨hᵢ, λ⟩ ≥ 0` (`lemma41_eq2_one`): the same for upward dots, with
-  `(-1)^{|i|⟨hᵢ,λ⟩}`;
-* (4.3) for all `λ` (`lemma41_eq3_one_even`, `lemma41_eq3_one_odd`): an upward dot on the
-  leftward cap `ε'` equals a downward dot on its other leg if `i` is even, and `(-1)^{⟨hᵢ,λ⟩}`
-  times it plus twice `ε'` followed by the odd bubble if `i` is odd.
+* (4.1) (`lemma41_eq1_one'`; `lemma41_eq1_one`, `lemma41_eq1_one_nonpos` for the two signs of
+  `⟨hᵢ, λ⟩`): on `Fᵢ Eᵢ 1_λ`, a downward dot followed by the leftward crossing, minus `(-1)^{|i|}`
+  times the leftward crossing followed by a downward dot, is `ε' ≫ η'`;
+* (4.2) (`lemma41_eq2_one'`): the same for upward dots, with `(-1)^{|i|⟨hᵢ,λ⟩}`;
+* (4.3) (`lemma41_eq3_one_even`, `lemma41_eq3_one_odd`): an upward dot on the leftward cap `ε'`
+  equals a downward dot on its other leg if `i` is even, and `(-1)^{⟨hᵢ,λ⟩}` times it plus twice
+  `ε'` followed by the odd bubble if `i` is odd;
+* (4.4) (`lemma41_eq4_one_even`, `lemma41_eq4_one_odd`): the same for the leftward cup `η'`, the
+  odd bubble preceding `η'`.
 
-The proofs follow the paper: (4.1), (4.2) are (3.3), (3.4) composed on both sides with the
-leftward crossing, simplified with (2.12)–(2.13); (4.3) for `⟨hᵢ, λ⟩ ≥ 0` is computed from (4.1),
-(4.2) and the definitions (2.11), (2.18), and for `⟨hᵢ, λ⟩ < 0` it is checked on the components
-of the isomorphism (1.14).
+The proofs: (4.1), (4.2) are (3.3), (3.4) composed on both sides with the leftward crossing,
+simplified with (2.12)–(2.14) (the paper does this for `⟨hᵢ, λ⟩ ≥ 0` and obtains `⟨hᵢ, λ⟩ < 0`
+from the Chevalley involution; here both signs are done directly). (4.3) for `⟨hᵢ, λ⟩ ≥ 0` is
+computed from (4.1), (4.2) and the definitions (2.11), (2.18), and for `⟨hᵢ, λ⟩ < 0` it is checked
+on the components of the isomorphism (1.14), as in the paper. (4.4), which the paper deduces from
+(4.3) with the Chevalley involution, is proved in the same way directly: for `⟨hᵢ, λ⟩ ≤ 0` from
+(4.1), (4.2), (2.10), (2.18), and for `⟨hᵢ, λ⟩ > 0` on the components of the isomorphism (1.13).
 -/
 
 noncomputable section
@@ -551,5 +555,345 @@ theorem lemma41_eq3_one_odd (i : I) (μ : X) (hi : D.parity i = 1) :
   rcases le_or_gt 0 (D.h i μ) with hh | hh
   · exact lemma41_eq3_one_odd_nonneg cs i μ hi hh
   · exact lemma41_eq3_one_odd_neg cs i μ hi hh
+
+/-! ## (4.1), (4.2) for `n = 1`, `⟨hᵢ, λ⟩ ≤ 0` -/
+
+theorem sg_lc_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) : sgM D Sc i μ ≫ lcM D Sc i μ = -𝟙 _ := by
+  rw [cl_comp (sChain_sigmaL i i) (sChain_lcrossL i i), cl_invM₂ Sc i μ hh, cl_nil]
+
+theorem lc_sg_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    lcM D Sc i μ ≫ sgM D Sc i μ =
+      ∑ n ∈ Finset.range (-D.h i μ).toNat, dkM D Sc i μ n ≫ hLM D Sc i μ n - 𝟙 _ := by
+  have := cl_invM₁ Sc i μ hh
+  rw [cl_nil] at this
+  have hs : ∑ n ∈ Finset.range (-D.h i μ).toNat, dkM D Sc i μ n ≫ hLM D Sc i μ n =
+      ∑ n ∈ Finset.range (-D.h i μ).toNat, cl D Sc μ [dn i, up i] [dn i, up i] (dcapL i n ++ etaL i n) :=
+    Finset.sum_congr rfl fun n _ => cl_comp (sChain_dcapL i n) (sChain_etaL i n)
+  rw [cl_comp (sChain_lcrossL i i) (sChain_sigmaL i i), hs, ← this]
+  abel
+
+theorem hL_lc (i : I) (μ : X) (m : ℕ) (hm : (m : ℤ) < -D.h i μ) :
+    hLM D Sc i μ m ≫ lcM D Sc i μ = 0 := by
+  rw [cl_comp (sChain_etaL i m) (sChain_lcrossL i i)]
+  exact eq_2_14_b i μ m hm
+
+theorem sum_dk_hL_lc (i : I) (μ : X) (f : ℕ → k) :
+    ∑ n ∈ Finset.range (-D.h i μ).toNat,
+        f n • (dkM D Sc i μ n ≫ hLM D Sc i μ (n + 1) ≫ lcM D Sc i μ) =
+      if (-D.h i μ).toNat = 0 then 0 else
+        f ((-D.h i μ).toNat - 1) •
+          (dkM D Sc i μ ((-D.h i μ).toNat - 1) ≫ hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ) := by
+  split_ifs with hN
+  · rw [hN, Finset.range_zero, Finset.sum_empty]
+  · rw [Finset.sum_eq_single ((-D.h i μ).toNat - 1)]
+    · rw [Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.2 hN)]
+    · intro n hn hne
+      rw [Finset.mem_range] at hn
+      rw [hL_lc i μ (n + 1) (by omega), Limits.comp_zero, smul_zero]
+    · intro h; exact absurd (Finset.mem_range.2 (by omega)) h
+
+theorem epsP_etaP_neg (i : I) (μ : X) (hneg : D.h i μ < 0) :
+    epsP cs i μ ≫ etaP cs i μ = zsign k (ipar D i μ) •
+      (dkM D Sc i μ ((-D.h i μ).toNat - 1) ≫ hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ) := by
+  have hne : ¬ 0 < D.h i μ := by omega
+  have eta_eq : cl D Sc μ [] [up i, dn i] (etaL i (-D.h i μ).toNat ++ lcrossL i i) =
+      hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ :=
+    (cl_comp (sChain_etaL i _) (sChain_lcrossL i i)).symm
+  rw [epsP_of_neg cs hneg, etaP, ite_eq_right hne, eta_eq, Linear.smul_comp, Linear.comp_smul,
+    smul_smul, show (-D.h i μ - 1).toNat = (-D.h i μ).toNat - 1 by omega]
+  congr 1
+  linear_combination (zsign k (ipar D i μ)) * cinv_mul_c cs i μ
+
+variable (Sc) in
+/-- **Brundan–Ellis, Proposition 4.1 (4.1), `i = j`, `n = 1`, `⟨hᵢ, λ⟩ ≤ 0`.** -/
+theorem lemma41_eq1_one_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    dLM D Sc i μ ≫ lcM D Sc i μ - zsign k (D.parity i) • (lcM D Sc i μ ≫ dRM D Sc i μ) =
+      epsP cs i μ ≫ etaP cs i μ := by
+  have A := congrArg (fun x => lcM D Sc i μ ≫ x ≫ lcM D Sc i μ) (sg_dL (Sc := Sc) i μ)
+  simp only [Preadditive.sub_comp, Preadditive.comp_sub, Linear.smul_comp, Linear.comp_smul,
+    Category.assoc, sg_lc_nonpos i μ hh, Preadditive.comp_neg, Category.comp_id] at A
+  simp only [← Category.assoc (lcM D Sc i μ) (sgM D Sc i μ), lc_sg_nonpos i μ hh,
+    Preadditive.sub_comp, Preadditive.sum_comp, Category.id_comp, Category.assoc] at A
+  simp only [← Category.assoc (hLM D Sc i μ _) (dLM D Sc i μ), hL_dL, Linear.smul_comp,
+    Linear.comp_smul] at A
+  rw [sum_dk_hL_lc] at A
+  have hz := zsign_mul_self (k := k) (D.parity i)
+  set S := (if (-D.h i μ).toNat = 0 then 0 else
+    zsign k (D.parity i * (((-D.h i μ).toNat - 1 : ℕ) : ZMod 2)) •
+      (dkM D Sc i μ ((-D.h i μ).toNat - 1) ≫ hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ)) with hS
+  have h1 : (zsign k (D.parity i) * zsign k (D.parity i)) • (dLM D Sc i μ ≫ lcM D Sc i μ) =
+      dLM D Sc i μ ≫ lcM D Sc i μ := by rw [hz, one_smul]
+  have h2 : (zsign k (D.parity i) * zsign k (D.parity i)) • S = S := by rw [hz, one_smul]
+  have key : dLM D Sc i μ ≫ lcM D Sc i μ - zsign k (D.parity i) • (lcM D Sc i μ ≫ dRM D Sc i μ) =
+      S - zsign k (D.parity i) • (lcM D Sc i μ ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 ≫ lcM D Sc i μ) := by
+    linear_combination (norm := module) (-(zsign k (D.parity i))) • A - h1 + h2
+  rw [key]
+  rcases eq_or_lt_of_le hh with h0 | hneg
+  · have hN : (-D.h i μ).toNat = 0 := by omega
+    simp only [hS, hN, ↓reduceIte, zero_sub]
+    rw [epsP_etaP_zero cs i μ h0]
+  · have hN : (-D.h i μ).toNat ≠ 0 := by omega
+    have z0 : lcM D Sc i μ ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 ≫ lcM D Sc i μ = 0 := by
+      rw [hL_lc i μ 0 (by omega), Limits.comp_zero, Limits.comp_zero]
+    simp only [hS, hN, ↓reduceIte, z0, smul_zero, sub_zero]
+    rw [epsP_etaP_neg cs i μ hneg]
+    congr 2
+    simp only [ipar]
+    rw [Nat.cast_sub (by omega), show (((-D.h i μ).toNat : ℕ) : ZMod 2) = ((-D.h i μ : ℤ) : ZMod 2) by
+      rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]]
+    push_cast
+    rw [show ∀ x : ZMod 2, -x - 1 = x + 1 by decide]
+
+variable (Sc) in
+/-- **Brundan–Ellis, Proposition 4.1 (4.2), `i = j`, `n = 1`, `⟨hᵢ, λ⟩ ≤ 0`.** -/
+theorem lemma41_eq2_one_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    zsign k (D.parity i) • (uRM D Sc i μ ≫ lcM D Sc i μ) - lcM D Sc i μ ≫ uLM D Sc i μ =
+      zsign k (D.parity i * (D.h i μ : ZMod 2)) • (epsP cs i μ ≫ etaP cs i μ) := by
+  have A := congrArg (fun x => lcM D Sc i μ ≫ x ≫ lcM D Sc i μ) (sg_uR (Sc := Sc) i μ)
+  simp only [Preadditive.sub_comp, Preadditive.comp_sub, Linear.smul_comp, Linear.comp_smul,
+    Category.assoc, sg_lc_nonpos i μ hh, Preadditive.comp_neg, Category.comp_id] at A
+  simp only [← Category.assoc (lcM D Sc i μ) (sgM D Sc i μ), lc_sg_nonpos i μ hh,
+    Preadditive.sub_comp, Preadditive.sum_comp, Category.id_comp, Category.assoc] at A
+  simp only [← Category.assoc (hLM D Sc i μ _) (uRM D Sc i μ), hL_uR] at A
+  have hs := sum_dk_hL_lc (Sc := Sc) i μ (fun _ => 1)
+  simp only [one_smul] at hs
+  rw [hs] at A
+  have hz := zsign_mul_self (k := k) (D.parity i)
+  set S := (if (-D.h i μ).toNat = 0 then 0 else
+    dkM D Sc i μ ((-D.h i μ).toNat - 1) ≫ hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ) with hS
+  have hY : (zsign k (D.parity i) * zsign k (D.parity i)) • (lcM D Sc i μ ≫ uLM D Sc i μ) =
+      lcM D Sc i μ ≫ uLM D Sc i μ := by rw [hz, one_smul]
+  have key : zsign k (D.parity i) • (uRM D Sc i μ ≫ lcM D Sc i μ) - lcM D Sc i μ ≫ uLM D Sc i μ =
+      zsign k (D.parity i) • S -
+        zsign k (D.parity i) • (lcM D Sc i μ ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 ≫ lcM D Sc i μ) := by
+    linear_combination (norm := module) (-(zsign k (D.parity i))) • A + hY
+  rw [key]
+  rcases eq_or_lt_of_le hh with h0 | hneg
+  · have hN : (-D.h i μ).toNat = 0 := by omega
+    simp only [hS, hN, ↓reduceIte, smul_zero, zero_sub]
+    rw [epsP_etaP_zero cs i μ h0, h0, Int.cast_zero, mul_zero, zsign_zero, one_smul]
+  · have hN : (-D.h i μ).toNat ≠ 0 := by omega
+    have z0 : lcM D Sc i μ ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 ≫ lcM D Sc i μ = 0 := by
+      rw [hL_lc i μ 0 (by omega), Limits.comp_zero, Limits.comp_zero]
+    simp only [hS, hN, ↓reduceIte, z0, smul_zero, sub_zero]
+    rw [epsP_etaP_neg cs i μ hneg, smul_smul, ← zsign_add]
+    congr 2
+    simp only [ipar]
+    generalize D.parity i = a; generalize ((D.h i μ : ℤ) : ZMod 2) = b
+    revert a b; decide
+
+/-! ## (4.1), (4.2) for `n = 1`, all `λ` -/
+
+variable (Sc) in
+/-- **Brundan–Ellis, Proposition 4.1 (4.1), `i = j`, `n = 1`.** -/
+theorem lemma41_eq1_one' (i : I) (μ : X) :
+    dLM D Sc i μ ≫ lcM D Sc i μ - zsign k (D.parity i) • (lcM D Sc i μ ≫ dRM D Sc i μ) =
+      epsP cs i μ ≫ etaP cs i μ := by
+  rcases le_total 0 (D.h i μ) with hh | hh
+  · exact lemma41_eq1_one Sc cs i μ hh
+  · exact lemma41_eq1_one_nonpos Sc cs i μ hh
+
+variable (Sc) in
+/-- **Brundan–Ellis, Proposition 4.1 (4.2), `i = j`, `n = 1`.** -/
+theorem lemma41_eq2_one' (i : I) (μ : X) :
+    zsign k (D.parity i) • (uRM D Sc i μ ≫ lcM D Sc i μ) - lcM D Sc i μ ≫ uLM D Sc i μ =
+      zsign k (D.parity i * (D.h i μ : ZMod 2)) • (epsP cs i μ ≫ etaP cs i μ) := by
+  rcases le_total 0 (D.h i μ) with hh | hh
+  · exact lemma41_eq2_one Sc cs i μ hh
+  · exact lemma41_eq2_one_nonpos Sc cs i μ hh
+
+/-! ## (4.4) for `n = 1` -/
+
+/-- For `⟨hᵢ, λ⟩ ≥ 0`, a 2-morphism into `Eᵢ Fᵢ 1_λ` is determined by its composites with `σ`
+and with the dotted rightward caps `ε ∘ (xᵐ ⊗ 1)`, `m < ⟨hᵢ,λ⟩` (the components of (1.13)). -/
+theorem ext_EF (i : I) (μ : X) (hh : 0 ≤ D.h i μ) {Z : (pres D Sc).Presented}
+    {f g : Z ⟶ (pres D Sc).obj (ob D μ [up i, dn i])}
+    (h₁ : f ≫ sgM D Sc i μ = g ≫ sgM D Sc i μ)
+    (h₂ : ∀ m : ℕ, (m : ℤ) < D.h i μ → f ≫ eLM D Sc i μ m = g ≫ eLM D Sc i μ m) : f = g := by
+  have hid : 𝟙 _ = -(sgM D Sc i μ ≫ lcM D Sc i μ) +
+      ∑ n ∈ Finset.range (D.h i μ).toNat, eLM D Sc i μ n ≫ dcM D Sc i μ n := by
+    rw [sg_lc]; abel
+  rw [← Category.comp_id f, ← Category.comp_id g, hid]
+  simp only [Preadditive.comp_add, Preadditive.comp_neg, Preadditive.comp_sum, ← Category.assoc,
+    h₁]
+  congr 1
+  refine Finset.sum_congr rfl fun n hn => ?_
+  rw [Finset.mem_range] at hn
+  rw [h₂ n (by omega)]
+
+theorem etaP_eL_lt (i : I) (μ : X) (n : ℕ) (hn : (n : ℤ) < D.h i μ) :
+    etaP cs i μ ≫ eLM D Sc i μ n = if (n : ℤ) = D.h i μ - 1 then (cs.c μ i : k) • 𝟙 _ else 0 :=
+  eq_2_13_c cs i μ n hn
+
+theorem etaP_eL_top (i : I) (μ : X) (hh : 0 ≤ D.h i μ) :
+    etaP cs i μ ≫ eLM D Sc i μ (D.h i μ).toNat = (cs.c μ i : k) • oddBubble cs i μ := by
+  rw [etaP_eL cs i μ hh, oddBubble_of_nonneg cs i μ hh, smul_smul,
+    show (cs.c μ i : k) * (↑(cs.c μ i)⁻¹ : k) = 1 by rw [mul_comm]; exact cinv_mul_c cs i μ,
+    one_smul]
+
+theorem etaP_sg_pos (i : I) (μ : X) (hpos : 0 < D.h i μ) : etaP cs i μ ≫ sgM D Sc i μ = 0 :=
+  eq_2_13_a cs i μ hpos
+
+theorem uL_sg (i : I) (μ : X) :
+    uLM D Sc i μ ≫ sgM D Sc i μ = zsign k (D.parity i) • (sgM D Sc i μ ≫ uRM D Sc i μ -
+      eLM D Sc i μ 0 ≫ hLM D Sc i μ 0) := by
+  have E := sg_uR (Sc := Sc) i μ
+  have hz := zsign_mul_self (k := k) (D.parity i)
+  have h1 : (zsign k (D.parity i) * zsign k (D.parity i)) • (uLM D Sc i μ ≫ sgM D Sc i μ) =
+      uLM D Sc i μ ≫ sgM D Sc i μ := by rw [hz, one_smul]
+  linear_combination (norm := module) (-zsign k (D.parity i)) • E - h1
+
+theorem dR_sg (i : I) (μ : X) :
+    dRM D Sc i μ ≫ sgM D Sc i μ = zsign k (D.parity i) • (sgM D Sc i μ ≫ dLM D Sc i μ) -
+      eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 := by
+  have E := sg_dL (Sc := Sc) i μ
+  linear_combination (norm := module) (-1 : k) • E
+
+/-- (4.4), `n = 1`, `⟨hᵢ, λ⟩ > 0`, `i` odd. -/
+theorem lemma41_eq4_one_odd_pos (i : I) (μ : X) (hi : D.parity i = 1) (hpos : 0 < D.h i μ) :
+    etaP cs i μ ≫ uLM D Sc i μ =
+      zsign k (D.h i μ : ZMod 2) • (etaP cs i μ ≫ dRM D Sc i μ) +
+        (2 : k) • (oddBubble cs i μ ≫ etaP cs i μ) := by
+  have hz1 : zsign k (1 : ZMod 2) = -1 := by simp [zsign]
+  refine ext_EF i μ hpos.le ?_ fun m hm => ?_
+  · have e1 : etaP cs i μ ≫ eLM D Sc i μ 0 ≫ hLM D Sc i μ 0 =
+        (if ((0 : ℕ) : ℤ) = D.h i μ - 1 then (cs.c μ i : k) • hLM D Sc i μ 0 else 0) := by
+      rw [← Category.assoc, etaP_eL_lt cs i μ 0 (by exact_mod_cast hpos)]
+      split_ifs <;> simp
+    have e2 : ∀ {Z} (f : (pres D Sc).obj (ob D μ [dn i, up i]) ⟶ Z),
+        etaP cs i μ ≫ sgM D Sc i μ ≫ f = 0 := fun f => by
+      rw [← Category.assoc, etaP_sg_pos cs i μ hpos, Limits.zero_comp]
+    rw [Preadditive.add_comp, Linear.smul_comp, Linear.smul_comp, Category.assoc, Category.assoc,
+      Category.assoc, uL_sg, dR_sg, Linear.comp_smul, Preadditive.comp_sub, Preadditive.comp_sub,
+      Linear.comp_smul, e2, e2, etaP_sg_pos cs i μ hpos, Limits.comp_zero, smul_zero, e1, hi, hz1]
+    by_cases h1 : D.h i μ = 1
+    · rw [ite_eq_left (by omega), show ((D.h i μ : ℤ) : ZMod 2) = 1 by rw [h1]; rfl, hz1]
+      simp
+    · rw [ite_eq_right (by omega)]
+      simp
+  · simp only [Preadditive.add_comp, Linear.smul_comp, Category.assoc, uL_eL, dR_eL,
+      Linear.comp_smul, smul_smul, hi, one_mul]
+    by_cases htop : (m : ℤ) + 1 = D.h i μ
+    · have hmt : m + 1 = (D.h i μ).toNat := by omega
+      rw [hmt, etaP_eL_top cs i μ hpos.le, etaP_eL_lt cs i μ m hm, ite_eq_left (by omega),
+        Linear.comp_smul, Category.comp_id]
+      have hs : zsign k (D.h i μ : ZMod 2) * zsign k (m : ZMod 2) = -1 := by
+        rw [← zsign_add, show ((D.h i μ : ℤ) : ZMod 2) + (m : ZMod 2) = 1 by
+          rw [show (m : ZMod 2) = ((m : ℤ) : ZMod 2) by simp, ← Int.cast_add,
+            show D.h i μ + m = 2 * m + 1 by omega]
+          push_cast
+          rw [show (2 : ZMod 2) = 0 from rfl]; ring, hz1]
+      rw [hs]
+      module
+    · rw [etaP_eL_lt cs i μ (m + 1) (by push_cast; omega),
+        etaP_eL_lt cs i μ m hm, ite_eq_right (show ¬ (m : ℤ) = D.h i μ - 1 by omega)]
+      simp only [Limits.comp_zero, smul_zero, add_zero]
+      by_cases hb : ((m + 1 : ℕ) : ℤ) = D.h i μ - 1
+      · rw [ite_eq_left hb]
+        have hs : zsign k (D.h i μ : ZMod 2) * zsign k (m : ZMod 2) = 1 := by
+          rw [← zsign_add, show ((D.h i μ : ℤ) : ZMod 2) + (m : ZMod 2) = 0 by
+            rw [show (m : ZMod 2) = ((m : ℤ) : ZMod 2) by simp, ← Int.cast_add,
+              show D.h i μ + m = 2 * (m + 1) by push_cast at hb; omega]
+            push_cast
+            rw [show (2 : ZMod 2) = 0 from rfl]; ring, zsign_zero]
+        rw [hs, one_smul]
+      · rw [ite_eq_right hb, smul_zero]
+
+/-- (4.4), `n = 1`, `⟨hᵢ, λ⟩ > 0`, `i` even. -/
+theorem lemma41_eq4_one_even_pos (i : I) (μ : X) (hi : D.parity i = 0) (hpos : 0 < D.h i μ) :
+    etaP cs i μ ≫ uLM D Sc i μ = etaP cs i μ ≫ dRM D Sc i μ := by
+  refine ext_EF i μ hpos.le ?_ fun m _ => ?_
+  · rw [Category.assoc, Category.assoc, uL_sg, dR_sg, Linear.comp_smul, Preadditive.comp_sub,
+      Preadditive.comp_sub, Linear.comp_smul, hi, zsign_zero, one_smul, one_smul]
+    simp only [← Category.assoc (etaP cs i μ) (sgM D Sc i μ), etaP_sg_pos cs i μ hpos,
+      Limits.zero_comp]
+  · rw [Category.assoc, Category.assoc, uL_eL, dR_eL, hi, zero_mul, zsign_zero, one_smul]
+
+theorem etaP_of_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    etaP cs i μ = (zsign k (ipar D i μ) * (cs.c μ i : k)) •
+      (hLM D Sc i μ (-D.h i μ).toNat ≫ lcM D Sc i μ) := by
+  rw [etaP, ite_eq_right (show ¬ 0 < D.h i μ by omega),
+    cl_comp (sChain_etaL i _) (sChain_lcrossL i i)]
+
+theorem etaP_uL_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    etaP cs i μ ≫ uLM D Sc i μ = (zsign k (ipar D i μ) * (cs.c μ i : k)) •
+      (zsign k (D.parity i) • (hLM D Sc i μ ((-D.h i μ).toNat + 1) ≫ lcM D Sc i μ) -
+        zsign k (D.parity i * (D.h i μ : ZMod 2)) •
+          ((hLM D Sc i μ (-D.h i μ).toNat ≫ epsP cs i μ) ≫ etaP cs i μ)) := by
+  have E := lemma41_eq2_one' Sc cs i μ
+  have E' : lcM D Sc i μ ≫ uLM D Sc i μ = zsign k (D.parity i) • (uRM D Sc i μ ≫ lcM D Sc i μ) -
+      zsign k (D.parity i * (D.h i μ : ZMod 2)) • (epsP cs i μ ≫ etaP cs i μ) := by
+    linear_combination (norm := module) (-1 : k) • E
+  conv_lhs => rw [etaP_of_nonpos cs i μ hh, Linear.smul_comp, Category.assoc, E',
+    Preadditive.comp_sub, Linear.comp_smul, Linear.comp_smul, ← Category.assoc, hL_uR,
+    ← Category.assoc]
+
+theorem etaP_dR_nonpos (i : I) (μ : X) (hh : D.h i μ ≤ 0) :
+    etaP cs i μ ≫ dRM D Sc i μ = (zsign k (ipar D i μ) * (cs.c μ i : k)) •
+      (zsign k (D.parity i) • (zsign k (D.parity i * ((-D.h i μ).toNat : ℕ)) •
+          (hLM D Sc i μ ((-D.h i μ).toNat + 1) ≫ lcM D Sc i μ) -
+        (hLM D Sc i μ (-D.h i μ).toNat ≫ epsP cs i μ) ≫ etaP cs i μ)) := by
+  have E := lemma41_eq1_one' Sc cs i μ
+  have hz := zsign_mul_self (k := k) (D.parity i)
+  have E' : lcM D Sc i μ ≫ dRM D Sc i μ = zsign k (D.parity i) • (dLM D Sc i μ ≫ lcM D Sc i μ -
+      epsP cs i μ ≫ etaP cs i μ) := by
+    have h1 : (zsign k (D.parity i) * zsign k (D.parity i)) • (lcM D Sc i μ ≫ dRM D Sc i μ) =
+        lcM D Sc i μ ≫ dRM D Sc i μ := by rw [hz, one_smul]
+    linear_combination (norm := module) (-zsign k (D.parity i)) • E - h1
+  conv_lhs => rw [etaP_of_nonpos cs i μ hh, Linear.smul_comp, Category.assoc, E',
+    Linear.comp_smul, Preadditive.comp_sub, ← Category.assoc, hL_dL, Linear.smul_comp,
+    ← Category.assoc]
+
+/-- (4.4), `n = 1`, `⟨hᵢ, λ⟩ ≤ 0`, `i` even. -/
+theorem lemma41_eq4_one_even_nonpos (i : I) (μ : X) (hi : D.parity i = 0) (hh : D.h i μ ≤ 0) :
+    etaP cs i μ ≫ uLM D Sc i μ = etaP cs i μ ≫ dRM D Sc i μ := by
+  rw [etaP_uL_nonpos cs i μ hh, etaP_dR_nonpos cs i μ hh]
+  simp only [hi, zero_mul, zsign_zero, one_smul]
+
+theorem hL_epsP_ob (i : I) (μ : X) (hi : D.parity i = 1) (hh : D.h i μ ≤ 0) :
+    hLM D Sc i μ (-D.h i μ).toNat ≫ epsP cs i μ = (↑(cs.c μ i)⁻¹ : k) • oddBubble cs i μ := by
+  rcases eq_or_lt_of_le hh with h0 | hneg
+  · have hc := oddBubble_consistent cs i μ hi h0
+    rw [oddBubble, ite_eq_left (by omega)]
+    rw [h0]
+    rw [hc, smul_smul, cinv_mul_c, one_smul, bubR, ite_eq_left le_rfl]
+    rfl
+  · exact hL_epsP_top cs i μ hneg
+
+/-- (4.4), `n = 1`, `⟨hᵢ, λ⟩ ≤ 0`, `i` odd. -/
+theorem lemma41_eq4_one_odd_nonpos (i : I) (μ : X) (hi : D.parity i = 1) (hh : D.h i μ ≤ 0) :
+    etaP cs i μ ≫ uLM D Sc i μ =
+      zsign k (D.h i μ : ZMod 2) • (etaP cs i μ ≫ dRM D Sc i μ) +
+        (2 : k) • (oddBubble cs i μ ≫ etaP cs i μ) := by
+  rw [etaP_uL_nonpos cs i μ hh, etaP_dR_nonpos cs i μ hh, hL_epsP_ob cs i μ hi hh]
+  have hz1 : zsign k (1 : ZMod 2) = -1 := by simp [zsign]
+  have hN : (((-D.h i μ).toNat : ℕ) : ZMod 2) = ((D.h i μ : ℤ) : ZMod 2) := by
+    rw [← Int.cast_natCast, Int.toNat_of_nonneg (by omega), Int.cast_neg]
+    generalize ((D.h i μ : ℤ) : ZMod 2) = x; revert x; decide
+  have hip : zsign k (ipar D i μ) = -zsign k (D.h i μ : ZMod 2) := by
+    rw [ipar, hi, one_mul, zsign_add, hz1, mul_neg_one]
+  simp only [hi, one_mul, hz1, hN, hip, Linear.smul_comp]
+  have hc := cinv_mul_c cs i μ
+  rcases zsign_cases (k := k) (D.h i μ : ZMod 2) with h | h <;> rw [h] <;>
+    linear_combination (norm := module) hc • ((2 : k) • (oddBubble cs i μ ≫ etaP cs i μ))
+
+/-- **Brundan–Ellis, Proposition 4.1 (4.4), `n = 1`, `i` even**: an upward dot on the left leg
+of the leftward cup `η'` equals a downward dot on its right leg. -/
+theorem lemma41_eq4_one_even (i : I) (μ : X) (hi : D.parity i = 0) :
+    etaP cs i μ ≫ uLM D Sc i μ = etaP cs i μ ≫ dRM D Sc i μ := by
+  rcases le_or_gt (D.h i μ) 0 with hh | hh
+  · exact lemma41_eq4_one_even_nonpos cs i μ hi hh
+  · exact lemma41_eq4_one_even_pos cs i μ hi hh
+
+/-- **Brundan–Ellis, Proposition 4.1 (4.4), `n = 1`, `i` odd**: an upward dot on the left leg of
+the leftward cup `η'` equals `(-1)^{⟨hᵢ,λ⟩}` times a downward dot on its right leg plus twice the
+odd bubble (2.18) followed by `η'`. -/
+theorem lemma41_eq4_one_odd (i : I) (μ : X) (hi : D.parity i = 1) :
+    etaP cs i μ ≫ uLM D Sc i μ =
+      zsign k (D.h i μ : ZMod 2) • (etaP cs i μ ≫ dRM D Sc i μ) +
+        (2 : k) • (oddBubble cs i μ ≫ etaP cs i μ) := by
+  rcases le_or_gt (D.h i μ) 0 with hh | hh
+  · exact lemma41_eq4_one_odd_nonpos cs i μ hi hh
+  · exact lemma41_eq4_one_odd_pos cs i μ hi hh
 
 end OddMath.SKM
