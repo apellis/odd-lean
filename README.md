@@ -664,6 +664,7 @@ finite and `I` may have no odd elements.
 | §9, (9.2)–(9.4) | `U̇_{q,π}(𝔤)` by generators `1_λ`, `eᵢ1_λ`, `fᵢ1_λ` and relations, over any commutative ring with a unit `q` and an element `π` (encoded as a unital algebra; the unit is adjoined) | `CoveringUDot`, `UDot.Rel`, `UDot.one`, `UDot.E`, `UDot.F`, `UDot.one_mul_one`, `UDot.one_mul_E`, `UDot.E_mul_one`, `UDot.comm_rel`, `UDot.serreE_rel`, `UDot.serreF_rel` |
 | §9, (9.5) | divided powers and the `𝓛`-form | `UDot.edp`, `UDot.fdp`, `UDot.lForm`, `UDot.edp_mem_lForm` |
 | §9, (9.6), (9.7) | the antilinear automorphisms `ω`, `ψ`, for a bar involution `σ` with `σ(q) = q⁻¹`, `σ(π) = π`, `π² = 1`; both are involutions | `UDot.omega`, `UDot.omega_E`, `UDot.omega_F`, `UDot.omega_smul`, `UDot.omega_omega`, `UDot.psi`, `UDot.psi_F`, `UDot.psi_smul`, `UDot.psi_psi`, `UDot.BarData.map_serreCoeff` |
+| §9, (9.8)–(9.10) | linear involutive antiautomorphism `ρ` (`π² = 1`); antilinear antiautomorphisms `∗ = ρ ∘ ψ` and `! = ψ ∘ ρ`, mutually inverse for an involutive scalar bar | `UDot.rho`, `UDot.rho_E`, `UDot.rho_F`, `UDot.rho_rho`, `UDot.star`, `UDot.shriek`, `UDot.star_E`, `UDot.star_F`, `UDot.shriek_E`, `UDot.shriek_F`, `UDot.star_shriek`, `UDot.shriek_star` |
 
 ## Building
 
