@@ -13,6 +13,8 @@ import OddMath.CoveringQuantum.SerreIdeal
 import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
 import OddMath.CoveringQuantum.Negative
+import OddMath.CoveringQuantum.Coefficients.HalfSplitting
+import OddMath.CoveringQuantum.Nondegenerate
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.PreF.WordGauge
 import OddMath.CoveringQuantum.PreF.GaugeForm
