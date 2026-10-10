@@ -1,4 +1,5 @@
 import OddMath.CoveringQuantum.Coefficients
+import OddMath.CoveringQuantum.Coefficients.Splitting
 import OddMath.CoveringQuantum.Datum
 import OddMath.CoveringQuantum.HalfAlgebra
 import OddMath.CoveringQuantum.Integers
