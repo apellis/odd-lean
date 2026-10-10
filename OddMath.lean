@@ -502,6 +502,7 @@ import OddMath.SKM.Calculus
 import OddMath.SKM.Chevalley
 import OddMath.SKM.ChevalleyBase
 import OddMath.SKM.ChevalleyInv
+import OddMath.SKM.ChevalleyLeft
 import OddMath.SKM.ChevalleyRel
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
