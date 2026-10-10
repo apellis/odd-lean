@@ -13,6 +13,8 @@ Sources (numbering refers to these arXiv versions):
 - **[EQ]** A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
   (in progress: Thm 3.18 and Thm 4.17 are proved, over every field and over `ℤ`; see the [EQ] status
   below).
+- **[BE2]** J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2 (in
+  progress; see the [BE2] status below).
 
 The library builds with no `sorry` and no added axioms; the axiom closures of the results contain
 only `propext`, `Classical.choice` and `Quot.sound`.
@@ -495,13 +497,27 @@ permutation action):
   endomorphism dg algebra (`ONH.toENDZnEquiv`; dg-lean's `END` acts on the right, so the statement is for the
   opposite of `ONH_n`).
 
+### [BE2] (in progress)
+
+Names are in `OddMath.SKM`. Diagrams are read bottom to top, words left to right (as in the
+paper's pictures); a strand colour records the weight of the region to its right. The ground ring is
+a commutative ring concentrated in even parity, and the weight data is any additive group with
+simple roots and coroots (lie-lean's `CartanDatum`) whose Cartan matrix is generalized Cartan; the
+paper's realization in a complex vector space is a special case.
+
+| Statement | Content | Declarations |
+| --- | --- | --- |
+| §1, data before Def 1.5 | parity on `I`, (1.4), `tᵢⱼ` (1.5), `sᵢⱼ^{pq}` (1.6), `2` invertible if some `i` is odd | `Datum`, `Scalars` |
+| Def 1.5, (1.7)–(1.14) | the Kac–Moody 2-supercategory `𝔘(𝔤)` by generators `x`, `τ`, `η`, `ε` and relations: quiver Hecke superalgebra relations (1.7)–(1.9), right adjunction (1.10), `σ` (1.11), inversion relations (1.12)–(1.14) with the inverse matrix entries of (2.6)–(2.9) as generators; all relations parity-homogeneous; a strict 2-supercategory | `sig`, `Rel`, `relation`, `pres`, `isParityHomogeneous`, `U`, `twoSupercategory` |
+
 ## Building
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, and the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `aa7f594c90a5a8de8200ad23656140d3d8aceee7` (see
-`lakefile.lean` and `lake-manifest.json`).
+string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, the [EQ] dg structures on
+[dg-lean](https://github.com/apellis/dg-lean) at `38e1e848d07386de5053f85099a947d92afced40`, and the
+[BE2] Cartan data on [lie-lean](https://github.com/apellis/lie-lean) at
+`9caf9bf648b6fb29c9d2436565c99b0b0e892f9c` (see `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
 lake exe cache get

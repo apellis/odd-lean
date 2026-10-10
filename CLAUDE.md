@@ -4,7 +4,7 @@
 
 Keep the checked-in pins together: the toolchain in `lean-toolchain` (`leanprover/lean4:v4.34.1`)
 and the package revisions in `lake-manifest.json` (Mathlib `v4.34.1`, commit
-`d13f23b723b8a846827a245b89c10fc7d3f11612`, plus StringDiagrams and DG).
+`d13f23b723b8a846827a245b89c10fc7d3f11612`, plus StringDiagrams, DG and LieLean).
 
 Use the existing `lake-manifest.json`; do not run `lake update` just to build, and do not edit
 shared dependency checkouts. `lakefile.lean` retains warnings as errors and the two

@@ -487,6 +487,8 @@ import OddMath.PbwL1
 import OddMath.PbwL2
 import OddMath.PbwL3
 import OddMath.PbwL4
+import OddMath.SKM.Basic
+import OddMath.SKM.Presentation
 import OddMath.SkewPolynomial
 import OddMath.SkewSign
 import OddMath.Tests.DividedDifferencesFixtures

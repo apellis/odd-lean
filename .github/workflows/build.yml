@@ -36,6 +36,7 @@ jobs:
             .lake/build
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
+            .lake/packages/LieLean/.lake/build
           key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
@@ -65,4 +66,5 @@ jobs:
             .lake/build
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
+            .lake/packages/LieLean/.lake/build
           key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
