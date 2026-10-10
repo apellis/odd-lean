@@ -183,6 +183,8 @@ import OddMath.Frontier.EQThm318
 import OddMath.Frontier.EQThm318Int
 import OddMath.Frontier.EQThm318Assembly
 import OddMath.Frontier.EQK0AssemblySmall
+import OddMath.Frontier.EQCor419K0
+import OddMath.Frontier.EQHalfGradedLift
 import OddMath.Frontier.EQFunctorBox
 import OddMath.Frontier.EQHalfGradedField
 import OddMath.Frontier.EQLimaAllRanks

@@ -148,11 +148,11 @@ def thm_3_18_equiv : uPlus ≃ₗ[GaussianInt] K0ONHSum K :=
   AssemblySmall.equiv (M := K0ONH K) (superK0OPolEquiv.{0} K 0) (superK0OPolEquiv.{0} K 1)
     (K0ONH_subsingleton K) (regONH K) (superK0OPolEquiv_self K 0) (superK0OPolEquiv_self K 1)
 
-theorem thm_3_18_equiv_one : thm_3_18_equiv K 1 = lof GaussianInt ℕ (K0ONH K) 0 (regG K 0) :=
+theorem thm_3_18_equiv_one : thm_3_18_equiv K 1 = lof GaussianInt ℕ (K0ONH K) 0 (regONH K 0) :=
   AssemblySmall.equiv_one _ _ _ _ _ _
 
 theorem thm_3_18_equiv_eps :
-    thm_3_18_equiv K DualNumber.eps = lof GaussianInt ℕ (K0ONH K) 1 (regG K 1) :=
+    thm_3_18_equiv K DualNumber.eps = lof GaussianInt ℕ (K0ONH K) 1 (regONH K 1) :=
   AssemblySmall.equiv_eps _ _ _ _ _ _
 
 /-- The multiplication `[Ind]` on `K₀(D(ONH))`. -/
@@ -279,11 +279,11 @@ def thm_3_18_int_equiv : uPlus ≃ₗ[GaussianInt] K0ONHIntSum :=
     (superK0OPolIntEquiv (N := 1) le_rfl) K0ONHInt_subsingleton regONHInt
     (superK0OPolIntEquiv_self _) (superK0OPolIntEquiv_self _)
 
-theorem thm_3_18_int_equiv_one : thm_3_18_int_equiv 1 = lof GaussianInt ℕ K0ONHInt 0 (regGZ 0) :=
+theorem thm_3_18_int_equiv_one : thm_3_18_int_equiv 1 = lof GaussianInt ℕ K0ONHInt 0 (regONHInt 0) :=
   AssemblySmall.equiv_one _ _ _ _ _ _
 
 theorem thm_3_18_int_equiv_eps :
-    thm_3_18_int_equiv DualNumber.eps = lof GaussianInt ℕ K0ONHInt 1 (regGZ 1) :=
+    thm_3_18_int_equiv DualNumber.eps = lof GaussianInt ℕ K0ONHInt 1 (regONHInt 1) :=
   AssemblySmall.equiv_eps _ _ _ _ _ _
 
 /-- The multiplication `[Ind]` on `K₀(D(ONH))` over `ℤ`. -/
