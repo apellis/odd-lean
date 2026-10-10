@@ -1,5 +1,6 @@
 import OddMath.CoveringQuantum.Coefficients
 import OddMath.CoveringQuantum.Coefficients.Splitting
+import OddMath.CoveringQuantum.Coefficients.WeightCharacters
 import OddMath.CoveringQuantum.Datum
 import OddMath.CoveringQuantum.HalfAlgebra
 import OddMath.CoveringQuantum.Integers
@@ -31,6 +32,8 @@ import OddMath.CoveringQuantum.UDot.HalfWeights
 import OddMath.CoveringQuantum.UDot.Rho
 import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.CoveringQuantum.UDot.Triangular
+import OddMath.CoveringQuantum.UDot.VermaOperators
+import OddMath.CoveringQuantum.UDot.VermaSerre
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
