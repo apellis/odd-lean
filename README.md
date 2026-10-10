@@ -512,7 +512,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 |---|---|---|---|
 | (2.1), (2.2) | divided-power product and coproduct of `U⁺` at `q = √−1` | `Frontier.EQQuantumGroups`, `Frontier.EQQuantumBinomial`, `Frontier.EQQuantumBialgebra` | formalized with the twist `−1` ([EQ] 1, 2) |
 | (2.3)–(2.5) | super Leibniz rule for dg algebras and dg modules | dg-lean `Algebra`, `Module`; `Diagrams.OddNilHecke.Differential` | definitions; (2.3) on `ONH_n`: `d_mul_of_mem` |
-| Remark 2.1 | dg categories | dg-lean `Category` | remark (dg-category versions of §2.2 are in dg-lean) |
+| Remark 2.1 | dg categories | dg-lean `Category` | remark; not a target (dg-category versions of §2.2 are in dg-lean) |
 | (2.6)–(2.8) | `END_A(M)`, its differential, the right action of `END_A(M)` | dg-lean `Module.End` | definitions, formalized |
 | (2.9), Lemma 2.2 | `HOM_A(Ae, Ae) ≅ eAe`; `Ae` over `(eAe, d_e)` when `d e ∈ Ae` | dg-lean `Module.CornerEnd` (`LeftDGIdempotent`, `endLeftCornerEquiv`) | formalized |
 | (2.10) | `Hom_{H(A)}(M, N) = H⁰(HOM_A(M, N))` | dg-lean `Homotopy.HomotopyCategory` | formalized |
@@ -525,10 +525,10 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | Theorem 2.7 | a quasi-isomorphism of dg algebras induces an equivalence of derived categories | dg-lean `Category.Derived.Keller` (`DGRingHom.derivedEquivalence`) | formalized |
 | Corollary 2.8 | `D(A) ≃ 0` iff `H(A) = 0` iff `d x = 1` for some `x` | dg-lean `Derived.Zero` (`DerivedCategory.tfae_isZero`) | formalized |
 | (2.17) | `K₀(D(k)) ≅ ℤ[√−1]` | `Frontier.EQHalfGradedField` (fields), `Frontier.EQThm318Int` (`superK0OPolIntEquiv` with `OPol_0 = ℤ`) | formalized over every field and over `ℤ` |
-| Remark 2.9 | homotopy versus derived category over `ℤ` | — | remark |
-| Examples 2.10–2.12 | `k[S_n]`, `OPol_n`, KLR algebras as diagrammatic algebras | — | illustrations of the definition; not separate targets |
+| Remark 2.9 | homotopy versus derived category over `ℤ` | — | remark; not a target |
+| Examples 2.10–2.12 | `k[S_n]`, `OPol_n`, KLR algebras as diagrammatic algebras | — | illustrations of the definition; not targets |
 | Example 2.13, (2.18), (2.19) | the local differential on `OPol_n`; the twist `θ` | `Frontier.EQSkewDifferential` (`d`, `d_mul`, `d_d`, `theta`) | formalized |
-| Remarks 2.14, 2.15 | EKL's odd elementary polynomials; `OΛ̃_n` is not `d`-stable | `Frontier.EQFixW0` (`theta_elementary`) | remarks (2.14 used and formalized) |
+| Remarks 2.14, 2.15 | EKL's odd elementary polynomials; `OΛ̃_n` is not `d`-stable | `Frontier.EQFixW0` (`theta_elementary`) | remarks (2.14 used and formalized; 2.15 not a target) |
 | (2.20)–(2.22) | `w₀` on odd elementary polynomials; `θ ∘ w₀` versus `w₀ ∘ θ` | `Frontier.EQFixW0`, `Frontier.EQSchurDifferential` (`theta_longestPerm`) | formalized |
 | (2.23), (2.24), Proposition 2.16, (2.25)–(2.31) | odd divided differences, `OΛ̃_n` as joint kernel and image, the relations of `ONH_n`, faithfulness ([EKL]) | `Frontier.LongestKernel`, `Frontier.LongestElementary`, `Frontier.NilHeckeBasis`, `Frontier.NilHeckeEndomorphism` | formalized (the [EKL] part) |
 | (2.32)–(2.39) | diagrammatic relations of `ONH_n`; the words `∂_w`, `∂_{w₀}` | `Diagrams.OddNilHecke`, `Frontier.ZeroHecke`, `Frontier.LongestDivided` | formalized (definitions and comparison with `Presented n`) |
@@ -556,7 +556,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | Proposition 3.17 | `Z_n` cofibrant over `ONH_n` iff not acyclic iff `n ≤ 1` | `Frontier.EQCofibZn` (`prop_3_17`), `Frontier.EQZnFiniteCell` | formalized |
 | (3.39)–(3.43) | `ι_{m,n}`, `Ind`, `Res` | `Frontier.EQOPolTensor`, `Frontier.EQOnhTensor`, `Frontier.EQLiftAll` (`iotaAll`), `Frontier.EQThm318` | formalized (definitions) |
 | (3.44) | the Künneth isomorphism | `Frontier.EQThm318` (`kunneth`), `Frontier.EQKunnethIntAll` (`kunnethIntAll`) | formalized over every field and over `ℤ` |
-| Theorem 3.18 | `u⁺ ≅ K₀(ONH)` as `√−1`-bialgebras | `Frontier.EQThm318`, `Frontier.EQThm318Int` | formalized over every field and over `ℤ`, as the structure constants of `u⁺` on the bases `{1, E}` |
+| Theorem 3.18 | `u⁺ ≅ K₀(ONH)` as `√−1`-bialgebras | `Frontier.EQThm318`, `Frontier.EQThm318Int`, `Frontier.EQThm318Assembly`, `Frontier.EQK0AssemblySmall` | formalized over every field and over `ℤ`: the structure constants on `{1, E}`, and one isomorphism `u⁺ ≃ K₀(D(ONH))` compatible with `[Ind]` and `[Res]` (`thm_3_18_equiv`, `thm_3_18_mul`, `thm_3_18_comul`; `thm_3_18_int_*`) |
 | Remark 4.1 | conventions for thick calculus | `Frontier.EQThickRelations` (`remark_4_1`) | formalized |
 | (4.1)–(4.5) | `∂_{w_{a,b}}`, splitters, exploders and the associated functors | `Frontier.EQThickSplitters`, `Frontier.EQThickRelations`, `Frontier.EQThickSlider` | definitions (misprint in the word for `w_{a,b}`, [EQ] 5); the relations displayed after them are formalized, three corrected ([EQ] 6, 7, 8) |
 | Proposition 4.2, (4.6), (4.7) | differentials of splitters and mergers | `Frontier.EQThickSplitters` (`prop_4_2_splitter`, `prop_4_2_merger`) | formalized, with the differential of Lemma 2.2 ([EQ] 9) |
@@ -572,7 +572,7 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | Definition 4.9, (4.26) | `Z^∨_{a,b} ≅ z^∨ · (OΛ_a ⊗ OΛ_b)`, `d(z^∨)` | `Frontier.EQZabTrace` | **partial**: the formula for `d(z^∨)` is used (as the reading of Cor 4.10); that `Z^∨_{a,b}` is free of rank one over `OΛ_a ⊗ OΛ_b` on `z^∨` is not formalized |
 | Corollary 4.10 | compatibility of `z^∨` with the dg bimodule structure | `Frontier.EQZabTrace` (`cor_4_10`) | formalized ([EQ] 19) |
 | Corollary 4.11 | `Z^∨_{a,b}` cofibrant of graded rank `[a+b, a]_q` | `Frontier.EQZabDual` (`cor_4_11`), `Frontier.EQFunctorDual` | formalized |
-| Proposition 4.12 | `REND = END` for `Z_{a,b}`, `Z^∨_{a,b}`; `E_{a,b} ≅ END(Z_{a,b}) ≅ END(Z^∨_{a,b})` | `Frontier.EQZabREnd`, `Frontier.EQZabEndRankOne` | **partial**: (1) formalized; (2) `END(Z_{a,b})` is the algebra spanned by the trace-pairing maps (`prop_4_12_two`); `END(Z_{a,b}) ≅ END(Z^∨_{a,b})` is not formalized |
+| Proposition 4.12 | `REND = END` for `Z_{a,b}`, `Z^∨_{a,b}`; `E_{a,b} ≅ END(Z_{a,b}) ≅ END(Z^∨_{a,b})` | `Frontier.EQZabREnd`, `Frontier.EQZabEndRankOne`; dg-lean `Derived.RightDualEnd` | formalized: (1); (2) `END(Z_{a,b})` is the algebra spanned by the trace-pairing maps (`prop_4_12_two`), and transposition is an isomorphism of dg algebras `END(Z_{a,b}) ≅ END(Z^∨_{a,b})` (`prop_4_12_two_dual`, into the graded opposite in the library's right-action convention for `END`) |
 | (4.27), Proposition 4.13 | `Z_a` for compositions: basis, `d`-stability, `HOM(Z_a, Z_b)` | `Frontier.EQZabBlocks`, `…BlocksDiff`, `…BlocksHom`, `…BlocksRank` | formalized ((1) and the graded rank in (3) corrected, [EQ] 11, 21) |
 | Definition 4.14 | the multiplication functor | `Frontier.EQFunctorDerived` (`mult`), `Frontier.EQFunctorBox`, `Frontier.EQK0Mult` (`multKHalf`) | formalized |
 | Definition 4.15 | `Z^♮_{a,b}` and the comultiplication functor | `Frontier.EQFunctorDerived` (`comult`), `Frontier.EQRestrictionFunctor` (`ZNat`) | formalized (right action not printed and forced, [EQ] 24; misprint [EQ] 25) |
@@ -592,8 +592,8 @@ compact super Grothendieck group of half-graded modules (§2.2.4).
 | (A.5)–(A.7) | `d(e_k)`, `d(h_k)`, `d(s_λ)` in the `p`-dg setting | `Frontier.EQPdgPoly`, `Frontier.EQPdgAlt`, `Frontier.EQPdgLimit` | formalized ((A.5), (A.6) corrected, [EQ] 16) |
 | Theorem A.4 | slash cohomology of `Sym_n` and `Sym` | `Frontier.EQPdgTheorem`, `Frontier.EQPdgTheorem2`, `Frontier.EQPdgLimitTheorem` | formalized |
 
-Not formalized: the Grothendieck-group statement of Corollary 4.19, the second isomorphism of Proposition 4.12 (2),
-and the freeness claim of Definition 4.9. Corollaries 4.19 and 4.21 and Definitions 4.18 and 4.20 are formalized for
+Not formalized: the Grothendieck-group statement of Corollary 4.19 and the freeness claim of Definition 4.9.
+Remarks 2.1, 2.9, 2.15 and Examples 2.10–2.12 are not targets. Corollaries 4.19 and 4.21 and Definitions 4.18 and 4.20 are formalized for
 the `ℤ`-graded dg modules of the scope note above, not for all half-graded modules.
 
 ### [BE2] (in progress)

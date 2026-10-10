@@ -17,9 +17,9 @@ Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXi
   (`EQFix.zab_isKProjective`); `prop_4_12_one_dual`: the same for the left dg `OΛ_{a+b}`-module
   `Z_{a,b}^∨`, from Corollary 4.11 (`EQFunctor.zdual_isKProjective`).
 
-Proposition 4.12 (2), the identification of `END(Z_{a,b})` with the diagrammatic algebra
-`E_{a,b}`, is not formalized here: the source defines `E_{a,b}` only through the diagrams `φ` of
-the paragraph before the proposition.
+Proposition 4.12 (2) is in `OddMath.Frontier.EQZabEndRankOne` (`prop_4_12_two`: `END(Z_{a,b})` is the
+algebra `E_{a,b}` spanned by the trace-pairing maps; `prop_4_12_two_dual`:
+`END(Z_{a,b}) ≅ END(Z^∨_{a,b})`).
 -/
 
 open CategoryTheory DG
