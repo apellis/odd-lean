@@ -8,7 +8,7 @@ import DG.Category.Derived.TensorIso
 # Ellis–Qi Theorem 3.18 over `ℤ`
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§3.6, Theorem 3.18 and the Künneth property (3.39). `OddMath.Frontier.EQThm318` proves the theorem
+§3.6, Theorem 3.18 and the Künneth property (3.44). `OddMath.Frontier.EQThm318` proves the theorem
 over every field; this file proves it over the integers, with the integral dg rings `ONH_N`
 themselves (no scalar extension), half-graded dg modules (diagonal half-grading) and the compact
 super Grothendieck group, a `ℤ[√−1]`-module.
@@ -22,7 +22,7 @@ super Grothendieck group, a `ℤ[√−1]`-module.
   `DG.DGRing.K0.equivIntOfIsPrincipalIdealRing`); `superK0OPolIntEquiv`: the half-graded super
   Grothendieck group of `ONH_N = OPol_N` (`N ≤ 1`) is `ℤ[√−1]` on the regular class.
   For `N ≥ 2` it vanishes (`EQDiagonal.superK0c_eq_zero`, Proposition 3.16 (2)).
-* `kunnethInt` (`m + n ≤ 1`): the Künneth isomorphism (3.39) on regular classes;
+* `kunnethInt` (`m + n ≤ 1`): the Künneth isomorphism (3.44) on regular classes;
   `kunnethMapInt 1 1`: the `ℤ[√−1]`-linear map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]` (that it is an
   isomorphism over `ℤ` is not needed here, since its composite with `[Ind_{1,1}]` lands in
   `K₀(D(ONH_2)) = 0`; it is proved in `OddMath.Frontier.EQKunnethInt`).
@@ -243,7 +243,7 @@ theorem superK0OPolTIntEquiv_self {m n : ℕ} (hmn : m + n ≤ 1) :
     superK0OPolTIntEquiv hmn (regTZ m n) = 1 := by
   rw [superK0OPolTIntEquiv, superK0GaussianOfBase_mk, baseK0OPolTInt_self, Int.cast_one]
 
-/-- **The Künneth isomorphism (3.39) over `ℤ`**, `m + n ≤ 1`:
+/-- **The Künneth isomorphism (3.44) over `ℤ`**, `m + n ≤ 1`:
 `K₀(ONH_m) ⊗ K₀(ONH_n) ≅ K₀(ONH_m ⊗ ONH_n)`, `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]`. -/
 def kunnethInt {m n : ℕ} (hmn : m + n ≤ 1) :
     GZ m ⊗[GaussianInt] GZ n ≃ₗ[GaussianInt] TZ m n :=
@@ -270,7 +270,7 @@ theorem kunnethMapInt_reg {m n : ℕ} (hm : m ≤ 1) (hn : n ≤ 1) :
   rw [superK0OPolIntEquiv_self, superK0OPolIntEquiv_self, TensorProduct.lid_tmul, one_smul,
     LinearMap.toSpanSingleton_apply, one_smul]
 
-/-- The symbol of `Ind_{m,n}` (3.35) over `ℤ`, `m + n ≤ 1`: derived induction along
+/-- The symbol of `Ind_{m,n}` (3.40) over `ℤ`, `m + n ≤ 1`: derived induction along
 `ι_{m,n} : ONH_m ⊗ ONH_n ≅ ONH_{m+n}` on half-graded modules, after the Künneth isomorphism. -/
 def indInt {m n : ℕ} (hmn : m + n ≤ 1) (t : GZ m ⊗[GaussianInt] GZ n) : GZ (m+n) :=
   superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (opolTensorDG m n)).K0Map (kunnethInt hmn t)
@@ -283,7 +283,7 @@ theorem indInt_reg {m n : ℕ} (hmn : m + n ≤ 1) :
   refine (congrArg (superK0OPolTIntEquiv hmn) (kunnethInt_reg hmn)).trans ?_
   exact (superK0OPolTIntEquiv_self hmn).trans (superK0OPolIntEquiv_self hmn).symm
 
-/-- The symbol of `Res_{m,n}` (3.36) over `ℤ`, `m + n ≤ 1` (restriction along the isomorphism
+/-- The symbol of `Res_{m,n}` (3.41) over `ℤ`, `m + n ≤ 1` (restriction along the isomorphism
 `ι_{m,n}`, i.e. derived induction along its inverse), followed by the inverse Künneth isomorphism. -/
 def resInt {m n : ℕ} (hmn : m + n ≤ 1) (s : GZ (m+n)) : GZ m ⊗[GaussianInt] GZ n :=
   (kunnethInt hmn).symm

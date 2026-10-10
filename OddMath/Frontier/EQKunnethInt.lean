@@ -2,10 +2,10 @@ import OddMath.Frontier.EQThm318Int
 import OddMath.Frontier.EQK0Int
 
 /-!
-# The Künneth isomorphism (3.39) over `ℤ` in bidegree `(1, 1)`
+# The Künneth isomorphism (3.44) over `ℤ` in bidegree `(1, 1)`
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§3.6, the Künneth property (3.39) and Theorem 3.18.
+§3.6, the Künneth property (3.44) and Theorem 3.18.
 
 `OddMath.Frontier.EQThm318Int` proves Theorem 3.18 over `ℤ` using the map
 `kunnethMapInt 1 1 : K₀(D(ONH_1)) ⊗ K₀(D(ONH_1)) → K₀(D(ONH_1 ⊗ ONH_1))`,
@@ -19,7 +19,7 @@ Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXi
 * `kunnethOneOneInt`: the Künneth isomorphism `K₀(D(ONH_1)) ⊗ K₀(D(ONH_1)) ≅ K₀(D(ONH_1 ⊗ ONH_1))`
   over `ℤ`, and `kunnethMapInt_one_one_eq`: it is `kunnethMapInt 1 1`.
 
-Together with `kunnethInt` (`m + n ≤ 1`), the Künneth isomorphism (3.39) holds over `ℤ` in every
+Together with `kunnethInt` (`m + n ≤ 1`), the Künneth isomorphism (3.44) holds over `ℤ` in every
 bidegree `(m, n)` with `m, n ≤ 1`, i.e. for all the `ONH_m ⊗ ONH_n` with nonzero `K₀`.
 -/
 
@@ -141,7 +141,7 @@ omit [∀ N, DG.HasDerivedCategory.{0, 0} (OPol N)]
 theorem superK0OPolTOneOneIntEquiv_self : superK0OPolTOneOneIntEquiv (regTZ 1 1) = 1 := by
   rw [superK0OPolTOneOneIntEquiv, superK0GaussianOfBase_mk, baseK0OPolTOneOneInt_self, Int.cast_one]
 
-/-- **The Künneth isomorphism (3.39) over `ℤ` in bidegree `(1, 1)`**:
+/-- **The Künneth isomorphism (3.44) over `ℤ` in bidegree `(1, 1)`**:
 `K₀(D(ONH_1)) ⊗_{ℤ[√−1]} K₀(D(ONH_1)) ≅ K₀(D(ONH_1 ⊗ ONH_1))`. -/
 def kunnethOneOneInt : GZ 1 ⊗[GaussianInt] GZ 1 ≃ₗ[GaussianInt] TZ 1 1 :=
   tensorEquivOfGaussian (superK0OPolIntEquiv le_rfl) (superK0OPolIntEquiv le_rfl)
