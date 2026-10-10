@@ -488,6 +488,7 @@ import OddMath.PbwL2
 import OddMath.PbwL3
 import OddMath.PbwL4
 import OddMath.SKM.Basic
+import OddMath.SKM.Bubbles
 import OddMath.SKM.Calculus
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
