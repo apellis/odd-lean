@@ -524,6 +524,8 @@ import OddMath.SKM.GrassmannianOdd
 import OddMath.SKM.LeftAdj
 import OddMath.SKM.LeftAdj2
 import OddMath.SKM.LeftDot
+import OddMath.SKM.Lemma71
+import OddMath.SKM.Lemma71Cup
 import OddMath.SKM.Lemma31Rot
 import OddMath.SKM.Lemma32
 import OddMath.SKM.Lemma33
