@@ -474,4 +474,133 @@ theorem pf_a (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) :
       rw [mul_inv, Units.val_mul, wt_nil]
       linear_combination (↑(cs.c μ i)⁻¹ : k) * Units.mul_inv (Sc.t i j)
 
+theorem pfR_b (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ) :
+    cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfR cs i j μ =
+      plcL D Sc μ [up j] [] [] []
+        (cl D Sc (wt D μ []) [] [dn i, up i] (etaL i n) ≫ epsP cs i (wt D μ [])) := by
+  rw [pfR, ← Category.assoc (cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] _),
+    sigma_lcross_whisk i j μ hij, Category.id_comp]
+  symm
+  rw [plcL_comp_of_mem μ [up j] [] (cl_mem_homPar (sChain_etaL i n) rfl) (epsP_mem cs i _),
+    plcL_cl]
+  rfl
+
+/-- A clockwise bubble to the left of the `j`-strand, followed by a map on the `j`-strand. -/
+theorem bub_factor (i j : I) (μ : X) (m : ℕ) {B : List (LayerData I)} (hB : SChain [up j] B [up j]) :
+    cl D Sc μ [up j] [dn i, up i, up j]
+        ((etaL i m).map (whL [] [up j]) ++ B.map (whL [dn i, up i] [])) ≫
+      plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+    zsign k (ipar D i (wt D μ [up j]) * parsum D B) •
+      (plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i] (etaL i m) ≫
+        epsP cs i (wt D μ [up j])) ≫ cl D Sc μ [up j] [up j] B) := by
+  have h3 : SChain [] (etaL i m) [dn i, up i] := sChain_etaL i m
+  have hI := plcL_left_interchange (Sc := Sc) μ [up j] (epsP_mem cs i (wt D μ [up j])) hB
+  simp only [map_whL_nil_nil] at hI
+  rw [← cl_comp (by simpa using h3.whisk [] [up j]) (by simpa using hB.whisk [dn i, up i] []),
+    Category.assoc]
+  erw [show cl D Sc μ [dn i, up i, up j] [dn i, up i, up j] (B.map (whL [dn i, up i] [])) ≫
+      plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+      zsign k (ipar D i (wt D μ [up j]) * parsum D B) •
+        (plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) ≫
+          cl D Sc μ [up j] [up j] B) by
+    erw [hI, smul_smul, zsign_mul_self', one_smul]; rfl]
+  rw [Linear.comp_smul, ← Category.assoc, plcL_comp_of_mem μ [] [up j] (cl_mem_homPar h3 rfl)
+    (epsP_mem cs i _), plcL_cl]
+  rfl
+
+theorem pfL_b_reduce (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ) :
+    cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfL cs i j μ =
+    cl D Sc μ [up j] [dn i, up i, up j]
+        ((etaL i n).map (whL [] [up j]) ++ crossL [dn i] i j [] ++ crossL [dn i] j i []) ≫
+      plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) := by
+  have het : SChain [up j] ((etaL i n).map (whL [up j] [])) [up j, dn i, up i] := by
+    simpa using (sChain_etaL i n).whisk [up j] []
+  have hsij : SChain [up j, dn i, up i] ((sigmaL i j).map (whL [] [up i])) [dn i, up j, up i] := by
+    simpa using (sChain_sigmaL i j).whisk [] [up i]
+  have hcr : SChain [dn i, up j, up i] (crossL [dn i] j i []) [dn i, up i, up j] := by
+    simp [crossL, Shape.dom, Shape.cod]
+  have hcup : SChain [up j] [([up j], Shape.cup i, [])] [up j, dn i, up i] := by
+    simp [Shape.dom, Shape.cod]
+  have hdA : SChain [dn i, up j, up i] (dotsL [dn i, up j] i [] n) [dn i, up j, up i] :=
+    sChain_dotsL [dn i, up j] i [] n
+  have hP : SChain [up j] ([([up j], Shape.cup i, [])] ++ (sigmaL i j).map (whL [] [up i]))
+      [dn i, up j, up i] := hcup.append hsij
+  have hP' : SChain [up j] [([], Shape.cup i, [up j]), ([dn i], Shape.cross i j, [])]
+      [dn i, up j, up i] := by simp [Shape.dom, Shape.cod]
+  -- the dots pass the sideways crossing
+  have eA : cl D Sc μ [up j] [dn i, up i, up j]
+      ((etaL i n).map (whL [up j] []) ++ (sigmaL i j).map (whL [] [up i]) ++
+        crossL [dn i] j i []) =
+      zsign k (parsum D (sigmaL i j) * parsum D (dotsL [] i [] n)) •
+        cl D Sc μ [up j] [dn i, up i, up j]
+          ([([up j], Shape.cup i, [])] ++ (sigmaL i j).map (whL [] [up i]) ++
+            dotsL [dn i, up j] i [] n ++ crossL [dn i] j i []) := by
+    have hI := cl_interchange (D := D) (Sc := Sc) (μ := μ) (S := [up j]) (T := [dn i, up i, up j])
+      [([up j], Shape.cup i, [])] (crossL [dn i] j i []) (sChain_sigmaL i j)
+      (sChain_dotsL [] i [] n)
+    simp only [List.nil_append, List.append_nil] at hI
+    have e1 : (etaL i n).map (whL [up j] []) = [([up j], Shape.cup i, [])] ++
+        (dotsL [] i [] n).map (whL [up j, dn i] []) := by
+      simp [etaL, dotsL, whL, List.map_replicate]
+    have e2 : (dotsL [] i [] n).map (whL [dn i, up j] []) = dotsL [dn i, up j] i [] n := by
+      simp [dotsL, whL, List.map_replicate]
+    rw [e1, ← e2, hI, smul_smul, zsign_mul_self', one_smul]
+  -- (2.4)
+  have eB : cl D Sc μ [up j] [dn i, up i, up j]
+      ([([up j], Shape.cup i, [])] ++ (sigmaL i j).map (whL [] [up i]) ++
+        dotsL [dn i, up j] i [] n ++ crossL [dn i] j i []) =
+      cl D Sc μ [up j] [dn i, up i, up j]
+        ([([], Shape.cup i, [up j]), ([dn i], Shape.cross i j, [])] ++
+          dotsL [dn i, up j] i [] n ++ crossL [dn i] j i []) := by
+    rw [List.append_assoc _ (dotsL _ _ _ _), List.append_assoc [_, _],
+      ← cl_comp hP (hdA.append hcr), ← cl_comp hP' (hdA.append hcr)]
+    congr 1
+    exact eq_2_4_b Sc i j μ
+  -- the dots pass the upward crossing
+  have eC : cl D Sc μ [up j] [dn i, up i, up j]
+      ([([], Shape.cup i, [up j]), ([dn i], Shape.cross i j, [])] ++
+          dotsL [dn i, up j] i [] n ++ crossL [dn i] j i []) =
+      zsign k (D.parity i * D.parity j * n) •
+        cl D Sc μ [up j] [dn i, up i, up j]
+          ((etaL i n).map (whL [] [up j]) ++ crossL [dn i] i j [] ++ crossL [dn i] j i []) := by
+    have h31 := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up j, up i])
+      (lemma31_eq1_ne Sc i j (wt D μ []) hij n)
+    rw [map_smul, plcL_cl, plcL_cl] at h31
+    have e3 : (etaL i n).map (whL [] [up j]) ++ crossL [dn i] i j [] =
+        [([], Shape.cup i, [up j])] ++ (dotsL [] i [up j] n ++ crossL [] i j []).map (whL [dn i] []) := by
+      simp [etaL, dotsL, crossL, whL, List.map_replicate]
+    have e4 : [([], Shape.cup i, [up j]), ([dn i], Shape.cross i j, [])] ++
+        dotsL [dn i, up j] i [] n = [([], Shape.cup i, [up j])] ++
+          (crossL [] i j [] ++ dotsL [up j] i [] n).map (whL [dn i] []) := by
+      simp [dotsL, crossL, whL, List.map_replicate]
+    have hc0 : SChain [up j] [([], Shape.cup i, [up j])] [dn i, up i, up j] := by
+      simp [Shape.dom, Shape.cod]
+    have hX : SChain [dn i, up i, up j] ((dotsL [] i [up j] n ++ crossL [] i j []).map
+        (whL [dn i] [])) [dn i, up j, up i] := by
+      simpa using ((sChain_dotsL [] i [up j] n).append
+        (by simp [crossL, Shape.dom, Shape.cod] : SChain [up i, up j] (crossL [] i j [])
+          [up j, up i])).whisk [dn i] []
+    have hY : SChain [dn i, up i, up j] ((crossL [] i j [] ++ dotsL [up j] i [] n).map
+        (whL [dn i] [])) [dn i, up j, up i] := by
+      simpa using ((by simp [crossL, Shape.dom, Shape.cod] : SChain [up i, up j] (crossL [] i j [])
+          [up j, up i]).append (sChain_dotsL [up j] i [] n)).whisk [dn i] []
+    rw [e4, e3]
+    refine cl_append_congr _ (hc0.append hY) (hc0.append hX) hcr _ ?_
+    refine cl_prefix_congr _ hc0 hY hX _ ?_
+    rw [show cl D Sc μ [dn i, up i, up j] [dn i, up j, up i]
+      ((dotsL [] i [up j] n ++ crossL [] i j []).map (whL [dn i] [])) = _ from h31, smul_smul,
+      zsign_mul_self', one_smul]
+    rfl
+  rw [pfL, ← Category.assoc, ← Category.assoc, cl_comp het hsij,
+    cl_comp (het.append hsij) hcr, eA, eB, eC, smul_smul, Linear.smul_comp]
+  rw [← zsign_add, parsum_sigmaL, parsum_dotsL]
+  generalize D.parity i = a
+  generalize D.parity j = b
+  generalize (n : ZMod 2) = c
+  rw [show a * b * (c * a) + a * b * c = 0 by revert a b c; decide, zsign_zero, one_smul]
+
 end OddMath.SKM
