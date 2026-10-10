@@ -8,6 +8,7 @@ import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
+import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.UDot.Basic
 import OddMath.CoveringQuantum.UDot.Blocks
 import OddMath.CoveringQuantum.UDot.Rho
