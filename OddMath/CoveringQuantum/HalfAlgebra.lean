@@ -117,9 +117,10 @@ namespace SuperCartanDatum
 /-- `N = dᵢⱼ + 1 = 1 - aᵢⱼ` (as a natural number; `aᵢⱼ ≤ 0` for `i ≠ j`). -/
 def serreDeg (i j : I) : ℕ := (1 - C.a i j).toNat
 
-/-- The coefficient `(-1)ʳ πᵢ^{r|j| + r(r-1)/2} [N, r]_{qᵢ,πᵢ}` of (10.1). -/
+/-- The coefficient `(-1)ʳ πᵢ^{r|j| + r(r-1)/2} [N, r]_{qᵢ,πᵢ}` of (10.1) (with
+`r(r-1)/2 = (r choose 2)`). -/
 def serreCoeff (i j : I) (r : ℕ) : k :=
-  (-1) ^ r * C.pii π i ^ (r * (C.parity j).val + r * (r - 1) / 2) *
+  (-1) ^ r * C.pii π i ^ (r * (C.parity j).val + r.choose 2) *
     qpBinom (C.qi q i) (C.pii π i) (C.serreDeg i j) r
 
 /-- The left side of the quantum Serre relation (10.1) in `'f`:
