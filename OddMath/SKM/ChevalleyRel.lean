@@ -86,6 +86,104 @@ theorem cl_append_congr {μ : X} {s m t : List (Letter I)} {A A' : List (LayerDa
     cl D Sc μ s t (A ++ C) = c • cl D Sc μ s t (A' ++ C) := by
   rw [← cl_comp hA hC, h, Linear.smul_comp, cl_comp hA' hC]
 
+theorem cl_prefix_congr {μ : X} {s m t : List (Letter I)} (A : List (LayerData I))
+    {B B' : List (LayerData I)} (hA : SChain s A m) (hB : SChain m B t) (hB' : SChain m B' t)
+    (c : k) (h : cl D Sc μ m t B = c • cl D Sc μ m t B') :
+    cl D Sc μ s t (A ++ B) = c • cl D Sc μ s t (A ++ B') := by
+  rw [← cl_comp hA hB, h, Linear.comp_smul, cl_comp hA hB']
+
+theorem omegaL_sigmaL (i j : I) : omegaL (sigmaL i j) = omegaSigma i j := by
+  simp [sigmaL, omegaSigma, chevL]
+
+theorem omegaC_sigmaL (i j : I) : omegaC D k (sigmaL i j) = -zsign k (D.parity i * D.parity j) := by
+  simp [sigmaL, chevC, Shape.parity, zsign_zero]
+
+theorem omegaL_lcrossL (i j : I) : omegaL (lcrossL i j) = lcrossL j i := by
+  simp [lcrossL, chevL]
+
+theorem omegaC_lcrossL (i j : I) : omegaC D k (lcrossL i j) = -1 := by
+  simp [lcrossL, chevC, zsign_zero]
+
+theorem omegaL_epsL (i : I) (n : ℕ) :
+    omegaL (epsL i n) = ([], Shape.cup i, []) :: (ddotsL i n).map (whL [] [up i]) := by
+  simp [epsL, chevL, omegaL_dotsL]
+
+theorem omegaC_epsL (i : I) (n : ℕ) :
+    omegaC D k (epsL i n) = zsign k (D.parity i * ((n / 2 : ℕ) : ZMod 2)) := by
+  simp [epsL, omegaC_append, omegaC_dotsL, chevC, Shape.parity, parsum, zsign_zero]
+
+theorem omegaL_etaL (i : I) (n : ℕ) :
+    omegaL (etaL i n) = (ddotsL i n).map (whL [up i] []) ++ [([], Shape.cap i, [])] := by
+  simp [etaL, chevL, omegaL_dotsL]
+
+theorem omegaC_etaL (i : I) (n : ℕ) :
+    omegaC D k (etaL i n) = zsign k (D.parity i * ((n / 2 : ℕ) : ZMod 2)) := by
+  simp [etaL, omegaC_dotsL, chevC, Shape.parity, parsum, zsign_zero]
+
+theorem omegaL_dcupL (i : I) (n : ℕ) : omegaL (dcupL i n) = dcapL i n := by
+  simp [dcupL, dcapL, chevL]
+
+theorem omegaC_dcupL (i : I) (n : ℕ) :
+    omegaC D k (dcupL i n) = zsign k (D.parity i * n) := by
+  simp [dcupL, chevC]
+
+theorem omegaL_dcapL (i : I) (n : ℕ) : omegaL (dcapL i n) = dcupL i n := by
+  simp [dcupL, dcapL, chevL]
+
+theorem omegaC_dcapL (i : I) (n : ℕ) :
+    omegaC D k (dcapL i n) = zsign k (D.parity i * n) := by
+  simp [dcapL, chevC]
+
+theorem parsum_lcrossL (i j : I) : parsum D (lcrossL i j) = D.parity i * D.parity j := by
+  simp [parsum, lcrossL, Shape.parity]
+
+theorem parsum_epsL (i : I) (n : ℕ) : parsum D (epsL i n) = (n : ZMod 2) * D.parity i := by
+  rw [epsL, parsum_append, parsum_dotsL]; simp [parsum, Shape.parity]
+
+theorem parsum_etaL (i : I) (n : ℕ) : parsum D (etaL i n) = (n : ZMod 2) * D.parity i := by
+  rw [etaL, parsum_append, parsum_dotsL]; simp [parsum, Shape.parity]
+
+theorem parsum_dcupL (i : I) (n : ℕ) : parsum D (dcupL i n) = D.parity i * n := by
+  simp [parsum, dcupL, Shape.parity]
+
+theorem parsum_dcapL (i : I) (n : ℕ) : parsum D (dcapL i n) = D.parity i * n := by
+  simp [parsum, dcapL, Shape.parity]
+
+theorem sChain_cupDots (i : I) (n : ℕ) :
+    SChain [] (([], Shape.cup i, []) :: (ddotsL i n).map (whL [] [up i])) [dn i, up i] :=
+  ⟨rfl, by simpa [Shape.cod] using (sChain_ddotsL i n).whisk [] [up i]⟩
+
+theorem sChain_dotsCap (i : I) (n : ℕ) :
+    SChain [up i, dn i] ((ddotsL i n).map (whL [up i] []) ++ [([], Shape.cap i, [])]) [] :=
+  SChain.append (t' := [up i] ++ [dn i] ++ []) (by simpa using (sChain_ddotsL i n).whisk [up i] [])
+    ⟨rfl, rfl⟩
+
+variable (Sc) in
+/-- (2.3) for the image of `ε ∘ (xⁿ ⊗ 1)`. -/
+theorem cl_cupDots (μ : X) (i : I) (n : ℕ) :
+    cl D Sc μ [] [dn i, up i] (([], Shape.cup i, []) :: (ddotsL i n).map (whL [] [up i])) =
+      zsign k (D.parity i * ((n / 2 : ℕ) : ZMod 2)) • cl D Sc μ [] [dn i, up i] (etaL i n) := by
+  have h := eq_2_3_a' (Sc := Sc) i μ n
+  rw [show (dotsL [] i [] n).map (whL [dn i] []) = dotsL [dn i] i [] n by
+    simp [dotsL, List.map_replicate, whL]] at h
+  exact h
+
+variable (Sc) in
+/-- (2.3) for the image of `(1 ⊗ xⁿ) ∘ η`. -/
+theorem cl_dotsCap (μ : X) (i : I) (n : ℕ) :
+    cl D Sc μ [up i, dn i] [] ((ddotsL i n).map (whL [up i] []) ++ [([], Shape.cap i, [])]) =
+      zsign k (D.parity i * ((n / 2 : ℕ) : ZMod 2)) • cl D Sc μ [up i, dn i] [] (epsL i n) := by
+  have h := eq_2_3_b' (Sc := Sc) i μ n
+  rw [show (dotsL [] i [] n).map (whL [] [dn i]) = dotsL [] i [dn i] n by
+    simp [dotsL, List.map_replicate, whL]] at h
+  exact h
+
+attribute [local simp] omegaL_sigmaL omegaC_sigmaL omegaL_lcrossL omegaC_lcrossL omegaL_epsL
+  omegaC_epsL omegaL_etaL omegaC_etaL omegaL_dcupL omegaC_dcupL omegaL_dcapL omegaC_dcapL
+  parsum_sigmaL parsum_lcrossL parsum_epsL parsum_etaL parsum_dcupL parsum_dcapL
+
+theorem coroot_neg (i : I) (ν : X) : D.h i (-ν) = -D.h i ν := map_neg _ _
+
 theorem omega_zigE (i : I) (ν : X) :
     omegaLin Sc ν [up i] [up i] (relation D Sc (.zigE i ν)) = 0 := by
   simp only [relation]
@@ -348,58 +446,86 @@ theorem omega_braidEq (i j : I) (ν : X) (hij : i ≠ j) :
 
 theorem omega_invNe₁ (i j : I) (ν : X) (hij : i ≠ j) :
     omegaLin Sc ν [up j, dn i] [up j, dn i] (relation D Sc (.invNe₁ i j ν hij)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+  simp only [relation, map_sub, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_lcrossL, omegaC_sigmaL,
+    omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_prefix_congr (lcrossL j i) (sChain_lcrossL j i) (sChain_omegaSigma i j)
+    (sChain_sigmaL j i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i j), one_smul,
+    cl_invNe₂ Sc j i (-ν) (Ne.symm hij)]
+  generalize D.parity i = a; generalize D.parity j = b
+  fin_cases a <;> fin_cases b <;> simp (config := {decide := true}) [zsign]
 
 theorem omega_invNe₂ (i j : I) (ν : X) (hij : i ≠ j) :
     omegaLin Sc ν [dn i, up j] [dn i, up j] (relation D Sc (.invNe₂ i j ν hij)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
-
-theorem omega_invP₁ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
-    omegaLin Sc ν [up i, dn i] [up i, dn i] (relation D Sc (.invP₁ i ν hh)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+  simp only [relation, map_sub, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_lcrossL, omegaC_sigmaL,
+    omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_append_congr (lcrossL j i) (sChain_omegaSigma i j) (sChain_sigmaL j i)
+    (sChain_lcrossL j i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i j), one_smul,
+    cl_invNe₁ Sc j i (-ν) (Ne.symm hij)]
+  generalize D.parity i = a; generalize D.parity j = b
+  fin_cases a <;> fin_cases b <;> simp (config := {decide := true}) [zsign]
 
 theorem omega_invP₂ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
     omegaLin Sc ν [dn i, up i] [dn i, up i] (relation D Sc (.invP₂ i ν hh)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+  simp only [relation, map_add, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_lcrossL, omegaC_sigmaL,
+    omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_append_congr (lcrossL i i) (sChain_omegaSigma i i) (sChain_sigmaL i i)
+    (sChain_lcrossL i i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul,
+    cl_invM₂ Sc i (-ν) (by rw [coroot_neg]; omega)]
+  generalize D.parity i = a
+  fin_cases a <;> simp (config := {decide := true}) [zsign]
+
+theorem omega_invM₂ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
+    omegaLin Sc ν [up i, dn i] [up i, dn i] (relation D Sc (.invM₂ i ν hh)) = 0 := by
+  simp only [relation, map_add, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_lcrossL, omegaC_sigmaL,
+    omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_prefix_congr (lcrossL i i) (sChain_lcrossL i i) (sChain_omegaSigma i i)
+    (sChain_sigmaL i i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul,
+    cl_invP₂ Sc i (-ν) (by rw [coroot_neg]; omega)]
+  generalize D.parity i = a
+  fin_cases a <;> simp (config := {decide := true}) [zsign]
 
 theorem omega_invP₃ (i : I) (ν : X) (m : ℕ) (hm : (m : ℤ) < D.h i ν) :
     omegaLin Sc ν [dn i, up i] [] (relation D Sc (.invP₃ i ν m hm)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+  simp only [relation, omegaLin_dg]
+  simp only [omegaL_append, omegaC_append, omegaL_epsL, omegaL_lcrossL, omegaC_epsL,
+    omegaC_lcrossL, parsum_epsL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_append_congr (lcrossL i i) (sChain_cupDots i m) (sChain_etaL i m) (sChain_lcrossL i i) _
+    (cl_cupDots Sc (-ν) i m), cl_invM₃ Sc i (-ν) m (by rw [coroot_neg]; omega), smul_zero,
+    smul_zero]
+
+theorem omega_invM₃ (i : I) (ν : X) (m : ℕ) (hm : (m : ℤ) < -D.h i ν) :
+    omegaLin Sc ν [] [up i, dn i] (relation D Sc (.invM₃ i ν m hm)) = 0 := by
+  simp only [relation, omegaLin_dg]
+  simp only [omegaL_append, omegaC_append, omegaL_etaL, omegaL_lcrossL, omegaC_etaL,
+    omegaC_lcrossL, parsum_etaL, parsum_lcrossL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_prefix_congr (lcrossL i i) (sChain_lcrossL i i) (sChain_dotsCap i m) (sChain_epsL i m) _
+    (cl_dotsCap Sc (-ν) i m), cl_invP₃ Sc i (-ν) m (by rw [coroot_neg]; omega), smul_zero,
+    smul_zero]
 
 theorem omega_invP₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < D.h i ν) :
     omegaLin Sc ν [] [dn i, up i] (relation D Sc (.invP₄ i ν n hn)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+  simp only [relation, omegaLin_dg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_dcupL, omegaC_sigmaL,
+    omegaC_dcupL, parsum_sigmaL, parsum_dcupL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_append_congr (dcapL i n) (sChain_omegaSigma i i) (sChain_sigmaL i i) (sChain_dcapL i n) 1
+    (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul,
+    cl_invM₄ Sc i (-ν) n (by rw [coroot_neg]; omega), smul_zero]
 
-theorem omega_invP₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < D.h i ν) (hn : (n : ℤ) < D.h i ν) :
-    omegaLin Sc ν [] [] (relation D Sc (.invP₅ i ν m n hm hn)) = 0 := by
-  simp only [relation]
-  simp only [map_sub, map_add, map_neg, map_sum, omegaLin_dg]
-  try erw [omegaLin_idg]
-  simp [sigmaL, lcrossL, epsL, etaL, dcupL, dcapL, chevL, chevC, Shape.parity, parsum_append]
-  done
+theorem omega_invM₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < -D.h i ν) :
+    omegaLin Sc ν [up i, dn i] [] (relation D Sc (.invM₄ i ν n hn)) = 0 := by
+  simp only [relation, omegaLin_dg]
+  simp only [omegaL_append, omegaC_append, omegaL_sigmaL, omegaL_dcapL, omegaC_sigmaL,
+    omegaC_dcapL, parsum_sigmaL, parsum_dcapL, flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_prefix_congr (dcupL i n) (sChain_dcupL i n) (sChain_omegaSigma i i) (sChain_sigmaL i i) 1
+    (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul,
+    cl_invP₄ Sc i (-ν) n (by rw [coroot_neg]; omega), smul_zero]
 
 end OddMath.SKM
