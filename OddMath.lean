@@ -26,6 +26,8 @@ import OddMath.CoveringQuantum.Twistor.Serre
 import OddMath.CoveringQuantum.Twistor.Nondegenerate
 import OddMath.CoveringQuantum.UDot.Basic
 import OddMath.CoveringQuantum.UDot.Blocks
+import OddMath.CoveringQuantum.UDot.HalfMaps
+import OddMath.CoveringQuantum.UDot.HalfWeights
 import OddMath.CoveringQuantum.UDot.Rho
 import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.Diagrammatics.Even.Basic
