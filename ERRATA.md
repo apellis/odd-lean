@@ -395,7 +395,8 @@ from `0` in Lean.
    `z^∨ = θ ∘ ∂_{a,b}` is not right `OΛ_{a+b}`-linear (`EQZab.trace_not_linear`, with `h = e_2`); it is `w_0`-semilinear,
    `z^∨(f z · h) = z^∨(f z) w_0(h)` (`EQZab.trace_mul_twistRev`), and `w_0 ∘ θ ∘ ∂_{a,b}` is linear (`EQZab.trace_linear`).
    Corollary 4.10 holds as printed for `z^∨ = θ ∘ ∂_{a,b}` (`EQZab.cor_4_10`) and hence also for `w_0 ∘ z^∨`, since
-   `d ∘ w_0 = w_0 ∘ d`.
+   `d ∘ w_0 = w_0 ∘ d`. Definition 4.9 holds with `w_0 ∘ z^∨` in place of `z^∨`: `Z^∨_{a,b}` is free of rank one over
+   `OΛ_a ⊗ OΛ_b` on `w_0 ∘ z^∨` (`EQFrob.def_4_9_free`).
 20. **§4.3, Lemma 4.4 [F→T].** The map `γ` of (4.10), `e_k ↦ (−1)^{binom(k,2)} e_k(x)`, is not an isomorphism of left
    `OΛ_a`-modules for the action of `OΛ_a` on `(OΛ_a ⊠ OΛ_b)/M` by `g(x)·`: for `(a, b) = (2, 2)` no additive map with the
    printed values is left `OΛ_2`-linear (`EQBorel.lemma_4_4_printed_false`; linearity would force `2 e_2(x) ∈ M`, while
