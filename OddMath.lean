@@ -33,6 +33,7 @@ import OddMath.CoveringQuantum.UDot.Rho
 import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.CoveringQuantum.UDot.Triangular
 import OddMath.CoveringQuantum.UDot.VermaOperators
+import OddMath.CoveringQuantum.UDot.VermaSerre
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures

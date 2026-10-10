@@ -10,8 +10,8 @@ The numerator is derived from [CHW1] Proposition 2.2.2(b), rather than the
 printed formula in the proof of Lemma 2.3.1.
 
 This file constructs individual operators and their mixed commutation law.
-It does not assert that the operators satisfy the positive Serre relations,
-nor does it assert faithfulness or triangular decomposition.
+Their positive Serre relations are proved in `VermaSerre`. Neither file asserts
+faithfulness or triangular decomposition.
 -/
 
 noncomputable section
@@ -180,8 +180,8 @@ omit [DecidableEq I] [Finite I] in
 private theorem halfProjection_surjective : Function.Surjective (halfProjection C) :=
   C.toSerreF_surjective Coefficients.q pi
 
-/-- The individual lowering operator on the actual Serre half algebra.
-No positive-Serre relation among these endomorphisms is asserted here. -/
+/-- The lowering operator on the actual Serre half algebra. Its positive
+Serre relations are established in `VermaSerre`. -/
 def lower (i : I) (n : ℤ) : Module.End Coefficients.Ring (C.serreF Coefficients.q pi) :=
   let p := halfProjection C
   let f := p.comp (lowerFree C Coefficients.q pi i n)
