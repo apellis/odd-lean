@@ -1,3 +1,4 @@
+import OddMath.CoveringQuantum.Coefficients
 import OddMath.CoveringQuantum.Datum
 import OddMath.CoveringQuantum.HalfAlgebra
 import OddMath.CoveringQuantum.Integers
