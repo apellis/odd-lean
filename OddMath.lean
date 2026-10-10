@@ -4,7 +4,9 @@ import OddMath.CoveringQuantum.Integers
 import OddMath.CoveringQuantum.PreF.Basic
 import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
+import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
+import OddMath.CoveringQuantum.SerreForm
 import OddMath.CoveringQuantum.UDot.Basic
 import OddMath.CoveringQuantum.UDot.Blocks
 import OddMath.CoveringQuantum.UDot.Rho
