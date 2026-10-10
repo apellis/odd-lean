@@ -500,10 +500,13 @@ import OddMath.SKM.Calculus
 import OddMath.SKM.Chevalley
 import OddMath.SKM.ChevalleyBase
 import OddMath.SKM.ChevalleyRel
+import OddMath.SKM.Curls
+import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
+import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
 import OddMath.SKM.LeftDot
 import OddMath.SKM.Lemma31Rot
@@ -513,6 +516,7 @@ import OddMath.SKM.Lemma33Rot
 import OddMath.SKM.MateBlock
 import OddMath.SKM.MateN
 import OddMath.SKM.Mates
+import OddMath.SKM.Placement
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
