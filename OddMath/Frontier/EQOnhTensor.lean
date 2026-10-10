@@ -7,7 +7,7 @@ import DG.Algebra.TensorProduct
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
 §3.6, the inclusion `ι_{m,n} : ONH_m ⊗ ONH_n ↪ ONH_{m+n}` defining `Ind_{m,n}` and `Res_{m,n}`
-((3.35)–(3.36)); ranks `a = a' + 2`, `b = b' + 2`.
+((3.39)–(3.41)); ranks `a = a' + 2`, `b = b' + 2`.
 
 * `ONH.windowDG m n p h : ONH_{m+2} → ONH_{n+2}`: the strand window (`OnhWindow.windowHom`, placing a
   diagram on the strands `[p, p + m + 2)`) as a morphism of dg rings: it preserves the grading

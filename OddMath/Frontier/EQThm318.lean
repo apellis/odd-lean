@@ -5,7 +5,7 @@ import OddMath.Frontier.EQK0Coproduct
 # Ellis–Qi Theorem 3.18: `K₀(D(ONH)) ≅ u⁺` over a field
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§3.6, the induction and restriction functors (3.35)–(3.38), the Künneth property (3.39) and
+§3.6, the induction and restriction functors (3.40)–(3.43), the Künneth property (3.44) and
 Theorem 3.18 (printed numbering). Conventions as in `OddMath.Frontier.EQThm417`: a field `K`
 (scalar extension of the integral dg rings), half-graded dg modules (diagonal half-grading), `K₀` the
 compact super Grothendieck group, a `ℤ[√−1]`-module.
@@ -18,10 +18,10 @@ compact super Grothendieck group, a `ℤ[√−1]`-module.
 * `ι_{m,n} : ONH_m ⊗ ONH_n → ONH_{m+n}`: for `m + n ≤ 1` the isomorphism of dg rings
   `OPol_m ⊗ OPol_n ≅ OPol_{m+n}` (`EQFunctor.opolTensorDG`); `ι_{1,1}` is that map followed by the
   inclusion `OPol_2 ⊆ ONH_2` (`EQOnhDG.ONH.polyHom`).
-* `kunneth m n`: the Künneth isomorphism (3.39) `K₀(ONH_m) ⊗ K₀(ONH_n) ≅ K₀(ONH_m ⊗ ONH_n)` for
+* `kunneth m n`: the Künneth isomorphism (3.44) `K₀(ONH_m) ⊗ K₀(ONH_n) ≅ K₀(ONH_m ⊗ ONH_n)` for
   `m, n ≤ 1`, `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]` (for `m` or `n ≥ 2` both sides vanish).
-* `ind m n`, `indTwo`: the symbol of `Ind_{m,n}` (3.35) (derived induction along `ι_{m,n}` on
-  half-graded modules) after `kunneth`; `res m n`: the symbol of `Res_{m,n}` (3.36) followed by the
+* `ind m n`, `indTwo`: the symbol of `Ind_{m,n}` (3.40) (derived induction along `ι_{m,n}` on
+  half-graded modules) after `kunneth`; `res m n`: the symbol of `Res_{m,n}` (3.41) followed by the
   inverse of `kunneth`. Restriction along the isomorphism `ι_{m,n}` (`m + n ≤ 1`) is derived induction
   along its inverse, which is how `res` is computed.
 
@@ -98,7 +98,7 @@ abbrev regT (m n : ℕ) : TK K m n :=
 def superK0OPolTEquiv (m n : ℕ) : TK K m n ≃ₗ[GaussianInt] GaussianInt :=
   superK0GaussianOfConnected K (isConnectedInt_opolT m n)
 
-/-- **The Künneth isomorphism (3.39)** `K₀(ONH_m) ⊗ K₀(ONH_n) ≅ K₀(ONH_m ⊗ ONH_n)`, `m, n ≤ 1`,
+/-- **The Künneth isomorphism (3.44)** `K₀(ONH_m) ⊗ K₀(ONH_n) ≅ K₀(ONH_m ⊗ ONH_n)`, `m, n ≤ 1`,
 with `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]` (`kunneth_reg`). -/
 def kunneth (m n : ℕ) : GK K m ⊗[GaussianInt] GK K n ≃ₗ[GaussianInt] TK K m n :=
   tensorEquivOfGaussian (superK0OPolEquiv.{0} K m) (superK0OPolEquiv.{0} K n) (superK0OPolTEquiv K m n)
@@ -107,7 +107,7 @@ theorem kunneth_reg (m n : ℕ) : kunneth K m n (regG K m ⊗ₜ regG K n) = reg
   tensorEquivOfGaussian_tmul _ _ _ (superK0OPolEquiv_self K m) (superK0OPolEquiv_self K n)
     (superK0GaussianOfConnected_self K (isConnectedInt_opolT m n))
 
-/-- **The symbol of `Ind_{m,n}`** (3.35) for `m + n ≤ 1` (more generally into `K₀(D(OPol_{m+n}))`):
+/-- **The symbol of `Ind_{m,n}`** (3.40) for `m + n ≤ 1` (more generally into `K₀(D(OPol_{m+n}))`):
 derived induction along `K ⊗ ι_{m,n}` on half-graded modules, after the Künneth isomorphism. -/
 def ind (m n : ℕ) (t : GK K m ⊗[GaussianInt] GK K n) : GK K (m+n) :=
   superK0cMap _ _ (HalfGradedDGRing.Hom.ofDGRingHom (extendHom K (opolTensorDG m n))).K0Map
@@ -122,7 +122,7 @@ theorem ind_reg (m n : ℕ) : ind K m n (regG K m ⊗ₜ regG K n) = regG K (m+n
   exact (superK0GaussianOfConnected_self K (isConnectedInt_opolT m n)).trans
     (superK0OPolEquiv_self K (m+n)).symm
 
-/-- **The symbol of `Res_{m,n}`** (3.36), `m + n ≤ 1` (restriction along the isomorphism `ι_{m,n}`, that
+/-- **The symbol of `Res_{m,n}`** (3.41), `m + n ≤ 1` (restriction along the isomorphism `ι_{m,n}`, that
 is derived induction along its inverse), followed by the inverse of the Künneth isomorphism. -/
 def res (m n : ℕ) (s : GK K (m+n)) : GK K m ⊗[GaussianInt] GK K n :=
   (kunneth K m n).symm

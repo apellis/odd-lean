@@ -291,7 +291,8 @@ These errata are what the formalization turned up; they are not a complete revie
 
 ## [EQ] A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
 
-In progress (Thm 3.18 and Thm 4.17 are proved; see the README); strands are numbered from `0` in Lean.
+Thm 3.18 and Thm 4.17 are proved; the README's [EQ] coverage table lists every numbered statement. Strands are numbered
+from `0` in Lean.
 
 1. **§2.1, the twist of `U⁺ ⊗ U⁺` [F→T].** With the displayed twist `(b₁⊗b₂)(b₁'⊗b₂') = v^{|b₂||b₁'|} b₁b₁' ⊗ b₂b₂'`,
    `v = √−1`, no algebra map `r` with `r(E) = E⊗1 + 1⊗E` exists, on `u⁺` or on `U⁺`
@@ -448,3 +449,6 @@ In progress (Thm 3.18 and Thm 4.17 are proved; see the README); strands are numb
    `resIsoH`, `resIsoD`). This right action is the only one: for every morphism of dg rings `φ : OΛ_{a+b} → OΛ_a ⊗ OΛ_b`
    through which `OΛ_{a+b}` could act on `Z^♮_{a,b}`, the bimodule isomorphism forces `φ(h) = h(y, x)`
    (`EQFunctor.natAction_unique`); the inclusion `h ↦ h(x, y)` fails (`EQFunctor.no_resIso_incl`, `a = b = 2`).
+25. **§4.4, Definition 4.15 (2) [M].** The functor `D(OΛ_{a+b}) → D(OΛ_{a,b})` is printed as
+   `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`; the tensor product is over `OΛ_{a+b}`, as in the displayed functor
+   `Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (−)` and in the definition of `R` (`EQFunctor.comult`, `comultIsoDerivedTensor`).
