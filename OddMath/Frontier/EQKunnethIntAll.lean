@@ -2,10 +2,10 @@ import OddMath.Frontier.EQKunnethInt
 import DG.HalfGraded.Vanishing
 
 /-!
-# The Künneth isomorphism (3.39) over `ℤ` in all bidegrees
+# The Künneth isomorphism (3.44) over `ℤ` in all bidegrees
 
 Source: A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2,
-§3.6, the Künneth property (3.39).
+§3.6, the Künneth property (3.44).
 
 `ONHAll N` is the integral dg odd nilHecke ring `ONH_N` for every `N`: `ONH_0 = OPol_0`,
 `ONH_1 = OPol_1`, and `ONH_{n+2} = EQOnhDG.ONH n`. `ONHTensor m n` is `ONH_m ⊗ ONH_n`, dg-lean's
@@ -22,7 +22,7 @@ graded tensor product over `ℤ`; `ONHT m n` is the same type, written as `EQK0.
   `kunnethOneOneInt` (`m = n = 1`) are, from `K₀ ≅ ℤ[√−1]` on the regular classes
   (`gaEquiv`, `taEquiv`).
 
-**The Künneth isomorphism (3.39) over `ℤ`** (`kunnethIntAll`): for all `m, n`,
+**The Künneth isomorphism (3.44) over `ℤ`** (`kunnethIntAll`): for all `m, n`,
 `K₀(D(ONH_m)) ⊗_{ℤ[√−1]} K₀(D(ONH_n)) ≅ K₀(D(ONH_m ⊗ ONH_n))`, with
 `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]` (`kunnethIntAll_reg`).
 -/
@@ -274,7 +274,7 @@ theorem taEquiv_reg : ∀ m n (hm : m ≤ 1) (hn : n ≤ 1), taEquiv m n hm hn (
 
 /-! ### The Künneth isomorphism -/
 
-/-- **The Künneth isomorphism (3.39) over `ℤ`, all bidegrees**:
+/-- **The Künneth isomorphism (3.44) over `ℤ`, all bidegrees**:
 `K₀(D(ONH_m)) ⊗_{ℤ[√−1]} K₀(D(ONH_n)) ≅ K₀(D(ONH_m ⊗ ONH_n))`, `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]`
 (`kunnethIntAll_reg`). For `m, n ≤ 1` it is built from the trivializations on the regular classes,
 as `EQK0.kunnethInt` and `kunnethOneOneInt` are; otherwise both sides vanish. -/
@@ -303,7 +303,7 @@ def kunnethIntAll : ∀ m n, GA m ⊗[GaussianInt] GA n ≃ₗ[GaussianInt] TA m
       haveI : Subsingleton (GA 1 ⊗[GaussianInt] GA (n + 2)) := subsingleton_tensor_right
       LinearEquiv.ofSubsingleton _ _
 
-/-- The Künneth isomorphism (3.39) over `ℤ` sends `[ONH_m] ⊗ [ONH_n]` to `[ONH_m ⊗ ONH_n]`. -/
+/-- The Künneth isomorphism (3.44) over `ℤ` sends `[ONH_m] ⊗ [ONH_n]` to `[ONH_m ⊗ ONH_n]`. -/
 theorem kunnethIntAll_reg : ∀ m n, kunnethIntAll m n (regGA m ⊗ₜ regGA n) = regTA m n
   | 0, 0 => tensorEquivOfGaussian_tmul _ _ _ (gaEquiv_reg 0 _) (gaEquiv_reg 0 _)
       (taEquiv_reg 0 0 _ _)

@@ -11,8 +11,8 @@ Sources (numbering refers to these arXiv versions):
   diagrammatics*, arXiv:1111.1320v1.
 - **[E]** A. P. Ellis, *The odd Littlewood–Richardson rule*, arXiv:1111.3932v1.
 - **[EQ]** A. P. Ellis, Y. Qi, *The differential graded odd nilHecke algebra*, arXiv:1504.01712v2
-  (in progress: Thm 3.18 and Thm 4.17 are proved, over every field and over `ℤ`; see the [EQ] status
-  below).
+  (Thm 3.18 and Thm 4.17 are proved, over every field and over `ℤ`; three numbered statements are
+  formalized only in part, see the [EQ] coverage table below).
 
 The library builds with no `sorry` and no added axioms; the axiom closures of the results contain
 only `propext`, `Classical.choice` and `Quot.sound`.
@@ -340,7 +340,7 @@ permutation action):
   have `K₀ ≅ ℤ[√−1]` and `K₀(D(ONH_n)) = 0` for `n ≥ 2`; with `ι_{m,n}` the dg ring isomorphism
   `OPol_m ⊗ OPol_n ≅ OPol_{m+n}` (`EQFunctor.opolTensorDG`, `opolTensorEquiv`; followed by `OPol_2 ⊆ ONH_2` for
   `ι_{1,1}`; for `m, n ≥ 2`, `ι_{m,n} : ONH_m ⊗ ONH_n → ONH_{m+n}` is the strand-window morphism of dg rings
-  `EQOnhDG.ONH.iota`, `Frontier.EQOnhTensor`) and the Künneth isomorphism (3.39) (`EQK0.kunneth`), the symbols of
+  `EQOnhDG.ONH.iota`, `Frontier.EQOnhTensor`) and the Künneth isomorphism (3.44) (`EQK0.kunneth`), the symbols of
   `Ind_{m,n}` and `Res_{m,n}` give the
   structure constants of `u⁺`: `1·1 = 1`, `1·E = E·1 = E`, `E·E = 0`, `r(1) = 1 ⊗ 1`, `r(E) = E ⊗ 1 + 1 ⊗ E`
   (`thm_3_18_mul_one_one`, `thm_3_18_mul_one_E`, `thm_3_18_mul_E_one`, `thm_3_18_mul_E_E`, `thm_3_18_comul_one`,
@@ -350,12 +350,12 @@ permutation action):
   `N ≤ 1` (`EQK0.intUnit_opol_isQuasiIso`, from `H(OPol_N) = ℤ · 1`, `Frontier.EQSmallRankDG`), so
   `K₀(D(OPol_N)^c) ≅ K₀(D(ℤ)^c) ≅ ℤ` (dg-lean's quasi-isomorphism invariance of `K₀` and `K₀(ℤ) ≅ ℤ`;
   `EQK0.baseK0OPolInt`) and `K₀(D(ONH_N)) ≅ ℤ[√−1]` (`superK0OPolIntEquiv`); `K₀(D(ONH_n)) = 0` for `n ≥ 2`
-  (`superK0c_onh_int_eq_zero`); with the Künneth isomorphism (3.39) for `m + n ≤ 1` (`kunnethInt`) the same
+  (`superK0c_onh_int_eq_zero`); with the Künneth isomorphism (3.44) for `m + n ≤ 1` (`kunnethInt`) the same
   structure constants hold (`thm_3_18_int_*`). For `E · E` the Künneth map `[ONH_1] ⊗ [ONH_1] ↦ [ONH_1 ⊗ ONH_1]`
   (`kunnethMapInt`) suffices, since the product lands in `K₀(D(ONH_2)) = 0`; it is in fact the Künneth
   isomorphism over `ℤ` (`Frontier.EQKunnethInt`: `OPol_1 ⊗ OPol_1` has `Z¹ = 0` and torsion-free `H²`, so
   `K₀(D(OPol_1 ⊗ OPol_1)^c) ≅ ℤ`; `EQK0Int.kunnethOneOneInt`, `kunnethMapInt_one_one_eq`). **The Künneth
-  isomorphism (3.39) holds over `ℤ` for all `m, n`** (`Frontier.EQKunnethIntAll`, `EQK0Int.kunnethIntAll`,
+  isomorphism (3.44) holds over `ℤ` for all `m, n`** (`Frontier.EQKunnethIntAll`, `EQK0Int.kunnethIntAll`,
   `[ONH_m] ⊗ [ONH_n] ↦ [ONH_m ⊗ ONH_n]` by `kunnethIntAll_reg`, with `ONH_N` = `EQK0Int.ONHAll N` for every
   `N` and `ONH_m ⊗ ONH_n` dg-lean's graded tensor product over `ℤ`): for `m ≥ 2` or `n ≥ 2` the dg ring
   `ONH_m ⊗ ONH_n` is acyclic (`d (∂₁ ⊗ 1) = 1`, resp. `d (1 ⊗ ∂₁) = 1`), so both sides vanish.
@@ -399,8 +399,9 @@ permutation action):
   the crossing contracts every weight, with no parity-versus-degree support restriction:
   `isAcyclic_halfGraded`, `isZero_halfGraded_derivedCategory`. Both ordinary and super Grothendieck
   groups of compact objects vanish (`compactK0_eq_zero`, `superK0c_eq_zero`). These statements cover
-  ranks at least two only; the integral half-graded compact Grothendieck-group calculation in
-  ranks zero and one and tensor multiplicativity remain open.
+  ranks at least two only; the integral half-graded compact Grothendieck groups in ranks zero
+  and one and the Künneth isomorphism are computed in `Frontier.EQThm318Int` and
+  `Frontier.EQKunnethIntAll` (above).
 - Integral ordinary dg cohomology in ranks zero and one (`Frontier.EQSmallRankDG`): for the
   actual `OPol_N` dg ring with `N ≤ 1`, `cohomologyZeroEquivInt` identifies `H⁰` with `ℤ`,
   taking the actual constant class to its integer, and `cohomology_eq_zero_of_ne_zero` proves
@@ -425,8 +426,9 @@ permutation action):
   derived induction/restriction as an equivalence on all half-graded modules in ranks zero
   and one, not only diagonal modules. The forward functor commutes with cohomological shift
   and preserves distinguished triangles. Its equivalence of ordinary compact `K₀` groups
-  sends each weight representable to the representable at that same weight. Numerical
-  compact `K₀` and tensor multiplicativity remain open; the super-`K₀` comparison is below.
+  sends each weight representable to the representable at that same weight. The numerical
+  compact `K₀` and the Künneth isomorphism are in `Frontier.EQThm318Int`, `Frontier.EQKunnethIntAll`; the
+  super-`K₀` comparison is below.
 - `Frontier.EQHalfGradedUnitParity` proves that actual derived restriction along the unit
   commutes with every internal shift and the existing parity shift in every rank. In ranks
   zero and one, the unit and counit of Keller's equivalence give these comparisons for
@@ -438,7 +440,8 @@ permutation action):
   actual parity-relation subgroup onto its target counterpart, giving `superK0cEquiv`
   between the existing compact super Grothendieck groups. Every compact object class
   maps to its actual perfect induction. No replacement quotient or transported shift
-  is used. Numerical calculations and tensor multiplicativity remain open.
+  is used. (Numerical calculations and the Künneth isomorphism: `Frontier.EQThm318Int`,
+  `Frontier.EQKunnethIntAll`.)
 - `Frontier.EQHalfGradedUnitParityCoherence` proves, in every rank, that actual module
   restriction along the integral unit respects both existing parity involutions.
   The proof uses preservation of the inverse periodic unit, and gives the complete
@@ -474,8 +477,8 @@ permutation action):
   equivalence unit/counit, not assumed; restriction faithfulness and the published
   restriction square then give induction coherence on every source derived object.
   The source derived Hom universe remains the module universe and the target Hom
-  universe is independent. Numerical calculations and tensor multiplicativity
-  remain open; no all-rank induction equivalence is asserted.
+  universe is independent. No all-rank induction equivalence is asserted
+  (numerical calculations and the Künneth isomorphism: `Frontier.EQThm318Int`, `Frontier.EQKunnethIntAll`).
 - Scope of the nilHecke dg-lean statements: the dg rings and modules above are `ℤ`-graded by half the `q`-degree, so every
   homogeneous element has parity equal to its degree mod 2. The derived-category, cofibrancy and K-projectivity results
   for these constructions are statements about such modules. The new half-graded vanishing result
@@ -494,6 +497,102 @@ permutation action):
   `(ONH_n, OΛ_n)`-bimodule (`ONH.instDGBimoduleZn`), and Cor 3.9 as an isomorphism of dg algebras with dg-lean's
   endomorphism dg algebra (`ONH.toENDZnEquiv`; dg-lean's `END` acts on the right, so the statement is for the
   opposite of `ONH_n`).
+
+#### [EQ]: coverage of the numbered statements
+
+Every numbered statement of [EQ] (§§2–4 and Appendix A; theorem-like environments and the numbered displays that
+make a claim; displays that only fix notation are grouped with the statement they belong to), with the modules where
+it is formalized. Modules are under `OddMath.` unless marked dg-lean (under `DG`, generic). "[EQ] n" refers to
+[ERRATA.md](ERRATA.md). The `ℤ`-grading of the dg rings is half the `q`-degree (see the scope note above); `K₀` is the
+compact super Grothendieck group of half-graded modules (§2.2.4).
+
+| Statement | Subject | Modules | Status |
+|---|---|---|---|
+| (2.1), (2.2) | divided-power product and coproduct of `U⁺` at `q = √−1` | `Frontier.EQQuantumGroups`, `Frontier.EQQuantumBinomial`, `Frontier.EQQuantumBialgebra` | formalized with the twist `−1` ([EQ] 1, 2) |
+| (2.3)–(2.5) | super Leibniz rule for dg algebras and dg modules | dg-lean `Algebra`, `Module`; `Diagrams.OddNilHecke.Differential` | definitions; (2.3) on `ONH_n`: `d_mul_of_mem` |
+| Remark 2.1 | dg categories | dg-lean `Category` | remark (dg-category versions of §2.2 are in dg-lean) |
+| (2.6)–(2.8) | `END_A(M)`, its differential, the right action of `END_A(M)` | dg-lean `Module.End` | definitions, formalized |
+| (2.9), Lemma 2.2 | `HOM_A(Ae, Ae) ≅ eAe`; `Ae` over `(eAe, d_e)` when `d e ∈ Ae` | dg-lean `Module.CornerEnd` (`LeftDGIdempotent`, `endLeftCornerEquiv`) | formalized |
+| (2.10) | `Hom_{H(A)}(M, N) = H⁰(HOM_A(M, N))` | dg-lean `Homotopy.HomotopyCategory` | formalized |
+| Proposition 2.3 | existence and uniqueness of cofibrant (K-projective) replacements | dg-lean `Category.Resolution` (`exists_kProjective_resolution`, `SemiFreeResolution.dgHomotopyEquiv`) | formalized |
+| (2.11), (2.12) | morphisms in `D(A)` through a resolution; `RHOM` | dg-lean `Derived.ConnectedK0` (`homShiftAddEquivOfIsKProjective`), `Category.Derived.Tensor` (`rhom`) | formalized |
+| Example 2.4 | finite-cell modules are compact | dg-lean `Category.Derived.FiniteCell` | formalized |
+| Theorem 2.5 | Schnürer: compact iff finite-cell, for positive dg algebras | dg-lean `Positive.Schnurer` (`IsPositive.isCompact_iff`) | formalized (no field hypothesis) |
+| Corollary 2.6 | `K₀(A) ≅ K₀(A⁰)` for positive `A` | dg-lean `Positive.K0Basis`, `HalfGraded.Positive` (`IsPositive.K0DegreeZeroEquiv`) | formalized |
+| (2.13)–(2.16) | derived tensor and hom functors, their adjunction, induction and restriction | dg-lean `Category.Derived.Tensor`, `Category.Derived.DGBimodule`, `Category.Derived.TensorInduction` | formalized |
+| Theorem 2.7 | a quasi-isomorphism of dg algebras induces an equivalence of derived categories | dg-lean `Category.Derived.Keller` (`DGRingHom.derivedEquivalence`) | formalized |
+| Corollary 2.8 | `D(A) ≃ 0` iff `H(A) = 0` iff `d x = 1` for some `x` | dg-lean `Derived.Zero` (`DerivedCategory.tfae_isZero`) | formalized |
+| (2.17) | `K₀(D(k)) ≅ ℤ[√−1]` | `Frontier.EQHalfGradedField` (fields), `Frontier.EQThm318Int` (`superK0OPolIntEquiv` with `OPol_0 = ℤ`) | formalized over every field and over `ℤ` |
+| Remark 2.9 | homotopy versus derived category over `ℤ` | — | remark |
+| Examples 2.10–2.12 | `k[S_n]`, `OPol_n`, KLR algebras as diagrammatic algebras | — | illustrations of the definition; not separate targets |
+| Example 2.13, (2.18), (2.19) | the local differential on `OPol_n`; the twist `θ` | `Frontier.EQSkewDifferential` (`d`, `d_mul`, `d_d`, `theta`) | formalized |
+| Remarks 2.14, 2.15 | EKL's odd elementary polynomials; `OΛ̃_n` is not `d`-stable | `Frontier.EQFixW0` (`theta_elementary`) | remarks (2.14 used and formalized) |
+| (2.20)–(2.22) | `w₀` on odd elementary polynomials; `θ ∘ w₀` versus `w₀ ∘ θ` | `Frontier.EQFixW0`, `Frontier.EQSchurDifferential` (`theta_longestPerm`) | formalized |
+| (2.23), (2.24), Proposition 2.16, (2.25)–(2.31) | odd divided differences, `OΛ̃_n` as joint kernel and image, the relations of `ONH_n`, faithfulness ([EKL]) | `Frontier.LongestKernel`, `Frontier.LongestElementary`, `Frontier.NilHeckeBasis`, `Frontier.NilHeckeEndomorphism` | formalized (the [EKL] part) |
+| (2.32)–(2.39) | diagrammatic relations of `ONH_n`; the words `∂_w`, `∂_{w₀}` | `Diagrams.OddNilHecke`, `Frontier.ZeroHecke`, `Frontier.LongestDivided` | formalized (definitions and comparison with `Presented n`) |
+| Lemma 2.17, (2.40) | `x^δ`, `∂_{w₀}(x^δ)`, `∂_{w₀} f ∂_{w₀}`, the idempotent `e_n`, PBW bases | `Frontier.EQZnBimodule` (`staircase_mul`), `Frontier.LongestDivided` (`D_staircase`), `Frontier.OnhPolynomial` (`DElem_poly_DElem`), `Frontier.EQThickBlocks` (`eqIdempotent_mul_self`), `Frontier.NilHeckeBasis`, `Frontier.NilHeckeRightBasis` | formalized |
+| Lemma 2.18, (2.41) | `e_n f = (θ ∘ w₀)(f) e_n` | `Frontier.EQZnBimodule` (`eqIdempotent_mul_polyElem`) | formalized (the identity cited in the proof needs a sign, [EQ] 6) |
+| (3.1)–(3.3), Proposition 3.1 | `OPol_n(α)` is a left (right) dg module iff `α ∈ {0,1}ⁿ` | `Frontier.EQSkewDifferential` (`prop_3_1_left`, `prop_3_1_right`) | formalized |
+| Lemma 3.2, (3.4), (3.5) | `d(e_k) = e_1 e_k − {k+1} e_{k+1}`; `d` preserves `OΛ_n` | `Frontier.EQSkewDifferential` (`d_elementary`, `d_mem_osym`) | formalized |
+| (3.6)–(3.11), Proposition 3.3 | locality of the induced differential | `Frontier.EQFixProp33` (`prop_3_3`, `prop_3_3_iff`), `Diagrams.OddNilHecke.DifferentialAnsatz` | formalized (as printed, and an intrinsic variant) |
+| (3.12) | display in the proof of Proposition 3.3 | — | proof step |
+| Lemma 3.4, (3.13)–(3.15) | `d(∂_{w₀})` | `Diagrams.OddNilHecke.DifferentialLongest`, `…DifferentialLongestComparison` | formalized |
+| Lemma 3.5, (3.16), (3.17) | `d(e_n)`, `d(x^δ)` | `Diagrams.OddNilHecke.DifferentialLongest`, `…DifferentialLongestComparison` | formalized |
+| Corollary 3.6 | `ONH_n e_n ≅ OPol_n(0,1,0,1,…)` | `Frontier.EQZnAction` (`corollary_3_6`) | formalized |
+| Proposition 3.7 | `OPol_n e_n` is a dg `(OPol_n, OΛ_n)`-bimodule | `Frontier.EQZnBimodule` (`proposition_3_7`), `Frontier.EQSkewDifferential` (`dAlpha_mul_twistRev`) | formalized |
+| Definition 3.8, (3.18)–(3.20) | the bimodule `Z_n` | `Frontier.EQDGStructures`, `Frontier.EQOnhDGZn` | formalized |
+| Corollary 3.9, (3.21)–(3.23) | `ONH_n ≅ END_{OΛ_n^op}(Z_n)` as dg algebras | `Frontier.EQZnAction` (`corollary_3_9`), `Frontier.EQOnhDGEndIso` (`ONH.toENDZnEquiv`) | formalized |
+| (3.24)–(3.27), Remark 3.10 | untwisted and twisted odd Schur polynomials; comparison with EKL | `Frontier.EQSchurDifferential` | formalized |
+| (3.28) | the SZ relations | `Frontier.EQSchurDifferential` (`sz_relation_left`, `sz_relation_right`) | formalized |
+| Proposition 3.11, (3.29)–(3.31) | `d(s_λ)` | `Frontier.EQSchurDifferential` (`prop_3_11`) | formalized |
+| (3.32), Lemma 3.12, (3.33), (3.34) | odd partial derivatives; `d = Σ x_i² ∂/∂x_i` | `Frontier.EQOddDerivatives` | formalized |
+| Remark 3.13 | (3.34) on `OPol_n(α)` iff `α = 0` | `Frontier.EQOddDerivatives` (`dAlpha_eq_sum_iff`) | formalized |
+| (3.35), Lemma 3.14, (3.36) | `h_β d + d h_β = ⟨α, β⟩` | `Frontier.EQOddDerivatives` (`lemma_3_14`) | formalized |
+| Corollary 3.15 | null-homotopy of the identity of `OPol_n(α)` | `Frontier.EQOddDerivatives` (`cor_3_15`), `Frontier.EQFixNullHomotopy` | formalized for the underlying complex; false for null-homotopies of dg modules ([EQ] 4) |
+| (3.37), (3.38) | `d(x^a 1_z)`; `Z_n ≅ U_n ⊗ OΛ_n` | `Frontier.EQZnFiniteCell` (`dAlpha_zAlpha_monomial`, `eq_3_38`) | formalized (corrected basis range, [EQ] 3) |
+| Proposition 3.16 | `Z_n` finite-cell over `OΛ_n`; `Z_n`, `ONH_n` acyclic for `n ≥ 2` | `Frontier.EQZnFiniteCell`, `Frontier.EQFixZnCells`, `Frontier.EQOnhDGAcyclic` | formalized |
+| Proposition 3.17 | `Z_n` cofibrant over `ONH_n` iff not acyclic iff `n ≤ 1` | `Frontier.EQCofibZn` (`prop_3_17`), `Frontier.EQZnFiniteCell` | formalized |
+| (3.39)–(3.43) | `ι_{m,n}`, `Ind`, `Res` | `Frontier.EQOPolTensor`, `Frontier.EQOnhTensor`, `Frontier.EQLiftAll` (`iotaAll`), `Frontier.EQThm318` | formalized (definitions) |
+| (3.44) | the Künneth isomorphism | `Frontier.EQThm318` (`kunneth`), `Frontier.EQKunnethIntAll` (`kunnethIntAll`) | formalized over every field and over `ℤ` |
+| Theorem 3.18 | `u⁺ ≅ K₀(ONH)` as `√−1`-bialgebras | `Frontier.EQThm318`, `Frontier.EQThm318Int` | formalized over every field and over `ℤ`, as the structure constants of `u⁺` on the bases `{1, E}` |
+| Remark 4.1 | conventions for thick calculus | `Frontier.EQThickRelations` (`remark_4_1`) | formalized |
+| (4.1)–(4.5) | `∂_{w_{a,b}}`, splitters, exploders and the associated functors | `Frontier.EQThickSplitters`, `Frontier.EQThickRelations`, `Frontier.EQThickSlider` | definitions (misprint in the word for `w_{a,b}`, [EQ] 5); the relations displayed after them are formalized, three corrected ([EQ] 6, 7, 8) |
+| Proposition 4.2, (4.6), (4.7) | differentials of splitters and mergers | `Frontier.EQThickSplitters` (`prop_4_2_splitter`, `prop_4_2_merger`) | formalized, with the differential of Lemma 2.2 ([EQ] 9) |
+| Corollary 4.3, (4.8) | differentials of exploders | `Frontier.EQThickSplitters` (`cor_4_3_split`, `cor_4_3_merge`) | formalized ([EQ] 9) |
+| (4.9), Lemma 4.4, (4.10)–(4.12) | `OH_{a,b} ≅ (OΛ_a ⊠ OΛ_b)/M` | `Frontier.EQBorelPresentation` (`lemma_4_4`) | formalized (corrected: `w₀`-semilinear, [EQ] 20) |
+| (4.13)–(4.17), Lemma 4.5 | the four variants of odd Schur polynomials | `Frontier.EQZabHat` | formalized (corrected signs, [EQ] 10) |
+| (4.18)–(4.20) | hat SZ relation, hat Pieri rule, `d(ŝ_λ)` | `Frontier.EQZabHatFormulas` | formalized ((4.19), (4.20) corrected, [EQ] 17, 18) |
+| (4.21), (4.22) | dual bases and their pairing | `Frontier.EQZabCell`, `Frontier.EQZabTrace` (`pairing`) | formalized |
+| Definition 4.6 | the dg bimodule `Z_{a,b}` | `Frontier.EQZabModule`, `Frontier.EQFunctorDual` | formalized (left action of `OΛ_a ⊗ OΛ_b` not printed; [EQ] 23) |
+| Lemma 4.7, (4.23) | `d` on the basis of `Z_{a,b}`; Pieri rule | `Frontier.EQZabSchur` (`lemma_4_7_box_twisted`, `pieri_twisted`) | formalized |
+| Corollary 4.8 | `d`-stable basis; `Z_{a,b}` finite-cell over `OΛ_{a+b}` | `Frontier.EQZabCell`, `Frontier.EQZabFiltration`, `Frontier.EQFixZabCells` | formalized |
+| (4.24), (4.25) | the trace `z^∨` and `Z^∨_{a,b}` | `Frontier.EQZabTrace`, `Frontier.EQFunctorDual` (`ZDual`) | definitions (`z^∨` is only `w₀`-semilinear, [EQ] 19) |
+| Definition 4.9, (4.26) | `Z^∨_{a,b} ≅ z^∨ · (OΛ_a ⊗ OΛ_b)`, `d(z^∨)` | `Frontier.EQZabTrace` | **partial**: the formula for `d(z^∨)` is used (as the reading of Cor 4.10); that `Z^∨_{a,b}` is free of rank one over `OΛ_a ⊗ OΛ_b` on `z^∨` is not formalized |
+| Corollary 4.10 | compatibility of `z^∨` with the dg bimodule structure | `Frontier.EQZabTrace` (`cor_4_10`) | formalized ([EQ] 19) |
+| Corollary 4.11 | `Z^∨_{a,b}` cofibrant of graded rank `[a+b, a]_q` | `Frontier.EQZabDual` (`cor_4_11`), `Frontier.EQFunctorDual` | formalized |
+| Proposition 4.12 | `REND = END` for `Z_{a,b}`, `Z^∨_{a,b}`; `E_{a,b} ≅ END(Z_{a,b}) ≅ END(Z^∨_{a,b})` | `Frontier.EQZabREnd`, `Frontier.EQZabEndRankOne` | **partial**: (1) formalized; (2) `END(Z_{a,b})` is the algebra spanned by the trace-pairing maps (`prop_4_12_two`); `END(Z_{a,b}) ≅ END(Z^∨_{a,b})` is not formalized |
+| (4.27), Proposition 4.13 | `Z_a` for compositions: basis, `d`-stability, `HOM(Z_a, Z_b)` | `Frontier.EQZabBlocks`, `…BlocksDiff`, `…BlocksHom`, `…BlocksRank` | formalized ((1) and the graded rank in (3) corrected, [EQ] 11, 21) |
+| Definition 4.14 | the multiplication functor | `Frontier.EQFunctorDerived` (`mult`), `Frontier.EQFunctorBox`, `Frontier.EQK0Mult` (`multKHalf`) | formalized |
+| Definition 4.15 | `Z^♮_{a,b}` and the comultiplication functor | `Frontier.EQFunctorDerived` (`comult`), `Frontier.EQRestrictionFunctor` (`ZNat`) | formalized (right action not printed and forced, [EQ] 24; misprint [EQ] 25) |
+| Lemma 4.16 | `K₀(D(OΛ ⊗ OΛ)) ≅ K₀(OΛ) ⊗ K₀(OΛ)` | `Frontier.EQK0Field` (`lemma_4_16`), `Frontier.EQThm417Int` (`lemma_4_16_int`) | formalized over every field and over `ℤ` |
+| Theorem 4.17 | `K₀(D(OΛ)) ≅ U⁺` as twisted bialgebras | `Frontier.EQThm417`, `Frontier.EQThm417Int`, `Frontier.EQK0Assembly` | formalized over every field and over `ℤ` (twist `−1`, [EQ] 1; footnote 5, [EQ] 22) |
+| (4.28), (4.29) | module and homotopy categories of `ONH`, `OΛ` as direct sums | — | notation (all statements are componentwise) |
+| Definition 4.18 | the functors `J^A`, `J^H`, `J` | `Frontier.EQFunctorEmbedding*`, `Frontier.EQLiftDerived` (`JDAll`) | formalized |
+| Corollary 4.19 | `J` fully faithful; on `K₀` it categorifies `u⁺ ⊂ U⁺` | `Frontier.EQFunctorEmbedding` (`jFullyFaithful`), `Frontier.EQFunctorEmbeddingSmall` (`jSmall_isEquivalence`) | **partial**: full faithfulness formalized in every rank; the Grothendieck-group statement is not formalized |
+| (4.30), (4.31) | the Morita equivalences `J^A_n`, `J^H_n` | `Frontier.EQFunctorEmbeddingAbelian`, `Frontier.EQZnMorita` | formalized |
+| (4.32) | the bimodule `ONH^♮_{a+b}` | `Frontier.EQOnhNat` (`ONHNat`, `d_Pw`), `Frontier.EQRestrictionPoly` | corrected ([EQ] 24) |
+| Definition 4.20 | `Res^♮ = ONH^♮ ⊗^L (−)` | `Frontier.EQRestrictionDerived`, `Frontier.EQLiftSmallDerived` (`ResNatDAllAny`) | formalized |
+| Corollary 4.21 | `J` intertwines `I` with `Ind` and `R` with `Res^♮` | `Frontier.EQInductionFunctor`, `Frontier.EQRestrictionFunctor`, `Frontier.EQLift*` | formalized in all ranks on abelian, homotopy and derived categories ([EQ] 23, 24) |
+| Lemma A.1 | adding or removing boxes of one colour | `Frontier.EQLimaPartitions` (`lemma_A_1`) | formalized |
+| Proposition A.2 | Lima bases of `H(OΛ)`, `H(OΛ_n)` | `Frontier.EQLimaCohomology`, `Frontier.EQLimaOsym`, `Frontier.EQLimaAllRanks`, `Frontier.EQLimaLimit` | formalized |
+| Proposition A.3, (A.1) | `H(OΛ)` is a polynomial algebra | `Frontier.EQLimaPolyAlg` (`prop_A_3_columns`, `prop_A_3_rows`, `tri_mul`) | formalized (two claims of the proof refuted, [EQ] 12) |
+| (A.2), (A.3), (A.4) | `p`-dg setting; slash cohomology | `Frontier.EQPdgSlash` | (A.2), (A.3) definitions ((A.3) misprint, [EQ] 15); (A.4) formalized |
+| (A.5)–(A.7) | `d(e_k)`, `d(h_k)`, `d(s_λ)` in the `p`-dg setting | `Frontier.EQPdgPoly`, `Frontier.EQPdgAlt`, `Frontier.EQPdgLimit` | formalized ((A.5), (A.6) corrected, [EQ] 16) |
+| Theorem A.4 | slash cohomology of `Sym_n` and `Sym` | `Frontier.EQPdgTheorem`, `Frontier.EQPdgTheorem2`, `Frontier.EQPdgLimitTheorem` | formalized |
+
+Not formalized: the Grothendieck-group statement of Corollary 4.19, the second isomorphism of Proposition 4.12 (2),
+and the freeness claim of Definition 4.9. Corollaries 4.19 and 4.21 and Definitions 4.18 and 4.20 are formalized for
+the `ℤ`-graded dg modules of the scope note above, not for all half-graded modules.
 
 ## Building
 
