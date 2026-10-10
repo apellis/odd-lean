@@ -536,6 +536,8 @@ import OddMath.SKM.MateBlock
 import OddMath.SKM.MateN
 import OddMath.SKM.Mates
 import OddMath.SKM.Placement
+import OddMath.SKM.PlacementHom
+import OddMath.SKM.PitchforkCap
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
