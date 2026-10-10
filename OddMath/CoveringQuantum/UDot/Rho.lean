@@ -21,7 +21,7 @@ satisfy `c_{N-r} = (-1)^N πᵢ^{N|j| + N(N-1)/2} c_r` (`serreCoeff_reflect`).
 
 ## Main definitions
 
-* `UDot.rho`: `ρ`, as a ring homomorphism `U̇ →+* U̇ᵐᵒᵖ`; `UDot.star`, `UDot.shriek`: `∗`, `!`.
+* `UDot.rho`: `ρ`, as an algebra homomorphism `U̇ →ₐ[k] U̇ᵐᵒᵖ`; `UDot.star`, `UDot.shriek`: `∗`, `!`.
 
 ## Main results
 
@@ -234,10 +234,12 @@ theorem rhoU_rel {x y : Free k I X} (hπ : π ^ 2 = 1) (h : Rel D q π x y) :
   | one_E i μ => rw [rhoU_mul, rhoU_E, rhoU_one, smul_mul_assoc, F_mul_one_self]
   | E_one i μ =>
     rw [rhoU_mul, rhoU_E, rhoU_one, mul_smul_comm, one_mul_F,
-      if_pos (add_sub_cancel_right μ (D.α i)).symm]
+      add_sub_cancel_right]
+    simp only [ite_true, eq_self]
   | one_F i μ => rw [rhoU_mul, rhoU_F, rhoU_one, smul_mul_assoc, E_mul_one_self]
   | F_one i μ =>
-    rw [rhoU_mul, rhoU_F, rhoU_one, mul_smul_comm, one_mul_E, if_pos (sub_add_cancel μ (D.α i)).symm]
+    rw [rhoU_mul, rhoU_F, rhoU_one, mul_smul_comm, one_mul_E, sub_add_cancel]
+    simp only [ite_true, eq_self]
   | comm i j μ =>
     obtain ⟨μ', hμ'⟩ : ∃ μ', μ' = μ + D.α i - D.α j := ⟨_, rfl⟩
     have w1 : μ - D.α j = μ' - D.α i := by rw [hμ']; abel
@@ -247,8 +249,13 @@ theorem rhoU_rel {x y : Free k I X} (hπ : π ^ 2 = 1) (h : Rel D q π x y) :
       w2, ← hμ', w3, w1, smul_mul_smul_comm, smul_mul_smul_comm, qp_mul, qp_mul]
     have hK : -(D.d i * (D.h i μ + 1)) + D.d j * (D.h j μ + D.a j i - 1) =
         D.d j * (D.h j μ - 1) + -(D.d i * (D.h i μ - D.a i j + 1)) := by
-      linear_combination D.d_mul_symm i j
-    rw [hK, smul_comm (π ^ _) (qp q _), ← smul_sub, mul_comm (D.parity i), comm_rel]
+      linear_combination -D.d_mul_symm i j
+    rw [hK]
+    rw [smul_comm (π ^ (D.parity i * D.parity j).val) (qp q _)]
+    rw [← smul_sub (qp q (D.d j * (D.h j μ - 1) + -(D.d i * (D.h i μ - D.a i j + 1))))
+      (E D q π j (μ' - D.α i) * F D q π i μ')
+      (π ^ (D.parity i * D.parity j).val • (F D q π i (μ' + D.α j) * E D q π j μ'))]
+    rw [mul_comm (D.parity i), comm_rel]
     split_ifs with h₁ h₂ h₂
     · subst h₁
       rw [hμ', add_sub_cancel_right, rhoU_smul, rhoU_one, qp_eq_one, one_smul]
@@ -271,18 +278,23 @@ theorem rhoU_rel {x y : Free k I X} (hπ : π ^ 2 = 1) (h : Rel D q π x y) :
       have e1 : N - r = m := by omega
       have e2 : N - m = r := by omega
       obtain ⟨w1, w2, w3⟩ := weight_aux μ (D.α i) (D.α j) r m
-      simp only [fw, ν, e1, e2, hm] at *
+      simp only [fw, e1, e2]
+      dsimp only [ν]
+      rw [hm]
       rw [rhoU_smul, rhoU_mul, rhoU_mul, rhoU_epow, rhoU_E, rhoU_epow, w1, w2, w3, map_mul, map_mul,
         smul_mul_smul_comm, smul_mul_smul_comm, qp_mul, qp_mul, smul_smul, ← mul_assoc]
+      rw [mul_comm (D.serreCoeff q π i j r)]
       congr 3
+      dsimp only [K]
+      rw [hm]
       rw [h_add_nsmul, h_add_α, h_add_nsmul, D.isGCM.diag]
       push_cast
-      linear_combination (-(r : ℤ)) * D.d_mul_symm i j
+      linear_combination (r : ℤ) * D.d_mul_symm i j
     rw [sum_congr rfl key]
-    have refl := sum_range_reflect (fun s ↦ (qp q K * D.serreCoeff q π i j (N - s)) •
+    have hreflect := sum_range_reflect (fun s ↦ (qp q K * D.serreCoeff q π i j (N - s)) •
       mk D q π (fw s)) (N + 1)
-    simp only [Nat.add_sub_cancel] at refl
-    rw [refl]
+    simp only [Nat.add_sub_cancel] at hreflect
+    rw [hreflect]
     have key2 : ∀ s ∈ range (N + 1), (qp q K * D.serreCoeff q π i j (N - s)) • mk D q π (fw s) =
         (qp q K * ((-1) ^ N * D.pii π i ^ (N * (D.parity j).val + N.choose 2))) •
           mk D q π (D.serreCoeff q π i j s • fw s) := by
@@ -307,18 +319,23 @@ theorem rhoU_rel {x y : Free k I X} (hπ : π ^ 2 = 1) (h : Rel D q π x y) :
       have e1 : N - r = m := by omega
       have e2 : N - m = r := by omega
       obtain ⟨w1, w2, w3⟩ := weight_aux' μ (D.α i) (D.α j) r m
-      simp only [ew, ν, e1, e2, hm] at *
+      simp only [ew, e1, e2]
+      dsimp only [ν]
+      rw [hm]
       rw [rhoU_smul, rhoU_mul, rhoU_mul, rhoU_fpow, rhoU_F, rhoU_fpow, w1, w2, w3, map_mul, map_mul,
         smul_mul_smul_comm, smul_mul_smul_comm, qp_mul, qp_mul, smul_smul, ← mul_assoc]
+      rw [mul_comm (D.serreCoeff q π i j r)]
       congr 3
+      dsimp only [K]
+      rw [hm]
       rw [h_sub_nsmul, h_sub_α, h_sub_nsmul, D.isGCM.diag]
       push_cast
       linear_combination (r : ℤ) * D.d_mul_symm i j
     rw [sum_congr rfl key]
-    have refl := sum_range_reflect (fun s ↦ (qp q K * D.serreCoeff q π i j (N - s)) •
+    have hreflect := sum_range_reflect (fun s ↦ (qp q K * D.serreCoeff q π i j (N - s)) •
       mk D q π (ew s)) (N + 1)
-    simp only [Nat.add_sub_cancel] at refl
-    rw [refl]
+    simp only [Nat.add_sub_cancel] at hreflect
+    rw [hreflect]
     have key2 : ∀ s ∈ range (N + 1), (qp q K * D.serreCoeff q π i j (N - s)) • mk D q π (ew s) =
         (qp q K * ((-1) ^ N * D.pii π i ^ (N * (D.parity j).val + N.choose 2))) •
           mk D q π (D.serreCoeff q π i j s • ew s) := by
@@ -328,6 +345,132 @@ theorem rhoU_rel {x y : Free k I X} (hπ : π ^ 2 = 1) (h : Rel D q π x y) :
     rw [sum_congr rfl key2, ← smul_sum, ← map_sum]
     have : ∑ s ∈ range (N + 1), D.serreCoeff q π i j s • ew s = serreE D q π i j ν := rfl
     rw [this, serreE_rel D q π h, smul_zero]
+
+variable (D q π)
+
+/-- The linear antiautomorphism (9.8), with codomain the opposite algebra. -/
+def rho (hπ : π ^ 2 = 1) : CoveringUDot k D q π →ₐ[k] (CoveringUDot k D q π)ᵐᵒᵖ :=
+  RingQuot.liftAlgHom k ⟨rhoFree D q π, fun _ _ h ↦
+    MulOpposite.unop_injective (rhoU_rel hπ h)⟩
+
+variable {D q π}
+
+@[simp] theorem rho_mk (hπ : π ^ 2 = 1) (x : Free k I X) :
+    (rho D q π hπ (mk D q π x)).unop = rhoU D q π x := by
+  simp only [rho, mk, RingQuot.liftAlgHom_mkAlgHom_apply, rhoU]
+
+@[simp] theorem rho_one (hπ : π ^ 2 = 1) (μ : X) :
+    (rho D q π hπ (one D q π μ)).unop = one D q π μ := by
+  rw [one, rho_mk, rhoU_one]; rfl
+
+@[simp] theorem rho_E (hπ : π ^ 2 = 1) (i : I) (μ : X) :
+    (rho D q π hπ (E D q π i μ)).unop =
+      qp q (-(D.d i * (D.h i μ + 1))) • F D q π i (μ + D.α i) := by
+  rw [E, rho_mk, rhoU_E]
+
+@[simp] theorem rho_F (hπ : π ^ 2 = 1) (i : I) (μ : X) :
+    (rho D q π hπ (F D q π i μ)).unop =
+      qp q (D.d i * (D.h i μ - 1)) • E D q π i (μ - D.α i) := by
+  rw [F, rho_mk, rhoU_F]
+
+theorem rho_smul (hπ : π ^ 2 = 1) (c : k) (x : CoveringUDot k D q π) :
+    (rho D q π hπ (c • x)).unop = c • (rho D q π hπ x).unop := by simp
+
+theorem rho_mul (hπ : π ^ 2 = 1) (x y : CoveringUDot k D q π) :
+    (rho D q π hπ (x * y)).unop = (rho D q π hπ y).unop * (rho D q π hπ x).unop := by simp
+
+/-- The antiautomorphism `ρ` is involutive. -/
+theorem rho_rho (hπ : π ^ 2 = 1) (x : CoveringUDot k D q π) :
+    (rho D q π hπ (rho D q π hπ x).unop).unop = x := by
+  obtain ⟨y, rfl⟩ := mk_surjective D q π x
+  induction y using FreeAlgebra.induction with
+  | grade0 c => simp only [AlgHom.commutes, MulOpposite.algebraMap_apply, MulOpposite.unop_op]
+  | grade1 g =>
+    cases g with
+    | one μ => rw [← Free.one, ← one, rho_one, rho_one]
+    | e i μ =>
+      rw [← Free.E, ← E, rho_E, rho_smul, rho_F, add_sub_cancel_right, smul_smul,
+        qp_mul, h_add_α, D.isGCM.diag, qp_eq_one, one_smul]
+      ring
+    | f i μ =>
+      rw [← Free.F, ← F, rho_F, rho_smul, rho_E, sub_add_cancel, smul_smul,
+        qp_mul, h_sub_α, D.isGCM.diag, qp_eq_one, one_smul]
+      ring
+  | add a b ha hb => simpa only [map_add, MulOpposite.unop_add] using congrArg₂ (· + ·) ha hb
+  | mul a b ha hb => rw [map_mul, rho_mul, rho_mul, ha, hb]
+
+variable {σ : k →+* k}
+
+theorem BarData.map_qp (hσ : BarData q π σ) (z : ℤ) : σ (qp q z) = qp q (-z) := by
+  have hq : Units.map σ.toMonoidHom q = q⁻¹ := Units.ext hσ.map_q
+  change (↑(Units.map σ.toMonoidHom (q ^ z)) : k) = (↑(q ^ (-z)) : k)
+  rw [map_zpow, hq, inv_zpow, zpow_neg]
+
+variable (D q π σ)
+
+/-- The antilinear antiautomorphism `∗ = ρ ∘ ψ` of (9.9). -/
+def star (hσ : BarData q π σ) : CoveringUDot k D q π →+* (CoveringUDot k D q π)ᵐᵒᵖ :=
+  (rho D q π hσ.π_sq).toRingHom.comp (psi D q π σ hσ)
+
+/-- The antilinear antiautomorphism `! = ψ ∘ ρ` of (9.10). -/
+def shriek (hσ : BarData q π σ) : CoveringUDot k D q π →+* (CoveringUDot k D q π)ᵐᵒᵖ :=
+  (psi D q π σ hσ).op.comp (rho D q π hσ.π_sq).toRingHom
+
+variable {D q π σ}
+
+theorem star_apply (hσ : BarData q π σ) (x : CoveringUDot k D q π) :
+    (star D q π σ hσ x).unop = (rho D q π hσ.π_sq (psi D q π σ hσ x)).unop := rfl
+
+theorem shriek_apply (hσ : BarData q π σ) (x : CoveringUDot k D q π) :
+    (shriek D q π σ hσ x).unop = psi D q π σ hσ (rho D q π hσ.π_sq x).unop := rfl
+
+@[simp] theorem star_one (hσ : BarData q π σ) (μ : X) :
+    (star D q π σ hσ (one D q π μ)).unop = one D q π μ := by
+  rw [star_apply, psi_one, rho_one]
+
+@[simp] theorem shriek_one (hσ : BarData q π σ) (μ : X) :
+    (shriek D q π σ hσ (one D q π μ)).unop = one D q π μ := by
+  rw [shriek_apply, rho_one, psi_one]
+
+@[simp] theorem star_E (hσ : BarData q π σ) (i : I) (μ : X) :
+    (star D q π σ hσ (E D q π i μ)).unop =
+      qp q (-(D.d i * (D.h i μ + 1))) • F D q π i (μ + D.α i) := by
+  rw [star_apply, psi_E, rho_E]
+
+@[simp] theorem star_F (hσ : BarData q π σ) (i : I) (μ : X) :
+    (star D q π σ hσ (F D q π i μ)).unop =
+      (qp q (D.d i * (D.h i μ - 1)) * π ^ (D.parl i μ).val) • E D q π i (μ - D.α i) := by
+  rw [star_apply, psi_F, rho_smul, rho_F, smul_smul, mul_comm]
+
+@[simp] theorem shriek_E (hσ : BarData q π σ) (i : I) (μ : X) :
+    (shriek D q π σ hσ (E D q π i μ)).unop =
+      (π ^ (D.parl i μ).val * qp q (D.d i * (D.h i μ + 1))) • F D q π i (μ + D.α i) := by
+  rw [shriek_apply, rho_E, psi_smul, psi_F, hσ.map_qp, neg_neg, D.parl_add_α, smul_smul, mul_comm]
+
+@[simp] theorem shriek_F (hσ : BarData q π σ) (i : I) (μ : X) :
+    (shriek D q π σ hσ (F D q π i μ)).unop =
+      qp q (D.d i * (1 - D.h i μ)) • E D q π i (μ - D.α i) := by
+  rw [shriek_apply, rho_F, psi_smul, psi_E, hσ.map_qp]
+  congr 2
+  ring
+
+theorem star_smul (hσ : BarData q π σ) (c : k) (x : CoveringUDot k D q π) :
+    (star D q π σ hσ (c • x)).unop = σ c • (star D q π σ hσ x).unop := by
+  rw [star_apply, psi_smul, rho_smul, star_apply]
+
+theorem shriek_smul (hσ : BarData q π σ) (c : k) (x : CoveringUDot k D q π) :
+    (shriek D q π σ hσ (c • x)).unop = σ c • (shriek D q π σ hσ x).unop := by
+  rw [shriek_apply, rho_smul, psi_smul, shriek_apply]
+
+/-- `∗` and `!` are mutually inverse when the scalar bar is involutive. -/
+theorem star_shriek (hσ : BarData q π σ) (hσσ : ∀ c, σ (σ c) = c) (x : CoveringUDot k D q π) :
+    (star D q π σ hσ (shriek D q π σ hσ x).unop).unop = x := by
+  rw [star_apply, shriek_apply, psi_psi hσ hσσ, rho_rho]
+
+/-- `!` and `∗` are mutually inverse when the scalar bar is involutive. -/
+theorem shriek_star (hσ : BarData q π σ) (hσσ : ∀ c, σ (σ c) = c) (x : CoveringUDot k D q π) :
+    (shriek D q π σ hσ (star D q π σ hσ x).unop).unop = x := by
+  rw [shriek_apply, star_apply, rho_rho, psi_psi hσ hσσ]
 
 end UDot
 
