@@ -497,6 +497,9 @@ import OddMath.SKM.Basic
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
 import OddMath.SKM.Calculus
+import OddMath.SKM.Chevalley
+import OddMath.SKM.ChevalleyBase
+import OddMath.SKM.ChevalleyRel
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.Grading

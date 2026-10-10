@@ -528,4 +528,210 @@ theorem omega_invM₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < -D.h i ν) :
     (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul,
     cl_invP₄ Sc i (-ν) n (by rw [coroot_neg]; omega), smul_zero]
 
+theorem omega_invP₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < D.h i ν) (hn : (n : ℤ) < D.h i ν) :
+    omegaLin Sc ν [] [] (relation D Sc (.invP₅ i ν m n hm hn)) = 0 := by
+  have hm' : (m : ℤ) < -D.h i (-ν) := by rw [coroot_neg, neg_neg]; exact hm
+  have hn' : (n : ℤ) < -D.h i (-ν) := by rw [coroot_neg, neg_neg]; exact hn
+  simp only [relation]
+  split_ifs with hmn
+  · subst hmn
+    rw [map_sub, omegaLin_dg]
+    erw [omegaLin_idg]
+    simp only [omegaL_append, omegaC_append, omegaL_epsL, omegaL_dcupL, omegaC_epsL,
+      omegaC_dcupL, parsum_epsL, parsum_dcupL, flipW_nil]
+    rw [cl_append_congr (dcapL i m) (sChain_cupDots i m) (sChain_etaL i m) (sChain_dcapL i m) _
+      (cl_cupDots Sc (-ν) i m), cl_invM₅ Sc i (-ν) m m hm' hm', ite_eq_left rfl, smul_smul]
+    generalize D.parity i = a; generalize ((m / 2 : ℕ) : ZMod 2) = b; generalize (m : ZMod 2) = c
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+  · rw [map_sub, map_zero, sub_zero, omegaLin_dg]
+    simp only [omegaL_append, omegaL_epsL, omegaL_dcupL, flipW_nil]
+    rw [cl_append_congr (dcapL i n) (sChain_cupDots i m) (sChain_etaL i m) (sChain_dcapL i n) _
+      (cl_cupDots Sc (-ν) i m), cl_invM₅ Sc i (-ν) m n hm' hn', ite_eq_right hmn, smul_zero, smul_zero]
+
+theorem omega_invM₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < -D.h i ν)
+    (hn : (n : ℤ) < -D.h i ν) :
+    omegaLin Sc ν [] [] (relation D Sc (.invM₅ i ν m n hm hn)) = 0 := by
+  have hm' : (m : ℤ) < D.h i (-ν) := by rw [coroot_neg]; exact hm
+  have hn' : (n : ℤ) < D.h i (-ν) := by rw [coroot_neg]; exact hn
+  simp only [relation]
+  split_ifs with hmn
+  · subst hmn
+    rw [map_sub, omegaLin_dg]
+    erw [omegaLin_idg]
+    simp only [omegaL_append, omegaC_append, omegaL_etaL, omegaL_dcapL, omegaC_etaL,
+      omegaC_dcapL, parsum_etaL, parsum_dcapL, flipW_nil]
+    rw [cl_prefix_congr (dcupL i m) (sChain_dcupL i m) (sChain_dotsCap i m) (sChain_epsL i m) _
+      (cl_dotsCap Sc (-ν) i m), cl_invP₅ Sc i (-ν) m m hm' hm', ite_eq_left rfl, smul_smul]
+    generalize D.parity i = a; generalize ((m / 2 : ℕ) : ZMod 2) = b; generalize (m : ZMod 2) = c
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+  · rw [map_sub, map_zero, sub_zero, omegaLin_dg]
+    simp only [omegaL_append, omegaL_etaL, omegaL_dcapL, flipW_nil]
+    rw [cl_prefix_congr (dcupL i n) (sChain_dcupL i n) (sChain_dotsCap i m) (sChain_epsL i m) _
+      (cl_dotsCap Sc (-ν) i m), cl_invP₅ Sc i (-ν) m n hm' hn', ite_eq_right hmn, smul_zero, smul_zero]
+
+theorem omega_invP₁ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
+    omegaLin Sc ν [up i, dn i] [up i, dn i] (relation D Sc (.invP₁ i ν hh)) = 0 := by
+  simp only [relation, map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaL_sigmaL, omegaL_lcrossL, omegaL_epsL, omegaL_dcupL, flipW_cons,
+    flipW_nil, flipL_up, flipL_dn]
+  have hc1 : omegaC D k (sigmaL i i ++ lcrossL i i) = 1 := by
+    simp only [omegaC_append, omegaC_sigmaL, omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL]
+    generalize D.parity i = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+  have hterm : ∀ x : ℕ, omegaC D k (epsL i x ++ dcupL i x) •
+      cl D Sc (-ν) [dn i, up i] [dn i, up i]
+        (dcapL i x ++ (([], Shape.cup i, []) :: (ddotsL i x).map (whL [] [up i]))) =
+      cl D Sc (-ν) [dn i, up i] [dn i, up i] (dcapL i x ++ etaL i x) := by
+    intro x
+    rw [cl_prefix_congr (dcapL i x) (sChain_dcapL i x) (sChain_cupDots i x) (sChain_etaL i x) _
+      (cl_cupDots Sc (-ν) i x), smul_smul]
+    convert one_smul k _
+    simp only [omegaC_append, omegaC_epsL, omegaC_dcupL, parsum_epsL, parsum_dcupL]
+    generalize D.parity i = a; generalize ((x / 2 : ℕ) : ZMod 2) = b; generalize (x : ZMod 2) = c
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+  simp only [hterm, hc1, one_smul]
+  rw [cl_prefix_congr (lcrossL i i) (sChain_lcrossL i i) (sChain_omegaSigma i i)
+    (sChain_sigmaL i i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul]
+  have key := cl_invM₁ Sc i (-ν) (by rw [coroot_neg]; omega)
+  rw [coroot_neg, neg_neg] at key
+  rw [← key, sub_self]
+
+theorem omega_invM₁ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
+    omegaLin Sc ν [dn i, up i] [dn i, up i] (relation D Sc (.invM₁ i ν hh)) = 0 := by
+  simp only [relation, map_sub, map_add, map_neg, map_sum, omegaLin_dg]
+  erw [omegaLin_idg]
+  simp only [omegaL_append, omegaL_sigmaL, omegaL_lcrossL, omegaL_etaL, omegaL_dcapL, flipW_cons,
+    flipW_nil, flipL_up, flipL_dn]
+  have hc1 : omegaC D k (lcrossL i i ++ sigmaL i i) = 1 := by
+    simp only [omegaC_append, omegaC_sigmaL, omegaC_lcrossL, parsum_sigmaL, parsum_lcrossL]
+    generalize D.parity i = a
+    fin_cases a <;> simp (config := {decide := true}) [zsign]
+  have hterm : ∀ x : ℕ, omegaC D k (dcapL i x ++ etaL i x) •
+      cl D Sc (-ν) [up i, dn i] [up i, dn i]
+        (((ddotsL i x).map (whL [up i] []) ++ [([], Shape.cap i, [])]) ++ dcupL i x) =
+      cl D Sc (-ν) [up i, dn i] [up i, dn i] (epsL i x ++ dcupL i x) := by
+    intro x
+    rw [cl_append_congr (dcupL i x) (sChain_dotsCap i x) (sChain_epsL i x) (sChain_dcupL i x) _
+      (cl_dotsCap Sc (-ν) i x), smul_smul]
+    convert one_smul k _
+    simp only [omegaC_append, omegaC_etaL, omegaC_dcapL, parsum_etaL, parsum_dcapL]
+    generalize D.parity i = a; generalize ((x / 2 : ℕ) : ZMod 2) = b; generalize (x : ZMod 2) = c
+    fin_cases a <;> fin_cases b <;> fin_cases c <;> simp (config := {decide := true}) [zsign]
+  simp only [hterm, hc1, one_smul]
+  rw [cl_append_congr (lcrossL i i) (sChain_omegaSigma i i) (sChain_sigmaL i i)
+    (sChain_lcrossL i i) 1 (by rw [one_smul]; exact cl_omegaSigma Sc (-ν) i i), one_smul]
+  have key := cl_invP₁ Sc i (-ν) (by rw [coroot_neg]; omega)
+  rw [coroot_neg] at key
+  rw [← key, sub_self]
+
+/-! ## The Chevalley involution -/
+
+/-- The image of every defining relation of `𝔘(𝔤)` vanishes. -/
+theorem omega_relation (r : Rel D) :
+    (freeLift k (SOpMap.functor (chevMap D) (chevImg D Sc))).map ((pres D Sc).rel r) = 0 := by
+  apply eq_zero_of_omegaLin
+  cases r with
+  | quadEq i ν => exact omega_quadEq i ν
+  | quadZero i j ν hij hd => exact omega_quadZero i j ν hij hd
+  | quadNe i j ν hij hd => exact omega_quadNe i j ν hij hd
+  | slideL i j ν hij => exact omega_slideL i j ν hij
+  | slideLEq i ν => exact omega_slideLEq i ν
+  | slideR i j ν hij => exact omega_slideR i j ν hij
+  | slideREq i ν => exact omega_slideREq i ν
+  | braid i j k' ν h => exact omega_braid i j k' ν h
+  | braidEq i j ν hij => exact omega_braidEq i j ν hij
+  | zigE i ν => exact omega_zigE i ν
+  | zigF i ν => exact omega_zigF i ν
+  | invNe₁ i j ν hij => exact omega_invNe₁ i j ν hij
+  | invNe₂ i j ν hij => exact omega_invNe₂ i j ν hij
+  | invP₁ i ν hh => exact omega_invP₁ i ν hh
+  | invP₂ i ν hh => exact omega_invP₂ i ν hh
+  | invP₃ i ν m hm => exact omega_invP₃ i ν m hm
+  | invP₄ i ν n hn => exact omega_invP₄ i ν n hn
+  | invP₅ i ν m n hm hn => exact omega_invP₅ i ν m n hm hn
+  | invM₁ i ν hh => exact omega_invM₁ i ν hh
+  | invM₂ i ν hh => exact omega_invM₂ i ν hh
+  | invM₃ i ν m hm => exact omega_invM₃ i ν m hm
+  | invM₄ i ν n hn => exact omega_invM₄ i ν n hn
+  | invM₅ i ν m n hm hn => exact omega_invM₅ i ν m n hm hn
+  | dcupZero i ν n hn => exact omega_dcupZero i ν n hn
+  | dcapZero i ν n hn => exact omega_dcapZero i ν n hn
+
+variable (Sc) in
+/-- **Brundan–Ellis, Proposition 3.5: the Chevalley involution** `ω : 𝔘(𝔤) → 𝔘(𝔤)^{sop}`, the
+contravariant superfunctor given on objects by `λ ↦ -λ`, `Eᵢ ↦ Fᵢ`, `Fᵢ ↦ Eᵢ` and on the generating
+2-morphisms by the images `chevImg` (see `OddMath.SKM.Chevalley`). -/
+def omega : (pres D Sc).Presented ⥤ SOp k (pres D Sc).Presented :=
+  SOpMap.liftGen chevPar (chevMap D) (chevImg D Sc) (pres D Sc) chevImg_mem omega_relation
+
+instance : (omega Sc).Additive := by unfold omega; infer_instance
+
+instance : (omega Sc).Linear k := by unfold omega; infer_instance
+
+theorem omega_obj (μ : X) (t : List (Letter I)) :
+    (omega Sc).obj ((pres D Sc).obj (ob D μ t)) = ⟨(pres D Sc).obj (ob D (-μ) (flipW t))⟩ := by
+  unfold omega; rw [SOpMap.liftGen_obj, chevMap_obj]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- `ω` on normal-form diagrams: the images of the layers in reverse order, at the weight `-μ`. -/
+theorem omega_cl (μ : X) {s t : List (Letter I)} {L : List (LayerData I)} (h : SChain s L t) :
+    SOp.unsop ((omega Sc).map (cl D Sc μ s t L)) =
+      eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ t)) ≫
+        (omegaC D k L • cl D Sc (-μ) (flipW t) (flipW s) (omegaL L)) ≫
+          eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ s)).symm := by
+  unfold omega; rw [cl_of h, SOpMap.liftGen_diag, unsop_functor_mkD]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- `ω` on the generating 2-morphisms (Proposition 3.5 and the table that follows it). -/
+theorem omega_gen (μ : X) (g : Shape I) :
+    SOp.unsop ((omega Sc).map (cl D Sc μ g.dom g.cod [([], g, [])])) =
+      eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ g.cod)) ≫
+        (chevC D k g • cl D Sc (-μ) (flipW g.cod) (flipW g.dom) (chevL g)) ≫
+          eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ g.dom)).symm := by
+  rw [omega_cl μ (show SChain g.dom [([], g, [])] g.cod from ⟨by simp, by simp⟩)]
+  simp [zsign_zero]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- `ω` is a strict 2-superfunctor: it commutes with horizontal composition (whiskering). -/
+theorem omega_whisk {a b : Obj (sig D)} (f : (pres D Sc).obj a ⟶ (pres D Sc).obj b) {u : Obj (sig D)}
+    {v : List (sig D).Colour} (hw : a.WhiskerOK u v) :
+    SOp.unsop ((omega Sc).map ((pres D Sc).whisk f u v)) =
+      eqToHom (congrArg (pres D Sc).obj ((chevMap D).obj_whisker b u v)) ≫
+        (pres D Sc).whisk (SOp.unsop ((omega Sc).map f)) ((chevMap D).obj u) ((chevMap D).word v) ≫
+          eqToHom (congrArg (pres D Sc).obj ((chevMap D).obj_whisker a u v)).symm :=
+  SOpMap.liftGen_whisk chevPar chevImg_mem omega_relation f hw
+
+/-- `ω` preserves parities. -/
+theorem omega_mem {a b : Obj (sig D)} {x : (pres D Sc).obj a ⟶ (pres D Sc).obj b} {p : ZMod 2}
+    (hx : x ∈ parity (R := k) ((pres D Sc).obj a) ((pres D Sc).obj b) p) :
+    (omega Sc).map x ∈ parity (R := k) ((omega Sc).obj ((pres D Sc).obj a))
+      ((omega Sc).obj ((pres D Sc).obj b)) p :=
+  SOpMap.liftGen_mem chevPar chevImg_mem omega_relation hx
+
+set_option backward.isDefEq.respectTransparency false in
+/-- **(3.10)**: `ω(xⁿ) = (-1)^{|i|⌊n/2⌋}` times `n` downward dots, at the weight `-μ`. -/
+theorem omega_dots (μ : X) (i : I) (n : ℕ) :
+    SOp.unsop ((omega Sc).map (cl D Sc μ [up i] [up i] (dotsL [] i [] n))) =
+      eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ [up i])) ≫
+        (zsign k (D.parity i * ((n / 2 : ℕ) : ZMod 2)) •
+          cl D Sc (-μ) [dn i] [dn i] (ddotsL i n)) ≫
+          eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ [up i])).symm := by
+  rw [omega_cl μ (show SChain [up i] (dotsL [] i [] n) [up i] from sChain_dotsL [] i [] n),
+    omegaL_dotsL, omegaC_dotsL]
+  simp
+
+set_option backward.isDefEq.respectTransparency false in
+/-- `ω(σᵢⱼ) = -(-1)^{|i||j|} σⱼᵢ` (the value on the rightward crossing listed after
+Proposition 3.5). -/
+theorem omega_sigma (μ : X) (i j : I) :
+    SOp.unsop ((omega Sc).map (cl D Sc μ [up j, dn i] [dn i, up j] (sigmaL i j))) =
+      eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ [dn i, up j])) ≫
+        (-zsign k (D.parity i * D.parity j) •
+          cl D Sc (-μ) [up i, dn j] [dn j, up i] (sigmaL j i)) ≫
+          eqToHom (congrArg (pres D Sc).obj (chevMap_obj D μ [up j, dn i])).symm := by
+  rw [omega_cl μ (sChain_sigmaL i j), omegaL_sigmaL, omegaC_sigmaL]
+  simp only [flipW_cons, flipW_nil, flipL_up, flipL_dn]
+  rw [cl_omegaSigma]
+
 end OddMath.SKM
