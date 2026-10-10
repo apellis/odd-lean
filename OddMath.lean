@@ -490,7 +490,17 @@ import OddMath.PbwL2
 import OddMath.PbwL3
 import OddMath.PbwL4
 import OddMath.SKM.Basic
+import OddMath.SKM.Bubbles
+import OddMath.SKM.Calculus
+import OddMath.SKM.DotSlides
+import OddMath.SKM.Envelope
+import OddMath.SKM.Grading
+import OddMath.SKM.Lemma31Rot
+import OddMath.SKM.Mates
+import OddMath.SKM.MoreGenerators
 import OddMath.SKM.Presentation
+import OddMath.SKM.RelationsNF
+import OddMath.SKM.Rewriting
 import OddMath.SkewPolynomial
 import OddMath.SkewSign
 import OddMath.Tests.DividedDifferencesFixtures

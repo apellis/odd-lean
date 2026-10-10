@@ -608,12 +608,19 @@ paper's realization in a complex vector space is a special case.
 | --- | --- | --- |
 | §1, data before Def 1.5 | parity on `I`, (1.4), `tᵢⱼ` (1.5), `sᵢⱼ^{pq}` (1.6), `2` invertible if some `i` is odd | `Datum`, `Scalars` |
 | Def 1.5, (1.7)–(1.14) | the Kac–Moody 2-supercategory `𝔘(𝔤)` by generators `x`, `τ`, `η`, `ε` and relations: quiver Hecke superalgebra relations (1.7)–(1.9), right adjunction (1.10), `σ` (1.11), inversion relations (1.12)–(1.14) with the inverse matrix entries of (2.6)–(2.9) as generators; all relations parity-homogeneous; a strict 2-supercategory | `sig`, `Rel`, `relation`, `pres`, `isParityHomogeneous`, `U`, `twoSupercategory` |
+| §1 "Gradings", (1.31) and the degree table | symmetrization `dᵢ`, homogeneity condition (1.31); degrees of `x`, `τ`, `η`, `ε` as in the table, and the degrees forced by the inversion relations on the inverse entries (leftward crossing `0`, `♦`-cup `dᵢ(⟨hᵢ,λ⟩-1-2n)`, `♦`-cap `-dᵢ(⟨hᵢ,λ⟩+1+2n)`); every relation homogeneous; `𝔘(𝔤)` a graded 2-supercategory (no field hypothesis needed) | `Symmetrizer`, `Scalars.Homogeneous`, `gdeg`, `isHomogeneous_gdeg`, `UGr`, `UGr.instGradedTwoSupercategory` |
+| Def 1.6 | the `(Q, Π)`-envelope `𝔘_{q,π}(𝔤)` (string-diagrams-lean's `QPiTwoEnvelope`), its underlying `(Q, Π)`-2-category `𝔘̲_{q,π}(𝔤)` and `𝔘̇_{q,π}(𝔤)` (idempotent completion of the additive envelope) | `Uqπ`, `UUnderline`, `UDot` |
+| (1.1)–(1.3) in normal form | rewriting calculus for normal-form diagrams: placement, rewriting in context, the super interchange law for adjacent layers and for blocks with the sign `(-1)^{\|A\|\|B\|}`; the relations (1.7)–(1.14) as equations of normal-form diagrams | `cl`, `ctxL`, `cl_step`, `cl_swap`, `cl_interchange`, `cl_zigE`, `cl_quadNe`, `cl_invP₁`, … |
+| Def 2.1, (2.1)–(2.5) | downward dots and crossings as right mates; (2.2) `n`-th powers of downward dots are `(-1)^{\|i\|⌊n/2⌋}` times the mate of `xⁿ`; (2.3) dots slide around rightward cups and caps (and in mate form for any 2-morphism); (2.4), (2.5) pitchfork relations; composition of mates `mate(a) ≫ mate(b) = (-1)^{\|a\|\|b\|} mate(b ≫ a)` | `mateL`, `ddotL`, `dcrossL`, `cl_ddot_pow`, `eq_2_3_a`, `eq_2_3_b`, `cl_cup_slide`, `cl_cap_slide`, `eq_2_4_a`, `eq_2_4_b`, `eq_2_5_a`, `eq_2_5_b`, `cl_mate_comp` |
+| Def 2.2, (1.17), (2.10)–(2.14) | the units `c_{λ;i}`; `η'`, `ε'`; (2.12)–(2.14) | `CScalars`, `etaP`, `epsP`, `eq_2_12_a`, `eq_2_12_b`, `eq_2_13_a`–`eq_2_13_c`, `eq_2_14_a`–`eq_2_14_c` |
+| Def 2.3, (2.15)–(2.18) | dotted bubbles for all `n ∈ ℤ` (negatively dotted bubbles), the shorthand `n + *`, the odd bubble; the two definitions of the odd bubble agree at `⟨hᵢ, λ⟩ = 0` | `bubL`, `bubR`, `bubLs`, `bubRs`, `oddBubble`, `oddBubble_consistent` |
+| Lemma 3.1 (3.1)–(3.6) | dots slide through upward crossings ((3.1), (3.2); the heights of the dots in the correction terms as in the paper), upward and downward dots through `σ` ((3.3), (3.4)), downward dots through downward crossings ((3.5), (3.6)); all `i`, `j`, with the correction terms exactly as printed | `lemma31_eq1_ne`, `lemma31_eq1_eq`, `lemma31_eq2_ne`, `lemma31_eq2_eq`, `lemma31_eq3_ne`, `lemma31_eq3_eq`, `lemma31_eq4_ne`, `lemma31_eq4_eq`, `lemma31_eq5_ne`, `lemma31_eq5_eq`, `lemma31_eq6_ne`, `lemma31_eq6_eq` |
 
 ## Building
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `fb96f497c0dd0a24ed941d3a2c25b4cbfe63d884`, the [EQ] dg structures on
+string-diagrams-lean at `1f45e3c8ba51a148d028ce4f9bda36002f275690`, the [EQ] dg structures on
 [dg-lean](https://github.com/apellis/dg-lean) at `38e1e848d07386de5053f85099a947d92afced40`, and the
 [BE2] Cartan data on [lie-lean](https://github.com/apellis/lie-lean) at
 `9caf9bf648b6fb29c9d2436565c99b0b0e892f9c` (see `lakefile.lean` and `lake-manifest.json`).
