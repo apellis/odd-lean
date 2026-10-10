@@ -249,4 +249,229 @@ theorem eq_7_1_pos (i j : I) (μ : X) (hij : i ≠ j) (h0 : 0 < D.h i μ) (h1 : 
     pfL cs i j μ = pfR cs i j μ :=
   eq_7_1_of_eq_7_3 cs i j μ hij (eq_7_3 cs i j μ hij h0 h1)
 
+/-! ## (7.1) for `⟨hᵢ,λ⟩ ≤ 0` -/
+
+/-- For `⟨hᵢ,λ⟩ ≤ 0`, maps out of `Fᵢ Eⱼ Eᵢ 1_λ` are determined by their composites with
+`(↑ ⊗ σ) ≫ (σ ⊗ ↑)` and with `(↑ ⊗ (xⁿ ∘ η)) ≫ (σ ⊗ ↑)` for `n < -⟨hᵢ,λ⟩` (the isomorphisms
+(1.12) and (1.14)). -/
+theorem ext_FEE (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) {Z : (pres D Sc).Presented}
+    {f g : (pres D Sc).obj (ob D μ [dn i, up j, up i]) ⟶ Z}
+    (ha : cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫ f =
+      cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫ g)
+    (hb : ∀ n : ℕ, (n : ℤ) < -D.h i μ →
+      cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+        cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫ f =
+      cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+        cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫ g) :
+    f = g := by
+  have E : cl D Sc μ [up j, dn i, up i] [up j, dn i, up i]
+      ((lcrossL i i ++ sigmaL i i).map (whL [up j] [])) =
+      ∑ n ∈ range (-D.h i μ).toNat, cl D Sc μ [up j, dn i, up i] [up j, dn i, up i]
+        ((dcapL i n ++ etaL i n).map (whL [up j] [])) -
+      cl D Sc μ [up j, dn i, up i] [up j, dn i, up i] [] := by
+    have E0 := congrArg (plcL D Sc μ [up j] [] [dn i, up i] [dn i, up i])
+      (eq_2_12_b Sc i (wt D μ []))
+    simp only [map_sub, map_sum, plcL_cl, List.map_nil] at E0
+    exact E0
+  have hlc : SChain [up j, dn i, up i] ((lcrossL i i).map (whL [up j] [])) [up j, up i, dn i] := by
+    simpa using (sChain_lcrossL i i).whisk [up j] []
+  have hsii : SChain [up j, up i, dn i] ((sigmaL i i).map (whL [up j] [])) [up j, dn i, up i] := by
+    simpa using (sChain_sigmaL i i).whisk [up j] []
+  have hdc : ∀ n, SChain [up j, dn i, up i] ((dcapL i n).map (whL [up j] [])) [up j] := fun n => by
+    simpa using (sChain_dcapL i n).whisk [up j] []
+  have het : ∀ n, SChain [up j] ((etaL i n).map (whL [up j] [])) [up j, dn i, up i] := fun n => by
+    simpa using (sChain_etaL i n).whisk [up j] []
+  have hid : 𝟙 ((pres D Sc).obj (ob D μ [up j, dn i, up i])) =
+      -(cl D Sc μ [up j, dn i, up i] [up j, up i, dn i] ((lcrossL i i).map (whL [up j] [])) ≫
+        cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] []))) +
+      ∑ n ∈ range (-D.h i μ).toNat,
+        cl D Sc μ [up j, dn i, up i] [up j] ((dcapL i n).map (whL [up j] [])) ≫
+          cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) := by
+    rw [cl_comp hlc hsii, ← List.map_append, E, cl_nil,
+      sum_congr rfl fun n _ => cl_comp (hdc n) (het n), ← sum_congr rfl fun n _ =>
+        congrArg (cl D Sc μ [up j, dn i, up i] [up j, dn i, up i]) (List.map_append ..)]
+    abel
+  have key : ∀ φ : (pres D Sc).obj (ob D μ [dn i, up j, up i]) ⟶ Z, φ =
+      -(cl D Sc μ [dn i, up j, up i] [up j, dn i, up i] ((lcrossL i j).map (whL [] [up i])) ≫
+        cl D Sc μ [up j, dn i, up i] [up j, up i, dn i] ((lcrossL i i).map (whL [up j] [])) ≫
+        (cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+          cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫ φ)) +
+      ∑ n ∈ range (-D.h i μ).toNat,
+        cl D Sc μ [dn i, up j, up i] [up j, dn i, up i] ((lcrossL i j).map (whL [] [up i])) ≫
+          cl D Sc μ [up j, dn i, up i] [up j] ((dcapL i n).map (whL [up j] [])) ≫
+          (cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+            cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+              φ) := by
+    intro φ
+    conv_lhs => rw [← Category.id_comp φ, ← lcross_sigma_whisk i j μ hij, Category.assoc,
+      ← Category.id_comp (cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] _ ≫ φ), hid]
+    simp only [Preadditive.add_comp, Preadditive.comp_add, Preadditive.sum_comp,
+      Preadditive.comp_sum, Preadditive.neg_comp, Preadditive.comp_neg, Category.assoc]
+  rw [key f, key g, ha]
+  congr 1
+  refine sum_congr rfl fun n hn => ?_
+  rw [mem_range] at hn
+  rw [hb n (by omega)]
+
+theorem sigma_eps_h0 (i : I) (μ : X) (hh : D.h i μ = 0) :
+    cl D Sc μ [up i, dn i] [dn i, up i] (sigmaL i i) ≫ epsP cs i μ =
+      (↑(cs.c μ i)⁻¹ : k) • cl D Sc μ [up i, dn i] [] (epsL i 0) := by
+  rw [eq_5_17_a, show (D.h i μ).toNat + 1 = 1 by omega, sum_range_one, Nat.cast_zero, mul_zero,
+    zsign_zero, one_smul, Nat.cast_zero, neg_zero, zero_sub,
+    show (-1 : ℤ) = -D.h i μ - 1 by omega, bubR_eq_c, Linear.comp_smul, Category.comp_id]
+
+theorem term8_factor' (i j : I) (μ : X) (r q s : ℕ) :
+    cl D Sc μ [up j, up i, dn i] [dn i, up i, up j] (term8 i j r q s) ≫
+        plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+      plcL D Sc μ [up j] [] [up i, dn i] [] (cl D Sc (wt D μ []) [up i, dn i] [] (epsL i s)) ≫
+        cl D Sc μ [up j] [up j] (dotsL [] j [] q) ≫
+          plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i] (etaL i r) ≫
+            epsP cs i (wt D μ [up j])) := by
+  have h2 : SChain [up j] (dotsL [] j [] q) [up j] := sChain_dotsL [] j [] q
+  have h3 : SChain [] (etaL i r) [dn i, up i] := sChain_etaL i r
+  have h1 : SChain [up j, up i, dn i] ((epsL i s).map (whL [up j] [])) [up j] := by
+    simpa using (sChain_epsL i s).whisk [up j] []
+  rw [plcL_comp_of_mem μ [] [up j] (cl_mem_homPar h3 rfl) (epsP_mem cs i _), plcL_cl, plcL_cl]
+  change _ = cl D Sc μ [up j, up i, dn i] [up j] _ ≫ cl D Sc μ [up j] [up j] _ ≫
+    cl D Sc μ [up j] [dn i, up i, up j] _ ≫ _
+  simp only [← Category.assoc]
+  congr 1
+  rw [cl_comp h1 h2, cl_comp (h1.append h2) (by simpa using h3.whisk [] [up j]), term8_eq]
+
+theorem term8_zero_r' (i j : I) (μ : X) (r q s : ℕ)
+    (hr : (r : ℤ) < -D.h i (wt D μ [up j]) - 1) :
+    cl D Sc μ [up j, up i, dn i] [dn i, up i, up j] (term8 i j r q s) ≫
+        plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) = 0 := by
+  rw [term8_factor', eq_2_14_c cs i _ r (by omega),
+    ite_eq_right (show ¬ ((r : ℤ) = -D.h i (wt D μ [up j]) - 1) by omega), map_zero,
+    Limits.comp_zero, Limits.comp_zero]
+
+theorem pfR_a (i j : I) (μ : X) (hij : i ≠ j) :
+    cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfR cs i j μ =
+      plcL D Sc μ [up j] [] [up i, dn i] []
+        (cl D Sc (wt D μ []) [up i, dn i] [dn i, up i] (sigmaL i i) ≫ epsP cs i (wt D μ [])) := by
+  rw [pfR, ← Category.assoc (cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] _),
+    sigma_lcross_whisk i j μ hij, Category.id_comp]
+  symm
+  rw [plcL_comp_of_mem μ [up j] [] (cl_mem_homPar (sChain_sigmaL i i) rfl) (epsP_mem cs i _),
+    plcL_cl]
+  rfl
+
+theorem pfL_a (i j : I) (μ : X) :
+    cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfL cs i j μ =
+      cl D Sc μ [up j, up i, dn i] [dn i, up i, up j] (lemma33_eq8_lhs i j i) ≫
+        plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) := by
+  have hsii : SChain [up j, up i, dn i] ((sigmaL i i).map (whL [up j] [])) [up j, dn i, up i] := by
+    simpa using (sChain_sigmaL i i).whisk [up j] []
+  have hsij : SChain [up j, dn i, up i] ((sigmaL i j).map (whL [] [up i])) [dn i, up j, up i] := by
+    simpa using (sChain_sigmaL i j).whisk [] [up i]
+  have hcr : SChain [dn i, up j, up i] (crossL [dn i] j i []) [dn i, up i, up j] := by
+    simp [crossL, Shape.dom, Shape.cod]
+  rw [pfL, ← Category.assoc, ← Category.assoc, cl_comp hsii hsij,
+    cl_comp (hsii.append hsij) hcr]
+  rfl
+
+theorem term8_main' (i j : I) (μ : X) (r s : ℕ) (hr : (r : ℤ) = -D.h i (wt D μ [up j]) - 1) :
+    cl D Sc μ [up j, up i, dn i] [dn i, up i, up j] (term8 i j r 0 s) ≫
+        plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+      (↑(cs.c (wt D μ [up j]) i)⁻¹ : k) •
+        plcL D Sc μ [up j] [] [up i, dn i] [] (cl D Sc (wt D μ []) [up i, dn i] [] (epsL i s)) := by
+  rw [term8_factor', eq_2_14_c cs i _ r (by omega), ite_eq_left hr, map_smul, plcL_id,
+    show dotsL [] j [] 0 = [] from rfl, cl_nil, Linear.comp_smul, Linear.comp_smul]
+  erw [Category.id_comp, Category.comp_id]
+
+theorem rhs8_factor (i j : I) (μ : X) :
+    cl D Sc μ [up j, up i, dn i] [dn i, up i, up j] (lemma33_eq8_rhs i j i) ≫
+      plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+    cl D Sc μ [up j, up i, dn i] [up i, dn i, up j]
+          (crossL [] j i [dn i] ++ (sigmaL i j).map (whL [up i] [])) ≫
+        plcL D Sc μ [] [up j] [up i, dn i] []
+          (cl D Sc (wt D μ [up j]) [up i, dn i] [dn i, up i] (sigmaL i i) ≫
+            epsP cs i (wt D μ [up j])) := by
+  have h1 : SChain [up j, up i, dn i] (crossL [] j i [dn i] ++ (sigmaL i j).map (whL [up i] []))
+      [up i, dn i, up j] := by
+    refine SChain.append (t' := [up i, up j, dn i]) (by simp [crossL, Shape.dom, Shape.cod]) ?_
+    simpa using (sChain_sigmaL i j).whisk [up i] []
+  rw [plcL_comp_of_mem μ [] [up j] (cl_mem_homPar (sChain_sigmaL i i) rfl) (epsP_mem cs i _),
+    plcL_cl, ← Category.assoc]
+  congr 1
+  exact (cl_comp h1 (by simpa using (sChain_sigmaL i i).whisk [] [up j])).symm
+
+/-- The first family of test maps of `ext_FEE` agree on the two sides of (7.1) for
+`⟨hᵢ,λ⟩ ≤ 0`. -/
+theorem pf_a (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) :
+    cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfL cs i j μ =
+    cl D Sc μ [up j, up i, dn i] [up j, dn i, up i] ((sigmaL i i).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfR cs i j μ := by
+  have hd := D.dn_cast hij
+  rw [pfL_a, pfR_a cs i j μ hij]
+  have e8 := lemma33_eq8_eq (Sc := Sc) i j μ hij
+  rw [sub_eq_iff_eq_add, add_assoc] at e8
+  rw [e8]
+  simp only [Preadditive.add_comp, Preadditive.sum_comp, Linear.smul_comp]
+  have hν := h_wt_upj (D := D) i j μ
+  -- the triple sum vanishes
+  rw [Finset.sum_eq_zero (s := Finset.Ioo 0 (D.dn i j)) (fun p hp => Finset.sum_eq_zero
+    (fun q _ => Finset.sum_eq_zero (fun s hs => by
+      rw [Finset.mem_Ioo] at hp
+      rw [Finset.mem_range] at hs
+      rw [term8_zero_r' cs i j μ _ _ _ (by omega), smul_zero]))), zero_add]
+  rcases hh.lt_or_eq with hlt | h0
+  · rw [rhs8_zero cs i j μ (by omega), eq_2_14_a cs i _ (by simpa using hlt), map_zero, add_zero,
+      Finset.sum_eq_zero (fun s hs => by
+        rw [Finset.mem_range] at hs
+        rw [term8_zero_r' cs i j μ _ _ _ (by omega), smul_zero])]
+  · rw [sigma_eps_h0 cs i (wt D μ []) (by simpa using h0), map_smul]
+    by_cases hd0 : D.d i j = 0
+    · have hdn : D.dn i j = 0 := by omega
+      have hcJI : SChain [up j, up i, dn i] (crossL [] j i [dn i]) [up i, up j, dn i] := by
+        simp [crossL, Shape.dom, Shape.cod]
+      have hS : SChain [up i, up j, dn i] ((sigmaL i j).map (whL [up i] [])) [up i, dn i, up j] := by
+        simpa using (sChain_sigmaL i j).whisk [up i] []
+      have hC : SChain [up i, dn i, up j] [([], Shape.cap i, [up j])] [up j] := by
+        simp [Shape.dom, Shape.cod]
+      have hcIJ : SChain [up i, up j, dn i] [([], Shape.cross i j, [dn i])] [up j, up i, dn i] := by
+        simp [Shape.dom, Shape.cod]
+      have hC' : SChain [up j, up i, dn i] [([up j], Shape.cap i, [])] [up j] := by
+        simp [Shape.dom, Shape.cod]
+      have hq := congrArg (plcL D Sc μ [] [dn i] [up j, up i] [up j, up i])
+        (cl_quadZero (Sc := Sc) j i (wt D μ [dn i]) hij.symm ((D.d_eq_zero_iff i j).1 hd0))
+      rw [plcL_cl, map_smul, plcL_cl, List.map_nil, cl_nil] at hq
+      have key : cl D Sc μ [up j, up i, dn i] [up i, dn i, up j]
+            (crossL [] j i [dn i] ++ (sigmaL i j).map (whL [up i] [])) ≫
+          cl D Sc μ [up i, dn i, up j] [up j] [([], Shape.cap i, [up j])] =
+          (Sc.t j i : k) • cl D Sc μ [up j, up i, dn i] [up j] [([up j], Shape.cap i, [])] := by
+        rw [← cl_comp hcJI hS, Category.assoc, cl_comp hS hC, eq_2_4_a,
+          show ([([], Shape.cross i j, [dn i]), ([up j], Shape.cap i, [])] : List (LayerData I)) =
+            [([], Shape.cross i j, [dn i])] ++ [([up j], Shape.cap i, [])] from rfl,
+          ← cl_comp hcIJ hC',
+          ← Category.assoc, cl_comp hcJI hcIJ]
+        erw [hq, Linear.smul_comp, Category.id_comp]
+      rw [hdn, Finset.range_zero, Finset.sum_empty, zero_add, rhs8_factor,
+        sigma_eps_h0 cs i _ (by omega), map_smul, Linear.comp_smul, plcL_cl, plcL_cl]
+      erw [key]
+      rw [smul_smul, c_wt_upj, Sc.t_symm_of_d_eq_zero i j hd0]
+      congr 1
+      rw [mul_inv, Units.val_mul, wt_nil]
+      linear_combination (↑(cs.c μ i)⁻¹ : k) * Units.inv_mul (Sc.t j i)
+    · rw [rhs8_zero cs i j μ (by omega), add_zero,
+        Finset.sum_eq_single 0 (fun s hs hs0 => by
+          rw [Finset.mem_range] at hs
+          rw [term8_zero_r' cs i j μ _ _ _ (by omega), smul_zero])
+          (fun h => absurd (Finset.mem_range.2 (by omega)) h),
+        term8_main' cs i j μ _ _ (by omega), smul_smul, c_wt_upj, Nat.cast_zero, mul_zero,
+        zsign_zero, one_mul]
+      congr 1
+      rw [mul_inv, Units.val_mul, wt_nil]
+      linear_combination (↑(cs.c μ i)⁻¹ : k) * Units.mul_inv (Sc.t i j)
+
 end OddMath.SKM
