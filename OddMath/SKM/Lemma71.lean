@@ -603,4 +603,79 @@ theorem pfL_b_reduce (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ) :
   generalize (n : ZMod 2) = c
   rw [show a * b * (c * a) + a * b * c = 0 by revert a b c; decide, zsign_zero, one_smul]
 
+theorem bub_zero (i j : I) (μ : X) (m : ℕ) (hm : (m : ℤ) < -D.h i (wt D μ [up j]) - 1) :
+    plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i] (etaL i m) ≫
+      epsP cs i (wt D μ [up j])) = 0 := by
+  rw [eq_2_14_c cs i _ m (by omega),
+    ite_eq_right (show ¬ ((m : ℤ) = -D.h i (wt D μ [up j]) - 1) by omega), map_zero]
+
+theorem etaL_dots (i : I) (n m : ℕ) (w : List (Letter I)) :
+    (etaL i n).map (whL [] w) ++ dotsL [dn i] i w m = (etaL i (n + m)).map (whL [] w) := by
+  simp [etaL, dotsL, whL, List.map_replicate]
+
+theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) (n : ℕ)
+    (hn : (n : ℤ) < -D.h i μ) :
+    cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfL cs i j μ =
+      plcL D Sc μ [up j] [] [] []
+        (cl D Sc (wt D μ []) [] [dn i, up i] (etaL i n) ≫ epsP cs i (wt D μ [])) := by
+  have hd := D.dn_cast hij
+  have hν := h_wt_upj (D := D) i j μ
+  have het : SChain [up j] ((etaL i n).map (whL [] [up j])) [dn i, up i, up j] := by
+    simpa using (sChain_etaL i n).whisk [] [up j]
+  have hcc : SChain [dn i, up i, up j] (crossL [dn i] i j [] ++ crossL [dn i] j i [])
+      [dn i, up i, up j] := by simp [crossL, Shape.dom, Shape.cod]
+  have hQd : ∀ m, SChain [dn i, up i, up j] (dotsL [dn i] i [up j] m) [dn i, up i, up j] :=
+    fun m => sChain_dotsL [dn i] i [up j] m
+  have hQj : ∀ q, SChain [dn i, up i, up j] (dotsL [dn i, up i] j [] q) [dn i, up i, up j] :=
+    fun q => sChain_dotsL [dn i, up i] j [] q
+  have eDj : ∀ q, dotsL [dn i, up i] j [] q = (dotsL [] j [] q).map (whL [dn i, up i] []) :=
+    fun q => by simp [dotsL, whL, List.map_replicate]
+  -- a clockwise bubble with `m` dots, to the left of the `j`-strand
+  have hbub : ∀ m, cl D Sc μ [up j] [dn i, up i, up j] ((etaL i m).map (whL [] [up j])) ≫
+      plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+      plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i] (etaL i m) ≫
+        epsP cs i (wt D μ [up j])) := fun m => by
+    rw [plcL_comp_of_mem μ [] [up j] (cl_mem_homPar (sChain_etaL i m) rfl) (epsP_mem cs i _),
+      plcL_cl]
+    rfl
+  have e0 : cl D Sc μ [up j] [dn i, up i, up j]
+      ((etaL i n).map (whL [] [up j]) ++ crossL [dn i] i j [] ++ crossL [dn i] j i []) =
+      cl D Sc μ [up j] [dn i, up i, up j] ((etaL i n).map (whL [] [up j])) ≫
+        cl D Sc μ [dn i, up i, up j] [dn i, up i, up j]
+          (crossL [dn i] i j [] ++ crossL [dn i] j i []) := by
+    rw [cl_comp het hcc, List.append_assoc]
+  rw [pfL_b_reduce cs i j μ hij n, e0, Category.assoc]
+  -- the surviving term
+  have fin : (Sc.t i j : k) • plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i]
+      (etaL i (n + D.dn i j)) ≫ epsP cs i (wt D μ [up j])) =
+      plcL D Sc μ [up j] [] [] []
+        (cl D Sc (wt D μ []) [] [dn i, up i] (etaL i n) ≫ epsP cs i (wt D μ [])) := by
+    rw [eq_2_14_c cs i _ _ (by push_cast; omega), eq_2_14_c cs i _ _ (by simp only [wt_nil]; omega)]
+    by_cases hn1 : (n : ℤ) = -D.h i μ - 1
+    · rw [ite_eq_left (show ((n + D.dn i j : ℕ) : ℤ) = -D.h i (wt D μ [up j]) - 1 by push_cast; omega),
+        ite_eq_left (show (n : ℤ) = -D.h i (wt D μ []) - 1 by simp only [wt_nil]; omega),
+        map_smul, map_smul, plcL_id, plcL_id, smul_smul, c_wt_upj, mul_inv, Units.val_mul, wt_nil]
+      congr 1
+      linear_combination (↑(cs.c μ i)⁻¹ : k) * Units.mul_inv (Sc.t i j)
+    · rw [ite_eq_right (show ¬ ((n + D.dn i j : ℕ) : ℤ) = -D.h i (wt D μ [up j]) - 1 by
+          push_cast; omega),
+        ite_eq_right (show ¬ (n : ℤ) = -D.h i (wt D μ []) - 1 by simp only [wt_nil]; omega),
+        map_zero, map_zero, smul_zero]
+  rw [← fin]
+  by_cases hd0 : D.d i j = 0
+  · have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j])
+      (cl_quadZero (Sc := Sc) i j (wt D μ []) hij hd0)
+    rw [map_smul, plcL_cl, plcL_cl, List.map_nil, cl_nil] at hq
+    erw [hq]
+    rw [Linear.smul_comp, Linear.comp_smul]
+    erw [Category.id_comp]
+    rw [hbub, show D.dn i j = 0 by omega, add_zero]
+  · have hq := congrArg (plcL D Sc μ [dn i] [] [up i, up j] [up i, up j])
+      (cl_quadNe (Sc := Sc) i j (wt D μ []) hij hd0)
+    simp only [map_add, map_smul, map_sum, plcL_cl] at hq
+    erw [hq]
+    sorry
+
 end OddMath.SKM
