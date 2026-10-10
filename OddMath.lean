@@ -1,5 +1,9 @@
 import OddMath.CoveringQuantum.Datum
+import OddMath.CoveringQuantum.HalfAlgebra
 import OddMath.CoveringQuantum.Integers
+import OddMath.CoveringQuantum.PreF.Basic
+import OddMath.CoveringQuantum.PreF.Comul
+import OddMath.CoveringQuantum.PreF.Form
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
