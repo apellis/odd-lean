@@ -35,6 +35,7 @@ import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.CoveringQuantum.UDot.Triangular
 import OddMath.CoveringQuantum.UDot.TriangularTensor
 import OddMath.CoveringQuantum.UDot.TriangularOperators
+import OddMath.CoveringQuantum.UDot.TriangularSerre
 import OddMath.CoveringQuantum.UDot.VermaOperators
 import OddMath.CoveringQuantum.UDot.VermaSerre
 import OddMath.CoveringQuantum.UDot.VermaWeights
