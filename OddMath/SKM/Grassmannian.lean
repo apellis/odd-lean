@@ -108,12 +108,12 @@ theorem comm_of_mem {μ : X} {p q : ZMod 2} {f g : (pres D Sc).obj (ob D μ []) 
 
 variable (cs : CScalars Sc)
 
-theorem etaP_of_nonpos {i : I} {μ : X} (hh : D.h i μ ≤ 0) :
+theorem etaP_eq_of_nonpos {i : I} {μ : X} (hh : D.h i μ ≤ 0) :
     etaP cs i μ = (zsign k (ipar D i μ) * (cs.c μ i : k)) •
       cl D Sc μ [] [up i, dn i] (etaL i (-D.h i μ).toNat ++ lcrossL i i) :=
   ite_eq_right (show ¬ 0 < D.h i μ by omega)
 
-theorem epsP_of_nonneg {i : I} {μ : X} (hh : 0 ≤ D.h i μ) :
+theorem epsP_eq_of_nonneg {i : I} {μ : X} (hh : 0 ≤ D.h i μ) :
     epsP cs i μ = (-(zsign k (D.parity i * (D.h i μ : ZMod 2))) * (↑(cs.c μ i)⁻¹ : k)) •
       cl D Sc μ [dn i, up i] [] (lcrossL i i ++ epsL i (D.h i μ).toNat) :=
   by rw [epsP, ite_eq_right (show ¬ D.h i μ < 0 by omega), neg_mul]
@@ -249,7 +249,7 @@ theorem ig_hpos_neg (i : I) (μ : X) (hh : 0 ≤ D.h i μ) (T : ℕ) :
   rw [h12, Preadditive.add_comp, Preadditive.comp_add, Preadditive.comp_add, cl_nil,
     Category.id_comp, show (-(N : ℤ) - 1) = -D.h i μ - 1 by omega, bubR_eq_c,
     show ((T:ℤ) + N) = ((T + N : ℕ) : ℤ) by push_cast; ring, bubL_nat, epsL_add,
-    ← cl_comp hdT (sChain_epsL i N), epsP_of_nonneg cs hh, ← hN,
+    ← cl_comp hdT (sChain_epsL i N), epsP_eq_of_nonneg cs hh, ← hN,
     ← cl_comp (sChain_sigmaL i i) (sChain_lcrossL i i),
     ← cl_comp (sChain_lcrossL i i) (sChain_epsL i N),
     ← cl_comp hdT (sChain_sigmaL i i)]
@@ -336,7 +336,7 @@ theorem ig_hpos_split (i : I) (μ : X) (hh : 0 ≤ D.h i μ) (T : ℕ) :
         rw [cl_comp hlσ hdR, cl_comp (sChain_etaL i 0) (hlσ.append hdR),
           cl_comp ((sChain_etaL i 0).append (sChain_lcrossL i i)) ((sChain_sigmaL i i).append hdR)]
         simp only [List.append_assoc]
-      rw [etaP_of_nonpos cs (by omega), show (-D.h i μ).toNat = 0 by omega, Linear.smul_comp, ← e,
+      rw [etaP_eq_of_nonpos cs (by omega), show (-D.h i μ).toNat = 0 by omega, Linear.smul_comp, ← e,
         cl_invP₂ Sc i μ hh, Preadditive.neg_comp, Preadditive.comp_neg, cl_nil, Category.id_comp,
         cl_comp (sChain_etaL i 0) hdR, ← etaL_add, zero_add, smul_neg]
     rw [show (-1 : ℤ) = D.h i μ - 1 by omega, bubL_eq_c, ← Category.assoc, hW, Preadditive.neg_comp,
@@ -403,7 +403,7 @@ theorem ig_hneg_neg (i : I) (μ : X) (hh : D.h i μ ≤ 0) (T : ℕ) :
   rw [h12, Preadditive.add_comp, Preadditive.comp_add, cl_nil, Category.id_comp,
     show (-(M : ℤ) - 1) = D.h i μ - 1 by omega, bubL_eq_c,
     show ((T:ℤ) + M) = ((M + T : ℕ) : ℤ) by push_cast; ring, bubR_nat, etaL_add,
-    ← cl_comp (sChain_etaL i M) hdR, etaP_of_nonpos cs hh, ← hM,
+    ← cl_comp (sChain_etaL i M) hdR, etaP_eq_of_nonpos cs hh, ← hM,
     Linear.smul_comp (f := cl D Sc μ [] [up i, dn i] (etaL i M ++ lcrossL i i)),
     ← Category.assoc (cl D Sc μ [] [up i, dn i] (etaL i M ++ lcrossL i i)), ← e]
   simp only [Category.assoc, Linear.smul_comp, Category.id_comp, smul_add, smul_smul]
@@ -464,7 +464,7 @@ theorem ig_hneg_split (i : I) (μ : X) (hh : D.h i μ ≤ 0) (T : ℕ) :
     simp
   · have hY : cl D Sc μ [up i, dn i] [dn i, up i] (sigmaL i i) ≫ epsP cs i μ =
         (↑(cs.c μ i)⁻¹ : k) • cl D Sc μ [up i, dn i] [] (epsL i 0) := by
-      rw [epsP_of_nonneg cs (by omega), show (D.h i μ).toNat = 0 by omega, Linear.comp_smul,
+      rw [epsP_eq_of_nonneg cs (by omega), show (D.h i μ).toNat = 0 by omega, Linear.comp_smul,
         cl_comp (sChain_sigmaL i i) ((sChain_lcrossL i i).append (sChain_epsL i 0)),
         ← List.append_assoc,
         ← cl_comp ((sChain_sigmaL i i).append (sChain_lcrossL i i)) (sChain_epsL i 0),
@@ -495,7 +495,7 @@ theorem bubL_mem (i : I) (μ : X) (n : ℤ) :
       push_cast
       generalize D.parity i = a; generalize (m : ZMod 2) = x; generalize (D.h i μ : ZMod 2) = y
       revert a x y; decide
-    · rw [etaP_of_nonpos cs hp, Linear.smul_comp,
+    · rw [etaP_eq_of_nonpos cs hp, Linear.smul_comp,
         cl_comp ((sChain_etaL i _).append (sChain_lcrossL i i)) (sChain_epsL i m)]
       refine Submodule.smul_mem _ _ (cl_mem_closedPar (((sChain_etaL i _).append
         (sChain_lcrossL i i)).append (sChain_epsL i m)) ?_)
@@ -538,7 +538,7 @@ theorem bubR_mem (i : I) (μ : X) (n : ℤ) :
       push_cast
       generalize D.parity i = a; generalize (m : ZMod 2) = x; generalize (D.h i μ : ZMod 2) = y
       revert a x y; decide
-    · rw [epsP_of_nonneg cs hp, Linear.comp_smul,
+    · rw [epsP_eq_of_nonneg cs hp, Linear.comp_smul,
         cl_comp (sChain_etaL i m) ((sChain_lcrossL i i).append (sChain_epsL i _))]
       refine Submodule.smul_mem _ _ (cl_mem_closedPar ((sChain_etaL i m).append
         ((sChain_lcrossL i i).append (sChain_epsL i _))) ?_)
