@@ -18,6 +18,10 @@ require DG from git
   "https://github.com/apellis/dg-lean.git" @
   "38e1e848d07386de5053f85099a947d92afced40"
 
+require LieLean from git
+  "https://github.com/apellis/lie-lean.git" @
+  "9caf9bf648b6fb29c9d2436565c99b0b0e892f9c"
+
 @[default_target]
 lean_lib OddMath where
   globs := #[.andSubmodules `OddMath]
