@@ -22,7 +22,7 @@ All of Proposition 4.1, for all `i`, `j`, `n ≥ 0` and `λ`:
 * (4.4): `lemma41_eq4_even`, `lemma41_eq4_odd`; `n = 1`: `lemma41_eq4_one_even`, `lemma41_eq4_one_odd`.
 
 In the correction terms of (4.1), (4.2) the cap is below the cup, as in the paper's pictures.
-The odd bubble squares to zero (`oddBubble_sq`, (1.24)), which is used for (4.3), (4.4) with
+The odd bubble squares to zero (`oddBubble_comp_self`, (1.24)), which is used for (4.3), (4.4) with
 `n ≥ 2`.
 
 The proofs: (4.1), (4.2) are (3.3), (3.4) composed on both sides with the leftward crossing,
@@ -1022,7 +1022,7 @@ theorem lemma41_eq2_ne (i j : I) (μ : X) (hij : i ≠ j) (n : ℕ) :
 /-! ## (4.3), (4.4) for all `n` -/
 
 /-- The odd bubble squares to zero (1.24), by the super interchange law and `2 ∈ k^×`. -/
-theorem oddBubble_sq (i : I) (μ : X) (hi : D.parity i = 1) :
+theorem oddBubble_comp_self (i : I) (μ : X) (hi : D.parity i = 1) :
     oddBubble cs i μ ≫ oddBubble cs i μ = 0 := by
   have hm : oddBubble cs i μ ∈ closedPar D Sc μ 1 := by
     rw [oddBubble]
@@ -1085,7 +1085,7 @@ theorem lemma41_eq3_odd (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ) :
         zsign k (D.h i μ : ZMod 2) • (cpow (dLM D Sc i μ) n ≫ epsP cs i μ) +
           (2 : k) • (cpow (dLM D Sc i μ) (n - 1) ≫ epsP cs i μ ≫ oddBubble cs i μ) := by
   have hz1 : zsign k (1 : ZMod 2) = -1 := by simp [zsign]
-  have hsq := oddBubble_sq cs i μ hi
+  have hsq := oddBubble_comp_self cs i μ hi
   -- the recursion `aₙ₊₁ = zₕ (-1)ⁿ dL ≫ aₙ + 2 aₙ ≫ ob`
   have hrec : ∀ m, cpow (uRM D Sc i μ) (m + 1) ≫ epsP cs i μ =
       (zsign k (D.h i μ : ZMod 2) * zsign k (m : ZMod 2)) •
@@ -1194,7 +1194,7 @@ theorem lemma41_eq4_odd (i : I) (μ : X) (hi : D.parity i = 1) (n : ℕ) :
         zsign k (D.h i μ : ZMod 2) • (etaP cs i μ ≫ cpow (dRM D Sc i μ) n) +
           (2 : k) • (oddBubble cs i μ ≫ etaP cs i μ ≫ cpow (dRM D Sc i μ) (n - 1)) := by
   have hz1 : zsign k (1 : ZMod 2) = -1 := by simp [zsign]
-  have hsq := oddBubble_sq cs i μ hi
+  have hsq := oddBubble_comp_self cs i μ hi
   have hrec : ∀ m, etaP cs i μ ≫ cpow (uLM D Sc i μ) (m + 1) =
       (zsign k (D.h i μ : ZMod 2) * zsign k (m : ZMod 2)) •
           ((etaP cs i μ ≫ cpow (uLM D Sc i μ) m) ≫ dRM D Sc i μ) +
