@@ -499,6 +499,7 @@ import OddMath.SKM.Calculus
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.Grading
+import OddMath.SKM.Grassmannian
 import OddMath.SKM.LeftDot
 import OddMath.SKM.Lemma31Rot
 import OddMath.SKM.Lemma32
