@@ -304,6 +304,9 @@ theorem chi_of_ne {i j : I} (h : i ≠ j) :
 theorem pii_sq (hπ : π ^ 2 = 1) (i : I) : C.pii π i ^ 2 = 1 := by
   rw [pii, ← pow_mul, mul_comm, pow_mul, hπ, one_pow]
 
+/-- For an odd simple root, the Serre degree is odd. In [CHW1] §1.7.5 the reference
+for this parity step is printed as Condition 1.1(e); the needed assumption is 1.1(d),
+the evenness of the Cartan entries in an odd row. Bar-consistency is not needed here. -/
 theorem odd_serreDeg_or {i j : I} (h : i ≠ j) : Odd (C.serreDeg i j) ∨ C.pii π i = 1 := by
   rcases (by decide : ∀ x : ZMod 2, x = 0 ∨ x = 1) (C.parity i) with hp | hp
   · right
