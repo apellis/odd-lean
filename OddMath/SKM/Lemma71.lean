@@ -6,21 +6,20 @@ import OddMath.SKM.ChevalleyLeft
 import OddMath.SKM.Lemma33Rot
 
 /-!
-# Upward strands past leftward caps and cups (Brundan–Ellis, Lemma 7.1)
+# Upward strands past leftward caps (Brundan–Ellis, Lemma 7.1)
 
-J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, Lemma 7.1, (7.1)–(7.4)
-(TeX labels `pitchforkb`, `easy1`, `easy2`, `critical`, `turn`).
+J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
+Lemma 7.1, (7.1).
 
-For `i ≠ j`:
+For `i ≠ j`, `pfL` and `pfR` are the two morphisms in (7.1), from `Fᵢ Eⱼ Eᵢ 1_λ`
+to `Eⱼ 1_λ`. The theorem `eq_7_1` proves their equality throughout the stated range
+`⟨hᵢ,λ⟩ ≤ max (dᵢⱼ - 1) 0`.
 
-* `pfL`, `pfR`: the two sides of (7.1) on `Fᵢ Eⱼ Eᵢ 1_λ`: the upward crossing of `j` and `i`
-  followed by `ε'` (at `λ + αⱼ`) on the two left strands, and the leftward crossing of `i` and `j`
-  followed by `ε'` (at `λ`) on the two right strands;
-* `eq_7_3`: (7.3), for `0 < ⟨hᵢ,λ⟩ < dᵢⱼ`: after the sideways crossing `σ` of `j` and `i` the
-  upward `j`-strand passes the leftward cap. As in the paper: insert `-1 = ` (leftward crossing)
-  `≫ σ` on `Fᵢ Eᵢ` ((2.12), the sum is empty), pull the `j`-strand past the `ii`-crossing by
-  (3.8) (`lemma33_eq8_eq`), and evaluate the correction terms by (2.13) and (2.14);
-* `eq_7_1_pos`: (7.1) for `0 < ⟨hᵢ,λ⟩ < dᵢⱼ`, by composing (7.3) with the inverse (1.12).
+The positive-weight case uses (7.3) and the mixed braid relation (3.8).
+For nonpositive weights, the components of the inversion relations determine the
+morphism (`ext_FEE`); the two families of composites agree by `pf_a` and `pf_b`.
+The quadratic correction terms vanish by the degree bounds for bubbles.
+The cup relation (7.2) is separate.
 -/
 
 noncomputable section
@@ -613,7 +612,8 @@ theorem etaL_dots (i : I) (n m : ℕ) (w : List (Letter I)) :
     (etaL i n).map (whL [] w) ++ dotsL [dn i] i w m = (etaL i (n + m)).map (whL [] w) := by
   simp [etaL, dotsL, whL, List.map_replicate]
 
-theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) (n : ℕ)
+set_option maxHeartbeats 1000000 in
+theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (_hh : D.h i μ ≤ 0) (n : ℕ)
     (hn : (n : ℤ) < -D.h i μ) :
     cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
       cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
@@ -676,6 +676,73 @@ theorem pfL_b (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) (n : ℕ)
       (cl_quadNe (Sc := Sc) i j (wt D μ []) hij hd0)
     simp only [map_add, map_smul, map_sum, plcL_cl] at hq
     erw [hq]
-    sorry
+    have dot_main (m : ℕ) :
+        cl D Sc μ [up j] [dn i, up i, up j] ((etaL i n).map (whL [] [up j])) ≫
+          cl D Sc μ [dn i, up i, up j] [dn i, up i, up j] (dotsL [dn i] i [up j] m) ≫
+          plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) =
+        plcL D Sc μ [] [up j] [] [] (cl D Sc (wt D μ [up j]) [] [dn i, up i]
+          (etaL i (n + m)) ≫ epsP cs i (wt D μ [up j])) := by
+      rw [← Category.assoc, cl_comp het (hQd m), etaL_dots, hbub]
+    have dot_zero (q : ℕ) :
+        cl D Sc μ [up j] [dn i, up i, up j] ((etaL i n).map (whL [] [up j])) ≫
+          cl D Sc μ [dn i, up i, up j] [dn i, up i, up j] (dotsL [dn i, up i] j [] q) ≫
+          plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) = 0 := by
+      rw [← Category.assoc, cl_comp het (hQj q), eDj,
+        bub_factor cs i j μ n (sChain_dotsL [] j [] q), bub_zero cs i j μ n (by omega),
+        Limits.zero_comp, smul_zero]
+    have dot_pair_zero (p q : ℕ) (hp : p < D.dn i j) :
+        cl D Sc μ [up j] [dn i, up i, up j] ((etaL i n).map (whL [] [up j])) ≫
+          cl D Sc μ [dn i, up i, up j] [dn i, up i, up j]
+            (dotsL [dn i, up i] j [] q ++ dotsL [dn i] i [up j] p) ≫
+          plcL D Sc μ [] [up j] [dn i, up i] [] (epsP cs i (wt D μ [up j])) = 0 := by
+      have hI := cl_interchange (D := D) (Sc := Sc) (μ := μ)
+        (S := [dn i, up i, up j]) (T := [dn i, up i, up j]) [] []
+        (sChain_dotsL [dn i] i [] p) (sChain_dotsL [] j [] q)
+      simp only [List.nil_append, List.append_nil, List.cons_append] at hI
+      have eDi : (dotsL [dn i] i [] p).map (whL [] [up j]) = dotsL [dn i] i [up j] p := by
+        simp [dotsL, whL, List.map_replicate]
+      rw [eDi, ← eDj] at hI
+      have hI' : cl D Sc μ [dn i, up i, up j] [dn i, up i, up j]
+          (dotsL [dn i, up i] j [] q ++ dotsL [dn i] i [up j] p) =
+          zsign k (parsum D (dotsL [dn i] i [] p) * parsum D (dotsL [] j [] q)) •
+          cl D Sc μ [dn i, up i, up j] [dn i, up i, up j]
+            (dotsL [dn i] i [up j] p ++ dotsL [dn i, up i] j [] q) := by
+        rw [hI, smul_smul, zsign_mul_self', one_smul]
+      rw [hI', Linear.smul_comp, Linear.comp_smul, ← Category.assoc,
+        cl_comp het ((hQd p).append (hQj q)), ← List.append_assoc, etaL_dots, eDj,
+        bub_factor cs i j μ (n + p) (sChain_dotsL [] j [] q),
+        bub_zero cs i j μ (n + p) (by push_cast; omega), Limits.zero_comp, smul_zero, smul_zero]
+    simp only [Preadditive.add_comp, Preadditive.comp_add, Preadditive.sum_comp,
+      Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul]
+    simp only [dotsL, List.map_append, List.map_replicate, whL,
+      List.nil_append, List.append_nil, List.cons_append]
+    simp only [dotsL] at dot_main dot_zero dot_pair_zero
+    erw [dot_main, dot_zero, smul_zero, add_zero,
+      sum_eq_zero (fun p hp => sum_eq_zero (fun q _ => by
+        erw [dot_pair_zero p q (mem_Ioo.1 hp).2, smul_zero])), add_zero]
+    rfl
+
+theorem pf_b (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) (n : ℕ)
+    (hn : (n : ℤ) < -D.h i μ) :
+    cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfL cs i j μ =
+    cl D Sc μ [up j] [up j, dn i, up i] ((etaL i n).map (whL [up j] [])) ≫
+      cl D Sc μ [up j, dn i, up i] [dn i, up j, up i] ((sigmaL i j).map (whL [] [up i])) ≫
+        pfR cs i j μ := by
+  rw [pfL_b cs i j μ hij hh n hn, pfR_b cs i j μ hij n]
+
+/-- Relation (7.1) in the nonpositive weight range. -/
+theorem eq_7_1_nonpos (i j : I) (μ : X) (hij : i ≠ j) (hh : D.h i μ ≤ 0) :
+    pfL cs i j μ = pfR cs i j μ :=
+  ext_FEE i j μ hij hh (pf_a cs i j μ hij hh) (pf_b cs i j μ hij hh)
+
+/-- **Brundan–Ellis, Lemma 7.1, (7.1).** An upward strand can pass a leftward cap
+in the range `⟨hᵢ,λ⟩ ≤ max (dᵢⱼ - 1) 0`. -/
+theorem eq_7_1 (i j : I) (μ : X) (hij : i ≠ j)
+    (hh : D.h i μ ≤ max (D.d i j - 1) 0) : pfL cs i j μ = pfR cs i j μ := by
+  by_cases h0 : D.h i μ ≤ 0
+  · exact eq_7_1_nonpos cs i j μ hij h0
+  · exact eq_7_1_pos cs i j μ hij (by omega) (by omega)
 
 end OddMath.SKM
