@@ -497,6 +497,8 @@ import OddMath.SKM.Basic
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
 import OddMath.SKM.Calculus
+import OddMath.SKM.Curls
+import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.Grading
@@ -511,6 +513,7 @@ import OddMath.SKM.Lemma33Rot
 import OddMath.SKM.MateBlock
 import OddMath.SKM.MateN
 import OddMath.SKM.Mates
+import OddMath.SKM.Placement
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
