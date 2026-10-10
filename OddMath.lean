@@ -10,6 +10,9 @@ import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
 import OddMath.CoveringQuantum.SerreIdeal
+import OddMath.CoveringQuantum.SerreBaseChange
+import OddMath.CoveringQuantum.PreF.BaseChange
+import OddMath.CoveringQuantum.Negative
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.PreF.WordGauge
 import OddMath.CoveringQuantum.PreF.GaugeForm
