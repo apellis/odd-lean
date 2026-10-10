@@ -15,6 +15,9 @@ Sources (numbering refers to these arXiv versions):
   formalized only in part, see the [EQ] coverage table below).
 - **[BE2]** J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2 (in
   progress; see the [BE2] status below).
+- **[CHW1]** S. Clark, D. Hill, W. Wang, *Quantum supergroups I. Foundations*, arXiv:1301.1665v2,
+  and **[C]** S. Clark, *Quantum supergroups IV. The modified form*, arXiv:1312.4855v2 (the
+  covering quantum group used in [BE2] §§9–12).
 
 The library builds with no `sorry` and no added axioms; the axiom closures of the results contain
 only `propext`, `Classical.choice` and `Quot.sound`.
@@ -640,6 +643,19 @@ paper's realization in a complex vector space is a special case.
 | Cor 5.2, Cor 5.3, Cor 5.4 (5.17) | (5.11), (5.12): the `♦`-cups and caps as sums of dotted bubbles times `η'` (resp. `ε'`) with dots, via the inverse-matrix characterization ((5.13), (5.14) and their analogues for (5.12), which the paper leaves as "entirely similar"); (5.15), (5.16); the curl relations (5.17) `σ ≫ ε'` and `η' ≫ σ` | `eq_5_11`, `eq_5_12`, `eq_5_13`, `eq_5_14`, `eq_5_13'`, `eq_5_14'`, `dcupRHS`, `dcapRHS`, `eq_5_15`, `eq_5_16`, `eq_5_17_a`, `eq_5_17_b` |
 | Cor 5.4 (5.18)–(5.21) | the dotted left and right curls on `Eᵢ 1_λ` as sums of dots times dotted bubbles, all four as printed (heights of dots and bubbles as in the paper); tools: homogeneous linear combinations of diagrams (`homPar`), placement compatible with composition, and the super interchange law for placed 2-morphisms | `eq_5_18`, `eq_5_19`, `eq_5_20`, `eq_5_21`, `curlL_eq`, `curlR_eq`, `homPar`, `plcL_comp_of_mem`, `plcL_left_interchange`, `plcL_right_interchange`, `etaP_mem`, `epsP_mem` |
 | Lemma 6.1, Prop 6.2 (first relation) | the claim (6.3) for `⟨hᵢ,λ⟩ ≤ -1` by testing against the isomorphism (1.14) ((6.4), (6.5)); the pitchfork relation (6.1); the mirror-image claim for `⟨hᵢ,λ⟩ ≥ -1` by testing against (1.13), and (6.2); the first relation of (6.6) (left adjunction zigzag on `Eᵢ`, sign `(-1)^{\|i,λ\|}`) in all three cases of the paper. The second relation of (6.6) not yet | `eq_6_3`, `check_6_4`, `check_6_5`, `ext_EFE`, `eq_6_1`, `claim_6_2`, `ext_EFE'`, `eq_6_2`, `eq_6_6_a` |
+
+### [BE2] §§9–10: the covering quantum group (in progress)
+
+Names are in `OddMath.CoveringQuantum`. Conventions are those of [BE2] (its `q` is `q⁻¹` in [CHW1]
+and [C]). The `(q, π)`-integers are defined over any commutative ring with a unit `q` and an element
+`π`, with `π² = 1` where needed; [BE2] works over `ℚ(q)[π]/(π² - 1)`. Index sets need not be
+finite and `I` may have no odd elements.
+
+| Statement | Content | Declarations |
+| --- | --- | --- |
+| §9 (first paragraph), [CHW1] §1.1 | super Cartan datum: generalized Cartan matrix symmetrized by positive integers `dᵢ`, parity with (1.4); `i · j = dᵢ aᵢⱼ` satisfies [CHW1] (a), (b), (d); bar-consistency (10.2) and its consequence [CHW1] (f); root datum `⟨hᵢ, αⱼ⟩ = aᵢⱼ`, `\|i, λ\|` | `SuperCartanDatum`, `SuperCartanDatum.dot`, `SuperCartanDatum.BarConsistent`, `SuperCartanDatum.even_dot_of_barConsistent`, `RootDatum`, `RootDatum.parl` |
+| §9, `[n]_{q,π}`, (9.1) | `(q, π)`-integers for `n ∈ ℤ` as printed, `(q - πq⁻¹)[n] = qⁿ - πⁿq⁻ⁿ`, `[m+n] = πⁿq⁻ⁿ[m] + qᵐ[n]`, `[-n] = -π^{\|n\|}[n]`; (9.1) `bar[n] = π^{n-1}[n] = -π[-n]` | `qpNat`, `qpInt`, `qpNat_mul_sub`, `qpNat_add`, `qpInt_neg`, `qpInt_inv`, `qpInt_inv_eq_neg`, `map_qpInt` |
+| §9, factorials and binomials | `[n]!`, `[n r]` (Pascal rule) with `[n r][r]![n-r]! = [n]!`, the second Pascal rule, symmetry, `bar[n r] = π^{r(n-r)}[n r]` (bar invariant for `n` odd) | `qpFact`, `qpBinom`, `qpBinom_mul_qpFact`, `qpBinom_succ_succ'`, `qpBinom_symm`, `qpBinom_inv`, `qpBinom_inv_of_odd` |
 
 ## Building
 
