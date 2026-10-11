@@ -42,6 +42,12 @@ import OddMath.CoveringQuantum.UDot.TriangularMixed
 import OddMath.CoveringQuantum.UDot.TriangularRepresentation
 import OddMath.CoveringQuantum.UDot.TriangularRetraction
 import OddMath.CoveringQuantum.UDot.GlobalTriangular
+import OddMath.CoveringQuantum.UDot.RhoHalfWords
+import OddMath.CoveringQuantum.UDot.ColumnFunctional
+import OddMath.CoveringQuantum.UDot.AdjointColumn
+import OddMath.CoveringQuantum.UDot.NegativeColumnFunctional
+import OddMath.CoveringQuantum.UDot.ModifiedForm
+import OddMath.CoveringQuantum.UDot.ModifiedFormUniqueness
 import OddMath.CoveringQuantum.UDot.VermaOperators
 import OddMath.CoveringQuantum.UDot.VermaSerre
 import OddMath.CoveringQuantum.UDot.VermaWeights
