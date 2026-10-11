@@ -568,6 +568,10 @@ import OddMath.SKM.BubbleSeriesStep
 import OddMath.SKM.BubbleSlidesOne
 import OddMath.SKM.BubbleSlidePolynomial
 import OddMath.SKM.BubbleSlideMiddle
+import OddMath.SKM.BubbleSlideDotted
+import OddMath.SKM.BubbleSlideConvolution
+import OddMath.SKM.BubbleSlideInduction
+import OddMath.SKM.BubbleSlidesConnected
 import OddMath.SKM.Calculus
 import OddMath.SKM.Chevalley
 import OddMath.SKM.ChevalleyBase
