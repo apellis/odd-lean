@@ -645,6 +645,11 @@ paper's realization in a complex vector space is a special case.
 | Lemma 6.1, Prop 6.2 | the claim (6.3) for `⟨hᵢ,λ⟩ ≤ -1` by testing against the isomorphism (1.14) ((6.4), (6.5)); the pitchfork relation (6.1); the mirror-image claim for `⟨hᵢ,λ⟩ ≥ -1` by testing against (1.13), and (6.2); the first relation of (6.6) (left adjunction zigzag on `Eᵢ`, sign `(-1)^{\|i,λ\|}`) in all three cases of the paper; the second relation of (6.6) (zigzag on `Fᵢ`, no sign) as the image under `ω` of the first relation at `-λ`, computed on normal-form diagrams in the three cases `⟨hᵢ,λ⟩ = 1`, `≤ 0`, `≥ 2` | `eq_6_3`, `check_6_4`, `check_6_5`, `ext_EFE`, `eq_6_1`, `claim_6_2`, `ext_EFE'`, `eq_6_2`, `eq_6_6_a`, `retaF`, `lepsF`, `eq_6_6_b` |
 | Lemma 7.1 (7.1), (7.2) | an upward strand past a leftward cap or cup for distinct colours, with the stated weight bounds; the two relations are proved separately using inversion-map components, the mixed braid relation and bubble evaluations | `eq_7_1`, `eq_7_2` |
 | Prop 7.2 (7.5)–(7.6) | all four pitchfork equalities, for every weight and every pair of colours, with the sign in (7.6); left adjunction removes the weight bounds, and the Chevalley involution gives the downward orientations | `eq_7_5_a`, `eq_7_5_b`, `eq_7_6_a`, `eq_7_6_b`; `Om_etaP`, `Om_epsP` |
+| Prop 7.3(iv), corrected (7.13)–(7.14) | both disconnected-colour bubble slides, every weight and shifted degree `n ≥ 0`, including fake bubbles; a factor `tᵢⱼ` on each RHS, with no scalar specialization; see ERRATA [BE2] 1 | `eq_7_13_corrected`, `eq_7_14_corrected` |
+
+Proposition 7.3(i)–(iii) and the remaining diagrammatic results are not yet proved.
+The correction above is a consequence of the existing presentation; it does not
+establish nondegeneracy or the paper's later main results.
 
 ### [BE2] §§9–10: the covering quantum group (in progress)
 
