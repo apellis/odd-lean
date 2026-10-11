@@ -576,6 +576,8 @@ import OddMath.SKM.BubbleSlideDotted
 import OddMath.SKM.BubbleSlideConvolution
 import OddMath.SKM.BubbleSlideInduction
 import OddMath.SKM.BubbleSlidesConnected
+import OddMath.SKM.SameColourBubbleSlides
+import OddMath.SKM.OddBubbleCentrality
 import OddMath.SKM.Calculus
 import OddMath.SKM.Chevalley
 import OddMath.SKM.ChevalleyBase
