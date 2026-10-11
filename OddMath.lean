@@ -63,6 +63,9 @@ import OddMath.CoveringQuantum.UDot.VermaRepresentation
 import OddMath.CoveringQuantum.UDot.IntegrablePolarization
 import OddMath.CoveringQuantum.UDot.IntegrableSigns
 import OddMath.CoveringQuantum.UDot.LowestQuotient
+import OddMath.CoveringQuantum.UDot.IntegrableWeightOperators
+import OddMath.CoveringQuantum.UDot.LowestPolarization
+import OddMath.CoveringQuantum.UDot.TensorPresentation
 import OddMath.CoveringQuantum.UDot.VermaPolarization
 import OddMath.CoveringQuantum.UDot.VermaComparison
 import OddMath.CoveringQuantum.UDot.VermaLimit
