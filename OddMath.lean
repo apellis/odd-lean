@@ -31,6 +31,7 @@ import OddMath.CoveringQuantum.UDot.HalfMaps
 import OddMath.CoveringQuantum.UDot.HalfWeights
 import OddMath.CoveringQuantum.UDot.HalfEmbeddings
 import OddMath.CoveringQuantum.UDot.Rho
+import OddMath.CoveringQuantum.UDot.Sigma
 import OddMath.CoveringQuantum.UDot.Symmetries
 import OddMath.CoveringQuantum.UDot.Triangular
 import OddMath.CoveringQuantum.UDot.TriangularTensor
