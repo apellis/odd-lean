@@ -62,6 +62,7 @@ import OddMath.CoveringQuantum.UDot.VermaMixed
 import OddMath.CoveringQuantum.UDot.VermaRepresentation
 import OddMath.CoveringQuantum.UDot.VermaPolarization
 import OddMath.CoveringQuantum.UDot.VermaComparison
+import OddMath.CoveringQuantum.UDot.VermaLimit
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
