@@ -651,8 +651,10 @@ paper's realization in a complex vector space is a special case.
 | Prop 7.3(iii), (7.11)–(7.12), general connected pairs | both slides at every weight and integer shifted degree, including fake bubbles, with the full rectangular polynomial, arbitrary colour parities and unchanged scalars | `eq_7_11_connected`, `eq_7_12_connected`, `bubbleCoeff_connected` |
 | Prop 7.3(iii), proof, middle weights | arbitrary dotted braid contraction, evaluated curl sum, shifted convolution and coefficient induction through every missing degree | `bubble_slide_middle_dotted_all`, `bubble_slide_middle_shift_convolution`, `bubbleCoeff_middle` |
 | Prop 7.3(iv), corrected (7.13)–(7.14) | both disconnected-colour bubble slides, every weight and shifted degree `n ≥ 0`, including fake bubbles; a factor `tᵢⱼ` on each RHS, with no scalar specialization; see ERRATA [BE2] 1 | `eq_7_13_corrected`, `eq_7_14_corrected` |
+| Prop 7.3(i–ii), (7.7)–(7.10) | both same-colour slides, all weights and shifted degrees `n ≥ 0`, including fake bubbles; coefficients `r+1` for even colour and `2r+1` at even dot counts for odd colour, with the boundary correction at coroot value −1 retained | `eq_7_7`, `eq_7_8`, `eq_7_9`, `eq_7_10` |
+| Cor 7.4, (7.15), odd-bubble centrality | the actual normalized odd bubble slides across every `Eⱼ` and `Fⱼ`, with unchanged scalars; supernatural action on homogeneous 2-morphisms of arbitrary parity between arbitrary words with matching boundary weight, and the even-plus-odd linearity formula | `oddBubble_slide_up`, `oddBubble_slide_down`, `oddBubble_naturality`, `oddBubble_naturality_add` |
 
-Proposition 7.3(i)–(ii), Corollary 7.4 and Proposition 7.6 remain unproved.
+Proposition 7.6 remains unproved.
 The correction above is a consequence of the existing presentation; it does not
 establish nondegeneracy or the paper's later main results.
 
