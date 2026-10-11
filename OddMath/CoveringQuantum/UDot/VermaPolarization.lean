@@ -6,7 +6,7 @@ import OddMath.CoveringQuantum.UDot.RhoHalfWords
 
 Construct the form on the existing Serre-half Verma module by a vacuum matrix
 coefficient, and prove symmetry, normalization and full rho-contravariance.
-This is the Verma precursor to Clark IV §5.1 (the tau1-prime convention);
+This is the Verma precursor in Clark IV §5.2, Proposition 5.8's tau1-prime convention;
 no integrable-quotient descent or nondegeneracy is claimed.
 -/
 
