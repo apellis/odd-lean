@@ -646,9 +646,12 @@ paper's realization in a complex vector space is a special case.
 | Lemma 7.1 (7.1), (7.2) | an upward strand past a leftward cap or cup for distinct colours, with the stated weight bounds; the two relations are proved separately using inversion-map components, the mixed braid relation and bubble evaluations | `eq_7_1`, `eq_7_2` |
 | Prop 7.2 (7.5)–(7.6) | all four pitchfork equalities, for every weight and every pair of colours, with the sign in (7.6); left adjunction removes the weight bounds, and the Chevalley involution gives the downward orientations | `eq_7_5_a`, `eq_7_5_b`, `eq_7_6_a`, `eq_7_6_b`; `Om_etaP`, `Om_epsP` |
 | Prop 7.3(iii), (7.11)–(7.12), `dᵢⱼ = 1` | both connected-colour bubble slides at every weight and integer shifted degree, including fake bubbles; arbitrary `dⱼᵢ`, either parity of `j`, and unchanged scalars | `eq_7_11_of_d_one`, `eq_7_12_of_d_one` |
+| Prop 7.3(iii), (7.11)–(7.12), natural dots | both slides for arbitrary connected Cartan entries, both colour parities and the full quadratic polynomial; no fake-bubble extension asserted | `bubbleR_slide_polynomial_raw`, `bubbleL_slide_polynomial_raw` |
+| Prop 7.3(iii), proof, middle weights | initial contracted-braid recurrence for `0 < hᵢ(μ) < dᵢⱼ`, with every polynomial coefficient; ordered series transport between the actual normalized bubble families | `bubble_slide_middle_recurrence`, `bubbleCoeff_polynomial_iff` |
 | Prop 7.3(iv), corrected (7.13)–(7.14) | both disconnected-colour bubble slides, every weight and shifted degree `n ≥ 0`, including fake bubbles; a factor `tᵢⱼ` on each RHS, with no scalar specialization; see ERRATA [BE2] 1 | `eq_7_13_corrected`, `eq_7_14_corrected` |
 
-Proposition 7.3(i)–(ii), part (iii) for `dᵢⱼ > 1`, Corollary 7.4 and Proposition 7.6 remain unproved.
+Proposition 7.3(i)–(ii), the all-degree fake-bubble extension of (iii) for `dᵢⱼ > 1`,
+Corollary 7.4 and Proposition 7.6 remain unproved.
 The correction above is a consequence of the existing presentation; it does not
 establish nondegeneracy or the paper's later main results.
 
