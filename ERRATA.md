@@ -2,12 +2,14 @@
 
 Errata to the source papers found during the formalization, one list per paper, in order of
 appearance. Numbering refers to the arXiv versions cited in [README.md](README.md). All names are
-in `OddMath.Frontier`.
+in `OddMath.Frontier` unless another namespace is specified.
 
 Codes: **M** misprint; **F→T** false as printed, with a corrected statement proved; **G** gap in
 the proof of a true statement. Every item carries the Lean declarations that refute the printed
 claim and prove the correction, except where it is marked *textual*: such an item is a slip in
-the prose with no mathematical content to check.
+the prose with no mathematical content to check. Items explicitly marked **constraint** instead
+record a proved necessary condition and state any additional hypotheses needed for a contradiction;
+they are not unconditional counterexamples.
 
 These errata are what the formalization turned up; they are not a complete review of the papers.
 
@@ -453,3 +455,33 @@ from `0` in Lean.
 25. **§4.4, Definition 4.15 (2) [M].** The functor `D(OΛ_{a+b}) → D(OΛ_{a,b})` is printed as
    `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`; the tensor product is over `OΛ_{a+b}`, as in the displayed functor
    `Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (−)` and in the definition of `R` (`EQFunctor.comult`, `comultIsoDerivedTensor`).
+
+## [BE2] J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2
+
+Names in this section are in `OddMath.SKM`.
+
+1. **Proposition 7.3(iv), (7.13)–(7.14): missing scalar factors
+   [constraint proved; corrected identities proved].** For distinct colours with `dᵢⱼ = 0`,
+   multiply the entire right-hand side of **each** displayed equation by `tᵢⱼ`.
+   In (7.13) the bubble whose upward side is on the right moves right-to-left past `Eⱼ`;
+   in (7.14) the bubble whose upward side is on the left moves left-to-right.
+   The corrected identities hold for every weight and every shifted degree `n ≥ 0`,
+   including fake bubbles (`eq_7_13_corrected`, `eq_7_14_corrected`). The proof uses the
+   existing quadratic and pitchfork relations and the infinite Grassmannian identity;
+   it adds no defining relation and does not set `tᵢⱼ = 1`.
+
+   **Proved obstruction to the printed normalization.** At `n = 0`, either unscaled
+   equation forces `(tᵢⱼ - 1) • id_(Eⱼ 1_λ) = 0`
+   (`unscaled_bubbleRs_zero_constraint`, `unscaled_bubbleLs_zero_constraint`). Indeed,
+   the bubbles evaluate to `c_{λ;i}⁻¹` and `c_{λ;i}`, respectively, while
+   `c_{λ+αⱼ;i} = tᵢⱼ c_{λ;i}`. The printed scalar conditions allow disconnected
+   parameters satisfying `tᵢⱼ = tⱼᵢ`, not necessarily `tᵢⱼ = 1`.
+
+   **Certainty boundary.** Over an arbitrary commutative ring the constraint is an
+   annihilator condition, not a contradiction from `tᵢⱼ ≠ 1` alone. It contradicts a
+   nonzero strand identity when `tᵢⱼ - 1` is a unit
+   (`unscaled_bubbleRs_zero_impossible`, `unscaled_bubbleLs_zero_impossible`). No
+   nonzero model or nondegeneracy theorem is established here. This locates a defect
+   in the normalization of the derived slides, not an established defect in the
+   defining presentation. Parts (i)–(iii) of Proposition 7.3 and the consistency of
+   subsequent main results are not covered by this correction.

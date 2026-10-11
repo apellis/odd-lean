@@ -545,6 +545,10 @@ import OddMath.PbwL4
 import OddMath.SKM.Basic
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
+import OddMath.SKM.BubbleSeries
+import OddMath.SKM.BubbleSlideObstruction
+import OddMath.SKM.BubbleSlideRaw
+import OddMath.SKM.BubbleSlides
 import OddMath.SKM.Calculus
 import OddMath.SKM.Chevalley
 import OddMath.SKM.ChevalleyBase
