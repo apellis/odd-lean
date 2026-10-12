@@ -726,10 +726,11 @@ finite and `I` may have no odd elements.
 | Theorem 10.1, general finite-coordinate recurrence | actual positive-form pairing recurrence removes one negative generator with a unit prefactor; the full normal-order correction lowers negative word degree on arbitrary finite triangular families; finite bar-consistent data over the generic covering ring, no root independence; this is not full-form nondegeneracy or a valuation theorem | `UDot.GenericTensor.positiveModifiedForm_F_eq_zero_iff`, `coordinateAction_E_leading`, `finiteFamily_E_leading` |
 | Theorem 10.1(1)–(3), shorter characterization | same construction hypotheses; same-length reversed-word normalization suffices under the explicit local assumption that equal positive root sums have equal word lengths | `UDot.GenericTensor.sesquilinearForm_eq_iff_of_length_separation` |
 | Original highest-weight quotient local nilpotence | both original Chevalley halves are locally nilpotent on every vector of the action-generated quotient, over the generic covering ring for finite bar-consistent root data and arbitrary highest weight; raising has formal word-length bounds and lowering follows from the monic Serre relation; no dominance, root independence, field/domain, or nondegeneracy assumption | `UDot.GenericVerma.NativeLeading.integrableChevalley_true_locally_nilpotent`, `UDot.GenericVerma.integrableChevalley_false_locally_nilpotent`, `UDot.GenericVerma.serre_nilpotence_bound` |
+| Original mixed tensor E/F local nilpotence | proved over the generic covering ring for finite `I`, bar-consistent root data and arbitrary weights and tensor vectors, for both native Delta1/Delta2 coproduct choices | `UDot.GenericVerma.tensorE_locally_nilpotent`, `UDot.GenericVerma.tensorF_locally_nilpotent` |
 
 Native cross-Delta1/Delta2 tensor J-adjointness and the normalized mixed-Gram joint limit
 are proved in the rho=tau1-prime convention. Identification with the printed
-tau1/Delta3/Delta4 pairing, mixed-tensor local nilpotence and full modified-form nondegeneracy remain open.
+tau1/Delta3/Delta4 pairing and full modified-form nondegeneracy remain open.
 Joint faithfulness of the dominant native tensor family is proved for each fixed native coproduct
 under an explicitly given strictly positive coroot weight. Native cyclic finite-span injectivity
 is conditional on the stated coroot bounds; neither result asserts cofinal dominant weights for
