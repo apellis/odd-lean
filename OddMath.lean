@@ -64,6 +64,7 @@ import OddMath.CoveringQuantum.UDot.IntegrablePolarization
 import OddMath.CoveringQuantum.UDot.IntegrableSigns
 import OddMath.CoveringQuantum.UDot.LowestQuotient
 import OddMath.CoveringQuantum.UDot.IntegrableWeightOperators
+import OddMath.CoveringQuantum.UDot.LoweringNilpotence
 import OddMath.CoveringQuantum.UDot.LowestPolarization
 import OddMath.CoveringQuantum.UDot.TensorPresentation
 import OddMath.CoveringQuantum.UDot.TensorSerre
@@ -88,6 +89,7 @@ import OddMath.CoveringQuantum.UDot.TensorGram.MixedIntegration
 import OddMath.CoveringQuantum.UDot.TensorGram.JointLimit
 import OddMath.CoveringQuantum.UDot.TensorGram.JointConvergence
 import OddMath.CoveringQuantum.UDot.NativeCyclic.CyclicInjectivity
+import OddMath.CoveringQuantum.UDot.NativeCyclic.RaisingNilpotence
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
