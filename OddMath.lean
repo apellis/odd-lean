@@ -87,6 +87,7 @@ import OddMath.CoveringQuantum.UDot.TensorGram.PositiveComparison
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedIntegration
 import OddMath.CoveringQuantum.UDot.TensorGram.JointLimit
 import OddMath.CoveringQuantum.UDot.TensorGram.JointConvergence
+import OddMath.CoveringQuantum.UDot.NativeCyclic.CyclicInjectivity
 import OddMath.Diagrammatics.Even.Basic
 import OddMath.Diagrammatics.Even.Cancellation
 import OddMath.Diagrammatics.Even.Fixtures
