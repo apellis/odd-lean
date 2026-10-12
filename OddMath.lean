@@ -646,3 +646,4 @@ import OddMath.Tests.LrTriangularFixtures
 import OddMath.Tests.OddDotsFixtures
 import OddMath.Tests.PbwL1Fixtures
 import OddMath.Tests.SkewPolynomialFixtures
+import OddMath.CoveringQuantum.UDot.NativeCyclic.NativeFamily
