@@ -654,6 +654,10 @@ paper's realization in a complex vector space is a special case.
 | Prop 7.3(i–ii), (7.7)–(7.10) | both same-colour slides, all weights and shifted degrees `n ≥ 0`, including fake bubbles; coefficients `r+1` for even colour and `2r+1` at even dot counts for odd colour, with the boundary correction at coroot value −1 retained | `eq_7_7`, `eq_7_8`, `eq_7_9`, `eq_7_10` |
 | Cor 7.4, (7.15), odd-bubble centrality | the actual normalized odd bubble slides across every `Eⱼ` and `Fⱼ`, with unchanged scalars; supernatural action on homogeneous 2-morphisms of arbitrary parity between arbitrary words with matching boundary weight, and the even-plus-odd linearity formula | `oddBubble_slide_up`, `oddBubble_slide_down`, `oddBubble_naturality`, `oddBubble_naturality_add` |
 
+| Theorem | Source | Declaration | Hypotheses | Status |
+| --- | --- | --- | --- | --- |
+| Original homwise graded Chevalley equivalence | [BE2] §9, prerequisite for Prop 9.3 | `chevHomGradedEquivalence` | `CommRing k`, original `Datum`, `Scalars`, `Symmetrizer`, `Scalars.Homogeneous` | Homwise graded equivalence complete; shifted envelope and global horizontal coherence remain open |
+
 Proposition 7.6 remains unproved.
 The correction above is a consequence of the existing presentation; it does not
 establish nondegeneracy or the paper's later main results.
