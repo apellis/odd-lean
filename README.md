@@ -656,7 +656,7 @@ paper's realization in a complex vector space is a special case.
 
 | Theorem | Source | Declaration | Hypotheses | Status |
 | --- | --- | --- | --- | --- |
-| Original homwise graded Chevalley equivalence | [BE2] §9, prerequisite for Prop 9.3 | `chevHomGradedEquivalence` | `CommRing k`, original `Datum`, `Scalars`, `Symmetrizer`, `Scalars.Homogeneous` | Homwise graded equivalence complete; shifted envelope and global horizontal coherence remain open |
+| Original homwise graded Chevalley equivalence and whiskering compatibility | [BE2] §9, prerequisites for Prop 9.3 | `chevHomGradedEquivalence`, `Om_plcL_all`, `chevHomObj_id`, `chevHomObj_comp`, `chevHom_whiskerLeft`, `chevHom_whiskerRight` | `CommRing k`, original `Datum`, `Scalars`, `Symmetrizer`, `Scalars.Homogeneous`; arbitrary quotient morphisms | Homwise graded equivalence and both actual whiskering equations complete; global coherence and shifted-envelope extension remain open |
 
 Proposition 7.6 remains unproved.
 The correction above is a consequence of the existing presentation; it does not
