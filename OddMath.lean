@@ -610,6 +610,11 @@ import OddMath.SKM.ChevalleyBase
 import OddMath.SKM.ChevalleyInv
 import OddMath.SKM.ChevalleyLeft
 import OddMath.SKM.ChevalleyRel
+import OddMath.SKM.ChevalleyGrading
+import OddMath.SKM.SOpGrading
+import OddMath.SKM.ChevalleyGradedHom
+import OddMath.SKM.ChevalleyHomDensity
+import OddMath.SKM.ChevalleyHomEquivalence
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
