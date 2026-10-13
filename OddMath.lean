@@ -615,6 +615,8 @@ import OddMath.SKM.SOpGrading
 import OddMath.SKM.ChevalleyGradedHom
 import OddMath.SKM.ChevalleyHomDensity
 import OddMath.SKM.ChevalleyHomEquivalence
+import OddMath.SKM.ChevalleyPlacement
+import OddMath.SKM.ChevalleyWhiskering
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
