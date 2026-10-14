@@ -720,6 +720,9 @@ import OddMath.SKM.SpanLocal
 import OddMath.SKM.SpanBubbleProd
 import OddMath.SKM.SpanCaps
 import OddMath.SKM.SpanCapsElim
+import OddMath.SKM.SpanLocal2
+import OddMath.SKM.SpanCapBlock
+import OddMath.SKM.SpanCapsPush
 import OddMath.SKM.SpanBubbles
 import OddMath.SKM.SpanBubbleSlides
 import OddMath.SKM.ChevalleyHom
