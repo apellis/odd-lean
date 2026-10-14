@@ -669,6 +669,13 @@ import OddMath.SKM.ChevalleyQReverseTriangleNaturality
 import OddMath.SKM.ChevalleyQReverseTriangleAssembly
 import OddMath.SKM.ChevalleyQReverseTriangle
 import OddMath.SKM.ChevalleyQReverseTriangleGrading
+import OddMath.SKM.ChevalleyQPiCounit
+import OddMath.SKM.ChevalleyQPiCounitInv
+import OddMath.SKM.ChevalleyQPiUnit
+import OddMath.SKM.ChevalleyQPiUnitInv
+import OddMath.SKM.ChevalleyQPiCounitCancel
+import OddMath.SKM.ChevalleyQPiUnitCancelIso
+import OddMath.SKM.ChevalleyQPiUnitCancel
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
