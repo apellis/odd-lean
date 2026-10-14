@@ -485,3 +485,14 @@ Names in this section are in `OddMath.SKM`.
    in the normalization of the derived slides, not an established defect in the
    defining presentation. Parts (i)–(iii) of Proposition 7.3 and the consistency of
    subsequent main results are not covered by this correction.
+
+   **For the authors.** In Proposition 7.3(iv), for `i ≠ j` with `dᵢⱼ = 0`, the right-hand
+   side of each of (7.13) and (7.14) should carry a factor `tᵢⱼ`. Degree zero shows why:
+   by (5.3)–(5.4) the two dotless bubbles in a region of weight `λ` are `c_{λ;i}⁻¹` and
+   `c_{λ;i}`, the regions on the two sides of an upward `j`-strand have weights `λ` and
+   `λ + αⱼ`, and `c_{λ+αⱼ;i} = tᵢⱼ c_{λ;i}` by (1.17). So moving a bubble across the strand
+   rescales it by `tᵢⱼ^{±1}`, and the printed equations force `(tᵢⱼ − 1) · 1_{Eⱼ1_λ} = 0`,
+   whereas the conditions on the scalars in §1 only ask `tᵢⱼ = tⱼᵢ` when `dᵢⱼ = 0`. With the factor `tᵢⱼ` both
+   identities hold for every weight and every degree, fake bubbles included; the proof uses
+   only the quadratic and pitchfork relations and the infinite Grassmannian relation. Parts
+   (i)–(iii) hold as printed, with the scalars unchanged.
