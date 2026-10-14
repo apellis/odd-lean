@@ -616,6 +616,14 @@ import OddMath.SKM.ChevalleyHomDensity
 import OddMath.SKM.ChevalleyHomEquivalence
 import OddMath.SKM.ChevalleyPlacement
 import OddMath.SKM.ChevalleyWhiskering
+import OddMath.SKM.ChevalleyCoherence
+import OddMath.SKM.ChevalleyTwo
+import OddMath.SKM.ChevalleyQHom
+import OddMath.SKM.ChevalleyQTwo
+import OddMath.SKM.ChevalleyQEquivalence
+import OddMath.SKM.ChevalleyQTwoGraded
+import OddMath.SKM.ChevalleyQPiHom
+import OddMath.SKM.ChevalleyQPiTwo
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
