@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.SpanCapsElim
-import OddMath.SKM.SpanCapBlock
+import OddMath.SKM.SpanCapCross
 
 /-!
 # The cap push
@@ -202,6 +202,57 @@ theorem push_dotS {c : ℕ} {ms : List (Mv I)} (hF : LowHyp cs μ w₀ c)
       (by simp [mvLay, Mv.loc])
     simp [mvLay, Mv.lay, Mv.loc, Mv.pre, Mv.post]
 
+theorem cast_mid (P S Q : List (Letter I)) : P ++ [] ++ (S ++ Q) = P ++ S ++ Q := by simp
+
+/-- **A dot on the leg `B` below the block** is, up to sign, the block with one more dot on `A`,
+plus the block with an odd bubble in the region right of the cap ((2.3), (4.3)), plus diagrams with
+fewer crossings. -/
+theorem dotB_decomp {c : ℕ} (hF : LowHyp cs μ w₀ c) {pre : List (XLayer I)}
+    {P S Q : List (Letter I)} {l : Letter I} (d : ℕ)
+    (hpre : XChain w₀ pre (P ++ [flipL l] ++ S ++ [l] ++ Q)) (hc : xcnt pre + S.length ≤ c) :
+    ∃ (p : ZMod 2) (r : k) (e : (pres D Sc).obj (ob D μ w₀) ⟶ (pres D Sc).obj (ob D μ (P ++ S ++ Q))),
+      e ∈ CapTarget D Sc cs μ w₀ (P ++ S ++ Q) (xcnt pre + S.length) ∧
+      xev cs μ w₀ (P ++ S ++ Q) (pre ++ (xDotL l).map (xwhL (P ++ [flipL l] ++ S) Q) ++
+          (capBlk S l d).map (xwhL P Q)) =
+        zsign k p • xev cs μ w₀ (P ++ S ++ Q) (pre ++ (capBlk S l (d + 1)).map (xwhL P Q)) +
+        r • (xev cs μ w₀ (P ++ S ++ Q) (pre ++ (capBlk S l d).map (xwhL P Q)) ≫
+          wordCast μ (cast_mid P S Q) (cast_mid P S Q)
+            (plcL D Sc μ P (S ++ Q) [] [] (oddBubble cs l.2 (wt D μ (S ++ Q))))) + e := by
+  set A := flipL l
+  set pre' := pre ++ (lmLc S l).map (xwhL (P ++ [A]) Q)
+  have hpre' : XChain w₀ pre' (P ++ [A, l] ++ (S ++ Q)) :=
+    hpre.app ((xChain_lmLc S l).whisk (P ++ [A]) Q) (by simp) |>.cast rfl (by simp)
+  have hDs : ∀ n, XChain [A, l] ((xDotsL A n).map (xwhL [] [l]) ++ xCapL l) [] := fun n =>
+    ((xChain_xDotsL A n).whisk [] [l]).app (xChain_xCapL l) (by simp [A])
+  have hDB : XChain [A, l] ((xDotL l).map (xwhL [A] []) ++ (xDotsL A d).map (xwhL [] [l]) ++
+      xCapL l) [] := by
+    have := ((xChain_xDotL l).whisk [A] []).app (hDs d) (by simp)
+    simpa using this
+  -- the dot moves around the cap
+  obtain ⟨p, r, E⟩ := dotsCap_dotB cs (wt D μ (S ++ Q)) l d
+  have hE := xev_bub_ctx μ pre' P (S ++ Q) E hpre' hDB (hDs (d + 1)) (hDs d) (cast_mid P S Q)
+  have hn : ∀ n, pre' ++ ((xDotsL A n).map (xwhL [] [l]) ++ xCapL l).map (xwhL P (S ++ Q)) =
+      pre ++ (capBlk S l n).map (xwhL P Q) := fun n => by simp [pre', capBlk, A]
+  rw [hn, hn] at hE
+  -- the dot passes the strands `S`
+  rcases S.eq_nil_or_concat' with rfl | ⟨S', s, rfl⟩
+  · refine ⟨p, r, 0, Submodule.zero_mem _, ?_⟩
+    rw [add_zero, ← hE]
+    congr 1
+    simp [pre', capBlk, lmLc, A]
+  · obtain ⟨q, hq⟩ := XEq.at (L := pre ++ (xDotL l).map (xwhL (P ++ [A] ++ (S' ++ [s])) Q) ++
+        (capBlk (S' ++ [s]) l d).map (xwhL P Q)) (L' := pre' ++ ((xDotL l).map (xwhL [A] []) ++
+        (xDotsL A d).map (xwhL [] [l]) ++ xCapL l).map (xwhL P (S' ++ [s] ++ Q)))
+      (t₀ := P ++ (S' ++ [s]) ++ Q) (c := xcnt pre + S'.length) pre [] P Q
+      (capBlk_dotB cs (wt D μ Q) (S' ++ [s]) l d) (hpre.cast rfl (by simp [A]))
+      (((xChain_xDotL l).whisk ([A] ++ (S' ++ [s])) []).app (xChain_capBlk' (S' ++ [s]) l d)
+        (by simp [A]) |>.cast (by simp [A]) rfl)
+      (((xChain_lmLc (S' ++ [s]) l).whisk [A] []).app (hDB.whisk [] (S' ++ [s]))
+        (by simp) |>.cast (by simp [A]) (by simp)) (by simp [A]) (by simp [pre', A]) (by simp)
+    refine ⟨q + p, zsign k q * r, _, capT_of_leL hF (by simp at hc ⊢; omega) (by simp) hq, ?_⟩
+    rw [hE, zsign_add]
+    module
+
 /-- **The cap push past a dot on the leg `B`**: the dot passes the strands `S` and then moves
 around the cap to `A` ((2.3), (4.3)); the odd-bubble term of (4.3) is moved out by
 `BubbleSlideOut`. -/
@@ -212,49 +263,11 @@ theorem push_dotB (hS : BubbleSlideOut D Sc cs) {c : ℕ} {ms : List (Mv I)}
     xev cs μ w₀ (P ++ S ++ Q) (mvLay ms ++
         (xDotL l).map (xwhL (P ++ [flipL l] ++ S) Q) ++ (capBlk S l d).map (xwhL P Q)) ∈
       CapTarget D Sc cs μ w₀ (P ++ S ++ Q) (xcnt (mvLay ms) + S.length) := by
-  set A := flipL l
-  set pre := mvLay ms ++ (lmLc S l).map (xwhL (P ++ [A]) Q)
-  have hpre : XChain w₀ pre (P ++ [A, l] ++ (S ++ Q)) :=
-    hms.xChain.app ((xChain_lmLc S l).whisk (P ++ [A]) Q) (by simp)
-      |>.cast rfl (by simp)
-  have hDs : ∀ n, XChain [A, l] ((xDotsL A n).map (xwhL [] [l]) ++ xCapL l) [] := fun n =>
-    ((xChain_xDotsL A n).whisk [] [l]).app (xChain_xCapL l) (by simp [A])
-  have hDB : XChain [A, l] ((xDotL l).map (xwhL [A] []) ++ (xDotsL A d).map (xwhL [] [l]) ++
-      xCapL l) [] := by
-    have := ((xChain_xDotL l).whisk [A] []).app (hDs d) (by simp)
-    simpa using this
-  -- the dot passes the strands `S`
-  have h₂ : xev cs μ w₀ (P ++ S ++ Q) (pre ++ ((xDotL l).map (xwhL [A] []) ++
-      (xDotsL A d).map (xwhL [] [l]) ++ xCapL l).map (xwhL P (S ++ Q))) ∈
-      CapTarget D Sc cs μ w₀ (P ++ S ++ Q) (xcnt (mvLay ms) + S.length) := by
-    obtain ⟨p, r, E⟩ := dotsCap_dotB cs (wt D μ (S ++ Q)) l d
-    have e : P ++ [] ++ (S ++ Q) = P ++ S ++ Q := by simp
-    rw [xev_bub_ctx μ pre P (S ++ Q) E hpre hDB (hDs (d + 1)) (hDs d) e]
-    have hT : ∀ n, xev cs μ w₀ (P ++ S ++ Q) (pre ++
-        ((xDotsL A n).map (xwhL [] [l]) ++ xCapL l).map (xwhL P (S ++ Q))) ∈
-        CapTarget D Sc cs μ w₀ (P ++ S ++ Q) (xcnt (mvLay ms) + S.length) := by
-      intro n
-      have := hIH P S Q l n hms hc
-      convert this using 2
-      simp [pre, capBlk, A]
-    refine Submodule.add_mem _ (Submodule.smul_mem _ _ (hT (d + 1)))
-      (Submodule.smul_mem _ _ ?_)
-    exact capTarget_comp_bubble_mid hS e (hT d) (isBubbleProd_oddBubble _ _)
-  rcases S.eq_nil_or_concat' with rfl | ⟨S', s, rfl⟩
-  · convert h₂ using 2
-    simp [pre, capBlk, lmLc, A]
-  · refine capT_of_xeq hF (c' := xcnt (mvLay ms) + S'.length)
-      (L' := pre ++ ((xDotL l).map (xwhL [A] []) ++ (xDotsL A d).map (xwhL [] [l]) ++
-        xCapL l).map (xwhL P (S' ++ [s] ++ Q))) (XEq.at (mvLay ms) []
-      P Q (capBlk_dotB cs (wt D μ Q) (S' ++ [s]) l d) (hms.xChain.cast rfl (by simp [A])) ?_ ?_ ?_ ?_ (by simp))
-      (by simp at hc ⊢; omega) (by simp) ?_
-    · exact ((xChain_xDotL l).whisk ([A] ++ (S' ++ [s])) []).app (xChain_capBlk' (S' ++ [s]) l d)
-        (by simp [A]) |>.cast (by simp [A]) rfl
-    · exact ((xChain_lmLc (S' ++ [s]) l).whisk [A] []).app (hDB.whisk [] (S' ++ [s]))
-        (by simp) |>.cast (by simp [A]) (by simp)
-    · simp [A]
-    · simp [pre, A]
-    · exact h₂
+  obtain ⟨p, r, e, he, E⟩ := dotB_decomp hF d hms.xChain hc
+  rw [E]
+  exact Submodule.add_mem _ (Submodule.add_mem _ (Submodule.smul_mem _ _ (hIH P S Q l _ hms hc))
+    (Submodule.smul_mem _ _ (capTarget_comp_bubble_mid hS _ (hIH P S Q l d hms hc)
+      (isBubbleProd_oddBubble _ _)))) he
 
 /-- **The cap push past a dot.** -/
 theorem push_dot (hS : BubbleSlideOut D Sc cs) {c : ℕ} {ms : List (Mv I)}
@@ -280,5 +293,102 @@ theorem push_dot (hS : BubbleSlideOut D Sc cs) {c : ℕ} {ms : List (Mv I)}
   · exact push_disjR hIH hms d R h₁ h₂ hc
 
 end PushDot
+
+
+/-! ## The cap push through a crossing -/
+
+section PushCross
+
+variable {μ : X} {w₀ : List (Letter I)}
+
+/-- **The cap push past a crossing**, given Reidemeister 3 (`R3Rel`) and the curl of a crossing
+and a cap (`CapCurlRel`). -/
+theorem push_cross (hR : R3Rel D Sc cs) (hC : CapCurlRel D Sc cs) {c : ℕ} {ms : List (Mv I)}
+    (hF : LowHyp cs μ w₀ c) (hIH : PushHyp cs μ w₀ c ms) (u : List (Letter I))
+    (l₁ l₂ : Letter I) (v : List (Letter I)) (hms : MvChain w₀ ms (Mv.cross u l₁ l₂ v).src) :
+    PushGoal cs μ w₀ c ms (Mv.cross u l₁ l₂ v) := by
+  intro P S Q l d ht hc
+  have ht' : u ++ [l₂, l₁] ++ v = P ++ [flipL l] ++ S ++ [l] ++ Q := ht
+  have hlay : (Mv.cross u l₁ l₂ v).lay = (xCrL l₁ l₂).map (xwhL u v) := rfl
+  have hsrc : (Mv.cross u l₁ l₂ v).src = u ++ [l₁, l₂] ++ v := rfl
+  rcases posPair ht' with ⟨R, hP, hv⟩ | ⟨hP, h1, hv⟩ | ⟨hu, h2, S', hS, hv⟩ |
+    ⟨hu, h2, hS, h1, hv⟩ | ⟨S₁, S₂, hS, hu, hv⟩ | ⟨S', hS, h1, hu, hv⟩ | ⟨hu, h2, hQ⟩ |
+    ⟨R, hQ, hu⟩
+  · exact push_disjL hIH hms d R hP hv hc
+  · -- the strand to the left of `A` enters the block
+    subst P v l₁
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    have hms' : MvChain w₀ ms (u ++ [flipL l] ++ (l₂ :: S) ++ [l] ++ Q) := by simpa using hms
+    refine capT_of_xeq hF (c' := xcnt (mvLay ms) + S.length) (XEq.at (mvLay ms) [] u Q
+      (capBlk_enterL cs _ S l₂ l d) (hms.xChain.cast rfl (by simp)) ?_ ?_ ?_ rfl (by simp))
+      (by omega) (by omega) ?_
+    · exact ((xChain_xCrL (flipL l) l₂).whisk [] (S ++ [l])).app
+        ((xChain_capBlk S l d).whisk [l₂] []) (by simp) |>.cast (by simp) (by simp)
+    · simpa using xChain_capBlk (l₂ :: S) l d
+    · simp
+    · exact capTarget_mono cs (by simp; omega) (push_tail (d := d) hIH hms' [] (by simp [MvChain])
+        (by simp) (by simp at hc ⊢; omega) le_rfl)
+  · -- a crossing of `A` with the first strand of the block
+    subst u l₂ S v
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    refine capT_of_leL hF (c' := xcnt (mvLay ms) + (S'.length + 1)) (by simp at hc; omega)
+      (by simp) (xev_low_at cs (mvLay ms) [] P Q (capBlk_sA cs _ l₁ S' l d)
+        (hms.xChain.cast rfl (by simp)) ?_ ?_ (by simp))
+    · exact ((xChain_xCrL l₁ (flipL l)).whisk [] (S' ++ [l])).app (xChain_capBlk (l₁ :: S') l d)
+        (by simp) |>.cast (by simp) rfl
+    · simp
+  · -- a crossing of `B` and `A`: a curl
+    subst u l₂ S l₁ v
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    refine capT_of_leL hF (c' := xcnt (mvLay ms)) (by simp at hc; omega) (by simp)
+      (xev_low_at cs (mvLay ms) [] P Q (capBlk_AB cs hC _ l d) (hms.xChain.cast rfl (by simp))
+        ?_ ?_ (by simp))
+    · exact (xChain_xCrL l (flipL l)).app (xChain_capBlk [] l d) (by simp) |>.cast rfl (by simp)
+    · simp
+  · -- a crossing of two strands of the block: Reidemeister 3
+    subst S u v
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    have hms' : MvChain w₀ ms (P ++ [flipL l] ++ (S₁ ++ [l₁, l₂] ++ S₂) ++ [l] ++ Q) := by
+      simpa using hms
+    refine capT_of_xeq hF (c' := xcnt (mvLay ms) + (S₁.length + S₂.length)) (XEq.at (mvLay ms) []
+      P Q (capBlk_crossS cs hR _ S₁ S₂ l₁ l₂ l d) (hms.xChain.cast rfl (by simp)) ?_ ?_ ?_ rfl
+      (by simp)) (by simp at hc; omega) (by simp; omega) ?_
+    · exact ((xChain_xCrL l₁ l₂).whisk ([flipL l] ++ S₁) (S₂ ++ [l])).app
+        (xChain_capBlk (S₁ ++ [l₂, l₁] ++ S₂) l d) (by simp) |>.cast (by simp) rfl
+    · exact (xChain_capBlk (S₁ ++ [l₁, l₂] ++ S₂) l d).app ((xChain_xCrL l₁ l₂).whisk S₁ S₂)
+        (by simp) |>.cast (by simp) (by simp)
+    · simp
+    · refine push_tail (d := d) hIH hms' [Mv.cross (P ++ S₁) l₁ l₂ (S₂ ++ Q)]
+        ⟨by simp [Mv.src, Mv.pre, Mv.lsrc, Mv.post], by simp [Mv.tgt, Mv.pre, Mv.ltgt, Mv.post,
+          MvChain]⟩ ?_
+        (by simp only [List.length_append, List.length_cons, List.length_nil] at hc ⊢; omega)
+        (by simp [mvLay, Mv.lay, Mv.loc])
+      simp [mvLay, Mv.lay, Mv.loc, Mv.pre, Mv.post]
+  · -- a crossing of the last strand of the block with `B`
+    subst S l₁ u v
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    refine capT_of_leL hF (c' := xcnt (mvLay ms) + S'.length) (by simp at hc; omega)
+      (by simp; omega) (xev_low_at cs (mvLay ms) [] P Q (capBlk_sB cs _ S' l₂ l d)
+        (hms.xChain.cast rfl (by simp)) ?_ ?_ (by simp))
+    · exact ((xChain_xCrL l l₂).whisk ([flipL l] ++ S') []).app
+        (xChain_capBlk (S' ++ [l₂]) l d) (by simp) |>.cast (by simp) rfl
+    · simp
+  · -- the strand to the right of `B` enters the block
+    subst u l₂ Q
+    simp only [hlay, xcnt_map_xwhL, xcnt_xCrL] at hc ⊢
+    rw [hsrc] at hms
+    have hms' : MvChain w₀ ms (P ++ [flipL l] ++ (S ++ [l₁]) ++ [l] ++ v) := by simpa using hms
+    refine capTarget_mono cs (le_of_eq (by simp; omega)) (push_tail (d := d) hIH hms' []
+      (by simp [MvChain]) ?_ (by simp at hc ⊢; omega) le_rfl)
+    rw [← capBlk_enterR]
+    simp
+  · exact push_disjR hIH hms d R hQ hu hc
+
+end PushCross
 
 end OddMath.SKM
