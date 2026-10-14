@@ -60,6 +60,7 @@ import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
 import OddMath.CoveringQuantum.UDot.Gauge
 import OddMath.CoveringQuantum.UDot.Twistor
 import OddMath.CoveringQuantum.UDot.Nondegeneracy
+import OddMath.CoveringQuantum.UDot.LusztigComparison
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
