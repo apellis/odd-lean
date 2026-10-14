@@ -728,6 +728,10 @@ import OddMath.SKM.SpanCapsPush
 import OddMath.SKM.SpanCapsPushCup
 import OddMath.SKM.SpanBubbles
 import OddMath.SKM.SpanBubbleSlides
+import OddMath.SKM.SpanClosed
+import OddMath.SKM.SpanClosedLocal
+import OddMath.SKM.SpanClosedCaps
+import OddMath.SKM.SpanBubbleOut
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
