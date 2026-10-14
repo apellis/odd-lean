@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Alex Ellis
 -/
 import OddMath.SKM.ChevalleyGrading
-import OddMath.SKM.SOpGrading
+import StringDiagrams.Super.SOpGraded
 import OddMath.SKM.Envelope
 import OddMath.SKM.ChevalleyInv
 
