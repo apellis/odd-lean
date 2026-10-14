@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.SpanCapsElim
 import OddMath.SKM.SpanCapCross
+import OddMath.SKM.SpanCapCup
 
 /-!
 # The cap push
@@ -21,6 +22,7 @@ the odd bubble in a middle region ((4.3)); the bubble is moved to the rightmost 
 
 * `posDot`, `posPair`: the positions of a move relative to the block.
 * `push_dot`: the cap push through a dot.
+* `push_cross`: the cap push through a crossing.
 -/
 
 noncomputable section
