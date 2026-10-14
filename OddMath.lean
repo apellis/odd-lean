@@ -676,6 +676,14 @@ import OddMath.SKM.ChevalleyQPiUnitInv
 import OddMath.SKM.ChevalleyQPiCounitCancel
 import OddMath.SKM.ChevalleyQPiUnitCancelIso
 import OddMath.SKM.ChevalleyQPiUnitCancel
+import OddMath.SKM.ChevalleyQPiForwardZigzag
+import OddMath.SKM.ChevalleyQPiForwardLift
+import OddMath.SKM.ChevalleyQPiForwardComparison
+import OddMath.SKM.ChevalleyQPiForwardTriangle
+import OddMath.SKM.ChevalleyQPiReverseZigzag
+import OddMath.SKM.ChevalleyQPiReverseComparison
+import OddMath.SKM.ChevalleyQPiReverseTriangle
+import OddMath.SKM.ChevalleyQPiBiequivalence
 import OddMath.SKM.Curls
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
