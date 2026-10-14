@@ -714,6 +714,8 @@ import OddMath.SKM.Placement
 import OddMath.SKM.PlacementHom
 import OddMath.SKM.SpanLower
 import OddMath.SKM.SpanLocal
+import OddMath.SKM.SpanBubbles
+import OddMath.SKM.SpanBubbleSlides
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
