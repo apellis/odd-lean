@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.SpanCapsPush
+import OddMath.SKM.SpanBubbleOut
 
 /-!
 # The cap push through a cup, and elimination of caps
@@ -20,8 +21,8 @@ The dots on `A` are created one at a time from dots on `B` ((2.3), (4.3), `dotB_
 
 * `push_cup`: the cap push through a cup.
 * `pushHyp_all`: the cap push.
-* `capElim'`: elimination of caps, assuming `BubbleSlideOut` and the local relations `R3Rel`,
-  `CapCurlRel` and `CupCurlRel`.
+* `capElim'`: elimination of caps, assuming the local relations `R3Rel`, `CapCurlRel` and
+  `CupCurlRel`.
 -/
 
 noncomputable section
@@ -304,14 +305,12 @@ variable (μ : X) (w₀ : List (Letter I)) in
 /-- **Elimination of caps** ([BE2] Theorem 8.1, KL III Proposition 3.11): every extended diagram
 `E_{w₀} 1_μ → E_v 1_μ` with at most `c` crossings is a combination of move diagrams with at most
 `c` crossings followed by products of bubbles in the rightmost region, modulo 2-morphisms factoring
-through sequences shorter than `w₀`. The bubble slides (`BubbleSlideOut`), the Reidemeister 3
-relations (`R3Rel`) and the curls of a crossing with a cap or a cup (`CapCurlRel`, `CupCurlRel`)
-are hypotheses. -/
-theorem capElim' (hS : BubbleSlideOut D Sc cs) (hR : R3Rel D Sc cs) (hC : CapCurlRel D Sc cs)
-    (hU : CupCurlRel D Sc cs) :
+through sequences shorter than `w₀`. The Reidemeister 3 relations (`R3Rel`) and the curls of a
+crossing with a cap or a cup (`CapCurlRel`, `CupCurlRel`) are hypotheses; the bubble slides hold
+(`bubbleSlideOut`). -/
+theorem capElim' (hR : R3Rel D Sc cs) (hC : CapCurlRel D Sc cs) (hU : CupCurlRel D Sc cs) :
     ∀ (c : ℕ) (v : List (Letter I)) (L : List (XLayer I)), xcnt L ≤ c →
       xev cs μ w₀ v L ∈ CapTarget D Sc cs μ w₀ v c :=
-  capElim μ w₀ hS (pushHyp_all hS hR hC hU)
-
+  capElim_of_push μ w₀ (pushHyp_all (bubbleSlideOut D Sc cs) hR hC hU)
 
 end OddMath.SKM
