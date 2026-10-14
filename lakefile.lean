@@ -12,7 +12,7 @@ require mathlib from git
 
 require StringDiagrams from git
   "https://github.com/apellis/string-diagrams-lean.git" @
-  "864d894fc6efd58ff8303be8c73040c5cfcd2a8d"
+  "f4855a2731720992334b4bb3504e736ad0dcbb23"
 
 require DG from git
   "https://github.com/apellis/dg-lean.git" @
