@@ -662,6 +662,18 @@ Proposition 7.6 remains unproved.
 The correction above is a consequence of the existing presentation; it does not
 establish nondegeneracy or the paper's later main results.
 
+**Relation to Ellis–Lauda.** For `I` an odd singleton, [BE2] is a reformulation of the odd
+2-category of A. P. Ellis, A. D. Lauda, *An odd categorification of U_q(sl₂)*, arXiv:1307.7816v2,
+and supersedes it here; EL is not formalized separately. One relation needs care. EL's odd
+dot-cyclicity relation, (3.15) = Lemma 5.1, (5.5), which BE2 refers to as [EL, (3.1)], compares
+a dot on a downward strand defined through the left and through the right adjunction. For
+`λ ≠ 0` its right-hand side contains a term `2 · (bubble beside the strand)`, but in the case
+`λ = 0` that term is missing. The correct relation at every weight, including `⟨hᵢ,λ⟩ = 0`,
+is the one in [BE2] (1.27) and Prop 4.1 (4.3)–(4.4) for odd `i` and `n = 1`: a dot slid around
+the leftward cap or cup picks up `(-1)^{⟨hᵢ,λ⟩}` plus twice the odd bubble. This is what is
+proved here (`lemma41_eq3_odd`, `lemma41_eq4_odd`, with `oddBubble_consistent` for the odd
+bubble at `⟨hᵢ,λ⟩ = 0`). The correction will be made in a planned revision of the papers.
+
 ### [BE2] §§9–10: the covering quantum group (in progress)
 
 Names are in `OddMath.CoveringQuantum`. Conventions are those of [BE2] (its `q` is `q⁻¹` in [CHW1]
