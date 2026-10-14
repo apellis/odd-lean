@@ -762,10 +762,10 @@ arbitrary root data. These results do not establish full [BE2] Theorem 10.1.
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `0fe5b2b416de112b88462014d1aff86eeb9f46b7`, the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `38e1e848d07386de5053f85099a947d92afced40`, and the
+string-diagrams-lean at `864d894fc6efd58ff8303be8c73040c5cfcd2a8d`, the [EQ] dg structures on
+[dg-lean](https://github.com/apellis/dg-lean) at `fe2d53ab78fc1aa776069ebb8834882e37997c5c`, and the
 [BE2] Cartan data on [lie-lean](https://github.com/apellis/lie-lean) at
-`9caf9bf648b6fb29c9d2436565c99b0b0e892f9c` (see `lakefile.lean` and `lake-manifest.json`).
+`903fa7832abb412b701f4904abcb33344a6c8d00` (see `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
 lake exe cache get
