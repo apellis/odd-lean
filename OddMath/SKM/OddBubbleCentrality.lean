@@ -80,17 +80,19 @@ theorem oddBubble_slide_up (i j : I) (μ : X) (hi : D.parity i = 1) :
   · rw [← bubbleCoeffR_one_odd cs i _ hi, ← bubbleCoeffR_one_odd cs i _ hi]
     exact (bubbleCoeffR_slide_iff cs i j μ 1).mpr (bubRs_one_slide_ne cs i j μ hi hij)
 
-private def bubbleMate (j : I) (μ : X) :=
+/-- The right mate `End(Eⱼ 1_{λ - αⱼ}) → End(Fⱼ 1_λ)`: the cup `η` on the left, the
+2-morphism on the middle (upward) strand, the cap `ε` on the right. -/
+def bubbleMate (j : I) (μ : X) :=
   ctxL D Sc μ [dn j] [dn j] [([], Shape.cup j, [dn j])] [dn j] [dn j]
     [([dn j], Shape.cap j, [])] [up j] [up j]
 
-private theorem bubbleMate_cl (j : I) (μ : X) (L : List (LayerData I)) :
+theorem bubbleMate_cl (j : I) (μ : X) (L : List (LayerData I)) :
     bubbleMate (Sc := Sc) j μ (cl D Sc (wt D μ [dn j]) [up j] [up j] L) =
       cl D Sc μ [dn j] [dn j] (mateL j L) := by
   rw [bubbleMate, ctxL_cl μ (by simp [Shape.dom, Shape.cod]) (by simp [Shape.dom, Shape.cod])]
   rfl
 
-private theorem mate_closed_right (j : I) (μ : X) {L : List (LayerData I)} (hL : SChain [] L []) :
+theorem mate_closed_right (j : I) (μ : X) {L : List (LayerData I)} (hL : SChain [] L []) :
     cl D Sc μ [dn j] [dn j] (mateL j (L.map (whL [up j] []))) =
       cl D Sc μ [dn j] [dn j] (L.map (whL [] [dn j])) := by
   have E := cl_interchange (D := D) (Sc := Sc) (μ := μ) (S := [dn j]) (T := [dn j])
@@ -110,7 +112,7 @@ private theorem mate_closed_right (j : I) (μ : X) {L : List (LayerData I)} (hL 
       rfl
     _ = _ := hstep
 
-private theorem mate_closed_left (j : I) (μ : X) {L : List (LayerData I)} (hL : SChain [] L []) :
+theorem mate_closed_left (j : I) (μ : X) {L : List (LayerData I)} (hL : SChain [] L []) :
     cl D Sc μ [dn j] [dn j] (mateL j (L.map (whL [] [up j]))) =
       cl D Sc μ [dn j] [dn j] (L.map (whL [dn j] [])) := by
   have E := cl_interchange (D := D) (Sc := Sc) (μ := μ) (S := [dn j]) (T := [dn j])
@@ -133,10 +135,10 @@ private theorem mate_closed_left (j : I) (μ : X) {L : List (LayerData I)} (hL :
       rw [hm]
     _ = _ := hstep
 
-private theorem wt_up_after_down (j : I) (μ : X) :
+theorem wt_up_after_down (j : I) (μ : X) :
     wt D (wt D μ [dn j]) [up j] = μ := by simp [wt, sh]
 
-private theorem bubbleMate_right (j : I) (μ : X) {p : ZMod 2}
+theorem bubbleMate_right (j : I) (μ : X) {p : ZMod 2}
     {b : (pres D Sc).obj (ob D (wt D μ [dn j]) []) ⟶ (pres D Sc).obj (ob D (wt D μ [dn j]) [])}
     (hb : b ∈ closedPar D Sc (wt D μ [dn j]) p) :
     bubbleMate (Sc := Sc) j μ (rbub j (wt D μ [dn j]) b) = plcL D Sc μ [] [dn j] [] [] b := by
@@ -154,7 +156,7 @@ private theorem bubbleMate_right (j : I) (μ : X) {p : ZMod 2}
     unfold rbub at *
     erw [map_smul, map_smul, map_smul, hx]
 
-private theorem bubbleMate_left (j : I) (μ : X) {p : ZMod 2}
+theorem bubbleMate_left (j : I) (μ : X) {p : ZMod 2}
     {b : (pres D Sc).obj (ob D (wt D (wt D μ [dn j]) [up j]) []) ⟶
       (pres D Sc).obj (ob D (wt D (wt D μ [dn j]) [up j]) [])}
     (hb : b ∈ closedPar D Sc (wt D (wt D μ [dn j]) [up j]) p) :

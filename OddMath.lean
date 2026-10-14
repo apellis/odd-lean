@@ -57,6 +57,8 @@ import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.RootCoordinates
 import OddMath.CoveringQuantum.UDot.BaseChange
 import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
+import OddMath.CoveringQuantum.UDot.Gauge
+import OddMath.CoveringQuantum.UDot.Twistor
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
@@ -717,6 +719,8 @@ import OddMath.SKM.SpanLocal
 import OddMath.SKM.SpanBubbleProd
 import OddMath.SKM.SpanCaps
 import OddMath.SKM.SpanCapsElim
+import OddMath.SKM.SpanBubbles
+import OddMath.SKM.SpanBubbleSlides
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
