@@ -52,6 +52,8 @@ import OddMath.CoveringQuantum.UDot.ModifiedFormTransport
 import OddMath.CoveringQuantum.PreF.Reversal
 import OddMath.CoveringQuantum.UDot.PositiveForm
 import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
+import OddMath.CoveringQuantum.UDot.FormUniqueness
+import OddMath.CoveringQuantum.UDot.RootCoordinates
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
