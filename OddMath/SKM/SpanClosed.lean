@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.SpanBubbleSlides
+import OddMath.SKM.SpanCaps
 
 /-!
 # Cup diagrams over the image of `β`
@@ -46,20 +47,6 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w}
 
 /-! ## Boundaries of extended diagrams -/
 
-theorem XChain.target_unique {s t t' : List (Letter I)} {L : List (XLayer I)} (h : XChain s L t)
-    (h' : XChain s L t') : t = t' := by
-  induction L generalizing s with
-  | nil => exact h.symm.trans h'
-  | cons x L ih => exact ih h.2 h'.2
-
-theorem XChain.split_append {s t : List (Letter I)} {L M : List (XLayer I)}
-    (h : XChain s (L ++ M) t) : ∃ r, XChain s L r ∧ XChain r M t := by
-  induction L generalizing s with
-  | nil => exact ⟨s, rfl, h⟩
-  | cons x L ih =>
-    obtain ⟨r, h₁, h₂⟩ := ih h.2
-    exact ⟨r, ⟨h.1, h₁⟩, h₂⟩
-
 /-- A nonempty block placed between strands determines its boundary. -/
 theorem XChain.whisk_bdry {u v a b s t : List (Letter I)} {A : List (XLayer I)}
     (hA : XChain a A b) (hne : A ≠ []) (h : XChain s (A.map (xwhL u v)) t) :
@@ -69,54 +56,13 @@ theorem XChain.whisk_bdry {u v a b s t : List (Letter I)} {A : List (XLayer I)}
     rw [h.1, hA.1]; simp [xwhL, List.append_assoc]
   refine ⟨hs, ?_⟩
   subst hs
-  exact XChain.target_unique h (hA.whisk u v)
-
-theorem XShape.weight_dom_eq_cod (ν : X) (g : XShape I) : wt D ν g.dom = wt D ν g.cod := by
-  cases g with
-  | gen g => exact Shape.wt_dom_eq_wt_cod D ν g
-  | lcup i => simp [XShape.dom, XShape.cod, sh]
-  | lcap i => simp [XShape.dom, XShape.cod, sh]
-
-theorem XChain.weight_eq (ν : X) {s t : List (Letter I)} {L : List (XLayer I)} (h : XChain s L t) :
-    wt D ν s = wt D ν t := by
-  induction L generalizing s with
-  | nil => exact congrArg _ h
-  | cons x L ih =>
-    obtain ⟨rfl, h⟩ := h
-    rw [← ih h, wt_append, wt_append, wt_append, wt_append, XShape.weight_dom_eq_cod]
+  exact XChain.eq_target h (hA.whisk u v)
 
 theorem xev_append_of_not {ν : X} {s t : List (Letter I)} {L M : List (XLayer I)}
     (h : ¬ ∃ r, XChain s L r) : xev cs ν s t (L ++ M) = 0 :=
   xev_of_not cs fun h' => by
-    obtain ⟨r, h₁, -⟩ := h'.split_append
+    obtain ⟨r, h₁, -⟩ := h'.split
     exact h ⟨r, h₁⟩
-
-/-! ## Homogeneity -/
-
-theorem cl_homogeneous (μ : X) (s t : List (Letter I)) (L : List (LayerData I)) :
-    ∃ p, cl D Sc μ s t L ∈ homPar D Sc μ s t p := by
-  by_cases h : SChain s L t
-  · exact ⟨_, cl_mem_homPar h rfl⟩
-  · exact ⟨0, by rw [cl_of_not h]; exact Submodule.zero_mem _⟩
-
-theorem xlay_homogeneous (ν : X) (x : XLayer I) :
-    ∃ p, xlay cs ν x ∈ homPar D Sc ν (x.1 ++ x.2.1.dom ++ x.2.2) (x.1 ++ x.2.1.cod ++ x.2.2) p := by
-  obtain ⟨a, g, b⟩ := x
-  cases g with
-  | gen g => exact cl_homogeneous ν _ _ [(a, g, b)]
-  | lcup i => exact ⟨_, plcL_mem ν a b (etaP_mem cs i (wt D ν b))⟩
-  | lcap i => exact ⟨_, plcL_mem ν a b (epsP_mem cs i (wt D ν b))⟩
-
-/-- **Extended diagrams are homogeneous.** -/
-theorem xev_homogeneous (ν : X) (s t : List (Letter I)) (L : List (XLayer I)) :
-    ∃ p, xev cs ν s t L ∈ homPar D Sc ν s t p := by
-  induction L generalizing s with
-  | nil => exact cl_homogeneous ν s t []
-  | cons x L ih =>
-    obtain ⟨p, hp⟩ := ih (x.1 ++ x.2.1.cod ++ x.2.2)
-    obtain ⟨q, hq⟩ := xlay_homogeneous cs ν x
-    obtain ⟨r, hr⟩ := cl_homogeneous (D := D) (Sc := Sc) ν s (x.1 ++ x.2.1.dom ++ x.2.2) []
-    exact ⟨_, comp_mem_homPar hr (comp_mem_homPar hq hp)⟩
 
 /-! ## Placement of extended diagrams, for all boundaries -/
 
@@ -138,50 +84,7 @@ theorem xev_whisk_eq (ν : X) (u v : List (Letter I)) {a b : List (Letter I)} {A
         Limits.comp_zero, Limits.comp_zero]
     · rw [cl_of_not (show ¬ SChain s [] (u ++ a ++ v) from hs), Limits.zero_comp]
 
-theorem wordCast_xev (ν : X) {s t s' t' : List (Letter I)} (hs : s = s') (ht : t = t')
-    (L : List (XLayer I)) : wordCast ν hs ht (xev cs ν s t L) = xev cs ν s' t' L := by
-  subst hs ht; rfl
-
-theorem plcRight_xev (ν : X) (u : List (Letter I)) {t t' : List (Letter I)} (B : List (XLayer I)) :
-    plcRight ν u t t' (xev cs ν t t' B) = xev cs ν (u ++ t) (u ++ t') (B.map (xwhL u [])) := by
-  dsimp only [plcRight, LinearMap.comp_apply]
-  have h := plcL_xev cs ν u [] (s := t) (t := t') B
-  erw [h]
-  exact wordCast_xev cs ν _ _ _
-
 /-! ## The super interchange law -/
-
-/-- Super interchange of two blocks side by side, at the matching boundary. -/
-theorem xev_swap_core (ν : X) {a a' b b' : List (Letter I)} {A B : List (XLayer I)}
-    (hA : XChain a A a') (hB : XChain b B b') :
-    ∃ p : ZMod 2, xev cs ν (a ++ b) (a' ++ b') (A.map (xwhL [] b) ++ B.map (xwhL a' [])) =
-      zsign k p • xev cs ν (a ++ b) (a' ++ b') (B.map (xwhL a []) ++ A.map (xwhL [] b')) := by
-  obtain ⟨p, hp⟩ := xev_homogeneous cs (wt D ν b) a a' A
-  obtain ⟨q, hq⟩ := xev_homogeneous cs ν b b' B
-  have hw : wt D ν b = wt D ν b' := hB.weight_eq ν
-  have E := plcL_interchange_hom (D := D) (Sc := Sc) ν hw hp hq
-  have e₁ := plcL_xev cs ν [] b (s := a) (t := a') A
-  have e₂ := plcL_xev cs ν [] b' (s := a) (t := a') A
-  rw [regionCast_family (f := fun ν => xev cs ν a a' A), e₁, e₂, plcRight_xev,
-    plcRight_xev] at E
-  refine ⟨p * q, ?_⟩
-  have hA' : XChain (a ++ b) (A.map (xwhL [] b)) (a' ++ b) := by simpa using hA.whisk [] b
-  have hB' : XChain (a ++ b) (B.map (xwhL a [])) (a ++ b') := by simpa using hB.whisk a []
-  rw [xev_append cs _ hA', xev_append cs _ hB']
-  exact E
-
-theorem map_xwhL_comp (u v u' v' : List (Letter I)) (L : List (XLayer I)) :
-    (L.map (xwhL u v)).map (xwhL u' v') = L.map (xwhL (u' ++ u) (v ++ v')) := by
-  simp only [List.map_map]
-  apply List.map_congr_left
-  intro x _
-  obtain ⟨a, g, b⟩ := x
-  simp [xwhL, List.append_assoc]
-
-@[simp] theorem map_xwhL_nil (L : List (XLayer I)) : L.map (xwhL [] []) = L := by
-  induction L with
-  | nil => rfl
-  | cons x L ih => obtain ⟨a, g, b⟩ := x; simp [xwhL, ih]
 
 /-- **Super interchange of two blocks side by side**, between any boundaries, up to a scalar:
 the block `A` (left) and the block `B` (right), with the strands `P`, `Q`, `R` around them. -/
@@ -197,15 +100,15 @@ theorem xev_swap (ν : X) {a a' b b' : List (Letter I)} {A B : List (XLayer I)}
   · obtain rfl : b = b' := hB
     exact ⟨0, by simp [zsign_zero]⟩
   have hAQ : XChain (a ++ Q) (A.map (xwhL [] Q)) (a' ++ Q) := by simpa using hA.whisk [] Q
-  obtain ⟨c, hc⟩ := xev_swap_core cs (wt D ν R) hAQ hB
+  obtain ⟨c, hc⟩ := xev_interchange cs (wt D ν R) hAQ hB
   refine ⟨c, ?_⟩
   have e₁ : A.map (xwhL P (Q ++ b ++ R)) ++ B.map (xwhL (P ++ a' ++ Q) R) =
       ((A.map (xwhL [] Q)).map (xwhL [] b) ++ B.map (xwhL (a' ++ Q) [])).map (xwhL P R) := by
-    simp only [List.map_append, map_xwhL_comp, List.append_nil, List.nil_append,
+    simp only [List.map_append, map_xwhL_xwhL, List.append_nil, List.nil_append,
       List.append_assoc]
   have e₂ : B.map (xwhL (P ++ a ++ Q) R) ++ A.map (xwhL P (Q ++ b' ++ R)) =
       (B.map (xwhL (a ++ Q) []) ++ (A.map (xwhL [] Q)).map (xwhL [] b')).map (xwhL P R) := by
-    simp only [List.map_append, map_xwhL_comp, List.append_nil, List.nil_append,
+    simp only [List.map_append, map_xwhL_xwhL, List.append_nil, List.nil_append,
       List.append_assoc]
   have hne₁ : (A.map (xwhL [] Q)).map (xwhL [] b) ++ B.map (xwhL (a' ++ Q) []) ≠ [] := by
     simp [hAne]
@@ -467,7 +370,7 @@ theorem xev_comp_plcAt_right {s s₁ : List (Letter I)} {M : List (XLayer I)} (h
     ∃ c : k, xev cs ν s s₁ M ≫ plcAt ν s₁ t s₁ [] γ = c • (plcAt ν s s s [] γ ≫ xev cs ν s t M) := by
   by_cases ht : t = s₁
   · subst ht
-    obtain ⟨p, hp⟩ := xev_homogeneous cs ν s t M
+    obtain ⟨p, hp⟩ := xev_exists_mem cs ν s t M
     refine ⟨zsign k (p * q), ?_⟩
     rw [closedPar_eq] at hγ
     refine homPar_induction₂ (μ := ν) (μ' := ν) (P := fun f g =>
@@ -486,7 +389,7 @@ theorem xev_comp_plcAt_right {s s₁ : List (Letter I)} {M : List (XLayer I)} (h
     simp only [List.nil_append, List.append_nil, map_whL_nil_nil] at E
     rw [E, hpL, hpN]
   · refine ⟨1, ?_⟩
-    have h1 : xev cs ν s t M = 0 := xev_of_not cs fun h => ht (XChain.target_unique h hM)
+    have h1 : xev cs ν s t M = 0 := xev_of_not cs fun h => ht (XChain.eq_target h hM)
     rw [h1, plcW_apply, cl_of_not (show ¬ SChain (s₁ ++ [] ++ []) [] t from by simpa using Ne.symm ht)]
     simp
 

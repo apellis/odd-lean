@@ -14,15 +14,15 @@ Theorem 8.1 and (1.21)–(1.22) for diagrams without crossings, following the ar
 crossingless diagrams in M. Khovanov, A. Lauda, *A categorification of quantum `sl(n)`*,
 arXiv:0807.3250v1, §3.2.1 (proof of Proposition 3.6).
 
-A cap `l* l → 1` (`capBlk l m`) carries a block of `m` dots on its upward leg: the rightward cap
+A cap `l* l → 1` (`capDots l m`) carries a block of `m` dots on its upward leg: the rightward cap
 `ε` (`l = dn i`) on its left leg, the leftward cap `ε'` (`l = up i`) on its right leg. This file
 records what happens when the cap meets the layer just below it.
 
-* A dot on the upward leg joins the block (`dotUp_capBlk_dn`, `dotUp_capBlk_up`).
+* A dot on the upward leg joins the block (`dotUp_capDots_dn`, `dotUp_capDots_up`).
 * A downward dot on the downward leg moves to the upward leg: exactly for `ε` ((2.3),
-  `ddot_capBlk_dn`); for `ε'` by Proposition 4.1 (4.3), which adds a term with the odd bubble
-  (2.18) when `i` is odd (`ddot_capBlk_up`).
-* A cup creating both legs closes up to a dotted bubble (`isBub_cup_capBlk`, Definition 2.3).
+  `ddot_capDots_dn`); for `ε'` by Proposition 4.1 (4.3), which adds a term with the odd bubble
+  (2.18) when `i` is odd (`ddot_capDots_up`).
+* A cup creating both legs closes up to a dotted bubble (`isBub_cup_capDots`, Definition 2.3).
 * A cup sharing one leg with the cap forms a zigzag. The zigzags of the right adjunction
   ((1.10), `zig_dn_left`, `zig_dn_right`) and the zigzag `(ε' ⊗ 1) ∘ (1 ⊗ η') = 1` on `Eᵢ`
   ((6.6), `zig_up_left`) leave dots on the strand; the zigzag on `Fᵢ` with dots on its middle
@@ -46,35 +46,35 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X} {k : Type w}
 
 /-- The cap `l* l → 1` with `m` dots on its upward leg: dots on the left leg of `ε` (`l = dn i`),
 on the right leg of `ε'` (`l = up i`). -/
-def capBlk : Letter I → ℕ → List (XLayer I)
+def capDots : Letter I → ℕ → List (XLayer I)
   | (false, i), m => (xDots (up i) m).map (xwhL [] [dn i]) ++ [([], .gen (.cap i), [])]
   | (true, i), m => (xDots (up i) m).map (xwhL [dn i] []) ++ [([], .lcap i, [])]
 
-theorem xChain_capBlk : ∀ (l : Letter I) (m : ℕ), XChain [flipL l, l] (capBlk l m) []
+theorem xChain_capDots : ∀ (l : Letter I) (m : ℕ), XChain [flipL l, l] (capDots l m) []
   | (false, i), m => XChain.append (by simpa using (xChain_xDots (up i) m).whisk [] [dn i])
       (show XChain [up i, dn i] [([], .gen (.cap i), [])] [] from ⟨rfl, rfl⟩)
   | (true, i), m => XChain.append (by simpa using (xChain_xDots (up i) m).whisk [dn i] [])
       (show XChain [dn i, up i] [([], .lcap i, [])] [] from ⟨rfl, rfl⟩)
 
-theorem capBlk_ne_nil : ∀ (l : Letter I) (m : ℕ), capBlk l m ≠ []
-  | (false, _), _ => by simp [capBlk]
-  | (true, _), _ => by simp [capBlk]
+theorem capDots_ne_nil : ∀ (l : Letter I) (m : ℕ), capDots l m ≠ []
+  | (false, _), _ => by simp [capDots]
+  | (true, _), _ => by simp [capDots]
 
-theorem capBlk_zero : ∀ l : Letter I, capBlk l 0 = match l with
+theorem capDots_zero : ∀ l : Letter I, capDots l 0 = match l with
     | (false, i) => [([], .gen (.cap i), [])]
     | (true, i) => [([], .lcap i, [])]
   | (false, _) => rfl
   | (true, _) => rfl
 
 /-- A dot on the upward (left) leg of `ε` joins the block. -/
-theorem dotUp_capBlk_dn (i : I) (m : ℕ) :
-    (CMove.dot (up i)).loc.map (xwhL [] [dn i]) ++ capBlk (dn i) m = capBlk (dn i) (m + 1) := by
-  simp [capBlk, xDots_succ]
+theorem dotUp_capDots_dn (i : I) (m : ℕ) :
+    (CMove.dot (up i)).loc.map (xwhL [] [dn i]) ++ capDots (dn i) m = capDots (dn i) (m + 1) := by
+  simp [capDots, xDots_succ]
 
 /-- A dot on the upward (right) leg of `ε'` joins the block. -/
-theorem dotUp_capBlk_up (i : I) (m : ℕ) :
-    (CMove.dot (up i)).loc.map (xwhL [dn i] []) ++ capBlk (up i) m = capBlk (up i) (m + 1) := by
-  simp [capBlk, xDots_succ]
+theorem dotUp_capDots_up (i : I) (m : ℕ) :
+    (CMove.dot (up i)).loc.map (xwhL [dn i] []) ++ capDots (up i) m = capDots (up i) (m + 1) := by
+  simp [capDots, xDots_succ]
 
 /-! ## Evaluating short extended diagrams -/
 
@@ -105,19 +105,19 @@ theorem xev_xDots_mem_slideSetR (μ : X) (l : Letter I) (a : ℕ) {c : k} :
 /-! ## Bubbles -/
 
 /-- **A cup creating both legs of the cap closes up to a dotted bubble.** -/
-theorem isBub_cup_capBlk (μ : X) : ∀ (l : Letter I) (m : ℕ),
-    IsBub cs μ (xev cs μ [] [] ((CMove.cup (flipL l)).loc ++ capBlk l m))
+theorem isBub_cup_capDots (μ : X) : ∀ (l : Letter I) (m : ℕ),
+    IsBub cs μ (xev cs μ [] [] ((CMove.cup (flipL l)).loc ++ capDots l m))
   | (false, i), m => by
-    have e : (CMove.cup (flipL (dn i))).loc ++ capBlk (dn i) m =
+    have e : (CMove.cup (flipL (dn i))).loc ++ capDots (dn i) m =
         [([], .lcup i, [])] ++ (epsL i m).map ofL := by
-      simp [capBlk, epsL, xDots_eq, dotsLay, dotsL, List.map_replicate, ofL]
+      simp [capDots, epsL, xDots_eq, dotsLay, dotsL, List.map_replicate, ofL]
     rw [e, xev_append cs _ (show XChain [] [([], .lcup i, [])] [up i, dn i] from ⟨rfl, rfl⟩),
       xev_lcup, xev_map_ofL, ← bubL_nat]
     exact isBub_bubL cs i μ m
   | (true, i), m => by
-    have e : (CMove.cup (flipL (up i))).loc ++ capBlk (up i) m =
+    have e : (CMove.cup (flipL (up i))).loc ++ capDots (up i) m =
         (etaL i m).map ofL ++ [([], .lcap i, [])] := by
-      simp [capBlk, etaL, xDots_eq, dotsLay, dotsL, List.map_replicate, ofL]
+      simp [capDots, etaL, xDots_eq, dotsLay, dotsL, List.map_replicate, ofL]
     rw [e, xev_append cs _ (XChain.of_sChain (sChain_etaL i m)), xev_lcap, xev_map_ofL,
       ← bubR_nat]
     exact isBub_bubR cs i μ m
@@ -137,10 +137,10 @@ theorem xChain_xDots_whisk (l : Letter I) (a : ℕ) (u v : List (Letter I)) :
   (xChain_xDots l a).whisk u v
 
 /-- **A downward dot on the right leg of `ε`** moves to its left leg ((2.3)). -/
-theorem ddot_capBlk_dn (μ : X) (i : I) (m : ℕ) :
+theorem ddot_capDots_dn (μ : X) (i : I) (m : ℕ) :
     ∃ c : k, xev cs μ [up i, dn i] []
-        ((CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ capBlk (dn i) m) =
-      c • xev cs μ [up i, dn i] [] (capBlk (dn i) (m + 1)) := by
+        ((CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ capDots (dn i) m) =
+      c • xev cs μ [up i, dn i] [] (capDots (dn i) (m + 1)) := by
   -- the downward dot moves below the block of upward dots
   obtain ⟨p, hp⟩ := xev_swap' cs μ (xChain_xDots (up i) m) ((CMove.dot (dn i)).xChain_loc)
     [] [] [] [up i, dn i] [up i, dn i]
@@ -148,15 +148,15 @@ theorem ddot_capBlk_dn (μ : X) (i : I) (m : ℕ) :
   have h₁ := xChain_dot_whisk (dn i) [up i] []
   have h₂ := xChain_xDots_whisk (up i) m [] [dn i]
   simp only [List.nil_append, List.append_nil, List.cons_append] at h₁ h₂
-  have e₁ : (CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ capBlk (dn i) m =
+  have e₁ : (CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ capDots (dn i) m =
       ((CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ (xDots (up i) m).map (xwhL [] [dn i])) ++
-        [([], .gen (.cap i), [])] := by simp [capBlk]
+        [([], .gen (.cap i), [])] := by simp [capDots]
   rw [e₁, xev_append_congr cs μ _ (h₁.append h₂) (h₂.append h₁) hp]
   -- (2.3): the downward dot on the right leg of `ε` is a dot on its left leg
   have E := eq_2_3_b Sc i μ 1
   rw [ddotsL_one] at E
   refine ⟨zsign k p * zsign k (D.parity i * ((1 / 2 : ℕ) : ZMod 2)), ?_⟩
-  rw [List.append_assoc, xev_append cs _ h₂, capBlk, xDots_succ', List.map_append,
+  rw [List.append_assoc, xev_append cs _ h₂, capDots, xDots_succ', List.map_append,
     List.append_assoc, xev_append cs _ h₂]
   have e₂ : (CMove.dot (dn i)).loc.map (xwhL [up i] []) ++ [([], .gen (.cap i), [])] =
       ((ddotL i).map (whL [up i] []) ++ [([], Shape.cap i, [])]).map ofL := by
@@ -171,20 +171,20 @@ theorem ddot_capBlk_dn (μ : X) (i : I) (m : ℕ) :
 
 /-- **A downward dot on the left leg of `ε'`** moves to its right leg (Proposition 4.1 (4.3));
 for odd `i` this adds `ε'` followed by the odd bubble. -/
-theorem ddot_capBlk_up (μ : X) (i : I) (m : ℕ) :
+theorem ddot_capDots_up (μ : X) (i : I) (m : ℕ) :
     ∃ a b : k, xev cs μ [dn i, up i] []
-        ((CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++ capBlk (up i) m) =
-      a • xev cs μ [dn i, up i] [] (capBlk (up i) (m + 1)) +
-        b • (xev cs μ [dn i, up i] [] (capBlk (up i) m) ≫ oddBubble cs i μ) := by
+        ((CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++ capDots (up i) m) =
+      a • xev cs μ [dn i, up i] [] (capDots (up i) (m + 1)) +
+        b • (xev cs μ [dn i, up i] [] (capDots (up i) m) ≫ oddBubble cs i μ) := by
   obtain ⟨p, hp⟩ := xev_swap cs μ ((CMove.dot (dn i)).xChain_loc) (xChain_xDots (up i) m)
     [] [] [] [dn i, up i] [dn i, up i]
   simp only [List.nil_append, List.append_nil, CMove.dom_dot, CMove.cod_dot] at hp
   have h₁ := xChain_dot_whisk (dn i) [] [up i]
   have h₂ := xChain_xDots_whisk (up i) m [dn i] []
   simp only [List.nil_append, List.append_nil, List.cons_append] at h₁ h₂
-  have e₁ : (CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++ capBlk (up i) m =
+  have e₁ : (CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++ capDots (up i) m =
       ((CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++ (xDots (up i) m).map (xwhL [dn i] [])) ++
-        [([], .lcap i, [])] := by simp [capBlk]
+        [([], .lcap i, [])] := by simp [capDots]
   -- (4.3) solved for the downward dot
   have E : ∃ a b : k, dLM D Sc i μ ≫ epsP cs i μ =
       a • (uRM D Sc i μ ≫ epsP cs i μ) + b • (epsP cs i μ ≫ oddBubble cs i μ) := by
@@ -211,7 +211,7 @@ theorem ddot_capBlk_up (μ : X) (i : I) (m : ℕ) :
       by simp [dotsL, ofL], xev_map_ofL]
   refine ⟨zsign k p * a, zsign k p * b, ?_⟩
   rw [e₁, xev_append_congr cs μ _ (h₁.append h₂) (h₂.append h₁) hp, List.append_assoc,
-    xev_append cs _ h₂, eD, E, capBlk, capBlk, xDots_succ', List.map_append, List.append_assoc,
+    xev_append cs _ h₂, eD, E, capDots, capDots, xDots_succ', List.map_append, List.append_assoc,
     xev_append cs _ h₂, eU, xev_append cs _ h₂, xev_lcap]
   simp only [Preadditive.comp_add, Linear.comp_smul, smul_add, smul_smul, Category.assoc]
 
@@ -221,11 +221,11 @@ theorem ddot_capBlk_up (μ : X) (i : I) (m : ℕ) :
 `m`-th power of the downward dot ((2.2)). -/
 theorem zig_dn_left (μ : X) (i : I) (m : ℕ) :
     xev cs μ [dn i] [dn i]
-        ((CMove.cup (dn i)).loc.map (xwhL [] [dn i]) ++ (capBlk (dn i) m).map (xwhL [dn i] [])) ∈
+        ((CMove.cup (dn i)).loc.map (xwhL [] [dn i]) ++ (capDots (dn i) m).map (xwhL [dn i] [])) ∈
       slideSetR cs μ (dn i) := by
-  have e : (CMove.cup (dn i)).loc.map (xwhL [] [dn i]) ++ (capBlk (dn i) m).map (xwhL [dn i] []) =
+  have e : (CMove.cup (dn i)).loc.map (xwhL [] [dn i]) ++ (capDots (dn i) m).map (xwhL [dn i] []) =
       (mateL i (dotsL [] i [] m)).map ofL := by
-    simp [capBlk, mateL, xDots_eq, dotsLay, dotsL, List.map_replicate, whL, ofL]
+    simp [capDots, mateL, xDots_eq, dotsLay, dotsL, List.map_replicate, whL, ofL]
   rw [e, xev_map_ofL]
   have E := cl_ddot_pow Sc i μ m
   rw [← cl_ddotsL] at E
@@ -239,19 +239,19 @@ theorem zig_dn_left (μ : X) (i : I) (m : ℕ) :
 ((1.10)). -/
 theorem zig_dn_right (μ : X) (i : I) (m : ℕ) :
     xev cs μ [up i] [up i]
-        ((CMove.cup (dn i)).loc.map (xwhL [up i] []) ++ (capBlk (dn i) m).map (xwhL [] [up i])) ∈
+        ((CMove.cup (dn i)).loc.map (xwhL [up i] []) ++ (capDots (dn i) m).map (xwhL [] [up i])) ∈
       slideSetR cs μ (up i) := by
   obtain ⟨p, hp⟩ := xev_swap' cs μ (xChain_xDots (up i) m) ((CMove.cup (dn i)).xChain_loc)
     [] [] [] [up i] [up i, dn i, up i]
-  simp only [List.nil_append, List.append_nil, CMove.dom_cup, CMove.cod_cup, map_xwhL_nil,
+  simp only [List.nil_append, List.append_nil, CMove.dom_cup, CMove.cod_cup, map_xwhL_nil_nil,
     flipL_dn] at hp
   have h₁ := xChain_cup_whisk (dn i) [up i] []
   have h₂ := xChain_xDots_whisk (up i) m [] [dn i, up i]
   simp only [List.nil_append, List.append_nil, List.cons_append, flipL_dn] at h₁ h₂
-  have e : (CMove.cup (dn i)).loc.map (xwhL [up i] []) ++ (capBlk (dn i) m).map (xwhL [] [up i]) =
+  have e : (CMove.cup (dn i)).loc.map (xwhL [up i] []) ++ (capDots (dn i) m).map (xwhL [] [up i]) =
       ((CMove.cup (dn i)).loc.map (xwhL [up i] []) ++
         (xDots (up i) m).map (xwhL [] [dn i, up i])) ++ [([], .gen (.cap i), [up i])] := by
-    simp [capBlk]
+    simp [capDots]
   rw [e, xev_append_congr cs μ _ (h₁.append h₂) ((xChain_xDots (up i) m).append h₁) hp,
     List.append_assoc, xev_append cs _ (xChain_xDots (up i) m)]
   have Z : xev cs μ [up i] [up i] ((CMove.cup (dn i)).loc.map (xwhL [up i] []) ++
@@ -266,19 +266,19 @@ theorem zig_dn_right (μ : X) (i : I) (m : ℕ) :
 dots ((6.6), first relation). -/
 theorem zig_up_left (μ : X) (i : I) (m : ℕ) :
     xev cs μ [up i] [up i]
-        ((CMove.cup (up i)).loc.map (xwhL [] [up i]) ++ (capBlk (up i) m).map (xwhL [up i] [])) ∈
+        ((CMove.cup (up i)).loc.map (xwhL [] [up i]) ++ (capDots (up i) m).map (xwhL [up i] [])) ∈
       slideSetR cs μ (up i) := by
   obtain ⟨p, hp⟩ := xev_swap cs μ ((CMove.cup (up i)).xChain_loc) (xChain_xDots (up i) m)
     [] [] [] [up i] [up i, dn i, up i]
-  simp only [List.nil_append, List.append_nil, CMove.dom_cup, CMove.cod_cup, map_xwhL_nil,
+  simp only [List.nil_append, List.append_nil, CMove.dom_cup, CMove.cod_cup, map_xwhL_nil_nil,
     flipL_up] at hp
   have h₁ := xChain_cup_whisk (up i) [] [up i]
   have h₂ := xChain_xDots_whisk (up i) m [up i, dn i] []
   simp only [List.nil_append, List.append_nil, List.cons_append, flipL_up] at h₁ h₂
-  have e : (CMove.cup (up i)).loc.map (xwhL [] [up i]) ++ (capBlk (up i) m).map (xwhL [up i] []) =
+  have e : (CMove.cup (up i)).loc.map (xwhL [] [up i]) ++ (capDots (up i) m).map (xwhL [up i] []) =
       ((CMove.cup (up i)).loc.map (xwhL [] [up i]) ++
         (xDots (up i) m).map (xwhL [up i, dn i] [])) ++ [([up i], .lcap i, [])] := by
-    simp [capBlk]
+    simp [capDots]
   rw [e, xev_append_congr cs μ _ (h₁.append h₂) ((xChain_xDots (up i) m).append h₁) hp,
     List.append_assoc, xev_append cs _ (xChain_xDots (up i) m)]
   have Z : xev cs μ [up i] [up i] ((CMove.cup (up i)).loc.map (xwhL [] [up i]) ++
@@ -295,13 +295,13 @@ theorem zig_up_left (μ : X) (i : I) (m : ℕ) :
 `slideSetR` ((6.6), second relation, and Proposition 4.1 (4.4)). -/
 theorem zig_up_right (μ : X) (i : I) : ∀ m : ℕ,
     xev cs μ [dn i] [dn i]
-        ((CMove.cup (up i)).loc.map (xwhL [dn i] []) ++ (capBlk (up i) m).map (xwhL [] [dn i])) ∈
+        ((CMove.cup (up i)).loc.map (xwhL [dn i] []) ++ (capDots (up i) m).map (xwhL [] [dn i])) ∈
       slideSetR cs μ (dn i)
   | 0 => by
     have Z : xev cs μ [dn i] [dn i] ((CMove.cup (up i)).loc.map (xwhL [dn i] []) ++
-        (capBlk (up i) 0).map (xwhL [] [dn i])) = 𝟙 _ := by
+        (capDots (up i) 0).map (xwhL [] [dn i])) = 𝟙 _ := by
       rw [← eq_6_6_b cs i μ]
-      simp only [CMove.loc_cup_up, capBlk, xDots, List.replicate_zero, List.flatten_nil,
+      simp only [CMove.loc_cup_up, capDots, xDots, List.replicate_zero, List.flatten_nil,
         List.map_nil, List.map_cons, xwhL_mk, List.nil_append, List.append_nil, List.cons_append,
         xev_cons, xev_nil, XShape.dom, XShape.cod, cl_nil, Category.id_comp, Category.comp_id]
       rfl
@@ -309,9 +309,9 @@ theorem zig_up_right (μ : X) (i : I) : ∀ m : ℕ,
     have := cl_dotsLay_mem_slideSetR cs μ (dn i) 0
     rwa [dotsLay_zero, cl_nil] at this
   | m + 1 => by
-    set REST := (capBlk (up i) m).map (xwhL [] [dn i]) with hRESTdef
+    set REST := (capDots (up i) m).map (xwhL [] [dn i]) with hRESTdef
     have hREST : XChain [dn i, up i, dn i] REST [dn i] := by
-      simpa using (xChain_capBlk (up i) m).whisk [] [dn i]
+      simpa using (xChain_capDots (up i) m).whisk [] [dn i]
     have IH := zig_up_right μ i m
     -- the lowest dot moves through `η'` ((4.4))
     set A : List (XLayer I) := [([], .lcup i, []), ([], .gen (.dot i), [dn i])] with hAdef
@@ -319,8 +319,8 @@ theorem zig_up_right (μ : X) (i : I) : ∀ m : ℕ,
     have hAw : XChain [dn i] (A.map (xwhL [dn i] [])) [dn i, up i, dn i] := by
       simpa using hA.whisk [dn i] []
     have e : (CMove.cup (up i)).loc.map (xwhL [dn i] []) ++
-        (capBlk (up i) (m + 1)).map (xwhL [] [dn i]) = A.map (xwhL [dn i] []) ++ REST := by
-      simp [hAdef, hRESTdef, capBlk, xDots_succ]
+        (capDots (up i) (m + 1)).map (xwhL [] [dn i]) = A.map (xwhL [dn i] []) ++ REST := by
+      simp [hAdef, hRESTdef, capDots, xDots_succ]
     have EA : xev cs (wt D μ []) [] [up i, dn i] A = etaP cs i (wt D μ []) ≫ uLM D Sc i (wt D μ []) := by
       rw [hAdef, show [([], XShape.lcup i, []), ([], XShape.gen (Shape.dot i), [dn i])] =
         [([], XShape.lcup i, ([] : List (Letter I)))] ++ (dotsL [] i [dn i] 1).map ofL by
@@ -358,18 +358,18 @@ theorem zig_up_right (μ : X) (i : I) : ∀ m : ℕ,
       have hL₁ : XChain [dn i] ([([], XShape.lcup i, ([] : List (Letter I)))].map (xwhL [dn i] []))
           ([dn i] ++ [up i, dn i] ++ []) := hA₀.whisk [dn i] []
       rw [← xev_append cs REST hL₂]
-      obtain ⟨p, hp⟩ := xev_swap' cs μ (xChain_capBlk (up i) m) ((CMove.dot (dn i)).xChain_loc)
+      obtain ⟨p, hp⟩ := xev_swap' cs μ (xChain_capDots (up i) m) ((CMove.dot (dn i)).xChain_loc)
         [] [] [] ([dn i] ++ [up i, dn i] ++ []) [dn i]
       simp only [List.nil_append, List.append_nil, CMove.dom_dot, CMove.cod_dot,
-        flipL_up, map_xwhL_nil] at hp
+        flipL_up, map_xwhL_nil_nil] at hp
       have eL : Dl.map (xwhL [dn i] []) ++ REST =
-          (CMove.dot (dn i)).loc.map (xwhL [dn i, up i] []) ++ (capBlk (up i) m).map (xwhL [] [dn i]) := by
-        rw [hDl, map_xwhL_comp]; simp [hRESTdef]
+          (CMove.dot (dn i)).loc.map (xwhL [dn i, up i] []) ++ (capDots (up i) m).map (xwhL [] [dn i]) := by
+        rw [hDl, map_xwhL_xwhL]; simp [hRESTdef]
       rw [eL, hp, Linear.comp_smul]
       refine Submodule.smul_mem _ _ ?_
       rw [← xev_append cs _ hL₁, ← List.append_assoc]
       have hZ : XChain [dn i] ([([], XShape.lcup i, ([] : List (Letter I)))].map (xwhL [dn i] []) ++
-          (capBlk (up i) m).map (xwhL [] [dn i])) [dn i] := hL₁.append (by simpa using hREST)
+          (capDots (up i) m).map (xwhL [] [dn i])) [dn i] := hL₁.append (by simpa using hREST)
       rw [xev_append cs _ hZ]
       refine slideSetR_comp ?_ ?_
       · simpa using IH

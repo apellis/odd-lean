@@ -16,11 +16,11 @@ from the bottom, and each cap is pushed down until it meets the cup it closes up
 ## Main results
 
 * `cupSpan_cap`: **`CupSpan` is closed under caps.** A cap `l* l → 1` carrying a block of dots
-  on its upward leg (`capBlk`), placed on top of a 2-morphism in `CupSpan`, gives a 2-morphism
+  on its upward leg (`capDots`), placed on top of a 2-morphism in `CupSpan`, gives a 2-morphism
   in `CupSpan`. By induction on `CupSpan`: the cap commutes with a dot or cup away from it
-  (super interchange law, `xev_swap`), absorbs a dot on a leg (`dotUp_capBlk_dn`,
-  `dotUp_capBlk_up`, `ddot_capBlk_dn`, `ddot_capBlk_up`), closes up with a cup to a dotted
-  bubble (`isBub_cup_capBlk`), which slides out (`cupSpan_plcAt`), or straightens a zigzag,
+  (super interchange law, `xev_swap`), absorbs a dot on a leg (`dotUp_capDots_dn`,
+  `dotUp_capDots_up`, `ddot_capDots_dn`, `ddot_capDots_up`), closes up with a cup to a dotted
+  bubble (`isBub_cup_capDots`), which slides out (`cupSpan_plcAt`), or straightens a zigzag,
   leaving dots and elements of the image of `β` (`zig_dn_left`, `zig_dn_right`, `zig_up_left`,
   `zig_up_right`, `cupSpan_plcW_slideSetR`).
 * `cupSpan_dcup`, `cupSpan_dcap`: the same for the `♦`-cups and `♦`-caps, by (5.11) and (5.12)
@@ -154,12 +154,12 @@ on top of a 2-morphism in `CupSpan`, gives a 2-morphism in `CupSpan`. -/
 theorem cupSpan_cap {s : List (Letter I)}
     {f : (pres D Sc).obj (ob D ν []) ⟶ (pres D Sc).obj (ob D ν s)} (hf : CupSpan cs ν s f) :
     ∀ (l : Letter I) (m : ℕ) (u v t : List (Letter I)),
-      CupSpan cs ν t (f ≫ xev cs ν s t ((capBlk l m).map (xwhL u v))) := by
+      CupSpan cs ν t (f ≫ xev cs ν s t ((capDots l m).map (xwhL u v))) := by
   induction hf with
   | @bub β hβ =>
     intro l m u v t
-    have h : ¬ XChain [] ((capBlk l m).map (xwhL u v)) t := fun h => by
-      have := (XChain.whisk_bdry (xChain_capBlk l m) (capBlk_ne_nil l m) h).1
+    have h : ¬ XChain [] ((capDots l m).map (xwhL u v)) t := fun h => by
+      have := (XChain.whisk_bdry (xChain_capDots l m) (capDots_ne_nil l m) h).1
       simp at this
     rw [xev_of_not cs h, Limits.comp_zero]; exact .zero
   | @move s s₁ f m' u' v' hf ih =>
@@ -167,11 +167,11 @@ theorem cupSpan_cap {s : List (Letter I)}
     by_cases hM : XChain s (m'.loc.map (xwhL u' v')) s₁
     swap
     · rw [xev_of_not cs hM, Limits.comp_zero, Limits.zero_comp]; exact .zero
-    by_cases hC : XChain s₁ ((capBlk l m).map (xwhL u v)) t
+    by_cases hC : XChain s₁ ((capDots l m).map (xwhL u v)) t
     swap
     · rw [xev_of_not cs hC, Limits.comp_zero]; exact .zero
     have h₁ := (XChain.whisk_bdry m'.xChain_loc m'.loc_ne_nil hM).2
-    have h₂ := (XChain.whisk_bdry (xChain_capBlk l m) (capBlk_ne_nil l m) hC).1
+    have h₂ := (XChain.whisk_bdry (xChain_capDots l m) (capDots_ne_nil l m) hC).1
     rw [Category.assoc, ← xev_append cs _ hM]
     have he := h₁.symm.trans h₂
     clear h₁ h₂ hM hC
@@ -181,28 +181,28 @@ theorem cupSpan_cap {s : List (Letter I)}
       rcases pos_dot_cases he with ⟨c, hu, hv⟩ | ⟨hu, hl, hv⟩ | ⟨hu, hl, hv⟩ | ⟨c, hu, hv⟩
       · -- the dot is to the left of the cap
         subst u v'
-        obtain ⟨p, hp⟩ := xev_swap cs ν (CMove.xChain_loc (.dot l')) (xChain_capBlk l m) u' c v s t
+        obtain ⟨p, hp⟩ := xev_swap cs ν (CMove.xChain_loc (.dot l')) (xChain_capDots l m) u' c v s t
         exact CupSpan.of_swap ν (fun r => ih l m (u' ++ [l'] ++ c) v r) (.dot l') u' (c ++ v)
           (z := zsign k p) (by simpa using hp)
       · -- the dot is on the left leg of the cap
         subst u' l' v'
         obtain ⟨i, rfl⟩ | ⟨i, rfl⟩ := letter_cases l
-        · refine CupSpan.congr_list ν (L' := (capBlk (dn i) (m + 1)).map (xwhL u v)) ?_
+        · refine CupSpan.congr_list ν (L' := (capDots (dn i) (m + 1)).map (xwhL u v)) ?_
             (ih (dn i) (m + 1) u v t)
-          rw [← dotUp_capBlk_dn, List.map_append, map_xwhL_comp]
+          rw [← dotUp_capDots_dn, List.map_append, map_xwhL_xwhL]
           simp
         · have hd : XChain [dn i, up i] ((CMove.dot (dn i)).loc.map (xwhL [] [up i]))
               [dn i, up i] := by simpa using xChain_dot_whisk (dn i) [] [up i]
-          have hc : ∀ n, XChain [dn i, up i] (capBlk (up i) n) [] := xChain_capBlk (up i)
-          obtain ⟨a, b, E⟩ := ddot_capBlk_up cs (wt D ν v) i m
+          have hc : ∀ n, XChain [dn i, up i] (capDots (up i) n) [] := xChain_capDots (up i)
+          obtain ⟨a, b, E⟩ := ddot_capDots_up cs (wt D ν v) i m
           refine CupSpan.congr_list ν (L' := ((CMove.dot (dn i)).loc.map (xwhL [] [up i]) ++
-            capBlk (up i) m).map (xwhL u v)) ?_ ?_
-          · rw [List.map_append, map_xwhL_comp]
+            capDots (up i) m).map (xwhL u v)) ?_ ?_
+          · rw [List.map_append, map_xwhL_xwhL]
             simp
-          rw [xev_eq_plcW ν u v (hd.append (hc m)) (by simp [capBlk_ne_nil]), E, map_add,
+          rw [xev_eq_plcW ν u v (hd.append (hc m)) (by simp [capDots_ne_nil]), E, map_add,
             map_smul, map_smul, plcW_comp, Preadditive.comp_add, Linear.comp_smul,
-            Linear.comp_smul, ← xev_eq_plcW ν u v (hc (m + 1)) (capBlk_ne_nil _ _),
-            ← xev_eq_plcW ν u v (hc m) (capBlk_ne_nil _ _), ← Category.assoc]
+            Linear.comp_smul, ← xev_eq_plcW ν u v (hc (m + 1)) (capDots_ne_nil _ _),
+            ← xev_eq_plcW ν u v (hc m) (capDots_ne_nil _ _), ← Category.assoc]
           exact .add (.smul a (ih (up i) (m + 1) u v t))
             (.smul b (cupSpan_plcAt ν v u (ih (up i) m u v _) (isBub_oddBubble cs i _)))
       · -- the dot is on the right leg of the cap
@@ -210,23 +210,23 @@ theorem cupSpan_cap {s : List (Letter I)}
         obtain ⟨i, rfl⟩ | ⟨i, rfl⟩ := letter_cases l
         · have hd : XChain [up i, dn i] ((CMove.dot (dn i)).loc.map (xwhL [up i] []))
               [up i, dn i] := by simpa using xChain_dot_whisk (dn i) [up i] []
-          have hc : ∀ n, XChain [up i, dn i] (capBlk (dn i) n) [] := xChain_capBlk (dn i)
-          obtain ⟨c, E⟩ := ddot_capBlk_dn cs (wt D ν v) i m
+          have hc : ∀ n, XChain [up i, dn i] (capDots (dn i) n) [] := xChain_capDots (dn i)
+          obtain ⟨c, E⟩ := ddot_capDots_dn cs (wt D ν v) i m
           refine CupSpan.congr_list ν (L' := ((CMove.dot (dn i)).loc.map (xwhL [up i] []) ++
-            capBlk (dn i) m).map (xwhL u v)) ?_ ?_
-          · rw [List.map_append, map_xwhL_comp]
+            capDots (dn i) m).map (xwhL u v)) ?_ ?_
+          · rw [List.map_append, map_xwhL_xwhL]
             simp
-          rw [xev_eq_plcW ν u v (hd.append (hc m)) (by simp [capBlk_ne_nil]), E, map_smul,
-            Linear.comp_smul, ← xev_eq_plcW ν u v (hc (m + 1)) (capBlk_ne_nil _ _)]
+          rw [xev_eq_plcW ν u v (hd.append (hc m)) (by simp [capDots_ne_nil]), E, map_smul,
+            Linear.comp_smul, ← xev_eq_plcW ν u v (hc (m + 1)) (capDots_ne_nil _ _)]
           exact .smul c (ih (dn i) (m + 1) u v t)
-        · refine CupSpan.congr_list ν (L' := (capBlk (up i) (m + 1)).map (xwhL u v)) ?_
+        · refine CupSpan.congr_list ν (L' := (capDots (up i) (m + 1)).map (xwhL u v)) ?_
             (ih (up i) (m + 1) u v t)
-          rw [← dotUp_capBlk_up, List.map_append, map_xwhL_comp]
+          rw [← dotUp_capDots_up, List.map_append, map_xwhL_xwhL]
           simp
       · -- the dot is to the right of the cap
         subst u' v
         obtain ⟨p, hp⟩ :=
-          xev_swap' cs ν (xChain_capBlk l m) (CMove.xChain_loc (.dot l')) u c v' s t
+          xev_swap' cs ν (xChain_capDots l m) (CMove.xChain_loc (.dot l')) u c v' s t
         exact CupSpan.of_swap ν (fun r => ih l m u (c ++ [l'] ++ v') r) (.dot l') (u ++ c) v'
           (z := zsign k p) (by simpa using hp)
     | cup l' =>
@@ -235,7 +235,7 @@ theorem cupSpan_cap {s : List (Letter I)}
         ⟨hu, hl, hv⟩ | ⟨c, hu, hv⟩
       · -- the cup is to the left of the cap
         subst u v'
-        obtain ⟨p, hp⟩ := xev_swap cs ν (CMove.xChain_loc (.cup l')) (xChain_capBlk l m) u' c v s t
+        obtain ⟨p, hp⟩ := xev_swap cs ν (CMove.xChain_loc (.cup l')) (xChain_capDots l m) u' c v s t
         exact CupSpan.of_swap ν (fun r => ih l m (u' ++ c) v r) (.cup l') u' (c ++ v)
           (z := zsign k p) (by simpa using hp)
       · -- the right leg of the cup is the left leg of the cap: a zigzag
@@ -243,47 +243,47 @@ theorem cupSpan_cap {s : List (Letter I)}
         subst l' u v'
         have h₁ : XChain [l] ((CMove.cup l).loc.map (xwhL [] [l])) [l, flipL l, l] := by
           simpa using xChain_cup_whisk l [] [l]
-        have h₂ : XChain [l, flipL l, l] ((capBlk l m).map (xwhL [l] [])) [l] := by
-          simpa using (xChain_capBlk l m).whisk [l] []
+        have h₂ : XChain [l, flipL l, l] ((capDots l m).map (xwhL [l] [])) [l] := by
+          simpa using (xChain_capDots l m).whisk [l] []
         have hmem : xev cs (wt D ν v) [l] [l] ((CMove.cup l).loc.map (xwhL [] [l]) ++
-            (capBlk l m).map (xwhL [l] [])) ∈ slideSetR cs (wt D ν v) l := by
+            (capDots l m).map (xwhL [l] [])) ∈ slideSetR cs (wt D ν v) l := by
           obtain ⟨i, rfl⟩ | ⟨i, rfl⟩ := letter_cases l
           exacts [zig_dn_left cs _ i m, zig_up_left cs _ i m]
         refine CupSpan.congr_list ν (L' := ((CMove.cup l).loc.map (xwhL [] [l]) ++
-          (capBlk l m).map (xwhL [l] [])).map (xwhL u' v)) ?_
+          (capDots l m).map (xwhL [l] [])).map (xwhL u' v)) ?_
           (cupSpan_local_slide ν hf (h₁.append h₂) (by simp [CMove.loc_ne_nil]) hmem)
-        rw [List.map_append, map_xwhL_comp, map_xwhL_comp]
+        rw [List.map_append, map_xwhL_xwhL, map_xwhL_xwhL]
         simp
       · -- the cup closes up with the cap: a dotted bubble
         subst u' l' v'
         have h₁ : XChain [] (CMove.cup (flipL l)).loc [flipL l, l] := by
           simpa using CMove.xChain_loc (.cup (flipL l))
         refine CupSpan.congr_list ν
-          (L' := ((CMove.cup (flipL l)).loc ++ capBlk l m).map (xwhL u v)) (by simp) ?_
-        rw [xev_eq_plcW ν u v (h₁.append (xChain_capBlk l m)) (by simp [capBlk_ne_nil])]
-        exact cupSpan_plcAt ν v u hf (isBub_cup_capBlk cs _ l m)
+          (L' := ((CMove.cup (flipL l)).loc ++ capDots l m).map (xwhL u v)) (by simp) ?_
+        rw [xev_eq_plcW ν u v (h₁.append (xChain_capDots l m)) (by simp [capDots_ne_nil])]
+        exact cupSpan_plcAt ν v u hf (isBub_cup_capDots cs _ l m)
       · -- the left leg of the cup is the right leg of the cap: a zigzag
         subst u' l' v
         have h₁ : XChain [flipL l] ((CMove.cup l).loc.map (xwhL [flipL l] []))
             [flipL l, l, flipL l] := by
           simpa using xChain_cup_whisk l [flipL l] []
-        have h₂ : XChain [flipL l, l, flipL l] ((capBlk l m).map (xwhL [] [flipL l]))
+        have h₂ : XChain [flipL l, l, flipL l] ((capDots l m).map (xwhL [] [flipL l]))
             [flipL l] := by
-          simpa using (xChain_capBlk l m).whisk [] [flipL l]
+          simpa using (xChain_capDots l m).whisk [] [flipL l]
         have hmem : xev cs (wt D ν v') [flipL l] [flipL l]
-            ((CMove.cup l).loc.map (xwhL [flipL l] []) ++ (capBlk l m).map (xwhL [] [flipL l])) ∈
+            ((CMove.cup l).loc.map (xwhL [flipL l] []) ++ (capDots l m).map (xwhL [] [flipL l])) ∈
             slideSetR cs (wt D ν v') (flipL l) := by
           obtain ⟨i, rfl⟩ | ⟨i, rfl⟩ := letter_cases l
           exacts [zig_dn_right cs _ i m, zig_up_right cs _ i m]
         refine CupSpan.congr_list ν (L' := ((CMove.cup l).loc.map (xwhL [flipL l] []) ++
-          (capBlk l m).map (xwhL [] [flipL l])).map (xwhL u v')) ?_
+          (capDots l m).map (xwhL [] [flipL l])).map (xwhL u v')) ?_
           (cupSpan_local_slide ν hf (h₁.append h₂) (by simp [CMove.loc_ne_nil]) hmem)
-        rw [List.map_append, map_xwhL_comp, map_xwhL_comp]
+        rw [List.map_append, map_xwhL_xwhL, map_xwhL_xwhL]
         simp
       · -- the cup is to the right of the cap
         subst u' v
         obtain ⟨p, hp⟩ :=
-          xev_swap' cs ν (xChain_capBlk l m) (CMove.xChain_loc (.cup l')) u c v' s t
+          xev_swap' cs ν (xChain_capDots l m) (CMove.xChain_loc (.cup l')) u c v' s t
         exact CupSpan.of_swap ν (fun r => ih l m u (c ++ v') r) (.cup l') (u ++ c) v'
           (z := zsign k p) (by simpa using hp)
   | zero => intro l m u v t; rw [Limits.zero_comp]; exact .zero
@@ -318,7 +318,7 @@ theorem cupSpan_dcup {s : List (Letter I)}
       congr 1
       exact (xev_dots_up cs (wt D ν b) [] [dn i] i r).symm
     rw [E, plcW_comp, ← xev_eq_plcW ν a b (hc.append hd) (by simp),
-      ← Category.assoc, List.map_append, map_xwhL_comp]
+      ← Category.assoc, List.map_append, map_xwhL_xwhL]
     exact CupSpan.comp_append ν
       (fun _ => .move (.cup (up i)) a b (cupSpan_plcAt ν b a hf (isBub_bubR cs i _ _)))
       (fun _ _ _ hg => cupSpan_dots ν (up i) (a ++ []) ([dn i] ++ b) r hg)
@@ -339,17 +339,17 @@ theorem cupSpan_dcap {s : List (Letter I)}
     refine CupSpan.sum ν _ fun r _ => ?_
     rw [map_smul, Linear.comp_smul]
     refine .smul _ ?_
-    have hc : XChain [dn i, up i] (capBlk (up i) r) [] := xChain_capBlk (up i) r
+    have hc : XChain [dn i, up i] (capDots (up i) r) [] := xChain_capDots (up i) r
     have hd : XChain [dn i, up i] ((xDots (up i) r).map (xwhL [dn i] [])) [dn i, up i] :=
       (xChain_xDots (up i) r).whisk [dn i] []
     have E : cl D Sc (wt D ν b) [dn i, up i] [dn i, up i] (dotsL [dn i] i [] r) ≫
-        epsP cs i (wt D ν b) = xev cs (wt D ν b) [dn i, up i] [] (capBlk (up i) r) := by
+        epsP cs i (wt D ν b) = xev cs (wt D ν b) [dn i, up i] [] (capDots (up i) r) := by
       show _ = xev cs (wt D ν b) [dn i, up i] []
         ((xDots (up i) r).map (xwhL [dn i] []) ++ [([], .lcap i, [])])
       rw [xev_append cs _ hd, xev_lcap]
       congr 1
       exact (xev_dots_up cs (wt D ν b) [dn i] [] i r).symm
-    rw [← Category.assoc, E, plcW_comp, ← xev_eq_plcW ν a b hc (capBlk_ne_nil _ _),
+    rw [← Category.assoc, E, plcW_comp, ← xev_eq_plcW ν a b hc (capDots_ne_nil _ _),
       ← Category.assoc]
     exact cupSpan_plcAt ν b a (cupSpan_cap ν hf (up i) r a b _) (isBub_bubL cs i _ _)
   · rw [cl_dcapZero (Sc := Sc) i _ n (by omega), map_zero, Limits.comp_zero]; exact .zero
@@ -372,8 +372,8 @@ theorem cupSpan_layer {s : List (Letter I)}
       exact CupSpan.congr_list ν (L' := (CMove.cup (dn i)).loc.map (xwhL a b)) (by simp)
         (.move (.cup (dn i)) a b hf)
     | cap i =>
-      exact CupSpan.congr_list ν (L' := (capBlk (dn i) 0).map (xwhL a b))
-        (by simp [capBlk, xDots]) (cupSpan_cap ν hf (dn i) 0 a b t)
+      exact CupSpan.congr_list ν (L' := (capDots (dn i) 0).map (xwhL a b))
+        (by simp [capDots, xDots]) (cupSpan_cap ν hf (dn i) 0 a b t)
     | dcup i n => exact cupSpan_dcup ν hf i n a b t
     | dcap i n => exact cupSpan_dcap ν hf i n a b t
     | cross i j => simp [XShape.isCross, Shape.isCross] at hx
@@ -382,8 +382,8 @@ theorem cupSpan_layer {s : List (Letter I)}
     exact CupSpan.congr_list ν (L' := (CMove.cup (up i)).loc.map (xwhL a b)) (by simp)
       (.move (.cup (up i)) a b hf)
   | lcap i =>
-    exact CupSpan.congr_list ν (L' := (capBlk (up i) 0).map (xwhL a b))
-      (by simp [capBlk, xDots]) (cupSpan_cap ν hf (up i) 0 a b t)
+    exact CupSpan.congr_list ν (L' := (capDots (up i) 0).map (xwhL a b))
+      (by simp [capDots, xDots]) (cupSpan_cap ν hf (up i) 0 a b t)
 
 /-- **Crossingless diagrams** keep a 2-morphism in `CupSpan`. -/
 theorem cupSpan_comp_xev : ∀ (L : List (XLayer I)), xcnt L = 0 →
