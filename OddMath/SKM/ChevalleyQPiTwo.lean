@@ -23,8 +23,9 @@ by `chevQPiHom` (`chevalleyQPiTwo_map₂`); its composition comparison carries t
 graded (`chevalleyQPiTwo_isGraded`), every hom functor is a graded superequivalence and it is
 surjective on objects (`chevalleyQPiTwo_isLocalTwoSuperequivalence`).
 
-Not proved here: the assertion of Proposition 9.3 that `ω̃` is an isomorphism (an inverse
-2-superfunctor).
+The assertion of Proposition 9.3 that `ω̃` is an isomorphism is proved in the adjoint
+biequivalence reading in `OddMath.SKM.ChevalleyQPiBiequivalence`
+(`chevalleyQPiTwo_isAdjointBiequivalence`).
 -/
 noncomputable section
 namespace OddMath.SKM
