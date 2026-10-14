@@ -649,6 +649,8 @@ import OddMath.SKM.MateN
 import OddMath.SKM.Mates
 import OddMath.SKM.Placement
 import OddMath.SKM.PlacementHom
+import OddMath.SKM.SpanLower
+import OddMath.SKM.SpanLocal
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
