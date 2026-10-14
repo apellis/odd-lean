@@ -496,3 +496,34 @@ Names in this section are in `OddMath.SKM`.
    identities hold for every weight and every degree, fake bubbles included; the proof uses
    only the quadratic and pitchfork relations and the infinite Grassmannian relation. Parts
    (i)–(iii) hold as printed, with the scalars unchanged.
+
+2. **Proposition 7.6, the alternative braid relation for `i = j = k`: sign of the second sum
+   [corrected identity proved].** Write `h = ⟨hᵢ, μ⟩` for the weight `μ` of the rightmost
+   region. The second triple sum on the right-hand side (the one with the clockwise bubble,
+   summed over `r + s + t ≤ -h - 2`) carries the sign `(-1)^{|i|(h + r + s + t)}` as printed;
+   the correct sign is `(-1)^{|i|(h + r + s)}`. The first sum and all diagrams are as printed,
+   so the two versions differ only for odd `i`. The corrected relation holds for every colour,
+   weight and parity, over arbitrary scalars (`AltBraid.prop_7_6`, `AltBraid.prop_7_6_equal`,
+   with the second sum `altCorrectionL`). For colours that are not all equal the printed
+   relation (no correction) is proved as stated (`AltBraid.prop_7_6_ne`); the case `i = k ≠ j`
+   uses the left adjunction (6.6) and the pitchfork relation (7.5) to rotate the upward braid
+   relation (`AltBraid.left_braid`).
+
+   **Why the printed sign is wrong.** For odd `i` and `h = -3` the two versions differ by
+   twice the term with `r = s = 0`, `t = 1`. That term vanishes if and only if the dot on
+   `Eᵢ 1_μ` does (it is the dot composed with a split cup and cap on either side), and the dot
+   vanishes only if the identity of `1_μ` does.
+   That this identity is nonzero in a nontrivial example is not proved here: it follows from
+   the odd Grassmannian 2-representation of J. Brundan, A. Kleshchev, arXiv:2203.14149v3,
+   Thm 13.2, whose relation (13.21) is the corrected form above in the odd rank-one case
+   (they credit the correction to Dupont–Ebert–Lauda).
+
+   **For the authors.** In Proposition 7.6 with `i = j = k`, the sign in the second sum (the
+   terms with the clockwise bubble, `r + s + t ≤ -⟨hᵢ,λ⟩ - 2`) should be
+   `(-1)^{|i|(⟨hᵢ,λ⟩ + r + s)}`, without `t`. Both sums come out of
+   the proof by expanding the ♦-cup and ♦-cap of the inversion relation with (5.11) and (5.12)
+   and moving the dots with the pitchfork relations. For odd `i` and `⟨hᵢ,λ⟩ = -3` the printed
+   sign changes the relation by `2 · (term at r = s = 0, t = 1)`, which vanishes only if the
+   identity of `1_λ` does; in the odd Grassmannian 2-representation of Brundan–Kleshchev it is
+   nonzero, and their (13.21) has the corrected sign. The other colour configurations
+   hold as printed.

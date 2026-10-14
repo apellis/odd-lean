@@ -634,6 +634,9 @@ import OddMath.SKM.GrassmannianCor
 import OddMath.SKM.GrassmannianOdd
 import OddMath.SKM.LeftAdj
 import OddMath.SKM.LeftAdj2
+import OddMath.SKM.AltBraid
+import OddMath.SKM.AltBraidRotation
+import OddMath.SKM.AlternativeBraid
 import OddMath.SKM.LeftDot
 import OddMath.SKM.Lemma71
 import OddMath.SKM.Lemma71Cup
