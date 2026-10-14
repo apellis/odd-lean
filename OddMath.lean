@@ -15,6 +15,7 @@ import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
 import OddMath.CoveringQuantum.Negative
 import OddMath.CoveringQuantum.Coefficients.HalfSplitting
+import OddMath.CoveringQuantum.Coefficients.FormSplitting
 import OddMath.CoveringQuantum.Nondegenerate
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.PreF.WordGauge
@@ -54,6 +55,8 @@ import OddMath.CoveringQuantum.UDot.PositiveForm
 import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
 import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.RootCoordinates
+import OddMath.CoveringQuantum.UDot.BaseChange
+import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
