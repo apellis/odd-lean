@@ -125,7 +125,7 @@ theorem dotsCap_dotB (ν : X) (l : Letter I) (d : ℕ) : ∃ (p : ZMod 2) (r : k
         oddBubble cs l.2 ν) := by
   obtain ⟨q, hq⟩ := xev_ichg cs ν (S := [flipL l, l]) (T := []) [] (xCapL l) [] []
     (xChain_xDotsL (flipL l) d) (xChain_xDotL l) rfl
-  obtain ⟨p, r, hpr⟩ := dotCap cs ν l
+  obtain ⟨p, r, -, hpr⟩ := dotCap cs ν l
   have hD : XChain [flipL l, l] ((xDotsL (flipL l) d).map (xwhL [] [l])) [flipL l, l] := by
     simpa using (xChain_xDotsL (flipL l) d).whisk [] [l]
   have hD' : XChain [flipL l, l] ((xDotL (flipL l)).map (xwhL [] [l])) [flipL l, l] := by
