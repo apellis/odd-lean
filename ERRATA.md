@@ -527,3 +527,34 @@ Names in this section are in `OddMath.SKM`.
    identity of `1_λ` does; in the odd Grassmannian 2-representation of Brundan–Kleshchev it is
    nonzero, and their (13.21) has the corrected sign. The other colour configurations
    hold as printed.
+
+3. **(1.28), the cyclicity of crossings: missing sign [F→T; corrected identity proved].**
+   As printed, for all `i, j ∈ I` the downward crossing `Fᵢ Fⱼ 1_λ → Fⱼ Fᵢ 1_λ` obtained from
+   the upward crossing `τ : Eᵢ Eⱼ → Eⱼ Eᵢ` with the rightward cups and caps (the right mate,
+   Definition 2.1) equals the one obtained with the leftward cups `η'` and caps `ε'` (the left
+   mate; cups nested with the outer one lowest, caps with the outer one highest, as drawn).
+   Correct: the left mate is `(-1)^{|i||j|(⟨hᵢ,λ⟩ + ⟨hⱼ,λ⟩ + 1)}` times the right mate
+   (`eq_1_28`, with the left mate `lcrossMate` and the right mate `dcrossL`). So (1.28) holds as
+   printed when `i` or `j` is even (`eq_1_28_of_even`); for `i = j` the sign is `(-1)^{|i|}`
+   (`eq_1_28_self`); for odd `i ≠ j` it is `(-1)^{⟨hᵢ,λ⟩ + ⟨hⱼ,λ⟩ + 1}` and depends on `λ`.
+   The proof uses only the left adjunction (6.6) and the pitchfork relations (7.5), (7.6).
+   The case `i = j` is the correction recorded by J. Brundan, A. Kleshchev, arXiv:2203.14149v3,
+   (13.18) and its footnote, who credit Dupont–Ebert–Lauda. (1.26) and (1.27) hold as printed
+   (`eq_1_26`, `eq_1_27`).
+
+   **Proved obstruction.** For odd `i`, the printed relation on `Fᵢ Fᵢ 1_λ` forces the downward
+   crossing to vanish (`2` is invertible), and then the dot slide (3.5) gives
+   `1_{Fᵢ Fᵢ 1_λ} = 0` (`eq_1_28_printed_self_odd`). For odd `i ≠ j` and `⟨hᵢ,λ⟩ + ⟨hⱼ,λ⟩` even
+   it forces the downward crossing on `Fᵢ Fⱼ 1_λ` to vanish (`eq_1_28_printed_odd`). That these
+   2-morphisms are nonzero in a nontrivial example is not proved here; for `i = j` it follows
+   from the odd Grassmannian 2-representation of Brundan–Kleshchev, Thm 13.2.
+
+   **For the authors.** In (1.28) the right-hand side should carry the sign
+   `(-1)^{|i||j|(⟨hᵢ,λ⟩ + ⟨hⱼ,λ⟩ + 1)}`, with the leftward cups nested as drawn (outer cup lowest,
+   outer cap highest). Rotating `τ` by the inner leftward cup and cap gives
+   `(-1)^{|i||j||j,λ|}` times the leftward crossing, because the cup of parity `|j,λ|` passes
+   the leftward crossing of parity `|i||j|` before (7.5) and the zigzag (6.6) apply; the
+   pitchfork relation (7.6) contributes `(-1)^{|i||j|}`, and moving the downward crossing past
+   the outer leftward cap contributes `(-1)^{|i||j||i,λ|}`. The product is the sign above. For
+   `i = j` odd the printed relation forces the downward crossing on `Fᵢ Fᵢ 1_λ`, and hence the
+   identity of that 1-morphism by (3.5), to be zero. (1.26) and (1.27) are correct as printed.

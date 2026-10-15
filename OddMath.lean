@@ -692,6 +692,7 @@ import OddMath.SKM.ChevalleyQPiReverseComparison
 import OddMath.SKM.ChevalleyQPiReverseTriangle
 import OddMath.SKM.ChevalleyQPiBiequivalence
 import OddMath.SKM.Curls
+import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
