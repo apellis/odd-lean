@@ -581,11 +581,12 @@ matching has such layerings, and they differ by the super interchange law, i.e. 
 
 Compared with the printed statement:
 * `Reduced₂` asks that no strand crosses itself and two strands cross at most once, but not that
-  every strand has exactly one critical point; this allows more matchings in `M` (the statement is
+  every strand has at most one critical point; this allows more matchings in `M` (the statement is
   more general).
 * The hypothesis on `M` is that it represents every *pairing* of `a* b`, rather than every
   equivalence class of reduced matchings; the form of the paper is `theorem_8_1`, using that every
-  pairing is the pairing of a reduced matching (`exists_reduced_matching`).
+  pairing is the pairing of a matching reduced in the sense of the paper
+  (`exists_strictReduced_matching`).
 * `M` need not consist of pairwise inequivalent matchings, and for each `R` and `n` any decorated
   matching with the prescribed dots may be chosen, in particular with the dots at one height in any
   order (both only make the statement more general); `wt(a) = wt(b)` is not needed. -/

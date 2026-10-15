@@ -35,7 +35,8 @@ to the canonical diagram of its pairing.
   pairing bent back by nested caps (`bendL`)**.
 
 The paper's notion of reduced matchings also asks that every strand has at most one critical
-point; this is not needed here, so `Reduced₂` admits more matchings.
+point; this is not needed here, so `Reduced₂` admits more matchings (the paper's notion is
+`StrictReduced₂`, in `OddMath.SKM.SpanStrictReduced`).
 -/
 
 noncomputable section
@@ -165,8 +166,10 @@ def IsMatching₂ (a b : List (Letter I)) (R : List (TMove (Letter I))) : Prop :
 def pairing₂ (a : List (Letter I)) (R : List (TMove (Letter I))) : List (ℕ × Letter I) :=
   (tRun flipL a.length (tStart a) R).st
 
-/-- **Reduced matchings** ([BE2] §8): no strand crosses itself and two strands cross at most
-once (the crossings being recorded on the strands of the matching, `Chord.TState.xs`). -/
+/-- **Reduced matchings, without the condition on critical points** ([BE2] §8): no strand crosses
+itself and two strands cross at most once (the crossings being recorded on the strands of the
+matching, `Chord.TState.xs`). The paper also asks every strand to have at most one critical point
+(`StrictReduced₂`). -/
 def Reduced₂ (a : List (Letter I)) (R : List (TMove (Letter I))) : Prop :=
   (tRun flipL a.length (tStart a) R).xs.Nodup ∧
     ∀ z ∈ (tRun flipL a.length (tStart a) R).xs, ¬ z.IsDiag

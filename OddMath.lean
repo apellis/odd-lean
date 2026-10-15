@@ -748,6 +748,7 @@ import OddMath.SKM.SpanTwoSided
 import OddMath.SKM.SpanDotStrands
 import OddMath.SKM.SpanDecoratedMatchings
 import OddMath.SKM.SpanReducedMatchings
+import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
