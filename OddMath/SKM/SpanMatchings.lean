@@ -39,6 +39,8 @@ moves below the point) and a position at that height on the strand (`OnStrand`).
 
 * `theorem_8_1_nil_bottom`: **[BE2] Theorem 8.1 for `a = ∅`, for any choice of representatives
   and distinguished points**.
+* `eq_top_of_canon_dots_mem`: the triangular induction on crossings, for any submodule of
+  `Hom(1_μ, E_v 1_μ)` (also used for a general bottom boundary, `theorem_8_1_of_pairings`).
 
 The proof follows KL III: by induction on the number of crossings, every diagram is a combination
 of chord diagrams with dots followed by bubbles (`capElim_full`, `mv_to_chord`); a chord diagram
@@ -620,55 +622,84 @@ theorem canon_dots_mem_decorated (c : ℕ)
   rw [Preadditive.add_comp]
   exact Submodule.add_mem _ (hlow (ltL_comp_bubAt hy hβ)) (key z hz)
 
-include hM hrep hq hσ in
-/-- **Every diagram lies in the span of the chosen decorated matchings followed by bubbles**, by
-induction on the number of crossings. -/
-theorem xev_mem_decorated : ∀ (c : ℕ) (L : List (XLayer I)), xcnt L ≤ c →
-    xev cs μ [] v L ∈ diagBubSpan D Sc cs μ [] v (decoratedFamily M σ) := by
-  intro c
-  induction c using Nat.strong_induction_on with
-  | _ c ihc =>
-  intro L hL
-  set T := diagBubSpan D Sc cs μ [] v (decoratedFamily M σ)
-  have hlo : ∀ n ≤ c, LtL D Sc cs μ [] v n ≤ T := by
-    intro n hn
-    refine Submodule.span_le.2 ?_
-    rintro _ ⟨L', hL', rfl⟩
-    exact ihc (xcnt L') (by omega) L' le_rfl
-  have hcap := capElim_full cs μ [] c v L hL
-  rw [CapTarget, thruShort_nil, sup_bot_eq, MvSp] at hcap
-  generalize xev cs μ [] v L = x at hcap
-  induction hcap using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨ms, β, hch, hcc, hβ, rfl⟩ := hx
-    set n := xcnt (mvLay ms)
-    have hlow : ∀ x ∈ LtL D Sc cs μ [] v n, x ≫ bubAt D Sc μ v β ∈ T :=
-      fun x hx => hlo n hcc (ltL_comp_bubAt hx hβ)
-    obtain ⟨E, is, hE, hlet, hn, his, hdiff⟩ := mv_to_chord (cs := cs) μ ms hch
-    refine hdiff.signRel.comp_mem hlow ?_
-    have hsD : XChain [] (chordLay [] E) v := by
-      have := xChain_chordLay (l := []) hE; rwa [hlet] at this
-    rcases chordLay_normal_form (r3Rel cs) (cupCurlRel cs) hE μ v with h | ⟨hfc, hnc, hdc⟩
-    · refine hlow _ ?_
-      rw [xev_append cs _ hsD]
-      have := ltL_comp_xev (r := v) h (dotsOn v is)
-      rwa [xcnt_dotsOn, add_zero, hn] at this
-    · obtain ⟨s, hs⟩ : ∃ s, s = run flipL E := ⟨_, rfl⟩
-      rw [← hs] at hfc hnc hdc
-      have hvs : Valid s := hs ▸ (Chord.inv_run hE).1
-      have hls : Lettered flipL s := hs ▸ Chord.lettered_run flipL_involutive hE
-      have hsv : s.map Prod.snd = v := by rw [hs, Chord.snd_run, ← hlet]
-      have hsc : XChain [] (chordLay [] (canon s)) v := by
-        have := xChain_chordLay_canon hvs hls; rwa [hsv] at this
-      have h2 := hdc.append_right (t := v) hsD hsc (dotsOn v is)
-      rw [xcnt_dotsOn, add_zero, hn] at h2
-      refine h2.signRel.comp_mem hlow ?_
-      exact canon_dots_mem_decorated μ v M hM hrep q hq σ hσ n (hlo n hcc) is.length hvs hls
-        hsv (by rw [hnc, hn]) is (fun i hi => by rw [← hsv] at his; simpa using his i hi)
-        le_rfl hβ
-  | zero => exact Submodule.zero_mem _
-  | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
-  | smul r x _ hx => exact Submodule.smul_mem _ r hx
+end Theorem
+
+section Triangular
+
+variable (cs) in
+/-- **The triangular induction on crossings** (KL III, proof of Proposition 3.11): a submodule of
+`Hom(1_μ, E_v 1_μ)` is everything as soon as it contains the canonical chord diagrams with any
+dots, followed by products of bubbles, of every crossing number `c` for which it contains the
+diagrams with fewer than `c` crossings. -/
+theorem eq_top_of_canon_dots_mem (μ : X) (v : List (Letter I))
+    (T : Submodule k ((pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ v)))
+    (h : ∀ c, LtL D Sc cs μ [] v c ≤ T → ∀ {s : List (ℕ × Letter I)}, Valid s →
+      Lettered flipL s → s.map Prod.snd = v → ncr (canon s) = c → ∀ (is : List ℕ),
+      (∀ i ∈ is, i < s.length) →
+      ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])}, IsBubbleProd cs μ β →
+      xev cs μ [] v (chordLay [] (canon s) ++ dotsOn v is) ≫ bubAt D Sc μ v β ∈ T) :
+    T = ⊤ := by
+  have key : ∀ (c : ℕ) (L : List (XLayer I)), xcnt L ≤ c → xev cs μ [] v L ∈ T := by
+    intro c
+    induction c using Nat.strong_induction_on with
+    | _ c ihc =>
+    intro L hL
+    have hlo : ∀ n ≤ c, LtL D Sc cs μ [] v n ≤ T := by
+      intro n hn
+      refine Submodule.span_le.2 ?_
+      rintro _ ⟨L', hL', rfl⟩
+      exact ihc (xcnt L') (by omega) L' le_rfl
+    have hcap := capElim_full cs μ [] c v L hL
+    rw [CapTarget, thruShort_nil, sup_bot_eq, MvSp] at hcap
+    generalize xev cs μ [] v L = x at hcap
+    induction hcap using Submodule.span_induction with
+    | mem x hx =>
+      obtain ⟨ms, β, hch, hcc, hβ, rfl⟩ := hx
+      set n := xcnt (mvLay ms)
+      have hlow : ∀ x ∈ LtL D Sc cs μ [] v n, x ≫ bubAt D Sc μ v β ∈ T :=
+        fun x hx => hlo n hcc (ltL_comp_bubAt hx hβ)
+      obtain ⟨E, is, hE, hlet, hn, his, hdiff⟩ := mv_to_chord (cs := cs) μ ms hch
+      refine hdiff.signRel.comp_mem hlow ?_
+      have hsD : XChain [] (chordLay [] E) v := by
+        have := xChain_chordLay (l := []) hE; rwa [hlet] at this
+      rcases chordLay_normal_form (r3Rel cs) (cupCurlRel cs) hE μ v with h' | ⟨hfc, hnc, hdc⟩
+      · refine hlow _ ?_
+        rw [xev_append cs _ hsD]
+        have := ltL_comp_xev (r := v) h' (dotsOn v is)
+        rwa [xcnt_dotsOn, add_zero, hn] at this
+      · obtain ⟨s, hs⟩ : ∃ s, s = run flipL E := ⟨_, rfl⟩
+        rw [← hs] at hfc hnc hdc
+        have hvs : Valid s := hs ▸ (Chord.inv_run hE).1
+        have hls : Lettered flipL s := hs ▸ Chord.lettered_run flipL_involutive hE
+        have hsv : s.map Prod.snd = v := by rw [hs, Chord.snd_run, ← hlet]
+        have hsc : XChain [] (chordLay [] (canon s)) v := by
+          have := xChain_chordLay_canon hvs hls; rwa [hsv] at this
+        have h2 := hdc.append_right (t := v) hsD hsc (dotsOn v is)
+        rw [xcnt_dotsOn, add_zero, hn] at h2
+        refine h2.signRel.comp_mem hlow ?_
+        exact h n (hlo n hcc) hvs hls hsv (by rw [hnc, hn]) is
+          (fun i hi => by rw [← hsv] at his; simpa using his i hi) hβ
+    | zero => exact Submodule.zero_mem _
+    | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
+    | smul r x _ hx => exact Submodule.smul_mem _ r hx
+  exact eq_top_of_cl_mem fun L _ => by
+    rw [← xev_map_ofL cs]
+    exact key _ _ le_rfl
+
+end Triangular
+
+section Theorem
+
+open DMove
+
+variable (μ : X) (v : List (Letter I)) (M : Set (List (Move (Letter I))))
+  (hM : ∀ E ∈ M, IsNilMatching v E ∧ Reduced flipL E)
+  (hrep : ∀ E', IsNilMatching v E' → Reduced flipL E' →
+    ∃ E ∈ M, Iso (run flipL E) (run flipL E'))
+  (q : List (Move (Letter I)) → ℕ → ℕ × ℕ)
+  (hq : ∀ E ∈ M, ∀ j ∈ leftEnds E, OnStrand E j (q E j))
+  (σ : List (Move (Letter I)) → (ℕ → ℕ) → List (DMove I))
+  (hσ : ∀ E ∈ M, ∀ n, Decorates E (q E) n (σ E n))
 
 include hM hrep hq hσ in
 /-- **[BE2] Theorem 8.1 for an empty bottom boundary (`a = ∅`)**, for any choice of
@@ -691,9 +722,9 @@ with the prescribed dots may be chosen, in particular with the dots at one heigh
 (both only make the statement more general); the hypothesis `wt(a) = wt(b)` is not needed. -/
 theorem theorem_8_1_nil_bottom :
     diagBubSpan D Sc cs μ [] v (decoratedFamily M σ) = ⊤ :=
-  eq_top_of_cl_mem fun L _ => by
-    rw [← xev_map_ofL cs]
-    exact xev_mem_decorated μ v M hM hrep q hq σ hσ _ _ le_rfl
+  eq_top_of_canon_dots_mem cs μ v _ fun c hlow _ hv hl hsv hc is his _ hβ =>
+    canon_dots_mem_decorated μ v M hM hrep q hq σ hσ c hlow is.length hv hl hsv hc is his le_rfl
+      hβ
 
 end Theorem
 

@@ -27,6 +27,9 @@ to the canonical diagram of its pairing.
 
 * `tProcess`: a matching on top of a one-sided diagram is, up to sign modulo fewer crossings, a
   one-sided diagram with the joined pairing and at most as many crossings.
+* `reduced₂_bent_normal_form`: the same in the bent picture: the matching on top of the nested
+  cups `cupA a*` agrees up to sign, modulo fewer crossings, with the canonical chord diagram of its
+  pairing.
 * `reduced₂_normal_form`: **a reduced `(a, b)`-matching has as many crossings as its pairing, and
   agrees up to sign, modulo diagrams with fewer crossings, with the canonical chord diagram of its
   pairing bent back by nested caps (`bendL`)**.
@@ -388,17 +391,14 @@ theorem xlt_bendG (μ : X) {s t : List (Letter I)} {n : ℕ} {A C : List (XLayer
 
 variable (cs)
 
-/-- **[BE2] §8, reduced matchings: the normal form.** A reduced `(a, b)`-matching has as many
-crossings as the crossing number of its pairing, and agrees up to sign, modulo diagrams with fewer
-crossings, with the canonical chord diagram of its pairing (on `a* b`) bent back by nested caps.
-
-This is the step of the proof of [BE2] Theorem 8.1 (after KL III Proposition 3.11) that makes the
-choice of reduced representatives irrelevant; `Reduced₂` does not ask that every strand has at
-most one critical point. -/
-theorem reduced₂_normal_form (μ : X) {a b : List (Letter I)} {R : List (TMove (Letter I))}
+/-- **[BE2] §8, reduced matchings: the normal form, bent.** A reduced `(a, b)`-matching, bent up
+by the nested cups `cupA a*`, has as many crossings as the canonical chord diagram of its pairing,
+and agrees with it up to sign modulo diagrams with fewer crossings. -/
+theorem reduced₂_bent_normal_form (μ : X) {a b : List (Letter I)} {R : List (TMove (Letter I))}
     (hR : IsMatching₂ a b R) (hred : Reduced₂ a R) :
-    ncr₂ R = Chord.cr (pairing₂ a R) ∧
-      XLt cs μ a b (ncr₂ R) (tLay a R) (bendL a b (chordLay [] (canon (pairing₂ a R)))) := by
+    ncr₂ R = Chord.cr (pairing₂ a R) ∧ ncr₂ R = ncr (canon (pairing₂ a R)) ∧
+      XLt cs μ [] (dualW a ++ b) (ncr₂ R) (cupA (dualW a) ++ (tLay a R).map (xwhL (dualW a) []))
+        (chordLay [] (canon (pairing₂ a R))) := by
   obtain ⟨hfit, hb⟩ := hR
   obtain ⟨hf₀, hn₀, hc₀, hw₀⟩ := cupMoves_spec (dualW a)
   rw [dualW_dualW] at hw₀
@@ -419,22 +419,45 @@ theorem reduced₂_normal_form (μ : X) {a b : List (Letter I)} {R : List (TMove
     le_antisymm (Chord.cr_le_of_iso hiso') (Chord.cr_le_of_iso hiso'.symm)
   have hcr' := Chord.cr_run_le_ncr flipL hf'
   rw [hn₀, zero_add] at hle hxl
-  have hpr : pairing₂ a R = (tRun flipL a.length (tStart a) R).st := rfl
   have heq : ncr E' = ncr₂ R := by omega
-  refine ⟨by omega, ?_⟩
   -- the one-sided diagram is reduced, hence equivalent to the canonical diagram
   have hredE : Chord.Reduced flipL E' := (Chord.reduced_iff flipL hf').2 (by omega)
   have hequiv := Chord.equiv_canon_of_reduced flipL hf' hredE
-  obtain ⟨-, hsound⟩ := equiv_sound (r3Rel cs) hequiv hf'
-  rw [Chord.canon_eq_of_iso hiso'] at hsound
-  rw [heq] at hsound
+  obtain ⟨hn, hsound⟩ := equiv_sound (r3Rel cs) hequiv hf'
+  rw [Chord.canon_eq_of_iso hiso'] at hsound hn
+  rw [heq] at hsound hn
   have H := (hxl heq).trans (hsound μ (dualW a ++ b))
   rw [hc₀] at H
+  exact ⟨by omega, hn, H⟩
+
+/-- **[BE2] §8, reduced matchings: the normal form.** A reduced `(a, b)`-matching has as many
+crossings as the crossing number of its pairing, and agrees up to sign, modulo diagrams with fewer
+crossings, with the canonical chord diagram of its pairing (on `a* b`) bent back by nested caps.
+
+This is the step of the proof of [BE2] Theorem 8.1 (after KL III Proposition 3.11) that makes the
+choice of reduced representatives irrelevant; `Reduced₂` does not ask that every strand has at
+most one critical point. -/
+theorem reduced₂_normal_form (μ : X) {a b : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a b R) (hred : Reduced₂ a R) :
+    ncr₂ R = Chord.cr (pairing₂ a R) ∧
+      XLt cs μ a b (ncr₂ R) (tLay a R) (bendL a b (chordLay [] (canon (pairing₂ a R)))) := by
+  obtain ⟨h1, -, H⟩ := reduced₂_bent_normal_form cs μ hR hred
+  obtain ⟨hfit, hb⟩ := hR
+  obtain ⟨hf₀, hn₀, -, hw₀⟩ := cupMoves_spec (dualW a)
+  rw [dualW_dualW] at hw₀
+  have hu : (dualW a).length = a.length := by simp [dualW]
+  have I₀ : TInv (tStart a) := Chord.tInv_start hf₀ hn₀
+  have hl₀ : (tStart a).st.map Prod.snd = dualW a ++ a := by
+    rw [tStart]; dsimp only; rw [← foldl_chStep_eq, hw₀]
+  obtain ⟨hl, hc, -, E', hf', hiso', -, -⟩ := tProcess cs μ hu R (tStart a) a
+    (cupMoves (dualW a)) I₀ hf₀ (Iso.refl _) hl₀ hfit
+  rw [hb] at hl hc
+  have I := I₀.run hfit
   have hv : Chord.Valid (pairing₂ a R) := I.valid
   have hlet : Chord.Lettered flipL (pairing₂ a R) :=
     lettered_of_iso hiso' (Chord.lettered_run flipL_involutive hf')
   have hC : XChain [] (chordLay [] (canon (pairing₂ a R))) (dualW a ++ b) := by
-    have := xChain_chordLay_canon hv hlet; rwa [hpr, hl] at this
-  exact xlt_bendG μ hc hC H
+    have := xChain_chordLay_canon hv hlet; rwa [pairing₂, hl] at this
+  exact ⟨h1, xlt_bendG μ hc hC H⟩
 
 end OddMath.SKM

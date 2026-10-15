@@ -397,17 +397,17 @@ theorem capPF (ν : X) (l m : Letter I) :
 
 /-! ## Dots around caps -/
 
-theorem dotCap_dn (ν : X) (i : I) : ∃ (p : ZMod 2) (r : k),
+theorem dotCap_dn (ν : X) (i : I) : ∃ (p : ZMod 2) (r : k), (D.parity i = 1 ∨ r = 0) ∧
     xev cs ν [up i, dn i] [] ((xDotL (dn i)).map (xwhL [up i] []) ++ xCapL (dn i)) =
       zsign k p • xev cs ν [up i, dn i] [] ((xDotL (up i)).map (xwhL [] [dn i]) ++ xCapL (dn i)) +
         r • (xev cs ν [up i, dn i] [] (xCapL (dn i)) ≫ oddBubble cs i ν) := by
-  refine ⟨D.parity i * ((1 / 2 : ℕ) : ZMod 2), 0, ?_⟩
+  refine ⟨D.parity i * ((1 / 2 : ℕ) : ZMod 2), 0, Or.inr rfl, ?_⟩
   rw [zero_smul, add_zero]
   have E := eq_2_3_b' (Sc := Sc) i ν 1
   rw [← xev_map_ofL cs, ← xev_map_ofL cs, ddotsL_one'] at E
   exact E
 
-theorem dotCap_up (ν : X) (i : I) : ∃ (p : ZMod 2) (r : k),
+theorem dotCap_up (ν : X) (i : I) : ∃ (p : ZMod 2) (r : k), (D.parity i = 1 ∨ r = 0) ∧
     xev cs ν [dn i, up i] [] ((xDotL (up i)).map (xwhL [dn i] []) ++ xCapL (up i)) =
       zsign k p • xev cs ν [dn i, up i] [] ((xDotL (dn i)).map (xwhL [] [up i]) ++ xCapL (up i)) +
         r • (xev cs ν [dn i, up i] [] (xCapL (up i)) ≫ oddBubble cs i ν) := by
@@ -423,14 +423,14 @@ theorem dotCap_up (ν : X) (i : I) : ∃ (p : ZMod 2) (r : k),
       xCapL_up, xev_lcap, xev_map_ofL]
   rw [hL, hR, xCapL_up, xev_lcap]
   rcases zmod2_cases (D.parity i) with hi | hi
-  · exact ⟨0, 0, by rw [lemma41_eq3_one_even cs i ν hi, zsign_zero, one_smul, zero_smul,
-      add_zero]⟩
-  · exact ⟨_, 2, lemma41_eq3_one_odd cs i ν hi⟩
+  · exact ⟨0, 0, Or.inr rfl, by rw [lemma41_eq3_one_even cs i ν hi, zsign_zero, one_smul,
+      zero_smul, add_zero]⟩
+  · exact ⟨_, 2, Or.inl hi, lemma41_eq3_one_odd cs i ν hi⟩
 
 /-- **A dot moves around a cap** ((2.3), Proposition 4.1 (4.3)): a dot on the right leg `l` of the
 cap `xCapL l` is, up to sign, a dot on its left leg, plus (for the leftward cap `ε'` and odd `i`)
 twice the odd bubble (2.18) in the region of the cap. -/
-theorem dotCap (ν : X) (l : Letter I) : ∃ (p : ZMod 2) (r : k),
+theorem dotCap (ν : X) (l : Letter I) : ∃ (p : ZMod 2) (r : k), (D.parity l.2 = 1 ∨ r = 0) ∧
     xev cs ν [flipL l, l] [] ((xDotL l).map (xwhL [flipL l] []) ++ xCapL l) =
       zsign k p • xev cs ν [flipL l, l] [] ((xDotL (flipL l)).map (xwhL [] [l]) ++ xCapL l) +
         r • (xev cs ν [flipL l, l] [] (xCapL l) ≫ oddBubble cs l.2 ν) := by
