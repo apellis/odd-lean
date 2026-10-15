@@ -7,16 +7,19 @@ import OddMath.SKM.SpanDecoratedMatchings
 /-!
 # Every pairing is the pairing of a reduced matching ([BE2] Theorem 8.1)
 
-J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, Theorem 8.1, in the
-form of the paper: a choice of reduced `(a, b)`-matchings representing every equivalence class of
-reduced matchings, decorated with dots at distinguished points, spans
-`Hom(E_a 1_λ, E_b 1_λ)` over `SYM`.
+J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, Theorem 8.1, for
+matchings in which no strand crosses itself and two strands cross at most once (`Reduced₂`): a
+choice of such `(a, b)`-matchings representing every equivalence class, decorated with dots at
+distinguished points, spans `Hom(E_a 1_λ, E_b 1_λ)` over `SYM`. The paper also asks every strand
+to have at most one critical point; that form is `theorem_8_1` in
+`OddMath.SKM.SpanStrictReduced`.
 
 `theorem_8_1_of_pairings` assumes that the chosen matchings represent every *pairing* of `a* b`.
 The missing step is that every pairing is realised by a reduced matching
 (`exists_reduced_matching`): put the canonical chord diagram of the pairing to the right of `a`
 and cap `a` against the new `a*` with nested caps. Each strand of the result contains exactly one
-arc of the canonical diagram, so the matching is reduced.
+arc of the canonical diagram, so the matching is reduced (but its through strands have a cap and
+a cup).
 
 ## Main results
 
@@ -24,7 +27,8 @@ arc of the canonical diagram, so the matching is reduced.
   number of its pairing is reduced.
 * `exists_reduced_matching`: **every pairing of `a* b` is the pairing of a reduced
   `(a, b)`-matching.**
-* `theorem_8_1`: **[BE2] Theorem 8.1** (for any bottom boundary).
+* `theorem_8_1_of_reduced`: [BE2] Theorem 8.1 for matchings in which strands may have several
+  critical points (the form of the paper is `OddMath.SKM.theorem_8_1`).
 -/
 
 namespace StringDiagrams.Chord
@@ -493,30 +497,17 @@ variable (μ : X) (a b : List (Letter I)) (M : Set (List (TMove (Letter I))))
   (hσ : ∀ R ∈ M, ∀ n, Decorates₂ a R (q R) n (σ R n))
 
 include hM hrep hq hσ in
-/-- **[BE2] Theorem 8.1.** Let `M` be a set of reduced `(a, b)`-matchings (`IsMatching₂ a b R`,
-`Reduced₂ a R`) containing a representative of every equivalence class of reduced
-`(a, b)`-matchings, two matchings being equivalent when they define the same pairing of the
-letters of `a* b` (`Iso (pairing₂ a R) (pairing₂ a R')`). For each `R ∈ M` let `q R j` be a
-distinguished point on the strand with left endpoint `j` (`OnStrand₂`), and for counts `n` let
-`σ R n` be the decorated matching with `n j` dots at `q R j` (`Decorates₂`). Then the 2-morphisms
-`dLay a (σ R n) : E_a 1_λ → E_b 1_λ` generate `Hom(E_a 1_λ, E_b 1_λ)` as a right `SYM`-module,
-`SYM` acting by `β_λ` in the rightmost region (`diagBubSpan`).
+/-- **[BE2] Theorem 8.1 for matchings reduced in the weaker sense `Reduced₂`.** Let `M` be a set of
+`(a, b)`-matchings (`IsMatching₂ a b R`) in which no strand crosses itself and two strands cross at
+most once (`Reduced₂ a R`), containing a representative of every equivalence class of such
+matchings, two matchings being equivalent when they define the same pairing of the letters of
+`a* b`. With distinguished points and dots as in `theorem_8_1`, the decorated matchings generate
+`Hom(E_a 1_λ, E_b 1_λ)` as a right `SYM`-module.
 
-Matchings are encoded by generic layerings (sequences of cups, crossings and caps); every planar
-matching has such layerings, and they differ by the super interchange law, i.e. by signs. Compared
-with the printed statement, every deviation makes the statement more general:
-* `Reduced₂` asks that no strand crosses itself and two strands cross at most once, but not that
-  every strand has at most one critical point. So `M` may contain more matchings, and it is asked
-  to represent the classes of these reduced matchings. Each such class is a pairing of `a* b`,
-  which is the pairing of a matching reduced in the paper's sense, by the remark of [BE2] §8 that
-  every matching is equivalent to a reduced one; so a set of representatives as in the paper is a
-  valid `M` here. (By `exists_reduced_matching`, the hypothesis amounts to `M` representing every
-  pairing.)
-* `M` need not consist of pairwise inequivalent matchings, and for each `R` and `n` any decorated
-  matching with the prescribed dots may be chosen, in particular with the dots at one height in any
-  order.
-* `wt(a) = wt(b)` is not assumed. -/
-theorem theorem_8_1 : diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ) = ⊤ :=
+This differs from the paper's statement (`theorem_8_1`) in that strands may have several critical
+points, so `M` ranges over a larger class of matchings and must represent every class of that
+class; by `exists_reduced_matching`, the hypothesis amounts to `M` representing every pairing. -/
+theorem theorem_8_1_of_reduced : diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ) = ⊤ :=
   theorem_8_1_of_pairings μ a b M hM (fun s hv hl hs => by
     obtain ⟨R', hR', hred, hiso⟩ := exists_reduced_matching hv hl hs
     obtain ⟨R, hRM, hR⟩ := hrep R' hR' hred
