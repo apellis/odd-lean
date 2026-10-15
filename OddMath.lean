@@ -692,6 +692,7 @@ import OddMath.SKM.ChevalleyQPiReverseComparison
 import OddMath.SKM.ChevalleyQPiReverseTriangle
 import OddMath.SKM.ChevalleyQPiBiequivalence
 import OddMath.SKM.Curls
+import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
@@ -729,12 +730,15 @@ import OddMath.SKM.SpanCapsPush
 import OddMath.SKM.SpanCapsPushCup
 import OddMath.SKM.SpanCurls
 import OddMath.SKM.SpanR3
+import OddMath.SKM.SpanChord
 import OddMath.SKM.SpanBubbles
 import OddMath.SKM.SpanBubbleSlides
 import OddMath.SKM.SpanClosed
 import OddMath.SKM.SpanClosedLocal
 import OddMath.SKM.SpanClosedCaps
 import OddMath.SKM.SpanBubbleOut
+import OddMath.SKM.SpanBend
+import OddMath.SKM.SpanOneSided
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
