@@ -16,7 +16,7 @@ zigzags ((1.10), (6.6)), the curls formed by a cup creating a leg of the cap, an
 formed by a cup creating both legs ((2.3)).
 
 The curl formed by a cup followed by the crossing of its two legs enters as the explicit
-hypothesis `CupCurlRel`.
+hypothesis `CupCurlRel`, proved in `OddMath.SKM.SpanCurls` (`cupCurlRel`).
 -/
 
 noncomputable section

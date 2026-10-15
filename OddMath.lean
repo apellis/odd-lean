@@ -728,6 +728,8 @@ import OddMath.SKM.SpanCapCross
 import OddMath.SKM.SpanCapCup
 import OddMath.SKM.SpanCapsPush
 import OddMath.SKM.SpanCapsPushCup
+import OddMath.SKM.SpanCurls
+import OddMath.SKM.SpanR3
 import OddMath.SKM.SpanChord
 import OddMath.SKM.SpanBubbles
 import OddMath.SKM.SpanBubbleSlides

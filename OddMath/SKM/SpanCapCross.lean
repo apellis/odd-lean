@@ -15,7 +15,8 @@ push the cap block `capBlk S l d` below a crossing, up to sign modulo diagrams w
 (Reidemeister 2 and a curl), and Reidemeister 3 inside the block.
 
 Two inputs enter as explicit hypotheses: Reidemeister 3 for every orientation of the three
-strands (`R3Rel`), and the curl formed by a crossing followed by a cap (`CapCurlRel`).
+strands (`R3Rel`), and the curl formed by a crossing followed by a cap (`CapCurlRel`). They are
+proved in `OddMath.SKM.SpanR3` (`r3Rel`) and `OddMath.SKM.SpanCurls` (`capCurlRel`).
 -/
 
 noncomputable section

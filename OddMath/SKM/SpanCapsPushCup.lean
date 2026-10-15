@@ -22,7 +22,8 @@ The dots on `A` are created one at a time from dots on `B` ((2.3), (4.3), `dotB_
 * `push_cup`: the cap push through a cup.
 * `pushHyp_all`: the cap push.
 * `capElim'`: elimination of caps, assuming the local relations `R3Rel`, `CapCurlRel` and
-  `CupCurlRel`.
+  `CupCurlRel` (proved in `OddMath.SKM.SpanR3` and `OddMath.SKM.SpanCurls`; the version without
+  hypotheses is `capElim_full`).
 -/
 
 noncomputable section
