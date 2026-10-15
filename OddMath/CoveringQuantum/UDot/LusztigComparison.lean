@@ -10,19 +10,19 @@ import LieLean.Algebra.QuantumGroup.Modified.BaseChange
 import LieLean.Algebra.QuantumGroup.Modified.FormPlus
 import LieLean.Algebra.QuantumGroup.Modified.TriangularBasis
 import LieLean.Algebra.QuantumGroup.TriangularDecomposition
+import LieLean.Algebra.QuantumGroup.CrystalBasis.Global.ModifiedCanonicalForm
 import Mathlib.Algebra.Algebra.Unitization
 import Mathlib.RingTheory.Flat.Basic
+import Mathlib.RingTheory.Localization.Module
 
 /-!
 # At `π = 1` the modified covering algebra is Lusztig's `U̇`
 
-This file supplies the `π = 1` input of the nondegeneracy theorem of Brundan–Ellis,
-arXiv:1701.04133v2 ([BE2]), Theorem 10.1, from Lusztig's form on `U̇`. At `π = 1` the
-`ρ`-adjoint form on the modified covering algebra is the pullback of Lusztig's form on `U̇`
-([Lus] 26.1.2), so its nondegeneracy follows from that of Lusztig's form ([Lus] 26.3.1). The
-nondegeneracy of Lusztig's form is **not proved here**: it is an explicit hypothesis of the
-results below, `hLus` at a general parameter and, for the headline results, `hQ`: Lusztig's form
-on `U̇` over `ℚ(v)` at `v = X` has trivial left radical.
+This file proves the nondegeneracy assertion of Brundan–Ellis, arXiv:1701.04133v2 ([BE2]),
+Theorem 10.1, for root data of the form `C.rootDatumOf R`, from Lusztig's form on `U̇`. At
+`π = 1` the `ρ`-adjoint form on the modified covering algebra is the pullback of Lusztig's form on
+`U̇` ([Lus] 26.1.2), so its nondegeneracy follows from that of Lusztig's form ([Lus] 26.3.1,
+LieLean's `QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero` over `ℚ(v)`).
 
 Let `k` be a field, `q ∈ kˣ` with `v = q⁻¹` not a root of unity, `C` a super Cartan datum and
 `R` a LieLean root datum (coweight lattice `Y`) for the Cartan datum `C.lusztigDatum`. The
@@ -39,10 +39,14 @@ LieLean's `plusHom_eq_zero_iff`, `minusHom_eq_zero_iff`).
 Over `L = \overline{ℚ(q)}` the parameters `q` and `t q` (`t² = -1`) have inverses that are not
 roots of unity; in fact they are transcendental over `ℚ`, so LieLean's base change
 `QuantumGroup.Modified.form_nondegenerate_of_transcendental` (along `ℚ(v) → L`, `v ↦ q'⁻¹`)
-transfers `hQ` to Lusztig's form at both parameters. Then
+transfers [Lus] 26.3.1 to Lusztig's form at both parameters. Lusztig's theorem needs dominant
+weights that are arbitrarily large on all simple coroots; these exist when `Y` is free of finite
+rank and the simple coroots are linearly independent
+(`exists_dominant_ge_of_linearIndependent_coroot`). Then
 `UDot.positiveModifiedForm_leftRadical_trivial_algebraicClosure` and
 `UDot.sesquilinearForm_leftRadical_trivial` give the nondegeneracy assertion of [BE2]
-Theorem 10.1, conditional on `hQ` ([Lus] 26.3.1 over `ℚ(v)`).
+Theorem 10.1. Not in [BE2] are the shape `C.rootDatumOf R` of the root datum
+(`X = Hom(Y, ℤ)`) and the bar-consistency hypothesis `hD` of `GenericTensor`.
 
 ## Main definitions
 
@@ -55,13 +59,13 @@ Theorem 10.1, conditional on `hQ` ([Lus] 26.3.1 over `ℚ(v)`).
 * `UDot.toLusztig_mul`, `UDot.toLusztig_injective`, `UDot.toLusztig_surjective`.
 * `UDot.form_toLusztig_rho`: the pulled back form is left `ρ`-adjoint.
 * `UDot.form_toLusztig_positiveWord`: its values on positive words.
+* `exists_dominant_ge_of_linearIndependent_coroot`: dominant weights large on all simple coroots.
 * `UDot.positiveFormNondegenerate_of_lusztig`: `UDot.PositiveFormNondegenerate` at `π = 1`,
-  from the nondegeneracy of Lusztig's form on `U̇` ([Lus] 26.3.1), a hypothesis here.
+  from the nondegeneracy of Lusztig's form on `U̇` at a general parameter (hypothesis `hLus`).
 * `UDot.positiveFormNondegenerate_of_ratFunc`: the same for any `q'` with `q'⁻¹` transcendental
   over `ℚ`, from the nondegeneracy of Lusztig's form over `ℚ(v)` (hypothesis `hQ`).
-* `UDot.positiveModifiedForm_leftRadical_trivial_of_lusztig`,
-  `UDot.sesquilinearForm_leftRadical_trivial_of_lusztig`: [BE2] Theorem 10.1 (nondegeneracy),
-  conditional on [Lus] 26.3.1 over `ℚ(v)` (hypothesis `hQ`).
+* `UDot.positiveModifiedForm_nondegenerate`, `UDot.sesquilinearForm_nondegenerate`: [BE2]
+  Theorem 10.1 (nondegeneracy) for root data `C.rootDatumOf R`.
 -/
 
 noncomputable section
@@ -100,6 +104,77 @@ abbrev rootDatumOf : RootDatum I (Y →+ ℤ) where
   rfl
 
 end SuperCartanDatum
+
+/-! ### Dominant weights that are large on the simple coroots -/
+
+section DominantWeights
+
+variable {I Y : Type*} [AddCommGroup Y] {D : LusztigCartanDatum I}
+
+/-- If the coweight lattice `Y` is free of finite rank and the simple coroots are linearly
+independent, then for every `N` there is a dominant weight `Λ ∈ Hom(Y, ℤ)` with
+`⟨hᵢ, Λ⟩ ≥ N` for all `i`. Proof: the coroots stay linearly independent in `Y ⊗ ℚ`, so some
+`ℚ`-linear functional takes the value `1` on each of them; clearing denominators on a `ℤ`-basis of
+`Y` gives an integral functional `f` with `f(hᵢ) = d > 0`, and `Λ = N f` works. -/
+theorem exists_dominant_ge_of_linearIndependent_coroot [Module.Free ℤ Y] [Module.Finite ℤ Y]
+    (R : D.RootDatum Y) (hc : LinearIndependent ℤ R.coroot) (N : ℕ) :
+    ∃ Λ : QuantumGroup.GrandLoop.Dom R, ∀ i, (N : ℤ) ≤ Λ.1 (R.coroot i) := by
+  classical
+  let b := Module.Free.chooseBasis ℤ Y
+  let φ : Y →ₗ[ℤ] (Module.Free.ChooseBasisIndex ℤ Y → ℚ) :=
+    LinearMap.pi fun j ↦ (Int.castAddHom ℚ).toIntLinearMap ∘ₗ b.coord j
+  have hφ : Function.Injective φ := by
+    intro y y' h
+    apply b.repr.injective
+    ext j
+    simpa [φ] using congrFun h j
+  have hφb : ∀ j, φ (b j) = Pi.single j 1 := by
+    intro j
+    funext j'
+    by_cases h : j' = j
+    · subst h
+      simp [φ]
+    · simp [φ, h]
+  have hvQ : LinearIndependent ℚ (φ ∘ R.coroot) :=
+    (LinearIndependent.iff_fractionRing ℤ ℚ).1 (hc.map' φ (LinearMap.ker_eq_bot.2 hφ))
+  obtain ⟨g, hg⟩ := LinearMap.exists_extend
+    ((Finsupp.linearCombination ℚ (fun _ : I ↦ (1 : ℚ))) ∘ₗ hvQ.repr)
+  have hgv : ∀ i, g (φ (R.coroot i)) = 1 := by
+    intro i
+    have h := LinearMap.congr_fun hg ⟨φ (R.coroot i), Submodule.subset_span ⟨i, rfl⟩⟩
+    rw [LinearMap.comp_apply, Submodule.subtype_apply] at h
+    rw [h, LinearMap.comp_apply, hvQ.repr_eq_single i _ rfl, Finsupp.linearCombination_single,
+      smul_eq_mul, mul_one]
+  -- a common denominator of the values of `g` on the coordinate vectors
+  let e : Module.Free.ChooseBasisIndex ℤ Y → ℚ := fun j ↦ g (Pi.single j 1)
+  let d : ℕ := ∏ j, (e j).den
+  have hd : 0 < d := Finset.prod_pos fun j _ ↦ (e j).den_pos
+  have hm : ∀ j, ∃ m : ℤ, (m : ℚ) = d * e j := by
+    intro j
+    obtain ⟨c, hc⟩ := Finset.dvd_prod_of_mem (fun j ↦ (e j).den) (Finset.mem_univ j)
+    refine ⟨c * (e j).num, ?_⟩
+    change (((c : ℤ) * (e j).num : ℤ) : ℚ) = ((∏ j, (e j).den : ℕ) : ℚ) * e j
+    rw [hc]
+    push_cast
+    rw [mul_comm ((e j).den : ℚ), mul_assoc, Rat.den_mul_eq_num]
+  choose m hm using hm
+  let f : Y →ₗ[ℤ] ℤ := b.constr ℤ m
+  have hf : ∀ y, (f y : ℚ) = d * g (φ y) := by
+    have h : (Int.castAddHom ℚ).toIntLinearMap ∘ₗ f = (d : ℚ) • ((g.restrictScalars ℤ) ∘ₗ φ) :=
+      b.ext fun j ↦ by simp [f, hφb, hm, e]
+    exact fun y ↦ LinearMap.congr_fun h y
+  have hfc : ∀ i, f (R.coroot i) = d := by
+    intro i
+    have h := hf (R.coroot i)
+    rw [hgv, mul_one] at h
+    exact_mod_cast h
+  refine ⟨⟨N • f.toAddMonoidHom, fun i ↦ ?_⟩, fun i ↦ ?_⟩
+  · simp only [AddMonoidHom.nsmul_apply, LinearMap.toAddMonoidHom_coe, hfc, nsmul_eq_mul]
+    positivity
+  · simp only [AddMonoidHom.nsmul_apply, LinearMap.toAddMonoidHom_coe, hfc, nsmul_eq_mul]
+    exact_mod_cast Nat.le_mul_of_pos_right N hd
+
+end DominantWeights
 
 namespace UDot
 
@@ -1041,33 +1116,37 @@ theorem positiveFormNondegenerate_of_ratFunc
 
 variable [Finite I] (hD : (C.rootDatumOf R).toSuperCartanDatum.BarConsistent)
 
-/-- **Nondegeneracy of the `ρ`-adjoint form on `U̇`, conditional on [Lus] 26.3.1.** This is the
-nondegeneracy assertion of [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for
-`GenericTensor.positiveModifiedForm` on the modified covering algebra of `C.rootDatumOf R` over
-`ℚ(q)[π]/(π² - 1)` (finite `I`, bar-consistent datum, linearly independent simple roots),
-conditional on the input `hQ`: Lusztig's form on `U̇` over `ℚ(v)` at `v = X` has trivial left
-radical ([Lus] 26.3.1). Inside the proof it is transferred to `L = \overline{ℚ(q)}` at
-`v = q⁻¹` and `v = (t q)⁻¹` (`t² = -1`), both transcendental over `ℚ`. -/
-theorem positiveModifiedForm_leftRadical_trivial_of_lusztig
-    (hα : LinearIndependent ℤ (C.rootDatumOf R).α)
-    (hQ : ∀ x : QuantumGroup.Modified R (RatFunc.X : RatFunc ℚ),
-      (∀ y, QuantumGroup.Modified.form R _ QuantumGroup.ratFunc_X_not_root x y = 0) → x = 0) :
+/-- **Nondegeneracy of the `ρ`-adjoint form on `U̇`.** This is the nondegeneracy assertion of
+[BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.positiveModifiedForm`
+on the modified covering algebra of `C.rootDatumOf R` over `ℚ(q)[π]/(π² - 1)`: its left radical is
+trivial. The setting is that of [BE2] §1: finite `I`, the coweight lattice `Y` free of finite rank,
+simple roots `hα` and simple coroots `hcoroot` linearly independent. Two restrictions are not in
+[BE2]: the root datum is of the form `C.rootDatumOf R` (weights `X = Hom(Y, ℤ)`), and `hD`
+(bar-consistency, used by the construction of `GenericTensor.positiveModifiedForm`). The `π = 1`
+input is Lusztig's [Lus] 26.3.1 over `ℚ(v)`, LieLean's `Modified.eq_zero_of_forall_form_eq_zero`,
+whose dominance hypothesis is `exists_dominant_ge_of_linearIndependent_coroot`; inside the proof it
+is transferred to `L = \overline{ℚ(q)}` at `v = q⁻¹` and `v = (t q)⁻¹` (`t² = -1`), both
+transcendental over `ℚ`. -/
+theorem positiveModifiedForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
+    (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
     ∀ x, (∀ y, GenericTensor.positiveModifiedForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
+  have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
+    (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   refine positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R) hD hα
     (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
     fun t ht ↦ positiveFormNondegenerate_of_ratFunc R hQ _
       (QuantumGroup.transcendental_inv_mul_X (t := t) ?_)
   rw [← Units.val_pow_eq_pow_val, ht, Units.val_neg, Units.val_one]
 
-/-- **Nondegeneracy of the sesquilinear form on `U̇`, conditional on [Lus] 26.3.1.** The
-nondegeneracy assertion of [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for
-`GenericTensor.sesquilinearForm`, under the same hypotheses and the same [Lus] 26.3.1 input
-`hQ` as `positiveModifiedForm_leftRadical_trivial_of_lusztig`. -/
-theorem sesquilinearForm_leftRadical_trivial_of_lusztig
-    (hα : LinearIndependent ℤ (C.rootDatumOf R).α)
-    (hQ : ∀ x : QuantumGroup.Modified R (RatFunc.X : RatFunc ℚ),
-      (∀ y, QuantumGroup.Modified.form R _ QuantumGroup.ratFunc_X_not_root x y = 0) → x = 0) :
+/-- **Nondegeneracy of the sesquilinear form on `U̇`.** The nondegeneracy assertion of [BE2]
+Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.sesquilinearForm`, under the
+hypotheses of `positiveModifiedForm_nondegenerate` (the same two restrictions not in [BE2]: root
+data `C.rootDatumOf R`, and `hD`). -/
+theorem sesquilinearForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
+    (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
     ∀ x, (∀ y, GenericTensor.sesquilinearForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
+  have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
+    (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))
   have hz0 : z ≠ 0 := by
     rintro rfl
