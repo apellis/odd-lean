@@ -20,7 +20,7 @@ require DG from git
 
 require LieLean from git
   "https://github.com/apellis/lie-lean.git" @
-  "903fa7832abb412b701f4904abcb33344a6c8d00"
+  "8db4a246a754a32d5bdc65b0934c351dd439ba9e"
 
 @[default_target]
 lean_lib OddMath where

@@ -6,6 +6,7 @@ import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.TriangularTensor
 import OddMath.CoveringQuantum.UDot.Nondegeneracy
+import LieLean.Algebra.QuantumGroup.Modified.BaseChange
 import LieLean.Algebra.QuantumGroup.Modified.FormPlus
 import LieLean.Algebra.QuantumGroup.Modified.TriangularBasis
 import LieLean.Algebra.QuantumGroup.TriangularDecomposition
@@ -19,8 +20,9 @@ This file supplies the `π = 1` input of the nondegeneracy theorem of Brundan–
 arXiv:1701.04133v2 ([BE2]), Theorem 10.1, from Lusztig's form on `U̇`. At `π = 1` the
 `ρ`-adjoint form on the modified covering algebra is the pullback of Lusztig's form on `U̇`
 ([Lus] 26.1.2), so its nondegeneracy follows from that of Lusztig's form ([Lus] 26.3.1). The
-nondegeneracy of Lusztig's form is **not proved here**: it is the explicit hypothesis `hLus` of
-the results below.
+nondegeneracy of Lusztig's form is **not proved here**: it is an explicit hypothesis of the
+results below, `hLus` at a general parameter and, for the headline results, `hQ`: Lusztig's form
+on `U̇` over `ℚ(v)` at `v = X` has trivial left radical.
 
 Let `k` be a field, `q ∈ kˣ` with `v = q⁻¹` not a root of unity, `C` a super Cartan datum and
 `R` a LieLean root datum (coweight lattice `Y`) for the Cartan datum `C.lusztigDatum`. The
@@ -35,9 +37,12 @@ embeddings of the Serre half algebra into `U^∓` (whose kernels are the Serre i
 LieLean's `plusHom_eq_zero_iff`, `minusHom_eq_zero_iff`).
 
 Over `L = \overline{ℚ(q)}` the parameters `q` and `t q` (`t² = -1`) have inverses that are not
-roots of unity, so `UDot.positiveModifiedForm_leftRadical_trivial_algebraicClosure` and
+roots of unity; in fact they are transcendental over `ℚ`, so LieLean's base change
+`QuantumGroup.Modified.form_nondegenerate_of_transcendental` (along `ℚ(v) → L`, `v ↦ q'⁻¹`)
+transfers `hQ` to Lusztig's form at both parameters. Then
+`UDot.positiveModifiedForm_leftRadical_trivial_algebraicClosure` and
 `UDot.sesquilinearForm_leftRadical_trivial` give the nondegeneracy assertion of [BE2]
-Theorem 10.1, conditional on `hLus` at these two parameters.
+Theorem 10.1, conditional on `hQ` ([Lus] 26.3.1 over `ℚ(v)`).
 
 ## Main definitions
 
@@ -52,9 +57,11 @@ Theorem 10.1, conditional on `hLus` at these two parameters.
 * `UDot.form_toLusztig_positiveWord`: its values on positive words.
 * `UDot.positiveFormNondegenerate_of_lusztig`: `UDot.PositiveFormNondegenerate` at `π = 1`,
   from the nondegeneracy of Lusztig's form on `U̇` ([Lus] 26.3.1), a hypothesis here.
+* `UDot.positiveFormNondegenerate_of_ratFunc`: the same for any `q'` with `q'⁻¹` transcendental
+  over `ℚ`, from the nondegeneracy of Lusztig's form over `ℚ(v)` (hypothesis `hQ`).
 * `UDot.positiveModifiedForm_leftRadical_trivial_of_lusztig`,
   `UDot.sesquilinearForm_leftRadical_trivial_of_lusztig`: [BE2] Theorem 10.1 (nondegeneracy),
-  conditional on [Lus] 26.3.1.
+  conditional on [Lus] 26.3.1 over `ℚ(v)` (hypothesis `hQ`).
 -/
 
 noncomputable section
@@ -1013,42 +1020,24 @@ theorem positiveFormNondegenerate_of_lusztig
 
 /-! ### The nondegeneracy theorem over `ℚ(q)[π]/(π² - 1)` -/
 
-omit [Field k] in
-theorem ratFuncX_pow_ne_one {m : ℕ} (hm : 0 < m) : (RatFunc.X : RatFunc ℚ) ^ m ≠ 1 := by
-  intro h
-  have h' : (Polynomial.X : Polynomial ℚ) ^ m = 1 := by
-    apply RatFunc.algebraMap_injective ℚ
-    rw [map_pow, RatFunc.algebraMap_X, h, map_one]
-  have := congrArg Polynomial.natDegree h'
-  rw [Polynomial.natDegree_X_pow, Polynomial.natDegree_one] at this
-  omega
-
-omit [Field k] in
-/-- For a field `L ⊇ ℚ(q)` and `t ∈ Lˣ` with `t⁴ = 1`, `(t q)⁻¹` is not a root of unity. -/
-theorem mul_genericParameter_inv_pow_ne_one {L : Type*} [Field L] [Algebra (RatFunc ℚ) L]
-    {t : Lˣ} (ht : t ^ 4 = 1) (n : ℕ) (hn : 0 < n) :
-    ((t * genericParameter L : Lˣ) : L)⁻¹ ^ n ≠ 1 := by
-  intro h
-  have hg : ((genericParameter L : Lˣ) : L) = algebraMap (RatFunc ℚ) L RatFunc.X := rfl
-  have h1 : (t * genericParameter L) ^ n = 1 := by
-    apply Units.ext
-    rw [Units.val_pow_eq_pow_val, Units.val_one, ← inv_eq_one, ← inv_pow, h]
-  have h4 : genericParameter L ^ (4 * n) = 1 := by
-    have h4' : (t * genericParameter L) ^ (4 * n) = 1 := by
-      rw [mul_comm 4 n, pow_mul, h1, one_pow]
-    rwa [mul_pow, pow_mul t, ht, one_pow, one_mul] at h4'
-  apply ratFuncX_pow_ne_one (m := 4 * n) (by omega)
-  apply (algebraMap (RatFunc ℚ) L).injective
-  rw [map_pow, map_one, ← hg, ← Units.val_pow_eq_pow_val, h4, Units.val_one]
-
-omit [Field k] in
-/-- `q⁻¹` is not a root of unity in a field `L ⊇ ℚ(q)`. -/
-theorem genericParameter_inv_pow_ne_one {L : Type*} [Field L] [Algebra (RatFunc ℚ) L]
-    (n : ℕ) (hn : 0 < n) : ((genericParameter L : Lˣ) : L)⁻¹ ^ n ≠ 1 := by
-  have := mul_genericParameter_inv_pow_ne_one (L := L) (t := 1) (one_pow 4) n hn
-  rwa [one_mul] at this
-
 section Generic
+
+attribute [local instance] QuantumGroup.neZero_ratFunc_X
+
+/-- **The `π = 1` nondegeneracy input from [Lus] 26.3.1 over `ℚ(v)`.** If Lusztig's form on `U̇`
+over `ℚ(v)` at `v = X` has trivial left radical (the hypothesis `hQ`, [Lus] 26.3.1), then for any
+field `L` of characteristic zero and `q' ∈ Lˣ` with `q'⁻¹` transcendental over `ℚ`, every left
+`ρ`-adjoint form on `U̇_{q',1}` with the standard values on positive words has trivial left radical.
+The transfer from `ℚ(v)` to `L` is LieLean's
+`QuantumGroup.Modified.form_nondegenerate_of_transcendental` (base change along `v ↦ q'⁻¹`). -/
+theorem positiveFormNondegenerate_of_ratFunc
+    (hQ : ∀ x : QuantumGroup.Modified R (RatFunc.X : RatFunc ℚ),
+      (∀ y, QuantumGroup.Modified.form R _ QuantumGroup.ratFunc_X_not_root x y = 0) → x = 0)
+    {L : Type*} [Field L] [CharZero L] (q' : Lˣ) (hw : Transcendental ℚ ((q' : L)⁻¹)) :
+    PositiveFormNondegenerate (C.rootDatumOf R) L q' 1 (one_pow 2) :=
+  positiveFormNondegenerate_of_lusztig R q'
+    (fun _ hn ↦ LusztigF.pow_ne_one_of_transcendental hw hn)
+    (QuantumGroup.Modified.form_nondegenerate_of_transcendental hQ hw)
 
 variable [Finite I] (hD : (C.rootDatumOf R).toSuperCartanDatum.BarConsistent)
 
@@ -1056,49 +1045,38 @@ variable [Finite I] (hD : (C.rootDatumOf R).toSuperCartanDatum.BarConsistent)
 nondegeneracy assertion of [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for
 `GenericTensor.positiveModifiedForm` on the modified covering algebra of `C.rootDatumOf R` over
 `ℚ(q)[π]/(π² - 1)` (finite `I`, bar-consistent datum, linearly independent simple roots),
-conditional on the input `hLus`: Lusztig's form on `U̇` over `L = \overline{ℚ(q)}` has trivial
-left radical at `v = q'⁻¹` for `q' = q` and for `q' = t q` with `t² = -1` ([Lus] 26.3.1). -/
+conditional on the input `hQ`: Lusztig's form on `U̇` over `ℚ(v)` at `v = X` has trivial left
+radical ([Lus] 26.3.1). Inside the proof it is transferred to `L = \overline{ℚ(q)}` at
+`v = q⁻¹` and `v = (t q)⁻¹` (`t² = -1`), both transcendental over `ℚ`. -/
 theorem positiveModifiedForm_leftRadical_trivial_of_lusztig
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α)
-    (hLus : ∀ q' : (AlgebraicClosure (RatFunc ℚ))ˣ,
-      (q' = genericParameter _ ∨
-        ∃ t : (AlgebraicClosure (RatFunc ℚ))ˣ, t ^ 2 = -1 ∧ q' = t * genericParameter _) →
-      ∀ (hv : ∀ n : ℕ, 0 < n → ((q' : AlgebraicClosure (RatFunc ℚ))⁻¹) ^ n ≠ 1)
-        (x : QuantumGroup.Modified R (q' : AlgebraicClosure (RatFunc ℚ))⁻¹),
-        (∀ y, QuantumGroup.Modified.form R _ hv x y = 0) → x = 0) :
+    (hQ : ∀ x : QuantumGroup.Modified R (RatFunc.X : RatFunc ℚ),
+      (∀ y, QuantumGroup.Modified.form R _ QuantumGroup.ratFunc_X_not_root x y = 0) → x = 0) :
     ∀ x, (∀ y, GenericTensor.positiveModifiedForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
   refine positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R) hD hα
-    (positiveFormNondegenerate_of_lusztig R _ genericParameter_inv_pow_ne_one
-      (hLus _ (Or.inl rfl) _)) fun t ht ↦ ?_
-  have ht4 : t ^ 4 = 1 := by rw [show 4 = 2 * 2 from rfl, pow_mul, ht, neg_one_sq]
-  exact positiveFormNondegenerate_of_lusztig R _ (mul_genericParameter_inv_pow_ne_one ht4)
-    (hLus _ (Or.inr ⟨t, ht, rfl⟩) _)
+    (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
+    fun t ht ↦ positiveFormNondegenerate_of_ratFunc R hQ _
+      (QuantumGroup.transcendental_inv_mul_X (t := t) ?_)
+  rw [← Units.val_pow_eq_pow_val, ht, Units.val_neg, Units.val_one]
 
 /-- **Nondegeneracy of the sesquilinear form on `U̇`, conditional on [Lus] 26.3.1.** The
 nondegeneracy assertion of [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for
 `GenericTensor.sesquilinearForm`, under the same hypotheses and the same [Lus] 26.3.1 input
-`hLus` as `positiveModifiedForm_leftRadical_trivial_of_lusztig`. -/
+`hQ` as `positiveModifiedForm_leftRadical_trivial_of_lusztig`. -/
 theorem sesquilinearForm_leftRadical_trivial_of_lusztig
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α)
-    (hLus : ∀ q' : (AlgebraicClosure (RatFunc ℚ))ˣ,
-      (q' = genericParameter _ ∨
-        ∃ t : (AlgebraicClosure (RatFunc ℚ))ˣ, t ^ 2 = -1 ∧ q' = t * genericParameter _) →
-      ∀ (hv : ∀ n : ℕ, 0 < n → ((q' : AlgebraicClosure (RatFunc ℚ))⁻¹) ^ n ≠ 1)
-        (x : QuantumGroup.Modified R (q' : AlgebraicClosure (RatFunc ℚ))⁻¹),
-        (∀ y, QuantumGroup.Modified.form R _ hv x y = 0) → x = 0) :
+    (hQ : ∀ x : QuantumGroup.Modified R (RatFunc.X : RatFunc ℚ),
+      (∀ y, QuantumGroup.Modified.form R _ QuantumGroup.ratFunc_X_not_root x y = 0) → x = 0) :
     ∀ x, (∀ y, GenericTensor.sesquilinearForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))
   have hz0 : z ≠ 0 := by
     rintro rfl
     simp at hz
   have ht : Units.mk0 z hz0 ^ 2 = -1 := Units.ext (by simp [sq, ← hz])
-  have ht4 : Units.mk0 z hz0 ^ 4 = 1 := by
-    rw [show 4 = 2 * 2 from rfl, pow_mul, ht, neg_one_sq]
   exact sesquilinearForm_leftRadical_trivial (C.rootDatumOf R) hD hα _ ht
-    (positiveFormNondegenerate_of_lusztig R _ genericParameter_inv_pow_ne_one
-      (hLus _ (Or.inl rfl) _))
-    (positiveFormNondegenerate_of_lusztig R _ (mul_genericParameter_inv_pow_ne_one ht4)
-      (hLus _ (Or.inr ⟨_, ht, rfl⟩) _))
+    (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
+    (positiveFormNondegenerate_of_ratFunc R hQ _
+      (QuantumGroup.transcendental_inv_mul_X (t := z) (by rw [sq, ← hz])))
 
 end Generic
 
