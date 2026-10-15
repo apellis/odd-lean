@@ -18,10 +18,9 @@ A cup creates a strand with a fresh id (`TState.nxt`), a crossing swaps two adja
 cap joins two adjacent strands (`Chord.jn`); the final state is the pairing of `a* b`.
 
 Following [BE2] §8, the crossings are recorded as unordered pairs of strand ids (`TState.xs`;
-ids are renamed when strands are joined), and the caps as the pairs of ids they join
-(`TState.cps`). A matching is *reduced* if no strand crosses itself, two strands cross at most
-once, and every strand has at most one critical point; the last condition says that every cap
-joins two strands coming from the bottom (`OddMath.SKM.Reduced₂`).
+ids are renamed when strands are joined), so that at the end they are pairs of strands of the
+matching. A matching is *reduced* if no strand crosses itself and two strands cross at most once
+(`OddMath.SKM.Reduced₂`).
 
 ## Main results
 
@@ -370,12 +369,11 @@ inductive TMove (α : Type*) where
 
 /-- The state of a two-sided matching at some height, in the bent picture: the next fresh strand
 id, the strands crossing this height (with the id of each), the crossings so far (as pairs of
-strand ids, renamed along joins) and the caps so far (as the pairs of ids they joined). -/
+strand ids, renamed along joins). -/
 structure TState (α : Type*) where
   nxt : ℕ
   st : List (ℕ × α)
   xs : List (Sym2 ℕ)
-  cps : List (ℕ × ℕ)
 
 /-- The id of the strand at position `i` (`0` if there is none). -/
 def idD (s : List (ℕ × α)) (i : ℕ) : ℕ := (idAt s i).getD 0
@@ -390,12 +388,11 @@ variable (d : α → α)
 /-- One move of a two-sided matching, the moves being placed after the first `k` (bent)
 strands. -/
 def tStep (k : ℕ) (T : TState α) : TMove α → TState α
-  | .mv (.cup g a) => ⟨T.nxt + 1, insAt T.st (k + g) (T.nxt, a) (T.nxt, d a), T.xs, T.cps⟩
+  | .mv (.cup g a) => ⟨T.nxt + 1, insAt T.st (k + g) (T.nxt, a) (T.nxt, d a), T.xs⟩
   | .mv (.cross p) => ⟨T.nxt, swapAt T.st (k + p),
-      T.xs ++ [s(idD T.st (k + p), idD T.st (k + p + 1))], T.cps⟩
+      T.xs ++ [s(idD T.st (k + p), idD T.st (k + p + 1))]⟩
   | .cap g => ⟨T.nxt, jn T.st (k + g),
-      T.xs.map (Sym2.map (rlId (idD T.st (k + g + 1)) (idD T.st (k + g)))),
-      T.cps ++ [(idD T.st (k + g), idD T.st (k + g + 1))]⟩
+      T.xs.map (Sym2.map (rlId (idD T.st (k + g + 1)) (idD T.st (k + g))))⟩
 
 /-- A move applies to the state `s`: a cap joins two distinct strands with dual labels. -/
 def TMove.Ok (k : ℕ) (s : List (ℕ × α)) : TMove α → Prop
@@ -642,7 +639,7 @@ theorem length_xps (D : List (Move α)) : ∀ s : List (ℕ × α),
 
 /-- A diagram of cups and crossings without crossings is a starting state for the invariant. -/
 theorem tInv_start {D : List (Move α)} (hf : Fits 0 D) (h0 : OddMath.SKM.ncr D = 0) :
-    TInv (⟨(run d D).length, run d D, [], []⟩ : TState α) := by
+    TInv (⟨(run d D).length, run d D, []⟩ : TState α) := by
   have hi := inv_run (d := d) hf
   have I := runInv d hf
   have hx : xps d [] D = [] := List.eq_nil_of_length_eq_zero (by rw [length_xps, h0])

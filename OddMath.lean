@@ -741,6 +741,10 @@ import OddMath.SKM.SpanBend
 import OddMath.SKM.SpanOneSided
 import OddMath.SKM.ChordReduced
 import OddMath.SKM.SpanMatchings
+import OddMath.SKM.ChordJoin
+import OddMath.SKM.SpanCapTrack
+import OddMath.SKM.ChordTwoSided
+import OddMath.SKM.SpanTwoSided
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
