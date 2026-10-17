@@ -63,19 +63,8 @@ jobs:
           restore-keys: |
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
-      # OddMath.Frontier.EKMoreGram needs about 11 GB to compile; other large modules need up to
-      # about 6 GB, and the runner has 16 GB. Build its dependencies with two concurrent Lean
-      # processes, then the module alone, then the rest with two concurrent Lean processes.
-      - name: Build dependencies of EKMoreGram
-        if: steps.scope.outputs.docs_only != 'true'
-        env:
-          LEAN_NUM_THREADS: 2
-        run: lake build --wfail OddMath.Frontier.EKRestForgotten OddMath.Frontier.EKGeneralQNondeg OddMath.Frontier.EKRestDegree < /dev/null
-      - name: Build EKMoreGram
-        if: steps.scope.outputs.docs_only != 'true'
-        env:
-          LEAN_NUM_THREADS: 1
-        run: lake build --wfail OddMath.Frontier.EKMoreGram < /dev/null
+      # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
+      # processes.
       - name: Build
         if: steps.scope.outputs.docs_only != 'true'
         env:
