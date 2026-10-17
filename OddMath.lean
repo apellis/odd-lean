@@ -696,6 +696,7 @@ import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
+import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
