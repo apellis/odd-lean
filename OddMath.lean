@@ -700,6 +700,7 @@ import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
 import OddMath.SKM.PsiAdjunctions
+import OddMath.SKM.PsiInversion
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
