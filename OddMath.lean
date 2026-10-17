@@ -243,7 +243,6 @@ import OddMath.Frontier.EKRestDet4
 import OddMath.Frontier.EKRestEval
 import OddMath.Frontier.EKRestForgotten
 import OddMath.Frontier.EKRestGenFun
-import OddMath.Frontier.EKRestGram7
 import OddMath.Frontier.EKRestRibbon
 import OddMath.Frontier.EKRestSuperCenter
 import OddMath.Frontier.EKRestrictedPairing
@@ -697,10 +696,13 @@ import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.EnvelopeSOp
+import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
 import OddMath.SKM.PsiAdjunctions
 import OddMath.SKM.PsiInversion
+import OddMath.SKM.PsiInversionSame
+import OddMath.SKM.PsiInverse
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
