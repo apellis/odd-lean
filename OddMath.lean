@@ -705,6 +705,7 @@ import OddMath.SKM.PsiInversionSame
 import OddMath.SKM.PsiInverse
 import OddMath.SKM.PsiInverseQ
 import OddMath.SKM.PsiFunctor
+import OddMath.SKM.PsiDescent
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor

@@ -17,11 +17,14 @@ vertical composition. The concrete consumer `psiPrimaryRaw_mixed_inversion`
 identifies the raw mixed-crossing composite with the independently verified
 image and applies both distinct-colour inverse equations.
 
-The auxiliary inversion generators, linearization, full contextual relation
-descent and the strict graded functor remain separate obligations; no
-relation-preservation hypothesis is used to assert a functor here. The raw
-slice works over a purely even commutative ring; only the mixed inverse consumer
-requires `t² = -1`, and it does not need the field assumption of §9.
+`psiPlace_place` proves compatibility with nested signed contexts, and
+`psiPrimaryRaw_whisk` identifies source-layer placement with actual target
+whiskering. The contextual equal-colour quadratic relation is checked directly.
+The seven-shape linear evaluation is developed in `PsiDescent`; full quotient
+descent and the strict graded functor remain separate obligations. No relation-
+preservation hypothesis is used to assert a functor here. This slice works over
+a purely even commutative ring; the quadratic and mixed-inverse consumers require
+`t² = -1`, without the field assumption of §9.
 -/
 
 noncomputable section
@@ -50,7 +53,8 @@ theorem psiAt_comp_eq (ν ξ μ : X) (s t : List (Letter I))
       psiAt ν μ (s ++ t) (by rw [wt_append, ht, hs]) := by
   rw [← psiMap_comp, psiWordAt_comp_eq]
 
-private theorem psiAt_congr (ν μ : X) {s r : List (Letter I)}
+/-- Equal signed words determine equal ψ images at fixed weights. -/
+theorem psiAt_congr (ν μ : X) {s r : List (Letter I)}
     (hs : wt D μ s = ν) (hr : wt D μ r = ν) (h : s = r) :
     psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ s hs = psiAt ν μ r hr := by
   cases h
@@ -453,5 +457,242 @@ theorem psiPrimaryRaw_sigma_homogeneous (t : k) (cs : CScalars Sc) (μ : X) (i j
   · simpa only [gsum_sigmaL] using
       psiPrimaryRaw_mem_degree (sy := sy) (hc := hc) t cs (wt D μ [up j, dn i]) μ (sigmaL i j)
         rfl ((sChain_sigmaL i j).wt_eq D μ) (sChain_sigmaL i j) (primaryLayers_sigmaL i j)
+
+
+/-- Horizontal placement is linear on the actual target hom module. -/
+def psiPlaceLinear (Ω ν ξ μ : X) (u v : List (Letter I)) {s r : List (Letter I)}
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hs : wt D ξ s = ν) (hr : wt D ξ r = ν) :
+    (psiAt (Sc := Sc) (sy := sy) (hc := hc) ν ξ s hs ⟶ psiAt ν ξ r hr) →ₗ[k]
+      (psiAt (Sc := Sc) (sy := sy) (hc := hc) Ω μ (u ++ s ++ v)
+          (by rw [wt_append, wt_append, hv, hs, hu]) ⟶
+        psiAt Ω μ (u ++ r ++ v) (by rw [wt_append, wt_append, hv, hr, hu])) where
+  toFun := psiPlace Ω ν ξ μ u v hu hv hs hr
+  map_add' η θ := by
+    subst ξ
+    simp [psiPlace, psiWhiskerLeft, psiWhiskerRight,
+      TwoSupercategory.whiskerLeft_add (R := k), TwoSupercategory.add_whiskerRight (R := k),
+      Preadditive.add_comp, Preadditive.comp_add]
+  map_smul' a η := by
+    subst ξ
+    simp [psiPlace, psiWhiskerLeft, psiWhiskerRight,
+      TwoSupercategory.whiskerLeft_smul (R := k), TwoSupercategory.smul_whiskerRight (R := k),
+      Linear.smul_comp, Linear.comp_smul]
+
+/-- Placing an identity gives the identity on the concatenated word. -/
+theorem psiPlace_id (Ω ν ξ μ : X) (u v s : List (Letter I))
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hs : wt D ξ s = ν) :
+    psiPlace (Sc := Sc) (sy := sy) (hc := hc) Ω ν ξ μ u v hu hv hs hs (𝟙 _) = 𝟙 _ := by
+  subst ξ
+  simp [psiPlace, psiWhiskerLeft, psiWhiskerRight,
+    TwoSupercategory.whiskerLeft_id (R := k), TwoSupercategory.id_whiskerRight (R := k)]
+
+/-- The equal-colour quadratic relation holds for the raw evaluator in any signed
+horizontal context. This evaluates the two source layers, not merely a target equation. -/
+theorem psiPrimaryRaw_quadEq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc)
+    (ν μ : X) (u v : List (Letter I)) (i : I)
+    (h : wt D μ (u ++ [up i, up i] ++ v) = ν) :
+    psiPrimaryRaw (sy := sy) (hc := hc) t cs ν μ
+      (crossL u i i v ++ crossL u i i v) h h
+      (by simp [crossL, Shape.dom, Shape.cod])
+      (by intro x hx; simp only [crossL, List.singleton_append, List.mem_cons,
+            List.not_mem_nil, or_false, or_self] at hx; subst x; trivial) = 0 := by
+  simp only [crossL, List.singleton_append, psiPrimaryRaw, eqToHom_refl, Category.id_comp,
+    Category.comp_id]
+
+  unfold psiPrimaryLayer
+  rw [← psiPlace_comp]
+  change psiPlaceLinear ν (wt D (wt D μ v) [up i, up i]) (wt D μ v) μ u v
+    (by simpa only [wt_append] using h) rfl rfl rfl
+    (psiCross t _ _ i i rfl ≫ psiCross t _ _ i i rfl) = 0
+  rw [psiCross_sq t ht, map_zero]
+
+
+private theorem psiAt_associator {Ω ν ξ μ : X}
+    (a : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩)
+    (b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨ξ⟩)
+    (c : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ξ⟩ ⟶ psiObj ⟨μ⟩)
+    (h : (a ≫ b) ≫ c = a ≫ b ≫ c) :
+    (associator a b c).hom = eqToHom h := by
+  apply SOp.hom_ext
+  rw [psiEq_underlying]
+  rfl
+
+
+
+private theorem psiAt_assoc_eq (Ω ν ξ μ : X) (u v w : List (Letter I))
+    (hu : wt D ν u = Ω) (hv : wt D ξ v = ν) (hw : wt D μ w = ξ) :
+    (psiAt (Sc := Sc) (sy := sy) (hc := hc) Ω ν u hu ≫ psiAt ν ξ v hv) ≫ psiAt ξ μ w hw =
+      psiAt Ω ν u hu ≫ psiAt ν ξ v hv ≫ psiAt ξ μ w hw := by
+  rw [psiAt_comp_eq, psiAt_comp_eq, psiAt_comp_eq, psiAt_comp_eq]
+  exact psiAt_congr Ω μ _ _ (List.append_assoc u v w)
+
+private theorem psiAt_associator_inv {Ω ν ξ μ : X}
+    (a : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩)
+    (b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨ξ⟩)
+    (c : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ξ⟩ ⟶ psiObj ⟨μ⟩)
+    (h : (a ≫ b) ≫ c = a ≫ b ≫ c) :
+    (associator a b c).inv = eqToHom h.symm := by
+  apply SOp.hom_ext
+  rw [psiEq_underlying]
+  rfl
+
+private theorem psiWhiskerLeft_congr {Ω ν μ : X}
+    {a b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩}
+    (h : a = b) {s r : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨μ⟩}
+    (η : s ⟶ r) :
+    b ◁ η = eqToHom (congrArg (· ≫ s) h.symm) ≫ (a ◁ η) ≫
+      eqToHom (congrArg (· ≫ r) h) := by
+  cases h
+  simp
+
+/-- Normalized left whiskering respects concatenation of signed contexts. -/
+theorem psiWhiskerLeft_append (Ω ν ξ μ : X) (u v s r : List (Letter I))
+    (hu : wt D ν u = Ω) (hv : wt D ξ v = ν)
+    (hs : wt D μ s = ξ) (hr : wt D μ r = ξ)
+    (η : psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ μ s hs ⟶ psiAt ξ μ r hr) :
+    psiWhiskerLeft Ω ν μ u (v ++ s ++ []) (v ++ r ++ []) hu
+        (by simp only [List.append_nil, wt_append, hs, hv])
+        (by simp only [List.append_nil, wt_append, hr, hv])
+        (psiWhiskerLeft ν ξ μ v s r hv hs hr η) =
+      eqToHom (psiAt_congr Ω μ _ _ (by simp [List.append_assoc])) ≫
+        psiWhiskerLeft Ω ξ μ (u ++ v) s r (by rw [wt_append, hv, hu]) hs hr η ≫
+        eqToHom (psiAt_congr Ω μ _ _ (by simp [List.append_assoc])) := by
+  unfold psiWhiskerLeft
+  simp only [TwoSupercategory.whiskerLeft_comp (R := k),
+    TwoSupercategory.whiskerLeft_eqToHom k, Category.assoc,
+    eqToHom_trans_assoc, eqToHom_trans]
+  rw [psiWhiskerLeft_congr (psiAt_comp_eq Ω ν ξ u v hu hv) η]
+  rw [TwoSupercategory.comp_whiskerLeft (R := k)]
+  rw [psiAt_associator _ _ _ (psiAt_assoc_eq Ω ν ξ μ u v s hu hv hs),
+    psiAt_associator_inv _ _ _ (psiAt_assoc_eq Ω ν ξ μ u v r hu hv hr)]
+  simp [Category.assoc]
+
+
+private theorem psiWhiskerRight_congr {Ω ν μ : X}
+    {a b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨μ⟩}
+    (h : a = b) {s r : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩}
+    (η : s ⟶ r) :
+    η ▷ b = eqToHom (congrArg (s ≫ ·) h.symm) ≫ (η ▷ a) ≫
+      eqToHom (congrArg (r ≫ ·) h) := by
+  cases h
+  simp
+
+/-- Placement in explicit weight coordinates, without eliminating a region equality. -/
+theorem psiPlace_eq (Ω ν ξ μ : X) (u v : List (Letter I)) {s r : List (Letter I)}
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hs : wt D ξ s = ν) (hr : wt D ξ r = ν)
+    (η : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν ξ s hs ⟶ psiAt ν ξ r hr) :
+    psiPlace Ω ν ξ μ u v hu hv hs hr η =
+      eqToHom (by
+        rw [psiAt_comp_eq, psiAt_comp_eq]
+        exact psiAt_congr Ω μ _ _ (List.append_assoc u s v)) ≫
+      (psiAt Ω ν u hu ◁ (η ▷ psiAt ξ μ v hv)) ≫
+      eqToHom (by
+        rw [psiAt_comp_eq, psiAt_comp_eq]
+        exact psiAt_congr Ω μ _ _ (List.append_assoc u r v).symm) := by
+  subst ξ
+  simp [psiPlace, psiWhiskerLeft, psiWhiskerRight,
+    TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_eqToHom k,
+    Category.assoc]
+
+private theorem psiAssoc {Ω ν ξ μ : X}
+    (a : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨Ω⟩ ⟶ psiObj ⟨ν⟩)
+    (b : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ν⟩ ⟶ psiObj ⟨ξ⟩)
+    (c : psiObj (D := D) (Sc := Sc) (sy := sy) (hc := hc) ⟨ξ⟩ ⟶ psiObj ⟨μ⟩) :
+    (a ≫ b) ≫ c = a ≫ b ≫ c := by
+  apply congrArg SOp.mk
+  apply congrArg₂ Envelope.mk
+  · exact add_assoc _ _ _
+  · apply congrArg₂ QEnvelope.mk
+    · exact add_assoc _ _ _
+    · apply Presentation.Bicat.Hom.ext
+      apply Obj.ext
+      · rfl
+      · exact List.append_assoc _ _ _
+
+/-- Iterated placement agrees with concatenating both signed contexts. -/
+theorem psiPlace_place (Δ Ω ν ξ ζ μ : X) (a b u v : List (Letter I))
+    {s r : List (Letter I)} (ha : wt D Ω a = Δ) (hb : wt D μ b = ζ)
+    (hu : wt D ν u = Ω) (hv : wt D ζ v = ξ) (hs : wt D ξ s = ν) (hr : wt D ξ r = ν)
+    (η : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν ξ s hs ⟶ psiAt ν ξ r hr) :
+    psiPlace Δ Ω ζ μ a b ha hb
+        (by rw [wt_append, wt_append, hv, hs, hu])
+        (by rw [wt_append, wt_append, hv, hr, hu])
+        (psiPlace Ω ν ξ ζ u v hu hv hs hr η) =
+      eqToHom (psiAt_congr Δ μ _ _ (by simp [List.append_assoc])) ≫
+        psiPlace Δ ν ξ μ (a ++ u) (v ++ b)
+          (by rw [wt_append, hu, ha]) (by rw [wt_append, hb, hv]) hs hr η ≫
+        eqToHom (psiAt_congr Δ μ _ _ (by simp [List.append_assoc])) := by
+  subst ζ ξ
+  simp only [psiPlace_eq,
+    TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.comp_whiskerRight (R := k),
+    TwoSupercategory.whiskerLeft_eqToHom k, TwoSupercategory.eqToHom_whiskerRight k,
+    Category.assoc, eqToHom_trans_assoc, eqToHom_trans]
+  rw [psiWhiskerLeft_congr (psiAt_comp_eq Δ Ω ν a u ha hu)]
+  rw [psiWhiskerRight_congr (psiAt_comp_eq (wt D (wt D μ b) v) (wt D μ b) μ v b rfl rfl)]
+  rw [TwoSupercategory.comp_whiskerLeft (R := k),
+    TwoSupercategory.whiskerRight_comp (R := k), TwoSupercategory.whisker_assoc (R := k)]
+  simp only [psiAt_associator _ _ _ (psiAssoc _ _ _),
+    psiAt_associator_inv _ _ _ (psiAssoc _ _ _),
+    TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_eqToHom k,
+    Category.assoc, eqToHom_trans_assoc, eqToHom_trans]
+
+
+/-- Primary layers stay primary after horizontal placement. -/
+theorem PrimaryLayers.whisk {L : List (LayerData I)} (hp : PrimaryLayers L)
+    (u v : List (Letter I)) : PrimaryLayers (L.map (whL u v)) := by
+  intro x hx
+  obtain ⟨y, hy, rfl⟩ := List.mem_map.mp hx
+  exact hp y hy
+
+private theorem psiPrimaryRaw_reindex (t : k) (cs : CScalars Sc) (ν μ : X)
+    (L : List (LayerData I)) {s r s' r' : List (Letter I)}
+    (hs : wt D μ s = ν) (hr : wt D μ r = ν) (hs' : wt D μ s' = ν) (hr' : wt D μ r' = ν)
+    (h : SChain s L r) (h' : SChain s' L r') (hp : PrimaryLayers L)
+    (e : s = s') (f : r = r') :
+    psiPrimaryRaw (sy := sy) (hc := hc) t cs ν μ L hs hr h hp =
+      eqToHom (psiAt_congr ν μ hs hs' e) ≫ psiPrimaryRaw t cs ν μ L hs' hr' h' hp ≫
+        eqToHom (psiAt_congr ν μ hr' hr f.symm) := by
+  cases e; cases f
+  simp
+
+private theorem psiPrimaryLayer_eq (t : k) (cs : CScalars Sc) (ν ξ μ : X)
+    (u : List (Letter I)) (g : Shape I) (v : List (Letter I)) (hg : g.IsPrimary)
+    (h : wt D μ (u ++ g.dom ++ v) = ν) (hv : wt D μ v = ξ) :
+    psiPrimaryLayer (sy := sy) (hc := hc) t cs ν μ u g v hg h =
+      psiPlace ν (wt D ξ g.dom) ξ μ u v
+        (by rw [← hv]; simpa only [wt_append] using h) hv rfl
+        (g.wt_dom_eq_wt_cod D ξ).symm (psiPrimaryGen t cs _ ξ g hg rfl) := by
+  subst ξ
+  rfl
+
+/-- The raw primary evaluator commutes with placement of every source layer. -/
+theorem psiPrimaryRaw_whisk (t : k) (cs : CScalars Sc) (Ω ν ξ μ : X)
+    (u v : List (Letter I)) (L : List (LayerData I)) {s r : List (Letter I)}
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hs : wt D ξ s = ν) (hr : wt D ξ r = ν)
+    (hL : SChain s L r) (hp : PrimaryLayers L) :
+    psiPrimaryRaw (sy := sy) (hc := hc) t cs Ω μ (L.map (whL u v))
+        (by rw [wt_append, wt_append, hv, hs, hu])
+        (by rw [wt_append, wt_append, hv, hr, hu]) (hL.whisk u v) (hp.whisk u v) =
+      psiPlace Ω ν ξ μ u v hu hv hs hr (psiPrimaryRaw t cs ν ξ L hs hr hL hp) := by
+  induction L generalizing s with
+  | nil =>
+    cases hL
+    simp only [List.map_nil, psiPrimaryRaw, psiPlace_id, eqToHom_refl]
+  | cons x L ih =>
+    obtain ⟨rfl, hL⟩ := hL
+    simp only [List.map_cons, psiPrimaryRaw, eqToHom_refl, Category.id_comp,
+      psiPlace_comp]
+    rw [← ih]
+    unfold psiPrimaryLayer
+    rw [psiPlace_place]
+    simp only [whL, Category.assoc]
+    congr 1
+    apply congrArg₂ (· ≫ ·)
+    · exact psiPrimaryLayer_eq t cs Ω (wt D ξ x.2.2) μ (u ++ x.1) x.2.1 (x.2.2 ++ v)
+        _ _ (by rw [wt_append, hv])
+    · simpa only [eqToHom_refl, Category.comp_id] using
+        psiPrimaryRaw_reindex t cs Ω μ (L.map (whL u v)) _ _ _ _ _ (hL.whisk u v) _
+          (show (u ++ x.1) ++ x.2.1.cod ++ (x.2.2 ++ v) =
+            u ++ (x.1 ++ x.2.1.cod ++ x.2.2) ++ v by simp [List.append_assoc]) rfl
 
 end OddMath.SKM
