@@ -696,10 +696,16 @@ import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.EnvelopeSOp
+import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
 import OddMath.SKM.PsiAdjunctions
 import OddMath.SKM.PsiInversion
+import OddMath.SKM.PsiInversionSame
+import OddMath.SKM.PsiInverse
+import OddMath.SKM.PsiInverseQ
+import OddMath.SKM.PsiFunctor
+import OddMath.SKM.PsiDescent
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
