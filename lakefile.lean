@@ -12,15 +12,15 @@ require mathlib from git
 
 require StringDiagrams from git
   "https://github.com/apellis/string-diagrams-lean.git" @
-  "9976974dfbce9c140f20c41467abbe44a4a0e294"
+  "4540cd4a47cf0c4d8ef7597cdc8a5fa95c84a11f"
 
 require DG from git
   "https://github.com/apellis/dg-lean.git" @
-  "df94a62562df5d82029d2832f6e9a5d42e078b67"
+  "fe555b543a8a4ab084a6eafef9159dda8339d2fd"
 
 require LieLean from git
   "https://github.com/apellis/lie-lean.git" @
-  "9666a66184264251e73d604223db1c934820845a"
+  "84222f8a9861e73db9778092c6a9d51ff39315cb"
 
 @[default_target]
 lean_lib OddMath where
