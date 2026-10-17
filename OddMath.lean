@@ -709,6 +709,7 @@ import OddMath.SKM.PsiDescent
 import OddMath.SKM.PsiLeftImages
 import OddMath.SKM.PsiInversionRelations
 import OddMath.SKM.PsiKernel
+import OddMath.SKM.PsiQuotient
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
