@@ -468,4 +468,140 @@ theorem psiAdjunction_dn_whisker (cs : CScalars Sc) (μ : X) (i : I) :
   exact psiAdjunction_dn cs μ i
   all_goals exact psiAt_comp _ _ _ _ _ _ _
 
+/-- Normalize a left whiskering in the ψ target, retaining its parity sign.
+Used to evaluate the mixed crossing and the dotted inversion entries. -/
+theorem psiWhiskerLeft_heq (ξ ν μ : X) (u s t : List (Letter I))
+    (hu : wt D ν u = ξ) (hs : wt D μ s = ν) (ht : wt D μ t = ν)
+    {p : ZMod 2} {f : (pres D Sc).obj (ob D μ t) ⟶ (pres D Sc).obj (ob D μ s)}
+    (hf : f ∈ homPar D Sc μ t s p) :
+    HEq (psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ ν u hu ◁
+      (show psiAt ν μ s hs ⟶ psiAt ν μ t ht from SOp.mk' f))
+      (show psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ μ (u ++ s ++ [])
+          (by simp only [List.append_nil, wt_append, hs, hu]) ⟶
+        psiAt ξ μ (u ++ t ++ []) (by simp only [List.append_nil, wt_append, ht, hu]) from
+        SOp.mk' (sign k (psiParity (sy := sy) (hc := hc)
+          (psiWordAt (Sc := Sc) ξ ν u hu) * p) • plcL D Sc μ u [] t s f)) := by
+  apply target_heq
+    (by simpa only [List.append_nil] using psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) _ _ _ _ _ _ _)
+    (by simpa only [List.append_nil] using psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) _ _ _ _ _ _ _)
+  rw [TwoSOp.unsop_whiskerLeft]
+  change HEq (Envelope.toHom ((SOp.unop (psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ ν u hu)) ◁
+    (show SOp.unop (psiAt ν μ t ht) ⟶ SOp.unop (psiAt ν μ s hs) from f))) _
+  rw [TwoEnvelope.toHom_whiskerLeft_of_mem _ (homPar_mem hf)]
+  change HEq (sign k (psiParity (sy := sy) (hc := hc)
+    (psiWordAt (Sc := Sc) ξ ν u hu) * p) • (pres D Sc).wL (ob D ν u) f) _
+  apply raw_smul_heq (congrArg (pres D Sc).obj (ob_tensor ν μ u t ht))
+    (congrArg (pres D Sc).obj (ob_tensor ν μ u s hs))
+  exact wL_plcL ν μ u t s ht hs hf
+
+/-- Normalize a right whiskering in the ψ target, retaining its parity sign. -/
+theorem psiWhiskerRight_heq (ν μ : X) (s t v : List (Letter I))
+    (hs : wt D (wt D μ v) s = ν) (ht : wt D (wt D μ v) t = ν)
+    {p : ZMod 2}
+    {f : (pres D Sc).obj (ob D (wt D μ v) t) ⟶ (pres D Sc).obj (ob D (wt D μ v) s)}
+    (hf : f ∈ homPar D Sc (wt D μ v) t s p) :
+    HEq ((show psiAt (Sc := Sc) (sy := sy) (hc := hc) ν (wt D μ v) s hs ⟶
+        psiAt ν (wt D μ v) t ht from SOp.mk' f) ▷
+      psiAt (wt D μ v) μ v rfl)
+      (show psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ (s ++ v) (by rw [wt_append, hs]) ⟶
+        psiAt ν μ (t ++ v) (by rw [wt_append, ht]) from
+        SOp.mk' (sign k (psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) (wt D μ v) μ v rfl) *
+          (p + (psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) ν (wt D μ v) t ht) +
+            psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) ν (wt D μ v) s hs)))) •
+          plcL D Sc μ [] v t s f)) := by
+  apply target_heq
+    (by simpa only [List.append_nil] using psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) _ _ _ _ _ _ _)
+    (by simpa only [List.append_nil] using psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) _ _ _ _ _ _ _)
+  rw [TwoSOp.unsop_whiskerRight]
+  change HEq (Envelope.toHom ((show SOp.unop (psiAt (Sc := Sc) (sy := sy) (hc := hc)
+      ν (wt D μ v) t ht) ⟶ SOp.unop (psiAt ν (wt D μ v) s hs) from f) ▷
+    SOp.unop (psiAt (wt D μ v) μ v rfl))) _
+  rw [TwoEnvelope.toHom_whiskerRight_of_mem (homPar_mem hf)]
+  change HEq (_ • (pres D Sc).wRAt ν f (ob D μ v) ht hs) _
+  apply raw_smul_heq (congrArg (pres D Sc).obj (ob_tensor_right μ t v))
+    (congrArg (pres D Sc).obj (ob_tensor_right μ s v))
+  exact wR_plcL ν μ t s v ht hs hf
+
+/-- Left whiskering, with concatenated words normalized. -/
+def psiWhiskerLeft (ξ ν μ : X) (u s t : List (Letter I))
+    (hu : wt D ν u = ξ) (hs : wt D μ s = ν) (ht : wt D μ t = ν)
+    (f : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ s hs ⟶ psiAt ν μ t ht) :
+    psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ μ (u ++ s ++ [])
+        (by simp only [List.append_nil, wt_append, hs, hu]) ⟶
+      psiAt ξ μ (u ++ t ++ []) (by simp only [List.append_nil, wt_append, ht, hu]) :=
+  eqToHom (by simpa only [List.append_nil] using
+    (psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) ξ ν μ u s hu hs).symm) ≫
+    (psiAt ξ ν u hu ◁ f) ≫
+  eqToHom (by simpa only [List.append_nil] using psiAt_comp ξ ν μ u t hu ht)
+
+/-- Right whiskering, with concatenated words normalized. -/
+def psiWhiskerRight (ν μ : X) (s t v : List (Letter I))
+    (hs : wt D (wt D μ v) s = ν) (ht : wt D (wt D μ v) t = ν)
+    (f : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν (wt D μ v) s hs ⟶
+      psiAt ν (wt D μ v) t ht) :
+    psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ (s ++ v) (by rw [wt_append, hs]) ⟶
+      psiAt ν μ (t ++ v) (by rw [wt_append, ht]) :=
+  eqToHom (psiAt_comp (Sc := Sc) (sy := sy) (hc := hc) ν (wt D μ v) μ s v hs rfl).symm ≫
+    (f ▷ psiAt (wt D μ v) μ v rfl) ≫
+  eqToHom (psiAt_comp ν (wt D μ v) μ t v ht rfl)
+
+/-- Raw formula for normalized left whiskering. -/
+theorem psiWhiskerLeft_mk (ξ ν μ : X) (u s t : List (Letter I))
+    (hu : wt D ν u = ξ) (hs : wt D μ s = ν) (ht : wt D μ t = ν)
+    {p : ZMod 2} {f : (pres D Sc).obj (ob D μ t) ⟶ (pres D Sc).obj (ob D μ s)}
+    (hf : f ∈ homPar D Sc μ t s p) :
+    psiWhiskerLeft (sy := sy) (hc := hc) ξ ν μ u s t hu hs ht (SOp.mk' f) =
+      (show psiAt (Sc := Sc) (sy := sy) (hc := hc) ξ μ (u ++ s ++ [])
+          (by simp only [List.append_nil, wt_append, hs, hu]) ⟶
+        psiAt ξ μ (u ++ t ++ []) (by simp only [List.append_nil, wt_append, ht, hu]) from
+        SOp.mk' (sign k (psiParity (sy := sy) (hc := hc)
+          (psiWordAt (Sc := Sc) ξ ν u hu) * p) • plcL D Sc μ u [] t s f)) :=
+  reindex_of_heq
+    (by simpa only [List.append_nil] using psiAt_comp ξ ν μ u s hu hs)
+    (by simpa only [List.append_nil] using psiAt_comp ξ ν μ u t hu ht)
+    (psiWhiskerLeft_heq ξ ν μ u s t hu hs ht hf)
+
+/-- Raw formula for normalized right whiskering. -/
+theorem psiWhiskerRight_mk (ν μ : X) (s t v : List (Letter I))
+    (hs : wt D (wt D μ v) s = ν) (ht : wt D (wt D μ v) t = ν)
+    {p : ZMod 2}
+    {f : (pres D Sc).obj (ob D (wt D μ v) t) ⟶ (pres D Sc).obj (ob D (wt D μ v) s)}
+    (hf : f ∈ homPar D Sc (wt D μ v) t s p) :
+    psiWhiskerRight (sy := sy) (hc := hc) ν μ s t v hs ht (SOp.mk' f) =
+      (show psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ (s ++ v) (by rw [wt_append, hs]) ⟶
+        psiAt ν μ (t ++ v) (by rw [wt_append, ht]) from SOp.mk' (sign k (psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) (wt D μ v) μ v rfl) *
+        (p + (psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) ν (wt D μ v) t ht) +
+          psiParity (sy := sy) (hc := hc) (psiWordAt (Sc := Sc) ν (wt D μ v) s hs)))) •
+        plcL D Sc μ [] v t s f)) :=
+  reindex_of_heq (psiAt_comp ν (wt D μ v) μ s v hs rfl)
+    (psiAt_comp ν (wt D μ v) μ t v ht rfl) (psiWhiskerRight_heq ν μ s t v hs ht hf)
+
+private theorem reindex_mem {C : Type*} [Category* C] [Preadditive C] [Linear k C]
+    [Supercategory k C] {a a' b b' : C} (ha : a = a') (hb : b = b')
+    {f : a ⟶ b} {p : ZMod 2} (hf : f ∈ parity (R := k) _ _ p) :
+    eqToHom ha.symm ≫ f ≫ eqToHom hb ∈ parity (R := k) _ _ p := by
+  subst ha; subst hb
+  simpa using hf
+
+/-- Normalizing a left whiskering preserves parity. -/
+theorem psiWhiskerLeft_mem (ξ ν μ : X) (u s t : List (Letter I))
+    (hu : wt D ν u = ξ) (hs : wt D μ s = ν) (ht : wt D μ t = ν)
+    {f : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν μ s hs ⟶ psiAt ν μ t ht} {p : ZMod 2}
+    (hf : f ∈ parity (R := k) _ _ p) :
+    psiWhiskerLeft ξ ν μ u s t hu hs ht f ∈ parity (R := k) _ _ p := by
+  exact reindex_mem
+    (by simpa only [List.append_nil] using psiAt_comp ξ ν μ u s hu hs)
+    (by simpa only [List.append_nil] using psiAt_comp ξ ν μ u t hu ht)
+    (TwoSupercategory.whiskerLeft_mem (psiAt ξ ν u hu) hf)
+
+/-- Normalizing a right whiskering preserves parity. -/
+theorem psiWhiskerRight_mem (ν μ : X) (s t v : List (Letter I))
+    (hs : wt D (wt D μ v) s = ν) (ht : wt D (wt D μ v) t = ν)
+    {f : psiAt (Sc := Sc) (sy := sy) (hc := hc) ν (wt D μ v) s hs ⟶
+      psiAt ν (wt D μ v) t ht} {p : ZMod 2} (hf : f ∈ parity (R := k) _ _ p) :
+    psiWhiskerRight ν μ s t v hs ht f ∈ parity (R := k) _ _ p := by
+  exact reindex_mem (psiAt_comp ν (wt D μ v) μ s v hs rfl)
+    (psiAt_comp ν (wt D μ v) μ t v ht rfl)
+    (TwoSupercategory.whiskerRight_mem (psiAt (wt D μ v) μ v rfl) hf)
+
 end OddMath.SKM

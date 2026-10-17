@@ -72,8 +72,8 @@ These errata are what the formalization turned up; they are not a complete revie
    meant; the signs agree, and every printed contribution and total is correct
    (`EKMore.ex32_table`, `EKMore.ex32_column_sums`).
 12. **"f_n = ±m_n", p. 25 [F→T].** It fails for n = 7: (e₇, m₇) = 5 while (e₇, f₇) = 1, so f₇ is
-   not a multiple of m₇ (`EKRest.f_seven_ne`); indeed m₇ = 4f₄₃ + 8f₅₂ + 5f₇, so f₇ and m₇ are
-   linearly independent (`EKMore.m_seven_f_expansion`, `EKMore.f_seven_m_seven_independent`). It holds for n = 1 and every even n, with the sign
+   not a multiple of m₇; indeed m₇ = 4f₄₃ + 8f₅₂ + 5f₇. This degree-7 computation was checked in
+   Lean and then removed from the library because of its cost; it is not currently formalized. It holds for n = 1 and every even n, with the sign
    the coefficient of h_n in e_n, as stated (`EKRest.f_eq_smul_m`, `EKRest.e_coefficient`), and
    for n = 3, 5 (`EKRest.f_three`, `EKRest.f_five`). The conclusion drawn from it (the f_{2k} are
    primitive) holds (`EKRest.f_primitive`).

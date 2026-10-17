@@ -6,9 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+# A newer push to a pull request cancels its running build; the cache step below still saves
+# what the cancelled run compiled. Master builds always run to completion.
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -18,7 +20,26 @@ jobs:
     timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # A change touching only Markdown files cannot affect the Lean build.
+      - name: Detect documentation-only change
+        id: scope
+        run: |
+          if [ "${{ github.event_name }}" = pull_request ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+          else
+            base="${{ github.event.before }}"
+          fi
+          if files=$(git diff --name-only "$base" HEAD 2>/dev/null) && [ -n "$files" ] \
+              && ! printf '%s\n' "$files" | grep -qvE '\.md$'; then
+            echo "docs_only=true" >> "$GITHUB_OUTPUT"
+            echo "Only Markdown files changed; skipping the Lean build."
+          else
+            echo "docs_only=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Set up Lean and fetch the Mathlib cache
+        if: steps.scope.outputs.docs_only != 'true'
         uses: leanprover/lean-action@v1
         with:
           build: false
@@ -30,6 +51,7 @@ jobs:
       # toolchain and manifest, then to the newest entry for the toolchain (oleans of modules
       # unaffected by a dependency bump stay valid; Lake rebuilds the rest).
       - name: Restore build cache
+        if: steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -41,25 +63,18 @@ jobs:
           restore-keys: |
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
-      # OddMath.Frontier.EKMoreGram needs about 11 GB to compile; other large modules need up to
-      # about 6 GB, and the runner has 16 GB. Build its dependencies with two concurrent Lean
-      # processes, then the module alone, then the rest with two concurrent Lean processes.
-      - name: Build dependencies of EKMoreGram
-        env:
-          LEAN_NUM_THREADS: 2
-        run: lake build --wfail OddMath.Frontier.EKRestForgotten OddMath.Frontier.EKGeneralQNondeg OddMath.Frontier.EKRestDegree < /dev/null
-      - name: Build EKMoreGram
-        env:
-          LEAN_NUM_THREADS: 1
-        run: lake build --wfail OddMath.Frontier.EKMoreGram < /dev/null
+      # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
+      # processes.
       - name: Build
+        if: steps.scope.outputs.docs_only != 'true'
         env:
           LEAN_NUM_THREADS: 2
         run: lake build --wfail < /dev/null
       - name: Axiom audit
+        if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       - name: Save build cache
-        if: always()
+        if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
