@@ -711,6 +711,7 @@ import OddMath.SKM.PsiInversionRelations
 import OddMath.SKM.PsiKernel
 import OddMath.SKM.PsiQuotient
 import OddMath.SKM.PsiTwo
+import OddMath.SKM.PsiInverseParameters
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
