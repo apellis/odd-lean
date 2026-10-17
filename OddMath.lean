@@ -243,7 +243,6 @@ import OddMath.Frontier.EKRestDet4
 import OddMath.Frontier.EKRestEval
 import OddMath.Frontier.EKRestForgotten
 import OddMath.Frontier.EKRestGenFun
-import OddMath.Frontier.EKRestGram7
 import OddMath.Frontier.EKRestRibbon
 import OddMath.Frontier.EKRestSuperCenter
 import OddMath.Frontier.EKRestrictedPairing
