@@ -9,15 +9,16 @@ canonical extension of Lemma 9.1. `psiQConjugate_eq` computes every integer
 power, with literal word transports and no scalar. `psiQPiConjugate_eq` and
 its cup/cap consumers combine this with the previously proved Π calculation.
 `psiExtension_map₂_heq` identifies the result with the canonical extension;
-`psiExtension_mapComp_hom_combined` computes its full composition comparison,
-including the leading parity sign and both structure-isomorphism layers.
+`psiExtension_mapComp_hom_combined` and `psiExtension_mapComp_inv_combined`
+compute both directions of its composition comparison, including the leading
+parity sign and both structure-isomorphism layers.
 
 The coefficient hypotheses remain those of the existing graded presentation;
 there is no field, flatness, or comparison-identity assumption. The arbitrary
 input functor `F` below is an interface, not a constructed ψ functor. This file
-does not evaluate ψ on the original derived left cups/caps, prove the literal
-two-sided inverse, or normalize the inverse composition comparison. Those are
-separate obligations, not consequences of the scalar calculations alone.
+does not evaluate ψ on the original derived left cups/caps or prove the literal
+two-sided inverse. Those are separate obligations, not consequences of the
+comparison calculations alone.
 -/
 
 noncomputable section
@@ -337,6 +338,22 @@ private theorem psiComparison_fuse {a b c : TwoSOp k (Uqπ D Sc sy hc)}
     TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc]
   rw [reassoc_of% (TwoEnvelope.interchange_even_left k hs e'.hom)]
 
+-- Keep signed isomorphism algebra independent of the nested extension.
+private def psiComparisonIso {a b c : TwoSOp k (Uqπ D Sc sy hc)}
+    {f₀ f₁ : a ⟶ b} {g₀ g₁ : b ⟶ c} {h₀ h₁ : a ⟶ c}
+    (e : f₁ ≅ f₀) (s : g₁ ≅ g₀) (t : h₁ ≅ h₀) (x : f₀ ≫ g₀ ≅ h₀)
+    (p : ZMod 2) : f₁ ≫ g₁ ≅ h₁ where
+  hom := sign k p • (e.hom ▷ g₁ ≫ f₀ ◁ s.hom ≫ x.hom ≫ t.inv)
+  inv := sign k p • (t.hom ≫ x.inv ≫ f₀ ◁ s.inv ≫ e.inv ▷ g₁)
+  hom_inv_id := by
+    simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, sign_mul_self, one_smul,
+      Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id_assoc,
+      TwoEnvelope.whiskerLeft_hom_inv'_assoc k, TwoEnvelope.hom_inv_whiskerRight' k]
+  inv_hom_id := by
+    simp only [Linear.smul_comp, Linear.comp_smul, smul_smul, sign_mul_self, one_smul,
+      Category.assoc, TwoEnvelope.inv_hom_whiskerRight'_assoc k,
+      TwoEnvelope.whiskerLeft_inv_hom'_assoc k, Iso.inv_hom_id_assoc, Iso.hom_inv_id]
+
 section Extension
 local instance : ∀ a b : TwoSOp k (Uqπ D Sc sy hc), QPiSupercategory k (a ⟶ b) :=
   fun a b => QPiTwoSupercategory.homQPiLeft a b
@@ -392,6 +409,49 @@ theorem psiExtension_mapComp_hom_combined {a b c : Uqπ D Sc sy hc}
     (congrArg (fun z => sign k (f.par * g.par) • z)
       (psiComparison_fuse _ _ _ _ _ _ _
         (σPow_hom_mem (R := k) f.obj.shift (F.map f.obj.obj))))
+
+-- Transport the extension endpoints before assembling the comparison.
+private def psiExtensionShiftIso {a b : Uqπ D Sc sy hc} (f : a ⟶ b) :
+    (extendEnvelopeSOp F).map f ≅ F.map f.obj.obj :=
+  eqToIso (psiExtension_map F f) ≪≫ psiQPiIso f.obj.shift f.par (F.map f.obj.obj)
+
+private def psiExtensionCompShiftIso {a b c : Uqπ D Sc sy hc} (f : a ⟶ b) (g : b ⟶ c) :
+    (extendEnvelopeSOp F).map (f ≫ g) ≅ F.map (f.obj.obj ≫ g.obj.obj) :=
+  eqToIso (psiExtension_map F (f ≫ g)) ≪≫
+    psiQPiIso (f.obj.shift + g.obj.shift) (f.par + g.par)
+      (F.map (f.obj.obj ≫ g.obj.obj))
+
+private def psiExtensionComparisonIso {a b c : Uqπ D Sc sy hc} (f : a ⟶ b) (g : b ⟶ c) :
+    (extendEnvelopeSOp F).map f ≫ (extendEnvelopeSOp F).map g ≅
+      (extendEnvelopeSOp F).map (f ≫ g) :=
+  psiComparisonIso (psiExtensionShiftIso F f) (psiExtensionShiftIso F g)
+    (psiExtensionCompShiftIso F f g) (F.mapComp f.obj.obj g.obj.obj) (f.par * g.par)
+
+private theorem psiExtensionComparisonIso_eq {a b c : Uqπ D Sc sy hc}
+    (f : a ⟶ b) (g : b ⟶ c) :
+    (extendEnvelopeSOp F).mapComp f g = psiExtensionComparisonIso F f g := by
+  apply Iso.ext
+  change _ = (psiComparisonIso _ _ _ _ _).hom
+  dsimp only [psiComparisonIso]
+  simpa only [psiExtensionShiftIso, psiExtensionCompShiftIso, Iso.trans_hom, Iso.trans_inv,
+    eqToIso.hom, eqToIso.inv, eqToHom_refl, Category.id_comp, Category.comp_id] using
+    psiExtension_mapComp_hom_combined F f g
+
+/-- The inverse composition comparison retains the same sign and reverses all structure maps. -/
+theorem psiExtension_mapComp_inv_combined {a b c : Uqπ D Sc sy hc}
+    (f : a ⟶ b) (g : b ⟶ c) :
+    ((extendEnvelopeSOp F).mapComp f g).inv = sign k (f.par * g.par) •
+      ((psiQPiIso (f.obj.shift + g.obj.shift) (f.par + g.par)
+          (F.map (f.obj.obj ≫ g.obj.obj))).hom ≫
+        (F.mapComp f.obj.obj g.obj.obj).inv ≫
+        F.map f.obj.obj ◁ (psiQPiIso g.obj.shift g.par (F.map g.obj.obj)).inv ≫
+        (psiQPiIso f.obj.shift f.par (F.map f.obj.obj)).inv ▷
+          (extendEnvelopeSOp F).map g) := by
+  rw [psiExtensionComparisonIso_eq]
+  change (psiComparisonIso _ _ _ _ _).inv = _
+  dsimp only [psiComparisonIso]
+  simp only [psiExtensionShiftIso, psiExtensionCompShiftIso, Iso.trans_hom, Iso.trans_inv,
+    eqToIso.hom, eqToIso.inv, eqToHom_refl, Category.id_comp, Category.comp_id]
 
 end Extension
 end OddMath.SKM
