@@ -703,6 +703,7 @@ import OddMath.SKM.PsiAdjunctions
 import OddMath.SKM.PsiInversion
 import OddMath.SKM.PsiInversionSame
 import OddMath.SKM.PsiInverse
+import OddMath.SKM.PsiInverseQ
 import OddMath.SKM.Grading
 import OddMath.SKM.Grassmannian
 import OddMath.SKM.GrassmannianCor
