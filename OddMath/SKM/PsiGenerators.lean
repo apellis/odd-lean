@@ -54,7 +54,8 @@ private theorem cpow_mem {k : Type w} [CommRing k] {C : Type*} [Category C]
   | succ n ih =>
     simpa only [cpow_succ, Nat.cast_add, Nat.cast_one, add_mul, one_mul] using comp_mem ih hx
 
-private theorem psi_cpow {k : Type w} [CommRing k] {C : Type*} [Category C]
+/-- Powers of a homogeneous morphism scaled by the square-root coefficient. -/
+theorem psi_cpow {k : Type w} [CommRing k] {C : Type*} [Category C]
     [Preadditive C] [Linear k C] [Supercategory k C] {A : C} {x : A ⟶ A}
     {p : ZMod 2} (hx : x ∈ parity (R := k) A A p) {t : k} (ht : t ^ 2 = -1) (n : ℕ) :
     SOp.unsop (cpow (SOp.sop (R := k) (psiCoeff t p • x)) n) =
