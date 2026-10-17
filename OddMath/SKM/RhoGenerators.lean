@@ -11,8 +11,8 @@ import OddMath.SKM.ChevalleyGrading
 # Upward generators of ρ in the shifted super-reverse
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
-Proposition 9.6, the upward-strand, dot and crossing assignments in its proof.
-We use the super-reverse of Lemma 9.5, not the super-opposite: vertical
+Proposition 9.8, the upward-strand, dot and crossing assignments in its proof.
+We use the super-reverse of Definition 9.5, not the super-opposite: vertical
 composition is unchanged, while words reverse order and direction.
 
 The 1-morphism assignments follow the displayed proposition, in particular its
@@ -30,7 +30,7 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
   {k : Type w} [CommRing k] {Sc : Scalars D k} {sy : Symmetrizer D} {hc : Sc.Homogeneous}
 
-/-- The fixed weight assignment for Proposition 9.6. -/
+/-- The fixed weight assignment for Proposition 9.8. -/
 def rhoObj (μ : X) : TwoSRev k (Uqπ D Sc sy hc) := ⟨⟨⟨⟨μ⟩⟩⟩⟩
 
 /-- Sum of the printed integer shifts on an upward word, using each right region. -/
@@ -58,7 +58,7 @@ def rhoUpAt (ν μ : X) (w : List I) (h : wt D μ (ups w) = ν) :
 abbrev rhoE (μ : X) (i : I) :=
   rhoUpAt (Sc := Sc) (sy := sy) (hc := hc) (wt D μ [up i]) μ [i] rfl
 
-/-- The downward-strand assignment in the displayed statement of Proposition 9.6.
+/-- The downward-strand assignment in the displayed statement of Proposition 9.8.
 The parity shift is zero, exactly as printed; no cup/cap relation is asserted here. -/
 def rhoF (μ : X) (i : I) :
     rhoObj (Sc := Sc) (sy := sy) (hc := hc) (wt D μ [dn i]) ⟶ rhoObj μ :=
