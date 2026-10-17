@@ -14,7 +14,9 @@ existing diagram syntax. `psiRaw_whisk` proves horizontal compatibility for all
 seven shapes, and `psiLin_comp` proves vertical composition on the original free
 linear diagram module. The three quadratic, four dot-slide and two braid
 relations of the presentation are killed, including their polynomial terms.
-Full quotient-kernel inclusion and the strict graded functor are not asserted here;
+The right-adjunction and signed interchange calculations are also verified.
+Full quotient-kernel inclusion is assembled in `PsiKernel`; the strict graded
+functor is not asserted here;
 no relation-preservation hypothesis is part of the evaluator.
 -/
 
@@ -844,5 +846,206 @@ theorem psiLin_braidEq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i 
   simp_rw [psiRaw_braidMonomial, psiRaw_braidMonomial_zero]
   rw [psi_braidEq t ht _ μ i j rfl hij, psiBraidCorrection]
   abel
+
+private theorem wt_ud (μ : X) (i : I) : wt D μ [up i, dn i] = μ := by
+  simp [wt_cons, sh, up, dn]
+
+private theorem wt_du (μ : X) (i : I) : wt D μ [dn i, up i] = μ := by
+  simp [wt_cons, sh, up, dn]
+
+private theorem psiRaw_cupRight (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [up i]) μ
+      [([up i], Shape.cup i, [])] rfl
+      (by simp [wt_cons, sh, up, dn]) (by simp [SChain, Shape.dom, Shape.cod]) =
+    psiWhiskerLeft (wt D μ [up i]) μ μ [up i] [] [dn i, up i] rfl rfl
+      (wt_du μ i) (psiCup cs μ i) := by
+  erw [psiRaw_layer t cs _ μ μ μ [up i] (.cup i) [] rfl rfl rfl]
+  change psiPlace _ μ μ μ [up i] [] rfl rfl rfl (wt_du μ i) (psiCup cs μ i) = _
+  simp only [psiPlace, psiWhiskerRight_nil, eqToHom_refl, Category.id_comp,
+    Category.comp_id]
+  rfl
+
+private theorem psiRaw_capLeft (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [up i]) μ
+      [([], Shape.cap i, [up i])]
+      (by simp [wt_cons, sh, up, dn]) rfl (by simp [SChain, Shape.dom, Shape.cod]) =
+    psiWhiskerRight (wt D μ [up i]) μ [up i, dn i] [] [up i]
+      (wt_ud _ i) rfl (psiCap cs (wt D μ [up i]) i) := by
+  erw [psiRaw_layer t cs _ (wt D μ [up i]) (wt D μ [up i]) μ [] (.cap i) [up i]
+    rfl rfl (wt_ud _ i)]
+  change psiPlace _ _ _ μ [] [up i] rfl rfl (wt_ud _ i) rfl
+    (psiCap cs (wt D μ [up i]) i) = _
+  simp only [psiPlace, wt_nil, psiWhiskerLeft_nil, eqToHom_refl, Category.id_comp,
+    Category.comp_id]
+
+/-- Evaluation kills the upward right-adjunction relation (1.10). -/
+theorem psiLin_zigE (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiLin (sy := sy) (hc := hc) t cs (wt D μ [up i]) μ rfl rfl
+      (relation D Sc (.zigE i μ)) = 0 := by
+  change psiLin t cs _ μ rfl rfl (dg D μ _ _ - idg D μ _) = 0
+  erw [map_sub, psiLin_dg, psiLin_idg, sub_eq_zero]
+  erw [psiRaw_append t cs _ μ [([up i], Shape.cup i, [])]
+    [([], Shape.cap i, [up i])] rfl
+    (show wt D μ [up i, dn i, up i] = wt D μ [up i] by simp [wt_cons, sh, up, dn]) rfl
+    (by simp [SChain, Shape.dom, Shape.cod]) (by simp [SChain, Shape.dom, Shape.cod])]
+  rw [psiRaw_cupRight, psiRaw_capLeft]
+  exact psiAdjunction_up_whisker cs μ i
+
+
+private theorem psiRaw_cupLeft (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [dn i]) μ
+      [([], Shape.cup i, [dn i])] rfl
+      (by simp [wt_cons, sh, up, dn]) (by simp [SChain, Shape.dom, Shape.cod]) =
+    psiWhiskerRight (wt D μ [dn i]) μ [] [dn i, up i] [dn i]
+      rfl (wt_du _ i) (psiCup cs (wt D μ [dn i]) i) := by
+  erw [psiRaw_layer t cs _ (wt D μ [dn i]) (wt D μ [dn i]) μ [] (.cup i) [dn i]
+    rfl rfl rfl]
+  change psiPlace _ _ _ μ [] [dn i] rfl rfl rfl (wt_du _ i)
+    (psiCup cs (wt D μ [dn i]) i) = _
+  simp only [psiPlace, wt_nil, psiWhiskerLeft_nil, eqToHom_refl, Category.id_comp,
+    Category.comp_id]
+
+private theorem psiRaw_capRight (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [dn i]) μ
+      [([dn i], Shape.cap i, [])]
+      (by simp [wt_cons, sh, up, dn]) rfl (by simp [SChain, Shape.dom, Shape.cod]) =
+    psiWhiskerLeft (wt D μ [dn i]) μ μ [dn i] [up i, dn i] [] rfl
+      (wt_ud μ i) rfl (psiCap cs μ i) := by
+  erw [psiRaw_layer t cs _ μ μ μ [dn i] (.cap i) [] rfl rfl (wt_ud μ i)]
+  change psiPlace _ μ μ μ [dn i] [] rfl rfl (wt_ud μ i) rfl (psiCap cs μ i) = _
+  simp only [psiPlace, psiWhiskerRight_nil, eqToHom_refl, Category.id_comp,
+    Category.comp_id]
+  rfl
+
+/-- Evaluation kills the downward right-adjunction relation (1.10). -/
+theorem psiLin_zigF (t : k) (cs : CScalars Sc) (μ : X) (i : I) :
+    psiLin (sy := sy) (hc := hc) t cs (wt D μ [dn i]) μ rfl rfl
+      (relation D Sc (.zigF i μ)) = 0 := by
+  change psiLin t cs _ μ rfl rfl (dg D μ _ _ - idg D μ _) = 0
+  erw [map_sub, psiLin_dg, psiLin_idg, sub_eq_zero]
+  erw [psiRaw_append t cs _ μ [([], Shape.cup i, [dn i])]
+    [([dn i], Shape.cap i, [])] rfl
+    (show wt D μ [dn i, up i, dn i] = wt D μ [dn i] by simp [wt_cons, sh, up, dn]) rfl
+    (by simp [SChain, Shape.dom, Shape.cod]) (by simp [SChain, Shape.dom, Shape.cod])]
+  rw [psiRaw_cupLeft, psiRaw_capRight]
+  exact psiAdjunction_dn_whisker cs μ i
+
+private theorem psiRaw_whisk_left (t : k) (cs : CScalars Sc) (ν ξ μ : X)
+    (s : List (Letter I)) (L : List (LayerData I)) {a b : List (Letter I)}
+    (hs : wt D ξ s = ν) (ha : wt D μ a = ξ) (hb : wt D μ b = ξ) (hL : SChain a L b) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (L.map (whL s []))
+      (by rw [wt_append, ha, hs]) (by rw [wt_append, hb, hs])
+      (show SChain (s ++ a) (L.map (whL s [])) (s ++ b) by
+        simpa only [List.append_nil] using hL.whisk s []) =
+      eqToHom (psiAt_comp_eq ν ξ μ s a hs ha).symm ≫
+        (psiAt ν ξ s hs ◁ psiRaw t cs ξ μ L ha hb hL) ≫
+          eqToHom (psiAt_comp_eq ν ξ μ s b hs hb) := by
+  rw [psiRaw_reindex t cs ν μ _ _ _
+    (by simp only [List.append_nil, wt_append, ha, hs])
+    (by simp only [List.append_nil, wt_append, hb, hs]) _ (hL.whisk s [])
+    (List.append_nil _).symm (List.append_nil _).symm]
+  rw [psiRaw_whisk t cs ν ξ μ μ s [] L hs rfl ha hb hL]
+  simp only [psiPlace, psiWhiskerRight_nil, psiWhiskerLeft,
+    TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_eqToHom k,
+    Category.assoc, eqToHom_trans_assoc, eqToHom_trans]
+
+private theorem psiRaw_whisk_right (t : k) (cs : CScalars Sc) (ν ξ μ : X)
+    (L : List (LayerData I)) (a : List (Letter I)) {s r : List (Letter I)}
+    (hs : wt D ξ s = ν) (hr : wt D ξ r = ν) (ha : wt D μ a = ξ) (hL : SChain s L r) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (L.map (whL [] a))
+      (by rw [wt_append, ha, hs]) (by rw [wt_append, ha, hr])
+      (show SChain (s ++ a) (L.map (whL [] a)) (r ++ a) by
+        simpa only [List.nil_append] using hL.whisk [] a) =
+      eqToHom (psiAt_comp_eq ν ξ μ s a hs ha).symm ≫
+        (psiRaw t cs ν ξ L hs hr hL ▷ psiAt ξ μ a ha) ≫
+          eqToHom (psiAt_comp_eq ν ξ μ r a hr ha) := by
+  subst ξ
+  have he := psiRaw_whisk (sy := sy) (hc := hc) t cs ν ν (wt D μ a) μ [] a L rfl rfl hs hr hL
+  simpa only [psiPlace, wt_nil, psiWhiskerLeft_nil, psiWhiskerRight, List.nil_append,
+    TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_eqToHom k,
+    Category.assoc, eqToHom_trans_assoc, eqToHom_trans,
+    eqToHom_refl, Category.id_comp, Category.comp_id] using he
+
+
+/-- Disjoint source words satisfy super-interchange after evaluation. -/
+theorem psiRaw_exchange (t : k) (cs : CScalars Sc) (ν ξ μ : X)
+    (L M : List (LayerData I)) {s r a b : List (Letter I)}
+    (hs : wt D ξ s = ν) (hr : wt D ξ r = ν) (ha : wt D μ a = ξ) (hb : wt D μ b = ξ)
+    (hL : SChain s L r) (hM : SChain a M b) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (L.map (whL [] a) ++ M.map (whL r []))
+      (by rw [wt_append, ha, hs]) (by rw [wt_append, hb, hr])
+      ((show SChain (s ++ a) (L.map (whL [] a)) (r ++ a) by
+        simpa only [List.nil_append] using hL.whisk [] a).append
+       (show SChain (r ++ a) (M.map (whL r [])) (r ++ b) by
+        simpa only [List.append_nil] using hM.whisk r [])) =
+    koszulSign (parsum D L) (parsum D M) •
+      psiRaw t cs ν μ (M.map (whL s []) ++ L.map (whL [] b))
+        (by rw [wt_append, ha, hs]) (by rw [wt_append, hb, hr])
+        ((show SChain (s ++ a) (M.map (whL s [])) (s ++ b) by
+          simpa only [List.append_nil] using hM.whisk s []).append
+         (show SChain (s ++ b) (L.map (whL [] b)) (r ++ b) by
+          simpa only [List.nil_append] using hL.whisk [] b)) := by
+  rw [psiRaw_append t cs ν μ (L.map (whL [] a)) (M.map (whL r []))
+    (r := r ++ a) _ (by rw [wt_append, ha, hr]) _
+    (by simpa only [List.nil_append] using hL.whisk [] a)
+    (by simpa only [List.append_nil] using hM.whisk r []),
+    psiRaw_append t cs ν μ (M.map (whL s [])) (L.map (whL [] b))
+      (r := s ++ b) _ (by rw [wt_append, hb, hs]) _
+      (by simpa only [List.append_nil] using hM.whisk s [])
+      (by simpa only [List.nil_append] using hL.whisk [] b)]
+  rw [psiRaw_whisk_right t cs ν ξ μ L a hs hr ha hL,
+    psiRaw_whisk_left t cs ν ξ μ r M hr ha hb hM,
+    psiRaw_whisk_left t cs ν ξ μ s M hs ha hb hM,
+    psiRaw_whisk_right t cs ν ξ μ L b hs hr hb hL]
+  simp only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+  have he := TwoSupercategory.super_interchange
+    (psiRaw_mem_parity (sy := sy) (hc := hc) t cs ν ξ L hs hr hL)
+    (psiRaw_mem_parity (sy := sy) (hc := hc) t cs ξ μ M ha hb hM)
+  have H := congrArg (fun f => eqToHom (psiAt_comp_eq ν ξ μ s a hs ha).symm ≫ f ≫
+    eqToHom (psiAt_comp_eq ν ξ μ r b hr hb)) he
+  simpa only [Category.assoc, Linear.smul_comp, Linear.comp_smul] using H
+
+
+private theorem psi_koszul_cast (p q : ZMod 2) :
+    (koszulSign p q : k) = zsign k (p * q) := by
+  rcases parity_eq_zero_or_one p with rfl | rfl <;>
+    rcases parity_eq_zero_or_one q with rfl | rfl <;> simp [koszulSign, zsign]
+
+/-- The elementary interchange word with an arbitrary separating signed word is preserved. -/
+theorem psiRaw_swap₀ (t : k) (cs : CScalars Sc) (ν μ : X) (m : List (Letter I))
+    (g h : Shape I) (hs : wt D μ (g.dom ++ m ++ h.dom) = ν)
+    (hr : wt D μ (g.cod ++ m ++ h.cod) = ν) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ
+      [([], g, m ++ h.dom), (g.cod ++ m, h, [])] hs hr
+      (by simp only [sChain_cons, sChain_nil, List.nil_append, List.append_nil, List.append_assoc,
+        true_and]) =
+    zsign k (g.parity D * h.parity D) • psiRaw t cs ν μ
+      [(g.dom ++ m, h, []), ([], g, m ++ h.cod)] hs hr
+      (by simp only [sChain_cons, sChain_nil, List.nil_append, List.append_nil, List.append_assoc,
+        true_and]) := by
+  have hL : SChain (g.dom ++ m) [([], g, m)] (g.cod ++ m) := ⟨rfl, rfl⟩
+  have hM : SChain h.dom [([], h, [])] h.cod := by simp
+  have he := psiRaw_exchange (sy := sy) (hc := hc) t cs ν (wt D μ h.dom) μ
+    [([], g, m)] [([], h, [])]
+    (by simpa only [wt_append] using hs)
+    ((hL.wt_eq D (wt D μ h.dom)).trans (by simpa only [wt_append] using hs))
+    rfl (h.wt_dom_eq_wt_cod D μ).symm hL hM
+  rw [← Int.cast_smul_eq_zsmul k, psi_koszul_cast] at he
+  simpa only [List.map_cons, List.map_nil, List.singleton_append, List.nil_append,
+    List.append_nil, whL, parsum, List.map, List.sum_cons, List.sum_nil, add_zero] using he
+
+/-- Linear evaluation kills the elementary signed interchange relation. -/
+theorem psiLin_swap₀ (t : k) (cs : CScalars Sc) (μ : X) (m : List (Letter I)) (g h : Shape I) :
+    psiLin (sy := sy) (hc := hc) t cs (wt D μ (g.dom ++ m ++ h.dom)) μ
+      (s := g.dom ++ m ++ h.dom) (r := g.cod ++ m ++ h.cod) rfl
+      (by simp only [wt_append, Shape.wt_dom_eq_wt_cod])
+      (dg D μ [([], g, m ++ h.dom), (g.cod ++ m, h, [])]
+        (by simp only [sChain_cons, sChain_nil, List.nil_append, List.append_nil, List.append_assoc,
+          true_and]) -
+       zsign k (g.parity D * h.parity D) •
+         dg D μ [(g.dom ++ m, h, []), ([], g, m ++ h.cod)]
+           (by simp only [sChain_cons, sChain_nil, List.nil_append, List.append_nil, List.append_assoc,
+             true_and])) = 0 := by
+  rw [map_sub, map_smul, psiLin_dg, psiLin_dg, psiRaw_swap₀, sub_self]
 
 end OddMath.SKM
