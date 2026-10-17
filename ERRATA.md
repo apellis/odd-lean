@@ -1,13 +1,14 @@
 # Errata
 
-Errata to the source papers found during the formalization, one list per paper, in order of
+Errata and clarifications to the source papers found during the formalization, one list per paper, in order of
 appearance. Numbering refers to the arXiv versions cited in [README.md](README.md). All names are
 in `OddMath.Frontier` unless another namespace is specified.
 
 Codes: **M** misprint; **F→T** false as printed, with a corrected statement proved; **G** gap in
-the proof of a true statement. Every item carries the Lean declarations that refute the printed
-claim and prove the correction, except where it is marked *textual*: such an item is a slip in
-the prose with no mathematical content to check. Items explicitly marked **constraint** instead
+the proof of a true statement; **C** clarification of an omitted argument, dependency or reading
+convention, not a separate substantive gap or a refutation of the stated result. Entries cite the
+relevant Lean declarations, distinguishing counterexamples to literal formulas from proofs of the
+intended results. Items marked *textual* concern prose slips. Items explicitly marked **constraint** instead
 record a proved necessary condition and state any additional hypotheses needed for a contradiction;
 they are not unconditional counterexamples.
 
@@ -56,10 +57,11 @@ These errata are what the formalization turned up; they are not a complete revie
    (`EKOverK.isOfFinOrder_psi1K_iff`, `EKOverK.rhoK_injective_iff`).
 8. **(2.24) [M].** The exponent `λ_j λ_j` should be `Σ_{i<j} λ_i λ_j`
    (`EKAutomorphisms.psi3_hWord_source`).
-9. **Step before (2.26), p. 21 [G].** One transformation is omitted when ψ₃ is applied to (2.5);
+9. **Step before (2.26), p. 21 [C].** One routine transformation is omitted when ψ₃ is applied to (2.5);
    the step needs ψ₃(e_n) = (−1)^{C(n+1,2)} ψ₂(e_n) (`ErrataChecks.psi3_e`), after which ψ₃ applied
    to (2.5) gives `ErrataChecks.psi3_relation_2_5`; (2.26) then follows by applying ψ₂
-   (`ErrataChecks.eq_2_26`).
+   and simplifying the common sign (`ErrataChecks.eq_2_26`). Alternatively, use the equivalent
+   recurrence already stated after (2.5), p. 9. The recurrence and antipode formulas are unchanged.
 10. **(3.4), p. 23 [F→T].** False as printed: `det M₂ = −1`
    (`EKDeterminant.equation_3_4_counterexample`), for every ordering
    (`EKDeterminant.counterexample_under_every_order`). Correct formula, every d:
@@ -82,8 +84,11 @@ These errata are what the formalization turned up; they are not a complete revie
    (p₄h₁, e₅) = (h₁p₄, e₅) = −1 (`EKComplete.prop_3_4_values_false_k4`); for k = 1 both
    pairings are 0 (`EKComplete.prop_3_4_values_false_k1`). Prop 3.4 holds
    (`EKCenterPower.center_iff`).
-14. **Uniqueness of Schur functions, p. 29 [G].** The cited argument relies on the false equality
-    in item 5. The characterization of s_λ by properties (1)–(2) holds
+14. **Uniqueness of Schur functions, pp. 28–29 [C; dependency on item 5].** The characterization of
+    s_λ by properties (1)–(2) follows from the stated conclusion of Lemma 2.15: the difference of
+    two candidates lies in the strict upper span and pairs to zero with that span, so restricted
+    nondegeneracy gives uniqueness. Item 5 concerns the proof of that lemma, not this inference.
+    The characterization needs no change or extra hypothesis
     (`EKComplete.schur_characterisation`, `EKComplete.schur_existsUnique`).
 15. **Prop 3.10 proof, p. 29 [G].** The intersection claimed to be one-dimensional has dimension
     ≥ 2 at λ = (3,3): it contains the independent s₃₃ and s₄₁₁
@@ -95,10 +100,13 @@ These errata are what the formalization turned up; they are not a complete revie
     `ErrataChecks.lemma_3_11_printed_not_mem`), and the first display has `h_μ` for `e_μ`
     (`ErrataChecks.lemma_3_11_first_display`). The lemma
     holds (`EKFinalClosure.lemma_3_11`).
-17. **Proof of Cor 3.12, p. 30 [G].** Applying ψ₁ψ₂ to (3.10) does not give the second equation of
+17. **Proof of Cor 3.12, p. 30 [C].** Applying ψ₁ψ₂ to (3.10) does not give the second equation of
     (3.14), because ψ₁ψ₂ does not send m_μ to ±f_μ: ψ₁ψ₂(m₃) = −h₁₁₁ + h₂₁ − h₃ while
-    f₃ = h₁₁₁ + h₂₁ − h₃ (`EKComplete.cor_3_12_proof_gap`). (3.14) holds
-    (`EKFinalClosure.cor_3_12_second`).
+    f₃ = h₁₁₁ + h₂₁ − h₃ (`EKComplete.cor_3_12_proof_gap`). This refutes the proof shortcut,
+    not (3.14). Obtain the first identity by applying ψ₁ψ₂ to (3.6), then obtain the second by
+    dualizing with signed Schur orthonormality and the e/f dual bases. Both identities hold
+    (`EKFinalClosure.cor_3_12_first`, `EKFinalClosure.cor_3_12_second`); this is a routine
+    dual-basis repair, not a separate substantive gap.
 18. **p. 31, ⟨s_λ, s_λ⟩ = (−1)^{½ s*(2λ)} [M].** For λ = (1,1), s*(2λ) = 1, so the exponent is
     not an integer (`EKComplete.printed_exponent_not_integer`). The correct norm is
     (−1)^{s*(2λ)} (`EKComplete.norm_schur_spin`, `EKComplete.twiceSpinMax_double`).
@@ -204,8 +212,12 @@ These errata are what the formalization turned up; they are not a complete revie
     (`EKLMisc.signX_col_mod_two`, `EKLMisc.signX_col_exact`; the integer equality fails:
     `EKLMisc.eq_4_52_false`), and X^{a,1}_{(1^a)} is even, not 1 (`EKLMisc.signX_col_self_even`,
     `EKLMisc.neg_one_pow_signX_col_self`). Lemma 4.14 and Thm 4.15 are unaffected.
-19. **Proof of Thm 4.16 [G].** It appeals to ONH_a ≅ Mat(OΛ_a) without the rank argument needed;
-    `ThickDecomposition.thm_4_16` supplies it by a graded trace count.
+19. **Proof of Thm 4.16, p. 43 [C].** The short matrix-algebra argument compresses the graded
+    rank comparison showing that the orthogonal summands exhaust the corner. The split maps
+    in (4.53)–(4.55), their degrees and the matrix realization provide the input: the complementary
+    idempotent has zero rank in every degree and hence vanishes. This standard argument is made
+    explicit by the graded trace count in `ThickDecomposition.thm_4_16`; the theorem needs no
+    extra hypothesis. The ambient algebra here is ONH_{a+b}, rather than ONH_a as written in the proof.
 20. **p. 44 [M].** "The ε_λ form a basis of OΛ_a just like the h_λ": in OΛ_a the family of all h_λ
     is linearly dependent (h_3 = h_1³ for a = 2: `EKLMisc.complete_parts_not_basis`). The statement
     holds for OΛ (`EKIntegralBases`) and, for OΛ_a, for the ε_λ with parts ≤ a
@@ -269,10 +281,16 @@ These errata are what the formalization turned up; they are not a complete revie
    of column Schur functions s_{(1^{λᵀ_1})}⋯s_{(1^{λᵀ_r})}, not of row Schur functions. Thm 3.8
    holds (`OddLRThm38.thm38`, via `OddLRElimination.eliminate`, `OddLRElimination.strip_lex`; in
    every rank with `OddLRThm38.sK_eq_sp` and `SmallRank.conjecture_5_3_small`).
-5. **Cor 3.9 [G].** It is stated without proof and does not follow from Thm 3.8 alone; the paper
-   also uses without proof that the tableau words form a basis of ℤPl_n. Both hold, in
-   every rank (`OddLRPlactic.tableauBasis`, `OddLRExamples.cor39_all`). Lemma 4.7, whose proof reads
-   coefficients in ℤPl_n, depends on Cor 3.9; it holds, along the printed route
+5. **Cor 3.9, pp. 8, 10–11 [C].** The tableau-basis assertion follows from the classical Knuth
+   normal form cited in Thm 3.1, refined by inversion-parity signs: each signed Knuth move changes
+   that parity, so the sign is independent of the chosen sequence of moves. Cor 3.9 requires a
+   further explanatory bridge: equality of polynomial images in Thm 3.8 alone does not establish
+   the lifted subalgebra statement in ℤPl_n. The signed bumping and tableau-product argument of
+   Prop 3.7 and Thm 3.8 should be performed before evaluation; triangular generation then gives
+   the lift. This is an underexplained step, not a demonstrated false corollary or a need for a
+   new hypothesis. The tableau basis and Cor 3.9 hold in every rank
+   (`OddLRPlactic.tableauBasis`, `OddLRExamples.cor39_all`). Lemma 4.7, whose proof extracts
+   coefficients in ℤPl_n, uses this lift; it holds along the printed route
    (`OddLRExamples.lemma_4_7_plactic`) and independently of Cor 3.9 (`OddLRRule.lemma_4_7`), and
    Thm 4.8 holds (`OddLRRule.thm_4_8`).
 6. **§4.2, "sign(S) = sign(Ŝ) = N^<(Ŝ)" [M].** Read (−1)^{N^<(Ŝ)} (`OddLRTableau.SkewTableau.sign`); for the tableaux of Example 4.9,
@@ -340,11 +358,13 @@ from `0` in Lean.
    (`EQThick.slider_printed_false`). Correct: moving `ẽ_s` through a splitter gives
    `Σ_{l=0}^{s} (−1)^{a l} (ẽ_{s−l} ⊗ ẽ_l)` with the left coupon above the right and no further sign (`EQThick.slider`,
    from the coproduct formula `EQThick.elementary_coproduct`). For `s ≤ 1` the two agree.
-9. **§4.2, the differential on thick diagrams [textual].** In Prop 4.2 and Cor 4.3, `d` is the differential
-   of Lemma 2.2 on idempotent truncations, `e d(−)` with `e` the idempotent at the top of the diagram (as the
-   proof's first step indicates), not the restriction of the differential of `ONH_n`: with the latter the
-   printed formulas fail already in rank 2 (`EQThick.dONH_DElem_ne_thickD_rank_two`). With `e d(−)` they hold
-   as printed (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
+9. **§4.2, the differential on thick diagrams [C; reading convention].** Section 4.2.1 explicitly
+   invokes Lemma 2.2 for the idempotented pieces. Thus Prop 4.2 and Cor 4.3 use the induced corner
+   differential `e d(−)`, with `e` at the top of the diagram, not the untruncated ambient differential
+   of `ONH_n`. The rank-two calculation `EQThick.dONH_DElem_ne_thickD_rank_two` excludes only the
+   latter interpretation; it is not a counterexample to the source's formulas. With the specified
+   corner differential they hold as printed
+   (`EQThick.prop_4_2_splitter`, `prop_4_2_merger`, `cor_4_3_split`, `cor_4_3_merge`).
 10. **§4.3, Lemma 4.5 and the formula for `s̃̂_λ` after it [F→T].** With the printed definitions of `s̃̂_λ` and `ŝ_λ`
    (via `η^n_λ`), the horizontal arrows of Lemma 4.5 and the displayed `s̃̂_λ = (−1)^{Σ_{i<j} λ_iλ_j} ∂_{w_0}(x^λ x^δ)` fail
    for `n = 2`, `λ = (1)` (`EQZab.lemma_4_5_bottom_false`, `lemma_4_5_top_false`, `hat_formula_false`). They hold after
@@ -414,19 +434,25 @@ from `0` in Lean.
    `invert_grankHom_eq_printed_iff`), and differ for `a = (1, 1)`, `b = (2)` (`EQBlocks.prop_4_13_three_printed_false`).
    The printed formula is the graded rank after placing the generator of each `Z_a` in degree `−D_a`, the normalization
    under which `Z_a` itself has the symmetric graded rank `[n; a]_q` (as stated for `Z_{a,b}` before Cor 4.11).
-22. **§4.4, footnote 5, the results over ℤ [G].** The footnote derives the statements of §4.4 over ℤ from formality and
-   Theorem 2.7, but Corollary 2.6 needs a semisimple degree-0 part, which formality does not supply over ℤ. The statements
-   hold over ℤ by a different route: `OΛ_n` and `OΛ_{a,b}` are connected over ℤ with `Z¹ = 0` and torsion-free `H²`
+22. **§4.4, footnote 5, the results over ℤ [C].** The footnote correctly cites Theorem 2.7 for derived
+   invariance under a dg quasi-isomorphism; Corollary 2.8 is the separate acyclicity criterion.
+   The integral K₀ argument needs an additional explanation: Corollary 2.6's semisimple degree-0
+   hypothesis does not follow from formality over ℤ. One can supplement formality and the polynomial
+   cohomology description with the standard K₀ computation for regular polynomial rings. This is
+   not a false integral statement or a wrong citation. The library instead uses a connected-dg
+   argument: `OΛ_n` and `OΛ_{a,b}` are connected over ℤ with `Z¹ = 0` and torsion-free `H²`
    (every cocycle in degree not divisible by 4 is a coboundary, `osym_eq_d_of_cocycle`, by Prop A.2 (2)), so their compact
    derived categories have `K₀ ≃ ℤ` (`baseK0OsymInt`, `baseK0OsymABInt`, from `DG.DGRing.K0.equivIntOfIsConnectedInt` in
    dg-lean), and Theorem 4.17 holds over ℤ (`thm_4_17_int_equiv`, `thm_4_17_int_mul`, `thm_4_17_int_comul`).
-23. **§4.3, Definition 4.6, and §4.4, the induction half of Corollary 4.21 [G].** Definition 4.6 calls
-   `Z_{a,b} = OΛ̃_a ⊠ OΛ̃_b · z` an `(OΛ_{a,b}, OΛ_{a+b})`-bimodule without saying how `OΛ_{a,b} = OΛ_a ⊗ OΛ_b`
-   acts on it, and the proof of the induction half of Corollary 4.21 is omitted ("similar and easier"). That half
+23. **§4.3, Definition 4.6, and §4.4, the induction half of Corollary 4.21 [F→T; action-convention conflict].**
+   Section 4.1, p. 28, specifies the bimodule actions through `θ ∘ w₀`, whereas §4.3.2, p. 34, explicitly
+   gives the left action `(f ⊗ g) · z = (θ(f) ⊗ θ(g))z` on `Z_{a,b} = OΛ̃_a ⊠ OΛ̃_b · z`.
+   These are conflicting conventions, not an absent definition. The induction comparison in Corollary 4.21
    needs an isomorphism of dg `(ONH_a ⊗ ONH_b, OΛ_{a+b})`-bimodules `(Z_a ⊠ Z_b) ⊗_{OΛ_{a,b}} Z_{a,b} ≅ ι^* Z_{a+b}`.
-   If `f ⊗ g` acts by multiplication by `θ(f) ⊠ θ(g)`, no such isomorphism exists: for `a = b = 2` it would force
+   For the explicit θ-only left action on p. 34, no such isomorphism exists over ℤ: for `a = b = 2` it would force
    `(w₀ × w₀)(φ(e_2)) = φ(e_2)`, where `z · h = φ(h) z` (`EQFunctor.untwisted_constraint`,
-   `EQFunctor.no_indEquiv_untwisted`). If `f ⊗ g` acts through `θ ∘ w₀` on each factor (the map through which `OΛ_n`
+   `EQFunctor.no_indEquiv_untwisted`). Retaining the earlier blockwise `θ ∘ w₀` convention corrects that
+   left-action formula: if `f ⊗ g` acts through `θ ∘ w₀` on each factor (the map through which `OΛ_n`
    acts on `Z_n` on the right), the isomorphism exists, `y ⊗ F ↦ y (θ_a ⊗ θ_b)(F)` (`EQFunctor.indEquiv`, for
    `a, b ≥ 2`; `EQLift.gIndEquiv` in all ranks). The differentials need no further sign or automorphism:
    `s_{α_b}(y) + {a} θ_b(e_1)(y)` is the `y`-part of `s_{α_{a+b}}` (`EQFunctor.sAlpha_zAlpha_eq`). With this
