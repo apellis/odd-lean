@@ -4,7 +4,7 @@ import StringDiagrams.Super.GradedTwoEnvelopeUniversal
 # The general extension into a super-reverse
 
 Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §9,
-the definition of the super-reverse and Lemma 9.5. The input functor may already
+the definition of the super-reverse and Lemma 9.6. The input functor may already
 have shifted values. This is the extension used in the subsequent construction of ρ.
 -/
 
@@ -88,7 +88,7 @@ instance twoSupercategory : TwoSupercategory R (TwoSRev R B) where
   rightUnitor_hom_mem f := leftUnitor_hom_mem (R := R) (B := B) f
 
 /-- The homogeneous horizontal composition is reversed with the Koszul sign,
-as in the definition preceding Lemma 9.5. -/
+as in the definition preceding Lemma 9.6. -/
 theorem hcomp_eq {a b c : TwoSRev R B} {f g : a ⟶ b} {h i : b ⟶ c}
     {p q : ZMod 2} {η : f ⟶ g} {θ : h ⟶ i}
     (hη : η ∈ parity (R := R) f g p) (hθ : θ ∈ parity (R := R) h i q) :
@@ -112,7 +112,7 @@ instance gradedTwoSupercategory : GradedTwoSupercategory R (TwoSRev R B) where
   leftUnitor_hom_mem_degree f := GradedTwoSupercategory.rightUnitor_hom_mem_degree (B := B) f
   rightUnitor_hom_mem_degree f := GradedTwoSupercategory.leftUnitor_hom_mem_degree (B := B) f
 
-/-- The structure maps preceding Lemma 9.5 are retained, not inverted;
+/-- The structure maps preceding Lemma 9.6 are retained, not inverted;
 in particular the two integer shift objects are not exchanged. -/
 instance qpiTwoSupercategory [QPiTwoSupercategory R B] :
     QPiTwoSupercategory R (TwoSRev R B) where
@@ -142,7 +142,7 @@ variable {R : Type r} [CommRing R]
   [∀ a b : B, Supercategory R (a ⟶ b)] [TwoSupercategory R B]
   [∀ a b : B, GradedSupercategory R (a ⟶ b)] [GradedTwoSupercategory R B]
 
-/-- **Lemma 9.5.** Extend an arbitrary functor into the super-reverse of the
+/-- **Lemma 9.6.** Extend an arbitrary functor into the super-reverse of the
 already-shifted target; no factorization through an unshifted target is required. -/
 def extendEnvelopeSRev (F : TwoSuperfunctor R A (TwoSRev R (QPiTwoEnvelope R B))) :
     TwoSuperfunctor R (QPiTwoEnvelope R A) (TwoSRev R (QPiTwoEnvelope R B)) :=
@@ -180,13 +180,13 @@ theorem twoJ_comp_extendEnvelopeSRev
     (QPiTwoEnvelope.twoJ R A).comp (extendEnvelopeSRev F) = F :=
   QPiTwoEnvelope.twoJ_comp_extendQPi F
 
-/-- The extension in Lemma 9.5 preserves integer degrees, including those of its comparisons. -/
+/-- The extension in Lemma 9.6 preserves integer degrees, including those of its comparisons. -/
 theorem extendEnvelopeSRev_isGraded
     (F : TwoSuperfunctor R A (TwoSRev R (QPiTwoEnvelope R B))) (hF : F.IsGraded) :
     (extendEnvelopeSRev F).IsGraded :=
   QPiTwoEnvelope.extendQPi_isGraded F hF
 
-/-- **Lemma 9.5**, with gradedness and agreement on restriction. -/
+/-- **Lemma 9.6**, with gradedness and agreement on restriction. -/
 theorem exists_graded_envelopeSRev_extension
     (F : TwoSuperfunctor R A (TwoSRev R (QPiTwoEnvelope R B))) (hF : F.IsGraded) :
     ∃ G : TwoSuperfunctor R (QPiTwoEnvelope R A) (TwoSRev R (QPiTwoEnvelope R B)),
