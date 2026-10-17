@@ -343,4 +343,138 @@ theorem psiLin_quadEq (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i :
         List.not_mem_nil, or_false, or_self] at hx; subst x; trivial)]
   exact psiPrimaryRaw_quadEq t ht cs _ μ [] [] i rfl
 
+
+/-- Actual source whiskering and boundary retyping evaluate to target placement. -/
+theorem psiDiagram_place (t : k) (cs : CScalars Sc) (μ : X) (u v s r : List (Letter I))
+    (hst : wt D (wt D μ v) r = wt D (wt D μ v) s)
+    (d : ob D (wt D μ v) s ⟶ ob D (wt D μ v) r) :
+    psiDiagram (sy := sy) (hc := hc) t cs (wt D (wt D (wt D μ v) s) u) μ
+        (by rw [wt_append, wt_append]) (by rw [wt_append, wt_append, hst])
+        (Diagram.cast (Diagram.whisker d (ob D (wt D (wt D μ v) s) u) (wd D μ v)
+          (whiskerOK_ob D μ u v s))
+          (ob_whisker D μ u v s s rfl) (ob_whisker D μ u v s r hst)) =
+      psiPlace _ _ _ μ u v rfl rfl rfl hst (psiDiagram t cs _ _ rfl hst d) := by
+  obtain ⟨L, hL, rfl⟩ := diag_eq_mkD d
+  have e : Diagram.cast
+      (Diagram.whisker (mkD D (wt D μ v) L hL) (ob D (wt D (wt D μ v) s) u)
+        (wd D μ v) (whiskerOK_ob D μ u v s))
+      (ob_whisker D μ u v s s rfl) (ob_whisker D μ u v s r hst) =
+        mkD D μ (L.map (whL u v)) (hL.whisk u v) := by
+    apply Diagram.ext
+    simp only [Diagram.layers_cast, Diagram.layers_whisker, layers_mkD]
+    exact layList_whisker D μ u v hL
+  rw [e, psiDiagram_mkD, psiDiagram_mkD]
+  exact psiRaw_whisk t cs _ _ _ μ u v L rfl rfl rfl hst hL
+
+/-- Horizontal compatibility on the original free linear diagram module. -/
+theorem psiLin_place (t : k) (cs : CScalars Sc) (μ : X) (u v s r : List (Letter I))
+    (hst : wt D (wt D μ v) r = wt D (wt D μ v) s)
+    (f : LinDiagram k (ob D (wt D μ v) s) (ob D (wt D μ v) r)) :
+    psiLin (sy := sy) (hc := hc) t cs (wt D (wt D (wt D μ v) s) u) μ
+        (by rw [wt_append, wt_append]) (by rw [wt_append, wt_append, hst])
+        (LinDiagram.cast (LinDiagram.whisker f (ob D (wt D (wt D μ v) s) u) (wd D μ v)
+          (whiskerOK_ob D μ u v s))
+          (ob_whisker D μ u v s s rfl) (ob_whisker D μ u v s r hst)) =
+      psiPlaceLinear _ _ _ μ u v rfl rfl rfl hst (psiLin t cs _ _ rfl hst f) := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp [LinDiagram.cast]
+  | add f g hf hg =>
+    erw [LinDiagram.whisker_add, LinDiagram.cast_add]
+    simp only [map_add, hf, hg]
+  | single d a =>
+    rw [LinDiagram.whisker_single, LinDiagram.cast_single, psiLin_single, psiLin_single,
+      map_smul, psiDiagram_place]
+    rfl
+
+
+/-- The disconnected-colour quadratic defining relation is killed. -/
+theorem psiLin_quadZero (t : k) (ht : t ^ 2 = -1) (cs : CScalars Sc) (μ : X) (i j : I)
+    (hij : i ≠ j) (hd : D.d i j = 0) :
+    psiLin (sy := sy) (hc := hc) t cs (wt D μ [up i, up j]) μ rfl rfl
+      (relation D Sc (.quadZero i j μ hij hd)) = 0 := by
+  change psiLin t cs _ μ rfl rfl (dg D μ _ _ - (Sc.t i j : k) • idg D μ [up i, up j]) = 0
+  rw [map_sub, map_smul, psiLin_dg, psiLin_idg,
+    psiRaw_append t cs _ μ (crossL [] i j []) (crossL [] j i []) (r := [up j, up i]) rfl
+      (by simp only [wt_cons, wt_nil]; abel) rfl
+      (by simp [crossL, Shape.dom, Shape.cod]) (by simp [crossL, Shape.dom, Shape.cod])]
+  change psiRaw t cs _ μ [([], Shape.cross i j, [])] _ _ _ ≫
+    psiRaw t cs _ μ [([], Shape.cross j i, [])] _ _ _ - _ = 0
+  rw [psiRaw_gen, psiRaw_gen]
+  exact sub_eq_zero.mpr (psiCross_quadZero t ht _ μ i j rfl hij hd)
+
+/-- The complete evaluator sends the primary mixed-crossing word to the verified image. -/
+theorem psiRaw_sigma (t : k) (cs : CScalars Sc) (μ : X) (i j : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [up j, dn i]) μ (sigmaL i j)
+      rfl ((sChain_sigmaL i j).wt_eq D μ) (sChain_sigmaL i j) = psiSigma t μ i j := by
+  rw [psiRaw_eq_primary t cs _ μ _ _ _ _ (primaryLayers_sigmaL i j)]
+  exact psiPrimaryRaw_sigma_eq t cs μ i j
+
+/-- The adjoined mixed crossing evaluates to its independently verified target image. -/
+theorem psiRaw_lcross (t : k) (cs : CScalars Sc) (μ : X) (i j : I) :
+    psiRaw (sy := sy) (hc := hc) t cs (wt D μ [up j, dn i]) μ (lcrossL i j)
+      ((sChain_sigmaL i j).wt_eq D μ) rfl (sChain_lcrossL i j) = psiLCross t μ i j := by
+  change psiRaw t cs _ μ [([], Shape.lcross i j, [])] _ _ _ = _
+  rw [psiRaw_gen]
+  rfl
+
+private theorem psiLayer_at (t : k) (cs : CScalars Sc) (Ω ν ξ μ : X)
+    (u : List (Letter I)) (g : Shape I) (v : List (Letter I))
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hg : wt D ξ g.dom = ν) :
+    psiLayer (sy := sy) (hc := hc) t cs Ω μ u g v
+        (by rw [wt_append, wt_append, hv, hg, hu]) =
+      psiPlace Ω ν ξ μ u v hu hv hg ((g.wt_dom_eq_wt_cod D ξ).symm.trans hg)
+        (psiGen t cs ν ξ g hg) := by
+  subst ξ ν
+  rfl
+
+/-- A contextual singleton computes by the actual target placement of its generator. -/
+theorem psiRaw_layer (t : k) (cs : CScalars Sc) (Ω ν ξ μ : X)
+    (u : List (Letter I)) (g : Shape I) (v : List (Letter I))
+    (hu : wt D ν u = Ω) (hv : wt D μ v = ξ) (hg : wt D ξ g.dom = ν) :
+    psiRaw (sy := sy) (hc := hc) t cs Ω μ [(u, g, v)]
+        (by rw [wt_append, wt_append, hv, hg, hu])
+        (by rw [wt_append, wt_append, hv, ← g.wt_dom_eq_wt_cod D, hg, hu]) ⟨rfl, rfl⟩ =
+      psiPlace Ω ν ξ μ u v hu hv hg ((g.wt_dom_eq_wt_cod D ξ).symm.trans hg)
+        (psiGen t cs ν ξ g hg) := by
+  simp only [psiRaw, eqToHom_refl, Category.id_comp, Category.comp_id]
+  exact psiLayer_at t cs Ω ν ξ μ u g v hu hv hg
+
+/-- Source left dots evaluate to the actual two-strand left dot used in the target relations. -/
+theorem psiRaw_dotLeft (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
+    (h : wt D μ [up i, up j] = ν) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (dotsL [] i [up j] 1) h h
+      (sChain_dotsL [] i [up j] 1) = psiDotLeft t ν μ i j h := by
+  subst ν
+  change psiRaw t cs _ μ [([], Shape.dot i, [up j])] _ _ _ = _
+  erw [psiRaw_layer t cs _ _ _ μ [] (.dot i) [up j] rfl rfl rfl]
+  change psiPlace _ _ _ μ [] [up j] rfl rfl rfl rfl (psiDot t (wt D μ [up j]) i) = _
+  simp only [psiPlace, wt_nil]
+  erw [psiWhiskerLeft_nil]
+  simp only [psiWhiskerRight, eqToHom_refl, Category.id_comp, Category.comp_id]
+  exact psiDot_whiskerRight t μ i j
+
+/-- Source right dots evaluate to the actual two-strand right dot. -/
+theorem psiRaw_dotRight (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
+    (h : wt D μ [up i, up j] = ν) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (dotsL [up i] j [] 1) h h
+      (sChain_dotsL [up i] j [] 1) = psiDotRight t ν μ i j h := by
+  subst ν
+  change psiRaw t cs _ μ [([up i], Shape.dot j, [])] _ _ _ = _
+  erw [psiRaw_layer t cs _ _ μ μ [up i] (.dot j) [] rfl rfl rfl]
+  change psiPlace _ _ μ μ [up i] [] rfl rfl rfl rfl (psiDot t μ j) = _
+  simp only [psiPlace, psiWhiskerRight_nil]
+  simp only [psiWhiskerLeft, eqToHom_refl, Category.id_comp, Category.comp_id]
+  exact psiDot_whiskerLeft t μ i j
+
+
+/-- The raw upward crossing has its printed target image. -/
+theorem psiRaw_cross (t : k) (cs : CScalars Sc) (ν μ : X) (i j : I)
+    (h : wt D μ [up i, up j] = ν) :
+    psiRaw (sy := sy) (hc := hc) t cs ν μ (crossL [] i j []) h
+      ((Shape.cross i j).wt_dom_eq_wt_cod D μ |>.symm.trans h)
+      (by simp [crossL, Shape.dom, Shape.cod]) = psiCross t ν μ i j h := by
+  change psiRaw t cs ν μ [([], Shape.cross i j, [])] _ _ _ = _
+  rw [psiRaw_gen]
+  rfl
+
 end OddMath.SKM
