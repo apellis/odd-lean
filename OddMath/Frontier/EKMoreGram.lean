@@ -23,10 +23,6 @@ matrices `M_{λμ} = (e_λ, h_μ)`, `M′_{λμ} = (h_λ, h_μ)`, `M″_{λμ} =
   of `EKRest` agree (`degD_cast`), so the Gram determinant of `Λ′_n` over `ℤ[q]` has degree
   exactly `2^{n−2}(n² − 3n + 4) − 1` for every `n ≥ 2` (`gram_det_natDegree_closed`,
   `gram_det_natDegree_closed_nat`).
-* p. 25, "`f_n = ±m_n`", at `n = 7`: `m₇ = 4 f₍₄,₃₎ + 8 f₍₅,₂₎ + 5 f₍₇₎` (`m_seven_f_expansion`).
-  Hence `m₇` and `f₇` are linearly independent over `ℤ` (`f_seven_m_seven_independent`), so
-  `f₇` is not a rational multiple of `m₇` (the `f`-basis is a `ℤ`-basis, so the relation
-  `a f₇ = b m₇` with `a, b ∈ ℚ` clears to integers).
 -/
 
 noncomputable section
@@ -202,58 +198,5 @@ theorem gram_det_natDegree_closed_nat (n : ℕ) (hn : 2 ≤ n) :
   zify [h3, hp]
   rw [h]
   ring
-
-/-! ## p. 25, `n = 7`: the f-expansion of `m₇` -/
-
-open EKRest in
-/-- `(e_ν, m₇)` on the fifteen partitions of `7` (lexicographic order `EKRest.pl7`). -/
-def m7fCoeff : Fin 15 → ℤ := ![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 8, 0, 5]
-
-open EKRest in
-theorem m7_f_coord_fast : ∀ j : Fin 15,
-    ∑ l, m7coeff l * fastEH (pl7 j) (pl7 l) = m7fCoeff j := by
-  decide +kernel
-
-open EKRest in
-theorem pairing_e_m7 (j : Fin 15) :
-    quotientPairing (ePartition (hshapes7 j).val) (EKPrimitives.mRow 7 : Q) = m7fCoeff j := by
-  rw [← m7_f_coord_fast j]
-  change quotientPairing _ ((mBasis 7 (EKPrimitives.rowShape 7) : degreePiece 7) : Q) = _
-  rw [mBasis_val hshapes7 pl7 hs7 _ m7coeff m_seven, map_sum]
-  apply Finset.sum_congr rfl
-  intro l _
-  rw [map_zsmul, smul_eq_mul, ← hPartition_eq_hP hshapes7 pl7 hs7 l]
-  change m7coeff l * M 7 (hshapes7 j) (hshapes7 l) = _
-  rw [M_fast, hs7, hs7]
-
-open EKRest in
-/-- [EK] p. 25, `n = 7`: `m₇ = 4 f₍₄,₃₎ + 8 f₍₅,₂₎ + 5 f₍₇₎` in the forgotten basis. -/
-theorem m_seven_f_expansion :
-    EKPrimitives.mRow 7 = (4 : ℤ) • fBasis 7 (hshapes7 10) + (8 : ℤ) • fBasis 7 (hshapes7 12) +
-      (5 : ℤ) • fBasis 7 (hshapes7 14) := by
-  apply (fBasis 7).repr.injective
-  ext ν
-  obtain ⟨j, rfl⟩ := exhaust7 ν
-  rw [f_coordinates, pairing_e_m7]
-  simp only [map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
-    Finsupp.single_apply, smul_eq_mul]
-  have e : ∀ i : Fin 15, (hshapes7 i = hshapes7 j) ↔ i = j := fun i => inj7.eq_iff
-  simp only [e]
-  fin_cases j <;> decide
-
-open EKRest in
-/-- `f₇` and `m₇` are linearly independent over `ℤ`: `a f₇ = b m₇` forces `a = b = 0`. In
-particular `f₇` is not a rational (let alone integer or sign) multiple of `m₇`. -/
-theorem f_seven_m_seven_independent (a b : ℤ) :
-    a • fBasis 7 (EKPrimitives.rowShape 7) = b • EKPrimitives.mRow 7 → a = 0 ∧ b = 0 := by
-  intro h
-  rw [rowShape_seven, m_seven_f_expansion] at h
-  have hc := fun i => congrArg (fun x => (fBasis 7).repr x (hshapes7 i)) h
-  have h10 := hc 10
-  have h14 := hc 14
-  simp only [map_add, map_zsmul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply,
-    Finsupp.single_apply, smul_eq_mul, smul_add, inj7.eq_iff] at h10 h14
-  norm_num at h10 h14
-  omega
 
 end OddMath.Frontier.EKMore
