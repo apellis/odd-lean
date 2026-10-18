@@ -484,7 +484,7 @@ from `0` in Lean.
 
 ## [BE2] J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2
 
-Names in this section are in `OddMath.SKM`.
+Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
 1. **Proposition 7.3(iv), (7.13)–(7.14): missing scalar factors
    [constraint proved; corrected identities proved].** For distinct colours with `dᵢⱼ = 0`,
@@ -612,3 +612,63 @@ Names in this section are in `OddMath.SKM`.
    **Corrected construction.** Over a purely even commutative ground ring, with the existing `Datum`, `Scalars`, `Symmetrizer`, and `Sc.Homogeneous` hypotheses and an element `t` satisfying `t² = −1`, the corrected assignments give a graded 2-superfunctor on the full `(Q,Π)`-envelope (`RhoExtension.rhoEnvelope`, `RhoExtension.rhoEnvelope_isGraded`). The reverse-direction functor uses `−t` and is graded (`RhoInverse.rhoInverse`, `RhoInverse.rhoInverse_isGraded`). Both composites equal the identity 2-superfunctor, including their composition and unit comparison maps (`RhoFunctorLaws.rhoEnvelope_comp_inverse`, `RhoFunctorLaws.rhoInverse_comp_envelope`). The maps and inverse laws apply to arbitrary 2-morphisms and arbitrary external integer/parity shifts. Thus they prove the graded-isomorphism assertion with the displayed 1-morphism images in this coefficient setting. The scalar homogeneity hypothesis is (1.31), not a restriction to homogeneous 2-morphisms. `Scalars` includes invertibility of `2` when an odd colour exists. The additive weight realization encompasses the paper's complex realization; no field hypothesis is imposed in §9. General supercommutative coefficient rings are outside this formalization. The subsequent assertion about the induced antiautomorphism of the Grothendieck ring and its compatibility with `γ` is a separate decategorification statement.
 
    **For the authors.** In arXiv:1701.04133v2, Proposition 9.8, p. 38, the proof's image of `Fᵢ1_λ` has parity shift `|i,λ|`, although the statement preserves the external parity shift. We obtain the stated 1-morphism formulas by using zero intrinsic parity shift for both `Eᵢ` and `Fᵢ`. With the right-mate downward diagrams of Definition 2.1 and the super-reverse of Definition 9.5, the odd dot coefficient `t` and printed odd–odd crossing coefficient `−t` give the equal-colour slide with `−id` instead of `+id`. The literal assignments therefore force `2 id = 0` if they preserve this relation; this observation alone does not prove that the relevant identity is nonzero. Keeping the dot coefficient and replacing the odd–odd crossing coefficient by `+t` yields a relation-preserving graded construction over purely even commutative ground rings, with inverse obtained using `−t` and both whole-functor inverse laws. This corrects the proof's assignments while retaining the proposition's stated object and 1-morphism formulas.
+
+5. **Theorem 10.3, proof of Claim 1, p. 41: permutation index direction
+   [M; corrected algebraic identity and rational-parameter diagnostic proved].**
+   Declaration names in this item are in `OddMath.CoveringQuantum`.
+   Write `aᵣ = iᵣ`, `bᵣ = jᵣ`,
+   $\chi(i,j)=\pi^{|i||j|}q^{-(\alpha_i,\alpha_j)}$, and
+   $N(a)=\prod_r(1-\pi_{a_r}q_{a_r}^{2})^{-1}$.
+   For equal-length words, the printed display combines the colour condition
+   `a_{w(r)} = bᵣ` with source-colour factors over the inversions of `w`.
+   Use a source-to-target permutation instead, with `aᵣ = b_{w(r)}`:
+   $$
+   N(a)\sum_{\substack{w\in S_n\\a_r=b_{w(r)}\;\forall r}}
+   \prod_{\substack{r<s\\w(r)>w(s)}}\chi(a_r,a_s).
+   $$
+   The surrounding description of the matching bijection should use this same
+   direction. Equivalently, retain the printed colour condition and use inversions
+   of `w⁻¹`, or retain its inversion test and use target colours `bᵣ,bₛ` in the factors.
+   These repairs agree by reindexing inversion pairs and symmetry of `χ`.
+   The reference to Theorem 10.1 “(iv)” in the same paragraph should be to 10.1(3).
+   No additional mathematical hypothesis is needed for this index correction.
+
+   **Diagnostic and certainty boundary.** For the even A₃ parameters `dᵢ = 2`,
+   with indexed colours `a = (2,1,3)` and `b = (1,3,2)`, the printed expression is
+   `q²/(1−q⁴)³`, whereas the corrected expression and twisted-coproduct form give
+   `q⁴/(1−q⁴)³`. The explicit rational crossing parameters at `q = 2` have diagonal
+   `1/16`, adjacent-colour value `4`, and remaining value `1`, with generator norms
+   `−1/15`. At these parameters, `PreF.PermutationIndex.printed_value` proves that
+   the literal mixed-index sum is `−4/3375`; `form_value` proves that the existing
+   free form is `−16/3375`; `form_ne_printed` proves their inequality. The concrete
+   words are checked by `source_word` and `target_word` in the same namespace.
+   These are kernel-checked statements about explicit rational parameters, not a
+   constructed A₃ root datum or a specialization homomorphism from the entire
+   rational-function coefficient field. The rational expressions above have
+   nonzero denominators at `q = 2`. The discrepancy concerns the proof display;
+   it does not refute the intrinsic matching identity (10.5).
+
+   **Corrected algebraic result and remaining scope.**
+   `PreF.form_monomial_permutations` proves the displayed finite sum for the existing
+   free form over any commutative ring, with decidable colour equality, symmetric
+   `Bichar`, and arbitrary generator norms. Empty words and repeated colours are
+   included; the colour type need not be finite. The application
+   `UDot.GenericTensor.sesquilinearForm_positive_words_permutations` uses the
+   existing Serre-form descent and reversed-positive-word normalization at a common
+   weight. It retains the construction's explicit finite-I and `BarConsistent`
+   restrictions; these are not new hypotheses of Theorem 10.3 or of the index repair.
+   Removing those construction restrictions remains separate tracked work in #42.
+   The decorated-matching generating-function comparison, its choice independence,
+   and the mixed-word cases remain open. This algebraic slice is not the full
+   graphical Claim 1 or Theorem 10.3.
+
+   **For the authors.** In arXiv:1701.04133v2, the unnumbered expansion in Claim 1
+   of the proof of Theorem 10.3 combines `i_{w(r)} = jᵣ` with source-colour factors
+   indexed by inversions of `w`. Those factors instead require `iᵣ = j_{w(r)}`;
+   alternatively keep the printed condition and take inversions of `w⁻¹`, or use
+   target colours in the inversion factors. For even A₃ with `dᵢ = 2` and colour
+   sequences `(2,1,3)` and `(1,3,2)`, the printed sum gives `q²/(1−q⁴)³`, while
+   the defining twisted-coproduct form gives `q⁴/(1−q⁴)³`. The explicit rational
+   values at `q = 2` and the corrected general free-form expansion are proved in
+   the declarations above. This is a local indexing correction to the proof,
+   not a defect in (10.5). The citation to 10.1 “(iv)” should also refer to (3).

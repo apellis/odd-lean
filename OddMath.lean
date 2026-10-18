@@ -9,6 +9,8 @@ import OddMath.CoveringQuantum.Integers
 import OddMath.CoveringQuantum.PreF.Basic
 import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
+import OddMath.CoveringQuantum.PreF.PermutationForm
+import OddMath.CoveringQuantum.PreF.PermutationIndex
 import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
@@ -54,6 +56,7 @@ import OddMath.CoveringQuantum.UDot.ModifiedFormUniqueness
 import OddMath.CoveringQuantum.UDot.ModifiedFormTransport
 import OddMath.CoveringQuantum.PreF.Reversal
 import OddMath.CoveringQuantum.UDot.PositiveForm
+import OddMath.CoveringQuantum.UDot.PositiveWordForm
 import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
 import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.RootCoordinates
