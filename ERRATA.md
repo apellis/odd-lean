@@ -584,3 +584,31 @@ Names in this section are in `OddMath.SKM`.
    the outer leftward cap contributes `(-1)^{|i||j||i,λ|}`. The product is the sign above. For
    `i = j` odd the printed relation forces the downward crossing on `Fᵢ Fᵢ 1_λ`, and hence the
    identity of that 1-morphism by (3.5), to be zero. (1.26) and (1.27) are correct as printed.
+
+4. **Proposition 9.8, proof, p. 38: the parity of the image of `Fᵢ` and the odd–odd crossing coefficient [M for the parity exponent; constraint proved and corrected construction proved for the crossing sign].** Put `t = √−1`, with `t² = −1`. The proposition's statement preserves the external parity shift on both generating 1-morphisms:
+   $$
+   Q^m\Pi^a E_i1_\lambda\longmapsto
+   (Q^{m-d_i(1+\langle h_i,\lambda\rangle)}\Pi^a1_\lambda F_i)^{\mathrm{srev}},
+   \qquad
+   Q^m\Pi^a F_i1_\lambda\longmapsto
+   (Q^{m-d_i(1-\langle h_i,\lambda\rangle)}\Pi^a1_\lambda E_i)^{\mathrm{srev}}.
+   $$
+   The proof instead assigns the bare `Fᵢ1_λ` an extra `Π^{|i,λ|}`, where `|i,λ| = |i|(⟨hᵢ,λ⟩+1)`. Replace this exponent by zero, consistently with the statement. The extension in Lemma 9.6 adds the external parity shift; it does not remove an existing output shift.
+
+   In the proof's upward-generator assignments, keep the downward right-mate dot coefficient `1` for even `i` and `t` for odd `i`. Replace the coefficient `−t` on the downward right-mate crossing when both colours are odd by `+t`; keep coefficient `1` otherwise. Thus the corrected coefficients are
+   $$
+   c_{\mathrm{dot}}(i)=\begin{cases}1&|i|=0,\\t&|i|=1,\end{cases}
+   \qquad
+   c_{\mathrm{cross}}(i,j)=\begin{cases}1&|i||j|=0,\\t&|i||j|=1.\end{cases}
+   $$
+   The crossing diagram is unchanged: its upper endpoints, from left to right, have colours `i,j`, its lower endpoints have colours `j,i`, and both arrows point downward. The displayed degree shifts and the coefficient-one right cup/cap assignments are unchanged. These are corrections to the construction in the proof, not additional hypotheses or a change to the proposition's stated 1-morphism images.
+
+   **Relation check and certainty boundary.** In the super-reverse of Definition 9.5, horizontal order reverses with the Koszul sign, whereas vertical composition does not reverse. For odd equal colours, write `D_L`, `D_R` for the images of the two placed source dots and `C` for the image crossing; write `≫` for bottom-to-top composition. With the printed coefficients, the downward relation (3.6) gives
+   $$
+   D_L\gg C=-(C\gg D_R)-\mathrm{id},
+   $$
+   while the image of (1.8) requires the same equation with `+id`. Consequently, satisfaction of that source relation by the literal printed assignments forces `id + id = 0` (`RhoCoefficients.odd_printed_relation_forces_two_id`). No nonzero identity witness is supplied by this calculation, so it is not a counterexample to Proposition 9.8. Changing only the odd–odd crossing coefficient as above changes the local identity coefficient to the required one. More importantly, the corrected construction respects all 25 constructors of the existing defining presentation and its contextual linear ideal, not just this local slide (`RhoEvaluator.rhoLin_ideal`). No defining relation is added and no parameter specialization is imposed.
+
+   **Corrected construction.** Over a purely even commutative ground ring, with the existing `Datum`, `Scalars`, `Symmetrizer`, and `Sc.Homogeneous` hypotheses and an element `t` satisfying `t² = −1`, the corrected assignments give a graded 2-superfunctor on the full `(Q,Π)`-envelope (`RhoExtension.rhoEnvelope`, `RhoExtension.rhoEnvelope_isGraded`). The reverse-direction functor uses `−t` and is graded (`RhoInverse.rhoInverse`, `RhoInverse.rhoInverse_isGraded`). Both composites equal the identity 2-superfunctor, including their composition and unit comparison maps (`RhoFunctorLaws.rhoEnvelope_comp_inverse`, `RhoFunctorLaws.rhoInverse_comp_envelope`). The maps and inverse laws apply to arbitrary 2-morphisms and arbitrary external integer/parity shifts. Thus they prove the graded-isomorphism assertion with the displayed 1-morphism images in this coefficient setting. The scalar homogeneity hypothesis is (1.31), not a restriction to homogeneous 2-morphisms. `Scalars` includes invertibility of `2` when an odd colour exists. The additive weight realization encompasses the paper's complex realization; no field hypothesis is imposed in §9. General supercommutative coefficient rings are outside this formalization. The subsequent assertion about the induced antiautomorphism of the Grothendieck ring and its compatibility with `γ` is a separate decategorification statement.
+
+   **For the authors.** In arXiv:1701.04133v2, Proposition 9.8, p. 38, the proof's image of `Fᵢ1_λ` has parity shift `|i,λ|`, although the statement preserves the external parity shift. We obtain the stated 1-morphism formulas by using zero intrinsic parity shift for both `Eᵢ` and `Fᵢ`. With the right-mate downward diagrams of Definition 2.1 and the super-reverse of Definition 9.5, the odd dot coefficient `t` and printed odd–odd crossing coefficient `−t` give the equal-colour slide with `−id` instead of `+id`. The literal assignments therefore force `2 id = 0` if they preserve this relation; this observation alone does not prove that the relevant identity is nonzero. Keeping the dot coefficient and replacing the odd–odd crossing coefficient by `+t` yields a relation-preserving graded construction over purely even commutative ground rings, with inverse obtained using `−t` and both whole-functor inverse laws. This corrects the proof's assignments while retaining the proposition's stated object and 1-morphism formulas.
