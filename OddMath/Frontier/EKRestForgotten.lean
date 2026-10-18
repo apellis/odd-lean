@@ -1,7 +1,7 @@
-import OddMath.Frontier.EKRestGram7
+import OddMath.Frontier.EKRestData
 import OddMath.Frontier.EKPrimitives
 
-/-! # `f_n = ±m_n`: true for `n = 1` and `n` even, false for `n = 7`
+/-! # `f_n = ±m_n` for `n = 1`, `n` even, and `n = 3, 5`
 
 EK arXiv:1107.5610v2, §3.2, p. 25: "Note that `f_n = ±m_n`, so the `f_{2k}` are primitive
 as well (the sign is the same as the coefficient of `h_n` in the expansion of `e_n` in the
@@ -13,10 +13,8 @@ member of `EKDualBases.fBasis`.
 * `f_eq_smul_m`: for `n = 1` and every even `n ≥ 2`, `f_n = c_n m_n` with
   `c_n = [h_n] e_n = -(-1)^{C(n+1,2)}` (`e_coefficient`), a sign.
 * `f_three`, `f_five`: `f₃ = m₃`, `f₅ = m₅`.
-* `f_seven_ne`: **false for `n = 7`**: `f₇ ≠ c • m₇` for every integer `c`. Indeed
-  `(e₇, m₇) = 5` (`e7_m7`), i.e. the coefficient of `h₇` in `e₇` is `5`, while `(e₇, f₇) = 1`.
-  So the claim is proved for `n = 1`, every even `n`, and `n = 3, 5`, and fails for `n = 7`;
-  larger odd `n` are not treated here.
+* The claim fails for `n = 7` (`(e₇, m₇) = 5` while `(e₇, f₇) = 1`); that degree-7 check
+  is not formalized here (see `ERRATA.md`). Larger odd `n` are not treated.
 -/
 
 noncomputable section
@@ -122,7 +120,7 @@ theorem f_primitive (n : ℕ) (hpos : 0 < n) (hn : n = 1 ∨ Even n) :
   rw [f_eq_smul_m n hpos hn, Submodule.coe_smul]
   exact EKPrimitives.smul_primitive (EKPrimitives.mRow_primitive n hn hpos) _
 
-/-! ## Odd degrees: `n = 3` holds, `n = 7` fails -/
+/-! ## Odd degrees: `n = 3` and `n = 5` -/
 
 theorem rowShape_three : rowShape 3 = hshapes3 2 := Subtype.ext rfl
 
@@ -152,41 +150,5 @@ theorem f_five : fBasis 5 (rowShape 5) = mRow 5 := by
       (by decide),
     m_of_table hshapes5 exhaust5 inj5 printedGram5 gram_table5 ![1, 1, 3, -1, -3, -9, 9] 6
       (by decide)]
-
-/-- The h-expansion of `m₇` (last row of the inverse of `gram7`). -/
-def m7coeff : Fin 15 → ℤ := ![5, 5, 12, 11, -5, -1, -11, -7, -25, -22, -29, 17, 51, 65, -65]
-
-theorem rowShape_seven : rowShape 7 = hshapes7 14 := Subtype.ext rfl
-
-theorem m_seven : mRow 7 = ∑ l, m7coeff l • degreeHBasis 7 (hshapes7 l) := by
-  rw [mRow, rowShape_seven]
-  exact m_of_table hshapes7 exhaust7 inj7 gram7 gram_table7 m7coeff 14 (by decide)
-
-/-- `(h_μ, e₇) = δ_{μ,(1⁷)}` on the fifteen partitions (EK (2.8)). -/
-theorem h_e7 : ∀ l : Fin 15, quotientPairing (hP (pl7 l)) (EKElementaryQuotient.e 7) =
-    if l = 0 then 1 else 0 := by
-  have : ∀ l : Fin 15, fastEval (pl7 l) (List.replicate (pl7 l).length false) [7] [true] =
-      if l = 0 then 1 else 0 := by decide +kernel
-  intro l
-  rw [← this l, hP, show EKElementaryQuotient.e 7 = ([7].map (col true)).prod by simp [col]]
-  rw [show ((pl7 l).map EKElementaryQuotient.h) = (pl7 l).map (col false) by simp [col]]
-  exact pairing_const false true _ _
-
-/-- `(e₇, m₇) = 5`: the coefficient of `h₇` in the h-expansion of `e₇` is `5`. -/
-theorem e7_m7 : quotientPairing (EKElementaryQuotient.e 7) (mRow 7).val = 5 := by
-  rw [quotientPairing_symm]
-  change quotientPairing ((mBasis 7 (rowShape 7) : degreePiece 7) : Q) _ = 5
-  rw [mBasis_val hshapes7 pl7 hs7 _ m7coeff m_seven, map_sum, LinearMap.sum_apply]
-  simp only [map_zsmul, LinearMap.smul_apply, smul_eq_mul, h_e7]
-  simp [m7coeff]
-
-/-- **EK p. 25, "`f_n = ±m_n`", is false for `n = 7`:** `f₇` is not an integer multiple
-of `m₇`. -/
-theorem f_seven_ne (c : ℤ) : fBasis 7 (rowShape 7) ≠ c • mRow 7 := by
-  intro h
-  have h1 := e_f 7 (rowShape 7) (rowShape 7)
-  rw [ite_eq_left rfl, h, Submodule.coe_smul, map_zsmul, smul_eq_mul,
-    ePartition_row (by decide), e7_m7] at h1
-  omega
 
 end OddMath.Frontier.EKRest
