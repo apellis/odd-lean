@@ -1,3 +1,5 @@
+import OddMath.SKM.Rho.FunctorInverses
+import OddMath.SKM.Rho.PrintedSlideConstraint
 import OddMath.CoveringQuantum.Coefficients
 import OddMath.CoveringQuantum.Coefficients.Splitting
 import OddMath.CoveringQuantum.Coefficients.WeightCharacters
