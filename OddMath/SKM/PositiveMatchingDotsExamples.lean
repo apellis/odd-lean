@@ -64,6 +64,9 @@ example : XChain A (dLay A (topDotMoves A R (fun j => (position j).val) counts))
 example : Function.Injective (topDotMoves A R (fun j => (position j).val)) :=
   topDotMoves_injective A R _ (fun _ _ h => position_injective (Fin.ext h))
 
+example : Function.Injective (fun n => dLay A (topDotMoves A R (fun j => (position j).val) n)) :=
+  dLay_topDotMoves_injective colours matching position position_injective
+
 private def crossing : List (LayerData Unit) := [([], Shape.cross () (), [])]
 private theorem crossing_layers : crossing.map ofL = tLay A R := rfl
 

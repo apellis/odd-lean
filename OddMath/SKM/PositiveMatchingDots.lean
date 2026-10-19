@@ -322,6 +322,38 @@ theorem dLay_topDotMoves {a : List (Letter I)} {d : ℕ} (b : Fin d → I)
   simp only [strandCounts_apply, strandPosition_apply]
   exact dLay_dots_top b (p j) (n j)
 
+private theorem topDotLayers_decode {a : List (Letter I)} {d : ℕ} (b : Fin d → I)
+    {R : List (TMove (Letter I))} (p : MatchingStrand a R → Fin d)
+    (n : MatchingStrand a R → ℕ) :
+    R.map DTMove.tm ++ (topDotLayers b p n).map (fun x => DTMove.dt x.1.length) =
+      topDotMoves a R (fun j => (p j).val) n := by
+  unfold topDotMoves topDotLayers
+  congr 1
+  rw [List.map_flatMap]
+  conv_rhs => rw [← List.attach_map_subtype_val (leftEnds₂ a R), List.flatMap_map]
+  apply List.flatMap_congr
+  intro j _
+  simp only [strandCounts_apply, strandPosition_apply, dotsL, List.map_replicate,
+    List.length_take, List.length_ofFn]
+  rw [Nat.min_eq_left (p j).isLt.le]
+
+/-- Distinct finite counts give distinct lists of decorated layers at the selected
+positive top endpoints. This is syntactic injectivity, not independence in the quotient. -/
+theorem dLay_topDotMoves_injective {a : List (Letter I)} {d : ℕ} (b : Fin d → I)
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (List.ofFn fun t => (true, b t)) R)
+    (p : MatchingStrand a R → Fin d) (hp : Function.Injective p) :
+    Function.Injective (fun n => dLay a (topDotMoves a R (fun j => (p j).val) n)) := by
+  intro n m he
+  dsimp only at he
+  rw [dLay_topDotMoves b hR p n, dLay_topDotMoves b hR p m] at he
+  have he' := List.append_cancel_left he
+  have hd := congrArg (List.map fun x : XLayer I => DTMove.dt (I := I) x.1.length) he'
+  simp only [List.map_map, ofL, Function.comp_def] at hd
+  have hh := congrArg (fun L => R.map DTMove.tm ++ L) hd
+  rw [topDotLayers_decode, topDotLayers_decode] at hh
+  exact topDotMoves_injective a R (fun j => (p j).val)
+    (fun _ _ h => hp (Fin.ext h)) hh
+
 private theorem sum_flatMap_eq {α β : Type*} [AddMonoid β] (s : List α) (f : α → List β) :
     (s.flatMap f).sum = (s.map fun j => (f j).sum).sum := by
   induction s with
