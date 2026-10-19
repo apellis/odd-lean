@@ -1,5 +1,7 @@
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
+import OddMath.SKM.PositivePointGrading
+import OddMath.SKM.PositivePointGradingExamples
 import OddMath.SKM.PositiveDecoratedCoefficients
 import OddMath.SKM.PositiveDecoratedCoefficientsExamples
 import OddMath.SKM.PositiveDecoratedGradingExamples
