@@ -162,6 +162,7 @@ import OddMath.CoveringQuantum.UDot.ColumnFunctional
 import OddMath.CoveringQuantum.UDot.AdjointColumn
 import OddMath.CoveringQuantum.UDot.NegativeColumnFunctional
 import OddMath.CoveringQuantum.UDot.ModifiedForm
+import OddMath.CoveringQuantum.UDot.ModifiedFormExamples
 import OddMath.CoveringQuantum.UDot.ModifiedFormUniqueness
 import OddMath.CoveringQuantum.UDot.ModifiedFormTransport
 import OddMath.CoveringQuantum.PreF.Reversal
