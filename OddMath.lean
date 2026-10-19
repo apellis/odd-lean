@@ -35,6 +35,8 @@ import OddMath.SKM.MixedDotGrading
 import OddMath.SKM.MixedDotGradingExamples
 import OddMath.SKM.TwoSidedGrading
 import OddMath.SKM.TwoSidedGradingExamples
+import OddMath.SKM.DecoratedNormalization
+import OddMath.SKM.DecoratedNormalizationExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
