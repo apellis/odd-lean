@@ -7,6 +7,8 @@ import OddMath.SKM.PositiveDecoratedCoefficientsExamples
 import OddMath.SKM.PositiveDecoratedGradingExamples
 import OddMath.SKM.PositiveDecoratedEnumeration
 import OddMath.SKM.PositiveDecoratedEnumerationExamples
+import OddMath.SKM.PositiveDecoratedFamilyCoefficients
+import OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
