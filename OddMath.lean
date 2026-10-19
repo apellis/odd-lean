@@ -11,6 +11,8 @@ import OddMath.SKM.PositiveDecoratedFamilyCoefficients
 import OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
 import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositiveFormCoefficientsExamples
+import OddMath.SKM.PositiveLabelledCoefficients
+import OddMath.SKM.PositiveLabelledCoefficientsExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
