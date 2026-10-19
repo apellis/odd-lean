@@ -295,3 +295,57 @@ example := OddMath.Frontier.EQK0.thm_3_18_equiv_one ℚ
 example (n : ℕ) := OddMath.Frontier.EQK0.thm_4_17_equiv_E ℚ n
 
 end NonVacuity
+
+namespace NonVacuity
+open OddMath.SKM OddMath.CoveringQuantum
+private abbrev Q := oddSl2.rootDatumOf oddSl2Root
+
+-- The existing osp(1|2) datum is recovered on its own weight lattice, without a transport.
+def osp12Covering : RootDatum Unit ℤ where
+  toSuperCartanDatum := oddSl2
+  cd := osp12.cd
+  coroot_root _ _ := rfl
+example : osp12Covering.toSKM = osp12 := rfl
+example : osp12Covering.skmSymmetrizer = osp12Sy := rfl
+example : Q.toSKM.α () (1 : ℤ) = osp12.α () := rfl
+example (μ : ℤ →+ ℤ) : Q.toSKM.h () μ = osp12.h () (μ 1) := rfl
+example : gdeg Q.toSKM Q.skmSymmetrizer (.dot (), 0) = 2 := rfl
+example : Shape.parity Q.toSKM (.dot ()) = 1 := rfl
+
+open StringDiagrams StringDiagrams.Chord in
+example :
+    ∃ (L : List (LayerData Unit))
+      (hL : SChain [(true, ()), (true, ())] L [(true, ()), (true, ())]),
+      L.map ofL = tLay [(true, ()), (true, ())] [.mv (.cross 0)] ∧
+      Diagram.degree (gdeg Q.toSKM Q.skmSymmetrizer) (mkD Q.toSKM (0 : ℤ →+ ℤ) L hL) = -2 ∧
+      xpar Q.toSKM (0 : ℤ →+ ℤ) (tLay [(true, ()), (true, ())] [.mv (.cross 0)]) = 1 := by
+  let a : Fin 2 → Unit := fun _ => ()
+  let R : List (TMove (Letter Unit)) := [.mv (.cross 0)]
+  have hm : IsMatching₂ (List.ofFn fun r => (true, a r))
+      (List.ofFn fun r => (true, a r)) R := by
+    constructor
+    · change 3 < 4 ∧ True
+      decide
+    · rfl
+  have hr : StrictReduced₂ (List.ofFn fun r => (true, a r)) R := by
+    refine ⟨⟨List.nodup_singleton _, ?_⟩, List.nodup_nil⟩
+    intro z hz
+    change z ∈ [_] at hz
+    obtain rfl := List.mem_singleton.mp hz
+    change ¬ (s(2, 0) : Sym2 ℕ).IsDiag
+    decide
+  have he : ∀ r : Fin 2, Same (pairing₂ (List.ofFn fun r => (true, a r)) R)
+      (2 - 1 - r.val) (2 + ((Equiv.swap 0 1) r).val) := by
+    intro r
+    fin_cases r
+    · change 1 ≠ 3 ∧ (some 2 : Option ℕ) ≠ none ∧ (some 2 : Option ℕ) = some 2
+      decide
+    · change 0 ≠ 2 ∧ (some 0 : Option ℕ) ≠ none ∧ (some 0 : Option ℕ) = some 0
+      decide
+  have h := positive_matching_covering_degree_parity Q (0 : ℤ →+ ℤ) a a hm hr
+    (Equiv.swap 0 1) he
+  simp only [Finset.sum_filter, Fin.sum_univ_two] at h
+  simpa [a, R, Q, oddSl2, SuperCartanDatum.dot] using h
+
+
+end NonVacuity
