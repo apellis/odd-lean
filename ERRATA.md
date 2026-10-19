@@ -672,3 +672,41 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    values at `q = 2` and the corrected general free-form expansion are proved in
    the declarations above. This is a local indexing correction to the proof,
    not a defect in (10.5). The citation to 10.1 “(iv)” should also refer to (3).
+
+6. **Theorem 10.3, proof of Claim 5, equation (10.7) and the following cap expansion
+   [local bar corrections; full graphical Claim 5 remains open].** Put
+   `n = ⟨hᵢ,μ⟩`, where `μ` is the left endpoint of the suffix word. Replace the
+   coefficient `[n]_{qᵢ,πᵢ}` in (10.7) by its bar. In the next display, remove the
+   outer bar around the bracketed cap contribution. No extra hypothesis or change
+   to the form convention, (10.5), or the statement of Claim 5 is proposed.
+
+   The defining relation has coefficient `[n]_{qᵢ,πᵢ}`, but the word lies in the
+   first, antilinear slot of the form. The resulting form difference therefore has
+   coefficient `bar([n]_{qᵢ,πᵢ})`. The bar used in §9 fixes `π` and sends `q` to
+   `q⁻¹`; these quantum integers are not generally bar invariant. Independently,
+   the degrees and parities of the two caps and their dots give
+   $$
+   S=\frac{q_i^{1-n}-\pi_i\pi^{|i,\mu|}q_i^{1+n}}{1-\pi_iq_i^2}
+     =\overline{[n]_{q_i,\pi_i}},
+   \qquad |i,\mu|=|i|(n+1).
+   $$
+   The printed outer bar changes this direct contribution to the unbarred quantum
+   integer. Thus changing only (10.7) would leave the following display inconsistent.
+
+   **Diagnostic and remaining scope.** For one odd simple root with `dᵢ = 1`,
+   `n = 2`, and empty surrounding words, the correct coefficient is `q⁻¹ + πq`,
+   while the printed one is `q + πq⁻¹`. At `π = −1`, their formal `q¹`
+   coefficients are respectively `−1` and `1`. This refutes the displayed local
+   identity, not Theorem 10.3. The general three-class cancellation of decorated
+   matchings, the corrected graphical Claim 5, and the full-series assembly of
+   (10.5) remain separate proof obligations tracked in #42. The local repair
+   introduces no restriction to even colours or to `π = 1`.
+
+   **For the authors.** In the proof of Claim 5 of Theorem 10.3 in
+   arXiv:1701.04133v2, the quantum integer on the right of (10.7) must be barred
+   because the form is antilinear in its first argument. The direct cap series
+   already equals that barred quantum integer, so the outer bar in the following
+   display must be removed. The odd rank-one weight-two example distinguishes
+   the two coefficients. These corrections preserve the stated form convention
+   and the proposed matching identity (10.5); they do not by themselves establish
+   the remaining general cancellation argument.
