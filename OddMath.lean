@@ -37,6 +37,10 @@ import OddMath.SKM.TwoSidedGrading
 import OddMath.SKM.TwoSidedGradingExamples
 import OddMath.SKM.DecoratedNormalization
 import OddMath.SKM.DecoratedNormalizationExamples
+import OddMath.SKM.LeftCupAttachment
+import OddMath.SKM.LeftCupAttachmentExamples
+import OddMath.SKM.LeftCupNormalization
+import OddMath.SKM.LeftCupNormalizationExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
