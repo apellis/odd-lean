@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.VermaPolarization
 import Mathlib.Algebra.MvPolynomial.CommRing
 
@@ -13,40 +18,43 @@ with zero constant coefficient in pi_i^|h_i(Lambda)| q_i^(2h_i(Lambda)).
 This is the algebraic precursor to CHWII Proposition 6.10, translated to the
 BE2 rho / Clark IV tau1-prime convention. It proves neither q-adic convergence
 nor descent to an integrable quotient, and assumes neither one.
+Colours may be infinite, and bar-consistency is not required.
 -/
 
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericVerma
 open PreF Coefficients
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (Λ : X)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X) (Λ : X)
 
 /-- Every weight projector is self-adjoint for the constructed polarization. -/
 theorem polarization_weightProject (μ : X) (x y : D.serreF Coefficients.q pi) :
-    polarization D hD Λ (weightProject D hD Λ μ x) y =
-      polarization D hD Λ x (weightProject D hD Λ μ y) := by
-  have h := polarization_adjoint D hD Λ
+    polarization D Λ (weightProject D Λ μ x) y =
+      polarization D Λ x (weightProject D Λ μ y) := by
+  have h := polarization_adjoint D Λ
     ⟨one D Coefficients.q pi μ, one_mem_modified D Coefficients.q pi μ⟩ x y
-  change polarization D hD Λ (representation D hD Λ (one D Coefficients.q pi μ) x) y =
-    polarization D hD Λ x (representation D hD Λ
+  change polarization D Λ (representation D Λ (one D Coefficients.q pi μ) x) y =
+    polarization D Λ x (representation D Λ
       (rho D Coefficients.q pi pi_sq (one D Coefficients.q pi μ)).unop y) at h
   simpa only [rho_one, representation_one] using h
 
+omit [DecidableEq I] [DecidableEq X] in
 private theorem project_word (w : List I) :
-    weightProject D hD Λ (Λ + halfWeight D false (wordWeight w))
+    weightProject D Λ (Λ + halfWeight D false (wordWeight w))
       (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) =
       D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) := by
+  classical
   rw [weightProject_mk, weightProjectFree_monomial]
   have hf : halfWeight D false (wordWeight w) = -halfWeight D true (wordWeight w) := by
     simp [halfWeight, halfRoot, Finsupp.sum, Finset.sum_neg_distrib]
   simp [hf]
 
-/-- Exact lowering adjointness on arbitrary words, with no degree restriction on the second argument. -/
+/-- Exact lowering adjointness on words, with no degree restriction on the second argument. -/
 theorem polarization_word_cons (i : I) (w : List I) (y : D.serreF Coefficients.q pi) :
-    polarization D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (i :: w))) y =
+    polarization D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (i :: w))) y =
       qp Coefficients.q (D.d i * (D.h i (Λ + halfWeight D false (wordWeight w)) - 1)) •
-        polarization D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
-          (lower D.toSuperCartanDatum hD i (D.h i Λ) y) := by
+        polarization D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
+          (lower D.toSuperCartanDatum i (D.h i Λ) y) := by
   let μ := Λ + halfWeight D false (wordWeight w)
   rw [polarization_apply, halfMap_monomial, halfWord,
     rho_mul]
@@ -55,9 +63,9 @@ theorem polarization_word_cons (i : I) (w : List I) (y : D.serreF Coefficients.q
     representation_E, map_smul, map_smul]
   rw [Module.End.mul_apply, ← weightProject_lower]
   rw [← halfMap_monomial]
-  change _ • polarization D hD Λ
+  change _ • polarization D Λ
     (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
-      (weightProject D hD Λ μ (lower D.toSuperCartanDatum hD i (D.h i Λ) y)) = _
+      (weightProject D Λ μ (lower D.toSuperCartanDatum i (D.h i Λ) y)) = _
   rw [← polarization_weightProject, project_word]
 
 /-- An explicitly constructed deformation, not an assumed polarization. -/
@@ -75,7 +83,7 @@ def wordDeformation (t : I → Coefficients.Ring) : List I →
           ((parityTwist D.toSuperCartanDatum pi i).toLinearMap.comp
             (rDeriv (D.chi Coefficients.q pi) i)))
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 /-- At zero deformation, the formula is EXACTLY the existing half form on all words. -/
 theorem wordDeformation_zero (w : List I) (y : PreF Coefficients.Ring I) :
     wordDeformation D (fun _ ↦ 0) w y =
@@ -110,7 +118,7 @@ def polarizationSign (i : I) : Coefficients.Ring :=
 /-- The total pi-sign of a word. -/
 def wordSign (w : List I) : Coefficients.Ring := (w.map (polarizationSign D Λ)).prod
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem inverse_denominator (i : I) :
     Ring.inverse (vermaDenominator D.toSuperCartanDatum Coefficients.q pi i) =
       -(D.pii pi i * (D.qi Coefficients.q i : Coefficients.Ring)) *
@@ -131,7 +139,7 @@ private theorem inverse_denominator (i : I) :
       _ = _ := by rw [hp, one_mul, hu]
   rw [← mul_assoc, hf, denominator_mul_norm]
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 private theorem scaled_lowerFree (i : I) (m : ℤ) (y : PreF Coefficients.Ring I) :
     ((D.qi Coefficients.q i ^ (D.h i Λ - m - 1) : Coefficients.Ringˣ) : Coefficients.Ring) •
       lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Λ) y =
@@ -189,7 +197,8 @@ private theorem scaled_lowerFree (i : I) (m : ℤ) (y : PreF Coefficients.Ring I
           ((D.qi Coefficients.q i ^ (-D.h i Λ) : Coefficients.Ringˣ) : Coefficients.Ring)) =
       -(D.pii pi i * D.pii pi i ^ (D.h i Λ).natAbs * D.norm Coefficients.q pi i *
         ((D.qi Coefficients.q i ^ (-m) : Coefficients.Ringˣ) : Coefficients.Ring)) := by
-    linear_combination -(D.pii pi i * D.pii pi i ^ (D.h i Λ).natAbs * D.norm Coefficients.q pi i) * hb
+    linear_combination
+      -(D.pii pi i * D.pii pi i ^ (D.h i Λ).natAbs * D.norm Coefficients.q pi i) * hb
   simp only [← mul_assoc] at hca hcb ⊢
   rw [hca, hcb]
   simp only [neg_smul, sub_eq_add_neg, neg_neg]
@@ -198,7 +207,7 @@ private theorem scaled_lowerFree (i : I) (m : ℤ) (y : PreF Coefficients.Ring I
 /-- Exact comparison on arbitrary words and arbitrary second arguments.
 The same explicit deformation has zero value equal to the half form. -/
 theorem polarization_word_deformation (w : List I) (y : PreF Coefficients.Ring I) :
-    polarization D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
+    polarization D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
       (D.toSerreF Coefficients.q pi y) =
       wordSign D Λ w * wordDeformation D (deformationParameter D Λ) w y := by
   induction w generalizing y with
@@ -231,7 +240,7 @@ def wordPolynomial : List I → PreF Coefficients.Ring I → MvPolynomial I Coef
         MvPolynomial.X i * wordPolynomial w (parityTwist D.toSuperCartanDatum pi i
           (rDeriv (D.chi Coefficients.q pi) i y)))
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem wordPolynomial_eval (t : I → Coefficients.Ring) (w : List I)
     (y : PreF Coefficients.Ring I) :
     MvPolynomial.eval t (wordPolynomial D w y) = wordDeformation D t w y := by
@@ -239,14 +248,14 @@ theorem wordPolynomial_eval (t : I → Coefficients.Ring) (w : List I)
   | nil => simp [wordPolynomial, wordDeformation]
   | cons i w ih => simp [wordPolynomial, wordDeformation, ih, smul_eq_mul]
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 /-- The constant term is the existing half form, on arbitrary words. -/
 theorem wordPolynomial_constantCoeff (w : List I) (y : PreF Coefficients.Ring I) :
     MvPolynomial.constantCoeff (wordPolynomial D w y) =
       D.form Coefficients.q pi (monomial Coefficients.Ring w) y := by
   rw [← MvPolynomial.eval_zero', wordPolynomial_eval, wordDeformation_zero]
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 /-- A real polynomial degree bound; this is NOT a claim about q-valuation. -/
 theorem wordPolynomial_totalDegree (w : List I) (y : PreF Coefficients.Ring I) :
     (wordPolynomial D w y).totalDegree ≤ w.length := by
@@ -267,12 +276,12 @@ theorem wordPolynomial_totalDegree (w : List I) (y : PreF Coefficients.Ring I) :
 Together with `wordPolynomial_totalDegree`, this is the finite algebraic ingredient
 for a q-adic limit, not the limit or nondegeneracy itself. -/
 theorem polarization_word_polynomial (w : List I) (y : PreF Coefficients.Ring I) :
-    polarization D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
+    polarization D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
       (D.toSerreF Coefficients.q pi y) = wordSign D Λ w *
         MvPolynomial.eval (deformationParameter D Λ) (wordPolynomial D w y) := by
   rw [wordPolynomial_eval, polarization_word_deformation]
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- The normalization sign is a unit even though the covering ring has zero divisors. -/
 theorem wordSign_sq (w : List I) : wordSign D Λ w ^ 2 = 1 := by
   induction w with
@@ -288,12 +297,12 @@ def comparisonError (w : List I) (y : PreF Coefficients.Ring I) :
     MvPolynomial I Coefficients.Ring := wordPolynomial D w y -
       MvPolynomial.C (D.form Coefficients.q pi (monomial Coefficients.Ring w) y)
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem comparisonError_constantCoeff (w : List I) (y : PreF Coefficients.Ring I) :
     MvPolynomial.constantCoeff (comparisonError D w y) = 0 := by
   simp [comparisonError, wordPolynomial_constantCoeff]
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem comparisonError_totalDegree (w : List I) (y : PreF Coefficients.Ring I) :
     (comparisonError D w y).totalDegree ≤ w.length :=
   (MvPolynomial.totalDegree_sub_C_le _ _).trans (wordPolynomial_totalDegree D w y)
@@ -303,7 +312,7 @@ with ZERO constant coefficient, evaluated at explicit highest-weight parameters.
 This is a comparison theorem on arbitrary words, not a filtration recurrence. -/
 theorem polarization_sub_half (w : List I) (y : PreF Coefficients.Ring I) :
     wordSign D Λ w *
-      polarization D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
+      polarization D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
         (D.toSerreF Coefficients.q pi y) -
       D.serreForm Coefficients.q pi pi_sq
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))

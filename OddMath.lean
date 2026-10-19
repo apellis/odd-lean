@@ -205,6 +205,7 @@ import OddMath.CoveringQuantum.UDot.TensorRepresentation
 import OddMath.CoveringQuantum.UDot.TensorPolarization
 import OddMath.CoveringQuantum.UDot.VermaPolarization
 import OddMath.CoveringQuantum.UDot.VermaComparison
+import OddMath.CoveringQuantum.UDot.VermaComparisonExamples
 import OddMath.CoveringQuantum.UDot.VermaLimit
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedGram
 import OddMath.CoveringQuantum.UDot.TensorGram.Transport
