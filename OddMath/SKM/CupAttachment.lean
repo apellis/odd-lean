@@ -1,16 +1,28 @@
 import OddMath.SKM.CupAttachmentGrading
 import OddMath.SKM.MatchingBending
 
-/-! Literal cup attachment, supporting BE2 v2 Theorem 10.3 Claim 2.
-No normalization or representative-family invariance is asserted. -/
+/-! # Cup attachment in both orientations
+
+Literal matching, strand, point and decoration transport for the cup steps of
+BE2, arXiv:1701.04133v2, Theorem 10.3 Claims 2–3. The right-cup interface is the
+false-orientation specialization of the common endpoint and cap-renaming proofs.
+-/
 
 namespace OddMath.SKM
+/-- The point after insertion of the cup and the leftmost vertical strand. -/
+def cupAttachPoint (p : ℕ × ℕ) : ℕ × ℕ := (p.1 + 1, p.2 + 1)
+
+namespace CupAttachment
 open StringDiagrams StringDiagrams.Chord DTMove
 variable {I : Type*}
 
-/-- The literal underlying matching after the right cup is attached. -/
-def cupAttachMatching (i : I) (R : List (TMove (Letter I))) : List (TMove (Letter I)) :=
-  .mv (.cup 0 (false, i)) :: R.map (shiftT 1)
+/-- The literal underlying matching for either cup orientation. -/
+def cupAttachMatching (o : Bool) (i : I) (R : List (TMove (Letter I))) : List (TMove (Letter I)) :=
+  .mv (.cup 0 (o, i)) :: R.map (shiftT 1)
+
+/-- The decorated move version of the same oriented attachment. -/
+def cupAttachMoves (o : Bool) (i : I) (ds : List (DTMove I)) : List (DTMove I) :=
+  .tm (.mv (.cup 0 (o, i))) :: ds.map (shiftD 1)
 
 private theorem tStep_shift_at (k n : ℕ) (T : TState (Letter I)) (m : TMove (Letter I)) :
     tStep flipL k T (shiftT n m) = tStep flipL (k + n) T m := by
@@ -61,16 +73,16 @@ private theorem fits_run_iso (k : ℕ) (R : List (TMove (Letter I)))
 
 /-- The initial cup produces exactly the same endpoint IDs as the old nested cups.
 The next fresh ID need not agree, so this is intentionally a state-list equality only. -/
-theorem cupAttach_start_st (i : I) (a : List (Letter I)) :
-    (tStep flipL a.length (tStart a) (.mv (.cup 0 (false, i)))).st =
-      (tStart ((true, i) :: a)).st := by
-  simp only [tStart, tStep, Nat.add_zero, dualW_cons, flipL]
+theorem cupAttach_start_st (o : Bool) (i : I) (a : List (Letter I)) :
+    (tStep flipL a.length (tStart a) (.mv (.cup 0 (o, i)))).st =
+      (tStart ((!o, i) :: a)).st := by
+  simp only [tStart, tStep, Nat.add_zero, dualW_cons, flipL, Bool.not_not]
   rw [cupMoves_append, Chord.run_append]
   simp only [List.foldl_cons, List.foldl_nil, Chord.step, length_dualW]
   rfl
 
-private theorem cupAttach_ok (i : I) (a : List (Letter I)) :
-    (TMove.mv (.cup 0 (false, i))).Ok flipL a.length (tStart a).st := by
+private theorem cupAttach_ok (o : Bool) (i : I) (a : List (Letter I)) :
+    (TMove.mv (.cup 0 (o, i))).Ok flipL a.length (tStart a).st := by
   have h := congrArg List.length (tStart_letters a)
   simp only [List.length_map, List.length_append, length_dualW] at h
   change a.length + 0 ≤ (tStart a).st.length
@@ -98,21 +110,21 @@ private theorem foldl_shift_prefix (u : List (Letter I)) (R : List (TMove (Lette
     exact ih _ _ hn hf.2
 
 /-- Literal cup attachment is a matching in the bent boundary class. -/
-theorem cupAttach_matching_iso {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
-    IsMatching₂ a ((false, i) :: b) (cupAttachMatching i R) ∧
-      Iso (pairing₂ a (cupAttachMatching i R)) (pairing₂ ((true, i) :: a) R) := by
-  let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (false, i)))
-  have hi : Iso T.st (tStart ((true, i) :: a)).st := by
-    rw [show T.st = (tStart ((true, i) :: a)).st from cupAttach_start_st i a]
+theorem cupAttach_matching_iso {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R) :
+    IsMatching₂ a ((o, i) :: b) (cupAttachMatching o i R) ∧
+      Iso (pairing₂ a (cupAttachMatching o i R)) (pairing₂ ((!o, i) :: a) R) := by
+  let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (o, i)))
+  have hi : Iso T.st (tStart ((!o, i) :: a)).st := by
+    rw [show T.st = (tStart ((!o, i) :: a)).st from cupAttach_start_st o i a]
     exact Iso.refl _
   have hf := fits_run_iso (a.length + 1) R
-    ((tInv_tStart a).step (cupAttach_ok i a)) (tInv_tStart ((true, i) :: a)) hi hR.1
-  refine ⟨⟨⟨cupAttach_ok i a, (tFits_shift_at a.length 1 T R).2 hf.1⟩, ?_⟩, ?_⟩
-  · have he := foldl_shift_prefix [(false, i)] R _ (tStart ((true, i) :: a))
-      (dualW ((true, i) :: a)) ((true, i) :: a) (length_dualW _) (tStart_letters _) hR.1
-    have hc : tLet a (.mv (.cup 0 (false, i))) = (false, i) :: (true, i) :: a := by
-      simpa [tLet, flipL] using chStep_cup ([] : List (Letter I)) a (false, i)
+    ((tInv_tStart a).step (cupAttach_ok o i a)) (tInv_tStart ((!o, i) :: a)) hi hR.1
+  refine ⟨⟨⟨cupAttach_ok o i a, (tFits_shift_at a.length 1 T R).2 hf.1⟩, ?_⟩, ?_⟩
+  · have he := foldl_shift_prefix [(o, i)] R _ (tStart ((!o, i) :: a))
+      (dualW ((!o, i) :: a)) ((!o, i) :: a) (length_dualW _) (tStart_letters _) hR.1
+    have hc : tLet a (.mv (.cup 0 (o, i))) = (o, i) :: (!o, i) :: a := by
+      simpa [tLet, flipL] using chStep_cup ([] : List (Letter I)) a (o, i)
     simpa only [cupAttachMatching, List.foldl_cons, hc, List.length_singleton,
       List.singleton_append, hR.2] using he
   · change Iso (tRun flipL a.length T (R.map (shiftT 1))).st _
@@ -120,9 +132,9 @@ theorem cupAttach_matching_iso {i : I} {a b : List (Letter I)}
     exact hf.2
 
 /-- Endpoint-number equality, not merely a bijection of cardinalities. -/
-theorem leftEnds₂_cupAttach {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
-    leftEnds₂ a (cupAttachMatching i R) = leftEnds₂ ((true, i) :: a) R := by
+theorem leftEnds₂_cupAttach {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R) :
+    leftEnds₂ a (cupAttachMatching o i R) = leftEnds₂ ((!o, i) :: a) R := by
   classical
   have hi := (cupAttach_matching_iso hR).2
   unfold leftEnds₂
@@ -132,20 +144,17 @@ theorem leftEnds₂_cupAttach {i : I} {a b : List (Letter I)}
   simp only [isLeftEnd_iso hi]
 
 /-- The identity on ordered boundary endpoints gives the strand correspondence. -/
-def cupAttachStrandEquiv {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
-    MatchingStrand ((true, i) :: a) R ≃ MatchingStrand a (cupAttachMatching i R) where
+def cupAttachStrandEquiv {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R) :
+    MatchingStrand ((!o, i) :: a) R ≃ MatchingStrand a (cupAttachMatching o i R) where
   toFun j := ⟨j.val, by rw [leftEnds₂_cupAttach hR]; exact j.property⟩
   invFun j := ⟨j.val, by rw [← leftEnds₂_cupAttach hR]; exact j.property⟩
   left_inv _ := rfl
   right_inv _ := rfl
 
-@[simp] theorem cupAttachStrandEquiv_val {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
-    (j : MatchingStrand ((true, i) :: a) R) : (cupAttachStrandEquiv hR j).val = j.val := rfl
-
-/-- The point after insertion of the cup and the leftmost vertical strand. -/
-def cupAttachPoint (p : ℕ × ℕ) : ℕ × ℕ := (p.1 + 1, p.2 + 1)
+@[simp] theorem cupAttachStrandEquiv_val {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R)
+    (j : MatchingStrand ((!o, i) :: a) R) : (cupAttachStrandEquiv hR j).val = j.val := rfl
 
 private theorem dotPts_shiftD (n : ℕ) (ds : List (DTMove I)) :
     dotPts (ds.map (shiftD n)) = (dotPts ds).map (fun p => (p.1, n + p.2)) := by
@@ -153,18 +162,18 @@ private theorem dotPts_shiftD (n : ℕ) (ds : List (DTMove I)) :
   | nil => rfl
   | cons d ds ih => cases d <;> simp [shiftD, dotPts, ih, List.map_map, Function.comp_def]
 
-@[simp] theorem dotPts_cupAttach (i : I) (ds : List (DTMove I)) :
-    dotPts (cupAttachMoves i ds) = (dotPts ds).map cupAttachPoint := by
+@[simp] theorem dotPts_cupAttach (o : Bool) (i : I) (ds : List (DTMove I)) :
+    dotPts (cupAttachMoves o i ds) = (dotPts ds).map cupAttachPoint := by
   simp [cupAttachMoves, dotPts, dotPts_shiftD, List.map_map, cupAttachPoint, Nat.add_comm]
 
 /-- Decoration transport is the actual permutation of replicated distinguished points.
 This statement does not by itself certify that the points lie on the named strands. -/
-theorem decorates₂_cupAttach {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
-    (q : ℕ → ℕ × ℕ) (c : MatchingStrand ((true, i) :: a) R → ℕ)
-    {ds : List (DTMove I)} (hd : Decorates₂ ((true, i) :: a) R q (strandCounts c) ds) :
-    Decorates₂ a (cupAttachMatching i R) (cupAttachPoint ∘ q)
-      (strandCounts (c ∘ (cupAttachStrandEquiv hR).symm)) (cupAttachMoves i ds) := by
+theorem decorates₂_cupAttach {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R)
+    (q : ℕ → ℕ × ℕ) (c : MatchingStrand ((!o, i) :: a) R → ℕ)
+    {ds : List (DTMove I)} (hd : Decorates₂ ((!o, i) :: a) R q (strandCounts c) ds) :
+    Decorates₂ a (cupAttachMatching o i R) (cupAttachPoint ∘ q)
+      (strandCounts (c ∘ (cupAttachStrandEquiv hR).symm)) (cupAttachMoves o i ds) := by
   classical
   constructor
   · simp only [cupAttachMoves, tmoves, tmoves_map_shiftD, hd.1, cupAttachMatching]
@@ -175,7 +184,7 @@ theorem decorates₂_cupAttach {i : I} {a b : List (Letter I)}
     rw [leftEnds₂_cupAttach hR]
     apply List.flatMap_congr
     intro j hj
-    have hj' : j ∈ leftEnds₂ a (cupAttachMatching i R) := by
+    have hj' : j ∈ leftEnds₂ a (cupAttachMatching o i R) := by
       rw [leftEnds₂_cupAttach hR]; exact hj
     simp [List.map_replicate, strandCounts, hj, hj', cupAttachStrandEquiv]
 
@@ -262,9 +271,9 @@ private theorem cupId_ren (a : List (Letter I)) (k : ℕ) (R : List (TMove (Lett
     simp only [tRen, he]
     exact ih h1 h2 h3 _
 
-private theorem cupAttach_start_ids (i : I) (a : List (Letter I)) :
-    let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (false, i)))
-    let U := tStart ((true, i) :: a)
+private theorem cupAttach_start_ids (o : Bool) (i : I) (a : List (Letter I)) :
+    let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (o, i)))
+    let U := tStart ((!o, i) :: a)
     2 * a.length + 1 ≤ T.nxt ∧ U.nxt = T.nxt + 1 ∧
       U.st = T.st.map (fun z => (cupId a z.1, z.2)) := by
   have hl (l : List (Letter I)) : (run flipL (cupMoves (dualW l))).length = 2 * l.length := by
@@ -276,10 +285,10 @@ private theorem cupAttach_start_ids (i : I) (a : List (Letter I)) :
     by simp only [tStep, tStart, hl, List.length_cons]; omega, ?_⟩
   rw [cupAttach_start_st]
   symm
-  conv_rhs => rw [← List.map_id (tStart ((true, i) :: a)).st]
+  conv_rhs => rw [← List.map_id (tStart ((!o, i) :: a)).st]
   apply List.map_congr_left
   intro z hz
-  have hz' := (tInv_tStart ((true, i) :: a)).fresh z hz
+  have hz' := (tInv_tStart ((!o, i) :: a)).fresh z hz
   have hpar : ∃ n, z.1 = 2 * n := by
     simp only [tStart, run_cupMoves, List.mem_append, List.mem_map] at hz
     rcases hz with hz | ⟨y, hy, rfl⟩
@@ -289,7 +298,7 @@ private theorem cupAttach_start_ids (i : I) (a : List (Letter I)) :
       exact ⟨n, (congrArg Prod.fst he).symm⟩
   rcases hpar with ⟨n, hn⟩
   have hlt : z.1 < 2 * a.length + 1 := by
-    change z.1 < (run flipL (cupMoves (dualW ((true, i) :: a)))).length at hz'
+    change z.1 < (run flipL (cupMoves (dualW ((!o, i) :: a)))).length at hz'
     rw [hl] at hz'
     simp only [List.length_cons] at hz'
     omega
@@ -307,27 +316,27 @@ private theorem tRen_shift_at (k n : ℕ) (T : TState (Letter I))
 
 /-- A bounded distinguished point stays on its original strand after literal attachment.
 The proof follows the actual cap renamings, not just the final pairing isomorphism. -/
-theorem onStrand₂_cupAttach {i : I} {a b : List (Letter I)}
-    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
+theorem onStrand₂_cupAttach {o : Bool} {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((!o, i) :: a) b R)
     {j : ℕ} {p : ℕ × ℕ} (hbound : p.1 ≤ R.length)
-    (hp : OnStrand₂ ((true, i) :: a) R j p) :
-    (cupAttachPoint p).1 ≤ (cupAttachMatching i R).length ∧
-    OnStrand₂ a (cupAttachMatching i R) j (cupAttachPoint p) := by
-  let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (false, i)))
-  let U := tStart ((true, i) :: a)
-  obtain ⟨hn, hnxt, hs⟩ := cupAttach_start_ids i a
+    (hp : OnStrand₂ ((!o, i) :: a) R j p) :
+    (cupAttachPoint p).1 ≤ (cupAttachMatching o i R).length ∧
+    OnStrand₂ a (cupAttachMatching o i R) j (cupAttachPoint p) := by
+  let T := tStep flipL a.length (tStart a) (.mv (.cup 0 (o, i)))
+  let U := tStart ((!o, i) :: a)
+  obtain ⟨hn, hnxt, hs⟩ := cupAttach_start_ids o i a
   have hrun := cupId_run a (a.length + 1) (R.take p.1) hn hnxt hs
   have hfinal := (cupId_run a (a.length + 1) R hn hnxt hs).2.2
-  have htake : TFits flipL (((true, i) :: a).length) U (R.take p.1) := by
+  have htake : TFits flipL (((!o, i) :: a).length) U (R.take p.1) := by
     exact ((tFits_append_at _ U (R.take p.1) (R.drop p.1)).1
       (by simpa only [List.take_append_drop] using hR.1)).1
   refine ⟨by simpa [cupAttachPoint, cupAttachMatching] using hbound, ?_, ?_⟩
-  · have he := foldl_shift_prefix [(false, i)] (R.take p.1) _ U
-      (dualW ((true, i) :: a)) ((true, i) :: a) (length_dualW _) (tStart_letters _) htake
-    have hc : tLet a (.mv (.cup 0 (false, i))) = (false, i) :: (true, i) :: a := by
-      simpa [tLet, flipL] using chStep_cup ([] : List (Letter I)) a (false, i)
+  · have he := foldl_shift_prefix [(o, i)] (R.take p.1) _ U
+      (dualW ((!o, i) :: a)) ((!o, i) :: a) (length_dualW _) (tStart_letters _) htake
+    have hc : tLet a (.mv (.cup 0 (o, i))) = (o, i) :: (!o, i) :: a := by
+      simpa [tLet, flipL] using chStep_cup ([] : List (Letter I)) a (o, i)
     simp only [List.length_singleton, List.singleton_append] at he
-    change p.2 + 1 < (((cupAttachMatching i R).take (p.1 + 1)).foldl tLet a).length
+    change p.2 + 1 < (((cupAttachMatching o i R).take (p.1 + 1)).foldl tLet a).length
     simp only [cupAttachMatching, List.take_succ_cons, ← List.map_take, List.foldl_cons, hc]
     rw [he, List.length_cons]
     exact Nat.add_lt_add_right hp.1 1
@@ -348,6 +357,71 @@ theorem onStrand₂_cupAttach {i : I} {a b : List (Letter I)}
     convert hc using 1
     congr 2
     omega
+
+end CupAttachment
+
+open StringDiagrams StringDiagrams.Chord DTMove
+variable {I : Type*}
+
+/-- The literal underlying matching after the right cup is attached. -/
+def cupAttachMatching (i : I) (R : List (TMove (Letter I))) : List (TMove (Letter I)) :=
+  .mv (.cup 0 (false, i)) :: R.map (shiftT 1)
+
+/-- Right-cup specialization of the common initial endpoint-list equality. -/
+theorem cupAttach_start_st (i : I) (a : List (Letter I)) :
+    (tStep flipL a.length (tStart a) (.mv (.cup 0 (false, i)))).st =
+      (tStart ((true, i) :: a)).st := CupAttachment.cupAttach_start_st false i a
+
+/-- Literal right-cup attachment is a matching in the bent boundary class. -/
+theorem cupAttach_matching_iso {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
+    IsMatching₂ a ((false, i) :: b) (cupAttachMatching i R) ∧
+      Iso (pairing₂ a (cupAttachMatching i R)) (pairing₂ ((true, i) :: a) R) :=
+  CupAttachment.cupAttach_matching_iso (o := false) hR
+
+theorem leftEnds₂_cupAttach {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
+    leftEnds₂ a (cupAttachMatching i R) = leftEnds₂ ((true, i) :: a) R :=
+  CupAttachment.leftEnds₂_cupAttach (o := false) hR
+
+/-- The identity on ordered boundary endpoints gives the strand correspondence. -/
+def cupAttachStrandEquiv {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R) :
+    MatchingStrand ((true, i) :: a) R ≃ MatchingStrand a (cupAttachMatching i R) :=
+  CupAttachment.cupAttachStrandEquiv (o := false) hR
+
+@[simp] theorem cupAttachStrandEquiv_val {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
+    (j : MatchingStrand ((true, i) :: a) R) : (cupAttachStrandEquiv hR j).val = j.val := rfl
+
+@[simp] theorem dotPts_cupAttach (i : I) (ds : List (DTMove I)) :
+    dotPts (cupAttachMoves i ds) = (dotPts ds).map cupAttachPoint :=
+  CupAttachment.dotPts_cupAttach false i ds
+
+/-- The old right-cup decoration interface is the specialization of the shared core. -/
+theorem decorates₂_cupAttach {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
+    (q : ℕ → ℕ × ℕ) (c : MatchingStrand ((true, i) :: a) R → ℕ)
+    {ds : List (DTMove I)} (hd : Decorates₂ ((true, i) :: a) R q (strandCounts c) ds) :
+    Decorates₂ a (cupAttachMatching i R) (cupAttachPoint ∘ q)
+      (strandCounts (c ∘ (cupAttachStrandEquiv hR).symm)) (cupAttachMoves i ds) :=
+  CupAttachment.decorates₂_cupAttach (o := false) hR q c hd
+
+/-- Bounded points use the same cap-renaming proof in both orientations. -/
+theorem onStrand₂_cupAttach {i : I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ ((true, i) :: a) b R)
+    {j : ℕ} {p : ℕ × ℕ} (hbound : p.1 ≤ R.length)
+    (hp : OnStrand₂ ((true, i) :: a) R j p) :
+    (cupAttachPoint p).1 ≤ (cupAttachMatching i R).length ∧
+      OnStrand₂ a (cupAttachMatching i R) j (cupAttachPoint p) :=
+  CupAttachment.onStrand₂_cupAttach (o := false) hR hbound hp
+
+/-- The common core specializes definitionally to the retained right-cup API. -/
+theorem CupAttachment.right_matching (i : I) (R : List (TMove (Letter I))) :
+    CupAttachment.cupAttachMatching false i R = OddMath.SKM.cupAttachMatching i R := rfl
+
+theorem CupAttachment.right_moves (i : I) (ds : List (DTMove I)) :
+    CupAttachment.cupAttachMoves false i ds = OddMath.SKM.cupAttachMoves i ds := rfl
 
 /-- Literal right-cup attachment with bounded distinguished points and finite strand labels.
 The ordinary realization remains an explicit input; no normalized representative is chosen. -/
