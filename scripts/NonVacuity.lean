@@ -132,7 +132,7 @@ theorem pairing₂_eq_nil {R : List (StringDiagrams.Chord.TMove (Letter Unit))}
   have h := letters_tRun (length_dualW ([] : List (Letter Unit))) R (tStart []) []
     (tStart_letters []) hR.1
   rw [hR.2] at h
-  exact List.map_eq_nil_iff.1 (by simpa [dualW] using h)
+  simpa [pairing₂, dualW] using h
 
 theorem isMatching₂_nil : IsMatching₂ ([] : List (Letter Unit)) [] [] := ⟨trivial, rfl⟩
 
