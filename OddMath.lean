@@ -780,6 +780,8 @@ import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
 import OddMath.SKM.PositiveMatchingLayers
 import OddMath.SKM.PositiveMatchingLayersExamples
+import OddMath.SKM.PositiveMatchingGrading
+import OddMath.SKM.PositiveMatchingGradingExamples
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
