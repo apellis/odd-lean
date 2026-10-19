@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
+
 import OddMath.SKM.BoundaryExchange
 import OddMath.SKM.MixedCrossingLocalExamples
 
@@ -171,7 +177,8 @@ theorem finite_dot_formula :
       tableDegree oddDatum oddSymmetrizer 0 (tLay B S) +
         ∑ j : MatchingStrand A R, (cR j : ℤ) * (2 * oddSymmetrizer.d (matchingStrandColour A R j)) ∧
     xpar oddDatum 0 (dLay A sourceDots) = xpar oddDatum 0 (tLay B S) + 1 +
-        ∑ j : MatchingStrand A R, (cR j : ZMod 2) * oddDatum.parity (matchingStrandColour A R j) := by
+        ∑ j : MatchingStrand A R,
+          (cR j : ZMod 2) * oddDatum.parity (matchingStrandColour A R j) := by
   obtain ⟨hd, hp⟩ := mixed_decorated_degree_parity oddDatum oddSymmetrizer 0
     source_matching qR (fun j hj => (pointsR j hj).2) cR sourceDots finite_dot_decorations.1
   rw [← existing_intersection_normalized.1] at hd
@@ -239,9 +246,11 @@ to the normalized target base, whose grading is proved above. -/
 theorem finite_dot_formula₀ :
     tableDegree oddDatum oddSymmetrizer 0 (dLay A₀ sourceDots₀) =
       tableDegree oddDatum oddSymmetrizer 0 (tLay B₀ S₀) +
-        ∑ j : MatchingStrand A₀ R₀, (cR₀ j : ℤ) * (2 * oddSymmetrizer.d (matchingStrandColour A₀ R₀ j)) ∧
+        ∑ j : MatchingStrand A₀ R₀,
+          (cR₀ j : ℤ) * (2 * oddSymmetrizer.d (matchingStrandColour A₀ R₀ j)) ∧
     xpar oddDatum 0 (dLay A₀ sourceDots₀) = xpar oddDatum 0 (tLay B₀ S₀) + 1 +
-        ∑ j : MatchingStrand A₀ R₀, (cR₀ j : ZMod 2) * oddDatum.parity (matchingStrandColour A₀ R₀ j) := by
+        ∑ j : MatchingStrand A₀ R₀,
+          (cR₀ j : ZMod 2) * oddDatum.parity (matchingStrandColour A₀ R₀ j) := by
   obtain ⟨hd, hp⟩ := mixed_decorated_degree_parity oddDatum oddSymmetrizer 0
     matching₀ qR₀ (fun j hj => (pointsR₀ j hj).2) cR₀ sourceDots₀ finite_dot_decorations₀.1
   rw [← no_intersection_normalized.1] at hd
