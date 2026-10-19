@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.PositiveForm
 
 /-!
@@ -76,10 +81,14 @@ theorem forms_eq_of_positive_words
     (hB : ∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y))
     (hC : ∀ u x y, C (u * x) y = C x (rhoModified D Coefficients.q pi pi_sq u * y))
     (hpositive : ∀ a b μ ν,
-      B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
-        (positiveHalf D Coefficients.q pi ν (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
-      C (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
-        (positiveHalf D Coefficients.q pi ν (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b)))) : B = C := by
+      B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring a)))
+        (positiveHalf D Coefficients.q pi ν (D.toSerreF Coefficients.q pi (monomial
+          Coefficients.Ring b))) =
+      C (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring a)))
+        (positiveHalf D Coefficients.q pi ν (D.toSerreF Coefficients.q pi (monomial
+          Coefficients.Ring b)))) : B = C := by
   have hn : ∀ a b μ ν, B (wordModified D true a μ) (wordModified D true b ν) =
       C (wordModified D true a μ) (wordModified D true b ν) := by
     intro a b μ ν
@@ -98,7 +107,8 @@ theorem forms_eq_of_positive_words
           (wordModified D true b ν) := by
       rw [hF, rhoModified_rhoModified]
     rw [he B hB, he C hC, hr, smul_mul_assoc]
-    have hm : wordModified D true a.reverse (μ + halfWeight D false (wordWeight a)) * weightOne D η =
+    have hm : wordModified D true a.reverse (μ + halfWeight D false (wordWeight a)) * weightOne
+      D η =
         if μ + halfWeight D false (wordWeight a) = η then
           wordModified D true a.reverse (μ + halfWeight D false (wordWeight a)) else 0 := by
       apply Subtype.ext
@@ -124,12 +134,11 @@ theorem forms_eq_of_positive_words
     _ = C (x * ∑ η ∈ s, weightOne D η) y := (hC _ _ _).symm
     _ = C x y := by rw [hx]
 
-variable [Finite I]
 
 /-- Endpoint orthogonality, adjointness for all actual modified elements, and
 normalization on all positive-half pairs uniquely determine the constructed form.
 No homogeneity or independence of the simple roots is assumed. -/
-theorem positiveModifiedForm_unique (hD : D.toSuperCartanDatum.BarConsistent)
+theorem positiveModifiedForm_unique
     (B : LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi))
     (horth : ∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
       (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν →
@@ -138,8 +147,9 @@ theorem positiveModifiedForm_unique (hD : D.toSuperCartanDatum.BarConsistent)
     (hadj : ∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y))
     (hpositive : ∀ μ (x y : D.serreF Coefficients.q pi),
       B (positiveHalf D Coefficients.q pi μ x) (positiveHalf D Coefficients.q pi μ y) =
-        D.serreForm Coefficients.q pi pi_sq x y) : B = positiveModifiedForm D hD := by
-  apply forms_eq_of_positive_words D B (positiveModifiedForm D hD) hadj (positiveModifiedForm_adjoint D hD)
+        D.serreForm Coefficients.q pi pi_sq x y) : B = positiveModifiedForm D := by
+  apply forms_eq_of_positive_words D B (positiveModifiedForm D) hadj
+    (positiveModifiedForm_adjoint D)
   intro a b μ ν
   simp only [← wordModified_positive]
   by_cases h : μ = ν
@@ -147,28 +157,30 @@ theorem positiveModifiedForm_unique (hD : D.toSuperCartanDatum.BarConsistent)
     rw [wordModified_positive, wordModified_positive, hpositive, positiveModifiedForm_positiveHalf]
   · rw [horth _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi true a μ)
         (halfWord_mem_block D Coefficients.q pi true b ν) (Or.inr h),
-      positiveModifiedForm_orthogonal D hD _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi true a μ)
+      positiveModifiedForm_orthogonal D _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi
+        true a μ)
         (halfWord_mem_block D Coefficients.q pi true b ν) (Or.inr h)]
 
 /-- Symmetry follows by applying uniqueness to the transposed form. -/
-theorem positiveModifiedForm_comm (hD : D.toSuperCartanDatum.BarConsistent)
-    (x y : modified D Coefficients.q pi) : positiveModifiedForm D hD x y = positiveModifiedForm D hD y x := by
-  have he : (positiveModifiedForm D hD).flip = positiveModifiedForm D hD := by
-    apply positiveModifiedForm_unique D hD
+theorem positiveModifiedForm_comm
+    (x y : modified D Coefficients.q pi) : positiveModifiedForm D x y = positiveModifiedForm D
+      y x := by
+  have he : (positiveModifiedForm D).flip = positiveModifiedForm D := by
+    apply positiveModifiedForm_unique D
     · intro μ ν μ' ν' a b ha hb hn
-      exact positiveModifiedForm_orthogonal D hD μ' ν' μ ν b a hb ha
+      exact positiveModifiedForm_orthogonal D μ' ν' μ ν b a hb ha
         (hn.imp Ne.symm Ne.symm)
     · intro u a b
-      change positiveModifiedForm D hD b (u * a) =
-        positiveModifiedForm D hD (rhoModified D Coefficients.q pi pi_sq u * b) a
+      change positiveModifiedForm D b (u * a) =
+        positiveModifiedForm D (rhoModified D Coefficients.q pi pi_sq u * b) a
       rw [positiveModifiedForm_adjoint, rhoModified_rhoModified]
     · intro μ a b
-      change positiveModifiedForm D hD (positiveHalf D Coefficients.q pi μ b)
+      change positiveModifiedForm D (positiveHalf D Coefficients.q pi μ b)
         (positiveHalf D Coefficients.q pi μ a) = _
       rw [positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_comm]
   exact (LinearMap.congr_fun (LinearMap.congr_fun he x) y).symm
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem halfWeight_wordWeight_positive (a : List I) :
     halfWeight D true (wordWeight a) = (a.map D.α).sum := by
   induction a with
@@ -180,7 +192,7 @@ forces equality of word lengths. The separation hypothesis is local to this
 shorter characterization; all-half uniqueness and symmetry do not require it.
 Unequal lengths give distinct left endpoints, so endpoint orthogonality supplies
 both zero values without any root-independence assumption on the datum itself. -/
-theorem positiveModifiedForm_unique_of_same_length (hD : D.toSuperCartanDatum.BarConsistent)
+theorem positiveModifiedForm_unique_of_same_length
     (hlength : ∀ a b : List I, (a.map D.α).sum = (b.map D.α).sum → a.length = b.length)
     (B : LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi))
     (horth : ∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
@@ -189,14 +201,16 @@ theorem positiveModifiedForm_unique_of_same_length (hD : D.toSuperCartanDatum.Ba
       μ ≠ μ' ∨ ν ≠ ν' → B x y = 0)
     (hadj : ∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y))
     (hwords : ∀ μ (a b : List I), a.length = b.length →
-      B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
-        (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
+      B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring a)))
+        (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+          Coefficients.Ring b))) =
       D.serreForm Coefficients.q pi pi_sq
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a))
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) :
-    B = positiveModifiedForm D hD := by
-  apply forms_eq_of_positive_words D B (positiveModifiedForm D hD) hadj
-    (positiveModifiedForm_adjoint D hD)
+    B = positiveModifiedForm D := by
+  apply forms_eq_of_positive_words D B (positiveModifiedForm D) hadj
+    (positiveModifiedForm_adjoint D)
   intro a b μ ν
   simp only [← wordModified_positive]
   by_cases hμ : μ = ν
@@ -212,12 +226,12 @@ theorem positiveModifiedForm_unique_of_same_length (hD : D.toSuperCartanDatum.Ba
         simpa only [halfWeight_wordWeight_positive] using add_left_cancel he
       rw [horth _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi true a μ)
           (halfWord_mem_block D Coefficients.q pi true b μ) (Or.inl hleft),
-        positiveModifiedForm_orthogonal D hD _ _ _ _ _ _
+        positiveModifiedForm_orthogonal D _ _ _ _ _ _
           (halfWord_mem_block D Coefficients.q pi true a μ)
           (halfWord_mem_block D Coefficients.q pi true b μ) (Or.inl hleft)]
   · rw [horth _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi true a μ)
         (halfWord_mem_block D Coefficients.q pi true b ν) (Or.inr hμ),
-      positiveModifiedForm_orthogonal D hD _ _ _ _ _ _
+      positiveModifiedForm_orthogonal D _ _ _ _ _ _
         (halfWord_mem_block D Coefficients.q pi true a μ)
         (halfWord_mem_block D Coefficients.q pi true b ν) (Or.inr hμ)]
 
@@ -225,27 +239,28 @@ theorem positiveModifiedForm_unique_of_same_length (hD : D.toSuperCartanDatum.Ba
 pairs in the normalization clause. Root-sum length separation is an explicit
 hypothesis rather than a global assumption or a root-independence assertion. -/
 theorem positiveModifiedForm_eq_iff_of_length_separation
-    (hD : D.toSuperCartanDatum.BarConsistent)
     (hlength : ∀ a b : List I, (a.map D.α).sum = (b.map D.α).sum → a.length = b.length)
     (B : LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi)) :
-    B = positiveModifiedForm D hD ↔
+    B = positiveModifiedForm D ↔
       (∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
         (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν →
         (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ' ν' →
         μ ≠ μ' ∨ ν ≠ ν' → B x y = 0) ∧
       (∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y)) ∧
       (∀ μ (a b : List I), a.length = b.length →
-        B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
-          (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
+        B (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+          Coefficients.Ring a)))
+          (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+            Coefficients.Ring b))) =
         D.serreForm Coefficients.q pi pi_sq
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a))
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) := by
   constructor
   · rintro rfl
-    refine ⟨positiveModifiedForm_orthogonal D hD, positiveModifiedForm_adjoint D hD, ?_⟩
+    refine ⟨positiveModifiedForm_orthogonal D, positiveModifiedForm_adjoint D, ?_⟩
     intro μ a b _
-    exact positiveModifiedForm_positiveHalf D hD μ _ _
+    exact positiveModifiedForm_positiveHalf D μ _ _
   · rintro ⟨horth, hadj, hwords⟩
-    exact positiveModifiedForm_unique_of_same_length D hD hlength B horth hadj hwords
+    exact positiveModifiedForm_unique_of_same_length D hlength B horth hadj hwords
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

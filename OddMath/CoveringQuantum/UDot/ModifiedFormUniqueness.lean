@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.ModifiedForm
 
 /-!
@@ -10,8 +15,9 @@ obtained by applying the actual semilinear omega to triangular spanning.
 Transposing the form then gives symmetry by uniqueness.
 
 The statements concern arbitrary, possibly nonhomogeneous elements over the
-generic covering ring, for finite bar-consistent data. No independence of the
-simple roots, nondegeneracy, or full-form hypothesis is used in the construction.
+generic covering ring, with arbitrary colours and no bar-consistency assumption. No
+independence of the simple roots, nondegeneracy, or full-form hypothesis is used in the
+construction.
 -/
 
 noncomputable section
@@ -100,7 +106,8 @@ private theorem forms_eq_of_negative_words
           (wordModified D false b ν) := by
       rw [hF, rhoModified_rhoModified]
     rw [he B hB, he C hC, hr, smul_mul_assoc]
-    have hm : wordModified D false a.reverse (μ + halfWeight D true (wordWeight a)) * weightOne D η =
+    have hm : wordModified D false a.reverse (μ + halfWeight D true (wordWeight a)) * weightOne
+      D η =
         if μ + halfWeight D true (wordWeight a) = η then
           wordModified D false a.reverse (μ + halfWeight D true (wordWeight a)) else 0 := by
       apply Subtype.ext
@@ -126,12 +133,11 @@ private theorem forms_eq_of_negative_words
     _ = C (x * ∑ η ∈ s, weightOne D η) y := (hC _ _ _).symm
     _ = C x y := by rw [hx]
 
-variable [Finite I]
 
 /-- Endpoint orthogonality, adjointness for all actual modified elements, and
 normalization on all negative-half pairs uniquely determine the constructed form.
 No homogeneity or independence of the simple roots is assumed. -/
-theorem modifiedForm_unique (hD : D.toSuperCartanDatum.BarConsistent)
+theorem modifiedForm_unique
     (B : LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi))
     (horth : ∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
       (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν →
@@ -140,31 +146,31 @@ theorem modifiedForm_unique (hD : D.toSuperCartanDatum.BarConsistent)
     (hadj : ∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y))
     (hnegative : ∀ μ (x y : D.serreF Coefficients.q pi),
       B (negativeHalf D Coefficients.q pi μ x) (negativeHalf D Coefficients.q pi μ y) =
-        D.serreForm Coefficients.q pi pi_sq x y) : B = modifiedForm D hD := by
-  apply forms_eq_of_negative_words D B (modifiedForm D hD) hadj (modifiedForm_adjoint D hD)
+        D.serreForm Coefficients.q pi pi_sq x y) : B = modifiedForm D := by
+  apply forms_eq_of_negative_words D B (modifiedForm D) hadj (modifiedForm_adjoint D)
   intro a b μ ν
   by_cases h : μ = ν
   · subst ν
     rw [wordModified_negative, wordModified_negative, hnegative, modifiedForm_negativeHalf]
   · rw [horth _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi false a μ)
         (halfWord_mem_block D Coefficients.q pi false b ν) (Or.inr h),
-      modifiedForm_orthogonal D hD _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi false a μ)
+      modifiedForm_orthogonal D _ _ _ _ _ _ (halfWord_mem_block D Coefficients.q pi false a μ)
         (halfWord_mem_block D Coefficients.q pi false b ν) (Or.inr h)]
 
 /-- Symmetry follows by applying uniqueness to the transposed form. -/
-theorem modifiedForm_comm (hD : D.toSuperCartanDatum.BarConsistent)
-    (x y : modified D Coefficients.q pi) : modifiedForm D hD x y = modifiedForm D hD y x := by
-  have he : (modifiedForm D hD).flip = modifiedForm D hD := by
-    apply modifiedForm_unique D hD
+theorem modifiedForm_comm
+    (x y : modified D Coefficients.q pi) : modifiedForm D x y = modifiedForm D y x := by
+  have he : (modifiedForm D).flip = modifiedForm D := by
+    apply modifiedForm_unique D
     · intro μ ν μ' ν' a b ha hb hn
-      exact modifiedForm_orthogonal D hD μ' ν' μ ν b a hb ha
+      exact modifiedForm_orthogonal D μ' ν' μ ν b a hb ha
         (hn.imp Ne.symm Ne.symm)
     · intro u a b
-      change modifiedForm D hD b (u * a) =
-        modifiedForm D hD (rhoModified D Coefficients.q pi pi_sq u * b) a
+      change modifiedForm D b (u * a) =
+        modifiedForm D (rhoModified D Coefficients.q pi pi_sq u * b) a
       rw [modifiedForm_adjoint, rhoModified_rhoModified]
     · intro μ a b
-      change modifiedForm D hD (negativeHalf D Coefficients.q pi μ b)
+      change modifiedForm D (negativeHalf D Coefficients.q pi μ b)
         (negativeHalf D Coefficients.q pi μ a) = _
       rw [modifiedForm_negativeHalf, SuperCartanDatum.serreForm_comm]
   exact (LinearMap.congr_fun (LinearMap.congr_fun he x) y).symm

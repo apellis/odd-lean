@@ -179,6 +179,7 @@ import OddMath.CoveringQuantum.UDot.Twistor
 import OddMath.CoveringQuantum.UDot.Nondegeneracy
 import OddMath.CoveringQuantum.UDot.LusztigComparison
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
+import OddMath.CoveringQuantum.UDot.SesquilinearFormExamples
 import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
 import OddMath.CoveringQuantum.UDot.VermaOperators
