@@ -785,6 +785,7 @@ import OddMath.SKM.MatchingBendingExamples
 import OddMath.SKM.PositiveMatchingLayers
 import OddMath.SKM.PositiveMatchingLayersExamples
 import OddMath.SKM.PositiveMatchingGrading
+import OddMath.SKM.CoveringDatum
 import OddMath.SKM.PositiveMatchingGradingExamples
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.PitchforkCap
