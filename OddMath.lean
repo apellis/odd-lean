@@ -57,6 +57,10 @@ import OddMath.SKM.Claim2CoefficientsExamples
 import OddMath.SKM.Claim2MismatchExamples
 import OddMath.SKM.Claim3Coefficients
 import OddMath.SKM.Claim3CoefficientsExamples
+import OddMath.SKM.MixedCrossingLocal
+import OddMath.SKM.MixedCrossingLocalExamples
+import OddMath.SKM.BoundaryNormalization
+import OddMath.SKM.BoundaryNormalizationExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
