@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.VermaSerre
 import Mathlib.LinearAlgebra.TensorProduct.Basic
 import Mathlib.LinearAlgebra.TensorProduct.Map
@@ -13,8 +18,8 @@ presentation: that assertion also requires the positive Serre and weight relatio
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open PreF Coefficients TensorProduct
-variable {I : Type*} [DecidableEq I] [Finite I]
-variable (C : SuperCartanDatum I) (hC : C.BarConsistent)
+variable {I : Type*} [DecidableEq I]
+variable (C : SuperCartanDatum I)
 
 /-- Diagonal scaling on the actual Serre quotient. -/
 def diagonal (c : I → Coefficients.Ring) :
@@ -27,14 +32,14 @@ def diagonal (c : I → Coefficients.Ring) :
         simp only [AlgHom.comp_apply, C.diagTwist_serreElt, map_smul,
           C.toSerreF_serreElt Coefficients.q pi hij, smul_zero, map_zero]⟩
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 @[simp] theorem diagonal_mk (c : I → Coefficients.Ring) (x : PreF Coefficients.Ring I) :
     diagonal C c (C.toSerreF Coefficients.q pi x) =
       C.toSerreF Coefficients.q pi (diagTwist c x) := by
   simp only [diagonal, SuperCartanDatum.toSerreF, RingQuot.liftAlgHom_mkAlgHom_apply,
     AlgHom.comp_apply]
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 @[simp] theorem diagonal_θ (c : I → Coefficients.Ring) (i : I) :
     diagonal C c (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
       c i • C.toSerreF Coefficients.q pi (θ Coefficients.Ring i) := by
@@ -43,15 +48,14 @@ omit [DecidableEq I] [Finite I] in
 private abbrev projection : PreF Coefficients.Ring I →ₗ[Coefficients.Ring]
     C.serreF Coefficients.q pi := (C.toSerreF Coefficients.q pi).toLinearMap
 
-include hC in
 private theorem numerator_preserves (i : I) (a b : Coefficients.Ring)
     {x : PreF Coefficients.Ring I} (hx : x ∈ C.serreIdeal Coefficients.q pi) :
     C.toSerreF Coefficients.q pi (lowerNumerator C Coefficients.q pi i a b x) = 0 := by
   have hr := C.diagTwist_mem_serreIdeal Coefficients.q pi
-    (fun j ↦ pi ^ (C.parity i * C.parity j).val) (GenericVerma.rDeriv_mem_serreIdeal C hC i hx)
+    (fun j ↦ pi ^ (C.parity i * C.parity j).val) (GenericVerma.rDeriv_mem_serreIdeal C i hx)
   have hl := C.diagTwist_mem_serreIdeal Coefficients.q pi
     (fun j ↦ ((Coefficients.q ^ C.dot i j : Coefficients.Ringˣ) : Coefficients.Ring))
-    (GenericVerma.lDeriv_mem_serreIdeal C hC i hx)
+    (GenericVerma.lDeriv_mem_serreIdeal C i hx)
   rw [C.mem_serreIdeal] at hr hl
   simp only [lowerNumerator, LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
     AlgHom.toLinearMap_apply, map_sub, map_smul, parityTwist, weightTwist, hr, hl,
@@ -64,11 +68,11 @@ def numerator (i : I) (a b : Coefficients.Ring) :
   let f := p.comp (lowerNumerator C Coefficients.q pi i a b)
   ((LinearMap.ker p).liftQ f (by
     intro x hx
-    exact numerator_preserves C hC i a b ((C.mem_serreIdeal Coefficients.q pi x).mpr hx))).comp
+    exact numerator_preserves C i a b ((C.mem_serreIdeal Coefficients.q pi x).mpr hx))).comp
     (p.quotKerEquivOfSurjective (C.toSerreF_surjective Coefficients.q pi)).symm.toLinearMap
 
 @[simp] theorem numerator_mk (i : I) (a b : Coefficients.Ring) (x : PreF Coefficients.Ring I) :
-    numerator C hC i a b (C.toSerreF Coefficients.q pi x) =
+    numerator C i a b (C.toSerreF Coefficients.q pi x) =
       C.toSerreF Coefficients.q pi (lowerNumerator C Coefficients.q pi i a b x) := by
   simp only [numerator, LinearMap.comp_apply, LinearEquiv.coe_coe]
   change (LinearMap.ker (projection C)).liftQ _ _
@@ -78,7 +82,7 @@ def numerator (i : I) (a b : Coefficients.Ring) :
       (C.toSerreF_surjective Coefficients.q pi) x)
 
 @[simp] theorem numerator_one (i : I) (a b : Coefficients.Ring) :
-    numerator C hC i a b 1 = 0 := by
+    numerator C i a b 1 = 0 := by
   rw [← map_one (C.toSerreF Coefficients.q pi), numerator_mk, lowerNumerator_one, map_zero]
 
 /-- Parity on the first tensor factor. -/
@@ -87,9 +91,10 @@ def parity (i : I) : C.serreF Coefficients.q pi →ₐ[Coefficients.Ring]
 
 /-- The quantum weight scaling, with either sign of the exponent. -/
 def weight (v : Coefficients.Ringˣ) (i : I) : C.serreF Coefficients.q pi →ₐ[Coefficients.Ring]
-    C.serreF Coefficients.q pi := diagonal C fun j ↦ ((v ^ C.dot i j : Coefficients.Ringˣ) : Coefficients.Ring)
+    C.serreF Coefficients.q pi :=
+  diagonal C fun j ↦ ((v ^ C.dot i j : Coefficients.Ringˣ) : Coefficients.Ring)
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem parity_twist (i : I) (x : PreF Coefficients.Ring I) :
     parityTwist C pi i (twist (C.chi Coefficients.q pi) i x) =
       weightTwist C Coefficients.q⁻¹ i x := by
@@ -108,9 +113,9 @@ private theorem parity_twist (i : I) (x : PreF Coefficients.Ring I) :
 /-- The mixed relation for quotient numerators with arbitrary coefficients. -/
 theorem numerator_create (i j : I) (a b : Coefficients.Ring)
     (x : C.serreF Coefficients.q pi) :
-    numerator C hC i a b (C.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * x) =
+    numerator C i a b (C.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * x) =
       pi ^ (C.parity i * C.parity j).val •
-        (C.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * numerator C hC i a b x) +
+        (C.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * numerator C i a b x) +
       if i = j then a • weight C Coefficients.q⁻¹ i x - b • weight C Coefficients.q i x else 0 := by
   obtain ⟨x, rfl⟩ := C.toSerreF_surjective Coefficients.q pi x
   rw [← map_mul, numerator_mk, lowerNumerator_θ_mul, map_add, map_smul, map_mul,
@@ -137,13 +142,15 @@ def positive (n : I → ℤ) (i : I) : Module.End Coefficients.Ring
     (C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :=
   TensorProduct.map (parity C i).toLinearMap (create C i) +
     Ring.inverse (vermaDenominator C Coefficients.q pi i) •
-      (TensorProduct.map (numerator C hC i (((C.qi Coefficients.q i) ^ n i : Coefficients.Ringˣ) : Coefficients.Ring) 0)
+      (TensorProduct.map (numerator C i
+        (((C.qi Coefficients.q i) ^ n i : Coefficients.Ringˣ) : Coefficients.Ring) 0)
         (weight C Coefficients.q i).toLinearMap +
-      TensorProduct.map (numerator C hC i 0
-        (C.pii pi i ^ (n i).natAbs * (((C.qi Coefficients.q i) ^ (-n i) : Coefficients.Ringˣ) : Coefficients.Ring)))
+      TensorProduct.map (numerator C i 0
+        (C.pii pi i ^ (n i).natAbs *
+          (((C.qi Coefficients.q i) ^ (-n i) : Coefficients.Ringˣ) : Coefficients.Ring)))
         (weight C Coefficients.q⁻¹ i).toLinearMap)
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 @[simp] theorem negative_tmul (i : I) (x y : C.serreF Coefficients.q pi) :
     negative C i (x ⊗ₜ[Coefficients.Ring] y) =
       (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i) * x) ⊗ₜ[Coefficients.Ring] y := rfl
@@ -151,7 +158,7 @@ omit [DecidableEq I] [Finite I] in
 /-- On a first-factor vacuum the positive operator is exact creation in the
 second factor. There are no lower terms in this regular-module convention. -/
 @[simp] theorem positive_one_tmul (n : I → ℤ) (i : I) (y : C.serreF Coefficients.q pi) :
-    positive C hC n i (1 ⊗ₜ[Coefficients.Ring] y) =
+    positive C n i (1 ⊗ₜ[Coefficients.Ring] y) =
       (1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring]
         (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i) * y) := by
   simp [positive, TensorProduct.map_tmul, create, Algebra.lsmul_apply]
@@ -164,8 +171,8 @@ def toral (v : Coefficients.Ringˣ) (i : I) : Module.End Coefficients.Ring
 /-- The concrete regular operators satisfy the mixed supercommutator on the
 whole tensor product, not just the vacuum or a selected homogeneous submodule. -/
 theorem positive_negative (n : I → ℤ) (i j : I) :
-    positive C hC n i * negative C j =
-      pi ^ (C.parity i * C.parity j).val • (negative C j * positive C hC n i) +
+    positive C n i * negative C j =
+      pi ^ (C.parity i * C.parity j).val • (negative C j * positive C n i) +
       if i = j then Ring.inverse (vermaDenominator C Coefficients.q pi i) •
         (((((C.qi Coefficients.q i) ^ n i : Coefficients.Ringˣ) : Coefficients.Ring)) •
             toral C Coefficients.q i +
@@ -202,7 +209,7 @@ through the positive Serre relations is a separate obligation. -/
 def positiveFree (n : I → ℤ) : PreF Coefficients.Ring I →ₐ[Coefficients.Ring]
     Module.End Coefficients.Ring
       (C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :=
-  FreeAlgebra.lift Coefficients.Ring (positive C hC n)
+  FreeAlgebra.lift Coefficients.Ring (positive C n)
 
 /-- The actual negative half acts by left multiplication on the first factor. -/
 def negativeHalfAction : C.serreF Coefficients.q pi →ₐ[Coefficients.Ring]
@@ -217,14 +224,15 @@ def negativeHalfAction : C.serreF Coefficients.q pi →ₐ[Coefficients.Ring]
   commutes' c := by ext x y; simp [Algebra.algebraMap_eq_smul_one, smul_tmul']
 
 @[simp] theorem positiveFree_θ (n : I → ℤ) (i : I) :
-    positiveFree C hC n (θ Coefficients.Ring i) = positive C hC n i := by
+    positiveFree C n (θ Coefficients.Ring i) = positive C n i := by
   simp [positiveFree, θ]
 
 /-- All positive words act on a first-factor vacuum by their actual Serre class. -/
 theorem positiveFree_vacuum (n : I → ℤ) (x : PreF Coefficients.Ring I)
     (y : C.serreF Coefficients.q pi) :
-    positiveFree C hC n x (1 ⊗ₜ[Coefficients.Ring] y) =
-      (1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] (C.toSerreF Coefficients.q pi x * y) := by
+    positiveFree C n x (1 ⊗ₜ[Coefficients.Ring] y) =
+      (1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring]
+        (C.toSerreF Coefficients.q pi x * y) := by
   induction x using induction_left with
   | algebraMap c => simp [Algebra.algebraMap_eq_smul_one, tmul_smul]
   | smul c x hx => simp [hx, smul_tmul', tmul_smul]
@@ -239,12 +247,12 @@ must still be shown to satisfy every relation of that algebra. -/
 theorem triangular_vacuum (n : I → ℤ) (x : C.serreF Coefficients.q pi)
     (y : PreF Coefficients.Ring I) :
     negativeHalfAction C x
-      (positiveFree C hC n y ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] 1)) =
+      (positiveFree C n y ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] 1)) =
       x ⊗ₜ[Coefficients.Ring] C.toSerreF Coefficients.q pi y := by
   rw [positiveFree_vacuum]
   simp [negativeHalfAction]
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 /-- The negative Serre relations already hold on the entire tensor product,
 since the negative action factors through the actual quotient. -/
 theorem negative_serre (i j : I) (hij : i ≠ j) :
@@ -260,7 +268,7 @@ theorem negative_serre (i j : I) (hij : i ≠ j) :
 statement is not the missing positive Serre operator identity on the full tensor. -/
 theorem positive_serre_vacuum (n : I → ℤ) (i j : I) (hij : i ≠ j)
     (y : C.serreF Coefficients.q pi) :
-    positiveFree C hC n (C.serreElt Coefficients.q pi i j)
+    positiveFree C n (C.serreElt Coefficients.q pi i j)
       ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] y) = 0 := by
   rw [positiveFree_vacuum, C.toSerreF_serreElt Coefficients.q pi hij, zero_mul,
     TensorProduct.tmul_zero]
