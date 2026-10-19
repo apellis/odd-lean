@@ -197,6 +197,7 @@ import OddMath.CoveringQuantum.UDot.LowestQuotient
 import OddMath.CoveringQuantum.UDot.IntegrableWeightOperators
 import OddMath.CoveringQuantum.UDot.LoweringNilpotence
 import OddMath.CoveringQuantum.UDot.LowestPolarization
+import OddMath.CoveringQuantum.UDot.IntegrableQuotientExamples
 import OddMath.CoveringQuantum.UDot.TensorPresentation
 import OddMath.CoveringQuantum.UDot.TensorSerre
 import OddMath.CoveringQuantum.UDot.TensorNegative
