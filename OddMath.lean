@@ -82,6 +82,10 @@ import OddMath.SKM.NoncapFamilyCoefficients
 import OddMath.SKM.NoncapFamilyCoefficientsExamples
 import OddMath.SKM.CapDecoratedNormalization
 import OddMath.SKM.CapDecoratedNormalizationExamples
+import OddMath.SKM.CapFamilyCoefficients
+import OddMath.SKM.CapFamilyCoefficientsExamples
+import OddMath.CoveringQuantum.CapScalar
+import OddMath.CoveringQuantum.CapScalarExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
