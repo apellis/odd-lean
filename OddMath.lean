@@ -33,6 +33,11 @@ import OddMath.SKM.CapPushGradingExamples
 import OddMath.SKM.MatchingStrandColour
 import OddMath.SKM.MixedDotGrading
 import OddMath.SKM.MixedDotGradingExamples
+import OddMath.SKM.TwoSidedGrading
+import OddMath.SKM.TwoSidedGradingExamples
+import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
+import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
+import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
