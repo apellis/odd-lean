@@ -184,6 +184,8 @@ import OddMath.CoveringQuantum.UDot.VermaOperatorExamples
 import OddMath.CoveringQuantum.UDot.VermaWeights
 import OddMath.CoveringQuantum.UDot.VermaMixed
 import OddMath.CoveringQuantum.UDot.VermaRepresentation
+import OddMath.CoveringQuantum.UDot.VermaWeightExamples
+import OddMath.CoveringQuantum.UDot.VermaRepresentationExamples
 import OddMath.CoveringQuantum.UDot.IntegrablePolarization
 import OddMath.CoveringQuantum.UDot.IntegrableSigns
 import OddMath.CoveringQuantum.UDot.LowestQuotient

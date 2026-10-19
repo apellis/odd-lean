@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.VermaWeights
 
 /-!
@@ -98,7 +103,8 @@ private theorem mixed_correction_monomial (hπ : π ^ 2 = 1) (i : I) (n : ℤ)
       vermaDenominator D.toSuperCartanDatum q π i *
         qpInt (D.qi q i) (D.pii π i) (n - D.h i (halfWeight D true (wordWeight w))) := by
     rw [denominator_qpInt D q π hπ, pii_pow_sub_word D π hπ]
-    simp only [mul_assoc, ← Units.val_mul, ← zpow_add, sub_eq_add_neg, neg_add_rev, neg_neg, add_comm]
+    simp only [mul_assoc, ← Units.val_mul, ← zpow_add, sub_eq_add_neg, neg_add_rev,
+      neg_neg, add_comm]
   rw [he, ← mul_assoc, Ring.inverse_mul_cancel _ hden, one_mul]
 
 omit [DecidableEq X] in
@@ -121,6 +127,7 @@ theorem lowerFree_mixed_monomial (hπ : π ^ 2 = 1) (i j : I) (n : ℤ)
       exact mixed_correction_monomial D q π hπ j n (h ▸ hden) w
     · simp [h]
 
+omit [DecidableEq X] in
 /-- The mixed quantum-integer relation on each actual free weight projection. -/
 theorem lowerFree_mixed_project (hπ : π ^ 2 = 1) (i j : I) (Λ μ : X)
     (hden : IsUnit (vermaDenominator D.toSuperCartanDatum q π i)) (x : PreF k I) :
@@ -128,6 +135,7 @@ theorem lowerFree_mixed_project (hπ : π ^ 2 = 1) (i j : I) (Λ μ : X)
       π ^ (D.parity i * D.parity j).val •
         (θ k j * lowerFree D.toSuperCartanDatum q π i (D.h i Λ) (weightProjectFree D Λ μ x)) +
       if i = j then qpInt (D.qi q i) (D.pii π i) (D.h i μ) • weightProjectFree D Λ μ x else 0 := by
+  classical
   induction x using induction_monomial with
   | zero => simp
   | add x y hx hy =>
@@ -145,17 +153,17 @@ theorem lowerFree_mixed_project (hπ : π ^ 2 = 1) (i j : I) (Λ μ : X)
 
 namespace GenericVerma
 open Coefficients
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
 
+omit [DecidableEq X] in
 /-- The normalized mixed relation on the actual negative Serre quotient weight space. -/
 theorem lower_mixed_project (i j : I) (Λ μ : X) (x : D.serreF Coefficients.q pi) :
-    lower D.toSuperCartanDatum hD i (D.h i Λ)
-      (D.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * weightProject D hD Λ μ x) =
+    lower D.toSuperCartanDatum i (D.h i Λ)
+      (D.toSerreF Coefficients.q pi (θ Coefficients.Ring j) * weightProject D Λ μ x) =
       pi ^ (D.parity i * D.parity j).val •
         (D.toSerreF Coefficients.q pi (θ Coefficients.Ring j) *
-          lower D.toSuperCartanDatum hD i (D.h i Λ) (weightProject D hD Λ μ x)) +
+          lower D.toSuperCartanDatum i (D.h i Λ) (weightProject D Λ μ x)) +
       if i = j then
-        qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i μ) • weightProject D hD Λ μ x else 0 := by
+        qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i μ) • weightProject D Λ μ x else 0 := by
   obtain ⟨y, rfl⟩ := D.toSerreF_surjective Coefficients.q pi x
   rw [weightProject_mk, ← map_mul, lower_mk,
     lowerFree_mixed_project D Coefficients.q pi pi_sq i j Λ μ
