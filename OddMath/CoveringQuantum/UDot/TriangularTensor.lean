@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.Triangular
 import OddMath.CoveringQuantum.UDot.HalfEmbeddings
 import Mathlib.LinearAlgebra.TensorProduct.Basic
@@ -164,13 +169,12 @@ def triangularModified (μ : X) :
 
 section Generic
 open Coefficients PreF
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
 
-/-- A mixed tensor acts nontrivially in the already constructed representation:
+/-- A mixed tensor has an explicit action in the already constructed representation:
 its positive generator contracts a simple negative vector, then its negative
 generator creates the output. This is an evaluation identity, not faithfulness. -/
 theorem representation_triangularTensor_θ_θ (Λ : X) (i j : I) :
-    GenericVerma.representation D hD Λ
+    GenericVerma.representation D Λ
       (triangularTensor D Coefficients.q pi (Λ - D.α j)
         (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i) ⊗ₜ[Coefficients.Ring]
           D.toSerreF Coefficients.q pi (θ Coefficients.Ring j)))
@@ -179,7 +183,7 @@ theorem representation_triangularTensor_θ_θ (Λ : X) (i j : I) :
         D.toSerreF Coefficients.q pi (θ Coefficients.Ring i) := by
   rw [triangularTensor_θ_θ, sub_add_cancel, map_mul, Module.End.mul_apply,
     GenericVerma.representation_E, Module.End.mul_apply]
-  have hp : GenericVerma.weightProject D hD Λ (Λ - D.α j)
+  have hp : GenericVerma.weightProject D Λ (Λ - D.α j)
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring j)) =
       D.toSerreF Coefficients.q pi (θ Coefficients.Ring j) := by
     rw [GenericVerma.weightProject_mk]
@@ -188,7 +192,7 @@ theorem representation_triangularTensor_θ_θ (Λ : X) (i j : I) :
       add_zero, halfWeight_single, halfRoot, ite_true, sub_sub_cancel] at h
     rw [h]
   rw [hp, GenericVerma.lower_θ_self, map_smul, GenericVerma.representation_F]
-  have hu : GenericVerma.weightProject D hD Λ Λ (1 : D.serreF Coefficients.q pi) = 1 := by
+  have hu : GenericVerma.weightProject D Λ Λ (1 : D.serreF Coefficients.q pi) = 1 := by
     rw [← map_one (D.toSerreF Coefficients.q pi), GenericVerma.weightProject_mk]
     change D.toSerreF Coefficients.q pi
       (weightProjectFree D Λ Λ (monomial Coefficients.Ring [])) = _

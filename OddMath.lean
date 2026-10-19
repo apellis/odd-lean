@@ -156,6 +156,7 @@ import OddMath.CoveringQuantum.UDot.TriangularRepresentation
 import OddMath.CoveringQuantum.UDot.TriangularRepresentationExamples
 import OddMath.CoveringQuantum.UDot.TriangularRetraction
 import OddMath.CoveringQuantum.UDot.GlobalTriangular
+import OddMath.CoveringQuantum.UDot.TriangularRetractionExamples
 import OddMath.CoveringQuantum.UDot.RhoHalfWords
 import OddMath.CoveringQuantum.UDot.ColumnFunctional
 import OddMath.CoveringQuantum.UDot.AdjointColumn
