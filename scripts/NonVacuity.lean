@@ -297,6 +297,63 @@ example (n : ℕ) := OddMath.Frontier.EQK0.thm_4_17_equiv_E ℚ n
 end NonVacuity
 
 namespace NonVacuity
+
+/-! ### Positive top-decorated matchings in Theorem 10.3
+
+Two equal odd strands cross once, with top dot counts `![1, 2]`:
+degree `4` and parity `0`, on the same ordinary diagram. -/
+
+open OddMath.SKM StringDiagrams StringDiagrams.Chord in
+-- One odd crossing and three odd dots have even total parity.
+example :
+    ∃ p : MatchingStrand [(true, ()), (true, ())] [.mv (.cross 0)] ≃ Fin 2,
+      (∀ j : MatchingStrand [(true, ()), (true, ())] [.mv (.cross 0)],
+        OnStrand₂ [(true, ()), (true, ())] [.mv (.cross 0)] j.val (1, (p j).val)) ∧
+      ∃ (L : List (LayerData Unit))
+        (hL : SChain [(true, ()), (true, ())] L [(true, ()), (true, ())]),
+        L.map ofL = dLay [(true, ()), (true, ())]
+          (topDotMoves [(true, ()), (true, ())] [.mv (.cross 0)]
+            (fun j => (p j).val) (fun j => ![1, 2] (p j))) ∧
+        Diagram.degree (gdeg osp12 osp12Sy) (mkD osp12 (0 : ℤ) L hL) =
+          4 ∧
+        xpar osp12 (0 : ℤ) (L.map ofL) = 0 := by
+  let a : Fin 2 → Unit := fun _ => ()
+  let R : List (TMove (Letter Unit)) := [.mv (.cross 0)]
+  have hm : IsMatching₂ (List.ofFn fun r => (true, a r))
+      (List.ofFn fun r => (true, a r)) R := by
+    constructor
+    · change 3 < 4 ∧ True
+      decide
+    · rfl
+  have hr : StrictReduced₂ (List.ofFn fun r => (true, a r)) R := by
+    refine ⟨⟨List.nodup_singleton _, ?_⟩, List.nodup_nil⟩
+    intro z hz
+    change z ∈ [_] at hz
+    obtain rfl := List.mem_singleton.mp hz
+    change ¬ (s(2, 0) : Sym2 ℕ).IsDiag
+    decide
+  have he : ∀ r : Fin 2, Same (pairing₂ (List.ofFn fun r => (true, a r)) R)
+      (2 - 1 - r.val) (2 + ((Equiv.swap 0 1) r).val) := by
+    intro r
+    fin_cases r
+    · change 1 ≠ 3 ∧ (some 2 : Option ℕ) ≠ none ∧ (some 2 : Option ℕ) = some 2
+      decide
+    · change 0 ≠ 2 ∧ (some 0 : Option ℕ) ≠ none ∧ (some 0 : Option ℕ) = some 0
+      decide
+  obtain ⟨p, hpoints, h⟩ := positive_decorated_degree_parity osp12 osp12Sy (0 : ℤ) a a hm hr
+    (Equiv.swap 0 1) he
+  obtain ⟨L, hL, hm, hd, hp⟩ := h ![1, 2]
+  refine ⟨p, hpoints, L, hL, hm, ?_, ?_⟩
+  · simp only [Finset.sum_filter, Fin.sum_univ_two] at hd
+    simpa [a, osp12, osp12Sy, Datum.d, Datum.h, Datum.α] using hd
+  · rw [hm]
+    simp only [Finset.sum_filter, Fin.sum_univ_two] at hp
+    have hz : (1 + (1 + 2) : ZMod 2) = 0 := by decide
+    simpa [a, osp12, hz] using hp
+
+end NonVacuity
+
+namespace NonVacuity
 open OddMath.SKM OddMath.CoveringQuantum
 private abbrev Q := oddSl2.rootDatumOf oddSl2Root
 
