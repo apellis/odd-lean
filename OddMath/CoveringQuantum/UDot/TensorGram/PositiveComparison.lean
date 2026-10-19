@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.ToralCancellation
 
@@ -79,14 +80,14 @@ theorem wordPolynomial_grade (w : List I) {ν : I →₀ ℕ}
         ih (diagTwist_mem _ hr) htail]
       simp
 
-variable [DecidableEq X] [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+variable [DecidableEq X]
 
 /-- Exact normalized positive-word Gram over the original modified algebra.
 The polynomial is chosen independently of Λ, Μ and the coproduct choice. -/
 theorem actual_positive_polynomial (Λ Μ : X)
     (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List I) :
-    modifiedGram D hD Λ Μ hΛ hΜ s
+    modifiedGram D Λ Μ hΛ hΜ s
       (algebraWord D (Λ - Μ) (pos u)) (algebraWord D (Λ - Μ) (pos v)) =
     MvPolynomial.eval (deformationParameter D Μ) (normalizedReverse D u v) := by
   rw [modifiedGram_pos, normalizedReverse_eval_deformationParameter]
@@ -99,7 +100,7 @@ theorem actual_positive_polynomial (Λ Μ : X)
 theorem actual_positive_residual (Λ Μ : X)
     (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List I) :
-    modifiedGram D hD Λ Μ hΛ hΜ s
+    modifiedGram D Λ Μ hΛ hΜ s
       (algebraWord D (Λ - Μ) (pos u)) (algebraWord D (Λ - Μ) (pos v)) -
       D.form Coefficients.q pi (monomial Coefficients.Ring u) (monomial Coefficients.Ring v) =
     MvPolynomial.eval (deformationParameter D Μ) (reciprocalError D u v) := by
@@ -110,11 +111,11 @@ theorem fixed_positive_residual (u v : List I) :
     ∃ p : MvPolynomial I Coefficients.Ring,
       MvPolynomial.constantCoeff p = 0 ∧
       ∀ (Λ Μ : X) (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool),
-        modifiedGram D hD Λ Μ hΛ hΜ s
+        modifiedGram D Λ Μ hΛ hΜ s
           (algebraWord D (Λ - Μ) (pos u)) (algebraWord D (Λ - Μ) (pos v)) -
           D.form Coefficients.q pi (monomial Coefficients.Ring u) (monomial Coefficients.Ring v) =
         MvPolynomial.eval (deformationParameter D Μ) p :=
   ⟨reciprocalError D u v, reciprocalError_constantCoeff D u v,
-    fun Λ Μ hΛ hΜ s ↦ actual_positive_residual D hD Λ Μ hΛ hΜ s u v⟩
+    fun Λ Μ hΛ hΜ s ↦ actual_positive_residual D Λ Μ hΛ hΜ s u v⟩
 
 end OddMath.CoveringQuantum.UDot.PositiveComparison

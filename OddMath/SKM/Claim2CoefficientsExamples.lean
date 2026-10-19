@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.Claim2Coefficients
 import OddMath.SKM.BoundedPointSerialization
 import OddMath.SKM.PositiveFormCoefficientsExamples
@@ -227,7 +232,7 @@ private theorem right_cup_cap_all_counts (n : ℕ) (σ : ℚ) :
 
 /-- Claim 2 instantiated on the complete cap and downward-identity families.
 The serializers include all natural counts and are fixed before the signs and
-degrees. No endpoint condition is requested; bar consistency is discharged. The same
+degrees. No endpoint condition is requested; no bar-consistency premise is required. The same
 finite witnesses occurring in the iff have populated fibers and parity-sensitive
 values; neither side of the iff is assumed or replaced by a tautology. -/
 theorem cap_form_coeff_iff :
@@ -235,11 +240,11 @@ theorem cap_form_coeff_iff :
       (hg : ∀ z : ℤ, Set.Finite {u : U | e u = z}),
       (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
        ((∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 []))).coeff z =
             ∑ x ∈ (hf z).toFinset, σ ^ (p x).val) ↔
         (∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 a) (algebraWord oddDatum 0 a))).coeff z =
             ∑ u ∈ (hg z).toFinset, σ ^ (p' u).val))) ∧
       ∀ (n : ℕ) (σ : ℚ),
@@ -252,7 +257,7 @@ theorem cap_form_coeff_iff :
     hM hN q r hq (fun S j hj => (hr S j hj).2) τ υ hτ hυ hMrep hNrep
     (fun _ hS _ hV _ => (Set.mem_singleton_iff.mp hS).trans (Set.mem_singleton_iff.mp hV).symm)
     (fun _ hS _ hV _ => (Set.mem_singleton_iff.mp hS).trans (Set.mem_singleton_iff.mp hV).symm)
-  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum odd_barConsistent 0
+  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum 0
   refine ⟨hf, hg, hiff, ?_⟩
   intro n σ
   obtain ⟨_, _, hsource, htarget, hs, ht⟩ := right_cup_cap_all_counts n σ

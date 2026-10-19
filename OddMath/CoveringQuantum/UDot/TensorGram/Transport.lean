@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.ModifiedFormTransport
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedGram
@@ -12,7 +13,9 @@ The two original-algebra input transports and coefficient-barred output give a
 bilinear normalized form, preserving rho-adjointness. No module bar or
 root-lattice quadratic refinement is assumed. The convention is native cross
 Delta1/Delta2 with rho=tau1-prime and source v=q^-1, not an identification with
-the printed tau1/Delta3/Delta4 pairing.
+the printed tau1/Delta3/Delta4 pairing. Clark IV assumes finite, bar-consistent
+data; these algebraic transports and adjoint identities do not require those
+ambient assumptions. Dominance is retained where the quotient form requires it.
 -/
 
 noncomputable section
@@ -111,17 +114,17 @@ theorem rightModified_mul (u v : modified D Coefficients.q pi) :
     rightModified D (u * v) = rightModified D u * rightModified D v :=
   Subtype.ext (map_mul (right D) u.val v.val)
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent) (Λ Μ : X)
+variable (Λ Μ : X)
 
 /-- Actual action, with the scalar twist EXPLICIT in its codomain. -/
 def action (side s : Bool) :
     CoveringUDot Coefficients.Ring D Coefficients.q pi →ₐ[Coefficients.Ring]
     Twist bar (Module.End Coefficients.Ring
-      (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ)) where
+      (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ)) where
   __ := (Twist.of bar).toRingHom.comp
-    ((tensorRepresentation D hD Λ Μ s).toRingHom.comp (if side then left D else right D))
+    ((tensorRepresentation D Λ Μ s).toRingHom.comp (if side then left D else right D))
   commutes' c := by
-    change tensorRepresentation D hD Λ Μ s
+    change tensorRepresentation D Λ Μ s
       ((if side then left D else right D) (algebraMap Coefficients.Ring _ c)) =
         algebraMap Coefficients.Ring _ (bar c)
     rw [Algebra.algebraMap_eq_smul_one]
@@ -130,19 +133,19 @@ def action (side s : Bool) :
 /-- This includes EVERY original relation (mixed and both connected Serre families). -/
 theorem action_rel (side s : Bool) {u v : Free Coefficients.Ring I X}
     (h : Rel D Coefficients.q pi u v) :
-    action D hD Λ Μ side s (mk D Coefficients.q pi u) =
-      action D hD Λ Μ side s (mk D Coefficients.q pi v) := by
-  exact congrArg (action D hD Λ Μ side s) (RingQuot.mkAlgHom_rel Coefficients.Ring h)
+    action D Λ Μ side s (mk D Coefficients.q pi u) =
+      action D Λ Μ side s (mk D Coefficients.q pi v) := by
+  exact congrArg (action D Λ Μ side s) (RingQuot.mkAlgHom_rel Coefficients.Ring h)
 
-abbrev vac := toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1
+abbrev vac := toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1
 
 /-- Bilinear, not sesquilinear: both inputs and the OUTPUT are coefficient-barred. -/
 def gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) :
     LinearMap.BilinForm Coefficients.Ring (CoveringUDot Coefficients.Ring D Coefficients.q pi) where
   toFun u :=
-    { toFun := fun v ↦ bar (tensorPolarization D hD Λ Μ hΛ hΜ
-        (tensorRepresentation D hD Λ Μ s (left D u) (vac D hD Λ Μ))
-        (tensorRepresentation D hD Λ Μ (!s) (right D v) (vac D hD Λ Μ)))
+    { toFun := fun v ↦ bar (tensorPolarization D Λ Μ hΛ hΜ
+        (tensorRepresentation D Λ Μ s (left D u) (vac D Λ Μ))
+        (tensorRepresentation D Λ Μ (!s) (right D v) (vac D Λ Μ)))
       map_add' := by intro v w; simp
       map_smul' := by intro c v; simp [right_smul, bar_bar] }
   map_add' := by intro u v; ext w; simp
@@ -150,22 +153,22 @@ def gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) 
 
 @[simp] theorem gram_apply (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : CoveringUDot Coefficients.Ring D Coefficients.q pi) :
-    gram D hD Λ Μ hΛ hΜ s u v = bar (tensorPolarization D hD Λ Μ hΛ hΜ
-      (tensorRepresentation D hD Λ Μ s (left D u) (vac D hD Λ Μ))
-      (tensorRepresentation D hD Λ Μ (!s) (right D v) (vac D hD Λ Μ))) := rfl
+    gram D Λ Μ hΛ hΜ s u v = bar (tensorPolarization D Λ Μ hΛ hΜ
+      (tensorRepresentation D Λ Μ s (left D u) (vac D Λ Μ))
+      (tensorRepresentation D Λ Μ (!s) (right D v) (vac D Λ Μ))) := rfl
 
 /-- Original rho, with its scalar contractions, survives the input transport. -/
 theorem gram_adjoint (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u x y : CoveringUDot Coefficients.Ring D Coefficients.q pi) :
-    gram D hD Λ Μ hΛ hΜ s (u*x) y =
-      gram D hD Λ Μ hΛ hΜ s x ((rho D Coefficients.q pi pi_sq u).unop*y) := by
+    gram D Λ Μ hΛ hΜ s (u*x) y =
+      gram D Λ Μ hΛ hΜ s x ((rho D Coefficients.q pi pi_sq u).unop*y) := by
   simp only [gram_apply, map_mul, Module.End.mul_apply, right_rho]
   rw [tensorPolarization_adjoint]
 
 /-- Restriction to the genuine nonunital modified algebra. -/
 def modifiedGram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) :
     LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi) :=
-  (gram D hD Λ Μ hΛ hΜ s).compl₁₂
+  (gram D Λ Μ hΛ hΜ s).compl₁₂
     (modified D Coefficients.q pi).subtype (modified D Coefficients.q pi).subtype
 
 end OddMath.CoveringQuantum.UDot.PolarizationTransport

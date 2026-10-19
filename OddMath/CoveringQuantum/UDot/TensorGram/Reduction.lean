@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.Words
 
@@ -151,14 +152,14 @@ theorem column_coordinates (ζ : X) (z : modified D Coefficients.q pi) :
 
 /-- The same finite coordinates work for both actual forms, for every growing
 weight pair. This is an exact reduction, not a claimed residual-order bound. -/
-theorem actual_comparison_reduction [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+theorem actual_comparison_reduction
     (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     ∃ c : WordPair I →₀ Coefficients.Ring, ∀ (Λ Μ : X)
       (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool),
-      modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y =
-        evaluate D ζ c (modifiedGram D hD Λ Μ hΛ hΜ s) -
-          evaluate D ζ c (GenericTensor.positiveModifiedForm D hD) := by
+      modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y =
+        evaluate D ζ c (modifiedGram D Λ Μ hΛ hΜ s) -
+          evaluate D ζ c (GenericTensor.positiveModifiedForm D) := by
   obtain ⟨c, hc⟩ := column_coordinates D ζ (rhoModified D Coefficients.q pi pi_sq x * y)
   refine ⟨c, fun Λ Μ hΛ hΜ s ↦ ?_⟩
   have he (B : LinearMap.BilinForm Coefficients.Ring (modified D Coefficients.q pi))
@@ -166,10 +167,10 @@ theorem actual_comparison_reduction [Finite I] (hD : D.toSuperCartanDatum.BarCon
       B x y = evaluate D ζ c B := by
     rw [← hx, hB]
     simpa only [mul_assoc, hy] using hc B hB
-  rw [he _ (fun u v w ↦ gram_adjoint D hD Λ Μ hΛ hΜ s u.val v.val w.val),
-    he _ (GenericTensor.positiveModifiedForm_adjoint D hD)]
+  rw [he _ (fun u v w ↦ gram_adjoint D Λ Μ hΛ hΜ s u.val v.val w.val),
+    he _ (GenericTensor.positiveModifiedForm_adjoint D)]
 
-@[simp] theorem algebraWord_mul_one [Finite I] (ζ : X) (w : List (Bool × I)) :
+@[simp] theorem algebraWord_mul_one (ζ : X) (w : List (Bool × I)) :
     MixedGram.algebraWord D ζ w * weightOne D ζ = MixedGram.algebraWord D ζ w := by
   induction w with
   | nil =>
@@ -182,9 +183,9 @@ theorem actual_comparison_reduction [Finite I] (hD : D.toSuperCartanDatum.BarCon
 
 /-- The finite constant is evaluated in the existing positiveModifiedForm,
 not in a newly specified form or an assumed leading functional. -/
-theorem evaluate_positive [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+theorem evaluate_positive
     (ζ : X) (c : WordPair I →₀ Coefficients.Ring) :
-    evaluate D ζ c (GenericTensor.positiveModifiedForm D hD) =
+    evaluate D ζ c (GenericTensor.positiveModifiedForm D) =
       c.sum (fun p a ↦ a * D.form Coefficients.q pi
         (monomial Coefficients.Ring p.1) (monomial Coefficients.Ring p.2)) := by
   simp only [evaluate, word_positive, GenericTensor.positiveModifiedForm_positiveHalf,
@@ -192,17 +193,17 @@ theorem evaluate_positive [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
 
 /-- Exact arbitrary mixed-column residual identity with fixed finite coefficients.
 The positive-word residuals on the right are actual values, not hypotheses. -/
-theorem actual_residual_sum [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+theorem actual_residual_sum
     (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     ∃ c : WordPair I →₀ Coefficients.Ring, ∀ (Λ Μ : X)
       (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool),
-      modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y =
-        c.sum (fun p a ↦ a * (modifiedGram D hD Λ Μ hΛ hΜ s
+      modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y =
+        c.sum (fun p a ↦ a * (modifiedGram D Λ Μ hΛ hΜ s
           (word D true p.1 ζ) (word D true p.2 ζ) -
             D.form Coefficients.q pi (monomial Coefficients.Ring p.1)
               (monomial Coefficients.Ring p.2))) := by
-  obtain ⟨c, hc⟩ := actual_comparison_reduction D hD ζ x y hx hy
+  obtain ⟨c, hc⟩ := actual_comparison_reduction D ζ x y hx hy
   refine ⟨c, fun Λ Μ hΛ hΜ s ↦ ?_⟩
   rw [hc Λ Μ hΛ hΜ s, evaluate_positive]
   simp only [evaluate, Finsupp.linearCombination_apply, smul_eq_mul,

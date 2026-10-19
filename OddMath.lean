@@ -93,6 +93,7 @@ import OddMath.SKM.CapLaurentCoefficients
 import OddMath.SKM.CapLaurentCoefficientsExamples
 import OddMath.SKM.Claim5Coefficients
 import OddMath.SKM.Claim5CoefficientsExamples
+import OddMath.SKM.MixedClaimInfiniteExamples
 import OddMath.SKM.MatchingFamilyChoice
 import OddMath.SKM.EmptyBoundaryCoefficients
 import OddMath.SKM.EmptyBoundaryCoefficientsExamples
@@ -225,6 +226,7 @@ import OddMath.CoveringQuantum.UDot.TensorGram.Reciprocal
 import OddMath.CoveringQuantum.UDot.TensorGram.ToralCancellation
 import OddMath.CoveringQuantum.UDot.TensorGram.PositiveComparison
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedIntegration
+import OddMath.CoveringQuantum.UDot.TensorGram.MixedResidualInfiniteExamples
 import OddMath.CoveringQuantum.UDot.TensorGram.JointLimit
 import OddMath.CoveringQuantum.UDot.TensorGram.JointConvergence
 import OddMath.CoveringQuantum.UDot.NativeCyclic.CyclicInjectivity

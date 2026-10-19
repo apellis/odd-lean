@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.Claim4Coefficients
 import OddMath.CoveringQuantum.UDot.ContextualExchangeExamples
 import OddMath.SKM.BoundaryNormalizationExamples
@@ -151,14 +156,16 @@ private theorem hr (k : Bool) : ∀ V j, j ∈ leftEnds₂ (B k) V.val →
   simp only [endsS, List.mem_cons, List.not_mem_nil, or_false] at hj
   rcases hj with rfl | rfl <;> cases k <;> dsimp only [q, r] <;> unfold OnStrand₂ <;> decide
 
-private def τ (k : Bool) (V : {V // V ∈ M k}) (c : MatchingStrand (A k) V.val → ℕ) : List (DTMove Bool) :=
+private def τ (k : Bool) (V : {V // V ∈ M k}) (c : MatchingStrand (A k) V.val → ℕ) : List (DTMove
+  Bool) :=
   (exists_decorates₂_of_bounded_points (A k) V.val (q k V)
     (fun j hj => (hq k V j hj).2) (fun j hj => (hq k V j hj).1) c).choose
 private theorem hτ (k : Bool) (V : {V // V ∈ M k}) (c : MatchingStrand (A k) V.val → ℕ) :
     Decorates₂ (A k) V.val (q k V) (strandCounts c) (τ k V c) :=
   (exists_decorates₂_of_bounded_points (A k) V.val (q k V)
     (fun j hj => (hq k V j hj).2) (fun j hj => (hq k V j hj).1) c).choose_spec.1
-private def υ (k : Bool) (V : {V // V ∈ N k}) (c : MatchingStrand (B k) V.val → ℕ) : List (DTMove Bool) :=
+private def υ (k : Bool) (V : {V // V ∈ N k}) (c : MatchingStrand (B k) V.val → ℕ) : List (DTMove
+  Bool) :=
   (exists_decorates₂_of_bounded_points (B k) V.val (r k V)
     (fun j hj => (hr k V j hj).2) (fun j hj => (hr k V j hj).1) c).choose
 private theorem hυ (k : Bool) (V : {V // V ∈ N k}) (c : MatchingStrand (B k) V.val → ℕ) :
@@ -206,7 +213,8 @@ private theorem base_values (k : Bool) :
     tableDegree D sy 0 (tLay (A k) (R k)) = 2 ∧
     xpar D 0 (tLay (A k) (R k)) = if k then 0 else 1 := by
   cases k <;>
-    norm_num [A, R, tail, tLay, tmLay, tLet, moveLay, chStep, lstep, swapAt, xCrL, xCapL, sigmaL, up, dn,
+    norm_num [A, R, tail, tLay, tmLay, tLet, moveLay, chStep, lstep, swapAt, xCrL, xCapL, sigmaL,
+      up, dn,
       tableDegree, xpar, xlpar, ofL, gdeg, Shape.parity, xwhL, wt, sh, ipar,
       D, sy, twoOddDatum, RootDatum.toSKM, RootDatum.skmSymmetrizer,
       Datum.h, Datum.α, Datum.d]
@@ -234,8 +242,10 @@ private theorem count_grading (k : Bool) (c : MatchingStrand (A k) (R k) → ℕ
   have cf : matchingStrandColour (A k) (R k) (jf k) = false := by cases k <;> rfl
   have ct : matchingStrandColour (A k) (R k) (jt k) = true := by cases k <;> rfl
   have h := mixed_decorated_degree_parity D sy 0 (hm k)
-    (q k ⟨R k, Set.mem_singleton _⟩) (fun j hj => (hq k _ j hj).2) c _ (hτ k ⟨R k, Set.mem_singleton _⟩ c)
-  simp only [hu, Finset.sum_insert (show jf k ∉ ({jt k} : Finset _) by simpa using hne), Finset.sum_singleton,
+    (q k ⟨R k, Set.mem_singleton _⟩) (fun j hj => (hq k _ j hj).2) c _ (hτ k ⟨R k,
+      Set.mem_singleton _⟩ c)
+  simp only [hu, Finset.sum_insert (show jf k ∉ ({jt k} : Finset _) by simpa using hne),
+    Finset.sum_singleton,
     cf, ct, (base_values k).1, (base_values k).2] at h
   constructor
   · have hd := h.1
@@ -297,11 +307,11 @@ theorem two_odd_coeff_iff (k : Bool) : ∃ F : T k ≃ U k,
       (∀ t, e k (F t) = d k t ∧ p' k (F t) = p k t + 1) ∧
       ∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
       ((∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm twoOddDatum
           (algebraWord twoOddDatum 0 (A k)) (algebraWord twoOddDatum 0 []))).coeff z =
             ∑ t ∈ (hf z).toFinset, σ ^ (p k t).val) ↔
        (∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm twoOddDatum
           (algebraWord twoOddDatum 0 (B k)) (algebraWord twoOddDatum 0 []))).coeff z =
             ∑ u ∈ (hg z).toFinset, σ ^ (p' k u).val)) := by
   obtain ⟨F, hF⟩ := opposite_boundary_labelled_form_coeff_iff (X := Bool → ℤ)
@@ -310,7 +320,7 @@ theorem two_odd_coeff_iff (k : Bool) : ∃ F : T k ≃ U k,
     (τ k) (υ k) (hτ k) (hυ k) (hMrep k) (hNrep k)
     (fun _ hV _ hW _ => (Set.mem_singleton_iff.mp hV).trans (Set.mem_singleton_iff.mp hW).symm)
     (fun _ hV _ hW _ => (Set.mem_singleton_iff.mp hV).trans (Set.mem_singleton_iff.mp hW).symm)
-  obtain ⟨hf, hg, hgrading, _, hiff⟩ := hF twoOddDatum twoOdd_barConsistent 0
+  obtain ⟨hf, hg, hgrading, _, hiff⟩ := hF twoOddDatum 0
   exact ⟨F, hf, hg, hgrading, hiff⟩
 
 /-- The same finite fibers used by the iff have populated degree two and a nonzero
@@ -321,11 +331,11 @@ theorem populated_iff (k : Bool) :
       (hg : ∀ z : ℤ, Set.Finite {u : U k | e k u = z}),
       (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
         ((∀ z : ℤ,
-          (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+          (signLaurent σ hσ (sesquilinearForm twoOddDatum
             (algebraWord twoOddDatum 0 (A k)) (algebraWord twoOddDatum 0 []))).coeff z =
               ∑ t ∈ (hf z).toFinset, σ ^ (p k t).val) ↔
          (∀ z : ℤ,
-          (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+          (signLaurent σ hσ (sesquilinearForm twoOddDatum
             (algebraWord twoOddDatum 0 (B k)) (algebraWord twoOddDatum 0 []))).coeff z =
               ∑ u ∈ (hg z).toFinset, σ ^ (p' k u).val))) ∧
       (∃ t, d k t = 4 ∧ ∃ j, t.2 j ≠ 0) ∧

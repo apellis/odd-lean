@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.Words
 
@@ -14,7 +15,7 @@ no root-independence, limit or toral cancellation hypothesis.
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.TensorPositive
 open Coefficients PreF TensorProduct GenericVerma MixedGram PolarizationTransport
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 variable (D : RootDatum I X)
 
 /-- All letters are the original positive generators. -/
@@ -24,51 +25,51 @@ def pos (w : List I) : List (Bool × I) := w.map (fun i ↦ (true, i))
 def amplitude (s : Bool) (Λ : X) (w : List I) : Coefficients.Ring :=
   (w.map (fun i ↦ tensorToralScalar D s i Λ)).prod
 
-variable (hD : D.toSuperCartanDatum.BarConsistent) (Λ Μ : X)
+variable (Λ Μ : X)
 
 /-- The annihilating coproduct branch vanishes on the highest vector, even
 when the second factor is an arbitrary free-algebra vector. -/
 theorem E_highest (s : Bool) (i : I) (y : PreF Coefficients.Ring I) :
-    tensorE D hD Λ Μ s i
-      (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] project D hD Μ y) =
+    tensorE D Λ Μ s i
+      (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] project D Μ y) =
       tensorToralScalar D s i Λ •
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring]
-          project D hD Μ (θ Coefficients.Ring i * y)) := by
-  have h := step_value D hD Λ Μ s true i (1, y)
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring]
+          project D Μ (θ Coefficients.Ring i * y)) := by
+  have h := step_value D Λ Μ s true i (1, y)
   simpa [step, listValue, pairValue, project, freeTwist, lowerFree,
     freeWeight_one, tensorChevalley, smul_tmul] using h.symm
 
 /-- Exact all-positive collapse for either original coproduct. -/
 theorem wordAction_pos (s : Bool) (w : List I) :
-    wordAction D hD Λ Μ s (pos w) (vac D hD Λ Μ) =
+    wordAction D Λ Μ s (pos w) (vac D Λ Μ) =
       amplitude D s Λ w •
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring]
-          project D hD Μ (monomial Coefficients.Ring w)) := by
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring]
+          project D Μ (monomial Coefficients.Ring w)) := by
   induction w with
   | nil => simp [pos, wordAction, amplitude, vac, project]
   | cons i w ih =>
-    change tensorE D hD Λ Μ s i
-      (wordAction D hD Λ Μ s (pos w) (vac D hD Λ Μ)) = _
+    change tensorE D Λ Μ s i
+      (wordAction D Λ Μ s (pos w) (vac D Λ Μ)) = _
     rw [ih, map_smul, E_highest, smul_smul]
     simp only [amplitude, List.map_cons, List.prod_cons, monomial_cons]
     rw [mul_comm]
 
 /-- Collapse of the genuine weight-labelled modified-algebra action. -/
 theorem algebraWord_pos_action (s : Bool) (w : List I) :
-    tensorRepresentation D hD Λ Μ s (algebraWord D (Λ - Μ) (pos w)).val
-      (vac D hD Λ Μ) =
+    tensorRepresentation D Λ Μ s (algebraWord D (Λ - Μ) (pos w)).val
+      (vac D Λ Μ) =
       amplitude D s Λ w •
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring]
-          project D hD Μ (monomial Coefficients.Ring w)) := by
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring]
+          project D Μ (monomial Coefficients.Ring w)) := by
   rw [algebraWord_action]
-  exact wordAction_pos D hD Λ Μ s w
+  exact wordAction_pos D Λ Μ s w
 
 /-- The lowest form is the normalized Verma form, hence the actual word
 polynomial evaluated at the lowest weight's deformation parameter. -/
 theorem lowest_word (hΜ : ∀ i, 0 ≤ D.h i Μ) (u v : List I) :
-    lowestPolarization D hD Μ hΜ
-      (project D hD Μ (monomial Coefficients.Ring u))
-      (project D hD Μ (monomial Coefficients.Ring v)) =
+    lowestPolarization D Μ hΜ
+      (project D Μ (monomial Coefficients.Ring u))
+      (project D Μ (monomial Coefficients.Ring v)) =
       MvPolynomial.eval (deformationParameter D Μ)
         (wordPolynomial D u (monomial Coefficients.Ring v)) := by
   rw [lowest_polynomial, halfPolynomial_word]
@@ -77,9 +78,9 @@ theorem lowest_word (hΜ : ∀ i, 0 ≤ D.h i Μ) (u v : List I) :
 can be chosen independently. -/
 theorem tensor_gram_pos (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s t : Bool) (u v : List I) :
-    tensorPolarization D hD Λ Μ hΛ hΜ
-      (wordAction D hD Λ Μ s (pos u) (vac D hD Λ Μ))
-      (wordAction D hD Λ Μ t (pos v) (vac D hD Λ Μ)) =
+    tensorPolarization D Λ Μ hΛ hΜ
+      (wordAction D Λ Μ s (pos u) (vac D Λ Μ))
+      (wordAction D Λ Μ t (pos v) (vac D Λ Μ)) =
       amplitude D s Λ u * amplitude D t Λ v *
         MvPolynomial.eval (deformationParameter D Μ)
           (wordPolynomial D u (monomial Coefficients.Ring v)) := by
@@ -91,14 +92,14 @@ theorem tensor_gram_pos (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i 
 covers every scalar, including the evaluated word polynomial. -/
 theorem modifiedGram_pos (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List I) :
-    modifiedGram D hD Λ Μ hΛ hΜ s
+    modifiedGram D Λ Μ hΛ hΜ s
       (algebraWord D (Λ - Μ) (pos u)) (algebraWord D (Λ - Μ) (pos v)) =
       bar (wordScalar D true (Λ - Μ) (pos u) *
         wordScalar D false (Λ - Μ) (pos v) *
         amplitude D s Λ u * amplitude D (!s) Λ v *
         MvPolynomial.eval (deformationParameter D Μ)
           (wordPolynomial D u (monomial Coefficients.Ring v))) := by
-  change gram D hD Λ Μ hΛ hΜ s (algebraWord D (Λ - Μ) (pos u)).val
+  change gram D Λ Μ hΛ hΜ s (algebraWord D (Λ - Μ) (pos u)).val
     (algebraWord D (Λ - Μ) (pos v)).val = _
   rw [gram_apply]
   have hl := word_transport D true (Λ - Μ) (pos u)

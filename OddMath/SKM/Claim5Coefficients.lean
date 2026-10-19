@@ -216,37 +216,37 @@ theorem claim5_cap_scalar (D : RootDatum I X) (μ : X) (b : List (Letter I))
   rfl
 
 section Form
-variable [DecidableEq I] [DecidableEq X] [Finite I]
+variable [DecidableEq I] [DecidableEq X]
 
 /-- The coefficientwise form of Claim 5 at both rational sign specializations.
 The explicit induction premise is only the shorter-word coefficient equality
 at every integer degree (and every square-one rational sign). No endpoint,
 finite-fiber, grading, cap identity or whole-word comparison is assumed.
-Finite colours, bar consistency and purely-even coefficients are inherited
-from the existing algebraic form construction. This is not Theorem 10.3. -/
+Colours are unrestricted and bar consistency is not required. The covering
+coefficients remain purely even. This is not Theorem 10.3. -/
 theorem same_boundary_labelled_form_coeff_iff {a b : List (Letter I)} {i : I}
     (M : CoefficientFamily (a ++ (true, i) :: (false, i) :: b))
     (N : CoefficientFamily (a ++ (false, i) :: (true, i) :: b))
     (K : CoefficientFamily (a ++ b))
     (hM : M.Complete) (hN : N.Complete) (hK : K.Complete)
-    (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
+    (D : RootDatum I X) (μ : X)
     (hIH : ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
       K.coeff D.toSKM D.skmSymmetrizer μ σ z =
-        (signLaurent σ hσ (sesquilinearForm D hD
+        (signLaurent σ hσ (sesquilinearForm D
           (algebraWord D μ (a ++ b)) (algebraWord D μ []))).coeff z) :
     ((∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D μ (a ++ (true, i) :: (false, i) :: b))
         (algebraWord D μ []))).coeff z = M.coeff D.toSKM D.skmSymmetrizer μ σ z) ↔
      (∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D μ (a ++ (false, i) :: (true, i) :: b))
         (algebraWord D μ []))).coeff z = N.coeff D.toSKM D.skmSymmetrizer μ σ z)) := by
   have hc (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D μ (a ++ (true, i) :: (false, i) :: b))
         (algebraWord D μ []))).coeff z - σ ^ (D.parity i).val *
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D μ (a ++ (false, i) :: (true, i) :: b))
         (algebraWord D μ []))).coeff z =
       M.coeff D.toSKM D.skmSymmetrizer μ σ z -
@@ -256,7 +256,7 @@ theorem same_boundary_labelled_form_coeff_iff {a b : List (Letter I)} {i : I}
     simp only [RootDatum.toSKM_parity] at hg
     rw [claim5_cap_scalar D μ b i σ hσ] at hg
     have ha := congrArg (fun v => (signLaurent σ hσ v).coeff z)
-      (sesquilinearForm_context_EF D hD μ a b i)
+      (sesquilinearForm_context_EF D μ a b i)
     simp only [map_sub, map_mul, SuperCartanDatum.pii, map_pow,
       signLaurent_pi, HahnSeries.coeff_sub] at ha
     rw [← map_pow, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul,
