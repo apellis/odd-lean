@@ -249,6 +249,17 @@ example : oddSl2.norm (1 : ℤˣ) (-1 : ℤ) () =
 
 end
 
+/-! ### Undecorated boundary bending -/
+
+example : ∃ E :
+    {R : List (StringDiagrams.Chord.TMove (OddMath.SKM.Letter Unit)) //
+      R ∈ ({[]} : Set _)} ≃
+    {S : List (StringDiagrams.Chord.TMove (OddMath.SKM.Letter Unit)) //
+      S ∈ ({[.mv (.cup 0 (false, ()))]} : Set _)},
+    ∀ R, StringDiagrams.Chord.Iso (OddMath.SKM.pairing₂ [] (E R).val)
+      (OddMath.SKM.pairing₂ [(true, ())] R.val) :=
+  OddMath.SKM.MatchingBendingExamples.identity_cup_equiv (true, ())
+
 /-! ### Ellis–Qi, The differential graded odd nilHecke algebra, Theorems 3.18 and 4.17 -/
 
 attribute [local instance] DG.HasDerivedCategory.small DG.CatModule.HasDerivedCategory.small
