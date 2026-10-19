@@ -9,6 +9,8 @@ import OddMath.SKM.PositiveDecoratedEnumeration
 import OddMath.SKM.PositiveDecoratedEnumerationExamples
 import OddMath.SKM.PositiveDecoratedFamilyCoefficients
 import OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
+import OddMath.SKM.PositiveFormCoefficients
+import OddMath.SKM.PositiveFormCoefficientsExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
@@ -70,6 +72,7 @@ import OddMath.CoveringQuantum.UDot.ModifiedFormTransport
 import OddMath.CoveringQuantum.PreF.Reversal
 import OddMath.CoveringQuantum.UDot.PositiveForm
 import OddMath.CoveringQuantum.UDot.PositiveWordForm
+import OddMath.CoveringQuantum.UDot.PositiveWordCoefficients
 import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
 import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.RootCoordinates
