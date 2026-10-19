@@ -215,6 +215,32 @@ example :
   simp only [Finset.sum_filter, Fin.sum_univ_two] at h
   simpa [a, R, osp12, osp12Sy, Datum.d, Datum.h, Datum.α] using h
 
+/-! ### Positive matching dot decorations -/
+
+open StringDiagrams.Chord in
+example : ∃ p : MatchingStrand (List.ofFn fun _ : Fin 2 => (true, ()))
+      [.mv (.cross 0)] → Fin 2,
+    Function.Bijective p ∧
+      ∀ j : MatchingStrand (List.ofFn fun _ : Fin 2 => (true, ())) [.mv (.cross 0)],
+      OnStrand₂ (List.ofFn fun _ : Fin 2 => (true, ())) [.mv (.cross 0)] j (1, (p j).val) := by
+  apply positive_top_points (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ())
+  constructor
+  · change 3 < 4 ∧ True
+    decide
+  · rfl
+
+example := topDotMoves_degree osp12 osp12Sy 0 (fun _ : Fin 1 => ())
+  (a := List.ofFn fun _ : Fin 1 => (true, ())) (R := [])
+  (show IsMatching₂ (List.ofFn fun _ : Fin 1 => (true, ()))
+    (List.ofFn fun _ : Fin 1 => (true, ())) [] from ⟨trivial, rfl⟩)
+  (fun _ => (0 : Fin 1)) (fun _ => 3) [] rfl
+
+example := topDotMoves_parity osp12 0 (fun _ : Fin 1 => ())
+  (a := List.ofFn fun _ : Fin 1 => (true, ())) (R := [])
+  (show IsMatching₂ (List.ofFn fun _ : Fin 1 => (true, ()))
+    (List.ofFn fun _ : Fin 1 => (true, ())) [] from ⟨trivial, rfl⟩)
+  (fun _ => (0 : Fin 1)) (fun _ => 3)
+
 /-! ### Ellis–Qi, The differential graded odd nilHecke algebra, Theorems 3.18 and 4.17 -/
 
 attribute [local instance] DG.HasDerivedCategory.small DG.CatModule.HasDerivedCategory.small
