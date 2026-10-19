@@ -55,6 +55,8 @@ import OddMath.SKM.MatchingEndpointSupportExamples
 import OddMath.SKM.Claim2Coefficients
 import OddMath.SKM.Claim2CoefficientsExamples
 import OddMath.SKM.Claim2MismatchExamples
+import OddMath.SKM.Claim3Coefficients
+import OddMath.SKM.Claim3CoefficientsExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
