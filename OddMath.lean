@@ -15,6 +15,10 @@ import OddMath.SKM.PositiveLabelledCoefficients
 import OddMath.SKM.PositiveLabelledCoefficientsExamples
 import OddMath.SKM.BoundedPointSerialization
 import OddMath.SKM.BoundedPointSerializationExamples
+import OddMath.SKM.CupAttachmentGrading
+import OddMath.SKM.CupAttachmentGradingExamples
+import OddMath.SKM.CupAttachment
+import OddMath.SKM.CupAttachmentExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
