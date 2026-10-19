@@ -3,7 +3,9 @@ import OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
 
 /-! Non-vacuity checks for the positive modified-form coefficient comparison.
 The existing one-odd-root datum supplies both empty words and a repeated-colour
-canonical family with crossing degree -2, at each of the two π signs. -/
+canonical family with crossing degree -2, at each of the two π signs. Unequal
+lengths (0, 1), (1, 2), and their reversals give zero coefficients at every degree
+and exercise the generalized consumer on an empty representative set. -/
 
 noncomputable section
 namespace OddMath.SKM.PositiveFormCoefficientsExamples
@@ -99,7 +101,7 @@ theorem repeated_family (σ : ℚ) (hσ : σ ^ 2 = 1) :
              (repeatedForm σ hσ 2).coeff (-2) ∧
            (∑ D ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0 D.val).val) = σ) := by
   obtain ⟨p, hp, L, hL, hm, h⟩ := positive_decorated_family_form_coeff oddDatum
-    odd_barConsistent 0 σ hσ (fun _ : Fin 2 => ()) (fun _ => ())
+    odd_barConsistent 0 σ hσ (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ())
     repeatedFamily family_matching family_coverage family_unique
   obtain ⟨hf, hc⟩ := h (-2)
   exact ⟨p, hp, L, hL, hm, hf, hc, hc.trans (repeated_negative_coeff σ hσ).1⟩
@@ -225,5 +227,97 @@ example :
              (repeatedForm (-1) (by norm_num) 2).coeff (-2) ∧
            (∑ D ∈ hf.toFinset, (-1 : ℚ) ^ (xpar oddDatum.toSKM 0 D.val).val) = (-1)) :=
   repeated_family (-1) (by norm_num)
+
+/-- Laurent expansion of the existing form on two odd words of possibly different lengths. -/
+def twoWordForm (σ : ℚ) (hσ : σ ^ 2 = 1) (m n : ℕ) : LaurentSeries ℚ :=
+  signLaurent σ hσ (UDot.GenericTensor.sesquilinearForm oddDatum odd_barConsistent
+    (UDot.positiveHalf oddDatum Coefficients.q Coefficients.pi 0
+      (oddDatum.toSerreF Coefficients.q Coefficients.pi
+        (PreF.monomial Coefficients.Ring (List.ofFn (fun _ : Fin m => ())).reverse)))
+    (UDot.positiveHalf oddDatum Coefficients.q Coefficients.pi 0
+      (oddDatum.toSerreF Coefficients.q Coefficients.pi
+        (PreF.monomial Coefficients.Ring (List.ofFn (fun _ : Fin n => ())).reverse))))
+
+/-- Every coefficient vanishes for odd words of different lengths. -/
+theorem unequal_coeff (σ : ℚ) (hσ : σ ^ 2 = 1) {m n : ℕ} (hmn : m ≠ n) (z : ℤ) :
+    (twoWordForm σ hσ m n).coeff z = 0 := by
+  rw [twoWordForm, UDot.GenericTensor.sesquilinearForm_positive_words_eq_zero_of_length_ne
+    oddDatum odd_barConsistent 0 _ _ hmn, map_zero]
+  simp
+
+/-- Fixture statement for an empty representative set: the canonical family's
+finite fibers compute the form coefficients and vanish. Placement and realization
+witnesses precede every integer degree, as in the general consumer. -/
+def EmptyFamilyComparison (σ : ℚ) (hσ : σ ^ 2 = 1) (m n : ℕ) : Prop :=
+  let a := List.ofFn (fun _ : Fin m => (true, ()))
+  let b := List.ofFn (fun _ : Fin n => (true, ()))
+  let M : Set (List (TMove (Letter Unit))) := ∅
+  ∃ p : ∀ R : {R // R ∈ M}, MatchingStrand a R.val ≃ Fin n,
+    (∀ R (j : MatchingStrand a R.val),
+      OnStrand₂ a R.val j.val (R.val.length, (p R j).val)) ∧
+    (let G := {D // D ∈ decoratedFamily₂ a M
+       (fun R c => topDotMoves a R (topPositionExtension M p R) (fun j => c j))}
+     ∃ (L : G → List (LayerData Unit)) (hL : ∀ D, SChain a (L D) b),
+       (∀ D, (L D).map ofL = D.val) ∧
+       ∀ z : ℤ, ∃ hf : Set.Finite {D : G |
+         Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+           (mkD oddDatum.toSKM 0 (L D) (hL D)) = z},
+         (∑ D ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0 D.val).val) =
+           (twoWordForm σ hσ m n).coeff z ∧
+         (∑ D ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0 D.val).val) = 0)
+
+/-- The generalized coefficient theorem applies to the empty matching set, with
+matching validity, coverage, uniqueness, and all root-datum hypotheses discharged. -/
+theorem unequal_family (σ : ℚ) (hσ : σ ^ 2 = 1) {m n : ℕ} (hmn : m ≠ n) :
+    EmptyFamilyComparison σ hσ m n := by
+  obtain ⟨p, hp, L, hL, hmap, hc⟩ := positive_decorated_family_form_coeff oddDatum
+    odd_barConsistent 0 σ hσ (fun _ : Fin m => ()) (fun _ : Fin n => ()) ∅
+    (by simp)
+    (by intro R hR _; exact (hmn (hR.positive_length_eq _ _)).elim)
+    (by simp)
+  refine ⟨p, hp, L, hL, hmap, ?_⟩
+  intro z
+  obtain ⟨hf, heq⟩ := hc z
+  exact ⟨hf, heq, heq.trans (unequal_coeff σ hσ hmn z)⟩
+
+example (z : ℤ) : (twoWordForm 1 (by norm_num) 0 1).coeff z = 0 :=
+  unequal_coeff 1 (by norm_num) (by decide : 0 ≠ 1) z
+example : EmptyFamilyComparison 1 (by norm_num) 0 1 :=
+  unequal_family 1 (by norm_num) (by decide : 0 ≠ 1)
+
+example (z : ℤ) : (twoWordForm (-1) (by norm_num) 0 1).coeff z = 0 :=
+  unequal_coeff (-1) (by norm_num) (by decide : 0 ≠ 1) z
+example : EmptyFamilyComparison (-1) (by norm_num) 0 1 :=
+  unequal_family (-1) (by norm_num) (by decide : 0 ≠ 1)
+
+example (z : ℤ) : (twoWordForm 1 (by norm_num) 1 2).coeff z = 0 :=
+  unequal_coeff 1 (by norm_num) (by decide : 1 ≠ 2) z
+example : EmptyFamilyComparison 1 (by norm_num) 1 2 :=
+  unequal_family 1 (by norm_num) (by decide : 1 ≠ 2)
+
+example (z : ℤ) : (twoWordForm (-1) (by norm_num) 1 2).coeff z = 0 :=
+  unequal_coeff (-1) (by norm_num) (by decide : 1 ≠ 2) z
+example : EmptyFamilyComparison (-1) (by norm_num) 1 2 :=
+  unequal_family (-1) (by norm_num) (by decide : 1 ≠ 2)
+
+example (z : ℤ) : (twoWordForm 1 (by norm_num) 1 0).coeff z = 0 :=
+  unequal_coeff 1 (by norm_num) (by decide : 1 ≠ 0) z
+example : EmptyFamilyComparison 1 (by norm_num) 1 0 :=
+  unequal_family 1 (by norm_num) (by decide : 1 ≠ 0)
+
+example (z : ℤ) : (twoWordForm (-1) (by norm_num) 1 0).coeff z = 0 :=
+  unequal_coeff (-1) (by norm_num) (by decide : 1 ≠ 0) z
+example : EmptyFamilyComparison (-1) (by norm_num) 1 0 :=
+  unequal_family (-1) (by norm_num) (by decide : 1 ≠ 0)
+
+example (z : ℤ) : (twoWordForm 1 (by norm_num) 2 1).coeff z = 0 :=
+  unequal_coeff 1 (by norm_num) (by decide : 2 ≠ 1) z
+example : EmptyFamilyComparison 1 (by norm_num) 2 1 :=
+  unequal_family 1 (by norm_num) (by decide : 2 ≠ 1)
+
+example (z : ℤ) : (twoWordForm (-1) (by norm_num) 2 1).coeff z = 0 :=
+  unequal_coeff (-1) (by norm_num) (by decide : 2 ≠ 1) z
+example : EmptyFamilyComparison (-1) (by norm_num) 2 1 :=
+  unequal_family (-1) (by norm_num) (by decide : 2 ≠ 1)
 
 end OddMath.SKM.PositiveFormCoefficientsExamples
