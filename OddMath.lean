@@ -11,6 +11,7 @@ import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.PreF.PermutationForm
 import OddMath.CoveringQuantum.PreF.PermutationIndex
+import OddMath.CoveringQuantum.PreF.DotSeries
 import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
