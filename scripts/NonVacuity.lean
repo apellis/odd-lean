@@ -215,6 +215,37 @@ example :
   simp only [Finset.sum_filter, Fin.sum_univ_two] at h
   simpa [a, R, osp12, osp12Sy, Datum.d, Datum.h, Datum.α] using h
 
+/-! ### Formal dot factors for two odd strands -/
+
+section
+open scoped BigOperators
+
+example : oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ()) =
+    ∏ _r : Fin 2, Ring.inverse
+      (1 - PowerSeries.C (oddSl2.pii (-1 : ℤ) ()) *
+        PowerSeries.X ^ (2 * oddSl2.d ())) := by
+  exact oddSl2.dotSeries_eq_prod_inverse (-1 : ℤ) (fun _ : Fin 2 ↦ ())
+
+example : PowerSeries.coeff 2 (oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ())) =
+    ∑ l ∈ Finset.finsuppAntidiag Finset.univ 2,
+      ∏ r : Fin 2, if 2 * oddSl2.d () ∣ l r then
+        oddSl2.pii (-1 : ℤ) () ^ (l r / (2 * oddSl2.d ())) else 0 :=
+  oddSl2.coeff_dotSeries (-1) _ 2
+
+example : PowerSeries.coeff 2 (oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ())) = -2 := by
+  change PowerSeries.coeff 2
+    (PreF.DotSeries.strands (fun _ : Fin 2 ↦ (-1 : ℤ)) (fun _ ↦ 2)
+      (fun _ ↦ by decide)) = -2
+  simp only [PreF.DotSeries.strands, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  rw [pow_two, PowerSeries.coeff_mul]
+  norm_num [Finset.Nat.antidiagonal_succ, PreF.DotSeries.coeff_factor]
+
+example : oddSl2.norm (1 : ℤˣ) (-1 : ℤ) () =
+    Ring.inverse ((oddSl2.dotDenominator (-1 : ℤ) ()).eval (1 : ℤ)) :=
+  oddSl2.norm_eq_inverse_eval_dotDenominator (-1) 1 ()
+
+end
+
 /-! ### Ellis–Qi, The differential graded odd nilHecke algebra, Theorems 3.18 and 4.17 -/
 
 attribute [local instance] DG.HasDerivedCategory.small DG.CatModule.HasDerivedCategory.small
