@@ -1,4 +1,10 @@
-import OddMath.CoveringQuantum.Nondegenerate
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
+import OddMath.CoveringQuantum.SerreDeriv
+import OddMath.CoveringQuantum.Coefficients
 import Mathlib.LinearAlgebra.Isomorphisms
 
 /-!
@@ -115,10 +121,9 @@ namespace GenericVerma
 
 open Coefficients
 
-variable {I : Type*} [DecidableEq I] [Finite I] (C : SuperCartanDatum I)
-variable (hC : C.BarConsistent)
+variable {I : Type*} [DecidableEq I] (C : SuperCartanDatum I)
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 /-- The denominator is a unit in the generic covering ring, without treating
 that ring as a field. -/
 theorem vermaDenominator_isUnit (i : I) :
@@ -134,29 +139,24 @@ theorem vermaDenominator_isUnit (i : I) :
       _ = ((C.qi Coefficients.q i : Coefficients.Ringˣ) : Coefficients.Ring) * C.pii pi i ^ 2 *
           (((C.qi Coefficients.q i : Coefficients.Ringˣ) : Coefficients.Ring) *
             (((C.qi Coefficients.q i)⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring)) -
-          C.pii pi i * (((C.qi Coefficients.q i)⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring) := by ring
+          C.pii pi i * (((C.qi Coefficients.q i)⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring) := by
+            ring
       _ = _ := by simp only [hp, Units.mul_inv, mul_one, vermaDenominator]
   rw [← hfactor]
   exact (hu.neg.mul (C.qi Coefficients.q i)⁻¹.isUnit).mul (denominator_isUnit C i)
 
-include hC in
-/-- Over the actual generic covering ring, both skew derivatives preserve the
-Serre ideal. The finite bar-consistent hypothesis is used in identifying that
-ideal with the free-form radical. -/
+/-- Over the generic covering ring, the right skew derivative preserves the
+Serre ideal directly, without identifying it with a form radical. -/
 theorem rDeriv_mem_serreIdeal (i : I) {x : PreF Coefficients.Ring I}
     (hx : x ∈ C.serreIdeal Coefficients.q pi) :
     rDeriv (C.chi Coefficients.q pi) i x ∈ C.serreIdeal Coefficients.q pi := by
-  rw [serreIdeal_eq_radical C hC] at hx ⊢
-  exact rDeriv_mem_radical _ _ (norm_isUnit C i) hx
+  exact C.rDeriv_mem_serreIdeal Coefficients.q pi pi_sq i hx
 
-include hC in
 theorem lDeriv_mem_serreIdeal (i : I) {x : PreF Coefficients.Ring I}
     (hx : x ∈ C.serreIdeal Coefficients.q pi) :
     lDeriv (C.chi Coefficients.q pi) i x ∈ C.serreIdeal Coefficients.q pi := by
-  rw [serreIdeal_eq_radical C hC] at hx ⊢
-  exact lDeriv_mem_radical _ _ (norm_isUnit C i) hx
+  exact C.lDeriv_mem_serreIdeal Coefficients.q pi pi_sq i hx
 
-include hC in
 /-- The lowering operator preserves the full two-sided Serre ideal, not merely
 its displayed generators. -/
 theorem lowerFree_mem_serreIdeal (i : I) (n : ℤ) {x : PreF Coefficients.Ring I}
@@ -164,10 +164,10 @@ theorem lowerFree_mem_serreIdeal (i : I) (n : ℤ) {x : PreF Coefficients.Ring I
     lowerFree C Coefficients.q pi i n x ∈ C.serreIdeal Coefficients.q pi := by
   apply (C.mem_serreIdeal Coefficients.q pi _).mpr
   have hr := C.diagTwist_mem_serreIdeal Coefficients.q pi
-    (fun j ↦ pi ^ (C.parity i * C.parity j).val) (rDeriv_mem_serreIdeal C hC i hx)
+    (fun j ↦ pi ^ (C.parity i * C.parity j).val) (rDeriv_mem_serreIdeal C i hx)
   have hl := C.diagTwist_mem_serreIdeal Coefficients.q pi
     (fun j ↦ ((Coefficients.q ^ C.dot i j : Coefficients.Ringˣ) : Coefficients.Ring))
-    (lDeriv_mem_serreIdeal C hC i hx)
+    (lDeriv_mem_serreIdeal C i hx)
   rw [C.mem_serreIdeal] at hr hl
   simp only [lowerFree, lowerNumerator, LinearMap.smul_apply, LinearMap.sub_apply,
     LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_smul, map_sub,
@@ -176,7 +176,7 @@ theorem lowerFree_mem_serreIdeal (i : I) (n : ℤ) {x : PreF Coefficients.Ring I
 private abbrev halfProjection : PreF Coefficients.Ring I →ₗ[Coefficients.Ring]
     C.serreF Coefficients.q pi := (C.toSerreF Coefficients.q pi).toLinearMap
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem halfProjection_surjective : Function.Surjective (halfProjection C) :=
   C.toSerreF_surjective Coefficients.q pi
 
@@ -189,12 +189,12 @@ def lower (i : I) (n : ℤ) : Module.End Coefficients.Ring (C.serreF Coefficient
     intro x hx
     change C.toSerreF Coefficients.q pi (lowerFree C Coefficients.q pi i n x) = 0
     apply (C.mem_serreIdeal Coefficients.q pi _).mp
-    apply lowerFree_mem_serreIdeal C hC i n
+    apply lowerFree_mem_serreIdeal C i n
     exact (C.mem_serreIdeal Coefficients.q pi x).mpr hx)).comp
     (p.quotKerEquivOfSurjective (halfProjection_surjective C)).symm.toLinearMap
 
 @[simp] theorem lower_mk (i : I) (n : ℤ) (x : PreF Coefficients.Ring I) :
-    lower C hC i n (C.toSerreF Coefficients.q pi x) =
+    lower C i n (C.toSerreF Coefficients.q pi x) =
       C.toSerreF Coefficients.q pi (lowerFree C Coefficients.q pi i n x) := by
   simp only [lower, LinearMap.comp_apply, LinearEquiv.coe_coe]
   change (LinearMap.ker (halfProjection C)).liftQ _ _
@@ -205,12 +205,12 @@ def lower (i : I) (n : ℤ) : Module.End Coefficients.Ring (C.serreF Coefficient
 /-- On the actual generic half algebra, lowering a simple generator at weight
 pairing `n` gives the required quantum integer times the vacuum. -/
 theorem lower_θ_self (i : I) (n : ℤ) :
-    lower C hC i n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
+    lower C i n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
       qpInt (C.qi Coefficients.q i) (C.pii pi i) n • (1 : C.serreF Coefficients.q pi) := by
   rw [lower_mk, lowerFree_θ_self C Coefficients.q pi pi_sq i n
     (vermaDenominator_isUnit C i), map_smul, map_one]
 
-@[simp] theorem lower_one (i : I) (n : ℤ) : lower C hC i n 1 = 0 := by
+@[simp] theorem lower_one (i : I) (n : ℤ) : lower C i n 1 = 0 := by
   rw [← map_one (C.toSerreF Coefficients.q pi), lower_mk, lowerFree_one, map_zero]
 
 end GenericVerma

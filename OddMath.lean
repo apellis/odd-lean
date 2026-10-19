@@ -120,6 +120,8 @@ import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
 import OddMath.CoveringQuantum.SerreIdeal
+import OddMath.CoveringQuantum.SerreDeriv
+import OddMath.CoveringQuantum.SerreDerivExamples
 import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
 import OddMath.CoveringQuantum.Negative
@@ -177,6 +179,7 @@ import OddMath.CoveringQuantum.UDot.MixedSeparation
 import OddMath.CoveringQuantum.UDot.FinitePairingRecurrence
 import OddMath.CoveringQuantum.UDot.VermaOperators
 import OddMath.CoveringQuantum.UDot.VermaSerre
+import OddMath.CoveringQuantum.UDot.VermaOperatorExamples
 import OddMath.CoveringQuantum.UDot.VermaWeights
 import OddMath.CoveringQuantum.UDot.VermaMixed
 import OddMath.CoveringQuantum.UDot.VermaRepresentation
