@@ -241,6 +241,51 @@ example := topDotMoves_parity osp12 0 (fun _ : Fin 1 => ())
     (List.ofFn fun _ : Fin 1 => (true, ())) [] from ⟨trivial, rfl⟩)
   (fun _ => (0 : Fin 1)) (fun _ => 3)
 
+/-! ### Formal dot factors for two odd strands -/
+
+section
+open scoped BigOperators
+
+example : oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ()) =
+    ∏ _r : Fin 2, Ring.inverse
+      (1 - PowerSeries.C (oddSl2.pii (-1 : ℤ) ()) *
+        PowerSeries.X ^ (2 * oddSl2.d ())) := by
+  exact oddSl2.dotSeries_eq_prod_inverse (-1 : ℤ) (fun _ : Fin 2 ↦ ())
+
+example : PowerSeries.coeff 2 (oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ())) =
+    ∑ l ∈ Finset.finsuppAntidiag Finset.univ 2,
+      ∏ r : Fin 2, if 2 * oddSl2.d () ∣ l r then
+        oddSl2.pii (-1 : ℤ) () ^ (l r / (2 * oddSl2.d ())) else 0 :=
+  oddSl2.coeff_dotSeries (-1) _ 2
+
+example : PowerSeries.coeff 2 (oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ())) = -2 := by
+  change PowerSeries.coeff 2
+    (PreF.DotSeries.strands (fun _ : Fin 2 ↦ (-1 : ℤ)) (fun _ ↦ 2)
+      (fun _ ↦ by decide)) = -2
+  simp only [PreF.DotSeries.strands, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  rw [pow_two, PowerSeries.coeff_mul]
+  norm_num [Finset.Nat.antidiagonal_succ, PreF.DotSeries.coeff_factor]
+
+example := oddSl2.dotCount_monomial (-1 : ℤ)
+  (fun _ : Fin 2 ↦ ()) (fun _ ↦ 1)
+
+example : oddSl2.norm (1 : ℤˣ) (-1 : ℤ) () =
+    Ring.inverse ((oddSl2.dotDenominator (-1 : ℤ) ()).eval (1 : ℤ)) :=
+  oddSl2.norm_eq_inverse_eval_dotDenominator (-1) 1 ()
+
+end
+
+/-! ### Undecorated boundary bending -/
+
+example : ∃ E :
+    {R : List (StringDiagrams.Chord.TMove (OddMath.SKM.Letter Unit)) //
+      R ∈ ({[]} : Set _)} ≃
+    {S : List (StringDiagrams.Chord.TMove (OddMath.SKM.Letter Unit)) //
+      S ∈ ({[.mv (.cup 0 (false, ()))]} : Set _)},
+    ∀ R, StringDiagrams.Chord.Iso (OddMath.SKM.pairing₂ [] (E R).val)
+      (OddMath.SKM.pairing₂ [(true, ())] R.val) :=
+  OddMath.SKM.MatchingBendingExamples.identity_cup_equiv (true, ())
+
 /-! ### Ellis–Qi, The differential graded odd nilHecke algebra, Theorems 3.18 and 4.17 -/
 
 attribute [local instance] DG.HasDerivedCategory.small DG.CatModule.HasDerivedCategory.small

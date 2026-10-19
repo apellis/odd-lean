@@ -13,6 +13,7 @@ import OddMath.CoveringQuantum.PreF.Comul
 import OddMath.CoveringQuantum.PreF.Form
 import OddMath.CoveringQuantum.PreF.PermutationForm
 import OddMath.CoveringQuantum.PreF.PermutationIndex
+import OddMath.CoveringQuantum.PreF.DotSeries
 import OddMath.CoveringQuantum.PreF.QuotientForm
 import OddMath.CoveringQuantum.Serre
 import OddMath.CoveringQuantum.SerreForm
@@ -779,6 +780,8 @@ import OddMath.SKM.SpanReducedMatchings
 import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
+import OddMath.SKM.MatchingBending
+import OddMath.SKM.MatchingBendingExamples
 import OddMath.SKM.PositiveMatchingLayers
 import OddMath.SKM.PositiveMatchingLayersExamples
 import OddMath.SKM.PositiveMatchingGrading
