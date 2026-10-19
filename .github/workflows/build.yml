@@ -73,6 +73,13 @@ jobs:
       - name: Axiom audit
         if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+      - name: Non-vacuity checks
+        if: steps.scope.outputs.docs_only != 'true'
+        run: >-
+          lake env lean -DwarningAsError=true
+          -Dbackward.isDefEq.respectTransparency=false
+          -Dbackward.isDefEq.respectTransparency.types=false
+          scripts/NonVacuity.lean < /dev/null
       - name: Save build cache
         if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
