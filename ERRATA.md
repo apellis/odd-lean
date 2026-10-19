@@ -615,7 +615,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
 5. **Theorem 10.3, proof of Claim 1, p. 41: permutation index direction
    [M; corrected algebraic identity and rational-parameter diagnostic proved].**
-   Declaration names in this item are in `OddMath.CoveringQuantum`.
+   Declaration names in this item are in `OddMath.CoveringQuantum` unless fully qualified.
    Write `aᵣ = iᵣ`, `bᵣ = jᵣ`,
    $\chi(i,j)=\pi^{|i||j|}q^{-(\alpha_i,\alpha_j)}$, and
    $N(a)=\prod_r(1-\pi_{a_r}q_{a_r}^{2})^{-1}$.
@@ -658,9 +658,12 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    weight. It retains the construction's explicit finite-I and `BarConsistent`
    restrictions; these are not new hypotheses of Theorem 10.3 or of the index repair.
    Removing those construction restrictions remains separate tracked work in #42.
-   The decorated-matching generating-function comparison, its choice independence,
-   and the mixed-word cases remain open. This algebraic slice is not the full
-   graphical Claim 1 or Theorem 10.3.
+   The decorated-matching comparison for arbitrary physical boundary words and
+   external weights is now proved by `OddMath.SKM.theorem103`, for any complete
+   unique strictly reduced representative family. Its graphical expression is
+   independent of the form. This result retains the restrictions above, the
+   additive weight realization and the existing purely-even generic coefficients;
+   it does not claim unrestricted source generality.
 
    **For the authors.** In arXiv:1701.04133v2, the unnumbered expansion in Claim 1
    of the proof of Theorem 10.3 combines `i_{w(r)} = jᵣ` with source-colour factors
@@ -674,7 +677,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    not a defect in (10.5). The citation to 10.1 “(iv)” should also refer to (3).
 
 6. **Theorem 10.3, proof of Claim 5, equation (10.7) and the following cap expansion
-   [local bar corrections; full graphical Claim 5 remains open].** Put
+   [local bar corrections; restricted graphical comparison proved].** Put
    `n = ⟨hᵢ,μ⟩`, where `μ` is the left endpoint of the suffix word. Replace the
    coefficient `[n]_{qᵢ,πᵢ}` in (10.7) by its bar. In the next display, remove the
    outer bar around the bracketed cap contribution. No extra hypothesis or change
@@ -704,10 +707,15 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    `n = 2`, and empty surrounding words, the correct coefficient is `q⁻¹ + πq`,
    while the printed one is `q + πq⁻¹`. At `π = −1`, their formal `q¹`
    coefficients are respectively `−1` and `1`. This refutes the displayed local
-   identity, not Theorem 10.3. The general three-class cancellation of decorated
-   matchings, the corrected graphical Claim 5, and the full-series assembly of
-   (10.5) remain separate proof obligations tracked in #42. The local repair
-   introduces no restriction to even colours or to `π = 1`.
+   identity, not Theorem 10.3. The three-class coefficient cancellation is now
+   proved by `OddMath.SKM.claim5_graphical_commutator`, and
+   `OddMath.SKM.same_boundary_labelled_form_coeff_iff` gives the corrected
+   interchange under the shorter-word comparison. The length/inversion and
+   boundary inductions discharge that premise; `OddMath.SKM.theorem103` proves
+   (10.5) in the finite-colour, bar-consistent, additive-weight, purely-even
+   generic covering-ring realization, with decidable colour and weight equality.
+   Removing those realization restrictions remains tracked in #42. The local
+   repair itself introduces no restriction to even colours or to `π = 1`.
 
    **For the authors.** In the proof of Claim 5 of Theorem 10.3 in
    arXiv:1701.04133v2, the quantum integer on the right of (10.7) must be barred
