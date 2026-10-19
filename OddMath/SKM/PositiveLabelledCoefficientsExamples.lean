@@ -6,7 +6,9 @@ import OddMath.SKM.PositiveFormCoefficientsExamples
 The one-odd-root datum gives complete identity/transposition representatives.
 A serializer reverses the two unit dots on the identity, so the coefficient consumer
 is not limited to the canonical dot order. It computes both signs with one ordinary
-realization and one negative-degree fiber. Empty boundaries are also exercised.
+realization and one negative-degree fiber. A separate application constructs its
+serializer from bounded strand points and computes both signs on that shared fiber.
+Empty boundaries are also exercised.
 -/
 
 noncomputable section
@@ -174,5 +176,48 @@ theorem empty_family :
   intro σ hσ z
   obtain ⟨hf, h⟩ := hc σ hσ z
   exact ⟨hf, h, h.trans (PositiveFormCoefficientsExamples.empty_coeff σ hσ z)⟩
+
+/-- These distinguished points have the maximum permitted height. -/
+theorem points_bounded : ∀ R j, j ∈ leftEnds₂ repeatedWord R.val →
+    (points R j).1 ≤ R.val.length := by
+  intro R j _
+  exact le_rfl
+
+/-- Bounded points alone construct a shared serializer and ordinary realization. -/
+theorem bounded_repeated_family :
+    ∃ (τ : ∀ R : {R // R ∈ repeatedFamily},
+        (MatchingStrand repeatedWord R.val → ℕ) → List (DTMove Unit)),
+      (∀ R c, Decorates₂ repeatedWord R.val (points R) (strandCounts c) (τ R c)) ∧
+    ∃ (L : Index → List (LayerData Unit)) (hL : ∀ t, SChain repeatedWord (L t) repeatedWord),
+      (∀ t, (L t).map ofL = dLay repeatedWord (τ t.1 t.2)) ∧
+      ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
+        ∃ hf : Set.Finite {t : Index |
+          Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+            (mkD oddDatum.toSKM 0 (L t) (hL t)) = z},
+          (∑ t ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0
+            (dLay repeatedWord (τ t.1 t.2))).val) = (repeatedForm σ hσ 2).coeff z :=
+  positive_bounded_points_family_form_coeff oddDatum odd_barConsistent 0
+    (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ()) repeatedFamily
+    family_matching family_coverage family_unique points points_valid points_bounded
+
+/-- Both signs on one degree minus two fiber of the constructed serializer. -/
+theorem bounded_repeated_signs :
+    ∃ (τ : ∀ R : {R // R ∈ repeatedFamily},
+        (MatchingStrand repeatedWord R.val → ℕ) → List (DTMove Unit)),
+      (∀ R c, Decorates₂ repeatedWord R.val (points R) (strandCounts c) (τ R c)) ∧
+    ∃ (L : Index → List (LayerData Unit)) (hL : ∀ t, SChain repeatedWord (L t) repeatedWord),
+      (∀ t, (L t).map ofL = dLay repeatedWord (τ t.1 t.2)) ∧
+      ∃ hf : Set.Finite {t : Index |
+        Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+          (mkD oddDatum.toSKM 0 (L t) (hL t)) = -2},
+        (∑ t ∈ hf.toFinset, (1 : ℚ) ^ (xpar oddDatum.toSKM 0
+          (dLay repeatedWord (τ t.1 t.2))).val) = 1 ∧
+        (∑ t ∈ hf.toFinset, (-1 : ℚ) ^ (xpar oddDatum.toSKM 0
+          (dLay repeatedWord (τ t.1 t.2))).val) = -1 := by
+  obtain ⟨τ, hτ, L, hL, hm, hc⟩ := bounded_repeated_family
+  obtain ⟨hf, hplus⟩ := hc 1 (by norm_num) (-2)
+  obtain ⟨hf', hminus⟩ := hc (-1) (by norm_num) (-2)
+  exact ⟨τ, hτ, L, hL, hm, hf, hplus.trans (repeated_negative_coeff 1 (by norm_num)).1,
+    hminus.trans (repeated_negative_coeff (-1) (by norm_num)).1⟩
 
 end OddMath.SKM.PositiveLabelledCoefficientsExamples

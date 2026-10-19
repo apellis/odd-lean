@@ -13,6 +13,8 @@ import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositiveFormCoefficientsExamples
 import OddMath.SKM.PositiveLabelledCoefficients
 import OddMath.SKM.PositiveLabelledCoefficientsExamples
+import OddMath.SKM.BoundedPointSerialization
+import OddMath.SKM.BoundedPointSerializationExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint

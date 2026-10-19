@@ -1,17 +1,19 @@
 import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositivePointGrading
+import OddMath.SKM.BoundedPointSerialization
 /-!
 # Positive strand-labelled families and the modified form
 
 For Brundan–Ellis, arXiv:1701.04133v2, Theorem 10.3, proof of Claim 1,
 index a decoration by a representative and one natural-number label per strand.
-The chosen point placement and serializer may be arbitrary subject to their validity
-certificates. Ordinary layers are chosen before both sign specializations and every
-integer degree. Their finite degree fibers compute the existing modified form.
+The fixed-serializer comparison allows arbitrary valid point placements and serializers.
+The bounded-point corollary constructs a serializer from strand membership and bounded
+heights. Serializers and ordinary layers are chosen before both sign specializations
+and every integer degree. Their finite degree fibers compute the existing modified form.
 
 The comparison reindexes the established canonical family; it does not change
 `decoratedFamily₂` or identify different literal layer lists. Serializer existence
-is an explicit input, not a consequence asserted from `OnStrand₂` alone. The form's
+is constructed for bounded points, not asserted from `OnStrand₂` alone. The form's
 finite-colour and bar-consistency restrictions remain. Mixed boundaries and the
 remaining claims of Theorem 10.3 are not addressed here.
 -/
@@ -197,4 +199,51 @@ theorem positive_labelled_family_form_coeff
       Q hQ μ a b hmn, map_zero]
     rw [show hf.toFinset = ∅ from Finset.eq_empty_of_forall_notMem (fun t => isEmptyElim t)]
     simp
+
+/-- For the distinguished-point family of BE2, arXiv:1701.04133v2, §8 and
+Theorem 10.3, proof of Claim 1, bounded strand points determine a valid serializer
+and ordinary realizations before all signs and integer degrees. Their finite degree
+fibers compute the modified-form coefficients. Representative coverage and uniqueness,
+finite colours, and bar consistency remain explicit; this does not establish the
+mixed-boundary claims or a comparison with the full raw selector range. -/
+theorem positive_bounded_points_family_form_coeff
+    (M : Set (List (TMove (Letter I))))
+    (hM : ∀ R ∈ M, IsMatching₂ A B R ∧ StrictReduced₂ A R)
+    (hrep : ∀ R', IsMatching₂ A B R' → StrictReduced₂ A R' →
+      ∃ R ∈ M, Iso (pairing₂ A R) (pairing₂ A R'))
+    (huniq : ∀ R ∈ M, ∀ S ∈ M,
+      Iso (pairing₂ A R) (pairing₂ A S) → R = S)
+    (q : {R // R ∈ M} → ℕ → ℕ × ℕ)
+    (hq : ∀ R j, j ∈ leftEnds₂ A R.val → OnStrand₂ A R.val j (q R j))
+    (hh : ∀ R j, j ∈ leftEnds₂ A R.val → (q R j).1 ≤ R.val.length) :
+  ∃ τ : ∀ R : {R // R ∈ M}, (MatchingStrand A R.val → ℕ) → List (DTMove I),
+    (∀ R c, Decorates₂ A R.val (q R) (strandCounts c) (τ R c)) ∧
+  let T := Σ R : {R // R ∈ M}, MatchingStrand A R.val → ℕ
+  ∃ (L : T → List (LayerData I)) (hL : ∀ t, SChain A (L t) B),
+    (∀ t, (L t).map ofL = dLay A (τ t.1 t.2)) ∧
+    ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
+      ∃ hf : Set.Finite {t : T |
+        Diagram.degree (gdeg Q.toSKM Q.skmSymmetrizer)
+          (mkD Q.toSKM μ (L t) (hL t)) = z},
+        (∑ t ∈ hf.toFinset, σ ^ (xpar Q.toSKM μ (dLay A (τ t.1 t.2))).val) =
+           (CoveringQuantum.signLaurent σ hσ
+             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q hQ
+               (CoveringQuantum.UDot.positiveHalf Q CoveringQuantum.Coefficients.q
+                 CoveringQuantum.Coefficients.pi μ
+                 (Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
+                   (CoveringQuantum.PreF.monomial CoveringQuantum.Coefficients.Ring
+                     (List.ofFn a).reverse)))
+               (CoveringQuantum.UDot.positiveHalf Q CoveringQuantum.Coefficients.q
+                 CoveringQuantum.Coefficients.pi μ
+                 (Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
+                   (CoveringQuantum.PreF.monomial CoveringQuantum.Coefficients.Ring
+                     (List.ofFn b).reverse))))).coeff z := by
+  classical
+  have hs (R : {R // R ∈ M}) (c : MatchingStrand A R.val → ℕ) :
+      ∃ ds : List (DTMove I), Decorates₂ A R.val (q R) (strandCounts c) ds := by
+    obtain ⟨ds, hd, -⟩ := exists_decorates₂_of_bounded_points A R.val (q R) (hq R) (hh R) c
+    exact ⟨ds, hd⟩
+  choose τ hτ using hs
+  exact ⟨τ, hτ, positive_labelled_family_form_coeff Q hQ μ a b M hM hrep huniq q hq τ hτ⟩
+
 end OddMath.SKM
