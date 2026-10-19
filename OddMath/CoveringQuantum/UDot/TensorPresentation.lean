@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.IntegrableWeightOperators
 
 /-!
@@ -13,8 +18,8 @@ It is a presentation-descent component, not yet a full tensor representation.
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericVerma
 open PreF Coefficients TensorProduct
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (Λ Μ : X)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X) (Λ Μ : X)
 
 /-- Source tilde K, optionally multiplied by tilde J, in v=q^-1 convention. -/
 def tensorToralScalar (withJ : Bool) (i : I) (μ : X) : Coefficients.Ring :=
@@ -23,30 +28,30 @@ def tensorToralScalar (withJ : Bool) (i : I) (μ : X) : Coefficients.Ring :=
 
 /-- The toral times Koszul operator in the second summand of Delta1/Delta2(E). -/
 def tensorTwist (withJ : Bool) (i : I) :
-    Module.End Coefficients.Ring (IntegrableQuotient D hD Λ) :=
-  integrableWeight D hD Λ (tensorToralScalar D withJ i) * integrableParity D hD Λ i
+    Module.End Coefficients.Ring (IntegrableQuotient D Λ) :=
+  integrableWeight D Λ (tensorToralScalar D withJ i) * integrableParity D Λ i
 
 /-- Actual mixed-tensor E: withJ=true is Delta1, false is Delta2.
 The second factor's E is F in the accepted highest quotient, by Clark omega. -/
 def tensorE (withJ : Bool) (i : I) : Module.End Coefficients.Ring
-    (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ) :=
-  TensorProduct.map (integrableChevalley D hD Λ true i) LinearMap.id +
-    TensorProduct.map (tensorTwist D hD Λ withJ i) (integrableChevalley D hD Μ false i)
+    (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
+  TensorProduct.map (integrableChevalley D Λ true i) LinearMap.id +
+    TensorProduct.map (tensorTwist D Λ withJ i) (integrableChevalley D Μ false i)
 
 @[simp] theorem tensorE_tmul (withJ : Bool) (i : I)
-    (x : IntegrableQuotient D hD Λ) (y : IntegrableQuotient D hD Μ) :
-    tensorE D hD Λ Μ withJ i (x ⊗ₜ[Coefficients.Ring] y) =
-      integrableChevalley D hD Λ true i x ⊗ₜ[Coefficients.Ring] y +
-        tensorTwist D hD Λ withJ i x ⊗ₜ[Coefficients.Ring]
-          integrableChevalley D hD Μ false i y := rfl
+    (x : IntegrableQuotient D Λ) (y : IntegrableQuotient D Μ) :
+    tensorE D Λ Μ withJ i (x ⊗ₜ[Coefficients.Ring] y) =
+      integrableChevalley D Λ true i x ⊗ₜ[Coefficients.Ring] y +
+        tensorTwist D Λ withJ i x ⊗ₜ[Coefficients.Ring]
+          integrableChevalley D Μ false i y := rfl
 
 /-- The first-degree Serre relation on the original global quotient operators. -/
 theorem integrableChevalley_disconnected (positive : Bool) {i j : I}
     (hij : i ≠ j) (ha : D.a i j = 0) :
-    integrableChevalley D hD Λ positive i * integrableChevalley D hD Λ positive j =
+    integrableChevalley D Λ positive i * integrableChevalley D Λ positive j =
       pi ^ (D.parity i * D.parity j).val •
-        (integrableChevalley D hD Λ positive j * integrableChevalley D hD Λ positive i) := by
-  have hs := integrableChevalley_serre D hD Λ positive hij
+        (integrableChevalley D Λ positive j * integrableChevalley D Λ positive i) := by
+  have hs := integrableChevalley_serre D Λ positive hij
   have hN : D.serreDeg i j = 1 := by simp [SuperCartanDatum.serreDeg, ha]
   simp only [hN, Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
     Nat.sub_zero, pow_one, pow_zero, mul_one, Nat.sub_self, one_mul] at hs
@@ -63,7 +68,7 @@ theorem integrableChevalley_disconnected (positive : Bool) {i j : I}
   simp only [LinearMap.smul_apply]
   exact eq_of_sub_eq_zero (by simpa only [sub_eq_add_neg] using hx)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Toral scaling has the correct (here trivial) disconnected covariance. -/
 theorem tensorToralScalar_shift (withJ : Bool) {i j : I} (ha : D.a i j = 0)
     (positive : Bool) (μ : X) :
@@ -73,20 +78,20 @@ theorem tensorToralScalar_shift (withJ : Bool) {i j : I} (ha : D.a i j = 0)
 
 /-- Genuine Koszul covariance of the full toral/Koszul factor. -/
 theorem tensorTwist_chevalley (withJ : Bool) {i j : I} (ha : D.a i j = 0)
-    (positive : Bool) (x : IntegrableQuotient D hD Λ) :
-    tensorTwist D hD Λ withJ i (integrableChevalley D hD Λ positive j x) =
+    (positive : Bool) (x : IntegrableQuotient D Λ) :
+    tensorTwist D Λ withJ i (integrableChevalley D Λ positive j x) =
       pi ^ (D.parity i * D.parity j).val •
-        integrableChevalley D hD Λ positive j (tensorTwist D hD Λ withJ i x) := by
+        integrableChevalley D Λ positive j (tensorTwist D Λ withJ i x) := by
   simp only [tensorTwist, Module.End.mul_apply, integrableParity_chevalley, map_smul,
     integrableWeight_chevalley, tensorToralScalar_shift D withJ ha]
 
 /-- The toral/Koszul operators commute on every vector, not just homogeneous ones. -/
 theorem tensorTwist_comm (withJ : Bool) (i j : I) :
-    tensorTwist D hD Λ withJ i * tensorTwist D hD Λ withJ j =
-      tensorTwist D hD Λ withJ j * tensorTwist D hD Λ withJ i := by
+    tensorTwist D Λ withJ i * tensorTwist D Λ withJ j =
+      tensorTwist D Λ withJ j * tensorTwist D Λ withJ i := by
   apply LinearMap.ext
   intro x
-  induction x using integrable_induction D hD Λ with
+  induction x using integrable_induction D Λ with
   | zero => simp
   | add x y hx hy => simpa only [map_add] using congrArg₂ (· + ·) hx hy
   | smul c x hx => simpa only [map_smul] using congrArg (c • ·) hx
@@ -101,9 +106,9 @@ operators on the entire mixed tensor. Both pi components, including odd-by-odd,
 are retained. No tensor-action compatibility is hypothesized. -/
 theorem tensorE_disconnected (withJ : Bool) {i j : I}
     (hij : i ≠ j) (ha : D.a i j = 0) :
-    tensorE D hD Λ Μ withJ i * tensorE D hD Λ Μ withJ j =
+    tensorE D Λ Μ withJ i * tensorE D Λ Μ withJ j =
       pi ^ (D.parity i * D.parity j).val •
-        (tensorE D hD Λ Μ withJ j * tensorE D hD Λ Μ withJ i) := by
+        (tensorE D Λ Μ withJ j * tensorE D Λ Μ withJ i) := by
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
@@ -111,19 +116,19 @@ theorem tensorE_disconnected (withJ : Bool) {i j : I}
   intro y
   simp only [LinearMap.compr₂ₛₗ_apply, TensorProduct.mk_apply, Module.End.mul_apply,
     LinearMap.smul_apply, tensorE_tmul, map_add]
-  have he := congrArg (fun f ↦ f x) (integrableChevalley_disconnected D hD Λ true hij ha)
-  have hf := congrArg (fun f ↦ f y) (integrableChevalley_disconnected D hD Μ false hij ha)
-  have ht := congrArg (fun f ↦ f x) (tensorTwist_comm D hD Λ withJ i j)
+  have he := congrArg (fun f ↦ f x) (integrableChevalley_disconnected D Λ true hij ha)
+  have hf := congrArg (fun f ↦ f y) (integrableChevalley_disconnected D Μ false hij ha)
+  have ht := congrArg (fun f ↦ f x) (tensorTwist_comm D Λ withJ i j)
   simp only [Module.End.mul_apply, LinearMap.smul_apply] at he hf ht
-  rw [he, hf, tensorTwist_chevalley D hD Λ withJ ha true, ht]
+  rw [he, hf, tensorTwist_chevalley D Λ withJ ha true, ht]
   have hb : D.a j i = 0 := (D.isGCM.zero_comm i j).mp ha
-  have hc := tensorTwist_chevalley D hD Λ withJ hb true x
+  have hc := tensorTwist_chevalley D Λ withJ hb true x
   rw [mul_comm (D.parity j) (D.parity i)] at hc
   have hp : pi ^ (D.parity i * D.parity j).val * pi ^ (D.parity i * D.parity j).val = 1 := by
     rw [← pow_two, ← pow_mul, mul_comm _ 2, pow_mul, pi_sq, one_pow]
-  have hc' : integrableChevalley D hD Λ true i (tensorTwist D hD Λ withJ j x) =
-      pi ^ (D.parity i * D.parity j).val • tensorTwist D hD Λ withJ j
-        (integrableChevalley D hD Λ true i x) := by
+  have hc' : integrableChevalley D Λ true i (tensorTwist D Λ withJ j x) =
+      pi ^ (D.parity i * D.parity j).val • tensorTwist D Λ withJ j
+        (integrableChevalley D Λ true i x) := by
     rw [hc, smul_smul, hp, one_smul]
   rw [hc']
   simp only [smul_tmul, tmul_smul, smul_add]
@@ -131,21 +136,21 @@ theorem tensorE_disconnected (withJ : Bool) {i j : I}
 
 /-- Toral/Koszul scaling preserves each actual weight space. -/
 theorem tensorTwist_project (withJ : Bool) (i : I) (μ : X)
-    (x : IntegrableQuotient D hD Λ) :
-    integrableRepresentation D hD Λ (one D Coefficients.q pi μ)
-      (tensorTwist D hD Λ withJ i x) =
-      tensorTwist D hD Λ withJ i
-        (integrableRepresentation D hD Λ (one D Coefficients.q pi μ) x) := by
-  induction x using integrable_induction D hD Λ with
+    (x : IntegrableQuotient D Λ) :
+    integrableRepresentation D Λ (one D Coefficients.q pi μ)
+      (tensorTwist D Λ withJ i x) =
+      tensorTwist D Λ withJ i
+        (integrableRepresentation D Λ (one D Coefficients.q pi μ) x) := by
+  induction x using integrable_induction D Λ with
   | zero => simp
   | add x y hx hy => simp only [map_add, hx, hy]
   | smul c x hx => simp only [map_smul, hx]
   | word w =>
-    have ht : tensorTwist D hD Λ withJ i
-        (toIntegrable D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))) =
+    have ht : tensorTwist D Λ withJ i
+        (toIntegrable D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))) =
         ((w.map (fun j ↦ pi ^ (D.parity i * D.parity j).val)).prod *
           tensorToralScalar D withJ i (Λ - halfWeight D true (wordWeight w))) •
-          toIntegrable D hD Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) := by
+          toIntegrable D Λ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) := by
       simp only [tensorTwist, Module.End.mul_apply, integrableParity, integrableSign_word,
         map_smul, integrableWeight_word, smul_smul]
     rw [ht]
@@ -154,30 +159,30 @@ theorem tensorTwist_project (withJ : Bool) (i : I) (μ : X)
     split_ifs <;> simp [ht]
 
 private def tensorProjectBilinear (η : X) :
-    IntegrableQuotient D hD Λ →ₗ[Coefficients.Ring]
-      IntegrableQuotient D hD Μ →ₗ[Coefficients.Ring]
-        (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ) :=
+    IntegrableQuotient D Λ →ₗ[Coefficients.Ring]
+      IntegrableQuotient D Μ →ₗ[Coefficients.Ring]
+        (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
   (Finsupp.lsum Coefficients.Ring fun a ↦
     (TensorProduct.mk Coefficients.Ring _ _).compl₂
-      (integrableRepresentation D hD Μ (one D Coefficients.q pi (Λ - a - η)))).comp
-        (integrableGrading D hD Λ)
+      (integrableRepresentation D Μ (one D Coefficients.q pi (Λ - a - η)))).comp
+        (integrableGrading D Λ)
 
 /-- Total-weight projection on the actual highest/lowest tensor. This is a finite
 sum from the descended grading, not a sum over assumed finite weight fibers. -/
 def tensorProject (η : X) : Module.End Coefficients.Ring
-    (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ) :=
-  TensorProduct.lift (tensorProjectBilinear D hD Λ Μ η)
+    (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
+  TensorProduct.lift (tensorProjectBilinear D Λ Μ η)
 
 /-- Arbitrary first quotient vectors and a homogeneous second word suffice to
 compute the genuine mixed-weight projector. -/
-theorem tensorProject_tmul_word (η : X) (x : IntegrableQuotient D hD Λ) (b : List I) :
-    tensorProject D hD Λ Μ η
+theorem tensorProject_tmul_word (η : X) (x : IntegrableQuotient D Λ) (b : List I) :
+    tensorProject D Λ Μ η
       (x ⊗ₜ[Coefficients.Ring]
-        toIntegrable D hD Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
-      integrableRepresentation D hD Λ
+        toIntegrable D Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
+      integrableRepresentation D Λ
         (one D Coefficients.q pi (η + Μ - halfWeight D true (wordWeight b))) x ⊗ₜ[Coefficients.Ring]
-        toIntegrable D hD Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b)) := by
-  induction x using integrable_induction D hD Λ with
+        toIntegrable D Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b)) := by
+  induction x using integrable_induction D Λ with
   | zero => simp
   | add x y hx hy => simp only [map_add, add_tmul, hx, hy]
   | smul c x hx => simp only [map_smul, smul_tmul, tmul_smul, hx]
@@ -197,15 +202,15 @@ theorem tensorProject_tmul_word (η : X) (x : IntegrableQuotient D hD Λ) (b : L
 
 /-- Orthogonal idempotence of the actual mixed tensor projectors. -/
 theorem tensorProject_mul (η ν : X) :
-    tensorProject D hD Λ Μ η * tensorProject D hD Λ Μ ν =
-      if η = ν then tensorProject D hD Λ Μ η else 0 := by
+    tensorProject D Λ Μ η * tensorProject D Λ Μ ν =
+      if η = ν then tensorProject D Λ Μ η else 0 := by
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
   apply LinearMap.ext
   intro y
   simp only [LinearMap.compr₂ₛₗ_apply, TensorProduct.mk_apply]
-  induction y using integrable_induction D hD Μ with
+  induction y using integrable_induction D Μ with
   | zero => simp
   | add y z hy hz =>
     simp only [tmul_add, map_add] at *
@@ -224,22 +229,22 @@ theorem tensorProject_mul (η ν : X) :
 
 /-- The concrete Delta1/Delta2 positive operator has the actual total-weight shift. -/
 theorem tensorProject_E (withJ : Bool) (i : I) (η : X) :
-    tensorProject D hD Λ Μ η * tensorE D hD Λ Μ withJ i =
-      tensorE D hD Λ Μ withJ i * tensorProject D hD Λ Μ (η - D.α i) := by
+    tensorProject D Λ Μ η * tensorE D Λ Μ withJ i =
+      tensorE D Λ Μ withJ i * tensorProject D Λ Μ (η - D.α i) := by
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
   apply LinearMap.ext
   intro y
   simp only [LinearMap.compr₂ₛₗ_apply, TensorProduct.mk_apply, Module.End.mul_apply]
-  induction y using integrable_induction D hD Μ with
+  induction y using integrable_induction D Μ with
   | zero => simp
   | add y z hy hz => simp only [tmul_add, map_add, hy, hz]
   | smul c y hy => simp only [tmul_smul, map_smul, hy]
   | word b =>
-    have hf : integrableChevalley D hD Μ false i
-        (toIntegrable D hD Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
-        toIntegrable D hD Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (i :: b))) := by
+    have hf : integrableChevalley D Μ false i
+        (toIntegrable D Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) =
+        toIntegrable D Μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (i :: b))) := by
       rw [integrableChevalley_mk, chevalley_false_apply, monomial_cons,
         map_mul (D.toSerreF Coefficients.q pi)]
     simp only [tensorE_tmul, hf, map_add, tensorProject_tmul_word,
@@ -253,19 +258,19 @@ theorem tensorProject_E (withJ : Bool) (i : I) (η : X) :
 
 /-- Weight-labelled positive generator for either genuine coproduct convention. -/
 def tensorEBlock (withJ : Bool) (i : I) (η : X) : Module.End Coefficients.Ring
-    (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ) :=
-  tensorE D hD Λ Μ withJ i * tensorProject D hD Λ Μ η
+    (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
+  tensorE D Λ Μ withJ i * tensorProject D Λ Μ η
 
 /-- Right-corner presentation relation on every quotient tensor. -/
 theorem tensorEBlock_project (withJ : Bool) (i : I) (η : X) :
-    tensorEBlock D hD Λ Μ withJ i η * tensorProject D hD Λ Μ η =
-      tensorEBlock D hD Λ Μ withJ i η := by
+    tensorEBlock D Λ Μ withJ i η * tensorProject D Λ Μ η =
+      tensorEBlock D Λ Μ withJ i η := by
   simp only [tensorEBlock, mul_assoc, tensorProject_mul, ite_true]
 
 /-- Left-corner presentation relation, with the genuine shifted weight. -/
 theorem tensorProject_EBlock (withJ : Bool) (i : I) (η : X) :
-    tensorProject D hD Λ Μ (η + D.α i) * tensorEBlock D hD Λ Μ withJ i η =
-      tensorEBlock D hD Λ Μ withJ i η := by
+    tensorProject D Λ Μ (η + D.α i) * tensorEBlock D Λ Μ withJ i η =
+      tensorEBlock D Λ Μ withJ i η := by
   rw [tensorEBlock, ← mul_assoc, tensorProject_E, add_sub_cancel_right, mul_assoc]
   simp only [tensorProject_mul, ite_true]
 
