@@ -71,6 +71,7 @@ import OddMath.SKM.Claim4CoefficientsExamples
 import OddMath.CoveringQuantum.UDot.ContextualExchange
 import OddMath.CoveringQuantum.UDot.ContextualExchangeExamples
 import OddMath.CoveringQuantum.UDot.ContextualCommutator
+import OddMath.CoveringQuantum.UDot.MixedWordStepExamples
 import OddMath.CoveringQuantum.UDot.ContextualCommutatorExamples
 import OddMath.SKM.BoundaryExchange
 import OddMath.SKM.BoundaryExchangeExamples

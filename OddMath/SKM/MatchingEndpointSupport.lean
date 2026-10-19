@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.MixedDotGrading
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 
@@ -63,22 +68,22 @@ end OddMath.CoveringQuantum.UDot.GenericVerma.MixedGram
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients GenericVerma.MixedGram
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Distinct physical endpoints force the existing mixed-word form to vanish. -/
 theorem sesquilinearForm_mixed_eq_zero_of_weight_ne (μ : X) (a b : List (Bool × I))
     (h : OddMath.SKM.wt D.toSKM μ a ≠ OddMath.SKM.wt D.toSKM μ b) :
-    sesquilinearForm D hD (algebraWord D μ a) (algebraWord D μ b) = 0 := by
-  apply sesquilinearForm_orthogonal D hD (μ + shift D a) μ (μ + shift D b) μ
+    sesquilinearForm D (algebraWord D μ a) (algebraWord D μ b) = 0 := by
+  apply sesquilinearForm_orthogonal D (μ + shift D a) μ (μ + shift D b) μ
     _ _ (algebraWord_mem_block D μ a) (algebraWord_mem_block D μ b)
   exact Or.inl (by simpa only [mixed_word_physical_weight] using h)
 /-- Both algebraic sides of Claim 2 vanish off its endpoint support. -/
 theorem sesquilinearForm_mixed_up_leftCons_mismatch (μ : X) (i : I)
     (a b : List (Bool × I))
     (h : OddMath.SKM.wt D.toSKM μ b ≠ OddMath.SKM.wt D.toSKM μ a + D.α i) :
-    sesquilinearForm D hD (algebraWord D μ ((true, i) :: a)) (algebraWord D μ b) = 0 ∧
-    sesquilinearForm D hD (algebraWord D μ a) (algebraWord D μ ((false, i) :: b)) = 0 := by
-  constructor <;> apply sesquilinearForm_mixed_eq_zero_of_weight_ne D hD
+    sesquilinearForm D (algebraWord D μ ((true, i) :: a)) (algebraWord D μ b) = 0 ∧
+    sesquilinearForm D (algebraWord D μ a) (algebraWord D μ ((false, i) :: b)) = 0 := by
+  constructor <;> apply sesquilinearForm_mixed_eq_zero_of_weight_ne D
   · simpa only [OddMath.SKM.wt_cons, OddMath.SKM.sh, RootDatum.toSKM_α,
       ite_true, add_comm] using h.symm
   · intro he
@@ -92,9 +97,9 @@ theorem sesquilinearForm_mixed_up_leftCons_mismatch (μ : X) (i : I)
 theorem sesquilinearForm_mixed_down_leftCons_mismatch (μ : X) (i : I)
     (a b : List (Bool × I))
     (h : OddMath.SKM.wt D.toSKM μ b ≠ OddMath.SKM.wt D.toSKM μ a - D.α i) :
-    sesquilinearForm D hD (algebraWord D μ ((false, i) :: a)) (algebraWord D μ b) = 0 ∧
-    sesquilinearForm D hD (algebraWord D μ a) (algebraWord D μ ((true, i) :: b)) = 0 := by
-  constructor <;> apply sesquilinearForm_mixed_eq_zero_of_weight_ne D hD
+    sesquilinearForm D (algebraWord D μ ((false, i) :: a)) (algebraWord D μ b) = 0 ∧
+    sesquilinearForm D (algebraWord D μ a) (algebraWord D μ ((true, i) :: b)) = 0 := by
+  constructor <;> apply sesquilinearForm_mixed_eq_zero_of_weight_ne D
   · simpa only [OddMath.SKM.wt_cons, OddMath.SKM.sh, RootDatum.toSKM_α,
       Bool.false_eq_true, ite_false, sub_eq_add_neg, add_comm] using h.symm
   · intro he
