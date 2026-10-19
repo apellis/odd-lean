@@ -13,6 +13,7 @@ import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositiveFormCoefficientsExamples
 import OddMath.SKM.PositiveLabelledCoefficients
 import OddMath.SKM.PositiveLabelledCoefficientsExamples
+import OddMath.SKM.PositiveInfiniteExamples
 import OddMath.SKM.BoundedPointSerialization
 import OddMath.SKM.BoundedPointSerializationExamples
 import OddMath.SKM.CupAttachmentGrading

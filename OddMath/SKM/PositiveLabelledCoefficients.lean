@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositivePointGrading
 import OddMath.SKM.BoundedPointSerialization
@@ -13,9 +18,9 @@ and every integer degree. Their finite degree fibers compute the existing modifi
 
 The comparison reindexes the established canonical family; it does not change
 `decoratedFamily₂` or identify different literal layer lists. Serializer existence
-is constructed for bounded points, not asserted from `OnStrand₂` alone. The form's
-finite-colour and bar-consistency restrictions remain. Mixed boundaries and the
-remaining claims of Theorem 10.3 are not addressed here.
+is constructed for bounded points, not asserted from `OnStrand₂` alone. The colour
+type may be infinite, and bar consistency is not required. Mixed boundaries and
+the remaining claims of Theorem 10.3 are not addressed here.
 -/
 
 noncomputable section
@@ -87,16 +92,16 @@ private theorem sum_fiber_transport {T G k : Type*} [AddCommMonoid k]
     exact hv t
 
 attribute [local instance] Classical.propDecidable
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (Q : CoveringQuantum.RootDatum I X) (hQ : Q.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (Q : CoveringQuantum.RootDatum I X)
 variable (μ : X) {m n : ℕ} (a : Fin m → I) (b : Fin n → I)
 local notation "A" => (List.ofFn fun r => (true, a r))
 local notation "B" => (List.ofFn fun r => (true, b r))
 
 /-- The finite-strand-labelled positive family computes the Laurent coefficients of
  the existing modified form, at any certified placement and fixed valid serializer.
- Representative coverage and uniqueness, finite colours, and bar consistency are
- explicit. The ordinary realizations precede all signs and integer degrees; unequal
+ Representative coverage and uniqueness are explicit; colours may be infinite
+ without bar consistency. The ordinary realizations precede all signs and integer degrees; unequal
  boundary lengths give an empty index. This conditional comparison does not construct
  serializers or identify the full range of the raw natural-number selector API. -/
 theorem positive_labelled_family_form_coeff
@@ -119,7 +124,7 @@ theorem positive_labelled_family_form_coeff
           (mkD Q.toSKM μ (L t) (hL t)) = z},
         (∑ t ∈ hf.toFinset, σ ^ (xpar Q.toSKM μ (dLay A (τ t.1 t.2))).val) =
            (CoveringQuantum.signLaurent σ hσ
-             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q hQ
+             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q
                (CoveringQuantum.UDot.positiveHalf Q CoveringQuantum.Coefficients.q
                  CoveringQuantum.Coefficients.pi μ
                  (Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
@@ -135,7 +140,8 @@ theorem positive_labelled_family_form_coeff
   by_cases hmn : m = n
   · subst m
     obtain ⟨E, hE⟩ := positive_representatives_equiv a b M hM hrep huniq
-    have hg (t : T) : ∃ (L : List (LayerData I)) (hL : SChain (List.ofFn fun r => (true, a r)) L (List.ofFn fun r => (true, b r))),
+    have hg (t : T) : ∃ (L : List (LayerData I)) (hL : SChain (List.ofFn fun r => (true, a r)) L
+      (List.ofFn fun r => (true, b r))),
         L.map ofL = dLay (List.ofFn fun r => (true, a r)) (τ t.1 t.2) := by
       obtain ⟨p, hp, hpt⟩ := positive_top_points a b (hM t.1 t.1.property).1
       let P := Equiv.ofBijective p hp
@@ -149,7 +155,7 @@ theorem positive_labelled_family_form_coeff
     refine ⟨L, hL, hm, ?_⟩
     intro σ hσ z
     obtain ⟨p, hp, K, hK, hKm, hc⟩ := positive_decorated_family_form_coeff
-      Q hQ μ σ hσ a b M hM hrep huniq
+      Q μ σ hσ a b M hM hrep huniq
     obtain ⟨F, hF⟩ := positive_topDotMoves_family_equiv a b M hM p
     let J : T ≃ ({R // R ∈ M} × (Fin n → ℕ)) :=
       { toFun := fun t => (t.1, fun i => t.2 ((p t.1).symm i))
@@ -161,21 +167,25 @@ theorem positive_labelled_family_form_coeff
         Diagram.degree (gdeg Q.toSKM Q.skmSymmetrizer) (mkD Q.toSKM μ (L t) (hL t)) =
           Diagram.degree (gdeg Q.toSKM Q.skmSymmetrizer)
             (mkD Q.toSKM μ (K (G t)) (hK (G t))) ∧
-        xpar Q.toSKM μ (dLay (List.ofFn fun r => (true, a r)) (τ t.1 t.2)) = xpar Q.toSKM μ (G t).val := by
+        xpar Q.toSKM μ (dLay (List.ofFn fun r => (true, a r)) (τ t.1 t.2)) =
+          xpar Q.toSKM μ (G t).val := by
       let c : Fin n → ℕ := fun i => t.2 ((p t.1).symm i)
       have h₁ := point_weights Q.toSKM Q.skmSymmetrizer μ a b
         (hM t.1 t.1.property).1 (hM t.1 t.1.property).2 (E t.1).val (hE t.1)
         (p t.1) (hp t.1) (q t.1) (hq t.1) c (τ t.1 t.2)
         (by simpa [c] using hτ t.1 t.2) (L t) (hL t) (hm t)
       have hmap : (K (G t)).map ofL = dLay (List.ofFn fun r => (true, a r))
-          (topDotMoves (List.ofFn fun r => (true, a r)) t.1.val (fun j => (p t.1 j).val) (fun j => c (p t.1 j))) :=
+          (topDotMoves (List.ofFn fun r => (true, a r)) t.1.val
+            (fun j => (p t.1 j).val) (fun j => c (p t.1 j))) :=
         (hKm (G t)).trans (hF (J t))
       have h₂ := point_weights Q.toSKM Q.skmSymmetrizer μ a b
         (hM t.1 t.1.property).1 (hM t.1 t.1.property).2 (E t.1).val (hE t.1)
         (p t.1) (hp t.1)
         (fun j => (t.1.val.length, strandPosition (fun j => (p t.1 j).val) j))
-        (by intro j hj; simpa [strandPosition, hj] using hp t.1 (⟨j, hj⟩ : MatchingStrand (List.ofFn fun r => (true, a r)) t.1.val))
-        c _ (topDotMoves_decorates (List.ofFn fun r => (true, a r)) t.1.val _ _) (K (G t)) (hK (G t)) hmap
+        (by intro j hj; simpa [strandPosition, hj] using hp t.1 (⟨j, hj⟩ : MatchingStrand
+          (List.ofFn fun r => (true, a r)) t.1.val))
+        c _ (topDotMoves_decorates (List.ofFn fun r => (true, a r)) t.1.val _ _)
+          (K (G t)) (hK (G t)) hmap
       refine ⟨h₁.1.trans h₂.1.symm, ?_⟩
       rw [show (G t).val = _ from hF (J t)]
       exact h₁.2.trans h₂.2.symm
@@ -189,22 +199,23 @@ theorem positive_labelled_family_form_coeff
     exact ⟨ht, hs.trans hfc⟩
   · have : IsEmpty T := ⟨fun t => hmn ((hM t.1 t.1.property).1.positive_length_eq a b)⟩
     let L : T → List (LayerData I) := isEmptyElim
-    let hL : ∀ t, SChain (List.ofFn fun r => (true, a r)) (L t) (List.ofFn fun r => (true, b r)) := isEmptyElim
+    let hL : ∀ t, SChain (List.ofFn fun r => (true, a r)) (L t) (List.ofFn fun r => (true, b r)) :=
+      isEmptyElim
     refine ⟨L, hL, (fun t => isEmptyElim t), ?_⟩
     intro σ hσ z
     have hf : Set.Finite {t : T | Diagram.degree (gdeg Q.toSKM Q.skmSymmetrizer)
         (mkD Q.toSKM μ (L t) (hL t)) = z} := Set.toFinite _
     refine ⟨hf, ?_⟩
     rw [CoveringQuantum.UDot.GenericTensor.sesquilinearForm_positive_words_eq_zero_of_length_ne
-      Q hQ μ a b hmn, map_zero]
+      Q μ a b hmn, map_zero]
     rw [show hf.toFinset = ∅ from Finset.eq_empty_of_forall_notMem (fun t => isEmptyElim t)]
     simp
 
 /-- For the distinguished-point family of BE2, arXiv:1701.04133v2, §8 and
 Theorem 10.3, proof of Claim 1, bounded strand points determine a valid serializer
 and ordinary realizations before all signs and integer degrees. Their finite degree
-fibers compute the modified-form coefficients. Representative coverage and uniqueness,
-finite colours, and bar consistency remain explicit; this does not establish the
+fibers compute the modified-form coefficients. Representative coverage and uniqueness
+remain explicit, without finite-colour or bar-consistency restrictions; this does not establish the
 mixed-boundary claims or a comparison with the full raw selector range. -/
 theorem positive_bounded_points_family_form_coeff
     (M : Set (List (TMove (Letter I))))
@@ -227,7 +238,7 @@ theorem positive_bounded_points_family_form_coeff
           (mkD Q.toSKM μ (L t) (hL t)) = z},
         (∑ t ∈ hf.toFinset, σ ^ (xpar Q.toSKM μ (dLay A (τ t.1 t.2))).val) =
            (CoveringQuantum.signLaurent σ hσ
-             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q hQ
+             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q
                (CoveringQuantum.UDot.positiveHalf Q CoveringQuantum.Coefficients.q
                  CoveringQuantum.Coefficients.pi μ
                  (Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
@@ -244,6 +255,6 @@ theorem positive_bounded_points_family_form_coeff
     obtain ⟨ds, hd, -⟩ := exists_decorates₂_of_bounded_points A R.val (q R) (hq R) (hh R) c
     exact ⟨ds, hd⟩
   choose τ hτ using hs
-  exact ⟨τ, hτ, positive_labelled_family_form_coeff Q hQ μ a b M hM hrep huniq q hq τ hτ⟩
+  exact ⟨τ, hτ, positive_labelled_family_form_coeff Q μ a b M hM hrep huniq q hq τ hτ⟩
 
 end OddMath.SKM

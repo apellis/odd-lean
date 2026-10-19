@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.PositiveFormCoefficients
 import OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
 
@@ -13,12 +18,12 @@ open CoveringQuantum StringDiagrams StringDiagrams.Chord
 open PositiveDecoratedFamilyCoefficientsExamples
 open scoped BigOperators
 
-/-- The one-odd-root datum satisfies the form's bar-consistency hypothesis. -/
+/-- The one-odd-root datum independently satisfies bar consistency. -/
 theorem odd_barConsistent : oddDatum.toSuperCartanDatum.BarConsistent := fun _ => rfl
 
 /-- The existing modified form on a repeated odd word, expanded after evaluation. -/
 def repeatedForm (σ : ℚ) (hσ : σ ^ 2 = 1) (n : ℕ) : LaurentSeries ℚ :=
-  signLaurent σ hσ (UDot.GenericTensor.sesquilinearForm oddDatum odd_barConsistent
+  signLaurent σ hσ (UDot.GenericTensor.sesquilinearForm oddDatum
     (UDot.positiveHalf oddDatum Coefficients.q Coefficients.pi 0
       (oddDatum.toSerreF Coefficients.q Coefficients.pi
         (PreF.monomial Coefficients.Ring (List.ofFn (fun _ : Fin n => ())).reverse)))
@@ -66,7 +71,7 @@ theorem repeated_negative_coeff (σ : ℚ) (hσ : σ ^ 2 = 1) :
     simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]
     exact perm_two w
   have h (z : ℤ) := UDot.GenericTensor.sesquilinearForm_positive_words_coeff
-    oddDatum odd_barConsistent σ hσ 0 2 (fun _ => ()) (fun _ => ()) z
+    oddDatum σ hσ 0 2 (fun _ => ()) (fun _ => ()) z
   change ∀ z, (repeatedForm σ hσ 2).coeff z = _ at h
   simp only [hu, Finset.sum_pair (by decide : (Equiv.refl (Fin 2)) ≠ Equiv.swap 0 1),
     Finset.sum_filter, Fin.sum_univ_two] at h
@@ -101,7 +106,7 @@ theorem repeated_family (σ : ℚ) (hσ : σ ^ 2 = 1) :
              (repeatedForm σ hσ 2).coeff (-2) ∧
            (∑ D ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0 D.val).val) = σ) := by
   obtain ⟨p, hp, L, hL, hm, h⟩ := positive_decorated_family_form_coeff oddDatum
-    odd_barConsistent 0 σ hσ (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ())
+    0 σ hσ (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ())
     repeatedFamily family_matching family_coverage family_unique
   obtain ⟨hf, hc⟩ := h (-2)
   exact ⟨p, hp, L, hL, hm, hf, hc, hc.trans (repeated_negative_coeff σ hσ).1⟩
@@ -129,7 +134,7 @@ theorem empty_family (σ : ℚ) (hσ : σ ^ 2 = 1) :
   have hr : StrictReduced₂ ([] : List (Letter Unit)) [] :=
     ⟨⟨List.nodup_nil, by simp [tRun, tStart]⟩, List.nodup_nil⟩
   obtain ⟨p, hp, L, hL, hmap, h⟩ := positive_decorated_family_form_coeff oddDatum
-    odd_barConsistent 0 σ hσ a a {[]}
+    0 σ hσ a a {[]}
     (by intro R hR; obtain rfl := Set.mem_singleton_iff.mp hR; exact ⟨hm, hr⟩)
     (by
       intro R hR _
@@ -230,7 +235,7 @@ example :
 
 /-- Laurent expansion of the existing form on two odd words of possibly different lengths. -/
 def twoWordForm (σ : ℚ) (hσ : σ ^ 2 = 1) (m n : ℕ) : LaurentSeries ℚ :=
-  signLaurent σ hσ (UDot.GenericTensor.sesquilinearForm oddDatum odd_barConsistent
+  signLaurent σ hσ (UDot.GenericTensor.sesquilinearForm oddDatum
     (UDot.positiveHalf oddDatum Coefficients.q Coefficients.pi 0
       (oddDatum.toSerreF Coefficients.q Coefficients.pi
         (PreF.monomial Coefficients.Ring (List.ofFn (fun _ : Fin m => ())).reverse)))
@@ -242,7 +247,7 @@ def twoWordForm (σ : ℚ) (hσ : σ ^ 2 = 1) (m n : ℕ) : LaurentSeries ℚ :=
 theorem unequal_coeff (σ : ℚ) (hσ : σ ^ 2 = 1) {m n : ℕ} (hmn : m ≠ n) (z : ℤ) :
     (twoWordForm σ hσ m n).coeff z = 0 := by
   rw [twoWordForm, UDot.GenericTensor.sesquilinearForm_positive_words_eq_zero_of_length_ne
-    oddDatum odd_barConsistent 0 _ _ hmn, map_zero]
+    oddDatum 0 _ _ hmn, map_zero]
   simp
 
 /-- Fixture statement for an empty representative set: the canonical family's
@@ -271,7 +276,7 @@ matching validity, coverage, uniqueness, and all root-datum hypotheses discharge
 theorem unequal_family (σ : ℚ) (hσ : σ ^ 2 = 1) {m n : ℕ} (hmn : m ≠ n) :
     EmptyFamilyComparison σ hσ m n := by
   obtain ⟨p, hp, L, hL, hmap, hc⟩ := positive_decorated_family_form_coeff oddDatum
-    odd_barConsistent 0 σ hσ (fun _ : Fin m => ()) (fun _ : Fin n => ()) ∅
+    0 σ hσ (fun _ : Fin m => ()) (fun _ : Fin n => ()) ∅
     (by simp)
     (by intro R hR _; exact (hmn (hR.positive_length_eq _ _)).elim)
     (by simp)

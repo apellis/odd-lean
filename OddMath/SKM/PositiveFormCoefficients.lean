@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.PositiveDecoratedFamilyCoefficients
 import OddMath.CoveringQuantum.UDot.PositiveWordCoefficients
 
@@ -11,8 +16,8 @@ top placement and ordinary realization are taken from the canonical-family
 coefficient theorem, without changing their quantifier order or identifying
 independently chosen families at different signs.
 
-This result retains representative coverage and uniqueness, finite colours,
-and bar consistency. Unequal positive lengths give empty families and zero form
+This result retains representative coverage and uniqueness, with arbitrary colours
+and without bar consistency. Unequal positive lengths give empty families and zero form
 values. It does not identify arbitrary geometric selectors for nonempty families
 or address the other claims of Theorem 10.3.
 -/
@@ -22,13 +27,13 @@ namespace OddMath.SKM
 open StringDiagrams StringDiagrams.Chord
 open scoped BigOperators
 attribute [local instance] Classical.propDecidable
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (Q : CoveringQuantum.RootDatum I X) (hQ : Q.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (Q : CoveringQuantum.RootDatum I X)
 variable (μ : X) (σ : ℚ) (hσ : σ ^ 2 = 1) {m n : ℕ} (a : Fin m → I) (b : Fin n → I)
 local notation "A" => (List.ofFn fun r => (true, a r))
 local notation "B" => (List.ofFn fun r => (true, b r))
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem positive_decoratedFamily₂_eq_empty_of_length_ne
     (hmn : m ≠ n) (M : Set (List (TMove (Letter I))))
     (hM : ∀ R ∈ M, IsMatching₂ A B R)
@@ -39,7 +44,7 @@ private theorem positive_decoratedFamily₂_eq_empty_of_length_ne
   simp [hempty, decoratedFamily₂]
 
 /-- The canonical family's finite parity-weighted degree fibers equal the Laurent
-coefficients of the constructed form, with its finite/bar-consistent restrictions.
+coefficients of the constructed form, for arbitrary colours without bar consistency.
 The positive boundaries may have different lengths; then both sides vanish. -/
 theorem positive_decorated_family_form_coeff
     (M : Set (List (TMove (Letter I))))
@@ -61,7 +66,7 @@ theorem positive_decorated_family_form_coeff
            (mkD Q.toSKM μ (L D) (hL D)) = z},
          (∑ D ∈ hf.toFinset, σ ^ (xpar Q.toSKM μ D.val).val) =
            (CoveringQuantum.signLaurent σ hσ
-             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q hQ
+             (CoveringQuantum.UDot.GenericTensor.sesquilinearForm Q
                (CoveringQuantum.UDot.positiveHalf Q CoveringQuantum.Coefficients.q
                  CoveringQuantum.Coefficients.pi μ
                  (Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
@@ -81,7 +86,7 @@ theorem positive_decorated_family_form_coeff
     obtain ⟨hf, hfcoeff⟩ := hc z
     refine ⟨hf, hfcoeff.trans ?_⟩
     simpa only using (CoveringQuantum.UDot.GenericTensor.sesquilinearForm_positive_words_coeff
-      Q hQ σ hσ μ n a b z).symm
+      Q σ hσ μ n a b z).symm
   · let p : ∀ R : {R // R ∈ M}, MatchingStrand A R.val ≃ Fin n :=
       fun R => (hmn ((hM R.val R.property).1.positive_length_eq a b)).elim
     refine ⟨p, (fun R => (hmn ((hM R.val R.property).1.positive_length_eq a b)).elim), ?_⟩
@@ -101,7 +106,7 @@ theorem positive_decorated_family_form_coeff
           (mkD Q.toSKM μ (L D) (hL D)) = z} := Set.toFinite _
     refine ⟨hf, ?_⟩
     rw [CoveringQuantum.UDot.GenericTensor.sesquilinearForm_positive_words_eq_zero_of_length_ne
-      Q hQ μ a b hmn, map_zero]
+      Q μ a b hmn, map_zero]
     rw [show hf.toFinset = ∅ from
       Finset.eq_empty_of_forall_notMem (fun D => isEmptyElim D)]
     simp
