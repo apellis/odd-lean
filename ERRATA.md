@@ -693,6 +693,13 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    The printed outer bar changes this direct contribution to the unbarred quantum
    integer. Thus changing only (10.7) would leave the following display inconsistent.
 
+   **Declarations.** The corrected contextual algebraic identity is
+   `OddMath.CoveringQuantum.UDot.GenericTensor.sesquilinearForm_context_EF`;
+   `ContextualCommutatorExamples.odd_context_commutator` applies it with nonempty
+   prefix and suffix. In the same examples namespace, `odd_two_bar_ne` distinguishes
+   the quantum integers and `odd_unbarred_commutator_false` refutes the unbarred
+   algebraic form identity. These are not claims of a general graphical proof.
+
    **Diagnostic and remaining scope.** For one odd simple root with `dᵢ = 1`,
    `n = 2`, and empty surrounding words, the correct coefficient is `q⁻¹ + πq`,
    while the printed one is `q + πq⁻¹`. At `π = −1`, their formal `q¹`
