@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
+
 import OddMath.SKM.BoundaryFamilyCoefficients
 
 /-! Numerical boundary exchange for the two non-cap classes in Brundan–Ellis,
@@ -9,7 +15,8 @@ open StringDiagrams StringDiagrams.Chord
 variable {I X : Type*} [AddCommGroup X]
 
 /-- Opposite-oriented canonical exchange for distinct strands, including equal colours. -/
-theorem canon_opposite_boundary_degree_parity_of_not_same (D : Datum I X) (sy : Symmetrizer D) (μ : X)
+theorem canon_opposite_boundary_degree_parity_of_not_same
+    (D : Datum I X) (sy : Symmetrizer D) (μ : X)
     {s : List (ℕ × Letter I)} (hv : Valid s) (hl : Lettered flipL s)
     (a b : List (Letter I)) (x y : Letter I)
     (hs : s.map Prod.snd = a ++ x :: y :: b)

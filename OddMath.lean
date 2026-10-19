@@ -74,6 +74,12 @@ import OddMath.SKM.BoundaryExchange
 import OddMath.SKM.BoundaryExchangeExamples
 import OddMath.SKM.CapFamily
 import OddMath.SKM.CapFamilyExamples
+import OddMath.SKM.CapStrands
+import OddMath.SKM.CapStrandsExamples
+import OddMath.SKM.CapNormalization
+import OddMath.SKM.CapNormalizationExamples
+import OddMath.SKM.NoncapFamilyCoefficients
+import OddMath.SKM.NoncapFamilyCoefficientsExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
