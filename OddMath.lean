@@ -25,6 +25,7 @@ import OddMath.SKM.TableIsotopy
 import OddMath.SKM.TableIsotopyExamples
 import OddMath.CoveringQuantum.UDot.AdjointCoefficients
 import OddMath.CoveringQuantum.UDot.PositiveAdjointCoefficients
+import OddMath.CoveringQuantum.UDot.WordCoefficientExamples
 import OddMath.CoveringQuantum.UDot.AdjointCoefficientsExamples
 import OddMath.SKM.CapPushLocalGrading
 import OddMath.SKM.CapPushCrossingGrading

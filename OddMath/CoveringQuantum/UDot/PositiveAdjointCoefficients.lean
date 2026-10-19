@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.AdjointCoefficients
 import OddMath.SKM.CoveringDatum
 
@@ -7,25 +12,25 @@ import OddMath.SKM.CoveringDatum
 BE2, arXiv:1701.04133v2, Theorem 10.3 Claim 2: the algebraic coefficient
 step for positive input lists. Physical lists evaluate in the same order.
 Simultaneous reversal is used only on the scalar form of two positive words,
-not on modified elements or on a mixed pair. Finite colours and the existing
-route hypothesis `BarConsistent` are retained. This is not the graphical iff.
+not on modified elements or on a mixed pair. Colours may be infinite, without
+bar consistency. This is not the graphical iff.
 -/
 
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients PreF
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Simultaneously reversing two positive lists preserves the scalar form.
 This does not identify the corresponding modified-algebra elements. -/
 theorem sesquilinearForm_positive_reverse (μ : X) (a b : List I) :
-    sesquilinearForm D hD
+    sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a.reverse)))
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b.reverse))) =
-    sesquilinearForm D hD
+    sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
       (positiveHalf D Coefficients.q pi μ
@@ -33,7 +38,7 @@ theorem sesquilinearForm_positive_reverse (μ : X) (a b : List I) :
   rw [sesquilinearForm_reversed_words, sesquilinearForm_positiveHalf,
     GenericVerma.halfBar_monomial]
 
-omit [Finite I] [DecidableEq I] [DecidableEq X] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- The right region of a cup attached at physical bottom left. -/
 theorem positive_word_physical_weight (μ : X) (a : List I) :
     OddMath.SKM.wt D.toSKM μ (a.map fun i => (true, i)) =
@@ -46,7 +51,6 @@ theorem positive_word_physical_weight (μ : X) (a : List I) :
       halfRoot]
     abel
 
-omit [Finite I] in
 /-- Multiplication by E adds a letter at physical left, without reversal. -/
 theorem positiveHalf_leftCons (i : I) (μ : X) (a : List I) :
     (⟨E D Coefficients.q pi i (μ + halfWeight D true (wordWeight a)),
@@ -64,19 +68,19 @@ theorem positiveHalf_leftCons (i : I) (μ : X) (a : List I) :
 The physical cup region is ν, and F has right idempotent ν + αᵢ. Its degree
 shift is δ = dᵢ(1+hᵢν), with no parity factor. The positive RHS uses the
 unchanged reversed-word coordinates of the positive-family theorem.
-Finite colours and the route hypothesis `BarConsistent` remain explicit;
-no mixed-word reversal, graphical normalization, or family bijection is asserted. -/
+No mixed-word reversal, graphical normalization, or family bijection is asserted.
+Colours may be infinite, without bar consistency. -/
 theorem sesquilinearForm_positive_leftCons_bent_coeff
     (σ : ℚ) (hσ : σ ^ 2 = 1) (i : I) (μ : X) (a b : List I) (z : ℤ) :
     let ν := OddMath.SKM.wt D.toSKM μ (a.map fun j => (true, j))
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a)))
       (⟨F D Coefficients.q pi i (ν + D.α i),
         F_mem_modified D Coefficients.q pi i (ν + D.α i)⟩ *
         positiveHalf D Coefficients.q pi μ
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))))).coeff z =
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (i :: a).reverse)))
       (positiveHalf D Coefficients.q pi μ
