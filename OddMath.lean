@@ -1,3 +1,5 @@
+import OddMath.SKM.PositiveMatchingDots
+import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
 import OddMath.CoveringQuantum.Coefficients
