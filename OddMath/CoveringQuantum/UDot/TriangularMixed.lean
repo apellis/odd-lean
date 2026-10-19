@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.TriangularWeights
 import OddMath.CoveringQuantum.UDot.VermaMixed
 
@@ -12,19 +17,20 @@ quantum integer in the modified presentation.
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open PreF Coefficients TensorProduct
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem weight_monomial (v : Coefficients.Ringˣ) (i : I) (w : List I) :
     weight D.toSuperCartanDatum v i (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) =
-      ((D.qi v i ^ D.h i (halfWeight D true (wordWeight w)) : Coefficients.Ringˣ) : Coefficients.Ring) •
+      ((D.qi v i ^ D.h i (halfWeight D true (wordWeight w)) : Coefficients.Ringˣ) :
+    Coefficients.Ring) •
         D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) := by
   rw [weight, diagonal_mk]
   change D.toSerreF Coefficients.q pi (weightTwist D.toSuperCartanDatum v i _) = _
   rw [weightTwist_monomial, map_smul]
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- The toral operator has the expected eigenvalue on a homogeneous tensor. -/
 theorem toral_monomial (v : Coefficients.Ringˣ) (i : I) (a b : List I) :
     toral D.toSuperCartanDatum v i
@@ -50,7 +56,7 @@ private def correction (μ : X) (i : I) : Module.End Coefficients.Ring
       ((D.qi Coefficients.q i ^ (-D.h i μ) : Coefficients.Ringˣ) : Coefficients.Ring))) •
       toral D.toSuperCartanDatum Coefficients.q⁻¹ i)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem correction_monomial (μ : X) (i : I) (a b : List I) :
     correction D μ i
       (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a) ⊗ₜ[Coefficients.Ring]
@@ -89,11 +95,14 @@ private theorem correction_monomial (μ : X) (i : I) (a b : List I) :
     simp only [RootDatum.h, map_add, map_neg, inv_zpow, ← zpow_neg, neg_mul, mul_assoc,
       ← Units.val_mul, ← zpow_add, sub_eq_add_neg, neg_add_rev, neg_neg]
     simp only [add_comm, add_left_comm, add_assoc]
-  rw [he, ← mul_assoc, Ring.inverse_mul_cancel _ (GenericVerma.vermaDenominator_isUnit D.toSuperCartanDatum i), one_mul]
+  rw [he, ← mul_assoc, Ring.inverse_mul_cancel _ (GenericVerma.vermaDenominator_isUnit
+    D.toSuperCartanDatum i), one_mul]
 
+omit [DecidableEq I] [DecidableEq X] in
 private theorem correction_project (μ ν : X) (i : I) :
-    correction D μ i * weightProject D hD μ ν =
-      qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i ν) • weightProject D hD μ ν := by
+    correction D μ i * weightProject D μ ν =
+      qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i ν) • weightProject D μ ν := by
+  classical
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
@@ -101,8 +110,8 @@ private theorem correction_project (μ ν : X) (i : I) :
   intro y
   simp only [LinearMap.compr₂ₛₗ_apply, TensorProduct.mk_apply, Module.End.mul_apply,
     ]
-  change correction D μ i (weightProject D hD μ ν _) =
-    qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i ν) • weightProject D hD μ ν _
+  change correction D μ i (weightProject D μ ν _) =
+    qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i ν) • weightProject D μ ν _
   obtain ⟨x, rfl⟩ := D.toSerreF_surjective Coefficients.q pi x
   obtain ⟨y, rfl⟩ := D.toSerreF_surjective Coefficients.q pi y
   induction x using induction_monomial with
@@ -120,23 +129,25 @@ private theorem correction_project (μ ν : X) (i : I) :
       · rw [correction_monomial, h]
       · simp
 
+omit [DecidableEq X] in
 /-- The mixed relation on every actual tensor weight projection. -/
 theorem positive_negative_project (μ ν : X) (i j : I)
     (z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
-    positive D.toSuperCartanDatum hD (fun l ↦ D.h l μ) i
-      (negative D.toSuperCartanDatum j (weightProject D hD μ ν z)) =
+    positive D.toSuperCartanDatum (fun l ↦ D.h l μ) i
+      (negative D.toSuperCartanDatum j (weightProject D μ ν z)) =
     pi ^ (D.parity i * D.parity j).val •
       negative D.toSuperCartanDatum j
-        (positive D.toSuperCartanDatum hD (fun l ↦ D.h l μ) i (weightProject D hD μ ν z)) +
+        (positive D.toSuperCartanDatum (fun l ↦ D.h l μ) i (weightProject D μ ν z)) +
     if i = j then qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i ν) •
-      weightProject D hD μ ν z else 0 := by
-  have h := congrArg (fun f ↦ f (weightProject D hD μ ν z))
-    (positive_negative D.toSuperCartanDatum hD (fun l ↦ D.h l μ) i j)
+      weightProject D μ ν z else 0 := by
+  classical
+  have h := congrArg (fun f ↦ f (weightProject D μ ν z))
+    (positive_negative D.toSuperCartanDatum (fun l ↦ D.h l μ) i j)
   simp only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply] at h
   rw [h]
   congr 1
   split_ifs
-  · exact congrArg (fun f ↦ f z) (correction_project D hD μ ν i)
+  · exact congrArg (fun f ↦ f z) (correction_project D μ ν i)
   · rfl
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

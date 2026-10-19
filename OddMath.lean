@@ -153,6 +153,7 @@ import OddMath.CoveringQuantum.UDot.TriangularOperatorExamples
 import OddMath.CoveringQuantum.UDot.TriangularWeights
 import OddMath.CoveringQuantum.UDot.TriangularMixed
 import OddMath.CoveringQuantum.UDot.TriangularRepresentation
+import OddMath.CoveringQuantum.UDot.TriangularRepresentationExamples
 import OddMath.CoveringQuantum.UDot.TriangularRetraction
 import OddMath.CoveringQuantum.UDot.GlobalTriangular
 import OddMath.CoveringQuantum.UDot.RhoHalfWords
