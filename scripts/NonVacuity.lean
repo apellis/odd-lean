@@ -240,6 +240,9 @@ example : PowerSeries.coeff 2 (oddSl2.dotSeries (-1 : ℤ) (fun _ : Fin 2 ↦ ()
   rw [pow_two, PowerSeries.coeff_mul]
   norm_num [Finset.Nat.antidiagonal_succ, PreF.DotSeries.coeff_factor]
 
+example := oddSl2.dotCount_monomial (-1 : ℤ)
+  (fun _ : Fin 2 ↦ ()) (fun _ ↦ 1)
+
 example : oddSl2.norm (1 : ℤˣ) (-1 : ℤ) () =
     Ring.inverse ((oddSl2.dotDenominator (-1 : ℤ) ()).eval (1 : ℤ)) :=
   oddSl2.norm_eq_inverse_eval_dotDenominator (-1) 1 ()
