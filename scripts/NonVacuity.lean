@@ -1459,11 +1459,11 @@ example :
     sesquilinearForm oddDatum odd_barConsistent
       (algebraWord oddDatum 0 [(false, ()), (true, ()), (false, ()), (true, ())])
       (algebraWord oddDatum 0 []) -
-    pi * sesquilinearForm oddDatum odd_barConsistent
+    Coefficients.pi * sesquilinearForm oddDatum odd_barConsistent
       (algebraWord oddDatum 0 [(false, ()), (false, ()), (true, ()), (true, ())])
       (algebraWord oddDatum 0 []) =
     (((Coefficients.q⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring) +
-      pi * (Coefficients.q : Coefficients.Ring)) *
+      Coefficients.pi * (Coefficients.q : Coefficients.Ring)) *
       sesquilinearForm oddDatum odd_barConsistent
         (algebraWord oddDatum 0 [(false, ()), (true, ())]) (algebraWord oddDatum 0 []) :=
   odd_context_commutator
@@ -1471,10 +1471,10 @@ example :
 example :
     sesquilinearForm oddDatum odd_barConsistent
       (algebraWord oddDatum 2 [(true, ()), (false, ())]) (algebraWord oddDatum 2 []) -
-    pi * sesquilinearForm oddDatum odd_barConsistent
+    Coefficients.pi * sesquilinearForm oddDatum odd_barConsistent
       (algebraWord oddDatum 2 [(false, ()), (true, ())]) (algebraWord oddDatum 2 []) ≠
-    qpInt Coefficients.q pi 2 := odd_unbarred_commutator_false
+    qpInt Coefficients.q Coefficients.pi 2 := odd_unbarred_commutator_false
 
-example : bar (qpInt Coefficients.q pi 2) ≠ qpInt Coefficients.q pi 2 := odd_two_bar_ne
+example : bar (qpInt Coefficients.q Coefficients.pi 2) ≠ qpInt Coefficients.q Coefficients.pi 2 := odd_two_bar_ne
 
 end NonVacuity.Claim5Algebra
