@@ -176,6 +176,45 @@ example := psiExtension_comp_inverse (sy := osp12Sy) (hc := osp12Sc_homogeneous)
 example := psiInverse_comp_extension (sy := osp12Sy) (hc := osp12Sc_homogeneous)
   Complex.I Complex.I_sq osp12Cs
 
+/-! ### Positive reduced matchings: the crossing contribution in Theorem 10.3
+
+Two equal odd strands cross once: degree `-2` and parity `1`. -/
+
+open StringDiagrams StringDiagrams.Chord in
+example :
+    ∃ (L : List (LayerData Unit))
+      (hL : SChain [(true, ()), (true, ())] L [(true, ()), (true, ())]),
+      L.map ofL = tLay [(true, ()), (true, ())] [.mv (.cross 0)] ∧
+      Diagram.degree (gdeg osp12 osp12Sy) (mkD osp12 (0 : ℤ) L hL) = -2 ∧
+      xpar osp12 (0 : ℤ) (tLay [(true, ()), (true, ())] [.mv (.cross 0)]) = 1 := by
+  let a : Fin 2 → Unit := fun _ => ()
+  let R : List (TMove (Letter Unit)) := [.mv (.cross 0)]
+  have hm : IsMatching₂ (List.ofFn fun r => (true, a r))
+      (List.ofFn fun r => (true, a r)) R := by
+    constructor
+    · change 3 < 4 ∧ True
+      decide
+    · rfl
+  have hr : StrictReduced₂ (List.ofFn fun r => (true, a r)) R := by
+    refine ⟨⟨List.nodup_singleton _, ?_⟩, List.nodup_nil⟩
+    intro z hz
+    change z ∈ [_] at hz
+    obtain rfl := List.mem_singleton.mp hz
+    change ¬ (s(2, 0) : Sym2 ℕ).IsDiag
+    decide
+  have he : ∀ r : Fin 2, Same (pairing₂ (List.ofFn fun r => (true, a r)) R)
+      (2 - 1 - r.val) (2 + ((Equiv.swap 0 1) r).val) := by
+    intro r
+    fin_cases r
+    · change 1 ≠ 3 ∧ (some 2 : Option ℕ) ≠ none ∧ (some 2 : Option ℕ) = some 2
+      decide
+    · change 0 ≠ 2 ∧ (some 0 : Option ℕ) ≠ none ∧ (some 0 : Option ℕ) = some 0
+      decide
+  have h := positive_matching_degree_parity osp12 osp12Sy (0 : ℤ) a a hm hr
+    (Equiv.swap 0 1) he
+  simp only [Finset.sum_filter, Fin.sum_univ_two] at h
+  simpa [a, R, osp12, osp12Sy, Datum.d, Datum.h, Datum.α] using h
+
 /-! ### Ellis–Qi, The differential graded odd nilHecke algebra, Theorems 3.18 and 4.17 -/
 
 attribute [local instance] DG.HasDerivedCategory.small DG.CatModule.HasDerivedCategory.small
