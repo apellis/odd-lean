@@ -5,7 +5,8 @@ import OddMath.CoveringQuantum.UDot.SesquilinearForm
 # Positive-word values of the sesquilinear form
 
 Brundan–Ellis, arXiv:1701.04133v2, Theorem 10.3, Claim 1: the equal-length
-algebraic weighted-permutation calculation for the existing modified form.
+algebraic weighted-permutation calculation and unequal-length vanishing for the
+existing modified form.
 The normalization and crossing factors are the `norm` and `chi` of `HalfAlgebra`.
 Permutations map source positions to target positions, so colour preservation is
 `a r = b (w r)`, with source colours in the inversion product.
@@ -39,5 +40,28 @@ theorem sesquilinearForm_positive_words_permutations (μ : X) (n : ℕ)
   rw [sesquilinearForm_reversed_words, SuperCartanDatum.serreForm_toSerreF]
   exact form_monomial_permutations (D.chi Coefficients.q pi)
     (D.norm Coefficients.q pi) n a b
+
+/-- Unequal positive boundary lengths give zero in the existing modified form
+([BE2], Theorem 10.3, Claim 1). Orthogonality uses formal colour multidegrees,
+not root independence. Finite colours and bar consistency are restrictions of
+the constructed form. -/
+theorem sesquilinearForm_positive_words_eq_zero_of_length_ne
+    (μ : X) {m n : ℕ} (a : Fin m → I) (b : Fin n → I) (hmn : m ≠ n) :
+    sesquilinearForm D hD
+      (positiveHalf D Coefficients.q pi μ
+        (D.toSerreF Coefficients.q pi
+          (monomial Coefficients.Ring (List.ofFn a).reverse)))
+      (positiveHalf D Coefficients.q pi μ
+        (D.toSerreF Coefficients.q pi
+          (monomial Coefficients.Ring (List.ofFn b).reverse))) = 0 := by
+  rw [sesquilinearForm_reversed_words, SuperCartanDatum.serreForm_toSerreF]
+  apply form_monomial_eq_zero (D.chi Coefficients.q pi)
+    (D.norm Coefficients.q pi) (List.ofFn a) _ _ (monomial_mem_weightSpace _)
+  intro hw
+  have hp : (List.ofFn a).Perm (List.ofFn b) :=
+    List.perm_iff_count.mpr (fun i => by
+      simpa only [← wordWeight_apply] using
+        congrArg (fun ν : I →₀ ℕ => ν i) hw)
+  exact hmn (by simpa using hp.length_eq)
 
 end OddMath.CoveringQuantum.UDot.GenericTensor
