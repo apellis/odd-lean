@@ -26,6 +26,13 @@ import OddMath.SKM.TableIsotopyExamples
 import OddMath.CoveringQuantum.UDot.AdjointCoefficients
 import OddMath.CoveringQuantum.UDot.PositiveAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.AdjointCoefficientsExamples
+import OddMath.SKM.CapPushLocalGrading
+import OddMath.SKM.CapPushCrossingGrading
+import OddMath.SKM.CapPushGrading
+import OddMath.SKM.CapPushGradingExamples
+import OddMath.SKM.MatchingStrandColour
+import OddMath.SKM.MixedDotGrading
+import OddMath.SKM.MixedDotGradingExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
