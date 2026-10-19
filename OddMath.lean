@@ -1,4 +1,6 @@
 import OddMath.SKM.PositiveMatchingDots
+import OddMath.SKM.PositiveDecoratedGrading
+import OddMath.SKM.PositiveDecoratedGradingExamples
 import OddMath.SKM.PositiveMatchingDotsExamples
 import OddMath.SKM.Rho.FunctorInverses
 import OddMath.SKM.Rho.PrintedSlideConstraint
