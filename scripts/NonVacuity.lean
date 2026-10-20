@@ -70,7 +70,7 @@ theorem oddSl2_coroot_linearIndependent : LinearIndependent ℤ oddSl2Root.coroo
 
 open scoped Classical in
 example : ∀ x, (∀ y, UDot.GenericTensor.sesquilinearForm (oddSl2.rootDatumOf oddSl2Root)
-    oddSl2_barConsistent x y = 0) → x = 0 :=
+    x y = 0) → x = 0 :=
   UDot.sesquilinearForm_nondegenerate oddSl2Root oddSl2_barConsistent
     oddSl2_root_linearIndependent oddSl2_coroot_linearIndependent
 
@@ -862,7 +862,7 @@ example :
             (mkD oddDatum.toSKM 0 (L t) (hL t)) = z},
           (∑ t ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0
             (dLay repeatedWord (τ t.1 t.2))).val) = (repeatedForm σ hσ 2).coeff z :=
-  positive_bounded_points_family_form_coeff oddDatum odd_barConsistent 0
+  positive_bounded_points_family_form_coeff oddDatum 0
     (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ()) repeatedFamily
     family_matching family_coverage family_unique points points_valid points_bounded
 
@@ -1028,14 +1028,14 @@ open OddMath.SKM.PositiveDecoratedFamilyCoefficientsExamples
 open OddMath.SKM.PositiveFormCoefficientsExamples
 
 example :
-    (signLaurent 1 (by norm_num) (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent 1 (by norm_num) (sesquilinearForm oddDatum
       (positiveHalf oddDatum Coefficients.q pi 0
         (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [()])))
       (⟨F oddDatum Coefficients.q pi () 4,
         F_mem_modified oddDatum Coefficients.q pi () 4⟩ *
         positiveHalf oddDatum Coefficients.q pi 0
           (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [(), ()]))))).coeff 1 = 1 ∧
-    (signLaurent (-1) (by norm_num) (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent (-1) (by norm_num) (sesquilinearForm oddDatum
       (positiveHalf oddDatum Coefficients.q pi 0
         (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [()])))
       (⟨F oddDatum Coefficients.q pi () 4,
@@ -1045,7 +1045,7 @@ example :
   OddMath.CoveringQuantum.UDot.AdjointCoefficientsExamples.repeated_odd_physical_both_signs
 
 example (σ : ℚ) (hσ : σ ^ 2 = 1) :
-    (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm oddDatum
       (positiveHalf oddDatum Coefficients.q pi 0
         (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [()])))
       (⟨F oddDatum Coefficients.q pi () 4,
@@ -1105,11 +1105,11 @@ example : (signLaurent 1 (by norm_num) downPairing).coeff 1 = 1 ∧
   repeated_odd_down_both_signs
 
 example :
-    (signLaurent 1 (by norm_num) (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent 1 (by norm_num) (sesquilinearForm oddDatum
       (GenericVerma.MixedGram.algebraWord oddDatum 0
         [(false, ()), (true, ()), (true, ())])
       (GenericVerma.MixedGram.algebraWord oddDatum 0 [(true, ())]))).coeff 1 = 1 ∧
-    (signLaurent (-1) (by norm_num) (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent (-1) (by norm_num) (sesquilinearForm oddDatum
       (GenericVerma.MixedGram.algebraWord oddDatum 0
         [(false, ()), (true, ()), (true, ())])
       (GenericVerma.MixedGram.algebraWord oddDatum 0 [(true, ())]))).coeff 1 = 1 :=
@@ -1234,7 +1234,7 @@ example :
     (signLaurent (-1) (by norm_num) MixedUpAdjointExamples.mixedCupPairing).coeff 2 ≠ 0 :=
   MixedUpAdjointExamples.odd_mixed_up_both_signs
 
-example : sesquilinearForm oddDatum odd_barConsistent
+example : sesquilinearForm oddDatum
     (algebraWord oddDatum 0 [(true, ()), (false, ())])
     (algebraWord oddDatum 0 [(true, ()), (true, ()), (false, ())]) = 0 :=
   MatchingEndpointSupportExamples.form_zero
@@ -1278,11 +1278,11 @@ example : ∃ (T U : Type) (d : T → ℤ) (e : U → ℤ)
     (hf : ∀ z : ℤ, Set.Finite {t | d t = z})
     (hg : ∀ z : ℤ, Set.Finite {u | e u = z}),
     (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
-      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(true, ()), (false, ())])
         (algebraWord oddDatum 0 []))).coeff z =
           ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
-       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ())])
         (algebraWord oddDatum 0 [(false, ())]))).coeff z =
           ∑ u ∈ (hg z).toFinset, σ ^ (q u).val))) ∧
@@ -1294,10 +1294,10 @@ example : ∃ (T U : Type) (d : T → ℤ) (e : U → ℤ)
   · simpa using (hcounts 1 1).2.1
 
 example (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(true, ()), (true, ()), (false, ())])
       (algebraWord oddDatum 0 [(true, ()), (false, ())]))).coeff z = 0 ∧
-    (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(true, ()), (false, ())])
       (algebraWord oddDatum 0 [(false, ()), (true, ()), (false, ())]))).coeff z = 0 := by
   obtain ⟨_, _, _, hzero⟩ := Claim2MismatchExamples.mismatch_form_coeff_iff
@@ -1316,11 +1316,11 @@ example : ∃ (T U : Type) (d : T → ℤ) (e : U → ℤ)
     (hf : ∀ z : ℤ, Set.Finite {t | d t = z})
     (hg : ∀ z : ℤ, Set.Finite {u | e u = z}),
     (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
-      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ()), (true, ())])
         (algebraWord oddDatum 0 []))).coeff z =
           ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
-       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(true, ())])
         (algebraWord oddDatum 0 [(true, ())]))).coeff z =
           ∑ u ∈ (hg z).toFinset, σ ^ (q u).val))) ∧
@@ -1342,16 +1342,16 @@ example : ∃ (T U : Type) (d : T → ℤ) (e : U → ℤ)
     (hf : ∀ z : ℤ, Set.Finite {t | d t = z})
     (hg : ∀ z : ℤ, Set.Finite {u | e u = z}),
     (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
-      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+      ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ())]) (algebraWord oddDatum 0 []))).coeff z =
           ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
-       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+       (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 []) (algebraWord oddDatum 0 [(true, ())]))).coeff z =
           ∑ u ∈ (hg z).toFinset, σ ^ (q u).val))) ∧
     (∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+      (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ())]) (algebraWord oddDatum 0 []))).coeff z = 0 ∧
-      (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+      (signLaurent σ hσ (sesquilinearForm oddDatum
         (algebraWord oddDatum 0 []) (algebraWord oddDatum 0 [(true, ())]))).coeff z = 0 ∧
       (∑ t ∈ (hf z).toFinset, σ ^ (p t).val) = 0 ∧
       (∑ u ∈ (hg z).toFinset, σ ^ (q u).val) = 0) := by
@@ -1409,10 +1409,10 @@ example (k : Bool) :
       (hf : ∀ z : ℤ, Set.Finite {t | d t = z})
       (hg : ∀ z : ℤ, Set.Finite {u | e u = z}),
       (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
-        ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+        ((∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm twoOddDatum
           (algebraWord twoOddDatum 0 a) (algebraWord twoOddDatum 0 []))).coeff z =
             ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
-         (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+         (∀ z : ℤ, (signLaurent σ hσ (sesquilinearForm twoOddDatum
           (algebraWord twoOddDatum 0 b) (algebraWord twoOddDatum 0 []))).coeff z =
             ∑ u ∈ (hg z).toFinset, σ ^ (q u).val))) ∧
       (∃ t, d t = 4) ∧ (∃ t, d t = 2) ∧ (∃ u, e u = 2) ∧
@@ -1439,10 +1439,10 @@ example (k : Bool) : ∃ (T U : Type) (d : T → ℤ) (e : U → ℤ)
   exact ⟨_, _, _, _, _, _, hf, hg, ⟨hdot.choose, hdot.choose_spec.1⟩, hu, hs, ht⟩
 
 example (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (true, false), (false, true), (true, true)])
       (algebraWord twoOddDatum 0 []))).coeff z =
-    σ * (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    σ * (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (false, true), (true, false), (true, true)])
       (algebraWord twoOddDatum 0 []))).coeff z :=
   twoOdd_context_coeff σ hσ z
@@ -1456,22 +1456,22 @@ open OddMath.SKM.PositiveFormCoefficientsExamples
 open UDot.ContextualCommutatorExamples
 
 example :
-    sesquilinearForm oddDatum odd_barConsistent
+    sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(false, ()), (true, ()), (false, ()), (true, ())])
       (algebraWord oddDatum 0 []) -
-    Coefficients.pi * sesquilinearForm oddDatum odd_barConsistent
+    Coefficients.pi * sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(false, ()), (false, ()), (true, ()), (true, ())])
       (algebraWord oddDatum 0 []) =
     (((Coefficients.q⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring) +
       Coefficients.pi * (Coefficients.q : Coefficients.Ring)) *
-      sesquilinearForm oddDatum odd_barConsistent
+      sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ()), (true, ())]) (algebraWord oddDatum 0 []) :=
   odd_context_commutator
 
 example :
-    sesquilinearForm oddDatum odd_barConsistent
+    sesquilinearForm oddDatum
       (algebraWord oddDatum 2 [(true, ()), (false, ())]) (algebraWord oddDatum 2 []) -
-    Coefficients.pi * sesquilinearForm oddDatum odd_barConsistent
+    Coefficients.pi * sesquilinearForm oddDatum
       (algebraWord oddDatum 2 [(false, ()), (true, ())]) (algebraWord oddDatum 2 []) ≠
     qpInt Coefficients.q Coefficients.pi 2 := odd_unbarred_commutator_false
 
@@ -1659,3 +1659,38 @@ example (μ : Bool → ℤ) := OddMath.SKM.Theorem103Examples.populated true μ
 example (μ : Bool → ℤ) := OddMath.SKM.Theorem103Examples.populated false μ
 
 end NonVacuity.Theorem103
+
+namespace NonVacuity.Theorem103Infinite
+
+open OddMath.CoveringQuantum.UDot.VermaWeightExamples
+open OddMath.SKM.Theorem103InfiniteExamples
+
+example : Infinite ℕ ∧ ¬ datum.toSuperCartanDatum.BarConsistent := infinite_nonbar
+example (ε : Bool) (ζ μ : ℕ →₀ ℤ) := graphical ε ζ μ
+example (ε : Bool) := negative_weight_graphical ε
+example := unequal_weight_zero true
+example := unequal_weight_zero false
+example (μ : ℕ →₀ ℤ) (z : ℤ) := both_signs true μ z
+example (μ : ℕ →₀ ℤ) (z : ℤ) := both_signs false μ z
+example (μ : ℕ →₀ ℤ) := populated true μ
+example (μ : ℕ →₀ ℤ) := populated false μ
+
+end NonVacuity.Theorem103Infinite
+
+namespace NonVacuity.InfiniteQuotientNilpotence
+
+open OddMath.CoveringQuantum.UDot
+open GenericVerma VermaWeightExamples IntegrableQuotientExamples
+
+example : toIntegrable datum highestWeight 1 ≠ 0 :=
+  toIntegrable_one_ne_zero datum highestWeight dominant
+
+example :
+    (∃ n : ℕ, (integrableChevalley datum highestWeight false 0 ^ n)
+      (toIntegrable datum highestWeight representative) = 0) ∧
+    (∃ n : ℕ, (integrableChevalley datum highestWeight true 1 ^ n)
+      (toIntegrable datum highestWeight representative) = 0) :=
+  ⟨integrableChevalley_false_locally_nilpotent datum highestWeight _ 0,
+    NativeLeading.integrableChevalley_true_locally_nilpotent datum highestWeight _ 1⟩
+
+end NonVacuity.InfiniteQuotientNilpotence

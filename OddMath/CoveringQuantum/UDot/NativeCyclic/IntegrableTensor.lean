@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.NativeCyclic.TensorSupport
 import OddMath.CoveringQuantum.UDot.NativeCyclic.IntegrableFinite
 
@@ -15,12 +20,15 @@ not the weight projection endomorphism called `tensorProject`. -/
 def toIntegrableTensor (Λ Μ : X) :
     (D.serreF Coefficients.q pi) ⊗[Coefficients.Ring]
       (D.serreF Coefficients.q pi) →ₗ[Coefficients.Ring]
-    (IntegrableQuotient D hD Λ) ⊗[Coefficients.Ring] (IntegrableQuotient D hD Μ) :=
-  TensorProduct.map (toIntegrable D hD Λ) (toIntegrable D hD Μ)
+    (IntegrableQuotient D Λ) ⊗[Coefficients.Ring] (IntegrableQuotient D Μ) :=
+  TensorProduct.map (toIntegrable D Λ) (toIntegrable D Μ)
 
+omit [Finite I] in
 @[simp] theorem toIntegrableTensor_tmul (Λ Μ : X) (x y : D.serreF Coefficients.q pi) :
-    toIntegrableTensor D hD Λ Μ (x ⊗ₜ[Coefficients.Ring] y) =
-      toIntegrable D hD Λ x ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ y := rfl
+    toIntegrableTensor D Λ Μ (x ⊗ₜ[Coefficients.Ring] y) =
+      toIntegrable D Λ x ⊗ₜ[Coefficients.Ring] toIntegrable D Μ y := rfl
+
+include hD
 
 /-- Any finite set of actual tensors, including arbitrary finite sums, has one
 bound for injectivity on its ENTIRE covering-ring span. No flatness, freeness,
@@ -29,7 +37,7 @@ theorem finite_span_toIntegrableTensor_injective_bound
     (s : Finset ((D.serreF Coefficients.q pi) ⊗[Coefficients.Ring]
       (D.serreF Coefficients.q pi))) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
-      Set.InjOn (toIntegrableTensor D hD Λ Μ) (Submodule.span Coefficients.Ring
+      Set.InjOn (toIntegrableTensor D Λ Μ) (Submodule.span Coefficients.Ring
         (s : Set ((D.serreF Coefficients.q pi) ⊗[Coefficients.Ring]
           (D.serreF Coefficients.q pi)))) := by
   obtain ⟨S, T, hS, hT, hst⟩ := TensorProduct.exists_finite_submodule_of_setFinite
@@ -40,8 +48,8 @@ theorem finite_span_toIntegrableTensor_injective_bound
   obtain ⟨B, hB, hb⟩ := exists_toIntegrable_injective_bound D hD S
   obtain ⟨C, hC, hc⟩ := exists_toIntegrable_injective_bound D hD T
   refine ⟨max B C, hB.trans (le_max_left _ _), fun Λ Μ hΛ hΜ => ?_⟩
-  have hinj := covering_tensor_injOn_range S T (toIntegrable D hD Λ)
-    (toIntegrable D hD Μ) (hb Λ (fun i => (le_max_left _ _).trans (hΛ i)))
+  have hinj := covering_tensor_injOn_range S T (toIntegrable D Λ)
+    (toIntegrable D Μ) (hb Λ (fun i => (le_max_left _ _).trans (hΛ i)))
     (hc Μ (fun i => (le_max_right _ _).trans (hΜ i)))
   exact hinj.mono (Submodule.span_le.mpr hst)
 
@@ -50,7 +58,7 @@ theorem fg_toIntegrableTensor_injective_bound
     (U : Submodule Coefficients.Ring ((D.serreF Coefficients.q pi) ⊗[Coefficients.Ring]
       (D.serreF Coefficients.q pi))) (hU : U.FG) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
-      Set.InjOn (toIntegrableTensor D hD Λ Μ) U := by
+      Set.InjOn (toIntegrableTensor D Λ Μ) U := by
   obtain ⟨s, rfl⟩ := hU
   exact finite_span_toIntegrableTensor_injective_bound D hD s
 
@@ -62,7 +70,7 @@ theorem finite_span_toIntegrableTensor_fixed_difference
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       (∀ i, 0 ≤ D.h i (ζ + n • ξ)) ∧ (∀ i, 0 ≤ D.h i (n • ξ)) ∧
       (ζ + n • ξ) - n • ξ = ζ ∧
-      Set.InjOn (toIntegrableTensor D hD (ζ + n • ξ) (n • ξ))
+      Set.InjOn (toIntegrableTensor D (ζ + n • ξ) (n • ξ))
         (Submodule.span Coefficients.Ring
         (s : Set ((D.serreF Coefficients.q pi) ⊗[Coefficients.Ring]
           (D.serreF Coefficients.q pi)))) := by
@@ -95,7 +103,7 @@ theorem nonzero_toIntegrableTensor_fixed_difference
     (hz : z ≠ 0) (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       (∀ i, 0 ≤ D.h i (ζ + n • ξ)) ∧ (∀ i, 0 ≤ D.h i (n • ξ)) ∧
-      toIntegrableTensor D hD (ζ + n • ξ) (n • ξ) z ≠ 0 := by
+      toIntegrableTensor D (ζ + n • ξ) (n • ξ) z ≠ 0 := by
   classical
   obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D hD {z} ζ ξ hξ
   refine ⟨N, fun n hn => ?_⟩
@@ -110,8 +118,8 @@ theorem toIntegrableTensor_fixed_difference_separating
     (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ)
     (x y : (D.serreF Coefficients.q pi) ⊗[Coefficients.Ring] (D.serreF Coefficients.q pi))
     (hxy : ∀ n : ℕ, (∀ i, 0 ≤ D.h i (ζ + n • ξ)) → (∀ i, 0 ≤ D.h i (n • ξ)) →
-      toIntegrableTensor D hD (ζ + n • ξ) (n • ξ) x =
-        toIntegrableTensor D hD (ζ + n • ξ) (n • ξ) y) : x = y := by
+      toIntegrableTensor D (ζ + n • ξ) (n • ξ) x =
+        toIntegrableTensor D (ζ + n • ξ) (n • ξ) y) : x = y := by
   classical
   obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D hD {x, y} ζ ξ hξ
   have hh := hN N le_rfl

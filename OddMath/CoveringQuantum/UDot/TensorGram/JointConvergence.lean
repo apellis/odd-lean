@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.JointLimit
 
@@ -20,25 +21,25 @@ open scoped Topology
 open Filter
 namespace OddMath.CoveringQuantum.UDot.NormalizedJointLimit
 open Coefficients PreF GenericVerma MixedGram PolarizationTransport NormalizedMixedComparison
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X)
 
 /-- The actual Gram on the eventual dominant domain, extended by zero elsewhere. -/
 def gramExtension (ζ : X) (x y : modified D Coefficients.q pi) (s : Bool)
     (p : WeightPair ζ) : Coefficients.Ring := by
   classical
   exact if h : (∀ i, 0 ≤ D.h i p.val.1) ∧ (∀ i, 0 ≤ D.h i p.val.2) then
-    modifiedGram D hD p.val.1 p.val.2 h.1 h.2 s x y
+    modifiedGram D p.val.1 p.val.2 h.1 h.2 s x y
   else 0
 
 /-- Agreement is pointwise on all actual dominant pairs, not merely a choice
 of a convenient residual-polynomial extension. -/
 theorem gramExtension_eq (ζ : X) (x y : modified D Coefficients.q pi) (s : Bool)
     (p : WeightPair ζ) (hΛ : ∀ i, 0 ≤ D.h i p.val.1) (hΜ : ∀ i, 0 ≤ D.h i p.val.2) :
-    gramExtension D hD ζ x y s p = modifiedGram D hD p.val.1 p.val.2 hΛ hΜ s x y := by
+    gramExtension D ζ x y s p = modifiedGram D p.val.1 p.val.2 hΛ hΜ s x y := by
   simp [gramExtension, hΛ, hΜ]
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Both coordinate families eventually exceed any one finite threshold. -/
 theorem jointFilter_eventually_lower (ζ : X) (B : ℤ) :
     ∀ᶠ p in jointFilter D ζ,
@@ -58,24 +59,24 @@ theorem jointFilter_eventually_lower (ζ : X) (B : ℤ) :
 theorem gramExtension_eventually_actual (ζ : X) (x y : modified D Coefficients.q pi) :
     ∀ᶠ p in jointFilter D ζ,
       ∃ (hΛ : ∀ i, 0 ≤ D.h i p.val.1) (hΜ : ∀ i, 0 ≤ D.h i p.val.2), ∀ s,
-        gramExtension D hD ζ x y s p = modifiedGram D hD p.val.1 p.val.2 hΛ hΜ s x y := by
+        gramExtension D ζ x y s p = modifiedGram D p.val.1 p.val.2 hΛ hΜ s x y := by
   filter_upwards [jointFilter_eventually_dominant D ζ] with p hp
-  exact ⟨hp.1, hp.2, fun s ↦ gramExtension_eq D hD ζ x y s p hp.1 hp.2⟩
+  exact ⟨hp.1, hp.2, fun s ↦ gramExtension_eq D ζ x y s p hp.1 hp.2⟩
 
 /-- A single eventual event controls all four (pi sign, native coproduct) cases. -/
 theorem gramExtension_eventually_order_both (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) (N : ℤ) :
     ∀ᶠ p in jointFilter D ζ, ∀ s : Bool,
       (N : WithTop ℤ) ≤ QAdic.order (specialize 1 (one_pow 2)
-        (gramExtension D hD ζ x y s p - GenericTensor.positiveModifiedForm D hD x y)) ∧
+        (gramExtension D ζ x y s p - GenericTensor.positiveModifiedForm D x y)) ∧
       (N : WithTop ℤ) ≤ QAdic.order (specialize (-1) (by norm_num)
-        (gramExtension D hD ζ x y s p - GenericTensor.positiveModifiedForm D hD x y)) := by
+        (gramExtension D ζ x y s p - GenericTensor.positiveModifiedForm D x y)) := by
   filter_upwards [jointFilter_eventually_dominant D ζ,
-    jointFilter_eventually_lower D ζ (bothThreshold (residualPolynomial D hD ζ x y hx hy) N)]
+    jointFilter_eventually_lower D ζ (bothThreshold (residualPolynomial D ζ x y hx hy) N)]
       with p hp hb
   intro s
-  rw [gramExtension_eq D hD ζ x y s p hp.1 hp.2]
-  exact (modifiedGram_order_both D hD ζ x y hx hy N).2
+  rw [gramExtension_eq D ζ x y s p hp.1 hp.2]
+  exact (modifiedGram_order_both D ζ x y hx hy N).2
     p.val.1 p.val.2 hp.1 hp.2 p.property hb.2 s
 
 /-- Genuine q-adic limit at q = 0 for every pi^2 = 1 specialization.
@@ -83,20 +84,22 @@ The coproduct may even vary with the weight pair: the estimate is uniform. -/
 theorem gramExtension_tendsto (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y)
     (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (s : WeightPair ζ → Bool) :
-    Tendsto (fun p ↦ specialize ε hε (gramExtension D hD ζ x y (s p) p))
-      (jointFilter D ζ) (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D hD x y))) := by
+    Tendsto (fun p ↦ specialize ε hε (gramExtension D ζ x y (s p) p))
+      (jointFilter D ζ) (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D x y))) := by
   have hh : Tendsto (fun p ↦ specialize ε hε
-      (gramExtension D hD ζ x y (s p) p - GenericTensor.positiveModifiedForm D hD x y))
+      (gramExtension D ζ x y (s p) p - GenericTensor.positiveModifiedForm D x y))
       (jointFilter D ζ) (𝓝 0) := by
     apply QAdic.tendsto_zero_of_order
     intro N
-    filter_upwards [gramExtension_eventually_order_both D hD ζ x y hx hy N] with p hp
+    filter_upwards [gramExtension_eventually_order_both D ζ x y hx hy N] with p hp
     rcases sq_eq_one_iff.mp hε with rfl | rfl
     · exact (hp (s p)).1
     · exact (hp (s p)).2
   have hs := hh.add (tendsto_const_nhds
-    (x := specialize ε hε (GenericTensor.positiveModifiedForm D hD x y)))
+    (x := specialize ε hε (GenericTensor.positiveModifiedForm D x y)))
   simpa only [map_sub, sub_add_cancel, zero_add] using hs
+
+variable [Finite I]
 
 /-- Nonvacuous joint convergence requires an explicit strictly positive
 coroot weight. This assumption is absent from every algebraic estimate. -/
@@ -104,9 +107,9 @@ theorem nonvacuous_joint_limit (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ)
     (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     (jointFilter D ζ).NeBot ∧ ∀ (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (s : WeightPair ζ → Bool),
-      Tendsto (fun p ↦ specialize ε hε (gramExtension D hD ζ x y (s p) p))
-        (jointFilter D ζ) (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D hD x y))) :=
-  ⟨jointFilter_neBot_of_positive D ζ ξ hξ, gramExtension_tendsto D hD ζ x y hx hy⟩
+      Tendsto (fun p ↦ specialize ε hε (gramExtension D ζ x y (s p) p))
+        (jointFilter D ζ) (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D x y))) :=
+  ⟨jointFilter_neBot_of_positive D ζ ξ hξ, gramExtension_tendsto D ζ x y hx hy⟩
 
 /-- The concrete natural-number fixed-difference sequence (ζ+nξ,nξ). -/
 def cofinalPair (ζ ξ : X) (n : ℕ) : WeightPair ζ :=
@@ -155,9 +158,9 @@ theorem cofinalPair_gram_tendsto (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ)
     (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y)
     (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (s : Bool) :
-    Tendsto (fun n : ℕ ↦ specialize ε hε (gramExtension D hD ζ x y s (cofinalPair ζ ξ n)))
-      atTop (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D hD x y))) :=
-  (gramExtension_tendsto D hD ζ x y hx hy ε hε (fun _ ↦ s)).comp
+    Tendsto (fun n : ℕ ↦ specialize ε hε (gramExtension D ζ x y s (cofinalPair ζ ξ n)))
+      atTop (𝓝 (specialize ε hε (GenericTensor.positiveModifiedForm D x y))) :=
+  (gramExtension_tendsto D ζ x y hx hy ε hε (fun _ ↦ s)).comp
     (cofinalPair_tendsto D ζ ξ hξ)
 
 end OddMath.CoveringQuantum.UDot.NormalizedJointLimit

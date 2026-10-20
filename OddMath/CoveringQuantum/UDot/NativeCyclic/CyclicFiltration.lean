@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.NativeCyclic.CyclicNative
 import Mathlib.Data.Set.Finite.List
 
@@ -33,14 +38,14 @@ theorem truncation_fg [Finite I] (m n : ℕ) : (truncation D m n).FG := by
   exact ⟨a, ha, b, hb, rfl⟩
 
 section Quotient
-variable [DecidableEq I] [DecidableEq X] [Finite I]
+variable [DecidableEq I] [DecidableEq X]
 variable (hD : D.toSuperCartanDatum.BarConsistent)
 
 /-- Every accepted correction belongs to the quotient image of the finite rectangle. -/
 theorem lowerBidegree_le_map_truncation (Λ Μ : X) {a b m n : ℕ}
     (ha : a ≤ m + 1) (hb : b ≤ n + 1) :
-    lowerBidegree D hD Λ Μ a b ≤
-      (truncation D m n).map (toIntegrableTensor D hD Λ Μ) := by
+    lowerBidegree D Λ Μ a b ≤
+      (truncation D m n).map (toIntegrableTensor D Λ Μ) := by
   apply Submodule.span_le.mpr
   rintro z ⟨u, v, hu, hv, rfl⟩
   refine ⟨wordTensor D u v, wordTensor_mem_truncation D u v m n (by omega) (by omega), ?_⟩
@@ -49,25 +54,28 @@ theorem lowerBidegree_le_map_truncation (Λ Μ : X) {a b m n : ℕ}
 /-- A valid whole-span filtration comparison: all corrections remain in the same
 finite quotient-injectivity domain as the leading terms. This is NOT injectivity. -/
 theorem cyclic_truncation (Λ Μ : X) (s : Bool) (m n : ℕ) :
-    (truncation D m n).map (cyclic D hD Λ Μ s) ≤
-      (truncation D m n).map (toIntegrableTensor D hD Λ Μ) := by
+    (truncation D m n).map (cyclic D Λ Μ s) ≤
+      (truncation D m n).map (toIntegrableTensor D Λ Μ) := by
   rw [Submodule.map_le_iff_le_comap]
   apply Submodule.span_le.mpr
   rintro z ⟨a, b, ha, hb, rfl⟩
-  change cyclic D hD Λ Μ s (wordTensor D a b) ∈
-    (truncation D m n).map (toIntegrableTensor D hD Λ Μ)
-  obtain ⟨_, r, hr, he⟩ := cyclic_wordTensor_leading D hD Λ Μ s a b
+  change cyclic D Λ Μ s (wordTensor D a b) ∈
+    (truncation D m n).map (toIntegrableTensor D Λ Μ)
+  obtain ⟨_, r, hr, he⟩ := cyclic_wordTensor_leading D Λ Μ s a b
   rw [he]
   exact Submodule.add_mem _
     (Submodule.smul_mem _ _ ⟨wordTensor D a b,
       wordTensor_mem_truncation D a b m n ha hb, rfl⟩)
-    (lowerBidegree_le_map_truncation D hD Λ Μ
+    (lowerBidegree_le_map_truncation D Λ Μ
       (ha.trans (Nat.le_succ _)) (hb.trans (Nat.le_succ _)) hr)
 
+variable [Finite I]
+
+include hD in
 /-- One threshold detects the entire finite rectangle, including every native correction. -/
 theorem truncation_quotient_injective_bound (m n : ℕ) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
-      Set.InjOn (toIntegrableTensor D hD Λ Μ) (truncation D m n) :=
+      Set.InjOn (toIntegrableTensor D Λ Μ) (truncation D m n) :=
   fg_toIntegrableTensor_injective_bound D hD _ (truncation_fg D m n)
 
 end Quotient

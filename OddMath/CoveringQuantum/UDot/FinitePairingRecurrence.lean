@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 
 /-!
@@ -20,28 +25,28 @@ This does not prove full-form nondegeneracy: lower word degree is not higher
 q-valuation, and this filtration is not orthogonal for the form. The valuation
 control supplied by canonical bases and tensor polarizations in Clark, Quantum
 supergroups IV, Propositions 5.10–5.11 and Theorem 5.12, is not asserted here.
-The form and action hypotheses remain finite bar-consistent data over the actual
-generic covering ring. No canonical basis, detecting family, or Gram invertibility
+The form and action are defined for arbitrary colours without bar consistency
+over the generic covering ring. No canonical basis, detecting family, or Gram invertibility
 is assumed.
 -/
 
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients TensorProduct PreF
-variable {I : Type*} [DecidableEq I] [Finite I]
-variable (C : SuperCartanDatum I) (hC : C.BarConsistent)
+variable {I : Type*} [DecidableEq I]
+variable (C : SuperCartanDatum I)
 
 /-- Word-length filtration of the actual Serre half. -/
 def halfWordDegree (n : ℕ) : Submodule Coefficients.Ring (C.serreF Coefficients.q pi) :=
   Submodule.span Coefficients.Ring {x | ∃ w : List I, w.length ≤ n ∧
     x = C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)}
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem monomial_mem_halfWordDegree (n : ℕ) (w : List I) (hw : w.length ≤ n) :
     C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) ∈ halfWordDegree C n :=
   Submodule.subset_span ⟨w, hw, rfl⟩
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem diagonal_mem_halfWordDegree (n : ℕ) (c : I → Coefficients.Ring)
     {x : C.serreF Coefficients.q pi} (hx : x ∈ halfWordDegree C n) :
     diagonal C c x ∈ halfWordDegree C n := by
@@ -54,7 +59,7 @@ private theorem diagonal_mem_halfWordDegree (n : ℕ) (c : I → Coefficients.Ri
   | add x y hx hy ihx ihy => simpa only [map_add] using Submodule.add_mem _ ihx ihy
   | smul c x hx ih => simpa only [map_smul] using Submodule.smul_mem _ c ih
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem create_mem_halfWordDegree (n : ℕ) (i : I)
     {x : C.serreF Coefficients.q pi} (hx : x ∈ halfWordDegree C n) :
     create C i x ∈ halfWordDegree C (n + 1) := by
@@ -70,7 +75,7 @@ private theorem create_mem_halfWordDegree (n : ℕ) (i : I)
 
 private theorem numerator_monomial_mem (i : I) (a b : Coefficients.Ring) (n : ℕ)
     (w : List I) (hw : w.length ≤ n + 1) :
-    numerator C hC i a b (C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) ∈
+    numerator C i a b (C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) ∈
       halfWordDegree C n := by
   induction n generalizing w with
   | zero =>
@@ -80,7 +85,7 @@ private theorem numerator_monomial_mem (i : I) (a b : Coefficients.Ring) (n : �
       have hw0 : w = [] := List.length_eq_zero_iff.mp (by simpa using hw)
       subst w
       simp only [monomial, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]
-      have he := numerator_create C hC i j a b 1
+      have he := numerator_create C i j a b 1
       simp only [mul_one, numerator_one, mul_zero, smul_zero, zero_add, map_one] at he
       rw [he]
       split_ifs
@@ -109,11 +114,11 @@ private theorem numerator_monomial_mem (i : I) (a b : Coefficients.Ring) (n : �
 and arbitrary inhomogeneous linear combinations in the Serre quotient. -/
 theorem numerator_mem_halfWordDegree (i : I) (a b : Coefficients.Ring) (n : ℕ)
     {x : C.serreF Coefficients.q pi} (hx : x ∈ halfWordDegree C (n + 1)) :
-    numerator C hC i a b x ∈ halfWordDegree C n := by
+    numerator C i a b x ∈ halfWordDegree C n := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨w, hw, rfl⟩ := hx
-    exact numerator_monomial_mem C hC i a b n w hw
+    exact numerator_monomial_mem C i a b n w hw
   | zero => simp
   | add x y hx hy ihx ihy => simpa only [map_add] using Submodule.add_mem _ ihx ihy
   | smul c x hx ih => simpa only [map_smul] using Submodule.smul_mem _ c ih
@@ -123,9 +128,10 @@ The second factor is unrestricted; this is a submodule of the actual tensor quot
 def negativeTensorDegree (n : ℕ) : Submodule Coefficients.Ring
     (C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :=
   Submodule.span Coefficients.Ring {z | ∃ (w : List I) (y : C.serreF Coefficients.q pi),
-    w.length ≤ n ∧ z = C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) ⊗ₜ[Coefficients.Ring] y}
+    w.length ≤ n ∧
+      z = C.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) ⊗ₜ[Coefficients.Ring] y}
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem tmul_mem_negativeTensorDegree (n : ℕ) {x : C.serreF Coefficients.q pi}
     (hx : x ∈ halfWordDegree C n) (y : C.serreF Coefficients.q pi) :
     x ⊗ₜ[Coefficients.Ring] y ∈ negativeTensorDegree C n := by
@@ -143,17 +149,17 @@ theorem numerator_map_mem_negativeTensorDegree (n : ℕ) (i : I) (a b : Coeffici
     (g : Module.End Coefficients.Ring (C.serreF Coefficients.q pi))
     {z : C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi}
     (hz : z ∈ negativeTensorDegree C (n + 1)) :
-    TensorProduct.map (numerator C hC i a b) g z ∈ negativeTensorDegree C n := by
+    TensorProduct.map (numerator C i a b) g z ∈ negativeTensorDegree C n := by
   induction hz using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨w, y, hw, rfl⟩ := hz
     rw [TensorProduct.map_tmul]
-    exact tmul_mem_negativeTensorDegree C n (numerator_monomial_mem C hC i a b n w hw) _
+    exact tmul_mem_negativeTensorDegree C n (numerator_monomial_mem C i a b n w hw) _
   | zero => simp
   | add x y hx hy ihx ihy => simpa only [map_add] using Submodule.add_mem _ ihx ihy
   | smul c x hx ih => simpa only [map_smul] using Submodule.smul_mem _ c ih
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 /-- The negative-degree submodules form an increasing filtration. -/
 theorem negativeTensorDegree_mono {m n : ℕ} (hmn : m ≤ n) :
     negativeTensorDegree C m ≤ negativeTensorDegree C n := by
@@ -161,7 +167,7 @@ theorem negativeTensorDegree_mono {m n : ℕ} (hmn : m ≤ n) :
   rintro z ⟨w, y, hw, rfl⟩
   exact Submodule.subset_span ⟨w, y, hw.trans hmn, rfl⟩
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 /-- Every actual tensor, including an inhomogeneous sum, has finite negative degree. -/
 theorem exists_negativeTensorDegree
     (z : C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :
@@ -194,25 +200,26 @@ end OddMath.CoveringQuantum.UDot.GenericTensor
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients TensorProduct PreF
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X)
 
 /-- Left multiplication is the actual regular action on every finite coordinate. -/
 theorem triangularCoordinates_mul (u x : modified D Coefficients.q pi) (μ : X) :
-    triangularCoordinates D hD (u * x) μ =
-      modifiedRepresentation D hD μ u (triangularCoordinates D hD x μ) := by
+    triangularCoordinates D (u * x) μ =
+      modifiedRepresentation D μ u (triangularCoordinates D x μ) := by
   simp only [triangularCoordinates_eq_vacuum, map_mul, Module.End.mul_apply]
 
 /-- The concrete coordinate action, retaining finite support. -/
 def coordinateAction (u : modified D Coefficients.q pi) :
-    (X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) →ₗ[Coefficients.Ring]
+    (X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) →ₗ[
+      Coefficients.Ring]
       (X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :=
   Finsupp.lsum Coefficients.Ring fun μ ↦
-    (Finsupp.lsingle μ).comp (modifiedRepresentation D hD μ u)
+    (Finsupp.lsingle μ).comp (modifiedRepresentation D μ u)
 
 @[simp] theorem coordinateAction_apply (u : modified D Coefficients.q pi)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) (μ : X) :
-    coordinateAction D hD u f μ = modifiedRepresentation D hD μ u (f μ) := by
+    coordinateAction D u f μ = modifiedRepresentation D μ u (f μ) := by
   induction f using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => simp only [map_add, Finsupp.add_apply, hf, hg]
@@ -227,9 +234,9 @@ def coordinateAction (u : modified D Coefficients.q pi) :
 theorem mul_globalTriangular
     (u : modified D Coefficients.q pi)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
-    u * globalTriangular D f = globalTriangular D (coordinateAction D hD u f) := by
-  apply (globalTriangularEquiv D hD).symm.injective
-  change triangularCoordinates D hD _ = triangularCoordinates D hD _
+    u * globalTriangular D f = globalTriangular D (coordinateAction D u f) := by
+  apply (globalTriangularEquiv D).symm.injective
+  change triangularCoordinates D _ = triangularCoordinates D _
   rw [triangularCoordinates_globalTriangular]
   ext μ
   rw [triangularCoordinates_mul, triangularCoordinates_globalTriangular, coordinateAction_apply]
@@ -243,30 +250,31 @@ def positiveLeading (i : I) : Module.End Coefficients.Ring
 def positiveCorrection (μ : X) (i : I) : Module.End Coefficients.Ring
     (D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :=
   Ring.inverse (vermaDenominator D.toSuperCartanDatum Coefficients.q pi i) •
-    (TensorProduct.map (numerator D.toSuperCartanDatum hD i
+    (TensorProduct.map (numerator D.toSuperCartanDatum i
       (((D.qi Coefficients.q i) ^ D.h i μ : Coefficients.Ringˣ) : Coefficients.Ring) 0)
       (weight D.toSuperCartanDatum Coefficients.q i).toLinearMap +
-    TensorProduct.map (numerator D.toSuperCartanDatum hD i 0
+    TensorProduct.map (numerator D.toSuperCartanDatum i 0
       (D.pii pi i ^ (D.h i μ).natAbs *
         (((D.qi Coefficients.q i) ^ (-D.h i μ) : Coefficients.Ringˣ) : Coefficients.Ring)))
       (weight D.toSuperCartanDatum Coefficients.q⁻¹ i).toLinearMap)
 
 omit [DecidableEq X] in
 theorem positive_eq_leading_add_correction (μ : X) (i : I) :
-    positive D.toSuperCartanDatum hD (fun j ↦ D.h j μ) i =
-      positiveLeading D i + positiveCorrection D hD μ i := rfl
+    positive D.toSuperCartanDatum (fun j ↦ D.h j μ) i =
+      positiveLeading D i + positiveCorrection D μ i := rfl
 
 /-- A negative generator in the first argument is removed using the exact
 positive normal-order operator on arbitrary finite triangular input. -/
 theorem positiveModifiedForm_F_recurrence (i : I) (ν : X)
     (x : modified D Coefficients.q pi)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
-    positiveModifiedForm D hD
+    positiveModifiedForm D
       (⟨F D Coefficients.q pi i ν, F_mem_modified D Coefficients.q pi i ν⟩ * x)
       (globalTriangular D f) =
     qp Coefficients.q (D.d i * (D.h i ν - 1)) *
-      positiveModifiedForm D hD x (globalTriangular D (coordinateAction D hD
-        ⟨E D Coefficients.q pi i (ν - D.α i), E_mem_modified D Coefficients.q pi i (ν - D.α i)⟩ f)) := by
+      positiveModifiedForm D x (globalTriangular D (coordinateAction D
+        ⟨E D Coefficients.q pi i (ν - D.α i),
+          E_mem_modified D Coefficients.q pi i (ν - D.α i)⟩ f)) := by
   rw [positiveModifiedForm_adjoint]
   have hr : rhoModified D Coefficients.q pi pi_sq
       ⟨F D Coefficients.q pi i ν, F_mem_modified D Coefficients.q pi i ν⟩ =
@@ -281,31 +289,35 @@ This reduces a specified pairing, not the radical of the full form. -/
 theorem positiveModifiedForm_F_eq_zero_iff (i : I) (ν : X)
     (x : modified D Coefficients.q pi)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
-    positiveModifiedForm D hD
+    positiveModifiedForm D
       (⟨F D Coefficients.q pi i ν, F_mem_modified D Coefficients.q pi i ν⟩ * x)
       (globalTriangular D f) = 0 ↔
-    positiveModifiedForm D hD x (globalTriangular D (coordinateAction D hD
-      ⟨E D Coefficients.q pi i (ν - D.α i), E_mem_modified D Coefficients.q pi i (ν - D.α i)⟩ f)) = 0 := by
+    positiveModifiedForm D x (globalTriangular D (coordinateAction D
+      ⟨E D Coefficients.q pi i (ν - D.α i),
+          E_mem_modified D Coefficients.q pi i (ν - D.α i)⟩ f)) = 0 := by
   rw [positiveModifiedForm_F_recurrence]
   exact (Units.isUnit (Coefficients.q ^ (D.d i * (D.h i ν - 1)))).mul_right_eq_zero
 
 /-- Both the leading term and the lower correction occur at each actual column. -/
 theorem coordinateAction_E_apply (i : I) (ν μ : X)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
-    coordinateAction D hD
+    coordinateAction D
       ⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ f μ =
-      positiveLeading D i (weightProject D hD μ ν (f μ)) +
-        positiveCorrection D hD μ i (weightProject D hD μ ν (f μ)) := by
+      positiveLeading D i (weightProject D μ ν (f μ)) +
+        positiveCorrection D μ i (weightProject D μ ν (f μ)) := by
   rw [coordinateAction_apply]
-  change representation D hD μ (E D Coefficients.q pi i ν) (f μ) = _
-  rw [representation_E, Module.End.mul_apply, positive_eq_leading_add_correction, LinearMap.add_apply]
+  change representation D μ (E D Coefficients.q pi i ν) (f μ) = _
+  rw [representation_E, Module.End.mul_apply, positive_eq_leading_add_correction,
+    LinearMap.add_apply]
 
+omit [DecidableEq I] [DecidableEq X] in
 /-- Weight projection preserves the negative word filtration even when distinct
 root degrees have the same weight in `X`. -/
 theorem weightProject_mem_negativeTensorDegree (n : ℕ) (μ ν : X)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
     (hz : z ∈ negativeTensorDegree D.toSuperCartanDatum n) :
-    weightProject D hD μ ν z ∈ negativeTensorDegree D.toSuperCartanDatum n := by
+    weightProject D μ ν z ∈ negativeTensorDegree D.toSuperCartanDatum n := by
+  classical
   induction hz using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨a, y, ha, rfl⟩ := hz
@@ -328,11 +340,11 @@ omit [DecidableEq X] in
 theorem positiveCorrection_mem_negativeTensorDegree (n : ℕ) (μ : X) (i : I)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
     (hz : z ∈ negativeTensorDegree D.toSuperCartanDatum (n + 1)) :
-    positiveCorrection D hD μ i z ∈ negativeTensorDegree D.toSuperCartanDatum n := by
+    positiveCorrection D μ i z ∈ negativeTensorDegree D.toSuperCartanDatum n := by
   apply Submodule.smul_mem
   apply Submodule.add_mem
-  · exact numerator_map_mem_negativeTensorDegree D.toSuperCartanDatum hD n i _ _ _ hz
-  · exact numerator_map_mem_negativeTensorDegree D.toSuperCartanDatum hD n i _ _ _ hz
+  · exact numerator_map_mem_negativeTensorDegree D.toSuperCartanDatum n i _ _ _ hz
+  · exact numerator_map_mem_negativeTensorDegree D.toSuperCartanDatum n i _ _ _ hz
 
 /-- The exact action on every column of an arbitrary finite family is its
 leading term plus an element of strictly smaller negative degree. -/
@@ -340,18 +352,19 @@ theorem coordinateAction_E_leading (n : ℕ) (i : I) (ν μ : X)
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi)
     (hf : f μ ∈ negativeTensorDegree D.toSuperCartanDatum (n + 1)) :
     ∃ r ∈ negativeTensorDegree D.toSuperCartanDatum n,
-      coordinateAction D hD
+      coordinateAction D
         ⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ f μ =
-      positiveLeading D i (weightProject D hD μ ν (f μ)) + r := by
-  exact ⟨_, positiveCorrection_mem_negativeTensorDegree D hD n μ i
-    (weightProject_mem_negativeTensorDegree D hD (n + 1) μ ν hf),
-    coordinateAction_E_apply D hD i ν μ f⟩
+      positiveLeading D i (weightProject D μ ν (f μ)) + r := by
+  exact ⟨_, positiveCorrection_mem_negativeTensorDegree D n μ i
+    (weightProject_mem_negativeTensorDegree D (n + 1) μ ν hf),
+    coordinateAction_E_apply D i ν μ f⟩
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- A single bound works for every column in an arbitrary finite coordinate family. -/
 theorem finiteFamily_degree_bound
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
     ∃ n, ∀ μ, f μ ∈ negativeTensorDegree D.toSuperCartanDatum n := by
+  classical
   induction f using Finsupp.induction_linear with
   | zero => exact ⟨0, fun μ ↦ by simp⟩
   | add f g hf hg =>
@@ -374,11 +387,11 @@ theorem finiteFamily_E_leading
     (f : X →₀ D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :
     ∃ n, ∀ (i : I) (ν μ : X),
       ∃ r ∈ negativeTensorDegree D.toSuperCartanDatum n,
-        coordinateAction D hD
+        coordinateAction D
           ⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ f μ =
-        positiveLeading D i (weightProject D hD μ ν (f μ)) + r := by
+        positiveLeading D i (weightProject D μ ν (f μ)) + r := by
   obtain ⟨n, hn⟩ := finiteFamily_degree_bound D f
-  exact ⟨n, fun i ν μ ↦ coordinateAction_E_leading D hD n i ν μ f
+  exact ⟨n, fun i ν μ ↦ coordinateAction_E_leading D n i ν μ f
     (negativeTensorDegree_mono _ (Nat.le_succ n) (hn μ))⟩
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

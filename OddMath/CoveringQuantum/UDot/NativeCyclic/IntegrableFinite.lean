@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.NativeCyclic.FiniteDetection
 import OddMath.CoveringQuantum.Nondegenerate
 import OddMath.CoveringQuantum.UDot.VermaLimit
@@ -33,7 +38,7 @@ def halfProbe (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi))
 def vermaProbe (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi)) (Λ : X)
     (t : PreF Coefficients.Ring I × {ε : RatFunc ℚ // ε ^ 2 = 1}) : S →ₗ[RatFunc ℚ] RatFunc ℚ :=
   (specialize t.2.1 t.2.2).toLinearMap.comp
-    (((polarization D hD Λ)
+    (((polarization D Λ)
       (D.toSerreF Coefficients.q pi (diagTwist (polarizationSign D Λ) t.1))).restrictScalars
       (RatFunc ℚ) |>.comp (S.subtype.restrictScalars (RatFunc ℚ)))
 
@@ -49,13 +54,14 @@ theorem halfProbe_separating (S : Submodule Coefficients.Ring (D.serreF Coeffici
   exact ⟨by simpa [halfProbe] using hv (w, ⟨1, one_pow 2⟩),
     by simpa [halfProbe] using hv (w, ⟨-1, by norm_num⟩)⟩
 
+omit [Finite I] in
 theorem vermaProbe_tendsto (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi))
     (t : PreF Coefficients.Ring I × {ε : RatFunc ℚ // ε ^ 2 = 1}) (v : S) :
-    Tendsto (fun Λ => vermaProbe D hD S Λ t v) (coordinateFilter D) (𝓝 (halfProbe D S t v)) := by
+    Tendsto (fun Λ => vermaProbe D S Λ t v) (coordinateFilter D) (𝓝 (halfProbe D S t v)) := by
   obtain ⟨y, hy⟩ := D.toSuperCartanDatum.toSerreF_surjective Coefficients.q pi
     (v : D.serreF Coefficients.q pi)
-  have hh := normalizedPolarization_tendsto D hD t.2.1 t.2.2 t.1 y
-  change Tendsto (fun Λ => specialize t.2.1 t.2.2 (polarization D hD Λ
+  have hh := normalizedPolarization_tendsto D t.2.1 t.2.2 t.1 y
+  change Tendsto (fun Λ => specialize t.2.1 t.2.2 (polarization D Λ
     (D.toSerreF Coefficients.q pi (diagTwist (polarizationSign D Λ) t.1))
     (v : D.serreF Coefficients.q pi))) (coordinateFilter D)
     (𝓝 (specialize t.2.1 t.2.2 (D.serreForm Coefficients.q pi pi_sq
@@ -63,24 +69,26 @@ theorem vermaProbe_tendsto (S : Submodule Coefficients.Ring (D.serreF Coefficien
   rw [← hy, SuperCartanDatum.serreForm_toSerreF]
   exact hh
 
+include hD
+
 /-- A finite covering submodule is eventually faithfully projected into the
 original integrable quotient. No freeness over the split covering ring is assumed. -/
 theorem eventually_toIntegrable_injective (S : Submodule Coefficients.Ring
     (D.serreF Coefficients.q pi)) [Module.Finite Coefficients.Ring S] :
-    ∀ᶠ Λ in coordinateFilter D, Function.Injective ((toIntegrable D hD Λ).comp S.subtype) := by
+    ∀ᶠ Λ in coordinateFilter D, Function.Injective ((toIntegrable D Λ).comp S.subtype) := by
   let : Module.Finite (RatFunc ℚ) Coefficients.Ring :=
     Module.Finite.equiv Coefficients.splitEquiv.symm.toLinearEquiv
   let : Module.Finite (RatFunc ℚ) S := Module.Finite.trans Coefficients.Ring S
   have hh := FiniteDetection.eventually_separating (K := RatFunc ℚ) (V := S)
     (coordinateFilter D) (halfProbe D S)
-    (vermaProbe D hD S) (halfProbe_separating D hD S) (vermaProbe_tendsto D hD S)
+    (vermaProbe D S) (halfProbe_separating D hD S) (vermaProbe_tendsto D S)
   filter_upwards [hh, eventually_coordinate_lower D 0] with Λ hsep hΛ
   apply (injective_iff_map_eq_zero _).mpr
   intro v hv
   apply hsep v
   intro t
-  change specialize t.2.1 t.2.2 (polarization D hD Λ _ (v : D.serreF Coefficients.q pi)) = 0
-  rw [← integrablePolarization_toIntegrable D hD Λ hΛ, show toIntegrable D hD Λ
+  change specialize t.2.1 t.2.2 (polarization D Λ _ (v : D.serreF Coefficients.q pi)) = 0
+  rw [← integrablePolarization_toIntegrable D Λ hΛ, show toIntegrable D Λ
     (v : D.serreF Coefficients.q pi) = 0 from hv, map_zero, map_zero]
 
 /-- One common nonnegative coroot bound works for every vector of the fixed
@@ -88,7 +96,7 @@ finite covering submodule, not just each vector separately. -/
 theorem exists_toIntegrable_injective_bound (S : Submodule Coefficients.Ring
     (D.serreF Coefficients.q pi)) [Module.Finite Coefficients.Ring S] :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ : X, (∀ i, B ≤ D.h i Λ) →
-      Function.Injective ((toIntegrable D hD Λ).comp S.subtype) := by
+      Function.Injective ((toIntegrable D Λ).comp S.subtype) := by
   classical
   let := Fintype.ofFinite I
   have he := eventually_toIntegrable_injective D hD S
@@ -106,7 +114,7 @@ zero-divisor coefficients and nonfree submodules. -/
 theorem finite_span_toIntegrable_injective_bound
     (s : Finset (D.serreF Coefficients.q pi)) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ : X, (∀ i, B ≤ D.h i Λ) →
-      Set.InjOn (toIntegrable D hD Λ)
+      Set.InjOn (toIntegrable D Λ)
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) := by
   let S := Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))
   obtain ⟨B, hB, hh⟩ := exists_toIntegrable_injective_bound D hD S
@@ -119,7 +127,7 @@ theorem finite_span_toIntegrable_injective_sequence
     (s : Finset (D.serreF Coefficients.q pi)) (Λ₀ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       (∀ i, 0 ≤ D.h i (Λ₀ + n • ξ)) ∧
-      Set.InjOn (toIntegrable D hD (Λ₀ + n • ξ))
+      Set.InjOn (toIntegrable D (Λ₀ + n • ξ))
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) := by
   classical
   let := Fintype.ofFinite I
@@ -142,9 +150,9 @@ theorem finite_spans_toIntegrable_fixed_difference
     (s t : Finset (D.serreF Coefficients.q pi)) (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
     ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       (∀ i, 0 ≤ D.h i (ζ + n • ξ)) ∧ (∀ i, 0 ≤ D.h i (n • ξ)) ∧
-      Set.InjOn (toIntegrable D hD (ζ + n • ξ))
+      Set.InjOn (toIntegrable D (ζ + n • ξ))
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) ∧
-      Set.InjOn (toIntegrable D hD (n • ξ))
+      Set.InjOn (toIntegrable D (n • ξ))
         (Submodule.span Coefficients.Ring (t : Set (D.serreF Coefficients.q pi))) := by
   obtain ⟨N, hN⟩ := finite_span_toIntegrable_injective_sequence D hD s ζ ξ hξ
   obtain ⟨M, hM⟩ := finite_span_toIntegrable_injective_sequence D hD t 0 ξ hξ
