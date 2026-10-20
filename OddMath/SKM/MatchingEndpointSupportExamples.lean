@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.MatchingEndpointSupport
 import OddMath.SKM.PositiveFormCoefficientsExamples
 
@@ -21,9 +26,9 @@ theorem no_matching (R : List (TMove (Letter Unit))) : ¬ IsMatching₂ a b R :=
   not_isMatching₂_of_weight_ne oddDatum.toSKM 0 endpoints_differ R
 
 theorem form_zero :
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 a)
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 a)
       (algebraWord oddDatum 0 b) = 0 :=
-  sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum odd_barConsistent 0 a b endpoints_differ
+  sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum 0 a b endpoints_differ
 
 /-- A signed identity is an inhabited matching, not a mismatch-only test. -/
 theorem signed_identity : IsMatching₂ a a [] := ⟨trivial, rfl⟩
@@ -52,17 +57,17 @@ theorem labelled_fibre_zero
     hf.toFinset (fun t => σ ^ (parity t).val)
 
 theorem up_mismatch :
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 ((true, ()) :: a))
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 ((true, ()) :: a))
       (algebraWord oddDatum 0 a) = 0 ∧
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 a)
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 a)
       (algebraWord oddDatum 0 ((false, ()) :: a)) = 0 := by
   apply sesquilinearForm_mixed_up_leftCons_mismatch
   norm_num [a, wt, sh, RootDatum.toSKM_α, oddDatum, RootDatum.α]
 
 theorem down_mismatch :
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 ((false, ()) :: a))
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 ((false, ()) :: a))
       (algebraWord oddDatum 0 a) = 0 ∧
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 a)
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 a)
       (algebraWord oddDatum 0 ((true, ()) :: a)) = 0 := by
   apply sesquilinearForm_mixed_down_leftCons_mismatch
   norm_num [a, wt, sh, RootDatum.toSKM_α, oddDatum, RootDatum.α]

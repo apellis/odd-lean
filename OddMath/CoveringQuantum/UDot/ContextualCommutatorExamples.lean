@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.ContextualCommutator
 import OddMath.SKM.PositiveFormCoefficientsExamples
 
@@ -25,21 +30,22 @@ private theorem quantum_two : qpInt Coefficients.q pi 2 =
 
 /-- A nonzero weight with nonempty context: the scalar is q⁻¹+πq, not q+πq⁻¹. -/
 theorem odd_context_commutator :
-    sesquilinearForm oddDatum odd_barConsistent
+    sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(false, ()), (true, ()), (false, ()), (true, ())])
       (algebraWord oddDatum 0 []) -
-    pi * sesquilinearForm oddDatum odd_barConsistent
+    pi * sesquilinearForm oddDatum
       (algebraWord oddDatum 0 [(false, ()), (false, ()), (true, ()), (true, ())])
       (algebraWord oddDatum 0 []) =
     (((Coefficients.q⁻¹ : Coefficients.Ringˣ) : Coefficients.Ring) +
       pi * (Coefficients.q : Coefficients.Ring)) *
-      sesquilinearForm oddDatum odd_barConsistent
+      sesquilinearForm oddDatum
         (algebraWord oddDatum 0 [(false, ()), (true, ())]) (algebraWord oddDatum 0 []) := by
-  have h := sesquilinearForm_context_EF oddDatum odd_barConsistent 0
+  have h := sesquilinearForm_context_EF oddDatum 0
     [(false, ())] [(true, ())] ()
   have hw : oddDatum.h () (OddMath.SKM.wt oddDatum.toSKM 0 [(true, ())]) = 2 := rfl
   rw [hw] at h
-  have hq : oddDatum.qi Coefficients.q () = Coefficients.q := by simp [SuperCartanDatum.qi, oddDatum]
+  have hq : oddDatum.qi Coefficients.q () = Coefficients.q := by
+    simp [SuperCartanDatum.qi, oddDatum]
   have hp : oddDatum.pii pi () = pi := by simp [SuperCartanDatum.pii, oddDatum, ZMod.val_one]
   rw [hq, hp] at h
   have hb : bar (qpInt Coefficients.q pi 2) =
@@ -76,12 +82,12 @@ theorem odd_two_bar_ne : bar (qpInt Coefficients.q pi 2) ≠ qpInt Coefficients.
 /-- Dropping the bar in the first-slot commutator fails already at odd weight two.
 This tests the contextual headline itself, not just the original defining relation. -/
 theorem odd_unbarred_commutator_false :
-    sesquilinearForm oddDatum odd_barConsistent
+    sesquilinearForm oddDatum
       (algebraWord oddDatum 2 [(true, ()), (false, ())]) (algebraWord oddDatum 2 []) -
-    pi * sesquilinearForm oddDatum odd_barConsistent
+    pi * sesquilinearForm oddDatum
       (algebraWord oddDatum 2 [(false, ()), (true, ())]) (algebraWord oddDatum 2 []) ≠
     qpInt Coefficients.q pi 2 := by
-  have hn : sesquilinearForm oddDatum odd_barConsistent
+  have hn : sesquilinearForm oddDatum
       (algebraWord oddDatum 2 []) (algebraWord oddDatum 2 []) = 1 := by
     have he : algebraWord oddDatum 2 [] = positiveHalf oddDatum Coefficients.q pi 2
         (oddDatum.toSerreF Coefficients.q pi (PreF.monomial Coefficients.Ring [])) := by
@@ -89,7 +95,7 @@ theorem odd_unbarred_commutator_false :
       simp only [PreF.monomial_nil, map_one, positiveHalf_one, algebraWord]
     rw [he, sesquilinearForm_positiveHalf, GenericVerma.halfBar_monomial]
     simp only [PreF.monomial_nil, map_one, SuperCartanDatum.serreForm_one_one]
-  have h := sesquilinearForm_context_EF oddDatum odd_barConsistent 2 [] [] ()
+  have h := sesquilinearForm_context_EF oddDatum 2 [] [] ()
   have hw : oddDatum.h () (OddMath.SKM.wt oddDatum.toSKM 2 []) = 2 := rfl
   have hq : oddDatum.qi Coefficients.q () = Coefficients.q := by
     simp [SuperCartanDatum.qi, oddDatum]
