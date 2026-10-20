@@ -930,3 +930,6 @@ import OddMath.Tests.OddDotsFixtures
 import OddMath.Tests.PbwL1Fixtures
 import OddMath.Tests.SkewPolynomialFixtures
 import OddMath.CoveringQuantum.UDot.NativeCyclic.NativeFamily
+import OddMath.CoveringQuantum.FiniteWeightWindow
+import OddMath.CoveringQuantum.SourceWeightLattice
+import OddMath.CoveringQuantum.SourceWeightLatticeExamples
