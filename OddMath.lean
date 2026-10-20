@@ -933,3 +933,5 @@ import OddMath.CoveringQuantum.UDot.NativeCyclic.NativeFamily
 import OddMath.CoveringQuantum.FiniteWeightWindow
 import OddMath.CoveringQuantum.SourceWeightLattice
 import OddMath.CoveringQuantum.SourceWeightLatticeExamples
+import OddMath.CoveringQuantum.FiniteWeightDuality
+import OddMath.CoveringQuantum.FiniteWeightDualityExamples
