@@ -1,12 +1,14 @@
 import OddMath
 import Lean.Util.CollectAxioms
 
-open Lean Elab Command
-
-/- Audit by owning module, not declaration namespace: this includes private declarations,
+/-! Audit by owning module, not declaration namespace: this includes private declarations,
 compiler-generated auxiliaries, and declarations placed in foreign namespaces.
 `scripts/audit_axioms.py` imports every local module and checks the source inventory first. -/
+
+open Lean Elab Command
+
 set_option maxHeartbeats 80000000 in
+-- Traverse the transitive axiom dependencies of every imported library declaration.
 run_cmd do
   let env ← getEnv
   let moduleNames := env.header.moduleNames
@@ -39,4 +41,6 @@ run_cmd do
     IO.FS.writeFile output (String.intercalate "\n" (modules.toList.map toString) ++ "\n")
   if let some output ← IO.getEnv "ODD_AXIOM_AUDIT_TSV" then
     IO.FS.writeFile output rows
-  logInfo m!"Audited {count} declarations owned by {modules.size} OddMath modules; {privateCount} private and {foreignCount} non-OddMath-namespace declarations included. All transitive axioms are allowed."
+  logInfo m!"Audited {count} declarations owned by {modules.size} OddMath modules; \
+    {privateCount} private and {foreignCount} non-OddMath-namespace declarations included. \
+    All transitive axioms are allowed."

@@ -551,7 +551,8 @@ example :
   obtain ⟨L, hL, hm, hd, hpar⟩ := hg ![1, 2]
   refine ⟨p, hp, L, hL, hm, ?_, ?_⟩
   · simp only [Finset.sum_filter, Fin.sum_univ_two] at hd
-    simpa [word, oddDatum, osp12Covering, oddSl2, OddMath.CoveringQuantum.RootDatum.toSKM_d] using hd
+    simpa [word, oddDatum, osp12Covering, oddSl2,
+      OddMath.CoveringQuantum.RootDatum.toSKM_d] using hd
   · rw [hm]
     simp only [Finset.sum_filter, Fin.sum_univ_two] at hpar
     have hz : (1 + (1 + 2) : ZMod 2) = 0 := by decide
@@ -931,8 +932,11 @@ example :
       ∃ (L : List (LayerData Unit))
         (hLB : SChain a (cupAttachLayers () a L) ((false, ()) :: A)),
         (cupAttachLayers () a L).map ofL = dLay a (cupAttachMoves () ds) ∧
-        Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer) (mkD oddDatum.toSKM 0 (cupAttachLayers () a L) hLB) =
-          oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () + 2 * oddDatum.skmSymmetrizer.d () + oddDatum.skmSymmetrizer.d () * (1 + oddDatum.toSKM.h () (wt oddDatum.toSKM 0 a)) ∧
+        Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+          (mkD oddDatum.toSKM 0 (cupAttachLayers () a L) hLB) =
+          oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () +
+            2 * oddDatum.skmSymmetrizer.d () +
+            oddDatum.skmSymmetrizer.d () * (1 + oddDatum.toSKM.h () (wt oddDatum.toSKM 0 a)) ∧
         xpar oddDatum.toSKM 0 (dLay a (cupAttachMoves () ds)) =
           oddDatum.toSKM.parity () * oddDatum.toSKM.parity () + oddDatum.toSKM.parity () :=
   CupTransportExamples.crossing_dot_cup oddDatum.toSKM oddDatum.skmSymmetrizer 0
@@ -950,11 +954,18 @@ example :
         [(false, ()), (true, ()), (true, ())]),
       L.map ofL = dLay [(true, ()), (true, ())] ds ∧
       (cupAttachLayers () [(true, ())] L).map ofL = dLay [(true, ())] (cupAttachMoves () ds) ∧
-      Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer) (mkD oddDatum.toSKM 0 L hL) = oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () + 2 * oddDatum.skmSymmetrizer.d () ∧
-      Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer) (mkD oddDatum.toSKM 0 (cupAttachLayers () [(true, ())] L) hB) =
-        oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () + 2 * oddDatum.skmSymmetrizer.d () + oddDatum.skmSymmetrizer.d () * (1 + oddDatum.toSKM.h () (wt oddDatum.toSKM 0 [(true, ())])) ∧
+      Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+        (mkD oddDatum.toSKM 0 L hL) =
+        oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () +
+          2 * oddDatum.skmSymmetrizer.d () ∧
+      Diagram.degree (gdeg oddDatum.toSKM oddDatum.skmSymmetrizer)
+        (mkD oddDatum.toSKM 0 (cupAttachLayers () [(true, ())] L) hB) =
+        oddDatum.skmSymmetrizer.d () * oddDatum.toSKM.d () () +
+          2 * oddDatum.skmSymmetrizer.d () + oddDatum.skmSymmetrizer.d () *
+          (1 + oddDatum.toSKM.h () (wt oddDatum.toSKM 0 [(true, ())])) ∧
       xpar oddDatum.toSKM 0 (dLay [(true, ())] (cupAttachMoves () ds)) =
-        oddDatum.toSKM.parity () * oddDatum.toSKM.parity () + oddDatum.toSKM.parity () := cup_attached_crossing_dot_points oddDatum.toSKM oddDatum.skmSymmetrizer 0 () ()
+        oddDatum.toSKM.parity () * oddDatum.toSKM.parity () + oddDatum.toSKM.parity () :=
+  cup_attached_crossing_dot_points oddDatum.toSKM oddDatum.skmSymmetrizer 0 () ()
 
 end NonVacuity.CupAttachment
 
@@ -1034,14 +1045,16 @@ example :
       (⟨F oddDatum Coefficients.q pi () 4,
         F_mem_modified oddDatum Coefficients.q pi () 4⟩ *
         positiveHalf oddDatum Coefficients.q pi 0
-          (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [(), ()]))))).coeff 1 = 1 ∧
+          (oddDatum.toSerreF Coefficients.q pi
+            (monomial Coefficients.Ring [(), ()]))))).coeff 1 = 1 ∧
     (signLaurent (-1) (by norm_num) (sesquilinearForm oddDatum
       (positiveHalf oddDatum Coefficients.q pi 0
         (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [()])))
       (⟨F oddDatum Coefficients.q pi () 4,
         F_mem_modified oddDatum Coefficients.q pi () 4⟩ *
         positiveHalf oddDatum Coefficients.q pi 0
-          (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [(), ()]))))).coeff 1 = -1 :=
+          (oddDatum.toSerreF Coefficients.q pi
+            (monomial Coefficients.Ring [(), ()]))))).coeff 1 = -1 :=
   OddMath.CoveringQuantum.UDot.AdjointCoefficientsExamples.repeated_odd_physical_both_signs
 
 example (σ : ℚ) (hσ : σ ^ 2 = 1) :
@@ -1051,7 +1064,8 @@ example (σ : ℚ) (hσ : σ ^ 2 = 1) :
       (⟨F oddDatum Coefficients.q pi () 4,
         F_mem_modified oddDatum Coefficients.q pi () 4⟩ *
         positiveHalf oddDatum Coefficients.q pi 0
-          (oddDatum.toSerreF Coefficients.q pi (monomial Coefficients.Ring [(), ()]))))).coeff 1 = σ :=
+          (oddDatum.toSerreF Coefficients.q pi
+            (monomial Coefficients.Ring [(), ()]))))).coeff 1 = σ :=
   OddMath.CoveringQuantum.UDot.AdjointCoefficientsExamples.repeated_odd_bent_coeff σ hσ
 
 end NonVacuity.AdjointCoefficients
@@ -1475,7 +1489,8 @@ example :
       (algebraWord oddDatum 2 [(false, ()), (true, ())]) (algebraWord oddDatum 2 []) ≠
     qpInt Coefficients.q Coefficients.pi 2 := odd_unbarred_commutator_false
 
-example : bar (qpInt Coefficients.q Coefficients.pi 2) ≠ qpInt Coefficients.q Coefficients.pi 2 := odd_two_bar_ne
+example : bar (qpInt Coefficients.q Coefficients.pi 2) ≠
+    qpInt Coefficients.q Coefficients.pi 2 := odd_two_bar_ne
 
 end NonVacuity.Claim5Algebra
 
@@ -1694,3 +1709,59 @@ example :
     NativeLeading.integrableChevalley_true_locally_nilpotent datum highestWeight _ 1⟩
 
 end NonVacuity.InfiniteQuotientNilpotence
+
+namespace NonVacuity.TwoStrand
+
+open CategoryTheory CategoryTheory.Limits StringDiagrams OddMath.SKM
+open OddMath.SKM.TwoStrand
+
+def datum : Datum Unit ℤ where
+  cd := {
+    root := fun _ => 2
+    coroot := fun _ => LinearMap.id
+    coroot_root_self := fun _ => rfl }
+  isGCM := {
+    diag := fun _ => rfl
+    offDiag_nonpos := fun i j h => absurd (Subsingleton.elim i j) h
+    zero_comm := fun _ _ => Iff.rfl }
+  parity := fun _ => 0
+  even_of_odd := fun _ _ _ => even_two
+
+def scalars : Scalars datum ℤ where
+  t := fun _ _ => 1
+  t_self := fun _ => rfl
+  t_symm_of_d_eq_zero := fun _ _ _ => rfl
+  s := fun _ _ _ _ => 0
+  s_symm := fun _ _ _ _ => rfl
+  s_eq_zero := fun _ _ _ _ _ => rfl
+  two_isUnit := by
+    rintro ⟨i, hi⟩
+    exact (zero_ne_one hi).elim
+
+theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h => absurd rfl h
+
+def symmetrizer : Symmetrizer datum where
+  d := fun _ => 1
+  pos := fun _ => one_pos
+  symm := fun _ _ => rfl
+
+noncomputable def splitting (ν : ℤ) :
+    whole scalars symmetrizer homogeneous () ν ≅
+      raw scalars symmetrizer homogeneous () ν rfl 0 ⊞
+        raw scalars symmetrizer homogeneous () ν rfl 2 :=
+  decomposition scalars symmetrizer homogeneous () ν rfl
+
+theorem crossing_projection (ν : ℤ) :
+    ((proj1 scalars symmetrizer homogeneous () ν rfl).f PUnit.unit PUnit.unit).val.val =
+      t scalars symmetrizer homogeneous () ν := rfl
+
+theorem dot_inclusion (ν : ℤ) :
+    ((incl1 scalars symmetrizer homogeneous () ν rfl).f PUnit.unit PUnit.unit).val.val =
+      xl scalars symmetrizer homogeneous () ν * e scalars symmetrizer homogeneous () ν := rfl
+
+theorem inverse_equations (ν : ℤ) :
+    (splitting ν).hom ≫ (splitting ν).inv = 𝟙 _ ∧
+      (splitting ν).inv ≫ (splitting ν).hom = 𝟙 _ :=
+  ⟨(splitting ν).hom_inv_id, (splitting ν).inv_hom_id⟩
+
+end NonVacuity.TwoStrand
