@@ -46,28 +46,28 @@ theorem nested_family_nonempty : (family nestedWord).members.Nonempty := by
 /-- Same-colour interchange, shorter comparison, and all choice hypotheses are
 fully discharged for an arbitrary weight and every Laurent coefficient. -/
 theorem nested_coeff (μ : Bool → ℤ) (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ nestedWord) (algebraWord twoOddDatum μ []))).coeff z =
       (family nestedWord).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ σ z :=
   empty_boundary_labelled_form_coeff nestedWord (family nestedWord)
-    (family_complete nestedWord) twoOddDatum twoOdd_barConsistent μ σ hσ z
+    (family_complete nestedWord) twoOddDatum μ σ hσ z
 
 /-- Distinct-colour interchange in nonempty context, with no supplied IH. -/
 theorem distinct_coeff (μ : Bool → ℤ) (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
     let a : List (Letter Bool) :=
       [(false, false), (true, false), (false, true), (true, true)]
-    (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ a) (algebraWord twoOddDatum μ []))).coeff z =
       (family a).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ σ z :=
   empty_boundary_labelled_form_coeff _ (family _) (family_complete _)
-    twoOddDatum twoOdd_barConsistent μ σ hσ z
+    twoOddDatum μ σ hσ z
 
 /-- Both square-one rational signs are concrete importing consumers. -/
 theorem nested_both_signs (μ : Bool → ℤ) (z : ℤ) :
-    (signLaurent 1 (by norm_num) (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent 1 (by norm_num) (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ nestedWord) (algebraWord twoOddDatum μ []))).coeff z =
       (family nestedWord).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ 1 z ∧
-    (signLaurent (-1) (by norm_num) (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent (-1) (by norm_num) (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ nestedWord) (algebraWord twoOddDatum μ []))).coeff z =
       (family nestedWord).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ (-1) z :=
   ⟨nested_coeff μ 1 (by norm_num) z, nested_coeff μ (-1) (by norm_num) z⟩

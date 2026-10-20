@@ -19,8 +19,8 @@ induction compose Claims 1, 3, 4 and 5. Auxiliary families are chosen internally
 all-count serializers force the bounded heights needed by Claim 3.
 
 The headline has no shorter-word induction premise or auxiliary-family-existence
-assumption. The finite-colour, bar-consistent, additive-weight and purely-even
-coefficient conventions of the existing algebraic form remain in force.
+assumption. Colours are arbitrary and bar consistency is not assumed. The
+additive-weight and purely-even covering-coefficient conventions are unchanged.
 -/
 noncomputable section
 namespace OddMath.SKM
@@ -102,7 +102,7 @@ private theorem BoundaryFamily.height {I : Type*} {a b : List (Letter I)}
 open CoveringQuantum CoveringQuantum.Coefficients
 open CoveringQuantum.UDot.GenericTensor CoveringQuantum.UDot.GenericVerma.MixedGram
 open scoped BigOperators
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 
 private def BoundaryFamily.coeff {a b : List (Letter I)} (F : BoundaryFamily a b)
     (D : RootDatum I X) (μ : X) (σ : ℚ) (z : ℤ) : ℚ :=
@@ -112,18 +112,18 @@ private def BoundaryFamily.coeff {a b : List (Letter I)} (F : BoundaryFamily a b
     σ ^ (xpar D.toSKM μ (dLay a (F.serialize t.1 t.2))).val
 
 private def BoundaryFamily.Correct {a b : List (Letter I)} (F : BoundaryFamily a b)
-    (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (μ : X) : Prop :=
+    (D : RootDatum I X) (μ : X) : Prop :=
   ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ a) (algebraWord D μ b))).coeff z = F.coeff D μ σ z
 
 private theorem positive_comparison (D : RootDatum I X)
-    (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
+    (μ : X)
     {m n : ℕ} (a : Fin m → I) (b : Fin n → I)
     (F : BoundaryFamily (List.ofFn fun r => (true, a r))
-      (List.ofFn fun r => (true, b r))) : F.Correct D hD μ := by
+      (List.ofFn fun r => (true, b r))) : F.Correct D μ := by
   classical
-  obtain ⟨L, hL, hm, hc⟩ := positive_labelled_family_form_coeff D hD μ a b
+  obtain ⟨L, hL, hm, hc⟩ := positive_labelled_family_form_coeff D μ a b
     F.members F.matching F.complete F.unique F.points F.onStrand F.serialize F.decorates
   intro σ hσ z
   obtain ⟨hf, he⟩ := hc σ hσ z
@@ -151,13 +151,13 @@ private theorem positive_comparison (D : RootDatum I X)
   simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, hd]
 
 private theorem sorted_comparison (D : RootDatum I X)
-    (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
+    (μ : X)
     (d u v : List I)
     (F : BoundaryFamily (d.map (fun i => (false, i)) ++ u.map (fun i => (true, i)))
-      (v.map (fun i => (true, i)))) : F.Correct D hD μ := by
+      (v.map (fun i => (true, i)))) : F.Correct D μ := by
   induction d generalizing v with
   | nil =>
-    have h := positive_comparison D hD μ u.get v.get
+    have h := positive_comparison D μ u.get v.get
     have hu : (List.ofFn fun r => (true, u.get r)) = u.map (fun i => (true, i)) := by
       rw [show (List.ofFn fun r => (true, u.get r)) =
         (List.ofFn u.get).map (fun i => (true, i)) by simp]
@@ -177,7 +177,7 @@ private theorem sorted_comparison (D : RootDatum I X)
       (fun R j hj => ⟨F.height R j hj, F.onStrand R j hj⟩)
       G.onStrand F.serialize G.serialize F.decorates G.decorates
       F.complete G.complete F.unique G.unique
-    obtain ⟨hf, hg, _, _, hs⟩ := hE D hD μ
+    obtain ⟨hf, hg, _, _, hs⟩ := hE D μ
     intro σ hσ
     exact (hs σ hσ).mpr (ih (i :: v) G σ hσ)
 
@@ -188,7 +188,7 @@ private def inversions : List (Letter I) → ℕ
   | [] => 0
   | x :: a => inversions a + if x.1 then downCount a else 0
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem inversions_swap (a b : List (Letter I)) (i j : I) :
     inversions (a ++ (true, i) :: (false, j) :: b) =
       inversions (a ++ (false, j) :: (true, i) :: b) + 1 := by
@@ -201,7 +201,7 @@ private theorem inversions_swap (a b : List (Letter I)) (i j : I) :
     simp only [List.cons_append, inversions, hd, ih]
     omega
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem sorted_or_interchange (a : List (Letter I)) :
     (∃ d u : List I, a = d.map (fun i => (false, i)) ++ u.map (fun i => (true, i))) ∨
       ∃ p s : List (Letter I), ∃ i j : I, a = p ++ (true, i) :: (false, j) :: s := by
@@ -221,19 +221,19 @@ private theorem sorted_or_interchange (a : List (Letter I)) :
 /-- The empty-boundary coefficient identity in the proof of BE2 Theorem 10.3.
 Every complete source-shaped family is allowed. Auxiliary representatives,
 points and serializers are chosen internally, and the shorter-word comparison
-is discharged by strong length induction. Finite colours, bar consistency,
-additive weights and purely-even covering coefficients are retained. -/
+is discharged by strong length induction. Colours are arbitrary; no bar
+consistency is required. Additive weights and covering coefficients are unchanged. -/
 theorem empty_boundary_labelled_form_coeff (a : List (Letter I))
     (F : CoefficientFamily a) (hF : F.Complete)
-    (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
+    (D : RootDatum I X) (μ : X)
     (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ a) (algebraWord D μ []))).coeff z =
       F.coeff D.toSKM D.skmSymmetrizer μ σ z := by
   have H : ∀ n, ∀ a : List (Letter I), a.length = n →
       ∀ F : CoefficientFamily a, F.Complete →
       ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D μ a) (algebraWord D μ []))).coeff z =
         F.coeff D.toSKM D.skmSymmetrizer μ σ z := by
     intro n
@@ -242,7 +242,7 @@ theorem empty_boundary_labelled_form_coeff (a : List (Letter I))
       have J : ∀ k, ∀ a : List (Letter I), a.length = n → inversions a = k →
           ∀ F : CoefficientFamily a, F.Complete →
           ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-          (signLaurent σ hσ (sesquilinearForm D hD
+          (signLaurent σ hσ (sesquilinearForm D
             (algebraWord D μ a) (algebraWord D μ []))).coeff z =
             F.coeff D.toSKM D.skmSymmetrizer μ σ z := by
         intro k
@@ -250,7 +250,7 @@ theorem empty_boundary_labelled_form_coeff (a : List (Letter I))
         | h k jk =>
           intro a ha hk F hF
           rcases sorted_or_interchange a with ⟨d, u, rfl⟩ | ⟨p, s, i, j, rfl⟩
-          · exact sorted_comparison D hD μ d u [] (BoundaryFamily.ofCoefficient F hF)
+          · exact sorted_comparison D μ d u [] (BoundaryFamily.ofCoefficient F hF)
           · obtain ⟨G, hG⟩ := exists_complete_coefficientFamily (p ++ (false, j) :: (true, i) :: s)
             have hg := jk _ (by have := inversions_swap p s i j; omega)
               (p ++ (false, j) :: (true, i) :: s) (by simpa using ha) rfl G hG
@@ -261,12 +261,12 @@ theorem empty_boundary_labelled_form_coeff (a : List (Letter I))
                 simp only [List.length_append, List.length_cons] at ha ⊢
                 omega
               have hh := ih _ hshort (p ++ s) rfl K hK
-              exact (same_boundary_labelled_form_coeff_iff F G K hF hG hK D hD μ
+              exact (same_boundary_labelled_form_coeff_iff F G K hF hG hK D μ
                 (fun τ hτ v => (hh τ hτ v).symm)).mpr hg
             · obtain ⟨E, hE⟩ := opposite_boundary_labelled_form_coeff_iff (X := X)
                 hij F.matching G.matching F.points G.points F.onStrand G.onStrand
                 F.serialize G.serialize F.decorates G.decorates hF hG F.unique G.unique
-              obtain ⟨hf, hh, _, _, hs⟩ := hE D hD μ
+              obtain ⟨hf, hh, _, _, hs⟩ := hE D μ
               intro τ hτ
               exact (hs τ hτ).mpr (hg τ hτ)
       intro a ha

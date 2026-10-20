@@ -90,24 +90,24 @@ theorem populated (ε : Bool) (μ : Bool → ℤ) : labelled ε ∈ fibre ε μ 
   simp only [fibre, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, degree]
 
 theorem coefficient (ε : Bool) (μ : Bool → ℤ) (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ (boundary ε))
       (algebraWord twoOddDatum μ (boundary ε)))).coeff z =
       ∑ t ∈ fibre ε μ z, σ ^
         (xpar twoOddDatum.toSKM μ (dLay (boundary ε) (serializer ε t.1 t.2))).val :=
-  mixed_boundary_labelled_form_coeff twoOddDatum twoOdd_barConsistent μ
+  mixed_boundary_labelled_form_coeff twoOddDatum μ
     (boundary ε) (boundary ε) (family ε) (family_matching ε) (family_complete ε)
     (family_unique ε) (points ε) (fun R j hj => (points_valid ε R j hj).2)
     (serializer ε) (serializer_valid ε) σ hσ z
 
 /-- Both transported signs at every degree and weight, in either orientation. -/
 theorem both_signs (ε : Bool) (μ : Bool → ℤ) (z : ℤ) :
-    (signLaurent 1 (by norm_num) (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent 1 (by norm_num) (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ (boundary ε))
       (algebraWord twoOddDatum μ (boundary ε)))).coeff z =
       ∑ t ∈ fibre ε μ z, (1 : ℚ) ^
         (xpar twoOddDatum.toSKM μ (dLay (boundary ε) (serializer ε t.1 t.2))).val ∧
-    (signLaurent (-1) (by norm_num) (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent (-1) (by norm_num) (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ (boundary ε))
       (algebraWord twoOddDatum μ (boundary ε)))).coeff z =
       ∑ t ∈ fibre ε μ z, (-1 : ℚ) ^
@@ -117,17 +117,17 @@ theorem both_signs (ε : Bool) (μ : Bool → ℤ) (z : ℤ) :
 /-- The covering-ring identity with independently chosen source families and
 arbitrary weights, not merely equality after one sign specialization. -/
 theorem graphical (ε : Bool) (ζ μ : Bool → ℤ) :
-    sesquilinearForm twoOddDatum twoOdd_barConsistent
+    sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum ζ (boundary ε)) (algebraWord twoOddDatum μ (boundary ε)) =
       (if ζ = μ then 1 else 0) * GraphicalSeries.expression twoOddDatum ζ
         (boundary ε) (boundary ε) (family ε)
         (fun R hR => (family_matching ε R hR).1) (family_unique ε) :=
-  theorem103 twoOddDatum twoOdd_barConsistent ζ μ (boundary ε) (boundary ε)
+  theorem103 twoOddDatum ζ μ (boundary ε) (boundary ε)
     (family ε) (family_matching ε) (family_complete ε) (family_unique ε)
 
 /-- Distinct actual external weights; the zero is derived from form blocks. -/
 theorem unequal_weight_zero (ε : Bool) :
-    sesquilinearForm twoOddDatum twoOdd_barConsistent
+    sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 (boundary ε))
       (algebraWord twoOddDatum (fun _ => 1) (boundary ε)) = 0 := by
   have h : (0 : Bool → ℤ) ≠ (fun _ => 1) := by

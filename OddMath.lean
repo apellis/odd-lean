@@ -102,6 +102,7 @@ import OddMath.SKM.GraphicalSeriesExamples
 import OddMath.SKM.MixedBoundaryCoefficients
 import OddMath.SKM.Theorem103
 import OddMath.SKM.Theorem103Examples
+import OddMath.SKM.Theorem103InfiniteExamples
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 import OddMath.CoveringQuantum.UDot.DownAdjointCoefficientsExamples
