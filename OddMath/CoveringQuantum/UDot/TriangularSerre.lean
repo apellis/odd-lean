@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.TriangularOperators
 
 /-!
@@ -12,8 +17,9 @@ factor then extends the known vacuum identity to the entire tensor product.
 This is a direct regular-module variant of the tensor construction in [CHW1] v2
 §2.3, using the corrected [BE2]-convention operators already defined in
 `TriangularOperators`. It uses neither toral-character separation nor a field
-hypothesis. Finiteness and bar-consistency enter through the existing generic
-quotient numerators. `positiveHalfAction` is an actual quotient algebra action;
+hypothesis, finiteness of the colour set, or bar consistency. Unlike the
+finite-colour radical presentation in [CHW1], it uses the Serre quotient directly.
+`positiveHalfAction` is an actual quotient algebra action;
 tensor weight projections, modified-presentation descent, and triangular
 injectivity are separate obligations.
 -/
@@ -21,13 +27,13 @@ injectivity are separate obligations.
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open PreF Coefficients TensorProduct
-variable {I : Type*} [DecidableEq I] [Finite I]
-variable (C : SuperCartanDatum I) (hC : C.BarConsistent)
+variable {I : Type*} [DecidableEq I]
+variable (C : SuperCartanDatum I)
 
 private theorem numerator_diag (i : I) (a b : Coefficients.Ring)
     (c : I → Coefficients.Ring) (x : C.serreF Coefficients.q pi) :
-    numerator C hC i a b (diagonal C c x) =
-      c i • diagonal C c (numerator C hC i a b x) := by
+    numerator C i a b (diagonal C c x) =
+      c i • diagonal C c (numerator C i a b x) := by
   obtain ⟨x, rfl⟩ := C.toSerreF_surjective Coefficients.q pi x
   have h : lowerNumerator C Coefficients.q pi i a b (diagTwist c x) =
       c i • diagTwist c (lowerNumerator C Coefficients.q pi i a b x) := by
@@ -40,14 +46,14 @@ private theorem numerator_diag (i : I) (a b : Coefficients.Ring)
 
 private theorem weight_numerator (v : Coefficients.Ringˣ) (i j : I)
     (a b : Coefficients.Ring) (x : C.serreF Coefficients.q pi) :
-    weight C v i (numerator C hC j a b x) =
+    weight C v i (numerator C j a b x) =
       ((v ^ (-C.dot i j) : Coefficients.Ringˣ) : Coefficients.Ring) •
-        numerator C hC j a b (weight C v i x) := by
+        numerator C j a b (weight C v i x) := by
   rw [weight, numerator_diag, smul_smul]
   simp only [← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero,
     Units.val_one, one_smul]
 
-omit [DecidableEq I] [Finite I] in
+omit [DecidableEq I] in
 private theorem diagonal_comm (c d : I → Coefficients.Ring)
     (x : C.serreF Coefficients.q pi) :
     diagonal C c (diagonal C d x) = diagonal C d (diagonal C c x) := by
@@ -56,9 +62,9 @@ private theorem diagonal_comm (c d : I → Coefficients.Ring)
 
 /-- Toral covariance of the positive regular operators on the whole tensor. -/
 theorem toral_positive (n : I → ℤ) (v : Coefficients.Ringˣ) (i j : I) :
-    toral C v i * positive C hC n j =
+    toral C v i * positive C n j =
       ((v ^ C.dot i j : Coefficients.Ringˣ) : Coefficients.Ring) •
-        (positive C hC n j * toral C v i) := by
+        (positive C n j * toral C v i) := by
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
@@ -91,11 +97,11 @@ private abbrev coeffB (n : I → ℤ) (i : I) : Coefficients.Ring :=
 
 private theorem mixed_apply (n : I → ℤ) (i l : I)
     (z : C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :
-    positive C hC n i (negative C l z) =
-      pi ^ (C.parity l * C.parity i).val • negative C l (positive C hC n i z) +
+    positive C n i (negative C l z) =
+      pi ^ (C.parity l * C.parity i).val • negative C l (positive C n i z) +
       if i = l then coeffA C n l • toral C Coefficients.q l z +
         coeffB C n l • toral C Coefficients.q⁻¹ l z else 0 := by
-  have h := congrArg (fun f ↦ f z) (positive_negative C hC n i l)
+  have h := congrArg (fun f ↦ f z) (positive_negative C n i l)
   simp only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply] at h
   rw [h]
   by_cases hil : i = l
@@ -106,31 +112,31 @@ private theorem mixed_apply (n : I → ℤ) (i l : I)
 
 private theorem toral_positive_apply (n : I → ℤ) (v : Coefficients.Ringˣ) (l i : I)
     (z : C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :
-    toral C v l (positive C hC n i z) =
+    toral C v l (positive C n i z) =
       ((v ^ C.dot l i : Coefficients.Ringˣ) : Coefficients.Ring) •
-        positive C hC n i (toral C v l z) :=
-  congrArg (fun f ↦ f z) (toral_positive C hC n v l i)
+        positive C n i (toral C v l z) :=
+  congrArg (fun f ↦ f z) (toral_positive C n v l i)
 
 /-- Commuting an arbitrary free positive element past a negative generator.
 The two correction terms use the skew derivatives at opposite parameters. -/
 theorem positiveFree_mixed (n : I → ℤ) (x : PreF Coefficients.Ring I) (l : I)
     (z : C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :
-    positiveFree C hC n x (negative C l z) =
-      negative C l (positiveFree C hC n (parityTwist C pi l x) z) +
+    positiveFree C n x (negative C l z) =
+      negative C l (positiveFree C n (parityTwist C pi l x) z) +
       (Ring.inverse (vermaDenominator C Coefficients.q pi l) *
         (((C.qi Coefficients.q l) ^ n l : Coefficients.Ringˣ) : Coefficients.Ring)) •
-        positiveFree C hC n (rDeriv (C.chi Coefficients.q⁻¹ pi) l x)
+        positiveFree C n (rDeriv (C.chi Coefficients.q⁻¹ pi) l x)
           (toral C Coefficients.q l z) +
       (Ring.inverse (vermaDenominator C Coefficients.q pi l) *
         (-(C.pii pi l ^ (n l).natAbs *
           (((C.qi Coefficients.q l) ^ (-n l) : Coefficients.Ringˣ) : Coefficients.Ring)))) •
-        positiveFree C hC n (rDeriv (C.chi Coefficients.q pi) l x)
+        positiveFree C n (rDeriv (C.chi Coefficients.q pi) l x)
           (toral C Coefficients.q⁻¹ l z) := by
-  change positiveFree C hC n x (negative C l z) =
-    negative C l (positiveFree C hC n (parityTwist C pi l x) z) +
-    coeffA C n l • positiveFree C hC n (rDeriv (C.chi Coefficients.q⁻¹ pi) l x)
+  change positiveFree C n x (negative C l z) =
+    negative C l (positiveFree C n (parityTwist C pi l x) z) +
+    coeffA C n l • positiveFree C n (rDeriv (C.chi Coefficients.q⁻¹ pi) l x)
       (toral C Coefficients.q l z) +
-    coeffB C n l • positiveFree C hC n (rDeriv (C.chi Coefficients.q pi) l x)
+    coeffB C n l • positiveFree C n (rDeriv (C.chi Coefficients.q pi) l x)
       (toral C Coefficients.q⁻¹ l z)
   induction x using induction_right generalizing z with
   | algebraMap c =>
@@ -150,8 +156,8 @@ theorem positiveFree_mixed (n : I → ℤ) (x : PreF Coefficients.Ring I) (l : I
       show ∀ j, parityTwist C pi l (θ Coefficients.Ring j) =
         pi ^ (C.parity l * C.parity j).val • θ Coefficients.Ring j from
         fun j ↦ diagTwist_θ _ j, positiveFree_θ]
-    rw [toral_positive_apply C hC n Coefficients.q,
-      toral_positive_apply C hC n Coefficients.q⁻¹]
+    rw [toral_positive_apply C n Coefficients.q,
+      toral_positive_apply C n Coefficients.q⁻¹]
     simp only [map_smul, inv_zpow, SuperCartanDatum.chi_apply]
     by_cases hil : i = l
     · subst i
@@ -166,7 +172,7 @@ theorem positiveFree_mixed (n : I → ℤ) (x : PreF Coefficients.Ring I) (l : I
 /-- The positive Serre relations hold as endomorphism identities on the entire
 actual tensor product, not merely on the first-factor vacuum. -/
 theorem positive_serre (n : I → ℤ) (i j : I) (hij : i ≠ j) :
-    positiveFree C hC n (C.serreElt Coefficients.q pi i j) = 0 := by
+    positiveFree C n (C.serreElt Coefficients.q pi i j) = 0 := by
   apply TensorProduct.ext
   apply LinearMap.ext
   intro x
@@ -177,7 +183,7 @@ theorem positive_serre (n : I → ℤ) (i j : I) (hij : i ≠ j) :
   induction x using induction_left with
   | algebraMap c =>
     rw [Algebra.algebraMap_eq_smul_one, map_smul, map_one, ← smul_tmul', map_smul,
-      positive_serre_vacuum C hC n i j hij, smul_zero]
+      positive_serre_vacuum C n i j hij, smul_zero]
   | smul c x hx => rw [map_smul, ← smul_tmul', map_smul, hx, smul_zero]
   | add x z hx hz => rw [map_add, add_tmul, map_add, hx, hz, add_zero]
   | θ_mul l x hx =>
@@ -194,27 +200,27 @@ def positiveHalfAction (n : I → ℤ) : C.serreF Coefficients.q pi →ₐ[Coeff
     Module.End Coefficients.Ring
       (C.serreF Coefficients.q pi ⊗[Coefficients.Ring] C.serreF Coefficients.q pi) :=
   RingQuot.liftAlgHom Coefficients.Ring
-    ⟨positiveFree C hC n, fun x y h ↦ by
+    ⟨positiveFree C n, fun x y h ↦ by
       cases h with
-      | serre i j hij => rw [map_zero, positive_serre C hC n i j hij]⟩
+      | serre i j hij => rw [map_zero, positive_serre C n i j hij]⟩
 
 /-- The quotient action agrees with the original free regular action. -/
 @[simp] theorem positiveHalfAction_mk (n : I → ℤ) (x : PreF Coefficients.Ring I) :
-    positiveHalfAction C hC n (C.toSerreF Coefficients.q pi x) =
-      positiveFree C hC n x := by
+    positiveHalfAction C n (C.toSerreF Coefficients.q pi x) =
+      positiveFree C n x := by
   change RingQuot.liftAlgHom Coefficients.Ring _
     (RingQuot.mkAlgHom Coefficients.Ring _ _) = _
   rw [RingQuot.liftAlgHom_mkAlgHom_apply]
 
 @[simp] theorem positiveHalfAction_θ (n : I → ℤ) (i : I) :
-    positiveHalfAction C hC n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
-      positive C hC n i := by
+    positiveHalfAction C n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
+      positive C n i := by
   rw [positiveHalfAction_mk, positiveFree_θ]
 
 /-- On a first-factor vacuum, arbitrary positive-half elements act by multiplication
 in the second factor. Neither argument needs to be homogeneous. -/
 theorem positiveHalfAction_vacuum (n : I → ℤ) (x y : C.serreF Coefficients.q pi) :
-    positiveHalfAction C hC n x ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] y) =
+    positiveHalfAction C n x ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] y) =
       (1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] (x * y) := by
   obtain ⟨x, rfl⟩ := C.toSerreF_surjective Coefficients.q pi x
   rw [positiveHalfAction_mk, positiveFree_vacuum]
@@ -223,7 +229,7 @@ theorem positiveHalfAction_vacuum (n : I → ℤ) (x y : C.serreF Coefficients.q
 assert descent of the modified presentation or triangular injectivity. -/
 theorem halfActions_vacuum (n : I → ℤ) (x y : C.serreF Coefficients.q pi) :
     negativeHalfAction C x
-      (positiveHalfAction C hC n y ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] 1)) =
+      (positiveHalfAction C n y ((1 : C.serreF Coefficients.q pi) ⊗ₜ[Coefficients.Ring] 1)) =
       x ⊗ₜ[Coefficients.Ring] y := by
   rw [positiveHalfAction_vacuum]
   simp [negativeHalfAction]

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.ContextualExchange
 
 /-!
@@ -9,8 +14,8 @@ bar of the quantum integer at the left endpoint of the suffix. This differs
 from the unbarred coefficient printed in the proof of Claim 5; the barred scalar
 is forced by the mixed defining relation and first-slot antilinearity. The importing
 examples distinguish these coefficients and refute the unbarred form identity.
-Finite colours and bar consistency are inherited from the existing form
-construction over the purely-even generic covering coefficient ring.
+The form allows arbitrary colours without bar consistency, over the purely-even
+generic covering coefficient ring.
 These identities do not assert the graphical matching comparisons.
 -/
 
@@ -69,20 +74,20 @@ end OddMath.CoveringQuantum.UDot.GenericVerma.MixedGram
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients GenericVerma.MixedGram
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Algebraic adjacent commutator for Claim 5. The quantum integer must be
 conjugated because the contextual word is in the first slot. The suffix weight
 is its physical endpoint, not the endpoint of the prefix or of the whole word. -/
 theorem sesquilinearForm_context_EF (ζ : X) (a b : List (Bool × I)) (i : I) :
-    sesquilinearForm D hD (algebraWord D ζ (a ++ (true, i) :: (false, i) :: b))
+    sesquilinearForm D (algebraWord D ζ (a ++ (true, i) :: (false, i) :: b))
         (algebraWord D ζ []) -
       D.pii pi i *
-        sesquilinearForm D hD (algebraWord D ζ (a ++ (false, i) :: (true, i) :: b))
+        sesquilinearForm D (algebraWord D ζ (a ++ (false, i) :: (true, i) :: b))
           (algebraWord D ζ []) =
       bar (qpInt (D.qi Coefficients.q i) (D.pii pi i)
         (D.h i (OddMath.SKM.wt D.toSKM ζ b))) *
-        sesquilinearForm D hD (algebraWord D ζ (a ++ b)) (algebraWord D ζ []) := by
+        sesquilinearForm D (algebraWord D ζ (a ++ b)) (algebraWord D ζ []) := by
   have h := algebraWord_context_EF D ζ a b i
   have he : algebraWord D ζ (a ++ (true, i) :: (false, i) :: b) =
       qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i (ζ + shift D b)) •
@@ -91,7 +96,7 @@ theorem sesquilinearForm_context_EF (ζ : X) (a b : List (Bool × I)) (i : I) :
     apply Subtype.ext
     exact sub_eq_iff_eq_add.mp (congrArg Subtype.val h)
   apply sub_eq_iff_eq_add.mpr
-  have hf := congrArg (fun x => sesquilinearForm D hD x (algebraWord D ζ [])) he
+  have hf := congrArg (fun x => sesquilinearForm D x (algebraWord D ζ [])) he
   simpa only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply,
     smul_eq_mul, barData.map_pii, mixed_word_physical_weight] using hf
 

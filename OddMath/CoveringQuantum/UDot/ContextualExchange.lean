@@ -1,9 +1,14 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.MatchingEndpointSupport
 /-! # Contextual distinct-colour exchange
 
 Algebraic adjacent exchange for BE2, arXiv:1701.04133v2, Theorem 10.3 Claim 4.
-The form uses finite colours and bar consistency, additive weights and decidable
-equalities over the purely-even generic covering coefficient ring. These identities
+The form uses additive weights and decidable equalities over the purely-even
+generic covering coefficient ring, with arbitrary colours and no bar consistency. These identities
 hold at every endpoint and do not assume a graphical comparison.
 -/
 
@@ -81,15 +86,15 @@ end OddMath.CoveringQuantum.UDot.GenericVerma.MixedGram
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients GenericVerma.MixedGram
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Algebraic adjacent exchange for Claim 4, with arbitrary mixed context. -/
 theorem sesquilinearForm_context_EF_ne (ζ : X) (a b : List (Bool × I))
     (i j : I) (hij : i ≠ j) :
-    sesquilinearForm D hD (algebraWord D ζ (a ++ (true, i) :: (false, j) :: b))
+    sesquilinearForm D (algebraWord D ζ (a ++ (true, i) :: (false, j) :: b))
         (algebraWord D ζ []) =
       pi ^ (D.parity i * D.parity j).val *
-        sesquilinearForm D hD (algebraWord D ζ (a ++ (false, j) :: (true, i) :: b))
+        sesquilinearForm D (algebraWord D ζ (a ++ (false, j) :: (true, i) :: b))
           (algebraWord D ζ []) := by
   rw [algebraWord_context_EF_ne D ζ a b i j hij]
   simp only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_pow, bar_pi]
@@ -98,14 +103,14 @@ theorem sesquilinearForm_context_EF_ne (ζ : X) (a b : List (Bool × I))
 /-- Formal Laurent coefficient exchange for Claim 4, specializing only π. -/
 theorem sesquilinearForm_context_EF_ne_coeff (σ : ℚ) (hσ : σ ^ 2 = 1)
     (ζ : X) (a b : List (Bool × I)) (i j : I) (hij : i ≠ j) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D ζ (a ++ (true, i) :: (false, j) :: b))
       (algebraWord D ζ []))).coeff z =
     σ ^ (D.parity i * D.parity j).val *
-      (signLaurent σ hσ (sesquilinearForm D hD
+      (signLaurent σ hσ (sesquilinearForm D
         (algebraWord D ζ (a ++ (false, j) :: (true, i) :: b))
         (algebraWord D ζ []))).coeff z := by
-  rw [sesquilinearForm_context_EF_ne D hD ζ a b i j hij, map_mul, map_pow,
+  rw [sesquilinearForm_context_EF_ne D ζ a b i j hij, map_mul, map_pow,
     signLaurent_pi, ← map_pow, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul,
     smul_eq_mul]
 

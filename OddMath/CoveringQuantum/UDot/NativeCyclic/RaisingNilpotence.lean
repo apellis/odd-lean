@@ -73,14 +73,14 @@ theorem exists_mem_freeBelow (x : PreF Coefficients.Ring I) :
     obtain ⟨n, hn⟩ := hx
     exact ⟨n, Submodule.smul_mem _ c hn⟩
 
-variable [DecidableEq X] [Finite I]
-variable (hD : D.toSuperCartanDatum.BarConsistent) (Λ : X)
+variable [DecidableEq X]
+variable (Λ : X)
 
 /-- All powers intertwine the original free and quotient actions. -/
 theorem integrableChevalley_pow_project (i : I) (n : ℕ)
     (x : PreF Coefficients.Ring I) :
-    (integrableChevalley D hD Λ true i ^ n) (project D hD Λ x) =
-      project D hD Λ ((lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Λ) ^ n) x) := by
+    (integrableChevalley D Λ true i ^ n) (project D Λ x) =
+      project D Λ ((lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Λ) ^ n) x) := by
   induction n generalizing x with
   | zero => rfl
   | succ n ih =>
@@ -90,28 +90,28 @@ theorem integrableChevalley_pow_project (i : I) (n : ℕ)
 /-- Quantitative annihilation of any representative with bounded formal length. -/
 theorem integrableChevalley_pow_project_eq_zero (i : I) (n : ℕ)
     {x : PreF Coefficients.Ring I} (hx : x ∈ freeBelow n) :
-    (integrableChevalley D hD Λ true i ^ n) (project D hD Λ x) = 0 := by
+    (integrableChevalley D Λ true i ^ n) (project D Λ x) = 0 := by
   rw [integrableChevalley_pow_project, lowerFree_pow_eq_zero D i (D.h i Λ) n hx]
   simp [project]
 
 /-- A projected word is killed by every exponent strictly above its length. -/
 theorem integrableChevalley_pow_word_eq_zero (i : I) (w : List I) (n : ℕ)
     (hw : w.length < n) :
-    (integrableChevalley D hD Λ true i ^ n)
-      (project D hD Λ (monomial Coefficients.Ring w)) = 0 :=
-  integrableChevalley_pow_project_eq_zero D hD Λ i n (monomial_mem_freeBelow w n hw)
+    (integrableChevalley D Λ true i ^ n)
+      (project D Λ (monomial Coefficients.Ring w)) = 0 :=
+  integrableChevalley_pow_project_eq_zero D Λ i n (monomial_mem_freeBelow w n hw)
 
 /-- The same quantitative bound holds on the entire projected-word span. -/
 theorem integrableChevalley_pow_span_eq_zero (i : I) (n : ℕ)
-    {x : IntegrableQuotient D hD Λ}
+    {x : IntegrableQuotient D Λ}
     (hx : x ∈ Submodule.span Coefficients.Ring
       {y | ∃ w : List I, w.length < n ∧
-        y = project D hD Λ (monomial Coefficients.Ring w)}) :
-    (integrableChevalley D hD Λ true i ^ n) x = 0 := by
+        y = project D Λ (monomial Coefficients.Ring w)}) :
+    (integrableChevalley D Λ true i ^ n) x = 0 := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨w, hw, rfl⟩ := hx
-    exact integrableChevalley_pow_word_eq_zero D hD Λ i w n hw
+    exact integrableChevalley_pow_word_eq_zero D Λ i w n hw
   | zero => exact map_zero _
   | add x y hx hy ihx ihy => simp only [map_add, ihx, ihy, add_zero]
   | smul c x hx ih => simp only [map_smul, ih, smul_zero]
@@ -119,11 +119,11 @@ theorem integrableChevalley_pow_span_eq_zero (i : I) (n : ℕ)
 /-- Every vector of the actual highest-weight quotient is locally nilpotent
 under each raising operator. No dominance or root-separation hypothesis is used. -/
 theorem integrableChevalley_true_locally_nilpotent
-    (x : IntegrableQuotient D hD Λ) (i : I) :
-    ∃ n : ℕ, (integrableChevalley D hD Λ true i ^ n) x = 0 := by
+    (x : IntegrableQuotient D Λ) (i : I) :
+    ∃ n : ℕ, (integrableChevalley D Λ true i ^ n) x = 0 := by
   obtain ⟨x⟩ := x
   obtain ⟨x, rfl⟩ := D.toSerreF_surjective Coefficients.q pi x
   obtain ⟨n, hn⟩ := exists_mem_freeBelow x
-  exact ⟨n, integrableChevalley_pow_project_eq_zero D hD Λ i n hn⟩
+  exact ⟨n, integrableChevalley_pow_project_eq_zero D Λ i n hn⟩
 
 end OddMath.CoveringQuantum.UDot.GenericVerma.NativeLeading

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.PositiveLabelledCoefficients
 import OddMath.SKM.PositiveFormCoefficientsExamples
 /-!
@@ -96,7 +101,7 @@ theorem repeated_family :
             (mkD oddDatum.toSKM 0 (L t) (hL t)) = z},
           (∑ t ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0
             (dLay repeatedWord (serializer t.1 t.2))).val) = (repeatedForm σ hσ 2).coeff z :=
-  positive_labelled_family_form_coeff oddDatum odd_barConsistent 0
+  positive_labelled_family_form_coeff oddDatum 0
     (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ()) repeatedFamily
     family_matching family_coverage family_unique points points_valid serializer serializer_valid
 
@@ -146,7 +151,7 @@ theorem empty_family :
   have hm : IsMatching₂ [] ([] : List (Letter Unit)) [] := ⟨trivial, rfl⟩
   have hr : StrictReduced₂ ([] : List (Letter Unit)) [] :=
     ⟨⟨List.nodup_nil, by simp [tRun, tStart]⟩, List.nodup_nil⟩
-  obtain ⟨L, hL, hmap, hc⟩ := positive_labelled_family_form_coeff oddDatum odd_barConsistent
+  obtain ⟨L, hL, hmap, hc⟩ := positive_labelled_family_form_coeff oddDatum
     0 a a {[]}
     (by intro R hR; obtain rfl := Set.mem_singleton_iff.mp hR; exact ⟨hm, hr⟩)
     (by
@@ -196,7 +201,7 @@ theorem bounded_repeated_family :
             (mkD oddDatum.toSKM 0 (L t) (hL t)) = z},
           (∑ t ∈ hf.toFinset, σ ^ (xpar oddDatum.toSKM 0
             (dLay repeatedWord (τ t.1 t.2))).val) = (repeatedForm σ hσ 2).coeff z :=
-  positive_bounded_points_family_form_coeff oddDatum odd_barConsistent 0
+  positive_bounded_points_family_form_coeff oddDatum 0
     (fun _ : Fin 2 => ()) (fun _ : Fin 2 => ()) repeatedFamily
     family_matching family_coverage family_unique points points_valid points_bounded
 

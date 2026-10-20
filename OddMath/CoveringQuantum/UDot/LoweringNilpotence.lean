@@ -56,14 +56,14 @@ theorem serre_nilpotence_bound (A B : Module.End k M) (m : ℕ) (c : ℕ → k)
 end Serre
 
 open PreF Coefficients
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (Λ : X)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X) (Λ : X)
 
 /-- Powers of the original lowering operator are left creation before projection. -/
 theorem integrableChevalley_false_pow_mk (i : I) (n : ℕ)
     (x : D.serreF Coefficients.q pi) :
-    (integrableChevalley D hD Λ false i ^ n) (toIntegrable D hD Λ x) =
-      toIntegrable D hD Λ (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i ^ n) * x) := by
+    (integrableChevalley D Λ false i ^ n) (toIntegrable D Λ x) =
+      toIntegrable D Λ (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i ^ n) * x) := by
   induction n with
   | zero => simp
   | succ n ih =>
@@ -72,18 +72,18 @@ theorem integrableChevalley_false_pow_mk (i : I) (n : ℕ)
 
 /-- The defining integrability relation kills the vacuum for every highest weight. -/
 theorem integrableChevalley_false_vacuum (i : I) :
-    (integrableChevalley D hD Λ false i ^ ((D.h i Λ).toNat + 1))
-      (toIntegrable D hD Λ 1) = 0 := by
+    (integrableChevalley D Λ false i ^ ((D.h i Λ).toNat + 1))
+      (toIntegrable D Λ 1) = 0 := by
   rw [integrableChevalley_false_pow_mk, mul_one]
-  exact toIntegrable_generator D hD Λ i
+  exact toIntegrable_generator D Λ i
 
 /-- Nilpotence under a fixed lowering generator survives every lowering generator,
 using the actual quotient Serre relation for unequal indices. -/
 theorem integrableChevalley_false_preserves_nilpotence (i j : I)
-    (x : IntegrableQuotient D hD Λ)
-    (hx : ∃ n : ℕ, (integrableChevalley D hD Λ false i ^ n) x = 0) :
-    ∃ n : ℕ, (integrableChevalley D hD Λ false i ^ n)
-      (integrableChevalley D hD Λ false j x) = 0 := by
+    (x : IntegrableQuotient D Λ)
+    (hx : ∃ n : ℕ, (integrableChevalley D Λ false i ^ n) x = 0) :
+    ∃ n : ℕ, (integrableChevalley D Λ false i ^ n)
+      (integrableChevalley D Λ false j x) = 0 := by
   obtain ⟨n, hn⟩ := hx
   by_cases hij : i = j
   · subst j
@@ -93,22 +93,22 @@ theorem integrableChevalley_false_preserves_nilpotence (i j : I)
   · refine ⟨n * D.serreDeg i j, ?_⟩
     exact serre_nilpotence_bound _ _ _ (D.serreCoeff Coefficients.q pi i j)
       (by simp [SuperCartanDatum.serreCoeff])
-      (integrableChevalley_serre D hD Λ false hij) n x hn
+      (integrableChevalley_serre D Λ false hij) n x hn
 
 /-- Every vector of the original action-generated quotient is locally nilpotent
 under each original lowering Chevalley operator. No dominance, independent roots,
 positive direction, field, finite dimension or nondegeneracy is assumed. -/
 theorem integrableChevalley_false_locally_nilpotent
-    (x : IntegrableQuotient D hD Λ) (i : I) :
-    ∃ n : ℕ, (integrableChevalley D hD Λ false i ^ n) x = 0 := by
-  induction x using integrable_induction D hD Λ with
+    (x : IntegrableQuotient D Λ) (i : I) :
+    ∃ n : ℕ, (integrableChevalley D Λ false i ^ n) x = 0 := by
+  induction x using integrable_induction D Λ with
   | word w =>
     induction w with
     | nil =>
       refine ⟨(D.h i Λ).toNat + 1, ?_⟩
-      simpa only [monomial_nil, map_one] using integrableChevalley_false_vacuum D hD Λ i
+      simpa only [monomial_nil, map_one] using integrableChevalley_false_vacuum D Λ i
     | cons j w ih =>
-      have h := integrableChevalley_false_preserves_nilpotence D hD Λ i j _ ih
+      have h := integrableChevalley_false_preserves_nilpotence D Λ i j _ ih
       simpa only [integrableChevalley_mk, chevalley_false_apply, monomial_cons, map_mul] using h
   | zero => exact ⟨0, by simp⟩
   | add x y hx hy =>

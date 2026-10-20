@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 
 /-!
@@ -5,7 +10,7 @@ import OddMath.CoveringQuantum.UDot.MixedAdjointCoefficients
 
 BE2, arXiv:1701.04133v2, Theorem 10.3 Claim 2, algebraic side.
 The existing signed algebraWord is evaluated in unchanged physical order.
-The finite-colour, bar-consistent form uses purely even covering coefficients.
+The form uses purely even covering coefficients, with arbitrary colours and no bar consistency.
 No graphical family identity or mixed-word reversal is asserted.
 -/
 
@@ -13,7 +18,7 @@ noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients GenericVerma.MixedGram
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Physical Claim 2 algebraic coefficient step for arbitrary existing signed words.
 The explicit endpoint condition places b at the endpoint of upward-left-cons a.
@@ -25,9 +30,9 @@ theorem sesquilinearForm_mixed_up_leftCons_bent_coeff
     (hwt : OddMath.SKM.wt D.toSKM μ b = OddMath.SKM.wt D.toSKM μ a + D.α i)
     (z : ℤ) :
     let ν := OddMath.SKM.wt D.toSKM μ a
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ a) (algebraWord D μ ((false, i) :: b)))).coeff z =
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ ((true, i) :: a)) (algebraWord D μ b))).coeff
         (z - D.d i * (1 + D.h i ν)) := by
   have hw : μ + shift D b = μ + shift D a + D.α i := by
@@ -35,7 +40,7 @@ theorem sesquilinearForm_mixed_up_leftCons_bent_coeff
   dsimp only
   rw [mixed_word_physical_weight]
   simpa only [algebraWord, halfGen, ite_true, Bool.false_eq_true, ite_false, hw] using
-    sesquilinearForm_E_bent_coeff D hD σ hσ i (μ + shift D a)
+    sesquilinearForm_E_bent_coeff D σ hσ i (μ + shift D a)
       (algebraWord D μ a) (algebraWord D μ b) z
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

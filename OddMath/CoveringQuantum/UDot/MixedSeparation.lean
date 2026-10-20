@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 
 /-!
@@ -15,17 +20,17 @@ of π. Thus the mixed coefficient can be recovered even when it is a zero diviso
 The calculation uses the quotient commutator at weight zero and the positive-half
 normalization, not an assumed detecting family or a canonical basis.
 
-The form hypotheses are finite bar-consistent data; root independence is not
-required. This does not establish full-form nondegeneracy: arbitrary weights,
+The form is available for arbitrary colours without bar consistency; root
+independence is not required. This does not establish full-form nondegeneracy: arbitrary weights,
 higher mixed degrees, and cancellation among general triangular tensors remain
-outside the theorem. Existence without bar consistency is also separate.
+outside the theorem.
 -/
 
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients PreF
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable (D : RootDatum I X)
 
 private abbrev e (i : I) (μ : X) := positiveHalf D Coefficients.q pi μ
   (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))
@@ -71,7 +76,8 @@ private theorem positive_square (i : I) :
     (e D i (-D.α i) : CoveringUDot Coefficients.Ring D Coefficients.q pi) =
     halfMap D Coefficients.q pi true (-D.α i) _
   simp only [e, positiveHalf_θ]
-  rw [show θ Coefficients.Ring i * θ Coefficients.Ring i = monomial Coefficients.Ring [i, i] by simp, halfMap_monomial]
+  rw [show θ Coefficients.Ring i * θ Coefficients.Ring i = monomial Coefficients.Ring [i, i] by
+    simp, halfMap_monomial]
   simp [halfWord, halfGen, halfRoot, E_mul_one_self]
 
 omit [DecidableEq X] in
@@ -88,15 +94,12 @@ private theorem half_square_norm (i : I) :
     SuperCartanDatum.pii, parity_sq, qp]
   ring
 
-variable [Finite I]
-
 private theorem mixed_unit (i : I) :
-    positiveModifiedForm D hD (o D (-D.α i)) (mixedGenerator D i) = D.norm Coefficients.q pi i := by
+    positiveModifiedForm D (o D (-D.α i)) (mixedGenerator D i) = D.norm Coefficients.q pi i := by
   rw [mixedGenerator, ← positiveModifiedForm_adjoint, e_unit,
     positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_θ_θ]
   simp
 
-omit [Finite I] in
 private theorem e_mixed (i : I) :
     e D i (-D.α i) * mixedGenerator D i =
       (D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ))) •
@@ -110,10 +113,10 @@ private theorem e_mixed (i : I) :
 
 /-- The actual positive form has a nonzero mixed Gram pivot. -/
 theorem positiveModifiedForm_mixedGenerator_self (i : I) :
-    positiveModifiedForm D hD (mixedGenerator D i) (mixedGenerator D i) =
+    positiveModifiedForm D (mixedGenerator D i) (mixedGenerator D i) =
       (1 + D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ))) *
         (D.norm Coefficients.q pi i)^2 := by
-  change positiveModifiedForm D hD
+  change positiveModifiedForm D
     (rhoModified D Coefficients.q pi pi_sq (e D i (-D.α i)) * e D i (-D.α i))
     (mixedGenerator D i) = _
   rw [positiveModifiedForm_adjoint, rhoModified_rhoModified, e_mixed,
@@ -134,23 +137,24 @@ def mixedPlane (i : I) : Submodule Coefficients.Ring (modified D Coefficients.q 
   Submodule.span Coefficients.Ring {o D (-D.α i), mixedGenerator D i}
 
 @[simp] theorem positiveModifiedForm_unit_mixedPivot (i : I) :
-    positiveModifiedForm D hD (o D (-D.α i)) (mixedPivot D i) = 0 := by
+    positiveModifiedForm D (o D (-D.α i)) (mixedPivot D i) = 0 := by
   rw [mixedPivot, map_add, map_smul, smul_eq_mul, mixed_unit,
     positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_one_one, mul_one, add_neg_cancel]
 
 /-- A unit Gram pivot over the covering ring, not merely a nonzero specialization. -/
 theorem positiveModifiedForm_mixedPivot_self (i : I) :
-    positiveModifiedForm D hD (mixedPivot D i) (mixedPivot D i) =
+    positiveModifiedForm D (mixedPivot D i) (mixedPivot D i) =
       D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ)) *
         (D.norm Coefficients.q pi i)^2 := by
-  have hm := mixed_unit D hD i
-  have hm' := (positiveModifiedForm_comm D hD (mixedGenerator D i) (o D (-D.α i))).trans hm
+  have hm := mixed_unit D i
+  have hm' := (positiveModifiedForm_comm D (mixedGenerator D i) (o D (-D.α i))).trans hm
   simp only [mixedPivot, LinearMap.BilinForm.add_left, LinearMap.BilinForm.add_right,
-    LinearMap.BilinForm.smul_left, LinearMap.BilinForm.smul_right, positiveModifiedForm_mixedGenerator_self,
+    LinearMap.BilinForm.smul_left, LinearMap.BilinForm.smul_right,
+    positiveModifiedForm_mixedGenerator_self,
     hm, hm', positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_one_one]
   ring
 
-omit [Finite I] [DecidableEq I] [DecidableEq X] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem pivot_isUnit (i : I) :
     IsUnit (D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ)) *
       (D.norm Coefficients.q pi i)^2) := by
@@ -161,25 +165,26 @@ private theorem pivot_isUnit (i : I) :
 
 /-- The mixed coordinate is recovered independently of the scalar coordinate. -/
 theorem positiveModifiedForm_mixedPivot_detect (i : I) (a b : Coefficients.Ring) :
-    positiveModifiedForm D hD (mixedPivot D i)
+    positiveModifiedForm D (mixedPivot D i)
       (a • o D (-D.α i) + b • mixedGenerator D i) =
         b * (D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ)) *
           (D.norm Coefficients.q pi i)^2) := by
-  have ho : positiveModifiedForm D hD (mixedPivot D i) (o D (-D.α i)) = 0 := by
+  have ho : positiveModifiedForm D (mixedPivot D i) (o D (-D.α i)) = 0 := by
     rw [positiveModifiedForm_comm, positiveModifiedForm_unit_mixedPivot]
-  have hm : positiveModifiedForm D hD (mixedPivot D i) (mixedGenerator D i) =
+  have hm : positiveModifiedForm D (mixedPivot D i) (mixedGenerator D i) =
       D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ)) * (D.norm Coefficients.q pi i)^2 := by
-    have hh := positiveModifiedForm_mixedPivot_self D hD i
-    change positiveModifiedForm D hD (mixedPivot D i)
+    have hh := positiveModifiedForm_mixedPivot_self D i
+    change positiveModifiedForm D (mixedPivot D i)
       (mixedGenerator D i + (-D.norm Coefficients.q pi i) • o D (-D.α i)) = _ at hh
-    simpa only [LinearMap.BilinForm.add_right, LinearMap.BilinForm.smul_right, ho, mul_zero, add_zero] using hh
+    simpa only [LinearMap.BilinForm.add_right, LinearMap.BilinForm.smul_right, ho, mul_zero,
+      add_zero] using hh
   simp only [map_add, map_smul, smul_eq_mul, ho, hm, mul_zero, zero_add]
 
 /-- Two actual pairings separate the scalar and mixed triangular coordinates. -/
 theorem positiveModifiedForm_mixed_coordinates_eq_zero_iff (i : I) (a b : Coefficients.Ring) :
-    (positiveModifiedForm D hD (o D (-D.α i))
+    (positiveModifiedForm D (o D (-D.α i))
         (a • o D (-D.α i) + b • mixedGenerator D i) = 0 ∧
-      positiveModifiedForm D hD (mixedPivot D i)
+      positiveModifiedForm D (mixedPivot D i)
         (a • o D (-D.α i) + b • mixedGenerator D i) = 0) ↔ a = 0 ∧ b = 0 := by
   constructor
   · rintro ⟨ha, hb⟩
@@ -187,40 +192,40 @@ theorem positiveModifiedForm_mixed_coordinates_eq_zero_iff (i : I) (a b : Coeffi
     have hb' : b = 0 := (pivot_isUnit D i).mul_right_cancel (hb.trans (zero_mul _).symm)
     subst b
     simpa only [zero_smul, add_zero, map_smul, smul_eq_mul,
-      positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_one_one, mul_one, and_true] using ha
+      positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_one_one, mul_one,
+      and_true] using ha
   · rintro ⟨rfl, rfl⟩
     simp
 
 /-- The calculated mixed pivot is invertible in the unspecialized covering ring. -/
 theorem positiveModifiedForm_mixedPivot_self_isUnit (i : I) :
-    IsUnit (positiveModifiedForm D hD (mixedPivot D i) (mixedPivot D i)) := by
+    IsUnit (positiveModifiedForm D (mixedPivot D i) (mixedPivot D i)) := by
   rw [positiveModifiedForm_mixedPivot_self]
   exact pivot_isUnit D i
 
-include hD in
 /-- These are genuinely two independent coordinates in the modified quotient. -/
 theorem mixed_coordinates_eq_zero_iff (i : I) (a b : Coefficients.Ring) :
     a • o D (-D.α i) + b • mixedGenerator D i = 0 ↔ a = 0 ∧ b = 0 := by
   constructor
   · intro hz
-    apply (positiveModifiedForm_mixed_coordinates_eq_zero_iff D hD i a b).mp
+    apply (positiveModifiedForm_mixed_coordinates_eq_zero_iff D i a b).mp
     simp only [hz, map_zero, and_self]
   · rintro ⟨rfl, rfl⟩
     simp
 
 /-- Genuine nondegeneracy on the first mixed plane inside the modified quotient. -/
 theorem positiveModifiedForm_mixedPlane_nondegenerate (i : I) :
-    ((positiveModifiedForm D hD).restrict (mixedPlane D i)).Nondegenerate := by
+    ((positiveModifiedForm D).restrict (mixedPlane D i)).Nondegenerate := by
   have hu : o D (-D.α i) ∈ mixedPlane D i := Submodule.subset_span (by simp)
   have hm : mixedGenerator D i ∈ mixedPlane D i := Submodule.subset_span (by simp)
   have hp : mixedPivot D i ∈ mixedPlane D i := by
     unfold mixedPivot
     exact (mixedPlane D i).add_mem hm ((mixedPlane D i).smul_mem _ hu)
   have sep : ∀ x : mixedPlane D i, (∀ y : mixedPlane D i,
-      positiveModifiedForm D hD y.val x.val = 0) → x = 0 := by
+      positiveModifiedForm D y.val x.val = 0) → x = 0 := by
     intro x hx
     obtain ⟨a, b, he⟩ := Submodule.mem_span_pair.mp x.property
-    have hab := (positiveModifiedForm_mixed_coordinates_eq_zero_iff D hD i a b).mp
+    have hab := (positiveModifiedForm_mixed_coordinates_eq_zero_iff D i a b).mp
       ⟨he ▸ hx ⟨_, hu⟩, he ▸ hx ⟨_, hp⟩⟩
     apply Subtype.ext
     rw [← he, hab.1, hab.2, zero_smul, zero_smul, add_zero]
@@ -233,7 +238,6 @@ theorem positiveModifiedForm_mixedPlane_nondegenerate (i : I) :
     exact hx y
   · exact sep
 
-omit [Finite I] in
 /-- The mixed generator is an actual triangular tensor, with a unit coefficient. -/
 theorem mixedGenerator_eq_triangular (i : I) :
     mixedGenerator D i = qp Coefficients.q (D.d i) •
@@ -248,12 +252,10 @@ theorem mixedGenerator_eq_triangular (i : I) :
       triangularTensor D Coefficients.q pi (-D.α i) _
   simpa [f, e] using (triangularTensor_θ_θ D Coefficients.q pi (-D.α i) i i).symm
 
-omit [Finite I] in
 private theorem psi_o (μ : X) : psiModified D (o D μ) = o D μ := by
   apply Subtype.ext
   simp [o]
 
-omit [Finite I] in
 private theorem psi_mixedGenerator (i : I) :
     psiModified D (mixedGenerator D i) =
       (bar (qp Coefficients.q (D.d i)) * D.pii pi i * qp Coefficients.q (-(D.d i : ℤ))) •
@@ -268,7 +270,6 @@ private theorem psi_mixedGenerator (i : I) :
   rw [mul_assoc, qp_mul]
   simp [SuperCartanDatum.pii]
 
-omit [Finite I] in
 /-- Psi preserves this actual mixed submodule, not just its dimension. -/
 theorem psiModified_mem_mixedPlane (i : I) {x : modified D Coefficients.q pi}
     (hx : x ∈ mixedPlane D i) : psiModified D x ∈ mixedPlane D i := by
@@ -281,7 +282,7 @@ theorem psiModified_mem_mixedPlane (i : I) {x : modified D Coefficients.q pi}
 
 /-- An explicit detector for the original sesquilinear form and an arbitrary mixed coefficient. -/
 theorem sesquilinearForm_mixedPivot_detect (i : I) (a b : Coefficients.Ring) :
-    sesquilinearForm D hD (psiModified D (mixedPivot D i))
+    sesquilinearForm D (psiModified D (mixedPivot D i))
       (a • o D (-D.α i) + b • mixedGenerator D i) =
         b * (D.pii pi i * qp Coefficients.q (2 * (D.d i : ℤ)) *
           (D.norm Coefficients.q pi i)^2) := by
@@ -289,11 +290,13 @@ theorem sesquilinearForm_mixedPivot_detect (i : I) (a b : Coefficients.Ring) :
 
 /-- The original BE2 sesquilinear form is nondegenerate on the mixed plane. -/
 theorem sesquilinearForm_mixedPlane_nondegenerate (i : I) :
-    LinearMap.Nondegenerate ((sesquilinearForm D hD).domRestrict₁₂ (mixedPlane D i) (mixedPlane D i)) := by
-  have hb := positiveModifiedForm_mixedPlane_nondegenerate D hD i
+    LinearMap.Nondegenerate
+      ((sesquilinearForm D).domRestrict₁₂ (mixedPlane D i) (mixedPlane D i)) := by
+  have hb := positiveModifiedForm_mixedPlane_nondegenerate D i
   constructor
   · intro x hx
-    have hz : (⟨psiModified D x.val, psiModified_mem_mixedPlane D i x.property⟩ : mixedPlane D i) = 0 :=
+    have hz : (⟨psiModified D x.val, psiModified_mem_mixedPlane D i x.property⟩ :
+        mixedPlane D i) = 0 :=
       hb.1 _ (fun y ↦ hx y)
     apply Subtype.ext
     have he := congrArg (fun z : mixedPlane D i ↦ psiModified D z.val) hz
@@ -302,8 +305,8 @@ theorem sesquilinearForm_mixedPlane_nondegenerate (i : I) :
     apply hb.2
     intro y
     have hh := hx ⟨psiModified D y.val, psiModified_mem_mixedPlane D i y.property⟩
-    change positiveModifiedForm D hD (psiModified D (psiModified D y.val)) x.val = 0 at hh
-    change positiveModifiedForm D hD y.val x.val = 0
+    change positiveModifiedForm D (psiModified D (psiModified D y.val)) x.val = 0 at hh
+    change positiveModifiedForm D y.val x.val = 0
     simpa only [psiModified_psiModified] using hh
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

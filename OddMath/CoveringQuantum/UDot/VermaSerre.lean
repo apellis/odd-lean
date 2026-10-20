@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.VermaOperators
 
 /-!
@@ -13,8 +18,8 @@ field structure on the covering coefficient ring.
 
 `lowerFree_serre` holds over a commutative ring with `q` a unit and `π² = 1`.
 `GenericVerma.lower_serre` transfers it to the existing quotient operators,
-whose construction assumes finite, bar-consistent data over the actual generic
-covering ring. `GenericVerma.positiveAction` is an action of the positive half,
+over the generic covering ring, with no finiteness or bar-consistency assumption.
+`GenericVerma.positiveAction` is an action of the positive half,
 not a modified weight-block representation or a triangular injectivity theorem.
 -/
 
@@ -164,10 +169,10 @@ theorem lowerFree_serre (hπ : π ^ 2 = 1) (n : I → ℤ)
 
 namespace GenericVerma
 open Coefficients
-variable {I : Type*} [DecidableEq I] [Finite I] (C : SuperCartanDatum I) (hC : C.BarConsistent)
+variable {I : Type*} [DecidableEq I] (C : SuperCartanDatum I)
 
 private theorem lower_lift_mk (n : I → ℤ) (x y : PreF Coefficients.Ring I) :
-    (FreeAlgebra.lift Coefficients.Ring fun i ↦ lower C hC i (n i)) x
+    (FreeAlgebra.lift Coefficients.Ring fun i ↦ lower C i (n i)) x
       (C.toSerreF Coefficients.q pi y) =
     C.toSerreF Coefficients.q pi
       ((FreeAlgebra.lift Coefficients.Ring fun i ↦ lowerFree C Coefficients.q pi i (n i)) x y) := by
@@ -177,10 +182,9 @@ private theorem lower_lift_mk (n : I → ℤ) (x y : PreF Coefficients.Ring I) :
   | add x z hx hz => simp [hx, hz]
   | mul x z hx hz => simp [Module.End.mul_apply, hx, hz]
 
-/-- Positive Serre relations among the actual descended lowering endomorphisms.
-    Finiteness and bar-consistency enter only through their existing quotient descent. -/
+/-- Positive Serre relations among the descended lowering endomorphisms. -/
 theorem lower_serre (n : I → ℤ) {i j : I} (hij : i ≠ j) :
-    (FreeAlgebra.lift Coefficients.Ring fun i ↦ lower C hC i (n i))
+    (FreeAlgebra.lift Coefficients.Ring fun i ↦ lower C i (n i))
       (C.serreElt Coefficients.q pi i j) = 0 := by
   ext z
   obtain ⟨y, rfl⟩ := C.toSerreF_surjective Coefficients.q pi z
@@ -193,23 +197,23 @@ theorem lower_serre (n : I → ℤ) {i j : I} (hij : i ≠ j) :
 theorem lower_serre_sum (n : I → ℤ) {i j : I} (hij : i ≠ j) :
     ∑ r ∈ Finset.range (C.serreDeg i j + 1),
       C.serreCoeff Coefficients.q pi i j r •
-        (lower C hC i (n i) ^ (C.serreDeg i j - r) *
-          lower C hC j (n j) * lower C hC i (n i) ^ r) = 0 := by
+        (lower C i (n i) ^ (C.serreDeg i j - r) *
+          lower C j (n j) * lower C i (n i) ^ r) = 0 := by
   simpa only [SuperCartanDatum.serreElt, map_sum, map_smul, map_mul, map_pow,
-    θ, FreeAlgebra.lift_ι_apply] using lower_serre C hC n hij
+    θ, FreeAlgebra.lift_ι_apply] using lower_serre C n hij
 
 /-- The positive Serre half acts on the actual negative Serre half by the
     constructed highest-weight lowering operators. No faithfulness is claimed. -/
 def positiveAction (n : I → ℤ) : C.serreF Coefficients.q pi →ₐ[Coefficients.Ring]
     Module.End Coefficients.Ring (C.serreF Coefficients.q pi) :=
   RingQuot.liftAlgHom Coefficients.Ring
-    ⟨FreeAlgebra.lift Coefficients.Ring (fun i ↦ lower C hC i (n i)), fun x y h ↦ by
+    ⟨FreeAlgebra.lift Coefficients.Ring (fun i ↦ lower C i (n i)), fun x y h ↦ by
       cases h with
-      | serre i j hij => rw [map_zero, lower_serre C hC n hij]⟩
+      | serre i j hij => rw [map_zero, lower_serre C n hij]⟩
 
 @[simp] theorem positiveAction_θ (n : I → ℤ) (i : I) :
-    positiveAction C hC n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
-      lower C hC i (n i) := by
+    positiveAction C n (C.toSerreF Coefficients.q pi (θ Coefficients.Ring i)) =
+      lower C i (n i) := by
   change RingQuot.liftAlgHom Coefficients.Ring _
     (RingQuot.mkAlgHom Coefficients.Ring _ _) = _
   rw [RingQuot.liftAlgHom_mkAlgHom_apply]

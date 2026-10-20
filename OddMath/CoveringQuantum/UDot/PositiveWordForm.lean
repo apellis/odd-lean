@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.PreF.PermutationForm
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 
@@ -11,8 +16,8 @@ The normalization and crossing factors are the `norm` and `chi` of `HalfAlgebra`
 Permutations map source positions to target positions, so colour preservation is
 `a r = b (w r)`, with source colours in the inversion product.
 
-The existing constructed sesquilinear form requires finite bar-consistent data;
-these route restrictions remain explicit. No matching enumeration, generating-series
+The existing constructed sesquilinear form allows arbitrary colours without
+bar consistency. No matching enumeration, generating-series
 identity, or mixed-sign case of Theorem 10.3 is asserted here.
 -/
 
@@ -21,14 +26,14 @@ open scoped BigOperators
 namespace OddMath.CoveringQuantum.UDot.GenericTensor
 open Coefficients PreF
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- Weighted-permutation value of reversed positive words in the existing sesquilinear
-form ([BE2], Theorem 10.3, Claim 1, algebraic step). The finite/bar-consistent
-hypotheses come from the constructed form, not from the free-form calculation. -/
+form ([BE2], Theorem 10.3, Claim 1, algebraic step), for arbitrary colours
+without bar consistency. -/
 theorem sesquilinearForm_positive_words_permutations (μ : X) (n : ℕ)
     (a b : Fin n → I) :
-    sesquilinearForm D hD
+    sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (List.ofFn a).reverse)))
       (positiveHalf D Coefficients.q pi μ
@@ -43,11 +48,10 @@ theorem sesquilinearForm_positive_words_permutations (μ : X) (n : ℕ)
 
 /-- Unequal positive boundary lengths give zero in the existing modified form
 ([BE2], Theorem 10.3, Claim 1). Orthogonality uses formal colour multidegrees,
-not root independence. Finite colours and bar consistency are restrictions of
-the constructed form. -/
+not root independence. Colours may be infinite, without bar consistency. -/
 theorem sesquilinearForm_positive_words_eq_zero_of_length_ne
     (μ : X) {m n : ℕ} (a : Fin m → I) (b : Fin n → I) (hmn : m ≠ n) :
-    sesquilinearForm D hD
+    sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi
           (monomial Coefficients.Ring (List.ofFn a).reverse)))

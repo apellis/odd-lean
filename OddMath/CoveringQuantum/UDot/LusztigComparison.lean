@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.UDot.FormUniqueness
@@ -45,8 +46,9 @@ rank and the simple coroots are linearly independent
 (`exists_dominant_ge_of_linearIndependent_coroot`). Then
 `UDot.positiveModifiedForm_leftRadical_trivial_algebraicClosure` and
 `UDot.sesquilinearForm_leftRadical_trivial` give the nondegeneracy assertion of [BE2]
-Theorem 10.1. Not in [BE2] are the shape `C.rootDatumOf R` of the root datum
-(`X = Hom(Y, ℤ)`) and the bar-consistency hypothesis `hD` of `GenericTensor`.
+Theorem 10.1. The root datum is presented as `C.rootDatumOf R`
+(`X = Hom(Y, ℤ)`). The bar-consistency hypothesis `hD`, used by the twistor
+reduction, is the additional nondegeneracy assumption (10.2) in [BE2].
 
 ## Main definitions
 
@@ -1116,20 +1118,21 @@ theorem positiveFormNondegenerate_of_ratFunc
 
 variable [Finite I] (hD : (C.rootDatumOf R).toSuperCartanDatum.BarConsistent)
 
+include hD in
 /-- **Nondegeneracy of the `ρ`-adjoint form on `U̇`.** This is the nondegeneracy assertion of
 [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.positiveModifiedForm`
 on the modified covering algebra of `C.rootDatumOf R` over `ℚ(q)[π]/(π² - 1)`: its left radical is
 trivial. The setting is that of [BE2] §1: finite `I`, the coweight lattice `Y` free of finite rank,
-simple roots `hα` and simple coroots `hcoroot` linearly independent. Two restrictions are not in
-[BE2]: the root datum is of the form `C.rootDatumOf R` (weights `X = Hom(Y, ℤ)`), and `hD`
-(bar-consistency, used by the construction of `GenericTensor.positiveModifiedForm`). The `π = 1`
+simple roots `hα` and simple coroots `hcoroot` linearly independent. The root datum is presented
+as `C.rootDatumOf R` (weights `X = Hom(Y, ℤ)`). The hypothesis `hD` is the bar-consistency
+assumption (10.2) of [BE2], used here by the twistor reduction. The `π = 1`
 input is Lusztig's [Lus] 26.3.1 over `ℚ(v)`, LieLean's `Modified.eq_zero_of_forall_form_eq_zero`,
 whose dominance hypothesis is `exists_dominant_ge_of_linearIndependent_coroot`; inside the proof it
 is transferred to `L = \overline{ℚ(q)}` at `v = q⁻¹` and `v = (t q)⁻¹` (`t² = -1`), both
 transcendental over `ℚ`. -/
 theorem positiveModifiedForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
-    ∀ x, (∀ y, GenericTensor.positiveModifiedForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
+    ∀ x, (∀ y, GenericTensor.positiveModifiedForm (C.rootDatumOf R) x y = 0) → x = 0 := by
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   refine positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R) hD hα
@@ -1138,13 +1141,14 @@ theorem positiveModifiedForm_nondegenerate [Module.Free ℤ Y] [Module.Finite �
       (QuantumGroup.transcendental_inv_mul_X (t := t) ?_)
   rw [← Units.val_pow_eq_pow_val, ht, Units.val_neg, Units.val_one]
 
+include hD in
 /-- **Nondegeneracy of the sesquilinear form on `U̇`.** The nondegeneracy assertion of [BE2]
 Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.sesquilinearForm`, under the
-hypotheses of `positiveModifiedForm_nondegenerate` (the same two restrictions not in [BE2]: root
-data `C.rootDatumOf R`, and `hD`). -/
+hypotheses of `positiveModifiedForm_nondegenerate`, including the bar-consistency assumption
+(10.2) of [BE2] and the root datum presentation `C.rootDatumOf R`. -/
 theorem sesquilinearForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
-    ∀ x, (∀ y, GenericTensor.sesquilinearForm (C.rootDatumOf R) hD x y = 0) → x = 0 := by
+    ∀ x, (∀ y, GenericTensor.sesquilinearForm (C.rootDatumOf R) x y = 0) → x = 0 := by
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.Claim2Coefficients
 import OddMath.SKM.PositiveFormCoefficientsExamples
 
@@ -53,9 +58,11 @@ private theorem hq : ∀ R j, j ∈ leftEnds₂ A R.val →
 private theorem hr : ∀ R j, j ∈ leftEnds₂ a R.val → OnStrand₂ a R.val j (r R j) := by
   intro R
   exact (Set.notMem_empty R.val R.property).elim
-private def sourceSerializer (R : {R // R ∈ M}) (_ : MatchingStrand A R.val → ℕ) : List (DTMove Unit) :=
+private def sourceSerializer (R : {R // R ∈ M})
+    (_ : MatchingStrand A R.val → ℕ) : List (DTMove Unit) :=
   (Set.notMem_empty R.val R.property).elim
-private def targetSerializer (R : {R // R ∈ N}) (_ : MatchingStrand a R.val → ℕ) : List (DTMove Unit) :=
+private def targetSerializer (R : {R // R ∈ N})
+    (_ : MatchingStrand a R.val → ℕ) : List (DTMove Unit) :=
   (Set.notMem_empty R.val R.property).elim
 private theorem hτ (R : {R // R ∈ M}) (c : MatchingStrand A R.val → ℕ) :
     Decorates₂ A R.val (q R) (strandCounts c) (sourceSerializer R c) :=
@@ -74,11 +81,11 @@ private def p' (u : U) : ZMod 2 := xpar oddDatum.toSKM 0 (dLay a (targetSerializ
 
 /-- Both different physical forms vanish by actual block orthogonality. -/
 theorem forms_zero :
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 A)
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 A)
       (algebraWord oddDatum 0 a) = 0 ∧
-    sesquilinearForm oddDatum odd_barConsistent (algebraWord oddDatum 0 a)
+    sesquilinearForm oddDatum (algebraWord oddDatum 0 a)
       (algebraWord oddDatum 0 B) = 0 :=
-  sesquilinearForm_mixed_up_leftCons_mismatch oddDatum odd_barConsistent 0 () a a mismatch
+  sesquilinearForm_mixed_up_leftCons_mismatch oddDatum 0 () a a mismatch
 
 /-- Invoke the endpoint-unrestricted headline on complete mismatch families.
 The actual two form assertions occur in the iff, and the same finite witnesses
@@ -88,23 +95,23 @@ theorem mismatch_form_coeff_iff :
       (hg : ∀ z : ℤ, Set.Finite {u : U | e u = z}),
       (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
         ((∀ z : ℤ,
-          (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+          (signLaurent σ hσ (sesquilinearForm oddDatum
             (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 a))).coeff z =
               ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
          (∀ z : ℤ,
-          (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+          (signLaurent σ hσ (sesquilinearForm oddDatum
             (algebraWord oddDatum 0 a) (algebraWord oddDatum 0 B))).coeff z =
               ∑ u ∈ (hg z).toFinset, σ ^ (p' u).val))) ∧
       ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 a))).coeff z = 0 ∧
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 a) (algebraWord oddDatum 0 B))).coeff z = 0 ∧
         (∑ t ∈ (hf z).toFinset, σ ^ (p t).val) = 0 ∧
         (∑ u ∈ (hg z).toFinset, σ ^ (p' u).val) = 0 := by
   obtain ⟨_, hF⟩ := rightCup_labelled_form_coeff_iff (X := ℤ)
     hM hN q r hq hr sourceSerializer targetSerializer hτ hυ hMrep hNrep hMuniq hNuniq
-  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum odd_barConsistent 0
+  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum 0
   refine ⟨hf, hg, hiff, ?_⟩
   intro σ hσ z
   refine ⟨?_, ?_, ?_, ?_⟩

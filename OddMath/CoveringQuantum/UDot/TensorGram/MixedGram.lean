@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorPolarization
 import OddMath.CoveringQuantum.UDot.VermaLimit
@@ -12,27 +13,28 @@ import OddMath.CoveringQuantum.UDot.PositiveForm
 The actual highest/lowest quotient tensor carries the native Delta1/Delta2
 actions. Finite word expansions retain both toral factors and the independent
 root multidegrees; no injectivity of the root map is required. The fixed-difference
-filter is non-bottom precisely when a strictly positive coroot weight exists.
+filter retains its full coordinate-bound non-bottom criterion for arbitrary colours.
+For finite colours this is equivalent to existence of a strictly positive coroot weight.
 These finite polynomials alone do not give a uniform mixed limit.
 -/
 
 noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericVerma.MixedGram
 open PreF Coefficients TensorProduct
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (Λ Μ : X)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X) (Λ Μ : X)
 
 abbrev RawPair (I : Type*) := PreF Coefficients.Ring I × PreF Coefficients.Ring I
 
-def project (x : PreF Coefficients.Ring I) : IntegrableQuotient D hD Λ :=
-  toIntegrable D hD Λ (D.toSerreF Coefficients.q pi x)
+def project (x : PreF Coefficients.Ring I) : IntegrableQuotient D Λ :=
+  toIntegrable D Λ (D.toSerreF Coefficients.q pi x)
 
 def freeWeight (f : X → Coefficients.Ring) :
     Module.End Coefficients.Ring (PreF Coefficients.Ring I) :=
   (FreeAlgebra.wordBasis Coefficients.Ring I).constr Coefficients.Ring
     (fun w ↦ f (Λ - halfWeight D true (wordWeight w)) • monomial Coefficients.Ring w)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 @[simp] theorem freeWeight_word (f : X → Coefficients.Ring) (w : List I) :
     freeWeight D Λ f (monomial Coefficients.Ring w) =
       f (Λ - halfWeight D true (wordWeight w)) • monomial Coefficients.Ring w := by
@@ -42,7 +44,7 @@ omit [DecidableEq I] [DecidableEq X] [Finite I] in
         monomial Coefficients.Ring w) w)
 
 theorem project_weight (f : X → Coefficients.Ring) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (freeWeight D Λ f x) = integrableWeight D hD Λ f (project D hD Λ x) := by
+    project D Λ (freeWeight D Λ f x) = integrableWeight D Λ f (project D Λ x) := by
   induction x using induction_monomial with
   | zero => simp [project]
   | add x y hx hy => simpa only [map_add, project] using congrArg₂ (· + ·) hx hy
@@ -50,18 +52,18 @@ theorem project_weight (f : X → Coefficients.Ring) (x : PreF Coefficients.Ring
   | word w => simp [project, integrableWeight_word]
 
 theorem project_lower (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Λ) x) =
-      integrableChevalley D hD Λ true i (project D hD Λ x) := by
+    project D Λ (lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Λ) x) =
+      integrableChevalley D Λ true i (project D Λ x) := by
   simp only [project, integrableChevalley_mk, chevalley_true, lower_mk]
 
 theorem project_create (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (θ Coefficients.Ring i * x) =
-      integrableChevalley D hD Λ false i (project D hD Λ x) := by
+    project D Λ (θ Coefficients.Ring i * x) =
+      integrableChevalley D Λ false i (project D Λ x) := by
   simp only [project, integrableChevalley_mk, chevalley_false_apply, map_mul]
 
 theorem project_parity (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (parityTwist D.toSuperCartanDatum pi i x) =
-      integrableParity D hD Λ i (project D hD Λ x) := by
+    project D Λ (parityTwist D.toSuperCartanDatum pi i x) =
+      integrableParity D Λ i (project D Λ x) := by
   simp only [project, integrableParity, integrableSign_mk,
     GenericTensor.diagonal_mk, parityTwist]
 
@@ -78,23 +80,23 @@ def freeLowestF (i : I) : Module.End Coefficients.Ring (PreF Coefficients.Ring I
   polarizationSign D (-Μ) i • lowerFree D.toSuperCartanDatum Coefficients.q pi i (D.h i Μ)
 
 theorem project_twist (s : Bool) (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (freeTwist D Λ s i x) = tensorTwist D hD Λ s i (project D hD Λ x) := by
+    project D Λ (freeTwist D Λ s i x) = tensorTwist D Λ s i (project D Λ x) := by
   simp only [freeTwist, LinearMap.comp_apply, project_weight, AlgHom.toLinearMap_apply,
     project_parity, tensorTwist, Module.End.mul_apply]
 
 theorem project_ftwist (s : Bool) (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Λ (freeFTwist D Λ s i x) = tensorFTwist D hD Λ s i (project D hD Λ x) := by
+    project D Λ (freeFTwist D Λ s i x) = tensorFTwist D Λ s i (project D Λ x) := by
   simp only [freeFTwist, LinearMap.smul_apply, AlgHom.toLinearMap_apply, tensorFTwist_eq_smul]
-  change toIntegrable D hD Λ (D.toSerreF Coefficients.q pi (_ • _)) = _
+  change toIntegrable D Λ (D.toSerreF Coefficients.q pi (_ • _)) = _
   rw [map_smul, map_smul]
-  exact congrArg (_ • ·) (project_parity D hD Λ i x)
+  exact congrArg (_ • ·) (project_parity D Λ i x)
 
 theorem project_lowestF (i : I) (x : PreF Coefficients.Ring I) :
-    project D hD Μ (freeLowestF D Μ i x) = lowestF D hD Μ i (project D hD Μ x) := by
+    project D Μ (freeLowestF D Μ i x) = lowestF D Μ i (project D Μ x) := by
   simp only [freeLowestF, LinearMap.smul_apply, lowestF_eq_smul, ← polarizationSign_eq_parl]
-  change toIntegrable D hD Μ (D.toSerreF Coefficients.q pi (_ • _)) = _
+  change toIntegrable D Μ (D.toSerreF Coefficients.q pi (_ • _)) = _
   rw [map_smul, map_smul]
-  exact congrArg (_ • ·) (project_lower D hD Μ i x)
+  exact congrArg (_ • ·) (project_lower D Μ i x)
 
 /-- Two actual coproduct branches; lowerFree retains both toral terms and its denominator. -/
 def step (s positive : Bool) (i : I) (z : RawPair I) : List (RawPair I) :=
@@ -105,13 +107,13 @@ def step (s positive : Bool) (i : I) (z : RawPair I) : List (RawPair I) :=
     [(θ Coefficients.Ring i * z.1, freeWeight D Μ (tensorToralScalar D false i) z.2),
      (freeFTwist D Λ s i z.1, freeLowestF D Μ i z.2)]
 
-def pairValue (z : RawPair I) := project D hD Λ z.1 ⊗ₜ[Coefficients.Ring] project D hD Μ z.2
+def pairValue (z : RawPair I) := project D Λ z.1 ⊗ₜ[Coefficients.Ring] project D Μ z.2
 
-def listValue (zs : List (RawPair I)) := (zs.map (pairValue D hD Λ Μ)).sum
+def listValue (zs : List (RawPair I)) := (zs.map (pairValue D Λ Μ)).sum
 
 theorem step_value (s positive : Bool) (i : I) (z : RawPair I) :
-    listValue D hD Λ Μ (step D Λ Μ s positive i z) =
-      tensorChevalley D hD Λ Μ s positive i (pairValue D hD Λ Μ z) := by
+    listValue D Λ Μ (step D Λ Μ s positive i z) =
+      tensorChevalley D Λ Μ s positive i (pairValue D Λ Μ z) := by
   cases positive
   · simp only [step, Bool.false_eq_true, ite_false, listValue, List.map_cons, List.map_nil,
       List.sum_cons, List.sum_nil, add_zero, pairValue, project_create, project_weight,
@@ -127,11 +129,11 @@ def expansion (s : Bool) : List (Bool × I) → List (RawPair I)
 
 /-- The original global mixed action, not a replacement action. -/
 def wordAction (s : Bool) (w : List (Bool × I)) :=
-  (w.map (fun g ↦ tensorChevalley D hD Λ Μ s g.1 g.2)).prod
+  (w.map (fun g ↦ tensorChevalley D Λ Μ s g.1 g.2)).prod
 
 theorem listValue_step (s positive : Bool) (i : I) (zs : List (RawPair I)) :
-    listValue D hD Λ Μ (zs.flatMap (step D Λ Μ s positive i)) =
-      tensorChevalley D hD Λ Μ s positive i (listValue D hD Λ Μ zs) := by
+    listValue D Λ Μ (zs.flatMap (step D Λ Μ s positive i)) =
+      tensorChevalley D Λ Μ s positive i (listValue D Λ Μ zs) := by
   induction zs with
   | nil => simp [listValue]
   | cons z zs ih =>
@@ -140,9 +142,9 @@ theorem listValue_step (s positive : Bool) (i : I) (zs : List (RawPair I)) :
     rw [← listValue, step_value, ih]
 
 theorem expansion_action (s : Bool) (w : List (Bool × I)) :
-    listValue D hD Λ Μ (expansion D Λ Μ s w) =
-      wordAction D hD Λ Μ s w
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) := by
+    listValue D Λ Μ (expansion D Λ Μ s w) =
+      wordAction D Λ Μ s w
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) := by
   induction w with
   | nil => simp [expansion, listValue, pairValue, project, wordAction]
   | cons g w ih =>
@@ -153,20 +155,20 @@ theorem expansion_action (s : Bool) (w : List (Bool × I)) :
 def halfPolynomial (x y : PreF Coefficients.Ring I) : MvPolynomial I Coefficients.Ring :=
   MvPolynomial.C (D.form Coefficients.q pi x y) + freeComparisonError D y x
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem halfPolynomial_constant (x y : PreF Coefficients.Ring I) :
     MvPolynomial.constantCoeff (halfPolynomial D x y) = D.form Coefficients.q pi x y := by
   simp [halfPolynomial, freeComparisonError_constantCoeff]
 
 theorem halfPolynomial_eval (x y : PreF Coefficients.Ring I) :
     MvPolynomial.eval (deformationParameter D Λ) (halfPolynomial D x y) =
-      normalizedPolarization D hD Λ x y := by
-  have h := normalizedPolarization_sub_half D hD Λ x y
+      normalizedPolarization D Λ x y := by
+  have h := normalizedPolarization_sub_half D Λ x y
   simp only [halfPolynomial, map_add, MvPolynomial.eval_C]
   rw [← h]
   ring
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 theorem sign_involution (x : PreF Coefficients.Ring I) :
     diagTwist (polarizationSign D Λ) (diagTwist (polarizationSign D Λ) x) = x := by
   rw [diagTwist_diagTwist]
@@ -183,7 +185,7 @@ theorem sign_involution (x : PreF Coefficients.Ring I) :
 
 theorem highest_polynomial (hΛ : ∀ i, 0 ≤ D.h i Λ)
     (x y : PreF Coefficients.Ring I) :
-    integrablePolarization D hD Λ hΛ (project D hD Λ x) (project D hD Λ y) =
+    integrablePolarization D Λ hΛ (project D Λ x) (project D Λ y) =
       MvPolynomial.eval (deformationParameter D Λ)
         (halfPolynomial D (diagTwist (polarizationSign D Λ) x) y) := by
   rw [halfPolynomial_eval, normalizedPolarization, sign_involution]
@@ -191,12 +193,12 @@ theorem highest_polynomial (hΛ : ∀ i, 0 ≤ D.h i Λ)
 
 theorem lowest_polynomial (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (x y : PreF Coefficients.Ring I) :
-    lowestPolarization D hD Μ hΜ (project D hD Μ x) (project D hD Μ y) =
+    lowestPolarization D Μ hΜ (project D Μ x) (project D Μ y) =
       MvPolynomial.eval (deformationParameter D Μ) (halfPolynomial D x y) := by
-  rw [halfPolynomial_eval D hD Μ]
-  change integrablePolarization D hD Μ hΜ (project D hD Μ x)
-    (integrableJ D hD Μ (project D hD Μ y)) = _
-  rw [integrableJ, ← integrablePolarization_sign D hD Μ hΜ]
+  rw [halfPolynomial_eval D Μ]
+  change integrablePolarization D Μ hΜ (project D Μ x)
+    (integrableJ D Μ (project D Μ y)) = _
+  rw [integrableJ, ← integrablePolarization_sign D Μ hΜ]
   simp only [project, integrableSign_mk, GenericTensor.diagonal_mk]
   rfl
 
@@ -213,8 +215,8 @@ def pairPolynomial (z z' : RawPair I) : MvPolynomial (Bool × I) Coefficients.Ri
 theorem pairPolynomial_eval (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (z z' : RawPair I) :
     MvPolynomial.eval (jointParameter D Λ Μ) (pairPolynomial D Λ z z') =
-      tensorPolarization D hD Λ Μ hΛ hΜ
-        (pairValue D hD Λ Μ z) (pairValue D hD Λ Μ z') := by
+      tensorPolarization D Λ Μ hΛ hΜ
+        (pairValue D Λ Μ z) (pairValue D Λ Μ z') := by
   simp only [pairPolynomial, map_mul, MvPolynomial.eval_rename, Function.comp_def,
     jointParameter, ite_true, Bool.false_eq_true, ite_false, pairValue,
     tensorPolarization_tmul, highest_polynomial, lowest_polynomial]
@@ -231,8 +233,8 @@ theorem list_gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (zs ws : List (RawPair I)) :
     MvPolynomial.eval (jointParameter D Λ Μ)
       ((zs.map (fun z ↦ (ws.map (pairPolynomial D Λ z)).sum)).sum) =
-      tensorPolarization D hD Λ Μ hΛ hΜ
-        (listValue D hD Λ Μ zs) (listValue D hD Λ Μ ws) := by
+      tensorPolarization D Λ Μ hΛ hΜ
+        (listValue D Λ Μ zs) (listValue D Λ Μ ws) := by
   induction zs with
   | nil => simp [listValue]
   | cons z zs ih =>
@@ -244,23 +246,23 @@ theorem list_gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     | nil => simp
     | cons w ws ihw =>
       simp only [List.map_cons, List.sum_cons, map_add,
-        pairPolynomial_eval D hD Λ Μ hΛ hΜ] at ihw ⊢
+        pairPolynomial_eval D Λ Μ hΛ hΜ] at ihw ⊢
       rw [ihw]
 
 /-- Arbitrary finite mixed words, either original coproduct in either slot.
 In particular t=!s is the native cross-Delta Gram matrix. -/
 theorem mixed_gram_formula (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s t : Bool) (u v : List (Bool × I)) :
-    tensorPolarization D hD Λ Μ hΛ hΜ
-      (wordAction D hD Λ Μ s u
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1))
-      (wordAction D hD Λ Μ t v
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1)) =
+    tensorPolarization D Λ Μ hΛ hΜ
+      (wordAction D Λ Μ s u
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1))
+      (wordAction D Λ Μ t v
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1)) =
       MvPolynomial.eval (jointParameter D Λ Μ) (gramPolynomial D Λ Μ s t u v) := by
   rw [← expansion_action, ← expansion_action]
-  exact (list_gram D hD Λ Μ hΛ hΜ _ _).symm
+  exact (list_gram D Λ Μ hΛ hΜ _ _).symm
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 def shift : List (Bool × I) → X
   | [] => 0
   | g :: w => halfRoot D g.1 g.2 + shift w
@@ -274,60 +276,59 @@ def algebraWord (ζ : X) : List (Bool × I) → modified D Coefficients.q pi
         (halfGen_mem_block D Coefficients.q pi g.1 g.2 _)⟩ * algebraWord ζ w
 
 theorem project_vacuum :
-    tensorProject D hD Λ Μ (Λ - Μ)
-      (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) =
-        toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1 := by
-  have h := tensorProject_tmul_word D hD Λ Μ (Λ - Μ) (toIntegrable D hD Λ 1) []
+    tensorProject D Λ Μ (Λ - Μ)
+      (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) =
+        toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1 := by
+  have h := tensorProject_tmul_word D Λ Μ (Λ - Μ) (toIntegrable D Λ 1) []
   simpa [monomial, wordWeight_nil, integrableRepresentation_toIntegrable,
     representation_one, weightProject_one] using h
 
 theorem project_chevalley (s positive : Bool) (i : I) (μ : X) :
-    tensorProject D hD Λ Μ μ * tensorChevalley D hD Λ Μ s positive i =
-      tensorChevalley D hD Λ Μ s positive i *
-        tensorProject D hD Λ Μ (μ - halfRoot D positive i) := by
+    tensorProject D Λ Μ μ * tensorChevalley D Λ Μ s positive i =
+      tensorChevalley D Λ Μ s positive i *
+        tensorProject D Λ Μ (μ - halfRoot D positive i) := by
   cases positive
   · simpa only [tensorChevalley, Bool.false_eq_true, ite_false,
-      halfRoot, sub_neg_eq_add] using tensorProject_F D hD Λ Μ s i μ
-  · exact tensorProject_E D hD Λ Μ s i μ
+      halfRoot, sub_neg_eq_add] using tensorProject_F D Λ Μ s i μ
+  · exact tensorProject_E D Λ Μ s i μ
 
 theorem wordAction_weight (s : Bool) (w : List (Bool × I)) :
-    tensorProject D hD Λ Μ (Λ - Μ + shift D w)
-      (wordAction D hD Λ Μ s w
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1)) =
-      wordAction D hD Λ Μ s w
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) := by
+    tensorProject D Λ Μ (Λ - Μ + shift D w)
+      (wordAction D Λ Μ s w
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1)) =
+      wordAction D Λ Μ s w
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) := by
   induction w with
-  | nil => simpa [shift, wordAction] using project_vacuum D hD Λ Μ
+  | nil => simpa [shift, wordAction] using project_vacuum D Λ Μ
   | cons g w ih =>
     simp only [shift, wordAction, List.map_cons, List.prod_cons, Module.End.mul_apply]
     rw [← Module.End.mul_apply, project_chevalley, Module.End.mul_apply]
     have he : Λ - Μ + (halfRoot D g.1 g.2 + shift D w) - halfRoot D g.1 g.2 =
         Λ - Μ + shift D w := by abel
     rw [he]
-    exact congrArg (tensorChevalley D hD Λ Μ s g.1 g.2) ih
+    exact congrArg (tensorChevalley D Λ Μ s g.1 g.2) ih
 
 /-- The recursive expansion computes the original quotient action, at the
 compatible weight difference, not merely a free Chevalley action. -/
 theorem algebraWord_action (s : Bool) (w : List (Bool × I)) :
-    tensorRepresentation D hD Λ Μ s (algebraWord D (Λ - Μ) w).val
-      (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) =
-      wordAction D hD Λ Μ s w
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) := by
+    tensorRepresentation D Λ Μ s (algebraWord D (Λ - Μ) w).val
+      (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) =
+      wordAction D Λ Μ s w
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) := by
   induction w with
-  | nil => simpa [algebraWord, wordAction] using project_vacuum D hD Λ Μ
+  | nil => simpa [algebraWord, wordAction] using project_vacuum D Λ Μ
   | cons g w ih =>
-    change tensorRepresentation D hD Λ Μ s
+    change tensorRepresentation D Λ Μ s
       (halfGen D Coefficients.q pi g.1 g.2 (Λ - Μ + shift D w) *
         (algebraWord D (Λ - Μ) w).val) _ = _
     rw [map_mul, Module.End.mul_apply, ih]
     have hg (b : Bool) (i : I) (μ : X) :
-        tensorRepresentation D hD Λ Μ s (halfGen D Coefficients.q pi b i μ) =
-          tensorChevalley D hD Λ Μ s b i * tensorProject D hD Λ Μ μ := by
+        tensorRepresentation D Λ Μ s (halfGen D Coefficients.q pi b i μ) =
+          tensorChevalley D Λ Μ s b i * tensorProject D Λ Μ μ := by
       cases b <;> simp [halfGen, tensorChevalley, tensorEBlock]
     rw [hg, Module.End.mul_apply, wordAction_weight]
     simp only [wordAction, List.map_cons, List.prod_cons, Module.End.mul_apply]
 
-include hD in
 /-- Equality of actual modified elements implies equality of the evaluated
 finite formula, without any faithfulness or representative hypothesis. -/
 theorem gram_representative_invariant
@@ -337,7 +338,7 @@ theorem gram_representative_invariant
     (hv : algebraWord D (Λ - Μ) v = algebraWord D (Λ - Μ) v') :
     MvPolynomial.eval (jointParameter D Λ Μ) (gramPolynomial D Λ Μ s t u v) =
       MvPolynomial.eval (jointParameter D Λ Μ) (gramPolynomial D Λ Μ s t u' v') := by
-  rw [← mixed_gram_formula D hD Λ Μ hΛ hΜ, ← mixed_gram_formula D hD Λ Μ hΛ hΜ]
+  rw [← mixed_gram_formula D Λ Μ hΛ hΜ, ← mixed_gram_formula D Λ Μ hΛ hΜ]
   simp only [← algebraWord_action, hu, hv]
 
 /-- The coefficientwise constant of the finite expression. Not asserted to be
@@ -347,7 +348,7 @@ def finiteCenter (s t : Bool) (u v : List (Bool × I)) : Coefficients.Ring :=
     (fun z' ↦ D.form Coefficients.q pi (diagTwist (polarizationSign D Λ) z.1) z'.1 *
       D.form Coefficients.q pi z.2 z'.2)).sum)).sum
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem gramPolynomial_constant (s t : Bool) (u v : List (Bool × I)) :
     MvPolynomial.constantCoeff (gramPolynomial D Λ Μ s t u v) =
       finiteCenter D Λ Μ s t u v := by
@@ -360,7 +361,7 @@ def residualPolynomial (s t : Bool) (u v : List (Bool × I)) :
     MvPolynomial (Bool × I) Coefficients.Ring :=
   gramPolynomial D Λ Μ s t u v - MvPolynomial.C (finiteCenter D Λ Μ s t u v)
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem residualPolynomial_constant (s t : Bool) (u v : List (Bool × I)) :
     MvPolynomial.constantCoeff (residualPolynomial D Λ Μ s t u v) = 0 := by
   simp [residualPolynomial, gramPolynomial_constant]
@@ -370,21 +371,21 @@ constant mismatch plus a zero-constant residual. Neither term is discarded. -/
 theorem mixed_comparison_identity
     (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List (Bool × I)) :
-    tensorPolarization D hD Λ Μ hΛ hΜ
-      (tensorRepresentation D hD Λ Μ s (algebraWord D (Λ - Μ) u).val
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1))
-      (tensorRepresentation D hD Λ Μ (!s) (algebraWord D (Λ - Μ) v).val
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1)) -
-      GenericTensor.positiveModifiedForm D hD
+    tensorPolarization D Λ Μ hΛ hΜ
+      (tensorRepresentation D Λ Μ s (algebraWord D (Λ - Μ) u).val
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1))
+      (tensorRepresentation D Λ Μ (!s) (algebraWord D (Λ - Μ) v).val
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1)) -
+      GenericTensor.positiveModifiedForm D
         (algebraWord D (Λ - Μ) u) (algebraWord D (Λ - Μ) v) =
-      (finiteCenter D Λ Μ s (!s) u v - GenericTensor.positiveModifiedForm D hD
+      (finiteCenter D Λ Μ s (!s) u v - GenericTensor.positiveModifiedForm D
         (algebraWord D (Λ - Μ) u) (algebraWord D (Λ - Μ) v)) +
       MvPolynomial.eval (jointParameter D Λ Μ) (residualPolynomial D Λ Μ s (!s) u v) := by
   rw [algebraWord_action, algebraWord_action, mixed_gram_formula]
   simp only [residualPolynomial, map_sub, MvPolynomial.eval_C]
   ring
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 /-- Correct q-adic bound, including weight-dependent negative coefficient orders.
 Dominance alone does not imply the displayed threshold hypothesis. -/
 theorem residual_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
@@ -419,13 +420,13 @@ theorem residual_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
       dsimp only at hd
       nlinarith : B ≤ _)
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem halfPolynomial_word (w : List I) (y : PreF Coefficients.Ring I) :
     halfPolynomial D (monomial Coefficients.Ring w) y = wordPolynomial D w y := by
   simp only [halfPolynomial, freeComparisonError_word, comparisonError]
   ring
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem halfPolynomial_theta (i : I) :
     halfPolynomial D (θ Coefficients.Ring i) (θ Coefficients.Ring i) =
       MvPolynomial.C (D.norm Coefficients.q pi i) * (1 - MvPolynomial.X i) := by
@@ -433,24 +434,24 @@ theorem halfPolynomial_theta (i : I) :
   rw [hw, halfPolynomial_word, ← hw]
   simp [wordPolynomial]
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 @[simp] theorem freeWeight_one (f : X → Coefficients.Ring) :
     freeWeight D Λ f 1 = f Λ • (1 : PreF Coefficients.Ring I) := by
   simpa using freeWeight_word D Λ f []
 
 theorem E_vacuum (s : Bool) (i : I) :
-    tensorE D hD Λ Μ s i
-      (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1) =
+    tensorE D Λ Μ s i
+      (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1) =
       tensorToralScalar D s i Λ •
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring]
-          project D hD Μ (θ Coefficients.Ring i)) := by
-  have h := step_value D hD Λ Μ s true i (1, 1)
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring]
+          project D Μ (θ Coefficients.Ring i)) := by
+  have h := step_value D Λ Μ s true i (1, 1)
   simpa [step, listValue, pairValue, project, freeTwist, lowerFree,
     freeWeight_one, tensorChevalley, smul_tmul] using h.symm
 
 theorem lowest_theta_norm (hΜ : ∀ i, 0 ≤ D.h i Μ) (i : I) :
-    lowestPolarization D hD Μ hΜ
-      (project D hD Μ (θ Coefficients.Ring i)) (project D hD Μ (θ Coefficients.Ring i)) =
+    lowestPolarization D Μ hΜ
+      (project D Μ (θ Coefficients.Ring i)) (project D Μ (θ Coefficients.Ring i)) =
       D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i) := by
   rw [lowest_polynomial, halfPolynomial_theta]
   simp
@@ -459,11 +460,11 @@ theorem lowest_theta_norm (hΜ : ∀ i, 0 ≤ D.h i Μ) (i : I) :
 The prefactor contains q_i^(-2 h_i Λ); no growing-weight normalization is hidden. -/
 theorem E_cross_gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (i : I) :
-    tensorPolarization D hD Λ Μ hΛ hΜ
-      (tensorE D hD Λ Μ s i
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1))
-      (tensorE D hD Λ Μ (!s) i
-        (toIntegrable D hD Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D hD Μ 1)) =
+    tensorPolarization D Λ Μ hΛ hΜ
+      (tensorE D Λ Μ s i
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1))
+      (tensorE D Λ Μ (!s) i
+        (toIntegrable D Λ 1 ⊗ₜ[Coefficients.Ring] toIntegrable D Μ 1)) =
       (D.pii pi i ^ (D.h i Λ).natAbs *
         qp Coefficients.q (-(D.d i * D.h i Λ)) ^ 2) *
       (D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i)) := by
@@ -477,15 +478,15 @@ theorem E_cross_gram (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
 /-- Fixed weight-difference pairs, without any existence assertion. -/
 abbrev WeightPair (ζ : X) := {p : X × X // p.1 - p.2 = ζ}
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 def jointCoordinates (ζ : X) (p : WeightPair ζ) (g : Bool × I) : ℤ :=
   D.h g.2 (if g.1 then p.val.1 else p.val.2)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 def jointFilter (ζ : X) : Filter (WeightPair ζ) :=
   Filter.comap (jointCoordinates D ζ) Filter.atTop
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 theorem jointFilter_neBot_iff (ζ : X) : (jointFilter D ζ).NeBot ↔
     ∀ b : Bool × I → ℤ, ∃ p : WeightPair ζ, ∀ g, b g ≤ jointCoordinates D ζ p g := by
   change (Filter.comap (jointCoordinates D ζ) Filter.atTop).NeBot ↔ _
@@ -499,7 +500,7 @@ theorem jointFilter_neBot_iff (ζ : X) : (jointFilter D ζ).NeBot ↔
 omit [DecidableEq I] [DecidableEq X] in
 /-- An explicit positive weight produces the genuine fixed-difference family
 (ζ+nξ,nξ). The statement does not supply such a ξ for arbitrary root data. -/
-theorem jointFilter_neBot_of_positive (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
+theorem jointFilter_neBot_of_positive [Finite I] (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
     (jointFilter D ζ).NeBot := by
   classical
   let _ := Fintype.ofFinite I
@@ -530,7 +531,7 @@ theorem jointFilter_neBot_of_positive (ζ ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
 
 omit [DecidableEq I] [DecidableEq X] in
 /-- Exact nonvacuity criterion for the joint filter at every fixed difference. -/
-theorem jointFilter_neBot_iff_positive (ζ : X) :
+theorem jointFilter_neBot_iff_positive [Finite I] (ζ : X) :
     (jointFilter D ζ).NeBot ↔ ∃ ξ : X, ∀ i, 0 < D.h i ξ := by
   constructor
   · intro h
@@ -542,7 +543,7 @@ theorem jointFilter_neBot_iff_positive (ζ : X) :
   · rintro ⟨ξ, hξ⟩
     exact jointFilter_neBot_of_positive D ζ ξ hξ
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Both weights are eventually dominant in the joint filter, even though
 nonvacuity and the stronger residual coefficient threshold remain separate. -/
 theorem jointFilter_eventually_dominant (ζ : X) :
@@ -559,7 +560,7 @@ theorem jointFilter_eventually_dominant (ζ : X) :
     simpa only [← congrFun hp (false, i), jointCoordinates,
       Bool.false_eq_true, ite_false] using h
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Connected off-diagonal entries and the odd×odd Koszul coefficient both
 occur in the actual free transition; neither is replaced by a root sign. -/
 theorem freeTwist_theta (s : Bool) (i j : I) :

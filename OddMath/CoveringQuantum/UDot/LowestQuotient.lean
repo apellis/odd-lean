@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.IntegrablePolarization
 
 /-!
@@ -135,43 +140,44 @@ theorem rho_clarkOmega (u : CoveringUDot Coefficients.Ring D Coefficients.q pi) 
   | mul a b ha hb => simp only [map_mul, MulOpposite.unop_mul, ha, hb]
 
 namespace GenericVerma
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent) (Λ : X)
+variable (Λ : X)
 
 /-- The genuine omega-twisted source quotient, with the original quotient carrier. -/
 def lowestRepresentation : CoveringUDot Coefficients.Ring D Coefficients.q pi →ₐ[Coefficients.Ring]
-    Module.End Coefficients.Ring (IntegrableQuotient D hD Λ) :=
-  (integrableRepresentation D hD Λ).comp (clarkOmega D)
+    Module.End Coefficients.Ring (IntegrableQuotient D Λ) :=
+  (integrableRepresentation D Λ).comp (clarkOmega D)
 
 /-- The inverse-twisted source quotient, needed for the cross-polarization. -/
-def lowestInverseRepresentation : CoveringUDot Coefficients.Ring D Coefficients.q pi →ₐ[Coefficients.Ring]
-    Module.End Coefficients.Ring (IntegrableQuotient D hD Λ) :=
-  (integrableRepresentation D hD Λ).comp (clarkOmegaInv D)
+def lowestInverseRepresentation :
+    CoveringUDot Coefficients.Ring D Coefficients.q pi →ₐ[Coefficients.Ring]
+    Module.End Coefficients.Ring (IntegrableQuotient D Λ) :=
+  (integrableRepresentation D Λ).comp (clarkOmegaInv D)
 
 @[simp] theorem lowestRepresentation_one (μ : X) :
-    lowestRepresentation D hD Λ (one D Coefficients.q pi μ) =
-      integrableRepresentation D hD Λ (one D Coefficients.q pi (-μ)) := by
+    lowestRepresentation D Λ (one D Coefficients.q pi μ) =
+      integrableRepresentation D Λ (one D Coefficients.q pi (-μ)) := by
   simp [lowestRepresentation]
 
 @[simp] theorem lowestRepresentation_E (i : I) (μ : X) :
-    lowestRepresentation D hD Λ (E D Coefficients.q pi i μ) =
-      integrableRepresentation D hD Λ (F D Coefficients.q pi i (-μ)) := by
+    lowestRepresentation D Λ (E D Coefficients.q pi i μ) =
+      integrableRepresentation D Λ (F D Coefficients.q pi i (-μ)) := by
   simp [lowestRepresentation]
 
 @[simp] theorem lowestRepresentation_F (i : I) (μ : X) :
-    lowestRepresentation D hD Λ (F D Coefficients.q pi i μ) =
-      pi ^ (D.parl i μ).val • integrableRepresentation D hD Λ (E D Coefficients.q pi i (-μ)) := by
+    lowestRepresentation D Λ (F D Coefficients.q pi i μ) =
+      pi ^ (D.parl i μ).val • integrableRepresentation D Λ (E D Coefficients.q pi i (-μ)) := by
   simp [lowestRepresentation]
 
 /-- Arbitrary representatives compute through the original action, not a substituted module. -/
 @[simp] theorem lowestRepresentation_toIntegrable
     (u : CoveringUDot Coefficients.Ring D Coefficients.q pi) (x : D.serreF Coefficients.q pi) :
-    lowestRepresentation D hD Λ u (toIntegrable D hD Λ x) =
-      toIntegrable D hD Λ (representation D hD Λ (clarkOmega D u) x) := rfl
+    lowestRepresentation D Λ u (toIntegrable D Λ x) =
+      toIntegrable D Λ (representation D Λ (clarkOmega D u) x) := rfl
 
 /-- The transported vacuum has weight minus Lambda. -/
 @[simp] theorem lowestRepresentation_vacuum_weight (μ : X) :
-    lowestRepresentation D hD Λ (one D Coefficients.q pi μ) (toIntegrable D hD Λ 1) =
-      if μ = -Λ then toIntegrable D hD Λ 1 else 0 := by
+    lowestRepresentation D Λ (one D Coefficients.q pi μ) (toIntegrable D Λ 1) =
+      if μ = -Λ then toIntegrable D Λ 1 else 0 := by
   rw [lowestRepresentation_toIntegrable, clarkOmega_one, representation_one, weightProject_one]
   have he : -μ = Λ ↔ μ = -Λ := neg_eq_iff_eq_neg
   simp only [he]
@@ -179,7 +185,7 @@ def lowestInverseRepresentation : CoveringUDot Coefficients.Ring D Coefficients.
 
 /-- Every negative Chevalley generator kills the actual lowest vector. -/
 @[simp] theorem lowestRepresentation_F_vacuum (i : I) (μ : X) :
-    lowestRepresentation D hD Λ (F D Coefficients.q pi i μ) (toIntegrable D hD Λ 1) = 0 := by
+    lowestRepresentation D Λ (F D Coefficients.q pi i μ) (toIntegrable D Λ 1) = 0 := by
   rw [lowestRepresentation_F, LinearMap.smul_apply, integrableRepresentation_E_mk,
     weightProject_one]
   split_ifs <;> simp
@@ -188,11 +194,11 @@ def lowestInverseRepresentation : CoveringUDot Coefficients.Ring D Coefficients.
 This is not same-action polarization: the inverse twist is essential at pi=-1. -/
 theorem lowest_cross_adjoint (hΛ : ∀ i, 0 ≤ D.h i Λ)
     (u : CoveringUDot Coefficients.Ring D Coefficients.q pi)
-    (x y : IntegrableQuotient D hD Λ) :
-    integrablePolarization D hD Λ hΛ (lowestRepresentation D hD Λ u x) y =
-      integrablePolarization D hD Λ hΛ x
-        (lowestInverseRepresentation D hD Λ (rho D Coefficients.q pi pi_sq u).unop y) := by
-  change integrablePolarization D hD Λ hΛ (integrableRepresentation D hD Λ (clarkOmega D u) x) y = _
+    (x y : IntegrableQuotient D Λ) :
+    integrablePolarization D Λ hΛ (lowestRepresentation D Λ u x) y =
+      integrablePolarization D Λ hΛ x
+        (lowestInverseRepresentation D Λ (rho D Coefficients.q pi pi_sq u).unop y) := by
+  change integrablePolarization D Λ hΛ (integrableRepresentation D Λ (clarkOmega D u) x) y = _
   rw [integrablePolarization_adjoint, rho_clarkOmega]
   rfl
 

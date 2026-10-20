@@ -420,10 +420,10 @@ private theorem empty_coeff {Y : Type*} [AddCommGroup Y]
 
 open CoveringQuantum CoveringQuantum.Coefficients CoveringQuantum.UDot
 open CoveringQuantum.UDot.GenericTensor CoveringQuantum.UDot.GenericVerma.MixedGram
-open CoveringQuantum.UDot.ContextualExchangeExamples (twoOddDatum twoOdd_barConsistent)
+open CoveringQuantum.UDot.ContextualExchangeExamples (twoOddDatum)
 
 private theorem empty_form (μ : Bool → ℤ) :
-    sesquilinearForm twoOddDatum twoOdd_barConsistent
+    sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum μ []) (algebraWord twoOddDatum μ []) = 1 := by
   have he : algebraWord twoOddDatum μ [] = positiveHalf twoOddDatum Coefficients.q pi μ
       (twoOddDatum.toSerreF Coefficients.q pi (PreF.monomial Coefficients.Ring [])) := by
@@ -436,21 +436,21 @@ private theorem empty_form (μ : Bool → ℤ) :
 all integer degrees, and arbitrary external weights are included. -/
 theorem form_coeff_iff (μ : Bool → ℤ) :
     ((∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+      (signLaurent σ hσ (sesquilinearForm twoOddDatum
         (algebraWord twoOddDatum μ [(true, false), (false, false)])
         (algebraWord twoOddDatum μ []))).coeff z =
           (fullFamily true false).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ σ z) ↔
      (∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-      (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+      (signLaurent σ hσ (sesquilinearForm twoOddDatum
         (algebraWord twoOddDatum μ [(false, false), (true, false)])
         (algebraWord twoOddDatum μ []))).coeff z =
           (fullFamily false false).coeff twoOddDatum.toSKM twoOddDatum.skmSymmetrizer μ σ z)) := by
   apply same_boundary_labelled_form_coeff_iff (a := []) (b := []) (i := false)
     (fullFamily true false) (fullFamily false false) (shortFamily false)
     (full_complete true false) (full_complete false false) (short_complete false)
-    twoOddDatum twoOdd_barConsistent μ
+    twoOddDatum μ
   intro σ hσ z
-  change _ = (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+  change _ = (signLaurent σ hσ (sesquilinearForm twoOddDatum
     (algebraWord twoOddDatum μ []) (algebraWord twoOddDatum μ []))).coeff z
   rw [empty_form, map_one]
   exact empty_coeff _ _ μ σ z

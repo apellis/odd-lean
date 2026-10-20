@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.PositiveWordCoefficients
 
 /-!
@@ -5,7 +10,7 @@ import OddMath.CoveringQuantum.UDot.PositiveWordCoefficients
 
 BE2, arXiv:1701.04133v2, Theorem 10.3 Claim 2: upward-generator
 adjointness for the existing modified form and its formal Laurent coefficient
-shift. Finite colours and bar consistency remain explicit. The reversed-word
+shift, for arbitrary colours without bar consistency. The reversed-word
 append formula is not identified with physical left-cons evaluation.
 -/
 
@@ -26,17 +31,17 @@ theorem signLaurent_qp (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
 namespace UDot.GenericTensor
 open Coefficients PreF
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+  (D : RootDatum I X)
 
 /-- The upward adjoint formula in the existing modified algebra. The generator's
 right weight is ν, not the common column's right weight μ. This identity holds
 for arbitrary modified elements; no weight or graphical premise is needed. -/
 theorem sesquilinearForm_E_adjoint (i : I) (ν : X)
     (x y : modified D Coefficients.q pi) :
-    sesquilinearForm D hD
+    sesquilinearForm D
       (⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ * x) y =
     qp Coefficients.q (-(D.d i * (1 + D.h i ν))) *
-      sesquilinearForm D hD x
+      sesquilinearForm D x
         (⟨F D Coefficients.q pi i (ν + D.α i),
           F_mem_modified D Coefficients.q pi i (ν + D.α i)⟩ * y) := by
   rw [sesquilinearForm_adjoint]
@@ -56,29 +61,28 @@ theorem sesquilinearForm_E_adjoint (i : I) (ν : X)
 /-- The bent form is q^δ times the old form; there is no π factor for E. -/
 theorem sesquilinearForm_E_bent (i : I) (ν : X)
     (x y : modified D Coefficients.q pi) :
-    sesquilinearForm D hD x
+    sesquilinearForm D x
       (⟨F D Coefficients.q pi i (ν + D.α i),
         F_mem_modified D Coefficients.q pi i (ν + D.α i)⟩ * y) =
     qp Coefficients.q (D.d i * (1 + D.h i ν)) *
-      sesquilinearForm D hD
+      sesquilinearForm D
         (⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ * x) y := by
   rw [sesquilinearForm_E_adjoint, ← mul_assoc, qp_mul, add_neg_cancel, qp_zero, one_mul]
 
 /-- BE2 Theorem 10.3 Claim 2, algebraic coefficient step only. Specialize π
-only after evaluating the existing form. Retains finite colours/bar consistency.
+only after evaluating the existing form, without finite-colour or bar restrictions.
 No assumption on grades, graphical normalization, or form identities is used. -/
 theorem sesquilinearForm_E_bent_coeff (σ : ℚ) (hσ : σ ^ 2 = 1)
     (i : I) (ν : X) (x y : modified D Coefficients.q pi) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm D hD x
+    (signLaurent σ hσ (sesquilinearForm D x
       (⟨F D Coefficients.q pi i (ν + D.α i),
         F_mem_modified D Coefficients.q pi i (ν + D.α i)⟩ * y))).coeff z =
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (⟨E D Coefficients.q pi i ν, E_mem_modified D Coefficients.q pi i ν⟩ * x) y)).coeff
         (z - D.d i * (1 + D.h i ν)) := by
   rw [sesquilinearForm_E_bent, map_mul, signLaurent_qp,
     HahnSeries.coeff_single_mul, one_mul]
 
-omit [Finite I] in
 /-- With the existing reversed-word convention, algebraic left multiplication
 adds a letter at the END of the list being reversed, not at its beginning. -/
 theorem positiveHalf_reverse_append (i : I) (μ : X) (a : List I) :
@@ -101,12 +105,12 @@ suffix computed by the existing half-word API. The second argument is arbitrary.
 theorem sesquilinearForm_E_reversed_coeff (σ : ℚ) (hσ : σ ^ 2 = 1)
     (i : I) (μ : X) (a : List I) (y : modified D Coefficients.q pi) (z : ℤ) :
     let ν := μ + halfWeight D true (wordWeight a.reverse)
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a.reverse)))
       (⟨F D Coefficients.q pi i (ν + D.α i),
         F_mem_modified D Coefficients.q pi i (ν + D.α i)⟩ * y))).coeff z =
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (positiveHalf D Coefficients.q pi μ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring (a ++ [i]).reverse)))
       y)).coeff (z - D.d i * (1 + D.h i ν)) := by

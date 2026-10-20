@@ -17,7 +17,7 @@ local instance : AddCommGroup
   TensorProduct.addCommGroup
 
 local instance : AddCommGroup
-    (IntegrableQuotient D hD Λ ⊗[Coefficients.Ring] IntegrableQuotient D hD Μ) :=
+    (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
   TensorProduct.addCommGroup
 
 /-- The exact native leading coefficient, acting on actual formal bidegree projections. -/
@@ -26,24 +26,24 @@ def leadingDiagonal (s : Bool) (N : ℕ) :=
 
 /-- A genuine linear error map, not a choice of word expansion. -/
 def error (s : Bool) (N : ℕ) :=
-  cyclic D hD Λ Μ s - (toIntegrableTensor D hD Λ Μ).comp (leadingDiagonal D hD Λ Μ s N)
+  cyclic D Λ Μ s - (toIntegrableTensor D Λ Μ).comp (leadingDiagonal D hD Λ Μ s N)
 
 /-- The error strictly lowers both lengths on every linear combination in the square. -/
 theorem error_mem_lower (s : Bool) (N n : ℕ) (hn : n ≤ N)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
     (hz : z ∈ truncation D n n) :
-    error D hD Λ Μ s N z ∈ lowerBidegree D hD Λ Μ n n := by
+    error D hD Λ Μ s N z ∈ lowerBidegree D Λ Μ n n := by
   induction hz using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨a, b, ha, hb, rfl⟩ := hz
-    obtain ⟨_, r, hr, he⟩ := cyclic_wordTensor_leading D hD Λ Μ s a b
+    obtain ⟨_, r, hr, he⟩ := cyclic_wordTensor_leading D Λ Μ s a b
     have herr : error D hD Λ Μ s N (wordTensor D a b) = r := by
       simp only [error, LinearMap.sub_apply, LinearMap.comp_apply, leadingDiagonal,
         diagonal_word D hD N _ a b (ha.trans hn) (hb.trans hn), scalarUnit_word,
         map_smul, he]
       abel
     rw [herr]
-    exact lowerBidegree_mono D hD Λ Μ ha hb hr
+    exact lowerBidegree_mono D Λ Μ ha hb hr
   | zero => simp
   | add x y hx hy ihx ihy => simpa only [map_add] using Submodule.add_mem _ ihx ihy
   | smul c x hx ih => simpa only [map_smul] using Submodule.smul_mem _ c ih
@@ -51,21 +51,23 @@ theorem error_mem_lower (s : Bool) (N n : ℕ) (hn : n ≤ N)
 /-- Vanishing of the native cyclic map forces the leading diagonal into the lower image. -/
 theorem leading_mem_lower_of_cyclic_eq_zero (s : Bool) (N n : ℕ) (hn : n ≤ N)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
-    (hz : z ∈ truncation D n n) (hzero : cyclic D hD Λ Μ s z = 0) :
-    toIntegrableTensor D hD Λ Μ (leadingDiagonal D hD Λ Μ s N z) ∈
-      lowerBidegree D hD Λ Μ n n := by
+    (hz : z ∈ truncation D n n) (hzero : cyclic D Λ Μ s z = 0) :
+    toIntegrableTensor D Λ Μ (leadingDiagonal D hD Λ Μ s N z) ∈
+      lowerBidegree D Λ Μ n n := by
   have he := error_mem_lower D hD Λ Μ s N n hn hz
   simpa only [error, LinearMap.sub_apply, LinearMap.comp_apply, hzero,
     zero_sub, neg_mem_iff] using he
 
+include hD
+
 /-- Finite-filtration induction using quotient injectivity on the SAME full square.
 The only injectivity hypothesis here is discharged by the next theorem. -/
 theorem cyclic_kernel_truncation (s : Bool) (N : ℕ)
-    (hQ : Set.InjOn (toIntegrableTensor D hD Λ Μ) (truncation D N N))
+    (hQ : Set.InjOn (toIntegrableTensor D Λ Μ) (truncation D N N))
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
-    (hz : z ∈ truncation D N N) (hzero : cyclic D hD Λ Μ s z = 0) : z = 0 := by
+    (hz : z ∈ truncation D N N) (hzero : cyclic D Λ Μ s z = 0) : z = 0 := by
   have step (n : ℕ) : n ≤ N → ∀ z ∈ truncation D n n,
-      cyclic D hD Λ Μ s z = 0 → z = 0 := by
+      cyclic D Λ Μ s z = 0 → z = 0 := by
     induction n with
     | zero =>
       intro hn z hz hzero
@@ -84,7 +86,7 @@ theorem cyclic_kernel_truncation (s : Bool) (N : ℕ)
       intro hn z hz hzero
       have hn' : n ≤ N := (Nat.le_succ n).trans hn
       have he := leading_mem_lower_of_cyclic_eq_zero D hD Λ Μ s N (n + 1) hn hz hzero
-      have hm := lowerBidegree_le_map_truncation D hD Λ Μ
+      have hm := lowerBidegree_le_map_truncation D Λ Μ
         (m := n) (n := n) le_rfl le_rfl he
       obtain ⟨t, ht, heq⟩ := hm
       have hDz : leadingDiagonal D hD Λ Μ s N z ∈ truncation D N N :=
@@ -105,7 +107,7 @@ theorem cyclic_kernel_truncation (s : Bool) (N : ℕ)
 for both native coproducts, over the actual covering ring. -/
 theorem cyclic_truncation_injective_bound (N : ℕ) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
-      ∀ s : Bool, Set.InjOn (cyclic D hD Λ Μ s) (truncation D N N) := by
+      ∀ s : Bool, Set.InjOn (cyclic D Λ Μ s) (truncation D N N) := by
   obtain ⟨B, hB, hQ⟩ := truncation_quotient_injective_bound D hD N N
   refine ⟨B, hB, fun Λ Μ hΛ hΜ s x hx y hy hxy => ?_⟩
   apply sub_eq_zero.mp
@@ -118,7 +120,7 @@ Serre tensors. No word independence, grading, field, or freeness is a premise. -
 theorem finite_span_cyclic_injective_bound
     (S : Finset (D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi)) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
-      ∀ s : Bool, Set.InjOn (cyclic D hD Λ Μ s)
+      ∀ s : Bool, Set.InjOn (cyclic D Λ Μ s)
         (Submodule.span Coefficients.Ring
           (S : Set (D.serreF Coefficients.q pi ⊗[Coefficients.Ring]
             D.serreF Coefficients.q pi))) := by

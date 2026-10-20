@@ -655,15 +655,14 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    included; the colour type need not be finite. The application
    `UDot.GenericTensor.sesquilinearForm_positive_words_permutations` uses the
    existing Serre-form descent and reversed-positive-word normalization at a common
-   weight. It retains the construction's explicit finite-I and `BarConsistent`
-   restrictions; these are not new hypotheses of Theorem 10.3 or of the index repair.
-   Removing those construction restrictions remains separate tracked work in #42.
+   weight. Neither the construction nor this application requires finite colours
+   or `BarConsistent`.
    The decorated-matching comparison for arbitrary physical boundary words and
    external weights is now proved by `OddMath.SKM.theorem103`, for any complete
    unique strictly reduced representative family. Its graphical expression is
-   independent of the form. This result retains the restrictions above, the
-   additive weight realization and the existing purely-even generic coefficients;
-   it does not claim unrestricted source generality.
+   independent of the form. It holds for arbitrary colours and root datum over
+   the generic covering ring, without a bar-consistency hypothesis; additive
+   weights and decidable colour and weight equality provide the realization.
 
    **For the authors.** In arXiv:1701.04133v2, the unnumbered expansion in Claim 1
    of the proof of Theorem 10.3 combines `i_{w(r)} = jᵣ` with source-colour factors
@@ -677,7 +676,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    not a defect in (10.5). The citation to 10.1 “(iv)” should also refer to (3).
 
 6. **Theorem 10.3, proof of Claim 5, equation (10.7) and the following cap expansion
-   [local bar corrections; restricted graphical comparison proved].** Put
+   [local bar corrections; graphical comparison proved].** Put
    `n = ⟨hᵢ,μ⟩`, where `μ` is the left endpoint of the suffix word. Replace the
    coefficient `[n]_{qᵢ,πᵢ}` in (10.7) by its bar. In the next display, remove the
    outer bar around the bracketed cap contribution. No extra hypothesis or change
@@ -712,10 +711,10 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    `OddMath.SKM.same_boundary_labelled_form_coeff_iff` gives the corrected
    interchange under the shorter-word comparison. The length/inversion and
    boundary inductions discharge that premise; `OddMath.SKM.theorem103` proves
-   (10.5) in the finite-colour, bar-consistent, additive-weight, purely-even
-   generic covering-ring realization, with decidable colour and weight equality.
-   Removing those realization restrictions remains tracked in #42. The local
-   repair itself introduces no restriction to even colours or to `π = 1`.
+   (10.5) for arbitrary colours and root datum over the generic covering ring,
+   with additive weights and decidable colour and weight equality. Neither finite
+   colours nor bar consistency is assumed. The local repair itself introduces no
+   restriction to even colours or to `π = 1`.
 
    **For the authors.** In the proof of Claim 5 of Theorem 10.3 in
    arXiv:1701.04133v2, the quantum integer on the right of (10.7) must be barred

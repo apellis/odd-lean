@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.SKM.Claim3Coefficients
 import OddMath.SKM.BoundedPointSerialization
 import OddMath.SKM.PositiveFormCoefficientsExamples
@@ -215,7 +220,8 @@ theorem left_cup_cap_all_counts (n : ℕ) (σ : ℚ) (hσ : σ ^ 2 = 1) :
   have hg : Set.Finite {u : U | e u = 2 * (n : ℤ)} := hgAll _
   have heq : (∑ u ∈ hg.toFinset, σ ^ (p' u).val) =
       σ * ∑ x ∈ hf.toFinset, σ ^ (p x).val := by
-    simpa only [sub_neg_eq_add, show (1 : ZMod 2).val = 1 from rfl, pow_one] using h.2.2 σ hσ (2 * (n : ℤ))
+    simpa only [sub_neg_eq_add, show (1 : ZMod 2).val = 1 from rfl, pow_one] using h.2.2 σ hσ (2 *
+      (n : ℤ))
   have hfs : hf.toFinset = {t n} := by
     ext x
     simp only [Set.Finite.mem_toFinset, Finset.mem_singleton]
@@ -224,7 +230,8 @@ theorem left_cup_cap_all_counts (n : ℕ) (σ : ℚ) (hσ : σ ^ 2 = 1) :
   · refine ⟨F (t n), ?_⟩
     rw [(h.1 (t n)).1, show d (t n) = 2 * (n : ℤ) + 1 from (count_grading (fun _ => n)).1]
     ring
-  · rw [hfs, Finset.sum_singleton, show p (t n) = (n : ZMod 2) + 1 from (count_grading (fun _ => n)).2]
+  · rw [hfs, Finset.sum_singleton, show p (t n) = (n : ZMod 2) + 1 from (count_grading (fun _ =>
+    n)).2]
 
 /-- The same all-count families specialize at both rational signs. -/
 theorem left_cup_cap_both_signs (n : ℕ) :
@@ -275,11 +282,11 @@ theorem cap_form_coeff_iff :
       (hg : ∀ z : ℤ, Set.Finite {u : U | e u = z}),
       (∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
        ((∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 []))).coeff z =
             ∑ x ∈ (hf z).toFinset, σ ^ (p x).val) ↔
         (∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 a) (algebraWord oddDatum 0 a))).coeff z =
             ∑ u ∈ (hg z).toFinset, σ ^ (p' u).val))) ∧
       ∀ (n : ℕ) (σ : ℚ), σ ^ 2 = 1 →
@@ -292,7 +299,7 @@ theorem cap_form_coeff_iff :
     hM hN q r hq (fun S j hj => (hr S j hj).2) τ υ hτ hυ hMrep hNrep
     (fun _ hS _ hV _ => (Set.mem_singleton_iff.mp hS).trans (Set.mem_singleton_iff.mp hV).symm)
     (fun _ hS _ hV _ => (Set.mem_singleton_iff.mp hS).trans (Set.mem_singleton_iff.mp hV).symm)
-  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum odd_barConsistent 0
+  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum 0
   refine ⟨hf, hg, hiff, ?_⟩
   intro n σ hσ
   obtain ⟨_, _, hx, hu, hs, ht⟩ := left_cup_cap_all_counts n σ hσ
@@ -330,10 +337,13 @@ private theorem no_target (R : List (TMove (Letter Unit))) : ¬ IsMatching₂ []
 private def q (R : {R // R ∈ E}) (_ : ℕ) : ℕ × ℕ := False.elim R.property
 private def τ (R : {R // R ∈ E}) (_ : MatchingStrand A R.val → ℕ) : List (DTMove Unit) :=
   False.elim R.property
-private def υ (R : {R // R ∈ E}) (_ : MatchingStrand ([] : List (Letter Unit)) R.val → ℕ) : List (DTMove Unit) :=
+private def υ (R : {R // R ∈ E}) (_ : MatchingStrand ([] : List (Letter Unit)) R.val → ℕ) : List
+  (DTMove Unit) :=
   False.elim R.property
-private def d (t : T) : ℤ := tableDegree oddDatum.toSKM oddDatum.skmSymmetrizer 0 (dLay A (τ t.1 t.2))
-private def e (u : U) : ℤ := tableDegree oddDatum.toSKM oddDatum.skmSymmetrizer 0 (dLay [] (υ u.1 u.2))
+private def d (t : T) : ℤ := tableDegree oddDatum.toSKM oddDatum.skmSymmetrizer 0 (dLay A (τ t.1
+  t.2))
+private def e (u : U) : ℤ := tableDegree oddDatum.toSKM oddDatum.skmSymmetrizer 0 (dLay [] (υ u.1
+  u.2))
 private def p (t : T) : ZMod 2 := xpar oddDatum.toSKM 0 (dLay A (τ t.1 t.2))
 private def p' (u : U) : ZMod 2 := xpar oddDatum.toSKM 0 (dLay [] (υ u.1 u.2))
 
@@ -345,11 +355,11 @@ theorem empty_form_coeff_iff :
       (hg : ∀ z : ℤ, Set.Finite {u : U | e u = z}),
       ∀ (σ : ℚ) (hσ : σ ^ 2 = 1),
        ((∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 []))).coeff z =
             ∑ t ∈ (hf z).toFinset, σ ^ (p t).val) ↔
         (∀ z : ℤ,
-        (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+        (signLaurent σ hσ (sesquilinearForm oddDatum
           (algebraWord oddDatum 0 []) (algebraWord oddDatum 0 B))).coeff z =
             ∑ u ∈ (hg z).toFinset, σ ^ (p' u).val)) := by
   obtain ⟨_, hF⟩ := leftCup_labelled_form_coeff_iff (X := ℤ) (i := ())
@@ -360,20 +370,20 @@ theorem empty_form_coeff_iff :
     (fun R h _ => False.elim (no_source R h))
     (fun R h _ => False.elim (no_target R h))
     (fun _ h => False.elim h) (fun _ h => False.elim h)
-  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum odd_barConsistent 0
+  obtain ⟨hf, hg, _, _, hiff⟩ := hF oddDatum 0
   exact ⟨hf, hg, hiff⟩
 
 /-- Off support, both distinct form coefficients and both family sums vanish. -/
 theorem empty_coefficients_zero (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ)
     (hf : Set.Finite {t : T | d t = z}) (hg : Set.Finite {u : U | e u = z}) :
-    (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm oddDatum
       (algebraWord oddDatum 0 A) (algebraWord oddDatum 0 []))).coeff z = 0 ∧
-    (signLaurent σ hσ (sesquilinearForm oddDatum odd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm oddDatum
       (algebraWord oddDatum 0 []) (algebraWord oddDatum 0 B))).coeff z = 0 ∧
     (∑ t ∈ hf.toFinset, σ ^ (p t).val) = 0 ∧
     (∑ u ∈ hg.toFinset, σ ^ (p' u).val) = 0 := by
-  have hs := sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum odd_barConsistent 0 A [] source_ne
-  have ht := sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum odd_barConsistent 0 [] B target_ne
+  have hs := sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum 0 A [] source_ne
+  have ht := sesquilinearForm_mixed_eq_zero_of_weight_ne oddDatum 0 [] B target_ne
   refine ⟨by rw [hs, map_zero, HahnSeries.coeff_zero],
     by rw [ht, map_zero, HahnSeries.coeff_zero], ?_, ?_⟩
   · exact Finset.sum_eq_zero (fun t _ => False.elim t.1.property)

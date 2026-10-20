@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.PositiveWordForm
 import OddMath.CoveringQuantum.PreF.DotSeries
 import OddMath.CoveringQuantum.Coefficients.Splitting
@@ -14,7 +19,7 @@ is used. The form is evaluated in the covering ring before expanding its value.
 
 The source-to-target permutation uses source colours for crossings and target
 colours for dots. The physical words are reversed in the form's arguments.
-Finite colours and bar consistency remain restrictions of the constructed form.
+Colours may be infinite, without bar consistency.
 This is not the unequal-length or arbitrary geometric-choice comparison.
 -/
 
@@ -123,11 +128,11 @@ private theorem shifted_series_coeff (f : PowerSeries ℚ) (k z : ℤ) (c : ℚ)
 namespace UDot.GenericTensor
 open Coefficients PreF
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
-  [Finite I] (Q : RootDatum I X) (hQ : Q.toSuperCartanDatum.BarConsistent)
+  (Q : RootDatum I X)
 
 /-- The Laurent coefficient of the existing positive modified form, for either π sign.
-Negative crossing shifts are kept as integers; the guard precedes `toNat`. The
-finite-colour and bar-consistency assumptions are inherited from the form. -/
+Negative crossing shifts are kept as integers; the guard precedes `toNat`.
+Colours may be infinite, without bar consistency. -/
 theorem sesquilinearForm_positive_words_coeff
     (σ : ℚ) (hσ : σ ^ 2 = 1) (μ : X) (n : ℕ)
     (a b : Fin n → I) (z : ℤ) :
@@ -137,7 +142,7 @@ theorem sesquilinearForm_positive_words_coeff
     let ε : Equiv.Perm (Fin n) → ZMod 2 := fun w =>
       ∑ r, ∑ s with r < s ∧ w s < w r,
         Q.parity (a r) * Q.parity (a s)
-    (signLaurent σ hσ (sesquilinearForm Q hQ
+    (signLaurent σ hσ (sesquilinearForm Q
       (positiveHalf Q Coefficients.q pi μ
         (Q.toSerreF Coefficients.q pi
           (monomial Coefficients.Ring (List.ofFn a).reverse)))

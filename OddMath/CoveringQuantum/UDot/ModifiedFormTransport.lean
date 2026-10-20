@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.ModifiedFormUniqueness
 
 /-!
@@ -16,8 +21,8 @@ These are convention diagnostics, not a counterexample to Theorem 10.1 and not a
 construction of its form. They identify why a different precursor is necessary.
 
 The universal norm comparison needs neither finiteness nor bar consistency.
-Results involving `modifiedForm` retain its finite, bar-consistent, generic-ring
-hypotheses; no root independence is assumed.
+The diagnostics for `modifiedForm` hold over the generic covering ring with
+arbitrary colours; neither bar consistency nor root independence is assumed.
 -/
 
 noncomputable section
@@ -58,7 +63,8 @@ theorem rho_adjoint_generator_zero
     (hadj : ∀ u x y, B (u * x) y = B x (rhoModified D Coefficients.q pi pi_sq u * y))
     (i : I) : B (negativeHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) (negativeHalf D Coefficients.q pi 0
-      (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) = D.pii pi i * B (positiveHalf D Coefficients.q pi 0
+      (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) = D.pii pi i * B (positiveHalf D
+        Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) := by
   have he : e D i 0 * o D 0 = e D i 0 := by
@@ -103,31 +109,30 @@ private theorem sigma_o (μ : X) : sigmaModified D Coefficients.q pi pi_sq (o D 
   apply Subtype.ext
   simp [o]
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
 
 /-- Direct psi pullback of the negative-normalized form. This is not BE2's normalized form. -/
 def psiPullback : modified D Coefficients.q pi →ₛₗ[bar]
     (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring) :=
-  LinearMap.comp (modifiedForm D hD) (psiModified D)
+  LinearMap.comp (modifiedForm D) (psiModified D)
 
 /-- The sigma/psi formula applied to the negative-normalized form, without identifying it
 with Clark's precursor. The star-adjoint identity fails for an odd generator. -/
 def sigmaPsiPullback : modified D Coefficients.q pi →ₛₗ[bar]
     (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring) :=
-  ((modifiedForm D hD).compl₁₂ (sigmaModified D Coefficients.q pi pi_sq)
+  ((modifiedForm D).compl₁₂ (sigmaModified D Coefficients.q pi pi_sq)
     (sigmaModified D Coefficients.q pi pi_sq)).comp (psiModified D)
 
 /-- The negative-normalized form has a parity-twisted positive generator norm at zero. -/
 theorem modifiedForm_positive_generator_zero (i : I) :
-    modifiedForm D hD (positiveHalf D Coefficients.q pi 0
+    modifiedForm D (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i)))
       (positiveHalf D Coefficients.q pi 0
         (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) =
       D.pii pi i * D.norm Coefficients.q pi i := by
-  have h := rho_adjoint_generator_zero D (modifiedForm D hD) (modifiedForm_adjoint D hD) i
+  have h := rho_adjoint_generator_zero D (modifiedForm D) (modifiedForm_adjoint D) i
   simp only [modifiedForm_negativeHalf, SuperCartanDatum.serreForm_θ_θ, ↓reduceIte] at h
   calc
-    _ = (D.pii pi i) ^ 2 * modifiedForm D hD (e D i 0) (e D i 0) := by
+    _ = (D.pii pi i) ^ 2 * modifiedForm D (e D i 0) (e D i 0) := by
       rw [D.pii_sq pi pi_sq, one_mul]
     _ = D.pii pi i * D.norm Coefficients.q pi i := by rw [h]; ring
 
@@ -140,7 +145,7 @@ theorem covering_pi_ne_one : pi ≠ (1 : Coefficients.Ring) := by
 
 /-- An odd generator's positive norm differs from the half-algebra norm. -/
 theorem modifiedForm_positive_generator_zero_ne (i : I) (hi : D.parity i = 1) :
-    modifiedForm D hD (positiveHalf D Coefficients.q pi 0
+    modifiedForm D (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) ≠ D.norm Coefficients.q pi i := by
   rw [modifiedForm_positive_generator_zero]
@@ -153,29 +158,29 @@ theorem modifiedForm_positive_generator_zero_ne (i : I) (hi : D.parity i = 1) :
 
 /-- The direct psi pullback still has the incorrect odd positive norm. -/
 theorem psiPullback_positive_generator_zero_ne (i : I) (hi : D.parity i = 1) :
-    psiPullback D hD (positiveHalf D Coefficients.q pi 0
+    psiPullback D (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) ≠ D.norm Coefficients.q pi i := by
-  change modifiedForm D hD (psiModified D (e D i 0)) (e D i 0) ≠ _
+  change modifiedForm D (psiModified D (e D i 0)) (e D i 0) ≠ _
   rw [psi_e]
-  exact modifiedForm_positive_generator_zero_ne D hD i hi
+  exact modifiedForm_positive_generator_zero_ne D i hi
 
 /-- Sigma fixes the generator normalization, but this alone does not transport adjointness. -/
 theorem sigmaPsiPullback_positive_generator_zero (i : I) :
-    sigmaPsiPullback D hD (positiveHalf D Coefficients.q pi 0
+    sigmaPsiPullback D (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) (positiveHalf D Coefficients.q pi 0
       (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) = D.norm Coefficients.q pi i := by
   have hs : sigmaModified D Coefficients.q pi pi_sq (e D i 0) = f D i (D.α i) := by
     apply Subtype.ext
     simp [e, f]
-  change modifiedForm D hD (sigmaModified D Coefficients.q pi pi_sq (psiModified D (e D i 0)))
+  change modifiedForm D (sigmaModified D Coefficients.q pi pi_sq (psiModified D (e D i 0)))
     (sigmaModified D Coefficients.q pi pi_sq (e D i 0)) = _
   rw [psi_e, hs, modifiedForm_negativeHalf, SuperCartanDatum.serreForm_θ_θ]
   simp
 
 /-- The other side of the putative star-adjoint identity has the extra parity factor. -/
 theorem sigmaPsiPullback_star_generator_zero (i : I) :
-    sigmaPsiPullback D hD (positiveHalf D Coefficients.q pi 0 1)
+    sigmaPsiPullback D (positiveHalf D Coefficients.q pi 0 1)
       (starModified D (positiveHalf D Coefficients.q pi 0
         (D.toSerreF Coefficients.q pi (θ Coefficients.Ring i))) *
         positiveHalf D Coefficients.q pi 0
@@ -192,21 +197,21 @@ theorem sigmaPsiPullback_star_generator_zero (i : I) :
   have he : e D i 0 * o D 0 = e D i 0 := by
     apply Subtype.ext
     simpa [e, o] using E_mul_one_self D Coefficients.q pi i 0
-  change modifiedForm D hD (sigmaModified D Coefficients.q pi pi_sq (psiModified D (o D 0)))
+  change modifiedForm D (sigmaModified D Coefficients.q pi pi_sq (psiModified D (o D 0)))
     (sigmaModified D Coefficients.q pi pi_sq (starModified D (e D i 0) * e D i 0)) = _
   rw [psi_o, sigma_o, hr, hs, ← modifiedForm_adjoint, he, modifiedForm_positive_generator_zero]
 
 /-- With an odd root, this sigma/psi pullback does not satisfy the original star-adjoint law. -/
 theorem sigmaPsiPullback_not_star_adjoint (i : I) (hi : D.parity i = 1) :
-    ¬ (∀ u x y, sigmaPsiPullback D hD (u * x) y =
-      sigmaPsiPullback D hD x (starModified D u * y)) := by
+    ¬ (∀ u x y, sigmaPsiPullback D (u * x) y =
+      sigmaPsiPullback D x (starModified D u * y)) := by
   intro h
   have he : e D i 0 * o D 0 = e D i 0 := by
     apply Subtype.ext
     simpa [e, o] using E_mul_one_self D Coefficients.q pi i 0
   have hh := h (e D i 0) (o D 0) (e D i 0)
   rw [he, sigmaPsiPullback_positive_generator_zero, sigmaPsiPullback_star_generator_zero] at hh
-  apply modifiedForm_positive_generator_zero_ne D hD i hi
+  apply modifiedForm_positive_generator_zero_ne D i hi
   rw [modifiedForm_positive_generator_zero]
   exact hh.symm
 

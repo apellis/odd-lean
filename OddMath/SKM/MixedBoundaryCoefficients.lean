@@ -72,7 +72,7 @@ private theorem BoundaryFamily.height {I : Type*} {a b : List (Letter I)}
 open CoveringQuantum CoveringQuantum.Coefficients
 open CoveringQuantum.UDot.GenericTensor CoveringQuantum.UDot.GenericVerma.MixedGram
 open scoped BigOperators
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 
 private def BoundaryFamily.coeff {a b : List (Letter I)} (F : BoundaryFamily a b)
     (D : RootDatum I X) (μ : X) (σ : ℚ) (z : ℤ) : ℚ :=
@@ -82,19 +82,19 @@ private def BoundaryFamily.coeff {a b : List (Letter I)} (F : BoundaryFamily a b
     σ ^ (xpar D.toSKM μ (dLay a (F.serialize t.1 t.2))).val
 
 private def BoundaryFamily.Correct {a b : List (Letter I)} (F : BoundaryFamily a b)
-    (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent) (μ : X) : Prop :=
+    (D : RootDatum I X) (μ : X) : Prop :=
   ∀ (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ),
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ a) (algebraWord D μ b))).coeff z = F.coeff D μ σ z
 
 private theorem BoundaryFamily.correct (D : RootDatum I X)
-    (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
-    (a b : List (Letter I)) (F : BoundaryFamily a b) : F.Correct D hD μ := by
+    (μ : X)
+    (a b : List (Letter I)) (F : BoundaryFamily a b) : F.Correct D μ := by
   induction b generalizing a with
   | nil =>
     let G : CoefficientFamily a :=
       ⟨F.members, F.matching, F.unique, F.points, F.onStrand, F.serialize, F.decorates⟩
-    exact fun σ hσ z => empty_boundary_labelled_form_coeff a G F.complete D hD μ σ hσ z
+    exact fun σ hσ z => empty_boundary_labelled_form_coeff a G F.complete D μ σ hσ z
   | cons l b ih =>
     rcases l with ⟨ε, i⟩
     cases ε with
@@ -105,7 +105,7 @@ private theorem BoundaryFamily.correct (D : RootDatum I X)
         (fun R j hj => ⟨G.height R j hj, G.onStrand R j hj⟩)
         F.onStrand G.serialize F.serialize G.decorates F.decorates
         G.complete F.complete G.unique F.unique
-      obtain ⟨hf, hg, _, _, hs⟩ := hE D hD μ
+      obtain ⟨hf, hg, _, _, hs⟩ := hE D μ
       intro σ hσ
       exact (hs σ hσ).mp (ih _ G σ hσ)
     | true =>
@@ -115,15 +115,15 @@ private theorem BoundaryFamily.correct (D : RootDatum I X)
         (fun R j hj => ⟨G.height R j hj, G.onStrand R j hj⟩)
         F.onStrand G.serialize F.serialize G.decorates F.decorates
         G.complete F.complete G.unique F.unique
-      obtain ⟨hf, hg, _, _, hs⟩ := hE D hD μ
+      obtain ⟨hf, hg, _, _, hs⟩ := hE D μ
       intro σ hσ
       exact (hs σ hσ).mp (ih _ G σ hσ)
 
 /-- Arbitrary-boundary coefficient comparison in BE2 Theorem 10.3.
-Auxiliary families and height bounds are derived internally. The existing
-finite-colour, bar-consistency and purely-even coefficient restrictions remain. -/
+Auxiliary families and height bounds are derived internally. Colours are
+arbitrary and bar consistency is not required; covering coefficients are unchanged. -/
 theorem mixed_boundary_labelled_form_coeff (D : RootDatum I X)
-    (hD : D.toSuperCartanDatum.BarConsistent) (μ : X)
+    (μ : X)
     (a b : List (Letter I)) (M : Set (List (TMove (Letter I))))
     (hM : ∀ R ∈ M, IsMatching₂ a b R ∧ StrictReduced₂ a R)
     (hrep : ∀ R, IsMatching₂ a b R → StrictReduced₂ a R →
@@ -134,12 +134,12 @@ theorem mixed_boundary_labelled_form_coeff (D : RootDatum I X)
     (τ : ∀ R : M, (MatchingStrand a R.val → ℕ) → List (DTMove I))
     (hτ : ∀ R c, Decorates₂ a R.val (q R) (strandCounts c) (τ R c))
     (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm D hD
+    (signLaurent σ hσ (sesquilinearForm D
       (algebraWord D μ a) (algebraWord D μ b))).coeff z =
       ∑ t ∈ (mixed_labelled_degree_finite D.toSKM D.skmSymmetrizer μ a b M
         (fun R hR => (hM R hR).1) huniq q hq τ hτ z).toFinset,
         σ ^ (xpar D.toSKM μ (dLay a (τ t.1 t.2))).val := by
-  exact BoundaryFamily.correct D hD μ a b
+  exact BoundaryFamily.correct D μ a b
     ⟨M, hM, huniq, hrep, q, hq, τ, hτ⟩ σ hσ z
 
 end OddMath.SKM

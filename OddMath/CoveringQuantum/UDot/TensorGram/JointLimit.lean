@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedIntegration
 import OddMath.CoveringQuantum.UDot.VermaLimit
@@ -20,27 +21,27 @@ open Filter
 namespace OddMath.CoveringQuantum.UDot.NormalizedJointLimit
 open Coefficients PreF GenericVerma MixedGram PolarizationTransport PositiveComparison
 open NormalizedMixedComparison
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X)
 
 /-- The residual depends on the fixed inputs and column, not on Λ, Μ or s. -/
 def residualPolynomial (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     MvPolynomial I Coefficients.Ring :=
-  (fixed_column_residual D hD ζ x y hx hy).choose
+  (fixed_column_residual D ζ x y hx hy).choose
 
 theorem residualPolynomial_constantCoeff (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
-    MvPolynomial.constantCoeff (residualPolynomial D hD ζ x y hx hy) = 0 :=
-  (fixed_column_residual D hD ζ x y hx hy).choose_spec.1
+    MvPolynomial.constantCoeff (residualPolynomial D ζ x y hx hy) = 0 :=
+  (fixed_column_residual D ζ x y hx hy).choose_spec.1
 
 theorem residualPolynomial_eval (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y)
     (Λ Μ : X) (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (hζ : Λ - Μ = ζ) :
-    modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y =
-      MvPolynomial.eval (deformationParameter D Μ) (residualPolynomial D hD ζ x y hx hy) :=
-  (fixed_column_residual D hD ζ x y hx hy).choose_spec.2 Λ Μ hΛ hΜ s hζ
+    modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y =
+      MvPolynomial.eval (deformationParameter D Μ) (residualPolynomial D ζ x y hx hy) :=
+  (fixed_column_residual D ζ x y hx hy).choose_spec.2 Λ Μ hΛ hΜ s hζ
 
 /-- Explicit finite-coefficient threshold, including all negative orders.
 The empty support has floor zero and is covered without a nonzero assumption. -/
@@ -52,12 +53,12 @@ def threshold (p : MvPolynomial I Coefficients.Ring)
 def bothThreshold (p : MvPolynomial I Coefficients.Ring) (N : ℤ) : ℤ :=
   max (threshold p 1 (one_pow 2) N) (threshold p (-1) (by norm_num) N)
 
-omit [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [AddCommGroup X] [DecidableEq I] [DecidableEq X] in
 theorem bothThreshold_nonneg (p : MvPolynomial I Coefficients.Ring) (N : ℤ) :
     0 ≤ bothThreshold p N :=
   (le_max_left 0 _).trans (le_max_left _ _)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Evaluation estimate for the actual deformation parameters, not assumed convergence. -/
 theorem polynomial_order (p : MvPolynomial I Coefficients.Ring)
     (hp : MvPolynomial.constantCoeff p = 0)
@@ -85,31 +86,31 @@ theorem modifiedGram_order (ζ : X) (x y : modified D Coefficients.q pi)
     (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (N : ℤ)
     (Λ Μ : X) (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (hζ : Λ - Μ = ζ)
-    (hbound : ∀ i ∈ (residualPolynomial D hD ζ x y hx hy).vars,
-      threshold (residualPolynomial D hD ζ x y hx hy) ε hε N ≤ D.h i Μ) :
+    (hbound : ∀ i ∈ (residualPolynomial D ζ x y hx hy).vars,
+      threshold (residualPolynomial D ζ x y hx hy) ε hε N ≤ D.h i Μ) :
     (N : WithTop ℤ) ≤ QAdic.order (specialize ε hε
-      (modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y)) := by
-  rw [residualPolynomial_eval D hD ζ x y hx hy Λ Μ hΛ hΜ s hζ]
-  exact polynomial_order D _ (residualPolynomial_constantCoeff D hD ζ x y hx hy)
+      (modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y)) := by
+  rw [residualPolynomial_eval D ζ x y hx hy Λ Μ hΛ hΜ s hζ]
+  exact polynomial_order D _ (residualPolynomial_constantCoeff D ζ x y hx hy)
     ε hε N Μ hbound
 
 /-- ONE explicit bound, chosen before the weights and coproduct, works for
 both specializations and BOTH native coproducts simultaneously. -/
 theorem modifiedGram_order_both (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) (N : ℤ) :
-    let B := bothThreshold (residualPolynomial D hD ζ x y hx hy) N
+    let B := bothThreshold (residualPolynomial D ζ x y hx hy) N
     0 ≤ B ∧ ∀ (Λ Μ : X) (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ),
       Λ - Μ = ζ → (∀ i, B ≤ D.h i Μ) → ∀ s : Bool,
       (N : WithTop ℤ) ≤ QAdic.order (specialize 1 (one_pow 2)
-        (modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y)) ∧
+        (modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y)) ∧
       (N : WithTop ℤ) ≤ QAdic.order (specialize (-1) (by norm_num)
-        (modifiedGram D hD Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D hD x y)) := by
+        (modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y)) := by
   refine ⟨bothThreshold_nonneg _ _, ?_⟩
   intro Λ Μ hΛ hΜ hζ hb s
   constructor
-  · exact modifiedGram_order D hD ζ x y hx hy 1 (one_pow 2) N Λ Μ hΛ hΜ s hζ
+  · exact modifiedGram_order D ζ x y hx hy 1 (one_pow 2) N Λ Μ hΛ hΜ s hζ
       (fun i _ ↦ (le_max_left _ _).trans (hb i))
-  · exact modifiedGram_order D hD ζ x y hx hy (-1) (by norm_num) N Λ Μ hΛ hΜ s hζ
+  · exact modifiedGram_order D ζ x y hx hy (-1) (by norm_num) N Λ Μ hΛ hΜ s hζ
       (fun i _ ↦ (le_max_right _ _).trans (hb i))
 
 end OddMath.CoveringQuantum.UDot.NormalizedJointLimit

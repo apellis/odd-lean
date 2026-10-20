@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
 import OddMath.CoveringQuantum.UDot.Twistor
@@ -28,7 +29,8 @@ The reduction:
 * the covering ring splits through the specializations `π ↦ ±1` to `K = ℚ(q)`
   (`Coefficients.leftRadical_trivial_of_specialize`); each specialization is flat, so the
   specialized form is `baseChangeForm` along `modifiedBaseChange`;
-* trivial left radical descends from a field extension `L / K` (`leftRadical_trivial_of_baseChangeForm`);
+* trivial left radical descends from a field extension `L / K`
+  (`leftRadical_trivial_of_baseChangeForm`);
   over `L` the extended form is `ρ`-adjoint with the standard values on positive words;
 * at `π = -1` the twistor `U̇_{q,-1} ≅ U̇_{tq,1}` (`t² = -1`) transports the question to `π = 1`
   (`positiveFormNondegenerate_neg_one_of_twist`).
@@ -198,15 +200,13 @@ section Assembly
 
 open GenericTensor
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
-
 /-- The image `q ↦ X ∈ L` of the generic parameter in a field extension `L` of `ℚ(q)`. -/
 def genericParameter (L : Type*) [Field L] [Algebra (RatFunc ℚ) L] : Lˣ :=
   Units.map (algebraMap (RatFunc ℚ) L).toMonoidHom (Units.mk0 RatFunc.X RatFunc.X_ne_zero)
 
 /-- The values of `positiveModifiedForm` on pairs of positive words. -/
 theorem positiveModifiedForm_positiveWord (a b : List I) (μ ν : X) :
-    positiveModifiedForm D hD (positiveWord D Coefficients.q Coefficients.pi a μ)
+    positiveModifiedForm D (positiveWord D Coefficients.q Coefficients.pi a μ)
         (positiveWord D Coefficients.q Coefficients.pi b ν) =
       if μ = ν then D.form Coefficients.q Coefficients.pi (monomial Coefficients.Ring a)
         (monomial Coefficients.Ring b) else 0 := by
@@ -217,7 +217,7 @@ theorem positiveModifiedForm_positiveWord (a b : List I) (μ ν : X) :
           (D.toSerreF Coefficients.q Coefficients.pi (monomial Coefficients.Ring w)) :=
       Subtype.ext (halfMap_monomial D Coefficients.q Coefficients.pi true w μ).symm
     rw [hw, hw, positiveModifiedForm_positiveHalf, SuperCartanDatum.serreForm_toSerreF]
-  · exact positiveModifiedForm_orthogonal D hD _ _ _ _ _ _
+  · exact positiveModifiedForm_orthogonal D _ _ _ _ _ _
       (halfWord_mem_block D Coefficients.q Coefficients.pi true a μ)
       (halfWord_mem_block D Coefficients.q Coefficients.pi true b ν) (Or.inr hμν)
 
@@ -228,7 +228,7 @@ theorem specialize_leftRadical_trivial (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (L 
     (hπ'2 : π' ^ 2 = 1) (h : PositiveFormNondegenerate D L (genericParameter L) π' hπ'2) :
     letI := (Coefficients.specialize ε hε).toRingHom.toAlgebra
     ∀ t : RatFunc ℚ ⊗[Coefficients.Ring] modified D Coefficients.q Coefficients.pi,
-      (∀ s, (positiveModifiedForm D hD).baseChange (RatFunc ℚ) t s = 0) → t = 0 := by
+      (∀ s, (positiveModifiedForm D).baseChange (RatFunc ℚ) t s = 0) → t = 0 := by
   let _ := (Coefficients.specialize ε hε).toRingHom.toAlgebra
   have := specialize_flat ε hε
   let qK : (RatFunc ℚ)ˣ := Units.mk0 RatFunc.X RatFunc.X_ne_zero
@@ -237,13 +237,13 @@ theorem specialize_leftRadical_trivial (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (L 
   have hπ : algebraMap Coefficients.Ring (RatFunc ℚ) Coefficients.pi = ε :=
     Coefficients.specialize_pi ε hε
   have hqL : algebraMap (RatFunc ℚ) L (qK : RatFunc ℚ) = (genericParameter L : L) := rfl
-  set B := positiveModifiedForm D hD
+  set B := positiveModifiedForm D
   set BK := baseChangeForm D hq hπ B
   set BL := baseChangeForm D hqL hπ' BK
   have hadjK := baseChangeForm_adjoint D hq hπ B Coefficients.pi_sq hε
-    (positiveModifiedForm_adjoint D hD)
+    (positiveModifiedForm_adjoint D)
   have hadjL := baseChangeForm_adjoint D hqL hπ' BK hε hπ'2 hadjK
-  have hvalK := baseChangeForm_positiveWord D hq hπ B _ (positiveModifiedForm_positiveWord D hD)
+  have hvalK := baseChangeForm_positiveWord D hq hπ B _ (positiveModifiedForm_positiveWord D)
   have hvalL := baseChangeForm_positiveWord D hqL hπ' BK _ hvalK
   let φ : Coefficients.Ring →+* L :=
     (algebraMap (RatFunc ℚ) L).comp (algebraMap Coefficients.Ring (RatFunc ℚ))
@@ -272,6 +272,9 @@ theorem specialize_leftRadical_trivial (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (L 
     exact ht _
   simpa using h0
 
+variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+
+include hD in
 /-- Reduction of the nondegeneracy statement of Brundan–Ellis, arXiv:1701.04133v2, Theorem 10.1,
 for the `ρ`-adjoint form `positiveModifiedForm` to the `π = 1` input. For a field `L ⊇ ℚ(q)`
 containing a square root `t` of `-1`, if the `π = 1` input holds over `L` at the parameters `q`
@@ -281,17 +284,18 @@ theorem positiveModifiedForm_leftRadical_trivial (hα : LinearIndependent ℤ D.
     (L : Type*) [Field L] [Algebra (RatFunc ℚ) L] {t : Lˣ} (ht : t ^ 2 = -1)
     (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2))
     (h₂ : PositiveFormNondegenerate D L (t * genericParameter L) 1 (one_pow 2)) :
-    ∀ x, (∀ y, positiveModifiedForm D hD x y = 0) → x = 0 := by
+    ∀ x, (∀ y, positiveModifiedForm D x y = 0) → x = 0 := by
   let _ : LinearOrder I := LinearOrder.lift' (Finite.equivFin I) (Finite.equivFin I).injective
   have h₃ : PositiveFormNondegenerate D L (genericParameter L) (-1) neg_one_sq :=
     positiveFormNondegenerate_neg_one_of_twist D (D.rootCoord_add_α hα) ht _ hD h₂
   have hm : (-1 : RatFunc ℚ) ^ 2 = 1 := by norm_num
-  have hp := specialize_leftRadical_trivial D hD 1 (one_pow 2) L 1 (map_one _) (one_pow 2) h₁
-  have hn := specialize_leftRadical_trivial D hD (-1) hm L (-1) (by simp) neg_one_sq h₃
+  have hp := specialize_leftRadical_trivial D 1 (one_pow 2) L 1 (map_one _) (one_pow 2) h₁
+  have hn := specialize_leftRadical_trivial D (-1) hm L (-1) (by simp) neg_one_sq h₃
   have key := @Coefficients.leftRadical_trivial_of_specialize
-    (modified D Coefficients.q Coefficients.pi) _ _ (positiveModifiedForm D hD)
+    (modified D Coefficients.q Coefficients.pi) _ _ (positiveModifiedForm D)
   exact key hp hn
 
+include hD in
 /-- The same reduction over the algebraic closure of `ℚ(q)`, with the `π = 1` input at `q` and at
 `tq` for every square root `t` of `-1`. -/
 theorem positiveModifiedForm_leftRadical_trivial_algebraicClosure (hα : LinearIndependent ℤ D.α)
@@ -300,7 +304,7 @@ theorem positiveModifiedForm_leftRadical_trivial_algebraicClosure (hα : LinearI
     (h₂ : ∀ t : (AlgebraicClosure (RatFunc ℚ))ˣ, t ^ 2 = -1 →
       PositiveFormNondegenerate D (AlgebraicClosure (RatFunc ℚ))
         (t * genericParameter (AlgebraicClosure (RatFunc ℚ))) 1 (one_pow 2)) :
-    ∀ x, (∀ y, positiveModifiedForm D hD x y = 0) → x = 0 := by
+    ∀ x, (∀ y, positiveModifiedForm D x y = 0) → x = 0 := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))
   have hz0 : z ≠ 0 := by
     rintro rfl
@@ -308,13 +312,14 @@ theorem positiveModifiedForm_leftRadical_trivial_algebraicClosure (hα : LinearI
   have ht : Units.mk0 z hz0 ^ 2 = -1 := Units.ext (by simp [sq, ← hz])
   exact positiveModifiedForm_leftRadical_trivial D hD hα _ ht h₁ (h₂ _ ht)
 
+include hD in
 /-- The sesquilinear form `sesquilinearForm = positiveModifiedForm ∘ ψ` has trivial left radical
 under the same `π = 1` input, since `ψ` is an involution. -/
 theorem sesquilinearForm_leftRadical_trivial (hα : LinearIndependent ℤ D.α)
     (L : Type*) [Field L] [Algebra (RatFunc ℚ) L] {t : Lˣ} (ht : t ^ 2 = -1)
     (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2))
     (h₂ : PositiveFormNondegenerate D L (t * genericParameter L) 1 (one_pow 2)) :
-    ∀ x, (∀ y, sesquilinearForm D hD x y = 0) → x = 0 := by
+    ∀ x, (∀ y, sesquilinearForm D x y = 0) → x = 0 := by
   intro x hx
   have h0 := positiveModifiedForm_leftRadical_trivial D hD hα L ht h₁ h₂ (psiModified D x)
     fun y ↦ by rw [← sesquilinearForm_apply]; exact hx y

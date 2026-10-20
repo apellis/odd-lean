@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.ContextualExchange
 
 /-! Two odd colours in nonempty mixed context for BE2 Theorem 10.3 Claim 4. -/
@@ -30,26 +35,26 @@ theorem twoOdd_barConsistent : twoOddDatum.toSuperCartanDatum.BarConsistent := f
 
 /-- Nonempty prefix and suffix, both odd colours, in the actual generic coefficient ring. -/
 theorem twoOdd_context_exchange :
-    sesquilinearForm twoOddDatum twoOdd_barConsistent
+    sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (true, false), (false, true), (true, true)])
       (algebraWord twoOddDatum 0 []) =
-    pi * sesquilinearForm twoOddDatum twoOdd_barConsistent
+    pi * sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (false, true), (true, false), (true, true)])
       (algebraWord twoOddDatum 0 []) := by
-  have h := sesquilinearForm_context_EF_ne twoOddDatum twoOdd_barConsistent 0
+  have h := sesquilinearForm_context_EF_ne twoOddDatum 0
     [(false, false)] [(true, true)] false true (by decide)
   simpa only [twoOddDatum, one_mul, ZMod.val_one, pow_one, List.cons_append,
     List.nil_append] using h
 
 /-- The same nonempty consumer gives opposite signs in the two π specializations. -/
 theorem twoOdd_context_coeff (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
-    (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (true, false), (false, true), (true, true)])
       (algebraWord twoOddDatum 0 []))).coeff z =
-    σ * (signLaurent σ hσ (sesquilinearForm twoOddDatum twoOdd_barConsistent
+    σ * (signLaurent σ hσ (sesquilinearForm twoOddDatum
       (algebraWord twoOddDatum 0 [(false, false), (false, true), (true, false), (true, true)])
       (algebraWord twoOddDatum 0 []))).coeff z := by
-  have h := sesquilinearForm_context_EF_ne_coeff twoOddDatum twoOdd_barConsistent σ hσ 0
+  have h := sesquilinearForm_context_EF_ne_coeff twoOddDatum σ hσ 0
     [(false, false)] [(true, true)] false true (by decide) z
   simpa only [twoOddDatum, one_mul, ZMod.val_one, pow_one, List.cons_append,
     List.nil_append] using h

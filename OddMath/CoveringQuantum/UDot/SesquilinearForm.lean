@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
 import OddMath.CoveringQuantum.PreF.Reversal
 
@@ -6,11 +11,10 @@ import OddMath.CoveringQuantum.PreF.Reversal
 
 Pulling the positive-normalized bilinear form back by the original `psi` in its
 first argument gives the form of Brundan–Ellis, Theorem 10.1, over the generic
-covering ring for finite bar-consistent data. The original `star` and `shriek`
+covering ring for arbitrary colours, without bar consistency. The original `star` and `shriek`
 are retained. All-half uniqueness and identities (4) and (5) require no root
 separation; only the shorter same-length-word characterization assumes the
-explicit root-sum length separation hypothesis. Nondegeneracy and existence
-without bar consistency are not asserted.
+explicit root-sum length separation hypothesis. Nondegeneracy is not asserted.
 -/
 
 noncomputable section
@@ -68,12 +72,11 @@ private theorem psi_positive_halfWord (a : List I) (μ : X) :
   rw [halfMap_monomial, psi_positive_halfWord]
   exact (halfMap_monomial D Coefficients.q pi true a μ).symm
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
 
 /-- Scalar conjugation on the positive half agrees with the original psi. -/
 theorem psiModified_positiveHalf (μ : X) (x : D.serreF Coefficients.q pi) :
     psiModified D (positiveHalf D Coefficients.q pi μ x) =
-      positiveHalf D Coefficients.q pi μ (GenericVerma.halfBar D hD x) := by
+      positiveHalf D Coefficients.q pi μ (GenericVerma.halfBar D x) := by
   obtain ⟨x, rfl⟩ := D.toSerreF_surjective Coefficients.q pi x
   induction x using induction_monomial with
   | word w => rw [psiModified_positive_monomial, GenericVerma.halfBar_monomial]
@@ -84,38 +87,41 @@ theorem psiModified_positiveHalf (μ : X) (x : D.serreF Coefficients.q pi) :
 /-- Antilinear in the first argument and linear in the second, over the generic ring. -/
 def sesquilinearForm : modified D Coefficients.q pi →ₛₗ[bar]
     (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring) :=
-  LinearMap.comp (positiveModifiedForm D hD) (psiModified D)
+  LinearMap.comp (positiveModifiedForm D) (psiModified D)
 
 theorem sesquilinearForm_apply (x y : modified D Coefficients.q pi) :
-    sesquilinearForm D hD x y = positiveModifiedForm D hD (psiModified D x) y := rfl
+    sesquilinearForm D x y = positiveModifiedForm D (psiModified D x) y := rfl
 
 /-- The original star is the left adjoint for every modified element. -/
 theorem sesquilinearForm_adjoint (u x y : modified D Coefficients.q pi) :
-    sesquilinearForm D hD (u * x) y =
-      sesquilinearForm D hD x (starModified D u * y) := by
+    sesquilinearForm D (u * x) y =
+      sesquilinearForm D x (starModified D u * y) := by
   simp only [sesquilinearForm_apply, psiModified_mul, positiveModifiedForm_adjoint]
   rfl
 
 /-- Both endpoints are orthogonal. -/
 theorem sesquilinearForm_orthogonal (μ ν μ' ν' : X) (x y : modified D Coefficients.q pi)
     (hx : (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν)
-    (hy : (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ' ν')
-    (hne : μ ≠ μ' ∨ ν ≠ ν') : sesquilinearForm D hD x y = 0 :=
-  positiveModifiedForm_orthogonal D hD μ ν μ' ν' (psiModified D x) y
+    (hy : (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D
+      Coefficients.q pi μ' ν')
+    (hne : μ ≠ μ' ∨ ν ≠ ν') : sesquilinearForm D x y = 0 :=
+  positiveModifiedForm_orthogonal D μ ν μ' ν' (psiModified D x) y
     (psi_mem_block D Coefficients.q pi barData hx) hy hne
 
 /-- Normalization on the entire positive half, including arbitrary coefficients. -/
 theorem sesquilinearForm_positiveHalf (μ : X) (x y : D.serreF Coefficients.q pi) :
-    sesquilinearForm D hD (positiveHalf D Coefficients.q pi μ x)
+    sesquilinearForm D (positiveHalf D Coefficients.q pi μ x)
       (positiveHalf D Coefficients.q pi μ y) =
-        D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D hD x) y := by
-  rw [sesquilinearForm_apply, psiModified_positiveHalf D hD, positiveModifiedForm_positiveHalf]
+        D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D x) y := by
+  rw [sesquilinearForm_apply, psiModified_positiveHalf D, positiveModifiedForm_positiveHalf]
 
 /-- The reversed positive-word normalization in Theorem 10.1(3). -/
 theorem sesquilinearForm_reversed_words (μ : X) (a b : List I) :
-    sesquilinearForm D hD
-      (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a.reverse)))
-      (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b.reverse))) =
+    sesquilinearForm D
+      (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring a.reverse)))
+      (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring b.reverse))) =
         D.serreForm Coefficients.q pi pi_sq
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a))
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b)) := by
@@ -124,17 +130,18 @@ theorem sesquilinearForm_reversed_words (μ : X) (a b : List I) :
 
 /-- The psi-twisted symmetry of Theorem 10.1(4). -/
 theorem sesquilinearForm_psi_comm (x y : modified D Coefficients.q pi) :
-    sesquilinearForm D hD x y = sesquilinearForm D hD (psiModified D y) (psiModified D x) := by
+    sesquilinearForm D x y = sesquilinearForm D (psiModified D y) (psiModified D x) := by
   rw [sesquilinearForm_apply, sesquilinearForm_apply, psiModified_psiModified,
     positiveModifiedForm_comm]
 
 /-- The original shriek is the right adjoint, as in Theorem 10.1(5). -/
 theorem sesquilinearForm_shriek_adjoint (x y z : modified D Coefficients.q pi) :
-    sesquilinearForm D hD x (y * z) =
-      sesquilinearForm D hD (shriekModified D y * x) z := by
+    sesquilinearForm D x (y * z) =
+      sesquilinearForm D (shriekModified D y * x) z := by
   simp only [sesquilinearForm_apply, psiModified_mul]
-  change positiveModifiedForm D hD (psiModified D x) (y * z) =
-    positiveModifiedForm D hD (psiModified D (psiModified D (rhoModified D Coefficients.q pi pi_sq y)) * psiModified D x) z
+  change positiveModifiedForm D (psiModified D x) (y * z) =
+    positiveModifiedForm D (psiModified D (psiModified D (rhoModified D Coefficients.q pi pi_sq
+      y)) * psiModified D x) z
   rw [psiModified_psiModified, positiveModifiedForm_adjoint, rhoModified_rhoModified]
 
 private def bilinearPullback
@@ -145,7 +152,6 @@ private def bilinearPullback
   map_add' x y := by simp only [map_add]
   map_smul' c x := by simp only [map_smulₛₗ, bar_bar, RingHom.id_apply]
 
-omit [Finite I] in
 private theorem bilinearPullback_orthogonal
     (S : modified D Coefficients.q pi →ₛₗ[bar]
       (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring))
@@ -155,11 +161,11 @@ private theorem bilinearPullback_orthogonal
       μ ≠ μ' ∨ ν ≠ ν' → S x y = 0)
     (μ ν μ' ν' : X) (x y : modified D Coefficients.q pi)
     (hx : (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν)
-    (hy : (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ' ν')
+    (hy : (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D
+      Coefficients.q pi μ' ν')
     (hne : μ ≠ μ' ∨ ν ≠ ν') : bilinearPullback D S x y = 0 :=
   horth μ ν μ' ν' (psiModified D x) y (psi_mem_block D Coefficients.q pi barData hx) hy hne
 
-omit [Finite I] in
 private theorem bilinearPullback_adjoint
     (S : modified D Coefficients.q pi →ₛₗ[bar]
       (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring))
@@ -176,11 +182,11 @@ private theorem bilinearPullback_adjoint
 private theorem eq_of_bilinearPullback_eq
     (S : modified D Coefficients.q pi →ₛₗ[bar]
       (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring))
-    (he : bilinearPullback D S = positiveModifiedForm D hD) :
-    S = sesquilinearForm D hD := by
+    (he : bilinearPullback D S = positiveModifiedForm D) :
+    S = sesquilinearForm D := by
   ext x y
   have h := LinearMap.congr_fun (LinearMap.congr_fun he (psiModified D x)) y
-  change S (psiModified D (psiModified D x)) y = positiveModifiedForm D hD (psiModified D x) y at h
+  change S (psiModified D (psiModified D x)) y = positiveModifiedForm D (psiModified D x) y at h
   simpa only [psiModified_psiModified, sesquilinearForm_apply] using h
 
 /-- Endpoint orthogonality, original-star adjointness, and all-half normalization
@@ -195,20 +201,20 @@ theorem sesquilinearForm_unique
     (hadj : ∀ u x y, S (u * x) y = S x (starModified D u * y))
     (hpositive : ∀ μ (x y : D.serreF Coefficients.q pi),
       S (positiveHalf D Coefficients.q pi μ x) (positiveHalf D Coefficients.q pi μ y) =
-        D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D hD x) y) :
-    S = sesquilinearForm D hD := by
-  apply eq_of_bilinearPullback_eq D hD S
-  apply positiveModifiedForm_unique D hD (bilinearPullback D S)
+        D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D x) y) :
+    S = sesquilinearForm D := by
+  apply eq_of_bilinearPullback_eq D S
+  apply positiveModifiedForm_unique D (bilinearPullback D S)
     (bilinearPullback_orthogonal D S horth) (bilinearPullback_adjoint D S hadj)
   intro μ x y
   change S (psiModified D (positiveHalf D Coefficients.q pi μ x)) _ = _
-  rw [psiModified_positiveHalf D hD, hpositive, GenericVerma.halfBar_halfBar]
+  rw [psiModified_positiveHalf D, hpositive, GenericVerma.halfBar_halfBar]
 
 /-- The three-axiom characterization using normalization on the entire positive half. -/
 theorem sesquilinearForm_eq_iff
     (S : modified D Coefficients.q pi →ₛₗ[bar]
       (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring)) :
-    S = sesquilinearForm D hD ↔
+    S = sesquilinearForm D ↔
       (∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
         (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν →
         (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ' ν' →
@@ -216,13 +222,13 @@ theorem sesquilinearForm_eq_iff
       (∀ u x y, S (u * x) y = S x (starModified D u * y)) ∧
       (∀ μ (x y : D.serreF Coefficients.q pi),
         S (positiveHalf D Coefficients.q pi μ x) (positiveHalf D Coefficients.q pi μ y) =
-          D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D hD x) y) := by
+          D.serreForm Coefficients.q pi pi_sq (GenericVerma.halfBar D x) y) := by
   constructor
   · rintro rfl
-    exact ⟨sesquilinearForm_orthogonal D hD, sesquilinearForm_adjoint D hD,
-      sesquilinearForm_positiveHalf D hD⟩
+    exact ⟨sesquilinearForm_orthogonal D, sesquilinearForm_adjoint D,
+      sesquilinearForm_positiveHalf D⟩
   · rintro ⟨horth, hadj, hpositive⟩
-    exact sesquilinearForm_unique D hD S horth hadj hpositive
+    exact sesquilinearForm_unique D S horth hadj hpositive
 
 /-- Same-length reversed positive words suffice under the explicit local
 root-sum length separation assumption. This assumption is not needed for the
@@ -237,14 +243,16 @@ theorem sesquilinearForm_unique_of_same_length
       μ ≠ μ' ∨ ν ≠ ν' → S x y = 0)
     (hadj : ∀ u x y, S (u * x) y = S x (starModified D u * y))
     (hwords : ∀ μ (a b : List I), a.length = b.length →
-      S (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a.reverse)))
-        (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b.reverse))) =
+      S (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring a.reverse)))
+        (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+        Coefficients.Ring b.reverse))) =
         D.serreForm Coefficients.q pi pi_sq
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a))
           (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) :
-    S = sesquilinearForm D hD := by
-  apply eq_of_bilinearPullback_eq D hD S
-  apply positiveModifiedForm_unique_of_same_length D hD hlength (bilinearPullback D S)
+    S = sesquilinearForm D := by
+  apply eq_of_bilinearPullback_eq D S
+  apply positiveModifiedForm_unique_of_same_length D hlength (bilinearPullback D S)
     (bilinearPullback_orthogonal D S horth) (bilinearPullback_adjoint D S hadj)
   intro μ a b hab
   change S (psiModified D (positiveHalf D Coefficients.q pi μ _)) _ = _
@@ -258,24 +266,26 @@ theorem sesquilinearForm_eq_iff_of_length_separation
     (hlength : ∀ a b : List I, (a.map D.α).sum = (b.map D.α).sum → a.length = b.length)
     (S : modified D Coefficients.q pi →ₛₗ[bar]
       (modified D Coefficients.q pi →ₗ[Coefficients.Ring] Coefficients.Ring)) :
-    S = sesquilinearForm D hD ↔
+    S = sesquilinearForm D ↔
       (∀ μ ν μ' ν' (x y : modified D Coefficients.q pi),
         (x : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ ν →
         (y : CoveringUDot Coefficients.Ring D Coefficients.q pi) ∈ block D Coefficients.q pi μ' ν' →
         μ ≠ μ' ∨ ν ≠ ν' → S x y = 0) ∧
       (∀ u x y, S (u * x) y = S x (starModified D u * y)) ∧
       (∀ μ (a b : List I), a.length = b.length →
-        S (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a.reverse)))
-          (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b.reverse))) =
+        S (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+          Coefficients.Ring a.reverse)))
+          (positiveHalf D Coefficients.q pi μ (D.toSerreF Coefficients.q pi (monomial
+            Coefficients.Ring b.reverse))) =
           D.serreForm Coefficients.q pi pi_sq
             (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring a))
             (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring b))) := by
   constructor
   · rintro rfl
-    refine ⟨sesquilinearForm_orthogonal D hD, sesquilinearForm_adjoint D hD, ?_⟩
+    refine ⟨sesquilinearForm_orthogonal D, sesquilinearForm_adjoint D, ?_⟩
     intro μ a b _
-    exact sesquilinearForm_reversed_words D hD μ a b
+    exact sesquilinearForm_reversed_words D μ a b
   · rintro ⟨horth, hadj, hwords⟩
-    exact sesquilinearForm_unique_of_same_length D hD hlength S horth hadj hwords
+    exact sesquilinearForm_unique_of_same_length D hlength S horth hadj hwords
 
 end OddMath.CoveringQuantum.UDot.GenericTensor

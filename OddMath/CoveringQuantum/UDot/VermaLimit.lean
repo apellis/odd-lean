@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
+-/
 import OddMath.CoveringQuantum.QAdic
 import OddMath.CoveringQuantum.UDot.VermaComparison
 
@@ -16,6 +21,11 @@ valuation step underlying the comparison in CHWII Proposition 6.10; it is not
 integrable-quotient descent or the tensor-module limit of Clark IV Proposition
 5.11. Filter nonvacuity is characterized separately and is not asserted for an
 arbitrary root datum. No nondegeneracy is inferred from this half comparison.
+
+Unlike the finite, bar-consistent setting of those sources, the algebraic
+comparison, finite-support order bounds and conditional convergence here allow
+arbitrary colour types without bar-consistency. The positive-weight criterion
+for filter nonvacuity still requires finitely many colours.
 -/
 
 noncomputable section
@@ -23,10 +33,10 @@ open scoped Topology
 open Filter
 namespace OddMath.CoveringQuantum.UDot.GenericVerma
 open PreF Coefficients
-variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
+variable (D : RootDatum I X)
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 private theorem specialize_qi_zpow (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
     (i : I) (n : ℤ) :
     specialize ε hε ((D.qi Coefficients.q i ^ n : Coefficients.Ringˣ) : Coefficients.Ring) =
@@ -39,7 +49,7 @@ private theorem specialize_qi_zpow (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
   simp only [SuperCartanDatum.qi, Units.val_pow_eq_pow_val, map_pow, specialize_q]
   rw [← zpow_natCast, ← zpow_mul]
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Each specialization has the same parameter order. The pi factor is an actual
 unit of order zero, including at pi = -1. -/
 theorem deformationParameter_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (Λ : X) (i : I) :
@@ -59,14 +69,14 @@ def freeComparisonError (y : PreF Coefficients.Ring I) :
   (FreeAlgebra.wordBasis Coefficients.Ring I).constr Coefficients.Ring
     (fun w => comparisonError D w y)
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 @[simp] theorem freeComparisonError_word (w : List I) (y : PreF Coefficients.Ring I) :
     freeComparisonError D y (monomial Coefficients.Ring w) = comparisonError D w y := by
   simpa only [FreeAlgebra.wordBasis_apply, monomial, freeComparisonError, θ] using
     (Module.Basis.constr_basis (FreeAlgebra.wordBasis Coefficients.Ring I)
       Coefficients.Ring (fun w => comparisonError D w y) w)
 
-omit [DecidableEq X] [Finite I] in
+omit [DecidableEq X] in
 theorem freeComparisonError_constantCoeff (x y : PreF Coefficients.Ring I) :
     MvPolynomial.constantCoeff (freeComparisonError D y x) = 0 := by
   induction x using FreeAlgebra.induction_wordBasis with
@@ -81,13 +91,13 @@ theorem freeComparisonError_constantCoeff (x y : PreF Coefficients.Ring I) :
 /-- The rho/tau1-prime normalization is applied wordwise before taking the actual
 Verma pairing; it cannot be dropped at pi = -1 or on inhomogeneous inputs. -/
 def normalizedPolarization (Λ : X) (x y : PreF Coefficients.Ring I) : Coefficients.Ring :=
-  polarization D hD Λ
+  polarization D Λ
     (D.toSerreF Coefficients.q pi (diagTwist (polarizationSign D Λ) x))
     (D.toSerreF Coefficients.q pi y)
 
 /-- Exact finite linear-combination extension of the accepted word comparison. -/
 theorem normalizedPolarization_sub_half (Λ : X) (x y : PreF Coefficients.Ring I) :
-    normalizedPolarization D hD Λ x y - D.form Coefficients.q pi x y =
+    normalizedPolarization D Λ x y - D.form Coefficients.q pi x y =
       MvPolynomial.eval (deformationParameter D Λ) (freeComparisonError D y x) := by
   induction x using FreeAlgebra.induction_wordBasis with
   | zero => simp [normalizedPolarization]
@@ -102,13 +112,13 @@ theorem normalizedPolarization_sub_half (Λ : X) (x y : PreF Coefficients.Ring I
     ring
   | word w =>
     simp only [FreeAlgebra.wordBasis_apply]
-    change normalizedPolarization D hD Λ (monomial Coefficients.Ring w) y -
+    change normalizedPolarization D Λ (monomial Coefficients.Ring w) y -
       D.form Coefficients.q pi (monomial Coefficients.Ring w) y =
       MvPolynomial.eval (deformationParameter D Λ)
         (freeComparisonError D y (monomial Coefficients.Ring w))
     rw [freeComparisonError_word, normalizedPolarization, diagTwist_monomial,
       map_smul, map_smul, LinearMap.smul_apply]
-    have h := polarization_sub_half D hD Λ w y
+    have h := polarization_sub_half D Λ w y
     simpa only [SuperCartanDatum.serreForm_toSerreF, SuperCartanDatum.form, wordSign,
       smul_eq_mul] using h
 
@@ -125,7 +135,7 @@ theorem normalizedPolarization_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
     (hΛ : ∀ i ∈ (freeComparisonError D y x).vars,
       comparisonThreshold D ε hε x y N ≤ D.h i Λ) :
     (N : WithTop ℤ) ≤ QAdic.order (specialize ε hε
-      (normalizedPolarization D hD Λ x y - D.form Coefficients.q pi x y)) := by
+      (normalizedPolarization D Λ x y - D.form Coefficients.q pi x y)) := by
   rw [normalizedPolarization_sub_half]
   change (N : WithTop ℤ) ≤ QAdic.order ((specialize ε hε).toRingHom
     (MvPolynomial.eval (deformationParameter D Λ) (freeComparisonError D y x)))
@@ -147,17 +157,17 @@ theorem normalizedPolarization_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
 theorem normalizedPolarization_order_both (x y : PreF Coefficients.Ring I) (N : ℤ) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ : X, (∀ i, B ≤ D.h i Λ) →
       (N : WithTop ℤ) ≤ QAdic.order (specialize 1 (one_pow 2)
-        (normalizedPolarization D hD Λ x y - D.form Coefficients.q pi x y)) ∧
+        (normalizedPolarization D Λ x y - D.form Coefficients.q pi x y)) ∧
       (N : WithTop ℤ) ≤ QAdic.order (specialize (-1) (by norm_num)
-        (normalizedPolarization D hD Λ x y - D.form Coefficients.q pi x y)) := by
+        (normalizedPolarization D Λ x y - D.form Coefficients.q pi x y)) := by
   let B := max (comparisonThreshold D 1 (one_pow 2) x y N)
     (comparisonThreshold D (-1) (by norm_num) x y N)
   refine ⟨B, (le_max_left 0 _).trans (le_max_left _ _), ?_⟩
   intro Λ hΛ
   constructor
-  · exact normalizedPolarization_order D hD 1 (one_pow 2) x y N Λ
+  · exact normalizedPolarization_order D 1 (one_pow 2) x y N Λ
       (fun i _ => (le_max_left _ _).trans (hΛ i))
-  · exact normalizedPolarization_order D hD (-1) (by norm_num) x y N Λ
+  · exact normalizedPolarization_order D (-1) (by norm_num) x y N Λ
       (fun i _ => (le_max_right _ _).trans (hΛ i))
 
 /-- The filter in which every simple-coroot coordinate tends to +infinity.
@@ -165,7 +175,7 @@ It may be bottom for a general root datum; nonvacuity is a separate theorem. -/
 def coordinateFilter : Filter X :=
   Filter.comap (fun Λ i => D.h i Λ) Filter.atTop
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 theorem eventually_coordinate_lower (B : ℤ) :
     ∀ᶠ Λ in coordinateFilter D, ∀ i, B ≤ D.h i Λ := by
   apply Filter.eventually_comap.mpr
@@ -179,19 +189,19 @@ specializations. This is the normalized actual Verma pairing, not an assumed for
 No existence of large dominant weights is included in this assertion. -/
 theorem normalizedPolarization_tendsto (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
     (x y : PreF Coefficients.Ring I) :
-    Tendsto (fun Λ => specialize ε hε (normalizedPolarization D hD Λ x y))
+    Tendsto (fun Λ => specialize ε hε (normalizedPolarization D Λ x y))
       (coordinateFilter D) (𝓝 (specialize ε hε (D.form Coefficients.q pi x y))) := by
   have hh : Tendsto (fun Λ => specialize ε hε
-      (normalizedPolarization D hD Λ x y - D.form Coefficients.q pi x y))
+      (normalizedPolarization D Λ x y - D.form Coefficients.q pi x y))
       (coordinateFilter D) (𝓝 0) := by
     apply QAdic.tendsto_zero_of_order
     intro N
     filter_upwards [eventually_coordinate_lower D (comparisonThreshold D ε hε x y N)] with Λ hΛ
-    exact normalizedPolarization_order D hD ε hε x y N Λ (fun i _ => hΛ i)
+    exact normalizedPolarization_order D ε hε x y N Λ (fun i _ => hΛ i)
   have hs := hh.add (tendsto_const_nhds (x := specialize ε hε (D.form Coefficients.q pi x y)))
   simpa only [map_sub, sub_add_cancel, zero_add] using hs
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 /-- Exact nonvacuity boundary: coordinate convergence is nontrivial precisely when
 all coordinate lower bounds can be attained. This is NOT assumed for root data. -/
 theorem coordinateFilter_neBot_iff : (coordinateFilter D).NeBot ↔
@@ -205,9 +215,9 @@ theorem coordinateFilter_neBot_iff : (coordinateFilter D).NeBot ↔
     exact h b
 
 omit [DecidableEq I] [DecidableEq X] in
-/-- An explicit weight with all positive simple-coroot coordinates suffices for
+/-- For finite I, a weight with all positive simple-coroot coordinates suffices for
 nonvacuity, by its integer multiples. No such weight is silently supplied. -/
-theorem coordinateFilter_neBot_of_positive_weight (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
+theorem coordinateFilter_neBot_of_positive_weight [Finite I] (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) :
     (coordinateFilter D).NeBot := by
   classical
   let _ := Fintype.ofFinite I
@@ -226,7 +236,7 @@ theorem coordinateFilter_neBot_of_positive_weight (ξ : X) (hξ : ∀ i, 0 < D.h
 omit [DecidableEq I] [DecidableEq X] in
 /-- For finite I, an explicit positive weight is exactly the missing nonvacuity
 condition. This theorem does not assert that any such weight exists. -/
-theorem coordinateFilter_neBot_iff_positive_weight :
+theorem coordinateFilter_neBot_iff_positive_weight [Finite I] :
     (coordinateFilter D).NeBot ↔ ∃ ξ : X, ∀ i, 0 < D.h i ξ := by
   constructor
   · intro h
@@ -242,11 +252,11 @@ theorem polarization_word_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
       max 0 (N - QAdic.coefficientFloor (specialize ε hε).toRingHom (comparisonError D w y)) ≤
         D.h i Λ) :
     (N : WithTop ℤ) ≤ QAdic.order (specialize ε hε
-      (wordSign D Λ w * polarization D hD Λ
+      (wordSign D Λ w * polarization D Λ
         (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
         (D.toSerreF Coefficients.q pi y) -
         D.form Coefficients.q pi (monomial Coefficients.Ring w) y)) := by
-  have h := normalizedPolarization_order D hD ε hε (monomial Coefficients.Ring w) y N Λ
+  have h := normalizedPolarization_order D ε hε (monomial Coefficients.Ring w) y N Λ
     (by simpa only [comparisonThreshold, freeComparisonError_word] using hΛ)
   simpa only [normalizedPolarization, diagTwist_monomial, map_smul,
     LinearMap.smul_apply, smul_eq_mul, wordSign] using h
@@ -254,12 +264,12 @@ theorem polarization_word_order (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
 /-- The normalized accepted word polarization converges after either pi specialization. -/
 theorem polarization_word_tendsto (ε : RatFunc ℚ) (hε : ε ^ 2 = 1)
     (w : List I) (y : PreF Coefficients.Ring I) :
-    Tendsto (fun Λ => specialize ε hε (wordSign D Λ w * polarization D hD Λ
+    Tendsto (fun Λ => specialize ε hε (wordSign D Λ w * polarization D Λ
       (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w))
       (D.toSerreF Coefficients.q pi y))) (coordinateFilter D)
       (𝓝 (specialize ε hε (D.form Coefficients.q pi (monomial Coefficients.Ring w) y))) := by
   simpa only [normalizedPolarization, diagTwist_monomial, map_smul,
     LinearMap.smul_apply, smul_eq_mul, wordSign] using
-    normalizedPolarization_tendsto D hD ε hε (monomial Coefficients.Ring w) y
+    normalizedPolarization_tendsto D ε hε (monomial Coefficients.Ring w) y
 
 end OddMath.CoveringQuantum.UDot.GenericVerma

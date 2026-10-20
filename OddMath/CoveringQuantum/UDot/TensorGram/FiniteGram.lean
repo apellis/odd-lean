@@ -1,6 +1,7 @@
 /-
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alex Ellis
 -/
 import OddMath.CoveringQuantum.UDot.TensorGram.Transport
 
@@ -120,27 +121,27 @@ theorem qint_normalized (μ : X) (i : I) :
           qp Coefficients.q (D.d i) * qp Coefficients.q (D.d i * D.h i μ)) := by ring
     _ = _ := by rw [hplus, hminus]; ring
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent) (Λ Μ : X)
+variable (Λ Μ : X)
 
-@[simp] theorem project_vac : tensorProject D hD Λ Μ (Λ - Μ) (vac D hD Λ Μ) =
-    vac D hD Λ Μ := by
-  have h := tensorProject_tmul_word D hD Λ Μ (Λ - Μ) (toIntegrable D hD Λ 1) []
+@[simp] theorem project_vac : tensorProject D Λ Μ (Λ - Μ) (vac D Λ Μ) =
+    vac D Λ Μ := by
+  have h := tensorProject_tmul_word D Λ Μ (Λ - Μ) (toIntegrable D Λ 1) []
   simpa [vac, integrableRepresentation_toIntegrable, representation_one,
     weightProject_mk, weightProjectFree_monomial] using h
 
 @[simp] theorem E_vac (s : Bool) (i : I) :
-    tensorRepresentation D hD Λ Μ s (E D Coefficients.q pi i (Λ - Μ))
-      (vac D hD Λ Μ) = tensorE D hD Λ Μ s i (vac D hD Λ Μ) := by
+    tensorRepresentation D Λ Μ s (E D Coefficients.q pi i (Λ - Μ))
+      (vac D Λ Μ) = tensorE D Λ Μ s i (vac D Λ Μ) := by
   simp [tensorEBlock]
 
 @[simp] theorem F_vac (s : Bool) (i : I) :
-    tensorRepresentation D hD Λ Μ s (F D Coefficients.q pi i (Λ - Μ))
-      (vac D hD Λ Μ) = tensorF D hD Λ Μ s i (vac D hD Λ Μ) := by
+    tensorRepresentation D Λ Μ s (F D Coefficients.q pi i (Λ - Μ))
+      (vac D Λ Μ) = tensorF D Λ Μ s i (vac D Λ Μ) := by
   simp
 
 /-- Exact finite E Gram, with NO growing-weight Laurent prefactor remaining. -/
 theorem gram_E (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
       (E D Coefficients.q pi i (Λ - Μ)) =
         D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i) := by
   rw [gram_apply, left_E, right_E]
@@ -185,23 +186,23 @@ theorem gram_E (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : 
       simp only [one_mul, deformation_eq_qp]
 
 @[simp] theorem gram_one (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) :
-    gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
       (one D Coefficients.q pi (Λ - Μ)) = 1 := by
   simp only [gram_apply, left_one, right_one, tensorRepresentation_one, project_vac]
   simp [vac]
 
 /-- The mixed FE scalar is retained, now with only a fixed-difference prefactor. -/
 theorem gram_FE (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
       (F D Coefficients.q pi i (Λ - Μ + D.α i) * E D Coefficients.q pi i (Λ - Μ)) =
         qp Coefficients.q (D.d i * (D.h i (Λ - Μ) + 1)) *
           (D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i)) := by
-  have h := gram_adjoint D hD Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
+  have h := gram_adjoint D Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
     (one D Coefficients.q pi (Λ - Μ)) (E D Coefficients.q pi i (Λ - Μ))
   rw [E_mul_one_self, rho_E, smul_mul_assoc, map_smul, smul_eq_mul] at h
   calc
     _ = qp Coefficients.q (D.d i * (D.h i (Λ - Μ) + 1)) *
-        gram D hD Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
+        gram D Λ Μ hΛ hΜ s (E D Coefficients.q pi i (Λ - Μ))
           (E D Coefficients.q pi i (Λ - Μ)) := by
       rw [h, ← mul_assoc, qp_mul, add_neg_cancel, qp_zero, one_mul]
     _ = _ := by rw [gram_E]
@@ -209,12 +210,12 @@ theorem gram_FE (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s :
 /-- ORIGINAL scalar commutator, not the false contraction-free word-length rule. -/
 theorem gram_commutator (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
       (E D Coefficients.q pi i (Λ - Μ - D.α i) * F D Coefficients.q pi i (Λ - Μ)) -
-      D.pii pi i * gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+      D.pii pi i * gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
         (F D Coefficients.q pi i (Λ - Μ + D.α i) * E D Coefficients.q pi i (Λ - Μ)) =
       qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i (Λ - Μ)) := by
-  have h := congrArg (gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ)))
+  have h := congrArg (gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ)))
     (comm_rel D Coefficients.q pi i i (Λ - Μ))
   have hp : D.parity i * D.parity i = D.parity i := by
     have : ∀ p : ZMod 2, p * p = p := by decide
@@ -224,31 +225,31 @@ theorem gram_commutator (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i 
 
 /-- Exact EF formula: the quantum integer is an indispensable scalar term. -/
 theorem gram_EF (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
       (E D Coefficients.q pi i (Λ - Μ - D.α i) * F D Coefficients.q pi i (Λ - Μ)) =
         D.pii pi i * qp Coefficients.q (D.d i * (D.h i (Λ - Μ) + 1)) *
           (D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i)) +
         qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i (Λ - Μ)) := by
-  have h := gram_commutator D hD Λ Μ hΛ hΜ s i
+  have h := gram_commutator D Λ Μ hΛ hΜ s i
   rw [gram_FE] at h
   linear_combination h
 
 /-- Exact F norm with the scalar contraction explicit. -/
 theorem gram_F (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ) (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
       (F D Coefficients.q pi i (Λ - Μ)) =
       qp Coefficients.q (D.d i * (D.h i (Λ - Μ) - 1)) *
         (D.pii pi i * qp Coefficients.q (D.d i * (D.h i (Λ - Μ) + 1)) *
           (D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i)) +
         qpInt (D.qi Coefficients.q i) (D.pii pi i) (D.h i (Λ - Μ))) := by
-  have h := gram_adjoint D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+  have h := gram_adjoint D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
     (one D Coefficients.q pi (Λ - Μ)) (F D Coefficients.q pi i (Λ - Μ))
   simpa only [F_mul_one_self, rho_F, smul_mul_assoc, map_smul, smul_eq_mul, gram_EF] using h
 
 /-- Fixed-difference leading term and a genuine growing-weight remainder. -/
 theorem gram_F_leading (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
       (F D Coefficients.q pi i (Λ - Μ)) =
       pi ^ (D.parl i (Λ - Μ)).val * D.norm Coefficients.q pi i -
         D.pii pi i * qp Coefficients.q (2 * D.d i * D.h i (Λ - Μ)) *
@@ -268,7 +269,7 @@ theorem gram_F_leading (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i �
         D.norm Coefficients.q pi i * (1 - deformationParameter D Μ i) := by ring
     _ = _ := by rw [qint_normalized, hq]; ring
 
-omit [DecidableEq I] [DecidableEq X] [Finite I] in
+omit [DecidableEq I] [DecidableEq X] in
 theorem deformation_difference (i : I) :
     D.pii pi i * qp Coefficients.q (2 * D.d i * D.h i (Λ - Μ)) *
       deformationParameter D Μ i =
@@ -296,7 +297,7 @@ theorem deformation_difference (i : I) :
 /-- Exact finite F norm with the expected parity character. -/
 theorem gram_F_normalized (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
       (F D Coefficients.q pi i (Λ - Μ)) =
       pi ^ (D.parl i (Λ - Μ)).val *
         (D.norm Coefficients.q pi i * (1 - deformationParameter D Λ i)) := by
@@ -307,17 +308,17 @@ theorem gram_F_normalized (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h 
 /-- Same EF scalar in its finite normalized form. -/
 theorem gram_EF_normalized (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (i : I) :
-    gram D hD Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
+    gram D Λ Μ hΛ hΜ s (one D Coefficients.q pi (Λ - Μ))
       (E D Coefficients.q pi i (Λ - Μ - D.α i) * F D Coefficients.q pi i (Λ - Μ)) =
       qp Coefficients.q (-(D.d i * (D.h i (Λ - Μ) - 1))) *
         (pi ^ (D.parl i (Λ - Μ)).val *
           (D.norm Coefficients.q pi i * (1 - deformationParameter D Λ i))) := by
-  have h := gram_adjoint D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+  have h := gram_adjoint D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
     (one D Coefficients.q pi (Λ - Μ)) (F D Coefficients.q pi i (Λ - Μ))
   rw [F_mul_one_self, rho_F, smul_mul_assoc, map_smul, smul_eq_mul] at h
   calc
     _ = qp Coefficients.q (-(D.d i * (D.h i (Λ - Μ) - 1))) *
-        gram D hD Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
+        gram D Λ Μ hΛ hΜ s (F D Coefficients.q pi i (Λ - Μ))
           (F D Coefficients.q pi i (Λ - Μ)) := by
       rw [h, ← mul_assoc, qp_mul, neg_add_cancel, qp_zero, one_mul]
     _ = _ := by rw [gram_F_normalized]
