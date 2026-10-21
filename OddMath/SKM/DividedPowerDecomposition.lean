@@ -144,7 +144,7 @@ private theorem reflection_crossing {n : ℕ} (i : Fin (n + 1)) :
 private theorem reflection_word_degree {n : ℕ} (w : List (Letter n)) :
     reflection n (wordValue w) ∈ grading n (halfWordDegree w) := by
   induction w with
-  | nil => simpa [wordValue, reflection_apply] using one_mem_grading n
+  | nil => simpa [wordValue, halfWordDegree, reflection_apply] using one_mem_grading n
   | cons g w ih =>
     simp only [wordValue, halfWordDegree, List.map_cons, List.prod_cons,
       List.sum_cons, reflection_apply, reflectedOpposite_mul] at ih ⊢
