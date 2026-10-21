@@ -15,6 +15,7 @@ supply the crossing operators or an action of `Hn`.
 -/
 
 noncomputable section
+attribute [local instance] Classical.propDecidable
 open scoped BigOperators
 namespace OddMath.QuiverHecke.CliffordColours
 
@@ -34,12 +35,15 @@ def flip (c : J → J) (i : Fin n) (ν : Word J n) : Word J n :=
 @[simp] theorem flip_flip (c : J → J) (hc : Function.Involutive c)
     (i : Fin n) (ν : Word J n) : flip c i (flip c i ν) = ν := by
   funext j
-  by_cases h : j = i <;> simp [flip, h, hc]
+  by_cases h : j = i
+  · subst j
+    simpa [flip] using hc (ν i)
+  · simp [flip, h]
 
 theorem flip_commute (c : J → J) (i j : Fin n) (ν : Word J n) :
     flip c i (flip c j ν) = flip c j (flip c i ν) := by
   funext k
-  by_cases hi : k = i <;> by_cases hj : k = j <;> simp [flip, hi, hj]
+  by_cases hi : k = i <;> by_cases hj : k = j <;> simp_all [flip]
 
 /-- Projection onto a single colour word. -/
 def e (ν : Word J n) : Module.End R (Space R J n) where
@@ -54,14 +58,18 @@ def e (ν : Word J n) : Module.End R (Space R J n) where
 theorem e_mul (ν μ : Word J n) :
     e (R := R) ν * e μ = if ν = μ then e ν else 0 := by
   classical
-  ext f κ
+  apply LinearMap.ext
+  intro f
+  funext κ
   by_cases h : ν = μ <;> by_cases hκ : κ = ν <;>
     simp_all [Module.End.mul_apply]
 
 /-- For a finite colour set the colour projections resolve the identity. -/
 theorem sum_e [Fintype J] : (∑ ν : Word J n, e (R := R) ν) = 1 := by
   classical
-  ext f μ
+  apply LinearMap.ext
+  intro f
+  funext μ
   simp [e_apply]
 
 /-- Scalar multiplication on every colour summand. -/
@@ -85,21 +93,27 @@ theorem C_e (c : J → J) (hc : Function.Involutive c) (i : Fin n) (ν : Word J 
   classical
   have hiff (μ : Word J n) : flip c i μ = ν ↔ μ = flip c i ν :=
     ⟨fun h => by rw [← h, flip_flip c hc], fun h => by rw [h, flip_flip c hc]⟩
-  ext f μ
+  apply LinearMap.ext
+  intro f
+  funext μ
   simp only [Module.End.mul_apply, C_apply, e_apply]
   by_cases h : μ = flip c i ν <;> simp [hiff, h]
 
 /-- Colour-coupled Clifford generators square to the identity. -/
 theorem C_sq (c : J → J) (hc : Function.Involutive c) (i : Fin n) :
     C (R := R) c i * C c i = 1 := by
-  ext f ν
+  apply LinearMap.ext
+  intro f
+  funext ν
   simp only [Module.End.mul_apply, C_apply, flip_flip c hc]
   exact DFunLike.congr_fun (CliffordLocalization.C_sq (R := R) i) (f ν)
 
 /-- Colour changes preserve anticommutation of distinct Clifford generators. -/
 theorem C_anticommute (c : J → J) (i j : Fin n) (hij : i ≠ j) :
     C (R := R) c i * C c j = -(C c j * C c i) := by
-  ext f ν
+  apply LinearMap.ext
+  intro f
+  funext ν
   simp only [Module.End.mul_apply, C_apply, LinearMap.neg_apply, Pi.neg_apply]
   rw [flip_commute c i j]
   exact DFunLike.congr_fun (CliffordLocalization.C_anticommute (R := R) i j hij)
@@ -109,13 +123,17 @@ theorem C_anticommute (c : J → J) (i j : Fin n) (hij : i ≠ j) :
 theorem scalar_e (a : CliffordLocalization.K R n) (ν : Word J n) :
     scalar (J := J) a * e ν = e ν * scalar a := by
   classical
-  ext f μ
+  apply LinearMap.ext
+  intro f
+  funext μ
   by_cases h : μ = ν <;> simp [Module.End.mul_apply, scalar, h]
 
 /-- Clifford generators reflect scalar coefficients also on colour summands. -/
 theorem C_scalar (c : J → J) (i : Fin n) (a : CliffordLocalization.K R n) :
     C c i * scalar a = scalar (CliffordLocalization.reflect i a) * C c i := by
-  ext f ν
+  apply LinearMap.ext
+  intro f
+  funext ν
   exact DFunLike.congr_fun (CliffordLocalization.C_scalar i a) (f (flip c i ν))
 
 end OddMath.QuiverHecke.CliffordColours
