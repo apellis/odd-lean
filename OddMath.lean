@@ -839,6 +839,7 @@ import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.TwoStrandSummands
 import OddMath.SKM.TwoStrandShifts
 import OddMath.SKM.TwoStrandShiftExamples
+import OddMath.SKM.SerrePolynomialExamples
 import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
