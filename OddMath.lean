@@ -1,7 +1,4 @@
-import OddMath.QuiverHecke.CliffordLocalizationExamples
-import OddMath.QuiverHecke.CliffordColoursExamples
-import OddMath.QuiverHecke.CliffordPermutationsExamples
-import OddMath.QuiverHecke.CliffordCoefficientsExamples
+import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
