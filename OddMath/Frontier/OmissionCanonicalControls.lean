@@ -80,7 +80,7 @@ theorem n3 (a b c : Bool) : Trichotomy ([(1,a),(0,b),(1,c)] : Marked 1) := by
     cases a <;> cases b <;> simp [hybrid, hf 1]
 
 -- Postproduction controls: exact exports, not new finite evidence for the theorem.
-theorem actual_frozen_word (n : ℕ) : OmissionCanonical.word n =
+theorem word_eq_reverse_wordIn (n : ℕ) : OmissionCanonical.word n =
     (LongestDivided.wordIn n (n+2) le_rfl).reverse.map Fin.rev := rfl
 
 example (n : ℕ) : Reduced (OmissionCanonical.word n) := OmissionCanonical.word_reduced n

@@ -150,9 +150,9 @@ theorem column_coordinates (ζ : X) (z : modified D Coefficients.q pi) :
       rw [smul_mul_assoc, map_smul, hc B hB, evaluate_smul]
   exact aux z.val hz z.property
 
-/-- The same finite coordinates work for both actual forms, for every growing
+/-- The same finite coordinates work for both forms, for every growing
 weight pair. This is an exact reduction, not a claimed residual-order bound. -/
-theorem actual_comparison_reduction
+theorem comparison_reduction
     (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     ∃ c : WordPair I →₀ Coefficients.Ring, ∀ (Λ Μ : X)
@@ -192,8 +192,8 @@ theorem evaluate_positive
     SuperCartanDatum.serreForm_toSerreF, Finsupp.linearCombination_apply, smul_eq_mul]
 
 /-- Exact arbitrary mixed-column residual identity with fixed finite coefficients.
-The positive-word residuals on the right are actual values, not hypotheses. -/
-theorem actual_residual_sum
+The positive-word residuals on the right are computed values, not hypotheses. -/
+theorem residual_sum
     (ζ : X) (x y : modified D Coefficients.q pi)
     (hx : x * weightOne D ζ = x) (hy : y * weightOne D ζ = y) :
     ∃ c : WordPair I →₀ Coefficients.Ring, ∀ (Λ Μ : X)
@@ -203,7 +203,7 @@ theorem actual_residual_sum
           (word D true p.1 ζ) (word D true p.2 ζ) -
             D.form Coefficients.q pi (monomial Coefficients.Ring p.1)
               (monomial Coefficients.Ring p.2))) := by
-  obtain ⟨c, hc⟩ := actual_comparison_reduction D ζ x y hx hy
+  obtain ⟨c, hc⟩ := comparison_reduction D ζ x y hx hy
   refine ⟨c, fun Λ Μ hΛ hΜ s ↦ ?_⟩
   rw [hc Λ Μ hΛ hΜ s, evaluate_positive]
   simp only [evaluate, Finsupp.linearCombination_apply, smul_eq_mul,

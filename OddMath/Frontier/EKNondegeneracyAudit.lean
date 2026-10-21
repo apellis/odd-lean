@@ -7,7 +7,7 @@ import OddMath.Frontier.EKNondegeneracy
   the restricted pairing-to-dual map.
 * Exact integer identities `GH * NH = 1`, `GE * NE = 1`.
 * CONDITIONAL consumers `nondeg_of_GH_table/GE_table` (kept from run 2231).
-* UNCONDITIONAL closures (run 2236): `gramH_actual`/`gramE_actual` DERIVE the
+* UNCONDITIONAL closures (run 2236): `gramH_eq`/`gramE_eq` DERIVE the
   tables from the actual `quotientPairing` (sound evaluator, kernel decide);
   `Hge_le_span`/`Egt_le_span` + `hL_mem`/`eL_mem` prove the actual spaces EQUAL
   the explicit spans (exact source lex, all size-6 Young diagrams);
@@ -31,7 +31,7 @@ theorem Egt222_nondeg_iff_injective :
     RestrictedNondeg (Egt 6 lam33) ↔ Function.Injective (restrictedDual (Egt 6 lam33)) :=
   restrictedNondeg_iff_injective _
 
-/-- `h`-Gram table (emitted from supporting computation; equality with the actual pairing is `gramH_actual`). -/
+/-- `h`-Gram table (emitted from supporting computation; equality with the actual pairing is `gramH_eq`). -/
 def GH : Matrix (Fin 5) (Fin 5) ℤ :=
   !![1, 1, 1, 1, 1;
     1, 0, 2, 1, 0;
@@ -47,7 +47,7 @@ def NH : Matrix (Fin 5) (Fin 5) ℤ :=
     -1, 1, 1, -1, 0;
     -2, 2, 1, 0, -1]
 
-/-- `e`-Gram table (emitted from supporting computation; equality with the actual pairing is `gramE_actual`). -/
+/-- `e`-Gram table (emitted from supporting computation; equality with the actual pairing is `gramE_eq`). -/
 def GE : Matrix (Fin 7) (Fin 7) ℤ :=
   !![-1, 1, -1, 1, 1, 1, -1;
     1, 0, 2, -1, 0, 1, 0;
@@ -111,12 +111,12 @@ def hRows : Fin 5 → List ℕ := ![[6], [5,1], [4,2], [4,1,1], [3,3]]
 /-- Row lists of the `e`-family (emitted from `SE`). -/
 def eRows : Fin 7 → List ℕ := ![[6], [5,1], [4,2], [4,1,1], [3,3], [3,2,1], [3,1,1,1]]
 
-/-- Actual Gram matrix of the `h`-family equals `GH` (derived, not assumed). -/
-theorem gramH_actual : ∀ i j, quotientPairing (hL (hRows i)) (hL (hRows j)) = GH i j := by
+/-- The Gram matrix of the `h`-family equals `GH` (derived, not assumed). -/
+theorem gramH_eq : ∀ i j, quotientPairing (hL (hRows i)) (hL (hRows j)) = GH i j := by
   intro i j; rw [pairing_hL]; revert i j; decide +kernel
 
-/-- Actual Gram matrix of the `e`-family equals `GE` (derived, not assumed). -/
-theorem gramE_actual : ∀ i j, quotientPairing (eL (eRows i)) (eL (eRows j)) = GE i j := by
+/-- The Gram matrix of the `e`-family equals `GE` (derived, not assumed). -/
+theorem gramE_eq : ∀ i j, quotientPairing (eL (eRows i)) (eL (eRows j)) = GE i j := by
   intro i j; rw [pairing_eL]; revert i j; decide +kernel
 
 /-- Exact-lex classification: every partition of 6 that is `≥ (3,3)` is a listed `h`-row. -/
@@ -176,7 +176,7 @@ theorem Hge33_nondeg : RestrictedNondeg (Hge lam33) := by
   · intro i; obtain ⟨a, b, c, d⟩ := hRows_ok i; exact hL_mem _ a b c d
   · exact Hge_le_span
   · have hG : (Matrix.of fun i j => quotientPairing (hL (hRows i)) (hL (hRows j))) = GH :=
-      Matrix.ext gramH_actual
+      Matrix.ext gramH_eq
     rw [hG]; exact GH_mul_NH
 
 /-- EK Lemma 2.15 target (ii): restricted nondegeneracy of the actual `E>(2,2,2)`. -/
@@ -185,7 +185,7 @@ theorem Egt222_nondeg : RestrictedNondeg (Egt 6 lam33) := by
   · intro i; obtain ⟨a, b, c, d⟩ := eRows_ok i; exact eL_mem _ a b c d
   · exact Egt_le_span
   · have hG : (Matrix.of fun i j => quotientPairing (eL (eRows i)) (eL (eRows j))) = GE :=
-      Matrix.ext gramE_actual
+      Matrix.ext gramE_eq
     rw [hG]; exact GE_mul_NE
 
 /-- Injectivity of the restricted pairing-to-dual map on the actual `H≥(3,3)`. -/

@@ -84,7 +84,7 @@ variable [DecidableEq X]
 
 /-- Exact normalized positive-word Gram over the original modified algebra.
 The polynomial is chosen independently of Λ, Μ and the coproduct choice. -/
-theorem actual_positive_polynomial (Λ Μ : X)
+theorem modifiedGram_pos_eq_eval (Λ Μ : X)
     (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List I) :
     modifiedGram D Λ Μ hΛ hΜ s
@@ -96,15 +96,15 @@ theorem actual_positive_polynomial (Λ Μ : X)
   · rw [wordPolynomial_grade D u (monomial_mem_weightSpace v) huv]
     simp
 
-/-- One genuine fixed zero-constant residual polynomial for every positive pair. -/
-theorem actual_positive_residual (Λ Μ : X)
+/-- One fixed zero-constant residual polynomial for every positive pair. -/
+theorem positive_residual_eq_eval (Λ Μ : X)
     (hΛ : ∀ i, 0 ≤ D.h i Λ) (hΜ : ∀ i, 0 ≤ D.h i Μ)
     (s : Bool) (u v : List I) :
     modifiedGram D Λ Μ hΛ hΜ s
       (algebraWord D (Λ - Μ) (pos u)) (algebraWord D (Λ - Μ) (pos v)) -
       D.form Coefficients.q pi (monomial Coefficients.Ring u) (monomial Coefficients.Ring v) =
     MvPolynomial.eval (deformationParameter D Μ) (reciprocalError D u v) := by
-  rw [actual_positive_polynomial, reciprocalError, map_sub, MvPolynomial.eval_C]
+  rw [modifiedGram_pos_eq_eval, reciprocalError, map_sub, MvPolynomial.eval_C]
 
 /-- Quantifiers certify weight and coproduct independence, not a weight-dependent floor. -/
 theorem fixed_positive_residual (u v : List I) :
@@ -116,6 +116,6 @@ theorem fixed_positive_residual (u v : List I) :
           D.form Coefficients.q pi (monomial Coefficients.Ring u) (monomial Coefficients.Ring v) =
         MvPolynomial.eval (deformationParameter D Μ) p :=
   ⟨reciprocalError D u v, reciprocalError_constantCoeff D u v,
-    fun Λ Μ hΛ hΜ s ↦ actual_positive_residual D Λ Μ hΛ hΜ s u v⟩
+    fun Λ Μ hΛ hΜ s ↦ positive_residual_eq_eval D Λ Μ hΛ hΜ s u v⟩
 
 end OddMath.CoveringQuantum.UDot.PositiveComparison
