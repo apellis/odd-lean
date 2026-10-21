@@ -45,6 +45,12 @@ example (hN : NondegeneracyConjecture cScalars) (μ : Bool → ℤ) :
       symDimension twoOddDatum.skmSymmetrizer ℚ (-1) :=
   mixed_formula hN false μ (-1) (by norm_num)
 
+example (hN : NondegeneracyConjecture cScalars) :
+    DirectSum.IsInternal (SYM.component twoOddDatum.skmSymmetrizer ℚ) :=
+  SYM.isInternal_component_of_nondegeneracy twoOddDatum.skmSymmetrizer cScalars homogeneous hN
+
+#print axioms OddMath.SKM.betaSYM_injective_of_nondegeneracy
+#print axioms OddMath.SKM.SYM.isInternal_component_of_nondegeneracy
 #print axioms OddMath.SKM.MatchingBasisChoice.componentExpansion_surjective
 #print axioms OddMath.SKM.MatchingBasisChoice.componentExpansionEquiv
 #print axioms OddMath.SKM.homPar_eq_homDeg

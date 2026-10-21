@@ -220,4 +220,90 @@ theorem homPar_eq_homDeg (sy : Symmetrizer D) (cs : CScalars Sc)
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
 
+/-- The conjectural independence of the empty-boundary expansion makes the
+coefficient-algebra evaluation injective. -/
+theorem betaSYM_injective_of_nondegeneracy (cs : CScalars Sc)
+    (hN : NondegeneracyConjecture cs) (μ : X) : Function.Injective (betaSYM cs μ) := by
+  classical
+  obtain ⟨F⟩ := MatchingBasisChoice.nonempty ([] : List (Letter I)) []
+  have hm : IsMatching₂ ([] : List (Letter I)) [] [] := ⟨trivial, rfl⟩
+  obtain ⟨R, hR, hr, _⟩ := exists_strictReduced_equiv hm
+  obtain ⟨S, hS, _⟩ := F.complete R hR hr
+  let t : F.Labels := ⟨⟨S, hS⟩, fun _ => 0⟩
+  intro x y h
+  have he : F.expansion cs μ (Finsupp.single t x) =
+      F.expansion cs μ (Finsupp.single t y) := by
+    rw [F.expansion_single, F.expansion_single]
+    rw [h]
+  have hs := congrArg (fun f : F.Labels →₀ SYM D k => f t) ((hN [] [] rfl μ F).1 he)
+  simpa only [Finsupp.single_eq_same] using hs
+
+/-- Under the hypotheses of (dum), the intrinsic coefficient components form
+an internal grading of the abstract `SYM`, not merely a family of spanning
+subspaces. Independence is detected by the two homogeneous projections after
+the injective bubble evaluation; spanning is intrinsic to the presentation. -/
+theorem SYM.isInternal_component_of_nondegeneracy (sy : Symmetrizer D)
+    (cs : CScalars Sc) (hc : Sc.Homogeneous) (hN : NondegeneracyConjecture cs) :
+    DirectSum.IsInternal (SYM.component sy k) := by
+  classical
+  let μ : X := 0
+  let B := SYM.component sy k
+  let C := DirectSum.coeLinearMap B
+  let β := (betaSYM cs μ).toLinearMap
+  let P (z : ℤ × ZMod 2) :=
+    homogeneousComponent (a := ob D μ []) (b := ob D μ []) (isParityHomogeneous D Sc) z.2 ∘ₗ
+      homogeneousComponent (isHomogeneous_gdeg D sy Sc hc) z.1
+  have hp (z w : ℤ × ZMod 2) (x : B w) :
+      P z (β x.val) = if w = z then β x.val else 0 := by
+    have hg : β x.val ∈ (pres D Sc).homDeg (gdeg D sy) (ob D μ []) (ob D μ []) w.1 :=
+      (beta_component_mem sy cs μ w x.property).1
+    have hpar : β x.val ∈ (pres D Sc).homDeg (parityDeg (sig D))
+        (ob D μ []) (ob D μ []) w.2 :=
+      homPar_le_homDeg μ [] [] w.2 (beta_component_mem sy cs μ w x.property).2
+    change homogeneousComponent (isParityHomogeneous D Sc) z.2
+      (homogeneousComponent (isHomogeneous_gdeg D sy Sc hc) z.1 (β x.val)) = _
+    by_cases hw : w = z
+    · subst w
+      rw [ite_eq_left rfl, show homogeneousComponent (isHomogeneous_gdeg D sy Sc hc)
+        z.1 (β x.val) = β x.val from homogeneousComponent_of_mem _ hg]
+      exact homogeneousComponent_of_mem _ hpar
+    · rw [ite_eq_right hw]
+      by_cases hn : w.1 = z.1
+      · rw [show homogeneousComponent (isHomogeneous_gdeg D sy Sc hc)
+          z.1 (β x.val) = β x.val from homogeneousComponent_of_mem _ (hn ▸ hg)]
+        exact homogeneousComponent_of_mem_of_ne _ hpar (fun he => hw (Prod.ext hn he))
+      · rw [show homogeneousComponent (isHomogeneous_gdeg D sy Sc hc)
+          z.1 (β x.val) = 0 from homogeneousComponent_of_mem_of_ne _ hg hn, map_zero]
+  have he (z : ℤ × ZMod 2) :
+      P z ∘ₗ β ∘ₗ C = β ∘ₗ (B z).subtype ∘ₗ DirectSum.component k _ (fun w => B w) z := by
+    apply DirectSum.linearMap_ext
+    intro w
+    ext x
+    simp only [LinearMap.comp_apply, C, DirectSum.coeLinearMap_lof]
+    apply (hp z w x).trans
+    change (if w = z then β x.val else 0) =
+      β ((DirectSum.component k _ (fun w => B w) z
+        (DirectSum.lof k _ (fun w => B w) w x)).val)
+    by_cases hw : w = z
+    · subst w
+      simp only [ite_true, DirectSum.component.lof_self]
+    · simp [DirectSum.component.of, hw]
+  change Function.Bijective C
+  constructor
+  · intro x y h
+    ext z
+    apply betaSYM_injective_of_nondegeneracy cs hN μ
+    have hh := congrArg (fun v => P z (β v)) h
+    change (P z ∘ₗ β ∘ₗ C) x = (P z ∘ₗ β ∘ₗ C) y at hh
+    rw [he] at hh
+    exact hh
+  · apply LinearMap.range_eq_top.mp
+    apply top_unique
+    rw [← SYM.span_words (D := D) (k := k)]
+    apply Submodule.span_le.mpr
+    rintro x ⟨l, rfl⟩
+    refine ⟨DirectSum.lof k _ (fun z => B z) (SYM.wordBidegree sy l)
+      ⟨SYM.word k l, Submodule.subset_span ⟨l, rfl, rfl⟩⟩, ?_⟩
+    exact DirectSum.coeLinearMap_lof B _ _
+
 end OddMath.SKM
