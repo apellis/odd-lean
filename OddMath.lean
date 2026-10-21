@@ -1,6 +1,9 @@
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.SKM.DividedPowerIdempotents
+import OddMath.SKM.DividedPowerDecomposition
+import OddMath.SKM.DividedPowerMultiplicity
+import OddMath.SKM.DividedPowerDecompositionExamples
 import OddMath.SKM.DividedPowerIdempotentExamples
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
