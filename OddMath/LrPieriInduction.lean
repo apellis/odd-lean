@@ -1,52 +1,31 @@
 import OddMath.SkewSign
 
 /-!
-# LR Leg B: Pieri-induction skeleton (`s^p = s^s`, Theorem 3.8 second half)
+# Partition combinatorics and the triangular solve for `s^p = s^s`
 
-Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1,
-Theorem 3.8 proof, paper lines 508-520 (snapshot
-an unpublished note).
-Design: an unpublished note, §4 Leg B.
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1, proof of Theorem 3.8: the
+equality `s^p = s^s` is proved by induction on the width of `lam` and, within a width,
+lexicographically on `lam^T`, using the e-right Pieri rule (3.10), which sums over the `mu`
+obtained from `lam` by adding a vertical strip.
 
-What this module proves (sorry-free):
-- (B3) Partition combinatorics for the induction measure: `width`,
-  `transpose` (`lam^T_j = #{i : lam_i > j}`), lexicographic `lexGe`, and the
-  vertical-strip predicate `isVertStrip` (the e-right Pieri rule (3.10) sums
-  over `mu` obtained from `lam` by adding a vertical strip). The paper
-  inducts on width, and within a width lexicographically on `lam^T`.
-- (B3) The single-box NE sign model `addedSignExp`/`addedSign` following the
-  paper's own proof gloss ("The sign (-1)^{|i|lam|} counts boxes NorthEast
-  of the new box", Prop 3.7 proof): boxes strictly North of the added box
-  and strictly East of its column.
-- (B4) The triangular solve: `solve_one`/`solve_two`/`solve_three`. The paper
-  argues both families satisfy `s_{(lam^T_1)} ... s_{(lam^T_r)} = sum_mu ± s_mu`
-  with each `mu` of width `<= r`, lexicographically `>= lam`, leading
-  coefficient `±1`, and -- crucially -- the SAME signs `±` for both
-  families (this sameness is what the B2 transfer buys); hence both equal the
-  same expression in the elementary functions. These theorems are that solve
-  step at one/two/three-shape depth with explicit shared signs and shared
-  elementary products: same matrix, same right-hand side `=>` same solution.
+Main results:
+- `width`, `transpose` (`lam^T_j = #{i : lam_i > j}`), the lexicographic order `lexGe` and
+  the vertical-strip predicate `isVertStrip`.
+- `addedSignExp` / `addedSign`: the sign of adding one box, counting the boxes strictly
+  North of the new box and strictly East of its column (proof of Prop 3.7: "The sign
+  (-1)^{|i|lam|} counts boxes NorthEast of the new box").
+- `solve_one` / `solve_two` / `solve_three`: the solve step at depth one, two and three.
+  Both families satisfy `s_{(lam^T_1)} ... s_{(lam^T_r)} = sum_mu ± s_mu` over `mu` of width
+  at most `r`, lexicographically at least `lam`, with leading coefficient `±1` and the same
+  signs for both families; with the same matrix and the same right-hand side, the solutions
+  agree.
 
-Scope (NOT this module, recorded as hypotheses, never asserted):
-- (B1) The column base case `lam = (1^k)` (Lemma 3.5, eq (3.5)) is the shared
-  `Prod` input both families agree on -- modeled here as the hypothesis that
-  both families share each `Prod`, verified only on finite fixtures.
-- (B2) The psi1-psi2 transfer of the h-right plactic Pieri rule (3.8) to the
-  e-right form (3.10) with the same signs as the s^s rule (3.7) is the
-  hypothesis that both families share each coefficient matrix entry
-  (`d` leads, `c`/`e`/`a`/`b` signs). The paper asserts it in one sentence;
-  its sign-preservation content is an obligation of a successor, not proved here.
-- No `s^K`/`s^p`/`s^s` definitions (non-tautology guard: the three Schur
-  objects stay independent in `formal-statements/lr-theorem38.lean`, untouched
-  here), no Lemma 3.5/Prop 3.6/Prop 3.7 statements, no Theorem 3.8 comparison.
-  Finite fixtures in `OddMath/Tests/LrPieriInductionFixtures.lean` are development aids
-  (`SUPPORTED_LOW_DEGREE` at most), never a proof of the published theorem.
-
-Conventions: English Ferrers coordinates (rows down, columns right) per
-the sign convention, matching the Leg A module `OddMath.LrNorthEastSign`.
-Imports `OddMath.SkewSign` for the shared core-algebra prelude only
-(documented here; no mathematical dependence -- same pattern as Leg A,
-since bare core lacks generic `mul_assoc`/`mul_one`).
+The base case `lam = (1^k)` (Lemma 3.5, eq (3.5)) and the agreement of the coefficient
+matrices for the two families (from the involution `psi1 psi2` applied to (3.8)) enter as
+hypotheses. The general finite solve is `OddMath.LrTriangular.unique`; Theorem 3.8 is proved
+in `OddMath.Frontier.OddLRThm38`. English Ferrers coordinates (rows down, columns right), as
+in `OddMath.LrNorthEastSign`; the import of `OddMath.SkewSign` supplies only basic algebraic
+lemmas.
 -/
 
 namespace OddMath.LrPieriInduction
@@ -66,13 +45,13 @@ def isPartition : Partition → Bool
   | a :: rest => decide (0 < a) && checkFrom a rest
 
 /-- Width `lam_1`: first-row length, `0` for the empty partition.
-The B3 outer induction is on this quantity. -/
+The outer induction of the proof is on this quantity. -/
 def width : Partition → Nat
   | [] => 0
   | l :: _ => l
 
 /-- Transpose: `lam^T_j` counts rows strictly longer than `j`.
-The B3 inner induction is lexicographic on this list. -/
+The inner induction of the proof is lexicographic on this list. -/
 def transpose (lam : Partition) : Partition :=
   List.map (fun j => ((lam.filter fun r => decide (j < r)).length))
     (List.range (width lam))
@@ -141,7 +120,7 @@ theorem lead_cancel (d x : Int) (h : d = 1 ∨ d = -1) : d * (d * x) = x := by
     _ = 1 * x := by rw [hsq]
     _ = x := one_mul x
 
-/-- A `±1`-lead equation determines its unknown (the B4 leading-`±1`
+/-- A `±1`-lead equation determines its unknown (the leading-`±1`
 cancellation the paper invokes when solving for each `s_lam`). -/
 theorem solve_head (d p s : Int) (hlead : d = 1 ∨ d = -1)
     (h : d * p = d * s) : p = s := by
@@ -149,13 +128,13 @@ theorem solve_head (d p s : Int) (hlead : d = 1 ∨ d = -1)
   rw [lead_cancel d p hlead, lead_cancel d s hlead] at h2
   exact h2
 
-/-- B4 top shape: same `±1` lead and same elementary product determine
-the top (lexicographically largest, successor-free) value for both families. -/
+/-- Top shape: the same `±1` lead and the same elementary product determine
+the top (lexicographically largest) value for both families. -/
 theorem solve_one (d P S Prod : Int) (hlead : d = 1 ∨ d = -1)
     (hP : d * P = Prod) (hS : d * S = Prod) : P = S :=
   solve_head d P S hlead (by rw [hP, hS])
 
-/-- B4 two-shape chain: the top value is pinned by `solve_one`, then the lower
+/-- Two-shape chain: the top value is pinned by `solve_one`, then the lower
 equation `d0 * x_0 + c * x_1 = Prod0` -- shared signs `d0, c` and shared
 product `Prod0` for both families -- pins the lower value. -/
 theorem solve_two (d0 d1 c P0 P1 S0 S1 Prod0 Prod1 : Int)
@@ -170,7 +149,7 @@ theorem solve_two (d0 d1 c P0 P1 S0 S1 Prod0 Prod1 : Int)
   have hLow : d0 * P0 = d0 * S0 := by omega
   exact solve_head d0 P0 S0 h0 hLow
 
-/-- B4 three-shape chain (the full paper pattern: leading `±1` at every
+/-- Three-shape chain (the pattern of the paper: leading `±1` at every
 level, each equation seeing only the target and already-solved larger
 shapes, identical signs and products for both families). -/
 theorem solve_three (d0 d1 d2 e1 a b P0 P1 P2 S0 S1 S2 Prod0 Prod1 Prod2 : Int)

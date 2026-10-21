@@ -1,25 +1,20 @@
 import OddMath.PbwModelRelations
 
-/-! Hand-derived PBW L1 fixtures, written BEFORE the module exists (TDD red step).
+/-! Fixtures for `OddMath.PbwModelRelations`.
 
-Roadmap: an unpublished note, §4.
-L1 (R0) is relations adequacy in the model: distinct generators anticommute
-(`x_i x_j = -x_j x_i`, `i ≠ j`; EKL arXiv:1111.1320v1 §2.1.1, (2.1)/(2.9)
-via `diagram-relations/relations.json` R-2.01/R-2.09A; locked by
-the sign convention) and generator squares do NOT vanish (no exterior
-square law is imposed).
+In the skew-polynomial model, distinct generators anticommute
+(`x_i x_j = -x_j x_i`, `i ≠ j`; EKL arXiv:1111.1320v1 §2.1.1, (2.1) and (2.9)) and generator
+squares do not vanish (no exterior square law is imposed).
 
-Values below are hand-derived from the locked conventions BEFORE any Lean is
-written:
+The values are computed by hand:
 - F1 rank-two pair (0,1): anticommute instance.
 - F2 rank-two pair (0,1): relation-ideal form (anticommutator sum = 0).
 - F3 rank-two square (0,0): nonvanishing.
 - F4 rank-one square: nonvanishing (the `n = 1` edge case has no pairs).
 - F5 rank-three outer pair (0,2): anticommute + sum instances.
 - F6/F7 rank-two coordinates: ordered product at ![1,1] is 1, reversed is -1
-  (grounding probes inherited from `SkewPolynomialFixtures.lean`).
+  (as in `OddMath.Tests.SkewPolynomialFixtures`).
 - F8 adequacy conjunction on the rank-two pair.
-This file MUST fail to elaborate until `OddMath.PbwModelRelations` exists.
 -/
 
 namespace OddMath.PbwModelRelations.Tests

@@ -1,53 +1,25 @@
-/-
-  LR adapter B8 — S2 enumeration order + index over the B7 census (sorry-free).
-
-  Context: the design specification is the
-  shape-spec authority; B7 delivered
-  the S1 census this module builds on. The B7 census module is IMPORTED
-  here, never redefined: no S1 declaration (`shapeCensus`, `shapeCount`,
-  soundness/completeness/nodup, generators) is restated below.
-  This file realizes exactly ONE further the design specification item — the
-  `enumeration-order` shape S2 — as compiled Lean. All other the design specification shapes
-  (S3–S6) and end-to-end checks (C1–C8) are NOT realized here.
-
-  Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1.
-  the design specification (S2): width-first enumeration order with justifications
-  `shapeOrder_wf` and `shapeIndex_correct`.
-
-  Choice documentation (C6 narrowing): the design specification records that the paper's
-  induction-ordering passage (lines 508-520) carries two phrasings —
-  transpose-lexicographic and row-lexicographic — and the adapter must
-  pick one with a paper locator. B8 fixes the row/list phrasing:
-  `shapeOrder` compares the partition lists themselves (length first,
-  then head-major lexicographic), NOT their transposes. The
-  transpose-vs-row source adjudication (which phrasing the paper's
-  induction actually consumes) is recorded as the remaining C6 half in
-  the unpublished development notes; the order/index machinery itself (well-foundedness,
-  totality, transitivity, index round-trip, census sortedness) is proved
-  here and is independent of that adjudication.
-
-  What this module proves (sorry-free, `Init` + B7 import only):
-  - `lexLt`: head-major lexicographic strict order on partitions;
-  - `shapeOrder`: the design specification S2 width-first order (list length, then `lexLt`);
-  - `shapeOrder_wf`: well-foundedness (future induction measure carrier);
-  - `shapeOrder_total` / `shapeOrder_trans` / `shapeOrder_irrefl`:
-    order bona fides;
-  - `shapeIndex`: position of a census member as `Fin (shapeCount wt)`;
-  - `shapeIndex_correct`: the index round-trips through the census;
-  - `shapeCensus_sorted`: the B7 census is ordered by `shapeOrder`
-    (proved below).
-
-  Honest deviation from the the design specification declaration sketch: the design specification writes the index
-  totally (`Partition → Fin (shapeCount wt)`). A non-member has no
-  position, so the constructible form carries the membership proof
-  (`(h : l ∈ shapeCensus wt)`); this is documented, not hidden.
-
-  Non-tautology: no Schur object is defined here; the order/index is
-  pure partition combinatorics over the imported S1 census.
-  Names live in `OddMath.LrShapeOrder`.
--/
-
 import OddMath.LrShapeCensus
+
+/-!
+# A well-founded order on partitions and the census index
+
+`shapeOrder` compares partitions by number of parts and then by the head-major lexicographic
+order `lexLt`, applied to the partition lists themselves. The proof of Theorem 3.8 of
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1, inducts on the width of
+`lam` and, within a width, lexicographically on `lam^T`; on transposes, `shapeOrder`
+compares exactly these keys.
+
+Main results (Lean core only, besides `OddMath.LrShapeCensus`):
+- `lexLt`: head-major lexicographic strict order on lists of naturals.
+- `shapeOrder`: number of parts, then `lexLt`.
+- `shapeOrder_wf`: `shapeOrder` is well founded.
+- `shapeOrder_total` / `shapeOrder_trans` / `shapeOrder_irrefl`: it is a strict total order.
+- `shapeIndex`: the position of a census member, as `Fin (shapeCount wt)`; it takes the
+  membership proof as an argument, since a non-member has no position.
+- `shapeIndex_correct`: the index round-trips through the census.
+- `shapeCensus_sorted`: the census is sorted by `shapeOrder`.
+- `nat_strong_induction`: strong induction on `Nat` from structural induction.
+-/
 
 namespace OddMath.LrShapeOrder
 
@@ -221,9 +193,8 @@ theorem lexLt_total : ∀ (a b : List Nat),
                 exact hlt
               exact Or.inr (Or.inr hrev)
 
-/-- the design specification S2 order: width (list length) first, then head-major
-    lexicographic on the partition lists themselves (row/list phrasing;
-    see the module header for the transpose documentation). -/
+/-- The census order: list length first, then head-major lexicographic order on the
+    partition lists themselves (see the module docstring for the relation with transposes). -/
 def shapeOrder (a b : Partition) : Prop :=
   a.length < b.length ∨ (a.length = b.length ∧ lexLt a b = true)
 
@@ -408,8 +379,7 @@ theorem accOfLen : ∀ (K : Nat) (l : Partition),
           WellFounded.apply (lexRel_wf z.length) z
         exact acc_shapeOrder_of_lexAcc z.length z rfl hshort haccZ)
 
-/-- the design specification S2 justification `shapeOrder_wf`: the width-first order is
-    well-founded — the future induction measure carrier. -/
+/-- The census order is well-founded. -/
 theorem shapeOrder_wf : WellFounded shapeOrder :=
   ⟨fun l => accOfLen l.length l (Nat.le_refl _)⟩
 
@@ -476,9 +446,8 @@ theorem atPos_posOf : ∀ (t : List (List Nat)) (l : List Nat),
         show atPos t' (posOf t' l) = some l
         exact ih l hmem
 
-/-- the design specification S2 index: position of a census member as `Fin (shapeCount wt)`.
-    the design specification sketches this totally; the honest constructible form carries the
-    membership proof (a non-member has no position). -/
+/-- The position of a census member as `Fin (shapeCount wt)`. The membership proof is an
+    argument because a non-member has no position. -/
 def shapeIndex (wt : Nat) (l : Partition) (h : l ∈ shapeCensus wt) :
     Fin (shapeCount wt) :=
   ⟨posOf (shapeCensus wt) l, by
@@ -486,8 +455,7 @@ def shapeIndex (wt : Nat) (l : Partition) (h : l ∈ shapeCensus wt) :
     show posOf (shapeCensus wt) l < (shapeCensus wt).length
     exact h1⟩
 
-/-- the design specification S2 justification `shapeIndex_correct`: the index round-trips
-    through the census. -/
+/-- The index round-trips through the census. -/
 theorem shapeIndex_correct (wt : Nat) (l : Partition) (h : l ∈ shapeCensus wt) :
     atPos (shapeCensus wt) (shapeIndex wt l h).val = some l := by
   exact atPos_posOf (shapeCensus wt) l h
@@ -723,8 +691,8 @@ theorem allListsUpTo_sorted : ∀ (k m : Nat), SortedOrder (allListsUpTo k m) :=
       have hylen : y.length = k + 1 := (mem_allLists.mp hy).1
       exact Or.inl (Or.inl (by omega))
 
-/-- the design specification S1 justification:
-    the B7 census is ordered by `shapeOrder`. Filtering preserves order. -/
+/-- The census is sorted by `shapeOrder`: the bounded enumeration is sorted and filtering
+    preserves order. -/
 theorem shapeCensus_sorted : ∀ (wt : Nat), SortedOrder (shapeCensus wt) := by
   intro wt
   show SortedOrder ((allListsUpTo wt (wt + 1)).filter fun l => isPartitionOf l wt)
@@ -735,8 +703,7 @@ theorem mem_22_4 : ([2, 2] : Partition) ∈ shapeCensus 4 := by
   apply shapeCensus_complete
   rfl
 
-/- Executable spot-values (compiled execution evidence; outputs appear in
-   the isolated build log). -/
+/- Evaluated values. -/
 #eval ("lex89", lexLt [2, 2] [3, 1])
 #eval ("lex98", lexLt [3, 1] [2, 2])
 #eval ("ordA", decide (shapeOrder [2] [1, 1]))
@@ -745,8 +712,7 @@ theorem mem_22_4 : ([2, 2] : Partition) ∈ shapeCensus 4 := by
 #eval ("at1", atPos (shapeCensus 4) 1)
 #eval ("cnt4", shapeCount 4)
 
-/- Axiom audit (outputs appear in the isolated build log; expected: no
-   unfinished-proof axiom). -/
+/- Axiom checks. -/
 #print axioms shapeOrder_wf
 #print axioms shapeIndex_correct
 #print axioms shapeCensus_sorted

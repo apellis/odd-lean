@@ -2,17 +2,18 @@ import Mathlib.Combinatorics.Young.SemistandardTableau
 import OddMath.LrNorthEastSign
 
 /-!
-# Genuine semistandard tableaux discharge the Leg A sign hypothesis
+# Semistandard tableaux satisfy the North/NorthEast sign hypothesis
 
 Ellis, arXiv:1111.3932v1, §2.1 (positive alphabet, weak rows, strict
 columns), §2.2 (English box directions), and Theorem 3.8, first sign
-comparison in the proof, PDF p.11. This proves the combinatorial sign
-premise, not the full equality of Schur functions.
+comparison in the proof, PDF p.11. This discharges the per-box hypothesis
+of `OddMath.LrNorthEastSign` for every positive semistandard tableau; it is the
+combinatorial sign premise, not the equality of Schur functions.
 
 The shape is Mathlib's finite lower set `YoungDiagram`; semistandardness
 is Mathlib's existing row/column predicate plus positivity on the shape.
-`boxes` enumerates each actual cell once. Its order is irrelevant to these
-all-pairs counts and is NOT a choice of tableau reading word.
+`boxes` enumerates each cell once. Its order is irrelevant to these
+all-pairs counts and is not a choice of tableau reading word.
 -/
 
 namespace OddMath.Frontier.TableauSign
@@ -25,15 +26,15 @@ structure PositiveTableau (μ : YoungDiagram) extends SemistandardYoungTableau �
 
 variable {μ : YoungDiagram}
 
-/-- Convert a coordinate to the existing Leg A box representation. -/
+/-- Convert a coordinate to the box representation of `OddMath.LrNorthEastSign`. -/
 def box (T : PositiveTableau μ) (c : ℕ × ℕ) : TBox :=
   ⟨c.1, c.2, T.entry c.1 c.2⟩
 
-/-- All actual cells, once each; no reading order is imposed. -/
+/-- All cells, once each; no reading order is imposed. -/
 noncomputable def boxes (T : PositiveTableau μ) : Tableau :=
   μ.cells.toList.map (box T)
 
-/-- Exact membership, including both shape and the actual entry. -/
+/-- Membership: the cell lies in the shape and the entry is the tableau entry. -/
 theorem mem_boxes (T : PositiveTableau μ) (B : TBox) :
     B ∈ boxes T ↔ (B.row, B.col) ∈ μ ∧ B.entry = T.entry B.row B.col := by
   simp only [boxes, List.mem_map, Finset.mem_toList, YoungDiagram.mem_cells]
@@ -60,7 +61,7 @@ theorem boxes_coordinates_nodup (T : PositiveTableau μ) :
 theorem boxes_length (T : PositiveTableau μ) : (boxes T).length = μ.card := by
   simp [boxes, YoungDiagram.card]
 
-/-- Entries of actual boxes belong to the positive alphabet. -/
+/-- Entries of the boxes belong to the positive alphabet. -/
 theorem boxes_positive (T : PositiveTableau μ) {B : TBox} (hB : B ∈ boxes T) :
     0 < B.entry := by
   obtain ⟨hc, he⟩ := (mem_boxes T B).mp hB
@@ -78,7 +79,7 @@ theorem north_not_east_lt (T : PositiveTableau μ)
   exact lt_of_le_of_lt (T.toSemistandardYoungTableau.row_weak_of_le hNotE hC)
     (T.toSemistandardYoungTableau.col_strict hN hB)
 
-/-- The exact Boolean premise consumed by the inherited Leg A lemmas. -/
+/-- The Boolean per-box hypothesis of `LrNorthEastSign.perBox`. -/
 theorem north_not_east_isLtEntry (T : PositiveTableau μ) :
     ∀ B ∈ boxes T, ∀ A ∈ boxes T,
       isNorth A B = true → isEast A B = false → isLtEntry A B = true := by
@@ -90,20 +91,20 @@ theorem north_not_east_isLtEntry (T : PositiveTableau μ) :
   have h := north_not_east_lt T hBc hN (Nat.le_of_not_gt hE)
   simpa only [isLtEntry, decide_eq_true_eq, hAe, hBe] using h
 
-/-- Exact per-box even-exponent difference on a genuine tableau. -/
+/-- Per-box even-exponent difference on a semistandard tableau. -/
 theorem perBox (T : PositiveTableau μ) (B : TBox) (hB : B ∈ boxes T) :
     countNorth (boxes T) B + countNorthLt (boxes T) B =
       countNE (boxes T) B + countNELt (boxes T) B + 2 * countRest (boxes T) B :=
   LrNorthEastSign.perBox (boxes T) B (north_not_east_isLtEntry T B hB)
 
-/-- Global exact exponent difference, not just a parity assertion. -/
+/-- Global exponent difference (an equality, not only a parity statement). -/
 theorem global (T : PositiveTableau μ) :
     totalNorth (boxes T) (boxes T) + totalNorthLt (boxes T) (boxes T) =
       totalNE (boxes T) (boxes T) + totalNELt (boxes T) (boxes T) +
         2 * totalRest (boxes T) (boxes T) :=
   LrNorthEastSign.global (boxes T) (boxes T) (north_not_east_isLtEntry T)
 
-/-- Ellis's Leg A sign identity for every positive semistandard tableau
+/-- The North/NorthEast sign identity for every positive semistandard tableau
 of every Young shape, with no residual per-box hypothesis. -/
 theorem global_sign (T : PositiveTableau μ) :
     signLeft (boxes T) (boxes T) = signRight (boxes T) (boxes T) :=

@@ -1,16 +1,14 @@
 import OddMath.LrPieriInduction
 
-/-! Hand-derived LR Leg B fixtures, written BEFORE the module exists (TDD red step).
+/-! Fixtures for `OddMath.LrPieriInduction`.
 
-Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1.
-Leg B (Thm 3.8 proof, second half, paper lines 508-520): `s^p = s^s` by
-Pieri induction -- (B1) column base case Lemma 3.5, (B2) psi1-psi2 transfer
-of the h-right plactic Pieri rule (3.8) to the e-right form (3.10) with the
-SAME signs as the s^s rule (3.7), (B3) induction on width then lexicographic
-transpose, (B4) triangular solve for both families in terms of elementaries.
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1, proof of Theorem 3.8:
+`s^p = s^s` by Pieri induction -- the column base case (Lemma 3.5), the transfer by
+`psi1 psi2` of the h-right plactic Pieri rule (3.8) to the e-right form (3.10) with the same
+signs as the rule (3.7) for `s^s`, induction on width and then lexicographically on the
+transpose, and the triangular solve for both families in terms of elementary functions.
 
-Values below are hand-derived from the paper's Sec 3.1-3.2 counting rules
-BEFORE any Lean is written:
+The values are computed by hand from the counting rules of §§3.1-3.2:
 - F1 partition basics: widths, sizes, `isPartition` accepts/rejects.
 - F2 transpose `lam^T_j = #{i : lam_i > j}`: `[]`, `[1]`, `[3]`, `[2,1]`
   (self-conjugate), `[3,1] -> [2,1,1]`, `[2,2]` (self-conjugate).
@@ -22,12 +20,11 @@ BEFORE any Lean is written:
   boxes NorthEast of the new box"): adding `(1,1)` to `[3,1]` sees the
   `(0,2)` box (exponent 1, sign -1); adding `(1,1)` to `[2,1]` sees
   nothing (exponent 0, sign +1); top-row additions see nothing North.
-- F5 triangular solve (B4) end-to-end: shared elementary products and
+- F5 triangular solve: shared elementary products and
   shared signs pin both families to the same values (top `2`, mid `3`,
   lower `5` with mixed `±1` signs).
-- F6 induction measure (B3): lexicographic comparisons including a
+- F6 induction measure: lexicographic comparisons including a
   transpose-then-compare pair that distinguishes `[3,1]` from `[2,2]`.
-This file MUST fail to elaborate until `OddMath.LrPieriInduction` exists.
 -/
 
 namespace OddMath.LrPieriInduction.Tests
@@ -82,16 +79,16 @@ example : addedSign [2, 1] 1 1 = 1 := by decide
 example : addedSignExp [2, 1] 0 2 = 0 := by decide
 example : addedSign [2, 1] 0 2 = 1 := by decide
 
--- F5a: top-shape determination (B4 base): `1 * x = 2` pins `x = 2`.
+-- F5a: top-shape determination: `1 * x = 2` pins `x = 2`.
 example : (2 : Int) = 2 :=
   OddMath.LrPieriInduction.solve_one 1 2 2 2 (by decide) (by decide) (by decide)
 
--- F5b: two-shape chain (B4 step): top `1 * x_1 = 3`, lower `1 * x_0 + 1 * 3 = 8`.
+-- F5b: two-shape chain: top `1 * x_1 = 3`, lower `1 * x_0 + 1 * 3 = 8`.
 example : (5 : Int) = 5 ∧ (3 : Int) = 3 :=
   OddMath.LrPieriInduction.solve_two 1 1 1 5 3 5 3 8 3
     (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
 
--- F5c: three-shape chain with mixed signs (B4 full pattern):
+-- F5c: three-shape chain with mixed signs:
 -- top `x_2 = 2`, mid `x_1 - x_2 = 1`, lower `x_0 + x_1 - x_2 = 6`.
 example : (5 : Int) = 5 ∧ (3 : Int) = 3 ∧ (2 : Int) = 2 :=
   OddMath.LrPieriInduction.solve_three 1 1 1 (-1) 1 (-1) 5 3 2 5 3 2 6 1 2
@@ -101,7 +98,7 @@ example : (5 : Int) = 5 ∧ (3 : Int) = 3 ∧ (2 : Int) = 2 :=
 -- F5d: the empty-strip reflexivity theorem applied to paper data.
 example : isVertStrip [2, 1] [2, 1] = true := vertStrip_refl _
 
--- F6: lexicographic measure comparisons (B3 induction order).
+-- F6: lexicographic measure comparisons (the induction order).
 example : lexGe [2, 1] [2, 1] = true := by decide
 example : lexGe [3, 1] [2, 2] = true := by decide
 example : lexGe [2, 2] [3, 1] = false := by decide

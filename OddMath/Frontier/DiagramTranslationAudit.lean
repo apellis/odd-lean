@@ -48,8 +48,7 @@ operators, be stated.
 - no all-rank odd action; no translation of `seq` beyond the single example;
 - no braid/crossing soundness and no faithfulness;
 - no odd-symmetric quotient descent and no kernel membership;
-- no Schur/LR content; no second example; no umbrella/import expansion;
-- no legacy-base migration (root PbwL2..L6 boundary stands).
+- no Schur/LR content; no second example; no umbrella/import expansion.
 -/
 
 namespace OddMath.Frontier.DiagramTranslationAudit
