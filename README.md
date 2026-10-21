@@ -704,12 +704,22 @@ bubble at `⟨hᵢ,λ⟩ = 0`). The correction will be made in a planned revisio
 
 | Result | Scope and status | Declarations |
 |---|---|---|
-| Opening Laurentian `K₀` assertion; ERRATA [BE2] 10 | The degree-zero Clifford algebra has a nonzero split `K₀` of its graded super Karoubi envelope with trivial parity action, so it is not free over `ℤ[q,q⁻¹,π]/(π²−1)`. Proved over every field, with a rational consumer. Uses the existing `StringDiagrams.K₀` and `K₀.moduleLaurent`. The explicit graded left-projective comparison, general indecomposable basis, parity-orbit decomposition and corrected freeness criterion remain to be proved. The ungraded right-projective comparison is included. | `SKM.CliffordK0.laurentian`, `gradedRegular_class_ne_zero`, `gradedProjectiveParityNatIso`, `C_pi_smul`, `gradedK0_not_free`, `projectiveK0Equiv` |
+| Opening Laurentian `K₀` assertion; ERRATA [BE2] 10 | The degree-zero Clifford algebra has a nonzero split `K₀` of its graded super Karoubi envelope with trivial parity action, so it is not free over `ℤ[q,q⁻¹,π]/(π²−1)`. Proved over every field, with a rational consumer. Uses the existing `StringDiagrams.K₀` and `K₀.moduleLaurent`. The ungraded right-projective comparison is included. The pinned StringDiagrams library also proves the Hom-finite integral indecomposable basis and the parity-ring freeness criterion, consumed in `CliffordKrullSchmidt`. The explicit graded left-projective comparison, integer-shift rigidity, full Laurentian extension and Laurent-ring decomposition/criterion remain to be proved. | `SKM.CliffordK0.laurentian`, `gradedRegular_class_ne_zero`, `gradedProjectiveParityNatIso`, `C_pi_smul`, `gradedK0_not_free`, `projectiveK0Equiv` |
 
-**Remaining for Theorem 11.3.** Prove Hom-finite Krull–Schmidt on the existing
-split `K₀`, then integer-shift rigidity and the parity-orbit decomposition.
-Retain parity-fixed summands until the finite weightwise rank argument proves
-type M. For Theorem 11.7, also retain the weaker Laurent-integer freeness needed
+**Proved integral and parity-ring input.** The pinned StringDiagrams library
+constructs `KrullSchmidt.indecBasis` on the existing split `K₀` for Hom-finite
+idempotent-complete linear categories. Its finite-dimensional superalgebra
+consumers include `GSKarAlg.indecBasis`. `KrullSchmidt.k0_free_zpi_iff` proves
+freeness over `Zπ` exactly when no indecomposable is parity-self-isomorphic;
+`parityBasis` constructs its basis. No finiteness of the indecomposable index
+set is assumed. `SKM.CliffordK0.indecBasis`, `gradedK0_not_free_zpi` and
+`exists_indecomposable_not_norm` apply these to the graded Clifford envelope.
+
+**Remaining for Theorem 11.3.** Prove integer-shift rigidity, a basis modulo
+integer shifts, the mixed M/Q Laurent-module decomposition, and the Laurentian
+extension. The full Laurent-ring assertion is not yet proved, even in the
+finite-dimensional graded case. Retain parity-fixed summands until the finite
+weightwise rank argument proves type M. For Theorem 11.7, also retain the weaker Laurent-integer freeness needed
 for faithful rational localization; no type-M assumption on its entire target
 is justified by the input about `H_n`.
 
