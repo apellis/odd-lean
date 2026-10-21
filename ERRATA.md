@@ -869,7 +869,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
 
 10. **§11, first introductory bullet: parity-fixed projectives
-    [F→T; Clifford obstruction and Laurentian R-freeness proved, ℒ decomposition pending].**
+    [F→T; Clifford obstruction, Laurentian R-freeness and mixed ℒ decomposition proved].**
     **Printed statement.** For every Laurentian graded superalgebra, the split
     Grothendieck group of finitely generated graded projective supermodules is
     asserted to be free over `ℒ = ℤ[q,q⁻¹,π]/(π²−1)`. The accompanying assertion
@@ -923,9 +923,15 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     `SKM.UDot.k0_free_laurentInt` and `SKM.UDot.laurentBasis` apply this to
     the existing idempotent completion, using Theorem 8.1 and the explicit
     `Symmetrizer.DegreeLocallyFinite` hypothesis from `hom_laurentian`.
-    No Nondegeneracy Conjecture or type-M premise is used. The mixed M/Q
-    `ℒ`-linear direct-sum equivalence and the comparison with graded left
-    projectives remain open; Theorems 11.3 and 11.7 themselves are not claimed.
+    No Nondegeneracy Conjecture or type-M premise is used.
+    `GSKar.laurentDecomposition` and `GSKarAlg.laurentDecomposition` now prove
+    the mixed M/Q `ℒ`-linear direct-sum equivalence;
+    `SKM.UDot.laurentDecomposition` applies it to the completed Hom categories
+    with the same explicit local-finiteness hypothesis.
+    `CliffordK0.laurentDecomposition`, `laurent_coordinates_ne_zero`,
+    `laurentParity_eq_self` and `typeQ_orbits_nonempty` exhibit a nonzero
+    all-type-Q consumer. The graded left-projective and simple-head
+    comparisons remain separate; Theorems 11.3 and 11.7 themselves are not claimed.
 
     **Later uses.** The tensor assertion at the start of §11 already assumes
     absolute irreducibility and type M. For `H_n`, derive type M from the
