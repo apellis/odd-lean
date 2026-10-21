@@ -30,25 +30,25 @@ theorem homPar_le_homDeg (μ : X) (a b : List (Letter I)) (p : ZMod 2) :
   exact lin_mem_homDeg (dg_mem D hp)
 
 /-- The simultaneous integer/parity component of a word Hom. -/
-def homComponent (sy : Symmetrizer D) (Sc : Scalars D k) (μ : X)
+def wordHomComponent (sy : Symmetrizer D) (Sc : Scalars D k) (μ : X)
     (a b : List (Letter I)) (z : ℤ × ZMod 2) :
     Submodule k ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)) :=
   (pres D Sc).homDeg (gdeg D sy) (ob D μ a) (ob D μ b) z.1 ⊓
     homPar D Sc μ a b z.2
 
 /-- Project a spanning homogeneous family to one integer/parity component. -/
-theorem homComponent_eq_span (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+theorem wordHomComponent_eq_span (sy : Symmetrizer D) (hc : Sc.Homogeneous)
     (μ : X) (a b : List (Letter I)) {α : Type*}
     (v : α → ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)))
-    (d : α → ℤ × ZMod 2) (hv : ∀ t, v t ∈ homComponent sy Sc μ a b (d t))
+    (d : α → ℤ × ZMod 2) (hv : ∀ t, v t ∈ wordHomComponent sy Sc μ a b (d t))
     (hs : Submodule.span k (Set.range v) = ⊤) (z : ℤ × ZMod 2) :
-    homComponent sy Sc μ a b z = Submodule.span k (v '' {t | d t = z}) := by
+    wordHomComponent sy Sc μ a b z = Submodule.span k (v '' {t | d t = z}) := by
   let pg := homogeneousComponent (a := ob D μ a) (b := ob D μ b)
     (isHomogeneous_gdeg D sy Sc hc) z.1
   let pp := homogeneousComponent (a := ob D μ a) (b := ob D μ b)
     (isParityHomogeneous D Sc) z.2
   let p := pp ∘ₗ pg
-  have psame {x} (hx : x ∈ homComponent sy Sc μ a b z) : p x = x := by
+  have psame {x} (hx : x ∈ wordHomComponent sy Sc μ a b z) : p x = x := by
     change pp (pg x) = x
     rw [show pg x = x from homogeneousComponent_of_mem _ hx.1]
     exact homogeneousComponent_of_mem _ (homPar_le_homDeg μ a b z.2 hx.2)
@@ -101,7 +101,7 @@ def labelBidegree (t : F.Labels) : ℤ × ZMod 2 :=
 /-- Multiplication by a homogeneous abstract coefficient adds both degrees. -/
 theorem coefficientMap_mem (t : F.Labels) (z : ℤ × ZMod 2) {x : SYM D k}
     (hx : x ∈ SYM.component sy k z) :
-    F.coefficientMap cs μ t x ∈ homComponent sy Sc μ a b (F.labelBidegree sy μ t + z) := by
+    F.coefficientMap cs μ t x ∈ wordHomComponent sy Sc μ a b (F.labelBidegree sy μ t + z) := by
   obtain ⟨hg, hp⟩ := beta_component_mem sy cs μ z hx
   constructor
   · change F.coefficientMap cs μ t x ∈ (pres D Sc).homDeg (gdeg D sy)
@@ -116,7 +116,7 @@ theorem coefficientMap_mem (t : F.Labels) (z : ℤ × ZMod 2) {x : SYM D k}
 
 /-- Theorem 8.1's coefficient-word family is homogeneous in both gradings. -/
 theorem wordEval_mem_component (t : F.Labels × List (SYMGen D)) :
-    F.wordEval cs μ t ∈ homComponent sy Sc μ a b
+    F.wordEval cs μ t ∈ wordHomComponent sy Sc μ a b
       (F.labelBidegree sy μ t.1 + SYM.wordBidegree sy t.2) :=
   F.coefficientMap_mem sy cs μ t.1 _ (Submodule.subset_span ⟨t.2, rfl, rfl⟩)
 
@@ -132,7 +132,7 @@ def coefficientComponent (z : ℤ × ZMod 2) : Submodule k (F.Labels →₀ SYM 
 the target component. -/
 theorem expansion_mem_component (z : ℤ × ZMod 2)
     {f : F.Labels →₀ SYM D k} (hf : f ∈ F.coefficientComponent (k := k) sy μ z) :
-    F.expansion cs μ f ∈ homComponent sy Sc μ a b z := by
+    F.expansion cs μ f ∈ wordHomComponent sy Sc μ a b z := by
   classical
   rw [expansion, Finsupp.lsum_apply, Finsupp.sum]
   apply Submodule.sum_mem
@@ -142,7 +142,7 @@ theorem expansion_mem_component (z : ℤ × ZMod 2)
 
 /-- The linear expansion map on a single homogeneous component. -/
 def componentExpansion (z : ℤ × ZMod 2) :
-    F.coefficientComponent (k := k) sy μ z →ₗ[k] homComponent sy Sc μ a b z :=
+    F.coefficientComponent (k := k) sy μ z →ₗ[k] wordHomComponent sy Sc μ a b z :=
   (F.expansion cs μ ∘ₗ (F.coefficientComponent (k := k) sy μ z).subtype).codRestrict _
     (fun f => F.expansion_mem_component sy cs μ z f.property)
 
@@ -151,7 +151,7 @@ no independence hypothesis enters this assertion. -/
 theorem componentExpansion_surjective (hc : Sc.Homogeneous) (z : ℤ × ZMod 2) :
     Function.Surjective (F.componentExpansion sy cs μ z) := by
   classical
-  have hs := homComponent_eq_span sy hc μ a b (F.wordEval cs μ)
+  have hs := wordHomComponent_eq_span sy hc μ a b (F.wordEval cs μ)
     (fun t => F.labelBidegree sy μ t.1 + SYM.wordBidegree sy t.2)
     (F.wordEval_mem_component sy cs μ) (F.span_wordEval cs μ) z
   have hsingle (t : F.Labels) (x : SYM D k)
@@ -163,7 +163,7 @@ theorem componentExpansion_surjective (hc : Sc.Homogeneous) (z : ℤ × ZMod 2) 
     · simpa only [Finsupp.single_eq_of_ne (Ne.symm h)] using
         (Submodule.zero_mem (SYM.component sy k (z - F.labelBidegree sy μ s)))
   let L := F.expansion cs μ ∘ₗ (F.coefficientComponent (k := k) sy μ z).subtype
-  have hr : homComponent sy Sc μ a b z ≤ L.range := by
+  have hr : wordHomComponent sy Sc μ a b z ≤ L.range := by
     rw [hs]
     apply Submodule.span_le.mpr
     rintro _ ⟨⟨t, l⟩, htl, rfl⟩
@@ -181,10 +181,43 @@ expansion identifies a homogeneous Hom component with its shifted coefficient
 space. This is the graded restriction needed for BE2 Theorem 12.1, (dum). -/
 def componentExpansionEquiv (hc : Sc.Homogeneous) (hF : F.IsBasis cs μ)
     (z : ℤ × ZMod 2) :
-    F.coefficientComponent (k := k) sy μ z ≃ₗ[k] homComponent sy Sc μ a b z :=
+    F.coefficientComponent (k := k) sy μ z ≃ₗ[k] wordHomComponent sy Sc μ a b z :=
   LinearEquiv.ofBijective (F.componentExpansion sy cs μ z)
     ⟨fun _ _ h => Subtype.ext (hF.1 (congrArg Subtype.val h)),
       F.componentExpansion_surjective sy cs μ hc z⟩
 
 end MatchingBasisChoice
+
+/-- The normal-form parity spans are exactly the intrinsic presentation parity
+components. This identifies the parity used in `wordHomComponent` with that of
+the presented 2-supercategory, independently of the conjecture. -/
+theorem homPar_eq_homDeg (sy : Symmetrizer D) (cs : CScalars Sc)
+    (μ : X) (a b : List (Letter I)) (p : ZMod 2) :
+    homPar D Sc μ a b p =
+      (pres D Sc).homDeg (parityDeg (sig D)) (ob D μ a) (ob D μ b) p := by
+  apply le_antisymm (homPar_le_homDeg μ a b p)
+  obtain ⟨F⟩ := MatchingBasisChoice.nonempty a b
+  let q := homogeneousComponent (a := ob D μ a) (b := ob D μ b)
+    (isParityHomogeneous D Sc) p
+  intro x hx
+  have hs : x ∈ Submodule.span k (Set.range (F.wordEval cs μ)) := by
+    rw [F.span_wordEval cs μ]; trivial
+  rw [← show q x = x from homogeneousComponent_of_mem _ hx]
+  clear hx
+  induction hs using Submodule.span_induction with
+  | mem x hx =>
+      obtain ⟨t, rfl⟩ := hx
+      have ht := (F.wordEval_mem_component sy cs μ t).2
+      let e := (F.labelBidegree sy μ t.1 + SYM.wordBidegree sy t.2).2
+      by_cases he : e = p
+      · rw [show q (F.wordEval cs μ t) = F.wordEval cs μ t from
+          homogeneousComponent_of_mem _ (homPar_le_homDeg μ a b p (he ▸ ht))]
+        exact he ▸ ht
+      · rw [show q (F.wordEval cs μ t) = 0 from
+          homogeneousComponent_of_mem_of_ne _ (homPar_le_homDeg μ a b e ht) he]
+        exact Submodule.zero_mem _
+  | zero => rw [map_zero]; exact Submodule.zero_mem _
+  | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
+  | smul r x _ hx => rw [map_smul]; exact Submodule.smul_mem _ r hx
+
 end OddMath.SKM

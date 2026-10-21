@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.GradedExpansion
+import Mathlib.LinearAlgebra.Basis.VectorSpace
 
 /-!
 # Homogeneous dimensions in BE2 (dum)
@@ -10,7 +11,7 @@ import OddMath.SKM.GradedExpansion
 The graded restriction of the conjectural basis gives an explicit finite
 convolution of the dimensions of the abstract coefficient algebra components.
 The colour-degree local-finiteness hypothesis is the intermediate scope
-recorded in ERRATA [BE2] 9 and issue #42.
+tracked as an infinite-colour source question in issue #42.
 -/
 
 noncomputable section
@@ -32,7 +33,7 @@ theorem labelDegree_le_finite (n : ℤ) :
   exact Set.mem_iUnion.mpr ⟨_, Set.mem_iUnion.mpr ⟨⟨hN t, ht⟩, rfl⟩⟩
 
 /-- The finite set of labels that can contribute to integer degree `n`. -/
-def boundedLabels (n : ℤ) := {t : F.Labels // (F.labelBidegree sy μ t).1 ≤ n}
+abbrev boundedLabels (n : ℤ) := {t : F.Labels // (F.labelBidegree sy μ t).1 ≤ n}
 
 instance (n : ℤ) : Fintype (F.boundedLabels sy μ n) :=
   (F.labelDegree_le_finite sy μ n).fintype
@@ -99,14 +100,17 @@ variable (sy : Symmetrizer D) (cs : CScalars Sc) (μ : X)
 The Nondegeneracy Conjecture enters only through the selected family's basis
 hypothesis. `DegreeLocallyFinite` is the explicit intermediate hypothesis
 needed to interpret all dimensions as finite integers. -/
-theorem homComponent_finrank (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
+theorem wordHomComponent_finrank (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
     (hF : F.IsBasis cs μ) (z : ℤ × ZMod 2) :
-    Module.finrank k (homComponent sy Sc μ a b z) =
+    Module.finrank k (wordHomComponent sy Sc μ a b z) =
       ∑ t : F.boundedLabels sy μ z.1,
         Module.finrank k (SYM.component sy k (z - F.labelBidegree sy μ t.val)) := by
   let (t : F.boundedLabels sy μ z.1) :
       FiniteDimensional k (SYM.component sy k (z - F.labelBidegree sy μ t.val)) :=
     SYM.finiteDimensional_component sy hf _
+  let (t : F.boundedLabels sy μ z.1) :
+      Module.Free k (SYM.component sy k (z - F.labelBidegree sy μ t.val)) :=
+    Module.Free.of_divisionRing k (SYM.component sy k (z - F.labelBidegree sy μ t.val))
   rw [← (F.componentExpansionEquiv sy cs μ hc hF z).finrank_eq,
     (F.coefficientComponentEquiv sy μ k z).finrank_eq]
   exact Module.finrank_pi_fintype _
@@ -114,13 +118,13 @@ theorem homComponent_finrank (hc : Sc.Homogeneous) (hf : sy.DegreeLocallyFinite)
 /-- The conjecture supplies the only independence input to the homogeneous
 dimension formula. All component dimensions on the right belong to the
 abstract coefficient algebra `SYM`. -/
-theorem homComponent_finrank_of_nondegeneracy (hc : Sc.Homogeneous)
+theorem wordHomComponent_finrank_of_nondegeneracy (hc : Sc.Homogeneous)
     (hf : sy.DegreeLocallyFinite) (hN : NondegeneracyConjecture cs)
     (hab : wt D 0 a = wt D 0 b) (z : ℤ × ZMod 2) :
-    Module.finrank k (homComponent sy Sc μ a b z) =
+    Module.finrank k (wordHomComponent sy Sc μ a b z) =
       ∑ t : F.boundedLabels sy μ z.1,
         Module.finrank k (SYM.component sy k (z - F.labelBidegree sy μ t.val)) :=
-  homComponent_finrank F sy cs μ hc hf (hN a b hab μ F) z
+  wordHomComponent_finrank F sy cs μ hc hf (hN a b hab μ F) z
 
 end Dimensions
 end OddMath.SKM
