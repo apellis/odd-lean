@@ -791,4 +791,27 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    dimension. The coefficient in degree `4d_i` already distinguishes the two
    formulas. The normalized Hom identity can still use `S = dim_{q,π} SYM`.
 
+11. **Equation (11.8), the weight of the downward map [index correction].**
+    The printed formula `α′_{n,λ} := ω ∘ α_{n,λ}` has rightmost weight `−λ`,
+    whereas its displayed codomain consists of downward words at `λ`.
+    Proposition 3.5 sends the region `λ` to `−λ`. For the stated codomain,
+    replace the formula by `α′_{n,λ} := ω ∘ α_{n,−λ}`, with the same
+    super-opposite source `H_n^sop`. Equivalently, retain the printed composite
+    and replace the codomain's external weight by `−λ`.
+
+    **Declarations and scope.** `QuiverHecke.alpha_omega_obj` computes the
+    boundary of the literal composite. `alphaPrime_obj` computes the corrected
+    boundary; `alphaPrimeN` and `alphaPrimeN_mem_bidegree` give the resulting
+    coefficient-linear, degree/parity-preserving algebra homomorphism. This is
+    a weight-index correction, not a claim that the two Hom spaces are
+    nonisomorphic or that a particular 2-morphism is nonzero. The construction
+    uses the existing Chevalley involution and its super-opposite signs.
+
+    **For the authors.** In (11.8), composing (11.7) at weight `λ` with the
+    isomorphism of Proposition 3.5 produces downward diagrams with rightmost
+    region `−λ`. To obtain the displayed target at `λ`, the subscript on the
+    upward map in the composite should therefore be `−λ`. This change is only
+    a reindexing of the external weight and leaves the source `H_n^sop` and
+    the graded-superalgebra homomorphism assertion unchanged.
+
 
