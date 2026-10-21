@@ -11,6 +11,7 @@ example : ∑ ℓ, summand 1 ℓ = 1 := sum_summand 1
 
 example : Fintype.card (BoxPartitionCount.Sq 4) = 24 := by
   rw [summand_count]
+  norm_num
 
 #print axioms Examples.even_twoStrand_coefficient
 #print axioms normalized_degree
