@@ -1,3 +1,5 @@
+import OddMath.SKM.DividedPowerIdempotents
+import OddMath.SKM.DividedPowerIdempotentExamples
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
 import OddMath.SKM.PositivePointGrading
