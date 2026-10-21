@@ -945,3 +945,5 @@ import OddMath.CoveringQuantum.FiniteWeightDuality
 import OddMath.CoveringQuantum.FiniteWeightDualityExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebra
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebraExamples
+import OddMath.CoveringQuantum.UDot.FiniteWeightForm
+import OddMath.CoveringQuantum.UDot.FiniteWeightFormExamples
