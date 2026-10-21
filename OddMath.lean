@@ -1,4 +1,9 @@
+import OddMath.QuiverHecke.Algebra
+import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.SKM.DividedPowerIdempotents
+import OddMath.SKM.DividedPowerDecomposition
+import OddMath.SKM.DividedPowerMultiplicity
+import OddMath.SKM.DividedPowerDecompositionExamples
 import OddMath.SKM.DividedPowerIdempotentExamples
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
@@ -910,6 +915,7 @@ import OddMath.SKM.SpanDecoratedMatchings
 import OddMath.SKM.SpanReducedMatchings
 import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.Nondegeneracy
+import OddMath.SKM.LaurentianHoms
 import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
 import OddMath.SKM.MatchingBending
