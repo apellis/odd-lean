@@ -71,16 +71,18 @@ def layers (F : MatchingBasisChoice a b) (t : F.Labels) : List (XLayer I) :=
 
 /-- Extend a chosen serializer to the ambient arguments used by Theorem 8.1. -/
 def ambientSerializer (F : MatchingBasisChoice a b) (R : List (TMove (Letter I)))
-    (n : ℕ → ℕ) : List (DTMove I) :=
-  if h : R ∈ F.members then F.serialize ⟨R, h⟩ (fun j => n j) else []
+    (n : ℕ → ℕ) : List (DTMove I) := by
+  classical
+  exact if h : R ∈ F.members then F.serialize ⟨R, h⟩ (fun j => n j) else []
 
 /-- Extend distinguished points off the chosen family; these extra values are unused. -/
-def ambientPoints (F : MatchingBasisChoice a b) (R : List (TMove (Letter I))) : ℕ → ℕ × ℕ :=
-  if h : R ∈ F.members then F.points ⟨R, h⟩ else fun _ => (0, 0)
+def ambientPoints (F : MatchingBasisChoice a b) (R : List (TMove (Letter I))) : ℕ → ℕ × ℕ := by
+  classical
+  exact if h : R ∈ F.members then F.points ⟨R, h⟩ else fun _ => (0, 0)
 
 theorem ambient_decorates (F : MatchingBasisChoice a b) (R) (hR : R ∈ F.members) (n) :
     Decorates₂ a R (F.ambientPoints R) n (F.ambientSerializer R n) := by
-  simp only [ambientPoints, ambientSerializer, dif_pos hR]
+  simp only [ambientPoints, ambientSerializer, dite_eq_left hR]
   exact (decorates₂_strandCounts_iff _ n _).mp (F.decorates ⟨R, hR⟩ _)
 
 theorem decoratedFamily_eq (F : MatchingBasisChoice a b) :
@@ -111,7 +113,7 @@ theorem bubble_swap {p : ZMod 2}
     refine ⟨zsign k (p * q) • bubLs cs i μ n,
       (isBub_bubLs cs i μ n).smul _, ?_⟩
     rw [map_smul, Linear.smul_comp]
-    exact comp_bubAt cs hf (bubL_mem cs i μ (n + D.h i μ - 1))
+    exact comp_bubAt hf (bubL_mem cs i μ (n + D.h i μ - 1))
   | algebraMap r =>
     refine ⟨r • 𝟙 _, IsBub.id.smul r, ?_⟩
     change f ≫ bubAt D Sc μ b (r • 𝟙 _) = _
@@ -165,7 +167,7 @@ def expansion (F : MatchingBasisChoice a b) :
 @[simp] theorem expansion_single (F : MatchingBasisChoice a b) (t : F.Labels) (p : SYM D k) :
     F.expansion cs μ (Finsupp.single t p) =
       bubAt D Sc μ a (betaSYM cs μ p) ≫ xev cs μ a b (F.layers t) := by
-  exact Finsupp.lsum_single _ _ _
+  exact Finsupp.lsum_single k (F.coefficientMap cs μ) t p
 
 /-- Theorem 8.1, with abstract coefficients: every Hom has a finite expansion. -/
 theorem expansion_surjective (F : MatchingBasisChoice a b) :
@@ -175,7 +177,7 @@ theorem expansion_surjective (F : MatchingBasisChoice a b) :
     rw [← F.decoratedFamily_eq]
     exact theorem_8_1 μ a b F.members F.matching F.complete F.ambientPoints
       (fun R hR j hj => by
-        simpa only [ambientPoints, dif_pos hR] using F.onStrand ⟨R, hR⟩ j hj)
+        simpa only [ambientPoints, dite_eq_left hR] using F.onStrand ⟨R, hR⟩ j hj)
       F.ambientSerializer F.ambient_decorates
   apply LinearMap.range_eq_top.mp
   apply top_unique
@@ -210,7 +212,8 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 /-- **The Nondegeneracy Conjecture, BE2 §8 after Theorem 8.1.** For every
 pair of equal-weight words, every external weight and every complete unique
 choice of reduced representatives and distinguished points, the decorated
-family has unique finite `SYM` coefficients. This declaration is only a `Prop`;
+family has unique finite `SYM` coefficients. The coefficient ring is concentrated
+in even parity, as throughout the SKM library. This declaration is only a `Prop`;
 it neither assumes nor proves the conjecture. -/
 def NondegeneracyConjecture (cs : CScalars Sc) : Prop :=
   ∀ (a b : List (Letter I)), wt D 0 a = wt D 0 b →
