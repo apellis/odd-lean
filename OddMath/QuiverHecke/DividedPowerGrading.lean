@@ -136,7 +136,27 @@ theorem oddDecompositionInHn_symm_degree (i : I) (hi : D.parity i = 1)
   simpa only [oddSplittingInHn_lam, Unitization.snd_mul, Unitization.fst_inr,
     Unitization.snd_inr, principal_fst_zero D Sc, zero_smul, zero_add] using h
 
+/-- Ranks zero and one: one summand, with no shift. -/
+theorem oddDecompositionInHn_degree_small (i : I) (hi : D.parity i = 1)
+    {r : ℕ} (hr : r < 2) {d : ℤ × ZMod 2} (x : wordProjective D Sc i r)
+    (hx : PrincipalDegree D Sc sy hc d x) (ℓ : Sq r) :
+    PrincipalDegree D Sc sy hc d (oddDecompositionInHn D Sc i hi r x ℓ) := by
+  match r, hr with
+  | 0, _ => exact hx
+  | 1, _ => exact hx
+
+/-- Ranks zero and one: the inverse also preserves both degrees. -/
+theorem oddDecompositionInHn_symm_degree_small (i : I) (hi : D.parity i = 1)
+    {r : ℕ} (hr : r < 2) {d : ℤ × ZMod 2} (y : Sq r → oddProjective D Sc i hi r)
+    (hy : ∀ ℓ, PrincipalDegree D Sc sy hc d (y ℓ)) :
+    PrincipalDegree D Sc sy hc d ((oddDecompositionInHn D Sc i hi r).symm y) := by
+  match r, hr with
+  | 0, _ => exact hy _
+  | 1, _ => exact hy _
+
 #print axioms oddIdempotent_mem_bidegree
 #print axioms sigmaInHn_mem_bidegree
 #print axioms lamInHn_mem_bidegree
+#print axioms oddDecompositionInHn_degree
+#print axioms oddDecompositionInHn_symm_degree
 end OddMath.QuiverHecke.DividedPowerModules

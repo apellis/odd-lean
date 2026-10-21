@@ -79,6 +79,13 @@ example : (∑ ℓ ∈ Sq 3, multiplicity (1 : ℤˣ) (-1 : ℤ) ℓ) = 0 := by
   rw [sum_multiplicity]
   norm_num [OddMath.CoveringQuantum.qpFact, OddMath.CoveringQuantum.qpNat]
 
+/-- Rank three, in normalized summand form: the six shifted copies of `P(i^(3))`. -/
+example {k : Type*} [CommRing k] (q : kˣ) (π : k) :
+    ∑ ℓ : Sq 3, π ^ (shift 1 ℓ).toNat *
+      ((q ^ (((1 + 2).choose 2 : ℤ) - 2 * shift 1 ℓ) : kˣ) : k) =
+      OddMath.CoveringQuantum.qpFact q π 3 :=
+  sum_shift_monomial q π 1
+
 example : summand 0 lower * summand 0 upper = 0 := by
   rw [summand_mul, ite_eq_right]
   intro h

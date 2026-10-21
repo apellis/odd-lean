@@ -109,5 +109,21 @@ theorem multiplicity_degree {n : ℕ} (ℓ : Sq (n + 2)) :
   change s - (-(s - c)) = c - 2 * (-(s - c))
   ring
 
+/-- BE2, arXiv:1701.04133v2, Lemma 11.1, the multiplicity: the summand of
+`H_n 1_{i^n}` indexed by `ℓ` is `Q^(dᵢ (choose(n,2) - 2 shift)) Π^shift P(i^(n))`,
+and these degree/parity monomials sum to `[n]!_{q,π}` (with `q = q_i`, `π = π_i`). -/
+theorem sum_shift_monomial (q : kˣ) (π : k) (n : ℕ) :
+    ∑ ℓ : Sq (n + 2), π ^ (shift n ℓ).toNat *
+      ((q ^ (((n + 2).choose 2 : ℤ) - 2 * shift n ℓ) : kˣ) : k) = qpFact q π (n + 2) := by
+  rw [← sum_multiplicity q π (n + 2), ← Finset.sum_coe_sort (Sq (n + 2))]
+  apply Finset.sum_congr rfl
+  intro ℓ _
+  have h1 := complement_eq_shift ℓ
+  have h2 := multiplicity_degree ℓ
+  rw [← h1] at h2 ⊢
+  rw [← h2, Int.toNat_natCast, multiplicity_eq, zpow_sub, zpow_natCast, zpow_natCast,
+    ← inv_pow, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]
+  exact (mul_assoc _ _ _).symm
+
 end
 end OddMath.SKM.DividedPowerDecomposition
