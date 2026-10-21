@@ -71,7 +71,7 @@ theorem zeroHecke_braid (i j : Fin (n + 1)) (h : j.val = i.val + 1) :
       crossing n i * (crossing n j * crossing n i) := by
     simpa only [mul_assoc] using (crossing_braid i j h).symm
   simp only [zeroHecke, hij, mul_assoc, h1, h2, h3, h4, h6, mul_sub, sub_mul,
-    mul_add, add_mul, mul_zero, crossing_square]
+    mul_add, mul_zero, crossing_square]
   abel
 
 /-- BE2's even-colour Demazure generator, with the source's sign. -/
