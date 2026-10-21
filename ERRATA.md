@@ -481,6 +481,32 @@ from `0` in Lean.
 25. **§4.4, Definition 4.15 (2) [M].** The functor `D(OΛ_{a+b}) → D(OΛ_{a,b})` is printed as
    `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`; the tensor product is over `OΛ_{a+b}`, as in the displayed functor
    `Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (−)` and in the definition of `R` (`EQFunctor.comult`, `comultIsoDerivedTensor`).
+26. **§2.2.4, (2.17), `K₀(D(k)) ≅ ℤ[√−1]` and `⟨1⟩ ∘ ⟨1⟩ ≅ [1]` [F→T; convention].** §2.2 defines morphisms
+   of dg modules as degree-zero (even) maps, and §2.2.4 builds `D(k)` from these. The computation in §2.2.4 counts
+   `k` in bidegree `(a+2, b+1̄)` as `q²[k]`, i.e. it identifies objects that are isomorphic only through an odd
+   map. With even morphisms this relation fails: in the ordinary Grothendieck group of compact half-graded
+   complexes over a field the four classes `[k⟨j⟩]`, `j mod 4`, are independent and `(1 + q²)[k] ≠ 0`
+   (`EQHalfGraded.even_super_relation_ne_zero`). Likewise `⟨1⟩ ∘ ⟨1⟩` is not evenly isomorphic to the translation,
+   already on the regular object (`EQHalfGraded.no_even_shiftTwo_translation_regular`); in the half-graded setting
+   the translation is the parity shift combined with `⟨2⟩` (dg-lean `DG.HalfGradedDGRing.shiftOneIso`), because the
+   cone's off-diagonal component has bidegree `(0, 0̄)` while the differential has bidegree `(2, 1̄)`.
+   Correct: take `K₀` of the dg supercategory, with classes up to isomorphisms of either parity (odd closed maps
+   from the `ℤ/2`-graded Hom complexes) modulo distinguished triangles, equivalently the even `K₀` modulo
+   `[ΠX] = [X]`. Then `K₀(D(k)) ≅ ℤ[√−1]` with `[k⟨1⟩] = √−1 [k]` (`EQHalfGraded.superK0EquivGaussian`,
+   `superK0EquivGaussian_shift_regular`, `superK0GaussianLinearEquiv`), and `⟨1⟩ ∘ ⟨1⟩` is isomorphic to the
+   translation through an odd natural isomorphism, i.e. an even isomorphism `⟨1⟩ ∘ ⟨1⟩ ≅ Π ∘ [1]`
+   (`EQHalfGraded.internalShiftSquaredOddIso`). Theorems 3.18 and 4.17 are
+   formalized as printed, over `ℤ[√−1]`, with this definition of `K₀`.
+   The literal even group over a field is free abelian on `[k⟨j⟩]`, `0 ≤ j < 4` (dg-lean
+   `DG.HalfGradedDGRing.Field.K0Basis`).
+   **For the authors.** In §2.2.4 the morphisms of §2.2 are even, and with them the classes of `k` and of `k`
+   placed in bidegree `(2, 1̄)` are not related by `q²`, so the relation `(1 + q²)[k] = 0` does not hold and
+   `⟨1⟩ ∘ ⟨1⟩` is not isomorphic to the translation. Both statements become correct once `K₀` of the dg
+   supercategory is defined using isomorphisms of either parity (equivalently, by imposing `[ΠX] = [X]` on the
+   usual Grothendieck group) and the isomorphism `⟨1⟩ ∘ ⟨1⟩ ≅ [1]` is read as an odd natural isomorphism, with
+   `[1]` the translation of the half-graded derived category; that translation is the parity shift combined with
+   the `q`-shift by 2, not the parity shift alone as in §2.2. The
+   later results, in particular Theorems 3.18 and 4.17, hold with this convention as stated.
 
 ## [HW] D. Hill, W. Wang, *Categorification of quantum Kac–Moody superalgebras*, arXiv:1202.2769v2
 
