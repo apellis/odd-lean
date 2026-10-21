@@ -3,7 +3,7 @@ import OddMath
 /-! Concrete consumers of the signed mixed exchange, HW v2 (4.22). -/
 noncomputable section
 namespace OddMath.QuiverHecke.NonVacuityExchange
-open Polynomial Polynomial.ExchangeExamples
+open OddMath.QuiverHecke.Polynomial Polynomial.ExchangeExamples
 
 example : exchange (R := ℤ) mixed 0 1 (X mixed 3) =
     -X (exchangeParity mixed 0 1) 3 := distant_odd
@@ -20,6 +20,9 @@ example (f : Polynomial ℤ 4 mixed) :
 
 example : characteristicTwo (X mixed 3 ^ 2) ≠ 0 := characteristicTwo_square
 
+example : oddLeft * oddRight ≠ -(oddRight * oddLeft) := distant_not_anticommute
+
+#print axioms distant_not_anticommute
 #print axioms exchangeAlgEquiv
 #print axioms exchange_X_mul
 end OddMath.QuiverHecke.NonVacuityExchange

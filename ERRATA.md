@@ -482,6 +482,59 @@ from `0` in Lean.
    `M ↦ Z^♮_{a,b} ⊗^L_{OΛ_{a,b}} M`; the tensor product is over `OΛ_{a+b}`, as in the displayed functor
    `Z^♮_{a,b} ⊗^L_{OΛ_{a+b}} (−)` and in the definition of `R` (`EQFunctor.comult`, `comultIsoDerivedTensor`).
 
+## [HW] D. Hill, W. Wang, *Categorification of quantum Kac–Moody superalgebras*, arXiv:1202.2769v2
+
+1. **Proposition 4.5: the printed polynomial action misses the distant odd-crossing sign.**
+   The unequal-colour formula is
+   `τ_r e(i) ↦ P_{i_r,i_{r+1}}(y_{r+1},y_r) e(s_r i) s_r`, where
+   (4.22) specifies the signed action
+   `s_k(y_r e(i)) = (−1)^{p(i_k)p(i_{k+1})p(i_r)} y_{s_k(r)}e(s_k i)`.
+   Taken as the stated algebra action on the direct sum of the polynomial
+   coefficient rings, this does not satisfy (4.8).
+
+   **Counterexample.** Work over `ℚ`, with two disconnected odd colours `a,b`,
+   Cartan matrix `diag(2,2)`, symmetrizer `(1,1)`, and word `(a,b,a,b)`.
+   Conditions (C1)–(C6) hold. The prescribed polynomials have
+   `Q_ab = Q_ba = P_ab = P_ba = 1`, since the off-diagonal Cartan entries and
+   arrow counts vanish. Both `τ₁τ₃` and `τ₃τ₁` therefore send the constant in
+   the `(a,b,a,b)` summand to `+1` in the `(b,a,b,a)` summand. However, (4.8)
+   requires `τ₁τ₃ = −τ₃τ₁` on that summand. The coefficient-operator
+   contradiction is proved in
+   `QuiverHecke.Polynomial.ExchangeExamples.distant_not_anticommute`.
+   Thus this is a specialization of the printed formula, not a restriction
+   obtained by discarding a nontrivial parameter factor.
+
+   **Correct construction from KKT.** In arXiv:1107.1039v2, Theorem 3.8 embeds
+   the quiver Hecke–Clifford algebra in a localized twisted symmetric-group
+   algebra with coefficient module consisting of ordinary polynomials and
+   Clifford factors. In Theorem 3.13, proof (a), immediately after (3.19),
+   the quiver Hecke generators are
+   `x_p e(ν) = c_p y_p e(ν)` at odd positions (and `y_p e(ν)` at even ones), and
+   `τ_a e(ν) = γ_{ν_a,ν_{a+1}} (c_a − c_{a+1})^{p(ν_a)p(ν_{a+1})} σ_a e(ν)`.
+   Here `γ_ij = 1` if either colour is even, `γ_ij γ_ji = −1/2` for distinct
+   odd colours, and `γ_ii = 1/2` for an odd colour. Distant even `σ` operators
+   commute with one another and with the remote Clifford factors; the two
+   disjoint odd Clifford differences anticommute. This supplies exactly the
+   sign missing above. The local calculation is proved in
+   `QuiverHecke.CliffordExchange.distant`, with nonzero rational Clifford
+   examples in `QuiverHecke.CliffordExchange.Examples`. The coefficient parameters are transported by KKT
+   (3.17), so odd squares satisfy `y_p² = −x_p²`. Remark 3.14 and Corollary
+   3.15 transfer the Clifford PBW result to the quiver Hecke superalgebra.
+   This correction changes the representation space; it is not an assertion
+   that the plain polynomial formula works unchanged. The use of `1/2` is
+   compatible with BE2's coefficient assumptions whenever odd colours occur.
+   No square root of `−1` is needed for this embedding or PBW transfer.
+
+   **For the authors.** Proposition 4.5, as written with (4.22), fails (4.8)
+   already for two disconnected odd vertices and content `2a+2b`: the two
+   distant unequal-colour crossings both fix the coefficient constant, so
+   their composites cannot anticommute in characteristic different from two.
+   The Clifford factor in KKT Theorem 3.13 supplies the required sign and
+   gives a valid route through their Theorem 3.8 and Corollary 3.15. A
+   corrected statement must include this enlarged representation, or provide
+   additional operators and prove the distant relation on its proposed
+   polynomial module. The PBW theorem itself is not contradicted.
+
 ## [BE2] J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2
 
 Names in this section are in `OddMath.SKM` unless otherwise indicated.
