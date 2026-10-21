@@ -918,6 +918,12 @@ import OddMath.SKM.SpanReducedMatchings
 import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.Nondegeneracy
 import OddMath.SKM.LaurentianHoms
+import OddMath.SKM.DimensionComponents
+import OddMath.SKM.GradedExpansion
+import OddMath.SKM.HomDimensions
+import OddMath.SKM.DimensionConvolution
+import OddMath.SKM.DimensionFormula
+import OddMath.SKM.DimensionFormulaExamples
 import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
 import OddMath.SKM.MatchingBending
