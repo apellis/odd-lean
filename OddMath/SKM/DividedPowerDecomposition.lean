@@ -195,6 +195,17 @@ theorem oddDecomposition_parity {n : ℕ} {x : Presented n} {p : ZMod 2}
     (oddDecomposition n x ℓ : Presented n) ∈ parity n (p + (shift n ℓ : ZMod 2)) :=
   mul_mem_parity hx (grading_le_parity n _ (sigma_degree n ℓ))
 
+open OddMath.Diagrams.OddNilHecke in
+/-- The inverse splitting also preserves parity after the specified shifts. -/
+theorem oddDecomposition_symm_parity {n : ℕ} {p : ZMod 2}
+    (y : Sq (n + 2) → leftIdeal (oppositeProjector n))
+    (hy : ∀ ℓ, (y ℓ : Presented n) ∈ parity n (p + (shift n ℓ : ZMod 2))) :
+    (oddDecomposition n).symm y ∈ parity n p := by
+  change (∑ ℓ, (y ℓ : Presented n) * (oddSplitting n).lam ℓ) ∈ parity n p
+  apply AddSubgroup.sum_mem
+  intro ℓ _
+  simpa using mul_mem_parity (hy ℓ) (grading_le_parity n _ (lam_degree n ℓ))
+
 /-- With `P = Q^(-dᵢ choose(a,2)) NH_a D_w₀`, the summand exponent is
 `dᵢ (2|ℓ| - choose(a,2))`; there is no extra Π shift on `P`. -/
 theorem normalized_degree (n : ℕ) (ℓ : Sq (n + 2)) (di : ℤ) :
