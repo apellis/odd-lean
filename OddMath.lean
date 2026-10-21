@@ -7,6 +7,7 @@ import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.DividedPowerModulesExamples
 import OddMath.QuiverHecke.EvenDividedPowerExamples
+import OddMath.QuiverHecke.CategoricalDividedPowersExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
 import OddMath.SKM.DividedPowerIdempotents
