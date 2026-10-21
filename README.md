@@ -838,10 +838,10 @@ arbitrary root data. These results are not used by the nondegeneracy proof above
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `4540cd4a47cf0c4d8ef7597cdc8a5fa95c84a11f`, the [EQ] dg structures on
-[dg-lean](https://github.com/apellis/dg-lean) at `fe555b543a8a4ab084a6eafef9159dda8339d2fd`, and the
+string-diagrams-lean at `e4495caf7733af3318a26058266dca1272379af3`, the [EQ] dg structures on
+[dg-lean](https://github.com/apellis/dg-lean) at `161db4ede65f2dd359263a301c33ec39036988eb`, and the
 [BE2] Cartan data on [lie-lean](https://github.com/apellis/lie-lean) at
-`84222f8a9861e73db9778092c6a9d51ff39315cb` (see `lakefile.lean` and `lake-manifest.json`).
+`29042522f511a969b7f6dbc81d3c8a8bebfef818` (see `lakefile.lean` and `lake-manifest.json`).
 
 ```sh
 lake exe cache get
