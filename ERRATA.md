@@ -941,3 +941,33 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     comparison and before the integral isomorphism. The tensor comparison
     already includes the needed type-M hypothesis; the generic width and
     localization arguments do not require the stronger blanket freeness claim.
+
+12. **Lemma 11.6, negative-weight proof displays [degree and scalar correction].**
+    Put `h = ⟨hᵢ,λ⟩ ≤ 0`. The isomorphism display in the proof assigns the
+    identity summands degrees `dᵢ(-h-1-2n)` and parities `n|i|`, for
+    `0 ≤ n < -h`. The next displayed scalar assertion is
+    `[h]_{qᵢ,πᵢ} = -πᵢ ∑ₙ qᵢ^(-h-1-2n) πᵢⁿ`.
+
+    **Correction.** Keep the parities and replace both exponents by
+    `dᵢ(h+1+2n)` for `Q`, respectively `h+1+2n` for `qᵢ`. The cup in (1.14)
+    has exactly the former degree. Thus the corrected scalar formula is
+    `[h]_{qᵢ,πᵢ} = -πᵢ [-h]_{qᵢ⁻¹,πᵢ}`. It follows from (9.1), including
+    zero weight. No change to the statement of Lemma 11.6 is needed.
+
+    **Declarations.** `SKM.K0Relations.minusFamily`, `minus_diag`,
+    `minus_off`, `minus_total` and `mixed_nonpos` verify the degree-zero,
+    even inverse matrix and its split Grothendieck-group consequence.
+    `qpInt_negative`, `comm_same` and `covering_comm_same` give the corrected
+    coefficient and the stated commutator. In `SKM.K0RelationsExamples`,
+    `negative_two_coefficient` and `printed_negative_coefficient_fails`
+    distinguish the printed scalar assertion at `h = -2`, `qᵢ = 2`,
+    `πᵢ = -1`: its left side is `-3/2`, but its right side is `3/2`.
+    This is a counterexample to a proof assertion, not to the lemma.
+
+    **For the authors.** In the proof of Lemma 11.6 of arXiv:1701.04133v2,
+    the identity summands in the negative-coroot-weight case should carry
+    `Q^{dᵢ(h+1+2n)} Π^{n|i|}`. This is forced by the cup degrees in the
+    inversion map (1.14). The following scalar sum needs the same reversal
+    of the `qᵢ` exponent; with it, (9.1) yields precisely `[h]_{qᵢ,πᵢ}`.
+    The printed scalar equality already fails at `h=-2`, `qᵢ=2`, `πᵢ=-1`.
+    These local proof corrections preserve every relation in Lemma 11.6.

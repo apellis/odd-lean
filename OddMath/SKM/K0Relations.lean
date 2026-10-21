@@ -138,4 +138,29 @@ theorem mixed_ne (i j : I) (ν μ : X)
   exact K₀Ring.mk_eq_mk_of_iso
     ((inclusion Sc sy hc μ ν).mapIso (mixedIso Sc sy hc i j ν μ hs ht hij))
 
+/-- The class assigned to the positive generator at a weight. -/
+def E (i : I) (ν : X) : Grothendieck Sc sy hc :=
+  cls Sc sy hc (ν + D.α i) ν [up i] (by simp [wt, sh, add_comm]) 0 0
+
+/-- The class assigned to the negative generator at a weight. -/
+def F (i : I) (ν : X) : Grothendieck Sc sy hc :=
+  cls Sc sy hc (ν - D.α i) ν [dn i] (by simp [wt, sh, sub_eq_add_neg, add_comm]) 0 0
+
+open Classical in
+/-- The weight relations in `CoveringQuantum.UDot.Rel`, in BE2 multiplication order. -/
+def WeightRelations : Prop :=
+  (∀ μ ν, one Sc sy hc μ * one Sc sy hc ν = if μ = ν then one Sc sy hc μ else 0) ∧
+  (∀ i ν, one Sc sy hc (ν + D.α i) * E Sc sy hc i ν = E Sc sy hc i ν) ∧
+  (∀ i ν, E Sc sy hc i ν * one Sc sy hc ν = E Sc sy hc i ν) ∧
+  (∀ i ν, one Sc sy hc (ν - D.α i) * F Sc sy hc i ν = F Sc sy hc i ν) ∧
+  (∀ i ν, F Sc sy hc i ν * one Sc sy hc ν = F Sc sy hc i ν)
+
+/-- All five weight relation families required by the assignment in Theorem 11.7. -/
+theorem weight_relations : WeightRelations Sc sy hc :=
+  ⟨one_mul_one Sc sy hc,
+    fun i ν => one_mul_cls Sc sy hc _ ν [up i] _ 0 0,
+    fun i ν => cls_mul_one Sc sy hc _ ν [up i] _ 0 0,
+    fun i ν => one_mul_cls Sc sy hc _ ν [dn i] _ 0 0,
+    fun i ν => cls_mul_one Sc sy hc _ ν [dn i] _ 0 0⟩
+
 end OddMath.SKM.K0Relations
