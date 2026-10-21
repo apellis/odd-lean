@@ -75,15 +75,13 @@ jobs:
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       - name: Non-vacuity checks
         if: steps.scope.outputs.docs_only != 'true'
+        # Each file loads the OddMath environment separately; elaborate four at a time.
         run: |
-          for f in scripts/NonVacuity.lean scripts/NonVacuity/*.lean; do
-            echo "::group::$f"
-            lake env lean -DwarningAsError=true \
+          printf '%s\n' scripts/NonVacuity.lean scripts/NonVacuity/*.lean |
+            xargs -P 4 -I{} sh -c 'lake env lean -DwarningAsError=true \
               -Dbackward.isDefEq.respectTransparency=false \
               -Dbackward.isDefEq.respectTransparency.types=false \
-              "$f" < /dev/null
-            echo "::endgroup::"
-          done
+              "{}" < /dev/null || { echo "::error file={}::non-vacuity check failed"; exit 1; }'
       - name: Save build cache
         if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
