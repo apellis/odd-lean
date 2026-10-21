@@ -944,6 +944,8 @@ import OddMath.SKM.PositiveMatchingLayers
 import OddMath.SKM.PositiveMatchingLayersExamples
 import OddMath.SKM.PositiveMatchingGrading
 import OddMath.SKM.CoveringDatum
+import OddMath.SKM.K0Commutation
+import OddMath.SKM.K0RelationsExamples
 import OddMath.SKM.PositiveMatchingGradingExamples
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.CliffordK0
