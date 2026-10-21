@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.Realization.Sigma
 import OddMath.QuiverHecke.CliffordLocalizationExamples
 import OddMath.QuiverHecke.CliffordColoursExamples
 import OddMath.QuiverHecke.CliffordPermutationsExamples
