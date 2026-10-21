@@ -109,11 +109,13 @@ theorem bubble_swap {p : ZMod 2}
   induction hβ using Algebra.adjoin_induction with
   | mem β hβ =>
     obtain ⟨i, n, rfl⟩ := hβ
-    let q := D.parity i * (n + D.h i μ - 1)
+    let q : ZMod 2 := D.parity i * (((n + D.h i μ - 1) + D.h i μ + 1 : ℤ) : ZMod 2)
+    have hgen : bubLs cs i μ n ∈ closedPar D Sc μ q :=
+      bubL_mem cs i μ (n + D.h i μ - 1)
     refine ⟨zsign k (p * q) • bubLs cs i μ n,
       (isBub_bubLs cs i μ n).smul _, ?_⟩
     rw [map_smul, Linear.smul_comp]
-    exact comp_bubAt hf (bubL_mem cs i μ (n + D.h i μ - 1))
+    exact comp_bubAt hf hgen
   | algebraMap r =>
     refine ⟨r • 𝟙 _, IsBub.id.smul r, ?_⟩
     change f ≫ bubAt D Sc μ b (r • 𝟙 _) = _
