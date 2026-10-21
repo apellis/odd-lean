@@ -146,9 +146,9 @@ theorem betaSYMGen_polynomial_mem (μ : X) (a : I × ℕ) :
     betaSYMGen cs μ (.inl a) ∈ closedPar D Sc μ 0 := by
   rcases a with ⟨i, n⟩
   by_cases hi : D.parity i = 0
-  · simp only [betaSYMGen, if_pos hi, betaGen]
+  · simp only [betaSYMGen, ite_eq_left hi, betaGen]
     exact Submodule.smul_mem _ _ (bubLs_mem_even cs i μ hi _)
-  · simp only [betaSYMGen, if_neg hi, betaDGen]
+  · simp only [betaSYMGen, ite_eq_right hi, betaDGen]
     exact Submodule.smul_mem _ _ (bubLs_two_mul_mem cs i μ _)
 
 /-- Super interchange and the square-zero odd-bubble relation respect the abstract
@@ -169,7 +169,7 @@ theorem betaSYM_rel (μ : X) {x y : FreeAlgebra k (SYMGen D)} (h : SYMRel D k x 
       simpa [i.property, j.property, zsign] using
         comm_of_mem (oddBubble_mem cs j μ) (oddBubble_mem cs i μ)
   | square i =>
-      simp only [map_pow, map_zero, FreeAlgebra.lift_ι_apply, betaSYMGen, sq, End.mul_def]
+      simp only [sq, map_mul, map_zero, FreeAlgebra.lift_ι_apply, betaSYMGen, End.mul_def]
       exact oddBubble_sq cs i μ i.property
 
 /-- The all-colour bubble homomorphism of Brundan–Ellis (1.22), with abstract domain (1.21). -/
@@ -185,7 +185,7 @@ def betaSYM (μ : X) : SYM D k →ₐ[k] End ((pres D Sc).obj (ob D μ [])) :=
 theorem betaSYM_e_even (μ : X) (i : I) (hi : D.parity i = 0) (n : ℕ) :
     betaSYM cs μ (SYM.e D k i n) = beta cs i μ hi (MvPolynomial.X n) := by
   rw [SYM.e, betaSYM_ι, beta_X]
-  simp only [betaSYMGen, if_pos hi]
+  simp only [betaSYMGen, ite_eq_left hi]
 
 /-- On an odd colour, the elementary generator has the image prescribed by `betaD`. -/
 theorem betaSYM_e_odd (μ : X) (i : I) (hi : D.parity i = 1) (n : ℕ) :
@@ -194,7 +194,7 @@ theorem betaSYM_e_odd (μ : X) (i : I) (hi : D.parity i = 1) (n : ℕ) :
   have hne : D.parity i ≠ 0 := by rw [hi]; decide
   rw [SYM.e, betaSYM_ι, SymD.ofSym, AlgHom.comp_apply, MvPolynomial.rename_X,
     betaD_mk, betaDPoly_X]
-  simp only [betaSYMGen, if_neg hne]
+  simp only [betaSYMGen, ite_eq_right hne]
 
 @[simp] theorem betaSYM_delta (μ : X) (i : {i : I // D.parity i = 1}) :
     betaSYM cs μ (SYM.delta D k i) = oddBubble cs i μ := by
@@ -208,6 +208,7 @@ theorem betaRange_le_betaSYM_range (i : I) (μ : X) :
   unfold betaRange
   split_ifs with hi
   · rintro _ ⟨x, rfl⟩
+    change beta cs i μ hi x ∈ (betaSYM cs μ).range
     induction x using MvPolynomial.induction_on with
     | C a =>
         rw [← MvPolynomial.algebraMap_eq, AlgHom.commutes]
@@ -218,9 +219,10 @@ theorem betaRange_le_betaSYM_range (i : I) (μ : X) :
     | mul_X p n hp =>
         rw [map_mul, beta_X]
         exact (betaSYM cs μ).range.mul_mem hp (by
-          simpa only [betaSYMGen, if_pos hi] using hg (.inl (i, n)))
+          simpa only [betaSYMGen, ite_eq_left hi] using hg (.inl (i, n)))
   · rintro _ ⟨x, rfl⟩
     obtain ⟨p, rfl⟩ := Ideal.Quotient.mkₐ_surjective k _ x
+    change betaD cs i μ _ (SymD.mk p) ∈ (betaSYM cs μ).range
     rw [betaD_mk]
     induction p using MvPolynomial.induction_on with
     | C a =>
@@ -235,7 +237,7 @@ theorem betaRange_le_betaSYM_range (i : I) (μ : X) :
         cases o with
         | none => exact hg (.inr ⟨i, zmod2_eq_one_of_ne_zero hi⟩)
         | some n =>
-            simpa only [betaSYMGen, if_neg hi] using hg (.inl (i, n))
+            simpa only [betaSYMGen, ite_eq_right hi] using hg (.inl (i, n))
 
 /-- The abstract all-colour bubble homomorphism has exactly the bubble subalgebra as range. -/
 theorem betaSYM_range (μ : X) : (betaSYM cs μ).range = bubbleSpan cs μ := by
@@ -247,9 +249,9 @@ theorem betaSYM_range (μ : X) : (betaSYM cs μ).range = bubbleSpan cs μ := by
     | inl a =>
         rcases a with ⟨i, n⟩
         by_cases hi : D.parity i = 0
-        · simp only [betaSYMGen, if_pos hi, betaGen]
+        · simp only [betaSYMGen, ite_eq_left hi, betaGen]
           exact (isBub_bubLs cs i μ _).smul _
-        · simp only [betaSYMGen, if_neg hi, betaDGen]
+        · simp only [betaSYMGen, ite_eq_right hi, betaDGen]
           exact (isBub_bubLs cs i μ _).smul _
     | inr i => exact isBub_oddBubble cs i μ
   · rw [bubbleSpan_eq_iSup]
