@@ -779,8 +779,9 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    `OddMath/SKM/BubbleAlgebra.lean`. This entry records a coefficient diagnostic;
    a general graded-dimension theorem is not yet formalized. Equation (dum)
    should retain its printed normalization with `S` defined as the actual
-   graded-super dimension of `SYM`, subject to the local-finiteness condition
-   discussed below. It is not a reason to assume the Nondegeneracy Conjecture.
+   graded-super dimension of `SYM`, subject to an explicit local-finiteness
+   scope (the infinite-colour source question is tracked in issue #42). It is
+   not a reason to assume the Nondegeneracy Conjecture.
 
    **For the authors.** In the proof of Theorem 12.1, the factor assigned to an
    odd colour in the displayed series for `S` does not match the algebra
@@ -790,38 +791,29 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    dimension. The coefficient in degree `4d_i` already distinguishes the two
    formulas. The normalized Hom identity can still use `S = dim_{q,π} SYM`.
 
-9. **§§11–12, local finiteness with an infinite colour set
-   [missing degree-finiteness condition].** The initial data allow arbitrary
-   infinite `I`, but the proof of Theorem 12.1 places the series `S` in
-   `ℤ[[q]][π]/(π²−1)`. This requires finitely many colours in each bounded
-   symmetrizer-degree range, not just finite boundary words. For example,
-   infinitely many even colours with `d_i = 1` give independent degree-two
-   generators `e_{i,1}` in `SYM`. Under the Nondegeneracy Conjecture, the
-   empty-word endomorphism space is this algebra, and its degree-two piece is
-   infinite-dimensional. Thus a Laurentian assertion for every Hom space does
-   not follow from Theorem 8.1 in the unrestricted source generality.
+11. **Equation (11.8), the weight of the downward map [index correction].**
+    The printed formula `α′_{n,λ} := ω ∘ α_{n,λ}` has rightmost weight `−λ`,
+    whereas its displayed codomain consists of downward words at `λ`.
+    Proposition 3.5 sends the region `λ` to `−λ`. For the stated codomain,
+    replace the formula by `α′_{n,λ} := ω ∘ α_{n,−λ}`, with the same
+    super-opposite source `H_n^sop`. Equivalently, retain the printed composite
+    and replace the codomain's external weight by `−λ`.
 
-   **Correction and scope.** A sufficient condition for the bubble-algebra
-   series is that `{i | d_i ≤ N}` be finite for each integer `N`; finite `I` is
-   stronger. One must state such a condition, or specify a finite-colour
-   subcategory, before claiming the ordinary integer-coefficient Hom series
-   and Laurentian property. The requested scope is tracked in issue #42.
-   `MatchingBasisChoice.expansion_surjective` formalizes Theorem 8.1 with
-   coefficients in all of `SYM`; `NondegeneracyConjecture` does not add colour
-   finiteness. Finiteness of decorated matching degree fibers in
-   `GraphicalSeries` concerns strand decorations, not the independent bubble
-   coefficients. No unrestricted Laurentian theorem or formal infinite-rank
-   counterexample is claimed by these declarations.
+    **Declarations and scope.** `QuiverHecke.alpha_omega_obj` computes the
+    boundary of the literal composite. `alphaPrime_obj` computes the corrected
+    boundary; `alphaPrimeN` and `alphaPrimeN_mem_bidegree` give the resulting
+    coefficient-linear, degree/parity-preserving algebra homomorphism. This is
+    a weight-index correction, not a claim that the two Hom spaces are
+    nonisomorphic or that a particular 2-morphism is nonzero. The construction
+    uses the existing Chevalley involution and its super-opposite signs.
 
-   **For the authors.** The allowance of infinite `I` in the initial data needs
-   a qualification when the proof of Theorem 12.1 regards `dim_{q,π} SYM` as an
-   ordinary power series. Already infinitely many even colours of common
-   symmetrizer degree give an infinite-dimensional homogeneous bubble space,
-   including at the empty boundary under nondegeneracy. Finiteness of each
-   bounded symmetrizer-degree sublevel is sufficient for this coefficient
-   issue; finite boundary words alone do not remove the bubbles of other
-   colours. The Laurentian arguments cited in §11 and the ordinary Hom series
-   in §12 therefore require an explicit finiteness scope.
+    **For the authors.** In (11.8), composing (11.7) at weight `λ` with the
+    isomorphism of Proposition 3.5 produces downward diagrams with rightmost
+    region `−λ`. To obtain the displayed target at `λ`, the subscript on the
+    upward map in the composite should therefore be `−λ`. This change is only
+    a reindexing of the external weight and leaves the source `H_n^sop` and
+    the graded-superalgebra homomorphism assertion unchanged.
+
 
 10. **§11, first introductory bullet: parity-fixed projectives
     [F→T; Clifford obstruction proved, general correction pending].**

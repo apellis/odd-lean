@@ -1,4 +1,10 @@
+import OddMath.QuiverHecke.Algebra
+import OddMath.QuiverHecke.AlgebraExamples
+import OddMath.QuiverHecke.AlgebraMapExamples
 import OddMath.SKM.DividedPowerIdempotents
+import OddMath.SKM.DividedPowerDecomposition
+import OddMath.SKM.DividedPowerMultiplicity
+import OddMath.SKM.DividedPowerDecompositionExamples
 import OddMath.SKM.DividedPowerIdempotentExamples
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
@@ -131,6 +137,7 @@ import OddMath.CoveringQuantum.SerreDeriv
 import OddMath.CoveringQuantum.SerreDerivExamples
 import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
+import OddMath.CoveringQuantum.Character
 import OddMath.CoveringQuantum.Negative
 import OddMath.CoveringQuantum.Coefficients.HalfSplitting
 import OddMath.CoveringQuantum.Coefficients.FormSplitting
@@ -834,6 +841,7 @@ import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.TwoStrandSummands
 import OddMath.SKM.TwoStrandShifts
 import OddMath.SKM.TwoStrandShiftExamples
+import OddMath.SKM.SerrePolynomialExamples
 import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
@@ -909,6 +917,7 @@ import OddMath.SKM.SpanDecoratedMatchings
 import OddMath.SKM.SpanReducedMatchings
 import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.Nondegeneracy
+import OddMath.SKM.LaurentianHoms
 import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
 import OddMath.SKM.MatchingBending
