@@ -81,7 +81,7 @@ instance moduleRingTower (r : ℕ) :
       exact mul_assoc _ _ _
     · change (c * x.fst) • y.snd + y.fst • (c • x.snd) + (c • x.snd) * y.snd =
         c • (x.fst • y.snd + y.fst • x.snd + x.snd * y.snd)
-      rw [smul_add, smul_add, smul_smul, smul_comm y.fst c, smul_mul_assoc]
+      simp only [smul_add, smul_smul, smul_mul_assoc, mul_comm y.fst c]
 
 /-- The principal projective with its full left `H_n` action. -/
 abbrev principal {r : ℕ} (e : Hn D Sc r) :=
@@ -107,6 +107,7 @@ theorem principal_fst_zero {r : ℕ} {e : Hn D Sc r} (x : principal D Sc e) :
 def principalEquivHn {r : ℕ} (e : Hn D Sc r) :
     (principal D Sc e).restrictScalars k ≃ₗ[k] principalInHn D Sc e where
   toFun x := ⟨(x : ModuleRing D Sc r).snd, by
+    change (x : ModuleRing D Sc r).snd * e = (x : ModuleRing D Sc r).snd
     have h := congrArg (fun z : ModuleRing D Sc r => z.snd) x.property
     simpa only [Unitization.snd_mul, Unitization.snd_inr, Unitization.fst_inr,
       principal_fst_zero D Sc x, zero_smul, zero_add] using h⟩
