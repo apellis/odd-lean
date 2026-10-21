@@ -869,7 +869,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
 
 10. **§11, first introductory bullet: parity-fixed projectives
-    [F→T; Clifford obstruction proved, general correction pending].**
+    [F→T; Clifford obstruction and Laurentian R-freeness proved, ℒ decomposition pending].**
     **Printed statement.** For every Laurentian graded superalgebra, the split
     Grothendieck group of finitely generated graded projective supermodules is
     asserted to be free over `ℒ = ℤ[q,q⁻¹,π]/(π²−1)`. The accompanying assertion
@@ -914,9 +914,18 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     the paired-orbit basis. These results require no assumed decomposition or
     basis. `CliffordK0.indecBasis`, `exists_indecomposable_not_norm` and
     `gradedK0_not_free_zpi` apply them to the same graded Clifford envelope.
-    The full Laurentian theorem, integer-shift rigidity, the mixed M/Q
-    direct-sum equivalence and the Laurent-ring basis remain obligations for
-    Theorem 11.3, including the general finite-dimensional graded case.
+    `GradedSupercategory.qPow_iso_degree_zero` now proves integer-shift
+    rigidity from bounded-below graded endomorphisms. The upstream
+    `GSKar.k0_free_laurentInt` derives `R`-freeness from degreewise
+    finite-dimensional, bounded-below Homs, with `KrullSchmidt.laurentBasis`
+    indexed by integer-shift orbits. `GSKarAlg.k0_free_laurentInt` supplies
+    the Laurentian graded-superalgebra consumer without finite total dimension.
+    `SKM.UDot.k0_free_laurentInt` and `SKM.UDot.laurentBasis` apply this to
+    the existing idempotent completion, using Theorem 8.1 and the explicit
+    `Symmetrizer.DegreeLocallyFinite` hypothesis from `hom_laurentian`.
+    No Nondegeneracy Conjecture or type-M premise is used. The mixed M/Q
+    `ℒ`-linear direct-sum equivalence and the comparison with graded left
+    projectives remain open; Theorems 11.3 and 11.7 themselves are not claimed.
 
     **Later uses.** The tensor assertion at the start of §11 already assumes
     absolute irreducibility and type M. For `H_n`, derive type M from the
