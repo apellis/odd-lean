@@ -907,6 +907,7 @@ import OddMath.SKM.SpanDotStrands
 import OddMath.SKM.SpanDecoratedMatchings
 import OddMath.SKM.SpanReducedMatchings
 import OddMath.SKM.SpanStrictReduced
+import OddMath.SKM.Nondegeneracy
 import OddMath.SKM.PositiveMatchings
 import OddMath.SKM.PositiveMatchingsExamples
 import OddMath.SKM.MatchingBending
