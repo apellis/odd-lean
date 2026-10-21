@@ -31,9 +31,10 @@ lake env lean -DwarningAsError=true \
 No `sorry`, `admit`, added axioms, or `native_decide`. Keep theorem statements and proof coverage
 intact. `scripts/AxiomAudit.lean` checks every imported `OddMath` declaration against the
 allowlist `propext`, `Classical.choice`, `Quot.sound`; a failed build is not a successful audit.
-`scripts/NonVacuity.lean` (run by CI) applies each headline theorem to concrete data with every
-hypothesis proved. When a headline theorem is added or its hypotheses change, add or update its
-example there.
+`scripts/NonVacuity.lean` and the files in `scripts/NonVacuity/` (all run by CI) apply each
+headline theorem to concrete data with every hypothesis proved. When a headline theorem is added,
+add its examples as a new file in `scripts/NonVacuity/` (so parallel PRs do not conflict); when its
+hypotheses change, update its existing example.
 
 ## Shared build storage
 
