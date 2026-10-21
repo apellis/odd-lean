@@ -70,7 +70,7 @@ theorem one_mul_one (μ ν : X) :
   classical
   by_cases h : μ = ν
   · subst ν
-    simp only [ite_eq_left rfl, one, ← MulOpposite.op_mul, K₀Ring.one_mul_one_self]
+    simp only [ite_true, one, ← MulOpposite.op_mul, K₀Ring.one_mul_one_self]
   · rw [ite_eq_right h]
     change MulOpposite.op (K₀Ring.one (weight Sc sy hc ν) *
       K₀Ring.one (weight Sc sy hc μ)) = MulOpposite.op 0
