@@ -828,6 +828,7 @@ import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
 import OddMath.SKM.HomComponents
 import OddMath.SKM.EnvelopeSOp
+import OddMath.SKM.TwoStrandSummands
 import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
