@@ -1,3 +1,5 @@
+import OddMath.QuiverHecke.Algebra
+import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.SKM.DividedPowerIdempotents
 import OddMath.SKM.DividedPowerDecomposition
 import OddMath.SKM.DividedPowerMultiplicity
