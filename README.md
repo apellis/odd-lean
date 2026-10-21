@@ -898,7 +898,7 @@ arbitrary root data. These results are not used by the nondegeneracy proof above
 
 Requires [elan](https://github.com/leanprover/elan). Toolchain `leanprover/lean4:v4.34.1` and Mathlib
 `v4.34.1` (`d13f23b723b8a846827a245b89c10fc7d3f11612`) are pinned. The diagrammatic modules depend on
-string-diagrams-lean at `34f2d952b3e5bdecea71bf7ba7c0610274660bd9`, the [EQ] dg structures on
+string-diagrams-lean at `7de888b35b96640e8514df79ab19fc4b3787025c`, the [EQ] dg structures on
 [dg-lean](https://github.com/apellis/dg-lean) at `161db4ede65f2dd359263a301c33ec39036988eb`, and the
 [BE2] Cartan data on [lie-lean](https://github.com/apellis/lie-lean) at
 `29042522f511a969b7f6dbc81d3c8a8bebfef818`. Classical even nilHecke algebras and splitting maps
