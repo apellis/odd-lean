@@ -26,6 +26,31 @@ private def reflection (n : ℕ) : Presented n ≃+ Presented n :=
 private theorem reflection_apply (n : ℕ) (x : Presented n) :
     reflection n x = reflectedOpposite n x := rfl
 
+/-- The corrected longest projector is primitive, by the existing integral
+corner theorem and the explicit reflected anti-equivalence. -/
+theorem oppositeProjector_primitive {n : ℕ} (y : Presented n)
+    (h : (oppositeProjector n * y * oppositeProjector n) *
+      (oppositeProjector n * y * oppositeProjector n) =
+      oppositeProjector n * y * oppositeProjector n) :
+    oppositeProjector n * y * oppositeProjector n = 0 ∨
+      oppositeProjector n * y * oppositeProjector n = oppositeProjector n := by
+  obtain ⟨x, rfl⟩ := (reflection n).surjective y
+  have hx : (ZeroHecke.projector n * x * ZeroHecke.projector n) *
+      (ZeroHecke.projector n * x * ZeroHecke.projector n) =
+      ZeroHecke.projector n * x * ZeroHecke.projector n := by
+    apply (reflection n).injective
+    simpa only [reflection_apply, reflectedOpposite_mul, mul_assoc,
+      oppositeProjector] using h
+  rcases OnhStructure.projector_primitive x hx with hx | hx
+  · left
+    have hh := congrArg (reflection n) hx
+    simpa only [map_zero, reflection_apply, reflectedOpposite_mul, mul_assoc,
+      oppositeProjector] using hh
+  · right
+    have hh := congrArg (reflection n) hx
+    simpa only [reflection_apply, reflectedOpposite_mul, mul_assoc,
+      oppositeProjector] using hh
+
 /-- EKL's splitters with their order interchanged by the anti-automorphism. -/
 def oddSplitting (n : ℕ) :
     Splitting (1 : Presented n) (oppositeProjector n) (Sq (n + 2)) where
@@ -34,13 +59,13 @@ def oddSplitting (n : ℕ) :
   sum_eq := by
     have h := congrArg (reflection n) (sum_eq_61 (n := n))
     simpa only [map_sum, reflection_apply, reflectedOpposite_mul,
-      reflectedOpposite, map_one, MulOpposite.unop_one] using h
+      reflectedOpposite_one] using h
   orth i j := by
     by_cases h : i = j
     · subst j
-      rw [← reflectedOpposite_mul, orth_61, if_pos rfl, if_pos rfl]
+      rw [← reflectedOpposite_mul, orth_61, ite_eq_left rfl, ite_eq_left rfl]
       rfl
-    · rw [← reflectedOpposite_mul, orth_61, if_neg h.symm, if_neg h]
+    · rw [← reflectedOpposite_mul, orth_61, ite_eq_right (Ne.symm h), ite_eq_right h]
       simp [reflectedOpposite]
   mul_sigma _ := one_mul _
   lam_mul _ := mul_one _
@@ -64,6 +89,7 @@ theorem summand_mul (n : ℕ) (i j : Sq (n + 2)) :
 
 theorem summand_idempotent (n : ℕ) (i : Sq (n + 2)) :
     IsIdempotentElem (summand n i) := by
+  change summand n i * summand n i = summand n i
   simpa using summand_mul n i i
 
 /-- The left regular module as a product of `n!` principal LEFT ideals.
@@ -72,6 +98,26 @@ def oddDecomposition (n : ℕ) :
     Presented n ≃ₗ[Presented n] (Sq (n + 2) → leftIdeal (oppositeProjector n)) :=
   (Submodule.topEquiv.symm.trans (LinearEquiv.ofEq _ _ leftIdeal_one.symm)).trans
     (oddSplitting n).equiv
+
+/-- Push the constructed splitting along a unital ring homomorphism, for
+coefficient extension or the same-colour corner of a quiver Hecke algebra. -/
+def oddSplittingMap {A : Type*} [Ring A] {n : ℕ} (f : Presented n →+* A) :
+    Splitting (1 : A) (f (oppositeProjector n)) (Sq (n + 2)) where
+  σ ℓ := f ((oddSplitting n).σ ℓ)
+  lam ℓ := f ((oddSplitting n).lam ℓ)
+  sum_eq := by
+    simpa only [map_sum, map_mul, map_one] using congrArg f (oddSplitting n).sum_eq
+  orth i j := by
+    simpa only [map_mul, apply_ite, map_zero] using congrArg f ((oddSplitting n).orth i j)
+  mul_sigma _ := one_mul _
+  lam_mul _ := mul_one _
+
+/-- The left-module decomposition after coefficient extension or corner transport.
+The homomorphism need not be injective. -/
+def oddDecompositionMap {A : Type*} [Ring A] {n : ℕ} (f : Presented n →+* A) :
+    A ≃ₗ[A] (Sq (n + 2) → leftIdeal (f (oppositeProjector n))) :=
+  (Submodule.topEquiv.symm.trans (LinearEquiv.ofEq _ _ leftIdeal_one.symm)).trans
+    (oddSplittingMap f).equiv
 
 /-- The indexing set has exactly the required ordinary factorial size. -/
 theorem summand_count (a : ℕ) : Fintype.card (Sq a) = a.factorial := by
@@ -98,7 +144,7 @@ private theorem reflection_crossing {n : ℕ} (i : Fin (n + 1)) :
 private theorem reflection_word_degree {n : ℕ} (w : List (Letter n)) :
     reflection n (wordValue w) ∈ grading n (halfWordDegree w) := by
   induction w with
-  | nil => simpa [wordValue, reflection] using one_mem_grading n
+  | nil => simpa [wordValue, reflection_apply] using one_mem_grading n
   | cons g w ih =>
     simp only [wordValue, halfWordDegree, List.map_cons, List.prod_cons,
       List.sum_cons, reflection_apply, reflectedOpposite_mul] at ih ⊢
@@ -118,6 +164,7 @@ private theorem reflection_word_degree {n : ℕ} (w : List (Letter n)) :
 theorem reflectedOpposite_degree {n : ℕ} {d : ℤ} {x : Presented n}
     (hx : x ∈ grading n d) : reflectedOpposite n x ∈ grading n d := by
   have hx' : x ∈ degreePiece n (2 * d) := grading_le_degreePiece d hx
+  clear hx
   change reflection n x ∈ grading n d
   induction hx' using Submodule.span_induction with
   | mem y hy =>
@@ -204,14 +251,18 @@ theorem oddDecomposition_symm_parity {n : ℕ} {p : ZMod 2}
   change (∑ ℓ, (y ℓ : Presented n) * (oddSplitting n).lam ℓ) ∈ parity n p
   apply AddSubgroup.sum_mem
   intro ℓ _
-  simpa using mul_mem_parity (hy ℓ) (grading_le_parity n _ (lam_degree n ℓ))
+  have h := mul_mem_parity (hy ℓ) (grading_le_parity n _ (lam_degree n ℓ))
+  rw [Int.cast_neg, add_neg_cancel_right] at h
+  exact h
 
 /-- With `P = Q^(-dᵢ choose(a,2)) NH_a D_w₀`, the summand exponent is
 `dᵢ (2|ℓ| - choose(a,2))`; there is no extra Π shift on `P`. -/
 theorem normalized_degree (n : ℕ) (ℓ : Sq (n + 2)) (di : ℤ) :
     di * ((n + 2).choose 2 : ℤ) - 2 * di * shift n ℓ =
       di * (2 * (∑ j, ℓ.1 j : ℕ) - ((n + 2).choose 2 : ℤ)) := by
-  simp only [shift, deg61]
+  let s : ℤ := ((∑ j : Fin (n + 1), ℓ.1 j : ℕ) : ℤ)
+  let c : ℤ := (n + 2).choose 2
+  change di * c - 2 * di * (-(s - c)) = di * (2 * s - c)
   ring
 
 end

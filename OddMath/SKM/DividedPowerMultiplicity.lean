@@ -34,7 +34,8 @@ private theorem local_multiplicity (q : kˣ) (π : k) (m : ℕ) :
   apply Finset.sum_congr rfl
   intro l hl
   have hl' := Finset.mem_range.mp hl
-  congr 2 <;> omega
+  simp only [show m + 2 - 1 = m + 1 by omega,
+    show m + 1 - (m + 1 - l) = l by omega]
 
 private theorem prod_qpNat (q : kˣ) (π : k) (a : ℕ) :
     (∏ j : Fin (a - 1), qpNat q π (j.val + 2)) = qpFact q π a := by

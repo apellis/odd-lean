@@ -30,12 +30,25 @@ example : (oddDecompositionAll 0).symm (oddDecompositionAll 0 1) = 1 :=
 example : (oddDecompositionAll 1).symm (oddDecompositionAll 1 1) = 1 :=
   (oddDecompositionAll 1).symm_apply_apply 1
 
+/-- The same constructed splitting acts over the admissible field ℚ. -/
+example (x : RationalPresented 0) :
+    (oddDecompositionMap (rationalInclude 0)).symm
+      (oddDecompositionMap (rationalInclude 0) x) = x :=
+  (oddDecompositionMap (rationalInclude 0)).symm_apply_apply x
+
+example : oppositeProjector 0 * 1 * oppositeProjector 0 = 0 ∨
+    oppositeProjector 0 * 1 * oppositeProjector 0 = oppositeProjector 0 :=
+  oppositeProjector_primitive 1 (by
+    have he : oppositeProjector 0 * oppositeProjector 0 = oppositeProjector 0 :=
+      oppositeProjector_idempotent 0
+    simp only [mul_one, he])
+
 example : (∑ ℓ ∈ Sq 3, multiplicity (1 : ℤˣ) (-1 : ℤ) ℓ) = 0 := by
   rw [sum_multiplicity]
   norm_num [OddMath.CoveringQuantum.qpFact, OddMath.CoveringQuantum.qpNat]
 
 example : summand 0 lower * summand 0 upper = 0 := by
-  rw [summand_mul, if_neg]
+  rw [summand_mul, ite_eq_right]
   intro h
   have hh := congrArg (fun z : Sq 2 => z.1 0) h
   norm_num [lower, upper] at hh
