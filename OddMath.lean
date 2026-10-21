@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.AlgebraExamples
