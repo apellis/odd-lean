@@ -815,3 +815,76 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     the graded-superalgebra homomorphism assertion unchanged.
 
 
+10. **§11, first introductory bullet: parity-fixed projectives
+    [F→T; Clifford obstruction proved, general correction pending].**
+    **Printed statement.** For every Laurentian graded superalgebra, the split
+    Grothendieck group of finitely generated graded projective supermodules is
+    asserted to be free over `ℒ = ℤ[q,q⁻¹,π]/(π²−1)`. The accompanying assertion
+    that all indecomposable isomorphism classes form a `ℤ`-basis is unaffected.
+
+    **Counterexample.** Let `A = k[c]/(c²−1)`, with `c` odd and integer degree
+    zero, over a field of characteristic different from two. Multiplication by
+    the odd unit identifies the regular projective with its parity shift.
+    More strongly, parity acts as the identity on its entire graded projective
+    split Grothendieck group. That group is nonzero, so it cannot be a free
+    `ℒ`-module: a nonzero free module is faithful, while `π−1 ≠ 0` annihilates
+    this group. A single nonzero parity-fixed vector would not suffice for this
+    argument, since the free module `ℒ` itself has the fixed vector `π+1`.
+
+    **Corrected statement.** Put `R = ℤ[q,q⁻¹]`. Krull–Schmidt gives the
+    `ℤ`-basis of indecomposable classes; bounded-below grading rules out any
+    nonzero integer shift stabilizer, so `K₀(A)` is `R`-free. Parity acts on
+    the integer-shift orbits. Choose compatible representatives for its paired
+    orbits `M` and fixed orbits `Q`. Then
+    `K₀(A) ≅ (⨁_M ℒ) ⊕ (⨁_Q ℒ/(π−1))` as `ℒ`-modules. In particular,
+    `K₀(A)` is `ℒ`-free if and only if no indecomposable projective is
+    isomorphic to its parity shift. In that case representatives modulo both
+    shifts form a basis. For the converse, including infinite orbit sets,
+    parity-fixed vectors modulo norms vanish in a free module, whereas every
+    `Q` summand contributes `R/2R`. The equivalent condition on graded simple
+    heads uses parity-compatible projective covers.
+
+    **Declarations and remaining scope.** In `OddMath.SKM.CliffordK0`,
+    `c_mul_c` and `laurentian` verify the degree-zero Clifford algebra and its
+    finiteness properties. `gradedRegular_class_ne_zero`,
+    `gradedProjectiveParityNatIso`, `C_pi_smul` and `gradedK0_not_free` prove
+    the obstruction on `StringDiagrams.K₀` of its graded super Karoubi envelope,
+    with the existing `K₀.moduleLaurent` action. The nonzero class is detected
+    by a finite-dimensional representable Hom invariant. The comparison
+    `projectiveK0Equiv` concerns ungraded right projective supermodules; an
+    explicit equivalence with graded left projective supermodules remains
+    separate. `StringDiagrams.KrullSchmidt.indecBasis` now constructs the
+    integral basis for Hom-finite idempotent-complete linear categories;
+    `GSKarAlg.indecBasis` supplies the finite-dimensional graded-superalgebra
+    consumer. `KrullSchmidt.k0_free_zpi_iff` proves the parity-ring freeness
+    criterion, before quotienting integer shifts, and `parityBasis` constructs
+    the paired-orbit basis. These results require no assumed decomposition or
+    basis. `CliffordK0.indecBasis`, `exists_indecomposable_not_norm` and
+    `gradedK0_not_free_zpi` apply them to the same graded Clifford envelope.
+    The full Laurentian theorem, integer-shift rigidity, the mixed M/Q
+    direct-sum equivalence and the Laurent-ring basis remain obligations for
+    Theorem 11.3, including the general finite-dimensional graded case.
+
+    **Later uses.** The tensor assertion at the start of §11 already assumes
+    absolute irreducibility and type M. For `H_n`, derive type M from the
+    finite weightwise rank comparison in Hill–Wang Proposition 6.12 before
+    invoking covering-ring freeness; Proposition 6.15 explicitly refers back
+    to that argument. This avoids using Corollary 11.4 circularly in Theorem
+    11.3. For the target of Theorem 11.7, the general `R`-freeness suffices for
+    faithful rational localization, and its width argument uses
+    Krull–Schmidt and projective lifting, not absence of type Q. The map
+    `j_{n,n′}` uses the separately established type-M and absolute-irreducibility
+    input of Corollary 11.4. The §12 Hom pairing descends by split additivity,
+    without a free `ℒ`-basis assumption.
+
+    **For the authors.** The first bullet of §11 in arXiv:1701.04133v2 needs a
+    parity qualification: the degree-zero one-generator Clifford superalgebra
+    has nonzero split projective `K₀` with trivial parity action, and hence
+    does not have free `ℒ`-module `K₀`. The integral indecomposable basis and
+    freeness over `ℤ[q,q⁻¹]` remain valid. Over `ℒ`, paired parity orbits give
+    free summands and parity-fixed orbits give `ℒ/(π−1)` summands; freeness
+    holds exactly when there are no parity-self-associate indecomposables.
+    The type-M input for `H_n` can be placed after Hill–Wang's weightwise rank
+    comparison and before the integral isomorphism. The tensor comparison
+    already includes the needed type-M hypothesis; the generic width and
+    localization arguments do not require the stronger blanket freeness claim.
