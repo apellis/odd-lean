@@ -1,29 +1,27 @@
-import OddMath.LrLegA
+import OddMath.LrNorthEastSign
 
-/-! Hand-derived LR Leg A fixtures, written BEFORE the module exists (TDD red step).
+/-! Fixtures for `OddMath.LrNorthEastSign`.
 
-Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1.
-Leg A (Thm 3.8 proof, first half): the h-expansion sign identity
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1, Theorem 3.8: the
+h-expansion sign identity
   (-1)^{NE(lam)+NE^<(T)} = (-1)^{N(lam)+N^<(T)}
-for every tableau T (all counts per paper Sec 2.2 boxterpretations:
-North = strictly above row; East = strictly right column; ^< = entry
-strictly smaller than the reference box; totals sum over all boxes).
+for every tableau T (all counts as in §2.2: North = strictly above row; East = strictly
+right column; ^< = entry strictly smaller than the reference box; totals sum over all
+boxes).
 
-Values below are hand-derived in an unpublished script (exact Python model
-of the Sec 2.2 counting rules) BEFORE any Lean is written:
+The values are computed by hand from the §2.2 counting rules:
 - F1 single box: all totals 0.
 - F2 row (2), entries [1,1]: no North boxes anywhere; N = NE = 0.
 - F3 column (1^2), entries [1],[2]: bottom box sees N=1, NE=0, N^<=1,
   NE^<=0 (the Lemma 3.5 column micro-instance: exponents 0 vs 2).
 - F4 shape (2,1), rows [1,1],[2]: bottom box N=2, NE=1, N^<=2, NE^<=1.
 - F5 paper Example 2.4, rows [1,1,2,2],[2,3,3,4],[3,4,4],[5,6]:
-  grounding totals dN=16, E^>=28, sW=47 (paper p.8, exact match required);
-  Leg A totals NE+NE^< = 55, N+N^< = 117 (diff 62, even), both signs -1.
-This file MUST fail to elaborate until `OddMath.LrLegA` exists.
+  the totals dN=16, E^>=28, sW=47 printed in the example;
+  NE+NE^< = 55 and N+N^< = 117 (difference 62, even), both signs -1.
 -/
-namespace OddMath.LrLegA.Tests
+namespace OddMath.LrNorthEastSign.Tests
 
-open OddMath.LrLegA
+open OddMath.LrNorthEastSign
 
 /- Kernel reduction depth: the F5 closed checks unfold 13x13 box
 comparisons plus `(-1)^117`; that exceeds the default limit of 512. -/
@@ -76,12 +74,12 @@ example : totalNELt exShape21 exShape21 = 1 := by decide
 example : signLeft exShape21 exShape21 = 1 := by decide
 example : signRight exShape21 exShape21 = 1 := by decide
 
--- F5 grounding: the paper's worked values dN=16, E^>=28, sW=47.
+-- F5: the paper's worked values dN=16, E^>=28, sW=47.
 example : totalDirectNorth exEllis24 exEllis24 = 16 := by decide
 example : totalEastGt exEllis24 exEllis24 = 28 := by decide
 example : totalSouthWest exEllis24 exEllis24 = 47 := by decide
 
--- F5 Leg A totals: NE+NE^< = 55, N+N^< = 117; both signs -1.
+-- F5 sign totals: NE+NE^< = 55, N+N^< = 117; both signs -1.
 example : totalNE exEllis24 exEllis24 = 31 := by decide
 example : totalNELt exEllis24 exEllis24 = 24 := by decide
 example : totalNorth exEllis24 exEllis24 = 62 := by decide
@@ -99,4 +97,4 @@ example : ∀ B ∈ exEllis24, ∀ A ∈ exEllis24,
 example : signLeft exEllis24 exEllis24 = signRight exEllis24 exEllis24 :=
   global_sign exEllis24 exEllis24 (by decide)
 
-end OddMath.LrLegA.Tests
+end OddMath.LrNorthEastSign.Tests

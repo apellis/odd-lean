@@ -1,57 +1,39 @@
 import OddMath.SkewSign
 
 /-!
-# LR Leg A: the per-tableau sign identity behind `s^K = s^p`
+# North and NorthEast box counts: the sign identity behind `s^K = s^p`
 
-Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1.
-Leg A is the first half of the proof of Theorem 3.8, eq. (3.9)
-(`s^K_lam = s^p_lam = s^s_lam`): expanding the complete product
-`h_mu = h_{mu_1} ... h_{mu_r}` as an odd-plactic signed sum and regrouping
-by shape gives
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1, Theorem 3.8, eq. (3.9)
+(`s^K_lam = s^p_lam = s^s_lam`). The first half of the proof expands the complete product
+`h_mu = h_{mu_1} ... h_{mu_r}` as an odd-plactic signed sum and regroups by shape:
   `h_mu = sum_lam sum_{T in SSYT(lam,mu)} (-1)^{NE(lam)+NE^<(T)} s^p_lam`,
-while the Kostka expansion is `h_mu = sum_lam K_{lam,mu} s^K_lam`; since
-both `{h_mu}` and `{s^K_lam}` are integral bases (Prop 2.3, eqs (2.8)-(2.9)),
-it suffices to check the per-tableau sign identity
+while the Kostka expansion is `h_mu = sum_lam K_{lam,mu} s^K_lam`. Since both `{h_mu}` and
+`{s^K_lam}` are integral bases (Prop 2.3, eqs (2.8)-(2.9)), it suffices to prove the
+per-tableau sign identity
   `(-1)^{NE(lam)+NE^<(T)} = (-1)^{N(lam)+N^<(T)}`.
 
-Box-count conventions (paper Sec 2.2, "Boxterpretations"): rows grow
-downward (English diagrams), columns grow rightward. `North` is strict
-(row above); `East` is strict (column right); a `^<` decoration counts
-only boxes whose entry is strictly smaller than the reference box;
-a count evaluated on a tableau sums over all boxes. Signs:
-`sign(T) = (-1)^{N^<(T)}` for a tableau, `sign(T_lam) = (-1)^{N(lam)}`
-for the row-reading tableau.
+Box counts follow §2.2 ("Boxterpretations"): English diagrams, rows grow downward and
+columns rightward. `North` is strict (an earlier row) and `East` is strict (a later column);
+a `^<` decoration counts only boxes whose entry is strictly smaller than that of the
+reference box; a count evaluated on a tableau sums over all of its boxes. Thus
+`sign(T) = (-1)^{N^<(T)}` and `sign(T_lam) = (-1)^{N(lam)}`.
 
-What this module proves (sorry-free):
-- `perBox`: for one reference box `B`, if every North-but-not-NE box has
-  a strictly smaller entry (the consequence of semistandardness the paper
-  uses: "those Northwest are ignored by the left-hand sign, but the entry
-  of such a box is necessarily less than that of B, so the right-hand
-  sign is +1"), then
-  `N + N^< = (NE + NE^<) + 2 * R` where `R` counts the non-NE North boxes.
-- `global`: the summed identity over a box list (take `Bs = T` for the
-  full tableau totals).
-- `perBox_sign` / `global_sign`: the `(-1)`-power form of both.
-- Grounding counters `countDirectNorth` / `countEastGt` / `countSouthWest`
-  reproducing the paper's worked Example 2.4 values
-  (dN = 16, E^> = 28, sW = 47); see the fixture suite.
+Main results:
+- `perBox`: for a reference box `B` such that every box North of `B` and not East of it has
+  a strictly smaller entry (true in any semistandard tableau),
+  `N + N^< = (NE + NE^<) + 2 * R`, where `R` counts the North boxes that are not East.
+- `global`: the summed identity over a list of reference boxes (take `Bs = T` for the
+  tableau totals).
+- `perBox_sign` / `global_sign`: the corresponding identities of powers of `-1`.
+- `countDirectNorth` / `countEastGt` / `countSouthWest`: the counts of Example 2.4
+  (`dN = 16`, `E^> = 28`, `sW = 47`), evaluated in `OddMath.Tests.LrNorthEastSignFixtures`.
 
-Scope (NOT this module): the h-expansion regrouping (A1), the integral-basis
-uniqueness step (A2, needs Prop 2.3), semistandard tableaux and Ferrers
-shapes (the `Semistandard => per-box hypothesis` bridge is an obligation
-of the Leg B successor), and the full `s^K = s^p` equality. Finite fixture
-values are development aids (`SUPPORTED_LOW_DEGREE` at most), never a proof
-of the published theorem.
-
-Convention authority: the sign convention (increasing-index canonical
-order, Koszul reorder signs; English Ferrers coordinates). This module
-imports `OddMath.SkewSign` for the shared core-algebra prelude only
-(`pow_succ`, `mul_assoc`, `mul_one` are not in bare Lean core); there is
-no mathematical dependence on skew signs, and the axiom audit must still
-show only the standard triple with no `sorryAx`.
+`OddMath.Frontier.TableauSign` discharges the per-box hypothesis for semistandard tableaux
+on a Young diagram. Boxes are bare `(row, col, entry)` records; the import of
+`OddMath.SkewSign` supplies only basic algebraic lemmas (`pow_succ`, `mul_assoc`, `mul_one`).
 -/
 
-namespace OddMath.LrLegA
+namespace OddMath.LrNorthEastSign
 
 /-- A tableau box: 0-indexed English coordinates (rows grow downward,
 columns grow rightward) with an entry in the positive alphabet. -/
@@ -110,7 +92,7 @@ def countNELt : Tableau → TBox → Nat
         (if isEast A B then (if isLtEntry A B then 1 else 0) else 0)
        else 0) + countNELt T B
 
-/-- R(B): North boxes that are NOT strictly East (the NW boxes plus the
+/-- R(B): North boxes that are not strictly East (the NW boxes plus the
 same-column North boxes). The paper's argument ignores exactly these on
 the left-hand side. -/
 def countRest : Tableau → TBox → Nat
@@ -180,11 +162,11 @@ def totalSouthWest (T : Tableau) : Tableau → Nat
   | [] => 0
   | B :: Bs => countSouthWest T B + totalSouthWest T Bs
 
-/-- Left-hand Leg A sign: `(-1)^{NE+NE^<}` (the plactic h-expansion side). -/
+/-- Left-hand sign: `(-1)^{NE+NE^<}` (the plactic h-expansion side). -/
 def signLeft (T Bs : Tableau) : Int :=
   (-1 : Int) ^ (totalNE T Bs + totalNELt T Bs)
 
-/-- Right-hand Leg A sign: `(-1)^{N+N^<}` (the Kostka side). -/
+/-- Right-hand sign: `(-1)^{N+N^<}` (the Kostka side). -/
 def signRight (T Bs : Tableau) : Int :=
   (-1 : Int) ^ (totalNorth T Bs + totalNorthLt T Bs)
 
@@ -195,7 +177,7 @@ theorem bool_false_of_not_true {b : Bool} (h : ¬ b = true) :
   | true => exact absurd hb h
   | false => rfl
 
-/-- Per-box Leg A parity identity (the paper's per-box argument).
+/-- Per-box parity identity (the paper's per-box argument).
 For a fixed box `B`, the North boxes split into NE boxes (counted by both
 sides) and non-NE North boxes (counted twice on the right: once in `N`
 and once in `N^<`, using the hypothesis). Hence the two exponents differ
@@ -230,7 +212,7 @@ theorem perBox (T : Tableau) (B : TBox) :
       · simp only [hN, ite_false, Bool.false_eq_true]
         omega
 
-/-- Summed Leg A parity identity over a box list (take `Bs = T`). -/
+/-- Summed parity identity over a box list (take `Bs = T`). -/
 theorem global (T Bs : Tableau) :
     (∀ B ∈ Bs, ∀ A ∈ T, isNorth A B = true → isEast A B = false →
       isLtEntry A B = true) →
@@ -280,7 +262,7 @@ theorem perBox_sign (T : Tableau) (B : TBox)
       = (-1 : Int) ^ (countNorth T B + countNorthLt T B) := by
   exact (sign_of_eq_add_two_mul _ _ _ (perBox T B H)).symm
 
-/-- Global Leg A sign identity: `(-1)^{NE+NE^<} = (-1)^{N+N^<}`. -/
+/-- Global sign identity: `(-1)^{NE+NE^<} = (-1)^{N+N^<}`. -/
 theorem global_sign (T Bs : Tableau)
     (H : ∀ B ∈ Bs, ∀ A ∈ T, isNorth A B = true → isEast A B = false →
       isLtEntry A B = true) :
@@ -289,4 +271,4 @@ theorem global_sign (T Bs : Tableau)
     = (-1 : Int) ^ (totalNorth T Bs + totalNorthLt T Bs)
   exact (sign_of_eq_add_two_mul _ _ _ (global T Bs H)).symm
 
-end OddMath.LrLegA
+end OddMath.LrNorthEastSign

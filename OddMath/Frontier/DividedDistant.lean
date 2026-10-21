@@ -7,7 +7,7 @@ All generators, including spectators and repeated letters, are retained.
 -/
 namespace OddMath.Frontier.DividedDistant
 open OddMath.SkewPolynomial (SkewPolynomial generator)
-open PbwL2 PbwL3 AllRankDivided
+open PbwPresentation PbwFactorization AllRankDivided
 variable {n : ℕ}
 
 /-- Left-generator induction on the actual model, via the genuine presentation.

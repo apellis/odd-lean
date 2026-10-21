@@ -154,10 +154,11 @@ theorem tableauxOfContent_zero_of_card_ne_zero (μ : YoungDiagram) (hμ : μ.car
   apply tableauxOfContent_eq_empty_of_total_ne
   simpa only [Finsupp.sum_zero_index] using Ne.symm hμ
 
-/-- Leg A aggregated over the actual, exact fixed-content tableau domain. -/
+/-- The North/NorthEast sign identity summed over the tableaux of fixed shape
+and content. -/
 theorem signed_content_sum (μ : YoungDiagram) (c : ℕ →₀ ℕ) :
-    (∑ T ∈ tableauxOfContent μ c, LrLegA.signLeft (boxes T) (boxes T)) =
-      ∑ T ∈ tableauxOfContent μ c, LrLegA.signRight (boxes T) (boxes T) := by
+    (∑ T ∈ tableauxOfContent μ c, LrNorthEastSign.signLeft (boxes T) (boxes T)) =
+      ∑ T ∈ tableauxOfContent μ c, LrNorthEastSign.signRight (boxes T) (boxes T) := by
   apply Finset.sum_congr rfl
   intro T _
   exact TableauSign.global_sign T

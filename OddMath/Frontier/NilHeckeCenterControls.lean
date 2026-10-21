@@ -25,7 +25,7 @@ theorem rankTwo_square_survives : generator (0 : Fin 2) ^ 2 ≠ 0 := by
 
 theorem rankTwo_distinct_odd_anticommute :
     generator (0 : Fin 2) * generator 1 = -(generator 1 * generator 0) :=
-  OddMath.PbwL1.rel_anticommute 0 1 (by decide)
+  OddMath.PbwModelRelations.rel_anticommute 0 1 (by decide)
 
 theorem rankTwo_kernel_not_ordinary_central :
     generator (0 : Fin 2) * generator 1 ∈ kernelSubring 0 ∧

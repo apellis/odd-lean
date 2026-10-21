@@ -1,4 +1,4 @@
-import OddMath.PbwL4
+import OddMath.PbwSpanning
 import Mathlib.Data.List.Sort
 import Mathlib.Algebra.BigOperators.Group.List.Basic
 
@@ -6,7 +6,7 @@ import Mathlib.Algebra.BigOperators.Group.List.Basic
 # General ordered-word realization in the actual skew-polynomial presentation
 
 The source presentation is EKL, arXiv:1111.1320v1, §2.1.1, (2.1), p.3
-(and (2.9), p.4), implemented in `PbwL2`. Increasing index order is the
+(and (2.9), p.4), implemented in `PbwPresentation`. Increasing index order is the
 locked convention in the sign convention. Equal indices may repeat.
 This module proves realization and surjectivity, not quotient normalization
 or injectivity. There is no bound on rank, word length, or multiplicity.
@@ -17,8 +17,8 @@ namespace OddMath.Frontier.PbwRealization
 open OddMath.SkewPolynomial
 
 /-- Quotient evaluation of a generator list, including the empty product. -/
-def word {n : ℕ} (l : List (Fin n)) : OddMath.PbwL2.Presented n :=
-  (l.map (OddMath.PbwL2.q n)).prod
+def word {n : ℕ} (l : List (Fin n)) : OddMath.PbwPresentation.Presented n :=
+  (l.map (OddMath.PbwPresentation.q n)).prod
 
 /-- Multiplicity vector of a word. -/
 def exponents {n : ℕ} (l : List (Fin n)) : Fin n → ℕ := fun i => l.count i
@@ -45,7 +45,7 @@ theorem crossingCount_head {n : ℕ} (i : Fin n) (l : List (Fin n))
 
 /-- Every nondecreasing word evaluates to its multiplicity monomial with sign +1. -/
 theorem Phi_word_of_sorted {n : ℕ} (l : List (Fin n)) (h : l.Pairwise (· ≤ ·)) :
-    OddMath.PbwL3.Phi n (word l) = monomial (exponents l) 1 := by
+    OddMath.PbwFactorization.Phi n (word l) = monomial (exponents l) 1 := by
   induction l with
   | nil =>
     simp only [word, List.map_nil, List.prod_nil, map_one, exponents_nil]
@@ -55,8 +55,8 @@ theorem Phi_word_of_sorted {n : ℕ} (l : List (Fin n)) (h : l.Pairwise (· ≤ 
     have hs : OddMath.skewSign (expSingle i) (exponents l) = 1 := by
       unfold OddMath.skewSign
       rw [crossingCount_head i l hi, pow_zero]
-    change OddMath.PbwL3.Phi n (OddMath.PbwL2.q n i * word l) = _
-    rw [map_mul, OddMath.PbwL3.Phi_q, ih ht, exponents_cons]
+    change OddMath.PbwFactorization.Phi n (OddMath.PbwPresentation.q n i * word l) = _
+    rw [map_mul, OddMath.PbwFactorization.Phi_q, ih ht, exponents_cons]
     change OddMath.SkewPolynomial.mul (monomial (expSingle i) 1)
       (monomial (exponents l) 1) = _
     rw [mul_monomial, hs]
@@ -89,19 +89,19 @@ theorem exponents_orderedList {n : ℕ} (a : Fin n → ℕ) :
 /-- Uniform ordered-word realization of each unit-coefficient monomial. -/
 theorem exists_ordered_word {n : ℕ} (a : Fin n → ℕ) :
     ∃ l : List (Fin n), l.Pairwise (· ≤ ·) ∧ exponents l = a ∧
-      OddMath.PbwL3.Phi n (word l) = monomial a 1 := by
+      OddMath.PbwFactorization.Phi n (word l) = monomial a 1 := by
   refine ⟨orderedList a, orderedList_sorted a, exponents_orderedList a, ?_⟩
   rw [Phi_word_of_sorted _ (orderedList_sorted a), exponents_orderedList]
 
 /-- Integer coefficients lift by scalar multiplication in the actual quotient. -/
 theorem Phi_smul_word {n : ℕ} (a : Fin n → ℕ) (c : ℤ) :
-    OddMath.PbwL3.Phi n (c • word (orderedList a)) = monomial a c := by
+    OddMath.PbwFactorization.Phi n (c • word (orderedList a)) = monomial a c := by
   rw [map_zsmul, Phi_word_of_sorted _ (orderedList_sorted a), exponents_orderedList,
-    ← OddMath.PbwL4.monomial_smul]
+    ← OddMath.PbwSpanning.monomial_smul]
 
 /-- Surjectivity of the presentation-to-model map, in all ranks and degrees.
 This does not assert injectivity or quotient-side normal ordering. -/
-theorem Phi_surjective (n : ℕ) : Function.Surjective (OddMath.PbwL3.Phi n) := by
+theorem Phi_surjective (n : ℕ) : Function.Surjective (OddMath.PbwFactorization.Phi n) := by
   intro f
   induction f using Finsupp.induction_linear with
   | zero => exact ⟨0, map_zero _⟩

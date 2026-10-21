@@ -1,7 +1,7 @@
 import OddMath.Frontier.DividedSquareZero
 
 namespace OddMath.Frontier.DividedBraid
-open PbwL2 PbwL3 AllRankDivided DividedSquareZero
+open PbwPresentation PbwFactorization AllRankDivided DividedSquareZero
 open OddMath.SkewPolynomial (SkewPolynomial generator)
 variable {n : ℕ}
 

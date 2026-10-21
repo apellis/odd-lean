@@ -1,5 +1,5 @@
 import OddMath.DividedDifferences
-import OddMath.PbwL3
+import OddMath.PbwFactorization
 import Mathlib.Data.Fin.Basic
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Tactic.FinCases

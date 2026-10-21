@@ -171,8 +171,8 @@ def piFree (m : ℕ) : FreeAlgebra ℤ (Fin (m+1)) →ₐ[ℤ] Polynomial ℤ :=
   FreeAlgebra.lift ℤ (fun j => if j = 0 then Polynomial.X else 0)
 
 theorem piFree_kill (m : ℕ) (w : FreeAlgebra ℤ (Fin (m+1)))
-    (hw : w ∈ PbwL2.relIdeal (m+1)) : piFree m w = 0 := by
-  rw [PbwL2.relIdeal, PbwL2.relTwoSided, TwoSidedIdeal.mem_asIdeal] at hw
+    (hw : w ∈ PbwPresentation.relIdeal (m+1)) : piFree m w = 0 := by
+  rw [PbwPresentation.relIdeal, PbwPresentation.relTwoSided, TwoSidedIdeal.mem_asIdeal] at hw
   induction hw using TwoSidedIdeal.span_induction with
   | mem x h =>
       obtain ⟨i, j, hij, rfl⟩ := h
@@ -187,18 +187,18 @@ theorem piFree_kill (m : ℕ) (w : FreeAlgebra ℤ (Fin (m+1)))
   | left_absorb a x hx ih => rw [map_mul, ih, mul_zero]
   | right_absorb b x hx ih => rw [map_mul, ih, zero_mul]
 
-def piPres (m : ℕ) : PbwL2.Presented (m+1) →+* Polynomial ℤ :=
-  Ideal.Quotient.lift (PbwL2.relIdeal (m+1)) (piFree m).toRingHom (piFree_kill m)
+def piPres (m : ℕ) : PbwPresentation.Presented (m+1) →+* Polynomial ℤ :=
+  Ideal.Quotient.lift (PbwPresentation.relIdeal (m+1)) (piFree m).toRingHom (piFree_kill m)
 
 def pi (m : ℕ) : SkewPolynomial (m+1) →+* Polynomial ℤ :=
   (piPres m).comp (PbwEquivalence.presentedEquiv (m+1)).symm.toRingHom
 
 theorem pi_generator (m : ℕ) (j : Fin (m+1)) :
     pi m (generator j) = if j = 0 then Polynomial.X else 0 := by
-  have he : (PbwEquivalence.presentedEquiv (m+1)).symm (generator j) = PbwL2.q (m+1) j := by
+  have he : (PbwEquivalence.presentedEquiv (m+1)).symm (generator j) = PbwPresentation.q (m+1) j := by
     apply (PbwEquivalence.presentedEquiv (m+1)).injective
     simpa only [RingEquiv.apply_symm_apply, PbwEquivalence.presentedEquiv_apply] using
-      (PbwL3.Phi_q (m+1) j).symm
+      (PbwFactorization.Phi_q (m+1) j).symm
   simp only [pi, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, he]
   change piFree m (FreeAlgebra.ι ℤ j) = _
   simp [piFree]

@@ -860,7 +860,7 @@ theorem place_prefix {ν : ℕ} (h₀ : 0 + ν ≤ n+2) (h₁ : 0 + (ν+1) ≤ n
     intro j
     simp only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe,
       RingEquiv.coe_toRingHom, PbwEquivalence.presentedEquiv_apply]
-    rw [OddMath.PbwL3.Phi_q, ElementaryBranching.prefix_generator, ProjectorRank.place_generator,
+    rw [OddMath.PbwFactorization.Phi_q, ElementaryBranching.prefix_generator, ProjectorRank.place_generator,
       ProjectorRank.place_generator]
     rfl
   exact congrArg (fun φ => φ x) key

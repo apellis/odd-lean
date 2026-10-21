@@ -179,7 +179,7 @@ theorem contentPolynomial_eq_signedKostka (n : ℕ) (lam mu : YoungDiagram)
   classical
   rw [TableauEvaluation.contentPolynomial_eq]
   have he (T : PositiveTableau lam) :
-      (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T) = tableauSign T := by
+      (-1 : ℤ) ^ LrNorthEastSign.totalNorthLt (boxes T) (boxes T) = tableauSign T := by
     rw [tableauSign, rowWord_inversions]
   simp only [he, signedKostka]
   congr 1

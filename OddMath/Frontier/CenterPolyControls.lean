@@ -20,7 +20,7 @@ noncomputable section
 theorem square_commutes_rankTwo :
     generator (0 : Fin 2) ^ 2 * generator 1 = generator 1 * generator 0 ^ 2 := by
   have h : generator (0 : Fin 2) * generator 1 = -(generator 1 * generator 0) :=
-    OddMath.PbwL1.rel_anticommute (0 : Fin 2) 1 (by decide)
+    OddMath.PbwModelRelations.rel_anticommute (0 : Fin 2) 1 (by decide)
   rw [pow_two, mul_assoc, h, mul_neg, ← mul_assoc, ← mul_assoc, h, neg_mul, neg_neg]
 
 theorem divided_square_rankTwo :
