@@ -38,29 +38,57 @@ theorem odd_comm (i : Bool) (ν : Bool → ℤ) :
   comm_same S sy hS i ν
 
 /-- The positive-weight inversion has two shifted identity summands. -/
-theorem positive_two := mixed_nonneg S sy hS false (fun _ => 2) 0 (by decide)
+theorem positive_two :
+    let ν : Bool → ℤ := fun _ => 2
+    K₀.mk ((inclusion S sy hS ν ν).obj (ef S sy hS false ν 0)) =
+      K₀.mk ((inclusion S sy hS ν ν).obj
+        (fe S sy hS false ν (twoOddDatum.parity false + 0))) +
+      ∑ n : Fin (twoOddDatum.h false ν).toNat,
+        K₀.mk ((inclusion S sy hS ν ν).obj (idShift S sy hS ν
+          (sy.d false * (twoOddDatum.h false ν - 1 - 2 * n.val)) (n.val * twoOddDatum.parity false + 0))) :=
+  mixed_nonneg S sy hS false (fun _ => 2) 0 (by decide)
 
 /-- The negative-weight inversion has two summands with the corrected degrees. -/
-theorem negative_two := mixed_nonpos S sy hS true (fun _ => -2) 0 (by decide)
+theorem negative_two :
+    let ν : Bool → ℤ := fun _ => -2
+    K₀.mk ((inclusion S sy hS ν ν).obj (fe S sy hS true ν 0)) =
+      K₀.mk ((inclusion S sy hS ν ν).obj
+        (ef S sy hS true ν (twoOddDatum.parity true + 0))) +
+      ∑ n : Fin (-twoOddDatum.h true ν).toNat,
+        K₀.mk ((inclusion S sy hS ν ν).obj (idShift S sy hS ν
+          (sy.d true * (twoOddDatum.h true ν + 1 + 2 * n.val)) (n.val * twoOddDatum.parity true + 0))) :=
+  mixed_nonpos S sy hS true (fun _ => -2) 0 (by decide)
 
 /-- Zero weight, where the finite identity sum is empty. -/
-theorem zero_weight := odd_comm false (fun _ => 0)
+theorem zero_weight :
+    blockClass S sy hS (fun _ => 0) (fun _ => 0) [up false, dn false]
+      (by simp [wt, sh]) 0 0 -
+    piCoeff 1 • blockClass S sy hS (fun _ => 0) (fun _ => 0) [dn false, up false]
+      (by simp [wt, sh]) 0 0 = 0 := by
+  simpa [qpInt] using odd_comm false (fun _ => 0)
 
 /-- The family also specializes to integral coefficients in even rank one. -/
-theorem even_integral := comm_same TwoStrandShiftConsumer.scalars
-  TwoStrandShiftConsumer.symmetrizer TwoStrandShiftConsumer.homogeneous () (-3)
+theorem even_integral :
+    let S := TwoStrandShiftConsumer.scalars
+    let sy := TwoStrandShiftConsumer.symmetrizer
+    let hc := TwoStrandShiftConsumer.homogeneous
+    blockClass S sy hc (-3) (-3) [up (), dn ()] (by simp [wt, sh]) 0 0 -
+      piCoeff 0 • blockClass S sy hc (-3) (-3) [dn (), up ()] (by simp [wt, sh]) 0 0 =
+      qpInt (qUnit 1) (piCoeff 0) (-3) • blockClass S sy hc (-3) (-3) [] rfl 0 0 :=
+  comm_same TwoStrandShiftConsumer.scalars
+    TwoStrandShiftConsumer.symmetrizer TwoStrandShiftConsumer.homogeneous () (-3)
 
 /-- A specialization of the negative quantum integer in the proof of Lemma 11.6. -/
 theorem negative_two_coefficient :
     qpInt (Units.mk0 (2 : ℚ) (by norm_num)) (-1) (-2) = -3 / 2 := by
-  rw [qpInt_neg_natCast (n := 2)]
+  rw [show (-2 : ℤ) = -(2 : ℕ) by rfl, qpInt_neg_natCast]
   norm_num [qpNat, Finset.sum_range_succ]
 
 /-- The printed negative-weight scalar identity is false; the lemma statement is unchanged. -/
 theorem printed_negative_coefficient_fails :
     qpInt (Units.mk0 (2 : ℚ) (by norm_num)) (-1) (-2) ≠
       -((-1 : ℚ) * qpNat (Units.mk0 (2 : ℚ) (by norm_num)) (-1) 2) := by
-  rw [qpInt_neg_natCast (n := 2)]
+  rw [show (-2 : ℤ) = -(2 : ℕ) by rfl, qpInt_neg_natCast]
   norm_num [qpNat, Finset.sum_range_succ]
 
 #print axioms K0Relations.weight_relations

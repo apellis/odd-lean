@@ -957,11 +957,17 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     `0 ≤ n < -h`. The next displayed scalar assertion is
     `[h]_{qᵢ,πᵢ} = -πᵢ ∑ₙ qᵢ^(-h-1-2n) πᵢⁿ`.
 
-    **Correction.** Keep the parities and replace both exponents by
-    `dᵢ(h+1+2n)` for `Q`, respectively `h+1+2n` for `qᵢ`. The cup in (1.14)
-    has exactly the former degree. Thus the corrected scalar formula is
-    `[h]_{qᵢ,πᵢ} = -πᵢ [-h]_{qᵢ⁻¹,πᵢ}`. It follows from (9.1), including
-    zero weight. No change to the statement of Lemma 11.6 is needed.
+    **Correction.** The printed isomorphism assertion is
+    `Π^{|i|} EᵢFᵢ1_λ ⊕ ⨁_{0≤n<-h} Q^{dᵢ(-h-1-2n)} Π^{n|i|}1_λ ≅ FᵢEᵢ1_λ`.
+    Its corrected form is
+    `Π^{|i|} EᵢFᵢ1_λ ⊕ ⨁_{0≤n<-h} Q^{dᵢ(h+1+2n)} Π^{n|i|}1_λ ≅ FᵢEᵢ1_λ`.
+    Keep the parities: only the degree exponents change. The cup in the
+    negative-weight inversion relation of §1 has exactly the latter degree.
+    The corrected scalar assertion is
+    `[h]_{qᵢ,πᵢ} = -πᵢ ∑_{0≤n<-h} qᵢ^{h+1+2n} πᵢⁿ = -πᵢ [-h]_{qᵢ⁻¹,πᵢ}`.
+    This follows from the definition of quantum integers at the beginning
+    of §9, including zero weight. No change to the statement of Lemma 11.6
+    is needed.
 
     **Declarations.** `SKM.K0Relations.minusFamily`, `minus_diag`,
     `minus_off`, `minus_total` and `mixed_nonpos` verify the degree-zero,
@@ -976,7 +982,8 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     **For the authors.** In the proof of Lemma 11.6 of arXiv:1701.04133v2,
     the identity summands in the negative-coroot-weight case should carry
     `Q^{dᵢ(h+1+2n)} Π^{n|i|}`. This is forced by the cup degrees in the
-    inversion map (1.14). The following scalar sum needs the same reversal
-    of the `qᵢ` exponent; with it, (9.1) yields precisely `[h]_{qᵢ,πᵢ}`.
+    negative-weight inversion map in §1. The following scalar sum needs the same
+    reversal of the `qᵢ` exponent; with it, the quantum-integer definition
+    in §9 yields precisely `[h]_{qᵢ,πᵢ}`.
     The printed scalar equality already fails at `h=-2`, `qᵢ=2`, `πᵢ=-1`.
     These local proof corrections preserve every relation in Lemma 11.6.
