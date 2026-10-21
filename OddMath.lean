@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
 import OddMath.QuiverHecke.Algebra
+import OddMath.QuiverHecke.DividedPowerModulesExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
 import OddMath.Diagrams.EvenNilHecke.Examples
