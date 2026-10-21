@@ -63,6 +63,17 @@ jobs:
           restore-keys: |
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      # Keep this dependency separate: changing the paths of the main cache invalidates
+      # its cache version, including entries selected by restore-keys.
+      - name: Restore Categorification cache
+        if: steps.scope.outputs.docs_only != 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/packages/Categorification/.lake/build
+          key: categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
       # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
       # processes.
       - name: Build
@@ -82,6 +93,12 @@ jobs:
               -Dbackward.isDefEq.respectTransparency=false \
               -Dbackward.isDefEq.respectTransparency.types=false \
               "{}" < /dev/null || { echo "::error file={}::non-vacuity check failed"; exit 1; }'
+      - name: Save Categorification cache
+        if: always() && steps.scope.outputs.docs_only != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .lake/packages/Categorification/.lake/build
+          key: categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
         if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4

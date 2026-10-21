@@ -6,11 +6,11 @@ import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
+import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.DividedPowerModulesExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
-import OddMath.Diagrams.EvenNilHecke.Examples
 import OddMath.SKM.DividedPowerIdempotents
 import OddMath.SKM.DividedPowerDecomposition
 import OddMath.SKM.DividedPowerMultiplicity

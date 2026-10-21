@@ -22,6 +22,10 @@ require LieLean from git
   "https://github.com/apellis/lie-lean.git" @
   "29042522f511a969b7f6dbc81d3c8a8bebfef818"
 
+require Categorification from git
+  "https://github.com/apellis/categorification-lean.git" @
+  "041134047391010165ceb0c8555375d148d69620"
+
 @[default_target]
 lean_lib OddMath where
   globs := #[.andSubmodules `OddMath]
