@@ -99,7 +99,7 @@ variable {I k : Type*} [DecidableEq I] [Finite I] [Field k] [CharZero k]
 /-- Hill–Wang, arXiv:1202.2769v2, Lemma 6.11, for finite bar-consistent data:
 the two specializations have equal dimensions in every weight. This intermediate
 statement retains bar-consistency, an extra hypothesis relative to BE2 Theorem 11.3;
-the general case without it remains separate. -/
+the general case without it is tracked in apellis/odd-lean#247. -/
 theorem finrank_serreWeightSpace_one_eq_neg_one (hC : C.BarConsistent)
     (hq : Transcendental ℚ (q : k)) (ν : I →₀ ℕ) :
     finrank k (C.serreWeightSpace q 1 ν) = finrank k (C.serreWeightSpace q (-1) ν) := by
