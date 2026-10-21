@@ -39,17 +39,17 @@ Scope (NOT this module, recorded as hypotheses, never asserted):
 - No `s^K`/`s^p`/`s^s` definitions (non-tautology guard: the three Schur
   objects stay independent in `formal-statements/lr-theorem38.lean`, untouched
   here), no Lemma 3.5/Prop 3.6/Prop 3.7 statements, no Theorem 3.8 comparison.
-  Finite fixtures in `OddMath/Tests/LrLegBFixtures.lean` are development aids
+  Finite fixtures in `OddMath/Tests/LrPieriInductionFixtures.lean` are development aids
   (`SUPPORTED_LOW_DEGREE` at most), never a proof of the published theorem.
 
 Conventions: English Ferrers coordinates (rows down, columns right) per
-the sign convention, matching the Leg A module `OddMath.LrLegA`.
+the sign convention, matching the Leg A module `OddMath.LrNorthEastSign`.
 Imports `OddMath.SkewSign` for the shared core-algebra prelude only
 (documented here; no mathematical dependence -- same pattern as Leg A,
 since bare core lacks generic `mul_assoc`/`mul_one`).
 -/
 
-namespace OddMath.LrLegB
+namespace OddMath.LrPieriInduction
 
 /-- A partition as a list of row lengths (weakly decreasing, positive;
 checked by `isPartition`). -/
@@ -193,4 +193,4 @@ theorem solve_three (d0 d1 d2 e1 a b P0 P1 P2 S0 S1 S2 Prod0 Prod1 Prod2 : Int)
     exact solve_head d0 P0 S0 h0 hLow
   exact ⟨h0eq, h1eq, h2eq⟩
 
-end OddMath.LrLegB
+end OddMath.LrPieriInduction

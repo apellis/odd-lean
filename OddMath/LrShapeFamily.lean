@@ -62,14 +62,14 @@
 
   Non-tautology: the independence theorems show the two families are
   provably distinct — no single definition proves anything by construction,
-  and no comparison is asserted. Names live in `OddMath.LrAdapterB10`.
+  and no comparison is asserted. Names live in `OddMath.LrShapeFamily`.
 -/
 
-import OddMath.LrAdapterB7
+import OddMath.LrShapeCensus
 
-namespace OddMath.LrAdapterB10
+namespace OddMath.LrShapeFamily
 
-open OddMath.LrAdapterB7
+open OddMath.LrShapeCensus
 
 /-- the design specification S3 family-map type shape: a census-indexed family into an ambient
     type `M`. The index `Fin (shapeCount wt)` is the `n` the adapter feeds
@@ -144,4 +144,4 @@ theorem fam_ne (wt : Nat) : famPlactic wt ≠ famSymm wt := by
 #print axioms famIdx_nonempty
 #print axioms fam_ne
 
-end OddMath.LrAdapterB10
+end OddMath.LrShapeFamily

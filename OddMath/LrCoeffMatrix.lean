@@ -74,14 +74,14 @@
   Non-tautology: no Schur object is defined here; the matrix/vector shape
   is pure index combinatorics over the imported S1 census index, and the
   non-collapse theorem shows the two canonical instances are provably
-  distinct. Names live in `OddMath.LrAdapterB11`.
+  distinct. Names live in `OddMath.LrCoeffMatrix`.
 -/
 
-import OddMath.LrAdapterB7
+import OddMath.LrShapeCensus
 
-namespace OddMath.LrAdapterB11
+namespace OddMath.LrCoeffMatrix
 
-open OddMath.LrAdapterB7
+open OddMath.LrShapeCensus
 
 /-- the design specification S4 coefficient-matrix type shape: a census-indexed square matrix
     over `Int`. The index `Fin (shapeCount wt)` is the `n` the adapter feeds
@@ -166,4 +166,4 @@ set_option maxRecDepth 10000
 #print axioms coeffDiag_offdiag
 #print axioms coeffDiag_one_ne_zero
 
-end OddMath.LrAdapterB11
+end OddMath.LrCoeffMatrix

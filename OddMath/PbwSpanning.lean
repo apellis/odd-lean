@@ -1,6 +1,6 @@
-import OddMath.PbwL1
-import OddMath.PbwL2
-import OddMath.PbwL3
+import OddMath.PbwModelRelations
+import OddMath.PbwPresentation
+import OddMath.PbwFactorization
 
 /-!
 # PBW lemma L4: spanning / normal-form existence in the model
@@ -14,7 +14,7 @@ correspondence: every `f : SkewPolynomial n` is a finite `ℤ`-sum of monomials
 scaled-exponent monomials at arbitrary degree.
 
 No new definitions (R0): only theorems over the verified `SkewPolynomial` +
-`PbwL2` + `PbwL3` interface (the `PbwL3` `Ring` instance supplies the
+`PbwPresentation` + `PbwFactorization` interface (the `PbwFactorization` `Ring` instance supplies the
 generator power `^`). No quotient content is changed (that is L2/L3, built
 on, not redone).
 
@@ -40,7 +40,7 @@ work: see the remainder note in the unpublished development notes. Finite fixtur
 (`SUPPORTED_LOW_DEGREE` at most), never a proof of the correspondence.
 -/
 
-namespace OddMath.PbwL4
+namespace OddMath.PbwSpanning
 
 open OddMath.SkewPolynomial
 
@@ -133,4 +133,4 @@ theorem spanning (n : ℕ) (f : OddMath.SkewPolynomial.SkewPolynomial n)
     ∧ ((generator l ^ k) = monomial (k • expSingle l) 1) :=
   ⟨span_expand n f, ordered_pair n i j h, pow_form n l k⟩
 
-end OddMath.PbwL4
+end OddMath.PbwSpanning

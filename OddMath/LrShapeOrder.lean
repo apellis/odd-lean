@@ -44,18 +44,18 @@
 
   Non-tautology: no Schur object is defined here; the order/index is
   pure partition combinatorics over the imported S1 census.
-  Names live in `OddMath.LrAdapterB8`.
+  Names live in `OddMath.LrShapeOrder`.
 -/
 
-import OddMath.LrAdapterB7
+import OddMath.LrShapeCensus
 
-namespace OddMath.LrAdapterB8
+namespace OddMath.LrShapeOrder
 
-open OddMath.LrAdapterB7
+open OddMath.LrShapeCensus
 
 /-- Bootstrapped strong induction on `Nat`, proved from structural
     induction alone (no Mathlib/WF API needed). -/
-theorem b8StrongNat (motive : Nat → Prop)
+theorem nat_strong_induction (motive : Nat → Prop)
     (step : ∀ n, (∀ m, m < n → motive m) → motive n) :
     ∀ n, motive n := by
   have H : ∀ n, ∀ m, m ≤ n → motive m := by
@@ -317,7 +317,7 @@ theorem lexRel_acc_step (K : Nat)
   obtain ⟨a, as, rfl, has⟩ := cons_of_length_succ s K hs
   suffices H : ∀ (b : Nat) (u : List Nat),
       u.length = K → Acc (lexRel (K + 1)) (b :: u) from H a as has
-  exact b8StrongNat
+  exact nat_strong_induction
     (fun b => ∀ u : List Nat, u.length = K → Acc (lexRel (K + 1)) (b :: u))
     (fun b innerIH u hu => by
       induction (IHK u hu) generalizing b with
@@ -391,7 +391,7 @@ theorem acc_shapeOrder_of_lexAcc (K : Nat) (x : Partition)
     relation). -/
 theorem accOfLen : ∀ (K : Nat) (l : Partition),
     l.length ≤ K → Acc shapeOrder l := by
-  exact b8StrongNat (fun K => ∀ l : Partition, l.length ≤ K → Acc shapeOrder l)
+  exact nat_strong_induction (fun K => ∀ l : Partition, l.length ≤ K → Acc shapeOrder l)
     (fun K outerIH l hl => by
       refine Acc.intro l ?_
       intro z hz
@@ -753,4 +753,4 @@ theorem mem_22_4 : ([2, 2] : Partition) ∈ shapeCensus 4 := by
 #print axioms accOfLen
 #print axioms sorted_append
 
-end OddMath.LrAdapterB8
+end OddMath.LrShapeOrder

@@ -152,13 +152,13 @@ theorem mem_center_of_generators {m : ℕ} (z : SkewPolynomial m)
   obtain ⟨a, rfl⟩ := PbwRealization.Phi_surjective m p
   induction a using Quotient.inductionOn' with
   | h w =>
-    change z * PbwL3.evalAlg m w = PbwL3.evalAlg m w * z
+    change z * PbwFactorization.evalAlg m w = PbwFactorization.evalAlg m w * z
     induction w using FreeAlgebra.induction with
     | grade0 r =>
       rw [AlgHom.commutes]
       change z * (r • 1) = (r • 1) * z
       simp only [mul_smul_comm, smul_mul_assoc, mul_one, one_mul]
-    | grade1 j => rw [PbwL3.evalAlg_ι]; exact h j
+    | grade1 j => rw [PbwFactorization.evalAlg_ι]; exact h j
     | add a b ha hb => rw [map_add, mul_add, add_mul, ha, hb]
     | mul a b ha hb =>
       rw [map_mul, ← mul_assoc, ha, mul_assoc, hb, ← mul_assoc]

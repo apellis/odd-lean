@@ -71,18 +71,18 @@
   pure unit-diagonal composition over the imported S1 census index, and
   the two non-collapse theorems show the instantiated diagonal matrices
   are provably distinct from the zero matrix. Names live in
-  `OddMath.LrAdapterB12`.
+  `OddMath.LrSignDiagonalMatrix`.
 -/
 
-import OddMath.LrAdapterB7
-import OddMath.LrAdapterB9
-import OddMath.LrAdapterB11
+import OddMath.LrShapeCensus
+import OddMath.LrSignDiagonal
+import OddMath.LrCoeffMatrix
 
-namespace OddMath.LrAdapterB12
+namespace OddMath.LrSignDiagonalMatrix
 
-open OddMath.LrAdapterB7
-open OddMath.LrAdapterB9
-open OddMath.LrAdapterB11
+open OddMath.LrShapeCensus
+open OddMath.LrSignDiagonal
+open OddMath.LrCoeffMatrix
 
 /-- The B9 all-ones lead satisfies the unit justification: instantiation
     of `diagOne_isUnit` through this namespace. -/
@@ -218,4 +218,4 @@ set_option maxRecDepth 10000
 #print axioms coeffUnitOne_eq_sign
 #print axioms coeffUnitNegOne_eq_sign
 
-end OddMath.LrAdapterB12
+end OddMath.LrSignDiagonalMatrix

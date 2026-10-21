@@ -51,11 +51,11 @@ noncomputable section
 local instance (priority := high) znCellNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) znCellNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 variable {N : ℕ}
 

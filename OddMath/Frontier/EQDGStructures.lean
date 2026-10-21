@@ -52,11 +52,11 @@ noncomputable section
 local instance (priority := high) opolNUNASemiring'' (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) opolNUNARing'' (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 variable {n : ℕ}
 
@@ -289,7 +289,7 @@ def OPol (n : ℕ) : Type := SkewPolynomial n
 
 namespace OPol
 
-instance instRing : Ring (OPol n) := OddMath.PbwL3.instRing n
+instance instRing : Ring (OPol n) := OddMath.PbwFactorization.instRing n
 
 /-- The identification of `OPol n` with the skew-polynomial model. -/
 def equiv (n : ℕ) : SkewPolynomial n ≃+* OPol n := RingEquiv.refl _

@@ -11,7 +11,7 @@ The recursive list statistic is independent of the inherited all-pairs box count
 namespace OddMath.Frontier.TableauRowWord
 
 open TableauSign
-open LrLegA
+open LrNorthEastSign
 
 /-- English row reading: decreasing row, then increasing column. -/
 def RowLE (a b : ℕ × ℕ) : Prop := b.1 < a.1 ∨ (a.1 = b.1 ∧ a.2 ≤ b.2)

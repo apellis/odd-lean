@@ -1,4 +1,4 @@
-import OddMath.PbwL2
+import OddMath.PbwPresentation
 import Mathlib.Data.List.Sort
 import Mathlib.Data.List.FinRange
 import Mathlib.LinearAlgebra.Span.Basic
@@ -7,7 +7,7 @@ import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 /-!
 # General quotient normal ordering
 
-The carrier is `PbwL2.Presented n`, the integer free algebra modulo only the
+The carrier is `PbwPresentation.Presented n`, the integer free algebra modulo only the
 anticommutators of DISTINCT generators. Canonical order is increasing index.
 Source: EKL arXiv:1111.1320v1, §2.1.1, (2.1); the sign convention.
 No model map or surjectivity result is used.
@@ -15,7 +15,7 @@ No model map or surjectivity result is used.
 
 namespace OddMath.Frontier.PbwNormalization
 
-open PbwL2
+open PbwPresentation
 
 variable {n : ℕ}
 

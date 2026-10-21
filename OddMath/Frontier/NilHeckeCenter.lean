@@ -102,13 +102,13 @@ theorem volume_commutes (p : SkewPolynomial 3) : volume * p = p * volume := by
   obtain ⟨a, rfl⟩ := PbwRealization.Phi_surjective 3 p
   induction a using Quotient.inductionOn' with
   | h w =>
-    change volume * PbwL3.evalAlg 3 w = PbwL3.evalAlg 3 w * volume
+    change volume * PbwFactorization.evalAlg 3 w = PbwFactorization.evalAlg 3 w * volume
     induction w using FreeAlgebra.induction with
     | grade0 z =>
       rw [AlgHom.commutes]
       change volume * (z • 1) = (z • 1) * volume
       simp only [mul_smul_comm, smul_mul_assoc, mul_one, one_mul]
-    | grade1 j => rw [PbwL3.evalAlg_ι]; exact volume_commutes_generators j
+    | grade1 j => rw [PbwFactorization.evalAlg_ι]; exact volume_commutes_generators j
     | add a b ha hb => rw [map_add, mul_add, add_mul, ha, hb]
     | mul a b ha hb =>
       rw [map_mul, ← mul_assoc, ha, mul_assoc, hb, ← mul_assoc]
@@ -162,7 +162,7 @@ theorem evenSpan_mul {p q : SkewPolynomial 3} (hp : p ∈ evenSpan) (hq : q ∈ 
       have he : (fun j => 2 * a j) + (fun j => 2 * b j) = (fun j => 2 * (a+b) j) := by
         funext j; simp only [Pi.add_apply, Nat.mul_add]
       rw [he]
-      simpa only [one_mul, ← PbwL4.monomial_smul] using
+      simpa only [one_mul, ← PbwSpanning.monomial_smul] using
         evenSpan.smul_mem (OddMath.skewSign (fun j => 2*a j) (fun j => 2*b j))
           (even_monomial_mem (a+b))
     | zero => simpa only [mul_zero] using evenSpan.zero_mem
@@ -234,10 +234,10 @@ def polynomialInclusion : SkewPolynomial 3 →+* Presented 1 :=
 
 @[simp] theorem polynomialInclusion_generator (j : Fin 3) :
     polynomialInclusion (generator j) = dot 1 j := by
-  have he : (PbwEquivalence.presentedEquiv 3).symm (generator j) = PbwL2.q 3 j := by
+  have he : (PbwEquivalence.presentedEquiv 3).symm (generator j) = PbwPresentation.q 3 j := by
     apply (PbwEquivalence.presentedEquiv 3).injective
     simpa only [RingEquiv.apply_symm_apply, PbwEquivalence.presentedEquiv_apply] using
-      (PbwL3.Phi_q 3 j).symm
+      (PbwFactorization.Phi_q 3 j).symm
   simp only [polynomialInclusion, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe,
     RingHom.coe_coe, he, NilHeckeBasis.dotMap_q]
 
@@ -253,7 +253,7 @@ theorem polynomialInclusion_action (p f : SkewPolynomial 3) :
       RingHom.coe_coe, PbwEquivalence.presentedEquiv_symm_apply,
       PbwEquivalence.lift_monomial, map_zsmul, NilHeckeBasis.dotMap_ordered]
     change c • action 1 (NilHeckeBasis.dotMonomial a) f = _
-    rw [NilHeckeBasis.action_dotMonomial, ← smul_mul_assoc, ← PbwL4.monomial_smul]
+    rw [NilHeckeBasis.action_dotMonomial, ← smul_mul_assoc, ← PbwSpanning.monomial_smul]
 
 theorem polynomialInclusion_injective : Function.Injective polynomialInclusion := by
   intro p q h

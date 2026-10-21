@@ -39,12 +39,12 @@ theorem induction_generators {N : ℕ} {P : SkewPolynomial N → Prop}
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective N f
   induction x using Quotient.inductionOn' with
   | h w =>
-      change P (PbwL3.evalAlg N w)
+      change P (PbwFactorization.evalAlg N w)
       induction w using FreeAlgebra.induction with
       | grade0 r =>
           rw [AlgHom.commutes]
           exact hconst r
-      | grade1 j => rw [PbwL3.evalAlg_ι]; exact hgen j
+      | grade1 j => rw [PbwFactorization.evalAlg_ι]; exact hgen j
       | add a b ha hb => rw [map_add]; exact hadd _ _ ha hb
       | mul a b ha hb => rw [map_mul]; exact hmul _ _ ha hb
 
@@ -108,7 +108,7 @@ theorem crossingCount_snoc_last {N : ℕ} (γ : Fin N → ℕ) (e : ℕ) :
 `x_N^e`, with sign `+1` since the last variable is on the right. -/
 theorem monomial_snoc {N : ℕ} (γ : Fin N → ℕ) (e : ℕ) (c : ℤ) :
     monomial (Fin.snoc γ e) c = prefixHom N (monomial γ c) * generator (Fin.last N) ^ e := by
-  rw [prefixHom_monomial, PbwL4.pow_form]
+  rw [prefixHom_monomial, PbwSpanning.pow_form]
   change _ = OddMath.SkewPolynomial.mul _ _
   rw [OddMath.SkewPolynomial.mul_monomial, OddMath.skewSign, crossingCount_snoc_last,
     pow_zero, mul_one, mul_one]
@@ -266,7 +266,7 @@ theorem crossingCount_first_cons {N : ℕ} (γ : Fin N → ℕ) (e : ℕ) :
 with sign `+1` since the first variable is on the left. -/
 theorem monomial_cons {N : ℕ} (γ : Fin N → ℕ) (e : ℕ) (c : ℤ) :
     monomial (Fin.cons e γ) c = generator (0 : Fin (N+1)) ^ e * shiftHom N (monomial γ c) := by
-  rw [shiftHom_monomial, PbwL4.pow_form]
+  rw [shiftHom_monomial, PbwSpanning.pow_form]
   change _ = OddMath.SkewPolynomial.mul _ _
   rw [OddMath.SkewPolynomial.mul_monomial, OddMath.skewSign, crossingCount_first_cons,
     pow_zero, mul_one, one_mul]

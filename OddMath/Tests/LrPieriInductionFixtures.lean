@@ -1,4 +1,4 @@
-import OddMath.LrLegB
+import OddMath.LrPieriInduction
 
 /-! Hand-derived LR Leg B fixtures, written BEFORE the module exists (TDD red step).
 
@@ -27,12 +27,12 @@ BEFORE any Lean is written:
   lower `5` with mixed `±1` signs).
 - F6 induction measure (B3): lexicographic comparisons including a
   transpose-then-compare pair that distinguishes `[3,1]` from `[2,2]`.
-This file MUST fail to elaborate until `OddMath.LrLegB` exists.
+This file MUST fail to elaborate until `OddMath.LrPieriInduction` exists.
 -/
 
-namespace OddMath.LrLegB.Tests
+namespace OddMath.LrPieriInduction.Tests
 
-open OddMath.LrLegB
+open OddMath.LrPieriInduction
 
 -- F1: partition basics.
 example : width ([] : Partition) = 0 := by decide
@@ -84,17 +84,17 @@ example : addedSign [2, 1] 0 2 = 1 := by decide
 
 -- F5a: top-shape determination (B4 base): `1 * x = 2` pins `x = 2`.
 example : (2 : Int) = 2 :=
-  OddMath.LrLegB.solve_one 1 2 2 2 (by decide) (by decide) (by decide)
+  OddMath.LrPieriInduction.solve_one 1 2 2 2 (by decide) (by decide) (by decide)
 
 -- F5b: two-shape chain (B4 step): top `1 * x_1 = 3`, lower `1 * x_0 + 1 * 3 = 8`.
 example : (5 : Int) = 5 ∧ (3 : Int) = 3 :=
-  OddMath.LrLegB.solve_two 1 1 1 5 3 5 3 8 3
+  OddMath.LrPieriInduction.solve_two 1 1 1 5 3 5 3 8 3
     (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
 
 -- F5c: three-shape chain with mixed signs (B4 full pattern):
 -- top `x_2 = 2`, mid `x_1 - x_2 = 1`, lower `x_0 + x_1 - x_2 = 6`.
 example : (5 : Int) = 5 ∧ (3 : Int) = 3 ∧ (2 : Int) = 2 :=
-  OddMath.LrLegB.solve_three 1 1 1 (-1) 1 (-1) 5 3 2 5 3 2 6 1 2
+  OddMath.LrPieriInduction.solve_three 1 1 1 (-1) 1 (-1) 5 3 2 5 3 2 6 1 2
     (by decide) (by decide) (by decide)
     (by decide) (by decide) (by decide) (by decide) (by decide) (by decide)
 
@@ -115,4 +115,4 @@ example : transpose [2, 2] = [2, 2] := by decide
 example : lexGe (transpose [3, 1]) (transpose [2, 2]) = false := by decide
 example : lexGe (transpose [2, 2]) (transpose [3, 1]) = true := by decide
 
-end OddMath.LrLegB.Tests
+end OddMath.LrPieriInduction.Tests

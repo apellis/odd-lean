@@ -57,13 +57,13 @@ noncomputable section
 local instance (priority := high) functorDualNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 local instance (priority := high) functorDualNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 theorem sk_one_mul {m : ℕ} (x : SkewPolynomial m) : 1 * x = x := by
-  let := OddMath.PbwL3.instSemiring m
+  let := OddMath.PbwFactorization.instSemiring m
   exact one_mul x
 
 variable {a b : ℕ}

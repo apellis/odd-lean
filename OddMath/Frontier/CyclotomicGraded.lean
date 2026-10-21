@@ -73,14 +73,14 @@ open NilHeckeAction NilHeckeGrading
 theorem ringHom_mem_polynomialPiece {N : ℕ} (φ : SkewPolynomial N →+* SkewPolynomial N)
     (hφ : ∀ j, φ (generator j) ∈ polynomialPiece N 2) {d : ℤ} {f : SkewPolynomial N}
     (hf : f ∈ polynomialPiece N d) : φ f ∈ polynomialPiece N d := by
-  have hw : ∀ w : List (Fin N), φ (OddMath.PbwL3.Phi N (PbwRealization.word w)) ∈
+  have hw : ∀ w : List (Fin N), φ (OddMath.PbwFactorization.Phi N (PbwRealization.word w)) ∈
       polynomialPiece N (2*(w.length : ℤ)) := by
     intro w
     induction w with
     | nil => simpa [PbwRealization.word] using NilHeckeGradedEnd.one_mem N
     | cons j w ih =>
       have h := polynomial_mul (hφ j) ih
-      simpa [PbwRealization.word, OddMath.PbwL3.Phi_q, Nat.cast_add, mul_add, add_comm] using h
+      simpa [PbwRealization.word, OddMath.PbwFactorization.Phi_q, Nat.cast_add, mul_add, add_comm] using h
   rw [← Finsupp.sum_single f, Finsupp.sum, map_sum]
   refine Submodule.sum_mem _ fun a ha => ?_
   have hl : ((PbwRealization.orderedList a).length : ℕ) = ∑ j, a j := by
@@ -502,7 +502,7 @@ theorem onhCycK0_subsingleton {n N : ℕ} (h : N < n+2) : Subsingleton (K0 (onhC
 /-- The ring structure of `OPol`, preferred over the pointwise `Finsupp` structure. -/
 local instance (priority := high) opolNonUnitalNonAssocRing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-- `⟨x^N⟩ ⊂ ONH_1 = OPol_1`. -/
 def cyc1Ideal (N : ℕ) : TwoSidedIdeal (SkewPolynomial 1) :=

@@ -51,7 +51,7 @@ no mathematical dependence on skew signs, and the axiom audit must still
 show only the standard triple with no `sorryAx`.
 -/
 
-namespace OddMath.LrLegA
+namespace OddMath.LrNorthEastSign
 
 /-- A tableau box: 0-indexed English coordinates (rows grow downward,
 columns grow rightward) with an entry in the positive alphabet. -/
@@ -289,4 +289,4 @@ theorem global_sign (T Bs : Tableau)
     = (-1 : Int) ^ (totalNorth T Bs + totalNorthLt T Bs)
   exact (sign_of_eq_add_two_mul _ _ _ (global T Bs H)).symm
 
-end OddMath.LrLegA
+end OddMath.LrNorthEastSign

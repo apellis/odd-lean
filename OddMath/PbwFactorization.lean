@@ -1,5 +1,5 @@
-import OddMath.PbwL1
-import OddMath.PbwL2
+import OddMath.PbwModelRelations
+import OddMath.PbwPresentation
 
 /-!
 # PBW lemma L3: universal factorization (presentation-to-model direction)
@@ -47,7 +47,7 @@ independence (L5); the isomorphism/PBW corollary (L6). Finite fixtures in
 (`SUPPORTED_LOW_DEGREE` at most), never a proof of the correspondence.
 -/
 
-namespace OddMath.PbwL3
+namespace OddMath.PbwFactorization
 
 /-- L3 model multiplication as a typeclass `Mul`: exactly the named
 `SkewPolynomial.mul` (no new multiplication is introduced). -/
@@ -162,7 +162,7 @@ theorem evalAlg_kills (n : ℕ) (i j : Fin n) (h : i ≠ j) :
     evalAlg n (FreeAlgebra.ι ℤ i * FreeAlgebra.ι ℤ j
       + FreeAlgebra.ι ℤ j * FreeAlgebra.ι ℤ i) = 0 := by
   rw [map_add, map_mul, map_mul, evalAlg_ι, evalAlg_ι]
-  exact OddMath.PbwL1.rel_sum i j h
+  exact OddMath.PbwModelRelations.rel_sum i j h
 
 /-- L3c: evaluation kills every element of the relation ideal: span induction
 (`TwoSidedIdeal.span_induction`). Generators die by L3b (`evalAlg_kills`,
@@ -170,9 +170,9 @@ definitionally also the `evalRingHom` statement); `0`/sums/negations die by
 the hom laws; two-sided multiples die because one factor dies (`mul_zero`,
 `zero_mul`). -/
 theorem kill_mem (n : ℕ) (w : FreeAlgebra ℤ (Fin n))
-    (hw : w ∈ OddMath.PbwL2.relIdeal n) :
+    (hw : w ∈ OddMath.PbwPresentation.relIdeal n) :
     evalRingHom n w = 0 := by
-  rw [OddMath.PbwL2.relIdeal, OddMath.PbwL2.relTwoSided,
+  rw [OddMath.PbwPresentation.relIdeal, OddMath.PbwPresentation.relTwoSided,
     TwoSidedIdeal.mem_asIdeal] at hw
   induction hw using TwoSidedIdeal.span_induction with
   | mem x h =>
@@ -187,19 +187,19 @@ theorem kill_mem (n : ℕ) (w : FreeAlgebra ℤ (Fin n))
 /-- L3 factorization: evaluation descends through the relation ideal to the
 presented object (`Ideal.Quotient.lift` with L3c). -/
 noncomputable def Phi (n : ℕ) :
-    OddMath.PbwL2.Presented n →+* OddMath.SkewPolynomial.SkewPolynomial n :=
-  Ideal.Quotient.lift (OddMath.PbwL2.relIdeal n) (evalRingHom n) (kill_mem n)
+    OddMath.PbwPresentation.Presented n →+* OddMath.SkewPolynomial.SkewPolynomial n :=
+  Ideal.Quotient.lift (OddMath.PbwPresentation.relIdeal n) (evalRingHom n) (kill_mem n)
 
 /-- L3d: `Φ` sends each quotient generator to the model generator. -/
 theorem Phi_q (n : ℕ) (i : Fin n) :
-    Phi n (OddMath.PbwL2.q n i) = OddMath.SkewPolynomial.generator i := by
-  simp only [Phi, OddMath.PbwL2.q]
+    Phi n (OddMath.PbwPresentation.q n i) = OddMath.SkewPolynomial.generator i := by
+  simp only [Phi, OddMath.PbwPresentation.q]
   show ⇑(evalAlg n) _ = _
   exact evalAlg_ι n i
 
 /-- L3e: `Φ` sends quotient products to model products. -/
 theorem Phi_mul_gens (n : ℕ) (i j : Fin n) :
-    Phi n (OddMath.PbwL2.q n i * OddMath.PbwL2.q n j)
+    Phi n (OddMath.PbwPresentation.q n i * OddMath.PbwPresentation.q n j)
       = OddMath.SkewPolynomial.mul (OddMath.SkewPolynomial.generator i)
         (OddMath.SkewPolynomial.generator j) := by
   rw [map_mul, Phi_q, Phi_q]
@@ -207,14 +207,14 @@ theorem Phi_mul_gens (n : ℕ) (i j : Fin n) :
 
 /-- L3f: `Φ` kills the quotient relation sum. -/
 theorem Phi_rel (n : ℕ) (i j : Fin n) (h : i ≠ j) :
-    Phi n (OddMath.PbwL2.q n i * OddMath.PbwL2.q n j
-      + OddMath.PbwL2.q n j * OddMath.PbwL2.q n i) = 0 := by
+    Phi n (OddMath.PbwPresentation.q n i * OddMath.PbwPresentation.q n j
+      + OddMath.PbwPresentation.q n j * OddMath.PbwPresentation.q n i) = 0 := by
   rw [map_add, Phi_mul_gens, Phi_mul_gens]
-  exact OddMath.PbwL1.rel_sum i j h
+  exact OddMath.PbwModelRelations.rel_sum i j h
 
 /-- L3g: the diagonal square maps to the model square. -/
 theorem Phi_sq_form (n : ℕ) (i : Fin n) :
-    Phi n (OddMath.PbwL2.q n i * OddMath.PbwL2.q n i)
+    Phi n (OddMath.PbwPresentation.q n i * OddMath.PbwPresentation.q n i)
       = OddMath.SkewPolynomial.mul (OddMath.SkewPolynomial.generator i)
         (OddMath.SkewPolynomial.generator i) :=
   Phi_mul_gens n i i
@@ -222,17 +222,17 @@ theorem Phi_sq_form (n : ℕ) (i : Fin n) :
 /-- L3h: the diagonal square does NOT vanish under `Φ` (roadmap §5: no
 square-zero law is imposed; L1 `square_ne_zero` transported). -/
 theorem Phi_sq_ne_zero (n : ℕ) (i : Fin n) :
-    Phi n (OddMath.PbwL2.q n i * OddMath.PbwL2.q n i) ≠ 0 := by
+    Phi n (OddMath.PbwPresentation.q n i * OddMath.PbwPresentation.q n i) ≠ 0 := by
   rw [Phi_sq_form]
-  exact OddMath.PbwL1.square_ne_zero i
+  exact OddMath.PbwModelRelations.square_ne_zero i
 
 /-- L3 adequacy conjunction: `Φ` hits the generators AND evaluation kills the
 relation word — the exact input L4/L5 need. -/
 theorem factorization (n : ℕ) (i j : Fin n) (h : i ≠ j) :
-    (Phi n (OddMath.PbwL2.q n i) = OddMath.SkewPolynomial.generator i)
-    ∧ (Phi n (OddMath.PbwL2.q n j) = OddMath.SkewPolynomial.generator j)
+    (Phi n (OddMath.PbwPresentation.q n i) = OddMath.SkewPolynomial.generator i)
+    ∧ (Phi n (OddMath.PbwPresentation.q n j) = OddMath.SkewPolynomial.generator j)
     ∧ evalAlg n (FreeAlgebra.ι ℤ i * FreeAlgebra.ι ℤ j
         + FreeAlgebra.ι ℤ j * FreeAlgebra.ι ℤ i) = 0 :=
   ⟨Phi_q n i, Phi_q n j, evalAlg_kills n i j h⟩
 
-end OddMath.PbwL3
+end OddMath.PbwFactorization

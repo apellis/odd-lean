@@ -47,7 +47,7 @@ Finite fixtures in `OddMath/Tests/PbwL2Fixtures.lean` are development aids
 (`SUPPORTED_LOW_DEGREE` at most), never a proof of the correspondence.
 -/
 
-namespace OddMath.PbwL2
+namespace OddMath.PbwPresentation
 
 /-- L2 relation words: the anticommutator `ι i * ι j + ι j * ι i` for `i ≠ j`.
 This is the exact equation the L3 evaluation map must kill. -/
@@ -148,4 +148,4 @@ theorem presentation_correct (n : ℕ) (i j : Fin n) (h : i ≠ j) :
       = TwoSidedIdeal.asIdeal (TwoSidedIdeal.span (relSet n)) :=
   ⟨rel_sum n i j h, rfl⟩
 
-end OddMath.PbwL2
+end OddMath.PbwPresentation

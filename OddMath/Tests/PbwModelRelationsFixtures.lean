@@ -1,4 +1,4 @@
-import OddMath.PbwL1
+import OddMath.PbwModelRelations
 
 /-! Hand-derived PBW L1 fixtures, written BEFORE the module exists (TDD red step).
 
@@ -19,10 +19,10 @@ written:
 - F6/F7 rank-two coordinates: ordered product at ![1,1] is 1, reversed is -1
   (grounding probes inherited from `SkewPolynomialFixtures.lean`).
 - F8 adequacy conjunction on the rank-two pair.
-This file MUST fail to elaborate until `OddMath.PbwL1` exists.
+This file MUST fail to elaborate until `OddMath.PbwModelRelations` exists.
 -/
 
-namespace OddMath.PbwL1.Tests
+namespace OddMath.PbwModelRelations.Tests
 
 /-- F1: the rank-two distinct pair anticommutes. -/
 example : OddMath.SkewPolynomial.mul
@@ -31,7 +31,7 @@ example : OddMath.SkewPolynomial.mul
   = -OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (1 : Fin 2))
     (OddMath.SkewPolynomial.generator 0) :=
-  OddMath.PbwL1.rel_anticommute 0 1 (by decide)
+  OddMath.PbwModelRelations.rel_anticommute 0 1 (by decide)
 
 /-- F2: relation-ideal form on the rank-two pair: `x_0 x_1 + x_1 x_0 = 0`. -/
 example : OddMath.SkewPolynomial.mul
@@ -40,19 +40,19 @@ example : OddMath.SkewPolynomial.mul
   + OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (1 : Fin 2))
     (OddMath.SkewPolynomial.generator 0) = 0 :=
-  OddMath.PbwL1.rel_sum 0 1 (by decide)
+  OddMath.PbwModelRelations.rel_sum 0 1 (by decide)
 
 /-- F3: the rank-two generator square does not vanish. -/
 example : OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (0 : Fin 2))
     (OddMath.SkewPolynomial.generator 0) ≠ 0 :=
-  OddMath.PbwL1.square_ne_zero 0
+  OddMath.PbwModelRelations.square_ne_zero 0
 
 /-- F4: the rank-one generator square does not vanish. -/
 example : OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (0 : Fin 1))
     (OddMath.SkewPolynomial.generator 0) ≠ 0 :=
-  OddMath.PbwL1.square_ne_zero 0
+  OddMath.PbwModelRelations.square_ne_zero 0
 
 /-- F5a: the rank-three outer pair anticommutes. -/
 example : OddMath.SkewPolynomial.mul
@@ -61,7 +61,7 @@ example : OddMath.SkewPolynomial.mul
   = -OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (2 : Fin 3))
     (OddMath.SkewPolynomial.generator 0) :=
-  OddMath.PbwL1.rel_anticommute 0 2 (by decide)
+  OddMath.PbwModelRelations.rel_anticommute 0 2 (by decide)
 
 /-- F5b: relation-ideal form on the rank-three outer pair. -/
 example : OddMath.SkewPolynomial.mul
@@ -70,7 +70,7 @@ example : OddMath.SkewPolynomial.mul
   + OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (2 : Fin 3))
     (OddMath.SkewPolynomial.generator 0) = 0 :=
-  OddMath.PbwL1.rel_sum 0 2 (by decide)
+  OddMath.PbwModelRelations.rel_sum 0 2 (by decide)
 
 /-- F6: ordered rank-two product coordinate is `1`. -/
 example : (OddMath.SkewPolynomial.mul
@@ -94,6 +94,6 @@ example : (OddMath.SkewPolynomial.mul
   ∧ (OddMath.SkewPolynomial.mul
     (OddMath.SkewPolynomial.generator (0 : Fin 2))
     (OddMath.SkewPolynomial.generator 0) ≠ 0) :=
-  OddMath.PbwL1.adequacy 0 1 (by decide)
+  OddMath.PbwModelRelations.adequacy 0 1 (by decide)
 
-end OddMath.PbwL1.Tests
+end OddMath.PbwModelRelations.Tests

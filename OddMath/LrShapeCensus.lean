@@ -34,12 +34,12 @@
 
   Non-tautology: no Schur object is defined here; the census is pure
   partition combinatorics, independent of the three scaffold families.
-  Names live in `OddMath.LrAdapterB7` so no global `Partition` is promoted
+  Names live in `OddMath.LrShapeCensus` so no global `Partition` is promoted
   (the scaffold's standalone `abbrev Partition := List Nat` in
   `formal-statements/lr-theorem38.lean` is untouched).
 -/
 
-namespace OddMath.LrAdapterB7
+namespace OddMath.LrShapeCensus
 
 /-- Partitions as lists of naturals (scaffold convention,
     `formal-statements/lr-theorem38.lean:22`). Positivity and
@@ -387,4 +387,4 @@ theorem shapeCensus_mem_single {wt : Nat} (hwt : 0 < wt) :
 #print axioms shapeCensus_nodup
 #print axioms shapeCensus_mem_single
 
-end OddMath.LrAdapterB7
+end OddMath.LrShapeCensus

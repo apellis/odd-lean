@@ -310,7 +310,7 @@ open ElementaryBranching («prefix» E)
 /-- Every product ending in `x_j^k`, `k ≥ 1`, has zero constant coefficient. -/
 theorem mul_pow_generator_zero {N : ℕ} (p : SkewPolynomial N) (j : Fin N) (k : ℕ) (hk : 1 ≤ k) :
     (p * generator j ^ k) 0 = 0 := by
-  rw [PbwL4.pow_form, ElementaryGeneration.mul_coeff]
+  rw [PbwSpanning.pow_form, ElementaryGeneration.mul_coeff]
   refine Finset.sum_eq_zero fun u _ => Finset.sum_eq_zero fun v hv => ?_
   have hv' : v = k • OddMath.SkewPolynomial.expSingle j := by
     by_contra hne
@@ -671,7 +671,7 @@ theorem eq_2_49_sum_from_zero (N : ℕ) (f : SkewPolynomial (N+1)) :
       simp only [e, Fin.lastCases_castSucc, Fin.lastCases_last]
       rfl
     rw [StaircaseLeft.reverse_mul, hsplit, StaircaseLeft.reverse_monomial, one_mul,
-      PbwL4.monomial_smul, mul_smul_comm, ← hsplit, ← mul_assoc]
+      PbwSpanning.monomial_smul, mul_smul_comm, ← hsplit, ← mul_assoc]
     exact T.smul_mem _ (Submodule.subset_span ⟨_, StaircaseLeft.reverse_mem_E c hc, _,
       Submodule.subset_span ⟨A, rfl⟩, j, hj, rfl⟩)
   rw [Submodule.mem_comap, StaircaseLeft.reverse_involutive] at key

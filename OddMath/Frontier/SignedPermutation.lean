@@ -12,7 +12,7 @@ first by tau, then sigma. No square-zero relations are introduced.
 
 namespace OddMath.Frontier.SignedPermutation
 
-open PbwL2 PbwL3
+open PbwPresentation PbwFactorization
 open OddMath.SkewPolynomial (SkewPolynomial generator)
 
 variable {n : ℕ}

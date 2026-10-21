@@ -27,11 +27,11 @@ What this module proves (sorry-free):
 Scope (NOT this module): the presented object `P n`, quotient map `π`, word
 evaluation `eval`, factorization `Φ` (L2/L3); spanning/normal-form existence
 (L4); linear independence (L5); the isomorphism/PBW corollary (L6). Finite
-fixtures in `OddMath/Tests/PbwL1Fixtures.lean` are development aids
+fixtures in `OddMath/Tests/PbwModelRelationsFixtures.lean` are development aids
 (`SUPPORTED_LOW_DEGREE` at most), never a proof of the correspondence.
 -/
 
-namespace OddMath.PbwL1
+namespace OddMath.PbwModelRelations
 
 /-- L1a: distinct generators anticommute in the model. -/
 theorem rel_anticommute {n : ℕ} (i j : Fin n) (h : i ≠ j) :
@@ -75,4 +75,4 @@ theorem adequacy {n : ℕ} (i j : Fin n) (h : i ≠ j) :
       (OddMath.SkewPolynomial.generator i) ≠ 0) :=
   ⟨rel_sum i j h, square_ne_zero i⟩
 
-end OddMath.PbwL1
+end OddMath.PbwModelRelations

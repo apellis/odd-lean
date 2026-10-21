@@ -55,14 +55,14 @@
 
   Non-tautology: no Schur object is defined here; the diagonal-unit
   shape is pure sign combinatorics over the imported S1 census index.
-  Names live in `OddMath.LrAdapterB9`.
+  Names live in `OddMath.LrSignDiagonal`.
 -/
 
-import OddMath.LrAdapterB7
+import OddMath.LrShapeCensus
 
-namespace OddMath.LrAdapterB9
+namespace OddMath.LrSignDiagonal
 
-open OddMath.LrAdapterB7
+open OddMath.LrShapeCensus
 
 /-- The `±1` diagonal entry of one sign bit. -/
 def signOf : Bool → Int
@@ -158,4 +158,4 @@ theorem idx0_lt (wt : Nat) (hwt : 0 < wt) : 0 < shapeCount wt :=
 #print axioms diagNegOne_eq_sign_apply
 #print axioms idx0_lt
 
-end OddMath.LrAdapterB9
+end OddMath.LrSignDiagonal

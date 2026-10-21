@@ -1,5 +1,5 @@
 import Mathlib.Combinatorics.Young.SemistandardTableau
-import OddMath.LrLegA
+import OddMath.LrNorthEastSign
 
 /-!
 # Genuine semistandard tableaux discharge the Leg A sign hypothesis
@@ -17,7 +17,7 @@ all-pairs counts and is NOT a choice of tableau reading word.
 
 namespace OddMath.Frontier.TableauSign
 
-open LrLegA
+open LrNorthEastSign
 
 /-- Ellis's positive-alphabet semistandard tableaux on an English shape. -/
 structure PositiveTableau (μ : YoungDiagram) extends SemistandardYoungTableau μ where
@@ -79,7 +79,7 @@ theorem north_not_east_lt (T : PositiveTableau μ)
     (T.toSemistandardYoungTableau.col_strict hN hB)
 
 /-- The exact Boolean premise consumed by the inherited Leg A lemmas. -/
-theorem legA_hypothesis (T : PositiveTableau μ) :
+theorem north_not_east_isLtEntry (T : PositiveTableau μ) :
     ∀ B ∈ boxes T, ∀ A ∈ boxes T,
       isNorth A B = true → isEast A B = false → isLtEntry A B = true := by
   intro B hB A hA hN hE
@@ -94,19 +94,19 @@ theorem legA_hypothesis (T : PositiveTableau μ) :
 theorem perBox (T : PositiveTableau μ) (B : TBox) (hB : B ∈ boxes T) :
     countNorth (boxes T) B + countNorthLt (boxes T) B =
       countNE (boxes T) B + countNELt (boxes T) B + 2 * countRest (boxes T) B :=
-  LrLegA.perBox (boxes T) B (legA_hypothesis T B hB)
+  LrNorthEastSign.perBox (boxes T) B (north_not_east_isLtEntry T B hB)
 
 /-- Global exact exponent difference, not just a parity assertion. -/
 theorem global (T : PositiveTableau μ) :
     totalNorth (boxes T) (boxes T) + totalNorthLt (boxes T) (boxes T) =
       totalNE (boxes T) (boxes T) + totalNELt (boxes T) (boxes T) +
         2 * totalRest (boxes T) (boxes T) :=
-  LrLegA.global (boxes T) (boxes T) (legA_hypothesis T)
+  LrNorthEastSign.global (boxes T) (boxes T) (north_not_east_isLtEntry T)
 
 /-- Ellis's Leg A sign identity for every positive semistandard tableau
 of every Young shape, with no residual per-box hypothesis. -/
 theorem global_sign (T : PositiveTableau μ) :
     signLeft (boxes T) (boxes T) = signRight (boxes T) (boxes T) :=
-  LrLegA.global_sign (boxes T) (boxes T) (legA_hypothesis T)
+  LrNorthEastSign.global_sign (boxes T) (boxes T) (north_not_east_isLtEntry T)
 
 end OddMath.Frontier.TableauSign

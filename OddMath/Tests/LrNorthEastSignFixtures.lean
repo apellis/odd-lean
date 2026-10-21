@@ -1,4 +1,4 @@
-import OddMath.LrLegA
+import OddMath.LrNorthEastSign
 
 /-! Hand-derived LR Leg A fixtures, written BEFORE the module exists (TDD red step).
 
@@ -19,11 +19,11 @@ of the Sec 2.2 counting rules) BEFORE any Lean is written:
 - F5 paper Example 2.4, rows [1,1,2,2],[2,3,3,4],[3,4,4],[5,6]:
   grounding totals dN=16, E^>=28, sW=47 (paper p.8, exact match required);
   Leg A totals NE+NE^< = 55, N+N^< = 117 (diff 62, even), both signs -1.
-This file MUST fail to elaborate until `OddMath.LrLegA` exists.
+This file MUST fail to elaborate until `OddMath.LrNorthEastSign` exists.
 -/
-namespace OddMath.LrLegA.Tests
+namespace OddMath.LrNorthEastSign.Tests
 
-open OddMath.LrLegA
+open OddMath.LrNorthEastSign
 
 /- Kernel reduction depth: the F5 closed checks unfold 13x13 box
 comparisons plus `(-1)^117`; that exceeds the default limit of 512. -/
@@ -99,4 +99,4 @@ example : ∀ B ∈ exEllis24, ∀ A ∈ exEllis24,
 example : signLeft exEllis24 exEllis24 = signRight exEllis24 exEllis24 :=
   global_sign exEllis24 exEllis24 (by decide)
 
-end OddMath.LrLegA.Tests
+end OddMath.LrNorthEastSign.Tests

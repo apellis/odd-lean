@@ -7,7 +7,7 @@ EKL arXiv:1111.1320v1 §2.1.1 (2.1)–(2.5), pp.3–4.
 The matrix evaluation descends through the actual relation ideal before PBW transport.
 -/
 namespace OddMath.Frontier.AllRankDivided
-open PbwL2 PbwL3
+open PbwPresentation PbwFactorization
 open OddMath.SkewPolynomial (SkewPolynomial generator)
 variable {n : ℕ}
 
