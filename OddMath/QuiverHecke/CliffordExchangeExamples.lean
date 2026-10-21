@@ -11,7 +11,7 @@ import Mathlib.Tactic
 noncomputable section
 namespace OddMath.QuiverHecke.CliffordExchange.Examples
 
-/-- The split four-generator Clifford form over the rational field. -/
+/-- The four-variable sum-of-squares Clifford form over the rational field. -/
 def form : QuadraticForm ℚ (Fin 4 → ℚ) :=
   QuadraticMap.weightedSumSquares ℚ (fun _ : Fin 4 => (1 : ℚ))
 
