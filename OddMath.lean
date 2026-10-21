@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.AlgebraExamples
+import OddMath.QuiverHecke.AlgebraMapExamples
 import OddMath.SKM.DividedPowerIdempotents
 import OddMath.SKM.DividedPowerDecomposition
 import OddMath.SKM.DividedPowerMultiplicity
@@ -840,6 +841,7 @@ import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.TwoStrandSummands
 import OddMath.SKM.TwoStrandShifts
 import OddMath.SKM.TwoStrandShiftExamples
+import OddMath.SKM.SerrePolynomialExamples
 import OddMath.SKM.EnvelopeSRev
 import OddMath.SKM.PsiGenerators
 import OddMath.SKM.PsiCrossings
