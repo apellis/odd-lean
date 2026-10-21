@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.Realization.Relations
 import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples

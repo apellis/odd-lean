@@ -255,6 +255,26 @@ theorem endMul_neg {X : Type*} [AddCommGroup X] [Module k X] (a b : Module.End k
 theorem endNeg_mul {X : Type*} [AddCommGroup X] [Module k X] (a b : Module.End k X) :
     -a * b = -(a * b) := neg_mul a b
 
+/-- `neg_neg` for linear endomorphisms; see `endMul_neg`. -/
+@[simp] theorem endNeg_neg {X : Type*} [AddCommGroup X] [Module k X] (a : Module.End k X) :
+    -(-a) = a := neg_neg a
+
+/-- `sub_neg_eq_add` for linear endomorphisms; see `endMul_neg`. -/
+theorem endSub_neg_eq_add {X : Type*} [AddCommGroup X] [Module k X] (a b : Module.End k X) :
+    a - -b = a + b := sub_neg_eq_add a b
+
+/-- `neg_one_smul` for linear endomorphisms; see `endMul_neg`. -/
+theorem endNeg_one_smul {X : Type*} [AddCommGroup X] [Module k X] (a : Module.End k X) :
+    (-1 : k) • a = -a := neg_one_smul k a
+
+/-- `smul_sub` for linear endomorphisms, right to left; see `endMul_neg`. -/
+theorem endSmul_sub {X : Type*} [AddCommGroup X] [Module k X] (c : k) (a b : Module.End k X) :
+    c • a - c • b = c • (a - b) := (smul_sub c a b).symm
+
+/-- `smul_add` for linear endomorphisms, right to left. -/
+theorem endSmul_add {X : Type*} [AddCommGroup X] [Module k X] (c : k) (a b : Module.End k X) :
+    c • a + c • b = c • (a + b) := (smul_add c a b).symm
+
 variable (k)
 
 /-- The coefficient module `K ⊗ Cl`; `f ⊗ u` stands for `f · u`. -/
