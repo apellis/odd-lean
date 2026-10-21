@@ -20,3 +20,9 @@ example (r : ℕ) : Module.Projective (ModuleRing datum scalars r)
 #print axioms OddMath.QuiverHecke.DividedPowerModules.oddDecompositionInHn_symm_degree
 #print axioms OddMath.QuiverHecke.DividedPowerModules.oddDecompositionInHn_degree_small
 #print axioms OddMath.SKM.DividedPowerDecomposition.sum_shift_monomial
+#print axioms OddMath.QuiverHecke.DividedPowerModules.evenDecompositionInHn
+#print axioms OddMath.QuiverHecke.DividedPowerModules.evenDecompositionInHn_degree
+#print axioms OddMath.QuiverHecke.DividedPowerModules.evenDecompositionInHn_symm_degree
+#print axioms OddMath.QuiverHecke.DividedPowerModules.evenIdempotent_mem_bidegree
+#print axioms OddMath.QuiverHecke.card_evenIndex
+#print axioms OddMath.QuiverHecke.sum_T_evenShift
