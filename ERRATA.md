@@ -853,9 +853,17 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     by a finite-dimensional representable Hom invariant. The comparison
     `projectiveK0Equiv` concerns ungraded right projective supermodules; an
     explicit equivalence with graded left projective supermodules remains
-    separate. The general Krull–Schmidt/parity-orbit decomposition and its
-    finite-dimensional specialization are pending, not hypotheses hidden in
-    the counterexample. They are follow-up obligations for Theorem 11.3.
+    separate. `StringDiagrams.KrullSchmidt.indecBasis` now constructs the
+    integral basis for Hom-finite idempotent-complete linear categories;
+    `GSKarAlg.indecBasis` supplies the finite-dimensional graded-superalgebra
+    consumer. `KrullSchmidt.k0_free_zpi_iff` proves the parity-ring freeness
+    criterion, before quotienting integer shifts, and `parityBasis` constructs
+    the paired-orbit basis. These results require no assumed decomposition or
+    basis. `CliffordK0.indecBasis`, `exists_indecomposable_not_norm` and
+    `gradedK0_not_free_zpi` apply them to the same graded Clifford envelope.
+    The full Laurentian theorem, integer-shift rigidity, the mixed M/Q
+    direct-sum equivalence and the Laurent-ring basis remain obligations for
+    Theorem 11.3, including the general finite-dimensional graded case.
 
     **Later uses.** The tensor assertion at the start of §11 already assumes
     absolute irreducibility and type M. For `H_n`, derive type M from the
