@@ -1,15 +1,16 @@
 import OddMath.QuiverHecke.CliffordLocalizationExamples
 import OddMath.QuiverHecke.CliffordColoursExamples
+import OddMath.QuiverHecke.CliffordPermutationsExamples
 import OddMath.QuiverHecke.CliffordCoefficientsExamples
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
+import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.DividedPowerModulesExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
-import OddMath.Diagrams.EvenNilHecke.Examples
 import OddMath.SKM.DividedPowerIdempotents
 import OddMath.SKM.DividedPowerDecomposition
 import OddMath.SKM.DividedPowerMultiplicity
@@ -943,6 +944,8 @@ import OddMath.SKM.PositiveMatchingLayers
 import OddMath.SKM.PositiveMatchingLayersExamples
 import OddMath.SKM.PositiveMatchingGrading
 import OddMath.SKM.CoveringDatum
+import OddMath.SKM.K0Commutation
+import OddMath.SKM.K0RelationsExamples
 import OddMath.SKM.PositiveMatchingGradingExamples
 import OddMath.SKM.ChevalleyHom
 import OddMath.SKM.CliffordK0
