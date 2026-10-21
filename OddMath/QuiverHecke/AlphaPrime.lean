@@ -19,6 +19,13 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
 variable {k : Type w} [CommRing k] (Sc : SKM.Scalars D k)
 
+/-- The literal composite at `μ` has rightmost weight `-μ`; compare ERRATA [BE2] 11. -/
+theorem alpha_omega_obj (μ : X) (s : List I) :
+    (((alpha D Sc μ) ⋙ SKM.omega Sc).obj ((pres D Sc).obj (ob D s))).unop =
+      (SKM.pres D Sc).obj (SKM.ob D (-μ) (SKM.flipW (upWord s))) := by
+  change ((SKM.omega Sc).obj ((alpha D Sc μ).obj ((pres D Sc).obj (ob D s)))).unop = _
+  rw [alpha_obj, SKM.omega_obj]
+
 /-- The contravariant downward functor; the rightmost weight is `μ`. -/
 abbrev alphaContravariant (μ : X) : H D Sc ⥤ SOp k (SKM.pres D Sc).Presented :=
   alpha D Sc (-μ) ⋙ SKM.omega Sc
