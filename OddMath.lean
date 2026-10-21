@@ -826,6 +826,7 @@ import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.Envelope
+import OddMath.SKM.HomComponents
 import OddMath.SKM.EnvelopeSOp
 import OddMath.SKM.TwoStrandSummands
 import OddMath.SKM.EnvelopeSRev
