@@ -400,7 +400,7 @@ permutation action):
   (`K₀(D(OΛ_n)) ≅ ℤ[√−1]`), `lemma_4_16_int`, `comultK0Int_ePowClass`, `multK0Int_ePowClass` (the multiplication
   functor is `(Z^∨_{a,b})ᵈ ⊗^L (-)` on half-graded modules), and `thm_4_17_int_equiv`, `thm_4_17_int_mul`,
   `thm_4_17_int_comul`, the same statements as over a field. Over every field all of §4.4 is proved as well (above).
-- §2.2.4 over a field (`Frontier.EQHalfGradedField`): the compact super Grothendieck group of
+- §2.2.4 over a field (`Frontier.EQHalfGradedField`; convention: [EQ] 26): the compact super Grothendieck group of
   dg-lean's half-graded derived category is additively equivalent to the Gaussian integers
   (`EQHalfGraded.superK0EquivGaussian`), with the regular object representing `1` and its actual
   internal shift `⟨1⟩` representing `√-1` (`superK0EquivGaussian_shift_regular`). In contrast,
