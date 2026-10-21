@@ -55,8 +55,9 @@ theorem jointFilter_eventually_lower (ζ : X) (B : ℤ) :
     have h := hb (false, i)
     simpa only [← congrFun hp (false, i), jointCoordinates, Bool.false_eq_true, ite_false] using h
 
-/-- Actual eventual identification on the original fixed-difference domain. -/
-theorem gramExtension_eventually_actual (ζ : X) (x y : modified D Coefficients.q pi) :
+/-- Eventually, the Gram extension equals the modified Gram form on the original
+fixed-difference domain. -/
+theorem gramExtension_eventually_eq_modifiedGram (ζ : X) (x y : modified D Coefficients.q pi) :
     ∀ᶠ p in jointFilter D ζ,
       ∃ (hΛ : ∀ i, 0 ≤ D.h i p.val.1) (hΜ : ∀ i, 0 ≤ D.h i p.val.2), ∀ s,
         gramExtension D ζ x y s p = modifiedGram D p.val.1 p.val.2 hΛ hΜ s x y := by

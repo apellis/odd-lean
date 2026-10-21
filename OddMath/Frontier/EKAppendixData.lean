@@ -110,7 +110,7 @@ theorem columns_all {n : ℕ} (rs : List (List (Fin n)))
 theorem entry_of_rows (n : ℕ) {μ : YoungDiagram} (T : PositiveTableau μ) (hT : InAlphabet n T)
     (r c : ℕ) : T.entry r c =
       ((((rows n T hT)[r]?.getD [])[c]?).map (fun x : Fin n => x.val + 1)).getD 0 := by
-  obtain ⟨hs, hc, _, _, he⟩ := genuine_roundtrip n μ T hT
+  obtain ⟨hs, hc, _, _, he⟩ := rows_roundtrip n μ T hT
   rw [← he r c, tableau_entry]
 
 theorem rows_injective (n : ℕ) {μ : YoungDiagram} (S T : PositiveTableau μ)
@@ -170,7 +170,7 @@ theorem fiber_sum (lam : YoungDiagram) (c : ℕ →₀ ℕ) (n : ℕ) (cl : List
   apply Finset.sum_bij (fun T hT => rows n T (inAlphabet_of_mem n c hsupp T hT))
   · intro T hT
     have hT' := inAlphabet_of_mem n c hsupp T hT
-    obtain ⟨hs, hc, hn, _, _⟩ := genuine_roundtrip n lam T hT'
+    obtain ⟨hs, hc, hn, _, _⟩ := rows_roundtrip n lam T hT'
     rw [List.mem_toFinset, List.mem_filter, decide_eq_true_iff]
     have hlens := rows_lengths n lam T hT'
     refine ⟨?_, hs, fun r _ => hc r, hlens, hn, ?_⟩

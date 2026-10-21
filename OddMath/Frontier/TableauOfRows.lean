@@ -159,7 +159,7 @@ theorem rowFinWord_tableau (n : ℕ) (rs : List (List (Fin n)))
     rowFinWord n (tableau n rs hs hc) (bounded n rs hs hc) = readRows rs := by
   rw [← readRows_rows, rows_tableau n rs hs hc hn]
 
-private theorem genuine_row_default (n : ℕ) (μ : YoungDiagram)
+private theorem rows_getD_eq_row (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) (r : ℕ) :
     (rows n T hT)[r]?.getD [] = row n T hT r := by
   by_cases hr : r < μ.colLen 0
@@ -173,14 +173,14 @@ private theorem genuine_row_default (n : ℕ) (μ : YoungDiagram)
     have hb : (rows n T hT).length ≤ r := by rw [rows_length]; omega
     simp [he, List.getElem?_eq_none hb]
 
-private theorem genuine_columns (n : ℕ) (μ : YoungDiagram)
+private theorem rows_getD_columnBelow (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) :
     ∀ r : ℕ, ColumnBelow ((rows n T hT)[r]?.getD []) ((rows n T hT)[r+1]?.getD []) := by
   intro r
-  rw [genuine_row_default, genuine_row_default]
+  rw [rows_getD_eq_row, rows_getD_eq_row]
   exact rows_columnBelow n μ T hT r
 
-private theorem genuine_nonempty (n : ℕ) (μ : YoungDiagram)
+private theorem rows_ne_nil (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) :
     ∀ w ∈ rows n T hT, w ≠ [] := by
   intro w hw
@@ -190,11 +190,11 @@ private theorem genuine_nonempty (n : ℕ) (μ : YoungDiagram)
   apply List.length_pos_iff.mp
   simpa only [row_length] using hl
 
-private theorem genuine_label (n : ℕ) (μ : YoungDiagram)
+private theorem label_rows (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) (r c : ℕ) :
     label (rows n T hT) r c = T.entry r c := by
   unfold label
-  rw [genuine_row_default]
+  rw [rows_getD_eq_row]
   by_cases hc : c < μ.rowLen r
   · have hc' : c < (row n T hT r).length := by simpa only [row_length] using hc
     have h := congrArg (fun l : List ℕ => l[c]?) (row_labels n μ T hT r)
@@ -204,19 +204,19 @@ private theorem genuine_label (n : ℕ) (μ : YoungDiagram)
       ((YoungDiagram.mem_iff_lt_rowLen).not.mpr hc)
     simpa [List.getElem?_eq_none hc'] using hz.symm
 
-theorem genuine_roundtrip (n : ℕ) (μ : YoungDiagram)
+theorem rows_roundtrip (n : ℕ) (μ : YoungDiagram)
     (T : PositiveTableau μ) (hT : InAlphabet n T) :
     ∃ (hs : ∀ w ∈ rows n T hT, w.Pairwise (· ≤ ·))
       (hc : ∀ r : ℕ, ColumnBelow ((rows n T hT)[r]?.getD []) ((rows n T hT)[r+1]?.getD []))
       (_hn : ∀ w ∈ rows n T hT, w ≠ []),
       shape n (rows n T hT) hc = μ ∧
       ∀ r c, (tableau n (rows n T hT) hs hc).entry r c = T.entry r c := by
-  refine ⟨rows_sorted n μ T hT, genuine_columns n μ T hT,
-    genuine_nonempty n μ T hT, ?_, ?_⟩
+  refine ⟨rows_sorted n μ T hT, rows_getD_columnBelow n μ T hT,
+    rows_ne_nil n μ T hT, ?_, ?_⟩
   · unfold shape
     simp only [rows_lengths]
     exact YoungDiagram.ofRowLens_to_rowLens_eq_self
   · intro r c
-    exact genuine_label n μ T hT r c
+    exact label_rows n μ T hT r c
 
 end OddMath.Frontier.TableauOfRows

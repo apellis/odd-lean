@@ -674,7 +674,7 @@ theorem valid_of_rows {n : ℕ} : ∀ (rs : List (List (Fin n))),
 
 theorem valid_rows {n : ℕ} {μ : YoungDiagram} (T : PositiveTableau μ) (hT : InAlphabet n T) :
     Valid ((rows n T hT).map (List.map lab)) := by
-  obtain ⟨hs, hc, hn, _, _⟩ := TableauOfRows.genuine_roundtrip n μ T hT
+  obtain ⟨hs, hc, hn, _, _⟩ := TableauOfRows.rows_roundtrip n μ T hT
   exact valid_of_rows _ hs hc hn
 
 /-- Equal shapes and entries give equal sigma-tableaux. -/
@@ -693,8 +693,8 @@ theorem sigma_eq_of_rows (n : ℕ) {μ μ' : YoungDiagram} (T : PositiveTableau 
     (T' : PositiveTableau μ') (hT : InAlphabet n T) (hT' : InAlphabet n T')
     (h : rows n T hT = rows n T' hT') :
     (⟨μ, T⟩ : Σ μ : YoungDiagram, PositiveTableau μ) = ⟨μ', T'⟩ := by
-  obtain ⟨hs, hc, hn, hμ, he⟩ := TableauOfRows.genuine_roundtrip n μ T hT
-  obtain ⟨hs', hc', hn', hμ', he'⟩ := TableauOfRows.genuine_roundtrip n μ' T' hT'
+  obtain ⟨hs, hc, hn, hμ, he⟩ := TableauOfRows.rows_roundtrip n μ T hT
+  obtain ⟨hs', hc', hn', hμ', he'⟩ := TableauOfRows.rows_roundtrip n μ' T' hT'
   refine sigma_eq T T' ?_ ?_
   · rw [← hμ, ← hμ']
     generalize hc = x

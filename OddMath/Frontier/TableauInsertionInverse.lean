@@ -29,8 +29,8 @@ private theorem sigma_eq_of_rows (n : ℕ) (μ ν : YoungDiagram)
     (hr : rows n S hS = rows n T hT) :
     (⟨μ, ⟨S,hS⟩⟩ : Σ ξ : YoungDiagram, {U : PositiveTableau ξ // InAlphabet n U}) =
       ⟨ν, ⟨T,hT⟩⟩ := by
-  obtain ⟨ss,sc,_,sh,se⟩ := TableauOfRows.genuine_roundtrip n μ S hS
-  obtain ⟨ts,tc,_,th,te⟩ := TableauOfRows.genuine_roundtrip n ν T hT
+  obtain ⟨ss,sc,_,sh,se⟩ := TableauOfRows.rows_roundtrip n μ S hS
+  obtain ⟨ts,tc,_,th,te⟩ := TableauOfRows.rows_roundtrip n ν T hT
   apply sigma_eq_of_shape_entries n μ ν S hS T hT
   · apply YoungDiagram.ext
     ext ⟨r,c⟩

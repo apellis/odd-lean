@@ -47,7 +47,7 @@ theorem halfWord_residual (Λ Μ : X)
       D.form Coefficients.q pi (monomial Coefficients.Ring u) (monomial Coefficients.Ring v) =
     MvPolynomial.eval (deformationParameter D Μ) (reciprocalError D u v) := by
   rw [← algebraWord_pos_eq, ← algebraWord_pos_eq]
-  exact actual_positive_residual D Λ Μ hΛ hΜ s u v
+  exact positive_residual_eq_eval D Λ Μ hΛ hΜ s u v
 
 /-- Every actual fixed-column mixed pair has a SINGLE finite residual
 polynomial, chosen before the growing highest weights and the coproduct.
@@ -61,7 +61,7 @@ theorem fixed_column_residual (ζ : X) (x y : modified D Coefficients.q pi)
         modifiedGram D Λ Μ hΛ hΜ s x y - GenericTensor.positiveModifiedForm D x y =
           MvPolynomial.eval (deformationParameter D Μ) p := by
   classical
-  obtain ⟨c, hc⟩ := actual_residual_sum D ζ x y hx hy
+  obtain ⟨c, hc⟩ := residual_sum D ζ x y hx hy
   refine ⟨c.sum (fun w a ↦ MvPolynomial.C a * reciprocalError D w.1 w.2), ?_, ?_⟩
   · simp [Finsupp.sum, map_sum, reciprocalError_constantCoeff]
   · intro Λ Μ hΛ hΜ s hζ
