@@ -14,7 +14,12 @@ contains only upward dots and crossings; its quotient is independent of
 presentation machinery, not additional defining relations.
 
 The parameters are BE2's `t` and `s`. In particular the zero-edge quadratic
-relation is `τ² = tᵢⱼ`, not the sum of two constant terms.
+relation is `τ² = tᵢⱼ`, not the sum of two constant terms. KKT §3.1
+packages these coefficients into `Qᵢⱼ`; Hill–Wang uses a specialized
+polynomial. This module does not replace BE2's parameters by that specialization.
+BE2 also reverses strand positions relative to the left-to-right list convention
+used here. The changed parity shift mentioned in BE2 after Lemma 11.1 concerns
+Hill–Wang's `(q,π)`-integer convention, not a change to the local relations.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke
@@ -165,7 +170,7 @@ theorem parity_sum_append (ls ms : List (LayerData I)) :
     ((crossL u i j v).map fun x => x.2.1.parity D).sum = D.parity i * D.parity j := by
   simp [crossL, Shape.parity]
 
-/-- All relations of Definition 1.5 are homogeneous for the parity, by (1.4) and (1.6). -/
+/-- All relations (1.7)–(1.9) are parity-homogeneous, by (1.4) and (1.6). -/
 theorem isParityHomogeneous : (pres D Sc).IsParityHomogeneous := by
   intro r
   cases r with

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.Presentation
 import StringDiagrams.Super.PresentedGraded
+import StringDiagrams.Super.GradedMonoidal
 
 /-!
 # The grading on the quiver Hecke supercategory
@@ -25,8 +26,7 @@ def gdeg : (sig D).Gen → ℤ
   | .dot i => 2 * sy.d i
   | .cross i j => sy.d i * D.d i j
 
-/-- The degree of a normal-form diagram: the sum of the degrees of its generators, each in the
-region `wt v` to its right. -/
+/-- The degree of a diagram is the sum of the degrees of its generators. -/
 theorem degree_gdeg_mkD {t t' : List I} (ls : List (LayerData I))
     (h : SChain t ls t') :
     Diagram.degree (gdeg D sy) (mkD D ls h) =
@@ -60,8 +60,7 @@ theorem idg_mem_gdeg (t : List I) :
     idg (k := k) D t ∈ LinDiagram.homDeg k (gdeg D sy) (ob D t) (ob D t) 0 :=
   of_mem_homDeg' (Diagram.degree_id _ _)
 
-/-- **The grading of `𝔘(𝔤)`** (Brundan–Ellis, §1, "Gradings"): under the homogeneity condition
-(1.31), every relation of Definition 1.5 is homogeneous for the degrees `gdeg`. -/
+/-- Under (1.31), all the upward relations defining `H` are homogeneous. -/
 theorem isHomogeneous_gdeg (Sc : SKM.Scalars D k) (hc : Sc.Homogeneous) :
     (pres D Sc).IsHomogeneous (gdeg D sy) := by
   intro r
@@ -162,5 +161,60 @@ abbrev homDegree (Sc : SKM.Scalars D k) (a b : List I) (d : ℤ) :=
 theorem isInternal_homDegree (Sc : SKM.Scalars D k) (hc : Sc.Homogeneous) (a b : List I) :
     DirectSum.IsInternal (homDegree D sy Sc a b) :=
   Presentation.isInternal_homDeg (isHomogeneous_gdeg D sy Sc hc) (ob D a) (ob D b)
+
+variable (Sc : SKM.Scalars D k) (hc : Sc.Homogeneous)
+
+/-- The parity projections on `H` are the diagram parity components. -/
+theorem proj_eq_component {a b : (pres D Sc).Presented} (p : ZMod 2) (f : a ⟶ b) :
+    Supercategory.proj k p f =
+      Presentation.homogeneousComponent (isParityHomogeneous D Sc) p f := by
+  refine Supercategory.induction_on (R := k) f ?_ ?_ ?_
+  · exact (map_zero _).trans (map_zero (Presentation.homogeneousComponent
+      (isParityHomogeneous D Sc) p)).symm
+  · intro q g hg
+    by_cases hq : q = p
+    · subst hq
+      exact (Supercategory.proj_of_mem hg).trans
+        (Presentation.homogeneousComponent_of_mem (isParityHomogeneous D Sc) hg).symm
+    · exact (Supercategory.proj_of_mem_ne hg hq).trans
+        (Presentation.homogeneousComponent_of_mem_of_ne (isParityHomogeneous D Sc) hg hq).symm
+  · intro g h hg hh
+    exact ((map_add _ g h).trans (congrArg₂ (· + ·) hg hh)).trans
+      (map_add (Presentation.homogeneousComponent (isParityHomogeneous D Sc) p) g h).symm
+
+/-- The integer grading compatible with parity and composition. -/
+@[instance_reducible]
+def gradedSupercategory : GradedSupercategory k (H D Sc) where
+  degree a b n := (pres D Sc).homDeg (gdeg D sy) a.as b.as n
+  isInternal_degree a b := Presentation.isInternal_homDeg
+    (isHomogeneous_gdeg D sy Sc hc) a.as b.as
+  proj_mem_degree := by
+    intro a b n f p hf
+    rw [proj_eq_component D Sc]
+    exact Presentation.homogeneousComponent_mem_homDeg (isParityHomogeneous D Sc) p hf
+  id_mem_degree a := (pres D Sc).id_mem_homDeg (gdeg D sy) a.as
+  comp_mem_degree hf hg := Presentation.comp_mem_homDeg hf hg
+
+/-- `H` with its integer grading is a graded monoidal supercategory. -/
+theorem gradedMonoidalSupercategory :
+    letI := gradedSupercategory D sy Sc hc
+    GradedMonoidalSupercategory k (H D Sc) := by
+  let _ := gradedSupercategory D sy Sc hc
+  exact
+    { whiskerLeft_mem_degree := by
+        intro a b c d f hf
+        exact (pres D Sc).wL_mem (gdeg D sy) a.as hf
+      whiskerRight_mem_degree := by
+        intro a b d f c hf
+        exact (pres D Sc).wR_mem (gdeg D sy) hf c.as
+      associator_hom_mem_degree := fun a b c =>
+        Presentation.eqToHom_mem_homDeg (gdeg D sy)
+          (congrArg (pres D Sc).obj (Obj.tensor_assoc a.as b.as c.as))
+      leftUnitor_hom_mem_degree := fun a =>
+        Presentation.eqToHom_mem_homDeg (gdeg D sy)
+          (congrArg (pres D Sc).obj (Obj.unit_tensor a.as))
+      rightUnitor_hom_mem_degree := fun a =>
+        Presentation.eqToHom_mem_homDeg (gdeg D sy)
+          (congrArg (pres D Sc).obj (Obj.tensor_unit a.as)) }
 
 end OddMath.QuiverHecke

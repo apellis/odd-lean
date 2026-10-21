@@ -726,6 +726,7 @@ import OddMath.PbwFactorization
 import OddMath.PbwModelRelations
 import OddMath.PbwPresentation
 import OddMath.PbwSpanning
+import OddMath.QuiverHecke.Examples
 import OddMath.SKM.Basic
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
