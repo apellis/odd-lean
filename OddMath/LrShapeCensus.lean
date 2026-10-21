@@ -1,48 +1,33 @@
-/-
-  LR adapter B7 — S1 finite fixed-weight shape census (sorry-free).
+/-!
+# The census of partitions of a fixed weight
 
-  Parent the design specification is the
-  ONLY required input. This file realizes exactly ONE the design specification ADDRESSED item —
-  the `partition-adapter` shape S1 (finite fixed-weight shape census) — as
-  compiled Lean. All other the design specification shapes (S2–S6) and checks (C1–C8) are NOT
-  realized here.
+A partition of `wt` is a weakly decreasing list of positive integers with sum `wt`; with
+positive parts there are no trailing zeros, so membership is unambiguous. `shapeCensus wt`
+is the list of all of them.
 
-  Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1.
-  the design specification (S1): a fixed weight isolates one comparison slice; census
-  membership is over partitions (weakly decreasing tuples of positive
-  integers — the sign convention, "Partition and tableau conventions"),
-  so no trailing zeros exist and membership is unambiguous.
+The census indexes the data of a unitriangular comparison of two families of functions over
+all shapes of one weight, in the form of the induction in the proof of Theorem 3.8 of
+Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1: the order
+`OddMath.LrShapeOrder`, the families `OddMath.LrShapeFamily`, the diagonals
+`OddMath.LrSignDiagonal` and the matrices `OddMath.LrCoeffMatrix` and
+`OddMath.LrSignDiagonalMatrix`, for the uniqueness statement `OddMath.LrTriangular.unique`.
+Theorem 3.8 itself is proved in `OddMath.Frontier.OddLRThm38` by a different route.
 
-  What this module proves (sorry-free, `Init` only, no Mathlib import):
-  - `isPartitionOf`: decidable census predicate (sum + positivity +
-    weakly-decreasing);
-  - `shapeCensus wt`: computable census (bounded enumeration filtered by
-    the predicate);
-  - `shapeCount wt`: census length — the `n` that a future adapter feeds
-    to `OddMath.LrTriangular.unique`;
-  - `shapeCensus_sound`: every census entry satisfies the predicate;
-  - `shapeCensus_complete`: every predicate-satisfying list is a census
-    entry;
-  - `shapeCensus_nodup`: the census has no duplicates;
-  - `shapeCensus_mem_single`: `[wt] ∈ census` for `0 < wt` (nonempty slice).
+Main results (Lean core only, no Mathlib import):
+- `isPartitionOf`: the decidable predicate (sum, positivity, weakly decreasing).
+- `shapeCensus wt`: the census, a bounded enumeration filtered by the predicate.
+- `shapeCount wt`: the number of partitions of `wt`.
+- `shapeCensus_sound` / `shapeCensus_complete`: the census consists of exactly the
+  partitions of `wt`.
+- `shapeCensus_nodup`: the census has no duplicates.
+- `shapeCensus_mem_single`: `[wt]` is in the census for `0 < wt`.
 
-  Honestly NOT here (obstructions in the unpublished development notes): `shapeCensus_sorted`
-  (needs the S2 order, whose transpose-vs-row-lex source check is open),
-  any S4 shared-lead/matrix/right-hand-side content (needs B1/B2 proof work),
-  any `RowSystem` instance (needs genuine P/S families blocked on
-  scaffold stubs G2/G3), and therefore no comparison theorem.
-
-  Non-tautology: no Schur object is defined here; the census is pure
-  partition combinatorics, independent of the three scaffold families.
-  Names live in `OddMath.LrAdapterB7` so no global `Partition` is promoted
-  (the scaffold's standalone `abbrev Partition := List Nat` in
-  `formal-statements/lr-theorem38.lean` is untouched).
+`Partition` is a local abbreviation for `List Nat` in this namespace.
 -/
 
-namespace OddMath.LrAdapterB7
+namespace OddMath.LrShapeCensus
 
-/-- Partitions as lists of naturals (scaffold convention,
-    `formal-statements/lr-theorem38.lean:22`). Positivity and
+/-- Partitions as lists of naturals. Positivity and
     weakly-decreasing order are enforced by `isPartitionOf`, not by
     this abbreviation. -/
 abbrev Partition := List Nat
@@ -61,7 +46,7 @@ def descending : List Nat → Bool
   | [_] => true
   | a :: b :: xs => decide (b ≤ a) && descending (b :: xs)
 
-/-- Decidable census predicate (the design specification S1): `l` is a partition of weight `wt`.
+/-- Decidable census predicate: `l` is a partition of weight `wt`.
     No trailing zeros can occur: every part is positive. -/
 def isPartitionOf (l : List Nat) (wt : Nat) : Bool :=
   decide (l.sum = wt) && allPos l && descending l
@@ -77,18 +62,18 @@ def allListsUpTo : Nat → Nat → List (List Nat)
   | 0, _ => [[]]
   | k + 1, m => allListsUpTo k m ++ allLists (k + 1) m
 
-/-- the design specification S1 census type: a finite list of partitions. -/
+/-- A census: a finite list of partitions. -/
 abbrev ShapeCensus := List Partition
 
-/-- the design specification S1 census: every partition of weight `wt`, each exactly once.
+/-- The census: every partition of weight `wt`, each exactly once.
     Entries are `< wt + 1` and length is at most `wt` (a positive-part
     list summing to `wt` cannot be longer or taller), so the bounded
     enumeration is exhaustive. -/
 def shapeCensus (wt : Nat) : ShapeCensus :=
   (allListsUpTo wt (wt + 1)).filter fun l => isPartitionOf l wt
 
-/-- the design specification S1 count: the `n` a future adapter feeds to
-    `OddMath.LrTriangular.unique` at weight `wt`. -/
+/-- The number of partitions of `wt`: the size `n` of a census-indexed system for
+    `OddMath.LrTriangular.unique`. -/
 def shapeCount (wt : Nat) : Nat := (shapeCensus wt).length
 
 /-- Generator characterization: membership is exactly
@@ -347,7 +332,7 @@ theorem nodup_filter (p : α → Bool) (l : List α)
     · simp only [List.filter_cons, hp]
       exact ih hcons.2
 
-/-- the design specification S1 justification: the census has no duplicates. -/
+/-- The census has no duplicates. -/
 theorem shapeCensus_nodup (wt : Nat) : (shapeCensus wt).Nodup := by
   unfold shapeCensus
   exact nodup_filter _ _ (allListsUpTo_nodup wt (wt + 1))
@@ -369,9 +354,7 @@ theorem shapeCensus_mem_single {wt : Nat} (hwt : 0 < wt) :
     rw [hdec, hpos, hdesc]
     rfl
 
-/- Census spot-values (compiled execution evidence; outputs appear in
-   the isolated build log): partitions of 0-4.
-   (Plain block comment: `#eval` takes no docstring.) -/
+/- Census values: partitions of 0-4. -/
 #eval shapeCensus 0
 #eval shapeCensus 1
 #eval shapeCensus 2
@@ -379,12 +362,11 @@ theorem shapeCensus_mem_single {wt : Nat} (hwt : 0 < wt) :
 #eval shapeCensus 4
 #eval shapeCount 4
 
-/- Axiom audit (outputs appear in the isolated build log; expected:
-   at most `propext`, with no unfinished-proof axiom). -/
+/- Axiom checks. -/
 #print axioms mem_allLists
 #print axioms shapeCensus_sound
 #print axioms shapeCensus_complete
 #print axioms shapeCensus_nodup
 #print axioms shapeCensus_mem_single
 
-end OddMath.LrAdapterB7
+end OddMath.LrShapeCensus

@@ -8,7 +8,7 @@ No faithfulness, nilHecke basis, or grading theorem is asserted here.
 -/
 namespace OddMath.Frontier.NilHeckeAction
 open OddMath.SkewPolynomial (SkewPolynomial generator)
-open PbwL3 AllRankDivided
+open PbwFactorization AllRankDivided
 
 abbrev Gen (n : ℕ) := Sum (Fin (n+2)) (Fin (n+1))
 abbrev Free (n : ℕ) := FreeAlgebra ℤ (Gen n)
@@ -103,7 +103,7 @@ theorem relation_killed (n : ℕ) (w : Free n) (hw : w ∈ relSet n) :
       change generator i * (generator j * f) + generator j * (generator i * f) = 0
       rw [← mul_assoc, ← mul_assoc, ← add_mul]
       rw [show generator i * generator j + generator j * generator i = 0 from
-        PbwL1.rel_sum i j h, zero_mul]
+        PbwModelRelations.rel_sum i j h, zero_mul]
   | distant i j h =>
       simp only [map_add, map_mul, freeAction_crossing]
       exact DividedDistant.divided_distant_comp i j h

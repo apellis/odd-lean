@@ -36,11 +36,11 @@ noncomputable section
 local instance (priority := high) eqBlocksDNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) eqBlocksDNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 variable {m k : ℕ}
 
@@ -54,7 +54,7 @@ theorem inclX_generator_mul_inclY (i : Fin m) (Q : SkewPolynomial k) :
       EQZab.inclX_generator, EQZab.inclY_generator, neg_mul]
     have hne : Fin.castAdd k i ≠ Fin.natAdd m j := by
       intro h; have := congrArg Fin.val h; simp at this; omega
-    exact eq_neg_of_add_eq_zero_left (OddMath.PbwL1.rel_sum _ _ hne)
+    exact eq_neg_of_add_eq_zero_left (OddMath.PbwModelRelations.rel_sum _ _ hne)
   | hint z => simp only [map_intCast]; exact (Int.cast_comm _ _).symm
   | hadd f g hf hg => rw [map_add, map_add, map_add, mul_add, add_mul, hf, hg]
   | hmul f g hf hg =>

@@ -13,7 +13,7 @@ No uniqueness of normal forms is assumed. Repeated indices are retained.
 
 namespace OddMath.Frontier.PbwEquivalence
 
-open PbwL2 PbwL3 PbwNormalization
+open PbwPresentation PbwFactorization PbwNormalization
 open OddMath.SkewPolynomial
 
 variable {n : ℕ}
@@ -49,7 +49,7 @@ quotient independence assumption. -/
   | add f g hf hg => rw [map_add, map_add, hf, hg]
   | single a c =>
     change Phi n (lift n (monomial a c)) = monomial a c
-    rw [lift_monomial, map_zsmul, Phi_orderedMonomial, ← PbwL4.monomial_smul]
+    rw [lift_monomial, map_zsmul, Phi_orderedMonomial, ← PbwSpanning.monomial_smul]
 
 /-- The indispensable quotient-side step: every quotient element has the
 parent's finite ordered expansion, so the explicit lift is also a left inverse. -/

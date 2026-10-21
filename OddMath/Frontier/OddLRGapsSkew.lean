@@ -10,7 +10,7 @@ import Mathlib.Algebra.DirectSum.Module
 
 Ellis, "The odd Littlewood–Richardson rule", arXiv:1111.3932v1 ("E"), §2.1, pp. 3–4, on
 `OPol_n = SkewPolynomial n` (increasing-index normal form, `x_i x_j = -x_j x_i` for `i ≠ j`),
-with its ring structure `PbwL3.instRing` and the odd divided differences
+with its ring structure `PbwFactorization.instRing` and the odd divided differences
 `AllRankDivided.divided` and signed transpositions `AllRankDivided.s`.
 
 * p. 3: "Although the generators `x_1, …, x_n` pairwise supercommute, the algebra `OPol_n` is not
@@ -32,7 +32,7 @@ with its ring structure `PbwL3.instRing` and the odd divided differences
 namespace OddMath.Frontier.OddLRGaps
 
 open OddMath.SkewPolynomial (SkewPolynomial generator monomial expSingle)
-open PbwL3 AllRankDivided
+open PbwFactorization AllRankDivided
 
 noncomputable section
 

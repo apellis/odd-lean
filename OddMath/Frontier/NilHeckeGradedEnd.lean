@@ -98,22 +98,22 @@ theorem generator_mem {N : ℕ} (j : Fin N) : generator j ∈ polynomialPiece N 
 
 /-- Word homogeneity is proved on the actual quotient evaluation. -/
 theorem polynomial_word_mem {N : ℕ} (w : List (Fin N)) :
-    OddMath.PbwL3.Phi N (PbwRealization.word w) ∈ polynomialPiece N (2*(w.length : ℤ)) := by
+    OddMath.PbwFactorization.Phi N (PbwRealization.word w) ∈ polynomialPiece N (2*(w.length : ℤ)) := by
   induction w with
   | nil => simpa [PbwRealization.word] using one_mem N
   | cons j w ih =>
     have h := polynomial_mul (generator_mem j) ih
-    simpa [PbwRealization.word, OddMath.PbwL3.Phi_q, Nat.cast_add, mul_add, add_comm] using h
+    simpa [PbwRealization.word, OddMath.PbwFactorization.Phi_q, Nat.cast_add, mul_add, add_comm] using h
 
 theorem divided_word_mem {n : ℕ} (i : Fin (n+1)) (w : List (Fin (n+2))) :
-    AllRankDivided.divided i (OddMath.PbwL3.Phi (n+2) (PbwRealization.word w)) ∈
+    AllRankDivided.divided i (OddMath.PbwFactorization.Phi (n+2) (PbwRealization.word w)) ∈
       polynomialPiece (n+2) (2*(w.length : ℤ)-2) := by
   induction w with
   | nil => simp [PbwRealization.word, AllRankDivided.divided_one]
   | cons j w ih =>
-    change AllRankDivided.divided i (OddMath.PbwL3.Phi (n+2)
-      (OddMath.PbwL2.q (n+2) j * PbwRealization.word w)) ∈ _
-    rw [map_mul, OddMath.PbwL3.Phi_q, AllRankDivided.divided_mul,
+    change AllRankDivided.divided i (OddMath.PbwFactorization.Phi (n+2)
+      (OddMath.PbwPresentation.q (n+2) j * PbwRealization.word w)) ∈ _
+    rw [map_mul, OddMath.PbwFactorization.Phi_q, AllRankDivided.divided_mul,
       AllRankDivided.divided_generator, AllRankDivided.s_generator]
     have ht := polynomial_mul ((polynomialPiece _ _).neg_mem
       (generator_mem (Equiv.swap i.castSucc i.succ j))) ih

@@ -1,4 +1,4 @@
-import OddMath.PbwL3
+import OddMath.PbwFactorization
 import OddMath.Frontier.PbwEquivalence
 import OddMath.Frontier.NilHeckeGradedEnd
 
@@ -13,14 +13,14 @@ namespace OddMath.Frontier.NilHeckeSmallRankControls
 open scoped BigOperators
 
 /-- N = 0: no relator words over the empty generator set. -/
-theorem relSet_empty_zero : OddMath.PbwL2.relSet 0 = ∅ := by
+theorem relSet_empty_zero : OddMath.PbwPresentation.relSet 0 = ∅ := by
   rw [Set.eq_empty_iff_forall_notMem]
   intro w hw
   obtain ⟨i, _, _, _⟩ := hw
   exact i.elim0
 
 /-- N = 0: no relator index pairs. -/
-theorem relPairs_empty_zero : OddMath.PbwL2.relPairs 0 = ∅ := by
+theorem relPairs_empty_zero : OddMath.PbwPresentation.relPairs 0 = ∅ := by
   rw [Finset.eq_empty_iff_forall_notMem]
   intro x _
   exact x.1.elim0
@@ -31,17 +31,17 @@ theorem pdegree_zero_all (a : Fin 0 → ℕ) :
   simp [OddMath.Frontier.NilHeckeGradedEnd.pdegree]
 
 /-- N = 1: no relator words; every alleged relator needs distinct generators. -/
-theorem relSet_empty_one : OddMath.PbwL2.relSet 1 = ∅ := by
+theorem relSet_empty_one : OddMath.PbwPresentation.relSet 1 = ∅ := by
   rw [Set.eq_empty_iff_forall_notMem]
   intro w hw
   obtain ⟨i, j, h, _⟩ := hw
   exact h (Subsingleton.elim i j)
 
 /-- N = 1: no relator index pairs. -/
-theorem relPairs_empty_one : OddMath.PbwL2.relPairs 1 = ∅ := by
+theorem relPairs_empty_one : OddMath.PbwPresentation.relPairs 1 = ∅ := by
   rw [Finset.eq_empty_iff_forall_notMem]
   intro x hx
-  rw [OddMath.PbwL2.relPairs] at hx
+  rw [OddMath.PbwPresentation.relPairs] at hx
   simp only [Finset.mem_filter, Finset.mem_univ,
     true_and] at hx
   exact hx (Subsingleton.elim x.1 x.2)
@@ -53,17 +53,17 @@ theorem no_distinct_generators_one : ¬ ∃ i j : Fin 1, i ≠ j :=
 
 /-- N = 1 must-hold control: the single generator square does not vanish. -/
 theorem single_square_ne_zero (i : Fin 1) :
-    OddMath.PbwL3.Phi 1
-      (OddMath.PbwL2.q 1 i * OddMath.PbwL2.q 1 i) ≠ 0 :=
-  OddMath.PbwL3.Phi_sq_ne_zero 1 i
+    OddMath.PbwFactorization.Phi 1
+      (OddMath.PbwPresentation.q 1 i * OddMath.PbwPresentation.q 1 i) ≠ 0 :=
+  OddMath.PbwFactorization.Phi_sq_ne_zero 1 i
 
 /-- N = 1 must-fail control (Phi image): the diagonal anticommutator maps to
 twice the generator square, i.e. the doubled monomial with coefficient 2,
 which is nonzero. -/
 theorem diagonal_image_ne_zero (i : Fin 1) :
-    OddMath.PbwL3.Phi 1 (OddMath.PbwL2.q 1 i * OddMath.PbwL2.q 1 i +
-      OddMath.PbwL2.q 1 i * OddMath.PbwL2.q 1 i) ≠ 0 := by
-  rw [map_add, OddMath.PbwL3.Phi_sq_form,
+    OddMath.PbwFactorization.Phi 1 (OddMath.PbwPresentation.q 1 i * OddMath.PbwPresentation.q 1 i +
+      OddMath.PbwPresentation.q 1 i * OddMath.PbwPresentation.q 1 i) ≠ 0 := by
+  rw [map_add, OddMath.PbwFactorization.Phi_sq_form,
     OddMath.SkewPolynomial.generator_square]
   have h2 : OddMath.SkewPolynomial.monomial
       (OddMath.SkewPolynomial.expSingle i + OddMath.SkewPolynomial.expSingle i) 1 +
@@ -83,8 +83,8 @@ theorem diagonal_image_ne_zero (i : Fin 1) :
 NOT apply to the single generator with itself (its double square is nonzero). -/
 
 theorem diagonal_anticomm_ne_zero (i : Fin 1) :
-    OddMath.PbwL2.q 1 i * OddMath.PbwL2.q 1 i +
-      OddMath.PbwL2.q 1 i * OddMath.PbwL2.q 1 i ≠ 0 := by
+    OddMath.PbwPresentation.q 1 i * OddMath.PbwPresentation.q 1 i +
+      OddMath.PbwPresentation.q 1 i * OddMath.PbwPresentation.q 1 i ≠ 0 := by
   intro h
   exact diagonal_image_ne_zero i (by rw [h, map_zero])
 
@@ -96,9 +96,9 @@ theorem single_generator_degree_two (j : Fin 1) :
 
 /-- N = 1 must-hold control: the polynomial action hits the generator. -/
 theorem single_action_hits_generator (i : Fin 1) :
-    OddMath.PbwL3.Phi 1 (OddMath.PbwL2.q 1 i) =
+    OddMath.PbwFactorization.Phi 1 (OddMath.PbwPresentation.q 1 i) =
       OddMath.SkewPolynomial.generator i :=
-  OddMath.PbwL3.Phi_q 1 i
+  OddMath.PbwFactorization.Phi_q 1 i
 
 /-- N = 1 Schubert side: the rank-one symmetric group is trivial, so every
 length shift vanishes definitionally downstream. -/

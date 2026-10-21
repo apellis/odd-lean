@@ -23,7 +23,7 @@ noncomputable def tildeGenerator {n : ℕ} (i : Fin n) : SkewPolynomial n :=
 theorem tilde_anticommute {n : ℕ} (i j : Fin n) (h : i ≠ j) :
     tildeGenerator i * tildeGenerator j = -(tildeGenerator j * tildeGenerator i) := by
   have hg : generator i * generator j = -(generator j * generator i) :=
-    OddMath.PbwL1.rel_anticommute i j h
+    OddMath.PbwModelRelations.rel_anticommute i j h
   simp only [tildeGenerator, smul_mul_assoc, mul_smul_comm, smul_smul]
   rw [hg, smul_neg, mul_comm ((-1 : ℤ) ^ i.val)]
 
@@ -63,13 +63,13 @@ def untildedWord {n : ℕ} (w : List (Fin n)) : OddPlactic.Plactic n :=
 
 /-- Connect literal plactic words to the already checked PBW realization map. -/
 theorem toSkew_untildedWord {n : ℕ} (w : List (Fin n)) :
-    toSkew n (untildedWord w) = OddMath.PbwL3.Phi n (PbwRealization.word w) := by
+    toSkew n (untildedWord w) = OddMath.PbwFactorization.Phi n (PbwRealization.word w) := by
   induction w with
   | nil => simp [untildedWord, PbwRealization.word]
   | cons i w ih =>
     change toSkew n (((-1 : ℤ) ^ i.val • OddPlactic.q n i) * untildedWord w) =
-      OddMath.PbwL3.Phi n (OddMath.PbwL2.q n i * PbwRealization.word w)
-    rw [map_mul, map_mul, toSkew_signed_q, OddMath.PbwL3.Phi_q, ih]
+      OddMath.PbwFactorization.Phi n (OddMath.PbwPresentation.q n i * PbwRealization.word w)
+    rw [map_mul, map_mul, toSkew_signed_q, OddMath.PbwFactorization.Phi_q, ih]
 
 /-- Every integer monomial has an explicit plactic preimage. -/
 theorem toSkew_monomial (n : ℕ) (a : Fin n → ℕ) (c : ℤ) :

@@ -45,8 +45,8 @@ theorem intertwine (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective (n+2) f
   induction x using Quotient.inductionOn' with
   | h w =>
-    change _ * PbwL3.evalAlg (n+2) w - s i (PbwL3.evalAlg (n+2) w) * _ =
-      _ * divided i (PbwL3.evalAlg (n+2) w)
+    change _ * PbwFactorization.evalAlg (n+2) w - s i (PbwFactorization.evalAlg (n+2) w) * _ =
+      _ * divided i (PbwFactorization.evalAlg (n+2) w)
     induction w using FreeAlgebra.induction with
     | grade0 r =>
         rw [AlgHom.commutes]
@@ -54,7 +54,7 @@ theorem intertwine (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
         rw [map_zsmul, map_one, map_zsmul, divided_one, smul_zero, mul_zero,
           mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_self]
     | grade1 j =>
-        rw [PbwL3.evalAlg_ι, s_generator, divided_generator]
+        rw [PbwFactorization.evalAlg_ι, s_generator, divided_generator]
         by_cases ha : j = i.castSucc
         · subst ha
           rw [Equiv.swap_apply_left, ite_eq_left (Or.inl rfl)]
@@ -78,8 +78,8 @@ theorem intertwine (i : Fin (n+1)) (f : SkewPolynomial (n+2)) :
         rw [map_mul, map_mul, divided_mul]
         set δ := (generator i.castSucc - generator i.succ : SkewPolynomial (n+2))
         set Q := (generator i.castSucc ^ 2 - generator i.succ ^ 2 : SkewPolynomial (n+2)) with hQ
-        set U := PbwL3.evalAlg (n+2) a
-        set V := PbwL3.evalAlg (n+2) b
+        set U := PbwFactorization.evalAlg (n+2) a
+        set V := PbwFactorization.evalAlg (n+2) b
         have key : δ * (U * V) - s i U * s i V * δ =
             (δ * U - s i U * δ) * V + s i U * (δ * V - s i V * δ) := by noncomm_ring
         rw [key, ha, hb, mul_add, ← mul_assoc, ← mul_assoc, ← mul_assoc, hQ,
@@ -123,13 +123,13 @@ theorem commutes_all_of_generators (z : SkewPolynomial (n+2))
   obtain ⟨a, rfl⟩ := PbwRealization.Phi_surjective (n+2) p
   induction a using Quotient.inductionOn' with
   | h w =>
-    change z * PbwL3.evalAlg (n+2) w = PbwL3.evalAlg (n+2) w * z
+    change z * PbwFactorization.evalAlg (n+2) w = PbwFactorization.evalAlg (n+2) w * z
     induction w using FreeAlgebra.induction with
     | grade0 r =>
       rw [AlgHom.commutes]
       change z * (r • 1) = (r • 1) * z
       simp only [mul_smul_comm, smul_mul_assoc, mul_one, one_mul]
-    | grade1 j => rw [PbwL3.evalAlg_ι]; exact hg j
+    | grade1 j => rw [PbwFactorization.evalAlg_ι]; exact hg j
     | add a b ha hb => rw [map_add, mul_add, add_mul, ha, hb]
     | mul a b ha hb => rw [map_mul, ← mul_assoc, ha, mul_assoc, hb, ← mul_assoc]
 
@@ -164,10 +164,10 @@ def polynomialInclusion (n : ℕ) : SkewPolynomial (n+2) →+* Presented n :=
 
 @[simp] theorem polynomialInclusion_generator (j : Fin (n+2)) :
     polynomialInclusion n (generator j) = dot n j := by
-  have he : (PbwEquivalence.presentedEquiv (n+2)).symm (generator j) = PbwL2.q (n+2) j := by
+  have he : (PbwEquivalence.presentedEquiv (n+2)).symm (generator j) = PbwPresentation.q (n+2) j := by
     apply (PbwEquivalence.presentedEquiv (n+2)).injective
     simpa only [RingEquiv.apply_symm_apply, PbwEquivalence.presentedEquiv_apply] using
-      (PbwL3.Phi_q (n+2) j).symm
+      (PbwFactorization.Phi_q (n+2) j).symm
   simp only [polynomialInclusion, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe,
     RingHom.coe_coe, he, NilHeckeBasis.dotMap_q]
 
@@ -183,7 +183,7 @@ theorem polynomialInclusion_action (p f : SkewPolynomial (n+2)) :
       RingHom.coe_coe, PbwEquivalence.presentedEquiv_symm_apply,
       PbwEquivalence.lift_monomial, map_zsmul, NilHeckeBasis.dotMap_ordered]
     change c • action n (NilHeckeBasis.dotMonomial a) f = _
-    rw [NilHeckeBasis.action_dotMonomial, ← smul_mul_assoc, ← PbwL4.monomial_smul]
+    rw [NilHeckeBasis.action_dotMonomial, ← smul_mul_assoc, ← PbwSpanning.monomial_smul]
 
 theorem polynomialInclusion_injective : Function.Injective (polynomialInclusion n) := by
   intro p q h
@@ -202,19 +202,19 @@ theorem map_mul_of_commutes_dots (F : Module.End ℤ (SkewPolynomial (n+2)))
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective (n+2) a
   induction x using Quotient.inductionOn' with
   | h w =>
-      change F (PbwL3.evalAlg (n+2) w * f) = PbwL3.evalAlg (n+2) w * F f
+      change F (PbwFactorization.evalAlg (n+2) w * f) = PbwFactorization.evalAlg (n+2) w * F f
       induction w using FreeAlgebra.induction generalizing f with
       | grade0 z =>
           rw [AlgHom.commutes]
           change F ((z • 1) * f) = (z • 1) * F f
           simp only [smul_mul_assoc, one_mul, map_smul]
       | grade1 j =>
-          rw [PbwL3.evalAlg_ι]
+          rw [PbwFactorization.evalAlg_ι]
           exact hj j f
       | add u v ihu ihv =>
           rw [map_add, add_mul, map_add, ihu, ihv, add_mul]
       | mul u v ihu ihv =>
-          rw [map_mul (PbwL3.evalAlg (n+2)) u v, mul_assoc, ihu, ihv, mul_assoc]
+          rw [map_mul (PbwFactorization.evalAlg (n+2)) u v, mul_assoc, ihu, ihv, mul_assoc]
 
 /-- (R2) The center of the presented odd nilHecke ring is the dot image of
 `OΛ_N ∩ Z(Pol_N)`. -/

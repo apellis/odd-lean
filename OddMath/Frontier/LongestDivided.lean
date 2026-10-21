@@ -339,7 +339,7 @@ theorem stairs_monomial (n p k : ℕ) (hb : p+k ≤ n+2) :
       have hp : p < n+2 := by omega
       rw [stairs, ih (p+1) (by omega)]
       simp only [letter, dite_eq_left hp]
-      rw [PbwL4.pow_form]
+      rw [PbwSpanning.pow_form]
       change OddMath.SkewPolynomial.mul _ _ = _
       rw [OddMath.SkewPolynomial.mul_monomial]
       rw [show OddMath.skewSign

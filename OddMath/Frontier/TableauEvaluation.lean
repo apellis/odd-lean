@@ -123,12 +123,12 @@ theorem sum_vals_eq_counts {n : ℕ} (w : List (Fin n)) :
 /-- Extract exactly the source tilde sign, before any normal ordering. -/
 theorem tildeWord_eq {n : ℕ} (w : List (Fin n)) :
     (w.map PlacticEvaluation.tildeGenerator).prod =
-      (-1 : ℤ) ^ (w.map Fin.val).sum • PbwL3.Phi n (PbwNormalization.word w) := by
+      (-1 : ℤ) ^ (w.map Fin.val).sum • PbwFactorization.Phi n (PbwNormalization.word w) := by
   induction w with
   | nil => simp
   | cons i w ih =>
     simp only [List.map_cons, List.prod_cons, List.sum_cons,
-      PbwNormalization.word_cons, map_mul, PbwL3.Phi_q, ih,
+      PbwNormalization.word_cons, map_mul, PbwFactorization.Phi_q, ih,
       PlacticEvaluation.tildeGenerator, smul_mul_assoc, mul_smul_comm, smul_smul,
       pow_add]
     rw [_root_.mul_comm ((-1 : ℤ) ^ (w.map Fin.val).sum)]
@@ -146,7 +146,7 @@ theorem wordPolynomial_eq {n : ℕ} (w : List (Fin n)) :
 /-- Actual row-word evaluation, with the source tilde normalization explicit. -/
 theorem rowPolynomial_eq (n : ℕ) (T : PositiveTableau μ) (h : InAlphabet n T) :
     rowPolynomial n T h = monomial (exponents n T)
-      ((-1 : ℤ) ^ (LrLegA.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) := by
+      ((-1 : ℤ) ^ (LrNorthEastSign.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) := by
   unfold rowPolynomial
   rw [wordPolynomial_eq, rowFinWord_inversions, rowWord_inversions, sum_vals_eq_counts]
   simp only [rowFinWord_count, tildeWeight]
@@ -172,7 +172,7 @@ theorem contentPolynomial_eq (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ ℕ)
     contentPolynomial n μ c hc = monomial (fun i : Fin n => c (i.val + 1))
       (((-1 : ℤ) ^ (∑ i : Fin n, i.val * c (i.val + 1))) *
         ∑ T ∈ TableauContent.tableauxOfContent μ c,
-          (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T)) := by
+          (-1 : ℤ) ^ LrNorthEastSign.totalNorthLt (boxes T) (boxes T)) := by
   classical
   unfold contentPolynomial
   have he (T : {T // T ∈ TableauContent.tableauxOfContent μ c}) :
@@ -182,7 +182,7 @@ theorem contentPolynomial_eq (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ ℕ)
       ((TableauContent.mem_tableauxOfContent T.val c).mp T.property)
   simp only [rowPolynomial_eq, tildeWeight, he, pow_add]
   rw [← Finset.sum_attach (TableauContent.tableauxOfContent μ c)
-    (fun T => (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T))]
+    (fun T => (-1 : ℤ) ^ LrNorthEastSign.totalNorthLt (boxes T) (boxes T))]
   rw [Finset.mul_sum]
   simp only [mul_comm ((-1 : ℤ) ^ (∑ i : Fin n, i.val * c (i.val + 1)))]
   exact (Finsupp.single_finsetSum _ _ _).symm
