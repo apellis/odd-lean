@@ -130,8 +130,8 @@ def dotFreeMap (n : ℕ) : FreeAlgebra ℤ (Fin (n+2)) →ₐ[ℤ] Presented n :
   FreeAlgebra.lift ℤ (dot n)
 
 theorem dotFreeMap_kills (a : FreeAlgebra ℤ (Fin (n+2)))
-    (ha : a ∈ PbwL2.relIdeal (n+2)) : dotFreeMap n a = 0 := by
-  rw [PbwL2.relIdeal, PbwL2.relTwoSided, TwoSidedIdeal.mem_asIdeal] at ha
+    (ha : a ∈ PbwPresentation.relIdeal (n+2)) : dotFreeMap n a = 0 := by
+  rw [PbwPresentation.relIdeal, PbwPresentation.relTwoSided, TwoSidedIdeal.mem_asIdeal] at ha
   induction ha using TwoSidedIdeal.span_induction with
   | mem x hx =>
       obtain ⟨i,j,h,rfl⟩ := hx
@@ -142,10 +142,10 @@ theorem dotFreeMap_kills (a : FreeAlgebra ℤ (Fin (n+2)))
   | left_absorb a x _ hx => rw [map_mul, hx, mul_zero]
   | right_absorb a x _ hx => rw [map_mul, hx, zero_mul]
 
-def dotMap (n : ℕ) : PbwL2.Presented (n+2) →+* Presented n :=
+def dotMap (n : ℕ) : PbwPresentation.Presented (n+2) →+* Presented n :=
   Ideal.Quotient.lift _ (dotFreeMap n).toRingHom dotFreeMap_kills
 
-@[simp] theorem dotMap_q (j : Fin (n+2)) : dotMap n (PbwL2.q (n+2) j) = dot n j := by
+@[simp] theorem dotMap_q (j : Fin (n+2)) : dotMap n (PbwPresentation.q (n+2) j) = dot n j := by
   change FreeAlgebra.lift ℤ (dot n) (FreeAlgebra.ι ℤ j) = dot n j
   exact FreeAlgebra.lift_ι_apply _ _
 
@@ -211,17 +211,17 @@ theorem exists_expansion (x : Presented n) :
   Finsupp.mem_span_range_iff_exists_finsupp.mp (mem_basisSpan x)
 
 theorem action_dotWord (v : List (Fin (n+2))) (f : SkewPolynomial (n+2)) :
-    action n (dotWord v) f = PbwL3.Phi (n+2) (PbwNormalization.word v) * f := by
+    action n (dotWord v) f = PbwFactorization.Phi (n+2) (PbwNormalization.word v) * f := by
   induction v with
   | nil => simp only [dotWord_nil, map_one, PbwNormalization.word_nil, one_mul]; rfl
   | cons j v ih =>
       rw [dotWord_cons, action_mul_apply, action_dot_apply, ih,
-        PbwNormalization.word_cons, map_mul, PbwL3.Phi_q, mul_assoc]
+        PbwNormalization.word_cons, map_mul, PbwFactorization.Phi_q, mul_assoc]
 
 theorem action_dotMonomial (A : Fin (n+2) → ℕ) (f : SkewPolynomial (n+2)) :
     action n (dotMonomial A) f = monomial A 1 * f := by
   rw [← dotWord_canonical, action_dotWord]
-  change PbwL3.Phi (n+2) (PbwNormalization.orderedMonomial A) * f = _
+  change PbwFactorization.Phi (n+2) (PbwNormalization.orderedMonomial A) * f = _
   rw [PbwEquivalence.Phi_orderedMonomial]
 
 /-- Exact rightmost-first action compatibility with the inherited LEFT operators. -/

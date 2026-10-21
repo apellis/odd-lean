@@ -54,25 +54,25 @@ noncomputable section
 local instance (priority := high) eqBorelNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) eqBorelNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-! ## Generalities on skew polynomials -/
 
 theorem sp_mul_assoc {m : ℕ} (x y z : SkewPolynomial m) : x * y * z = x * (y * z) :=
   @mul_assoc _ (@SemigroupWithZero.toSemigroup _ (@NonUnitalSemiring.toSemigroupWithZero _
-    (@Semiring.toNonUnitalSemiring _ (OddMath.PbwL3.instSemiring m)))) x y z
+    (@Semiring.toNonUnitalSemiring _ (OddMath.PbwFactorization.instSemiring m)))) x y z
 
 theorem sp_zero_mul {m : ℕ} (x : SkewPolynomial m) : 0 * x = 0 :=
   @zero_mul _ (@MulZeroOneClass.toMulZeroClass _ (@MonoidWithZero.toMulZeroOneClass _
-    (@Semiring.toMonoidWithZero _ (OddMath.PbwL3.instSemiring m)))) x
+    (@Semiring.toMonoidWithZero _ (OddMath.PbwFactorization.instSemiring m)))) x
 
 theorem sp_mul_zero {m : ℕ} (x : SkewPolynomial m) : x * 0 = 0 :=
   @mul_zero _ (@MulZeroOneClass.toMulZeroClass _ (@MonoidWithZero.toMulZeroOneClass _
-    (@Semiring.toMonoidWithZero _ (OddMath.PbwL3.instSemiring m)))) x
+    (@Semiring.toMonoidWithZero _ (OddMath.PbwFactorization.instSemiring m)))) x
 
 /-- Induction over the generators of `OPol_n`. -/
 theorem skew_induction {n : ℕ} {P : SkewPolynomial n → Prop} (hgen : ∀ j, P (generator j))
@@ -80,7 +80,7 @@ theorem skew_induction {n : ℕ} {P : SkewPolynomial n → Prop} (hgen : ∀ j, 
     (hmul : ∀ f g, P f → P g → P (f * g)) (u : SkewPolynomial n) : P u := by
   let ρ : FreeAlgebra ℤ (Fin n) →+* SkewPolynomial n :=
     (PbwEquivalence.presentedEquiv n).toRingHom.comp
-      (Ideal.Quotient.mk (OddMath.PbwL2.relIdeal n))
+      (Ideal.Quotient.mk (OddMath.PbwPresentation.relIdeal n))
   have hρ : Function.Surjective ρ :=
     (PbwEquivalence.presentedEquiv n).surjective.comp Ideal.Quotient.mk_surjective
   obtain ⟨w, rfl⟩ := hρ u
@@ -90,7 +90,7 @@ theorem skew_induction {n : ℕ} {P : SkewPolynomial n → Prop} (hgen : ∀ j, 
       rw [algebraMap_int_eq, eq_intCast, map_intCast]
     rw [this]; exact hint r
   | grade1 j =>
-    have : ρ (FreeAlgebra.ι ℤ j) = generator j := OddMath.PbwL3.Phi_q n j
+    have : ρ (FreeAlgebra.ι ℤ j) = generator j := OddMath.PbwFactorization.Phi_q n j
     rw [this]; exact hgen j
   | mul x y hx hy => rw [map_mul]; exact hmul _ _ hx hy
   | add x y hx hy => rw [map_add]; exact hadd _ _ hx hy
@@ -140,7 +140,7 @@ theorem inclY_generator_mul_inclX (j : Fin b) (u : SkewPolynomial a) :
       EQZab.inclX_generator, neg_mul]
     have hne : Fin.natAdd a j ≠ Fin.castAdd b i := by
       intro h; have := congrArg Fin.val h; simp at this; omega
-    have h := OddMath.PbwL1.rel_sum (Fin.natAdd a j) (Fin.castAdd b i) hne
+    have h := OddMath.PbwModelRelations.rel_sum (Fin.natAdd a j) (Fin.castAdd b i) hne
     exact eq_neg_of_add_eq_zero_left h
   | hint z => simp only [map_intCast]; exact (Int.cast_comm _ _).symm
   | hadd f g hf hg => rw [map_add, map_add, map_add, mul_add, add_mul, hf, hg]

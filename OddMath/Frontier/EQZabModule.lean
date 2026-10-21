@@ -56,11 +56,11 @@ noncomputable section
 local instance (priority := high) zabNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) zabNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-! ## Increasing words -/
 
@@ -164,7 +164,7 @@ theorem deriv_ext {n : ℕ} {R : Type*} [Ring R] (σ τ : SkewPolynomial n →+*
 theorem generator_anticomm_of_injective {m n : ℕ} (f : Fin m → Fin n)
     (hf : Function.Injective f) (i j : Fin m) (h : i ≠ j) :
     generator (f i) * generator (f j) + generator (f j) * generator (f i) = 0 :=
-  OddMath.PbwL1.rel_sum (f i) (f j) (hf.ne h)
+  OddMath.PbwModelRelations.rel_sum (f i) (f j) (hf.ne h)
 
 /-- The diagonal ring endomorphism `x_i ↦ c_i x_i`. -/
 def diagHom (n : ℕ) (c : Fin n → ℤ) : SkewPolynomial n →+* SkewPolynomial n :=

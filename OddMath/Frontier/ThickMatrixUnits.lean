@@ -97,7 +97,7 @@ theorem windowHom_polyElem (f : SkewPolynomial (m+2)) :
     intro j
     simp only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe,
       RingEquiv.coe_toRingHom, PbwEquivalence.presentedEquiv_apply]
-    rw [OddMath.PbwL3.Phi_q, polyElem_generator, windowHom_dot, ProjectorRank.place_generator,
+    rw [OddMath.PbwFactorization.Phi_q, polyElem_generator, windowHom_dot, ProjectorRank.place_generator,
       polyElem_generator]
     rfl
   exact congrArg (fun φ => φ x) key

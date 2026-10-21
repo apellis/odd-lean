@@ -4,7 +4,7 @@ import OddMath.Frontier.AllRankDivided
 EKL arXiv:1111.1320v1 Proposition 2.1 (2.7); Ellis arXiv:1111.3932v1 §2.1.
 -/
 namespace OddMath.Frontier.DividedSquareZero
-open PbwL2 PbwL3 AllRankDivided
+open PbwPresentation PbwFactorization AllRankDivided
 open OddMath.SkewPolynomial (SkewPolynomial generator)
 variable {n : ℕ}
 

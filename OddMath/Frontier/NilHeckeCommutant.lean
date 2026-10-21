@@ -41,19 +41,19 @@ theorem map_mul_of_commutes_dots (n : ℕ) (F : Module.End ℤ (SkewPolynomial (
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective (n+2) a
   induction x using Quotient.inductionOn' with
   | h w =>
-      change F (PbwL3.evalAlg (n+2) w * f) = PbwL3.evalAlg (n+2) w * F f
+      change F (PbwFactorization.evalAlg (n+2) w * f) = PbwFactorization.evalAlg (n+2) w * F f
       induction w using FreeAlgebra.induction generalizing f with
       | grade0 z =>
           rw [AlgHom.commutes]
           change F ((z • 1) * f) = (z • 1) * F f
           simp only [smul_mul_assoc, one_mul, map_smul]
       | grade1 j =>
-          rw [PbwL3.evalAlg_ι]
+          rw [PbwFactorization.evalAlg_ι]
           exact hj j f
       | add u v ihu ihv =>
           rw [map_add, add_mul, map_add, ihu, ihv, add_mul]
       | mul u v ihu ihv =>
-          rw [map_mul (PbwL3.evalAlg (n+2)) u v, mul_assoc, ihu, ihv, mul_assoc]
+          rw [map_mul (PbwFactorization.evalAlg (n+2)) u v, mul_assoc, ihu, ihv, mul_assoc]
 
 /-- An arbitrary integer-linear endomorphism commuting with dots is R_(F 1). -/
 theorem end_eq_rightOperator_of_commutes_dots (n : ℕ)

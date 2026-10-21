@@ -140,11 +140,11 @@ instance (n : ℕ) (μ : YoungDiagram) : Decidable (LengthLE n μ) :=
 local instance (priority := high) opolNUNASemiringEQLima (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) opolNUNARingEQLima (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-- The twisted differential `d̃ = θ d θ` on `OPol_N`; it restricts to `OΛ̃_N`. -/
 noncomputable def dt (N : ℕ) : SkewPolynomial N →+ SkewPolynomial N :=

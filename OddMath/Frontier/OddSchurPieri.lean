@@ -62,7 +62,7 @@ theorem D_of_divided_zero {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
 theorem mono_mul {N : ℕ} (a b : Fin N → ℕ) :
     monomial a 1 * monomial b 1 = OddMath.skewSign a b • monomial (a+b) 1 := by
   change OddMath.SkewPolynomial.mul _ _ = _
-  rw [OddMath.SkewPolynomial.mul_monomial, PbwL4.monomial_smul]
+  rw [OddMath.SkewPolynomial.mul_monomial, PbwSpanning.monomial_smul]
   norm_num
 
 theorem sign_sq {N : ℕ} (a b : Fin N → ℕ) :
@@ -94,7 +94,7 @@ theorem divided_equal {n : ℕ} (i : Fin (n+1)) (a : Fin (n+2) → ℕ)
   let q := b • expSingle i.castSucc + b • expSingle i.succ
   have hp : monomial q 1 ∈ R := by
     have h : generator i.castSucc ^ b * generator i.succ ^ b ∈ R := divided_balanced i b
-    rw [PbwL4.pow_form, PbwL4.pow_form, mono_mul] at h
+    rw [PbwSpanning.pow_form, PbwSpanning.pow_form, mono_mul] at h
     have h' := R.zsmul_mem h
       (OddMath.skewSign (b • expSingle i.castSucc) (b • expSingle i.succ))
     rw [smul_smul, sign_sq, one_smul] at h'
@@ -103,7 +103,7 @@ theorem divided_equal {n : ℕ} (i : Fin (n+1)) (a : Fin (n+2) → ℕ)
   have hs : monomial (∑ j ∈ s, a j • expSingle j) 1 ∈ R := by
     apply mono_sum_mem
     intro j hj
-    rw [← PbwL4.pow_form]
+    rw [← PbwSpanning.pow_form]
     apply R.pow_mem
     change divided i (generator j) = 0
     obtain ⟨h₀,h₁⟩ := (Finset.mem_filter.mp hj).2

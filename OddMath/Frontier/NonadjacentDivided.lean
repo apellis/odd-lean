@@ -6,7 +6,7 @@ Concrete upper triangular matrix evaluation kills the real two-sided relation
 ideal; PBW transports its upper-right entry to actual integer skew polynomials.
 -/
 namespace OddMath.Frontier.NonadjacentDivided
-open PbwL2 PbwL3
+open PbwPresentation PbwFactorization
 open OddMath.SkewPolynomial (SkewPolynomial generator)
 variable {n : ℕ}
 

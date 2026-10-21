@@ -242,7 +242,7 @@ theorem pair_monomial (i : Fin (n+1)) (p q : ℕ) :
     generator i.castSucc ^ p * generator i.succ ^ q =
       monomial (p • OddMath.SkewPolynomial.expSingle i.castSucc +
         q • OddMath.SkewPolynomial.expSingle i.succ) 1 := by
-  rw [PbwL4.pow_form, PbwL4.pow_form]
+  rw [PbwSpanning.pow_form, PbwSpanning.pow_form]
   apply mul_monomial_of_noncrossing
   intro a b hba
   by_cases ha : a = i.castSucc
@@ -257,7 +257,7 @@ theorem pair_monomial (i : Fin (n+1)) (p q : ℕ) :
 
 theorem pair_ne_zero (i : Fin (n+1)) (p q : ℕ) {c : ℤ} (hc : c ≠ 0) :
     c • (generator i.castSucc ^ p * generator i.succ ^ q) ≠ 0 := by
-  rw [pair_monomial, ← PbwL4.monomial_smul]
+  rw [pair_monomial, ← PbwSpanning.monomial_smul]
   exact Finsupp.single_ne_zero.mpr hc
 
 /-! ### The big odd shuffle (4.27) -/
@@ -458,7 +458,7 @@ theorem divided_monomial_spectator (i : Fin (n+1)) (d : ℕ) : ∀ σ : Fin (n+2
           OddMath.skewSign σ' (OddMath.SkewPolynomial.expSingle j) • monomial σ 1 := by
         change OddMath.SkewPolynomial.mul (monomial σ' 1)
           (monomial (OddMath.SkewPolynomial.expSingle j) 1) = _
-        rw [OddMath.SkewPolynomial.mul_monomial, one_mul, one_mul, PbwL4.monomial_smul, ← hσ]
+        rw [OddMath.SkewPolynomial.mul_monomial, one_mul, one_mul, PbwSpanning.monomial_smul, ← hσ]
       rw [hm, map_zsmul] at hprod
       have hsq : OddMath.skewSign σ' (OddMath.SkewPolynomial.expSingle j) *
           OddMath.skewSign σ' (OddMath.SkewPolynomial.expSingle j) = 1 := by
@@ -486,7 +486,7 @@ theorem divided_monomial_eq (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) :
 /-- Equal adjacent exponents are killed. -/
 theorem divided_monomial_balanced (i : Fin (n+1)) (γ : Fin (n+2) → ℕ) (c : ℤ)
     (h : γ i.castSucc = γ i.succ) : divided i (monomial γ c) = 0 := by
-  rw [PbwL4.monomial_smul, map_zsmul, divided_monomial_eq, h, divided_balanced, zero_mul,
+  rw [PbwSpanning.monomial_smul, map_zsmul, divided_monomial_eq, h, divided_balanced, zero_mul,
     mul_zero, smul_zero]
 
 /-- An ascent is a combination of descents in the same range. -/

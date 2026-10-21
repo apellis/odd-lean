@@ -36,12 +36,12 @@ theorem dotPiece_even_finrank (k : ℕ) :
 /-- N = 1 consumer: the dot generator is homogeneous of degree 2 in the
 source grading (via the proved degree equivalence). -/
 theorem dot_generator_mem_two :
-    OddMath.PbwL2.q 1 0 ∈ dotPiece 2 :=
+    OddMath.PbwPresentation.q 1 0 ∈ dotPiece 2 :=
   (degree_equiv 2 _).mpr (dot_action_generator 0)
 
 /-- N = 1 must-fail control: the dot generator is NOT of degree 0. -/
 theorem dot_generator_not_mem_zero :
-    OddMath.PbwL2.q 1 0 ∉ dotPiece 0 := by
+    OddMath.PbwPresentation.q 1 0 ∉ dotPiece 0 := by
   intro h
   have h1 := (degree_equiv 0 _).mp h
   rw [OddMath.Frontier.NilHeckeSmallRankControls.single_action_hits_generator]
@@ -56,8 +56,8 @@ theorem dot_generator_not_mem_zero :
 
 /-- N = 0 consumer: endomorphisms are scalar and the module has rank one. -/
 theorem zero_boundary_summary :
-    Module.finrank ℤ (OddMath.PbwL2.Presented 0) = 1 ∧
-      Module.finrank ℤ (Module.End ℤ (OddMath.PbwL2.Presented 0)) = 1 ∧
+    Module.finrank ℤ (OddMath.PbwPresentation.Presented 0) = 1 ∧
+      Module.finrank ℤ (Module.End ℤ (OddMath.PbwPresentation.Presented 0)) = 1 ∧
       (∀ d : ℤ, d ≠ 0 →
         OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 0 d = ⊥) :=
   ⟨finrank_presented_zero, finrank_end_zero,
@@ -65,8 +65,8 @@ theorem zero_boundary_summary :
 
 /-- N = 1 consumer: source / action / shifted-matrix degree equivalence at
 rank one, bundled. -/
-theorem one_boundary_summary (d : ℤ) (a : OddMath.PbwL2.Presented 1) :
-    (a ∈ dotPiece d ↔ OddMath.PbwL3.Phi 1 a ∈
+theorem one_boundary_summary (d : ℤ) (a : OddMath.PbwPresentation.Presented 1) :
+    (a ∈ dotPiece d ↔ OddMath.PbwFactorization.Phi 1 a ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 d) ∧
     (a ∈ dotPiece d ↔ ∀ i j, shiftMatrix a i j ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1

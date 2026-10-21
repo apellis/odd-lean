@@ -298,7 +298,7 @@ theorem printed_2_43_false (n : ℕ) : ¬ Printed_2_43 (n+1) := by
 
 theorem pow_last_not_mem_H (N i : ℕ) (hi : 1 ≤ i) :
     generator (Fin.last N) ^ i ∉ SchubertBasis.H (N+1) := by
-  rw [SchubertBasis.H_eq_box, SchubertBasis.mem_box, PbwL4.pow_form]
+  rw [SchubertBasis.H_eq_box, SchubertBasis.mem_box, PbwSpanning.pow_form]
   intro h
   have := h (i • expSingle (Fin.last N)) (by simp [monomial]) (Fin.last N)
   simp [expSingle] at this

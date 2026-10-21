@@ -47,24 +47,24 @@ noncomputable section
 local instance (priority := high) eqFixZabCNUNASemiring (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) eqFixZabCNUNARing (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-- Associativity of the skew product (the pointwise `Finsupp` product is not used). -/
 theorem sp_mul_assoc {m : ℕ} (x y z : SkewPolynomial m) : x * y * z = x * (y * z) :=
   @mul_assoc _ (@SemigroupWithZero.toSemigroup _ (@NonUnitalSemiring.toSemigroupWithZero _
-    (@Semiring.toNonUnitalSemiring _ (OddMath.PbwL3.instSemiring m)))) x y z
+    (@Semiring.toNonUnitalSemiring _ (OddMath.PbwFactorization.instSemiring m)))) x y z
 
 theorem sp_zero_mul {m : ℕ} (x : SkewPolynomial m) : 0 * x = 0 :=
   @zero_mul _ (@MulZeroOneClass.toMulZeroClass _ (@MonoidWithZero.toMulZeroOneClass _
-    (@Semiring.toMonoidWithZero _ (OddMath.PbwL3.instSemiring m)))) x
+    (@Semiring.toMonoidWithZero _ (OddMath.PbwFactorization.instSemiring m)))) x
 
 theorem sp_mul_zero {m : ℕ} (x : SkewPolynomial m) : x * 0 = 0 :=
   @mul_zero _ (@MulZeroOneClass.toMulZeroClass _ (@MonoidWithZero.toMulZeroOneClass _
-    (@Semiring.toMonoidWithZero _ (OddMath.PbwL3.instSemiring m)))) x
+    (@Semiring.toMonoidWithZero _ (OddMath.PbwFactorization.instSemiring m)))) x
 
 /-! ## Homogeneity -/
 

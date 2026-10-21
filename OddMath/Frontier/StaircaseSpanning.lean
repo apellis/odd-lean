@@ -292,7 +292,7 @@ theorem shift_monomial_mul_power (N : ℕ) (a : Fin N → ℕ) (j : ℕ) :
   have hs : shift N (monomial a 1) =
       monomial (VariableEmbedding.expEmbed (Fin.succOrderEmb N) a) 1 :=
     VariableEmbedding.embed_monomial _ _ _
-  rw [hs, X, OddMath.PbwL4.pow_form]
+  rw [hs, X, OddMath.PbwSpanning.pow_form]
   change OddMath.SkewPolynomial.mul _ _ = _
   rw [OddMath.SkewPolynomial.mul_monomial]
   have he : VariableEmbedding.expEmbed (Fin.succOrderEmb N) a +
