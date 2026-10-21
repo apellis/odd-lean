@@ -76,8 +76,9 @@ theorem serreWindow_braidTerm_self {d k : ℕ} (hk : 1 ≤ k) (hkd : k ≤ d)
 
 variable {I X : Type*} [AddCommGroup X] {D : Datum I X}
 
-/-- The odd braid correction, in ordered coefficients, for the BE2 quadratic
-polynomial. The pure `v` term has zero divided difference. -/
+/-- The ordered coefficient polynomial in the odd braid correction for BE2.
+The full correction is `(-1)^|j|` times this expression; that overall sign
+is deliberately not included here. The pure `v` term has zero divided difference. -/
 def braidPolynomial (S : Scalars D R) (i j : I) : OrderedPolynomial R :=
   (S.t i j : R) • braidTerm (D.dn i j) 0 +
     ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
