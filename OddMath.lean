@@ -1,3 +1,5 @@
+import OddMath.SKM.DividedPowerIdempotents
+import OddMath.SKM.DividedPowerIdempotentExamples
 import OddMath.SKM.PositiveMatchingDots
 import OddMath.SKM.PositiveDecoratedGrading
 import OddMath.SKM.PositivePointGrading
@@ -941,3 +943,5 @@ import OddMath.CoveringQuantum.FiniteWeightDuality
 import OddMath.CoveringQuantum.FiniteWeightDualityExamples
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebra
 import OddMath.CoveringQuantum.UDot.FiniteWeightAlgebraExamples
+import OddMath.CoveringQuantum.UDot.FiniteWeightForm
+import OddMath.CoveringQuantum.UDot.FiniteWeightFormExamples
