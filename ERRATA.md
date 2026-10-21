@@ -724,3 +724,40 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    the two coefficients. These corrections preserve the stated form convention
    and the proposed matching identity (10.5); they do not by themselves establish
    the remaining general cancellation argument.
+
+7. **§11, the definition of `D_r` before Lemma 11.1: odd sign.**
+   **Printed statement.** With strands numbered from right to left and ordinary
+   composition multiplication, `D_r = -T_r X_r` is asserted to be an idempotent
+   for either parity, citing Hill–Wang, arXiv:1202.2769v2, (5.20).
+
+   **Correction.** Use `D_r = (-1)^(|i|+1) T_r X_r`: retain the minus sign for
+   even colours, but use `+T_r X_r` for odd colours. The defining relations (1.7)
+   and (1.8) give `T_r² = 0` and
+   `X_{r+1} T_r - (-1)^|i| T_r X_r = 1`. Multiplying the latter by `T_r`
+   on the right gives `T_r X_r T_r = -(-1)^|i| T_r`. Thus the printed odd
+   element satisfies `D_r² = -D_r`. Over ℚ, in the odd polynomial
+   representation, it sends `1` to `-1`, so it is nonzero and not idempotent.
+   Reflection of the strand indices and reversal of composition do not remove
+   this error. Hill–Wang's (5.20) has the same parity omission; their odd
+   divided differences send each adjacent variable to `1` in §4.2.
+
+   **Declarations.** In `OddMath.SKM.DividedPowerIdempotents`,
+   `even_generator_idempotent` and `odd_generator_idempotent` give the two
+   ring calculations. `rationalPrintedGenerator_not_idempotent` gives a
+   counterexample over an admissible field in every rank at least two.
+   `unsignedGenerator_eq_reflectedOpposite` proves the comparison with the
+   existing EKL generators; `unsignedProduct_reduced_eq`,
+   `oppositeProjector_idempotent`, `oppositeProjector_degree` and
+   `oppositeProjector_even` give the corrected odd longest projector.
+   `printed_longest_leftIdeal` shows that the correction leaves the generated
+   principal left ideal unchanged. The existing even two-strand projector is
+   unchanged (`Consumer.even_twoStrand`). The all-rank graded-supermodule
+   decomposition and its normalization remain separate obligations.
+
+   **For the authors.** In §11 of arXiv:1701.04133v2, the definition preceding
+   Lemma 11.1 should read `D_r = (-1)^(|i|+1) T_r X_r`. For odd `i`, (1.8)
+   makes `T_r X_r` idempotent and its negative square to its negative; the
+   polynomial action over ℚ rules out the zero exception. The same sign
+   omission occurs in Hill–Wang (5.20). The even formula is unchanged. The
+   longest products differ only by the scalar `(-1)^length(w₀)`, so their
+   principal left ideals agree; this repair adds no degree or parity shift.
