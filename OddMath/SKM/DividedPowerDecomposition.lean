@@ -92,7 +92,7 @@ theorem summand_idempotent (n : ℕ) (i : Sq (n + 2)) :
   change summand n i * summand n i = summand n i
   simpa using summand_mul n i i
 
-/-- The left regular module as a product of `n!` principal LEFT ideals.
+/-- The left regular module as a product of `(n + 2)!` principal LEFT ideals.
 Degree and parity data are separate from this underlying linear equivalence. -/
 def oddDecomposition (n : ℕ) :
     Presented n ≃ₗ[Presented n] (Sq (n + 2) → leftIdeal (oppositeProjector n)) :=
