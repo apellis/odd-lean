@@ -418,7 +418,7 @@ theorem neLess_extend (T : PositiveTableau mu) (r : ℕ) (hb : InAlphabet r T)
   · exact Finset.sum_congr rfl (fun p hp => congrArg Finset.card (old p hp))
   · exact Finset.sum_congr rfl (fun p hp => congrArg Finset.card (fresh p hp))
 
-open OddMath.LrLegA TableauRowWord
+open OddMath.LrNorthEastSign TableauRowWord
 
 private theorem countNorth_sum (as : Tableau) (B : TBox) :
     countNorth as B = (as.map (fun A => if A.row < B.row then 1 else 0)).sum := by

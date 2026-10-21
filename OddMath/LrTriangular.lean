@@ -2,44 +2,26 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 
 /-!
-# General finite unitriangular uniqueness (`s^p = s^s` solve step, Theorem 3.8)
+# Uniqueness for finite unitriangular systems
 
-Paper: Ellis, "The odd Littlewood-Richardson rule", arXiv:1111.3932v1,
-Theorem 3.8 proof, paper lines 508-520 (snapshot
-an unpublished note).
-Design: an unpublished note
-(the Leg B triangulation argument).
+The proof of `s^p = s^s` in Theorem 3.8 of Ellis, "The odd Littlewood-Richardson rule",
+arXiv:1111.3932v1, solves a unitriangular system: each equation involves the target shape
+and larger shapes that are already solved, with leading coefficient `±1`. This module proves
+the uniqueness statement behind that step for an arbitrary finite index type.
 
-What this module proves (sorry-free):
-- `tailSum`: the strictly-upper-triangular tail of one row:
-  `∑ j, if i < j then C i j • F j else 0`. Only already-solved larger
-  shapes appear, exactly the paper's "each equation seeing only the target
-  and already-solved larger shapes" pattern.
-- `RowSystem`: one unitriangular row equation
-  `d i • F i + tailSum C F i = rhs i` for every `i`.
-- `unique`: two families satisfying the same system -- the SAME `±1`
-  leads `d`, the SAME coefficient matrix `C`, the SAME right-hand side
-  `rhs` (this sameness is what the B2 transfer buys) -- coincide: `P = S`.
-  Proof is strong backward induction from the top index down: the tail at
-  `i` sees only indices `j > i`, so the induction hypothesis pins every
-  tail value, the shared rows then give `d i • P i = d i • S i`, and the
-  `±1` lead cancels.
+Main results:
+- `tailSum`: the strictly upper triangular part of a row,
+  `∑ j, if i < j then C i j • F j else 0`.
+- `RowSystem`: the unitriangular equations `d i • F i + tailSum C F i = rhs i` for every `i`.
+- `unique`: two families satisfying the same system (the same `±1` leads `d`, the same
+  coefficient matrix `C`, the same right-hand side `rhs`) coincide. The proof is strong
+  backward induction from the top index: the tail at `i` involves only indices `j > i`, the
+  shared rows give `d i • P i = d i • S i`, and the `±1` lead cancels.
 
-Instantiation note (NOT formalized here): the paper applies this with
-`n` = number of transposed column heights, `M` = the odd symmetric
-function ring, `d`/`C` = the shared `±` signs from the e-right Pieri rule
-(3.10), `rhs` = the shared elementary products, and `P`/`S` = the two
-Schur families `s^p`/`s^s`. That instantiation is a successor obligation.
-
-Scope (NOT this module, recorded as hypotheses, never asserted):
-- No `s^K`/`s^p`/`s^s` definitions (non-tautology guard: the three Schur
-  objects stay independent in `formal-statements/lr-theorem38.lean`,
-  untouched here), no Lemma 3.5/Prop 3.6/Prop 3.7 statements, no
-  Theorem 3.8 comparison, no psi1-psi2 transfer, no semistandard-tableau
-  definitions.
-- Finite fixtures in `OddMath/Tests/LrTriangularFixtures.lean` are
-  development aids (`SUPPORTED_LOW_DEGREE` at most), never a proof of the
-  published theorem.
+In the paper, `n` is the number of shapes, `M` is the ring of odd symmetric functions,
+`d` and `C` are the signs of the e-right Pieri rule (3.10), `rhs` are elementary products,
+and `P`, `S` are the families `s^p`, `s^s`; that instantiation is not formalized here.
+Theorem 3.8 is proved in `OddMath.Frontier.OddLRThm38`.
 -/
 
 namespace OddMath.LrTriangular

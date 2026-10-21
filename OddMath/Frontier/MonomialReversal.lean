@@ -71,7 +71,7 @@ theorem prod_ofFn_monomial : ∀ {N : ℕ} (f : Fin N → Fin n → ℕ) (c : Fi
 /-- The unit monomial is the increasing-index ordered product of generator powers. -/
 theorem monomial_eq_prod (γ : Fin n → ℕ) :
     monomial γ 1 = (List.ofFn fun j => generator j ^ γ j).prod := by
-  simp_rw [PbwL4.pow_form]
+  simp_rw [PbwSpanning.pow_form]
   rw [prod_ofFn_monomial]
   congr 1
   · funext t
@@ -82,7 +82,7 @@ theorem monomial_eq_prod (γ : Fin n → ℕ) :
 
 theorem monomial_eq_smul_prod (γ : Fin n → ℕ) (c : ℤ) :
     monomial γ c = c • (List.ofFn fun j => generator j ^ γ j).prod := by
-  rw [PbwL4.monomial_smul, monomial_eq_prod]
+  rw [PbwSpanning.monomial_smul, monomial_eq_prod]
 
 /-- EKL (2.2) on an arbitrary monomial: the sign is `sgn(σ)^{|γ|}` times one factor
 `(-1)^{γ_i γ_j}` for each pair `i < j` inverted by `σ`. -/
@@ -93,8 +93,8 @@ theorem action_monomial (σ : Equiv.Perm (Fin n)) (γ : Fin n → ℕ) (c : ℤ)
         monomial (fun t => γ (σ.symm t)) c := by
   rw [monomial_eq_smul_prod, map_zsmul, map_list_prod, List.map_ofFn]
   simp only [Function.comp_def, map_pow, action_generator, smul_pow]
-  simp only [PbwL4.pow_form]
-  simp_rw [← PbwL4.monomial_smul]
+  simp only [PbwSpanning.pow_form]
+  simp_rw [← PbwSpanning.monomial_smul]
   rw [prod_ofFn_monomial, Finset.prod_pow_eq_pow_sum]
   have he : (∑ p, γ p • expSingle (σ p)) = fun t => γ (σ.symm t) := by
     funext t

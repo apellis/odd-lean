@@ -1,5 +1,5 @@
-import OddMath.PbwL2
-import OddMath.PbwL3
+import OddMath.PbwPresentation
+import OddMath.PbwFactorization
 import OddMath.SkewPolynomial
 import OddMath.Frontier.PbwEquivalence
 import OddMath.Frontier.NilHeckeGradedEnd
@@ -35,23 +35,23 @@ open scoped BigOperators
 /-! ## N = 0: the presented algebra is the base ring. -/
 
 /-- N = 0: the relation ideal vanishes (controls supply the empty relator set). -/
-theorem relIdeal_zero : OddMath.PbwL2.relIdeal 0 = ⊥ := by
-  rw [OddMath.PbwL2.ideal_is_span,
+theorem relIdeal_zero : OddMath.PbwPresentation.relIdeal 0 = ⊥ := by
+  rw [OddMath.PbwPresentation.ideal_is_span,
     OddMath.Frontier.NilHeckeSmallRankControls.relSet_empty_zero,
     bot_unique (TwoSidedIdeal.span_le.mpr (Set.empty_subset _)),
     TwoSidedIdeal.bot_asIdeal]
 
 /-- N = 0: the quotient map is injective because the relation ideal vanishes. -/
 theorem mk_zero_injective :
-    Function.Injective (Ideal.Quotient.mk (OddMath.PbwL2.relIdeal 0)) := by
+    Function.Injective (Ideal.Quotient.mk (OddMath.PbwPresentation.relIdeal 0)) := by
   refine (injective_iff_map_eq_zero _).mpr fun x hx => ?_
   rw [Ideal.Quotient.eq_zero_iff_mem, relIdeal_zero] at hx
   exact (Ideal.mem_bot).mp hx
 
 /-- N = 0: quotienting by the vanishing ideal does nothing. -/
 noncomputable def presented_zero_equiv :
-    OddMath.PbwL2.Presented 0 ≃+* FreeAlgebra ℤ (Fin 0) :=
-  (RingEquiv.ofBijective (Ideal.Quotient.mk (OddMath.PbwL2.relIdeal 0))
+    OddMath.PbwPresentation.Presented 0 ≃+* FreeAlgebra ℤ (Fin 0) :=
+  (RingEquiv.ofBijective (Ideal.Quotient.mk (OddMath.PbwPresentation.relIdeal 0))
     ⟨mk_zero_injective, Ideal.Quotient.mk_surjective⟩).symm
 
 /-- N = 0: the free algebra on no generators retracts onto the scalars. -/
@@ -78,17 +78,17 @@ noncomputable def freeZeroAlgEquiv : FreeAlgebra ℤ (Fin 0) ≃ₐ[ℤ] ℤ :=
     ⟨freeZero_leftInv.injective, freeZero_rightInv.surjective⟩
 
 /-- N = 0: the presented algebra IS the base ring. -/
-noncomputable def presentedZeroBase : OddMath.PbwL2.Presented 0 ≃+* ℤ :=
+noncomputable def presentedZeroBase : OddMath.PbwPresentation.Presented 0 ≃+* ℤ :=
   presented_zero_equiv.trans freeZeroAlgEquiv.toRingEquiv
 
 /-- N = 0: every presented element comes from a scalar through the base iso. -/
-theorem presented_zero_scalar (a : OddMath.PbwL2.Presented 0) :
+theorem presented_zero_scalar (a : OddMath.PbwPresentation.Presented 0) :
     ∃ n : ℤ, a = presentedZeroBase.symm n :=
   ⟨presentedZeroBase a, (RingEquiv.apply_symm_apply _ _).symm⟩
 
 /-- N = 0: the presented module has rank one (PBW fiber over the empty word). -/
 theorem finrank_presented_zero :
-    Module.finrank ℤ (OddMath.PbwL2.Presented 0) = 1 := by
+    Module.finrank ℤ (OddMath.PbwPresentation.Presented 0) = 1 := by
   have : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
   have := Unique.fintype (α := Fin 0 → ℕ)
   rw [Module.finrank_eq_card_basis
@@ -96,7 +96,7 @@ theorem finrank_presented_zero :
 
 /-- N = 0: endomorphisms form a rank-one module (1x1 matrices over scalars). -/
 theorem finrank_end_zero :
-    Module.finrank ℤ (Module.End ℤ (OddMath.PbwL2.Presented 0)) = 1 := by
+    Module.finrank ℤ (Module.End ℤ (OddMath.PbwPresentation.Presented 0)) = 1 := by
   have : IsEmpty (Fin 0) := ⟨Fin.elim0⟩
   have := Unique.fintype (α := Fin 0 → ℕ)
   have := Classical.decEq (Fin 0 → ℕ)
@@ -105,21 +105,21 @@ theorem finrank_end_zero :
     (OddMath.Frontier.PbwEquivalence.orderedBasis 0))
   rw [Module.finrank_matrix, Fintype.card_unique, Module.finrank_self] at h1
   show Module.finrank ℤ
-    (OddMath.PbwL2.Presented 0 →ₗ[ℤ] OddMath.PbwL2.Presented 0) = 1
+    (OddMath.PbwPresentation.Presented 0 →ₗ[ℤ] OddMath.PbwPresentation.Presented 0) = 1
   simpa using h1
 
 /-- N = 0: scalar preimages are integer multiples of one. -/
 theorem scalar_preimage_smul (n : ℤ) :
-    presentedZeroBase.symm n = n • (1 : OddMath.PbwL2.Presented 0) := by
+    presentedZeroBase.symm n = n • (1 : OddMath.PbwPresentation.Presented 0) := by
   have h : presentedZeroBase.symm (n : ℤ) =
-      ((n : ℤ) : OddMath.PbwL2.Presented 0) := map_intCast _ n
+      ((n : ℤ) : OddMath.PbwPresentation.Presented 0) := map_intCast _ n
   rw [h, zsmul_eq_mul, mul_one]
 
 /-- N = 0: every module endomorphism is right-multiplication by its value at
 one (the graded picture is trivially exact: scalars in the unique piece act as
 scalars, and there is nothing else). -/
-theorem end_zero_is_scalar (T : Module.End ℤ (OddMath.PbwL2.Presented 0)) :
-    ∃ c : OddMath.PbwL2.Presented 0, ∀ a, T a = c * a := by
+theorem end_zero_is_scalar (T : Module.End ℤ (OddMath.PbwPresentation.Presented 0)) :
+    ∃ c : OddMath.PbwPresentation.Presented 0, ∀ a, T a = c * a := by
   refine ⟨T 1, fun a => ?_⟩
   obtain ⟨n, rfl⟩ := presented_zero_scalar a
   rw [scalar_preimage_smul n, map_zsmul, zsmul_eq_mul, zsmul_eq_mul, mul_one]
@@ -145,9 +145,9 @@ theorem polynomial_piece_zero_top :
   exact absurd (OddMath.Frontier.NilHeckeSmallRankControls.pdegree_zero_all a) ha
 
 /-- N = 0: coordinates read through the inherited PBW basis. -/
-theorem coord_read_zero (x : OddMath.PbwL2.Presented 0) :
+theorem coord_read_zero (x : OddMath.PbwPresentation.Presented 0) :
     (OddMath.Frontier.PbwEquivalence.orderedBasis 0).repr x =
-      OddMath.PbwL3.Phi 0 x :=
+      OddMath.PbwFactorization.Phi 0 x :=
   OddMath.Frontier.PbwEquivalence.orderedBasis_repr x
 
 /-- N = 0 physical rank: the inversion generating sum over the trivial group
@@ -162,15 +162,15 @@ theorem physical_rank_zero {R : Type*} [CommSemiring R] (q : R) :
 
 /-- N = 1: the relation ideal vanishes (controls supply the empty relator set;
 the negative control `no_distinct_generators_one` says no relator can fire). -/
-theorem relIdeal_one : OddMath.PbwL2.relIdeal 1 = ⊥ := by
-  rw [OddMath.PbwL2.ideal_is_span,
+theorem relIdeal_one : OddMath.PbwPresentation.relIdeal 1 = ⊥ := by
+  rw [OddMath.PbwPresentation.ideal_is_span,
     OddMath.Frontier.NilHeckeSmallRankControls.relSet_empty_one,
     bot_unique (TwoSidedIdeal.span_le.mpr (Set.empty_subset _)),
     TwoSidedIdeal.bot_asIdeal]
 
 /-- N = 1: the quotient map is injective because the relation ideal vanishes. -/
 theorem mk_one_injective :
-    Function.Injective (Ideal.Quotient.mk (OddMath.PbwL2.relIdeal 1)) := by
+    Function.Injective (Ideal.Quotient.mk (OddMath.PbwPresentation.relIdeal 1)) := by
   refine (injective_iff_map_eq_zero _).mpr fun x hx => ?_
   rw [Ideal.Quotient.eq_zero_iff_mem, relIdeal_one] at hx
   exact (Ideal.mem_bot).mp hx
@@ -178,25 +178,25 @@ theorem mk_one_injective :
 /-- N = 1: quotienting by the vanishing ideal does nothing (the presented
 single-dot algebra is the free algebra on one generator). -/
 noncomputable def presented_one_equiv_free :
-    OddMath.PbwL2.Presented 1 ≃+* FreeAlgebra ℤ (Fin 1) :=
-  (RingEquiv.ofBijective (Ideal.Quotient.mk (OddMath.PbwL2.relIdeal 1))
+    OddMath.PbwPresentation.Presented 1 ≃+* FreeAlgebra ℤ (Fin 1) :=
+  (RingEquiv.ofBijective (Ideal.Quotient.mk (OddMath.PbwPresentation.relIdeal 1))
     ⟨mk_one_injective, Ideal.Quotient.mk_surjective⟩).symm
 
 /-- N = 1: relator index pairs are vacuous (consumer of the controls version). -/
 theorem relPairs_one_vacuous (p : Fin 1 × Fin 1) :
-    p ∉ OddMath.PbwL2.relPairs 1 := by
+    p ∉ OddMath.PbwPresentation.relPairs 1 := by
   rw [OddMath.Frontier.NilHeckeSmallRankControls.relPairs_empty_one]
   exact Finset.notMem_empty p
 
 /-- N = 1: the PBW comparison map is bijective (entry point to the inherited
 equivalence; consumed by the degree correspondence below). -/
-theorem phi_one_bijective : Function.Bijective (OddMath.PbwL3.Phi 1) :=
+theorem phi_one_bijective : Function.Bijective (OddMath.PbwFactorization.Phi 1) :=
   OddMath.Frontier.PbwEquivalence.Phi_bijective 1
 
 /-- N = 1: coordinates read through the inherited PBW basis. -/
-theorem coord_read_one (x : OddMath.PbwL2.Presented 1) :
+theorem coord_read_one (x : OddMath.PbwPresentation.Presented 1) :
     (OddMath.Frontier.PbwEquivalence.orderedBasis 1).repr x =
-      OddMath.PbwL3.Phi 1 x :=
+      OddMath.PbwFactorization.Phi 1 x :=
   OddMath.Frontier.PbwEquivalence.orderedBasis_repr x
 
 /-- N = 1: polynomial degree counts the single generator twice. -/
@@ -240,7 +240,7 @@ theorem fiber_odd_empty {d : ℤ} (hd : d % 2 ≠ 0) : IsEmpty (fiber d) := by
 /-! ## N = 1: the dot action and the degree correspondence. -/
 
 /-- N = 1: the dot piece is the span of the fiber monomials. -/
-def dotPiece (d : ℤ) : Submodule ℤ (OddMath.PbwL2.Presented 1) :=
+def dotPiece (d : ℤ) : Submodule ℤ (OddMath.PbwPresentation.Presented 1) :=
   Submodule.span ℤ (Set.range
     (fun a : fiber d =>
       OddMath.Frontier.PbwNormalization.orderedMonomial (a.val)))
@@ -269,7 +269,7 @@ theorem fiber_linear_independent (d : ℤ) :
   exact h
 
 /-- N = 1: every dot-piece element is a finite combination of fiber monomials. -/
-theorem fiber_spanning (d : ℤ) (x : OddMath.PbwL2.Presented 1)
+theorem fiber_spanning (d : ℤ) (x : OddMath.PbwPresentation.Presented 1)
     (hx : x ∈ dotPiece d) :
     ∃ c : fiber d →₀ ℤ,
       x = c.sum (fun a r =>
@@ -281,7 +281,7 @@ theorem fiber_spanning (d : ℤ) (x : OddMath.PbwL2.Presented 1)
 /-- N = 1: the dot generator maps into polynomial degree 2 (consumes both the
 action-hit and the degree controls). -/
 theorem dot_action_generator (i : Fin 1) :
-    OddMath.PbwL3.Phi 1 (OddMath.PbwL2.q 1 i) ∈
+    OddMath.PbwFactorization.Phi 1 (OddMath.PbwPresentation.q 1 i) ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 2 := by
   rw [OddMath.Frontier.NilHeckeSmallRankControls.single_action_hits_generator i]
   exact OddMath.Frontier.NilHeckeSmallRankControls.single_generator_degree_two i
@@ -290,15 +290,15 @@ theorem dot_action_generator (i : Fin 1) :
 polynomial-piece `e` into polynomial-piece `d + e`. This is the actual
 polynomial action at rank one, by span induction on the dot piece using the
 inherited `monomial_mem` / `polynomial_mul` laws. -/
-theorem source_action_mem {d e : ℤ} {a : OddMath.PbwL2.Presented 1}
+theorem source_action_mem {d e : ℤ} {a : OddMath.PbwPresentation.Presented 1}
     (ha : a ∈ dotPiece d) {f : OddMath.SkewPolynomial.SkewPolynomial 1}
     (hf : f ∈ OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 e) :
-    OddMath.PbwL3.Phi 1 a * f ∈
+    OddMath.PbwFactorization.Phi 1 a * f ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 (d + e) := by
   induction ha using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨u, rfl⟩ := hx
-    show OddMath.PbwL3.Phi 1
+    show OddMath.PbwFactorization.Phi 1
         (OddMath.Frontier.PbwNormalization.orderedMonomial (u.val)) * f ∈ _
     rw [OddMath.Frontier.PbwEquivalence.Phi_orderedMonomial]
     have h1 : OddMath.SkewPolynomial.monomial (u.val) 1 ∈
@@ -333,8 +333,8 @@ theorem lift_mem_dotPiece {d : ℤ} (g : OddMath.SkewPolynomial.SkewPolynomial 1
 
 /-- N = 1, action -> source: polynomial-piece membership pulls back along the
 comparison map (via the lift section `lift_Phi`). -/
-theorem action_source_mem {d : ℤ} {a : OddMath.PbwL2.Presented 1}
-    (ha : OddMath.PbwL3.Phi 1 a ∈
+theorem action_source_mem {d : ℤ} {a : OddMath.PbwPresentation.Presented 1}
+    (ha : OddMath.PbwFactorization.Phi 1 a ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 d) :
     a ∈ dotPiece d := by
   have h := lift_mem_dotPiece _ ha
@@ -342,8 +342,8 @@ theorem action_source_mem {d : ℤ} {a : OddMath.PbwL2.Presented 1}
 
 /-- N = 1 degree correspondence: dot-piece membership is exactly
 polynomial-piece membership after the comparison map. -/
-theorem degree_equiv (d : ℤ) (a : OddMath.PbwL2.Presented 1) :
-    a ∈ dotPiece d ↔ OddMath.PbwL3.Phi 1 a ∈
+theorem degree_equiv (d : ℤ) (a : OddMath.PbwPresentation.Presented 1) :
+    a ∈ dotPiece d ↔ OddMath.PbwFactorization.Phi 1 a ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1 d := by
   constructor
   · intro ha
@@ -356,10 +356,10 @@ theorem degree_equiv (d : ℤ) (a : OddMath.PbwL2.Presented 1) :
 
 /-- N = 1: the dot/MNS matrix is 1x1 over the trivial group, all entries the
 comparison image. -/
-noncomputable def shiftMatrix (a : OddMath.PbwL2.Presented 1) :
+noncomputable def shiftMatrix (a : OddMath.PbwPresentation.Presented 1) :
     Matrix (Equiv.Perm (Fin 1)) (Equiv.Perm (Fin 1))
       (OddMath.SkewPolynomial.SkewPolynomial 1) :=
-  Matrix.of fun _ _ => OddMath.PbwL3.Phi 1 a
+  Matrix.of fun _ _ => OddMath.PbwFactorization.Phi 1 a
 
 /-- N = 1: every length shift vanishes (the rank-one symmetric group is
 trivial; consumes the Schubert triviality control). -/
@@ -372,7 +372,7 @@ theorem shift_vanish (d : ℤ) (i j : Equiv.Perm (Fin 1)) :
 
 /-- N = 1 matrix entry degree law: dot-piece `d` holds exactly when every
 shifted matrix entry sits in the correspondingly shifted polynomial piece. -/
-theorem matrix_entry_degree (d : ℤ) (a : OddMath.PbwL2.Presented 1) :
+theorem matrix_entry_degree (d : ℤ) (a : OddMath.PbwPresentation.Presented 1) :
     a ∈ dotPiece d ↔ ∀ i j, shiftMatrix a i j ∈
       OddMath.Frontier.NilHeckeGradedEnd.polynomialPiece 1
         (d + 2 * ((OddMath.Frontier.NilHeckeGrading.inversions j : ℕ) : ℤ)
@@ -380,7 +380,7 @@ theorem matrix_entry_degree (d : ℤ) (a : OddMath.PbwL2.Presented 1) :
   constructor
   · intro ha i j
     rw [shift_vanish d i j]
-    show OddMath.PbwL3.Phi 1 a ∈ _
+    show OddMath.PbwFactorization.Phi 1 a ∈ _
     exact (degree_equiv d a).mp ha
   · intro h
     apply (degree_equiv d a).mpr

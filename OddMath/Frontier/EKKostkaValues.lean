@@ -343,7 +343,7 @@ theorem sp_coeff (lam ν : YoungDiagram) :
   unfold signedKostka tilde
   rw [canonical_sign]
   have he (T : PositiveTableau lam) :
-      (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T) = tableauSign T := by
+      (-1 : ℤ) ^ LrNorthEastSign.totalNorthLt (boxes T) (boxes T) = tableauSign T := by
     rw [tableauSign, rowWord_inversions]
   simp only [he, smul_eq_mul, pow_add]
   ring

@@ -39,7 +39,7 @@ theorem action_comp_polyElem (n : ℕ) : (action n).comp (polyElem n) = lmulHom 
     intro f
     simp only [RingHom.coe_comp, Function.comp_apply, NilHeckeBasis.dotMap_q,
       RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, PbwEquivalence.presentedEquiv_apply,
-      PbwL3.Phi_q, lmulHom_apply, action_dot_apply]
+      PbwFactorization.Phi_q, lmulHom_apply, action_dot_apply]
   ext g : 1
   obtain ⟨x, rfl⟩ := (PbwEquivalence.presentedEquiv (n+2)).surjective g
   have := congrArg (fun φ => φ x) h

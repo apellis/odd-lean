@@ -62,7 +62,7 @@ section Inclusions
 /-- The ring structure of `OPol`, preferred over the pointwise `Finsupp` structure. -/
 local instance (priority := high) opolRing' (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-- A ring map out of a quotient by a two-sided ideal contained in the kernel. -/
 def liftTwoSided {R S : Type*} [Ring R] [Ring S] (I : TwoSidedIdeal R) (f : R →+* S)

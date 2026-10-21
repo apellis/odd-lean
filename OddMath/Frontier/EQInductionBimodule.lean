@@ -501,11 +501,11 @@ theorem indFun_d {i : ℤ} {y : ZZ a b} (hy : y ∈ DG.grading i) (F : ZabTw a b
   abel
 
 theorem sp_mul_one' {m : ℕ} (x : SkewPolynomial m) : x * 1 = x := by
-  let := OddMath.PbwL3.instSemiring m
+  let := OddMath.PbwFactorization.instSemiring m
   exact mul_one x
 
 theorem sp_one_mul' {m : ℕ} (x : SkewPolynomial m) : 1 * x = x := by
-  let := OddMath.PbwL3.instSemiring m
+  let := OddMath.PbwFactorization.instSemiring m
   exact one_mul x
 
 variable (a b) in
@@ -760,7 +760,7 @@ def projX (A B : ℕ) : SkewPolynomial (A + B) →+* SkewPolynomial A :=
   skewLift (fun j => if h : j.val < A then generator ⟨j.val, h⟩ else 0) (fun i j hij => by
     by_cases hi : i.val < A <;> by_cases hj : j.val < A
     · simp only [hi, hj, dite_true]
-      exact OddMath.PbwL1.rel_sum _ _ (fun e => hij (Fin.ext (by simpa using congrArg Fin.val e)))
+      exact OddMath.PbwModelRelations.rel_sum _ _ (fun e => hij (Fin.ext (by simpa using congrArg Fin.val e)))
     · simp [hi, hj, EQBorel.sp_mul_zero, EQBorel.sp_zero_mul]
     · simp [hi, hj, EQBorel.sp_mul_zero, EQBorel.sp_zero_mul]
     · simp [hi, hj, EQBorel.sp_mul_zero])

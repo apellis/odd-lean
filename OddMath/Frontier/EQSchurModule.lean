@@ -41,11 +41,11 @@ noncomputable section
 local instance (priority := high) opolNUNASemiringSchur (m : ℕ) :
     NonUnitalNonAssocSemiring (SkewPolynomial m) :=
   @NonAssocSemiring.toNonUnitalNonAssocSemiring _
-    (@Semiring.toNonAssocSemiring _ (OddMath.PbwL3.instSemiring m))
+    (@Semiring.toNonAssocSemiring _ (OddMath.PbwFactorization.instSemiring m))
 
 local instance (priority := high) opolNUNARingSchur (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-- The differential `d_z` of `Z_n = OPol_n(0,1,0,1,…)` (Ellis–Qi Definition 3.8). -/
 abbrev dZ (N : ℕ) : SkewPolynomial N →+ SkewPolynomial N := dAlpha (zAlpha N)

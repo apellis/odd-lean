@@ -35,7 +35,7 @@ local notation "L" => LaurentPolynomial ℤ
 /-- The ring structure of `OPol`, preferred over the pointwise `Finsupp` structure. -/
 local instance (priority := high) opolRing'' (m : ℕ) :
     NonUnitalNonAssocRing (SkewPolynomial m) :=
-  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwL3.instRing m))
+  @NonAssocRing.toNonUnitalNonAssocRing _ (@Ring.toNonAssocRing _ (OddMath.PbwFactorization.instRing m))
 
 /-! ### Factor data -/
 

@@ -164,12 +164,12 @@ theorem square_comm {n : ℕ} (i : Fin n) (f : SkewPolynomial n) :
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective n f
   induction x using Quotient.inductionOn' with
   | h w =>
-    change generator i ^ 2 * PbwL3.evalAlg n w = PbwL3.evalAlg n w * generator i ^ 2
+    change generator i ^ 2 * PbwFactorization.evalAlg n w = PbwFactorization.evalAlg n w * generator i ^ 2
     induction w using FreeAlgebra.induction with
     | grade0 r =>
       rw [AlgHom.commutes]
       exact (Int.cast_commute r _).symm.eq
-    | grade1 j => rw [PbwL3.evalAlg_ι]; exact square_comm_generator i j
+    | grade1 j => rw [PbwFactorization.evalAlg_ι]; exact square_comm_generator i j
     | add a b ha hb => simp only [map_add, _root_.mul_add, _root_.add_mul, ha, hb]
     | mul a b ha hb => rw [map_mul, ← _root_.mul_assoc, ha, _root_.mul_assoc, hb,
         ← _root_.mul_assoc]
@@ -187,8 +187,8 @@ theorem divided_intertwiner {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
   obtain ⟨x, rfl⟩ := PbwRealization.Phi_surjective (n+2) f
   induction x using Quotient.inductionOn' with
   | h w =>
-    change (X^2-Y^2)*divided i (PbwL3.evalAlg (n+2) w) =
-      (X-Y)*PbwL3.evalAlg (n+2) w - s i (PbwL3.evalAlg (n+2) w)*(X-Y)
+    change (X^2-Y^2)*divided i (PbwFactorization.evalAlg (n+2) w) =
+      (X-Y)*PbwFactorization.evalAlg (n+2) w - s i (PbwFactorization.evalAlg (n+2) w)*(X-Y)
     induction w using FreeAlgebra.induction with
     | grade0 r =>
       rw [AlgHom.commutes]
@@ -197,7 +197,7 @@ theorem divided_intertwiner {n : ℕ} (i : Fin (n+1)) (f : SkewPolynomial (n+2))
       simp only [map_smul, divided_one, smul_zero, mul_zero, map_zsmul, map_one,
         smul_mul_assoc, mul_smul_comm, one_mul, mul_one, sub_self]
     | grade1 j =>
-      rw [PbwL3.evalAlg_ι, divided_generator, s_generator]
+      rw [PbwFactorization.evalAlg_ι, divided_generator, s_generator]
       by_cases hl : j=i.castSucc
       · subst j
         simp only [true_or, ↓reduceIte, Equiv.swap_apply_left, _root_.mul_one]
@@ -278,7 +278,7 @@ theorem s_monomial {n : ℕ} (i : Fin (n+1)) (a : Exp (n+2)) (d : ℤ) :
   obtain ⟨w, _, hw, he⟩ := PbwRealization.exists_ordered_word a
   have hwpoly : (w.map generator).prod = monomial a 1 := by
     rw [← he]
-    simp [PbwRealization.word, map_list_prod, List.map_map, Function.comp_def, PbwL3.Phi_q]
+    simp [PbwRealization.word, map_list_prod, List.map_map, Function.comp_def, PbwFactorization.Phi_q]
   obtain ⟨c,hc,h⟩ := s_word_monomial i w
   rw [hwpoly, hw] at h
   refine ⟨c,hc,?_⟩

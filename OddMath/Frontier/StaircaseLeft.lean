@@ -168,7 +168,7 @@ theorem reverse_stair {N : ℕ} (a : StairIndex N) :
     reverse N (stairMonomial a) = reversalSign a.val • stairMonomial a := by
   unfold stairMonomial
   rw [reverse_monomial, one_mul]
-  exact PbwL4.monomial_smul N a.val (reversalSign a.val)
+  exact PbwSpanning.monomial_smul N a.val (reversalSign a.val)
 
 /-- The coefficient transport, an involution on the actual elementary subring. -/
 def twist {N : ℕ} (a : StairIndex N) (c : E N) : E N :=

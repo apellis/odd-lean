@@ -96,12 +96,12 @@ theorem filter_exponents (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ ℕ) (h0 
 theorem tableauPolynomial_eq_sum (n : ℕ) (μ : YoungDiagram) :
     tableauPolynomial n μ = ∑ T ∈ tableauxInAlphabet n μ,
       monomial (exponents n T)
-        ((-1 : ℤ) ^ (LrLegA.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) := by
+        ((-1 : ℤ) ^ (LrNorthEastSign.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) := by
   classical
   simp only [tableauPolynomial, rowPolynomial_eq]
   exact Finset.sum_attach (tableauxInAlphabet n μ) (fun T =>
     (monomial (exponents n T)
-      ((-1 : ℤ) ^ (LrLegA.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) :
+      ((-1 : ℤ) ^ (LrNorthEastSign.totalNorthLt (boxes T) (boxes T) + tildeWeight n T)) :
         SkewPolynomial n))
 
 theorem coeff_tableauPolynomial (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ ℕ)
@@ -109,7 +109,7 @@ theorem coeff_tableauPolynomial (n : ℕ) (μ : YoungDiagram) (c : ℕ →₀ �
     tableauPolynomial n μ (fun i : Fin n => c (i.val + 1)) =
       ((-1 : ℤ) ^ (∑ i : Fin n, i.val * c (i.val + 1))) *
         ∑ T ∈ tableauxOfContent μ c,
-          (-1 : ℤ) ^ LrLegA.totalNorthLt (boxes T) (boxes T) := by
+          (-1 : ℤ) ^ LrNorthEastSign.totalNorthLt (boxes T) (boxes T) := by
   classical
   rw [tableauPolynomial_eq_sum]
   simp only [Finsupp.finsetSum_apply, monomial, Finsupp.single_apply]
@@ -177,7 +177,7 @@ theorem tableauPolynomial_independent {I : Type*} [Fintype I] [DecidableEq I]
   have he : exponents n emptyTableau = 0 := by
     funext i
     simp [exponents]
-  simp [he, tildeWeight, boxes, LrLegA.totalNorthLt]
+  simp [he, tildeWeight, boxes, LrNorthEastSign.totalNorthLt]
   rfl
 
 /-- Alphabet zero admits no positive filling of a nonempty genuine shape. -/
