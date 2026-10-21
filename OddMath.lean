@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.Realization.Braid
+import OddMath.QuiverHecke.Realization.BraidEq
 import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples
