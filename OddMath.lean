@@ -919,6 +919,8 @@ import OddMath.SKM.PositiveMatchingGrading
 import OddMath.SKM.CoveringDatum
 import OddMath.SKM.PositiveMatchingGradingExamples
 import OddMath.SKM.ChevalleyHom
+import OddMath.SKM.CliffordK0
+import OddMath.SKM.CliffordK0Examples
 import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot

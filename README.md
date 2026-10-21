@@ -700,6 +700,19 @@ the leftward cap or cup picks up `(-1)^{⟨hᵢ,λ⟩}` plus twice the odd bubbl
 proved here (`eq_1_27`, from `lemma41_eq3_odd`, `lemma41_eq4_odd`, with `oddBubble_consistent` for the odd
 bubble at `⟨hᵢ,λ⟩ = 0`). The correction will be made in a planned revision of the papers.
 
+### [BE2] §11: parity and the split Grothendieck group
+
+| Result | Scope and status | Declarations |
+|---|---|---|
+| Opening Laurentian `K₀` assertion; ERRATA [BE2] 10 | The degree-zero Clifford algebra has a nonzero split `K₀` of its graded super Karoubi envelope with trivial parity action, so it is not free over `ℤ[q,q⁻¹,π]/(π²−1)`. Proved over every field, with a rational consumer. Uses the existing `StringDiagrams.K₀` and `K₀.moduleLaurent`. The explicit graded left-projective comparison, general indecomposable basis, parity-orbit decomposition and corrected freeness criterion remain to be proved. The ungraded right-projective comparison is included. | `SKM.CliffordK0.laurentian`, `gradedRegular_class_ne_zero`, `gradedProjectiveParityNatIso`, `C_pi_smul`, `gradedK0_not_free`, `projectiveK0Equiv` |
+
+**Remaining for Theorem 11.3.** Prove Hom-finite Krull–Schmidt on the existing
+split `K₀`, then integer-shift rigidity and the parity-orbit decomposition.
+Retain parity-fixed summands until the finite weightwise rank argument proves
+type M. For Theorem 11.7, also retain the weaker Laurent-integer freeness needed
+for faithful rational localization; no type-M assumption on its entire target
+is justified by the input about `H_n`.
+
 ### [BE2] §§9–10: the covering quantum group (in progress)
 
 Names are in `OddMath.CoveringQuantum`. Conventions are those of [BE2] (its `q` is `q⁻¹` in [CHW1]
