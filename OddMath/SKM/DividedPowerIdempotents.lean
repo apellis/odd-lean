@@ -5,7 +5,8 @@ Authors: Alex Ellis
 -/
 import OddMath.Frontier.OnhReflection
 import OddMath.Frontier.OnhStructure
-import OddMath.Diagrams.OddNilHecke.DifferentialComparison
+import OddMath.Frontier.SmallRankONH
+import OddMath.Frontier.EQOnhDGRing
 import Mathlib.RingTheory.TensorProduct.Basic
 
 /-!
@@ -222,28 +223,27 @@ theorem oppositeProjector_ne_zero (n : ℕ) : oppositeProjector n ≠ 0 := by
     simpa using hs
   exact OnhStructure.projector_ne_zero n ((OnhReflection.sigma n).injective hz)
 
-/-! ## Homogeneity in the existing polynomial and diagrammatic gradings -/
+/-! ## Homogeneity in the existing integral and parity gradings -/
 
-open ProjectorRank GradedTrace
+open EQOnhDG
 
-/-- The corrected generator has degree zero in the faithful polynomial representation.
-The library degree is half the usual nilHecke degree; zero is unchanged by `2dᵢ`. -/
+/-- The corrected generator has degree zero in the existing internal grading
+of the presented ring. This grading assigns a dot degree one; zero is
+unchanged by the source's rescaling by `2dᵢ`. -/
 theorem unsignedGenerator_degree (i : Fin (n + 1)) :
-    HasDegree (Vd (n + 2)) 0 (action n (unsignedGenerator n i)) := by
+    unsignedGenerator n i ∈ grading n 0 := by
   simpa [unsignedGenerator, sourceDot, sourceCrossing] using
-    hasDegree_action_mul (hasDegree_crossing i.rev) (hasDegree_dot i.castSucc.rev)
+    mul_mem_grading (crossing_mem_grading n i.rev) (dot_mem_grading n i.castSucc.rev)
 
 /-- Every corrected word has degree zero, without a reducedness hypothesis. -/
-theorem unsignedProduct_degree (w : Word n) :
-    HasDegree (Vd (n + 2)) 0 (action n (unsignedProduct w)) := by
+theorem unsignedProduct_degree (w : Word n) : unsignedProduct w ∈ grading n 0 := by
   induction w with
-  | nil => exact hasDegree_action_one
+  | nil => exact one_mem_grading n
   | cons i w ih => simpa [unsignedProduct] using
-      hasDegree_action_mul (unsignedGenerator_degree i) ih
+      mul_mem_grading (unsignedGenerator_degree i) ih
 
 /-- The corrected longest projector has degree zero. -/
-theorem oppositeProjector_degree (n : ℕ) :
-    HasDegree (Vd (n + 2)) 0 (action n (oppositeProjector n)) := by
+theorem oppositeProjector_degree (n : ℕ) : oppositeProjector n ∈ grading n 0 := by
   rw [oppositeProjector_eq_unsignedProduct]
   exact unsignedProduct_degree _
 
@@ -251,20 +251,16 @@ open OddMath.Diagrams.OddNilHecke
 
 /-- Even parity is membership in the existing diagrammatic parity grading. -/
 theorem unsignedGenerator_even (i : Fin (n + 1)) :
-    unsignedGenerator n i ∈ parity n 0 := by
-  simpa [unsignedGenerator, sourceDot, sourceCrossing] using
-    mul_mem_parity (crossing_mem_parity n i.rev) (dot_mem_parity n i.castSucc.rev)
+    unsignedGenerator n i ∈ parity n 0 :=
+  grading_le_parity n 0 (unsignedGenerator_degree i)
 
 /-- Every corrected word is even. -/
-theorem unsignedProduct_even (w : Word n) : unsignedProduct w ∈ parity n 0 := by
-  induction w with
-  | nil => exact one_mem_parity n
-  | cons i w ih => simpa [unsignedProduct] using mul_mem_parity (unsignedGenerator_even i) ih
+theorem unsignedProduct_even (w : Word n) : unsignedProduct w ∈ parity n 0 :=
+  grading_le_parity n 0 (unsignedProduct_degree w)
 
 /-- The longest projector is even in the presented-ring/diagram comparison. -/
-theorem oppositeProjector_even (n : ℕ) : oppositeProjector n ∈ parity n 0 := by
-  rw [oppositeProjector_eq_unsignedProduct]
-  exact unsignedProduct_even _
+theorem oppositeProjector_even (n : ℕ) : oppositeProjector n ∈ parity n 0 :=
+  grading_le_parity n 0 (oppositeProjector_degree n)
 
 /-- The corrected `D_w`, choosing a reduced expression only internally. -/
 def demazure (p : Perm n) : Presented n := unsignedProduct (chosenWord p)
@@ -274,6 +270,25 @@ theorem demazure_eq (p : Perm n) (w : Word n) (hw : Reduced w)
     (hp : permutation w = p) : demazure p = unsignedProduct w :=
   unsignedProduct_reduced_eq _ _ (chosenWord_reduced p) hw
     ((chosenWord_permutation p).trans hp.symm)
+
+/-- The permutation-indexed construction recovers the corrected longest projector. -/
+theorem demazure_longest (n : ℕ) :
+    demazure (n := n) (LongestElementary.longest (n + 2)) = oppositeProjector n :=
+  unsignedProduct_longest _ (chosenWord_reduced _) (chosenWord_permutation _)
+
+/-- The corrected odd longest idempotent in every rank, including the empty
+products in ranks zero and one. Uses the existing all-rank odd nilHecke ring. -/
+def dividedPower : (a : ℕ) → SmallRank.ONH a
+  | 0 => 1
+  | 1 => 1
+  | n + 2 => oppositeProjector n
+
+/-- The corrected odd longest product is idempotent in every rank. -/
+theorem dividedPower_idempotent (a : ℕ) : IsIdempotentElem (dividedPower a) := by
+  match a with
+  | 0 => exact one_mul _
+  | 1 => exact one_mul _
+  | n + 2 => exact oppositeProjector_idempotent n
 
 end
 

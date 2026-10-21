@@ -14,6 +14,12 @@ example : unsignedGenerator 1 0 * unsignedGenerator 1 1 * unsignedGenerator 1 0 
     unsignedGenerator 1 1 * unsignedGenerator 1 0 * unsignedGenerator 1 1 :=
   unsignedGenerator_braid 0 1 rfl
 
+example : IsIdempotentElem (dividedPower 0) := dividedPower_idempotent 0
+example : IsIdempotentElem (dividedPower 1) := dividedPower_idempotent 1
+example : IsIdempotentElem (dividedPower 4) := dividedPower_idempotent 4
+
+#print axioms dividedPower_idempotent
+#print axioms demazure_longest
 #print axioms rationalPrintedGenerator_not_idempotent
 #print axioms unsignedProduct_reduced_eq
 #print axioms oppositeProjector_idempotent

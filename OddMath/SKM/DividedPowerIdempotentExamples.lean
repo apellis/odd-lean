@@ -119,7 +119,7 @@ theorem even_twoStrand {I X k : Type*} [AddCommGroup X] {D : Datum I X}
 
 /-- The corrected odd projector has both required gradings. -/
 theorem rankThree_homogeneous :
-    GradedTrace.HasDegree (ProjectorRank.Vd 3) 0 (action 1 (oppositeProjector 1)) ∧
+    oppositeProjector 1 ∈ EQOnhDG.grading 1 0 ∧
       oppositeProjector 1 ∈ OddMath.Diagrams.OddNilHecke.parity 1 0 :=
   ⟨oppositeProjector_degree 1, oppositeProjector_even 1⟩
 
