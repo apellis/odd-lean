@@ -20,17 +20,17 @@ def mixed : Fin 4 → Bool := ![true, true, false, true]
 /-- Odd–odd exchange negates the distant odd variable. -/
 theorem distant_odd : exchange (R := ℤ) mixed 0 1 (X mixed 3) =
     -X (exchangeParity mixed 0 1) 3 := by
-  simpa [mixed] using exchange_X (R := ℤ) mixed 0 1 3 (by decide)
+  simp [mixed, Equiv.swap_apply_def]
 
 /-- The same exchange fixes the distant even variable. -/
 theorem distant_even : exchange (R := ℤ) mixed 0 1 (X mixed 2) =
     X (exchangeParity mixed 0 1) 2 := by
-  simpa [mixed] using exchange_X (R := ℤ) mixed 0 1 2 (by decide)
+  simp [mixed, Equiv.swap_apply_def]
 
 /-- Mixed adjacent parities exchange without a generator sign. -/
 theorem even_odd : exchange (R := ℤ) ![false, true] 0 1 (X ![false, true] 0) =
     X (exchangeParity ![false, true] 0 1) 1 := by
-  simpa using exchange_X (R := ℤ) ![false, true] 0 1 0 (by decide)
+  simp
 
 /-- Multiplicativity is checked on an inhomogeneous input with both parities. -/
 theorem mixed_product (f : Polynomial ℤ 4 mixed) :
