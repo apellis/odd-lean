@@ -84,4 +84,33 @@ instance alpha_additive (μ : X) : (alpha D Sc μ).Additive :=
 instance alpha_linear (μ : X) : (alpha D Sc μ).Linear k :=
   LayerMap.lift_linear _ _ _ _ _
 
+/-- On objects, the rightmost weight is exactly the specified weight. -/
+@[simp] theorem alpha_obj (μ : X) (s : List I) :
+    (alpha D Sc μ).obj ((pres D Sc).obj (ob D s)) =
+      (SKM.pres D Sc).obj (SKM.ob D μ (upWord s)) := rfl
+
+/-- On diagrams, `α` is weight labelling with coefficient one. -/
+@[simp] theorem alpha_diag (μ : X) {a b : Obj (sig D)} (f : a ⟶ b) :
+    (alpha D Sc μ).map ((pres D Sc).diag f) =
+      (SKM.pres D Sc).diag ((label D μ).map f) := by
+  simp only [alpha, LayerMap.lift_diag, Diagram.weight_one, one_smul]
+
+/-- The upward map preserves parity. -/
+theorem alpha_mem_parity (μ : X) {a b : Obj (sig D)}
+    {f : (pres D Sc).obj a ⟶ (pres D Sc).obj b} {p : ZMod 2}
+    (hf : f ∈ (pres D Sc).homDeg (Presentation.parityDeg (sig D)) a b p) :
+    (alpha D Sc μ).map f ∈ (SKM.pres D Sc).homDeg
+      (Presentation.parityDeg (SKM.sig D)) ((label D μ).obj a) ((label D μ).obj b) p :=
+  LayerMap.lift_mem_homDeg (labelWhisker D) (fun _ => trivial) (label_rel D Sc)
+    (fun μ _ hx => label_interchange D Sc μ hx) μ (label_parity D μ) hf
+
+/-- The upward map preserves the integer degree. -/
+theorem alpha_mem_degree (sy : SKM.Symmetrizer D) (μ : X) {a b : Obj (sig D)}
+    {f : (pres D Sc).obj a ⟶ (pres D Sc).obj b} {d : ℤ}
+    (hf : f ∈ (pres D Sc).homDeg (gdeg D sy) a b d) :
+    (alpha D Sc μ).map f ∈ (SKM.pres D Sc).homDeg
+      (SKM.gdeg D sy) ((label D μ).obj a) ((label D μ).obj b) d :=
+  LayerMap.lift_mem_homDeg (labelWhisker D) (fun _ => trivial) (label_rel D Sc)
+    (fun μ _ hx => label_interchange D Sc μ hx) μ (label_degree D sy μ) hf
+
 end OddMath.QuiverHecke
