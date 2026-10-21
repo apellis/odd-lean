@@ -160,7 +160,8 @@ theorem fP_cl_right {p q : ℕ} (h : p ≠ q) (ν : Seq I) :
     rw [ite_eq_left hν]
     by_cases ho : oddAt par ν p
     · rw [ite_eq_left ho, ite_eq_left ho, ite_eq_left (hpq.mp ho)]
-      refine fpq_shape_mul_right (E := Module.End k (Coeff k)) (A := scalar (hA p q)) (cliff_mul_self p) (cliff_mul_self q)
+      refine fpq_shape_mul_right (E := Module.End k (Coeff k)) (A := scalar (hA p q))
+        (cliff_mul_self p) (cliff_mul_self q)
         (cliff_anticomm h) ?_ ?_ ?_
       · rw [cliff_scalar, reflect_hS_right h]
       · rw [cliff_scalar, reflect_hS_left (Ne.symm h), scalar_neg, endNeg_mul]
@@ -290,7 +291,8 @@ theorem sig_dot_right (a : ℕ) :
       have := fpq_shape_dot' (E := Module.End k (Coeff k)) (u := -1) (cp := cliff a)
         (cq := cliff (a + 1)) hs
         (by rw [cliff_scalar, reflect_y_of_ne (show a + 1 ≠ a by omega)])
-        (by rw [cliff_scalar, reflect_y_of_ne (show a ≠ a + 1 by omega)]) (by rw [endNeg_mul, one_mul, endMul_neg, mul_one])
+        (by rw [cliff_scalar, reflect_y_of_ne (show a ≠ a + 1 by omega)])
+        (by rw [endNeg_mul, one_mul, endMul_neg, mul_one])
         (cliff_anticomm (by omega))
       rw [this, endMul_neg, mul_one]
       exact sub_neg_eq_add (-1 : Module.End k (Coeff k)) _
