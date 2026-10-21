@@ -75,11 +75,15 @@ jobs:
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
       - name: Non-vacuity checks
         if: steps.scope.outputs.docs_only != 'true'
-        run: >-
-          lake env lean -DwarningAsError=true
-          -Dbackward.isDefEq.respectTransparency=false
-          -Dbackward.isDefEq.respectTransparency.types=false
-          scripts/NonVacuity.lean < /dev/null
+        run: |
+          for f in scripts/NonVacuity.lean scripts/NonVacuity/*.lean; do
+            echo "::group::$f"
+            lake env lean -DwarningAsError=true \
+              -Dbackward.isDefEq.respectTransparency=false \
+              -Dbackward.isDefEq.respectTransparency.types=false \
+              "$f" < /dev/null
+            echo "::endgroup::"
+          done
       - name: Save build cache
         if: always() && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
