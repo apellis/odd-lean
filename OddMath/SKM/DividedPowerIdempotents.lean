@@ -274,7 +274,7 @@ theorem demazure_eq (p : Perm n) (w : Word n) (hw : Reduced w)
 /-- The permutation-indexed construction recovers the corrected longest projector. -/
 theorem demazure_longest (n : ℕ) :
     demazure (n := n) (LongestElementary.longest (n + 2)) = oppositeProjector n :=
-  unsignedProduct_longest _ (chosenWord_reduced _) (chosenWord_permutation _)
+  (oppositeProjector_eq_of_reduced _ (chosenWord_reduced _) (chosenWord_permutation _)).symm
 
 /-- The corrected odd longest idempotent in every rank, including the empty
 products in ranks zero and one. Uses the existing all-rank odd nilHecke ring. -/
