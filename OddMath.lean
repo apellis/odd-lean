@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CliffordLocalizationExamples
 import OddMath.QuiverHecke.CliffordCoefficientsExamples
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.PolynomialExchangeExamples
