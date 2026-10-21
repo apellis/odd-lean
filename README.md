@@ -704,7 +704,7 @@ bubble at `⟨hᵢ,λ⟩ = 0`). The correction will be made in a planned revisio
 
 | Result | Scope and status | Declarations |
 |---|---|---|
-| Opening Laurentian `K₀` assertion; ERRATA [BE2] 10 | The degree-zero Clifford algebra has a nonzero split `K₀` of its graded super Karoubi envelope with trivial parity action, so it is not free over `ℤ[q,q⁻¹,π]/(π²−1)`. Proved over every field, with a rational consumer. Uses the existing `StringDiagrams.K₀` and `K₀.moduleLaurent`. The ungraded right-projective comparison is included. The pinned StringDiagrams library also proves the Hom-finite integral indecomposable basis and the parity-ring freeness criterion, consumed in `CliffordKrullSchmidt`. The integer-shift rigidity and Laurentian `R = ℤ[q,q⁻¹]`-freeness are proved as described below. The explicit graded left-projective comparison and mixed `ℒ`-module decomposition remain open. | `SKM.CliffordK0.laurentian`, `gradedRegular_class_ne_zero`, `gradedProjectiveParityNatIso`, `C_pi_smul`, `gradedK0_not_free`, `projectiveK0Equiv` |
+| Opening Laurentian `K₀` assertion; ERRATA [BE2] 10 | The degree-zero Clifford algebra has a nonzero split `K₀` of its graded super Karoubi envelope with trivial parity action, so it is not free over `ℤ[q,q⁻¹,π]/(π²−1)`. Proved over every field, with a rational consumer. Uses the existing `StringDiagrams.K₀` and `K₀.moduleLaurent`. The ungraded right-projective comparison is included. The pinned StringDiagrams library also proves the Hom-finite integral indecomposable basis and the parity-ring freeness criterion, consumed in `CliffordKrullSchmidt`. The integer-shift rigidity and Laurentian `R = ℤ[q,q⁻¹]`-freeness are proved as described below. The mixed `ℒ`-module decomposition is proved by `SKM.UDot.laurentDecomposition`, with nonzero all-type-Q Clifford consumers. The explicit graded left-projective comparison remains open. | `SKM.CliffordK0.laurentian`, `gradedRegular_class_ne_zero`, `gradedProjectiveParityNatIso`, `C_pi_smul`, `gradedK0_not_free`, `projectiveK0Equiv` |
 
 **Proved integral and parity-ring input.** The pinned StringDiagrams library
 constructs `KrullSchmidt.indecBasis` on the existing split `K₀` for Hom-finite
@@ -726,8 +726,16 @@ superalgebras, not only finite-total-dimensional ones. Concrete consumers use
 two odd colours over ℚ, and a rational-field envelope with a proved nonzero
 indecomposable projective class.
 
-**Remaining for Theorem 11.3.** Prove the mixed M/Q `ℒ`-module decomposition
-and identify graded envelopes with the paper’s graded left projectives.
+**Proved mixed decomposition.** `SKM.UDot.laurentDecomposition` identifies
+these completed Hom `K₀` modules with the direct sum of one `ℒ` per paired
+parity orbit and one `ℒ/(π−1)` per fixed orbit, under the same explicit
+`DegreeLocallyFinite` hypothesis. `CliffordK0.laurentParity_eq_self` and
+`typeQ_orbits_nonempty` give a nonempty all-type-Q example;
+`laurent_coordinates_ne_zero` detects its regular class. The two-odd-colour
+rational datum supplies concrete completed SKM consumers.
+
+**Remaining for Theorem 11.3.** Identify graded envelopes with the paper’s
+graded left projectives and compare their types with those of simple heads.
 Retain parity-fixed summands until the finite weightwise rank argument proves
 type M for `H_n`. The weaker `R`-freeness needed for faithful rational
 localization in Theorem 11.7 is now available; no type-M assumption on its
