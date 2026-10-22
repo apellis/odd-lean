@@ -23,6 +23,7 @@ import OddMath.SKM.KarSummandProducts
 import OddMath.QuiverHecke.SerreDividedPowers
 import OddMath.QuiverHecke.SerreDividedPowersDown
 import OddMath.QuiverHecke.GrothendieckDividedPowers
+import OddMath.QuiverHecke.GrothendieckPresentation
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
