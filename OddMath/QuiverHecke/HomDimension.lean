@@ -197,6 +197,37 @@ theorem homPiece_eq_span (t t' : List I) (n : ℤ) (p : ZMod 2) :
   ext i
   simp
 
+/-- **The degree pieces of `Hom_H(t, t')`** are spanned by the normal forms of that degree. -/
+theorem degree_eq_span (t t' : List I) (n : ℤ) :
+    GradedSupercategory.degree (R := k) (C := HGr D Sc sy hc) (hObj D Sc sy hc t)
+        (hObj D Sc sy hc t') n = Submodule.span k
+      ((fun i : NFIdx t t' => (i.nf (D := D) (Sc := Sc) : hObj D Sc sy hc t ⟶ hObj D Sc sy hc t'))
+        '' {i | i.deg D sy = n}) := by
+  classical
+  let _ : DirectSum.Decomposition
+      (GradedSupercategory.degree (R := k) (C := HGr D Sc sy hc) (hObj D Sc sy hc t)
+        (hObj D Sc sy hc t')) :=
+    (GradedSupercategory.isInternal_degree (R := k) (C := HGr D Sc sy hc) _ _).chooseDecomposition
+  have hspan : Submodule.span k
+      (Set.range fun i : NFIdx t t' => (i.nf (D := D) (Sc := Sc) :
+        hObj D Sc sy hc t ⟶ hObj D Sc sy hc t')) = ⊤ := span_nf D Sc t t'
+  have hdeg := inf_span_eq_of_homogeneous
+    (GradedSupercategory.degree (R := k) (C := HGr D Sc sy hc) (hObj D Sc sy hc t)
+      (hObj D Sc sy hc t'))
+    (b := fun i : NFIdx t t' => (i.nf (D := D) (Sc := Sc) :
+        hObj D Sc sy hc t ⟶ hObj D Sc sy hc t'))
+    (fun i => i.deg D sy) (fun i => i.nf_mem_homDegree D Sc sy) Set.univ n
+  rw [Set.image_univ, hspan, inf_top_eq] at hdeg
+  rw [hdeg]
+  congr 2
+  ext i
+  simp
+
+/-- Every object of `H` is the object of a word. -/
+theorem exists_hObj (X : HGr D Sc sy hc) : ∃ t, X = hObj D Sc sy hc t := by
+  obtain ⟨⟨⟨⟩, t⟩⟩ := X
+  exact ⟨t, rfl⟩
+
 section Field
 
 variable {K : Type w} [Field K] (Sc : SKM.Scalars D K) (hc : Sc.Homogeneous)
@@ -210,6 +241,14 @@ instance finiteDimensional_homPiece (t t' : List I) (n : ℤ) (p : ZMod 2) :
     FiniteDimensional K (homPiece D Sc sy hc t t' n p) := by
   rw [homPiece_eq_span]
   exact FiniteDimensional.span_of_finite K ((finite_par_deg D sy t t' n p).image _)
+
+/-- The degree pieces of `Hom_H(X, Y)` are finite dimensional. -/
+instance finiteDimensional_degree (X Y : HGr D Sc sy hc) (n : ℤ) :
+    FiniteDimensional K (GradedSupercategory.degree (R := K) (C := HGr D Sc sy hc) X Y n) := by
+  obtain ⟨t, rfl⟩ := exists_hObj D Sc sy hc X
+  obtain ⟨t', rfl⟩ := exists_hObj D Sc sy hc Y
+  rw [degree_eq_span]
+  exact FiniteDimensional.span_of_finite K ((finite_deg_eq D sy t t' n).image _)
 
 /-- **The dimension of a graded piece of `Hom_H(t, t')`** is the number of normal forms of that
 degree and parity. -/
