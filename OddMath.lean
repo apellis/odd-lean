@@ -929,6 +929,7 @@ import OddMath.SKM.EvenBridge.Full
 import OddMath.SKM.EvenBridge.Functor
 import OddMath.SKM.EvenBridge.KLInverse
 import OddMath.SKM.EvenBridge.KLUpCups
+import OddMath.SKM.EvenBridge.Pairings
 import OddMath.SKM.EvenBridge.Transfer
 import OddMath.SKM.Envelope
 import OddMath.SKM.HomComponents
