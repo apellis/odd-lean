@@ -341,13 +341,14 @@ variable {D Sc sy hc}
 
 /-- The corner of an idempotent cutting out an indecomposable summand is local. -/
 theorem hloc_of_isIndec {s : List I} {z : HEnd D Sc sy hc s} (hz : z ≫ z = z)
-    (hz0 : z ∈ homPiece D Sc sy hc s s 0 0) (hind : IsIndec (raw (k := k) hz hz0.1 hz0.2 0 0)) :
+    (hz0 : z ∈ homPiece D Sc sy hc s s 0 0) {n : ℤ} {p : ZMod 2}
+    (hind : IsIndec (raw (k := k) hz hz0.1 hz0.2 n p)) :
     ∀ a : HEnd D Sc sy hc s, a ∈ homPiece D Sc sy hc s s 0 0 → z ≫ a ≫ z = a →
       IsNilpotent (id a : End (hObj D Sc sy hc s)) ∨ ∃ a' : HEnd D Sc sy hc s,
         a' ∈ homPiece D Sc sy hc s s 0 0 ∧ a ≫ a' = z ∧ a' ≫ a = z := by
   intro a ha hza
-  let α : End (raw (k := k) hz hz0.1 hz0.2 0 0) :=
-    homR a (by simpa using ha.1) (by simpa using ha.2) hza
+  let α : End (raw (k := k) hz hz0.1 hz0.2 n p) :=
+    homR a (by simpa using ha.1) (by simpa [Supercategory.zmod2_add_self] using ha.2) hza
   have hpow : ∀ N : ℕ, evR (α ^ (N + 1)) = (id a : End (hObj D Sc sy hc s)) ^ (N + 1) := by
     intro N
     induction N with
@@ -362,7 +363,8 @@ theorem hloc_of_isIndec {s : List I} {z : HEnd D Sc sy hc s} (hz : z ≫ z = z)
     rw [← hpow, pow_succ, hN, zero_mul]
     rfl
   · right
-    refine ⟨evR u.inv, ⟨by simpa using evR_mem_degree u.inv, by simpa using evR_mem_parity u.inv⟩,
+    refine ⟨evR u.inv, ⟨by simpa using evR_mem_degree u.inv,
+      by simpa [Supercategory.zmod2_add_self] using evR_mem_parity u.inv⟩,
       ?_, ?_⟩
     · have h1 : α ≫ u.inv = 𝟙 _ := by rw [← hu]; exact u.inv_val
       exact (evR_comp α u.inv).symm.trans ((congrArg evR h1).trans evR_id)
@@ -370,16 +372,17 @@ theorem hloc_of_isIndec {s : List I} {z : HEnd D Sc sy hc s} (hz : z ≫ z = z)
       exact (evR_comp u.inv α).symm.trans ((congrArg evR h1).trans evR_id)
 
 /-- **Summands through longer tails.** If an even degree-zero idempotent `f` of `t = s i^ε` lies
-in `J`, and every indecomposable summand of a shifted word of the same length ending in
-`i^{ε+1}` has class in `dpSpan`, then so does `Q^n Π^p (t, f)`. -/
-theorem mk_raw_mem_dpSpan_of_mem_tailJ {s : List I} {i : I} {ε : ℕ}
+in `J`, then every indecomposable summand of `Q^n Π^p (t, f)` is a summand of a shifted word of the
+same length ending in `i^{ε+1}`. -/
+theorem exists_retract_word_of_mem_tailJ {s : List I} {i : I} {ε : ℕ}
     {f : HEnd D Sc sy hc (s ++ List.replicate ε i)} (hf : f ≫ f = f)
-    (hf0 : f ∈ homPiece D Sc sy hc _ _ 0 0) (hJ : f ∈ tailJ D Sc sy hc s i ε)
-    (IH : ∀ w : List I, List.replicate (ε + 1) i <:+ w →
-      w.length = (s ++ List.replicate ε i).length → ∀ (n : ℤ) (p : ZMod 2) (Y : HKar D Sc sy hc),
-      IsIndec Y → ∀ (u : Y ⟶ Wd D Sc sy hc w n p) (v : Wd D Sc sy hc w n p ⟶ Y), u ≫ v = 𝟙 Y →
-      K₀.mk Y ∈ dpSpan D Sc sy hc)
-    (n : ℤ) (p : ZMod 2) : K₀.mk (raw (k := k) hf hf0.1 hf0.2 n p) ∈ dpSpan D Sc sy hc := by
+    (hf0 : f ∈ homPiece D Sc sy hc _ _ 0 0) (hJ : f ∈ tailJ D Sc sy hc s i ε 0)
+    {n : ℤ} {p : ZMod 2} {Y : HKar D Sc sy hc} (hY : IsIndec Y)
+    (u : Y ⟶ raw (k := k) hf hf0.1 hf0.2 n p) (v : raw (k := k) hf hf0.1 hf0.2 n p ⟶ Y)
+    (huv : u ≫ v = 𝟙 Y) :
+    ∃ w : List I, List.replicate (ε + 1) i <:+ w ∧ w.length = (s ++ List.replicate ε i).length ∧
+      ∃ (n' : ℤ) (p' : ZMod 2) (u' : Y ⟶ Wd D Sc sy hc w n' p') (v' : Wd D Sc sy hc w n' p' ⟶ Y),
+        u' ≫ v' = 𝟙 Y := by
   obtain ⟨N, c, g, hg⟩ := Submodule.mem_span_set'.1 hJ
   have hg' := fun j => (g j).2
   choose w hw n₁ n₂ p₁ p₂ g₁ g₂ hg₁ hg₂ hn hp heq using hg'
@@ -421,7 +424,6 @@ theorem mk_raw_mem_dpSpan_of_mem_tailJ {s : List I} {i : I} {ε : ℕ}
           refine Finset.sum_congr rfl fun j _ => ?_
           simp only [Linear.comp_smul, Linear.smul_comp, Category.assoc]
       _ = f := by rw [hsum, hf, hf]
-  refine mk_mem_of_indec_retracts k _ _ fun Y hY u v huv => ?_
   have h1 : ∑ j, (u ≫ U j) ≫ (V j ≫ v) = 𝟙 Y := by
     simp only [Category.assoc]
     rw [← Preadditive.comp_sum]
@@ -429,13 +431,28 @@ theorem mk_raw_mem_dpSpan_of_mem_tailJ {s : List I} {i : I} {ε : ℕ}
     rw [← Preadditive.sum_comp, htot, Category.id_comp, huv]
   obtain ⟨j, -, v', hv'⟩ := exists_retract_of_sum k hY Finset.univ _ _ h1
   by_cases hl : (w j).length = (s ++ List.replicate ε i).length
-  · exact IH (w j) (hw j) hl _ _ Y hY _ v' hv'
+  · exact ⟨w j, hw j, hl, _, _, _, v', hv'⟩
   · exfalso
     have hU : U j = 0 := evR_injective (by
       change f ≫ (c j • g₁ j) = 0
       rw [eq_zero_of_length_ne (hg₁ j) hl, smul_zero, Limits.comp_zero])
     rw [hU, Limits.comp_zero, Limits.zero_comp] at hv'
     exact hY.1 ((Limits.IsZero.iff_id_eq_zero _).2 hv'.symm)
+
+/-- **Summands through longer tails, classes.** If an even degree-zero idempotent `f` of
+`t = s i^ε` lies in `J`, and every indecomposable summand of a shifted word of the same length
+ending in `i^{ε+1}` has class in `dpSpan`, then so does `Q^n Π^p (t, f)`. -/
+theorem mk_raw_mem_dpSpan_of_mem_tailJ {s : List I} {i : I} {ε : ℕ}
+    {f : HEnd D Sc sy hc (s ++ List.replicate ε i)} (hf : f ≫ f = f)
+    (hf0 : f ∈ homPiece D Sc sy hc _ _ 0 0) (hJ : f ∈ tailJ D Sc sy hc s i ε 0)
+    (IH : ∀ w : List I, List.replicate (ε + 1) i <:+ w →
+      w.length = (s ++ List.replicate ε i).length → ∀ (n : ℤ) (p : ZMod 2) (Y : HKar D Sc sy hc),
+      IsIndec Y → ∀ (u : Y ⟶ Wd D Sc sy hc w n p) (v : Wd D Sc sy hc w n p ⟶ Y), u ≫ v = 𝟙 Y →
+      K₀.mk Y ∈ dpSpan D Sc sy hc)
+    (n : ℤ) (p : ZMod 2) : K₀.mk (raw (k := k) hf hf0.1 hf0.2 n p) ∈ dpSpan D Sc sy hc := by
+  refine mk_mem_of_indec_retracts k _ _ fun Y hY u v huv => ?_
+  obtain ⟨w, hw, hl, n', p', u', v', huv'⟩ := exists_retract_word_of_mem_tailJ hf hf0 hJ hY u v huv
+  exact IH w hw hl n' p' Y hY u' v' huv'
 
 section Whisker
 

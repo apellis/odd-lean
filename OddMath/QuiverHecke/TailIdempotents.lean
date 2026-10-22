@@ -120,59 +120,59 @@ section Tail
 
 variable (s : List I) (i : I) (ε : ℕ)
 
-/-- The maps `(1_s ⊗ c)(a ⊗ 1_r) : s r → s r`, `r = i^ε`, of degree and parity zero, with `a`
-and `c` homogeneous and `deg a ≤ -d`. -/
-def tailP (d : ℕ) :
+/-- The maps `(1_s ⊗ c)(a ⊗ 1_r) : s r → s r`, `r = i^ε`, of degree zero and parity `p`, with
+`a` and `c` homogeneous and `deg a ≤ -d`. -/
+def tailP (d : ℕ) (p : ZMod 2) :
     Set (HEnd D Sc sy hc (s ++ List.replicate ε i)) :=
   {f | ∃ (n₁ n₂ : ℤ) (p₁ p₂ : ZMod 2) (a : HEnd D Sc sy hc s)
     (c : HEnd D Sc sy hc (List.replicate ε i)),
     a ∈ homPiece D Sc sy hc s s n₁ p₁ ∧
     c ∈ homPiece D Sc sy hc (List.replicate ε i) (List.replicate ε i) n₂ p₂ ∧
-    n₁ + n₂ = 0 ∧ p₁ + p₂ = 0 ∧ n₁ ≤ -(d : ℤ) ∧
+    n₁ + n₂ = 0 ∧ p₁ + p₂ = p ∧ n₁ ≤ -(d : ℤ) ∧
     f = (hObj D Sc sy hc s ◁ c) ≫ (a ▷ hObj D Sc sy hc (List.replicate ε i))}
 
-/-- The span `N_d` of `tailP d`. -/
-abbrev tailN (d : ℕ) :
+/-- The span `N_d` of `tailP d` (in parity `p`). -/
+abbrev tailN (d : ℕ) (p : ZMod 2) :
     Submodule k (hObj D Sc sy hc (s ++ List.replicate ε i) ⟶
       hObj D Sc sy hc (s ++ List.replicate ε i)) :=
-  Submodule.span k (tailP D Sc sy hc s i ε d)
+  Submodule.span k (tailP D Sc sy hc s i ε d p)
 
-/-- The span `J` of the degree-zero even maps through words ending in `i^{ε+1}`. -/
-abbrev tailJ :
+/-- The span `J` of the degree-zero maps of parity `p` through words ending in `i^{ε+1}`. -/
+abbrev tailJ (p : ZMod 2) :
     Submodule k (hObj D Sc sy hc (s ++ List.replicate ε i) ⟶
       hObj D Sc sy hc (s ++ List.replicate ε i)) :=
-  Submodule.span k (tailThrough D Sc sy hc s s i ε 0 0)
+  Submodule.span k (tailThrough D Sc sy hc s s i ε 0 p)
 
-/-- The filtration `V_d = N_d + J`. -/
-abbrev tailV (d : ℕ) :
+/-- The filtration `V_d = N_d + J` (in parity `p`). -/
+abbrev tailV (d : ℕ) (p : ZMod 2) :
     Submodule k (hObj D Sc sy hc (s ++ List.replicate ε i) ⟶
       hObj D Sc sy hc (s ++ List.replicate ε i)) :=
-  tailN D Sc sy hc s i ε d ⊔ tailJ D Sc sy hc s i ε
+  tailN D Sc sy hc s i ε d p ⊔ tailJ D Sc sy hc s i ε p
 
 variable {D Sc sy hc s i ε}
 
 
-theorem tailP_mem_homPiece {d : ℕ} {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hf : f ∈ tailP D Sc sy hc s i ε d) :
-    f ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0 := by
+theorem tailP_mem_homPiece {d : ℕ} {p : ZMod 2} {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hf : f ∈ tailP D Sc sy hc s i ε d p) :
+    f ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 p := by
   obtain ⟨n₁, n₂, p₁, p₂, a, c, ha, hc', hn, hp, -, rfl⟩ := hf
   exact mem_homPiece_cast (comp_mem_homPiece (whiskerLeft_mem_homPiece _ hc')
     (whiskerRight_mem_homPiece _ ha)) (by omega) (by rw [add_comm, hp])
 
-theorem tailN_le (d : ℕ) :
-    tailN D Sc sy hc s i ε d ≤
-      homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0 :=
+theorem tailN_le (d : ℕ) (p : ZMod 2) :
+    tailN D Sc sy hc s i ε d p ≤
+      homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 p :=
   Submodule.span_le.2 fun _ hf => tailP_mem_homPiece hf
 
-theorem tailN_antitone : Antitone (tailN D Sc sy hc s i ε) := by
+theorem tailN_antitone (p : ZMod 2) : Antitone fun d => tailN D Sc sy hc s i ε d p := by
   intro d d' h
   refine Submodule.span_mono ?_
   rintro _ ⟨n₁, n₂, p₁, p₂, a, c, ha, hc', hn, hp, hd, rfl⟩
   exact ⟨n₁, n₂, p₁, p₂, a, c, ha, hc', hn, hp, by omega, rfl⟩
 
-theorem tailN_eq_bot : ∃ B : ℕ, tailN D Sc sy hc s i ε B = ⊥ := by
+theorem tailN_eq_bot : ∃ B : ℕ, ∀ p, tailN D Sc sy hc s i ε B p = ⊥ := by
   obtain ⟨N, hN⟩ := homPiece_eq_bot_of_lt (D := D) (Sc := Sc) (sy := sy) (hc := hc) s s
-  refine ⟨N.natAbs + 1, ?_⟩
+  refine ⟨N.natAbs + 1, fun p => ?_⟩
   rw [Submodule.span_eq_bot]
   rintro _ ⟨n₁, n₂, p₁, p₂, a, c, ha, hc', hn, hp, hd, rfl⟩
   have ha0 : a = 0 := by
@@ -181,35 +181,36 @@ theorem tailN_eq_bot : ∃ B : ℕ, tailN D Sc sy hc s i ε B = ⊥ := by
     exact (Submodule.mem_bot k).1 ha
   rw [ha0, MonoidalSupercategory.zero_whiskerRight k, Limits.comp_zero]
 
-theorem comp_mem_tailJ_left {x y : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hx : x ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0)
-    (hy : y ∈ tailJ D Sc sy hc s i ε) : x ≫ y ∈ tailJ D Sc sy hc s i ε := by
+theorem comp_mem_tailJ_left {p q : ZMod 2} {x y : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hx : x ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 q)
+    (hy : y ∈ tailJ D Sc sy hc s i ε p) : x ≫ y ∈ tailJ D Sc sy hc s i ε (q + p) := by
   induction hy using Submodule.span_induction with
   | mem y hy =>
     obtain ⟨w, hw, n₁, n₂, p₁, p₂, g₁, g₂, hg₁, hg₂, hn, hp, rfl⟩ := hy
-    refine Submodule.subset_span ⟨w, hw, n₁, n₂, p₁, p₂, x ≫ g₁, g₂,
-      mem_homPiece_cast (comp_mem_homPiece hx hg₁) (zero_add _) (zero_add _), hg₂, hn, hp,
-      (Category.assoc _ _ _).symm⟩
+    refine Submodule.subset_span ⟨w, hw, n₁, n₂, q + p₁, p₂, x ≫ g₁, g₂,
+      mem_homPiece_cast (comp_mem_homPiece hx hg₁) (zero_add _) rfl, hg₂, hn,
+      by rw [add_assoc, hp], (Category.assoc _ _ _).symm⟩
   | zero => rw [Limits.comp_zero]; exact zero_mem _
   | add y y' _ _ h h' => rw [Preadditive.comp_add]; exact add_mem h h'
   | smul c y _ h => rw [Linear.comp_smul]; exact Submodule.smul_mem _ c h
 
-theorem comp_mem_tailJ_right {x y : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hx : x ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0)
-    (hy : y ∈ tailJ D Sc sy hc s i ε) : y ≫ x ∈ tailJ D Sc sy hc s i ε := by
+theorem comp_mem_tailJ_right {p q : ZMod 2} {x y : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hx : x ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 q)
+    (hy : y ∈ tailJ D Sc sy hc s i ε p) : y ≫ x ∈ tailJ D Sc sy hc s i ε (p + q) := by
   induction hy using Submodule.span_induction with
   | mem y hy =>
     obtain ⟨w, hw, n₁, n₂, p₁, p₂, g₁, g₂, hg₁, hg₂, hn, hp, rfl⟩ := hy
-    refine Submodule.subset_span ⟨w, hw, n₁, n₂, p₁, p₂, g₁, g₂ ≫ x, hg₁,
-      mem_homPiece_cast (comp_mem_homPiece hg₂ hx) (add_zero _) (add_zero _), hn, hp,
-      Category.assoc _ _ _⟩
+    refine Submodule.subset_span ⟨w, hw, n₁, n₂, p₁, p₂ + q, g₁, g₂ ≫ x, hg₁,
+      mem_homPiece_cast (comp_mem_homPiece hg₂ hx) (add_zero _) rfl, hn,
+      by rw [← add_assoc, hp], Category.assoc _ _ _⟩
   | zero => rw [Limits.zero_comp]; exact zero_mem _
   | add y y' _ _ h h' => rw [Preadditive.add_comp]; exact add_mem h h'
   | smul c y _ h => rw [Linear.smul_comp]; exact Submodule.smul_mem _ c h
 
-theorem tailP_comp {d d' : ℕ} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hf : f ∈ tailP D Sc sy hc s i ε d)
-    (hf' : f' ∈ tailP D Sc sy hc s i ε d') : f ≫ f' ∈ tailN D Sc sy hc s i ε (d + d') := by
+theorem tailP_comp {d d' : ℕ} {p p' : ZMod 2} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hf : f ∈ tailP D Sc sy hc s i ε d p)
+    (hf' : f' ∈ tailP D Sc sy hc s i ε d' p') :
+    f ≫ f' ∈ tailN D Sc sy hc s i ε (d + d') (p + p') := by
   obtain ⟨n₁, n₂, p₁, p₂, a, c, ha, hc', hn, hp, hd, rfl⟩ := hf
   obtain ⟨n₁', n₂', p₁', p₂', a', c', ha', hc'', hn', hp', hd', rfl⟩ := hf'
   have e : ((hObj D Sc sy hc s ◁ c) ≫ (a ▷ hObj D Sc sy hc (List.replicate ε i))) ≫
@@ -222,16 +223,16 @@ theorem tailP_comp {d d' : ℕ} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε 
       MonoidalSupercategory.comp_whiskerRight (R := k)]
     simp only [Linear.smul_comp, Linear.comp_smul, Category.assoc]
   rw [e]
-  refine zsmul_mem (Submodule.subset_span (show _ ∈ tailP D Sc sy hc s i ε (d + d') from
+  refine zsmul_mem (Submodule.subset_span (show _ ∈ tailP D Sc sy hc s i ε (d + d') (p + p') from
     ⟨n₁ + n₁', n₂ + n₂', p₁ + p₁', p₂ + p₂',
     a ≫ a', c ≫ c', comp_mem_homPiece ha ha', comp_mem_homPiece hc' hc'', by omega,
-    by rw [show p₁ + p₁' + (p₂ + p₂') = (p₁ + p₂) + (p₁' + p₂') by abel, hp, hp',
-      add_zero],
+    by rw [show p₁ + p₁' + (p₂ + p₂') = (p₁ + p₂) + (p₁' + p₂') by abel, hp, hp'],
     by push_cast; omega, rfl⟩)) _
 
-theorem tailN_comp {d d' : ℕ} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hf : f ∈ tailN D Sc sy hc s i ε d)
-    (hf' : f' ∈ tailN D Sc sy hc s i ε d') : f ≫ f' ∈ tailN D Sc sy hc s i ε (d + d') := by
+theorem tailN_comp {d d' : ℕ} {p p' : ZMod 2} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hf : f ∈ tailN D Sc sy hc s i ε d p)
+    (hf' : f' ∈ tailN D Sc sy hc s i ε d' p') :
+    f ≫ f' ∈ tailN D Sc sy hc s i ε (d + d') (p + p') := by
   induction hf using Submodule.span_induction with
   | mem f hf =>
     induction hf' using Submodule.span_induction with
@@ -243,25 +244,26 @@ theorem tailN_comp {d d' : ℕ} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε 
   | add y y' _ _ h h' => rw [Preadditive.add_comp]; exact add_mem h h'
   | smul c y _ h => rw [Linear.smul_comp]; exact Submodule.smul_mem _ c h
 
-theorem tailV_le (d : ℕ) :
-    tailV D Sc sy hc s i ε d ≤
-      homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0 := by
-  refine sup_le (tailN_le d) (Submodule.span_le.2 ?_)
+theorem tailV_le (d : ℕ) (p : ZMod 2) :
+    tailV D Sc sy hc s i ε d p ≤
+      homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 p := by
+  refine sup_le (tailN_le d p) (Submodule.span_le.2 ?_)
   rintro _ ⟨w, hw, n₁, n₂, p₁, p₂, g₁, g₂, hg₁, hg₂, hn, hp, rfl⟩
   exact mem_homPiece_cast (comp_mem_homPiece hg₁ hg₂) hn hp
 
-theorem tailV_comp {d d' : ℕ} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hf : f ∈ tailV D Sc sy hc s i ε d)
-    (hf' : f' ∈ tailV D Sc sy hc s i ε d') : f ≫ f' ∈ tailV D Sc sy hc s i ε (d + d') := by
+theorem tailV_comp {d d' : ℕ} {p p' : ZMod 2} {f f' : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hf : f ∈ tailV D Sc sy hc s i ε d p)
+    (hf' : f' ∈ tailV D Sc sy hc s i ε d' p') :
+    f ≫ f' ∈ tailV D Sc sy hc s i ε (d + d') (p + p') := by
   obtain ⟨x, hx, y, hy, rfl⟩ := Submodule.mem_sup.1 hf
   obtain ⟨x', hx', y', hy', rfl⟩ := Submodule.mem_sup.1 hf'
-  have hy0 := tailV_le d (Submodule.mem_sup_right hy)
+  have hy0 := tailV_le d p (Submodule.mem_sup_right hy)
   rw [Preadditive.comp_add, Preadditive.add_comp, Preadditive.add_comp]
   refine add_mem (add_mem (Submodule.mem_sup_left (tailN_comp hx hx'))
-    (Submodule.mem_sup_right (comp_mem_tailJ_right (tailN_le d' hx') hy)))
+    (Submodule.mem_sup_right (comp_mem_tailJ_right (tailN_le d' p' hx') hy)))
     (Submodule.mem_sup_right ?_)
   rw [← Preadditive.add_comp]
-  exact comp_mem_tailJ_left (add_mem (tailN_le d hx) hy0) hy'
+  exact comp_mem_tailJ_left (add_mem (tailN_le d p hx) hy0) hy'
 
 /-! ## The leading term -/
 
@@ -297,9 +299,9 @@ theorem tailT_comp {p : ZMod 2} {a a' : HEnd D Sc sy hc s}
     ← MonoidalSupercategory.comp_whiskerRight (R := k)]
 
 omit hb in
-theorem tailT_mem_tailN {a : HEnd D Sc sy hc s} (ha : a ∈ homPiece D Sc sy hc s s 0 0) :
-    tailT s b a ∈ tailN D Sc sy hc s i ε 0 :=
-  Submodule.subset_span ⟨0, 0, 0, 0, a, b, ha, hb0, rfl, rfl, le_rfl, rfl⟩
+theorem tailT_mem_tailN {p : ZMod 2} {a : HEnd D Sc sy hc s}
+    (ha : a ∈ homPiece D Sc sy hc s s 0 p) : tailT s b a ∈ tailN D Sc sy hc s i ε 0 p :=
+  Submodule.subset_span ⟨0, 0, p, 0, a, b, ha, hb0, rfl, add_zero p, le_rfl, rfl⟩
 
 omit hb in
 /-- Conjugating `(1 ⊗ c)(a ⊗ 1)` by `e = z ⊗ b`. -/
@@ -329,16 +331,16 @@ variable (hcorner : ∀ {n : ℤ} {p : ZMod 2} {c : HEnd D Sc sy hc (List.replic
 include hcorner
 
 omit hb in
-/-- **Leading term.** Every even degree-zero map `f : s i^ε → s i^ε`, conjugated by
-`e = z ⊗ b`, is `T(a) + v` with `a` an even degree-zero map in the corner of `z` and
+/-- **Leading term.** Every degree-zero map `f : s i^ε → s i^ε` of parity `p`, conjugated by
+`e = z ⊗ b`, is `T(a) + v` with `a` a degree-zero map of parity `p` in the corner of `z` and
 `v ∈ V₁`. -/
 theorem tailT_conj_sub_mem {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece D Sc sy hc s s 0 0)
-    (hz : z ≫ z = z) {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
-    (hf : f ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 0) :
-    ∃ a : HEnd D Sc sy hc s, a ∈ homPiece D Sc sy hc s s 0 0 ∧ z ≫ a ≫ z = a ∧
-      tailT s b z ≫ f ≫ tailT s b z - tailT s b a ∈ tailV D Sc sy hc s i ε 1 := by
+    (hz : z ≫ z = z) {p : ZMod 2} {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    (hf : f ∈ homPiece D Sc sy hc (s ++ List.replicate ε i) (s ++ List.replicate ε i) 0 p) :
+    ∃ a : HEnd D Sc sy hc s, a ∈ homPiece D Sc sy hc s s 0 p ∧ z ≫ a ≫ z = a ∧
+      tailT s b z ≫ f ≫ tailT s b z - tailT s b a ∈ tailV D Sc sy hc s i ε 1 p := by
   have hgen := homPiece_le_span_tail (D := D) (Sc := Sc) (sy := sy) (hc := hc) (s := s)
-    (s' := s) rfl i ε 0 0 hf
+    (s' := s) rfl i ε 0 p hf
   clear hf
   induction hgen using Submodule.span_induction with
   | mem f hf =>
@@ -357,7 +359,7 @@ theorem tailT_conj_sub_mem {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece D Sc sy
         exact Submodule.mem_sup_left (Submodule.subset_span
           ⟨n₁, n₂, p₁, p₂, _, _, hzaz, hbcb, hn, hp, by push_cast; omega, rfl⟩)
       · obtain ⟨μ, hμ⟩ := Submodule.mem_span_singleton.1 (hcorner hc' (by omega))
-        by_cases h00 : n₁ = 0 ∧ p₁ = 0
+        by_cases h00 : n₁ = 0 ∧ p₁ = p
         · obtain ⟨rfl, rfl⟩ := h00
           refine ⟨μ • (z ≫ a ≫ z), Submodule.smul_mem _ _ hzaz, ?_, ?_⟩
           · simp only [Linear.comp_smul, Linear.smul_comp, ← Category.assoc, hz]
@@ -377,7 +379,7 @@ theorem tailT_conj_sub_mem {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece D Sc sy
           exact zero_mem _
     · refine ⟨0, zero_mem _, by simp, ?_⟩
       rw [tailT_zero, sub_zero]
-      have he := tailT_mem_tailN hb0 hz0 |> tailN_le 0
+      have he := tailT_mem_tailN hb0 hz0 |> tailN_le 0 0
       refine Submodule.mem_sup_right (Submodule.subset_span ⟨w, hw, n₁, n₂, p₁, p₂,
         tailT s b z ≫ g₁, g₂ ≫ tailT s b z,
         mem_homPiece_cast (comp_mem_homPiece he hg₁) (zero_add _) (zero_add _),
@@ -413,42 +415,53 @@ theorem tailT_pow_succ {a : HEnd D Sc sy hc s} (ha : a ∈ homPiece D Sc sy hc s
     exact tailT_comp hb hb0 ha.2
 
 omit hb hb0 hcorner in
-theorem tailV_antitone : Antitone (tailV D Sc sy hc s i ε) :=
-  fun _ _ h => sup_le_sup_right (tailN_antitone h) _
+theorem tailV_antitone (p : ZMod 2) : Antitone fun d => tailV D Sc sy hc s i ε d p :=
+  fun _ _ h => sup_le_sup_right (tailN_antitone p h) _
+
+omit hcorner in
+/-- An even map `w` with `w - T(a) ∈ V₁` for a nilpotent `a` has a power in `J`. -/
+theorem pow_mem_tailJ_of_isNilpotent {w : HEnd D Sc sy hc (s ++ List.replicate ε i)}
+    {a : HEnd D Sc sy hc s} (ha : a ∈ homPiece D Sc sy hc s s 0 0)
+    (han : IsNilpotent (id a : End (hObj D Sc sy hc s)))
+    (hv : w - tailT s b a ∈ tailV D Sc sy hc s i ε 1 0) :
+    ∃ M : ℕ, (id w : End (hObj D Sc sy hc (s ++ List.replicate ε i))) ^ (M + 1) ∈
+      tailJ D Sc sy hc s i ε 0 := by
+  obtain ⟨B, hB⟩ := tailN_eq_bot (D := D) (Sc := Sc) (sy := sy) (hc := hc) (s := s) (i := i)
+    (ε := ε)
+  obtain ⟨m, hm⟩ := han
+  let V : ℕ → AddSubgroup (End (hObj D Sc sy hc (s ++ List.replicate ε i))) :=
+    fun d => (tailV D Sc sy hc s i ε d 0).toAddSubgroup
+  have hu0 : tailT s b a ∈ tailV D Sc sy hc s i ε 0 0 :=
+    Submodule.mem_sup_left (tailT_mem_tailN hb0 ha)
+  have key := pow_mem_of_filtration V (fun _ _ h => tailV_antitone 0 h)
+    (fun {d d' x y} hx hy => by
+      change y ≫ x ∈ tailV D Sc sy hc s i ε (d + d') 0
+      rw [add_comm]; simpa using tailV_comp hy hx)
+    (u := (id (tailT s b a) : End (hObj D Sc sy hc (s ++ List.replicate ε i))))
+    (fun {d x} hx => by
+      change x ≫ tailT s b a ∈ tailV D Sc sy hc s i ε d 0
+      simpa using tailV_comp hx hu0)
+    (fun {d x} hx => by
+      change tailT s b a ≫ x ∈ tailV D Sc sy hc s i ε d 0
+      simpa using tailV_comp hu0 hx)
+    (m := m + 1) (by rw [tailT_pow_succ hb hb0 ha, pow_succ, hm, zero_mul, tailT_zero]) hv B
+  rw [id, add_sub_cancel, show (m + 1) * (B + 1) = (m * B + m + B) + 1 by ring] at key
+  refine ⟨m * B + m + B, ?_⟩
+  obtain ⟨x, hx, y, hy, hxy⟩ := Submodule.mem_sup.1 key
+  have : x = 0 := by
+    rw [← Submodule.mem_bot k, ← hB 0]; exact tailN_antitone 0 (Nat.le_succ B) hx
+  rw [id, ← hxy, this, zero_add]; exact hy
 
 omit hcorner in
 /-- An idempotent `f` with `f - T(a) ∈ V₁` for a nilpotent `a` lies in `J`. -/
 theorem idem_mem_tailJ_of_isNilpotent {f : HEnd D Sc sy hc (s ++ List.replicate ε i)}
     (hf : f ≫ f = f) {a : HEnd D Sc sy hc s} (ha : a ∈ homPiece D Sc sy hc s s 0 0)
     (han : IsNilpotent (id a : End (hObj D Sc sy hc s)))
-    (hv : f - tailT s b a ∈ tailV D Sc sy hc s i ε 1) : f ∈ tailJ D Sc sy hc s i ε := by
-  obtain ⟨B, hB⟩ := tailN_eq_bot (D := D) (Sc := Sc) (sy := sy) (hc := hc) (s := s) (i := i)
-    (ε := ε)
-  obtain ⟨m, hm⟩ := han
-  let V : ℕ → AddSubgroup (End (hObj D Sc sy hc (s ++ List.replicate ε i))) :=
-    fun d => (tailV D Sc sy hc s i ε d).toAddSubgroup
-  have hu0 : tailT s b a ∈ tailV D Sc sy hc s i ε 0 :=
-    Submodule.mem_sup_left (tailT_mem_tailN hb0 ha)
-  have key := pow_mem_of_filtration V (fun _ _ h => tailV_antitone h)
-    (fun {d d' x y} hx hy => by
-      change y ≫ x ∈ tailV D Sc sy hc s i ε (d + d')
-      rw [add_comm]; exact tailV_comp hy hx)
-    (u := (id (tailT s b a) : End (hObj D Sc sy hc (s ++ List.replicate ε i))))
-    (fun {d x} hx => by
-      change x ≫ tailT s b a ∈ tailV D Sc sy hc s i ε d
-      simpa using tailV_comp hx hu0)
-    (fun {d x} hx => by
-      change tailT s b a ≫ x ∈ tailV D Sc sy hc s i ε d
-      simpa using tailV_comp hu0 hx)
-    (m := m + 1) (by rw [tailT_pow_succ hb hb0 ha, pow_succ, hm, zero_mul, tailT_zero]) hv B
+    (hv : f - tailT s b a ∈ tailV D Sc sy hc s i ε 1 0) : f ∈ tailJ D Sc sy hc s i ε 0 := by
+  obtain ⟨M, hM⟩ := pow_mem_tailJ_of_isNilpotent hb hb0 ha han hv
   have hidem : IsIdempotentElem (id f : End (hObj D Sc sy hc (s ++ List.replicate ε i))) := hf
   rw [id] at hidem
-  rw [id, add_sub_cancel, show (m + 1) * (B + 1) = (m * B + m + B) + 1 by ring,
-    hidem.pow_succ_eq] at key
-  obtain ⟨x, hx, y, hy, hxy⟩ := Submodule.mem_sup.1 key
-  have : x = 0 := by
-    rw [← Submodule.mem_bot k, ← hB]; exact tailN_antitone (Nat.le_succ B) hx
-  rw [← hxy, this, zero_add]; exact hy
+  rwa [id, hidem.pow_succ_eq] at hM
 
 /-- **At most one summand outside `J`.** Let `z` be an even degree-zero idempotent of `s` whose
 corner consists of nilpotent and invertible elements, and `e = z ⊗ b`. Of two idempotents
@@ -465,7 +478,7 @@ theorem tail_idempotent_mem_tailJ {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece 
     (he₁ : tailT s b z ≫ f₁ ≫ tailT s b z = f₁)
     (he₂ : tailT s b z ≫ f₂ ≫ tailT s b z = f₂)
     (hi₁ : f₁ ≫ f₁ = f₁) (hi₂ : f₂ ≫ f₂ = f₂) (h₁₂ : f₁ ≫ f₂ = 0) :
-    f₁ ∈ tailJ D Sc sy hc s i ε ∨ f₂ ∈ tailJ D Sc sy hc s i ε := by
+    f₁ ∈ tailJ D Sc sy hc s i ε 0 ∨ f₂ ∈ tailJ D Sc sy hc s i ε 0 := by
   obtain ⟨a₁, ha₁, hc₁, hv₁⟩ := tailT_conj_sub_mem hb0 hcorner hz0 hz hf₁
   obtain ⟨a₂, ha₂, hc₂, hv₂⟩ := tailT_conj_sub_mem hb0 hcorner hz0 hz hf₂
   rw [he₁] at hv₁
@@ -476,25 +489,26 @@ theorem tail_idempotent_mem_tailJ {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece 
   · exact Or.inr (idem_mem_tailJ_of_isNilpotent hb hb0 hi₂ ha₂ hn₂ hv₂)
   left
   have hT : ∀ {a : HEnd D Sc sy hc s}, a ∈ homPiece D Sc sy hc s s 0 0 →
-      tailT s b a ∈ tailV D Sc sy hc s i ε 0 :=
+      tailT s b a ∈ tailV D Sc sy hc s i ε 0 0 :=
     fun ha => Submodule.mem_sup_left (tailT_mem_tailN hb0 ha)
-  have hV10 : tailV D Sc sy hc s i ε 1 ≤ tailV D Sc sy hc s i ε 0 :=
-    tailV_antitone (Nat.zero_le 1)
-  have hf₁0 : f₁ ∈ tailV D Sc sy hc s i ε 0 := by
+  have hV10 : tailV D Sc sy hc s i ε 1 0 ≤ tailV D Sc sy hc s i ε 0 0 :=
+    tailV_antitone 0 (Nat.zero_le 1)
+  have hf₁0 : f₁ ∈ tailV D Sc sy hc s i ε 0 0 := by
     simpa using add_mem (hT ha₁) (hV10 hv₁)
-  have hf₂0 : f₂ ∈ tailV D Sc sy hc s i ε 0 := by
+  have hf₂0 : f₂ ∈ tailV D Sc sy hc s i ε 0 0 := by
     simpa using add_mem (hT ha₂) (hV10 hv₂)
   -- `T(a₁ a₂) ∈ V₁`
-  have h12 : tailT s b a₁ ≫ tailT s b a₂ ∈ tailV D Sc sy hc s i ε 1 := by
+  have h12 : tailT s b a₁ ≫ tailT s b a₂ ∈ tailV D Sc sy hc s i ε 1 0 := by
     have e : tailT s b a₁ ≫ tailT s b a₂ = f₁ ≫ f₂ - f₁ ≫ (f₂ - tailT s b a₂) -
         (f₁ - tailT s b a₁) ≫ f₂ + (f₁ - tailT s b a₁) ≫ (f₂ - tailT s b a₂) := by
       simp only [Preadditive.comp_sub, Preadditive.sub_comp]; abel
     rw [e, h₁₂, zero_sub]
-    refine add_mem (sub_mem (neg_mem ?_) ?_) (tailV_antitone (by omega) (tailV_comp hv₁ hv₂))
+    refine add_mem (sub_mem (neg_mem ?_) ?_) (tailV_antitone 0 (by omega)
+      (show _ ∈ tailV D Sc sy hc s i ε 2 0 by simpa using tailV_comp hv₁ hv₂))
     · simpa using tailV_comp hf₁0 hv₂
     · simpa using tailV_comp hv₁ hf₂0
   -- hence `e = T(z) ∈ V₁`
-  have he : tailT s b z ∈ tailV D Sc sy hc s i ε 1 := by
+  have he : tailT s b z ∈ tailV D Sc sy hc s i ε 1 0 := by
     have hz1 : a₁ ≫ z = a₁ := by rw [← hc₁]; simp only [Category.assoc, hz]
     have e : tailT s b z =
         tailT s b a₁' ≫ (tailT s b a₁ ≫ tailT s b a₂) ≫ tailT s b a₂' := by
@@ -505,7 +519,7 @@ theorem tail_idempotent_mem_tailJ {z : HEnd D Sc sy hc s} (hz0 : z ∈ homPiece 
       rw [hu₂, hz1, hu₁']
     rw [e]
     simpa using tailV_comp (hT ha₁') (tailV_comp h12 (hT ha₂'))
-  have hf₁1 : f₁ ∈ tailV D Sc sy hc s i ε 1 := by
+  have hf₁1 : f₁ ∈ tailV D Sc sy hc s i ε 1 0 := by
     rw [← he₁]; simpa using tailV_comp he (tailV_comp hf₁0 (hT hz0))
   exact idem_mem_tailJ_of_isNilpotent hb hb0 hi₁ (zero_mem _) IsNilpotent.zero
     (by rwa [tailT_zero, sub_zero])

@@ -38,9 +38,9 @@ theorem nv_local (a : HEnd datum scalars symmetrizer homogeneous [])
 
 example :
     (0 : HEnd datum scalars symmetrizer homogeneous ([] ++ List.replicate 1 0)) ∈
-        tailJ datum scalars symmetrizer homogeneous [] 0 1 ∨
+        tailJ datum scalars symmetrizer homogeneous [] 0 1 0 ∨
       (0 : HEnd datum scalars symmetrizer homogeneous ([] ++ List.replicate 1 0)) ∈
-        tailJ datum scalars symmetrizer homogeneous [] 0 1 :=
+        tailJ datum scalars symmetrizer homogeneous [] 0 1 0 :=
   tail_idempotent_mem_tailJ (Category.id_comp _)
     ⟨GradedSupercategory.id_mem_degree _, Supercategory.id_mem _⟩
     (fun hc hn => by simpa using nv_scalar (r := 1) le_rfl hn hc)
