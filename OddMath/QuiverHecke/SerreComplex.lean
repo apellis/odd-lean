@@ -422,6 +422,86 @@ theorem upMap_comp_upMap {a : ℕ} (ha : a + 1 < M) :
   rw [reassoc_of% hb, hsq]
   simp
 
+/-- The right chain of `downMap (a + 1)` passes through the next crossing `down`, up to a
+sign. -/
+theorem chR_slides_down {a : ℕ} (ha : a < M) :
+    ∃ u : ℤˣ, Slides (down D Sc i j M ha) u
+      (chR (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) (a + 1 + 1)
+        (M - (a + 1 + 1)))
+      (chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1 + 1) (M - (a + 1 + 1))) := by
+  unfold down chR
+  exact ⟨_, slides_wp_gen D Sc (sChain_down ha) (x := i) _ (fun q hq => by
+    rw [List.mem_reverse, List.mem_range'_1] at hq
+    exact ⟨word_gt (by omega) (by omega), word_gt (by omega) (by omega),
+      word_gt (by omega) (by omega), word_gt (by omega) (by omega),
+      Or.inr (by rw [PG.pos_cross, PG.width_cross]; omega)⟩)
+    (by rw [PG.pos_cross, PG.width_cross, length_word (by omega : a + 1 ≤ M)]; omega)⟩
+
+/-- The braid relation on `i^a i i j`. -/
+theorem braid_down {a : ℕ} (ha : a + 1 < M) :
+    tw D Sc i j M (a + 1 + 1) a ≫ down D Sc i j M ha ≫ down D Sc i j M (Nat.lt_of_succ_lt ha) =
+      down D Sc i j M ha ≫ down D Sc i j M (Nat.lt_of_succ_lt ha) ≫
+        tw D Sc i j M a (a + 1) := by
+  have hT := sChain_cross_of (word_lt (i := i) (j := j) (M := M) (a := a + 1 + 1) (p := a)
+    (by omega)) (word_lt (by omega))
+  have hT' := sChain_cross_of (word_gt (i := i) (j := j) (M := M) (a := a) (p := a + 1)
+    (by omega) (by omega)) (word_gt (by omega) (by omega))
+  have e₁ : word i j M (a + 1 + 1) =
+      List.replicate a i ++ [i, i, j] ++ List.replicate (M - a - 2) i := by
+    simp only [word, List.replicate_succ', List.append_assoc, List.cons_append,
+      List.nil_append]
+    congr 4
+  have e₂ : word i j M a = List.replicate a i ++ [j, i, i] ++ List.replicate (M - a - 2) i := by
+    rw [word_up (by omega)]
+    rw [show M - a - 1 = (M - a - 2) + 1 by omega, List.replicate_succ]
+    simp
+  unfold tw crossE down
+  rw [genE_eq D Sc hT, genE_eq D Sc hT', cl_comp, cl_comp, cl_comp, cl_comp]
+  exact cl_braid_of _ _ i i j (fun h => h.2 rfl) e₁ e₂ (by simp) rfl rfl _ _
+
+/-- `e_{a+2}` is fixed by the Demazure element on the last two strands of its left block. -/
+theorem eIdem_comp_demL (a : ℕ) :
+    eIdem D Sc i j M (a + 1 + 1) ≫
+        dem (B := End (wobj D Sc i j M (a + 1 + 1))) (eps D i) 0 (a + 1 + 1)
+          (xw D Sc i j M (a + 1 + 1)) (tw D Sc i j M (a + 1 + 1)) a =
+      eIdem D Sc i j M (a + 1 + 1) := by
+  have h := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (a + 1 + 1)).dem_mul_idem
+    (j := a) (s' := 0) (n' := a + 1 + 1) (Nat.zero_le _) (by omega)
+  rw [eIdem_eq_comp, Category.assoc]
+  congr 1
+
+/-- `downMap a ∘ downMap (a + 1) = 0`. -/
+theorem downMap_comp_downMap {a : ℕ} (ha : a + 1 < M) :
+    downMap D Sc i j M ha ≫ downMap D Sc i j M (Nat.lt_of_succ_lt ha) = 0 := by
+  obtain ⟨u, hu⟩ := chR_slides_down (D := D) (Sc := Sc) (i := i) (j := j) (Nat.lt_of_succ_lt ha)
+  have hb := braid_down (D := D) (Sc := Sc) (i := i) (j := j) ha
+  have hsq : tw D Sc i j M a (a + 1) ≫
+      chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1 + 1) (M - (a + 1 + 1)) ≫
+        chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1) (M - (a + 1)) = 0 := by
+    have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) a).chR_mul_chR
+      (p := a + 1) (l := M - (a + 1)) le_rfl (by omega) (by omega)
+    rw [show M - (a + 1) = M - (a + 1 + 1) + 1 by omega] at h
+    nth_rw 2 [Categorification.KLR.KL2.NH.chR_succ] at h
+    rw [show M - (a + 1 + 1) + 1 = M - (a + 1) by omega] at h
+    simpa only [End.mul_def, Category.assoc] using h
+  have hD := eIdem_comp_demL (D := D) (Sc := Sc) (i := i) (j := j) (M := M) a
+  rw [dem_of (Nat.zero_le _) (by omega)] at hD
+  change eIdem D Sc i j M (a + 1 + 1) ≫ (-((eps D i : ℤ) • (xw D Sc i j M (a + 1 + 1) (a + 1) ≫
+    tw D Sc i j M (a + 1 + 1) a))) = eIdem D Sc i j M (a + 1 + 1) at hD
+  simp only [Preadditive.comp_neg, Preadditive.comp_zsmul] at hD
+  rw [show downMap D Sc i j M (Nat.lt_of_succ_lt ha) = eIdem D Sc i j M (a + 1) ≫
+    down D Sc i j M (Nat.lt_of_succ_lt ha) ≫
+      chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1) (M - (a + 1)) from rfl,
+    ← Category.assoc, downMap_comp_eIdem]
+  unfold downMap
+  simp only [Category.assoc]
+  rw [reassoc_of% hu]
+  simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
+  rw [← hD]
+  simp only [Preadditive.neg_comp, Preadditive.zsmul_comp, Category.assoc]
+  rw [reassoc_of% hb, hsq]
+  simp
+
 end Complex
 
 end OddMath.QuiverHecke.SerreComplex
