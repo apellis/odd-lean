@@ -56,6 +56,7 @@ import OddMath.QuiverHecke.TailIdempotents
 import OddMath.QuiverHecke.DividedPowerSpan
 import OddMath.QuiverHecke.EnvelopeSerre
 import OddMath.QuiverHecke.EnvelopeAlgebra
+import OddMath.QuiverHecke.EnvelopeHalfAlgebra
 import OddMath.QuiverHecke.HomDimensionExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
