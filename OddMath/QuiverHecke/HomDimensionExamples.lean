@@ -11,7 +11,8 @@ import OddMath.QuiverHecke.AlgebraExamples
 
 For the datum with countably many odd colours over `ℚ`: every graded piece of every Hom space
 of `H` has dimension the number of normal forms of its degree and parity, and words multiply by
-concatenation in `K₀(Ḣ_{q,π})` with BE2's product.
+concatenation in `K₀(Ḣ_{q,π})` with BE2's product. The Hom spaces of `H` are bounded below, and
+`K₀(Ḣ_{q,π})` is free over `ℤ[q, q⁻¹]`.
 -/
 
 noncomputable section
@@ -28,5 +29,14 @@ example (s t : List ℕ) :
         wordCls datum scalars symmetrizer homogeneous t =
       wordCls datum scalars symmetrizer homogeneous (s ++ t) :=
   wordCls_mul datum scalars symmetrizer homogeneous s t
+
+example : GSKar.HomBoundedBelow (k := ℚ)
+    (C := HGr datum scalars symmetrizer homogeneous) :=
+  homBoundedBelow datum symmetrizer scalars homogeneous
+
+example :
+    letI := K₀.moduleLaurentInt ℚ (GSKar ℚ (HGr datum scalars symmetrizer homogeneous))
+    Module.Free (LaurentPolynomial ℤ) (K₀ (GSKar ℚ (HGr datum scalars symmetrizer homogeneous))) :=
+  k0_free_laurentInt datum symmetrizer scalars homogeneous
 
 end OddMath.QuiverHecke.HomDimensionExamples

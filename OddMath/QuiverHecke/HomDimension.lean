@@ -287,6 +287,13 @@ theorem homBoundedBelow : GSKar.HomBoundedBelow (k := K) (C := HGr D Sc sy hc) :
   change i.deg D sy = n at hi
   omega
 
+/-- **BE2 §11, first preliminary fact, for `Ḣ_{q,π}`**: `K₀` of the graded super Karoubi
+envelope of `H` is free over `ℤ[q, q⁻¹]`, with basis the shift orbits of indecomposables. -/
+theorem k0_free_laurentInt :
+    letI := K₀.moduleLaurentInt K (GSKar K (HGr D Sc sy hc))
+    Module.Free (LaurentPolynomial ℤ) (K₀ (GSKar K (HGr D Sc sy hc))) :=
+  GSKar.k0_free_laurentInt (homBoundedBelow D sy Sc hc)
+
 /-- **The dimension of a graded piece of `Hom_H(t, t')`** is the number of normal forms of that
 degree and parity. -/
 theorem finrank_homPiece (t t' : List I) (n : ℤ) (p : ZMod 2) :
