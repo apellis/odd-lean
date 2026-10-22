@@ -9,12 +9,14 @@ import StringDiagrams.Super.KrullSchmidtLaurent
 /-!
 # Summands of a 1-morphism cut out by a homogeneous splitting
 
-For a 1-morphism `w` of the graded SKM 2-category and a splitting of its identity
+For an object `w` of a graded supercategory `A` (for instance a 1-morphism of the graded SKM
+2-category, or an object of the quiver Hecke supercategory) and a splitting of its identity
 `1 = ∑_j σ_j λ_j`, `λ_i σ_j = δ_{ij} e`, by homogeneous 2-morphisms with
 `deg σ_j = m_j = -deg λ_j`, `|σ_j| = |λ_j| = p_j` and `e` even of degree zero, the completed
-hom category has `w ≅ ⨁_j Q^{m_j} Π^{p_j} (w, e)`; hence `[w] = ∑_j q^{m_j} π^{p_j} [(w, e)]`
-in split `K₀`.
-This is the categorical step in Brundan–Ellis, arXiv:1701.04133v2, proof of Lemma 11.5.
+category `Kar(A̲_{q,π})` has `w ≅ ⨁_j Q^{m_j} Π^{p_j} (w, e)`;
+hence `[w] = ∑_j q^{m_j} π^{p_j} [(w, e)]` in split `K₀`.
+This is the categorical step in Brundan–Ellis, arXiv:1701.04133v2, proofs of Lemmas 11.1
+and 11.5.
 
 ## Main declarations
 
@@ -33,58 +35,60 @@ open CategoryTheory.Idempotents CategoryTheory.Limits
 
 universe u v w
 
-variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
-  {k : Type w} [CommRing k] {Sc : Scalars D k} {sy : Symmetrizer D}
-  {hc : Sc.Homogeneous} {a b : UGr D Sc sy hc}
+variable {k : Type w} [CommRing k] {A : Type u} [Category.{v} A] [Preadditive A] [Linear k A]
+  [Supercategory k A] [GradedSupercategory k A]
 
-variable (a b) in
-/-- The hom category before taking the additive Karoubi envelope. -/
-abbrev Base := GUnderlying k (QPiEnvelope k (a ⟶ b))
+variable (k A) in
+/-- The category before taking the additive Karoubi envelope: even degree-zero morphisms of
+the `(Q, Π)`-envelope of `A`. -/
+abbrev Base := GUnderlying k (QPiEnvelope k A)
 
-/-- The formal degree and parity shift `Q^n Π^p` of a 1-morphism. -/
-def shifted (f : a ⟶ b) (n : ℤ) (p : ZMod 2) : Base a b := ⟨⟨⟨p, ⟨n, f⟩⟩⟩⟩
+/-- The formal degree and parity shift `Q^n Π^p` of an object. -/
+def shifted (f : A) (n : ℤ) (p : ZMod 2) : Base k A := ⟨⟨⟨p, ⟨n, f⟩⟩⟩⟩
 
-variable {f : a ⟶ b}
+variable {f : A}
 
 /-- A homogeneous endomorphism, viewed as an even degree-zero morphism between its appropriate
 shifts. -/
 def lift {m n : ℤ} {p p' : ZMod 2} (g : f ⟶ f) (hd : g ∈ degree (R := k) f f (m - n))
     (hp : g ∈ Supercategory.parity (R := k) f f (p + p')) :
-    shifted f m p ⟶ shifted f n p' :=
+    shifted (k := k) f m p ⟶ shifted (k := k) f n p' :=
   ⟨⟨g, by change g ∈ degree (R := k) _ _ (0 + (m - n)); simpa using hd⟩,
     by change g ∈ Supercategory.parity (R := k) _ _ (0 + (p + p')); simpa using hp⟩
 
 theorem lift_ext {m n : ℤ} {p p' : ZMod 2} {g g' : f ⟶ f} {hd hp hd' hp'} (h : g = g') :
-    (lift (m := m) (n := n) (p := p) (p' := p') g hd hp) = lift g' hd' hp' := by
+    (lift (k := k) (m := m) (n := n) (p := p) (p' := p') g hd hp) = lift g' hd' hp' := by
   subst h; rfl
 
 theorem lift_comp {l m n : ℤ} {p p' p'' : ZMod 2} (g g' : f ⟶ f) (hd hp hd' hp')
     (hd'' : g ≫ g' ∈ degree (R := k) f f (l - n))
     (hp'' : g ≫ g' ∈ Supercategory.parity (R := k) f f (p + p'')) :
-    lift (m := l) (n := m) (p := p) (p' := p') g hd hp ≫
+    lift (k := k) (m := l) (n := m) (p := p) (p' := p') g hd hp ≫
         lift (m := m) (n := n) (p := p') (p' := p'') g' hd' hp' =
       lift (g ≫ g') hd'' hp'' := rfl
 
 theorem lift_zero {m n : ℤ} {p p' : ZMod 2} (hd hp) :
-    lift (m := m) (n := n) (p := p) (p' := p') (0 : f ⟶ f) hd hp = 0 := rfl
+    lift (k := k) (m := m) (n := n) (p := p) (p' := p') (0 : f ⟶ f) hd hp = 0 := rfl
 
 theorem lift_id {m : ℤ} {p : ZMod 2} (hd hp) :
-    lift (m := m) (n := m) (p := p) (p' := p) (𝟙 f) hd hp = 𝟙 _ := rfl
+    lift (k := k) (m := m) (n := m) (p := p) (p' := p) (𝟙 f) hd hp = 𝟙 _ := rfl
 
-/-- The underlying 2-morphism, additively. -/
-def val (m n : ℤ) (p p' : ZMod 2) : (shifted f m p ⟶ shifted f n p') →+ (f ⟶ f) where
+/-- The underlying morphism, additively. -/
+def val (m n : ℤ) (p p' : ZMod 2) :
+    (shifted (k := k) f m p ⟶ shifted (k := k) f n p') →+ (f ⟶ f) where
   toFun x := x.1.1
   map_zero' := rfl
   map_add' _ _ := rfl
 
-theorem val_injective (m n : ℤ) (p p' : ZMod 2) : Function.Injective (val (f := f) m n p p') :=
+theorem val_injective (m n : ℤ) (p p' : ZMod 2) :
+    Function.Injective (val (k := k) (f := f) m n p p') :=
   fun _ _ h => Subtype.ext (Subtype.ext h)
 
 variable {e : f ⟶ f} (he : e ≫ e = e) (hd0 : e ∈ degree (R := k) f f 0)
   (hp0 : e ∈ Supercategory.parity (R := k) f f 0)
 
 /-- The idempotent `e` on the shift `Q^n Π^p f`. -/
-def projector (n : ℤ) (p : ZMod 2) : End (shifted f n p) :=
+def projector (n : ℤ) (p : ZMod 2) : End (shifted (k := k) f n p) :=
   lift e (by simpa using hd0) (by rw [Supercategory.zmod2_add_self]; exact hp0)
 
 include he in
@@ -95,36 +99,36 @@ theorem projector_idem (n : ℤ) (p : ZMod 2) :
 
 include he in
 /-- The summand `(Q^n Π^p f, e)` of the completed hom category. -/
-def raw (n : ℤ) (p : ZMod 2) : Karoubi (Mat_ (Base a b)) where
-  X := (Mat_.embedding _).obj (shifted f n p)
+def raw (n : ℤ) (p : ZMod 2) : Karoubi (Mat_ (Base k A)) where
+  X := (Mat_.embedding _).obj (shifted (k := k) f n p)
   p := (Mat_.embedding _).map (projector hd0 hp0 n p)
   idem := by rw [← Functor.map_comp, projector_idem he]
 
 variable (f) in
 /-- The unsplit 1-morphism in the completed hom category. -/
-def whole : Karoubi (Mat_ (Base a b)) :=
-  (toKaroubi _).obj ((Mat_.embedding _).obj (shifted f 0 0))
+def whole : Karoubi (Mat_ (Base k A)) :=
+  (toKaroubi _).obj ((Mat_.embedding _).obj (shifted (k := k) f 0 0))
 
 private theorem q_projector (n : ℤ) (p : ZMod 2) :
-    (QPiCategory.Q (R := k) (C := Base a b)).map (projector hd0 hp0 n p) =
+    (QPiCategory.Q (R := k) (C := Base k A)).map (projector hd0 hp0 n p) =
       projector hd0 hp0 (n + 1) p := by
   apply Subtype.ext; apply Subtype.ext
   change 𝟙 _ ≫ (e ≫ 𝟙 _) = e
   simp only [Category.id_comp, Category.comp_id]
 
 private theorem qinv_projector (n : ℤ) (p : ZMod 2) :
-    (QPiCategory.Qinv (R := k) (C := Base a b)).map (projector hd0 hp0 n p) =
+    (QPiCategory.Qinv (R := k) (C := Base k A)).map (projector hd0 hp0 n p) =
       projector hd0 hp0 (n - 1) p := by
   apply Subtype.ext; apply Subtype.ext
   change 𝟙 _ ≫ (e ≫ 𝟙 _) = e
   simp only [Category.id_comp, Category.comp_id]
 
 private theorem pi_projector (n : ℤ) (p : ZMod 2) :
-    (PiCategory.pi (R := k) (C := Base a b)).map (projector hd0 hp0 n p) =
+    (PiCategory.pi (R := k) (C := Base k A)).map (projector hd0 hp0 n p) =
       projector hd0 hp0 n (p + 1) := by
   apply Subtype.ext; apply Subtype.ext
   change Envelope.toHom ((PiSupercategory.pi (R := k)).map
-    (Envelope.ofHom (X := (⟨p, ⟨n, f⟩⟩ : QPiEnvelope k (a ⟶ b))) (Y := ⟨p, ⟨n, f⟩⟩) e)) = e
+    (Envelope.ofHom (X := (⟨p, ⟨n, f⟩⟩ : QPiEnvelope k A)) (Y := ⟨p, ⟨n, f⟩⟩) e)) = e
   rw [Envelope.toHom_pi_map, Supercategory.zmod2_add_self, Supercategory.sign_zero, one_smul]
   change Supercategory.twist k 1 e = e
   rw [Supercategory.twist_one_of_mem hp0, Supercategory.sign_zero, one_smul]
@@ -140,12 +144,12 @@ private def projectorIso {C : Type*} [Category C] (V : C) (p q : End V)
 include he in
 /-- `Q` shifts the summand by one. -/
 def qRawIso (n : ℤ) (p : ZMod 2) :
-    (QPiCategory.Q (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p) ≅
+    (QPiCategory.Q (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p) ≅
       raw he hd0 hp0 (n + 1) p :=
   projectorIso _ _ _
-    ((QPiCategory.Q (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p)).idem
+    ((QPiCategory.Q (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p)).idem
     (raw he hd0 hp0 (n + 1) p).idem (by
-      change (Mat_.embedding (Base a b)).map
+      change (Mat_.embedding (Base k A)).map
         ((QPiCategory.Q (R := k)).map (projector hd0 hp0 n p)) = _
       rw [q_projector]
       rfl)
@@ -153,12 +157,12 @@ def qRawIso (n : ℤ) (p : ZMod 2) :
 include he in
 /-- `Q⁻¹` shifts the summand by minus one. -/
 def qinvRawIso (n : ℤ) (p : ZMod 2) :
-    (QPiCategory.Qinv (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p) ≅
+    (QPiCategory.Qinv (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p) ≅
       raw he hd0 hp0 (n - 1) p :=
   projectorIso _ _ _
-    ((QPiCategory.Qinv (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p)).idem
+    ((QPiCategory.Qinv (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p)).idem
     (raw he hd0 hp0 (n - 1) p).idem (by
-      change (Mat_.embedding (Base a b)).map
+      change (Mat_.embedding (Base k A)).map
         ((QPiCategory.Qinv (R := k)).map (projector hd0 hp0 n p)) = _
       rw [qinv_projector]
       rfl)
@@ -166,12 +170,12 @@ def qinvRawIso (n : ℤ) (p : ZMod 2) :
 include he in
 /-- `Π` changes the parity of the summand. -/
 def piRawIso (n : ℤ) (p : ZMod 2) :
-    (PiCategory.pi (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p) ≅
+    (PiCategory.pi (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p) ≅
       raw he hd0 hp0 n (p + 1) :=
   projectorIso _ _ _
-    ((PiCategory.pi (R := k) (C := Karoubi (Mat_ (Base a b)))).obj (raw he hd0 hp0 n p)).idem
+    ((PiCategory.pi (R := k) (C := Karoubi (Mat_ (Base k A)))).obj (raw he hd0 hp0 n p)).idem
     (raw he hd0 hp0 n (p + 1)).idem (by
-      change (Mat_.embedding (Base a b)).map
+      change (Mat_.embedding (Base k A)).map
         ((PiCategory.pi (R := k)).map (projector hd0 hp0 n p)) = _
       rw [pi_projector]
       rfl)
@@ -179,10 +183,10 @@ def piRawIso (n : ℤ) (p : ZMod 2) :
 include he in
 /-- Every integer shift acts through the Laurent-module structure on split `K₀`. -/
 theorem class_raw_shift (m n : ℤ) (p : ZMod 2) :
-    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
     (LaurentPolynomial.T n : LaurentPolynomial Zπ) • K₀.mk (raw he hd0 hp0 m p) =
       K₀.mk (raw he hd0 hp0 (m + n) p) := by
-  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
   induction n using Int.induction_on with
   | zero => simp
   | succ n ih =>
@@ -200,7 +204,7 @@ theorem class_raw_shift (m n : ℤ) (p : ZMod 2) :
 include he in
 /-- `π` acts by the parity shift on split `K₀`. -/
 theorem class_raw_pi (m : ℤ) (p : ZMod 2) :
-    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
     (LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ) • K₀.mk (raw he hd0 hp0 m p) =
       K₀.mk (raw he hd0 hp0 m (p + 1)) := by
   rw [K₀.C_π_smul_mk, K₀.mk_eq_mk_of_iso (piRawIso he hd0 hp0 m p)]
@@ -208,14 +212,14 @@ theorem class_raw_pi (m : ℤ) (p : ZMod 2) :
 include he in
 /-- The same, for the `ℤ[q^±]`-module structure. -/
 theorem class_raw_shift_int (m n : ℤ) (p : ZMod 2) :
-    letI := K₀.moduleLaurentInt k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurentInt k (Karoubi (Mat_ (Base k A)))
     (LaurentPolynomial.T n : LaurentPolynomial ℤ) • K₀.mk (raw he hd0 hp0 m p) =
       K₀.mk (raw he hd0 hp0 (m + n) p) := by
   have h : AddMonoidAlgebra.mapRingHom ℤ (Int.castRingHom Zπ) (LaurentPolynomial.T n) =
       (LaurentPolynomial.T n : LaurentPolynomial Zπ) := by
     rw [LaurentPolynomial.T, AddMonoidAlgebra.mapRingHom_single, map_one]
     rfl
-  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
   change AddMonoidAlgebra.mapRingHom ℤ (Int.castRingHom Zπ) (LaurentPolynomial.T n) •
     K₀.mk (raw he hd0 hp0 m p) = _
   rw [h]
@@ -223,7 +227,7 @@ theorem class_raw_shift_int (m n : ℤ) (p : ZMod 2) :
 
 include he in
 theorem class_raw_shift' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
-    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
     (LaurentPolynomial.T n : LaurentPolynomial Zπ) • K₀.mk (raw he hd0 hp0 m p) =
       K₀.mk (raw he hd0 hp0 m' p) := by
   subst h
@@ -231,7 +235,7 @@ theorem class_raw_shift' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
 
 include he in
 theorem class_raw_shift_int' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
-    letI := K₀.moduleLaurentInt k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurentInt k (Karoubi (Mat_ (Base k A)))
     (LaurentPolynomial.T n : LaurentPolynomial ℤ) • K₀.mk (raw he hd0 hp0 m p) =
       K₀.mk (raw he hd0 hp0 m' p) := by
   subst h
@@ -240,11 +244,11 @@ theorem class_raw_shift_int' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
 include he in
 /-- Every summand is a monomial multiple of the unshifted one. -/
 theorem class_raw_eq (m : ℤ) (s : ℕ) :
-    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
     K₀.mk (raw he hd0 hp0 m (s : ZMod 2)) =
       (LaurentPolynomial.T m * LaurentPolynomial.C Zπ.π ^ s : LaurentPolynomial Zπ) •
         K₀.mk (raw he hd0 hp0 0 0) := by
-  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base k A)))
   rw [mul_smul]
   have hp : ∀ s : ℕ, (LaurentPolynomial.C Zπ.π ^ s : LaurentPolynomial Zπ) •
       K₀.mk (raw he hd0 hp0 0 0) = K₀.mk (raw he hd0 hp0 0 (s : ZMod 2)) := by
@@ -377,28 +381,28 @@ theorem class_whole :
         (by simpa using hσd j) (by simpa using hσp j))) ?_) ?_ ?_ ?_
   · change 𝟙 _ ≫ _ ≫ (Mat_.embedding _).map (projector hd0 hp0 (m j) (par j)) = _
     rw [Category.id_comp, ← Functor.map_comp]
-    exact congrArg _ (val_injective _ _ _ _ (hle j))
+    exact congrArg _ (val_injective (k := k) _ _ _ _ (hle j))
   · change (Mat_.embedding _).map (projector hd0 hp0 (m j) (par j)) ≫ _ ≫ 𝟙 _ = _
     rw [Category.comp_id, ← Functor.map_comp]
-    exact congrArg _ (val_injective _ _ _ _ (hσe j))
+    exact congrArg _ (val_injective (k := k) _ _ _ _ (hσe j))
   · intro j
     apply Karoubi.hom_ext
     change (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = (Mat_.embedding _).map _
     rw [← Functor.map_comp]
-    refine congrArg _ (val_injective _ _ _ _ ?_)
+    refine congrArg _ (val_injective (k := k) _ _ _ _ ?_)
     exact (horth j j).trans (ite_eq_left rfl)
   · intro j l h
     apply Karoubi.hom_ext
-    change (Mat_.embedding (Base a b)).map _ ≫ (Mat_.embedding (Base a b)).map _ =
-      (0 : (Mat_.embedding (Base a b)).obj (shifted f (m j) (par j)) ⟶
-        (Mat_.embedding (Base a b)).obj (shifted f (m l) (par l)))
-    rw [← Functor.map_comp, ← Functor.map_zero (Mat_.embedding (Base a b))]
-    exact congrArg _ (val_injective _ _ _ _ ((horth j l).trans (ite_eq_right h)))
+    change (Mat_.embedding (Base k A)).map _ ≫ (Mat_.embedding (Base k A)).map _ =
+      (0 : (Mat_.embedding (Base k A)).obj (shifted (k := k) f (m j) (par j)) ⟶
+        (Mat_.embedding (Base k A)).obj (shifted (k := k) f (m l) (par l)))
+    rw [← Functor.map_comp, ← Functor.map_zero (Mat_.embedding (Base k A))]
+    exact congrArg _ (val_injective (k := k) _ _ _ _ ((horth j l).trans (ite_eq_right h)))
   · apply Karoubi.hom_ext
     rw [Karoubi.sum_hom, Karoubi.id_f]
     change ∑ j, (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = 𝟙 _
     simp_rw [← Functor.map_comp]
-    rw [← Functor.map_sum, ← (Mat_.embedding (Base a b)).map_id]
+    rw [← Functor.map_sum, ← (Mat_.embedding (Base k A)).map_id]
     refine congrArg _ ?_
     apply val_injective
     rw [map_sum]
