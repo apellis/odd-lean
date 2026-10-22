@@ -41,6 +41,7 @@ import OddMath.QuiverHecke.PairingRadicalExamples
 import OddMath.QuiverHecke.ShuffleBasis
 import OddMath.QuiverHecke.TailDecomposition
 import OddMath.QuiverHecke.DividedPowerCorner
+import OddMath.QuiverHecke.TailIdempotents
 import OddMath.QuiverHecke.HomDimensionExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
