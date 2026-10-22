@@ -35,9 +35,11 @@ import OddMath.QuiverHecke.TensorCorner
 import OddMath.QuiverHecke.CornerImages
 import OddMath.QuiverHecke.UpDown
 import OddMath.QuiverHecke.LocalSummands
+import OddMath.QuiverHecke.HeckeCorner
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
+import OddMath.QuiverHecke.TopCorner
 import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.DividedPowerModulesExamples
