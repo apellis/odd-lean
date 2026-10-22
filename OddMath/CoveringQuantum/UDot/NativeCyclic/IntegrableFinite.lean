@@ -43,7 +43,7 @@ def vermaProbe (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi)) (�
       (RatFunc ℚ) |>.comp (S.subtype.restrictScalars (RatFunc ℚ)))
 
 include hD in
-omit [DecidableEq X] in
+omit [DecidableEq X] [Finite I] in
 theorem halfProbe_separating (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi))
     (v : S) (hv : ∀ t, halfProbe D S t v = 0) : v = 0 := by
   apply Subtype.ext
@@ -71,6 +71,7 @@ theorem vermaProbe_tendsto (S : Submodule Coefficients.Ring (D.serreF Coefficien
 
 include hD
 
+omit [Finite I] in
 /-- A finite covering submodule is eventually faithfully projected into the
 original integrable quotient. No freeness over the split covering ring is assumed. -/
 theorem eventually_toIntegrable_injective (S : Submodule Coefficients.Ring

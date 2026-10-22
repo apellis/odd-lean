@@ -213,6 +213,8 @@ import OddMath.CoveringQuantum.SerreDeriv
 import OddMath.CoveringQuantum.SerreDerivExamples
 import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
+import OddMath.CoveringQuantum.PreF.Restrict
+import OddMath.CoveringQuantum.SerreRestrict
 import OddMath.CoveringQuantum.Character
 import OddMath.CoveringQuantum.Negative
 import OddMath.CoveringQuantum.Coefficients.HalfSplitting
@@ -912,6 +914,7 @@ import OddMath.SKM.Curls
 import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
+import OddMath.SKM.EvenBridge.Datum
 import OddMath.SKM.Envelope
 import OddMath.SKM.HomComponents
 import OddMath.SKM.EnvelopeSOp
