@@ -1065,12 +1065,14 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
     **Proved obstruction.** Over a field, with finitely many symmetrizer values in each degree,
     the split `K₀` of each completed hom category is a free `ℤ[q,q⁻¹]`-module
-    (`SKM.UDot.k0_free_laurentInt`). There the printed equation for `n ≥ 2` forces
-    `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0`: for even `i` (`printed_forces_zero`) because
+    (`SKM.UDot.k0_free_laurentInt`). There the printed equation for `n ≥ 2` is consistent with
+    the true relation only if `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0`, so for a nonzero
+    `Eᵢⁿ1_λ` the printed equation is false; nothing vanishes. For even `i` (`printed_forces_zero`) because
     `(qᵢ^{n(n-1)/2} - 1)[n]^!_{qᵢ} ≠ 0`; for odd `i` (`printed_forces_zero_odd`) because both
     specializations `π = ±1` of `(qᵢ^{n(n-1)/2} π^{n(n-1)/2} - 1)[n]^!_{qᵢ,π}` are nonzero.
     Likewise the printed equation forces `[Fᵢ^{(n)}1_λ] = 0` (`printed_forces_zero_down`,
-    `printed_forces_zero_down_odd`).
+    `printed_forces_zero_down_odd`). The correction is a choice of normalization of one summand;
+    it changes no 2-morphism space and has no bearing on nondegeneracy.
 
     **Certainty boundary.** That `Eᵢⁿ1_λ` is nonzero in `K₀` is not proved here. It follows,
     for instance, from Theorem 11.7. The shifts do not affect Theorem 11.7 provided `γ` sends the divided powers to
