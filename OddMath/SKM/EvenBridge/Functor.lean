@@ -7,6 +7,7 @@ import OddMath.SKM.Presentation
 import Categorification.Diagrams.KL3.Decompositions
 import Categorification.Diagrams.KL3.BubbleSlidesGen
 import Categorification.Diagrams.KL3.EndOne
+import OddMath.SKM.EvenBridge.KLInverse
 
 /-!
 # The generators of `𝔘(𝔤)` in the Khovanov–Lauda 2-category, for even data
@@ -128,10 +129,7 @@ def imgS (ν : X) : (g : Shape I) →
   | .cap i => Diagram.dg RD k ν _ _ [([], .cap (false, i), [])]
   | .lcross i j => Diagram.dg RD k ν _ _ (Diagram.crossrL j i)
   | .dcup i n =>
-    if n < (Diagram.ip RD i ν).toNat then
-      ∑ g ∈ Finset.range ((Diagram.ip RD i ν).toNat - n),
-        Diagram.ccwU RD k ν i (-Diagram.ip RD i ν - 1 + g) ≫ Diagram.betaEF RD k i ν (n + g)
-    else 0
+    if n < (Diagram.ip RD i ν).toNat then Diagram.dcupEF RD k i ν n else 0
   | .dcap i n =>
     if n < (-Diagram.ip RD i ν).toNat then
       Diagram.alphaFE RD k i ν ((-Diagram.ip RD i ν).toNat - 1 - n)
@@ -385,15 +383,11 @@ theorem flatMap_trLay_lcrossL (i j : I) :
   simp [lcrossL, trLay]
 
 theorem flatMap_trLay_epsL (i : I) (n : ℕ) :
-    (epsL i n).flatMap trLay =
-      List.replicate n ([], Diagram.Shape.dot (true, i), [(false, i)]) ++
-        [([], Diagram.Shape.cap (false, i), [])] := by
+    (epsL i n).flatMap trLay = Diagram.dotCapEFLs i n := by
   rw [epsL, List.flatMap_append, flatMap_trLay_dotsL]; rfl
 
 theorem flatMap_trLay_etaL (i : I) (n : ℕ) :
-    (etaL i n).flatMap trLay =
-      [([], Diagram.Shape.cup (false, i), [])] ++
-        List.replicate n ([(false, i)], Diagram.Shape.dot (true, i), []) := by
+    (etaL i n).flatMap trLay = Diagram.cupDotFELs i n := by
   rw [etaL, List.flatMap_append, flatMap_trLay_dotsL]; rfl
 
 /-- Rewrites the image of a relation built from diagrams without `♦`-cups and `♦`-caps as a
@@ -502,5 +496,193 @@ theorem rel_invM₂ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
   rw [h, ← Diagram.dg_nil]
   simp
 
+/-! ## Relations with `♦`-cups and `♦`-caps -/
+
+/-- Removes the transport isomorphisms between definitionally equal objects. -/
+macro "clean_eqToHom" : tactic => `(tactic| (
+  simp only [Category.assoc, eqToHom_trans_assoc]
+  repeat erw [eqToHom_refl]
+  repeat erw [Category.id_comp]
+  repeat erw [Category.comp_id]))
+
+theorem lin_dg_append (μ : X) (A B : List (LayerData I)) {s t r : List (Letter I)}
+    (hA : SChain s A t) (hB : SChain t B r) (h : SChain s (A ++ B) r) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (dg D μ (A ++ B) h) =
+      (StringDiagrams.freeLift k (locMap D C hc k).functor).map (dg D μ A hA) ≫
+        (StringDiagrams.freeLift k (locMap D C hc k).functor).map (dg D μ B hB) := by
+  simp only [dg, StringDiagrams.freeLift_map_of]
+  rw [← Functor.map_comp, mkD_comp]
+
+theorem lin_dg_dcup (μ : X) (i : I) (n : ℕ) (h : SChain [] (dcupL i n) [up i, dn i]) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (dg D μ (dcupL i n) h) =
+      eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc μ [])) ≫
+        (if n < (Diagram.ip RD i μ).toNat then Diagram.dcupEF RD k i μ n else 0) ≫
+          eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc μ [up i, dn i])).symm := by
+  rw [dg, StringDiagrams.freeLift_map_of]
+  erw [map_mkD_single D C hc k μ [] (.dcup i n) [] h]
+  rw [plcL_nil_nil D C hc k μ _ _ (by rw [wt_eq, wt_eq, Shape.wt_dom_eq_wt_cod])]
+  simp [imgS]
+
+theorem lin_dg_dcap (μ : X) (i : I) (n : ℕ) (h : SChain [dn i, up i] (dcapL i n) []) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (dg D μ (dcapL i n) h) =
+      eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc μ [dn i, up i])) ≫
+        (if n < (-Diagram.ip RD i μ).toNat then
+          Diagram.alphaFE RD k i μ ((-Diagram.ip RD i μ).toNat - 1 - n) else 0) ≫
+          eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc μ [])).symm := by
+  rw [dg, StringDiagrams.freeLift_map_of]
+  erw [map_mkD_single D C hc k μ [] (.dcap i n) [] h]
+  rw [plcL_nil_nil D C hc k μ _ _ (by rw [wt_eq, wt_eq, Shape.wt_dom_eq_wt_cod])]
+  simp [imgS]
+
+theorem rel_invP₃ (i : I) (ν : X) (m : ℕ) (hm : (m : ℤ) < D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invP₃ i ν m hm)) = 0 := by
+  reduce_rel
+  rw [← Diagram.dg_comp (t := [Diagram.up i, Diagram.dn i]) (by schain) (by schain),
+    Diagram.crossr_dotCapEF i ν m (by rw [ip_eq]; omega)]
+  simp
+
+theorem rel_invM₃ (i : I) (ν : X) (m : ℕ) (hm : (m : ℤ) < -D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invM₃ i ν m hm)) = 0 := by
+  reduce_rel
+  rw [← Diagram.dg_comp (t := [Diagram.dn i, Diagram.up i]) (by schain) (by schain),
+    Diagram.cupDotFE_crossr i ν m (by rw [ip_eq]; omega)]
+  simp
+
+theorem rel_invP₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invP₄ i ν n hn)) = 0 := by
+  simp only [relation]
+  rw [lin_dg_append D C hc k ν _ _ (sChain_dcupL i n) (sChain_sigmaL i i), lin_dg_dcup,
+    lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_sigmaL]
+  have hn' : n < (Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_left hn']
+  simp [Diagram.dcupEF_crossl_assoc]
+
+theorem rel_invP₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < D.h i ν) (hn : (n : ℤ) < D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+      (relation D Sc (.invP₅ i ν m n hm hn)) = 0 := by
+  simp only [relation, Functor.map_sub]
+  rw [lin_dg_append D C hc k ν _ _ (sChain_dcupL i n) (sChain_epsL i m), lin_dg_dcup,
+    lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_epsL]
+  have hn' : n < (Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  have hm' : m < (Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_left hn']
+  clean_eqToHom
+  erw [Diagram.dcupEF_dotCapEF i ν m n hm' hn']
+  split_ifs with hmn
+  · subst hmn; rw [lin_idg, Diagram.dg_nil]; simp; exact sub_self _
+  · simp
+
+theorem rel_invM₄ (i : I) (ν : X) (n : ℕ) (hn : (n : ℤ) < -D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invM₄ i ν n hn)) = 0 := by
+  simp only [relation]
+  rw [lin_dg_append D C hc k ν _ _ (sChain_sigmaL i i) (sChain_dcapL i n), lin_dg_dcap,
+    lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_sigmaL]
+  have hn' : n < (-Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_left hn']
+  clean_eqToHom
+  erw [Diagram.crossl_alphaFE i ν _ (by omega)]
+  simp
+
+theorem rel_invM₅ (i : I) (ν : X) (m n : ℕ) (hm : (m : ℤ) < -D.h i ν) (hn : (n : ℤ) < -D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+      (relation D Sc (.invM₅ i ν m n hm hn)) = 0 := by
+  simp only [relation, Functor.map_sub]
+  rw [lin_dg_append D C hc k ν _ _ (sChain_etaL i m) (sChain_dcapL i n), lin_dg_dcap,
+    lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_etaL]
+  have hn' : n < (-Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  have hm' : m < (-Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_left hn']
+  clean_eqToHom
+  erw [Diagram.cupDotFE_alphaFE i ν m n hm' hn']
+  split_ifs with hmn
+  · subst hmn; rw [lin_idg, Diagram.dg_nil]; simp; exact sub_self _
+  · simp
+
+theorem rel_dcupZero (i : I) (ν : X) (n : ℕ) (hn : D.h i ν ≤ n) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+      (relation D Sc (.dcupZero i ν n hn)) = 0 := by
+  simp only [relation]
+  rw [lin_dg_dcup]
+  have hn' : ¬ n < (Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_right hn']
+  simp
+
+theorem rel_dcapZero (i : I) (ν : X) (n : ℕ) (hn : -D.h i ν ≤ n) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+      (relation D Sc (.dcapZero i ν n hn)) = 0 := by
+  simp only [relation]
+  rw [lin_dg_dcap]
+  have hn' : ¬ n < (-Diagram.ip RD i ν).toNat := by rw [ip_eq]; omega
+  rw [ite_eq_right hn']
+  simp
+
+theorem rel_invP₁ (i : I) (ν : X) (hh : 0 ≤ D.h i ν) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invP₁ i ν hh)) = 0 := by
+  have key : -Diagram.dg RD k ν [up i, dn i] [up i, dn i] (Diagram.crosslL i i ++ Diagram.crossrL i i) +
+      ∑ n ∈ Finset.range (D.h i ν).toNat,
+        Diagram.dg RD k ν [up i, dn i] [] (Diagram.dotCapEFLs i n) ≫ Diagram.dcupEF RD k i ν n -
+      Diagram.dg RD k ν [up i, dn i] [up i, dn i] [] = 0 := by
+    rw [← Diagram.dg_comp (t := [Diagram.dn i, Diagram.up i]) (by schain) (by schain),
+      Diagram.dg_nil, ← Preadditive.neg_comp]
+    change _ + ∑ n ∈ Finset.range (Diagram.ip RD i ν).toNat, _ - _ = _
+    rw [Diagram.sum_dotCapEF_dcupEF, Diagram.total_EF, sub_self]
+  simp only [relation, Functor.map_sub, Functor.map_add, Functor.map_neg, Functor.map_sum]
+  rw [lin_dg_plain D C hc k ν _ _ (by plain), lin_idg]
+  have hs : ∀ n ∈ Finset.range (D.h i ν).toNat,
+      (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+        (dg D ν (epsL i n ++ dcupL i n) ((sChain_epsL i n).append (sChain_dcupL i n))) =
+      eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [up i, dn i])) ≫
+        (Diagram.dg RD k ν [up i, dn i] [] (Diagram.dotCapEFLs i n) ≫ Diagram.dcupEF RD k i ν n) ≫
+          eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [up i, dn i])).symm := by
+    intro n hn
+    rw [Finset.mem_range] at hn
+    rw [lin_dg_append D C hc k ν _ _ (sChain_epsL i n) (sChain_dcupL i n), lin_dg_dcup,
+      lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_epsL,
+      ite_eq_left (show n < (Diagram.ip RD i ν).toNat by rw [ip_eq]; exact hn)]
+    simp
+  rw [Finset.sum_congr rfl hs, ← Preadditive.comp_sum, ← Preadditive.sum_comp]
+  simp only [List.flatMap_append, flatMap_trLay_sigmaL, flatMap_trLay_lcrossL]
+  dsimp only [Rel.dom, Rel.cod]
+  have h := congrArg (fun x => eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [up i, dn i])) ≫
+    x ≫ eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [up i, dn i])).symm) key
+  simp only [Preadditive.comp_add, Preadditive.add_comp, Preadditive.comp_sub, Preadditive.sub_comp,
+    Preadditive.comp_neg, Preadditive.neg_comp, Limits.zero_comp, Limits.comp_zero] at h
+  exact h
+
+theorem rel_invM₁ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.invM₁ i ν hh)) = 0 := by
+  have key : -Diagram.dg RD k ν [dn i, up i] [dn i, up i] (Diagram.crossrL i i ++ Diagram.crosslL i i) +
+      ∑ n ∈ Finset.range (-D.h i ν).toNat,
+        Diagram.alphaFE RD k i ν ((-D.h i ν).toNat - 1 - n) ≫
+          Diagram.dg RD k ν [] [dn i, up i] (Diagram.cupDotFELs i n) -
+      Diagram.dg RD k ν [dn i, up i] [dn i, up i] [] = 0 := by
+    rw [← Diagram.dg_comp (t := [Diagram.up i, Diagram.dn i]) (by schain) (by schain),
+      Diagram.dg_nil, ← Preadditive.neg_comp]
+    change _ + ∑ n ∈ Finset.range (-Diagram.ip RD i ν).toNat,
+      Diagram.alphaFE RD k i ν ((-Diagram.ip RD i ν).toNat - 1 - n) ≫ _ - _ = _
+    rw [Diagram.sum_alphaFE_cupDotFE, Diagram.total_FE, sub_self]
+  simp only [relation, Functor.map_sub, Functor.map_add, Functor.map_neg, Functor.map_sum]
+  rw [lin_dg_plain D C hc k ν _ _ (by plain), lin_idg]
+  have hs : ∀ n ∈ Finset.range (-D.h i ν).toNat,
+      (StringDiagrams.freeLift k (locMap D C hc k).functor).map
+        (dg D ν (dcapL i n ++ etaL i n) ((sChain_dcapL i n).append (sChain_etaL i n))) =
+      eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [dn i, up i])) ≫
+        (Diagram.alphaFE RD k i ν ((-D.h i ν).toNat - 1 - n) ≫
+          Diagram.dg RD k ν [] [dn i, up i] (Diagram.cupDotFELs i n)) ≫
+          eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [dn i, up i])).symm := by
+    intro n hn
+    rw [Finset.mem_range] at hn
+    rw [lin_dg_append D C hc k ν _ _ (sChain_dcapL i n) (sChain_etaL i n), lin_dg_dcap,
+      lin_dg_plain D C hc k ν _ _ (by plain), flatMap_trLay_etaL,
+      ite_eq_left (show n < (-Diagram.ip RD i ν).toNat by rw [ip_eq]; exact hn)]
+    simp
+  rw [Finset.sum_congr rfl hs, ← Preadditive.comp_sum, ← Preadditive.sum_comp]
+  simp only [List.flatMap_append, flatMap_trLay_sigmaL, flatMap_trLay_lcrossL]
+  dsimp only [Rel.dom, Rel.cod]
+  have h := congrArg (fun x => eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [dn i, up i])) ≫
+    x ≫ eqToHom (congrArg (Diagram.pres RD k).obj (κ_obj_ob D C hc ν [dn i, up i])).symm) key
+  simp only [Preadditive.comp_add, Preadditive.add_comp, Preadditive.comp_sub, Preadditive.sub_comp,
+    Preadditive.comp_neg, Preadditive.neg_comp, Limits.zero_comp, Limits.comp_zero] at h
+  exact h
 
 end OddMath.SKM.EvenBridge
