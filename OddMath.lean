@@ -28,6 +28,8 @@ import OddMath.QuiverHecke.GrothendieckPresentation
 import OddMath.QuiverHecke.SortedSummands
 import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.WidthZero
+import OddMath.QuiverHecke.GradedWalk
+import OddMath.QuiverHecke.TensorCorner
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
