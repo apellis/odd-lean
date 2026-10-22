@@ -19,8 +19,10 @@ Here `HGr` is `H` with its grading (`OddMath.QuiverHecke.Grading`), `HDot := GSK
 envelope of `H` (`hCat_eq`, definitionally). Its split Grothendieck group, the single summand of
 `K₀Ring HDot`, is the `K₀` of (11.2), with product from the tensor product.
 
-We take the left side of (11.2) as the definition; the equivalence of `Ḣ_{q,π}` with
-`⨁_n H_n-GSProj` that BE2 uses to identify the two sides is not formalized.
+We take the left side of (11.2) as the definition. The equivalence of a graded super Karoubi
+envelope with finitely generated graded projective (right) supermodules, which BE2 uses to
+identify the two sides, is `OddMath.FiniteHomMatrix.gsKarEquivEssImage`
+(`OddMath.QuiverHecke.ProjectiveModules`).
 -/
 
 noncomputable section

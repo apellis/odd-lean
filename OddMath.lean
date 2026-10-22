@@ -32,6 +32,8 @@ import OddMath.QuiverHecke.GradedModules
 import OddMath.QuiverHecke.RowModules
 import OddMath.QuiverHecke.GradedModulesAdditive
 import OddMath.QuiverHecke.RowFunctor
+import OddMath.QuiverHecke.KaroubiFunctor
+import OddMath.QuiverHecke.ProjectiveModules
 import OddMath.QuiverHecke.WidthZero
 import OddMath.QuiverHecke.UpwardClasses
 import OddMath.QuiverHecke.UpwardImage
