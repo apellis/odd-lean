@@ -52,8 +52,8 @@ def upWordHom (i : I) (n : ℕ) (ν : X) :
 
 /-- The completed hom category containing `E_i^n 1_ν`. -/
 abbrev HomCat (i : I) (n : ℕ) (ν : X) :=
-  Karoubi (Mat_ (Base (show SKM.UGr D Sc sy hc from
-    ⟨SKM.wt (X := X) D ν (upWord (List.replicate n i))⟩) (show SKM.UGr D Sc sy hc from ⟨ν⟩)))
+  Karoubi (Mat_ (Base k ((show SKM.UGr D Sc sy hc from
+    ⟨SKM.wt (X := X) D ν (upWord (List.replicate n i))⟩) ⟶ (show SKM.UGr D Sc sy hc from ⟨ν⟩))))
 
 /-- Equation (11.7) on the same-colour corner: weight labelling at `ν`. -/
 def alphaEnd (i : I) (n : ℕ) (ν : X) (c : Corner D Sc i n) :

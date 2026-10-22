@@ -53,9 +53,9 @@ def downWordHom (i : I) (n : ℕ) (ν : X) :
 
 /-- The completed hom category containing `F_i^n 1_{-ν}`. -/
 abbrev HomCatDown (i : I) (n : ℕ) (ν : X) :=
-  Karoubi (Mat_ (Base (show SKM.UGr D Sc sy hc from
+  Karoubi (Mat_ (Base k ((show SKM.UGr D Sc sy hc from
     ⟨SKM.wt (X := X) D (-ν) (SKM.flipW (upWord (List.replicate n i)))⟩)
-    (show SKM.UGr D Sc sy hc from ⟨-ν⟩)))
+    ⟶ (show SKM.UGr D Sc sy hc from ⟨-ν⟩))))
 
 /-- Equation (11.8) on the same-colour corner: `α'_{n,-ν} = ω ∘ α_{n,ν}`. -/
 def betaEnd (i : I) (n : ℕ) (ν : X) (c : Corner D Sc i n) :
