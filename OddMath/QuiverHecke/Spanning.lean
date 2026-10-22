@@ -278,34 +278,38 @@ theorem tgt_dot_cross (t : List I) (p a : ℕ) :
 theorem tgt_dot_cross' (t : List I) (p q a : ℕ) :
     tgt t [PG.dot p, PG.cross a] = tgt t [PG.dot q, PG.cross a] := rfl
 
-/-- A dot directly above a crossing moves below it, to a strand of the same word. -/
+/-- A dot directly above a crossing `a` moves below it, to the strand `s_a(p)`. -/
 theorem cross_dot_move {t₁ t₂ : List I} {a p : ℕ} (ha : a + 1 < t₁.length) (hp : p < t₁.length)
     (h₁ : SChain t₁ (pl t₁ [PG.cross a, PG.dot p]) t₂) :
-    ∃ p' < t₁.length, ∃ c : k, IsUnit c ∧ ∃ h₂ : SChain t₁ (pl t₁ [PG.dot p', PG.cross a]) t₂,
-      cl D Sc t₁ t₂ [PG.cross a, PG.dot p] h₁ - c • cl D Sc t₁ t₂ [PG.dot p', PG.cross a] h₂ ∈
-        Filt D Sc t₁ t₂ 0 := by
+    ∃ c : k, IsUnit c ∧ ∃ h₂ : SChain t₁ (pl t₁ [PG.dot (swapNat a p), PG.cross a]) t₂,
+      cl D Sc t₁ t₂ [PG.cross a, PG.dot p] h₁ -
+        c • cl D Sc t₁ t₂ [PG.dot (swapNat a p), PG.cross a] h₂ ∈ Filt D Sc t₁ t₂ 0 := by
   have hs : ∀ q, SChain t₁ (pl t₁ [PG.dot q, PG.cross a]) t₂ := fun q =>
     sChain_of_tgt h₁ (tgt_dot_cross t₁ q a).symm
   by_cases hpa : p = a
   · subst hpa
     obtain ⟨c, hc, hm⟩ := slide_right_at D Sc ha h₁ (hs (p + 1))
-    exact ⟨p + 1, ha, c, (Units.mk c c hc hc).isUnit, hs _, hm⟩
+    rw [show swapNat p p = p + 1 by simp [swapNat]]
+    exact ⟨c, (Units.mk c c hc hc).isUnit, hs _, hm⟩
   by_cases hpa' : p = a + 1
   · subst hpa'
     obtain ⟨c, hc, hm⟩ := slide_left_at D Sc ha (hs a) h₁
-    refine ⟨a, by omega, c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
+    rw [show swapNat a (a + 1) = a by simp [swapNat]]
+    refine ⟨c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
     have := Submodule.smul_mem _ (-c) hm
     convert this using 1
     rw [smul_sub, smul_smul, neg_mul, hc]
     simp [sub_eq_add_neg, add_comm]
+  have hsw : swapNat a p = p := by simp [swapNat, hpa, hpa']
+  rw [hsw]
   by_cases hlt : p < a
   · obtain ⟨c, hc, hsw⟩ := far_swap D Sc (PG.dot p) (PG.cross a)
       (by simp [PG.pos, PG.width]; omega) (by simp [PG.pos, PG.width]; omega) (hs p) h₁
-    refine ⟨p, hp, c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
+    refine ⟨c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
     rw [hsw, smul_smul, hc, one_smul, sub_self]; exact Submodule.zero_mem _
   · obtain ⟨c, hc, hsw⟩ := far_swap D Sc (PG.cross a) (PG.dot p)
       (by simp [PG.pos, PG.width]; omega) (by simp [PG.pos, PG.width]; omega) h₁ (hs p)
-    refine ⟨p, hp, c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
+    refine ⟨c, (Units.mk c c hc hc).isUnit, hs _, ?_⟩
     rw [hsw, sub_self]; exact Submodule.zero_mem _
 
 /-- A local move in context, as agreement up to a unit and fewer crossings. -/
@@ -329,17 +333,19 @@ theorem cl_eq_cl {t t' : List I} {gs hs : List PG} (e : gs = hs) (h : SChain t (
     (h' : SChain t (pl t hs) t') : cl D Sc t t' gs h = cl D Sc t t' hs h' := by
   subst e; rfl
 
-/-- A dot above a word of crossings moves below it, up to a unit and fewer crossings. -/
+/-- A dot on strand `p` above the crossings of a word `σ` moves below them, to the strand
+`w⁻¹(p)` for `w` the product of `σ`, up to a unit and fewer crossings. -/
 theorem dot_down {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n) (σ : List ℕ)
     (hv : ValidWord n σ) (p : ℕ) (hp : p < n) (R : List PG)
     (h : SChain t (pl t (P ++ cw σ ++ [PG.dot p] ++ R)) t') :
-    ∃ q < n, ∃ h' : SChain t (pl t (P ++ [PG.dot q] ++ cw σ ++ R)) t',
+    ∃ h' : SChain t (pl t (P ++ [PG.dot ((wordProd n σ)⁻¹ ⟨p, hp⟩)] ++ cw σ ++ R)) t',
       Approx D Sc (crossCount P + σ.length + crossCount R) (cl D Sc t t' _ h)
         (cl D Sc t t' _ h') := by
   induction σ generalizing p R with
   | nil =>
-    have e : P ++ cw [] ++ [PG.dot p] ++ R = P ++ [PG.dot p] ++ cw [] ++ R := by simp
-    exact ⟨p, hp, e ▸ h, by rw [cl_eq_cl e h (e ▸ h)]; exact Approx.refl _ _⟩
+    have e : P ++ cw [] ++ [PG.dot p] ++ R =
+        P ++ [PG.dot ((wordProd n [])⁻¹ ⟨p, hp⟩)] ++ cw [] ++ R := by simp
+    exact ⟨e ▸ h, by rw [cl_eq_cl e h (e ▸ h)]; exact Approx.refl _ _⟩
   | cons a σ ih =>
     have ha : a + 1 < n := hv a (by simp)
     set Q := P ++ cw σ
@@ -348,18 +354,25 @@ theorem dot_down {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n) (σ
     have hl : (tgt t Q).length = n := by simp [hn]
     have hM : SChain (tgt t Q) (pl (tgt t Q) [PG.cross a, PG.dot p])
         (tgt (tgt t Q) [PG.cross a, PG.dot p]) := sChain_pl _ _
-    obtain ⟨p', hp', c, hc, h₂, hm⟩ :=
+    obtain ⟨c, hc, h₂, hm⟩ :=
       cross_dot_move (D := D) (Sc := Sc) (by omega) (by omega) hM
     obtain ⟨h₃, hA⟩ := approx_ctx Q _ _ R c hc (e₁ ▸ h) hM h₂ hm
       (N := crossCount P + (a :: σ).length + crossCount R) (by simp [Q])
-    have e₂ : Q ++ [PG.dot p', PG.cross a] ++ R = P ++ cw σ ++ [PG.dot p'] ++ ([PG.cross a] ++ R) := by
+    have hp' : swapNat a p < n := by unfold swapNat; split_ifs <;> omega
+    have e₂ : Q ++ [PG.dot (swapNat a p), PG.cross a] ++ R =
+        P ++ cw σ ++ [PG.dot (swapNat a p)] ++ ([PG.cross a] ++ R) := by
       simp [Q]
-    obtain ⟨q, hq, h₄, hB⟩ :=
-      ih (fun x hx => hv x (by simp [hx])) p' (by omega) ([PG.cross a] ++ R) (e₂ ▸ h₃)
-    have e₃ : P ++ [PG.dot q] ++ cw σ ++ ([PG.cross a] ++ R) =
-        P ++ [PG.dot q] ++ cw (a :: σ) ++ R := by
-      simp [cw_cons]
-    refine ⟨q, hq, e₃ ▸ h₄, ?_⟩
+    obtain ⟨h₄, hB⟩ :=
+      ih (fun x hx => hv x (by simp [hx])) (swapNat a p) hp' ([PG.cross a] ++ R) (e₂ ▸ h₃)
+    have hq : (((wordProd n σ)⁻¹ ⟨swapNat a p, hp'⟩ : Fin n) : ℕ) =
+        (((wordProd n (a :: σ))⁻¹ ⟨p, hp⟩ : Fin n) : ℕ) := by
+      rw [wordProd_cons, mul_inv_rev, sadj_inv, Equiv.Perm.mul_apply]
+      congr 2
+      ext; rw [sadj_val_of_lt ha]
+    have e₃ : P ++ [PG.dot ((wordProd n σ)⁻¹ ⟨swapNat a p, hp'⟩)] ++ cw σ ++ ([PG.cross a] ++ R) =
+        P ++ [PG.dot ((wordProd n (a :: σ))⁻¹ ⟨p, hp⟩)] ++ cw (a :: σ) ++ R := by
+      rw [← hq]; simp [cw_cons]
+    refine ⟨e₃ ▸ h₄, ?_⟩
     rw [cl_eq_cl e₁ h (e₁ ▸ h), ← cl_eq_cl e₃ h₄ (e₃ ▸ h₄)]
     rw [cl_eq_cl e₂ h₃ (e₂ ▸ h₃)] at hA
     exact hA.trans (Approx.mono (by simp [PG.isCross]; omega) hB)
@@ -538,8 +551,10 @@ theorem nf_comp_dot {t t₀ t' : List I} {m : ℕ} (hlow : Low D Sc t t' m ≤ N
   have e : l.map PG.dot ++ cw σ ++ [PG.dot p] = l.map PG.dot ++ cw σ ++ [PG.dot p] ++ [] := by
     simp
   rw [cl_eq_cl e _ (e ▸ sChain_append_of h hg)]
-  obtain ⟨q, hq, h', hA⟩ := dot_down (D := D) (Sc := Sc) (l.map PG.dot) rfl σ
+  obtain ⟨h', hA⟩ := dot_down (D := D) (Sc := Sc) (l.map PG.dot) rfl σ
     (validWord_canWord t.length w) p hp' [] (e ▸ sChain_append_of h hg)
+  set q : ℕ := (((wordProd t.length σ)⁻¹ ⟨p, hp'⟩ : Fin t.length) : ℕ)
+  have hq : q < t.length := Fin.is_lt _
   have e' : l.map PG.dot ++ [PG.dot q] ++ cw σ ++ [] = [] ++ (l ++ [q]).map PG.dot ++ cw σ := by
     simp
   have hl' : ∀ x ∈ l ++ [q], x < t.length := by
