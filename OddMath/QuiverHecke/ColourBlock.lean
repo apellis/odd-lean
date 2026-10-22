@@ -16,7 +16,8 @@ nilHecke algebra (odd if `i` is odd), in the endomorphism ring of `w`: this is
 Lemma 11.6 on the words `i^k j i^{n-k}`.
 
 The same-colour relations (1.7) and (1.9) of BE2 at a position (`cross_cross_eq`, `braid_eq`;
-(1.8) is `slide_left_eq`, `slide_right_eq` in `Centre`) hold exactly, not only modulo words with fewer crossings as in
+(1.8) is `slide_left_eq`, `slide_right_eq` in `Centre`) hold exactly, not only modulo words with
+fewer crossings as in
 `PositionalRelations`.
 -/
 

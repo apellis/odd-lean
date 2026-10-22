@@ -1087,3 +1087,18 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     `[Fᵢⁿ1_λ] = 0` for `n ≥ 2`. Already for `n = 2` and even `i`, the
     two summands of `Eᵢ²1_λ` are `Eᵢ^{(2)}1_λ` and `Q^{2dᵢ}Eᵢ^{(2)}1_λ`, cut out by `−τx` and
     split off by the crossing.
+
+14. **Proposition 11.2: index misprints [M, *textual*].** With `n = d_ij + 1`, the projectives
+    `P(i^{(n-r)} j i^{(r)})` of the sequence have `n + 1` strands, so they are graded
+    `H_{n+1}`-supermodules; the printed `H_{r+s+1}` carries over the letters `r, s` of the
+    preceding definition. In the final isomorphism the left sum runs over `0 ≤ k ≤ ⌊n/2⌋` and
+    the right sum over `0 ≤ k ≤ ⌊(n-1)/2⌋`: the printed bounds `⌊(n+1)/2⌋` and `⌊n/2⌋` include
+    one term with a negative exponent (`P(i^{(-1)} j i^{(n+1)})`) on one side, depending on the
+    parity of `n`. With these bounds the even-position and odd-position terms of the sequence are
+    exactly the two sides.
+
+    **Declarations.** `QuiverHecke.SerreComplex.isSplit`, `serreEquiv` (on underlying modules,
+    words `i^a j i^{n-a}` indexed by `a = n − r`; the index sets are `SplitComplex.terms`).
+
+    **For the authors.** In Proposition 11.2, read `H_{n+1}` for `H_{r+s+1}`, and take the two
+    sums of the final isomorphism over `0 ≤ k ≤ ⌊n/2⌋` and `0 ≤ k ≤ ⌊(n-1)/2⌋`.
