@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.Basis
 import OddMath.QuiverHecke.Grading
 import OddMath.QuiverHecke.Envelope
+import StringDiagrams.Super.GSKarLaurent
 
 /-!
 # Graded pieces of the Hom spaces of `H`
@@ -19,7 +20,10 @@ parity (`homPiece_eq_span`).
 Each dot has degree `2 d_i ≥ 2`, so a normal form of degree `n` has at most a bounded number of
 dots, and there are only finitely many normal forms of each degree (`finite_deg_eq`). Over a
 field, the piece of degree `n` and parity `p` is therefore finite dimensional, of dimension the
-number of normal forms of that degree and parity (`finrank_homPiece`). These numbers are the
+number of normal forms of that degree and parity (`finrank_homPiece`). Every object of `H` is a
+word, and the degree pieces of all Hom spaces of `H` are finite dimensional and bounded below
+(`degreeHomFinite`, `homBoundedBelow`), the hypotheses of the graded dimension pairing on
+`K₀(Ḣ_{q,π})` (string-diagrams-lean `GSKar.pairing`). These numbers are the
 coefficients of the graded dimensions that enter the categorical pairing of BE2 §11 (Hill–Wang,
 arXiv:1202.2769v2, Proposition 6.8).
 -/
@@ -223,6 +227,21 @@ theorem degree_eq_span (t t' : List I) (n : ℤ) :
   ext i
   simp
 
+/-- **Degrees of normal forms are bounded below**: by the least crossing degree of a
+permutation. -/
+theorem exists_le_deg (t t' : List I) : ∃ N : ℤ, ∀ i : NFIdx t t', N ≤ i.deg D sy := by
+  classical
+  let c : Equiv.Perm (Fin t.length) → ℤ := fun w =>
+    gsum D sy (pl t (cw (Categorification.TypeA.canWord t.length w)))
+  obtain ⟨N, hN⟩ := (Set.finite_range c).bddBelow
+  refine ⟨N, fun i => ?_⟩
+  rw [NFIdx.deg_eq]
+  have h1 := two_mul_length_le_gsum_dots D sy t i.1.1 i.2.2.1
+  have h2 : N ≤ c i.1.2 := hN (Set.mem_range_self _)
+  have : (0 : ℤ) ≤ 2 * (i.1.1.length : ℤ) := by positivity
+  change N ≤ _ + c i.1.2
+  omega
+
 /-- Every object of `H` is the object of a word. -/
 theorem exists_hObj (X : HGr D Sc sy hc) : ∃ t, X = hObj D Sc sy hc t := by
   obtain ⟨⟨⟨⟩, t⟩⟩ := X
@@ -249,6 +268,24 @@ instance finiteDimensional_degree (X Y : HGr D Sc sy hc) (n : ℤ) :
   obtain ⟨t', rfl⟩ := exists_hObj D Sc sy hc Y
   rw [degree_eq_span]
   exact FiniteDimensional.span_of_finite K ((finite_deg_eq D sy t t' n).image _)
+
+/-- **The Hom spaces of `H` are degreewise finite dimensional.** -/
+instance degreeHomFinite : GSKar.DegreeHomFinite (k := K) (C := HGr D Sc sy hc) where
+  finiteDimensional X Y n := finiteDimensional_degree D sy Sc hc X Y n
+
+/-- **The Hom spaces of `H` are bounded below** in degree. -/
+theorem homBoundedBelow : GSKar.HomBoundedBelow (k := K) (C := HGr D Sc sy hc) := by
+  intro X Y
+  obtain ⟨t, rfl⟩ := exists_hObj D Sc sy hc X
+  obtain ⟨t', rfl⟩ := exists_hObj D Sc sy hc Y
+  obtain ⟨N, hN⟩ := exists_le_deg D sy t t'
+  refine ⟨N, fun n hn => ?_⟩
+  rw [degree_eq_span]
+  convert Submodule.span_empty
+  refine Set.image_eq_empty.mpr (Set.eq_empty_of_forall_notMem fun i hi => ?_)
+  have := hN i
+  change i.deg D sy = n at hi
+  omega
 
 /-- **The dimension of a graded piece of `Hom_H(t, t')`** is the number of normal forms of that
 degree and parity. -/
