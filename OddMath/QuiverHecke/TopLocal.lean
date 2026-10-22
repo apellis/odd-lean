@@ -22,8 +22,9 @@ and the elements to test are the endomorphisms of degree zero and parity zero:
 * `upE_mem_gdeg`, `dnE_mem_gdeg`: the upward and downward placements preserve degree.
 * `shortSpan_mul_left`, `shortSpan_mul_right`: the maps through shorter words form a two-sided
   ideal of `End(E_s F_t 1_λ)`.
-* `proj0`, `proj0_mem_shortSpan`: the projection onto degree zero and parity zero preserves
-  the maps through shorter words.
+* `proj0`, `proj0_mem_span_shortHom`: the projection onto degree zero and parity zero maps
+  the maps through shorter words into the span of composites of homogeneous maps through
+  shorter words (`shortHom`).
 -/
 
 namespace OddMath.SKM.GradedWalk
@@ -207,21 +208,64 @@ theorem proj0_of_mem {μ : X} {a b : List (Letter I)}
   simp only [proj0, LinearMap.comp_apply]
   rw [homogeneousComponent_of_mem _ h₁, homogeneousComponent_of_mem _ h₂]
 
-theorem proj0_comp_mem_shortSpan {μ : X} {a b u : List (Letter I)}
+theorem proj0_eq_zero {μ : X} {a b : List (Letter I)} {n : ℤ} {p : ZMod 2}
+    {x : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)}
+    (h₁ : x ∈ (pres D Sc).homDeg (gdeg D sy) _ _ n)
+    (h₂ : x ∈ (pres D Sc).homDeg (parityDeg (sig D)) _ _ p) (h : n ≠ 0 ∨ p ≠ 0) :
+    proj0 sy hc μ a b x = 0 := by
+  simp only [proj0, LinearMap.comp_apply]
+  rcases h with hn | hp
+  · rw [homogeneousComponent_of_mem_of_ne _ h₁ hn, map_zero]
+  · by_cases hn : n = 0
+    · subst hn
+      rw [homogeneousComponent_of_mem _ h₁, homogeneousComponent_of_mem_of_ne _ h₂ hp]
+    · rw [homogeneousComponent_of_mem_of_ne _ h₁ hn, map_zero]
+
+variable (sy) in
+/-- Composites `a → u → b` through words `u` with at least two letters fewer than `a`, of
+homogeneous maps of opposite degrees and equal parities. -/
+def shortHom (μ : X) (a b : List (Letter I)) :
+    Set ((pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)) :=
+  {f | ∃ (u : List (Letter I)) (_ : u.length + 2 ≤ a.length) (n : ℤ) (p : ZMod 2)
+    (g : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ u))
+    (h : (pres D Sc).obj (ob D μ u) ⟶ (pres D Sc).obj (ob D μ b)),
+    g ∈ (pres D Sc).homDeg (gdeg D sy) _ _ n ∧
+    g ∈ (pres D Sc).homDeg (parityDeg (sig D)) _ _ p ∧
+    h ∈ (pres D Sc).homDeg (gdeg D sy) _ _ (-n) ∧
+    h ∈ (pres D Sc).homDeg (parityDeg (sig D)) _ _ p ∧ f = g ≫ h}
+
+theorem span_shortHom_le (μ : X) (a b : List (Letter I)) :
+    Submodule.span k (shortHom (Sc := Sc) sy μ a b) ≤ ShortSpan Sc μ a b :=
+  Submodule.span_le.mpr fun _ ⟨u, hu, _, _, g, h, _, _, _, _, e⟩ =>
+    Submodule.subset_span ⟨u, hu, g, h, e⟩
+
+theorem proj0_comp_mem_span_shortHom {μ : X} {a b u : List (Letter I)}
     (hu : u.length + 2 ≤ a.length) (g : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ u))
     (h : (pres D Sc).obj (ob D μ u) ⟶ (pres D Sc).obj (ob D μ b)) :
-    proj0 sy hc μ a b (g ≫ h) ∈ ShortSpan Sc μ a b := by
+    proj0 sy hc μ a b (g ≫ h) ∈ Submodule.span k (shortHom (Sc := Sc) sy μ a b) := by
   refine (pres D Sc).hom_induction (p := fun g => proj0 sy hc μ a b (g ≫ h) ∈ _) ?_ ?_ ?_ ?_ g
   · intro d
     refine (pres D Sc).hom_induction
       (p := fun h => proj0 sy hc μ a b ((pres D Sc).diag d ≫ h) ∈ _) ?_ ?_ ?_ ?_ h
     · intro d'
-      rcases proj0_eq_or (comp_mem_homDeg ((pres D Sc).diag_mem_homDeg (deg := gdeg D sy) d)
-          ((pres D Sc).diag_mem_homDeg (deg := gdeg D sy) d'))
-        (comp_mem_homDeg ((pres D Sc).diag_mem_homDeg (deg := parityDeg (sig D)) d)
-          ((pres D Sc).diag_mem_homDeg (deg := parityDeg (sig D)) d')) with e | e <;> rw [e]
-      · exact Submodule.subset_span ⟨u, hu, _, _, rfl⟩
-      · exact Submodule.zero_mem _
+      have g₁ := (pres D Sc).diag_mem_homDeg (deg := gdeg D sy) d
+      have g₂ := (pres D Sc).diag_mem_homDeg (deg := gdeg D sy) d'
+      have p₁ := (pres D Sc).diag_mem_homDeg (deg := parityDeg (sig D)) d
+      have p₂ := (pres D Sc).diag_mem_homDeg (deg := parityDeg (sig D)) d'
+      set n := Diagram.degree (gdeg D sy) d
+      set n' := Diagram.degree (gdeg D sy) d'
+      set q := Diagram.degree (parityDeg (sig D)) d
+      set q' := Diagram.degree (parityDeg (sig D)) d'
+      by_cases h0 : n + n' = 0 ∧ q + q' = 0
+      · have hn' : n' = -n := by linarith [h0.1]
+        have hq' : q' = q := by
+          have : q' = -q := eq_neg_of_add_eq_zero_right h0.2
+          rw [this, ZModModule.neg_eq_self]
+        rw [proj0_of_mem (h0.1 ▸ comp_mem_homDeg g₁ g₂) (h0.2 ▸ comp_mem_homDeg p₁ p₂)]
+        exact Submodule.subset_span ⟨u, hu, n, q, _, _, g₁, p₁, hn' ▸ g₂, hq' ▸ p₂, rfl⟩
+      · rw [proj0_eq_zero (comp_mem_homDeg g₁ g₂) (comp_mem_homDeg p₁ p₂)
+          (not_and_or.mp h0)]
+        exact Submodule.zero_mem _
     · rw [Limits.comp_zero, map_zero]; exact Submodule.zero_mem _
     · intro f₁ f₂ h₁ h₂
       rw [Preadditive.comp_add, map_add]; exact Submodule.add_mem _ h₁ h₂
@@ -233,16 +277,24 @@ theorem proj0_comp_mem_shortSpan {μ : X} {a b u : List (Letter I)}
   · intro r f hf
     rw [Linear.smul_comp, map_smul]; exact Submodule.smul_mem _ r hf
 
-/-- **The projection to degree zero preserves the maps through shorter words.** -/
-theorem proj0_mem_shortSpan {μ : X} {a b : List (Letter I)}
+/-- **The degree-zero part of the maps through shorter words** is spanned by composites of
+homogeneous maps. -/
+theorem proj0_mem_span_shortHom {μ : X} {a b : List (Letter I)}
     {x : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)}
-    (hx : x ∈ ShortSpan Sc μ a b) : proj0 sy hc μ a b x ∈ ShortSpan Sc μ a b := by
+    (hx : x ∈ ShortSpan Sc μ a b) :
+    proj0 sy hc μ a b x ∈ Submodule.span k (shortHom (Sc := Sc) sy μ a b) := by
   induction hx using Submodule.span_induction with
   | mem f hf =>
     obtain ⟨u, hu, g, h, rfl⟩ := hf
-    exact proj0_comp_mem_shortSpan hu g h
+    exact proj0_comp_mem_span_shortHom hu g h
   | zero => rw [map_zero]; exact Submodule.zero_mem _
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
+
+/-- **The projection to degree zero preserves the maps through shorter words.** -/
+theorem proj0_mem_shortSpan {μ : X} {a b : List (Letter I)}
+    {x : (pres D Sc).obj (ob D μ a) ⟶ (pres D Sc).obj (ob D μ b)}
+    (hx : x ∈ ShortSpan Sc μ a b) : proj0 sy hc μ a b x ∈ ShortSpan Sc μ a b :=
+  span_shortHom_le μ a b (proj0_mem_span_shortHom hx)
 
 end OddMath.SKM
