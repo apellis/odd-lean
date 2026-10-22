@@ -49,7 +49,7 @@ def signLaurent (σ : ℚ) (hσ : σ ^ 2 = 1) :
   rw [Coefficients.specialize_q]
   exact RatFunc.coe_X
 
-private theorem signLaurent_q_zpow (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
+theorem signLaurent_q_zpow (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
     signLaurent σ hσ ((Coefficients.q ^ z : Coefficients.Ringˣ) : Coefficients.Ring) =
       HahnSeries.single z 1 := by
   change ((Units.map (signLaurent σ hσ).toMonoidHom (Coefficients.q ^ z) :
@@ -58,7 +58,7 @@ private theorem signLaurent_q_zpow (σ : ℚ) (hσ : σ ^ 2 = 1) (z : ℤ) :
   change (signLaurent σ hσ (Coefficients.q : Coefficients.Ring)) ^ z = _
   rw [signLaurent_q, ← RatFunc.single_zpow]
 
-private theorem signLaurent_norm {I : Type*} (C : SuperCartanDatum I)
+theorem signLaurent_norm {I : Type*} (C : SuperCartanDatum I)
     (σ : ℚ) (hσ : σ ^ 2 = 1) (i : I) :
     signLaurent σ hσ (C.norm Coefficients.q Coefficients.pi i) =
       (PreF.DotSeries.factor (C.pii σ i) (2 * C.d i)
@@ -78,7 +78,7 @@ private theorem signLaurent_norm {I : Type*} (C : SuperCartanDatum I)
       HahnSeries.ofPowerSeries_X] using h
   exact (left_inv_eq_right_inv hf hn).symm
 
-private theorem signLaurent_chi {I : Type*} (C : SuperCartanDatum I)
+theorem signLaurent_chi {I : Type*} (C : SuperCartanDatum I)
     (σ : ℚ) (hσ : σ ^ 2 = 1) (i j : I) :
     signLaurent σ hσ (C.chi Coefficients.q Coefficients.pi i j) =
       HahnSeries.single (-C.dot i j) (σ ^ (C.parity i * C.parity j).val) := by
@@ -87,7 +87,7 @@ private theorem signLaurent_chi {I : Type*} (C : SuperCartanDatum I)
   change HahnSeries.single (-C.dot i j) 1 * HahnSeries.single 0 _ = _
   rw [HahnSeries.single_mul_single, add_zero, one_mul]
 
-private theorem prod_single_parity {J : Type*} (s : Finset J) (k : J → ℤ)
+theorem prod_single_parity {J : Type*} (s : Finset J) (k : J → ℤ)
     (p : J → ZMod 2) (σ : ℚ) (hσ : σ ^ 2 = 1) :
     (∏ j ∈ s, (HahnSeries.single (k j) (σ ^ (p j).val) : LaurentSeries ℚ)) =
       HahnSeries.single (∑ j ∈ s, k j) (σ ^ (∑ j ∈ s, p j).val) := by
@@ -100,7 +100,7 @@ private theorem prod_single_parity {J : Type*} (s : Finset J) (k : J → ℤ)
     congr 1
     rw [ZMod.val_add, ← pow_eq_pow_mod _ hσ, pow_add]
 
-private theorem signLaurent_crossings {I : Type*} (C : SuperCartanDatum I)
+theorem signLaurent_crossings {I : Type*} (C : SuperCartanDatum I)
     (σ : ℚ) (hσ : σ ^ 2 = 1) {n : ℕ} (a : Fin n → I) (w : Equiv.Perm (Fin n)) :
     signLaurent σ hσ (∏ r, ∏ s with r < s ∧ w s < w r,
       C.chi Coefficients.q Coefficients.pi (a r) (a s)) =
@@ -109,13 +109,13 @@ private theorem signLaurent_crossings {I : Type*} (C : SuperCartanDatum I)
   simp only [map_prod, signLaurent_chi]
   simp_rw [prod_single_parity _ _ _ σ hσ]
 
-private theorem signLaurent_norms {I : Type*} (C : SuperCartanDatum I)
+theorem signLaurent_norms {I : Type*} (C : SuperCartanDatum I)
     (σ : ℚ) (hσ : σ ^ 2 = 1) {n : ℕ} (a : Fin n → I) :
     signLaurent σ hσ (∏ r, C.norm Coefficients.q Coefficients.pi (a r)) =
       (C.dotSeries σ a : LaurentSeries ℚ) := by
   simp only [map_prod, signLaurent_norm, SuperCartanDatum.dotSeries, PreF.DotSeries.strands]
 
-private theorem shifted_series_coeff (f : PowerSeries ℚ) (k z : ℤ) (c : ℚ) :
+theorem shifted_series_coeff (f : PowerSeries ℚ) (k z : ℤ) (c : ℚ) :
     ((HahnSeries.single k c : LaurentSeries ℚ) * (f : LaurentSeries ℚ)).coeff z =
       if k ≤ z then c * PowerSeries.coeff (z - k).toNat f else 0 := by
   rw [HahnSeries.coeff_single_mul, PowerSeries.coeff_coe]

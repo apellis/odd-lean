@@ -95,7 +95,7 @@ private theorem parity_pow_sum {ι k : Type*} [Fintype ι] [CommRing k]
         parity_pow_count π hπ, ih]
   exact hs Finset.univ
 
-private theorem shifted_counts_coeff {I k : Type*} [CommRing k]
+theorem shifted_counts_coeff {I k : Type*} [CommRing k]
     (C : CoveringQuantum.SuperCartanDatum I) (π : k) (hπ : π ^ 2 = 1)
     {n : ℕ} (b : Fin n → I) (κ z : ℤ) (ε : ZMod 2) :
     ∃ hf : Set.Finite {c : Fin n → ℕ | κ + ((∑ t, 2 * C.d (b t) * c t : ℕ) : ℤ) = z},
