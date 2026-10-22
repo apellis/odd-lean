@@ -114,6 +114,33 @@ theorem powσ {σ f : End A} (h : Slides σ u f f) (n : ℕ) : Slides (σ ^ n) (
   | zero => simp [Slides, End.one_def]
   | succ n ih => rw [pow_succ', pow_succ']; exact h.endMul ih
 
+theorem eq_of_one (h : Slides σ 1 f g) : f ≫ σ = σ ≫ g := by
+  simpa [Slides] using h
+
+theorem comp_eq {C' : C} (h : Slides σ 1 f g) (q : B ⟶ C') : f ≫ σ ≫ q = σ ≫ g ≫ q := by
+  rw [← Category.assoc, h.eq_of_one, Category.assoc]
+
+theorem zero_left : Slides (0 : A ⟶ B) u f g := by
+  simp [Slides]
+
+theorem neg_left (h : Slides σ u f g) : Slides (-σ) u f g := by
+  simp only [Slides] at *
+  rw [Preadditive.comp_neg, h, Preadditive.neg_comp, smul_neg]
+
+theorem zsmul_left (h : Slides σ u f g) (c : ℤ) : Slides (c • σ) u f g := by
+  simp only [Slides] at *
+  rw [Preadditive.comp_zsmul, h, Preadditive.zsmul_comp, smul_comm]
+
+theorem add_left {σ' : A ⟶ B} (h : Slides σ u f g) (h' : Slides σ' u f g) :
+    Slides (σ + σ') u f g := by
+  simp only [Slides] at *
+  rw [Preadditive.comp_add, h, h', Preadditive.add_comp, smul_add]
+
+/-- Sign-commutation in an endomorphism ring is symmetric. -/
+theorem symm_end {σ f : End A} (h : Slides σ u f f) : Slides f u σ σ := by
+  simp only [Slides] at *
+  rw [h, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]
+
 theorem wb {DA : ℕ → End A} {DB : ℕ → End B} {s n : ℕ}
     (h : ∀ j, s ≤ j → j + 1 < s + n → Slides σ 1 (DA j) (DB j)) :
     Slides σ 1 (Wb DA s n) (Wb DB s n) :=
@@ -244,44 +271,120 @@ theorem par_cross_of {w : List I} {q : ℕ} {x y : I} (h₁ : w[q]? = some x)
   simp [PG.par, h₁, h₂]
 
 open SignedNilHecke in
-/-- A Demazure element of a block of colour `x` passes through a generator at disjoint
+/-- A Demazure element on two strands of colour `x` passes through a generator at disjoint
 positions, with no sign. -/
 theorem slides_dem_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x : I}
-    {ε : ℤˣ} {s n q : ℕ} (h₁ : s ≤ q) (h₂ : q + 1 < s + n)
-    (hcol : ∀ p, s ≤ p → p < s + n → w[p]? = some x)
-    (hcol' : ∀ p, s ≤ p → p < s + n → w'[p]? = some x)
-    (hd : s + n ≤ h.pos ∨ h.pos + h.width ≤ s) (hhl : h.pos + h.width ≤ w.length) :
+    {ε : ℤˣ} {s n s' n' q : ℕ} (h₁ : s ≤ q) (h₂ : q + 1 < s + n) (h₁' : s' ≤ q)
+    (h₂' : q + 1 < s' + n') (hx₀ : w[q]? = some x) (hx₁ : w[q + 1]? = some x)
+    (hx₀' : w'[q]? = some x) (hx₁' : w'[q + 1]? = some x)
+    (hd : q + 2 ≤ h.pos ∨ h.pos + h.width ≤ q) (hhl : h.pos + h.width ≤ w.length) :
     Slides (cl D Sc w w' [h] hσ) 1 (dem ε s n (dotE D Sc w) (crossE D Sc w) q)
-      (dem ε s n (dotE D Sc w') (crossE D Sc w') q) := by
-  have hl : s + n ≤ w.length := by
+      (dem ε s' n' (dotE D Sc w') (crossE D Sc w') q) := by
+  have hl : q + 2 ≤ w.length := by
     by_contra hc
-    have := hcol (s + n - 1) (by omega) (by omega)
-    rw [List.getElem?_eq_none (by omega)] at this
-    simp at this
-  rw [dem_of h₁ h₂, dem_of h₁ h₂]
+    rw [List.getElem?_eq_none (by omega)] at hx₁
+    simp at hx₁
+  rw [dem_of h₁ h₂, dem_of h₁' h₂']
   refine Slides.neg (Slides.zsmul ?_ _)
   rw [← zunit_mul_self (D.parity x * h.par D w)]
   have hT := genE_slides D Sc (g := .cross q)
-    (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega) hhl
-    (sChain_cross_of (hcol q h₁ (by omega)) (hcol (q + 1) (by omega) h₂))
-    (sChain_cross_of (hcol' q h₁ (by omega)) (hcol' (q + 1) (by omega) h₂)) hσ
+    (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
+    hhl (sChain_cross_of hx₀ hx₁) (sChain_cross_of hx₀' hx₁') hσ
   have hX := genE_slides D Sc (g := .dot (q + 1))
     (by rw [PG.pos_dot, PG.width_dot]; omega) (by rw [PG.pos_dot, PG.width_dot]; omega) hhl
     (sChain_pl w _) (sChain_pl w' _) hσ
-  rw [par_cross_of D (hcol q h₁ (by omega)) (hcol (q + 1) (by omega) h₂), parity_sq] at hT
-  rw [par_dot_of D (hcol (q + 1) (by omega) h₂)] at hX
+  rw [par_cross_of D hx₀ hx₁, parity_sq] at hT
+  rw [par_dot_of D hx₁] at hX
   exact hT.mul hX
 
 open SignedNilHecke in
-/-- A block idempotent passes through a generator at disjoint positions, with no sign. -/
+/-- A block idempotent of colour `x` passes through a generator at disjoint positions, with no
+sign. -/
 theorem slides_idem_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x : I}
-    {ε : ℤˣ} {s n t m : ℕ} (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
-    (hcol : ∀ p, s ≤ p → p < s + n → w[p]? = some x)
-    (hcol' : ∀ p, s ≤ p → p < s + n → w'[p]? = some x)
-    (hd : s + n ≤ h.pos ∨ h.pos + h.width ≤ s) (hhl : h.pos + h.width ≤ w.length) :
+    {ε : ℤˣ} {s n s' n' t m : ℕ} (h₁ : s ≤ t) (h₂ : t + m ≤ s + n) (h₁' : s' ≤ t)
+    (h₂' : t + m ≤ s' + n')
+    (hcol : ∀ p, t ≤ p → p < t + m → w[p]? = some x)
+    (hcol' : ∀ p, t ≤ p → p < t + m → w'[p]? = some x)
+    (hd : t + m ≤ h.pos ∨ h.pos + h.width ≤ t) (hhl : h.pos + h.width ≤ w.length) :
     Slides (cl D Sc w w' [h] hσ) 1 (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
-      (idem ε s n (dotE D Sc w') (crossE D Sc w') t m) :=
-  Slides.wb fun q h₁' h₂' => slides_dem_gen D Sc hσ (by omega) (by omega) hcol hcol' hd hhl
+      (idem ε s' n' (dotE D Sc w') (crossE D Sc w') t m) :=
+  Slides.wb fun q h₁'' h₂'' => slides_dem_gen D Sc hσ (by omega) (by omega) (by omega)
+    (by omega) (hcol q (by omega) (by omega)) (hcol (q + 1) (by omega) (by omega))
+    (hcol' q (by omega) (by omega)) (hcol' (q + 1) (by omega) (by omega)) (by omega) hhl
 
+open SignedNilHecke in
+/-- A block idempotent commutes with every generator of its word at disjoint positions. -/
+theorem slides_idem_genE {w : List I} {g : PG} (hg : SChain w (pl w [g]) w) {x : I}
+    {ε : ℤˣ} {s n t m : ℕ} (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
+    (hcol : ∀ p, t ≤ p → p < t + m → w[p]? = some x)
+    (hd : t + m ≤ g.pos ∨ g.pos + g.width ≤ t) (hgl : g.pos + g.width ≤ w.length) :
+    Slides (genE D Sc w g) 1 (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m) := by
+  rw [genE_eq D Sc hg]
+  exact slides_idem_gen D Sc hg h₁ h₂ h₁ h₂ hcol hcol hd hgl
+
+open SignedNilHecke in
+/-- A block idempotent commutes with a Demazure element at disjoint positions. -/
+theorem slides_idem_dem {w : List I} {x y : I} {ε ε' : ℤˣ} {s n t m s' n' q : ℕ}
+    (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
+    (hcol : ∀ p, t ≤ p → p < t + m → w[p]? = some x)
+    (hy₀ : w[q]? = some y) (hy₁ : w[q + 1]? = some y)
+    (hd : t + m ≤ q ∨ q + 2 ≤ t) :
+    Slides (dem (B := End ((pres D Sc).obj (ob D w))) ε' s' n' (dotE D Sc w) (crossE D Sc w) q) 1
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m) := by
+  have hl : q + 2 ≤ w.length := by
+    by_contra hc
+    rw [List.getElem?_eq_none (by omega)] at hy₁
+    simp at hy₁
+  by_cases hq : s' ≤ q ∧ q + 1 < s' + n'
+  · rw [dem_of hq.1 hq.2]
+    refine Slides.neg_left (Slides.zsmul_left ?_ _)
+    rw [← one_mul (1 : ℤˣ)]
+    exact (slides_idem_genE D Sc (sChain_cross_of hy₀ hy₁) h₁ h₂ hcol
+      (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)).endMul
+      (slides_idem_genE D Sc (sChain_pl w [.dot (q + 1)]) h₁ h₂ hcol
+        (by rw [PG.pos_dot, PG.width_dot]; omega) (by rw [PG.pos_dot, PG.width_dot]; omega))
+  · rw [dem_of_not hq]
+    exact Slides.zero_left
+
+open SignedNilHecke in
+/-- Block idempotents of disjoint blocks commute. -/
+theorem slides_idem_idem {w : List I} {x y : I} {ε ε' : ℤˣ} {s n t m s' n' t' m' : ℕ}
+    (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
+    (hcol : ∀ p, t ≤ p → p < t + m → w[p]? = some x)
+    (hcol' : ∀ p, t' ≤ p → p < t' + m' → w[p]? = some y)
+    (hd : t + m ≤ t' ∨ t' + m' ≤ t) :
+    Slides (idem (B := End ((pres D Sc).obj (ob D w))) ε' s' n' (dotE D Sc w) (crossE D Sc w)
+      t' m') 1
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m) := by
+  have h := Slides.wpσ (u := 1) (ρ := (Categorification.NilHecke.w0Word m').map (t' + ·))
+    (D' := dem ε' s' n' (dotE D Sc w) (crossE D Sc w))
+    (f := idem ε s n (dotE D Sc w) (crossE D Sc w) t m) fun q hq => by
+      obtain ⟨hq₁, hq₂⟩ := Categorification.KLR.KL2.NH.mem_w0Word_map hq
+      exact slides_idem_dem D Sc h₁ h₂ hcol (hcol' q hq₁ (by omega))
+        (hcol' (q + 1) (by omega) (by omega)) (by omega)
+  rwa [one_pow] at h
+
+open SignedNilHecke in
+/-- A product of crossings at positions disjoint from a block commutes with its idempotent. -/
+theorem slides_idem_wp {w : List I} {x y : I} {ε : ℤˣ} {s n t m : ℕ} (ρ : List ℕ)
+    (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
+    (hcol : ∀ p, t ≤ p → p < t + m → w[p]? = some x)
+    (hρ : ∀ q ∈ ρ, w[q]? = some y ∧ w[q + 1]? = some y ∧ (t + m ≤ q ∨ q + 2 ≤ t)) :
+    Slides (wp (crossE D Sc w) ρ : End ((pres D Sc).obj (ob D w))) 1
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
+      (idem ε s n (dotE D Sc w) (crossE D Sc w) t m) := by
+  have h := Slides.wpσ (u := 1) (ρ := ρ) (D' := crossE D Sc w)
+    (f := idem ε s n (dotE D Sc w) (crossE D Sc w) t m) fun q hq => by
+      obtain ⟨hy₀, hy₁, hd⟩ := hρ q hq
+      have hl : q + 2 ≤ w.length := by
+        by_contra hc
+        rw [List.getElem?_eq_none (by omega)] at hy₁
+        simp at hy₁
+      exact slides_idem_genE D Sc (sChain_cross_of hy₀ hy₁) h₁ h₂ hcol
+        (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
+  rwa [one_pow] at h
 
 end OddMath.QuiverHecke
