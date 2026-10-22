@@ -20,6 +20,7 @@ import OddMath.QuiverHecke.SerreClass
 import OddMath.QuiverHecke.SerreClassUp
 import OddMath.QuiverHecke.CornerProjectors
 import OddMath.SKM.KarSummandProducts
+import OddMath.SKM.SummandRetracts
 import OddMath.QuiverHecke.SerreDividedPowers
 import OddMath.QuiverHecke.SerreDividedPowersDown
 import OddMath.QuiverHecke.PolynomialExchangeExamples
@@ -42,6 +43,7 @@ import OddMath.QuiverHecke.ShuffleBasis
 import OddMath.QuiverHecke.TailDecomposition
 import OddMath.QuiverHecke.DividedPowerCorner
 import OddMath.QuiverHecke.TailIdempotents
+import OddMath.QuiverHecke.DividedPowerSpan
 import OddMath.QuiverHecke.HomDimensionExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
