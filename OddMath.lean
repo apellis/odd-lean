@@ -917,6 +917,7 @@ import OddMath.SKM.DotSlides
 import OddMath.SKM.EvenBridge.Compare
 import OddMath.SKM.EvenBridge.Datum
 import OddMath.SKM.EvenBridge.Form
+import OddMath.SKM.EvenBridge.Functor
 import OddMath.SKM.EvenBridge.Transfer
 import OddMath.SKM.Envelope
 import OddMath.SKM.HomComponents
