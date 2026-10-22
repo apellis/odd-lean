@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SerreWords
 import OddMath.QuiverHecke.SplitComplex
+import OddMath.QuiverHecke.DividedPowerModules
 
 /-!
 # The categorical Serre complex
@@ -1039,5 +1040,153 @@ theorem split_top (hij : i ≠ j) {b : ℕ} (hM : M = D.dn i j + 1) (hbM : M = b
     rw [hc, hcc, hval, smul_smul, hγ.val_inv_mul, one_smul]
 
 end Ends
+
+
+/-! ## The split complex in `H_{M+1}` -/
+
+section Assembly
+
+variable (i j : I) (M : ℕ)
+
+/-- The word `i^a j i^{M-a}` as a word of length `M + 1`. -/
+def wd {a : ℕ} (ha : a ≤ M) : Word I (M + 1) := ⟨word i j M a, length_word ha⟩
+
+/-- `e_a = 1_{i^{(a)} j i^{(M-a)}}` in `H_{M+1}` (zero for `a > M`). -/
+def eH (a : ℕ) : Hn D Sc (M + 1) :=
+  if h : a ≤ M then Hn.single (wd i j M h) (wd i j M h) (eIdem D Sc i j M a) else 0
+
+/-- The map `upMap a` as an element of `e_{a+1} H_{M+1} e_a` (zero for `a ≥ M`). -/
+def fH (a : ℕ) : Hn D Sc (M + 1) :=
+  if h : a < M then Hn.single (wd i j M (a := a + 1) h) (wd i j M h.le) (upMap D Sc i j M h)
+  else 0
+
+/-- The map `downMap a` as an element of `e_a H_{M+1} e_{a+1}` (zero for `a ≥ M`). -/
+def gH (a : ℕ) : Hn D Sc (M + 1) :=
+  if h : a < M then Hn.single (wd i j M h.le) (wd i j M (a := a + 1) h) (downMap D Sc i j M h)
+  else 0
+
+variable {D Sc i j M}
+
+theorem eIdem_comp_upMap {a : ℕ} (ha : a < M) :
+    eIdem D Sc i j M a ≫ upMap D Sc i j M ha = upMap D Sc i j M ha := by
+  unfold upMap
+  rw [← Category.assoc, show eIdem D Sc i j M a ≫ eIdem D Sc i j M a = eIdem D Sc i j M a from
+    eIdem_idem a ha.le]
+
+theorem eIdem_comp_downMap {a : ℕ} (ha : a < M) :
+    eIdem D Sc i j M (a + 1) ≫ downMap D Sc i j M ha = downMap D Sc i j M ha := by
+  unfold downMap
+  rw [← Category.assoc, show eIdem D Sc i j M (a + 1) ≫ eIdem D Sc i j M (a + 1) =
+    eIdem D Sc i j M (a + 1) from eIdem_idem (a + 1) ha]
+
+theorem fH_mul (a : ℕ) : fH D Sc i j M a * eH D Sc i j M a = fH D Sc i j M a := by
+  by_cases h : a < M
+  · rw [fH, eH, dite_eq_left h, dite_eq_left h.le, Hn.single_mul_single, eIdem_comp_upMap]
+  · rw [fH, dite_eq_right h, FiniteHomMatrix.matrix_zero_mul]
+
+theorem mul_fH (a : ℕ) : eH D Sc i j M (a + 1) * fH D Sc i j M a = fH D Sc i j M a := by
+  by_cases h : a < M
+  · rw [fH, eH, dite_eq_left h, dite_eq_left (show a + 1 ≤ M from h), Hn.single_mul_single,
+      upMap_comp_eIdem]
+  · rw [fH, dite_eq_right h, FiniteHomMatrix.matrix_mul_zero]
+
+theorem gH_mul (a : ℕ) : gH D Sc i j M a * eH D Sc i j M (a + 1) = gH D Sc i j M a := by
+  by_cases h : a < M
+  · rw [gH, eH, dite_eq_left h, dite_eq_left (show a + 1 ≤ M from h), Hn.single_mul_single,
+      eIdem_comp_downMap]
+  · rw [gH, dite_eq_right h, FiniteHomMatrix.matrix_zero_mul]
+
+theorem mul_gH (a : ℕ) : eH D Sc i j M a * gH D Sc i j M a = gH D Sc i j M a := by
+  by_cases h : a < M
+  · rw [gH, eH, dite_eq_left h, dite_eq_left h.le, Hn.single_mul_single, downMap_comp_eIdem]
+  · rw [gH, dite_eq_right h, FiniteHomMatrix.matrix_mul_zero]
+
+theorem fH_mul_fH (a : ℕ) : fH D Sc i j M (a + 1) * fH D Sc i j M a = 0 := by
+  by_cases h : a + 1 < M
+  · rw [fH, fH, dite_eq_left h, dite_eq_left (Nat.lt_of_succ_lt h), Hn.single_mul_single,
+      upMap_comp_upMap h]
+    exact FiniteHomMatrix.single_zero _ _
+  · rw [show fH D Sc i j M (a + 1) = 0 from dite_eq_right h, FiniteHomMatrix.matrix_zero_mul]
+
+theorem gH_mul_gH (a : ℕ) : gH D Sc i j M a * gH D Sc i j M (a + 1) = 0 := by
+  by_cases h : a + 1 < M
+  · rw [gH, gH, dite_eq_left h, dite_eq_left (Nat.lt_of_succ_lt h), Hn.single_mul_single,
+      downMap_comp_downMap h]
+    exact FiniteHomMatrix.single_zero _ _
+  · rw [show gH D Sc i j M (a + 1) = 0 from dite_eq_right h, FiniteHomMatrix.matrix_mul_zero]
+
+theorem gH_mul_fH {a : ℕ} (h : a < M) :
+    gH D Sc i j M a * fH D Sc i j M a =
+      Hn.single (wd i j M h.le) (wd i j M h.le) (upMap D Sc i j M h ≫ downMap D Sc i j M h) := by
+  rw [gH, fH, dite_eq_left h, dite_eq_left h, Hn.single_mul_single]
+
+theorem fH_mul_gH {a : ℕ} (h : a < M) :
+    fH D Sc i j M a * gH D Sc i j M a =
+      Hn.single (wd i j M (a := a + 1) h) (wd i j M (a := a + 1) h)
+        (downMap D Sc i j M h ≫ upMap D Sc i j M h) := by
+  rw [gH, fH, dite_eq_left h, dite_eq_left h, Hn.single_mul_single]
+
+theorem single_comb {a b : Word I (M + 1)} (c₁ c₂ : k)
+    (f g : wordObj D Sc b ⟶ wordObj D Sc a) :
+    Hn.single a b (c₁ • f + c₂ • g) = c₁ • Hn.single a b f + c₂ • Hn.single a b g := by
+  unfold Hn.single
+  rw [FiniteHomMatrix.single_add, FiniteHomMatrix.single_smul, FiniteHomMatrix.single_smul]
+
+/-- The splitting identities of HW Theorem 5.9 in `H_{M+1}`. -/
+theorem eH_split (hij : i ≠ j) (hM : M = D.dn i j + 1) (a : ℕ) (ha : a ≤ M) :
+    ∃ cp cm : k, eH D Sc i j M a = cp • (gH D Sc i j M a * fH D Sc i j M a) +
+      if 0 < a then cm • (fH D Sc i j M (a - 1) * gH D Sc i j M (a - 1)) else 0 := by
+  rcases a with _ | b
+  · obtain ⟨cp, hcp⟩ := split_zero (D := D) (Sc := Sc) hij hM
+    refine ⟨cp, 0, ?_⟩
+    rw [ite_eq_right (lt_irrefl 0), add_zero, gH_mul_fH (by omega), eH, dite_eq_left ha, hcp]
+    exact FiniteHomMatrix.single_smul _ _ _ _
+  · by_cases hb : b + 1 < M
+    · obtain ⟨cp, cm, hc⟩ := split_interior (D := D) (Sc := Sc) hij hM hb
+      refine ⟨cp, cm, ?_⟩
+      rw [ite_eq_left (Nat.succ_pos b), Nat.add_sub_cancel, fH_mul_gH (by omega), gH_mul_fH hb,
+        eH, dite_eq_left ha, hc]
+      exact single_comb _ _ _ _
+    · obtain ⟨cm, hc⟩ := split_top (D := D) (Sc := Sc) hij hM (b := b) (by omega)
+      refine ⟨0, cm, ?_⟩
+      rw [ite_eq_left (Nat.succ_pos b), Nat.add_sub_cancel, fH_mul_gH (by omega), eH,
+        dite_eq_left ha, zero_smul, zero_add, hc]
+      exact FiniteHomMatrix.single_smul _ _ _ _
+
+open DividedPowerModules in
+/-- **BE2 Proposition 11.2** (HW Theorem 5.9), on underlying modules: for `i ≠ j` and
+`M = d_ij + 1`, the principal modules `H_{M+1} e_a` of the words `i^a j i^{M-a}`
+(`0 ≤ a ≤ M`) with the maps `upMap`, `downMap` form a split complex: consecutive maps compose to
+zero and `e_a = c⁺_a g_a f_a + c⁻_a f_{a-1} g_{a-1}`. -/
+theorem isSplit (hij : i ≠ j) (hM : M = D.dn i j + 1) :
+    ∃ cp cm : ℕ → k, SplitComplex.IsSplit M
+      (fun a => (eH D Sc i j M a : ModuleRing D Sc (M + 1)))
+      (fun a => (fH D Sc i j M a : ModuleRing D Sc (M + 1)))
+      (fun a => (gH D Sc i j M a : ModuleRing D Sc (M + 1))) cp cm := by
+  have hs := fun a ha => eH_split (D := D) (Sc := Sc) hij hM a ha
+  choose! cp cm hc using hs
+  refine ⟨cp, cm, ⟨fun a => ?_, fun a => ?_, fun a => ?_, fun a => ?_, fun a => ?_,
+    fun a => ?_, fun a ha => ?_, fun a ha => ?_, fun a ha => ?_⟩⟩
+  · rw [← Unitization.inr_mul, fH_mul]
+  · rw [← Unitization.inr_mul, mul_fH]
+  · rw [← Unitization.inr_mul, gH_mul]
+  · rw [← Unitization.inr_mul, mul_gH]
+  · rw [← Unitization.inr_mul, fH_mul_fH, Unitization.inr_zero]
+  · rw [← Unitization.inr_mul, gH_mul_gH, Unitization.inr_zero]
+  · rw [fH, dite_eq_right (by omega), Unitization.inr_zero]
+  · rw [gH, dite_eq_right (by omega), Unitization.inr_zero]
+  · rw [hc a ha]
+    split_ifs <;> simp only [Unitization.inr_add, Unitization.inr_smul, Unitization.inr_mul,
+      Unitization.inr_zero]
+
+open DividedPowerModules SplitComplex in
+/-- **BE2 Proposition 11.2**, "in particular" (on underlying modules): the sum of the principal
+modules `H_{M+1} e_a` over even `a` is isomorphic to the sum over odd `a`. -/
+def serreEquiv (hij : i ≠ j) (hM : M = D.dn i j + 1) :
+    (∀ a : terms M true, principal D Sc (eH D Sc i j M a)) ≃ₗ[ModuleRing D Sc (M + 1)]
+      (∀ b : terms M false, principal D Sc (eH D Sc i j M b)) :=
+  (Classical.choose_spec (Classical.choose_spec (isSplit (D := D) (Sc := Sc) hij hM))).evenOddEquiv
+
+end Assembly
 
 end OddMath.QuiverHecke.SerreComplex
