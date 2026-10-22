@@ -190,7 +190,7 @@ theorem projector_even :
 /-- The summand `Q^m (E_i^r 1_ν, α(1_{i^{(r)}}))` of the completed hom category. -/
 abbrev summand (m : ℤ) :=
   raw (projector_idem D Sc sy hc i hi r ν) (projector_degree D Sc sy hc i hi r ν)
-    (projector_even D Sc sy hc i hi r ν) m
+    (projector_even D Sc sy hc i hi r ν) m 0
 
 /-- BE2's divided power `E_i^{(r)} 1_ν`: the degree-zero summand. -/
 abbrev dividedPowerPrinted := summand D Sc sy hc i hi r ν 0
@@ -203,7 +203,7 @@ theorem class_summands :
     K₀.mk (whole (upWordHom D Sc sy hc i r ν)) =
       ∑ j : evenIndex r, K₀.mk (summand D Sc sy hc i hi r ν (evenShift r j * sy.d i)) := by
   have S := evenCornerSplitting D Sc i hi r
-  refine class_whole _ _ _ (fun j => evenShift r j * sy.d i)
+  refine class_whole _ _ _ (fun j => evenShift r j * sy.d i) (fun _ => 0)
     (fun j => alphaEnd D Sc sy hc i r ν (evenSigma D Sc i hi r j))
     (fun j => alphaEnd D Sc sy hc i r ν (evenLam D Sc i hi r j)) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
   · intro j

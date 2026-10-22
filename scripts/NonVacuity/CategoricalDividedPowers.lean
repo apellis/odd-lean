@@ -8,3 +8,12 @@ import OddMath
 #print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_corrected
 #print axioms OddMath.QuiverHecke.CategoricalDividedPowers.printed_forces_zero
 #print axioms OddMath.QuiverHecke.CategoricalDividedPowers.sum_T_evenShift_mul
+
+/-! BE2 Lemma 11.5 for odd colours. -/
+
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_summands_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_printed_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_corrected_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.printed_forces_zero_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.sum_T_oddShift_mul
+#print axioms OddMath.CoveringQuantum.qpFact_inv
