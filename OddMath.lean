@@ -29,6 +29,7 @@ import OddMath.QuiverHecke.SortedSummands
 import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.WidthZero
 import OddMath.QuiverHecke.UpwardClasses
+import OddMath.QuiverHecke.UpwardImage
 import OddMath.QuiverHecke.UTurnSpanning
 import OddMath.QuiverHecke.SplitFactorization
 import OddMath.QuiverHecke.GradedWalk
