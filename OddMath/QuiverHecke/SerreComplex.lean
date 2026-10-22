@@ -610,7 +610,7 @@ theorem ann_right {b : ℕ} (hb : b + 1 < M) (r : ℕ) (hr : r ≤ M - (b + 1 + 
   rw [show M - (b + 1 + 1) + 1 = M - (b + 1) by omega] at h
   exact h
 
-theorem pow_comm_lIdem {b : ℕ} (hb : b + 1 < M) {p : ℕ} (hp : b + 1 ≤ p) (hpM : p ≤ M)
+theorem pow_comm_lIdem {b : ℕ} (hb : b + 1 ≤ M) {p : ℕ} (hp : b + 1 ≤ p) (hpM : p ≤ M)
     (r : ℕ) :
     xw D Sc i j M (b + 1) p ^ r * lIdem D Sc i j M (b + 1) =
       lIdem D Sc i j M (b + 1) * xw D Sc i j M (b + 1) p ^ r := by
@@ -658,8 +658,8 @@ theorem interior_ann_zero {b : ℕ} (hb : b + 1 < M) {p q r : ℕ}
     chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) * chL (tw D Sc i j M (b + 1)) 0 b *
         (xw D Sc i j M (b + 1) b ^ p * xw D Sc i j M (b + 1) (b + 1) ^ q *
           xw D Sc i j M (b + 1) (b + 1 + 1) ^ r) * eIdem D Sc i j M (b + 1) = 0 :=
-  ann_mono_zero ann_left (ann_right hb) (pow_comm_lIdem hb (by omega) (by omega))
-    (pow_comm_lIdem hb le_rfl (by omega)) (signComm_chR_chL hb)
+  ann_mono_zero ann_left (ann_right hb) (pow_comm_lIdem hb.le (by omega) (by omega))
+    (pow_comm_lIdem hb.le le_rfl (by omega)) (signComm_chR_chL hb)
     (signComm_chR_dot hb (by omega)) (chR_comm_lIdem hb) (signComm_chR_dot hb le_rfl) h
 
 /-- The surviving monomial `x^b z^{M-b-2}` gives a sign times `e`. -/
@@ -669,7 +669,7 @@ theorem interior_ann_top {b : ℕ} (hb : b + 1 < M) :
         (xw D Sc i j M (b + 1) b ^ b * xw D Sc i j M (b + 1) (b + 1 + 1) ^ (M - (b + 1 + 1))) *
           eIdem D Sc i j M (b + 1) = (c : ℤ) • eIdem D Sc i j M (b + 1) := by
   refine ⟨(-1) ^ b * eps D i ^ (b + 1).choose 2 * eps D i ^ (M - (b + 1 + 1)).choose 2, ?_⟩
-  rw [eIdem, ann_mono_top ann_left (ann_right hb) (pow_comm_lIdem hb (by omega) (by omega))
+  rw [eIdem, ann_mono_top ann_left (ann_right hb) (pow_comm_lIdem hb.le (by omega) (by omega))
     (chR_comm_lIdem hb)]
   push_cast
   ring_nf
@@ -859,5 +859,120 @@ theorem split_interior (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b
   abel
 
 end Interior
+
+/-! ### The ends of the complex -/
+
+section Ends
+
+open SignedNilHecke
+
+variable {D Sc i j M}
+
+/-- (1.7) on words given up to equality. -/
+theorem cl_cross_cross_of {w : List I} (l r : List I) {x y : I} (hxy : x ≠ y) (hd : D.d x y ≠ 0)
+    (hw : w = l ++ [x, y] ++ r) {p : ℕ} (hp : l.length = p) {gs : List PG}
+    (hgs : gs = [.cross p, .cross p]) (h : SChain w (pl w gs) w) :
+    cl D Sc w w gs h =
+      ∑ p' ∈ Finset.Ioo 0 (D.dn x y), ∑ q ∈ Finset.Ioo 0 (D.dn y x),
+        Sc.s x y p' q • (dotE D Sc w p ^ p' * dotE D Sc w (p + 1) ^ q) +
+      ((Sc.t x y : k) • dotE D Sc w p ^ D.dn x y +
+        (Sc.t y x : k) • dotE D Sc w (p + 1) ^ D.dn y x) := by
+  subst hw hp hgs
+  exact cross_cross_ne D Sc l r hxy hd h
+
+/-- (1.7) with `d_xy = 0` on words given up to equality. -/
+theorem cl_cross_cross_zero_of {w : List I} (l r : List I) {x y : I} (hxy : x ≠ y)
+    (hd : D.d x y = 0) (hw : w = l ++ [x, y] ++ r) {p : ℕ} (hp : l.length = p) {gs : List PG}
+    (hgs : gs = [.cross p, .cross p]) (h : SChain w (pl w gs) w) :
+    cl D Sc w w gs h = (Sc.t x y : k) • 𝟙 _ := by
+  subst hw hp hgs
+  exact cross_cross_ne_zero D Sc l r hxy hd h
+
+theorem lIdem_zero : lIdem D Sc i j M 0 = 1 := by
+  simp [lIdem, idem, Wb, Categorification.NilHecke.w0Word]
+
+theorem rIdem_top {b : ℕ} (hbM : M = b + 1) : rIdem D Sc i j M (b + 1) = 1 := by
+  unfold rIdem
+  rw [show M - (b + 1) = 0 by omega]
+  simp [idem, Wb, Categorification.NilHecke.w0Word]
+
+/-- HW Theorem 5.9 at `a = 0`: `e_0` is a multiple of `upMap 0 ≫ downMap 0`. -/
+theorem split_zero (hij : i ≠ j) (hM : M = D.dn i j + 1) :
+    ∃ cp : k, eIdem D Sc i j M 0 =
+      cp • (upMap D Sc i j M (by omega : 0 < M) ≫ downMap D Sc i j M (by omega : 0 < M)) := by
+  have h0 : 0 < M := by omega
+  have hc : upMap D Sc i j M h0 ≫ downMap D Sc i j M h0 = eIdem D Sc i j M 0 ≫
+      (up D Sc i j M h0 ≫ down D Sc i j M h0) ≫
+        chR (B := End (wobj D Sc i j M 0)) (tw D Sc i j M 0) 1 (M - 1) := by
+    rw [show downMap D Sc i j M h0 = eIdem D Sc i j M 1 ≫ down D Sc i j M h0 ≫
+      chR (B := End (wobj D Sc i j M 0)) (tw D Sc i j M 0) 1 (M - 1) from rfl,
+      ← Category.assoc, upMap_comp_eIdem]
+    unfold upMap
+    rw [Categorification.KLR.KL2.NH.chL_zero, End.one_def, Category.comp_id]
+    simp only [Category.assoc]
+  have e : word i j M 0 = [] ++ [j, i] ++ List.replicate (M - 1) i := by
+    rw [word_up h0]; simp
+  have hcc : up D Sc i j M h0 ≫ down D Sc i j M h0 =
+      cl D Sc (word i j M 0) (word i j M 0) [.cross 0, .cross 0]
+        (sChain_comp (sChain_up h0) (sChain_down h0)) := by
+    unfold up down; rw [cl_comp]; rfl
+  rcases eq_or_ne (D.d i j) 0 with hd | hd
+  · have hd' := (D.d_eq_zero_iff i j).1 hd
+    have hM1 : M = 1 := by have := D.dn_cast hij; omega
+    refine ⟨((Sc.t j i)⁻¹ : kˣ), ?_⟩
+    rw [hc, hcc, cl_cross_cross_zero_of _ _ hij.symm hd' e (p := 0) rfl rfl, Linear.smul_comp,
+      Category.id_comp, Linear.comp_smul, show M - 1 = 0 by omega,
+      Categorification.KLR.KL2.NH.chR_zero, End.one_def, Category.comp_id, smul_smul,
+      Units.inv_mul, one_smul]
+  · have hd' : D.d j i ≠ 0 := fun h => hd ((D.d_eq_zero_iff i j).2 h)
+    have hn : D.dn i j = M - 1 := by omega
+    have hn0 : 0 < D.dn i j := by have := D.dn_cast hij; omega
+    -- the right block of `j i^M`
+    have hR : ∀ q ≤ M - 1, chR (tw D Sc i j M 0) 1 (M - 1) *
+        (xw D Sc i j M 0 1 ^ q * rIdem D Sc i j M 0) =
+        if q = M - 1 then ((eps D i : ℤ) ^ (M - 1).choose 2) • rIdem D Sc i j M 0 else 0 := by
+      intro q hq
+      have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) 0).chR_mul_x_pow_mul_idem
+        (s' := 1) (l := M - 1) (a := q) le_rfl (by omega) hq
+      rw [show M - 1 + 1 = M by omega] at h
+      exact h
+    have hX : ∀ p, SignComm (chR (tw D Sc i j M 0) 1 (M - 1)) (xw D Sc i j M 0 0 ^ p) := by
+      intro p
+      unfold chR
+      refine ((SignComm.wp fun q hq => ?_).pow_left p).symm
+      rw [List.mem_reverse, List.mem_range'_1] at hq
+      exact signComm_dot_cross D Sc (by omega) (word_gt (by omega) (by omega))
+        (word_gt (by omega) (by omega))
+    have hzero : ∀ p q, q < M - 1 → chR (tw D Sc i j M 0) 1 (M - 1) *
+        (xw D Sc i j M 0 0 ^ p * xw D Sc i j M 0 1 ^ q) * eIdem D Sc i j M 0 = 0 := by
+      intro p q hq
+      obtain ⟨u, hu⟩ := hX p
+      rw [eIdem, lIdem_zero, one_mul, ← mul_assoc, hu, smul_mul_assoc, smul_mul_assoc,
+        mul_assoc, mul_assoc, hR q hq.le, ite_eq_right (by omega), mul_zero, smul_zero]
+    obtain ⟨c, hc'⟩ : ∃ c : ℤ, IsUnit c ∧ chR (tw D Sc i j M 0) 1 (M - 1) *
+        xw D Sc i j M 0 1 ^ (M - 1) * eIdem D Sc i j M 0 = c • eIdem D Sc i j M 0 :=
+      ⟨_, (Units.isUnit (eps D i)).pow _, by
+        rw [eIdem, lIdem_zero, one_mul, mul_assoc, hR _ le_rfl, ite_eq_left rfl]⟩
+    have hval : eIdem D Sc i j M 0 ≫ cl D Sc (word i j M 0) (word i j M 0) [.cross 0, .cross 0]
+        (sChain_comp (sChain_up h0) (sChain_down h0)) ≫
+          chR (B := End (wobj D Sc i j M 0)) (tw D Sc i j M 0) 1 (M - 1) =
+        ((Sc.t i j : k) * ((c : ℤ) : k)) • eIdem D Sc i j M 0 := by
+      rw [cl_cross_cross_of _ _ hij.symm hd' e (p := 0) rfl rfl]
+      change chR (tw D Sc i j M 0) 1 (M - 1) * (_ + _) * eIdem D Sc i j M 0 = _
+      simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm,
+        smul_mul_assoc, zero_add]
+      rw [Finset.sum_eq_zero fun p' _ => Finset.sum_eq_zero fun q hq => by
+        rw [Finset.mem_Ioo] at hq
+        rw [hzero p' q (by omega), smul_zero]]
+      have h₁ := hzero (D.dn j i) 0 (by omega)
+      rw [pow_zero, mul_one] at h₁
+      rw [h₁, smul_zero, hn, hc'.2, ← Int.cast_smul_eq_zsmul k, smul_smul]
+      simp only [zero_add]
+    have hγ : IsUnit ((Sc.t i j : k) * ((c : ℤ) : k)) :=
+      (Sc.t i j).isUnit.mul (hc'.1.map (Int.castRingHom k))
+    refine ⟨↑hγ.unit⁻¹, ?_⟩
+    rw [hc, hcc, hval, smul_smul, hγ.val_inv_mul, one_smul]
+
+end Ends
 
 end OddMath.QuiverHecke.SerreComplex
