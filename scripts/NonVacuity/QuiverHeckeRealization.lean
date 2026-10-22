@@ -43,3 +43,29 @@ example : IsUnit (y (k := ZMod 2) 0 - y 1) := isUnit_y_sub (by decide)
 #print axioms OddMath.QuiverHecke.Realization.sig_braid
 #print axioms OddMath.QuiverHecke.Realization.sig_dot_right
 #print axioms OddMath.QuiverHecke.Realization.twist_twist
+
+/-! ## The representation of the quiver Hecke supercategory
+
+The relations (1.7)–(1.9) hold for all colours, including the extra dotted terms of (1.9) when
+the outer colours agree, for countably many odd colours over `ℚ`. -/
+
+section Representation
+open OddMath.QuiverHecke OddMath.QuiverHecke.AlgebraExamples
+
+example (u : StringDiagrams.Obj (OddMath.QuiverHecke.sig datum)) (v : List (OddMath.QuiverHecke.sig datum).Colour) :
+    (interp datum scalars).evalW (seqOf (I := ℕ) (wI u ++ [0, 1, 0] ++ cI v))
+      (seqOf (I := ℕ) (wI u ++ [0, 1, 0] ++ cI v)) u v
+      (relation datum scalars (.braidEq 0 1 (by decide))) = 0 :=
+  interp_rel datum scalars (.braidEq 0 1 (by decide)) u v
+
+example : (pres datum scalars).Respects (interp datum scalars).functor :=
+  respects datum scalars
+
+example : (rep datum scalars).obj ((pres datum scalars).obj (ob datum [0, 1])) =
+    (interp datum scalars).functor.obj (ob datum [0, 1]) :=
+  rfl
+
+end Representation
+
+#print axioms OddMath.QuiverHecke.Realization.interp_rel
+#print axioms OddMath.QuiverHecke.Realization.respects
