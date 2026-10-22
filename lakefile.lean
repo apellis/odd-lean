@@ -24,7 +24,7 @@ require LieLean from git
 
 require Categorification from git
   "https://github.com/apellis/categorification-lean.git" @
-  "453a6fe7621e7a21dbf3bdf33514bb9270bf7942"
+  "ee5a0b65a60c4d11193be85e412af544a2592867"
 
 @[default_target]
 lean_lib OddMath where
