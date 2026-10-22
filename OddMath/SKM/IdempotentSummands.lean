@@ -221,6 +221,40 @@ theorem class_raw_shift_int (m n : ℤ) (p : ZMod 2) :
   rw [h]
   exact class_raw_shift he hd0 hp0 m n p
 
+include he in
+theorem class_raw_shift' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    (LaurentPolynomial.T n : LaurentPolynomial Zπ) • K₀.mk (raw he hd0 hp0 m p) =
+      K₀.mk (raw he hd0 hp0 m' p) := by
+  subst h
+  exact class_raw_shift he hd0 hp0 m n p
+
+include he in
+theorem class_raw_shift_int' {m n m' : ℤ} (h : m + n = m') (p : ZMod 2) :
+    letI := K₀.moduleLaurentInt k (Karoubi (Mat_ (Base a b)))
+    (LaurentPolynomial.T n : LaurentPolynomial ℤ) • K₀.mk (raw he hd0 hp0 m p) =
+      K₀.mk (raw he hd0 hp0 m' p) := by
+  subst h
+  exact class_raw_shift_int he hd0 hp0 m n p
+
+include he in
+/-- Every summand is a monomial multiple of the unshifted one. -/
+theorem class_raw_eq (m : ℤ) (s : ℕ) :
+    letI := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+    K₀.mk (raw he hd0 hp0 m (s : ZMod 2)) =
+      (LaurentPolynomial.T m * LaurentPolynomial.C Zπ.π ^ s : LaurentPolynomial Zπ) •
+        K₀.mk (raw he hd0 hp0 0 0) := by
+  let := K₀.moduleLaurent k (Karoubi (Mat_ (Base a b)))
+  rw [mul_smul]
+  have hp : ∀ s : ℕ, (LaurentPolynomial.C Zπ.π ^ s : LaurentPolynomial Zπ) •
+      K₀.mk (raw he hd0 hp0 0 0) = K₀.mk (raw he hd0 hp0 0 (s : ZMod 2)) := by
+    intro s
+    induction s with
+    | zero => simp
+    | succ s ih =>
+      rw [pow_succ' (LaurentPolynomial.C Zπ.π) s, mul_smul, ih, class_raw_pi, Nat.cast_succ]
+  rw [hp, class_raw_shift, zero_add]
+
 /-! ### Finite biproducts in split `K₀` -/
 
 section Biproduct

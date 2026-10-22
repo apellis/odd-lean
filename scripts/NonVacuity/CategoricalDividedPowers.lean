@@ -17,3 +17,13 @@ import OddMath
 #print axioms OddMath.QuiverHecke.CategoricalDividedPowers.printed_forces_zero_odd
 #print axioms OddMath.QuiverHecke.CategoricalDividedPowers.sum_T_oddShift_mul
 #print axioms OddMath.CoveringQuantum.qpFact_inv
+
+/-! BE2 Lemma 11.5 for `F_i^{(n)}`, even and odd colours. -/
+
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_whole_down
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_printed_down
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_corrected_down
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.printed_forces_zero_down
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_printed_down_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.class_corrected_down_odd
+#print axioms OddMath.QuiverHecke.CategoricalDividedPowers.printed_forces_zero_down_odd

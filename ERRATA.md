@@ -1021,8 +1021,8 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     These local proof corrections preserve every relation in Lemma 11.6.
 
 13. **§11, the divided powers `Eᵢ^{(n)}1_λ`, `Fᵢ^{(n)}1_λ` before Lemma 11.5: missing degree
-    and parity shift [constraint proved and corrected statement proved for `Eᵢ^{(n)}1_λ`, even and
-    odd colours].** BE2 defines `Eᵢ^{(n)}1_λ` as the summand of `Eᵢⁿ1_λ` cut out by the
+    and parity shift [constraint proved and corrected statement proved for `Eᵢ^{(n)}1_λ` and
+    `Fᵢ^{(n)}1_λ`, even and odd colours].** BE2 defines `Eᵢ^{(n)}1_λ` as the summand of `Eᵢⁿ1_λ` cut out by the
     idempotent `α_{n,λ}(1_{i^{(n)}})` in degree zero and parity zero, with no shift, and
     Lemma 11.5 asserts `[Eᵢⁿ1_λ] = [n]^!_{qᵢ,πᵢ} [Eᵢ^{(n)}1_λ]`.
 
@@ -1045,11 +1045,23 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     printed equation of Lemma 11.5 holds. Unlike the degree shift, this parity shift has no
     counterpart in (11.3), where `P(i^{(n)})` carries no parity shift.
 
+    **What holds (`Fᵢ^{(n)}1_λ`).** BE2 defines `Fᵢ^{(n)}1_λ` by the idempotent
+    `α'_{n,λ}(1_{i^{(n)}})` with `α' = ω ∘ α` (11.8), again with no shift. Transporting the same
+    splitting along `α'` reverses the degrees of the conjugating units and keeps their parities,
+    so `Fᵢⁿ1_λ ≅ ⨁ⱼ Q^{-dᵢ sⱼ} Fᵢ^{(n)}1_λ` (even) and `Fᵢⁿ1_λ ≅ ⨁ Q^{-2dᵢs} Π^s Fᵢ^{(n)}1_λ`
+    (odd). Since the monomials `π^s q^{-2s}` sum to `q^{-n(n-1)/2} [n]^!_{q,π}`,
+    `[Fᵢⁿ1_λ] = qᵢ^{-n(n-1)/2} [n]^!_{qᵢ,πᵢ} [Fᵢ^{(n)}1_λ]` in both parities. So the downward
+    divided power needs the degree shift `Q^{-dᵢ n(n-1)/2}` and no parity shift: with
+    `Q^{-dᵢ n(n-1)/2} Fᵢ^{(n)}1_λ` in place of `Fᵢ^{(n)}1_λ`, the printed equation of Lemma 11.5
+    holds.
+
     **Declarations.** `QuiverHecke.CategoricalDividedPowers.class_printed` (BE2's definition),
     `class_corrected` (the shifted one), `class_summands` (the summands); for odd colours and
     `n ≥ 2` strands `class_printed_odd`, `class_corrected_odd`, `class_summands_odd`. All hold
     for an arbitrary commutative coefficient ring, Cartan datum and weight; the generic
-    splitting is `SKM.Summands.class_whole`.
+    splitting is `SKM.Summands.class_whole`. For `Fᵢ^{(n)}1_λ`: `class_printed_down`,
+    `class_corrected_down`, `class_printed_down_odd`, `class_corrected_down_odd`, with the
+    transported splitting `class_whole_down`.
 
     **Proved obstruction.** Over a field, with finitely many symmetrizer values in each degree,
     the split `K₀` of each completed hom category is a free `ℤ[q,q⁻¹]`-module
@@ -1057,16 +1069,19 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0`: for even `i` (`printed_forces_zero`) because
     `(qᵢ^{n(n-1)/2} - 1)[n]^!_{qᵢ} ≠ 0`; for odd `i` (`printed_forces_zero_odd`) because both
     specializations `π = ±1` of `(qᵢ^{n(n-1)/2} π^{n(n-1)/2} - 1)[n]^!_{qᵢ,π}` are nonzero.
+    Likewise the printed equation forces `[Fᵢ^{(n)}1_λ] = 0` (`printed_forces_zero_down`,
+    `printed_forces_zero_down_odd`).
 
     **Certainty boundary.** That `Eᵢⁿ1_λ` is nonzero in `K₀` is not proved here. It follows,
-    for instance, from Theorem 11.7. The downward version for `Fᵢ^{(n)}1_λ` is not yet
-    formalized. The shifts do not affect Theorem 11.7 provided `γ` sends the divided powers to
+    for instance, from Theorem 11.7. The shifts do not affect Theorem 11.7 provided `γ` sends the divided powers to
     the shifted objects.
 
-    **For the authors.** Before Lemma 11.5, define `Eᵢ^{(n)}1_λ` (and `Fᵢ^{(n)}1_λ`) with the shift
-    `Q^{dᵢ n(n-1)/2} Π^{|i| n(n-1)/2}`; the degree part matches (11.3). As printed, the units in
-    the proof of Lemma 11.5 have degrees and parities whose generating function is
-    `qᵢ^{n(n-1)/2} πᵢ^{n(n-1)/2} [n]^!_{qᵢ,πᵢ}`, not `[n]^!_{qᵢ,πᵢ}`, so the lemma's equation
-    would force `[Eᵢⁿ1_λ] = 0` for `n ≥ 2`. Already for `n = 2` and even `i`, the
+    **For the authors.** Before Lemma 11.5, define `Eᵢ^{(n)}1_λ` with the shift
+    `Q^{dᵢ n(n-1)/2} Π^{|i| n(n-1)/2}` (the degree part matches (11.3)) and `Fᵢ^{(n)}1_λ` with the
+    shift `Q^{-dᵢ n(n-1)/2}` and no parity shift. As printed, the units in the proof of
+    Lemma 11.5 have degrees and parities whose generating function is
+    `qᵢ^{n(n-1)/2} πᵢ^{n(n-1)/2} [n]^!_{qᵢ,πᵢ}` for `Eᵢⁿ` and `qᵢ^{-n(n-1)/2} [n]^!_{qᵢ,πᵢ}`
+    for `Fᵢⁿ`, not `[n]^!_{qᵢ,πᵢ}`, so the lemma's equations would force `[Eᵢⁿ1_λ] = 0` and
+    `[Fᵢⁿ1_λ] = 0` for `n ≥ 2`. Already for `n = 2` and even `i`, the
     two summands of `Eᵢ²1_λ` are `Eᵢ^{(2)}1_λ` and `Q^{2dᵢ}Eᵢ^{(2)}1_λ`, cut out by `−τx` and
     split off by the crossing.
