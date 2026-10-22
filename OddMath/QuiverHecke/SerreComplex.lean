@@ -973,6 +973,71 @@ theorem split_zero (hij : i ≠ j) (hM : M = D.dn i j + 1) :
     refine ⟨↑hγ.unit⁻¹, ?_⟩
     rw [hc, hcc, hval, smul_smul, hγ.val_inv_mul, one_smul]
 
+/-- HW Theorem 5.9 at `a = M`: `e_M` is a multiple of `downMap (M-1) ≫ upMap (M-1)`. -/
+theorem split_top (hij : i ≠ j) {b : ℕ} (hM : M = D.dn i j + 1) (hbM : M = b + 1) :
+    ∃ cm : k, eIdem D Sc i j M (b + 1) =
+      cm • (downMap D Sc i j M (by omega : b < M) ≫ upMap D Sc i j M (by omega : b < M)) := by
+  have hb : b < M := by omega
+  have hc : downMap D Sc i j M hb ≫ upMap D Sc i j M hb = eIdem D Sc i j M (b + 1) ≫
+      (down D Sc i j M hb ≫ up D Sc i j M hb) ≫
+        chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b := by
+    rw [show upMap D Sc i j M hb = eIdem D Sc i j M b ≫ up D Sc i j M hb ≫
+      chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b from rfl,
+      ← Category.assoc, downMap_comp_eIdem]
+    unfold downMap
+    rw [show M - (b + 1) = 0 by omega, Categorification.KLR.KL2.NH.chR_zero, End.one_def,
+      Category.comp_id]
+    simp only [Category.assoc]
+  have e : word i j M (b + 1) = List.replicate b i ++ [i, j] ++ [] := by
+    rw [word_down b, show M - b - 1 = 0 by omega]; rfl
+  have hcc : down D Sc i j M hb ≫ up D Sc i j M hb =
+      cl D Sc (word i j M (b + 1)) (word i j M (b + 1)) [.cross b, .cross b]
+        (sChain_comp (sChain_down hb) (sChain_up hb)) := by
+    unfold up down; rw [cl_comp]; rfl
+  rcases eq_or_ne (D.d i j) 0 with hd | hd
+  · have hb0 : b = 0 := by have := D.dn_cast hij; omega
+    subst hb0
+    refine ⟨((Sc.t i j)⁻¹ : kˣ), ?_⟩
+    rw [hc, hcc, cl_cross_cross_zero_of _ _ hij hd e (p := 0) rfl rfl, Linear.smul_comp,
+      Category.id_comp, Linear.comp_smul, Categorification.KLR.KL2.NH.chL_zero, End.one_def,
+      Category.comp_id, smul_smul, Units.inv_mul, one_smul]
+  · have hn : D.dn i j = b := by omega
+    have hn0 : 0 < b := by have := D.dn_cast hij; omega
+    have hzero : ∀ p q, p < b → chL (tw D Sc i j M (b + 1)) 0 b *
+        (xw D Sc i j M (b + 1) b ^ p * xw D Sc i j M (b + 1) (b + 1) ^ q) *
+          eIdem D Sc i j M (b + 1) = 0 := by
+      intro p q hp
+      rw [eIdem, rIdem_top hbM, mul_one, mul_assoc, mul_assoc,
+        pow_comm_lIdem (by omega) le_rfl (by omega), ← mul_assoc (xw D Sc i j M (b + 1) b ^ p),
+        ← mul_assoc (chL (tw D Sc i j M (b + 1)) 0 b), ann_left p hp.le, ite_eq_right (by omega),
+        zero_mul]
+    have htop : chL (tw D Sc i j M (b + 1)) 0 b * xw D Sc i j M (b + 1) b ^ b *
+        eIdem D Sc i j M (b + 1) = ((-1 : ℤ) ^ b * (eps D i : ℤ) ^ (b + 1).choose 2) •
+          eIdem D Sc i j M (b + 1) := by
+      rw [eIdem, rIdem_top hbM, mul_one, mul_assoc, ann_left b le_rfl, ite_eq_left rfl]
+    have hval : eIdem D Sc i j M (b + 1) ≫ cl D Sc (word i j M (b + 1)) (word i j M (b + 1))
+        [.cross b, .cross b] (sChain_comp (sChain_down hb) (sChain_up hb)) ≫
+          chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b =
+        ((Sc.t i j : k) * ((((-1 : ℤ) ^ b * (eps D i : ℤ) ^ (b + 1).choose 2 : ℤ)) : k)) •
+          eIdem D Sc i j M (b + 1) := by
+      rw [cl_cross_cross_of _ _ hij hd e (p := b) (by simp) rfl]
+      change chL (tw D Sc i j M (b + 1)) 0 b * (_ + _) * eIdem D Sc i j M (b + 1) = _
+      simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm,
+        smul_mul_assoc]
+      rw [Finset.sum_eq_zero fun p' hp' => Finset.sum_eq_zero fun q _ => by
+        rw [Finset.mem_Ioo] at hp'
+        rw [hzero p' q (by omega), smul_zero]]
+      have h₁ := hzero 0 (D.dn j i) (by omega)
+      rw [pow_zero, one_mul] at h₁
+      rw [h₁, smul_zero, hn, htop, ← Int.cast_smul_eq_zsmul k, smul_smul]
+      simp only [zero_add, add_zero]
+    have hγ : IsUnit ((Sc.t i j : k) *
+        ((((-1 : ℤ) ^ b * (eps D i : ℤ) ^ (b + 1).choose 2 : ℤ)) : k)) :=
+      (Sc.t i j).isUnit.mul (((isUnit_one.neg.pow b).mul ((Units.isUnit _).pow _)).map
+        (Int.castRingHom k))
+    refine ⟨↑hγ.unit⁻¹, ?_⟩
+    rw [hc, hcc, hval, smul_smul, hγ.val_inv_mul, one_smul]
+
 end Ends
 
 end OddMath.QuiverHecke.SerreComplex
