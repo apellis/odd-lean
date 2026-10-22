@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.SKM.EvenBridge.Datum
 import OddMath.CoveringQuantum.Coefficients
 import OddMath.CoveringQuantum.Ordinary
+import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
 import Categorification.QuantumGroup.UDotKL3
 import Categorification.QuantumGroup.GabberKacBridge
@@ -91,16 +92,19 @@ theorem specializeOne_form (u w : List I) :
     intro v
     simp [CoveringQuantum.PreF.monomial, map_list_prod, CoveringQuantum.PreF.θ,
       Function.comp_def]
-  rw [← CoveringQuantum.PreF.form_mapCoeffs specializeOne.toRingHom _ _ _ _
-      (fun i j => R.map_chi specializeOne.toRingHom Coefficients.q Coefficients.pi i j)
-      (fun i => R.map_norm specializeOne.toRingHom Coefficients.q Coefficients.pi i
-        (Coefficients.denominator_isUnit _ i)),
+  have hchi := fun i j =>
+    R.toSuperCartanDatum.map_chi specializeOne.toRingHom Coefficients.q Coefficients.pi i j
+  have hnorm := fun i => R.toSuperCartanDatum.map_norm specializeOne.toRingHom Coefficients.q
+    Coefficients.pi i (Coefficients.denominator_isUnit _ i)
+  change specializeOne.toRingHom (CoveringQuantum.PreF.form (R.chi Coefficients.q Coefficients.pi)
+    (R.norm Coefficients.q Coefficients.pi) _ _) = _
+  rw [← CoveringQuantum.PreF.form_mapCoeffs specializeOne.toRingHom _ _ _ _ hchi hnorm,
     hmap, hmap]
   change R.form _ (specializeOne Coefficients.pi) _ _ = _
   rw [specializeOne_pi, specializeOne_qUnit, SuperCartanDatum.form_one, UDot.fF,
     show UDot.KL3.cK (catCartan R) =
         Categorification.QuantumGroup.lusztigC (catCartan R).dot UDot.KL3.qK⁻¹ from
-      funext (UDot.KL3.cK_eq_lusztigC _),
+      funext (UDot.KL3.cK_eq_lusztigC (C := catCartan R)),
     Categorification.QuantumGroup.PreF.form_equiv, equivFreeAlgebra_symm_word_ofList,
     equivFreeAlgebra_symm_word_ofList,
     catCartan_toLusztig, Units.val_inv_eq_inv_val]

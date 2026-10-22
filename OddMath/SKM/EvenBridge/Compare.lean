@@ -39,7 +39,7 @@ variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 def ell (μ : X) : I → ℤ := fun i => R.h i μ
 
 /-- The KL III form on `'U 1_λ` for the weight `μ`, with `q = qK` and `(θᵢ, θᵢ) = (1 - qᵢ²)⁻¹`. -/
-abbrev klForm (μ : X) :=
+def klForm (μ : X) :=
   B (catCartan R) KL3.qK (KL3.cK (catCartan R)) (ell R μ)
 
 omit [DecidableEq I] [DecidableEq X] in
@@ -71,13 +71,13 @@ theorem qpInt_one_eq_qbr {K : Type*} [Field K] (t : Kˣ)
   have hnat : ∀ m : ℕ, qpInt t (1 : K) m = qbr t m := by
     intro m
     rw [qpInt_ofNat, qpNat_one_eq_qInt, qbr, eq_div_iff ht]
-    have h := LieLean.QuantumGroup.qInt_mul_sub (t : K) m
+    have h := LieLean.QuantumGroup.qInt_mul_sub (v := (t : K)) m
     rw [inv_pow] at h
-    simp only [Units.val_zpow_eq_zpow_val, zpow_neg, zpow_natCast, Units.val_inv_eq_inv_val]
+    simp only [zpow_neg, zpow_natCast, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]
     linear_combination h
   rcases Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩
   · exact hnat m
-  · rw [qpInt_neg _ _ (one_pow 2), one_pow, one_mul, hnat, qbr_neg]
+  · rw [qpInt_neg (one_pow 2), one_pow, one_mul, hnat, qbr_neg]
 
 omit [DecidableEq I] [DecidableEq X] in
 theorem specializeOne_bar_qpInt (i : I) (n : ℤ) :
@@ -88,7 +88,7 @@ theorem specializeOne_bar_qpInt (i : I) (n : ℤ) :
   have hqi : Units.map Coefficients.bar.toMonoidHom (R.qi Coefficients.q i) =
       (R.qi Coefficients.q i)⁻¹ := by
     simp only [SuperCartanDatum.qi, map_pow, hbq, inv_pow]
-  rw [map_qpInt, hqi, map_one, qpInt_inv _ _ (one_pow 2), one_pow, one_mul]
+  rw [map_qpInt, hqi, map_one, qpInt_inv (one_pow 2), one_pow, one_mul]
   change specializeOne.toRingHom _ = _
   have hsq : Units.map specializeOne.toRingHom.toMonoidHom (R.qi Coefficients.q i) =
       qi (catCartan R) KL3.qK i := by
@@ -137,7 +137,7 @@ theorem specializeOne_wordForm_negW_posW (heven : ∀ i, R.parity i = 0) (μ : X
     show specializeOne (wordForm R μ ((false, j) :: (negW c ++ posW u)) (posW v)) =
       klForm R μ (ew ((false, j) :: (negW c ++ posW u))) (ew (posW v))
     rw [wordForm_cons_F R μ j (heven j), map_mul, specializeOne_qp,
-      show ((true, j) :: posW v : List (Bool × I)) = posW (j :: v) from rfl, h, klForm, klForm,
+      show ((true, j) :: posW v : List (Bool × I)) = posW (j :: v) from rfl, h, klForm,
       B_rhoE, rhoE_ew, map_smul, smul_eq_mul]
     simp only [Bool.not_false]
     congr 2
@@ -190,9 +190,9 @@ theorem specializeOne_wordForm_nil (heven : ∀ i, R.parity i = 0) (μ : X)
     rw [φ_comm]
     by_cases hij : j = i
     · subst hij
-      rw [if_pos rfl]
+      simp only [↓reduceIte]
       exact specializeOne_wordForm_comm_self R heven μ a b _ h1 h2
-    · rw [if_neg hij, add_zero]
+    · simp only [hij, ↓reduceIte, add_zero]
       exact specializeOne_wordForm_comm_ne R heven μ a b i j (Ne.symm hij) h1
 
 /-- **The forms agree.** For even data, the Brundan–Ellis form on mixed words, specialized at
@@ -209,13 +209,13 @@ theorem specializeOne_wordForm (heven : ∀ i, R.parity i = 0) (μ : X)
   | cons l a ih =>
     obtain ⟨s, i⟩ := l
     cases s
-    · rw [wordForm_cons_F R μ i (heven i), map_mul, ih, specializeOne_qp, klForm, klForm,
+    · rw [wordForm_cons_F R μ i (heven i), map_mul, ih, specializeOne_qp, klForm,
         B_rhoE, rhoE_ew, map_smul, smul_eq_mul]
       simp only [Bool.not_false]
       congr 2
       rw [wl_ell, di_catCartan, sgn_false]
       ring
-    · rw [wordForm_cons_E R μ i, map_mul, ih, specializeOne_qp, klForm, klForm,
+    · rw [wordForm_cons_E R μ i, map_mul, ih, specializeOne_qp, klForm,
         B_rhoE, rhoE_ew, map_smul, smul_eq_mul]
       simp only [Bool.not_true]
       congr 2

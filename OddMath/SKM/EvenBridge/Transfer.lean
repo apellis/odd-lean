@@ -49,7 +49,8 @@ theorem wordForm_cons_E (μ : X) (i : I) (a b : List (Bool × I)) :
       (algebraWord D μ a) (algebraWord D μ b)
     have hc : -(D.d i * (1 + D.h i (μ + shift D a))) =
         D.d i * (1 - D.h i (μ + shift D b)) := by
-      rw [hw, map_add, h_α_self]; ring
+      rw [hw]; simp only [CoveringQuantum.RootDatum.h, map_add]
+      rw [show D.cd.coroot i (D.α i) = 2 from h_α_self D i]; ring
     rw [hc, ← hw] at h
     simpa only [wordForm, algebraWord, halfGen, ite_true, Bool.false_eq_true, ite_false]
       using h
@@ -65,7 +66,8 @@ theorem wordForm_cons_F (μ : X) (i : I) (hi : D.parity i = 0) (a b : List (Bool
   · have h := sesquilinearForm_F_adjoint D i (μ + shift D a)
       (algebraWord D μ a) (algebraWord D μ b)
     have hc : D.d i * (D.h i (μ + shift D a) - 1) = D.d i * (1 + D.h i (μ + shift D b)) := by
-      rw [hw, map_sub, h_α_self]; ring
+      rw [hw]; simp only [CoveringQuantum.RootDatum.h, map_sub]
+      rw [show D.cd.coroot i (D.α i) = 2 from h_α_self D i]; ring
     have hp : D.parl i (μ + shift D a) = 0 := by simp [CoveringQuantum.RootDatum.parl, hi]
     rw [hc, hp, ← hw] at h
     simpa only [wordForm, algebraWord, halfGen, ite_true, Bool.false_eq_true, ite_false,
