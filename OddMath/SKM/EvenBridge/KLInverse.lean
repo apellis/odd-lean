@@ -3,6 +3,8 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Categorification.Diagrams.KL3.Decompositions
+import Categorification.Diagrams.KL3.BubbleSlidesGen
+import Categorification.KLR.KL1
 
 /-!
 # The inverse of the decomposition of KL III Proposition 3.25 in components
@@ -202,5 +204,24 @@ theorem cupDotFE_alphaFE (m n : ℕ) (hm : m < (-ip RD i lam).toNat)
   by_cases hmn : m = n
   · subst hmn; simp
   · rw [ite_eq_right (by omega), ite_eq_right hmn]
+
+variable (RD k) in
+/-- **KL III `eq_r3_hard-gen`** for `c ≠ d` with `c · d = 0`: the KL II polynomial is `Q_cd = 1`,
+so the correction term vanishes and `ψ₀ψ₁ψ₀ = ψ₁ψ₀ψ₁` on `E_c E_d E_c`. -/
+theorem dg_braidQ_zero (μ : X) (c d : I) (h : c ≠ d) (hcd : C.dot c d = 0) :
+    dg RD k μ [up c, up d, up c] [up c, up d, up c]
+        [([], .cross true c d, [up c]), ([up d], .cross true c c, []),
+          ([], .cross true d c, [up c])] =
+      dg RD k μ [up c, up d, up c] [up c, up d, up c]
+        [([up c], .cross true d c, []), ([], .cross true c c, [up d]),
+          ([up c], .cross true c d, [])] := by
+  have key := KLR.Diagram.braidQ_at (KLR.klQ2 k C) (u := []) (v := []) h
+    (KLR.Diagram.braidL c d c) (KLR.Diagram.braidR c d c) (KLR.Diagram.E0 c d c)
+    (KLR.Diagram.E1 c d c) (KLR.Diagram.E2 c d c) rfl rfl rfl rfl rfl
+  rw [KLR.klQ2, ite_eq_left hcd, KLR.qbar_one] at key
+  simp only [KLR.ncEval, AddMonoidAlgebra.coeff_zero, Finsupp.sum_zero_index, sub_eq_zero] at key
+  have key' := congrArg (upFunctor RD k μ).map key
+  simp only [upFunctor_diag, upDiag_eq_dg] at key'
+  exact key'
 
 end Categorification.KL3.Diagram

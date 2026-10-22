@@ -685,4 +685,73 @@ theorem rel_invM₁ (i : I) (ν : X) (hh : D.h i ν ≤ 0) :
     Preadditive.comp_neg, Preadditive.neg_comp, Limits.zero_comp, Limits.comp_zero] at h
   exact h
 
+theorem rel_braidEq (hD : IsEven D) (hS : IsKLScalars D k Sc) (i j : I) (ν : X) (hij : i ≠ j) :
+    (StringDiagrams.freeLift k (locMap D C hc k).functor).map (relation D Sc (.braidEq i j ν hij)) = 0 := by
+  reduce_rel
+  simp only [hS.1, hS.2, zsign_even' D k hD, mul_zero, zero_smul, Finset.sum_const_zero, sub_zero]
+  by_cases hcd : C.dot i j = 0
+  · have hdn : D.dn i j = 0 := by simp [Datum.dn, (dot_eq_zero_iff hc i j).1 hcd]
+    rw [hdn, Diagram.dg_braidQ_zero RD k ν i j hij hcd]
+    simp
+  · have hsum : ∑ t ∈ Finset.range (D.dn i j),
+        Diagram.dg RD k ν [up i, up j, up i] [up i, up j, up i]
+          (List.replicate t ([], .dot (up i), [up j, up i]) ++
+            List.replicate (D.dn i j - 1 - t) ([up i, up j], .dot (up i), [])) =
+        ∑ x ∈ Finset.range (D.dn i j),
+        Diagram.dg RD k ν [up i, up j, up i] [up i, up j, up i]
+          (List.replicate x ([up i, up j], .dot (up i), []) ++
+            List.replicate (D.dn i j - 1 - x) ([], .dot (up i), [up j, up i])) := by
+      rw [← Finset.sum_range_reflect]
+      refine Finset.sum_congr rfl fun x hx => ?_
+      rw [Finset.mem_range] at hx
+      rw [show D.dn i j - 1 - (D.dn i j - 1 - x) = x by omega]
+      exact (Diagram.dg_swap_dots RD k ν [] [up j] [] (up i) (up i) _ _).symm
+    rw [Diagram.dg_braidQ _ _ _ _ _ hij hcd, dij_eq_dn hc, hsum]
+    simp [Preadditive.add_comp, Preadditive.comp_add, Preadditive.comp_sum, Preadditive.sum_comp]
+
+/-! ## The functor -/
+
+theorem sig_isEven (hD : IsEven D) : (sig D).IsEven :=
+  ⟨fun g => by
+    obtain ⟨g, ν⟩ := g
+    have h : ∀ i, D.parity i = 0 := hD
+    cases g <;> simp [sig, Shape.parity, h]⟩
+
+/-- **The 2-functor `𝔘(𝔤) → U` for even data.** For a datum all of whose colours are even, with
+the scalars of KL III (`t_ij = 1`, `s_ij^{pq} = 0`), the images of the generators of
+Brundan–Ellis Definition 1.5 satisfy all its relations in KL III's `U` (Definition 3.1), so they
+define a `k`-linear functor between the presented categories (horizontal composition is
+whiskering, which the functor preserves: `StringDiagrams.LocalMap.liftGen_whisk`). -/
+def evenFunctor (hD : IsEven D) (hS : IsKLScalars D k Sc) :
+    (pres D Sc).Presented ⥤ (Diagram.pres RD k).Presented :=
+  haveI := sig_isEven D hD
+  StringDiagrams.LocalMap.liftGen (κ D C hc) (img D C hc k) (pres D Sc)
+    (StringDiagrams.LocalMap.parity_of_isEven _ _) fun r => by
+      cases r with
+      | quadEq i ν => exact rel_quadEq D C hc k Sc i ν
+      | quadZero i j ν hij hd => exact rel_quadZero D C hc k Sc hS i j ν hij hd
+      | quadNe i j ν hij hd => exact rel_quadNe D C hc k Sc hS i j ν hij hd
+      | slideL i j ν hij => exact rel_slideL D C hc k Sc hD i j ν hij
+      | slideLEq i ν => exact rel_slideLEq D C hc k Sc hD i ν
+      | slideR i j ν hij => exact rel_slideR D C hc k Sc hD i j ν hij
+      | slideREq i ν => exact rel_slideREq D C hc k Sc hD i ν
+      | braid i j l ν h => exact rel_braid D C hc k Sc i j l ν h
+      | braidEq i j ν hij => exact rel_braidEq D C hc k Sc hD hS i j ν hij
+      | zigE i ν => exact rel_zigE D C hc k Sc i ν
+      | zigF i ν => exact rel_zigF D C hc k Sc i ν
+      | invNe₁ i j ν hij => exact rel_invNe₁ D C hc k Sc i j ν hij
+      | invNe₂ i j ν hij => exact rel_invNe₂ D C hc k Sc i j ν hij
+      | invP₁ i ν hh => exact rel_invP₁ D C hc k Sc i ν hh
+      | invP₂ i ν hh => exact rel_invP₂ D C hc k Sc i ν hh
+      | invP₃ i ν m hm => exact rel_invP₃ D C hc k Sc i ν m hm
+      | invP₄ i ν n hn => exact rel_invP₄ D C hc k Sc i ν n hn
+      | invP₅ i ν m n hm hn => exact rel_invP₅ D C hc k Sc i ν m n hm hn
+      | invM₁ i ν hh => exact rel_invM₁ D C hc k Sc i ν hh
+      | invM₂ i ν hh => exact rel_invM₂ D C hc k Sc i ν hh
+      | invM₃ i ν m hm => exact rel_invM₃ D C hc k Sc i ν m hm
+      | invM₄ i ν n hn => exact rel_invM₄ D C hc k Sc i ν n hn
+      | invM₅ i ν m n hm hn => exact rel_invM₅ D C hc k Sc i ν m n hm hn
+      | dcupZero i ν n hn => exact rel_dcupZero D C hc k Sc i ν n hn
+      | dcapZero i ν n hn => exact rel_dcapZero D C hc k Sc i ν n hn
+
 end OddMath.SKM.EvenBridge
