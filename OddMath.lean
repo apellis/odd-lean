@@ -42,6 +42,7 @@ import OddMath.QuiverHecke.TopLocal
 import OddMath.QuiverHecke.PolynomialExamples
 import OddMath.QuiverHecke.TopCorner
 import OddMath.QuiverHecke.TopIdempotent
+import OddMath.QuiverHecke.TopSummand
 import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
 import OddMath.QuiverHecke.DividedPowerModulesExamples
