@@ -1128,3 +1128,15 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     the 2-morphism spaces of `𝔘(𝔤)` to be finite-dimensional in each degree. By Theorem 8.1 this
     holds when, for each `N`, only finitely many `i ∈ I` have `dᵢ ≤ N`, and in particular when `I`
     is finite. It is worth stating this assumption at the start of §11.
+
+16. **Example 12.3: direction of `γ` [M, *textual*].** The example says that `γ` maps the classes
+    of the listed indecomposable 1-morphisms to the canonical basis of `U̇_{q,π}(𝔟₁)`. Since
+    `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇_{q,π}(𝔤))` (Theorem 11.7), the intended statement is the reverse:
+    `γ` maps the canonical basis (up to multiplication by `π`) to these classes, equivalently
+    `γ⁻¹` maps the classes to the canonical basis. The example is not formalized (see the README):
+    it rests on the Ellis–Lauda classification of indecomposables and on nondegeneracy for odd
+    `𝔰𝔩₂`, which are outside the library.
+
+    **For the authors.** In Example 12.3, read "`γ⁻¹` maps the classes of the indecomposable
+    1-morphisms listed above to the canonical basis", or "`γ` maps the canonical basis to the
+    classes of the indecomposable 1-morphisms listed above".
