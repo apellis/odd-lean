@@ -920,6 +920,7 @@ import OddMath.SKM.Curls
 import OddMath.SKM.Cyclicity
 import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
+import OddMath.SKM.EvenBridge.Bubbles
 import OddMath.SKM.EvenBridge.ChordDegree
 import OddMath.SKM.EvenBridge.Compare
 import OddMath.SKM.EvenBridge.Datum
