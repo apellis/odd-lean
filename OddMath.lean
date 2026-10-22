@@ -32,6 +32,7 @@ import OddMath.QuiverHecke.UpwardClasses
 import OddMath.QuiverHecke.UpwardImage
 import OddMath.QuiverHecke.DownwardClasses
 import OddMath.QuiverHecke.DownwardImage
+import OddMath.QuiverHecke.TopClass
 import OddMath.QuiverHecke.UTurnSpanning
 import OddMath.QuiverHecke.SplitFactorization
 import OddMath.QuiverHecke.GradedWalk
