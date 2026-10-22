@@ -387,4 +387,26 @@ theorem slides_idem_wp {w : List I} {x y : I} {ε : ℤˣ} {s n t m : ℕ} (ρ :
         (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
   rwa [one_pow] at h
 
+
+open SignedNilHecke in
+/-- A product of same-colour crossings passes through a generator at disjoint positions, up to a
+sign. -/
+theorem slides_wp_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x : I}
+    (ρ : List ℕ)
+    (hρ : ∀ q ∈ ρ, w[q]? = some x ∧ w[q + 1]? = some x ∧ w'[q]? = some x ∧
+      w'[q + 1]? = some x ∧ (q + 2 ≤ h.pos ∨ h.pos + h.width ≤ q))
+    (hhl : h.pos + h.width ≤ w.length) :
+    Slides (cl D Sc w w' [h] hσ) (zunit (D.parity x * h.par D w) ^ ρ.length)
+      (wp (crossE D Sc w) ρ) (wp (crossE D Sc w') ρ) :=
+  Slides.wp' fun q hq => by
+    obtain ⟨h₀, h₁, h₀', h₁', hd⟩ := hρ q hq
+    have hl : q + 2 ≤ w.length := by
+      by_contra hc
+      rw [List.getElem?_eq_none (by omega)] at h₁
+      simp at h₁
+    have hT := genE_slides D Sc (g := .cross q)
+      (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)
+      hhl (sChain_cross_of h₀ h₁) (sChain_cross_of h₀' h₁') hσ
+    rwa [par_cross_of D h₀ h₁, parity_sq] at hT
+
 end OddMath.QuiverHecke

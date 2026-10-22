@@ -337,6 +337,91 @@ theorem downMap_comp_eIdem {a : ℕ} (ha : a < M) :
   unfold rIdem
   rw [hc']
 
+/-- The left chain of `upMap a` passes through the next crossing `up`, up to a sign. -/
+theorem chL_slides_up {a : ℕ} (ha : a + 1 < M) :
+    ∃ u : ℤˣ, Slides (up D Sc i j M ha) u
+      (chL (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) 0 a)
+      (chL (B := End (wobj D Sc i j M (a + 1 + 1))) (tw D Sc i j M (a + 1 + 1)) 0 a) := by
+  unfold up chL
+  exact ⟨_, slides_wp_gen D Sc (sChain_up ha) (x := i) _ (fun q hq => by
+    rw [List.mem_range'_1] at hq
+    exact ⟨word_lt (by omega), word_lt (by omega), word_lt (by omega), word_lt (by omega),
+      Or.inl (by rw [PG.pos_cross]; omega)⟩)
+    (by rw [PG.pos_cross, PG.width_cross, length_word ha.le]; omega)⟩
+
+/-- `braid_ne` on words given up to equality. -/
+theorem cl_braid_of {w w' : List I} (l r : List I) (x y z : I) (hb : ¬(x = z ∧ x ≠ y))
+    (hw : w = l ++ [x, y, z] ++ r) (hw' : w' = l ++ [z, y, x] ++ r) {p : ℕ}
+    (hp : l.length = p) {gs hs : List PG} (hgs : gs = [.cross p, .cross (p + 1), .cross p])
+    (hhs : hs = [.cross (p + 1), .cross p, .cross (p + 1)]) (h₁ : SChain w (pl w gs) w')
+    (h₂ : SChain w (pl w hs) w') : cl D Sc w w' gs h₁ = cl D Sc w w' hs h₂ := by
+  subst hw hw' hp hgs hhs
+  exact braid_ne D Sc l r x y z hb h₁ h₂
+
+/-- The braid relation on `i^a j i i`: two crossings of `j` with the `i`s to its right, preceded
+by the crossing of those `i`s, are followed by the crossing of the `i`s. -/
+theorem braid_up {a : ℕ} (ha : a + 1 < M) :
+    tw D Sc i j M a (a + 1) ≫ up D Sc i j M (Nat.lt_of_succ_lt ha) ≫ up D Sc i j M ha =
+      up D Sc i j M (Nat.lt_of_succ_lt ha) ≫ up D Sc i j M ha ≫
+        tw D Sc i j M (a + 1 + 1) a := by
+  have hT := sChain_cross_of (word_gt (i := i) (j := j) (M := M) (a := a) (p := a + 1)
+    (by omega) (by omega)) (word_gt (by omega) (by omega))
+  have hT' := sChain_cross_of (word_lt (i := i) (j := j) (M := M) (a := a + 1 + 1) (p := a)
+    (by omega)) (word_lt (by omega))
+  have e₁ : word i j M a = List.replicate a i ++ [j, i, i] ++ List.replicate (M - a - 2) i := by
+    rw [word_up (by omega)]
+    rw [show M - a - 1 = (M - a - 2) + 1 by omega, List.replicate_succ]
+    simp
+  have e₂ : word i j M (a + 1 + 1) =
+      List.replicate a i ++ [i, i, j] ++ List.replicate (M - a - 2) i := by
+    simp only [word, List.replicate_succ', List.append_assoc, List.cons_append,
+      List.nil_append]
+    congr 4
+  unfold tw crossE up
+  rw [genE_eq D Sc hT, genE_eq D Sc hT', cl_comp, cl_comp, cl_comp, cl_comp]
+  symm
+  exact cl_braid_of _ _ j i i (fun h => h.2 h.1) e₁ e₂ (by simp) rfl rfl _ _
+
+/-- `e_a` is fixed by the Demazure element on the first two strands of its right block. -/
+theorem eIdem_comp_dem {a : ℕ} (ha : a + 1 < M) :
+    eIdem D Sc i j M a ≫
+        dem (B := End (wobj D Sc i j M a)) (eps D i) (a + 1) (M - a) (xw D Sc i j M a)
+          (tw D Sc i j M a) (a + 1) = eIdem D Sc i j M a := by
+  have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) a).dem_mul_idem
+    (j := a + 1) (s' := a + 1) (n' := M - a) le_rfl (by omega)
+  rw [eIdem_eq_comp' a (by omega), Category.assoc]
+  congr 1
+
+/-- `upMap (a + 1) ∘ upMap a = 0`. -/
+theorem upMap_comp_upMap {a : ℕ} (ha : a + 1 < M) :
+    upMap D Sc i j M (Nat.lt_of_succ_lt ha) ≫ upMap D Sc i j M ha = 0 := by
+  obtain ⟨u, hu⟩ := chL_slides_up (D := D) (Sc := Sc) (i := i) (j := j) ha
+  have hb := braid_up (D := D) (Sc := Sc) (i := i) (j := j) ha
+  have hsq : tw D Sc i j M (a + 1 + 1) a ≫
+      chL (B := End (wobj D Sc i j M (a + 1 + 1))) (tw D Sc i j M (a + 1 + 1)) 0 a ≫
+        chL (B := End (wobj D Sc i j M (a + 1 + 1))) (tw D Sc i j M (a + 1 + 1)) 0 (a + 1) =
+      0 := by
+    have h := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (a + 1 + 1)).chL_mul_chL
+      (p := 0) (l := a + 1) le_rfl (by omega) (by omega)
+    nth_rw 2 [Categorification.KLR.KL2.NH.chL_succ'] at h
+    simpa only [zero_add, End.mul_def, Category.assoc] using h
+  have hD := eIdem_comp_dem (D := D) (Sc := Sc) (i := i) (j := j) ha
+  rw [dem_of le_rfl (by omega)] at hD
+  change eIdem D Sc i j M a ≫ (-((eps D i : ℤ) • (xw D Sc i j M a (a + 1 + 1) ≫
+    tw D Sc i j M a (a + 1)))) = eIdem D Sc i j M a at hD
+  simp only [Preadditive.comp_neg, Preadditive.comp_zsmul] at hD
+  rw [show upMap D Sc i j M ha = eIdem D Sc i j M (a + 1) ≫ up D Sc i j M ha ≫
+    chL (B := End (wobj D Sc i j M (a + 1 + 1))) (tw D Sc i j M (a + 1 + 1)) 0 (a + 1) from rfl,
+    ← Category.assoc, upMap_comp_eIdem]
+  unfold upMap
+  simp only [Category.assoc]
+  rw [reassoc_of% hu]
+  simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
+  rw [← hD]
+  simp only [Preadditive.neg_comp, Preadditive.zsmul_comp, Category.assoc]
+  rw [reassoc_of% hb, hsq]
+  simp
+
 end Complex
 
 end OddMath.QuiverHecke.SerreComplex
