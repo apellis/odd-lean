@@ -36,6 +36,7 @@ variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X]
 abbrev wordForm (μ : X) (a b : List (Bool × I)) : Coefficients.Ring :=
   sesquilinearForm D (algebraWord D μ a) (algebraWord D μ b)
 
+omit [DecidableEq I] [DecidableEq X] in
 theorem h_α_self (i : I) : D.h i (D.α i) = 2 := by
   rw [D.h_α]; exact D.isGCM.diag i
 

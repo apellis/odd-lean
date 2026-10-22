@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.SKM.EvenBridge.Datum
+import OddMath.CoveringQuantum.Coefficients
 import OddMath.CoveringQuantum.Ordinary
 import OddMath.CoveringQuantum.PreF.BaseChange
 import Categorification.QuantumGroup.UDotKL3
@@ -42,7 +43,8 @@ abbrev specializeOne : Coefficients.Ring →ₐ[RatFunc ℚ] RatFunc ℚ :=
 
 theorem specializeOne_qUnit :
     (Units.map specializeOne.toMonoidHom Coefficients.q : (RatFunc ℚ)ˣ) = UDot.KL3.qK := by
-  ext
+  refine Units.ext ?_
+  rw [Units.coe_map]
   exact specializeOne_q
 
 theorem specializeOne_qUnit_zpow (z : ℤ) :
@@ -53,7 +55,7 @@ theorem specializeOne_qUnit_zpow (z : ℤ) :
 
 omit [DecidableEq I] in
 theorem catCartan_toLusztig : (catCartan R).toLusztig = R.lusztigDatum := by
-  have key : ∀ a b : LieLean.QuantumGroup.LusztigCartanDatum I, a.dot = b.dot → a = b := by
+  have key : ∀ a b : LusztigCartanDatum I, a.dot = b.dot → a = b := by
     rintro ⟨_, _, _, _, _, _⟩ ⟨_, _, _, _, _, _⟩ rfl; rfl
   exact key _ _ rfl
 
@@ -64,7 +66,7 @@ theorem equivFreeAlgebra_symm_word_ofList (u : List I) :
         FreeAlgebra (RatFunc ℚ) I ≃ₐ[RatFunc ℚ]
           Categorification.QuantumGroup.PreF (RatFunc ℚ) I).symm
         (Categorification.QuantumGroup.PreF.word (FreeMonoid.ofList u))) =
-      CoveringQuantum.PreF.monomial u := by
+      CoveringQuantum.PreF.monomial (RatFunc ℚ) u := by
   induction u with
   | nil =>
     simp [CoveringQuantum.PreF.monomial, Categorification.QuantumGroup.PreF.word]
@@ -77,14 +79,15 @@ theorem equivFreeAlgebra_symm_word_ofList (u : List I) :
 /-- At `π = 1` the Brundan–Ellis half form is the KL III half form `fF` with `q = qK` and
 `(θᵢ, θᵢ) = (1 - qᵢ²)⁻¹`, on words. -/
 theorem specializeOne_form (u w : List I) :
-    specializeOne (R.form Coefficients.q Coefficients.pi (CoveringQuantum.PreF.monomial u)
-        (CoveringQuantum.PreF.monomial w)) =
+    specializeOne (R.form Coefficients.q Coefficients.pi
+        (CoveringQuantum.PreF.monomial Coefficients.Ring u)
+        (CoveringQuantum.PreF.monomial Coefficients.Ring w)) =
       UDot.fF (catCartan R) UDot.KL3.qK (UDot.KL3.cK (catCartan R))
         (Categorification.QuantumGroup.PreF.word (FreeMonoid.ofList u))
         (Categorification.QuantumGroup.PreF.word (FreeMonoid.ofList w)) := by
   have hmap : ∀ v : List I, FreeAlgebra.mapCoeffs specializeOne.toRingHom
-      (CoveringQuantum.PreF.monomial (k := Coefficients.Ring) v) =
-        CoveringQuantum.PreF.monomial v := by
+      (CoveringQuantum.PreF.monomial Coefficients.Ring v) =
+        CoveringQuantum.PreF.monomial (RatFunc ℚ) v := by
     intro v
     simp [CoveringQuantum.PreF.monomial, map_list_prod, CoveringQuantum.PreF.θ,
       Function.comp_def]
