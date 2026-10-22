@@ -409,4 +409,12 @@ theorem slides_wp_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x
       hhl (sChain_cross_of h₀ h₁) (sChain_cross_of h₀' h₁') hσ
     rwa [par_cross_of D h₀ h₁, parity_sq] at hT
 
+
+open SignedNilHecke in
+/-- Two endomorphism generators at disjoint positions of a word commute up to a sign. -/
+theorem signComm_genE {w : List I} {g h : PG} (hd : g.pos + g.width ≤ h.pos)
+    (hhl : h.pos + h.width ≤ w.length) (hg : SChain w (pl w [g]) w)
+    (hh : SChain w (pl w [h]) w) : SignComm (genE D Sc w g) (genE D Sc w h) :=
+  SignComm.symm ⟨_, genE_far D Sc hd hhl hg hh⟩
+
 end OddMath.QuiverHecke

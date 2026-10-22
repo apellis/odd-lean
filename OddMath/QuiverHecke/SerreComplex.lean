@@ -504,4 +504,176 @@ theorem downMap_comp_downMap {a : ℕ} (ha : a + 1 < M) :
 
 end Complex
 
+
+/-! ## The splitting -/
+
+section Annihilation
+
+open SignedNilHecke
+
+/-- The annihilator computation of HW Lemma 5.8 on two blocks: `A`, `Bm` are the chains of the
+left and right blocks with idempotents `L`, `R`, and `x`, `z` the dots that HW Lemma 5.8 pairs
+with them. A monomial `x^p y^q z^r` with an exponent below its bound is killed. -/
+theorem ann_mono_zero {B : Type*} [Ring B] {A Bm L R x y z : B} {cL cR : ℤ} {m n : ℕ}
+    (hA : ∀ p ≤ m, A * (x ^ p * L) = if p = m then cL • L else 0)
+    (hB : ∀ r ≤ n, Bm * (z ^ r * R) = if r = n then cR • R else 0)
+    (zL : ∀ r, z ^ r * L = L * z ^ r) (yL : ∀ q, y ^ q * L = L * y ^ q)
+    (BA : SignComm Bm A) (Bx : ∀ p, SignComm Bm (x ^ p)) (BL : Bm * L = L * Bm)
+    (By : ∀ q, SignComm Bm (y ^ q)) {p q r : ℕ} (h : p < m ∨ r < n) :
+    Bm * A * (x ^ p * y ^ q * z ^ r) * (L * R) = 0 := by
+  simp only [mul_assoc]
+  rw [← mul_assoc (z ^ r) L, zL, mul_assoc L, ← mul_assoc (y ^ q) L, yL, mul_assoc L]
+  rcases h with h | h
+  · rw [← mul_assoc (x ^ p) L, ← mul_assoc A, hA p h.le, ite_eq_right (by omega), zero_mul,
+      mul_zero]
+  · have hc : SignComm Bm (A * (x ^ p * (L * y ^ q))) :=
+      BA.mul_right ((Bx p).mul_right (SignComm.mul_right (⟨1, by rw [BL]; simp⟩ : SignComm Bm L)
+        (By q)))
+    obtain ⟨u, hu⟩ := hc
+    have e : A * (x ^ p * (L * (y ^ q * (z ^ r * R)))) =
+        A * (x ^ p * (L * y ^ q)) * (z ^ r * R) := by simp only [mul_assoc]
+    rw [e, ← mul_assoc Bm, hu, smul_mul_assoc, mul_assoc, hB r h.le, ite_eq_right (by omega),
+      mul_zero, smul_zero]
+
+/-- The surviving monomial of HW Lemma 5.8 on two blocks. -/
+theorem ann_mono_top {B : Type*} [Ring B] {A Bm L R x z : B} {cL cR : ℤ} {m n : ℕ}
+    (hA : ∀ p ≤ m, A * (x ^ p * L) = if p = m then cL • L else 0)
+    (hB : ∀ r ≤ n, Bm * (z ^ r * R) = if r = n then cR • R else 0)
+    (zL : ∀ r, z ^ r * L = L * z ^ r) (BL : Bm * L = L * Bm) :
+    Bm * A * (x ^ m * z ^ n) * (L * R) = (cL * cR) • (L * R) := by
+  simp only [mul_assoc]
+  rw [← mul_assoc (z ^ n) L, zL, mul_assoc L, ← mul_assoc (x ^ m) L, ← mul_assoc A,
+    hA m le_rfl, ite_eq_left rfl, smul_mul_assoc, mul_smul_comm, ← mul_assoc Bm, BL, mul_assoc,
+    hB n le_rfl, ite_eq_left rfl, mul_smul_comm, smul_smul]
+
+end Annihilation
+
+
+section Commuting
+
+open SignedNilHecke
+
+variable {w : List I}
+
+theorem length_of_getElem? {p : ℕ} {x : I} (h : w[p]? = some x) : p < w.length := by
+  by_contra hc
+  rw [List.getElem?_eq_none (by omega)] at h
+  simp at h
+
+theorem signComm_cross_cross {q q' : ℕ} {x y : I} (hq : q + 2 ≤ q') (h₀ : w[q]? = some x)
+    (h₁ : w[q + 1]? = some x) (h₀' : w[q']? = some y) (h₁' : w[q' + 1]? = some y) :
+    SignComm (crossE D Sc w q) (crossE D Sc w q') :=
+  signComm_genE D Sc (by rw [PG.pos_cross, PG.width_cross, PG.pos_cross]; omega)
+    (by have := length_of_getElem? h₁'; rw [PG.pos_cross, PG.width_cross]; omega)
+    (sChain_cross_of h₀ h₁) (sChain_cross_of h₀' h₁')
+
+theorem signComm_dot_cross {p q' : ℕ} {y : I} (hq : p + 1 ≤ q') (h₀' : w[q']? = some y)
+    (h₁' : w[q' + 1]? = some y) : SignComm (dotE D Sc w p) (crossE D Sc w q') :=
+  signComm_genE D Sc (by rw [PG.pos_dot, PG.width_dot, PG.pos_cross]; omega)
+    (by have := length_of_getElem? h₁'; rw [PG.pos_cross, PG.width_cross]; omega)
+    (sChain_pl w _) (sChain_cross_of h₀' h₁')
+
+theorem signComm_cross_dot {q p : ℕ} {x y : I} (hq : q + 2 ≤ p) (h₀ : w[q]? = some x)
+    (h₁ : w[q + 1]? = some x) (hp : w[p]? = some y) :
+    SignComm (crossE D Sc w q) (dotE D Sc w p) :=
+  signComm_genE D Sc (by rw [PG.pos_dot, PG.width_cross, PG.pos_cross]; omega)
+    (by have := length_of_getElem? hp; rw [PG.pos_dot, PG.width_dot]; omega)
+    (sChain_cross_of h₀ h₁) (sChain_pl w _)
+
+end Commuting
+
+section Interior
+
+open SignedNilHecke
+
+variable {D Sc i j M}
+
+/-- HW Lemma 5.8 on the left block of `i^{b+1} j i^{M-b-1}`. -/
+theorem ann_left {b : ℕ} (p : ℕ) (hp : p ≤ b) :
+    chL (tw D Sc i j M (b + 1)) 0 b * (xw D Sc i j M (b + 1) b ^ p * lIdem D Sc i j M (b + 1)) =
+      if p = b then ((-1 : ℤ) ^ b * (eps D i : ℤ) ^ (b + 1).choose 2) • lIdem D Sc i j M (b + 1)
+      else 0 := by
+  have h := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (b + 1)).chL_mul_x_pow_mul_idem
+    (s' := 0) (l := b) (a := p) le_rfl (by omega) hp
+  rw [zero_add] at h
+  exact h
+
+/-- HW Lemma 5.8 on the right block of `i^{b+1} j i^{M-b-1}`. -/
+theorem ann_right {b : ℕ} (hb : b + 1 < M) (r : ℕ) (hr : r ≤ M - (b + 1 + 1)) :
+    chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) *
+        (xw D Sc i j M (b + 1) (b + 1 + 1) ^ r * rIdem D Sc i j M (b + 1)) =
+      if r = M - (b + 1 + 1) then
+        ((eps D i : ℤ) ^ (M - (b + 1 + 1)).choose 2) • rIdem D Sc i j M (b + 1)
+      else 0 := by
+  have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (b + 1)).chR_mul_x_pow_mul_idem
+    (s' := b + 1 + 1) (l := M - (b + 1 + 1)) (a := r) le_rfl (by omega) hr
+  rw [show M - (b + 1 + 1) + 1 = M - (b + 1) by omega] at h
+  exact h
+
+theorem pow_comm_lIdem {b : ℕ} (hb : b + 1 < M) {p : ℕ} (hp : b + 1 ≤ p) (hpM : p ≤ M)
+    (r : ℕ) :
+    xw D Sc i j M (b + 1) p ^ r * lIdem D Sc i j M (b + 1) =
+      lIdem D Sc i j M (b + 1) * xw D Sc i j M (b + 1) p ^ r := by
+  have h := slides_idem_genE D Sc (sChain_pl (word i j M (b + 1)) [.dot p]) (x := i)
+    (ε := eps D i) (s := 0) (n := b + 1) (t := 0) (m := b + 1) le_rfl le_rfl
+    (fun q _ hq => word_lt (by omega)) (Or.inl (by rw [PG.pos_dot]; omega))
+    (by rw [PG.pos_dot, PG.width_dot, length_word (by omega)]; omega)
+  have h₂ := h.powσ r
+  rw [one_pow] at h₂
+  exact h₂.eq_of_one
+
+theorem chR_comm_lIdem {b : ℕ} (hb : b + 1 < M) :
+    chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) * lIdem D Sc i j M (b + 1) =
+      lIdem D Sc i j M (b + 1) * chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) := by
+  have h := slides_idem_wp D Sc (w := word i j M (b + 1)) (x := i) (y := i) (ε := eps D i)
+    (s := 0) (n := b + 1) (t := 0) (m := b + 1) (List.range' (b + 1 + 1) (M - (b + 1 + 1))).reverse
+    le_rfl le_rfl (fun q _ hq => word_lt (by omega)) fun q hq => by
+      rw [List.mem_reverse, List.mem_range'_1] at hq
+      exact ⟨word_gt (by omega) (by omega), word_gt (by omega) (by omega), Or.inl (by omega)⟩
+  exact h.eq_of_one
+
+theorem signComm_chR_dot {b : ℕ} (hb : b + 1 < M) {p : ℕ} (hp : p ≤ b + 1) (e : ℕ) :
+    SignComm (chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)))
+      (xw D Sc i j M (b + 1) p ^ e) := by
+  unfold chR
+  refine ((SignComm.wp fun q hq => ?_).pow_left e).symm
+  rw [List.mem_reverse, List.mem_range'_1] at hq
+  exact signComm_dot_cross D Sc (by omega) (word_gt (by omega) (by omega))
+    (word_gt (by omega) (by omega))
+
+theorem signComm_chR_chL {b : ℕ} (hb : b + 1 < M) :
+    SignComm (chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)))
+      (chL (tw D Sc i j M (b + 1)) 0 b) := by
+  unfold chR chL
+  refine SignComm.wp fun q hq => (SignComm.wp fun q' hq' => ?_).symm
+  rw [List.mem_range'_1] at hq
+  rw [List.mem_reverse, List.mem_range'_1] at hq'
+  exact signComm_cross_cross D Sc (by omega) (word_lt (by omega)) (word_lt (by omega))
+    (word_gt (by omega) (by omega)) (word_gt (by omega) (by omega))
+
+/-- In the interior, a monomial `x^p y^q z^r` (dots on the strands left of, on, and right of `j`)
+with `p` or `r` below its bound is killed by the two chains and `e`. -/
+theorem interior_ann_zero {b : ℕ} (hb : b + 1 < M) {p q r : ℕ}
+    (h : p < b ∨ r < M - (b + 1 + 1)) :
+    chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) * chL (tw D Sc i j M (b + 1)) 0 b *
+        (xw D Sc i j M (b + 1) b ^ p * xw D Sc i j M (b + 1) (b + 1) ^ q *
+          xw D Sc i j M (b + 1) (b + 1 + 1) ^ r) * eIdem D Sc i j M (b + 1) = 0 :=
+  ann_mono_zero ann_left (ann_right hb) (pow_comm_lIdem hb (by omega) (by omega))
+    (pow_comm_lIdem hb le_rfl (by omega)) (signComm_chR_chL hb)
+    (signComm_chR_dot hb (by omega)) (chR_comm_lIdem hb) (signComm_chR_dot hb le_rfl) h
+
+/-- The surviving monomial `x^b z^{M-b-2}` gives a sign times `e`. -/
+theorem interior_ann_top {b : ℕ} (hb : b + 1 < M) :
+    ∃ c : ℤˣ, chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) *
+        chL (tw D Sc i j M (b + 1)) 0 b *
+        (xw D Sc i j M (b + 1) b ^ b * xw D Sc i j M (b + 1) (b + 1 + 1) ^ (M - (b + 1 + 1))) *
+          eIdem D Sc i j M (b + 1) = (c : ℤ) • eIdem D Sc i j M (b + 1) := by
+  refine ⟨(-1) ^ b * eps D i ^ (b + 1).choose 2 * eps D i ^ (M - (b + 1 + 1)).choose 2, ?_⟩
+  rw [eIdem, ann_mono_top ann_left (ann_right hb) (pow_comm_lIdem hb (by omega) (by omega))
+    (chR_comm_lIdem hb)]
+  push_cast
+  ring_nf
+
+end Interior
+
 end OddMath.QuiverHecke.SerreComplex
