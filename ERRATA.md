@@ -1019,3 +1019,43 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     in §9 yields precisely `[h]_{qᵢ,πᵢ}`.
     The printed scalar equality already fails at `h=-2`, `qᵢ=2`, `πᵢ=-1`.
     These local proof corrections preserve every relation in Lemma 11.6.
+
+13. **§11, the divided powers `Eᵢ^{(n)}1_λ`, `Fᵢ^{(n)}1_λ` before Lemma 11.5: missing degree
+    shift [even colours: constraint proved and corrected statement proved].** BE2 defines
+    `Eᵢ^{(n)}1_λ` as the summand of `Eᵢⁿ1_λ` cut out by the degree-zero idempotent
+    `α_{n,λ}(1_{i^{(n)}})`, with no shift, and Lemma 11.5 asserts
+    `[Eᵢⁿ1_λ] = [n]^!_{qᵢ,πᵢ} [Eᵢ^{(n)}1_λ]`.
+
+    **What holds (even `i`).** Lemma 11.1 splits `1_{i^n}` into `n!` idempotents conjugate to
+    `1_{i^{(n)}}` by units of degrees `dᵢ sⱼ` whose generating function is
+    `qᵢ^{n(n-1)/2} [n]^!_{qᵢ}`, the symmetric factorial times `qᵢ^{n(n-1)/2}`. Hence
+    `Eᵢⁿ1_λ ≅ ⨁ⱼ Q^{dᵢ sⱼ} Eᵢ^{(n)}1_λ` and
+    `[Eᵢⁿ1_λ] = qᵢ^{n(n-1)/2} [n]^!_{qᵢ} [Eᵢ^{(n)}1_λ]` with BE2's definition. With the shifted
+    divided power `Q^{dᵢ n(n-1)/2} Eᵢ^{(n)}1_λ` in place of `Eᵢ^{(n)}1_λ`, the printed equation of
+    Lemma 11.5 holds. This is the shift of `P(i^{(n)})` in (11.3), and for `n = 2` it is the
+    usual `Eᵢ² ≅ Q^{-dᵢ}Eᵢ^{(2)} ⊕ Q^{dᵢ}Eᵢ^{(2)}` for the shifted object.
+
+    **Declarations.** `QuiverHecke.CategoricalDividedPowers.class_printed` (BE2's definition),
+    `class_corrected` (the shifted one), `class_summands` (the summands), all for an arbitrary
+    commutative coefficient ring, Cartan datum and weight; the generic splitting is
+    `SKM.Summands.class_whole`.
+
+    **Proved obstruction.** Over a field, with finitely many symmetrizer values in each degree,
+    the split `K₀` of each completed hom category is a free `ℤ[q,q⁻¹]`-module
+    (`SKM.UDot.k0_free_laurentInt`). There the printed equation for `n ≥ 2` forces
+    `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0` (`printed_forces_zero`), because
+    `(qᵢ^{n(n-1)/2} - 1)[n]^!_{qᵢ} ≠ 0`.
+
+    **Certainty boundary.** That `Eᵢⁿ1_λ` is nonzero in `K₀` is not proved here. It follows,
+    for instance, from Theorem 11.7. The odd-colour statement has the same mechanism, through the
+    odd splitting of Lemma 11.1, but it is not yet formalized, and neither is the downward
+    version for `Fᵢ^{(n)}1_λ`. The shift does not affect Theorem 11.7 provided `γ` sends the
+    divided powers to the shifted objects.
+
+    **For the authors.** Before Lemma 11.5, define `Eᵢ^{(n)}1_λ` (and `Fᵢ^{(n)}1_λ`) with the shift
+    `Q^{dᵢ n(n-1)/2}`, matching (11.3). As printed, for even `i` the units in the proof of
+    Lemma 11.5 have degrees whose generating function is `qᵢ^{n(n-1)/2}[n]^!_{qᵢ}`, not
+    `[n]^!_{qᵢ}`, so the lemma's equation would force `[Eᵢⁿ1_λ] = 0` for `n ≥ 2`; the odd case
+    looks analogous. Already for `n = 2` and even `i`, the
+    two summands of `Eᵢ²1_λ` are `Eᵢ^{(2)}1_λ` and `Q^{2dᵢ}Eᵢ^{(2)}1_λ`, cut out by `−τx` and
+    split off by the crossing.
