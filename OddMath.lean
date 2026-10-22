@@ -8,6 +8,7 @@ import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples
+import OddMath.QuiverHecke.ColourBlock
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
