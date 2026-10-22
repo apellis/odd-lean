@@ -63,6 +63,7 @@ import OddMath.QuiverHecke.DividedPowerCorner
 import OddMath.QuiverHecke.TailIdempotents
 import OddMath.QuiverHecke.DividedPowerSpan
 import OddMath.QuiverHecke.IndecomposableCorners
+import OddMath.QuiverHecke.CornerLocal
 import OddMath.QuiverHecke.EnvelopeSerre
 import OddMath.QuiverHecke.EnvelopeAlgebra
 import OddMath.QuiverHecke.EnvelopeHalfAlgebra
