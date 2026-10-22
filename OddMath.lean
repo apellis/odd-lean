@@ -962,6 +962,7 @@ import OddMath.SKM.SpanStrictReduced
 import OddMath.SKM.Nondegeneracy
 import OddMath.SKM.LaurentianHoms
 import OddMath.SKM.LaurentianK0Examples
+import OddMath.SKM.GrothendieckShift
 import OddMath.SKM.LaurentianParityK0Examples
 import OddMath.SKM.DimensionComponents
 import OddMath.SKM.GradedExpansion
