@@ -37,6 +37,7 @@ import OddMath.QuiverHecke.UpDown
 import OddMath.QuiverHecke.HeckeCorner
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
+import OddMath.QuiverHecke.TopLocal
 import OddMath.QuiverHecke.PolynomialExamples
 import Categorification.Algebra.NilHeckeSplitting
 import OddMath.QuiverHecke.Algebra
