@@ -133,136 +133,155 @@ theorem zsign_smul_hom {a b : H D Sc} (p : ZMod 2) (f : a ⟶ b) :
   have hz : ∀ x : ZMod 2, x = 0 ∨ x = 1 := by decide
   rcases hz p with h | h <;> simp [zsign, zunit, h]
 
-/-- The crossing at positions `q`, `q + 1` as a morphism from `w` to `w'`, when it goes from `w`
-to `w'`, and `0` otherwise. -/
-def crossHom (w w' : List I) (q : ℕ) : (pres D Sc).obj (ob D w) ⟶ (pres D Sc).obj (ob D w') :=
-  if h : SChain w (pl w [.cross q]) w' then cl D Sc w w' [.cross q] h else 0
-
-theorem crossHom_eq {w w' : List I} {q : ℕ} (h : SChain w (pl w [.cross q]) w') :
-    crossHom D Sc w w' q = cl D Sc w w' [.cross q] h :=
-  dite_eq_left h
-
 theorem zunit_mul_self (p : ZMod 2) : zunit p * zunit p = 1 := Int.units_mul_self _
 
-theorem replicate_split (i : I) {n : ℕ} (a b : ℕ) (h : a + b = n) :
-    List.replicate n i = List.replicate a i ++ List.replicate b i := by
-  subst h; exact List.replicate_add a b i
+/-! ## Far commutation with its sign -/
 
-/-! ## Transport through a crossing -/
+@[simp] theorem PG.pos_dot (p : ℕ) : (PG.dot p).pos = p := rfl
+@[simp] theorem PG.pos_cross (a : ℕ) : (PG.cross a).pos = a := rfl
+@[simp] theorem PG.width_dot (p : ℕ) : (PG.dot p).width = 1 := rfl
+@[simp] theorem PG.width_cross (a : ℕ) : (PG.cross a).width = 2 := rfl
 
-section Transport
+/-- The parity of a positioned generator on a word: that of its colours there. -/
+def PG.par (t : List I) : PG → ZMod 2
+  | .dot p => match t[p]? with
+    | some x => D.parity x
+    | none => 0
+  | .cross a => match t[a]?, t[a + 1]? with
+    | some x, some y => D.parity x * D.parity y
+    | _, _ => 0
 
-variable (i : I) {x y : I} {a c : ℕ}
+theorem par_ofShape (l r : List I) (s : Shape I) :
+    (PG.ofShape s l.length).par D (l ++ s.dom ++ r) = s.parity D := by
+  cases s <;> simp [PG.par, PG.ofShape, Shape.dom, Shape.parity]
 
-/-- The crossing of the strands `a`, `a + 1` of `i^a x y V`. -/
-abbrev crossAt (x y : I) (a : ℕ) (V : List I) :=
-  crossHom D Sc (List.replicate a i ++ [x, y] ++ V) (List.replicate a i ++ [y, x] ++ V) a
-
-theorem sChain_crossAt (x y : I) (a : ℕ) (V : List I) :
-    SChain (List.replicate a i ++ [x, y] ++ V)
-      (pl (List.replicate a i ++ [x, y] ++ V) [.cross a]) (List.replicate a i ++ [y, x] ++ V) :=
-  sChain_ofShape' (List.replicate a i) V (.cross x y) rfl rfl (by simp)
-
-/-- A dot left of the crossing passes through it. -/
-theorem slides_dot_left {p : ℕ} (hp : p < a) :
-    Slides (crossAt D Sc i x y a (List.replicate c i)) (zunit (D.parity i * (D.parity x * D.parity y)))
-      (dotE D Sc _ p) (dotE D Sc _ p) := by
-  have e : List.replicate a i = List.replicate p i ++ [i] ++ List.replicate (a - p - 1) i := by
-    rw [replicate_split i p (a - p) (by omega), replicate_split i (n := a - p) 1 (a - p - 1)
-      (by omega)]
+/-- Two generators at disjoint positions commute up to the product of their parities. -/
+theorem far_swap_eq {t₁ t₂ : List I} (g h : PG) (hgh : g.pos + g.width ≤ h.pos)
+    (hh : h.pos + h.width ≤ t₁.length) (h₁ : SChain t₁ (pl t₁ [g, h]) t₂)
+    (h₂ : SChain t₁ (pl t₁ [h, g]) t₂) :
+    cl D Sc t₁ t₂ [g, h] h₁ = zsign k (g.par D t₁ * h.par D t₁) • cl D Sc t₁ t₂ [h, g] h₂ := by
+  obtain ⟨l, sg, r, rfl, hsg, hl, hw⟩ := exists_split g 0 t₁ (Nat.zero_le _) (by omega)
+  obtain ⟨m, sh, v, rfl, hsh, hm, hw'⟩ := exists_split h (l ++ sg.dom).length r
+    (by simp; omega) (by simp at hh ⊢; omega)
+  simp only [zero_add] at hsg
+  subst hsg hsh
+  have e : l ++ sg.dom ++ (m ++ sh.dom ++ v) = l ++ sg.dom ++ m ++ sh.dom ++ v := by
     simp
-  simp only [Slides, crossAt]
-  rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
-  exact genE_comp_cl D Sc (List.replicate p i) (List.replicate (a - p - 1) i) (List.replicate c i) (.dot i)
-    (.cross x y) rfl (by rw [e]; simp [Shape.dom]) (by rw [e]; simp [Shape.dom, Shape.cod])
-    (by simp) (by simp [Shape.dom]; omega) _
+  have e' : (l ++ sg.dom).length + m.length = (l ++ sg.dom ++ m).length := by simp; omega
+  revert h₁ h₂
+  rw [e, e']
+  intro h₁ h₂
+  have ht : tgt (l ++ sg.dom ++ m ++ sh.dom ++ v)
+      [PG.ofShape sg l.length, PG.ofShape sh (l ++ sg.dom ++ m).length] =
+        l ++ sg.cod ++ m ++ sh.cod ++ v := by
+    cases sg <;> cases sh <;>
+      simp [PG.act, PG.ofShape, Shape.dom, Shape.cod, List.take_append, List.drop_append]
+  obtain rfl : _ = t₂ := ht ▸ tgt_eq h₁
+  have p₁ : (PG.ofShape sg l.length).par D (l ++ sg.dom ++ m ++ sh.dom ++ v) = sg.parity D := by
+    simpa only [List.append_assoc] using par_ofShape D l (m ++ sh.dom ++ v) sg
+  rw [p₁, par_ofShape D (l ++ sg.dom ++ m) v sh]
+  exact cl_interchange D Sc l m v sg sh h₁ h₂
 
-/-- A crossing left of the crossing passes through it. -/
-theorem slides_cross_left {p : ℕ} (hp : p + 1 < a) :
-    Slides (crossAt D Sc i x y a (List.replicate c i))
-      (zunit (D.parity i * (D.parity x * D.parity y))) (crossE D Sc _ p) (crossE D Sc _ p) := by
-  have e : List.replicate a i = List.replicate p i ++ [i, i] ++ List.replicate (a - p - 2) i := by
-    rw [replicate_split i p (a - p) (by omega), replicate_split i (n := a - p) 2 (a - p - 2)
-      (by omega)]
-    simp
-  simp only [Slides, crossAt]
-  rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
-  have h := genE_comp_cl D Sc (k := k) (p := p) (q := a) (List.replicate p i) (List.replicate (a - p - 2) i)
-    (List.replicate c i)
-    (.cross i i) (.cross x y) rfl (by rw [e]; simp [Shape.dom])
-    (by rw [e]; simp [Shape.dom, Shape.cod]) (by simp) (by simp [Shape.dom]; omega)
-    (sChain_crossAt i x y a (List.replicate c i))
-  simpa only [Shape.parity, parity_sq, PG.ofShape] using h
+/-- Generators at disjoint positions of a word commute in its endomorphism ring, up to the
+product of their parities. -/
+theorem genE_far {w : List I} {g h : PG} (hgh : g.pos + g.width ≤ h.pos)
+    (hh : h.pos + h.width ≤ w.length) (hg : SChain w (pl w [g]) w)
+    (hh' : SChain w (pl w [h]) w) :
+    Slides (genE D Sc w h) (zunit (g.par D w * h.par D w)) (genE D Sc w g) (genE D Sc w g) := by
+  have e := far_swap_eq D Sc g h hgh hh (sChain_append_of hg hh') (sChain_append_of hh' hg)
+  rw [Slides, genE_eq D Sc hg, genE_eq D Sc hh', cl_comp, cl_comp, ← zsign_smul_hom]
+  exact e
 
-/-- A dot right of the crossing passes through it. -/
-theorem slides_dot_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p < a + 2 + c) :
-    Slides (crossAt D Sc i x y a (List.replicate c i))
-      (zunit (D.parity i * (D.parity x * D.parity y))) (dotE D Sc _ p) (dotE D Sc _ p) := by
-  have e : List.replicate c i =
-      List.replicate (p - a - 2) i ++ [i] ++ List.replicate (a + 1 + c - p) i := by
-    rw [replicate_split i (p - a - 2) (c - (p - a - 2)) (by omega),
-      replicate_split i (n := c - (p - a - 2)) 1 (a + 1 + c - p) (by omega)]
-    simp
-  simp only [Slides, crossAt]
-  rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
-  have h := genE_comp_cl' D Sc (k := k) (p := p) (q := a) (List.replicate a i) (List.replicate (p - a - 2) i)
-    (List.replicate (a + 1 + c - p) i) (.cross x y) (.dot i) rfl
-    (by rw [e]; simp [Shape.dom]) (by rw [e]; simp [Shape.dom, Shape.cod]) (by simp)
-    (by simp [Shape.dom]; omega) (by simp [Shape.cod]; omega)
-    (sChain_crossAt i x y a (List.replicate c i))
-  simpa only [Shape.parity, PG.ofShape, mul_comm (D.parity x * D.parity y)] using h
+/-- A generator left of a generator `h` from `w` to `w'` passes through it. -/
+theorem genE_far_left {w w' : List I} {g h : PG} (hgh : g.pos + g.width ≤ h.pos)
+    (hh : h.pos + h.width ≤ w.length) (hg : SChain w (pl w [g]) w)
+    (hg' : SChain w' (pl w' [g]) w') (hσ : SChain w (pl w [h]) w') :
+    Slides (cl D Sc w w' [h] hσ) (zunit (g.par D w * h.par D w)) (genE D Sc w g)
+      (genE D Sc w' g) := by
+  have e := far_swap_eq D Sc g h hgh hh (sChain_append_of hg hσ) (sChain_append_of hσ hg')
+  rw [Slides, genE_eq D Sc hg, genE_eq D Sc hg', cl_comp, cl_comp, ← zsign_smul_hom]
+  exact e
 
-/-- A crossing right of the crossing passes through it. -/
-theorem slides_cross_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p + 1 < a + 2 + c) :
-    Slides (crossAt D Sc i x y a (List.replicate c i))
-      (zunit (D.parity i * (D.parity x * D.parity y))) (crossE D Sc _ p) (crossE D Sc _ p) := by
-  have e : List.replicate c i =
-      List.replicate (p - a - 2) i ++ [i, i] ++ List.replicate (a + c - p) i := by
-    rw [replicate_split i (p - a - 2) (c - (p - a - 2)) (by omega),
-      replicate_split i (n := c - (p - a - 2)) 2 (a + c - p) (by omega)]
-    simp
-  simp only [Slides, crossAt]
-  rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
-  have h := genE_comp_cl' D Sc (k := k) (p := p) (q := a) (List.replicate a i) (List.replicate (p - a - 2) i)
-    (List.replicate (a + c - p) i) (.cross x y) (.cross i i) rfl
-    (by rw [e]; simp [Shape.dom]) (by rw [e]; simp [Shape.dom, Shape.cod]) (by simp)
-    (by simp [Shape.dom]; omega) (by simp [Shape.cod]; omega)
-    (sChain_crossAt i x y a (List.replicate c i))
-  simpa only [Shape.parity, parity_sq, PG.ofShape, mul_comm (D.parity x * D.parity y)] using h
+/-- A generator right of a generator `h` from `w` to `w'` passes through it. -/
+theorem genE_far_right {w w' : List I} {g h : PG} (hgh : h.pos + h.width ≤ g.pos)
+    (hg₁ : g.pos + g.width ≤ w.length) (hg : SChain w (pl w [g]) w)
+    (hg' : SChain w' (pl w' [g]) w') (hσ : SChain w (pl w [h]) w') :
+    Slides (cl D Sc w w' [h] hσ) (zunit (h.par D w * g.par D w)) (genE D Sc w g)
+      (genE D Sc w' g) := by
+  have e := far_swap_eq D Sc h g hgh hg₁ (sChain_append_of hσ hg') (sChain_append_of hg hσ)
+  rw [eq_zsign_smul_iff] at e
+  rw [Slides, genE_eq D Sc hg, genE_eq D Sc hg', cl_comp, cl_comp, ← zsign_smul_hom]
+  exact e
+
+/-- A generator at positions disjoint from those of a generator `h` from `w` to `w'` passes
+through it. -/
+theorem genE_slides {w w' : List I} {g h : PG}
+    (hd : g.pos + g.width ≤ h.pos ∨ h.pos + h.width ≤ g.pos)
+    (hgl : g.pos + g.width ≤ w.length) (hhl : h.pos + h.width ≤ w.length)
+    (hg : SChain w (pl w [g]) w) (hg' : SChain w' (pl w' [g]) w')
+    (hσ : SChain w (pl w [h]) w') :
+    Slides (cl D Sc w w' [h] hσ) (zunit (g.par D w * h.par D w)) (genE D Sc w g)
+      (genE D Sc w' g) := by
+  rcases hd with hd | hd
+  · exact genE_far_left D Sc hd hhl hg hg' hσ
+  · rw [mul_comm]; exact genE_far_right D Sc hd hgl hg hg' hσ
+
+theorem sChain_cross_of {w : List I} {q : ℕ} {x : I} (h₁ : w[q]? = some x)
+    (h₂ : w[q + 1]? = some x) : SChain w (pl w [.cross q]) w := by
+  have hq : q + 1 < w.length := by
+    by_contra h; rw [List.getElem?_eq_none (by omega)] at h₂; simp at h₂
+  obtain ⟨l, y, z, r, rfl, rfl⟩ := exists_split_cross hq
+  have hy : y = x := by simpa using h₁
+  have hz : z = x := by simpa [List.getElem?_append_right] using h₂
+  subst hy hz
+  exact sChain_cross l r _ rfl rfl
+
+theorem par_dot_of {w : List I} {p : ℕ} {x : I} (h : w[p]? = some x) :
+    (PG.dot p).par D w = D.parity x := by simp [PG.par, h]
+
+theorem par_cross_of {w : List I} {q : ℕ} {x y : I} (h₁ : w[q]? = some x)
+    (h₂ : w[q + 1]? = some y) : (PG.cross q).par D w = D.parity x * D.parity y := by
+  simp [PG.par, h₁, h₂]
 
 open SignedNilHecke in
-/-- A Demazure element of a block, at positions away from the crossing, passes through it. -/
-theorem slides_dem {ε : ℤˣ} {s n s' n' q : ℕ} (hA₁ : s ≤ q) (hA₂ : q + 1 < s + n) (hB₁ : s' ≤ q)
-    (hB₂ : q + 1 < s' + n') (hq : q + 2 ≤ a ∨ (a + 2 ≤ q ∧ q + 2 ≤ a + 2 + c)) :
-    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
-      (dem ε s n (dotE D Sc _) (crossE D Sc _) q) (dem ε s' n' (dotE D Sc _) (crossE D Sc _) q) := by
-  rw [dem_of hA₁ hA₂, dem_of hB₁ hB₂]
+/-- A Demazure element of a block of colour `x` passes through a generator at disjoint
+positions, with no sign. -/
+theorem slides_dem_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x : I}
+    {ε : ℤˣ} {s n q : ℕ} (h₁ : s ≤ q) (h₂ : q + 1 < s + n)
+    (hcol : ∀ p, s ≤ p → p < s + n → w[p]? = some x)
+    (hcol' : ∀ p, s ≤ p → p < s + n → w'[p]? = some x)
+    (hd : s + n ≤ h.pos ∨ h.pos + h.width ≤ s) (hhl : h.pos + h.width ≤ w.length) :
+    Slides (cl D Sc w w' [h] hσ) 1 (dem ε s n (dotE D Sc w) (crossE D Sc w) q)
+      (dem ε s n (dotE D Sc w') (crossE D Sc w') q) := by
+  have hl : s + n ≤ w.length := by
+    by_contra hc
+    have := hcol (s + n - 1) (by omega) (by omega)
+    rw [List.getElem?_eq_none (by omega)] at this
+    simp at this
+  rw [dem_of h₁ h₂, dem_of h₁ h₂]
   refine Slides.neg (Slides.zsmul ?_ _)
-  rw [← zunit_mul_self (D.parity i * (D.parity x * D.parity y))]
-  rcases hq with hq | ⟨hq₁, hq₂⟩
-  · exact (slides_cross_left D Sc i (by omega)).mul (slides_dot_left D Sc i (by omega))
-  · exact (slides_cross_right D Sc i hq₁ (by omega)).mul
-      (slides_dot_right D Sc i (by omega) (by omega))
+  rw [← zunit_mul_self (D.parity x * h.par D w)]
+  have hT := genE_slides D Sc (g := .cross q)
+    (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega) hhl
+    (sChain_cross_of (hcol q h₁ (by omega)) (hcol (q + 1) (by omega) h₂))
+    (sChain_cross_of (hcol' q h₁ (by omega)) (hcol' (q + 1) (by omega) h₂)) hσ
+  have hX := genE_slides D Sc (g := .dot (q + 1))
+    (by rw [PG.pos_dot, PG.width_dot]; omega) (by rw [PG.pos_dot, PG.width_dot]; omega) hhl
+    (sChain_pl w _) (sChain_pl w' _) hσ
+  rw [par_cross_of D (hcol q h₁ (by omega)) (hcol (q + 1) (by omega) h₂), parity_sq] at hT
+  rw [par_dot_of D (hcol (q + 1) (by omega) h₂)] at hX
+  exact hT.mul hX
 
 open SignedNilHecke in
-/-- A block idempotent left of the crossing passes through it. -/
-theorem slides_idem_left {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
-    (hB₁ : s' ≤ t) (hB₂ : t + m ≤ s' + n') (h : t + m ≤ a) :
-    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
-      (idem ε s n (dotE D Sc _) (crossE D Sc _) t m)
-      (idem ε s' n' (dotE D Sc _) (crossE D Sc _) t m) :=
-  Slides.wb fun q h₁ h₂ => slides_dem D Sc i (by omega) (by omega) (by omega) (by omega) (by omega)
+/-- A block idempotent passes through a generator at disjoint positions, with no sign. -/
+theorem slides_idem_gen {w w' : List I} {h : PG} (hσ : SChain w (pl w [h]) w') {x : I}
+    {ε : ℤˣ} {s n t m : ℕ} (h₁ : s ≤ t) (h₂ : t + m ≤ s + n)
+    (hcol : ∀ p, s ≤ p → p < s + n → w[p]? = some x)
+    (hcol' : ∀ p, s ≤ p → p < s + n → w'[p]? = some x)
+    (hd : s + n ≤ h.pos ∨ h.pos + h.width ≤ s) (hhl : h.pos + h.width ≤ w.length) :
+    Slides (cl D Sc w w' [h] hσ) 1 (idem ε s n (dotE D Sc w) (crossE D Sc w) t m)
+      (idem ε s n (dotE D Sc w') (crossE D Sc w') t m) :=
+  Slides.wb fun q h₁' h₂' => slides_dem_gen D Sc hσ (by omega) (by omega) hcol hcol' hd hhl
 
-open SignedNilHecke in
-/-- A block idempotent right of the crossing passes through it. -/
-theorem slides_idem_right {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
-    (hB₁ : s' ≤ t) (hB₂ : t + m ≤ s' + n') (h₁ : a + 2 ≤ t) (h₂ : t + m ≤ a + 2 + c) :
-    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
-      (idem ε s n (dotE D Sc _) (crossE D Sc _) t m)
-      (idem ε s' n' (dotE D Sc _) (crossE D Sc _) t m) :=
-  Slides.wb fun q h₁' h₂' => slides_dem D Sc i (by omega) (by omega) (by omega) (by omega)
-    (Or.inr ⟨by omega, by omega⟩)
-
-end Transport
 
 end OddMath.QuiverHecke
