@@ -80,7 +80,7 @@ theorem gen_mul_algebraWord_mem (η : X) (g : Gen I X) (a : List (Bool × I)) :
     by_cases h : μ = η + shift D a
     · subst h
       exact algebraWord_mem_wordSpan D η ((true, i) :: a)
-    · rw [mul_eq_zero_of_mem_block _ _ _
+    · rw [mul_eq_zero_of_mem_block _ _ _ (x := UDot.E D Coefficients.q Coefficients.pi i μ)
         (halfGen_mem_block D Coefficients.q Coefficients.pi true i μ) hw h]
       exact zero_mem _
   | f i μ =>
@@ -88,7 +88,7 @@ theorem gen_mul_algebraWord_mem (η : X) (g : Gen I X) (a : List (Bool × I)) :
     by_cases h : μ = η + shift D a
     · subst h
       exact algebraWord_mem_wordSpan D η ((false, i) :: a)
-    · rw [mul_eq_zero_of_mem_block _ _ _
+    · rw [mul_eq_zero_of_mem_block _ _ _ (x := UDot.F D Coefficients.q Coefficients.pi i μ)
         (halfGen_mem_block D Coefficients.q Coefficients.pi false i μ) hw h]
       exact zero_mem _
 
@@ -182,9 +182,11 @@ theorem halfGen_mem_lForm (L : Type*) [CommRing L] [Algebra L Coefficients.Ring]
     halfGen D Coefficients.q Coefficients.pi b i μ ∈
       lForm D Coefficients.q Coefficients.pi L := by
   cases b
-  · rw [halfGen, if_neg Bool.false_ne_true, ← fdp_one]
+  · show UDot.F D _ _ i μ ∈ _
+    rw [← fdp_one]
     exact fdp_mem_lForm _ _ _ _ i 1 _
-  · rw [halfGen, if_pos rfl, ← edp_one]
+  · show UDot.E D _ _ i μ ∈ _
+    rw [← edp_one]
     exact edp_mem_lForm _ _ _ _ i 1 _
 
 /-- Mixed words lie in the `ℒ`-form. -/
@@ -259,21 +261,21 @@ theorem choose_one_two : Nat.choose 1 2 = 0 := rfl
 theorem gammaInt_halfGen (b : Bool) (i : I) (μ : X) :
     gammaInt Q hS cs hf ⟨_, MixedWordSpan.halfGen_mem_lForm Q _ b i μ⟩ =
       cls S Q.skmSymmetrizer hS (SKM.wt Q.toSKM μ [(b, i)]) μ [(b, i)] rfl 0 0 := by
+  have hc : ((Nat.choose 1 2 : ℕ) : ℤ) = 0 := by rw [choose_one_two]; rfl
   cases b
   · have h : (⟨_, MixedWordSpan.halfGen_mem_lForm Q _ false i μ⟩ : Λ) =
         ⟨_, fdp_mem_lForm Q Coefficients.q Coefficients.pi _ i 1 μ⟩ :=
-      Subtype.ext (by rw [halfGen, if_neg Bool.false_ne_true, fdp_one])
-    rw [h, gammaInt_fdp,
-      Fdp_congr Q.skmSymmetrizer hS rfl rfl rfl (by simp [choose_one_two]) rfl _ (wt_rep (-μ) 1),
-      ← F_eq_Fdp Q.skmSymmetrizer hS i μ _ (wt_rep (-μ) 1), F]
+      Subtype.ext (show UDot.F Q _ _ i μ = _ from (fdp_one _ _ _ i μ).symm)
+    rw [h, gammaInt_fdp, Fdp_congr Q.skmSymmetrizer hS rfl rfl rfl (m' := 0) (p' := 0)
+      (by rw [hc, mul_zero, neg_zero]) rfl _ (wt_rep (-μ) 1),
+      ← F_eq_Fdp Q.skmSymmetrizer hS i μ _ (wt_rep (-μ) 1), SKM.K0Relations.F]
     exact cls_congr _ _ (by simp [SKM.wt, SKM.sh, sub_eq_add_neg, add_comm]) rfl rfl _ _ _ _
   · have h : (⟨_, MixedWordSpan.halfGen_mem_lForm Q _ true i μ⟩ : Λ) =
         ⟨_, edp_mem_lForm Q Coefficients.q Coefficients.pi _ i 1 μ⟩ :=
-      Subtype.ext (by rw [halfGen, if_pos rfl, edp_one])
-    rw [h, gammaInt_edp,
-      Edp_congr Q.skmSymmetrizer hS rfl rfl rfl (by simp [choose_one_two])
-        (by simp [choose_one_two]) _ (wt_rep μ 1),
-      ← E_eq_Edp Q.skmSymmetrizer hS i μ _ (wt_rep μ 1), E]
+      Subtype.ext (show UDot.E Q _ _ i μ = _ from (edp_one _ _ _ i μ).symm)
+    rw [h, gammaInt_edp, Edp_congr Q.skmSymmetrizer hS rfl rfl rfl (m' := 0) (p' := 0)
+      (by rw [hc, mul_zero]) (by rw [choose_one_two, Nat.cast_zero, zero_mul]) _ (wt_rep μ 1),
+      ← E_eq_Edp Q.skmSymmetrizer hS i μ _ (wt_rep μ 1), SKM.K0Relations.E]
     exact cls_congr _ _ (by simp [SKM.wt, SKM.sh, add_comm]) rfl rfl _ _ _ _
 
 /-- **`γ` on mixed words**: `γ(θ_a 1_ζ) = [E_a 1_ζ]`, the class of the word `a`. -/
@@ -281,7 +283,7 @@ theorem gammaInt_algebraWord (ζ : X) (a : List (Bool × I)) :
     gammaInt Q hS cs hf ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
       cls S Q.skmSymmetrizer hS (SKM.wt Q.toSKM ζ a) ζ a rfl 0 0 := by
   induction a with
-  | nil => rw [cls_nil]; exact gammaInt_one Q hS cs hf ζ
+  | nil => exact (gammaInt_one Q hS cs hf ζ).trans (by rw [← cls_nil]; rfl)
   | cons g a ih =>
     obtain ⟨b, i⟩ := g
     have hmul : (⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ ((b, i) :: a)⟩ : Λ) =
@@ -293,43 +295,51 @@ theorem gammaInt_algebraWord (ζ : X) (a : List (Bool × I)) :
       add_zero (0 : ℤ), add_zero (0 : ZMod 2)]
     exact cls_congr _ _ (SKM.wt_append _ ζ [(b, i)] a).symm rfl rfl _ _ _ _
 
+theorem gammaInt_algebraWord_of_eq (ζ μ : X) (a : List (Bool × I)) (h : SKM.wt Q.toSKM ζ a = μ) :
+    gammaInt Q hS cs hf ⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ζ a⟩ =
+      cls S Q.skmSymmetrizer hS μ ζ a h 0 0 := by
+  subst h
+  exact gammaInt_algebraWord Q hS cs hf ζ a
+
 /-! ### The pairing of word classes is a Hom dimension -/
 
 /-- The weight object `μ` of the graded 2-category. -/
-abbrev wobj (μ : X) : SKM.UGr Q.toSKM S Q.skmSymmetrizer hS := ⟨μ⟩
+abbrev weightObj (μ : X) : SKM.UGr Q.toSKM S Q.skmSymmetrizer hS := ⟨μ⟩
 
 /-- The graded dimension pairing of the classes of two words `b`, `a` from `ν` to `μ`, at
 `π = σ`, is the graded superdimension of `HOM(E_b 1_ν, E_a 1_ν)` at `π = σ`. -/
 theorem evalSeries_pairing_blockClass (μ ν : X) (a b : List (SKM.Letter I))
     (ha : SKM.wt Q.toSKM ν a = μ) (hb : SKM.wt Q.toSKM ν b = μ) (σ : ℤ) (hσ : σ * σ = 1) :
-    letI := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (wobj Q hS μ) (wobj Q hS ν)
+    let _ := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν)
     evalSeries σ hσ (GSKar.pairing k
-      (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (wobj Q hS μ) (wobj Q hS ν))
-      (GSKar.of k (word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
+      (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν))
+      (GSKar.of k (SKM.K0Relations.word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
       (blockClass S Q.skmSymmetrizer hS μ ν a ha 0 0)) =
       SKM.homDimension Q.skmSymmetrizer cs hS hf ν b a σ := by
-  letI := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (wobj Q hS μ) (wobj Q hS ν)
+  let _ := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν)
   ext z
   rw [coeff_evalSeries, SKM.homDimension_coeff, GSKar.coeff_pairing]
   change ((Zπ.eval σ hσ (GSKar.superCoeff k (GSKar.of k _ 0 0) z
-    (K₀.mk (GSKar.of k (word S Q.skmSymmetrizer hS μ ν a ha) 0 0))) : ℤ) : ℚ) = _
-  rw [GSKar.superCoeff_of]
+    (K₀.mk (GSKar.of k (SKM.K0Relations.word S Q.skmSymmetrizer hS μ ν a ha) 0 0))) : ℤ) : ℚ) = _
+  rw [GSKar.superCoeff_of, map_add, map_mul, map_natCast, map_natCast, Zπ.eval_π]
   have hsum : ∀ f : ZMod 2 → ℚ, ∑ p : ZMod 2, f p = f 0 + f 1 := fun f => Fin.sum_univ_two f
-  simp only [SKM.wordHomComponent, SKM.homPar_eq_homDeg _ cs]
   rw [hsum]
-  change ((Zπ.eval σ hσ ((Module.finrank k ↥((SKM.pres Q.toSKM S).homDeg
-      (SKM.gdeg Q.toSKM Q.skmSymmetrizer) (SKM.ob Q.toSKM ν b) (SKM.ob Q.toSKM ν a) z ⊓
-      (SKM.pres Q.toSKM S).homDeg (SKM.parityDeg (SKM.sig Q.toSKM)) (SKM.ob Q.toSKM ν b)
-        (SKM.ob Q.toSKM ν a) 0) : Zπ) +
-      (Module.finrank k ↥((SKM.pres Q.toSKM S).homDeg
-      (SKM.gdeg Q.toSKM Q.skmSymmetrizer) (SKM.ob Q.toSKM ν b) (SKM.ob Q.toSKM ν a) z ⊓
-      (SKM.pres Q.toSKM S).homDeg (SKM.parityDeg (SKM.sig Q.toSKM)) (SKM.ob Q.toSKM ν b)
-        (SKM.ob Q.toSKM ν a) 1) : Zπ) * Zπ.π)) : ℤ) : ℚ) = _
-  rw [map_add, map_mul, map_natCast, map_natCast, Zπ.eval_π]
-  simp only [show (1 : ZMod 2).val = 1 from rfl, show (0 : ZMod 2).val = 0 from rfl, pow_zero,
-    pow_one, one_mul]
+  have hfin : ∀ p : ZMod 2, SKM.wordHomComponent Q.skmSymmetrizer S ν b a (z, p) =
+      (SKM.pres Q.toSKM S).homDeg (SKM.gdeg Q.toSKM Q.skmSymmetrizer) (SKM.ob Q.toSKM ν b)
+        (SKM.ob Q.toSKM ν a) z ⊓ (SKM.pres Q.toSKM S).homDeg
+          (StringDiagrams.Presentation.parityDeg (SKM.sig Q.toSKM)) (SKM.ob Q.toSKM ν b)
+          (SKM.ob Q.toSKM ν a) p := fun p => by
+    rw [SKM.wordHomComponent, SKM.homPar_eq_homDeg Q.skmSymmetrizer cs]
+  have hfin' : ∀ p : ZMod 2,
+      (Module.finrank k ↥(SKM.wordHomComponent Q.skmSymmetrizer S ν b a (z, p)) : ℚ) =
+      Module.finrank k ↥((SKM.pres Q.toSKM S).homDeg (SKM.gdeg Q.toSKM Q.skmSymmetrizer)
+        (SKM.ob Q.toSKM ν b) (SKM.ob Q.toSKM ν a) z ⊓ (SKM.pres Q.toSKM S).homDeg
+          (StringDiagrams.Presentation.parityDeg (SKM.sig Q.toSKM)) (SKM.ob Q.toSKM ν b)
+          (SKM.ob Q.toSKM ν a) p) := fun p => by rw [hfin p]
+  rw [hfin' 0, hfin' 1]
+  simp only [ZMod.val_zero, ZMod.val_one, pow_zero, pow_one, one_mul]
   push_cast
-  ring
+  exact congrArg₂ (· + ·) rfl (mul_comm _ _)
 
 /-! ### The coefficient series is nonzero -/
 
@@ -370,7 +380,7 @@ theorem symDimension_coeff_zero {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) (K 
     have hset : {l | SKM.SYM.wordBidegree sy l = (0, p)} =
         if p = 0 then {([] : List (SKM.SYMGen D))} else ∅ := by
       ext l
-      simp only [Set.mem_setOf_eq, wordBidegree_eq_zero_iff]
+      simp only [Set.mem_ofPred_eq, wordBidegree_eq_zero_iff]
       split_ifs with hp <;> simp [hp]
     rw [SKM.SYM.component, hset]
     split_ifs
@@ -390,99 +400,79 @@ theorem symDimension_ne_zero {D : SKM.Datum I X} (sy : SKM.Symmetrizer D) (K : T
 
 /-! ### Theorem 12.1 -/
 
+theorem toGrBlock_injective (μ ν : X) :
+    Function.Injective (toGrBlock (Sc := S) Q.skmSymmetrizer hS μ ν) := fun _ _ h =>
+  K₀Ring.of_injective (weight S Q.skmSymmetrizer hS μ) (weight S Q.skmSymmetrizer hS ν)
+    (MulOpposite.op_injective h)
+
 section Injectivity
 
 variable [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X]
 
 attribute [local instance] SKM.K0Relations.homModule
 
-/-- The block step of Theorem 12.1. -/
-theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
-    (hD : Q.toSuperCartanDatum.BarConsistent) (hα : LinearIndependent ℤ Q.α)
-    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
-    blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 := by
-  set y := blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) with hy_def
-  have hyL : y ∈ Λ := by
-    rw [hy_def, blockProj_apply]
-    exact mul_mem (mul_mem (one_mem_lForm _ _ _ _ μ) x.2) (one_mem_lForm _ _ _ _ ν)
-  have hγy : gammaInt Q hS cs hf ⟨y, hyL⟩ = 0 := by
-    have : (⟨y, hyL⟩ : Λ) = ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ μ⟩ * x *
-        ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ ν⟩ :=
-      Subtype.ext (by simp [hy_def, blockProj_apply])
-    rw [this, map_mul, map_mul, hx, mul_zero, zero_mul]
-  -- `y` is a `𝕃`-combination of the mixed words of the block; clear denominators
-  obtain ⟨c, hc⟩ := Finsupp.mem_span_range_iff_exists_finsupp.1
-    (MixedWordSpan.blockProj_mem_span_blockWords Q μ ν (x : 𝕌))
-  obtain ⟨d, hd, a, had⟩ := Coefficients.exists_integral_combination
-    (MixedWordSpan.blockWords Q μ ν) c
-  rw [hc] at had
-  have hyB : y ∈ block Q Coefficients.q Coefficients.pi μ ν := blockProj_mem _ _ _ μ ν _
-  -- the `ℒ`-combination in the `ℒ`-form
-  set Y : Λ := a.sum fun t r => r • (⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ν t.1⟩ : Λ)
-  have hYval : (Y : 𝕌) = a.sum fun t r =>
-      CoveringQuantum.Coefficients.ofLaurentHom r • MixedWordSpan.blockWords Q μ ν t := by
-    simp only [Y, Finsupp.sum, NonUnitalSubalgebra.coe_sum, NonUnitalSubalgebra.coe_smul]
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- Weights of the mixed words of a weight block, read physically. -/
+theorem blockWord_wt {μ ν : X} (t : {a : List (Bool × I) // ν + shift Q a = μ}) :
+    SKM.wt Q.toSKM ν t.1 = μ :=
+  (mixed_word_physical_weight Q ν t.1).trans t.2
+
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+include hf in
+/-- **Vanishing classes give vanishing values of the form**: if an `ℒ`-combination of the classes
+of the words of a weight block vanishes in `K₀`, then the form of Theorem 10.1 pairs every mixed
+word of the block trivially with the same combination of mixed words in `U̇`. This is the
+categorical input of BE2 Theorem 12.1 (the Hom dimensions of Theorem 10.3, given the
+Nondegeneracy Conjecture). -/
+theorem form_algebraWord_eq_zero (hN : SKM.NondegeneracyConjecture cs) (μ ν : X)
+    (a : {a : List (Bool × I) // ν + shift Q a = μ} →₀ LaurentPolynomial Zπ)
+    (hZ : (a.sum fun t r =>
+      r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) = 0)
+    (Y' : modified Q Coefficients.q Coefficients.pi)
+    (hY' : Y' = a.sum fun t r => CoveringQuantum.Coefficients.ofLaurentHom r •
+      algebraWord Q ν t.1)
+    (b : List (Bool × I)) (hbμ : ν + shift Q b = μ) :
+    sesquilinearForm Q (algebraWord Q ν b) Y' = 0 := by
+  have hb : SKM.wt Q.toSKM ν b = μ := (mixed_word_physical_weight Q ν b).trans hbμ
+  let _ := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν)
+  set P := GSKar.pairing k
+    (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (weightObj Q hS μ) (weightObj Q hS ν))
+    (GSKar.of k (SKM.K0Relations.word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
+  have hP : ∀ σ : ℤ, ∀ hσ : σ * σ = 1, evalSeries σ hσ (P (a.sum fun t r =>
+      r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0)) =
+      signLaurent (σ : ℚ) (sq_eq_one_of_mul_self hσ) (sesquilinearForm Q
+        (algebraWord Q ν b) Y') * SKM.symDimension Q.skmSymmetrizer k σ := by
+    intro σ hσ
+    rw [hY']
+    simp only [Finsupp.sum, map_sum, map_smul, smul_eq_mul, map_mul, Finset.sum_mul]
     refine Finset.sum_congr rfl fun t _ => ?_
-    exact (algebraMap_smul CoveringQuantum.Coefficients.Ring (a t) _).symm
-  have hY0 : gammaInt Q hS cs hf Y = 0 := by
-    have : Y = d • (⟨y, hyL⟩ : Λ) := Subtype.ext (by
-      rw [hYval, had, NonUnitalSubalgebra.coe_smul]
-      exact algebraMap_smul CoveringQuantum.Coefficients.Ring d y)
-    rw [this, map_smul, hγy, smul_zero]
-  -- transport to the classes of the weight block
-  have ha : ∀ t : {a : List (Bool × I) // ν + shift Q a = μ}, SKM.wt Q.toSKM ν t.1 = μ :=
-    fun t => (mixed_word_physical_weight Q ν t.1).trans t.2
-  set Z : K₀ (block S Q.skmSymmetrizer hS μ ν) :=
-    a.sum fun t r => r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (ha t) 0 0
-  have hZ : Z = 0 := by
-    apply (show Function.Injective (toGrBlock (Sc := S) Q.skmSymmetrizer hS μ ν) from
-      fun u v h => K₀Ring.of_injective _ _ (MulOpposite.op_injective h))
-    rw [map_zero, ← hY0]
-    simp only [Z, Y, Finsupp.sum, map_sum, map_smul, toGrBlock_smul, gammaInt_algebraWord]
-    refine Finset.sum_congr rfl fun t _ => ?_
-    rw [cls_congr Q.skmSymmetrizer hS (ha t) rfl rfl _ (ha t) 0 0]
-  -- the vanishing pairings give vanishing values of the form
-  set Y' : modified Q Coefficients.q Coefficients.pi :=
-    ⟨(Y : 𝕌), by rw [hYval, had]; exact block_le_modified _ _ _ μ ν
-      (Submodule.smul_mem _ _ hyB)⟩
-  have hform : ∀ b : List (Bool × I), ν + shift Q b = μ →
-      sesquilinearForm Q (algebraWord Q ν b) Y' = 0 := by
-    intro b hbμ
-    have hb : SKM.wt Q.toSKM ν b = μ := (mixed_word_physical_weight Q ν b).trans hbμ
-    letI := SKM.UGr.degreeHomFinite Q.skmSymmetrizer cs hS hf (wobj Q hS μ) (wobj Q hS ν)
-    set P := GSKar.pairing k
-      (SKM.UGr.homBoundedBelow Q.skmSymmetrizer cs hS hf (wobj Q hS μ) (wobj Q hS ν))
-      (GSKar.of k (word S Q.skmSymmetrizer hS μ ν b hb) 0 0)
-    have hP : ∀ σ : ℤ, ∀ hσ : σ * σ = 1, evalSeries σ hσ (P Z) =
-        SKM.signLaurent (σ : ℚ) (sq_eq_one_of_mul_self hσ) (sesquilinearForm Q
-          (algebraWord Q ν b) Y') * SKM.symDimension Q.skmSymmetrizer k σ := by
-      intro σ hσ
-      have hY'val : Y' = a.sum fun t r => CoveringQuantum.Coefficients.ofLaurentHom r •
-          algebraWord Q ν t.1 := Subtype.ext (by
-        rw [show (Y' : 𝕌) = (Y : 𝕌) from rfl, hYval]
-        simp only [Finsupp.sum, NonUnitalSubalgebra.coe_sum, NonUnitalSubalgebra.coe_smul]
-        rfl)
-      rw [hY'val]
-      simp only [Z, Finsupp.sum, map_sum, map_smul, smul_eq_mul, map_mul, Finset.sum_mul]
-      refine Finset.sum_congr rfl fun t _ => ?_
-      have hab : SKM.wt Q.toSKM 0 b = SKM.wt Q.toSKM 0 t.1 := by
-        rw [mixed_word_physical_weight, mixed_word_physical_weight]
-        have h1 := (mixed_word_physical_weight Q ν b).symm.trans hb
-        have h2 := (mixed_word_physical_weight Q ν t.1).symm.trans (ha t)
-        rw [add_left_cancel (h1.trans h2.symm)]
-      erw [GSKar.pairing_smul]
-      rw [map_mul, evalSeries_laurentToSeries, evalSeries_pairing_blockClass,
-        SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab, mul_assoc]
-      rfl
-    apply Coefficients.eq_zero_of_signLaurent
-    intro σ hσ'
-    have hσ : σ * σ = 1 := by
-      have : ((σ * σ : ℤ) : ℚ) = 1 := by push_cast; rw [← pow_two]; exact hσ'
-      exact_mod_cast this
-    have h := hP σ hσ
-    rw [hZ, map_zero, map_zero] at h
-    exact (mul_eq_zero.1 h.symm).resolve_right (symDimension_ne_zero _ k σ)
-  -- extend to every element of the modified algebra
+    have hab : SKM.wt Q.toSKM 0 b = SKM.wt Q.toSKM 0 t.1 := by
+      rw [mixed_word_physical_weight, mixed_word_physical_weight]
+      have h1 := (mixed_word_physical_weight Q ν b).symm.trans hb
+      have h2 := (mixed_word_physical_weight Q ν t.1).symm.trans (blockWord_wt Q t)
+      rw [add_left_cancel (h1.trans h2.symm)]
+    erw [GSKar.pairing_smul]
+    rw [map_mul, evalSeries_laurentToSeries, evalSeries_pairing_blockClass,
+      SKM.hom_dimension_eq_form_mul_sym Q cs hS hf hN ν b t.1 hab, mul_assoc]
+    · rfl
+    · exact hf
+  apply Coefficients.eq_zero_of_signLaurent
+  intro σ hσ'
+  have hσ : σ * σ = 1 := by
+    have : ((σ * σ : ℤ) : ℚ) = 1 := by push_cast; rw [← pow_two]; exact hσ'
+    exact_mod_cast this
+  have h := hP σ hσ
+  rw [hZ, map_zero, map_zero] at h
+  exact (mul_eq_zero.1 h.symm).resolve_right (symDimension_ne_zero _ k σ)
+
+omit [Finite I] [Module.Free ℤ X] [Module.Finite ℤ X] in
+/-- An element of a weight block of `U̇` that pairs trivially with every mixed word of the block
+pairs trivially with all of `U̇`. -/
+theorem form_eq_zero_of_mem_block (μ ν : X) (Y' : modified Q Coefficients.q Coefficients.pi)
+    (hY'B : (Y' : 𝕌) ∈ block Q Coefficients.q Coefficients.pi μ ν)
+    (hform : ∀ b : List (Bool × I), ν + shift Q b = μ →
+      sesquilinearForm Q (algebraWord Q ν b) Y' = 0)
+    (z : modified Q Coefficients.q Coefficients.pi) : sesquilinearForm Q z Y' = 0 := by
   have hspan : Submodule.span Coefficients.Ring (Set.range (MixedWordSpan.blockWords Q μ ν)) ≤
       (modified Q Coefficients.q Coefficients.pi).toSubmodule := by
     rw [Submodule.span_le]
@@ -507,36 +497,93 @@ theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
       rw [show (⟨r • u, hspan (Submodule.smul_mem _ r hu)⟩ :
           modified Q Coefficients.q Coefficients.pi) = r • ⟨u, hspan hu⟩ from rfl,
         LinearMap.map_smulₛₗ, LinearMap.smul_apply, ih, smul_zero]
-  have hall : ∀ z, sesquilinearForm Q z Y' = 0 := by
-    intro z
-    obtain ⟨f, hf, hfz⟩ := (mem_modified_iff Q Coefficients.q Coefficients.pi z.1).1 z.2
-    have hz : z = ∑ b ∈ f.support, (⟨f b, block_le_modified _ _ _ b.1 b.2 (hf b)⟩ :
-        modified Q Coefficients.q Coefficients.pi) := by
-      apply Subtype.ext
-      rw [NonUnitalSubalgebra.coe_sum, ← hfz]
-      rfl
-    rw [hz, map_sum, LinearMap.coeFn_sum, Finset.sum_apply]
-    refine Finset.sum_eq_zero fun b _ => ?_
-    by_cases hb : b = (μ, ν)
-    · subst hb
-      have hfb : f (μ, ν) = blockProj Q Coefficients.q Coefficients.pi μ ν z.1 := by
-        rw [← hfz, blockProj_sum _ _ _ f hf (μ, ν)]
-      exact hspanForm _ (hfb ▸ MixedWordSpan.blockProj_mem_span_blockWords Q μ ν z.1)
-    · apply sesquilinearForm_orthogonal Q b.1 b.2 μ ν _ Y' (hf b)
-      · change (Y : 𝕌) ∈ _
-        rw [hYval, had]
-        exact Submodule.smul_mem _ _ hyB
-      · by_contra hne
-        push_neg at hne
-        exact hb (Prod.ext hne.1 hne.2)
-  -- nondegeneracy of the form
+  obtain ⟨f, hf, hfz⟩ := (mem_modified_iff Q Coefficients.q Coefficients.pi z.1).1 z.2
+  have hz : z = ∑ b ∈ f.support, (⟨f b, block_le_modified _ _ _ b.1 b.2 (hf b)⟩ :
+      modified Q Coefficients.q Coefficients.pi) := by
+    apply Subtype.ext
+    rw [AddSubmonoidClass.coe_finsetSum, ← hfz]
+    rfl
+  rw [hz, map_sum, LinearMap.sum_apply]
+  refine Finset.sum_eq_zero fun b _ => ?_
+  by_cases hb : b = (μ, ν)
+  · subst hb
+    have hfb : f (μ, ν) = blockProj Q Coefficients.q Coefficients.pi μ ν z.1 := by
+      rw [← hfz, blockProj_sum _ _ _ f hf (μ, ν)]
+    exact hspanForm _ (hfb ▸ MixedWordSpan.blockProj_mem_span_blockWords Q μ ν z.1)
+  · apply sesquilinearForm_orthogonal Q b.1 b.2 μ ν _ Y' (hf b) hY'B
+    by_contra hne
+    push Not at hne
+    exact hb (Prod.ext hne.1 hne.2)
+
+/-- An element of `U̇` pairing trivially with all of `U̇` vanishes (Theorem 10.1). -/
+theorem eq_zero_of_form_eq_zero (hD : Q.toSuperCartanDatum.BarConsistent)
+    (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
+    (Y' : modified Q Coefficients.q Coefficients.pi)
+    (hall : ∀ z, sesquilinearForm Q z Y' = 0) : Y' = 0 := by
   have hψ : psiModified Q Y' = 0 := by
     apply FiniteWeightForm.sesquilinearForm_nondegenerate Q hD hα hh
     intro w
     rw [sesquilinearForm_psi_comm, psiModified_psiModified]
     exact hall _
-  have hY' : Y' = 0 := by
-    rw [← psiModified_psiModified Q Y', hψ, map_zero]
+  rw [← psiModified_psiModified Q Y', hψ, map_zero]
+
+/-- The block step of Theorem 12.1. -/
+theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
+    (hD : Q.toSuperCartanDatum.BarConsistent) (hα : LinearIndependent ℤ Q.α)
+    (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
+    blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 := by
+  obtain ⟨y, hy_def⟩ : ∃ y, y = blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) :=
+    ⟨_, rfl⟩
+  rw [← hy_def]
+  have hyL : y ∈ Λ := by
+    rw [hy_def, blockProj_apply]
+    exact mul_mem (mul_mem (one_mem_lForm _ _ _ _ μ) x.2) (one_mem_lForm _ _ _ _ ν)
+  have hγy : gammaInt Q hS cs hf ⟨y, hyL⟩ = 0 := by
+    have : (⟨y, hyL⟩ : Λ) = ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ μ⟩ * x *
+        ⟨_, one_mem_lForm Q Coefficients.q Coefficients.pi _ ν⟩ :=
+      Subtype.ext (by simp [hy_def, blockProj_apply])
+    rw [this, map_mul, map_mul, hx, mul_zero, zero_mul]
+  -- `y` is a `𝕃`-combination of the mixed words of the block; clear denominators
+  obtain ⟨c, hc⟩ := Finsupp.mem_span_range_iff_exists_finsupp.1
+    (MixedWordSpan.blockProj_mem_span_blockWords Q μ ν (x : 𝕌))
+  obtain ⟨d, hd, a, had⟩ := Coefficients.exists_integral_combination
+    (MixedWordSpan.blockWords Q μ ν) c
+  rw [hc, ← hy_def] at had
+  have hyB : y ∈ block Q Coefficients.q Coefficients.pi μ ν := hy_def ▸ blockProj_mem _ _ _ μ ν _
+  -- the `ℒ`-combination in the `ℒ`-form
+  obtain ⟨Y, hYdef⟩ : ∃ Y : Λ,
+      Y = a.sum fun t r => r • (⟨_, MixedWordSpan.algebraWord_mem_lForm Q _ ν t.1⟩ : Λ) :=
+    ⟨_, rfl⟩
+  have hYval : (Y : 𝕌) = a.sum fun t r =>
+      CoveringQuantum.Coefficients.ofLaurentHom r • MixedWordSpan.blockWords Q μ ν t := by
+    simp only [hYdef, Finsupp.sum, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]
+    refine Finset.sum_congr rfl fun t _ => ?_
+    exact (algebraMap_smul CoveringQuantum.Coefficients.Ring (a t) _).symm
+  have hY0 : gammaInt Q hS cs hf Y = 0 := by
+    have : Y = d • (⟨y, hyL⟩ : Λ) := Subtype.ext (by
+      rw [hYval, had, SetLike.val_smul]
+      exact algebraMap_smul CoveringQuantum.Coefficients.Ring d y)
+    rw [this, map_smul, hγy, smul_zero]
+  -- the classes of the weight block
+  have hZ : (a.sum fun t r =>
+      r • blockClass S Q.skmSymmetrizer hS μ ν t.1 (blockWord_wt Q t) 0 0) = 0 := by
+    refine toGrBlock_injective Q hS μ ν (Eq.trans ?_ (hY0.trans (map_zero _).symm))
+    rw [hYdef]
+    simp only [Finsupp.sum, map_sum, map_smul, toGrBlock_smul]
+    refine Finset.sum_congr rfl fun t _ => ?_
+    congr 1
+    exact (gammaInt_algebraWord_of_eq Q hS cs hf ν μ t.1 (blockWord_wt Q t)).symm
+  -- the form vanishes on the element of `U̇`, so it vanishes
+  have hYm : (Y : 𝕌) ∈ block Q Coefficients.q Coefficients.pi μ ν := by
+    rw [hYval, had]
+    exact Submodule.smul_mem _ _ hyB
+  have hY' : (⟨(Y : 𝕌), block_le_modified _ _ _ μ ν hYm⟩ :
+      modified Q Coefficients.q Coefficients.pi) = 0 := by
+    refine eq_zero_of_form_eq_zero Q hD hα hh _ (form_eq_zero_of_mem_block Q μ ν _ hYm ?_)
+    refine form_algebraWord_eq_zero Q hS cs hf hN μ ν a hZ _ (Subtype.ext ?_)
+    rw [hYval]
+    simp only [Finsupp.sum, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]
+    rfl
   have hdy : CoveringQuantum.Coefficients.ofLaurentHom d • y = 0 := by
     rw [← had, ← hYval]
     exact congrArg Subtype.val hY'
@@ -552,7 +599,10 @@ theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
     (hD : Q.toSuperCartanDatum.BarConsistent) (hα : LinearIndependent ℤ Q.α)
     (hh : LinearIndependent ℤ Q.cd.coroot) :
     Function.Injective (gammaInt Q hS cs hf) := by
-  refine (injective_iff_map_eq_zero (gammaInt Q hS cs hf)).2 fun x hx => ?_
+  suffices h0 : ∀ x : Λ, gammaInt Q hS cs hf x = 0 → x = 0 by
+    intro x y hxy
+    exact sub_eq_zero.1 (h0 _ (by rw [map_sub, hxy, sub_self]))
+  intro x hx
   have hxm := MixedWordSpan.lForm_le_modified Q (LaurentPolynomial Zπ) x.2
   obtain ⟨f, hf', hfx⟩ := (mem_modified_iff Q Coefficients.q Coefficients.pi _).1 hxm
   have hf0 : f = 0 := by
