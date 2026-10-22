@@ -213,4 +213,73 @@ theorem braid_iji {i j : I} (hij : i ≠ j)
 
 end Rels
 
+/-! ## Generators of different words at disjoint positions -/
+
+theorem sChain_comp {t t' t'' : List I} {gs hs : List PG} (h₁ : SChain t (pl t gs) t')
+    (h₂ : SChain t' (pl t' hs) t'') : SChain t (pl t (gs ++ hs)) t'' := by
+  rw [pl_append, tgt_eq h₁]
+  exact h₁.append h₂
+
+/-- `cl_comp` with the composite chain supplied. -/
+theorem cl_comp' {t t' t'' : List I} (gs hs : List PG) (h₁ : SChain t (pl t gs) t')
+    (h₂ : SChain t' (pl t' hs) t'') :
+    cl D Sc t t' gs h₁ ≫ cl D Sc t' t'' hs h₂ = cl D Sc t t'' (gs ++ hs) (sChain_comp h₁ h₂) :=
+  cl_comp D Sc gs hs h₁ h₂ _
+
+theorem sChain_ofShape' (l r : List I) (g : Shape I) {t t' : List I} {p : ℕ}
+    (ht : t = l ++ g.dom ++ r) (ht' : t' = l ++ g.cod ++ r) (hp : l.length = p) :
+    SChain t (pl t [PG.ofShape g p]) t' := by
+  subst ht ht' hp
+  have := sChain_pl (l ++ g.dom ++ r) [PG.ofShape g l.length]
+  rwa [tgt_cons, tgt_nil, act_ofShape] at this
+
+/-- A generator `g` that does not change the word, to the left of a generator `h`, moves
+through `h` by the super interchange law. -/
+theorem genE_comp_cl (l m v : List I) (g h : Shape I) (hg : g.cod = g.dom) {w w' : List I}
+    (hw : w = l ++ g.dom ++ m ++ h.dom ++ v) (hw' : w' = l ++ g.dom ++ m ++ h.cod ++ v)
+    {p q : ℕ} (hp : l.length = p) (hq : (l ++ g.dom ++ m).length = q)
+    (hσ : SChain w (pl w [PG.ofShape h q]) w') :
+    genE D Sc w (PG.ofShape g p) ≫ cl D Sc w w' [PG.ofShape h q] hσ =
+      zsign k (g.parity D * h.parity D) •
+        (cl D Sc w w' [PG.ofShape h q] hσ ≫ genE D Sc w' (PG.ofShape g p)) := by
+  subst hw hw' hp hq
+  have h₁ := sChain_ofShape l (m ++ h.dom ++ v) g hg (t := l ++ g.dom ++ m ++ h.dom ++ v)
+    (by simp)
+  have h₂ := sChain_ofShape l (m ++ h.cod ++ v) g hg (t := l ++ g.dom ++ m ++ h.cod ++ v)
+    (by simp)
+  rw [genE_eq D Sc h₁, genE_eq D Sc h₂, cl_comp', cl_comp']
+  cases g with
+  | dot x => exact cl_interchange D Sc l m v _ _ _ _
+  | cross x x' =>
+    obtain rfl : x = x' := by simp [Shape.cod, Shape.dom] at hg; exact hg.2
+    exact cl_interchange D Sc l m v _ _ _ _
+
+theorem zsign_mul_self (p : ZMod 2) : zsign k p * zsign k p = 1 := by
+  unfold zsign; split_ifs <;> simp
+
+theorem eq_zsign_smul_iff {M : Type*} [AddCommGroup M] [Module k M] (p : ZMod 2) (x y : M) :
+    x = zsign k p • y ↔ y = zsign k p • x := by
+  constructor <;> rintro rfl <;> rw [smul_smul, zsign_mul_self, one_smul]
+
+/-- A generator `g` that does not change the word, to the right of a generator `h`, moves
+through `h` by the super interchange law. -/
+theorem genE_comp_cl' (l m v : List I) (h g : Shape I) (hg : g.cod = g.dom) {w w' : List I}
+    (hw : w = l ++ h.dom ++ m ++ g.dom ++ v) (hw' : w' = l ++ h.cod ++ m ++ g.dom ++ v)
+    {p q : ℕ} (hq : l.length = q) (hp : (l ++ h.dom ++ m).length = p)
+    (hp' : (l ++ h.cod ++ m).length = p) (hσ : SChain w (pl w [PG.ofShape h q]) w') :
+    genE D Sc w (PG.ofShape g p) ≫ cl D Sc w w' [PG.ofShape h q] hσ =
+      zsign k (h.parity D * g.parity D) •
+        (cl D Sc w w' [PG.ofShape h q] hσ ≫ genE D Sc w' (PG.ofShape g p)) := by
+  subst hw hw' hq hp
+  have h₁ := sChain_ofShape (l ++ h.dom ++ m) v g hg (t := l ++ h.dom ++ m ++ g.dom ++ v) rfl
+  have h₂ := sChain_ofShape' (l ++ h.cod ++ m) v g (t := l ++ h.cod ++ m ++ g.dom ++ v)
+    (t' := l ++ h.cod ++ m ++ g.dom ++ v) rfl (by rw [hg]) hp'
+  rw [genE_eq D Sc h₁, genE_eq D Sc h₂, cl_comp', cl_comp']
+  rw [eq_zsign_smul_iff]
+  cases g with
+  | dot x => exact cl_interchange D Sc l m v _ _ _ _
+  | cross x x' =>
+    obtain rfl : x = x' := by simp [Shape.cod, Shape.dom] at hg; exact hg.2
+    exact cl_interchange D Sc l m v _ _ _ _
+
 end OddMath.QuiverHecke
