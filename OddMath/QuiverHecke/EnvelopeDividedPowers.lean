@@ -46,9 +46,6 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   {k : Type w} [CommRing k] (Sc : SKM.Scalars D k) (sy : SKM.Symmetrizer D)
   (hc : Sc.Homogeneous)
 
-/-- The object of `H` attached to a word. -/
-abbrev hObj (t : List I) : HGr D Sc sy hc := (pres D Sc).obj (ob D t)
-
 /-- The graded super Karoubi envelope of `H`, written as the completed hom category of
 `OddMath.SKM.Summands`; it is the 1-morphism category `HCat` of `Ḣ_{q,π}` (`hKar_eq`). -/
 abbrev HKar := Karoubi (Mat_ (Base k (HGr D Sc sy hc)))

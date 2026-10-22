@@ -63,6 +63,10 @@ instance : GradedMonoidalSupercategory k (HGr D Sc sy hc) :=
 
 end HGr
 
+/-- The object of `H` attached to a word. -/
+abbrev hObj (t : List I) : HGr D Sc sy hc := (pres D Sc).obj (ob D t)
+
+
 /-- **BE2 §11.** `Ḣ_{q,π}`: the idempotent completion of the additive envelope of the
 underlying category of the `(Q, Π)`-envelope of `H`, as a 2-category with one object. -/
 abbrev HDot := GSKAR k (MonoidalTwo (HGr D Sc sy hc))
