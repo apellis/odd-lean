@@ -23,6 +23,8 @@ import OddMath.QuiverHecke.EvenDividedPowerExamples
 import OddMath.QuiverHecke.CategoricalDividedPowersExamples
 import OddMath.QuiverHecke.CategoricalDividedPowersOddExamples
 import OddMath.QuiverHecke.CategoricalDividedPowersDownExamples
+import OddMath.QuiverHecke.EnvelopeDividedPowersExamples
+import OddMath.QuiverHecke.HomDimensionExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
 import OddMath.SKM.DividedPowerIdempotents
