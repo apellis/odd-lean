@@ -495,6 +495,39 @@ theorem idem_mul_chR_mul_idem {s' l : ℕ} (hs : s ≤ s') (hn : s' + l + 1 ≤ 
     obtain rfl : r = s' + l := by omega
     rw [chR_succ', ← mul_assoc, ← mul_assoc, hF.dem_mul_t (by omega) (by omega)]
 
+/-- A chain of at least one crossing squares to zero: the strand it carries crosses another
+one twice. -/
+theorem chL_mul_chL {p l : ℕ} (hp : s ≤ p) (hl : p + l < s + n) (h0 : 0 < l) :
+    chL T p l * chL T p l = 0 := by
+  induction l with
+  | zero => omega
+  | succ l ih =>
+    rcases Nat.eq_zero_or_pos l with rfl | hl0
+    · simp only [chL_succ, chL_zero, mul_one]
+      exact hF.t_sq p hp (by omega)
+    · have h₁ : chL T p l * chL T p (l + 1) = 0 := by
+        rw [chL_succ', ← mul_assoc, ih (by omega) hl0, zero_mul]
+      obtain ⟨u, hu⟩ := hF.t_mul_chL (p := p) (l := l + 1) (j := p + l - 1) hp hl (by omega)
+        (by omega)
+      rw [show p + l - 1 + 1 = p + l by omega] at hu
+      nth_rw 1 [chL_succ' (D := T) p l]
+      rw [mul_assoc, hu, mul_smul_comm, ← mul_assoc, h₁, zero_mul, smul_zero]
+
+/-- A chain of at least one crossing squares to zero. -/
+theorem chR_mul_chR {p l : ℕ} (hp : s ≤ p) (hl : p + l < s + n) (h0 : 0 < l) :
+    chR T p l * chR T p l = 0 := by
+  induction l generalizing p with
+  | zero => omega
+  | succ l ih =>
+    rcases Nat.eq_zero_or_pos l with rfl | hl0
+    · simp only [chR_succ, chR_zero, one_mul]
+      exact hF.t_sq p hp (by omega)
+    · have h₁ : chR T (p + 1) l * chR T p (l + 1) = 0 := by
+        rw [chR_succ, ← mul_assoc, ih (by omega) (by omega) hl0, zero_mul]
+      obtain ⟨u, hu⟩ := hF.t_mul_chR (p := p) (l := l + 1) (j := p) hp hl le_rfl (by omega)
+      nth_rw 1 [chR_succ (D := T) p l]
+      rw [mul_assoc, hu, mul_smul_comm, ← mul_assoc, h₁, zero_mul, smul_zero]
+
 /-! ### Annihilators -/
 
 /-- HW Lemma 5.8, KL II (12), in the Demazure normalization:

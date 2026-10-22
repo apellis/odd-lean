@@ -28,6 +28,17 @@ variable {obj}
 /-- Insert one morphism into a matrix. -/
 abbrev single (i j : J) (f : obj j ⟶ obj i) : Mat obj := DFinsupp.single (i,j) f
 
+@[simp] theorem single_zero (i j : J) : single (obj := obj) i j 0 = 0 :=
+  DFinsupp.single_zero _
+
+theorem single_add (i j : J) (f g : obj j ⟶ obj i) :
+    single i j (f + g) = single i j f + single i j g := by
+  simp only [single, DFinsupp.single_add]
+
+theorem single_smul (i j : J) (c : k) (f : obj j ⟶ obj i) :
+    single i j (c • f) = c • single i j f := by
+  simp only [single, DFinsupp.single_smul]
+
 /-- Bilinear multiplication of individual entries. -/
 def entryMul (p q : J × J) :
     (obj p.2 ⟶ obj p.1) →ₗ[k] (obj q.2 ⟶ obj q.1) →ₗ[k] Mat obj := by
