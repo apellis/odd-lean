@@ -275,6 +275,96 @@ theorem alpha_eIdem_heq {a : ℕ} (ha : a ≤ M) :
         SKM.wd D (wtR D ν i M a) (upWord [j]) = _
       simp only [wtL, wtR, upWord_append, SKM.wd_append, SKM.wt_append, SKM.ob_word]; rfl
 
+/-! ### Divided-power summands -/
+
+theorem dpIdem_family (n : ℕ) :
+    IsSignedNilHeckeFamily (eps D i) 0 n (dotE D Sc (List.replicate n i))
+      (crossE D Sc (List.replicate n i)) :=
+  family_of_eq [] [] i n 0 (by simp) rfl
+
+theorem dpIdem_idem (n : ℕ) : dpIdem D Sc i n * dpIdem D Sc i n = dpIdem D Sc i n :=
+  (dpIdem_family n).idem_mul_idem 0 n
+
+theorem dpIdem_one : dpIdem D Sc i 1 = 1 := rfl
+
+theorem getElem?_replicate_of_lt {n p : ℕ} (h : p < n) : (List.replicate n i)[p]? = some i := by
+  simp [h]
+
+theorem dpIdem_degree (n : ℕ) :
+    (dpIdem D Sc i n : hObj D Sc sy hc (List.replicate n i) ⟶ hObj D Sc sy hc _) ∈
+      GradedSupercategory.degree (R := k) (C := HGr D Sc sy hc) _ _ 0 :=
+  idem_mem (gdeg_dot_add_cross sy i)
+    (fun _ _ hp => crossE_mem (getElem?_replicate_of_lt (by omega))
+      (getElem?_replicate_of_lt (by omega)))
+    (fun _ _ hp => dotE_mem (getElem?_replicate_of_lt (by omega))) 0 n
+
+theorem dpIdem_even (n : ℕ) :
+    (dpIdem D Sc i n : hObj D Sc sy hc (List.replicate n i) ⟶ hObj D Sc sy hc _) ∈
+      Supercategory.parity (R := k) (C := HGr D Sc sy hc) _ _ 0 :=
+  idem_mem (parityDeg_dot_add_cross i)
+    (fun _ _ hp => crossE_mem (getElem?_replicate_of_lt (by omega))
+      (getElem?_replicate_of_lt (by omega)))
+    (fun _ _ hp => dotE_mem (getElem?_replicate_of_lt (by omega))) 0 n
+
+variable (i) in
+/-- `α_{n,ν}(1_{i^{(n)}})` on the 1-morphism `E_i^n 1_ν` from `μ` to `ν`. -/
+def dpProj (n : ℕ) (μ ν : X) (hs : SKM.wt D ν (upWord (List.replicate n i)) = μ) :
+    SKM.K0Relations.word Sc sy hc μ ν _ hs ⟶ SKM.K0Relations.word Sc sy hc μ ν _ hs :=
+  (alpha D Sc ν).map (dpIdem D Sc i n)
+
+theorem dpProj_idem (n : ℕ) (μ ν : X) (hs : SKM.wt D ν (upWord (List.replicate n i)) = μ) :
+    dpProj sy hc i n μ ν hs ≫ dpProj sy hc i n μ ν hs = dpProj sy hc i n μ ν hs := by
+  change (alpha D Sc ν).map _ ≫ (alpha D Sc ν).map _ = _
+  rw [← Functor.map_comp]
+  exact congrArg _ (dpIdem_idem n)
+
+variable (i) in
+/-- The summand `Q^m Π^p (E_i^n 1_ν, α(1_{i^{(n)}}))`. BE2's divided power `E_i^{(n)} 1_ν`
+is `m = p = 0`; the corrected one of Lemma 11.5 is `m = d_i n(n-1)/2`, `p = |i| n(n-1)/2`. -/
+abbrev dpSummand (n : ℕ) (μ ν : X) (hs : SKM.wt D ν (upWord (List.replicate n i)) = μ)
+    (m : ℤ) (p : ZMod 2) :=
+  SKM.Summands.raw (dpProj_idem sy hc n μ ν hs)
+    (alpha_mem_degree D Sc sy ν (dpIdem_degree sy hc n))
+    (alpha_mem_parity D Sc ν (dpIdem_even sy hc n)) m p
+
+theorem raw_congr {A : Type*} [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
+    [GradedSupercategory k A] {f f' : A} (h : f = f') {e : f ⟶ f} {e' : f' ⟶ f'} (he : HEq e e')
+    (hi : e ≫ e = e) (hd : e ∈ GradedSupercategory.degree (R := k) f f 0)
+    (hp : e ∈ Supercategory.parity (R := k) f f 0) (hi' : e' ≫ e' = e')
+    (hd' : e' ∈ GradedSupercategory.degree (R := k) f' f' 0)
+    (hp' : e' ∈ Supercategory.parity (R := k) f' f' 0) (n : ℤ) (p : ZMod 2) :
+    SKM.Summands.raw hi hd hp n p = SKM.Summands.raw hi' hd' hp' n p := by
+  subst h; obtain rfl := eq_of_heq he; rfl
+
+/-! ### The terms of the Serre complex as products -/
+
+open SKM.K0Relations in
+/-- **The terms of the Serre complex are products of divided powers**: in the split
+Grothendieck ring of `𝔘̇_{q,π}(𝔤)`, with BE2's multiplication order,
+`[termUp a] = [Q^{m_L} Π^{p_L} E_i^{(a)}] [E_j] [Q^{m_R} Π^{p_R} E_i^{(M-a)} 1_ν]` whenever the
+shifts add up to those of `termUp a`. -/
+theorem class_termUp {a : ℕ} (ha : a ≤ M) (mL mR : ℤ) (pL pR : ZMod 2)
+    (hm : mL + 0 + mR = sh sy i M a) (hp : pL + 0 + pR = par D i j M a) :
+    (MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
+        (a := weight Sc sy hc ((M • D.α i + D.α j) + ν)) (b := weight Sc sy hc ν)
+        (termUp sy hc i j M ν a ha)) : Grothendieck Sc sy hc) =
+      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
+        (a := weight Sc sy hc ((M • D.α i + D.α j) + ν)) (b := weight Sc sy hc (wtL D ν i j M a))
+        (dpSummand sy hc i a ((M • D.α i + D.α j) + ν) (wtL D ν i j M a) (wt_left ν ha) mL pL)) *
+      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc) (a := weight Sc sy hc (wtL D ν i j M a))
+        (b := weight Sc sy hc (wtR D ν i M a))
+        (dpSummand sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl 0 0)) *
+      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc) (a := weight Sc sy hc (wtR D ν i M a))
+        (b := weight Sc sy hc ν) (dpSummand sy hc i (M - a) (wtR D ν i M a) ν rfl mR pR)) := by
+  rw [← MulOpposite.op_mul, ← MulOpposite.op_mul, SKM.Summands.mk_raw_mul_mk_raw,
+    SKM.Summands.mk_raw_mul_mk_raw]
+  congr 2
+  rw [hm, hp]
+  have hJ : dpProj sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl = 𝟙 _ :=
+    (alpha D Sc _).map_id _
+  exact raw_congr (wordHom_eq_comp sy hc ν ha)
+    ((alpha_eIdem_heq sy hc ν ha).trans (by rw [hJ]; rfl)) _ _ _ _ _ _ _ _
+
 end SerreComplex
 
 end OddMath.QuiverHecke
