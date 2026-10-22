@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.Spanning
 import OddMath.QuiverHecke.Realization.Functor
 import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CliffordExchangeExamples
