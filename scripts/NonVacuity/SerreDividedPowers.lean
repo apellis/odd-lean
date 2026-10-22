@@ -1,6 +1,6 @@
 import OddMath
 
-/-! # BE2 Lemma 11.6, positive Serre relation, on a rank-two datum
+/-! # BE2 Lemma 11.6, positive and negative Serre relations, on a rank-two datum
 
 The datum of `scripts/NonVacuity/SerreClass.lean` (type `B₂`, `true` odd, `d_{true,false} = 2`,
 `d_{false,true} = 1`) with the symmetrizer `d_true = 1`, `d_false = 2`, at the weight `0`. Both
@@ -61,6 +61,15 @@ example := serre_E (i := true) (j := false) (M := 3) symmetrizer homogeneous 0 (
 example := serre_E (i := false) (j := true) (M := 2) symmetrizer homogeneous 0 (by decide)
   (by rw [dn_false_true])
 
+/-- The negative relation, `i` odd, `M = 3`. -/
+example := serre_F (i := true) (j := false) (M := 3) symmetrizer homogeneous 0 (by decide)
+  (by rw [dn_true_false])
+
+/-- The negative relation, `i` even, `M = 2`. -/
+example := serre_F (i := false) (j := true) (M := 2) symmetrizer homogeneous 0 (by decide)
+  (by rw [dn_false_true])
+
 #print axioms OddMath.QuiverHecke.SerreComplex.serre_E
+#print axioms OddMath.QuiverHecke.SerreComplex.serre_F
 
 end NonVacuity.SerreDividedPowers
