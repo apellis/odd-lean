@@ -432,7 +432,7 @@ end Surjective
 
 section Injective
 
-variable [Finite I] [DecidableEq I] (hC : Q.BarConsistent)
+variable [DecidableEq I] (hC : Q.BarConsistent)
 
 include hC in
 theorem toSerreF_wordSum_eq_zero {a : List I →₀ ℒ}
@@ -448,7 +448,7 @@ include hC in
 /-- **BE2 Theorem 11.3, injectivity** (over `𝕃`): `γ̄ : f_𝕃 → 𝕃 ⊗_ℒ K₀(Ḣ_{q,π})` is injective.
 Clearing denominators, a relation `∑ c_t [t] = 0` among word classes with `c_t ∈ ℒ` puts
 `∑ c_t θ_t` in the radical of the form (`mem_radical_of_wordSum_eq_zero`), which is the Serre
-ideal for finite bar-consistent data (`Coefficients.serreIdeal_eq_radical`). -/
+ideal for bar-consistent data (`Coefficients.serreIdeal_eq_radical`). -/
 theorem gammaL_injective : Function.Injective (gammaL Q Sc hc) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   obtain ⟨y, rfl⟩ := Q.toSerreF_surjective CoveringQuantum.Coefficients.q
@@ -467,10 +467,11 @@ theorem gammaBar_injective : Function.Injective (gammaBar Q Sc hc) := fun x y h 
   Subtype.ext (gammaL_injective Q Sc hc hC ((one_tmul_gammaBar Q Sc hc x).symm.trans
     ((congrArg _ h).trans (one_tmul_gammaBar Q Sc hc y))))
 
-/-- **Brundan–Ellis, Theorem 11.3.** For a finite bar-consistent Cartan datum, over a field with
+/-- **Brundan–Ellis, Theorem 11.3.** For a bar-consistent Cartan datum, over a field with
 homogeneous scalars, `γ̄ : f_𝒜 → K₀(Ḣ_{q,π})` is an isomorphism of `ℒ`-algebras with
-`θ_i^{(n)} ↦ [P(i^{(n)})]` (`theorem_11_3_dpF`). The finiteness and bar-consistency hypotheses
-come from the current proof of nondegeneracy (`Coefficients.serreIdeal_eq_radical`). -/
+`θ_i^{(n)} ↦ [P(i^{(n)})]` (`theorem_11_3_dpF`). The bar-consistency hypothesis comes from the
+current proof of nondegeneracy (`Coefficients.serreIdeal_eq_radical`, via Hill–Wang's
+Lemma 6.11 in the bar-consistent case); its removal is tracked in odd-lean#247. -/
 def theorem_11_3 : fA Q ≃ₐ[ℒ] KQ :=
   AlgEquiv.ofBijective (gammaBar Q Sc hc)
     ⟨gammaBar_injective Q Sc hc hC, gammaBar_surjective Q Sc hc⟩
