@@ -31,6 +31,7 @@ import OddMath.QuiverHecke.CategoricalPairing
 import OddMath.QuiverHecke.CategoricalPairingExamples
 import OddMath.QuiverHecke.PairingRadical
 import OddMath.QuiverHecke.PairingRadicalExamples
+import OddMath.QuiverHecke.ShuffleBasis
 import OddMath.QuiverHecke.HomDimensionExamples
 import OddMath.QuiverHecke.AlgebraExamples
 import OddMath.QuiverHecke.AlgebraMapExamples
