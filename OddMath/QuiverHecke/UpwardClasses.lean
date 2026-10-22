@@ -179,15 +179,10 @@ open CategoryTheory StringDiagrams GradedSupercategory OddMath.SKM.Summands
 variable {I : Type*} {X : Type*} [AddCommGroup X] {D : SKM.Datum I X} {k : Type*} [CommRing k]
   {Sc : SKM.Scalars D k} {sy : SKM.Symmetrizer D} {hc : Sc.Homogeneous}
 
-theorem wt_eq_sum (μ : X) (t : List (SKM.Letter I)) :
-    SKM.wt D μ t = (t.map (SKM.sh D)).sum + μ := by
-  induction t with
-  | nil => simp
-  | cons l t ih => rw [SKM.wt_cons, ih, List.map_cons, List.sum_cons, add_assoc]
-
 theorem wt_upWord_perm (μ : X) {t t' : List I} (h : t'.Perm t) :
     SKM.wt D μ (upWord t') = SKM.wt D μ (upWord t) := by
-  rw [wt_eq_sum, wt_eq_sum, upWord, upWord, ((h.map SKM.up).map (SKM.sh D)).sum_eq]
+  rw [SerreComplex.wt_eq_sum, SerreComplex.wt_eq_sum, upWord, upWord,
+    ((h.map SKM.up).map (SKM.sh D)).sum_eq]
 
 variable (Sc sy hc) in
 /-- The words `t` with `wt_ν(t) = μ`, i.e. those `α_ν` sends into `Hom(μ, ν)`. -/
