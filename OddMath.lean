@@ -922,6 +922,7 @@ import OddMath.SKM.CurlsR
 import OddMath.SKM.DotSlides
 import OddMath.SKM.EvenBridge.Compare
 import OddMath.SKM.EvenBridge.Datum
+import OddMath.SKM.EvenBridge.Degree
 import OddMath.SKM.EvenBridge.Form
 import OddMath.SKM.EvenBridge.Functor
 import OddMath.SKM.EvenBridge.KLInverse
