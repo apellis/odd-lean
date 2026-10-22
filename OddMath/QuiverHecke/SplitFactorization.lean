@@ -168,7 +168,8 @@ theorem UDFactor.step {μ : X} {s t s' t' : List I} {L : List (LayerData I)}
     by_cases h₁ : i < s'.length
     · obtain ⟨α, j, β, rfl, rfl⟩ := exists_split_one h₁
       refine ⟨α ++ j :: β, t', [whL [] (dnWord t') (upL (α, .dot j, β))], ?_, rfl,
-        h.append_up Sc _ ⟨by simp [QuiverHecke.Shape.dom], by simp [QuiverHecke.SChain, QuiverHecke.Shape.cod]⟩⟩
+        h.append_up Sc _ ⟨by simp [QuiverHecke.Shape.dom],
+          by simp [QuiverHecke.SChain, QuiverHecke.Shape.cod]⟩⟩
       have e : upWord (α ++ j :: β) ++ dnWord t' =
           upWord α ++ up j :: (upWord β ++ dnWord t') := by simp [upWord]
       rw [e, show α.length = (upWord α).length by simp [upWord], dotOn_mid]
@@ -176,7 +177,8 @@ theorem UDFactor.step {μ : X} {s t s' t' : List I} {L : List (LayerData I)}
     by_cases h₂ : i < s'.length + t'.length
     · obtain ⟨α, j, β, rfl, hα⟩ := exists_split_one (l := t') (i := i - s'.length) (by omega)
       refine ⟨s', α ++ j :: β, (omegaL [upL (α, .dot j, β)]).map (whL (upWord s') []), ?_, rfl,
-        h.append_dn Sc _ ⟨by simp [QuiverHecke.Shape.dom], by simp [QuiverHecke.SChain, QuiverHecke.Shape.cod]⟩⟩
+        h.append_dn Sc _ ⟨by simp [QuiverHecke.Shape.dom],
+          by simp [QuiverHecke.SChain, QuiverHecke.Shape.cod]⟩⟩
       have e : upWord s' ++ dnWord (α ++ j :: β) =
           (upWord s' ++ dnWord α) ++ dn j :: dnWord β := by simp [upWord, dnWord]
       rw [e, show i = (upWord s' ++ dnWord α).length by simp [upWord, dnWord, flipW]; omega,
