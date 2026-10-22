@@ -859,7 +859,7 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
    a general graded-dimension theorem is not yet formalized. Equation (dum)
    should retain its printed normalization with `S` defined as the actual
    graded-super dimension of `SYM`, subject to an explicit local-finiteness
-   scope (the infinite-colour source question is tracked in issue #42). It is
+   scope (see entry 15). It is
    not a reason to assume the Nondegeneracy Conjecture.
 
    **For the authors.** In the proof of Theorem 12.1, the factor assigned to an
@@ -1102,3 +1102,29 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
 
     **For the authors.** In Proposition 11.2, read `H_{n+1}` for `H_{r+s+1}`, and take the two
     sums of the final isomorphism over `0 ≤ k ≤ ⌊n/2⌋` and `0 ≤ k ≤ ⌊(n-1)/2⌋`.
+
+15. **Theorem 11.7 and §12: local finiteness of the graded pieces [C].** The proof of Theorem 11.7
+    applies the Krull–Schmidt facts for Laurentian graded superalgebras, recalled at the start of §11,
+    to algebras of 2-morphisms in `𝔘(𝔤)` such as `End(1_λ)` and the algebras `H_{n,n',λ}`. Equation
+    (dum) in the proof of Theorem 12.1 also needs `dim_{q,π} SYM` to be a Laurent series. Theorem 8.1
+    makes these algebras finite-dimensional in each degree as long as only finitely many colours
+    `i` have `dᵢ ≤ N`, for every `N`. The paper allows an arbitrary index set `I`. If infinitely
+    many colours share one value `dᵢ = d`, the bubbles of those colours give infinitely many
+    spanning elements in degree `2d`. If the Nondegeneracy Conjecture holds, they are linearly
+    independent, so `End(1_λ)` is not Laurentian and the Krull–Schmidt input is not available.
+
+    **Formal reading.** Theorem 11.7 (existence and surjectivity of `γ`) is proved with the
+    hypothesis `Symmetrizer.DegreeLocallyFinite`: for each `N`, only finitely many colours satisfy
+    `dᵢ ≤ N`. It holds whenever `I` is finite. Equation (dum) and Theorem 12.1 carry the same
+    hypothesis. The maintainer decided on 2026-10-22 to keep this as the reading of the statement.
+    It would be reopened only if an intended reading for infinitely many colours of bounded degree
+    emerged, for example through a completion of `K₀`.
+
+    **Declarations.** `Symmetrizer.DegreeLocallyFinite`, `hom_laurentian`,
+    `UDot.int_smul_eq_zero`, `QuiverHecke.SerreComplex.theorem_11_7_existence`,
+    `QuiverHecke.theorem_11_7_surjective`, `hom_dimension_eq_form_mul_sym`.
+
+    **For the authors.** In §§11–12 the Krull–Schmidt argument and the series `dim_{q,π} SYM` need
+    the 2-morphism spaces of `𝔘(𝔤)` to be finite-dimensional in each degree. By Theorem 8.1 this
+    holds when, for each `N`, only finitely many `i ∈ I` have `dᵢ ≤ N`, and in particular when `I`
+    is finite. It is worth stating this assumption at the start of §11.
