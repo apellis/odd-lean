@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.PositionalRelations
+import OddMath.QuiverHecke.Centre
 import OddMath.QuiverHecke.SignedNilHecke
 
 /-!
@@ -15,8 +15,8 @@ nilHecke algebra (odd if `i` is odd), in the endomorphism ring of `w`: this is
 `1_u ⊗ e_n ⊗ 1_v` of Brundan–Ellis, arXiv:1701.04133v2, §11, used in Proposition 11.2 and
 Lemma 11.6 on the words `i^k j i^{n-k}`.
 
-The same-colour relations (1.7)–(1.9) of BE2 at a position (`cross_cross_eq`, `slide_left_eq`,
-`slide_right_eq`, `braid_eq`) hold exactly, not only modulo words with fewer crossings as in
+The same-colour relations (1.7) and (1.9) of BE2 at a position (`cross_cross_eq`, `braid_eq`;
+(1.8) is `slide_left_eq`, `slide_right_eq` in `Centre`) hold exactly, not only modulo words with fewer crossings as in
 `PositionalRelations`.
 -/
 
@@ -29,18 +29,6 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X) {k : Type w}
   [CommRing k] (Sc : SKM.Scalars D k)
 
-theorem cl_nil (t : List I) (h : SChain t (pl t []) t) : cl D Sc t t [] h = 𝟙 _ := by
-  rw [cl, ← Presentation.diag_id]
-  exact (pres D Sc).diag_eq_of_layers_eq rfl
-
-theorem cl_comp {t t' t'' : List I} (gs hs : List PG) (h₁ : SChain t (pl t gs) t')
-    (h₂ : SChain t' (pl t' hs) t'') (h : SChain t (pl t (gs ++ hs)) t'') :
-    cl D Sc t t' gs h₁ ≫ cl D Sc t' t'' hs h₂ = cl D Sc t t'' (gs ++ hs) h := by
-  have e := tgt_eq h₁
-  rw [cl, cl, cl, ← Presentation.diag_comp]
-  apply Presentation.diag_eq_of_layers_eq
-  simp [mkD, layList, pl_append, e]
-
 theorem sChain_append_self {t : List I} {gs hs : List PG} (h₁ : SChain t (pl t gs) t)
     (h₂ : SChain t (pl t hs) t) : SChain t (pl t (gs ++ hs)) t := by
   have := sChain_pl t (gs ++ hs)
@@ -52,7 +40,7 @@ theorem cl_mul {t : List I} (gs hs : List PG) (h₁ : SChain t (pl t gs) t)
     (show End ((pres D Sc).obj (ob D t)) from cl D Sc t t hs h₂) *
       (show End ((pres D Sc).obj (ob D t)) from cl D Sc t t gs h₁) =
       cl D Sc t t (gs ++ hs) (sChain_append_self h₁ h₂) :=
-  cl_comp D Sc gs hs h₁ h₂ _
+  cl_comp D Sc gs hs h₁ h₂
 
 /-! ## Exact same-colour relations at a position -/
 
@@ -66,50 +54,6 @@ theorem cross_cross_eq
     cl D Sc _ _ [.cross l.length, .cross l.length] h = 0 := by
   rw [cl_eq_lin D Sc l r _ (sChain_cross_cross i i) _ h (pl_cross_cross l r i i)]
   exact lin_rel_eq D Sc l r (Rel.quadEq i)
-
-/-- (1.8), left, for equal colours. -/
-theorem slide_left_eq
-    (h₁ : SChain (l ++ [i, i] ++ r) (pl _ [.dot l.length, .cross l.length]) (l ++ [i, i] ++ r))
-    (h₂ : SChain (l ++ [i, i] ++ r) (pl _ [.cross l.length, .dot (l.length + 1)])
-      (l ++ [i, i] ++ r)) :
-    cl D Sc _ _ [.dot l.length, .cross l.length] h₁ -
-        zsign k (D.parity i * D.parity i) •
-          cl D Sc _ _ [.cross l.length, .dot (l.length + 1)] h₂ =
-      𝟙 _ := by
-  have p₁ : SChain [i, i] (dotsL [] i [i] 1 ++ crossL [] i i []) [i, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  have p₂ : SChain [i, i] (crossL [] i i [] ++ dotsL [i] i [] 1) [i, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  rw [cl_eq_lin D Sc l r _ p₁ _ h₁ (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh]),
-    cl_eq_lin D Sc l r _ p₂ _ h₂
-      (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh, List.take_append])]
-  have hr := lin_rel_eq D Sc l r (Rel.slideLEq i)
-  simp only [relation, whisker_sub, whisker_smul, Presentation.lin_sub,
-    Presentation.lin_smul, sub_eq_zero] at hr
-  rw [hr, lin_whisker_idg, ← Presentation.diag_id]
-  exact (pres D Sc).diag_eq_of_layers_eq rfl
-
-/-- (1.8), right, for equal colours. -/
-theorem slide_right_eq
-    (h₁ : SChain (l ++ [i, i] ++ r) (pl _ [.cross l.length, .dot l.length]) (l ++ [i, i] ++ r))
-    (h₂ : SChain (l ++ [i, i] ++ r) (pl _ [.dot (l.length + 1), .cross l.length])
-      (l ++ [i, i] ++ r)) :
-    cl D Sc _ _ [.cross l.length, .dot l.length] h₁ -
-        zsign k (D.parity i * D.parity i) •
-          cl D Sc _ _ [.dot (l.length + 1), .cross l.length] h₂ =
-      𝟙 _ := by
-  have p₁ : SChain [i, i] (crossL [] i i [] ++ dotsL [] i [i] 1) [i, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  have p₂ : SChain [i, i] (dotsL [i] i [] 1 ++ crossL [] i i []) [i, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  rw [cl_eq_lin D Sc l r _ p₁ _ h₁ (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh]),
-    cl_eq_lin D Sc l r _ p₂ _ h₂
-      (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh, List.take_append])]
-  have hr := lin_rel_eq D Sc l r (Rel.slideREq i)
-  simp only [relation, whisker_sub, whisker_smul, Presentation.lin_sub,
-    Presentation.lin_smul, sub_eq_zero] at hr
-  rw [hr, lin_whisker_idg, ← Presentation.diag_id]
-  exact (pres D Sc).diag_eq_of_layers_eq rfl
 
 /-- (1.9) for three strands of one colour. -/
 theorem braid_eq
@@ -227,6 +171,7 @@ theorem crossE_dotE (hw : w = l ++ [i, i] ++ r) :
   rw [genE_eq D Sc (sChain_cross l r i rfl rfl),
     genE_eq D Sc (sChain_dot l (i :: r) i (by simp) rfl),
     genE_eq D Sc (sChain_dot (l ++ [i]) r i (by simp) (by simp)), cl_mul, cl_mul]
+  rw [sub_eq_iff_eq_add', End.one_def, ← cl_nil D Sc _ rfl]
   exact slide_left_eq D Sc l r i _ _
 
 theorem dotE_crossE (hw : w = l ++ [i, i] ++ r) :
@@ -237,6 +182,7 @@ theorem dotE_crossE (hw : w = l ++ [i, i] ++ r) :
   rw [genE_eq D Sc (sChain_cross l r i rfl rfl),
     genE_eq D Sc (sChain_dot l (i :: r) i (by simp) rfl),
     genE_eq D Sc (sChain_dot (l ++ [i]) r i (by simp) (by simp)), cl_mul, cl_mul]
+  rw [sub_eq_iff_eq_add', End.one_def, ← cl_nil D Sc _ rfl]
   exact slide_right_eq D Sc l r i _ _
 
 theorem crossE_braid (hw : w = l ++ [i, i, i] ++ r) :
