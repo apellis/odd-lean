@@ -781,6 +781,83 @@ theorem interior_corr (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b 
     rw [Finset.mem_range] at h
     omega
 
+theorem intCast_units_mul_self (u : ℤˣ) : ((u : ℤ) : k) * ((u : ℤ) : k) = 1 := by
+  rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
+
+/-- HW Theorem 5.9 in the interior: `e_{b+1}` is a combination of the two composites through
+the neighbouring words. -/
+theorem split_interior (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b + 1 < M) :
+    ∃ cp cm : k, eIdem D Sc i j M (b + 1) =
+      cp • (upMap D Sc i j M hb ≫ downMap D Sc i j M hb) +
+        cm • (downMap D Sc i j M (Nat.lt_of_succ_lt hb) ≫
+          upMap D Sc i j M (Nat.lt_of_succ_lt hb)) := by
+  obtain ⟨γ, hγ, hcorr⟩ := interior_corr (D := D) (Sc := Sc) hij hM hb
+  obtain ⟨u, hu⟩ := chL_slides_down (D := D) (Sc := Sc) (i := i) (j := j) (a := b + 1) (b := b)
+    hb le_rfl
+  obtain ⟨u', hu'⟩ := chR_slides_up (D := D) (Sc := Sc) (i := i) (j := j) (a := b)
+    (Nat.lt_of_succ_lt hb)
+  obtain ⟨v, hv⟩ := (signComm_chR_chL (D := D) (Sc := Sc) (i := i) (j := j) hb).symm
+  have hv' : chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+      (M - (b + 1 + 1)) ≫ chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b =
+      (v : ℤ) • (chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b ≫
+        chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+          (M - (b + 1 + 1))) := hv
+  have hI : upMap D Sc i j M hb ≫ downMap D Sc i j M hb = (u : ℤ) •
+      (eIdem D Sc i j M (b + 1) ≫ up D Sc i j M hb ≫ tw D Sc i j M (b + 1 + 1) b ≫
+        down D Sc i j M hb ≫
+        chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b ≫
+        chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+          (M - (b + 1 + 1))) := by
+    rw [show downMap D Sc i j M hb = eIdem D Sc i j M (b + 1 + 1) ≫ down D Sc i j M hb ≫
+      chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+        (M - (b + 1 + 1)) from rfl, ← Category.assoc, upMap_comp_eIdem]
+    unfold upMap
+    rw [show chL (B := End (wobj D Sc i j M (b + 1 + 1))) (tw D Sc i j M (b + 1 + 1)) 0 (b + 1) =
+      tw D Sc i j M (b + 1 + 1) b ≫
+        chL (B := End (wobj D Sc i j M (b + 1 + 1))) (tw D Sc i j M (b + 1 + 1)) 0 b by
+      rw [Categorification.KLR.KL2.NH.chL_succ', zero_add]; rfl]
+    simp only [Category.assoc]
+    rw [reassoc_of% hu]
+    simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
+  have hII : downMap D Sc i j M (Nat.lt_of_succ_lt hb) ≫ upMap D Sc i j M (Nat.lt_of_succ_lt hb) =
+      ((u' * v : ℤˣ) : ℤ) •
+      (eIdem D Sc i j M (b + 1) ≫ down D Sc i j M (Nat.lt_of_succ_lt hb) ≫
+        tw D Sc i j M b (b + 1) ≫ up D Sc i j M (Nat.lt_of_succ_lt hb) ≫
+        chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b ≫
+        chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+          (M - (b + 1 + 1))) := by
+    rw [show upMap D Sc i j M (Nat.lt_of_succ_lt hb) = eIdem D Sc i j M b ≫
+      up D Sc i j M (Nat.lt_of_succ_lt hb) ≫
+      chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b from rfl,
+      ← Category.assoc, downMap_comp_eIdem]
+    unfold downMap
+    rw [show chR (B := End (wobj D Sc i j M b)) (tw D Sc i j M b) (b + 1) (M - (b + 1)) =
+      tw D Sc i j M b (b + 1) ≫
+        chR (B := End (wobj D Sc i j M b)) (tw D Sc i j M b) (b + 1 + 1) (M - (b + 1 + 1)) by
+      rw [show M - (b + 1) = M - (b + 1 + 1) + 1 by omega,
+        Categorification.KLR.KL2.NH.chR_succ]; rfl]
+    simp only [Category.assoc]
+    rw [reassoc_of% hu']
+    simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
+    rw [hv']
+    simp only [Preadditive.comp_zsmul, smul_smul, Units.val_mul]
+  simp only [Preadditive.comp_sub, Preadditive.sub_comp, Category.assoc] at hcorr
+  rw [sub_eq_iff_eq_add] at hcorr
+  set γ' : k := ↑hγ.unit⁻¹
+  have hγγ : γ' * γ = 1 := hγ.val_inv_mul
+  have hUU := intCast_units_mul_self (k := k) u
+  have hVV := intCast_units_mul_self (k := k) (u' * v)
+  refine ⟨-(γ' * ((u : ℤ) : k)), γ' * (((u' * v : ℤˣ) : ℤ) : k), ?_⟩
+  rw [hI, hII, hcorr, ← Int.cast_smul_eq_zsmul k, ← Int.cast_smul_eq_zsmul k]
+  simp only [smul_add, smul_smul]
+  rw [show γ' * (((u' * v : ℤˣ) : ℤ) : k) * ((((u' * v : ℤˣ) : ℤ) : k) * γ) = 1 by
+      linear_combination (γ' * γ) * hVV + hγγ,
+    show -(γ' * ((u : ℤ) : k)) * ((u : ℤ) : k) =
+      -(γ' * (((u' * v : ℤˣ) : ℤ) : k) * (((u' * v : ℤˣ) : ℤ) : k)) by
+      linear_combination (-γ') * hUU + γ' * hVV,
+    neg_smul, one_smul]
+  abel
+
 end Interior
 
 end OddMath.QuiverHecke.SerreComplex
