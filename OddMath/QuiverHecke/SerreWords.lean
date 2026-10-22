@@ -5,19 +5,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.MixedRelations
 
 /-!
-# The words `i^a j i^{M-a}` of the categorical Serre relation
+# Generators passing through a crossing between different words
 
 Input to Brundan–Ellis, arXiv:1701.04133v2, Proposition 11.2 (Hill–Wang, arXiv:1202.2769v2,
-Theorem 5.9). For colours `i`, `j` and `M ≥ 0`, `serreWord i j M a = i^a j i^{M-a}` (positions
-counted from the left). On it the dots and crossings of the left block `[0, a)` and of the right
-block `[a + 1, M + 1)` are signed nilHecke families (`leftFamily`, `rightFamily`), and
-`serreIdem a = 1_{i^{(a)}} ⊗ 1_j ⊗ 1_{i^{(M-a)}}` is the product of their longest Demazure
-products. The crossing `crossHom` of the strand `j` with a neighbouring `i` moves between
-consecutive words.
-
-Generators away from that crossing pass through it by the super interchange law; `Slides`
-records this for elements of the endomorphism rings, with an explicit sign, and is closed under
-products, so the block idempotents pass through it unchanged.
+Theorem 5.9). `Slides σ u f g` says `f ≫ σ = u • (σ ≫ g)` for a morphism `σ` between two words
+and endomorphisms `f`, `g` of the two words; it is closed under sums, products and powers.
+Generators at disjoint positions pass through one another by the super interchange law with the
+sign of their parities (`far_swap_eq`, `genE_slides`, `signComm_genE`). Consequently the block
+idempotents `1_{i^{(n)}}` of the signed nilHecke calculus, and products of same-colour crossings,
+pass through a generator at disjoint positions: with no sign for the idempotents
+(`slides_idem_gen`, `slides_idem_idem`, `slides_idem_wp`) and up to a sign for crossings
+(`slides_wp_gen`). The words of the Serre complex themselves are in `SerreComplex`.
 -/
 
 noncomputable section
@@ -45,7 +43,8 @@ variable {σ : A ⟶ B} {u u' : ℤˣ} {f f' : End A} {g g' : End B}
 theorem one : Slides σ 1 (1 : End A) (1 : End B) := by
   simp [Slides, End.one_def]
 
-theorem mul (h : Slides σ u f g) (h' : Slides σ u' f' g') : Slides σ (u * u') (f * f') (g * g') := by
+theorem mul (h : Slides σ u f g) (h' : Slides σ u' f' g') :
+    Slides σ (u * u') (f * f') (g * g') := by
   simp only [Slides, End.mul_def, Category.assoc] at *
   rw [h, Preadditive.comp_zsmul, ← Category.assoc, h', Preadditive.zsmul_comp, Category.assoc,
     smul_smul, Units.val_mul]
@@ -342,7 +341,8 @@ theorem slides_idem_dem {w : List I} {x y : I} {ε ε' : ℤˣ} {s n t m s' n' q
     refine Slides.neg_left (Slides.zsmul_left ?_ _)
     rw [← one_mul (1 : ℤˣ)]
     exact (slides_idem_genE D Sc (sChain_cross_of hy₀ hy₁) h₁ h₂ hcol
-      (by rw [PG.pos_cross, PG.width_cross]; omega) (by rw [PG.pos_cross, PG.width_cross]; omega)).endMul
+      (by rw [PG.pos_cross, PG.width_cross]; omega)
+      (by rw [PG.pos_cross, PG.width_cross]; omega)).endMul
       (slides_idem_genE D Sc (sChain_pl w [.dot (q + 1)]) h₁ h₂ hcol
         (by rw [PG.pos_dot, PG.width_dot]; omega) (by rw [PG.pos_dot, PG.width_dot]; omega))
   · rw [dem_of_not hq]

@@ -9,6 +9,10 @@ import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples
 import OddMath.QuiverHecke.ColourBlock
+import OddMath.QuiverHecke.MixedRelations
+import OddMath.QuiverHecke.SerreWords
+import OddMath.QuiverHecke.SplitComplex
+import OddMath.QuiverHecke.SerreComplex
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples

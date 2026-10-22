@@ -21,11 +21,16 @@ two colour blocks. The maps
   `j`, then that `i` carried to the right end,
 
 satisfy `upMap a ≫ upMap (a + 1) = 0`, `downMap (a + 1) ≫ downMap a = 0` and
-`e_a = c⁺ (upMap a ≫ downMap a) + c⁻ (downMap (a - 1) ≫ upMap (a - 1))` for units `c⁺`, `c⁻`
-(one term at the ends). The proof is the Khovanov–Lauda computation: the composites differ by
+`e_a = c⁺ (upMap a ≫ downMap a) + c⁻ (downMap (a - 1) ≫ upMap (a - 1))` for scalars `c⁺`,
+`c⁻` (one term at the ends). The proof is the Khovanov–Lauda computation: the composites differ by
 the correction term of the braid relation (1.9) on `i j i`, of which only the term
 `t_ij x^{a-1} z^{M-a-1}` survives the annihilators of HW Lemma 5.8; at the ends the double
 crossing (1.7) does the same. Bar-consistency of the parameters is not needed.
+
+As elements `eH a`, `fH a`, `gH a` of `H_{M+1}` these form a split complex of principal modules
+(`isSplit`), so the sum of the `H_{M+1} e_a` with `a` even is isomorphic to the sum with `a` odd
+(`serreEquiv`): Proposition 11.2 on underlying modules. Its degree and parity shifts are not
+treated here.
 -/
 
 noncomputable section
@@ -261,7 +266,8 @@ def downMap {a : ℕ} (ha : a < M) : wobj D Sc i j M (a + 1) ⟶ wobj D Sc i j M
 variable {D Sc i j M}
 
 theorem chL_slides_r {a : ℕ} (ha : a < M) :
-    Slides (chL (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) 0 a) 1 (rIdem D Sc i j M (a + 1))
+    Slides (chL (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) 0 a) 1
+      (rIdem D Sc i j M (a + 1))
       (rIdem D Sc i j M (a + 1)) := by
   unfold rIdem chL
   exact slides_idem_wp D Sc (x := i) (y := i) _ le_rfl le_rfl
@@ -270,7 +276,8 @@ theorem chL_slides_r {a : ℕ} (ha : a < M) :
       exact ⟨word_lt (by omega), word_lt (by omega), Or.inr (by omega)⟩
 
 theorem chR_slides_l {a : ℕ} (ha : a < M) :
-    Slides (chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1) (M - (a + 1))) 1 (lIdem D Sc i j M a)
+    Slides (chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1) (M - (a + 1))) 1
+      (lIdem D Sc i j M a)
       (lIdem D Sc i j M a) := by
   unfold lIdem chR
   exact slides_idem_wp D Sc (x := i) (y := i) _ le_rfl le_rfl
@@ -307,7 +314,8 @@ theorem eIdem_comp_ls (a : ℕ) :
 theorem upMap_comp_eIdem {a : ℕ} (ha : a < M) :
     upMap D Sc i j M ha ≫ eIdem D Sc i j M (a + 1) = upMap D Sc i j M ha := by
   have hc := (chL_slides_r (D := D) (Sc := Sc) (i := i) (j := j) ha).eq_of_one
-  have hc' := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (a + 1)).idem_mul_chL_mul_idem
+  have hc' := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M)
+    (a + 1)).idem_mul_chL_mul_idem
     (s' := 0) (l := a) le_rfl (by omega)
   simp only [End.mul_def, Category.assoc] at hc'
   unfold upMap
@@ -594,7 +602,8 @@ theorem ann_left {b : ℕ} (p : ℕ) (hp : p ≤ b) :
     chL (tw D Sc i j M (b + 1)) 0 b * (xw D Sc i j M (b + 1) b ^ p * lIdem D Sc i j M (b + 1)) =
       if p = b then ((-1 : ℤ) ^ b * (eps D i : ℤ) ^ (b + 1).choose 2) • lIdem D Sc i j M (b + 1)
       else 0 := by
-  have h := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (b + 1)).chL_mul_x_pow_mul_idem
+  have h := (leftFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M)
+    (b + 1)).chL_mul_x_pow_mul_idem
     (s' := 0) (l := b) (a := p) le_rfl (by omega) hp
   rw [zero_add] at h
   exact h
@@ -606,7 +615,8 @@ theorem ann_right {b : ℕ} (hb : b + 1 < M) (r : ℕ) (hr : r ≤ M - (b + 1 + 
       if r = M - (b + 1 + 1) then
         ((eps D i : ℤ) ^ (M - (b + 1 + 1)).choose 2) • rIdem D Sc i j M (b + 1)
       else 0 := by
-  have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) (b + 1)).chR_mul_x_pow_mul_idem
+  have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M)
+    (b + 1)).chR_mul_x_pow_mul_idem
     (s' := b + 1 + 1) (l := M - (b + 1 + 1)) (a := r) le_rfl (by omega) hr
   rw [show M - (b + 1 + 1) + 1 = M - (b + 1) by omega] at h
   exact h
@@ -736,7 +746,8 @@ theorem braid_iji_word (hij : i ≠ j) {b : ℕ} (hb : b + 1 < M) :
     (by omega) (by omega)) (word_gt (by omega) (by omega))
   have hT' := sChain_cross_of (word_lt (i := i) (j := j) (M := M) (a := b + 1 + 1) (p := b)
     (by omega)) (word_lt (by omega))
-  have e : word i j M (b + 1) = List.replicate b i ++ [i, j, i] ++ List.replicate (M - b - 2) i := by
+  have e : word i j M (b + 1) =
+      List.replicate b i ++ [i, j, i] ++ List.replicate (M - b - 2) i := by
     rw [word_down b, show M - b - 1 = (M - b - 2) + 1 by omega, List.replicate_succ]
     simp
   unfold tw crossE up down
@@ -933,7 +944,8 @@ theorem split_zero (hij : i ≠ j) (hM : M = D.dn i j + 1) :
         (xw D Sc i j M 0 1 ^ q * rIdem D Sc i j M 0) =
         if q = M - 1 then ((eps D i : ℤ) ^ (M - 1).choose 2) • rIdem D Sc i j M 0 else 0 := by
       intro q hq
-      have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M) 0).chR_mul_x_pow_mul_idem
+      have h := (rightFamily (D := D) (Sc := Sc) (i := i) (j := j) (M := M)
+        0).chR_mul_x_pow_mul_idem
         (s' := 1) (l := M - 1) (a := q) le_rfl (by omega) hq
       rw [show M - 1 + 1 = M by omega] at h
       exact h

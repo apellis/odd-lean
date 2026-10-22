@@ -10,7 +10,8 @@ import OddMath.QuiverHecke.ColourBlock
 The relations (1.7)–(1.9) of the quiver Hecke supercategory (Brundan–Ellis,
 arXiv:1701.04133v2, §11) for strands of different colours, whiskered to an arbitrary position of
 a word, as exact identities between classes of positioned words (dots sliding through a crossing
-of different colours are `slide_left_ne`, `slide_right_ne` in `Centre`): a double crossing of different colours is a polynomial in the dots (`cross_cross_ne`), and the
+of different colours are `slide_left_ne`, `slide_right_ne` in `Centre`): a double crossing of
+different colours is a polynomial in the dots (`cross_cross_ne`), and the
 braid relation holds exactly except on `i j i`, where it has BE2's correction term
 (`braid_ne`, `braid_iji`). Polynomials in dots are written in the endomorphism ring of the word
 (`dotE_pow`).
