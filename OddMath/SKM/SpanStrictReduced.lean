@@ -30,6 +30,10 @@ in the end and have not crossed before.
 * `exists_strictReduced_matching`: **every pairing of `a* b` is the pairing of a strictly reduced
   `(a, b)`-matching**, so every matching is equivalent to a strictly reduced one
   (`exists_strictReduced_equiv`).
+* `exists_strictReduced_matching_shape`: the matching may be chosen to pass through a word with
+  two letters fewer than `a` if the pairing joins two bottom endpoints, and to consist of
+  crossings between sorted words if it joins no two endpoints on the same edge and `a`, `b` are
+  sorted (used in the proof of [BE2] Theorem 11.7).
 * `theorem_8_1`: **[BE2] Theorem 8.1** with the hypotheses of the paper.
 -/
 
@@ -321,6 +325,26 @@ def StrictReduced₂ (a : List (Letter I)) (R : List (TMove (Letter I))) : Prop 
 
 /-! ## Bent pairings realized by strictly reduced matchings -/
 
+/-- A word is sorted if no upward letter follows a downward one. -/
+def LSorted (w : List (Letter I)) : Prop :=
+  ∀ i j : ℕ, i < j → ∀ x y : Letter I, w[i]? = some x → w[j]? = some y → x.1 = false → y.1 = false
+
+theorem lSorted_dualW {a : List (Letter I)} (h : LSorted a) : LSorted (dualW a) := by
+  intro i j hij x y hx hy hx1
+  have hjl : j < a.length := by
+    by_contra c; rw [List.getElem?_eq_none (by simp [dualW]; omega)] at hy; cases hy
+  simp only [dualW] at hx hy
+  rw [List.getElem?_reverse (by simp; omega)] at hx hy
+  simp only [List.length_map, List.getElem?_map] at hx hy
+  obtain ⟨x', hx', rfl⟩ := Option.map_eq_some_iff.1 hx
+  obtain ⟨y', hy', rfl⟩ := Option.map_eq_some_iff.1 hy
+  have hx1' : x'.1 = true := by simpa [flipL] using hx1
+  simp only [flipL]
+  cases c : y'.1
+  · have := h _ _ (show a.length - 1 - j < a.length - 1 - i by omega) y' x' hy' hx' c
+    rw [hx1'] at this; cases this
+  · rfl
+
 section BentPairings
 
 variable (a : List (Letter I))
@@ -332,12 +356,35 @@ structure BentPairing (s : List (ℕ × Letter I)) : Prop where
   pre : ∀ i < a.length, (s[i]?).map Prod.snd = (dualW a)[i]?
   len : a.length ≤ s.length
 
+/-- The pairing `s` joins two bent lower endpoints (an arc with both ends on the bottom edge). -/
+def BotArc (s : List (ℕ × Letter I)) : Prop :=
+  ∃ i j, i < a.length ∧ j < a.length ∧ Same s i j
+
+/-- The pairing `s` joins two upper endpoints (an arc with both ends on the top edge). -/
+def TopArc (s : List (ℕ × Letter I)) : Prop :=
+  ∃ r t, a.length ≤ r ∧ a.length ≤ t ∧ Same s r t
+
+/-- The letters right of the bent lower endpoints are sorted (`LSorted`). -/
+def TopSorted (s : List (ℕ × Letter I)) : Prop := LSorted ((s.map Prod.snd).drop a.length)
+
+/-- The shape of a matching `R` realizing `s`: if `s` has an arc on the bottom edge, then `R`
+passes through a height with at least two strands fewer than `a`; if `s` has no arc on either
+edge, then `R` consists of crossings only, and if moreover the letters of `a* b` are sorted
+(upward before downward letters in `a*` and in `b`), then so are those at every height. -/
+def MatchShape (s : List (ℕ × Letter I)) (R : List (TMove (Letter I))) : Prop :=
+  (BotArc a s → ∃ R₀ R₁, R = R₀ ++ R₁ ∧
+    (tRun flipL a.length (tStart a) R₀).st.length + 2 ≤ 2 * a.length) ∧
+  (¬ BotArc a s → ¬ TopArc a s → (∀ m ∈ R, ∃ p, m = .mv (.cross p)) ∧
+    (LSorted (dualW a) → TopSorted a s → ∀ R₀ R₁, R = R₀ ++ R₁ →
+      TopSorted a (tRun flipL a.length (tStart a) R₀).st))
+
 /-- The pairing `s` is realized from the bent lower endpoints by a reduced matching (`CrossOnce`)
-satisfying the invariant of the critical points (`CritInv`). -/
+satisfying the invariant of the critical points (`CritInv`), of the shape `MatchShape`. -/
 def Realized (s : List (ℕ × Letter I)) : Prop :=
   ∃ R, TFits flipL a.length (tStart a) R ∧ Iso (tRun flipL a.length (tStart a) R).st s ∧
     CrossOnce (tRun flipL a.length (tStart a) R) ∧
-    CritInv a.length (tRun flipL a.length (tStart a) R) (tCrit flipL a.length (tStart a) [] R)
+    CritInv a.length (tRun flipL a.length (tStart a) R) (tCrit flipL a.length (tStart a) [] R) ∧
+    MatchShape a s R
 
 /-- No cup and no crossing can be peeled off the top of `s`. -/
 def NoTopMove (s : List (ℕ × Letter I)) : Prop :=
@@ -353,21 +400,107 @@ theorem tInv_tStart (a : List (Letter I)) : TInv (tStart a) := by
   obtain ⟨hf₀, hn₀, -, -⟩ := cupMoves_spec (dualW a)
   exact Chord.tInv_start hf₀ hn₀
 
+/-- Arcs on the bottom edge are unchanged by a relabelling of positions fixing the bottom edge. -/
+theorem botArc_iff_of_fix {s s' : List (ℕ × Letter I)} (f : ℕ → ℕ) (hf : ∀ i < a.length, f i = i)
+    (h : ∀ i j, Same s' i j ↔ Same s (f i) (f j)) : BotArc a s' ↔ BotArc a s := by
+  constructor
+  · rintro ⟨i, j, hi, hj, hS⟩
+    exact ⟨i, j, hi, hj, by rw [← hf i hi, ← hf j hj]; exact (h i j).1 hS⟩
+  · rintro ⟨i, j, hi, hj, hS⟩
+    exact ⟨i, j, hi, hj, (h i j).2 (by rw [hf i hi, hf j hj]; exact hS)⟩
+
+/-- No arc on the top edge appears under a relabelling of positions preserving the top edge. -/
+theorem not_topArc_of_map {s s' : List (ℕ × Letter I)} (f : ℕ → ℕ)
+    (hf : ∀ i, a.length ≤ i → a.length ≤ f i) (h : ∀ i j, Same s' i j → Same s (f i) (f j))
+    (ht : ¬ TopArc a s) : ¬ TopArc a s' := by
+  rintro ⟨r, t, hr, ht', hS⟩
+  exact ht ⟨f r, f t, hf r hr, hf t ht', h r t hS⟩
+
+theorem TopSorted.of_iso {s s' : List (ℕ × Letter I)} (h : TopSorted a s') (e : Iso s s') :
+    TopSorted a s := by
+  unfold TopSorted; rw [e.1]; exact h
+
+theorem MatchShape.of_iso {s s' : List (ℕ × Letter I)} {R : List (TMove (Letter I))} (h : MatchShape a s R)
+    (e : Iso s s') : MatchShape a s' R := by
+  have hb : BotArc a s' ↔ BotArc a s := botArc_iff_of_fix id (fun _ _ => rfl) fun i j => (e.2 i j).symm
+  refine ⟨fun h' => h.1 (hb.1 h'), fun h1 h2 => ?_⟩
+  obtain ⟨h3, h4⟩ := h.2 (fun h' => h1 (hb.2 h'))
+    (not_topArc_of_map id (fun _ h => h) (fun i j hS => (e.2 i j).1 hS) h2)
+  exact ⟨h3, fun hd ht => h4 hd (ht.of_iso e)⟩
+
+/-- In a pairing without arcs on the top edge whose bent lower endpoints are sorted, two adjacent
+upper endpoints carrying an upward and then a downward letter do not interleave. -/
+theorem not_ilv_up_dn {s : List (ℕ × Letter I)} (hs : BentPairing a s) {q : ℕ} (hqn : a.length ≤ q)
+    (h2 : ¬ TopArc a s) (hd : LSorted (dualW a)) {x y : Letter I}
+    (hx : (s[q]?).map Prod.snd = some x) (hy : (s[q + 1]?).map Prod.snd = some y)
+    (hx1 : x.1 = true) (hy1 : y.1 = false) : ¬ Ilv s q := by
+  have hqL : q + 1 < s.length := by
+    by_contra h; rw [List.getElem?_eq_none (by omega)] at hy; cases hy
+  obtain ⟨u, hu⟩ := hs.valid.exists (show q < s.length by omega)
+  obtain ⟨w, hw⟩ := hs.valid.exists hqL
+  have hua : u < a.length := by
+    by_contra h; exact h2 ⟨q, u, hqn, by omega, hu⟩
+  have hwa : w < a.length := by
+    by_contra h; exact h2 ⟨q + 1, w, by omega, by omega, hw⟩
+  have hlet : ∀ {p v : ℕ} {z : Letter I}, Same s v p → v < p → v < a.length →
+      (s[p]?).map Prod.snd = some z → (dualW a)[v]? = some (flipL z) := by
+    intro p v z hS hvp hva hz
+    have hl := hs.lettered v p hS hvp
+    have hvL : v < s.length := hS.lt_left
+    rw [hz, List.getElem?_eq_getElem hvL] at hl
+    rw [← hs.pre v hva, List.getElem?_eq_getElem hvL]
+    simp only [Option.map_some, Option.some_inj, Function.comp_apply] at hl ⊢
+    rw [hl, flipL_flipL]
+  have hu' := hlet hu.symm (by omega) hua hx
+  have hw' := hlet hw.symm (by omega) hwa hy
+  have hwu : w < u := by
+    rcases lt_trichotomy w u with h | h | h
+    · exact h
+    · subst h; have := hs.valid.unique hu.symm hw.symm; omega
+    · have := hd u w h _ _ hu' hw' (by simp [flipL, hx1]); simp [flipL, hy1] at this
+  rw [Chord.ilv_iff hs.valid hu hw]
+  omega
+
+theorem getElem?_drop_map_swapAt {s : List (ℕ × Letter I)} {q : ℕ}
+    (hql : q + 1 < s.length) (i : ℕ) :
+    (((swapAt s q).map Prod.snd).drop a.length)[i]? = (s[tau q (a.length + i)]?).map Prod.snd := by
+  rw [List.getElem?_drop, List.getElem?_map, Chord.getElem?_swapAt s hql]
+
+/-- Peeling a crossing keeps the upper letters sorted. -/
+theorem TopSorted.swapAt {s : List (ℕ × Letter I)} (hs : BentPairing a s) {q : ℕ} (hq : Ilv s q)
+    (hqn : a.length ≤ q) (h2 : ¬ TopArc a s) (hd : LSorted (dualW a)) (ht : TopSorted a s) :
+    TopSorted a (swapAt s q) := by
+  have hql := hq.lt
+  unfold TopSorted LSorted
+  intro i j hij x y hx hy hx1
+  rw [getElem?_drop_map_swapAt hql] at hx hy
+  by_cases e : a.length + i = q ∧ a.length + j = q + 1
+  · rw [e.1, show tau q q = q + 1 by simp [tau]] at hx
+    rw [e.2, show tau q (q + 1) = q by simp [tau]] at hy
+    by_contra hy1
+    exact not_ilv_up_dn hs hqn h2 hd hy hx (by simpa using hy1) hx1 hq
+  · have hlt : tau q (a.length + i) < tau q (a.length + j) :=
+      (Chord.tau_lt_iff q e (by omega)).2 (by omega)
+    have hge : a.length ≤ tau q (a.length + i) := by unfold tau; split_ifs <;> omega
+    refine ht (tau q (a.length + i) - a.length) (tau q (a.length + j) - a.length) (by omega) x y ?_ ?_ hx1
+    · rw [List.getElem?_drop, List.getElem?_map, Nat.add_sub_cancel' hge]; exact hx
+    · rw [List.getElem?_drop, List.getElem?_map, Nat.add_sub_cancel' (by omega)]; exact hy
+
 theorem Realized.of_iso {s s' : List (ℕ × Letter I)} (h : Realized a s) (e : Iso s s') : Realized a s' := by
-  obtain ⟨R, h1, h2, h3, h4⟩ := h
-  exact ⟨R, h1, h2.trans e, h3, h4⟩
+  obtain ⟨R, h1, h2, h3, h4, h5⟩ := h
+  exact ⟨R, h1, h2.trans e, h3, h4, h5.of_iso e⟩
 
 /-- **Peeling a cup** off the top. -/
 theorem realized_cup {s : List (ℕ × Letter I)} (hs : BentPairing a s) {r : ℕ} (hr : Same s r (r + 1))
     (hrn : a.length ≤ r) (h : Realized a (rmAt s r)) : Realized a s := by
-  obtain ⟨R, hfit, hiso, hR, hC⟩ := h
+  obtain ⟨R, hfit, hiso, hR, hC, hsh⟩ := h
   set T := tRun flipL a.length (tStart a) R
   have hI := (tInv_tStart a).run hfit
   have hl2 : r + 2 ≤ s.length := hr.lt_right
   have hlen : T.st.length = s.length - 2 := by rw [hiso.length_eq, Chord.length_rmAt s hl2]
   have hg : a.length + (r - a.length) ≤ T.st.length := by omega
   set m : TMove (Letter I) := .mv (.cup (r - a.length) (s[r]'(by omega)).2)
-  refine ⟨R ++ [m], (Chord.tFits_snoc _ m _ R).2 ⟨hfit, hg⟩, ?_, ?_, ?_⟩
+  refine ⟨R ++ [m], (Chord.tFits_snoc _ m _ R).2 ⟨hfit, hg⟩, ?_, ?_, ?_, ?_⟩
   · rw [Chord.tRun_snoc']
     show Iso (insAt T.st (a.length + (r - a.length)) _ _) s
     rw [show a.length + (r - a.length) = r by omega]
@@ -389,11 +522,17 @@ theorem realized_cup {s : List (ℕ × Letter I)} (hs : BentPairing a s) {r : �
       (fun x hx => Chord.ne_id_of_mem_rmAt hs.valid hr hx) _ _
   · rw [Chord.tRun_snoc']; exact hR
   · rw [Chord.tRun_snoc', Chord.tCrit_snoc]; exact Chord.critInv_cup hI hC hg
+  · refine ⟨fun hb => ?_, fun _ ht => absurd ⟨r, r + 1, hrn, by omega, hr⟩ ht⟩
+    have hb' : BotArc a (rmAt s r) := (botArc_iff_of_fix (rmIdx r)
+      (fun i hi => by unfold rmIdx; split_ifs <;> omega)
+      fun i j => Chord.same_rmAt hl2).2 hb
+    obtain ⟨R₀, R₁, e, hl⟩ := hsh.1 hb'
+    exact ⟨R₀, R₁ ++ [m], by rw [e, List.append_assoc], hl⟩
 
 /-- **Peeling a crossing** of two interleaving strands off the top. -/
 theorem realized_cross {s : List (ℕ × Letter I)} (hs : BentPairing a s) {q : ℕ} (hq : Ilv s q)
     (hqn : a.length ≤ q) (h : Realized a (swapAt s q)) : Realized a s := by
-  obtain ⟨R, hfit, hiso, hR, hC⟩ := h
+  obtain ⟨R, hfit, hiso, hR, hC, hsh⟩ := h
   set T := tRun flipL a.length (tStart a) R
   have hI := (tInv_tStart a).run hfit
   have hql := hq.lt
@@ -402,12 +541,13 @@ theorem realized_cross {s : List (ℕ × Letter I)} (hs : BentPairing a s) {q : 
   have hns := hq.not_same hs.valid
   set m : TMove (Letter I) := .mv (.cross (q - a.length))
   have e : a.length + (q - a.length) = q := by omega
-  refine ⟨R ++ [m], (Chord.tFits_snoc _ m _ R).2 ⟨hfit, hp⟩, ?_, ?_, ?_⟩
-  · rw [Chord.tRun_snoc']
+  have hfin : Iso (tRun flipL a.length (tStart a) (R ++ [m])).st s := by
+    rw [Chord.tRun_snoc']
     show Iso (swapAt T.st (a.length + (q - a.length))) s
     rw [e]
     have := hiso.swapAt q
     rwa [Chord.swapAt_swapAt] at this
+  refine ⟨R ++ [m], (Chord.tFits_snoc _ m _ R).2 ⟨hfit, hp⟩, hfin, ?_, ?_, ?_⟩
   · rw [Chord.tRun_snoc']
     have ha := Chord.idAt_eq_idD (s := T.st) (i := a.length + (q - a.length)) (by omega)
     have hb := Chord.idAt_eq_idD (s := T.st) (i := a.length + (q - a.length) + 1) hp
@@ -423,6 +563,24 @@ theorem realized_cross {s : List (ℕ × Letter I)} (hs : BentPairing a s) {q : 
         Chord.ilv_swapAt_iff hs.valid hql hns] at hil
       exact hil hq)
   · rw [Chord.tRun_snoc', Chord.tCrit_snoc]; exact Chord.critInv_cross hC hp
+  · have hS : ∀ i j, Same (swapAt s q) i j ↔ Same s (tau q i) (tau q j) :=
+      fun i j => Chord.same_swapAt hql
+    have hb := botArc_iff_of_fix (a := a) (tau q) (fun i hi => by unfold tau; split_ifs <;> omega) hS
+    refine ⟨fun h' => ?_, fun h1 h2 => ?_⟩
+    · obtain ⟨R₀, R₁, e', hl⟩ := hsh.1 (hb.2 h')
+      exact ⟨R₀, R₁ ++ [m], by rw [e', List.append_assoc], hl⟩
+    · obtain ⟨h3, h4⟩ := hsh.2 (fun h' => h1 (hb.1 h'))
+        (not_topArc_of_map (a := a) (tau q) (fun i hi => by unfold tau; split_ifs <;> omega)
+          (fun i j h' => (hS i j).1 h') h2)
+      refine ⟨fun m' hm' => ?_, fun hd ht R₀ R₁ e' => ?_⟩
+      · rcases List.mem_append.1 hm' with hm' | hm'
+        · exact h3 m' hm'
+        · rw [List.mem_singleton.1 hm']; exact ⟨_, rfl⟩
+      · rcases List.eq_nil_or_concat R₁ with rfl | ⟨R₁', m', rfl⟩
+        · rw [List.append_nil] at e'
+          rw [← e']; exact ht.of_iso hfin
+        · rw [List.concat_eq_append, ← List.append_assoc] at e'
+          exact h4 hd (ht.swapAt hs hq hqn h2 hd) R₀ R₁' (List.append_inj_left' e' rfl)
 
 /-- **Peeling cups and crossings** off the top until neither applies. -/
 theorem realized_of_noTopMove (s₀ : List (ℕ × Letter I))
@@ -622,6 +780,39 @@ theorem iso_tStart_of_noTopMove {s : List (ℕ × Letter I)} (hs : BentPairing a
   · rw [List.getElem?_eq_none (by simp [length_dualW]; omega), List.getElem?_eq_none (by omega)]
     rfl
 
+/-- In a terminal state with an arc `i, i'` on the bottom edge, the strands on the right end at
+distinct bent lower endpoints other than `i, i'`; so there are at most `a.length - 2` of them. -/
+theorem NoTopMove.length_le {s : List (ℕ × Letter I)} (hs : BentPairing a s) (ht : NoTopMove a s)
+    {i i' : ℕ} (hi : i < a.length) (hi' : i' < a.length) (hS : Same s i i') :
+    s.length + 2 ≤ 2 * a.length := by
+  classical
+  have hlen := hs.len
+  let f : ℕ → ℕ := fun x => if h : x < s.length then Classical.choose (hs.valid.exists h) else 0
+  have hf : ∀ x (h : x < s.length), Same s x (f x) := fun x h => by
+    simp only [f, h, ↓reduceDIte]; exact Classical.choose_spec (hs.valid.exists h)
+  have hmaps : ∀ x ∈ Finset.Ico a.length s.length,
+      f x ∈ ((Finset.range a.length).erase i).erase i' := by
+    intro x hx
+    rw [Finset.mem_Ico] at hx
+    have h1 := hf x hx.2
+    have hlt := NoTopMove.lt hs ht hx.1 h1
+    simp only [Finset.mem_erase, Finset.mem_range]
+    refine ⟨fun e => ?_, fun e => ?_, hlt⟩
+    · rw [e] at h1; have := hs.valid.unique h1.symm hS.symm; omega
+    · rw [e] at h1; have := hs.valid.unique h1.symm hS; omega
+  have hinj : Set.InjOn f (Finset.Ico a.length s.length : Set ℕ) := by
+    intro x hx y hy e
+    simp only [Finset.coe_Ico, Set.mem_Ico] at hx hy
+    have h1 := hf x hx.2
+    have h2 := hf y hy.2
+    rw [e] at h1
+    exact hs.valid.unique h1.symm h2.symm
+  have := Finset.card_le_card_of_injOn f hmaps hinj
+  have hne : i ≠ i' := hS.ne
+  rw [Nat.card_Ico, Finset.card_erase_of_mem (by simp [Finset.mem_erase]; omega),
+    Finset.card_erase_of_mem (by simp; omega), Finset.card_range] at this
+  omega
+
 /-! ## Peeling a cap: splitting an arc among the bent lower endpoints -/
 
 /-- **Peeling a cap** off a terminal state: the arc joining the bent lower endpoints `i < i'` (with
@@ -798,7 +989,7 @@ theorem realized_cap {s : List (ℕ × Letter I)} (hs : BentPairing a s) (ht : N
       rw [hb u w (by omega) (by omega) h4 (by omega) (by omega) n1]
       simp only [show u < r by omega, show w < r by omega, ↓reduceIte]
       exact h
-  obtain ⟨R, hfit, hiso, hR, hC⟩ := H s' hT' hQ'
+  obtain ⟨R, hfit, hiso, hR, hC, -⟩ := H s' hT' hQ'
   -- the cap
   set T := tRun flipL a.length (tStart a) R
   have hI := (tInv_tStart a).run hfit
@@ -846,8 +1037,8 @@ theorem realized_cap {s : List (ℕ × Letter I)} (hs : BentPairing a s) (ht : N
       simp only [idAt, List.getElem?_eq_getElem hiL, Option.map_some, Option.some_inj] at hA'
       rw [Chord.rl_of_ne (show (z, L1).1 ≠ idA from hzA.symm), Chord.rl_of_eq hA']
     · rw [List.getElem?_set_ne (Ne.symm h1)]
-  refine ⟨R ++ [.cap (r - a.length)], (Chord.tFits_snoc _ _ _ R).2 ⟨hfit, hok⟩, ?_, ?_, ?_⟩
-  · rw [Chord.tRun_snoc']
+  have hfin : Iso (tRun flipL a.length (tStart a) (R ++ [.cap (r - a.length)])).st s := by
+    rw [Chord.tRun_snoc']
     show Iso (jn T.st (a.length + (r - a.length))) s
     rw [e]
     refine (hiso.jn hr1).trans ?_
@@ -856,6 +1047,10 @@ theorem realized_cap {s : List (ℕ × Letter I)} (hs : BentPairing a s) (ht : N
     simp only [Chord.rlId] at h
     have := hz x hx; have := hz y hy
     split_ifs at h <;> omega
+  refine ⟨R ++ [.cap (r - a.length)], (Chord.tFits_snoc _ _ _ R).2 ⟨hfit, hok⟩, hfin, ?_, ?_,
+    fun _ => ⟨R ++ [.cap (r - a.length)], [], (List.append_nil _).symm, by
+      rw [hfin.length_eq]; exact NoTopMove.length_le hs ht (by omega) hi' hS⟩,
+    fun hb => absurd ⟨i, i', by omega, hi', hS⟩ hb⟩
   · rw [Chord.tRun_snoc']
     have hAx := Chord.arcAt_of_valid hI.valid hST1 hx
     have hAy := Chord.arcAt_of_valid hI.valid hST2 hy
@@ -946,7 +1141,10 @@ theorem realized_noTopMove : ∀ m s, ((Finset.range a.length).filter
       rw [e]; omega
     · refine ⟨[], trivial, iso_tStart_of_noTopMove hs ht fun i j hi hj h => hQ ⟨i, hi, j, hj, h⟩,
         ⟨List.nodup_nil, by simp [tRun, tStart]⟩, ⟨List.nodup_nil, by simp [tCrit],
-          by simp [tCrit]⟩⟩
+          by simp [tCrit]⟩, fun ⟨i, j, hi, hj, h⟩ => absurd ⟨i, hi, j, hj, h⟩ hQ, fun _ _ => ⟨by simp,
+          fun _ hts R₀ R₁ e => by
+            obtain ⟨rfl, -⟩ := List.append_eq_nil_iff.1 e.symm
+            exact hts.of_iso (iso_tStart_of_noTopMove hs ht fun i j hi hj h => hQ ⟨i, hi, j, hj, h⟩)⟩⟩
 
 /-- **Every bent pairing is realized.** -/
 theorem realized_of_bentPairing {s : List (ℕ × Letter I)} (hs : BentPairing a s) : Realized a s :=
@@ -982,10 +1180,47 @@ theorem exists_strictReduced_matching {a b : List (Letter I)} {s : List (ℕ × 
   have hT : BentPairing a s := ⟨hv, hl, fun i hi => by
     rw [← List.getElem?_map, hs, List.getElem?_append_left (by rw [length_dualW]; exact hi)], by
     have := congrArg List.length hs; simp [length_dualW] at this; omega⟩
-  obtain ⟨R, hfit, hiso, hR, hC⟩ := realized_of_bentPairing hT
+  obtain ⟨R, hfit, hiso, hR, hC, -⟩ := realized_of_bentPairing hT
   have hlet := letters_tRun (length_dualW a) R (tStart a) a (tStart_letters a) hfit
   rw [hiso.1, hs] at hlet
   exact ⟨R, ⟨hfit, (List.append_cancel_left hlet).symm⟩, ⟨⟨hR.1, hR.2⟩, hC.nodup⟩, hiso⟩
+
+/-- **The shape of the strictly reduced matching of a pairing**: in `exists_strictReduced_matching`
+the matching may be chosen so that, if the pairing joins two bottom endpoints, the diagram passes
+through a word with at least two letters fewer than `a` (so it factors through a shorter word),
+and, if the pairing joins no two endpoints on the same edge, the matching consists of crossings
+only. -/
+theorem exists_strictReduced_matching_shape {a b : List (Letter I)} {s : List (ℕ × Letter I)}
+    (hv : Valid s) (hl : Lettered flipL s) (hs : s.map Prod.snd = dualW a ++ b) :
+    ∃ R, IsMatching₂ a b R ∧ StrictReduced₂ a R ∧ Iso (pairing₂ a R) s ∧
+      (BotArc a s → ∃ R₀ R₁, R = R₀ ++ R₁ ∧ (R₀.foldl tLet a).length + 2 ≤ a.length) ∧
+      (¬ BotArc a s → ¬ TopArc a s → (∀ m ∈ R, ∃ p, m = .mv (.cross p)) ∧
+        (LSorted a → LSorted b → ∀ R₀ R₁, R = R₀ ++ R₁ → LSorted (R₀.foldl tLet a))) := by
+  have hT : BentPairing a s := ⟨hv, hl, fun i hi => by
+    rw [← List.getElem?_map, hs, List.getElem?_append_left (by rw [length_dualW]; exact hi)], by
+    have := congrArg List.length hs; simp [length_dualW] at this; omega⟩
+  obtain ⟨R, hfit, hiso, hR, hC, hsh⟩ := realized_of_bentPairing hT
+  have hlet := letters_tRun (length_dualW a) R (tStart a) a (tStart_letters a) hfit
+  rw [hiso.1, hs] at hlet
+  have hpre : ∀ R₀ R₁, R = R₀ ++ R₁ →
+      (tRun flipL a.length (tStart a) R₀).st.map Prod.snd = dualW a ++ R₀.foldl tLet a := by
+    intro R₀ R₁ e
+    rw [e] at hfit
+    exact letters_tRun (length_dualW a) R₀ (tStart a) a (tStart_letters a)
+      ((tFits_append_at _ _ _ _).1 hfit).1
+  refine ⟨R, ⟨hfit, (List.append_cancel_left hlet).symm⟩, ⟨⟨hR.1, hR.2⟩, hC.nodup⟩, hiso,
+    fun hb => ?_, fun h1 h2 => ?_⟩
+  · obtain ⟨R₀, R₁, e, h⟩ := hsh.1 hb
+    refine ⟨R₀, R₁, e, ?_⟩
+    have := congrArg List.length (hpre R₀ R₁ e)
+    simp only [List.length_map, List.length_append, length_dualW] at this
+    omega
+  · obtain ⟨h3, h4⟩ := hsh.2 h1 h2
+    refine ⟨h3, fun ha hb R₀ R₁ e => ?_⟩
+    have h5 := h4 (lSorted_dualW ha) (by
+      unfold TopSorted; rw [hs, List.drop_left' (length_dualW a)]; exact hb) R₀ R₁ e
+    unfold TopSorted at h5
+    rwa [hpre R₀ R₁ e, List.drop_left' (length_dualW a)] at h5
 
 /-! ## Every matching is equivalent to a strictly reduced one -/
 
