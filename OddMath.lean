@@ -28,6 +28,8 @@ import OddMath.QuiverHecke.GrothendieckPresentation
 import OddMath.QuiverHecke.SortedSummands
 import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.Injectivity
+import OddMath.QuiverHecke.GradedModules
+import OddMath.QuiverHecke.RowModules
 import OddMath.QuiverHecke.WidthZero
 import OddMath.QuiverHecke.UpwardClasses
 import OddMath.QuiverHecke.UpwardImage
