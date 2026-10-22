@@ -923,6 +923,7 @@ import OddMath.SKM.DotSlides
 import OddMath.SKM.EvenBridge.Compare
 import OddMath.SKM.EvenBridge.Datum
 import OddMath.SKM.EvenBridge.Form
+import OddMath.SKM.EvenBridge.Full
 import OddMath.SKM.EvenBridge.Functor
 import OddMath.SKM.EvenBridge.KLInverse
 import OddMath.SKM.EvenBridge.KLUpCups
