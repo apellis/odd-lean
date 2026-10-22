@@ -727,6 +727,15 @@ superalgebras, not only finite-total-dimensional ones. Concrete consumers use
 two odd colours over ℚ, and a rational-field envelope with a proved nonzero
 indecomposable projective class.
 
+**Proved: the grading shift of the Grothendieck ring is the entrywise shift.** For every graded
+2-supercategory, whiskering by `q_μ` on `Hom_{GSKAR(𝔄)}(λ, μ)` is isomorphic to the entrywise
+grading shift of `GSKar(Hom_𝔄(λ, μ))` (`GrothendieckShift.karRightQIso`, from the right unitor),
+so the two `ℤ[q,q⁻¹]`-actions on each summand of the Grothendieck ring agree
+(`GrothendieckShift.laurentEnd_int_eq`). With the Laurent bases above, `K₀(U̇)` with BE2's §6
+module structure has no `ℤ[q,q⁻¹]`-torsion (`SKM.UDot.int_smul_eq_zero`, same
+`DegreeLocallyFinite` hypothesis). This is the faithful rational localization used in the
+existence part of Theorem 11.7.
+
 **Proved mixed decomposition.** `SKM.UDot.laurentDecomposition` identifies
 these completed Hom `K₀` modules with the direct sum of one `ℒ` per paired
 parity orbit and one `ℒ/(π−1)` per fixed orbit, under the same explicit
