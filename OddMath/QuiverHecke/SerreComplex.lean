@@ -674,6 +674,74 @@ theorem interior_ann_top {b : ℕ} (hb : b + 1 < M) :
   push_cast
   ring_nf
 
+/-- The left part of the left chain passes through `down`, up to a sign. -/
+theorem chL_slides_down {a b : ℕ} (ha : a < M) (hb : b + 1 ≤ a) :
+    ∃ u : ℤˣ, Slides (down D Sc i j M ha) u
+      (chL (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) 0 b)
+      (chL (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) 0 b) := by
+  unfold down chL
+  exact ⟨_, slides_wp_gen D Sc (sChain_down ha) (x := i) _ (fun q hq => by
+    rw [List.mem_range'_1] at hq
+    exact ⟨word_lt (by omega), word_lt (by omega), word_lt (by omega), word_lt (by omega),
+      Or.inl (by rw [PG.pos_cross]; omega)⟩)
+    (by rw [PG.pos_cross, PG.width_cross, length_word (by omega : a + 1 ≤ M)]; omega)⟩
+
+/-- The right part of the right chain passes through `up`, up to a sign. -/
+theorem chR_slides_up {a : ℕ} (ha : a < M) :
+    ∃ u : ℤˣ, Slides (up D Sc i j M ha) u
+      (chR (B := End (wobj D Sc i j M a)) (tw D Sc i j M a) (a + 1 + 1) (M - (a + 1 + 1)))
+      (chR (B := End (wobj D Sc i j M (a + 1))) (tw D Sc i j M (a + 1)) (a + 1 + 1)
+        (M - (a + 1 + 1))) := by
+  unfold up chR
+  exact ⟨_, slides_wp_gen D Sc (sChain_up ha) (x := i) _ (fun q hq => by
+    rw [List.mem_reverse, List.mem_range'_1] at hq
+    exact ⟨word_gt (by omega) (by omega), word_gt (by omega) (by omega),
+      word_gt (by omega) (by omega), word_gt (by omega) (by omega),
+      Or.inr (by rw [PG.pos_cross, PG.width_cross]; omega)⟩)
+    (by rw [PG.pos_cross, PG.width_cross, length_word ha.le]; omega)⟩
+
+/-- `braid_iji` on words given up to equality. -/
+theorem cl_braid_iji_of {w : List I} (l r : List I) (hij : i ≠ j)
+    (hw : w = l ++ [i, j, i] ++ r) {p : ℕ} (hp : l.length = p) {gs hs : List PG}
+    (hgs : gs = [.cross p, .cross (p + 1), .cross p])
+    (hhs : hs = [.cross (p + 1), .cross p, .cross (p + 1)]) (h₁ : SChain w (pl w gs) w)
+    (h₂ : SChain w (pl w hs) w) :
+    cl D Sc w w gs h₁ - cl D Sc w w hs h₂ =
+      ∑ s ∈ Finset.range (D.dn i j),
+          (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
+            (dotE D Sc w p ^ (D.dn i j - 1 - s) * dotE D Sc w (p + 2) ^ s) +
+        ∑ p' ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+          ∑ s ∈ Finset.range p', (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p' q) •
+            (dotE D Sc w p ^ (p' - 1 - s) * dotE D Sc w (p + 1) ^ q *
+              dotE D Sc w (p + 2) ^ s) := by
+  subst hw hp hgs hhs
+  exact braid_iji D Sc l r hij h₁ h₂
+
+/-- (1.9) on the strands `b, b+1, b+2` (colours `i j i`) of `i^{b+1} j i^{M-b-1}`, through the
+neighbouring words. -/
+theorem braid_iji_word (hij : i ≠ j) {b : ℕ} (hb : b + 1 < M) :
+    down D Sc i j M (Nat.lt_of_succ_lt hb) ≫ tw D Sc i j M b (b + 1) ≫
+          up D Sc i j M (Nat.lt_of_succ_lt hb) -
+        up D Sc i j M hb ≫ tw D Sc i j M (b + 1 + 1) b ≫ down D Sc i j M hb =
+      ∑ s ∈ Finset.range (D.dn i j),
+          (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
+            (xw D Sc i j M (b + 1) b ^ (D.dn i j - 1 - s) *
+              xw D Sc i j M (b + 1) (b + 2) ^ s) +
+        ∑ p' ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+          ∑ s ∈ Finset.range p', (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p' q) •
+            (xw D Sc i j M (b + 1) b ^ (p' - 1 - s) * xw D Sc i j M (b + 1) (b + 1) ^ q *
+              xw D Sc i j M (b + 1) (b + 2) ^ s) := by
+  have hT := sChain_cross_of (word_gt (i := i) (j := j) (M := M) (a := b) (p := b + 1)
+    (by omega) (by omega)) (word_gt (by omega) (by omega))
+  have hT' := sChain_cross_of (word_lt (i := i) (j := j) (M := M) (a := b + 1 + 1) (p := b)
+    (by omega)) (word_lt (by omega))
+  have e : word i j M (b + 1) = List.replicate b i ++ [i, j, i] ++ List.replicate (M - b - 2) i := by
+    rw [word_down b, show M - b - 1 = (M - b - 2) + 1 by omega, List.replicate_succ]
+    simp
+  unfold tw crossE up down
+  rw [genE_eq D Sc hT, genE_eq D Sc hT', cl_comp, cl_comp, cl_comp, cl_comp]
+  exact cl_braid_iji_of _ _ hij e (by simp) rfl rfl _ _
+
 end Interior
 
 end OddMath.QuiverHecke.SerreComplex
