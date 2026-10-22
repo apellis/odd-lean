@@ -19,6 +19,7 @@ import OddMath.QuiverHecke.SerreClass
 import OddMath.QuiverHecke.SerreClassUp
 import OddMath.QuiverHecke.CornerProjectors
 import OddMath.SKM.KarSummandProducts
+import OddMath.QuiverHecke.SerreDividedPowers
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples

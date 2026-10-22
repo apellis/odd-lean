@@ -8,15 +8,25 @@ import OddMath.SKM.KarSummandProducts
 import OddMath.SKM.K0Relations
 
 /-!
-# The Serre idempotents as whiskered divided-power projectors
+# BE2 Lemma 11.6: the positive Serre relation with divided powers
 
-Brundan–Ellis, arXiv:1701.04133v2, proof of Lemma 11.6. On the word `w = l ++ t ++ r` of the
-quiver Hecke supercategory, whiskering by `l` and `r` is a ring homomorphism
-`End(t) → End(w)` (`blockHom`, and `blockOf` for a word only propositionally of this form)
-carrying the dots and crossings of `t` to those of `w` shifted by `|l|`. Hence the idempotents
-`1_{i^{(a)}} ⊗ 1_{j i^{M-a}}` and `1_{i^a j} ⊗ 1_{i^{(M-a)}}` of `SerreComplex` are the
-whiskered divided-power projectors `idem ε 0 n` on `i^n` (`lIdem_eq_blockOf`,
-`rIdem_eq_blockOf`).
+Brundan–Ellis, arXiv:1701.04133v2, Lemma 11.6 (second identity). `SerreClassUp` carries the
+split Serre complex of Proposition 11.2 to `𝔘̇_{q,π}(𝔤)`: its terms are the summands
+`Q^{sh a} Π^{par a} (E_i^a E_j E_i^{M-a} 1_ν, α(e_a))`. Here these terms are identified with
+products of divided powers, which gives the identity as printed.
+
+* On a word `l t r` of the quiver Hecke supercategory, whiskering by `l` and `r` is a ring
+  homomorphism `End(t) → End(l t r)` (`blockHom`, `blockOf`) carrying dots and crossings to dots
+  and crossings; so `1_{i^{(a)}} ⊗ 1_{j i^{M-a}}` and `1_{i^a j} ⊗ 1_{i^{(M-a)}}` are whiskered
+  divided-power projectors (`lIdem_eq_blockOf`, `rIdem_eq_blockOf`).
+* `α` commutes with whiskering (`alpha_blockOf_heq`), and whiskering in `𝔘(𝔤)` is whiskering
+  of diagrams, so `α(e_a)` is the horizontal composite of `α(1_{i^{(a)}})`, `1_{E_j}` and
+  `α(1_{i^{(M-a)}})` on `(E_i^a E_j) E_i^{M-a} 1_ν` (`alpha_eIdem_heq`).
+* Hence each term is a product `[E_i^{(a)}] [E_j] [E_i^{(M-a)} 1_ν]` in the split Grothendieck
+  ring (`class_termShift`), and the alternating sum gives `serre_E`:
+  `∑_{r ≤ M} (-1)^r π_i^{r|j| + r(r-1)/2} [E_i^{(M-r)} E_j E_i^{(r)} 1_ν] = 0`, `M = d_ij + 1`,
+  for the divided powers of Lemma 11.5 in their corrected normalization (`dpSummand`), with
+  `π_i^e` acting as `Π^{|i| e}`.
 -/
 
 noncomputable section
@@ -338,32 +348,228 @@ theorem raw_congr {A : Type*} [Category A] [Preadditive A] [Linear k A] [Superca
 
 /-! ### The terms of the Serre complex as products -/
 
+variable (i) in
+/-- The class of `Q^m Π^p (E_i^n 1_ν, α(1_{i^{(n)}}))`, from `μ` to `ν`, in the split
+Grothendieck ring of `𝔘̇_{q,π}(𝔤)` with BE2's multiplication order. -/
+def Edp (n : ℕ) (μ ν : X) (hs : SKM.wt D ν (upWord (List.replicate n i)) = μ) (m : ℤ)
+    (p : ZMod 2) : SKM.K0Relations.Grothendieck Sc sy hc :=
+  MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc) (a := SKM.K0Relations.weight Sc sy hc μ)
+    (b := SKM.K0Relations.weight Sc sy hc ν) (dpSummand sy hc i n μ ν hs m p))
+
+theorem Edp_congr {n n' : ℕ} {μ μ' ν ν' : X} {m m' : ℤ} {p p' : ZMod 2} (hn : n = n')
+    (hμ : μ = μ') (hν : ν = ν') (hm : m = m') (hp : p = p')
+    (hs : SKM.wt D ν (upWord (List.replicate n i)) = μ)
+    (hs' : SKM.wt D ν' (upWord (List.replicate n' i)) = μ') :
+    Edp sy hc i n μ ν hs m p = Edp sy hc i n' μ' ν' hs' m' p' := by
+  subst hn hμ hν hm hp; rfl
+
+variable (i j M) in
+/-- `Q^n Π^p (E_i^a E_j E_i^{M-a} 1_ν, α(e_a))`; `termUp a` is `n = sh a`, `p = par a`. -/
+abbrev termShift (a : ℕ) (ha : a ≤ M) (n : ℤ) (p : ZMod 2) :=
+  SKM.Summands.raw (f := wordHom D Sc sy hc i j M ν a ha) (eIdem_up_idem ν a)
+    (alpha_mem_degree D Sc sy ν (eIdem_degree sy hc a))
+    (alpha_mem_parity D Sc ν (eIdem_even sy hc a)) n p
+
 open SKM.K0Relations in
 /-- **The terms of the Serre complex are products of divided powers**: in the split
 Grothendieck ring of `𝔘̇_{q,π}(𝔤)`, with BE2's multiplication order,
-`[termUp a] = [Q^{m_L} Π^{p_L} E_i^{(a)}] [E_j] [Q^{m_R} Π^{p_R} E_i^{(M-a)} 1_ν]` whenever the
-shifts add up to those of `termUp a`. -/
-theorem class_termUp {a : ℕ} (ha : a ≤ M) (mL mR : ℤ) (pL pR : ZMod 2)
-    (hm : mL + 0 + mR = sh sy i M a) (hp : pL + 0 + pR = par D i j M a) :
+`[Q^n Π^p (E_i^a E_j E_i^{M-a} 1_ν, α(e_a))] =
+[Q^{m_L} Π^{p_L} E_i^{(a)}] [E_j] [Q^{m_R} Π^{p_R} E_i^{(M-a)} 1_ν]` whenever the shifts add
+up. -/
+theorem class_termShift {a : ℕ} (ha : a ≤ M) (n : ℤ) (p : ZMod 2) (mL mR : ℤ) (pL pR : ZMod 2)
+    (hm : mL + 0 + mR = n) (hp : pL + 0 + pR = p) :
     (MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
         (a := weight Sc sy hc ((M • D.α i + D.α j) + ν)) (b := weight Sc sy hc ν)
-        (termUp sy hc i j M ν a ha)) : Grothendieck Sc sy hc) =
-      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc)
-        (a := weight Sc sy hc ((M • D.α i + D.α j) + ν)) (b := weight Sc sy hc (wtL D ν i j M a))
-        (dpSummand sy hc i a ((M • D.α i + D.α j) + ν) (wtL D ν i j M a) (wt_left ν ha) mL pL)) *
-      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc) (a := weight Sc sy hc (wtL D ν i j M a))
-        (b := weight Sc sy hc (wtR D ν i M a))
-        (dpSummand sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl 0 0)) *
-      MulOpposite.op (K₀Ring.mk (B := SKM.UDot D Sc sy hc) (a := weight Sc sy hc (wtR D ν i M a))
-        (b := weight Sc sy hc ν) (dpSummand sy hc i (M - a) (wtR D ν i M a) ν rfl mR pR)) := by
-  rw [← MulOpposite.op_mul, ← MulOpposite.op_mul, SKM.Summands.mk_raw_mul_mk_raw,
-    SKM.Summands.mk_raw_mul_mk_raw]
+        (termShift sy hc i j M ν a ha n p)) : Grothendieck Sc sy hc) =
+      Edp sy hc i a ((M • D.α i + D.α j) + ν) (wtL D ν i j M a) (wt_left ν ha) mL pL *
+        Edp sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl 0 0 *
+        Edp sy hc i (M - a) (wtR D ν i M a) ν rfl mR pR := by
+  rw [Edp, Edp, Edp, ← MulOpposite.op_mul, ← MulOpposite.op_mul,
+    SKM.Summands.mk_raw_mul_mk_raw, SKM.Summands.mk_raw_mul_mk_raw]
   congr 2
   rw [hm, hp]
   have hJ : dpProj sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl = 𝟙 _ :=
     (alpha D Sc _).map_id _
   exact raw_congr (wordHom_eq_comp sy hc ν ha)
     ((alpha_eIdem_heq sy hc ν ha).trans (by rw [hJ]; rfl)) _ _ _ _ _ _ _ _
+
+/-! ### Lemma 11.6, positive Serre relation -/
+
+section Serre
+
+variable (hij : i ≠ j) (hM : M = D.dn i j + 1)
+include hij hM
+
+/-- The Serre complex with all parities shifted by `c`. -/
+theorem class_alternating_sum_shift (c : ZMod 2) :
+    ∑ a : Fin (M + 1), ((-1 : ℤ) ^ (a : ℕ)) •
+      K₀.mk (termShift sy hc i j M ν a (Nat.le_of_lt_succ a.2) (sh sy i M a)
+        (par D i j M a + c)) = 0 := by
+  have h := class_alternating_sum_up sy hc hij hM ν
+  rcases (by decide : ∀ c : ZMod 2, c = 0 ∨ c = 1) c with rfl | rfl
+  · simp only [add_zero]; exact h
+  · let := K₀.moduleLaurent k (CategoryTheory.Idempotents.Karoubi
+      (Mat_ (SKM.Summands.Base k (UHom D Sc sy hc ((M • D.α i + D.α j) + ν) ν))))
+    have hπ : ∀ a : Fin (M + 1), (LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ) •
+        K₀.mk (termUp sy hc i j M ν a (Nat.le_of_lt_succ a.2)) =
+        K₀.mk (termShift sy hc i j M ν a (Nat.le_of_lt_succ a.2) (sh sy i M a)
+          (par D i j M a + 1)) := fun a =>
+      SKM.Summands.class_raw_pi _ _ _ _ _
+    have h' := congrArg ((LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ) • ·) h
+    simp only [smul_zero, Finset.smul_sum] at h'
+    rw [← h']
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [smul_comm (LaurentPolynomial.C Zπ.π : LaurentPolynomial Zπ), hπ]
+
+omit hij hM in
+theorem choose_two_add (a r : ℕ) : (a + r).choose 2 = a.choose 2 + r.choose 2 + a * r := by
+  induction r with
+  | zero => simp
+  | succ r ih =>
+    rw [← add_assoc, Nat.choose_succ_succ, ih, Nat.choose_succ_succ, Nat.choose_one_right,
+      Nat.choose_one_right]
+    ring
+
+/-- The parity of the colour `i` kills `a (M - a)`: `M = d_ij + 1` is odd when `i` is odd. -/
+theorem parity_mul_eq_zero (a : ℕ) :
+    ((a * (M - a) : ℕ) : ZMod 2) * D.parity i = 0 := by
+  rcases (by decide : ∀ c : ZMod 2, c = 0 ∨ c = 1) (D.parity i) with h | h
+  · rw [h, mul_zero]
+  · rw [h, mul_one, ZMod.natCast_eq_zero_iff_even]
+    obtain ⟨t, ht⟩ := D.even_d_of_odd h j
+    have hd := D.dn_cast hij
+    have hM' : M = t + t + 1 := by omega
+    rcases Nat.even_or_odd a with ha | ha
+    · exact ha.mul_right _
+    · refine Even.mul_left ?_ _
+      rcases ha with ⟨s, hs⟩
+      exact ⟨t.toNat - s, by omega⟩
+
+omit hij hM in
+theorem wt_rep (μ : X) (n : ℕ) : SKM.wt D μ (upWord (List.replicate n i)) = μ + n • D.α i := by
+  rw [wt_eq_sum]
+  simp [upWord, List.map_replicate, List.sum_replicate, SKM.up, SKM.sh, add_comm]
+
+omit hij hM in
+theorem wt_singleton (μ : X) : SKM.wt D μ (upWord [j]) = μ + D.α j := by
+  simp [wt_eq_sum, upWord, SKM.up, SKM.sh, add_comm]
+
+omit hij hM in
+theorem wtL_eq {a r : ℕ} (h : a + r = M) : wtL D ν i j M a = ν + r • D.α i + D.α j := by
+  rw [wtL, upWord_append, SKM.wt_append, wt_rep, wt_singleton, show M - a = r by omega]
+
+omit hij hM in
+theorem wtR_eq {a r : ℕ} (h : a + r = M) : wtR D ν i M a = ν + r • D.α i := by
+  rw [wtR, wt_rep, show M - a = r by omega]
+
+omit hij hM in
+theorem wt_left' {a r : ℕ} (h : a + r = M) :
+    SKM.wt D (ν + r • D.α i + D.α j) (upWord (List.replicate a i)) = ν + (M • D.α i + D.α j) := by
+  rw [wt_rep, ← h, add_smul]; abel
+
+omit hij hM in
+theorem wt_mid (r : ℕ) :
+    SKM.wt D (ν + r • D.α i) (upWord (List.replicate 1 j)) = ν + r • D.α i + D.α j := by
+  rw [wt_rep, one_smul]
+
+variable (D i j) in
+omit hij hM in
+/-- The parity shift `π_i^{r|j| + r(r-1)/2}` of the printed coefficient, on the corrected
+`E_i^{(r)}` (parity shift `|i| r(r-1)/2`). -/
+abbrev parR (r : ℕ) : ZMod 2 :=
+  ((r.choose 2 : ℕ) : ZMod 2) * D.parity i +
+    D.parity i * ((r : ZMod 2) * D.parity j + ((r.choose 2 : ℕ) : ZMod 2))
+
+omit hij hM in
+theorem term_eq {a r : ℕ} (h : a + r = M) (ha : a ≤ M) :
+    Edp sy hc i a ((M • D.α i + D.α j) + ν) (wtL D ν i j M a) (wt_left ν ha)
+        (sy.d i * (a.choose 2 : ℕ)) (((a.choose 2 : ℕ) : ZMod 2) * D.parity i) *
+      Edp sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl 0 0 *
+      Edp sy hc i (M - a) (wtR D ν i M a) ν rfl (sy.d i * ((M - a).choose 2 : ℕ))
+        (parR D i j (M - a)) =
+    Edp sy hc i a (ν + (M • D.α i + D.α j)) (ν + r • D.α i + D.α j) (wt_left' ν h)
+        (sy.d i * (a.choose 2 : ℕ)) (((a.choose 2 : ℕ) : ZMod 2) * D.parity i) *
+      Edp sy hc j 1 (ν + r • D.α i + D.α j) (ν + r • D.α i) (wt_mid ν r) 0 0 *
+      Edp sy hc i r (ν + r • D.α i) ν (wt_rep ν r) (sy.d i * (r.choose 2 : ℕ)) (parR D i j r) := by
+  have hr : M - a = r := by omega
+  congr 1; congr 1
+  · exact Edp_congr sy hc rfl (add_comm _ _) (wtL_eq ν h) rfl rfl _ _
+  · exact Edp_congr sy hc rfl (wtL_eq ν h) (wtR_eq ν h) rfl rfl _ _
+  · exact Edp_congr sy hc hr (wtR_eq ν h) rfl (by rw [hr]) (by rw [hr]) _ _
+
+omit hij hM in
+theorem neg_one_pow_eq {r : ℕ} (hr : r ≤ M) :
+    ((-1 : ℤ) ^ r) = (-1) ^ M * (-1) ^ (M - r) := by
+  obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hr
+  rw [Nat.add_sub_cancel_left, pow_add, mul_assoc, ← pow_add, ← two_mul, pow_mul]
+  simp
+
+/-- **BE2 Lemma 11.6, the positive Serre relation**, for `i ≠ j` and `M = d_ij + 1`: in the
+split Grothendieck ring of `𝔘̇_{q,π}(𝔤)`,
+`∑_{r=0}^{M} (-1)^r π_i^{r|j| + r(r-1)/2} [E_i^{(M-r)} E_j E_i^{(r)} 1_ν] = 0`.
+
+The divided powers are those of Lemma 11.5 in its corrected form,
+`E_i^{(n)} = Q^{d_i n(n-1)/2} Π^{|i| n(n-1)/2} (E_i^n, α(1_{i^{(n)}}))` (`dpSummand`); with
+BE2's printed normalization (no shift) Lemma 11.5 already fails (`class_printed`). The
+coefficient `π_i^e` acts on classes as the parity shift `Π^{|i| e}`, placed on the right
+factor (`parR`). -/
+theorem serre_E :
+    ∑ r : Fin (M + 1), ((-1 : ℤ) ^ (r : ℕ)) •
+      (Edp sy hc i (M - r) (ν + (M • D.α i + D.α j)) (ν + (r : ℕ) • D.α i + D.α j)
+          (wt_left' ν (Nat.sub_add_cancel (Nat.le_of_lt_succ r.2)))
+          (sy.d i * ((M - r).choose 2 : ℕ)) ((((M - r).choose 2 : ℕ) : ZMod 2) * D.parity i) *
+        Edp sy hc j 1 (ν + (r : ℕ) • D.α i + D.α j) (ν + (r : ℕ) • D.α i) (wt_mid ν r) 0 0 *
+        Edp sy hc i r (ν + (r : ℕ) • D.α i) ν (wt_rep ν r) (sy.d i * ((r : ℕ).choose 2 : ℕ))
+          (parR D i j r)) = 0 := by
+  have h := class_alternating_sum_shift sy hc ν hij hM (((M.choose 2 : ℕ) : ZMod 2) * D.parity i)
+  have h2 := congrArg (fun x => (MulOpposite.op (K₀Ring.of
+    (SKM.K0Relations.weight Sc sy hc ((M • D.α i + D.α j) + ν))
+    (SKM.K0Relations.weight Sc sy hc ν) x) : SKM.K0Relations.Grothendieck Sc sy hc)) h
+  simp only [map_sum, map_zsmul, Finset.op_sum, MulOpposite.op_smul, map_zero,
+    MulOpposite.op_zero] at h2
+  have h3 : ∑ a : Fin (M + 1), ((-1 : ℤ) ^ (a : ℕ)) •
+      (Edp sy hc i a ((M • D.α i + D.α j) + ν) (wtL D ν i j M a)
+          (wt_left ν (Nat.le_of_lt_succ a.2))
+          (sy.d i * ((a : ℕ).choose 2 : ℕ)) ((((a : ℕ).choose 2 : ℕ) : ZMod 2) * D.parity i) *
+        Edp sy hc j 1 (wtL D ν i j M a) (wtR D ν i M a) rfl 0 0 *
+        Edp sy hc i (M - a) (wtR D ν i M a) ν rfl (sy.d i * ((M - a).choose 2 : ℕ))
+          (parR D i j (M - a))) = 0 := by
+    rw [← h2]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    congr 1
+    refine (class_termShift sy hc ν (Nat.le_of_lt_succ a.2) _ _ _ _ _ _ ?_ ?_).symm
+    · rw [sh, add_zero, ← mul_add]
+    · have hc := parity_mul_eq_zero hij hM (i := i) (j := j) a
+      have hch := choose_two_add (a : ℕ) (M - a)
+      rw [Nat.add_sub_cancel' (Nat.le_of_lt_succ a.2)] at hch
+      rw [par, hch]
+      push_cast at hc ⊢
+      linear_combination -hc
+  rw [← Equiv.sum_comp Fin.revPerm] at h3
+  have h4 : ∀ r : Fin (M + 1), ((Fin.revPerm r : Fin (M + 1)) : ℕ) + r = M := fun r => by
+    simp only [Fin.revPerm_apply, Fin.val_rev]; omega
+  calc _ = ∑ r : Fin (M + 1), ((-1 : ℤ) ^ M) • ((-1 : ℤ) ^ ((Fin.revPerm r : Fin (M + 1)) : ℕ) •
+      (Edp sy hc i (Fin.revPerm r) ((M • D.α i + D.α j) + ν) (wtL D ν i j M (Fin.revPerm r))
+          (wt_left ν (Nat.le_of_lt_succ (Fin.revPerm r).2))
+          (sy.d i * (((Fin.revPerm r : Fin (M + 1)) : ℕ).choose 2 : ℕ))
+          (((((Fin.revPerm r : Fin (M + 1)) : ℕ).choose 2 : ℕ) : ZMod 2) * D.parity i) *
+        Edp sy hc j 1 (wtL D ν i j M (Fin.revPerm r)) (wtR D ν i M (Fin.revPerm r)) rfl 0 0 *
+        Edp sy hc i (M - (Fin.revPerm r : Fin (M + 1))) (wtR D ν i M (Fin.revPerm r)) ν rfl
+          (sy.d i * ((M - (Fin.revPerm r : Fin (M + 1))).choose 2 : ℕ))
+          (parR D i j (M - (Fin.revPerm r : Fin (M + 1)))))) := by
+        refine Finset.sum_congr rfl fun r _ => ?_
+        have hr := h4 r
+        have hs : ((-1 : ℤ) ^ (r : ℕ)) =
+            (-1) ^ M * (-1) ^ ((Fin.revPerm r : Fin (M + 1)) : ℕ) := by
+          rw [neg_one_pow_eq (by omega : (r : ℕ) ≤ M),
+            show M - (r : ℕ) = ((Fin.revPerm r : Fin (M + 1)) : ℕ) by omega]
+        rw [smul_smul, ← hs, term_eq sy hc ν hr (by omega)]
+        have hn : M - (r : ℕ) = ((Fin.revPerm r : Fin (M + 1)) : ℕ) := by omega
+        congr 3
+        exact Edp_congr sy hc hn rfl rfl (by rw [hn]) (by rw [hn]) _ _
+    _ = 0 := by rw [← Finset.smul_sum, h3, smul_zero]
+
+end Serre
 
 end SerreComplex
 
