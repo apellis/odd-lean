@@ -25,6 +25,7 @@ import OddMath.QuiverHecke.SerreDividedPowers
 import OddMath.QuiverHecke.SerreDividedPowersDown
 import OddMath.QuiverHecke.GrothendieckDividedPowers
 import OddMath.QuiverHecke.GrothendieckPresentation
+import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
@@ -40,6 +41,7 @@ import OddMath.QuiverHecke.GradedDimensionFormExamples
 import OddMath.QuiverHecke.CategoricalPairing
 import OddMath.QuiverHecke.CategoricalPairingExamples
 import OddMath.QuiverHecke.PairingRadical
+import OddMath.QuiverHecke.CoefficientLocalization
 import OddMath.QuiverHecke.PairingRadicalExamples
 import OddMath.QuiverHecke.ShuffleBasis
 import OddMath.QuiverHecke.TailDecomposition
@@ -236,6 +238,7 @@ import OddMath.CoveringQuantum.UDot.PositiveFormUniqueness
 import OddMath.CoveringQuantum.UDot.FormUniqueness
 import OddMath.CoveringQuantum.UDot.RootCoordinates
 import OddMath.CoveringQuantum.UDot.BaseChange
+import OddMath.CoveringQuantum.UDot.LFormRestriction
 import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
 import OddMath.CoveringQuantum.UDot.Gauge
 import OddMath.CoveringQuantum.UDot.Twistor
