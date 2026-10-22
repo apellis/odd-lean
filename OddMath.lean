@@ -34,6 +34,7 @@ import OddMath.QuiverHecke.GradedWalk
 import OddMath.QuiverHecke.TensorCorner
 import OddMath.QuiverHecke.CornerImages
 import OddMath.QuiverHecke.UpDown
+import OddMath.QuiverHecke.LocalSummands
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
 import OddMath.QuiverHecke.PolynomialExamples
