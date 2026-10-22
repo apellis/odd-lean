@@ -40,7 +40,7 @@ identities (9.1) are stated as `qpInt_inv` and `qpBinom_inv`.
 
 * `qpNat_mul_sub`, `qpInt_mul_sub`: `(q - π q⁻¹) [n] = qⁿ - πⁿ q⁻ⁿ`.
 * `qpNat_add`: `[m + n] = πⁿ q⁻ⁿ [m] + qᵐ [n]`.
-* `qpInt_neg`: `[-n] = -π^{|n|} [n]`; `qpInt_inv`, `qpInt_inv_eq_neg`: (9.1).
+* `qpInt_neg`: `[-n] = -π^{|n|} [n]`; `qpInt_inv`, `qpInt_inv_eq_neg`: (9.1); `qpFact_inv`.
 * `qpBinom_mul_qpFact`, `qpBinom_symm`, `qpBinom_succ_succ'` (second Pascal rule),
   `qpBinom_inv` (`bar [n r] = π^{r(n-r)} [n r]`).
 -/
@@ -208,6 +208,23 @@ theorem map_qpInt {k' : Type*} [CommRing k'] (f : k →+* k') (n : ℤ) :
 @[simp] lemma qpFact_zero : qpFact q π 0 = 1 := rfl
 
 lemma qpFact_succ (n : ℕ) : qpFact q π (n + 1) = qpNat q π (n + 1) * qpFact q π n := rfl
+
+/-- Ring homomorphisms commute with `(q, π)`-factorials. -/
+theorem map_qpFact {k' : Type*} [CommRing k'] (f : k →+* k') (n : ℕ) :
+    f (qpFact q π n) = qpFact (Units.map f.toMonoidHom q) (f π) n := by
+  induction n with
+  | zero => simp
+  | succ n ih => rw [qpFact_succ, qpFact_succ, map_mul, ih, map_qpNat]
+
+/-- `[n]!_{q⁻¹,π} = π^{n(n-1)/2} [n]!_{q,π}`, given `π² = 1`. -/
+theorem qpFact_inv (hπ : π ^ 2 = 1) (n : ℕ) :
+    qpFact q⁻¹ π n = π ^ n.choose 2 * qpFact q π n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [qpFact_succ, qpFact_succ, qpNat_inv hπ, ih, Nat.choose_succ_succ', Nat.choose_one_right,
+      pow_add]
+    ring
 
 @[simp] lemma qpBinom_zero_right (n : ℕ) : qpBinom q π n 0 = 1 := by cases n <;> rfl
 

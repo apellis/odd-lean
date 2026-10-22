@@ -1021,10 +1021,10 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     These local proof corrections preserve every relation in Lemma 11.6.
 
 13. **§11, the divided powers `Eᵢ^{(n)}1_λ`, `Fᵢ^{(n)}1_λ` before Lemma 11.5: missing degree
-    shift [even colours: constraint proved and corrected statement proved].** BE2 defines
-    `Eᵢ^{(n)}1_λ` as the summand of `Eᵢⁿ1_λ` cut out by the degree-zero idempotent
-    `α_{n,λ}(1_{i^{(n)}})`, with no shift, and Lemma 11.5 asserts
-    `[Eᵢⁿ1_λ] = [n]^!_{qᵢ,πᵢ} [Eᵢ^{(n)}1_λ]`.
+    and parity shift [constraint proved and corrected statement proved for `Eᵢ^{(n)}1_λ`, even and
+    odd colours].** BE2 defines `Eᵢ^{(n)}1_λ` as the summand of `Eᵢⁿ1_λ` cut out by the
+    idempotent `α_{n,λ}(1_{i^{(n)}})` in degree zero and parity zero, with no shift, and
+    Lemma 11.5 asserts `[Eᵢⁿ1_λ] = [n]^!_{qᵢ,πᵢ} [Eᵢ^{(n)}1_λ]`.
 
     **What holds (even `i`).** Lemma 11.1 splits `1_{i^n}` into `n!` idempotents conjugate to
     `1_{i^{(n)}}` by units of degrees `dᵢ sⱼ` whose generating function is
@@ -1035,27 +1035,38 @@ Names in this section are in `OddMath.SKM` unless otherwise indicated.
     Lemma 11.5 holds. This is the shift of `P(i^{(n)})` in (11.3), and for `n = 2` it is the
     usual `Eᵢ² ≅ Q^{-dᵢ}Eᵢ^{(2)} ⊕ Q^{dᵢ}Eᵢ^{(2)}` for the shifted object.
 
+    **What holds (odd `i`).** The odd splitting of Lemma 11.1 conjugates the `n!` summands to
+    `1_{i^{(n)}}` by units of degree `2dᵢs` and parity `s`, one for each EKL index with shift `s`.
+    Hence `Eᵢⁿ1_λ ≅ ⨁ Q^{2dᵢs} Π^s Eᵢ^{(n)}1_λ`, and since the monomials `π^s q^{2s}` sum to
+    `q^{n(n-1)/2} [n]^!_{q⁻¹,π} = q^{n(n-1)/2} π^{n(n-1)/2} [n]^!_{q,π}` (by (9.1)),
+    `[Eᵢⁿ1_λ] = qᵢ^{n(n-1)/2} π^{n(n-1)/2} [n]^!_{qᵢ,π} [Eᵢ^{(n)}1_λ]` with BE2's definition.
+    The `(q,π)`-factorial is not bar-invariant, so here the parity shift is needed as well as the
+    degree shift: with `Q^{dᵢ n(n-1)/2} Π^{n(n-1)/2} Eᵢ^{(n)}1_λ` in place of `Eᵢ^{(n)}1_λ`, the
+    printed equation of Lemma 11.5 holds. Unlike the degree shift, this parity shift has no
+    counterpart in (11.3), where `P(i^{(n)})` carries no parity shift.
+
     **Declarations.** `QuiverHecke.CategoricalDividedPowers.class_printed` (BE2's definition),
-    `class_corrected` (the shifted one), `class_summands` (the summands), all for an arbitrary
-    commutative coefficient ring, Cartan datum and weight; the generic splitting is
-    `SKM.Summands.class_whole`.
+    `class_corrected` (the shifted one), `class_summands` (the summands); for odd colours and
+    `n ≥ 2` strands `class_printed_odd`, `class_corrected_odd`, `class_summands_odd`. All hold
+    for an arbitrary commutative coefficient ring, Cartan datum and weight; the generic
+    splitting is `SKM.Summands.class_whole`.
 
     **Proved obstruction.** Over a field, with finitely many symmetrizer values in each degree,
     the split `K₀` of each completed hom category is a free `ℤ[q,q⁻¹]`-module
     (`SKM.UDot.k0_free_laurentInt`). There the printed equation for `n ≥ 2` forces
-    `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0` (`printed_forces_zero`), because
-    `(qᵢ^{n(n-1)/2} - 1)[n]^!_{qᵢ} ≠ 0`.
+    `[Eᵢ^{(n)}1_λ] = 0`, hence `[Eᵢⁿ1_λ] = 0`: for even `i` (`printed_forces_zero`) because
+    `(qᵢ^{n(n-1)/2} - 1)[n]^!_{qᵢ} ≠ 0`; for odd `i` (`printed_forces_zero_odd`) because both
+    specializations `π = ±1` of `(qᵢ^{n(n-1)/2} π^{n(n-1)/2} - 1)[n]^!_{qᵢ,π}` are nonzero.
 
     **Certainty boundary.** That `Eᵢⁿ1_λ` is nonzero in `K₀` is not proved here. It follows,
-    for instance, from Theorem 11.7. The odd-colour statement has the same mechanism, through the
-    odd splitting of Lemma 11.1, but it is not yet formalized, and neither is the downward
-    version for `Fᵢ^{(n)}1_λ`. The shift does not affect Theorem 11.7 provided `γ` sends the
-    divided powers to the shifted objects.
+    for instance, from Theorem 11.7. The downward version for `Fᵢ^{(n)}1_λ` is not yet
+    formalized. The shifts do not affect Theorem 11.7 provided `γ` sends the divided powers to
+    the shifted objects.
 
     **For the authors.** Before Lemma 11.5, define `Eᵢ^{(n)}1_λ` (and `Fᵢ^{(n)}1_λ`) with the shift
-    `Q^{dᵢ n(n-1)/2}`, matching (11.3). As printed, for even `i` the units in the proof of
-    Lemma 11.5 have degrees whose generating function is `qᵢ^{n(n-1)/2}[n]^!_{qᵢ}`, not
-    `[n]^!_{qᵢ}`, so the lemma's equation would force `[Eᵢⁿ1_λ] = 0` for `n ≥ 2`; the odd case
-    looks analogous. Already for `n = 2` and even `i`, the
+    `Q^{dᵢ n(n-1)/2} Π^{|i| n(n-1)/2}`; the degree part matches (11.3). As printed, the units in
+    the proof of Lemma 11.5 have degrees and parities whose generating function is
+    `qᵢ^{n(n-1)/2} πᵢ^{n(n-1)/2} [n]^!_{qᵢ,πᵢ}`, not `[n]^!_{qᵢ,πᵢ}`, so the lemma's equation
+    would force `[Eᵢⁿ1_λ] = 0` for `n ≥ 2`. Already for `n = 2` and even `i`, the
     two summands of `Eᵢ²1_λ` are `Eᵢ^{(2)}1_λ` and `Q^{2dᵢ}Eᵢ^{(2)}1_λ`, cut out by `−τx` and
     split off by the crossing.
