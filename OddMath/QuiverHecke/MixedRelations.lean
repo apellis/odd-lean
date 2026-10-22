@@ -9,9 +9,8 @@ import OddMath.QuiverHecke.ColourBlock
 
 The relations (1.7)–(1.9) of the quiver Hecke supercategory (Brundan–Ellis,
 arXiv:1701.04133v2, §11) for strands of different colours, whiskered to an arbitrary position of
-a word, as exact identities between classes of positioned words: dots slide through a crossing
-of different colours up to the sign `(-1)^{|i||j|}` (`slide_left_ne`, `slide_right_ne`), a
-double crossing of different colours is a polynomial in the dots (`cross_cross_ne`), and the
+a word, as exact identities between classes of positioned words (dots sliding through a crossing
+of different colours are `slide_left_ne`, `slide_right_ne` in `Centre`): a double crossing of different colours is a polynomial in the dots (`cross_cross_ne`), and the
 braid relation holds exactly except on `i j i`, where it has BE2's correction term
 (`braid_ne`, `braid_iji`). Polynomials in dots are written in the endomorphism ring of the word
 (`dotE_pow`).
@@ -50,46 +49,6 @@ theorem dotE_pow (w : List I) (p n : ℕ) :
 section Rels
 
 variable (l r : List I)
-
-/-- (1.8), left, for different colours: exact. -/
-theorem slide_left_ne {i j : I} (hij : i ≠ j)
-    (h₁ : SChain (l ++ [i, j] ++ r) (pl _ [.dot l.length, .cross l.length]) (l ++ [j, i] ++ r))
-    (h₂ : SChain (l ++ [i, j] ++ r) (pl _ [.cross l.length, .dot (l.length + 1)])
-      (l ++ [j, i] ++ r)) :
-    cl D Sc _ _ [.dot l.length, .cross l.length] h₁ =
-      zsign k (D.parity i * D.parity j) •
-        cl D Sc _ _ [.cross l.length, .dot (l.length + 1)] h₂ := by
-  have p₁ : SChain [i, j] (dotsL [] i [j] 1 ++ crossL [] i j []) [j, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  have p₂ : SChain [i, j] (crossL [] i j [] ++ dotsL [j] i [] 1) [j, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  rw [cl_eq_lin D Sc l r _ p₁ _ h₁ (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh]),
-    cl_eq_lin D Sc l r _ p₂ _ h₂
-      (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh, List.take_append])]
-  have hr := lin_rel_eq D Sc l r (Rel.slideL i j hij)
-  simp only [relation, whisker_sub, whisker_smul, Presentation.lin_sub,
-    Presentation.lin_smul, sub_eq_zero] at hr
-  exact hr
-
-/-- (1.8), right, for different colours: exact. -/
-theorem slide_right_ne {i j : I} (hij : i ≠ j)
-    (h₁ : SChain (l ++ [i, j] ++ r) (pl _ [.cross l.length, .dot l.length]) (l ++ [j, i] ++ r))
-    (h₂ : SChain (l ++ [i, j] ++ r) (pl _ [.dot (l.length + 1), .cross l.length])
-      (l ++ [j, i] ++ r)) :
-    cl D Sc _ _ [.cross l.length, .dot l.length] h₁ =
-      zsign k (D.parity i * D.parity j) •
-        cl D Sc _ _ [.dot (l.length + 1), .cross l.length] h₂ := by
-  have p₁ : SChain [i, j] (crossL [] i j [] ++ dotsL [] j [i] 1) [j, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  have p₂ : SChain [i, j] (dotsL [i] j [] 1 ++ crossL [] i j []) [j, i] := by
-    simp [dotsL, crossL, Shape.dom, Shape.cod]
-  rw [cl_eq_lin D Sc l r _ p₁ _ h₁ (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh]),
-    cl_eq_lin D Sc l r _ p₂ _ h₂
-      (by simp [pl, PG.ld, PG.act, dotsL, crossL, wh, List.take_append])]
-  have hr := lin_rel_eq D Sc l r (Rel.slideR i j hij)
-  simp only [relation, whisker_sub, whisker_smul, Presentation.lin_sub,
-    Presentation.lin_smul, sub_eq_zero] at hr
-  exact hr
 
 /-- (1.9) on three strands `i j m` other than `i j i` with `i ≠ j`: exact. -/
 theorem braid_ne (i j m : I) (hb : ¬(i = m ∧ i ≠ j))
@@ -224,7 +183,7 @@ theorem sChain_comp {t t' t'' : List I} {gs hs : List PG} (h₁ : SChain t (pl t
 theorem cl_comp' {t t' t'' : List I} (gs hs : List PG) (h₁ : SChain t (pl t gs) t')
     (h₂ : SChain t' (pl t' hs) t'') :
     cl D Sc t t' gs h₁ ≫ cl D Sc t' t'' hs h₂ = cl D Sc t t'' (gs ++ hs) (sChain_comp h₁ h₂) :=
-  cl_comp D Sc gs hs h₁ h₂ _
+  cl_comp D Sc gs hs h₁ h₂
 
 theorem sChain_ofShape' (l r : List I) (g : Shape I) {t t' : List I} {p : ℕ}
     (ht : t = l ++ g.dom ++ r) (ht' : t' = l ++ g.cod ++ r) (hp : l.length = p) :
@@ -253,9 +212,6 @@ theorem genE_comp_cl (l m v : List I) (g h : Shape I) (hg : g.cod = g.dom) {w w'
   | cross x x' =>
     obtain rfl : x = x' := by simp [Shape.cod, Shape.dom] at hg; exact hg.2
     exact cl_interchange D Sc l m v _ _ _ _
-
-theorem zsign_mul_self (p : ZMod 2) : zsign k p * zsign k p = 1 := by
-  unfold zsign; split_ifs <;> simp
 
 theorem eq_zsign_smul_iff {M : Type*} [AddCommGroup M] [Module k M] (p : ZMod 2) (x y : M) :
     x = zsign k p • y ↔ y = zsign k p • x := by

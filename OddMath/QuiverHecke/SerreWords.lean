@@ -15,7 +15,7 @@ block `[a + 1, M + 1)` are signed nilHecke families (`leftFamily`, `rightFamily`
 products. The crossing `crossHom` of the strand `j` with a neighbouring `i` moves between
 consecutive words.
 
-Generators away from that crossing pass through it by the super interchange law; `Intw`
+Generators away from that crossing pass through it by the super interchange law; `Slides`
 records this for elements of the endomorphism rings, with an explicit sign, and is closed under
 products, so the block idempotents pass through it unchanged.
 -/
@@ -31,38 +31,38 @@ universe u v w
 
 /-! ## Intertwiners -/
 
-section Intw
+section Slides
 
 variable {C : Type*} [Category C] [Preadditive C] {A B : C}
 
 /-- `f ≫ σ = u • (σ ≫ g)`: `f` passes through `σ` as `g`, with the sign `u`. -/
-def Intw (σ : A ⟶ B) (u : ℤˣ) (f : End A) (g : End B) : Prop := f ≫ σ = (u : ℤ) • (σ ≫ g)
+def Slides (σ : A ⟶ B) (u : ℤˣ) (f : End A) (g : End B) : Prop := f ≫ σ = (u : ℤ) • (σ ≫ g)
 
-namespace Intw
+namespace Slides
 
 variable {σ : A ⟶ B} {u u' : ℤˣ} {f f' : End A} {g g' : End B}
 
-theorem one : Intw σ 1 (1 : End A) (1 : End B) := by
-  simp [Intw, End.one_def]
+theorem one : Slides σ 1 (1 : End A) (1 : End B) := by
+  simp [Slides, End.one_def]
 
-theorem mul (h : Intw σ u f g) (h' : Intw σ u' f' g') : Intw σ (u * u') (f * f') (g * g') := by
-  simp only [Intw, End.mul_def, Category.assoc] at *
+theorem mul (h : Slides σ u f g) (h' : Slides σ u' f' g') : Slides σ (u * u') (f * f') (g * g') := by
+  simp only [Slides, End.mul_def, Category.assoc] at *
   rw [h, Preadditive.comp_zsmul, ← Category.assoc, h', Preadditive.zsmul_comp, Category.assoc,
     smul_smul, Units.val_mul]
 
-theorem zsmul (h : Intw σ u f g) (c : ℤ) : Intw σ u (c • f) (c • g) := by
-  simp only [Intw] at *
+theorem zsmul (h : Slides σ u f g) (c : ℤ) : Slides σ u (c • f) (c • g) := by
+  simp only [Slides] at *
   rw [Preadditive.zsmul_comp, h, Preadditive.comp_zsmul, smul_comm]
 
-theorem neg (h : Intw σ u f g) : Intw σ u (-f) (-g) := by
+theorem neg (h : Slides σ u f g) : Slides σ u (-f) (-g) := by
   simpa using h.zsmul (-1)
 
-theorem add (h : Intw σ u f g) (h' : Intw σ u f' g') : Intw σ u (f + f') (g + g') := by
-  simp only [Intw] at *
+theorem add (h : Slides σ u f g) (h' : Slides σ u f' g') : Slides σ u (f + f') (g + g') := by
+  simp only [Slides] at *
   rw [Preadditive.add_comp, h, h', Preadditive.comp_add, smul_add]
 
 theorem wp {DA : ℕ → End A} {DB : ℕ → End B} {ρ : List ℕ}
-    (h : ∀ j ∈ ρ, Intw σ 1 (DA j) (DB j)) : Intw σ 1 (wp DA ρ) (wp DB ρ) := by
+    (h : ∀ j ∈ ρ, Slides σ 1 (DA j) (DB j)) : Slides σ 1 (wp DA ρ) (wp DB ρ) := by
   induction ρ with
   | nil => exact one
   | cons a ρ ih =>
@@ -70,60 +70,60 @@ theorem wp {DA : ℕ → End A} {DB : ℕ → End B} {ρ : List ℕ}
     simpa using (h a (by simp)).mul (ih fun j hj => h j (by simp [hj]))
 
 theorem wp' {DA : ℕ → End A} {DB : ℕ → End B} {ρ : List ℕ}
-    (h : ∀ j ∈ ρ, Intw σ u (DA j) (DB j)) :
-    Intw σ (u ^ ρ.length) (Categorification.KLR.KL2.NH.wp DA ρ)
+    (h : ∀ j ∈ ρ, Slides σ u (DA j) (DB j)) :
+    Slides σ (u ^ ρ.length) (Categorification.KLR.KL2.NH.wp DA ρ)
       (Categorification.KLR.KL2.NH.wp DB ρ) := by
   induction ρ with
-  | nil => simpa using (one : Intw σ 1 (1 : End A) (1 : End B))
+  | nil => simpa using (one : Slides σ 1 (1 : End A) (1 : End B))
   | cons a ρ ih =>
     rw [Categorification.KLR.KL2.NH.wp_cons, Categorification.KLR.KL2.NH.wp_cons,
       List.length_cons, pow_succ']
     exact (h a (by simp)).mul (ih fun j hj => h j (by simp [hj]))
 
-theorem pow (h : Intw σ u f g) (n : ℕ) : Intw σ (u ^ n) (f ^ n) (g ^ n) := by
+theorem pow (h : Slides σ u f g) (n : ℕ) : Slides σ (u ^ n) (f ^ n) (g ^ n) := by
   induction n with
-  | zero => simpa using (one : Intw σ 1 (1 : End A) (1 : End B))
+  | zero => simpa using (one : Slides σ 1 (1 : End A) (1 : End B))
   | succ n ih => rw [pow_succ', pow_succ', pow_succ']; exact h.mul ih
 
-theorem comp {C' : C} {σ' : B ⟶ C'} {h₀ : End C'} {g : End B} (h : Intw σ u f g)
-    (h' : Intw σ' u' g h₀) : Intw (σ ≫ σ') (u * u') f h₀ := by
-  simp only [Intw] at *
+theorem comp {C' : C} {σ' : B ⟶ C'} {h₀ : End C'} {g : End B} (h : Slides σ u f g)
+    (h' : Slides σ' u' g h₀) : Slides (σ ≫ σ') (u * u') f h₀ := by
+  simp only [Slides] at *
   rw [← Category.assoc, h, Preadditive.zsmul_comp, Category.assoc, h', Preadditive.comp_zsmul,
     smul_smul, Units.val_mul, Category.assoc]
 
-theorem smul_left {R : Type*} [Semiring R] [Linear R C] (h : Intw σ u f g) (c : R) :
-    Intw (c • σ) u f g := by
-  simp only [Intw] at *
+theorem smul_left {R : Type*} [Semiring R] [Linear R C] (h : Slides σ u f g) (c : R) :
+    Slides (c • σ) u f g := by
+  simp only [Slides] at *
   rw [Linear.comp_smul, h, Linear.smul_comp, smul_comm]
 
 /-- Commuting with a product of endomorphisms. -/
-theorem endMul {σ σ' : End A} {f : End A} (h : Intw σ u f f) (h' : Intw σ' u' f f) :
-    Intw (σ * σ') (u * u') f f := by
+theorem endMul {σ σ' : End A} {f : End A} (h : Slides σ u f f) (h' : Slides σ' u' f f) :
+    Slides (σ * σ') (u * u') f f := by
   rw [End.mul_def, mul_comm u u']; exact h'.comp h
 
-theorem wpσ {D' : ℕ → End A} {f : End A} {ρ : List ℕ} (h : ∀ j ∈ ρ, Intw (D' j) u f f) :
-    Intw (Categorification.KLR.KL2.NH.wp D' ρ : End A) (u ^ ρ.length) f f := by
+theorem wpσ {D' : ℕ → End A} {f : End A} {ρ : List ℕ} (h : ∀ j ∈ ρ, Slides (D' j) u f f) :
+    Slides (Categorification.KLR.KL2.NH.wp D' ρ : End A) (u ^ ρ.length) f f := by
   induction ρ with
-  | nil => simp [Intw, End.one_def]
+  | nil => simp [Slides, End.one_def]
   | cons a ρ ih =>
     rw [Categorification.KLR.KL2.NH.wp_cons, List.length_cons, pow_succ']
     exact (h a (by simp)).endMul (ih fun j hj => h j (by simp [hj]))
 
-theorem powσ {σ f : End A} (h : Intw σ u f f) (n : ℕ) : Intw (σ ^ n) (u ^ n) f f := by
+theorem powσ {σ f : End A} (h : Slides σ u f f) (n : ℕ) : Slides (σ ^ n) (u ^ n) f f := by
   induction n with
-  | zero => simp [Intw, End.one_def]
+  | zero => simp [Slides, End.one_def]
   | succ n ih => rw [pow_succ', pow_succ']; exact h.endMul ih
 
 theorem wb {DA : ℕ → End A} {DB : ℕ → End B} {s n : ℕ}
-    (h : ∀ j, s ≤ j → j + 1 < s + n → Intw σ 1 (DA j) (DB j)) :
-    Intw σ 1 (Wb DA s n) (Wb DB s n) :=
+    (h : ∀ j, s ≤ j → j + 1 < s + n → Slides σ 1 (DA j) (DB j)) :
+    Slides σ 1 (Wb DA s n) (Wb DB s n) :=
   wp fun j hj => by
     obtain ⟨h₁, h₂⟩ := Categorification.KLR.KL2.NH.mem_w0Word_map hj
     exact h j h₁ h₂
 
-end Intw
+end Slides
 
-end Intw
+end Slides
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X) {k : Type w}
   [CommRing k] (Sc : SKM.Scalars D k)
@@ -164,28 +164,28 @@ theorem sChain_crossAt (x y : I) (a : ℕ) (V : List I) :
   sChain_ofShape' (List.replicate a i) V (.cross x y) rfl rfl (by simp)
 
 /-- A dot left of the crossing passes through it. -/
-theorem intw_dot_left {p : ℕ} (hp : p < a) :
-    Intw (crossAt D Sc i x y a (List.replicate c i)) (zunit (D.parity i * (D.parity x * D.parity y)))
+theorem slides_dot_left {p : ℕ} (hp : p < a) :
+    Slides (crossAt D Sc i x y a (List.replicate c i)) (zunit (D.parity i * (D.parity x * D.parity y)))
       (dotE D Sc _ p) (dotE D Sc _ p) := by
   have e : List.replicate a i = List.replicate p i ++ [i] ++ List.replicate (a - p - 1) i := by
     rw [replicate_split i p (a - p) (by omega), replicate_split i (n := a - p) 1 (a - p - 1)
       (by omega)]
     simp
-  simp only [Intw, crossAt]
+  simp only [Slides, crossAt]
   rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
   exact genE_comp_cl D Sc (List.replicate p i) (List.replicate (a - p - 1) i) (List.replicate c i) (.dot i)
     (.cross x y) rfl (by rw [e]; simp [Shape.dom]) (by rw [e]; simp [Shape.dom, Shape.cod])
     (by simp) (by simp [Shape.dom]; omega) _
 
 /-- A crossing left of the crossing passes through it. -/
-theorem intw_cross_left {p : ℕ} (hp : p + 1 < a) :
-    Intw (crossAt D Sc i x y a (List.replicate c i))
+theorem slides_cross_left {p : ℕ} (hp : p + 1 < a) :
+    Slides (crossAt D Sc i x y a (List.replicate c i))
       (zunit (D.parity i * (D.parity x * D.parity y))) (crossE D Sc _ p) (crossE D Sc _ p) := by
   have e : List.replicate a i = List.replicate p i ++ [i, i] ++ List.replicate (a - p - 2) i := by
     rw [replicate_split i p (a - p) (by omega), replicate_split i (n := a - p) 2 (a - p - 2)
       (by omega)]
     simp
-  simp only [Intw, crossAt]
+  simp only [Slides, crossAt]
   rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
   have h := genE_comp_cl D Sc (k := k) (p := p) (q := a) (List.replicate p i) (List.replicate (a - p - 2) i)
     (List.replicate c i)
@@ -195,15 +195,15 @@ theorem intw_cross_left {p : ℕ} (hp : p + 1 < a) :
   simpa only [Shape.parity, parity_sq, PG.ofShape] using h
 
 /-- A dot right of the crossing passes through it. -/
-theorem intw_dot_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p < a + 2 + c) :
-    Intw (crossAt D Sc i x y a (List.replicate c i))
+theorem slides_dot_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p < a + 2 + c) :
+    Slides (crossAt D Sc i x y a (List.replicate c i))
       (zunit (D.parity i * (D.parity x * D.parity y))) (dotE D Sc _ p) (dotE D Sc _ p) := by
   have e : List.replicate c i =
       List.replicate (p - a - 2) i ++ [i] ++ List.replicate (a + 1 + c - p) i := by
     rw [replicate_split i (p - a - 2) (c - (p - a - 2)) (by omega),
       replicate_split i (n := c - (p - a - 2)) 1 (a + 1 + c - p) (by omega)]
     simp
-  simp only [Intw, crossAt]
+  simp only [Slides, crossAt]
   rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
   have h := genE_comp_cl' D Sc (k := k) (p := p) (q := a) (List.replicate a i) (List.replicate (p - a - 2) i)
     (List.replicate (a + 1 + c - p) i) (.cross x y) (.dot i) rfl
@@ -213,15 +213,15 @@ theorem intw_dot_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p < a + 2 + c) :
   simpa only [Shape.parity, PG.ofShape, mul_comm (D.parity x * D.parity y)] using h
 
 /-- A crossing right of the crossing passes through it. -/
-theorem intw_cross_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p + 1 < a + 2 + c) :
-    Intw (crossAt D Sc i x y a (List.replicate c i))
+theorem slides_cross_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p + 1 < a + 2 + c) :
+    Slides (crossAt D Sc i x y a (List.replicate c i))
       (zunit (D.parity i * (D.parity x * D.parity y))) (crossE D Sc _ p) (crossE D Sc _ p) := by
   have e : List.replicate c i =
       List.replicate (p - a - 2) i ++ [i, i] ++ List.replicate (a + c - p) i := by
     rw [replicate_split i (p - a - 2) (c - (p - a - 2)) (by omega),
       replicate_split i (n := c - (p - a - 2)) 2 (a + c - p) (by omega)]
     simp
-  simp only [Intw, crossAt]
+  simp only [Slides, crossAt]
   rw [crossHom_eq D Sc (sChain_crossAt i x y a _), ← zsign_smul_hom]
   have h := genE_comp_cl' D Sc (k := k) (p := p) (q := a) (List.replicate a i) (List.replicate (p - a - 2) i)
     (List.replicate (a + c - p) i) (.cross x y) (.cross i i) rfl
@@ -232,35 +232,35 @@ theorem intw_cross_right {p : ℕ} (hp : a + 2 ≤ p) (hp' : p + 1 < a + 2 + c) 
 
 open SignedNilHecke in
 /-- A Demazure element of a block, at positions away from the crossing, passes through it. -/
-theorem intw_dem {ε : ℤˣ} {s n s' n' q : ℕ} (hA₁ : s ≤ q) (hA₂ : q + 1 < s + n) (hB₁ : s' ≤ q)
+theorem slides_dem {ε : ℤˣ} {s n s' n' q : ℕ} (hA₁ : s ≤ q) (hA₂ : q + 1 < s + n) (hB₁ : s' ≤ q)
     (hB₂ : q + 1 < s' + n') (hq : q + 2 ≤ a ∨ (a + 2 ≤ q ∧ q + 2 ≤ a + 2 + c)) :
-    Intw (crossAt D Sc i x y a (List.replicate c i)) 1
+    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
       (dem ε s n (dotE D Sc _) (crossE D Sc _) q) (dem ε s' n' (dotE D Sc _) (crossE D Sc _) q) := by
   rw [dem_of hA₁ hA₂, dem_of hB₁ hB₂]
-  refine Intw.neg (Intw.zsmul ?_ _)
+  refine Slides.neg (Slides.zsmul ?_ _)
   rw [← zunit_mul_self (D.parity i * (D.parity x * D.parity y))]
   rcases hq with hq | ⟨hq₁, hq₂⟩
-  · exact (intw_cross_left D Sc i (by omega)).mul (intw_dot_left D Sc i (by omega))
-  · exact (intw_cross_right D Sc i hq₁ (by omega)).mul
-      (intw_dot_right D Sc i (by omega) (by omega))
+  · exact (slides_cross_left D Sc i (by omega)).mul (slides_dot_left D Sc i (by omega))
+  · exact (slides_cross_right D Sc i hq₁ (by omega)).mul
+      (slides_dot_right D Sc i (by omega) (by omega))
 
 open SignedNilHecke in
 /-- A block idempotent left of the crossing passes through it. -/
-theorem intw_idem_left {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
+theorem slides_idem_left {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
     (hB₁ : s' ≤ t) (hB₂ : t + m ≤ s' + n') (h : t + m ≤ a) :
-    Intw (crossAt D Sc i x y a (List.replicate c i)) 1
+    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
       (idem ε s n (dotE D Sc _) (crossE D Sc _) t m)
       (idem ε s' n' (dotE D Sc _) (crossE D Sc _) t m) :=
-  Intw.wb fun q h₁ h₂ => intw_dem D Sc i (by omega) (by omega) (by omega) (by omega) (by omega)
+  Slides.wb fun q h₁ h₂ => slides_dem D Sc i (by omega) (by omega) (by omega) (by omega) (by omega)
 
 open SignedNilHecke in
 /-- A block idempotent right of the crossing passes through it. -/
-theorem intw_idem_right {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
+theorem slides_idem_right {ε : ℤˣ} {s n s' n' t m : ℕ} (hA₁ : s ≤ t) (hA₂ : t + m ≤ s + n)
     (hB₁ : s' ≤ t) (hB₂ : t + m ≤ s' + n') (h₁ : a + 2 ≤ t) (h₂ : t + m ≤ a + 2 + c) :
-    Intw (crossAt D Sc i x y a (List.replicate c i)) 1
+    Slides (crossAt D Sc i x y a (List.replicate c i)) 1
       (idem ε s n (dotE D Sc _) (crossE D Sc _) t m)
       (idem ε s' n' (dotE D Sc _) (crossE D Sc _) t m) :=
-  Intw.wb fun q h₁' h₂' => intw_dem D Sc i (by omega) (by omega) (by omega) (by omega)
+  Slides.wb fun q h₁' h₂' => slides_dem D Sc i (by omega) (by omega) (by omega) (by omega)
     (Or.inr ⟨by omega, by omega⟩)
 
 end Transport
