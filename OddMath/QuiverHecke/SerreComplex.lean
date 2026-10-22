@@ -726,11 +726,11 @@ theorem braid_iji_word (hij : i ≠ j) {b : ℕ} (hb : b + 1 < M) :
       ∑ s ∈ Finset.range (D.dn i j),
           (zsign k (D.parity i * (D.parity j + s)) * (Sc.t i j : k)) •
             (xw D Sc i j M (b + 1) b ^ (D.dn i j - 1 - s) *
-              xw D Sc i j M (b + 1) (b + 2) ^ s) +
+              xw D Sc i j M (b + 1) (b + 1 + 1) ^ s) +
         ∑ p' ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
           ∑ s ∈ Finset.range p', (zsign k (D.parity i * (D.parity j + s)) * Sc.s i j p' q) •
             (xw D Sc i j M (b + 1) b ^ (p' - 1 - s) * xw D Sc i j M (b + 1) (b + 1) ^ q *
-              xw D Sc i j M (b + 1) (b + 2) ^ s) := by
+              xw D Sc i j M (b + 1) (b + 1 + 1) ^ s) := by
   have hT := sChain_cross_of (word_gt (i := i) (j := j) (M := M) (a := b) (p := b + 1)
     (by omega) (by omega)) (word_gt (by omega) (by omega))
   have hT' := sChain_cross_of (word_lt (i := i) (j := j) (M := M) (a := b + 1 + 1) (p := b)
@@ -741,6 +741,45 @@ theorem braid_iji_word (hij : i ≠ j) {b : ℕ} (hb : b + 1 < M) :
   unfold tw crossE up down
   rw [genE_eq D Sc hT, genE_eq D Sc hT', cl_comp, cl_comp, cl_comp, cl_comp]
   exact cl_braid_iji_of _ _ hij e (by simp) rfl rfl _ _
+
+/-- The correction term of (1.9), between the two chains, is a unit times `e`. -/
+theorem interior_corr (hij : i ≠ j) (hM : M = D.dn i j + 1) {b : ℕ} (hb : b + 1 < M) :
+    ∃ γ : k, IsUnit γ ∧
+      eIdem D Sc i j M (b + 1) ≫
+          (down D Sc i j M (Nat.lt_of_succ_lt hb) ≫ tw D Sc i j M b (b + 1) ≫
+              up D Sc i j M (Nat.lt_of_succ_lt hb) -
+            up D Sc i j M hb ≫ tw D Sc i j M (b + 1 + 1) b ≫ down D Sc i j M hb) ≫
+          chL (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) 0 b ≫
+          chR (B := End (wobj D Sc i j M (b + 1))) (tw D Sc i j M (b + 1)) (b + 1 + 1)
+            (M - (b + 1 + 1)) = γ • eIdem D Sc i j M (b + 1) := by
+  obtain ⟨c, hc⟩ := interior_ann_top (D := D) (Sc := Sc) (i := i) (j := j) hb
+  refine ⟨zsign k (D.parity i * (D.parity j + ((M - (b + 1 + 1) : ℕ) : ZMod 2))) *
+    (Sc.t i j : k) * ((c : ℤ) : k), ?_, ?_⟩
+  · refine ((IsUnit.of_mul_eq_one _ (zsign_mul_self _)).mul (Sc.t i j).isUnit).mul ?_
+    exact c.isUnit.map (Int.castRingHom k)
+  rw [braid_iji_word hij hb]
+  change chR (tw D Sc i j M (b + 1)) (b + 1 + 1) (M - (b + 1 + 1)) *
+    chL (tw D Sc i j M (b + 1)) 0 b * (_ + _) * eIdem D Sc i j M (b + 1) = _
+  simp only [mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]
+  rw [Finset.sum_eq_zero (s := Finset.Ioo 0 (D.dn i j)) fun p' hp' =>
+    Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun s hs => by
+      rw [Finset.mem_Ioo] at hp'
+      rw [Finset.mem_range] at hs
+      have h0 := interior_ann_zero (D := D) (Sc := Sc) (i := i) (j := j) hb (p := p' - 1 - s)
+        (q := q) (r := s) (by omega)
+      rw [h0, smul_zero], add_zero,
+    Finset.sum_eq_single (M - (b + 1 + 1))]
+  · rw [show D.dn i j - 1 - (M - (b + 1 + 1)) = b by omega, hc, ← Int.cast_smul_eq_zsmul k,
+      smul_smul]
+  · intro s hs hne
+    rw [Finset.mem_range] at hs
+    have h0 := interior_ann_zero (D := D) (Sc := Sc) (i := i) (j := j) hb (p := D.dn i j - 1 - s)
+      (q := 0) (r := s) (by omega)
+    simp only [pow_zero, mul_one] at h0
+    rw [h0, smul_zero]
+  · intro h
+    rw [Finset.mem_range] at h
+    omega
 
 end Interior
 
