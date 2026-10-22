@@ -1,6 +1,6 @@
 import OddMath
 
-/-! # BE2 Proposition 11.2 in `K₀(Ḣ_{q,π})` on a rank-two datum with an odd colour
+/-! # BE2 Proposition 11.2 in `K₀(Ḣ_{q,π})` and `K₀(𝔘̇_{q,π}(𝔤))` on a rank-two datum
 
 The datum of `scripts/NonVacuity/SerreComplex.lean` (type `B₂`, `true` odd, `d_{true,false} = 2`,
 `d_{false,true} = 1`) with the symmetrizer `d_true = 1`, `d_false = 2`. The scalars `s` vanish,
@@ -65,7 +65,14 @@ example : ∑ a ∈ SplitComplex.terms 2 true,
       StringDiagrams.K₀.mk (term symmetrizer homogeneous false true 2 a) :=
   class_even_eq_odd symmetrizer homogeneous (by decide) (by rw [dn_false_true])
 
+/-- `i` odd, `M = 3`, in `𝔘̇_{q,π}(𝔤)` at the weight `0`. -/
+example : ∑ a : Fin 4, ((-1 : ℤ) ^ (a : ℕ)) •
+    StringDiagrams.K₀.mk (termUp symmetrizer homogeneous true false 3 0 a
+      (Nat.le_of_lt_succ a.2)) = 0 :=
+  class_alternating_sum_up symmetrizer homogeneous (by decide) (by rw [dn_true_false]) 0
+
 #print axioms OddMath.QuiverHecke.SerreComplex.class_alternating_sum
+#print axioms OddMath.QuiverHecke.SerreComplex.class_alternating_sum_up
 #print axioms OddMath.QuiverHecke.SerreComplex.class_even_eq_odd
 
 end NonVacuity.SerreClass

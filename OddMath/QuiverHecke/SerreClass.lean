@@ -3,7 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SerreComplex
-import OddMath.QuiverHecke.SplitComplexK0
+import OddMath.QuiverHecke.SplitComplexShifted
 import OddMath.QuiverHecke.EnvelopeDividedPowers
 
 /-!
@@ -24,7 +24,8 @@ the words `i^a j i^{M-a}` and the splitting identities. Here:
   `Q^{-d_i a(a-1)/2 - d_i r(r-1)/2}` appears with the opposite sign because the envelope is
   contravariant in the shift (`OddMath.QuiverHecke.EnvelopeDividedPowers`);
 * with these shifts the maps are even of degree zero (`sh_sub_succ`, `par_add_succ`, ...), so
-  they give a split complex in `Ḣ_{q,π}` (`isSplitK`), and
+  they give a split complex in `Ḣ_{q,π}` (`data`, `split`, via
+  `OddMath.QuiverHecke.SplitComplex.ShiftedData`), and
   `∑_{a ≤ M} (-1)^a [term a] = 0` in `K₀(Ḣ_{q,π})` (`class_alternating_sum`); equivalently the
   even and odd terms have the same total class (`class_even_eq_odd`).
 
@@ -245,30 +246,6 @@ theorem exists_scalars (hij : i ≠ j) (hM : M = D.dn i j + 1) :
 
 end Scalars
 
-/-! ## Shifted terms in the envelope -/
-
-section Lift
-
-open GradedSupercategory OddMath.SKM.Summands
-
-variable {A : Type*} [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
-  [GradedSupercategory k A]
-
-/-- A homogeneous morphism `g : f → f'` as an even degree-zero morphism between the shifts
-`Q^m Π^p f → Q^n Π^{p'} f'`. -/
-def hlift {f f' : A} {m n : ℤ} {p p' : ZMod 2} (g : f ⟶ f')
-    (hd : g ∈ degree (R := k) f f' (m - n))
-    (hp : g ∈ Supercategory.parity (R := k) f f' (p + p')) :
-    shifted (k := k) f m p ⟶ shifted (k := k) f' n p' :=
-  ⟨⟨g, by change g ∈ degree (R := k) _ _ (0 + (m - n)); simpa using hd⟩,
-    by change g ∈ Supercategory.parity (R := k) _ _ (0 + (p + p')); simpa using hp⟩
-
-theorem base_ext {f f' : A} {m n : ℤ} {p p' : ZMod 2}
-    {x y : shifted (k := k) f m p ⟶ shifted (k := k) f' n p'} (h : x.1.1 = y.1.1) : x = y :=
-  Subtype.ext (Subtype.ext h)
-
-end Lift
-
 theorem parityDeg_eq (g : Shape I) : Presentation.parityDeg (sig D) g = g.parity D := by
   simp only [Presentation.parityDeg, sig]
   rcases (by decide : ∀ x : ZMod 2, x = 0 ∨ x = 1) (g.parity D) with h | h <;> simp [h]
@@ -441,39 +418,35 @@ theorem downMap_parity {a : ℕ} (ha : a < M) :
   rw [par_succ_add ha]
   exact downMap_mem (parityDeg_dot_add_cross i) ha
 
-/-- The map `c_a • upMap a : term a → term (a + 1)` (zero for `a ≥ M`). -/
-def fK (c : ℕ → k) (a : ℕ) : term sy hc i j M a ⟶ term sy hc i j M (a + 1) :=
-  if h : a < M then
-    ⟨(Mat_.embedding _).map (hlift (c a • (upMap D Sc i j M h :
-        hObj D Sc sy hc (word i j M a) ⟶ hObj D Sc sy hc (word i j M (a + 1))))
-      (Submodule.smul_mem _ _ (upMap_degree sy hc hij hM h))
-      (Submodule.smul_mem _ _ (upMap_parity sy hc hij hM h))), by
-      change (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = _
-      rw [← Functor.map_comp, ← Functor.map_comp]
-      congr 1
-      apply base_ext
-      change eIdem D Sc i j M a ≫ (c a • upMap D Sc i j M h) ≫ eIdem D Sc i j M (a + 1) =
-        c a • upMap D Sc i j M h
-      rw [Linear.smul_comp, Linear.comp_smul]
-      rw [← Category.assoc, eIdem_comp_upMap, upMap_comp_eIdem]⟩
-  else 0
+/-- The Serre complex in `HGr`, with its shifts. -/
+def data (c : ℕ → k) : SplitComplex.ShiftedData k (HGr D Sc sy hc) M where
+  W a _ := hObj D Sc sy hc (word i j M a)
+  e a _ := eIdem D Sc i j M a
+  u a h := c a • upMap D Sc i j M h
+  d a h := downMap D Sc i j M h
+  sh := sh sy i M
+  par := par D i j M
+  e_idem a _ := eIdem_idem_all a
+  e_degree a _ := eIdem_degree sy hc a
+  e_even a _ := eIdem_even sy hc a
+  u_degree _ h := Submodule.smul_mem _ _ (upMap_degree sy hc hij hM h)
+  u_parity _ h := Submodule.smul_mem _ _ (upMap_parity sy hc hij hM h)
+  d_degree _ h := downMap_degree sy hc hij hM h
+  d_parity _ h := downMap_parity sy hc h
+  e_u a h := by
+    change eIdem D Sc i j M a ≫ (c a • upMap D Sc i j M h) ≫ eIdem D Sc i j M (a + 1) =
+      c a • upMap D Sc i j M h
+    rw [Linear.smul_comp, Linear.comp_smul, ← Category.assoc, eIdem_comp_upMap,
+      upMap_comp_eIdem]
+  e_d a h := by
+    change eIdem D Sc i j M (a + 1) ≫ downMap D Sc i j M h ≫ eIdem D Sc i j M a =
+      downMap D Sc i j M h
+    rw [← Category.assoc, eIdem_comp_downMap, downMap_comp_eIdem]
 
-/-- The map `downMap a : term (a + 1) → term a` (zero for `a ≥ M`). -/
-def gK (a : ℕ) : term sy hc i j M (a + 1) ⟶ term sy hc i j M a :=
-  if h : a < M then
-    ⟨(Mat_.embedding _).map (hlift (downMap D Sc i j M h :
-        hObj D Sc sy hc (word i j M (a + 1)) ⟶ hObj D Sc sy hc (word i j M a))
-      (downMap_degree sy hc hij hM h) (downMap_parity sy hc h)), by
-      change (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = _
-      rw [← Functor.map_comp, ← Functor.map_comp]
-      congr 1
-      apply base_ext
-      change eIdem D Sc i j M (a + 1) ≫ downMap D Sc i j M h ≫ eIdem D Sc i j M a =
-        downMap D Sc i j M h
-      rw [← Category.assoc, eIdem_comp_downMap, downMap_comp_eIdem]⟩
-  else 0
+theorem data_term (c : ℕ → k) (a : ℕ) (ha : a ≤ M) :
+    (data sy hc hij hM c).term a ha = term sy hc i j M a := rfl
 
-theorem isSplitK (c : ℕ → k)
+theorem split (c : ℕ → k)
     (h0 : eIdem D Sc i j M 0 = c 0 • (upMap D Sc i j M (by omega : 0 < M) ≫
         downMap D Sc i j M (by omega : 0 < M)))
     (hs : ∀ a (h : a + 1 < M), eIdem D Sc i j M (a + 1) =
@@ -482,68 +455,22 @@ theorem isSplitK (c : ℕ → k)
             upMap D Sc i j M (Nat.lt_of_succ_lt h)))
     (ht : ∀ a (h : a + 1 = M), eIdem D Sc i j M (a + 1) =
         c a • (downMap D Sc i j M (by omega : a < M) ≫ upMap D Sc i j M (by omega : a < M))) :
-    SplitComplex.IsSplitK M (term sy hc i j M) (fK sy hc hij hM c) (gK sy hc hij hM) where
-  ff a := by
-    by_cases h : a + 1 < M
-    · unfold fK
-      rw [dite_eq_left (Nat.lt_of_succ_lt h), dite_eq_left h]
-      apply Karoubi.hom_ext
-      change (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = 0
-      rw [← Functor.map_comp, ← Functor.map_zero (Mat_.embedding _)]
-      congr 1
-      apply base_ext
-      change (c a • upMap D Sc i j M (Nat.lt_of_succ_lt h)) ≫ (c (a + 1) • upMap D Sc i j M h) = 0
-      rw [Linear.smul_comp, Linear.comp_smul, upMap_comp_upMap h, smul_zero, smul_zero]
-    · rw [show fK sy hc hij hM c (a + 1) = 0 from dite_eq_right h, Limits.comp_zero]
-  gg a := by
-    by_cases h : a + 1 < M
-    · unfold gK
-      rw [dite_eq_left (Nat.lt_of_succ_lt h), dite_eq_left h]
-      apply Karoubi.hom_ext
-      change (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ = 0
-      rw [← Functor.map_comp, ← Functor.map_zero (Mat_.embedding _)]
-      congr 1
-      apply base_ext
-      change downMap D Sc i j M h ≫ downMap D Sc i j M (Nat.lt_of_succ_lt h) = 0
-      rw [downMap_comp_downMap h]
-    · rw [show gK sy hc hij hM (a + 1) = 0 from dite_eq_right h, Limits.zero_comp]
-  f_top := dite_eq_right (lt_irrefl M)
+    (data sy hc hij hM c).Split where
+  pos := by omega
+  uu a h := by
+    change (c a • upMap D Sc i j M _) ≫ (c (a + 1) • upMap D Sc i j M h) = 0
+    rw [Linear.smul_comp, Linear.comp_smul, upMap_comp_upMap h, smul_zero, smul_zero]
+  dd a h := downMap_comp_downMap h
   split_zero := by
-    unfold fK gK
-    rw [dite_eq_left (by omega : 0 < M), dite_eq_left (by omega : 0 < M)]
-    apply Karoubi.hom_ext
-    change (Mat_.embedding _).map _ = (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _
-    rw [← Functor.map_comp]
-    congr 1
-    apply base_ext
     change eIdem D Sc i j M 0 = (c 0 • upMap D Sc i j M _) ≫ downMap D Sc i j M _
     rw [Linear.smul_comp, h0]
-  split_succ a ha := by
-    rcases Nat.lt_or_ge (a + 1) M with h | h
-    · unfold fK gK
-      rw [dite_eq_left h, dite_eq_left h, dite_eq_left (Nat.lt_of_succ_lt h),
-        dite_eq_left (Nat.lt_of_succ_lt h)]
-      apply Karoubi.hom_ext
-      change (Mat_.embedding _).map _ = (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _ +
-        (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _
-      rw [← Functor.map_comp, ← Functor.map_comp, ← Functor.map_add]
-      congr 1
-      apply base_ext
-      change eIdem D Sc i j M (a + 1) = (c (a + 1) • upMap D Sc i j M h) ≫ downMap D Sc i j M h +
-        downMap D Sc i j M _ ≫ (c a • upMap D Sc i j M _)
-      rw [Linear.smul_comp, Linear.comp_smul, hs a h]
-    · have hM' : a + 1 = M := by omega
-      rw [show fK sy hc hij hM c (a + 1) = 0 from dite_eq_right (by omega), Limits.zero_comp,
-        zero_add]
-      unfold fK gK
-      rw [dite_eq_left (by omega : a < M), dite_eq_left (by omega : a < M)]
-      apply Karoubi.hom_ext
-      change (Mat_.embedding _).map _ = (Mat_.embedding _).map _ ≫ (Mat_.embedding _).map _
-      rw [← Functor.map_comp]
-      congr 1
-      apply base_ext
-      change eIdem D Sc i j M (a + 1) = downMap D Sc i j M _ ≫ (c a • upMap D Sc i j M _)
-      rw [Linear.comp_smul, ht a hM']
+  split_succ a h := by
+    change eIdem D Sc i j M (a + 1) = (c (a + 1) • upMap D Sc i j M h) ≫ downMap D Sc i j M h +
+      downMap D Sc i j M _ ≫ (c a • upMap D Sc i j M _)
+    rw [Linear.smul_comp, Linear.comp_smul, hs a h]
+  split_top a h hat := by
+    change eIdem D Sc i j M (a + 1) = downMap D Sc i j M h ≫ (c a • upMap D Sc i j M h)
+    rw [Linear.comp_smul, ht a hat]
 
 end KComplex
 
@@ -563,7 +490,10 @@ variable {D Sc} {i j : I} {M : ℕ}
 theorem class_alternating_sum (hij : i ≠ j) (hM : M = D.dn i j + 1) :
     ∑ a ∈ Finset.range (M + 1), ((-1 : ℤ) ^ a) • K₀.mk (term sy hc i j M a) = 0 := by
   obtain ⟨c, h0, hs, ht⟩ := exists_scalars (D := D) (Sc := Sc) hij hM
-  exact (isSplitK sy hc hij hM c h0 hs ht).alternating_sum_eq_zero
+  have h := (split sy hc hij hM c h0 hs ht).alternating_sum_eq_zero
+  simp only [data_term] at h
+  rw [Fin.sum_univ_eq_sum_range (fun a => ((-1 : ℤ) ^ a) • K₀.mk (term sy hc i j M a))] at h
+  exact h
 
 /-- **BE2 Proposition 11.2**, "in particular", in `K₀(Ḣ_{q,π})`: the classes of the terms with
 `a` even and with `a` odd have the same sum. -/
