@@ -30,6 +30,8 @@ import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.WidthZero
 import OddMath.QuiverHecke.UpwardClasses
 import OddMath.QuiverHecke.UpwardImage
+import OddMath.QuiverHecke.DownwardClasses
+import OddMath.QuiverHecke.DownwardImage
 import OddMath.QuiverHecke.UTurnSpanning
 import OddMath.QuiverHecke.SplitFactorization
 import OddMath.QuiverHecke.GradedWalk
