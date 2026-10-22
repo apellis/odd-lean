@@ -25,6 +25,7 @@ import OddMath.QuiverHecke.SerreDividedPowers
 import OddMath.QuiverHecke.SerreDividedPowersDown
 import OddMath.QuiverHecke.GrothendieckDividedPowers
 import OddMath.QuiverHecke.GrothendieckPresentation
+import OddMath.QuiverHecke.SortedSummands
 import OddMath.QuiverHecke.GrothendieckIntegral
 import OddMath.QuiverHecke.PolynomialExchangeExamples
 import OddMath.QuiverHecke.PolynomialOddExamples
