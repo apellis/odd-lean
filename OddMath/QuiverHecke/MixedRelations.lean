@@ -29,7 +29,7 @@ universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X) {k : Type w}
   [CommRing k] (Sc : SKM.Scalars D k)
 
-theorem sChain_dots (t : List I) (p n : ℕ) :
+theorem sChain_dot_pow (t : List I) (p n : ℕ) :
     SChain t (pl t (List.replicate n (.dot p))) t := by
   have := sChain_pl t (List.replicate n (.dot p))
   rwa [tgt_dots] at this
@@ -40,7 +40,7 @@ theorem dotE_eq (w : List I) (p : ℕ) :
 
 /-- `n` dots on strand `p` are the `n`-th power of the dot. -/
 theorem dotE_pow (w : List I) (p n : ℕ) :
-    dotE D Sc w p ^ n = cl D Sc w w (List.replicate n (.dot p)) (sChain_dots w p n) := by
+    dotE D Sc w p ^ n = cl D Sc w w (List.replicate n (.dot p)) (sChain_dot_pow w p n) := by
   induction n with
   | zero => rw [pow_zero, End.one_def]; exact (cl_nil D Sc w rfl).symm
   | succ n ih =>
