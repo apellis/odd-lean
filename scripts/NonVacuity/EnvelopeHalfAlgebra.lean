@@ -71,6 +71,7 @@ def cartan₂ : SuperCartanDatum Unit where
 theorem not_barConsistent₂ : ¬ cartan₂.BarConsistent := fun h ↦ by
   have h0 := h ()
   simp [cartan₂] at h0
+  exact absurd h0 (by decide)
 
 /-- `cartan₂` on the weight lattice `ℤ`. -/
 def datum₂ : RootDatum Unit ℤ where

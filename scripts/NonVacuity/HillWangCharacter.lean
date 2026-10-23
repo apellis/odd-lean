@@ -25,6 +25,7 @@ def datum : SuperCartanDatum Unit where
 theorem not_barConsistent : ¬ datum.BarConsistent := fun h ↦ by
   have h0 := h ()
   simp [datum] at h0
+  exact absurd h0 (by decide)
 
 private def q : (RatFunc ℚ)ˣ := Units.mk0 RatFunc.X RatFunc.X_ne_zero
 
