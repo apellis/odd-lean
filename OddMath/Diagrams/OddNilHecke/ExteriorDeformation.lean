@@ -14,6 +14,12 @@ odd square-zero parameter `δ` and the deformed cyclotomic relation `x₁² + x�
 Over the dual numbers, `δ` acts nontrivially. Thus this cyclotomic relation does not
 force the exterior parameter to vanish when the second strand is added.
 
+The cyclotomic polynomial is the specialization `n = 2`, `χ₁ = 0`, `d = -δ`
+of Ebert–Lauda–Vera, *Derived superequivalences for spin symmetric groups and
+odd sl₂-categorifications*, arXiv:2203.14153v2, Definition 3.9 and (3.26).
+That source works over a field; the local matrix identities here hold over
+every commutative ring.
+
 This is a local test for the independent odd bubble coefficients in the
 Nondegeneracy Conjecture of Brundan–Ellis, *Super Kac–Moody 2-categories*,
 arXiv:1701.04133v2, §8. It is not a 2-representation: no cups, caps, Frobenius
