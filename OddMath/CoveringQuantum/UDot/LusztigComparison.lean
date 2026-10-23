@@ -1118,6 +1118,7 @@ theorem positiveFormNondegenerate_of_ratFunc
 
 variable [Finite I]
 
+omit [DecidableEq I] [DecidableEq (Y →+ ℤ)] [Finite I] in
 /-- A weight of `C.rootDatumOf R` pairing positively with every simple coroot. -/
 theorem exists_pos_of_linearIndependent_coroot [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (hcoroot : LinearIndependent ℤ R.coroot) :
