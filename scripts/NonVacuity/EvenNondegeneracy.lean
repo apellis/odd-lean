@@ -1,8 +1,8 @@
 import OddMath
 
 /-! Non-vacuity checks in `NonVacuity.EvenNondegeneracy`: the Nondegeneracy Conjecture of
-Brundan–Ellis for the purely even datum of `sl₂` (one even colour) over `ℚ`, with every
-hypothesis of `nondegeneracyConjecture_of_isEven` proved. Conventions are in
+Brundan–Ellis for the purely even datum of `sl₂` (one even colour), with every
+hypothesis of `nondegeneracyConjecture_of_isEven` proved, over `ℚ` and over `ℤ`. Conventions are in
 `scripts/NonVacuity.lean`. -/
 
 noncomputable section
@@ -11,8 +11,8 @@ namespace NonVacuity.EvenNondegeneracy
 
 open OddMath.SKM OddMath.SKM.EvenBridge TwoStrandShiftConsumer
 
-/-- Khovanov–Lauda scalars for the one-colour datum over `ℚ`. -/
-def scalarsQ : Scalars datum ℚ where
+/-- Khovanov–Lauda scalars for the one-colour datum over a commutative ring. -/
+def klScalars (k : Type) [CommRing k] : Scalars datum k where
   t := fun _ _ => 1
   t_self := fun _ => rfl
   t_symm_of_d_eq_zero := fun _ _ _ => rfl
@@ -23,9 +23,9 @@ def scalarsQ : Scalars datum ℚ where
     rintro ⟨i, hi⟩
     exact (zero_ne_one hi).elim
 
-def csQ : CScalars scalarsQ where
+def klCScalars (k : Type) [CommRing k] : CScalars (klScalars k) where
   c := fun _ _ => 1
-  shift := fun _ _ _ => by simp [scalarsQ]
+  shift := fun _ _ _ => by simp [klScalars]
 
 /-- The Cartan datum of `sl₂`: `i · i = 2`. -/
 def cartanSl2 : Categorification.QuantumGroup.CartanDatum Unit where
@@ -41,9 +41,13 @@ theorem compatible : Compatible datum cartanSl2 := fun _ _ => by
 
 theorem isEven : IsEven datum := fun _ => rfl
 
-theorem isKLScalars : IsKLScalars datum ℚ scalarsQ := ⟨fun _ _ => rfl, fun _ _ _ _ => rfl⟩
+theorem isKLScalars (k : Type) [CommRing k] : IsKLScalars datum k (klScalars k) :=
+  ⟨fun _ _ => rfl, fun _ _ _ _ => rfl⟩
 
-example : NondegeneracyConjecture csQ :=
-  nondegeneracyConjecture_of_isEven cartanSl2 compatible isEven isKLScalars csQ
+example : NondegeneracyConjecture (klCScalars ℚ) :=
+  nondegeneracyConjecture_of_isEven cartanSl2 compatible isEven (isKLScalars ℚ) (klCScalars ℚ)
+
+example : NondegeneracyConjecture (klCScalars ℤ) :=
+  nondegeneracyConjecture_of_isEven cartanSl2 compatible isEven (isKLScalars ℤ) (klCScalars ℤ)
 
 end NonVacuity.EvenNondegeneracy
