@@ -328,6 +328,7 @@ import OddMath.CoveringQuantum.UDot.TensorGram.MixedIntegration
 import OddMath.CoveringQuantum.UDot.TensorGram.MixedResidualInfiniteExamples
 import OddMath.CoveringQuantum.UDot.TensorGram.JointLimit
 import OddMath.CoveringQuantum.UDot.TensorGram.JointConvergence
+import OddMath.CoveringQuantum.UDot.TensorGram.NegativeComparison
 import OddMath.CoveringQuantum.UDot.NativeCyclic.CyclicInjectivity
 import OddMath.CoveringQuantum.UDot.NativeCyclic.RaisingNilpotence
 import OddMath.Diagrammatics.Even.Basic
