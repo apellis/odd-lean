@@ -17,26 +17,29 @@ J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, �
 Nondegeneracy Conjecture after Theorem 8.1: the decorated reduced matchings of Theorem 8.1 form
 a basis of `HOM(E_a 1_μ, E_b 1_μ)` as a free module over the bubble algebra `SYM`.
 
-For purely even data (`IsEven D`) with Khovanov–Lauda scalars (`IsKLScalars`), over a field, and
-with finitely many colours, this file proves the conjecture
+For purely even data (`IsEven D`) with Khovanov–Lauda scalars (`IsKLScalars`), over every
+commutative ring, and with finitely many colours, this file proves the conjecture
 (`nondegeneracyConjecture_of_isEven`). The proof compares with Khovanov–Lauda's 2-category
 (A. D. Lauda, M. Khovanov, *A categorification of quantum sl(n)*, arXiv:0807.3250v1, the
 "KL III" paper), whose nondegeneracy (Theorem 1.2 with its nondegeneracy hypothesis, proved in
-`Categorification.KL3.Diagram.calculusNondeg`) gives the graded dimension of every Hom space:
+`Categorification.KL3.Diagram.calculusNondeg`) gives, by KL III §6.4, a homogeneous basis of
+every Hom space over every commutative ring (`Categorification.KL3.Diagram.integralNondegBasis`):
 
 * the 2-functor `evenFunctor` is full (`evenFunctor_surjective`) and preserves degrees
   (`evenFunctor_map_mem_homDeg`), so the composite of the expansion map with it is surjective
   and sends each decorated matching with a bubble monomial into one graded piece;
 * by `spanDeg_monoIdxEquiv`, these are indexed by KL III's set `B_{𝐢,𝐣,λ}` with its degree;
-* by KL III Proposition 3.12 and nondegeneracy, the number of indices of each degree is the
-  dimension of the corresponding graded piece;
-* a degreewise count (`injective_of_surjective_of_card_eq_finrank`) gives injectivity.
+* by KL III Proposition 3.12 each degree contains finitely many indices;
+* in each degree the comparison with the KL basis is a surjective endomorphism of a finitely
+  generated free module, hence injective by Orzech's theorem
+  (`injective_of_surjective_of_basis`).
 
 ## Hypotheses
 
 The statement carries, beyond the conjecture's own setting: purely even data, Khovanov–Lauda
-scalars (`s = 0`, `t` as in KL III), a compatible symmetrizable Cartan datum, finitely many
-colours, and a field. The general (super) conjecture is not addressed.
+scalars (`s = 0`, `t` as in KL III), a compatible symmetrizable Cartan datum and finitely many
+colours. The ground ring is an arbitrary commutative ring. The general (super) conjecture is not
+addressed.
 -/
 
 noncomputable section
@@ -50,7 +53,7 @@ universe u v w
 
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
   (C : CartanDatum I) (hc : Compatible D C)
-  {k : Type w} [Field k] (Sc : Scalars D k) (hD : IsEven D) (hS : IsKLScalars D k Sc)
+  {k : Type w} [CommRing k] (Sc : Scalars D k) (hD : IsEven D) (hS : IsKLScalars D k Sc)
 
 local notation "WD" => weightDatum D C hc
 
@@ -72,7 +75,7 @@ variable {D Sc}
 include C hc hD hS
 
 /-- **Injectivity of the expansion map for even data**: the decorated reduced matchings of a
-`MatchingBasisChoice` are linearly independent over `SYM`. -/
+`MatchingBasisChoice` are linearly independent over `SYM`, over every commutative ring. -/
 theorem expansion_injective [Finite I] (cs : CScalars Sc) (μ : X) {a b : List (Letter I)}
     (F : MatchingBasisChoice a b) : Function.Injective (F.expansion cs μ) := by
   classical
@@ -80,6 +83,13 @@ theorem expansion_injective [Finite I] (cs : CScalars Sc) (μ : X) {a b : List (
     Finsupp.basis fun _ => symMonomialBasis hD
   let f := mapOb D C hc k Sc hD hS μ a b ∘ₗ F.expansion cs μ ∘ₗ B.repr.symm.toLinearMap
   let deg : MonoIdx F → ℤ := fun j => Diagram.spanDeg C ((WD).ellOf μ) (monoIdxEquiv F j)
+  let KB : Basis (MonoIdx F) k _ :=
+    (Diagram.integralNondegBasis k (Diagram.calculusNondeg WD ℚ) μ a b).reindex
+      (monoIdxEquiv F).symm
+  have hKB : ∀ j, KB j ∈ Diagram.HomD WD k μ a b (deg j) := by
+    intro j
+    simp only [KB, Basis.reindex_apply, Equiv.symm_symm, Diagram.integralNondegBasis_apply]
+    exact Diagram.IntegralSpanning.twoB_mem μ a b _
   have hfib : ∀ d, {j // deg j = d} ≃
       {x : Diagram.SpanIdx a b // Diagram.spanDeg C ((WD).ellOf μ) x = d} := fun d =>
     (monoIdxEquiv F).subtypeEquiv fun _ => Iff.rfl
@@ -87,7 +97,6 @@ theorem expansion_injective [Finite I] (cs : CScalars Sc) (μ : X) {a b : List (
     intro d
     have := (Diagram.prop_3_12 WD (s := a) (t := b) μ d).1
     exact Finite.of_equiv _ (hfib d).symm
-  have hgdim := Diagram.hasGdim_homD (RD := WD) (k := k) μ a b
   have hf : Function.Surjective f := by
     intro y
     obtain ⟨g, hg⟩ := evenFunctor_surjective D C hc k Sc hD hS μ a b y
@@ -107,27 +116,16 @@ theorem expansion_injective [Finite I] (cs : CScalars Sc) (μ : X) {a b : List (
     exact comp_mem_homDeg
       (bubAt_mem_gdeg _ a (betaSYM_symMonomial_mem_gdeg (symmetrizer D C hc) cs hD μ m))
       (xev_mem_gdeg _ cs μ a b (F.layers t))
-  have hcard : ∀ d, Nat.card {j // deg j = d} = finrank k (Diagram.HomD WD k μ a b d) := by
-    intro d
-    have : Finite {x : Diagram.SpanIdx a b // Diagram.spanDeg C ((WD).ellOf μ) x = d} :=
-      (Diagram.prop_3_12 WD μ d).1
-    have : Fintype {x : Diagram.SpanIdx a b // Diagram.spanDeg C ((WD).ellOf μ) x = d} :=
-      Fintype.ofFinite _
-    have h1 := Diagram.card_fiber_eq (RD := WD) μ a b d
-    have h2 := Diagram.calculusNondeg WD k μ a b d
-    rw [Nat.card_congr (hfib d), Nat.card_eq_fintype_card]
-    rw [← h2] at h1
-    exact_mod_cast h1
-  have hinj := injective_of_surjective_of_card_eq_finrank f hf (Diagram.HomD WD k μ a b)
-    (Diagram.isInternal_homDeg (RD := WD) (k := k) _ _).submodule_iSupIndep deg hdeg hfin hcard
+  have hinj := injective_of_surjective_of_basis f hf (Diagram.HomD WD k μ a b)
+    (Diagram.isInternal_homDeg (RD := WD) (k := k) _ _).submodule_iSupIndep deg hdeg KB hKB hfin
   intro x y hxy
   have := hinj (a₁ := B.repr x) (a₂ := B.repr y) (by simp [f, hxy])
   exact B.repr.injective this
 
 /-- **The Nondegeneracy Conjecture of Brundan–Ellis (arXiv:1701.04133v2, §8) for purely even
-data**, with Khovanov–Lauda scalars, a compatible Cartan datum, finitely many colours and a
-field: for all words `a`, `b`, every weight `μ` and every `MatchingBasisChoice`, the decorated
-reduced matchings of Theorem 8.1 are a basis of `HOM(E_a 1_μ, E_b 1_μ)` over `SYM`. -/
+data**, with Khovanov–Lauda scalars, a compatible Cartan datum and finitely many colours, over
+every commutative ring: for all words `a`, `b`, every weight `μ` and every
+`MatchingBasisChoice`, the decorated reduced matchings of Theorem 8.1 are a basis of `HOM(E_a 1_μ, E_b 1_μ)` over `SYM`. -/
 theorem nondegeneracyConjecture_of_isEven [Finite I] (cs : CScalars Sc) :
     NondegeneracyConjecture cs :=
   (nondegeneracyConjecture_iff_injective cs).2 fun _ _ _ μ F =>
