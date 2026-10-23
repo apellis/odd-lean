@@ -1123,7 +1123,9 @@ theorem exists_pos_of_linearIndependent_coroot [Module.Free ℤ Y] [Module.Finit
     (hcoroot : LinearIndependent ℤ R.coroot) :
     ∃ ξ : Y →+ ℤ, ∀ i, 0 < (C.rootDatumOf R).h i ξ := by
   obtain ⟨Λ, hΛ⟩ := exists_dominant_ge_of_linearIndependent_coroot R hcoroot 1
-  exact ⟨Λ.1, fun i ↦ by simpa using hΛ i⟩
+  refine ⟨Λ.1, fun i ↦ ?_⟩
+  have h : (0 : ℤ) < Λ.1 (R.coroot i) := by have := hΛ i; push_cast at this; omega
+  simpa using h
 
 /-- **Nondegeneracy of the `ρ`-adjoint form on `U̇`.** This is the nondegeneracy assertion of
 [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.positiveModifiedForm`
@@ -1142,7 +1144,7 @@ theorem positiveModifiedForm_nondegenerate [Module.Free ℤ Y] [Module.Finite �
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   exact positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R)
-    (exists_pos_of_linearIndependent_coroot hcoroot)
+    (exists_pos_of_linearIndependent_coroot R hcoroot)
     (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
 
 /-- **Nondegeneracy of the sesquilinear form on `U̇`.** The nondegeneracy assertion of [BE2]
@@ -1155,7 +1157,7 @@ theorem sesquilinearForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
   exact sesquilinearForm_leftRadical_trivial (C.rootDatumOf R)
-    (exists_pos_of_linearIndependent_coroot hcoroot) _
+    (exists_pos_of_linearIndependent_coroot R hcoroot) _
     (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
 
 end Generic
