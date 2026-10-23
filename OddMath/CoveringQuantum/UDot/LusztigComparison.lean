@@ -37,18 +37,18 @@ composes with Lusztig's map `Φ_μ : U̇ → U⁻ ⊗ U⁺` ([Lus] 23.2.1) to th
 embeddings of the Serre half algebra into `U^∓` (whose kernels are the Serre ideal, by
 LieLean's `plusHom_eq_zero_iff`, `minusHom_eq_zero_iff`).
 
-Over `L = \overline{ℚ(q)}` the parameters `q` and `t q` (`t² = -1`) have inverses that are not
-roots of unity; in fact they are transcendental over `ℚ`, so LieLean's base change
-`QuantumGroup.Modified.form_nondegenerate_of_transcendental` (along `ℚ(v) → L`, `v ↦ q'⁻¹`)
-transfers [Lus] 26.3.1 to Lusztig's form at both parameters. Lusztig's theorem needs dominant
-weights that are arbitrarily large on all simple coroots; these exist when `Y` is free of finite
-rank and the simple coroots are linearly independent
-(`exists_dominant_ge_of_linearIndependent_coroot`). Then
+Over `L = \overline{ℚ(q)}` the parameter `q` has inverse transcendental over `ℚ`, in particular not
+a root of unity, so LieLean's base change
+`QuantumGroup.Modified.form_nondegenerate_of_transcendental` (along `ℚ(v) → L`, `v ↦ q⁻¹`)
+transfers [Lus] 26.3.1 to Lusztig's form. Lusztig's theorem needs dominant weights that are
+arbitrarily large on all simple coroots; these exist when `Y` is free of finite rank and the
+simple coroots are linearly independent (`exists_dominant_ge_of_linearIndependent_coroot`). The
+`π = -1` half of the form is handled directly (`UDot.SignRadical.negativeIdempotent_smul_eq_zero`,
+which needs one weight positive on all simple coroots, supplied by the same lemma). Then
 `UDot.positiveModifiedForm_leftRadical_trivial_algebraicClosure` and
 `UDot.sesquilinearForm_leftRadical_trivial` give the nondegeneracy assertion of [BE2]
-Theorem 10.1. The root datum is presented as `C.rootDatumOf R`
-(`X = Hom(Y, ℤ)`). The bar-consistency hypothesis `hD`, used by the twistor
-reduction, is the additional nondegeneracy assumption (10.2) in [BE2].
+Theorem 10.1. The root datum is presented as `C.rootDatumOf R` (`X = Hom(Y, ℤ)`). The
+bar-consistency hypothesis (10.2) of [BE2] is not needed.
 
 ## Main definitions
 
@@ -1116,50 +1116,50 @@ theorem positiveFormNondegenerate_of_ratFunc
     (fun _ hn ↦ LusztigF.pow_ne_one_of_transcendental hw hn)
     (QuantumGroup.Modified.form_nondegenerate_of_transcendental hQ hw)
 
-variable [Finite I] (hD : (C.rootDatumOf R).toSuperCartanDatum.BarConsistent)
+variable [Finite I]
 
-include hD in
+omit [DecidableEq I] [DecidableEq (Y →+ ℤ)] [Finite I] in
+/-- A weight of `C.rootDatumOf R` pairing positively with every simple coroot. -/
+theorem exists_pos_of_linearIndependent_coroot [Module.Free ℤ Y] [Module.Finite ℤ Y]
+    (hcoroot : LinearIndependent ℤ R.coroot) :
+    ∃ ξ : Y →+ ℤ, ∀ i, 0 < (C.rootDatumOf R).h i ξ := by
+  obtain ⟨Λ, hΛ⟩ := exists_dominant_ge_of_linearIndependent_coroot R hcoroot 1
+  refine ⟨Λ.1, fun i ↦ ?_⟩
+  have h : (0 : ℤ) < Λ.1 (R.coroot i) := by have := hΛ i; push_cast at this; omega
+  simpa using h
+
 /-- **Nondegeneracy of the `ρ`-adjoint form on `U̇`.** This is the nondegeneracy assertion of
 [BE2] Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.positiveModifiedForm`
 on the modified covering algebra of `C.rootDatumOf R` over `ℚ(q)[π]/(π² - 1)`: its left radical is
 trivial. The setting is that of [BE2] §1: finite `I`, the coweight lattice `Y` free of finite rank,
 simple roots `hα` and simple coroots `hcoroot` linearly independent. The root datum is presented
-as `C.rootDatumOf R` (weights `X = Hom(Y, ℤ)`). The hypothesis `hD` is the bar-consistency
-assumption (10.2) of [BE2], used here by the twistor reduction. The `π = 1`
-input is Lusztig's [Lus] 26.3.1 over `ℚ(v)`, LieLean's `Modified.eq_zero_of_forall_form_eq_zero`,
-whose dominance hypothesis is `exists_dominant_ge_of_linearIndependent_coroot`; inside the proof it
-is transferred to `L = \overline{ℚ(q)}` at `v = q⁻¹` and `v = (t q)⁻¹` (`t² = -1`), both
-transcendental over `ℚ`. -/
+as `C.rootDatumOf R` (weights `X = Hom(Y, ℤ)`). The bar-consistency assumption (10.2) of [BE2]
+is not needed. The `π = 1` input is Lusztig's [Lus] 26.3.1 over `ℚ(v)`, LieLean's
+`Modified.eq_zero_of_forall_form_eq_zero`, whose dominance hypothesis is
+`exists_dominant_ge_of_linearIndependent_coroot`; inside the proof it is transferred to
+`L = \overline{ℚ(q)}` at `v = q⁻¹`, transcendental over `ℚ`. The `π = -1` half is
+`UDot.SignRadical.negativeIdempotent_smul_eq_zero`. -/
 theorem positiveModifiedForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
     ∀ x, (∀ y, GenericTensor.positiveModifiedForm (C.rootDatumOf R) x y = 0) → x = 0 := by
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
-  refine positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R) hD hα
+  exact positiveModifiedForm_leftRadical_trivial_algebraicClosure (C.rootDatumOf R)
+    (exists_pos_of_linearIndependent_coroot R hcoroot)
     (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
-    fun t ht ↦ positiveFormNondegenerate_of_ratFunc R hQ _
-      (QuantumGroup.transcendental_inv_mul_X (t := t) ?_)
-  rw [← Units.val_pow_eq_pow_val, ht, Units.val_neg, Units.val_one]
 
-include hD in
 /-- **Nondegeneracy of the sesquilinear form on `U̇`.** The nondegeneracy assertion of [BE2]
 Theorem 10.1 (Brundan–Ellis, arXiv:1701.04133v2) for `GenericTensor.sesquilinearForm`, under the
-hypotheses of `positiveModifiedForm_nondegenerate`, including the bar-consistency assumption
-(10.2) of [BE2] and the root datum presentation `C.rootDatumOf R`. -/
+hypotheses of `positiveModifiedForm_nondegenerate` and the root datum presentation
+`C.rootDatumOf R`. -/
 theorem sesquilinearForm_nondegenerate [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (hα : LinearIndependent ℤ (C.rootDatumOf R).α) (hcoroot : LinearIndependent ℤ R.coroot) :
     ∀ x, (∀ y, GenericTensor.sesquilinearForm (C.rootDatumOf R) x y = 0) → x = 0 := by
   have hQ := QuantumGroup.Modified.eq_zero_of_forall_form_eq_zero (R := R) hα
     (exists_dominant_ge_of_linearIndependent_coroot R hcoroot)
-  obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))
-  have hz0 : z ≠ 0 := by
-    rintro rfl
-    simp at hz
-  have ht : Units.mk0 z hz0 ^ 2 = -1 := Units.ext (by simp [sq, ← hz])
-  exact sesquilinearForm_leftRadical_trivial (C.rootDatumOf R) hD hα _ ht
+  exact sesquilinearForm_leftRadical_trivial (C.rootDatumOf R)
+    (exists_pos_of_linearIndependent_coroot R hcoroot) _
     (positiveFormNondegenerate_of_ratFunc R hQ _ QuantumGroup.transcendental_inv_X)
-    (positiveFormNondegenerate_of_ratFunc R hQ _
-      (QuantumGroup.transcendental_inv_mul_X (t := z) (by rw [sq, ← hz])))
 
 end Generic
 

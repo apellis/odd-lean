@@ -168,16 +168,15 @@ theorem sesquilinearForm_modifiedEquiv (x y : modified D Coefficients.q pi) :
 
 omit [DecidableEq (coweight L →+ ℤ)] in
 /-- Finite-colour, finite-free-lattice left-radical theorem on the original
-weight lattice. Root and coroot independence and bar consistency are retained;
-this intermediate does not assert nondegeneracy for arbitrary ambient lattices. -/
+weight lattice. Root and coroot independence are retained; bar consistency is not
+needed. This intermediate does not assert nondegeneracy for arbitrary ambient lattices. -/
 theorem sesquilinearForm_nondegenerate [Finite I]
-    (hD : D.toSuperCartanDatum.BarConsistent)
     (hα : LinearIndependent ℤ D.α) (hh : LinearIndependent ℤ D.cd.coroot)
     (x : modified D Coefficients.q pi)
     (hx : ∀ y, sesquilinearForm D x y = 0) : x = 0 := by
   classical
   have he : modifiedEquiv D Coefficients.q pi x = 0 := by
-    apply UDot.sesquilinearForm_nondegenerate (realization D) hD
+    apply UDot.sesquilinearForm_nondegenerate (realization D)
       (root_independent D hα) (coroot_independent D hh)
     intro y
     obtain ⟨y, rfl⟩ := (modifiedEquiv D Coefficients.q pi).surjective y
@@ -200,11 +199,11 @@ theorem sourceWindow_nondegenerate {I H : Type*} [AddCommGroup H] [Module ℂ H]
     (h : I → H) (C : SuperCartanDatum I) (α : I → Module.Dual ℂ H)
     (ha : ∀ i j, α j (h i) = (C.a i j : ℂ))
     (hh : LinearIndependent ℂ h) (hα : LinearIndependent ℂ α)
-    (hC : C.BarConsistent) (J : Finset I) (W : Finset (weightLattice h))
+    (J : Finset I) (W : Finset (weightLattice h))
     (x : modified (windowDatum h C α ha hh J W) Coefficients.q pi)
     (hx : ∀ y, sesquilinearForm (windowDatum h C α ha hh J W) x y = 0) : x = 0 := by
   apply sesquilinearForm_nondegenerate (windowDatum h C α ha hh J W)
-    (fun i ↦ hC i) (window_root_linearIndependent h C α ha hh J W hα)
+    (window_root_linearIndependent h C α ha hh J W hα)
     (window_coroot_linearIndependent h C α ha hh J W) x hx
 
 end OddMath.CoveringQuantum.UDot.FiniteWeightForm
