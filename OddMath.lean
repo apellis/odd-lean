@@ -19,6 +19,7 @@ import OddMath.QuiverHecke.SplitComplexOpposite
 import OddMath.QuiverHecke.SerreClass
 import OddMath.QuiverHecke.SerreClassUp
 import OddMath.QuiverHecke.CornerProjectors
+import OddMath.SKM.BubbleTruncation
 import OddMath.SKM.KarSummandProducts
 import OddMath.SKM.SummandRetracts
 import OddMath.QuiverHecke.SerreDividedPowers
@@ -348,6 +349,7 @@ import OddMath.Diagrams.OddNilHecke.DifferentialAnsatz
 import OddMath.Diagrams.OddNilHecke.DifferentialComparison
 import OddMath.Diagrams.OddNilHecke.DifferentialLongest
 import OddMath.Diagrams.OddNilHecke.DifferentialLongestComparison
+import OddMath.Diagrams.OddNilHecke.ExteriorDeformation
 import OddMath.Diagrams.OddNilHecke.Relations
 import OddMath.Diagrams.OddNilHecke
 import OddMath.DividedDifferences
