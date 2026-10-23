@@ -90,10 +90,13 @@ theorem expansion_injective [Finite I] (cs : CScalars Sc) (μ : X) {a b : List (
     intro j
     simp only [KB, Basis.reindex_apply, Equiv.symm_symm, Diagram.integralNondegBasis_apply]
     exact Diagram.IntegralSpanning.twoB_mem μ a b _
+  have hfib : ∀ d, {j // deg j = d} ≃
+      {x : Diagram.SpanIdx a b // Diagram.spanDeg C ((WD).ellOf μ) x = d} := fun d =>
+    (monoIdxEquiv F).subtypeEquiv fun _ => Iff.rfl
   have hfin : ∀ d, Finite {j // deg j = d} := by
     intro d
     have := (Diagram.prop_3_12 WD (s := a) (t := b) μ d).1
-    exact Finite.of_equiv _ ((monoIdxEquiv F).subtypeEquiv fun _ => Iff.rfl).symm
+    exact Finite.of_equiv _ (hfib d).symm
   have hf : Function.Surjective f := by
     intro y
     obtain ⟨g, hg⟩ := evenFunctor_surjective D C hc k Sc hD hS μ a b y
