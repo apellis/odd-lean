@@ -19,7 +19,7 @@ noncomputable section
 namespace OddMath.CoveringQuantum.UDot.GenericVerma.NativeFamily
 open Coefficients TensorProduct NativeCyclic GenericTensor NormalizedJointLimit
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable (D : RootDatum I X)
 
 local instance : AddCommGroup
     (D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :=
@@ -29,7 +29,6 @@ local instance (Λ Μ : X) : AddCommGroup
     (IntegrableQuotient D Λ ⊗[Coefficients.Ring] IntegrableQuotient D Μ) :=
   TensorProduct.addCommGroup
 
-include hD in
 /-- One eventual bound for the whole finite covering-ring span and both coproducts.
 Positivity is explicit; the sequence is not assumed cofinal for arbitrary data. -/
 theorem finite_span_cyclic_fixed_difference
@@ -41,7 +40,7 @@ theorem finite_span_cyclic_fixed_difference
         (Submodule.span Coefficients.Ring
           (S : Set (D.serreF Coefficients.q pi ⊗[Coefficients.Ring]
             D.serreF Coefficients.q pi))) := by
-  obtain ⟨B, hB, hinj⟩ := finite_span_cyclic_injective_bound D hD S
+  obtain ⟨B, hB, hinj⟩ := finite_span_cyclic_injective_bound D S
   have he := (cofinalPair_tendsto D ζ ξ hξ).eventually
     (jointFilter_eventually_lower D ζ B)
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp he
@@ -77,7 +76,6 @@ theorem cyclic_coordinate_fixed_difference (ζ ξ : X) (n : ℕ) (s : Bool)
   simpa only [add_sub_cancel_right] using
     cyclic_coordinate_eq_native_vacuum D (ζ + n • ξ) (n • ξ) s x
 
-include hD
 
 /-- Kernel zero for each native coproduct along actual dominant members of the
 fixed-difference families. The input is an arbitrary original modified element. -/
@@ -90,7 +88,7 @@ theorem cofinal_kernel_zero (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool)
   have hc : triangularCoordinates D x = 0 := by
     ext ζ
     let z := triangularCoordinates D x ζ
-    obtain ⟨N, hN⟩ := finite_span_cyclic_fixed_difference D hD {z} ζ ξ hξ
+    obtain ⟨N, hN⟩ := finite_span_cyclic_fixed_difference D {z} ζ ξ hξ
     obtain ⟨hΛ, hΜ, hinj⟩ := hN N le_rfl
     have hzero : cyclic D (ζ + N • ξ) (N • ξ) s z = 0 := by
       rw [cyclic_coordinate_fixed_difference, hx ζ N hΛ hΜ]
@@ -117,7 +115,7 @@ theorem cofinal_eq_iff (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool)
     rfl
   · intro h
     apply sub_eq_zero.mp
-    apply cofinal_kernel_zero D hD ξ hξ s (x - y)
+    apply cofinal_kernel_zero D ξ hξ s (x - y)
     intro ζ n hΛ hΜ
     change tensorRepresentation D (ζ + n • ξ) (n • ξ) s
       ((x : CoveringUDot Coefficients.Ring D Coefficients.q pi) -
@@ -138,14 +136,14 @@ theorem dominant_eq_iff (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool)
   · rintro rfl Λ Μ hΛ hΜ
     rfl
   · intro h
-    exact (cofinal_eq_iff D hD ξ hξ s x y).mpr (fun ζ n => h (ζ + n • ξ) (n • ξ))
+    exact (cofinal_eq_iff D ξ hξ s x y).mpr (fun ζ n => h (ζ + n • ξ) (n • ξ))
 
 /-- The equivalent all-dominant-pairs kernel-zero criterion. -/
 theorem dominant_kernel_iff (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool)
     (x : modified D Coefficients.q pi) :
     x = 0 ↔ ∀ Λ Μ : X, (∀ i, 0 ≤ D.h i Λ) → (∀ i, 0 ≤ D.h i Μ) →
       tensorModifiedRepresentation D Λ Μ s x = 0 := by
-  simpa only [map_zero] using dominant_eq_iff D hD ξ hξ s x 0
+  simpa only [map_zero] using dominant_eq_iff D ξ hξ s x 0
 
 /-- The dependent family of genuine endomorphisms is an injective map. -/
 theorem dominant_jointly_injective (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool) :
@@ -154,7 +152,7 @@ theorem dominant_jointly_injective (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Boo
       fun Μ : {Μ : X // ∀ i, 0 ≤ D.h i Μ} =>
         tensorModifiedRepresentation D Λ.val Μ.val s x) := by
   intro x y h
-  apply (dominant_eq_iff D hD ξ hξ s x y).mpr
+  apply (dominant_eq_iff D ξ hξ s x y).mpr
   intro Λ Μ hΛ hΜ
   exact congrFun (congrFun h ⟨Λ, hΛ⟩) ⟨Μ, hΜ⟩
 
@@ -167,7 +165,7 @@ theorem dominant_point_separating (ξ : X) (hξ : ∀ i, 0 < D.h i ξ) (s : Bool
   classical
   by_contra h
   apply hxy
-  apply (dominant_eq_iff D hD ξ hξ s x y).mpr
+  apply (dominant_eq_iff D ξ hξ s x y).mpr
   simpa only [not_exists, not_and, not_not] using h
 
 end OddMath.CoveringQuantum.UDot.GenericVerma.NativeFamily

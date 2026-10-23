@@ -1,16 +1,16 @@
 import OddMath.CoveringQuantum.CharacterBaseChange
 import OddMath.CoveringQuantum.Negative
+import LieLean.Algebra.QuantumGroup.PBW.KostantDimension
 
 /-!
-# The bar-consistent character comparison
+# The character comparison
 
-This proves the finite bar-consistent case of Hill–Wang, arXiv:1202.2769v2,
-Lemma 6.11 (`lem:sameCh`). The ordered twistor compares the negative specialization
-at `q` with the ordinary specialization at `t * q`, where `t² = -1`.
-Quantum Gabber–Kac removes the parameter shift, and scalar extension removes the
-square-root hypothesis. The result is an intermediate input to Hill–Wang
-Proposition 6.12 and BE2 Theorem 11.3: bar-consistency is an extra hypothesis for
-that downstream theorem, whose general case is not asserted here.
+This proves Hill–Wang, arXiv:1202.2769v2, Lemma 6.11, for every super Cartan datum with finitely
+many simple roots (`SuperCartanDatum.finrank_serreWeightSpace_one_eq_neg_one`): both
+specializations have the weight dimensions `K(ν)` of the Kac–Moody algebra of the Cartan matrix.
+For bar-consistent data the ordered twistor also compares the negative specialization at `q` with
+the ordinary specialization at `t * q`, where `t² = -1`
+(`SuperCartanDatum.finrank_serreWeightSpace_twist`).
 -/
 
 noncomputable section
@@ -93,39 +93,62 @@ end SuperCartanDatum
 
 namespace SuperCartanDatum
 
-variable {I k : Type*} [DecidableEq I] [Finite I] [Field k] [CharZero k]
-  (C : SuperCartanDatum I) (q : kˣ)
+open FreeAlgebra Matrix.Realization.SuperEnveloping
 
-/-- Hill–Wang, arXiv:1202.2769v2, Lemma 6.11, for finite bar-consistent data:
-the two specializations have equal dimensions in every weight. This intermediate
-statement retains bar-consistency, an extra hypothesis relative to BE2 Theorem 11.3;
-the general case without it is tracked in apellis/odd-lean#247. -/
-theorem finrank_serreWeightSpace_one_eq_neg_one (hC : C.BarConsistent)
-    (hq : Transcendental ℚ (q : k)) (ν : I →₀ ℕ) :
+variable {I k : Type*} [DecidableEq I] [Finite I] [Field k] [CharZero k]
+  (C : SuperCartanDatum I) {q : kˣ}
+
+/-- At `π = -1`, the kernel of `'f → f` on the words of weight `ν` is the span of the products
+`a sᵢⱼ b` of weight `ν`, so the weight space of `f` and this span have complementary
+dimensions. -/
+theorem finrank_serreWeightSpace_neg_one (hq : Transcendental ℚ (q : k)) (ν : I →₀ ℕ) :
+    finrank k (C.serreWeightSpace q (-1) ν) +
+      finrank k (productSpan (C.serreFamily q) (superSerreWeight C.a) ν) =
+        Fintype.card (LusztigF.Words ν) := by
+  set V := LusztigF.weightSpace k ν
+  set Z := productSpan (C.serreFamily q) (superSerreWeight C.a) ν
+  set f := (C.toSerreF q (-1)).toLinearMap.domRestrict V
+  have hZV : Z ≤ V := productSpan_le_wordSpan (fun ij ↦ C.serreElt_mem_wordSpan q (-1) ij) ν
+  have hrange : LinearMap.range f = C.serreWeightSpace q (-1) ν := by
+    rw [LinearMap.range_domRestrict]
+    rfl
+  have hker : LinearMap.ker f = Z.comap V.subtype := by
+    ext y
+    simp only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply]
+    refine ⟨fun h ↦ ?_, fun h ↦ ?_⟩
+    · refine (C.mem_productSpan_of_mem_radical hq ν).1 y ?_ y.2
+      exact C.serreIdeal_le_radical q (-1) (by norm_num) ((C.mem_serreIdeal q (-1) y).2 h)
+    · exact (C.mem_serreIdeal q (-1) y).1 (C.serreFamily_mem_serreIdeal q h)
+  have hZ : finrank k (Z.comap V.subtype) = finrank k Z := by
+    rw [← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, inf_eq_right.2 hZV]
+  have hrn := LinearMap.finrank_range_add_finrank_ker f
+  rw [hrange, hker, hZ, LusztigF.finrank_weightSpace] at hrn
+  exact hrn
+
+/-- **Hill–Wang, arXiv:1202.2769v2, Lemma 6.11**, for every super Cartan datum with finitely
+many simple roots: the two specializations `π = 1` and `π = -1` have equal dimensions in every
+weight. Both equal `K(ν)`, Kostant's partition function of the Kac–Moody algebra of the Cartan
+matrix: at `π = 1` by quantum Gabber–Kac, at `π = -1` by the super Serre count
+(`SuperCartanDatum.finrank_productSpan_neg_one`). The argument is ours. -/
+theorem finrank_serreWeightSpace_one_eq_neg_one (hq : Transcendental ℚ (q : k)) (ν : I →₀ ℕ) :
     finrank k (C.serreWeightSpace q 1 ν) = finrank k (C.serreWeightSpace q (-1) ν) := by
-  let K := AlgebraicClosure k
-  let φ := algebraMap k K
-  let qK := Units.map φ.toMonoidHom q
-  obtain ⟨a, ha⟩ := IsAlgClosed.exists_pow_nat_eq (-1 : K) (show 0 < 2 by decide)
-  have ha0 : a ≠ 0 := by intro h; simp [h] at ha
-  let t : Kˣ := Units.mk0 a ha0
-  have ht : t ^ 2 = -1 := by apply Units.ext; exact ha
-  have hqK : Transcendental ℚ (qK : K) :=
-    (transcendental_algebraMap_iff φ.injective).mpr hq
-  let := Fintype.ofFinite I
-  let o : LinearOrder I := LinearOrder.lift' (Fintype.equivFin I) (Fintype.equivFin I).injective
-  have htq := transcendental_twisted_parameter qK t ht hqK
-  calc
-    finrank k (C.serreWeightSpace q 1 ν) =
-        finrank K (C.serreWeightSpace (t * qK) 1 ν) :=
-      C.finrank_serreWeightSpace_one_eq q hq (t * qK) htq ν
-    _ = finrank K (C.serreWeightSpace qK (-1) ν) :=
-      C.finrank_serreWeightSpace_twist qK t hC ht hqK ν
-    _ = finrank k (C.serreWeightSpace q (-1) ν) := by
-      have h := C.finrank_serreWeightSpace_baseChange (K := K) q (-1) ν
-      have hπ : algebraMap k K (-1) = -1 := by simp
-      rw [hπ] at h
-      exact h.symm
+  have := Fintype.ofFinite I
+  have h₁ := C.finrank_serreWeightSpace_one q hq ν
+  have h₂ := C.finrank_serreWeightSpace_neg_one hq ν
+  have hA : C.lusztigDatum.cartanMatrix = C.a := by
+    ext i j; exact lusztigDatum_cartanMatrix C i j
+  let P := Matrix.Realization.std C.lusztigDatum.cartanMatrix ℚ
+  have h₃ := LusztigF.kostantPartition_add_finrank_serreSpan C.lusztigDatum P ν
+  have key : ∀ (A : Matrix I I ℤ) (_ : A = C.a) {H : Type _} [AddCommGroup H] [Module ℚ H]
+      [FiniteDimensional ℚ H] (P : Matrix.Realization A ℚ H),
+      Matrix.Realization.KacMoodyAlgebra.kostantPartition P (P.rootOf (natVec ν)) +
+        finrank k (productSpan (C.serreFamily q) (superSerreWeight C.a) ν) =
+          Fintype.card (LusztigF.Words ν) := by
+    rintro A rfl H _ _ _ P
+    exact C.finrank_productSpan_neg_one hq P ν
+  have h₄ := key _ hA P
+  change Matrix.Realization.KacMoodyAlgebra.kostantPartition P (P.rootOf fun i ↦ (ν i : ℤ)) + _ = _ at h₄
+  omega
 
 end SuperCartanDatum
 end OddMath.CoveringQuantum

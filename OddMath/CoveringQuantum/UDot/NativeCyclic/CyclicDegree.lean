@@ -48,16 +48,14 @@ theorem degreeFree_form (χ : Bichar Coefficients.Ring I) (nm : I → Coefficien
         simp only [degreeFree_word]
         split_ifs <;> simp [hz]
 
-variable (hD : D.toSuperCartanDatum.BarConsistent)
 
 omit [DecidableEq I] in
-include hD in
 /-- Formal-degree projection preserves the actual Serre ideal. -/
 theorem degreeFree_mem_serreIdeal (ν : I →₀ ℕ) {x : PreF Coefficients.Ring I}
     (hx : x ∈ D.serreIdeal Coefficients.q pi) :
     degreeFree ν x ∈ D.serreIdeal Coefficients.q pi := by
   classical
-  rw [serreIdeal_eq_radical D.toSuperCartanDatum hD] at hx ⊢
+  rw [serreIdeal_eq_radical D.toSuperCartanDatum] at hx ⊢
   rw [mem_radical_iff] at hx ⊢
   intro y
   rw [degreeFree_form]
@@ -71,13 +69,13 @@ def degree (ν : I →₀ ℕ) : Module.End Coefficients.Ring (D.serreF Coeffici
     intro x hx
     change D.toSerreF Coefficients.q pi (degreeFree ν x) = 0
     apply (D.mem_serreIdeal Coefficients.q pi _).mp
-    apply degreeFree_mem_serreIdeal D hD ν
+    apply degreeFree_mem_serreIdeal D ν
     exact (D.mem_serreIdeal Coefficients.q pi x).mpr hx)).comp
     (p.quotKerEquivOfSurjective (D.toSerreF_surjective Coefficients.q pi)).symm.toLinearMap
 
 omit [DecidableEq I] in
 @[simp] theorem degree_mk (ν : I →₀ ℕ) (x : PreF Coefficients.Ring I) :
-    degree D hD ν (D.toSerreF Coefficients.q pi x) =
+    degree D ν (D.toSerreF Coefficients.q pi x) =
       D.toSerreF Coefficients.q pi (degreeFree ν x) := by
   let p := (D.toSerreF Coefficients.q pi).toLinearMap
   simp only [degree, LinearMap.comp_apply, LinearEquiv.coe_coe]
@@ -86,7 +84,7 @@ omit [DecidableEq I] in
     (p.quotKerEquivOfSurjective_symm_apply (D.toSerreF_surjective Coefficients.q pi) x)
 
 @[simp] theorem degree_word (ν : I →₀ ℕ) (w : List I) :
-    degree D hD ν (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) =
+    degree D ν (D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w)) =
       if wordWeight w = ν then
         D.toSerreF Coefficients.q pi (monomial Coefficients.Ring w) else 0 := by
   rw [degree_mk, degreeFree_word]
@@ -95,10 +93,10 @@ omit [DecidableEq I] in
 /-- Formal bidegree projection on actual Serre tensors. -/
 def bidegree (α β : I →₀ ℕ) : Module.End Coefficients.Ring
     (D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :=
-  TensorProduct.map (degree D hD α) (degree D hD β)
+  TensorProduct.map (degree D α) (degree D β)
 
 @[simp] theorem bidegree_wordTensor (α β : I →₀ ℕ) (a b : List I) :
-    bidegree D hD α β (wordTensor D a b) =
+    bidegree D α β (wordTensor D a b) =
       if wordWeight a = α ∧ wordWeight b = β then wordTensor D a b else 0 := by
   simp only [bidegree, wordTensor, TensorProduct.map_tmul, degree_word]
   split_ifs <;> simp_all

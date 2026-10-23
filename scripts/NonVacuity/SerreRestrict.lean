@@ -3,7 +3,7 @@ import OddMath
 /-! # Serre ideal equals the radical for an infinite index set
 
 The super Cartan datum on `ℕ` with `aᵢⱼ = 2δᵢⱼ`, `dᵢ = 1` and every simple root odd (an infinite
-product of copies of `𝔬𝔰𝔭(1|2)`); it is bar-consistent. The generic covering form radical is the
+product of copies of `𝔬𝔰𝔭(1|2)`). The generic covering form radical is the
 Serre ideal (`Coefficients.serreIdeal_eq_radical`, no finiteness of the index set), so the form
 on the Serre presentation is nondegenerate.
 -/
@@ -31,9 +31,9 @@ theorem barConsistent : cartan.BarConsistent := fun _ ↦ Nat.cast_one
 example : cartan.serreIdeal Coefficients.q Coefficients.pi =
     PreF.radical (cartan.chi Coefficients.q Coefficients.pi)
       (cartan.norm Coefficients.q Coefficients.pi) :=
-  Coefficients.serreIdeal_eq_radical cartan barConsistent
+  Coefficients.serreIdeal_eq_radical cartan
 
 example : (cartan.serreForm Coefficients.q Coefficients.pi Coefficients.pi_sq).Nondegenerate :=
-  Coefficients.serreForm_nondegenerate cartan barConsistent
+  Coefficients.serreForm_nondegenerate cartan
 
 end NonVacuity.SerreRestrict

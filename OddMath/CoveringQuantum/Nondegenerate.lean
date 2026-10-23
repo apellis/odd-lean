@@ -1,11 +1,12 @@
 import OddMath.CoveringQuantum.Coefficients.HalfSplitting
 import OddMath.CoveringQuantum.Negative
+import OddMath.CoveringQuantum.PreF.BaseChange
 import OddMath.CoveringQuantum.SerreRestrict
 
 /-!
 # Nondegeneracy over the generic covering coefficient ring
 
-For bar-consistent Cartan data, the free-form radical equals the Serre
+For every super Cartan datum, the free-form radical equals the Serre
 ideal over the actual polynomial quotient `ℚ(q)[π]/(π²-1)`. The form on the
 Serre presentation is therefore nondegenerate. For finite index sets the proof
 combines the two field specializations with the central-idempotent detection
@@ -44,9 +45,6 @@ private theorem specialize_q_transcendental (ε : RatFunc ℚ) (hε : ε ^ 2 = 1
     @Transcendental ℚ (RatFunc ℚ) _ _ a RatFunc.X) hi).mp
       (RatFunc.transcendental_X (K := ℚ))
 
-variable (hC : C.BarConsistent)
-
-include hC in
 private theorem serreIdeal_eq_radical_of_finite [Finite I] :
     C.serreIdeal q pi = PreF.radical (C.chi q pi) (C.norm q pi) := by
   apply le_antisymm (C.serreIdeal_le_radical q pi pi_sq)
@@ -55,21 +53,19 @@ private theorem serreIdeal_eq_radical_of_finite [Finite I] :
   constructor
   · rw [C.serreIdeal_one_eq_radical _ (specialize_q_transcendental 1 (one_pow 2))]
     exact specialize_mem_radical C 1 (one_pow 2) hx
-  · rw [C.serreIdeal_neg_one_eq_radical_of_transcendental _ hC
+  · rw [C.serreIdeal_neg_one_eq_radical_of_transcendental
       (specialize_q_transcendental (-1) (by norm_num))]
     exact specialize_mem_radical C (-1) (by norm_num) hx
 
-include hC in
 /-- The generic covering form radical is exactly the two-sided Serre ideal. -/
 theorem serreIdeal_eq_radical :
     C.serreIdeal q pi = PreF.radical (C.chi q pi) (C.norm q pi) :=
   C.serreIdeal_eq_radical_of_finset q pi pi_sq fun _ ↦
-    serreIdeal_eq_radical_of_finite _ (hC.comap _ _)
+    serreIdeal_eq_radical_of_finite _
 
-include hC in
 /-- Nondegeneracy of the Serre-presented half covering quantum group over
-`ℚ(q)[π]/(π²-1)`, for bar-consistent Cartan data. -/
+`ℚ(q)[π]/(π²-1)`. -/
 theorem serreForm_nondegenerate : (C.serreForm q pi pi_sq).Nondegenerate :=
-  (C.serreForm_nondegenerate_iff_ideal_eq q pi pi_sq).mpr (serreIdeal_eq_radical C hC)
+  (C.serreForm_nondegenerate_iff_ideal_eq q pi pi_sq).mpr (serreIdeal_eq_radical C)
 
 end OddMath.CoveringQuantum.Coefficients
