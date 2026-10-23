@@ -348,6 +348,7 @@ import OddMath.Diagrams.OddNilHecke.DifferentialAnsatz
 import OddMath.Diagrams.OddNilHecke.DifferentialComparison
 import OddMath.Diagrams.OddNilHecke.DifferentialLongest
 import OddMath.Diagrams.OddNilHecke.DifferentialLongestComparison
+import OddMath.Diagrams.OddNilHecke.ExteriorDeformation
 import OddMath.Diagrams.OddNilHecke.Relations
 import OddMath.Diagrams.OddNilHecke
 import OddMath.DividedDifferences
