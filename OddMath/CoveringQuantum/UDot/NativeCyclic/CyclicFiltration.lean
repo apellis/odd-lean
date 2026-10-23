@@ -39,7 +39,6 @@ theorem truncation_fg [Finite I] (m n : ℕ) : (truncation D m n).FG := by
 
 section Quotient
 variable [DecidableEq I] [DecidableEq X]
-variable (hD : D.toSuperCartanDatum.BarConsistent)
 
 /-- Every accepted correction belongs to the quotient image of the finite rectangle. -/
 theorem lowerBidegree_le_map_truncation (Λ Μ : X) {a b m n : ℕ}
@@ -71,12 +70,11 @@ theorem cyclic_truncation (Λ Μ : X) (s : Bool) (m n : ℕ) :
 
 variable [Finite I]
 
-include hD in
 /-- One threshold detects the entire finite rectangle, including every native correction. -/
 theorem truncation_quotient_injective_bound (m n : ℕ) :
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
       Set.InjOn (toIntegrableTensor D Λ Μ) (truncation D m n) :=
-  fg_toIntegrableTensor_injective_bound D hD _ (truncation_fg D m n)
+  fg_toIntegrableTensor_injective_bound D _ (truncation_fg D m n)
 
 end Quotient
 

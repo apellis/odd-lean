@@ -50,7 +50,7 @@ def scalarUnit (Λ Μ : X) (s : Bool) (α β : I →₀ ℕ) : Coefficients.Ring
   rw [scalarUnit, IsUnit.unit_spec]
   exact leadingScalar_eq_of_wordWeight_eq D Λ Μ s (degreeWord_weight a) (degreeWord_weight b)
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+variable [Finite I]
 
 /-- Only grades represented in the finite square are needed. -/
 def grades (N : ℕ) : Finset (I →₀ ℕ) := by
@@ -66,12 +66,12 @@ theorem wordWeight_mem_grades (N : ℕ) (w : List I) (hw : w.length ≤ N) :
 def diagonal (N : ℕ) (c : (I →₀ ℕ) → (I →₀ ℕ) → Coefficients.Ring) :
     Module.End Coefficients.Ring
       (D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi) :=
-  ∑ α ∈ grades (I := I) N, ∑ β ∈ grades (I := I) N, c α β • bidegree D hD α β
+  ∑ α ∈ grades (I := I) N, ∑ β ∈ grades (I := I) N, c α β • bidegree D α β
 
 /-- The finite diagonal acts with exactly the specified scalar on every word in the square. -/
 theorem diagonal_word (N : ℕ) (c : (I →₀ ℕ) → (I →₀ ℕ) → Coefficients.Ring)
     (a b : List I) (ha : a.length ≤ N) (hb : b.length ≤ N) :
-    diagonal D hD N c (wordTensor D a b) =
+    diagonal D N c (wordTensor D a b) =
       c (wordWeight a) (wordWeight b) • wordTensor D a b := by
   classical
   simp only [diagonal, LinearMap.sum_apply, LinearMap.smul_apply, bidegree_wordTensor]
@@ -82,11 +82,11 @@ theorem diagonal_word (N : ℕ) (c : (I →₀ ℕ) → (I →₀ ℕ) → Coeff
 theorem diagonal_mem_truncation (N m n : ℕ) (hm : m ≤ N) (hn : n ≤ N)
     (c : (I →₀ ℕ) → (I →₀ ℕ) → Coefficients.Ring)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
-    (hz : z ∈ truncation D m n) : diagonal D hD N c z ∈ truncation D m n := by
+    (hz : z ∈ truncation D m n) : diagonal D N c z ∈ truncation D m n := by
   induction hz using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨a, b, ha, hb, rfl⟩ := hz
-    rw [diagonal_word D hD N c a b (ha.trans hm) (hb.trans hn)]
+    rw [diagonal_word D N c a b (ha.trans hm) (hb.trans hn)]
     exact Submodule.smul_mem _ _ (wordTensor_mem_truncation D a b m n ha hb)
   | zero => simp
   | add x y hx hy ihx ihy => simpa only [map_add] using Submodule.add_mem _ ihx ihy
@@ -96,13 +96,13 @@ theorem diagonal_mem_truncation (N m n : ℕ) (hm : m ≤ N) (hn : n ≤ N)
 theorem diagonal_inverse (N : ℕ) (u : (I →₀ ℕ) → (I →₀ ℕ) → Coefficients.Ringˣ)
     {z : D.serreF Coefficients.q pi ⊗[Coefficients.Ring] D.serreF Coefficients.q pi}
     (hz : z ∈ truncation D N N) :
-    diagonal D hD N (fun α β => ↑(u α β)⁻¹)
-      (diagonal D hD N (fun α β => ↑(u α β)) z) = z := by
+    diagonal D N (fun α β => ↑(u α β)⁻¹)
+      (diagonal D N (fun α β => ↑(u α β)) z) = z := by
   induction hz using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨a, b, ha, hb, rfl⟩ := hz
-    rw [diagonal_word D hD N _ a b ha hb, map_smul,
-      diagonal_word D hD N _ a b ha hb, smul_smul]
+    rw [diagonal_word D N _ a b ha hb, map_smul,
+      diagonal_word D N _ a b ha hb, smul_smul]
     simp
   | zero => simp
   | add x y hx hy ihx ihy => simp only [map_add, ihx, ihy]

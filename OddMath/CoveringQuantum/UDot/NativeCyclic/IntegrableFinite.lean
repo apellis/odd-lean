@@ -17,7 +17,7 @@ open scoped Topology
 namespace OddMath.CoveringQuantum.UDot.GenericVerma
 open PreF Coefficients
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable (D : RootDatum I X)
 
 local instance halfScalarModule : Module (RatFunc ℚ) (D.serreF Coefficients.q pi) :=
   Module.restrictScalars (RatFunc ℚ) Coefficients.Ring _
@@ -42,12 +42,11 @@ def vermaProbe (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi)) (�
       (D.toSerreF Coefficients.q pi (diagTwist (polarizationSign D Λ) t.1))).restrictScalars
       (RatFunc ℚ) |>.comp (S.subtype.restrictScalars (RatFunc ℚ)))
 
-include hD in
 omit [DecidableEq X] [Finite I] in
 theorem halfProbe_separating (S : Submodule Coefficients.Ring (D.serreF Coefficients.q pi))
     (v : S) (hv : ∀ t, halfProbe D S t v = 0) : v = 0 := by
   apply Subtype.ext
-  apply (Coefficients.serreForm_nondegenerate D.toSuperCartanDatum hD).2
+  apply (Coefficients.serreForm_nondegenerate D.toSuperCartanDatum).2
   intro x
   obtain ⟨w, rfl⟩ := D.toSuperCartanDatum.toSerreF_surjective Coefficients.q pi x
   apply (eq_iff_specialize_eq _ 0).mpr
@@ -69,7 +68,6 @@ theorem vermaProbe_tendsto (S : Submodule Coefficients.Ring (D.serreF Coefficien
   rw [← hy, SuperCartanDatum.serreForm_toSerreF]
   exact hh
 
-include hD
 
 omit [Finite I] in
 /-- A finite covering submodule is eventually faithfully projected into the
@@ -82,7 +80,7 @@ theorem eventually_toIntegrable_injective (S : Submodule Coefficients.Ring
   let : Module.Finite (RatFunc ℚ) S := Module.Finite.trans Coefficients.Ring S
   have hh := FiniteDetection.eventually_separating (K := RatFunc ℚ) (V := S)
     (coordinateFilter D) (halfProbe D S)
-    (vermaProbe D S) (halfProbe_separating D hD S) (vermaProbe_tendsto D S)
+    (vermaProbe D S) (halfProbe_separating D S) (vermaProbe_tendsto D S)
   filter_upwards [hh, eventually_coordinate_lower D 0] with Λ hsep hΛ
   apply (injective_iff_map_eq_zero _).mpr
   intro v hv
@@ -100,7 +98,7 @@ theorem exists_toIntegrable_injective_bound (S : Submodule Coefficients.Ring
       Function.Injective ((toIntegrable D Λ).comp S.subtype) := by
   classical
   let := Fintype.ofFinite I
-  have he := eventually_toIntegrable_injective D hD S
+  have he := eventually_toIntegrable_injective D S
   obtain ⟨b, hb⟩ := Filter.eventually_atTop.mp (Filter.eventually_comap.mp he)
   let B : ℤ := ∑ i : I, |b i|
   refine ⟨B, Finset.sum_nonneg (fun i _ => abs_nonneg (b i)), ?_⟩
@@ -118,7 +116,7 @@ theorem finite_span_toIntegrable_injective_bound
       Set.InjOn (toIntegrable D Λ)
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) := by
   let S := Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))
-  obtain ⟨B, hB, hh⟩ := exists_toIntegrable_injective_bound D hD S
+  obtain ⟨B, hB, hh⟩ := exists_toIntegrable_injective_bound D S
   refine ⟨B, hB, fun Λ hΛ x hx y hy hxy => ?_⟩
   exact congrArg Subtype.val (hh Λ hΛ (a₁ := ⟨x, hx⟩) (a₂ := ⟨y, hy⟩) hxy)
 
@@ -132,7 +130,7 @@ theorem finite_span_toIntegrable_injective_sequence
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) := by
   classical
   let := Fintype.ofFinite I
-  obtain ⟨B, hB, hh⟩ := finite_span_toIntegrable_injective_bound D hD s
+  obtain ⟨B, hB, hh⟩ := finite_span_toIntegrable_injective_bound D s
   let M : ℤ := ∑ i : I, |B - D.h i Λ₀|
   have hM : 0 ≤ M := Finset.sum_nonneg (fun i _ => abs_nonneg _)
   refine ⟨M.toNat, fun n hn => ?_⟩
@@ -155,8 +153,8 @@ theorem finite_spans_toIntegrable_fixed_difference
         (Submodule.span Coefficients.Ring (s : Set (D.serreF Coefficients.q pi))) ∧
       Set.InjOn (toIntegrable D (n • ξ))
         (Submodule.span Coefficients.Ring (t : Set (D.serreF Coefficients.q pi))) := by
-  obtain ⟨N, hN⟩ := finite_span_toIntegrable_injective_sequence D hD s ζ ξ hξ
-  obtain ⟨M, hM⟩ := finite_span_toIntegrable_injective_sequence D hD t 0 ξ hξ
+  obtain ⟨N, hN⟩ := finite_span_toIntegrable_injective_sequence D s ζ ξ hξ
+  obtain ⟨M, hM⟩ := finite_span_toIntegrable_injective_sequence D t 0 ξ hξ
   refine ⟨max N M, fun n hn => ?_⟩
   have h₁ := hN n ((le_max_left _ _).trans hn)
   have h₂ := hM n ((le_max_right _ _).trans hn)

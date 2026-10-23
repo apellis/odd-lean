@@ -223,6 +223,10 @@ import OddMath.CoveringQuantum.PreF.Restrict
 import OddMath.CoveringQuantum.SerreRestrict
 import OddMath.CoveringQuantum.Character
 import OddMath.CoveringQuantum.Negative
+import OddMath.CoveringQuantum.SuperCount.Operator
+import OddMath.CoveringQuantum.SuperCount.SerreSpecialization
+import OddMath.CoveringQuantum.SuperCount.Coefficients
+import OddMath.CoveringQuantum.SuperCount.Count
 import OddMath.CoveringQuantum.Coefficients.HalfSplitting
 import OddMath.CoveringQuantum.Coefficients.FormSplitting
 import OddMath.CoveringQuantum.Nondegenerate

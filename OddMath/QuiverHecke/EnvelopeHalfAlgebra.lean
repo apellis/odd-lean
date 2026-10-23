@@ -31,9 +31,9 @@ The proof follows the paper and Khovanov–Lauda, arXiv:0803.4121v2, §3:
   Proposition 6.8), which is the Serre ideal (`Coefficients.serreIdeal_eq_radical`)
   (`gammaL_injective`).
 
-The last step uses the current proof of nondegeneracy (Theorem 10.1 in the form
-`serreIdeal_eq_radical`), which assumes `I` finite and the datum bar-consistent; these are the
-extra hypotheses of `theorem_11_3`. BE2's `K₀(Ḣ_{q,π})` is `⨁_n K₀(H_n)` via (11.2); here it is
+The last step uses nondegeneracy of the form on `f` (`serreIdeal_eq_radical`, from Hill–Wang's
+Lemma 6.11 for all data, `SuperCartanDatum.finrank_serreWeightSpace_one_eq_neg_one`), so
+`theorem_11_3` carries no hypothesis beyond the paper's. BE2's `K₀(Ḣ_{q,π})` is `⨁_n K₀(H_n)` via (11.2); here it is
 `K₀` of `Ḣ_{q,π}` itself (`OddMath.QuiverHecke.Envelope`).
 -/
 
@@ -432,23 +432,21 @@ end Surjective
 
 section Injective
 
-variable [DecidableEq I] (hC : Q.BarConsistent)
+variable [DecidableEq I]
 
-include hC in
 theorem toSerreF_wordSum_eq_zero {a : List I →₀ ℒ}
     (hK : (a.sum fun t r => r • wordCls Q.toSKM Sc Q.skmSymmetrizer hc t) = 0) :
     Q.toSerreF CoveringQuantum.Coefficients.q CoveringQuantum.Coefficients.pi
       (a.sum fun t r => CoveringQuantum.Coefficients.ofLaurentHom r •
         CoveringQuantum.PreF.monomial 𝕃 t) = 0 := by
   have hrad := mem_radical_of_wordSum_eq_zero Q Sc hc a (wordSum_eq_zero Q Sc hc hK)
-  rw [← CoveringQuantum.Coefficients.serreIdeal_eq_radical Q.toSuperCartanDatum hC] at hrad
+  rw [← CoveringQuantum.Coefficients.serreIdeal_eq_radical Q.toSuperCartanDatum] at hrad
   exact (TwoSidedIdeal.mem_ker _).1 hrad
 
-include hC in
 /-- **BE2 Theorem 11.3, injectivity** (over `𝕃`): `γ̄ : f_𝕃 → 𝕃 ⊗_ℒ K₀(Ḣ_{q,π})` is injective.
 Clearing denominators, a relation `∑ c_t [t] = 0` among word classes with `c_t ∈ ℒ` puts
 `∑ c_t θ_t` in the radical of the form (`mem_radical_of_wordSum_eq_zero`), which is the Serre
-ideal for bar-consistent data (`Coefficients.serreIdeal_eq_radical`). -/
+ideal (`Coefficients.serreIdeal_eq_radical`). -/
 theorem gammaL_injective : Function.Injective (gammaL Q Sc hc) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
   obtain ⟨y, rfl⟩ := Q.toSerreF_surjective CoveringQuantum.Coefficients.q
@@ -458,26 +456,24 @@ theorem gammaL_injective : Function.Injective (gammaL Q Sc hc) := by
   obtain ⟨c, rfl⟩ := (Finsupp.mem_span_range_iff_exists_finsupp).1 hy
   obtain ⟨b, hb, a, hsum⟩ := exists_wordSum c
   have hK := wordCls_sum_eq_zero Q Sc hc hsum hx
-  have h0 := toSerreF_wordSum_eq_zero Q Sc hc hC hK
+  have h0 := toSerreF_wordSum_eq_zero Q Sc hc hK
   exact eq_zero_of_ofLaurent_smul Q hb
     ((map_smul _ _ _).symm.trans ((congrArg _ hsum).symm.trans h0))
 
-include hC in
 theorem gammaBar_injective : Function.Injective (gammaBar Q Sc hc) := fun x y h =>
-  Subtype.ext (gammaL_injective Q Sc hc hC ((one_tmul_gammaBar Q Sc hc x).symm.trans
+  Subtype.ext (gammaL_injective Q Sc hc ((one_tmul_gammaBar Q Sc hc x).symm.trans
     ((congrArg _ h).trans (one_tmul_gammaBar Q Sc hc y))))
 
-/-- **Brundan–Ellis, Theorem 11.3.** For a bar-consistent Cartan datum, over a field with
-homogeneous scalars, `γ̄ : f_𝒜 → K₀(Ḣ_{q,π})` is an isomorphism of `ℒ`-algebras with
-`θ_i^{(n)} ↦ [P(i^{(n)})]` (`theorem_11_3_dpF`). The bar-consistency hypothesis comes from the
-current proof of nondegeneracy (`Coefficients.serreIdeal_eq_radical`, via Hill–Wang's
-Lemma 6.11 in the bar-consistent case); its removal is tracked in odd-lean#247. -/
+/-- **Brundan–Ellis, Theorem 11.3.** Over a field with homogeneous scalars,
+`γ̄ : f_𝒜 → K₀(Ḣ_{q,π})` is an isomorphism of `ℒ`-algebras with `θ_i^{(n)} ↦ [P(i^{(n)})]`
+(`theorem_11_3_dpF`). Injectivity uses nondegeneracy of the form on `f`
+(`Coefficients.serreIdeal_eq_radical`, via Hill–Wang's Lemma 6.11). -/
 def theorem_11_3 : fA Q ≃ₐ[ℒ] KQ :=
   AlgEquiv.ofBijective (gammaBar Q Sc hc)
-    ⟨gammaBar_injective Q Sc hc hC, gammaBar_surjective Q Sc hc⟩
+    ⟨gammaBar_injective Q Sc hc, gammaBar_surjective Q Sc hc⟩
 
 theorem theorem_11_3_dpF :
-    theorem_11_3 Q Sc hc hC ⟨dpF Q i n, dpF_mem_fA Q i n⟩ = dpCls Q Sc hc i n :=
+    theorem_11_3 Q Sc hc ⟨dpF Q i n, dpF_mem_fA Q i n⟩ = dpCls Q Sc hc i n :=
   gammaBar_dpF Q Sc hc i n
 
 end Injective

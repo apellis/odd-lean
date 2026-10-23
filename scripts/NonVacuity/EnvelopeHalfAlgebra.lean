@@ -3,7 +3,8 @@ import OddMath
 /-! # Brundan–Ellis, Theorem 11.3: `γ̄ : f_𝒜 ≅ K₀(Ḣ_{q,π})`
 
 The covering datum of `𝔬𝔰𝔭(1|2)` (rank one, `a = 2`, `d = 1`, the simple root odd, which is
-bar-consistent), on the weight lattice `ℤ`, with scalars `t = 1`, `s = 0` over `ℚ`.
+bar-consistent), on the weight lattice `ℤ`, with scalars `t = 1`, `s = 0` over `ℚ`; and the same
+with symmetrizer `d = 2`, which is not bar-consistent.
 -/
 
 noncomputable section
@@ -47,11 +48,53 @@ def scalars : SKM.Scalars datum.toSKM ℚ where
 theorem homogeneous : scalars.Homogeneous := fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
 
 /-- **BE2 Theorem 11.3** for `𝔬𝔰𝔭(1|2)`: the isomorphism sends `θ^{(3)}` to `[P(i^{(3)})]`. -/
-example : theorem_11_3 datum scalars homogeneous barConsistent
+example : theorem_11_3 datum scalars homogeneous
     ⟨dpF datum () 3, dpF_mem_fA datum () 3⟩ = dpCls datum scalars homogeneous () 3 :=
-  theorem_11_3_dpF datum scalars homogeneous () 3 barConsistent
+  theorem_11_3_dpF datum scalars homogeneous () 3
 
-example : Function.Bijective (theorem_11_3 datum scalars homogeneous barConsistent) :=
-  (theorem_11_3 datum scalars homogeneous barConsistent).bijective
+example : Function.Bijective (theorem_11_3 datum scalars homogeneous) :=
+  (theorem_11_3 datum scalars homogeneous).bijective
+
+/-- The covering Cartan datum of rank one with `a = 2`, `d = 2` and an odd simple root. -/
+def cartan₂ : SuperCartanDatum Unit where
+  a := Matrix.of fun _ _ ↦ 2
+  isGCM :=
+    { diag := fun _ ↦ rfl
+      offDiag_nonpos := fun i j h ↦ absurd (Subsingleton.elim i j) h
+      zero_comm := fun _ _ ↦ Iff.rfl }
+  d := fun _ ↦ 2
+  d_pos := fun _ ↦ two_pos
+  d_mul_symm := fun _ _ ↦ rfl
+  parity := fun _ ↦ 1
+  even_of_odd := fun _ _ _ ↦ even_two
+
+theorem not_barConsistent₂ : ¬ cartan₂.BarConsistent := fun h ↦ by
+  have h0 := h ()
+  simp [cartan₂] at h0
+  exact absurd h0 (by decide)
+
+/-- `cartan₂` on the weight lattice `ℤ`. -/
+def datum₂ : RootDatum Unit ℤ where
+  toSuperCartanDatum := cartan₂
+  cd :=
+    { root := fun _ ↦ 2
+      coroot := fun _ ↦ LinearMap.id
+      coroot_root_self := fun _ ↦ rfl }
+  coroot_root _ _ := rfl
+
+def scalars₂ : SKM.Scalars datum₂.toSKM ℚ where
+  t := fun _ _ ↦ 1
+  t_self := fun _ ↦ rfl
+  t_symm_of_d_eq_zero := fun _ _ _ ↦ rfl
+  s := fun _ _ _ _ ↦ 0
+  s_symm := fun _ _ _ _ ↦ rfl
+  s_eq_zero := fun _ _ _ _ _ ↦ rfl
+  two_isUnit := fun _ ↦ isUnit_iff_ne_zero.mpr (by norm_num)
+
+theorem homogeneous₂ : scalars₂.Homogeneous := fun _ _ _ _ _ _ _ _ h ↦ absurd rfl h
+
+/-- **BE2 Theorem 11.3** for a datum that is not bar-consistent. -/
+example : Function.Bijective (theorem_11_3 datum₂ scalars₂ homogeneous₂) :=
+  (theorem_11_3 datum₂ scalars₂ homogeneous₂).bijective
 
 end NonVacuity.EnvelopeHalfAlgebra

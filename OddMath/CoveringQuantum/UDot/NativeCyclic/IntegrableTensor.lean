@@ -13,7 +13,7 @@ open TensorProduct
 namespace OddMath.CoveringQuantum.UDot.GenericVerma
 open PreF Coefficients
 variable {I X : Type*} [AddCommGroup X] [DecidableEq I] [DecidableEq X] [Finite I]
-variable (D : RootDatum I X) (hD : D.toSuperCartanDatum.BarConsistent)
+variable (D : RootDatum I X)
 
 /-- The tensor of the original integrability-relation quotient maps. This is
 not the weight projection endomorphism called `tensorProject`. -/
@@ -28,7 +28,6 @@ omit [Finite I] in
     toIntegrableTensor D Λ Μ (x ⊗ₜ[Coefficients.Ring] y) =
       toIntegrable D Λ x ⊗ₜ[Coefficients.Ring] toIntegrable D Μ y := rfl
 
-include hD
 
 /-- Any finite set of actual tensors, including arbitrary finite sums, has one
 bound for injectivity on its ENTIRE covering-ring span. No flatness, freeness,
@@ -45,8 +44,8 @@ theorem finite_span_toIntegrableTensor_injective_bound
       (D.serreF Coefficients.q pi))) s.finite_toSet
   let := hS
   let := hT
-  obtain ⟨B, hB, hb⟩ := exists_toIntegrable_injective_bound D hD S
-  obtain ⟨C, hC, hc⟩ := exists_toIntegrable_injective_bound D hD T
+  obtain ⟨B, hB, hb⟩ := exists_toIntegrable_injective_bound D S
+  obtain ⟨C, hC, hc⟩ := exists_toIntegrable_injective_bound D T
   refine ⟨max B C, hB.trans (le_max_left _ _), fun Λ Μ hΛ hΜ => ?_⟩
   have hinj := covering_tensor_injOn_range S T (toIntegrable D Λ)
     (toIntegrable D Μ) (hb Λ (fun i => (le_max_left _ _).trans (hΛ i)))
@@ -60,7 +59,7 @@ theorem fg_toIntegrableTensor_injective_bound
     ∃ B : ℤ, 0 ≤ B ∧ ∀ Λ Μ : X, (∀ i, B ≤ D.h i Λ) → (∀ i, B ≤ D.h i Μ) →
       Set.InjOn (toIntegrableTensor D Λ Μ) U := by
   obtain ⟨s, rfl⟩ := hU
-  exact finite_span_toIntegrableTensor_injective_bound D hD s
+  exact finite_span_toIntegrableTensor_injective_bound D s
 
 /-- A positive coroot direction makes the fixed-difference tensor family
 nonvacuous, with both weights dominant and whole-span injectivity. -/
@@ -76,7 +75,7 @@ theorem finite_span_toIntegrableTensor_fixed_difference
           (D.serreF Coefficients.q pi)))) := by
   classical
   let := Fintype.ofFinite I
-  obtain ⟨B, hB, hb⟩ := finite_span_toIntegrableTensor_injective_bound D hD s
+  obtain ⟨B, hB, hb⟩ := finite_span_toIntegrableTensor_injective_bound D s
   let M : ℤ := B + ∑ i : I, |B - D.h i ζ|
   have hBM : B ≤ M := le_add_of_nonneg_right (Finset.sum_nonneg (fun i _ => abs_nonneg _))
   refine ⟨M.toNat, fun n hn => ?_⟩
@@ -105,7 +104,7 @@ theorem nonzero_toIntegrableTensor_fixed_difference
       (∀ i, 0 ≤ D.h i (ζ + n • ξ)) ∧ (∀ i, 0 ≤ D.h i (n • ξ)) ∧
       toIntegrableTensor D (ζ + n • ξ) (n • ξ) z ≠ 0 := by
   classical
-  obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D hD {z} ζ ξ hξ
+  obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D {z} ζ ξ hξ
   refine ⟨N, fun n hn => ?_⟩
   have hh := hN n hn
   refine ⟨hh.1, hh.2.1, fun hzero => hz (hh.2.2.2 ?_ (Submodule.zero_mem _) ?_)⟩
@@ -121,7 +120,7 @@ theorem toIntegrableTensor_fixed_difference_separating
       toIntegrableTensor D (ζ + n • ξ) (n • ξ) x =
         toIntegrableTensor D (ζ + n • ξ) (n • ξ) y) : x = y := by
   classical
-  obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D hD {x, y} ζ ξ hξ
+  obtain ⟨N, hN⟩ := finite_span_toIntegrableTensor_fixed_difference D {x, y} ζ ξ hξ
   have hh := hN N le_rfl
   apply hh.2.2.2 _ _ (hxy N hh.1 hh.2.1)
   · exact Submodule.subset_span (by simp)
