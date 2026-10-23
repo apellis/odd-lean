@@ -20,7 +20,7 @@ require DG from git
 
 require LieLean from git
   "https://github.com/apellis/lie-lean.git" @
-  "29042522f511a969b7f6dbc81d3c8a8bebfef818"
+  "b4e8b45c6d5f9e194ebd70b12344cac6d0e34a41"
 
 require Categorification from git
   "https://github.com/apellis/categorification-lean.git" @
