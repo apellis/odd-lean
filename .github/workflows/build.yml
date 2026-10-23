@@ -6,8 +6,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-# A newer push to a pull request cancels its running build; the cache step below still saves
-# what the cancelled run compiled. Master builds always run to completion.
+# A newer push to a pull request cancels its running build. Master builds always run to
+# completion.
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -47,9 +47,11 @@ jobs:
           lint: false
           use-mathlib-cache: true
           use-github-cache: false
-      # One cache entry per run attempt. Restores fall back to the newest entry for the same
-      # toolchain and manifest, then to the newest entry for the toolchain (oleans of modules
-      # unaffected by a dependency bump stay valid; Lake rebuilds the rest).
+      # Only master builds write the cache (one entry per run); pull requests restore the newest
+      # master entry, so their entries cannot evict master's from the repository's cache quota.
+      # Restores fall back to the newest entry for the same toolchain and manifest, then to the
+      # newest entry for the toolchain (oleans of modules unaffected by a dependency bump stay
+      # valid; Lake rebuilds the rest).
       - name: Restore build cache
         if: steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/restore@v4
@@ -94,13 +96,13 @@ jobs:
               -Dbackward.isDefEq.respectTransparency.types=false \
               "{}" < /dev/null || { echo "::error file={}::non-vacuity check failed"; exit 1; }'
       - name: Save Categorification cache
-        if: always() && steps.scope.outputs.docs_only != 'true'
+        if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: .lake/packages/Categorification/.lake/build
           key: categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
-        if: always() && steps.scope.outputs.docs_only != 'true'
+        if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
