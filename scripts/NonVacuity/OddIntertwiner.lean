@@ -1,4 +1,5 @@
 import OddMath.Diagrams.OddNilHecke.Intertwiner
+import OddMath.Diagrams.OddNilHecke.ExteriorDeformation
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
@@ -35,6 +36,24 @@ open OddMath.Diagrams.OddNilHecke in
 example : intertwiner (ZMod 4) 3 1 * x (ZMod 4) 3 1 =
     -(x (ZMod 4) 3 2 * intertwiner (ZMod 4) 3 1) :=
   (intertwiner_dot_transport (ZMod 4) (n := 3) (i := 1) (by decide)).1
+
+open OddMath.Diagrams.OddNilHecke in
+example : intertwiner (ZMod 4) 3 1 ^ 2 =
+    -((x (ZMod 4) 3 2 ^ 2 - x (ZMod 4) 3 1 ^ 2) ^ 2 *
+      (x (ZMod 4) 3 1 ^ 2 + x (ZMod 4) 3 2 ^ 2)) :=
+  intertwiner_square (ZMod 4) (n := 3) (i := 1) (by decide)
+
+open OddMath.OddNilHecke.ExteriorDeformation in
+example : exterior dualParameter ≠ 0 ∧
+    exterior dualParameter * element (firstDot dualParameter) (secondDot dualParameter) crossing =
+      -(element (firstDot dualParameter) (secondDot dualParameter) crossing *
+        exterior dualParameter) := by
+  refine ⟨dualNumber_model.1, ?_⟩
+  have hs : dualParameter * dualParameter = 0 :=
+    TrivSqZeroExt.inr_mul_inr ℚ 1 1
+  have h := exterior_anticommutes dualParameter hs
+  exact anticommutes _ _ _ _ (eq_neg_of_add_eq_zero_left h.1)
+    (eq_neg_of_add_eq_zero_left h.2.1) (eq_neg_of_add_eq_zero_left h.2.2)
 
 #print axioms OddMath.OddNilHecke.Intertwiner.identities
 #print axioms OddMath.OddNilHecke.Intertwiner.anticommutes

@@ -9,9 +9,9 @@ import Mathlib.Tactic.NoncommRing
 # The odd equal-colour intertwiner
 
 Kang–Kashiwara–Oh, *Supercategorification of quantum Kac-Moody algebras*,
-arXiv:1206.5933v2, (8.10) and Lemma 8.3: the equal-odd-colour intertwiner
+arXiv:1206.5933v2, (8.10) and Lemma 8.3: the equal-odd-colour intertwiner variant
 `g = Δ (y - x) - Δ² τ`, with `Δ = y² - x²`, transports the two dots with
-minus signs. Its square is `-Δ² (x² + y²)`.
+minus signs. The local relations also give its square `-Δ² (x² + y²)`.
 
 The local identities hold in any ring satisfying the four two-strand odd
 nilHecke relations. They are applied below to the existing presented
