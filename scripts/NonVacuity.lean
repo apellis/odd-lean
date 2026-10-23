@@ -75,7 +75,7 @@ theorem oddSl2_coroot_linearIndependent : LinearIndependent ℤ oddSl2Root.coroo
 open scoped Classical in
 example : ∀ x, (∀ y, UDot.GenericTensor.sesquilinearForm (oddSl2.rootDatumOf oddSl2Root)
     x y = 0) → x = 0 :=
-  UDot.sesquilinearForm_nondegenerate oddSl2Root oddSl2_barConsistent
+  UDot.sesquilinearForm_nondegenerate oddSl2Root
     oddSl2_root_linearIndependent oddSl2_coroot_linearIndependent
 
 /-! ### The super Kac–Moody datum of `𝔬𝔰𝔭(1|2)` -/

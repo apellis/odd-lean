@@ -110,4 +110,22 @@ theorem leftRadical_trivial_of_specialize {M : Type*} [AddCommGroup M] [Module R
   rw [← one_smul Ring x, ← signIdempotent_add, add_smul, key 1 (one_pow 2) h₁,
     key (-1) (by norm_num) h₂, add_zero]
 
+/-- A bilinear form over the generic covering ring has trivial left radical when its
+specialization `π ↦ 1` does and the `π ↦ -1` component of every element of its left radical
+vanishes. -/
+theorem leftRadical_trivial_of_specialize_one {M : Type*} [AddCommGroup M] [Module Ring M]
+    (B : LinearMap.BilinForm Ring M)
+    (h₁ : letI := (specialize 1 (one_pow 2)).toRingHom.toAlgebra;
+      ∀ t : RatFunc ℚ ⊗[Ring] M, (∀ s, B.baseChange (RatFunc ℚ) t s = 0) → t = 0)
+    (h₂ : ∀ x : M, (∀ y, B x y = 0) → signIdempotent (-1) • x = 0) :
+    ∀ x : M, (∀ y, B x y = 0) → x = 0 := by
+  intro x hx
+  have key : signIdempotent 1 • x = 0 := by
+    let _ := (specialize 1 (one_pow 2)).toRingHom.toAlgebra
+    refine signIdempotent_smul_eq_zero 1 (one_pow 2) (h₁ _ fun s ↦ ?_)
+    induction s with
+    | tmul c y => rw [LinearMap.BilinForm.baseChange_tmul, hx, zero_smul]
+    | add s t hs ht => rw [map_add, hs, ht, add_zero]
+  rw [← one_smul Ring x, ← signIdempotent_add, add_smul, key, h₂ x hx, add_zero]
+
 end OddMath.CoveringQuantum.Coefficients

@@ -28,7 +28,7 @@ open scoped Classical in
 hypothesis discharged. -/
 example (x : modified oddDatum Coefficients.q Coefficients.pi)
     (hx : ∀ y, GenericTensor.sesquilinearForm oddDatum x y = 0) : x = 0 :=
-  FiniteWeightForm.sesquilinearForm_nondegenerate oddDatum odd_barConsistent
+  FiniteWeightForm.sesquilinearForm_nondegenerate oddDatum
     odd_root_independent odd_coroot_independent x hx
 
 end NonVacuity.WeightForm

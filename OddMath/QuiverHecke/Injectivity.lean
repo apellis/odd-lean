@@ -30,7 +30,7 @@ Hypotheses. Besides the Nondegeneracy Conjecture, the theorem keeps the hypothes
 results it uses: the hypotheses of §9 on the scalars and a ground field (Theorem 11.7); the route
 hypothesis `DegreeLocallyFinite` of Theorem 11.7; and, for nondegeneracy of the form
 (`FiniteWeightForm.sesquilinearForm_nondegenerate`), finitely many colours, a finitely generated
-free weight lattice, linearly independent roots and coroots, and bar-consistent data. The paper
+free weight lattice, and linearly independent roots and coroots. The paper
 states Theorem 12.1 for the setting of §9 with the Nondegeneracy Conjecture as its only
 hypothesis; the remaining hypotheses are route hypotheses recorded in the README.
 
@@ -516,12 +516,12 @@ theorem form_eq_zero_of_mem_block (μ ν : X) (Y' : modified Q Coefficients.q Co
     exact hb (Prod.ext hne.1 hne.2)
 
 /-- An element of `U̇` pairing trivially with all of `U̇` vanishes (Theorem 10.1). -/
-theorem eq_zero_of_form_eq_zero (hD : Q.toSuperCartanDatum.BarConsistent)
+theorem eq_zero_of_form_eq_zero
     (hα : LinearIndependent ℤ Q.α) (hh : LinearIndependent ℤ Q.cd.coroot)
     (Y' : modified Q Coefficients.q Coefficients.pi)
     (hall : ∀ z, sesquilinearForm Q z Y' = 0) : Y' = 0 := by
   have hψ : psiModified Q Y' = 0 := by
-    apply FiniteWeightForm.sesquilinearForm_nondegenerate Q hD hα hh
+    apply FiniteWeightForm.sesquilinearForm_nondegenerate Q hα hh
     intro w
     rw [sesquilinearForm_psi_comm, psiModified_psiModified]
     exact hall _
@@ -529,7 +529,7 @@ theorem eq_zero_of_form_eq_zero (hD : Q.toSuperCartanDatum.BarConsistent)
 
 /-- The block step of Theorem 12.1. -/
 theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
-    (hD : Q.toSuperCartanDatum.BarConsistent) (hα : LinearIndependent ℤ Q.α)
+    (hα : LinearIndependent ℤ Q.α)
     (hh : LinearIndependent ℤ Q.cd.coroot) (x : Λ) (hx : gammaInt Q hS cs hf x = 0) (μ ν : X) :
     blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) = 0 := by
   obtain ⟨y, hy_def⟩ : ∃ y, y = blockProj Q Coefficients.q Coefficients.pi μ ν (x : 𝕌) :=
@@ -579,7 +579,7 @@ theorem blockProj_eq_zero (hN : SKM.NondegeneracyConjecture cs)
     exact Submodule.smul_mem _ _ hyB
   have hY' : (⟨(Y : 𝕌), block_le_modified _ _ _ μ ν hYm⟩ :
       modified Q Coefficients.q Coefficients.pi) = 0 := by
-    refine eq_zero_of_form_eq_zero Q hD hα hh _ (form_eq_zero_of_mem_block Q μ ν _ hYm ?_)
+    refine eq_zero_of_form_eq_zero Q hα hh _ (form_eq_zero_of_mem_block Q μ ν _ hYm ?_)
     refine form_algebraWord_eq_zero Q hS cs hf hN μ ν a hZ _ (Subtype.ext ?_)
     rw [hYval]
     simp only [Finsupp.sum, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]
@@ -594,9 +594,9 @@ holds, the homomorphism `γ : U̇_{q,π}(𝔤)_ℒ → K₀(𝔘̇(𝔤))` of Th
 
 Route hypotheses (README): `DegreeLocallyFinite` (from Theorem 11.7), and for nondegeneracy of the
 form of Theorem 10.1, finitely many colours, a free finitely generated weight lattice, linearly
-independent roots and coroots, and bar-consistent data. -/
+independent roots and coroots. -/
 theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
-    (hD : Q.toSuperCartanDatum.BarConsistent) (hα : LinearIndependent ℤ Q.α)
+    (hα : LinearIndependent ℤ Q.α)
     (hh : LinearIndependent ℤ Q.cd.coroot) :
     Function.Injective (gammaInt Q hS cs hf) := by
   suffices h0 : ∀ x : Λ, gammaInt Q hS cs hf x = 0 → x = 0 by
@@ -608,7 +608,7 @@ theorem theorem_12_1 (hN : SKM.NondegeneracyConjecture cs)
   have hf0 : f = 0 := by
     ext b
     rw [← blockProj_sum _ _ _ f hf' b, hfx]
-    exact blockProj_eq_zero Q hS cs hf hN hD hα hh x hx b.1 b.2
+    exact blockProj_eq_zero Q hS cs hf hN hα hh x hx b.1 b.2
   apply Subtype.ext
   rw [← hfx, hf0]
   simp

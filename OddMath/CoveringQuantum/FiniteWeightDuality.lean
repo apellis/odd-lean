@@ -21,7 +21,7 @@ They impose no finiteness on the ambient complex realization. This implements
 only the finite-perfect-lattice step (cf. Clark, *Quantum supergroups IV*,
 arXiv:1312.4855v2, §2.1), not algebra/form transport or nondegeneracy on the
 original weight lattice. The conditional categorical theorem still requires
-Nondegeneracy and BarConsistent.
+the Nondegeneracy Conjecture.
 -/
 
 noncomputable section

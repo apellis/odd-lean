@@ -102,7 +102,7 @@ open scoped Classical in
 /-- Every radical premise is discharged except the tested vector's radical membership. -/
 theorem odd_leftRadical (x : modified oddDatum Coefficients.q Coefficients.pi)
     (hx : ∀ y, sesquilinearForm oddDatum x y = 0) : x = 0 :=
-  FiniteWeightForm.sesquilinearForm_nondegenerate oddDatum odd_barConsistent
+  FiniteWeightForm.sesquilinearForm_nondegenerate oddDatum
     odd_root_independent odd_coroot_independent x hx
 
 end OddMath.CoveringQuantum.FiniteWeightFormConsumer

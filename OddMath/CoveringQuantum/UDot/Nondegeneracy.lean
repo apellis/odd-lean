@@ -7,6 +7,7 @@ import OddMath.CoveringQuantum.UDot.ModifiedBaseChange
 import OddMath.CoveringQuantum.UDot.Twistor
 import OddMath.CoveringQuantum.UDot.SesquilinearForm
 import OddMath.CoveringQuantum.Coefficients.FormSplitting
+import OddMath.CoveringQuantum.UDot.TensorGram.SignRadical
 import OddMath.CoveringQuantum.SerreBaseChange
 import OddMath.CoveringQuantum.PreF.BaseChange
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
@@ -16,24 +17,27 @@ import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
 This file reduces the nondegeneracy statement of Brundan–Ellis, arXiv:1701.04133v2,
 Theorem 10.1, for the `ρ`-adjoint form `GenericTensor.positiveModifiedForm` on the modified
-covering algebra over `ℚ(q)[π]/(π² - 1)` (finite bar-consistent data, linearly independent simple
-roots), to the corresponding statement for the modified quantum group at `π = 1` over a field.
+covering algebra over `ℚ(q)[π]/(π² - 1)` (finitely many colours, some weight pairing positively
+with every simple coroot), to the corresponding statement for the modified quantum group at
+`π = 1` over a field.
 
 The `π = 1` input is the Prop `PositiveFormNondegenerate D L q' 1`: every left `ρ`-adjoint
 bilinear form on `U̇_{q',1}` over the field `L` with the standard values
-`(E_a 1_μ, E_b 1_ν) = δ_{μν} (θ_a, θ_b)` on positive words has trivial left radical. It is **not
-proved here**: it is an explicit hypothesis of the results below, to be discharged from Lusztig's
-form on `U̇` ([Lus] 26.3.1).
+`(E_a 1_μ, E_b 1_ν) = δ_{μν} (θ_a, θ_b)` on positive words has trivial left radical. It is an
+explicit hypothesis of the results below, discharged from Lusztig's form on `U̇` ([Lus] 26.3.1)
+in `UDot.LusztigComparison`.
 
 The reduction:
 * the covering ring splits through the specializations `π ↦ ±1` to `K = ℚ(q)`
-  (`Coefficients.leftRadical_trivial_of_specialize`); each specialization is flat, so the
-  specialized form is `baseChangeForm` along `modifiedBaseChange`;
-* trivial left radical descends from a field extension `L / K`
-  (`leftRadical_trivial_of_baseChangeForm`);
-  over `L` the extended form is `ρ`-adjoint with the standard values on positive words;
-* at `π = -1` the twistor `U̇_{q,-1} ≅ U̇_{tq,1}` (`t² = -1`) transports the question to `π = 1`
-  (`positiveFormNondegenerate_neg_one_of_twist`).
+  (`Coefficients.leftRadical_trivial_of_specialize_one`); the specialization `π ↦ 1` is flat, so
+  the specialized form is `baseChangeForm` along `modifiedBaseChange`, and trivial left radical
+  descends from a field extension `L / K` (`leftRadical_trivial_of_baseChangeForm`);
+* at `π = -1` the negative-fiber component of a radical element vanishes directly, by a Gram
+  determinant argument on matched normal words (`SignRadical.negativeIdempotent_smul_eq_zero`).
+  No bar-consistency hypothesis (BE2 (10.2)) is needed.
+
+The twistor `U̇_{q,-1} ≅ U̇_{tq,1}` (`t² = -1`) for bar-consistent data is kept as
+`positiveFormNondegenerate_neg_one_of_twist`; it is no longer used for Theorem 10.1.
 
 ## Main definitions
 
@@ -272,56 +276,41 @@ theorem specialize_leftRadical_trivial (ε : RatFunc ℚ) (hε : ε ^ 2 = 1) (L 
     exact ht _
   simpa using h0
 
-variable [Finite I] (hD : D.toSuperCartanDatum.BarConsistent)
+variable [Finite I]
 
-include hD in
 /-- Reduction of the nondegeneracy statement of Brundan–Ellis, arXiv:1701.04133v2, Theorem 10.1,
-for the `ρ`-adjoint form `positiveModifiedForm` to the `π = 1` input. For a field `L ⊇ ℚ(q)`
-containing a square root `t` of `-1`, if the `π = 1` input holds over `L` at the parameters `q`
-and `tq`, then `positiveModifiedForm` has trivial left radical. The `π = 1` input is a hypothesis,
-to be discharged from Lusztig's form ([Lus] 26.3.1). -/
-theorem positiveModifiedForm_leftRadical_trivial (hα : LinearIndependent ℤ D.α)
-    (L : Type*) [Field L] [Algebra (RatFunc ℚ) L] {t : Lˣ} (ht : t ^ 2 = -1)
-    (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2))
-    (h₂ : PositiveFormNondegenerate D L (t * genericParameter L) 1 (one_pow 2)) :
+for the `ρ`-adjoint form `positiveModifiedForm` to the `π = 1` input. Let some weight `ξ` pair
+positively with every simple coroot. For a field `L ⊇ ℚ(q)`, if the `π = 1` input holds over `L`
+at the parameter `q`, then `positiveModifiedForm` has trivial left radical. The `π = -1` half is
+`UDot.SignRadical.negativeIdempotent_smul_eq_zero`; the `π = 1` input is a hypothesis, to be
+discharged from Lusztig's form ([Lus] 26.3.1). -/
+theorem positiveModifiedForm_leftRadical_trivial (hξ : ∃ ξ : X, ∀ i, 0 < D.h i ξ)
+    (L : Type*) [Field L] [Algebra (RatFunc ℚ) L]
+    (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2)) :
     ∀ x, (∀ y, positiveModifiedForm D x y = 0) → x = 0 := by
-  let _ : LinearOrder I := LinearOrder.lift' (Finite.equivFin I) (Finite.equivFin I).injective
-  have h₃ : PositiveFormNondegenerate D L (genericParameter L) (-1) neg_one_sq :=
-    positiveFormNondegenerate_neg_one_of_twist D (D.rootCoord_add_α hα) ht _ hD h₂
-  have hm : (-1 : RatFunc ℚ) ^ 2 = 1 := by norm_num
   have hp := specialize_leftRadical_trivial D 1 (one_pow 2) L 1 (map_one _) (one_pow 2) h₁
-  have hn := specialize_leftRadical_trivial D (-1) hm L (-1) (by simp) neg_one_sq h₃
-  have key := @Coefficients.leftRadical_trivial_of_specialize
+  have key := @Coefficients.leftRadical_trivial_of_specialize_one
     (modified D Coefficients.q Coefficients.pi) _ _ (positiveModifiedForm D)
-  exact key hp hn
+  refine key hp fun x hx ↦ ?_
+  rw [SignRadical.signIdempotent_neg_one]
+  exact SignRadical.negativeIdempotent_smul_eq_zero D hξ x fun y ↦ by rw [hx, map_zero]
 
-include hD in
-/-- The same reduction over the algebraic closure of `ℚ(q)`, with the `π = 1` input at `q` and at
-`tq` for every square root `t` of `-1`. -/
-theorem positiveModifiedForm_leftRadical_trivial_algebraicClosure (hα : LinearIndependent ℤ D.α)
+/-- The same reduction over the algebraic closure of `ℚ(q)`. -/
+theorem positiveModifiedForm_leftRadical_trivial_algebraicClosure
+    (hξ : ∃ ξ : X, ∀ i, 0 < D.h i ξ)
     (h₁ : PositiveFormNondegenerate D (AlgebraicClosure (RatFunc ℚ))
-      (genericParameter (AlgebraicClosure (RatFunc ℚ))) 1 (one_pow 2))
-    (h₂ : ∀ t : (AlgebraicClosure (RatFunc ℚ))ˣ, t ^ 2 = -1 →
-      PositiveFormNondegenerate D (AlgebraicClosure (RatFunc ℚ))
-        (t * genericParameter (AlgebraicClosure (RatFunc ℚ))) 1 (one_pow 2)) :
-    ∀ x, (∀ y, positiveModifiedForm D x y = 0) → x = 0 := by
-  obtain ⟨z, hz⟩ := IsAlgClosed.exists_eq_mul_self (-1 : AlgebraicClosure (RatFunc ℚ))
-  have hz0 : z ≠ 0 := by
-    rintro rfl
-    simp at hz
-  have ht : Units.mk0 z hz0 ^ 2 = -1 := Units.ext (by simp [sq, ← hz])
-  exact positiveModifiedForm_leftRadical_trivial D hD hα _ ht h₁ (h₂ _ ht)
+      (genericParameter (AlgebraicClosure (RatFunc ℚ))) 1 (one_pow 2)) :
+    ∀ x, (∀ y, positiveModifiedForm D x y = 0) → x = 0 :=
+  positiveModifiedForm_leftRadical_trivial D hξ _ h₁
 
-include hD in
 /-- The sesquilinear form `sesquilinearForm = positiveModifiedForm ∘ ψ` has trivial left radical
 under the same `π = 1` input, since `ψ` is an involution. -/
-theorem sesquilinearForm_leftRadical_trivial (hα : LinearIndependent ℤ D.α)
-    (L : Type*) [Field L] [Algebra (RatFunc ℚ) L] {t : Lˣ} (ht : t ^ 2 = -1)
-    (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2))
-    (h₂ : PositiveFormNondegenerate D L (t * genericParameter L) 1 (one_pow 2)) :
+theorem sesquilinearForm_leftRadical_trivial (hξ : ∃ ξ : X, ∀ i, 0 < D.h i ξ)
+    (L : Type*) [Field L] [Algebra (RatFunc ℚ) L]
+    (h₁ : PositiveFormNondegenerate D L (genericParameter L) 1 (one_pow 2)) :
     ∀ x, (∀ y, sesquilinearForm D x y = 0) → x = 0 := by
   intro x hx
-  have h0 := positiveModifiedForm_leftRadical_trivial D hD hα L ht h₁ h₂ (psiModified D x)
+  have h0 := positiveModifiedForm_leftRadical_trivial D hξ L h₁ (psiModified D x)
     fun y ↦ by rw [← sesquilinearForm_apply]; exact hx y
   rw [← psiModified_psiModified D x, h0, map_zero]
 
