@@ -217,10 +217,11 @@ reusing the target formula.
 map for mutually adapted strict families in arbitrary whisker contexts. It
 expands only a residual morphism and appends the isolated cup afterwards,
 so no residual normalization can change the pivot strand's dot count.
-Still needed are arbitrary-choice invertible comparison, the complete
-source-side map and a coefficient-level right closure of sorted boundaries.
-The spanning theorem and Hom-level bending identities alone do not supply
-these remaining assertions.
+The [source comparison](SourceContextualSorting.md) and
+[conditional sorted closure](SortedClosure.md) now have prose coefficient
+arguments. Arbitrary-choice invertible comparison and upward SKM independence
+remain unproved, and the contextual comparisons are not yet formalized.
+Spanning and Hom-level bending identities alone do not supply these results.
 
 Run `python3 scripts/Nondegeneracy/all_weight_elementary.py`. It checks the
 cup recurrence initialized by the actual negative fake-bubble branch for

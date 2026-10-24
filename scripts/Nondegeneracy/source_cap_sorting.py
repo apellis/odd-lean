@@ -1,5 +1,6 @@
 """Finite formal coefficient checks; not an SKM representation or Lean proof."""
 from collections import defaultdict
+from itertools import product
 
 checks = 0
 for eps in (0, 1):
@@ -68,3 +69,65 @@ assert exterior_product(d, p)[0] != 0
 assert exterior_product(p, p) == (0, 0)
 assert (-1) ** (p | d).bit_count() == 1  # parity fixes the mixed product
 print('PASS: ordered mixed exterior coefficients retained; opposite orders distinguished.')
+
+
+def mul(a, b):
+    sign, mask = exterior_product(a[1], b[1])
+    return (a[0] * b[0] * sign, mask)
+
+
+def theta(a, power):
+    return (a[0] * (-1) ** (power * a[1].bit_count()), a[1])
+
+
+# Two ways to move the source coefficient and a chosen suffix coefficient
+# across e_m.  This tests coefficient order as well as both involutions.
+context_checks = 0
+for eps in (0, 1):
+    for m in range(16):
+        for dmask in range(4):
+            for pmask in range(4):
+                d, p = (1, dmask), (1, pmask)
+                direct = mul(theta(d, eps*m), theta(p, eps))
+                suffix = theta(mul(d, theta(p, eps*(m+1))), eps*m)
+                assert direct == suffix
+                context_checks += 1
+assert mul(theta((1, 1), 1), (1, 0)) != mul((1, 1), (1, 0))
+assert mul((1, 0), theta((1, 1), 1)) != mul((1, 0), (1, 1))
+assert mul((1, 1), (1, 2)) != mul((1, 2), (1, 1))
+assert mul((1, 1), theta((1, 0), 1)) != theta(mul((1, 1), (1, 0)), 1)
+print(f'Contextual ordered coefficient paths: {context_checks} cases passed; '
+      'missing-twist, reversed-product and extra remainder-twist mutations rejected')
+
+
+def inversions(word, first):
+    return sum(x[0] == first and y[0] != first
+               for i, x in enumerate(word) for y in word[i+1:])
+
+
+def weight(word):
+    return tuple(sum(orientation for orientation, colour in word if colour == i)
+                 for i in range(2))
+
+
+boundary_checks = 0
+alphabet = tuple(product((-1, 1), range(2)))
+for length in range(7):
+    for word in product(alphabet, repeat=length):
+        for j in range(length - 1):
+            x, y = word[j:j+2]
+            if x[0] == y[0]:
+                continue
+            swapped = word[:j] + (y, x) + word[j+2:]
+            # Source sorts F E; target sorts E F.
+            assert inversions(swapped, x[0]) + 1 == inversions(word, x[0])
+            assert weight(swapped) == weight(word)
+            boundary_checks += 1
+            if x[1] == y[1]:
+                deleted = word[:j] + word[j+2:]
+                assert len(deleted) < len(word)
+                assert weight(deleted) == weight(word)
+                boundary_checks += 1
+# Opposite orientation alone does NOT give weight zero at distinct colours.
+assert weight(((1, 0), (-1, 1))) != (0, 0)
+print(f'Boundary swap/deletion measure: {boundary_checks} coloured cases passed')

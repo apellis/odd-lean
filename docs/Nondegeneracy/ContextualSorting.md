@@ -6,10 +6,11 @@ injective map of their formal SYM coefficient modules intertwining the
 actual sorting components. This statement uses residual spanning, **not
 upward independence or injectivity of any matching evaluation**.
 
-This is a mathematical construction, not a compiled SKM theorem. It does
-not yet give an invertible transition from arbitrary chosen representatives,
-or compatible choices at successive sorting edges. The sorted-boundary
-coefficient closure and upward SKM independence remain separate obligations.
+This is a mathematical construction, not a compiled SKM theorem. The
+[source comparison and boundary induction](SourceContextualSorting.md) and
+[conditional sorted closure](SortedClosure.md) are separate prose arguments.
+An invertible transition from arbitrary chosen representatives and full
+upward SKM independence remain unproved.
 
 Throughout, composition is chronological. Put
 
@@ -282,8 +283,9 @@ by a residual matching, normalize only the suffix after the cap. All
 correction bubbles and transported coefficients occur there; the terminated
 pivot strand cannot acquire more dots. With context `P,Q`, use local
 `h_i(wt D μ Q)` while the source coefficient retains global weight `μ`.
-Constructing the complete source-side adapted comparison, including its
-distinct sector, is not asserted merely from these cap formulas.
+These cap formulas alone are not the complete source comparison. Its
+distinct sector, ordered coefficient columns and formal injectivity are
+derived in [SourceContextualSorting](SourceContextualSorting.md).
 
 ## Verification and remaining work
 
@@ -293,8 +295,9 @@ These are finite exact checks, not an SKM action or a proof of faithfulness.
 The new greatest-pivot lemma and its concrete application are Lean-checked;
 the contextual matching construction is not yet formalized.
 
-Still needed for the full conjecture: arbitrary-choice invertible comparison
-(or compatible families through the whole induction), the complete
-source-side contextual comparison, the sorted-boundary all-up coefficient
-closure, and full upward SKM independence. The existing Hom reconstruction
+Still needed for the full conjecture: arbitrary-choice invertible comparison,
+full upward SKM independence, and formalization of the contextual sorting and
+sorted-closure arguments. The [crossing-filtered expansion](MatchingChoiceTransition.md)
+is Lean-proved, but does not supply the lower-dot comparison or the inverse.
+Hom reconstruction
 identities alone do not close any of those coefficient-level obligations.
