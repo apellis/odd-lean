@@ -205,20 +205,22 @@ unconditional nonvanishing of the identity or formalize a full
 `MatchingBasisChoice` witness.
 
 With a right whisker `Q`, the parameter is the **local** weight
-`h_i(wt D μ Q)`, not automatically `h_i(μ)`. The prospective source/cap shift
-is `b+h`, with remainder `b<−h`; its complete signed coefficient comparison
-is a separate calculation, not a consequence of the target formula above.
+`h_i(wt D μ Q)`, not automatically `h_i(μ)`. The source/cap shift is `b+h`,
+with remainder `b<−h`. Its exact components, same-weight source coefficient
+transport and residual suffix isolation are derived separately in
+[ContextualSorting](ContextualSorting.md); they do not follow merely by
+reusing the target formula.
 
 ## Remaining contextual obligations and checks
 
-To pass from these fixed families to arbitrary boundaries, one still needs
-adapted strict representatives and explicit coefficient maps for both sorts.
-The pivot variable is a **strand**, not a horizontal position. Absence of
-pivot dots must survive residual matching normalization. One also needs a
-finite signed-unit triangular change of representatives, points and
-serializers, and a coefficient-level right closure of the sorted boundaries.
-The existing spanning theorem and Hom-level bending identities do not supply
-these assertions automatically.
+[ContextualSorting](ContextualSorting.md) constructs the target-side formal
+map for mutually adapted strict families in arbitrary whisker contexts. It
+expands only a residual morphism and appends the isolated cup afterwards,
+so no residual normalization can change the pivot strand's dot count.
+Still needed are arbitrary-choice invertible comparison, the complete
+source-side map and a coefficient-level right closure of sorted boundaries.
+The spanning theorem and Hom-level bending identities alone do not supply
+these remaining assertions.
 
 Run `python3 scripts/Nondegeneracy/all_weight_elementary.py`. It checks the
 cup recurrence initialized by the actual negative fake-bubble branch for
