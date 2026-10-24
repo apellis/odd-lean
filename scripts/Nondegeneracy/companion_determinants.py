@@ -57,4 +57,22 @@ for a in range(5):
             rhs-=sum((-1)**s*c[s]*z**(a+1+s) for s in range(len(c)))
             assert lhs==rhs,(a,orientation,z,lhs,rhs)
             checked+=1
-print(json.dumps({'exact_cases':checked,'all_passed':True,'transfer_coefficients':c}))
+# Source slide: y sigma - q sigma x = u v.  In the positive-weight
+# companion the unnormalized upper-right entry is -q u, not always +u.
+# This two-dimensional nilpotent example catches the incorrect even sign.
+source_sign_cases=0
+for q in (-1,1):
+    dot=[[0,-q],[0,0]]
+    sigma=[[1,0]]
+    uv=[[0,1]]
+    assert [[-q*z for z in row] for row in mm(sigma,dot)]==uv
+    assert mm(dot,dot)==[[0,0],[0,0]]
+    assert dot[0][1]==-q
+    if q==1:
+        assert dot[0][1]!=1  # Reject changing only the diagonal signs.
+    normalized_Q=[[-q,0],[0,1]]
+    assert mm(normalized_Q,normalized_Q)==ident(2)
+    assert mm(mm(normalized_Q,dot),normalized_Q)==[[0,1],[0,0]]
+    source_sign_cases+=1
+print(json.dumps({'exact_cases':checked,'all_passed':True,'transfer_coefficients':c,
+                  'source_sign_cases':source_sign_cases,'even_sign_mutation_rejected':True}))

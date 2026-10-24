@@ -8,6 +8,8 @@ Write q=-1 for the odd nilHecke slide and q=1 for the even slide. For each facto
 
     sigma x = u v + q y sigma.                         (1)
 
+Relative to the source slide `y sigma_src-q sigma_src x=uv`, equation (1) uses sigma=-q sigma_src and leaves the dots unchanged. To use [BlockNilpotence](BlockNilpotence.md), further replace its right dot by -q y and its j-th cup by (-q)^j u_j; this turns (1) into that document's plus-sign slide. The resulting unit rescalings do not change the generated coefficient ideals. They do not identify the coupled C/D formulas below with their source mates: that comparison remains required.
+
 Set u_s=y^s u, v_s=v x^s. The second-factor dots are invertible, so negative subscripts are allowed there. The first-factor dots are nilpotent. All identities use the actual Pi comparisons; the equations below are equations of the resulting ordered maps, not unsigned tensor products.
 
 Use A for the first factor, B for the second. On the diagonal part of EF→FE the matrix is
