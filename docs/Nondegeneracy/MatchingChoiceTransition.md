@@ -1,9 +1,10 @@
 # Crossing-filtered expansions and matching choices
 
 Crossing-filtered coefficient extraction and the unit-leading signed comparison
-with explicitly bounded error morphisms are proved in Lean. The lower-dot
-coefficient recursion and invertible change-of-choice map are not yet constructed;
-neither proved result establishes independence.
+with explicitly bounded error morphisms are proved in Lean. A standalone checked
+calculation also normalizes bounded lower-dot sectors into a filtered coefficient
+image. The signed comparison between two choices and its inverse are not yet
+constructed; none of these results establishes independence.
 
 ## Crossing-filtered expansions
 
@@ -122,8 +123,38 @@ error loses a strand dot and its odd bubble slides without regenerating
 strand dots. General bubble slides need not have that property.
 
 The crossing-filtered result above handles the lower-crossing errors.
-The explicit lower-dot coefficient vectors and the resulting decorated
-comparison still need to be extracted.
+The filtered normalization below handles lower-dot sectors on a chosen family;
+the resulting signed comparison between two families still needs construction.
+
+## Filtered lower-dot normalization
+
+The standalone checked file
+[`MatchingDotFiltration.lean`](../../scripts/Nondegeneracy/MatchingDotFiltration.lean)
+defines `MatchingBasisChoice.openDots` as the finite sum of the actual strand
+multiplicities, and `dotBound c N` by
+
+\[
+ \operatorname{crossings}(t)<c\quad\text{or}\quad
+ \bigl(\operatorname{crossings}(t)=c\ \text{and}
+       \operatorname{openDots}(t)<N\bigr).
+\]
+
+`strand_count_sum` identifies the canonical list length with that strand sum.
+The bounded canonical step retains the corresponding restriction on its family
+premise; simultaneous induction then normalizes the canonical and decorated
+lower-dot sectors without truncating the complete family.
+
+`MatchingBasisChoice.bounded_errors_mem` places those sectors in the `bendG`
+preimage of the expansion image of coefficient vectors supported on `dotBound`.
+Membership in this image supplies finite abstract-SYM coefficients. Source
+placement uses `bubble_swap` and `betaSYM_range`, without assuming faithfulness.
+There is no dot restriction when the crossing count drops.
+
+The decorated clause applies only to skeletons **in the chosen family**. It is
+not a theorem normalizing an arbitrary other-family skeleton into that family
+with the same dot bound. The remaining two-choice induction must address errors
+from both representatives, preserve the endpoint reindexing, and retain a signed
+leading label. The standalone result is not yet part of the imported library API.
 
 ## From a bounded comparison to an inverse
 
