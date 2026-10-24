@@ -1,8 +1,9 @@
 # Crossing-filtered expansions and matching choices
 
-The first bounded coefficient lemma needed for changing matching choices is
-proved in Lean. The invertible change-of-choice map itself is not yet
-constructed, and no independence follows from the bounded spanning result.
+Crossing-filtered coefficient extraction and the unit-leading signed comparison
+with explicitly bounded error morphisms are proved in Lean. The lower-dot
+coefficient recursion and invertible change-of-choice map are not yet constructed;
+neither proved result establishes independence.
 
 ## Crossing-filtered expansions
 
@@ -53,7 +54,35 @@ crossings, and a zero-crossing matching expands using only zero-crossing
 representatives. These examples do not assert that their evaluated
 morphisms are nonzero.
 
-## The remaining decorated comparison
+## Signed decorated comparison
+
+`canon_dots_signRel_decorated₂` in
+[`SpanDecoratedMatchings.lean`](../../OddMath/SKM/SpanDecoratedMatchings.lean)
+retains the leading sign from the canonical normalization. Given a reduced
+matching `R` with pairing isomorphic to `s`, any valid distinguished points and
+serializer, and a list `is` of open dot positions, it gives
+
+\[
+ \operatorname{canonDots}(s,\mathrm{is})
+ =(-1)^p\operatorname{bentDecorated}(R,n)+e_C+e_F+e_D,
+ \qquad n(j)=\#\{i\in\mathrm{is}:\operatorname{lEnd}_s(i)=j\}.
+\]
+
+Here `e_C` has strictly fewer crossings; `e_F` lies in `FewerDots` on the
+canonical skeleton; and `e_D` lies in `DecSpan` on the chosen bent skeleton.
+Both latter submodules have strictly fewer than `is.length` open dots, with
+unrestricted bubble products. `canon_dots_eq_sign_decorated₂_add_errors`
+extracts these three errors separately. No complete family, ambient spanning
+hypothesis, or coefficient-faithfulness assumption enters either statement.
+
+The existing `canon_dots_mem_step` now consumes this comparison, with its
+statement unchanged. The errors remain morphisms, not finite abstract-SYM
+coefficient vectors. The importing examples in
+[`MatchingDecoratedSign.lean`](../../scripts/NonVacuity/MatchingDecoratedSign.lean)
+use a two-colour odd matching over rational scalars: three dots including a
+repeated dot, and a zero-dot comparison in which both lower-dot errors vanish.
+
+## The remaining choice comparison
 
 For complete unique choices `F,G`, identify their matching classes by the
 endpoint pairing, and transport strand counts with
@@ -81,10 +110,10 @@ Several needed relations already preserve a leading sign:
   crossings.
 - `DotBase.dots_up` and `dots_to_lEnd` preserve the leading strand counts;
   their errors have fewer crossings or fewer open-strand dots.
-- `canon_dots_mem_step` constructs a chain of `SignRel` witnesses before
-  using it only to prove span membership. Extracting a decorated comparison
-  requires retaining that chain and its lower-dot induction, not invoking
-  unrestricted surjectivity.
+- `canon_dots_signRel_decorated₂` retains the chain of `SignRel` witnesses
+  underlying `canon_dots_mem_step`. Converting its two lower-dot errors into
+  coefficient vectors requires the lower-dot induction, not unrestricted
+  surjectivity.
 
 The sign assertions concern the repository's normalized layer evaluations.
 They do not say that every raw cyclicity relation has coefficient `±1`.
