@@ -20,6 +20,7 @@ import OddMath.QuiverHecke.SerreClass
 import OddMath.QuiverHecke.SerreClassUp
 import OddMath.QuiverHecke.CornerProjectors
 import OddMath.SKM.BubbleTruncation
+import OddMath.SKM.BubbleSpecialization
 import OddMath.SKM.KarSummandProducts
 import OddMath.SKM.SummandRetracts
 import OddMath.QuiverHecke.SerreDividedPowers
