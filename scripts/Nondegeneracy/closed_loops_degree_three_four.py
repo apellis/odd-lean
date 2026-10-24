@@ -66,12 +66,34 @@ P=[sigma[i]+sum((cup(s)[i] for s in range(n-2)),[]) for i in range(dim)]
 Pinv=inverse(P)
 assert mm(P,Pinv)==[[int(i==j) for j in range(dim)] for i in range(dim)]
 r=Pinv[:n*n]
+# Verify the negative-weight coefficient recurrence on the actual inverse maps.
+height=n-2
+tcoords=[Pinv[n*n+j*n:n*n+(j+1)*n] for j in range(height)]
+w=mm(r,cup(height))
+bs=[mm(t,cup(height)) for t in tcoords]
+cs=[mm(cap(s),w) for s in range(n)]
+def madd(a,b): return [[x+y for x,y in zip(row,col)] for row,col in zip(a,b)]
+def mneg(a): return [[-x for x in row] for row in a]
+zero=[[0]*n for _ in range(n)]
+def B(j,t): return mm(tcoords[j],cup(t))
+def L(s,t): return mm(mm(cap(s),r),cup(t))
+recurrences=0
+for t in range(2*n-2):
+    for s in range(n):
+        assert L(s,t+1)==madd(mneg(L(s+1,t)),mm(cs[s],B(height-1,t)))
+        recurrences+=1
+    for j in range(height):
+        rhs=madd(L(0,t) if j==0 else zero,B(j-1,t) if j>0 else zero)
+        rhs=madd(rhs,mm(bs[j],B(height-1,t)))
+        assert B(j,t+1)==rhs
+        recurrences+=1
 nonzero={}
 for s in range(n):
     for t in range(2*n-1):
-        L=mm(mm(cap(s),r),cup(t))
-        if any(v for row in L for v in row): nonzero[f'{s},{t}']=[[str(v) for v in row] for row in L]
+        loop_value=mm(mm(cap(s),r),cup(t))
+        if any(v for row in loop_value for v in row): nonzero[f'{s},{t}']=[[str(v) for v in row] for row in loop_value]
         # Every loop strictly raises the x-degree; n products vanish.
-        assert all(L[i][j]==0 for i in range(n) for j in range(n) if i<=j),(s,t,L)
+        assert all(loop_value[i][j]==0 for i in range(n) for j in range(n) if i<=j),(s,t,loop_value)
 print(json.dumps({'cyclotomic_degree':n,'factor_inverse_dimension':len(P),'loops_checked':n*(2*n-1),'nonzero_loops':nonzero,
-                  'all_loops_strictly_raise_degree':True,'uniform_product_nilpotence_bound':n},indent=2))
+                  'all_loops_strictly_raise_degree':True,'uniform_product_nilpotence_bound':n,
+                  'coefficient_recurrences_checked':recurrences},indent=2))

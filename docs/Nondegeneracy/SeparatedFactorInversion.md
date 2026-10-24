@@ -96,6 +96,18 @@ and cap rows with indices -a,...,-d-1. Hence it is
 
 which is invertible.
 
+The second-factor part of the added cup columns is essential here. It produces the correction to sigma_B in (3); it does not vanish merely because the first-factor bubble ideal does. For example, the companion
+
+    T=[1 1; -1 0]
+
+has an invertible leading block and is invertible, but the lower-right entry of T^-2 is zero. With q=-1, a=2 and m=1, the full matrix including its added cup column is instead
+
+    [ 1 1 1 ]
+    [-1 0 0 ],
+    [ 1 0 1 ]
+
+which is invertible. Replacing its bottom-right cup entry by zero makes it singular. Thus the calculation does not use an unjustified raw window beyond m.
+
 ### h_A=-a, h_B=-b≤0
 
 Now h=-(a+b). Eliminate the first a added cup columns using the A-coordinate rows. What remains is
@@ -123,3 +135,7 @@ If a<b, the a negative cup columns and the b-a added nonnegative cup columns giv
 ## Boundary of the conclusion
 
 This proves an abstract all-weight block inversion CONDITIONAL on: actual factor inversions and slides, nilpotence/invertibility of the respective dots, the first-factor central nilpotence lemma, both actual mate expansions (2), and the signed identification of total cups/caps in the block coordinates. It does not establish those categorical comparisons by fiat. It does not compute normalized BE2 vacuum bubbles, prove the factor actions for every allowed parameter, or prove matching independence.
+
+## Exact block calculations
+
+`python3 scripts/Nondegeneracy/separated_block_inversion.py` checks the ordered block equations with pure nilpotent first-factor cup/cap blocks and second-factor companions. It covers both slide signs and all first- and second-factor heights from -4 through 4. It also checks the displayed beyond-window example and detects the mutation deleting its cup term. These are tests of the stated block algebra, not tests of superfunctor coherence or a construction of BE2 actions.
