@@ -139,3 +139,17 @@ This proves an abstract all-weight block inversion CONDITIONAL on: actual factor
 ## Exact block calculations
 
 `python3 scripts/Nondegeneracy/separated_block_inversion.py` checks the ordered block equations with pure nilpotent first-factor cup/cap blocks and second-factor companions. It covers both slide signs and all first- and second-factor heights from -4 through 4. It also checks the displayed beyond-window example and detects the mutation deleting its cup term. These are tests of the stated block algebra, not tests of superfunctor coherence or a construction of BE2 actions.
+
+## Actual nonvacuum mate in the degree-two odd towers
+
+Run the separate right-supermodule calculation with its declared SymPy dependency:
+
+```sh
+uv run --no-project --script scripts/Nondegeneracy/nonvacuum_rankone.py
+```
+
+This uses one odd colour and two factors, at component (1,1), on the regular module of `A_1 ⊗̂ B_1`, where `A_1=Q[x]/(x²)` and `B_1=Q[y]/(y²-1)` with x and y odd. It constructs balanced induction and constrained-Hom coinduction, their actual units and counits, the parity shifts, and the local crossing. The mixed mate is then computed as the cup–crossing–cap composite, not selected by dimension.
+
+The resulting matrix is 36 by 36, of rank 36 and determinant 1; both inverse products are checked. Its central block is 16 by 16, and `D sigma_A^-1 C=0`, so the feedback pivot is `I_8`. Both ordered expansions in (2) are checked against their actual dotted-unit and dotted-counit composites. The separate pure-right mate is 4 by 4, of rank 4 and determinant -1.
+
+The same execution checks both adjunction triangles, the relevant two-strand nilHecke relations, right-linearity and parity of the mate blocks, and supernaturality against all homogeneous basis endomorphisms of the regular input. The restriction-dot square is computed from its definition and has the negative raw-right-multiplication sign. These checks do not establish three-strand coherence, other cyclotomic degrees, independent exterior parameters, or mixed-colour nondegeneracy.
