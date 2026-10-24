@@ -19,6 +19,10 @@ The ordinary affine quiver-Hecke PBW theorem does **not** supply the stated
 upward SKM independence with independent bubble coefficients. Arbitrary
 oriented boundaries and arbitrary matching choices remain separate obligations.
 
+[AllWeightSorting](AllWeightSorting.md) extends this target-side calculation
+to all coroot weights and both parities. Source-side sorting has the opposite
+identity-remainder threshold and cannot use the target rule unchanged.
+
 ## One-strand transport on full SYM
 
 This step works for any colour `j` and weight `λ`, conditional on one-strand
