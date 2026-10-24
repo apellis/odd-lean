@@ -1,7 +1,9 @@
 # Elementary odd sorting and coefficient placement
 
 This calculation supports the Brundan–Ellis §8 Nondegeneracy Conjecture. It gives
-identities of SKM morphisms, not independence of the formal matching labels.
+identities of SKM morphisms. [ElementaryClosure](ElementaryClosure.md) uses them
+to prove independence of the fixed family below **conditional on upward SKM
+independence with full SYM coefficients**, not the general conjecture.
 Throughout, composition `f ; g` means `f ≫ g`. The base and scalar data are those
 of the existing SKM presentation.
 
@@ -89,9 +91,9 @@ remaining expressions are nonzero without a separate independence argument.
 Applying `SpanBend.bendF` with source word `[up i,dn i]` gives target words
 `EFFE` and `EF`, not all-upward words. Its return sign is `+1` in this weight
 case, but that does not turn it into a coefficient comparison with an upward
-basis. A right-adjunction closure to `EE` and `E` instead uses rightmost weight
-`λ=μ−α_i`. Its dot, crossing and coefficient images still need to be computed
-with the literal cup/cap placements.
+basis. The right-adjunction closures to `EE` and `E` instead use rightmost weight
+`λ=μ−α_i`. Their dot, crossing and coefficient images are computed with the
+literal cup/cap placements in [ElementaryClosure](ElementaryClosure.md).
 
 Already the first odd elementary coefficient has a correction. Write
 
@@ -117,12 +119,14 @@ Odd dot squares are not exterior squares, so deleting the term uniformly is
 unjustified. In contrast, the actual odd bubbles slide by
 `OddBubbleCentrality.oddBubble_slide_up`.
 
-To prove a coefficient-level division-with-remainder statement, one must still
-transport arbitrary `p ∈ SYM` and the middle bubbles `q_r` through the relevant
-closures. The term with `r=0` in the cap-cup crossing formula is a prospective
-leading term, but it cannot be declared leading before the other coefficient
-images are controlled. Morphism reconstruction alone does not give formal
-matching independence.
+The full coefficient and middle-bubble transport in
+[ElementaryClosure](ElementaryClosure.md) now supplies the conditional
+division-with-remainder argument for this family. The transported source
+coefficient has constant dot coefficient `p`, and middle-bubble transport
+introduces no left-strand dot in the chosen two-strand closure. These are the
+additional facts that make the `r=0` term leading. Morphism reconstruction
+alone does not give formal matching independence, and the upward independence
+input and global arbitrary-matching comparison remain unproved.
 
 ## Checks and their scope
 
