@@ -303,10 +303,12 @@ variable (μ : X) (a b : List (Letter I)) (M : Set (List (TMove (Letter I))))
   (hσ : ∀ R ∈ M, ∀ n, Decorates₂ a R (q R) n (σ R n))
   (v : List (Letter I)) (hvab : dualW a ++ b = v)
   (T : Submodule k ((pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ v)))
-  (hfam : ∀ R ∈ M, ∀ n, ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])},
+  (c : ℕ)
+  (hfam : ∀ R ∈ M, ncr₂ R = c → ∀ n,
+    ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])},
     IsBubbleProd cs μ β → xev cs μ [] v (cupA (dualW a) ++
       dLay (dualW a ++ a) ((σ R n).map (shiftD a.length))) ≫ bubAt D Sc μ v β ∈ T)
-  (c : ℕ) (hlow : LtL D Sc cs μ [] v c ≤ T)
+  (hlow : LtL D Sc cs μ [] v c ≤ T)
 
 include hM hrep hq hσ hvab hfam hlow in
 /-- **The canonical diagrams with dots, step**: given the canonical diagrams with fewer than `N`
@@ -438,7 +440,7 @@ theorem canon_dots_mem_step (N : ℕ)
     refine this.mono (sup_le hLF (le_trans (decSpan_mono ?_) hDS))
     omega
   have hchain := h01.trans (h12.trans (h23.trans (h34.trans h45)))
-  refine hchain.comp_mem ?_ (hfam R hRM n hβ)
+  refine hchain.comp_mem ?_ (hfam R hRM hnc n hβ)
   intro x hx
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
   obtain ⟨z₁, hz₁, z₂, hz₂, rfl⟩ := Submodule.mem_sup.1 hz
@@ -508,7 +510,8 @@ theorem decSpan_le_step (N : ℕ)
 
 include hM hrep hq hσ hvab hfam hlow in
 /-- **The triangular step of [BE2] Theorem 8.1** (KL III, proof of Proposition 3.11): if `T`
-contains the bent decorated matchings and the diagrams with fewer than `c` crossings, then it
+contains the chosen bent decorated matchings with exactly `c` crossings and the diagrams with
+fewer than `c` crossings, then it
 contains the canonical diagrams with `c` crossings and any dots, and the bent decorated diagrams
 with their moves, by induction on the number of dots. -/
 theorem canon_dots_mem_decorated₂ : ∀ N : ℕ,
@@ -524,9 +527,9 @@ theorem canon_dots_mem_decorated₂ : ∀ N : ℕ,
   | N + 1 => by
     obtain ⟨hC, hA⟩ := canon_dots_mem_decorated₂ N
     exact ⟨fun hv hl hsv hc is his hlt _ hβ => canon_dots_mem_step μ a b M hM hrep q hq σ hσ v
-        hvab T hfam c hlow N hC hA hv hl hsv hc is his (by omega) hβ,
+        hvab T c hfam hlow N hC hA hv hl hsv hc is his (by omega) hβ,
       decSpan_le_step μ a b M hM v hvab T c hlow N (fun hv hl hsv hc is his hle _ hβ =>
-        canon_dots_mem_step μ a b M hM hrep q hq σ hσ v hvab T hfam c hlow N hC hA hv hl hsv hc is
+        canon_dots_mem_step μ a b M hM hrep q hq σ hσ v hvab T c hfam hlow N hC hA hv hl hsv hc is
           his hle hβ) hA⟩
 
 end Step
@@ -565,6 +568,47 @@ variable (μ : X) (a b : List (Letter I)) (M : Set (List (TMove (Letter I))))
   (hσ : ∀ R ∈ M, ∀ n, Decorates₂ a R (q R) n (σ R n))
 
 include hM hrep hq hσ in
+/-- Diagrams below a crossing ceiling are spanned by the chosen decorated matchings below
+that same ceiling, with arbitrary rightmost bubble coefficients. This retains the crossing
+bound through normalization; it asserts neither coefficient uniqueness nor independence. -/
+theorem ltL_le_diagBubSpan_decoratedFamily₂ (N : ℕ) :
+    LtL D Sc cs μ a b N ≤ diagBubSpan D Sc cs μ a b
+      (decoratedFamily₂ a {R | R ∈ M ∧ ncr₂ R < N} σ) := by
+  set T := diagBubSpan D Sc cs μ a b
+    (decoratedFamily₂ a {R | R ∈ M ∧ ncr₂ R < N} σ)
+  have hfam : ∀ R ∈ M, ncr₂ R < N → ∀ n,
+      ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])},
+      IsBubbleProd cs μ β → xev cs μ [] (dualW a ++ b) (cupA (dualW a) ++
+        dLay (dualW a ++ a) ((σ R n).map (shiftD a.length))) ≫
+          bubAt D Sc μ (dualW a ++ b) β ∈ T.comap (bendG cs μ a b) := by
+    intro R hRM hRN n β hβ
+    obtain ⟨hR, -⟩ := hM R hRM
+    obtain ⟨hmv, -⟩ := hσ R hRM n
+    obtain ⟨hfitb, -⟩ := matching_bent_spec hR
+    obtain ⟨h1, h2, -, -⟩ := shiftD_spec (dualW a) a.length (length_dualW a) (σ R n)
+      (tStart_letters a) (by rw [tmoves_map_shiftD, hmv]; exact hfitb)
+    rw [h1]
+    rw [hmv, hR.2] at h2
+    exact bendF_mem_comap_bendG μ a b
+      (𝒞 := decoratedFamily₂ a {R | R ∈ M ∧ ncr₂ R < N} σ)
+      ⟨R, ⟨hRM, hRN⟩, n, rfl⟩ h2 hβ
+  have hT : LtL D Sc cs μ [] (dualW a ++ b) N ≤ T.comap (bendG cs μ a b) :=
+    ltL_le_of_canon_dots_mem cs μ (dualW a ++ b) _ N
+      fun c hc hlow _ hv hl hsv hsc is his _ hβ =>
+        (canon_dots_mem_decorated₂ μ a b M hM hrep q hq σ hσ (dualW a ++ b) rfl _ c
+          (fun R hR heq => hfam R hR (heq ▸ hc)) hlow
+          (is.length + 1)).1 hv hl hsv hsc is his (Nat.lt_succ_self _) hβ
+  refine Submodule.span_le.2 ?_
+  rintro _ ⟨L, hL, rfl⟩
+  by_cases hC : XChain a L b
+  · refine Submodule.map_comap_le _ _
+      (mem_map_bendG_of_bendF_mem cs μ (xev_mem_homPar cs μ a b L) (hT ?_))
+    rw [bendF_xev cs μ hC]
+    exact Submodule.subset_span ⟨_, by simpa using hL, rfl⟩
+  · rw [xev_of_not cs hC]
+    exact Submodule.zero_mem _
+
+include hM hrep hq hσ in
 /-- **[BE2] Theorem 8.1, for any bottom boundary**, for any set of reduced matchings representing
 every pairing, any distinguished points, and any order of the dots at one height.
 
@@ -592,26 +636,20 @@ Compared with the printed statement:
   order (both only make the statement more general); `wt(a) = wt(b)` is not needed. -/
 theorem theorem_8_1_of_pairings :
     diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ) = ⊤ := by
-  set T := diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ)
-  have hfam : ∀ R ∈ M, ∀ n, ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])},
-      IsBubbleProd cs μ β → xev cs μ [] (dualW a ++ b) (cupA (dualW a) ++
-        dLay (dualW a ++ a) ((σ R n).map (shiftD a.length))) ≫
-          bubAt D Sc μ (dualW a ++ b) β ∈ T.comap (bendG cs μ a b) := by
-    intro R hRM n β hβ
-    obtain ⟨hR, -⟩ := hM R hRM
-    obtain ⟨hmv, -⟩ := hσ R hRM n
-    obtain ⟨hfitb, -⟩ := matching_bent_spec hR
-    obtain ⟨h1, h2, -, -⟩ := shiftD_spec (dualW a) a.length (length_dualW a) (σ R n)
-      (tStart_letters a) (by rw [tmoves_map_shiftD, hmv]; exact hfitb)
-    rw [h1]
-    rw [hmv, hR.2] at h2
-    exact bendF_mem_comap_bendG μ a b (𝒞 := decoratedFamily₂ a M σ) ⟨R, hRM, n, rfl⟩ h2 hβ
-  have hT' : T.comap (bendG cs μ a b) = ⊤ :=
-    eq_top_of_canon_dots_mem cs μ (dualW a ++ b) _ fun c hlow _ hv hl hsv hc is his _ hβ =>
-      (canon_dots_mem_decorated₂ μ a b M hM hrep q hq σ hσ (dualW a ++ b) rfl _ hfam c hlow
-        (is.length + 1)).1 hv hl hsv hc is his (Nat.lt_succ_self _) hβ
-  exact eq_top_of_cl_mem fun L _ => Submodule.map_comap_le _ _
-    (mem_map_bendG_of_bendF_mem cs μ (cl_mem_homPar' μ a b L) (by rw [hT']; trivial))
+  have hmono (N : ℕ) : diagBubSpan D Sc cs μ a b
+      (decoratedFamily₂ a {R | R ∈ M ∧ ncr₂ R < N} σ) ≤
+      diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ) := by
+    apply Submodule.span_mono
+    rintro _ ⟨_, ⟨R, ⟨hRM, _⟩, n, rfl⟩, β, hβ, rfl⟩
+    exact ⟨_, ⟨R, hRM, n, rfl⟩, β, hβ, rfl⟩
+  have key (L : List (XLayer I)) :
+      xev cs μ a b L ∈ diagBubSpan D Sc cs μ a b (decoratedFamily₂ a M σ) :=
+    hmono (xcnt L + 1)
+      (ltL_le_diagBubSpan_decoratedFamily₂ μ a b M hM hrep q hq σ hσ (xcnt L + 1)
+        (Submodule.subset_span ⟨L, Nat.lt_succ_self _, rfl⟩))
+  exact eq_top_of_cl_mem fun L _ => by
+    rw [← xev_map_ofL cs]
+    exact key _
 
 end Theorem
 

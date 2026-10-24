@@ -627,28 +627,28 @@ end Theorem
 section Triangular
 
 variable (cs) in
-/-- **The triangular induction on crossings** (KL III, proof of Proposition 3.11): a submodule of
-`Hom(1_μ, E_v 1_μ)` is everything as soon as it contains the canonical chord diagrams with any
-dots, followed by products of bubbles, of every crossing number `c` for which it contains the
-diagrams with fewer than `c` crossings. -/
-theorem eq_top_of_canon_dots_mem (μ : X) (v : List (Letter I))
+/-- Crossing-bounded spanning induction. Only canonical diagrams below the given crossing
+ceiling are needed to span all diagrams below that ceiling. Dot counts are unrestricted. -/
+theorem ltL_le_of_canon_dots_mem (μ : X) (v : List (Letter I))
     (T : Submodule k ((pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ v)))
-    (h : ∀ c, LtL D Sc cs μ [] v c ≤ T → ∀ {s : List (ℕ × Letter I)}, Valid s →
+    (N : ℕ)
+    (h : ∀ c < N, LtL D Sc cs μ [] v c ≤ T → ∀ {s : List (ℕ × Letter I)}, Valid s →
       Lettered flipL s → s.map Prod.snd = v → ncr (canon s) = c → ∀ (is : List ℕ),
       (∀ i ∈ is, i < s.length) →
       ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])}, IsBubbleProd cs μ β →
       xev cs μ [] v (chordLay [] (canon s) ++ dotsOn v is) ≫ bubAt D Sc μ v β ∈ T) :
-    T = ⊤ := by
-  have key : ∀ (c : ℕ) (L : List (XLayer I)), xcnt L ≤ c → xev cs μ [] v L ∈ T := by
+    LtL D Sc cs μ [] v N ≤ T := by
+  have key : ∀ (c : ℕ), c < N → ∀ (L : List (XLayer I)),
+      xcnt L ≤ c → xev cs μ [] v L ∈ T := by
     intro c
     induction c using Nat.strong_induction_on with
     | _ c ihc =>
-    intro L hL
+    intro hc L hL
     have hlo : ∀ n ≤ c, LtL D Sc cs μ [] v n ≤ T := by
       intro n hn
       refine Submodule.span_le.2 ?_
       rintro _ ⟨L', hL', rfl⟩
-      exact ihc (xcnt L') (by omega) L' le_rfl
+      exact ihc (xcnt L') (by omega) (by omega) L' le_rfl
     have hcap := capElim_full cs μ [] c v L hL
     rw [CapTarget, thruShort_nil, sup_bot_eq, MvSp] at hcap
     generalize xev cs μ [] v L = x at hcap
@@ -677,14 +677,34 @@ theorem eq_top_of_canon_dots_mem (μ : X) (v : List (Letter I))
         have h2 := hdc.append_right (t := v) hsD hsc (dotsOn v is)
         rw [xcnt_dotsOn, add_zero, hn] at h2
         refine h2.signRel.comp_mem hlow ?_
-        exact h n (hlo n hcc) hvs hls hsv (by rw [hnc, hn]) is
+        exact h n (by omega) (hlo n hcc) hvs hls hsv (by rw [hnc, hn]) is
           (fun i hi => by rw [← hsv] at his; simpa using his i hi) hβ
     | zero => exact Submodule.zero_mem _
     | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
     | smul r x _ hx => exact Submodule.smul_mem _ r hx
+  refine Submodule.span_le.2 ?_
+  rintro _ ⟨L, hL, rfl⟩
+  exact key _ hL L le_rfl
+
+variable (cs) in
+/-- **The triangular induction on crossings** (KL III, proof of Proposition 3.11): a submodule of
+`Hom(1_μ, E_v 1_μ)` is everything as soon as it contains the canonical chord diagrams with any
+dots, followed by products of bubbles, of every crossing number `c` for which it contains the
+diagrams with fewer than `c` crossings. -/
+theorem eq_top_of_canon_dots_mem (μ : X) (v : List (Letter I))
+    (T : Submodule k ((pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ v)))
+    (h : ∀ c, LtL D Sc cs μ [] v c ≤ T → ∀ {s : List (ℕ × Letter I)}, Valid s →
+      Lettered flipL s → s.map Prod.snd = v → ncr (canon s) = c → ∀ (is : List ℕ),
+      (∀ i ∈ is, i < s.length) →
+      ∀ {β : (pres D Sc).obj (ob D μ []) ⟶ (pres D Sc).obj (ob D μ [])}, IsBubbleProd cs μ β →
+      xev cs μ [] v (chordLay [] (canon s) ++ dotsOn v is) ≫ bubAt D Sc μ v β ∈ T) :
+    T = ⊤ := by
+  have key (L : List (XLayer I)) : xev cs μ [] v L ∈ T :=
+    ltL_le_of_canon_dots_mem cs μ v T (xcnt L + 1) (fun c _ => h c)
+      (Submodule.subset_span ⟨L, Nat.lt_succ_self _, rfl⟩)
   exact eq_top_of_cl_mem fun L _ => by
     rw [← xev_map_ofL cs]
-    exact key _ _ le_rfl
+    exact key _
 
 end Triangular
 
