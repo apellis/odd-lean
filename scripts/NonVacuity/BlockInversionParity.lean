@@ -67,4 +67,11 @@ theorem slide_normalized {X Y U : C} (q : R) (hq : q ^ 2 = 1)
 #print axioms crossing_even
 #print axioms slide_normalized
 
+/-- The three parity-line contributions to the BB mate cancel. -/
+theorem mate_line_parity : ∀ s p a v f b : ZMod 2,
+    a + v + p = b + f → s * (v + f) + s * (a + b) + s * p = 0 := by
+  decide
+
+#print axioms mate_line_parity
+
 end NonVacuity.BlockInversionParity

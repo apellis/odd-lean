@@ -1,6 +1,6 @@
 # Separated-factor block inversion
 
-This conditional calculation treats the identity-summand Schur maps for all weight signs. The signed categorical comparison remains to be proved. The factor actions and mixed mates below are explicit inputs; no constructed SKM action or nondegeneracy theorem is asserted.
+This conditional calculation treats the identity-summand Schur maps for all weight signs. The mixed-mate formulas follow from the projected source dot-slide once the specified parity-line comparisons are supplied. Their application still requires a coherent upward construction and actual factor actions; neither those constructions nor a nondegeneracy theorem is asserted.
 
 ## Algebraic conventions
 
@@ -27,6 +27,67 @@ For odd q=-1 these two sums have the same alternating coefficients; for even q=1
 Assume the first-factor companion coefficients and closed loops generate a nilpotent supercentral ideal J, as required by the [nilpotent closed-loop argument](BlockNilpotence.md). Gaussian elimination of the common first-factor summand is valid: the feedback correction lies in J and 1-feedback has a finite geometric inverse.
 
 It suffices to invert the remaining matrix modulo J. An inverse modulo a nilpotent ideal lifts by a finite geometric correction. Here J means finite sums of first-factor central coefficients times second-factor maps; it is stable under all the intervening second-factor maps, with Koszul signs.
+
+## Mixed mates from the projected dot-slide
+
+First distinguish the literal source mate sigma_src from sigma=-q sigma_src used in (1). The source equation is `y sigma_src-q sigma_src x=uv`; its equivalent normalized equation is (1). Thus the following C,D are blocks of the **normalized** mate. For the raw source mate both blocks must be multiplied by -q. This changes both signs for even colour and changes neither for odd colour.
+
+Suppose the diagonal-sector comparisons carry the total dots to `(x_A,x_B)` and `(y_A,y_B)`, and the total right unit/counit to `(u_A,u_B)^T` and `(v_A,v_B)`. Projecting (1) then gives
+
+    C x_B-q y_A C=u_A v_B,
+    D x_A-q y_B D=u_B v_A.                         (5)
+
+Because the B dots are invertible, these are the ordered recurrences
+
+    C=u_A v_B x_B^-1+q y_A C x_B^-1,
+    D=-q y_B^-1 u_B v_A+q y_B^-1 D x_A.            (6)
+
+Iterating n times, without interchanging any factors, gives
+
+    C=sum_(r<n) q^r y_A^r u_A v_B x_B^(-r-1)
+        +q^n y_A^n C x_B^-n,
+    D=-sum_(r<n) q^(r+1) y_B^(-r-1) u_B v_A x_A^r
+        +q^n y_B^-n D x_A^n.                     (7)
+
+The remainders vanish when y_A^n=x_A^n=0, proving (2). Applied to the difference of two solutions, the same iteration proves uniqueness. The two nilpotence exponents may differ. This is an ordered composition argument, not commutativity of odd maps or a vacuum specialization.
+
+`scripts/NonVacuity/MixedMateRecurrence.lean` proves the general expansion with remainder, its nilpotent truncation and uniqueness in any preadditive category. In its bottom-to-top composition notation the recurrence is `f=b+s≫f≫t`. For C, take s=x_B^-1, t=q y_A and b=u_A v_B x_B^-1; for D, take s=x_A, t=q y_B^-1 and b=-q y_B^-1 u_B v_A (the b expressions here retain right-to-left notation). This Lean check does not identify the categorical source maps or establish their projected slide.
+
+### The parity-line comparison that must be implemented
+
+On a fixed first-content component N, put P=Pi^(pN), R=P B and R*=B* P. Let m:P P→Id be the chosen even line contraction, with coevaluation m^-1, and c_T:T P→P T the canonical even line commutation for an even superfunctor T. These obey
+
+    c_V (alpha P)=(P alpha)c_T,
+    c_TU=(c_T U)(T c_U),
+    (m T)(P c_T)(c_T P)=T m,                       (8)
+
+with alpha homogeneous. In particular c_P=(-1)^(pN), not always 1. The appropriate B-sector comparisons are
+
+    phi_X=(m BB*)(P c_(BB*)): P BB* P→BB*,
+    phi_Y=B* m B: B* P P B→B*B,
+    kappa=(m BB)(P c_B B): P B P B→BB.             (9)
+
+Use the composed adjunction
+
+    eta_R=(B* m^-1 B) eta_B,
+    epsilon_R=m(P epsilon_B P),
+
+and the BB upward crossing `tau_RR=kappa^-1 tau_B kappa`. With (8), these give the unshifted B dots, unit, counit and same-factor mate under phi_X,phi_Y. The A-sector comparison is the identity. The local BB mate sign has contributions `s(v+f)`, `s(a+b)` and `sp`, where s=pN and a+v+p=b+f; their sum is zero. Omitting the last, outer-whiskering contribution introduces a false content-parity sign. The parity identity is checked in `BlockInversionParity.lean`; this is not a formalization of the entire categorical comparison.
+
+Since the direct-sum adjunction has no mixed-sector unit/counit entries and dots preserve sectors, conjugating their powers yields exactly
+
+    u_total,r=(u_A,r,u_B,r)^T,
+    v_total,r=(v_A,r,v_B,r),                        (10)
+
+and zero mixed-sector components. In particular the B cup term is retained. The identity-source/target shifts are those stated in [BlockNilpotence](BlockNilpotence.md).
+
+Equations (8)–(10), including the specified kappa comparison of the upward crossing, must be realized by the actual coherent construction. Neither existence of arbitrary even sector isomorphisms nor the finite parity check establishes that implementation. Once these inputs and the source dot-slide hold, (5)–(7) determine the mixed blocks for every first-content parity.
+
+The finite sign and ordered-word checks can be reproduced with:
+
+```sh
+python3 scripts/Nondegeneracy/mixed_mate_recurrence.py
+```
 
 ## Modulo-J first-factor coordinates
 
