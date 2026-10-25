@@ -36,6 +36,14 @@ independence. Theorem graph: [GeneralRoute.md](GeneralRoute.md) (in preparation)
 | Observations | construct `FiniteUpwardObservations` from a 2-representation | open; see below |
 | Multicolour deformed action | KKO-type cyclotomic action with ELV odd parameters, even cutoffs at odd colours | proposed: [MulticolourActionTheorem.md](MulticolourActionTheorem.md) |
 
+## Reduction route comparison
+
+[ReductionRoute.md](ReductionRoute.md) compares contextual descent with a graded-dimension
+reduction. The proposed next route is contextual descent: reconstruct complete same-colour
+adapted choices, then their coefficient columns. `hom_laurentian` already supplies the
+finite-dimensionality needed by the alternative field route; the missing super rank recursion
+and comparison basis prevent treating the even Orzech argument as an immediate reduction.
+
 ## Open obligations
 
 1. **Same-colour exchange descent**, source and target. The distinct-colour target proof is
