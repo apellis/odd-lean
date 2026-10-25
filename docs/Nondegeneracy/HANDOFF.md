@@ -76,6 +76,20 @@ fused action or theorem A2 is asserted. Detection still requires the bubble
 normalization outside the finite inverse window and its comparison with the
 connected reservoir coefficients.
 
+## One-strand cyclotomic algebra coordinates
+
+`QuiverHecke/CyclotomicAbsentColour.lean` proves `singlePolynomialEquiv` for
+the existing quiver Hecke one-strand endomorphism algebra, including odd
+colours. `singleCyclotomicEquiv` identifies its polynomial-ideal quotient
+with `AdjoinRoot`; `singleCyclotomicFinEquiv_apply` gives the monic finite
+coordinate map as the sum of scalar multiples of descended dot powers.
+These are underlying-algebra results over any commutative ring. A super
+quotient requires homogeneous polynomials; the higher-content induction,
+restriction, tensor adjunction and KKO local inversion are still open.
+[ActionLeanPlan.md](ActionLeanPlan.md) places exterior ELV coefficients after
+the even-parameter action theorem, and targets the existing
+`SKM.SuperRouquierLoc` rather than a second local-data interface.
+
 ## Proof architecture
 
 | Step | Statement | Status |

@@ -26,6 +26,40 @@ mathematical hypothesis. The main theorem should quantify over a cutoff vector
 with a supplied weight-pairing equation, not infer a weight from arbitrary
 natural numbers in an unspecified weight lattice.
 
+## Even-parameter implementation boundary
+
+The first implementation stage has a commutative, purely even coefficient
+ring. Odd colours are retained. Exterior ELV coefficients are a second stage:
+no exterior-parameter extension is needed to state the first action theorem.
+The underlying one-strand polynomial quotient exists for arbitrary monic
+polynomials, but its super grading requires homogeneity; these assertions must
+not be conflated.
+
+`QuiverHecke/CyclotomicAbsentColour.lean` starts the port with the actual
+one-strand endomorphism algebra. `singlePolynomialEquiv` identifies evaluation
+at its dot with a polynomial algebra, using the existing affine normal-form
+basis. `singleCyclotomicEquiv` identifies its cyclotomic quotient with
+`AdjoinRoot`, and `singleCyclotomicFinEquiv` gives the monic finite coordinates.
+This is only the vacuum-boundary algebra input, not an induction functor or a
+local inversion theorem.
+
+The higher-content port additionally needs the two-sided polynomial ideal in
+`Hn`, last-strand inclusion preserving that ideal, its colour-cut induction and
+restriction bimodules, and the graded tensor adjunction. Neither affine PBW
+coordinates nor an ordinary polynomial quotient supply these maps by themselves.
+The final same-colour inversion must instantiate `SKM.SuperRouquierLoc` from
+`SKM/RouquierData.lean`, with the prescribed mate and parity-indexed inverse
+entries. Do not replace its odd shifted summands by ordinary copies of the
+identity. The unchanged-parameter obstruction and corrected directed crossing
+in `SignedInductionComparison.md` remain part of the comparison obligation.
+
+After the even-parameter local inversion compiles, extend coefficients by the
+ELV algebra, prove the homogeneous normal first-dot relations and compatibility
+with strand inclusions, then carry the balanced projective resolution and mate
+matrix through the extension. Only then restore exterior-translated dots and
+verify both odd cutoff parities. The detailed exterior steps below specify
+that second stage, not prerequisites to the even-ring port.
+
 ## Dependency order and concrete consumers
 
 ### 1. `QuiverHecke/CyclotomicAction/Presentation.lean`
