@@ -1,3 +1,4 @@
+import OddMath.SKM.SourceCapAttachmentExamples
 import OddMath.SKM.SourceCapStateExamples
 import OddMath.SKM.SourceIdRelabelExamples
 import OddMath.SKM.StrictResidualChoice
