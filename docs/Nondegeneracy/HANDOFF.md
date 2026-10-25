@@ -105,3 +105,25 @@ twisted linearity. Prop4.7's explicit bubble computation can be used directly;
 its universal-equivalence proof invokes known rank-one nondegeneracy, so do not
 use that equivalence circularly. Workers now prioritize the connected extension
 and fixed-weight coupling rather than reconstructing the known rank-one theorem.
+
+### Superseding checkpoint, 18:45 UTC
+
+`cd0ba81` full CI40221653309 is green. `c8debb4` is pushed and CI40222091681
+is running. Next staged native milestones: PositiveDotTransport's
+betaSYM_exists_positiveDotExpansion for arbitrary full coefficients/all colours;
+BubbleCoefficientBasis's actual high-weight ideal and quotient injection;
+right-cap layer/dot transport; odd braid translation; cyclotomic norm identities.
+
+Current next tasks: choice completes right-cap strand/dot bijection and iteration;
+sorting builds UpwardWordTransport then full closure comparison; separation
+constructs coefficient-extended QH category using StringDiagrams.Super.BoxProduct
+(actual tensor Homs, proved Koszul composition); action investigates disconnected
+categorical product coherence after writing fixed-weight rank-one detection;
+synthesis audits all-content P/Q projectivity; alternatives checks filtered
+Mackey monicity and connected two-bubble pilot. All six remain active.
+
+General-Cartan guardrail: dominant vacua need not be cofinal in a fixed root
+coset, and a quadratic-in-head-length cutoff bound does not suffice when head
+length grows linearly. Rank-one uses the exact ELV rectangle. A zero-spectrum
+deformed reservoir plus compensating generic probes remains a possible Webster
+route after the connected action exists; its coupling is not yet proved.

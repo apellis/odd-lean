@@ -202,3 +202,31 @@ consumer and axiom prints are in
 `scripts/NonVacuity/OrientedReduction.lean`. Scoped compilation is separate
 from full CI evidence and does not certify the unimplemented constructions
 above.
+
+### Prescribed constant coefficient in full-SYM transport
+
+`PositiveDotTransport.lean` now proves
+`betaSYM_exists_positiveDotExpansion`: for every full-SYM coefficient `p`
+and every upward color `j`, its left placement is its right placement with
+**the same coefficient `p`**, plus a finite sum of strictly positive dot powers
+with full-SYM coefficients. The auxiliary `positiveDotExpansion` has domain
+`({n : ℕ // 0 < n} →₀ SYM D k)`, so positivity and finiteness are literal.
+No upward independence, field, finite-color condition, or specialization of
+`t_ij` is assumed.
+
+The proof constructs the actual positive-dot filtration on morphisms.
+Composition adds filtration lower bounds and retains super-interchange
+signs. Raw bubbles have leading scalar `t_ij`; the defining shift of
+`c_(lambda,i)` cancels it for normalized SYM generators. The exterior
+generators slide exactly. Free-algebra induction then handles arbitrary
+sums and ordered products; finite coefficient extraction uses the existing
+range theorem for beta, only for finitely many correction bubbles.
+
+This is a native one-strand coefficient transport theorem, not yet the
+complete oriented independence implication. A uniform homogeneous degree
+bound for repeated slides is not in this theorem: the last range-lifting
+step selects arbitrary preimages of correction bubbles. The rank-one
+fixed-weight action strategy must separately retain graded coefficient
+lifts or prove the source-level homogeneous formula. The closure route still
+needs repeated transport and its evaluation identity for the chosen weak
+inverse-mate family, followed by the finite triangular detector.

@@ -240,3 +240,120 @@ coupling fails. Even a successful symmetrizable homogeneous pilot does not
 settle all BE2 Section 8 data: nonsymmetrizable input, arbitrary permitted
 parameters, source supercommutative base rings, characteristic restrictions,
 and integral descent remain separate scope obligations.
+
+## The isomeric categorical bridge: useful but reduced
+
+Brundan–Savage,
+[Isomeric Heisenberg and Kac–Moody categorification I](https://pages.uoregon.edu/brundan/papers/isomericI.pdf),
+provides relevant categorical Clifford architecture. Section 5.1 assumes
+symmetrizable homogeneous data. Section 5.2 defines the isomeric category
+`V(g)` with **odd bubbles equal to zero**, relation (5.13); Remark 5.1 names
+the variant omitting this relation the non-reduced category. Condition
+(IKM4) uses generators with purely even supercenters. Thus Theorem 6.11's
+reduced action does not supply our full exterior coefficient detector.
+
+The reusable ingredients are the prescribed adjunction (IKM1), upward
+Clifford relations (IKM2), and explicit inversion matrices (5.12)/(IKM3).
+For odd vertices these matrices have both plain and Clifford-token identity
+components; the inverse-crossing normalization uses `−γ_i²` and adjunction
+components use `γ_i`, with `γ_i²=2`. A translation to SKM must track these
+factors rather than identify the matrices literally.
+
+Remark 6.12 expressly leaves evaluated left cups/caps and dotted bubble
+formulas uncomputed. Theorem 6.11 also treats its specified spectral Cartan
+types and parameters, not all Section 5 data. The next useful extension for
+our purpose is therefore a **non-reduced** categorical comparison retaining
+odd coefficients, followed by its normalized bubble calculation. The paper
+is not a theorem of general odd nondegeneracy.
+
+## All-content cyclotomic projectivity audit
+
+The next prerequisite is an odd-coefficient extension of KKO
+[arXiv:1206.5933v2](https://arxiv.org/abs/1206.5933), Section 8, rather than
+another spectral ansatz. ELV Theorem 4.5 supplies its rank-one version.
+Here all odd cutoffs are **even integers** and independent exterior
+parameters satisfy the ELV top-coefficient relations. This paragraph
+records a conditional proof route, not a completed multicolour action.
+
+Write the polynomial for an odd colour as
+`f_i(t) = C_i(t²) - t d_i q_i(t²)`, with `d_i²=0` and
+`d_i χ_(i,m)=0`. The latter relation is needed for its normality law;
+the identity
+`(C_i(t²)+t d_i q_i(t²)) f_i(t) = C_i(t²)²`
+needs only square-zero, skew commutation of `t,d_i`, and commuting even
+coefficients. It is checked abstractly in `CyclotomicNorm.lean`.
+The separate odd-cutoff factorization is not covered by this argument.
+
+In KKO's split algebra `B[t; parity]`, `t d_i` commutes with every
+homogeneous element of `B`: the two Koszul signs cancel, including for
+other independent parameters `d_j`. Thus `f_i` commutes with `B` while
+remaining generally noncentral with respect to `t`. The source of `P`
+must carry the ELV translated polynomial action; changing the old
+`B`-action is not justified by this observation.
+
+KKO (8.14)--(8.17) suggest that the same intertwiner calculation gives
+`QP = f_i(t) G_i(t²)`. Transport of the odd coefficient and its odd dot
+has matching signs, so their product acquires no extra sign. This must
+still be proved as an equality in the actual quotient bimodule for all
+contents. The symmetric dot-square product `G_i` is the other norm
+factor, with invertible leading coefficient. The companion `PQ` identity
+is also required; it cannot be inferred merely from a small matrix test.
+
+Conditional on these two identities and the PBW descriptions of `K₀,K₁`,
+there is a useful projectivity route. After tensoring with **any** left
+`B`-supermodule, wordwise PBW coordinates make the leading part of `QP`
+an invertible coefficient times a shift of polynomial degree. Hence it
+is injective, and so is `P` after that base change. Since `K₀,K₁` are
+projective over `B`, the resulting Tor calculation makes `coker P` flat
+over `B`. This is an arbitrary-module argument, not a fibrewise criterion.
+One must use the even, `B`-linear norm operator in this argument: the odd
+operator `t` alone does not descend as an ordinary `B`-linear operator.
+
+The companion norm identity annihilates the cokernel by `f_i G_i`.
+Multiplication by the conjugate factor therefore supplies the **central
+monic** annihilator `C_i(t²)² G_i(t²)²` (after unit normalization).
+Its polynomial quotient is finite free over `B`; a finite presentation
+over the split polynomial algebra consequently yields a finite
+presentation over `B`. Flat plus finitely presented gives projective.
+This avoids incorrectly treating `f_i G_i` itself as central. The exact
+image/kernel statement still requires the deformed analogue of KKO
+Lemma 8.2, in addition to the two norm identities.
+
+Even a successful all-content action does not by itself solve fixed-weight
+separation in general type. Dominant highest weights need not be cofinal
+in a fixed root-lattice coset, especially in affine or indefinite type.
+The rank-one fixed-weight rectangle argument does not remove this
+obligation. A Webster comparison or a compatible highest/lowest-weight
+construction may still be needed after the categorical extension.
+
+### Ideal decomposition and intertwiner signs
+
+There is a direct PBW proof of the deformed Lemma 8.2(i). Put
+`f = Σ_i f_i(x₁)e(i,...)`. Each polynomial has even total parity.
+It commutes with crossings `τ₂,...,τ_n` and with dots `x_k`, `k>1`:
+in an exterior-coefficient term the signs from its odd dot and odd
+coefficient cancel. On each first-colour idempotent the normality rule
+for `x₁` is the ELV translation by `2d_i`; coefficients themselves
+supercommute with the even `f`. Consequently `f` normalizes the entire
+polynomial coefficient algebra.
+
+Choose PBW reduced words using the left cosets of the subgroup generated
+by `s₂,...,s_n`, with representatives `1,s₁,s₁s₂,...,s₁...s_n`.
+Move polynomial coefficients across `f` by normality, and move subgroup
+crossings across it by commutation. Any discrepancy between a chosen
+reduced word and this factorization is a sum of terms of smaller crossing
+length; induction applies to those terms. This proves
+`R f R = Σ_(a=0)^n R f τ₁...τ_a`.
+This argument uses independent `d_i`; it never equates different colours'
+parameters. Applying the ordinary last-strand Mackey decomposition to
+this formula is the remaining bookkeeping for part (ii) and the precise
+balanced image of `P`. These statements are not yet native Lean theorems.
+
+For the norm calculation, the local sign issue can also be separated
+from quotient bookkeeping. If an odd intertwiner satisfies
+`x g = -g y`, `d g = -g e`, `q g = g r`, and `C g = g D`, then
+`(C-xdq)g = g(D-yer)`. Both this identity and its all-positive version
+are kernel-checked as `even_cutoff_transport_neg/pos` in
+`CyclotomicNorm.lean`. In the coefficient-supercentral case `e=d`;
+there is no new translated coefficient. This is the local ingredient
+in (8.17), not a proof of the entire inductive (8.14) quotient identity.

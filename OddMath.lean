@@ -1095,3 +1095,6 @@ import OddMath.SKM.RightClosureCoefficients
 import OddMath.SKM.BubblePolynomialExterior
 import OddMath.SKM.OddDotTranslation
 import OddMath.SKM.RightCapAttachment
+import OddMath.SKM.PositiveDotTransport
+import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.Diagrams.OddNilHecke.CyclotomicNorm

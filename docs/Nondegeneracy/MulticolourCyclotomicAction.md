@@ -127,6 +127,13 @@ crossing test.
 
 ## Even cutoff: an exact normality repair for the first bimodule map
 
+This rank-one mechanism is already part of Ebert–Lauda–Vera's published
+Theorem 4.5: equation (4.16) states the shifted-dot defect of `P`, and the
+following argument controls the filtered defect of the induced Mackey map.
+The elementary normality calculation below identifies the automorphism and
+its direction in KKO's notation; it is supporting algebra for extending
+that source argument to multiple colours, not a new rank-one action proof.
+
 The obstruction to copying the same-colour proof is visible already in
 KKO (8.3), third identity, and the right-`t_i` linearity claimed for `P` in
 (8.5). At `β=0`, that map is simply `P(b)=b f(x)`. Its original source
@@ -237,6 +244,27 @@ count or sorting inversions. The canonical unit/dot basis matrix is invertible,
 the mixed exterior product has rank 8, and `f_i(t)` itself remains nonzero
 (a control against imposing the wrong cyclotomic relation).
 
+The same script also computes the **right-`B`** inverse coordinate of
+`t^4` at `t^3`; converting from left-normal exterior coefficients requires
+the Koszul sign and cannot be skipped. If `η` is the canonical unit and
+`β_3` that inverse coordinate, the result is
+
+`β_3 t^4 η = L_(d_i)` on the 8-dimensional base `B`, of rank 4.
+
+This is the degree-one inverse-coordinate bubble formula of ELV
+Proposition 4.7, using the actual canonical inversion in this connected
+corner. The parallel action stream then supplied the actual `j`-bubble
+at this same object. Because there are no `i` strands at `β=α_j`, the
+`j` directions are the rank-one ELV tower with the `i` coefficients as
+spectators. Its `h_j=0` mate matrix is 8 by 8 with determinant 1; the
+counit/inverse-mate/unit composite is `−L_delta=L_(d_j)` in that
+script's convention. After the explicit basis change and the spectator
+Koszul sign, this `j`-bubble has rank 4 on `B`. The product of the two
+computed bubble composites has rank 2. The script checks the actual
+mate composite, not merely multiplication by a designated exterior symbol.
+This gives a connected, single-object two-bubble test; it still does not
+construct a coherent full two-colour action or a faithful full-SYM map.
+
 Separately, `elv_kko_first_map.py` checks the right-dot twist at
 `β=α_j`: with `f=x²−xd`, the exact identity is
 `−(x+2d)fτ=fτy`. It also checks that the old `j` cyclotomic relation maps
@@ -245,3 +273,86 @@ At `β=α_i` the right-dot residual is `−f`, in the defining left ideal.
 For that same-colour case the script gives an explicit PBW left-ideal
 witness for KKO (8.18) in degree two. These tests support the proposed
 all-`β` repair but do not replace its bimodule and projectivity proof.
+
+## Coloured filtered-defect reduction
+
+Here is the precise extension of the filtered part of ELV Theorem 4.5
+needed after the multicolour `P`/Mackey diagram has been constructed. It
+does not assume the desired inversion map is an isomorphism.
+
+Let `R=R^Λ(β)` over the full coefficient algebra, fix an odd colour `i`
+with even cutoff, and let `C=R[t;parity]`. The parameter `d_i` remains
+supercentral and square-zero in `R`. Hence
+
+`σ_i(t)=t−2d_i`, `σ_i|_R=id`
+
+is an even automorphism of `C`. It is compatible with every independent
+`d_j`: both `t` and `d_i` anticommute with `d_j`. It preserves degree in
+`t` and fixes `t²`.
+
+Suppose `U` is the source right `C`-module in the Mackey construction and
+`A:U→C` its additive right-`R`-linear map. Assume the one-step identity
+obtained from that diagram gives
+
+`deg_t(A(y t)−A(y)σ_i(t)) ≤ 0` for every `y∈U`.
+
+Then, for every `g∈C` of `t`-degree at most `ℓ`,
+
+`deg_t(A(y g)−A(y)σ_i(g)) < ℓ`.
+
+For constants the difference is zero by right-`R`-linearity. For powers
+of `t`, repeatedly use the exact defect identity
+
+`D(y,g h)=D(y g,h)+D(y,g)σ_i(h)`,
+`D(y,g)=A(y g)−A(y)σ_i(g)`.
+
+The first term is bounded independently of `y g`; the second term has
+degree bounded by the sum of the bounds. This gives the assertion by
+induction and addition of coefficient monomials. In particular the argument
+does not require `A` to be twisted-linear; that would be a stronger and
+generally false statement.
+
+The one-step identity has the same coloured derivation as in the source.
+Decompose `P(z)=F(ψ)+φ` using affine Mackey. KKO Lemma 9.4 gives
+`F(ψ)t=F(ψ·x_n)+E(ψ)`, where `E(ψ)` has `t`-degree zero. The shifted
+identity `P(zt)=P(z)(t−2d_i)` then gives
+
+`φ_next=E(ψ)+φ(t−2d_i)`.
+
+The extra `−2d_i` term in the `F(ψ)` component stays in `im(F)` by
+right-`R`-linearity, and disappears on passing to the Mackey quotient.
+Thus no additional colour-dependent error polynomial is introduced at
+this filtered stage. **Constructing the exact diagram and verifying its
+maps is still an input to this derivation.**
+
+For the monicity consumer, let `p` be the multiplicity of `i` in `β` and
+use KKO's polynomial `S_i`, a sum over words of products
+`(t²−x_a²)²` at positions of colour `i`. It is monic of degree `4p`,
+central, and fixed by `σ_i`. The other norm factors `Q_iν(t,x_a)` and
+`(x_a−t)²=x_a²+t²` are also fixed: the former have even `t` exponents,
+and the latter involve anticommuting odd variables. The even ELV `f_i(t)`
+is fixed as well, since it is built from `t²` and `t d_i`.
+
+Consequently, if the all-`β` norm identity extending KKO (9.13) has been
+established, the same division argument proves Proposition 9.3's degree
+claim. More precisely, write that identity as
+
+`A(t^k S_i T)=u t^k F_i`,
+
+with `u` a unit and `F_i` monic of degree `h_i(Λ−β)+4p`.
+The filtered defect, together with `σ_i(S_i)=S_i`, says
+
+`u t^k F_i−A(t^k T)S_i` has degree less than `4p`.
+
+Since `S_i` is monic, comparison of top coefficients forces
+`A(t^k T)` to have degree `h_i(Λ−β)+k` and unit leading coefficient
+when that number is nonnegative; it forces zero when the number is
+negative. This comparison is valid over coefficient rings with zero
+divisors. It does **not** require `F_i` to commute with `t`, an observation
+in the original undeformed proof which need not hold after deformation.
+
+This isolates the remaining all-`β` mathematical obligation: establish the
+exact cyclotomic `P`/Mackey diagram and the monic norm identity with the
+correct shifted actions, including the projectivity needed for the chosen
+module categories. The filtered-degree step itself introduces no further
+mixed-colour obstruction once those identities are available.

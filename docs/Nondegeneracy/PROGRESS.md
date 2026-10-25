@@ -1,6 +1,6 @@
 # Odd nondegeneracy research progress
 
-Last checkpoint: 2026-10-25 18:35 UTC. Branch: `research/odd-nondegeneracy`.
+Last checkpoint: 2026-10-25 18:45 UTC. Branch: `research/odd-nondegeneracy`.
 Research baseline: `0edcf48`. This board records checkpoints, not live telemetry.
 
 ## Objective and operating rules
@@ -25,6 +25,17 @@ scoped Lean checks, and full CI verification.
 | Independent challenge / rewriting | Active | Twisted KKO maps and monic projectivity argument | Mixed EF paper extension; even-cutoff normality exact sequence; first connected map test | All-beta same-colour projectivity and inversion |
 
 ## Verification
+
+- Full CI [40221653309](https://github.com/apellis/odd-lean/actions/runs/40221653309)
+  passed for `cd0ba81`. Checkpoint `c8debb4` is pushed; full CI
+  [40222091681](https://github.com/apellis/odd-lean/actions/runs/40222091681) running.
+- **18:45 UTC:** Full-SYM one-strand transport with prescribed constant
+  coefficient and finite positive-dot errors is scoped Lean-checked.
+  Coefficient basis, multiplicative weight filtration and bounded injection
+  into its actual ring quotient are checked. Workers continue on whole-word
+  transport, signed categorical coefficient extension, and connected action.
+  Both actual odd bubble composites at the first connected object have a
+  nonzero product in the exact finite pilot; this is not a full action.
 
 - Full CI [40221226055](https://github.com/apellis/odd-lean/actions/runs/40221226055)
   passed for `3da1842`. Next pushed checkpoint `cd0ba81` is running full CI

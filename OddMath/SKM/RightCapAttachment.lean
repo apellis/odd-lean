@@ -334,4 +334,118 @@ theorem attach_reduced {x : Letter I} {a b : List (Letter I)}
 @[simp] theorem ncr_attach (b : List (Letter I)) (R : List (TMove (Letter I))) :
     ncr₂ (attach b R) = ncr₂ R := by simp [attach, ncr₂]
 
+private theorem tmLay_right (v : List (Letter I)) {l : List (Letter I)}
+    {m : TMove (Letter I)} (hm : LOk l m) :
+    tmLay (l ++ v) m = (tmLay l m).map (xwhL [] v) ∧
+      tLet (l ++ v) m = tLet l m ++ v := by
+  cases m with
+  | mv m =>
+    have h := moveLay_shift [] v (show m.Ok l.length from hm)
+    cases m <;> simpa only [shiftM, List.length_nil, Nat.zero_add, List.nil_append, tmLay, tLet] using h
+  | cap g =>
+    obtain ⟨P, y, Q, rfl, rfl⟩ := hm
+    have he : (P ++ flipL y :: y :: Q) ++ v = P ++ flipL y :: y :: (Q ++ v) := by simp
+    rw [he, (tmLay_cap P (Q ++ v) (flipL y) y).1,
+      (tmLay_cap P Q (flipL y) y).1,
+      (tmLay_cap P (Q ++ v) (flipL y) y).2,
+      (tmLay_cap P Q (flipL y) y).2, map_xwhL_xwhL]
+    simp
+
+private theorem dotOn_right (v : List (Letter I)) {l : List (Letter I)} {p : ℕ}
+    (hp : p < l.length) : dotOn (l ++ v) p = (dotOn l p).map (xwhL [] v) := by
+  obtain ⟨P, y, Q, rfl, rfl⟩ := exists_split_dot hp
+  have he : (P ++ y :: Q) ++ v = P ++ y :: (Q ++ v) := by simp
+  rw [he, dotOn_eq, dotOn_eq, map_xwhL_xwhL]
+  simp
+
+private theorem lOk_at {k : ℕ} {u l : List (Letter I)} {T : TState (Letter I)}
+    (hu : u.length = k) (hl : T.st.map Prod.snd = u ++ l)
+    {m : TMove (Letter I)} (hm : m.Ok flipL k T.st) : LOk l m := by
+  have hm' : (shiftT u.length m).Ok flipL 0 T.st := by
+    rcases m with (⟨g, y⟩ | p) | g <;> simpa only [shiftT, shiftM, TMove.Ok, Nat.zero_add, hu] using hm
+  exact lOk_unshift u (lOk_of_ok hl hm')
+
+/-- Right whiskering preserves the actual decorated layers, including cap moves
+and dots, provided the dots occupy existing strands. -/
+theorem dLay_right {k : ℕ} {u : List (Letter I)} (hu : u.length = k)
+    (v : List (Letter I)) (ds : List (DTMove I)) (T : TState (Letter I))
+    (l : List (Letter I)) (hl : T.st.map Prod.snd = u ++ l)
+    (hf : TFits flipL k T (tmoves ds)) (hd : DOk₂ l ds) :
+    dLay (l ++ v) ds = (dLay l ds).map (xwhL [] v) ∧
+      (tmoves ds).foldl tLet (l ++ v) = (tmoves ds).foldl tLet l ++ v := by
+  induction ds generalizing T l with
+  | nil => exact ⟨rfl, rfl⟩
+  | cons d ds ih =>
+    cases d with
+    | tm m =>
+      obtain ⟨hm, hf⟩ := hf
+      have hm' := lOk_at hu hl hm
+      have hn := letters_tRun hu [m] T l hl ⟨hm, trivial⟩
+      simp only [tRun, List.foldl_cons, List.foldl_nil] at hn
+      obtain ⟨he, ht⟩ := tmLay_right v hm'
+      obtain ⟨hds, hfold⟩ := ih _ _ hn hf hd
+      simp only [dLay, tmoves, List.foldl_cons, ht, he, hds, hfold, List.map_append, and_self]
+    | dt p =>
+      obtain ⟨hds, hfold⟩ := ih _ _ hl hf hd.2
+      simp only [dLay, tmoves, dotOn_right v hd.1, hds, hfold, List.map_append, and_self]
+
+/-- Attach the actual cap to a decorated move list; all original dot positions remain. -/
+def attachMoves (b : List (Letter I)) (ds : List (DTMove I)) : List (DTMove I) :=
+  ds ++ [.tm (.cap b.length)]
+
+@[simp] theorem tmoves_attachMoves (b : List (Letter I)) (ds : List (DTMove I)) :
+    tmoves (attachMoves b ds) = attach b (tmoves ds) := by simp [attachMoves, attach, tmoves]
+
+/-- The cap attachment agrees literally with right-whiskering the old decorated
+layers and appending the corresponding cap; no normalization is involved. -/
+theorem dLay_attachMoves {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    {ds : List (DTMove I)} (hm : tmoves ds = R) (hd : DOk₂ a ds) :
+    dLay (a ++ [x]) (attachMoves b ds) =
+      (dLay a ds).map (xwhL [] [x]) ++ (xCapL x).map (xwhL b []) := by
+  obtain ⟨hlay, hfold⟩ := dLay_right (length_dualW a) [x] ds (tStart a) a
+    (tStart_letters a) (by rw [hm]; exact hR.1) hd
+  rw [attachMoves, dLay_append, hlay, hfold, hm, hR.2]
+  have he : (b ++ [flipL x]) ++ [x] = b ++ flipL x :: x :: [] := by simp
+  simp only [dLay, List.append_nil]
+  rw [he, (tmLay_cap b [] (flipL x) x).1]
+
+@[simp] theorem dotPts_attachMoves (b : List (Letter I)) (ds : List (DTMove I)) :
+    dotPts (attachMoves b ds) = dotPts ds := by
+  unfold attachMoves
+  induction ds with
+  | nil => rfl
+  | cons d ds ih =>
+    cases d <;> simp only [List.cons_append, dotPts, ih]
+
+/-- The strand-renaming function of a framed run is the old one shifted by two. -/
+theorem frame_ren (x : Letter I) (k : ℕ) (T : TState (Letter I))
+    (R : List (TMove (Letter I))) (hR : TFits flipL k T R) (n : ℕ) :
+    tRen (k + 1) (frame x T) R (n + 2) = tRen k T R n + 2 := by
+  induction R generalizing T n with
+  | nil => rfl
+  | cons m R ih =>
+    have hs : stepRen (k + 1) (frame x T) m (n + 2) = stepRen k T m n + 2 := by
+      cases m with
+      | mv m => rfl
+      | cap g =>
+        have hr : k + g + 1 < T.st.length := by
+          obtain ⟨A, B, hA, hB, hdual, hne⟩ := hR.1
+          by_contra h
+          rw [List.getElem?_eq_none (by omega)] at hB
+          cases hB
+        simp only [stepRen]
+        rw [show k + 1 + g = (k + g) + 1 by omega, idD_frame x T hr,
+          idD_frame x T (show k + g < T.st.length by omega)]
+        exact rlId_add_two _ _ n
+    simp only [tRen, hs, frame_step x k T m hR.1]
+    exact ih _ hR.2 _
+
+private theorem tRen_append_at (k : ℕ) (T : TState (Letter I))
+    (R S : List (TMove (Letter I))) (n : ℕ) :
+    tRen k T (R ++ S) n = tRen k (tRun flipL k T R) S (tRen k T R n) := by
+  induction R generalizing T n with
+  | nil => rfl
+  | cons m R ih => exact ih _ _
+
 end OddMath.SKM.RightCapAttachment

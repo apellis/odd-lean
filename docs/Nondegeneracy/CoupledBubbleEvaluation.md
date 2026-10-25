@@ -44,6 +44,75 @@ These results are exact rational-matrix checks, not Lean proofs of a general
 action, and the two factors have one root colour. They do not address the
 mixed-colour reservoir problem or full bubble independence.
 
+### An all-order series on that same coupled object
+
+Write `x` for the reservoir dot and `δ` for its exterior coefficient, so
+`x²=−xδ`, `δ²=0`, and `xδ=−δx`. The action stream has now computed the dotted
+moments `B_r=V X^r σ⁻¹ U` as actual matrices, not chosen scalar values. Their
+first values, interpreted as left-multiplication endomorphisms, are
+
+\[
+B_0=-\delta,\quad B_1=2-3x\delta,\quad B_2=-2\delta,
+\quad B_3=2-6x\delta,\quad B_4=-2\delta.
+\]
+
+The exact matrix identity `X⁵ σ⁻¹U=X³ σ⁻¹U` proves the recurrence for every
+higher moment. Together with these initial values it establishes
+
+\[
+1+\sum_{r\geq0} B_r T^{r+1}
+ =(1-\delta T)(1-3x\delta T^2)\frac{1+T^2}{1-T^2}.
+\]
+
+Thus the full moment family is genuinely an ordered coefficient series for
+this finite coupled action. The nilpotent term `−3xδ` is visible before
+coefficient extraction; dropping it prematurely would give an incorrect
+categorical bubble value.
+
+There is an actual algebra quotient sending `x↦0` and retaining the independent
+reservoir `δ` and probe Clifford generator `y`, `y²=1`. It respects the displayed
+reservoir relations and the super tensor signs. On the bubble values the
+quotient gives
+
+\[
+C(T)=(1-\delta T)P(T^2),\qquad P(Z)=\frac{1+Z}{1-Z}.
+\]
+
+This is a **computed rational even-probe law** in the current small model,
+with a fixed probe series and nonzero odd coefficient. The reservoir has no
+independent positive even coefficient after this extraction, so this example
+does not prove a general triangular change of the full polynomial bubble
+algebra. The script also tests the product of the two actual odd-bubble
+composites on a super tensor product; this retains two independent exterior
+coefficients, but still does not construct a connected two-root action.
+
+### A higher reservoir detects an even coefficient and its odd product
+
+The separate `vacuum_even_exterior.py` calculation uses cyclotomic degree
+four over `B=Q[ε]/(ε²) ⊗ Λ(δ)`, with
+
+\[
+f(x)=x^4+x^3\delta+x^2\varepsilon+x\delta\varepsilon.
+\]
+
+It constructs the 16-dimensional algebra and its actual vacuum dotted-cup
+inversion. The odd Frobenius trace selects the coefficient of `x³`, and the
+associated map to `Hom_B(A,B)` is checked to be an isomorphism. At source
+height `−4`, native `oddBubble`, `betaD_h` and `betaD_dh` give the normalized
+images as `tr(x⁴)`, `−tr(x⁵)`, `−tr(x⁶)`, respectively. The computation gives
+
+\[
+\delta_{\mathrm{source}}\mapsto-\delta,\qquad
+e_1\mapsto\varepsilon,\qquad
+\delta_{\mathrm{source}}e_1\mapsto-\delta\varepsilon.
+\]
+
+The four images of `1, δ_source, e_1, δ_source e_1` are linearly independent.
+This is a stronger finite **reservoir** detector than the degree-two model:
+an even parameter and its odd product both survive normalized categorical
+evaluation. It does not yet couple this larger reservoir to an invertible
+probe, establish every tower level, or prove arbitrary-cutoff separation.
+
 ## An ordered generating-series identity already inside BK
 
 In Brundan–Kleshchev, [arXiv:2203.14149](https://arxiv.org/pdf/2203.14149),
@@ -104,11 +173,10 @@ hypothesis is essential.
 
 ## What still has to be proved
 
-The finite odd-bubble result makes a zero coefficient less likely to be the
-first obstruction, but does not yet establish the full convolution law.
-The next calculation is the sequence `v x^(2r−1) σ⁻¹u` on the same object,
-followed by a reservoir with a nonzero independent even parameter. The current
-small reservoir alone cannot demonstrate independence of all even variables.
+The finite series calculation establishes a coupling law for this specific
+object, but does not yet establish the general convolution law. The next
+calculation needs a reservoir with a nonzero independent even parameter.
+The current small reservoir alone cannot demonstrate independence of all even variables.
 The general law must then be proved from the actual block inverse, including
 its nilpotent feedback, rather than inferred from BK's internal factorization.
 

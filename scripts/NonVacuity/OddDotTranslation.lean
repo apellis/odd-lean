@@ -18,6 +18,20 @@ example : exterior dualParameter ≠ 0 ∧
       (exterior_anticommutes dualParameter (TrivSqZeroExt.inr_mul_inr ℚ 1 1)).1
 
 private abbrev R := TrivSqZeroExt ℚ ℚ
+example (m : ℕ) :
+    DotTranslation.braidPolynomial
+      (firstDot dualParameter + exterior dualParameter) 1
+      (firstDot dualParameter + exterior dualParameter) m =
+    DotTranslation.braidPolynomial (firstDot dualParameter) 1
+      (firstDot dualParameter) m := by
+  apply DotTranslation.braidPolynomial_translate
+  · exact dualNumber_model.2.1
+  · simpa only [add_comm] using
+      (exterior_anticommutes dualParameter (TrivSqZeroExt.inr_mul_inr ℚ 1 1)).1
+  · simpa only [add_comm] using
+      (exterior_anticommutes dualParameter (TrivSqZeroExt.inr_mul_inr ℚ 1 1)).1
+  · simp
+
 private abbrev Z : SingleObj R := PUnit.unit
 private def d : End Z := TrivSqZeroExt.inr 1
 
@@ -73,6 +87,8 @@ example (d₀ : End ((pres D Sc).obj (ob D 3 []))) :
 #print axioms OddMath.OddNilHecke.DotTranslation.even_pow
 #print axioms OddMath.OddNilHecke.DotTranslation.odd_pow
 #print axioms OddMath.OddNilHecke.DotTranslation.slide
+#print axioms OddMath.OddNilHecke.DotTranslation.braidPolynomial_paired
+#print axioms OddMath.OddNilHecke.DotTranslation.braidPolynomial_translate
 #print axioms OddMath.SKM.OddDotTranslation.shiftedCap_inverse
 #print axioms OddMath.SKM.OddDotTranslation.last_column_coordinates
 #print axioms OddMath.SKM.OddDotTranslation.odd_moment_shift

@@ -250,6 +250,18 @@ commutative ground rings; it is no longer only an informal interpretation of
 the generators and relations. The equivalence is independent of diagram
 evaluation and will support the coefficient-weight filtration.
 
+`OddMath/SKM/BubbleCoefficientBasis.lean` supplies that basis and filtration.
+It uses arbitrary polynomial exponent vectors and finite subsets of distinct
+odd colours as indices, choosing an exterior ordering without adding a
+hypothesis on the datum. Basis multiplication is either zero for overlapping
+exterior supports or a scalar times the exponent-sum/disjoint-union basis
+element. Consequently coefficient weights add on nonzero basis products,
+and high weight is an actual two-sided ideal. The native theorem
+`coefficient_weight_quotient_injective` proves that quotienting by weights at
+least `N` retains the part of weight at most `d` whenever `d < N`.
+Every abstract coefficient lies in some bounded weight span. These coefficient
+quotients are not yet identified with the ELV deformation rings or an SKM action.
+
 ## A concrete coupling target for reservoir and spectral factors
 
 The nilpotent-reservoir/nonzero-probe proposal is the earlier split-factor

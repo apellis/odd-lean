@@ -68,9 +68,38 @@ def run():
         columns.append(D**a*E**b*X**c*T**r*unit)
     inversion=s.Matrix.hstack(*columns)
     assert inversion==s.eye(32)
+    # Right-B coefficient of t^3 in t^4 is d_i. This is the degree-one
+    # inverse-coordinate bubble formula of ELV Proposition 4.7, applied
+    # to this connected corner's canonical unit/dot inverse.
+    base=[w for w in basis if "t" not in w]
+    unitmap=s.zeros(32,8); extract0=s.zeros(8,32); beta3=s.zeros(8,32)
+    for k,w in enumerate(base):
+        unitmap[indexes[w],k]=1
+        extract0[k,indexes[w]]=1
+        beta3[k,indexes[w+("t",)*3]]=(-1)**len(w)
+    bubble=beta3*T**4*unitmap
+    dbase=extract0*D*unitmap;ebase=extract0*E*unitmap
+    assert bubble==dbase and bubble.rank()==4
+    assert (bubble*ebase).rank()==2
+    # The j directions at beta=j contain no i strands, so use the actual
+    # rank-one ELV tower with the i coefficient as spectator. Compute its
+    # h_j=0 mate inversion, not merely coefficient multiplication.
+    import nonvacuum_exterior as R
+    regular_j=R.regular((1,0))
+    sigma_j=R.mate(regular_j,0,0,0,0)
+    assert sigma_j.shape==(8,8) and sigma_j.det()==1
+    bubble_j_raw=R.counit(regular_j,0)*sigma_j.inv()*R.unit(regular_j,0)
+    # R's basis is [1,x,delta,x*delta], with source d_j=-delta;
+    # ours is [1,x,d_j,d_j*x], hence the indicated change of basis.
+    change=s.diag(1,1,-1,1)
+    bubble_j=s.kronecker_product(s.diag(1,-1),change.inv()*bubble_j_raw*change)
+    assert bubble_j==ebase and bubble_j.rank()==4
+    assert (bubble*bubble_j).rank()==2
     print(f"PASS {overlaps} rewrite overlaps; 32D connected cyclotomic corner")
     print("PASS canonical unit/dot rank-4 B-basis inversion; exterior product rank 8")
     print("PASS f_i(t) nonzero control; scope beta=alpha_j, i absent")
+    print("PASS inverse-coordinate i bubble=d_i (rank4), product with d_j rank2")
+    print("PASS actual j mate inversion (8x8); two connected bubble composites product rank2")
 
 
 if __name__ == "__main__":
