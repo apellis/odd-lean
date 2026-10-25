@@ -1,0 +1,6 @@
+import OddMath.SKM.UpwardNondegeneracyReductionExamples
+
+#print axioms OddMath.SKM.nondegeneracy_of_upward_independence
+#print axioms OddMath.SKM.nondegeneracy_iff_upward_independence
+#print axioms OddMath.SKM.UpwardNondegeneracyReductionExamples.two_odd_colour_reduction
+#print axioms OddMath.SKM.SameColourSourceFrameExamples.all_source_exchanges

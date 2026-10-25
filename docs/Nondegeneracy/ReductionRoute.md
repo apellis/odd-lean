@@ -2,11 +2,12 @@
 
 ## Status and decision
 
-**Proposed reduction; not a proof of the odd/mixed Nondegeneracy Conjecture.**
-Choose contextual descent (route A) for the next implementation. The graded-dimension
-route (B) is mathematically plausible in the finite-colour homogeneous field setting,
-but does not yet provide a shorter checked path. In particular, the even comparison
-basis cannot be reused for odd colours.
+**Checked reduction; upward independence remains an explicit hypothesis.**
+`SKM.nondegeneracy_of_upward_independence` proves the implication via contextual
+descent (route A), and `nondegeneracy_iff_upward_independence` proves equivalence.
+This does not establish upward independence or unconditional odd/mixed
+nondegeneracy. The graded-dimension route (B) is an unused alternative; the
+even comparison basis is not reused for odd colours.
 
 The desired input is injectivity of every upward expansion at every external weight,
 with coefficients in the abstract `SYM D k`, not merely scalar coefficients or the
@@ -22,10 +23,11 @@ the upward input. The programme's symmetrizable finite-colour field scope is inc
 | Sorted families from upward families | `WeakMate.sorted_independence` | Checked, including full coefficients |
 | Change matching representatives and dot placements | `expansion_injective_choice_iff` | Checked; no preferred choice is a new premise |
 | Distinct-colour target exchange | `distinct_target_exchange_descent` | Checked |
-| Distinct-colour source exchange | `distinct_source_adapted_independent`, `distinctSourceExchange_coefficient`, `SourceFrozenSwap.run` | Medium: construct complete source-adapted choices and literal prefix serializers, then assemble |
+| Distinct-colour source exchange | `distinct_source_exchange_descent` | Checked with complete source choices and literal prefix serializers |
 | Same-colour target families | `exists_same_colour_adapted_choices`, `exists_same_colour_adapted_equiv` | Constructed: complete families, literal unpaired terminal crossings, and common residual cup serializers |
-| Same-colour target coefficient columns | `paired_target_leading_pos`, `paired_target_leading_nonpos`, `paired_target_low`, `paired_target_below`, `pairedCoefficientComparison_injective` | Large: full contextual columns and residual bubble coefficients, including inverse-block corrections |
-| Same-colour source families and columns | `paired_source_leading_neg`, `paired_source_leading_nonneg`, `paired_source_low`, `paired_source_below` | Large: source cap attachment and target-placement parity transport |
+| Same-colour target coefficient columns | `same_colour_target_exchange_descent`, `target_exchange_descent` | Checked at every height, retaining inverse-block corrections |
+| Same-colour source families and columns | `exists_source_same_colour_adapted_equiv`, `same_colour_source_exchange_descent`, `source_exchange_descent` | Checked: full-SYM twists, negative-height low-cup components and downward-dot odd-bubble correction |
+| Final implication | `nondegeneracy_of_upward_independence` | Checked; no remaining descent hypothesis |
 
 The difficult point is **not** cancellation of an odd bubble. Every pivot must be a
 unit scalar, possibly followed by `SYM.parityTwist`. Closed correction diagrams are
@@ -39,12 +41,12 @@ The first risk-reducing construction is now in `CupCompletedChoice` and
 `AdaptedSameColourChoices`: unpaired representatives and literal residual cups
 combine into two complete matching choices. The equivalence in
 `exists_same_colour_adapted_equiv` identifies their unpaired sectors and embeds
-the common paired sector as `ℕ × B.Labels`. This is not same-colour descent.
-The next target is the actual coefficient columns, not another abstract
-injectivity criterion. Residual serializers use `PointedMatching.ofStrict` on
-`B.members`; assemble these into the corresponding `IndexedMatchingChoice`
-when invoking residual boundary independence, rather than identifying their
-layers with the original serializers of `B`.
+the common paired sector as `ℕ × B.Labels`. The source counterparts are
+`SourceCompletedChoice` and `SourceAdaptedChoices`. Their actual columns are
+attached and detected by the source and target descent theorems. Residual
+serializers use `PointedMatching.ofStrict` on `B.members`, assembled through
+`strictResidualChoice`; their layers are not identified with arbitrary original
+serializers of `B`.
 
 ## B. Bending and graded dimensions
 
@@ -103,7 +105,8 @@ upward independence and the signed inversion recursion.
 
 There is no counterexample to the upward reduction here. Route B is not rejected
 mathematically. It is deferred because its additional rank-recursion interface is
-larger than the remaining explicit descent interface, while route A also avoids
-field and grading restrictions. Neither route currently proves the headline
-implication. The remaining obligations are concrete same-colour coefficient
-comparisons and complete source-adapted families, not an action or detection input.
+larger than the explicit descent interface, while route A also avoids field
+and grading restrictions. Route A now proves the headline implication. What
+remains for unconditional nondegeneracy is upward independence itself: the
+categorical action and coefficient-detection obligations in `GeneralRoute.md`,
+not an additional oriented-descent assumption.

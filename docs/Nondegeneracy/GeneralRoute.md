@@ -210,26 +210,34 @@ weight. **Even analogue:** `linearIndependent_posB_of_unfurledEval`.
 
 ### B0. From upward to oriented independence — B
 
-**Proposed remaining statement.** Establish contextual source exchange descent,
-including the same-colour identity remainders, and combine with sorted-boundary
-independence. **Even analogue:** `KL3.Diagram.calculusNondeg_of_positive`.
-**Existing:** `WeakMate.sorted_independence`, `expansion_injective_choice_iff`,
-`SKM.target_exchange_descent` (complete contextual target descent at every
-height), and `distinct_source_adapted_independent` (transfer for supplied
-adapted source families). The target proof includes normalized low cap rows,
-shifted principal columns, and both finite correction sums over full `SYM`.
-**New:** construct the complete source adapted choices and finish source
-independence transfer, then instantiate `nondegeneracy_of_contextual_descent`.
-**Risk: medium.** Source and target use different height conventions; target
-descent does not by itself supply the source families.
+**Checked reduction.** `SKM.nondegeneracy_of_upward_independence` derives
+`SKM.NondegeneracyConjecture cs` from `WeakMate.UpwardIndependence cs`.
+`nondegeneracy_iff_upward_independence` also proves the converse. The hypothesis
+quantifies over every external weight and every equal-weight upward boundary,
+with unrestricted coefficients in the abstract `SYM`.
+
+**Even analogue:** `KL3.Diagram.calculusNondeg_of_positive`.
+**Inputs:** `WeakMate.sorted_independence`, `source_exchange_descent`,
+`target_exchange_descent`, and `nondegeneracy_of_contextual_descent`. Complete
+source and target choices, all decorated labels, both height signs and the
+identity remainder components are constructed. Source downward-dot normalization
+retains the odd-bubble correction; every coefficient pivot is a unit.
+
+This reduction works over any commutative ring admitted by `Sc`; no field,
+finite-colour, symmetrizer, grading, homogeneity or action hypothesis is added.
+The concrete two-odd-colour reduction and the unconditional source-exchange
+consumer are in `UpwardNondegeneracyReductionExamples` and
+`SameColourSourceFrameExamples`. Their axiom reports contain only `propext`,
+`Classical.choice`, and `Quot.sound`. B0 is complete; upward independence itself
+remains the C3 obligation.
 
 ### B1. Field endpoint — B
 
 **Proposed statement.** Under the scope above, every permitted matching expansion
 is injective, hence `SKM.NondegeneracyConjecture`.
 **Even analogue:** `calculusNondeg` and `GenericFields.calculusNondeg_charZero`.
-**Existing:** `SKM.nondegeneracy_of_contextual_descent` and spanning of the
-presented SKM Hom spaces. **New:** instantiate C3 and B0 with no residual
+**Existing:** `SKM.nondegeneracy_of_upward_independence` completes B0, and
+spanning of the presented SKM Hom spaces is proved. **New:** establish C3 with no residual
 faithfulness or observation assumptions. **Risk: low as assembly, unresolved
 as a theorem until A2 and C2 are established.**
 
