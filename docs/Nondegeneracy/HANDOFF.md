@@ -18,7 +18,10 @@ Route: the super analogue of Webster's proof of the even case (formalized in
 categorification-lean): deformed cyclotomic super actions with ELV odd parameters at highest and
 lowest weight, the family `Hom(T(-μ₊), W(μ₋))` reaching every weight `μ₋ - μ₊`, detection of the
 upward part and of bubble products there, and the reduction of the conjecture to upward
-independence. Theorem graph: [GeneralRoute.md](GeneralRoute.md) (in preparation).
+independence. Proposed theorem graph: [GeneralRoute.md](GeneralRoute.md). The product-datum Hom family
+must still be fused to the original superdatum; nilpotent-sector fusion with inherited
+blockwise dots is the first falsification target. The separated zero/nonzero alternative
+retains all odd coefficients in one connected reservoir, not in the invertible probe.
 
 ## Proof architecture
 
