@@ -135,6 +135,10 @@ by the unit-image idempotent and proves the underlying module adjunction
 `cyclotomicIndResAdjunction`, without a flatness hypothesis. Its unit and
 counit are those of the actual descended nonunital map, not assumed maps.
 This ordinary adjunction is not yet a `SuperAdjunction` or KKO inversion.
+`CyclotomicAction/Slides.lean` proves the actual affine signed naturality
+`induction_dot_slide`; `induction_dot_slide_odd` specializes it to the minus
+sign for an odd new dot and an odd lower morphism. This supplies the corrected
+homogeneous intertwiner equation rather than the false unsigned equation.
 
 ## Proof architecture
 
