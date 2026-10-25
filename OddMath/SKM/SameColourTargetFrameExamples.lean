@@ -1,3 +1,4 @@
+import OddMath.SKM.SameColourTargetDescent
 import OddMath.SKM.SameColourTargetFrame
 import OddMath.SKM.PairedTargetDetection
 import OddMath.SKM.MixedCrossingLocalExamples
@@ -57,6 +58,11 @@ theorem negative_column (d : SYM D ℚ) :
         sameColourTargetCross (Sc := Sc) (fun _ => -2) P Q false :=
   (frame (-2)).nonpositive_column 2 3 (label (-2)) d (by rw [local_height]; norm_num)
 
+/-- The complete target-descent interface is inhabited for the two-odd-colour
+datum, without any additional action, grading, or coefficient assumptions. -/
+theorem all_target_exchanges : TargetExchangeDescent cs := target_exchange_descent cs
+
+#print axioms all_target_exchanges
 #print axioms positive_column
 #print axioms negative_column
 #print axioms MatchingBasisChoice.targetPositiveColumns_detect

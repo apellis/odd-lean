@@ -1,4 +1,5 @@
 import OddMath.SKM.SameColourTargetFrameExamples
 
+#print axioms OddMath.SKM.SameColourTargetFrameExamples.all_target_exchanges
 #print axioms OddMath.SKM.SameColourTargetFrameExamples.positive_column
 #print axioms OddMath.SKM.SameColourTargetFrameExamples.negative_column

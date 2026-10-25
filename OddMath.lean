@@ -1,4 +1,5 @@
 import OddMath.SKM.StrictResidualChoice
+import OddMath.SKM.SameColourTargetDescent
 import OddMath.SKM.PairedTargetIndependence
 import OddMath.SKM.SameColourTargetFrameExamples
 import OddMath.SKM.SameColourCupRowsExamples

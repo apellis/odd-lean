@@ -199,16 +199,18 @@ weight. **Even analogue:** `linearIndependent_posB_of_unfurledEval`.
 
 ### B0. From upward to oriented independence — B
 
-**Proposed remaining statement.** Establish contextual source and target
-exchange descent, including the same-colour identity remainders, and combine
-with sorted-boundary independence. **Even analogue:**
-`KL3.Diagram.calculusNondeg_of_positive`.
-**Existing:** `WeakMate.sorted_independence`,
-`expansion_injective_choice_iff`, `SKM.distinct_target_exchange_descent`,
-and distinct-source adapted families. **New:** remaining source descent and
-same-colour descents, or a separately justified shorter oriented reduction.
-**Risk: medium.** Principal mixed crossings alone lose the identity remainder;
-source and target use different height conventions.
+**Proposed remaining statement.** Establish contextual source exchange descent,
+including the same-colour identity remainders, and combine with sorted-boundary
+independence. **Even analogue:** `KL3.Diagram.calculusNondeg_of_positive`.
+**Existing:** `WeakMate.sorted_independence`, `expansion_injective_choice_iff`,
+`SKM.target_exchange_descent` (complete contextual target descent at every
+height), and `distinct_source_adapted_independent` (transfer for supplied
+adapted source families). The target proof includes normalized low cap rows,
+shifted principal columns, and both finite correction sums over full `SYM`.
+**New:** construct the complete source adapted choices and finish source
+independence transfer, then instantiate `nondegeneracy_of_contextual_descent`.
+**Risk: medium.** Source and target use different height conventions; target
+descent does not by itself supply the source families.
 
 ### B1. Field endpoint — B
 
