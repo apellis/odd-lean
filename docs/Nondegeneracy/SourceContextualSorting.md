@@ -250,12 +250,6 @@ preserves the full reducedness data. The concrete consumer uses an actual cap
 and a permutation moving ID zero; no `f 0 = 0` premise is assumed. ID lookup
 identities are restricted to valid active positions.
 
-The remaining source-family construction must identify the actual `tStart`
-state after an initial crossing with the swapped-source state, using both the
-reversed frozen endpoint position and the initial-ID permutation. It must also
-construct the isolated initial-cap sector with all dot-count labels, prove
-completeness and uniqueness of the assembled source choices, and attach the
-source columns with their full-SYM twists. These are proposed obligations,
-not consequences of final pairing isomorphism alone. The complete target
-interface is now proved by `target_exchange_descent`; the source interface
-remains the blocker to the upward-to-oriented headline theorem.
+`SourceCrossState.start_cross` and `cross_run` now identify the actual initial-crossing state and its cap-renamed crossing history. `SourceCrossAttachment` constructs strict pointed attachments and low/high partners with actual count equivalences and literal initial-crossing serializers. `SourceCapAttachment` inserts the frozen cap pair and shifts fresh IDs by four, preserving the residual serializer and all added cap counts.
+
+`SourceCompletedChoice` and `SourceAdaptedChoices` assemble complete same-colour choices: `exists_source_same_colour_adapted_equiv` retains every paired exponent and residual label, using `PointedMatching.ofStrict` on `B.members`. `SourceAdaptedDistinctChoices` proves complete distinct-colour choices without independence assumptions. The remaining obligation is to attach and detect the native source coefficient columns with their full-SYM twists. The complete target interface is proved by `target_exchange_descent`; the source interface still blocks the upward-to-oriented headline theorem.

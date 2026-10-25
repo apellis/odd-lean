@@ -1,3 +1,5 @@
+import OddMath.SKM.SourceAdaptedChoices
+import OddMath.SKM.SourceAdaptedDistinctChoices
 import OddMath.SKM.SourceCrossAttachmentExamples
 import OddMath.SKM.SourceCapAttachmentExamples
 import OddMath.SKM.SourceCapStateExamples
