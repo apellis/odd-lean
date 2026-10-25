@@ -1,6 +1,6 @@
 # Odd nondegeneracy research progress
 
-Last checkpoint: 2026-10-25 18:24 UTC. Branch: `research/odd-nondegeneracy`.
+Last checkpoint: 2026-10-25 18:30 UTC. Branch: `research/odd-nondegeneracy`.
 Research baseline: `0edcf48`. This board records checkpoints, not live telemetry.
 
 ## Objective and operating rules
@@ -38,6 +38,8 @@ scoped Lean checks, and full CI verification.
   partial results are preserved in the linked topic notes and baseline commit.
 
 See [HANDOFF.md](HANDOFF.md) for exact restart state and file ownership.
+
+- **18:30 UTC:** Commit `3da1842` pushed; full CI [40221226055](https://github.com/apellis/odd-lean/actions/runs/40221226055) running. Next scoped-checked checkpoint: pure-power cyclotomic separation, arbitrary-module tensor coordinate detection (including full `SYM`), weak source-cup matching transport, and exact finite-cutoff kernel. These do not yet construct a full SKM action. Next tasks: right-cap matching transport; polynomial/exterior coefficient structure; actual N=4 categorical bubbles with independent even and odd parameters; odd-height dot translation; even-cutoff twisted Mackey maps.
 
 - **2026-10-25 18:08 UTC**: Native elementary closure and endpoint-list constructions advance the oriented stream. Actual nonzero-exterior inversion and normalized bubble detection advance the action stream. Workers continue on the next missing constructions. New results awaiting integration are scoped checks, not a full-CI claim.
 

@@ -99,3 +99,71 @@ These finite one-colour checks do not supply colour-specific exterior generators
 mixed-colour braid coherence, or a faithful full-SYM bubble map. Those are
 still genuine missing construction tasks; tensoring spectators onto an
 action does not establish that categorical bubbles realize them.
+
+## Two actual bubble composites and higher moments
+
+`two_colour_exterior.py` reconstructs the rank-one mate inverse, then takes
+its supertensor lifts for two independent slots. Both normalized bubbles
+are computed as lifted V, inverse sigma and U composites. On the 64-dimensional
+product object the bubbles have rank 32 each, their product has rank 16,
+and their squares and anticommutator vanish. This is a genuine pair of
+bubble composites rather than two adjoined spectator scalars. It does not
+by itself attach the mixed-colour KLR crossings to these adjunctions.
+
+For the original eight-dimensional object, let B_r=V X^r sigma^-1 U and
+z=x delta. Exact coefficient calculations give
+
+- B_0=-delta;
+- B_1=2-3z;
+- B_(2r)=-2delta for r>=1;
+- B_(2r+1)=2-6z for r>=1.
+
+These are equalities of left-multiplication matrices, not just their values
+on one vector. The matrix identity X^5 sigma^-1 U=X^3 sigma^-1 U certifies
+the tail for all r, so the normalized moment series is
+
+\[
+1+\sum_{r\geq0}B_rt^{r+1}
+=(1-\delta t)(1-3x\delta t^2)\frac{1+t^2}{1-t^2}.
+\]
+
+Quotienting the nilpotent reservoir by x=0 preserves delta and removes the
+x delta correction. The resulting series is
+(1-delta t)(1+t²)/(1-t²): the nonvacuum probe contributes a rational factor.
+The odd coefficients equal the odd bubble times the preceding even
+coefficient, and the even coefficients commute. This is a finite
+specialization of the bubble coefficients, not full-SYM injectivity.
+
+## Higher cutoffs retain joint coefficient/operator information
+
+`higher_exterior_reservoir.py` constructs a two-strand odd polynomial module
+with nonzero exterior coefficient at even cutoffs N=2,4,6. In the skew
+polynomial ring on odd x,y,delta, it quotients by the **left** ideal generated
+by f_N=x^N+x^(N-1)delta and its odd divided difference g_N. It explicitly
+checks that multiplication and divided difference preserve the relation
+spaces; this is not a guessed quotient action. The final two homogeneous
+pieces vanish, so the degree truncation introduces no artificial boundary.
+
+The module dimensions are 4,24,60; the exterior operator has rank 2,12,30.
+All odd nilHecke, supercentral-exterior and cyclotomic relations pass.
+The rectangular operator families
+
+\[
+ X^aY^b\tau^w\delta^e,
+ \quad 0\leq a<N,\quad 0\leq b<N-1,\quad w,e\in\{0,1\},
+\]
+
+have full ranks 8,48,120 respectively. In particular they simultaneously
+detect dots, crossings and the exterior coefficient through total
+coefficient-plus-dot degree N-2 in each tested model. Conversely g_N tau=0
+is an actual relation of degree N-1. At N=2 this is
+(X-Y+delta)tau=0, explaining why the smallest reservoir loses some
+operator/coefficient combinations despite its nonzero bubble.
+
+`CyclotomicCutoffKernel.lean` proves the cutoff relation for every N in an
+arbitrary ring from the dot-slide, crossing-square-zero, exterior
+anticommutation and cyclotomic relations. Its proof uses the recurrence
+G_0=0, G_(n+1)=x^n-yG_n and the identity
+ tau x^n=G_n+(-y)^n tau. This generic negative-boundary statement is separate
+from the finite computational independence evidence. An all-N rectangular
+basis proof and higher-cutoff categorical adjunction/inversion remain open.

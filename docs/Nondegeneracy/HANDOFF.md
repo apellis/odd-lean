@@ -1,6 +1,6 @@
 # Research handoff
 
-Updated 2026-10-25 18:04 UTC. Continue on `research/odd-nondegeneracy` only.
+Updated 2026-10-25 18:30 UTC. Continue on `research/odd-nondegeneracy` only.
 
 ## Standing scope
 
@@ -63,3 +63,27 @@ The next signed-column, elementary closure, weighted braid-filtration, and exact
 ## Latest continuation
 
 A brief executor disconnect was resolved and local files/staging were verified intact. No remote divergence was introduced. Commit120463b has full green CI40220230892. Next staged milestones: native MatchingChoiceCoefficients/MatchingChoiceTransition (actual coefficient-space equivalence), RightClosure arbitrary block partial-mate contraction, and WeightedSeparation complete score-controlled PBW straightening. CyclotomicSeparation native pure-power quotient injection built successfully; its concrete consumer check and doc update are pending. New RightMateMatchings remains unverified until worker completes its proof. DotTranslation is under active verification. New disconnected bubble, higher-reservoir, and connected n3/n4 scripts must retain their exact finite scope.
+
+### Superseding checkpoint, 18:30 UTC
+
+`3da1842` now contains choice equivalence, arbitrary-block partial-mate contraction,
+and complete weighted affine PBW straightening. Its full CI40221226055 is pending.
+Staged next: CyclotomicSeparation and CyclotomicCoefficients (scoped checks and
+consumers passed), RightMateMatchings source-cup transport (scoped checks and
+nonempty dotted consumer passed), CyclotomicCutoffKernel, higher reservoir pilot,
+choice consumer, and paper multicolour cyclotomic analysis with exact scripts.
+
+Active ownership now:
+- choice: RightCapAttachment, completing final-cap pairing/reducedness.
+- sorting: RightMateMatchings, next coefficient compatibility and full weak-mate family.
+- separation: BubbleExterior, actual exterior inclusion/retraction and grading.
+- action: N=4 Frobenius action with independent epsilon and delta; bubble normalization.
+- synthesis: DotTranslation/OddDotTranslation, native odd-height shifted inverse coordinates.
+- alternatives: even-cutoff twisted Mackey map, first connected beta=alpha_j test.
+
+Even cutoffs require a genuine twist: f is normal rather than central, with
+nu(x)=x-2d; right multiplication by f uses source right x-action nu-inverse(x)=x+2d.
+Odd cutoffs can translate x to x-d, but this does not detect the even-height
+odd bubble. Pure-power tensor detection is a module theorem, not a deformed
+supertensor algebra or a categorical action. Brundan–Savage isomeric action is
+reduced (odd bubble zero), so it cannot by itself supply full exterior detection.

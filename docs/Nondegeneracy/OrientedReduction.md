@@ -102,12 +102,14 @@ desired implication.
    evaluation intertwiners. Their principal-block and remainder pivots
    then reduce arbitrary boundaries to sorted ones by induction on
    boundary length followed by orientation inversions.
-4. Establish choice independence of the decorated formal coefficient
-   family, so the induction can choose a different adapted family at
-   each boundary. Normalization of arbitrary reduced-skeleton errors is
-   being strengthened separately; a signed transition and its native
-   evaluation identity are still required. Its lower-dot triangular
-   order is different from the positive-dot closure order above.
+
+Choice independence, previously a fourth obligation, is now proved by
+`MatchingBasisChoice.expansion_injective_choice_iff` in
+`MatchingChoiceTransition.lean`. It includes the signed transition and
+native evaluation identity. Its lower-dot triangular order differs from
+the positive-dot closure order above. The related generic surjectivity
+theorem in `MatchingChoiceCoefficients.lean` supports the weakly reduced
+inverse-mate route below.
 
 There is no additional algebraic obstruction at the final coefficient
 detection step. The remaining difficulty is realizing these diagrammatic
@@ -168,6 +170,18 @@ needs to realize them in the `TMove` matching syntax, prove weak reducedness
 and the pairing/dot-label bijections, and extend the choice comparison to
 such a weakly reduced family. The evaluated contraction itself is now
 proved; these combinatorial statements are not supplied by it.
+
+The source-prefix half of that combinatorial bridge is now implemented in
+`RightMateMatchings.lean`. Iterating literal cup attachment defines
+`cupPrefixMatching`, preserves `IsMatching₂` and weak `Reduced₂`, preserves
+crossing count, and gives an identity-on-endpoint-numbers strand
+equivalence. The associated decorated moves preserve every dot count;
+distinguished heights and positions both increase by the prefix length.
+`dLay_cupPrefix` identifies the resulting actual decorated layers with
+the ordinary cup-prefix layers, and `cl_rightClosure_cupPrefix` recovers
+the original evaluated block. No coefficient transport is needed for
+this source-prefix-only contraction. The right-target cap attachment is
+the remaining half of the partial-mate matching construction.
 
 ## Verification
 

@@ -3,8 +3,9 @@
 Research toward Brundan–Ellis, *Super Kac–Moody 2-categories*, §8,
 Nondegeneracy Conjecture; tracking issue #345. This note supplies a mathematical
 bounded-separation argument. It does **not** construct an SKM action or claim
-that the conjecture is proved. The refined affine straightening statement below is now a Lean theorem;
-the bounded cyclotomic quotient argument remains mathematical.
+that the conjecture is proved. The refined affine straightening statement and
+the bounded monomial cyclotomic quotient theorem below are now Lean theorems.
+The weighted coefficient/deformation extension remains mathematical.
 
 ## A parameter-independent bound
 
@@ -204,9 +205,33 @@ simultaneous induction are now proved. `boundedScore_le_weightedNF` and
 `word_mem_weightedNF` establish the refined affine straightening statement.
 Separate membership in a crossing span and a score span would be insufficient;
 the proof uses their joint generating set throughout.
-After this refinement, the ideal and disjoint-support arguments are
-finite-sum and basis-coordinate arguments. Neither the bounded quotient
-theorem nor the weighted ELV extension is currently a Lean theorem.
+`OddMath/QuiverHecke/CyclotomicSeparation.lean` now formalizes the ideal and
+disjoint-support arguments too. `permutation_length_le_choose_two` supplies
+the explicit binomial crossing bound. `CyclotomicSpan` includes arbitrary
+left/right affine multipliers and all first-dot powers of exponent at least
+`N` on nonempty intermediate strand words; its closure under composition on
+both sides is proved. `cyclotomicSpan_le_dotAtLeast` gives the ideal-support
+bound, and `cyclotomic_quotient_injective_on_dotAtMost` proves bounded quotient
+injectivity for `N > d + 2 * choose(n,2)`, with `n > 0`.
+
+These are scoped native Lean checks over arbitrary allowed commutative ground
+rings and QH parameters, with no action or SKM injectivity hypothesis. The
+nonvacuity examples include a two-strand dot-degree-two quotient at cutoff
+five.
+
+`OddMath/QuiverHecke/CyclotomicCoefficients.lean` additionally constructs low-PBW
+coordinate maps on this quotient, then tensors them with any coefficient
+module. `tensor_cyclotomic_coefficients_eq_zero` proves that a finite tensor
+relation below the cutoff has all coefficients zero;
+`tensor_cyclotomic_jointly_detects` proves joint detection by the entire family.
+No flatness, basis, or domain assumption on the coefficient module is needed.
+The nonvacuity example instantiates that module with full abstract `SYM` and
+checks that extraction returns the whole coefficient `δ_i δ_j`.
+
+This establishes coefficientwise detection at the module level. Signed
+supertensor multiplication, its identification of the extended relation ideal,
+and the weighted ELV quotient remain to be formalized; a tensor-module theorem
+alone does not supply any of these algebra or action constructions.
 
 ## A concrete coupling target for reservoir and spectral factors
 
