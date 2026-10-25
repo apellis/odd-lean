@@ -44,9 +44,37 @@ theorem dotted_position : DTMove.dotPts (attachMoves [x] ds) = [(1, 0)] := by
   rw [dotPts_attachMoves]
   rfl
 
+private def u : Letter Unit := (true, ())
+private def twoUps : List (Letter Unit) := [u, u]
+private def threeDots : List (DTMove Unit) := [.dt 0, .dt 1, .dt 0]
+
+private theorem identity_matching : IsMatching₂ twoUps ([] ++ twoUps) [] := ⟨trivial, rfl⟩
+private theorem identity_reduced : Reduced₂ twoUps [] := by
+  change ([] : List (Sym2 ℕ)).Nodup ∧ ∀ z ∈ ([] : List (Sym2 ℕ)), ¬ z.IsDiag
+  simp
+
+/-- Two successive right caps retain the actual matching and weak reducedness. -/
+theorem two_caps_reduced :
+    IsMatching₂ (twoUps ++ dualW twoUps) [] (suffixMatching [] twoUps []) ∧
+      Reduced₂ (twoUps ++ dualW twoUps) (suffixMatching [] twoUps []) :=
+  ⟨suffix_matching identity_matching, suffix_reduced identity_matching identity_reduced⟩
+
+/-- Repeated dots and both right caps use the checked literal layer bridge. -/
+theorem two_caps_dotted_layers :
+    dLay (twoUps ++ dualW twoUps) (suffixMoves [] twoUps threeDots) =
+      suffixLayers [] twoUps (dLay twoUps threeDots) := by
+  apply dLay_suffixMoves identity_matching (show DTMove.tmoves threeDots = [] from rfl)
+  change 0 < 2 ∧ 1 < 2 ∧ 0 < 2 ∧ True
+  decide
+
 #print axioms zigzag_matching
 #print axioms zigzag_reduced
 #print axioms zigzag_not_strict
 #print axioms dotted_layers
 #print axioms dotted_position
+#print axioms two_caps_reduced
+#print axioms two_caps_dotted_layers
+#print axioms OddMath.SKM.RightCapAttachment.onStrand_attach
+#print axioms OddMath.SKM.RightCapAttachment.attach_decorates
+#print axioms OddMath.SKM.RightCapAttachment.suffix_decorates
 end NonVacuity.RightCapAttachment

@@ -127,3 +127,29 @@ coset, and a quadratic-in-head-length cutoff bound does not suffice when head
 length grows linearly. Rank-one uses the exact ELV rectangle. A zero-spectrum
 deformed reservoir plus compensating generic probes remains a possible Webster
 route after the connected action exists; its coupling is not yet proved.
+
+### Superseding checkpoint, 18:54 UTC
+
+`c8debb4` full CI40222091681 is green; `8b5b2cc` pushed, CI40222830590 running.
+Staged checked: CoefficientExtension (BoxProd actual signed tensor category),
+UpwardWordTransport, ClosureCoefficientExpansion (actual partial-mate closure
+with full coefficients and positive-dot errors), final right-cap/suffix
+matching/decorator/layer transport, source projectivity notes, fixed-weight
+rank-one argument, and finite disconnected categorical product pilot.
+
+Reallocated ownership: rewriting_alternatives now proves cyclic pairing
+reindexing/coverage in coordination with choice. Choice owns WeakMateMatchings
+and WeakMatchingChoice; sorting owns UpwardTopDots and independence transfer.
+Use all-top upward dot serializers: positive appended dots then reorder exactly
+without crossing slides, preserving strict dot increase. Do not use the general
+choice lower-dot comparison inside the least-dot closure detector; transfer
+weak-to-strict independence separately by its lower-lex triangular surjection.
+Separation owns WeightedCoefficientSeparation; synthesis audits Section 9
+inversion after the proposed Section 8 projectivity argument; action writes
+all-cutoff disconnected product coherence following the finite joint pilot.
+
+Source Section 8 correction: obtain monic square-variable annihilators from
+conjugate fbar*f and KKO7.3 independently of PQ. Restrict to central s=t²,
+which the P twist fixes. This avoids circular use of PQ for projectivity.
+Section 9 negative-height recurrence shifts psi as well as phi; shifted cap
+rows require a unitriangular conversion to the actual dotted rows.

@@ -1098,3 +1098,6 @@ import OddMath.SKM.RightCapAttachment
 import OddMath.SKM.PositiveDotTransport
 import OddMath.SKM.BubbleCoefficientBasis
 import OddMath.Diagrams.OddNilHecke.CyclotomicNorm
+import OddMath.QuiverHecke.CoefficientExtension
+import OddMath.SKM.UpwardWordTransport
+import OddMath.SKM.ClosureCoefficientExpansion

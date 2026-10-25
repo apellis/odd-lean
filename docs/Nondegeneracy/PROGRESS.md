@@ -1,6 +1,6 @@
 # Odd nondegeneracy research progress
 
-Last checkpoint: 2026-10-25 18:45 UTC. Branch: `research/odd-nondegeneracy`.
+Last checkpoint: 2026-10-25 18:54 UTC. Branch: `research/odd-nondegeneracy`.
 Research baseline: `0edcf48`. This board records checkpoints, not live telemetry.
 
 ## Objective and operating rules
@@ -25,6 +25,15 @@ scoped Lean checks, and full CI verification.
 | Independent challenge / rewriting | Active | Twisted KKO maps and monic projectivity argument | Mixed EF paper extension; even-cutoff normality exact sequence; first connected map test | All-beta same-colour projectivity and inversion |
 
 ## Verification
+
+- Full CI [40222091681](https://github.com/apellis/odd-lean/actions/runs/40222091681)
+  passed for `c8debb4`. `8b5b2cc` is pushed; CI40222830590 running.
+- **18:54 UTC:** Whole-word full-coefficient transport and actual partial-mate
+  closure expansion are scoped Lean-checked. The signed coefficient-extended
+  QH category is constructed with genuine tensor Homs. All-content even-cutoff
+  projectivity has a written source-adaptation proof under review; Section 9
+  inversion is still being audited. One worker moved from that audit to the
+  cyclic pairing-coverage lemma; six workers remain active across all streams.
 
 - Full CI [40221653309](https://github.com/apellis/odd-lean/actions/runs/40221653309)
   passed for `cd0ba81`. Checkpoint `c8debb4` is pushed; full CI

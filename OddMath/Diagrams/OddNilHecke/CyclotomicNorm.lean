@@ -53,4 +53,19 @@ theorem even_cutoff_transport_pos (x y d e q r c b g : R)
       _ = (x * g) * e * r := by rw [hd]; noncomm_ring
       _ = g * (y * e * r) := by rw [hx]; noncomm_ring
   rw [sub_mul, hc, ht, mul_sub]
+
+/-- The ELV translation fixes the central square variable. -/
+theorem translated_square (x d : R) (hd : d * d = 0)
+    (hx : d * x = -(x * d)) : (x - 2 * d) ^ 2 = x ^ 2 := by
+  rw [two_mul]
+  noncomm_ring [hd, hx]
+
+/-- Once its even square-polynomial factors are fixed, the whole even
+cyclotomic polynomial is fixed by the ELV translation. -/
+theorem even_cutoff_translation_fixed (x d q c : R) (hd : d * d = 0) :
+    c - (x - 2 * d) * d * q = c - x * d * q := by
+  have hh : (x - 2 * d) * d = x * d := by
+    rw [two_mul]
+    noncomm_ring [hd]
+  rw [hh]
 end OddMath.OddNilHecke.CyclotomicNorm

@@ -22,3 +22,5 @@ example : exterior dualParameter ≠ 0 ∧
 #print axioms CyclotomicNorm.even_cutoff_multiple
 #print axioms CyclotomicNorm.even_cutoff_transport_neg
 #print axioms CyclotomicNorm.even_cutoff_transport_pos
+#print axioms CyclotomicNorm.translated_square
+#print axioms CyclotomicNorm.even_cutoff_translation_fixed

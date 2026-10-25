@@ -448,4 +448,441 @@ private theorem tRen_append_at (k : ℕ) (T : TState (Letter I))
   | nil => rfl
   | cons m R ih => exact ih _ _
 
+private theorem idD_lEnd {s : List (ℕ × Letter I)} {i : ℕ} (hi : i < s.length) :
+    idD s (lEnd s i) = idD s i := by
+  rcases lEnd_spec s i with ⟨he, _⟩ | ⟨_, hs⟩
+  · rw [he]
+  · have h := hs.2.2
+    rw [idAt_eq_idD hi, idAt_eq_idD (lEnd_lt hi)] at h
+    exact (Option.some.inj h).symm
+
+private theorem idD_mem {s : List (ℕ × Letter I)} {i : ℕ} (hi : i < s.length) :
+    idD s i ∈ s.map Prod.fst := by
+  refine List.mem_map.mpr ⟨s[i], List.getElem_mem hi, ?_⟩
+  simp [idD, idAt, List.getElem?_eq_getElem hi]
+
+/-- Left-endpoint strand names are in bijection with the IDs actually present
+in a valid matching. This avoids assuming a cyclic cut preserves left endpoints. -/
+noncomputable def strandIdEquiv (a : List (Letter I)) (R : List (TMove (Letter I)))
+    (hv : Valid (pairing₂ a R)) :
+    MatchingStrand a R ≃ {n : ℕ // n ∈ (pairing₂ a R).map Prod.fst} := by
+  let f : MatchingStrand a R → {n : ℕ // n ∈ (pairing₂ a R).map Prod.fst} :=
+    fun j => ⟨idD (pairing₂ a R) j.val, idD_mem (mem_leftEnds₂.mp j.property).1⟩
+  apply Equiv.ofBijective f
+  constructor
+  · intro i j hij
+    have hid := congrArg Subtype.val hij
+    have h := lEnd_eq_of_idD hv (Iso.refl _) (mem_leftEnds₂.mp i.property).1
+      (mem_leftEnds₂.mp j.property) hid
+    have hi := lEnd_eq_of_isLeftEnd hv (mem_leftEnds₂.mp i.property) (Or.inl rfl)
+    exact Subtype.ext (hi.symm.trans h)
+  · intro n
+    obtain ⟨z, hz, he⟩ := List.mem_map.mp n.property
+    obtain ⟨i, hi, hiZ⟩ := List.mem_iff_getElem.mp hz
+    refine ⟨⟨lEnd (pairing₂ a R) i, mem_leftEnds₂.mpr (isLeftEnd_lEnd hv hi)⟩, ?_⟩
+    apply Subtype.ext
+    change idD (pairing₂ a R) (lEnd (pairing₂ a R) i) = n.val
+    rw [idD_lEnd hi]
+    simpa only [idD, idAt, List.getElem?_eq_getElem hi, Option.map_some, Option.getD_some,
+      hiZ] using he
+
+@[simp] theorem strandIdEquiv_val (a : List (Letter I)) (R : List (TMove (Letter I)))
+    (hv : Valid (pairing₂ a R)) (j : MatchingStrand a R) :
+    (strandIdEquiv a R hv j).val = idD (pairing₂ a R) j.val := rfl
+
+theorem attach_ids_perm {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R) :
+    ((pairing₂ (a ++ [x]) (attach b R)).map Prod.fst).Perm
+      (((pairing₂ a R).map Prod.fst).map (fun n => n + 2)) := by
+  obtain ⟨_, P, q, hs, hp, _⟩ := attach_matching_state hR
+  rw [hs, hp]
+  simp only [List.map_cons, List.map_append, List.map_nil, List.map_map, liftId,
+    Function.comp_def]
+  exact List.perm_append_comm (l₁ := [q + 2]) (l₂ := P.map fun z => z.1 + 2)
+
+noncomputable def attachIdEquiv {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R) :
+    {n : ℕ // n ∈ (pairing₂ a R).map Prod.fst} ≃
+      {n : ℕ // n ∈ (pairing₂ (a ++ [x]) (attach b R)).map Prod.fst} := by
+  let f : {n : ℕ // n ∈ (pairing₂ a R).map Prod.fst} →
+      {n : ℕ // n ∈ (pairing₂ (a ++ [x]) (attach b R)).map Prod.fst} := fun n =>
+    ⟨n.val + 2, (attach_ids_perm hR).mem_iff.mpr (List.mem_map.mpr ⟨n.val, n.property, rfl⟩)⟩
+  apply Equiv.ofBijective f
+  constructor
+  · intro i j hij
+    exact Subtype.ext (Nat.add_right_cancel (congrArg Subtype.val hij))
+  · intro n
+    obtain ⟨m, hm, he⟩ := List.mem_map.mp ((attach_ids_perm hR).mem_iff.mp n.property)
+    exact ⟨⟨m, hm⟩, Subtype.ext he⟩
+
+/-- Actual strand transport across the cyclic boundary cut. The left endpoint
+may change, so transport is through the injectively shifted strand IDs. -/
+noncomputable def attachStrandEquiv {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R) :
+    MatchingStrand a R ≃ MatchingStrand (a ++ [x]) (attach b R) :=
+  (strandIdEquiv a R hR.pairing_properties.1).trans
+    ((attachIdEquiv hR).trans
+      (strandIdEquiv (a ++ [x]) (attach b R) (attach_matching hR).pairing_properties.1).symm)
+
+/-- Strand transport preserves the exact shifted ID, including the strand
+whose endpoint passes through the cyclic cut. -/
+theorem attachStrandEquiv_id {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (j : MatchingStrand a R) :
+    idD (pairing₂ (a ++ [x]) (attach b R)) (attachStrandEquiv hR j).val =
+      idD (pairing₂ a R) j.val + 2 := by
+  have h := congrArg Subtype.val
+    ((strandIdEquiv (a ++ [x]) (attach b R) (attach_matching hR).pairing_properties.1).apply_symm_apply
+      (attachIdEquiv hR (strandIdEquiv a R hR.pairing_properties.1 j)))
+  exact h
+
+private theorem frame_cap_ren (x : Letter I) (T : TState (Letter I))
+    (P : List (ℕ × Letter I)) (q n : ℕ) (hs : T.st = P ++ [(q, flipL x)]) :
+    stepRen 0 (frame x T) (.cap (P.length + 1)) (n + 2) = n + 2 := by
+  let U := (0, flipL x) :: P.map liftId
+  have hU : U.length = P.length + 1 := by simp [U]
+  have hst : (frame x T).st = U ++ [(q + 2, flipL x), (0, x)] := by
+    simp [frame, hs, U, liftId, List.append_assoc]
+  have hA : (frame x T).st[P.length + 1]? = some (q + 2, flipL x) := by
+    rw [hst, ← hU]
+    simp
+  have hB : (frame x T).st[P.length + 1 + 1]? = some (0, x) := by
+    rw [hst, ← hU]
+    simp
+  simp only [stepRen, Nat.zero_add, idD, idAt, hA, hB, Option.map_some, Option.getD_some]
+  simp [rlId]
+
+/-- The final cap changes only the outer ID 0, never any old strand ID. -/
+theorem frame_ren_append_cap (x : Letter I) (k : ℕ) (T : TState (Letter I))
+    (R : List (TMove (Letter I))) (hR : TFits flipL k T R)
+    (P : List (ℕ × Letter I)) (q : ℕ)
+    (hs : (tRun flipL k T R).st = P ++ [(q, flipL x)])
+    (g : ℕ) (hg : k + g = P.length) (n : ℕ) :
+    tRen (k + 1) (frame x T) (R ++ [.cap g]) (n + 2) = tRen k T R n + 2 := by
+  rw [tRen_append_at, frame_ren x k T R hR n, (frame_run x k T R hR).2]
+  change stepRen (k + 1) (frame x (tRun flipL k T R)) (.cap g) (_ + 2) = _
+  have h := frame_cap_ren x (tRun flipL k T R) P q (tRen k T R n) hs
+  simpa only [stepRen, Nat.zero_add, show k + 1 + g = P.length + 1 by omega] using h
+
+/-- A bounded distinguished point stays at the same height and position on
+the corresponding strand after the right cap. -/
+theorem onStrand_attach {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (j : MatchingStrand a R) {p : ℕ × ℕ} (hbound : p.1 ≤ R.length)
+    (hp : OnStrand₂ a R j.val p) :
+    p.1 ≤ (attach b R).length ∧
+      OnStrand₂ (a ++ [x]) (attach b R) (attachStrandEquiv hR j).val p := by
+  let T := tRun flipL a.length (tStart a) (R.take p.1)
+  have hsplit := (tFits_append_at a.length (tStart a) (R.take p.1) (R.drop p.1)).mp
+    (by simpa only [List.take_append_drop] using hR.1)
+  have hrun := (frame_run x a.length (tStart a) (R.take p.1) hsplit.1).2
+  have htake : (attach b R).take p.1 = R.take p.1 := List.take_append_of_le_length hbound
+  have hdrop : (attach b R).drop p.1 = R.drop p.1 ++ [.cap b.length] :=
+    List.drop_append_of_le_length hbound
+  have hnew : tRun flipL (a ++ [x]).length (tStart (a ++ [x])) ((attach b R).take p.1) =
+      frame x T := by
+    rw [htake]
+    simpa only [List.length_append, List.length_singleton, frame_start] using hrun
+  have hfold := (dLay_right (length_dualW a) [x] ((R.take p.1).map .tm)
+    (tStart a) a (tStart_letters a) (by simpa only [tmoves_map_tm] using hsplit.1)
+    (dOk₂_map_tm a (R.take p.1))).2
+  simp only [tmoves_map_tm] at hfold
+  have hlet := letters_tRun (length_dualW a) (R.take p.1) (tStart a) a
+    (tStart_letters a) hsplit.1
+  have hlen : T.st.length = a.length + ((R.take p.1).foldl tLet a).length := by
+    have hh := congrArg List.length hlet
+    simpa only [List.length_map, List.length_append, length_dualW] using hh
+  obtain ⟨_, P, q, hs, _, _⟩ := attach_matching_state hR
+  have hPlen : a.length + b.length = P.length := by
+    have h₁ := congrArg List.length hs
+    have h₂ := congrArg List.length hR.pairing_properties.2.2
+    simp only [List.length_map, List.length_append, length_dualW, List.length_singleton] at h₁ h₂
+    omega
+  have htail : tRun flipL a.length T (R.drop p.1) = tRun flipL a.length (tStart a) R := by
+    simp only [T, tRun, ← List.foldl_append, List.take_append_drop]
+  have hren := frame_ren_append_cap x a.length T (R.drop p.1) hsplit.2 P q
+    (by rw [htail]; exact hs) b.length hPlen (idD T.st (a.length + p.2))
+  refine ⟨by simp only [attach, List.length_append, List.length_singleton]; omega, ?_, ?_⟩
+  · rw [htake, hfold, List.length_append, List.length_singleton]
+    exact Nat.lt_succ_of_lt hp.1
+  ·
+
+    rw [hnew, hdrop, show (a ++ [x]).length = a.length + 1 by simp,
+      show a.length + 1 + p.2 = (a.length + p.2) + 1 by omega,
+      idD_frame x T (by have := hp.1; omega), hren, attachStrandEquiv_id hR j]
+    exact congrArg (fun n => n + 2) hp.2
+
+noncomputable def attachPoints {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (q : ℕ → ℕ × ℕ) (j : ℕ) : ℕ × ℕ := by
+  classical
+  exact if h : j ∈ leftEnds₂ (a ++ [x]) (attach b R) then
+    q ((attachStrandEquiv hR).symm ⟨j, h⟩).val else (0, 0)
+
+@[simp] theorem attachPoints_apply {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (q : ℕ → ℕ × ℕ) (j : MatchingStrand (a ++ [x]) (attach b R)) :
+    attachPoints hR q j.val = q ((attachStrandEquiv hR).symm j).val := by
+  simp only [attachPoints, dite_eq_left j.property]
+
+private theorem dotList_attach (a : List (Letter I)) (R : List (TMove (Letter I)))
+    (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ) :
+    (leftEnds₂ a R).flatMap (fun j => List.replicate (strandCounts n j) (q j)) =
+      (leftEnds₂ a R).attach.flatMap (fun j => List.replicate (n j) (q j.val)) := by
+  conv_lhs => rw [← List.attach_map_subtype_val (leftEnds₂ a R), List.flatMap_map]
+  congr 1
+  funext j
+  simp only [strandCounts_apply]
+
+/-- Literal cap attachment transports every strand multiplicity, including
+arbitrary repeated dots and serializers, across the cyclic boundary cut. -/
+theorem attach_decorates {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ) {ds : List (DTMove I)}
+    (hd : Decorates₂ a R q (strandCounts n) ds) :
+    Decorates₂ (a ++ [x]) (attach b R) (attachPoints hR q)
+      (strandCounts (n ∘ (attachStrandEquiv hR).symm)) (attachMoves b ds) := by
+  classical
+  refine ⟨by rw [tmoves_attachMoves, hd.1], ?_⟩
+  rw [dotPts_attachMoves]
+  apply hd.2.trans
+  rw [dotList_attach, dotList_attach]
+  have he : ((leftEnds₂ (a ++ [x]) (attach b R)).attach.map (attachStrandEquiv hR).symm).Perm
+      (leftEnds₂ a R).attach := by
+    apply (List.perm_ext_iff_of_nodup
+      ((nodup_leftEnds₂ _ _).attach.map (attachStrandEquiv hR).symm.injective)
+      (nodup_leftEnds₂ _ _).attach).mpr
+    intro j
+    simp only [List.mem_attach, iff_true, List.mem_map]
+    exact ⟨attachStrandEquiv hR j, trivial, (attachStrandEquiv hR).symm_apply_apply j⟩
+  have hp := he.symm.flatMap_right (fun j : MatchingStrand a R => List.replicate (n j) (q j.val))
+  simpa only [List.flatMap_map, Function.comp_apply, attachPoints_apply] using hp
+
+/-- Transported distinguished points remain bounded and on their actual strands. -/
+theorem attachPoints_spec {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    (q : ℕ → ℕ × ℕ)
+    (hq : ∀ j ∈ leftEnds₂ a R, (q j).1 ≤ R.length ∧ OnStrand₂ a R j (q j))
+    (j : MatchingStrand (a ++ [x]) (attach b R)) :
+    (attachPoints hR q j.val).1 ≤ (attach b R).length ∧
+      OnStrand₂ (a ++ [x]) (attach b R) j.val (attachPoints hR q j.val) := by
+  rw [attachPoints_apply]
+  have h := onStrand_attach hR ((attachStrandEquiv hR).symm j)
+    (hq _ ((attachStrandEquiv hR).symm j).property).1
+    (hq _ ((attachStrandEquiv hR).symm j).property).2
+  simpa only [Equiv.apply_symm_apply] using h
+
+/-- Bend an entire target suffix down, starting at its rightmost endpoint. -/
+def suffixMatching (b : List (Letter I)) : List (Letter I) →
+    List (TMove (Letter I)) → List (TMove (Letter I))
+  | [], R => R
+  | y :: w, R => attach b (suffixMatching (b ++ [y]) w R)
+
+def suffixMoves (b : List (Letter I)) : List (Letter I) →
+    List (DTMove I) → List (DTMove I)
+  | [], ds => ds
+  | y :: w, ds => attachMoves b (suffixMoves (b ++ [y]) w ds)
+
+@[simp] theorem tmoves_suffixMoves (b w : List (Letter I)) (ds : List (DTMove I)) :
+    tmoves (suffixMoves b w ds) = suffixMatching b w (tmoves ds) := by
+  induction w generalizing b with
+  | nil => rfl
+  | cons y w ih => simp only [suffixMoves, suffixMatching, tmoves_attachMoves, ih]
+
+@[simp] theorem dotPts_suffixMoves (b w : List (Letter I)) (ds : List (DTMove I)) :
+    dotPts (suffixMoves b w ds) = dotPts ds := by
+  induction w generalizing b with
+  | nil => rfl
+  | cons y w ih => simp only [suffixMoves, dotPts_attachMoves, ih]
+
+/-- Iterated literal inverse mates are genuine matchings. -/
+theorem suffix_matching {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) :
+    IsMatching₂ (a ++ dualW w) b (suffixMatching b w R) := by
+  induction w generalizing a b R with
+  | nil => simpa only [suffixMatching, dualW_nil, List.append_nil] using hR
+  | cons y w ih =>
+    have hR' : IsMatching₂ a ((b ++ [y]) ++ w) R := by simpa using hR
+    have hm := ih hR'
+    have hm' : IsMatching₂ (a ++ dualW w) (b ++ [flipL (flipL y)])
+        (suffixMatching (b ++ [y]) w R) := by simpa only [flipL_involutive y] using hm
+    have h := attach_matching hm'
+    simpa only [suffixMatching, dualW_cons, List.append_assoc] using h
+
+/-- Weak reducedness is preserved throughout the entire target-suffix bend. -/
+theorem suffix_reduced {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (hred : Reduced₂ a R) :
+    Reduced₂ (a ++ dualW w) (suffixMatching b w R) := by
+  induction w generalizing a b R with
+  | nil => simpa only [suffixMatching, dualW_nil, List.append_nil] using hred
+  | cons y w ih =>
+    have hR' : IsMatching₂ a ((b ++ [y]) ++ w) R := by simpa using hR
+    have hm : IsMatching₂ (a ++ dualW w) (b ++ [flipL (flipL y)])
+        (suffixMatching (b ++ [y]) w R) := by
+      simpa only [flipL_involutive y] using suffix_matching hR'
+    have h := attach_reduced hm (ih hR' hred)
+    simpa only [suffixMatching, dualW_cons, List.append_assoc] using h
+
+@[simp] theorem ncr_suffixMatching (b w : List (Letter I)) (R : List (TMove (Letter I))) :
+    ncr₂ (suffixMatching b w R) = ncr₂ R := by
+  induction w generalizing b with
+  | nil => rfl
+  | cons y w ih => simp only [suffixMatching, ncr_attach, ih]
+
+/-- The entire suffix bend has a strand bijection preserving every bounded
+actual point. In particular, strands passing through successive cyclic cuts
+retain their dot multiplicities. -/
+theorem exists_suffixStrandEquiv {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) :
+    ∃ e : MatchingStrand a R ≃ MatchingStrand (a ++ dualW w) (suffixMatching b w R),
+      ∀ (j : MatchingStrand a R) (p : ℕ × ℕ), p.1 ≤ R.length → OnStrand₂ a R j.val p →
+        p.1 ≤ (suffixMatching b w R).length ∧
+          OnStrand₂ (a ++ dualW w) (suffixMatching b w R) (e j).val p := by
+  induction w generalizing a b R with
+  | nil =>
+    rw [dualW_nil, List.append_nil]
+    simpa only [suffixMatching] using
+      (show ∃ e : MatchingStrand a R ≃ MatchingStrand a R,
+        ∀ (j : MatchingStrand a R) (p : ℕ × ℕ), p.1 ≤ R.length → OnStrand₂ a R j.val p →
+          p.1 ≤ R.length ∧ OnStrand₂ a R (e j).val p from
+        ⟨Equiv.refl _, fun _ _ hb hp => ⟨hb, hp⟩⟩)
+  | cons y w ih =>
+    have hR' : IsMatching₂ a ((b ++ [y]) ++ w) R := by simpa using hR
+    obtain ⟨e, he⟩ := ih hR'
+    have hm : IsMatching₂ (a ++ dualW w) (b ++ [flipL (flipL y)])
+        (suffixMatching (b ++ [y]) w R) := by
+      simpa only [flipL_involutive y] using suffix_matching hR'
+    have h : ∃ E : MatchingStrand a R ≃
+        MatchingStrand ((a ++ dualW w) ++ [flipL y]) (attach b (suffixMatching (b ++ [y]) w R)),
+        ∀ (j : MatchingStrand a R) (p : ℕ × ℕ), p.1 ≤ R.length → OnStrand₂ a R j.val p →
+          p.1 ≤ (attach b (suffixMatching (b ++ [y]) w R)).length ∧
+            OnStrand₂ ((a ++ dualW w) ++ [flipL y]) (attach b (suffixMatching (b ++ [y]) w R))
+              (E j).val p := by
+      refine ⟨e.trans (attachStrandEquiv hm), ?_⟩
+      intro j p hb hp
+      exact onStrand_attach hm (e j) (he j p hb hp).1 (he j p hb hp).2
+    rw [dualW_cons, ← List.append_assoc]
+    exact h
+
+noncomputable def suffixStrandEquiv {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) :
+    MatchingStrand a R ≃ MatchingStrand (a ++ dualW w) (suffixMatching b w R) :=
+  (exists_suffixStrandEquiv hR).choose
+
+theorem onStrand_suffix {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (j : MatchingStrand a R) (p : ℕ × ℕ)
+    (hb : p.1 ≤ R.length) (hp : OnStrand₂ a R j.val p) :
+    p.1 ≤ (suffixMatching b w R).length ∧
+      OnStrand₂ (a ++ dualW w) (suffixMatching b w R) (suffixStrandEquiv hR j).val p :=
+  (exists_suffixStrandEquiv hR).choose_spec j p hb hp
+
+noncomputable def suffixPoints {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (q : ℕ → ℕ × ℕ) (j : ℕ) : ℕ × ℕ := by
+  classical
+  exact if h : j ∈ leftEnds₂ (a ++ dualW w) (suffixMatching b w R) then
+    q ((suffixStrandEquiv hR).symm ⟨j, h⟩).val else (0, 0)
+
+@[simp] theorem suffixPoints_apply {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (q : ℕ → ℕ × ℕ)
+    (j : MatchingStrand (a ++ dualW w) (suffixMatching b w R)) :
+    suffixPoints hR q j.val = q ((suffixStrandEquiv hR).symm j).val := by
+  simp only [suffixPoints, dite_eq_left j.property]
+
+theorem suffix_decorates {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ)
+    {ds : List (DTMove I)} (hd : Decorates₂ a R q (strandCounts n) ds) :
+    Decorates₂ (a ++ dualW w) (suffixMatching b w R) (suffixPoints hR q)
+      (strandCounts (n ∘ (suffixStrandEquiv hR).symm)) (suffixMoves b w ds) := by
+  classical
+  refine ⟨by rw [tmoves_suffixMoves, hd.1], ?_⟩
+  rw [dotPts_suffixMoves]
+  apply hd.2.trans
+  rw [dotList_attach, dotList_attach]
+  have he : ((leftEnds₂ (a ++ dualW w) (suffixMatching b w R)).attach.map
+      (suffixStrandEquiv hR).symm).Perm (leftEnds₂ a R).attach := by
+    apply (List.perm_ext_iff_of_nodup
+      ((nodup_leftEnds₂ _ _).attach.map (suffixStrandEquiv hR).symm.injective)
+      (nodup_leftEnds₂ _ _).attach).mpr
+    intro j
+    simp only [List.mem_attach, iff_true, List.mem_map]
+    exact ⟨suffixStrandEquiv hR j, trivial, (suffixStrandEquiv hR).symm_apply_apply j⟩
+  have hp := he.symm.flatMap_right (fun j : MatchingStrand a R => List.replicate (n j) (q j.val))
+  simpa only [List.flatMap_map, Function.comp_apply, suffixPoints_apply] using hp
+
+theorem suffixPoints_spec {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) (q : ℕ → ℕ × ℕ)
+    (hq : ∀ j ∈ leftEnds₂ a R, (q j).1 ≤ R.length ∧ OnStrand₂ a R j (q j))
+    (j : MatchingStrand (a ++ dualW w) (suffixMatching b w R)) :
+    (suffixPoints hR q j.val).1 ≤ (suffixMatching b w R).length ∧
+      OnStrand₂ (a ++ dualW w) (suffixMatching b w R) j.val (suffixPoints hR q j.val) := by
+  rw [suffixPoints_apply]
+  have h := onStrand_suffix hR ((suffixStrandEquiv hR).symm j) _
+    (hq _ ((suffixStrandEquiv hR).symm j).property).1
+    (hq _ ((suffixStrandEquiv hR).symm j).property).2
+  simpa only [Equiv.apply_symm_apply] using h
+
+private theorem dOk_right {k : ℕ} {u : List (Letter I)} (hu : u.length = k)
+    (v : List (Letter I)) (ds : List (DTMove I)) (T : TState (Letter I))
+    (l : List (Letter I)) (hl : T.st.map Prod.snd = u ++ l)
+    (hf : TFits flipL k T (tmoves ds)) (hd : DOk₂ l ds) : DOk₂ (l ++ v) ds := by
+  induction ds generalizing T l with
+  | nil => trivial
+  | cons d ds ih =>
+    cases d with
+    | tm m =>
+      have hm := lOk_at hu hl hf.1
+      have hn := letters_tRun hu [m] T l hl ⟨hf.1, trivial⟩
+      simp only [tRun, List.foldl_cons, List.foldl_nil] at hn
+      change DOk₂ (tLet (l ++ v) m) ds
+      rw [(tmLay_right v hm).2]
+      exact ih _ _ hn hf.2 hd
+    | dt p =>
+      refine ⟨?_, ih _ _ hl hf hd.2⟩
+      have h := hd.1
+      simp only [List.length_append]
+      omega
+
+theorem dOk_attachMoves {x : Letter I} {a b : List (Letter I)}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (b ++ [flipL x]) R)
+    {ds : List (DTMove I)} (hm : tmoves ds = R) (hd : DOk₂ a ds) :
+    DOk₂ (a ++ [x]) (attachMoves b ds) := by
+  apply (dOk₂_append _ _ _).mpr
+  exact ⟨dOk_right (length_dualW a) [x] ds (tStart a) a (tStart_letters a)
+    (by rw [hm]; exact hR.1) hd, trivial⟩
+
+theorem dOk_suffixMoves {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) {ds : List (DTMove I)}
+    (hm : tmoves ds = R) (hd : DOk₂ a ds) :
+    DOk₂ (a ++ dualW w) (suffixMoves b w ds) := by
+  induction w generalizing a b R ds with
+  | nil => simpa only [suffixMoves, dualW_nil, List.append_nil] using hd
+  | cons y w ih =>
+    have hR' : IsMatching₂ a ((b ++ [y]) ++ w) R := by simpa using hR
+    have hmatch : IsMatching₂ (a ++ dualW w) (b ++ [flipL (flipL y)])
+        (suffixMatching (b ++ [y]) w R) := by
+      simpa only [flipL_involutive y] using suffix_matching hR'
+    have h := dOk_attachMoves hmatch (by rw [tmoves_suffixMoves, hm]) (ih hR' hm hd)
+    simpa only [suffixMoves, dualW_cons, List.append_assoc] using h
+
+/-- Literal layers for iterated right-target cap attachment. -/
+def suffixLayers (b : List (Letter I)) : List (Letter I) → List (XLayer I) → List (XLayer I)
+  | [], L => L
+  | y :: w, L => (suffixLayers (b ++ [y]) w L).map (xwhL [] [flipL y]) ++
+      (xCapL (flipL y)).map (xwhL b [])
+
+theorem dLay_suffixMoves {a b w : List (Letter I)} {R : List (TMove (Letter I))}
+    (hR : IsMatching₂ a (b ++ w) R) {ds : List (DTMove I)}
+    (hm : tmoves ds = R) (hd : DOk₂ a ds) :
+    dLay (a ++ dualW w) (suffixMoves b w ds) = suffixLayers b w (dLay a ds) := by
+  induction w generalizing a b R ds with
+  | nil => simp only [suffixMoves, suffixLayers, dualW_nil, List.append_nil]
+  | cons y w ih =>
+    have hR' : IsMatching₂ a ((b ++ [y]) ++ w) R := by simpa using hR
+    have hmatch : IsMatching₂ (a ++ dualW w) (b ++ [flipL (flipL y)])
+        (suffixMatching (b ++ [y]) w R) := by
+      simpa only [flipL_involutive y] using suffix_matching hR'
+    have h := dLay_attachMoves hmatch (by rw [tmoves_suffixMoves, hm]) (dOk_suffixMoves hR' hm hd)
+    rw [ih hR' hm hd] at h
+    simpa only [suffixMoves, suffixLayers, dualW_cons, List.append_assoc] using h
+
 end OddMath.SKM.RightCapAttachment

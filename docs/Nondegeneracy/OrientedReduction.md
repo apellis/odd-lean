@@ -230,3 +230,42 @@ fixed-weight action strategy must separately retain graded coefficient
 lifts or prove the source-level homogeneous formula. The closure route still
 needs repeated transport and its evaluation identity for the chosen weak
 inverse-mate family, followed by the finite triangular detector.
+
+### Repeated upward-word coefficients
+
+`UpwardWordTransport.betaSYM_exists_positiveWordExpansion` strengthens the
+one-strand result to an arbitrary upward word and arbitrary left context.
+The error is a finite vector indexed by `PositiveWordDots`: literal nonempty
+lists of upward dot layers satisfying the actual boundary chain. Every term
+is evaluated as that dot diagram followed by a full rightmost SYM coefficient.
+The zero-dot coefficient remains exactly `p`. The proof transports each
+one-strand positive error through the remaining suffix and prepends its
+positive dots, so the positivity assertion survives every step. The consumer
+uses three upward strands, a repeated odd color, a downward left context,
+and an inhomogeneous coefficient containing a product of distinct odd generators.
+The native repeated-word theorem does not yet assert the entire weak-mate
+closure coefficient identity or canonical decorated-label estimates.
+
+### Full coefficients of literal weak mates
+
+`ClosureCoefficientExpansion.rightClosure_partialMate_betaSYM_expansion`
+now proves the actual closure identity for an arbitrary layer diagram `A`:
+close its literal partial right mate with rightmost coefficient `beta(p)`;
+the result is `A` followed by the same rightmost coefficient `beta(p)`,
+plus `A` followed by a finite combination of nonempty upward-dot diagrams
+and full coefficients. Both cup and cap blocks may be nonempty. The identity
+assumes only the actual boundary chain of `A`; it uses no reducedness or
+independence premise. Its consumer bends and closes a two-color crossing,
+with both blocks nonempty and an inhomogeneous exterior-product coefficient.
+
+The structural lemma `rightClosure_bubAt` holds for every actual morphism
+and every closed coefficient. It identifies the intermediate coefficient
+region immediately before the appended upward suffix, using interchange
+with the even cap block. Applying the repeated-word theorem then supplies
+the exact diagonal coefficient `p` and positive-dot errors.
+
+The remaining reduction task is combinatorial and coefficient-level:
+identify the complete weak inverse-mate family with the native matching
+and decorated APIs, and translate these nonempty dot corrections into the
+finite labelled triangular expansion consumed by the upward-independence
+detector. The resulting formal implication is still not asserted here.

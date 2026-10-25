@@ -262,6 +262,19 @@ least `N` retains the part of weight at most `d` whenever `d < N`.
 Every abstract coefficient lies in some bounded weight span. These coefficient
 quotients are not yet identified with the ELV deformation rings or an SKM action.
 
+`OddMath/SKM/BubbleParity.lean` gives the polynomial/exterior model its actual
+parity grading, with elementary generators even and each independent delta
+odd. `OddMath/QuiverHecke/CoefficientExtension.lean` then uses the pinned
+`StringDiagrams.Super.BoxProduct` construction to form an actual
+coefficient-extended affine supercategory. Its Hom modules are tensor products;
+composition, associativity, and identities are the established box-product
+ones, with the Koszul sign proved explicitly for homogeneous composition.
+This avoids pretending the arbitrary-colour locally unital `H_n` is unital.
+The source tensor equivalence uses the whole abstract `SYM`, and the test
+checks the sign of an independent odd coefficient across an actual odd upward
+dot. The weighted ideal-support argument in this extended category is the
+next unproved step; the category itself is not yet an SKM representation.
+
 ## A concrete coupling target for reservoir and spectral factors
 
 The nilpotent-reservoir/nonzero-probe proposal is the earlier split-factor

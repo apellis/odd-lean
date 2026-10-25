@@ -345,9 +345,13 @@ reduced word and this factorization is a sum of terms of smaller crossing
 length; induction applies to those terms. This proves
 `R f R = Σ_(a=0)^n R f τ₁...τ_a`.
 This argument uses independent `d_i`; it never equates different colours'
-parameters. Applying the ordinary last-strand Mackey decomposition to
-this formula is the remaining bookkeeping for part (ii) and the precise
-balanced image of `P`. These statements are not yet native Lean theorems.
+parameters. For part (ii), multiply by `e(β,i)` on the right. Every
+representative with `a<n` lies in the old `R(β)` algebra, so its term
+belongs to `R f R(β)e(β,i)`; only `a=n` remains. The reverse containment
+is immediate from the two-sided ideal. This proves the asserted ideal
+decomposition. Identifying its last summand with the precise balanced
+image of `P` still requires the deformed analogue of (8.3)--(8.4).
+These statements are not yet native Lean theorems.
 
 For the norm calculation, the local sign issue can also be separated
 from quotient bookkeeping. If an odd intertwiner satisfies
@@ -357,3 +361,111 @@ are kernel-checked as `even_cutoff_transport_neg/pos` in
 `CyclotomicNorm.lean`. In the coefficient-supercentral case `e=d`;
 there is no new translated coefficient. This is the local ingredient
 in (8.17), not a proof of the entire inductive (8.14) quotient identity.
+
+### A shorter projectivity route using the even square variable
+
+There is a better ordering of the preceding proof obligations. In
+[Kang--Kashiwara, arXiv:1102.4677v4](https://arxiv.org/abs/1102.4677),
+Lemma 4.19 derives the companion `PQ` identity using an already-known
+monic annihilator. Deriving that annihilator only from `PQ` would be
+circular. Our conjugate identity supplies an independent starting point.
+
+For each odd colour, `C_i(x₁²)²` vanishes in the deformed cyclotomic
+quotient. For an even colour use `f_i(-x₁)f_i(x₁)` and normalize its
+leading sign. Taking the product over the finitely many colours in the
+content gives a monic polynomial `g(x₁²)` annihilating the quotient.
+KKO Lemma 7.3 propagates precisely such an annihilator to all other dot
+squares. Its different-colour step uses the leading unit of `Q`; its
+same-colour step uses the square-variable identity in Lemma 7.2. These
+calculations involve even coefficients and therefore remain valid after
+adjoining independent exterior parameters and imposing their top
+relations. No flatness of that coefficient extension is needed for an
+identity to survive the extension. This also avoids assuming that the
+chosen cutoff vector is realized by a dominant weight in a fixed coset.
+
+Now restrict the split variable to `s=t²`. The ELV twist fixes it:
+`(t-2d_i)²=t²`. Both polynomial actions are therefore actions of the
+ordinary central polynomial algebra `B[s]`, and `P` is `B[s]`-linear.
+The skew algebra `B[t;parity]` is free of rank two over `B[s]`, so the
+PBW projective modules `K₀,K₁` remain projective after restriction.
+Once the exact sequence and the `QP` injectivity argument are in place,
+the sequence is a projective resolution of length one over `B[s]`.
+Apply Kang--Kashiwara Lemma 4.18 with the independently obtained central
+monic annihilator in `s`. Its explicit splitting argument yields
+projectivity over `B`, without needing `PQ` or an arbitrary-base-change
+argument. This paragraph is a paper-level conditional application of
+that lemma; the full deformed bimodule sequence is not formalized here.
+
+Finally, to obtain `PQ`, prove the commuting square between the norm
+operators and `P`, and use
+`QP` to show that `PQ-A₀` vanishes on `im P`. It factors through the
+cyclotomic cokernel. Every such `B[s]`-linear map into `K₀` vanishes:
+the cokernel has a monic annihilator, whereas monic multiplication is
+injective on the PBW projective module `K₀`. This is exactly the
+torsion-versus-torsion-free argument of Lemma 4.19, now applied to the
+even square variable. It avoids cancelling a non-surjective `P`.
+
+The prospective parity extension should be kept separate. At an odd
+cutoff, `f=(d-x)q(x²)` becomes `-u q(u²)` after `u=x-d`; odd-dot
+translation preserves squares. A mixed family of even-cutoff ELV
+reservoirs and translated ordinary odd-cutoff reservoirs may therefore
+handle different odd-height components. It still requires the full
+categorical translation and mixed-family action; the even-cutoff audit
+above does not already prove those statements.
+
+### All-content norm audit, with map conventions
+
+Keep KKO (8.2)'s underlying right-`B` modules, with even cutoffs at odd
+colours, and use (8.5)'s `P` and Proposition 8.4's `Q`. Give `P` the
+ELV semilinearity `P(zt)=P(z)(t-2d_i)` rather than asserting its original
+polynomial linearity. The following checks isolate the coefficient
+extension from the original affine calculations.
+
+* **`Q` descent.** Relations (8.13) move each old dot and crossing across
+  `g_n...g_1`. A homogeneous base coefficient moves across that product
+  with the same parity sign already supplied by `Π_i^{p(β)}` in the
+  codomain. Thus adjoining independent `d_j` does not add a translation
+  to `Q`. In particular, transported old cyclotomic relations vanish
+  in the source-side quotient. The dot-polynomial action of `Q` remains
+  the one in Proposition 8.4.
+* **`QP` induction.** In the different-colour step (8.15), the affine
+  crossing square and transport of `Q_{i,j}` are unchanged. In the
+  repeated odd-colour step, the new polynomial enters through (8.17).
+  The matching-sign transport above moves its entire even expression
+  to `f_i(x₂)` with the original sign. All subsequent uses of (8.10)
+  are affine identities. The two cancellations after (8.17) remain
+  valid: in first-dot PBW coordinates their multipliers have leading
+  coefficient a sign unit. They do not require the exterior base to
+  be a domain. Consequently the same induction gives the (8.5) norm
+  formula with `a_i` replaced by `f_i`.
+* **Commuting norm square.** For odd `i`, the norm is
+  `A_i(t)=f_i(t)G_i(t²)`. The translation fixes both `t²` and `td_i`,
+  hence fixes `A_i`; every allowed `Q_{i,j}` is even in the odd
+  variable. For even `i`, ordinary polynomial linearity applies.
+  Thus `P A₁=A₀ P` follows from the precise semilinearity, not from
+  treating the odd-coefficient norm as central in `t`.
+* **Companion norm.** The central-square annihilator argument above
+  now proves `PQ=A₀` by factorization through `coker P` and monic
+  injectivity on `K₀`.
+
+These are a paper-level extension audit of the specified source proofs.
+They depend on the deformed balanced `P` map and exact image/kernel
+identification, the PBW module descriptions, and the source's parameter
+hypotheses. The ring transport and translation identities are checked
+in Lean; the all-content quotient bimodules and their norm identities
+are **not** represented by native Lean declarations yet. This should
+not be reported as an existing formal theorem of full SKM independence
+or as the completed categorical inversion theorem of Section 9.
+
+The companion [multicolour cyclotomic audit](MulticolourCyclotomicAction.md)
+now supplies the missing paper-level balanced-`P` calculation: sliding
+an old dot deletes a crossing only in the matching-colour case, and
+sliding an old crossing produces a braid-correction term only in the
+corresponding repeated-colour case. In each case the shorter prefix
+moves that matching colour to the first position, putting the error
+in the old cyclotomic ideal. Together these notes give a proposed
+all-content even-cutoff projectivity argument with independent odd
+parameters. The boundary is still the full categorical inversion
+argument and its realization as an SKM action, plus native formalization
+of the quotient maps. In particular this is not yet a solution of
+fixed-weight SKM independence.
