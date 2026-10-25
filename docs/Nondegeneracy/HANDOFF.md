@@ -62,6 +62,13 @@ remains the branch-wide verification gate.
 transformations; two odd transformations anticommute. This is the Hom-sector
 generator layer, not multicolour affine coherence or categorical fusion.
 
+`OddMath/SKM/RouquierHomAdjunction.lean` proves `homPostAdjunction` and
+`homPreAdjunction`, including both triangles and evenness of all unit/counit
+components. Precomposition reverses the two adjoints. The proof uses the even
+underlying bicategory only for triangle coherence; the functors and naturality
+remain on the full Hom supercategories. Content-dependent parity-shifted
+comparisons and the coupled affine action remain to be constructed.
+
 `OddMath/SKM/RouquierBoundary.lean` adds the actual finite dotted-unit
 `RouquierBoundary.Coefficients`. `Coefficients.ofVacuumInverse` extracts it
 from negative local inversion when the common summand vanishes.
