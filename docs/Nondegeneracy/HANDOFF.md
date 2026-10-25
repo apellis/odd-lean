@@ -178,8 +178,8 @@ an odd supermodule map.
 bundles `cyclotomicSuperIndResAdjunction`. Both directions of its Hom
 bijection preserve parity. This is an actual super induction-restriction
 adjunction, not only the underlying ordinary adjunction. Remaining action
-obligations are the vacuum inclusion, concrete quotient dot and crossing
-transformations, their square and braid comparisons, and the projective
+obligations are the vacuum inclusion, concrete quotient crossing
+transformations, the dot-square and braid comparisons, and the projective
 Mackey/local-inversion theorem with the prescribed parity shifts.
 
 `CyclotomicAction/LastDot.lean` constructs `cyclotomicLastDot` as the image
@@ -189,7 +189,16 @@ colour. `cyclotomicLastDot_parity` proves parity `D.parity i`, and
 a polynomial-parity hypothesis. `cyclotomicLastDot_comm` proves
 `φ(r)c = (-1)^(p |i|) c φ(r)` for every parity-`p` quotient element, using
 homogeneous affine lifts. The indexing is height `n+1` to height `n+2`.
-Constructing the associated super dot transformation remains separate.
+`CyclotomicAction/SuperDot.lean` constructs `inductionSuperDot` on this
+corner: on homogeneous `x` it is `(-1)^(|x| |i|) x c`, as proved by
+`inductionSuperDot_apply`. The concrete last-dot relation gives ordinary
+right linearity; the parity sign gives signed left linearity.
+`inductionSuperDot_parity` proves degree `|i|`, and balanced-tensor signed
+interchange gives `cyclotomicSuperInductionDot`, a `SuperNatTrans` on
+`cyclotomicSuperInduction`, homogeneous of degree `|i|`. These declarations
+pass the scoped warning-free build. Square, braid, crossing and KKO
+comparisons remain open; unsigned right multiplication is not substituted
+for the signed-left superbimodule convention.
 
 ## Proof architecture
 
