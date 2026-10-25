@@ -130,6 +130,11 @@ obtains the descended nonunital algebra map `cyclotomicAppend`. The associated
 These inclusions run from height `n+1` to height `n+2`; the vacuum map and
 the supermodule enhancement are not yet bundled. In particular, no ordinary
 naturality claim is made for odd dots.
+`CyclotomicAction/Restriction.lean` adds `cyclotomicRestriction` as truncation
+by the unit-image idempotent and proves the underlying module adjunction
+`cyclotomicIndResAdjunction`, without a flatness hypothesis. Its unit and
+counit are those of the actual descended nonunital map, not assumed maps.
+This ordinary adjunction is not yet a `SuperAdjunction` or KKO inversion.
 
 ## Proof architecture
 
