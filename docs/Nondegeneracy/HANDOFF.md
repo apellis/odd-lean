@@ -109,8 +109,8 @@ colours. `singleCyclotomicEquiv` identifies its polynomial-ideal quotient
 with `AdjoinRoot`; `singleCyclotomicFinEquiv_apply` gives the monic finite
 coordinate map as the sum of scalar multiples of descended dot powers.
 These are underlying-algebra results over any commutative ring. A super
-quotient requires homogeneous polynomials; the higher-content induction,
-restriction, tensor adjunction and KKO local inversion are still open.
+quotient requires homogeneous polynomials. The superfunctors and adjunction
+are constructed below; KKO local inversion remains open.
 [ActionLeanPlan.md](ActionLeanPlan.md) places exterior ELV coefficients after
 the even-parameter action theorem, and targets the existing
 `SKM.SuperRouquierLoc` rather than a second local-data interface.
@@ -120,21 +120,22 @@ Hom algebra with a unit for finitely many colours, defines its genuine
 two-sided first-dot polynomial ideal, and constructs `CyclotomicAlgebra` and
 `cyclotomicMk` at every positive strand number. `cyclotomicMk_generator`
 proves that the defining cyclotomic polynomials vanish. This supplies the
-underlying quotient algebra, not its homogeneous super grading or the
-projectivity and Mackey statements needed for inversion.
+underlying quotient algebra; its homogeneous grading is supplied below.
+The projectivity and Mackey statements needed for inversion remain open.
 
 `CyclotomicAction/Induction.lean` constructs `appendAlgebra` by actual right
 whiskering of affine Hom entries, proves `appendAlgebra_mem_ideal`, and
 obtains the descended nonunital algebra map `cyclotomicAppend`. The associated
 `cyclotomicInduction` is a genuine induction functor on underlying modules.
-These inclusions run from height `n+1` to height `n+2`; the vacuum map and
-the supermodule enhancement are not yet bundled. In particular, no ordinary
+These inclusions run from height `n+1` to height `n+2`; the vacuum map remains
+separate. The supermodule enhancement is given below. No ordinary
 naturality claim is made for odd dots.
 `CyclotomicAction/Restriction.lean` adds `cyclotomicRestriction` as truncation
 by the unit-image idempotent and proves the underlying module adjunction
 `cyclotomicIndResAdjunction`, without a flatness hypothesis. Its unit and
 counit are those of the actual descended nonunital map, not assumed maps.
-This ordinary adjunction is not yet a `SuperAdjunction` or KKO inversion.
+This underlying construction is distinct from the super adjunction below
+and does not prove KKO inversion.
 `CyclotomicAction/Slides.lean` proves the actual affine signed naturality
 `induction_dot_slide`; `induction_dot_slide_odd` specializes it to the minus
 sign for an odd new dot and an odd lower morphism. This supplies the corrected
@@ -156,10 +157,8 @@ superbimodule `inductionCorner = B φ(1)` and its balanced-tensor
 including on odd morphisms, using the signed tensor whiskering.
 `CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
 `restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
-`k`-linear, and parity preserving. The ordinary adjunction above has not
-thereby been promoted to a super adjunction, nor has the KKO decomposition
-been proved. The positive-height indexing still leaves the vacuum step
-separate.
+`k`-linear, and parity preserving. The positive-height indexing still leaves
+the vacuum step separate; the KKO decomposition is not proved.
 `CyclotomicAction/CornerPairing.lean` gives even superbimodule maps
 `cornerEvaluation : B e ⊗_A e B → B` and
 `cornerCoevaluation : A → e B ⊗_B B e`, together with the two elementary
@@ -174,6 +173,13 @@ zero.
 `cyclotomicSuperCounit` by `(x ⊗ (y ⊗ m)) ↦ (xy)m`. Its naturality proof
 accounts for both tensor-whiskering signs and the signed left-linearity of
 an odd supermodule map.
+`CyclotomicAction/SuperAdjunction.lean` proves both triangular identities and
+bundles `cyclotomicSuperIndResAdjunction`. Both directions of its Hom
+bijection preserve parity. This is an actual super induction-restriction
+adjunction, not only the underlying ordinary adjunction. Remaining action
+obligations are the vacuum inclusion, concrete quotient dot and crossing
+transformations, their square and braid comparisons, and the projective
+Mackey/local-inversion theorem with the prescribed parity shifts.
 
 ## Proof architecture
 

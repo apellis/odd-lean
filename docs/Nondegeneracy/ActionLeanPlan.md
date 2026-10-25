@@ -43,10 +43,20 @@ basis. `singleCyclotomicEquiv` identifies its cyclotomic quotient with
 This is only the vacuum-boundary algebra input, not an induction functor or a
 local inversion theorem.
 
-The higher-content port additionally needs the two-sided polynomial ideal in
-`Hn`, last-strand inclusion preserving that ideal, its colour-cut induction and
-restriction bimodules, and the graded tensor adjunction. Neither affine PBW
-coordinates nor an ordinary polynomial quotient supply these maps by themselves.
+The positive-height algebraic and super-adjunction prerequisites are now
+implemented in `CyclotomicAction/{Quotient,Induction,Parity,SuperQuotient,
+SuperInduction,SuperRestriction,CornerPairing,SuperAdjunctionUnit,
+SuperAdjunctionCounit,SuperAdjunction}.lean`. They use the actual two-sided
+polynomial ideal in `Hn`, its homogeneous quotient, and the colour-cut
+superbimodules `B φ(1)` and `φ(1) B`. `cyclotomicSuperIndResAdjunction` has
+even unit and counit and parity-preserving Hom bijections. These statements
+need the coefficient-support condition `CyclotomicPolynomialParity`, but no
+monicity or flatness assumption.
+
+This does not yet provide the vacuum inclusion, the concrete quotient dot and
+crossing transformations, their square and braid comparisons, or the
+projective Mackey/local-inversion theorem. The finite monic coordinates above
+are not a proof of those higher-content assertions.
 The final same-colour inversion must instantiate `SKM.SuperRouquierLoc` from
 `SKM/RouquierData.lean`, with the prescribed mate and parity-indexed inverse
 entries. Do not replace its odd shifted summands by ordinary copies of the
