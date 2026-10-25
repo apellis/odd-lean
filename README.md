@@ -1007,12 +1007,11 @@ Released under the Apache License 2.0; see [`LICENSE`](LICENSE).
 
 ### Research branch: current nondegeneracy interfaces
 
-The research branch now checks full abstract polynomial/exterior coefficient
-placement, positive-dot closure corrections, weak mate matching transport, and
-explicit multicolour ELV cyclotomic quotient separation. The latter detects
-finite affine coefficient expressions; it does not by itself prove faithfulness
-of their images in SKM at a fixed weight. Paired source/target mixed-crossing
-expansions are checked at all weights; contextual sorting assembly is ongoing.
-See [the progress board](docs/Nondegeneracy/PROGRESS.md) and
-[handoff](docs/Nondegeneracy/HANDOFF.md) for the current parallel assignments.
-Neither full upward independence nor full oriented nondegeneracy is claimed.
+The research branch reduces the odd/mixed conjecture to upward independence over full
+abstract `SYM` together with local exchange descent (`SKM.nondegeneracy_of_contextual_descent`,
+`WeakMate.sorted_independence`), and proves explicit multicolour ELV cyclotomic quotient
+separation for the affine coefficient-extended category. The separation does not by itself
+prove faithfulness of the SKM images at a fixed weight. See the
+[status board](docs/Nondegeneracy/PROGRESS.md) and the
+[restart state](docs/Nondegeneracy/HANDOFF.md). Neither full upward independence nor full
+nondegeneracy is claimed.

@@ -108,6 +108,22 @@ instructions that conflict with them.
   `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
   lemmas, experiments or speculative reductions piecemeal. This does not restrict
   formalization of published results, including purely even nondegeneracy.
+- On `research/odd-nondegeneracy`, the pushed branch is the only durable state; anything
+  that exists only in a local checkout, index or session can be lost without warning.
+  - Commit and push each result as soon as its scoped build and consumer pass. Do not let
+    checked work accumulate locally, and do not batch several results into one later push.
+  - Unfinished Lean that does not yet build is pushed to a side branch
+    `research/odd-nondegeneracy-wip/<topic>` at least hourly, and merged into the research
+    branch once it builds.
+  - Before committing, run `git status` and include every file the new code imports or
+    modifies. Each push to the branch runs the full CI build; a red branch tip is repaired
+    before any further research commit.
+  - The same push updates `docs/Nondegeneracy/HANDOFF.md`: checked declarations, written
+    but unchecked arguments (labelled as proposed), open obligations and the next target of
+    each line of work. A written argument goes into `docs/Nondegeneracy/` when it is
+    written, not at the end of a session.
+  - These files carry mathematics only. Assignment of work, session or machine status,
+    local paths, logs and timestamps used as telemetry do not belong in the repository.
 - All proof work happens on topic branches of this repository and lands through PRs with green
   CI. Work that does not build yet may be pushed as a draft PR. Proof developments are not kept
   in private copies, scratch archives or other repositories.

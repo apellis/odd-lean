@@ -13,7 +13,7 @@ That calculation tests the first coupling coefficient, not the full proposal.
 
 ## What really worked in the even repository
 
-The user's recollection is correct. `OddMath/SKM/EvenBridge/EvenNondegeneracy.lean`
+`OddMath/SKM/EvenBridge/EvenNondegeneracy.lean`
 uses `Categorification.KL3.Diagram.calculusNondeg`; the dependency's
 `Categorification/Diagrams/KL3/Nondegeneracy.lean` supplies this through
 `KLR.Unfurling.GenericFields.calculusNondeg_charZero` followed by integral
