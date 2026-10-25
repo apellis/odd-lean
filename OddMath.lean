@@ -1,3 +1,4 @@
+import OddMath.SKM.DistinctSourceDescent
 import OddMath.SKM.SourceAdaptedChoices
 import OddMath.SKM.SourceAdaptedDistinctChoices
 import OddMath.SKM.SourceCrossAttachmentExamples
