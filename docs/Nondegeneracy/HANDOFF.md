@@ -26,6 +26,14 @@ rank 32 and augmented rank 33. The separated zero/nonzero alternative remains
 proposed and retains all odd coefficients in one connected reservoir, not in
 the invertible probe; its all-content categorical inversion is still open.
 
+`separated_fusion_relations.py` checks zero/nonzero cross-polynomial units in
+all colour-parity combinations, including a nonsemisimple probe. Its adjacent
+odd affine A1 test includes one reservoir i strand, one probe i strand and one
+reservoir j strand: all six labelled shuffles satisfy the two-strand relations
+and the two nonzero repeated-colour braid corrections. Both independent
+reservoir exterior generators survive. This is an affine corner test, not an
+induction/restriction construction or an all-content inversion theorem.
+
 ## Proof architecture
 
 | Step | Statement | Status |
