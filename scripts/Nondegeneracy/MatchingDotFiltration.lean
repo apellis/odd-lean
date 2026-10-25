@@ -5,9 +5,10 @@ import OddMath.SKM.Nondegeneracy
 
 Supporting calculation for the BE2 nondegeneracy conjecture. The filtered image
 retains finite abstract-SYM source coefficients with strictly smaller crossing
-count or equal crossing count and strictly fewer open dots. The decorated-error
-clause concerns skeletons belonging to the chosen family. This does not construct
-a signed comparison between two families or an inverse coefficient transition.
+count or equal crossing count and strictly fewer open dots. The original simultaneous
+recursion treats the chosen family; a second induction extends the decorated-error
+bound to every reduced skeleton. This does not construct a signed comparison
+between two families or an inverse coefficient transition.
 -/
 
 noncomputable section
@@ -202,6 +203,48 @@ theorem bounded_errors_mem (F : MatchingBasisChoice a b) (c N : ℕ) :
     (fun R hR j hj => by
       simpa only [ambientPoints, dite_eq_left hR] using F.onStrand ⟨R, hR⟩ j hj)
     F.ambientSerializer F.ambient_decorates (dualW a ++ b) rfl T c N hfam hlow N le_rfl
+/-- Lower-dot decorations on any reduced matching normalize into the chosen family's
+strict filtered image. The skeleton need not belong to the chosen family. -/
+theorem bounded_arbitrary_errors_mem (F : MatchingBasisChoice a b) (c N : ℕ) :
+    let T := ((Finsupp.supported (SYM D k) k {t | F.dotBound c N t}).map
+      (F.expansion cs μ)).comap (bendG cs μ a b)
+    ∀ {s : List (ℕ × Letter I)}, Valid s → Lettered flipL s →
+      s.map Prod.snd = dualW a ++ b → ncr (canon s) = c →
+      ∀ R, IsMatching₂ a b R → Reduced₂ a R → Iso (pairing₂ a R) s →
+      DecSpan cs μ (dualW a ++ a) (cupA (dualW a))
+        (R.map (shiftT a.length)) (dualW a ++ b) N ≤ T := by
+  classical
+  let T := ((Finsupp.supported (SYM D k) k {t | F.dotBound c N t}).map
+    (F.expansion cs μ)).comap (bendG cs μ a b)
+  let M : Set (List (TMove (Letter I))) := {R | IsMatching₂ a b R ∧ Reduced₂ a R}
+  have hlow : LtL D Sc cs μ [] (dualW a ++ b) c ≤ T := by
+    intro f hf
+    obtain ⟨z, hz, hs⟩ := F.exists_expansion_of_mem_ltL cs μ (bendG_mem_ltL μ hf)
+    exact ⟨z, (Finsupp.mem_supported k z).2 (fun t ht => Or.inl (hs t ht)), hz⟩
+  have hA : ∀ n : ℕ, n ≤ N →
+      ∀ {s : List (ℕ × Letter I)}, Valid s → Lettered flipL s →
+        s.map Prod.snd = dualW a ++ b → ncr (canon s) = c →
+        ∀ R ∈ M, Iso (pairing₂ a R) s →
+        DecSpan cs μ (dualW a ++ a) (cupA (dualW a))
+          (R.map (shiftT a.length)) (dualW a ++ b) n ≤ T := by
+    intro n
+    induction n with
+    | zero =>
+      intro _ s hv hl hs hc R hR hi
+      exact Submodule.span_le.2 fun _ ⟨_, _, _, _, _, _, h, _⟩ =>
+        absurd h (Nat.not_lt_zero _)
+    | succ n ih =>
+      intro hn
+      exact decSpan_le_step μ a b M (fun R hR => hR) (dualW a ++ b) rfl T c
+        hlow n (fun hv hl hs hc is his hlen _ hβ =>
+          (F.bounded_errors_mem cs μ c N).1 hv hl hs hc is his (by omega) hβ)
+        (ih (by omega))
+  dsimp only
+  intro s hv hl hs hc R hR hr hi
+  exact hA N le_rfl hv hl hs hc R ⟨hR, hr⟩ hi
+
 end MatchingBasisChoice
 end OddMath.SKM
 #print axioms OddMath.SKM.MatchingBasisChoice.bounded_errors_mem
+
+#print axioms OddMath.SKM.MatchingBasisChoice.bounded_arbitrary_errors_mem

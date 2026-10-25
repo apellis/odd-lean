@@ -150,11 +150,25 @@ Membership in this image supplies finite abstract-SYM coefficients. Source
 placement uses `bubble_swap` and `betaSYM_range`, without assuming faithfulness.
 There is no dot restriction when the crossing count drops.
 
-The decorated clause applies only to skeletons **in the chosen family**. It is
-not a theorem normalizing an arbitrary other-family skeleton into that family
-with the same dot bound. The remaining two-choice induction must address errors
-from both representatives, preserve the endpoint reindexing, and retain a signed
-leading label. The standalone result is not yet part of the imported library API.
+The original decorated clause applies only to skeletons **in the chosen family**.
+The new `bounded_arbitrary_errors_mem` strengthens it to every reduced matching
+skeleton, including a representative from another family. Its proof is a second
+induction on `n ≤ N`, keeping the target filtered image fixed. At the successor
+step, apply `decSpan_le_step` with the set of all reduced matching skeletons.
+Its canonical premise follows from the first clause of `bounded_errors_mem`,
+because a list of length at most `n` has length strictly less than `N`. Its
+recursive decorated premise is the induction hypothesis. This step needs no
+completeness hypothesis on that auxiliary set and no additional independence
+assumption. At `n = 0`, the decorated-error span is zero.
+
+This removes the need for a simultaneous recursion between the two families:
+both representatives' lower-dot errors normalize directly into the fixed target
+family. The remaining construction must preserve endpoint reindexing, realize
+each strand multiplicity by a canonical endpoint-dot list, and retain the signed
+leading label through bending. The standalone results are not yet part of the
+imported library API. The extension passes standalone compilation with warnings
+as errors; its printed axiom dependencies are exactly `propext`,
+`Classical.choice`, and `Quot.sound`.
 
 ## From a bounded comparison to an inverse
 
@@ -176,3 +190,68 @@ That would equate injectivity for different choices. It would not prove
 injectivity for any choice, nor replace the missing upward SKM independence
 with full bubble coefficients. Independently chosen reverse expansions
 need not be the inverse of the first transition.
+
+## A smaller endpoint sufficient for independence transfer
+
+An explicit inverse is stronger than needed for the nondegeneracy implication.
+Once the signed triangular columns and their coefficient-linear extension `T`
+are available, `T` is injective by a finite-support argument. If `x ≠ 0`, choose
+the largest lexicographic complexity among labels in its finite support. At that
+complexity, all strict-lowering columns contribute zero; distinct source labels
+have distinct reindexed leading labels. The leading coefficient is multiplied by
+`1` or `-1`, so cannot vanish. Thus `T x ≠ 0`, over an arbitrary ground ring.
+
+Consequently, `expansion_F = expansion_G ∘ T` transfers injectivity of
+`expansion_G` to `expansion_F`. Repeating the argument with the families reversed
+gives equivalence of their injectivity statements without formalizing a locally
+nilpotent inverse. The inverse remains a useful optional strengthening, but is
+not on the shortest path to choice-independent nondegeneracy. This argument is
+conditional on the still-unconstructed signed coefficient transition; it is not
+a proof of upward independence.
+
+## Construction of a unit column (mathematical proof, not yet formalized)
+
+Fix a label `t = (R,n)` of `F`. Completeness of `G` chooses a representative
+`S` with the same endpoint pairing, and uniqueness makes this choice a bijection
+of matching classes. The equivalence `matchingStrandEquivOfIso` preserves the
+underlying left-endpoint number, so transports `n` to a multiplicity `n′` on `S`
+and preserves its sum. Reducedness makes the two crossing counts equal; call the
+common count `c`, and put `N = ∑ n(j)`.
+
+Choose the common canonical pairing `s`. Form the finite list `is` by listing
+each left endpoint `j` exactly `n(j)` times, in any fixed order. A left endpoint
+is fixed by `lEnd s`, so `(is.map (lEnd s)).count j = n(j)`, and the list length
+is `N`. All positions are valid. Apply `canon_dots_signRel_decorated₂` twice,
+using the actual distinguished points and serializers of `F` and `G`. Writing
+`B_F` and `B_G` for their bent decorated diagrams, this yields
+
+\[
+ C=\epsilon_F B_F+e_F,
+ \qquad C=\epsilon_G B_G+e_G.
+\]
+
+Both errors lie in the fixed target submodule
+
+\[
+ T=\operatorname{bendG}^{-1}
+ \left(\operatorname{expansion}_G
+   (\text{coefficient vectors supported on }\operatorname{dotBound}(c,N))
+ \right).
+\]
+
+Indeed, crossing errors use `exists_expansion_of_mem_ltL` and
+`bendG_mem_ltL`; canonical lower-dot errors use `bounded_errors_mem`; decorated
+lower-dot errors on **either** skeleton use `bounded_arbitrary_errors_mem`.
+These are submodule inclusions, so arbitrary sums and signs are retained.
+Subtracting the two equalities gives
+`B_F = ε_F ε_G B_G + ε_F (e_G-e_F)`.
+
+Apply the linear map `bendG`. By `bendG_bendF_xev`, each leading diagram
+acquires a known sign depending on its parity. Both signs are units, so moving
+the source sign to the other side leaves one unit leading sign and an error in
+the target filtered image. Membership in that image supplies the required
+finite abstract-SYM coefficient vector `r_t`. No faithfulness of the bubble map
+or uniqueness of the error coefficients is used. This proves the desired
+unit-column assertion at the mathematical level, subject to implementing the
+endpoint list and the stated identifications in Lean. The resulting full
+transition still needs its finite-support linear extension formalized.
