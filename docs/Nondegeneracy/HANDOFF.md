@@ -87,3 +87,21 @@ Odd cutoffs can translate x to x-d, but this does not detect the even-height
 odd bubble. Pure-power tensor detection is a module theorem, not a deformed
 supertensor algebra or a categorical action. Brundan–Savage isomeric action is
 reduced (odd bubble zero), so it cannot by itself supply full exterior detection.
+
+### Superseding checkpoint, 18:35 UTC
+
+Full CI for `3da1842` succeeded. `cd0ba81` pushed with quotient/tensor detection
+and source-cup transport; CI40221653309 running. Staged checked next:
+BubbleExterior and BubblePolynomialExterior (entire abstract SYM algebra
+equivalent to polynomial tensor exterior algebra), RightClosureCoefficients
+(source-prefix map has left inverse and commutes with every closed coefficient),
+OddDotTranslation local identities and actual inverse coordinates, and exact
+vacuum even/odd coefficient detection scripts.
+
+Source review identifies Ebert–Lauda–Vera arXiv2203.14153 Th4.5 as already
+constructing the full rank-one deformed action; (4.16) is the twisted P map.
+The induced A map has only a lower-degree twisted-linearity defect, not exact
+twisted linearity. Prop4.7's explicit bubble computation can be used directly;
+its universal-equivalence proof invokes known rank-one nondegeneracy, so do not
+use that equivalence circularly. Workers now prioritize the connected extension
+and fixed-weight coupling rather than reconstructing the known rank-one theorem.

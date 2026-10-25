@@ -189,3 +189,59 @@ in the proof of Proposition 9.3 also need not commute with `t_i` after
 deformation; its `S_i` remains built from even squared-dot differences.
 Monic skew division is still available, but the source bimodule identities
 must be re-established before importing that proof.
+
+## First connected inversion corner: no existing strand of colour i
+
+There is a concrete connected case beyond the `β=0` normality lemma. Take
+two odd colours with `a_ij=a_ji=−2`, `Q_ij(t,x)=t²+x²`, even ELV cutoffs
+`N_i,N_j`, and independent exterior parameters `d_i,d_j`. Let
+`β=α_j` and put `B=R^Λ(α_j)`, including the coefficient algebra. There is
+no removable `i` strand, so `F_i E_i` is zero in KKO's convention.
+
+The corner of the two-strand cyclotomic algebra ending in `i` is
+
+`e(ji) R^Λ(α_i+α_j) e(ji) ≅ B[t;parity]/(f_i(t)(t²+x_j²))`.
+
+Here is the ideal argument, which is necessary for identifying this with
+the cyclotomic corner. The affine `ji` corner has only dot PBW terms:
+the two colours are distinct, so the only permutation returning this word
+to itself is the identity. The cyclotomic generator on `ji` imposes
+`f_j(x_j)=0`. The generator on `ij` contributes through an off-diagonal
+crossing on each side. Mixed dot transport takes it to `f_i(t)` and the
+two crossings compose to `Q_ij(t,x_j)`. All other terms are polynomial
+multiples of these, by the distinct-colour PBW descriptions of the two
+off-diagonal corners. Thus the full corner ideal is exactly generated
+by the two displayed polynomials; it is not legitimate to impose
+`f_i(t)=0` alone.
+
+The variable `x_j²` is even and central in this one-colour base. The product
+`f_i(t)(t²+x_j²)` is monic of degree `N_i+2` and normal under the same
+inverse-dot twist as above: the twist fixes both squares. Consequently
+this corner is free over `B` on `1,t,...,t^(N_i+1)`. The canonical induction/
+restriction unit is inclusion of `B` in this corner; its successive extra-dot
+powers therefore give an isomorphism from these `N_i+2` identity summands
+to `E_i F_i`. Their right/left coefficient signs are exactly the parity
+twists coming from `t^r b=(−1)^(r|b|) b t^r`.
+
+This is the positive-weight same-colour inversion at this particular
+connected object: `h_i(Λ−α_j)=N_i+2`. It uses the actual cyclotomic corner
+and canonical unit/dot maps, not a freely chosen matrix. It does not provide
+the next case with an existing `i` strand, where the `F_i E_i` summand is
+nonzero and the full Mackey/intertwiner argument becomes necessary.
+
+For the minimal specialization `N_i=N_j=2`, with top even parameters zero,
+`connected_first_inversion.py` verifies the resulting 32-dimensional algebra.
+Its normal forms are `d_i^a d_j^b x_j^c t^r`, with `a,b,c<2`, `r<4`.
+All 32 intersecting rewrite ambiguities agree; reduction decreases dot
+count or sorting inversions. The canonical unit/dot basis matrix is invertible,
+the mixed exterior product has rank 8, and `f_i(t)` itself remains nonzero
+(a control against imposing the wrong cyclotomic relation).
+
+Separately, `elv_kko_first_map.py` checks the right-dot twist at
+`β=α_j`: with `f=x²−xd`, the exact identity is
+`−(x+2d)fτ=fτy`. It also checks that the old `j` cyclotomic relation maps
+to the correct target left ideal, retaining a second independent parameter.
+At `β=α_i` the right-dot residual is `−f`, in the defining left ideal.
+For that same-colour case the script gives an explicit PBW left-ideal
+witness for KKO (8.18) in degree two. These tests support the proposed
+all-`β` repair but do not replace its bimodule and projectivity proof.

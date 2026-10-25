@@ -183,6 +183,18 @@ the original evaluated block. No coefficient transport is needed for
 this source-prefix-only contraction. The right-target cap attachment is
 the remaining half of the partial-mate matching construction.
 
+`RightClosureCoefficients.lean` now supplies native linear maps for that
+source-prefix operation. `capPrefixMap_cupPrefixMap` proves an explicit
+left inverse on every SKM morphism, and `cupPrefixMap_bubAt` proves exact
+compatibility with every rightmost closed coefficient. This applies to
+full `SYM`, including inhomogeneous coefficients and ordered products of
+distinct exterior generators. The proof expands into ordinary diagrams
+only to apply even cup interchange; it assumes no coefficient
+independence. Its consumer uses a sum containing a single exterior
+generator, a product of two distinct exterior generators, and a polynomial
+generator. The right-target operation still needs the nonconstant
+one-strand bubble transport.
+
 ## Verification
 
 The library theorem is in `OddMath/SKM/OrientedReduction.lean`; its concrete

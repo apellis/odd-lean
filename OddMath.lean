@@ -1091,3 +1091,7 @@ import OddMath.QuiverHecke.CyclotomicSeparation
 import OddMath.QuiverHecke.CyclotomicCoefficients
 import OddMath.Diagrams.OddNilHecke.CyclotomicCutoffKernel
 import OddMath.SKM.RightMateMatchings
+import OddMath.SKM.RightClosureCoefficients
+import OddMath.SKM.BubblePolynomialExterior
+import OddMath.SKM.OddDotTranslation
+import OddMath.SKM.RightCapAttachment

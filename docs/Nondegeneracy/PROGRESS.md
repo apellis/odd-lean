@@ -1,6 +1,6 @@
 # Odd nondegeneracy research progress
 
-Last checkpoint: 2026-10-25 18:30 UTC. Branch: `research/odd-nondegeneracy`.
+Last checkpoint: 2026-10-25 18:35 UTC. Branch: `research/odd-nondegeneracy`.
 Research baseline: `0edcf48`. This board records checkpoints, not live telemetry.
 
 ## Objective and operating rules
@@ -17,14 +17,24 @@ scoped Lean checks, and full CI verification.
 
 | Stream / worker | State | Current concrete target | Latest established input | Main unresolved obligation |
 | --- | --- | --- | --- | --- |
-| Oriented reduction / matching choice | Active | Apply choice isomorphisms to weakly reduced inverse-mate families | Native choiceTransition is a coefficient-space isomorphism; expansion_injective_choice_iff checked | Weak inverse-mate combinatorics and full-SYM closure comparison |
-| Oriented reduction / closure | Active | Construct weak-reduced partial-mate matching bridge | Arbitrary-block partial-mate contraction and nested cap–cup closure checked | Native finite sweep, full-SYM transport, and contextual sorting |
-| Upward independence / separation | Active | Check cyclotomic quotient consumer; extend to weighted super-coefficients | Full score-controlled PBW straightening checked; native bounded pure-power cyclotomic theorem built | Weighted supertensor extension, actual action and bubble comparison |
-| Upward independence / action | Active | Construct distinct-colour bubble-product tests; extend actual inversion | 72×72 mate inverse checked; feedback nonzero and square-zero; normalized bubble acts as nonzero −δ | Full inversion and genuinely multicolour coherence |
-| Grassmannian–Webster synthesis | Active | Anchor normalized bubble to native inverse mate, then derive coupled generating series | BK convolution derived on paper; native zero-weight bubble identity compiles | Compatibility of reservoir and probe actions with normalized cups/caps |
-| Independent challenge / rewriting | Active | Extend KKO mixed Mackey ideal argument to ELV coefficients | Connected n3/n4 upward relations checked; paper mixed EF extension identified | Multicolour confluence or a useful alternative reduction |
+| Oriented reduction / matching choice | Active | Right-cap attachment, final pairing and weak reducedness | Native arbitrary-choice coefficient isomorphism and independence equivalence | Full weak inverse-mate label bijection |
+| Oriented reduction / closure | Active | Full coefficient compatibility of source-prefix bending | Literal partial-mate contraction and source-cup matching/dot transport checked | Full-SYM closure comparison and contextual sorting |
+| Upward independence / separation | Active | Full bubble polynomial/exterior presentation and grading | Native pure-power quotient and arbitrary-module tensor detection checked | Weighted deformed ideal and actual categorical realization |
+| Upward independence / action | Active | Extend N=4 even/odd parameter action beyond vacuum | Actual72×72 inversion; N=4 vacuum detects δ, ε and δε | All-rank connected tower and full inversion |
+| Grassmannian–Webster synthesis | Active | Multicolour translated action at odd heights | Native shifted inverse coordinates and conditional bubble shift checked | Full translated presentation; even heights need reservoir deformation |
+| Independent challenge / rewriting | Active | Twisted KKO maps and monic projectivity argument | Mixed EF paper extension; even-cutoff normality exact sequence; first connected map test | All-beta same-colour projectivity and inversion |
 
 ## Verification
+
+- Full CI [40221226055](https://github.com/apellis/odd-lean/actions/runs/40221226055)
+  passed for `3da1842`. Next pushed checkpoint `cd0ba81` is running full CI
+  [40221653309](https://github.com/apellis/odd-lean/actions/runs/40221653309).
+- **18:35 UTC:** Source-prefix bending now commutes with all closed coefficients;
+  abstract SYM is identified with polynomial tensor exterior algebra. Both are
+  scoped Lean-checked. Rank-one deformed action is already supplied by
+  Ebert–Lauda–Vera Th4.5; ongoing action work targets its connected extension
+  and fixed-weight detection. Exact vacuum test retains both even and odd
+  parameters and their product. First connected inversion corner passes.
 
 - Baseline scoped Lean checks and concrete consumers passed, with allowed axioms only.
 - [Full branch CI for 0edcf48](https://github.com/apellis/odd-lean/actions/runs/40218574038)

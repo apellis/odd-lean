@@ -233,6 +233,23 @@ supertensor multiplication, its identification of the extended relation ideal,
 and the weighted ELV quotient remain to be formalized; a tensor-module theorem
 alone does not supply any of these algebra or action constructions.
 
+`OddMath/SKM/BubbleExterior.lean` constructs the exterior algebra on the free
+module of odd colours as a retract of the abstract `SYM`. It proves that the
+entire exterior inclusion is injective, with no characteristic restriction or
+division by two. This independently verifies that adjoining the elementary
+coefficient generators does not identify different exterior words. Its scoped
+build and nonvacuity/axiom checks pass. It is not a claim about the categorical
+bubble map.
+
+`OddMath/SKM/BubblePolynomialExterior.lean` upgrades this to an explicit algebra
+equivalence from abstract `SYM` to the polynomial algebra on all elementary
+generators tensored with the exterior algebra on all odd colours. Both maps
+and both inverse identities are proved. Thus the independent polynomial and
+exterior coefficient presentation is now established natively, over arbitrary
+commutative ground rings; it is no longer only an informal interpretation of
+the generators and relations. The equivalence is independent of diagram
+evaluation and will support the coefficient-weight filtration.
+
 ## A concrete coupling target for reservoir and spectral factors
 
 The nilpotent-reservoir/nonzero-probe proposal is the earlier split-factor

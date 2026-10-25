@@ -165,5 +165,49 @@ arbitrary ring from the dot-slide, crossing-square-zero, exterior
 anticommutation and cyclotomic relations. Its proof uses the recurrence
 G_0=0, G_(n+1)=x^n-yG_n and the identity
  tau x^n=G_n+(-y)^n tau. This generic negative-boundary statement is separate
-from the finite computational independence evidence. An all-N rectangular
-basis proof and higher-cutoff categorical adjunction/inversion remain open.
+from the finite computational independence evidence. A native all-N rectangular
+basis proof and the coupled higher-cutoff inversion remain open. The
+all-cutoff algebraic basis is available as a published input below.
+
+### Published all-cutoff basis input
+
+ELV Theorem 5.9 and Remark 5.10 give an A_N-supermodule basis of the deformed
+cyclotomic odd nilHecke algebra. Set k=ell=m in their notation (m is strand
+count, N is cutoff). The corner idempotents become identities, Y_(m,m)=X_m,
+and the basis is x^a tau_w with a_i<=N-i and w in S_m. Base change
+chi_r=0, d=-delta retains this basis over the exterior algebra. Thus the
+all-cutoff algebraic independence underlying the finite experiments is
+already published; no new all-N Groebner theorem is needed. Retaining the
+full coefficient ring A_N instead gives simultaneous even and odd source
+parameters, subject to the high-degree relation d chi_(N/2)=0 at even N.
+This statement does not identify the whole left-ideal polynomial model
+with the published categorical action without further comparison.
+
+### An actual even/odd vacuum coefficient detector
+
+`vacuum_even_exterior.py` retains an independent even square-zero parameter
+at cutoff four. Set B=Q[epsilon]/epsilon² tensor Lambda(delta), with
+chi1=epsilon, chi2=0, d=-delta, and
+
+\[
+ f_4=x^4+x^3\delta+x^2\epsilon+x\delta\epsilon.
+\]
+
+The resulting sixteen-dimensional algebra A1 is associative and free of
+rank four over B. The dotted cups 1,x,x²,x³ give an actual boundary inversion
+map from four parity-shifted copies of B to A1. Its final inverse row is the
+odd trace selecting the x³ coefficient. The Frobenius comparison
+ a |-> (b |-> trace(ab)) identifies A1 with Hom_B(A1,B): both injectivity and
+the entire Hom dimension are checked, together with right module actions.
+
+At weight -4 the native bubble conventions give
+
+- oddBubble = trace(x⁴) = -delta;
+- beta(e1) = -trace(x⁵) = epsilon;
+- beta(delta e1) = -trace(x⁶) = -delta epsilon.
+
+The mixed operator has rank one, and 1, oddBubble, beta(e1), and their product
+are linearly independent as operators on B. This detects an even parameter
+and its product with the actual odd bubble, rather than only a nonzero
+exterior scalar. It is a finite boundary/Frobenius realization; the script
+does not assert a complete higher-cutoff or multicolour categorical action.
