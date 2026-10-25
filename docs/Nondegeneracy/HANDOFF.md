@@ -50,6 +50,13 @@ adapted choices, then their coefficient columns. `hom_laurentian` already suppli
 finite-dimensionality needed by the alternative field route; the missing super rank recursion
 and comparison basis prevent treating the even Orzech argument as an immediate reduction.
 
+`exists_cup_completed_choice` constructs a complete choice from unpaired representatives
+and literal cups on a complete residual family, with a sum-label equivalence and exact
+layer equations. `exists_choice_with_literal_cups` constructs its inputs from arbitrary
+complete choices, with no independence premise. Both orientations with nonempty contexts
+are exercised in `CupCompletedChoiceExamples.complete_paired_sector`. Simultaneous
+same-colour adapted choices and their coefficient comparisons are still separate obligations.
+
 ## Action review
 
 [ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
