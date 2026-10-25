@@ -10,6 +10,16 @@ injectivity of `MatchingBasisChoice.expansion` over the abstract `SYM` (polynomi
 generators, exterior odd generators), for odd and mixed data. No full nondegeneracy
 theorem is claimed.
 
+Scope: compatible symmetrizable Cartan superdata with finitely many colours and homogeneous
+scalars, over a field, followed by integral descent as in the even case. Nonsymmetrizable data
+and nonhomogeneous scalars are outside the target.
+
+Route: the super analogue of Webster's proof of the even case (formalized in
+categorification-lean): deformed cyclotomic super actions with ELV odd parameters at highest and
+lowest weight, the family `Hom(T(-μ₊), W(μ₋))` reaching every weight `μ₋ - μ₊`, detection of the
+upward part and of bubble products there, and the reduction of the conjecture to upward
+independence. Theorem graph: [GeneralRoute.md](GeneralRoute.md) (in preparation).
+
 ## Proof architecture
 
 | Step | Statement | Status |
@@ -47,10 +57,11 @@ theorem is claimed.
    `⟨h_i, Λ⟩` is constant on a root-lattice coset when `i` is odd); bubble images at a fixed
    weight with spectators.
 5. **Fixed-weight coverage.** Dominant weights are cofinal in each root-lattice coset only in
-   finite type. In finite type, odd colours occur only at the short end of type `B_n`
-   (including `B_1 = A_1`), so no two odd colours are adjacent. Adjacent odd colours (for
-   example both colours of `A_1^(1)`) need a construction reaching every weight, such as the
-   two-sector zero/nonzero-spectrum coupling in [SpectralCompensation.md](SpectralCompensation.md).
+   finite type, and there odd colours occur only at the short end of `B_n`, never adjacent.
+   For general symmetrizable data every weight is `μ₋ - μ₊` with `μ±` dominant, reached by the
+   family `Hom(T(-μ₊), W(μ₋))` as in the even case; the super version of that family, and the
+   joint detection of the odd bubbles of adjacent odd colours in it, are open. For odd `i`,
+   `⟨h_i, μ⟩ mod 2` is constant on root-lattice cosets, so odd cutoffs at odd colours are needed.
 
 ## Next targets
 
