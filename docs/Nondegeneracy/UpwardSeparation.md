@@ -387,10 +387,25 @@ handles arbitrary representatives and distinguished points.
 affine word in the decorated-matching syntax, including every native PBW
 normal form. `BottomMatchingChoice.lean` constructs sorted bottom-dot
 serializers on the same matching representatives and proves that their dot
-lists recover all strand multiplicities. These comparison lemmas are checked,
-but the canonical crossing-word/matching classification and assembled
-independence transfer are still being connected; they are not implicit
-premises of the fixed-weight action-observation theorem.
+lists recover all strand multiplicities. The canonical crossing classification
+is now supplied by `CanonicalUpwardMatching.lean`: canonical reduced Coxeter
+words give actual strict matchings, with complete and unique representatives,
+including repeated colours. `UpwardPBWCoordinates.lean` extracts whole abstract
+SYM coefficients from affine PBW tensors. `CanonicalPBWChoiceComparison.lean`
+proves that the actual canonical matching expansion factors exactly through
+this PBW expansion, with an injective label map.
+
+Finally `UpwardMatchingIndependence.lean` proves
+`upward_independence_of_finite_observations`: finite fixed-weight observations
+imply the **existing** `WeakMate.UpwardIndependence cs`, quantifying over every
+complete upward matching choice, with its original equal-weight restriction.
+There is no additional matching-basis, canonical-family, or serializer premise.
+Unequal strand lengths have no matching labels; equal lengths use the native
+canonical family and the proved arbitrary-choice transition. Thus the affine
+detector now feeds the exact upward hypothesis used by the sorted oriented
+independence theorem. The missing input remains construction of the stated
+fixed-weight action observations, rather than an unproved identification of
+the two formulations of upward independence.
 
 The nilpotent-reservoir/nonzero-probe proposal is the earlier split-factor
 plan with a significant correction: the odd bubble coefficients must be

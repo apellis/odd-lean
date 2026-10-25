@@ -232,3 +232,14 @@ The generic induction does not claim to discharge them. Its concrete consumer
 constructs a finite reduction tree for alternating boundaries with distinct
 and repeated colors; a second consumer checks the conditional conjecture
 assembly on the two-odd-color datum.
+
+### Native frozen-prefix transport
+
+`SourceFrozenSwap.step`, `fits`, and `run` prove that swapping two adjacent
+frozen source endpoints commutes with every later valid matching move and with
+the whole finite matching word. This includes actual cap ID renaming and the
+complete crossing history. The checked consumer includes a cap which renames
+an ID appearing in the frozen prefix, followed by a cup and crossing. This is
+a source-attachment primitive, not yet the complete adapted source family:
+the initial-state ID relabelling, crossing history, and decorated source
+attachment still need assembly.

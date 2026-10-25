@@ -538,12 +538,17 @@ the common E_A F_A summand, the mixed rows supply trace exponents
 -1,...,-N, while the cap rows supply exponents 0,...,M-N-1. Together these
 are the contiguous Laurent basis y^{-N},...,y^{M-N-1}. Its Gram matrix
 against 1,y,...,y^{M-1} is again invertible, because it is the ordinary
-Frobenius Gram matrix twisted by the unit y^{-N}. To turn this latter matrix into the actual reduced mate, one must also
-check that eliminating the common E_A F_A summand changes the cap rows
-only by positive-degree closed coefficients. This is the corresponding
-cup–inverse–cap identity, analogous to `RouqCoproductBubbles`; the
-Laurent Gram calculation does not by itself verify that identity. Once
-checked, the corrections lift by the finite geometric inverse argument.
+Frobenius Gram matrix twisted by the unit y^{-N}. The additional common-block correction has the form
+v_{A,t} sigma_{A,left} u_{A,r}. In a homogeneous right-adjunction
+normalization, units and counits have degree zero, a dot has degree d>0,
+the mixed crossing has degree -d, and the common component of its
+factor-inversion inverse has degree d. Thus this closed correction has
+degree d(t+r+1)>0. This is precisely the grading explanation for the
+cup–inverse–cap nilpotence family in `RouqCoproductBubbles`. With these
+homogeneous shifts included, the correction belongs to the nilpotent
+positive-degree ideal and lifts by the finite geometric inverse argument.
+A native implementation must match these shifts and the unit signs,
+rather than treating the unshifted inversion matrix as degree zero.
 At N=0 the scalar target consists only of the probe Gram matrix.
 
 This gives a concrete symbolic local route at every reservoir
@@ -557,3 +562,33 @@ Since E_B kills the highest probe vacuum, the entire upward word stays in
 the reservoir. Thus this calculation addresses the actual local inversion
 and coordinate window used for that detector, without a Clifford
 comparison or an assumption about compressed probe-dot spectra.
+
+There is an exact resolvent refinement of this Gram calculation. For even
+M, write g(Y)=G(Y²), and define the coefficientwise trace by first moving
+all X powers to the left and then extracting Y^{M-1}. For XY=-YX and
+0<=j<M one obtains
+
+\[
+ \operatorname{tr}_B\bigl(a(X,Y)Y^j\bigr)
+   =(-1)^{j+1}X^j/g(X),\qquad
+ \operatorname{tr}_B\bigl(Y^j a(X,Y)\bigr)=-X^j/g(X),
+ \quad a=(X-Y)/(X^2-Y^2).
+\]
+
+Split j into even and odd cases and use the ordinary Frobenius identity
+tr_G(W^l/(W-Z))=-Z^l/G(Z), 0<=l<deg(G). This proves the displayed formulas
+without diagonalizing g or assuming simple roots. The categorical odd
+trace has its additional tensor/parity convention; these explicit
+ordered coefficientwise formulas provide the sign check for that bridge.
+They show that the highest-vacuum mixed columns are a polynomial dotted
+cup basis multiplied by the unit g(X)^{-1}.
+
+At a pure reservoir vacuum, dualizing this basis makes the corrected cap
+the old trace multiplied by g(X). Thus the moment series is multiplied
+by the reversed probe polynomial, while the elementary symmetric bubble
+series, obtained by the Grassmannian inverse, is divided by it. This is
+the algebraic source of the observed denominator (1+a t²)^2. Extending
+that formula from the pure vacuum to arbitrary reservoir content requires
+tracking the already described common E_A F_A components and their
+normalized caps; the Frobenius identity identifies the exact calculation
+needed rather than assuming a convolution law.

@@ -120,3 +120,32 @@ and identify the inserted decorated families with the actual adapted
 matching choices. The global boundary induction and arbitrary-choice
 transport are separate modules; these local lemmas do not by themselves
 discharge their exchange hypotheses.
+
+## Actual paired serializers and finite detection
+
+`PairedCupEvaluation.lean` now identifies the literal serializers from
+`PointedMatching.appendCup` with the native paired rows. With either
+orientation, all new dots lie on the upward leg. The upward-first cup
+therefore evaluates exactly as `J u^b`, and the downward-first cup as
+`H_b`. The contextual formulas retain the original residual serializer
+and place these local morphisms using `plcW` at weight `wt D μ Q`.
+There is no change of the global coefficient weight `μ`. The consumer
+uses a nonempty residual strand, two odd colours, and positive dot
+counts on both the old strand and the appended cup.
+
+`PairedCoefficientComparison.lean` proves injectivity of the finite
+coefficient comparison once its rows have the established lower-dot
+support and unit pivots. The output index may include both principal
+and shortened-boundary families. Each component may apply its own
+full-`SYM` parity twist; no common right-`SYM` linearity is assumed.
+The proof selects a greatest occupied dot row and cancels only a unit,
+then uses the parity involution. Its consumer includes a nontrivial
+exterior lower correction and alternating parity twists. The native
+`paired_target_below` and `paired_source_below` lemmas also establish
+vanishing of the principal crossing below the relevant height cutoff.
+
+The remaining assembly is the explicit finite column map joining
+these actual paired families to the unpaired matching families and
+proving its coefficient identities. The serializer and detector results
+are infrastructure for this step, not a completed same-colour exchange
+descent theorem.

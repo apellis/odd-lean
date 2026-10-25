@@ -1,3 +1,21 @@
+<!-- LIVE-STATUS-START -->
+# Live research status
+
+Updated 2026-10-25 19:43 UTC. Branch: `research/odd-nondegeneracy`.
+Latest pushed checkpoint: `4a9ef53`; [full CI](https://github.com/apellis/odd-lean/actions/runs/40226825974) passed (build, axiom audit, non-vacuity).
+Last fully green checkpoint: `4a9ef53`. The earlier umbrella name collision is fixed.
+
+| Stream | Checked result | Current task | Workers |
+|---|---|---|---|
+| Upward → oriented | Full-SYM sorted-boundary implication; actual distinct-colour target descent; global induction with explicit local hypotheses | Same-colour paired comparison and source exchange, with actual adapted serializers | sorting, rewriting, Webster |
+| Upward independence | Explicit ELV quotient separation; canonical PBW/matching bridge; fixed-weight finite observations imply full upward independence | Construct bounded coefficient recovery with nilpotent coefficient truncation | separation |
+| Actions / synthesis | Actual 80×80 fixed-weight coupling; local norm identities; proposed connected action audit | Direct zero/nonzero superdatum coupling: vacuum Frobenius signs and excited-probe Schur/bubble formulas | action, choice |
+
+**Still open:** construction of the fixed-weight observations, and completion of arbitrary-boundary local exchange. No full nondegeneracy theorem is claimed. Scoped-checked results after the pushed checkpoint await integration/full CI. Six workers remain active; completed assignments are immediately replaced.
+
+Persistent restart details: [HANDOFF.md](HANDOFF.md). Earlier checkpoint history follows.
+<!-- LIVE-STATUS-END -->
+
 # Odd nondegeneracy research progress
 
 Last checkpoint: 2026-10-25 18:54 UTC. Branch: `research/odd-nondegeneracy`.

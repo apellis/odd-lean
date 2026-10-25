@@ -295,3 +295,25 @@ contextual source/target exchange; action develops the direct disjoint-spectrum
 coupling. All six continue. The original all-content action remains a proposed
 manuscript. The direct coupling has a symbolic Frobenius-pairing argument at
 the highest probe vacuum; general coupled inversion remains under investigation.
+
+
+### Post-sorted checkpoint
+
+Full CI40226825974 is green for `4a9ef53`. New scoped-checked files now include
+complete canonical upward PBW matching choice and exact observation-to-upward
+independence bridge; complete distinct-colour target descent; actual contextual
+cup serializers/evaluations and paired coefficient detector; source frozen-prefix
+transport; and universal Frobenius resolvent plus separated square-norm units.
+The latter norm theorem concerns a source spectral corner, not an endomorphism
+intertwiner of that corner.
+
+Active allocation: sorting does distinct source descent; rewriting builds the
+complete same-colour adapted choices; Webster builds actual paired coefficient
+columns; separation builds bounded coordinate recovery; choice checks odd
+Frobenius trace ordering; action derives the direct coupled inversion. The
+excited-probe chart-change argument is written work under review, not a native
+coupled action. Its positive-reservoir-height case remains to be checked.
+
+Root broad local build session48148 remains in progress, log
+`/tmp/odd-full-build.log`; remote exact-commit CI already verified the last push.
+No repository dependency updates. Six active workers; research branch only.

@@ -214,6 +214,31 @@ theorem paired_source_leading_neg (cs : CScalars Sc) (i : I) (μ : X) (N m : ℕ
       ite_eq_left (by omega), Linear.comp_smul, Category.comp_id, smul_smul]
   rw [hp, add_comm]
 
+/-- The low-dot target paired sector is invisible to the principal crossing,
+which is exactly why the identity components of the full matrix are needed. -/
+theorem paired_target_below (cs : CScalars Sc) (i : I) (μ : X) (b : ℕ)
+    (hb : (b : ℤ) < D.h i μ) :
+    etaP cs i μ ≫ cpow (uLM D Sc i μ) b ≫ sgM D Sc i μ = 0 := by
+  rw [paired_target_expansion, ← Category.assoc, etaP_sg_pos cs i μ (by omega),
+    Limits.zero_comp, smul_zero, zero_add]
+  apply Finset.sum_eq_zero
+  intro s hs
+  have hs' := Finset.mem_range.mp hs
+  rw [← Category.assoc, etaP_eL_lt cs i μ (b - 1 - s) (by omega),
+    ite_eq_right (by omega), Limits.zero_comp, smul_zero]
+
+/-- The corresponding low-dot source paired sector needs the cup components. -/
+theorem paired_source_below (cs : CScalars Sc) (i : I) (μ : X) (b : ℕ)
+    (hb : (b : ℤ) < -D.h i μ) :
+    sgM D Sc i μ ≫ cpow (uRM D Sc i μ) b ≫ epsP cs i μ = 0 := by
+  rw [paired_source_expansion, eq_2_14_a cs i μ (by omega),
+    Limits.comp_zero, smul_zero, zero_add]
+  apply Finset.sum_eq_zero
+  intro s hs
+  have hs' := Finset.mem_range.mp hs
+  rw [hL_epsP_lt cs i μ (b - 1 - s) (by omega),
+    ite_eq_right (by omega), Limits.comp_zero, smul_zero]
+
 /-- The nonpositive target branch has two finite lower-index families:
 the inverse-block corrections and the dot-slide corrections. -/
 theorem paired_target_leading_nonpos (cs : CScalars Sc) (i : I) (μ : X) (N b : ℕ)

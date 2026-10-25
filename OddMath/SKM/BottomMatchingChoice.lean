@@ -112,5 +112,26 @@ def atBottomSorted (F : MatchingBasisChoice a b)
         (· ≤ ·)).map (fun j => (0, j))
       simpa only [bottomPositions, List.map_flatMap, List.map_replicate] using hp
 
+/-- Every literal upward boundary satisfies the bottom-endpoint condition;
+the serializer construction therefore has no additional geometric premise. -/
+theorem positive_bottom_bound (s t : List I)
+    (F : MatchingBasisChoice (s.map up) (t.map up))
+    (R : F.members) (j : ℕ) (hj : j ∈ leftEnds₂ (s.map up) R.val) : j < (s.map up).length := by
+  have hs : (List.ofFn fun r : Fin s.length => (true, s.get r)) = s.map up := by
+    simpa only [List.map_ofFn, Function.comp_def, up] using
+      congrArg (List.map (fun i : I => (true, i))) (List.ofFn_get s)
+  have ht : (List.ofFn fun r : Fin t.length => (true, t.get r)) = t.map up := by
+    simpa only [List.map_ofFn, Function.comp_def, up] using
+      congrArg (List.map (fun i : I => (true, i))) (List.ofFn_get t)
+  have hm : IsMatching₂ (List.ofFn fun r : Fin s.length => (true, s.get r))
+      (List.ofFn fun r : Fin t.length => (true, t.get r)) R.val := by
+    simpa only [hs, ht] using (F.matching R.val R.property).1
+  have h := (positive_mem_leftEnds₂ s.get t.get hm j).mp (by simpa only [hs] using hj)
+  simpa only [List.length_map] using h
+
+def atBottomSortedUp (s t : List I) (F : MatchingBasisChoice (s.map up) (t.map up)) :
+    MatchingBasisChoice (s.map up) (t.map up) :=
+  F.atBottomSorted (F.positive_bottom_bound s t)
+
 end MatchingBasisChoice
 end OddMath.SKM

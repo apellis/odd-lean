@@ -331,3 +331,16 @@ source proof uses target coefficient placement temporarily and the proved
 parity involution to return to the library convention. Their family
 correspondence premise is still explicit until the complete adapted-choice
 bundle is assembled; it is not an assumption of evaluation independence.
+
+### Distinct-colour target descent is native
+
+`DistinctTargetDescent.distinct_target_exchange_descent` (in namespace
+`OddMath.SKM`) now discharges the distinct-colour target branch itself. For
+arbitrary contexts, external weight, and source, independence for the swapped
+target implies independence for the original target when the colours differ.
+The theorem constructs the complete adapted families and their label bijection,
+uses actual terminal-crossing insertion or cancellation on each class, and
+transfers the resulting independence to every matching choice. All coefficients
+belong to full `SYM`; no adapted-family or homogeneous-coefficient premise is
+left. The source distinct-colour branch and the equal-colour paired-sector
+assembly remain separate obligations.
