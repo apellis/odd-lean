@@ -1,3 +1,4 @@
+import OddMath.SKM.SourceCrossAttachmentExamples
 import OddMath.SKM.SourceCapAttachmentExamples
 import OddMath.SKM.SourceCapStateExamples
 import OddMath.SKM.SourceIdRelabelExamples
