@@ -52,7 +52,7 @@ theorem comp_weightedRelationSpan {t v t' : List I} {N : ℕ}
     rw [Linear.comp_smul]
     exact Submodule.smul_mem _ c hg
 
-theorem cl_nil (t : List I) : cl D Sc t t [] (sChain_pl t []) = 𝟙 _ := by
+theorem coefficient_cl_nil (t : List I) : cl D Sc t t [] (sChain_pl t []) = 𝟙 _ := by
   rw [cl, ← Presentation.diag_id]
   exact Presentation.diag_eq_of_layers_eq _ (by simp [pl, layList])
 
@@ -63,7 +63,7 @@ theorem highCoefficient_identity_mem_relationSpan (t : List I) {N : ℕ}
     sourceCoefficientHom D Sc a (𝟙 ((pres D Sc).obj (ob D t))) ∈
       WeightedRelationSpan D Sc t t N := by
   have he := highCoefficient_word_mem_score D Sc (t := t) (t' := t) ha [] (sChain_pl t [])
-  simp [cl_nil, positionedScore, wordScore, crossCount] at he
+  simp [coefficient_cl_nil, positionedScore, wordScore, crossCount] at he
   exact Submodule.subset_span ⟨t, rfl, _, he, 𝟙 _, 𝟙 _, by simp⟩
 
 /-- The actual ELV even-cutoff coefficient relation belongs to the same ideal

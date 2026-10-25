@@ -286,9 +286,11 @@ serializers. `PairingRotation` and `WeakMateCoverage` now prove matching-class c
 reflection by cyclic endpoint rotation. `WeakMateChoice` assembles the actual
 representative bijection, the complete weak choice, and the bijection of dot
 labels. Its `weakChoice_layers` identifies the literal inverse-mate serializer.
-The remaining sorted-boundary integration is its ordinary layer-list bridge
-to `partialRightMateL` and the checked positive-dot closure coefficient
-detector. These modules do not yet claim the full upward-to-oriented implication.
+`WeakMateLayers.dLay_moves` now proves its exact ordinary layer-list bridge
+to `partialRightMateL`. `WeakMateIndependence.sorted_independence` completes the
+sorted-boundary implication using the positive-dot closure coefficient detector.
+General arbitrary-boundary sorting remains separate; the full oriented
+implication is not yet claimed.
 
 The normalization transition uses **decreasing** dots at fixed crossing count.
 This is independent of the closure calculation on the weak family, whose
@@ -300,3 +302,34 @@ Both modules pass targeted warnings-as-errors builds. The concrete consumer
 and evaluation on a nonempty odd boundary, and a literal combined cup/cap
 example with all dot counts. Its printed axioms, including the independence
 transfer theorem, are only `propext`, `Classical.choice`, and `Quot.sound`.
+
+
+## Checked sorted-boundary implication
+
+`WeakMate.sorted_independence` in `OddMath/SKM/WeakMateIndependence.lean`
+proves that full upward independence implies independence for every strict
+choice on
+
+\[
+ E_a F_r^\vee \longrightarrow F_l^\vee E_b,
+\]
+
+at every prescribed external weight. `UpwardIndependence` quantifies only
+upward words of equal weight, exactly as in the conjecture, and allows arbitrary
+finite abstract-SYM coefficients. Unequal-weight inputs have no matching labels
+and are handled directly. The closure weight is chosen as
+`ξ - wt D 0 (ups r)`, so the result has no restriction on the oriented weight.
+
+The proof uses the literal complete weak family, the exact source/target
+coefficient parity twist, coefficient-dependent finite positive-dot closure
+corrections, their minimum-dot detector, and finally the independent surjective
+maximum-dot normalization into the strict family. No full-SYM right-linearity
+of closure correction terms is assumed. Both `strict_injective_of_top_data`
+intermediate premises (ordinary realization and canonical positive-dot lift)
+are discharged by the chosen `atTopSplit` family in the final theorem.
+
+The module passes a targeted warnings-as-errors build. Its concrete consumer
+uses two odd colours over the rationals, both nonempty bending blocks, and
+external weight `(3,7)`. This consumer is explicitly conditional on upward
+independence; it does not assume or claim that the outstanding upward theorem
+has been proved. The kernel axiom audit prints only the standard three axioms.

@@ -1003,3 +1003,16 @@ The code and proofs were produced with AI models under human direction and check
 ## License
 
 Released under the Apache License 2.0; see [`LICENSE`](LICENSE).
+
+
+### Research branch: current nondegeneracy interfaces
+
+The research branch now checks full abstract polynomial/exterior coefficient
+placement, positive-dot closure corrections, weak mate matching transport, and
+explicit multicolour ELV cyclotomic quotient separation. The latter detects
+finite affine coefficient expressions; it does not by itself prove faithfulness
+of their images in SKM at a fixed weight. Paired source/target mixed-crossing
+expansions are checked at all weights; contextual sorting assembly is ongoing.
+See [the progress board](docs/Nondegeneracy/PROGRESS.md) and
+[handoff](docs/Nondegeneracy/HANDOFF.md) for the current parallel assignments.
+Neither full upward independence nor full oriented nondegeneracy is claimed.

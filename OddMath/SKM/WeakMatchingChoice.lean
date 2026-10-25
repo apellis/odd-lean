@@ -177,6 +177,15 @@ theorem unitColumn_lower (i j : F.Labels) (hij : i ≠ j)
 def transition : (F.Labels →₀ SYM D k) →ₗ[k] (F.Labels →₀ SYM D k) :=
   MatchingTransition.transition (k := k) (W.unitColumn cs μ)
 
+
+theorem transition_injective : Function.Injective (W.transition cs μ) := by
+  apply MatchingTransition.transition_injective (Equiv.refl F.Labels)
+    (fun t => ncr₂ t.1.val) F.openDots (W.unitColumn cs μ) (W.unitColumn_lower cs μ)
+  intro i p hp
+  rw [Equiv.refl_apply, W.unitColumn_diagonal cs μ i, smul_mul_assoc, one_mul] at hp
+  have h := congrArg (fun q : SYM D k => zsign k (W.columnData cs μ i).1 • q) hp
+  simpa only [smul_smul, zsign_mul_self', one_smul, smul_zero] using h
+
 theorem transition_surjective : Function.Surjective (W.transition cs μ) := by
   apply MatchingTransition.transition_surjective (Equiv.refl F.Labels)
     (fun i j => ncr₂ i.1.val < ncr₂ j.1.val ∨
@@ -199,6 +208,15 @@ theorem transition_evaluation (v : F.Labels →₀ SYM D k) :
       (Finsupp.single i p)) = _
     rw [MatchingTransition.transition_single, F.expansion_rightColumn,
       W.unitColumn_eval cs μ i, W.expansion_single]
+
+
+/-- A strict independent family also detects every complete weak realization. -/
+theorem expansion_injective_of_strict (hF : Function.Injective (F.expansion cs μ)) :
+    Function.Injective (W.expansion cs μ) := by
+  intro v w h
+  apply W.transition_injective cs μ
+  apply hF
+  simpa only [W.transition_evaluation cs μ] using h
 
 /-- Independence of a complete weak realization implies independence of the
 strict family. Surjectivity of the finite triangular transition is essential

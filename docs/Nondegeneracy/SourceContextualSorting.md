@@ -8,9 +8,10 @@ independence. It is not yet a compiled Lean theorem.
 Together with [target sorting](ContextualSorting.md) and the conditional
 [sorted closure](SortedClosure.md), it reduces oriented independence to
 upward SKM independence and an invertible arbitrary-choice comparison.
-The latter comparison is not yet established: only its crossing-filtered
-expansion input is currently proved in Lean; see
-[MatchingChoiceTransition](MatchingChoiceTransition.md).
+The arbitrary-choice comparison is now proved natively by
+`MatchingBasisChoice.expansion_injective_choice_iff`; see
+[MatchingChoiceTransition](MatchingChoiceTransition.md). The contextual local
+family comparisons in this note still require their full native assembly.
 
 ## Setup and adapted families
 
@@ -201,7 +202,33 @@ uses greatest crossing length followed by least occupied dot degree.
 Increasing dots in closure transport do not give a terminating inverse
 rewrite.
 
-Conditional on the missing arbitrary-choice equivalences and full upward
-SKM independence over `SYM`, this gives the oriented reduction together
-with [SortedClosure](SortedClosure.md). The whole reduction is not yet
-formalized, and neither missing input is supplied by these local formulas.
+The arbitrary-choice equivalences are now native theorems. Conditional on
+full upward SKM independence over `SYM`, the mathematical construction gives
+the oriented reduction together with [SortedClosure](SortedClosure.md). The
+whole reduction is not yet formalized: the contextual coefficient comparisons
+must still be assembled from actual families and inversion components.
+
+
+## Compiled boundary induction and exact remaining interface
+
+`ContextualBoundaryInduction.lean` proves the adjacent-inversion decomposition,
+the exact one-step decrease, and the global nested induction on total boundary
+length then inversion sum. Source and target contexts and colors are arbitrary;
+its deletion premise is demanded only when the two colors are equal.
+
+`ContextualNondegeneracy.lean` specializes this to the actual conjecture.
+`BoundaryIndependence cs μ a b` quantifies every matching choice and requires
+exactly the equal-weight boundary condition in `NondegeneracyConjecture`.
+`nondegeneracy_of_contextual_descent` takes sorted independence plus explicit
+`SourceExchangeDescent` and `TargetExchangeDescent` hypotheses. Every component
+uses the unchanged global external `μ`; no local unwhiskered coefficient
+formula is substituted for residual spanning. Actual weight preservation
+under arbitrary-color swaps and same-color deletion is separately checked.
+
+These local descent hypotheses are not disguised conclusions: they are the
+precise still-open assembly of the adapted-family bijections, native inversion
+identities, residual coefficient lifts, and finite paired-sector detector.
+The generic induction does not claim to discharge them. Its concrete consumer
+constructs a finite reduction tree for alternating boundaries with distinct
+and repeated colors; a second consumer checks the conditional conjecture
+assembly on the two-odd-color datum.

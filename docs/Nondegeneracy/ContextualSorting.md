@@ -9,8 +9,9 @@ upward independence or injectivity of any matching evaluation**.
 This is a mathematical construction, not a compiled SKM theorem. The
 [source comparison and boundary induction](SourceContextualSorting.md) and
 [conditional sorted closure](SortedClosure.md) are separate prose arguments.
-An invertible transition from arbitrary chosen representatives and full
-upward SKM independence remain unproved.
+The arbitrary-choice injectivity equivalence is now a native theorem.
+Full upward SKM independence and the complete contextual local comparison
+assembly remain open.
 
 Throughout, composition is chronological. Put
 
@@ -301,3 +302,32 @@ sorted-closure arguments. The [crossing-filtered expansion](MatchingChoiceTransi
 is Lean-proved, but does not supply the lower-dot comparison or the inverse.
 Hom reconstruction
 identities alone do not close any of those coefficient-level obligations.
+
+## Native distinct-color crossing action
+
+`DistinctContextualCrossing.lean` now proves the actual contextual sigma and
+left-crossing morphisms are mutual inverses for distinct colors, with arbitrary
+left/right contexts and the correct local weight `wt μ Q`. It constructs both
+source and target Hom linear equivalences at global external weight `μ`.
+Target exchange preserves every ordered source coefficient exactly. Source
+exchange applies the full-SYM parity involution for `|i||j|`; no `t_ij` factor
+or homogeneous-coefficient restriction is introduced. Its concrete consumer
+uses nonempty contexts, two odd colors, and an inhomogeneous exterior-product
+coefficient.
+
+This does not by itself establish basis independence under the exchange: an
+isomorphism of Hom spaces is not yet a verified matching-basis correspondence.
+The remaining native step is to assemble the adapted complete matching
+families, their dot serializers, and the exact label-level crossing identity.
+
+`DistinctExchangeIndependence.lean` additionally checks the actual decorated
+low-side insertion and high-side cancellation identities for both source and
+target exchange. They retain arbitrary decorated prefix/suffix layers and
+have exact leading coefficient `+1`. Given the adapted label bijection and
+its literal serializer correspondence, the native
+`distinct_target_adapted_independent` and
+`distinct_source_adapted_independent` transfer full-SYM independence. The
+source proof uses target coefficient placement temporarily and the proved
+parity involution to return to the library convention. Their family
+correspondence premise is still explicit until the complete adapted-choice
+bundle is assembled; it is not an assumption of evaluation independence.

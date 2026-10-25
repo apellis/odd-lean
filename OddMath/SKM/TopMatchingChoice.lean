@@ -80,6 +80,10 @@ def atTop : MatchingBasisChoice (List.ofFn fun r : Fin c => (true, a r)) (List.o
   serialize R n := topDotMoves (List.ofFn fun r : Fin c => (true, a r)) R.val (fun j => (F.topPosition a b R j).val) n
   decorates R n := topDotMoves_decorates (List.ofFn fun r : Fin c => (true, a r)) R.val _ n
 
+
+theorem atTop_bounded (R : (F.atTop a b).members) (j : ℕ) :
+    ((F.atTop a b).points R j).1 ≤ R.val.length := le_rfl
+
 theorem atTop_valid (R : (F.atTop a b).members) (n : MatchingStrand (List.ofFn fun r : Fin c => (true, a r)) R.val → ℕ) :
     DOk₂ (List.ofFn fun r : Fin c => (true, a r)) ((F.atTop a b).serialize R n) :=
   topDotMoves_valid b (F.matching R.val R.property).1 (F.topPosition a b R) n
@@ -184,6 +188,31 @@ theorem atTop_layers_dotsOn (t : (F.atTop a b).Labels) :
   change dLay _ _ = _
   rw [F.atTop_moves a b, dLay_append, dLay_map_tm, tmoves_map_tm,
     (F.matching t.1.val t.1.property).1.2, dLay_dt_list]
+
+
+/-- Every top-decorated upward representative has ordinary layers, exactly
+rather than up to a scalar or matching isomorphism. -/
+theorem atTop_ordinary (t : (F.atTop a b).Labels) :
+    ∃ L : List (LayerData I),
+      SChain (List.ofFn fun r : Fin c => (true, a r)) L (List.ofFn fun r : Fin d => (true, b r)) ∧
+      L.map ofL = (F.atTop a b).layers t := by
+  obtain ⟨L₀, _, he, _⟩ := positive_tLay_ofL a b
+    (F.matching t.1.val t.1.property).1 (F.matching t.1.val t.1.property).2
+  let L := L₀ ++ topDotLayers b (F.topPosition a b t.1) t.2
+  have he' : L.map ofL = (F.atTop a b).layers t := by
+    rw [F.atTop_layers a b]
+    simp only [L, List.map_append, he]
+  refine ⟨L, ?_, he'⟩
+  have hc := (F.atTop a b).layers_chain t
+  rw [← he'] at hc
+  suffices h : ∀ (v z : List (Letter I)) (M : List (LayerData I)),
+      XChain v (M.map ofL) z → SChain v M z from h _ _ L hc
+  intro v z M
+  induction M generalizing v with
+  | nil => exact id
+  | cons x M ih =>
+    rintro ⟨h, ht⟩
+    exact ⟨h, ih _ ht⟩
 
 end MatchingBasisChoice
 end OddMath.SKM

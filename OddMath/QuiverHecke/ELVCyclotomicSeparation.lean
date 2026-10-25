@@ -66,7 +66,7 @@ theorem elvGenerator_mem_score {cutoff : I → ℕ} {N : ℕ}
       (SKM.SYM.elvCoefficientIdeal_le_weight D k hN ha)
     have hm := highCoefficient_word_mem_score D Sc (t := t) (t' := t)
       (SKM.SYM.coefficientAtLeast_antitone D k (Nat.le_succ N) hw) [] (sChain_pl t [])
-    simpa [cl_nil, positionedScore, wordScore, crossCount] using hm
+    simpa [coefficient_cl_nil, positionedScore, wordScore, crossCount] using hm
   · subst t
     simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
     exact extendedScore_antitone D Sc (by exact_mod_cast hN i.1)

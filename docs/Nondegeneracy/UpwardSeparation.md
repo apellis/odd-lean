@@ -350,6 +350,48 @@ full categorical action or a proof of the SKM nondegeneracy conjecture.
 
 ## A concrete coupling target for reservoir and spectral factors
 
+`OddMath/QuiverHecke/UpwardCoefficientDetection.lean` now isolates the missing
+bridge using actual SKM morphisms. `upwardCoefficientMap` evaluates an abstract
+coefficient through `betaSYM cs μ`, places it at the source, and composes with
+the actual upward functor `alpha D Sc μ`. The external weight `μ` is fixed.
+`FiniteUpwardObservations` asks that, for each finite set of coefficient/PBW
+indices, a linear observation from this same SKM Hom recover those vectors in
+one sufficiently large **specified ELV quotient**. The required cutoff is
+explicitly greater than the maximum total weight plus `2*choose(n,2)`.
+The conditional theorem `upwardCoefficientMap_injective_of_observations`
+derives full coefficient-map injectivity from this compatibility and the
+proved affine separation. It assumes no map is faithful or injective.
+
+`cyclicObservation` exhibits the intended construction: apply a fixed-weight
+action to a chosen vector, then apply a linear coordinate-recovery map.
+Neither the action nor the recovery map needs to be injective. Recovery may
+include the inverse of the probe's triangular coefficient substitution on
+the particular finite span. It need not extend to an automorphism of the
+whole truncated ring, where top exterior relations can prevent such an
+extension. Both parity components are retained. The concrete test verifies
+the actual source-placement convention over the two-odd-colour rational
+datum; it deliberately does not assert the unconstructed observation exists.
+
+A family of reservoir vacua at weights `-Lambda` alone does **not** establish
+this interface at an arbitrary fixed `μ`. The coupled probe/reservoir action
+or a suitable growing-head projection must restore that same external weight,
+then recover the same quotient coordinates. Constructing those observations,
+including their normalized bubble evaluation, is the remaining substantive
+action problem.
+
+The matching-choice formulation requires one further concrete comparison:
+the canonical affine PBW family must be identified with an actual upward
+`MatchingBasisChoice`, after which the existing choice-transition theorem
+handles arbitrary representatives and distinguished points.
+`AlphaPositional.lean` now proves exact evaluation of every valid positioned
+affine word in the decorated-matching syntax, including every native PBW
+normal form. `BottomMatchingChoice.lean` constructs sorted bottom-dot
+serializers on the same matching representatives and proves that their dot
+lists recover all strand multiplicities. These comparison lemmas are checked,
+but the canonical crossing-word/matching classification and assembled
+independence transfer are still being connected; they are not implicit
+premises of the fixed-weight action-observation theorem.
+
 The nilpotent-reservoir/nonzero-probe proposal is the earlier split-factor
 plan with a significant correction: the odd bubble coefficients must be
 detected in the reservoir, rather than inferred from an invertible-dot

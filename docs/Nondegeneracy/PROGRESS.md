@@ -123,3 +123,47 @@ polynomials now have scoped-checked bounded quotient separation. Even uniform
 cutoffs jointly detect every affine SYM-coefficient morphism. Next: an explicit
 conditional categorical evaluation interface, keeping the missing SKM action
 and bubble identification visible.
+
+
+## Sorted-boundary milestone
+
+`WeakMate.sorted_independence` now builds: full upward matching-expansion
+independence implies every sorted oriented matching family is independent, at
+every prescribed external weight, over full SYM. The top serializer, ordinary
+layers, weak mate coverage, closure correction and coefficient parity premises
+are all discharged. Independent assumption audit found no additional action,
+field, finite-colour or bubble-faithfulness hypothesis. This is not yet the
+full arbitrary-boundary implication.
+
+The remaining oriented work is actual local exchange descent. Global boundary
+induction is checked conditionally; paired crossing expansions are checked;
+workers are constructing contextual adapted families and their coefficient maps.
+
+`UpwardCoefficientDetection` isolates finite observations at fixed weight as a
+sufficient condition for the actual affine coefficient evaluation to be injective.
+Neither these observations nor its PBW-to-matching comparison is yet constructed.
+The latter is now the separation worker's task.
+
+The 80 by 80 fixed-weight coupling script was independently reproduced. The
+general synthesis still needs actual categorical coupling and bubble recovery.
+We are also testing a simpler route using two original-superdatum cyclotomic
+actions with disjoint zero/nonzero spectra, before committing to a weighted
+Clifford-to-even cover construction.
+
+CI for `15ad5c1` passed; `67c4365` is running. Research branch only.
+
+
+### Integration and continued assignments
+
+CI `40225381594` for `67c4365` caught an umbrella-only name collision:
+new `QuiverHecke.cl_nil` duplicated the declaration in `Centre`. Renamed the
+new helper `coefficient_cl_nil`; the full local build is running. Scoped
+checks, including the sorted theorem's populated consumer and standard axiom
+audit, pass. The next commit is a checked local checkpoint awaiting full CI.
+
+Worker allocation now: choice + separation construct the canonical affine
+PBW/matching evaluation bridge; sorting + rewriting + Webster assemble actual
+contextual source/target exchange; action develops the direct disjoint-spectrum
+coupling. All six continue. The original all-content action remains a proposed
+manuscript. The direct coupling has a symbolic Frobenius-pairing argument at
+the highest probe vacuum; general coupled inversion remains under investigation.
