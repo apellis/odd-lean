@@ -3,7 +3,9 @@
 **Mathematical result.** There is an injective formal coefficient comparison
 for source sorting in mutually adapted strict matching families, over the
 full abstract `SYM`. This construction uses residual spanning, not upward
-independence. It is not yet a compiled Lean theorem.
+independence. Complete source descent is now proved natively by
+`same_colour_source_exchange_descent` and `source_exchange_descent`, with
+actual adapted families and full-SYM coefficient columns.
 
 Together with [target sorting](ContextualSorting.md) and the conditional
 [sorted closure](SortedClosure.md), it reduces oriented independence to
@@ -11,7 +13,8 @@ upward SKM independence and an invertible arbitrary-choice comparison.
 The arbitrary-choice comparison is now proved natively by
 `MatchingBasisChoice.expansion_injective_choice_iff`; see
 [MatchingChoiceTransition](MatchingChoiceTransition.md). The contextual local
-family comparisons in this note still require their full native assembly.
+family comparisons are now assembled, and `nondegeneracy_of_upward_independence`
+proves the complete reduction. This does not prove its upward-independence premise.
 
 ## Setup and adapted families
 

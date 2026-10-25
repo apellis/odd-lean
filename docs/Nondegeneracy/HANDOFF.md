@@ -391,7 +391,7 @@ comparison, not a new abstract action interface.
 
 ## Upward-to-oriented reduction
 
-`SKM.nondegeneracy_of_upward_independence` in `UpwardNondegeneracyReduction.lean` combines `WeakMate.sorted_independence` with both proved contextual exchange descents. Its only independence premise is `WeakMate.UpwardIndependence cs`, at every weight over full abstract `SYM`. `nondegeneracy_iff_upward_independence` supplies the converse. No field, finite-colour, symmetrizer, grading or coefficient-homogeneity restriction is added by the reduction. The concrete two-odd-colour consumer is `UpwardNondegeneracyReductionExamples.two_odd_colour_reduction`. Both headline axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`. This closes B0, not the action or upward-detection obligations needed to establish its premise.
+`SKM.nondegeneracy_of_upward_independence` in `UpwardNondegeneracyReduction.lean` combines `WeakMate.sorted_independence` with both proved contextual exchange descents. Its only independence premise is `WeakMate.UpwardIndependence cs`, at every weight over full abstract `SYM`. `nondegeneracy_iff_upward_independence` supplies the converse. No field, finite-colour, symmetrizer, grading or coefficient-homogeneity restriction is added by the reduction. The concrete two-odd-colour consumer is `UpwardNondegeneracyReductionExamples.two_odd_colour_reduction`. Both headline axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`. This closes B0, not the action or upward-detection obligations needed to establish its premise. The source and target sorting notes record the checked status as well as the mathematical formulas.
 
 ## Next targets
 

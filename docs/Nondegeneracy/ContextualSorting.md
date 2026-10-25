@@ -6,12 +6,13 @@ injective map of their formal SYM coefficient modules intertwining the
 actual sorting components. This statement uses residual spanning, **not
 upward independence or injectivity of any matching evaluation**.
 
-This is a mathematical construction, not a compiled SKM theorem. The
-[source comparison and boundary induction](SourceContextualSorting.md) and
-[conditional sorted closure](SortedClosure.md) are separate prose arguments.
-The arbitrary-choice injectivity equivalence is now a native theorem.
-Full upward SKM independence and the complete contextual local comparison
-assembly remain open.
+The complete contextual target descent is now proved by
+`same_colour_target_exchange_descent` and `target_exchange_descent`, using
+actual adapted families and all-height coefficient detection. The
+[source comparison and boundary induction](SourceContextualSorting.md) are
+also proved natively. Together with `WeakMate.sorted_independence`, they give
+`nondegeneracy_of_upward_independence`. Full upward SKM independence remains
+an explicit, unresolved hypothesis.
 
 Throughout, composition is chronological. Put
 
