@@ -167,6 +167,9 @@ comparison, not a new abstract action interface.
    joint detection of the odd bubbles of adjacent odd colours in it, are open. For odd `i`,
    `⟨h_i, μ⟩ mod 2` is constant on root-lattice cosets, so odd cutoffs at odd colours are needed.
 
+## Strict residual serializers
+**Strict residual choice interface (checked).** `StrictResidualChoice` rebuilds a complete matching choice using `PointedMatching.ofStrict` on every member. Its `strictResidualLabels` equivalence preserves the exact strict-serializer layers, and `strictResidualChoice_independent` transfers independence by choice invariance. Thus residual independence can be applied to the serializers used in cup completion without identifying them with an unrelated chosen serializer. Contextual same-colour descent remains open.
+
 ## Next targets
 
 These statements were proved by the methods recorded in the linked notes but are not yet on

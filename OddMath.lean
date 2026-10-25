@@ -1,3 +1,4 @@
+import OddMath.SKM.StrictResidualChoice
 import OddMath.QuiverHecke.Spanning
 import OddMath.QuiverHecke.Basis
 import OddMath.QuiverHecke.HnBasis
