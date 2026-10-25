@@ -39,7 +39,7 @@ the invertible probe; its all-content categorical inversion is still open.
 | Source exchange, same colour | as above | open |
 | Upward independence | finite observations at fixed weight imply `UpwardIndependence` | Lean: `upward_independence_of_finite_observations` |
 | Cyclotomic separation | even uniform ELV cutoffs jointly detect every finite coefficient-extended affine morphism | Lean: `even_elv_quotients_jointly_detect`, `weighted_quotients_jointly_detect` |
-| Observations | construct `FiniteUpwardObservations` from a 2-representation | open; see below |
+| Observations | extracted regular-projective evaluation on words including spectators; joint algebraic detection remains an input | `SpectatorEvaluation`, `upwardCoefficientMap_injective_of_spectators`; [SpectatorDetection.md](SpectatorDetection.md) |
 | Multicolour deformed action | KKO-type cyclotomic action with ELV odd parameters, even cutoffs at odd colours | proposed: [MulticolourActionTheorem.md](MulticolourActionTheorem.md) |
 
 ## Reduction route comparison
@@ -104,7 +104,10 @@ comparison, not a new abstract action interface.
    evaluates `E_t 1_μ` only after adding spectator strands `s` with `μ = -Λ + wt(s)`, and `μ` is
    fixed while the cutoff grows. The separation theorem therefore has to be extended to
    cyclotomic quotients with spectators, or the interface restated, before an action can
-   discharge it.
+   discharge it. `SpectatorEvaluation` now states the regular-projective component with
+   a specified affine whiskering and bubble lifts on the whole word. Its product law and
+   joint detection are still open for an action-derived family. The conditional consumer
+   `upward_independence_of_spectators` makes neither of those assertions.
 4. **The deformed action.** Independent review of the proposed even-cutoff theorem, in
    particular the balanced maps, the norm audit and the parity conventions of the
    negative-height cap conversion; extension to odd heights at odd colours (the parity of

@@ -1,0 +1,5 @@
+import OddMath.QuiverHecke.SpectatorDetectionExamples
+
+#print axioms OddMath.QuiverHecke.SpectatorEvaluation.observe_coefficient
+#print axioms OddMath.QuiverHecke.upwardCoefficientMap_injective_of_spectators
+#print axioms OddMath.QuiverHecke.upward_independence_of_spectators

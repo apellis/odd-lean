@@ -1140,6 +1140,8 @@ import OddMath.Algebra.FrobeniusResolvent
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
 import OddMath.QuiverHecke.UpwardMatchingIndependence
+import OddMath.QuiverHecke.SpectatorDetection
+import OddMath.QuiverHecke.SpectatorDetectionExamples
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
 import OddMath.SKM.AdaptedPointedPair

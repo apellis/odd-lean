@@ -7,11 +7,12 @@ import OddMath.QuiverHecke.Alpha
 import OddMath.SKM.BubbleAlgebra
 import OddMath.SKM.SpanBubbleProd
 
-/-! # The precise action interface for upward coefficient independence
+/-! # Vacuum-coordinate observations for upward coefficient independence
 
-The actual map uses source-placed `betaSYM` and the repository's upward
-functor `alpha`. Finite quotient observations are only required to agree on
-the explicit affine/coefficient basis; no faithfulness is assumed.
+The map uses source-placed `betaSYM` and the upward functor `alpha`.
+Finite observations below recover a quotient on the active words alone.
+They are a sufficient criterion, not the interface directly supplied by a
+cyclotomic action with spectators. See `SpectatorDetection` for that interface.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke
@@ -67,10 +68,11 @@ def cyclicObservation (μ : X) (t t' : List I) (m : ℕ)
   map_add' := by intros; simp
   map_smul' := by intros; simp
 
-/-- Precise missing action obligation. For each finite list of explicit
+/-- Vacuum-coordinate sufficient criterion. For each finite list of explicit
 coefficient/PBW vectors, an observation at the same external weight `μ`
-recovers their coordinates in a sufficiently large *specified* ELV quotient.
-No faithfulness of an action, coefficient map, or observation is a premise.
+recovers their coordinates in a sufficiently large specified ELV quotient
+on the active words alone. This is stronger than providing an action with
+spectators: the required coordinate recovery is an additional obligation.
 Compatibility is finite, so normalization need not be an automorphism of the
 whole truncated coefficient ring. -/
 def FiniteUpwardObservations (μ : X) (t t' : List I) : Prop :=
