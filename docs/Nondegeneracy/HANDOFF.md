@@ -38,7 +38,7 @@ the invertible probe; its all-content categorical inversion is still open.
 | Target exchange, same colour | requires the residual deletion `L ++ Q` | open |
 | Source exchange, same colour | as above | open |
 | Upward independence | finite observations at fixed weight imply `UpwardIndependence` | Lean: `upward_independence_of_finite_observations` |
-| Cyclotomic separation | even uniform ELV cutoffs jointly detect every finite coefficient-extended affine morphism | Lean: `even_elv_quotients_jointly_detect`, `weighted_quotients_jointly_detect` |
+| Cyclotomic separation | cofinal colourwise cutoffs jointly detect the full coefficient-extended Hom with fixed spectators; a degree-bound criterion for moving spectators | `cofinal_elv_quotients_with_spectators_detect`, `spectator_images_detect_of_bounds`; moving-family hypotheses remain open |
 | Observations | extracted regular-projective evaluation on words including spectators; joint algebraic detection remains an input | `SpectatorEvaluation`, `upwardCoefficientMap_injective_of_spectators`; [SpectatorDetection.md](SpectatorDetection.md) |
 | Multicolour deformed action | KKO-type cyclotomic action with ELV odd parameters, even cutoffs at odd colours | proposed: [MulticolourActionTheorem.md](MulticolourActionTheorem.md) |
 
@@ -107,7 +107,13 @@ comparison, not a new abstract action interface.
    discharge it. `SpectatorEvaluation` now states the regular-projective component with
    a specified affine whiskering and bubble lifts on the whole word. Its product law and
    joint detection are still open for an action-derived family. The conditional consumer
-   `upward_independence_of_spectators` makes neither of those assertions.
+   `upward_independence_of_spectators` makes neither of those assertions. Fixed-spectator
+   cofinal quotient separation is proved, but does not allow the spectator word to grow
+   with the cutoff. The existing quadratic crossing-loss bound fails whenever total
+   strand number `n ≥ 3` and cutoff `N ≤ 2n` (`spectator_crossing_bound_obstruction`).
+   The next target is a sharper spectator-corner theorem or a fixed-weight reservoir-vacuum
+   extraction; neither the failure of this bound nor separate bubble independence decides
+   joint detection.
 4. **The deformed action.** Independent review of the proposed even-cutoff theorem, in
    particular the balanced maps, the norm audit and the parity conventions of the
    negative-height cap conversion; extension to odd heights at odd colours (the parity of

@@ -47,9 +47,23 @@ The even comparison separates the same jobs: `RouqFamily.upEval` evaluates
 bubble parameters. The last of these is not an independence theorem for
 exterior coefficients in an ordinary field.
 
-## Remaining obstruction
+## Separation theorems and remaining obstruction
 
-**Proposed analysis, not a proof of fixed-weight detection.** The existing
+The following are Lean theorems in `SpectatorSeparation`:
+
+- `cofinal_elv_quotients_with_spectators_detect` separates the full augmented
+  Hom space for fixed `s,t,t'` and any colourwise cofinal cutoff family. In
+  particular the cutoffs need not be even. A concrete two-odd-colour example
+  retains an exterior-product basis vector with a nonempty spectator word.
+- `spectator_quotientImage_ne_zero` gives the degree criterion for a specified
+  joint image. `spectator_images_detect_of_bounds` assembles it for a moving
+  family, provided each nonzero input has a nonzero joint image and a suitable
+  bound at the **same** family index.
+- `spectator_crossing_bound_obstruction` proves that `N ≤ 2n` and `n ≥ 3`
+  preclude the bound below, for every nonnegative degree `d`. It is not a
+  nonvanishing or vanishing theorem for the quotient.
+
+**Proposed fixed-weight analysis.** The existing
 ELV estimate for a bounded vector of degree `d` on `n` strands requires
 
 ```

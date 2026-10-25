@@ -1,0 +1,6 @@
+import OddMath.QuiverHecke.SpectatorSeparationExamples
+
+#print axioms OddMath.QuiverHecke.cofinal_elv_quotients_with_spectators_detect
+#print axioms OddMath.QuiverHecke.spectator_quotientImage_ne_zero
+#print axioms OddMath.QuiverHecke.spectator_images_detect_of_bounds
+#print axioms OddMath.QuiverHecke.spectator_crossing_bound_obstruction

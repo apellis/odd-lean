@@ -1142,6 +1142,8 @@ import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
 import OddMath.QuiverHecke.UpwardMatchingIndependence
 import OddMath.QuiverHecke.SpectatorDetection
 import OddMath.QuiverHecke.SpectatorDetectionExamples
+import OddMath.QuiverHecke.SpectatorSeparation
+import OddMath.QuiverHecke.SpectatorSeparationExamples
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
 import OddMath.SKM.AdaptedPointedPair
