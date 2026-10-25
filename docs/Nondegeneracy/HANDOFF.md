@@ -33,6 +33,14 @@ reservoir j strand: all six labelled shuffles satisfy the two-strand relations
 and the two nonzero repeated-colour braid corrections. Both independent
 reservoir exterior generators survive. This is an affine corner test, not an
 induction/restriction construction or an all-content inversion theorem.
+[SeparatedFusion](SeparatedFusion.md) gives the proposed local denominator
+argument, the conditional all-height Schur argument and an explicit Lean plan.
+The categorical multicolour Hom-sector comparisons and their actual mate
+coordinates remain open; no all-content A2 theorem is claimed.
+`commute_inverse_square_difference` and `separated_diagonal_crossing` prove
+in Lean that `(x-y)/(x²-y²)` has both odd dot slides and square
+`(x²+y²)/(x²-y²)²`. The smallest actual nonvacuum rank-one mate was rechecked:
+its 72-by-72 matrix has determinant one, with square-zero feedback of rank four.
 
 ## Proof architecture
 

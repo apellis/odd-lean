@@ -1140,6 +1140,7 @@ import OddMath.SKM.DistinctExchangeIndependence
 import OddMath.SKM.ResidualCoefficientLift
 import OddMath.Algebra.FrobeniusResolvent
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
+import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
 import OddMath.QuiverHecke.UpwardMatchingIndependence
 import OddMath.QuiverHecke.SpectatorDetection

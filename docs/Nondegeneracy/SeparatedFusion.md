@@ -1,0 +1,295 @@
+# Separated-sector fusion
+
+## Status and scope
+
+This is a **proposed, incomplete proof** of node A2 of
+[GeneralRoute](GeneralRoute.md). No counterexample to zero/nonzero fusion is
+found below. In particular, the adjacent odd affine A1 example survives a
+six-shuffle braid test with both reservoir exterior parameters present.
+Neither that test nor the existing rank-one mate calculation establishes the
+all-content super 2-representation. The missing categorical comparison is
+identified in §6; A2 must remain open.
+
+The proposed input consists of genuine highest- and lowest-weight actions of
+the **original** superdatum, as in [LowestWeightAction](LowestWeightAction.md),
+not merely representations of their upward algebras. At a finite reservoir
+truncation its dots are nilpotent. On the probe the even spectral coordinate
+of each dot is a unit: it is the dot for an even colour and its square for an
+odd colour. All probe odd cyclotomic coefficients vanish. Independent odd
+coefficients are retained together in the connected reservoir. Inverting a
+reservoir dot is forbidden.
+
+Use characteristic different from two for the exterior-coordinate discussion.
+The local algebra calculations in §2 do not require division by two. A
+universal deformation with unrestricted even coefficients is not itself a
+nilpotent reservoir; finite coefficient truncations, or an explicitly specified
+completion, are necessary before invoking local nilpotence.
+
+## 1. What the even blueprint supplies, and what it does not
+
+The relevant declarations in the categorification library separate three
+operations:
+
+* `KLR.Unfurling.coverProduct` constructs the Hom product for disjoint label
+  sets, using `RouqFamily.homProduct`. Its upward relations are for `prodQ`,
+  not automatically for the original colour polynomial.
+* `TwoRep.Furling` constructs the block sums of functors, their adjunctions
+  and dots. Its definition explicitly leaves crossings and Rouquier relations
+  to separate results. Thus a product followed by a direct sum is not, by
+  itself, a proof of A2.
+* `TwoRep.RouqCoproduct.schur_const_eq` identifies the constant Schur matrix;
+  `isIso_lift_of_schur` lifts its inverse, and `isIso_rouqMap_of_nonneg`
+  applies that argument. `RouqCoproductNeg.schur_const_neg_eq` and
+  `isIso_rouqMap_of_nonpos` treat negative total height. These arguments
+  use ordinary commutative identity-endomorphism rings and scalar shifts
+  of nilpotent dots.
+
+The separated super construction does not shift an odd dot by a scalar and
+does not split the connected reservoir into independent colours. It must
+replace the last scalar-shift argument by an ordered two-sector argument.
+[SeparatedFactorInversion](SeparatedFactorInversion.md) already supplies the
+conditional block algebra for that replacement. What is needed is to connect
+its inputs to the actual multicolour Hom construction.
+
+## 2. Cross-sector denominators: a complete local argument
+
+Write `z_i=x_i` for even i and `z_i=x_i²` for odd i. The allowed homogeneous
+crossing polynomial is a polynomial in these commuting even coordinates.
+For distinct colours i,j, the nonzero extremal coefficient gives
+
+    Q_ij(0,y)=t_ji y^(-a_ji),
+
+with a unit scalar t_ji. The exponent is even when j is odd, so this expression
+is a unit on the probe under the stated hypothesis. Write
+
+    Q_ij(x,y)=Q_ij(0,y)(1+N).
+
+All terms of N contain a positive power of the reservoir dot. The coefficients
+commute with that dot and with one another in this cross-sector polynomial
+subalgebra. If x^L=0, then N^L=0. Consequently
+
+    Q_ij(x,y)^(-1)=(sum_(r=0)^(L-1) (-N)^r) Q_ij(0,y)^(-1).
+
+This is a finite identity, preserves every reservoir coefficient, and applies
+to even–even, even–odd and odd–odd pairs. It proves a denominator statement,
+not a statement about categorical mates. In particular, the mate of an
+arbitrary invertible two-morphism need not be invertible.
+
+For equal odd colours put X=x on the reservoir and Y=y on the probe. They
+anticommute. Their squares commute, and both X²-Y² and X²+Y² are units:
+a commuting nilpotent perturbation of a unit is a unit. Let
+
+    R=(X²-Y²)^(-1),  a=(X-Y)R,  b=(X²+Y²)R².
+
+Then R commutes with X and Y, and direct expansion gives
+
+    aX+Ya=1,    aY+Xa=1,    a²=b.                 (1)
+
+The first two are the inhomogeneous odd slides on the position-preserving
+shuffle block. The off-diagonal entries must cancel b in the crossing square.
+They cannot both be unnormalised shuffle identities. In the concrete parity
+model below, one direction is P and the other is -bP, where P anticommutes
+with X,Y and commutes with R. Then aP+Pa=0 and the two-by-two crossing squares
+to zero. This uses odd dots with potentially nonzero squares; replacing them
+by exterior generators would destroy the test.
+
+`OddMath.Diagrams.OddNilHecke.SeparatedCrossing` formalizes the inverse
+commutation and identities (1), with a unit whose value is X²-Y². Unit
+existence under spectral separation is already in `SeparatedSquareNorm`.
+These local statements do not assert a global shuffle construction.
+
+## 3. Exact falsification tests
+
+Run:
+
+```sh
+uv run --no-project --script scripts/Nondegeneracy/separated_fusion_relations.py
+uv run --no-project --script scripts/Nondegeneracy/nonvacuum_exterior.py --full
+python3 scripts/Nondegeneracy/separated_block_inversion.py
+python3 scripts/Nondegeneracy/mixed_mate_recurrence.py
+```
+
+### Cross-polynomial units
+
+The first test uses
+
+    Q[z,w]/(z³,(w-2)²) tensor Lambda(delta_i,delta_j).
+
+It is 24-dimensional. Both exterior generators belong to the reservoir
+coefficient algebra; neither is a probe ELV coefficient. The probe coordinate
+has a nontrivial Jordan part, so this is not only a scalar-eigenvalue test.
+The polynomials checked are u+v in even type A2; u+v² and u²+v for the two
+mixed orientations of B2; u²+v² for the all-odd Cartan matrix
+`[[2,-2],[-2,2]]`; and 3u²+5uv+7v² in even affine A1. Here z,w represent the
+even coordinates, including squares at odd colours. Every matrix has a
+verified two-sided inverse. The exterior-product rank remains six after
+multiplication by Q. The first four determinants are 16777216; the final
+polynomial also has nonzero determinant.
+
+### Adjacent odd braid with both sectors occupied
+
+Let a,b,c denote respectively reservoir i, probe i, reservoir j. The reservoir
+local odd dot x and coefficient delta satisfy
+
+    x²+x delta=0,  x³=0,  delta²=0,  x delta+delta x=0.
+
+Use the graded tensor product of two such four-dimensional modules and the
+two-dimensional probe with odd y²=1. Thus each labelled word is
+32-dimensional. No probe exterior coefficient is introduced. Dots X_a,X_b,X_c
+are fixed graded tensor operators; the grading of a word is changed by the
+parity of its permutation. Let P be the underlying tensor grading operator.
+
+For a distinct-colour adjacent pair use P in the i-to-j direction and QP in
+the reverse direction. For the equal-colour pair a,b use the diagonal a from
+(1), with off-diagonal P and -bP as above. The test enumerates all six labelled
+words and every resulting path, including the position-preserving component
+of the equal-colour crossing. It verifies:
+
+* both adjacent slides and the distant-dot slide;
+* crossing parity and supercommutation with both exterior coefficients;
+* each crossing square;
+* both three-crossing paths and every output block of their difference.
+
+For the two words of colour pattern iji the difference is the nonzero
+operator `X_3-X_1`, exactly the Q=u²+v² odd repeated-colour correction. All
+other braid differences vanish. The exterior-product rank is eight. This
+checks the dangerous repeated colour **across** the two sectors, rather than
+only a repeated colour inside the nilpotent factor.
+
+This is a fixed three-strand affine representation, not a cyclotomic tower.
+It does not test a four-strand distant-crossing relation or produce cups,
+caps, or connected multicolour categorical mates.
+
+### Actual smallest nonvacuum odd mate
+
+The second command reconstructs the existing degree-two rank-one example
+from balanced induction, constrained-Hom coinduction and actual adjunction
+maps. At content (1,1), with a nonzero reservoir exterior coefficient:
+
+* the full EF-to-FE mate is 72 by 72, of rank 72 and determinant one;
+* its central two-sector block is 32 by 32, of rank 32 and determinant one;
+* both factor mates have rank 16; both coupling blocks have rank 10;
+* the feedback F has rank four and F²=0; the Schur pivot I-F has determinant
+  one and inverse I+F;
+* the reconstructed undotted bubble is minus the reservoir exterior action,
+  of rank four; right-linearity, odd parity, homogeneous supernaturality,
+  both adjunction triangles and the ordered mixed-mate expansions pass.
+
+These are actual mates, not selected invertible matrices. They are still
+rank-one: the affine test above does not upgrade them to connected
+multicolour categorical mates.
+
+The conditional companion-matrix test passes 162 combinations of slide sign
+and factor heights from -4 through 4. The ordered recurrence/parity test
+passes 32 parity-line cases and 76 telescoping cases; 38 incorrect even-sign
+mutations are rejected. These tests are not a substitute for the comparison
+in §6.
+
+## 4. The conditional all-content inversion argument
+
+Fix a colour i and any content in both factors. Put q=(-1)^p(i). Write X_A,Y_A
+for its reservoir EF,FE terms and X_B,Y_B for the probe terms, after the parity
+line identifications. Let sigma be each factor mate and let u_r,v_r be its
+dotted cups and caps. The factor dot-slide is
+
+    sigma x = u_0 v_0 + q y sigma.
+
+The same-colour total inversion splits into the off-sector EF/FE blocks and
+the central block
+
+    [sigma_A  C]
+    [D  sigma_B]
+
+with extra **total** dotted cap rows or cup columns according to the sign of
+h=h_A+h_B. The target ordered formulas are
+
+    C= sum_(r>=0) q^r u_A,r v_B,-r-1,
+    D=-sum_(r>=0) q^(r+1) u_B,-r-1 v_A,r.       (2)
+
+The sums are finite because the reservoir dots are nilpotent. The total cups
+and caps have BOTH their A and B components. Dropping the B component can
+make an invertible matrix singular, as the mutation test records.
+
+Assume (2) has been derived from the actual crossing under the specified
+parity comparisons. The reservoir closed-loop ideal J in
+[BlockNilpotence](BlockNilpotence.md) then removes the correction terms in its
+factor companion coordinates. Eliminating the common reservoir summands
+reduces the map modulo J to the negative cap/cup windows and the dot-conjugated
+probe inversion maps calculated in [SeparatedFactorInversion](SeparatedFactorInversion.md).
+All four signs of (h_A,h_B), and both signs of h, are covered there. The
+argument uses invertibility of probe dots, not a claim that arbitrary
+unchanged-mate windows remain invertible.
+
+To lift from modulo J, only finitely many closed coefficients occur in a
+fixed block calculation. Their ideal is nilpotent under the hypotheses of
+BlockNilpotence. A matrix inverse modulo a nilpotent ideal lifts by the finite
+geometric series. This is valid for an associative ring and does not require
+a commutative determinant of a supermatrix. Parity shifts must first make the
+block entries even morphisms between their specified shifted objects; ordinary
+commutative determinants on unshifted odd entries are not valid.
+
+This proves inversion **conditional on the actual block identifications**.
+It is independent of content bounds beyond local nilpotence. Merely stating
+that a Schur complement exists, or verifying the vacuum, does not establish
+those identifications at occupied contents.
+
+## 5. What is genuinely new in the super comparison
+
+1. A shuffle of two odd labels changes the parity line. A sector comparison
+   which is an even underlying identity can have odd declared parity. The
+   content-dependent shifts in the Hom functors and their action on odd
+   natural transformations must be specified together.
+2. The equal odd-colour cross-sector crossing has the nonzero diagonal (1)
+   and a nontrivial off-diagonal norm. Its quadratic and repeated-colour
+   braid relations cannot be imported from the even scalar-difference formula.
+3. The mate of that same crossing must give (2), with the displayed signs.
+   A separate choice of an invertible EF/FE map is not enough. The ordered
+   recurrence is proved in `scripts/NonVacuity/MixedMateRecurrence.lean`, but
+   it requires the categorical recurrence as input.
+4. Odd reservoir coefficients supercommute; they are not central commuting
+   scalar variables. The nilpotent-ideal lift is an associative-ring argument
+   in parity-shifted blocks, not ordinary determinant calculus with odd
+   coefficients.
+5. The lowest-weight action has the transport signs and shifted adjunctions
+   in LowestWeightAction. They must agree with the chosen Hom construction;
+   conjugating an upward dot alone does not verify that comparison.
+
+## 6. Precise remaining gap and Lean plan
+
+The present results do **not** construct natural, coherent multicolour
+sector-comparison maps on Hom(T,W) and prove that their mates have the block
+coordinates used in §4. An invertible cross-sector Q and a successful affine
+braid test do not imply this. This is the current obstruction to closing A2,
+not a counterexample to the proposed mathematical statement.
+
+The implementation should proceed with the following interfaces, keeping
+these obligations separate rather than assuming the desired inversion:
+
+1. **Local rational crossing.** `SeparatedCrossing.lean`: (1) and its inverse
+   commutation, then the two-shuffle square and slides. The first local
+   identities are implemented here. Extend to an actual parity-envelope
+   two-block map, rather than an ungraded matrix abbreviation.
+2. **Hom sector functors.** Define pre/postcomposition E and F summands,
+   explicit content parity shifts, and their right adjunctions. Prove the
+   component formulas for total units and counits. Use original-datum weights,
+   with h=h_A+h_B; do not silently replace the datum by a disconnected one.
+3. **Multicolour affine coherence.** Define the cross-sector distinct-colour
+   normalization and the equal-colour rational block. Prove the braid with
+   repeated colour in different sectors before packaging all upward
+   relations; prove distant supercommutation as a separate obligation.
+4. **Actual mates.** In the same convention prove the projected dot-slide
+   recurrence, then apply the existing ordered-recurrence lemma to obtain
+   BOTH formulas (2). Prove the off-sector mixed-colour mate is invertible by
+   its explicit dot expression and adjunction triangles, not by the false
+   principle that taking a mate preserves every isomorphism.
+5. **All-content Schur comparison.** Port the negative-window lemmas,
+   the four height cases, and the nilpotent-ideal lift to the parity envelope.
+   State the actual equality of the block matrix with the mate plus total
+   cups/caps before asserting invertibility.
+6. **Assembly.** Package the original-datum super 2-representation after
+   steps 2–5, then expose its evaluation to detection. No theorem named A2
+   should have its defining categorical inversion as an assumed field.
+
+The next decisive deliverable is step 4 for the explicit multicolour Hom
+functors of step 2, including a connected occupied-content example. Another
+vacuum or denominator-only test cannot discharge it.
