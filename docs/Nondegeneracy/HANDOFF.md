@@ -108,6 +108,15 @@ copying the even-cutoff inverse twist gives the wrong sign. The relative action
 extension preserves inversion by triangular dot-row changes. Its unconditional
 use still requires the all-content diagram and presentation comparison.
 
+`CyclotomicAction.ExteriorTranslationRelations` proves simultaneous
+mixed-dot anticommutation, invariance of arbitrary square-variable mixed
+polynomials, and the entire alternating repeated-outer-colour braid
+polynomial with a second translated odd middle colour. Its rational
+four-dimensional exterior matrices retain a nonzero product of the two
+parameters and supply mixed-dot and nonzero braid-correction consumers.
+The category equivalence, strand-inclusion compatibility and cyclotomic
+quotient descent have not been constructed.
+
 [LowestWeightAction.md](LowestWeightAction.md) records that the proposed
 `E=induction`, `-Λ+β` convention is already lowest weight. The opposite orientation
 is proposed by signed Chevalley transport into the super-opposite target, reusing
