@@ -3,6 +3,9 @@
 A Lean 4 / Mathlib formalization of odd symmetric functions, the odd nilHecke algebra and the odd
 Littlewood–Richardson rule, together with machine-checked errata to the source papers.
 
+Research branch: [odd nondegeneracy progress board](docs/Nondegeneracy/PROGRESS.md)
+and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
+
 Sources (numbering refers to these arXiv versions):
 
 - **[EK]** A. P. Ellis, M. Khovanov, *The Hopf algebra of odd symmetric functions*,
