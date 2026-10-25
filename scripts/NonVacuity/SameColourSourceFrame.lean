@@ -1,0 +1,6 @@
+import OddMath.SKM.SameColourSourceFrameExamples
+
+#print axioms OddMath.SKM.source_exchange_descent
+#print axioms OddMath.SKM.SameColourSourceFrame.pairedExpansion_injective
+#print axioms OddMath.SKM.SameColourSourceFrameExamples.all_source_exchanges
+#print axioms OddMath.SKM.SameColourSourceFrameExamples.actual_source_column
