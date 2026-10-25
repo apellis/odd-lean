@@ -2,11 +2,11 @@ name: build
 
 on:
   push:
-    branches: [master]
+    branches: [master, research/odd-nondegeneracy]
   pull_request:
   workflow_dispatch:
 
-# A newer push to a pull request cancels its running build. Master builds always run to
+# A newer push to a pull request cancels its running build. Branch builds always run to
 # completion.
 concurrency:
   group: build-${{ github.ref }}
