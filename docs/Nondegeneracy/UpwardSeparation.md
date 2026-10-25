@@ -295,9 +295,58 @@ The scoped nonvacuity test checks cutoff five on two strands at total weight
 two and the monic deformation `x^5+b_{i,j}x^3`, where `b_{i,j}` is the nonzero
 exterior basis word on distinct odd colours. All checked theorem axioms are
 the standard `propext`, `Classical.choice`, and `Quot.sound`.
+The concrete consumer uses the repository's two-odd-colour Boolean datum over
+`ℚ`, proves that its distinct exterior coefficient is nonzero, and proves that
+the coefficient times the identity PBW vector has nonzero image in the actual
+two-strand cutoff-five quotient.
 These are affine quotient-module separation results; a source cyclotomic
 action, its mixed adjunction relations, and the identification of categorical
 bubbles with these abstract coefficients are not supplied by this theorem.
+
+`OddMath/QuiverHecke/WeightedDeformationIdeal.lean` proves closure under right
+composition and under left composition on a fixed strand-number component.
+It also puts high-weight coefficient-only relations, tensored with the actual
+identity, into the same relation span. `BubbleCoefficientGenerators.lean`
+identifies elementary and singleton-exterior basis vectors with the actual
+`e` and `delta` generators. In particular, `delta_i e(i,r)` has weight
+`2(r+1)+1` for odd `i`; the ELV even-cutoff relation therefore belongs to the
+cutoff `2(r+1)` ideal. Killing `e(i,r)` instead, the exterior-flat alternative,
+also belongs to that ideal, now at weight exactly the cutoff.
+
+For the intended odd-colour specialization at cutoff `N=2m`, the source
+coefficient algebra retains `e(i,0),...,e(i,m-1)` and `delta_i`, kills
+`e(i,r)` for `r>=m`, and imposes `delta_i e(i,m-1)=0`. Its first discarded
+elementary weight is `N+2` and the extra relation has weight `N+1`. For
+`N=2m+1` it retains the same elementary generators, discards weights from
+`N+1`, and has no extra top exterior relation. Thus these coefficient-only
+relations meet the proved high-weight criterion without killing distinct
+low-weight exterior products. This description is our explicit multicolour
+algebra specialization; identifying all source action and bubble maps with it
+is still required.
+
+The explicit specialization is now also implemented. `BubbleELVCoefficients.lean`
+defines `chi_0=1`, `chi_(r+1)=e(i,r)`, `c_(2r)=chi_r`, and
+`c_(2r+1)=delta_i chi_r`, proves their weight bounds, and proves that the
+normalized polynomial's top coefficient is one. Moving the source term
+`(-1)^j t^j c_(N-j)` to left coefficients and normalizing its leading sign gives
+`(-1)^(N(j+1)) c_(N-j) t^j`; the implementation uses this convention. Even-colour
+dots use the ordinary monic elementary polynomial.
+`BubbleELVSpecialization.lean` defines the actual multicolour two-sided
+coefficient ideal and proves that its quotient preserves coefficient weight
+at most `d` whenever every colour cutoff is at least `d`.
+
+`ELVCyclotomicSeparation.lean` forms the actual fixed-strand sandwich span of
+these coefficient-ideal relations and the colour-correct first-strand
+polynomials, for both even and odd colours. Its inclusion in the already
+proved weighted span yields `elv_quotient_injective_on_extendedAtMost`, with
+the same uniform `N>d+2*choose(n,2)` bound. The theorem
+`even_elv_quotients_jointly_detect` shows that even uniform cutoffs alone detect
+every finite coefficient-extended affine morphism. The concrete rational
+two-odd-colour test checks the left-coefficient signs at cutoffs two and three,
+then proves that a distinct exterior coefficient times the identity PBW vector
+survives the explicit cutoff-six relation quotient. This is separation for
+the defined algebraic relations, not yet their realization by the source's
+full categorical action or a proof of the SKM nondegeneracy conjecture.
 
 ## A concrete coupling target for reservoir and spectral factors
 

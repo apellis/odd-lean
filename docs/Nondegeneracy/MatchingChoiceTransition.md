@@ -282,9 +282,13 @@ bubbles, or independence of the strict target.
 caps on actual matching words. Weak reducedness and crossing count are
 preserved. The composite strand equivalence transports every dot count
 bijectively, preserves its sum, and transports bounded actual points and
-serializers. Matching-class coverage of the combined construction remains a
-separate endpoint-rotation obligation; the two modules do not claim the full
-upward-to-oriented implication yet.
+serializers. `PairingRotation` and `WeakMateCoverage` now prove matching-class coverage and
+reflection by cyclic endpoint rotation. `WeakMateChoice` assembles the actual
+representative bijection, the complete weak choice, and the bijection of dot
+labels. Its `weakChoice_layers` identifies the literal inverse-mate serializer.
+The remaining sorted-boundary integration is its ordinary layer-list bridge
+to `partialRightMateL` and the checked positive-dot closure coefficient
+detector. These modules do not yet claim the full upward-to-oriented implication.
 
 The normalization transition uses **decreasing** dots at fixed crossing count.
 This is independent of the closure calculation on the weak family, whose

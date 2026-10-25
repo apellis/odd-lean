@@ -70,6 +70,65 @@ theorem even_moment_fixed (x dX : End X) (e : Z ⟶ X) (v : X ⟶ Z) (m : ℕ)
     e ≫ ((x + dX) ^ (2 * m)) ≫ v = e ≫ (x ^ (2 * m)) ≫ v := by
   rw [OddMath.OddNilHecke.DotTranslation.even_pow x dX hd hx]
 
+/-- The odd exterior naturality of KKO's parity-shifted cap reverses
+the sign of the coefficient in the adjacent-row operation. -/
+theorem odd_cap_row (x dX : End X) (dZ : Z ⟶ Z) (v : X ⟶ Z) (m : ℕ)
+    (hd : dX * dX = 0) (hx : x * dX + dX * x = 0)
+    (hnat : dX ≫ v = -(v ≫ dZ)) :
+    ((x + dX) ^ (2 * m + 1)) ≫ v =
+      (x ^ (2 * m + 1)) ≫ v + (x ^ (2 * m)) ≫ v ≫ (-dZ) := by
+  rw [OddMath.OddNilHecke.DotTranslation.odd_pow_left x dX hd hx]
+  change ((show X ⟶ X from x ^ (2 * m + 1)) +
+    ((x ^ (2 * m)) ≫ dX : X ⟶ X)) ≫ v = _
+  rw [Preadditive.add_comp, Category.assoc, hnat]
+  simp only [Preadditive.comp_neg]
+
+/-- All cap rows are the explicit adjacent-row operation. -/
+theorem cap_rows_eq_shiftedCap (x dX : End X) (dZ : Z ⟶ Z) (v : X ⟶ Z)
+    (hd : dX * dX = 0) (hx : x * dX + dX * x = 0)
+    (hnat : dX ≫ v = -(v ≫ dZ)) :
+    (fun r => ((x + dX) ^ r) ≫ v) =
+      shiftedCap (fun r => (x ^ r) ≫ v) (-dZ) := by
+  funext r
+  by_cases ho : r % 2 = 1
+  · have hr : r = 2 * (r / 2) + 1 := by omega
+    have hp : r - 1 = 2 * (r / 2) := by omega
+    simp only [shiftedCap, ite_eq_left ho, hp]
+    conv_lhs => rw [hr]
+    rw [odd_cap_row x dX dZ v (r / 2) hd hx hnat]
+    rw [← hr]
+    simp only [Category.assoc]
+  · have hr : r = 2 * (r / 2) := by omega
+    simp only [shiftedCap, ite_eq_right ho]
+    rw [hr, OddMath.OddNilHecke.DotTranslation.even_pow x dX hd hx]
+
+/-- Recover the actual cap rows without changing the adjunction. -/
+theorem cap_rows_recovered (x dX : End X) (dZ : Z ⟶ Z) (v : X ⟶ Z)
+    (hd : dX * dX = 0) (hx : x * dX + dX * x = 0)
+    (hnat : dX ≫ v = -(v ≫ dZ)) :
+    shiftedCap (fun r => ((x + dX) ^ r) ≫ v) dZ =
+      (fun r => (x ^ r) ≫ v) := by
+  rw [cap_rows_eq_shiftedCap x dX dZ v hd hx hnat]
+  simpa using shiftedCap_inverse (fun r => (x ^ r) ≫ v) (-dZ)
+
+/-- The ELV shift `X - 2D` produces the KKO cap-row correction `+2d`.
+Both signs include the odd naturality of the parity-shifted cap. -/
+theorem kko_cap_rows (x dX : End X) (dZ : Z ⟶ Z) (v : X ⟶ Z)
+    (hd : dX * dX = 0) (hx : x * dX + dX * x = 0)
+    (hnat : dX ≫ v = -(v ≫ dZ)) :
+    (fun r => ((x - (dX + dX)) ^ r) ≫ v) =
+      shiftedCap (fun r => (x ^ r) ≫ v) (dZ + dZ) := by
+  have hd' : (-(dX + dX)) * (-(dX + dX)) = 0 := by noncomm_ring [hd]
+  have hx' : x * (-(dX + dX)) + (-(dX + dX)) * x = 0 := by
+    have ha : dX * x = -(x * dX) := eq_neg_of_add_eq_zero_right hx
+    noncomm_ring [ha]
+  have hn' : (-(dX + dX) : End X) ≫ v = -(v ≫ (-(dZ + dZ))) := by
+    change (-((show X ⟶ X from dX) + (show X ⟶ X from dX))) ≫ v = _
+    rw [Preadditive.neg_comp, Preadditive.add_comp, hnat]
+    simp only [Preadditive.comp_neg, Preadditive.comp_add, neg_add_rev, neg_neg]
+  simpa only [sub_eq_add_neg, neg_neg] using
+    cap_rows_eq_shiftedCap x (-(dX + dX)) (-(dZ + dZ)) v hd' hx' hn'
+
 end OddMath.SKM.OddDotTranslation
 
 namespace OddMath.SKM

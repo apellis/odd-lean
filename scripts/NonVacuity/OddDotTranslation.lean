@@ -18,6 +18,34 @@ example : exterior dualParameter ≠ 0 ∧
       (exterior_anticommutes dualParameter (TrivSqZeroExt.inr_mul_inr ℚ 1 1)).1
 
 private abbrev R := TrivSqZeroExt ℚ ℚ
+private abbrev MR := Matrix (Fin 2) (Fin 2) R
+private abbrev W : SingleObj MR := PUnit.unit
+private def dm : End W := exterior dualParameter
+private def vm : W ⟶ W := firstDot dualParameter
+
+private theorem cap_naturality : dm ≫ vm = -(vm ≫ dm) := by
+  change firstDot dualParameter * exterior dualParameter =
+    -(exterior dualParameter * firstDot dualParameter)
+  exact eq_neg_of_add_eq_zero_right
+    (exterior_anticommutes dualParameter (TrivSqZeroExt.inr_mul_inr ℚ 1 1)).1
+
+example : dm ≠ 0 ∧
+    (fun r => (((0 : End W) - (dm + dm)) ^ r) ≫ vm) =
+      OddMath.SKM.OddDotTranslation.shiftedCap
+        (fun r => ((0 : End W) ^ r) ≫ vm) (dm + dm) := by
+  refine ⟨dualNumber_model.1, ?_⟩
+  apply OddMath.SKM.OddDotTranslation.kko_cap_rows
+  · exact dualNumber_model.2.1
+  · simp
+  · exact cap_naturality
+
+-- The adjacent-row correction in this consumer is genuinely nonzero.
+example : vm ≫ dm ≠ 0 := by
+  change exterior dualParameter * firstDot dualParameter ≠ 0
+  intro h
+  have hs := congrArg (fun A : MR => TrivSqZeroExt.snd (A 1 0)) h
+  norm_num [exterior, firstDot, dualParameter, Matrix.mul_apply, Fin.sum_univ_two] at hs
+
 example (m : ℕ) :
     DotTranslation.braidPolynomial
       (firstDot dualParameter + exterior dualParameter) 1
@@ -86,6 +114,7 @@ example (d₀ : End ((pres D Sc).obj (ob D 3 []))) :
 #print axioms OddMath.OddNilHecke.DotTranslation.square
 #print axioms OddMath.OddNilHecke.DotTranslation.even_pow
 #print axioms OddMath.OddNilHecke.DotTranslation.odd_pow
+#print axioms OddMath.OddNilHecke.DotTranslation.odd_pow_left
 #print axioms OddMath.OddNilHecke.DotTranslation.slide
 #print axioms OddMath.OddNilHecke.DotTranslation.braidPolynomial_paired
 #print axioms OddMath.OddNilHecke.DotTranslation.braidPolynomial_translate
@@ -93,5 +122,9 @@ example (d₀ : End ((pres D Sc).obj (ob D 3 []))) :
 #print axioms OddMath.SKM.OddDotTranslation.last_column_coordinates
 #print axioms OddMath.SKM.OddDotTranslation.odd_moment_shift
 #print axioms OddMath.SKM.OddDotTranslation.even_moment_fixed
+#print axioms OddMath.SKM.OddDotTranslation.odd_cap_row
+#print axioms OddMath.SKM.OddDotTranslation.cap_rows_eq_shiftedCap
+#print axioms OddMath.SKM.OddDotTranslation.cap_rows_recovered
+#print axioms OddMath.SKM.OddDotTranslation.kko_cap_rows
 #print axioms OddMath.SKM.etaP_shifted_cap_coordinates
 end NonVacuity.OddDotTranslation

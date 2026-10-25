@@ -309,3 +309,36 @@ convention. Their integration must track the full-SYM parity involution
 fixing polynomial generators and negating odd exterior generators. Right
 mate cup/cap blocks are even, so their principal parity twists agree; an
 untracked existential bubble preimage is insufficient to certify this.
+
+### Canonical finite correction vectors
+
+`TopClosureCoefficients.top_correction_signed` now converts each actual
+positive-dot correction of an `atTop` label to another label of that same
+representative, with an exact unit sign and strictly greater `openDots`.
+`top_positiveExpansion_lift` extends this to a finite full-SYM coefficient
+vector supported strictly above the starting dot count. It evaluates under
+`MatchingBasisChoice.targetExpansion`, defined in
+`MatchingTargetExpansion.lean`; this explicitly uses target-placement
+coefficients. The proof uses actual top-position multiplicities, the native
+serializer identity, exact dot interchange, and linear span membership.
+The consumer adds an actual odd dot with an inhomogeneous coefficient
+containing two distinct exterior generators.
+
+Thus the positive-correction hypothesis of `injective_of_positive_closure`
+is now supplied by actual diagrams and canonical labelled coefficients.
+Integration still needs the literal weak-family/partial-mate layer bridge,
+reindexing of matching labels, and the source/target parity involution; none
+of those are silently included as an independence assumption.
+
+### Source/target placement discharged
+
+`MatchingCoefficientPlacement.expansion_injective_iff_target` now proves
+that each strict matching choice has equivalent source- and target-placement
+independence. More generally, `source_target_expansion_injective_iff`
+applies to any actual homogeneous family and hence also to weak choices.
+The coefficient change is an actual labelwise linear involution on finite
+full-SYM vectors, induced by the coefficient-basis parity involution of
+`BubbleCoefficientParity.lean`. It handles arbitrary inhomogeneous exterior
+products. This discharges the placement-convention obligation recorded
+above: no arbitrary bubble preimage or spatial bubble-slide argument is
+used for this temporal interchange.

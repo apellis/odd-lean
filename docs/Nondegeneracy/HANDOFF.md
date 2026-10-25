@@ -229,3 +229,25 @@ recovery commit `4b16af0` with all staged/unstaged work intact. Workers resumed.
 No remote/local divergence remains. Do not treat the earlier outage as an
 active blocker. WeightedCoefficientSeparation and the weak matching/rotation/
 positive-dot checkpoints are staged for the next research commit.
+
+
+## Integrated continuation checkpoint
+
+CI for `901938c` passed; `15ad5c1` is running separately. The executor is
+available and all six workers continue. No full nondegeneracy theorem is claimed.
+
+- Oriented: full-SYM parity placement equivalence, canonical positive-dot
+  coefficient lift, weak mate coverage and literal layers are scoped checked.
+  Choice assembles sorted independence; sorting audits its hypotheses and then
+  owns contextual assembly; rewriting supplies list-boundary wrappers; Webster
+  proves actual local paired-sector pivots and recurrences.
+- Upward: weighted signed quotient detection is integrated. Explicit ELV
+  coefficient specialization and its generated quotient bounds are next.
+  These results concern affine coefficient-extended quotients, not yet an SKM action.
+- Synthesis: the actual 80 by 80 fixed-weight reservoir/probe mate passes,
+  retaining odd and even coefficient products. General weighted spectral folding
+  and the proposed connected action still require categorical justification.
+
+Next review checkpoint: sorted theorem hypotheses, all-weight paired sorting,
+ELV quotient consumers, and reproducible fixed-weight coupling computation.
+All work remains on `research/odd-nondegeneracy`; no master PR.

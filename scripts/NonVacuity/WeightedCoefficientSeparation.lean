@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.WeightedCoefficientSeparation
+import OddMath.SKM.MixedCrossingLocalExamples
 
 noncomputable section
 open CategoryTheory StringDiagrams OddMath.QuiverHecke
@@ -20,7 +21,7 @@ private def coefficients (i j : {i : I // D.parity i = 1})
   if r.val = 5 then 1 else if r.val = 3 then
     OddMath.SKM.SYM.coefficientBasis D k (0, {i, j}) else 0
 
-/-- A genuine monic deformation with a nonzero two-colour exterior coefficient:
+/-- A genuine monic deformation with a two-colour exterior coefficient:
 `x^5 + b_{i,j} x^3`. No exterior variable is identified or discarded. -/
 example (i j : {i : I // D.parity i = 1}) (hij : i ≠ j) :
     deformedCyclotomic D Sc [i.1, j.1] 5 (coefficients D i j) ∈
@@ -41,3 +42,49 @@ example (i j : {i : I // D.parity i = 1}) (hij : i ≠ j) :
 #print axioms weighted_quotient_injective_on_extendedAtMost
 #print axioms deformedCyclotomic_mem_relationSpan
 #print axioms weighted_quotients_jointly_detect
+
+namespace Concrete
+open OddMath.SKM.MixedCrossingLocalExamples
+
+private def params : OddMath.SKM.Scalars oddDatum ℚ where
+  t := fun _ _ => 1
+  t_self := fun _ => rfl
+  t_symm_of_d_eq_zero := fun _ _ _ => rfl
+  s := fun _ _ _ _ => 0
+  s_symm := fun _ _ _ _ => rfl
+  s_eq_zero := fun _ _ _ _ _ => rfl
+  two_isUnit := fun _ => isUnit_iff_ne_zero.mpr (by norm_num)
+
+private def i : {i : Bool // oddDatum.parity i = 1} := ⟨false, rfl⟩
+private def j : {i : Bool // oddDatum.parity i = 1} := ⟨true, rfl⟩
+private theorem different : i ≠ j := by decide
+
+example : OddMath.SKM.SYM.coefficientBasis oddDatum ℚ (0, {i, j}) ≠ 0 :=
+  (OddMath.SKM.SYM.coefficientBasis oddDatum ℚ).ne_zero _
+
+private def identityIndex : NFIdx [false, true] [false, true] := by
+  have hc : Categorification.TypeA.canWord 2 1 = [] := by
+    apply List.length_eq_zero_iff.mp
+    rw [Categorification.TypeA.length_canWord, Categorification.TypeA.length_one]
+  exact ⟨([], 1), by simp, by simp, by simp [hc, cw]⟩
+
+private def idx : OddMath.SKM.SYM.CoefficientIndex oddDatum × NFIdx [false, true] [false, true] :=
+  ((0, {i, j}), identityIndex)
+
+/-- A specific nonzero independent two-odd coefficient survives the actual
+two-strand cutoff-five quotient over the rational numbers. -/
+example : (WeightedRelationSpan oddDatum params [false, true] [false, true] 5).mkQ
+    (extensionBasis oddDatum params [false, true] [false, true] idx) ≠ 0 := by
+  have hmem : extensionBasis oddDatum params [false, true] [false, true] idx ∈
+      ExtendedAtMost oddDatum params [false, true] [false, true] 2 := by
+    apply Submodule.subset_span
+    refine ⟨idx, ?_, rfl⟩
+    simp [extensionDegree, idx, identityIndex, OddMath.SKM.SYM.coefficientWeight, different]
+  intro hzero
+  have hinj := weighted_quotient_injective_on_extendedAtMost oddDatum params
+    (t := [false, true]) (t' := [false, true]) (d := 2) (N := 5) (by decide)
+  have hz := hinj (a₁ := ⟨_, hmem⟩) (a₂ := 0) (by simpa using hzero)
+  exact (extensionBasis oddDatum params [false, true] [false, true]).ne_zero idx
+    (congrArg Subtype.val hz)
+
+end Concrete

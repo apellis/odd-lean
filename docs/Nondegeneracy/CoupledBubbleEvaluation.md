@@ -267,8 +267,12 @@ row into the following odd-indexed row. Thus `N²=0` and its inverse
 is `1-N`. Its odd coefficient has precisely the parity difference
 between the adjacent shifted summands. This is a graded row
 automorphism; it does not disregard the parity involution in `E`.
-The categorical `shiftedCap_inverse` lemma checks the corresponding
-two-row-operation cancellation abstractly.
+The categorical `kko_cap_rows` theorem now checks the exact
+`X-2D` to `+2d` sign conversion. `cap_rows_eq_shiftedCap` and
+`cap_rows_recovered` identify all power rows with the adjacent-row
+operation and recover the original cap rows. These are categorical
+identities assuming the displayed square-zero, anticommutation, and
+cap-naturality hypotheses; they do not assume an invertible cap matrix.
 
 This audit identifies the maps and the additional deformed recurrence
 needed to use Section 9. It remains a paper-level argument conditional

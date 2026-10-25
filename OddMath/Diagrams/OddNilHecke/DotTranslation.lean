@@ -27,6 +27,10 @@ theorem odd_pow (x d : R) (hd : d * d = 0) (hx : x * d + d * x = 0)
     (m : ℕ) : (x + d) ^ (2 * m + 1) = x ^ (2 * m + 1) + x ^ (2 * m) * d := by
   rw [pow_succ, even_pow x d hd hx, mul_add, ← pow_succ]
 
+theorem odd_pow_left (x d : R) (hd : d * d = 0) (hx : x * d + d * x = 0)
+    (m : ℕ) : (x + d) ^ (2 * m + 1) = x ^ (2 * m + 1) + d * x ^ (2 * m) := by
+  rw [pow_succ', even_pow x d hd hx, add_mul, ← pow_succ']
+
 /-- The odd nilHecke dot-slide survives simultaneous exterior translation. -/
 theorem slide (x y τ d : R) (hτ : τ * d + d * τ = 0)
     (h : τ * x + y * τ = 1) :

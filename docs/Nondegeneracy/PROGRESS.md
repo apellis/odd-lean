@@ -95,3 +95,31 @@ pending checks. CI40222830590 passed for `8b5b2cc`; CI40223506675 for `901938c`
 is still running. New weighted signed ideal separation and weak-family transfer
 checkpoints are now being integrated; the connected-action theorem remains
 labelled proposed, not a native theorem or a solution of nondegeneracy.
+
+
+## Integrated continuation checkpoint
+
+CI for `901938c` passed; `15ad5c1` is running separately. The executor is
+available and all six workers continue. No full nondegeneracy theorem is claimed.
+
+- Oriented: full-SYM parity placement equivalence, canonical positive-dot
+  coefficient lift, weak mate coverage and literal layers are scoped checked.
+  Choice assembles sorted independence; sorting audits its hypotheses and then
+  owns contextual assembly; rewriting supplies list-boundary wrappers; Webster
+  proves actual local paired-sector pivots and recurrences.
+- Upward: weighted signed quotient detection is integrated. Explicit ELV
+  coefficient specialization and its generated quotient bounds are next.
+  These results concern affine coefficient-extended quotients, not yet an SKM action.
+- Synthesis: the actual 80 by 80 fixed-weight reservoir/probe mate passes,
+  retaining odd and even coefficient products. General weighted spectral folding
+  and the proposed connected action still require categorical justification.
+
+Next review checkpoint: sorted theorem hypotheses, all-weight paired sorting,
+ELV quotient consumers, and reproducible fixed-weight coupling computation.
+All work remains on `research/odd-nondegeneracy`; no master PR.
+
+Explicit all-colour ELV coefficient relations and colour-correct first-dot
+polynomials now have scoped-checked bounded quotient separation. Even uniform
+cutoffs jointly detect every affine SYM-coefficient morphism. Next: an explicit
+conditional categorical evaluation interface, keeping the missing SKM action
+and bubble identification visible.

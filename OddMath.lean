@@ -1107,3 +1107,16 @@ import OddMath.SKM.PositiveClosureDetector
 import OddMath.SKM.UpwardTopDots
 import OddMath.SKM.WeakMatchingChoice
 import OddMath.SKM.WeakMateMatchings
+import OddMath.QuiverHecke.WeightedDeformationIdeal
+import OddMath.SKM.BubbleCoefficientGenerators
+import OddMath.SKM.TopMatchingChoice
+import OddMath.SKM.WeakMateChoice
+import OddMath.SKM.BubbleCoefficientParity
+import OddMath.SKM.MatchingCoefficientPlacement
+import OddMath.SKM.MatchingTargetExpansion
+import OddMath.SKM.TopClosureCoefficients
+import OddMath.SKM.WeakMateCoverage
+import OddMath.SKM.WeakMateLayers
+import OddMath.SKM.BubbleELVCoefficients
+import OddMath.SKM.BubbleELVSpecialization
+import OddMath.QuiverHecke.ELVCyclotomicSeparation
