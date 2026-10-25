@@ -85,6 +85,14 @@ endomorphisms to the specified upward presentation remains open. Ordinary revers
 for projectivity and super-opposite reversal for natural transformations must not
 be identified. No multicolour action is yet claimed in Lean.
 
+`CyclotomicAction.Normality` checks the first-dot normality and inverse
+balance equations for even cutoff, the square-zero deformation term and
+conjugate square-annihilator, and the odd-cutoff normality and square.
+These are ring identities with coefficient commutations and top-coefficient
+annihilation explicit, not a constructed normalizing automorphism or a
+balanced all-content bimodule. In particular the even inverse-balance dot
+is `x+2d`, not `x-2d`.
+
 [OddCutoffAction.md](OddCutoffAction.md) gives a proposed exterior-translation
 reduction for odd cutoffs: `f_i=(x-d_i)C_i(x²)`, with no top-coefficient relation.
 The normalizing automorphism acts by parity on coefficients and is involutive;
