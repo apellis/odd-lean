@@ -1,4 +1,5 @@
 import OddMath.SKM.StrictResidualChoice
+import OddMath.SKM.SameColourTargetFrameExamples
 import OddMath.SKM.SameColourCupRowsExamples
 import OddMath.QuiverHecke.Spanning
 import OddMath.QuiverHecke.Basis

@@ -204,6 +204,8 @@ comparison, not a new abstract action interface.
 
 ## Next targets
 
+**Actual paired target columns (checked).** `SameColourTargetFrame` attaches the complete adapted choices to finite principal columns at every local height, retaining arbitrary abstract `SYM` inputs and both boundary contexts. `positive_column` and `nonpositive_column` identify their expansions with actual postcomposition by the same-colour crossing. `PairedTargetCapColumns` constructs the normalized low-cap columns. `targetPositiveColumns_detect` and `targetNonpositiveColumns_detect` prove finite coefficient detection by the actual unit pivots, with both inverse-block and dot-slide corrections included. `SameColourTargetFrameExamples` checks positive and negative local heights in a two-colour odd datum with nonempty contexts and residual labels. Full target descent still requires combining the paired and unpaired sectors; source descent and B0 are not asserted.
+
 These statements were proved by the methods recorded in the linked notes but are not yet on
 this branch:
 
