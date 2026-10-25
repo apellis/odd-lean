@@ -54,8 +54,11 @@ and comparison basis prevent treating the even Orzech argument as an immediate r
 and literal cups on a complete residual family, with a sum-label equivalence and exact
 layer equations. `exists_choice_with_literal_cups` constructs its inputs from arbitrary
 complete choices, with no independence premise. Both orientations with nonempty contexts
-are exercised in `CupCompletedChoiceExamples.complete_paired_sector`. Simultaneous
-same-colour adapted choices and their coefficient comparisons are still separate obligations.
+are exercised in `CupCompletedChoiceExamples.complete_paired_sector`.
+`exists_same_colour_adapted_choices` and `exists_same_colour_adapted_equiv` now
+construct simultaneous complete same-colour target choices: a single label
+equivalence, literal unpaired terminal crossings, and a common paired embedding
+`ℕ × B.Labels` with both cup serializers. Their coefficient comparisons remain open.
 
 ## Action review
 
@@ -112,8 +115,8 @@ vacuum and original-datum fusion remain separate requirements.
 These statements were proved by the methods recorded in the linked notes but are not yet on
 this branch:
 
-- all-height paired target coefficient columns; complete same-colour adapted families; source
-  crossing state and point transport; contextual source-cap families
+- all-height paired target coefficient columns; source crossing state and point transport;
+  contextual source-cap families (complete same-colour target adapted choices are now in Lean)
   ([ContextualSorting.md](ContextualSorting.md), [SourceContextualSorting.md](SourceContextualSorting.md));
 - bounded ELV coefficient recovery with locally triangular inversion, and nilpotence of the
   coefficient dot ideal ([UpwardSeparation.md](UpwardSeparation.md));

@@ -23,7 +23,7 @@ the upward input. The programme's symmetrizable finite-colour field scope is inc
 | Change matching representatives and dot placements | `expansion_injective_choice_iff` | Checked; no preferred choice is a new premise |
 | Distinct-colour target exchange | `distinct_target_exchange_descent` | Checked |
 | Distinct-colour source exchange | `distinct_source_adapted_independent`, `distinctSourceExchange_coefficient`, `SourceFrozenSwap.run` | Medium: construct complete source-adapted choices and literal prefix serializers, then assemble |
-| Same-colour target families | `exists_adapted_pointed_pair`, `PointedMatching.appendCup`, `cup_representatives_equiv`, `IndexedMatchingChoice.choice` | Medium: combine the unpaired and paired sectors in a complete choice; retain literal serializers, not only an abstract equivalence of labels |
+| Same-colour target families | `exists_same_colour_adapted_choices`, `exists_same_colour_adapted_equiv` | Constructed: complete families, literal unpaired terminal crossings, and common residual cup serializers |
 | Same-colour target coefficient columns | `paired_target_leading_pos`, `paired_target_leading_nonpos`, `paired_target_low`, `paired_target_below`, `pairedCoefficientComparison_injective` | Large: full contextual columns and residual bubble coefficients, including inverse-block corrections |
 | Same-colour source families and columns | `paired_source_leading_neg`, `paired_source_leading_nonneg`, `paired_source_low`, `paired_source_below` | Large: source cap attachment and target-placement parity transport |
 
@@ -35,12 +35,16 @@ and detected by the identity components of the inversion matrix. For nonpositive
 height, the principal pivot has a shifted index and the inverse-block terms lie
 strictly below it. The source cases reverse the height inequality.
 
-The next risk-reducing construction is a complete choice with prescribed literal
-paired cup representatives and prescribed unpaired representatives. This tests that
-the two sectors really combine without assuming the completeness needed in the
-conclusion. It is useful for the simultaneous same-colour adapted families; it is
-not by itself same-colour descent. After that, construct the actual coefficient
-columns rather than another abstract injectivity criterion.
+The first risk-reducing construction is now in `CupCompletedChoice` and
+`AdaptedSameColourChoices`: unpaired representatives and literal residual cups
+combine into two complete matching choices. The equivalence in
+`exists_same_colour_adapted_equiv` identifies their unpaired sectors and embeds
+the common paired sector as `ℕ × B.Labels`. This is not same-colour descent.
+The next target is the actual coefficient columns, not another abstract
+injectivity criterion. Residual serializers use `PointedMatching.ofStrict` on
+`B.members`; assemble these into the corresponding `IndexedMatchingChoice`
+when invoking residual boundary independence, rather than identifying their
+layers with the original serializers of `B`.
 
 ## B. Bending and graded dimensions
 
@@ -61,7 +65,7 @@ The super analogue would require the following.
 | Step | Existing material / missing work | Size and risk |
 | --- | --- | --- |
 | Graded spanning and local finiteness | `MatchingBasisChoice.expansion_surjective`, `hom_laurentian`, `hom_parity_laurentian` | Checked; finite colours imply `Symmetrizer.DegreeLocallyFinite` |
-| Abstract coefficient monomial basis | Polynomial/exterior presentation `SYM`; even-only `EvenBridge.symMonomialBasis` | Medium: an ordered polynomial-times-exterior basis and its grading for mixed data |
+| Abstract coefficient monomial basis | `SYM.coefficientBasis`, `polynomialExteriorEquiv`, `beta_coefficientBasis_mem` | Basis and parity checked for mixed data; integer-degree count still needs connection to the symmetrizer grading |
 | Graded bending for arbitrary signed boundaries | Mate isomorphisms and graded presentation; even `isSpanFamily_bendG` is a model | Medium: degree shifts and super inverses must be proved for the actual SKM maps |
 | Graded Hom decomposition from inversion | SKM inversion relations, contextual crossing maps | Medium to large: finite direct-sum maps with all degree and parity shifts |
 | Expected-rank recursion | Even `prop_3_12` and `calculusNondeg_of_positive` are models | Large: mixed polynomial/exterior count and equality with the inversion recursion; cannot assume the desired Hom dimension formula |

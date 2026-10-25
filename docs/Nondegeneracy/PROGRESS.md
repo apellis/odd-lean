@@ -6,7 +6,7 @@ audit, non-vacuity); the branch tip is expected to be green.
 
 | Line of work | Lean on this branch | Open |
 | --- | --- | --- |
-| Upward → oriented reduction | assembly `SKM.nondegeneracy_of_contextual_descent`; sorted boundaries `WeakMate.sorted_independence`; choice independence `expansion_injective_choice_iff`; distinct-colour target descent `SKM.distinct_target_exchange_descent`; distinct-colour source adapted families | source exchange descent; same-colour target and source descent |
+| Upward → oriented reduction | assembly `SKM.nondegeneracy_of_contextual_descent`; sorted boundaries `WeakMate.sorted_independence`; choice independence `expansion_injective_choice_iff`; distinct-colour target descent `SKM.distinct_target_exchange_descent`; distinct-colour source adapted families; complete same-colour target choices `exists_same_colour_adapted_equiv` | source exchange descent; same-colour target and source descent |
 | Upward independence | `upward_independence_of_finite_observations`; multicolour ELV quotient separation `even_elv_quotients_jointly_detect`; weighted signed quotient detection | observations from a 2-representation; separation with spectator strands |
 | Deformed actions | local norm, translation and Frobenius resolvent identities; cyclotomic exterior obstruction | multicolour action (proposed for even cutoffs), odd heights, fixed-weight bubble images; coupling for weights not reached by dominant vacua |
 

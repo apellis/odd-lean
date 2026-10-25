@@ -1151,5 +1151,6 @@ import OddMath.SKM.PairedCoefficientComparison
 import OddMath.SKM.PairedCupEvaluation
 import OddMath.SKM.PointedCupMatching
 import OddMath.SKM.CupCompletedChoice
+import OddMath.SKM.AdaptedSameColourChoices
 import OddMath.SKM.PointedMatching
 import OddMath.SKM.SourceFrozenSwap
