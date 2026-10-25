@@ -1,4 +1,5 @@
 import OddMath.SKM.SpanReducedMatchings
+import OddMath.SKM.SpanStrictReduced
 
 /-! Frozen source-endpoint transpositions commute with every subsequent
 matching move. This is the state transport needed for literal source crossing
@@ -58,8 +59,8 @@ theorem step (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
       simp only [tStep, frozen]
       have hr : k + r + 1 < T.st.length := hm
       rw [swapAt_comm T.st (by omega) hr,
-        idD_swap_right T.st (by omega) (by omega),
-        idD_swap_right T.st (by omega) hr]
+        idD_swap_right (p := p) T.st (by omega) (by omega),
+        idD_swap_right (p := p) T.st (by omega) hr]
   | cap g =>
     obtain ⟨A, B, hA, hB, hl, hn⟩ := hm
     have hr : k + g + 1 < T.st.length := List.getElem?_eq_some_iff.mp hB |>.1
@@ -67,7 +68,7 @@ theorem step (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
     change TState.mk _ (jn (swapAt T.st p) _) _ =
       TState.mk _ (swapAt (jn T.st _) p) _
     rw [jn_swap_right T.st (by omega) hr,
-      idD_swap_right T.st (by omega) hr, idD_swap_right T.st (by omega) (by omega)]
+      idD_swap_right (p := p) T.st (by omega) hr, idD_swap_right (p := p) T.st (by omega) (by omega)]
 
 /-- Every subsequent move remains valid after the frozen transposition. -/
 theorem fits (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
@@ -91,5 +92,54 @@ theorem run (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
       frozen p (tRun d k (tStep d k T m) R)
     rw [step d hpk T m hR.1]
     exact ih _ hR.2
+
+/-- Frozen source transpositions do not change the active strand-ID renaming
+performed by a move. This is stronger than final pairing invariance. -/
+theorem stepRen_eq {I : Type*} {k p : ℕ} (hpk : p + 2 ≤ k)
+    (T : TState (Letter I)) (m : TMove (Letter I)) (hm : m.Ok flipL k T.st) (x : ℕ) :
+    stepRen k (frozen p T) m x = stepRen k T m x := by
+  cases m with
+  | mv m => rfl
+  | cap g =>
+    obtain ⟨A, B, hA, hB, hl, hn⟩ := hm
+    have hr : k + g + 1 < T.st.length := List.getElem?_eq_some_iff.mp hB |>.1
+    simp only [stepRen, frozen, idD_swap_right (p := p) T.st (by omega) hr,
+      idD_swap_right (p := p) T.st (by omega) (by omega : k + g < T.st.length)]
+
+/-- Distinguished-point strand IDs are transported through the actual cap
+renamings, not inferred solely from the terminal pairing. -/
+theorem ren {I : Type*} {k p : ℕ} (hpk : p + 2 ≤ k)
+    (T : TState (Letter I)) (R : List (TMove (Letter I))) (hR : TFits flipL k T R) (x : ℕ) :
+    tRen k (frozen p T) R x = tRen k T R x := by
+  induction R generalizing T x with
+  | nil => rfl
+  | cons m R ih =>
+    simp only [tRen]
+    rw [stepRen_eq hpk T m hR.1, step flipL hpk T m hR.1]
+    exact ih _ hR.2 _
+
+/-- The complete critical-ID list is unchanged by a frozen source swap. -/
+theorem critStep_eq (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
+    (T : TState α) (cl : List ℕ) (m : TMove α) (hm : m.Ok d k T.st) :
+    critStep k (frozen p T) cl m = critStep k T cl m := by
+  cases m with
+  | mv m => cases m <;> rfl
+  | cap g =>
+    obtain ⟨A, B, hA, hB, hl, hn⟩ := hm
+    have hr : k + g + 1 < T.st.length := List.getElem?_eq_some_iff.mp hB |>.1
+    simp only [critStep, frozen, idD_swap_right (p := p) T.st (by omega) hr,
+      idD_swap_right (p := p) T.st (by omega) (by omega : k + g < T.st.length)]
+
+/-- Strict reducedness can use the same critical IDs throughout a frozen
+source exchange, rather than merely the same number of critical points. -/
+theorem crit (d : α → α) {k p : ℕ} (hpk : p + 2 ≤ k)
+    (T : TState α) (R : List (TMove α)) (hR : TFits d k T R) (cl : List ℕ) :
+    tCrit d k (frozen p T) cl R = tCrit d k T cl R := by
+  induction R generalizing T cl with
+  | nil => rfl
+  | cons m R ih =>
+    simp only [tCrit]
+    rw [critStep_eq d hpk T cl m hR.1, step d hpk T m hR.1]
+    exact ih _ hR.2 _
 
 end OddMath.SKM.SourceFrozenSwap

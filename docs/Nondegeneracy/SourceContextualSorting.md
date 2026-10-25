@@ -240,6 +240,22 @@ frozen source endpoints commutes with every later valid matching move and with
 the whole finite matching word. This includes actual cap ID renaming and the
 complete crossing history. The checked consumer includes a cap which renames
 an ID appearing in the frozen prefix, followed by a cup and crossing. This is
-a source-attachment primitive, not yet the complete adapted source family:
-the initial-state ID relabelling, crossing history, and decorated source
-attachment still need assembly.
+a source-attachment primitive, not yet the complete adapted source family.
+
+`SourceFrozenSwap.ren` and `crit` additionally preserve the actual strand-ID
+renaming and critical-ID lists. `SourceIdRelabel` proves validity, complete
+state transport, critical-ID transport, and distinguished-point ID transport
+for an injective relabelling fixing every fresh ID. Its `reducedData_iff`
+preserves the full reducedness data. The concrete consumer uses an actual cap
+and a permutation moving ID zero; no `f 0 = 0` premise is assumed. ID lookup
+identities are restricted to valid active positions.
+
+The remaining source-family construction must identify the actual `tStart`
+state after an initial crossing with the swapped-source state, using both the
+reversed frozen endpoint position and the initial-ID permutation. It must also
+construct the isolated initial-cap sector with all dot-count labels, prove
+completeness and uniqueness of the assembled source choices, and attach the
+source columns with their full-SYM twists. These are proposed obligations,
+not consequences of final pairing isomorphism alone. The complete target
+interface is now proved by `target_exchange_descent`; the source interface
+remains the blocker to the upward-to-oriented headline theorem.
