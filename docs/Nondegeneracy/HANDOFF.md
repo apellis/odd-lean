@@ -170,6 +170,14 @@ in the explicit extension `X × (I → ℤ)`, without changing its Cartan matrix
 or parity. Restriction of the categorical action along `μ ↦ (μ,0)` is still
 open. These arithmetic results alone do not construct a fused family.
 
+`QuiverHecke.reservoirWindowCoordinates` in `ReservoirCoordinates.lean`
+splits the bounded connected ELV injection over a field and recovers the
+whole joint coefficient/PBW window.
+`exists_bounded_reservoir_extraction` extends any linear source coordinate
+map on that window, without a global finite-quotient automorphism. It does
+not identify the regular quotient with the fused vacuum; the latter's
+`affine_coordinates` law and normalization comparison remain open.
+
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a
 unit factor from an odd coefficient. The categorical convolution and its

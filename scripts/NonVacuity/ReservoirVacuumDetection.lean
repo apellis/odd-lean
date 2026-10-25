@@ -1,5 +1,8 @@
 import OddMath.QuiverHecke.ReservoirVacuumExamples
 import OddMath.QuiverHecke.ReservoirWeights
+import OddMath.QuiverHecke.ReservoirCoordinates
+
+open CategoryTheory
 
 open OddMath.QuiverHecke OddMath.QuiverHecke.ReservoirWeights
 
@@ -34,6 +37,17 @@ open OddMath.QuiverHecke
 #check ReservoirVacuumExamples.mixed_parity_detect
 #check ReservoirVacuumExamples.crossing_window_injective
 #check ReservoirVacuumExamples.crossing_two_exterior_ne_zero
+#print axioms reservoirWindowCoordinates_apply
+#print axioms exists_bounded_reservoir_extraction
+
+example (f : ExtendedAtMost ReservoirVacuumExamples.datum ReservoirVacuumExamples.params
+    [false, true] [true, false] 2) :
+    reservoirWindowCoordinates ReservoirVacuumExamples.datum ReservoirVacuumExamples.params
+      (fun _ => 5) [false, true] [true, false] 2
+      ((ELVRelationSpan ReservoirVacuumExamples.datum ReservoirVacuumExamples.params
+        (fun _ => 5) [false, true] [true, false]).mkQ f) = f :=
+  reservoirWindowCoordinates_apply _ _ _ _ _ _ (N := 5) (fun _ => le_rfl) (by decide) f
+
 #print axioms FusedFixedWeightFamily.upward_independence_at
 #print axioms OddMath.SKM.reservoir_coefficients_recovered
 #print axioms ReservoirVacuumEvaluation.normalized_bubbles

@@ -101,6 +101,27 @@ use cover levels and a compatible relabelling of the action's external
 weights. Constructing that relabelling is still open. The level arithmetic
 alone does not discharge `FusedFixedWeightFamily.covers`.
 
+## Bounded coordinates on the connected regular quotient
+
+Over a field, `QuiverHecke.reservoirWindowCoordinates` in
+`ReservoirCoordinates.lean` constructs a total linear extraction from the
+connected reservoir quotient to its bounded joint coefficient/PBW window.
+`reservoirWindowCoordinates_apply` proves recovery whenever
+`d + 2 * t.length.choose 2 < N` and all cutoffs are at least `N`.
+The construction splits the already-proved bounded injection as a linear
+map; it does not require a cyclotomic ideal to be stable under normalization.
+The whole joint window is recovered, including crossings with products of
+distinct exterior generators.
+
+`exists_bounded_reservoir_extraction` applies this to **any** linear source
+coordinate map. Its extension off the bounded image is noncanonical. It
+establishes the existence of a total extraction on the regular quotient,
+not the `affine_coordinates` identity on the still-unconstructed fused
+vacuum. The remaining comparison must identify the fused word module,
+its cyclic vector, and its dot/crossing/coefficient operators with these
+connected coordinates. A normalization formula and its degree bound must
+still be proved for that comparison.
+
 ## Algebraic normalization, and its remaining gap
 
 `SKM.reservoirDeconvolution` is a recursively defined finite triangular inverse
