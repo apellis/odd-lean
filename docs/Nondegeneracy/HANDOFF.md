@@ -90,6 +90,14 @@ restriction, tensor adjunction and KKO local inversion are still open.
 the even-parameter action theorem, and targets the existing
 `SKM.SuperRouquierLoc` rather than a second local-data interface.
 
+`QuiverHecke/CyclotomicAction/Quotient.lean` equips the existing finite-support
+Hom algebra with a unit for finitely many colours, defines its genuine
+two-sided first-dot polynomial ideal, and constructs `CyclotomicAlgebra` and
+`cyclotomicMk` at every positive strand number. `cyclotomicMk_generator`
+proves that the defining cyclotomic polynomials vanish. This supplies the
+underlying quotient algebra, not its homogeneous super grading or the
+projectivity and Mackey statements needed for inversion.
+
 ## Proof architecture
 
 | Step | Statement | Status |
