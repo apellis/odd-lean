@@ -181,6 +181,15 @@ obligations are the vacuum inclusion, concrete quotient dot and crossing
 transformations, their square and braid comparisons, and the projective
 Mackey/local-inversion theorem with the prescribed parity shifts.
 
+`CyclotomicAction/LastDot.lean` constructs `cyclotomicLastDot` as the image
+of the finite diagonal sum of rightmost dots on words ending in the induction
+colour. `cyclotomicLastDot_parity` proves parity `D.parity i`, and
+`cyclotomicLastDot_corner` proves both unit-image corner identities without
+a polynomial-parity hypothesis. `cyclotomicLastDot_comm` proves
+`φ(r)c = (-1)^(p |i|) c φ(r)` for every parity-`p` quotient element, using
+homogeneous affine lifts. The indexing is height `n+1` to height `n+2`.
+Constructing the associated super dot transformation remains separate.
+
 ## Proof architecture
 
 | Step | Statement | Status |
