@@ -309,6 +309,12 @@ The following modules now separate the proved infrastructure from A2:
 - `OddMath/SKM/RouquierBoundary.lean`: finite homogeneous dotted-unit
   coefficients, extraction from negative local inversion at a vacuum, the
   top-coefficient cap and a joint detection lemma for its dotted units.
+- `OddMath/SKM/RouquierMate.lean`: `homMateEquiv_eq` identifies the actual
+  cup–crossing–cap composite with the Hom equivalence, retaining odd crossings.
+  `rouquierMate_slide` proves the unprojected identity
+  `σ ≫ (x₂ ▷ F₂) - q • ((F₁ ◁ x₁) ≫ σ) = ε₁ ≫ η₂` from the upward slide,
+  without assuming any inverse. Its sector projections still require the
+  explicit content-shifted comparison maps of step 2.
 - `OddMath/SKM/RouquierSchur.lean`: block LDU factorization and
   `isUnit_of_nilpotent_feedback` over an associative ring. This requires
   nilpotence of the whole feedback operator, never just of its entries.

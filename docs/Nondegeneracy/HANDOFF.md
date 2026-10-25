@@ -76,6 +76,15 @@ from negative local inversion when the common summand vanishes.
 normalized top-coefficient pairing, and boundary detection. The cutoff-two
 odd example has an odd cap; no unshifted opposite adjunction is inferred.
 
+`OddMath/SKM/RouquierMate.lean` identifies the ordered `rouquierMate` with
+`homMateEquiv`, proves both strand naturality laws, and derives
+`rouquierMate_slide` from the upward dot slide without any inversion
+hypothesis. Its interface consumer is `SuperRouquierLoc.mate_slide`:
+`σ ≫ (x₂ ▷ F₂) - q • ((F₁ ◁ x₁) ≫ σ) = ε₁ ≫ η₂`.
+The proof retains odd crossings; only the even prefix and suffix use ordinary
+coherence. This is the unprojected categorical recurrence. Identifying its
+sector projections with both ordered finite formulas is still missing.
+
 `OddMath/SKM/RouquierSchur.lean` supplies associative block factorization,
 `isUnit_of_schur`, and `isUnit_of_nilpotent_feedback`. Nilpotence concerns
 the whole feedback operator. This removes the need for a commutative

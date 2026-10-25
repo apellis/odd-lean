@@ -112,8 +112,10 @@ proves associative block lifting from nilpotent **whole-operator** feedback;
 it does not identify the feedback of the actual fused mate. **New:** coherent
 shuffle maps, all-content Schur-complement identification and super inversion.
 The first fusion-specific missing identity is the super replacement for
-`RouqCoproduct.rouqSig_eq`: both ordered projections of the actual
-cup–crossing–cap mate must give the finite expansions in
+`RouqCoproduct.rouqSig_eq`: `rouquierMate_slide` in
+`OddMath/SKM/RouquierMate.lean` already gives
+the unprojected categorical slide, but both ordered projections of the actual
+cup–crossing–cap mate must still give the finite expansions in
 [SeparatedFusion.md §6](SeparatedFusion.md). Neither upward invertibility nor
 an independently specified matrix establishes that comparison.
 **Risk: highest.** Neither units in the upward algebra nor a dimension count
