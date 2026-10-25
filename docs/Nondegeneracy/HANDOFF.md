@@ -145,6 +145,11 @@ independently of any integer symmetrizer. The coefficient-support condition
 polynomial generators and, in `cyclotomicIdeal_homogeneous_of_polynomials`,
 of the entire two-sided ideal. Right multipliers are decomposed into
 homogeneous parts; they are not silently assumed homogeneous.
+`CyclotomicAction/SuperQuotient.lean` now descends that parity to the actual
+`CyclotomicAlgebra`, with `cyclotomicParity_graded`, homogeneous affine lifts,
+and `cyclotomicAppend_parity`. `CyclotomicSupermodules` is the existing
+superbimodule category with trivial right scalar algebra. These constructions
+do not replace the quotient by a polynomial model or forget its odd part.
 
 ## Proof architecture
 
