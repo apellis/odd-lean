@@ -55,6 +55,13 @@ and `boundaryNeg_eq` consume its inverse to obtain the normalized Kronecker
 window. These declarations pass the scoped warning-free build; full CI
 remains the branch-wide verification gate.
 
+`OddMath/SKM/RouquierHom.lean` constructs the linear parity-preserving
+`homPre`/`homPost` functors on full Hom supercategories, their homogeneous
+`SuperNatTrans` transformations, and `homSectorInterchange`. Its
+`homSector_exchange` theorem retains the Koszul sign for opposite-sector
+transformations; two odd transformations anticommute. This is the Hom-sector
+generator layer, not multicolour affine coherence or categorical fusion.
+
 This is the factor-action interface, including same-colour square, braid,
 and local inversion. Multicolour affine relations and distinct-colour mixed
 inversion are separate obligations. In particular no construction of a

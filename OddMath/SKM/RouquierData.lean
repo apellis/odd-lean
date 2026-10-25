@@ -6,13 +6,14 @@ import StringDiagrams.Super.Bicategory
 
 Ports the interfaces in `Categorification/TwoRep/RouqSl2.lean` and
 `Categorification/TwoRep/RouqModel.lean`, with boundary coefficients from
-`Categorification/TwoRep/RouqBoundary.lean`, to the super conventions of
+`Categorification/TwoRep/RouqBoundaryAdjunction.lean`, to the super conventions of
 Brundan–Ellis, Definition 1.5, (1.10)–(1.14).
 
 The ambient structure is `TwoSupercategory`, not an ordinary bicategory.
 Homogeneous inverse entries encode parity-shifted summands: a row of parity
-`p` is an even row into the formal summand `Π^p`. In particular the common
-`FE` summand has shift `|i|`, and identity summand `n` has shift `n |i|`.
+`p` is an even row into the formal summand `Π^p`. The common summand
+has shift `|i|` (`FE` for a row inverse, `EF` for a column inverse),
+and identity summand `n` has shift `n |i|`.
 No parity shift is silently identified with the identity functor.
 
 `RouquierFamily` is generator and local-inversion data, NOT a representation
