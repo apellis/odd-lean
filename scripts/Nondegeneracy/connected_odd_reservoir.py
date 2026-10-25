@@ -48,6 +48,8 @@ def run():
     assert Q**3 == z and Q**2 != z
     # Plain disconnected transport would violate this connected relation.
     assert J*J == s.eye(16) and J*J != Q
+    # This is precisely the valid disconnected specialization Q=1.
+    assert (-P)*J+J*P == z
     # Independent exterior product is transported with the two odd signs;
     # coefficient order reverses because the target word is j,i.
     assert forward*(D*E) == (E*D)*forward
@@ -59,6 +61,7 @@ def run():
     print(f"PASS exterior product rank {(D*E).rank()}, Q nilpotence index 3; "
           "odd shifted parity, dot/coefficient transport, quadratic relations")
     print("PASS disconnected-crossing negative control; no full action claim")
+    print("PASS disconnected Q=1 specialization with J in both directions")
     print("LIMIT: reverse crossing times δ_i δ_j vanishes at this cutoff")
 
 

@@ -3,8 +3,8 @@
 Research toward Brundan–Ellis, *Super Kac–Moody 2-categories*, §8,
 Nondegeneracy Conjecture; tracking issue #345. This note supplies a mathematical
 bounded-separation argument. It does **not** construct an SKM action or claim
-that the conjecture is proved. The refined straightening statement below is not
-yet a Lean theorem.
+that the conjecture is proved. The refined affine straightening statement below is now a Lean theorem;
+the bounded cyclotomic quotient argument remains mathematical.
 
 ## A parameter-independent bound
 
@@ -199,9 +199,11 @@ the repository interprets these as empty layers, so counting an invalid dot
 would otherwise give arbitrarily high score to the identity. On valid words
 it agrees with the stated dot-minus-crossing score.
 
-Weighted dot transport and the final simultaneous refinement of the terminating
-`Spanning` induction remain outstanding. Separate membership in a crossing span and a score span
-is insufficient: the needed induction uses their joint generating set.
+The subsequent `weighted_dot_down`, repeated-crossing reduction, and final
+simultaneous induction are now proved. `boundedScore_le_weightedNF` and
+`word_mem_weightedNF` establish the refined affine straightening statement.
+Separate membership in a crossing span and a score span would be insufficient;
+the proof uses their joint generating set throughout.
 After this refinement, the ideal and disjoint-support arguments are
 finite-sum and basis-coordinate arguments. Neither the bounded quotient
 theorem nor the weighted ELV extension is currently a Lean theorem.

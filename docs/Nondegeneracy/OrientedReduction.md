@@ -148,6 +148,27 @@ These native calculations discharge local pieces of item 1 above. They do
 not yet construct the finite global sweep or the full-SYM transport of
 item 2.
 
+Two word-level extensions are now checked in the same module:
+
+- `cl_rightClosure_pairBlocks` treats arbitrary nested cap/cup words and
+  arbitrary decorations on each word. The elementary pair theorem is its
+  specialization.
+- `partialRightMateL` bends a source prefix and a target suffix of any
+  layer block. `cl_rightClosure_partialMate` proves that the literal right
+  closure recovers that block exactly. The proof is a finite sequence of
+  two even block interchanges and two word zigzags. It allows different
+  closing words and arbitrary unbent contexts, and does not assume that
+  the partial mate is strictly reduced.
+
+This suggests a route around the geometric sweep: use literal partial
+mates of reduced upward wirings as a weakly reduced matching family, then
+transfer independence to a strict family. Extra extrema prevent simply
+calling these representatives strictly reduced. A rigorous version still
+needs to realize them in the `TMove` matching syntax, prove weak reducedness
+and the pairing/dot-label bijections, and extend the choice comparison to
+such a weakly reduced family. The evaluated contraction itself is now
+proved; these combinatorial statements are not supplied by it.
+
 ## Verification
 
 The library theorem is in `OddMath/SKM/OrientedReduction.lean`; its concrete

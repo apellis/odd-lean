@@ -55,6 +55,78 @@ theorem rightClosure_cl (μ : X) (l r : List I) (u v : List (Letter I))
   · exact (sChain_cupN r).wh (ups l ++ u) [] (by simp) (by simp [List.append_assoc])
   · exact (sChain_capN l).wh [] (v ++ ups r) (by simp [List.append_assoc]) (by simp)
 
+/-- Bend the left source prefix and right target suffix of a layer block
+using right adjunctions. This definition does not assert strict reducedness. -/
+def partialRightMateL (l r : List I) (u v : List (Letter I))
+    (A : List (LayerData I)) : List (LayerData I) :=
+  (cupN l).map (whL [] (u ++ dns r)) ++ A.map (whL (dns l) (dns r)) ++
+    (capN r).map (whL (dns l ++ v) [])
+
+theorem sChain_partialRightMateL (l r : List I) (u v : List (Letter I))
+    {A : List (LayerData I)} (hA : SChain (ups l ++ u) A (v ++ ups r)) :
+    SChain (u ++ dns r) (partialRightMateL l r u v A) (dns l ++ v) := by
+  unfold partialRightMateL
+  refine SChain.append (t' := dns l ++ (v ++ ups r) ++ dns r)
+    (SChain.append (t' := dns l ++ (ups l ++ u) ++ dns r) ?_ ?_) ?_
+  · exact (sChain_cupN l).wh [] (u ++ dns r) (by simp) (by simp [List.append_assoc])
+  · exact hA.whisk (dns l) (dns r)
+  · exact (sChain_capN r).wh (dns l ++ v) [] (by simp [List.append_assoc]) (by simp)
+
+variable (Sc) in
+/-- A literal partial right mate is undone by the sorted right closure.
+The proof uses two word zigzags and interchanges only even cup/cap blocks.
+No strictness of the mate or independence of either diagram family is assumed. -/
+theorem cl_rightClosure_partialMate (μ : X) (l r : List I) (u v : List (Letter I))
+    {A : List (LayerData I)} (hA : SChain (ups l ++ u) A (v ++ ups r)) :
+    cl D Sc μ (ups l ++ u) (v ++ ups r)
+      (rightClosureL l r u v (partialRightMateL l r u v A)) =
+    cl D Sc μ (ups l ++ u) (v ++ ups r) A := by
+  let B := A.map (whL [] (dns r)) ++ (capN r).map (whL v [])
+  have hB : SChain (ups l ++ u ++ dns r) B v := by
+    refine SChain.append (t' := v ++ ups r ++ dns r) ?_ ?_
+    · exact hA.wh [] (dns r) (by simp) (by simp)
+    · exact (sChain_capN r).wh v [] (by simp [List.append_assoc]) (by simp)
+  have h1 : cl D Sc μ (ups l ++ u) (v ++ ups r)
+      (rightClosureL l r u v (partialRightMateL l r u v A)) =
+      cl D Sc μ (ups l ++ u) (v ++ ups r)
+        ((cupN r).map (whL (ups l ++ u) []) ++
+          (cupN l).map (whL (ups l) (u ++ dns r ++ ups r)) ++
+          (capN l).map (whL [] (ups l ++ (u ++ dns r ++ ups r))) ++
+          B.map (whL [] (ups r))) := by
+    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
+      (S := ups l ++ u) (T := v ++ ups r)
+      ((cupN r).map (whL (ups l ++ u) []) ++
+        (cupN l).map (whL (ups l) (u ++ dns r ++ ups r))) [] [] [] (ups r)
+      (sChain_capN l) hB (Or.inl (parsum_capN l))
+    simpa [rightClosureL, partialRightMateL, B, List.append_assoc] using E.symm
+  have h2 : cl D Sc μ (ups l ++ u) (v ++ ups r)
+      ((cupN r).map (whL (ups l ++ u) []) ++
+        (cupN l).map (whL (ups l) (u ++ dns r ++ ups r)) ++
+        (capN l).map (whL [] (ups l ++ (u ++ dns r ++ ups r))) ++
+        B.map (whL [] (ups r))) =
+      cl D Sc μ (ups l ++ u) (v ++ ups r)
+        ((cupN r).map (whL (ups l ++ u) []) ++ B.map (whL [] (ups r))) := by
+    simpa using cl_zigE_ctx (zigE_N Sc l) μ ((cupN r).map (whL (ups l ++ u) []))
+      (B.map (whL [] (ups r))) [] (u ++ dns r ++ ups r)
+      ((sChain_cupN r).wh (ups l ++ u) [] (by simp) (by simp [List.append_assoc]))
+      (hB.wh [] (ups r) (by simp [List.append_assoc]) (by simp))
+  have h3 : cl D Sc μ (ups l ++ u) (v ++ ups r)
+      ((cupN r).map (whL (ups l ++ u) []) ++ B.map (whL [] (ups r))) =
+      cl D Sc μ (ups l ++ u) (v ++ ups r)
+        (A ++ (cupN r).map (whL (v ++ ups r) []) ++
+          (capN r).map (whL v (ups r))) := by
+    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
+      (S := ups l ++ u) (T := v ++ ups r) [] ((capN r).map (whL v (ups r))) [] [] []
+      hA (sChain_cupN r) (Or.inr (parsum_cupN r))
+    simpa [B, List.append_assoc] using E.symm
+  have h4 : cl D Sc μ (ups l ++ u) (v ++ ups r)
+      (A ++ (cupN r).map (whL (v ++ ups r) []) ++
+        (capN r).map (whL v (ups r))) =
+      cl D Sc μ (ups l ++ u) (v ++ ups r) A := by
+    simpa using cl_zigE_ctx (zigE_N Sc r) μ A [] v []
+      (by simpa using hA) (by simp [SChain])
+  exact h1.trans (h2.trans (h3.trans h4))
+
 variable (Sc) in
 /-- Closing the mixed crossing gives the upward crossing, with coefficient
 one for every pair of colors (including equal odd colors). -/
@@ -98,6 +170,71 @@ theorem cl_rightClosure_sigma (μ : X) (i j : I) :
     List.append_nil, List.cons_append, List.append_assoc] at h2
   exact h1.trans (h2.symm.trans h3)
 
+/-- A block of right caps followed by a block of right cups, with endpoint
+decorations on the corresponding upward words. -/
+def pairedRightBlocksL (l r : List I) (A B : List (LayerData I)) : List (LayerData I) :=
+  A.map (whL [] (dns r)) ++ capN r ++ cupN l ++ B.map (whL (dns l) [])
+
+variable (Sc) in
+/-- Closing decorated cap-cup blocks separates their decorations without
+interchanging them. This is the nested-strand version of the elementary
+paired sweep, with no restrictions on the colors in either word. -/
+theorem cl_rightClosure_pairBlocks (μ : X) (l r : List I)
+    {A B : List (LayerData I)} (hA : SChain (ups r) A (ups r))
+    (hB : SChain (ups l) B (ups l)) :
+    cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (rightClosureL l r (ups r) (ups l) (pairedRightBlocksL l r A B)) =
+    cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (A.map (whL (ups l) []) ++ B.map (whL [] (ups r))) := by
+  let tail := (cupN l).map (whL (ups l) (ups r)) ++
+    B.map (whL (ups l ++ dns l) (ups r)) ++
+    (capN l).map (whL [] (ups l ++ ups r))
+  have htail : SChain (ups l ++ ups r) tail (ups l ++ ups r) := by
+    refine SChain.append (t' := ups l ++ dns l ++ ups l ++ ups r)
+      (SChain.append (t' := ups l ++ dns l ++ ups l ++ ups r) ?_ ?_) ?_
+    · exact (sChain_cupN l).wh (ups l) (ups r)
+        (by simp) (by simp [List.append_assoc])
+    · exact hB.wh (ups l ++ dns l) (ups r) rfl rfl
+    · exact (sChain_capN l).wh [] (ups l ++ ups r)
+        (by simp [List.append_assoc]) (by simp)
+  have h1 : cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (rightClosureL l r (ups r) (ups l) (pairedRightBlocksL l r A B)) =
+      cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+        (A.map (whL (ups l) []) ++ (cupN r).map (whL (ups l ++ ups r) []) ++
+          (capN r).map (whL (ups l) (ups r)) ++ tail) := by
+    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
+      (S := ups l ++ ups r) (T := ups l ++ ups r) []
+      ((capN r).map (whL (ups l) (ups r)) ++ tail) (ups l) [] []
+      hA (sChain_cupN r) (Or.inr (parsum_cupN r))
+    simpa [rightClosureL, pairedRightBlocksL, tail, List.append_assoc] using E.symm
+  have h2 : cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (A.map (whL (ups l) []) ++ (cupN r).map (whL (ups l ++ ups r) []) ++
+        (capN r).map (whL (ups l) (ups r)) ++ tail) =
+      cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+        (A.map (whL (ups l) []) ++ tail) := by
+    simpa using cl_zigE_ctx (zigE_N Sc r) μ (A.map (whL (ups l) [])) tail (ups l) []
+      (hA.wh (ups l) [] (by simp) (by simp)) (by simpa using htail)
+  have h3 : cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (A.map (whL (ups l) []) ++ tail) =
+      cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+        (A.map (whL (ups l) []) ++ (cupN l).map (whL (ups l) (ups r)) ++
+          (capN l).map (whL [] (ups l ++ ups r)) ++ B.map (whL [] (ups r))) := by
+    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
+      (S := ups l ++ ups r) (T := ups l ++ ups r)
+      (A.map (whL (ups l) []) ++ (cupN l).map (whL (ups l) (ups r))) [] [] [] (ups r)
+      (sChain_capN l) hB (Or.inl (parsum_capN l))
+    simpa [tail, List.append_assoc] using E.symm
+  have h4 : cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+      (A.map (whL (ups l) []) ++ (cupN l).map (whL (ups l) (ups r)) ++
+        (capN l).map (whL [] (ups l ++ ups r)) ++ B.map (whL [] (ups r))) =
+      cl D Sc μ (ups l ++ ups r) (ups l ++ ups r)
+        (A.map (whL (ups l) []) ++ B.map (whL [] (ups r))) := by
+    simpa using cl_zigE_ctx (zigE_N Sc l) μ (A.map (whL (ups l) []))
+      (B.map (whL [] (ups r))) [] (ups r)
+      (hA.wh (ups l) [] (by simp) (by simp))
+      (hB.wh [] (ups r) (by simp) (by simp))
+  exact h1.trans (h2.trans (h3.trans h4))
+
 /-- A right cap followed by a right cup, with upward endpoint decorations.
 The decorations need not be individual dots. -/
 def pairedRightL (i : I) (A B : List (LayerData I)) : List (LayerData I) :=
@@ -114,56 +251,9 @@ theorem cl_rightClosure_pair (μ : X) (i : I) {A B : List (LayerData I)}
       (rightClosureL [i] [i] [up i] [up i] (pairedRightL i A B)) =
     cl D Sc μ [up i, up i] [up i, up i]
       (A.map (whL [up i] []) ++ B.map (whL [] [up i])) := by
-  let tail := [([up i], Shape.cup i, [up i])] ++ B.map (whL [up i, dn i] [up i]) ++
-    [([], Shape.cap i, [up i, up i])]
-  have htail : SChain [up i, up i] tail [up i, up i] := by
-    refine SChain.append (t' := [up i, dn i, up i, up i])
-      (SChain.append (t' := [up i, dn i, up i, up i]) ⟨rfl, rfl⟩ ?_) ⟨rfl, rfl⟩
-    simpa using hB.whisk [up i, dn i] [up i]
-  have hcup : SChain [] [([], Shape.cup i, [])] [dn i, up i] := ⟨rfl, rfl⟩
-  have hcap : SChain [up i, dn i] [([], Shape.cap i, [])] [] := ⟨rfl, rfl⟩
-  have h1 : cl D Sc μ [up i, up i] [up i, up i]
-      (rightClosureL [i] [i] [up i] [up i] (pairedRightL i A B)) =
-      cl D Sc μ [up i, up i] [up i, up i]
-        (A.map (whL [up i] []) ++
-          [([up i, up i], Shape.cup i, []), ([up i], Shape.cap i, [up i])] ++ tail) := by
-    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
-      (S := [up i, up i]) (T := [up i, up i]) []
-      ([([up i], Shape.cap i, [up i])] ++ tail) [up i] [] [] hA hcup
-      (Or.inr (by simp [Shape.parity]))
-    simpa [rightClosureL, pairedRightL, cupN, capN, ups, dns, whL,
-      tail, List.append_assoc] using E.symm
-  have h2 : cl D Sc μ [up i, up i] [up i, up i]
-      (A.map (whL [up i] []) ++
-        [([up i, up i], Shape.cup i, []), ([up i], Shape.cap i, [up i])] ++ tail) =
-      cl D Sc μ [up i, up i] [up i, up i] (A.map (whL [up i] []) ++ tail) := by
-    apply cl_step (Sc := Sc) μ (A.map (whL [up i] [])) tail [up i] []
-      (cl_zigE Sc i (wt D μ []))
-      (hA.wh [up i] [] rfl rfl) htail
-    · simp [whL, List.append_assoc]
-    · simp
-  have h3 : cl D Sc μ [up i, up i] [up i, up i] (A.map (whL [up i] []) ++ tail) =
-      cl D Sc μ [up i, up i] [up i, up i]
-        (A.map (whL [up i] []) ++
-          [([up i], Shape.cup i, [up i]), ([], Shape.cap i, [up i, up i])] ++
-          B.map (whL [] [up i])) := by
-    have E := cl_ixc_even (D := D) (Sc := Sc) (μ := μ)
-      (S := [up i, up i]) (T := [up i, up i])
-      (A.map (whL [up i] []) ++ [([up i], Shape.cup i, [up i])]) [] [] [] [up i]
-      hcap hB (Or.inl (by simp [Shape.parity]))
-    simpa [tail, whL, List.append_assoc] using E.symm
-  have h4 : cl D Sc μ [up i, up i] [up i, up i]
-      (A.map (whL [up i] []) ++
-        [([up i], Shape.cup i, [up i]), ([], Shape.cap i, [up i, up i])] ++
-        B.map (whL [] [up i])) =
-      cl D Sc μ [up i, up i] [up i, up i]
-        (A.map (whL [up i] []) ++ B.map (whL [] [up i])) := by
-    apply cl_step (Sc := Sc) μ (A.map (whL [up i] [])) (B.map (whL [] [up i])) [] [up i]
-      (cl_zigE Sc i (wt D μ [up i]))
-      (hA.wh [up i] [] rfl rfl) (hB.wh [] [up i] rfl rfl)
-    · simp [whL, List.append_assoc]
-    · simp
-  exact h1.trans (h2.trans (h3.trans h4))
+  simpa [rightClosureL, pairedRightL, pairedRightBlocksL, cupN, capN,
+    ups, dns, List.append_assoc] using
+    cl_rightClosure_pairBlocks Sc μ [i] [i] hA hB
 
 variable (Sc) in
 /-- Closing a decorated right cap retains its upward decoration. -/

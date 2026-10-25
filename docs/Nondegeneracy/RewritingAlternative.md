@@ -266,3 +266,93 @@ does not by itself give joint operator/coefficient detection. Growing
 reservoirs and the weighted separation bound are necessary for this design.
 There is no three-strand braid, adjunction, mixed `EF` inversion, or actual
 two-colour bubble computation in this pilot. These remain construction tasks.
+
+### Repeated-colour braid and distant odd crossings
+
+The next pilot `connected_iji_reservoir.py` uses the actual two-strand
+rank-one reservoir operators `(a,b,t)` on the `i` factor and the one-strand
+reservoir on the `j` factor. It assigns 16-dimensional modules to `iij`,
+`iji`, `jii`, in canonical colour-grouped coordinates, with parity shifted
+by the number of colour inversions in the word. Mixed increasing crossings
+are total parity `P`, decreasing crossings are `QP`, and the same-colour
+crossing is `t⊗1`. All three-strand upward relations pass. In particular the
+`iji` braid residual is `x_3−x_1`, of rank 8, exactly the nonzero correction
+in `Presentation.lean`'s `braidEq` for this datum. Setting that correction
+to zero fails the test. The mixed exterior product remains rank 4.
+
+The parallel action stream supplied the missing sign for distant odd
+crossings: multiply a mixed crossing at positions `r,r+1` by
+`(−1)^inv(word[:r])`, counting colour inversions in its strict prefix.
+`connected_iijj_reservoir.py` checks this recipe on all six words of content
+`2i+2j`, with 16-dimensional modules obtained from two rank-two reservoirs.
+All 12 braid identities and 6 distant-crossing identities pass, together
+with dot, coefficient, parity and quadratic relations. Without the prefix
+sign, the two disjoint increasing crossings on `ijij` commute instead of
+anticommute. Thus the sign is detected by a genuine negative control.
+
+These are fixed-content upward algebra representations, consistent with a
+parabolic-induction interpretation. No general all-content construction or
+coherent inclusions between these representations has been proved. In
+particular, they do not furnish the adjunctions, normalized bubble maps or
+weight-dependent inversion decompositions of a connected SKM action.
+
+### Why fixed independent rank-one towers cannot supply connected inversion
+
+There is an elementary dimensional obstruction to promoting an unchanged
+external tensor product of fixed rank-one actions. On a nonzero finite
+test object `M=M_i⊗M_j`, define
+
+`c_i(M)=(dim(F_i E_i M)−dim(E_i F_i M))/dim(M)`.
+
+If the `i` functors act only on the fixed `i` factor, applying `E_j` to the
+other factor multiplies numerator and denominator by the same dimension
+ratio. Hence `c_i(E_j M)=c_i(M)` whenever both objects are nonzero. A
+same-colour SKM inversion decomposition, after forgetting parity shifts,
+forces this number to equal `h_i(λ)` or its negative, according to the
+fixed choice of `EF/FE` convention. In the connected datum under discussion,
+`h_i(λ+α_j)=h_i(λ)−2`. The two demanded numbers differ by 2, a contradiction.
+Parity shifts cannot fix the mismatch because they preserve ordinary
+dimension. This argument assumes the finite-dimensional test objects and
+functor values used in the reservoir experiments; it is not a claim about
+arbitrary infinite or degenerate categories.
+
+Thus adjusting only the mixed upward crossings is insufficient. A connected
+categorical construction must change the rank-one tower with the other
+colour's content, or use a genuinely multicolour induction algebra whose
+adjunction and inversion already reflect the connected Cartan matrix. The
+fixed-content upward pilots remain valid tests of the crossing formulas.
+
+### A general upward construction: parabolic induction
+
+The fixed-content tests suggest a construction that does not require guessing
+crossing matrices. For finite content `β=Σ n_i α_i`, choose a total order on
+its colours and the grouped word `g=i_1^n_1 ... i_r^n_r`. Inside the affine
+QH algebra let `e_g` be its idempotent and let `B` be the super tensor product
+of the same-colour affine algebras on these contiguous blocks. The existing
+affine PBW theorem identifies this with the corresponding grouped-word
+corner: permutations fixing `g` are precisely the within-block permutations.
+For any left `B`-module `M`, ordinary algebraic induction gives an honest
+upward representation
+
+`H_β e_g ⊗_B M`.
+
+PBW also makes `H_β e_g` a free right `B`-module on minimal colour shuffles.
+Indeed every permutation factors uniquely as a minimal shuffle followed by
+a within-block permutation, with lengths adding. Moving dots past the
+minimal shuffle crosses only distinct colours, so introduces only the
+prescribed unit signs and no nilHecke identity corrections. PBW proves
+independence of the resulting right-module coordinates. Thus induction
+has underlying module a direct sum of shifted copies of `M`, one per
+shuffle. For a tensor product of finite rank-one reservoirs the dimension
+is the multinomial number of shuffles times the product of their dimensions.
+The construction extends coefficientwise to the explicit super tensor
+extension with independent exterior parameters.
+
+This is a written PBW-based construction, not a new Lean theorem or a claim
+that the tested matrix formulas have been formally identified with it.
+It supplies arbitrary-content upward modules and preserves any nonzero
+coefficient acting on `M`. It does not make them jointly faithful for
+decorated PBW operators at a fixed cutoff, and it does not make these
+modules compatible with a connected categorical induction/restriction
+tower. Those are the substantive next tasks; another isolated quadratic
+or braid check cannot settle them.

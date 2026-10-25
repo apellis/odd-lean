@@ -48,6 +48,32 @@ theorem two_downward_odd_dots :
   simpa [MixedCrossingLocalExamples.oddDatum, zsign] using
     cl_rightClosure_downward_cap sc 0 false 2
 
+/-- Two nested caps and two nested cups, with odd decorations in different
+positions of the two-colored blocks. -/
+theorem nested_paired_decorations :
+    cl D₂ sc 0 (ups [false, true] ++ ups [true, false])
+      (ups [false, true] ++ ups [true, false])
+      (rightClosureL [false, true] [true, false] (ups [true, false]) (ups [false, true])
+        (pairedRightBlocksL [false, true] [true, false]
+          (dotsL [] true [up false] 3) (dotsL [up false] true [] 1))) =
+    cl D₂ sc 0 (ups [false, true] ++ ups [true, false])
+      (ups [false, true] ++ ups [true, false])
+      ((dotsL [] true [up false] 3).map (whL (ups [false, true]) []) ++
+        (dotsL [up false] true [] 1).map (whL [] (ups [true, false]))) :=
+  cl_rightClosure_pairBlocks sc 0 [false, true] [true, false]
+    (sChain_dotsL [] true [up false] 3) (sChain_dotsL [up false] true [] 1)
+
+/-- Unequal-size closing blocks and a dotted upward diagram. -/
+theorem partial_mate_recovered :
+    cl D₂ sc 0 (ups [false, true] ++ [up false]) ([up false, up true] ++ ups [false])
+      (rightClosureL [false, true] [false] [up false] [up false, up true]
+        (partialRightMateL [false, true] [false] [up false] [up false, up true]
+          (dotsL [up false, up true] false [] 2))) =
+    cl D₂ sc 0 (ups [false, true] ++ [up false]) ([up false, up true] ++ ups [false])
+      (dotsL [up false, up true] false [] 2) :=
+  cl_rightClosure_partialMate sc 0 [false, true] [false] [up false] [up false, up true]
+    (sChain_dotsL [up false, up true] false [] 2)
+
 -- A nonzero local region is retained when the rightmost strand is closed.
 example : rightClosure D₂ sc 0 [false] [false] [up true] [up true]
       (cl D₂ sc (wt D₂ 0 (ups [false])) ([up true] ++ dns [false])
@@ -63,6 +89,8 @@ example : SChain [up false, up true]
 
 #print axioms cl_rightClosure_sigma
 #print axioms cl_rightClosure_pair
+#print axioms cl_rightClosure_pairBlocks
+#print axioms cl_rightClosure_partialMate
 #print axioms cl_rightClosure_downward_cap
 #print axioms two_downward_odd_dots
 end NonVacuity.RightClosure

@@ -1,6 +1,6 @@
 # Odd nondegeneracy research progress
 
-Last checkpoint: 2026-10-25 18:11 UTC. Branch: `research/odd-nondegeneracy`.
+Last checkpoint: 2026-10-25 18:24 UTC. Branch: `research/odd-nondegeneracy`.
 Research baseline: `0edcf48`. This board records checkpoints, not live telemetry.
 
 ## Objective and operating rules
@@ -17,12 +17,12 @@ scoped Lean checks, and full CI verification.
 
 | Stream / worker | State | Current concrete target | Latest established input | Main unresolved obligation |
 | --- | --- | --- | --- | --- |
-| Oriented reduction / matching choice | Active | Extend signed columns coefficient-linearly and prove transition injectivity | Actual arbitrary-choice signed unit-column comparison passes scoped Lean checks | Evaluate the complete signed transition and prove injectivity |
-| Oriented reduction / closure | Active | Generalize cap–cup closure to arbitrary nested strand blocks | Mixed-crossing, decorated cap–cup and signed downward-dot closure lemmas pass scoped Lean checks | Native finite sweep, full-SYM transport, and contextual sorting |
-| Upward independence / separation | Active | Refine dot-down and normal-form induction with joint score/crossing filtration | Native weighted braid equivalence and contextual correction bounds pass scoped checks | Native straightening bound, supertensor coefficient extension, actual action |
+| Oriented reduction / matching choice | Active | Apply choice isomorphisms to weakly reduced inverse-mate families | Native choiceTransition is a coefficient-space isomorphism; expansion_injective_choice_iff checked | Weak inverse-mate combinatorics and full-SYM closure comparison |
+| Oriented reduction / closure | Active | Construct weak-reduced partial-mate matching bridge | Arbitrary-block partial-mate contraction and nested cap–cup closure checked | Native finite sweep, full-SYM transport, and contextual sorting |
+| Upward independence / separation | Active | Check cyclotomic quotient consumer; extend to weighted super-coefficients | Full score-controlled PBW straightening checked; native bounded pure-power cyclotomic theorem built | Weighted supertensor extension, actual action and bubble comparison |
 | Upward independence / action | Active | Construct distinct-colour bubble-product tests; extend actual inversion | 72×72 mate inverse checked; feedback nonzero and square-zero; normalized bubble acts as nonzero −δ | Full inversion and genuinely multicolour coherence |
 | Grassmannian–Webster synthesis | Active | Anchor normalized bubble to native inverse mate, then derive coupled generating series | BK convolution derived on paper; native zero-weight bubble identity compiles | Compatibility of reservoir and probe actions with normalized cups/caps |
-| Independent challenge / rewriting | Active | Connected iji braid; distinguish low-cutoff annihilators from general obstruction | Connected two-colour transport/quadratic pilot passes; tiny cutoff kills reverse-crossing·δiδj | Multicolour confluence or a useful alternative reduction |
+| Independent challenge / rewriting | Active | Extend KKO mixed Mackey ideal argument to ELV coefficients | Connected n3/n4 upward relations checked; paper mixed EF extension identified | Multicolour confluence or a useful alternative reduction |
 
 ## Verification
 
@@ -42,3 +42,5 @@ See [HANDOFF.md](HANDOFF.md) for exact restart state and file ownership.
 - **2026-10-25 18:08 UTC**: Native elementary closure and endpoint-list constructions advance the oriented stream. Actual nonzero-exterior inversion and normalized bubble detection advance the action stream. Workers continue on the next missing constructions. New results awaiting integration are scoped checks, not a full-CI claim.
 
 - **2026-10-25 18:11 UTC**: Baseline full CI successful. Integrating the next scoped-checked checkpoint while all streams continue. Connected pilot confirms that surviving exterior coefficients alone do not imply joint PBW detection.
+
+- **2026-10-25 18:24 UTC**: Brief executor disconnection resolved; local files and staging survived. Full CI for [120463b](https://github.com/apellis/odd-lean/actions/runs/40220230892) passed. Native choice equivalence and complete score-controlled PBW straightening are the next integration checkpoint. All streams resumed.

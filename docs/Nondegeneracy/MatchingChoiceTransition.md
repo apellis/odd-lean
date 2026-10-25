@@ -1,12 +1,20 @@
 # Crossing-filtered expansions and matching choices
 
-Crossing-filtered coefficient extraction and the unit-leading signed comparison
-with explicitly bounded error morphisms are proved in Lean. A standalone checked
-calculation also normalizes bounded lower-dot sectors into a filtered coefficient
-image. The standalone calculation now also constructs endpoint label reindexing
-and the signed unit-column comparison between two arbitrary choices. Its
-coefficient-linear extension and triangular injectivity are not yet formalized;
-none of these results establishes independence.
+Choice independence is proved in Lean. For any two complete decorated matching
+choices `F,G` on the same boundary, `expansion_injective_choice_iff` proves
+
+\[
+\operatorname{Injective}(\operatorname{expansion}_F)
+\iff \operatorname{Injective}(\operatorname{expansion}_G).
+\]
+
+The native implementation is
+[`MatchingChoiceTransition.lean`](../../OddMath/SKM/MatchingChoiceTransition.lean),
+using finite right-coefficient bookkeeping in
+[`MatchingChoiceCoefficients.lean`](../../OddMath/SKM/MatchingChoiceCoefficients.lean).
+It constructs a signed triangular transition and proves its evaluation identity
+and injectivity. This establishes independence of choices; it does not establish
+injectivity for even one choice or prove upward SKM independence.
 
 ## Crossing-filtered expansions
 
@@ -85,11 +93,11 @@ coefficient vectors. The importing examples in
 use a two-colour odd matching over rational scalars: three dots including a
 repeated dot, and a zero-dot comparison in which both lower-dot errors vanish.
 
-## The remaining choice comparison
+## The signed choice comparison
 
 For complete unique choices `F,G`, identify their matching classes by the
 endpoint pairing, and transport strand counts with
-`matchingStrandEquivOfIso` in `DecoratedNormalization.lean`. The desired statement is
+`matchingStrandEquivOfIso` in `DecoratedNormalization.lean`. The checked statement is
 
 \[
  \operatorname{ev}_F(t)
@@ -126,13 +134,11 @@ strand dots. General bubble slides need not have that property.
 
 The crossing-filtered result above handles the lower-crossing errors.
 The filtered normalization below handles lower-dot sectors on arbitrary reduced
-skeletons; the signed comparison between two families is now checked standalone.
+skeletons; the signed comparison between two families is checked in the native library.
 
 ## Filtered lower-dot normalization
 
-The standalone checked file
-[`MatchingDotFiltration.lean`](../../scripts/Nondegeneracy/MatchingDotFiltration.lean)
-defines `MatchingBasisChoice.openDots` as the finite sum of the actual strand
+The native choice-transition module defines `MatchingBasisChoice.openDots` as the finite sum of the actual strand
 multiplicities, and `dotBound c N` by
 
 \[
@@ -167,51 +173,53 @@ This removes the need for a simultaneous recursion between the two families:
 both representatives' lower-dot errors normalize directly into the fixed target
 family. The endpoint reindexing, canonical endpoint-dot list, and signed leading label
 through bending are now constructed by `labelsEquiv`,
-`exists_canonical_strand_dots`, and `labels_filtered_signRel`. The standalone results are not yet part of the
-imported library API. The extension passes standalone compilation with warnings
-as errors; its printed axiom dependencies are exactly `propext`,
-`Classical.choice`, and `Quot.sound`.
+`exists_canonical_strand_dots`, and `labels_filtered_signRel`. These results are
+part of the native module. Their printed axiom dependencies are exactly
+`propext`, `Classical.choice`, and `Quot.sound`.
 
-## From a bounded comparison to an inverse
+## The checked coefficient transition
 
-Once those vectors are chosen, extend each unit-coefficient column to
-coefficient `p` by multiplying its entries on the right by `p`. Thus an
-entry `d` becomes `d*p`, not `p*d`; `rightAction_mul` proves the evaluation
-identity. Do not choose a new arbitrary preimage separately for every `p`
-and then assert linearity.
+`columnData` chooses each unit leading sign and finite lower coefficient vector
+once. `unitColumn` combines its signed leading single with that lower vector.
+The generic `MatchingTransition.rightColumn` extends a column to coefficient
+`p` by multiplying every entry `d` on the right: `d*p`, not `p*d`.
+`MatchingTransition.transition` uses `Finsupp.lsum` to assemble those maps.
+There is no arbitrary new preimage choice depending on `p`.
 
-After relabeling and diagonal rescaling the transition would be `Id + L`,
-where every column is finite and `L` strictly lowers the lexicographic
-complexity. This gives local nilpotence: well-founded induction bounds the
-depth of each column by the maximum depth of its finitely many children.
-There is no uniform exponent for all labels, and dropping the crossing
-count may increase the dot count arbitrarily. The finite geometric inverse
-on each vector would then give an invertible coefficient transition.
+`choiceTransition_evaluation` proves the native evaluation identity
 
-That would equate injectivity for different choices. It would not prove
-injectivity for any choice, nor replace the missing upward SKM independence
-with full bubble coefficients. Independently chosen reverse expansions
-need not be the inverse of the first transition.
+\[
+\operatorname{expansion}_G(Tx)=\operatorname{expansion}_F(x).
+\]
 
-## A smaller endpoint sufficient for independence transfer
+Its key compatibility lemma is `expansion_rightColumn`, proved from
+`rightAction_mul`; it retains the repository's actual source placement and the
+noncommutative coefficient multiplication order.
 
-An explicit inverse is stronger than needed for the nondegeneracy implication.
-Once the signed triangular columns and their coefficient-linear extension `T`
-are available, `T` is injective by a finite-support argument. If `x ≠ 0`, choose
-the largest lexicographic complexity among labels in its finite support. At that
-complexity, all strict-lowering columns contribute zero; distinct source labels
-have distinct reindexed leading labels. The leading coefficient is multiplied by
-`1` or `-1`, so cannot vanish. Thus `T x ≠ 0`, over an arbitrary ground ring.
+`choiceTransition_injective` uses greatest crossing count and then greatest open
+dot count in finite support. At that complexity, strict-lowering entries vanish,
+and the label equivalence separates distinct leading columns. Multiplication
+by each leading sign reflects zero over an arbitrary ground ring. The generic
+finite-support argument is `MatchingTransition.transition_injective`.
 
-Consequently, `expansion_F = expansion_G ∘ T` transfers injectivity of
-`expansion_G` to `expansion_F`. Repeating the argument with the families reversed
-gives equivalence of their injectivity statements without formalizing a locally
-nilpotent inverse. The inverse remains a useful optional strengthening, but is
-not on the shortest path to choice-independent nondegeneracy. This argument is
-conditional on the still-unconstructed coefficient-linear extension of the
-checked signed columns; it is not a proof of upward independence.
+Consequently `expansion_injective_of_choice` transfers injectivity from `G` to
+`F`; its symmetric use gives `expansion_injective_choice_iff`.
 
-## Construction of a unit column (checked standalone)
+Surjectivity is also now checked. `MatchingTransition.transition_surjective`
+works for arbitrary well-founded strict lower relations and right-invertible
+leading coefficients. It constructs each target single recursively from its
+source column and finitely many lower errors, with no uniform depth bound.
+`choiceTransition_surjective` specializes it to crossing/open-dot order, and
+`choiceLinearEquiv` bundles the resulting coefficient-space isomorphism. This
+surjectivity result also allows weak-reduced families to be compared into a
+strict family without first proving strictness of those source skeletons.
+
+The audit script
+[`MatchingDotFiltration.lean`](../../scripts/Nondegeneracy/MatchingDotFiltration.lean)
+now imports the native module and prints the axiom dependencies of the principal
+normalization, transition, and independence-transfer theorems.
+
+## Construction of a unit column (checked)
 
 Fix a label `t = (R,n)` of `F`. Completeness of `G` chooses a representative
 `S` with the same endpoint pairing, and uniqueness makes this choice a bijection
@@ -253,7 +261,6 @@ acquires a known sign depending on its parity. Both signs are units, so moving
 the source sign to the other side leaves one unit leading sign and an error in
 the target filtered image. Membership in that image supplies the required
 finite abstract-SYM coefficient vector `r_t`. No faithfulness of the bubble map
-or uniqueness of the error coefficients is used. This is now checked as `labels_filtered_signRel` in the standalone script.
-Its axiom dependencies are exactly `propext`, `Classical.choice`, and `Quot.sound`.
-The resulting full transition still needs its finite-support linear extension
-and triangular injectivity formalized.
+or uniqueness of the error coefficients is used. This is checked as `labels_filtered_signRel` in the native module. The finite
+coefficient witness is extracted by `exists_signed_column`; the construction
+then proceeds through the checked coefficient transition described above.

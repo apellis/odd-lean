@@ -10,8 +10,8 @@ import OddMath.QuiverHecke.Spanning
 Supporting the bounded cyclotomic separation step toward Brundan–Ellis,
 *Super Kac–Moody 2-categories*, §8 Nondegeneracy Conjecture (research issue #345).
 The integer score remembers dots lost by the crossing-only filtration.
-This file establishes local score control and its compatibility with contexts;
-it does not yet establish score-controlled PBW straightening or SKM independence.
+This file establishes score-controlled affine PBW straightening through the
+actual positioned relations. It does not assert SKM independence.
 -/
 
 noncomputable section
@@ -79,6 +79,24 @@ def positionedScore (n : ℕ) (gs : List PG) : ℤ :=
         omega
       · exact hi
     | cross a => simp [PG.isCross] at h
+
+ theorem positionedScore_cross {n a : ℕ} (h : a + 1 < n) :
+    positionedScore n [.cross a] = -1 := by
+  rw [positionedScore_eq_wordScore, wordScore_cross]
+  intro g hg
+  simp only [List.mem_singleton] at hg
+  subst g
+  simp only [PG.pos, PG.width]
+  omega
+
+ theorem positionedScore_dot {n p : ℕ} (h : p < n) :
+    positionedScore n [.dot p] = 1 := by
+  rw [positionedScore_eq_wordScore, wordScore_dot]
+  intro g hg
+  simp only [List.mem_singleton] at hg
+  subst g
+  simp only [PG.pos, PG.width]
+  omega
 
 universe u v w
 variable {I : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
@@ -439,5 +457,312 @@ theorem weighted_braid_move {t t' : List I} (P : List PG) {n : ℕ} (hn : t.leng
     rw [← BraidEquiv.length_eq hb₁] at this
     exact WeightedApprox.trans D Sc (ih₁ hv h h'') this
 
+
+theorem weighted_approx_ctx {t t' : List I} (Q M M' R : List PG) (c : k) (hc : IsUnit c)
+    (h : SChain t (pl t (Q ++ M ++ R)) t')
+    (hM : SChain (tgt t Q) (pl (tgt t Q) M) (tgt (tgt t Q) M))
+    (hM' : SChain (tgt t Q) (pl (tgt t Q) M') (tgt (tgt t Q) M))
+    (hmove : cl D Sc _ _ M hM - c • cl D Sc _ _ M' hM' ∈ Filt D Sc _ _ 0) {N : ℕ}
+    (hN : crossCount Q + crossCount R < N) {s : ℤ}
+    (hs : s ≤ positionedScore t.length Q + positionedScore t.length R) :
+    ∃ h' : SChain t (pl t (Q ++ M' ++ R)) t',
+      WeightedApprox D Sc N s (cl D Sc t t' (Q ++ M ++ R) h) (cl D Sc t t' (Q ++ M' ++ R) h') := by
+  have hR : SChain (tgt (tgt t Q) M) (pl (tgt (tgt t Q) M) R) t' := by
+    have : tgt (tgt (tgt t Q) M) R = t' := by rw [← tgt_append, ← tgt_append]; exact tgt_eq (by simpa only [List.append_assoc] using h)
+    exact this ▸ sChain_pl _ _
+  have h' : SChain t (pl t (Q ++ M' ++ R)) t' :=
+    sChain_append_of (sChain_append_of (sChain_pl t Q) hM') hR
+  exact ⟨h', weightedApprox_of_bounded D Sc hN (by simpa using hs) c hc
+    (bounded_correction_ctx D Sc Q M M' R c (sChain_pl t Q) hR hM hM' hmove h h')⟩
+
+
+theorem weighted_dot_down {t t' : List I} (P : List PG) {n : ℕ} (hn : t.length = n) (σ : List ℕ)
+    (hv : ValidWord n σ) (p : ℕ) (hp : p < n) (R : List PG)
+    (h : SChain t (pl t (P ++ cw σ ++ [PG.dot p] ++ R)) t') :
+    ∃ h' : SChain t (pl t (P ++ [PG.dot ((wordProd n σ)⁻¹ ⟨p, hp⟩)] ++ cw σ ++ R)) t',
+      WeightedApprox D Sc (crossCount P + σ.length + crossCount R)
+        (positionedScore t.length P - (σ.length : ℤ) + 1 + positionedScore t.length R) (cl D Sc t t' _ h)
+        (cl D Sc t t' _ h') := by
+  induction σ generalizing p R with
+  | nil =>
+    have e : P ++ cw [] ++ [PG.dot p] ++ R =
+        P ++ [PG.dot ((wordProd n [])⁻¹ ⟨p, hp⟩)] ++ cw [] ++ R := by simp
+    exact ⟨e ▸ h, by rw [cl_eq_cl e h (e ▸ h)]; exact WeightedApprox.refl D Sc _ _ _⟩
+  | cons a σ ih =>
+    have ha : a + 1 < n := hv a (by simp)
+    set Q := P ++ cw σ
+    have e₁ : P ++ cw (a :: σ) ++ [PG.dot p] ++ R = Q ++ [PG.cross a, PG.dot p] ++ R := by
+      simp [Q, cw_cons]
+    have hl : (tgt t Q).length = n := by simp [hn]
+    have hM : SChain (tgt t Q) (pl (tgt t Q) [PG.cross a, PG.dot p])
+        (tgt (tgt t Q) [PG.cross a, PG.dot p]) := sChain_pl _ _
+    obtain ⟨c, hc, h₂, hm⟩ :=
+      cross_dot_move (D := D) (Sc := Sc) (by omega) (by omega) hM
+    obtain ⟨h₃, hA⟩ := weighted_approx_ctx D Sc Q _ _ R c hc (e₁ ▸ h) hM h₂ hm
+      (N := crossCount P + (a :: σ).length + crossCount R) (by simp [Q])
+      (s := positionedScore t.length P - ((a :: σ).length : ℤ) + 1 + positionedScore t.length R)
+      (by
+        have hvσ : ValidWord n σ := fun x hx => hv x (by simp [hx])
+        simp only [Q, positionedScore_append, hn, positionedScore_cw hvσ,
+          List.length_cons, Nat.cast_add, Nat.cast_one]
+        omega)
+    have hp' : swapNat a p < n := by unfold swapNat; split_ifs <;> omega
+    have e₂ : Q ++ [PG.dot (swapNat a p), PG.cross a] ++ R =
+        P ++ cw σ ++ [PG.dot (swapNat a p)] ++ ([PG.cross a] ++ R) := by
+      simp [Q]
+    obtain ⟨h₄, hB⟩ :=
+      ih (fun x hx => hv x (by simp [hx])) (swapNat a p) hp' ([PG.cross a] ++ R) (e₂ ▸ h₃)
+    have hq : (((wordProd n σ)⁻¹ ⟨swapNat a p, hp'⟩ : Fin n) : ℕ) =
+        (((wordProd n (a :: σ))⁻¹ ⟨p, hp⟩ : Fin n) : ℕ) := by
+      rw [wordProd_cons, mul_inv_rev, sadj_inv, Equiv.Perm.mul_apply]
+      congr 2
+      ext; rw [sadj_val_of_lt ha]
+    have e₃ : P ++ [PG.dot ((wordProd n σ)⁻¹ ⟨swapNat a p, hp'⟩)] ++ cw σ ++ ([PG.cross a] ++ R) =
+        P ++ [PG.dot ((wordProd n (a :: σ))⁻¹ ⟨p, hp⟩)] ++ cw (a :: σ) ++ R := by
+      rw [← hq]; simp [cw_cons]
+    refine ⟨e₃ ▸ h₄, ?_⟩
+    rw [cl_eq_cl e₁ h (e₁ ▸ h), ← cl_eq_cl e₃ h₄ (e₃ ▸ h₄)]
+    rw [cl_eq_cl e₂ h₃ (e₂ ▸ h₃)] at hA
+    apply WeightedApprox.trans D Sc hA
+    apply WeightedApprox.mono D Sc (by simp [PG.isCross]; omega) _ hB
+    simp only [positionedScore_append, hn, positionedScore_cross ha,
+      List.length_cons, Nat.cast_add, Nat.cast_one]
+    omega
+
+
+theorem cl_mem_boundedScore_of_hasRepeat {t t' : List I} (P R : List PG) {n : ℕ} (hn : t.length = n)
+    {σ : List ℕ} (hv : ValidWord n σ) (hr : HasRepeat σ)
+    (h : SChain t (pl t (P ++ cw σ ++ R)) t') :
+    cl D Sc t t' _ h ∈ BoundedScore D Sc t t' (crossCount P + (σ.length - 2) + crossCount R)
+      (positionedScore t.length P - (σ.length : ℤ) + positionedScore t.length R) := by
+  obtain ⟨α, β, b, rfl⟩ := hr
+  have hb : b + 1 < n := hv b (by simp)
+  have e : P ++ cw (α ++ [b, b] ++ β) ++ R =
+      (P ++ cw β) ++ [PG.cross b, PG.cross b] ++ (cw α ++ R) := by simp [cw]
+  rw [cl_eq_cl e h (e ▸ h)]
+  set Q := P ++ cw β
+  have hM : SChain (tgt t Q) (pl (tgt t Q) [PG.cross b, PG.cross b])
+      (tgt (tgt t Q) [PG.cross b, PG.cross b]) := sChain_pl _ _
+  have hR := sChain_suffix (e ▸ h)
+  have key : cl D Sc t t' (Q ++ [PG.cross b, PG.cross b] ++ (cw α ++ R)) (e ▸ h) =
+      cl D Sc t _ Q (sChain_pl t Q) ≫ cl D Sc _ _ _ hM ≫ cl D Sc _ t' _ hR := by
+    rw [cl_comp, cl_comp]; simp only [List.append_assoc]
+  rw [key]
+  refine boundedScore_mono D Sc ?_ ?_ (comp_boundedScore_comp D Sc Q _ _ hR
+    (filt_zero_le_boundedScore_zero D Sc _ _
+      (cross_cross_at D Sc (by simp [hn]; omega) hM)))
+  · simp [Q]; omega
+  · have hvα : ValidWord n α := fun x hx => hv x (by simp only [List.mem_append]; aesop)
+    have hvβ : ValidWord n β := fun x hx => hv x (by simp only [List.mem_append]; aesop)
+    simp only [Q, positionedScore_append, length_tgt, hn,
+      positionedScore_cw hvα, positionedScore_cw hvβ,
+      List.length_append, List.length_cons, List.length_nil, Nat.cast_add]
+    omega
+
+
+theorem WeightedApprox.mem {t t' : List I} {N : ℕ} {s : ℤ}
+    {x y : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')}
+    (h : WeightedApprox D Sc N s x y)
+    {M : Submodule k ((pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t'))}
+    (hM : ScoreLow D Sc t t' N s ≤ M) (hy : y ∈ M) : x ∈ M := by
+  obtain ⟨c, -, h⟩ := h
+  have hm := M.add_mem (hM h) (M.smul_mem c hy)
+  simpa using hm
+
+/-- Canonical affine normal forms with simultaneous crossing and score bounds. -/
+def WeightedNF (t t' : List I) (m : ℕ) (s : ℤ) :
+    Submodule k ((pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')) :=
+  Submodule.span k {f | ∃ l : List ℕ, l.Pairwise (· ≤ ·) ∧ (∀ x ∈ l, x < t.length) ∧
+    ∃ w : Equiv.Perm (Fin t.length), length t.length w ≤ m ∧
+      s ≤ (l.length : ℤ) - (length t.length w : ℤ) ∧
+      ∃ h, cl D Sc t t' (l.map PG.dot ++ cw (canWord t.length w)) h = f}
+
+theorem weightedNF_mono {t t' : List I} {m n : ℕ} {s r : ℤ}
+    (hm : m ≤ n) (hs : s ≤ r) : WeightedNF D Sc t t' m r ≤ WeightedNF D Sc t t' n s :=
+  Submodule.span_mono fun _ ⟨l, hl, hf, w, hw, hd, h, e⟩ =>
+    ⟨l, hl, hf, w, hw.trans hm, hs.trans hd, h, e⟩
+
+ theorem positionedScore_dots {n : ℕ} {l : List ℕ} (hl : ∀ p ∈ l, p < n) :
+    positionedScore n (l.map PG.dot) = l.length := by
+  rw [positionedScore_eq_wordScore]
+  · simp [wordScore]
+  · intro g hg
+    obtain ⟨p, hp, rfl⟩ := List.mem_map.mp hg
+    have := hl p hp
+    simp only [PG.pos, PG.width]
+    omega
+
+theorem weighted_nf_comp_dot {t t₀ t' : List I} {m : ℕ} {s : ℤ} (hlow : ScoreLow D Sc t t' m (s + 1) ≤ WeightedNF D Sc t t' m (s + 1))
+    {p : ℕ} (hp : p < t₀.length) (hg : SChain t₀ (pl t₀ [PG.dot p]) t')
+    {f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t₀)} (hf : f ∈ WeightedNF D Sc t t₀ m s) :
+    f ≫ cl D Sc t₀ t' [PG.dot p] hg ∈ WeightedNF D Sc t t' m (s + 1) := by
+  obtain rfl : t₀ = t' := tgt_eq hg
+  refine span_comp_mem _ (fun s hs => ?_) hf
+  obtain ⟨l, hs, hl, w, hw, hd, h, rfl⟩ := hs
+  rw [cl_comp]
+  set σ := canWord t.length w
+  have hp' : p < t.length := by rw [← length_of_sChain h]; exact hp
+  have e : l.map PG.dot ++ cw σ ++ [PG.dot p] = l.map PG.dot ++ cw σ ++ [PG.dot p] ++ [] := by
+    simp
+  rw [cl_eq_cl e _ (e ▸ sChain_append_of h hg)]
+  obtain ⟨h', hA⟩ := weighted_dot_down D Sc (l.map PG.dot) rfl σ
+    (validWord_canWord t.length w) p hp' [] (e ▸ sChain_append_of h hg)
+  set q : ℕ := (((wordProd t.length σ)⁻¹ ⟨p, hp'⟩ : Fin t.length) : ℕ)
+  have hq : q < t.length := Fin.is_lt _
+  have e' : l.map PG.dot ++ [PG.dot q] ++ cw σ ++ [] = [] ++ (l ++ [q]).map PG.dot ++ cw σ := by
+    simp
+  have hl' : ∀ x ∈ l ++ [q], x < t.length := by
+    intro x hx; simp at hx; rcases hx with hx | rfl; exacts [hl x hx, hq]
+  obtain ⟨c, hc, h'', he⟩ := dots_perm (D := D) (Sc := Sc) [] (cw σ)
+    ((List.perm_append_singleton q l).trans (List.perm_orderedInsert (· ≤ ·) q l).symm) hl'
+    (e' ▸ h')
+  rw [cl_eq_cl e' h' (e' ▸ h'), he] at hA
+  have hscore : s + 1 ≤ positionedScore t.length (l.map PG.dot) - (σ.length : ℤ) + 1 +
+      positionedScore t.length [] := by
+    rw [positionedScore_dots hl]
+    simp only [positionedScore, List.filter_nil, wordScore_nil,
+      add_zero, σ, length_canWord]
+    omega
+  refine WeightedApprox.mem D Sc hA ((scoreLow_mono D Sc
+      (by simp [σ, length_canWord]; omega) hscore).trans hlow)
+    (Submodule.smul_mem _ c (Submodule.subset_span ?_))
+  refine ⟨_, hs.orderedInsert q l, ?_, w, hw, ?_, by simpa using h'', rfl⟩
+  · intro x hx
+    rcases (List.mem_orderedInsert (· ≤ ·)).mp hx with rfl | hx
+    exacts [hq, hl x hx]
+  · have he := (List.perm_orderedInsert (· ≤ ·) q l).length_eq
+    simp only [List.length_cons] at he
+    omega
+
+
+theorem weighted_nf_comp_cross {t t₀ t' : List I} {m : ℕ} {s : ℤ}
+    (hlow : ScoreLow D Sc t t' (m + 1) (s - 1) ≤ WeightedNF D Sc t t' (m + 1) (s - 1))
+    {a : ℕ} (ha : a + 1 < t₀.length) (hg : SChain t₀ (pl t₀ [PG.cross a]) t')
+    {f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t₀)} (hf : f ∈ WeightedNF D Sc t t₀ m s) :
+    f ≫ cl D Sc t₀ t' [PG.cross a] hg ∈ WeightedNF D Sc t t' (m + 1) (s - 1) := by
+  refine span_comp_mem _ (fun s hs => ?_) hf
+  obtain ⟨l, hs, hl, w, hw, hd, h, rfl⟩ := hs
+  rw [cl_comp]
+  set σ := canWord t.length w
+  have ha' : a + 1 < t.length := by rw [← length_of_sChain h]; exact ha
+  have hv : ValidWord t.length (a :: σ) := by
+    intro x hx; simp at hx; rcases hx with rfl | hx
+    exacts [ha', validWord_canWord t.length w x hx]
+  have hσ : σ.length = length t.length w := length_canWord t.length w
+  have e : l.map PG.dot ++ cw σ ++ [PG.cross a] = l.map PG.dot ++ cw (a :: σ) := by
+    simp [cw_cons]
+  rw [cl_eq_cl e _ (e ▸ sChain_append_of h hg)]
+  set h₀ := e ▸ sChain_append_of h hg
+  have hlow' : ScoreLow D Sc t t' (crossCount (l.map PG.dot) + (a :: σ).length)
+      (positionedScore t.length (l.map PG.dot) - ((a :: σ).length : ℤ)) ≤
+      WeightedNF D Sc t t' (m + 1) (s - 1) := by
+    apply (scoreLow_mono D Sc (by simp; omega) _).trans hlow
+    rw [positionedScore_dots hl]
+    simp only [List.length_cons, Nat.cast_add, Nat.cast_one]
+    omega
+  by_cases hr : IsReduced t.length (a :: σ)
+  · set σ' := canWord t.length (sadj t.length a * w)
+    have hb : BraidEquiv (a :: σ) σ' :=
+      braidEquiv_of_isReduced hr (isReduced_canWord t.length _) (by simp [σ, σ'])
+    have h' := sChain_of_braid (l.map PG.dot) hb hv rfl h₀
+    refine WeightedApprox.mem D Sc (weighted_braid_move D Sc (l.map PG.dot) rfl hb hv h₀ h') hlow'
+      (Submodule.subset_span ⟨l, hs, hl, sadj t.length a * w, ?_, ?_, h', rfl⟩)
+    all_goals
+      have h2 : wordProd t.length (a :: σ) = sadj t.length a * w := by simp [σ]
+      have := hr.2
+      rw [h2, List.length_cons] at this
+      omega
+  · obtain ⟨σ', hb, hrep⟩ := exists_braidEquiv_hasRepeat_of_not_isReduced hv hr
+    have h' := sChain_of_braid (l.map PG.dot) hb hv rfl h₀
+    refine WeightedApprox.mem D Sc (weighted_braid_move D Sc (l.map PG.dot) rfl hb hv h₀ h') hlow' (hlow' ?_)
+    have e₂ : l.map PG.dot ++ cw σ' = l.map PG.dot ++ cw σ' ++ [] := by simp
+    rw [cl_eq_cl e₂ h' (e₂ ▸ h')]
+    refine boundedScore_le_scoreLow D Sc ?_ ?_
+      (cl_mem_boundedScore_of_hasRepeat D Sc (l.map PG.dot) [] rfl
+        (hb.validWord_iff.mp hv) hrep (e₂ ▸ h'))
+    · have := hb.length_eq
+      simp at this ⊢; omega
+    · rw [hb.length_eq]
+      simp [positionedScore]
+
+
+theorem nil_mem_weightedNF {t t' : List I} (h : SChain t (pl t []) t') (m : ℕ)
+    {s : ℤ} (hs : s ≤ 0) : cl D Sc t t' [] h ∈ WeightedNF D Sc t t' m s := by
+  have hc : canWord t.length 1 = [] :=
+    List.eq_nil_of_length_eq_zero (by rw [length_canWord, length_eq_zero_iff])
+  have e : ([] : List PG) = ([] : List ℕ).map PG.dot ++ cw (canWord t.length 1) := by simp [hc]
+  refine Submodule.subset_span ⟨[], List.Pairwise.nil, by simp, 1, ?_, ?_, e ▸ h, ?_⟩
+  · simp [length_eq_zero_iff.mpr rfl]
+  · simpa [length_eq_zero_iff.mpr rfl] using hs
+  · exact (cl_eq_cl e h _).symm
+
+theorem cl_mem_weightedNF {t : List I} {m : ℕ}
+    (hlow : ∀ t' s, ScoreLow D Sc t t' m s ≤ WeightedNF D Sc t t' m s)
+    (hprev : ∀ j < m, ∀ t' s, BoundedScore D Sc t t' j s ≤ WeightedNF D Sc t t' j s)
+    (gs : List PG) :
+    ∀ {t'} (h : SChain t (pl t gs) t'), crossCount gs ≤ m →
+      cl D Sc t t' gs h ∈ WeightedNF D Sc t t' m (positionedScore t.length gs) := by
+  induction gs using List.reverseRecOn with
+  | nil =>
+    intro t' h _
+    exact nil_mem_weightedNF D Sc h m (by simp [positionedScore])
+  | append_singleton gs g ih =>
+    intro t' h hc
+    simp only [crossCount_append, crossCount_cons, crossCount_nil, add_zero] at hc
+    by_cases hfit : g.pos + g.width ≤ (tgt t gs).length
+    · rw [cl_append]
+      cases g with
+      | dot p =>
+        have hp : p < t.length := by simpa [PG.pos, PG.width] using hfit
+        rw [positionedScore_append, positionedScore_dot hp]
+        exact weighted_nf_comp_dot D Sc (hlow _ _) (by simpa using hp) _
+          (ih (sChain_pl t gs) (by simp [PG.isCross] at hc ⊢; omega))
+      | cross a =>
+        have ha : a + 1 < t.length := by simp only [PG.pos, PG.width, length_tgt] at hfit; omega
+        rw [positionedScore_append, positionedScore_cross ha]
+        simp only [← sub_eq_add_neg]
+        simp only [PG.isCross] at hc
+        obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
+        exact weighted_nf_comp_cross D Sc (hlow _ _) (by simpa using ha) _
+          (hprev m' (by omega) _ _ (cl_mem_boundedScore D Sc _ (by omega) le_rfl))
+    · have e : pl t (gs ++ [g]) = pl t gs := by
+        rw [pl_append]; simp [ld_eq_nil (show (tgt t gs).length < g.pos + g.width by omega)]
+      have h' : SChain t (pl t gs) t' := e ▸ h
+      rw [cl_congr D Sc h h' (by rw [e])]
+      have hn : ¬g.pos + g.width ≤ t.length := by simpa using hfit
+      have he : positionedScore t.length [g] = 0 := by simp [positionedScore, hn]
+      rw [positionedScore_append, he, add_zero]
+      exact ih h' (by omega)
+
+theorem scoreLow_succ_le_boundedScore (t t' : List I) (m : ℕ) (s : ℤ) :
+    ScoreLow D Sc t t' (m + 1) s ≤ BoundedScore D Sc t t' m s :=
+  Submodule.span_mono fun _ ⟨gs, hg, hc, hd, e⟩ =>
+    ⟨gs, hg, Nat.lt_succ_iff.mp hc, hd, e⟩
+
+/-- Affine straightening preserves the lower bound on dots minus crossings.
+No SKM injectivity or cyclotomic faithfulness is assumed. -/
+theorem boundedScore_le_weightedNF (t : List I) (m : ℕ) (t' : List I) (s : ℤ) :
+    BoundedScore D Sc t t' m s ≤ WeightedNF D Sc t t' m s := by
+  induction m using Nat.strong_induction_on generalizing t' s with
+  | _ m ihm =>
+    have hlow : ∀ t' s, ScoreLow D Sc t t' m s ≤ WeightedNF D Sc t t' m s := by
+      intro t' s
+      rcases m with _ | j
+      · refine Submodule.span_le.mpr ?_
+        rintro _ ⟨gs, h, hc, hs, rfl⟩
+        exact absurd hc (Nat.not_lt_zero _)
+      · exact (scoreLow_succ_le_boundedScore D Sc t t' j s).trans
+          ((ihm j (by omega) t' s).trans (weightedNF_mono D Sc (by omega) le_rfl))
+    refine Submodule.span_le.mpr ?_
+    rintro _ ⟨gs, h, hc, hs, rfl⟩
+    exact weightedNF_mono D Sc le_rfl hs
+      (cl_mem_weightedNF D Sc hlow (fun j hj t' s => ihm j hj t' s) gs h hc)
+
+/-- A positioned word has a canonical PBW expansion with no loss of score. -/
+theorem word_mem_weightedNF {t t' : List I} (gs : List PG) (h : SChain t (pl t gs) t') :
+    cl D Sc t t' gs h ∈
+      WeightedNF D Sc t t' (crossCount gs) (positionedScore t.length gs) :=
+  boundedScore_le_weightedNF D Sc _ _ _ _
+    (cl_mem_boundedScore D Sc h le_rfl le_rfl)
 
 end OddMath.QuiverHecke

@@ -59,3 +59,7 @@ Do not open PRs against master. Do not merge experimental results piecemeal.
 ## Current continuation checkpoint
 
 The next signed-column, elementary closure, weighted braid-filtration, and exact exterior-inversion milestones are being integrated. Choice worker continues the coefficient-linear transition; closure worker extends to arbitrary word blocks; separation worker ports dot-down and normal-form induction; action worker builds distinct-colour parity-shifted tensor actions; synthesis worker derives higher bubble coefficients; independent worker tests the connected iji braid. The two-colour connected degree-two pilot has δiδj nonzero but reverse crossing·δiδj zero, so preserve the joint bounded-detection requirement.
+
+## Latest continuation
+
+A brief executor disconnect was resolved and local files/staging were verified intact. No remote divergence was introduced. Commit120463b has full green CI40220230892. Next staged milestones: native MatchingChoiceCoefficients/MatchingChoiceTransition (actual coefficient-space equivalence), RightClosure arbitrary block partial-mate contraction, and WeightedSeparation complete score-controlled PBW straightening. CyclotomicSeparation native pure-power quotient injection built successfully; its concrete consumer check and doc update are pending. New RightMateMatchings remains unverified until worker completes its proof. DotTranslation is under active verification. New disconnected bubble, higher-reservoir, and connected n3/n4 scripts must retain their exact finite scope.
