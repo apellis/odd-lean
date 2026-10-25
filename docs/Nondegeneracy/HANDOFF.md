@@ -62,6 +62,13 @@ remains the branch-wide verification gate.
 transformations; two odd transformations anticommute. This is the Hom-sector
 generator layer, not multicolour affine coherence or categorical fusion.
 
+`OddMath/SKM/RouquierBoundary.lean` adds the actual finite dotted-unit
+`RouquierBoundary.Coefficients`. `Coefficients.ofVacuumInverse` extracts it
+from negative local inversion when the common summand vanishes.
+`Coefficients.cap_mem`, `cup_cap`, and `hom_ext` prove the cap parity,
+normalized top-coefficient pairing, and boundary detection. The cutoff-two
+odd example has an odd cap; no unshifted opposite adjunction is inferred.
+
 This is the factor-action interface, including same-colour square, braid,
 and local inversion. Multicolour affine relations and distinct-colour mixed
 inversion are separate obligations. In particular no construction of a
