@@ -76,3 +76,15 @@ See [HANDOFF.md](HANDOFF.md) for exact restart state and file ownership.
 - **2026-10-25 18:11 UTC**: Baseline full CI successful. Integrating the next scoped-checked checkpoint while all streams continue. Connected pilot confirms that surviving exterior coefficients alone do not imply joint PBW detection.
 
 - **2026-10-25 18:24 UTC**: Brief executor disconnection resolved; local files and staging survived. Full CI for [120463b](https://github.com/apellis/odd-lean/actions/runs/40220230892) passed. Native choice equivalence and complete score-controlled PBW straightening are the next integration checkpoint. All streams resumed.
+
+
+## Latest execution checkpoint
+
+The workspace executor disconnected after the 19:01 UTC update. Local builds
+and edits are paused; all six streams retain their assignments and source review
+continues. Last pushed code is `901938c`. New weighted signed quotient separation,
+weak-to-strict transfer, cyclic pairing coverage, and positive-dot detector results
+passed scoped checks and are staged locally, not yet part of that commit.
+The proposed connected-action manuscript remains a written argument under review.
+See the recovery section of [HANDOFF.md](HANDOFF.md) for exact checked/unchecked
+files and restart commands. This board update was saved directly through GitHub.

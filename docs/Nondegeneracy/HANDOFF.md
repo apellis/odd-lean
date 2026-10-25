@@ -153,3 +153,71 @@ conjugate fbar*f and KKO7.3 independently of PQ. Restrict to central s=t²,
 which the P twist fixes. This avoids circular use of PQ for projectivity.
 Section 9 negative-height recurrence shifts psi as well as phi; shifted cap
 rows require a unitriangular conversion to the actual dotted rows.
+
+## Workspace-disconnection recovery checkpoint (2026-10-25)
+
+The executor became unavailable after the 19:01 UTC checkpoint. Local Lean
+and Python execution is paused; source-level research continues. This note
+was saved through GitHub and is the only remote-only change. On restoration,
+fetch and fast-forward the research branch before making the next commit,
+preserving the existing staged and unstaged research files. Do not reset or
+clean the checkout.
+
+Last pushed code: `901938ca7cb742e43f5d4e0ee6e03a2d35f51d38`.
+CI40222830590 for `8b5b2cc`: completed/success.
+CI40223506675 for `901938c` was running at the last check.
+
+### Checked locally and staged after that code commit
+
+- WeightedCoefficientSeparation and its consumer: actual signed weighted
+  relation-ideal separation, deformed polynomial membership, joint quotient
+  detection. Its existing consumer is generic; root requested an additional
+  concrete two-odd-colour rational nonzero-image example.
+- PairingRotation and consumer, including suffix pairing reflection and
+  reverse cyclic strict realization.
+- WeakMatchingChoice, WeakMateMatchings, and WeakMatchingChoice consumer:
+  genuine weak-to-strict independence transfer by a surjective triangular map.
+- UpwardTopDots and consumer; PositiveClosureDetector and consumer.
+- Expanded disconnected_tensor_action.py and DisconnectedTensorAction.md:
+  full finite degree-two weight window, actual same/mixed inversions,
+  adjunctions, supernaturality, and nonzero product of two actual odd bubbles.
+- Updated MatchingChoiceTransition, OrientedReduction, UpwardSeparation,
+  MulticolourActionTheorem, and CoupledBubbleEvaluation notes. The action
+  manuscript is explicitly PROPOSED, not a checked native action theorem.
+
+### Unfinished local continuation
+
+- choice: TopMatchingChoice core/top dots bridge checked; final length lemma
+  and consumer were being checked. Combined weak-family coverage and native
+  detector assembly remain. WeakMateMatchings is already staged.
+- sorting: TopClosureCoefficients.topPositions_perm_counts checked;
+  appending top_correction_signed was interrupted and may not have landed.
+  Need supported finite correction labels and the actual independence transfer.
+- rewriting: WeakMateCoverage file saved and elaborated; only reported errors
+  are unused simp arguments `up,dn` on line35. Remove those two simp arguments,
+  rebuild, then export. BubbleCoefficientParity is agreed next ownership but
+  not yet created: explicit coefficient-basis diagonal parity involution and
+  source/target beta placement identity.
+- separation: new WeightedDeformationIdeal composition closure and
+  high-coefficient identity compiled. BubbleCoefficientGenerators elementary
+  weight proofs have an unverified final fix; attempted singleton-delta patch
+  did not land. Concrete rational weighted consumer is pending.
+- synthesis: native negative-height cap-row conversion patch failed on its
+  first tool call; no edit/build claim. Proposed all-content even-cutoff
+  action manuscript is saved/staged. Its left-projectivity argument uses
+  opposite coefficients with d'=-d^op, not a specialization-preserving
+  involution assumed without proof.
+- action: spectral compensation review continues. Nonzero probes are not
+  isolated A1 components globally. Candidate weighted coroot folding has
+  factor2 for nonzero odd-colour fibres and factor1 for even colours; the
+  zero odd component retains factor1. This remains a target for categorical
+  comparison, not an established coupling.
+
+### Exact next priorities
+
+Resume scoped builds, finish source/target coefficient parity and sorted-boundary
+independence assembly, then contextual sorting for arbitrary boundaries. Extend
+weighted separation to specific coefficient quotient ideals. Independently
+review and implement the proposed connected action; spectral/unfurling coupling
+and fixed-weight coverage remain separate. Maintain all three streams and
+immediately reassign completed workers. No PRs against master.
