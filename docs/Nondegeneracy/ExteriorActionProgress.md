@@ -61,10 +61,33 @@ the separate B tower of dimensions 1, 2, 4. Its default local checks pass.
 The slower `--action` checks also passed: both adjunction triangles on the
 eight-dimensional regular input, and all four tested upward-relation
 blocks (dimensions 32, 32, 64, 16). The labels 0 and 1 here distinguish
-the two factors of one colour, not two distinct root colours. The complete
-EF/FE mate computation was stopped during costly coinduction matrix
-construction, so no inversion result is claimed for this exterior extension.
-There is no remaining background computation.
+the two factors of one colour, not two distinct root colours. The `--full` calculation now completes using sparse Kronecker products. The
+actual mate matrix has size 72 by 72, rank 72 and determinant 1; both inverse
+identities pass. Its central block has size 32 by 32 and determinant 1.
+The off-diagonal blocks have rank 10 each, and the Schur feedback is genuinely
+nonzero of rank 4 but square-zero. Thus H=1-feedback has inverse 1+feedback.
+All mate blocks pass odd-parity and right-linearity checks, homogeneous
+supernaturality passes, and the two actual diagonal mates equal the ordered
+finite dotted expansions. The pure-right mate has size 8 and determinant 1.
+
+There is also an actual categorical coefficient check. At total weight zero,
+form U by summing the adjunction units into the diagonal FE branches, and V
+by summing the counits from the diagonal EF branches. With the normalization
+in `MoreGenerators.etaP`, `eq_2_12_a` and `Bubbles.oddBubble`, the odd bubble is
+
+\[
+ V\sigma^{-1}U=-L_\delta.
+\]
+
+This matrix identity is checked exactly: its rank is 4 and its square is zero.
+It agrees with the source parameter d=-delta and establishes that this odd
+parameter is realized by an actual coupled bubble, not merely added as a
+spectator coefficient. The feedback also has image inside the reservoir
+exterior image and annihilates that image; both assertions are checked.
+They explain its square-zero property structurally: any endomorphism F with
+im(F) contained in im(D) and F D=0 satisfies F^2=0. This is the elementary
+lifting mechanism available when reduction modulo a square-zero coefficient
+recovers the zero-feedback model.
 
 The concrete consumer `scripts/NonVacuity/CyclotomicExteriorObstruction.lean`
 applies the obstruction theorem to the existing nonzero dual-number exterior

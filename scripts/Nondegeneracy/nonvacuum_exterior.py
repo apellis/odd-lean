@@ -2,19 +2,22 @@
 # requires-python = ">=3.10"
 # dependencies = ["sympy==1.14.0"]
 # ///
-"""Nonzero exterior reservoir and local odd action checks.
+"""Nonzero exterior reservoir: local relations, adjunction, inversion and odd bubble.
 
 Run: uv run --no-project --script scripts/Nondegeneracy/nonvacuum_exterior.py
-Add --action for the slower induction/coinduction checks (several minutes).
-The complete EF/FE mate computation is intentionally not claimed here.
-This finite calculation is not a general action or a nondegeneracy proof.
+Add --action for upward/adjunction checks or --full for the coupled inversion
+and normalized odd-bubble calculation (several minutes). Factor labels 0 and 1
+refer to one root colour. This is not a full action or nondegeneracy proof.
 """
 import sympy as S
 from functools import lru_cache
 I=S.eye
 Z=S.zeros
 
-def kron(a,b): return S.kronecker_product(a,b)
+def kron(a,b):
+ ad=a.todok();bd=b.todok()
+ return S.SparseMatrix(a.rows*b.rows,a.cols*b.cols,
+  {(i*b.rows+k,j*b.cols+l):v*w for (i,j),v in ad.items() for (k,l),w in bd.items()})
 def cols(vs,n): return S.Matrix.hstack(*vs) if vs else Z(n,0)
 def sign(p): return (-1)**(p%2)
 def paritydiag(ps): return S.diag(*[sign(p) for p in ps])
@@ -216,11 +219,98 @@ def mate(m,p,q,s,r):
  finish=Fm(cap,etarget,Ei(m,s),p,0)
  return finish*cross*u
 
+def full_checks():
+ m=regular((1,1))
+ print('regular input dimension',m.n,flush=True)
+ for t in (0,1):
+  check_adj(m,t);print('adjunction triangles PASS',t,flush=True)
+ for r in (0,1):
+  n=Fi(m,r)
+  check_up(n,[(0,1),(1,0)])
+  check_up(n,[(0,0)] if r==0 else [(1,1)])
+ branches=[(q,r) for q in (0,1) for r in (0,1)]
+ src=[Ei(Fi(m,r),q) for q,r in branches]
+ tar=[Fi(Ei(m,s),p) for p,s in branches]
+ blocks=[]
+ for p,s in branches:
+  row=[]
+  for q,r in branches:
+   if sorted((p,q))==sorted((s,r)):
+    print("computing mate",p,q,s,r,flush=True)
+    v=mate(m,p,q,s,r)
+   else:v=Z(tar[branches.index((p,s))].n,src[branches.index((q,r))].n)
+   row.append(v)
+  blocks.append(row)
+ sigma=S.BlockMatrix(blocks).as_explicit()
+ print('EF branch dimensions',[(b,n.n) for b,n in zip(branches,src)],flush=True)
+ print('FE branch dimensions',[(b,n.n) for b,n in zip(branches,tar)],flush=True)
+ print('sigma shape',sigma.shape,'rank',sigma.rank(),'det',sigma.det(),flush=True)
+ assert sigma.inv()*sigma==I(sigma.rows) and sigma*sigma.inv()==I(sigma.rows)
+ print('two-sided inverse PASS',flush=True)
+ # Central 2x2 block: AA* and BB* to A*A and B*B.
+ central=S.BlockMatrix([[blocks[0][0],blocks[0][3]],[blocks[3][0],blocks[3][3]]]).as_explicit()
+ print('central block',central.shape,'rank',central.rank(),'det',central.det(),flush=True)
+ sa,cc,dd,sb=blocks[0][0],blocks[0][3],blocks[3][0],blocks[3][3]
+ print('factor mate ranks',sa.rank(),sb.rank(),'cross diagonal-mate ranks',cc.rank(),dd.rank(),flush=True)
+ feedback=dd*sa.inv()*cc*sb.inv(); H=I(sb.rows)-feedback
+ assert feedback.rank()==4 and feedback**2==Z(feedback.rows)
+ assert H*(I(H.rows)+feedback+feedback**2)==I(H.rows)
+ print('feedback rank',feedback.rank(),'feedback squared zero',feedback**2==Z(feedback.rows),'H rank',H.rank(),'H det',H.det(),flush=True)
+ for ir,(p,s) in enumerate(branches):
+  for ic,(q,r) in enumerate(branches):
+   v=blocks[ir][ic]
+   if not v.is_zero_matrix:
+    assert src[ic].idx==tar[ir].idx
+    assert all(v*src[ic].act[j]==tar[ir].act[j]*v for j in range(len(src[ic].act)))
+    assert paritydiag(tar[ir].ps)*v==-v*paritydiag(src[ic].ps)
+ print('all mate blocks rightlinear and odd PASS',flush=True)
+ base_delta=lmul(C[m.idx],kron(A[1].coord(ad),B[1].one))
+ delta_bb=Fm(Em(base_delta,m,m,1,1),Ei(m,1),Ei(m,1),1,1)
+ assert feedback*delta_bb==Z(feedback.rows)
+ assert S.Matrix.hstack(delta_bb,feedback).rank()==delta_bb.rank()
+ print('feedback factors through exterior image and kills it PASS',flush=True)
+ total_unit=S.Matrix.vstack(*[unit(m,p) if p==s else Z(n.n,m.n)
+   for (p,s),n in zip(branches,tar)])
+ total_cap=S.Matrix.hstack(*[counit(m,q) if q==r else Z(m.n,n.n)
+   for (q,r),n in zip(branches,src)])
+ bubble=total_cap*sigma.inv()*total_unit
+ print('coupled undotted bubble rank',bubble.rank(),'delta rank',base_delta.rank(),
+       'equals delta',bubble==base_delta,'equals -delta',bubble==-base_delta,flush=True)
+ assert bubble == -base_delta and bubble.rank()==4 and bubble**2==Z(m.n)
+ print('normalized odd bubble equals minus reservoir exterior PASS',flush=True)
+
+ for j,pf in enumerate(C[m.idx].ps):
+  f=lmul(C[m.idx],I(m.n)[:,j])
+  ef=S.diag(*[Em(Fm(f,m,m,r,pf),Fi(m,r),Fi(m,r),q,pf) for q,r in branches])
+  fe=S.diag(*[Fm(Em(f,m,m,s,pf),Ei(m,s),Ei(m,s),p,pf) for p,s in branches])
+  assert sigma*ef==sign(pf)*fe*sigma
+ print('regular-module homogeneous supernaturality PASS',flush=True)
+ # Compare both off-diagonal mates with the proposed ordered dotted composites.
+ def dotted_unit(t,r):
+  e=Ei(m,t)
+  return Fm(dot(m,t)**r,e,e,t,r%2)*unit(m,t)
+ def dotted_cap(t,r):
+  return counit(m,t)*dot(Fi(m,t),t)**r
+ assert dot(m,0)**3==Z(Ei(m,0).n)
+ assert dot(Fi(m,0),0)**3==Z(Ei(Fi(m,0),0).n)
+ cp=sum((sign(r)*dotted_unit(0,r)*dotted_cap(1,-r-1) for r in range(3)),Z(*cc.shape))
+ dp=sum((sign(r)*dotted_unit(1,-r-1)*dotted_cap(0,r) for r in range(3)),Z(*dd.shape))
+ assert cc==cp and dd==dp
+ print('actual diagonal-mate expansions C and D PASS',flush=True)
+ right=regular((0,1))
+ right_mate=mate(right,1,1,1,1)
+ assert right_mate.shape==(8,8) and right_mate.det()==1
+ assert right_mate.inv()*right_mate==I(8)==right_mate*right_mate.inv()
+ print('pure-right mate',right_mate.shape,'rank',right_mate.rank(),'det',right_mate.det(),flush=True)
 def main():
  import argparse
  parser=argparse.ArgumentParser(description=__doc__)
+ parser.add_argument('--full',action='store_true',help='also check full EF/FE inversion and normalized odd bubble')
  parser.add_argument('--action',action='store_true',help='also check adjunction triangles and upward relations; slower')
  args=parser.parse_args()
+ if args.full:
+  full_checks()
+  return
  print('nonzero exterior, square-zero, cyclotomic and odd nilHecke relations PASS',flush=True)
  print('A dimensions',[a.n for a in A],'B dimensions',[b.n for b in B],flush=True)
  assert A[0].coord(ad)!=Z(A[0].n,1)

@@ -116,6 +116,38 @@ coefficients. The source and target sorting arguments require the
 induction hypothesis for all choices at smaller boundaries; one globally
 compatible family is not needed.
 
+## Evaluated right-closure steps now checked
+
+`OddMath/SKM/RightClosure.lean` constructs the literal closure on arbitrary
+sorted boundaries as both `rightClosureL` (layers) and `rightClosure`
+(a linear map on actual SKM morphisms). Its source region is exactly
+`wt D μ (ups r)`. `rightClosure_cl` identifies the linear map with the
+literal cup/middle/cap list; `sChain_rightClosureL` checks its boundaries.
+
+Three elementary formulas are proved in the quotient presentation, without
+upward independence:
+
+- `cl_rightClosure_sigma`: `R(σ_ij)=τ_ij` for every pair of colors, including
+  equal odd colors. The proof applies the actual pitchfork at the shifted
+  local weight, interchanges an even cup, and cancels a right zigzag.
+- `cl_rightClosure_pair`: a right cap-cup with arbitrary one-strand upward
+  decorations `A,B` closes to `A` on the right upward strand followed by
+  `B` on the left upward strand. In particular this gives
+  `R(e_a;H_m)=Y^a;X^m` in the chronological convention of
+  `ElementaryClosure.md`. The two decorations are not silently commuted.
+- `cl_rightClosure_downward_cap`: closing a cap with `n` dots on its
+  downward leg gives `(-1)^(|i| floor(n/2))` times the upward dot power.
+  For two odd dots the sign is minus; there is no square-zero conclusion.
+  The supporting `cl_rightClosure_cap` treats arbitrary upward cap
+  decorations.
+
+`scripts/NonVacuity/RightClosure.lean` applies these results to a concrete
+two-color odd datum over `ℚ`, including both distinct and repeated colors,
+odd decorations on both resulting strands, and the two-downward-dot sign.
+These native calculations discharge local pieces of item 1 above. They do
+not yet construct the finite global sweep or the full-SYM transport of
+item 2.
+
 ## Verification
 
 The library theorem is in `OddMath/SKM/OrientedReduction.lean`; its concrete

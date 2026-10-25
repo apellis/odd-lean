@@ -176,3 +176,93 @@ python3 scripts/Nondegeneracy/odd_spectral_blocks.py
 
 This is exact rational matrix evidence with six negative controls. It constructs
 neither a quiver-Hecke action nor an SKM action and proves no matching independence.
+
+## Follow-up: adversarial score audit and a reducible overlap family
+
+The executable `scripts/Nondegeneracy/cyclotomic_score_audit.py` independently
+normalizes two-strand words, rather than checking only numerical scores.
+It tests the odd nilHecke rules and a distinct-odd-colour Ore model with
+`τx=−yτ`, `τy=−xτ`, and the deliberately inhomogeneous invariant polynomial
+`τ²=1+x²+y²+3x²y²`. The latter is a local stress model, not a constructed
+general SKM datum/action. Both models retain independent exterior generators
+`d,e`, anticommuting with all three odd strand generators. All 25 minimal
+length-three rewrite ambiguities in each model agree. The test checks 18,432
+explicit two-sided multiples of pure and weighted deformed generators and
+finds the asserted score support. An unweighted unit constant term fails the
+bound, as it should. These finite tests do not replace the general proof or
+the three-strand braid audit.
+
+There is also a useful reduction in the proposed DEL overlap agenda. Consider
+a bubble of colour `i` passing a crossing whose two strand colours are both
+different from `i`. The connected normalized slide formula already proved in
+`BubbleSlidesConnected.lean` expresses slide corrections through its
+polynomial `P_ij`. Every exponent on an odd `j` strand in this polynomial is
+even, by `Sc.parity_of_ne_zero` and `parity_mul_dn`. Consequently these factors
+are even, and use squared dots on odd strands. Formal generating-series
+parameters here are ordinary commuting bookkeeping variables.
+
+For distinct crossing colours `j≠k`, the dot-crossing relations have no
+identity correction. They therefore transport the factors individually:
+
+`τ_jk P_ij(x) P_ik(y) = P_ij(y) P_ik(x) τ_jk`,
+
+where variables on the right follow their strand to the new position. The
+even powers remove every odd dot-crossing sign, and the transported factors
+commute. This resolves the **polynomial transport part** of this overlap;
+the actual diagrammatic statement still has to match boundary weights,
+normalizations and the common bubble's super-interchange sign.
+
+For an equal odd crossing colour `j=k≠i`, put `u=x²`, `v=y²`, `c=x−y`.
+The odd nilHecke rules give
+
+`τu=vτ+c`, `τv=uτ−c`,
+
+and `c` commutes with `u,v`. Induction on polynomials consequently gives
+
+`τ f(u,v) = f(v,u) τ + c ∂f(u,v)`,
+
+where `∂f=(f(u,v)−f(v,u))/(u−v)` denotes the polynomial divided difference,
+not localization or division in the coefficient ring. Hence every symmetric
+polynomial in `u,v` commutes with `τ`. In particular the two identical slide
+factors `P_ij(x)P_ij(y)` commute with this crossing. A single factor need not:
+`τx²−y²τ=x−y` is a useful nonzero control. This reduces the same-colour
+polynomial diamond to a familiar centrality identity rather than a new
+critical-overlap computation.
+
+`scripts/Nondegeneracy/bubble_crossing_overlap.py` verifies 50 transport and
+symmetric-centrality cases, the nonzero single-factor residual, and an
+independent exterior-pair control. The remaining difficult families include
+the cases where the bubble colour equals a crossing colour, cups/caps and
+inversion summands, and three-strand mixed braid interactions. No global
+termination, confluence, or relative normal-form invariant is supplied here.
+
+## Connected two-odd-colour reservoir pilot
+
+For off-diagonal Cartan entries `−2`, take the permitted two-odd-colour
+quadratic `Q(x,y)=x²+y²`; parity excludes an interior `xy` term. Two nilpotent
+reservoirs make `Q` nilpotent. Thus the invertible crossing from a disconnected
+tensor construction cannot simply be reused in both directions: its composite
+would be invertible, whereas the required quadratic is nilpotent.
+
+There is nevertheless no obstruction at the level of two-strand upward local
+relations. The exact pilot `scripts/Nondegeneracy/connected_odd_reservoir.py`
+uses two copies of the four-dimensional exterior reservoir from
+`nonvacuum_exterior.py`. Their super tensor product has dimension 16. Give
+the reversed-word summand the opposite parity grading. If `S` is the superflip
+and `P` total parity, put `J=P S` and set
+
+`τ_ij=J`, `τ_ji=Q J`.
+
+Both maps are odd between the shifted word summands; they obey signed dot and
+colour-specific exterior-coefficient transport, and their two composites
+equal `Q`. Their ranks are 16 and 6, respectively. The product `δ_i δ_j` has
+rank 4 and remains nonzero, while `Q` has nilpotence index 3. The computation
+also rejects using `J` in both directions, as the disconnected case would.
+
+This pilot exposes a concrete limitation rather than establishing separation:
+`Q δ_i δ_j=0`, so the reverse crossing decorated by the two independent odd
+coefficients is zero at this small cutoff. Retaining a nonzero bubble product
+does not by itself give joint operator/coefficient detection. Growing
+reservoirs and the weighted separation bound are necessary for this design.
+There is no three-strand braid, adjunction, mixed `EF` inversion, or actual
+two-colour bubble computation in this pilot. These remain construction tasks.

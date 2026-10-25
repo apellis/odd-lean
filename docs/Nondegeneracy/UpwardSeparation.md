@@ -142,7 +142,7 @@ the tensor-product module is coefficientwise PBW by the preceding explicit
 construction. After quotienting, the weighted ideal-support proof establishes
 bounded injectivity; it does not assume freeness of the entire quotient.
 This construction is not a multicolour SKM action supplied by the rank-one
-source. ELV states the cited presentation over `Q`; any use over a broader
+source. We use this source presentation over `Q` for the pilot; any use over a broader
 ground ring here refers to this explicitly defined algebraic presentation,
 not an extension of the source's categorical theorem.
 
@@ -181,13 +181,30 @@ operator detection in two unrelated factors does not supply item 4.
 
 Existing inputs are `QuiverHecke.basisNF`, the explicit local relation
 expansions in `PositionalRelations`, and the terminating proof in `Spanning`.
-`Straighten.Filt` and `Low` currently remember crossing counts only. Their
-membership statements alone cannot recover a lower bound on dots, so a new
-proof must retain both counts through the local expansions and the induction
-in `Spanning`; a lemma deduced only from `Filt` would lose the necessary
-information. After this refinement, the ideal and disjoint-support arguments
-are routine finite-sum and basis-coordinate arguments. No new Lean file is
-claimed as checked by this note.
+`Straighten.Filt` and `Low` remember crossing counts only. Their general
+membership statements cannot recover a lower bound on dots. However, the
+existing *local* correction statements land in `Filt 0`, where every
+representative has nonnegative score. This permits reuse of the local
+relations without duplicating their polynomial expansions.
+
+`OddMath/QuiverHecke/WeightedSeparation.lean` now establishes this local
+reduction, score control under arbitrary contexts, and the joint
+`BoundedScore` filtration recording crossing bounds and score bounds on the
+same representatives. It also proves `weighted_approx_step` and
+`weighted_braid_move`: arbitrary Coxeter braid equivalences have unit leading
+coefficient with corrections of strictly fewer crossings and the required
+score lower bound. Its scoped Lean check passed with warnings as errors.
+The effective `positionedScore` ignores out-of-range positioned generators:
+the repository interprets these as empty layers, so counting an invalid dot
+would otherwise give arbitrarily high score to the identity. On valid words
+it agrees with the stated dot-minus-crossing score.
+
+Weighted dot transport and the final simultaneous refinement of the terminating
+`Spanning` induction remain outstanding. Separate membership in a crossing span and a score span
+is insufficient: the needed induction uses their joint generating set.
+After this refinement, the ideal and disjoint-support arguments are
+finite-sum and basis-coordinate arguments. Neither the bounded quotient
+theorem nor the weighted ELV extension is currently a Lean theorem.
 
 ## A concrete coupling target for reservoir and spectral factors
 

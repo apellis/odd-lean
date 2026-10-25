@@ -15,7 +15,7 @@ Do not open PRs against master. Do not merge experimental results piecemeal.
 ## Baseline and checks
 
 - Baseline commit `0edcf48367872a8edc5563eb781cc777a3ecd227` is pushed.
-- Full CI: run `40218574038`, not yet reported successful.
+- Full CI: run `40218574038` completed successfully (baseline `0edcf48`).
 - Dependencies in this checkout are copies at the checked-in exact pins. Do not
   run `lake update` or edit external/shared source checkouts.
 - Local full build was interrupted when branch CI was dispatched. Targeted
@@ -24,7 +24,7 @@ Do not open PRs against master. Do not merge experimental results piecemeal.
   normalization, finite oriented coefficient detection, cyclotomic obstruction.
 - Python spectral checker and quick exterior checker pass. The exterior
   script's `--action` mode also passed its recorded upward/adjunction tests;
-  full EF/FE inversion is still absent.
+  the later `--full` mode now checks actual 72×72 EF/FE inversion, nonzero square-zero feedback, supernaturality, actual C/D expansions, and normalized odd bubble −δ. Root independently reproduced the complete run.
 
 ## Ownership and next steps
 
@@ -55,3 +55,7 @@ Do not open PRs against master. Do not merge experimental results piecemeal.
   algebra, or an explicitly proved invertible earlier-variable substitution.
 - The weighted separation paper argument still needs native formalization.
   Complete SKM action and normalized bubble comparison remain separate tasks.
+
+## Current continuation checkpoint
+
+The next signed-column, elementary closure, weighted braid-filtration, and exact exterior-inversion milestones are being integrated. Choice worker continues the coefficient-linear transition; closure worker extends to arbitrary word blocks; separation worker ports dot-down and normal-form induction; action worker builds distinct-colour parity-shifted tensor actions; synthesis worker derives higher bubble coefficients; independent worker tests the connected iji braid. The two-colour connected degree-two pilot has δiδj nonzero but reverse crossing·δiδj zero, so preserve the joint bounded-detection requirement.

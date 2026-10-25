@@ -3,8 +3,10 @@
 Crossing-filtered coefficient extraction and the unit-leading signed comparison
 with explicitly bounded error morphisms are proved in Lean. A standalone checked
 calculation also normalizes bounded lower-dot sectors into a filtered coefficient
-image. The signed comparison between two choices and its inverse are not yet
-constructed; none of these results establishes independence.
+image. The standalone calculation now also constructs endpoint label reindexing
+and the signed unit-column comparison between two arbitrary choices. Its
+coefficient-linear extension and triangular injectivity are not yet formalized;
+none of these results establishes independence.
 
 ## Crossing-filtered expansions
 
@@ -123,8 +125,8 @@ error loses a strand dot and its odd bubble slides without regenerating
 strand dots. General bubble slides need not have that property.
 
 The crossing-filtered result above handles the lower-crossing errors.
-The filtered normalization below handles lower-dot sectors on a chosen family;
-the resulting signed comparison between two families still needs construction.
+The filtered normalization below handles lower-dot sectors on arbitrary reduced
+skeletons; the signed comparison between two families is now checked standalone.
 
 ## Filtered lower-dot normalization
 
@@ -163,9 +165,9 @@ assumption. At `n = 0`, the decorated-error span is zero.
 
 This removes the need for a simultaneous recursion between the two families:
 both representatives' lower-dot errors normalize directly into the fixed target
-family. The remaining construction must preserve endpoint reindexing, realize
-each strand multiplicity by a canonical endpoint-dot list, and retain the signed
-leading label through bending. The standalone results are not yet part of the
+family. The endpoint reindexing, canonical endpoint-dot list, and signed leading label
+through bending are now constructed by `labelsEquiv`,
+`exists_canonical_strand_dots`, and `labels_filtered_signRel`. The standalone results are not yet part of the
 imported library API. The extension passes standalone compilation with warnings
 as errors; its printed axiom dependencies are exactly `propext`,
 `Classical.choice`, and `Quot.sound`.
@@ -206,10 +208,10 @@ Consequently, `expansion_F = expansion_G ∘ T` transfers injectivity of
 gives equivalence of their injectivity statements without formalizing a locally
 nilpotent inverse. The inverse remains a useful optional strengthening, but is
 not on the shortest path to choice-independent nondegeneracy. This argument is
-conditional on the still-unconstructed signed coefficient transition; it is not
-a proof of upward independence.
+conditional on the still-unconstructed coefficient-linear extension of the
+checked signed columns; it is not a proof of upward independence.
 
-## Construction of a unit column (mathematical proof, not yet formalized)
+## Construction of a unit column (checked standalone)
 
 Fix a label `t = (R,n)` of `F`. Completeness of `G` chooses a representative
 `S` with the same endpoint pairing, and uniqueness makes this choice a bijection
@@ -251,7 +253,7 @@ acquires a known sign depending on its parity. Both signs are units, so moving
 the source sign to the other side leaves one unit leading sign and an error in
 the target filtered image. Membership in that image supplies the required
 finite abstract-SYM coefficient vector `r_t`. No faithfulness of the bubble map
-or uniqueness of the error coefficients is used. This proves the desired
-unit-column assertion at the mathematical level, subject to implementing the
-endpoint list and the stated identifications in Lean. The resulting full
-transition still needs its finite-support linear extension formalized.
+or uniqueness of the error coefficients is used. This is now checked as `labels_filtered_signRel` in the standalone script.
+Its axiom dependencies are exactly `propext`, `Classical.choice`, and `Quot.sound`.
+The resulting full transition still needs its finite-support linear extension
+and triangular injectivity formalized.

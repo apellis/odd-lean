@@ -5,6 +5,12 @@ obligations, not a proof of general odd nondegeneracy. No new Lean theorem is
 claimed here. Repository baseline: `5b698faee17e176c871cd07ee272b89585148617`;
 Categorification pin: `777be9ef0d1f66354e185afbde208119f5255bb3`.
 
+Subsequent concrete progress is recorded in
+[CoupledBubbleEvaluation.md](CoupledBubbleEvaluation.md): a native Lean
+formula identifies the height-zero odd bubble with an inverse-mate
+coefficient, and the actual finite exterior coupling evaluates it nontrivially.
+That calculation tests the first coupling coefficient, not the full proposal.
+
 ## What really worked in the even repository
 
 The user's recollection is correct. `OddMath/SKM/EvenBridge/EvenNondegeneracy.lean`
