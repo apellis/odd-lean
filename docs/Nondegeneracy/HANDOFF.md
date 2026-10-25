@@ -200,6 +200,16 @@ pass the scoped warning-free build. Square, braid, crossing and KKO
 comparisons remain open; unsigned right multiplication is not substituted
 for the signed-left superbimodule convention.
 
+`CyclotomicAction/ActionSupercategory.lean` packages these supermodule
+categories as `cyclotomicActionObject` in the existing `SCat` 2-supercategory,
+with bundled target `cyclotomicActionTarget : TwoSCat k`.
+`cyclotomicActionInduction` and `cyclotomicActionRestriction` are its
+1-morphisms; `cyclotomicActionAdjunction` inhabits the existing
+`SKM.SuperAdjunction` and proves both triangles with even unit and counit.
+`cyclotomicActionDot_mem` gives the colour parity of its dot 2-endomorphism.
+No local inversion or new action interface is assumed. This positive-height
+packaging does not supply crossings, vacuum, or the Mackey decomposition.
+
 ## Proof architecture
 
 | Step | Statement | Status |
