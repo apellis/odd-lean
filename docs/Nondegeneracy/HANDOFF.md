@@ -189,8 +189,11 @@ level difference. `odd_pairing_invariant` proves invariance under signed root
 words. `exists_weights_of_pairing_surjective` realizes the levels in a
 pairing-complete lattice; `exists_extended_weights` does so for every datum
 in the explicit extension `X × (I → ℤ)`, without changing its Cartan matrix
-or parity. Restriction of the categorical action along `μ ↦ (μ,0)` is still
-open. These arithmetic results alone do not construct a fused family.
+or parity. `ReservoirWeights.restrictRouquierFamily`, in the
+`ReservoirWeightRestriction.lean` module, restricts the actual super
+Rouquier factor interface along `μ ↦ (μ,0)`, retaining local inverses and
+all parity shifts. Full multicolour action and fused-family construction
+remain open.
 
 `QuiverHecke.reservoirWindowCoordinates` in `ReservoirCoordinates.lean`
 splits the bounded connected ELV injection over a field and recovers the

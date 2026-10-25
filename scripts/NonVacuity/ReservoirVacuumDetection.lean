@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.ReservoirVacuumExamples
 import OddMath.QuiverHecke.ReservoirWeights
 import OddMath.QuiverHecke.ReservoirCoordinates
+import OddMath.QuiverHecke.ReservoirWeightRestriction
 
 open CategoryTheory
 
@@ -25,6 +26,8 @@ example (N : ℕ) : ∃ m, ∀ i : Bool,
 #print axioms odd_pairing_invariant
 #print axioms exists_extended_weights
 #print axioms pairingExtension_cartanMatrix
+#print axioms restrictRouquierFamily
+#print axioms restrictRouquierFamily_obj
 
 example (μ : Bool → ℤ) (m : ℕ) :
     ∃ μp μm : (Bool → ℤ) × (Bool → ℤ), μm - μp = (μ, 0) ∧

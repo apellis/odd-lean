@@ -98,8 +98,11 @@ For example, on the root lattice of affine A1 with Cartan matrix
 `[[2,-2],[-2,2]]`, the two coroot pairings sum to zero; no weight has both
 pairings strictly positive. Thus arbitrary-lattice coverage must instead
 use cover levels and a compatible relabelling of the action's external
-weights. Constructing that relabelling is still open. The level arithmetic
-alone does not discharge `FusedFixedWeightFamily.covers`.
+weights. `restrictRouquierFamily` now constructs that restriction for the
+super Rouquier factor interface, including its homogeneous local inverses,
+in `ReservoirWeightRestriction.lean`. It does not construct a full
+multicolour action or a fused family, so `FusedFixedWeightFamily.covers`
+remains a categorical obligation.
 
 ## Bounded coordinates on the connected regular quotient
 
@@ -140,6 +143,19 @@ implements these finite inverse substitutions. The Lean recursion supplies
 the algebraic inverse, not that identification or an automorphism of `SYM`.
 In particular, these results do not yet prove a multicolour categorical bubble
 evaluation theorem without a formula hypothesis.
+
+The super input is now `SKM.SuperRouquierLoc` and
+`RouquierBoundary.Coefficients.ofVacuumInverse`, not a second local-action
+interface. The inverse gives the normalized finite Kronecker window
+`Coefficients.cup_cap`. It does **not** identify the dot's deformed
+cyclotomic polynomial or its exterior coefficient. The even
+`VacuumRouqBubbles.lean` additionally proves a concrete block comparison
+for the mate and dot operators before applying the coefficient calculation
+in `VacuumBubbles.lean`. The super analogue still needs that comparison
+with the connected reservoir module, including the odd coefficient action
+and probe normalization. Consequently `NormalizedBubbleFormula` has not
+been removed, and the main upward-independence theorem is not restated
+with only action and fusion hypotheses.
 
 ## Connected tests
 
