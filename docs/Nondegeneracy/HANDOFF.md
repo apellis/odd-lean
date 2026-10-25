@@ -170,6 +170,10 @@ transformation `cyclotomicSuperUnit`, from the identity to induction followed
 by restriction, i.e. each module maps into `e B ⊗_B (B e ⊗_A M)`. Naturality is proved
 for odd as well as even module maps; both inserted idempotents have parity
 zero.
+`CyclotomicAction/SuperAdjunctionCounit.lean` constructs
+`cyclotomicSuperCounit` by `(x ⊗ (y ⊗ m)) ↦ (xy)m`. Its naturality proof
+accounts for both tensor-whiskering signs and the signed left-linearity of
+an odd supermodule map.
 
 ## Proof architecture
 
