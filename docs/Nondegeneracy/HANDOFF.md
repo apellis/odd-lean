@@ -165,6 +165,11 @@ separate.
 `cornerCoevaluation : A → e B ⊗_B B e`, together with the two elementary
 idempotent triangular identities. These use actual multiplication in the
 cyclotomic quotient.
+`CyclotomicAction/SuperAdjunctionUnit.lean` constructs the even natural
+transformation `cyclotomicSuperUnit`, from the identity to induction followed
+by restriction, i.e. each module maps into `e B ⊗_B (B e ⊗_A M)`. Naturality is proved
+for odd as well as even module maps; both inserted idempotents have parity
+zero.
 
 ## Proof architecture
 
