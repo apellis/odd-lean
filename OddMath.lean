@@ -6,6 +6,7 @@ import OddMath.QuiverHecke.Centre
 import OddMath.QuiverHecke.CentreFinite
 import OddMath.QuiverHecke.Realization.Functor
 import OddMath.QuiverHecke.Realization.SigmaRelations
+import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
 import OddMath.QuiverHecke.CyclotomicAction.Normality
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers

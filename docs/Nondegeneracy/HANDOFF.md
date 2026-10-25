@@ -99,7 +99,11 @@ conjugate square-annihilator, and the odd-cutoff normality and square.
 These are ring identities with coefficient commutations and top-coefficient
 annihilation explicit, not a constructed normalizing automorphism or a
 balanced all-content bimodule. In particular the even inverse-balance dot
-is `x+2d`, not `x-2d`.
+is `x+2d`, not `x-2d`. `LocalRelationExamples` checks both balances on
+exterior creation/contraction matrices with `x²=1` and `d≠0`, and proves
+that using the normalizer instead of its inverse fails. It also constructs
+a single directed-sign crossing operator whose constant square is the identity.
+Its headline axiom inventory uses only the permitted standard axioms.
 
 [OddCutoffAction.md](OddCutoffAction.md) gives a proposed exterior-translation
 reduction for odd cutoffs: `f_i=(x-d_i)C_i(x²)`, with no top-coefficient relation.
