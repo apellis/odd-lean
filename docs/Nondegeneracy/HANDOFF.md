@@ -139,6 +139,12 @@ This ordinary adjunction is not yet a `SuperAdjunction` or KKO inversion.
 `induction_dot_slide`; `induction_dot_slide_odd` specializes it to the minus
 sign for an odd new dot and an odd lower morphism. This supplies the corrected
 homogeneous intertwiner equation rather than the false unsigned equation.
+`CyclotomicAction/Parity.lean` equips affine `Hn` with its parity grading
+independently of any integer symmetrizer. The coefficient-support condition
+`CyclotomicPolynomialParity` proves homogeneity of the actual first-dot
+polynomial generators and, in `cyclotomicIdeal_homogeneous_of_polynomials`,
+of the entire two-sided ideal. Right multipliers are decomposed into
+homogeneous parts; they are not silently assumed homogeneous.
 
 ## Proof architecture
 
