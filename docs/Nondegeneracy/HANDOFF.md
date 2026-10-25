@@ -56,6 +56,13 @@ endomorphisms to the specified upward presentation remains open. Ordinary revers
 for projectivity and super-opposite reversal for natural transformations must not
 be identified. No multicolour action is yet claimed in Lean.
 
+[OddCutoffAction.md](OddCutoffAction.md) gives a proposed exterior-translation
+reduction for odd cutoffs: `f_i=(x-d_i)C_i(x²)`, with no top-coefficient relation.
+The normalizing automorphism acts by parity on coefficients and is involutive;
+copying the even-cutoff inverse twist gives the wrong sign. The relative action
+extension preserves inversion by triangular dot-row changes. Its unconditional
+use still requires the all-content diagram and presentation comparison.
+
 ## Open obligations
 
 1. **Same-colour exchange descent**, source and target. The distinct-colour target proof is
