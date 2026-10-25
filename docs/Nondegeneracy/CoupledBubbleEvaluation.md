@@ -192,3 +192,87 @@ mixed-colour interactions intact whenever `Q_ij(0,0)=0`. Generic nonzero
 Clifford probes do not eliminate that construction task. A full proof still
 needs a multi-colour reservoir action and verification of its coupling to
 the probes.
+
+## Audit of the categorical inversion maps
+
+This section concerns the proposed multicolour extension of the ELV
+action, not a new computation in the finite matrix model above. Use
+KKO [arXiv:1206.5933v2](https://arxiv.org/abs/1206.5933), Section 9,
+and the detailed negative-height proof in Kang--Kashiwara
+[arXiv:1102.4677v4](https://arxiv.org/abs/1102.4677), Section 5.2.
+
+The orientation matters. Take native `E` to be induction and native `F`
+to be restriction, with weight `-Λ+β`; these are KKO's `F,E`, at the
+negative of KKO's weight. The ordinary induction/restriction adjunction
+has unit `1 ↦ 1` and multiplication counit. Its triangle identities
+hold on tensors before any projectivity claim. Projectivity from
+Section 8 is needed to restrict both functors to projective modules,
+not to establish these triangles.
+
+Under this identification KKO (9.5)'s map
+`F(a ⊗ π_i b)=a τ_n ⊗ b` is the native mate `sigmaL` of the upward
+crossing: inserting the unit, multiplying by the crossing, and applying
+the multiplication counit gives precisely that tensor formula. The
+displayed parity shift records the odd crossing; it is not a different
+choice of adjunction. The source unit and counit therefore identify the
+extra polynomial components with actual dotted cups and caps.
+
+The two rows of (9.5) use the already-established Section 8 exact
+sequence and its tensor consequences. Its columns are the affine Mackey
+decompositions. Consequently the diagram does not presuppose the
+categorical inversion theorem it is used to prove. Different-colour
+inversion (9.1)--(9.3) uses the same cyclotomic ideal decomposition:
+the possible double-crossing remainder has equal endpoint colours and
+vanishes after projecting to distinct endpoints. Even total parity of
+the deformed `f_i` preserves its required distant commutations.
+
+For equal colours let `P(v_k)=F(ψ_k)+φ_k` be the Mackey decomposition,
+and let `X` denote KKO (9.8)'s old-dot operator on the `ψ` summand.
+The ELV polynomial semilinearity changes the recurrence (9.12) to
+
+`ψ_(k+1)=ψ_k X - 2 ψ_k d_i`,
+
+`φ_(k+1)=E(ψ_k)+φ_k(t-2d_i)`.
+
+These are right-action formulas with the source's parity conventions;
+the evaluation map `E` itself includes its displayed parity involution.
+It is incorrect to copy (9.12) with an unchanged `ψ` recurrence.
+
+Assume the audited filtered argument gives `γ φ_k` monic of degree
+`a+k`, where `a` is KKO's coroot height and `γ` is its leading scalar
+unit. For `a≥0`, the cokernel basis `1,t,...,t^(a-1)` lifts by the
+actual dotted units. This gives the native negative-height inversion
+matrix, with its original right adjunction.
+
+For `a=-b<0`, the kernel basis has degrees below `b`. The recurrence
+implies `E(ψ_j)=0` for `j<b-1` and `E(ψ_(b-1))=γ⁻¹`. Iterating the
+shifted operator `Y=X-2R_(d_i)` makes the cap-coordinate matrix
+antitriangular with unit antidiagonal. To recover the **actual** cap
+matrix one must replace `E Y^r` by `E X^r`. Since `X` anticommutes with
+the square-zero right exterior operator, even powers agree and odd
+powers differ by a lower-degree exterior term. Thus these row systems
+are related by an invertible triangular matrix with diagonal one,
+with the source parity shifts included. This proves invertibility of
+the actual native positive-height matrix, not merely of a shifted
+substitute. At height zero the mate alone is invertible.
+
+More explicitly, for odd `i` the source conventions give
+`X(a⊗πb)=-a x⊗πφ(b)`, `D(a⊗πb)=a⊗π(bd_i)`, and
+`E(a⊗πb)=aφ(b)`. Hence `XD=-DX`, `D²=0`, and
+`E D=-R_(d_i) E`. The shifted rows therefore satisfy
+`E Y^(2r)=E X^(2r)` and
+`E Y^(2r+1)=E X^(2r+1)+2 R_(d_i) E X^(2r)`.
+The row-change matrix is `1+N`, where `N` only adds an even-indexed
+row into the following odd-indexed row. Thus `N²=0` and its inverse
+is `1-N`. Its odd coefficient has precisely the parity difference
+between the adjacent shifted summands. This is a graded row
+automorphism; it does not disregard the parity involution in `E`.
+The categorical `shiftedCap_inverse` lemma checks the corresponding
+two-row-operation cancellation abstractly.
+
+This audit identifies the maps and the additional deformed recurrence
+needed to use Section 9. It remains a paper-level argument conditional
+on the all-content exact diagram and filtered monicity; there is no
+native multicolour action declaration here. In particular, it does not
+by itself evaluate normalized higher bubbles or prove faithful action
+of the full coefficient algebra.

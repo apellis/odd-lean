@@ -221,3 +221,11 @@ weighted separation to specific coefficient quotient ideals. Independently
 review and implement the proposed connected action; spectral/unfurling coupling
 and fixed-weight coverage remain separate. Maintain all three streams and
 immediately reassign completed workers. No PRs against master.
+
+### Connection restored
+
+The executor returned; `git fetch` and `git merge --ff-only` incorporated
+recovery commit `4b16af0` with all staged/unstaged work intact. Workers resumed.
+No remote/local divergence remains. Do not treat the earlier outage as an
+active blocker. WeightedCoefficientSeparation and the weak matching/rotation/
+positive-dot checkpoints are staged for the next research commit.

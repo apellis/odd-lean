@@ -9,8 +9,9 @@ parity shift equal to the first colour height; all functor maps use the
 resulting super signs. Upward crossings and EF mates are built from the
 SAME functors, units and counits. Mixed crossings are canonical odd maps
 between opposite parity shifts, not an independently attached matrix model.
-Checks four-strand upward relations, both adjunction triangles, same/mixed
-inversion at the middle weight, actual bubbles and homogeneous naturality.
+Checks every admissible upward word of lengths2--4 and all legal adjunction
+and inversion corners in the nine-weight grid, actual middle-weight bubbles,
+and homogeneous naturality.
 This finite window is not an asserted arbitrary-cutoff/general-Cartan action.
 """
 import nonvacuum_exterior as R
@@ -98,24 +99,62 @@ def path(o,w,rs):
  return w,f.matrix()
 def check_upward():
  import itertools
- o=Obj(R.regular((0,0)),R.regular((0,0)))
- for w in sorted(set(itertools.permutations((0,0,1,1)))):
-  dots=[dot_in_word(o,w,r).matrix() for r in range(4)]
-  one=R.I(word(o,w).size);zero=R.Z(one.rows)
-  for r in range(3):
-   v,f=crossing_in_word(o,w,r);t=f.matrix();ys=[dot_in_word(o,v,s).matrix() for s in range(4)]
-   assert R.paritydiag(f.tgt.ps)*t==-t*R.paritydiag(f.src.ps)
-   assert t*dots[r]+ys[r+1]*t==(one if w[r]==w[r+1] else zero),('slide',w,r)
-   assert ys[r]*t+t*dots[r+1]==(one if w[r]==w[r+1] else zero)
-   for s in range(4):
-    if s not in (r,r+1):assert t*dots[s]+ys[s]*t==zero
-   _,back=crossing_in_word(o,v,r)
-   assert back.matrix()*t==(zero if w[r]==w[r+1] else one),('square',w,r)
-  for r in (0,1):assert path(o,w,(r,r+1,r))==path(o,w,(r+1,r,r+1)),('braid',w,r)
-  assert path(o,w,(0,2))[1]==-path(o,w,(2,0))[1],('far',w)
- print('PASS all disconnected upward4-strand relations from height-twisted functors',flush=True)
+ count=0
+ for hi,hj in itertools.product(range(3),repeat=2):
+  o=Obj(R.regular((hi,0)),R.regular((hj,0)))
+  for length in range(2,5):
+   for w in itertools.product((0,1),repeat=length):
+    if w.count(0)>2-hi or w.count(1)>2-hj:continue
+    count+=1
+    dots=[dot_in_word(o,w,r).matrix() for r in range(length)]
+    one=R.I(word(o,w).size);zero=R.Z(one.rows)
+    for r in range(length):
+     for q in range(r+1,length):assert dots[r]*dots[q]+dots[q]*dots[r]==zero
+    for r in range(length-1):
+     v,f=crossing_in_word(o,w,r);t=f.matrix();ys=[dot_in_word(o,v,q).matrix() for q in range(length)]
+     assert R.paritydiag(f.tgt.ps)*t==-t*R.paritydiag(f.src.ps)
+     assert t*dots[r]+ys[r+1]*t==(one if w[r]==w[r+1] else zero)
+     assert ys[r]*t+t*dots[r+1]==(one if w[r]==w[r+1] else zero)
+     for q in range(length):
+      if q not in (r,r+1):assert t*dots[q]+ys[q]*t==zero
+     _,back=crossing_in_word(o,v,r)
+     assert back.matrix()*t==(zero if w[r]==w[r+1] else one)
+    for r in range(length-2):assert path(o,w,(r,r+1,r))==path(o,w,(r+1,r,r+1))
+    if length==4:assert path(o,w,(0,2))[1]==-path(o,w,(2,0))[1]
+ print('PASS all',count,'admissible upward words of length2 through4 at all9 tower weights',flush=True)
+
+def check_boundaries():
+ for hi in range(3):
+  for hj in range(3):
+   o=Obj(R.regular((hi,0)),R.regular((hj,0)))
+   for c,h in ((0,hi),(1,hj)):
+    if h<2:
+     eo=E(o,c)
+     assert compose(cap(eo,c),whisker(unit(o,c),c)).matrix()==R.I(eo.size)
+    if h>0:
+     fo=F(o,c)
+     assert compose(whisker(cap(o,c),c,'F'),unit(fo,c)).matrix()==R.I(fo.size)
+    if h==0:
+     u=unit(o,c);du=compose(whisker(dot(o,c),c,'F'),u)
+     inversion=R.S.Matrix.hstack(u.matrix(),du.matrix())
+    elif h==1:inversion=mate(o,c,c).matrix()
+    else:
+     v=cap(o,c);dv=compose(v,dot(F(o,c),c))
+     inversion=R.S.Matrix.vstack(v.matrix(),dv.matrix())
+    assert inversion.rows==inversion.cols
+    inverse=inversion.inv()
+    assert inverse*inversion==R.I(inversion.rows)==inversion*inverse
+   for p,q in ((0,1),(1,0)):
+    hs=(hi,hj)
+    if hs[p]>0 and hs[q]<2:
+     f=mate(o,p,q);inversion=f.matrix();inverse=inversion.inv()
+     assert inversion.rows==inversion.cols
+     assert inverse*inversion==R.I(inversion.rows)==inversion*inverse
+     assert inversion==(1 if p==0 else (-1)**(hi+1))*R.I(inversion.rows)
+ print('PASS all legal adjunction triangles and same/mixed inversions at all9 tower weights',flush=True)
 def main():
  check_upward()
+ check_boundaries()
  o=Obj(R.regular((1,0)),R.regular((1,0)))
  bubbles=[]
  for c in (0,1):

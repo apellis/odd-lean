@@ -264,3 +264,35 @@ finite abstract-SYM coefficient vector `r_t`. No faithfulness of the bubble map
 or uniqueness of the error coefficients is used. This is checked as `labels_filtered_signRel` in the native module. The finite
 coefficient witness is extracted by `exists_signed_column`; the construction
 then proceeds through the checked coefficient transition described above.
+
+## Weak inverse-mate realizations
+
+`OddMath/SKM/WeakMatchingChoice.lean` now removes the strict critical-point
+condition from the source of the comparison. A `WeakMatchingChoice F` supplies
+one weakly reduced word for each class in the strict target `F`, with a pairing
+isomorphism and actual distinguished points and serializers. Its
+`filtered_signRel` and `unitColumn_eval` compare these literal diagrams with
+`F`; `transition_surjective` and `transition_evaluation` prove the finite
+abstract-SYM transition and its evaluation identity. Consequently
+`strict_expansion_injective` transfers independence of that weak family to `F`.
+This theorem does not assume strictness of the weak words, faithfulness of
+bubbles, or independence of the strict target.
+
+`OddMath/SKM/WeakMateMatchings.lean` combines source-prefix cups with target-suffix
+caps on actual matching words. Weak reducedness and crossing count are
+preserved. The composite strand equivalence transports every dot count
+bijectively, preserves its sum, and transports bounded actual points and
+serializers. Matching-class coverage of the combined construction remains a
+separate endpoint-rotation obligation; the two modules do not claim the full
+upward-to-oriented implication yet.
+
+The normalization transition uses **decreasing** dots at fixed crossing count.
+This is independent of the closure calculation on the weak family, whose
+positive-dot corrections use **increasing** dots. The two triangular
+arguments must be applied successively, not conflated into one order.
+
+Both modules pass targeted warnings-as-errors builds. The concrete consumer
+`scripts/NonVacuity/WeakMatchingChoice.lean` checks finite transition surjectivity
+and evaluation on a nonempty odd boundary, and a literal combined cup/cap
+example with all dot counts. Its printed axioms, including the independence
+transfer theorem, are only `propext`, `Classical.choice`, and `Quot.sound`.

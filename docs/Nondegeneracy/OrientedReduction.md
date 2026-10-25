@@ -269,3 +269,43 @@ identify the complete weak inverse-mate family with the native matching
 and decorated APIs, and translate these nonempty dot corrections into the
 finite labelled triangular expansion consumed by the upward-independence
 detector. The resulting formal implication is still not asserted here.
+
+### Top dots avoid the wrong triangular order
+
+The general choice-transition comparison permits same-crossing errors with
+*fewer* dots. It must not be used indiscriminately to normalize the positive
+closure corrections: the closure detector uses the opposite, minimum-dot
+order within a fixed crossing number.
+
+`UpwardTopDots.lean` supplies the appropriate exact alternative. Choose the
+upward representatives with all their dots on the top boundary.
+`upDotsOnly_eq_dotsOn` turns each literal correction into a list of valid
+top positions, preserving its exact length. `positiveWordDots_append_top`
+keeps the skeleton fixed and strictly increases the number of top dots;
+`upDotsOnly_xcnt` certifies that it adds no crossings. Finally,
+`top_dots_perm_eq` reorders any top-dot list with an exact unit sign and
+**no remainder**, even after an arbitrary crossed prefix. This follows
+from the existing interchange proof at crossing threshold zero, where the
+lower-crossing span is zero. Thus top serialization retains the triangular
+order required for the closure detector; the separate weak-to-strict choice
+comparison may still use the usual maximum-dot order.
+
+### Coefficient-dependent finite detection
+
+`PositiveClosureDetector.injective_of_positive_closure` supplies the precise
+remaining additive detector: injectivity of the upward expansion descends
+through a linear closure when each single labelled coefficient has its same
+principal coefficient plus a finite vector supported at strictly greater
+dot count. The correction vector may depend on the entire coefficient.
+In particular, this does **not** assume right-SYM-linearity of bubble
+transport; the unit coefficient has no correction and cannot generate all
+transport corrections by multiplying a fixed unit column. The consumer
+proves injectivity of identity plus the positive shift on finitely supported
+rational sequences, an unbounded nontrivial instance.
+
+The native closure identities above use coefficients at the target end of
+the diagram. `MatchingBasisChoice.expansion` uses the source-placement
+convention. Their integration must track the full-SYM parity involution
+fixing polynomial generators and negating odd exterior generators. Right
+mate cup/cap blocks are even, so their principal parity twists agree; an
+untracked existential bubble preimage is insufficient to certify this.

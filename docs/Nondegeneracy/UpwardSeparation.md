@@ -5,7 +5,8 @@ Nondegeneracy Conjecture; tracking issue #345. This note supplies a mathematical
 bounded-separation argument. It does **not** construct an SKM action or claim
 that the conjecture is proved. The refined affine straightening statement and
 the bounded monomial cyclotomic quotient theorem below are now Lean theorems.
-The weighted coefficient/deformation extension remains mathematical.
+The weighted coefficient/deformation separation theorem is also now formalized
+in the actual signed coefficient-extended affine category.
 
 ## A parameter-independent bound
 
@@ -228,10 +229,10 @@ No flatness, basis, or domain assumption on the coefficient module is needed.
 The nonvacuity example instantiates that module with full abstract `SYM` and
 checks that extraction returns the whole coefficient `δ_i δ_j`.
 
-This establishes coefficientwise detection at the module level. Signed
-supertensor multiplication, its identification of the extended relation ideal,
-and the weighted ELV quotient remain to be formalized; a tensor-module theorem
-alone does not supply any of these algebra or action constructions.
+This first result establishes coefficientwise detection at the module level.
+The subsequent signed multiplication and weighted relation-span theorem below
+are separate algebraic constructions; the tensor-module theorem alone did not
+supply them. Identification with an ELV/SKM action remains separate.
 
 `OddMath/SKM/BubbleExterior.lean` constructs the exterior algebra on the free
 module of odd colours as a retract of the abstract `SYM`. It proves that the
@@ -272,8 +273,31 @@ ones, with the Koszul sign proved explicitly for homogeneous composition.
 This avoids pretending the arbitrary-colour locally unital `H_n` is unital.
 The source tensor equivalence uses the whole abstract `SYM`, and the test
 checks the sign of an independent odd coefficient across an actual odd upward
-dot. The weighted ideal-support argument in this extended category is the
-next unproved step; the category itself is not yet an SKM representation.
+dot. The category itself is not yet an SKM representation.
+
+`OddMath/QuiverHecke/WeightedCoefficientSeparation.lean` now proves the weighted
+ideal-support argument in this actual category. `extendedScore_comp` handles
+the Koszul sign and the reversed coefficient product in diagrammatic
+composition. The actual tensor PBW basis gives every multiplier score at least
+`-choose(n,2)`. `WeightedRelationSpan` spans all composable sandwiches of
+endomorphisms of score at least `N` on words of the fixed strand number.
+`weightedRelationSpan_le_extendedAtLeast` puts this span in total PBW weight at
+least `N-2*choose(n,2)`. Consequently
+`weighted_quotient_injective_on_extendedAtMost` proves injectivity on weight at
+most `d` whenever `N>d+2*choose(n,2)`, and
+`weighted_quotients_jointly_detect` detects every actual extended morphism by
+the family of quotient modules. This includes arbitrary permitted QH scalar
+parameters and retains all independent abstract exterior products.
+
+The direct consumer `deformedCyclotomic_mem_relationSpan` puts an actual
+coefficient polynomial `sum_j c_j x^j` in that span when `weight(c_j)>=N-j`.
+The scoped nonvacuity test checks cutoff five on two strands at total weight
+two and the monic deformation `x^5+b_{i,j}x^3`, where `b_{i,j}` is the nonzero
+exterior basis word on distinct odd colours. All checked theorem axioms are
+the standard `propext`, `Classical.choice`, and `Quot.sound`.
+These are affine quotient-module separation results; a source cyclotomic
+action, its mixed adjunction relations, and the identification of categorical
+bubbles with these abstract coefficients are not supplied by this theorem.
 
 ## A concrete coupling target for reservoir and spectral factors
 

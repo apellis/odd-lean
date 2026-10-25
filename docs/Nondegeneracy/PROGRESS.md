@@ -88,3 +88,10 @@ passed scoped checks and are staged locally, not yet part of that commit.
 The proposed connected-action manuscript remains a written argument under review.
 See the recovery section of [HANDOFF.md](HANDOFF.md) for exact checked/unchecked
 files and restart commands. This board update was saved directly through GitHub.
+
+The connection subsequently returned. Recovery commit `4b16af0` was fetched and
+fast-forwarded without losing staged work. All workers resumed their exact
+pending checks. CI40222830590 passed for `8b5b2cc`; CI40223506675 for `901938c`
+is still running. New weighted signed ideal separation and weak-family transfer
+checkpoints are now being integrated; the connected-action theorem remains
+labelled proposed, not a native theorem or a solution of nondegeneracy.
