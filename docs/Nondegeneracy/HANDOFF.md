@@ -83,6 +83,13 @@ is proposed by signed Chevalley transport into the super-opposite target, reusin
 horizontally; it gives two copies of the datum, not their fusion. A nonzero Hom
 vacuum and original-datum fusion remain separate requirements.
 
+[ActionLeanPlan.md](ActionLeanPlan.md) orders the proposed construction from
+signed induction presentation comparison and simultaneous exterior translation,
+through balanced quotients, projectivity, inversion, the action, opposite transport
+and the product-datum Hom family. Each module names a consumer and existing
+inputs. The next bounded action result is the signed mixed-colour presentation
+comparison, not a new abstract action interface.
+
 ## Open obligations
 
 1. **Same-colour exchange descent**, source and target. The distinct-colour target proof is
