@@ -70,6 +70,14 @@ equivalence, literal unpaired terminal crossings, and a common paired embedding
 
 ## Action review
 
+`CyclotomicAction.SignedMultipliers` checks the signed right-multiplier
+composition and a nonzero rational matrix instance: negating both odd
+crossings still changes a constant quadratic relation from 1 to -1.
+[SignedInductionComparison.md](SignedInductionComparison.md) records the exact
+scope. This rules out the uniform-sign, unchanged-parameter assignment, not
+an action with a proved directed-sign or parameter comparison. The full
+multicolour square and braid comparison remains open.
+
 [ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
 steps of the even-cutoff argument. The normality, balanced-ideal, norm and cap-row
 repairs survive; the explicit comparison from the super-opposite induction
