@@ -47,6 +47,33 @@ checks the opposite-sign local composition. The identification with the
 presented two-colour cyclotomic quotient is explanatory here, not a Lean
 quotient isomorphism; the formal result is the exact regular-matrix instance.
 
+## A connected asymmetric polynomial test
+
+`CyclotomicAction.AsymmetricParameters` constructs a compatible all-odd
+Cartan datum with matrix `[[2,-2],[-4,2]]`, positive symmetrizer `(2,1)`,
+and homogeneous rational parameters with `Q(u,v)=u²+v⁴`. It verifies the
+literal `SKM.SerrePolynomial.quadraticValue` formula.
+
+Odd signed right multiplication squares to negative right multiplication by
+the dot square, whereas its fourth power has positive sign. Consequently,
+with the dots fixed to these operators, the two terms of this Q acquire
+opposite signs. In square coordinates the exact obstruction is
+
+`¬ ∃ c ∈ ℚ, ∀ z,w ∈ ℚ, c(z+w²) = -z+w²`.
+
+`no_common_quadratic_scalar` proves this using `(z,w)=(1,0),(0,1)`.
+Thus even allowing the product of directed crossing scalars to vary does
+not generally repair **unchanged parameters**. Individual dot signs do not
+alter even powers either. This strengthens the constant-square test; it
+still does not exclude word reversal or transported parameters.
+
+The same module constructs valid homogeneous `transportedScalars` with
+`Q'(u,v)=u²-v⁴`, and `transported_mixed_square` proves the signed operator
+quadratic comparison from that source relation. This is a relation-transfer
+theorem with the source multiplication relation as a hypothesis, not yet a
+homomorphism from the specified presentation or a functor on projectives.
+The corresponding braid and adjunction comparison must still be assembled.
+
 ## Remaining acceptance boundary
 
 A complete comparison must specify directed crossing scalars and the algebra

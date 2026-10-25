@@ -84,7 +84,13 @@ crossings still changes a constant quadratic relation from 1 to -1.
 [SignedInductionComparison.md](SignedInductionComparison.md) records the exact
 scope. This rules out the uniform-sign, unchanged-parameter assignment, not
 an action with a proved directed-sign or parameter comparison. The full
-multicolour square and braid comparison remains open.
+multicolour square and braid comparison remains open. The connected all-odd
+`AsymmetricParameters` example has Cartan entries -2,-4 and `Q=u²+v⁴`:
+no common crossing-product scalar absorbs the opposite signs of square and
+fourth-power dot transport. A valid transported family `Q'=u²-v⁴` and its
+conditional signed mixed-square transfer are checked. Thus directed signs
+alone with unchanged parameters are insufficient in general; a full
+parameter/presentation transport remains necessary.
 
 [ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
 steps of the even-cutoff argument. The normality, balanced-ideal, norm and cap-row
