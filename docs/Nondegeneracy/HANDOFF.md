@@ -150,6 +150,10 @@ homogeneous parts; they are not silently assumed homogeneous.
 and `cyclotomicAppend_parity`. `CyclotomicSupermodules` is the existing
 superbimodule category with trivial right scalar algebra. These constructions
 do not replace the quotient by a polynomial model or forget its odd part.
+`CyclotomicAction/SuperInduction.lean` constructs the actual colour-cut
+superbimodule `inductionCorner = B φ(1)` and its balanced-tensor
+`cyclotomicSuperInduction`. This is an additive, `k`-linear superfunctor,
+including on odd morphisms, using the signed tensor whiskering.
 
 ## Proof architecture
 
