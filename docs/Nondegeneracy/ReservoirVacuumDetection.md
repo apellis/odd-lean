@@ -68,6 +68,39 @@ prescribed mixture of even and odd cutoffs, including adjacent odd colours.
 This removes no categorical parity obligation: A0/A3 must still realize the
 appropriate cutoffs at the given weight. No root-lattice cofinality is assumed.
 
+## Cover levels and weight-lattice realization
+
+`ReservoirWeights.level_difference`, `reservoir_parity`, and
+`observation_bound` construct cofinal paired levels at any prescribed coroot
+pairing `h`. Explicitly, the probe has level `2m + 2(-h_i).toNat`, and the
+reservoir has level `2m + (h_i).toNat + (-h_i).toNat`. Their difference is
+`h_i`, the probe is even, and the reservoir has parity `h_i mod 2`.
+`odd_pairing_invariant` proves that signed root words cannot change that
+parity at an odd colour.
+
+These statements port the balancing arithmetic in the even
+`Unfurling/GenericWeights.lean`. Its weights live on the **cover**, so its
+pairing identity does not assert the existence of dominant weights in an
+arbitrary original lattice `X`. `exists_weights_of_pairing_surjective`
+realizes the levels by weights of literal difference `μ` when the joint
+coroot map is surjective. This extra hypothesis is not part of `SKM.Datum`
+and must not be added silently to the nondegeneracy conjecture. The
+connected two-odd datum with coordinate coroots satisfies it.
+
+`pairingExtension` adjoins independent coordinates, replacing `X` by
+`X × (I → ℤ)` with coroot `h_i(ν,a)=h_i(ν)+a_i` and root `(α_i,0)`.
+The Cartan matrix and parity are unchanged. `exists_extended_weights`
+constructs paired weights of literal difference `(μ,0)` for every original
+`μ`, without any lattice-richness assumption. This supplies arithmetic
+coverage in an explicitly constructed larger lattice.
+
+For example, on the root lattice of affine A1 with Cartan matrix
+`[[2,-2],[-2,2]]`, the two coroot pairings sum to zero; no weight has both
+pairings strictly positive. Thus arbitrary-lattice coverage must instead
+use cover levels and a compatible relabelling of the action's external
+weights. Constructing that relabelling is still open. The level arithmetic
+alone does not discharge `FusedFixedWeightFamily.covers`.
+
 ## Algebraic normalization, and its remaining gap
 
 `SKM.reservoirDeconvolution` is a recursively defined finite triangular inverse

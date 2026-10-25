@@ -161,6 +161,15 @@ obtain `upwardCoefficientMap_injective` at the same external weight and
 `SpectatorEvaluation` remains the one-sector consumer and is not used to
 supply the new family's coverage premise.
 
+`ReservoirWeights` constructs cofinal paired cover levels with even probe
+level, reservoir parity equal to the prescribed coroot pairing, and exact
+level difference. `odd_pairing_invariant` proves invariance under signed root
+words. `exists_weights_of_pairing_surjective` realizes the levels in a
+pairing-complete lattice; `exists_extended_weights` does so for every datum
+in the explicit extension `X × (I → ℤ)`, without changing its Cartan matrix
+or parity. Restriction of the categorical action along `μ ↦ (μ,0)` is still
+open. These arithmetic results alone do not construct a fused family.
+
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a
 unit factor from an odd coefficient. The categorical convolution and its
