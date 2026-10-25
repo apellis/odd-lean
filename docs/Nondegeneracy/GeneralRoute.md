@@ -236,6 +236,18 @@ base change need not preserve an arbitrary injection. A universal-ring basis
 and the presentation comparison must be proved. Do not extend odd SKM claims
 to characteristic two against the prescribed unit hypothesis.
 
+## Conditional reservoir-vacuum consumer
+
+`QuiverHecke.FusedFixedWeightFamily` and its consumer
+`upward_independence_of_fused_fixed_weight_families` formalize the C1–C3
+implication with no spectator strands. The categorical generator bubble formula,
+connected reservoir affine coordinates, and fixed-weight window coverage are
+explicit premises, not constructed fusion data. The finite series inverse and
+both-parity algebraic separation are proved separately. See
+[ReservoirVacuumDetection.md](ReservoirVacuumDetection.md) for the precise
+remaining hypotheses and the relation to `SpectatorEvaluation`. This conditional
+result does not mark A2, A3, or the categorical part of C1 as complete.
+
 ## Where the odd coefficients live
 
 **Proposed design.** Keep all odd colours' independent `δ_i` in the same

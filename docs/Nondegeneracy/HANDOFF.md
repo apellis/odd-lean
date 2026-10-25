@@ -76,6 +76,26 @@ construct simultaneous complete same-colour target choices: a single label
 equivalence, literal unpaired terminal crossings, and a common paired embedding
 `ℕ × B.Labels` with both cup serializers. Their coefficient comparisons remain open.
 
+## Reservoir-vacuum detection
+
+The separated-sector consumer is now `FusedFixedWeightFamily`, not a family
+of moving spectators. Conditional declarations in `ReservoirVacuumDetection`
+derive the joint bounded observation identity from composition, connected
+reservoir affine coordinates, and the named `NormalizedBubbleFormula` on the
+elementary and exterior generators. They then apply bounded ELV separation to
+obtain `upwardCoefficientMap_injective` at the same external weight and
+`upward_independence_of_fused_fixed_weight_families` for the reduction.
+`reservoir_parity_cutoffs_detect` covers arbitrary colourwise even/odd schedules.
+`SpectatorEvaluation` remains the one-sector consumer and is not used to
+supply the new family's coverage premise.
+
+`SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
+specified ordered probe convolution; `reservoir_exterior_recovered` removes a
+unit factor from an odd coefficient. The categorical convolution and its
+bounded coordinate comparison remain open, as does construction of the fused
+family. The connected two-odd examples test the algebraic inputs, not family
+existence. See [ReservoirVacuumDetection.md](ReservoirVacuumDetection.md).
+
 ## Action review
 
 `CyclotomicAction.SignedMultipliers` checks the signed right-multiplier

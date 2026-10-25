@@ -1,0 +1,14 @@
+import OddMath.QuiverHecke.ReservoirVacuumExamples
+
+open OddMath.QuiverHecke
+#check ReservoirVacuumExamples.recover_two_odd_series
+#check ReservoirVacuumExamples.mixed_parity_detect
+#check ReservoirVacuumExamples.crossing_window_injective
+#check ReservoirVacuumExamples.crossing_two_exterior_ne_zero
+#print axioms FusedFixedWeightFamily.upward_independence_at
+#print axioms OddMath.SKM.reservoir_coefficients_recovered
+#print axioms ReservoirVacuumEvaluation.normalized_bubbles
+#print axioms ReservoirVacuumEvaluation.odd_bubble_vacuum
+#print axioms ReservoirVacuumEvaluation.observe_coefficient
+#print axioms FusedFixedWeightFamily.vacuum_evaluations_jointly_detect
+#print axioms upward_independence_of_fused_fixed_weight_families
