@@ -42,6 +42,26 @@ in Lean that `(x-y)/(x²-y²)` has both odd dot slides and square
 `(x²+y²)/(x²-y²)²`. The smallest actual nonvacuum rank-one mate was rechecked:
 its 72-by-72 matrix has determinant one, with square-zero feedback of rank four.
 
+## Super Rouquier interface
+
+`OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
+`SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
+`SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
+super-interchange; it is not an ordinary bicategory. The common inverse
+component has parity `|i|`, and dotted identity component `n` has parity
+`n |i|`; these are the explicit parity shifts of the formal direct sums.
+`rouquierMate` is the ordered cup–crossing–cap composite. `boundaryPos_eq`
+and `boundaryNeg_eq` consume its inverse to obtain the normalized Kronecker
+window. These declarations pass the scoped warning-free build; full CI
+remains the branch-wide verification gate.
+
+This is the factor-action interface, including same-colour square, braid,
+and local inversion. Multicolour affine relations and distinct-colour mixed
+inversion are separate obligations. In particular no construction of a
+fused action or theorem A2 is asserted. Detection still requires the bubble
+normalization outside the finite inverse window and its comparison with the
+connected reservoir coefficients.
+
 ## Proof architecture
 
 | Step | Statement | Status |
