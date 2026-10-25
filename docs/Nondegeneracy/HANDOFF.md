@@ -154,6 +154,12 @@ do not replace the quotient by a polynomial model or forget its odd part.
 superbimodule `inductionCorner = B φ(1)` and its balanced-tensor
 `cyclotomicSuperInduction`. This is an additive, `k`-linear superfunctor,
 including on odd morphisms, using the signed tensor whiskering.
+`CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
+`restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
+`k`-linear, and parity preserving. The ordinary adjunction above has not
+thereby been promoted to a super adjunction, nor has the KKO decomposition
+been proved. The positive-height indexing still leaves the vacuum step
+separate.
 
 ## Proof architecture
 
