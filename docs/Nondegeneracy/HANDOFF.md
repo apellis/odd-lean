@@ -44,6 +44,15 @@ adapted choices, then their coefficient columns. `hom_laurentian` already suppli
 finite-dimensionality needed by the alternative field route; the missing super rank recursion
 and comparison basis prevent treating the even Orzech argument as an immediate reduction.
 
+## Action review
+
+[ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
+steps of the even-cutoff argument. The normality, balanced-ideal, norm and cap-row
+repairs survive; the explicit comparison from the super-opposite induction
+endomorphisms to the specified upward presentation remains open. Ordinary reversal
+for projectivity and super-opposite reversal for natural transformations must not
+be identified. No multicolour action is yet claimed in Lean.
+
 ## Open obligations
 
 1. **Same-colour exchange descent**, source and target. The distinct-colour target proof is
