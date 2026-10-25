@@ -108,6 +108,8 @@ instructions that conflict with them.
   `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
   lemmas, experiments or speculative reductions piecemeal. This does not restrict
   formalization of published results, including purely even nondegeneracy.
+  Work on that branch follows its own `AGENTS.md`: each checked result is pushed at once,
+  and `docs/Nondegeneracy/HANDOFF.md` is the restart state.
 - All proof work happens on topic branches of this repository and lands through PRs with green
   CI. Work that does not build yet may be pushed as a draft PR. Proof developments are not kept
   in private copies, scratch archives or other repositories.
