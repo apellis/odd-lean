@@ -60,6 +60,31 @@ matrix through the extension. Only then restore exterior-translated dots and
 verify both odd cutoff parities. The detailed exterior steps below specify
 that second stage, not prerequisites to the even-ring port.
 
+## Signed naturality at the induction boundary
+
+The next nonliteral port is the ordinary intertwiner used by
+`InductionAlong.natTrans` in the even induction file. Its premise for a new dot
+`c` is `f(r) * c = c * f(r)` for every element `r` of the lower algebra.
+For an odd new colour this must instead be the homogeneous equation
+`f(r) * c = (-1)^(|r||c|) * c * f(r)`. In the two-strand odd polynomial
+corner over `ℚ`, take `r = x₁` and `c = x₂`: the affine PBW monomial
+`x₁ x₂` is nonzero and `x₂ x₁ = -x₁ x₂`. Thus the unsigned intertwiner is
+false already in this affine input; it cannot be used to manufacture an
+ordinary natural endomorphism of induction. This is not a failure of the
+super action route. The replacement is a homogeneous transformation, or an
+even transformation to the parity-shifted functor, with the signed balanced
+tensor formula.
+
+The exact target, suppressing integer grading shifts, is the decomposition in
+Kang–Kashiwara–Oh, arXiv:1303.1916v2, §8.3, Theorem 8.13. For
+`h = ⟨hᵢ, Λ-β⟩ ≥ 0` it is
+`Πᵢ Fᵢ Eᵢ ⊕ (⊕_{0≤r<h} Πᵢ^r Id) ≅ Eᵢ Fᵢ`; for `h < 0` it is
+`Πᵢ Fᵢ Eᵢ ≅ Eᵢ Fᵢ ⊕ (⊕_{0≤r<-h} Πᵢ^(r+1) Id)`.
+The same section defines the homogeneous monic polynomial in (8.12), the
+actual two-sided quotient in Definition 8.10, and the induction/restriction
+superfunctors before Theorem 8.12. These are distinct obligations: an ordinary
+module adjunction after forgetting parity does not prove Theorem 8.13.
+
 ## Dependency order and concrete consumers
 
 ### 1. `QuiverHecke/CyclotomicAction/Presentation.lean`

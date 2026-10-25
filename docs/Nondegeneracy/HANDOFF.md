@@ -123,6 +123,14 @@ proves that the defining cyclotomic polynomials vanish. This supplies the
 underlying quotient algebra, not its homogeneous super grading or the
 projectivity and Mackey statements needed for inversion.
 
+`CyclotomicAction/Induction.lean` constructs `appendAlgebra` by actual right
+whiskering of affine Hom entries, proves `appendAlgebra_mem_ideal`, and
+obtains the descended nonunital algebra map `cyclotomicAppend`. The associated
+`cyclotomicInduction` is a genuine induction functor on underlying modules.
+These inclusions run from height `n+1` to height `n+2`; the vacuum map and
+the supermodule enhancement are not yet bundled. In particular, no ordinary
+naturality claim is made for odd dots.
+
 ## Proof architecture
 
 | Step | Statement | Status |
