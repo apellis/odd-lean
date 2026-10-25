@@ -85,10 +85,12 @@ reversed first and postcomposition with the second act on
 The object and all parity shifts must be specified in a concrete super-bicategory.
 
 **Even analogue:** `TwoRep.RouqFamily.reverse`, `yoneda`, `homProduct` in
-`TwoRep/RouqProduct.lean`. **Existing:** generic categorical infrastructure and
-super-interchange in the dependency libraries; no super `homProduct` discharging
-this assertion is identified here. **New:** super-opposite signs, odd natural
-transformations, parity-shifted adjunctions and nonzero vacuum objects.
+`TwoRep/RouqProduct.lean`. **Existing:** `OddMath/SKM/RouquierHom.lean`
+constructs linear super Hom-sector functors and signed transformations;
+`RouquierHomAdjunction.lean` proves both Hom adjunctions and evenness of their
+units and counits. A super `homProduct` discharging the full assertion is still
+missing. **New:** the weight-indexed super-opposite transport, explicit
+content parity shifts, coherent affine crossings, and nonzero vacuum objects.
 **Risk: medium for the product, high if confused with fusion.** Ordinary
 bicategorical interchange only handles the even skeleton directly.
 
@@ -105,8 +107,15 @@ comparisons; the local matrix blueprint is `TwoRep/RouqCoproduct.lean`, includin
 `schur_const_eq`, `isIso_lift_of_schur`, `isIso_rouqMap_of_nonneg` and the negative
 version. **Existing:** [SpectralCompensation.md](SpectralCompensation.md) gives
 proposed zero/nonzero transport and vacuum calculations; local resolvent and
-matrix lemmas exist, not the full fused action. **New:** coherent shuffle maps,
-all-content Schur-complement identification and super inversion.
+matrix lemmas exist, not the full fused action. `OddMath/SKM/RouquierSchur.lean`
+proves associative block lifting from nilpotent **whole-operator** feedback;
+it does not identify the feedback of the actual fused mate. **New:** coherent
+shuffle maps, all-content Schur-complement identification and super inversion.
+The first fusion-specific missing identity is the super replacement for
+`RouqCoproduct.rouqSig_eq`: both ordered projections of the actual
+cup–crossing–cap mate must give the finite expansions in
+[SeparatedFusion.md §6](SeparatedFusion.md). Neither upward invertibility nor
+an independently specified matrix establishes that comparison.
 **Risk: highest.** Neither units in the upward algebra nor a dimension count
 identifies the inverse of the categorical mate. Cross blocks need not vanish.
 The variant with both sector spectra zero is the falsification target below.

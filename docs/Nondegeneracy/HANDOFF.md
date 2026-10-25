@@ -76,6 +76,15 @@ from negative local inversion when the common summand vanishes.
 normalized top-coefficient pairing, and boundary detection. The cutoff-two
 odd example has an odd cap; no unshifted opposite adjunction is inferred.
 
+`OddMath/SKM/RouquierSchur.lean` supplies associative block factorization,
+`isUnit_of_schur`, and `isUnit_of_nilpotent_feedback`. Nilpotence concerns
+the whole feedback operator. This removes the need for a commutative
+coefficient determinant in the algebraic lifting step, but does not identify
+the actual fused mate or its feedback. A2 remains open at the super analogue
+of `RouqCoproduct.rouqSig_eq`, followed by the all-content negative-window and
+nilpotent-ideal comparison; see SeparatedFusion §7. No separated-fusion
+counterexample is asserted, and no fused inversion is assumed to prove A2.
+
 This is the factor-action interface, including same-colour square, braid,
 and local inversion. Multicolour affine relations and distinct-colour mixed
 inversion are separate obligations. In particular no construction of a

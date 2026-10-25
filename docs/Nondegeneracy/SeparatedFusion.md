@@ -293,3 +293,38 @@ these obligations separate rather than assuming the desired inversion:
 The next decisive deliverable is step 4 for the explicit multicolour Hom
 functors of step 2, including a connected occupied-content example. Another
 vacuum or denominator-only test cannot discharge it.
+
+## 7. Lean interfaces and the comparison still missing
+
+The following modules now separate the proved infrastructure from A2:
+
+- `OddMath/SKM/RouquierData.lean`: homogeneous factor generator data,
+  same-colour nilHecke relations, even right adjunctions, the actual ordered
+  mate `rouquierMate`, and parity-indexed row/column inverses. The common
+  summand has shift `|i|`, and dotted identity summand `r` has shift `r|i|`.
+- `OddMath/SKM/RouquierHom.lean` and `RouquierHomAdjunction.lean`: linear
+  pre/postcomposition on full super Hom categories, signed transformations,
+  the associator comparison, and both adjunctions with even components.
+  These are not yet the content-shifted, weight-indexed coupled functors.
+- `OddMath/SKM/RouquierBoundary.lean`: finite homogeneous dotted-unit
+  coefficients, extraction from negative local inversion at a vacuum, the
+  top-coefficient cap and a joint detection lemma for its dotted units.
+- `OddMath/SKM/RouquierSchur.lean`: block LDU factorization and
+  `isUnit_of_nilpotent_feedback` over an associative ring. This requires
+  nilpotence of the whole feedback operator, never just of its entries.
+
+The first fusion-specific equation still absent is the super analogue of
+`Categorification/TwoRep/RouqCoproduct.lean`'s `rouqSig_eq`. In the convention
+of §4, the projections of **one actual mate** must be identified with
+`C = Σ_r q^r u_{A,r} v_{B,-r-1}` and
+`D = -Σ_r q^(r+1) u_{B,-r-1} v_{A,r}`. The two factor unit/counit components
+must both occur. The even proof's scalar-difference crossing is not the
+homogeneous odd crossing (1), so its mate identity cannot simply be reused.
+
+After this equation, the remaining comparison is not automatic: identify the
+Schur reduction with the correct negative windows and dot-conjugated probe
+inverses in every height-sign case, and prove the feedback belongs to a
+nilpotent two-sided ideal. Only then can the associative lifting theorem
+supply inversion and the cover-family assembly be replaced by an action of
+the original superdatum. There is no A2 theorem in these modules, and no
+counterexample to separated fusion is asserted.
