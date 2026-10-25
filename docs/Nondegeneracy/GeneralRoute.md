@@ -119,7 +119,7 @@ family at exactly μ, with the probe at its highest vacuum and upward words
 remaining in the reservoir. All intermediate contents used in the window must
 be included in the action comparison.
 
-**Even analogue:** `GenericFields.rouqFamily`, `GenericWeights.sum_level_difference`
+**Even analogue:** `GenericFields.rouqFamily`, `GenericFields.sum_level_difference`
 and the vacuum of `GenericFields.unfurledEval`. **Existing:** weight arithmetic
 and the candidate construction in SpectralCompensation; no general fixed-weight
 observation is supplied by the algebraic quotient theorem. **New:** realization
@@ -322,4 +322,55 @@ nilpotent squared-coordinate ring `ℚ[z,w]/(z²,w²)`: for the admissible adjac
 odd datum with Cartan matrix `[[2,-2],[-2,2]]`, choose `Q_ij=z+w`. Test whether
 localizing at this cross-sector denominator can preserve `δ_iδ_j`.
 This is a denominator test, not a construction of that datum's full action.
-The exact computation and its outcome will be recorded here separately.
+
+### Executed exact instance and outcome
+
+Reproducer: `python3 scripts/Nondegeneracy/nilpotent_hom_fusion.py`.
+It uses exact rational elimination with no numerical tolerance. On the ordered
+basis `1,x,y,xy`, let `X₀` and `Y₀` be left multiplication by `x` and `y`.
+The two-shuffle test uses `X=diag(X₀,Y₀)`, `Y=diag(Y₀,X₀)` on dimension eight.
+Its unknown `τ` is an arbitrary eight-by-eight matrix, including all maps
+between the two blocks. It imposes only `τX+Yτ=I`, a necessary odd upward
+relation. The actual output is:
+
+```text
+shuffle dimension=8; rank(T -> TX+YT)=32; augmented rank=33
+NO crossing T satisfies TX+YT=I, even without parity restrictions
+adjacent-odd coefficient algebra dimension=16; ranks(Q,Q^2,Q^3)=8,4,0; rank(delta_i delta_j)=4
+Q^3=0: making Q invertible makes 1=0; the exterior product is lost
+separated control Q=1+z has rank=16 and inverse 1-z; the exterior product survives
+```
+
+**Falsification: the blockwise zero/zero fusion shortcut is false.** The
+proposed mathematical explanation is already the matrix identity above:
+`X²=Y²=0` would force `X=Y`. The chosen `X` and `Y` are different even after
+allowing all crossing matrices. Thus changing a guessed crossing formula,
+or adding the other nilHecke relations, cannot repair these inherited dots.
+This is not a counterexample to the odd nilHecke algebra: its polynomial
+divided difference need not descend to the separate-factor ideal `(x²,y²)`.
+A construction allowing extensions that alter the prescribed dot action is
+outside the assertion tested here.
+
+For the adjacent-odd denominator check the algebra is explicitly
+`ℚ[z,w]/(z²,w²) ⊗ Λ(δ_i,δ_j)`; its basis is
+`z^a w^b δ_i^e δ_j^f` with all four exponents in `{0,1}`. The exterior
+product is nonzero, but `Q=z+w` has cube zero. Inverting it forces the whole
+ring to vanish, not just a difficult crossing coefficient. The separated
+control replaces this denominator by `1+z`, retaining both exterior variables
+in the reservoir coefficient algebra. Its inverse is `1-z`; this verifies
+only the elementary unit mechanism, not A2 or the bubble laws.
+
+**Consequence for the programme (proposed).** An unqualified assertion that
+two deformed nilpotent Hom sectors automatically give the original action is
+not usable. Require the separated-sector A2, or replace it with an explicitly
+new collision construction and prove its dot and crossing formulas. The
+zero/nonzero candidate is not falsified by this test; neither is the
+Nondegeneracy Conjecture. In particular these tests do not show that nonzero
+spectra are logically necessary for every proof. They rule out the simple
+nilpotent-sector reuse of the even Hom/fusion recipe.
+
+The next decisive theorem is A2 with one exterior-deformed connected
+reservoir and an exterior-free invertible probe, including its all-content
+mixed inversion. In parallel, A0 needs odd cutoffs, and C1–C2 need one
+explicit multicolour cyclic coordinate calculation with `δ_iδ_j` retained.
+No new Lean declarations are proved by this document or its reproducer.

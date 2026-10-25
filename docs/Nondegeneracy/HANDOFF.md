@@ -19,9 +19,12 @@ categorification-lean): deformed cyclotomic super actions with ELV odd parameter
 lowest weight, the family `Hom(T(-μ₊), W(μ₋))` reaching every weight `μ₋ - μ₊`, detection of the
 upward part and of bubble products there, and the reduction of the conjecture to upward
 independence. Proposed theorem graph: [GeneralRoute.md](GeneralRoute.md). The product-datum Hom family
-must still be fused to the original superdatum; nilpotent-sector fusion with inherited
-blockwise dots is the first falsification target. The separated zero/nonzero alternative
-retains all odd coefficients in one connected reservoir, not in the invertible probe.
+must still be fused to the original superdatum. The exact test in
+`scripts/Nondegeneracy/nilpotent_hom_fusion.py` refutes zero/zero fusion with
+inherited blockwise dots: the necessary odd crossing equation has coefficient
+rank 32 and augmented rank 33. The separated zero/nonzero alternative remains
+proposed and retains all odd coefficients in one connected reservoir, not in
+the invertible probe; its all-content categorical inversion is still open.
 
 ## Proof architecture
 
