@@ -73,6 +73,13 @@ copying the even-cutoff inverse twist gives the wrong sign. The relative action
 extension preserves inversion by triangular dot-row changes. Its unconditional
 use still requires the all-content diagram and presentation comparison.
 
+[LowestWeightAction.md](LowestWeightAction.md) records that the proposed
+`E=induction`, `-Λ+β` convention is already lowest weight. The opposite orientation
+is proposed by signed Chevalley transport into the super-opposite target, reusing
+`SKM.chevalleyTwo`. The Hom construction instead reverses one lowest-weight factor
+horizontally; it gives two copies of the datum, not their fusion. A nonzero Hom
+vacuum and original-datum fusion remain separate requirements.
+
 ## Open obligations
 
 1. **Same-colour exchange descent**, source and target. The distinct-colour target proof is
