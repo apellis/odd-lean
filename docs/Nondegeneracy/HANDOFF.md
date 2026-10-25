@@ -160,6 +160,11 @@ including on odd morphisms, using the signed tensor whiskering.
 thereby been promoted to a super adjunction, nor has the KKO decomposition
 been proved. The positive-height indexing still leaves the vacuum step
 separate.
+`CyclotomicAction/CornerPairing.lean` gives even superbimodule maps
+`cornerEvaluation : B e ⊗_A e B → B` and
+`cornerCoevaluation : A → e B ⊗_B B e`, together with the two elementary
+idempotent triangular identities. These use actual multiplication in the
+cyclotomic quotient.
 
 ## Proof architecture
 
