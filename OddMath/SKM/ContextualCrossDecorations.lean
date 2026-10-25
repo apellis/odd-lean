@@ -78,4 +78,39 @@ theorem decorates_append_cross {a P Q : List (Letter I)} {x y : Letter I}
         (q (tau (a.length + P.length) j)))
     simpa only [List.flatMap_map, Function.comp_def, tau_tau] using hp.symm
 
+
+theorem strandCounts_terminalCross {a P Q : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
+    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
+    (n : MatchingStrand a R → ℕ) (j : ℕ) :
+    strandCounts (n ∘ (terminalCrossStrandEquiv hR hn).symm) j =
+      strandCounts n (tau (a.length + P.length) j) := by
+  classical
+  have he : j ∈ leftEnds₂ a (R ++ [.mv (.cross P.length)]) ↔
+      tau (a.length + P.length) j ∈ leftEnds₂ a R := by
+    rw [(leftEnds_append_cross_perm hR hn).mem_iff, List.mem_map]
+    constructor
+    · rintro ⟨i, hi, rfl⟩; simpa only [tau_tau] using hi
+    · intro h; exact ⟨_, h, tau_tau _ _⟩
+  by_cases hj : j ∈ leftEnds₂ a (R ++ [.mv (.cross P.length)])
+  · rw [strandCounts, dite_eq_left hj, strandCounts, dite_eq_left (he.mp hj)]
+    congr 1
+  · simp only [strandCounts, dite_eq_right hj, dite_eq_right (fun h => hj (he.mpr h))]
+
+/-- Typed natural strand-count transport for the actual terminal serializer. -/
+theorem decorates_append_cross_counts {a P Q : List (Letter I)} {x y : Letter I}
+    {R : List (TMove (Letter I))} (hR : IsMatching₂ a (P ++ x :: y :: Q) R)
+    (hn : ¬ Same (pairing₂ a R) (a.length + P.length) (a.length + P.length + 1))
+    (q : ℕ → ℕ × ℕ) (n : MatchingStrand a R → ℕ) {ds : List (DTMove I)}
+    (hd : Decorates₂ a R q (strandCounts n) ds) :
+    Decorates₂ a (R ++ [.mv (.cross P.length)])
+      (fun j => q (tau (a.length + P.length) j))
+      (strandCounts (n ∘ (terminalCrossStrandEquiv hR hn).symm))
+      (ds ++ [.tm (.mv (.cross P.length))]) := by
+  have he : strandCounts (n ∘ (terminalCrossStrandEquiv hR hn).symm) =
+      fun j => strandCounts n (tau (a.length + P.length) j) :=
+    funext (strandCounts_terminalCross hR hn n)
+  rw [he]
+  exact decorates_append_cross hR hn hd
+
 end OddMath.SKM

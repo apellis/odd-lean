@@ -317,3 +317,37 @@ coupled action. Its positive-reservoir-height case remains to be checked.
 Root broad local build session48148 remains in progress, log
 `/tmp/odd-full-build.log`; remote exact-commit CI already verified the last push.
 No repository dependency updates. Six active workers; research branch only.
+
+
+## Workspace interruption and exact CI repair
+
+The workspace connection became unavailable again during continued research.
+Latest local/pushed research commit is `692eda9`; its CI40228237453 failed because
+`PointedMatching` used the already locally checked helper
+`decorates_append_cross_counts`, but the modified dependency file was omitted
+from that commit. This remote recovery adds exactly the two checked helpers from
+`ContextualCrossDecorations.lean`. It is an integration repair, not a new proof
+claim. Last fully green commit is `4a9ef53` (CI40226825974).
+
+Many newer scoped-checked files remain staged locally: all-height paired target
+coefficient columns, complete same-colour adapted families, source crossing
+state/point transport, bounded ELV recovery and locally triangular inversion,
+coefficient dot nilpotence, odd Frobenius resolvents, and the initial native
+separated-sector chart lemmas. Further chart cases and contextual source-cap
+work may be checked but not staged. All six worker messages retain exact
+checkpoint status. No PRs or master changes.
+
+On restoration, preserve the complete working tree/index before reconciliation.
+The local ContextualCrossDecorations modification should be identical to this
+remote repair; compare it explicitly, save its diff, and only then restore that
+one path if required for the fast-forward. Fetch and fast-forward the research
+branch without losing other staged work. Restart/inspect root build session48148
+(`/tmp/odd-full-build.log`) rather than assuming it completed. Dispatch full CI
+explicitly for the recovered head: pushes to this branch do not trigger it.
+
+Assignments continue: sorting source exchange; rewriting source cap families;
+Webster contextual same-colour target assembly; separation explicit coefficient
+recovery/nilpotence; choice native all-height chart algebra; action coherent
+doubled-sector upward functors and parity-line comparisons. The chart algebra
+and its categorical hypotheses remain distinguished. Neither full nondegeneracy
+nor an assembled coupled action is claimed.
