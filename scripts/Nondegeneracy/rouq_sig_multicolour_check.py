@@ -984,15 +984,25 @@ def datum(case, par, mut=frozenset(), Q=None):
     raise ValueError(case)
 
 
+def Cyclotomic_formula(D, Lam, content):
+    from klr_cyclotomic import bk_dim, words_of
+    W = words_of(content)
+    return sum(bk_dim(D, Lam, u, v) for u in W for v in W) * 2 ** len(D.deltas)
+
+
 def build_levels(D, Lam, m, alist, log):
     levels, report = {}, []
     for a in alist:
         t0 = time.time()
+        if Cyclotomic_formula(D, Lam, (a, m)) == 0:
+            log(f"  level a={a}: formula dimension 0 (zero algebra; not built)")
+            continue
         R = build(D, Lam, (a, m), cap0=8, step=4, capmax=40, verbose=False)
         tot, _ = R.expected()
         err = R.verify() if R.dim else (None if tot == 0 else f"dimension 0 != formula {tot}")
         log(f"  level a={a}: dim {R.dim} (formula x 2^#delta: {tot}) cap={R.cap} "
-            f"verify={'OK' if err is None else err} [{time.time() - t0:.1f}s]")
+            f"verify={'OK' if err is None else err} assoc={getattr(R, 'assoc_mode', '-')} "
+            f"[{time.time() - t0:.1f}s]")
         if err is not None:
             report.append((a, err))
         if R.dim:
@@ -1005,7 +1015,7 @@ def run_case(case, par, contents, mut=frozenset(), twist="a", Q=None, log=print,
     label = f"{case} par={par} mut={sorted(mut)} twist={twist}" + (" Q=" + str(Q) if Q else "")
     log(f"== {label}")
     if levels is None:
-        need = sorted({x for a, _ in contents for x in (a - 1, a, a + 1, a + 2) if x in alist})
+        need = sorted({x for a, _ in contents for x in (a - 1, a, a + 1) if x in alist})
         levels, bad = build_levels(D, Lam, m, need, log)
         if bad:
             log(f"FAIL-ALGEBRA [{label}] {bad}")

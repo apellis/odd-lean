@@ -433,3 +433,52 @@ confirm the corner presentations, not new crossing data. Contents with two j
 strands in one factor, or a j strand beside nontrivial `f_i`, involve several
 idempotents linked by mixed crossings. They need a genuine multicolour
 cyclotomic quotient and remain untested.
+
+**Genuine two-colour cyclotomic reservoir (partial).**
+`scripts/Nondegeneracy/klr_cyclotomic.py` builds `R^Lambda(beta)` from the KKO
+presentation (R1)–(R8). It works over `Q` with odd supercommuting coefficients.
+Its normal forms are `tau_c(w) x^a delta^S e(nu)`, and products use only
+rewriting by the defining relations. The quotient is the left closure of
+`a^Lambda(x_1)·Box` modulo monomials with large polynomial degree, which form a
+left ideal. The degree cap is raised until the dimension formula is met. Each
+quotient is verified exactly: every block `dim e(mu) R^Lambda e(nu)` equals
+the Brundan–Kleshchev/Kang–Kashiwara formula times `2^#delta`. The left regular
+matrices satisfy every relation and `a^Lambda(x_1)=0`. Associativity is checked
+as `L_g L_b = L_(gb)` for all generators `g` and basis elements `b`.
+`scripts/Nondegeneracy/rouq_sig_multicolour_check.py` takes these quotients as
+reservoir tower `A_a`. Here `E^A` induces along the non-unital inclusion that
+appends an i strand, and `F^A` restricts to `M e(beta,i)`. The probe is the
+cutoff-two probe of `rouq_sig_super_check.py`. Induction uses an explicit
+presentation of `e(beta,i)A_(a+1)` as a left `A_a`-module. The test objects are
+the projectives `e(nu)A_a tensor e'B_b`. The run checks the same properties as
+before: both triangles, upward relations, the ordered `C/D` expansions for
+`-q·rouquierMate`, two-sided inverse of the total map, and nilpotent feedback.
+
+Datum: `[[2,-2],[-4,2]]`, `Q_ij=x²-y⁴`, `deg x_i=4`, `deg x_j=2`. Results:
+
+* Two j strands in one factor (`Lambda_A=Lambda_j`, `f_j=y`, `f_i=1`, j-content 2):
+  `R^Lambda(i+2j)`, of dimension 6, and `R^Lambda(2i+2j)`, of dimension 64, are
+  verified. `R^Lambda(2j)=0`. The cases are all four parities `(p_i,p_j)`
+  in `{0,1}²` and contents `(a,b)=(1,0),(1,1),(1,2)`, with heights
+  `h_A=-2` and `h=0,-2,-4`. All pass, with total matrices of sizes 60, 144
+  and 48. The whole feedback is zero there. Because level 0 vanishes,
+  `E^A F^A=0`, so `D` is trivially zero and only `C` is tested. The middle
+  content `a=2` needs the five-strand quotient and was not run.
+* j beside nontrivial `f_i` (`Lambda_A=Lambda_i+Lambda_j`, j-content 1, `f_i=x+delta_i`
+  for odd i, `f_i=x` for even i, `f_j=y`, or `y+delta_j` when i is even and
+  j is odd): levels `a=0..3` are verified, with dimensions `(1,10,26,64)·2^#delta`.
+  Level 4 vanishes by the formula. The sweep was stopped part-way, so the
+  following list is complete. Parities 11, 10 and 01 pass at contents
+  `(0,0),(0,1),(0,2),(1,0),(1,1),(1,2)`, and at the first projective of `(2,0)`.
+  Parity 00 passes there and also at `(2,0)`, `(2,1)` and the first
+  projective of `(2,2)`.
+  Here both `C` and `D` are nonzero. The feedback is nonzero at `h_B=0`: rank
+  4 and square zero with `delta_i`, and rank 2 or 8, square zero, in the even
+  control.
+
+**Status of this evidence.** No failure occurred for any true presentation.
+The required mutation controls were not completed. These are a flipped or
+dropped parity twist, a one-orientation sign flip in `Q_ij`, and a dropped odd
+dot–crossing sign. So nothing above is yet evidence about the crossing data.
+Contents `a=2,3` for odd i, and the middle content with two j strands, remain
+unrun.

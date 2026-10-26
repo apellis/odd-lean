@@ -166,6 +166,10 @@ coordinates remain open; no all-content A2 theorem is claimed.
 in Lean that `(x-y)/(x²-y²)` has both odd dot slides and square
 `(x²+y²)/(x²-y²)²`. The smallest actual nonvacuum rank-one mate was rechecked:
 its 72-by-72 matrix has determinant one, with square-zero feedback of rank four.
+`klr_cyclotomic.py` builds verified two-colour KKO cyclotomic quotients from
+the presentation. `rouq_sig_multicolour_check.py` runs the separated mate checks
+on them; partial results are in SeparatedFusion §7. Mutation controls are not
+done, so these results are not evidence about crossing data.
 
 ## Super Rouquier interface
 

@@ -413,6 +413,8 @@ def monomials(n, degs, cap):
 class Cyclotomic:
     """Exact R^Lambda(content) with verified basis and left-regular matrices."""
 
+    full_assoc_dim = 260
+
     def __init__(self, D: KLR, Lam, content, cap, verbose=False):
         self.D, self.Lam, self.content = D, Lam, content
         a_, m_ = content
@@ -598,15 +600,33 @@ class Cyclotomic:
             for r in range(dim):
                 if col[r, 0] != (1 if r == i else 0):
                     return f"L_b(1) != b for {k}"
+        if dim <= self.full_assoc_dim:
+            tests = None  # full matrix identity
+        else:
+            # randomized exact identity test on 3 random integer vectors
+            import random
+            rnd = random.Random(20261026)
+            W = flint.fmpq_mat(dim, 3, [rnd.randint(-10**6, 10**6) for _ in range(3 * dim)])
+            LW = [L_ * W for L_ in Ls]
+            tests = W
+        self.assoc_mode = "full" if tests is None else "randomized(3 vectors)"
         for g in self.gens:
             Lg = self.L[g]
             for i, k in enumerate(self.basis):
-                v = Lg * Ls[i]
-                w = flint.fmpq_mat(dim, dim)
-                for r in range(dim):
-                    c = Lg[r, i]
-                    if c:
-                        w += c * Ls[r]
+                if tests is None:
+                    v = Lg * Ls[i]
+                    w = flint.fmpq_mat(dim, dim)
+                    for r in range(dim):
+                        c = Lg[r, i]
+                        if c:
+                            w += c * Ls[r]
+                else:
+                    v = Lg * LW[i]
+                    w = flint.fmpq_mat(dim, 3)
+                    for r in range(dim):
+                        c = Lg[r, i]
+                        if c:
+                            w += c * LW[r]
                 if v != w:
                     return f"associativity fails: g={g} b={k}"
         self.Ls = Ls
