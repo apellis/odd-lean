@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Reversed reservoir window comparison
+
+`ReversedReservoirMatrix.md` derives the Hom reservoir height `-k` from
+reservoir height k, identifies its two mixed-word coordinates, and computes
+both left dotted windows as ordered antitriangular changes of the original
+inverse windows. It proves both inverse identities for the resulting
+augmented matrices with principal entry `R=-sigL`; their principal inverses
+are the original right mate. Integer/parity shifts, cap normalization and
+heights zero and plus/minus one are retained.
+
+These are written component calculations, not Lean theorems. The matrix is
+not yet identified with the Hom augmented matrix: its outstanding entry is
+`C_src^-1;P_H(tau_H);C_tgt`. Evaluating that normalized-left partial mate,
+including its scalar relative to R, remains necessary. Same-height right
+reflection does not give this weight-reversing comparison. (TC), shifted
+swapping mates, residual inversion and separation remain open.
+
 ## Specified Hom-sector adjunction and interchange components
 
 `HomSectorTransport.md` derives the unit and counit of the actual
