@@ -36,8 +36,8 @@ Every supported monomial has `pr=0` and `hs=0` separately in Z/2.
 The restrictions on the leading exponents are included. For disconnected
 colours Q is the **single** constant `t_ij`. No parameters are changed.
 
-For a reservoir i-dot u and probe i-dot v, define only the allowed mixed
-inverse expression
+For one reservoir i-dot u and one probe i-dot v, define only the allowed
+mixed inverse expression (the reversed argument order is also allowed):
 
 ```
 a(u,v)=(u-v)^-1                         (p=0),
@@ -249,12 +249,22 @@ For the lower-left entry of P-R, (7)--(9) give exactly
 ```
 
 For the upper-right entry, move the Q factor of vbar and ubar to the
-common target V, retaining its probe-i and middle-j dot arguments. These
+common target V, retaining the i-dot belonging to that mixed crossing
+and the middle j-dot. These
 moves are unsigned: each monomial has even i exponent if i is odd and
 even j exponent if j is odd. The result is
 
 ```
-Q_probe,target (Hbar J v^-1-u^-1 K Gbar)=0.           (11)
+Q_cross,target (Hbar J v^-1-u^-1 K Gbar)=0.           (11)
+```
+
+Here Q_cross,target uses the probe i-dot and middle j-dot in the
+reservoir-middle block, and the reservoir i-dot and middle j-dot in the
+probe-middle block. Thus these are different dot arguments, not a common
+probe-only scalar. Equivalently (11) is
+
+```
+(Hbar J vbar)-(ubar K Gbar)=0.
 ```
 
 Equations (10) and (11) use the two separate equalities of (8). No Q
