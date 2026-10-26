@@ -8,7 +8,7 @@ and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
 
 | Research result | Source | Declaration | Hypotheses | Status |
 |---|---|---|---|---|
-| Shifted postcomposition coordinates | `HomProbeMatrix.md`, §§1–3 | `homContentPostAdjunction_counit_coordinates`, `homContentPostFactorCrossing_shift` | Rouquier family in a Π-2-supercategory; fixed content shift and prescribed beta/xi crossing | Specified SCat adjunction, endpoint coordinates and two-sign cancellation proved; complete principal mate equality (B) remains open |
+| Shifted postcomposition principal mate | `HomProbeMatrix.md`, (B) | `homContentPostCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; arbitrary content and prescribed beta/xi crossing | Defined shifted mate equals insertion of the factor mixed mate in the specified endpoint coordinates, for every weight and both parities; no whole-matrix or fusion claim |
 | Normalized principal Hom mate | `HomPrincipalMate.md`, (10), (1) | `homContentCrossing_coordinates`, `homContentCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; specified inherited crossing | Proved at every height and both parities, including the exceptional height-zero scalar; no whole-matrix or fusion claim |
 
 Sources (numbering refers to these arXiv versions):
