@@ -156,8 +156,21 @@ Combined with `mixedMateBend_symm_rightTranspose`, it recovers the original
 prescribed mixed mate from the reflected mate of the right transpose;
 the rational odd consumer checks this for a degree-one crossing.
 
-Still missing in Lean are the reflected local dots, crossings and inversion
-data. These must be assembled before
+`RouquierReflectedLocal` constructs `SuperRouquierLoc.horizontalReflection`
+at the unchanged height, with transposed dots and crossing `s M(t)`.
+Both signed slides follow by transposing the original opposite slide.
+The prescribed mixed mate is `s` times its original, and each dotted
+window entry is `q(n)` times its original. `SuperSumInvTo.rescale` and
+`SuperSumInvFrom.rescale` prove all five augmented inverse equations in
+both orientations, including the empty window. Inverse components are
+copied explicitly; the four `horizontalReflection_invPos/Neg_f'/g'`
+comparison formulas are definitional. `reflectedCross_square` transports
+the nilpotent square. The rational odd consumer checks both height-zero
+inverses, the negative second-window coefficient, and both boundary windows.
+
+Still missing in Lean are the three-strand braid transport with explicit
+triple adjunction bracketings, and the piecewise canonical cup/cap
+comparisons in `SignedFTriangle.md` §5. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
