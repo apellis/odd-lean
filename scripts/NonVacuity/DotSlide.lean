@@ -31,8 +31,14 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 h) :
 example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 h) (hh : 0 < h) :
     L.cupL ≫ F₁ ◁ rouquierPower x₁ 0 ≫ L.sig = 0 :=
   L.cupL_powComp_sig hh (by omega)
+/-- Even colour, `h = 0`, `t = 2`: Brundan's relation `P_0 Q_0 + P_(-1) Q_1 + P_1 Q_(-1) = 0`. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 0) :
+    L.ccw 0 ≫ L.cw 0 + L.ccw (-1) ≫ L.cw 1 + L.ccw 1 ≫ L.cw (-1) = 0 := by
+  have := L.infGrass_nonneg le_rfl 1
+  simpa [koszulSign] using this
 end
 
+#print axioms SuperRouquierLoc.infGrass_nonneg
 #print axioms SuperRouquierLoc.powComp_sig
 #print axioms SuperRouquierLoc.cupL_powComp_sig
 #print axioms SuperRouquierLoc.sig_capL_expansion
