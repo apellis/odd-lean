@@ -41,8 +41,11 @@ Hecke supercategory (`isSignedNilHeckeFamily_block`, with `ε = (-1)^{|i|}`). Wi
   `t_mul_gEven` (`T_j g = T_j (v - u)`, the first case of KKO (8.15) on equal colours), and
   `x_far_mul_phiEven`, `t_far_mul_phiEven`.
 
-The braid identity `τ_a φ_{a+1} φ_a = φ_{a+1} φ_a τ_{a+1}` of Lemma 8.3, the case of distinct
-colours, and the composite `g_n ⋯ g_1` are not treated here.
+* `braid_phiOdd`, `braid_element`, `braid_phiEven`, `braid_gEven`: the braid identity
+  `τ_a φ_{a+1} φ_a = φ_{a+1} φ_a τ_{a+1}` of Lemma 8.3 on three strands of one colour (the sign
+  of `τ` cancels), and the same identity for the variants `g`.
+
+Strands of distinct colours, and the composite `g_n ⋯ g_1`, are not treated here.
 -/
 
 namespace OddMath.QuiverHecke.SignedNilHecke
@@ -221,6 +224,14 @@ theorem swap_of_neg_one_smul {x y : B} (h : x * y = ((-1 : ℤˣ) : ℤ) • (y 
 theorem eq_of_one_smul {x y : B} (h : x * y = ((1 : ℤˣ) : ℤ) • (y * x)) : x * y = y * x := by
   simpa only [Units.val_one, one_smul] using h
 
+theorem mul_mul_of_mul_eq {x y z : B} (h : x * y = z) (r : B) : x * (y * r) = z * r := by
+  rw [← mul_assoc, h]
+
+theorem mul_mul_mul_of_mul_mul_eq {x y z w : B} (h : x * (y * z) = w) (r : B) :
+    x * (y * (z * r)) = w * r := by
+  rw [← h]
+  simp only [mul_assoc]
+
 namespace IsSignedNilHeckeFamily
 
 variable {s n : ℕ} {X T : ℕ → B}
@@ -260,7 +271,8 @@ theorem x_far_mul_element (hF : IsSignedNilHeckeFamily (-1) s n X T) {a j : ℕ}
     (h₄ : a ≠ j + 1) :
     X a * OddNilHecke.Intertwiner.element (X j) (X (j + 1)) (T j) =
       -(OddNilHecke.Intertwiner.element (X j) (X (j + 1)) (T j) * X a) :=
-  OddNilHecke.Intertwiner.anticommutes _ _ _ _ (neg_of_neg_one_smul (hF.x_comm a j ha₁ ha₂ h₁ (by omega) h₃))
+  OddNilHecke.Intertwiner.anticommutes _ _ _ _
+    (neg_of_neg_one_smul (hF.x_comm a j ha₁ ha₂ h₁ (by omega) h₃))
     (neg_of_neg_one_smul (hF.x_comm a (j + 1) ha₁ ha₂ (by omega) h₂ h₄))
     (neg_of_neg_one_smul (hF.x_t_comm a j ha₁ ha₂ h₁ h₂ h₃ h₄))
 
@@ -306,6 +318,106 @@ theorem t_far_mul_phiEven (hF : IsSignedNilHeckeFamily 1 s n X T) {j l : ℕ} (h
   rcases hjl with h | h
   · exact (eq_of_one_smul (hF.t_comm j l h₁ h hl₂)).symm
   · exact eq_of_one_smul (hF.t_comm l j hl₁ h h₂)
+
+/-- KKO Lemma 8.3, the braid identity `τ_a φ_{a+1} φ_a = φ_{a+1} φ_a τ_{a+1}`, odd colour. -/
+theorem braid_phiOdd (hF : IsSignedNilHeckeFamily (-1) s n X T) {j : ℕ} (h₁ : s ≤ j)
+    (h₂ : j + 2 < s + n) :
+    T j * (phiOdd (X (j + 1)) (X (j + 2)) (T (j + 1)) * phiOdd (X j) (X (j + 1)) (T j)) =
+      phiOdd (X (j + 1)) (X (j + 2)) (T (j + 1)) * phiOdd (X j) (X (j + 1)) (T j) * T (j + 1) := by
+  have o₁ := hF.oddTwo h₁ (by omega)
+  have o₂ : OddTwo (X (j + 1)) (X (j + 2)) (T (j + 1)) := hF.oddTwo (j := j + 1) (by omega) h₂
+  have h₃ : T j * X (j + 2) = -(X (j + 2) * T j) := swap_of_neg_one_smul
+    (hF.x_t_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega) (by omega))
+  have h₆ : T (j + 1) * X j = -(X j * T (j + 1)) := swap_of_neg_one_smul
+    (hF.x_t_comm j (j + 1) h₁ (by omega) (by omega) (by omega) (by omega) (by omega))
+  have h₈ : X (j + 2) * X j = -(X j * X (j + 2)) := neg_of_neg_one_smul
+    (hF.x_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega))
+  have hss := hF.t_sq j h₁ (by omega)
+  have huu := hF.t_sq (j + 1) (by omega) (by omega)
+  have hb : T (j + 1) * (T j * T (j + 1)) = T j * (T (j + 1) * T j) := by
+    simpa only [mul_assoc] using (hF.braid j h₁ h₂).symm
+  simp only [phiOdd, mul_sub, sub_mul, mul_assoc, mul_neg, neg_mul,
+    neg_neg, mul_one, mul_zero, o₁.tu, o₁.tv, o₁.tv', o₂.tu, o₂.tu',
+    o₁.vu, o₁.vu', o₂.vu, o₂.vu', h₃, mul_mul_of_mul_eq h₃, h₆,
+    mul_mul_of_mul_eq h₆, h₈, mul_mul_of_mul_eq h₈, hss, huu,
+    hb]
+  noncomm_ring
+
+/-- The braid identity of KKO Lemma 8.3 for the odd variants `g`. -/
+theorem braid_element (hF : IsSignedNilHeckeFamily (-1) s n X T) {j : ℕ} (h₁ : s ≤ j)
+    (h₂ : j + 2 < s + n) :
+    T j * (OddNilHecke.Intertwiner.element (X (j + 1)) (X (j + 2)) (T (j + 1)) *
+        OddNilHecke.Intertwiner.element (X j) (X (j + 1)) (T j)) =
+      OddNilHecke.Intertwiner.element (X (j + 1)) (X (j + 2)) (T (j + 1)) *
+        OddNilHecke.Intertwiner.element (X j) (X (j + 1)) (T j) * T (j + 1) := by
+  have o₁ := hF.oddTwo h₁ (by omega)
+  have o₂ : OddTwo (X (j + 1)) (X (j + 2)) (T (j + 1)) := hF.oddTwo (j := j + 1) (by omega) h₂
+  have h₃ : T j * X (j + 2) = -(X (j + 2) * T j) := swap_of_neg_one_smul
+    (hF.x_t_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega) (by omega))
+  have h₆ : T (j + 1) * X j = -(X j * T (j + 1)) := swap_of_neg_one_smul
+    (hF.x_t_comm j (j + 1) h₁ (by omega) (by omega) (by omega) (by omega) (by omega))
+  have h₈ : X (j + 2) * X j = -(X j * X (j + 2)) := neg_of_neg_one_smul
+    (hF.x_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega))
+  have hss := hF.t_sq j h₁ (by omega)
+  have huu := hF.t_sq (j + 1) (by omega) (by omega)
+  have hb : T (j + 1) * (T j * T (j + 1)) = T j * (T (j + 1) * T j) := by
+    simpa only [mul_assoc] using (hF.braid j h₁ h₂).symm
+  simp only [OddNilHecke.Intertwiner.element, OddNilHecke.Intertwiner.squareDiff, pow_two,
+    mul_sub, sub_mul, mul_assoc, mul_neg, neg_mul,
+    neg_neg, mul_one, mul_zero, o₁.tu, o₁.tv, o₁.tv', o₂.tu, o₂.tu',
+    o₁.vu, o₁.vu', o₂.vu, o₂.vu', h₃, mul_mul_of_mul_eq h₃, h₆,
+    mul_mul_of_mul_eq h₆, h₈, mul_mul_of_mul_eq h₈, hss, huu,
+    hb]
+  noncomm_ring
+
+/-- KKO Lemma 8.3, the braid identity `τ_a φ_{a+1} φ_a = φ_{a+1} φ_a τ_{a+1}`, even colour. -/
+theorem braid_phiEven (hF : IsSignedNilHeckeFamily 1 s n X T) {j : ℕ} (h₁ : s ≤ j)
+    (h₂ : j + 2 < s + n) :
+    T j * (phiEven (X (j + 1)) (X (j + 2)) (T (j + 1)) * phiEven (X j) (X (j + 1)) (T j)) =
+      phiEven (X (j + 1)) (X (j + 2)) (T (j + 1)) * phiEven (X j) (X (j + 1)) (T j) *
+        T (j + 1) := by
+  have o₁ := hF.evenTwo h₁ (by omega)
+  have o₂ : EvenTwo (X (j + 1)) (X (j + 2)) (T (j + 1)) := hF.evenTwo (j := j + 1) (by omega) h₂
+  have h₃ : T j * X (j + 2) = X (j + 2) * T j := (eq_of_one_smul
+    (hF.x_t_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega) (by omega))).symm
+  have h₆ : T (j + 1) * X j = X j * T (j + 1) := (eq_of_one_smul
+    (hF.x_t_comm j (j + 1) h₁ (by omega) (by omega) (by omega) (by omega) (by omega))).symm
+  have h₈ : X (j + 2) * X j = X j * X (j + 2) := eq_of_one_smul
+    (hF.x_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega))
+  have hss := hF.t_sq j h₁ (by omega)
+  have huu := hF.t_sq (j + 1) (by omega) (by omega)
+  have hb : T (j + 1) * (T j * T (j + 1)) = T j * (T (j + 1) * T j) := by
+    simpa only [mul_assoc] using (hF.braid j h₁ h₂).symm
+  simp only [phiEven, mul_add, add_mul, mul_sub, sub_mul, mul_assoc,
+    mul_one, one_mul, mul_zero, o₁.tu, o₁.tv, o₂.tu,
+    o₁.vu, mul_mul_of_mul_eq h₃,
+    mul_mul_of_mul_eq h₆, mul_mul_of_mul_eq h₈, hss, huu,
+    hb]
+  noncomm_ring
+
+/-- The braid identity of KKO Lemma 8.3 for the even variants `g`. -/
+theorem braid_gEven (hF : IsSignedNilHeckeFamily 1 s n X T) {j : ℕ} (h₁ : s ≤ j)
+    (h₂ : j + 2 < s + n) :
+    T j * (gEven (X (j + 1)) (X (j + 2)) (T (j + 1)) * gEven (X j) (X (j + 1)) (T j)) =
+      gEven (X (j + 1)) (X (j + 2)) (T (j + 1)) * gEven (X j) (X (j + 1)) (T j) * T (j + 1) := by
+  have o₁ := hF.evenTwo h₁ (by omega)
+  have o₂ : EvenTwo (X (j + 1)) (X (j + 2)) (T (j + 1)) := hF.evenTwo (j := j + 1) (by omega) h₂
+  have h₃ : T j * X (j + 2) = X (j + 2) * T j := (eq_of_one_smul
+    (hF.x_t_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega) (by omega))).symm
+  have h₆ : T (j + 1) * X j = X j * T (j + 1) := (eq_of_one_smul
+    (hF.x_t_comm j (j + 1) h₁ (by omega) (by omega) (by omega) (by omega) (by omega))).symm
+  have h₈ : X (j + 2) * X j = X j * X (j + 2) := eq_of_one_smul
+    (hF.x_comm (j + 2) j (by omega) (by omega) h₁ (by omega) (by omega))
+  have hss := hF.t_sq j h₁ (by omega)
+  have huu := hF.t_sq (j + 1) (by omega) (by omega)
+  have hb : T (j + 1) * (T j * T (j + 1)) = T j * (T (j + 1) * T j) := by
+    simpa only [mul_assoc] using (hF.braid j h₁ h₂).symm
+  simp only [gEven, phiEven, mul_add, add_mul, mul_sub, sub_mul, mul_assoc,
+    mul_one, mul_zero, o₁.tu, o₁.tv, o₁.tv', o₂.tu, o₂.tu',
+    o₁.vu, o₁.vu', o₂.vu, o₂.vu', h₃, mul_mul_of_mul_eq h₃, h₆,
+    mul_mul_of_mul_eq h₆, h₈, mul_mul_of_mul_eq h₈, hss, huu,
+    hb]
+  noncomm_ring
 
 end IsSignedNilHeckeFamily
 

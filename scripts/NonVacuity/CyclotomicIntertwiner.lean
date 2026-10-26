@@ -77,6 +77,32 @@ example : intertwinerHom datum scalars [] [] true true =
   rw [intertwinerHom_self]
   simp [sameIntertwiner, datum]
 
+/-- The braid identity for the odd variants on three strands of the odd colour. -/
+example : crossE datum scalars [true, true, true] 0 *
+      (OddMath.OddNilHecke.Intertwiner.element (dotE datum scalars [true, true, true] 1)
+          (dotE datum scalars [true, true, true] 2) (crossE datum scalars [true, true, true] 1) *
+        OddMath.OddNilHecke.Intertwiner.element (dotE datum scalars [true, true, true] 0)
+          (dotE datum scalars [true, true, true] 1) (crossE datum scalars [true, true, true] 0)) =
+    OddMath.OddNilHecke.Intertwiner.element (dotE datum scalars [true, true, true] 1)
+        (dotE datum scalars [true, true, true] 2) (crossE datum scalars [true, true, true] 1) *
+      OddMath.OddNilHecke.Intertwiner.element (dotE datum scalars [true, true, true] 0)
+        (dotE datum scalars [true, true, true] 1) (crossE datum scalars [true, true, true] 0) *
+      crossE datum scalars [true, true, true] 1 := by
+  have hF := isSignedNilHeckeFamily_block datum scalars [] [] true 3
+  rw [show datum.parity true = 1 from rfl, show zunit (1 : ZMod 2) = -1 by simp [zunit]] at hF
+  exact hF.braid_element (j := 0) (by simp) (by simp)
+
+/-- The even intertwiners satisfy the braid identity on polynomials in three variables. -/
+example : dd ℚ 3 0 * (phiEven (xv ℚ 3 1) (xv ℚ 3 2) (dd ℚ 3 1) * phiEven (xv ℚ 3 0) (xv ℚ 3 1)
+      (dd ℚ 3 0)) =
+    phiEven (xv ℚ 3 1) (xv ℚ 3 2) (dd ℚ 3 1) * phiEven (xv ℚ 3 0) (xv ℚ 3 1) (dd ℚ 3 0) *
+      dd ℚ 3 1 :=
+  (isSignedNilHeckeFamily_nilHecke ℚ 3).braid_phiEven (j := 0) le_rfl (by norm_num)
+
+#print axioms IsSignedNilHeckeFamily.braid_phiOdd
+#print axioms IsSignedNilHeckeFamily.braid_element
+#print axioms IsSignedNilHeckeFamily.braid_phiEven
+#print axioms IsSignedNilHeckeFamily.braid_gEven
 #print axioms dot_comp_intertwinerHom
 #print axioms dot_succ_comp_intertwinerHom
 #print axioms OddTwo.x_succ_mul_phiOdd

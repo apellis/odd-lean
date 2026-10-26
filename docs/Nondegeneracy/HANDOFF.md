@@ -572,8 +572,11 @@ variant above if `i=j`), and checks (8.11) for `b=a,a+1`:
 `dot_comp_intertwinerHom`, `dot_succ_comp_intertwinerHom`, sign
 `(-1)^{|i||j|}`. These are the transports of `x_1` through `g_n⋯g_1` used in
 (8.16)–(8.17). Far dots (`b∉{a,a+1}`) are not yet stated at word level.
-Open for KKO Theorem 8.5 (`QP`): the braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}`,
-the composite `g_n⋯g_1` on `(i,ν)`, the map `Q` and the reduction modulo
+The braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}` of Lemma 8.3 is checked on
+three strands of one colour, for `φ` and for `g`, both parities
+(`IsSignedNilHeckeFamily.braid_phiOdd`, `braid_element`, `braid_phiEven`,
+`braid_gEven`). Open for KKO Theorem 8.5 (`QP`): the braid identity when the
+three colours are not all equal, the composite `g_n⋯g_1` on `(i,ν)`, the map `Q` and the reduction modulo
 `R a^Λ(x_2) R^1(β)`.
 
 [ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
