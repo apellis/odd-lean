@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Deformed right square resolution
+
+[DeformedSquareResolution.md](DeformedSquareResolution.md) gives a proposed
+written assembly of right projectivity, not a Lean theorem. The actual K₀,
+K₁ quotients carry central right B[s] actions (s=t² for odd i, s=t for
+even i). Adapted affine right PBW gives explicit finite direct sums of
+corner projectives e(ν)B[s], retaining the φ-twisted coefficient actions
+in raw quotient coordinates. P is square-linear, and the typed
+QP:K₁→K₁′ is injective by its unit leading moving-dot term. Together
+with the independently checked written ideal sum this gives the actual
+length-one projective resolution. A central monic annihilator is obtained
+by reducing the actual quotient modulo its finite nilpotent exterior ideal,
+using KKO Lemma 7.3 there, lifting even coefficients, and taking a power.
+Kang–Kashiwara Lemma 4.18 then yields finite right B-projectivity.
+The new assembly awaits independent review. Left projectivity and the
+specified Rouquier matrix remain separate, unproved conclusions.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
