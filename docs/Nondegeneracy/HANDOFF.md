@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Coefficient transport and the swapped weight
+
+`ELVVacuumTransport.md` gives the all-cutoff coefficient involution and
+local super-opposite polynomial transport, preserving the exact coefficient
+ideal and bounded coefficient detection. Its full affine equivalence is
+conditional; the first-boundary ideal then maps to the last-boundary ideal,
+not the same-index first-boundary ideal. These are written arguments, not
+Lean theorems or categorical bubble formulas.
+
+The weight choice in §4 is corrected: reachability at -mu gives
+Lambda_P-Lambda_R=(mu,0) literally for pre-probe/post-reservoir Hom.
+Chevalley is unnecessary merely to obtain that weight. Swapped augmented
+inversion and actual vacuum/generator recovery remain separate obligations;
+bounded recovery need not identify the two globally indexed quotients.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every

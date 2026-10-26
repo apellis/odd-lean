@@ -1,7 +1,8 @@
 # ELV vacuum transport: coefficient repair and orientation boundary
 
-**Status: proposed written mathematics, not a Lean theorem or an accepted
-vacuum comparison.** This audits the route at commit
+**Status: written coefficient and local polynomial transport proofs, not
+Lean theorems or a vacuum comparison.** The full affine equivalence in §3
+remains conditional. This audits the route at commit
 `0ff8a979490399ff6104caf5fbcf52a69914a0c1`. There is an explicit, invertible
 all-colour coefficient repair. It preserves the exact coefficient ideal,
 including the even-cutoff exterior relation, and bounded coefficient
@@ -204,22 +205,27 @@ transport theorems. They give
 For the unreversed lowest-weight towers C_R(-Lambda_R+beta_R) and
 C_P(-Lambda_P+beta_P), taking T=C_R and W=C_P puts the content-zero
 vacuum at (muP,muM)=(Lambda_R,-Lambda_P). The sum of sector labels is
-Lambda_R-Lambda_P, the required reservoir-minus-probe convention.
+Lambda_R-Lambda_P for that assignment of the two factors.
 But pre(E_R) decreases beta_R, so at the reservoir boundary its first
 upward step is zero. Post(E_P) increases probe content. Neither coefficient
 pullback (1) nor a module super-opposite changes these functor endpoints.
 
 Swapping the towers gives the desired support pattern: the probe is the
 input of the extension-by-zero vacuum, so pre(probe induction) is zero,
-and reservoir post(induction) grows beta_R. However its zero-content
-labels are (Lambda_P,-Lambda_R), with total Lambda_P-Lambda_R. This is
-minus the stipulated external weight, not the old weight with new names.
-Formal contents beta_R,beta_P must be retained even if external weights
-coincide. Correcting this sign requires an actual action transport and a
-comparison of its generators, not a relabelling of coroot values.
+and reservoir post(induction) grows beta_R. Its zero-content labels are
+(Lambda_P,-Lambda_R), with total Lambda_P-Lambda_R. Apply
+`exists_extended_weights D (-mu) m` when choosing the dominant weights.
+It gives Lambda_R-Lambda_P=(-mu,0), hence Lambda_P-Lambda_R=(mu,0)
+in the literal pairing extension, including the original lattice and its
+coroot kernel. This uses h_i=-D.h_i(mu), the factor-swap schedule allowed
+in `ProbeReachability.md`. `FusedRegularVacuumFamily` accepts independent
+mu and h parameters. No Chevalley or E/F transport is needed merely for
+this weight choice. Formal contents beta_R,beta_P remain distinct even
+when their root images agree. The arithmetic alone supplies neither
+swapped augmented inversion nor an actual vacuum/generator comparison.
 
-There IS a proved full-presentation symmetry worth using, rather than
-inventing a multicolour reversal from rank-one data. `chevalleyTwo` sends
+There is also a proved full-presentation symmetry, distinct from this
+weight choice. `chevalleyTwo` sends
 lambda to -lambda and E_i to F_i, F_i to E_i, into `TwoSOp`. Its exact
 generator images, from `chevL` and `chevC`, are:
 
@@ -234,12 +240,12 @@ generator images, from `chevL` and `chevC`, are:
 It preserves the independent integer degree. Applied to an actual full
 action C, its reflected object is C(-lambda) in the super-opposite target,
 and its upward functor is the OLD restriction, not the OLD induction.
-Consequently applying Chevalley to the swapped Hom action to repair its
-external weight also changes the upward word whose vacuum coordinates are
-being requested. It does not establish the old induction square.
+Consequently applying Chevalley changes the upward word whose vacuum
+coordinates are being requested. It does not establish the old induction
+square and is not required by the corrected weight choice above.
 
 The normalized precomposition adjunction has an additional fixed obligation:
-with h the reservoir source height, sigma=p(i)(h+1), and
+with h the precomposition factor's source height, sigma=p(i)(h+1), and
 c=(-1)^(sigma^2)*(1 if h<0 else (-1)^p(i)), its unit uses leftCup followed
 by output parity removal; its counit uses (-1)^sigma c^-1 leftCap with
 the specified parity comparison. `HomSectorTransport.md` (4)–(5) and
@@ -248,13 +254,13 @@ right cup/cap exchange cannot be identified with them by dropping c, sigma,
 or the output comparisons. A right transpose also sends an odd n-th dot
 power to q(n) times the n-th power of the transpose.
 
-Thus the exact remaining orientation task is to give one full-action
-transport with these weight labels and cup/cap conventions, identify its
-content-zero vacuum and upward words with the required first-boundary
-rows, and show that its dots/crossings become the specified coordinate
-generators. The existing Chevalley theorem supplies a full symmetry, but
-not this module/vacuum comparison. No new full multicolour action is
-asserted from `RouquierFamily` alone.
+Thus the remaining task is to assemble the chosen Hom orientation with
+its prescribed cup/cap conventions and prove a sufficient vacuum-coordinate
+recovery law for its actual generators. A comparison with first-boundary
+rows would suffice, but equality of same-index first/last ideals or a global
+quotient isomorphism is not required for bounded recovery. The existing
+Chevalley theorem supplies a full symmetry, not this comparison. No full
+multicolour action is asserted from `RouquierFamily` alone.
 
 ## 5. Balanced kernel and stopping point
 
@@ -303,6 +309,8 @@ No normalized bubble, fusion, or nondegeneracy claim follows.
 * `QuiverHecke/Algebra.lean`, `AlgebraMaps.lean`: corner and opposite conventions.
 * `SKM/RouquierHomContent.lean`, `RouquierNormalizedHomAdjunction.lean`.
 * `SKM/ChevalleyBase.lean`, `Chevalley.lean`, `ChevalleyTwo.lean`.
+* `QuiverHecke/ReservoirWeights.lean`: `exists_extended_weights`.
+* `QuiverHecke/ReservoirFusedVacuum.lean`: `FusedRegularVacuumFamily`.
 
 The surrounding written comparisons read were `ELVVacuumGeneratorComparison`,
 `RegularVacuumComparison`, `DeformedActionAssembly`, `DeformedGradedAction`,
