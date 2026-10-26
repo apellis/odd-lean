@@ -1,7 +1,7 @@
 import OddMath.SKM.RouquierPitchfork
 import Lean.Util.CollectAxioms
 
-/-! Both-parity cap-swap consumers, including the local data extracted from a
+/-! Both-parity cup/cap-swap and canonical E-zigzag consumers, including the local data extracted from a
 Rouquier family. These are conditional type/sign checks, not a construction of
 a nonzero odd inversion model. -/
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory OddMath.SKM
@@ -73,6 +73,74 @@ example (p : ZMod 2) (h : ℤ) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p h)
     (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
       L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 𝟙 E₂ :=
   L.leftAdj_triangle_E_of_neg U rfl hh hsq hsq' hB
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 0)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 0 2)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 𝟙 E₂ := by
+  simpa only [koszulSign_zero_left, one_smul] using
+    L.leftAdj_triangle_E_of_nonneg U (by norm_num) (by norm_num) hsq hsq' hB
+example (h : ℤ) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 h)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 0 (h + 2)) (hh : 0 < h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 𝟙 E₂ := by
+  simpa only [koszulSign_zero_left, one_smul] using
+    L.leftAdj_triangle_E_of_nonneg U rfl hh.le hsq hsq' hB
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 2)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = -𝟙 E₂ := by
+  simpa only [koszulSign_one_one, neg_one_zsmul] using
+    L.leftAdj_triangle_E_of_nonneg U (by norm_num) (by norm_num) hsq hsq' hB
+example (h : ℤ) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 h)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 (h + 2)) (hh : 0 < h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = -𝟙 E₂ := by
+  simpa only [koszulSign_one_one, neg_one_zsmul] using
+    L.leftAdj_triangle_E_of_nonneg U rfl hh.le hsq hsq' hB
+example (p : ZMod 2) (h : ℤ) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p h)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ p (h + 2)) (hh : 0 < h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (leftUnitor E₂).inv ≫ L.cupL ▷ E₂ ≫ (associator F₁ E₁ E₂).hom ≫
+      F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv =
+      (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫ L.sigL ▷ E₂ := by
+  simpa only [ite_eq_right (show h ≠ 0 by omega), one_smul] using
+    L.cupL_pitchfork_of_nonneg U rfl hh.le hsq hsq' hB
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 2)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (leftUnitor E₂).inv ≫ L.cupL ▷ E₂ ≫ (associator F₁ E₁ E₂).hom ≫
+      F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv =
+      -((rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫ L.sigL ▷ E₂) := by
+  simpa only [ite_true, koszulSign_one_one, neg_one_zsmul] using
+    L.cupL_pitchfork_of_nonneg U (by norm_num) (by norm_num) hsq hsq' hB
 end Local
 section Family
 variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
@@ -107,6 +175,14 @@ example (T : RouquierFamily (k := k) (B := B) D) (i : I) {a b c d : X}
 example (T : RouquierFamily (k := k) (B := B) D) (i : I) {x y : X}
     (e : x + D.α i = y) (hh : D.h i x < 0) : T.leftZigE i e = 𝟙 (T.E i e) :=
   T.leftZigE_of_neg i e hh
+example (T : RouquierFamily (k := k) (B := B) D) (i : I) {x y : X}
+    (e : x + D.α i = y) (hh : 0 ≤ D.h i x) :
+    T.leftZigE i e = koszulSign (D.parity i) (D.parity i) • 𝟙 (T.E i e) :=
+  T.leftZigE_of_nonneg i e hh
+example (T : RouquierFamily (k := k) (B := B) D) (i : I) {x y : X}
+    (e : x + D.α i = y) :
+    T.leftZigE i e = (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)) • 𝟙 (T.E i e) :=
+  T.leftZigE_eq i e
 end Family
 
 open Lean Elab Command
