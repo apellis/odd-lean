@@ -117,6 +117,17 @@ this check is not a nonvacuum categorical example. The categorical content
 of the listed coordinate hypotheses remains open, so this conditional
 reduction does not close A2 or supply its all-height negative windows.
 
+`OddMath/SKM/RouquierFeedbackIdeal.lean` proves whole-matrix nilpotence from
+a vanishing multiplicative filtration of two-sided coefficient ideals.
+`FeedbackIdealFiltration.matrix_pow_mem` controls all entries of every
+power, and `isUnit_of_feedback_filtration` feeds the resulting nilpotence
+into `isUnit_of_nilpotent_feedback`. Its concrete integral residue-ring
+fixture has nonzero square-zero feedback and noncommuting off-diagonal
+blocks (`scripts/NonVacuity/FeedbackIdeal.lean`). Construction of the
+categorical closed-coefficient filtration and feedback membership is still
+open. [HomSectorCoordinates](HomSectorCoordinates.md) specifies the exact
+remaining adjunction, original-datum coherence and coordinate obligations.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
