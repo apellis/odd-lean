@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRightDot
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import Lean.Util.CollectAxioms
 
@@ -7,7 +7,9 @@ run_cmd do
   let env ← getEnv
   let mut count : Nat := 0
   for i in [:env.header.moduleNames.size] do
-    if env.header.moduleNames[i]! == `OddMath.QuiverHecke.CyclotomicAction.IntertwinerRightDot then
+    if #[`OddMath.QuiverHecke.CyclotomicAction.IntertwinerRightDot,
+        `OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetDot].contains
+        env.header.moduleNames[i]! then
       for n in env.header.moduleData[i]!.constNames do
         for a in (← Lean.collectAxioms n) do
           unless #[`propext, `Classical.choice, `Quot.sound].contains a do
@@ -63,5 +65,43 @@ example (b : CyclotomicAlgebra mixedDatum mixedScalars polys 1)
     rightDotCoefficient mixedDatum mixedScalars true polys (polys_parity mixedDatum) 1 b = -b := by
   simpa [mixedDatum] using rightDotCoefficient_of_mem mixedDatum mixedScalars true polys
     (polys_parity mixedDatum) 1 1 b hb
+
+/-- All-odd content of height three retains the nonzero coefficient shift. -/
+example :
+    (targetRightDot datum scalars true {false, true, false} polys (polys_parity datum) 2).comp
+        (parityCyclotomicContentQ datum scalars true {false, true, false} polys (polys_parity datum) 2) =
+      (parityCyclotomicContentQ datum scalars true {false, true, false} polys (polys_parity datum) 2).comp
+        (sourceRightDot datum scalars true polys (polys_parity datum) 2) :=
+  targetRightDot_Q datum scalars true {false, true, false} polys (polys_parity datum) 2
+
+/-- Mixed content on the same balanced quotient, with odd moving colour. -/
+example :
+    (targetRightDot mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1).comp
+        (parityCyclotomicContentQ mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1) =
+      (parityCyclotomicContentQ mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1).comp
+        (sourceRightDot mixedDatum mixedScalars true polys (polys_parity mixedDatum) 1) :=
+  targetRightDot_Q mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1
+
+example (b : CyclotomicAlgebra mixedDatum mixedScalars polys 1) :
+    (qCoefficient mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1).toSVec.sgn 1
+        (qCoefficientInsert mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1 b) =
+      -(qCoefficientInsert mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1
+        (rightDotCoefficient mixedDatum mixedScalars true polys (polys_parity mixedDatum) 1 b)) := by
+  simpa [mixedDatum, contentSumParity] using targetDotCoefficient_insert mixedDatum mixedScalars
+    true {false, true} polys (polys_parity mixedDatum) 1 b
+
+example (b : CyclotomicAlgebra datum scalars polys 2) :=
+  LinearMap.congr_fun
+    (targetRightDot_Q datum scalars true {false, true, false} polys (polys_parity datum) 2)
+    (InductionAlong.Ind.tmul
+      (InductionAlong.unitGen (appendAlgebra datum scalars true 3 :
+        Hn datum scalars 3 →ₙ+* Hn datum scalars 4)) b)
+
+example (b : CyclotomicAlgebra mixedDatum mixedScalars polys 1) :=
+  LinearMap.congr_fun
+    (targetRightDot_Q mixedDatum mixedScalars true {false, true} polys (polys_parity mixedDatum) 1)
+    (InductionAlong.Ind.tmul
+      (InductionAlong.unitGen (appendAlgebra mixedDatum mixedScalars true 2 :
+        Hn mixedDatum mixedScalars 2 →ₙ+* Hn mixedDatum mixedScalars 3)) b)
 
 end IntertwinerRightDotConsumer

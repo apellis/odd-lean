@@ -11,7 +11,33 @@ are retained in both raw quotient and right-B-linear tensor coordinates.
 These are written arguments, not Lean theorems. Left projectivity, reverse
 adjunctions and invertibility of the prescribed Rouquier matrix remain separate.
 
-## Source right-dot operator (partial right-action construction)
+## Constructed right dots and Q compatibility
+
+`CyclotomicAction/IntertwinerTargetDot.lean` constructs `targetRightDot`
+on the actual prepend-corner induced module with coefficient `qCoefficient`.
+It sends `a ⊗ c` to `a x_first ⊗ sgn(p(i))(c)`. The theorem
+`targetDotCoefficient_insert`, derived from `Envelope.ζPow_inv_mem` and
+`SVec.sgn_comp_of_mem`, proves that on `c = π^η b`, with `η = p(i)p(β)`,
+this is exactly `(-1)^η a x_first ⊗ π^η φ_i(b)`. Both factors are present.
+
+`affineFirstDot_twist_comm` derives balance from homogeneous superinterchange.
+`contentMove_firstDot` assembles `dot_comp_moveHom` into the signed matrix
+identity, respecting reversal of diagram composition by matrix multiplication.
+`targetRightDot_Q` proves the equality of actual linear-map composites
+`targetRightDot.comp parityCyclotomicContentQ =
+parityCyclotomicContentQ.comp sourceRightDot` by balanced-tensor induction.
+Neither balance nor the matrix identity is assumed. The imported consumer
+checks the equality on all-odd height-three and mixed height-two contents,
+both with nonzero coefficient shift, and audits the owned declarations.
+
+Source comparison: KKO I, arXiv:1206.5933v2, (8.13) and Proposition 8.4,
+PDF page 42, give precisely this target `t_i` formula and compatibility.
+The theorem retains finite colours, content projection, positive quotient
+indexing, and `CyclotomicPolynomialParity`. It does **not** establish the
+induced tensor super grading, full right-superalgebra action, or full
+Proposition 8.4; no QP relation is claimed.
+
+## Source right-dot operator
 
 `CyclotomicAction/IntertwinerRightDot.lean` constructs `sourceRightDot` on
 `Ind (CyclotomicAlgebra a n) (appendAlgebra i (n+1))`. It is an ordinary
@@ -24,14 +50,10 @@ coefficient twist. There is no assumed balance or assumed intertwining.
 Mixed and all-odd consumers use the existing cyclotomic balanced tensor;
 the mixed consumer checks the minus sign on odd coefficients.
 
-This is only the source operator in KKO I, arXiv:1206.5933v2,
-Proposition 8.4. The target first-dot operator with both scalar
-`(-1)^{p(i)p(β)}` and coefficient involution is not constructed here.
-Compatibility with `parityCyclotomicContentQ` remains unproved: it must
-use `dot_comp_moveHom`, assembled in the content-projected Hom algebra,
-not an assumed intertwining identity. The induced-tensor grading and
-the superbimodule assertion also remain absent. Finite colours,
-positive quotient indexing, and `CyclotomicPolynomialParity` are retained.
+The source and target right-dot endomorphisms and their Q compatibility are
+now constructed as described above. The induced-tensor grading and the
+superbimodule assertion remain absent. Finite colours, positive quotient
+indexing, and `CyclotomicPolynomialParity` are retained.
 
 ## Canonical parity-shifted coefficient target
 
@@ -49,7 +71,8 @@ shift, use the actual cyclotomic quotient, and audit all owned declarations.
 
 Source-statement comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 also
 requires the induced super grading and signed right `t_i` compatibility.
-Neither is proved here. Its target right action contains both
+The latter is now proved by `targetRightDot_Q`; induced grading remains open.
+Its target right action contains both
 `(-1)^{p(i)p(β)}` on the first-dot action and the coefficient involution
 `φ_i(b)`; the latter cannot be dropped when balancing across odd coefficients.
 The new coefficient grading requires `CyclotomicPolynomialParity`; the old
