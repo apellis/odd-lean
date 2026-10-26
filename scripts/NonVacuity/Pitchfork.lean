@@ -47,6 +47,28 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 0) (hsq : t ≫ t = 0) :
     (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ 1 ▷ F₁) ▷ E₁ ≫ L.capCross =
       -𝟙 E₁ := by
   simpa using L.dottedUnit_capCross_boundary hsq (n := 1) (by omega) (by omega)
+/-- The odd low expansion retains both terms at height one. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 1) :
+    L.sig ≫ L.capL = L.capD 0 ≫ L.cw (-1) + L.capD 1 := by
+  simpa using L.sig_capL_low (by omega)
+
+/-- The odd one-dot capped crossing has the negative coefficient. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 1) (hsq : t ≫ t = 0) :
+    (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ (F₂ ◁ x₂ ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+    -(L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom) := by
+  simpa using L.cross_sig_capD_one hsq
+
+/-- The even one-dot capped crossing has the positive coefficient. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 1) (hsq : t ≫ t = 0) :
+    (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ (F₂ ◁ x₂ ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+    L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom := by
+  simpa using L.cross_sig_capD_one hsq
 end
 
 open Lean in
