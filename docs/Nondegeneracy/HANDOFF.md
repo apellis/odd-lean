@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Input-side prepend decomposition
+
+[PrependCoordinates.md](PrependCoordinates.md) gives a complete proposed
+written coordinate construction for the whole affine prepend corner at
+all heights, including height zero. It is **not a Lean-checked equivalence**.
+Inverting `parabolicEquiv` yields the unique factorization
+`w = d_j * blockPerm 1 v`; the input dot list splits uniquely into zeroes
+and shifted old dots. Unitriangularity then gives spanning and independence,
+and associativity proves right-old-algebra compatibility. Explicit balanced
+forward and backward maps are supplied in the written argument; no flatness,
+projectivity, diagram reflection or coefficient centrality is assumed.
+
+`InputParabolic.lean` checks `prependPermutationEquiv`,
+`length_prependPermutation` and `prependCrossingWord_spec`.
+`CyclotomicAction/PrependCoordinates.lean` constructs the finite crossing
+sums `prependShuffleElement` and the prescribed terms `c_j x^m φ(b)`.
+`prependPBWTerm_corner` and `prependPBWCorner_right` check these terms in
+the existing corner and right action. The consumer also exercises the
+existing `qCoefficient` right action at the corresponding tensor terms.
+The whole corner has free old-algebra coefficients in the written proof;
+a fixed target word instead has idempotent-summand coefficients.
+
+The next formalization is the explicit leading-index bijection and its
+`Approx` statement, then expansion existence and injectivity, choice
+coordinates with both round trips, and finally the balanced quotient maps.
+The checked affine term laws alone do not prove the decomposition or either
+dot-difference injection.
+
 ## Prepend square-dot operator and missing cancellation coordinates
 
 `IntertwinerSquareDot.lean` checks the square operator needed for KKO I,
@@ -22,9 +50,9 @@ followed by its balanced quotient, with the first-dot degree visible.
 `basisNF` is a base-ring Hom basis, not this right-module decomposition.
 `shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
 output side; prepend balancing needs old coefficients on the input side
-of `Hom(i :: s,t)`. An opposite-side shuffle construction (or a proved
-reflection comparison) and its compatibility with right multiplication
-are still needed. Base-ring linear independence alone cannot be tensored
+of `Hom(i :: s,t)`. The input construction above supplies the written
+argument without reflection; its leading-index and triangularity proofs
+still need Lean implementation. Base-ring linear independence alone cannot be tensored
 through the lower cyclotomic quotient to prove the required injection.
 
 After that comparison, the square difference must have leading moving
