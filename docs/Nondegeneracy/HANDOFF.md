@@ -11,8 +11,12 @@ At zero total height the residual is generally nonempty.
 the displayed negative-power probe-window matrices H at every pair of
 heights, using the specified whole probe inverse, invertible dots and the
 literal mate slide. It retains both nonempty zero-total cases and all
-parity lifts. Lifting this inverse to the exact residual and constructing
-the required localized factor actions remain separate tasks.
+parity lifts. `SameColourInversion.md` lifts this inverse through the jointly
+nilpotent coefficient matrix ideal and gives both stabilized Schur inverses.
+This proves conditional finite-quotient, parity-level same-colour augmented
+inversion (A2-b2), with the specified realized factor actions and Hom component
+comparisons as inputs. It neither constructs the localized factors nor
+identifies intrinsic left closures with the raw right-factor closures of TC.
 
 `ExecutionBraidNormalization.md` proves the reversal identity
 `-C_ij(z,y,x)=(-q_i)C_ij(x,y,z)` and the conditional even rational comparison,
@@ -20,7 +24,10 @@ without changing Q. `ParitySectorComparison.md` gives the actual signed
 word removals, the forced conditional identification `H_BA=J^-1 h k`, and
 one odd AAB braid component. It does not supply the sorted-sector h or
 the complete odd/localized comparison. These are written calculations, not
-Lean theorems or a full fusion proof.
+Lean theorems or a full fusion proof. `ThreeStrandSectorBraid.md` reduces all
+same-colour three-strand components to two paired-J crossing identities.
+Its complete residual vanishes exactly when those identities hold; this
+reduction alone does not prove them.
 
 ## Reservoir dotted coordinates
 

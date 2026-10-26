@@ -11,8 +11,11 @@ written as a proof. Every step carries one of these statuses:
   source text was read in `formalization-workspace/sources/ocr`.
 * **OPEN**: not proved; the exact missing statement is given.
 
-The proof is not complete. In particular the all-height residual Schur matrix
-is not eliminated by reservoir nilpotence, and arbitrary homogeneous
+The proof is not complete. The all-height residual Schur matrix is not
+eliminated by reservoir nilpotence alone: `SameColourInversion.md` now gives
+a written conditional finite-quotient inversion using the explicit probe
+window inverse. Its factor-construction and component-comparison hypotheses
+remain essential. Arbitrary homogeneous
 exterior-coefficient cyclotomic deformations need not be flat. Steps A0, A1,
 A2-b, A2-c, A3 and the final
 assembly B1/B2 contain OPEN statements, listed in §6. No step uses a
@@ -469,6 +472,17 @@ odd identities are exactly what (c2-odd) supplies.
 
 ### 5.4 (A2-b) Inversion of the fused Rouquier map
 
+**Current conditional Hom result.** `HomResidualWindows.md`,
+`ProbeWindowInverse.md` and `SameColourInversion.md` prove the parity-level
+finite-quotient same-colour augmented inversion at all height pairs, assuming
+their stated realized reservoir/probe actions and actual Hom comparisons.
+All identity summands are retained; neither a bare crossing inverse nor a
+dimension cancellation is used. The exact inverse uses joint coefficient
+ideal nilpotence after the leading residual has been explicitly inverted.
+This supplies A2-b2 for that Hom construction, not a construction of the
+localized factors, integer-graded fusion, or literal right-factor TC. The
+historical bare-block argument below is still not a valid replacement.
+
 **`i ≠ j` (paper, given H3).** The fused mate `E_iF_j → F_jE_i` is block
 diagonal in sectors. The cross crossings `J` and `Q J^{-1}` preserve sector
 content, so there is no `AA ↔ BB` component. The blocks are:
@@ -516,8 +530,9 @@ unit if `A`, `D` are units and `D^{-1}CA^{-1}B` is nilpotent. The filtration
 version is `isUnit_of_feedback_filtration` (`OddMath/SKM/RouquierFeedbackIdeal.lean`).
 Its unit hypotheses have not been supplied for the displayed blocks.
 The even blueprint retains a residual matrix with positive-height cap rows
-and fused dotted-window/negative-height cup columns. Its super counterpart,
-including the actual dotted-window comparison, remains **OPEN**.
+and fused dotted-window/negative-height cup columns. Its super counterpart
+for the parity-completed Hom construction is supplied by the three notes
+above, under their precise finite-quotient and realized-factor hypotheses.
 
 **Proposed feedback expression (not the full inversion theorem).** Insert §5.2:
 
