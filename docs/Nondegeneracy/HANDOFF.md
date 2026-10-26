@@ -10,9 +10,9 @@ shift-removal signs cancel. Signed cup/cap pitchforks then give
 `gamma(k)=(-1)^(p k)` for nonzero reservoir height k, and
 `gamma(0)=(-1)^p`. The exceptional zero coefficient is retained.
 
-This is a written derivation, not a Lean theorem. Its whole-matrix
-consequence, conditional on the window calculations in
-`ReversedReservoirMatrix.md`, rescales every finite identity summand and
+This is a written derivation, not a Lean theorem. Combined with the window
+calculations in `ReversedReservoirMatrix.md`, the whole-matrix comparison
+rescales every finite identity summand and
 gives principal inverse `gamma(k) f`. The principal derivation itself
 does not use those window calculations. Shifted swapping mates and their
 tensor support, (TC), residual inversion, fusion and separation remain
