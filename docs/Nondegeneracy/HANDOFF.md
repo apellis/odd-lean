@@ -690,7 +690,12 @@ actual coupled data. `RouquierCoupledSectors.lean` turns this into
 into post/pre summands, sector adjunctions incl. the shifted left adjunctions
 of the pre summand, factor dots and diagonal crossings with slides, swap
 blocks, probe inverses, reservoir nilpotence), the vacuum values
-`probe`/`reservoirValue`/`normalize`, and `fused`. No `FusedCoupledAction` is
+`probe`/`reservoirValue`/`normalize`, and `fusedBlock`. `RouquierCoupledMate`
+proves that a sector projection of the coupled mate is the sector mate of the
+corresponding crossing block (`sector_mate_block`, via the transport lemmas
+`sectorIn_rouquierMate`/`rouquierMate_sectorOut`), so `fused` reduces to
+`fusedBlock`: the probe cup, the sector mate of the rational block
+`rationalPR`, and the reservoir cap act as the fused bubble. No `FusedCoupledAction` is
 constructed. The quadratic and braid relations of `coupledCross` are not proved
 (the projection formula does not use them).
 

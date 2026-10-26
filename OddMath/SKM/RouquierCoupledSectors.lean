@@ -1,4 +1,4 @@
-import OddMath.SKM.RouquierCoupled
+import OddMath.SKM.RouquierCoupledMate
 import OddMath.QuiverHecke.ReservoirFusedSectors
 
 /-!
@@ -22,8 +22,12 @@ inverses and the reservoir nilpotence. What remains is
   adjunctions);
 * the vacuum values and normalization `probe`, `reservoirValue`, `normalize`
   (as in `VacuumSectorBubble`);
-* `fused`, the fusion inversion output identifying the projected coupled mate
-  with the fused bubble.
+* `fusedBlock`, the fusion inversion output: the sector mate of the rational
+  probe-to-reservoir block `rationalPR`, closed by the probe cup and the
+  reservoir cap, acts as the fused bubble. The `fused` field of
+  `VacuumSectorBubble` follows (`CoupledSectorBubble.fused`) because the
+  projected coupled mate is that block's sector mate
+  (`SKM.CoupledFactors.probe_mate_reservoir`).
 -/
 noncomputable section
 namespace OddMath.QuiverHecke
@@ -49,13 +53,10 @@ structure CoupledSectorBubble {μ : X} (W : FusedVacuumWords D Sc cs μ)
   reservoirCap :
     factors.O₂ SKM.CoupledSector.reservoir ≫ factors.P₂ SKM.CoupledSector.reservoir ⟶ 𝟙 b
   eval : ∀ t, End (𝟙 b) →+* Module.End k (W.V t)
-  fused : ∀ t, eval t (probeCup ≫
-    SKM.sectorIn (factors.DE₁.inc SKM.CoupledSector.probe)
-      (factors.DF₁.inc SKM.CoupledSector.probe) ≫
+  fusedBlock : ∀ t, eval t (probeCup ≫
     (-(koszulSign factors.p factors.p) •
-      SKM.rouquierMate factors.A₁ factors.A₂ factors.coupledCross) ≫
-    SKM.sectorOut (factors.DE₂.proj SKM.CoupledSector.reservoir)
-      (factors.DF₂.proj SKM.CoupledSector.reservoir) ≫
+      SKM.rouquierMate (factors.adj₁ SKM.CoupledSector.probe)
+        (factors.adj₂ SKM.CoupledSector.reservoir) factors.rationalPR) ≫
     reservoirCap) = W.bubbles t g
   probeCoeff : ℕ → k
   res : ℕ → SKM.SYM D k
@@ -75,6 +76,19 @@ variable {μ : X} {W : FusedVacuumWords D Sc cs μ}
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   (S : CoupledSectorBubble W reservoir g B)
+
+/-- The fused bubble identification for the coupled mate, from the one for the
+rational probe-to-reservoir block (`SKM.CoupledFactors.probe_mate_reservoir`). -/
+theorem fused (t : List I) : S.eval t (S.probeCup ≫
+    SKM.sectorIn (S.factors.DE₁.inc SKM.CoupledSector.probe)
+      (S.factors.DF₁.inc SKM.CoupledSector.probe) ≫
+    (-(koszulSign S.factors.p S.factors.p) •
+      SKM.rouquierMate S.factors.A₁ S.factors.A₂ S.factors.coupledCross) ≫
+    SKM.sectorOut (S.factors.DE₂.proj SKM.CoupledSector.reservoir)
+      (S.factors.DF₂.proj SKM.CoupledSector.reservoir) ≫
+    S.reservoirCap) = W.bubbles t g := by
+  rw [← S.fusedBlock t, ← S.factors.probe_mate_reservoir]
+  simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
 
 /-- The sector bubble whose coupled adjunctions, dots, crossing, slide, sector
 summands, probe inverses and reservoir nilpotence are those of the coupled

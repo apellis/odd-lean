@@ -1,4 +1,4 @@
-import OddMath.SKM.RouquierCoupled
+import OddMath.SKM.RouquierCoupledMate
 import OddMath.SKM.RouquierCoupledSectors
 import OddMath.QuiverHecke.ReservoirVacuumExamples
 
@@ -83,6 +83,16 @@ example {a b c : B} (C : CoupledFactors (k := k) a b c) (s : CoupledSector) :
     sectorIn (C.DE₁.inc s) (C.DF₁.inc s) ≫ C.A₁.counit = (C.adj₁ s).counit :=
   (C.sourceSector s).counit_comm
 
+/-- The probe-to-reservoir projection of the coupled mate at an odd colour is the
+sector mate of the rational block. -/
+example {a b c : B} (C : CoupledFactors (k := k) a b c) :
+    sectorIn (C.DE₁.inc CoupledSector.probe) (C.DF₁.inc CoupledSector.probe) ≫
+        rouquierMate C.A₁ C.A₂ C.coupledCross ≫
+          sectorOut (C.DE₂.proj CoupledSector.reservoir) (C.DF₂.proj CoupledSector.reservoir) =
+      rouquierMate (C.adj₁ CoupledSector.probe) (C.adj₂ CoupledSector.reservoir)
+        C.rationalPR :=
+  C.probe_mate_reservoir
+
 end
 
 /-- Detection at the two-odd-colour datum from coupled separated factors. -/
@@ -102,6 +112,11 @@ example {B : Type} [BicategoryStruct.{0,0} B]
 #print axioms CoupledFactors.sourceSector
 #print axioms CoupledFactors.targetSector
 #print axioms CoupledFactors.mateProjectionFormula
+#print axioms sectorIn_rouquierMate
+#print axioms rouquierMate_sectorOut
+#print axioms CoupledFactors.sector_mate_block
+#print axioms CoupledFactors.probe_mate_reservoir
+#print axioms CoupledSectorBubble.fused
 #print axioms CoupledSectorBubble.toVacuumSectorBubble
 #print axioms CoupledSectorBubble.bubbles_eq
 #print axioms FusedCoupledAction.toSectorAction
