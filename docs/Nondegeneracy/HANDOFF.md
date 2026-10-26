@@ -25,6 +25,26 @@ content projection (zero on the other blocks), and positive-height indexing
 `CyclotomicAlgebra a n` over `Hn (n+1)` are unchanged. This is not full
 Proposition 8.4, not a graded superbimodule-map theorem, and not QP.
 
+## Rectangular mates and the capped pitchfork
+
+`SKM/RouquierMixedMate.lean` defines `rectangularMate` for independent outer
+adjunctions and proves its explicit cup–map–cap formula and both naturality
+laws. `rouquierMate_postTranspose` identifies the prescribed rightward mate
+with the postcomposition transpose; `rouquierMate_pitchfork_cap` then follows
+from the Hom-adjunction inverse. Its triangle is the existing right-adjunction
+E-strand triangle, not a left zigzag. `rouquierMate_parity` derives homogeneity
+without inversion data, and `rouquierMate_cross_interchange` proves the single
+odd–odd exchange with coefficient `koszulSign p p` (minus one at odd parity).
+
+The three-adjunction signed two-mate expansion is still unproved: the local
+exchange must be transported through the outer unit, associators and capped
+pitchfork to identify the composite with `s • M(B ≫ A)`. Consequently neither
+`rouquierMate_mixed_braid` nor `SuperRouquierLoc.sig_capCross` is established
+here. Their expected coefficient is one, since both expansions have the same
+factor `s`. The importing consumer checks typed applications and all owned
+axioms, but retains the supercategory and adjunctions as parameters; no
+nonzero inversion model is constructed.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
