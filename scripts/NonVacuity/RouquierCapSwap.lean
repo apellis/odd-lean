@@ -29,7 +29,7 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 (-1))
   simpa using L.capCross_eq_of_neg U (by norm_num) (by norm_num) hsq hsq' hB
 
 example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1))
-    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 1)  
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 1)
     (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
     (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
       (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
@@ -38,6 +38,19 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1))
     U.capCross = L.capL ▷ E₂ ≫ (leftUnitor E₂).hom -
       ((associator E₂ F₂ E₂).hom ≫ E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom) := by
   simpa [sub_eq_add_neg] using L.capCross_eq_of_neg U (by norm_num) (by norm_num) hsq hsq' hB
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1))
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ 1 1)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom ≫
+      E₂ ◁ U.capL ≫ (rightUnitor E₂).hom = -
+      (E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
+        (leftUnitor E₂).hom) := by
+  simpa only [koszulSign_one_one, neg_one_zsmul] using
+    L.capL_pitchfork_at_neg_one U (by norm_num) rfl hsq hsq' hB
 end Local
 section Family
 variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
