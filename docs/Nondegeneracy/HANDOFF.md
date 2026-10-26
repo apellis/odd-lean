@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Three-strand same-colour sector reduction
+
+`ThreeStrandSectorBraid.md` gives the two three-sector matrices for
+`(AAB,ABA,BAA)` and `(ABB,BAB,BBA)`, retaining shifted J maps and the odd
+spectator sign. It lists every component of the braid difference and reduces
+the rational part using the fixed two-sided factor slides and square.
+Exact ordered-skew-polynomial numerator expansion vanishes for all nine
+entries in each block, in both parities, after the paired-factor crossing
+transport E is replaced by D. This is a symbolic identity, not a numeric
+dot evaluation or a total-quotient-ring specialization.
+
+The replacement E=D is NOT proved for the shifted Hom functors here.
+The complete remaining residual matrix is displayed in (4), with
+K=E-D; its 0,2 entry is -K. Equations (5A) and (5B) are the exact remaining
+paired-J naturality identities for the given factor crossings. They must
+be derived from the z/xi comparisons and bicategory associators, not added
+as new action premises. AAA and BBB are factor axioms; different A-count
+blocks vanish. This is a proposed finite obstruction reduction, not a full
+iii proof, localized sector equivalence, or Lean theorem. No factor, Q,
+dot, shift, or corrected crossing entry is changed. Mixed-colour braids,
+integer shifts, fusion and separation remain open.
+
 ## Parity-shifted sector comparison
 
 `ParitySectorComparison.md` derives word-by-word homogeneous shift removal
