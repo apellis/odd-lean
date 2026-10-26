@@ -17,11 +17,18 @@ positive-degree estimates are unchanged.
 braid, with correction `-q_i C_ij` and the middle-colour sign retained.
 Its paired AA comparison allows distinct reservoir colours; its equal-probe
 comparison uses the prescribed beta/xi transport identified in
-`PairedHomInterchange.md`, not an extra gauge hypothesis. The remaining
-mixed iji blocks and unequal-probe comparison are not proved in this note;
-iij, ijj and distinct ijk also remain separate. Neither this component
-calculation nor the probe construction proves fusion, normalized bubble
-values, regular-word coordinates, or nondegeneracy.
+`PairedHomInterchange.md`, not an extra gauge hypothesis.
+`MixedColourBlockCompletion.md` derives the remaining AAB/BAA and ABB/BBA
+blocks. Their diagonal corrections are `-q_i C_ij` and their off-diagonal
+differences vanish, using the prescribed forward and reverse factor
+crossings rather than their inverses. It also derives the unequal-probe
+beta/xi transport: `E_rs;z_t=Theta_rs`, with Theta of degree `t` and `td=0`,
+and the paired coefficient `(-1)^(p_a b p_r p_s)`. These written arguments
+complete the mixed iji components under the full factor-action and mixed
+denominator hypotheses. They are not Lean theorems. The iij, ijj and distinct
+ijk components remain separate. Neither these calculations nor the probe
+construction proves fusion, normalized bubble values, regular-word
+coordinates, or nondegeneracy.
 
 ## Unnormalized principal word
 
