@@ -25,6 +25,23 @@ content projection (zero on the other blocks), and positive-height indexing
 `CyclotomicAlgebra a n` over `Hn (n+1)` are unchanged. This is not full
 Proposition 8.4, not a graded superbimodule-map theorem, and not QP.
 
+## Deformed Rouquier matrix
+
+[DeformedRouquierMatrix.md](DeformedRouquierMatrix.md) gives a proposed
+matrix-level reduction of KKO I Theorem 9.6 / KKO II Theorem 8.13, not
+an action theorem. It identifies the prescribed mate, cap rows and cup
+columns, their source shifts and the height reversal h=−a. Given the
+Mackey boundary monicity and recurrence, the negative-a cap matrix on
+the snake-kernel basis is anti-triangular with unit diagonal after column
+reversal; this proves inversion over the full coefficient ring without
+flatness. The corrected unsquared moving operator on K₁ is
+ρ(h⊗π^εb)=(−1)^η h(x₁+2(−1)^r d_i)⊗π^εφ(b), r=p(i)N_i;
+it satisfies Pρ=(right t_i)P and ρ²=right t_i². Still required are its
+descent through the Mackey columns, the first-order boundary identity
+(U2) and monic division, and the signed tensor comparison with
+`SuperRouquierLoc`. Right projectivity alone supplies none of these.
+
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
