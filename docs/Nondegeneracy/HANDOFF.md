@@ -155,14 +155,36 @@ criterion and the two cancelling parity shifts. `parityCyclotomicContentQLinear`
 is only scalar restriction of the existing Q, not a replacement map.
 The consumer specializes actual Q-evenness and pure-tensor membership at
 all-odd height three and mixed height two, both with shift one, and audits
-all owned declarations. Right-dot degree and full right-superalgebra structure
-remain open.
+all owned declarations. Right-dot degree is now proved in
+`IntertwinerDotGrading`; full right-superalgebra structure remains open.
 Source comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 and (8.13),
 PDF page 42. Finite colours, positive indexing and
 `CyclotomicPolynomialParity` are retained. Ordinary coefficients
 `I → Polynomial k` are still narrower than full odd-coefficient deformations.
 No full Proposition 8.4, QP formula, or nonzero categorical inversion model
 is asserted.
+
+## Graded polynomial-variable square
+
+`CyclotomicAction/IntertwinerDotGrading.lean` proves `sourceRightDot_parity`
+and `targetRightDot_parity`: both existing right-dot operators have degree
+`D.parity i` on the constructed induced gradings. The proof uses homogeneous
+corner products with `affineLastDot_parity` and `affineFirstDot_parity`, and
+preservation of coefficient degree by the sign involution. In particular,
+the target still uses the parity of its shifted coefficient.
+
+`sourceRightDotLinear` and `targetRightDotLinear` only restrict scalars of
+these operators. `rightDot_Q_square` is the existing `targetRightDot_Q`
+on the graded carriers. `rightDot_Q_gradedSquare` combines this equality
+with Q-evenness and both dot degrees, giving the polynomial-variable
+portion of KKO I Proposition 8.4 on these quotients. The imported consumer
+checks all-odd height three and mixed height two, both with shift one,
+and audits all owned declarations.
+
+These are graded right operators, not signed left-superlinear morphisms.
+No square-zero relation for an odd polynomial variable is asserted. Full
+right-superalgebra structure, full Proposition 8.4, full-ELV coefficients,
+QP and nonzero inversion models remain separate obligations.
 
 ## Constructed right dots and Q compatibility
 
@@ -205,7 +227,8 @@ the mixed consumer checks the minus sign on odd coefficients.
 
 The source and target right-dot endomorphisms and their Q compatibility are
 now constructed as described above. The induced-tensor grading is now supplied
-by `IntertwinerGrading`; Q-evenness and the superbimodule assertion remain open. Finite colours, positive quotient
+by `IntertwinerGrading`, including Q-evenness; the dot degrees are supplied by
+`IntertwinerDotGrading`. The full superbimodule assertion remains open. Finite colours, positive quotient
 indexing, and `CyclotomicPolynomialParity` are retained.
 
 ## Canonical parity-shifted coefficient target
