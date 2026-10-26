@@ -36,6 +36,15 @@ blocks (`globalBlockRestriction`) and the even unit and counit to
 components are even (`globalBlockUnit_mem`, `globalBlockCounit_mem`). This is
 the positive-height block adjunction; the vacuum unit and counit are open.
 
+`GlobalWeightRestriction.lean` ports `globalF`: `heightSuperRestriction` is the
+colour-cut restriction bimodule along `heightAppend` at every height,
+definitionally `cyclotomicSuperRestriction` at positive height
+(`heightSuperRestriction_succ`), and restriction from one strand to the empty
+word uses `vacuumAppend`. `globalContentRestriction (h : {i} + β = δ)` lands in
+the vacuum condition `β = 0` at height zero, and
+`globalF i h : globalWeightSpace y ⟶ globalWeightSpace x` is the product of
+these superfunctors along `blockSucc`, retaining odd morphisms.
+
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
 `cyclotomicSuperInductionCrossing` (`globalBlockCross`, parity `|i||j|`).
