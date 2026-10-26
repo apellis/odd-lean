@@ -123,7 +123,12 @@ analogue of Brundan Theorem 4.3 is the named Prop
 and `(-1)^σ c` for a unit `c`. It is stated up to `c`, so it does not depend
 on a sign normalization; super interchange of the cup with itself forces the
 ratio `(-1)^σ` whenever the cup is nonzero. `leftAdjointsOfZigzags` turns it
-into `RouquierLeftAdjoints`. **Open:** proving `LeftZigzags`. The even proof is
+into `RouquierLeftAdjoints`. `RouquierInverseRelations.lean` ports Brundan
+Lemma 3.1 ((3.3), (3.5)–(3.9)): the sign-free inverse-matrix relations among
+`sig`, `sigL`, dotted cups/caps, and the bubble values `ccw_self`, `cw_self`.
+**Open:** proving `LeftZigzags`; the next even inputs to port are the curl
+identities (`RouqCurl`, `RouqDottedCurls`), where super interchange signs first
+appear. The even proof is
 `RouqLoc.leftAdjunction` via `RouqPitchfork`, `RouqTriangleE`,
 `RouqAdjunction`, `RouqCurl`, `RouqDottedCurls`, `RouqGrass` and
 `FakeBubbles` in categorification-lean, about 2500 lines. The
