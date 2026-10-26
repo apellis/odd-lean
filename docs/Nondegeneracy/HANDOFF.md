@@ -232,7 +232,16 @@ It also proves the infinite Grassmannian relation for `h ≥ 0` with signs
 `∑_{j<m} s^(m-j) P_j Q_(m-1-j) + P_m Q_(-1) + s^m ∑_{n≤-h} P_(-n-1) Q_(m+n) = 0`.
 At every weight the term `P_r Q_(m-1-r)` therefore carries `s^(m-r')`, with
 `r'` the clamp of `r` to `[0,m]`. This is a candidate sign normalization for
-the super fake bubbles. **Open:** proving `LeftZigzags`. The next even inputs
+the super fake bubbles. `RouquierCurl.lean` ports the curl calculus:
+`curlG`/`curlEG` (closing the left/right strand of a two-strand map), with
+atoms on the closed strand absorbed into the cup or cap without sign and atoms
+on the open strand leaving with the Koszul sign of the cup or cap they pass.
+It proves the pitchforks `sig_counit_pitchfork`, `unit_sig_pitchfork` (no
+sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
+self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
+`ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
+for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
+without a dual. **Open:** proving `LeftZigzags`. The next even inputs
 are the fake-bubble identities, the inverse-cup
 expansions (3.12)–(3.13) (`RouqCurl`), the dotted curls (`RouqDottedCurls`),
 pitchforks and `RouqTriangleE`. The dual statements need a super horizontal
