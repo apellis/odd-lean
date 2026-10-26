@@ -73,9 +73,14 @@ weight spaces.
 (`heightLastDot`; at one strand the image of `affineLastDot` in the
 height-one quotient) and restates the signed corner map of `SuperDot` along
 `heightAppend`: `heightSuperInductionDot`, homogeneous of parity `|i|`, its
-content restriction and `globalContentDot`. Open on weight spaces: the
-crossing (`cross` field), nilpotence, square/braid/slides, and `GlobalLoc`
-(local inversion is stream A's pending statement).
+content restriction and `globalContentDot`. `GlobalWeightDot.lean` transports
+it along `inductionComponent_blockSucc` to `globalWeightDot`, with
+`globalActionDot_mem : globalActionDot i h ∈ parity (globalActionE i h) _ |i|`,
+the `dot`/`dot_mem` fields of `RouquierData` on weight spaces. Open on weight
+spaces: the crossing (`cross` field, needs the two-step block induction of
+`GlobalCross` at the vacuum and its weight-level transport), nilpotence,
+square/braid/slides, and `GlobalLoc` (local inversion is stream A's pending
+statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
