@@ -550,3 +550,11 @@ units on the corresponding images. `vacuumAppend_parity` and
 `vacuumColourCut_parity` give the homogeneous-parameter parity formulas.
 This closes the algebra-map boundary at height zero; vacuum superinduction
 and the categorical inversion relations are not asserted here.
+
+`CyclotomicAction/VacuumExamples.lean` proves that the vacuum unit and the
+scalar two have nonzero images for the rational odd rank-one datum and
+zero cyclotomic polynomial. The proof reduces the defining ideal to zero
+and uses affine normal-form independence; it is not a positive-degree
+monic or finite-dimensional cyclotomic nonvanishing theorem. The scalar
+two also lies in the even quotient component. Both vacuum modules pass
+targeted warning-as-error builds and an owned-declaration axiom audit.
