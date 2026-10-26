@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Tensor feedback calculations and the remaining transport
+
+`FusedFeedbackComparison.md` gives the six partial-mate supports, the
+untwisted external-tensor rational coefficients, and the supported feedback
+sign `-(-1)^(p r s)`. It proves principal-block nilpotence only under its
+explicit transport condition (TC). Both augmented elimination formulas retain
+the identity summands and the residual matrices at arbitrary factor heights.
+
+These are written calculations, not Lean theorems or a fused action. Raw
+even interchange is not the odd content-shifted swapping map. The actual
+Hom-sector transport, reversed reservoir matrix comparison, residual
+invertibility, fusion relations and separation remain separate obligations.
+
 ## Fixed-content reservoir bounds on paper
 
 `DeformedReservoirBound.md` supplies finite-dimensional coefficient
