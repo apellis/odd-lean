@@ -118,6 +118,12 @@ endomorphisms (`heightCompositionRightMul`, hypotheses `CornerMulData`); the com
 `ψ x₁ - s x₂ ψ = s` and `x₁ ψ - s ψ x₂ = s` on components (`heightInduction_slide_left/right`,
 diagrammatic order). For the Rouquier crossing `t = -ψ` these are exactly
 `SuperRouquierLoc.slide_left/right`; the transport to weight blocks is still open.
+`GlobalBraidAlgebra.lean` gives the algebra half of the equal-colour braid: with
+`c₁ = φ(c)` the appended crossing and `c₂` the last-pair crossing on three strands of
+colour `i`, `c₁ c₂ c₁ = c₂ c₁ c₂` on each word (`induction_braid_same`, positional
+`braid_ne`), in the affine algebra and at every height (`heightLastCrossing_braid_same`).
+The functor half (three-fold corner comparison and transport through three successor blocks)
+is still open.
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
