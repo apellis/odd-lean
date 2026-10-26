@@ -11,11 +11,18 @@ covers the upward KLR relations, right triangles, and complete same-colour
 augmented inverse entries, including both zero-height windows, conditional
 on the existing written factor and local calculations.
 
-The full action is **not proved**: the first missing map is the distinct-colour
-pre/pre projection of the specified cup–crossing–cap mate, (A8)–(A9), with its
-normalized-left adjunctions. The two cross-sector distinct-colour partial
-mates also need their exact shift-removal formulas and inverses. Inverting
-Q on the upward word is not a proof of invertibility of these partial mates.
+The full action is **not proved**. `SwappedDistinctPreMate.md` supplies a
+proposed written evaluation and two-sided inverse for the pre/pre projection
+(A8)–(A9), conditional on the existing full factor action. Its coordinate
+coefficient is `t_ij (-1)^(p_i p_j sigma) g(k-d_ij)/g(k)`, with
+`sigma=p_i(k+1)` and `g(h)=1` for h>0, `g(h)=(-1)^(p_i(h+1))` otherwise.
+The proof compares the raw inverse-defined cup and normalized cap at their
+different edge weights with the source left maps, applies the derived
+`Cyclicity.rot_tau_left`, and uses both factor distinct-colour inverse laws.
+No new Lean comparison or full-action theorem is asserted. The two
+cross-sector distinct-colour partial mates still need their exact
+shift-removal formulas and inverses. Inverting Q on the upward word is not
+a proof of invertibility of these partial mates.
 
 The all-B vacuum restriction, multiplication-of-induction-kernels comparison,
 and signed opposite-corner formulas are derived directly, without a
