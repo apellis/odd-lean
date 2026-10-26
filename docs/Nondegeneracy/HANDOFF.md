@@ -29,10 +29,15 @@ gives `prependBasis`, a scalar basis of each `Hom(i :: s,t)`, including
 height zero and repeated colours. Its old coefficient is the existing
 normal form `PrependIdx.old.nf`.
 
-The next formalization is matrix assembly: identify these Hom diagrams with
-the matrix terms `prependPBWTerm` and assemble their scalar expansions into
-finite old-algebra coefficients. The right-old-algebra coordinate equivalence,
-its round trips, and the balanced quotient maps are not yet checked.
+`CyclotomicAction/PrependMatrix.lean` identifies the scalar prepend diagrams
+with matrix terms: `prependPBWTerm_old_nf` sends the single old normal form
+to the single `prependElt`. The intermediate formula `prependPBWTerm_single`
+is valid for every old morphism and new exponent, including zero.
+
+The next formalization is regrouping: assemble the scalar expansions into
+finite old-algebra coefficients and prove uniqueness. The right-old-algebra
+coordinate equivalence, its round trips, and the balanced quotient maps are
+not yet checked.
 The checked affine term laws alone do not prove the decomposition or either
 dot-difference injection.
 
