@@ -1,5 +1,36 @@
 # Odd nondegeneracy: restart state
 
+## Finite-quotient same-colour augmented inverse
+
+`SameColourInversion.md` is a proposed written assembly, conditional on the
+finite leading-table inverse algorithm in `ProbeWindowInverse.md`; that
+algorithm is not certified by this assembly. For each finite homogeneous
+reservoir coefficient quotient and fixed content, it proves nilpotence of
+the entire coefficient matrix ideal, including all parity-completed finite
+identity windows. The exponent uses the upper reservoir degree bound for
+all positive supercentral coefficients, not merely entrywise nilpotence.
+
+Starting from V0=Q^-1 Htab^-1 L^-1, the ordered correction is
+`sum (1-V0 S)^a V0 = V0 sum (1-S V0)^a`. Both inverse identities are
+proved. Explicit stabilized Schur algorithms then invert the positive and
+negative central augmented maps; adjoining the unchanged swapping inverses
+and restoring the specified comparisons gives the full same-colour
+augmented inverse. Opposite nonzero heights at total height zero retain
+their nonempty residual windows. The formulas keep c(k), gamma(0)=q,
+Knew=-q Kold and every reciprocal window scalar.
+
+The conclusion needs the specified localized probe factor action, whole
+local inverses, invertible dots and mate slide, and the existing Hom
+component/quotient comparisons. It does not construct a missing localized
+factor action. Compatibility between finite quotients is proved when the
+realized functors and kernel maps commute with their base change; arbitrary
+Hom/base-change commutation is not inferred. No infinite inverse limit or
+joint detection theorem is asserted. Literal right-factor tensor TC,
+coherent integer shifts, all mixed-colour/three-strand relations and
+coefficient/PBW/bubble separation remain distinct obligations. No full
+fusion, nondegeneracy or Lean verification is claimed. Earlier open-status
+paragraphs below record the inputs before this conditional assembly.
+
 ## Negative-power probe-window inverses
 
 `ProbeWindowInverse.md` gives a proposed written inverse algorithm for
