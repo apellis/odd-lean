@@ -42,6 +42,7 @@ import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 import OddMath.QuiverHecke.CyclotomicAction.ConcreteRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
+import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples

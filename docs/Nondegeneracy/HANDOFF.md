@@ -514,6 +514,20 @@ conditional signed mixed-square transfer are checked. Thus directed signs
 alone with unchanged parameters are insufficient in general; a full
 parameter/presentation transport remains necessary.
 
+`CyclotomicAction.Intertwiner` checks the same-colour intertwiners of KKO
+(arXiv:1206.5933v2) (8.7)–(8.8) on any signed nilHecke family, hence on two
+adjacent equal-colour strands of every word (`oddTwo_block`, `evenTwo_block`).
+With the family relations, KKO's `τ_a` is `-εT_j`. Odd colour:
+`φ=(v-u)-(v²-u²)T` with `vφ=-φu`, `uφ=-φv`, `φ²=(v-u)²`; the variant `g`
+reuses `OddNilHecke.Intertwiner.element` (`g²=-(v²-u²)²(u²+v²)`,
+`Tg=T(v-u)(v²-u²)`); far dots and crossings anticommute with `φ` and `g`
+(Lemma 8.3, (8.11)–(8.12), (8.15)). Even colour: `φ=1+(v-u)T`, `φ²=1`,
+`g²=-(v-u)²`, `Tg=T(v-u)`. The consumer `scripts/NonVacuity/CyclotomicIntertwiner.lean`
+uses the all-odd two-colour datum and the polynomial nilHecke representation.
+Open for KKO Theorem 8.5 (`QP`): the braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}`,
+the composite `g_n⋯g_1` on `(i,ν)`, the map `Q` and the reduction modulo
+`R a^Λ(x_2) R^1(β)`.
+
 [ActionReview.md](ActionReview.md) is a proposed source comparison of the seven
 steps of the even-cutoff argument. The normality, balanced-ideal, norm and cap-row
 repairs survive; the explicit comparison from the super-opposite induction
