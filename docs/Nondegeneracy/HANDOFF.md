@@ -57,12 +57,25 @@ assumption on `f`. `cl_mem_chainParity` identifies the positioned-word
 parity with its actual parity in the presented category. The hypotheses
 are only a Cartan superdatum, its scalar system, and a commutative base ring.
 
-This is the all-Hom-entry balance input of KKO I (8.13). It is not yet the
-balanced map Q of Proposition 8.4: the remaining construction must assemble
-these entries into the `Hn` colour corners, construct the tensor quotient
-map with the factor `Π_i^{p(β)} R^Λ(β)`, and prove the signed right `t_i`
-action. No cyclotomic or deformation flatness statement is used here.
-The QP identity of Theorem 8.5 remains downstream of that construction.
+`CyclotomicAction/IntertwinerCorners.lean` now assembles these entries in
+`Hn`: `contentMove` is the finite sum over words of content β, and
+`contentMove_balance` proves
+`append(twist_(p(i)p(β))(z)) * G_β = G_β * prepend(z)` for arbitrary
+inhomogeneous `z`. The only additional hypothesis is `[Fintype I]` for
+the height-algebra colour sums. `prependAlgebra` and
+`homMatrixTwistAlgebra` use the existing finite-support Hom coordinates.
+
+`CyclotomicAction/IntertwinerTensor.lean` constructs `contentQ` on the
+existing `InductionAlong.Ind` balanced quotient, with formula
+`a ⊗ b ↦ a G_β ⊗ b`; no balance/descent hypothesis is assumed.
+`cyclotomicContentQ` takes the actual cyclotomic quotient as coefficient
+module. The target right action is `prepend ∘ twist_(p(i)p(β))`.
+This is an underlying left-module descent, not yet the full Q of
+Proposition 8.4: identification with the explicitly parity-shifted
+coefficient superbimodule and signed right `t_i` compatibility remain.
+The QP identity of Theorem 8.5 remains downstream. No flatness statement
+is used. `scripts/NonVacuity/IntertwinerTensor.lean` checks all-odd and
+mixed-parity asymmetric data and audits all declarations in both modules.
 The consumer `scripts/NonVacuity/IntertwinerNaturality.lean` exercises
 arbitrary Hom entries and identity plus an odd dot on an all-odd
 asymmetric two-colour datum, and audits the module's axioms.
