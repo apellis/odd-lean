@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Residual windows and execution-order comparisons
+
+`HomResidualWindows.md` computes every corrected central Schur window and
+the leading comparison `S mod J = L H Q`, with the nilpotent ideal generated
+by positive-degree reservoir supercentral coefficients. The original factor
+inverses, c(k), gamma(0), parity lifts and every identity summand are retained.
+At zero total height the residual is generally nonempty. Inverting the
+displayed negative-power probe-window matrices H remains a separate task.
+
+`ExecutionBraidNormalization.md` proves the reversal identity
+`-C_ij(z,y,x)=(-q_i)C_ij(x,y,z)` and the conditional even rational comparison,
+without changing Q. `ParitySectorComparison.md` gives the actual signed
+word removals, the forced conditional identification `H_BA=J^-1 h k`, and
+one odd AAB braid component. It does not supply the sorted-sector h or
+the complete odd/localized comparison. These are written calculations, not
+Lean theorems or a full fusion proof.
+
 ## Fixed normalized reservoir adjunction
 
 `RouquierFamily.leftAdjoints` now uses the explicit involutive unit
