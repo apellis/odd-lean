@@ -69,7 +69,9 @@ of the coupled mate. The negative probe indices are integers.
    product associator does not supply these relations.
 3. Realize the sector inclusions/projections and prove all coordinate
    hypotheses of `MateProjectionFormula.of_coordinates` for these crossings.
-4. Identify the all-height negative windows and dot-conjugation comparisons.
+4. Identify the all-height negative windows with the ordered dot-conjugation
+   formulas. `RouquierDotConjugation` proves the underlying correction
+   identities at every length, without dropping the cap–cup terms.
 5. Put the resulting whole Schur feedback in a vanishing two-sided ideal
    filtration, then apply the associative inversion theorem.
 6. Assemble the separated cover family back to the original datum.

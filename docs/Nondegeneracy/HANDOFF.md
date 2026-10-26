@@ -128,6 +128,15 @@ categorical closed-coefficient filtration and feedback membership is still
 open. [HomSectorCoordinates](HomSectorCoordinates.md) specifies the exact
 remaining adjunction, original-datum coherence and coordinate obligations.
 
+`OddMath/SKM/RouquierDotConjugation.lean` proves
+`mate_dot_conjugation_source` and `mate_dot_conjugation_target` at arbitrary
+length, retaining the finite ordered cap–cup correction terms of
+SeparatedFactorInversion (3)–(4). No nilpotence is needed for these identities.
+`scripts/NonVacuity/DotConjugation.lean` consumes them at all lengths on
+noncommuting integral shear dots, with nonzero corrections for both signs.
+Their identification with the categorical negative windows remains open;
+these are not assertions that the uncorrected windows are invertible.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
