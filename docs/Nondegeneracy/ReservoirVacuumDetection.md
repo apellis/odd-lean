@@ -193,9 +193,60 @@ cyclotomic polynomial or its exterior coefficient. The even
 for the mate and dot operators before applying the coefficient calculation
 in `VacuumBubbles.lean`. The super analogue still needs that comparison
 with the connected reservoir module, including the odd coefficient action
-and probe normalization. Consequently `NormalizedBubbleFormula` has not
-been removed, and the main upward-independence theorem is not restated
-with only action and fusion hypotheses.
+and probe normalization. `NormalizedBubbleFormula` is now derived from the
+mate projection formula, under the action and fusion-inversion outputs listed
+in the next section.
+
+## Fused vacua, sector bubbles and the restated detection theorem
+
+`ReservoirFusedVacuum.lean` (porting `CyclotomicAction/VacuumProduct.lean` and
+`Unfurling/GenericVacuumWordCoordinates.lean`). `FusedVacuumWords` is an
+upward action evaluated on the word modules of one vacuum.
+`RegularVacuumIdentification` identifies these with the connected regular
+modules: coordinates `coord s t : V t → e_t R^Λ e_s` sending the vacuum to the
+regular generator, affine operators to postcomposition and the reservoir
+coefficient action to source-placed coefficients. No injectivity is assumed.
+`FusedVacuumWords.evaluation` builds a `ReservoirVacuumEvaluation` whose
+`affine_coordinates` is proved from C0 on the regular window, and
+`FusedRegularVacuumFamily.toFamily` proves the categorical `covers` field from
+`regularVacuumWindow_covers`.
+
+`ReservoirFusedBubbles.lean` (porting `Unfurling/VacuumRouqBubbles.lean`,
+`GenericVacuumBubbles.lean`, `GenericKLBubbles.lean`). With `q = (-1)^{p}`,
+the first identity of `SuperRouquierLoc.MateProjectionFormula`, capped by a
+probe cup `κ : 1 → X_B` and a reservoir cap `ℓ : Y_A → 1`, gives
+(`mate_projection_sector_bubble`)
+
+    κ (−q·σ)_{B→A} ℓ = Σ_{r<n_C} q^r (κ v_{B,−r−1}) ∘ (u_{A,r} ℓ),
+
+the probe coefficient acting first. `VacuumBubbleSector` evaluates this on the
+word modules. If the capped composite is the fused bubble of a generator `g`
+(fusion inversion), the probe coefficients act by scalars `c_r` and the
+reservoir coefficients by `res_r` (action), and `Σ q^r c_r res_r = g`, then
+`bubbles_eq` gives `bubbles(g) = reservoir(g)`. `fused_bubbles_eq_reservoir`
+extends this to all of `SYM` and `fused_odd_bubble` identifies the odd bubble
+with the reservoir's exterior generator. `sector_normalize_deconvolution`
+shows that a scalar probe series with constant term one always admits this
+normalization, with `c_r = q^r P_r` and deconvolved reservoir coefficients.
+
+`ReservoirFusedDetection.lean`. `FusedVacuumAction` collects the fused vacuum
+family on the balanced levels `reservoirLevel (⟨h_j, μ⟩) m` together with its
+bubble sectors; `upward_independence_of_fused_vacuum_actions` assumes these
+and the mate projection formula for every sector, and proves
+`WeakMate.UpwardIndependence`. The two-odd consumer
+`scripts/NonVacuity/ReservoirFusedDetection.lean` instantiates the headline at
+the connected two-odd datum and checks the normalization with a nontrivial
+probe series and a product of both exterior generators.
+
+**Remaining obligations.** No instance of `FusedVacuumAction` is
+constructed. Its fields are exactly: (A0/A1) the vacuum word modules of the
+fused action, their regular identification, the scalar action of probe
+coefficients and the reservoir coefficient values; (A2) the identification of
+the capped mate composite with the fused SKM bubble of each generator,
+including the degree bookkeeping of the dotted cup and cap. The mate
+projection formula is F's open obligation. The regular-module side (C0,
+coordinates, covers) and the passage from these inputs to upward
+independence are proved.
 
 ## Connected tests
 

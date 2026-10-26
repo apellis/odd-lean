@@ -499,14 +499,20 @@ cutoffs, including the zero-window fallback, and
 pairing extension. The concrete two-odd consumer is
 `scripts/NonVacuity/ReservoirRegularCoordinates.lean`.
 
-The categorical gap is still the comparison of these connected regular
-modules and operators with the fused vacuum word modules. No
-`FusedFixedWeightFamily` is constructed by the regular-coordinate results.
-For the bubble step the designated additional hypothesis remains
-`SuperRouquierLoc.MateProjectionFormula` from `RouquierMateProjection.lean`;
-its sector maps and factor dotted units/counits must be specialized to that
-vacuum before deriving `NormalizedBubbleFormula`. The action-only/fusion-only
-restatement of upward independence is therefore not yet available.
+`ReservoirFusedVacuum.lean` proves fused-vacuum `affine_coordinates` and
+categorical `covers` from a `RegularVacuumIdentification` of the vacuum word
+modules with these regular modules (vacuum, affine operators, reservoir
+coefficients). `ReservoirFusedBubbles.lean` specializes the first identity of
+`SuperRouquierLoc.MateProjectionFormula` to a probe cup and reservoir cap
+(`mate_projection_sector_bubble`) and derives `bubbles = reservoir` on all of
+`SYM` (`fused_bubbles_eq_reservoir`), the odd bubble being the reservoir's
+exterior coefficient (`fused_odd_bubble`).
+`upward_independence_of_fused_vacuum_actions` in
+`ReservoirFusedDetection.lean` assumes only `FusedVacuumAction` (A0/A1: vacuum
+words, regular identification, probe and reservoir coefficient values; A2:
+capped mate composite = fused bubble of each generator) and the mate
+projection formula. Consumer: `scripts/NonVacuity/ReservoirFusedDetection.lean`.
+No `FusedVacuumAction` is constructed.
 
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a
