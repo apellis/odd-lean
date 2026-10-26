@@ -211,7 +211,9 @@ private theorem outerCap {C : Type u} [Bicategory.{w,v} C]
       Bicategory.whiskerRight ((Bicategory.associator F E H).inv ≫
         Bicategory.whiskerRight ε H ≫ (Bicategory.leftUnitor H).hom) K := by bicategory
 
-private theorem rectanglePost {a b c d : B} {E₁ : a ⟶ b} {F₁ : b ⟶ a}
+/-- The rectangular mate as one postcomposition transpose of a capped map.
+This formula retains arbitrary, including odd, input morphisms. -/
+theorem rectangularMate_postTranspose {a b c d : B} {E₁ : a ⟶ b} {F₁ : b ⟶ a}
     {E₃ : c ⟶ d} {F₃ : d ⟶ c}
     (A₁ : SuperAdjunction (k := k) E₁ F₁) (A₃ : SuperAdjunction (k := k) E₃ F₃)
     (g : a ⟶ c) (h : b ⟶ d) (z : g ≫ E₃ ⟶ E₁ ≫ h) :
@@ -356,7 +358,7 @@ theorem rouquierMate_comp_mate
     (associator F₁ E₁ (E₂ ≫ E₃)).inv ≫ A₁.counit ▷ (E₂ ≫ E₃) ≫
     (leftUnitor (E₂ ≫ E₃)).hom
   have ho := congrArg (fun f => (associator F₁ E₁ E₂).hom ≫ f)
-    (rectanglePost A₁ A₃ (E₁ ≫ E₂) (E₂ ≫ E₃) z)
+    (rectangularMate_postTranspose A₁ A₃ (E₁ ≫ E₂) (E₂ ≫ E₃) z)
   have hn := (homPostAdjunction A₃).homEquiv_naturality_left
     (associator F₁ E₁ E₂).hom q
   have ho' : (associator F₁ E₁ E₂).hom ≫
