@@ -47,6 +47,18 @@ still open; no full projectivity or action theorem is claimed. Once those
 steps are supplied, the central-square argument gives projectivity over the
 preceding block without an A-flatness assumption on that block.
 
+## All-prefix deformed QP calculation
+
+`DeformedGlobalQP.md` gives a proposed written proof of the all-prefix
+identity, using the affine pitchfork to put the killed relation at old
+position 2 before cancelling the moving square difference. The two
+repeated-odd prefix signs cancel; repeated-even strands contribute no
+factor. A separate old-generator P balance argument retains total
+coefficient parity and the shift `p(i)(N_i+p(β))`. These arguments are
+not Lean theorems and still require independent review. The deformed
+ideal-sum equality, exact projective resolution, and resulting global
+projectivity remain unproved; the central-monic lemma is not applied.
+
 ## Moving-strand balance on arbitrary Hom entries
 
 `CyclotomicAction/IntertwinerNaturality.lean` proves `hom_comp_moveHom` for
