@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Repeated-outer-colour blocks and unequal probe transport
+
+`MixedColourBlockCompletion.md` gives a proposed component proof of the
+AAB/BAA and ABB/BBA two-by-two iji blocks. Its typed six-node graph lists
+all eight route entries in each block, retaining both diagonals and both
+swapping entries of the corrected same-colour matrix. The diagonal
+execution differences are exactly `-q_i C_ij`; both off-diagonal differences
+vanish by the displayed paired-factor equations and separate Q support.
+Both leading Q terms are included; disconnected Q is a single constant.
+Only mixed nilpotent-reservoir/invertible-probe denominators occur.
+
+The same note derives the unequal-probe transport from the even beta/xi
+word comparison. The removal Theta has degree `b(p_r+p_s)` and can be odd,
+but its transport sign against the fixed degree-`p_r p_s` crossing is
+`(-1)^(b(p_r+p_s)p_r p_s)=1`. The paired-J coefficient is
+`(-1)^(p_a b p_r p_s)` and is unchanged when the probes exchange. This
+computes the prescribed transport rather than selecting a crossing by J.
+
+Together with the two sectors below and the full factor-action relations,
+this is a proposed written iji proof, not a Lean theorem. The mixed iij,
+ijj and pairwise-distinct ijk component identities remain open; equation
+(13) gives their exact source, target and path sums. No full fusion or
+nondegeneracy conclusion is asserted. The earlier note's remaining-block
+list is superseded by this component calculation.
+
 ## Mixed-colour Hom interchange and repeated outer colours
 
 `MixedColourSectorBraid.md` gives a proposed direct derivation on the full
