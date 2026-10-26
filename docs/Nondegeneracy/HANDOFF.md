@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Repeated-odd two-strand cyclotomic error
+
+`IntertwinerError.lean` proves the local quotient reduction needed in KKO I,
+arXiv:1206.5933v2, Theorem 8.5 for the word `[i,i]`, with `p(i)=1`.
+For `D=v²-u²`, `S=u²+v²`, the existing odd intertwiner `g` gives
+`K=Tg-S=S-D(v-u)T` and `H=v²+2uv-u²-(v+u)DT`.
+`error_pow` proves `u^m K = (if Even m then K else H) v^m` for every natural
+exponent. `error_polynomial` yields the corresponding right factorization
+for a central-coefficient polynomial supported in one parity.
+
+`repeatedOddError_factor` instantiates the presented quiver Hecke dots and
+crossing, using `oddTwo_block`; endomorphism products reverse composition.
+The existing `CyclotomicPolynomialParity` condition is **homogeneity**, not
+necessarily even support: odd degree uses H, even degree uses K. No extra
+even-degree, monicity, nontriviality or domain hypothesis is imposed.
+Constants and the zero polynomial are included.
+`prepend_generator_single` identifies the right factor with the shifted old
+cyclotomic generator, including its constant term. Balancing in the existing
+`InductionAlong.Ind` over `prependAlgebra`, with the existing `qCoefficient`,
+gives `repeatedOddError_tmul_zero` for arbitrary left multipliers and shifted
+coefficients. Thus the local reduction requires neither inversion nor
+cancellation of a dot difference.
+
+This is not a literal Q∘P theorem: P and its `T_i^{Λ_i}` source have not been
+constructed. The source's projectivity argument, full multicolour prefix
+induction, and super coefficient polynomials remain separate obligations.
+The consumer checks arbitrary monomial exponents, zero, and a polynomial
+with several even terms and a nonzero constant, in the prescribed tensor.
+
 ## Content-tensor right dots
 
 `IntertwinerContentDot.lean` constructs the source last-dot and shifted target
