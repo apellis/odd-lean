@@ -276,5 +276,80 @@ theorem infGrass_nonneg (hh : 0 ≤ h) (m : ℕ) :
     Finset.sum_neg_distrib, K]
   abel
 
+/-- The dot slide inside the leftward bubble, at every weight. -/
+theorem key_slide (m : ℕ) :
+    L.cupL ≫ F₁ ◁ rouquierPower x₁ m ≫ L.sig ≫ L.capL =
+      (koszulSign p p ^ m) • (L.cupL ≫ L.sig ≫ rouquierPower x₂ m ▷ F₂ ≫ L.capL) -
+        ∑ j ∈ Finset.range m,
+          (koszulSign p p ^ (m - j)) • ((L.cupL ≫ L.capD j) ≫ (L.cupD (m - 1 - j) ≫ L.capL)) := by
+  rw [← Category.assoc (F₁ ◁ _), L.powComp_sig, Preadditive.sub_comp, Preadditive.comp_sub,
+    Preadditive.sum_comp, Preadditive.comp_sum]
+  simp only [Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]
+
+/-- For `h ≤ 0` the dotted leftward bubble with the crossing is `P_m Q_(-1)`. -/
+theorem key_boundary_nonpos (hh : h ≤ 0) (m : ℕ) :
+    L.cupL ≫ F₁ ◁ rouquierPower x₁ m ≫ L.sig ≫ L.capL = L.ccw m ≫ L.cw (-1) := by
+  rcases lt_or_eq_of_le hh with hh' | hh'
+  · rw [sig_capL hh', Limits.comp_zero, Limits.comp_zero,
+      cw_of_neg_of_lt (by omega) (by omega), Limits.comp_zero]
+  · subst hh'
+    rw [L.cw_of_neg_of_eq (by omega) (by omega), Category.comp_id, ccw_of_nonneg (by positivity),
+      Int.toNat_natCast, capL_of_nonneg le_rfl, Preadditive.comp_neg, ← Category.assoc L.sig,
+      sig_sigL_of_nonpos le_rfl, Preadditive.neg_comp, Category.id_comp, neg_neg,
+      L.whiskerLeft_powComp_capD, Int.toNat_zero, add_zero]
+
+/-- For `h ≤ 0`: `η' σ x^m ε' = -∑_{n ≤ -h} P_(-n-1) Q_(m+n)`. -/
+theorem key_nonpos (hh : h ≤ 0) (m : ℕ) :
+    L.cupL ≫ L.sig ≫ rouquierPower x₂ m ▷ F₂ ≫ L.capL =
+      -∑ n ∈ Finset.range ((-h).toNat + 1), L.ccw (-(n : ℤ) - 1) ≫ L.cw ((m + n : ℕ) : ℤ) := by
+  have hN : ((-h).toNat : ℤ) = -h := Int.toNat_of_nonneg (by omega)
+  have e1 : ∀ n ∈ Finset.range (-h).toNat,
+      L.ccw (-(n : ℤ) - 1) ≫ L.cw ((m + n : ℕ) : ℤ) =
+        -((L.cupD (-h).toNat ≫ L.capN n) ≫ (L.cupD (n + m) ≫ L.capL)) := by
+    intro n hn
+    have hn' := Finset.mem_range.mp hn
+    rw [L.ccw_of_neg_of_gt (by omega) (by omega), show -(-(n : ℤ) - 1) - 1 = n by ring,
+      Int.toNat_natCast, cw_of_nonneg (by positivity), Int.toNat_natCast, add_comm m n,
+      Preadditive.neg_comp]
+  have e2 : L.ccw (-((-h).toNat : ℤ) - 1) ≫ L.cw ((m + (-h).toNat : ℕ) : ℤ) =
+      L.cupD ((-h).toNat + m) ≫ L.capL := by
+    rw [L.ccw_of_neg_of_eq (by omega) (by omega), Category.id_comp,
+      cw_of_nonneg (by positivity), Int.toNat_natCast, add_comm m]
+  rw [Finset.sum_range_succ, Finset.sum_congr rfl e1, e2, cupL_of_nonpos hh, Category.assoc,
+    ← Category.assoc L.sigL, sigL_sig_of_nonpos hh, Preadditive.sub_comp, Preadditive.sum_comp,
+    Category.id_comp, Preadditive.comp_sub, Preadditive.comp_sum]
+  simp only [Category.assoc]
+  rw [← Category.assoc (L.cupD (-h).toNat) (rouquierPower x₂ m ▷ F₂),
+    L.cupD_powComp_whiskerRight]
+  have e3 : ∀ n ∈ Finset.range (-h).toNat,
+      L.cupD (-h).toNat ≫ L.capN n ≫ L.cupD n ≫ rouquierPower x₂ m ▷ F₂ ≫ L.capL =
+        L.cupD (-h).toNat ≫ L.capN n ≫ L.cupD (n + m) ≫ L.capL := by
+    intro n _
+    rw [← Category.assoc (L.cupD n), L.cupD_powComp_whiskerRight]
+  rw [Finset.sum_congr rfl e3, Finset.sum_neg_distrib]
+  abel
+
+/-- **The infinite Grassmannian relation for `h ≤ 0`, with Koszul signs**:
+`∑_{j<m} s^(m-j) P_j Q_(m-1-j) + P_m Q_(-1) + s^m ∑_{n ≤ -h} P_(-n-1) Q_(m+n) = 0`.
+Together with `infGrass_nonneg`, at every weight the term `P_r Q_(m-1-r)` carries the sign
+`s^(m - r')` with `r'` the clamp of `r` to `[0, m]`. -/
+theorem infGrass_nonpos (hh : h ≤ 0) (m : ℕ) :
+    ∑ j ∈ Finset.range m, (koszulSign p p ^ (m - j)) •
+        (L.ccw j ≫ L.cw ((m : ℤ) - 1 - j)) +
+      L.ccw m ≫ L.cw (-1) +
+      (koszulSign p p ^ m) • ∑ n ∈ Finset.range ((-h).toNat + 1),
+        L.ccw (-(n : ℤ) - 1) ≫ L.cw ((m + n : ℕ) : ℤ) = 0 := by
+  have e1 : ∀ j ∈ Finset.range m, (koszulSign p p ^ (m - j)) •
+      (L.ccw j ≫ L.cw ((m : ℤ) - 1 - j)) = (koszulSign p p ^ (m - j)) •
+      ((L.cupL ≫ L.capD j) ≫ (L.cupD (m - 1 - j) ≫ L.capL)) := by
+    intro j hj
+    have hj' := Finset.mem_range.mp hj
+    rw [show (m : ℤ) - 1 - j = ((m - 1 - j : ℕ) : ℤ) by omega, ccw_of_nonneg (by positivity),
+      cw_of_nonneg (by positivity), Int.toNat_natCast, Int.toNat_natCast]
+  have K := L.key_slide m
+  rw [L.key_boundary_nonpos hh m, L.key_nonpos hh m, smul_neg] at K
+  rw [Finset.sum_congr rfl e1, K]
+  abel
+
 end SuperRouquierLoc
 end OddMath.SKM

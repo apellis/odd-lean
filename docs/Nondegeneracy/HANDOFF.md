@@ -132,10 +132,12 @@ Lemma 3.1 ((3.3), (3.5)–(3.9)): the sign-free inverse-matrix relations among
 It also proves the infinite Grassmannian relation for `h ≥ 0` with signs
 (`infGrass_nonneg`):
 `∑_{j<m} s^(m-j) P_j Q_(m-1-j) + s^m P_(-1) Q_m + ∑_{n≤h} P_(m+n) Q_(-n-1) = 0`.
-For an odd colour the signs are not uniform in the bubble degree, so the
-super fake bubbles need a sign normalization before the `h ≤ 0` case and the
-window form are stated. **Open:** proving `LeftZigzags`. The next even inputs
-are the `h ≤ 0` Grassmannian relation, the fake-bubble identities, the inverse-cup
+`infGrass_nonpos` is the `h ≤ 0` case, proved directly without a dual:
+`∑_{j<m} s^(m-j) P_j Q_(m-1-j) + P_m Q_(-1) + s^m ∑_{n≤-h} P_(-n-1) Q_(m+n) = 0`.
+At every weight the term `P_r Q_(m-1-r)` therefore carries `s^(m-r')`, with
+`r'` the clamp of `r` to `[0,m]`. This is a candidate sign normalization for
+the super fake bubbles. **Open:** proving `LeftZigzags`. The next even inputs
+are the fake-bubble identities, the inverse-cup
 expansions (3.12)–(3.13) (`RouqCurl`), the dotted curls (`RouqDottedCurls`),
 pitchforks and `RouqTriangleE`. The dual statements need a super horizontal
 opposite with Koszul signs (`RouqLoc.dual`, `RouqLoc.mirror`), which does not

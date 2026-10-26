@@ -36,8 +36,24 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 0) :
     L.ccw 0 ≫ L.cw 0 + L.ccw (-1) ≫ L.cw 1 + L.ccw 1 ≫ L.cw (-1) = 0 := by
   have := L.infGrass_nonneg le_rfl 1
   simpa [koszulSign] using this
+/-- Odd colour, `h = 0`, `t = 2`, from the `h ≤ 0` side:
+`-P_0 Q_0 + P_1 Q_(-1) - P_(-1) Q_1 = 0`, matching the `h ≥ 0` side. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0) :
+    -(L.ccw 0 ≫ L.cw 0) + L.ccw 1 ≫ L.cw (-1) - L.ccw (-1) ≫ L.cw 1 = 0 := by
+  have := L.infGrass_nonpos le_rfl 1
+  simp [koszulSign] at this
+  rw [← this]
+  abel
+
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0) :
+    -(L.ccw 0 ≫ L.cw 0) - L.ccw (-1) ≫ L.cw 1 + L.ccw 1 ≫ L.cw (-1) = 0 := by
+  have := L.infGrass_nonneg le_rfl 1
+  simp [koszulSign] at this
+  rw [← this]
+  abel
 end
 
+#print axioms SuperRouquierLoc.infGrass_nonpos
 #print axioms SuperRouquierLoc.infGrass_nonneg
 #print axioms SuperRouquierLoc.powComp_sig
 #print axioms SuperRouquierLoc.cupL_powComp_sig
