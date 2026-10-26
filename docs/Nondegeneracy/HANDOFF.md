@@ -1,5 +1,19 @@
 # Odd nondegeneracy: restart state
 
+## Three-adjunction mixed braid
+
+[SignedMixedMateBraid.md](SignedMixedMateBraid.md) gives a proposed written
+proof of the general mate braid and its `sig_capCross` consequence, not new
+Lean theorems. The two-mate expansion is `P = s • M(B ≫ A)`, with precisely
+one odd–odd interchange; both sides of the mixed braid acquire that factor,
+so `C ≫ P = P ≫ D` and the cap consequence have coefficient one. Only the
+existing right-adjunction E₂ triangle and the explicit upward braid are
+used. Two isolated local data records do not supply that cross-edge braid;
+`RouquierFamily.braid` does. The outer mate is rectangular: the current
+adjacent-object `homMateEquiv` cannot be applied directly to A₁ and A₃.
+The document defines its typed generalization explicitly. Full cap-swap and
+the left-adjunction triangles remain downstream obligations.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
