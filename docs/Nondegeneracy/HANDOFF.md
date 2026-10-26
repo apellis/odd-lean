@@ -73,6 +73,15 @@ factor right adjunction transports in the opposite direction. The required
 shifted factor left adjunction and the original-datum rational crossings
 must be constructed before these sectors can be assembled into A2.
 
+`OddMath/SKM/RouquierMateSlide.lean` proves
+`rouquierMate_normalized_slide`: multiplying the raw cup–crossing–cap mate
+by `-q` gives the normalized dot slide, directly from the upward relation.
+`mate_slide_projection` then projects this ordered relation along specified
+dot-intertwining sector maps. Neither theorem assumes an inverse.
+`scripts/NonVacuity/MateSlide.lean` checks the projection on a noncommutative
+integral matrix fixture. The construction of the required sector intertwining
+maps, not the scalar normalization, remains open.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
