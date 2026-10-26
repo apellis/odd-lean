@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Swapped vacuum bubbles at positive external height
+
+`SwappedVacuumBubbles.md` gives a proposed written inverse-column calculation,
+conditional on the prescribed full swapped action and the candidate augmented
+inverse of `SwappedHomInversion.md` at `6f348ac31483097b677fef1a47d49715464c356e`.
+For H=P-N>0, support leaves the pre-probe mixed source and post-reservoir
+mixed target. The extreme inverse cup a satisfies sa=0 and the cap-window
+Kronecker identities. Applying the probe annihilator to a and the literal
+mate slide computes every normalized bubble moment, not merely the leading
+mate projection. At an odd colour P=2M, the inherited dot annihilator is
+`(x²+1)^M`, and the result is `oddBubble=(-1)^(N+1)L_delta` and elementary
+series `C(-z)/(1+z)^M`. At an even colour it is `E(-z)/(1-z)^P`.
+The even-cutoff relation delta chi_top=0 is retained in the odd series.
+
+Source placement gives the same signed left multiplier on every surviving
+word functor. The triangular substitutions and their inverses preserve the
+bounded coefficient filtration; inserting the inverse substitution after
+bounded extraction adjusts the recovering square without asserting an
+automorphism of the finite cyclotomic quotient. This applies to collections
+of colours with H_i>0. Zero and negative external heights, full action
+assembly, arbitrary-weight bubble normalization, and infinite-colour
+extension remain open. No Lean verification or nondegeneracy is claimed.
+
 ## Swapped Hom vacuum: signed corners and bounded recovery
 
 `SwappedVacuumCoordinates.md` gives a proposed written construction, not a
