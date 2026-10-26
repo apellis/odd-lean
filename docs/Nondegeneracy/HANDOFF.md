@@ -28,12 +28,24 @@ koszulSign(σ,σ)e(h) id. The E composite is e(h) id. Rescaling only the
 cap by the involutive unit koszulSign(σ,σ)e(h) gives the shifted left
 adjunction normalization of `LeftZigzags`.
 
-This is a written proof, not a kernel-certified F triangle. The
-transposition calculus, horizontal super-opposite and reflected local
-structure still need Lean implementations. The supporting all-height
-E-triangle development is on `research/odd-nondegeneracy-wip/signed-f-r17`; it is
-not included in this documentation-only integration. Transport to fusion
-and regular-bubble detection remains separate.
+This is a written proof, not a kernel-certified F triangle. The supporting
+all-height E-triangle development and the first right-transposition lemmas
+are included here, but the inherited cap/pitchfork chain still needs the
+full-package CI gate. `RouquierRightTranspose` proves the actual counit
+bending equivalence, its cup–map–cap transpose, parity preservation,
+linearity, signed anticomposition, and the power coefficient
+`q(n)=koszulSign p p ^ (n.choose 2)`. Its concrete local consumer
+`SuperRouquierLoc.rightTranspose_capD` proves that the reflected dotted cap
+is `q(n)` times the original `capD n`, at every height and parity.
+No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
+
+Still missing in Lean are the unit bending identity and dotted-cup
+comparison, composite-adjunction whiskering/coherence, the typed `P,Q,R`
+comparison with the prescribed mixed mate, horizontal super-opposition,
+and the mirrored local inversion data. These must be assembled before
+applying the E theorem to prove the canonical F equation; neither
+`LeftZigzags` nor the shifted left adjunction is discharged yet.
+Transport to fusion and regular-bubble detection remains separate.
 
 ## Full graded deformed action on paper
 
@@ -187,6 +199,110 @@ ungraded map remains unchanged and more general. The `[Fintype I]` scope,
 content projection (zero on the other blocks), and positive-height indexing
 `CyclotomicAlgebra a n` over `Hn (n+1)` are unchanged. This is not full
 Proposition 8.4, not a graded superbimodule-map theorem, and not QP.
+
+## Rectangular mates and the capped pitchfork
+
+`SKM/RouquierMixedMate.lean` defines `rectangularMate` for independent outer
+adjunctions and proves its explicit cup–map–cap formula and both naturality
+laws. `rouquierMate_postTranspose` identifies the prescribed rightward mate
+with the postcomposition transpose; `rouquierMate_pitchfork_cap` then follows
+from the Hom-adjunction inverse. Its triangle is the existing right-adjunction
+E-strand triangle, not a left zigzag. `rouquierMate_parity` derives homogeneity
+without inversion data, and `rouquierMate_cross_interchange` proves the single
+odd–odd exchange with coefficient `koszulSign p p` (minus one at odd parity).
+
+The three-adjunction signed expansion is now `rouquierMate_comp_mate`:
+`P = koszulSign p p • M(B ≫ A)`, with the final output associator included
+in `M`. Its proof transports the existing odd interchange through the even
+outer unit and applies the derived capped pitchfork. No exchange or mixed
+identity is assumed. Only pure coherence is checked in the underlying-even
+bicategory; the odd crossing exchange remains in the supercategory.
+`rouquierMate_mixed_braid` derives `C ≫ P = P ≫ D` from the explicitly typed
+upward braid and the two rectangular naturality laws. Its coefficient is one
+at both parities: the common expansion coefficient is not cancelled or inverted.
+The importing consumer exercises both headlines at parity one, including the
+minus sign in the expansion, and audits every owned declaration. It retains
+the supercategory and adjunctions as parameters; no nonzero inversion model
+is constructed.
+
+`SuperRouquierLoc.sig_capCross` now follows by postcomposing the sign-free
+mixed braid with the upper left cap, without exchanging that cap.
+`sig_capCross_of_neg` computes its crossing component at `h < 0`, with
+`h' = h + 2`: it is zero except at `h = -1`, where its coefficient is
+`s = koszulSign p p`. `whiskerRight_hom_ext_of_nonpos` extracts equality
+from the total augmented inverse equation, and `capCross_eq_of_neg`
+assembles the crossing and all dotted-cup components. Writing
+`C = L.capL ▷ E₂ ≫ λ.hom` and
+`R = α.hom ≫ E₂ ◁ A₂.counit ≫ ρ.hom`, its formula is
+`U.capCross = s • (-C + R)` at `h = -1`, and `U.capCross = -C` at
+`h < -1`. In particular, the odd boundary is `C - R`; scaling only `R`
+would fail the undotted-cup equation. Inputs are the adjacent local data,
+both upward square relations, the upward braid, and the height relation.
+The proof uses no assumed left zigzag or target cap relation.
+
+The imported `RouquierCapSwap` consumer specializes the boundary to both
+parities, applies the theorem to the local data of a `RouquierFamily`
+(deriving the height shift and using its square/braid fields), and audits
+101 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
+pitchfork at `h = -1` from the cap swap and the positive inverse; its
+coefficient is `s`, with an importing odd-parity consumer.
+`capL_pitchfork_below_neg_one` proves the remaining negative-height case,
+with coefficient one, by `whiskerLeft_hom_ext_of_nonpos` at upper height
+`h+2` and `curlEG_cupD_zero`. Its importing consumer tests arbitrary parity
+at height `-2` and all lower heights for a `RouquierFamily`.
+`leftAdj_triangle_E_of_neg` now proves the canonical E-strand zigzag is
+`𝟙 E₂` for every `h < 0`, including `h = -1`: at the boundary the common
+cap-swap sign cancels, and below it the pitchfork reduces to
+`curlEG_cupD_self`. `RouquierFamily.leftZigE_of_neg` gives this directly for
+`leftZigE`, with the existing `leftCup` and `leftCap`, without rescaling.
+The consumer checks arbitrary parity and negative height and the family API.
+These remain parametric consumers, not a nonzero odd inversion model.
+The positive augmented inverse now gives `cupCross_eq_of_nonneg`, using
+all its crossing and dotted-cap components rather than an unsigned duality.
+Writing `R = ρ.inv ≫ E₂ ◁ U.cupL`, the cup-side double crossing equals
+`-s • R` at `h = 0` and `-R` at `h > 0`. The component calculation
+`cupCross_capD_boundary` retains both the crossing/dot interchange sign
+and the positive single-curl coefficient. `cupL_pitchfork_of_nonneg`
+then has coefficient `s` at zero and one above zero. It assumes the same
+adjacent-height relation, both upward squares, and upward braid as the
+cap pitchfork; it does not assume left zigzags.
+
+Consequently `leftAdj_triangle_E_of_nonneg` and
+`RouquierFamily.leftZigE_of_nonneg` prove the canonical E zigzag is
+`s • 𝟙 E₂` for `h ≥ 0`, **not** an unsigned identity at odd parity.
+`RouquierFamily.leftZigE_eq` assembles all heights: coefficient one below
+zero and `s` at nonnegative height. No cup or cap was rescaled. Importing
+consumers check both parities at zero and arbitrary positive height,
+the signed cup pitchfork, and the actual family API.
+
+The canonical F triangle and a common normalization remain open. For
+`σ = leftAdjParity D i x` and E coefficient `e` just computed, the remaining
+compatible F formula is `leftZigF = (koszulSign σ σ * e) • 𝟙 F`.
+`RouquierFamily.leftZigzags_iff_leftZigF` now proves that this exact F
+formula is equivalent to `LeftZigzags`. The reverse implication constructs
+`c = koszulSign σ σ * e` as a unit with inverse itself. For the forward
+implication, `SuperAdjunction.smul_id_right_of_left` transfers equality of
+scalar multiples of `𝟙 E` to `𝟙 F` using the existing right-adjunction
+triangle. It does not assert scalar faithfulness or infer F from E alone.
+The named `FNormalizationChecks` consumers check even parity and odd
+heights zero and one, and construct `RouquierLeftAdjoints` **conditional
+on the exact F equation** via the existing `leftAdjointsOfZigzags`.
+The canonical F equation itself, hence unconditional normalized left
+adjunctions, is still unproved in Lean at every height.
+[SignedFTriangle.md](SignedFTriangle.md) now gives a written mathematical
+proof by explicit right-mate reflection, including the signed vertical
+composition law, horizontal opposite, comparison of the prescribed mixed
+mate, and every field of the mirrored local inversion data. With
+`s=(-1)^p` and `q(n)=s^(n(n-1)/2)`, the mirrored crossing is `s M(t)`;
+the dotted components and their inverses are scaled by `q(n)`.
+The reflected canonical cup and cap have coefficients `a(h+2),b(h)`
+whose product is exactly `s^(h+1)=koszulSign σ σ`. Applying the already
+proved local E theorem to these mirrored data therefore gives the
+canonical F coefficient `s^(h+1)` for `h<0`, and `s^h` for `h≥0`.
+The document is not kernel-checked; formalizing the generic mate calculus
+and the mirrored local construction remains necessary. No cyclicity,
+left adjunction, or scalar faithfulness is assumed in the argument.
+No nonzero odd inversion model or full-root certification is claimed.
 
 ## Reservoir closure audit
 
@@ -572,16 +688,37 @@ sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
 self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
 `ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
 for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
-without a dual. **Implementation checkpoint:** `SignedFTriangle.md` now
-supplies the written signed reflection proof, and
-`research/odd-nondegeneracy-wip/signed-f-r17` supplies the all-height E theorem. The following describes
-the earlier implementation gap in this branch, not a remaining mathematical
-assumption of that written proof:
-(1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
-`capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
-`RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
-the E-zigzag is `∓ε` times the sign of the super cupL pitchfork, which is not
-yet derived. (2) F-zigzag: needs a mirror into a super horizontal opposite
+without a dual. `RouquierPitchfork.lean` adds two direct inputs for the
+leftward pitchfork calculation: `curlEG_cupD_zero` proves vanishing with
+`n < -h` dots on the cup, and `curlEG_double_dotted` proves, for `0 < n ≤ 1-h`
+and `t ≫ t = 0`, that the closed double crossing `t ≫ x₁^n ▷ E₂ ≫ t` is zero
+below the boundary and `-s^n • 𝟙 E₁` at the boundary. Its ordered expansion is
+`powComp_right_tau`; no mirror is used. The same module now defines `capCross`
+and proves `unit_capCross_zero`, `dottedUnit_capCross`, and
+`dottedUnit_capCross_boundary`. Moving `n` dots past the rightward crossing
+contributes `s^n`; multiplied by the double-curl boundary `-s^n`, this gives
+`-𝟙` in both parities. Thus the dotted-cup component of the cap-swap is
+proved, including undotted vanishing. The low capped-crossing expansion is now
+proved by `sig_capL_low`: for `h ≤ 1`, it is `capD 0 ≫ cw (-1)` plus `capD 1`
+exactly at `h = 1`, in either parity. `sig_capD_closed` and
+`cross_sig_capD_closed` retain the factor `koszulSign p (n*p)` from moving the
+open-strand dot power past the rightward crossing. For a square-zero upward
+crossing, `cross_sig_capD_zero` vanishes and `cross_sig_capD_one` is `s` times
+the undotted right-cap pitchfork, where `s = (-1)^p`. The upward sandwich
+`tau_dot_tau_left` itself has coefficient one; the factor `s` comes from
+interchange. The mixed braid and full negative-height cap swap are now proved
+as recorded above, together with both negative-height cap-pitchfork cases and
+the canonical negative-height E triangle. Brundan Lemma 4.2, (4.5)–(4.7),
+supplies the decomposition followed. BE Proposition 7.2's full pitchforks use
+(6.6), so they cannot be imported as independent inputs to the missing
+adjunction triangles.
+The odd- and even-parity specializations in `NonVacuity/Pitchfork.lean` assume
+local Rouquier data: they are signature and axiom checks, not a constructed
+nonzero categorical example. No existing concrete instantiation of the local
+inversion data has been supplied here; the cyclotomic global local-inversion
+comparison remains open. The canonical E-zigzag scalar is now determined
+at every height, as recorded above. **Open:** proving `LeftZigzags` by
+establishing the F-zigzag through a mirror into a super horizontal opposite
 `HOpS B`. That opposite is a 2-supercategory with the same Koszul signs. A
 first analysis found that right mates are anti-multiplicative *with* a sign:
 `mate (x ≫ y) = koszulSign |x| |y| • (mate y ≫ mate x)`. Consequently
@@ -589,8 +726,9 @@ first analysis found that right mates are anti-multiplicative *with* a sign:
 `s •` (full mate of `t`). The mirror's rightward crossing is then
 `s • sig`, its dotted caps and cups are `s^(n choose 2) •` L's, and its
 `sigL`, `cupL`, `capL` agree with L's only up to explicit signs, not by `rfl`.
-These derivations have not been checked in Lean. `LeftZigzags` is stated up to
-a unit, so these signs should be harmless, but they have to be tracked. The
+Signed anticomposition, powers, and the dotted-cap comparison are now checked
+in `RouquierRightTranspose`. The remaining reflected-data comparisons have
+not been checked in Lean; their precise coefficients are in `SignedFTriangle.md`. The
 nilHecke square and braid transfer to the mirror. Suggested construction: the
 mirror crossing is `(homMateEquiv A₁.hop A₂.hop _ _).symm (s • sig)`, and
 mate injectivity comes from `recover (φ ▷ E ≫ counit) = φ`. The next even inputs
