@@ -45,6 +45,16 @@ the vacuum condition `β = 0` at height zero, and
 `globalF i h : globalWeightSpace y ⟶ globalWeightSpace x` is the product of
 these superfunctors along `blockSucc`, retaining odd morphisms.
 
+`GlobalWeightInduction.lean` ports `globalE`. Each block has at most one
+predecessor (`blockSucc_injective`), so the component at `δ` is
+`globalContentInduction` from it (`inductionComponent_blockSucc`) and the zero
+supermodule otherwise (`inductionComponent_isZero`, `globalZero_isZero`).
+`globalE i h : globalWeightSpace x ⟶ globalWeightSpace y` is the resulting
+superfunctor. Open on weight spaces: the adjunction `globalE ⊣ globalF` (needs
+the vacuum unit and counit, a height-generic copy of
+`CornerPairing`/`SuperAdjunction{Unit,Counit}` along `heightAppend`), the
+weight-level dot and crossing, nilpotence, braid and slides, `GlobalLoc`.
+
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
 `cyclotomicSuperInductionCrossing` (`globalBlockCross`, parity `|i||j|`).
