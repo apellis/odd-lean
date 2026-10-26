@@ -36,6 +36,16 @@ blocks (`globalBlockRestriction`) and the even unit and counit to
 components are even (`globalBlockUnit_mem`, `globalBlockCounit_mem`). This is
 the positive-height block adjunction; the vacuum unit and counit are open.
 
+`GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
+with explicit target content and restricts the constructed crossing
+`cyclotomicSuperInductionCrossing` (`globalBlockCross`, parity `|i||j|`).
+`globalBlockSignedCross` is the Rouquier convention of the even file (`-ψ` for
+equal colours). `cyclotomicSuperInductionCrossing_square` transports
+`compositionSuperCrossing_square` through the comparison isomorphism, giving
+`globalBlockCross_square` and `globalBlockSignedCross_square`, the shape of the
+`square` field of `RouquierFamily`. Distinct-colour squares, dot slides and
+braids are not yet transported to blocks.
+
 `CyclotomicAction/Global.lean` supplies the content indices and boundary sign
 for the global cyclotomic action: `WeightBlocks`, injective `blockSucc`, its
 subsingleton fibres, `exists_blockSucc_iff`, `blockSucc_comm`,

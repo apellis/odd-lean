@@ -25,6 +25,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
 import OddMath.QuiverHecke.CyclotomicAction.Normality
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
 import OddMath.QuiverHecke.CyclotomicAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalProduct
