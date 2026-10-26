@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Swapped Hom vacuum: signed corners and bounded recovery
+
+`SwappedVacuumCoordinates.md` gives a proposed written construction, not a
+Lean theorem. Taking the existing probe as Hom input and reservoir as output,
+`exists_extended_weights D (-μ) m` gives the literal external weight μ with
+h=-D.h μ. Extension by zero on formal probe content zero kills every probe
+upward summand. Multiplication of the existing induction kernels gives the
+reservoir word projective `B e_(reverse t)`. Signed left-module Hom evaluation
+at its idempotent yields the exact opposite corner, with the original source
+word retained in the direct sum of actual word-functor Hom spaces.
+
+The note writes the all-colour generator equivalence for `parameterTwist Sc`
+and the inverse image of the whole factor ideal: unchanged coefficient
+relations and last-position polynomials with dot-power signs
+`(-1)^(p(i) binom(j,2))`. It does not identify this ideal with the standard
+first-boundary ideal. Instead every inverse-image generator has high weighted
+score, so the existing weighted two-sided separation bound gives bounded
+injectivity; a linear left inverse followed by source-order correction recovers
+the desired first-boundary quotient. High coefficient-power truncations retain
+the same bound. This avoids relying on the proposed theta involution.
+
+Remaining: formalize this presentation/kernel calculation; assemble and compare
+the swapped full Hom action and its augmented inversion; supply the total
+zero-window extension needed by the present detection interface; compare actual
+normalized bubbles to the constructed reservoir coefficient action. The note
+establishes admissible bounded observations on paper, not a completed
+`RegularVacuumIdentification`, full family, or nondegeneracy theorem.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every
