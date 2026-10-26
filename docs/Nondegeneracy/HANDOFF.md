@@ -50,10 +50,18 @@ predecessor (`blockSucc_injective`), so the component at `δ` is
 `globalContentInduction` from it (`inductionComponent_blockSucc`) and the zero
 supermodule otherwise (`inductionComponent_isZero`, `globalZero_isZero`).
 `globalE i h : globalWeightSpace x ⟶ globalWeightSpace y` is the resulting
-superfunctor. Open on weight spaces: the adjunction `globalE ⊣ globalF` (needs
-the vacuum unit and counit, a height-generic copy of
-`CornerPairing`/`SuperAdjunction{Unit,Counit}` along `heightAppend`), the
-weight-level dot and crossing, nilpotence, braid and slides, `GlobalLoc`.
+superfunctor.
+
+`GlobalHeightAdjunction.lean` restates the corner pairing, even unit and
+counit and both triangle identities along `heightAppend` (they only use a
+unital even multiplicative strand map), so the adjunction now also covers the
+empty word to one strand. `heightContentAdjunction` restricts it to content
+blocks at every height, and `globalContentAdjunction (h : {i} + β = δ)` gives
+`globalContentInduction h ⊣ globalContentRestriction h` (composed with the
+mutually adjoint transports `heightContentCastAdjunction`). Open on weight
+spaces: assembling `globalE ⊣ globalF` from the blockwise adjunctions (zero
+components at blocks without predecessor), the weight-level dot and crossing,
+nilpotence, braid and slides, `GlobalLoc`.
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
