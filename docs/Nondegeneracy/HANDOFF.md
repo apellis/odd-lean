@@ -203,10 +203,21 @@ The named `FNormalizationChecks` consumers check even parity and odd
 heights zero and one, and construct `RouquierLeftAdjoints` **conditional
 on the exact F equation** via the existing `leftAdjointsOfZigzags`.
 The canonical F equation itself, hence unconditional normalized left
-adjunctions, is still unproved at every height. The even reflection proof
-requires a super counterpart with its mate-composition and mirrored
-cup/cap signs verified; no such cyclicity is assumed here. No nonzero
-odd inversion model or full-root certification is claimed.
+adjunctions, is still unproved in Lean at every height.
+[SignedFTriangle.md](SignedFTriangle.md) now gives a proposed mathematical
+proof by explicit right-mate reflection, including the signed vertical
+composition law, horizontal opposite, comparison of the prescribed mixed
+mate, and every field of the mirrored local inversion data. With
+`s=(-1)^p` and `q(n)=s^(n(n-1)/2)`, the mirrored crossing is `s M(t)`;
+the dotted components and their inverses are scaled by `q(n)`.
+The reflected canonical cup and cap have coefficients `a(h+2),b(h)`
+whose product is exactly `s^(h+1)=koszulSign σ σ`. Applying the already
+proved local E theorem to these mirrored data therefore gives the
+canonical F coefficient `s^(h+1)` for `h<0`, and `s^h` for `h≥0`.
+The document is not kernel-checked; formalizing the generic mate calculus
+and the mirrored local construction remains necessary. No cyclicity,
+left adjunction, or scalar faithfulness is assumed in the argument.
+No nonzero odd inversion model or full-root certification is claimed.
 
 ## Reservoir closure audit
 
