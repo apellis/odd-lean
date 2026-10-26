@@ -158,9 +158,12 @@ The proof uses no assumed left zigzag or target cap relation.
 The imported `RouquierCapSwap` consumer specializes the boundary to both
 parities, applies the theorem to the local data of a `RouquierFamily`
 (deriving the height shift and using its square/braid fields), and audits
-49 owned declarations. These remain parametric consumers, not a nonzero
-odd inversion model. The restricted leftward pitchfork and the E-strand
-left triangle remain unproved; this chain is not a full-root certification.
+53 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
+pitchfork at `h = -1` from the cap swap and the positive inverse; its
+coefficient is `s`, with an importing odd-parity consumer. These remain
+parametric consumers, not a nonzero odd inversion model. The leftward
+pitchfork below `-1` and the E-strand left triangle remain unproved; this
+chain is not a full-root certification.
 
 ## Reservoir closure audit
 

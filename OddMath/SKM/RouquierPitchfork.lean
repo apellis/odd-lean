@@ -401,6 +401,35 @@ theorem capCross_eq_of_neg (hw : h' = h + 2) (hh : h < 0)
           hb, apply_ite (fun z => (leftUnitor E₂).hom ≫ z),
           Preadditive.comp_neg, Category.comp_id, Limits.comp_zero] at hc
         split_ifs at hc ⊢ <;> simpa only [cupD, neg_zero] using hc
+/-- The left-cap pitchfork at the exceptional negative boundary.
+Its coefficient is `(-1)^p`, as forced by the signed cap swap. -/
+theorem capL_pitchfork_at_neg_one (hw : h' = h + 2) (hh : h = -1)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom ≫
+      E₂ ◁ U.capL ≫ (rightUnitor E₂).hom = koszulSign p p •
+      (E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
+        (leftUnitor E₂).hom) := by
+  have hz : U.sigL ≫ A₂.counit = 0 := by
+    simpa only [capD, rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
+      Category.id_comp] using U.sigL_capD (n := 0) (by omega) (by omega)
+  have hc := congrArg (fun z => E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ z)
+    (L.capCross_eq_of_neg U hw (by omega) hsq hsq' hB)
+  rw [ite_eq_left hh] at hc
+  simp only [capCross, Iso.inv_hom_id_assoc,
+    Preadditive.comp_zsmul, Preadditive.comp_add, Preadditive.comp_neg] at hc
+  rw [← Category.assoc (E₂ ◁ U.sigL) (E₂ ◁ U.sig),
+    ← TwoSupercategory.whiskerLeft_comp (R := k),
+    U.sigL_sig_of_nonneg (by omega), TwoSupercategory.whiskerLeft_neg (R := k),
+    TwoSupercategory.whiskerLeft_id (R := k), Preadditive.neg_comp, Category.id_comp,
+    ← Category.assoc (E₂ ◁ U.sigL) (E₂ ◁ A₂.counit),
+    ← TwoSupercategory.whiskerLeft_comp (R := k), hz,
+    TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp, add_zero, smul_neg] at hc
+  exact neg_injective hc
+
 end Adjacent
 
 end SuperRouquierLoc
