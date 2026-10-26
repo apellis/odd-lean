@@ -156,6 +156,14 @@ do not replace the quotient by a polynomial model or forget its odd part.
 superbimodule `inductionCorner = B φ(1)` and its balanced-tensor
 `cyclotomicSuperInduction`. This is an additive, `k`-linear superfunctor,
 including on odd morphisms, using the signed tensor whiskering.
+`CyclotomicAction/InductionComposition.lean` constructs `compositionCorner`
+with right action through the composite inclusion and proves the even
+superbimodule isomorphism `inductionCompositionIso : C eᵢ ⊗_B B eⱼ ≅ C φᵢ(eⱼ)`.
+Its forward map is `x ⊗ y ↦ x φᵢ(y)` and its inverse is `z ↦ z ⊗ eⱼ`;
+both algebra actions and both parity compatibilities are proved. The scoped
+warning-free build and declaration axiom audit pass. This supplies coordinates
+for composing two positive-height inductions, not crossing, braid or KKO
+inversion relations; constructing the concrete crossings remains next.
 `CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
 `restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
 `k`-linear, and parity preserving. The positive-height indexing still leaves
