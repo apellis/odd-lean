@@ -538,3 +538,15 @@ this branch:
 [MulticolourCyclotomicAction.md](MulticolourCyclotomicAction.md),
 [SpectralCompensation.md](SpectralCompensation.md), [CoupledBubbleEvaluation.md](CoupledBubbleEvaluation.md),
 [OddUnfurling.md](OddUnfurling.md), [RewritingAlternative.md](RewritingAlternative.md).
+
+### Vacuum strand inclusion
+
+`CyclotomicAction/Vacuum.lean` supplies `vacuumAppend`, the nonunital algebra map
+from `Hn D Sc 0` to `CyclotomicAlgebra D Sc a 0` obtained by adding the first
+strand and applying the existing height-one quotient map. `vacuumAppend_one`
+and `vacuumAppend_scalar` identify its unit and scalar images with the
+single-colour cut; the cuts are idempotent, mutually orthogonal, and act as
+units on the corresponding images. `vacuumAppend_parity` and
+`vacuumColourCut_parity` give the homogeneous-parameter parity formulas.
+This closes the algebra-map boundary at height zero; vacuum superinduction
+and the categorical inversion relations are not asserted here.
