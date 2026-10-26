@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Unit output comparison
+
+`homContentPreAdjunction_unit_output_coordinates` removes the output shift
+following the specified normalized Hom unit and a homogeneous map of parity q.
+It retains the factor `koszulSign sigma q` and all cup associators. Its
+odd rank-one consumer allows every height and either parity. This is only
+the first shift cancellation: substitution of the prescribed crossing and
+counit into `rouquierMate`, the input comparison, and equation (10) of
+`HomPrincipalMate.md` remain open.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every
