@@ -72,6 +72,11 @@ instance (F : C ⥤ C') (hF : ∀ M, P M → Q (F.obj M))
     [F.Additive] [F.Linear k] [IsSuperfunctor k F] : IsSuperfunctor k (fullLift P Q F hF) where
   map_mem hf := IsSuperfunctor.map_mem (F := F) hf
 
+/-- Restriction of a bundled superfunctor to full supercategories. -/
+def fullLiftSuperfunctor (F : Superfunctor k C C') (hF : ∀ M, P M → Q (F.obj M)) :
+    Superfunctor k P.FullSubcategory Q.FullSubcategory :=
+  ⟨fullLift P Q F.toFunctor hF⟩
+
 /-- Restriction preserves both homogeneous components and their Koszul naturality. -/
 def fullLiftTrans {F G : C ⥤ C'} (hF : ∀ M, P M → Q (F.obj M))
     (hG : ∀ M, P M → Q (G.obj M)) (η : SuperNatTrans k F G) :
