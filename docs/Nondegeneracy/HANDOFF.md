@@ -18,6 +18,27 @@ families, not unrestricted products of underlying Hom spaces.
 This is not a Lean implementation. Hom-finiteness, fusion, detection and
 nondegeneracy remain open.
 
+## Finite-coefficient reservoir bounds on paper
+
+`DeformedReservoirBound.md` proves that homogeneous power truncations of the
+finitely many positive even deformation parameters leave a finite-dimensional
+coefficient superalgebra, retaining all independent odd ELV generators and
+relations. Presentation base change identifies the defined cyclotomic quotients
+and specializes the prescribed kernel maps and inverse identities without
+flatness. Finite right generation of induction kernels, including the square
+resolution's monic annihilator, then proves finite dimension at every fixed
+content by induction on height. Finite modules remain finite under finite
+E/F words; arbitrary Hom spaces are not assumed finite.
+
+Homogeneous identity transformations identify with the supercentre via the
+regular module. The resulting finite degree support and the graded principal
+inverse block prove joint nilpotence of the positive reservoir closures.
+Bounds are contentwise or on finite windows, not uniform over an infinite
+weight fiber. Degree-zero content-preserving feedback inverses can assemble
+componentwise. This is a written argument, not a Lean theorem. Actual fused
+feedback identification, factor left-adjunction transport, the all-height
+residual matrix, and truncation-compatible separation remain open.
+
 ## Prescribed same-colour inversion on paper
 
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
