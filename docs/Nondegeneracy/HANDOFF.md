@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted fused cap windows
+
+[FusedCapWindows.md](FusedCapWindows.md) gives a proposed written calculation,
+not a new Lean theorem. For the postcomposition sector with its actual content
+parity shift S, its dotted counit is `S.map(c_t(S Y)) ≫ ξ_Y.hom`.
+Transporting a positive factor inverse cup as
+`ξ_Y.inv ≫ S.map(a_s^post(S Y))` gives the exact Kronecker block for both
+indices inside the factor low window. This does not yet identify the paired
+probe jet basis or compute higher windows.
+
+The precomposition right adjunction still requires `RouquierLeftAdjoints T`:
+`homPreAdjunction T.adj` points the other way.
+`leftAdjointsOfZigzags` requires the unproved `T.LeftZigzags`, even for a
+bounded set of edges. The abstract coupled diagonal adjunction does not
+construct that input from the Hom family. Integer-graded sector transports
+are also absent from these Hom modules. Hence the full fused cap restrictions
+and the residual partial-fraction comparison remain open.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
