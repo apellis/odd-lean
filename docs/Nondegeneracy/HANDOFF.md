@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Central Hom feedback and a normalization check
+
+`HomCentralFeedback.md` derives the literal central mates of the specified
+AB/BA diagonals directly from their finite rational expansions. In common
+z/xi coordinates they are
+`C_raw=sum q^r alpha_r [v_B(-r-1);P_Ur]` and
+`D_raw=-sum q^(s+1) beta_s [P_Vs;u_B(-s-1)]`, with the normalized-left
+coefficients of `HomPrincipalMate.md`. Inserting its whole augmented
+inverse gives the exact left closure `U_r;f;V_s` and feedback coefficient
+`-gamma c^-1 (-1)^(p r s+sigma(1+p(r+s)))`.
+Supernaturality suffices to move these closures past the remaining probe
+coordinate maps; a raw right-reservoir closure comparison is unnecessary.
+Given the actual probe sector augmented inverse, the fixed-content
+reservoir bound then kills the nth feedback power for `2dn>M_beta`.
+Only the reservoir needs an integer grading, not the fused crossing.
+
+This is a proposed written calculation, not a Lean theorem or full (TC).
+It retains an explicit probe-sector input: if its actual augmented
+inverse is not already supplied, the single sufficient comparison (B)
+is `B_s^-1;P(T_BB);B_t=post(sigma_B)`, not proved in this note.
+It also records a normalization discrepancy: with the stated execution
+word labels, the literal diagonal mates have the shape of equation (9)
+of `FusedFeedbackComparison.md`, rather than -q times that equation.
+The discrepancy is invisible for odd colours and cancels in two-step
+feedback, but matters for the displayed residual matrices. No frozen
+convention is changed. Probe comparison, this normalization check,
+residual inversion, and graded fusion remain separate obligations.
+
 ## Content-shifted swapping mates
 
 `HomSwappingMates.md` evaluates the two swapping partial mates of the
