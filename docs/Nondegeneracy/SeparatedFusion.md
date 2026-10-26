@@ -334,3 +334,73 @@ nilpotent two-sided ideal. Only then can the associative lifting theorem
 supply inversion and the cover-family assembly be replaced by an action of
 the original superdatum. There is no A2 theorem in these modules, and no
 counterexample to separated fusion is asserted.
+
+### Exact mate controls and an occupied adjacent-colour slice
+
+`scripts/Nondegeneracy/rouq_sig_super_check.py` computes the cup–crossing–cap
+composite before extracting either coupling block. Its even control uses
+ordinary cutoff-two nilHecke towers; its odd control uses the corresponding
+odd towers. Induction is a balanced-tensor quotient and coinduction is a
+constrained Hom space. The tests check both adjunction triangles, both upward
+dot slides, crossing square, both finite expansions, the complete total
+cup/cap matrix and its two-sided inverse. The feedback tested is the whole
+operator `D r_A C r_B`, with `r_A,r_B` extracted from the factor inversion
+matrices, including their dotted identity summands.
+
+There is a necessary convention distinction, already specified in
+[SeparatedFactorInversion](SeparatedFactorInversion.md): (2) describes
+`sigma = -q sigma_src`. Thus for the literal `rouquierMate` the formulas are
+
+    C_src = -sum_(r>=0) q^(r+1) u_A,r v_B,-r-1,
+    D_src =  sum_(r>=0) q^r u_B,-r-1 v_A,r.
+
+For odd colour these are exactly (2); for even colour both blocks change
+sign. In the even control, if `a=(X-Y)^(-1)` is the raw source
+position-preserving crossing, the crossing in the convention of
+`RouqCoproduct.rouqSig_eq` is `delta=-a`: it satisfies
+`delta (Y-X)=1`, exactly its inverse-difference hypothesis. Its mate is
+therefore `-sigma_src`. The even control passes with this normalization.
+No extra odd-bubble term is required in the tested cases.
+
+An occupied connected slice uses the all-odd datum `[[2,-2],[-4,2]]` with
+`Q_ij(x,y)=x²-y⁴`, reservoir cyclotomic polynomials `f_i=1`,
+`f_j=y²+y delta_j`, and probe `f_i=t²-1` at zero j-content. Put
+`R=Q<y,delta_j>/(delta_j²,y delta_j+delta_j y,y²+y delta_j)`.
+Here `delta_j` and `y²` are nonzero, while `y³=0`. At reservoir content
+`(a,1)`, every word except `j i^a` starts with i and is killed by `f_i=1`.
+Consequently mixed crossings vanish, and their quadratic relation imposes
+`x_1²=y⁴=0`. The surviving `jii` braid has unequal outer colours, hence zero
+correction. Relations on killed words vanish with their idempotents. Sending
+those idempotents and mixed crossings to zero gives the reverse presentation
+map, identifying this slice with `R tensor_hat ONH_a/(x_1²)` for `a=0,1,2`.
+The ideal `(x_1²)` here is two-sided. These identifications respect appending
+an i-strand, so the induction, coinduction and their adjunctions transport.
+
+The calculation transports the generators and recomputes their mate, rather
+than tensoring a presumed mate formula. The additional occupied odd j strand
+is retained through the component equivalence `G_(a,b)=Pi^b`; a homogeneous
+map of parity p transports as `(-1)^(bp) P_R^p tensor f`. In particular the
+B-sector functor has the extra parity line; it is not silently discarded.
+
+Run `python3 scripts/Nondegeneracy/rouq_sig_super_check.py --all-contents
+--connected` for all `a,b in {0,1,2}`. All nine even controls, nine odd
+controls and nine occupied-j slice cases pass. The factor heights are
+`h_A=2a-2`, `h_B=2-2b`, covering both signs of each factor and of their sum.
+By default the script uses the graded projective generators `e_00 A_2` and
+`e_00 B_2` in the matrix-algebra factors, retaining the entire local algebra
+at the other levels. The connected total matrix sizes are 24, 32, 48, 64,
+80 and 144. Retaining full regular modules with `--regular` also passed,
+with total matrices up to size 192. Their whole
+feedback operators vanish. The rank-one even middle-content feedback has
+rank two and square zero; the odd coefficient-free feedback vanishes.
+Separately, `--exterior` checks the rank-one middle content with nonzero
+`delta_i`: the total matrix has size 72 and invertible total map, and the
+feedback has rank four and square zero.
+
+**Boundary of this evidence.** These are exact finite instances, not an
+all-content multicolour comparison theorem. The connected slice has
+`delta_i=0` and its mixed polynomial specializes to `x²`; it does not test
+simultaneously independent `delta_i,delta_j`, other j-contents, or a mixed
+crossing with nonzero polynomial contribution inside the reservoir. Such
+contents may also have small matrices and have not been enumerated here.
+A2 and the general comparison in this section therefore remain open.
