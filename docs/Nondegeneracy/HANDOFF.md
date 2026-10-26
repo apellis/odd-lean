@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Canonical parity-shifted coefficient target
+
+`CyclotomicAction/IntertwinerParity.lean` refines the target of the existing
+`cyclotomicContentQ`. `qCoefficient` is the existing `Envelope.piPow` of the
+regular cyclotomic superbimodule, with exponent `p(i)p(β)`;
+`qCoefficientInsert_mem` proves the coefficient parity, and
+`qCoefficientInsert_smul` proves the actual semilinear coefficient identity.
+`qCoefficientTransfer` moves the involution out of the right corner action,
+and `parityCyclotomicContentQ` composes this with the already descended map.
+`parityCyclotomicContentQ_tmul` retains the actual moving-strand representative.
+No new balance hypothesis, flatness assumption, or duplicate parity-shift
+interface was introduced. Mixed and all-odd consumers activate a nonzero
+shift, use the actual cyclotomic quotient, and audit all owned declarations.
+
+Source-statement comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 also
+requires the induced super grading and signed right `t_i` compatibility.
+Neither is proved here. Its target right action contains both
+`(-1)^{p(i)p(β)}` on the first-dot action and the coefficient involution
+`φ_i(b)`; the latter cannot be dropped when balancing across odd coefficients.
+The new coefficient grading requires `CyclotomicPolynomialParity`; the old
+ungraded map remains unchanged and more general. The `[Fintype I]` scope,
+content projection (zero on the other blocks), and positive-height indexing
+`CyclotomicAlgebra a n` over `Hn (n+1)` are unchanged. This is not full
+Proposition 8.4, not a graded superbimodule-map theorem, and not QP.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
