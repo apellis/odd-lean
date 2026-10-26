@@ -30,6 +30,35 @@ are retained in both raw quotient and right-B-linear tensor coordinates.
 These are written arguments, not Lean theorems. Left projectivity and reverse
 adjunctions remain separate; prescribed same-colour inversion is supplied above.
 
+## Actual induced-tensor parity grading
+
+`CyclotomicAction/IntertwinerGrading.lean` constructs `qSourceSpace` and
+`qTargetSpace` on the **existing** `InductionAlong.Ind` carriers. The raw tensor
+is the original integral tensor. Its odd projection is the sum of even-odd
+and odd-even tensor projections. `InducedParity.relation_odd_mem` proves that
+the original balancing submodule is stable, by homogeneous decomposition of
+the corner, balancing algebra, and coefficient. Restricting its scalars to
+`k` leaves the quotient carrier unchanged; no comparison equivalence is assumed.
+
+`qSourceSpace_tmul_mem` and `qTargetSpace_tmul_mem` give total tensor degrees;
+`qSourceSpace_smul_mem` and `qTargetSpace_smul_mem` prove grading of the actual
+left action. Corner projection stability follows from the even idempotent,
+and append/prepend and coefficient action grading are proved, not postulated.
+The imported consumer exercises all-odd height three and mixed height two,
+both with nonzero coefficient shift, and audits the module's declarations.
+
+This is a checked grading increment, **not yet Q-evenness**. The remaining
+focal step is to prove the `contentMove` matrix has parity `p(i)p(β)` and use
+`InducedParity.ind_map_mem` with `parityCyclotomicContentQ_tmul` and
+`qCoefficientInsert_mem`; its two parity shifts then cancel. The right-dot
+degree assertions and full right-superalgebra structure also remain open.
+Source comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 and (8.13),
+PDF page 42. Finite colours, positive indexing and
+`CyclotomicPolynomialParity` are retained. Ordinary coefficients
+`I → Polynomial k` are still narrower than full odd-coefficient deformations.
+No full Proposition 8.4, QP formula, or nonzero categorical inversion model
+is asserted.
+
 ## Constructed right dots and Q compatibility
 
 `CyclotomicAction/IntertwinerTargetDot.lean` constructs `targetRightDot`
@@ -70,8 +99,8 @@ Mixed and all-odd consumers use the existing cyclotomic balanced tensor;
 the mixed consumer checks the minus sign on odd coefficients.
 
 The source and target right-dot endomorphisms and their Q compatibility are
-now constructed as described above. The induced-tensor grading and the
-superbimodule assertion remain absent. Finite colours, positive quotient
+now constructed as described above. The induced-tensor grading is now supplied
+by `IntertwinerGrading`; Q-evenness and the superbimodule assertion remain open. Finite colours, positive quotient
 indexing, and `CyclotomicPolynomialParity` are retained.
 
 ## Canonical parity-shifted coefficient target
@@ -90,7 +119,8 @@ shift, use the actual cyclotomic quotient, and audit all owned declarations.
 
 Source-statement comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 also
 requires the induced super grading and signed right `t_i` compatibility.
-The latter is now proved by `targetRightDot_Q`; induced grading remains open.
+The latter is now proved by `targetRightDot_Q`; induced grading is now supplied
+by `IntertwinerGrading`, while Q-evenness remains open.
 Its target right action contains both
 `(-1)^{p(i)p(β)}` on the first-dot action and the coefficient involution
 `φ_i(b)`; the latter cannot be dropped when balancing across odd coefficients.
