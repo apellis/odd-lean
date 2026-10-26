@@ -21,6 +21,15 @@ parity is the colour parity, and its naturality is the original signed
 naturality. These constructions do not discard odd module morphisms.
 
 
+`GlobalInduction.lean` extends superinduction to every height of the tower,
+including the vacuum: `heightSuperInduction` uses the colour-cut bimodule over
+`heightAppend`, and `heightSuperInduction_succ` is definitional agreement with
+`cyclotomicSuperInduction` at positive height. `heightContentSupported_induction`
+moves content `β ↦ {i} + β` at all heights (at zero via `vacuumAppend_content`).
+`globalContentInduction (h : {i} + β = δ)` is the superfunctor between global
+content categories, composed with the identity transport `heightContentCast`
+along `β.card + 1 = δ.card`.
+
 `CyclotomicAction/Global.lean` supplies the content indices and boundary sign
 for the global cyclotomic action: `WeightBlocks`, injective `blockSucc`, its
 subsingleton fibres, `exists_blockSucc_iff`, `blockSucc_comm`,
