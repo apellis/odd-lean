@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Equal-colour crossing normalization and central feedback
+
+`CrossingNormalization.md` proposes the repaired mixed equal-colour matrix
+`[[-q a,J],[-J^-1 a^2,q J^-1 a J]]`. With execution AB (reservoir first),
+the previous diagonals gave -q, not 1, in the fixed library slides. That
+claim is withdrawn. Both slides and the square are derived using the
+specified J/dot transport; the swapping maps, factor crossings, dots and
+adjunctions are unchanged. This correction is pending independent review,
+not a Lean theorem. The scalar sector-inversion gauge explains the local
+sign change but needs a consistently signed comparison family; the even
+rational comparison and its mixed-colour braid correction remain open.
+
+`HomCentralFeedback.md` retains the historical literal series C,D and all
+shift coordinates. The corrected literal entries are Cnew=-q C,Dnew=-q D;
+C,D are normalized corrected mates, as in `FusedFeedbackComparison.md`.
+Feedback is unchanged. It factors through the intrinsic left closures
+`U_r;f;V_s`, retaining c(k), gamma(0)=q and every inverse identity window.
+Their positive reservoir degrees prove fixed-content feedback nilpotence
+conditional on the specified probe augmented inverse. No probe grading or
+uniform infinite-weight-fiber bound is used. The exact sector comparison
+(B) remains unproved here. The all-height residuals use
+`Knew=-q [[0,C],[D,0]]`, not the historical K; they are not inverted.
+
+Next checks: independent review of the correction and central calculation;
+probe augmented-sector comparison; actual cap/cup residual coordinates and
+inversion; rational/source/localization braid comparisons, coherent integer
+word shifts, full (TC), fusion and separation. No full-action claim follows.
+The older restart paragraphs below are historical where superseded here.
+
 ## Content-shifted swapping mates
 
 `HomSwappingMates.md` evaluates the two swapping partial mates of the
