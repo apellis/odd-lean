@@ -159,10 +159,20 @@ the signed cup pitchfork, and the actual family API.
 The canonical F triangle and a common normalization remain open. For
 `σ = leftAdjParity D i x` and E coefficient `e` just computed, the remaining
 compatible F formula is `leftZigF = (koszulSign σ σ * e) • 𝟙 F`.
-This would provide the common unit `c = koszulSign σ σ * e` in
-`LeftZigzags`; it is not inferred from the E calculation alone. No
-uniqueness of scalar coefficients or nonzero inversion model is claimed.
-This chain is not a full-root certification.
+`RouquierFamily.leftZigzags_iff_leftZigF` now proves that this exact F
+formula is equivalent to `LeftZigzags`. The reverse implication constructs
+`c = koszulSign σ σ * e` as a unit with inverse itself. For the forward
+implication, `SuperAdjunction.smul_id_right_of_left` transfers equality of
+scalar multiples of `𝟙 E` to `𝟙 F` using the existing right-adjunction
+triangle. It does not assert scalar faithfulness or infer F from E alone.
+The named `FNormalizationChecks` consumers check even parity and odd
+heights zero and one, and construct `RouquierLeftAdjoints` **conditional
+on the exact F equation** via the existing `leftAdjointsOfZigzags`.
+The canonical F equation itself, hence unconditional normalized left
+adjunctions, is still unproved at every height. The even reflection proof
+requires a super counterpart with its mate-composition and mirrored
+cup/cap signs verified; no such cyclicity is assumed here. No nonzero
+odd inversion model or full-root certification is claimed.
 
 ## Reservoir closure audit
 

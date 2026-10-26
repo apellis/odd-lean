@@ -183,7 +183,35 @@ example (T : RouquierFamily (k := k) (B := B) D) (i : I) {x y : X}
     (e : x + D.α i = y) :
     T.leftZigE i e = (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)) • 𝟙 (T.E i e) :=
   T.leftZigE_eq i e
+namespace FNormalizationChecks
+/-- This consumer retains the unproved F equation as an explicit premise. -/
+def adjointsOfF (T : RouquierFamily (k := k) (B := B) D)
+    (hF : ∀ (i : I) (x y : X) (e : x + D.α i = y),
+      T.leftZigF i e = (koszulSign (leftAdjParity D i x) (leftAdjParity D i x) *
+        (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i))) • 𝟙 (T.F i e)) :
+    RouquierLeftAdjoints (k := k) T :=
+  T.leftAdjointsOfZigzags (T.leftZigzags_iff_leftZigF.mpr hF)
+
+theorem evenF (T : RouquierFamily (k := k) (B := B) D)
+    (H : T.LeftZigzags) (i : I) {x y : X} (e : x + D.α i = y)
+    (hp : D.parity i = 0) : T.leftZigF i e = 𝟙 (T.F i e) := by
+  simpa [leftAdjParity, hp] using T.leftZigzags_iff_leftZigF.mp H i x y e
+
+theorem oddFAtZero (T : RouquierFamily (k := k) (B := B) D)
+    (H : T.LeftZigzags) (i : I) {x y : X} (e : x + D.α i = y)
+    (hp : D.parity i = 1) (hh : D.h i x = 0) : T.leftZigF i e = 𝟙 (T.F i e) := by
+  simpa [leftAdjParity, hp, hh] using T.leftZigzags_iff_leftZigF.mp H i x y e
+
+theorem oddFAtOne (T : RouquierFamily (k := k) (B := B) D)
+    (H : T.LeftZigzags) (i : I) {x y : X} (e : x + D.α i = y)
+    (hp : D.parity i = 1) (hh : D.h i x = 1) : T.leftZigF i e = -𝟙 (T.F i e) := by
+  simpa [leftAdjParity, hp, hh, show (1 : ZMod 2) + 1 = 0 by decide] using
+    T.leftZigzags_iff_leftZigF.mp H i x y e
+end FNormalizationChecks
 end Family
+
+#print axioms OddMath.SKM.SuperAdjunction.smul_id_right_of_left
+#print axioms OddMath.SKM.RouquierFamily.leftZigzags_iff_leftZigF
 
 open Lean Elab Command
 run_cmd do
