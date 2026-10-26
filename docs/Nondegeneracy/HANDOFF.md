@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Specified Hom-sector adjunction and interchange components
+
+`HomSectorTransport.md` derives the unit and counit of the actual
+output-shifted reservoir Hom adjunction and the composed probe adjunction.
+The reservoir counit has the extra factor `(-1)^σ`; removing two probe
+shifts with bare ζ differs from ξ by `(-1)^κ`. It gives all dotted
+cup/cap coefficients and the content-changing swapping map of parity p,
+using κ′=κ+p rather than identifying it with raw even interchange.
+
+These are written derivations, not new Lean theorems. The remaining
+transport comparison must identify the reversed, normalized-left reservoir
+augmented matrix and principal inverse with the intended right-factor
+coordinates, then evaluate both shifted swapping partial mates. Neither
+principal-feedback nilpotence for the actual Hom realization nor full
+fusion follows merely from these component formulas.
+
 ## Tensor feedback calculations and the remaining transport
 
 `FusedFeedbackComparison.md` gives the six partial-mate supports, the
@@ -10,7 +26,7 @@ the identity summands and the residual matrices at arbitrary factor heights.
 
 These are written calculations, not Lean theorems or a fused action. Raw
 even interchange is not the odd content-shifted swapping map. The actual
-Hom-sector transport, reversed reservoir matrix comparison, residual
+Hom-sector components are supplied above; reversed reservoir matrix comparison, residual
 invertibility, fusion relations and separation remain separate obligations.
 
 ## Fixed-content reservoir bounds on paper
