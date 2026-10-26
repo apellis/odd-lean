@@ -30,6 +30,23 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1)) (hsq : t ≫ t = 0) 
 /-- Moving one dot to the cup remains below the height minus two boundary. -/
 example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-2)) :
     curlEG (L.cupD 1) L.capL t = 0 := L.curlEG_cupD_zero (by omega)
+/-- The odd one-dot cap-swap component is `-1`, not the `+1` double-curl value. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0) (hsq : t ≫ t = 0) :
+    (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ 1 ▷ F₁) ▷ E₁ ≫ L.capCross =
+      -𝟙 E₁ := by
+  simpa using L.dottedUnit_capCross_boundary hsq (n := 1) (by omega) (by omega)
+
+/-- The odd two-dot cap-swap boundary has the same scalar. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1)) (hsq : t ≫ t = 0) :
+    (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ 2 ▷ F₁) ▷ E₁ ≫ L.capCross =
+      -𝟙 E₁ := by
+  simpa using L.dottedUnit_capCross_boundary hsq (n := 2) (by omega) (by omega)
+
+/-- The even case has the same boundary scalar. -/
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 0) (hsq : t ≫ t = 0) :
+    (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ 1 ▷ F₁) ▷ E₁ ≫ L.capCross =
+      -𝟙 E₁ := by
+  simpa using L.dottedUnit_capCross_boundary hsq (n := 1) (by omega) (by omega)
 end
 
 open Lean in
