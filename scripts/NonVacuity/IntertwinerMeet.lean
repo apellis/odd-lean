@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerMeet
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerChain
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 
 /-! The three-strand identity on `i, j, i` (KKO arXiv:1206.5933v2, Lemma 8.3 and (8.13)) for the
@@ -17,3 +17,7 @@ example : meetLeft datum scalars [false] [true] false true false =
 
 /-- The moving strand of colour `true` passes an old crossing of `false, true`. -/
 example := cross_comp_moveHom_all datum scalars [] true false true [] []
+
+/-- The balance for the positioned word "cross, then dot" on `false, true`. -/
+example := cl_comp_moveHom datum scalars true [PG.cross 0, PG.dot 1] (sChain_pl [false, true] _)
+  (by intro g hg; simp at hg; rcases hg with rfl | rfl <;> simp [PG.pos, PG.width])
