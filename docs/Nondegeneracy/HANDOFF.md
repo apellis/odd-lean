@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Swapped vacuum bubbles at nonpositive external height
+
+`SwappedVacuumNonpositiveBubbles.md` gives a proposed written calculation,
+conditional on the specified full swapped action and the augmented inverse
+of `SwappedHomInversion.md` at `6f348ac31483097b677fef1a47d49715464c356e`.
+For H=P-N<0, signed monic top-coefficient extraction lambda and the probe
+annihilator g give the extreme inverse cap b=lambda g(y): the mate slide
+proves bs=0 and the cap-window Kronecker identities identify b with the
+prescribed inverse row. For H=0, the same polynomial calculation instead
+gives lambda g(y)s=v, hence v s^-1=lambda g(y). This evaluates the source
+odd bubble u;s^-1;v directly, without relabelling a positive-height cup.
+
+Monic reservoir division gives odd moments with series 1/C(-z) and
+`(-1)^(N+1)delta/C(-z)`. Thus the odd exterior image is
+`(-1)^(N+1)L_delta` for every nonpositive matching cutoff. Right-bubble
+moments give the complete functions; the elementary series is
+`C(-z)/(1+z)^M` for odd P=2M and `E(-z)/(1-z)^P` for even colour.
+Independent exterior generators and delta chi_top=0 at even reservoir
+cutoff are retained. The zero-cutoff corner is covered if those factor
+inputs are available; positive cofinal probe existence alone does not
+assert their admissibility. The filtered substitution inverse adjusts
+bounded recovery on untruncated SYM, not by an automorphism of an ELV
+quotient. These are written arguments, not Lean or nondegeneracy results;
+full action assembly remains a separate input.
+
 ## Swapped vacuum bubbles at positive external height
 
 `SwappedVacuumBubbles.md` gives a proposed written inverse-column calculation,
@@ -19,9 +44,10 @@ word functor. The triangular substitutions and their inverses preserve the
 bounded coefficient filtration; inserting the inverse substitution after
 bounded extraction adjusts the recovering square without asserting an
 automorphism of the finite cyclotomic quotient. This applies to collections
-of colours with H_i>0. Zero and negative external heights, full action
-assembly, arbitrary-weight bubble normalization, and infinite-colour
-extension remain open. No Lean verification or nondegeneracy is claimed.
+of colours with H_i>0. The nonpositive-height calculation is now recorded
+separately above. Full action assembly, formalized arbitrary-weight bubble
+normalization, and infinite-colour extension remain open. No Lean
+verification or nondegeneracy is claimed.
 
 ## Swapped Hom vacuum: signed corners and bounded recovery
 
