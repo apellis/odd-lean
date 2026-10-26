@@ -76,11 +76,19 @@ height-one quotient) and restates the signed corner map of `SuperDot` along
 content restriction and `globalContentDot`. `GlobalWeightDot.lean` transports
 it along `inductionComponent_blockSucc` to `globalWeightDot`, with
 `globalActionDot_mem : globalActionDot i h ∈ parity (globalActionE i h) _ |i|`,
-the `dot`/`dot_mem` fields of `RouquierData` on weight spaces. Open on weight
-spaces: the crossing (`cross` field, needs the two-step block induction of
-`GlobalCross` at the vacuum and its weight-level transport), nilpotence,
-square/braid/slides, and `GlobalLoc` (local inversion is stream A's pending
-statement).
+the `dot`/`dot_mem` fields of `RouquierData` on weight spaces.
+
+`GlobalHeightCrossing.lean` defines the last-pair crossing of the extended
+tower (`heightLastCrossing`; on two strands the image of
+`affineLastCrossing` in the height-two quotient) and restates the two-colour
+corner, functor comparison, signed corner crossing and transported crossing
+along `heightAppend`: `heightSuperInductionCrossing`, homogeneous of parity
+`|i||j|`, now also from the empty word. Open on weight spaces: restricting it
+to global content blocks (two-step `globalContentInduction` with casts) and
+transporting it to `globalE i ≫ globalE j` (the `cross` field), nilpotence
+(needs an odd cyclotomic analogue of Brundan–Kleshchev Lemma 2.1, absent),
+square/braid/slides on weight spaces, and `GlobalLoc` (local inversion is
+stream A's pending statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
