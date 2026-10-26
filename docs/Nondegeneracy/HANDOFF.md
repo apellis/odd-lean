@@ -83,8 +83,12 @@ tower (`heightLastCrossing`; on two strands the image of
 `affineLastCrossing` in the height-two quotient) and restates the two-colour
 corner, functor comparison, signed corner crossing and transported crossing
 along `heightAppend`: `heightSuperInductionCrossing`, homogeneous of parity
-`|i||j|`, now also from the empty word. Open on weight spaces: restricting it
-to global content blocks (two-step `globalContentInduction` with casts) and
+`|i||j|`, now also from the empty word. `GlobalHeightBlockCross.lean` proves
+`heightLastCrossing_square` (at two strands from `affineLastCrossing_square`),
+`heightSuperInductionCrossing_square`, and restricts the crossing to content
+blocks with explicit target content at every height (`heightBlockCross`,
+`heightBlockCross_square`). Open on weight spaces: transporting it through the
+height casts of two-step `globalContentInduction` and
 transporting it to `globalE i ≫ globalE j` (the `cross` field), nilpotence
 (needs an odd cyclotomic analogue of Brundan–Kleshchev Lemma 2.1, absent),
 square/braid/slides on weight spaces, and `GlobalLoc` (local inversion is
