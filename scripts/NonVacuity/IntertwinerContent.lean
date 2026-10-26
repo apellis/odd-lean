@@ -82,7 +82,7 @@ example (f g : qSourceContent mixedDatum mixedScalars true {false, true} polys 1
   apply LinearMap.ext
   intro z
   induction z using sourceContent_induction with
-  | hzero => simp
+  | hzero => exact (map_zero f).trans (map_zero g).symm
   | hadd x y hx hy => simp only [map_add, hx, hy]
   | htmul x b => exact h x b
 
