@@ -6,6 +6,7 @@ audit, non-vacuity); the branch tip is expected to be green.
 
 | Line of work | Lean on this branch | Open |
 | --- | --- | --- |
+| Reservoir principal word, `HomPrincipalMate.md` §3 | `RouquierFamily.leftCrossingWord_eq`: unnormalized word at every height, coefficient one at zero; `principalWord_scalar`: gamma(0)=(-1)^p | specified shifted Hom mate substitution and shift removal (10); full principal comparison, augmented inversion, fusion |
 | Upward → oriented reduction | assembly `SKM.nondegeneracy_of_contextual_descent`; sorted boundaries `WeakMate.sorted_independence`; choice independence `expansion_injective_choice_iff`; distinct-colour target descent `SKM.distinct_target_exchange_descent`; distinct-colour source adapted families; complete same-colour target choices `exists_same_colour_adapted_equiv` | source exchange descent; same-colour target and source descent |
 | Upward independence | conditional consumers `upward_independence_of_finite_observations`, `upward_independence_of_spectators`; spectator evaluation interface; fixed-spectator cofinal ELV separation and weighted signed quotient detection | action-derived product law and joint detection; fixed-weight separation with moving spectator strands |
 | Deformed actions | local norm, translation and Frobenius resolvent identities; cyclotomic exterior obstruction | multicolour action (proposed for even cutoffs), odd heights, fixed-weight bubble images; coupling for weights not reached by dominant vacua |
