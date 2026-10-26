@@ -682,3 +682,15 @@ even balanced-tensor isomorphism. `inductionCrossingApp_square` concerns the
 actual composed superinduction functors; `cyclotomicSuperInductionCrossing_vcomp_app`
 shows that every parity component of the supernatural vertical square is zero.
 
+### Mixed quadratic polynomial
+
+`CyclotomicAction/MixedComparison.lean` defines `wordQuadratic` by the specified
+`t` and `s` coefficients and the two actual positioned dots.
+`cyclotomicLastCrossing_mixed` identifies the product of opposite crossings
+with its image in the concrete quotient, for both connected and disconnected
+colours. `compositionSuperCrossing_mixed_apply` proves the resulting identity
+on every homogeneous element of the actual composition superbimodule. Its
+factor is `(-1)^(|i||j|)`, independent of input parity; dropping it would give
+the unchanged-parameter error. This is an upward quadratic comparison, not
+the mixed induction–restriction Mackey isomorphism.
+
