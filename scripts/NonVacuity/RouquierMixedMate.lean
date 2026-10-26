@@ -3,7 +3,8 @@ import Lean.Util.CollectAxioms
 
 /-! Typed consumers of the rectangular transpose and the odd interchange.
 The supercategory and adjunctions remain explicit parameters: this is not a
-construction of a nonzero inversion model or a proof of the mixed braid. -/
+construction of a nonzero inversion model. The headline consumers specialize
+the signed expansion and sign-free mixed braid to odd crossing parity. -/
 open CategoryTheory StringDiagrams BicategoryStruct Supercategory OddMath.SKM
 noncomputable section
 variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
@@ -31,6 +32,31 @@ example (z : (E₁ ≫ E₂) ≫ E₃ ⟶ E₁ ≫ (E₂ ≫ E₃)) :
     (rectangularMate A₁ A₃ (E₁ ≫ E₂) (E₂ ≫ E₃)).symm
       (rectangularMate A₁ A₃ (E₁ ≫ E₂) (E₂ ≫ E₃) z) = z :=
   Equiv.symm_apply_apply _ z
+
+example (t₁₂ : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) (t₂₃ : E₂ ≫ E₃ ⟶ E₂ ≫ E₃)
+    (h₁₂ : t₁₂ ∈ parity (R := k) _ _ 1) (h₂₃ : t₂₃ ∈ parity (R := k) _ _ 1) :
+    rouquierMate A₁ A₂ t₁₂ ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ rouquierMate A₂ A₃ t₂₃ =
+    -((associator F₁ E₁ E₂).hom ≫
+      rectangularMate A₁ A₃ (E₁ ≫ E₂) (E₂ ≫ E₃)
+        ((associator E₁ E₂ E₃).hom ≫ E₁ ◁ t₂₃ ≫
+          (associator E₁ E₂ E₃).inv ≫ t₁₂ ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      (associator E₂ E₃ F₃).hom) := by
+  simpa only [koszulSign_one_one, neg_one_zsmul] using
+    rouquierMate_comp_mate A₁ A₂ A₃ h₁₂ h₂₃
+
+example (t₁₂ : E₁ ≫ E₂ ⟶ E₁ ≫ E₂) (t₂₃ : E₂ ≫ E₃ ⟶ E₂ ≫ E₃)
+    (h₁₂ : t₁₂ ∈ parity (R := k) _ _ 1) (h₂₃ : t₂₃ ∈ parity (R := k) _ _ 1)
+    (hB : E₁ ◁ t₂₃ ≫
+      ((associator E₁ E₂ E₃).inv ≫ t₁₂ ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t₁₂ ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ ≫
+      ((associator E₁ E₂ E₃).inv ≫ t₁₂ ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    ((associator F₁ E₁ E₂).hom ≫ F₁ ◁ t₁₂ ≫ (associator F₁ E₁ E₂).inv) ≫
+      (rouquierMate A₁ A₂ t₁₂ ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ rouquierMate A₂ A₃ t₂₃) =
+    (rouquierMate A₁ A₂ t₁₂ ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ rouquierMate A₂ A₃ t₂₃) ≫
+      (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom := rouquierMate_mixed_braid A₁ A₂ A₃ h₁₂ h₂₃ hB
 
 open Lean Elab Command
 run_cmd do
