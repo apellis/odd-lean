@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerBalance
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.SignedNilHeckeExamples
 
@@ -124,6 +124,18 @@ example : dotE datum scalars [true, false, true] 1 ≫ moveHom datum scalars tru
   rw [hs, one_smul] at h
   exact h
 
+/-- A crossing of the odd colours `true, false` to the left of an odd pair passes through the
+odd variant `g` with the sign `(-1)^{1·0·1·1} = 1`. -/
+example := cross_left_comp_intertwinerHom datum scalars [] [] [] true false true true
+
+/-- A crossing to the left of the moving strand passes through `g_2 g_1`. -/
+example := cross_left_comp_moveHom datum scalars true true false [] [false, true]
+  [true, false] [false, true] [] rfl rfl
+
+#print axioms variants_comp_of
+#print axioms cross_left_comp_intertwinerHom
+#print axioms cross_right_comp_intertwinerHom
+#print axioms cross_left_comp_moveHom
 #print axioms dot_mem_comp_moveHom
 #print axioms dot_left_comp_moveHom
 #print axioms dot_right_comp_intertwinerHom
