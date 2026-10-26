@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Conditional finite-colour swapped superaction
+
+`SwappedActionAssembly.md` now states the conditional written finite-colour
+parity-superaction theorem with explicit factor inputs F1–F4 and a complete
+`Presentation.Rel` dictionary. The four distinct-colour blocks are inverted
+componentwise: normalized-left pre/pre with
+`delta=t_ij (-1)^(p_i p_j sigma) g(k-d_ij)/g(k)`, transported factor
+post/post, and both mixed mates. The QJ mate bends the unit probe strand;
+its polynomial uses the normalized-left transposed probe dot Z and the
+surviving nilpotent reservoir dot Y, retaining the signed transpose powers
+and both dotless residual signs. Whole same-colour matrices, not merely
+the principal components, supply the height-window inverse generators.
+
+The specified vacuum has only its all-reservoir upward path.
+`SwappedVacuumBubbles.md` and `SwappedVacuumNonpositiveBubbles.md` give
+all-height elementary series `C_i(-z)/(1+z)^M_i` at odd colours and
+`E_i(-z)/(1-z)^P_i` at even colours, with odd bubble
+`(-1)^(N_i+1)L_delta_i`. Composing the filtration-preserving coefficient
+substitution with `SwappedVacuumCoordinates.md` gives recovery on the
+explicit admissible bounded windows. The arbitrary-colour finite-witness
+implication is conditional on finite-colour detecting models.
+
+These are written results. Factor existence and full formalization are
+not inferred; admissible-observation packaging and its detection consumer
+remain separate. No total zero-window extension, full integer-graded
+fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
+kernel-checked pre/post principal comparisons below are preserved as
+separate formalized results; they do not certify the whole matrices.
+
 ## Content-shifted postcomposition coordinates
 
 `RouquierHomPostCoordinates.lean` bundles the specified
