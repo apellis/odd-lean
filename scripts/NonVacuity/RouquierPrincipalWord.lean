@@ -31,15 +31,15 @@ example (h : ℤ) :
   simpa [D, Datum.h] using T.leftCrossingWord_eq () (sub_add_cancel h (D.α ())) rfl
 
 example : (T.loc () (sub_add_cancel (0 : ℤ) (D.α ())) rfl).leftCrossingWord =
-    (T.loc () (sub_add_cancel (0 : ℤ) (D.α ())) rfl).sigL := by
+    (1 : ℤ) • (T.loc () (sub_add_cancel (0 : ℤ) (D.α ())) rfl).sigL := by
   simpa [D, Datum.h] using T.leftCrossingWord_eq () (sub_add_cancel (0 : ℤ) (D.α ())) rfl
 
 example : (T.loc () (sub_add_cancel (1 : ℤ) (D.α ())) rfl).leftCrossingWord =
-    -(T.loc () (sub_add_cancel (1 : ℤ) (D.α ())) rfl).sigL := by
+    (-1 : ℤ) • (T.loc () (sub_add_cancel (1 : ℤ) (D.α ())) rfl).sigL := by
   simpa [D, Datum.h] using T.leftCrossingWord_eq () (sub_add_cancel (1 : ℤ) (D.α ())) rfl
 
 example : (T.loc () (sub_add_cancel (-1 : ℤ) (D.α ())) rfl).leftCrossingWord =
-    (T.loc () (sub_add_cancel (-1 : ℤ) (D.α ())) rfl).sigL := by
+    (1 : ℤ) • (T.loc () (sub_add_cancel (-1 : ℤ) (D.α ())) rfl).sigL := by
   simpa [D, Datum.h] using T.leftCrossingWord_eq () (sub_add_cancel (-1 : ℤ) (D.α ())) rfl
 end
 
