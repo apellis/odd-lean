@@ -467,9 +467,10 @@ and scalar multiples, on the unchanged source and shifted target.
 `rightSupertensor_Q_gradedSquare` combines these results with the proved
 evenness and equivariance of Q, without additional premises.
 The homogeneous spans are not yet bundled as a direct-sum grading.
-Ordinary left linearity does not imply signed-left superlinearity; that
-comparison and graded-supermodule packaging remain separate, as do source
-fixed-content comparison, zero-height, full-ELV coefficients and QP.
+The right actions use ordinary left-module compatibility; a separate
+signed-left condition is not required. The fixed-content restriction is
+proved below. A separate tensor comparison over the unital content algebra,
+zero-height, full-ELV coefficients and QP remain open.
 
 ## Right cyclotomic coefficients and the polynomial variable
 
@@ -807,6 +808,33 @@ mixed-parity asymmetric data and audits all declarations in both modules.
 The consumer `scripts/NonVacuity/IntertwinerNaturality.lean` exercises
 arbitrary Hom entries and identity plus an odd dot on an all-odd
 asymmetric two-colour datum, and audits the module's axioms.
+
+## Fixed-content restriction of Q
+
+For KKO I, arXiv:1206.5933v2, Proposition 8.4,
+`CyclotomicAction/IntertwinerContent.lean` restricts the previously constructed
+Q to the right images of the cyclotomic content idempotent. These are proper
+content summands, not the whole height quotient. The source projection is
+`x ⊗ b ↦ x append(e_β) ⊗ b`; the shifted target projection is
+`x ⊗ πb ↦ x prepend(e_β) ⊗ πb`. Both equalities are proved by balancing
+and multiplication on quotient representatives. The corresponding induction
+principles show that these cut representatives generate each summand.
+
+`appendContent_mul_contentMove` removes the redundant append idempotent.
+`contentCornerQ_tmul` gives `x e(β,i) ⊗ b ↦ x G_β v ⊗ πb`, using
+multiplication by `contentMove` and the canonical coefficient insertion. `contentCornerQ_left`,
+`contentCornerQ_rightCoefficient` and `contentCornerQ_rightDot` prove the
+three module compatibilities on the restricted carriers.
+`targetContentRightDot_tmul` retains the sign `(-1)^(p(i)p(β))`, first dot,
+and coefficient involution. No module action is transported along a chosen
+equivalence; ordinary right multiplication is left-linear, without an extra
+signed-left condition.
+
+This establishes restriction and representative generation inside the
+height-balanced quotients. It does not yet give a separately defined tensor
+over the unital algebra `R(β)` with a two-sided comparison to these summands.
+Finite colours, positive quotient height (`n+1`) and polynomial parity remain.
+The zero-height formula, full ELV coefficients and QP are still open.
 
 ## Global content indices
 
