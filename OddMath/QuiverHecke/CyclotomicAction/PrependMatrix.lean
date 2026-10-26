@@ -126,4 +126,29 @@ theorem prependPBWTerm_old_nf {i : I} {s t : List I} (x : PrependIdx i s t) :
   simp [PrependIdx.gens, List.map_append, cw_map_shift, List.map_replicate,
     List.append_assoc]
 
+/-- Every allowed matrix entry has a finite expansion by prescribed PBW terms.
+The coefficients here are scalar multiples of single old normal forms; regrouping
+these terms into unique old-algebra coefficients is a separate step. -/
+theorem prepend_single_expansion (i : I) (s : List I) (t : Word I (s.length + 1))
+    (f : wordObj D Sc (prependWord i ⟨s, rfl⟩) ⟶ wordObj D Sc t) :
+    FiniteHomMatrix.single t (prependWord i ⟨s, rfl⟩) f =
+      ((prependBasis D Sc (i := i) (s := s) (t := t.1)).repr f).sum
+        (fun x c => c • prependPBWTerm D Sc i x.1.2.2.2 x.1.1
+          (FiniteHomMatrix.single x.oldWord ⟨s, rfl⟩
+            (NFIdx.nf (D := D) (Sc := Sc) x.old))) := by
+  let L : (wordObj D Sc (prependWord i ⟨s, rfl⟩) ⟶ wordObj D Sc t) →ₗ[k]
+      Hn D Sc (s.length + 1) :=
+    { toFun := FiniteHomMatrix.single t (prependWord i ⟨s, rfl⟩)
+      map_add' := FiniteHomMatrix.single_add _ _
+      map_smul' := fun c g => FiniteHomMatrix.single_smul _ _ c g }
+  have h := congrArg L ((prependBasis D Sc (i := i) (s := s) (t := t.1)).linearCombination_repr f)
+  change L f = _
+  rw [← h]
+  simp only [Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul,
+    prependBasis_apply]
+  apply Finset.sum_congr rfl
+  intro x _
+  apply congrArg (_ • ·)
+  exact (prependPBWTerm_old_nf D Sc x).symm
+
 end OddMath.QuiverHecke

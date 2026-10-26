@@ -33,6 +33,9 @@ normal form `PrependIdx.old.nf`.
 with matrix terms: `prependPBWTerm_old_nf` sends the single old normal form
 to the single `prependElt`. The intermediate formula `prependPBWTerm_single`
 is valid for every old morphism and new exponent, including zero.
+`prepend_single_expansion` gives the resulting finite expansion of every
+allowed matrix entry, with scalar coefficients from `prependBasis.repr`
+and single old normal forms as the old-algebra coefficients.
 
 The next formalization is regrouping: assemble the scalar expansions into
 finite old-algebra coefficients and prove uniqueness. The right-old-algebra

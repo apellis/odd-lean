@@ -1,7 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 
 noncomputable section
-open OddMath OddMath.QuiverHecke Categorification.TypeA
+open OddMath OddMath.QuiverHecke Categorification.TypeA CategoryTheory
 
 namespace PrependMatrixExamples
 universe u v
@@ -52,9 +52,19 @@ example (i : I) (r : Hn D Sc 2) :
   exact congrArg (fun b => b * prependAlgebra D Sc i 2 r)
     (prependPBWTerm_old_nf D Sc (sample i))
 
+example (i : I) (f : wordObj D Sc (prependWord i ⟨[i, i], rfl⟩) ⟶
+    wordObj D Sc (sample i).targetWord) :
+    FiniteHomMatrix.single (sample i).targetWord (prependWord i ⟨[i, i], rfl⟩) f =
+      ((prependBasis D Sc (i := i) (s := [i, i]) (t := (sample i).targetWord.1)).repr f).sum
+        (fun x c => c • prependPBWTerm D Sc i x.1.2.2.2 x.1.1
+          (FiniteHomMatrix.single x.oldWord ⟨[i, i], rfl⟩
+            (NFIdx.nf (D := D) (Sc := Sc) x.old))) :=
+  prepend_single_expansion D Sc i [i, i] (sample i).targetWord f
+
 end PrependMatrixExamples
 
 #print axioms OddMath.QuiverHecke.affineFirstDot_pow_mul_single
 #print axioms OddMath.QuiverHecke.prependShuffleElement_mul_single
 #print axioms OddMath.QuiverHecke.prependPBWTerm_single
 #print axioms OddMath.QuiverHecke.prependPBWTerm_old_nf
+#print axioms OddMath.QuiverHecke.prepend_single_expansion
