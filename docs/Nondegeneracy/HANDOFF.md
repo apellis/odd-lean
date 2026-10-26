@@ -92,6 +92,18 @@ for both signs with a nonzero square-zero reservoir dot and a coefficient
 not commuting with that dot. These are algebraic series tests, not a proof
 that the categorical sector coordinates have been constructed.
 
+`OddMath/SKM/RouquierMateCoordinates.lean` proves
+`SuperRouquierLoc.MateProjectionFormula.of_coordinates`. It starts from the
+upward slide and the cup–crossing–cap composite, uses the two projected
+slides, and derives the named projection predicate from explicitly listed
+sector dot intertwiners, cap–cup factorizations, ordered power coordinates,
+probe-dot inverses and reservoir nilpotence bounds. In particular it does
+not assume the projection predicate or any inverse of the coupled mate.
+The signature/axiom check is `scripts/NonVacuity/MateCoordinates.lean`;
+this check is not a nonvacuum categorical example. The categorical content
+of the listed coordinate hypotheses remains open, so this conditional
+reduction does not close A2 or supply its all-height negative windows.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
