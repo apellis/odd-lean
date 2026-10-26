@@ -92,4 +92,16 @@ example := @qSourceSpace_smul_mem Bool ℚ (Bool → ℤ) inferInstance datum in
 example := @qTargetSpace_smul_mem Bool ℚ (Bool → ℤ) inferInstance mixedDatum inferInstance
   mixedScalars inferInstance true ({false, true} : Multiset Bool) polys (polys_parity mixedDatum) 1
 
+/-- Actual Q maps, not zero-map replacements, in both odd-shift examples. -/
+example := @parityCyclotomicContentQ_even Bool ℚ (Bool → ℤ) inferInstance datum inferInstance
+  scalars inferInstance true ({false, true, false} : Multiset Bool) polys (polys_parity datum) 2
+example := @parityCyclotomicContentQ_even Bool ℚ (Bool → ℤ) inferInstance mixedDatum inferInstance
+  mixedScalars inferInstance true ({false, true} : Multiset Bool) polys (polys_parity mixedDatum) 1
+example := @parityCyclotomicContentQ_tmul_mem Bool ℚ (Bool → ℤ) inferInstance datum inferInstance
+  scalars inferInstance true ({false, true, false} : Multiset Bool) polys (polys_parity datum) 2
+example := @parityCyclotomicContentQ_tmul_mem Bool ℚ (Bool → ℤ) inferInstance mixedDatum inferInstance
+  mixedScalars inferInstance true ({false, true} : Multiset Bool) polys (polys_parity mixedDatum) 1
+
+#print axioms parityCyclotomicContentQ_even
+#print axioms contentMove_parity
 end IntertwinerGradingConsumer

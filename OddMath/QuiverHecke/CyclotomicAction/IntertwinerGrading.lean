@@ -21,8 +21,10 @@ parity and the actual coefficient actions. The finite-colour, positive-height,
 and `CyclotomicPolynomialParity` restrictions are unchanged. These ordinary
 polynomial coefficients do not cover arbitrary odd-coefficient deformations.
 
-This module does not yet prove that Q preserves these gradings or establish
-full Proposition 8.4, the full right-superalgebra action, or a QP formula.
+`contentMove_parity` derives the moving-strand degree from the local generators.
+`parityCyclotomicContentQ_even` proves that Q preserves these gradings: the
+corner degree and coefficient shift cancel. This does not establish full
+Proposition 8.4, the full right-superalgebra action, or a QP formula.
 -/
 
 noncomputable section
@@ -399,4 +401,172 @@ theorem qTargetSpace_smul_mem (i : I) (β : Multiset I) (a : I → _root_.Polyno
   InducedParity.ind_smul_mem _ _ _ _
     (fun _ _ h => prependAlgebra_parity D Sc i (n + 1) h)
     (qCoefficient_smul_mem D Sc i β a ha n) hr hz
+
+omit [Fintype I] in
+theorem positionedDot_parity (l r : List I) (i : I) :
+    dotE D Sc (l ++ i :: r) l.length ∈ parity (R := k) _ _ (D.parity i) := by
+  rw [dotE_eq]
+  apply Presentation.diag_mem_homDeg'
+  simp [degree_parity_mkD, pl, PG.ld, Shape.parity]
+
+omit [Fintype I] in
+theorem positionedCross_parity (l r : List I) (i j : I) :
+    cl D Sc _ _ [.cross l.length] (sChain_crossAt l r i j) ∈
+      parity (R := k) _ _ (D.parity i * D.parity j) := by
+  apply Presentation.diag_mem_homDeg'
+  simp [degree_parity_mkD, pl, PG.ld, Shape.parity]
+
+private theorem end_mul_parity {C : Type*} [Category C] [Preadditive C] [Linear k C]
+    [Supercategory k C] {A : C} {p q : ZMod 2} {x y : End A}
+    (hx : x ∈ parity (R := k) A A p) (hy : y ∈ parity (R := k) A A q) :
+    x * y ∈ parity (R := k) A A (p + q) := by
+  simpa only [End.mul_def, add_comm] using Supercategory.comp_mem hy hx
+
+private theorem gEven_parity {C : Type*} [Category C] [Preadditive C] [Linear k C]
+    [Supercategory k C] {A : C} {x y t : End A}
+    (hx : x ∈ parity (R := k) A A 0) (hy : y ∈ parity (R := k) A A 0)
+    (ht : t ∈ parity (R := k) A A 0) :
+    SignedNilHecke.gEven x y t ∈ parity (R := k) A A 0 := by
+  have hd := Submodule.sub_mem _ hy hx
+  have hp : (y - x) * t ∈ parity (R := k) A A 0 := end_mul_parity hd ht
+  exact end_mul_parity hd (Submodule.add_mem _ (Supercategory.id_mem A) hp)
+
+private theorem gOdd_parity {C : Type*} [Category C] [Preadditive C] [Linear k C]
+    [Supercategory k C] {A : C} {x y t : End A}
+    (hx : x ∈ parity (R := k) A A 1) (hy : y ∈ parity (R := k) A A 1)
+    (ht : t ∈ parity (R := k) A A 1) :
+    OddNilHecke.Intertwiner.element x y t ∈ parity (R := k) A A 1 := by
+  have hs : OddNilHecke.Intertwiner.squareDiff x y ∈ parity (R := k) A A 0 := by
+    simpa only [OddNilHecke.Intertwiner.squareDiff, pow_two,
+      show (1 : ZMod 2) + 1 = 0 by decide] using
+      Submodule.sub_mem _ (end_mul_parity hy hy) (end_mul_parity hx hx)
+  exact Submodule.sub_mem _ (end_mul_parity hs (Submodule.sub_mem _ hy hx))
+    (end_mul_parity (show OddNilHecke.Intertwiner.squareDiff x y ^ 2 ∈ parity (R := k) A A 0 by
+      simpa only [pow_two, zero_add] using end_mul_parity hs hs) ht)
+
+omit [Fintype I] in
+theorem intertwinerHom_parity (l r : List I) (i j : I) :
+    intertwinerHom D Sc l r i j ∈ parity (R := k) _ _ (D.parity i * D.parity j) := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    rw [intertwinerHom_self]
+    have hx := positionedDot_parity D Sc l (i :: r) i
+    have hy : dotE D Sc (l ++ i :: i :: r) (l.length + 1) ∈
+        parity (R := k) _ _ (D.parity i) := by
+      have e : (l ++ [i]) ++ i :: r = l ++ i :: i :: r := by simp
+      have h := positionedDot_parity D Sc (l ++ [i]) r i
+      rw [e] at h
+      simpa only [List.length_append, List.length_singleton] using h
+    have ht := positionedCross_parity D Sc l r i i
+    rw [← crossE_eq_cl] at ht
+    have e : l ++ [i,i] ++ r = l ++ i :: i :: r := by simp
+    rw [e] at ht ⊢
+    rcases parity_eq_zero_or_one (D.parity i) with hp | hp
+    · simp only [hp, mul_zero] at hx hy ht ⊢
+      rw [sameIntertwiner, ite_eq_right (by simpa only [hp] using (zero_ne_one : (0 : ZMod 2) ≠ 1))]
+      exact gEven_parity hx hy ht
+    · simp only [hp, mul_one] at hx hy ht ⊢
+      rw [sameIntertwiner, ite_eq_left hp]
+      exact gOdd_parity hx hy ht
+  · rw [intertwinerHom_of_ne D Sc l r hij]
+    exact positionedCross_parity D Sc l r i j
+
+omit [Fintype I] in
+theorem moveHom_parity (i : I) (l ν : List I) :
+    moveHom D Sc i l ν ∈ parity (R := k) _ _ (D.parity i * wordSumParity D ν) := by
+  have he {A B : (pres D Sc).Presented} (h : A = B) :
+      eqToHom h ∈ parity (R := k) A B 0 := by
+    subst h
+    exact Supercategory.id_mem _
+  induction ν generalizing l with
+  | nil => simpa only [moveHom, wordSumParity, List.map_nil, List.sum_nil, mul_zero] using he _
+  | cons j ν ih =>
+    simpa only [moveHom, wordSumParity, List.map_cons, List.sum_cons, mul_add,
+      zero_add, add_zero] using Supercategory.comp_mem (he _)
+        (Supercategory.comp_mem (intertwinerHom_parity D Sc l ν i j)
+          (Supercategory.comp_mem (he _) (Supercategory.comp_mem (ih (l ++ [j])) (he _))))
+
+/-- Every supported matrix summand has the content's total moving-strand parity. -/
+theorem contentMove_parity (i : I) (n : ℕ) (β : Multiset I) :
+    contentMove D Sc i n β ∈ affineParity D Sc (n + 1)
+      (D.parity i * contentSumParity D β) := by
+  classical
+  apply Submodule.sum_mem
+  intro w hw
+  have hw' := (Finset.mem_filter.mp hw).2
+  have h := moveHom_parity D Sc i [] w.val
+  rw [wordSumParity_eq_content D w, hw'] at h
+  exact FiniteHomMatrix.single_mem_component _ _ h
+
+/-- Q as a scalar-linear map on its existing graded carriers. -/
+def parityCyclotomicContentQLinear (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    qSourceSpace D Sc i a ha n →ₗ[k] qTargetSpace D Sc i β a ha n :=
+
+    letI : Module k (InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
+      (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (Module k (qSourceSpace D Sc i a ha n))
+    letI : Module k (InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
+      (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (Module k (qTargetSpace D Sc i β a ha n))
+    letI : IsScalarTower k (Hn D Sc (n + 1 + 1))
+      (InductionAlong.Ind (CyclotomicAlgebra D Sc a n)
+        (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (IsScalarTower k (Hn D Sc (n + 1 + 1))
+        ((InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
+          Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) ⊗[ℤ] CyclotomicAlgebra D Sc a n) ⧸
+          BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
+    letI : IsScalarTower k (Hn D Sc (n + 1 + 1))
+      (InductionAlong.Ind (qCoefficient D Sc i β a ha n).toSVec
+        (prependAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))) :=
+      inferInstanceAs (IsScalarTower k (Hn D Sc (n + 1 + 1))
+        ((InductionAlong.Corner (prependAlgebra D Sc i (n + 1) :
+          Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)) ⊗[ℤ] (qCoefficient D Sc i β a ha n).toSVec) ⧸
+          BalancedTensor.rel ℤ (Hn D Sc (n + 1 + 1)) (Hn D Sc (n + 1)) _ _))
+    (parityCyclotomicContentQ D Sc i β a ha n).restrictScalars k
+
+/-- Homogeneous pure tensors retain their total degree under Q. -/
+theorem parityCyclotomicContentQ_tmul_mem (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+    (p q : ZMod 2)
+    (x : InductionAlong.Corner (appendAlgebra D Sc i (n + 1) :
+      Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1)))
+    (b : CyclotomicAlgebra D Sc a n)
+    (hx : x.val ∈ affineParity D Sc (n + 1 + 1) p)
+    (hb : b ∈ cyclotomicParity D Sc a ha n q) :
+    parityCyclotomicContentQLinear D Sc i β a ha n
+      (InductionAlong.Ind.tmul (N := CyclotomicAlgebra D Sc a n) x b) ∈
+      (qTargetSpace D Sc i β a ha n).part (p + q + 0) := by
+  change parityCyclotomicContentQ D Sc i β a ha n (InductionAlong.Ind.tmul x b) ∈ _
+  rw [parityCyclotomicContentQ_tmul]
+  have hcorner := SetLike.GradedMul.mul_mem hx (contentMove_parity D Sc i (n + 1) β)
+  have h := qTargetSpace_tmul_mem D Sc i β a ha n
+    (x := qPrependCorner D Sc i (n + 1) β
+      (InductionAlong.cornerMul (contentMove_intertwines D Sc i (n + 1) β) x))
+    hcorner (qCoefficientInsert_mem D Sc i β a ha n q b hb)
+  have he (η : ZMod 2) : p + η + (η + q) = p + q + 0 := by
+    have hη : η + η = 0 := by
+      rcases parity_eq_zero_or_one η with rfl | rfl <;> decide
+    calc
+      _ = p + (η + η) + q := by abel
+      _ = _ := by rw [hη]; simp
+  rw [he] at h
+  exact h
+
+/-- The moving-strand parity and the canonical coefficient shift cancel on Q. -/
+theorem parityCyclotomicContentQ_even (i : I) (β : Multiset I)
+    (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ) :
+    SVec.ofHom (parityCyclotomicContentQLinear D Sc i β a ha n) ∈
+      SVec.parityHom (qSourceSpace D Sc i a ha n) (qTargetSpace D Sc i β a ha n) 0 := by
+  let : Module (Hn D Sc (n + 1)) (cyclotomicSuperspace D Sc a ha n) :=
+    inferInstanceAs (Module (Hn D Sc (n + 1)) (CyclotomicAlgebra D Sc a n))
+  exact InducedParity.ind_map_mem (cyclotomicSuperspace D Sc a ha n)
+    (affineParity D Sc (n + 1)) (affineParity D Sc (n + 1 + 1))
+    (appendAlgebra D Sc i (n + 1))
+    (fun _ _ h => appendAlgebra_parity D Sc i (n + 1) h)
+    (cyclotomicCoefficient_smul_mem D Sc a ha n)
+    (parityCyclotomicContentQLinear D Sc i β a ha n)
+    (fun p q x b hx hb => parityCyclotomicContentQ_tmul_mem D Sc i β a ha n p q x b hx hb)
+
 end OddMath.QuiverHecke

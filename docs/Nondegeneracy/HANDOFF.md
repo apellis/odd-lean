@@ -99,11 +99,17 @@ and append/prepend and coefficient action grading are proved, not postulated.
 The imported consumer exercises all-odd height three and mixed height two,
 both with nonzero coefficient shift, and audits the module's declarations.
 
-This is a checked grading increment, **not yet Q-evenness**. The remaining
-focal step is to prove the `contentMove` matrix has parity `p(i)p(β)` and use
-`InducedParity.ind_map_mem` with `parityCyclotomicContentQ_tmul` and
-`qCoefficientInsert_mem`; its two parity shifts then cancel. The right-dot
-degree assertions and full right-superalgebra structure also remain open.
+`contentMove_parity` now proves the matrix degree `p(i)p(β)` from
+`intertwinerHom_parity` and `moveHom_parity`, including the equal-odd polynomial
+intertwiner. The finite matrix sum uses its actual content support and the
+order-independent multiset parity. `parityCyclotomicContentQ_even` proves
+Q-evenness on these existing source and target spaces, using the pure-tensor
+criterion and the two cancelling parity shifts. `parityCyclotomicContentQLinear`
+is only scalar restriction of the existing Q, not a replacement map.
+The consumer specializes actual Q-evenness and pure-tensor membership at
+all-odd height three and mixed height two, both with shift one, and audits
+all owned declarations. Right-dot degree and full right-superalgebra structure
+remain open.
 Source comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 and (8.13),
 PDF page 42. Finite colours, positive indexing and
 `CyclotomicPolynomialParity` are retained. Ordinary coefficients
