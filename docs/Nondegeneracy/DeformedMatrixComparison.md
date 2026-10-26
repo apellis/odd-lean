@@ -176,6 +176,14 @@ matrices as follows. Write w_k for the corrected polynomial basis,
 central even unit γ with φ_k=0 when a+k<0 and γφ_k monic of degree
 a+k otherwise. Degree assertions are interpreted on nonzero corners.
 
+The required cyclotomic top row is proved in the proposed written argument
+`DeformedCyclotomicTopRow.md`: im P'=ker q for the canonical quotient
+q onto B e tensor_D Pi^p(e B), and its vertical map is exactly Fbar
+of (4). Its commutative square uses the literal concatenation
+f_i(x_1)(tau_1 ... tau_(n−1))tau_n. This fills the top-row input rather
+than inferring it from the middle-row ideal equality. That input still
+requires independent review and Lean formalization.
+
 For a≥0, the distinct leading degrees make A_∂ injective and give its
 cokernel the polynomial window j_0,…,j_(a−1). The exact snake sequence
 then proves K_− bijective with these particular columns. At a=0 the

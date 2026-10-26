@@ -106,8 +106,13 @@ There is consequently a uniquely defined map
     A_∂:V₁→V₀,       C₀P=A_∂B₁.                  (5)
 
 It is right B-linear. This assertion alone does not identify all the other
-quotients of diagram (9.5); the cyclotomic top-row identification still
-uses the deformed ideal argument.
+quotients of diagram (9.5). `DeformedCyclotomicTopRow.md` supplies the
+proposed written top-row identification: restrict P through the specified
+short-column inclusion, identify its multiplier with the lower-height
+balanced resolution, and use right exactness only for its cokernel.
+Its descended vertical arrow is the prescribed a tau_n b, with total
+coefficient parity. That additional argument is not yet Lean-checked or
+independently accepted.
 
 ## 3. Explicit lifts and first-order defect
 

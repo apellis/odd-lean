@@ -513,6 +513,18 @@ nondegeneracy remain open.
 
 ## Prescribed same-colour inversion on paper
 
+`DeformedCyclotomicTopRow.md` supplies a proposed written proof of the
+previously implicit cyclotomic top row. With the source's short-column
+inclusion, P' sends h tensor pi^epsilon b to
+h f_i(x_1)(tau_1 ... tau_(n−1)) tensor pi^p b. Its image is the kernel
+of the canonical quotient onto B e tensor_D Pi^p(e B), whose vertical
+arrow is a tensor pi^p b ↦ a tau_n b. The proof tensors the lower-height
+resolution only for right exactness; injectivity comes from P and the
+affine column embeddings. It retains total coefficient parity and the
+even-cutoff relation, including the absent-corner cases. This argument
+is not independently accepted or Lean-checked; it does not promote full
+factor/action existence. Review of this bridge is the next written target.
+
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
 `DeformedRouquierMatrix.md` and `DeformedMatrixComparison.md` now give a
 written proof that the prescribed tensor-mate/dotted-cup/dotted-cap matrix
