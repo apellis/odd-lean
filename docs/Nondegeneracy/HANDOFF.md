@@ -177,6 +177,18 @@ inputs. Signed left linearity and ordinary right linearity follow from the
 proved global intertwiner, not an assumed relation. Its scoped warning-free
 build and declaration axiom audit pass. Square, braid and inversion relations
 remain separate obligations.
+`CyclotomicAction/InductionFunctorComparison.lean` constructs the even natural
+isomorphism `inductionFunctorComparison` from successive cyclotomic induction
+to tensoring by `compositionCorner`. Its pure-tensor formula is
+`x ⊗ (y ⊗ m) ↦ (x φᵢ(y)) ⊗ m`; the inverse uses the existing balanced-tensor
+associator and the proved corner isomorphism, with no inverse hypothesis.
+`CyclotomicAction/CrossingTransformation.lean` transports
+`compositionSuperCrossing` along these comparisons to
+`cyclotomicSuperInductionCrossing`, a supernatural transformation between the
+two orders of composed induction, homogeneous of parity `|i||j|`.
+Signed naturality holds on the full supermodule categories. Both modules pass
+the scoped warning-free build and owned-declaration axiom audit. Square,
+braid and inversion relations, and the KKO decomposition, remain open.
 `CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
 `restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
 `k`-linear, and parity preserving. The positive-height indexing still leaves
