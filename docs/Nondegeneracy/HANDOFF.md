@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Corrected mixed braid comparison on paper
+
+`DeformedMixedBraid.md` supplies a written proof of the exact comparison
+isolated in `DeformedActionAssembly.md` §6, pending independent checking.
+The algebra uses `parameterTwist Sc`, and induction reverses the three
+appended positions. The reversal of the braid difference cancels the one
+equal-colour crossing minus. Reindexing the algebra correction by
+`b = r−1−l` gives exactly the ordered monomial `x₁^l x₂^s x₃^(r−1−l)`.
+The remaining exponent difference is
+`p[(r−1)+floor((r−1)/2)−floor(r/2)]`, which is even: it vanishes if
+`p=0`, and is `2v−2` when the odd-colour support forces `r=2v`.
+The total parity of the input, including independent odd coefficients,
+appears identically on both sides. This is an arbitrary-exponent proof,
+not a finite sweep, and assumes only the independent algebra relation.
+No Lean declaration or full-action certification is claimed. The older
+boundary descriptions below refer to the obligation now addressed by this
+separate note; the other written action arguments still require review.
+
 ## Prescribed same-colour inversion on paper
 
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
