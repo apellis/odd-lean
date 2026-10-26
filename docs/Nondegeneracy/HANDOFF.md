@@ -830,8 +830,8 @@ asymmetric two-colour datum, and audits the module's axioms.
 
 For KKO I, arXiv:1206.5933v2, Proposition 8.4,
 `CyclotomicAction/IntertwinerContent.lean` restricts the previously constructed
-Q to the right images of the cyclotomic content idempotent. These are proper
-content summands, not the whole height quotient. The source projection is
+Q to the right images of the cyclotomic content idempotent. The construction
+cuts to content rather than identifying the whole height quotient with it. The source projection is
 `x ⊗ b ↦ x append(e_β) ⊗ b`; the shifted target projection is
 `x ⊗ πb ↦ x prepend(e_β) ⊗ πb`. Both equalities are proved by balancing
 and multiplication on quotient representatives. The corresponding induction
