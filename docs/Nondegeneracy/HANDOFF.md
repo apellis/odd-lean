@@ -124,6 +124,14 @@ colour `i`, `c₁ c₂ c₁ = c₂ c₁ c₂` on each word (`induction_braid_sam
 `braid_ne`), in the affine algebra and at every height (`heightLastCrossing_braid_same`).
 The functor half (three-fold corner comparison and transport through three successor blocks)
 is still open.
+Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
+`heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
+`globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
+`GlobalRouquierData.globalActionCross_square` (t = `globalActionSignedCross` = -ψ for i = i);
+(b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
+`Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
+`heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
+an odd algebra-level BK Lemma 2.1 (none exists in odd-lean yet); not started.
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
