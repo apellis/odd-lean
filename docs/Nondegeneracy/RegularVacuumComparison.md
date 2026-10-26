@@ -8,6 +8,15 @@ with those modules. This is a local factor-action comparison, not an assumed
 `RegularVacuumIdentification` and not an identification of the whole fused
 action. No new nondegeneracy theorem is claimed here.
 
+The untransported factor identification is obstructed as explained in
+`ELVVacuumGeneratorComparison.md`: the signed factor dot does not agree
+with the coordinate dot while fixing the raw coefficient action, and this
+note's probe-input/reservoir-output orientation is not the assignment in
+`HomSectorTransport.md`. The representable calculation below retains its
+stated hypotheses; it does not discharge either comparison. The detection
+interface permits k-linear coordinate recovery with a constructed, possibly
+transported, reservoir coefficient action.
+
 ## 1. The quotient and the projectives
 
 Fix an external weight and one of the balanced cutoffs of

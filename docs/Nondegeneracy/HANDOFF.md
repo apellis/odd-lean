@@ -25,10 +25,32 @@ crossings rather than their inverses. It also derives the unequal-probe
 beta/xi transport: `E_rs;z_t=Theta_rs`, with Theta of degree `t` and `td=0`,
 and the paired coefficient `(-1)^(p_a b p_r p_s)`. These written arguments
 complete the mixed iji components under the full factor-action and mixed
-denominator hypotheses. They are not Lean theorems. The iij, ijj and distinct
-ijk components remain separate. Neither these calculations nor the probe
-construction proves fusion, normalized bubble values, regular-word
+denominator hypotheses. `MixedColourRemainingBraid.md` supplies the iij,
+ijj and distinct ijk components, including all four mixed-pair coefficients
+and the arbitrary-exponent symmetric-Q derivative cancellation. Together
+with the same-colour calculation, these cover the upward braid relations
+under the stated factor and denominator hypotheses. They are written
+arguments, not Lean theorems. Neither these calculations nor the probe
+construction proves full fusion, normalized bubble values, regular-word
 coordinates, or nondegeneracy.
+
+## Vacuum comparison: exact scope of the obstruction
+
+`ELVVacuumGeneratorComparison.md` proves the coefficient-category quotient
+and append/kernel calculation, but exhibits an obstruction to identifying
+the raw deformed factor with it while fixing coefficients and the unit.
+For an odd colour at even cutoff two, after delta=0, the signed factor dot
+squares to chi on the unit whereas coordinate postcomposition squares to
+-chi. The normalized Hom construction also uses reservoir precomposition
+and probe postcomposition, unlike the orientation in `RegularVacuumComparison`.
+Its representable contraction does not by itself identify these constructions.
+
+This does not refute `RegularVacuumIdentification`: that structure asks for
+k-linear coordinates and a constructed reservoir coefficient action, not
+linearity over the raw factor coefficients. Nor is a global quotient
+isomorphism required by the bounded detection interface. An explicit
+coefficient/generator and orientation comparison remains to be constructed;
+normalized bubbles must use the same transported coefficient action.
 
 ## Unnormalized principal word
 
