@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Signed-height residual comparison
+
+[FusionResidualMatrix.md](FusionResidualMatrix.md) gives a proposed written
+categorical elimination formula with positive cap rows and fused-window plus
+negative cup columns, retaining degree/parity shifts. It derives the leading
+negative-window signs and proves symbolic invertibility of a two-point
+partial-fraction candidate: at odd colours use the paired basis
+`z^ε(z²−c)^j`, not a scalar translation of the odd dot. The proof covers
+nonnegative total height and either factor sign, with even probe heights
+as supplied by the proposed odd-colour probe. No numerical inversion or
+new Lean theorem is involved. Identification of the actual residual with
+this candidate remains open: compute fused cap restrictions, probe inverse
+windows and their coordinate changes, and control all Schur corrections
+by a single nilpotent reservoir ideal. Negative total height is not inferred
+by mirroring signs.
+
 ## Reservoir closure audit
 
 [FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
