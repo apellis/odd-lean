@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Reversed reservoir window comparison
+
+`ReversedReservoirMatrix.md` derives the Hom reservoir height `-k` from
+reservoir height k, identifies its two mixed-word coordinates, and computes
+both left dotted windows as ordered antitriangular changes of the original
+inverse windows. It proves both inverse identities for the resulting
+augmented matrices with principal entry `R=-sigL`; their principal inverses
+are the original right mate. Integer/parity shifts, cap normalization and
+heights zero and plus/minus one are retained.
+
+These are written component calculations, not Lean theorems. The matrix is
+not yet identified with the Hom augmented matrix: its outstanding entry is
+`C_src^-1;P_H(tau_H);C_tgt`. Evaluating that normalized-left partial mate,
+including its scalar relative to R, remains necessary. Same-height right
+reflection does not give this weight-reversing comparison. (TC), shifted
+swapping mates, residual inversion and separation remain open.
+
 ## Specified Hom-sector adjunction and interchange components
 
 `HomSectorTransport.md` derives the unit and counit of the actual
@@ -75,9 +92,27 @@ original weight boundary, for every height and parity. Odd two- and
 three-dot cups and caps are exercised on the prescribed composites.
 No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
 
-Still missing in Lean are composite-adjunction whiskering/coherence, the typed `P,Q,R`
-comparison with the prescribed mixed mate, horizontal super-opposition,
-and the mirrored local inversion data. These must be assembled before
+`RouquierCompositeAdjunction` constructs `SuperAdjunction.comp` for
+`E₁ ≫ E₂` with right adjoint `F₂ ≫ F₁`. Both triangles are derived by
+composing the even underlying right adjunctions. `comp_unit` and
+`comp_counit` identify the resulting maps with the nested units and counits,
+including every associator and unitor. Its consumer applies the same
+full-Hom transpose to an odd crossing at arbitrary height; no odd map is
+restricted to the even underlying bicategory.
+
+`RouquierTransposeComparison` proves the typed partial-mate comparison:
+`mixedMateBend_rouquierMate` identifies `Q(P(t))` with right transposition
+for `A₁.comp A₂`, and `mixedMateBend_symm_rightTranspose` gives `R(M(t))=P(t)`.
+Here `P` is the prescribed `rouquierMate`; `Q` uses the existing rectangular
+Hom equivalence with the adjunctions interchanged, and its inverse `R` has
+an explicit unit–map–counit formula. Counit uniqueness, the composite
+counit expansion and even-cap interchange prove the comparison for the
+full Hom space, including odd crossings. The consumer specializes to
+rational scalars, odd parity and arbitrary integral height, retaining local
+inversion data as premises rather than asserting a nonzero model.
+
+Still missing in Lean are composite-transpose whiskering/coherence,
+horizontal super-opposition, and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
