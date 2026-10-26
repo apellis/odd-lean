@@ -1,4 +1,5 @@
 import OddMath.SKM.RouquierPrincipalWord
+import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomReservoirPowers
 import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction
