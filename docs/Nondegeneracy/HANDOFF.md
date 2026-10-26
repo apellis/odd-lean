@@ -2,6 +2,12 @@
 
 ## Global content indices
 
+`GlobalProduct.lean` constructs the full weight supercategory
+`globalWeightSpace`, the product of all `GlobalContentModules β` of the
+given weight. The pointwise parity decomposition works for arbitrary
+products; it does not require finitely many contents. This constructs the
+objects of the weight action, not yet its induction and restriction maps.
+
 `GlobalHeight.lean` adds the empty-word algebra and supermodule category to
 the tower without altering a positive-height quotient. `heightAppend` is
 the vacuum map at zero and the existing quotient inclusion thereafter;
