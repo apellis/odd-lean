@@ -664,3 +664,12 @@ not yet the braid between three composed superinduction functors. The latter
 still requires comparison with the balanced-tensor associators; the repeated
 outside-colour correction remains a separate polynomial identity.
 
+### Equal-colour crossing square
+
+`CyclotomicAction/Square.lean` identifies the associator-defined last crossing
+with its positioned-word diagram. `cyclotomicLastCrossing_square` proves
+square-zero in the concrete quotient. `compositionSuperCrossing_square` proves
+square-zero for the actual signed superbimodule map on the composition corner;
+it is not merely a statement about an unsigned multiplier. No local inversion
+or projectivity is used or concluded.
+
