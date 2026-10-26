@@ -5,9 +5,9 @@ import OddMath.SKM.RouquierFTriangle
 
 The canonical triangles supply the fixed cup and inverse-scaled cap. The existing
 content-shifted Hom adjunction therefore needs no additional left-zigzag premise.
-The unit is reduced to its cup and output-shift comparison. The counit expansion
-retains the shift-square and commuting comparison; its reduced signed-cap formula
-in `HomSectorTransport.md`, §2, remains a separate comparison obligation.
+The unit is reduced to its cup and output-shift comparison. The counit is reduced
+to the signed normalized cap of `HomSectorTransport.md`, §2, by homogeneous
+comparison naturality and cancellation of the shift-square and commuting maps.
 -/
 
 noncomputable section
@@ -37,6 +37,20 @@ theorem homParityShiftSquare_hom_app (p : ZMod 2) (Z : C) :
   · simpa [homParityShiftSquare, homParityShiftAdd, homParityShiftDatum,
       homParityShift, ParityShiftDatum.pi] using PiSupercategory.ξ_hom_eq_neg (R := k) Z
 
+theorem homParityShiftSquare_inv_map_even (p : ZMod 2) (X Z : C)
+    (g : (homParityShift (k := k) p).obj X ⟶ (homParityShift (k := k) p).obj Z)
+    (hg : g ∈ parity (R := k) _ _ 0) :
+    (homParityShiftSquare (k := k) p).inv.app X ≫
+      (homParityShift (k := k) p).map g ≫ (homParityShiftSquare (k := k) p).hom.app Z =
+      ((homParityShiftDatum (k := k) p).iso X).inv ≫ g ≫
+        ((homParityShiftDatum (k := k) p).iso Z).hom := by
+  apply (cancel_epi ((homParityShiftSquare (k := k) p).hom.app X)).mp
+  simp only [Iso.hom_inv_id_app_assoc]
+  rw [homParityShiftSquare_hom_app, homParityShiftSquare_hom_app]
+  simp only [Preadditive.comp_zsmul, Preadditive.zsmul_comp, Category.assoc]
+  rw [reassoc_of% ((homParityShiftDatum (k := k) p).hom_naturality_even hg)]
+  simp only [Iso.hom_inv_id_assoc]
+
 variable {C' : Type*} [Category C'] [Preadditive C'] [Linear k C']
   [Supercategory k C'] [PiSupercategory k C']
 
@@ -49,6 +63,17 @@ theorem homParityShiftCommute_inv_app (F : C ⥤ C') [F.Additive] [F.Linear k]
   · change 𝟙 (F.obj Z) ≫ 𝟙 (F.obj Z) = F.map (𝟙 Z) ≫ 𝟙 (F.obj Z)
     rw [F.map_id]
   · rfl
+theorem homParityShiftCommute_hom_app (F : C ⥤ C') [F.Additive] [F.Linear k]
+    [IsSuperfunctor k F] (p : ZMod 2) (Z : C) :
+    (homParityShiftCommute (k := k) F p).hom.app Z =
+      ((homParityShiftDatum (k := k) p).iso (F.obj Z)).hom ≫
+        F.map ((homParityShiftDatum (k := k) p).iso Z).inv := by
+  apply (cancel_mono ((homParityShiftCommute (k := k) F p).inv.app Z)).mp
+  rw [Iso.hom_inv_id_app, homParityShiftCommute_inv_app]
+  simp only [Category.assoc]
+  rw [← Category.assoc (F.map _), ← F.map_comp, Iso.inv_hom_id, F.map_id,
+    Category.id_comp, Iso.hom_inv_id]
+
 end Shift
 
 variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
@@ -132,4 +157,48 @@ theorem homContentPreAdjunction_leftAdjoints_counit_expansion
   change _ ≫ (_ ≫ 𝟙 _) ≫ _ ≫ _ = _
   rw [Category.comp_id, homParityShiftAdjunction_counit_app]
   rfl
+/-- The signed-cap component of the specified normalized adjunction
+(`HomSectorTransport.md`, §2, equation (4)). -/
+theorem homContentPreAdjunction_leftAdjoints_counit_app
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreAdjunction T W T.leftAdjoints i muM h).counit.app Z =
+      koszulSign (leftAdjParity D i (-nuP)) (leftAdjParity D i (-nuP)) •
+        (T.E i h ◁ ((homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).iso
+          (T.F i h ≫ Z)).hom ≫
+          (associator (T.E i h) (T.F i h) Z).inv ≫
+          ((((T.leftAdjScalar i (-nuP))⁻¹ : kˣ) : k) • T.leftCap i h) ▷ Z ≫
+          (leftUnitor Z).hom) := by
+  let p := leftAdjParity D i (-nuP)
+  let P := homParityShiftDatum (k := k) (C := T.obj (-nuP) ⟶ W muM) p
+  let S := homParityShift (k := k) (C := T.obj (-nuP) ⟶ W muM) p
+  let A := T.leftAdjoints.adjL i h
+  rw [homContentPreAdjunction_leftAdjoints_counit_expansion]
+  change T.E i h ◁ (homParityShiftCommute (homPre (k := k) (T.F i h)) p).hom.app Z ≫
+    (homParityShiftSquare (k := k) p).inv.app (T.E i h ≫ T.F i h ≫ S.obj Z) ≫
+    S.map (homPreShiftCounitApp A P (S.obj Z)) ≫
+    (homParityShiftSquare (k := k) p).hom.app Z =
+      koszulSign p p •
+        (T.E i h ◁ ((homParityShiftDatum (k := k) p).iso (T.F i h ≫ Z)).hom ≫
+          (associator (T.E i h) (T.F i h) Z).inv ≫ A.counit ▷ Z ≫ (leftUnitor Z).hom)
+  rw [homParityShiftSquare_inv_map_even p _ Z _ (homPreShiftCounitApp_mem A P _)]
+  have hn := (homPreShiftCounit A P).naturality (P.iso Z).hom
+  change S.map (T.E i h ◁ T.F i h ◁ (P.iso Z).hom) ≫ homPreShiftCounitApp A P Z =
+    homPreShiftCounitApp A P (S.obj Z) ≫ (P.iso Z).hom at hn
+  rw [← hn]
+  unfold homPreShiftCounitApp
+  rw [reassoc_of% (P.hom_naturality
+    (TwoSupercategory.whiskerLeft_mem (T.E i h)
+      (TwoSupercategory.whiskerLeft_mem (T.F i h) (P.hom_mem Z))))]
+  dsimp only [P]
+  simp only [Linear.comp_smul, Linear.smul_comp, Category.assoc]
+  rw [Iso.inv_hom_id_assoc]
+  rw [homParityShiftCommute_hom_app]
+  simp only [homPre, TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc]
+  rw [← Category.assoc (T.E i h ◁ T.F i h ◁ _),
+    ← TwoSupercategory.whiskerLeft_comp (R := k),
+    ← TwoSupercategory.whiskerLeft_comp (R := k), Iso.inv_hom_id,
+    TwoSupercategory.whiskerLeft_id (R := k), TwoSupercategory.whiskerLeft_id (R := k),
+    Category.id_comp]
+  rw [koszulSign_smul (R := k)]
+
 end OddMath.SKM

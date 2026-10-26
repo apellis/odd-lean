@@ -8,12 +8,14 @@ at the source height h, with unit `leftCup` and counit `leftAdjScalar⁻¹ • l
 Both triangles follow from the canonical triangles; no chosen-scalar uniqueness
 or faithfulness is used. `RouquierNormalizedHomAdjunction.lean` specializes the
 existing `homContentPreAdjunction` without an additional `LeftZigzags` premise.
-It proves the reduced cup/output-shift unit formula and expands the specified
-counit through the shift-square and commuting comparison.
-
-The reduced counit formula of `HomSectorTransport.md` §2, including its outer
-`koszulSign σ σ`, still requires cancellation of those comparisons. The checked
-expansion is not that cancellation theorem. No fusion or nonzero model is claimed.
+It proves the reduced cup/output-shift unit formula and the signed-cap counit
+formula of `HomSectorTransport.md` §2. The theorem
+`homContentPreAdjunction_leftAdjoints_counit_app` retains the outer
+`koszulSign σ σ`, with σ at the reservoir source height, and the inverse-scaled
+`leftCap`. Homogeneous comparison naturality cancels the shift-square and
+commuting maps; the normalized adjunction itself is unchanged. The odd rank-one
+consumer checks this component for arbitrary heights and audits all owned
+declarations. No fusion or nonzero model is claimed.
 
 ## Canonical F triangle and shifted left adjunctions
 
