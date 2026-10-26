@@ -103,6 +103,14 @@ toward `RouquierFamily`: the braid field on weight spaces (port of
 slides (`GlobalSlides`), nilpotence (needs an odd cyclotomic analogue of
 Brundan–Kleshchev Lemma 2.1, absent), and `GlobalLoc` (local inversion is stream A's pending statement).
 
+`GlobalSlideAlgebra.lean` proves the equal-colour dot slides on the last pair of
+strands. Locally `x₁ τ - s τ x₂ = 1` and `τ x₁ - s x₂ τ = 1` (`s = (-1)^{|i|}`,
+`inductionStrand_slide_left/right`, from relations (1.8) via `Centre.slide_left_eq`);
+whiskered by an old word (`induction_slide_left/right`) and summed, in the algebra
+`c y₁ - s y₂ c = θ(1)` and `y₁ c - s c y₂ = θ(1)`, where `c` is the last-pair crossing,
+`y₁` the appended and `y₂` the new last dot (`affineLastCrossing_slide_left/right`,
+and at every height of the extended tower `heightLastCrossing_slide_left/right`).
+
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
 `cyclotomicSuperInductionCrossing` (`globalBlockCross`, parity `|i||j|`).
