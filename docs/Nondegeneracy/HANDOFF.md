@@ -1109,3 +1109,16 @@ Thus A3's parity-compatible arithmetic and algebraic regular windows are
 closed, while full-action restriction, regular-vacuum identification and
 the actual bubble comparisons remain open.
 
+[RegularVacuumComparison.md](RegularVacuumComparison.md) gives a proposed
+module-level derivation: contract the defining representable induction
+tensor by `b ⊗ m ↦ b ≫ J_i(m)`, with inverse `h ↦ h ⊗ 1`, and take the
+source-word component. A content-zero-supported Hom vacuum kills every
+probe term by the corner equation `e_0 B_i^probe e_β = 0`, not by numerical
+weight arithmetic. The contraction gives the three coordinate identities
+for these defining tensor maps. Still missing is the identification of the
+connected ELV factor's induction bimodules and signed dots/crossings with
+these representable maps, together with the content-supported Hom vacuum
+and fusion's upward-block comparison. This is a written derivation, not a
+new Lean theorem or a construction of `RegularVacuumIdentification`.
+The normalized bubble inverse-block comparison remains separate.
+
