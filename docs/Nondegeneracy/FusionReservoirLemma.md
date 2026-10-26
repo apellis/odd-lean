@@ -23,6 +23,13 @@ as checked refer to the existing declarations cited explicitly. The precise
 remaining obstruction is the all-height residual identity-summand matrix,
 including its super shifts and its comparison with the fused dotted windows.
 
+`DeformedReservoirBound.md` now supplies the homogeneous-action and bounded
+identity-endomorphism hypotheses on each fixed content of the explicitly
+truncated full-ELV reservoir. This does not give a global bound over infinite
+weight fibers or identify the actual fused feedback. The general argument
+below and the distinction between principal blocks and full inverses remain
+unchanged.
+
 ## 1. Types before inverses
 
 Use right-to-left composition. Put `X = EF 1_λ`, `Y = FE 1_λ`, and suppress
@@ -121,9 +128,10 @@ interface. This is a suggested declaration name, not an existing one.
 ### What this does and does not prove
 
 This proves the needed reservoir nilpotence assertion **under the above
-explicit graded hypotheses**. It does not prove those hypotheses for the
-proposed deformed cyclotomic action, nor identify the true all-height Schur
-feedback with the draft's expression. In particular H1–H3 as written do not
+explicit graded hypotheses**. `DeformedReservoirBound.md` proves those
+hypotheses on each fixed content of its finite coefficient quotients; neither
+argument identifies the true all-height Schur feedback with the draft's
+expression. In particular H1–H3 as written do not
 explicitly include a homogeneous action or finite-dimensional identity
 endomorphism algebra. The probe need not be graded for this argument; the
 reservoir and its closures do.

@@ -529,13 +529,18 @@ than ordinary-central commutation. For a homogeneous graded action its
 degree is `2d_i(r+s+1)>0`. Bounded-above grading support therefore makes all
 sufficiently long products of these closures zero. Supercommuting reservoir
 closures past probe operators gives nilpotence of this specified feedback.
-This is a proposed general argument with explicit hypotheses in
-[FusionReservoirLemma](FusionReservoirLemma.md), not a new Lean theorem.
+The general argument and its explicit hypotheses are in
+[FusionReservoirLemma](FusionReservoirLemma.md).
+[DeformedReservoirBound](DeformedReservoirBound.md) supplies the homogeneous
+action and bounded identity-endomorphism support on each fixed content of
+finite coefficient quotients. This is a written result, not a Lean theorem
+or an identification of the actual fused feedback.
 
 The earlier radical/degree-zero equivalence is false: a degree-zero algebra
 can have a nonzero radical. No such equivalence is needed for the positive-
-degree argument. Its homogeneous-action and support hypotheses still need
-to be established for the intended reservoir.
+degree argument. The fixed-content bounds do not assert a uniform bound
+over infinite weight fibers; feedback supports and truncation-compatible
+separation still have to be established for the intended fusion construction.
 
 Even when these hypotheses hold, the residual identity-summand matrix is
 not removed. In `RouqCoproduct`, `isIso_lift_of_schur` retains it and
@@ -586,7 +591,7 @@ the factors, part of A3.
 | A2-b, `i≠j` | fused mixed relation | **paper** given (H3) |
 | A2-b1 | cross summands decouple | **OPEN comparison**: derive the partial mate on the actual tensor supports |
 | A2-b2 | total map invertible | **OPEN**: all-height residual identity-summand matrix; abstract Schur lemma **Lean** |
-| Reservoir closures | joint nilpotence | **proposed** from homogeneous action and bounded grading support; hypotheses and feedback identification remain |
+| Reservoir closures | joint nilpotence | **written fixed-content proof** for finite coefficient quotients, `DeformedReservoirBound.md`; actual feedback identification and separation remain |
 | A2-fused | fused bubble = mate composite | **OPEN** |
 | A1-b,c | KKO-I Thm 9.1, 9.6 (undeformed) | **cited** (read) |
 | A1-map | the specific same-colour Rouquier map is invertible (super) | **written proof**, full-ELV hypotheses: `DeformedMatrixComparison.md`; not yet Lean |

@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Fixed-content reservoir bounds on paper
+
+`DeformedReservoirBound.md` supplies finite-dimensional coefficient
+quotients retaining the independent odd ELV parameters and their relations.
+Finite right generation plus the central monic annihilator gives finite
+dimension of every fixed-content algebra. The enriched supercentre then
+bounds identity transformations on all modules, without asserting arbitrary
+Hom-finiteness. Positive-degree principal-inverse closures are jointly
+nilpotent at each content and on finite content windows.
+
+This is a written proof, not a Lean theorem. It gives no uniform bound over
+an infinite weight fiber. Component-preserving degree-zero inverse families
+can assemble without such a bound, but identifying the actual fused feedback,
+its tensor-factor signs and supports, the residual identity-summand matrix,
+and truncation-compatible separation remain separate obligations.
+
 ## Canonical signed F triangle on paper
 
 `SignedFTriangle.md` derives the second triangle for the prescribed
