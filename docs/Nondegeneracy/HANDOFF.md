@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Zero-correction mixed-colour braid components
+
+`MixedColourRemainingBraid.md` gives a proposed written evaluation of all
+input/output components of the iij, ijj and pairwise-distinct ijk braid.
+Its path tables retain both mixed diagonals, both swapping entries, and
+all target-coordinate Q factors. For a repeated colour in different
+sectors the four entries reduce to the typed identities
+`R_AB J_s=J_t R_BA` and `a_t R_AB=R_AB a_s`; their two local/spectator
+signs cancel. For a repeated colour in one sector, the factor slides
+annihilate the derivative of the symmetric product of the two Q factors.
+The distinct-colour table has one path per side and the common product
+of Q over initial B-before-A pairs; no Q is cancelled or inverted.
+
+The comparison is calculated from shifted associators and the prescribed
+beta/xi probe transport at arbitrary content. The unequal-probe
+identification remains proposed, as in `MixedColourBlockCompletion.md`;
+this note does not change its status or use that note's iji conclusion.
+Full multicolour factor actions are hypotheses, not consequences of
+`RouquierFamily`. The result is not a Lean theorem. Review and
+formalization, integer word shifts, the other fusion relations, local
+inversion and separation remain open. The older open iij/ijj/ijk entries
+below are superseded by this proposed component argument only.
+
 ## Repeated-outer-colour blocks and unequal probe transport
 
 `MixedColourBlockCompletion.md` gives a proposed component proof of the
