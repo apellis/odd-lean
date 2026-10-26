@@ -58,10 +58,18 @@ unital even multiplicative strand map), so the adjunction now also covers the
 empty word to one strand. `heightContentAdjunction` restricts it to content
 blocks at every height, and `globalContentAdjunction (h : {i} + β = δ)` gives
 `globalContentInduction h ⊣ globalContentRestriction h` (composed with the
-mutually adjoint transports `heightContentCastAdjunction`). Open on weight
-spaces: assembling `globalE ⊣ globalF` from the blockwise adjunctions (zero
-components at blocks without predecessor), the weight-level dot and crossing,
-nilpotence, braid and slides, `GlobalLoc`.
+mutually adjoint transports `heightContentCastAdjunction`).
+
+`GlobalWeightAdjunction.lean` assembles `globalWeightAdjunction :
+globalEFunctor ⊣ (globalF).toFunctor` from the blockwise adjunctions,
+transported along `inductionComponent_blockSucc`, with zero counit at blocks
+without predecessor; unit and counit are even (`globalWeightUnit_mem`,
+`globalWeightCounit_mem`). `globalActionAdjunction` packages it as
+`SKM.SuperAdjunction (globalActionE i h) (globalActionF i h)` in the `SCat`
+target of `ActionSupercategory`, i.e. the `adj` field of `RouquierFamily` on
+weight spaces. Open on weight spaces: the dot and crossing (`dot`, `cross`
+fields), nilpotence, square/braid/slides, and `GlobalLoc` (local inversion is
+stream A's pending statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
