@@ -20,7 +20,10 @@ natural powers retained. The induced quotient carriers and target shift are unch
 Its `Mul` and `NonAssocSemiring` projections are selected explicitly where used:
 Mathlib's ordinary tensor-product instances would otherwise select unsigned
 multiplication. No instances are disabled. This supplies the balanced ring
-comparison and actions, not the graded-supermodule packaging of Proposition 8.4.
+comparison and actions. The named algebra structure retains the existing tensor
+scalar multiplication and the comparison is a ground-ring algebra equivalence.
+Scalar compatibility of the quotient right actions and graded-supermodule
+packaging remain separate obligations for Proposition 8.4.
 -/
 
 noncomputable section
@@ -289,5 +292,74 @@ theorem rightSupertensor_Q (β : Multiset I)
       (parityCyclotomicContentQLinear D Sc i β a ha n).comp
         (sourceRightSupertensor D Sc i a ha n f).unop :=
   rightSkew_Q D Sc i β a ha n (polynomialTensorSkewEquiv D Sc i a ha n f)
+
+
+/-- The parity twist commutes with the ground-ring scalar action. -/
+theorem coefficientParityScalarComm :
+    letI := coefficientParityAction D Sc i a ha n
+    SMulCommClass (Multiplicative ℕ) k (CyclotomicAlgebra D Sc a n) := by
+  let := coefficientParityAction D Sc i a ha n
+  exact ⟨fun m r c => (coefficientParityLinear D Sc a ha n
+    ((m.toAdd : ZMod 2) * D.parity i)).map_smul r c⟩
+
+@[instance_reducible] private def linearEquivAlgebra {R A B : Type*} [CommRing R] [AddCommGroup A]
+    [Ring B] [Module R A] [Algebra R B] (e : A ≃ₗ[R] B) :
+    letI := linearEquivRing e
+    Algebra R A := by
+  letI := linearEquivRing e
+  exact {
+    smul := (· • ·)
+    algebraMap := (linearEquivRingEquiv e).symm.toRingHom.comp (algebraMap R B)
+    commutes' := fun r x => by
+      apply e.injective
+      change e (e.symm (_ * _)) = e (e.symm (_ * _))
+      rw [e.apply_symm_apply, e.apply_symm_apply]
+      change e (e.symm (algebraMap R B r)) * e x = e x * e (e.symm (algebraMap R B r))
+      simp only [e.apply_symm_apply]
+      exact Algebra.commutes r (e x)
+    smul_def' := fun r x => by
+      apply e.injective
+      change e (r • x) = e (e.symm (e (e.symm (algebraMap R B r)) * e x))
+      simp only [e.map_smul, e.apply_symm_apply, Algebra.smul_def] }
+
+/-- The supertensor algebra uses the existing balanced tensor scalar action.
+This is the scalar-centrality needed for the right action in KKO I Proposition 8.4. -/
+@[instance_reducible] def polynomialSupertensorAlgebra :
+    letI : Semiring (_root_.Polynomial k ⊗[k] CyclotomicAlgebra D Sc a n) :=
+      (polynomialSupertensorRing D Sc i a ha n).toSemiring
+    Algebra k (_root_.Polynomial k ⊗[k] CyclotomicAlgebra D Sc a n) := by
+  letI := coefficientParityAction D Sc i a ha n
+  letI := coefficientParityScalarComm D Sc i a ha n
+  exact linearEquivAlgebra (polynomialTensorSkewEquiv D Sc i a ha n)
+
+/-- The normal-order comparison is an algebra equivalence, not only a ring equivalence. -/
+def polynomialSupertensorSkewAlgEquiv :
+    letI := coefficientParityAction D Sc i a ha n
+    letI := coefficientParityScalarComm D Sc i a ha n
+    letI : Semiring (_root_.Polynomial k ⊗[k] CyclotomicAlgebra D Sc a n) :=
+      (polynomialSupertensorRing D Sc i a ha n).toSemiring
+    letI := polynomialSupertensorAlgebra D Sc i a ha n
+    (_root_.Polynomial k ⊗[k] CyclotomicAlgebra D Sc a n) ≃ₐ[k]
+      _root_.SkewPolynomial (CyclotomicAlgebra D Sc a n) := by
+  letI := coefficientParityAction D Sc i a ha n
+  letI := coefficientParityScalarComm D Sc i a ha n
+  letI : Semiring (_root_.Polynomial k ⊗[k] CyclotomicAlgebra D Sc a n) :=
+    (polynomialSupertensorRing D Sc i a ha n).toSemiring
+  letI := polynomialSupertensorAlgebra D Sc i a ha n
+  exact { polynomialSupertensorSkewRingEquiv D Sc i a ha n with
+    commutes' := fun r => (polynomialTensorSkewEquiv D Sc i a ha n).apply_symm_apply _ }
+
+
+/-- The shifted coefficient module retains the ground-ring scalar tower. -/
+theorem qCoefficientScalarTower (β : Multiset I) :
+    IsScalarTower k (Hn D Sc (n + 1)) (qCoefficient D Sc i β a ha n).toSVec := by
+  apply IsScalarTower.of_algebraMap_smul
+  intro r b
+  change (qCoefficient D Sc i β a ha n).lact
+    (cyclotomicMk D Sc a n (algebraMap k (Hn D Sc (n + 1)) r)) b = r • b
+  rw [Algebra.algebraMap_eq_smul_one, map_smul, map_one,
+    (qCoefficient D Sc i β a ha n).lact.map_smul, SuperBimodule.lact_one]
+  rfl
+
 
 end OddMath.QuiverHecke
