@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Mixed-colour Hom interchange and repeated outer colours
+
+`MixedColourSectorBraid.md` gives a proposed direct derivation on the full
+Hom categories for the iji input sectors `A_i B_j A_i` and `B_i A_j B_i`,
+with arbitrary parities and reservoir contents. The prescribed degree-
+`p_i p_j` J points BA -> AB; the distinct-colour unit is its inverse.
+Paired interchange is computed for an arbitrary degree-`p_r p_s`
+reservoir crossing, and for two equal probe colours past an arbitrary
+reservoir colour. The latter pair has raw coefficient
+`(-1)^(kappa p_i p_j)` with the double-shift sign retained.
+
+The two direct braid differences reduce to `-delta(Q(z,y))` and
+`delta(Q(x,y))`. Undoing the degree-`p_i p_j` comparison supplies the
+middle-colour sign, giving `-q_i C_ij(x,y,z)=-C_ij(z,y,x)` exactly.
+Only polynomial factor slides are used; no same-reservoir denominator or
+faithfulness premise is introduced. The source's separate Q support and
+its disconnected constant case are retained.
+
+This is a written checkpoint, not a Lean theorem or a full iji proof.
+The AAB/BAA and ABB/BBA two-by-two iji blocks remain unevaluated, as do
+mixed-sector iij, ijj and ijk. The note specifies their typed path tests
+and the remaining comparison for unequal probe colours, whose word-removal
+map need not be even. AAA/BBB remain inherited factor-action relations,
+not consequences of the rank-one RouquierFamily interface. The corrected
+same-colour matrix is unchanged. No full fusion claim follows.
+
 ## Paired Hom interchange component calculation
 
 `PairedHomInterchange.md` proposes derivations of both remaining equations
