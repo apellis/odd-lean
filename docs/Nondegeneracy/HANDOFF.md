@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Integer-graded deformed action on paper
+
+`DeformedGradedAction.md` supplies a written upgrade of the underlying action:
+with `(q^r M)_a=M_(a−r)` and λ=−Λ+β, leave induction E unshifted and use
+`F_i1_λ=q^(d_i(h_i(λ)−1)) Res_i1_λ`. The transported tensor unit and counit
+have the standard SKM degrees, opposite on each edge. The degree-zero
+mixed mates, both same-colour matrix profiles, their inverse components,
+and all zero/out-of-range components give exactly `SKM.gdeg`. The leading
+unit γ has integer degree zero because it is a product of scalar parameter
+units, not merely because it is central and even. All odd ELV coefficients
+and the accepted parity/parameter normalizations are retained.
+
+This is a written proof, not a Lean implementation. It does not supply
+left adjunction, fusion, Hom finiteness, a detection window or nondegeneracy.
+
 ## Full underlying deformed action on paper
 
 `DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
@@ -10,10 +25,9 @@ arbitrary-exponent corrected braid, and explicit zero out-of-range inverse
 components. It uses the same-colour matrix argument below, without a further
 kernel or pivot assumption. Tensoring applies to all modules, not just projectives.
 
-This is not a Lean implementation and does not yet preserve the standard
-SKM integer grading: the current restriction and right-adjunction maps are
-unshifted. Weight-dependent restriction shifts and adjunction transport
-remain to be supplied. Fusion, detection and nondegeneracy remain open.
+This is not a Lean implementation. The unshifted construction in that note
+is upgraded to the standard SKM integer grading by `DeformedGradedAction.md`
+as described above. Fusion, detection and nondegeneracy remain open.
 
 ## Prescribed same-colour inversion on paper
 
