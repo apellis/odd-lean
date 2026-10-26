@@ -1,4 +1,5 @@
 import OddMath.SKM.RouquierCurl
+import OddMath.SKM.RouquierMixedMate
 
 /-!
 # Signed curl inputs for leftward pitchforks
@@ -261,6 +262,146 @@ theorem cross_sig_capD_zero (hsq : t ≫ t = 0) :
   simpa only [rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
     Category.id_comp, hsq, TwoSupercategory.whiskerLeft_zero (R := k),
     Limits.zero_comp, Limits.comp_zero, smul_zero] using hc
+
+/-- The negative augmented inverse detects equality after right whiskering.
+Only its total inverse equation is used; no target morphism is assumed. -/
+theorem whiskerRight_hom_ext_of_nonpos (hh : h ≤ 0) {d : B} (G : b ⟶ d)
+    {H : b ⟶ d} (f g : (E₂ ≫ F₂) ≫ G ⟶ H)
+    (hf : L.sig ▷ G ≫ f = L.sig ▷ G ≫ g)
+    (hg : ∀ n, n < (-h).toNat → L.cupD n ▷ G ≫ f = L.cupD n ▷ G ≫ g) : f = g := by
+  let I := L.invNeg hh
+  have ht (z : (E₂ ≫ F₂) ≫ G ⟶ H) :
+      I.f' ▷ G ≫ (L.sig ▷ G ≫ z) +
+        ∑ n ∈ Finset.range (-h).toNat, I.g' n ▷ G ≫ (L.cupD n ▷ G ≫ z) = z := by
+    have hs := map_sum (AddMonoidHom.mk' (fun η : E₂ ≫ F₂ ⟶ E₂ ≫ F₂ => η ▷ G)
+      fun η θ => TwoSupercategory.add_whiskerRight (R := k) η θ G)
+      (fun n => I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) (Finset.range (-h).toNat)
+    have he := congrArg (fun q => q ▷ G ≫ z) I.total
+    change (∑ n ∈ Finset.range (-h).toNat, I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) ▷ G =
+      ∑ n ∈ Finset.range (-h).toNat, (I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) ▷ G at hs
+    simpa only [TwoSupercategory.add_whiskerRight (R := k),
+      hs, TwoSupercategory.comp_whiskerRight (R := k),
+      TwoSupercategory.id_whiskerRight (R := k), Preadditive.add_comp,
+      Preadditive.sum_comp, Category.assoc, Category.id_comp, sig, cupD] using he
+  calc
+    f = I.f' ▷ G ≫ (L.sig ▷ G ≫ f) +
+        ∑ n ∈ Finset.range (-h).toNat, I.g' n ▷ G ≫ (L.cupD n ▷ G ≫ f) := (ht f).symm
+    _ = I.f' ▷ G ≫ (L.sig ▷ G ≫ g) +
+        ∑ n ∈ Finset.range (-h).toNat, I.g' n ▷ G ≫ (L.cupD n ▷ G ≫ g) := by
+      rw [hf]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro n hn
+      rw [hg n (Finset.mem_range.mp hn)]
+    _ = g := ht g
+
+section Adjacent
+variable {d : B} {E₃ : c ⟶ d} {F₃ : d ⟶ c}
+  {A₃ : SuperAdjunction (k := k) E₃ F₃} {x₃ : E₃ ⟶ E₃}
+  {t₂₃ : E₂ ≫ E₃ ⟶ E₂ ≫ E₃} {h' : ℤ}
+  (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ p h')
+
+/-- Postcomposing the mixed braid with the left cap introduces no new sign:
+the cap is not exchanged with either crossing. -/
+theorem sig_capCross
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    L.sig ▷ E₂ ≫ U.capCross =
+      (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫ E₂ ◁ (U.sig ≫ U.capL) ≫
+      (rightUnitor E₂).hom := by
+  have hb := rouquierMate_mixed_braid A₁ A₂ A₃ L.cross_mem U.cross_mem hB
+  have hc := congrArg (fun z => z ≫ E₂ ◁ U.capL ≫ (rightUnitor E₂).hom) hb.symm
+  simpa only [capCross, sig, TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc] using hc
+
+/-- At negative lower height the crossing component vanishes except at `h=-1`,
+where its coefficient is `(-1)^p` from the one-dot capped double crossing. -/
+theorem sig_capCross_of_neg (hw : h' = h + 2) (hh : h < 0) (hsq : t ≫ t = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    L.sig ▷ E₂ ≫ U.capCross = if h = -1 then koszulSign p p •
+      (L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫ E₂ ◁ A₂.counit ≫
+        (rightUnitor E₂).hom) else 0 := by
+  have h0 := congrArg (fun z => z ≫ (rightUnitor E₂).inv ≫
+    E₂ ◁ U.cw (-1) ≫ (rightUnitor E₂).hom) (L.cross_sig_capD_zero hsq)
+  simp only [Category.assoc, Iso.hom_inv_id_assoc, Limits.zero_comp] at h0
+  rw [L.sig_capCross U hB, U.sig_capL_low (by omega)]
+  by_cases he : h = -1
+  · rw [ite_eq_left (show h' = 1 by omega), ite_eq_left he,
+      TwoSupercategory.whiskerLeft_add (R := k)]
+    simp only [Preadditive.comp_add, Preadditive.add_comp,
+      TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc]
+    simpa only [capD, rouquierPower_zero, rouquierPower_succ,
+      TwoSupercategory.whiskerLeft_id (R := k), Category.id_comp,
+      h0, zero_add] using L.cross_sig_capD_one hsq
+  · rw [ite_eq_right (show h' ≠ 1 by omega), ite_eq_right he, add_zero]
+    simpa only [capD, rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
+      Category.id_comp, TwoSupercategory.whiskerLeft_comp (R := k), Category.assoc] using h0
+/-- Super cap swap, derived from all components of the negative augmented inverse.
+For `h < -1` its coefficient is `-1`. At `h=-1` the whole difference of
+left and right caps is scaled by `s=(-1)^p`; scaling only the right cap would
+violate the undotted cup component. This is the super counterpart of Brundan,
+arXiv:1501.00350v1, (4.5) in the proof of Lemma 4.2. -/
+theorem capCross_eq_of_neg (hw : h' = h + 2) (hh : h < 0)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    U.capCross = if h = -1 then koszulSign p p •
+      (-(L.capL ▷ E₂ ≫ (leftUnitor E₂).hom) +
+        (associator E₂ F₂ E₂).hom ≫ E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom)
+      else -(L.capL ▷ E₂ ≫ (leftUnitor E₂).hom) := by
+  apply L.whiskerRight_hom_ext_of_nonpos hh.le E₂
+  · have hc : L.sig ▷ E₂ ≫ L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 0 := by
+      rw [← Category.assoc, ← TwoSupercategory.comp_whiskerRight (R := k),
+        L.sig_capL hh, TwoSupercategory.zero_whiskerRight (R := k), Limits.zero_comp]
+    rw [L.sig_capCross_of_neg U hw hh hsq hB]
+    split_ifs <;> simp only [Preadditive.comp_zsmul, Preadditive.comp_add,
+      Preadditive.comp_neg, hc, neg_zero, zero_add]
+  · intro n hn
+    have hcap : L.cupD n ▷ E₂ ≫ L.capL ▷ E₂ ≫ (leftUnitor E₂).hom =
+        if n = (-h - 1).toNat then (leftUnitor E₂).hom else 0 := by
+      rw [← Category.assoc, ← TwoSupercategory.comp_whiskerRight (R := k), L.cupD_capL hh hn]
+      split_ifs
+      · rw [TwoSupercategory.id_whiskerRight (R := k), Category.id_comp]
+      · rw [TwoSupercategory.zero_whiskerRight (R := k), Limits.zero_comp]
+    by_cases he : h = -1
+    · have hn0 : n = 0 := by omega
+      subst n
+      have hz : L.cupD 0 ▷ E₂ ≫ U.capCross = 0 := by
+        have hc := congrArg (fun z => (leftUnitor E₂).hom ≫ z) (U.unit_capCross_zero hsq')
+        simpa only [cupD, rouquierPower_zero, TwoSupercategory.id_whiskerRight (R := k),
+          Category.comp_id, ← Category.assoc, Iso.hom_inv_id, Category.id_comp,
+          Limits.comp_zero] using hc
+      have ht : L.cupD 0 ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+          E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom = (leftUnitor E₂).hom := by
+        have hc := congrArg (fun z => (leftUnitor E₂).hom ≫ z) A₂.left_triangle
+        simpa only [cupD, rouquierPower_zero, TwoSupercategory.id_whiskerRight (R := k),
+          Category.comp_id, ← Category.assoc, Iso.hom_inv_id, Category.id_comp] using hc
+      rw [ite_eq_left he, hz, Preadditive.comp_zsmul, Preadditive.comp_add,
+        Preadditive.comp_neg, hcap, ht]
+      simp [he]
+    · rw [ite_eq_right he, Preadditive.comp_neg, hcap]
+      by_cases hn0 : n = 0
+      · subst n
+        have hc := congrArg (fun z => (leftUnitor E₂).hom ≫ z) (U.unit_capCross_zero hsq')
+        have hnz : (0 : ℕ) ≠ (-h - 1).toNat := by omega
+        simpa only [cupD, rouquierPower_zero, TwoSupercategory.id_whiskerRight (R := k),
+          Category.comp_id, ← Category.assoc, Iso.hom_inv_id, Category.id_comp,
+          Limits.comp_zero, ite_eq_right hnz, neg_zero] using hc
+      · have hc := congrArg (fun z => (leftUnitor E₂).hom ≫ z)
+          (U.dottedUnit_capCross_boundary hsq' (by omega : 0 < n) (by omega))
+        have hb : (n : ℤ) = 1 - h' ↔ n = (-h - 1).toNat := by omega
+        simp only [← Category.assoc, Iso.hom_inv_id, Category.id_comp,
+          hb, apply_ite (fun z => (leftUnitor E₂).hom ≫ z),
+          Preadditive.comp_neg, Category.comp_id, Limits.comp_zero] at hc
+        split_ifs at hc ⊢ <;> simpa only [cupD, neg_zero] using hc
+end Adjacent
 
 end SuperRouquierLoc
 end OddMath.SKM
