@@ -1,5 +1,16 @@
 # Odd nondegeneracy: restart state
 
+## Execution-order braid comparison
+
+`ExecutionBraidNormalization.md` proves the presentation comparison
+`-C_ij(z,y,x)=(-q_i)C_ij(x,y,z)` using the separate parity support of Q.
+It derives the even rational braid with the fixed-slide divided difference
+and the directed distinct-colour crossings. No replacement of Q or fixed
+factor crossings is made. The even sector gauge remains conditional on
+the stated rational factor realizations and shuffle identifications;
+the odd shifted-sector identification and smaller localization remain open.
+This is a written comparison, not a Lean theorem or full fused action.
+
 ## Content-shifted probe augmented inverse
 
 `HomProbeMatrix.md` supplies a written proof of the probe comparison
