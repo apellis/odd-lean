@@ -394,9 +394,19 @@ and proves `unit_capCross_zero`, `dottedUnit_capCross`, and
 `dottedUnit_capCross_boundary`. Moving `n` dots past the rightward crossing
 contributes `s^n`; multiplied by the double-curl boundary `-s^n`, this gives
 `-𝟙` in both parities. Thus the dotted-cup component of the cap-swap is
-proved, including undotted vanishing. The crossing component, which needs
-the signed mixed braid and low capped-crossing expansion at adjacent weights,
-is not yet proved. Brundan Lemma 4.2, (4.5)–(4.7), supplies the decomposition
+proved, including undotted vanishing. The low capped-crossing expansion is now
+proved by `sig_capL_low`: for `h ≤ 1`, it is `capD 0 ≫ cw (-1)` plus `capD 1`
+exactly at `h = 1`, in either parity. `sig_capD_closed` and
+`cross_sig_capD_closed` retain the factor `koszulSign p (n*p)` from moving the
+open-strand dot power past the rightward crossing. For a square-zero upward
+crossing, `cross_sig_capD_zero` vanishes and `cross_sig_capD_one` is `s` times
+the undotted right-cap pitchfork, where `s = (-1)^p`. The upward sandwich
+`tau_dot_tau_left` itself has coefficient one; the factor `s` comes from
+interchange. This is not the complete crossing component: the mixed braid
+identifying `L.sig ▷ E₂ ≫ U.capCross` with the capped double-crossing expression
+at adjacent heights `h' = h + 2` remains unproved. Its sign must be derived
+before identifying the cap-swap correction at `h = -1`. No leftward pitchfork
+or E/F left-adjunction triangle is concluded. Brundan Lemma 4.2, (4.5)–(4.7), supplies the decomposition
 being followed. BE Proposition 7.2's full pitchforks use (6.6), so they cannot
 be imported as independent inputs to the missing adjunction triangle.
 The odd- and even-parity specializations in `NonVacuity/Pitchfork.lean` assume
