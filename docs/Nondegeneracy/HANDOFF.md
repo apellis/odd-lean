@@ -1,5 +1,32 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted postcomposition coordinates
+
+`RouquierHomPostCoordinates.lean` bundles the specified
+`homContentPostAdjunction` in `SCat`, with right adjoint `N S`, not its
+output-shifted replacement. `homContentPostWordIso` is the prescribed
+`S(beta_M⁻¹);xi` comparison followed by the even postcomposition associator.
+`homContentPostCrossing` transports `W.cross i i h h₂ h h₂` with no scalar gauge.
+Its component and parity are proved.
+
+`homShiftConjugationIso_supernatural` proves cancellation of both comparison
+signs, for arbitrary shift and homogeneous transformation parity.
+`homContentPostFactorCrossing_shift` specializes this to the prescribed factor
+crossing. The specified unit and counit have coordinates `u;b⁻¹` and `a;v`,
+proved by `homContentPostAdjunction_unit_coordinates` and
+`homContentPostAdjunction_counit_coordinates`. The source coordinate has the
+signed two-removal formula `homShiftConjugationIso_hom_signed`; its factorization
+is `homShiftConjugationIso_comp`. `homShiftConjugationIso_unit_cancel` cancels
+the inner shift-square against the shifted word comparison.
+
+**Still open:** assemble these identities in the defined `rouquierMate`, then
+reassociate the raw postcomposition mate to insertion of `(W.loc i h h₂).sig`.
+That `sig` is defined as `rouquierMate (W.adj i h) (W.adj i h₂)` of the factor
+crossing. No comparison with it, including equation (B), is asserted yet.
+The consumers exercise odd colour with odd and zero content shift, and typecheck
+the specified odd-content mate; the Rouquier family remains an input.
+No dotted-power, whole-matrix, swapping-mate, fusion or nonzero-model result is claimed.
+
 ## Raw normalized Hom mate coordinates
 
 `homContentCrossing_coordinates_raw` proves cancellation of both comparisons
