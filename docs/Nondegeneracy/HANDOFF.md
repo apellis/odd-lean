@@ -83,9 +83,19 @@ including every associator and unitor. Its consumer applies the same
 full-Hom transpose to an odd crossing at arbitrary height; no odd map is
 restricted to the even underlying bicategory.
 
-Still missing in Lean are composite-transpose whiskering/coherence, the typed `P,Q,R`
-comparison with the prescribed mixed mate, horizontal super-opposition,
-and the mirrored local inversion data. These must be assembled before
+`RouquierTransposeComparison` proves the typed partial-mate comparison:
+`mixedMateBend_rouquierMate` identifies `Q(P(t))` with right transposition
+for `A₁.comp A₂`, and `mixedMateBend_symm_rightTranspose` gives `R(M(t))=P(t)`.
+Here `P` is the prescribed `rouquierMate`; `Q` uses the existing rectangular
+Hom equivalence with the adjunctions interchanged, and its inverse `R` has
+an explicit unit–map–counit formula. Counit uniqueness, the composite
+counit expansion and even-cap interchange prove the comparison for the
+full Hom space, including odd crossings. The consumer specializes to
+rational scalars, odd parity and arbitrary integral height, retaining local
+inversion data as premises rather than asserting a nonzero model.
+
+Still missing in Lean are composite-transpose whiskering/coherence,
+horizontal super-opposition, and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
