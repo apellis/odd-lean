@@ -709,3 +709,11 @@ of an odd dot. `oddRight_iterate_even` proves the half-exponent sign for
 all even powers of a signed odd multiplier. These coefficient statements
 are not by themselves compatibility of all categorical generators.
 
+`ConcreteRelationExamples.lean` checks this coefficient family on the
+all-odd datum `[[2,-2],[-4,2]]`, recovers the transported leading units,
+and proves the quadratic-minus-quartic identity in the actual affine and
+cyclotomic algebras. It checks the minus sign on the actual composition
+superbimodule. The repeated-colour polynomial is the last dot minus the
+first dot, and the corresponding affine matrix braid is proved. These
+are relation consumers, not nonvanishing or local-inversion theorems.
+
