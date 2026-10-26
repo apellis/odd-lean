@@ -391,10 +391,17 @@ as a ground-ring algebra equivalence. Scalar centrality follows from the
 linearity of the coefficient parity twist. `qCoefficientScalarTower` proves
 compatibility of the ground-ring and affine-algebra scalar actions on the
 existing shifted coefficient superspace. Neither quotient is replaced.
-The remaining scalar step is to prove that the source and target right
-representations send `r • f` to `r • ρ(f)` for the existing quotient
-scalar structures. This requires transporting the ground-ring scalar
-across the original integral balancing relation. It is not yet proved.
+`IntertwinerSupertensorScalars.lean` now proves
+`sourceRightSupertensor_smul` and `targetRightSupertensor_smul`: both
+representations send `r • f` to `r • ρ(f)` in the existing ground-ring
+endomorphism modules. Balancing transfers the scalar to the corner as
+`algebraMap k B r`; the existing quotient scalar tower identifies this
+with its superspace scalar action. No new quotient module is introduced.
+The coefficient and skew-polynomial actions satisfy the same scalar law.
+`rightSupertensor_scalarQ` gives equivariance for scalar multiples of Q.
+The importing consumer checks arbitrary scalars and tensor arguments in
+odd and mixed data with nonzero target shifts, and audits every declaration
+owned by the scalar-compatibility module against the standard axioms.
 
 Odd and mixed consumers check both signs at exponents one and two,
 nonzero target shifts, the algebra-map identity, and definitional agreement
