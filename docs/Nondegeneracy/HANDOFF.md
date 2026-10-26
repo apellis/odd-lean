@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Cyclotomic probes with invertible dots
+
+`InvertibleDotProbe.md` proposes a parity-graded probe factor obtained from
+explicit full-ELV coefficient specialization to `(u^2-1)^M_i` at odd colours
+and `(u-1)^M_i` at even colours, with positive cutoffs and homogeneous
+admissible Q parameters. It uses the written full deformed action, not an
+assumed localization-stable action. KKO's even-coefficient monic annihilators
+and PBW spanning give finite generation. Over a field, the zero-primary
+space of the next dot square moves left through the distinct-colour crossing
+or the equal-colour intertwiner; its square is invertible there by the leading
+Q coefficient, or by `phi^2=1` / `phi^2=u^2+v^2`. This proves every dot is a
+unit at every content. Finite-module cokernels and residue-field Nakayama
+then descend the result to any nonzero even commutative base with 2 invertible.
+
+The note identifies the specialized induction/restriction kernels, signed
+right-dot inverse (including its odd minus sign), cup/cap maps and both
+whole inverse matrices. Thus their specialization supplies the conditional
+probe input used by same-colour inversion and `HomProbeMatrix.md`, with
+parity retained and no positive integer grading asserted for the probe.
+The vacuum and positive-cutoff one-strand blocks are nonzero; arbitrary
+higher blocks and external weights are not asserted nonzero. These are
+written arguments, not new Lean declarations. Formalization, full fusion,
+normalized bubbles and the A3 regular-word identifications remain open.
+
 ## Residual windows and execution-order comparisons
 
 `HomResidualWindows.md` computes every corrected central Schur window and
