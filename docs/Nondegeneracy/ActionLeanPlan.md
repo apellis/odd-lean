@@ -339,6 +339,37 @@ This module must not export an original-datum action just by summing the
 two weights. Original-datum fusion is a separate research acceptance
 boundary, not hidden in the implementation plan for cyclotomic actions.
 
+## Global weight-space action
+
+Constructed on weight spaces of a level `Λ`, in `cyclotomicActionTarget`
+(`CyclotomicAction/Global*.lean`): induction `globalActionE` and restriction
+`globalActionF` with the even super adjunction `globalActionAdjunction`; the
+dot `globalActionDot` of parity `|i|`; the signed crossing
+`globalActionSignedCross` of parity `|i||j|` with square zero. These form
+`globalRouquierData Λ : SKM.RouquierData D`. The extension of the tower to the
+empty word (`heightAppend`, `heightLastDot`, `heightLastCrossing`) uses only
+unital, even, multiplicative strand maps and the signed intertwining and cut
+identities, which hold at one and two strands by the affine lemmas.
+
+Remaining obligations for `RouquierFamily`, in order:
+
+1. `braid` (same colour). The algebra identity `cyclotomicTriple_braid` exists;
+   the functor-level statement needs a three-colour corner comparison
+   (`InductionComposition` for three successive inductions) along
+   `heightAppend`, then the weight transport through three successor blocks
+   as in `GlobalWeightCross`.
+2. Slides. `SuperRouquierLoc.slide_left/right` with `t = -ψ` for equal colours:
+   `E₁ ◁ x₂ ≫ t - (-1)^{|i|} (t ≫ x₁ ▷ E₂) = 𝟙`. Needs the functor-level
+   dot–crossing relation on two inductions from every height, from the affine
+   relation on `affineLastCrossing` and the last two dots.
+3. Nilpotence (`GlobalNilpotent`): `∃ N, heightLastDot D Sc a i n ^ N = 0`. At
+   one strand this is the cyclotomic relation; for `n ≥ 1` the even proof uses
+   Brundan–Kleshchev Lemma 2.1, which has no odd counterpart in the library.
+   Not yet attempted; no step is known to fail.
+4. `loc`. Stream A's local inversion (`invPos`, `invNeg`) is pending, so
+   `GlobalLoc` is not stated: the family needs items 1–2 first, after which
+   `GlobalLoc` should take A's local-inversion statement as a named hypothesis.
+
 ## Verification and claim discipline
 
 Each headline has a concrete downstream consumer above. Alongside scoped

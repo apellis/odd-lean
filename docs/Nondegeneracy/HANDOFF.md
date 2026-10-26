@@ -101,8 +101,7 @@ the `cross`/`cross_mem` field of `RouquierData` on weight spaces.
 toward `RouquierFamily`: the braid field on weight spaces (port of
 `GlobalBraid`/`GlobalBraidQ` through `blockSucc₃`, using A's `Braid`), the
 slides (`GlobalSlides`), nilpotence (needs an odd cyclotomic analogue of
-Brundan–Kleshchev Lemma 2.1, absent), square/braid/slides on weight spaces,
-and `GlobalLoc` (local inversion is stream A's pending statement).
+Brundan–Kleshchev Lemma 2.1, absent), and `GlobalLoc` (local inversion is stream A's pending statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
