@@ -1,5 +1,32 @@
 # Odd nondegeneracy: restart state
 
+## Precomposition probe and postcomposition reservoir
+
+`SwappedHomInversion.md` gives a proposed written same-colour augmented
+inverse on the same `homWeightSector`, with the unit-dot probe on the
+precomposition side and nilpotent full-ELV reservoir on the postcomposition
+side. Cutoffs chosen by `ProbeReachability` at -mu give the literal vacuum
+weight Lambda_P-Lambda_R=mu, retaining its original lattice coordinate.
+No E/F exchange or new factor action is used.
+
+The prescribed central mates, expanded in the post-reservoir dot, become
+`C=sum q^r u_A(-r-1)v_B(r)` and
+`D=-sum q^(r+1)u_B(r)v_A(-r-1)`. Permuting only the central summand labels
+(B,A) identifies their residual tables with `ProbeWindowInverse` at heights
+(-h,-k). Post-reservoir right inverse windows give delta contractions
+modulo the positive-degree closed-identity coefficient ideal; the closures
+`cupD(r);R_W;capD(s)` have degree `2d(r+s+1)>0`. This supplies joint
+nilpotence, the all-height residual lift, both nonempty zero-total-height
+cases, and the unchanged swapping blocks with their reversed-variable
+finite inverse formulas. The pre-probe whole inverse retains c(k),
+gamma(0), all dotted scalars and parity comparisons.
+
+This is a written argument, not Lean verification. Its inputs are the
+existing written full factor constructions and finite homogeneous reservoir
+quotients. Formalization and independent checking of this transport remain;
+full fusion assembly, vacuum-generator and bubble comparisons, and detection
+are not conclusions of the same-colour inverse.
+
 ## Invertible-dot probe and mixed braid components
 
 `InvertibleDotProbe.md` constructs the parity-graded probe at all contents,
