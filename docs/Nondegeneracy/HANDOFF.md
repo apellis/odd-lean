@@ -58,6 +58,21 @@ uses its negative, matching the normalized slide in SeparatedFactorInversion.
 `NonVacuity/MateProjectionFormula.lean` checks both parity specializations.
 This interface assumes neither an inversion nor a proof of A2.
 
+`OddMath/SKM/RouquierHomContent.lean` defines `contentParity`,
+`homContentShift`, the original-weight category `homWeightSector`, and the
+content-shifted `homContentPostE`/`homContentPostF` with
+`homContentPostAdjunction`. The shift is `p(i) P(β₊)`; its change across a
+reservoir `j` edge is `p(i)p(j)` (`homContentShift_add_single`). The Π-action
+is the full superfunctor action, and its self-adjunction is derived from the
+even Π² comparison. `scripts/NonVacuity/HomContentShift.lean` consumes this
+adjunction in the integral parity envelope and checks the nontrivial sign on
+its odd comparison map. Finite content is retained separately from weight.
+The raising precomposition functor `homContentPreE` has the correct negative
+factor weight indices, but its right adjunction is still missing: the given
+factor right adjunction transports in the opposite direction. The required
+shifted factor left adjunction and the original-datum rational crossings
+must be constructed before these sectors can be assembled into A2.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
