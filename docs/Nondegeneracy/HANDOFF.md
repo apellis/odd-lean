@@ -1556,6 +1556,26 @@ equivalence, literal unpaired terminal crossings, and a common paired embedding
 
 ## Reservoir-vacuum detection
 
+`ELVVacuumTransport.md` records the proposed R41 narrow repair, not an
+accepted vacuum construction. For every cutoff N the coefficient pullback
+fixes even-colour elementary generators, sends odd chi_(i,r) to
+(-1)^r chi_(i,r), and sends delta_i to (-1)^(N_i+1) delta_i. It is an
+involution preserving the exact coefficient ideal in both directions,
+including delta_i chi_(i,m) at N_i=2m and delta_i at N_i=0, and preserves
+bounded coefficient detection. In the local super-opposite dot algebra it
+sends f_N to (-1)^binom(N,2) f_N; the delta sign is derived for all N.
+The natural prescribed-crossing candidate also reverses strand positions:
+first-boundary cyclotomic generators then become last-boundary generators,
+and append becomes prepend. These indexed ideals need not coincide (an
+explicit two-colour zero-cutoff example distinguishes them). The full
+affine generator map is a candidate, not a newly verified equivalence.
+The note spells out the existing Chevalley generator table and explains
+why swapping the Hom factors changes the external-weight sign, while
+Chevalley also changes E to restriction and reverses 2-morphisms. The
+remaining first-boundary vacuum/kernel and normalized cup/cap comparison
+is not supplied by either operation. Stop before replacing the action or
+changing theorem hypotheses; such a change requires a research steer.
+
 `ELVVacuumGeneratorComparison.md` gives a proposed written obstruction to
 identifying the untransported deformed factor with the regular ELV row.
 The exact matrix-category quotient has corners `ReservoirQuotient`: its
