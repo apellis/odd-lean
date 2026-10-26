@@ -1069,3 +1069,24 @@ superbimodule. The repeated-colour polynomial is the last dot minus the
 first dot, and the corresponding affine matrix braid is proved. These
 are relation consumers, not nonvanishing or local-inversion theorems.
 
+## Parity-compatible probe reachability
+
+[ProbeReachability.md](ProbeReachability.md) separates the proved weight
+choice from the remaining categorical vacuum construction. Specializing
+`exists_regular_vacuum_window D Sc μ t t' d`, together with `probe_even`,
+already gives every original weight an even probe cutoff and a cofinal
+reservoir cutoff of the required parity, with exact extended difference
+`(μ,0)` and injective regular ELV coordinates. No finite-type or original
+pairing-surjectivity assumption is used. The extension retains coroot-kernel
+coordinates as well as the prescribed pairings.
+
+`restrictRouquierFamily` restricts the supplied factor interface, not a
+constructed full fused action. The remaining regular-vacuum obligation is
+to construct the actual `FusedVacuumWords` and the maps and three identities
+of `RegularVacuumIdentification` for the same balanced cutoffs. The
+`FusedCoupledAction.family` field assumes these data; its sector fields
+still require the vacuum values, normalization and fused bubble block.
+Thus A3's parity-compatible arithmetic and algebraic regular windows are
+closed, while full-action restriction, regular-vacuum identification and
+the actual bubble comparisons remain open.
+
