@@ -94,8 +94,19 @@ full Hom space, including odd crossings. The consumer specializes to
 rational scalars, odd parity and arbitrary integral height, retaining local
 inversion data as premises rather than asserting a nonzero model.
 
-Still missing in Lean are composite-transpose whiskering/coherence,
-horizontal super-opposition, and the mirrored local inversion data. These must be assembled before
+`RouquierTransposeWhiskering` proves
+`SuperAdjunction.rightTranspose_whiskerLeft` and
+`rightTranspose_whiskerRight` for arbitrary maps between independently
+right-adjointable source and target 1-morphisms. Both composite adjunctions
+are explicit. The counit-bend proof moves each arbitrary argument only past
+even counits or coherence maps, so neither law carries a sign.
+`rightTranspose_associator_inv` identifies the transpose of the inverse
+associator with the inverse associator on the reversed adjoint string,
+using the two explicitly bracketed triple composite adjunctions. Its
+consumer checks both whiskered odd dots retain parity one.
+
+Still missing in Lean are horizontal super-opposition and the mirrored
+local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
