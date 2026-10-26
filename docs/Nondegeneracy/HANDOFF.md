@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## Canonical F triangle and shifted left adjunctions
+
+`OddMath.SKM.reflection_triangle_scalar` in `RouquierFTriangle.lean`
+proves the cup/cap reflection scalar product at every integer height by the
+binomial recurrence and involutive signs, including the separating height -1.
+`SuperRouquierLoc.leftAdj_triangle_F` applies the E triangle to the explicitly
+reflected local data, with the derived reflected crossing squares and braid.
+It reads back the horizontal-opposite unitors, associator and whiskerings,
+then cancels the canonical cup/cap scalar product. Its coefficient is
+`koszulSign σ σ * (if h < 0 then 1 else koszulSign p p)`, where `σ=p(h+1)`.
+
+`RouquierFamily.leftZigF_eq` specializes this to every family edge;
+`RouquierFamily.leftZigzags` discharges the existing two-triangle condition.
+`RouquierFamily.leftAdjoints` uses the existing cap-normalization constructor.
+There is no new cyclicity, faithfulness or left-triangle hypothesis. The
+rank-one odd consumer checks arbitrary heights and the boundaries -1 and 0,
+and audits every declaration owned by the new module.
+
+This closes the triangle obligation of `SignedFTriangle.md`, not the existence
+of a nonzero odd inversion model, the multicolour action, fusion or separation.
+
 ## Principal component of the reversed Hom matrix
 
 `HomPrincipalMate.md` derives the unbundled same-colour Hom crossing as
