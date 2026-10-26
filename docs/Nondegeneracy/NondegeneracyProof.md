@@ -144,20 +144,26 @@ This holds by construction, since the action is right multiplication.
 
 **cited**, KKO-I Theorem 9.6, for undeformed `a^Λ`.
 
-**OPEN (A1-map).** KKO-I 9.6 asserts *some* natural isomorphism. The
-detection data need the *specific* Rouquier map:
+**Written proof (A1-map), not yet Lean.** The detection data need the
+specific Rouquier map, not just an abstract isomorphism:
 
 > (A1-map) For the cyclotomic super 2-representation, the map
 > `ρ = [σ ; ε∘x^0, …, ε∘x^{h-1}]` (resp. with dotted units for `h<0`) is
 > invertible. Here `σ` is the cup–crossing–cap mate.
 
+For the actual full-ELV coefficient algebra and its stated admissibility
+hypotheses, `DeformedMatrixComparison.md` proves this at every height using
+`DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md` and
+`DeformedRouquierMatrix.md`. The output parity transport in the cap rows
+and their semilinear kernel-pivot calculation are explicit. This does not
+prove the full action, fusion, or a Lean version of the full-coefficient result.
+
 In the even case this is Kang–Kashiwara's theorem: Kang–Kashiwara
 *Categorification of highest weight modules via KLR algebras*, the source
 `kang-kashiwara-cyclotomic_1102.4677v4.txt`. The statement there was not
-re-read for this document, so no locator is given. The super case needs the
-KKO proof ("arguments of [10, Theorem 5.2] with a slight modification",
-KKO-I proof of 9.6) to be checked for the specific map. Lean modules in
-progress for this map are listed in HANDOFF (A0).
+re-read for this document, so no locator is given. The companion notes above
+resolve the specific-map comparison in the super case at the written level.
+Lean modules in progress for this map are listed in HANDOFF (A0).
 
 **OPEN (A0-deform).** KKO permits homogeneous even coefficients over an
 ordinary commutative graded base; odd super coefficients require a separate
@@ -167,10 +173,12 @@ not flat. Use the precise ELV coefficient ring, including `d_iχ_(i,m)=0`
 at even cutoffs, as specified in [CyclotomicDeformationProof](CyclotomicDeformationProof.md).
 That ring is itself not flat over the independent exterior subalgebra.
 The translated KKO subfamily has a proposed tower-freeness proof, but does
-not supply the even-cutoff ELV deformation. The full family still needs
-deformed corner projectivity. Lifting the specified Rouquier matrix also
-needs its exact base-change comparison, A1-map, and Tor vanishing for its
-target convolution kernel; algebra freeness alone is not sufficient.
+not supply the even-cutoff ELV deformation. The direct full-family matrix argument is now supplied by the companion
+notes above, without nilpotent lifting. A lifting-based alternative would
+still need exact base-change comparison and Tor vanishing for the target
+convolution kernel; algebra freeness alone is not sufficient. Full action
+assembly remains separate; restricting to projectives also needs the
+appropriate side-specific projectivity statements.
 
 ## 5. Separated-sector fusion (A2)
 
@@ -574,8 +582,8 @@ the factors, part of A3.
 | Reservoir closures | joint nilpotence | **proposed** from homogeneous action and bounded grading support; hypotheses and feedback identification remain |
 | A2-fused | fused bubble = mate composite | **OPEN** |
 | A1-b,c | KKO-I Thm 9.1, 9.6 (undeformed) | **cited** (read) |
-| A1-map | the specific Rouquier map is invertible (super) | **OPEN** (even: Kang–Kashiwara, cited, locator not re-read) |
-| A0-deform | A1 over the actual ELV coefficient ring | **OPEN**: deformed corner projectivity and exact map comparison; unrestricted exterior flatness is false |
+| A1-map | the specific same-colour Rouquier map is invertible (super) | **written proof**, full-ELV hypotheses: `DeformedMatrixComparison.md`; not yet Lean |
+| A0-deform | A1 over the actual ELV coefficient ring | **OPEN**: full action assembly and distinct-colour prescribed mate; unrestricted exterior flatness is false |
 | A3 | detection weights reachable with probes (even `⟨h_i,Λ_B⟩` at odd `i`); regular identification; vacuum values | **OPEN** |
 | B1 | assembly over a field | **OPEN** (formal, once A0–A3 hold) |
 | B2 | descent from fields to the coefficient rings of `NondegeneracyConjecture` | **OPEN** |
@@ -596,5 +604,5 @@ The conditional Lean results and proposed written arguments give:
 The genuinely open mathematics is concentrated in:
 * (c2-odd), a finite symbolic three-strand check in KKT's rational form;
 * the full residual-matrix comparison and inversion, including all height signs;
-* A1-map and A0-deform for the super cyclotomic factors;
+* Lean formalization of A1-map and full A0-deform action assembly for the super cyclotomic factors;
 * A3.

@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Prescribed same-colour inversion on paper
+
+`DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
+`DeformedRouquierMatrix.md` and `DeformedMatrixComparison.md` now give a
+written proof that the prescribed tensor-mate/dotted-cup/dotted-cap matrix
+is invertible at every height over the stated full-ELV coefficient algebra.
+The odd parameters remain independent, with the required coefficient
+relations; no exterior-flatness assumption is used. The cap rows require
+output parity transport between explicitly twisted bimodule targets.
+The kernel-window and semilinear unit-pivot calculation are proved, not
+extra inversion hypotheses. The local right-factored g signs in
+`DeformedProjectiveResolution.md` and `DeformedGlobalQP.md` are corrected
+without changing the definitions, cancellation or final QP formula.
+
+This is not a Lean theorem or a full action. The full-coefficient
+distinct-colour prescribed mate, action assembly, and fusion remain
+separate; the existing polynomial-coefficient Lean implementation is
+narrower. The general nondegeneracy conjecture remains open.
+
 ## Deformed right projectivity on paper
 
 `DeformedSquareResolution.md` assembles the written right-projectivity argument
@@ -8,8 +27,8 @@ central right `B[s]` actions and finite corner-projective PBW modules, proves
 P-linearity and injectivity, identifies its cokernel, and lifts a central monic
 annihilator through the nilpotent odd-parameter ideal. The coefficient twists
 are retained in both raw quotient and right-B-linear tensor coordinates.
-These are written arguments, not Lean theorems. Left projectivity, reverse
-adjunctions and invertibility of the prescribed Rouquier matrix remain separate.
+These are written arguments, not Lean theorems. Left projectivity and reverse
+adjunctions remain separate; prescribed same-colour inversion is supplied above.
 
 ## Constructed right dots and Q compatibility
 

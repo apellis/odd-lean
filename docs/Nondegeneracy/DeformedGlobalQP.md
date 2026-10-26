@@ -105,7 +105,7 @@ D_0=x_(n+1)^2−x_1^2, E_0=x_(n+1)−x_1. The exact transport laws are
 
 The second includes the spectator's supercommutation with V. Use
 
-    g_n=(τ_n D−E)D,       τ_n g_n=τ_n D E.
+    g_n=(E−τ_n D)D,       τ_n g_n=τ_n D E.
 
 Define Z=f_i(x_1)T_(n−1)τ_n D V. Equation (K), before cancellation, is
 
@@ -122,7 +122,7 @@ Thus the two signs cancel. This does not move f_i past τ_n and does not
 cancel f_i or any coefficient.
 
 If ν_n=i is even, use D=x_(n+1)−x_n and D_0=x_(n+1)−x_1 instead.
-The local formulas are g_n=(τ_n D−1)D and τ_n g_n=τ_n D.
+The local formulas are g_n=(1−τ_n D)D and τ_n g_n=τ_n D.
 Equation (K) says
 
     (f_i(x_1)T_(n−1)τ_n D V−A_(ν<))D_0 ≡ 0.
