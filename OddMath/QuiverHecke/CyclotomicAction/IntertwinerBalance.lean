@@ -25,14 +25,18 @@ consumer is the balance of the map `Q` of KKO Proposition 8.4 over the old cross
   `g_n ⋯ g_1` with the sign `(-1)^{p(x)p(y)p(i)p(ν)}`.
 * `meetLeft`, `meetRight`: the two sides of `τ_{a+1} g_a g_{a+1} = g_a g_{a+1} τ_a` on
   `i, j, c`; `meetLeft_eq_of_ne` (both `j, c` differ from `i`: the braid relation (1.9)) and
-  `meetLeft_eq_self` (`i = j = c`: `braid_element`, `braid_gEven`).
+  `meetLeft_eq_self` (`i = j = c`: `braid_element`, `braid_gEven`), `meetLeft_eq_of_eq_ne`
+  (`i = j ≠ c`: the exact braid relation on `i, i, c` and the dot slides intertwine the
+  variants, `meet_core_eq_ne`), combined in `meetLeft_eq` (all cases except `c = i ≠ j`).
 * `cross_comp_moveHom`: the first identity of KKO (8.13) for an old crossing `ψ` of `j, c` in
   `ν`: `ψ g_n ⋯ g_1 = (-1)^{p(j)p(c)p(i)p(ν)} g_n ⋯ g_1 ψ`, given the three-strand identity
   for `i, j, c`.
 
-Not treated here: the three-strand identity for `i = j ≠ c` and `i = c ≠ j`. In the second case
-the braid relation has the correction term of `braid_iji`, which must cancel against the
-quadratic relation `cross_cross_ne`.
+* `cross_comp_moveHom_of`: the same, unconditionally unless `c = i ≠ j`.
+
+Not treated here: the three-strand identity for `c = i ≠ j`. There the braid relation has the
+correction term of `braid_iji`, which must cancel against the quadratic relation
+`cross_cross_ne`.
 -/
 
 noncomputable section
@@ -578,5 +582,154 @@ theorem cross_comp_moveHom (v : List I) (i j c : I)
         List.sum_cons]
       exact congrArg (fun z => zsign k z • _) (by ring)
     all_goals simp
+
+theorem slide_left_ne_gen {t t' : List I} (l r : List I) (i j : I) (hij : i ≠ j) {p : ℕ}
+    (hp : l.length = p) (ht : t = l ++ [i, j] ++ r) (ht' : t' = l ++ [j, i] ++ r)
+    (h₁ : SChain t (pl t [.dot p, .cross p]) t')
+    (h₂ : SChain t (pl t [.cross p, .dot (p + 1)]) t') :
+    cl D Sc t t' [.dot p, .cross p] h₁ =
+      zsign k (D.parity i * D.parity j) • cl D Sc t t' [.cross p, .dot (p + 1)] h₂ := by
+  subst hp ht ht'
+  exact slide_left_ne D Sc l r i j hij h₁ h₂
+
+theorem sChain_cross_left (l v : List I) (i c : I) :
+    SChain (l ++ i :: c :: i :: v) (pl (l ++ i :: c :: i :: v) [.cross l.length])
+      ((l ++ [c] ++ [i]) ++ i :: v) :=
+  sChain_ofShape' l (i :: v) (.cross i c) (by simp [Shape.dom]) (by simp [Shape.cod]) rfl
+
+/-- The crossings `ψ_a ψ_{a+1}` from `i, i, c` to `c, i, i` intertwine the variant `g` on the
+first two strands with the variant on the last two. -/
+theorem meet_core_eq_ne (l v : List I) {i c : I} (hic : i ≠ c) {L₁ L₂ : List PG}
+    (hL₁ : L₁ = [.cross (l.length + 1), .cross l.length])
+    (hL₂ : L₂ = [.cross (l.length + 1), .cross l.length])
+    (h₁ : SChain (l ++ i :: i :: c :: v) (pl (l ++ i :: i :: c :: v) L₁)
+      ((l ++ [c] ++ [i]) ++ i :: v))
+    (h₂ : SChain (l ++ i :: i :: c :: v) (pl (l ++ i :: i :: c :: v) L₂)
+      ((l ++ [c] ++ [i]) ++ i :: v)) :
+    cl D Sc _ _ L₁ h₁ ≫ sameIntertwiner D Sc ((l ++ [c] ++ [i]) ++ i :: v) (l.length + 1) i =
+      sameIntertwiner D Sc (l ++ i :: i :: c :: v) l.length i ≫ cl D Sc _ _ L₂ h₂ := by
+  subst hL₁ hL₂
+  have hΦ : ∀ h : SChain (l ++ i :: i :: c :: v)
+      (pl (l ++ i :: i :: c :: v) [.cross (l.length + 1), .cross l.length])
+      ((l ++ [c] ++ [i]) ++ i :: v),
+      cl D Sc _ _ _ h = cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+        cl D Sc _ _ _ (sChain_cross_left l v i c) := fun h => by
+    rw [cl_comp]
+    rfl
+  have i₁ : cl D Sc (l ++ i :: i :: c :: v) (l ++ i :: c :: i :: v)
+      ([.dot l.length] ++ [.cross (l.length + 1)])
+      (sChain_append_of (sChain_dotAny _ _) (sChain_cross_succ l v i i c)) =
+      zsign k (D.parity i * (D.parity i * D.parity c)) •
+        (cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+          cl D Sc (l ++ i :: c :: i :: v) _ [.dot l.length] (sChain_dotAny _ _)) := by
+    rw [cl_comp]
+    exact cl_interchange_gen D Sc l [] v (.dot i) (.cross i c) (by simp [Shape.dom])
+      (by simp [Shape.cod]) rfl rfl (by simp [Shape.dom]) (by simp [Shape.dom]) _ _
+  have s₁ : cl D Sc (l ++ i :: c :: i :: v) _ [.dot l.length] (sChain_dotAny _ _) ≫
+      cl D Sc _ _ _ (sChain_cross_left l v i c) =
+      zsign k (D.parity i * D.parity c) •
+        (cl D Sc _ _ _ (sChain_cross_left l v i c) ≫
+          cl D Sc ((l ++ [c] ++ [i]) ++ i :: v) _ [.dot (l.length + 1)] (sChain_dotAny _ _)) := by
+    rw [cl_comp, cl_comp]
+    exact slide_left_ne_gen D Sc l (i :: v) i c hic rfl (by simp) (by simp) _ _
+  have s₂ : cl D Sc (l ++ i :: i :: c :: v) _ [.dot (l.length + 1)] (sChain_dotAny _ _) ≫
+      cl D Sc _ _ _ (sChain_cross_succ l v i i c) =
+      zsign k (D.parity i * D.parity c) •
+        (cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+          cl D Sc (l ++ i :: c :: i :: v) _ [.dot (l.length + 1 + 1)] (sChain_dotAny _ _)) := by
+    rw [cl_comp, cl_comp]
+    refine slide_left_ne_gen D Sc (l ++ [i]) v i c hic ?_ ?_ ?_ _ _ <;> simp
+  have i₂ : cl D Sc (l ++ i :: c :: i :: v) _ [.dot (l.length + 1 + 1)] (sChain_dotAny _ _) ≫
+      cl D Sc _ _ _ (sChain_cross_left l v i c) =
+      zsign k (D.parity i * D.parity c * D.parity i) •
+        (cl D Sc _ _ _ (sChain_cross_left l v i c) ≫
+          cl D Sc ((l ++ [c] ++ [i]) ++ i :: v) _ [.dot (l.length + 1 + 1)]
+            (sChain_dotAny _ _)) := by
+    rw [cl_comp, cl_comp]
+    exact eq_zsign_smul_symm (cl_interchange_gen D Sc l [] v (.cross i c) (.dot i)
+      (by simp [Shape.dom]) (by simp [Shape.cod]) rfl rfl (by simp [Shape.dom])
+      (by simp [Shape.dom]) _ _)
+  have hsq : ∀ x y : ZMod 2, x * (x * y) = x * y := fun x y => by
+    rw [← mul_assoc, parity_sq]
+  have hsq' : ∀ x y : ZMod 2, x * y * x = x * y := fun x y => by
+    rw [mul_comm, ← mul_assoc, parity_sq]
+  have hu : dotE D Sc (l ++ i :: i :: c :: v) l.length ≫
+      (cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫ cl D Sc _ _ _ (sChain_cross_left l v i c)) =
+      zsign k 0 • ((cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+        cl D Sc _ _ _ (sChain_cross_left l v i c)) ≫
+          dotE D Sc ((l ++ [c] ++ [i]) ++ i :: v) (l.length + 1)) := by
+    rw [dotE_eq_cl D Sc (sChain_dotAny _ _), dotE_eq_cl D Sc (sChain_dotAny _ _),
+      ← Category.assoc, cl_comp, i₁, Linear.smul_comp, Category.assoc, s₁, Linear.comp_smul,
+      smul_smul, hsq, zsign_mul_self, show zsign k (0 : ZMod 2) = 1 by simp [zsign],
+      Category.assoc]
+  have hv : dotE D Sc (l ++ i :: i :: c :: v) (l.length + 1) ≫
+      (cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫ cl D Sc _ _ _ (sChain_cross_left l v i c)) =
+      zsign k 0 • ((cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+        cl D Sc _ _ _ (sChain_cross_left l v i c)) ≫
+          dotE D Sc ((l ++ [c] ++ [i]) ++ i :: v) (l.length + 1 + 1)) := by
+    rw [dotE_eq_cl D Sc (sChain_dotAny _ _), dotE_eq_cl D Sc (sChain_dotAny _ _),
+      ← Category.assoc, s₂, Linear.smul_comp, Category.assoc, i₂, Linear.comp_smul,
+      smul_smul, hsq', zsign_mul_self, show zsign k (0 : ZMod 2) = 1 by simp [zsign],
+      Category.assoc]
+  have hT : crossE D Sc (l ++ i :: i :: c :: v) l.length ≫
+      (cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫ cl D Sc _ _ _ (sChain_cross_left l v i c)) =
+      zsign k 0 • ((cl D Sc _ _ _ (sChain_cross_succ l v i i c) ≫
+        cl D Sc _ _ _ (sChain_cross_left l v i c)) ≫
+          crossE D Sc ((l ++ [c] ++ [i]) ++ i :: v) (l.length + 1)) := by
+    rw [crossE_eq_cl D Sc (sChain_ofShape' l (c :: v) (.cross i i)
+        (t := l ++ i :: i :: c :: v) (t' := l ++ i :: i :: c :: v) (by simp [Shape.dom])
+        (by simp [Shape.cod]) rfl),
+      crossE_eq_cl D Sc (sChain_ofShape' (l ++ [c]) v (.cross i i)
+        (t := (l ++ [c] ++ [i]) ++ i :: v) (t' := (l ++ [c] ++ [i]) ++ i :: v)
+        (by simp [Shape.dom]) (by simp [Shape.cod]) (by simp)),
+      show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul]
+    simp only [cl_comp]
+    refine (braid_ne_gen D Sc l v i i c (fun h => h.2 rfl) ?_ ?_ ?_ ?_ _ _).symm <;> simp
+  have hS := variants_comp_of D Sc _ 0 hu hv hT
+  rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul, one_smul] at hS
+  rw [hΦ h₁]
+  unfold sameIntertwiner
+  split_ifs
+  · exact hS.1.symm
+  · exact hS.2.symm
+
+/-- If `i = j ≠ c`, the identity follows from the exact braid relation on `i, i, c` and the
+dot slides, through `variants_comp_of`. -/
+theorem meetLeft_eq_of_eq_ne (l v : List I) {i c : I} (hic : i ≠ c) :
+    meetLeft D Sc l v i i c = meetRight D Sc l v i i c := by
+  unfold meetLeft meetRight
+  rw [intertwinerHom_of_ne D Sc l (i :: v) hic, intertwinerHom_of_ne D Sc (l ++ [i]) v hic,
+    intertwinerHom_self, intertwinerHom_self,
+    sameIntertwiner_congr D Sc (w := l ++ i :: i :: c :: v)
+      (show l ++ i :: i :: c :: v = l ++ [i, i] ++ (c :: v) by simp) rfl,
+    sameIntertwiner_congr D Sc (w := (l ++ [c] ++ [i]) ++ i :: v)
+      (show (l ++ [c] ++ [i]) ++ i :: v = (l ++ [c]) ++ [i, i] ++ v by simp)
+      (show l.length + 1 = (l ++ [c]).length by simp)]
+  simp only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp, eqToHom_trans,
+    Category.comp_id]
+  rw [cl_comp_eqToHom_assoc, cl_comp_assoc, cl_comp_eqToHom_assoc, eqToHom_comp_cl_assoc,
+    cl_comp_eqToHom_assoc, cl_comp]
+  · exact meet_core_eq_ne D Sc l v hic (by simp) (by simp) _ _
+  all_goals simp
+
+/-- The three-strand identity holds unless the colours are `i, j, i` with `j ≠ i`. -/
+theorem meetLeft_eq (l v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) :
+    meetLeft D Sc l v i j c = meetRight D Sc l v i j c := by
+  by_cases hij : i = j
+  · subst hij
+    by_cases hic : i = c
+    · subst hic
+      exact meetLeft_eq_self D Sc l v i
+    · exact meetLeft_eq_of_eq_ne D Sc l v hic
+  · exact meetLeft_eq_of_ne D Sc l v hij (fun h => hb ⟨h, hij⟩)
+
+/-- KKO (8.13), first identity, for an old crossing of `j, c`, unless `c = i ≠ j`. -/
+theorem cross_comp_moveHom_of (v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) (m l : List I) :
+    cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j c) ≫
+        moveHom D Sc i l (m ++ c :: j :: v) =
+      zsign k (D.parity j * D.parity c * (D.parity i * (wordParity D m + wordParity D v))) •
+        (moveHom D Sc i l (m ++ j :: c :: v) ≫
+          cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j c)) :=
+  cross_comp_moveHom D Sc v i j c (fun l' => meetLeft_eq D Sc l' v hb) m l
 
 end OddMath.QuiverHecke

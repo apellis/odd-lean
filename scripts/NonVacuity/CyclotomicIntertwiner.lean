@@ -141,7 +141,14 @@ example := cross_comp_moveHom datum scalars [] true false false
 example := cross_comp_moveHom datum scalars [] true true true
   (fun l' => meetLeft_eq_self datum scalars l' [] true) [] [false]
 
+/-- Colours `true, true, false`: the moving strand meets a crossing of its own colour with
+another colour. -/
+example := cross_comp_moveHom_of datum scalars [] (i := true) (j := true) (c := false)
+  (by decide) [] [false]
+
 #print axioms cross_comp_moveHom
+#print axioms cross_comp_moveHom_of
+#print axioms meetLeft_eq
 #print axioms meetLeft_eq_of_ne
 #print axioms meetLeft_eq_self
 #print axioms variants_comp_of

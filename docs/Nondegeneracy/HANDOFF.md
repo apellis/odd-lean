@@ -680,9 +680,10 @@ sign `(-1)^{p(x)p(y)p(i)p(j)}`) and `cross_left_comp_moveHom`. For crossings of
 `R(β)` the first identity of (8.13) is `cross_comp_moveHom` (sign
 `(-1)^{p(j)p(c)p(i)p(ν)}`), proved from the three-strand step `meetLeft = meetRight`
 (`ψ_{a+1} g_a g_{a+1} = g_a g_{a+1} ψ_a` on `(i,j,c)`). That step is proved for
-`i≠j,c` (`meetLeft_eq_of_ne`, braid relation) and `i=j=c` (`meetLeft_eq_self`).
-Open: `i=j≠c` (should follow from `variants_comp_of` with the exact braid on
-`(i,i,c)` and the dot slides); the hard case is `i=c≠j`,
+`i≠j,c` (`meetLeft_eq_of_ne`, braid relation), `i=j=c` (`meetLeft_eq_self`) and
+`i=j≠c` (`meetLeft_eq_of_eq_ne`: exact braid on `(i,i,c)` plus dot slides through
+`variants_comp_of`); `meetLeft_eq` and `cross_comp_moveHom_of` cover every case but
+one. Open: `c=i≠j`,
 where the `(i,j,i)` braid correction (`braid_iji`) must cancel against
 `cross_cross_ne`; this is the remaining computation (KKO Lemma 8.3, mixed colours).
 The braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}` of Lemma 8.3 is checked on
