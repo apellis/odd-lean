@@ -270,6 +270,79 @@ PDF page 42. Finite colours, positive indexing and
 No full Proposition 8.4, QP formula, or nonzero categorical inversion model
 is asserted.
 
+## Finite polynomial operators on the moving-strand quotients
+
+`CyclotomicAction/IntertwinerRightPolynomial.lean` evaluates every finite
+ordered family `∑ t^m ⊗ c_m` on the same `qSourceSpace` and `qTargetSpace`.
+`sourceRightPolynomial` and `targetRightPolynomial` are additive maps to
+endomorphisms; their constant-unit law is proved. `rightPolynomial_Q`
+proves equivariance for every such family, from the existing dot and
+coefficient formulas, without any assumed action interface.
+
+`sourceRightMonomial_comp` and `targetRightMonomial_comp` prove the
+ordered multiplication law: composing the operator for `t^r ⊗ b` with
+that for `t^s ⊗ c` gives `(-1)^(s p(i) q)` times the operator for
+`t^(r+s) ⊗ bc`, when `b` has degree `q`. Composition reverses right
+products. All natural powers are retained; odd variables are not exterior
+variables. Consumers exercise odd and mixed data with nonzero target
+shift, finite two-term polynomials, and both signs at exponents one and two.
+
+`CyclotomicAction/IntertwinerSkewAction.lean` now constructs the associative
+parity-skew polynomial ring using Mathlib's `SkewPolynomial` and the proved
+`coefficientParityAction`. The underlying coefficient map is the sign
+endomorphism `φ(c)=(-1)^(p(i)|c|)c`; its multiplicativity and unit law follow
+from the existing cyclotomic grading. No action law is assumed.
+`sourceRightSkew` and `targetRightSkew` are ring homomorphisms into ordinary
+opposite endomorphism rings on the same induced quotients, including the
+shifted target. Their multiplication law is reverse composition, and
+`rightSkew_Q` proves Q equivariance for every skew polynomial.
+
+Coefficient-first `c X^m` acts as `T^m C_c`. The `*_dotFirst` and
+`*_coefficientFirst` theorems prove both order conversions: dot-first
+`X^m c` is coefficient-first `φ^m(c) X^m`, with
+`φ^m(c)=sgn(m p(i))(c)`. The twist is involutive, so the inverse conversion
+uses the same formula. All natural powers remain; odd dots are not exterior.
+The consumer checks ring products, Q equivariance, and order/sign conversion
+on odd and mixed data with nonzero target shift.
+
+This is the right skew-ring action portion of KKO I,
+arXiv:1206.5933v2, Proposition 8.4, not its full supertensor comparison.
+Remaining: the scalar-balanced linear identification with `k[t_i]`
+supertensor the cyclotomic coefficient algebra and the corresponding graded
+supermodule packaging. Ring representations alone do not prove that
+identification. The source fixed-content comparison, zero-height case,
+full-ELV coefficients and QP identity remain separate.
+
+## Right cyclotomic coefficients and the polynomial variable
+
+`CyclotomicAction/IntertwinerRightCoefficient.lean` descends right
+cyclotomic multiplication to the existing source induced quotient and the
+shifted `qCoefficient.ract` to the existing target. The descent uses
+`InductionAlong.Ind.map`: coefficient right multiplication is proved
+left-affine-linear, so the integral balancing relations are preserved.
+Both resulting operators remain endomorphisms over the larger affine algebra.
+Their unit, product (reverse composition), zero and addition laws are proved.
+
+`qCoefficientInsert_mul` derives right-linearity of the canonical insertion
+from its superbimodule homomorphism law, with **no additional sign**.
+`rightCoefficient_Q` then proves Q equivariance by its pure-tensor formula.
+`sourceRightCoefficient_parity` and `targetRightCoefficient_parity` give the
+homogeneous coefficient degree on `qSourceSpace` and `qTargetSpace`.
+`sourceRightDot_coefficient` and `targetRightDot_coefficient` prove
+`R_t ∘ R_c = (-1)^(p(i)q) R_c ∘ R_t` for a coefficient of degree `q`.
+The sign comes from the coefficient parity involution, including on the
+shifted target; no square-zero condition on the odd variable is imposed.
+
+This is the right-coefficient and dot/coefficient part of KKO I,
+arXiv:1206.5933v2, Proposition 8.4, with the right action setup preceding
+Lemma 8.1. The consumer checks all-odd height three and mixed height two,
+both with shift one, and uses a concrete odd cyclotomic dot for the grading
+and supercommutation hypotheses. These are quotient examples, not nonzero
+inversion models. Full polynomial-supertensor action packaging, comparison
+with the source's fixed-content corners, full-ELV coefficients and QP remain
+open. Finite colours, positive quotient indexing and
+`CyclotomicPolynomialParity` are unchanged.
+
 ## Graded polynomial-variable square
 
 `CyclotomicAction/IntertwinerDotGrading.lean` proves `sourceRightDot_parity`
