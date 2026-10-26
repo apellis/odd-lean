@@ -282,6 +282,17 @@ positive-height adjunction, dots and crossings above form the action data,
 not yet a representation satisfying all defining relations. Vacuum extension
 and the parity-shifted Mackey decomposition remain open.
 
+`CyclotomicAction/ContentBlocks.lean` defines `contentIdempotent` as the finite
+sum of word identities with a prescribed multiset of colours. Its centrality
+uses `hom_eq_zero_of_content_ne`, proved by induction on the presented Hom
+space, not a hypothesis about content preservation. The quotient elements
+`cyclotomicContentIdempotent` satisfy `_sq`, `_central`, and `_orthogonal`
+in `CyclotomicAlgebra`. `wordContent_append` records the colour added by
+rightmost strand insertion. These pass a scoped warning-free build and
+owned-declaration axiom audit; full CI remains the branch-wide gate.
+The restriction to a support supercategory and its induction functor, and
+the height-zero vacuum extension, are not supplied by these algebra lemmas.
+
 ## Proof architecture
 
 | Step | Statement | Status |
