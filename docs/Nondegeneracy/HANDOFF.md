@@ -1,5 +1,43 @@
 # Odd nondegeneracy: restart state
 
+## Inherited Hom crossing and its specified mate
+
+`RouquierHomCrossing.lean` defines `homContentCrossing` using the inherited
+same-colour `T.cross`, multiplied by `-koszulSign p p` and conjugated by
+the even precomposition associator. `homContentCrossing_app` computes every
+component and `homContentCrossing_mem` proves parity p.
+`homContentCrossing_mate_app` specializes the SCat mate bridge to this
+crossing and expands both normalized adjunction components. It retains
+both parity comparisons, the counit sign, and c(k) inverse at the cap edge.
+The output/input-shift cancellation and equation (10) of
+`HomPrincipalMate.md` are still open, as is composition with the principal
+word evaluation. The consumer specializes the expanded mate to the odd
+rank-one datum at arbitrary weights; no nonzero model is constructed.
+
+## Normalized Hom adjunction in SCat
+
+`RouquierHomSuperAdjunction.lean` packages the specified
+`homContentPreAdjunction T W T.leftAdjoints` as `homContentSuperAdjunction`
+in the existing `SCat` 2-supercategory. The unit and inverse-scaled counit
+are proved even from their normalized formulas; no new zigzag premise is used.
+`rouquierMate_scat_app` unfolds the defined mate, and
+`homContentSuperAdjunction_mate_app` specializes it to these Hom adjunctions,
+giving the literal unit–mapped crossing–mapped counit component at either parity.
+The general bridge accepts an arbitrary crossing; the inherited specialization
+is given above. Both shift removals and `HomPrincipalMate.md` (10) remain open. All heights, the existing normalization c(k), and gamma(0)
+are unchanged. The odd rank-one consumer uses arbitrary weights; it does
+not construct a nonzero family.
+
+## Unit output comparison
+
+`homContentPreAdjunction_unit_output_coordinates` removes the output shift
+following the specified normalized Hom unit and a homogeneous map of parity q.
+It retains the factor `koszulSign sigma q` and all cup associators. Its
+odd rank-one consumer allows every height and either parity. This is only
+the first shift cancellation: substitution of the prescribed crossing and
+counit into `rouquierMate`, the input comparison, and equation (10) of
+`HomPrincipalMate.md` remain open.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every

@@ -1,0 +1,68 @@
+import OddMath.SKM.RouquierHomCrossing
+import Lean.Util.CollectAxioms
+
+/-! Odd rank-one consumers at arbitrary weights. The Rouquier family is an input,
+not a constructed nonzero model. -/
+noncomputable section
+open CategoryTheory StringDiagrams BicategoryStruct Supercategory OddMath.SKM
+namespace NonVacuity.RouquierHomCrossing
+private def D : Datum Unit ℤ where
+  cd := {
+    root := fun _ => 2
+    coroot := fun _ => LinearMap.id
+    coroot_root_self := fun _ => rfl }
+  isGCM := {
+    diag := fun _ => rfl
+    offDiag_nonpos := fun i j h => absurd (Subsingleton.elim i j) h
+    zero_comm := fun _ _ => Iff.rfl }
+  parity := fun _ => 1
+  even_of_odd := fun _ _ _ => even_two
+
+variable {B : Type*} [BicategoryStruct B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear ℚ (a ⟶ b)]
+  [∀ a b : B, Supercategory ℚ (a ⟶ b)] [TwoSupercategory ℚ B]
+  [∀ a b : B, PiSupercategory ℚ (a ⟶ b)]
+  (T : RouquierFamily (k := ℚ) (B := B) D) (W : ℤ → B)
+
+example (muM muP nuP rhoP : ℤ) (h : -nuP + D.α () = -muP)
+    (h₂ : -rhoP + D.α () = -nuP)
+    (Z : homWeightSector T.obj W nuP muM) :
+    let P := homParityShiftDatum (k := ℚ) (leftAdjParity D () (-nuP))
+    let P₂ := homParityShiftDatum (k := ℚ) (leftAdjParity D () (-rhoP))
+    let H := (homContentPreF T W () muM h).obj Z
+    let Q := T.E () h ≫ H
+    (rouquierMate (homContentSuperAdjunction T W () muM h)
+      (homContentSuperAdjunction T W () muM h₂)
+      (homContentCrossing T W () muM h h₂)).app (D.parity ()) Z =
+      ((leftUnitor Q).inv ≫ T.leftCup () h₂ ▷ Q ≫
+        (associator (T.F () h₂) (T.E () h₂) Q).hom ≫
+        (P₂.iso (T.F () h₂ ≫ T.E () h₂ ≫ Q)).inv) ≫
+      (homContentPreF T W () muM h₂).map
+        ((-koszulSign (D.parity ()) (D.parity ())) •
+          ((associator (T.E () h₂) (T.E () h) H).inv ≫
+            T.cross () () h₂ h h₂ h ▷ H ≫
+            (associator (T.E () h₂) (T.E () h) H).hom)) ≫
+      (homContentPreF T W () muM h₂).map ((homContentPreE T W () muM h₂).map
+        (koszulSign (leftAdjParity D () (-nuP)) (leftAdjParity D () (-nuP)) •
+          (T.E () h ◁ (P.iso (T.F () h ≫ Z)).hom ≫
+            (associator (T.E () h) (T.F () h) Z).inv ≫
+            ((((T.leftAdjScalar () (-nuP))⁻¹ : ℚˣ) : ℚ) • T.leftCap () h) ▷ Z ≫
+            (leftUnitor Z).hom))) :=
+  homContentCrossing_mate_app T W () muM h h₂ Z
+
+end NonVacuity.RouquierHomCrossing
+
+open Lean Elab Command in
+run_cmd do
+  let env ← getEnv
+  for mod in #[`OddMath.SKM.RouquierHomCrossing] do
+    let mut count : Nat := 0
+    for i in [:env.header.moduleNames.size] do
+      if env.header.moduleNames[i]! == mod then
+        for name in env.header.moduleData[i]!.constNames do
+          for ax in (← Lean.collectAxioms name) do
+            unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+              throwError "unexpected axiom {ax} in {name}"
+          count := count + 1
+    if count == 0 then throwError "Empty audit: {mod}"
+    logInfo m!"Audited {count} owned declarations in {mod}"

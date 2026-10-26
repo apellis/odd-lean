@@ -2,6 +2,7 @@ import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomReservoirPowers
 import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction
+import OddMath.SKM.RouquierHomSuperAdjunction
 import OddMath.SKM.RouquierCompositeAdjunction
 import OddMath.SKM.UpwardNondegeneracyReductionExamples
 import OddMath.SKM.SameColourSourceFrameExamples
