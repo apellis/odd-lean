@@ -11,6 +11,25 @@ are retained in both raw quotient and right-B-linear tensor coordinates.
 These are written arguments, not Lean theorems. Left projectivity, reverse
 adjunctions and invertibility of the prescribed Rouquier matrix remain separate.
 
+## Deformed boundary norm and division
+
+`DeformedBoundaryDivision.md` proposes the full-coefficient norm/division
+calculation for the still-pending boundary of `DeformedMackeyBoundary.md`.
+It proves injectivity of the intertwiner chain by its reverse-chain norm,
+then derives the reverse QP comparison and longest extraction. In the
+corrected basis it obtains
+`A_∂(S(ρ̄)w_k)=(-1)^(ηr+m) f_i(t)L(t)t^k`, retaining the right order
+of `t^k` and distinguishing `S=∏(t²−x_b²)²` from the repeated-odd
+factors `t²+x_b²` in `L`. Finite telescoping of the first-order defect
+gives monic division and the leading-degree formula, without exterior
+flatness. This is proposed mathematics pending independent criticism,
+not a Lean result or a full action theorem. The note also corrects the
+two local g rewritings in `DeformedGlobalQP.md` §3: they are
+`(E−τD)D` and `(1−τD)D`; its final QP formula is unchanged. The
+source matrices still need comparison with the prescribed tensor mate,
+dotted cups and dotted caps.
+
+
 ## Canonical parity-shifted coefficient target
 
 `CyclotomicAction/IntertwinerParity.lean` refines the target of the existing
