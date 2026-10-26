@@ -278,18 +278,17 @@ The coefficient action to compare, if the generator transport succeeds,
 is the pullback: the coordinate coefficient a corresponds to the factor
 coefficient theta_N(a). Equation (2) makes this invertible and detection
 preserving. Coefficient preservation over the identity was an unnecessary
-strengthening, not a user requirement; its cutoff-two failure is repaired
+strengthening for detection; its cutoff-two failure is repaired
 algebraically by (1). The orientation and boundary obligations are not.
 
-**Stop/research decision:** an existing-route continuation must first prove
-that the actual reversed Hom vacuum realizes the required first-boundary
-append kernel, including the preceding generator and adjunction table.
-If this requires replacing the factor action, changing the external-weight
-convention or the headline theorem, or postulating a new full-action
-reversal, that is a new research steer for Alex, not authorized by this
-repair. This note implements none of those alternatives. No integer-graded
-probe is required; reservoir positivity is retained. No normalized bubble,
-fusion, or nondegeneracy claim follows.
+**Remaining comparison:** the actual Hom vacuum has not been identified
+with the first-boundary append kernel and its specified generators and
+adjunctions. Nor has this note constructed a different coordinate recovery
+map sufficient for detection. A change of factor order or boundary must
+retain the literal external weight and prove the corresponding generator
+and kernel comparisons; the existing symmetry alone does not supply them.
+No integer-graded probe is required; reservoir positivity is retained.
+No normalized bubble, fusion, or nondegeneracy claim follows.
 
 ## Internal definitions audited
 
