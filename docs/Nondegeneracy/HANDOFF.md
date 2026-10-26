@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted probe augmented inverse
+
+`HomProbeMatrix.md` supplies a proposed written proof of the probe comparison
+(B), without assuming the shifted sector's inverse. For fixed reservoir
+content, the prescribed Koszul transport is
+`Theta=S(beta_M^-1);xi=S M(z_kappa(M-));z_kappa(MM-)` and
+`T_BB=Theta;post(t_B);Theta^-1`; the dots are `S(post(x_B))`.
+The explicit unit--map--cap computation gives
+`B_s^-1;P(T_BB);B_t=post(sigma_B)` with scalar one. The intermediate
+four-strand comparison has endpoint signs `(-1)^kappa` twice and crossing
+exchange signs `(-1)^(kappa p)` twice, all cancelling.
+
+All dotted cups/caps retain their raw coordinates, also for negative powers
+of the invertible probe dot. Both whole augmented matrices and inverses are
+transported, with explicit z lifts on every parity-shifted identity summand;
+at zero height the empty-window inverse has no exceptional scalar.
+Consequently `I_B=B_t;post(R_B);B_s^-1` and
+`Rcal_B=post(R_B)`, conditional only on the specified probe factor local
+inverse data and coherent crossing prescription. No bare-crossing inverse
+is asserted at nonzero height. This discharges the separate probe-sector
+input of `HomCentralFeedback.md`; it does not establish or independently
+validate that note's central nilpotence result. The literal C/D convention,
+residual inversion, grading and full fusion remain separate. No Lean theorem
+is added by this written calculation.
+
 ## Central Hom feedback and a normalization check
 
 `HomCentralFeedback.md` derives the literal central mates of the specified
