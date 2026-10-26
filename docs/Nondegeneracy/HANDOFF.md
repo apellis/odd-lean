@@ -611,8 +611,12 @@ variant above if `i=j`), and checks (8.11) for `b=a,a+1`:
 `(-1)^{|i||j|}`. These are the transports of `x_1` through `g_n⋯g_1` used in
 (8.16)–(8.17). `moveHom i l ν` composes them to `g_n⋯g_1 e(i,ν)` (KKO's `Q`,
 Proposition 8.4), and `dot_comp_moveHom` is the second identity of (8.13),
-`x_{n+1}g_n⋯g_1e(i,ν)=(-1)^{p(i)p(ν)}g_n⋯g_1x_1e(i,ν)`. Far dots (`b∉{a,a+1}`)
-are not yet stated at word level.
+`x_{n+1}g_n⋯g_1e(i,ν)=(-1)^{p(i)p(ν)}g_n⋯g_1x_1e(i,ν)`. Far dots pass through
+each `g` with sign `(-1)^{p(ν_b)p(ν_a)p(ν_{a+1})}` (`dot_left_comp_intertwinerHom`,
+`dot_right_comp_intertwinerHom`), and `dot_mem_comp_moveHom` is the first
+identity of (8.13) for dots: `x_b g_n⋯g_1 = (-1)^{p(ν_b)p(i)p(ν)} g_n⋯g_1 x_{b+1}`.
+For crossings of `R(β)` the first identity of (8.13) still needs the braid
+identity on mixed colours.
 The braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}` of Lemma 8.3 is checked on
 three strands of one colour, for `φ` and for `g`, both parities
 (`IsSignedNilHeckeFamily.braid_phiOdd`, `braid_element`, `braid_phiEven`,

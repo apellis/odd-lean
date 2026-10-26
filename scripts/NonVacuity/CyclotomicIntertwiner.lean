@@ -113,6 +113,20 @@ example : dotE datum scalars [true, false, true] 0 ≫ moveHom datum scalars tru
   rw [hs, one_smul] at h
   exact h
 
+/-- The dot on the strand `false` of `[true, false, true]` moves from position 1 to position 0
+under `g_2 g_1`, with the sign `(-1)^{p(false) p(true) p([false, true])} = 1`. -/
+example : dotE datum scalars [true, false, true] 1 ≫ moveHom datum scalars true [] [false, true] =
+    moveHom datum scalars true [] [false, true] ≫ dotE datum scalars [false, true, true] 0 := by
+  have h := dot_mem_comp_moveHom datum scalars true false [true] [] [] [false, true] rfl
+  have hs : OddMath.SKM.zsign ℚ (datum.parity false *
+      (datum.parity true * wordParity datum [false, true])) = 1 := by
+    simp [OddMath.SKM.zsign, wordParity, datum]
+  rw [hs, one_smul] at h
+  exact h
+
+#print axioms dot_mem_comp_moveHom
+#print axioms dot_left_comp_moveHom
+#print axioms dot_right_comp_intertwinerHom
 #print axioms dot_comp_moveHom
 #print axioms dot_comp_intertwinerHom
 #print axioms dot_succ_comp_intertwinerHom
