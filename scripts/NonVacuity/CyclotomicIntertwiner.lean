@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.SignedNilHeckeExamples
 
@@ -7,7 +7,7 @@ odd colour of the all-odd two-colour datum, in the endomorphism rings of the wor
 `[true, true]` and `[true, true, true]`, and on the polynomial representation of the nilHecke
 ring. -/
 noncomputable section
-open OddMath.QuiverHecke OddMath.QuiverHecke.SignedNilHecke
+open CategoryTheory OddMath.QuiverHecke OddMath.QuiverHecke.SignedNilHecke
 open OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 open Categorification.NilHecke Categorification.KLR.KL2.NH
 
@@ -59,6 +59,26 @@ example : gEven (xv ℚ 3 0) (xv ℚ 3 1) (dd ℚ 3 0) * gEven (xv ℚ 3 0) (xv 
     -((xv ℚ 3 1 - xv ℚ 3 0) * (xv ℚ 3 1 - xv ℚ 3 0)) :=
   ((isSignedNilHeckeFamily_nilHecke ℚ 3).evenTwo (j := 0) le_rfl (by norm_num)).gEven_mul_gEven
 
+/-- The dot passes through the crossing of two distinct odd colours with a minus sign. -/
+example : dotE datum scalars [true, false] 0 ≫ intertwinerHom datum scalars [] [] true false =
+    -(intertwinerHom datum scalars [] [] true false ≫ dotE datum scalars [false, true] 1) := by
+  have h := dot_comp_intertwinerHom datum scalars [] [] true false
+  simpa [OddMath.SKM.zsign, datum] using h
+
+/-- On two strands of the odd colour, `g` is KKO's odd variant and the dot changes sign. -/
+example : dotE datum scalars [true, true] 1 ≫ intertwinerHom datum scalars [] [] true true =
+    -(intertwinerHom datum scalars [] [] true true ≫ dotE datum scalars [true, true] 0) := by
+  have h := dot_succ_comp_intertwinerHom datum scalars [] [] true true
+  simpa [OddMath.SKM.zsign, datum] using h
+
+example : intertwinerHom datum scalars [] [] true true =
+    OddMath.OddNilHecke.Intertwiner.element (dotE datum scalars [true, true] 0)
+      (dotE datum scalars [true, true] 1) (crossE datum scalars [true, true] 0) := by
+  rw [intertwinerHom_self]
+  simp [sameIntertwiner, datum]
+
+#print axioms dot_comp_intertwinerHom
+#print axioms dot_succ_comp_intertwinerHom
 #print axioms OddTwo.x_succ_mul_phiOdd
 #print axioms OddTwo.x_mul_phiOdd
 #print axioms OddTwo.phiOdd_mul_phiOdd

@@ -541,6 +541,12 @@ reuses `OddNilHecke.Intertwiner.element` (`g²=-(v²-u²)²(u²+v²)`,
 (Lemma 8.3, (8.11)–(8.12), (8.15)). Even colour: `φ=1+(v-u)T`, `φ²=1`,
 `g²=-(v-u)²`, `Tg=T(v-u)`. The consumer `scripts/NonVacuity/CyclotomicIntertwiner.lean`
 uses the all-odd two-colour datum and the polynomial nilHecke representation.
+`CyclotomicAction.IntertwinerWords` defines `intertwinerHom l r i j`, KKO's
+`g_a e(ν)` from `l++[i,j]++r` to `l++[j,i]++r` (the crossing if `i≠j`, the
+variant above if `i=j`), and checks (8.11) for `b=a,a+1`:
+`dot_comp_intertwinerHom`, `dot_succ_comp_intertwinerHom`, sign
+`(-1)^{|i||j|}`. These are the transports of `x_1` through `g_n⋯g_1` used in
+(8.16)–(8.17). Far dots (`b∉{a,a+1}`) are not yet stated at word level.
 Open for KKO Theorem 8.5 (`QP`): the braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}`,
 the composite `g_n⋯g_1` on `(i,ν)`, the map `Q` and the reduction modulo
 `R a^Λ(x_2) R^1(β)`.
