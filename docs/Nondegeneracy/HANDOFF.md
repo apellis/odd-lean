@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Full underlying deformed action on paper
+
+`DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
+action of the full underlying SKM supercategory over the stated full-ELV
+coefficient algebra. The construction includes the prescribed distinct-colour
+mate, mixed quadratic parameter normalization with reversed labels, the
+arbitrary-exponent corrected braid, and explicit zero out-of-range inverse
+components. It uses the same-colour matrix argument below, without a further
+kernel or pivot assumption. Tensoring applies to all modules, not just projectives.
+
+This is not a Lean implementation and does not yet preserve the standard
+SKM integer grading: the current restriction and right-adjunction maps are
+unshifted. Weight-dependent restriction shifts and adjunction transport
+remain to be supplied. Fusion, detection and nondegeneracy remain open.
+
 ## Prescribed same-colour inversion on paper
 
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
@@ -14,10 +29,10 @@ extra inversion hypotheses. The local right-factored g signs in
 `DeformedProjectiveResolution.md` and `DeformedGlobalQP.md` are corrected
 without changing the definitions, cancellation or final QP formula.
 
-This is not a Lean theorem or a full action. The full-coefficient
-distinct-colour prescribed mate, action assembly, and fusion remain
-separate; the existing polynomial-coefficient Lean implementation is
-narrower. The general nondegeneracy conjecture remains open.
+This is not a Lean theorem. The full-coefficient distinct-colour mate and
+underlying action are supplied above; their integer-graded enhancement and
+fusion remain separate. The existing polynomial-coefficient Lean
+implementation is narrower. The general nondegeneracy conjecture remains open.
 
 ## Deformed right projectivity on paper
 
