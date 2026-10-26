@@ -316,13 +316,28 @@ uses the same formula. All natural powers remain; odd dots are not exterior.
 The consumer checks ring products, Q equivariance, and order/sign conversion
 on odd and mixed data with nonzero target shift.
 
-This is the right skew-ring action portion of KKO I,
-arXiv:1206.5933v2, Proposition 8.4, not its full supertensor comparison.
-Remaining: the scalar-balanced linear identification with `k[t_i]`
-supertensor the cyclotomic coefficient algebra and the corresponding graded
-supermodule packaging. Ring representations alone do not prove that
-identification. The source fixed-content comparison, zero-height case,
-full-ELV coefficients and QP identity remain separate.
+`CyclotomicAction/IntertwinerSupertensorAction.lean` identifies the
+scalar-balanced tensor product `k[t_i] ⊗[k] R^Λ(n)` with the parity-skew
+polynomial ring. `polynomialTensorSkewEquiv` is a ground-ring-linear
+equivalence, sending `t^m ⊗ c` to `φ^m(c) X^m`; its inverse monomial
+formula is proved. `polynomialSupertensorSkewRingEquiv` preserves the
+transported associative ring multiplication, and
+`polynomialSupertensor_mul_tmul` proves the exact Koszul product
+`(t^r ⊗ b)(t^s ⊗ c) = (-1)^(s p(i) q) t^(r+s) ⊗ bc` for homogeneous
+`b` of parity `q`. The transported unit is `1 ⊗ 1`. The multiplication
+and semiring projections are selected explicitly; the ordinary unsigned
+tensor-product instances are neither used for this product nor disabled.
+
+`sourceRightSupertensor` and `targetRightSupertensor` transport the ring
+representations onto the same quotient carriers, retaining the target shift.
+Their pure-tensor formulas recover the dot-first operators, and
+`rightSupertensor_Q` proves equivariance for every balanced tensor.
+Odd and mixed consumers check both signs at exponents one and two and
+nonzero target shifts. This is the balanced ring comparison and quotient
+action in KKO I, arXiv:1206.5933v2, Proposition 8.4, not its complete
+statement. The corresponding graded-supermodule packaging, source
+fixed-content comparison, zero-height case, full-ELV coefficients and QP
+identity remain separate.
 
 ## Right cyclotomic coefficients and the polynomial variable
 
