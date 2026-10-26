@@ -1,13 +1,15 @@
 # The principal component of the reversed Hom matrix
 
-**Status: the principal Hom comparison remains a written derivation.**
+**Status: the principal Hom comparison (1) is proved in Lean.**
 `RouquierPrincipalWord.lean` proves the unnormalized word evaluation (11)
 at all heights and the scalar identity (16).
 `RouquierHomCrossing.lean` defines the inherited crossing and its specified
 shifted mate. `homContentCrossing_coordinates_raw` removes both parity
 comparisons, leaving the raw cup, inherited crossing and normalized cap.
-The even reassociation identifying this expression with the insertion of
-`leftCrossingWord`, hence (10), remains to be formalized. With the
+`RouquierHomPrincipal.lean` proves the even reassociation and (10) as
+`homContentCrossing_coordinates`. It combines the word evaluation and
+scalar identity into `homContentCrossing_principal`, proving (1) at all
+heights, including zero, over a general commutative ring. With the
 inherited reservoir dots and the same-colour KLR crossing convention, the
 normalized-left Hom mixed mate has raw component
 
