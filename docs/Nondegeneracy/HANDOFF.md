@@ -32,6 +32,25 @@ matrix needs only `Tor₁(A/J,target)=0`, but also exact base-change comparison
 of its corners, tensor adjunction, signed generators and cup–crossing–cap
 mate, and a proof of invertibility of that reduced matrix (A1-map).
 
+## Moving-strand balance on arbitrary Hom entries
+
+`CyclotomicAction/IntertwinerNaturality.lean` proves `hom_comp_moveHom` for
+any morphism `f : H(t,t')`, including inhomogeneous morphisms:
+`(1_i ⊗ f) ≫ move(t') = move(t) ≫ (twist_(p(i)p(t))(f) ⊗ 1_i)`.
+The proof uses the normal-form spanning theorem, not a homogeneity
+assumption on `f`. `cl_mem_chainParity` identifies the positioned-word
+parity with its actual parity in the presented category. The hypotheses
+are only a Cartan superdatum, its scalar system, and a commutative base ring.
+
+This is the all-Hom-entry balance input of KKO I (8.13). It is not yet the
+balanced map Q of Proposition 8.4: the remaining construction must assemble
+these entries into the `Hn` colour corners, construct the tensor quotient
+map with the factor `Π_i^{p(β)} R^Λ(β)`, and prove the signed right `t_i`
+action. No cyclotomic or deformation flatness statement is used here.
+The QP identity of Theorem 8.5 remains downstream of that construction.
+The consumer `scripts/NonVacuity/IntertwinerNaturality.lean` exercises
+arbitrary Hom entries and identity plus an odd dot on an all-odd
+asymmetric two-colour datum, and audits the module's axioms.
 
 ## Global content indices
 
