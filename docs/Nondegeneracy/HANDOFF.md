@@ -1,5 +1,58 @@
 # Odd nondegeneracy: restart state
 
+## Fixed-content reservoir bounds on paper
+
+`DeformedReservoirBound.md` supplies finite-dimensional coefficient
+quotients retaining the independent odd ELV parameters and their relations.
+Finite right generation plus the central monic annihilator gives finite
+dimension of every fixed-content algebra. The enriched supercentre then
+bounds identity transformations on all modules, without asserting arbitrary
+Hom-finiteness. Positive-degree principal-inverse closures are jointly
+nilpotent at each content and on finite content windows.
+
+This is a written proof, not a Lean theorem. It gives no uniform bound over
+an infinite weight fiber. Component-preserving degree-zero inverse families
+can assemble without such a bound, but identifying the actual fused feedback,
+its tensor-factor signs and supports, the residual identity-summand matrix,
+and truncation-compatible separation remain separate obligations.
+
+## Canonical signed F triangle on paper
+
+`SignedFTriangle.md` derives the second triangle for the prescribed
+inverse-defined cups and caps by horizontal super-opposition and signed
+right transposition. It constructs the reflected local data, including the
+prescribed mixed mate and every inverse-component comparison; it assumes
+neither cyclicity nor the F triangle. With s=(-1)^p, σ=p(h+1), and
+e(h)=1 for h<0 and s for h≥0, the canonical F composite is
+koszulSign(σ,σ)e(h) id. The E composite is e(h) id. Rescaling only the
+cap by the involutive unit koszulSign(σ,σ)e(h) gives the shifted left
+adjunction normalization of `LeftZigzags`.
+
+This is a written proof, not a kernel-certified F triangle. The
+transposition calculus, horizontal super-opposite and reflected local
+structure still need Lean implementations. The supporting all-height
+E-triangle development is on `research/odd-nondegeneracy-wip/signed-f-r17`; it is
+not included in this documentation-only integration. Transport to fusion
+and regular-bubble detection remains separate.
+
+## Full graded deformed action on paper
+
+`DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
+action of the full underlying SKM supercategory over the stated full-ELV
+coefficient algebra. The construction includes the prescribed distinct-colour
+mate, mixed quadratic parameter normalization with reversed labels, the
+arbitrary-exponent corrected braid, and explicit zero out-of-range inverse
+components. It uses the same-colour matrix argument below, without a further
+kernel or pivot assumption. Tensoring applies to all modules, not just projectives.
+
+`DeformedGradedAction.md` supplies the standard SKM integer grading:
+E_i is unshifted induction and F_i1_λ=q^[d_i(h_i(λ)−1)] Res_i1_λ.
+It transports the adjunction on each edge and checks every generator and
+inverse-component degree. Infinite weight fibers use finite-bidegree Hom
+families, not unrestricted products of underlying Hom spaces.
+This is not a Lean implementation. Hom-finiteness, fusion, detection and
+nondegeneracy remain open.
+
 ## Prescribed same-colour inversion on paper
 
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
@@ -14,10 +67,9 @@ extra inversion hypotheses. The local right-factored g signs in
 `DeformedProjectiveResolution.md` and `DeformedGlobalQP.md` are corrected
 without changing the definitions, cancellation or final QP formula.
 
-This is not a Lean theorem or a full action. The full-coefficient
-distinct-colour prescribed mate, action assembly, and fusion remain
-separate; the existing polynomial-coefficient Lean implementation is
-narrower. The general nondegeneracy conjecture remains open.
+This is not a Lean theorem. The full-coefficient distinct-colour mate and
+graded action are supplied above; fusion remains separate. The existing polynomial-coefficient Lean
+implementation is narrower. The general nondegeneracy conjecture remains open.
 
 ## Deformed right projectivity on paper
 
@@ -543,7 +595,11 @@ sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
 self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
 `ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
 for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
-without a dual. **Open:** proving `LeftZigzags`. Restart point:
+without a dual. **Implementation checkpoint:** `SignedFTriangle.md` now
+supplies the written signed reflection proof, and
+`research/odd-nondegeneracy-wip/signed-f-r17` supplies the all-height E theorem. The following describes
+the earlier implementation gap in this branch, not a remaining mathematical
+assumption of that written proof:
 (1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
 `capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
 `RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
