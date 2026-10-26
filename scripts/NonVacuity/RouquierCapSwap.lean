@@ -63,6 +63,16 @@ example (p : ZMod 2) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p (-2))
       E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
         (leftUnitor E₂).hom := by
   exact L.capL_pitchfork_below_neg_one U (by norm_num) (by norm_num) hsq hsq' hB
+example (p : ZMod 2) (h : ℤ) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p h)
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ p (h + 2)) (hh : h < 0)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 𝟙 E₂ :=
+  L.leftAdj_triangle_E_of_neg U rfl hh hsq hsq' hB
 end Local
 section Family
 variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
@@ -94,6 +104,9 @@ example (T : RouquierFamily (k := k) (B := B) D) (i : I) {a b c d : X}
     (T.square i h₁ h₂) (T.square i h₂ h₃) (T.braid i h₁ h₂ h₃)
   rw [← h₂]
   simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]
+example (T : RouquierFamily (k := k) (B := B) D) (i : I) {x y : X}
+    (e : x + D.α i = y) (hh : D.h i x < 0) : T.leftZigE i e = 𝟙 (T.E i e) :=
+  T.leftZigE_of_neg i e hh
 end Family
 
 open Lean Elab Command
