@@ -633,3 +633,16 @@ and uses affine normal-form independence; it is not a positive-degree
 monic or finite-dimensional cyclotomic nonvanishing theorem. The scalar
 two also lies in the even quotient component. Both vacuum modules pass
 targeted warning-as-error builds and an owned-declaration axiom audit.
+
+### Three-strand cyclotomic braid
+
+`CyclotomicAction/Braid.lean` defines the first-pair and last-pair crossing
+matrices on the actual `w ++ [i,j,c]` corners. `tripleMatrix_mul` proves that
+multiplication of these finite families is reversed pointwise composition.
+`affineTriple_braid` and `cyclotomicTriple_braid` prove the uncorrected braid
+when the outside colours differ or all three colours coincide, with arbitrary
+old words and arbitrary colour parities. These are concrete algebra identities,
+not yet the braid between three composed superinduction functors. The latter
+still requires comparison with the balanced-tensor associators; the repeated
+outside-colour correction remains a separate polynomial identity.
+
