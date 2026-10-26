@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Execution-order braid comparison
+
+`ExecutionBraidNormalization.md` proposes the exact correction comparison:
+execution 121 minus 212 is `-C_ij(z,y,x)=(-q_i) C_ij(x,y,z)`, where C
+is the fixed displayed-strand correction. The proof uses the separate
+parity support of Q and ordered skew-dot monomials; it covers even, odd
+and mixed parity without changing Q. The even rational operator is
+`(s_a-1)/(x_a-x_(a+1))`. Its generic iji difference is
+`(Q_ij(z,y)-Q_ij(x,y))/(x-z)`, exactly the required execution correction;
+iii and iij are homogeneous. Its equal-colour gauge ratio is `(x-y)^-1`.
+Distinct-colour unit interchanges must be typed separately from the
+oppositely directed equal-colour J.
+
+This repairs the even comparison sign conditional on the proposed crossing
+normalization and the factor/shuffle realization. It is not a Lean theorem
+or a fused-action construction. The odd/mixed sector identifications must
+still satisfy equation (6) of that note, including their content shifts
+and Koszul signs; the smaller localization comparison remains open.
+No factor, Q, swapping map, frozen C,D or residual has been changed.
+
 ## Equal-colour crossing normalization and central feedback
 
 `CrossingNormalization.md` proposes the repaired mixed equal-colour matrix
