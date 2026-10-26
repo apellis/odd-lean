@@ -76,7 +76,11 @@ Here is the cancellation step with its ambient module specified. Let x,y be
 two adjacent odd i-dots, τ their crossing, and set
 
     Δ=y²−x²,   S=y²+x²,
-    g=Δ((y−x)−Δτ)=(τΔ−(y−x))Δ.
+    g=Δ((y−x)−Δτ)=((y−x)−τΔ)Δ.
+
+The second expression corrects its earlier negative in this note. Indeed
+τΔ=−Δτ+2(y−x) and τΔ²=Δ²τ. This is a correction to the
+rewriting here, not a change to the defining intertwiner.
 
 Take the affine two-strand algebra over A, balanced on the right against its
 old second-strand cyclotomic algebra B=A⟨y⟩/(f_i(y)). Denote this module by M.
@@ -92,7 +96,7 @@ A-projectivity of B; no unsplit exact sequence is being tensored.
 
 By (1), f_i(x)g=(−1)^N g f_i(y)=0 in M. Using the second expression for g,
 
-    (f_i(x)τΔ−f_i(x)(y−x))Δ=0.
+    (f_i(x)(y−x)−f_i(x)τΔ)Δ=0.
 
 Right multiplication by Δ is well defined: x² commutes with R_y and y² is
 central in R_y, so it preserves the balanced quotient. In the above coordinates,

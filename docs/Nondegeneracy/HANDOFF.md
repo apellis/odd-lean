@@ -1,5 +1,14 @@
 # Odd nondegeneracy: restart state
 
+## Local intertwiner rewriting correction
+
+The right-factored forms of the repeated-colour intertwiner in
+`DeformedProjectiveResolution.md` and `DeformedGlobalQP.md` had opposite
+signs. They are `g=(E−τD)D` in the odd case and `g=(1−τD)D` in the
+even case, with the original definitions unchanged. The local cancellation
+and the resulting QP formula are unchanged: negating a zero relation does
+not alter the cancellation. This corrects these notes, not the source paper.
+
 ## Deformed right projectivity on paper
 
 `DeformedSquareResolution.md` assembles the written right-projectivity argument
