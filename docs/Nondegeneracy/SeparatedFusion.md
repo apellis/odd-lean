@@ -412,12 +412,13 @@ with probe `f_i=1`, `f_j=y'²-1`: there `Q_ij(x_1,y')=0` gives `x_1²=y'⁴=1`,
 so the corner is `Q<y'>/(y'²-1) tensor_hat B_b` and the probe j strand gives no
 parity twist. In the default run (under a minute) all nine contents of the even
 and odd controls, of the reservoir slice and of the probe slice pass. With
-`--heavy`, an odd j strand in both factors (coefficient dimension 8, total
+`--heavy` (about six minutes), an odd j strand in both factors (coefficient dimension 8, total
 matrices up to 288) passes at all nine contents, as do the `delta_i` exterior
 reservoir at all nine contents and `delta_i` together with a nonzero odd
 coefficient `delta_j`, with or without an occupied probe j strand. Throughout,
 `C` and `D` equal (2) and the total map has a two-sided inverse; the whole
-feedback is nilpotent, and is nonzero only at the middle exterior content.
+feedback is nilpotent, and is nonzero only at the middle exterior content,
+where it has square zero and rank 4, 8 or 16 for coefficient dimension 1, 2 or 4.
 
 Two limitations are structural. First, an exterior coefficient cannot deform an
 invertible odd cyclotomic polynomial: in `Q<y,delta>/(delta²,y²+y delta-1)`,
