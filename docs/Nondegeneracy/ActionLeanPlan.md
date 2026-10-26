@@ -104,11 +104,22 @@ superfunctors. `ActionSupercategory.lean` packages the category, functors,
 dot and even adjunction in the existing `TwoSCat` and `SKM.SuperAdjunction`
 interfaces.
 
-This does not yet provide the vacuum inclusion, the square and braid
-comparisons, or the projective Mackey/local-inversion theorem. In particular,
-constructing a crossing map does not prove its polynomial square or the
-corrected transported-parameter comparison. The finite monic coordinates
-above are not a proof of those higher-content assertions.
+The vacuum algebra inclusion is now in `Vacuum.lean`; its superinduction
+boundary is still separate. `Square.lean` and `Comparison.lean` prove
+square-zero for the actual signed corner crossing and for composed
+superinduction. `MixedComparison.lean` proves the explicit two-dot polynomial
+square on the actual quotient and the super-opposite sign on composition
+corners. `Braid.lean` and `BraidCorrection.lean` prove both three-strand
+relations in the actual quotient. These algebra identities do not identify
+the three crossings with whiskered transformations through the triple
+balanced-tensor associators.
+
+The projective resolution and the projective Mackey/local-inversion theorem
+are not implemented. The finite monic coordinates above are not a proof of
+those higher-content assertions. In particular, the even
+`CyclotomicAction/KangKashiwara.lean` is only the final transport: it invokes
+`ConcreteAdjunction.loc` and `BoundaryAdjunction.coefficients`, not just the
+quadratic and braid relations. Their signed analogues are still required.
 The final same-colour inversion must instantiate `SKM.SuperRouquierLoc` from
 `SKM/RouquierData.lean`, with the prescribed mate and parity-indexed inverse
 entries. Do not replace its odd shifted summands by ordinary copies of the

@@ -701,3 +701,11 @@ factor is `(-1)^(|i||j|)`, independent of input parity; dropping it would give
 the unchanged-parameter error. This is an upward quadratic comparison, not
 the mixed induction–restriction Mackey isomorphism.
 
+`ParameterTransport.lean` constructs `parameterTwist`, an involutive
+transformation of valid even scalar families, and proves preservation of
+homogeneous support. Its monomial sign exponent is
+`|i||j| + |i|⌊p/2⌋ + |j|⌊q/2⌋`; the support conditions exclude odd powers
+of an odd dot. `oddRight_iterate_even` proves the half-exponent sign for
+all even powers of a signed odd multiplier. These coefficient statements
+are not by themselves compatibility of all categorical generators.
+
