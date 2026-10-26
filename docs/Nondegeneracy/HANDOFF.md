@@ -67,9 +67,15 @@ without predecessor; unit and counit are even (`globalWeightUnit_mem`,
 `globalWeightCounit_mem`). `globalActionAdjunction` packages it as
 `SKM.SuperAdjunction (globalActionE i h) (globalActionF i h)` in the `SCat`
 target of `ActionSupercategory`, i.e. the `adj` field of `RouquierFamily` on
-weight spaces. Open on weight spaces: the dot and crossing (`dot`, `cross`
-fields), nilpotence, square/braid/slides, and `GlobalLoc` (local inversion is
-stream A's pending statement).
+weight spaces.
+
+`GlobalHeightDot.lean` defines the last dot of the extended tower
+(`heightLastDot`; at one strand the image of `affineLastDot` in the
+height-one quotient) and restates the signed corner map of `SuperDot` along
+`heightAppend`: `heightSuperInductionDot`, homogeneous of parity `|i|`, its
+content restriction and `globalContentDot`. Open on weight spaces: the
+crossing (`cross` field), nilpotence, square/braid/slides, and `GlobalLoc`
+(local inversion is stream A's pending statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
