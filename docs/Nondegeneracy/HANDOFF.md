@@ -11,6 +11,28 @@ are retained in both raw quotient and right-B-linear tensor coordinates.
 These are written arguments, not Lean theorems. Left projectivity, reverse
 adjunctions and invertibility of the prescribed Rouquier matrix remain separate.
 
+## Source right-dot operator (partial right-action construction)
+
+`CyclotomicAction/IntertwinerRightDot.lean` constructs `sourceRightDot` on
+`Ind (CyclotomicAlgebra a n) (appendAlgebra i (n+1))`. It is an ordinary
+left `Hn (n+2)`-linear endomorphism with pure-tensor formula
+`a ⊗ b ↦ a x_last ⊗ φ_i(b)`. The coefficient involution is the regular
+cyclotomic supermodule's `SVec.sgn`; `rightDotCoefficient_of_mem` gives
+its homogeneous sign. `affineLastDot_twist_comm` derives balance from
+`affineLastDot_comm`, and `rightDotCoefficient_smul` supplies the matching
+coefficient twist. There is no assumed balance or assumed intertwining.
+Mixed and all-odd consumers use the existing cyclotomic balanced tensor;
+the mixed consumer checks the minus sign on odd coefficients.
+
+This is only the source operator in KKO I, arXiv:1206.5933v2,
+Proposition 8.4. The target first-dot operator with both scalar
+`(-1)^{p(i)p(β)}` and coefficient involution is not constructed here.
+Compatibility with `parityCyclotomicContentQ` remains unproved: it must
+use `dot_comp_moveHom`, assembled in the content-projected Hom algebra,
+not an assumed intertwining identity. The induced-tensor grading and
+the superbimodule assertion also remain absent. Finite colours,
+positive quotient indexing, and `CyclotomicPolynomialParity` are retained.
+
 ## Canonical parity-shifted coefficient target
 
 `CyclotomicAction/IntertwinerParity.lean` refines the target of the existing
