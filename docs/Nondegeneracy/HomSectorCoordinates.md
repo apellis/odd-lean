@@ -27,8 +27,12 @@ silently identified with its image in the weight lattice.
 The implemented postcomposition right adjoint has Π on its input side. Its
 adjunction follows by composing the factor right adjunction with the
 self-adjunction of Π. This is a genuine adjunction on the full Hom category,
-including odd morphisms. Moving Π to the output side requires the coherent
-comparison for superfunctors, not an unsigned identification of objects.
+including odd morphisms. `RouquierHomContentCoherence` moves Π to the output
+side through the even β comparison, preserving homogeneous supernaturality.
+The resulting `homContentPostOutAdjunction` uses the same output-shift
+convention for both adjoints. The comparison is not an unsigned identification:
+Π self-interchange is negative, and the integral parity-envelope fixture
+proves that it differs from the identity.
 
 Raising precomposition uses the factor edge
 `T(-ν₊) → T(-μ₊)` with `-ν₊ + α_i = -μ₊`. Consequently its desired right

@@ -86,6 +86,15 @@ factor right adjunction transports in the opposite direction. The required
 shifted factor left adjunction and the original-datum rational crossings
 must be constructed before these sectors can be assembled into A2.
 
+`OddMath/SKM/RouquierHomContentCoherence.lean` supplies `homParityShiftAdd`,
+`homParityShiftCommute` and its compatibility with homogeneous supernatural
+transformations. `homContentPostOutAdjunction` puts both postcomposition
+adjoints in the output-shift convention via the even β comparison.
+`homParityShiftCommute_pi` retains the negative Π self-interchange; the
+integral parity-envelope fixture proves that this comparison is not the
+identity (`scripts/NonVacuity/HomContentCoherence.lean`). These parity-shift
+comparisons are not the missing original-datum multicolour KLR relations.
+
 `OddMath/SKM/RouquierMateSlide.lean` proves
 `rouquierMate_normalized_slide`: multiplying the raw cup–crossing–cap mate
 by `-q` gives the normalized dot slide, directly from the upward relation.
