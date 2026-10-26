@@ -158,15 +158,24 @@ The proof uses no assumed left zigzag or target cap relation.
 The imported `RouquierCapSwap` consumer specializes the boundary to both
 parities, applies the theorem to the local data of a `RouquierFamily`
 (deriving the height shift and using its square/braid fields), and audits
-60 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
+68 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
 pitchfork at `h = -1` from the cap swap and the positive inverse; its
 coefficient is `s`, with an importing odd-parity consumer.
 `capL_pitchfork_below_neg_one` proves the remaining negative-height case,
 with coefficient one, by `whiskerLeft_hom_ext_of_nonpos` at upper height
 `h+2` and `curlEG_cupD_zero`. Its importing consumer tests arbitrary parity
-at height `-2` and all lower heights for a `RouquierFamily`. These remain
-parametric consumers, not a nonzero odd inversion model. The E-strand left
-triangle remains unproved; this chain is not a full-root certification.
+at height `-2` and all lower heights for a `RouquierFamily`.
+`leftAdj_triangle_E_of_neg` now proves the canonical E-strand zigzag is
+`𝟙 E₂` for every `h < 0`, including `h = -1`: at the boundary the common
+cap-swap sign cancels, and below it the pitchfork reduces to
+`curlEG_cupD_self`. `RouquierFamily.leftZigE_of_neg` gives this directly for
+`leftZigE`, with the existing `leftCup` and `leftCap`, without rescaling.
+The consumer checks arbitrary parity and negative height and the family API.
+These remain parametric consumers, not a nonzero odd inversion model.
+The nonnegative-height E triangle still requires a signed left-cup pitchfork;
+the canonical F triangle and their common normalization remain open. In
+particular, the negative-height E value is one, not an assumed `(-1)^σ`.
+This chain is not a full-root certification.
 
 ## Reservoir closure audit
 
@@ -570,22 +579,21 @@ open-strand dot power past the rightward crossing. For a square-zero upward
 crossing, `cross_sig_capD_zero` vanishes and `cross_sig_capD_one` is `s` times
 the undotted right-cap pitchfork, where `s = (-1)^p`. The upward sandwich
 `tau_dot_tau_left` itself has coefficient one; the factor `s` comes from
-interchange. This is not the complete crossing component: the mixed braid
-identifying `L.sig ▷ E₂ ≫ U.capCross` with the capped double-crossing expression
-at adjacent heights `h' = h + 2` remains unproved. Its sign must be derived
-before identifying the cap-swap correction at `h = -1`. No leftward pitchfork
-or E/F left-adjunction triangle is concluded. Brundan Lemma 4.2, (4.5)–(4.7), supplies the decomposition
-being followed. BE Proposition 7.2's full pitchforks use (6.6), so they cannot
-be imported as independent inputs to the missing adjunction triangle.
+interchange. The mixed braid and full negative-height cap swap are now proved
+as recorded above, together with both negative-height cap-pitchfork cases and
+the canonical negative-height E triangle. Brundan Lemma 4.2, (4.5)–(4.7),
+supplies the decomposition followed. BE Proposition 7.2's full pitchforks use
+(6.6), so they cannot be imported as independent inputs to the missing
+adjunction triangles.
 The odd- and even-parity specializations in `NonVacuity/Pitchfork.lean` assume
 local Rouquier data: they are signature and axiom checks, not a constructed
 nonzero categorical example. No existing concrete instantiation of the local
 inversion data has been supplied here; the cyclotomic global local-inversion
-comparison remains open. These inputs do not determine the E-zigzag scalar.
+comparison remains open. The canonical E-zigzag scalar is now determined
+as one at negative height; the nonnegative case remains open.
 **Open:** proving `LeftZigzags`. Restart point:
-(1) E-zigzag: prove `capCross_eq_of_neg`,
-`capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two` with super signs, then
-`RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
+(1) E-zigzag: prove `cupL_pitchfork_of_gt_neg_two` with super signs, then
+complete the nonnegative branch of `RouqTriangleE.leftAdj_triangle_E`. For `h ≥ 0`
 the E-zigzag is `∓ε` times the sign of the super cupL pitchfork, which is not
 yet derived. (2) F-zigzag: needs a mirror into a super horizontal opposite
 `HOpS B`. That opposite is a 2-supercategory with the same Koszul signs. A

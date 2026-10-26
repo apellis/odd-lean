@@ -494,7 +494,63 @@ theorem capL_pitchfork_below_neg_one (hw : h' = h + 2) (hh : h < -1)
       TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp]
     simpa only [Category.assoc] using hc
 
+/-- The canonical E-strand left zigzag is the identity at negative lower
+height. The cup and cap are the inverse-defined generators, without rescaling. -/
+theorem leftAdj_triangle_E_of_neg (hw : h' = h + 2) (hh : h < 0)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = 𝟙 E₂ := by
+  by_cases he : h = -1
+  · have hu : 0 < h' := by omega
+    have hs : U.cupL ≫ U.sig = 0 := U.cupL_sig hu
+    have hb : U.cupL ≫ A₂.counit = 𝟙 (𝟙 c) := by
+      simpa only [capD, rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
+        Category.id_comp, show (h' - 1).toNat = 0 by omega, ite_true] using
+        U.cupL_capD hu (n := 0) (by omega)
+    have hz : (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫
+        (associator E₂ F₂ E₂).inv ≫ U.capCross = 0 := by
+      unfold capCross
+      rw [Iso.inv_hom_id_assoc,
+        ← Category.assoc (E₂ ◁ U.cupL) (E₂ ◁ U.sig),
+        ← TwoSupercategory.whiskerLeft_comp (R := k), hs,
+        TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp, Limits.comp_zero]
+    rw [L.capCross_eq_of_neg U hw hh hsq hsq' hB, ite_eq_left he] at hz
+    simp only [Preadditive.comp_zsmul, Preadditive.comp_add, Preadditive.comp_neg,
+      Iso.inv_hom_id_assoc] at hz
+    rw [← Category.assoc (E₂ ◁ U.cupL) (E₂ ◁ A₂.counit),
+      ← TwoSupercategory.whiskerLeft_comp (R := k), hb,
+      TwoSupercategory.whiskerLeft_id (R := k), Category.id_comp, Iso.inv_hom_id] at hz
+    have hz' := congrArg (fun z => koszulSign p p • z) hz
+    rw [smul_smul, koszulSign_mul_self, one_smul, smul_zero] at hz'
+    exact neg_add_eq_zero.mp hz'
+  · have hu : h' ≤ 0 := by omega
+    have hp := L.capL_pitchfork_below_neg_one U hw (by omega) hsq hsq' hB
+    rw [cupL, ite_eq_right (show ¬0 < h' by omega),
+      TwoSupercategory.whiskerLeft_comp (R := k)]
+    simp only [Category.assoc]
+    rw [← hp]
+    exact U.curlEG_cupD_self hu
+
 end Adjacent
 
 end SuperRouquierLoc
+
+namespace RouquierFamily
+variable {I X : Type*} [AddCommGroup X] {D : Datum I X}
+  (T : RouquierFamily (k := k) (B := B) D)
+
+/-- The canonical left zigzag on E at negative source height, in the family API. -/
+theorem leftZigE_of_neg (i : I) {x y : X} (e : x + D.α i = y) (hh : D.h i x < 0) :
+    T.leftZigE i e = 𝟙 (T.E i e) := by
+  apply (T.loc i (sub_add_cancel x (D.α i)) e).leftAdj_triangle_E_of_neg
+    (T.loc i e rfl) _ hh (T.square i (sub_add_cancel x (D.α i)) e)
+    (T.square i e rfl) (T.braid i (sub_add_cancel x (D.α i)) e rfl)
+  rw [← e]
+  simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]
+
+end RouquierFamily
 end OddMath.SKM
