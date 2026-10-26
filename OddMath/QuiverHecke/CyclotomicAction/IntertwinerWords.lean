@@ -163,17 +163,17 @@ def moveHom (i : I) : (l ν : List I) →
               eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp))
 
 /-- The parity `p(ν)` of a word. -/
-def wordParity (ν : List I) : ZMod 2 := (ν.map D.parity).sum
+def wordSumParity (ν : List I) : ZMod 2 := (ν.map D.parity).sum
 
 /-- KKO (8.13), second identity: the dot on the moving strand passes from its first position
 to the last, with the sign `(-1)^{p(i) p(ν)}`. -/
 theorem dot_comp_moveHom (i : I) (l ν : List I) :
     dotE D Sc (l ++ i :: ν) l.length ≫ moveHom D Sc i l ν =
-      zsign k (D.parity i * wordParity D ν) •
+      zsign k (D.parity i * wordSumParity D ν) •
         (moveHom D Sc i l ν ≫ dotE D Sc (l ++ ν ++ [i]) (l.length + ν.length)) := by
   induction ν generalizing l with
   | nil =>
-    simp only [moveHom, wordParity, List.map_nil, List.sum_nil, mul_zero, List.length_nil,
+    simp only [moveHom, wordSumParity, List.map_nil, List.sum_nil, mul_zero, List.length_nil,
       add_zero]
     rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul]
     exact dotE_comp_eqToHom D Sc (by simp) _
@@ -187,7 +187,7 @@ theorem dot_comp_moveHom (i : I) (l ν : List I) :
       ← Category.assoc (dotE D Sc _ _), ih, Linear.smul_comp, Category.assoc,
       show (l ++ [j]).length + ν.length = l.length + (j :: ν).length by simp; omega,
       dotE_comp_eqToHom D Sc (show l ++ [j] ++ ν ++ [i] = l ++ j :: ν ++ [i] by simp)]
-    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordParity, List.map_cons,
+    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordSumParity, List.map_cons,
       List.sum_cons, mul_add, zsign_add_eq]
 
 /-! ### Far dots -/
@@ -340,12 +340,12 @@ theorem dot_right_comp_intertwinerHom (l m v : List I) (x i j : I) :
 theorem dot_left_comp_moveHom (i x : I) (l₁ : List I) (ν : List I) :
     ∀ (l l₂ : List I), l = l₁ ++ [x] ++ l₂ →
       dotE D Sc (l ++ i :: ν) l₁.length ≫ moveHom D Sc i l ν =
-        zsign k (D.parity x * (D.parity i * wordParity D ν)) •
+        zsign k (D.parity x * (D.parity i * wordSumParity D ν)) •
           (moveHom D Sc i l ν ≫ dotE D Sc (l ++ ν ++ [i]) l₁.length) := by
   induction ν with
   | nil =>
     intro l l₂ _
-    simp only [moveHom, wordParity, List.map_nil, List.sum_nil, mul_zero]
+    simp only [moveHom, wordSumParity, List.map_nil, List.sum_nil, mul_zero]
     rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul]
     exact dotE_comp_eqToHom D Sc (by simp) _
   | cons j ν ih =>
@@ -362,7 +362,7 @@ theorem dot_left_comp_moveHom (i x : I) (l₁ : List I) (ν : List I) :
       ih (l₁ ++ [x] ++ l₂ ++ [j]) (l₂ ++ [j]) (by simp), Linear.smul_comp, Category.assoc,
       dotE_comp_eqToHom D Sc
         (show l₁ ++ [x] ++ l₂ ++ [j] ++ ν ++ [i] = l₁ ++ [x] ++ l₂ ++ j :: ν ++ [i] by simp)]
-    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordParity, List.map_cons,
+    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordSumParity, List.map_cons,
       List.sum_cons, mul_add, zsign_add_eq]
 
 /-- KKO (8.13), first identity, for dots: the dot on the strand `ν_b` passes through
@@ -370,7 +370,7 @@ theorem dot_left_comp_moveHom (i x : I) (l₁ : List I) (ν : List I) :
 theorem dot_mem_comp_moveHom (i x : I) (v : List I) (m : List I) :
     ∀ (l ν : List I), ν = m ++ [x] ++ v →
       dotE D Sc (l ++ i :: ν) (l.length + 1 + m.length) ≫ moveHom D Sc i l ν =
-        zsign k (D.parity x * (D.parity i * wordParity D ν)) •
+        zsign k (D.parity x * (D.parity i * wordSumParity D ν)) •
           (moveHom D Sc i l ν ≫ dotE D Sc (l ++ ν ++ [i]) (l.length + m.length)) := by
   induction m with
   | nil =>
@@ -388,7 +388,7 @@ theorem dot_mem_comp_moveHom (i x : I) (v : List I) (m : List I) :
       dotE_comp_eqToHom D Sc (show l ++ [x] ++ v ++ [i] = l ++ x :: v ++ [i] by simp)]
     simp only [Linear.comp_smul, smul_smul, Category.assoc, ← zsign_add_eq]
     congr 2
-    simp only [wordParity, List.map_cons, List.sum_cons]
+    simp only [wordSumParity, List.map_cons, List.sum_cons]
     linear_combination (-D.parity i) * parity_sq (D.parity x)
   | cons j m ih =>
     intro l ν hν
@@ -407,7 +407,7 @@ theorem dot_mem_comp_moveHom (i x : I) (v : List I) (m : List I) :
       show (l ++ [j]).length + m.length = l.length + (j :: m).length by simp; omega,
       dotE_comp_eqToHom D Sc (show l ++ [j] ++ (m ++ [x] ++ v) ++ [i] =
         l ++ j :: (m ++ [x] ++ v) ++ [i] by simp)]
-    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordParity, List.map_cons,
+    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordSumParity, List.map_cons,
       List.sum_cons, mul_add, zsign_add_eq]
 
 end OddMath.QuiverHecke

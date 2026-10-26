@@ -108,8 +108,8 @@ example : dd ℚ 3 0 * (phiEven (xv ℚ 3 1) (xv ℚ 3 2) (dd ℚ 3 1) * phiEven
 example : dotE datum scalars [true, false, true] 0 ≫ moveHom datum scalars true [] [false, true] =
     moveHom datum scalars true [] [false, true] ≫ dotE datum scalars [false, true, true] 2 := by
   have h := dot_comp_moveHom datum scalars true [] [false, true]
-  have hs : OddMath.SKM.zsign ℚ (datum.parity true * wordParity datum [false, true]) = 1 := by
-    simp [OddMath.SKM.zsign, wordParity, datum]
+  have hs : OddMath.SKM.zsign ℚ (datum.parity true * wordSumParity datum [false, true]) = 1 := by
+    simp [OddMath.SKM.zsign, wordSumParity, datum]
   rw [hs, one_smul] at h
   exact h
 
@@ -119,8 +119,8 @@ example : dotE datum scalars [true, false, true] 1 ≫ moveHom datum scalars tru
     moveHom datum scalars true [] [false, true] ≫ dotE datum scalars [false, true, true] 0 := by
   have h := dot_mem_comp_moveHom datum scalars true false [true] [] [] [false, true] rfl
   have hs : OddMath.SKM.zsign ℚ (datum.parity false *
-      (datum.parity true * wordParity datum [false, true])) = 1 := by
-    simp [OddMath.SKM.zsign, wordParity, datum]
+      (datum.parity true * wordSumParity datum [false, true])) = 1 := by
+    simp [OddMath.SKM.zsign, wordSumParity, datum]
   rw [hs, one_smul] at h
   exact h
 

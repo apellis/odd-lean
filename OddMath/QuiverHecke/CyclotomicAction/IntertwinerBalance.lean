@@ -325,7 +325,7 @@ theorem cl_eq_eqToHom_comp {t t₀ t' : List I} {gs : List PG} (e : t = t₀)
   subst e
   simp
 
-theorem sChain_cross_of {L L' l₁ l₂ s : List I} {x y : I} (hL : L = l₁ ++ [x, y] ++ l₂)
+theorem sChain_cross_split {L L' l₁ l₂ s : List I} {x y : I} (hL : L = l₁ ++ [x, y] ++ l₂)
     (hL' : L' = l₁ ++ [y, x] ++ l₂) :
     SChain (L ++ s) (pl (L ++ s) [.cross l₁.length]) (L' ++ s) := by
   subst hL hL'
@@ -335,17 +335,17 @@ theorem sChain_cross_of {L L' l₁ l₂ s : List I} {x y : I} (hL : L = l₁ ++ 
 `(-1)^{p(x)p(y)p(i)p(ν)}`. -/
 theorem cross_left_comp_moveHom (i x y : I) (l₁ : List I) (ν : List I) :
     ∀ (L L' l₂ : List I) (hL : L = l₁ ++ [x, y] ++ l₂) (hL' : L' = l₁ ++ [y, x] ++ l₂),
-      cl D Sc (L ++ i :: ν) (L' ++ i :: ν) [.cross l₁.length] (sChain_cross_of hL hL') ≫
+      cl D Sc (L ++ i :: ν) (L' ++ i :: ν) [.cross l₁.length] (sChain_cross_split hL hL') ≫
           moveHom D Sc i L' ν =
-        zsign k (D.parity x * D.parity y * (D.parity i * wordParity D ν)) •
+        zsign k (D.parity x * D.parity y * (D.parity i * wordSumParity D ν)) •
           (moveHom D Sc i L ν ≫
             cl D Sc (L ++ ν ++ [i]) (L' ++ ν ++ [i]) [.cross l₁.length]
               (by simpa only [List.append_assoc] using
-                sChain_cross_of (s := ν ++ [i]) hL hL')) := by
+                sChain_cross_split (s := ν ++ [i]) hL hL')) := by
   induction ν with
   | nil =>
     intro L L' l₂ hL hL'
-    simp only [moveHom, wordParity, List.map_nil, List.sum_nil, mul_zero]
+    simp only [moveHom, wordSumParity, List.map_nil, List.sum_nil, mul_zero]
     rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul,
       cl_comp_eqToHom D Sc _ (show L' ++ [i] = L' ++ [] ++ [i] by simp),
       eqToHom_comp_cl D Sc (show L ++ [i] = L ++ [] ++ [i] by simp)]
@@ -368,7 +368,7 @@ theorem cross_left_comp_moveHom (i x y : I) (l₁ : List I) (ν : List I) :
       Linear.smul_comp, Linear.comp_smul, Category.assoc, cl_comp_eqToHom]
     simp only [Category.assoc]
     rw [eqToHom_comp_cl]
-    simp only [Linear.comp_smul, smul_smul, wordParity, List.map_cons, List.sum_cons, mul_add,
+    simp only [Linear.comp_smul, smul_smul, wordSumParity, List.map_cons, List.sum_cons, mul_add,
       zsign_add_eq]
     all_goals simp
 
@@ -423,7 +423,7 @@ def meetRight (l v : List I) (i j k : I) :
     eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
       (show (l ++ [j]) ++ [k, i] ++ v = (l ++ [j] ++ [k]) ++ i :: v by simp)) ≫
     cl D Sc ((l ++ [j] ++ [k]) ++ i :: v) ((l ++ [k] ++ [j]) ++ i :: v) [.cross l.length]
-      (sChain_cross_of (l₁ := l) (l₂ := []) (x := j) (y := k) (by simp) (by simp))
+      (sChain_cross_split (l₁ := l) (l₂ := []) (x := j) (y := k) (by simp) (by simp))
 
 /-- If the colours `j, k` both differ from `i`, the identity is the braid relation (1.9). -/
 theorem meetLeft_eq_of_ne (l v : List I) {i j k : I} (hij : i ≠ j) (hik : i ≠ k) :
@@ -505,7 +505,7 @@ theorem cross_comp_moveHom_base (l v : List I) (i j c : I)
     (h₂ : SChain (l ++ j :: c :: v ++ [i]) (pl (l ++ j :: c :: v ++ [i]) [.cross l.length])
       (l ++ c :: j :: v ++ [i])) :
     cl D Sc _ _ [.cross (l.length + 1)] h₁ ≫ moveHom D Sc i l (c :: j :: v) =
-      zsign k (D.parity j * D.parity c * (D.parity i * wordParity D v)) •
+      zsign k (D.parity j * D.parity c * (D.parity i * wordSumParity D v)) •
         (moveHom D Sc i l (j :: c :: v) ≫ cl D Sc _ _ [.cross l.length] h₂) := by
   have hL : cl D Sc _ _ [.cross (l.length + 1)] h₁ ≫ moveHom D Sc i l (c :: j :: v) =
       meetLeft D Sc l v i j c ≫ moveHom D Sc i (l ++ [c] ++ [j]) v ≫
@@ -549,13 +549,13 @@ theorem cross_comp_moveHom (v : List I) (i j c : I)
     ∀ l : List I,
       cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j c) ≫
           moveHom D Sc i l (m ++ c :: j :: v) =
-        zsign k (D.parity j * D.parity c * (D.parity i * (wordParity D m + wordParity D v))) •
+        zsign k (D.parity j * D.parity c * (D.parity i * (wordSumParity D m + wordSumParity D v))) •
           (moveHom D Sc i l (m ++ j :: c :: v) ≫
             cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j c)) := by
   induction m with
   | nil =>
     intro l
-    have hw : wordParity D ([] : List I) = 0 := by simp [wordParity]
+    have hw : wordSumParity D ([] : List I) = 0 := by simp [wordSumParity]
     rw [hw, zero_add]
     exact cross_comp_moveHom_base D Sc l v i j c (hmeet l) _ _
   | cons x m ih =>
@@ -578,7 +578,7 @@ theorem cross_comp_moveHom (v : List I) (i j c : I)
     simp only [Category.assoc]
     rw [eqToHom_comp_cl, cl_cross_pos D Sc (p := l.length + (x :: m).length)
       (p' := (l ++ [x]).length + m.length) (by simp; omega)]
-    · simp only [Linear.comp_smul, smul_smul, ← zsign_add_eq, wordParity, List.map_cons,
+    · simp only [Linear.comp_smul, smul_smul, ← zsign_add_eq, wordSumParity, List.map_cons,
         List.sum_cons]
       exact congrArg (fun z => zsign k z • _) (by ring)
     all_goals simp
@@ -727,7 +727,7 @@ theorem meetLeft_eq (l v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) :
 theorem cross_comp_moveHom_of (v : List I) {i j c : I} (hb : ¬(i = c ∧ i ≠ j)) (m l : List I) :
     cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j c) ≫
         moveHom D Sc i l (m ++ c :: j :: v) =
-      zsign k (D.parity j * D.parity c * (D.parity i * (wordParity D m + wordParity D v))) •
+      zsign k (D.parity j * D.parity c * (D.parity i * (wordSumParity D m + wordSumParity D v))) •
         (moveHom D Sc i l (m ++ j :: c :: v) ≫
           cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j c)) :=
   cross_comp_moveHom D Sc v i j c (fun l' => meetLeft_eq D Sc l' v hb) m l
