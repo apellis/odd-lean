@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Negative-power probe-window inverses
+
+`ProbeWindowInverse.md` gives a proposed written inverse algorithm for
+both leading tables of `HomResidualWindows.md`, conditional on that
+note's coordinate and quotient comparison. The inputs are the specified
+whole probe local inverse, the invertible adjacent probe dots, and the
+literal mate slide `y s-q s x=u v`. No residual-inverse or additional
+Frobenius hypothesis is introduced.
+
+The finite identities
+`q^l y^l s x^-l=s+sum_(r<l) q^(r+1) u_r v_(-r-1)` and
+`q^l y^-l s x^l=s-sum_(r<l) q^(r+2) u_(-r-1) v_r`
+give explicit two-sided inverses for the allowed shifted cap/cup windows.
+Six all-height subcases reduce to these windows or the original specified
+factor inverse. The unequal-height delta and j-composite terms are
+retained. Explicit lifting/projection formulas extract the inverses of
+H_+,H_- and prove both products without dimension cancellation.
+
+The nonempty zero-total-height cases are included, as are h=0 and k=0.
+Old reservoir indexing, alpha/beta scalars and the existing L,Q changes
+are restored at the end. The exceptional gamma(0)=q is not renormalized.
+These are written calculations only. Review of the leading comparison,
+its nilpotent-ideal lift, full fusion, integer shifts, factor-action
+construction and separation remain separate; no Lean verification or
+nondegeneracy conclusion is asserted.
+
 ## All-height residual window coordinates
 
 `HomResidualWindows.md` gives a proposed written calculation (not a Lean
