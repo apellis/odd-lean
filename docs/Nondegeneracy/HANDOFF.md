@@ -110,6 +110,14 @@ whiskered by an old word (`induction_slide_left/right`) and summed, in the algeb
 `c y₁ - s y₂ c = θ(1)` and `y₁ c - s c y₂ = θ(1)`, where `c` is the last-pair crossing,
 `y₁` the appended and `y₂` the new last dot (`affineLastCrossing_slide_left/right`,
 and at every height of the extended tower `heightLastCrossing_slide_left/right`).
+`GlobalHeightSlides.lean` lifts these to the two inductions: on the equal-colour corner
+`T = C θ(1)` signed right multiplication by `y₂` and by `y₁` are superbimodule
+endomorphisms (`heightCompositionRightMul`, hypotheses `CornerMulData`); the comparison
+`F ≅ T ⊗ -` sends the outer dot to `y₂` and the inner dot to `y₁`
+(`heightComparison_dot_outer_app`, `heightComparison_dot_inner_app`), so
+`ψ x₁ - s x₂ ψ = s` and `x₁ ψ - s ψ x₂ = s` on components (`heightInduction_slide_left/right`,
+diagrammatic order). For the Rouquier crossing `t = -ψ` these are exactly
+`SuperRouquierLoc.slide_left/right`; the transport to weight blocks is still open.
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
