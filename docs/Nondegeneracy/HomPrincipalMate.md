@@ -1,6 +1,9 @@
 # The principal component of the reversed Hom matrix
 
-**Status: written mathematical derivation, not a Lean theorem.** With the
+**Status: the principal Hom comparison remains a written derivation.**
+`RouquierPrincipalWord.lean` proves the unnormalized word evaluation (11)
+at all heights and the scalar identity (16). Substitution into the specified
+shifted Hom mate and shift cancellation (3)–(10) remain to be formalized. With the
 inherited reservoir dots and the same-colour KLR crossing convention, the
 normalized-left Hom mixed mate has raw component
 
@@ -166,8 +169,9 @@ W_k = w(k) L_k,   w(k)=1 (k<=0), w(k)=s (k>0).          (11)
 
 The input is the same-colour local inversions, squares and upward braid,
 the signed pitchforks in `RouquierPitchfork.lean`, and the unnormalized
-F snake from `SignedFTriangle.md`. The F snake is available as a written
-proof; this argument does not claim its Lean implementation is complete.
+F snake proved in `RouquierFTriangle.lean`. The word computation below is
+formalized by `RouquierFamily.leftCrossingWord_eq`; it does not identify
+the word with the specified shifted Hom mate.
 
 For k>=0 the theorem `cupL_pitchfork_of_nonneg` says
 
