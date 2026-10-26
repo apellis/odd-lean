@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## First-order deformed Mackey boundary
+
+[DeformedMackeyBoundary.md](DeformedMackeyBoundary.md) gives a proposed written
+calculation on the PBW columns of KKO I (9.5), not a Lean theorem. At odd i,
+the corrected first-dot operator preserves the short-coset submodule and
+induces `ρ̄(v_l b)=v_(l+1)φ(b)+2v_l d_i φ(b)` on longest-crossing
+coefficients, at both cutoff parities. Its explicit lifted basis is
+`w_(2q)=v_(2q)`, `w_(2q+1)=v_(2q+1)+2v_(2q)d_i`, with lifts
+`z_k=ρ^k(τ_n⋯τ₁⊗π^ε1)`. Polynomial projection kills P of the short
+cosets, giving `C₀P=A_∂B₁`; the affine crossing slide then gives
+`A_∂(ρ̄v)-A_∂(v)t=Eψ(v)` on these specified lifts. The full-coefficient
+longest-crossing norm comparison with `S_i=∏(t²-x_a²)²`, and therefore
+the leading-degree division statement and prescribed matrix comparison,
+remain unproved. The repeated-odd QP sum factor is not substituted for S_i.
+
 ## Canonical parity-shifted coefficient target
 
 `CyclotomicAction/IntertwinerParity.lean` refines the target of the existing
