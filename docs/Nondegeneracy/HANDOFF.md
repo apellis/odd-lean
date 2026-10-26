@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Invertible-dot probe and mixed braid components
+
+`InvertibleDotProbe.md` constructs the parity-graded probe at all contents,
+conditional on the deformed full-action construction. Its coefficient
+specialization sends odd parameters to zero and the cyclotomic polynomials
+to `(u²-1)^M` at odd colours and `(u-1)^M` at even colours. Finite generation,
+the zero-primary argument and residue-field descent make every dot a unit.
+Both maps of every prescribed inverse matrix specialize, so no separate
+localization/induction compatibility assumption is used. This is a written
+argument, not a Lean theorem. Only the vacuum and one-strand blocks are
+proved nonzero. The probe loses integer grading; the reservoir's independent
+positive-degree estimates are unchanged.
+
+`MixedColourSectorBraid.md` derives the full ABA/BAB columns of the iji
+braid, with correction `-q_i C_ij` and the middle-colour sign retained.
+Its paired AA comparison allows distinct reservoir colours; its equal-probe
+comparison uses the prescribed beta/xi transport identified in
+`PairedHomInterchange.md`, not an extra gauge hypothesis. The remaining
+mixed iji blocks and unequal-probe comparison are not proved in this note;
+iij, ijj and distinct ijk also remain separate. Neither this component
+calculation nor the probe construction proves fusion, normalized bubble
+values, regular-word coordinates, or nondegeneracy.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every
