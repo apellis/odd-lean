@@ -177,5 +177,90 @@ theorem dottedUnit_capCross_boundary (hsq : t ≫ t = 0) {n : ℕ}
   · rw [smul_neg, smul_smul, ← mul_pow, koszulSign_mul_self, one_pow, one_smul]
   · rw [smul_zero]
 
+omit [TwoSupercategory k B] in
+/-- At heights at most one the capped crossing has only its two lowest terms.
+The coefficients are unchanged in odd parity. -/
+theorem sig_capL_low (hh : h ≤ 1) :
+    L.sig ≫ L.capL = L.capD 0 ≫ L.cw (-1) + if h = 1 then L.capD 1 else 0 := by
+  rcases lt_trichotomy h 0 with hn | hz | hp
+  · rw [L.sig_capL hn, L.cw_of_neg_of_lt (by omega) (by omega),
+      Limits.comp_zero, ite_eq_right (by omega), add_zero]
+  · subst h
+    rw [L.sig_capL_expansion]
+    change (∑ n ∈ Finset.range 1, L.capD n ≫ L.cw (-(n : ℤ) - 1)) =
+      L.capD 0 ≫ L.cw (-1) + 0
+    rw [Finset.sum_range_one, add_zero]
+    rfl
+  · have heq : h = 1 := by omega
+    subst h
+    rw [L.sig_capL_expansion]
+    change (∑ n ∈ Finset.range 2, L.capD n ≫ L.cw (-(n : ℤ) - 1)) =
+      L.capD 0 ≫ L.cw (-1) + L.capD 1
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+      Nat.cast_zero, Nat.cast_one]
+    have hc : L.cw (-1 - 1) = 𝟙 _ := L.cw_of_neg_of_eq (by omega) (by omega)
+    rw [hc, Category.comp_id]
+    rfl
+/-- Closing the rightward crossing with a dotted right cap retains the sign
+from interchanging its crossing and the open-strand dot power. -/
+theorem sig_capD_closed (n : ℕ) :
+    L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ (F₂ ◁ rouquierPower x₂ n ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+    koszulSign p ((n : ZMod 2) * p) •
+      ((associator F₁ E₁ E₂).hom ≫ F₁ ◁ (E₁ ◁ rouquierPower x₂ n ≫ t) ≫
+        (associator F₁ E₁ E₂).inv ≫ A₁.counit ▷ E₂ ≫ (leftUnitor E₂).hom) := by
+  rw [TwoSupercategory.whiskerLeft_comp (R := k)]
+  simp only [Category.assoc]
+  rw [← TwoSupercategory.associator_naturality_right_assoc (R := k),
+    TwoSupercategory.super_interchange_assoc (R := k) L.sig_mem
+      (rouquierPower_mem L.dot₂_mem n)]
+  rw [L.sig_counit_pitchfork]
+  rw [TwoSupercategory.associator_naturality_right_assoc (R := k),
+    TwoSupercategory.whiskerLeft_comp (R := k)]
+  simp only [Category.assoc]
+/-- Closing a dotted cap after the additional upward crossing. -/
+theorem cross_sig_capD_closed (n : ℕ) :
+    (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ (F₂ ◁ rouquierPower x₂ n ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+    koszulSign p ((n : ZMod 2) * p) •
+      ((associator F₁ E₁ E₂).hom ≫ F₁ ◁ (t ≫ E₁ ◁ rouquierPower x₂ n ≫ t) ≫
+        (associator F₁ E₁ E₂).inv ≫ A₁.counit ▷ E₂ ≫ (leftUnitor E₂).hom) := by
+  rw [L.sig_capD_closed]
+  simp only [Preadditive.comp_zsmul, TwoSupercategory.whiskerLeft_comp (R := k),
+    Category.assoc, Iso.inv_hom_id_assoc]
+
+include L in
+omit [TwoSupercategory k B] in
+/-- The one-dot sandwich reduces to the crossing in either parity. -/
+theorem tau_dot_tau_left (hsq : t ≫ t = 0) : t ≫ E₁ ◁ x₂ ≫ t = t := by
+  have hs := congrArg (fun z => t ≫ z) L.slide_left
+  simp only [Preadditive.comp_sub, Preadditive.comp_zsmul, Category.comp_id,
+    ← Category.assoc, hsq, Limits.zero_comp, smul_zero, sub_zero] at hs
+  simpa only [Category.assoc] using hs
+
+/-- The one-dot capped double-crossing has coefficient `(-1)^p`.
+This sign comes from the dotted-cap interchange, not from the upward sandwich. -/
+theorem cross_sig_capD_one (hsq : t ≫ t = 0) :
+    (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ (F₂ ◁ x₂ ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+    koszulSign p p • (L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom) := by
+  have hc := L.cross_sig_capD_closed 1
+  simp only [rouquierPower_succ, rouquierPower_zero, Category.id_comp,
+    Nat.cast_one, one_mul] at hc
+  rw [L.tau_dot_tau_left hsq, ← L.sig_counit_pitchfork] at hc
+  exact hc
+/-- The zero-dot capped double-crossing vanishes by the upward square relation. -/
+theorem cross_sig_capD_zero (hsq : t ≫ t = 0) :
+    (associator F₁ E₁ E₂).hom ≫ F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫
+      L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+        E₂ ◁ A₂.counit ≫ (rightUnitor E₂).hom = 0 := by
+  have hc := L.cross_sig_capD_closed 0
+  simpa only [rouquierPower_zero, TwoSupercategory.whiskerLeft_id (R := k),
+    Category.id_comp, hsq, TwoSupercategory.whiskerLeft_zero (R := k),
+    Limits.zero_comp, Limits.comp_zero, smul_zero] using hc
+
 end SuperRouquierLoc
 end OddMath.SKM
