@@ -78,9 +78,15 @@ of the coupled mate. The negative probe indices are integers.
 3. Realize the sector inclusions/projections for these crossings.
    `MateProjectionFormula.of_sectors` (`RouquierMateSectors`) derives every
    coordinate hypothesis from sector summands with restricted counits,
-   projected units and restricted dots; what remains is the coupled slide,
-   the probe-dot inverses and the reservoir nilpotence for the actual
-   sectors.
+   projected units and restricted dots. `RouquierCoupled` constructs the
+   coupled adjunction, dots and crossing from sector decompositions of the
+   coupled 1-morphisms, proves the coupled slide (with rational
+   position-preserving cross-sector entries) and supplies the sectors, so
+   the projection formula holds for the coupled data given factor slides,
+   probe-dot inverses and reservoir nilpotence. What remains here is the
+   sector decomposition of the actual Hom-family coupled functor into its
+   post/pre summands (a weight-space category with biproducts) and the
+   superadjunctions of those summands in the ambient 2-supercategory.
 4. Identify the all-height negative windows with the ordered dot-conjugation
    formulas. `RouquierDotConjugation` proves the underlying correction
    identities at every length, without dropping the cap–cup terms.

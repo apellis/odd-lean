@@ -659,8 +659,32 @@ formula from sector summands through `MateProjectionFormula.of_sectors`, so
 `upward_independence_of_fused_sector_actions` assumes only sector summands
 with slide, probe inverses and reservoir nilpotence, the vacuum values, the
 regular identification and the fused bubble identification. Consumer:
-`scripts/NonVacuity/ReservoirFusedDetection.lean`. No `FusedVacuumAction` or
-`FusedSectorAction` is constructed.
+`scripts/NonVacuity/ReservoirFusedDetection.lean`.
+
+`RouquierCoupled.lean` constructs the coupled structure from two separated
+factors (`CoupledFactors`: sector decompositions `SectorDecomp` of the coupled
+`E₁, F₁, E₂, F₂` into reservoir and probe summands). It builds the diagonal
+`coupledAdjunction` with both triangles, the diagonal dots, and the coupled
+crossing `coupledCross` as a block matrix on the four summands of `E₁ ≫ E₂`:
+factor crossings on the diagonal sectors, the rational position-preserving
+cross-sector entries `coupledRationalLeft/Right` (finite series inverting
+`y - q x`, nilpotent reservoir and invertible probe; no centrality, odd `q`
+allowed), and given sector-swapping blocks intertwining the dots.
+`CoupledFactors.slide` proves the coupled upward slide; `sourceSector` and
+`targetSector` restrict counits, units and dots as `of_sectors` requires, and
+`CoupledFactors.mateProjectionFormula` is the projection formula for the
+actual coupled data. `RouquierCoupledSectors.lean` turns this into
+`CoupledSectorBubble.toVacuumSectorBubble` and
+`upward_independence_of_fused_coupled_actions`. Consumer:
+`scripts/NonVacuity/RouquierCoupled.lean`. Remaining inputs of
+`FusedCoupledAction`: the family (regular identification), the factor data of
+`CoupledFactors` (the sector decompositions of the coupled Hom-family functors
+into post/pre summands, sector adjunctions incl. the shifted left adjunctions
+of the pre summand, factor dots and diagonal crossings with slides, swap
+blocks, probe inverses, reservoir nilpotence), the vacuum values
+`probe`/`reservoirValue`/`normalize`, and `fused`. No `FusedCoupledAction` is
+constructed. The quadratic and braid relations of `coupledCross` are not proved
+(the projection formula does not use them).
 
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a
