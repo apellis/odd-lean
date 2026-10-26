@@ -27,6 +27,11 @@ Diagrams compose bottom to top. The dot on the left strand passes through `g` to
 strand with the sign `(-1)^{|i||j|}`, and the dot on the right strand to the left one with the
 same sign (`dot_comp_intertwinerHom`, `dot_succ_comp_intertwinerHom`); this is KKO's sign
 `(-1)^{p(ν_a)p(ν_{a+1})p(ν_b)}` for `b = a, a + 1`.
+
+`moveHom i l ν` is the composite `g_{|l|+|ν|} ⋯ g_{|l|+1}` from `l ++ i :: ν` to
+`l ++ ν ++ [i]`, which for `l = []` is the element `g_n ⋯ g_1 e(i, ν)` of KKO's map `Q`
+(Proposition 8.4). `dot_comp_moveHom` is the second identity of KKO (8.13):
+`x_{n+1} g_n ⋯ g_1 e(i, ν) = (-1)^{p(i)p(ν)} g_n ⋯ g_1 x_1 e(i, ν)`.
 -/
 
 noncomputable section
@@ -123,5 +128,59 @@ theorem dot_succ_comp_intertwinerHom (l r : List I) (i j : I) :
     have h' := congrArg (zsign k (D.parity i * D.parity j) • ·) hs
     simp only [smul_smul, zsign_mul_self, one_smul] at h'
     exact h'.symm
+
+/-! ### Moving a strand across a word -/
+
+theorem zsign_add_eq (p q : ZMod 2) : zsign k (p + q) = zsign k p * zsign k q := by
+  have hz : ∀ x : ZMod 2, x = 0 ∨ x = 1 := by decide
+  rcases hz p with rfl | rfl <;> rcases hz q with rfl | rfl <;> simp [zsign]
+
+/-- A dot commutes with the identification of equal words. -/
+theorem dotE_comp_eqToHom {w w' : List I} (h : w = w') (b : ℕ) :
+    dotE D Sc w b ≫ eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) h) =
+      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) h) ≫ dotE D Sc w' b := by
+  subst h
+  simp
+
+/-- KKO's `g_n ⋯ g_1 e(i, ν)`, moving the strand of colour `i` from position `|l|` across
+`ν` to the end: `g_{|l|+|ν|} ⋯ g_{|l|+1}` on `l ++ i :: ν`. -/
+def moveHom (i : I) : (l ν : List I) →
+    (pres D Sc).obj (ob D (l ++ i :: ν)) ⟶ (pres D Sc).obj (ob D (l ++ ν ++ [i]))
+  | l, [] => eqToHom (by simp)
+  | l, j :: ν =>
+      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp)) ≫
+        intertwinerHom D Sc l ν i j ≫
+          eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+            (show l ++ [j, i] ++ ν = (l ++ [j]) ++ i :: ν by simp)) ≫
+            moveHom i (l ++ [j]) ν ≫
+              eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp))
+
+/-- The parity `p(ν)` of a word. -/
+def wordParity (ν : List I) : ZMod 2 := (ν.map D.parity).sum
+
+/-- KKO (8.13), second identity: the dot on the moving strand passes from its first position
+to the last, with the sign `(-1)^{p(i) p(ν)}`. -/
+theorem dot_comp_moveHom (i : I) (l ν : List I) :
+    dotE D Sc (l ++ i :: ν) l.length ≫ moveHom D Sc i l ν =
+      zsign k (D.parity i * wordParity D ν) •
+        (moveHom D Sc i l ν ≫ dotE D Sc (l ++ ν ++ [i]) (l.length + ν.length)) := by
+  induction ν generalizing l with
+  | nil =>
+    simp only [moveHom, wordParity, List.map_nil, List.sum_nil, mul_zero, List.length_nil,
+      add_zero]
+    rw [show zsign k (0 : ZMod 2) = 1 by simp [zsign], one_smul]
+    exact dotE_comp_eqToHom D Sc (by simp) _
+  | cons j ν ih =>
+    simp only [moveHom]
+    rw [← Category.assoc, dotE_comp_eqToHom D Sc (show l ++ i :: j :: ν = l ++ [i, j] ++ ν by simp),
+      Category.assoc, ← Category.assoc (dotE D Sc _ _), dot_comp_intertwinerHom,
+      Linear.smul_comp, Category.assoc, ← Category.assoc (dotE D Sc _ _),
+      dotE_comp_eqToHom D Sc (show l ++ [j, i] ++ ν = (l ++ [j]) ++ i :: ν by simp),
+      Category.assoc, show l.length + 1 = (l ++ [j]).length by simp,
+      ← Category.assoc (dotE D Sc _ _), ih, Linear.smul_comp, Category.assoc,
+      show (l ++ [j]).length + ν.length = l.length + (j :: ν).length by simp; omega,
+      dotE_comp_eqToHom D Sc (show l ++ [j] ++ ν ++ [i] = l ++ j :: ν ++ [i] by simp)]
+    simp only [Linear.comp_smul, smul_smul, Category.assoc, wordParity, List.map_cons,
+      List.sum_cons, mul_add, zsign_add_eq]
 
 end OddMath.QuiverHecke

@@ -103,6 +103,17 @@ example : dd ℚ 3 0 * (phiEven (xv ℚ 3 1) (xv ℚ 3 2) (dd ℚ 3 1) * phiEven
 #print axioms IsSignedNilHeckeFamily.braid_element
 #print axioms IsSignedNilHeckeFamily.braid_phiEven
 #print axioms IsSignedNilHeckeFamily.braid_gEven
+/-- The dot on the moving odd strand reaches the end of `[true, false, true]` with the sign
+`(-1)^{p(true)(p(false) + p(true))} = 1`. -/
+example : dotE datum scalars [true, false, true] 0 ≫ moveHom datum scalars true [] [false, true] =
+    moveHom datum scalars true [] [false, true] ≫ dotE datum scalars [false, true, true] 2 := by
+  have h := dot_comp_moveHom datum scalars true [] [false, true]
+  have hs : OddMath.SKM.zsign ℚ (datum.parity true * wordParity datum [false, true]) = 1 := by
+    simp [OddMath.SKM.zsign, wordParity, datum]
+  rw [hs, one_smul] at h
+  exact h
+
+#print axioms dot_comp_moveHom
 #print axioms dot_comp_intertwinerHom
 #print axioms dot_succ_comp_intertwinerHom
 #print axioms OddTwo.x_succ_mul_phiOdd
