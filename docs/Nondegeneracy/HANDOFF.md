@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Fixed normalized reservoir adjunction
+
+`RouquierFamily.leftAdjoints` now uses the explicit involutive unit
+`leftAdjScalar i x = koszulSign σ σ * (if h < 0 then 1 else koszulSign p p)`
+at the source height h, with unit `leftCup` and counit `leftAdjScalar⁻¹ • leftCap`.
+Both triangles follow from the canonical triangles; no chosen-scalar uniqueness
+or faithfulness is used. `RouquierNormalizedHomAdjunction.lean` specializes the
+existing `homContentPreAdjunction` without an additional `LeftZigzags` premise.
+It proves the reduced cup/output-shift unit formula and expands the specified
+counit through the shift-square and commuting comparison.
+
+The reduced counit formula of `HomSectorTransport.md` §2, including its outer
+`koszulSign σ σ`, still requires cancellation of those comparisons. The checked
+expansion is not that cancellation theorem. No fusion or nonzero model is claimed.
+
 ## Canonical F triangle and shifted left adjunctions
 
 `OddMath.SKM.reflection_triangle_scalar` in `RouquierFTriangle.lean`
@@ -13,7 +28,7 @@ then cancels the canonical cup/cap scalar product. Its coefficient is
 
 `RouquierFamily.leftZigF_eq` specializes this to every family edge;
 `RouquierFamily.leftZigzags` discharges the existing two-triangle condition.
-`RouquierFamily.leftAdjoints` uses the existing cap-normalization constructor.
+`RouquierFamily.leftAdjoints` normalizes the cap by the explicit involutive scalar.
 There is no new cyclicity, faithfulness or left-triangle hypothesis. The
 rank-one odd consumer checks arbitrary heights and the boundaries -1 and 0,
 and audits every declaration owned by the new module.

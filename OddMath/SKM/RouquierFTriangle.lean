@@ -133,8 +133,69 @@ shifted left-adjunction API; no left-triangle hypothesis is needed. -/
 theorem leftZigzags : T.LeftZigzags :=
   T.leftZigzags_iff_leftZigF.mpr (fun i _ _ e => T.leftZigF_eq i e)
 
-/-- Normalize only the cap using the existing common-unit construction. -/
-def leftAdjoints : RouquierLeftAdjoints (k := k) T :=
-  T.leftAdjointsOfZigzags T.leftZigzags
+/-- The fixed involutive normalization at the source height of an edge. -/
+def leftAdjScalar (_T : RouquierFamily (k := k) (B := B) D) (i : I) (x : X) : kˣ := by
+  let s : ℤ := koszulSign (leftAdjParity D i x) (leftAdjParity D i x)
+  let a : ℤ := if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)
+  have hs : s * s = 1 := koszulSign_mul_self _ _
+  have ha : a * a = 1 := by
+    dsimp [a]
+    split_ifs <;> simp only [mul_one, koszulSign_mul_self]
+  have hc : (s * a) * (s * a) = 1 := by
+    calc _ = (s * s) * (a * a) := by ring
+         _ = 1 := by rw [hs, ha, mul_one]
+  exact ⟨((s * a : ℤ) : k), ((s * a : ℤ) : k),
+    by rw [← Int.cast_mul, hc, Int.cast_one],
+    by rw [← Int.cast_mul, hc, Int.cast_one]⟩
+
+omit [TwoSupercategory k B] in
+/-- The prescribed scalar uses the source height, not the preceding local height. -/
+theorem leftAdjScalar_coe (i : I) (x : X) :
+    (T.leftAdjScalar i x : k) =
+      ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) *
+        (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)) : ℤ) : k) := rfl
+
+omit [TwoSupercategory k B] in
+/-- The inverse has the same explicit value because the normalization is involutive. -/
+theorem leftAdjScalar_inv_coe (i : I) (x : X) :
+    (((T.leftAdjScalar i x)⁻¹ : kˣ) : k) =
+      ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) *
+        (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)) : ℤ) : k) := rfl
+
+/-- Normalize only the cap by the fixed inverse scalar, without choosing a scalar
+from the existential zigzag statement. -/
+def leftAdjoints : RouquierLeftAdjoints (k := k) T where
+  adjL i {x y} h :=
+    { unit := T.leftCup i h
+      counit := (((T.leftAdjScalar i x)⁻¹ : kˣ) : k) • T.leftCap i h
+      unit_mem := T.leftCup_mem i h
+      counit_mem := Submodule.smul_mem _ _ (T.leftCap_mem i h)
+      left_triangle := by
+        have hF : T.leftZigF i h = (T.leftAdjScalar i x : k) • 𝟙 _ := by
+          rw [T.leftAdjScalar_coe, Int.cast_smul_eq_zsmul]
+          exact T.leftZigF_eq i h
+        unfold leftZigF at hF
+        rw [TwoSupercategory.whiskerLeft_smul, Linear.smul_comp, Linear.comp_smul,
+          Linear.comp_smul, Linear.comp_smul, hF, smul_smul, Units.inv_mul, one_smul]
+      right_triangle := by
+        have hE : T.leftZigE i h =
+            ((koszulSign (leftAdjParity D i x) (leftAdjParity D i x) : k) *
+              T.leftAdjScalar i x) • 𝟙 _ := by
+          rw [T.leftAdjScalar_coe, ← Int.cast_mul, ← mul_assoc, koszulSign_mul_self,
+            one_mul, Int.cast_smul_eq_zsmul]
+          exact T.leftZigE_eq i h
+        unfold leftZigE at hE
+        rw [TwoSupercategory.smul_whiskerRight, Linear.smul_comp, Linear.comp_smul,
+          Linear.comp_smul, Linear.comp_smul, hE, smul_smul, mul_left_comm, Units.inv_mul,
+          mul_one, Int.cast_smul_eq_zsmul] }
+
+/-- The normalized unit is the inverse-defined cup at the target of the edge. -/
+theorem leftAdjoints_unit (i : I) {x y : X} (h : x + D.α i = y) :
+    (T.leftAdjoints.adjL i h).unit = T.leftCup i h := rfl
+
+/-- The normalized counit is the inverse-defined cap at the source of the edge. -/
+theorem leftAdjoints_counit (i : I) {x y : X} (h : x + D.α i = y) :
+    (T.leftAdjoints.adjL i h).counit =
+      (((T.leftAdjScalar i x)⁻¹ : kˣ) : k) • T.leftCap i h := rfl
 end RouquierFamily
 end OddMath.SKM
