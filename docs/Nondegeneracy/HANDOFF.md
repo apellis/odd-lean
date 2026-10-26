@@ -87,12 +87,15 @@ along `heightAppend`: `heightSuperInductionCrossing`, homogeneous of parity
 `heightLastCrossing_square` (at two strands from `affineLastCrossing_square`),
 `heightSuperInductionCrossing_square`, and restricts the crossing to content
 blocks with explicit target content at every height (`heightBlockCross`,
-`heightBlockCross_square`). Open on weight spaces: transporting it through the
-height casts of two-step `globalContentInduction` and
-transporting it to `globalE i ≫ globalE j` (the `cross` field), nilpotence
-(needs an odd cyclotomic analogue of Brundan–Kleshchev Lemma 2.1, absent),
-square/braid/slides on weight spaces, and `GlobalLoc` (local inversion is
-stream A's pending statement).
+`heightBlockCross_square`). `GlobalWeightCross.lean` identifies two global
+content inductions with `heightBlockInduction₂` followed by a height
+transport (`globalContentInduction_comp`), and transports `heightBlockCross`
+blockwise to `globalWeightCross`; both composites vanish off two-step
+successor blocks (`globalEFunctor_comp_isZero`). `globalActionCross_mem` is
+the `cross`/`cross_mem` field of `RouquierData` on weight spaces. Open on
+weight spaces: nilpotence (needs an odd cyclotomic analogue of
+Brundan–Kleshchev Lemma 2.1, absent), square/braid/slides on weight spaces,
+and `GlobalLoc` (local inversion is stream A's pending statement).
 
 `GlobalCross.lean` defines two-step block induction `globalBlockInduction₂`
 with explicit target content and restricts the constructed crossing
