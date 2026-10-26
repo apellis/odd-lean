@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Principal component of the reversed Hom matrix
+
+`HomPrincipalMate.md` derives the unbundled same-colour Hom crossing as
+`-(-1)^p` times the inherited reservoir crossing from the reversed-slot
+KLR slides. In the specified normalized-left Hom adjunction, all four
+shift-removal signs cancel. Signed cup/cap pitchforks then give
+`C_src^-1;P_H(tau_H);C_tgt = gamma(k) P_R`, where `R=-sigL`,
+`gamma(k)=(-1)^(p k)` for nonzero reservoir height k, and
+`gamma(0)=(-1)^p`. The exceptional zero coefficient is retained.
+
+This is a written derivation, not a Lean theorem. Its whole-matrix
+consequence, conditional on the window calculations in
+`ReversedReservoirMatrix.md`, rescales every finite identity summand and
+gives principal inverse `gamma(k) f`. The principal derivation itself
+does not use those window calculations. Shifted swapping mates and their
+tensor support, (TC), residual inversion, fusion and separation remain
+open; a principal-entry evaluation does not establish them.
+
 ## Reversed reservoir window comparison
 
 `ReversedReservoirMatrix.md` derives the Hom reservoir height `-k` from
@@ -10,12 +28,12 @@ augmented matrices with principal entry `R=-sigL`; their principal inverses
 are the original right mate. Integer/parity shifts, cap normalization and
 heights zero and plus/minus one are retained.
 
-These are written component calculations, not Lean theorems. The matrix is
-not yet identified with the Hom augmented matrix: its outstanding entry is
-`C_src^-1;P_H(tau_H);C_tgt`. Evaluating that normalized-left partial mate,
-including its scalar relative to R, remains necessary. Same-height right
-reflection does not give this weight-reversing comparison. (TC), shifted
-swapping mates, residual inversion and separation remain open.
+These are written component calculations, not Lean theorems. That note
+leaves `C_src^-1;P_H(tau_H);C_tgt` unevaluated; the separate principal
+calculation above supplies its scalar relative to R without changing the
+window argument. Same-height right reflection does not give this
+weight-reversing comparison. (TC), shifted swapping mates, residual
+inversion and separation remain open.
 
 ## Specified Hom-sector adjunction and interchange components
 
