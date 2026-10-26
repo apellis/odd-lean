@@ -163,7 +163,14 @@ Its forward map is `x ⊗ y ↦ x φᵢ(y)` and its inverse is `z ↦ z ⊗ eⱼ
 both algebra actions and both parity compatibilities are proved. The scoped
 warning-free build and declaration axiom audit pass. This supplies coordinates
 for composing two positive-height inductions, not crossing, braid or KKO
-inversion relations; constructing the concrete crossings remains next.
+inversion relations.
+`CyclotomicAction/LastCrossing.lean` constructs the finite matrix sum
+`cyclotomicLastCrossing` from the literal last-pair crossing `[i,j] → [j,i]`.
+It proves parity `|i||j|`, both colour-cut identities and signed intertwining
+`θᵢⱼ(r) τ = (-1)^{|r||i||j|} τ θⱼᵢ(r)` for the two composite inclusions.
+Rows are targets, so right multiplication goes from `C θᵢⱼ(1)` to
+`C θⱼᵢ(1)`. The scoped warning-free build and declaration axiom audit pass.
+The homogeneous corner map, square, braid and inversion remain separate.
 `CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
 `restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
 `k`-linear, and parity preserving. The positive-height indexing still leaves
