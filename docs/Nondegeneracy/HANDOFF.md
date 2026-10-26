@@ -414,12 +414,24 @@ leftward pitchfork calculation: `curlEG_cupD_zero` proves vanishing with
 `n < -h` dots on the cup, and `curlEG_double_dotted` proves, for `0 < n ≤ 1-h`
 and `t ≫ t = 0`, that the closed double crossing `t ≫ x₁^n ▷ E₂ ≫ t` is zero
 below the boundary and `-s^n • 𝟙 E₁` at the boundary. Its ordered expansion is
-`powComp_right_tau`; no mirror is used. The odd-height specializations in
-`NonVacuity/Pitchfork.lean` assume local Rouquier data: they are signature and
-axiom checks, not a constructed nonzero categorical example. The new inputs
-alone do not determine the E-zigzag scalar. **Open:** proving `LeftZigzags`. Restart point:
-(1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
-`capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
+`powComp_right_tau`; no mirror is used. The same module now defines `capCross`
+and proves `unit_capCross_zero`, `dottedUnit_capCross`, and
+`dottedUnit_capCross_boundary`. Moving `n` dots past the rightward crossing
+contributes `s^n`; multiplied by the double-curl boundary `-s^n`, this gives
+`-𝟙` in both parities. Thus the dotted-cup component of the cap-swap is
+proved, including undotted vanishing. The crossing component, which needs
+the signed mixed braid and low capped-crossing expansion at adjacent weights,
+is not yet proved. Brundan Lemma 4.2, (4.5)–(4.7), supplies the decomposition
+being followed. BE Proposition 7.2's full pitchforks use (6.6), so they cannot
+be imported as independent inputs to the missing adjunction triangle.
+The odd- and even-parity specializations in `NonVacuity/Pitchfork.lean` assume
+local Rouquier data: they are signature and axiom checks, not a constructed
+nonzero categorical example. No existing concrete instantiation of the local
+inversion data has been supplied here; the cyclotomic global local-inversion
+comparison remains open. These inputs do not determine the E-zigzag scalar.
+**Open:** proving `LeftZigzags`. Restart point:
+(1) E-zigzag: prove `capCross_eq_of_neg`,
+`capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two` with super signs, then
 `RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
 the E-zigzag is `∓ε` times the sign of the super cupL pitchfork, which is not
 yet derived. (2) F-zigzag: needs a mirror into a super horizontal opposite

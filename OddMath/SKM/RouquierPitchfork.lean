@@ -113,5 +113,69 @@ theorem curlEG_double_dotted (hsq : t ≫ t = 0) {n : ℕ}
   · simp [heq, hn0]
   · simp [heq]
 
+/-- The cap composite in the left-cap pitchfork calculation. The rightward
+crossing is followed by the upward crossing, then the inverse-defined left cap. -/
+def capCross : (E₁ ≫ F₁) ≫ E₁ ⟶ E₁ :=
+  (associator E₁ F₁ E₁).hom ≫ E₁ ◁ L.sig ≫ (associator E₁ E₂ F₂).inv ≫ t ▷ F₂ ≫
+    (associator E₁ E₂ F₂).hom ≫ E₁ ◁ L.capL ≫ (rightUnitor E₁).hom
+
+omit [TwoSupercategory k B] in
+/-- The rightward crossing has the parity of the upward crossing. -/
+theorem sig_mem : L.sig ∈ parity (R := k) _ _ p := by
+  rcases le_total 0 h with hh | hh
+  · exact (L.invPos hh).f_mem
+  · exact (L.invNeg hh).f_mem
+
+/-- Closing the input of the cap composite gives a double crossing. The
+right-adjunction unit is even, so this closure introduces no Koszul sign. -/
+theorem unit_capCross :
+    (leftUnitor E₁).inv ≫ A₁.unit ▷ E₁ ≫ L.capCross =
+      curlEG A₂.unit L.capL (t ≫ t) := by
+  unfold capCross
+  rw [reassoc_of% L.unit_sig_pitchfork]
+  simp only [curlEG, TwoSupercategory.comp_whiskerRight (R := k), Category.assoc,
+    Iso.hom_inv_id_assoc]
+
+/-- The undotted cup component of the cap-swap calculation vanishes by the
+nilHecke square relation, in either parity and without a height restriction. -/
+theorem unit_capCross_zero (hsq : t ≫ t = 0) :
+    (leftUnitor E₁).inv ≫ A₁.unit ▷ E₁ ≫ L.capCross = 0 := by
+  rw [L.unit_capCross, hsq, curlEG_zero (k := k)]
+
+/-- Moving a homogeneous dot power past the rightward crossing contributes
+`(-1)^(n p²)`. This factor must be retained before using the double-curl value. -/
+theorem dottedUnit_capCross (n : ℕ) :
+    (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ n ▷ F₁) ▷ E₁ ≫ L.capCross =
+      koszulSign ((n : ZMod 2) * p) p •
+        curlEG A₂.unit L.capL (t ≫ rouquierPower x₁ n ▷ E₂ ≫ t) := by
+  unfold capCross
+  rw [TwoSupercategory.comp_whiskerRight (R := k)]
+  simp only [Category.assoc]
+  rw [TwoSupercategory.associator_naturality_left_assoc (R := k)]
+  rw [reassoc_of% (TwoSupercategory.super_interchange (R := k)
+    (rouquierPower_mem L.dot₁_mem n) L.sig_mem)]
+  simp only [Preadditive.comp_zsmul, Preadditive.zsmul_comp, Category.assoc]
+  rw [TwoSupercategory.associator_inv_naturality_left_assoc (R := k)]
+  rw [reassoc_of% L.unit_sig_pitchfork]
+  simp only [curlEG, TwoSupercategory.comp_whiskerRight (R := k), Category.assoc,
+    Iso.hom_inv_id_assoc]
+
+/-- The dotted cup component has boundary value `-1`, in both parities.
+The interchange factor `s^n` cancels the `s^n` in the double-curl value. -/
+theorem dottedUnit_capCross_boundary (hsq : t ≫ t = 0) {n : ℕ}
+    (hn0 : 0 < n) (hn : (n : ℤ) ≤ 1 - h) :
+    (leftUnitor E₁).inv ≫ (A₁.unit ≫ rouquierPower x₁ n ▷ F₁) ▷ E₁ ≫ L.capCross =
+      if (n : ℤ) = 1 - h then -𝟙 E₁ else 0 := by
+  have hs : ∀ m : ℕ, koszulSign ((m : ZMod 2) * p) p = koszulSign p p ^ m := by
+    intro m
+    induction m with
+    | zero => simp
+    | succ m ih => simp only [Nat.cast_add, Nat.cast_one, add_mul, one_mul,
+        koszulSign_add_left, ih, pow_succ]
+  rw [L.dottedUnit_capCross, L.curlEG_double_dotted hsq hn0 hn, hs]
+  split_ifs
+  · rw [smul_neg, smul_smul, ← mul_pow, koszulSign_mul_self, one_pow, one_smul]
+  · rw [smul_zero]
+
 end SuperRouquierLoc
 end OddMath.SKM
