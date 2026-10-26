@@ -1,3 +1,4 @@
+import OddMath.SKM.RouquierHomReservoirPowers
 import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction
 import OddMath.SKM.RouquierCompositeAdjunction

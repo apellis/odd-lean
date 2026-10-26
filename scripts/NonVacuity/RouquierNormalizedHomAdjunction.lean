@@ -56,6 +56,17 @@ example (muM muP nuP : ℤ) (h : -nuP + D.α () = -muP)
         ((homParityShiftDatum (k := ℚ) (leftAdjParity D () (-nuP))).iso
           (T.F () h ≫ T.E () h ≫ Z)).inv :=
   homContentPreAdjunction_leftAdjoints_unit_app T W () muM h Z
+/-- The signed cap holds at every odd rank-one source height, with the specified shifts. -/
+example (muM muP nuP : ℤ) (h : -nuP + D.α () = -muP)
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreAdjunction T W T.leftAdjoints () muM h).counit.app Z =
+      koszulSign (leftAdjParity D () (-nuP)) (leftAdjParity D () (-nuP)) •
+        (T.E () h ◁ ((homParityShiftDatum (k := ℚ) (leftAdjParity D () (-nuP))).iso
+          (T.F () h ≫ Z)).hom ≫
+          (associator (T.E () h) (T.F () h) Z).inv ≫
+          ((((T.leftAdjScalar () (-nuP))⁻¹ : ℚˣ) : ℚ) • T.leftCap () h) ▷ Z ≫
+          (leftUnitor Z).hom) :=
+  homContentPreAdjunction_leftAdjoints_counit_app T W () muM h Z
 end NonVacuity.RouquierNormalizedHomAdjunction
 
 open Lean Elab Command in
