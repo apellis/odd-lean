@@ -26,6 +26,7 @@ import OddMath.QuiverHecke.CyclotomicAction.Normality
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
 import OddMath.QuiverHecke.CyclotomicAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross
+import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBlockCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightDot

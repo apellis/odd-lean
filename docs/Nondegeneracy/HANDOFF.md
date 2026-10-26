@@ -92,8 +92,15 @@ content inductions with `heightBlockInduction₂` followed by a height
 transport (`globalContentInduction_comp`), and transports `heightBlockCross`
 blockwise to `globalWeightCross`; both composites vanish off two-step
 successor blocks (`globalEFunctor_comp_isZero`). `globalActionCross_mem` is
-the `cross`/`cross_mem` field of `RouquierData` on weight spaces. Open on
-weight spaces: nilpotence (needs an odd cyclotomic analogue of
+the `cross`/`cross_mem` field of `RouquierData` on weight spaces.
+`GlobalRouquierData.lean` proves `globalActionCross_square` and assembles
+`globalRouquierData Λ : SKM.RouquierData D` in `cyclotomicActionTarget`
+(weight-space induction, dot, and the even file's signed crossing
+`globalActionSignedCross`: `-ψ` for equal colours, `ψ` otherwise), with
+`globalRouquierData_square`; `globalActionAdjunction` supplies `adj`. Open
+toward `RouquierFamily`: the braid field on weight spaces (port of
+`GlobalBraid`/`GlobalBraidQ` through `blockSucc₃`, using A's `Braid`), the
+slides (`GlobalSlides`), nilpotence (needs an odd cyclotomic analogue of
 Brundan–Kleshchev Lemma 2.1, absent), square/braid/slides on weight spaces,
 and `GlobalLoc` (local inversion is stream A's pending statement).
 
