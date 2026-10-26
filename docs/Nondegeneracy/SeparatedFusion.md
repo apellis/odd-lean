@@ -404,3 +404,31 @@ simultaneously independent `delta_i,delta_j`, other j-contents, or a mixed
 crossing with nonzero polynomial contribution inside the reservoir. Such
 contents may also have small matrices and have not been enumerated here.
 A2 and the general comparison in this section therefore remain open.
+
+**Further j-contents and exterior coefficients.** The script now builds each
+coefficient superalgebra from a presentation and checks associativity on the
+claimed basis. Besides the reservoir slice it treats the probe word `j i^b`
+with probe `f_i=1`, `f_j=y'²-1`: there `Q_ij(x_1,y')=0` gives `x_1²=y'⁴=1`,
+so the corner is `Q<y'>/(y'²-1) tensor_hat B_b` and the probe j strand gives no
+parity twist. In the default run (under a minute) all nine contents of the even
+and odd controls, of the reservoir slice and of the probe slice pass. With
+`--heavy`, an odd j strand in both factors (coefficient dimension 8, total
+matrices up to 288) passes at all nine contents, as do the `delta_i` exterior
+reservoir at all nine contents and `delta_i` together with a nonzero odd
+coefficient `delta_j`, with or without an occupied probe j strand. Throughout,
+`C` and `D` equal (2) and the total map has a two-sided inverse; the whole
+feedback is nilpotent, and is nonzero only at the middle exterior content.
+
+Two limitations are structural. First, an exterior coefficient cannot deform an
+invertible odd cyclotomic polynomial: in `Q<y,delta>/(delta²,y²+y delta-1)`,
+`y·y²-y²·y=-2delta`, so `delta=0`. Hence `delta_i` and `delta_j` enter
+nontrivially only through nilpotent reservoir polynomials, and an occupied
+reservoir j strand needs `f_i=1`, which excludes `delta_i` there. Second, every
+slice above is a base change of a single-colour model along a coefficient
+superalgebra. Replacing the parity line `Pi^(jA b)` by `Pi^0` or `Pi^b` also
+passes at contents `(0,1)`, `(1,0)` and `(1,1)`, so that line acts as a gauge
+there. The computations therefore
+confirm the corner presentations, not new crossing data. Contents with two j
+strands in one factor, or a j strand beside nontrivial `f_i`, involve several
+idempotents linked by mixed crossings. They need a genuine multicolour
+cyclotomic quotient and remain untested.

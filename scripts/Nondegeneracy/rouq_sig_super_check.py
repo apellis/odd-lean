@@ -4,16 +4,18 @@
 # ///
 """Exact cup--crossing--cap tests in cutoff-two separated towers.
 
-The optional connected slice has reservoir content (a,1_j), probe (b,0_j),
-and Q_ij=x^2-y^4. It does not enumerate other multicolour contents.
 Induction and constrained-Hom coinduction use nonvacuum_rankone's algebra
 coordinates. Mixed mates are computed from adjunctions, never from the
 proposed expansion. The even control distinguishes the raw source mate
-from sigma=-q*sigma_src. By default it checks all 27 projective-generator
-instances (equivalently --all-contents --connected). Use --middle-only for
-the three middle-content cases, --regular to retain redundant regular
-matrix-algebra copies, or --exterior for the nonzero delta_i middle-content
-rank-one control.
+from sigma=-q*sigma_src. The default run checks all nine contents of: the
+even and odd controls; the reservoir slice j i^a (f_i=1, f_j=y^2+y delta_j,
+Q_ij=x^2-y^4); and the probe slice j i^b (f_i=1, f_j=y'^2-1). It also checks
+that an exterior deformation y^2+y delta-1 of an invertible odd dot collapses.
+--heavy adds an odd j strand in both factors, the delta_i exterior reservoir at
+all contents, and delta_i together with an odd delta_j coefficient and with an
+occupied probe j strand. Use --middle-only for a=b=1, --regular to retain
+redundant regular matrix-algebra copies, or --exterior for the middle-content
+delta_i control alone.
 """
 
 import argparse
@@ -24,6 +26,8 @@ from types import SimpleNamespace
 from typing import Any
 
 import sympy as S
+from sympy import QQ
+from sympy.polys.matrices import DomainMatrix
 
 
 def model(odd, exterior=False, regular=False):
@@ -47,6 +51,23 @@ def model(odd, exterior=False, regular=False):
         )
 
     m.kron = sparse_kron
+
+    # Same exact formulas as the base module, skipping zero coordinates.
+    def lin(v, mats, rows, cols):
+        out = S.zeros(rows, cols)
+        for i in range(len(mats)):
+            if v[i]:
+                out += v[i] * mats[i]
+        return out
+
+    def lmul(c, v):
+        return m.cols([lin(v, [c.mul[i][j] for i in range(c.n)], c.n, 1) for j in range(c.n)], c.n)
+
+    def rmul(c, v):
+        return m.cols([lin(v, c.mul[i], c.n, 1) for i in range(c.n)], c.n)
+
+    m.lmul, m.rmul = lmul, rmul
+    m.Mod.action = lambda self, v: lin(v, self.act, self.n, self.n)
 
     if not odd:
         assert not exterior
@@ -194,41 +215,81 @@ def model(odd, exterior=False, regular=False):
     return m
 
 
-def connected_slice(base):
-    """Transport the ji^a corner tower, retaining the occupied-j parity line.
+def coefficient_algebra(names, squares):
+    """Exact superalgebra on odd anticommuting generators.
 
-    f_i=1, f_j=y^2+y delta; Q_ij=x^2-y^4. Only ji^a survives.
-    Mixed crossings vanish and their square forces x_1^2=y^4=0.
-    Hence this corner tower is R tensor ONH_a^2, not an independent
-    disconnected datum. All functor and adjunction maps below are transported
-    along this algebra isomorphism. G_(a,b)=Pi^b accounts for the extra
-    occupied odd j strand in the B-sector parity line.
+    `squares[g]` is g*g as a dict {word: coefficient}; words are tuples of
+    generator indices. Normal words are strictly increasing. Associativity of
+    the resulting multiplication is checked, so an inconsistent presentation
+    (one that collapses its claimed basis) is rejected.
     """
-    assert base.odd and not base.exterior
-    # Left multiplication in the basis (1,y,delta,y delta).
-    y = S.Matrix([[0, 0, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0], [0, -1, 1, 0]])
-    delta = S.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0], [0, -1, 0, 0]])
-    P = S.diag(1, -1, -1, 1)
-    assert delta**2 == S.zeros(4) and delta.rank() == 2
-    assert y**2 + y * delta == S.zeros(4) and y**3 == S.zeros(4)
-    assert y * delta + delta * y == S.zeros(4)
-    assert P * y == -y * P and P * delta == -delta * P
-    assert y**2 != S.zeros(4)
+    k = len(names)
+    basis = [w for n in range(k + 1) for w in __import__("itertools").combinations(range(k), n)]
+    pos = {w: i for i, w in enumerate(basis)}
+
+    def normal(word):
+        out = {}
+        stack = [(tuple(word), S.Integer(1))]
+        while stack:
+            w, c = stack.pop()
+            for i in range(len(w) - 1):
+                if w[i] > w[i + 1]:
+                    stack.append((w[:i] + (w[i + 1], w[i]) + w[i + 2 :], -c))
+                    break
+                if w[i] == w[i + 1]:
+                    for v, d in squares[w[i]].items():
+                        stack.append((w[:i] + tuple(v) + w[i + 2 :], c * d))
+                    break
+            else:
+                out[w] = out.get(w, 0) + c
+        return {w: c for w, c in out.items() if c}
+
+    def left(word):
+        M = S.zeros(len(basis))
+        for j, b in enumerate(basis):
+            for w, c in normal(tuple(word) + b).items():
+                M[pos[w], j] += c
+        return M
+
+    L = [left((g,)) for g in range(k)]
+    mult = {w: left(w) for w in basis}
+    for u in basis:
+        for v in basis:
+            prod = S.zeros(len(basis))
+            for w, c in normal(u + v).items():
+                prod += c * mult[w]
+            assert mult[u] * mult[v] == prod, ("non-associative presentation", names)
+    P = S.diag(*[(-1) ** len(w) for w in basis])
+    assert all(P * g == -g * P for g in L)
+    return SimpleNamespace(names=names, L=L, P=P, dim=len(basis), word=left)
+
+
+def coefficient_slice(base, R, jA, label):
+    """Transport a corner tower R tensor_hat (reservoir tower) tensor_hat (probe tower).
+
+    All functors and their 2-morphisms are base changed along the odd
+    coefficient superalgebra R (Koszul signs via its parity operator P).
+    jA is the number of odd j strands in the reservoir: G_(a,b)=Pi^(jA*b)
+    retains them in the B-sector parity line. Probe j strands sit in front
+    of the probe i strands and give no twist.
+    """
+    P, d = R.P, R.dim
+    rps = [0 if P[k, k] == 1 else 1 for k in range(d)]
 
     @lru_cache(None)
     def wrap(v):
         return SimpleNamespace(
             base=v,
             idx=v.idx,
-            n=4 * v.n,
-            ps=[(r + p + v.idx[1]) % 2 for r in (0, 1, 1, 0) for p in v.ps],
+            n=d * v.n,
+            ps=[(r + p + jA * v.idx[1]) % 2 for r in rps for p in v.ps],
         )
 
     def lift(f, p, idx):
-        return (-1) ** ((idx[1] * p) % 2) * base.kron(P if p % 2 else S.eye(4), f)
+        return (-1) ** ((jA * idx[1] * p) % 2) * base.kron(P if p % 2 else S.eye(d), f)
 
     def unlift(f, p, idx, rows, cols):
-        raw = (-1) ** ((idx[1] * p) % 2) * f[:rows, :cols]
+        raw = (-1) ** ((jA * idx[1] * p) % 2) * f[:rows, :cols]
         assert f == lift(raw, p, idx), "map outside the transported tensor subspace"
         return raw
 
@@ -273,11 +334,7 @@ def connected_slice(base):
         finish = Fm(evaluation, etarget, E(v, s), p)
         return finish * cross * cup
 
-    print(
-        "PASS connected ji^a corner presentation: delta!=0, y^2!=0, y^3=0; "
-        "Q_ij=x^2-y^4; probe j-content=0",
-        flush=True,
-    )
+    print(f"PASS coefficient presentation [{label}] dim R={d}", flush=True)
     return SimpleNamespace(
         regular=lambda idx: wrap(base.regular(idx)),
         Ei=E,
@@ -290,9 +347,77 @@ def connected_slice(base):
         T=T,
         mate=mate,
         odd=True,
-        exterior=False,
+        exterior=base.exterior,
         connected=True,
+        label=label,
     )
+
+
+ONE = ()
+
+
+def reservoir_j():
+    """R_A=Q<delta_j,y>/(delta_j^2, y^2+y delta_j): word j i^a, f_i=1, f_j=y^2+y delta_j.
+
+    Q_ij(x_1,y)=x_1^2-y^4=0 with y^4=0 gives the reservoir tower ONH_a/(x_1^2).
+    """
+    R = coefficient_algebra(["delta_j", "y"], {0: {}, 1: {(1, 0): -1}})
+    d, y = R.L
+    assert d**2 == S.zeros(4) and d.rank() == 2
+    assert y**2 + y * d == S.zeros(4) and y**3 == S.zeros(4) and y**2 != S.zeros(4)
+    return R
+
+
+def probe_j():
+    """R_B=Q<y'>/(y'^2-1): probe word j i^b, f_i=1, f_j=y'^2-1.
+
+    Q_ij(x_1,y')=0 gives x_1^2=y'^4=1, the probe tower B_b.
+    """
+    R = coefficient_algebra(["y'"], {0: {ONE: 1}})
+    (y,) = R.L
+    assert y**2 == S.eye(2) and y**4 == S.eye(2)
+    return R
+
+
+def both_j():
+    """R_A tensor_hat R_B: one odd j strand in each factor (delta_j in the reservoir)."""
+    R = coefficient_algebra(
+        ["delta_j", "y", "y'"], {0: {}, 1: {(1, 0): -1}, 2: {ONE: 1}}
+    )
+    d, y, z = R.L
+    assert y**2 + y * d == S.zeros(8) and y**3 == S.zeros(8) and z**2 == S.eye(8)
+    assert d.rank() == 4 and y**2 != S.zeros(8)
+    return R
+
+
+def inert_delta_j(probe=False):
+    """Lambda(delta_j), optionally tensor_hat R_B: zero reservoir j-content."""
+    if probe:
+        R = coefficient_algebra(["delta_j", "y'"], {0: {}, 1: {ONE: 1}})
+    else:
+        R = coefficient_algebra(["delta_j"], {0: {}})
+    assert R.L[0] ** 2 == S.zeros(R.dim) and R.L[0] != S.zeros(R.dim)
+    return R
+
+
+def degenerate_probe_deformation():
+    """An exterior deformation of an invertible odd dot collapses.
+
+    In Q<y,delta>/(delta^2, y^2+y delta-1), y*y^2 - y^2*y = -2 delta, so
+    delta=0: an odd colour with an invertible cyclotomic constant cannot carry
+    a nonzero exterior coefficient. This is why delta_i and delta_j only occur
+    in reservoir (nilpotent-dot) cyclotomic polynomials below.
+    """
+    try:
+        coefficient_algebra(["delta", "y"], {0: {}, 1: {(1, 0): -1, ONE: 1}})
+    except AssertionError:
+        print("PASS probe exterior deformation y^2+y delta-1 is inconsistent (forces delta=0)", flush=True)
+        return
+    raise AssertionError("expected y^2+y delta-1 to collapse")
+
+
+def assemble(rows):
+    return S.Matrix.vstack(*[S.Matrix.hstack(*[S.Matrix(b) for b in row]) for row in rows])
 
 
 def check(m, idx):
@@ -313,9 +438,7 @@ def check(m, idx):
             Y = S.diag(
                 *[m.Em(m.dot(n, b), E(n, b), E(n, b), a, int(m.odd)) for a, b in words]
             )
-            T = S.BlockMatrix(
-                [[m.T(n, a, b, c, d) for a, b in words] for c, d in words]
-            ).as_explicit()
+            T = assemble([[m.T(n, a, b, c, d) for a, b in words] for c, d in words])
             assert X * Y == q * Y * X
             assert T * X - q * Y * T == S.eye(X.rows)
             assert X * T - q * T * Y == S.eye(X.rows)
@@ -329,7 +452,7 @@ def check(m, idx):
         ]
         for j, (p, s) in enumerate(branches)
     ]
-    raw = S.BlockMatrix(blocks).as_explicit()
+    raw = assemble(blocks)
     sig = -q * raw
 
     def u(t, r):
@@ -384,7 +507,8 @@ def check(m, idx):
         total = sig
     assert total.rows == total.cols, ("height dimension", total.shape, h)
     total = S.SparseMatrix(total)
-    inv = S.SparseMatrix(S.Matrix(total).inv())
+    dm = DomainMatrix.from_Matrix(S.Matrix(total)).convert_to(QQ)
+    inv = S.SparseMatrix(dm.inv().to_Matrix())
     assert total * inv == inv * total == S.eye(total.rows)
 
     def common_inverse(t, height):
@@ -412,16 +536,25 @@ def check(m, idx):
     assert nilindex is not None, "whole feedback not nilpotent"
     feedback_note = f"rank={feedback.rank()}, nilpotence index={nilindex}"
     print(
-        f"PASS {'connected odd slice' if m.connected else 'odd exterior' if m.exterior else 'odd' if m.odd else 'even control'}"
+        f"PASS {getattr(m, 'label', 'odd exterior' if m.exterior else 'odd' if m.odd else 'even control')}"
         f" content={idx} heights={(hA, hB, h)} total={total.rows}x{total.cols}"
         f" C,D=ordered expansions; inverse=two-sided; feedback={feedback_note}",
         flush=True,
     )
 
 
+def run(m, cases, name):
+    for idx in cases:
+        try:
+            check(m, idx)
+        except Exception:
+            print(f"FAIL {name} content={idx}", flush=True)
+            raise
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--exterior", action="store_true")
+    parser.add_argument("--exterior", action="store_true", help="middle-content delta_i control only")
     parser.add_argument("--all-contents", action="store_true")
     parser.add_argument("--connected", action="store_true")
     parser.add_argument("--middle-only", action="store_true", help="test only a=b=1")
@@ -430,32 +563,35 @@ def main():
         action="store_true",
         help="retain redundant regular matrix-algebra copies",
     )
+    parser.add_argument(
+        "--heavy",
+        action="store_true",
+        help="also j in both factors (dim R=8) and delta_i with j-occupied probe or delta_j",
+    )
     args = parser.parse_args()
     all_contents = args.all_contents or (not args.middle_only and not args.exterior)
     cases = [(a, b) for a in range(3) for b in range(3)] if all_contents else [(1, 1)]
+    if args.exterior and not args.heavy:
+        m = model(True, exterior=True, regular=args.regular)
+        run(m, cases, "odd exterior")
+        return
     for odd in (False, True):
-        m = model(odd, exterior=args.exterior and odd, regular=args.regular)
-        for idx in cases:
-            try:
-                check(m, idx)
-            except Exception:
-                print(
-                    f"FAIL parity={int(odd)} exterior={m.exterior} content={idx}",
-                    flush=True,
-                )
-                raise
-    if args.connected or not args.exterior:
-        connected = connected_slice(
-            m if not args.exterior else model(True, regular=args.regular)
-        )
-        for idx in cases:
-            try:
-                check(connected, idx)
-            except Exception:
-                print(f"FAIL connected occupied-j slice content={idx}", flush=True)
-                raise
+        m = model(odd, regular=args.regular)
+        run(m, cases, f"parity={int(odd)}")
+    odd = m
+    degenerate_probe_deformation()
+    run(coefficient_slice(odd, reservoir_j(), 1, "reservoir j i^a slice"), cases, "reservoir j")
+    run(coefficient_slice(odd, probe_j(), 0, "probe j i^b slice"), cases, "probe j")
+    if args.heavy:
+        run(coefficient_slice(odd, both_j(), 1, "j in both factors"), cases, "both j")
+        ext = model(True, exterior=True, regular=args.regular)
+        run(ext, cases, "odd exterior")
+        run(coefficient_slice(ext, inert_delta_j(), 0, "delta_i reservoir, odd delta_j coefficient"), cases, "delta_i,delta_j")
+        run(coefficient_slice(ext, inert_delta_j(True), 0, "delta_i reservoir, delta_j, probe j i^b"), cases, "delta_i,delta_j,probe j")
     print(
-        "NOT TESTED: other multicolour contents or simultaneous independent delta_i,delta_j.",
+        "NOT TESTED: two or more j strands in one factor; delta_i together with an "
+        "occupied reservoir j strand; delta_j entering an occupied-j polynomial "
+        "together with delta_i.",
         flush=True,
     )
 
