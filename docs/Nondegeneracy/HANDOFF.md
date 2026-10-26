@@ -14,10 +14,32 @@ extra inversion hypotheses. The local right-factored g signs in
 `DeformedProjectiveResolution.md` and `DeformedGlobalQP.md` are corrected
 without changing the definitions, cancellation or final QP formula.
 
-This is not a Lean theorem or a full action. The full-coefficient
-distinct-colour prescribed mate, action assembly, and fusion remain
-separate; the existing polynomial-coefficient Lean implementation is
-narrower. The general nondegeneracy conjecture remains open.
+This is not a Lean theorem. `DeformedActionAssembly.md` gives the written
+distinct-colour prescribed mate proof and rank-one all-module family assembly;
+its precise remaining mixed upward comparison is recorded below. Fusion and
+the general nondegeneracy conjecture remain open.
+
+## Distinct-colour mate and the full-action boundary
+
+`DeformedActionAssembly.md` proves the full-ELV analogue of KKO I (9.3):
+parabolic normality reduces the ideal to its two old-side terms and a long
+double-crossing term, whose mixed corner is zero by colour support. This
+retains noncentral generators and both odd cutoff parities. The actual
+crossing-coset PBW map descends to an isomorphism `ρ`; the prescribed
+unit–crossing–counit mate is `s=ρJ`, with
+`J(a⊗b)=(-1)^(p(i)p(j)|a|)a⊗π^(p(i)p(j))b`. Its inverse is
+`J⁻¹ρ⁻¹`, with the canonical parity/integer shifts. No crossing is inverted
+inside the algebra and no flatness of a module is assumed.
+
+The note constructs the all-module k-linear super target and assembles every
+field of the smaller `RouquierFamily`, using the accepted same-colour
+inversions without a residual pivot condition. It does not claim a full SKM
+action: that interface omits the mixed upward relations. The exact remaining
+comparison is the image of `Rel.braidEq i j λ hij` for algebra parameters
+`parameterTwist Sc`, prescribed signed right crossings, and the ordered
+three-dot correction. Mixed quadratic parameter transport alone does not
+prove it. This is a written proof obligation, not a new centrality hypothesis;
+the full-ELV Lean category and action also remain unimplemented.
 
 ## Deformed right projectivity on paper
 
