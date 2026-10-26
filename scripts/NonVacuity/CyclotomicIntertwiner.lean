@@ -132,6 +132,18 @@ example := cross_left_comp_intertwinerHom datum scalars [] [] [] true false true
 example := cross_left_comp_moveHom datum scalars true true false [] [false, true]
   [true, false] [false, true] [] rfl rfl
 
+/-- The old crossing of two strands of colour `false`, behind one strand of `ν`,
+balances through the moving-strand map of an odd strand `true`. -/
+example := cross_comp_moveHom datum scalars [] true false false
+  (fun l' => meetLeft_eq_of_ne datum scalars l' [] (by decide) (by decide)) [true] []
+
+/-- Three odd strands of one colour: the three-strand identity holds. -/
+example := cross_comp_moveHom datum scalars [] true true true
+  (fun l' => meetLeft_eq_self datum scalars l' [] true) [] [false]
+
+#print axioms cross_comp_moveHom
+#print axioms meetLeft_eq_of_ne
+#print axioms meetLeft_eq_self
 #print axioms variants_comp_of
 #print axioms cross_left_comp_intertwinerHom
 #print axioms cross_right_comp_intertwinerHom

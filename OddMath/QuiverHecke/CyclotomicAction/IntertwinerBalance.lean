@@ -23,10 +23,16 @@ consumer is the balance of the map `Q` of KKO Proposition 8.4 over the old cross
   pair passes through `g` with the sign `(-1)^{p(ν_c)p(ν_{c+1})p(ν_a)p(ν_{a+1})}` (KKO (8.12)).
 * `cross_left_comp_moveHom`: a crossing to the left of the moving strand passes through
   `g_n ⋯ g_1` with the sign `(-1)^{p(x)p(y)p(i)p(ν)}`.
+* `meetLeft`, `meetRight`: the two sides of `τ_{a+1} g_a g_{a+1} = g_a g_{a+1} τ_a` on
+  `i, j, c`; `meetLeft_eq_of_ne` (both `j, c` differ from `i`: the braid relation (1.9)) and
+  `meetLeft_eq_self` (`i = j = c`: `braid_element`, `braid_gEven`).
+* `cross_comp_moveHom`: the first identity of KKO (8.13) for an old crossing `ψ` of `j, c` in
+  `ν`: `ψ g_n ⋯ g_1 = (-1)^{p(j)p(c)p(i)p(ν)} g_n ⋯ g_1 ψ`, given the three-strand identity
+  for `i, j, c`.
 
-Not treated here: the three-strand identity where the moving strand meets the crossing, which
-is the braid identity of Lemma 8.3 for mixed colours; on three strands of one colour it is
-`IsSignedNilHeckeFamily.braid_element` and `braid_gEven`.
+Not treated here: the three-strand identity for `i = j ≠ c` and `i = c ≠ j`. In the second case
+the braid relation has the correction term of `braid_iji`, which must cancel against the
+quadratic relation `cross_cross_ne`.
 -/
 
 noncomputable section
@@ -223,40 +229,40 @@ theorem eq_zsign_smul_symm {M : Type*} [AddCommGroup M] [Module k M] {a b : M} {
 /-- KKO (8.12) for a crossing to the right of the pair: it passes through `g` with the sign
 `(-1)^{p(i)p(j)p(x)p(y)}`. -/
 theorem cross_right_comp_intertwinerHom (l m v : List I) (x y i j : I) :
-    cl D Sc (l ++ [i, j] ++ (m ++ [x, y] ++ v)) (l ++ [i, j] ++ (m ++ [y, x] ++ v))
+    cl D Sc (l ++ [i, j] ++ (m ++ x :: y :: v)) (l ++ [i, j] ++ (m ++ y :: x :: v))
         [.cross (l ++ [i, j] ++ m).length] (sChain_ofShape' (l ++ [i, j] ++ m) v (.cross x y)
           (by simp [Shape.dom]) (by simp [Shape.cod]) rfl) ≫
-        intertwinerHom D Sc l (m ++ [y, x] ++ v) i j =
+        intertwinerHom D Sc l (m ++ y :: x :: v) i j =
       zsign k (D.parity i * D.parity j * (D.parity x * D.parity y)) •
-        (intertwinerHom D Sc l (m ++ [x, y] ++ v) i j ≫
-          cl D Sc (l ++ [j, i] ++ (m ++ [x, y] ++ v)) (l ++ [j, i] ++ (m ++ [y, x] ++ v))
+        (intertwinerHom D Sc l (m ++ x :: y :: v) i j ≫
+          cl D Sc (l ++ [j, i] ++ (m ++ x :: y :: v)) (l ++ [j, i] ++ (m ++ y :: x :: v))
             [.cross (l ++ [j, i] ++ m).length] (sChain_ofShape' (l ++ [j, i] ++ m) v
               (.cross x y) (by simp [Shape.dom]) (by simp [Shape.cod]) rfl)) := by
   by_cases h : i = j
   · subst h
     have hu := eq_zsign_smul_symm (k := k) (q := D.parity i * (D.parity x * D.parity y))
-      (a := dotE D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) l.length ≫
-        cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (a := dotE D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) l.length ≫
+        cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl))
-      (b := cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (b := cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl) ≫
-        dotE D Sc (l ++ [i, i] ++ (m ++ [y, x] ++ v)) l.length) (by
+        dotE D Sc (l ++ [i, i] ++ (m ++ y :: x :: v)) l.length) (by
       rw [dotE_eq_cl D Sc (sChain_dotAny _ _), dotE_eq_cl D Sc (sChain_dotAny _ _), cl_comp,
         cl_comp]
       exact cl_interchange_gen D Sc l ([i] ++ m) v (.dot i) (.cross x y)
         (by simp [Shape.dom]) (by simp [Shape.cod]) rfl rfl (by simp [Shape.dom])
         (by simp [Shape.dom]) _ _)
     have hv := eq_zsign_smul_symm (k := k) (q := D.parity i * (D.parity x * D.parity y))
-      (a := dotE D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l.length + 1) ≫
-        cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (a := dotE D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l.length + 1) ≫
+        cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl))
-      (b := cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (b := cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl) ≫
-        dotE D Sc (l ++ [i, i] ++ (m ++ [y, x] ++ v)) (l.length + 1)) (by
+        dotE D Sc (l ++ [i, i] ++ (m ++ y :: x :: v)) (l.length + 1)) (by
       rw [dotE_eq_cl D Sc (sChain_dotAny _ _), dotE_eq_cl D Sc (sChain_dotAny _ _), cl_comp,
         cl_comp]
       exact cl_interchange_gen D Sc (l ++ [i]) m v (.dot i) (.cross x y)
@@ -265,16 +271,16 @@ theorem cross_right_comp_intertwinerHom (l m v : List I) (x y i j : I) :
         (by simp only [Shape.dom, List.length_append, List.length_cons, List.length_nil])
         _ _)
     have hT := eq_zsign_smul_symm (k := k) (q := D.parity i * (D.parity x * D.parity y))
-      (a := crossE D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) l.length ≫
-        cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (a := crossE D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) l.length ≫
+        cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl))
-      (b := cl D Sc (l ++ [i, i] ++ (m ++ [x, y] ++ v)) (l ++ [i, i] ++ (m ++ [y, x] ++ v))
+      (b := cl D Sc (l ++ [i, i] ++ (m ++ x :: y :: v)) (l ++ [i, i] ++ (m ++ y :: x :: v))
           [.cross (l ++ [i, i] ++ m).length] (sChain_ofShape' (l ++ [i, i] ++ m) v (.cross x y)
             (by simp [Shape.dom]) (by simp [Shape.cod]) rfl) ≫
-        crossE D Sc (l ++ [i, i] ++ (m ++ [y, x] ++ v)) l.length) (by
-      rw [crossE_eq_cl D Sc (sChain_crossAt l (m ++ [x, y] ++ v) i i),
-        crossE_eq_cl D Sc (sChain_crossAt l (m ++ [y, x] ++ v) i i), cl_comp, cl_comp,
+        crossE D Sc (l ++ [i, i] ++ (m ++ y :: x :: v)) l.length) (by
+      rw [crossE_eq_cl D Sc (sChain_crossAt l (m ++ x :: y :: v) i i),
+        crossE_eq_cl D Sc (sChain_crossAt l (m ++ y :: x :: v) i i), cl_comp, cl_comp,
         ← parity_sq (D.parity i)]
       exact cl_interchange_gen D Sc l m v (.cross i i) (.cross x y)
         (by simp [Shape.dom]) (by simp [Shape.cod]) rfl rfl (by simp [Shape.dom])
@@ -292,6 +298,7 @@ theorem cross_right_comp_intertwinerHom (l m v : List I) (x y i j : I) :
       (by simp [Shape.dom]) _ _)
 
 /-- A crossing commutes with the identification of equal words on either side. -/
+@[reassoc]
 theorem cl_comp_eqToHom {t t' t'' : List I} {gs : List PG} (h : SChain t (pl t gs) t')
     (e : t' = t'') :
     cl D Sc t t' gs h ≫ eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e) =
@@ -299,6 +306,7 @@ theorem cl_comp_eqToHom {t t' t'' : List I} {gs : List PG} (h : SChain t (pl t g
   subst e
   simp
 
+@[reassoc]
 theorem eqToHom_comp_cl {t t' t'' : List I} {gs : List PG} (e : t = t')
     (h : SChain t' (pl t' gs) t'') :
     eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e) ≫ cl D Sc t' t'' gs h =
@@ -358,6 +366,217 @@ theorem cross_left_comp_moveHom (i x y : I) (l₁ : List I) (ν : List I) :
     rw [eqToHom_comp_cl]
     simp only [Linear.comp_smul, smul_smul, wordParity, List.map_cons, List.sum_cons, mul_add,
       zsign_add_eq]
+    all_goals simp
+
+theorem cl_comp_assoc {t t₁ t' : List I} (Q R : List PG) (h₁ : SChain t (pl t Q) t₁)
+    (h₂ : SChain t₁ (pl t₁ R) t') {Z : H D Sc} (f : (pres D Sc).obj (ob D t') ⟶ Z) :
+    cl D Sc t t₁ Q h₁ ≫ cl D Sc t₁ t' R h₂ ≫ f =
+      cl D Sc t t' (Q ++ R) (sChain_append_of h₁ h₂) ≫ f := by
+  rw [← Category.assoc, cl_comp]
+
+/-- The braid relation `braid_ne` on words given up to equality. -/
+theorem braid_ne_gen {t t' : List I} (l r : List I) (i j m : I) (hb : ¬(i = m ∧ i ≠ j))
+    (ht : t = l ++ [i, j, m] ++ r) (ht' : t' = l ++ [m, j, i] ++ r) {L₁ L₂ : List PG}
+    (e₁ : L₁ = [.cross (l.length + 1), .cross l.length, .cross (l.length + 1)])
+    (e₂ : L₂ = [.cross l.length, .cross (l.length + 1), .cross l.length])
+    (h₁ : SChain t (pl t L₁) t') (h₂ : SChain t (pl t L₂) t') :
+    cl D Sc t t' L₁ h₁ = cl D Sc t t' L₂ h₂ := by
+  subst ht ht' e₁ e₂
+  exact (braid_ne D Sc l r i j m hb _ _).symm
+
+theorem sChain_cross_succ (l v : List I) (i j k : I) :
+    SChain (l ++ i :: j :: k :: v) (pl (l ++ i :: j :: k :: v) [.cross (l.length + 1)])
+      (l ++ i :: k :: j :: v) :=
+  sChain_ofShape' (l ++ [i]) v (.cross j k) (by simp [Shape.dom]) (by simp [Shape.cod])
+    (by simp)
+
+/-- The crossing of `j, k` followed by `g_a g_{a+1}`, moving `i` across `k, j`: the left side
+of KKO's `τ_{a+1} g_a g_{a+1} = g_a g_{a+1} τ_a` on `l ++ i :: j :: k :: v`. -/
+def meetLeft (l v : List I) (i j k : I) :
+    (pres D Sc).obj (ob D (l ++ i :: j :: k :: v)) ⟶
+      (pres D Sc).obj (ob D ((l ++ [k] ++ [j]) ++ i :: v)) :=
+  cl D Sc (l ++ i :: j :: k :: v) (l ++ i :: k :: j :: v) [.cross (l.length + 1)]
+      (sChain_cross_succ l v i j k) ≫
+    eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show l ++ i :: k :: j :: v = l ++ [i, k] ++ (j :: v) by simp)) ≫
+    intertwinerHom D Sc l (j :: v) i k ≫
+    eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show l ++ [k, i] ++ (j :: v) = (l ++ [k]) ++ [i, j] ++ v by simp)) ≫
+    intertwinerHom D Sc (l ++ [k]) v i j ≫
+    eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show (l ++ [k]) ++ [j, i] ++ v = (l ++ [k] ++ [j]) ++ i :: v by simp))
+
+/-- `g_a g_{a+1}`, moving `i` across `j, k`, followed by the crossing of `j, k`. -/
+def meetRight (l v : List I) (i j k : I) :
+    (pres D Sc).obj (ob D (l ++ i :: j :: k :: v)) ⟶
+      (pres D Sc).obj (ob D ((l ++ [k] ++ [j]) ++ i :: v)) :=
+  eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show l ++ i :: j :: k :: v = l ++ [i, j] ++ (k :: v) by simp)) ≫
+    intertwinerHom D Sc l (k :: v) i j ≫
+    eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show l ++ [j, i] ++ (k :: v) = (l ++ [j]) ++ [i, k] ++ v by simp)) ≫
+    intertwinerHom D Sc (l ++ [j]) v i k ≫
+    eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+      (show (l ++ [j]) ++ [k, i] ++ v = (l ++ [j] ++ [k]) ++ i :: v by simp)) ≫
+    cl D Sc ((l ++ [j] ++ [k]) ++ i :: v) ((l ++ [k] ++ [j]) ++ i :: v) [.cross l.length]
+      (sChain_cross_of (l₁ := l) (l₂ := []) (x := j) (y := k) (by simp) (by simp))
+
+/-- If the colours `j, k` both differ from `i`, the identity is the braid relation (1.9). -/
+theorem meetLeft_eq_of_ne (l v : List I) {i j k : I} (hij : i ≠ j) (hik : i ≠ k) :
+    meetLeft D Sc l v i j k = meetRight D Sc l v i j k := by
+  unfold meetLeft meetRight
+  rw [intertwinerHom_of_ne D Sc _ _ hik, intertwinerHom_of_ne D Sc _ _ hij,
+    intertwinerHom_of_ne D Sc _ _ hij, intertwinerHom_of_ne D Sc _ _ hik]
+  rw [cl_comp_eqToHom_assoc, cl_comp_assoc, cl_comp_eqToHom_assoc, cl_comp_assoc,
+    cl_comp_eqToHom, eqToHom_comp_cl_assoc, cl_comp_eqToHom_assoc, cl_comp_assoc,
+    cl_comp_eqToHom_assoc, cl_comp]
+  · refine braid_ne_gen D Sc l v i j k (fun h => hik h.1) ?_ ?_ ?_ ?_ _ _ <;> simp
+  all_goals simp
+
+theorem sameIntertwiner_congr {w w' : List I} (e : w = w') {a a' : ℕ} (ha : a = a') (i : I) :
+    sameIntertwiner D Sc w' a' i =
+      eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e.symm) ≫
+        sameIntertwiner D Sc w a i ≫ eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e) := by
+  subst e ha
+  simp
+
+theorem cl_conj {t W : List I} {gs : List PG} (e : t = W) (h : SChain t (pl t gs) t) :
+    cl D Sc t t gs h = eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e) ≫
+      cl D Sc W W gs (by subst e; exact h) ≫
+        eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e.symm) := by
+  subst e
+  simp
+
+/-- On three strands of one colour the identity is the braid identity for the variants
+(`braid_element`, `braid_gEven`). -/
+theorem meetLeft_eq_self (l v : List I) (i : I) :
+    meetLeft D Sc l v i i i = meetRight D Sc l v i i i := by
+  unfold meetLeft meetRight
+  rw [intertwinerHom_self, intertwinerHom_self,
+    sameIntertwiner_congr D Sc (w := l ++ [i, i, i] ++ v)
+      (show l ++ [i, i, i] ++ v = l ++ [i, i] ++ (i :: v) by simp) rfl,
+    sameIntertwiner_congr D Sc (w := l ++ [i, i, i] ++ v)
+      (show l ++ [i, i, i] ++ v = (l ++ [i]) ++ [i, i] ++ v by simp)
+      (show l.length + 1 = (l ++ [i]).length by simp),
+    cl_conj D Sc (show l ++ i :: i :: i :: v = l ++ [i, i, i] ++ v by simp),
+    cl_conj D Sc (show (l ++ [i] ++ [i]) ++ i :: v = l ++ [i, i, i] ++ v by simp),
+    ← crossE_eq_cl, ← crossE_eq_cl]
+  simp only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+  have hF : IsSignedNilHeckeFamily (zunit (D.parity i)) l.length 3
+      (dotE D Sc (l ++ [i, i, i] ++ v)) (crossE D Sc (l ++ [i, i, i] ++ v)) :=
+    isSignedNilHeckeFamily_block D Sc l v i 3
+  have key : crossE D Sc (l ++ [i, i, i] ++ v) (l.length + 1) ≫
+      sameIntertwiner D Sc (l ++ [i, i, i] ++ v) l.length i ≫
+        sameIntertwiner D Sc (l ++ [i, i, i] ++ v) (l.length + 1) i =
+      sameIntertwiner D Sc (l ++ [i, i, i] ++ v) l.length i ≫
+        sameIntertwiner D Sc (l ++ [i, i, i] ++ v) (l.length + 1) i ≫
+          crossE D Sc (l ++ [i, i, i] ++ v) l.length := by
+    rw [← Category.assoc, ← Category.assoc, ← End.mul_def, ← End.mul_def, ← End.mul_def,
+      ← End.mul_def]
+    by_cases hp : D.parity i = 1
+    · rw [hp, show zunit (1 : ZMod 2) = -1 by simp [zunit]] at hF
+      simp only [sameIntertwiner, hp, ite_true]
+      rw [← mul_assoc]
+      exact (hF.braid_element (j := l.length) le_rfl (by omega)).symm
+    · have hp0 := parity_eq_zero_of_ne_one hp
+      rw [hp0, show zunit (0 : ZMod 2) = 1 by simp [zunit]] at hF
+      simp only [sameIntertwiner, hp, ite_false]
+      rw [← mul_assoc]
+      exact (hF.braid_gEven (j := l.length) le_rfl (by omega)).symm
+  rw [reassoc_of% key, eqToHom_trans]
+
+theorem cl_eq_comp_eqToHom {t t₀ t' : List I} {gs : List PG} (e : t₀ = t')
+    (h : SChain t (pl t gs) t') :
+    cl D Sc t t' gs h = cl D Sc t t₀ gs (by subst e; exact h) ≫
+      eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s)) e) := by
+  subst e
+  simp
+
+/-- The crossing `ψ` of `j, c` directly to the right of the moving strand `i` balances through
+`g_n ⋯ g_1`, given the three-strand identity `meetLeft = meetRight`. -/
+theorem cross_comp_moveHom_base (l v : List I) (i j c : I)
+    (hmeet : meetLeft D Sc l v i j c = meetRight D Sc l v i j c)
+    (h₁ : SChain (l ++ i :: j :: c :: v) (pl (l ++ i :: j :: c :: v) [.cross (l.length + 1)])
+      (l ++ i :: c :: j :: v))
+    (h₂ : SChain (l ++ j :: c :: v ++ [i]) (pl (l ++ j :: c :: v ++ [i]) [.cross l.length])
+      (l ++ c :: j :: v ++ [i])) :
+    cl D Sc _ _ [.cross (l.length + 1)] h₁ ≫ moveHom D Sc i l (c :: j :: v) =
+      zsign k (D.parity j * D.parity c * (D.parity i * wordParity D v)) •
+        (moveHom D Sc i l (j :: c :: v) ≫ cl D Sc _ _ [.cross l.length] h₂) := by
+  have hL : cl D Sc _ _ [.cross (l.length + 1)] h₁ ≫ moveHom D Sc i l (c :: j :: v) =
+      meetLeft D Sc l v i j c ≫ moveHom D Sc i (l ++ [c] ++ [j]) v ≫
+        eqToHom (congrArg (fun s => (pres D Sc).obj (ob D s))
+          (show l ++ [c] ++ [j] ++ v ++ [i] = l ++ c :: j :: v ++ [i] by simp)) := by
+    simp only [moveHom, meetLeft, Category.assoc, eqToHom_trans_assoc, eqToHom_trans]
+  have hc := eq_zsign_smul_symm (cross_left_comp_moveHom D Sc i j c l v (l ++ [j] ++ [c])
+    (l ++ [c] ++ [j]) [] (by simp) (by simp))
+  rw [hL, hmeet]
+  simp only [moveHom, meetRight, Category.assoc, eqToHom_trans_assoc]
+  rw [eqToHom_comp_cl, cl_eq_comp_eqToHom D Sc
+    (show l ++ [c] ++ [j] ++ v ++ [i] = l ++ c :: j :: v ++ [i] by simp), reassoc_of% hc]
+  · simp only [Linear.smul_comp, Linear.comp_smul, Category.assoc, smul_smul, zsign_mul_self,
+      one_smul]
+  · simp
+
+theorem cl_cross_pos {t t' : List I} {p p' : ℕ} (hp : p = p') (h : SChain t (pl t [.cross p]) t') :
+    cl D Sc t t' [.cross p] h = cl D Sc t t' [.cross p'] (hp ▸ h) := by
+  subst hp
+  rfl
+
+theorem sChain_mid₁ (l m v : List I) (i j c : I) :
+    SChain (l ++ i :: (m ++ j :: c :: v))
+      (pl (l ++ i :: (m ++ j :: c :: v)) [.cross (l.length + 1 + m.length)])
+      (l ++ i :: (m ++ c :: j :: v)) :=
+  sChain_ofShape' (l ++ i :: m) v (.cross j c) (by simp [Shape.dom]) (by simp [Shape.cod])
+    (by simp only [List.length_append, List.length_cons]; omega)
+
+theorem sChain_mid₂ (l m v : List I) (i j c : I) :
+    SChain (l ++ (m ++ j :: c :: v) ++ [i])
+      (pl (l ++ (m ++ j :: c :: v) ++ [i]) [.cross (l.length + m.length)])
+      (l ++ (m ++ c :: j :: v) ++ [i]) :=
+  sChain_ofShape' (l ++ m) (v ++ [i]) (.cross j c) (by simp [Shape.dom]) (by simp [Shape.cod])
+    (by simp)
+
+/-- KKO (8.13), first identity, for an old crossing: the crossing `ψ` of `j, c` in the word
+`ν = m ++ j :: c :: v` passes through `g_n ⋯ g_1` with the sign `(-1)^{p(j)p(c)p(i)p(ν)}`,
+given the three-strand identity where it meets the moving strand `i`. -/
+theorem cross_comp_moveHom (v : List I) (i j c : I)
+    (hmeet : ∀ l', meetLeft D Sc l' v i j c = meetRight D Sc l' v i j c) (m : List I) :
+    ∀ l : List I,
+      cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j c) ≫
+          moveHom D Sc i l (m ++ c :: j :: v) =
+        zsign k (D.parity j * D.parity c * (D.parity i * (wordParity D m + wordParity D v))) •
+          (moveHom D Sc i l (m ++ j :: c :: v) ≫
+            cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j c)) := by
+  induction m with
+  | nil =>
+    intro l
+    have hw : wordParity D ([] : List I) = 0 := by simp [wordParity]
+    rw [hw, zero_add]
+    exact cross_comp_moveHom_base D Sc l v i j c (hmeet l) _ _
+  | cons x m ih =>
+    intro l
+    simp only [List.cons_append, moveHom]
+    rw [← Category.assoc, cl_comp_eqToHom D Sc _
+        (show l ++ i :: x :: (m ++ c :: j :: v) = l ++ [i, x] ++ (m ++ c :: j :: v) by simp),
+      cl_eq_eqToHom_comp D Sc
+        (show l ++ i :: x :: (m ++ j :: c :: v) = l ++ [i, x] ++ (m ++ j :: c :: v) by simp),
+      cl_cross_pos D Sc (p' := (l ++ [i, x] ++ m).length) (by simp; omega),
+      Category.assoc, ← Category.assoc (cl D Sc _ _ _ _), cross_right_comp_intertwinerHom,
+      Linear.smul_comp, Linear.comp_smul, Category.assoc, ← Category.assoc (cl D Sc _ _ _ _),
+      cl_comp_eqToHom D Sc _
+        (show l ++ [x, i] ++ (m ++ c :: j :: v) = (l ++ [x]) ++ i :: (m ++ c :: j :: v) by simp),
+      cl_eq_eqToHom_comp D Sc
+        (show l ++ [x, i] ++ (m ++ j :: c :: v) = (l ++ [x]) ++ i :: (m ++ j :: c :: v) by simp),
+      cl_cross_pos D Sc (p' := (l ++ [x]).length + 1 + m.length) (by simp; omega),
+      Category.assoc, ← Category.assoc (cl D Sc _ _ _ _), ih (l ++ [x]), Linear.smul_comp,
+      Linear.comp_smul, Category.assoc, cl_comp_eqToHom]
+    simp only [Category.assoc]
+    rw [eqToHom_comp_cl, cl_cross_pos D Sc (p := l.length + (x :: m).length)
+      (p' := (l ++ [x]).length + m.length) (by simp; omega)]
+    · simp only [Linear.comp_smul, smul_smul, ← zsign_add_eq, wordParity, List.map_cons,
+        List.sum_cons]
+      exact congrArg (fun z => zsign k z • _) (by ring)
     all_goals simp
 
 end OddMath.QuiverHecke

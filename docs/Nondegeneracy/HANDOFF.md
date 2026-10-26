@@ -665,11 +665,12 @@ identity of (8.13) for dots: `x_b g_n⋯g_1 = (-1)^{p(ν_b)p(i)p(ν)} g_n⋯g_1 
 (a morphism intertwining `u,v,T` up to a common sign intertwines both `g`),
 `cross_left_comp_intertwinerHom`, `cross_right_comp_intertwinerHom` ((8.12),
 sign `(-1)^{p(x)p(y)p(i)p(j)}`) and `cross_left_comp_moveHom`. For crossings of
-`R(β)` the first identity of (8.13) (`Q_balanced` on old crossings) still needs
-the three-strand step where the moving strand `i` meets the crossing `(j,k)`:
-`ψ_{a+1} g_a g_{a+1} = g_a g_{a+1} ψ_a` on `(i,j,k)`. It is `braid_ne` if `i≠j,k`,
-`braid_element`/`braid_gEven` if `i=j=k`, follows from `variants_comp_of` and
-the exact braid on `(i,i,k)` if `i=j≠k`; the hard case is `i=k≠j`,
+`R(β)` the first identity of (8.13) is `cross_comp_moveHom` (sign
+`(-1)^{p(j)p(c)p(i)p(ν)}`), proved from the three-strand step `meetLeft = meetRight`
+(`ψ_{a+1} g_a g_{a+1} = g_a g_{a+1} ψ_a` on `(i,j,c)`). That step is proved for
+`i≠j,c` (`meetLeft_eq_of_ne`, braid relation) and `i=j=c` (`meetLeft_eq_self`).
+Open: `i=j≠c` (should follow from `variants_comp_of` with the exact braid on
+`(i,i,c)` and the dot slides); the hard case is `i=c≠j`,
 where the `(i,j,i)` braid correction (`braid_iji`) must cancel against
 `cross_cross_ne`; this is the remaining computation (KKO Lemma 8.3, mixed colours).
 The braid identity `τ_aφ_{a+1}φ_a=φ_{a+1}φ_aτ_{a+1}` of Lemma 8.3 is checked on
