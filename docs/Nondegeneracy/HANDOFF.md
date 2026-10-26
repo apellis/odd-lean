@@ -2,6 +2,12 @@
 
 ## Global content indices
 
+`GlobalHeight.lean` adds the empty-word algebra and supermodule category to
+the tower without altering a positive-height quotient. `heightAppend` is
+the vacuum map at zero and the existing quotient inclusion thereafter;
+`heightAppend_parity` proves every such inclusion is even.
+`GlobalContentModules β` uses height `β.card`, including zero.
+
 `GlobalSupport.lean` retains both parity components on full content
 subcategories, with `fullSupercategory`, `fullLiftTrans`,
 `globalBlockInduction` and the odd `globalBlockDot`. The dot's homogeneous
