@@ -18,6 +18,18 @@ transport problem. The historical `FusionResidualMatrix.md` at commit
 `d6cb482` contains the positive-total elimination, not a proved coordinate
 comparison. Neither historical note is an additional action hypothesis.
 
+**Crossing normalization clarification (proposed, pending independent review).**
+`CrossingNormalization.md` replaces the historical cross diagonals a and
+−J⁻¹aJ by −q a and q J⁻¹aJ, leaving the swapping entries and all factor
+maps fixed. The historical literal C,D computed in `HomCentralFeedback.md`
+are the normalized corrected mates. The literal corrected entries are
+−q C,−q D, exactly as used in (9)–(14) below; no formula in those displays
+is rescaled. The supported feedback is unchanged. The separate Hom note
+uses intrinsic left closures and retains gamma(0)=q and c(k); it does not
+identify those closures with the right-factor closures here. Neither
+that conditional nilpotence calculation nor the two-strand repair proves
+full (TC), braid relations or residual inversion.
+
 ## 1. Conventions, shifts and the unfilled comparison
 
 Composition of maps is right to left. Words in the mate calculation retain
