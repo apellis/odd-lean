@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## Independent right coefficient descent
+
+`IntertwinerContentCoefficient.lean` defines the right operators directly by
+`InductionAlong.Ind.map`: source coefficients are multiplied in the unital
+cyclotomic content corner, and the target restricts the existing shifted
+right action to `qContentCoefficient`. Centrality gives source closure;
+commutation with the existing affine left action gives target closure and
+well-defined balancing. Neither operator is defined by equivalence conjugation.
+The pure-tensor formulas, compatibility with `sourceContentRightCoefficient`
+and `targetContentRightCoefficient`, and reverse composition law are proved.
+`contentTensorShiftedQ_rightCoefficient` intertwines these operators for the
+existing prescribed moving-strand Q. Finite colours, positive coefficient
+height, arbitrary commutative ground ring and polynomial parity are unchanged.
+
+This is only the coefficient part of KKO I Proposition 8.4. Independent
+content-tensor dot operators and their comparison/intertwining remain open.
+Their target representative must retain the first dot, coefficient involution
+and `(-1)^(p(i)p(β))` exactly as in source lines 2436–2438 and
+`targetContentRightDot_tmul`. No signed-left-linearity premise is needed.
+The consumer checks all-odd and mixed data and audits every owned declaration.
+
 ## Shifted target tensor over the content algebra
 
 For KKO I, arXiv:1206.5933v2, Proposition 8.4,

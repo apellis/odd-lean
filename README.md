@@ -12,8 +12,13 @@ The shifted target now has its own tensor over that unital algebra
 (`contentTargetEquiv` in `IntertwinerTargetTensor`), using the existing shifted
 coefficient action and explicit inclusion/cuts. Both composites and the Q
 representatives are proved. Finite colours, positive height and polynomial
-parity remain; tensor-level right-action compatibility, graded comparison,
+parity remain. Right coefficient compatibility now holds on both independently
+defined content tensors; tensor-level dot compatibility, graded comparison,
 zero height and QP remain open.
+
+| Content tensor theorem | Scope |
+| --- | --- |
+| `contentTensorShiftedQ_rightCoefficient` | Balanced second-factor right actions, both comparison compatibilities and ordinary opposite composition; coefficient part of KKO I Proposition 8.4 only. |
 
 Sources (numbering refers to these arXiv versions):
 
