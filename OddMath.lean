@@ -58,6 +58,7 @@ import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
 import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerBalance
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerMeet
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples

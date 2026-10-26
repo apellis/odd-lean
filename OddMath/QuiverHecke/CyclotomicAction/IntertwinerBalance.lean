@@ -34,9 +34,8 @@ consumer is the balance of the map `Q` of KKO Proposition 8.4 over the old cross
 
 * `cross_comp_moveHom_of`: the same, unconditionally unless `c = i ≠ j`.
 
-Not treated here: the three-strand identity for `c = i ≠ j`. There the braid relation has the
-correction term of `braid_iji`, which must cancel against the quadratic relation
-`cross_cross_ne`.
+The three-strand identity for `c = i ≠ j`, where the correction term of `braid_iji` cancels
+against the quadratic relation `cross_cross_ne`, is `IntertwinerMeet`.
 -/
 
 noncomputable section
