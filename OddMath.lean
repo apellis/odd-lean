@@ -2,6 +2,7 @@ import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomReservoirPowers
 import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction
+import OddMath.SKM.RouquierHomSuperAdjunction
 import OddMath.SKM.RouquierCompositeAdjunction
 import OddMath.SKM.UpwardNondegeneracyReductionExamples
 import OddMath.SKM.SameColourSourceFrameExamples
@@ -30,6 +31,7 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContent
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentTensor
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetTensor
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentCoefficient
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentDot
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations

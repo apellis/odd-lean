@@ -67,6 +67,17 @@ example (muM muP nuP : ℤ) (h : -nuP + D.α () = -muP)
           ((((T.leftAdjScalar () (-nuP))⁻¹ : ℚˣ) : ℚ) • T.leftCap () h) ▷ Z ≫
           (leftUnitor Z).hom) :=
   homContentPreAdjunction_leftAdjoints_counit_app T W () muM h Z
+example (muM muP nuP : ℤ) (h : -nuP + D.α () = -muP)
+    (Z Y : homWeightSector T.obj W muP muM) {q : ZMod 2}
+    (g : T.F () h ≫ T.E () h ≫ Z ⟶ Y)
+    (hg : g ∈ parity (R := ℚ) _ _ q) :
+    (homContentPreAdjunction T W T.leftAdjoints () muM h).unit.app Z ≫
+      (homParityShift (k := ℚ) (leftAdjParity D () (-nuP))).map g ≫
+      ((homParityShiftDatum (k := ℚ) (leftAdjParity D () (-nuP))).iso Y).hom =
+    koszulSign (leftAdjParity D () (-nuP)) q •
+      ((leftUnitor Z).inv ≫ T.leftCup () h ▷ Z ≫
+        (associator (T.F () h) (T.E () h) Z).hom ≫ g) :=
+  homContentPreAdjunction_unit_output_coordinates T W () muM h Z Y g hg
 end NonVacuity.RouquierNormalizedHomAdjunction
 
 open Lean Elab Command in

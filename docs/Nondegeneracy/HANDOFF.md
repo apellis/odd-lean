@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Content-tensor right dots
+
+`IntertwinerContentDot.lean` constructs the source last-dot and shifted target
+first-dot maps directly with `InductionAlong.Ind.lift` over `ContentAlgebra`.
+The even central content identity is fixed by the parity involution; its
+restriction pairs the corner dot with the coefficient involution in the
+balance proof. No tensor action is defined by equivalence conjugation.
+`contentTargetRightDot_insert` retains `(-1)^(p(i)p(β))`, the first dot and
+`φ_i` on the coefficient. The forward comparisons commute with the existing
+content-dot maps, and `contentTensorShiftedQ_rightDot` closes the dot generator
+of KKO I, arXiv:1206.5933v2, Proposition 8.4 alongside the coefficient theorem.
+The scope remains finite colours, positive coefficient height, polynomial
+parity and an arbitrary commutative ground ring, without nontriviality or
+signed-left premises. No graded comparison, zero-height extension, full ELV
+coefficients or QP conclusion is asserted.
+
 ## Independent right coefficient descent
 
 `IntertwinerContentCoefficient.lean` defines the right operators directly by
@@ -14,11 +30,9 @@ and `targetContentRightCoefficient`, and reverse composition law are proved.
 existing prescribed moving-strand Q. Finite colours, positive coefficient
 height, arbitrary commutative ground ring and polynomial parity are unchanged.
 
-This is only the coefficient part of KKO I Proposition 8.4. Independent
-content-tensor dot operators and their comparison/intertwining remain open.
-Their target representative must retain the first dot, coefficient involution
-and `(-1)^(p(i)p(β))` exactly as in source lines 2436–2438 and
-`targetContentRightDot_tmul`. No signed-left-linearity premise is needed.
+This supplies the coefficient generator of KKO I Proposition 8.4; the dot
+generator and its first-dot/involution sign are supplied above.
+No signed-left-linearity premise is needed.
 The consumer checks all-odd and mixed data and audits every owned declaration.
 
 ## Shifted target tensor over the content algebra
@@ -41,11 +55,9 @@ moving-strand formula between the separately defined source and target tensors.
 
 Hypotheses remain finite colours, positive coefficient height and polynomial
 parity over the existing commutative ground ring and scalar datum. These are
-underlying left-module statements, not a graded identification. Next: define
-and compare the right coefficient and polynomial actions directly on these
-tensors. The latter must retain the first dot, coefficient involution and
-`(-1)^(p(i)p(β))` of `targetContentRightDot_tmul`; do not replace it with an
-untwisted action or require a signed-left condition. Enlarged target-block
+underlying left-module statements, not a graded identification. The direct
+right coefficient and dot actions and their Q compatibilities are supplied
+above, retaining the first dot, involution and `(-1)^(p(i)p(β))`. Enlarged target-block
 support, graded comparison, zero height, full ELV coefficients and QP are
 separate obligations.
 
@@ -64,9 +76,48 @@ height tensor. No arbitrary choice of equivalence or new action axiom is used.
 this source carrier. Finite colours and positive coefficient height remain;
 polynomial parity is needed only for Q.
 
-The shifted target comparison is supplied above. Next: explicit
-right coefficient/polynomial compatibility on both tensor carriers. The
+The shifted target comparison and right coefficient/dot compatibility on
+both tensor carriers are supplied above. The
 zero-height case, QP and full nondegeneracy are not consequences of this step.
+
+## Inherited Hom crossing and its specified mate
+
+`RouquierHomCrossing.lean` defines `homContentCrossing` using the inherited
+same-colour `T.cross`, multiplied by `-koszulSign p p` and conjugated by
+the even precomposition associator. `homContentCrossing_app` computes every
+component and `homContentCrossing_mem` proves parity p.
+`homContentCrossing_mate_app` specializes the SCat mate bridge to this
+crossing and expands both normalized adjunction components. It retains
+both parity comparisons, the counit sign, and c(k) inverse at the cap edge.
+The output/input-shift cancellation and equation (10) of
+`HomPrincipalMate.md` are still open, as is composition with the principal
+word evaluation. The consumer specializes the expanded mate to the odd
+rank-one datum at arbitrary weights; no nonzero model is constructed.
+
+## Normalized Hom adjunction in SCat
+
+`RouquierHomSuperAdjunction.lean` packages the specified
+`homContentPreAdjunction T W T.leftAdjoints` as `homContentSuperAdjunction`
+in the existing `SCat` 2-supercategory. The unit and inverse-scaled counit
+are proved even from their normalized formulas; no new zigzag premise is used.
+`rouquierMate_scat_app` unfolds the defined mate, and
+`homContentSuperAdjunction_mate_app` specializes it to these Hom adjunctions,
+giving the literal unit–mapped crossing–mapped counit component at either parity.
+The general bridge accepts an arbitrary crossing; the inherited specialization
+is given above. Both shift removals and `HomPrincipalMate.md` (10) remain open. All heights, the existing normalization c(k), and gamma(0)
+are unchanged. The odd rank-one consumer uses arbitrary weights; it does
+not construct a nonzero family.
+
+## Unit output comparison
+
+`homContentPreAdjunction_unit_output_coordinates` removes the output shift
+following the specified normalized Hom unit and a homogeneous map of parity q.
+It retains the factor `koszulSign sigma q` and all cup associators. Its
+odd rank-one consumer allows every height and either parity. This is only
+the first shift cancellation: substitution of the prescribed crossing and
+counit into `rouquierMate`, the input comparison, and equation (10) of
+`HomPrincipalMate.md` remain open.
+
 ## Unnormalized principal word
 
 `RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every

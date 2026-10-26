@@ -201,4 +201,24 @@ theorem homContentPreAdjunction_leftAdjoints_counit_app
     Category.id_comp]
   rw [koszulSign_smul (R := k)]
 
+/-- Removal of the output comparison after the specified unit and a homogeneous
+map. This is the first cancellation in the principal Hom mate calculation;
+it does not identify that mate with the unnormalized principal word. -/
+theorem homContentPreAdjunction_unit_output_coordinates
+    (Z : homWeightSector T.obj W muP muM)
+    (Y : homWeightSector T.obj W muP muM) {q : ZMod 2}
+    (g : T.F i h ≫ T.E i h ≫ Z ⟶ Y)
+    (hg : g ∈ parity (R := k) _ _ q) :
+    (homContentPreAdjunction T W T.leftAdjoints i muM h).unit.app Z ≫
+      (homParityShift (k := k) (leftAdjParity D i (-nuP))).map g ≫
+      ((homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).iso Y).hom =
+    koszulSign (leftAdjParity D i (-nuP)) q •
+      ((leftUnitor Z).inv ≫ T.leftCup i h ▷ Z ≫
+        (associator (T.F i h) (T.E i h) Z).hom ≫ g) := by
+  rw [homContentPreAdjunction_leftAdjoints_unit_app]
+  simp only [Category.assoc]
+  rw [(homParityShiftDatum (k := k) (leftAdjParity D i (-nuP))).hom_naturality hg]
+  simp only [Linear.comp_smul, Iso.inv_hom_id_assoc]
+  rw [koszulSign_smul (R := k)]
+
 end OddMath.SKM
