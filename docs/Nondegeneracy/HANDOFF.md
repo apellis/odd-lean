@@ -124,7 +124,7 @@ The proof uses no assumed left zigzag or target cap relation.
 The imported `RouquierCapSwap` consumer specializes the boundary to both
 parities, applies the theorem to the local data of a `RouquierFamily`
 (deriving the height shift and using its square/braid fields), and audits
-68 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
+101 owned declarations. `capL_pitchfork_at_neg_one` derives the left-cap
 pitchfork at `h = -1` from the cap swap and the positive inverse; its
 coefficient is `s`, with an importing odd-parity consumer.
 `capL_pitchfork_below_neg_one` proves the remaining negative-height case,
@@ -138,9 +138,30 @@ cap-swap sign cancels, and below it the pitchfork reduces to
 `leftZigE`, with the existing `leftCup` and `leftCap`, without rescaling.
 The consumer checks arbitrary parity and negative height and the family API.
 These remain parametric consumers, not a nonzero odd inversion model.
-The nonnegative-height E triangle still requires a signed left-cup pitchfork;
-the canonical F triangle and their common normalization remain open. In
-particular, the negative-height E value is one, not an assumed `(-1)^σ`.
+The positive augmented inverse now gives `cupCross_eq_of_nonneg`, using
+all its crossing and dotted-cap components rather than an unsigned duality.
+Writing `R = ρ.inv ≫ E₂ ◁ U.cupL`, the cup-side double crossing equals
+`-s • R` at `h = 0` and `-R` at `h > 0`. The component calculation
+`cupCross_capD_boundary` retains both the crossing/dot interchange sign
+and the positive single-curl coefficient. `cupL_pitchfork_of_nonneg`
+then has coefficient `s` at zero and one above zero. It assumes the same
+adjacent-height relation, both upward squares, and upward braid as the
+cap pitchfork; it does not assume left zigzags.
+
+Consequently `leftAdj_triangle_E_of_nonneg` and
+`RouquierFamily.leftZigE_of_nonneg` prove the canonical E zigzag is
+`s • 𝟙 E₂` for `h ≥ 0`, **not** an unsigned identity at odd parity.
+`RouquierFamily.leftZigE_eq` assembles all heights: coefficient one below
+zero and `s` at nonnegative height. No cup or cap was rescaled. Importing
+consumers check both parities at zero and arbitrary positive height,
+the signed cup pitchfork, and the actual family API.
+
+The canonical F triangle and a common normalization remain open. For
+`σ = leftAdjParity D i x` and E coefficient `e` just computed, the remaining
+compatible F formula is `leftZigF = (koszulSign σ σ * e) • 𝟙 F`.
+This would provide the common unit `c = koszulSign σ σ * e` in
+`LeftZigzags`; it is not inferred from the E calculation alone. No
+uniqueness of scalar coefficients or nonzero inversion model is claimed.
 This chain is not a full-root certification.
 
 ## Reservoir closure audit

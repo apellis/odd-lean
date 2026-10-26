@@ -49,6 +49,67 @@ theorem curlEG_cupD_zero {n : ℕ} (hn : (n : ℤ) < -h) :
   rw [hc, TwoSupercategory.whiskerLeft_zero (R := k)]
   simp
 
+/-- Moving dots onto the right cap preserves vanishing below the positive boundary. -/
+theorem curlG_capD_zero {n : ℕ} (hn : (n : ℤ) < h) :
+    curlG L.cupL (L.capD n) t = 0 := by
+  have hh : 0 < h := by omega
+  have hb : curlG L.cupL A₁.counit t = 0 := by
+    have := L.curlG_dotted (n := 0) (by omega)
+    simpa [TwoSupercategory.whiskerLeft_id (R := k), show h ≠ 0 by omega,
+      show (0 : ℤ) ≠ h by omega] using this
+  rw [capD, ← curlG_comp_whiskerRight (k := k), L.tau_powComp,
+    curlG_sub (k := k), curlG_zsmul (k := k),
+    curlG_whiskerLeft_comp L.cupL_mem _ _ (rouquierPower_mem L.dot₂_mem _),
+    hb, Limits.comp_zero, smul_zero, smul_zero, zero_sub, curlG_sum (k := k)]
+  rw [Finset.sum_eq_zero]
+  · exact neg_zero
+  · intro j hj
+    have hj' := Finset.mem_range.mp hj
+    rw [curlG_zsmul (k := k),
+      curlG_whiskerLeft_comp L.cupL_mem _ _ (rouquierPower_mem L.dot₂_mem _),
+      curlG_whiskerRight (k := k)]
+    have hc := L.cupL_capD hh (n := n - 1 - j) (by omega)
+    rw [ite_eq_right (by omega)] at hc
+    rw [show L.cupL ≫ F₁ ◁ rouquierPower x₁ (n - 1 - j) ≫ A₁.counit = 0 by
+      simpa only [capD, Category.assoc] using hc,
+      TwoSupercategory.zero_whiskerRight (R := k)]
+    simp
+
+/-- The positive double curl is supported exactly at its boundary degree.
+The factor from the positive one-crossing curl is retained, including height zero. -/
+theorem curlG_double_dotted (hh : 0 ≤ h) (hsq : t ≫ t = 0) {n : ℕ}
+    (hn0 : 0 < n) (hn : (n : ℤ) ≤ h + 1) :
+    curlG L.cupL A₁.counit (t ≫ E₁ ◁ rouquierPower x₂ n ≫ t) =
+      if (n : ℤ) = h + 1 then
+        -((koszulSign p p ^ (n - 1) * (if h = 0 then 1 else koszulSign p p)) • 𝟙 E₂)
+      else 0 := by
+  rw [L.powComp_tau, Preadditive.comp_add, Preadditive.comp_zsmul,
+    ← Category.assoc, hsq, Limits.zero_comp, smul_zero, zero_add,
+    Preadditive.comp_sum, curlG_sum (k := k)]
+  have ht : ∀ j ∈ Finset.range n, curlG L.cupL A₁.counit
+      (t ≫ ((koszulSign p p ^ (n - 1 - j)) •
+        (E₁ ◁ rouquierPower x₂ j ≫ rouquierPower x₁ (n - 1 - j) ▷ E₂))) =
+      if (n : ℤ) = h + 1 ∧ j = 0 then
+        -((koszulSign p p ^ (n - 1) * (if h = 0 then 1 else koszulSign p p)) • 𝟙 E₂)
+      else 0 := by
+    intro j hj
+    have hj' := Finset.mem_range.mp hj
+    rw [Preadditive.comp_zsmul, curlG_zsmul (k := k), ← Category.assoc,
+      curlG_comp_whiskerRight (k := k)]
+    change (koszulSign p p ^ (n - 1 - j)) •
+      curlG L.cupL (L.capD (n - 1 - j)) (t ≫ E₁ ◁ rouquierPower x₂ j) = _
+    rw [curlG_comp_whiskerLeft _ (L.capD_mem _) _ (rouquierPower_mem L.dot₂_mem _)]
+    by_cases he : (n : ℤ) = h + 1 ∧ j = 0
+    · rcases he with ⟨he, rfl⟩
+      rw [show n - 1 - 0 = h.toNat by omega, L.curlG_capD_self hh]
+      simp [he, show h.toNat = n - 1 by omega, smul_smul]
+    · rw [L.curlG_capD_zero (by omega), Limits.zero_comp, smul_zero, smul_zero,
+        ite_eq_right he]
+  rw [Finset.sum_congr rfl ht]
+  by_cases he : (n : ℤ) = h + 1
+  · simp [he, hn0]
+  · simp [he]
+
 include L in
 /-- Iterated right slide, with the ordered powers kept on their original strands. -/
 theorem powComp_right_tau (n : ℕ) :
@@ -326,11 +387,232 @@ theorem whiskerLeft_hom_ext_of_nonpos (hh : h ≤ 0) {d : B} (G : d ⟶ b)
       rw [hg n (Finset.mem_range.mp hn)]
     _ = g := ht g
 
+/-- The positive augmented inverse detects maps into a left-whiskered `FE`. -/
+theorem whiskerLeft_hom_ext_of_nonneg (hh : 0 ≤ h) {d : B} (G : d ⟶ b)
+    {H : d ⟶ b} (f g : H ⟶ G ≫ (F₁ ≫ E₁))
+    (hf : f ≫ G ◁ L.sig = g ≫ G ◁ L.sig)
+    (hg : ∀ n, n < h.toNat → f ≫ G ◁ L.capD n = g ≫ G ◁ L.capD n) : f = g := by
+  let I := L.invPos hh
+  have ht (z : H ⟶ G ≫ (F₁ ≫ E₁)) :
+      (z ≫ G ◁ L.sig) ≫ G ◁ I.f' +
+        ∑ n ∈ Finset.range h.toNat, (z ≫ G ◁ L.capD n) ≫ G ◁ I.g' n = z := by
+    have hs := map_sum (AddMonoidHom.mk' (fun η : F₁ ≫ E₁ ⟶ F₁ ≫ E₁ => G ◁ η)
+      fun η θ => TwoSupercategory.whiskerLeft_add (R := k) G η θ)
+      (fun n => F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) (Finset.range h.toNat)
+    have he := congrArg (fun q => z ≫ G ◁ q) I.total
+    change G ◁ (∑ n ∈ Finset.range h.toNat, F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) =
+      ∑ n ∈ Finset.range h.toNat, G ◁ (F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) at hs
+    simpa only [TwoSupercategory.whiskerLeft_add (R := k), hs,
+      TwoSupercategory.whiskerLeft_comp (R := k), TwoSupercategory.whiskerLeft_id (R := k),
+      Preadditive.comp_add, Preadditive.comp_sum, Category.assoc, Category.comp_id, sig, capD] using he
+  calc
+    f = (f ≫ G ◁ L.sig) ≫ G ◁ I.f' +
+        ∑ n ∈ Finset.range h.toNat, (f ≫ G ◁ L.capD n) ≫ G ◁ I.g' n := (ht f).symm
+    _ = (g ≫ G ◁ L.sig) ≫ G ◁ I.f' +
+        ∑ n ∈ Finset.range h.toNat, (g ≫ G ◁ L.capD n) ≫ G ◁ I.g' n := by
+      rw [hf]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro n hn
+      rw [hg n (Finset.mem_range.mp hn)]
+    _ = g := ht g
+
+/-- The positive augmented inverse detects maps into a right-whiskered `FE`. -/
+theorem whiskerRight_hom_ext_of_nonneg (hh : 0 ≤ h) {d : B} (G : b ⟶ d)
+    {H : b ⟶ d} (f g : H ⟶ (F₁ ≫ E₁) ≫ G)
+    (hf : f ≫ L.sig ▷ G = g ≫ L.sig ▷ G)
+    (hg : ∀ n, n < h.toNat → f ≫ L.capD n ▷ G = g ≫ L.capD n ▷ G) : f = g := by
+  let I := L.invPos hh
+  have ht (z : H ⟶ (F₁ ≫ E₁) ≫ G) :
+      (z ≫ L.sig ▷ G) ≫ I.f' ▷ G +
+        ∑ n ∈ Finset.range h.toNat, (z ≫ L.capD n ▷ G) ≫ I.g' n ▷ G = z := by
+    have hs := map_sum (AddMonoidHom.mk' (fun η : F₁ ≫ E₁ ⟶ F₁ ≫ E₁ => η ▷ G)
+      fun η θ => TwoSupercategory.add_whiskerRight (R := k) η θ G)
+      (fun n => F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) (Finset.range h.toNat)
+    have he := congrArg (fun q => z ≫ q ▷ G) I.total
+    change (∑ n ∈ Finset.range h.toNat, F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) ▷ G =
+      ∑ n ∈ Finset.range h.toNat, (F₁ ◁ rouquierPower x₁ n ≫ A₁.counit ≫ I.g' n) ▷ G at hs
+    simpa only [TwoSupercategory.add_whiskerRight (R := k), hs,
+      TwoSupercategory.comp_whiskerRight (R := k), TwoSupercategory.id_whiskerRight (R := k),
+      Preadditive.comp_add, Preadditive.comp_sum, Category.assoc, Category.comp_id, sig, capD] using he
+  calc
+    f = (f ≫ L.sig ▷ G) ≫ I.f' ▷ G +
+        ∑ n ∈ Finset.range h.toNat, (f ≫ L.capD n ▷ G) ≫ I.g' n ▷ G := (ht f).symm
+    _ = (g ≫ L.sig ▷ G) ≫ I.f' ▷ G +
+        ∑ n ∈ Finset.range h.toNat, (g ≫ L.capD n ▷ G) ≫ I.g' n ▷ G := by
+      rw [hf]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro n hn
+      rw [hg n (Finset.mem_range.mp hn)]
+    _ = g := ht g
+
+/-- The cup-side double crossing, with its actual inverse-defined left cup. -/
+def cupCross : E₂ ⟶ E₂ ≫ (F₂ ≫ E₂) :=
+  (leftUnitor E₂).inv ≫ L.cupL ▷ E₂ ≫ (associator F₁ E₁ E₂).hom ≫
+    F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv ≫ L.sig ▷ E₂ ≫ (associator E₂ F₂ E₂).hom
+
+/-- All dotted-cap components of the cup-side double crossing are signed double curls. -/
+theorem cupCross_capD (n : ℕ) :
+    L.cupCross ≫ E₂ ◁ (F₂ ◁ rouquierPower x₂ n ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+      koszulSign p ((n : ZMod 2) * p) •
+        curlG L.cupL A₁.counit (t ≫ E₁ ◁ rouquierPower x₂ n ≫ t) := by
+  unfold cupCross
+  simp only [Category.assoc]
+  rw [L.cross_sig_capD_closed]
+  simp only [curlG, Preadditive.comp_zsmul]
+
+/-- The dotted-cap components have coefficient `-s` at height zero and `-1`
+at positive height. These coefficients are forced before extracting the cup swap. -/
+theorem cupCross_capD_boundary (hh : 0 ≤ h) (hsq : t ≫ t = 0) {n : ℕ}
+    (hn : (n : ℤ) ≤ h + 1) :
+    L.cupCross ≫ E₂ ◁ (F₂ ◁ rouquierPower x₂ n ≫ A₂.counit) ≫ (rightUnitor E₂).hom =
+      if (n : ℤ) = h + 1 then -((if h = 0 then koszulSign p p else 1) • 𝟙 E₂) else 0 := by
+  rw [L.cupCross_capD]
+  by_cases hn0 : n = 0
+  · subst n
+    simp [TwoSupercategory.whiskerLeft_id (R := k), hsq, curlG_zero (k := k),
+      show (0 : ℤ) ≠ h + 1 by omega]
+  · rw [L.curlG_double_dotted hh hsq (by omega) hn]
+    by_cases he : (n : ℤ) = h + 1
+    · rw [ite_eq_left he, ite_eq_left he, smul_neg, smul_smul]
+      have hs : ∀ m : ℕ, koszulSign p ((m : ZMod 2) * p) = koszulSign p p ^ m := by
+        intro m
+        induction m with
+        | zero => simp
+        | succ m ih => simp only [Nat.cast_add, Nat.cast_one, add_mul, one_mul,
+            koszulSign_add_right, ih, pow_succ]
+      have hs2 : koszulSign p p ^ n * koszulSign p p ^ (n - 1) = koszulSign p p := by
+        rw [show koszulSign p p ^ n = koszulSign p p ^ (n - 1) * koszulSign p p by
+          rw [← pow_succ]; congr 1; omega,
+          mul_right_comm, ← mul_pow, koszulSign_mul_self, one_pow, one_mul]
+      rw [hs, ← mul_assoc, hs2]
+      split_ifs <;> simp [koszulSign_mul_self]
+    · rw [ite_eq_right he, ite_eq_right he, smul_zero]
+
 section Adjacent
 variable {d : B} {E₃ : c ⟶ d} {F₃ : d ⟶ c}
   {A₃ : SuperAdjunction (k := k) E₃ F₃} {x₃ : E₃ ⟶ E₃}
   {t₂₃ : E₂ ≫ E₃ ⟶ E₂ ≫ E₃} {h' : ℤ}
   (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ p h')
+
+/-- The crossing component of the positive cup swap vanishes. -/
+theorem cupCross_sig_of_nonneg (hh : 0 ≤ h) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    L.cupCross ≫ E₂ ◁ U.sig = 0 := by
+  have hb := rouquierMate_mixed_braid A₁ A₂ A₃ L.cross_mem U.cross_mem hB
+  have hc := congrArg (fun z => (leftUnitor E₂).inv ≫ L.cupL ▷ E₂ ≫ z) hb
+  simp only [sig, cupCross, Category.assoc] at hc ⊢
+  rw [hc]
+  rw [← Category.assoc (L.cupL ▷ E₂) (rouquierMate A₁ A₂ t ▷ E₂),
+    ← TwoSupercategory.comp_whiskerRight (R := k)]
+  change (leftUnitor E₂).inv ≫ (L.cupL ≫ L.sig) ▷ E₂ ≫ _ = 0
+  rcases eq_or_lt_of_le hh with hz | hp
+  · have hz' : h = 0 := hz.symm
+    have hu : L.cupL ≫ L.sig = -A₂.unit := by
+      have h0 := L.cupL_powComp_sig_of_le (n := 0) hh
+      simpa [hz', TwoSupercategory.whiskerLeft_id (R := k)] using h0
+    rw [hu, TwoSupercategory.neg_whiskerRight (R := k), Preadditive.neg_comp,
+      Preadditive.comp_neg]
+    change -((leftUnitor E₂).inv ≫ A₂.unit ▷ E₂ ≫ (associator E₂ F₂ E₂).hom ≫
+      E₂ ◁ U.sig ≫ (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫
+      (associator E₂ E₃ F₃).hom) = 0
+    rw [reassoc_of% U.unit_sig_pitchfork]
+    simp only [Iso.hom_inv_id_assoc]
+    rw [← Category.assoc (t₂₃ ▷ F₃) (t₂₃ ▷ F₃),
+      ← TwoSupercategory.comp_whiskerRight (R := k), hsq',
+      TwoSupercategory.zero_whiskerRight (R := k)]
+    simp
+  · rw [L.cupL_sig hp, TwoSupercategory.zero_whiskerRight (R := k)]
+    simp
+
+/-- The positive cup swap follows from every component of the augmented inverse.
+At height zero its coefficient is `-s`; above zero it is `-1`. -/
+theorem cupCross_eq_of_nonneg (hw : h' = h + 2) (hh : 0 ≤ h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    L.cupCross = -((if h = 0 then koszulSign p p else 1) •
+      ((rightUnitor E₂).inv ≫ E₂ ◁ U.cupL)) := by
+  apply U.whiskerLeft_hom_ext_of_nonneg (by omega) E₂
+  · rw [L.cupCross_sig_of_nonneg U hh hsq' hB, Preadditive.neg_comp,
+      Preadditive.zsmul_comp, Category.assoc, ← TwoSupercategory.whiskerLeft_comp (R := k),
+      U.cupL_sig (by omega), TwoSupercategory.whiskerLeft_zero (R := k),
+      Limits.comp_zero, smul_zero, neg_zero]
+  · intro n hn
+    apply (cancel_mono (rightUnitor E₂).hom).mp
+    simp only [Preadditive.neg_comp, Preadditive.zsmul_comp, Category.assoc]
+    rw [← Category.assoc (E₂ ◁ U.cupL) (E₂ ◁ U.capD n),
+      ← TwoSupercategory.whiskerLeft_comp (R := k), U.cupL_capD (by omega) hn]
+    have hc := L.cupCross_capD_boundary hh hsq (n := n) (by omega)
+    have he : (n : ℤ) = h + 1 ↔ (h' - 1).toNat = n := by omega
+    simp only [he] at hc
+    split_ifs at hc ⊢ <;>
+      simpa only [capD, Category.assoc, TwoSupercategory.whiskerLeft_id (R := k),
+        TwoSupercategory.whiskerLeft_zero (R := k), Category.comp_id, Category.id_comp,
+        Limits.comp_zero, Limits.zero_comp, Preadditive.neg_comp,
+        Preadditive.zsmul_comp, Iso.inv_hom_id, smul_zero, neg_zero] using hc
+
+/-- The signed left-cup pitchfork at nonnegative lower height.
+Its coefficient is `s` at zero and one at strictly positive height. -/
+theorem cupL_pitchfork_of_nonneg (hw : h' = h + 2) (hh : 0 ≤ h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (leftUnitor E₂).inv ≫ L.cupL ▷ E₂ ≫ (associator F₁ E₁ E₂).hom ≫
+      F₁ ◁ t ≫ (associator F₁ E₁ E₂).inv =
+      (if h = 0 then koszulSign p p else 1) •
+        ((rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫ L.sigL ▷ E₂) := by
+  apply L.whiskerRight_hom_ext_of_nonneg hh E₂
+  · have hc := congrArg (fun z => z ≫ (associator E₂ F₂ E₂).inv)
+      (L.cupCross_eq_of_nonneg U hw hh hsq hsq' hB)
+    simp only [cupCross, Category.assoc, Iso.hom_inv_id, Category.comp_id,
+      Preadditive.neg_comp, Preadditive.zsmul_comp] at hc
+    simp only [Preadditive.zsmul_comp, Category.assoc]
+    rw [← TwoSupercategory.comp_whiskerRight (R := k), L.sigL_sig_of_nonneg hh,
+      TwoSupercategory.neg_whiskerRight (R := k), TwoSupercategory.id_whiskerRight (R := k)]
+    simpa only [Preadditive.comp_neg, Category.comp_id, smul_neg] using hc
+  · intro n hn
+    apply (cancel_mono (leftUnitor E₂).hom).mp
+    have hc := L.curlG_capD_zero (n := n) (by omega)
+    simp only [Preadditive.zsmul_comp, Category.assoc]
+    rw [← Category.assoc (L.sigL ▷ E₂) (L.capD n ▷ E₂),
+      ← TwoSupercategory.comp_whiskerRight (R := k), L.sigL_capD hh hn,
+      TwoSupercategory.zero_whiskerRight (R := k)]
+    simpa only [curlG, capD, Category.assoc, Limits.zero_comp, Limits.comp_zero,
+      smul_zero] using hc
+
+/-- The canonical nonnegative E zigzag has coefficient `(-1)^p`.
+Neither inverse-defined generator is rescaled. -/
+theorem leftAdj_triangle_E_of_nonneg (hw : h' = h + 2) (hh : 0 ≤ h)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+      L.capL ▷ E₂ ≫ (leftUnitor E₂).hom = koszulSign p p • 𝟙 E₂ := by
+  have hp := L.cupL_pitchfork_of_nonneg U hw hh hsq hsq' hB
+  have hc : curlG L.cupL (L.capD h.toNat) t =
+      (if h = 0 then koszulSign p p else 1) •
+        ((rightUnitor E₂).inv ≫ E₂ ◁ U.cupL ≫ (associator E₂ F₂ E₂).inv ≫
+          L.sigL ▷ E₂ ≫ L.capD h.toNat ▷ E₂ ≫ (leftUnitor E₂).hom) := by
+    simpa only [curlG, Preadditive.zsmul_comp, Category.assoc] using
+      congrArg (fun z => z ≫ L.capD h.toNat ▷ E₂ ≫ (leftUnitor E₂).hom) hp
+  rw [L.curlG_capD_self hh] at hc
+  have he := congrArg (fun z => -((if h = 0 then koszulSign p p else 1) • z)) hc
+  rw [L.capL_of_nonneg hh, TwoSupercategory.neg_whiskerRight (R := k),
+    TwoSupercategory.comp_whiskerRight (R := k)]
+  simp only [Preadditive.comp_neg, Preadditive.neg_comp, Category.assoc]
+  split_ifs at he <;> simpa only [smul_neg, smul_smul, koszulSign_mul_self,
+    one_smul, mul_one, one_mul, neg_neg] using he.symm
 
 /-- Postcomposing the mixed braid with the left cap introduces no new sign:
 the cap is not exchanged with either crossing. -/
@@ -551,6 +833,24 @@ theorem leftZigE_of_neg (i : I) {x y : X} (e : x + D.α i = y) (hh : D.h i x < 0
     (T.square i e rfl) (T.braid i (sub_add_cancel x (D.α i)) e rfl)
   rw [← e]
   simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]
+
+/-- The inverse-defined E zigzag at nonnegative source height. -/
+theorem leftZigE_of_nonneg (i : I) {x y : X} (e : x + D.α i = y) (hh : 0 ≤ D.h i x) :
+    T.leftZigE i e = koszulSign (D.parity i) (D.parity i) • 𝟙 (T.E i e) := by
+  apply (T.loc i (sub_add_cancel x (D.α i)) e).leftAdj_triangle_E_of_nonneg
+    (T.loc i e rfl) _ hh (T.square i (sub_add_cancel x (D.α i)) e)
+    (T.square i e rfl) (T.braid i (sub_add_cancel x (D.α i)) e rfl)
+  rw [← e]
+  simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]
+
+/-- The canonical E zigzag at every height. This is not an assertion of the
+F zigzag or of a simultaneous normalization of the two triangles. -/
+theorem leftZigE_eq (i : I) {x y : X} (e : x + D.α i = y) :
+    T.leftZigE i e =
+      (if D.h i x < 0 then 1 else koszulSign (D.parity i) (D.parity i)) • 𝟙 (T.E i e) := by
+  split_ifs with hh
+  · simpa only [one_smul] using T.leftZigE_of_neg i e hh
+  · exact T.leftZigE_of_nonneg i e (by omega)
 
 end RouquierFamily
 end OddMath.SKM
