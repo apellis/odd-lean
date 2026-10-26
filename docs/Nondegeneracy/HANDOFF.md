@@ -675,6 +675,14 @@ colour polynomial relation: `affineTriple_braid_correction` and
 `(-1)^(|i|(|j|+s))` in every divided-difference term. Both braid cases now hold
 in the actual quotient; neither statement assumes a categorical representation.
 
+`BraidOperators.lean` proves the homogeneous degrees of both triple crossing
+matrices and carries both quotient identities to signed operators on the
+existing graded regular module. `cyclotomicSignedTriple_braid` has no
+additional sign. `cyclotomicSignedTriple_braid_correction` retains the
+factor `(-1)^(|i||j|)` on signed multiplication by the explicit correction.
+No parity restriction on the three colours is imposed. These regular-module
+operator identities still do not identify triple induction associators.
+
 ### Equal-colour crossing square
 
 `CyclotomicAction/Square.lean` identifies the associator-defined last crossing
