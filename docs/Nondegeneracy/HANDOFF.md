@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Swapped action assembly and arbitrary-colour passage
+
+`SwappedActionAssembly.md` gives a written partial assembly for the fixed
+pre-probe/post-reservoir construction. The literal weight category is a
+super-enriched product over formal content pairs; each E/F output has two
+incoming summands. The prescribed parity comparisons and sector adjunctions
+assemble without a finite weight-fibre assumption. Its source-relation table
+covers the upward KLR relations, right triangles, and complete same-colour
+augmented inverse entries, including both zero-height windows, conditional
+on the existing written factor and local calculations.
+
+The full action is **not proved**: the first missing map is the distinct-colour
+pre/pre projection of the specified cup–crossing–cap mate, (A8)–(A9), with its
+normalized-left adjunctions. The two cross-sector distinct-colour partial
+mates also need their exact shift-removal formulas and inverses. Inverting
+Q on the upward word is not a proof of invertibility of these partial mates.
+
+The all-B vacuum restriction, multiplication-of-induction-kernels comparison,
+and signed opposite-corner formulas are derived directly, without a
+`VacuumIdentification` premise. A finite-witness argument reduces the
+arbitrary-colour detection implication to finite-colour detection: retain the
+full weight lattice and include every colour in a finite zero derivation,
+including its cup/cap contexts. Compatible factor presentations and append
+kernels commute with finite coefficient enlargement; no arbitrary Hom
+base-change theorem is assumed. An infinite-colour graded Hom tower is not
+needed for this route. Normalized bubbles and the admissible bounded consumer
+remain separate obligations. No nondegeneracy or Lean assembly is asserted.
+
 ## Swapped vacuum bubbles at positive external height
 
 `SwappedVacuumBubbles.md` gives a proposed written inverse-column calculation,
