@@ -114,10 +114,19 @@ the odd comparison `ζ`. `homContentPreAdjunction` then gives
 `homContentPreE ⊣ homContentPreF`, where the lowering precomposition is
 shifted by `leftAdjParity D i = p(i)(h_i+1)`, constant along the edge
 (`leftAdjParity_edge`). Its input is `RouquierLeftAdjoints T`, the factor's
-shifted left adjunctions. **Open:** constructing `RouquierLeftAdjoints` from
-`RouquierFamily.loc`, the super analogue of Brundan Theorem 4.3
-(`RouqLoc.leftAdjunction` in categorification-lean, via the pitchfork and
-curl modules `RouqPitchfork`, `RouqTriangleE`, `RouqAdjunction`). The
+shifted left adjunctions. `OddMath/SKM/RouquierLeftCupCap.lean` defines the
+leftward crossing, cups and caps from the local inverses (`sigL`, `cupN`,
+`capN`, `cupL`, `capL`, as in `RouqSl2`), proves they have parity
+`p(i)(h_i+1)`, and packages `RouquierFamily.leftCup`/`leftCap`. The super
+analogue of Brundan Theorem 4.3 is the named Prop
+`RouquierFamily.LeftZigzags`: both zigzags of the leftward cup/cap equal `c`
+and `(-1)^σ c` for a unit `c`. It is stated up to `c`, so it does not depend
+on a sign normalization; super interchange of the cup with itself forces the
+ratio `(-1)^σ` whenever the cup is nonzero. `leftAdjointsOfZigzags` turns it
+into `RouquierLeftAdjoints`. **Open:** proving `LeftZigzags`. The even proof is
+`RouqLoc.leftAdjunction` via `RouqPitchfork`, `RouqTriangleE`,
+`RouqAdjunction`, `RouqCurl`, `RouqDottedCurls`, `RouqGrass` and
+`FakeBubbles` in categorification-lean, about 2500 lines. The
 original-datum rational crossings must also be constructed before these
 sectors can be assembled into A2. `scripts/NonVacuity/ShiftedAdjunction.lean`
 checks the odd comparison on the integral parity envelope and the odd
