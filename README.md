@@ -5,6 +5,10 @@ Littlewood–Richardson rule, together with machine-checked errata to the source
 
 Research branch: [odd nondegeneracy progress board](docs/Nondegeneracy/PROGRESS.md)
 and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
+The KKO I §8 source tensor over the unital content algebra now has an explicit
+two-sided comparison with its height-quotient content image
+(`IntertwinerContentTensor`), preserving the Q representative formula.
+The shifted target tensor comparison and QP remain open.
 
 Sources (numbering refers to these arXiv versions):
 

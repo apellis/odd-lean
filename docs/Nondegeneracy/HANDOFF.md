@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Source tensor over the content algebra
+
+`contentSourceEquiv` in `IntertwinerContentTensor.lean` identifies the KKO I §8 source
+`R(β+αᵢ)e(β,i) ⊗[R(β)] RΛ(β)` with `qSourceContent`. Both coefficient
+algebras use Mathlib's unital idempotent corners; the coefficient action is
+the existing quotient map restricted to those corners. The append left ideal
+is supported on content `β+αᵢ` (`contentSourceCorner_support`).
+The forward map includes both factors. The inverse cuts both factors by their
+content identities, is balanced over the unital corner, and has two checked
+composites: identity on the source tensor, the content projection on the
+height tensor. No arbitrary choice of equivalence or new action axiom is used.
+`contentTensorQ_representative` gives the existing moving-strand formula on
+this source carrier. Finite colours and positive coefficient height remain;
+polynomial parity is needed only for Q.
+
+Next: the shifted target tensor over the unital content algebra, and explicit
+right coefficient/polynomial compatibility on both tensor carriers. The
+zero-height case, QP and full nondegeneracy are not consequences of this step.
+
 ## Residual windows and execution-order comparisons
 
 `HomResidualWindows.md` computes every corrected central Schur window and

@@ -26,6 +26,7 @@ import OddMath.QuiverHecke.Realization.SigmaRelations
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerSkewAction
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerSupertensorGrading
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContent
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentTensor
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
