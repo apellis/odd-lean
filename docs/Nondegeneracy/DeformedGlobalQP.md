@@ -165,16 +165,21 @@ with shape
 
     F_1 τ_1⋯τ_(ℓ−1) C τ_(ℓ+2)⋯τ_n.
 
-The right crossing string is distant from the left crossing string and
-from F_1. Move it to the left, allowing its passage through C to produce
-further polynomial terms by the dot-crossing relations. Such terms have
-no new crossings to the left of F_1. Every resulting polynomial involving
-x_(n+1) can be expanded in powers of that variable; these powers commute
-up to sign past τ_1,…,τ_(ℓ−1) and F_1, since ℓ≤n−1. The residual right
-factor uses only positions 1,…,n. Each term is consequently in I₀.
-Equivalently, the polynomial and crossing tail are both in the algebra on
-positions ℓ,…,n+1, which is distant from the prefix through ℓ−2; the one
-boundary dot uses the ordinary dot-crossing relation. No division is used.
+Write L=τ_1⋯τ_(ℓ−1) and S=τ_(ℓ+2)⋯τ_n. For a polynomial p the
+dot-crossing relations give pτ_a=τ_a p'_a+p''_a, componentwise, with
+polynomials p'_a,p''_a retaining all coefficient signs. Induction through
+the fixed tail S therefore gives C S=Σ_u u p_u, where u is a subword
+of S and p_u is polynomial. No new crossing index or braid move is needed.
+Every crossing of u has index at least ℓ+2, so u supercommutes past L
+and F_1. Expand p_u=Σ_k x_(n+1)^k q_(u,k), with q_(u,k) involving only
+the first n dot positions and coefficients. Since ℓ≤n−1, the moving
+power also supercommutes past L and F_1. Thus, on homogeneous components,
+
+    F_1 L C S e(ν,i)
+      = Σ_(u,k) ±(u x_(n+1)^k) F_1 (L q_(u,k)) e(ν,i) ∈ I₀.
+
+The boundary dot x_ℓ stays in the residual old-algebra right factor;
+it never needs to cross τ_(ℓ−1). No division is used.
 
 The sign of each main term is (−1)^(ε|b|): the old generator crosses the
 moving-strand crossings with total parity p(i)p(β), and crosses the
@@ -201,5 +206,5 @@ ideal-sum equality). In particular it does not yet identify the cokernel
 of P with the induction corner, nor supply all projective B[s] module
 structures and their exact sequence. The central-monic projectivity lemma
 cannot be invoked until that exact projective sequence has been proved.
-The proposed QP formula and P balance must be independently checked before
-being used to promote any projectivity or multicolour action claim.
+The QP formula and P balance alone do not establish projectivity or the
+multicolour action; the stated remaining inputs are essential.
