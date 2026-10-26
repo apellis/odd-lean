@@ -105,7 +105,16 @@ associator with the inverse associator on the reversed adjoint string,
 using the two explicitly bracketed triple composite adjunctions. Its
 consumer checks both whiskered odd dots retain parity one.
 
-Still missing in Lean are horizontal super-opposition and the mirrored
+`HorizontalSuperOpposite` constructs `HOpS B` and its `TwoSupercategory`
+instance on the unchanged Hom supercategories, with reversed 1-morphisms,
+exchanged whiskerings, inverse reversed associator and exchanged unitors.
+Its interchange proof solves the original signed equation using the
+self-inverse Koszul sign. `SuperAdjunction.horizontalOpposite` reflects
+`E ⊣ F` to `F ⊣ E` with the same unit and counit and exchanged snakes.
+The rational odd consumer retains degree-one transposed dots and verifies
+the negative odd–odd interchange in the reflected category.
+
+Still missing in Lean are the reflected mate comparison and the mirrored
 local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
