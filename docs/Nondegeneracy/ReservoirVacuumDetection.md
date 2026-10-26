@@ -238,13 +238,23 @@ and the mate projection formula for every sector, and proves
 the connected two-odd datum and checks the normalization with a nontrivial
 probe series and a product of both exterior generators.
 
-**Remaining obligations.** No instance of `FusedVacuumAction` is
-constructed. Its fields are exactly: (A0/A1) the vacuum word modules of the
-fused action, their regular identification, the scalar action of probe
-coefficients and the reservoir coefficient values; (A2) the identification of
-the capped mate composite with the fused SKM bubble of each generator,
-including the degree bookkeeping of the dotted cup and cap. The mate
-projection formula is F's open obligation. The regular-module side (C0,
+`ReservoirFusedSectors.lean` builds the sectors from reservoir and probe
+summands (`SKM.SourceSector`, `SKM.TargetSector`). With the upward slide of
+the coupled crossing, inverses of the probe dots and nilpotence of the
+reservoir dots, F's `MateProjectionFormula.of_sectors` proves the projection
+formula (`VacuumSectorBubble.toSector_mateProjection`); the coordinates are
+the dotted reservoir cups and the probe caps with powers of the inverse probe
+dot. `upward_independence_of_fused_sector_actions` has no mate projection
+hypothesis.
+
+**Remaining obligations.** No instance of `FusedVacuumAction` or
+`FusedSectorAction` is constructed. Their fields are exactly: (A0/A1) the
+vacuum word modules of the fused action, their regular identification, the
+sector summands with the crossing slide, probe inverses and reservoir
+nilpotence, the scalar action of the probe coefficients and the reservoir
+coefficient values; (A2) the identification of the capped mate composite with
+the fused SKM bubble of each generator, including the degree bookkeeping of
+the dotted cup and cap. The regular-module side (C0,
 coordinates, covers) and the passage from these inputs to upward
 independence are proved.
 

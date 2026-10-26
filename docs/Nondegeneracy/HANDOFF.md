@@ -520,8 +520,13 @@ exterior coefficient (`fused_odd_bubble`).
 `ReservoirFusedDetection.lean` assumes only `FusedVacuumAction` (A0/A1: vacuum
 words, regular identification, probe and reservoir coefficient values; A2:
 capped mate composite = fused bubble of each generator) and the mate
-projection formula. Consumer: `scripts/NonVacuity/ReservoirFusedDetection.lean`.
-No `FusedVacuumAction` is constructed.
+projection formula. `ReservoirFusedSectors.lean` discharges the mate projection
+formula from sector summands through `MateProjectionFormula.of_sectors`, so
+`upward_independence_of_fused_sector_actions` assumes only sector summands
+with slide, probe inverses and reservoir nilpotence, the vacuum values, the
+regular identification and the fused bubble identification. Consumer:
+`scripts/NonVacuity/ReservoirFusedDetection.lean`. No `FusedVacuumAction` or
+`FusedSectorAction` is constructed.
 
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a

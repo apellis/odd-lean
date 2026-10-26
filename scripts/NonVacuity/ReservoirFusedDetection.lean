@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.ReservoirFusedDetection
+import OddMath.QuiverHecke.ReservoirFusedSectors
 import OddMath.QuiverHecke.ReservoirVacuumExamples
 
 /-! Two-odd-colour consumers of the fused-vacuum detection reduction.
@@ -20,6 +21,14 @@ example {B : Type} [BicategoryStruct.{0,0} B]
     (hM : ∀ μ, (A μ).MateProjections) :
     OddMath.SKM.WeakMate.UpwardIndependence cs :=
   upward_independence_of_fused_vacuum_actions A hM
+
+/-- With sector summands the mate projection hypothesis is discharged. -/
+example {B : Type} [BicategoryStruct.{0,0} B]
+    [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear ℚ (a ⟶ b)]
+    [∀ a b : B, Supercategory ℚ (a ⟶ b)] [TwoSupercategory ℚ B]
+    (A : ∀ μ, FusedSectorAction datum params cs μ B) :
+    OddMath.SKM.WeakMate.UpwardIndependence cs :=
+  upward_independence_of_fused_sector_actions A
 
 /-- The sector normalization is satisfiable with a nontrivial probe series at an
 odd colour (`q = -1`), with reservoir coefficients carrying the product of the
@@ -62,3 +71,6 @@ example : OddMath.SKM.reservoirDeconvolution
 #print axioms FusedRegularVacuumFamily.toFamily
 #print axioms FusedVacuumAction.toFamily
 #print axioms upward_independence_of_fused_vacuum_actions
+#print axioms VacuumSectorBubble.toSector_mateProjection
+#print axioms VacuumSectorBubble.bubbles_eq
+#print axioms upward_independence_of_fused_sector_actions
