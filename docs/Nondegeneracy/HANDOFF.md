@@ -499,7 +499,15 @@ sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
 self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
 `ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
 for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
-without a dual. **Open:** proving `LeftZigzags`. Restart point:
+without a dual. `RouquierPitchfork.lean` adds two direct inputs for the
+leftward pitchfork calculation: `curlEG_cupD_zero` proves vanishing with
+`n < -h` dots on the cup, and `curlEG_double_dotted` proves, for `0 < n ≤ 1-h`
+and `t ≫ t = 0`, that the closed double crossing `t ≫ x₁^n ▷ E₂ ≫ t` is zero
+below the boundary and `-s^n • 𝟙 E₁` at the boundary. Its ordered expansion is
+`powComp_right_tau`; no mirror is used. The odd-height specializations in
+`NonVacuity/Pitchfork.lean` assume local Rouquier data: they are signature and
+axiom checks, not a constructed nonzero categorical example. The new inputs
+alone do not determine the E-zigzag scalar. **Open:** proving `LeftZigzags`. Restart point:
 (1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
 `capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
 `RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
