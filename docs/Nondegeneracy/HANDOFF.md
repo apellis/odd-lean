@@ -434,10 +434,23 @@ tensor-product instances are neither used for this product nor disabled.
 representations onto the same quotient carriers, retaining the target shift.
 Their pure-tensor formulas recover the dot-first operators, and
 `rightSupertensor_Q` proves equivariance for every balanced tensor.
-Odd and mixed consumers check both signs at exponents one and two and
-nonzero target shifts. This is the balanced ring comparison and quotient
-action in KKO I, arXiv:1206.5933v2, Proposition 8.4, not its complete
-statement. The corresponding graded-supermodule packaging, source
+`polynomialSupertensorAlgebra` preserves the existing tensor scalar action,
+and `polynomialSupertensorSkewAlgEquiv` bundles the normal-order comparison
+as a ground-ring algebra equivalence. Scalar centrality follows from the
+linearity of the coefficient parity twist. `qCoefficientScalarTower` proves
+compatibility of the ground-ring and affine-algebra scalar actions on the
+existing shifted coefficient superspace. Neither quotient is replaced.
+The remaining scalar step is to prove that the source and target right
+representations send `r • f` to `r • ρ(f)` for the existing quotient
+scalar structures. This requires transporting the ground-ring scalar
+across the original integral balancing relation. It is not yet proved.
+
+Odd and mixed consumers check both signs at exponents one and two,
+nonzero target shifts, the algebra-map identity, and definitional agreement
+of the algebra scalar action with the original tensor module. This is
+the balanced algebra comparison for the right action in KKO I,
+arXiv:1206.5933v2, Proposition 8.4, not its complete statement. Homogeneous
+polynomial-tensor action parity and graded-supermodule packaging, source
 fixed-content comparison, zero-height case, full-ELV coefficients and QP
 identity remain separate.
 
