@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted Hom cup/cap transport on paper
+
+`HomSectorTransport.md` expands the specified Hom adjunctions using the
+normalized left factor cap. With `sigma=p(h_A+1)` and
+`c=(-1)^sigma e(h_A)`, its reservoir counit is
+`(-1)^sigma L(z_sigma(KY));v_Y`, where v uses `c^-1 capL`.
+Dotted cap transport has coefficient `(-1)^(sigma(1+np)) c^-1`.
+The probe cap is `S(v_n(SY));xi_Y`; its raw double-zeta coordinate
+is `(-1)^kappa z_(H S Y);H(z_Y)`, not the unsigned double removal.
+The content change `kappa'=kappa+p` gives an explicit parity-p swapping
+comparison and both signed dot intertwinings.
+
+These are written derivations, not new Lean theorems. Evaluation of the
+two shifted swapping partial mates, and identification of the reversed
+reservoir augmented matrix with the intended right-factor coordinates,
+remain necessary for the full tensor-feedback comparison. In particular
+no partial-mate invertibility, residual comparison, braid, separation or
+nondegeneracy result is claimed.
+
 ## Fixed-content reservoir bounds on paper
 
 `DeformedReservoirBound.md` supplies finite-dimensional coefficient
