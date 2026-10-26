@@ -32,6 +32,21 @@ matrix needs only `Tor₁(A/J,target)=0`, but also exact base-change comparison
 of its corners, tensor adjunction, signed generators and cup–crossing–cap
 mate, and a proof of invertibility of that reduced matrix (A1-map).
 
+## Deformed cyclotomic transport and repeated-odd cancellation
+
+`DeformedProjectiveResolution.md` gives a proposed written proof, not a Lean
+theorem, of full ELV polynomial transport through arbitrary multicolour
+intertwiner chains. The coefficient sign and dot sign combine to the uniform
+polynomial-parity sign. In the first-dot polynomial balanced module this
+proves `f(x)τg=f(x)(x²+y²)` by cancelling the monic square difference, not
+by assuming cyclotomic freeness. The even-cutoff normalizer defect before
+imposing the ELV coefficient relation is exactly `2χ_m d_i`.
+The document specifies the twisted balanced K₀, K₁, K₁′ and the global QP
+formula. The all-prefix induction, P balance and tensor-map assembly are
+still open; no full projectivity or action theorem is claimed. Once those
+steps are supplied, the central-square argument gives projectivity over the
+preceding block without an A-flatness assumption on that block.
+
 ## Moving-strand balance on arbitrary Hom entries
 
 `CyclotomicAction/IntertwinerNaturality.lean` proves `hom_comp_moveHom` for
