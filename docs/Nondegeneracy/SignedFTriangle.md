@@ -1,6 +1,7 @@
 # Signed reflection and the canonical F triangle
 
-**Status: written mathematical proof, not yet checked in Lean.** This is a
+**Status: the canonical F triangle and family left zigzags are checked in Lean**
+in `RouquierFTriangle.lean`. This is a
 proof for the inverse-defined generators in `RouquierLeftCupCap`, not an
 additional interface assuming a triangle. The input is two adjacent
 `SuperRouquierLoc`s, their even right adjunctions, both crossing squares, and
@@ -352,11 +353,14 @@ to any generator used to prove (1).
 
 ## Formalization boundary
 
-No Lean declaration is added by this document. The missing implementation
-is the generic even-right-adjunction transposition calculus (2)–(9),
-the super horizontal opposite, and the explicit mirrored local structure
-(10)–(12). The mathematical argument above supplies those identities and
-all scalar coefficients; they must still be checked in the kernel before
-claiming `leftZigF` or `LeftZigzags` as a proved Lean theorem. It does not
-construct a nonzero odd inversion model, a multicolour action, or a
-nondegeneracy proof.
+The transposition calculus, horizontal opposite, reflected local data, braid,
+and canonical cup/cap comparisons are implemented in the imported reflection
+modules. `RouquierFTriangle.lean` completes §§5–6 with
+`reflection_triangle_scalar` and `SuperRouquierLoc.leftAdj_triangle_F`.
+The former uses the binomial recurrence at symbolic heights; the latter
+applies the existing E theorem to the reflected data and cancels that scalar.
+`RouquierFamily.leftZigF_eq` and `RouquierFamily.leftZigzags` discharge the
+family obligation, and `RouquierFamily.leftAdjoints` invokes the existing
+normalization API. No extra triangle or cyclicity premise is added.
+This does not construct a nonzero odd inversion model, a multicolour action,
+or a nondegeneracy proof.

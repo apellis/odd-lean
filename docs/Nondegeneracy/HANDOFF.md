@@ -1,5 +1,41 @@
 # Odd nondegeneracy: restart state
 
+## Fixed normalized reservoir adjunction
+
+`RouquierFamily.leftAdjoints` now uses the explicit involutive unit
+`leftAdjScalar i x = koszulSign σ σ * (if h < 0 then 1 else koszulSign p p)`
+at the source height h, with unit `leftCup` and counit `leftAdjScalar⁻¹ • leftCap`.
+Both triangles follow from the canonical triangles; no chosen-scalar uniqueness
+or faithfulness is used. `RouquierNormalizedHomAdjunction.lean` specializes the
+existing `homContentPreAdjunction` without an additional `LeftZigzags` premise.
+It proves the reduced cup/output-shift unit formula and expands the specified
+counit through the shift-square and commuting comparison.
+
+The reduced counit formula of `HomSectorTransport.md` §2, including its outer
+`koszulSign σ σ`, still requires cancellation of those comparisons. The checked
+expansion is not that cancellation theorem. No fusion or nonzero model is claimed.
+
+## Canonical F triangle and shifted left adjunctions
+
+`OddMath.SKM.reflection_triangle_scalar` in `RouquierFTriangle.lean`
+proves the cup/cap reflection scalar product at every integer height by the
+binomial recurrence and involutive signs, including the separating height -1.
+`SuperRouquierLoc.leftAdj_triangle_F` applies the E triangle to the explicitly
+reflected local data, with the derived reflected crossing squares and braid.
+It reads back the horizontal-opposite unitors, associator and whiskerings,
+then cancels the canonical cup/cap scalar product. Its coefficient is
+`koszulSign σ σ * (if h < 0 then 1 else koszulSign p p)`, where `σ=p(h+1)`.
+
+`RouquierFamily.leftZigF_eq` specializes this to every family edge;
+`RouquierFamily.leftZigzags` discharges the existing two-triangle condition.
+`RouquierFamily.leftAdjoints` normalizes the cap by the explicit involutive scalar.
+There is no new cyclicity, faithfulness or left-triangle hypothesis. The
+rank-one odd consumer checks arbitrary heights and the boundaries -1 and 0,
+and audits every declaration owned by the new module.
+
+This closes the triangle obligation of `SignedFTriangle.md`, not the existence
+of a nonzero odd inversion model, the multicolour action, fusion or separation.
+
 ## Content-shifted probe augmented inverse
 
 `HomProbeMatrix.md` supplies a written proof of the probe comparison
@@ -245,11 +281,24 @@ comparison formulas are definitional. `reflectedCross_square` transports
 the nilpotent square. The rational odd consumer checks both height-zero
 inverses, the negative second-window coefficient, and both boundary windows.
 
-Still missing in Lean are the three-strand braid transport with explicit
-triple adjunction bracketings, and the piecewise canonical cup/cap
-comparisons in `SignedFTriangle.md` §5. These must be assembled before
-applying the E theorem to prove the canonical F equation; neither
-`LeftZigzags` nor the shifted left adjunction is discharged yet.
+`RouquierReflectedBraid` proves `rightTranspose_associator_hom` by
+transposing the inverse identity, and `rightTranspose_bracketed_whiskerRight`
+with the explicit triple composite adjunctions. `reflectedCross_braid`
+transports the bracketed three-strand braid to the prescribed crossings
+`s M(t)`; the equal palindromic transpose signs cancel without any
+cyclicity or left-triangle hypothesis.
+
+`RouquierReflectedCupCap` identifies the canonical `sigL`, every `cupN`
+and `capN`, the dotted right cups/caps, and both piecewise `cupL`/`capL`
+with their original maps times the coefficients of `SignedFTriangle.md`
+§5. All integer heights, including zero and both unused zero branches,
+are retained. The consumer specializes both canonical comparisons and
+the bracketed braid to odd parity over rational scalars.
+
+Still missing in Lean are the symbolic all-integer-height scalar product
+`a(h+2)b(h)=koszulSign (p(h+1)) (p(h+1))`, and application of the local
+E theorem followed by explicit horizontal-opposite readback. Neither the
+canonical F equation nor `LeftZigzags` is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
 
 ## Full graded deformed action on paper
