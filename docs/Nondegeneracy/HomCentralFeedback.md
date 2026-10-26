@@ -1,7 +1,7 @@
 # Central feedback in the content-shifted Hom construction
 
-**Status: proposed written component calculation, not a Lean theorem;
-crossing correction pending independent review.** The historical diagonals
+**Status: written component calculation and conditional nilpotence, not a Lean
+theorem.** The historical diagonals
 in §2 did not satisfy the fixed even-colour slides. Their literal mates
 C,D are retained as historical variables. `CrossingNormalization.md`
 repairs the diagonals by -q, so the literal new mates are
@@ -235,6 +235,11 @@ inverse, but not equality (B) or any chosen raw formula for that inverse.
 Thus where that inverse is not already available, (B) is the precise
 remaining sector-comparison obligation, not a restatement of (TC).
 
+`HomProbeMatrix.md` proves (B) by the explicit four-strand comparison and
+transports every inverse identity component. For that prescribed factor
+action, the needed augmented inverse is therefore supplied and
+`Rcal_B=post(R_B)`. The factor local inverse data remain hypotheses.
+
 The maps B_s and B_t identify the probe source and target functors with
 MN and NM on all homogeneous morphisms, since they are even natural
 isomorphisms. Consequently Rcal_B is supernatural of parity p. This
@@ -384,9 +389,9 @@ These are typed residual formulas, not inverses to residual matrices.
 Their w,z and their comparison with an invertible coefficient matrix
 remain uncomputed here. The normalization correction after (5) matters
 in (13)-(14): it cannot be discarded merely because the feedback is
-unchanged. Independent review of the proposed crossing correction,
-verifying the probe sector augmented comparison if it has not already
-been supplied, and proving residual inversion remain separate checks.
+unchanged. `CrossingNormalization.md` supplies the two-strand correction;
+`HomProbeMatrix.md` supplies the probe comparison. Computing the residual
+windows and proving their inversion remain separate obligations.
 No full (TC), fusion relations, separation, or nondegeneracy theorem is
 claimed. The new comparison is specifically (5), (7), (10)-(12), with
 its fixed-content nilpotence argument and the stated probe-sector input.

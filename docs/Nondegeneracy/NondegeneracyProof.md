@@ -226,7 +226,7 @@ Koszul interchange. For even `i` everything is even and `q = 1`. ∎
 
 **Proposition (paper; abstract version Lean).** Assume (H1), (H2), and that
 the fused crossing satisfies the fixed slide on `E_iE_i` (functional
-order `T S − q F T = 1`, with F the first dot and S the second). Then
+order `S T − q T F = 1`, with F the first dot and S the second). Then
 the reservoir–probe blocks of the normalized mate `−q·σ` are:
 
 ```
@@ -278,8 +278,7 @@ Koszul tensor product.
 
 *Equal colours, cross sectors.* On the two summands `AB`, `BA` of
 `E_iE_i`, AB means execution A then B. Write `X=x` for its first
-(reservoir) dot and `Y=y` for its second (probe) dot. **Proposed correction,
-pending independent review:**
+(reservoir) dot and `Y=y` for its second (probe) dot. The corrected matrix is:
 
 ```
           ⎡ −q a         J          ⎤      even i:  a = (X − Y)^{-1}

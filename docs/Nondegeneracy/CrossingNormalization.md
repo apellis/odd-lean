@@ -1,7 +1,7 @@
 # Equal-colour crossing normalization and central mates
 
-**Status: proposed convention repair, pending independent review; not a Lean
-theorem or a fusion theorem.** The old assertion in `NondegeneracyProof.md`
+**Status: written two-strand convention repair; not a Lean theorem or a fusion
+theorem.** The old assertion in `NondegeneracyProof.md`
 §5.3 that its mixed matrix satisfied the fixed library slides is withdrawn.
 The error is visible for an even colour. This note changes only the two
 position-preserving cross-sector entries; all factor maps, dots, adjunctions
@@ -201,5 +201,6 @@ if `G0=diag(1,-q)` on the central A/B sectors, then
 `Knew=G0 Kold G0^-1` and `Anew=G0 Aold G0^-1`; this does not identify the
 residuals unless their window maps are transported too. Here the specified
 window maps are retained, not gauged away. Computation of w,z and residual
-inversion, the probe-sector comparison, integer word-shift coherence,
-full (TC), fusion and separation remain open.
+inversion, integer word-shift coherence, full (TC), fusion and separation
+remain open. The separate `HomProbeMatrix.md` supplies the probe-sector
+comparison conditional on the specified factor local inverse data.
