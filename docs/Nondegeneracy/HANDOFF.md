@@ -1,6 +1,25 @@
 # Odd nondegeneracy: restart state
 
-## Full underlying deformed action on paper
+## Canonical signed F triangle on paper
+
+`SignedFTriangle.md` derives the second triangle for the prescribed
+inverse-defined cups and caps by horizontal super-opposition and signed
+right transposition. It constructs the reflected local data, including the
+prescribed mixed mate and every inverse-component comparison; it assumes
+neither cyclicity nor the F triangle. With s=(-1)^p, σ=p(h+1), and
+e(h)=1 for h<0 and s for h≥0, the canonical F composite is
+koszulSign(σ,σ)e(h) id. The E composite is e(h) id. Rescaling only the
+cap by the involutive unit koszulSign(σ,σ)e(h) gives the shifted left
+adjunction normalization of `LeftZigzags`.
+
+This is a written proof, not a kernel-certified F triangle. The
+transposition calculus, horizontal super-opposite and reflected local
+structure still need Lean implementations. The supporting all-height
+E-triangle development is on `research/odd-nondegeneracy-wip/signed-f-r17`; it is
+not included in this documentation-only integration. Transport to fusion
+and regular-bubble detection remains separate.
+
+## Full graded deformed action on paper
 
 `DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
 action of the full underlying SKM supercategory over the stated full-ELV
@@ -10,10 +29,13 @@ arbitrary-exponent corrected braid, and explicit zero out-of-range inverse
 components. It uses the same-colour matrix argument below, without a further
 kernel or pivot assumption. Tensoring applies to all modules, not just projectives.
 
-This is not a Lean implementation and does not yet preserve the standard
-SKM integer grading: the current restriction and right-adjunction maps are
-unshifted. Weight-dependent restriction shifts and adjunction transport
-remain to be supplied. Fusion, detection and nondegeneracy remain open.
+`DeformedGradedAction.md` supplies the standard SKM integer grading:
+E_i is unshifted induction and F_i1_λ=q^[d_i(h_i(λ)−1)] Res_i1_λ.
+It transports the adjunction on each edge and checks every generator and
+inverse-component degree. Infinite weight fibers use finite-bidegree Hom
+families, not unrestricted products of underlying Hom spaces.
+This is not a Lean implementation. Hom-finiteness, fusion, detection and
+nondegeneracy remain open.
 
 ## Prescribed same-colour inversion on paper
 
@@ -30,8 +52,7 @@ extra inversion hypotheses. The local right-factored g signs in
 without changing the definitions, cancellation or final QP formula.
 
 This is not a Lean theorem. The full-coefficient distinct-colour mate and
-underlying action are supplied above; their integer-graded enhancement and
-fusion remain separate. The existing polynomial-coefficient Lean
+graded action are supplied above; fusion remains separate. The existing polynomial-coefficient Lean
 implementation is narrower. The general nondegeneracy conjecture remains open.
 
 ## Deformed right projectivity on paper
@@ -44,6 +65,35 @@ annihilator through the nilpotent odd-parameter ideal. The coefficient twists
 are retained in both raw quotient and right-B-linear tensor coordinates.
 These are written arguments, not Lean theorems. Left projectivity and reverse
 adjunctions remain separate; prescribed same-colour inversion is supplied above.
+
+## Actual induced-tensor parity grading
+
+`CyclotomicAction/IntertwinerGrading.lean` constructs `qSourceSpace` and
+`qTargetSpace` on the **existing** `InductionAlong.Ind` carriers. The raw tensor
+is the original integral tensor. Its odd projection is the sum of even-odd
+and odd-even tensor projections. `InducedParity.relation_odd_mem` proves that
+the original balancing submodule is stable, by homogeneous decomposition of
+the corner, balancing algebra, and coefficient. Restricting its scalars to
+`k` leaves the quotient carrier unchanged; no comparison equivalence is assumed.
+
+`qSourceSpace_tmul_mem` and `qTargetSpace_tmul_mem` give total tensor degrees;
+`qSourceSpace_smul_mem` and `qTargetSpace_smul_mem` prove grading of the actual
+left action. Corner projection stability follows from the even idempotent,
+and append/prepend and coefficient action grading are proved, not postulated.
+The imported consumer exercises all-odd height three and mixed height two,
+both with nonzero coefficient shift, and audits the module's declarations.
+
+This is a checked grading increment, **not yet Q-evenness**. The remaining
+focal step is to prove the `contentMove` matrix has parity `p(i)p(β)` and use
+`InducedParity.ind_map_mem` with `parityCyclotomicContentQ_tmul` and
+`qCoefficientInsert_mem`; its two parity shifts then cancel. The right-dot
+degree assertions and full right-superalgebra structure also remain open.
+Source comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 and (8.13),
+PDF page 42. Finite colours, positive indexing and
+`CyclotomicPolynomialParity` are retained. Ordinary coefficients
+`I → Polynomial k` are still narrower than full odd-coefficient deformations.
+No full Proposition 8.4, QP formula, or nonzero categorical inversion model
+is asserted.
 
 ## Constructed right dots and Q compatibility
 
@@ -85,8 +135,8 @@ Mixed and all-odd consumers use the existing cyclotomic balanced tensor;
 the mixed consumer checks the minus sign on odd coefficients.
 
 The source and target right-dot endomorphisms and their Q compatibility are
-now constructed as described above. The induced-tensor grading and the
-superbimodule assertion remain absent. Finite colours, positive quotient
+now constructed as described above. The induced-tensor grading is now supplied
+by `IntertwinerGrading`; Q-evenness and the superbimodule assertion remain open. Finite colours, positive quotient
 indexing, and `CyclotomicPolynomialParity` are retained.
 
 ## Canonical parity-shifted coefficient target
@@ -105,7 +155,8 @@ shift, use the actual cyclotomic quotient, and audit all owned declarations.
 
 Source-statement comparison: KKO I, arXiv:1206.5933v2, Proposition 8.4 also
 requires the induced super grading and signed right `t_i` compatibility.
-The latter is now proved by `targetRightDot_Q`; induced grading remains open.
+The latter is now proved by `targetRightDot_Q`; induced grading is now supplied
+by `IntertwinerGrading`, while Q-evenness remains open.
 Its target right action contains both
 `(-1)^{p(i)p(β)}` on the first-dot action and the coefficient involution
 `φ_i(b)`; the latter cannot be dropped when balancing across odd coefficients.

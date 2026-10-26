@@ -1,6 +1,6 @@
 # Signed reflection and the canonical F triangle
 
-**Status: proposed mathematical proof, not yet checked in Lean.** This is a
+**Status: written mathematical proof, not yet checked in Lean.** This is a
 proof for the inverse-defined generators in `RouquierLeftCupCap`, not an
 additional interface assuming a triangle. The input is two adjacent
 `SuperRouquierLoc`s, their even right adjunctions, both crossing squares, and

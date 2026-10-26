@@ -1,8 +1,8 @@
 # Deformed distinct-colour mate and action assembly
 
 **Status: written proof of the full underlying SKM supercategory action over
-the stated full-ELV coefficients; not a Lean implementation.** Integer-grading
-preservation is not yet established. The mixed quadratic calculation in §6
+the stated full-ELV coefficients; not a Lean implementation.** The standard
+integer grading is supplied by `DeformedGradedAction.md`. The mixed quadratic calculation in §6
 and the corrected braid in `DeformedMixedBraid.md`, together with the explicit
 zero components below, complete the presentation relations. The smaller
 `RouquierFamily` interface alone does not do so. The same-colour matrix proof
@@ -341,19 +341,22 @@ to be implemented. Fusion, arbitrary-weight nonzero detection, normalized
 regular bubbles and nondegeneracy are separate obligations and are not
 consequences claimed here.
 
-## 7. Integer grading is not yet transported
+## 7. Transport to the standard integer grading
 
 The construction above uses unshifted restriction with degree-zero unit
-and counit. It therefore defines the underlying supercategory action, not
-yet an action preserving the standard SKM integer grading. In that grading
+and counit. By itself it defines only the underlying supercategory action.
+`DeformedGradedAction.md` supplies its standard integer grading. In that grading
 the cup and cap have degrees d_i(1+h_iλ) and d_i(1−h_iλ) at their
 respective labelled weights; the distinct-colour inverse crossing has
 degree zero. The raw distinct-colour mate in §4 instead has degree
 −(α_i|α_j), with the inverse of opposite degree.
 
-To promote the claim to a standard integer-graded action, specify the
-weight-dependent integer shifts on restriction and transport the adjunction
-and every inverse component through them. Checking the homogeneous degree
-of the upward quadratic and braid relations is necessary but does not
-supply those shifts. Parity grading and all underlying relations proved
-above are unaffected by this remaining obligation.
+With (q^r M)_a=M_(a−r), keep E_i unshifted and set
+F_i1_λ=q^[d_i(h_i(λ)−1)] Res_i1_λ. A raw degree-t map from q^u M to
+q^v N has degree t+v−u. The companion proof transports the adjunction
+on each edge, both homogeneous matrix profiles and all their inverse
+components. It checks every generator against `SKM.gdeg`, including zero
+out-of-range components and all height signs. Integer shifts carry no
+parity signs, so the underlying relations proved here are unchanged.
+This gives a written standard integer-graded action, not its Lean
+implementation, a Hom-finiteness theorem or fusion.
