@@ -51,6 +51,18 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-1))
         (leftUnitor E₂).hom) := by
   simpa only [koszulSign_one_one, neg_one_zsmul] using
     L.capL_pitchfork_at_neg_one U (by norm_num) rfl hsq hsq' hB
+example (p : ZMod 2) (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t p (-2))
+    (U : SuperRouquierLoc A₂ A₃ x₂ x₃ t₂₃ p 0)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom ≫
+      E₂ ◁ U.capL ≫ (rightUnitor E₂).hom =
+      E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
+        (leftUnitor E₂).hom := by
+  exact L.capL_pitchfork_below_neg_one U (by norm_num) (by norm_num) hsq hsq' hB
 end Local
 section Family
 variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
@@ -66,6 +78,19 @@ example (T : RouquierFamily (k := k) (B := B) D) (i : I) {a b c d : X}
         T.E i h₂ ◁ (T.adj i h₂).counit ≫ (rightUnitor (T.E i h₂)).hom)
       else -((T.loc i h₁ h₂).capL ▷ T.E i h₂ ≫ (leftUnitor (T.E i h₂)).hom) := by
   apply (T.loc i h₁ h₂).capCross_eq_of_neg (T.loc i h₂ h₃) _ hh
+    (T.square i h₁ h₂) (T.square i h₂ h₃) (T.braid i h₁ h₂ h₃)
+  rw [← h₂]
+  simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]
+example (T : RouquierFamily (k := k) (B := B) D) (i : I) {a b c d : X}
+    (h₁ : a + D.α i = b) (h₂ : b + D.α i = c) (h₃ : c + D.α i = d)
+    (hh : D.h i b < -1) :
+    (associator (T.E i h₂) (T.E i h₃) (T.F i h₃)).inv ≫ T.cross i i h₂ h₃ h₂ h₃ ▷ T.F i h₃ ≫
+      (associator (T.E i h₂) (T.E i h₃) (T.F i h₃)).hom ≫
+      T.E i h₂ ◁ (T.loc i h₂ h₃).capL ≫ (rightUnitor (T.E i h₂)).hom =
+      T.E i h₂ ◁ (T.loc i h₂ h₃).sigL ≫
+      (associator (T.E i h₂) (T.F i h₂) (T.E i h₂)).inv ≫
+      (T.loc i h₁ h₂).capL ▷ T.E i h₂ ≫ (leftUnitor (T.E i h₂)).hom := by
+  apply (T.loc i h₁ h₂).capL_pitchfork_below_neg_one (T.loc i h₂ h₃) _ hh
     (T.square i h₁ h₂) (T.square i h₂ h₃) (T.braid i h₁ h₂ h₃)
   rw [← h₂]
   simp [Datum.h, Datum.α, map_add, D.cd.coroot_root_self]

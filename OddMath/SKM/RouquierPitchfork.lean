@@ -295,6 +295,37 @@ theorem whiskerRight_hom_ext_of_nonpos (hh : h ≤ 0) {d : B} (G : b ⟶ d)
       rw [hg n (Finset.mem_range.mp hn)]
     _ = g := ht g
 
+/-- The negative augmented inverse also detects equality after left whiskering. -/
+theorem whiskerLeft_hom_ext_of_nonpos (hh : h ≤ 0) {d : B} (G : d ⟶ b)
+    {H : d ⟶ b} (f g : G ≫ (E₂ ≫ F₂) ⟶ H)
+    (hf : G ◁ L.sig ≫ f = G ◁ L.sig ≫ g)
+    (hg : ∀ n, n < (-h).toNat → G ◁ L.cupD n ≫ f = G ◁ L.cupD n ≫ g) : f = g := by
+  let I := L.invNeg hh
+  have ht (z : G ≫ (E₂ ≫ F₂) ⟶ H) :
+      G ◁ I.f' ≫ (G ◁ L.sig ≫ z) +
+        ∑ n ∈ Finset.range (-h).toNat, G ◁ I.g' n ≫ (G ◁ L.cupD n ≫ z) = z := by
+    have hs := map_sum (AddMonoidHom.mk' (fun η : E₂ ≫ F₂ ⟶ E₂ ≫ F₂ => G ◁ η)
+      fun η θ => TwoSupercategory.whiskerLeft_add (R := k) G η θ)
+      (fun n => I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) (Finset.range (-h).toNat)
+    have he := congrArg (fun q => G ◁ q ≫ z) I.total
+    change G ◁ (∑ n ∈ Finset.range (-h).toNat, I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) =
+      ∑ n ∈ Finset.range (-h).toNat, G ◁ (I.g' n ≫ (A₂.unit ≫ rouquierPower x₂ n ▷ F₂)) at hs
+    simpa only [TwoSupercategory.whiskerLeft_add (R := k),
+      hs, TwoSupercategory.whiskerLeft_comp (R := k),
+      TwoSupercategory.whiskerLeft_id (R := k), Preadditive.add_comp,
+      Preadditive.sum_comp, Category.assoc, Category.id_comp, sig, cupD] using he
+  calc
+    f = G ◁ I.f' ≫ (G ◁ L.sig ≫ f) +
+        ∑ n ∈ Finset.range (-h).toNat, G ◁ I.g' n ≫ (G ◁ L.cupD n ≫ f) := (ht f).symm
+    _ = G ◁ I.f' ≫ (G ◁ L.sig ≫ g) +
+        ∑ n ∈ Finset.range (-h).toNat, G ◁ I.g' n ≫ (G ◁ L.cupD n ≫ g) := by
+      rw [hf]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro n hn
+      rw [hg n (Finset.mem_range.mp hn)]
+    _ = g := ht g
+
 section Adjacent
 variable {d : B} {E₃ : c ⟶ d} {F₃ : d ⟶ c}
   {A₃ : SuperAdjunction (k := k) E₃ F₃} {x₃ : E₃ ⟶ E₃}
@@ -429,6 +460,39 @@ theorem capL_pitchfork_at_neg_one (hw : h' = h + 2) (hh : h = -1)
     ← TwoSupercategory.whiskerLeft_comp (R := k), hz,
     TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp, add_zero, smul_neg] at hc
   exact neg_injective hc
+
+/-- Below height minus one the negative left-cap pitchfork has coefficient one.
+Unlike the boundary value, no crossing is interchanged with a cap in this argument. -/
+theorem capL_pitchfork_below_neg_one (hw : h' = h + 2) (hh : h < -1)
+    (hsq : t ≫ t = 0) (hsq' : t₂₃ ≫ t₂₃ = 0)
+    (hB : E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫
+      (associator E₁ E₂ E₃).hom) ≫ E₁ ◁ t₂₃ =
+      ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom) ≫
+      E₁ ◁ t₂₃ ≫ ((associator E₁ E₂ E₃).inv ≫ t ▷ E₃ ≫ (associator E₁ E₂ E₃).hom)) :
+    (associator E₂ E₃ F₃).inv ≫ t₂₃ ▷ F₃ ≫ (associator E₂ E₃ F₃).hom ≫
+      E₂ ◁ U.capL ≫ (rightUnitor E₂).hom =
+      E₂ ◁ U.sigL ≫ (associator E₂ F₂ E₂).inv ≫ L.capL ▷ E₂ ≫
+        (leftUnitor E₂).hom := by
+  have hu : h' ≤ 0 := by omega
+  apply U.whiskerLeft_hom_ext_of_nonpos hu E₂
+  · have hc := congrArg (fun z => (associator E₂ F₂ E₂).inv ≫ z)
+      (L.capCross_eq_of_neg U hw (by omega) hsq hsq' hB)
+    rw [ite_eq_right (show h ≠ -1 by omega)] at hc
+    simp only [capCross, Iso.inv_hom_id_assoc, Preadditive.comp_neg] at hc
+    rw [← Category.assoc (E₂ ◁ U.sig) (E₂ ◁ U.sigL),
+      ← TwoSupercategory.whiskerLeft_comp (R := k), U.sig_sigL_of_nonpos hu,
+      TwoSupercategory.whiskerLeft_neg (R := k), TwoSupercategory.whiskerLeft_id (R := k),
+      Preadditive.neg_comp, Category.id_comp]
+    exact hc
+  · intro n hn
+    have hc := congrArg (fun z => (rightUnitor E₂).hom ≫ z)
+      (U.curlEG_cupD_zero (n := n) (by omega))
+    simp only [curlEG, ← Category.assoc, Iso.hom_inv_id, Category.id_comp,
+      Limits.comp_zero] at hc
+    rw [← Category.assoc (E₂ ◁ U.cupD n) (E₂ ◁ U.sigL),
+      ← TwoSupercategory.whiskerLeft_comp (R := k), U.cupD_sigL hu hn,
+      TwoSupercategory.whiskerLeft_zero (R := k), Limits.zero_comp]
+    simpa only [Category.assoc] using hc
 
 end Adjacent
 
