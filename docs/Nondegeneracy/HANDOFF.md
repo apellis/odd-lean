@@ -1,5 +1,16 @@
 # Odd nondegeneracy: restart state
 
+## Deformed right projectivity on paper
+
+`DeformedSquareResolution.md` assembles the written right-projectivity argument
+from `DeformedGlobalQP.md` and `DeformedIdealSum.md`. It constructs the actual
+central right `B[s]` actions and finite corner-projective PBW modules, proves
+P-linearity and injectivity, identifies its cokernel, and lifts a central monic
+annihilator through the nilpotent odd-parameter ideal. The coefficient twists
+are retained in both raw quotient and right-B-linear tensor coordinates.
+These are written arguments, not Lean theorems. Left projectivity, reverse
+adjunctions and invertibility of the prescribed Rouquier matrix remain separate.
+
 ## Canonical parity-shifted coefficient target
 
 `CyclotomicAction/IntertwinerParity.lean` refines the target of the existing
