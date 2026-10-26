@@ -1556,6 +1556,25 @@ equivalence, literal unpaired terminal crossings, and a common paired embedding
 
 ## Reservoir-vacuum detection
 
+`ELVVacuumGeneratorComparison.md` gives a proposed written obstruction to
+identifying the untransported deformed factor with the regular ELV row.
+The exact matrix-category quotient has corners `ReservoirQuotient`: its
+two-sided ideal entries are precisely `ELVRelationSpan`, and right append
+descends on every generator. Entry insertion/extraction are inverse; the
+representable contraction and its inverse satisfy the balancing relation.
+These do not identify the signed-left factor induction kernel with that row.
+For one odd colour at cutoff two, after the valid specialization delta=0,
+both raw quotients have x²+chi=0, but the factor dot satisfies D_x²(1)=chi
+and coefficient-category postcomposition satisfies post_x²(1)=-chi.
+Consequently a unit-preserving, coefficient-preserving dot-intertwining map
+cannot exist without an explicit coefficient transport (already chi must
+change sign in this specialization). Independently, the normalized Hom
+construction has reservoir precomposition and probe postcomposition, whereas
+`RegularVacuumComparison.md` uses the opposite support orientation. The next
+comparison must specify the reversed/opposite families and their weight
+labels, then identify the full transported ideal and generator maps. No
+bubble, fusion, or nondegeneracy conclusion follows from the row calculation.
+
 The separated-sector consumer is now `FusedFixedWeightFamily`, not a family
 of moving spectators. Conditional declarations in `ReservoirVacuumDetection`
 derive the joint bounded observation identity from composition, connected
