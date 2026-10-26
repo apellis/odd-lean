@@ -30,6 +30,12 @@ moves content `β ↦ {i} + β` at all heights (at zero via `vacuumAppend_conten
 content categories, composed with the identity transport `heightContentCast`
 along `β.card + 1 = δ.card`.
 
+`GlobalRestriction.lean` restricts `cyclotomicSuperRestriction` to content
+blocks (`globalBlockRestriction`) and the even unit and counit to
+`globalBlockAdjunction : globalBlockInduction ⊣ globalBlockRestriction`; both
+components are even (`globalBlockUnit_mem`, `globalBlockCounit_mem`). This is
+the positive-height block adjunction; the vacuum unit and counit are open.
+
 `CyclotomicAction/Global.lean` supplies the content indices and boundary sign
 for the global cyclotomic action: `WeightBlocks`, injective `blockSucc`, its
 subsingleton fibres, `exists_blockSucc_iff`, `blockSucc_comm`,
