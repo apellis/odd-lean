@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Paired Hom interchange component calculation
+
+`PairedHomInterchange.md` proposes derivations of both remaining equations
+(5A) and (5B) in `ThreeStrandSectorBraid.md`. It retains the reservoir
+crossing `-(-1)^p (t_A whisker -)` with the precomposition bracketing, and
+uses the explicit even probe word-removal Theta transport displayed in
+`HomCentralFeedback.md`. No crossing is selected by conjugation with J.
+For AAB the intermediate shift comparisons cancel adjacently; both paths
+have the same supernaturality factor `(-1)^(kappa p)`. For ABB the raw
+paired J is `(-1)^(kappa p)` times the paired inverse associator. Its
+calculation includes the negative double-shift removal, rather than
+identifying total parity zero with an unsigned comparison. Both typed
+paths then reduce to associator naturality for the fixed factor crossing.
+
+This is a proposed written proof, not a Lean theorem. It applies to the
+explicit Theta convention; if a different probe transport is intended,
+its component comparison with that convention remains required. Review
+and formalization of these equations and of the separate rational
+three-strand reduction remain pending. No localized factor equivalence,
+mixed-colour braid, integer shift coherence, fusion, or separation is
+claimed. The earlier open-equation paragraph below records the state
+before this proposed calculation.
+
 ## Three-strand same-colour sector reduction
 
 `ThreeStrandSectorBraid.md` gives the two three-sector matrices for
