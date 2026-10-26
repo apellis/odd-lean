@@ -27,7 +27,12 @@ the complete odd/localized comparison. These are written calculations, not
 Lean theorems or a full fusion proof. `ThreeStrandSectorBraid.md` reduces all
 same-colour three-strand components to two paired-J crossing identities.
 Its complete residual vanishes exactly when those identities hold; this
-reduction alone does not prove them.
+reduction alone does not prove them. `PairedHomInterchange.md` derives both
+identities using the actual shift comparisons and exactly the probe transport
+fixed in `HomProbeMatrix.md`. Thus the same-colour iii braid is proved in
+writing under the stated factor and mixed-denominator hypotheses. The paired
+ABB coefficient remains `(-1)^(kappa*p)`; even total parity does not make
+the paired comparison unsigned. Mixed-colour relations remain separate.
 
 ## Reservoir dotted coordinates
 

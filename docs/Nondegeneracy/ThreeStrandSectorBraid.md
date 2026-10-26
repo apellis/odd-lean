@@ -8,6 +8,9 @@ crossing, without a localized sector identification. The rational part closes
 in both parities. The remaining categorical identities are displayed below;
 they have not been derived here from the Hom shift comparisons. In particular,
 this note does not add them as premises of a claimed fused-action theorem.
+`PairedHomInterchange.md` separately derives both identities from the
+prescribed Hom comparisons. Together the two notes establish the iii braid
+under the factor and mixed-denominator hypotheses used here.
 
 ## 1. Conventions and the two blocks
 
