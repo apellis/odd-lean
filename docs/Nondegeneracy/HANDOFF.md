@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted swapping mates
+
+`HomSwappingMates.md` evaluates the two swapping partial mates of the
+specified upward matrix, by unit–map–cap words and the normalized snakes.
+With kappa'=kappa+p, the raw mixed coordinates are
+`(-1)^(sigma kappa') h_A` and
+`-(-1)^(kappa p) h_B;g_B`, where, for an odd colour,
+`g_B=(X²-W²)(X²+W²)^(-2)` and W is the right-transposed probe dot.
+The xi signs and every parity-removal map are retained. Finite geometric
+series give g_B inverse, and the note writes both inverse composites for
+both shifted maps. Their projected supports contribute no additional
+Schur term to the same-sector central block.
+
+This is a written derivation conditional on the accepted normalized
+left snake, not a Lean theorem. It supersedes the swapping-mate open
+obligations in the historical paragraphs below, but not full (TC).
+Central C,D/feedback transport must still include the principal inverse
+`gamma(k) f`, particularly `gamma(0)=(-1)^p`, all dotted windows and
+homogeneous comparisons. The chosen upward normalization has swapping
+degrees 0 and -4d on the presently specified functors: a common degree
+-2d requires an additional coherent integer word-shift construction.
+No such construction or probe integer grading is assumed here. Residual
+inversion, fusion relations and separation remain open.
+
 ## Principal component of the reversed Hom matrix
 
 `HomPrincipalMate.md` derives the unbundled same-colour Hom crossing as
@@ -156,8 +180,21 @@ Combined with `mixedMateBend_symm_rightTranspose`, it recovers the original
 prescribed mixed mate from the reflected mate of the right transpose;
 the rational odd consumer checks this for a degree-one crossing.
 
-Still missing in Lean are the reflected local dots, crossings and inversion
-data. These must be assembled before
+`RouquierReflectedLocal` constructs `SuperRouquierLoc.horizontalReflection`
+at the unchanged height, with transposed dots and crossing `s M(t)`.
+Both signed slides follow by transposing the original opposite slide.
+The prescribed mixed mate is `s` times its original, and each dotted
+window entry is `q(n)` times its original. `SuperSumInvTo.rescale` and
+`SuperSumInvFrom.rescale` prove all five augmented inverse equations in
+both orientations, including the empty window. Inverse components are
+copied explicitly; the four `horizontalReflection_invPos/Neg_f'/g'`
+comparison formulas are definitional. `reflectedCross_square` transports
+the nilpotent square. The rational odd consumer checks both height-zero
+inverses, the negative second-window coefficient, and both boundary windows.
+
+Still missing in Lean are the three-strand braid transport with explicit
+triple adjunction bracketings, and the piecewise canonical cup/cap
+comparisons in `SignedFTriangle.md` §5. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
