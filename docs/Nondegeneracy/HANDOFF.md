@@ -46,7 +46,15 @@ original weight boundary, for every height and parity. Odd two- and
 three-dot cups and caps are exercised on the prescribed composites.
 No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
 
-Still missing in Lean are composite-adjunction whiskering/coherence, the typed `P,Q,R`
+`RouquierCompositeAdjunction` constructs `SuperAdjunction.comp` for
+`E₁ ≫ E₂` with right adjoint `F₂ ≫ F₁`. Both triangles are derived by
+composing the even underlying right adjunctions. `comp_unit` and
+`comp_counit` identify the resulting maps with the nested units and counits,
+including every associator and unitor. Its consumer applies the same
+full-Hom transpose to an odd crossing at arbitrary height; no odd map is
+restricted to the even underlying bicategory.
+
+Still missing in Lean are composite-transpose whiskering/coherence, the typed `P,Q,R`
 comparison with the prescribed mixed mate, horizontal super-opposition,
 and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
