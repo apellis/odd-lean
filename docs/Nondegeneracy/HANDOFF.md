@@ -274,7 +274,24 @@ sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
 self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
 `ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
 for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
-without a dual. **Open:** proving `LeftZigzags`. The next even inputs
+without a dual. **Open:** proving `LeftZigzags`. Restart point:
+(1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
+`capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
+`RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
+the E-zigzag is `∓ε` times the sign of the super cupL pitchfork, which is not
+yet derived. (2) F-zigzag: needs a mirror into a super horizontal opposite
+`HOpS B`. That opposite is a 2-supercategory with the same Koszul signs. A
+first analysis found that right mates are anti-multiplicative *with* a sign:
+`mate (x ≫ y) = koszulSign |x| |y| • (mate y ≫ mate x)`. Consequently
+`mate (x^n) = s^(n choose 2) • (mate x)^n`, and the mirror crossing must be
+`s •` (full mate of `t`). The mirror's rightward crossing is then
+`s • sig`, its dotted caps and cups are `s^(n choose 2) •` L's, and its
+`sigL`, `cupL`, `capL` agree with L's only up to explicit signs, not by `rfl`.
+These derivations have not been checked in Lean. `LeftZigzags` is stated up to
+a unit, so these signs should be harmless, but they have to be tracked. The
+nilHecke square and braid transfer to the mirror. Suggested construction: the
+mirror crossing is `(homMateEquiv A₁.hop A₂.hop _ _).symm (s • sig)`, and
+mate injectivity comes from `recover (φ ▷ E ≫ counit) = φ`. The next even inputs
 are the fake-bubble identities, the inverse-cup
 expansions (3.12)–(3.13) (`RouqCurl`), the dotted curls (`RouqDottedCurls`),
 pitchforks and `RouqTriangleE`. The dual statements need a super horizontal
