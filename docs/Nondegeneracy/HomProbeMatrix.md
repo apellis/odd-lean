@@ -1,7 +1,10 @@
 # The content-shifted probe matrix
 
-**Status: principal equality (B) proved in Lean; the dotted and whole-matrix
-comparisons below remain written proofs.** The principal theorem is
+**Status: principal equality (B) and the natural-power dotted identities (9)
+proved in Lean; negative powers and the whole-matrix comparisons below remain
+written proofs.** `homContentPostCup_coordinates` and
+`homContentPostCap_coordinates` in `RouquierHomPostPowers.lean` supply every
+natural-power dotted entry, without requiring the factor dot to be invertible. The principal theorem is
 `homContentPostCrossing_principal` in `RouquierHomPostPrincipal.lean`. This computes the
 probe-sector input (B) of `HomCentralFeedback.md`, independently of its
 central-feedback argument. The conclusion is conditional on the probe factor's
