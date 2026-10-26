@@ -6,8 +6,13 @@
 the leading comparison `S mod J = L H Q`, with the nilpotent ideal generated
 by positive-degree reservoir supercentral coefficients. The original factor
 inverses, c(k), gamma(0), parity lifts and every identity summand are retained.
-At zero total height the residual is generally nonempty. Inverting the
-displayed negative-power probe-window matrices H remains a separate task.
+At zero total height the residual is generally nonempty.
+`ProbeWindowInverse.md` supplies a finite two-sided inverse algorithm for
+the displayed negative-power probe-window matrices H at every pair of
+heights, using the specified whole probe inverse, invertible dots and the
+literal mate slide. It retains both nonempty zero-total cases and all
+parity lifts. Lifting this inverse to the exact residual and constructing
+the required localized factor actions remain separate tasks.
 
 `ExecutionBraidNormalization.md` proves the reversal identity
 `-C_ij(z,y,x)=(-q_i)C_ij(x,y,z)` and the conditional even rational comparison,
