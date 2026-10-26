@@ -163,6 +163,23 @@ this check is not a nonvacuum categorical example. The categorical content
 of the listed coordinate hypotheses remains open, so this conditional
 reduction does not close A2 or supply its all-height negative windows.
 
+`OddMath/SKM/RouquierMateSectors.lean` proves
+`SuperRouquierLoc.MateProjectionFormula.of_sectors`. Source sectors
+(`SourceSector`: summands `E₁ₛ, F₁ₛ` with even inclusions, a sector
+adjunction to which the coupled counit restricts, and a sector dot) and
+target sectors (`TargetSector`: projections, unit and dot) realize all
+intertwiners, cap–cup factorizations and ordered power coordinates of
+`of_coordinates`. The coordinates are the actual dotted sector cups and caps,
+with negative indices given by powers of the inverse probe dot (`probeCup`,
+`probeCap`). The remaining hypotheses are exactly: the upward slide of the
+coupled crossing, inverses of the two probe dots, and nilpotence of the two
+reservoir dots. No biproduct completeness of the sectors and no inverse of the
+coupled mate are used. Still open: constructing the coupled raising functor of
+the Hom family with its post/pre sectors and coupled crossing (needs
+`RouquierLeftAdjoints` and the original-datum rational crossing), and proving
+its slide. `scripts/NonVacuity/MateSectors.lean` is a signature/axiom check with
+self-sector evaluations.
+
 `OddMath/SKM/RouquierFeedbackIdeal.lean` proves whole-matrix nilpotence from
 a vanishing multiplicative filtration of two-sided coefficient ideals.
 `FeedbackIdealFiltration.matrix_pow_mem` controls all entries of every

@@ -75,8 +75,12 @@ of the coupled mate. The negative probe indices are integers.
 2. Construct the original-datum crossings, including equal-odd rational
    crossings and multicolour polynomial and braid relations. The disconnected
    product associator does not supply these relations.
-3. Realize the sector inclusions/projections and prove all coordinate
-   hypotheses of `MateProjectionFormula.of_coordinates` for these crossings.
+3. Realize the sector inclusions/projections for these crossings.
+   `MateProjectionFormula.of_sectors` (`RouquierMateSectors`) derives every
+   coordinate hypothesis from sector summands with restricted counits,
+   projected units and restricted dots; what remains is the coupled slide,
+   the probe-dot inverses and the reservoir nilpotence for the actual
+   sectors.
 4. Identify the all-height negative windows with the ordered dot-conjugation
    formulas. `RouquierDotConjugation` proves the underlying correction
    identities at every length, without dropping the cap–cup terms.
