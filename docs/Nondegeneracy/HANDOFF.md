@@ -45,6 +45,19 @@ its 72-by-72 matrix has determinant one, with square-zero feedback of rank four.
 
 ## Super Rouquier interface
 
+The named projection obligation is
+`OddMath.SKM.SuperRouquierLoc.MateProjectionFormula`, in
+`OddMath/SKM/RouquierMateProjection.lean`. It equates the two sector projections
+of the normalized cup–crossing–cap mate `-q • rouquierMate` with
+`C = Σ_r q^r u_{A,r} v_{B,-r-1}` and
+`D = -Σ_r q^(r+1) u_{B,-r-1} v_{A,r}`. It is a **Prop definition, not a theorem**.
+The inclusions, projections, dotted factor maps and finite nilpotence bounds
+are explicit arguments; their content-shifted Hom realization is still open.
+The odd specialization uses the raw mate, whereas the even specialization
+uses its negative, matching the normalized slide in SeparatedFactorInversion.
+`NonVacuity/MateProjectionFormula.lean` checks both parity specializations.
+This interface assumes neither an inversion nor a proof of A2.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
