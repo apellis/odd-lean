@@ -2,8 +2,12 @@
 
 **Status: the principal Hom comparison remains a written derivation.**
 `RouquierPrincipalWord.lean` proves the unnormalized word evaluation (11)
-at all heights and the scalar identity (16). Substitution into the specified
-shifted Hom mate and shift cancellation (3)–(10) remain to be formalized. With the
+at all heights and the scalar identity (16).
+`RouquierHomCrossing.lean` defines the inherited crossing and its specified
+shifted mate. `homContentCrossing_coordinates_raw` removes both parity
+comparisons, leaving the raw cup, inherited crossing and normalized cap.
+The even reassociation identifying this expression with the insertion of
+`leftCrossingWord`, hence (10), remains to be formalized. With the
 inherited reservoir dots and the same-colour KLR crossing convention, the
 normalized-left Hom mixed mate has raw component
 
@@ -36,10 +40,10 @@ c(k)=(-1)^sigma e(k), e(k)=1 (k<0), e(k)=s (k>=0).
 ```
 
 The source Hom weight has height -k. Its raising functors retain E,
-not its right transpose. The library provides `homContentPreE` and
-`homContentPreAdjunction`, but does not bundle a same-colour upward Hom
-crossing. Here is the explicit crossing required by the inherited-dot
-horizontal-reversal convention; no new Lean identifier is asserted.
+not its right transpose. The library provides `homContentPreE`,
+`homContentPreAdjunction`, and the
+bundled same-colour upward `homContentCrossing`. The latter implements the
+following inherited-dot horizontal-reversal convention.
 
 Let t be the factor crossing on `E_- E_+`, and put
 `A=E_- whisker x_+`, `B=x_- whisker E_+`. The factor relations are
@@ -70,7 +74,7 @@ mixed-inversion proof is not an input here.
 
 The homogeneous transformation in (3) is obtained by
 `homPreTransform`, with even reassociations from `homPreComp`.
-Its degree is p. This specifies the unbundled same-colour datum only;
+Its degree is p. This specifies the bundled same-colour datum only;
 no multicolour action follows from the two slide checks.
 
 ## 2. Remove the shifts in the specified mate
