@@ -1,6 +1,8 @@
 # The content-shifted probe matrix
 
-**Status: written proof, not a Lean theorem.** This computes the
+**Status: principal equality (B) proved in Lean; the dotted and whole-matrix
+comparisons below remain written proofs.** The principal theorem is
+`homContentPostCrossing_principal` in `RouquierHomPostPrincipal.lean`. This computes the
 probe-sector input (B) of `HomCentralFeedback.md`, independently of its
 central-feedback argument. The conclusion is conditional on the probe factor's
 specified local augmented inverse, not on an inverse for the shifted sector.
