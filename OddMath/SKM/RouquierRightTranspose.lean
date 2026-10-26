@@ -155,6 +155,54 @@ theorem rightTranspose_power (A : SuperAdjunction (k := k) E F)
       ih, Preadditive.comp_zsmul, smul_smul, power_comm]
     simp only [Nat.choose_succ_succ, Nat.choose_one_right, pow_add, rouquierPower]
 
+/-- Bend a full-Hom map upward with the even right unit. -/
+def unitBend (A : SuperAdjunction (k := k) E F) (G : b ⟶ a) :
+    (F ⟶ G) ≃ (𝟙 a ⟶ E ≫ G) :=
+  (Iso.homCongr (rightUnitor F).symm (Iso.refl G)).trans
+    ((homPreAdjunction A).homEquiv (𝟙 a) G)
+private theorem unitUnitor {C : Type u} [Bicategory.{w,v} C]
+    {a b : C} (E : a ⟶ b) (F : b ⟶ a) (η : 𝟙 a ⟶ E ≫ F) :
+    (Bicategory.leftUnitor (𝟙 a)).inv ≫
+      Bicategory.whiskerRight η (𝟙 a) ≫
+      (Bicategory.associator E F (𝟙 a)).hom ≫
+      Bicategory.whiskerLeft E (Bicategory.rightUnitor F).hom = η := by
+  bicategory
+/-- Unit bending is the prescribed cup composite. -/
+theorem unitBend_apply (A : SuperAdjunction (k := k) E F)
+    (G : b ⟶ a) (ψ : F ⟶ G) :
+    A.unitBend G ψ = A.unit ≫ E ◁ ψ := by
+  have h := congrArg Subtype.val (unitUnitor
+    (Underlying2.hom1 (R := k) E) (Underlying2.hom1 (R := k) F)
+    ⟨A.unit, A.unit_mem⟩)
+  change (leftUnitor (𝟙 a)).inv ≫ A.unit ▷ (𝟙 a) ≫
+    (associator E F (𝟙 a)).hom ≫ E ◁ (rightUnitor F).hom = A.unit at h
+  dsimp [unitBend, Iso.homCongr, CategoryTheory.Adjunction.homEquiv,
+    homPreAdjunction, homPreUnit, homPreComp, homPreTransform,
+    homPreId, SuperNatTrans.toNatTrans, homPre]
+  simp only [Category.comp_id, TwoSupercategory.whiskerLeft_comp (R := k),
+    ← Category.assoc]
+  simpa only [← Category.assoc] using congrArg (· ≫ E ◁ ψ) h
+/-- Unbending uses only the even right counit. -/
+theorem unitBend_symm_apply (A : SuperAdjunction (k := k) E F)
+    (G : b ⟶ a) (β : 𝟙 a ⟶ E ≫ G) :
+    (A.unitBend G).symm β =
+      (rightUnitor F).inv ≫ F ◁ β ≫ (associator F E G).inv ≫
+        A.counit ▷ G ≫ (leftUnitor G).hom := by
+  simp [unitBend, Iso.homCongr, CategoryTheory.Adjunction.homEquiv,
+    homPreAdjunction, homPreCounit, homPreComp, homPreTransform,
+    homPreId, SuperNatTrans.toNatTrans, homPre]
+/-- The same right transpose satisfies the unit bending identity, including odd maps. -/
+theorem rightTranspose_unit (A : SuperAdjunction (k := k) E F)
+    (A' : SuperAdjunction (k := k) E' F') (f : E ⟶ E') :
+    A'.unit ≫ E' ◁ rightTranspose A A' f = A.unit ≫ f ▷ F := by
+  rw [← unitBend_apply]
+  apply (A'.unitBend F).symm.injective
+  rw [Equiv.symm_apply_apply, unitBend_symm_apply, rightTranspose_apply]
+  simp only [TwoSupercategory.whiskerLeft_comp (R := k),
+    TwoSupercategory.comp_whiskerRight (R := k), Category.assoc]
+  rw [← Category.assoc (F' ◁ (f ▷ F)),
+    TwoSupercategory.associator_inv_naturality_middle (R := k), Category.assoc]
+
 end SuperAdjunction
 
 namespace SuperRouquierLoc
@@ -173,6 +221,16 @@ theorem rightTranspose_capD (n : ℕ) :
     TwoSupercategory.zsmul_whiskerRight (R := k), Preadditive.zsmul_comp] at he
   have hh := congrArg (fun z => koszulSign p p ^ (n.choose 2) • z) he
   simpa only [smul_smul, ← mul_pow, koszulSign_mul_self, one_pow, one_smul, capD] using hh
+
+/-- The reflected dotted cup has coefficient `q(n)` at its original weight boundary. -/
+theorem rightTranspose_cupD (n : ℕ) :
+    A₂.unit ≫ E₂ ◁ rouquierPower (A₂.rightTranspose A₂ x₂) n =
+      koszulSign p p ^ (n.choose 2) • L.cupD n := by
+  have he := A₂.rightTranspose_unit A₂ (rouquierPower x₂ n)
+  rw [A₂.rightTranspose_power L.dot₂_mem n,
+    TwoSupercategory.whiskerLeft_zsmul (R := k), Preadditive.comp_zsmul] at he
+  have hh := congrArg (fun z => koszulSign p p ^ (n.choose 2) • z) he
+  simpa only [smul_smul, ← mul_pow, koszulSign_mul_self, one_pow, one_smul, cupD] using hh
 
 end SuperRouquierLoc
 end OddMath.SKM

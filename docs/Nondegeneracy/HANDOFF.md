@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Tensor feedback calculations and the remaining transport
+
+`FusedFeedbackComparison.md` gives the six partial-mate supports, the
+untwisted external-tensor rational coefficients, and the supported feedback
+sign `-(-1)^(p r s)`. It proves principal-block nilpotence only under its
+explicit transport condition (TC). Both augmented elimination formulas retain
+the identity summands and the residual matrices at arbitrary factor heights.
+
+These are written calculations, not Lean theorems or a fused action. Raw
+even interchange is not the odd content-shifted swapping map. The actual
+Hom-sector transport, reversed reservoir matrix comparison, residual
+invertibility, fusion relations and separation remain separate obligations.
+
 ## Fixed-content reservoir bounds on paper
 
 `DeformedReservoirBound.md` supplies finite-dimensional coefficient
@@ -37,10 +50,16 @@ linearity, signed anticomposition, and the power coefficient
 `q(n)=koszulSign p p ^ (n.choose 2)`. Its concrete local consumer
 `SuperRouquierLoc.rightTranspose_capD` proves that the reflected dotted cap
 is `q(n)` times the original `capD n`, at every height and parity.
+The full-Hom equivalence `SuperAdjunction.unitBend` is also constructed
+from precomposition adjunction, with explicit forward and inverse formulas.
+`rightTranspose_unit` proves the second bending identity for the same
+counit-defined transpose. `SuperRouquierLoc.rightTranspose_cupD` identifies
+the reflected dotted cup with `q(n)` times the original `cupD n`, at its
+original weight boundary, for every height and parity. Odd two- and
+three-dot cups and caps are exercised on the prescribed composites.
 No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
 
-Still missing in Lean are the unit bending identity and dotted-cup
-comparison, composite-adjunction whiskering/coherence, the typed `P,Q,R`
+Still missing in Lean are composite-adjunction whiskering/coherence, the typed `P,Q,R`
 comparison with the prescribed mixed mate, horizontal super-opposition,
 and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
