@@ -150,4 +150,32 @@ omit [Fintype I] in
   simp only [wordContent, appendWord, ← Multiset.coe_add, Multiset.coe_singleton,
     Multiset.add_comm]
 
+/-- The affine inclusion shifts the content projector by the appended colour. -/
+theorem contentIdempotent_appendAlgebra (i : I) (n : ℕ) (β : Multiset I)
+    (z : Hn D Sc n) :
+    contentIdempotent D Sc (n + 1) ({i} + β) * appendAlgebra D Sc i n z =
+      appendAlgebra D Sc i n (contentIdempotent D Sc n β * z) := by
+  induction z using FiniteHomMatrix.induction with
+  | hz => simp
+  | ha x y hx hy => simp only [map_add, mul_add, hx, hy]
+  | hs s t f =>
+    rw [content_mul_single]
+    change contentIdempotent D Sc (n + 1) ({i} + β) *
+      appendLinear D Sc i n (FiniteHomMatrix.single s t f) = _
+    rw [appendLinear_single, content_mul_single, wordContent_append]
+    simp only [add_right_inj]
+    split_ifs
+    · exact (appendLinear_single D Sc i t s f).symm
+    · exact (map_zero (appendAlgebra D Sc i n)).symm
+
+/-- The same projector identity holds on the cyclotomic quotient itself. -/
+theorem cyclotomicContentIdempotent_append (i : I) (a : I → _root_.Polynomial k)
+    (n : ℕ) (β : Multiset I) (z : CyclotomicAlgebra D Sc a n) :
+    cyclotomicContentIdempotent D Sc a (n + 1) ({i} + β) *
+        cyclotomicAppend D Sc i a n z =
+      cyclotomicAppend D Sc i a n (cyclotomicContentIdempotent D Sc a n β * z) := by
+  obtain ⟨z, rfl⟩ := Ideal.Quotient.mk_surjective z
+  exact congrArg (cyclotomicMk D Sc a (n + 1))
+    (contentIdempotent_appendAlgebra D Sc i (n + 1) β z)
+
 end OddMath.QuiverHecke

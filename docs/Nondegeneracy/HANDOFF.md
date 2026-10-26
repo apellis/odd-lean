@@ -312,8 +312,15 @@ space, not a hypothesis about content preservation. The quotient elements
 in `CyclotomicAlgebra`. `wordContent_append` records the colour added by
 rightmost strand insertion. These pass a scoped warning-free build and
 owned-declaration axiom audit; full CI remains the branch-wide gate.
-The restriction to a support supercategory and its induction functor, and
-the height-zero vacuum extension, are not supplied by these algebra lemmas.
+`contentIdempotent_appendAlgebra` and `cyclotomicContentIdempotent_append`
+prove the projector identity for the actual strand-inclusion maps.
+`ContentSupport.lean` defines `ContentSupported`, its full subcategory
+`CyclotomicContentModules`, and `cyclotomicContentInduction`.
+`inductionCorner_content` identifies the left target projector with the right
+source projector on the actual corner; `contentSupported_induction` then
+uses the balanced tensor relation to prove the content shift `β ↦ {i} + β`.
+The full subcategory retains all module morphisms; separate supercategory
+instances on this wrapper and the height-zero vacuum extension remain open.
 
 ## Proof architecture
 
