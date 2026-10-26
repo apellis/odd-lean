@@ -170,7 +170,13 @@ It proves parity `|i||j|`, both colour-cut identities and signed intertwining
 `θᵢⱼ(r) τ = (-1)^{|r||i||j|} τ θⱼᵢ(r)` for the two composite inclusions.
 Rows are targets, so right multiplication goes from `C θᵢⱼ(1)` to
 `C θⱼᵢ(1)`. The scoped warning-free build and declaration axiom audit pass.
-The homogeneous corner map, square, braid and inversion remain separate.
+`CyclotomicAction/SuperCrossing.lean` now constructs the homogeneous map
+`compositionSuperCrossing : compositionCorner i j ⟶ compositionCorner j i`,
+with parity `|i||j|` and formula `x ↦ (-1)^{|i||j||x|} x τ` on homogeneous
+inputs. Signed left linearity and ordinary right linearity follow from the
+proved global intertwiner, not an assumed relation. Its scoped warning-free
+build and declaration axiom audit pass. Square, braid and inversion relations
+remain separate obligations.
 `CyclotomicAction/SuperRestriction.lean` similarly represents restriction by
 `restrictionCorner = φ(1) B`; `cyclotomicSuperRestriction` is additive,
 `k`-linear, and parity preserving. The positive-height indexing still leaves
