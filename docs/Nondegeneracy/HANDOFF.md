@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Reservoir dotted coordinates
+
+`RouquierHomReservoirPowers.lean` proves `HomSectorTransport.md` §2 (5)
+for all natural powers and every reservoir source height. The dot is the raw
+`T.dot ▷ Z`; cups and caps are defined using the same normalized
+`homContentPreAdjunction T W T.leftAdjoints`. Removing the output comparison
+from the cup gives `koszulSign σ (n*p)` times the raw dotted cup. Moving the
+cap comparison past the dot power gives `koszulSign σ (1+n*p)` times the raw
+dotted cap, retaining `leftAdjScalar⁻¹ • leftCap`. The power has parity `n*p`,
+and its naturality is proved for every homogeneous map, not only even maps.
+These are window coordinates for the Hom principal and central comparisons;
+no principal-block identification, window inverse, or fusion comparison follows
+from these formulas alone. The consumer checks arbitrary odd rank-one heights
+and powers, and powers zero, one, and two at nonzero output shift.
+
 ## Fixed normalized reservoir adjunction
 
 `RouquierFamily.leftAdjoints` now uses the explicit involutive unit
