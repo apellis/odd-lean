@@ -1,5 +1,58 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted probe augmented inverse
+
+`HomProbeMatrix.md` supplies a written proof of the probe comparison
+(B), without assuming the shifted sector's inverse. For fixed reservoir
+content, the prescribed Koszul transport is
+`Theta=S(beta_M^-1);xi=S M(z_kappa(M-));z_kappa(MM-)` and
+`T_BB=Theta;post(t_B);Theta^-1`; the dots are `S(post(x_B))`.
+The explicit unit--map--cap computation gives
+`B_s^-1;P(T_BB);B_t=post(sigma_B)` with scalar one. The intermediate
+four-strand comparison has endpoint signs `(-1)^kappa` twice and crossing
+exchange signs `(-1)^(kappa p)` twice, all cancelling.
+
+All dotted cups/caps retain their raw coordinates, also for negative powers
+of the invertible probe dot. Both whole augmented matrices and inverses are
+transported, with explicit z lifts on every parity-shifted identity summand;
+at zero height the empty-window inverse has no exceptional scalar.
+Consequently `I_B=B_t;post(R_B);B_s^-1` and
+`Rcal_B=post(R_B)`, conditional only on the specified probe factor local
+inverse data and coherent crossing prescription. No bare-crossing inverse
+is asserted at nonzero height. This discharges the separate probe-sector
+input of `HomCentralFeedback.md`; it does not establish or independently
+validate that note's central nilpotence result. The literal C/D convention,
+residual inversion, grading and full fusion remain separate. No Lean theorem
+is added by this written calculation.
+
+## Equal-colour crossing normalization and central feedback
+
+`CrossingNormalization.md` derives the repaired mixed equal-colour matrix
+`[[-q a,J],[-J^-1 a^2,q J^-1 a J]]`. With execution AB (reservoir first),
+the previous diagonals gave -q, not 1, in the fixed library slides. That
+claim is withdrawn. Both slides and the square are derived using the
+specified J/dot transport; the swapping maps, factor crossings, dots and
+adjunctions are unchanged. This is a written two-strand correction,
+not a Lean theorem. The scalar sector-inversion gauge explains the local
+sign change but needs a consistently signed comparison family; the even
+rational comparison and its mixed-colour braid correction remain open.
+
+`HomCentralFeedback.md` retains the historical literal series C,D and all
+shift coordinates. The corrected literal entries are Cnew=-q C,Dnew=-q D;
+C,D are normalized corrected mates, as in `FusedFeedbackComparison.md`.
+Feedback is unchanged. It factors through the intrinsic left closures
+`U_r;f;V_s`, retaining c(k), gamma(0)=q and every inverse identity window.
+Their positive reservoir degrees prove fixed-content feedback nilpotence
+conditional on the specified factor actions and finite homogeneous coefficient
+quotients. `HomProbeMatrix.md` supplies the probe augmented inverse. No probe
+grading or uniform infinite-weight-fiber bound is used. The all-height residuals use
+`Knew=-q [[0,C],[D,0]]`, not the historical K; they are not inverted.
+
+Next checks: actual cap/cup residual coordinates and
+inversion; rational/source/localization braid comparisons, coherent integer
+word shifts, full (TC), fusion and separation. No full-action claim follows.
+The older restart paragraphs below are historical where superseded here.
+
 ## Content-shifted swapping mates
 
 `HomSwappingMates.md` evaluates the two swapping partial mates of the

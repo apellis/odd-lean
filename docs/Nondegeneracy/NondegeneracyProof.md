@@ -225,7 +225,8 @@ Koszul interchange. For even `i` everything is even and `q = 1`. ∎
 ### 5.2 (A2-a) The mate projection formula from the dot slide
 
 **Proposition (paper; abstract version Lean).** Assume (H1), (H2), and that
-the fused crossing satisfies the slide `T X − q Y T = 1` on `E_iE_i`. Then
+the fused crossing satisfies the fixed slide on `E_iE_i` (functional
+order `S T − q T F = 1`, with F the first dot and S the second). Then
 the reservoir–probe blocks of the normalized mate `−q·σ` are:
 
 ```
@@ -276,15 +277,20 @@ mutation was invisible to the mate check.
 Koszul tensor product.
 
 *Equal colours, cross sectors.* On the two summands `AB`, `BA` of
-`E_iE_i`, write `X = X_{AB}` and `Y = Y_{AB}`. Put
+`E_iE_i`, AB means execution A then B. Write `X=x` for its first
+(reservoir) dot and `Y=y` for its second (probe) dot. The corrected matrix is:
 
 ```
-          ⎡ a            J        ⎤        even i:  a = (X − Y)^{-1}
-T_cross = ⎢                       ⎥
-          ⎣ −J^{-1}a²   −J^{-1}aJ ⎦        odd i:   a = (X − Y)(X² − Y²)^{-1}
+          ⎡ −q a         J          ⎤      even i:  a = (X − Y)^{-1}
+T_cross = ⎢                         ⎥
+          ⎣ −J^{-1}a²    q J^{-1}aJ ⎦      odd i:   a = (X − Y)(X² − Y²)^{-1}
 ```
 
-with rows and columns ordered (AB, BA), source on the right.
+with rows and columns ordered (AB, BA), source on the right, J:BA→AB.
+The previous diagonals a and −J⁻¹aJ gave right side −q in the fixed
+slides, not 1; that slide claim is withdrawn. The swapping entries and
+same-sector factor crossings are unchanged. See `CrossingNormalization.md`
+for the two-strand derivation and the explicit braid-comparison boundary.
 
 *Distinct colours, cross sectors.* On `E_i^A E_j^B → E_j^B E_i^A` the map is
 `J`. On `E_i^B E_j^A → E_j^A E_i^B` the map is `Q_ij(X,Y)∘J^{-1}` (the
@@ -309,7 +315,8 @@ for an outer reservoir dot `x` and an inner probe dot `y`.
 **Proposition c1 (paper): two-strand relations.** On every fused `E_iE_j`:
 
 1. The dot slides hold:
-   * `T X − q Y T = δ_ij` and `X T − q T Y = δ_ij`, for `i = j`;
+   * in functional order, `S T − q T F = 1` and `T S − q F T = 1`,
+     for `i = j`, where F,S are the first and second dots on every sector;
    * `T X = ± Y' T` without correction, for `i ≠ j`.
 2. `T² = 0` on `E_iE_i`.
 3. `T_ji T_ij = Q_ij(x_1, x_2)` on `E_iE_j` for `i ≠ j`.
@@ -320,31 +327,16 @@ block, the equal-colour cross blocks are *forced* by 1 and 2.
 *Proof.*
 * *Same-sector blocks*: these are the factor relations (H3).
 
-*Equal colours, cross blocks.* Write `T = [[a,b],[c,d]]`.
-
-* *Diagonal slides.* The `(AB,AB)` component of (1) is `aX − qYa = 1`.
-  - By Lemma 0 and the Sylvester argument of §5.2, it has a unique solution.
-  - Even case: `(X−Y)^{-1}` commutes with `X` and `Y` and solves it.
-  - Odd case: `X² − Y²` commutes with `X` and `Y`, and
-    `(X−Y)X + Y(X−Y) = X² − Y²` because `XY = −YX`. So `a` solves it.
-  - The second slide `Xa − qaY = 1` follows in the same way, from
-    `X(X−Y) + (X−Y)Y = X² − Y²`.
-  - The `(BA,BA)` component is the conjugate by `J`, using (J1).
-* *Off-diagonal slides.* The `(AB,BA)` component reads `b X_{BA} − q Y b = 0`,
-  which `b = J` satisfies by (J1).
-  - For `c = −J^{-1}a²`, first note that `a²` commutes with `X` and `Y`. From
-    the two slides, `a²X = a(1 + qYa) = a + q(aY)a`, and `aY = q(Xa − 1)`.
-    Hence `a²X = a + Xa² − a = Xa²`, and similarly for `Y`.
-  - Then (J1) gives `c X − q Y_{BA} c = 0`.
-* *Square.* `T² = 0` is the four identities `a² + bc = 0`, `ab + bd = 0`,
-  `ca + dc = 0` and `cb + d² = 0`.
-  - The first two hold by the definitions of `c` and `d`.
-  - The last two: `ca + dc = −J^{-1}a³ + J^{-1}a³ = 0` and
-    `cb + d² = −J^{-1}a²J + J^{-1}a²J = 0`.
-* *Uniqueness.*
-  - `a` is forced by Sylvester.
-  - Given `b = J` invertible, `d = −b^{-1}ab` and `c = −b^{-1}a²` are
-    forced by `T² = 0`.
+*Equal colours, cross blocks.* Put b=−q a. By direct multiplication,
+`aX−qYa=1` and `Xa−qaY=1`, hence `Yb−qbX=1` and `bY−qXb=1`.
+These are the fixed slides on AB, unlike the old diagonal a. The BA
+slides and the off-diagonal slides follow using the same-factor transports
+`J u=q Y J`, `J v=q X J`, where u,v are respectively first and second
+on BA. The full four-entry verification is `CrossingNormalization.md` §2.
+Since b²=a², the matrix is `[[b,J],[-J⁻¹b²,-J⁻¹bJ]]` and its square
+is zero by ordinary matrix multiplication. Sylvester uniqueness forces b;
+then the upper-right and upper-left square equations force the remaining
+diagonal and lower-left entries. No swapping map is modified.
 * *Distinct colours.*
   - The slides hold by naturality of `J`, and because the even polynomial
     `Q_ij(X,Y)` slides through `J`.
@@ -359,8 +351,9 @@ The odd diagonal identities are also **Lean**:
 
 **Proposition c2: the three-strand (braid) relations.**
 The relation is `T_1T_2T_1 − T_2T_1T_2 = (KLR correction)` on `E_iE_jE_k`.
-In every case the relation transports along a homomorphism, by the
-following argument.
+The intended route is transport along a homomorphism. The following
+comparison is incomplete, including its even normalization as specified
+below; this paragraph does not assert that the braid has been proved.
 
 *Universal algebra.* Let `α`, `β` be the A- and B-contents.
 `L = (R(α) ⊗̂ R(β))[Δ^{-1}]`, where
@@ -391,7 +384,13 @@ Composing with Θ, the fused data then satisfy all KLR relations of the
 original datum. This uses no finite-degree computation and holds for any
 number of strands and colours.
 
-**Proof of (c2), even case (paper modulo a cited faithfulness).**
+**Historical even comparison (not a verified comparison for the fixed slides).**
+The following old-sign rational/gauge calculation is retained to locate the
+remaining comparison, not as proof of the corrected c2. Its cross diagonal
+was a while the factors were specified in the fixed slide convention.
+`CrossingNormalization.md` §3 explains the negative Demazure convention,
+the extra scalar inversion gauge, and the mixed-colour correction sign
+that must be checked before this argument can be used.
 
 * **Faithful rational forms.**
   - `R(n)` acts faithfully on `Pol = ⊕_ν K[x]e(ν)`:
@@ -441,8 +440,11 @@ number of strands and colours.
   `(ι_L ⊗ 1)(g^{-1}φ(w)g) = ψ(KL(w)) = 0`. Since `ι_L ⊗ 1` is injective,
   `φ(w) = 0`. ∎
 
-**Status of c2, even:** paper modulo the cited KL1 faithfulness and
-centre. Note that `Δ` is needed only for equal-colour cross pairs.
+**Status of c2, even: OPEN comparison.** Besides the cited faithfulness and
+centre inputs, the corrected rational embedding must match the fixed factor
+crossings and the fixed mixed-colour braid correction. The historical
+comparison above is not a proof of those sign identifications. `Δ` is
+needed only for equal-colour cross pairs.
 
 **OPEN (c2-odd).** The same argument needs a faithful rational form of the
 quiver Hecke superalgebra. The available read statement is **cited** KKT
@@ -585,7 +587,7 @@ the factors, part of A3.
 | C | `upward_independence_of_fused_sector_actions` | **Lean** (conditional on `∀ μ, FusedSectorAction`) |
 | A2-a | mate projection formula from slide + (H1) + (H2) | **Lean** (`MateProjectionFormula.of_sectors`) + paper §5.2 |
 | A2-c1 | fused two-strand relations, all parities; forcing of cross blocks | **paper** (odd diagonal also Lean: `separated_diagonal_crossing`) |
-| A2-c2 even | braid relations via faithful rational form + Mackey + gauge | **OPEN comparison**: gauge localization requires additional justification |
+| A2-c2 even | braid relations via faithful rational form + Mackey + gauge | **OPEN comparison**: fixed factor/correction signs and gauge localization require justification |
 | A2-c2 odd | same, via KKT Thm 3.8/3.13 | **OPEN** (c2-odd) |
 | A2-b, `i≠j` | fused mixed relation | **paper** given (H3) |
 | A2-b1 | cross summands decouple | **OPEN comparison**: derive the partial mate on the actual tensor supports |
