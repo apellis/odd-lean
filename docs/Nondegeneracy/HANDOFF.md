@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Tensor-mate feedback comparison on paper
+
+`FusedFeedbackComparison.md` derives the six sector supports directly from
+the cup–crossing–cap definition. In untwisted external tensor coordinates it
+computes the partial mates of the rational square coefficient: bending an
+odd square replaces it by minus the transposed square. Their invertibility
+follows from the snakes and finite nilpotent/invertible-dot expansions,
+not from preservation of arbitrary isomorphisms by partial mates.
+
+For the specified tensor-supported mixed series it derives
+`D R_A C R_B = -sum_(s,r) (-1)^(p rs) (v_A(s) R_A u_A(r)) tensor
+(u_B(-s-1) v_B(-r-1) R_B)`. Every reservoir closure returns to the evaluated
+content; the accepted fixed-content joint bound therefore makes this
+specified feedback nilpotent. Both total-height signs retain all augmented
+identity summands in the exact residual formulas.
+
+This is a written calculation, not a Lean theorem or the full fusion
+comparison. The precise unfilled hypothesis is the transport from the
+content-shifted Hom adjunctions and prescribed swapping entry to these
+tensor coordinates, including the zeta/xi signs and rational normalization.
+The signed F result supplies the normalized factor left adjunction, but
+not that transport. Residual comparison `S mod J=L H Q`, fused crossing
+relations and joint separation remain open.
+
 ## Fixed-content reservoir bounds on paper
 
 `DeformedReservoirBound.md` supplies finite-dimensional coefficient
