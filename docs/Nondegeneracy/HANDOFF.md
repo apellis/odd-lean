@@ -181,16 +181,31 @@ products. All natural powers are retained; odd variables are not exterior
 variables. Consumers exercise odd and mixed data with nonzero target
 shift, finite two-term polynomials, and both signs at exponents one and two.
 
-This is a finite-polynomial checkpoint for KKO I, arXiv:1206.5933v2,
-Proposition 8.4, not the full right-superalgebra package. The coefficient
-family has no bundled multiplication yet. Remaining: construct the
-parity-twisted convolution algebra, its scalar-balanced linear comparison
-with `k[t_i]` supertensor the cyclotomic coefficient algebra, and the
-corresponding full right-module structures. Mathlib's `SkewPolynomial`
-and `SkewMonoidAlgebra.liftNCRingHom` provide an existing associative
-construction, but use coefficient-first normal order `c t^m`, requiring
-an explicit order conversion. The source fixed-content comparison,
-zero-height case, full-ELV coefficients and QP identity remain separate.
+`CyclotomicAction/IntertwinerSkewAction.lean` now constructs the associative
+parity-skew polynomial ring using Mathlib's `SkewPolynomial` and the proved
+`coefficientParityAction`. The underlying coefficient map is the sign
+endomorphism `φ(c)=(-1)^(p(i)|c|)c`; its multiplicativity and unit law follow
+from the existing cyclotomic grading. No action law is assumed.
+`sourceRightSkew` and `targetRightSkew` are ring homomorphisms into ordinary
+opposite endomorphism rings on the same induced quotients, including the
+shifted target. Their multiplication law is reverse composition, and
+`rightSkew_Q` proves Q equivariance for every skew polynomial.
+
+Coefficient-first `c X^m` acts as `T^m C_c`. The `*_dotFirst` and
+`*_coefficientFirst` theorems prove both order conversions: dot-first
+`X^m c` is coefficient-first `φ^m(c) X^m`, with
+`φ^m(c)=sgn(m p(i))(c)`. The twist is involutive, so the inverse conversion
+uses the same formula. All natural powers remain; odd dots are not exterior.
+The consumer checks ring products, Q equivariance, and order/sign conversion
+on odd and mixed data with nonzero target shift.
+
+This is the right skew-ring action portion of KKO I,
+arXiv:1206.5933v2, Proposition 8.4, not its full supertensor comparison.
+Remaining: the scalar-balanced linear identification with `k[t_i]`
+supertensor the cyclotomic coefficient algebra and the corresponding graded
+supermodule packaging. Ring representations alone do not prove that
+identification. The source fixed-content comparison, zero-height case,
+full-ELV coefficients and QP identity remain separate.
 
 ## Right cyclotomic coefficients and the polynomial variable
 
