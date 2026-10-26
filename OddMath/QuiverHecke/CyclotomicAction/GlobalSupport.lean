@@ -77,6 +77,19 @@ def fullLiftSuperfunctor (F : Superfunctor k C C') (hF : ∀ M, P M → Q (F.obj
     Superfunctor k P.FullSubcategory Q.FullSubcategory :=
   ⟨fullLift P Q F.toFunctor hF⟩
 
+/-- An adjunction preserving two object properties restricts to their full subcategories. -/
+def fullLiftAdjunction (F : C ⥤ C') (G : C' ⥤ C)
+    (hF : ∀ M, P M → Q (F.obj M)) (hG : ∀ N, Q N → P (G.obj N)) (adj : F ⊣ G) :
+    fullLift P Q F hF ⊣ fullLift Q P G hG where
+  unit :=
+    { app M := ⟨adj.unit.app M.obj⟩
+      naturality _ _ f := InducedCategory.hom_ext (adj.unit.naturality f.hom) }
+  counit :=
+    { app N := ⟨adj.counit.app N.obj⟩
+      naturality _ _ f := InducedCategory.hom_ext (adj.counit.naturality f.hom) }
+  left_triangle_components M := InducedCategory.hom_ext (adj.left_triangle_components M.obj)
+  right_triangle_components N := InducedCategory.hom_ext (adj.right_triangle_components N.obj)
+
 /-- Restriction preserves both homogeneous components and their Koszul naturality. -/
 def fullLiftTrans {F G : C ⥤ C'} (hF : ∀ M, P M → Q (F.obj M))
     (hG : ∀ M, P M → Q (G.obj M)) (η : SuperNatTrans k F G) :
