@@ -226,6 +226,8 @@ The initial minus is the specified upward coefficient. Both J and J
 inverse commute with even squares up to their same-factor transport, so
 placing a squared coefficient before J inverse causes no extra sign.
 
+On the actual mixed target NL, X and W are supported on independent factors.
+Super interchange gives `XW=(-1)^p WX`; their squares commute with both dots.
 Here are explicit finite inverse formulas. Choose m with `X^(2m)=0` in
 the odd case and set `t=X^2 W^-2`. Then t is nilpotent and commutes with W.
 The probe transpose is invertible: transposing both original inverse
@@ -317,6 +319,13 @@ After the invertible-dot probe specialization there need not be an integer
 grading at all. The parity-supercategory inverse statement above still
 applies. The distinction is necessary when using a graded precursor to
 justify central-closure degree bounds.
+
+For feedback nilpotence it suffices to use the grading internally in the
+reservoir, once the actual closure and fixed-content support comparison is
+proved. Products of sufficiently many positive-degree reservoir identity
+endomorphisms then vanish before forgetting integer grading or acting on
+the parity-only Hom category. This does not require a graded fused action;
+it does still require the central transport identification below.
 
 Finally, the six projected supports in `FusedFeedbackComparison.md` §2
 apply before any coordinate removal. The two maps (3) have only their
