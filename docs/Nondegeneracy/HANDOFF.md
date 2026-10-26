@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Normalized Hom adjunction in SCat
+
+`RouquierHomSuperAdjunction.lean` packages the specified
+`homContentPreAdjunction T W T.leftAdjoints` as `homContentSuperAdjunction`
+in the existing `SCat` 2-supercategory. The unit and inverse-scaled counit
+are proved even from their normalized formulas; no new zigzag premise is used.
+`rouquierMate_scat_app` unfolds the defined mate, and
+`homContentSuperAdjunction_mate_app` specializes it to these Hom adjunctions,
+giving the literal unit–mapped crossing–mapped counit component at either parity.
+The crossing argument is still arbitrary: specialization to the inherited
+`-koszulSign p p` crossing, both shift removals, and `HomPrincipalMate.md` (10)
+remain open. All heights, the existing normalization c(k), and gamma(0)
+are unchanged. The odd rank-one consumer uses arbitrary weights; it does
+not construct a nonzero family.
+
 ## Unit output comparison
 
 `homContentPreAdjunction_unit_output_coordinates` removes the output shift

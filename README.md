@@ -6,6 +6,10 @@ Littlewood–Richardson rule, together with machine-checked errata to the source
 Research branch: [odd nondegeneracy progress board](docs/Nondegeneracy/PROGRESS.md)
 and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
 
+| Research result | Source | Declaration | Hypotheses | Status |
+|---|---|---|---|---|
+| Normalized Hom mate components | `HomPrincipalMate.md`, §2, defining word (5) | `homContentSuperAdjunction_mate_app` | Rouquier family in a Π-2-supercategory; arbitrary crossing transformation | Proved for the specified normalized adjunction in `SCat`; prescribed crossing specialization and (10) remain open |
+
 Sources (numbering refers to these arXiv versions):
 
 - **[EK]** A. P. Ellis, M. Khovanov, *The Hopf algebra of odd symmetric functions*,
