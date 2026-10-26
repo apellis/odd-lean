@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Reservoir closure audit
+
+[FusionReservoirLemma.md](FusionReservoirLemma.md) audits the inversion argument
+of `NondegeneracyProof.md`. The proposed graded proof gives the correctly typed
+closure `cap_s ∘ principalInverseBlock ∘ cup_r` degree `2d_i(r+s+1)`;
+bounded-above reservoir grading support then gives joint nilpotence in every
+parity and at every height. This is a written argument, not a new Lean theorem.
+The draft's ordinary-centre formulation and radical/degree-zero equivalence
+need correction. More importantly, nilpotence of these closures does not prove
+fused inversion: the augmented factor inverses leave a residual matrix on
+positive-height cap rows and negative-height cup columns. The even
+`RouqCoproduct.isIso_lift_of_schur` and `schur_const_eq` explicitly retain and
+invert this matrix. The all-height super residual matrix and its dotted-window
+comparison remain open; §5.4's two-by-two reduction cannot yet be used as a
+proved reduction to Lemma β alone.
+
 ## Global content indices
 
 `GlobalProduct.lean` constructs the full weight supercategory
