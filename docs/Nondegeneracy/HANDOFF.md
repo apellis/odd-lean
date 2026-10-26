@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Parity-shifted sector comparison
+
+`ParitySectorComparison.md` derives word-by-word homogeneous shift removal
+and the multicolour comparison with shift change p(i)p(j). For a localized
+BA -> AB entry k, the prescribed J forces `H_BA=J^-1 H_AB k`; this is even
+when H_AB is even, unlike the failed odd scalar gauge diag(1,a). The latter
+fails dot transport by the explicit commutator and anticommutator in (6).
+The odd AAB -> AAB braid component vanishes using the fixed factor slides:
+`D f=-g D-f g` and centrality of f², with the spectator sign retained.
+
+These are proposed written calculations, not a full comparison theorem.
+The sorted-sector identification with the Hom family is still absent; the
+standalone rational/Clifford realization does not supply its Mackey blocks.
+Equation (13) is the explicit remaining repeated-factor transport test
+for the forced ordered two-exchange identification. Other iii components,
+iij/iji, integer word shifts and smaller-localization comparison remain
+open. No Q, factor, dot, adjunction or corrected mixed block is changed.
+
 ## Execution-order braid comparison
 
 `ExecutionBraidNormalization.md` proposes the exact correction comparison:
