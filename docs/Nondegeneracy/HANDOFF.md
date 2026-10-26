@@ -36,14 +36,20 @@ E-strand triangle, not a left zigzag. `rouquierMate_parity` derives homogeneity
 without inversion data, and `rouquierMate_cross_interchange` proves the single
 odd–odd exchange with coefficient `koszulSign p p` (minus one at odd parity).
 
-The three-adjunction signed two-mate expansion is still unproved: the local
-exchange must be transported through the outer unit, associators and capped
-pitchfork to identify the composite with `s • M(B ≫ A)`. Consequently neither
-`rouquierMate_mixed_braid` nor `SuperRouquierLoc.sig_capCross` is established
-here. Their expected coefficient is one, since both expansions have the same
-factor `s`. The importing consumer checks typed applications and all owned
-axioms, but retains the supercategory and adjunctions as parameters; no
-nonzero inversion model is constructed.
+The three-adjunction signed expansion is now `rouquierMate_comp_mate`:
+`P = koszulSign p p • M(B ≫ A)`, with the final output associator included
+in `M`. Its proof transports the existing odd interchange through the even
+outer unit and applies the derived capped pitchfork. No exchange or mixed
+identity is assumed. Only pure coherence is checked in the underlying-even
+bicategory; the odd crossing exchange remains in the supercategory.
+`rouquierMate_mixed_braid` derives `C ≫ P = P ≫ D` from the explicitly typed
+upward braid and the two rectangular naturality laws. Its coefficient is one
+at both parities: the common expansion coefficient is not cancelled or inverted.
+The importing consumer exercises both headlines at parity one, including the
+minus sign in the expansion, and audits every owned declaration. It retains
+the supercategory and adjunctions as parameters; no nonzero inversion model
+is constructed. `SuperRouquierLoc.sig_capCross` specialization remains to be
+connected to these generic theorems.
 
 ## Reservoir closure audit
 
