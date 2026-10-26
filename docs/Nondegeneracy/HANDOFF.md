@@ -75,9 +75,27 @@ original weight boundary, for every height and parity. Odd two- and
 three-dot cups and caps are exercised on the prescribed composites.
 No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
 
-Still missing in Lean are composite-adjunction whiskering/coherence, the typed `P,Q,R`
-comparison with the prescribed mixed mate, horizontal super-opposition,
-and the mirrored local inversion data. These must be assembled before
+`RouquierCompositeAdjunction` constructs `SuperAdjunction.comp` for
+`E₁ ≫ E₂` with right adjoint `F₂ ≫ F₁`. Both triangles are derived by
+composing the even underlying right adjunctions. `comp_unit` and
+`comp_counit` identify the resulting maps with the nested units and counits,
+including every associator and unitor. Its consumer applies the same
+full-Hom transpose to an odd crossing at arbitrary height; no odd map is
+restricted to the even underlying bicategory.
+
+`RouquierTransposeComparison` proves the typed partial-mate comparison:
+`mixedMateBend_rouquierMate` identifies `Q(P(t))` with right transposition
+for `A₁.comp A₂`, and `mixedMateBend_symm_rightTranspose` gives `R(M(t))=P(t)`.
+Here `P` is the prescribed `rouquierMate`; `Q` uses the existing rectangular
+Hom equivalence with the adjunctions interchanged, and its inverse `R` has
+an explicit unit–map–counit formula. Counit uniqueness, the composite
+counit expansion and even-cap interchange prove the comparison for the
+full Hom space, including odd crossings. The consumer specializes to
+rational scalars, odd parity and arbitrary integral height, retaining local
+inversion data as premises rather than asserting a nonzero model.
+
+Still missing in Lean are composite-transpose whiskering/coherence,
+horizontal super-opposition, and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
