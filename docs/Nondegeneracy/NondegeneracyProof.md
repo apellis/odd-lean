@@ -481,23 +481,22 @@ Hence the fused map is invertible. ∎
 **`i = j`.** Order sources as `(E^AF^A, E^BF^B; cross)` and targets as
 `(F^AE^A, F^BE^B; cross)`, with heights `h = h_A + h_B`.
 
-**Lemma b1 (paper).** The cross summands `E^AF^B` and `E^BF^A` map
-isomorphically and decouple. The fused crossing's off-diagonal entries `J`
-and `−J^{-1}a²` have mates that are interchanges composed with `a²`.
-`a² = (X²+Y²)(X²−Y²)^{-2}` (odd) or `(X−Y)^{-2}` (even) is invertible:
+**Lemma b1 (written, under the normalized-left snake).**
+`HomSwappingMates.md` evaluates the two actual content-shifted partial mates
+of `J` and `−J^{-1}a²`. In its specified coordinates they are
+`alpha h_A` and `−beta h_B;g_B`, with explicit Koszul scalars and
+`g_B=(X²−W²)(X²+W²)^{-2}` for odd colour, or `(X−W)^{-2}` for even colour.
+Here W is the right-transposed probe dot. The first mate has no rational
+factor; the second does not retain the unbent expression `a²`.
+That note constructs both inverse composites by finite series and actual
+unit–map–cap calculations. Projected supports show these blocks decouple
+from the central block and introduce no extra Schur term.
 
-* even: `a` is invertible;
-* odd: `a² X = X a²` was shown above, and
-  `X² + Y² = Y²(1 + Y^{-2}X²)` is invertible.
-
-Their only couplings to the `AA`/`BB` summands are through the diagonal
-entries `a`. These enter the mate as dotted cup–cap composites of the form
-in §5.2, already accounted for by `C`, `D`. ∎
-
-*(Caveat: the exact bookkeeping of which cross summand receives which block
-is the one used in `rouq_sig_super_check.py`. The paper argument above is at
-the level of sector supports and should be re-derived in full when
-formalized.)*
+The central entries from the diagonal upward coefficients still require
+their own C,D transport and normalization comparison. The swapping result
+does not establish this comparison or residual inversion. Its statement
+is parity-supercategorical; coherent integer word shifts for graded fusion
+are not supplied by these two inverses.
 
 The originally proposed remaining `2×2` system was
 

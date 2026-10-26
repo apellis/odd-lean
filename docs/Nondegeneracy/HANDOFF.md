@@ -21,6 +21,30 @@ and audits every declaration owned by the new module.
 This closes the triangle obligation of `SignedFTriangle.md`, not the existence
 of a nonzero odd inversion model, the multicolour action, fusion or separation.
 
+## Content-shifted swapping mates
+
+`HomSwappingMates.md` evaluates the two swapping partial mates of the
+specified upward matrix, by unit–map–cap words and the normalized snakes.
+With kappa'=kappa+p, the raw mixed coordinates are
+`(-1)^(sigma kappa') h_A` and
+`-(-1)^(kappa p) h_B;g_B`, where, for an odd colour,
+`g_B=(X²-W²)(X²+W²)^(-2)` and W is the right-transposed probe dot.
+The xi signs and every parity-removal map are retained. Finite geometric
+series give g_B inverse, and the note writes both inverse composites for
+both shifted maps. Their projected supports contribute no additional
+Schur term to the same-sector central block.
+
+This is a written derivation conditional on the accepted normalized
+left snake, not a Lean theorem. It supersedes the swapping-mate open
+obligations in the historical paragraphs below, but not full (TC).
+Central C,D/feedback transport must still include the principal inverse
+`gamma(k) f`, particularly `gamma(0)=(-1)^p`, all dotted windows and
+homogeneous comparisons. The chosen upward normalization has swapping
+degrees 0 and -4d on the presently specified functors: a common degree
+-2d requires an additional coherent integer word-shift construction.
+No such construction or probe integer grading is assumed here. Residual
+inversion, fusion relations and separation remain open.
+
 ## Principal component of the reversed Hom matrix
 
 `HomPrincipalMate.md` derives the unbundled same-colour Hom crossing as
