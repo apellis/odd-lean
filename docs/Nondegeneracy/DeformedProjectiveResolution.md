@@ -81,20 +81,29 @@ two adjacent odd i-dots, τ their crossing, and set
 Take the affine two-strand algebra over A, balanced on the right against its
 old second-strand cyclotomic algebra B=A⟨y⟩/(f_i(y)). Denote this module by M.
 Thus a rightmost old relation f_i(y) is zero in M, whereas the moving first
-dot x has **not** been cyclotomically specialized. PBW coset decomposition
-makes M projective over the moving skew polynomial extension of B: its
-summands are the corresponding shifted polynomial modules. This follows by
-tensoring the explicit affine direct-sum decomposition, not by tensoring an
-unsplit exact sequence. It requires no A-projectivity of B.
+dot x has **not** been cyclotomically specialized. Put R_y=A⟨y⟩. Use the
+right PBW coordinates with crossings on the left and dots on the right:
+
+    H = ⨁_(ε∈{0,1}, a≥0) τ^ε x^a R_y,
+    M = H ⊗_(R_y) B = ⨁_(ε∈{0,1}, a≥0) τ^ε x^a B.
+
+Tensoring this explicit direct sum does not require A-flatness or
+A-projectivity of B; no unsplit exact sequence is being tensored.
 
 By (1), f_i(x)g=(−1)^N g f_i(y)=0 in M. Using the second expression for g,
 
     (f_i(x)τΔ−f_i(x)(y−x))Δ=0.
 
-Right multiplication by Δ is injective on M. Indeed, in each polynomial
-summand its leading term in the moving square variable s=x² is −s; the
-coefficient of the largest s-power of a nonzero vector cannot vanish.
-This argument works over arbitrary B, including with zero divisors. Hence
+Right multiplication by Δ is well defined: x² commutes with R_y and y² is
+central in R_y, so it preserves the balanced quotient. In the above coordinates,
+
+    (τ^ε x^a ⊗ b) Δ = τ^ε x^a ⊗ by² − τ^ε x^(a+2) ⊗ b.
+
+Neither square is moved across τ^ε, so no crossing terms mix. A nonzero
+finite-support vector has a largest x-exponent a; at exponent a+2 its image
+has coefficient −b_(ε,a), nonzero for some ε. Right multiplication by Δ is
+therefore injective, even when B has zero divisors. Equivalently its leading
+action in square degree s=x² is −s in each crossing/parity component. Hence
 
     f_i(x)τΔ=f_i(x)(y−x).
 
@@ -162,7 +171,8 @@ At even odd-colour cutoff the correct relation d_iχ_m=0 gives
 The first identity fails without that relation: its defect
 x f_i−f_i(x−2d_i) is 2χ_m d_i. This is the exact local obstruction for an
 independent polynomial/exterior coefficient ring; it is zero over A.
-At odd cutoff the coefficient normalizer is parity and f_i²=x²C(x²)².
+At odd cutoff the normalizer acts by parity on coefficients and sends
+x to x−2d_i; it does not fix x. Also f_i²=x²C(x²)².
 At even cutoff the normalizer fixes coefficients and its inverse sends
 x to x+2d_i. These normalizers both fix x². In particular one must not
 copy the original KKO right-t linearity into the deformed resolution.
