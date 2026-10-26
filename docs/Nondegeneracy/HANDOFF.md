@@ -1,6 +1,6 @@
 # Odd nondegeneracy: restart state
 
-## Full underlying deformed action on paper
+## Full graded deformed action on paper
 
 `DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
 action of the full underlying SKM supercategory over the stated full-ELV
@@ -10,10 +10,13 @@ arbitrary-exponent corrected braid, and explicit zero out-of-range inverse
 components. It uses the same-colour matrix argument below, without a further
 kernel or pivot assumption. Tensoring applies to all modules, not just projectives.
 
-This is not a Lean implementation and does not yet preserve the standard
-SKM integer grading: the current restriction and right-adjunction maps are
-unshifted. Weight-dependent restriction shifts and adjunction transport
-remain to be supplied. Fusion, detection and nondegeneracy remain open.
+`DeformedGradedAction.md` supplies the standard SKM integer grading:
+E_i is unshifted induction and F_i1_λ=q^[d_i(h_i(λ)−1)] Res_i1_λ.
+It transports the adjunction on each edge and checks every generator and
+inverse-component degree. Infinite weight fibers use finite-bidegree Hom
+families, not unrestricted products of underlying Hom spaces.
+This is not a Lean implementation. Hom-finiteness, fusion, detection and
+nondegeneracy remain open.
 
 ## Prescribed same-colour inversion on paper
 
@@ -30,8 +33,7 @@ extra inversion hypotheses. The local right-factored g signs in
 without changing the definitions, cancellation or final QP formula.
 
 This is not a Lean theorem. The full-coefficient distinct-colour mate and
-underlying action are supplied above; their integer-graded enhancement and
-fusion remain separate. The existing polynomial-coefficient Lean
+graded action are supplied above; fusion remains separate. The existing polynomial-coefficient Lean
 implementation is narrower. The general nondegeneracy conjecture remains open.
 
 ## Deformed right projectivity on paper

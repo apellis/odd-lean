@@ -198,6 +198,7 @@ The new content here is that explicit arbitrary-exponent comparison.
 
 This is a written relation proof, not a new Lean declaration. Combined
 with `DeformedActionAssembly.md` it supplies the underlying supercategory
-action, but not yet its standard integer grading. The construction and comparison of
+action; `DeformedGradedAction.md` supplies its standard integer grading.
+The construction and comparison of
 the full-ELV category/functors remain unimplemented, and fusion, bubble
 normalization, fixed-weight detection and nondegeneracy remain separate.

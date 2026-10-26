@@ -165,12 +165,13 @@ re-read for this document, so no locator is given. The companion notes above
 resolve the specific-map comparison in the super case at the written level.
 Lean modules in progress for this map are listed in HANDOFF (A0).
 
-**A0-deform: underlying action proved on paper; standard integer grading
-and Lean implementation open.** `DeformedActionAssembly.md` and
+**A0-deform: standard integer-graded action proved on paper; Lean
+implementation open.** `DeformedActionAssembly.md` and
 `DeformedMixedBraid.md` supply the full underlying presentation action,
 including the mixed quadratic, corrected braid and prescribed mates.
-Weight-dependent restriction shifts and adjunction transport remain;
-unshifted restriction does not preserve the standard cup/cap degrees.
+`DeformedGradedAction.md` supplies weight-dependent restriction shifts
+and coherent adjunction transport, with all generator and inverse-component
+degrees checked. Unshifted restriction alone does not preserve those degrees.
 KKO permits homogeneous even coefficients over an
 ordinary commutative graded base; odd super coefficients require a separate
 argument. The unrestricted family suggested in §4.1 is too broad: already
@@ -182,8 +183,8 @@ The translated KKO subfamily has a proposed tower-freeness proof, but does
 not supply the even-cutoff ELV deformation. The direct full-family matrix argument is now supplied by the companion
 notes above, without nilpotent lifting. A lifting-based alternative would
 still need exact base-change comparison and Tor vanishing for the target
-convolution kernel; algebra freeness alone is not sufficient. Integer-graded
-action assembly remains separate; restricting to projectives also needs the
+convolution kernel; algebra freeness alone is not sufficient. The graded
+all-module action is supplied above; restricting to projectives also needs the
 appropriate side-specific projectivity statements.
 
 ## 5. Separated-sector fusion (A2)
@@ -589,7 +590,7 @@ the factors, part of A3.
 | A2-fused | fused bubble = mate composite | **OPEN** |
 | A1-b,c | KKO-I Thm 9.1, 9.6 (undeformed) | **cited** (read) |
 | A1-map | the specific same-colour Rouquier map is invertible (super) | **written proof**, full-ELV hypotheses: `DeformedMatrixComparison.md`; not yet Lean |
-| A0-deform | A1 over the actual ELV coefficient ring | **written underlying action**; standard integer grading and Lean implementation open; unrestricted exterior flatness is false |
+| A0-deform | A1 over the actual ELV coefficient ring | **written standard graded action**, `DeformedGradedAction.md`; Lean implementation open; unrestricted exterior flatness is false |
 | A3 | detection weights reachable with probes (even `⟨h_i,Λ_B⟩` at odd `i`); regular identification; vacuum values | **OPEN** |
 | B1 | assembly over a field | **OPEN** (formal, once A0–A3 hold) |
 | B2 | descent from fields to the coefficient rings of `NondegeneracyConjecture` | **OPEN** |
@@ -610,5 +611,5 @@ The conditional Lean results and proposed written arguments give:
 The genuinely open mathematics is concentrated in:
 * (c2-odd), a finite symbolic three-strand check in KKT's rational form;
 * the full residual-matrix comparison and inversion, including all height signs;
-* Lean formalization of A1-map and the standard integer-graded A0-deform action for the super cyclotomic factors;
+* Lean formalization of A1-map and the written standard integer-graded A0-deform action for the super cyclotomic factors;
 * A3.
