@@ -16,6 +16,23 @@ invert this matrix. The all-height super residual matrix and its dotted-window
 comparison remain open; §5.4's two-by-two reduction cannot yet be used as a
 proved reduction to Lemma β alone.
 
+## Cyclotomic deformation coefficients
+
+`CyclotomicDeformationProof.md` gives proposed written proofs, not new Lean
+claims. Arbitrary homogeneous exterior-coefficient cyclotomic polynomials
+need not be flat: over `Λ(d,e,f)`, the one-strand relation
+`x²−xd+ef=0` forces `def=0`. KKO's permitted even-coefficient deformations
+and their odd-cutoff exterior translates have a general freeness argument
+from KKO tower projectivity, graded splitting and compatible translation.
+The full ELV family must use its relation `d_iχ_(i,m)=0` at even cutoffs;
+its coefficient ring is itself not flat over the exterior subalgebra.
+Multicolour freeness over the full ELV ring still needs the balanced
+deformed projective resolution. Nilpotent lifting of the specified Rouquier
+matrix needs only `Tor₁(A/J,target)=0`, but also exact base-change comparison
+of its corners, tensor adjunction, signed generators and cup–crossing–cap
+mate, and a proof of invertibility of that reduced matrix (A1-map).
+
+
 ## Global content indices
 
 `GlobalProduct.lean` constructs the full weight supercategory
