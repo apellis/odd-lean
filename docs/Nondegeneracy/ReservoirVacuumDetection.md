@@ -125,6 +125,46 @@ its cyclic vector, and its dot/crossing/coefficient operators with these
 connected coordinates. A normalization formula and its degree bound must
 still be proved for that comparison.
 
+## Regular cyclic action and source-order normalization
+
+`ReservoirRegular.lean` descends actual postcomposition to the connected
+ELV quotient. `elvRelationSpan_postcomp` proves stability of the defining
+relation span. `reservoirPostcomp_generator` evaluates a morphism on the
+identity class, and `reservoirRegular_injective_on_window` combines this
+cyclic evaluation with bounded separation. These operators use the signed
+coefficient category, not an unsigned tensor-product multiplication.
+
+There is a necessary source-order correction. For homogeneous coefficient
+`a` and affine morphism `f`, applying `a` at the source and then `f` gives
+`(-1)^(|a||f|) [a ⊗ f]`, not `[a ⊗ f]`. In
+`ReservoirSourceCoordinates.lean`, `reservoirSourceOrder` is the corresponding
+diagonal involution of the joint PBW basis. It preserves every bounded
+window and is the identity on the zero window.
+`reservoirSourceOrder_source` proves the formula for arbitrary, not just
+homogeneous, inputs. `exists_reservoir_source_coordinates` constructs a
+single linear extraction undoing this sign for every coefficient/affine
+input in the window. It does not assert that the involution descends to an
+automorphism of the ELV quotient.
+
+`ReservoirCoverage.lean` supplies the everywhere-defined regular window
+`regularVacuumWindow m n = 2*m - 2*choose(n,2) - 1` (natural subtraction).
+`regularVacuumWindow_coordinates` constructs normalized source-order
+coordinates for every `m` and every active word. At small cutoffs the window
+is zero, and the identity extraction suffices; positive windows use C0.
+`regularVacuumWindow_covers` gives cofinal coverage for these actual regular
+windows. `exists_regular_vacuum_window` simultaneously realizes extended
+weights of literal difference `(μ,0)` and an injective cyclic regular window.
+`balanced_regular_vacuums_detect` proves joint detection along these levels.
+
+This removes the source-order normalization and window-selection problems
+**for the connected regular quotient**. It does not identify that quotient
+with the fused word module. The comparison must still construct the fused
+vacuum, its word modules, and their affine and coefficient operators. The
+scalar-polynomial quotient action and its height-one vacuum map do not yet
+supply the full exterior-coefficient vacuum tower or its comparison with these
+connected quotient modules. In particular,
+these results do not by themselves inhabit `FusedFixedWeightFamily`.
+
 ## Algebraic normalization, and its remaining gap
 
 `SKM.reservoirDeconvolution` is a recursively defined finite triangular inverse
