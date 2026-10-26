@@ -22,9 +22,17 @@ existing `qCoefficient` right action at the corresponding tensor terms.
 The whole corner has free old-algebra coefficients in the written proof;
 a fixed target word instead has idempotent-summand coefficients.
 
-The next formalization is the explicit leading-index bijection and its
-`Approx` statement, then expansion existence and injectivity, choice
-coordinates with both round trips, and finally the balanced quotient maps.
+`PrependBasis.lean` now checks the input leading-index equivalence
+`PrependIdx.leadEquiv`, the concrete chronological diagram comparison
+`prependElt_eq_comp`, and `prependElt_approx`. Applying `basisOfTriangular`
+gives `prependBasis`, a scalar basis of each `Hom(i :: s,t)`, including
+height zero and repeated colours. Its old coefficient is the existing
+normal form `PrependIdx.old.nf`.
+
+The next formalization is matrix assembly: identify these Hom diagrams with
+the matrix terms `prependPBWTerm` and assemble their scalar expansions into
+finite old-algebra coefficients. The right-old-algebra coordinate equivalence,
+its round trips, and the balanced quotient maps are not yet checked.
 The checked affine term laws alone do not prove the decomposition or either
 dot-difference injection.
 
@@ -51,8 +59,9 @@ followed by its balanced quotient, with the first-dot degree visible.
 `shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
 output side; prepend balancing needs old coefficients on the input side
 of `Hom(i :: s,t)`. The input construction above supplies the written
-argument without reflection; its leading-index and triangularity proofs
-still need Lean implementation. Base-ring linear independence alone cannot be tensored
+argument without reflection; its leading-index equivalence and scalar Hom
+triangularity are checked in `PrependBasis.lean`. Matrix assembly is still
+required. Base-ring linear independence alone cannot be tensored
 through the lower cyclotomic quotient to prove the required injection.
 
 After that comparison, the square difference must have leading moving

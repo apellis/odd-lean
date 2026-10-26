@@ -4,9 +4,11 @@
 
 This is a **proposed written proof, not a Lean-checked coordinate equivalence**.
 The checked portion is `InputParabolic.lean` (unique input permutation and
-reduced concatenation) and `CyclotomicAction/PrependCoordinates.lean` (the
-specified crossing elements, coefficient terms, corner membership and their
-right-old-algebra law). Neither file assumes a coordinate equivalence.
+reduced concatenation), `PrependBasis.lean` (input leading-index equivalence,
+concrete diagram triangularity and scalar Hom basis), and
+`CyclotomicAction/PrependCoordinates.lean` (the specified crossing elements,
+coefficient terms, corner membership and their right-old-algebra law).
+None of these files assumes a coordinate equivalence.
 
 The target is the affine decomposition needed for Kang–Kashiwara–Oh,
 *Supercategorification of quantum Kac–Moody algebras*, arXiv:1206.5933v2,
@@ -235,9 +237,17 @@ Nothing here asserts injectivity of a dot minus itself.
 
 ## Remaining formalization
 
-Implement the leading-index bijection (6)–(7), its `Approx` statement and
-matrix assembly; apply the checked triangular basis construction to obtain
-existence and injectivity of (1). Define choice coordinates only after
+The leading-index bijection (6)–(7) is `PrependIdx.leadEquiv`; the
+chronological diagram is `prependElt`, with its old normal-form factor
+identified by `prependElt_eq_comp`. Its `Approx` statement is
+`prependElt_approx`, and `prependBasis` applies the triangular basis
+construction to each scalar Hom space. The index records the old target
+as `PrependIdx.oldTarget` and the old normal form as `PrependIdx.old`.
+
+Implement matrix assembly: identify the corresponding single-entry matrix
+with `prependPBWTerm` applied to the old basis matrix, and regroup finite
+scalar Hom expansions into old-algebra coefficients to obtain existence
+and injectivity of (1). Define choice coordinates only after
 these two results, prove both round trips, and then implement (9) for the
 existing balanced quotient. The checked permutation and affine term laws
 remove the need for a global reflection or super-opposite functor; they do
