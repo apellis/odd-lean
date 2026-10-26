@@ -2,6 +2,13 @@
 
 ## Global content indices
 
+`GlobalSupport.lean` retains both parity components on full content
+subcategories, with `fullSupercategory`, `fullLiftTrans`,
+`globalBlockInduction` and the odd `globalBlockDot`. The dot's homogeneous
+parity is the colour parity, and its naturality is the original signed
+naturality. These constructions do not discard odd module morphisms.
+
+
 `CyclotomicAction/Global.lean` supplies the content indices and boundary sign
 for the global cyclotomic action: `WeightBlocks`, injective `blockSucc`, its
 subsingleton fibres, `exists_blockSucc_iff`, `blockSucc_comm`,

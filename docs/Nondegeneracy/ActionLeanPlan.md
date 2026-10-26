@@ -1,5 +1,45 @@
 # Plan for the deformed action in Lean
 
+## Globalization: content and height-zero prerequisites
+
+The even `CyclotomicAction/Global.lean` starts with `CycKLR β` for every
+multiset, including `β = 0`. The positive-height super API instead has
+`CyclotomicAlgebra a n = H_(n+1)/(a)`. Replacing its index by the weight is
+not a type-correct port: for distinct simple roots, singleton contents have
+the same height but different weights. `CyclotomicAction.blockWeight_not_card` proves
+this obstruction; a pair of orthogonal odd roots is a concrete smallest
+instance. `ContentBlocks` supplies central, mutually orthogonal content
+projectors, and `ContentSupport` proves induction preserves the appropriate
+content. The empty source must be the empty-word algebra, not
+`CyclotomicAlgebra a 0`, which already has one strand.
+
+The precise missing boundary for the crossing chain is the crossing of two
+inductions **starting at height zero**, and its compatibility with the
+positive-height crossing after one more induction. For the braid this is
+already required at `β = 0` and three appended colours (three strands total).
+`cyclotomicTriple_braid` in `Braid.lean` supplies the algebraic identity at this height,
+but its transport through the balanced-tensor comparisons and associator is
+separate. The existing functor-level comparison starts at a source
+`CyclotomicSupermodules ... n`, hence at one strand. Extending that comparison
+to the empty-word source is a construction obligation, not a counterexample
+to the super action.
+
+`GlobalNilpotent` additionally requires a quotient-level nilpotence theorem
+for the undeformed powers `a_j = X^(Λ_j)` and the appropriate homogeneous
+super parameters. Polynomial parity alone is not the theorem's hypothesis.
+Even after blockwise nilpotence, a single exponent on a weight product needs
+a uniform bound; the even file assumes at most one content per weight.
+Neither arbitrary deformation parameters nor infinitely many unbounded
+blockwise exponents can be silently substituted for those assumptions.
+
+The local inversion target remains `SKM.SuperRouquierLoc`: the prescribed
+cup–crossing–cap mate and dotted caps/cups must possess the parity-indexed
+`SuperSumInvTo` and `SuperSumInvFrom` inverses at height `D.h i x`. A family
+of independently chosen inverse maps is not a substitute. The conversion
+from the block convention is `CyclotomicAction.blockLoc_weight`; the absent-colour
+boundary sign is `CyclotomicAction.pair_nonpos_of_not_mem` under dominance.
+
+
 Status: **proposed formalization plan**. No proposed declaration name below
 is an existing theorem. Existing inputs are named separately. The scope is
 the compatible symmetrizable homogeneous-parameter case over a field with
