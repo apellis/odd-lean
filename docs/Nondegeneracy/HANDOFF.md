@@ -233,9 +233,10 @@ its 72-by-72 matrix has determinant one, with square-zero feedback of rank four.
 the presentation. `rouq_sig_multicolour_check.py` runs the separated mate checks
 on them; partial results are in SeparatedFusion §7. Mutation controls are not
 done, so these results are not evidence about crossing data.
-[NondegeneracyProof](NondegeneracyProof.md) states the full proof with a
-status for each step. Its separated-fusion part reduces invertibility of the
-fused Rouquier map to Lemma β, which concerns only the reservoir.
+[NondegeneracyProof](NondegeneracyProof.md) records the proposed proof with a
+status for each step. The claimed reduction of fused inversion to reservoir
+closure nilpotence alone has been withdrawn: the all-height residual
+identity-summand matrix and its dotted-window comparison remain open.
 
 ## Super Rouquier interface
 

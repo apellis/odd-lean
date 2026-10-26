@@ -4,12 +4,17 @@ This document is the end-to-end argument of [GeneralRoute](GeneralRoute.md),
 written as a proof. Every step carries one of these statuses:
 
 * **Lean**: proved in Lean; the declaration is named.
-* **paper**: proved in this document.
+* **paper**: a proposed written argument, not a Lean theorem; qualifications
+  in [FusionReservoirLemma](FusionReservoirLemma.md) and
+  [CyclotomicDeformationProof](CyclotomicDeformationProof.md) take precedence.
 * **cited**: a published statement; the locator is given only where the
   source text was read in `formalization-workspace/sources/ocr`.
 * **OPEN**: not proved; the exact missing statement is given.
 
-The proof is not complete. Steps A0, A1, A2-β, A2-c(odd), A3 and the final
+The proof is not complete. In particular the all-height residual Schur matrix
+is not eliminated by reservoir nilpotence, and arbitrary homogeneous
+exterior-coefficient cyclotomic deformations need not be flat. Steps A0, A1,
+A2-b, A2-c, A3 and the final
 assembly B1/B2 contain OPEN statements, listed in §6. No step uses a
 finite-degree computation. The computations recorded in SeparatedFusion §7 are
 evidence only and are not cited as proof.
@@ -154,14 +159,18 @@ KKO proof ("arguments of [10, Theorem 5.2] with a slight modification",
 KKO-I proof of 9.6) to be checked for the specific map. Lean modules in
 progress for this map are listed in HANDOFF (A0).
 
-**OPEN (A0-deform).** KKO work over a field with undeformed homogeneous
-`a^Λ`. The odd-coefficient deformation `c_{i;k} ∈ Λ(δ)` is outside their
-setting. The statement needed is (A1-b), (A1-c) and (A1-map) over
-`K ⊗ Λ(δ)` with the deformed `a^Λ`. A plausible route is flat base
-change: the algebras are free over `Λ(δ)` with the undeformed rank, and
-invertibility can be checked modulo the nilpotent ideal `(δ)`. This route is
-**not** carried out here. Its missing ingredient is the freeness of
-`R^Λ_δ(β)` over `Λ(δ)` with rank `dim R^Λ(β)`.
+**OPEN (A0-deform).** KKO permits homogeneous even coefficients over an
+ordinary commutative graded base; odd super coefficients require a separate
+argument. The unrestricted family suggested in §4.1 is too broad: already
+the one-strand relation `x²−xd+ef=0` over `Λ(d,e,f)` forces `def=0` and is
+not flat. Use the precise ELV coefficient ring, including `d_iχ_(i,m)=0`
+at even cutoffs, as specified in [CyclotomicDeformationProof](CyclotomicDeformationProof.md).
+That ring is itself not flat over the independent exterior subalgebra.
+The translated KKO subfamily has a proposed tower-freeness proof, but does
+not supply the even-cutoff ELV deformation. The full family still needs
+deformed corner projectivity. Lifting the specified Rouquier matrix also
+needs its exact base-change comparison, A1-map, and Tor vanishing for its
+target convolution kernel; algebra freeness alone is not sufficient.
 
 ## 5. Separated-sector fusion (A2)
 
@@ -475,59 +484,57 @@ is the one used in `rouq_sig_super_check.py`. The paper argument above is at
 the level of sector supports and should be re-derived in full when
 formalized.)*
 
-The remaining `2×2` system is
+The originally proposed remaining `2×2` system was
 
 ```
 ρ = ⎡ ρ_A   C ⎤ ,     ρ_A, ρ_B = factor Rouquier maps (invertible by H3,
     ⎣ D   ρ_B ⎦      extended by the dotted caps/cups of the fused height)
 ```
 
-with `C` and `D` given by §5.2. Use the Schur lemma: **Lean**
+with `C` and `D` given by §5.2. **This is not an established reduction.**
+At nonzero heights the factor maps are augmented by identity summands;
+their principal inverse blocks are not inverses to the bare crossings.
+The associative Schur lemma remains **Lean**:
 `SKM.RouquierSchur.isUnit_of_nilpotent_feedback`. `fromBlocks A B C D` is a
 unit if `A`, `D` are units and `D^{-1}CA^{-1}B` is nilpotent. The filtration
 version is `isUnit_of_feedback_filtration` (`OddMath/SKM/RouquierFeedbackIdeal.lean`).
-So it suffices that the feedback `Φ = D r_A C r_B` be nilpotent, where `r_A`,
-`r_B` are the factor inverses.
+Its unit hypotheses have not been supplied for the displayed blocks.
+The even blueprint retains a residual matrix with positive-height cap rows
+and fused dotted-window/negative-height cup columns. Its super counterpart,
+including the actual dotted-window comparison, remains **OPEN**.
 
-**Proposition b2 (paper modulo Lemma β).** Insert §5.2:
+**Proposed feedback expression (not the full inversion theorem).** Insert §5.2:
 
 `Φ = Σ_{r,s} c_{rs} · u_{B,−s−1} ∘ β_{s,r} ∘ v_{B,−r−1} ∘ r_B`, with
 `β_{s,r} := v_{A,s} ∘ r_A ∘ u_{A,r} ∈ End(1_{λ_A})`.
 
-Each `β_{s,r}` is a closed diagram of the *reservoir factor alone*. It acts
-through the centre `Z(A_a)` on the A tensor factor, and so supercommutes with
-every operator built from the B factor. Hence `Φ^N` is a sum of terms, each
-containing a product of `N` elements `β`. If every `β_{s,r}` lies in
-`rad Z(A_a)`, then `Φ^N = 0` for `N` at least the nilpotency index of the
-radical. The radical of the finite-dimensional algebra `Z(A_a)` is
-nilpotent. Then the total fused map is invertible.
+Here `r_A` must denote the **principal inverse block**. Each closure then
+belongs to the reservoir identity endomorphisms, with supercentral rather
+than ordinary-central commutation. For a homogeneous graded action its
+degree is `2d_i(r+s+1)>0`. Bounded-above grading support therefore makes all
+sufficiently long products of these closures zero. Supercommuting reservoir
+closures past probe operators gives nilpotence of this specified feedback.
+This is a proposed general argument with explicit hypotheses in
+[FusionReservoirLemma](FusionReservoirLemma.md), not a new Lean theorem.
 
-This holds for arbitrary content, number of strands and colours: the
-argument uses only that `A_a` is finite-dimensional. The filtration is
-`J_N = (rad Z(A_a))^N ⊗ End(B-side)`. ∎
+The earlier radical/degree-zero equivalence is false: a degree-zero algebra
+can have a nonzero radical. No such equivalence is needed for the positive-
+degree argument. Its homogeneous-action and support hypotheses still need
+to be established for the intended reservoir.
 
-**OPEN (Lemma β).**
-
-> For every content of the reservoir and all `r, s ≥ 0`, the reservoir
-> closed composite `β_{s,r} = v_{A,s} ∘ r_A ∘ u_{A,r}` lies in
-> `rad Z(R^Λ_δ(β))`. Equivalently, in the grading in which `δ`'s have
-> positive degree, `β_{s,r}` has zero component in the degree-zero part of
-> the centre.
-
-* *Partial (paper).* For `h_A < 0`, `ρ_A^{-1}ρ_A = 1` gives `r_A u_{A,r} = 0`
-  for `r < −h_A`. So only `r ≥ −h_A` contribute.
-* *Unproved.* That the degree-zero (fake-)bubble contributions cancel. For
-  the trivial-feedback contents of SeparatedFusion §7, `Φ = 0`. The
-  computations there also show nonzero square-zero `Φ` in other contents.
-  So Lemma β cannot be replaced by `Φ = 0`.
-* *Blueprint.* The even blueprint (`RouqCoproduct`,
-  `isIso_rouqMap_of_nonneg`, `schur_const_eq`) is the place to extract the
-  bubble identity that proves it.
+Even when these hypotheses hold, the residual identity-summand matrix is
+not removed. In `RouqCoproduct`, `isIso_lift_of_schur` retains it and
+`schur_const_eq` compares it with a separately inverted partial-fraction
+matrix. Opposite nonzero factor heights can leave a nonempty residual
+matrix even at total height zero. Thus closure nilpotence alone does not
+prove A2-b2.
 
 ### 5.5 Assembling A2 into the hypotheses of §3
 
-Given A1 and Lemma β, §5.3–5.4 make `𝒱_A ⊠ 𝒱_B` an SKM 2-representation of
-the original datum. For the even part, the KLR relations are c1 + c2; for the
+Given A1, the full residual-matrix comparison and inversion, and all the
+crossing and mate comparisons of §5.3–5.4, the proposed construction would
+make `𝒱_A ⊠ 𝒱_B` an SKM 2-representation of the original datum.
+For the even part, the KLR relations are c1 + c2; for the
 odd part they are c1 + (c2-odd). Inversion is §5.4.
 
 The `VacuumSectorBubble` fields are then supplied as follows.
@@ -559,36 +566,35 @@ the factors, part of A3.
 | C | `upward_independence_of_fused_sector_actions` | **Lean** (conditional on `∀ μ, FusedSectorAction`) |
 | A2-a | mate projection formula from slide + (H1) + (H2) | **Lean** (`MateProjectionFormula.of_sectors`) + paper §5.2 |
 | A2-c1 | fused two-strand relations, all parities; forcing of cross blocks | **paper** (odd diagonal also Lean: `separated_diagonal_crossing`) |
-| A2-c2 even | braid relations via faithful rational form + Mackey + gauge | **paper modulo cited** KL1 faithfulness and centre |
+| A2-c2 even | braid relations via faithful rational form + Mackey + gauge | **OPEN comparison**: gauge localization requires additional justification |
 | A2-c2 odd | same, via KKT Thm 3.8/3.13 | **OPEN** (c2-odd) |
 | A2-b, `i≠j` | fused mixed relation | **paper** given (H3) |
-| A2-b1 | cross summands decouple | **paper** (bookkeeping to re-derive when formalized) |
-| A2-b2 | total map invertible | **paper modulo Lemma β**; Schur step **Lean** |
-| Lemma β | reservoir closed composites in `rad Z` | **OPEN** |
+| A2-b1 | cross summands decouple | **OPEN comparison**: derive the partial mate on the actual tensor supports |
+| A2-b2 | total map invertible | **OPEN**: all-height residual identity-summand matrix; abstract Schur lemma **Lean** |
+| Reservoir closures | joint nilpotence | **proposed** from homogeneous action and bounded grading support; hypotheses and feedback identification remain |
 | A2-fused | fused bubble = mate composite | **OPEN** |
 | A1-b,c | KKO-I Thm 9.1, 9.6 (undeformed) | **cited** (read) |
 | A1-map | the specific Rouquier map is invertible (super) | **OPEN** (even: Kang–Kashiwara, cited, locator not re-read) |
-| A0-deform | A1 over `K⊗Λ(δ)` with deformed `a^Λ` | **OPEN** (missing: freeness over `Λ(δ)`) |
+| A0-deform | A1 over the actual ELV coefficient ring | **OPEN**: deformed corner projectivity and exact map comparison; unrestricted exterior flatness is false |
 | A3 | detection weights reachable with probes (even `⟨h_i,Λ_B⟩` at odd `i`); regular identification; vacuum values | **OPEN** |
 | B1 | assembly over a field | **OPEN** (formal, once A0–A3 hold) |
 | B2 | descent from fields to the coefficient rings of `NondegeneracyConjecture` | **OPEN** |
 
 ## 7. What this document establishes
 
-These parts are proved, on paper, in Lean, or both:
+The conditional Lean results and proposed written arguments give:
 * Given a slide, the mate projection formula is forced by the spectral
   separation of the dots alone. It is insensitive to crossing data.
 * The fused crossing on cross sectors is uniquely forced, up to the
   interchange normalization, by the slides and nilpotence of the square.
   Its two-strand relations hold in all parities.
-* In the even case the braid relations follow from the faithful rational form
-  without computation.
-* Invertibility of the fused Rouquier map reduces to one statement about the
-  reservoir factor alone, Lemma β. That statement is independent of the
-  probe and the coupling.
+* A proposed even braid comparison through a faithful rational form; the
+  gauge's localization still needs justification.
+* A reservoir closure nilpotence argument under explicit graded hypotheses.
+  It does not eliminate the remaining residual matrix in fused inversion.
 
 The genuinely open mathematics is concentrated in:
 * (c2-odd), a finite symbolic three-strand check in KKT's rational form;
-* Lemma β;
+* the full residual-matrix comparison and inversion, including all height signs;
 * A1-map and A0-deform for the super cyclotomic factors;
 * A3.
