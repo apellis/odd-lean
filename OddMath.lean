@@ -34,6 +34,7 @@ import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
 import OddMath.QuiverHecke.CyclotomicAction.Braid
 import OddMath.QuiverHecke.CyclotomicAction.Square
 import OddMath.QuiverHecke.CyclotomicAction.BraidCorrection
+import OddMath.QuiverHecke.CyclotomicAction.Comparison
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples

@@ -677,3 +677,8 @@ square-zero for the actual signed superbimodule map on the composition corner;
 it is not merely a statement about an unsigned multiplier. No local inversion
 or projectivity is used or concluded.
 
+`CyclotomicAction/Comparison.lean` transports this identity through the existing
+even balanced-tensor isomorphism. `inductionCrossingApp_square` concerns the
+actual composed superinduction functors; `cyclotomicSuperInductionCrossing_vcomp_app`
+shows that every parity component of the supernatural vertical square is zero.
+
