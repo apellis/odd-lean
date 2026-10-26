@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Tensor-adjunction matrix comparison
+
+`DeformedMatrixComparison.md` gives a proposed written comparison for the
+specified induction/restriction kernels, even tensor unit/counit, signed dot
+and same-colour crossing `−ψ`. With canonical parity transport
+`J(a⊗b)=(-1)^(p|a|)a⊗π^p b`, it calculates `s=−F̄J`,
+`u_k=(-1)^(p k(k−1)/2)j(t^k)` and
+`c_k=(-1)^(p k(k+1)/2)φ_B^(p(k+1))EX^kJ`.
+The output parity involution is essential even for the undotted cap; it
+transports twisted actions, not an ordinary bimodule automorphism. All source
+Π and q shifts are retained. This is not a Lean result. Inversion remains
+conditional on the norm/division proof under review, and the full-ELV
+super-coefficient category is not the existing even-polynomial realization.
+
+
 ## Deformed right projectivity on paper
 
 `DeformedSquareResolution.md` assembles the written right-projectivity argument
