@@ -8,7 +8,7 @@ and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
 
 | Research result | Source | Declaration | Hypotheses | Status |
 |---|---|---|---|---|
-| Normalized Hom mate components | `HomPrincipalMate.md`, §2, defining word (5) | `homContentSuperAdjunction_mate_app` | Rouquier family in a Π-2-supercategory; arbitrary crossing transformation | Prescribed crossing specialization and raw shift cancellation (`homContentCrossing_coordinates_raw`) proved; even reassociation to the principal word and (10) remain open |
+| Normalized principal Hom mate | `HomPrincipalMate.md`, (10), (1) | `homContentCrossing_coordinates`, `homContentCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; specified inherited crossing | Proved at every height and both parities, including the exceptional height-zero scalar; no whole-matrix or fusion claim |
 
 Sources (numbering refers to these arXiv versions):
 

@@ -17,23 +17,25 @@ unshifted map has parity `p + sigma`; output removal contributes
 `koszulSign sigma (p + sigma)`. Their product is one, using edge parity
 agreement. Thus no parity comparison or shift functor remains.
 
-**Exact open equality:** write `F=F_h₂`, `E=E_h₂`, `G=E_h`, `J=F_h`,
-`U=leftCup i h₂`, `V=leftCap i h`, `t=cross i i h₂ h h₂ h`, and
-`W=(T.loc i h₂ h).leftCrossingWord`. The remaining even reassociation is
+## Normalized principal Hom comparison
 
-```
-lambda_(G(JZ))^-1 ; (U ▷ G(JZ)) ; alpha_(F,E,G(JZ)) ;
-F ◁ (alpha_(E,G,JZ)^-1 ; (t ▷ JZ) ; alpha_(E,G,JZ) ;
-     E ◁ (alpha_(G,J,Z)^-1 ; (V ▷ Z) ; lambda_Z))
-  = alpha_(G,J,Z)^-1 ; (W ▷ Z) ; alpha_(F,E,Z).
-```
+`homContentCrossing_coordinates` proves (10) of `HomPrincipalMate.md`:
+the defined normalized mate in raw coordinates is the insertion of
+`(T.loc i h₂ h).leftCrossingWord`, scaled by `-koszulSign p p` and
+`leftAdjScalar i (-nuP)` inverse. Its even reassociation uses naturality
+and structural coherence without swapping the cup, crossing or cap.
 
-This is an equality from `G ≫ J ≫ Z` to `F ≫ E ≫ Z`, not a new
-hypothesis. Extracting the crossing coefficient `-koszulSign p p` and
-cap scalar inverse then gives (10); `leftCrossingWord_eq` and
-`principalWord_scalar` should finish (1), retaining gamma(0)=s. This
-reassociation and the final scalar comparison are **not proved**. No
-whole-matrix, tensor-support or nondegeneracy consequence is claimed.
+`homContentCrossing_principal` combines this equality with
+`RouquierFamily.leftCrossingWord_eq` and `principalWord_scalar` to give
+`D_H = gamma(k) P_(-sigL)`, with gamma(k)=(-1)^(p*k) for nonzero k and
+gamma(0)=(-1)^p. Both parities and every integer height are covered over
+any commutative ring. Odd rank-one consumers check arbitrary height and
+height zero, where the component is the insertion of `sigL`.
+No new coherence, scalar-evaluation or triangle hypothesis is imposed.
+
+The remaining targets are the shifted swapping mates, their tensor
+support, the residual identity-summand matrix, fusion and joint separation.
+No whole-matrix or nondegeneracy consequence is claimed here.
 
 ## Inherited Hom crossing and its specified mate
 
@@ -46,7 +48,7 @@ crossing and expands both normalized adjunction components. It retains
 both parity comparisons, the counit sign, and c(k) inverse at the cap edge.
 The output/input comparisons now cancel by
 `homContentCrossing_coordinates_raw` in `RouquierHomMateCoordinates.lean`.
-Equation (10) and composition with the principal word evaluation remain open.
+Equation (10) and the principal word comparison are proved above.
 The consumer specializes the expanded mate to the odd
 rank-one datum at arbitrary weights; no nonzero model is constructed.
 
@@ -61,7 +63,7 @@ are proved even from their normalized formulas; no new zigzag premise is used.
 giving the literal unit–mapped crossing–mapped counit component at either parity.
 The general bridge accepts an arbitrary crossing; the inherited specialization
 is given above. Both shift removals are proved in the raw coordinates above;
-`HomPrincipalMate.md` (10) remains open. All heights, the existing normalization c(k), and gamma(0)
+`HomPrincipalMate.md` (10) is proved above. All heights, the existing normalization c(k), and gamma(0)
 are unchanged. The odd rank-one consumer uses arbitrary weights; it does
 not construct a nonzero family.
 
@@ -73,7 +75,7 @@ It retains the factor `koszulSign sigma q` and all cup associators. Its
 odd rank-one consumer allows every height and either parity. This first
 shift cancellation is now used in `homContentCrossing_coordinates_raw`
 with the prescribed crossing and counit. The input comparison cancels
-there as well; equation (10) of `HomPrincipalMate.md` remains open.
+there as well; equation (10) is proved by `homContentCrossing_coordinates`.
 
 ## Unnormalized principal word
 
@@ -86,10 +88,9 @@ and nonpositive theorems overlap at zero and keep its exceptional pitchfork
 coefficient. `principalWord_scalar` proves (16), retaining gamma(0)=(-1)^p.
 The importing odd rank-one consumer checks arbitrary heights and -1, 0, 1.
 
-The next obligation is still the specified shifted Hom `rouquierMate`:
-substitute its unit, crossing and counit, then remove both output comparisons
-by homogeneous naturality to prove (10). The word evaluation is not that
-comparison. No whole-matrix, fusion, or separation theorem follows here.
+The specified shifted Hom mate is identified with this word by
+`homContentCrossing_coordinates` and evaluated by `homContentCrossing_principal`.
+No whole-matrix, fusion, or separation theorem follows here.
 
 ## Residual windows and execution-order comparisons
 
