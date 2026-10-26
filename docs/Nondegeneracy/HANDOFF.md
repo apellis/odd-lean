@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## Distinct-colour cross-sector partial mates
+
+`SwappedDistinctMixedMates.md` gives a proposed written evaluation of the
+prescribed mixed-sector mates, conditional on the existing factor actions
+and their normalized left adjunctions. With independent colour parities
+p,q, r=pq, t=q P(b), u=t+r and sigma=p(h+1), their dotless raw scalars
+are `(-1)^(tr)` for the B bend of J inverse and `(-1)^(sigma u)` for
+the A bend of J. All four source/target shift removals and both xi signs
+are retained. The normalized-left probe dot is an explicit cup–dot–cap
+word, not an assumed comparison with the factor right transpose.
+
+For the prescribed QJ orientation it is the **probe** dot which bends:
+the raw polynomial is `sum a_mn (-1)^(p binom(m,2)) Z^m Y^n`, with Z
+the transposed unit probe dot and Y the surviving nilpotent reservoir dot.
+The note derives this coordinate and a finite two-sided geometric inverse,
+then gives both inverse maps on the shifted sector words. A polynomial in
+a transposed reservoir dot would correspond to the other upward orientation,
+not to QJ as fixed in the assembly. This is a written calculation, not a
+Lean theorem. The pre/pre distinct-colour entry, full action verification,
+post same-colour principal comparison, bubbles and detection remain separate.
+
 ## Swapped action assembly and arbitrary-colour passage
 
 `SwappedActionAssembly.md` gives a written partial assembly for the fixed
@@ -13,9 +34,10 @@ on the existing written factor and local calculations.
 
 The full action is **not proved**: the first missing map is the distinct-colour
 pre/pre projection of the specified cup–crossing–cap mate, (A8)–(A9), with its
-normalized-left adjunctions. The two cross-sector distinct-colour partial
-mates also need their exact shift-removal formulas and inverses. Inverting
-Q on the upward word is not a proof of invertibility of these partial mates.
+normalized-left adjunctions. Proposed exact cross-sector shift removals
+and inverse formulas are now given in `SwappedDistinctMixedMates.md`;
+the assembly itself has not been formalized. Inverting Q on the upward
+word alone is not a proof of invertibility of its partial mate.
 
 The all-B vacuum restriction, multiplication-of-induction-kernels comparison,
 and signed opposite-corner formulas are derived directly, without a
