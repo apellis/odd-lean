@@ -100,10 +100,28 @@ even Π² comparison. `scripts/NonVacuity/HomContentShift.lean` consumes this
 adjunction in the integral parity envelope and checks the nontrivial sign on
 its odd comparison map. Finite content is retained separately from weight.
 The raising precomposition functor `homContentPreE` has the correct negative
-factor weight indices, but its right adjunction is still missing: the given
-factor right adjunction transports in the opposite direction. The required
-shifted factor left adjunction and the original-datum rational crossings
-must be constructed before these sectors can be assembled into A2.
+factor weight indices. Its right adjoint comes from the factor's left
+adjunction, not from the given right adjunction (see below).
+
+`OddMath/SKM/RouquierShiftedAdjunction.lean` defines
+`ShiftedSuperAdjunction F E σ`: a left adjunction `F ⊣ E` whose cup and cap have
+parity `σ`. The zigzag on `F` is the identity and the zigzag on `E` is `(-1)^σ`
+(the sign of BE Proposition 6.2, (6.6)). `homPreShiftAdjunction` proves
+`homPre E ⋙ S ⊣ homPre F` on the full Hom supercategories for any parity-`σ`
+shift `S` with a supernatural comparison (`ParityShiftDatum`). The odd sign of
+the `E`-zigzag cancels exactly against the super interchange of the cap with
+the odd comparison `ζ`. `homContentPreAdjunction` then gives
+`homContentPreE ⊣ homContentPreF`, where the lowering precomposition is
+shifted by `leftAdjParity D i = p(i)(h_i+1)`, constant along the edge
+(`leftAdjParity_edge`). Its input is `RouquierLeftAdjoints T`, the factor's
+shifted left adjunctions. **Open:** constructing `RouquierLeftAdjoints` from
+`RouquierFamily.loc`, the super analogue of Brundan Theorem 4.3
+(`RouqLoc.leftAdjunction` in categorification-lean, via the pitchfork and
+curl modules `RouqPitchfork`, `RouqTriangleE`, `RouqAdjunction`). The
+original-datum rational crossings must also be constructed before these
+sectors can be assembled into A2. `scripts/NonVacuity/ShiftedAdjunction.lean`
+checks the odd comparison on the integral parity envelope and the odd
+leftward parity. For the Hom adjunction it is only a signature check.
 
 `OddMath/SKM/RouquierHomContentCoherence.lean` supplies `homParityShiftAdd`,
 `homParityShiftCommute` and its compatibility with homogeneous supernatural

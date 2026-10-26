@@ -39,9 +39,10 @@ Raising precomposition uses the factor edge
 adjoint must come from the factor's **left** adjunction. Transporting the
 factor right adjunction gives the opposite orientation. The parity of the
 left cup and cap is `ipar D i λ = p(i)(h_i(λ)+1)` in `MoreGenerators.lean`.
-The proposed correction shifts the lowering precomposition summand by this
-parity. A proof must transport the signed triangle identities as well;
-parity bookkeeping alone does not establish the adjunction.
+The lowering precomposition summand is shifted by this parity.
+`homPreShiftAdjunction` transports the signed triangle identities: with the
+`F`-zigzag `1` and the `E`-zigzag `(-1)^σ`, both Hom-sector triangles are
+exact.
 
 ## What the mate calculation now proves
 
@@ -67,7 +68,10 @@ of the coupled mate. The negative probe indices are integers.
 
 ## Exact remaining categorical work
 
-1. Construct the shifted reverse factor adjunction for raising precomposition.
+1. Construct the factor's shifted left adjunctions (`RouquierLeftAdjoints`)
+   from the local inverses. Given them, `homContentPreAdjunction`
+   (`RouquierShiftedAdjunction`) already transports the signed triangles to
+   raising/lowering precomposition, with lowering shifted by `p(i)(h_i+1)`.
 2. Construct the original-datum crossings, including equal-odd rational
    crossings and multicolour polynomial and braid relations. The disconnected
    product associator does not supply these relations.
