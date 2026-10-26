@@ -407,10 +407,20 @@ Odd and mixed consumers check both signs at exponents one and two,
 nonzero target shifts, the algebra-map identity, and definitional agreement
 of the algebra scalar action with the original tensor module. This is
 the balanced algebra comparison for the right action in KKO I,
-arXiv:1206.5933v2, Proposition 8.4, not its complete statement. Homogeneous
-polynomial-tensor action parity and graded-supermodule packaging, source
-fixed-content comparison, zero-height case, full-ELV coefficients and QP
-identity remain separate.
+arXiv:1206.5933v2, Proposition 8.4, not its complete statement.
+`IntertwinerSupertensorGrading.lean` proves that the dot-first monomial
+`t^m ⊗ c` with coefficient parity `q` acts with degree `m p(i) + q`.
+`polynomialSupertensorPart` is the ground-ring span of these homogeneous
+tensors in the existing scalar-balanced tensor product.
+`sourceRightSupertensor_parity` and `targetRightSupertensor_parity` extend
+the degree statement to every element of this span, including finite sums
+and scalar multiples, on the unchanged source and shifted target.
+`rightSupertensor_Q_gradedSquare` combines these results with the proved
+evenness and equivariance of Q, without additional premises.
+The homogeneous spans are not yet bundled as a direct-sum grading.
+Ordinary left linearity does not imply signed-left superlinearity; that
+comparison and graded-supermodule packaging remain separate, as do source
+fixed-content comparison, zero-height, full-ELV coefficients and QP.
 
 ## Right cyclotomic coefficients and the polynomial variable
 
