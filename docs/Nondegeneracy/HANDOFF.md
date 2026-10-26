@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Canonical signed F triangle on paper
+
+`SignedFTriangle.md` derives the second triangle for the prescribed
+inverse-defined cups and caps by horizontal super-opposition and signed
+right transposition. It constructs the reflected local data, including the
+prescribed mixed mate and every inverse-component comparison; it assumes
+neither cyclicity nor the F triangle. With s=(-1)^p, σ=p(h+1), and
+e(h)=1 for h<0 and s for h≥0, the canonical F composite is
+koszulSign(σ,σ)e(h) id. The E composite is e(h) id. Rescaling only the
+cap by the involutive unit koszulSign(σ,σ)e(h) gives the shifted left
+adjunction normalization of `LeftZigzags`.
+
+This is a written proof, not a kernel-certified F triangle. The
+transposition calculus, horizontal super-opposite and reflected local
+structure still need Lean implementations. The supporting all-height
+E-triangle development is on `research/odd-nondegeneracy-wip/signed-f-r17`; it is
+not included in this documentation-only integration. Transport to fusion
+and regular-bubble detection remains separate.
+
 ## Full graded deformed action on paper
 
 `DeformedActionAssembly.md` and `DeformedMixedBraid.md` complete the written
@@ -531,7 +550,11 @@ sign), Brundan Lemma 4.1 (`curlG_dotted`, `curlEG_dotted`) and the boundary
 self-curls: `curlG cupL (capD h) t = -ε` with `ε = 1` at `h = 0` and
 `ε = s` for `h > 0` (`curlG_capD_self`), and `curlEG (cupD (-h)) capL t = 1`
 for `h ≤ 0` (`curlEG_cupD_self`). The `h ≤ 0` statements are proved directly,
-without a dual. **Open:** proving `LeftZigzags`. Restart point:
+without a dual. **Implementation checkpoint:** `SignedFTriangle.md` now
+supplies the written signed reflection proof, and
+`research/odd-nondegeneracy-wip/signed-f-r17` supplies the all-height E theorem. The following describes
+the earlier implementation gap in this branch, not a remaining mathematical
+assumption of that written proof:
 (1) E-zigzag: port `RouqPitchfork` (`capCross`, `capCross_eq_of_neg`,
 `capL_pitchfork_of_neg`, `cupL_pitchfork_of_gt_neg_two`) with super signs, then
 `RouqTriangleE.leftAdj_triangle_E` from the curl lemmas above. For `h ≥ 0`
