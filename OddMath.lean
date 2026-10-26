@@ -24,6 +24,10 @@ import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
 import OddMath.QuiverHecke.CyclotomicAction.Normality
 import OddMath.QuiverHecke.CyclotomicAction.SignedMultipliers
+import OddMath.QuiverHecke.CyclotomicAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.Restriction
+import OddMath.QuiverHecke.CyclotomicAction.ActionSupercategory
+import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
 import OddMath.QuiverHecke.CliffordExchangeExamples
 import OddMath.QuiverHecke.SignedNilHecke
 import OddMath.QuiverHecke.SignedNilHeckeExamples

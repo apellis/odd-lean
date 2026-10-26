@@ -53,10 +53,22 @@ even unit and counit and parity-preserving Hom bijections. These statements
 need the coefficient-support condition `CyclotomicPolynomialParity`, but no
 monicity or flatness assumption.
 
-This does not yet provide the vacuum inclusion, the concrete quotient dot and
-crossing transformations, their square and braid comparisons, or the
-projective Mackey/local-inversion theorem. The finite monic coordinates above
-are not a proof of those higher-content assertions.
+`LastDot.lean` and `SuperDot.lean` now supply the concrete quotient dot and
+its homogeneous supernatural transformation. `InductionComposition.lean`
+identifies the balanced tensor of two colour-cut induction bimodules with
+the corner of the composite inclusion. `LastCrossing.lean` and
+`SuperCrossing.lean` supply the concrete quotient crossing and its signed
+superbimodule map; `InductionFunctorComparison.lean` and
+`CrossingTransformation.lean` transport it to composed induction
+superfunctors. `ActionSupercategory.lean` packages the category, functors,
+dot and even adjunction in the existing `TwoSCat` and `SKM.SuperAdjunction`
+interfaces.
+
+This does not yet provide the vacuum inclusion, the square and braid
+comparisons, or the projective Mackey/local-inversion theorem. In particular,
+constructing a crossing map does not prove its polynomial square or the
+corrected transported-parameter comparison. The finite monic coordinates
+above are not a proof of those higher-content assertions.
 The final same-colour inversion must instantiate `SKM.SuperRouquierLoc` from
 `SKM/RouquierData.lean`, with the prescribed mate and parity-indexed inverse
 entries. Do not replace its odd shifted summands by ordinary copies of the

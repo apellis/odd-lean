@@ -211,9 +211,9 @@ an odd supermodule map.
 bundles `cyclotomicSuperIndResAdjunction`. Both directions of its Hom
 bijection preserve parity. This is an actual super induction-restriction
 adjunction, not only the underlying ordinary adjunction. Remaining action
-obligations are the vacuum inclusion, concrete quotient crossing
-transformations, the dot-square and braid comparisons, and the projective
-Mackey/local-inversion theorem with the prescribed parity shifts.
+obligations are the vacuum inclusion, the square, braid and mixed
+comparisons for the constructed dot and crossing transformations, and the
+projective Mackey/local-inversion theorem with the prescribed parity shifts.
 
 `CyclotomicAction/LastDot.lean` constructs `cyclotomicLastDot` as the image
 of the finite diagonal sum of rightmost dots on words ending in the induction
@@ -240,8 +240,10 @@ with bundled target `cyclotomicActionTarget : TwoSCat k`.
 1-morphisms; `cyclotomicActionAdjunction` inhabits the existing
 `SKM.SuperAdjunction` and proves both triangles with even unit and counit.
 `cyclotomicActionDot_mem` gives the colour parity of its dot 2-endomorphism.
-No local inversion or new action interface is assumed. This positive-height
-packaging does not supply crossings, vacuum, or the Mackey decomposition.
+No local inversion or new action interface is assumed. The concrete
+positive-height adjunction, dots and crossings above form the action data,
+not yet a representation satisfying all defining relations. Vacuum extension
+and the parity-shifted Mackey decomposition remain open.
 
 ## Proof architecture
 
