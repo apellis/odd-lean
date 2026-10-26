@@ -6,8 +6,13 @@
 the leading comparison `S mod J = L H Q`, with the nilpotent ideal generated
 by positive-degree reservoir supercentral coefficients. The original factor
 inverses, c(k), gamma(0), parity lifts and every identity summand are retained.
-At zero total height the residual is generally nonempty. Inverting the
-displayed negative-power probe-window matrices H remains a separate task.
+At zero total height the residual is generally nonempty.
+`ProbeWindowInverse.md` supplies a finite two-sided inverse algorithm for
+the displayed negative-power probe-window matrices H at every pair of
+heights, using the specified whole probe inverse, invertible dots and the
+literal mate slide. It retains both nonempty zero-total cases and all
+parity lifts. Lifting this inverse to the exact residual and constructing
+the required localized factor actions remain separate tasks.
 
 `ExecutionBraidNormalization.md` proves the reversal identity
 `-C_ij(z,y,x)=(-q_i)C_ij(x,y,z)` and the conditional even rational comparison,
@@ -17,6 +22,22 @@ one odd AAB braid component. It does not supply the sorted-sector h or
 the complete odd/localized comparison. These are written calculations, not
 Lean theorems or a full fusion proof.
 
+## Reservoir dotted coordinates
+
+`RouquierHomReservoirPowers.lean` proves `HomSectorTransport.md` §2 (5)
+for all natural powers and every reservoir source height. The dot is the raw
+`T.dot ▷ Z`; cups and caps are defined using the same normalized
+`homContentPreAdjunction T W T.leftAdjoints`. Removing the output comparison
+from the cup gives `koszulSign σ (n*p)` times the raw dotted cup. Moving the
+cap comparison past the dot power gives `koszulSign σ (1+n*p)` times the raw
+dotted cap, retaining `leftAdjScalar⁻¹ • leftCap`. The power has parity `n*p`,
+and its naturality is proved for every homogeneous map, not only even maps.
+These are window coordinates for the Hom principal and central comparisons;
+no principal-block identification, window inverse, or fusion comparison follows
+from these formulas alone. The consumer checks arbitrary odd rank-one heights
+and powers, and powers zero, one, and two at nonzero output shift.
+
+
 ## Fixed normalized reservoir adjunction
 
 `RouquierFamily.leftAdjoints` now uses the explicit involutive unit
@@ -25,12 +46,14 @@ at the source height h, with unit `leftCup` and counit `leftAdjScalar⁻¹ • l
 Both triangles follow from the canonical triangles; no chosen-scalar uniqueness
 or faithfulness is used. `RouquierNormalizedHomAdjunction.lean` specializes the
 existing `homContentPreAdjunction` without an additional `LeftZigzags` premise.
-It proves the reduced cup/output-shift unit formula and expands the specified
-counit through the shift-square and commuting comparison.
-
-The reduced counit formula of `HomSectorTransport.md` §2, including its outer
-`koszulSign σ σ`, still requires cancellation of those comparisons. The checked
-expansion is not that cancellation theorem. No fusion or nonzero model is claimed.
+It proves the reduced cup/output-shift unit formula and the signed-cap counit
+formula of `HomSectorTransport.md` §2. The theorem
+`homContentPreAdjunction_leftAdjoints_counit_app` retains the outer
+`koszulSign σ σ`, with σ at the reservoir source height, and the inverse-scaled
+`leftCap`. Homogeneous comparison naturality cancels the shift-square and
+commuting maps; the normalized adjunction itself is unchanged. The odd rank-one
+consumer checks this component for arbitrary heights and audits all owned
+declarations. No fusion or nonzero model is claimed.
 
 ## Canonical F triangle and shifted left adjunctions
 
@@ -457,19 +480,36 @@ as a ground-ring algebra equivalence. Scalar centrality follows from the
 linearity of the coefficient parity twist. `qCoefficientScalarTower` proves
 compatibility of the ground-ring and affine-algebra scalar actions on the
 existing shifted coefficient superspace. Neither quotient is replaced.
-The remaining scalar step is to prove that the source and target right
-representations send `r • f` to `r • ρ(f)` for the existing quotient
-scalar structures. This requires transporting the ground-ring scalar
-across the original integral balancing relation. It is not yet proved.
+`IntertwinerSupertensorScalars.lean` now proves
+`sourceRightSupertensor_smul` and `targetRightSupertensor_smul`: both
+representations send `r • f` to `r • ρ(f)` in the existing ground-ring
+endomorphism modules. Balancing transfers the scalar to the corner as
+`algebraMap k B r`; the existing quotient scalar tower identifies this
+with its superspace scalar action. No new quotient module is introduced.
+The coefficient and skew-polynomial actions satisfy the same scalar law.
+`rightSupertensor_scalarQ` gives equivariance for scalar multiples of Q.
+The importing consumer checks arbitrary scalars and tensor arguments in
+odd and mixed data with nonzero target shifts, and audits every declaration
+owned by the scalar-compatibility module against the standard axioms.
 
 Odd and mixed consumers check both signs at exponents one and two,
 nonzero target shifts, the algebra-map identity, and definitional agreement
 of the algebra scalar action with the original tensor module. This is
 the balanced algebra comparison for the right action in KKO I,
-arXiv:1206.5933v2, Proposition 8.4, not its complete statement. Homogeneous
-polynomial-tensor action parity and graded-supermodule packaging, source
-fixed-content comparison, zero-height case, full-ELV coefficients and QP
-identity remain separate.
+arXiv:1206.5933v2, Proposition 8.4, not its complete statement.
+`IntertwinerSupertensorGrading.lean` proves that the dot-first monomial
+`t^m ⊗ c` with coefficient parity `q` acts with degree `m p(i) + q`.
+`polynomialSupertensorPart` is the ground-ring span of these homogeneous
+tensors in the existing scalar-balanced tensor product.
+`sourceRightSupertensor_parity` and `targetRightSupertensor_parity` extend
+the degree statement to every element of this span, including finite sums
+and scalar multiples, on the unchanged source and shifted target.
+`rightSupertensor_Q_gradedSquare` combines these results with the proved
+evenness and equivariance of Q, without additional premises.
+The homogeneous spans are not yet bundled as a direct-sum grading.
+Ordinary left linearity does not imply signed-left superlinearity; that
+comparison and graded-supermodule packaging remain separate, as do source
+fixed-content comparison, zero-height, full-ELV coefficients and QP.
 
 ## Right cyclotomic coefficients and the polynomial variable
 
