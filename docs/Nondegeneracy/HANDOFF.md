@@ -203,12 +203,16 @@ signed two-removal formula `homShiftConjugationIso_hom_signed`; its factorizatio
 is `homShiftConjugationIso_comp`. `homShiftConjugationIso_unit_cancel` cancels
 the inner shift-square against the shifted word comparison.
 
-**Still open:** assemble these identities in the defined `rouquierMate`, then
-reassociate the raw postcomposition mate to insertion of `(W.loc i h h₂).sig`.
-That `sig` is defined as `rouquierMate (W.adj i h) (W.adj i h₂)` of the factor
-crossing. No comparison with it, including equation (B), is asserted yet.
-The consumers exercise odd colour with odd and zero content shift, and typecheck
-the specified odd-content mate; the Rouquier family remains an input.
+`RouquierHomPostPrincipal.lean` now proves equation (B) as
+`homContentPostCrossing_principal`: the source-coordinate inverse, specified
+`rouquierMate`, and target coordinate compose to
+`associator.hom; Z ◁ (W.loc i h h₂).sig; associator.inv`.
+The proof cancels the shift comparisons inside the literal mate, then uses
+even prefix/suffix coherence and crossing naturality. It covers arbitrary
+content, every weight and both parities over a commutative ring; no comparison
+premise is added. Odd-colour consumers apply this equality at odd and zero
+content shift, jointly importing the normalized precomposition principal
+theorem. The Rouquier family remains an input.
 No dotted-power, whole-matrix, swapping-mate, fusion or nonzero-model result is claimed.
 
 
