@@ -164,6 +164,34 @@ PDF page 42. Finite colours, positive indexing and
 No full Proposition 8.4, QP formula, or nonzero categorical inversion model
 is asserted.
 
+## Finite polynomial operators on the moving-strand quotients
+
+`CyclotomicAction/IntertwinerRightPolynomial.lean` evaluates every finite
+ordered family `∑ t^m ⊗ c_m` on the same `qSourceSpace` and `qTargetSpace`.
+`sourceRightPolynomial` and `targetRightPolynomial` are additive maps to
+endomorphisms; their constant-unit law is proved. `rightPolynomial_Q`
+proves equivariance for every such family, from the existing dot and
+coefficient formulas, without any assumed action interface.
+
+`sourceRightMonomial_comp` and `targetRightMonomial_comp` prove the
+ordered multiplication law: composing the operator for `t^r ⊗ b` with
+that for `t^s ⊗ c` gives `(-1)^(s p(i) q)` times the operator for
+`t^(r+s) ⊗ bc`, when `b` has degree `q`. Composition reverses right
+products. All natural powers are retained; odd variables are not exterior
+variables. Consumers exercise odd and mixed data with nonzero target
+shift, finite two-term polynomials, and both signs at exponents one and two.
+
+This is a finite-polynomial checkpoint for KKO I, arXiv:1206.5933v2,
+Proposition 8.4, not the full right-superalgebra package. The coefficient
+family has no bundled multiplication yet. Remaining: construct the
+parity-twisted convolution algebra, its scalar-balanced linear comparison
+with `k[t_i]` supertensor the cyclotomic coefficient algebra, and the
+corresponding full right-module structures. Mathlib's `SkewPolynomial`
+and `SkewMonoidAlgebra.liftNCRingHom` provide an existing associative
+construction, but use coefficient-first normal order `c t^m`, requiring
+an explicit order conversion. The source fixed-content comparison,
+zero-height case, full-ELV coefficients and QP identity remain separate.
+
 ## Right cyclotomic coefficients and the polynomial variable
 
 `CyclotomicAction/IntertwinerRightCoefficient.lean` descends right
