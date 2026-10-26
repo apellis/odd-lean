@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Global content indices
+
+`CyclotomicAction/Global.lean` supplies the content indices and boundary sign
+for the global cyclotomic action: `WeightBlocks`, injective `blockSucc`, its
+subsingleton fibres, `exists_blockSucc_iff`, `blockSucc_comm`,
+`blockLoc_weight`, and `pair_nonpos_of_not_mem`. The convention is
+`weight(β) = sum β - Λ`. Empty content is retained. `blockWeight_not_card`
+shows why positive-height categories alone do not give weight spaces: already
+the singleton contents of two distinct simple roots have different weights.
+This ports the index layer, not yet the global superfunctors. Concrete content
+projectors and induction support are in `ContentBlocks` and `ContentSupport`.
+
+
 Branch `research/odd-nondegeneracy`. Rules for this branch: `AGENTS.md`, "Workflow and
 evidence". This file is updated in the same push as the results it describes. Status
 words: *Lean* means compiled on this branch and covered by full CI; *proposed* means a
