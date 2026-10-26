@@ -414,6 +414,28 @@ map on that window, without a global finite-quotient automorphism. It does
 not identify the regular quotient with the fused vacuum; the latter's
 `affine_coordinates` law and normalization comparison remain open.
 
+`ReservoirRegular.lean` constructs the connected quotient's actual cyclic
+operators by descending postcomposition. `ReservoirSourceCoordinates.lean`
+proves that source coefficient followed by affine action differs from the
+joint tensor coordinate by its Koszul diagonal involution, then constructs
+`exists_reservoir_source_coordinates` on every C0 window. The involution
+preserves bounded windows; it is not asserted to preserve the ELV ideal.
+`ReservoirCoverage.lean` supplies `regularVacuumWindow_coordinates` at all
+cutoffs, including the zero-window fallback, and
+`regularVacuumWindow_covers` for the balanced reservoir schedule.
+`exists_regular_vacuum_window` also realizes literal external weight in the
+pairing extension. The concrete two-odd consumer is
+`scripts/NonVacuity/ReservoirRegularCoordinates.lean`.
+
+The categorical gap is still the comparison of these connected regular
+modules and operators with the fused vacuum word modules. No
+`FusedFixedWeightFamily` is constructed by the regular-coordinate results.
+For the bubble step the designated additional hypothesis remains
+`SuperRouquierLoc.MateProjectionFormula` from `RouquierMateProjection.lean`;
+its sector maps and factor dotted units/counits must be specialized to that
+vacuum before deriving `NormalizedBubbleFormula`. The action-only/fusion-only
+restatement of upward independence is therefore not yet available.
+
 `SKM.reservoir_coefficients_recovered` proves finite triangular inversion of a
 specified ordered probe convolution; `reservoir_exterior_recovered` removes a
 unit factor from an odd coefficient. The categorical convolution and its
