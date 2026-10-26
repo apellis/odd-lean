@@ -168,11 +168,24 @@ comparison formulas are definitional. `reflectedCross_square` transports
 the nilpotent square. The rational odd consumer checks both height-zero
 inverses, the negative second-window coefficient, and both boundary windows.
 
-Still missing in Lean are the three-strand braid transport with explicit
-triple adjunction bracketings, and the piecewise canonical cup/cap
-comparisons in `SignedFTriangle.md` §5. These must be assembled before
-applying the E theorem to prove the canonical F equation; neither
-`LeftZigzags` nor the shifted left adjunction is discharged yet.
+`RouquierReflectedBraid` proves `rightTranspose_associator_hom` by
+transposing the inverse identity, and `rightTranspose_bracketed_whiskerRight`
+with the explicit triple composite adjunctions. `reflectedCross_braid`
+transports the bracketed three-strand braid to the prescribed crossings
+`s M(t)`; the equal palindromic transpose signs cancel without any
+cyclicity or left-triangle hypothesis.
+
+`RouquierReflectedCupCap` identifies the canonical `sigL`, every `cupN`
+and `capN`, the dotted right cups/caps, and both piecewise `cupL`/`capL`
+with their original maps times the coefficients of `SignedFTriangle.md`
+§5. All integer heights, including zero and both unused zero branches,
+are retained. The consumer specializes both canonical comparisons and
+the bracketed braid to odd parity over rational scalars.
+
+Still missing in Lean are the symbolic all-integer-height scalar product
+`a(h+2)b(h)=koszulSign (p(h+1)) (p(h+1))`, and application of the local
+E theorem followed by explicit horizontal-opposite readback. Neither the
+canonical F equation nor `LeftZigzags` is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
 
 ## Full graded deformed action on paper
