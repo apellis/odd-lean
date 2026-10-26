@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Unnormalized principal word
+
+`RouquierPrincipalWord.lean` proves `HomPrincipalMate.md` §3 (11) at every
+integer height: `RouquierFamily.leftCrossingWord_eq` gives coefficient one
+at nonpositive height and `koszulSign p p` at positive height. The proof uses
+the signed cup/cap pitchforks and the proved canonical F triangle; no new
+left-triangle or principal-comparison premise is added. Local nonnegative
+and nonpositive theorems overlap at zero and keep its exceptional pitchfork
+coefficient. `principalWord_scalar` proves (16), retaining gamma(0)=(-1)^p.
+The importing odd rank-one consumer checks arbitrary heights and -1, 0, 1.
+
+The next obligation is still the specified shifted Hom `rouquierMate`:
+substitute its unit, crossing and counit, then remove both output comparisons
+by homogeneous naturality to prove (10). The word evaluation is not that
+comparison. No whole-matrix, fusion, or separation theorem follows here.
+
 ## Residual windows and execution-order comparisons
 
 `HomResidualWindows.md` computes every corrected central Schur window and
