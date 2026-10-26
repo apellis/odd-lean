@@ -33,6 +33,7 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentTensor
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerTargetTensor
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentCoefficient
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentDot
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerSquareDot
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerError
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples

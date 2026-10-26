@@ -1,5 +1,43 @@
 # Odd nondegeneracy: restart state
 
+## Prepend square-dot operator and missing cancellation coordinates
+
+`IntertwinerSquareDot.lean` checks the square operator needed for KKO I,
+arXiv:1206.5933v2, Lemma 8.1 and Theorem 8.5. `affineFirstDot_sq_comm`
+commutes the first-dot square with every old affine element, including at
+height zero. `targetRightDot_sq_tmul` identifies the square of the existing
+shifted right dot on `InductionAlong.Ind` with two first-dot corner actions
+and the unchanged `qCoefficient`. `targetDotCorner_twice_val` identifies
+that corner value with right multiplication by the first-dot square.
+`contentTargetRightDot_sq_tmul` proves the same cancellation of the
+coefficient involution on the unital content tensor. These require only
+the existing finite colours, scalar datum, commutative ground ring and
+polynomial homogeneity; no monicity or projectivity assumption is added.
+The tensor statements retain positive coefficient height. The consumer
+uses an odd-degree cyclotomic polynomial and arbitrary height and content.
+
+**Neither dot-difference injection is proved.** The remaining construction
+is a right-old-algebra coordinate isomorphism for the prepend corner,
+followed by its balanced quotient, with the first-dot degree visible.
+`basisNF` is a base-ring Hom basis, not this right-module decomposition.
+`shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
+output side; prepend balancing needs old coefficients on the input side
+of `Hom(i :: s,t)`. An opposite-side shuffle construction (or a proved
+reflection comparison) and its compatibility with right multiplication
+are still needed. Base-ring linear independence alone cannot be tensored
+through the lower cyclotomic quotient to prove the required injection.
+
+After that comparison, the square difference must have leading moving
+degree two with coefficient minus identity, and the odd linear difference
+can be tested through its square, the sum of the two dot squares. The
+old-dot contribution must use the coefficient right action; it need not
+be right-linear over the noncommutative old algebra. The empty old word
+has no old last dot and is the separate base case of the QP induction,
+not a case of cancelling a difference of a dot with itself. The proposed
+arguments in `DeformedGlobalQP.md` and `DeformedProjectiveResolution.md`
+remain conditional on this coordinate construction. No all-height QP,
+projectivity, literal P, or full coefficient-extension theorem follows.
+
 ## Repeated-odd two-strand cyclotomic error
 
 `IntertwinerError.lean` proves the local quotient reduction needed in KKO I,
