@@ -82,6 +82,16 @@ dot-intertwining sector maps. Neither theorem assumes an inverse.
 integral matrix fixture. The construction of the required sector intertwining
 maps, not the scalar normalization, remains open.
 
+`OddMath/SKM/RouquierMateSeries.lean` proves the signed ordered finite
+expansions `mate_series_probe_source` and `mate_series_probe_target`.
+They invert only the probe dot; nilpotence of the reservoir dot kills the
+tail. The first expansion has coefficients `q^r`, and the second has
+coefficients `-q^(r+1)`, without any exchange of factors. The four integral
+matrix fixtures in `scripts/NonVacuity/MateSeries.lean` check both expansions
+for both signs with a nonzero square-zero reservoir dot and a coefficient
+not commuting with that dot. These are algebraic series tests, not a proof
+that the categorical sector coordinates have been constructed.
+
 `OddMath/SKM/RouquierData.lean` defines `RouquierData`, `RouquierFamily`,
 `SuperAdjunction`, `SuperRouquierLoc`, and the homogeneous matrix interfaces
 `SuperSumInvTo`/`SuperSumInvFrom`. The ambient `TwoSupercategory` retains
