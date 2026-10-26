@@ -138,8 +138,29 @@ at both parities: the common expansion coefficient is not cancelled or inverted.
 The importing consumer exercises both headlines at parity one, including the
 minus sign in the expansion, and audits every owned declaration. It retains
 the supercategory and adjunctions as parameters; no nonzero inversion model
-is constructed. `SuperRouquierLoc.sig_capCross` specialization remains to be
-connected to these generic theorems.
+is constructed.
+
+`SuperRouquierLoc.sig_capCross` now follows by postcomposing the sign-free
+mixed braid with the upper left cap, without exchanging that cap.
+`sig_capCross_of_neg` computes its crossing component at `h < 0`, with
+`h' = h + 2`: it is zero except at `h = -1`, where its coefficient is
+`s = koszulSign p p`. `whiskerRight_hom_ext_of_nonpos` extracts equality
+from the total augmented inverse equation, and `capCross_eq_of_neg`
+assembles the crossing and all dotted-cup components. Writing
+`C = L.capL ▷ E₂ ≫ λ.hom` and
+`R = α.hom ≫ E₂ ◁ A₂.counit ≫ ρ.hom`, its formula is
+`U.capCross = s • (-C + R)` at `h = -1`, and `U.capCross = -C` at
+`h < -1`. In particular, the odd boundary is `C - R`; scaling only `R`
+would fail the undotted-cup equation. Inputs are the adjacent local data,
+both upward square relations, the upward braid, and the height relation.
+The proof uses no assumed left zigzag or target cap relation.
+
+The imported `RouquierCapSwap` consumer specializes the boundary to both
+parities, applies the theorem to the local data of a `RouquierFamily`
+(deriving the height shift and using its square/braid fields), and audits
+49 owned declarations. These remain parametric consumers, not a nonzero
+odd inversion model. The restricted leftward pitchfork and the E-strand
+left triangle remain unproved; this chain is not a full-root certification.
 
 ## Reservoir closure audit
 
