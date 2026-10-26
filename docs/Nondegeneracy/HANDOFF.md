@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Shifted target tensor over the content algebra
+
+For KKO I, arXiv:1206.5933v2, Proposition 8.4,
+`IntertwinerTargetTensor.lean` defines `contentTargetTensor` independently of
+`qTargetContent`: the first factor is the prepend left ideal over the unital
+`ContentAlgebra`, and the second is the content submodule of the existing
+`qCoefficient`. Its action is restricted from `qCoefficientModule`, retaining
+the parity-shift twist; no ring structure on the shifted coefficient is used.
+
+`contentTargetForward` includes both factors; `contentTargetBackward` cuts
+both by the content identity. `contentTargetBackward_forward` is identity,
+and `contentTargetForward_backward` is the existing target content projector,
+not identity on the entire height tensor. `contentTargetEquiv` gives the
+explicit two-sided comparison. `qContentCoefficientCut_insert` and
+`contentTargetEquiv_cut_tmul` identify the cuts with the prescribed shifted
+representatives. `contentTensorShiftedQ_representative` proves the literal
+moving-strand formula between the separately defined source and target tensors.
+
+Hypotheses remain finite colours, positive coefficient height and polynomial
+parity over the existing commutative ground ring and scalar datum. These are
+underlying left-module statements, not a graded identification. Next: define
+and compare the right coefficient and polynomial actions directly on these
+tensors. The latter must retain the first dot, coefficient involution and
+`(-1)^(p(i)p(β))` of `targetContentRightDot_tmul`; do not replace it with an
+untwisted action or require a signed-left condition. Enlarged target-block
+support, graded comparison, zero height, full ELV coefficients and QP are
+separate obligations.
+
 ## Source tensor over the content algebra
 
 `contentSourceEquiv` in `IntertwinerContentTensor.lean` identifies the KKO I §8 source
@@ -15,7 +43,7 @@ height tensor. No arbitrary choice of equivalence or new action axiom is used.
 this source carrier. Finite colours and positive coefficient height remain;
 polynomial parity is needed only for Q.
 
-Next: the shifted target tensor over the unital content algebra, and explicit
+The shifted target comparison is supplied above. Next: explicit
 right coefficient/polynomial compatibility on both tensor carriers. The
 zero-height case, QP and full nondegeneracy are not consequences of this step.
 

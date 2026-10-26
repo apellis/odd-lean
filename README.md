@@ -8,7 +8,12 @@ and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
 The KKO I §8 source tensor over the unital content algebra now has an explicit
 two-sided comparison with its height-quotient content image
 (`IntertwinerContentTensor`), preserving the Q representative formula.
-The shifted target tensor comparison and QP remain open.
+The shifted target now has its own tensor over that unital algebra
+(`contentTargetEquiv` in `IntertwinerTargetTensor`), using the existing shifted
+coefficient action and explicit inclusion/cuts. Both composites and the Q
+representatives are proved. Finite colours, positive height and polynomial
+parity remain; tensor-level right-action compatibility, graded comparison,
+zero height and QP remain open.
 
 Sources (numbering refers to these arXiv versions):
 
