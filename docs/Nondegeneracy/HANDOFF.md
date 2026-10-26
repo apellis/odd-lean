@@ -661,8 +661,12 @@ multiplication of these finite families is reversed pointwise composition.
 when the outside colours differ or all three colours coincide, with arbitrary
 old words and arbitrary colour parities. These are concrete algebra identities,
 not yet the braid between three composed superinduction functors. The latter
-still requires comparison with the balanced-tensor associators; the repeated
-outside-colour correction remains a separate polynomial identity.
+still requires comparison with the balanced-tensor associators.
+`CyclotomicAction/BraidCorrection.lean` supplies the separate repeated-outside-
+colour polynomial relation: `affineTriple_braid_correction` and
+`cyclotomicTriple_braid_correction`. Its explicit dot polynomial retains
+`(-1)^(|i|(|j|+s))` in every divided-difference term. Both braid cases now hold
+in the actual quotient; neither statement assumes a categorical representation.
 
 ### Equal-colour crossing square
 
