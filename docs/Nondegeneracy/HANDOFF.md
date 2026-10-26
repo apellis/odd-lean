@@ -126,9 +126,15 @@ ratio `(-1)^σ` whenever the cup is nonzero. `leftAdjointsOfZigzags` turns it
 into `RouquierLeftAdjoints`. `RouquierInverseRelations.lean` ports Brundan
 Lemma 3.1 ((3.3), (3.5)–(3.9)): the sign-free inverse-matrix relations among
 `sig`, `sigL`, dotted cups/caps, and the bubble values `ccw_self`, `cw_self`.
-**Open:** proving `LeftZigzags`; the next even inputs to port are the curl
-identities (`RouqCurl`, `RouqDottedCurls`), where super interchange signs first
-appear. The even proof is
+`RouquierDotSlide.lean` proves the signed iterated dot slide
+`powComp_sig`: `X^m σ = s^m σ Y^m - ∑_{j<m} s^(m-j) capD_j cupD_(m-1-j)` with
+`s = (-1)^p`, Brundan (3.14) (`cupL_powComp_sig`) and both expansions (3.18).
+**Open:** proving `LeftZigzags`. The next even inputs are the infinite
+Grassmannian relation (`RouqGrass`), the fake-bubble identities, the inverse-cup
+expansions (3.12)–(3.13) (`RouqCurl`), the dotted curls (`RouqDottedCurls`),
+pitchforks and `RouqTriangleE`. The dual statements need a super horizontal
+opposite with Koszul signs (`RouqLoc.dual`, `RouqLoc.mirror`), which does not
+exist yet. The even proof is
 `RouqLoc.leftAdjunction` via `RouqPitchfork`, `RouqTriangleE`,
 `RouqAdjunction`, `RouqCurl`, `RouqDottedCurls`, `RouqGrass` and
 `FakeBubbles` in categorification-lean, about 2500 lines. The
