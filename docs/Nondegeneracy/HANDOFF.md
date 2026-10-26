@@ -129,6 +129,36 @@ PDF page 42. Finite colours, positive indexing and
 No full Proposition 8.4, QP formula, or nonzero categorical inversion model
 is asserted.
 
+## Right cyclotomic coefficients and the polynomial variable
+
+`CyclotomicAction/IntertwinerRightCoefficient.lean` descends right
+cyclotomic multiplication to the existing source induced quotient and the
+shifted `qCoefficient.ract` to the existing target. The descent uses
+`InductionAlong.Ind.map`: coefficient right multiplication is proved
+left-affine-linear, so the integral balancing relations are preserved.
+Both resulting operators remain endomorphisms over the larger affine algebra.
+Their unit, product (reverse composition), zero and addition laws are proved.
+
+`qCoefficientInsert_mul` derives right-linearity of the canonical insertion
+from its superbimodule homomorphism law, with **no additional sign**.
+`rightCoefficient_Q` then proves Q equivariance by its pure-tensor formula.
+`sourceRightCoefficient_parity` and `targetRightCoefficient_parity` give the
+homogeneous coefficient degree on `qSourceSpace` and `qTargetSpace`.
+`sourceRightDot_coefficient` and `targetRightDot_coefficient` prove
+`R_t ∘ R_c = (-1)^(p(i)q) R_c ∘ R_t` for a coefficient of degree `q`.
+The sign comes from the coefficient parity involution, including on the
+shifted target; no square-zero condition on the odd variable is imposed.
+
+This is the right-coefficient and dot/coefficient part of KKO I,
+arXiv:1206.5933v2, Proposition 8.4, with the right action setup preceding
+Lemma 8.1. The consumer checks all-odd height three and mixed height two,
+both with shift one, and uses a concrete odd cyclotomic dot for the grading
+and supercommutation hypotheses. These are quotient examples, not nonzero
+inversion models. Full polynomial-supertensor action packaging, comparison
+with the source's fixed-content corners, full-ELV coefficients and QP remain
+open. Finite colours, positive quotient indexing and
+`CyclotomicPolynomialParity` are unchanged.
+
 ## Graded polynomial-variable square
 
 `CyclotomicAction/IntertwinerDotGrading.lean` proves `sourceRightDot_parity`
