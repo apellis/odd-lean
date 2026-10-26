@@ -31,6 +31,17 @@ example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-2)) :
 example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 2) (n : ℕ) :
     rouquierPower (A₁.rightTranspose A₁ x₁) n ▷ E₁ ≫ A₁.counit = L.capD n := by
   simpa using L.rightTranspose_capD n
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 0) :
+    A₂.unit ≫ E₂ ◁ rouquierPower (A₂.rightTranspose A₂ x₂) 2 = -L.cupD 2 := by
+  simpa using L.rightTranspose_cupD 2
+
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 1 (-2)) :
+    A₂.unit ≫ E₂ ◁ rouquierPower (A₂.rightTranspose A₂ x₂) 3 = -L.cupD 3 := by
+  simpa using L.rightTranspose_cupD 3
+
+example (L : SuperRouquierLoc A₁ A₂ x₁ x₂ t 0 2) (n : ℕ) :
+    A₂.unit ≫ E₂ ◁ rouquierPower (A₂.rightTranspose A₂ x₂) n = L.cupD n := by
+  simpa using L.rightTranspose_cupD n
 end
 
 open Lean Elab Command in

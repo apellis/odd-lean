@@ -50,10 +50,16 @@ linearity, signed anticomposition, and the power coefficient
 `q(n)=koszulSign p p ^ (n.choose 2)`. Its concrete local consumer
 `SuperRouquierLoc.rightTranspose_capD` proves that the reflected dotted cap
 is `q(n)` times the original `capD n`, at every height and parity.
+The full-Hom equivalence `SuperAdjunction.unitBend` is also constructed
+from precomposition adjunction, with explicit forward and inverse formulas.
+`rightTranspose_unit` proves the second bending identity for the same
+counit-defined transpose. `SuperRouquierLoc.rightTranspose_cupD` identifies
+the reflected dotted cup with `q(n)` times the original `cupD n`, at its
+original weight boundary, for every height and parity. Odd two- and
+three-dot cups and caps are exercised on the prescribed composites.
 No left triangle, cyclicity, faithfulness, or nonzero-model input is used.
 
-Still missing in Lean are the unit bending identity and dotted-cup
-comparison, composite-adjunction whiskering/coherence, the typed `P,Q,R`
+Still missing in Lean are composite-adjunction whiskering/coherence, the typed `P,Q,R`
 comparison with the prescribed mixed mate, horizontal super-opposition,
 and the mirrored local inversion data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
