@@ -114,8 +114,15 @@ self-inverse Koszul sign. `SuperAdjunction.horizontalOpposite` reflects
 The rational odd consumer retains degree-one transposed dots and verifies
 the negative odd–odd interchange in the reflected category.
 
-Still missing in Lean are the reflected mate comparison and the mirrored
-local inversion data. These must be assembled before
+`RouquierHorizontalReflection` proves `rouquierMate_horizontalOpposite`, identifying
+the reflected `rouquierMate` with `mixedMateBend.symm` on arbitrary maps.
+Only its even prefix and suffix use underlying bicategorical coherence.
+Combined with `mixedMateBend_symm_rightTranspose`, it recovers the original
+prescribed mixed mate from the reflected mate of the right transpose;
+the rational odd consumer checks this for a degree-one crossing.
+
+Still missing in Lean are the reflected local dots, crossings and inversion
+data. These must be assembled before
 applying the E theorem to prove the canonical F equation; neither
 `LeftZigzags` nor the shifted left adjunction is discharged yet.
 Transport to fusion and regular-bubble detection remains separate.
