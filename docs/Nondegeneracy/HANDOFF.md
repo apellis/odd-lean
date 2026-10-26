@@ -55,9 +55,26 @@ position 2 before cancelling the moving square difference. The two
 repeated-odd prefix signs cancel; repeated-even strands contribute no
 factor. A separate old-generator P balance argument retains total
 coefficient parity and the shift `p(i)(N_i+p(β))`. These arguments are
-not Lean theorems and still require independent review. The deformed
-ideal-sum equality, exact projective resolution, and resulting global
-projectivity remain unproved; the central-monic lemma is not applied.
+not Lean theorems and still require independent review. The separate
+ideal-sum argument is recorded below. The exact projective resolution and
+resulting global projectivity remain conditional; the central-monic lemma
+is not applied.
+
+## Deformed cyclotomic ideal sum
+
+[DeformedIdealSum.md](DeformedIdealSum.md) gives a proposed written proof of
+KKO I Lemma 8.2 for the full ELV coefficient ring. First-strand parabolic
+normality, with total coefficient parity and `x₁ ↦ x₁−2d_i`, replaces
+centrality. Choosing affine PBW words adapted to the tail parabolic proves
+`H F₁ H = Σ_a H F₁ τ₁⋯τ_a`, hence
+`(H F₁ H)e(β,i) = H F₁ ι_R(R) + H F₁ τ₁⋯τ_n e(β,i)`.
+Both inclusions and all old factors are retained; no cyclotomic flatness
+is assumed. This identifies the kernel of the old-to-new quotient map.
+Identification with `im P` is conditional on the separately proposed P
+balance/descent. A projective `B[s]` resolution additionally requires the
+reviewed QP injectivity argument and specified square-right actions and
+projective module structures. The proof awaits independent review; no
+full action or new Lean theorem is asserted.
 
 ## Moving-strand balance on arbitrary Hom entries
 
