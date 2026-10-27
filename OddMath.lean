@@ -54,6 +54,7 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerSquareDot
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerError
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRelation
 import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
+import OddMath.QuiverHecke.CyclotomicAction.CoefficientPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
