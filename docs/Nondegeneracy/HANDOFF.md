@@ -76,13 +76,25 @@ right whiskering and closed cup/cap pre/post diagrams. It also uses
 whiskered interchange with two-dot pre/post diagrams at both parities,
 over ℚ and the zero ring. It extracts ideal generation and exact recovery.
 
-Open: lift membership in `finiteColourIdeal` through its finite span
-derivation at common restricted endpoints, using `supported_context_lift`
-for the generator case and linear inclusion for addition and scalar
-multiplication. Exercise an actual sum. Then derive finite-presentation
-equality from `eq_finiteColourIdeal`; inclusion faithfulness of an
-arbitrarily preselected finite subset is not asserted. Arbitrary-colour
-detection and nondegeneracy remain separate obligations.
+`FiniteColourIdealDescent.lean` proves `supported_ideal_lift_at`: induction on the
+finite contextual span lifts every generator into the restricted presentation
+ideal at one prescribed pair of restricted endpoints, then closes under zero,
+addition and scalar multiplication through linear inclusion. The generator
+transport uses injectivity of raw object inclusion, not faithfulness of the
+presented category. Arbitrary original weights and commutative coefficient
+rings, including the zero ring, remain unchanged. The importing consumer
+lifts a sum of two distinct positive-inversion matrix relations with nonempty
+whiskering and internal cup/cap diagrams at common endpoints, over the mixed
+Bool datum and both ℚ and the zero ring. Earlier signed interchange
+consumers retain both parity signs.
+
+Open: derive equality in some enlarged finite-colour presentation from
+`eq_finiteColourIdeal` and `supported_ideal_lift_at`. Enlarge the witness by
+both input diagrams' `linearColours` before `supported_linear_lift_at`;
+the support of their difference may hide cancelled colours. Use the
+restricted quotient's `lin_eq_iff` after identifying the included difference
+with the descended ideal element. No faithfulness for a chosen finite J is
+asserted. Arbitrary-colour detection and nondegeneracy remain separate.
 
 ## Signed linear dot cancellation
 
