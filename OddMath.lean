@@ -16,6 +16,9 @@ import OddMath.SKM.RouquierHomPrincipal
 import OddMath.SKM.RouquierHomPreCoordinates
 import OddMath.SKM.RouquierHomPreInverse
 import OddMath.SKM.RouquierHomPreSuperInverse
+import OddMath.SKM.RouquierHomPreNegativePowers
+import OddMath.SKM.RouquierHomPreMateSlide
+import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers

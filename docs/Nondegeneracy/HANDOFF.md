@@ -257,6 +257,70 @@ This closes the relation-killing step for the existing ordinary-polynomial
 coefficient implementation only. Signed polynomial transport and the
 inductive QP calculation remain; no global QP, full coefficient-superalgebra
 extension, ideal-sum equality or projective resolution is asserted.
+## Content-shifted mixed Hom interchange
+
+`RouquierHomMixedInterchange.lean` constructs the prescribed J of
+`HomSwappingMates.md` §1 (1): remove the source content shift, apply the
+inverse pre/post associator, and insert the target shift. On the supplied
+factor families the shifts are κ(β) and κ(β+i); their sum is the colour
+parity. `homContentMixedInterchange_pre` and `_post` derive the q signs
+from super-interchange and homogeneous shift naturality.
+`homContentMixedDot_exchange` proves the shifted pre/post Koszul exchange.
+The two `_square` theorems transport dot squares with no residual sign.
+
+`homContentMixedSwap_products` composes the prescribed coefficient
+`-J^-1 a²` with this literal J on both sides, retaining the minus. Here a
+is an arbitrary AB endomorphism, not a constructed rational coefficient;
+this theorem does not assume or prove its finite expansion. Importing
+odd rank-one consumers check both dot signs, their anticommutation, the
+square transports, distinct content parities and the negative composite.
+No nonzero factor model is constructed. All statements hold over any
+commutative ring; there is no weight-height case split or additional
+field, domain, flatness, finite-colour or independent-root hypothesis.
+
+Next: construct the prescribed rational a from the actual unit pre dot
+and locally nilpotent post dot, then prove `SwappedHomInversion.md` §3
+(3) with a bound for each actual object/input. The even inverse and odd
+even-square inverse must be identified with the finite series, not
+defined by that series. Then bend in the specified adjunctions to prove
+(4) and raw comparisons (5), retaining alpha, beta, gamma, xi and the
+source-height normalization, including exceptional zero. No finite-sum
+consumer, literal mixed-entry comparison, fusion or detector is claimed
+by this prerequisite slice.
+
+## Negative precomposition windows and the literal mate slide
+
+`RouquierHomPreMateSlide.lean` proves `homContentCrossing_slide` from the
+factor’s `slide_left` relation and the prescribed reversed crossing
+`-q pre(t)`. Applying `rouquierMate_slide` to the specified normalized
+pre adjunctions gives `homContentPreMate_slide`, equation (1) of
+`SwappedHomInversion.md` §2. No slide for an inverse component is assumed.
+
+`RouquierHomPreNegativePowers.lean` defines exponent −n by the nth power
+of the inverse probe dot. Both whiskered inverse identities are proved.
+`homPreDotInverse_power_supernatural`, `homPreNegativeCup_supernatural`
+and `homPreNegativeCap_supernatural` give signed naturality on the full
+Hom supercategory. The coordinate theorems retain alpha at −n and beta
+at −n, including the inverse `leftAdjScalar` at the source height. At n=0
+they agree with the existing nonnegative windows. Gamma and xi conventions
+are unchanged; this slice does not use or alter either comparison.
+
+Hypotheses: supplied Rouquier family in a Π-2-supercategory over an
+arbitrary commutative ring; invertibility of the probe dot only for the
+negative powers. No field, domain, flatness, finite-colour, independent-root
+or global nilpotence-bound hypothesis is introduced. Importing odd rank-one
+examples verify the mate-slide sign, both inverse identities, odd and even
+negative-power naturality, both coordinates and exponent zero. These are
+consumers of supplied factor data, not a nonzero factor construction.
+
+Remaining and next target: prove `SwappedHomInversion.md` §3 (3), the finite
+expansion in the nilpotent postcomposition reservoir variable for the
+prescribed swapping entries, then bend them in their actual adjunctions
+to obtain the literal central entries (4) and raw comparisons (5). Retain
+`-J^-1 a²`, every alpha/beta/gamma and xi sign, and reservoir bounds local
+to each content. No central-entry comparison, fusion or detector theorem
+is asserted here.
+
 
 ## Normalized precomposition supernatural inverses
 
