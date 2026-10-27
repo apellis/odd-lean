@@ -1,5 +1,32 @@
 # Odd nondegeneracy: restart state
 
+## Precomposition inverse transport: incomplete
+
+`RouquierHomPreInverse.lean` contains preliminaries for
+`SwappedHomInversion.md`, §2, not the prescribed pre-Hom augmented inverses.
+`SuperSumInvTo.mapHomogeneousCoordinates` and its column counterpart
+transport along coordinates of common parity sigma, changing window parity
+from q(n) to sigma+q(n) while preserving principal parity. They are not yet
+specialized to the Hom coordinates.
+
+`SuperRouquierLoc.leftWindowInvFrom` and `leftWindowInvTo` package the raw
+left-window identities at nonnegative and nonpositive factor heights.
+`leftWindowCupRowNat` and `leftWindowCapColumnNat` extend the finite inverse
+entries by zero outside the window. The zero-height branches use the two
+raw principal products. These preliminaries have a scoped strict build;
+there is no importing consumer or declaration axiom audit for this module,
+and it is not yet imported from the root.
+
+Remaining: construct the prescribed source and target coordinate isomorphisms
+with their associators; identify their common parity using the adjacent
+height shift; specialize the homogeneous transport with the known alpha,
+beta and gamma coefficients; replace the forward entries by the specified
+mate and dotted normalized unit/counit using the existing comparison
+lemmas. Then give both inverse coordinate formulas and the zero-overlap
+identity, retaining gamma(0)=(-1)^p. The required all-height consumer,
+axiom audit and root integration remain open. No complete pre-Hom inverse,
+fusion, or nondegeneracy result is claimed.
+
 ## Raw reversed left-window inverses
 
 `RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
