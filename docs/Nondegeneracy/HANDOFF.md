@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Cofinal bounded observations
+
+`SwappedDetectingFamily.md` supplies the written simultaneous parameter
+choice from the full deformed factor inputs: fix the finite-colour pair and
+degree, set N0=d+2 choose(length(t),2)+1 and m=N0, use the balanced schedule
+at -mu, and truncate every positive even coefficient to power N0 in one
+common tower algebra. Probe content zero is nonzero (T_0=k) and already has
+the required external Hom weight; no positive-content reachability is assumed.
+Closure series lengths are chosen after the fixed-content grading bounds,
+independently of the cyclotomic cutoffs. Thus no circular inequality arises.
+The literal all-reservoir evaluation, all-height coefficient substitution,
+and bounded signed extraction supply the field-valued bounded cyclic
+recovery data at that pair and degree, including degree zero. This is a
+proposed written result relative to full factor existence, not a Lean
+instance, an arbitrary-ring splitting, or a global arbitrary-colour Hom
+action. Full factor construction and formalization remain separate.
+
 ## Conditional finite-colour swapped superaction
 
 `SwappedActionAssembly.md` now states the conditional written finite-colour
