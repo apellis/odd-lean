@@ -8,6 +8,23 @@ formalization obligations, with exact code revisions.
 
 ## Ground-ring descent retaining the original realization
 
+`SKM.linearIndependent_of_joint_scalar_images` formalizes the finite-relation
+argument of [GroundRingDescent.md](GroundRingDescent.md) §6: if ring maps
+`R → K_j` jointly detect zero and semilinear maps take a family in an
+`R`-module to independent families over every `K_j`, the original family is
+independent. The `K_j` may be commutative rings, not necessarily fields; no
+individual ring map or module map is assumed injective. Given spanning,
+`SKM.basisOfJointScalarImages` constructs the basis. The consumer applies it
+to the unit family over `ℚ × ℚ`, where neither projection alone is injective.
+This is a coefficientwise algebraic lemma, not SKM nondegeneracy.
+
+The next descent inputs are joint characteristic-zero field separation for
+the universal group-algebra parameter ring and semilinear transport of the
+actual SKM expansion family (including the full exterior coefficient basis).
+The universal parameter construction, scalar-change equivalence and expansion
+square, and the field candidate remain unformalized. The frozen candidate is
+unchanged.
+
 [GroundRingDescent.md](GroundRingDescent.md) gives a proposed deduction from
 `SwappedNondegeneracy.md` over characteristic-zero fields to its full scope
 over arbitrary commutative rings with 2 invertible, without inverting the
@@ -23,7 +40,8 @@ fields. Existing arbitrary-ring expansion spanning and the full exterior
 coefficient basis then give the universal basis from field independence;
 only that basis, not the field detecting action, is specialized.
 
-No Lean declaration is added. The precise remaining scalar-change target is
+The general ground-ring nondegeneracy endpoint is not formalized. The precise
+remaining scalar-change target is
 `R tensor_A H_A ≃ H_R` for the actual SKM presentation, with the raw-diagram
 formula, normalized bubble naturality and the expansion square. The note
 proves its contextual-presentation construction on paper. An integral
