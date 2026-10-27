@@ -220,9 +220,17 @@ right cyclotomic coefficient action commutes with the left action, so
 
     G(z ⊗ (y·c))_(j,m) = G(z⊗y)_(j,m) · c.                 (10)
 
-This is the coordinatewise coefficient action. Neither (9) nor (10) is yet
-implemented as a Lean equivalence. The new consumer checks the existing
-`qCoefficientInsert_mul` together with the original corner term laws.
+Equations (9)–(10) are checked in `PrependTensorCoordinates.lean` and
+`PrependCoefficientCoordinates.lean`. `prependTensorEquiv` is an additive
+equivalence for every unital left B-module, at all heights. It installs no
+new ground-ring action on the integral quotient and does not assert an
+ambient-algebra action on the finite-coordinate side. Its forward map is
+the literal finite sum; its inverse uses the proved affine coordinates.
+`qPrependTensorEquiv` specializes to the existing shifted coefficient at
+height r+1. `qPrependTensorEquiv_symm_insert` exhibits the parity involution
+on inserted coefficients, and `qPrependTensorEquiv_symm_right` proves (10)
+using the existing commuting left and right actions. These are additive
+and right-coefficient statements, not a graded or k-linear packaging.
 
 The checked first-dot square commutation gives
 
@@ -256,6 +264,8 @@ existence and injectivity are now `prependExpansion_projection`,
 `basisNF`, without tensoring independence. `prependCoordinateEquiv` supplies
 both round trips and the forward/inverse right-action laws.
 
-Remaining: implement (9) for the existing balanced quotient, then identify
-the prescribed coefficient action and cancellation operators. The affine
-coordinate equivalence does not itself establish these steps or full QP.
+The balanced quotient comparison and its prescribed coefficient action
+are checked in `prependTensorEquiv` and `qPrependTensorEquiv_symm_right`.
+Remaining: identify the moving-dot square as degree-two raising in these
+coordinates and prove the cancellation statements. Neither the affine nor
+the additive balanced equivalence alone establishes full QP.
