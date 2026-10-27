@@ -16,6 +16,47 @@ This is cancellation only. The all-prefix relation-killing and polynomial
 transport identities needed for global QP remain to be proved; no global
 QP, projective resolution or full nondegeneracy conclusion follows here.
 
+## Supernatural postcomposition augmented inverses
+
+`RouquierHomPostNaturalInverse.lean` proves signed naturality against arbitrary
+homogeneous probe morphisms, including odd ones, for the prescribed dot
+powers, mate, cups, caps and both families of inverse entries. The even
+source and target coordinate comparisons are natural isomorphisms; the
+inverse entries are transported from the specified factor maps, with the
+original right adjoint `N S`. Every raw natural-number inverse entry is
+retained, while product identities use the finite height window.
+
+`RouquierHomPostSuperInverse.lean` constructs `homContentPostSuperInvPos`
+and `homContentPostSuperInvNeg` in the existing SCat Hom category. All five
+identities are lifted by homogeneous component extensionality, and the two
+zero-height principal inverses agree as supernatural transformations. The
+principal map equals the actual ordered cup–crossing–cap mate. The even
+natural lifts use literal `homParityShiftDatum` comparisons, including the
+identity summands, not unsigned shift identifications. No object-category
+biproduct hypothesis is needed.
+
+This closes the natural-transformation packaging of the same-colour local
+augmented inverse. It does not supply the remaining fields of a full Hom
+Rouquier family, mixed-sector braid relations, fusion, negative dot powers,
+or a nonzero factor model in Lean.
+
+## Pointwise content-shifted postcomposition inverse
+
+`RouquierHomPostInverse.lean` constructs `homContentPostInvPos` and
+`homContentPostInvNeg` from the specified factor inverse and the checked
+principal and dotted-entry comparisons. All five finite-window products
+and homogeneous parities hold over a commutative ring, at every content
+and height. The forward maps remain the prescribed mate and dotted unit
+or counit, rather than maps defined by conjugation.
+
+The even-component theorems retain the literal parity-shifted identity
+summands, including their diagonal and off-diagonal products. The principal
+inverse, inverse rows and columns have explicit factor-coordinate formulas;
+the zero-height presentations agree. These pointwise data are lifted to
+supernatural transformations by the modules above. Fusion and construction
+of a nonzero factor model in Lean remain separate.
+
+
 ## Input-side prepend decomposition
 
 [PrependCoordinates.md](PrependCoordinates.md) records the construction for
@@ -272,7 +313,18 @@ content, every weight and both parities over a commutative ring; no comparison
 premise is added. Odd-colour consumers apply this equality at odd and zero
 content shift, jointly importing the normalized precomposition principal
 theorem. The Rouquier family remains an input.
-No dotted-power, whole-matrix, swapping-mate, fusion or nonzero-model result is claimed.
+`RouquierHomPostPowers.lean` proves the natural-power part of §3 (9):
+`homContentPostCup_coordinates` and `homContentPostCap_coordinates` identify
+all dotted entries with the literal factor unit/counit words, including their
+whiskering and associators. `homContentPostDot_power` identifies powers of the
+prescribed shifted dot with shifted raw powers. Both comparison signs cancel;
+no transpose sign or invertibility assumption is introduced. These theorems
+apply to every finite window, both colour parities, all content and weights.
+The importing consumer checks both parities, zero and odd content, and powers
+zero and three, and audits every declaration owned by the module.
+The pointwise whole augmented inverse and literal parity-shifted summands
+are now checked as described above. Negative powers, natural inverse
+packaging, swapping mates, fusion and a nonzero model remain separate.
 
 
 ## Raw normalized Hom mate coordinates
