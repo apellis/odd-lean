@@ -49,10 +49,18 @@ cup/cap and the signed-relation lift to two adjacent odd dots, over both ℚ
 and the zero ring. It also verifies that a cup/cap's expanded zero-ring
 support is empty while its raw and interior supports remain singleton.
 
-Open: extend the free-diagram lifts linearly at common restricted endpoints,
-prove compatibility with linear composition and whiskering, restrict each
-contextual `IdealGen`, and lift the entire span derivation. The supported
-free-diagram and interchange results do not yet prove this finite-subtype
+`FiniteColourIdealRestriction.lean` extends diagram restriction to finite
+linear combinations at canonical common restricted endpoints.
+`restrictDiagramAt` identifies all diagram summands at those endpoints;
+`include_restrictDiagramAt` and `include_restrictLinear` recover the entire
+free expression after inclusion and endpoint transport, over any
+commutative ring, including the zero ring. The result is not yet an
+ideal-membership theorem.
+
+Open: prove compatibility of these linear lifts with composition and
+whiskering, restrict each contextual `IdealGen` (including raw relation
+parameters), and lift the entire span derivation. The free-diagram,
+linear, and interchange results do not yet prove this finite-subtype
 derivation theorem. Only after that theorem can the finite-witness passage
 support arbitrary-colour detection. Neither that implication nor
 nondegeneracy is asserted here.
