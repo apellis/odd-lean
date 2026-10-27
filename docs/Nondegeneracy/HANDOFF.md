@@ -1,5 +1,39 @@
 # Odd nondegeneracy: restart state
 
+## Signed ELV coefficient quotient category
+
+`ELVCoefficientCategory.lean` constructs the categorical coefficient quotient
+required before old-cyclotomic balancing in `DeformedGlobalQP.md` §3.
+`elvCoefficientIdeal_parity` proves stability of the exact two-sided ELV
+coefficient ideal under both parity projections. The generators used are the
+specified elementary truncations and the even-cutoff `delta_i * chi_top`
+relations, transported through the polynomial/exterior algebra equivalence.
+No field, domain, flatness, finite-colour or independent-root premise is added.
+
+`elvCoefficientGradedAlgebra` gives the quotient algebra its induced parity.
+`ELVCoefficientCategory` is its signed box product with the affine category.
+`elvQuotientMap_comp` and `elvQuotientMap_mem` prove preservation of actual
+categorical composition and parity; `elvQuotientFunctor` is linear and a
+superfunctor. `elvQuotientHomEquiv` identifies its Homs with
+`ELVCoefficientHom`, and `elvQuotientMap_eq` identifies its map with the earlier
+tensor quotient. `elvQuotientMap_kills_span` kills the two-sided span of the
+coefficient arm of `ELVGenerator`. `elvQuotient_odd_comp_odd` retains the
+negative sign when an odd coefficient passes an odd affine morphism.
+
+The consumer retains nonzero delta at cutoffs two and three, tests the even
+top relation inside categorical composites, checks the quotient map and
+parity, and instantiates signed composition over `ZMod 9` with invertible two.
+Cutoff zero and the empty word are included.
+
+This is a categorical coefficient quotient, not an old-cyclotomic balanced
+target or all-prefix relation killing. Neither old-strand nor moving-strand
+cyclotomic polynomials are imposed. The next task is to construct the
+old-strand cyclotomic quotient and its signed balanced tensor over this
+category, imposing only the old-strand relations, then prove the required
+relation killing there. The ordinary `contentTargetTensor` alone does not
+supply that construction. QP, projective resolution and nondegeneracy remain
+separate obligations.
+
 ## Rational mixed coefficients on a nilpotent component
 
 `RouquierHomMixedRational.lean` proves `SwappedHomInversion.md` §3
@@ -314,9 +348,10 @@ includes zero cutoff and empty chains. Transport and the top relation
 are also instantiated over `ZMod 9`, with invertible two and a nonzero
 square-zero element.
 
-This is transport in the coefficient-quotient tensor modules, not a
-construction of categorical composition on those modules or of an SKM
-action. The next obligation is to compare these coefficient-extended
+The transport module alone does not construct categorical composition;
+`ELVCoefficientCategory.lean` now supplies that structure and its quotient
+functor. It does not construct an SKM action. The next obligation is to
+compare these coefficient-extended
 modules with the deformed old-cyclotomic balanced target and prove the
 relation-killing step there, then perform `DeformedGlobalQP.md` §3.
 The existing ordinary-polynomial `contentTargetTensor` does not supply
