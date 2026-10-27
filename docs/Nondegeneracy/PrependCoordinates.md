@@ -2,7 +2,12 @@
 
 ## Status and precise assertion
 
-This is a **proposed written proof, not a Lean-checked coordinate equivalence**.
+The whole affine corner coordinate equivalence is **Lean-checked** in
+`CyclotomicAction/PrependEquivalence.lean` as `prependCoordinateEquiv`. Its
+forward map is the literal finite sum of `prependPBWCorner`, its inverse is
+the entrywise assembly `prependCoefficients`, and both directions satisfy
+the right-old-algebra law. Balanced tensor descent is also Lean-checked as
+`prependTensorEquiv`, an additive equivalence without k-linear packaging.
 The checked portion is `InputParabolic.lean` (unique input permutation and
 reduced concatenation), `PrependBasis.lean` (input leading-index equivalence,
 concrete diagram triangularity and scalar Hom basis), and
@@ -215,9 +220,17 @@ right cyclotomic coefficient action commutes with the left action, so
 
     G(z ⊗ (y·c))_(j,m) = G(z⊗y)_(j,m) · c.                 (10)
 
-This is the coordinatewise coefficient action. Neither (9) nor (10) is yet
-implemented as a Lean equivalence. The new consumer checks the existing
-`qCoefficientInsert_mul` together with the original corner term laws.
+Equations (9)–(10) are checked in `PrependTensorCoordinates.lean` and
+`PrependCoefficientCoordinates.lean`. `prependTensorEquiv` is an additive
+equivalence for every unital left B-module, at all heights. It installs no
+new ground-ring action on the integral quotient and does not assert an
+ambient-algebra action on the finite-coordinate side. Its forward map is
+the literal finite sum; its inverse uses the proved affine coordinates.
+`qPrependTensorEquiv` specializes to the existing shifted coefficient at
+height r+1. `qPrependTensorEquiv_symm_insert` exhibits the parity involution
+on inserted coefficients, and `qPrependTensorEquiv_symm_right` proves (10)
+using the existing commuting left and right actions. These are additive
+and right-coefficient statements, not a graded or k-linear packaging.
 
 The checked first-dot square commutation gives
 
@@ -228,8 +241,19 @@ coefficient operator preserves m by (10). Their monic difference is
 injective by inspecting the largest occupied m; the leading coefficient
 is a unit identity map on M. Any use of an odd linear difference must
 also identify its square and its coefficient operator on the prescribed
-tensor; it is not inferred from scalar independence. These cancellation
-identifications remain separate Lean obligations.
+tensor; it is not inferred from scalar independence. The moving-dot
+square identification is now checked in `PrependDotCancellation.lean`:
+`prependPBWTerm_mul_sq` uses the displayed PBW order and
+`affineFirstDot_sq_comm`, and `targetRightDot_sq_prepend` transports the
+prescribed operator through the balanced equivalence.
+`qPrependTensorEquiv_symm_sq` is its inverse-coordinate formula.
+`targetRightDot_sq_sub_coefficient_injective` proves injectivity of the
+moving-dot square minus `targetRightCoefficient c`, for every cyclotomic
+coefficient c, including the prescribed last-dot square. The finite-support
+argument chooses a maximal occupied exponent and evaluates at that exponent
+plus two; the coefficient action is zero there. No nontriviality, domain,
+flatness or monicity premise is introduced. The odd linear-difference
+operator and its square identification remain separate Lean obligations.
 
 At n=0 there is one shuffle and one old empty-word idempotent; (1) is the
 one-strand dot basis over B=H₀≃k. There is no old last dot in this case.
@@ -244,11 +268,17 @@ identified by `prependElt_eq_comp`. Its `Approx` statement is
 construction to each scalar Hom space. The index records the old target
 as `PrependIdx.oldTarget` and the old normal form as `PrependIdx.old`.
 
-Implement matrix assembly: identify the corresponding single-entry matrix
-with `prependPBWTerm` applied to the old basis matrix, and regroup finite
-scalar Hom expansions into old-algebra coefficients to obtain existence
-and injectivity of (1). Define choice coordinates only after
-these two results, prove both round trips, and then implement (9) for the
-existing balanced quotient. The checked permutation and affine term laws
-remove the need for a global reflection or super-opposite functor; they do
-not themselves assert this remaining Lean coordinate theorem or full QP.
+Matrix assembly is checked in `PrependMatrix.lean`. Finite regrouping,
+existence and injectivity are now `prependExpansion_projection`,
+`prependExpansion_exists`, and `prependExpansion_injective` in
+`PrependEquivalence.lean`. The latter uses the scalar prepend basis and
+`basisNF`, without tensoring independence. `prependCoordinateEquiv` supplies
+both round trips and the forward/inverse right-action laws.
+
+The balanced quotient comparison and its prescribed coefficient action
+are checked in `prependTensorEquiv` and `qPrependTensorEquiv_symm_right`.
+The moving-dot square is now identified with degree-two raising and its
+difference with every right coefficient is injective in
+`PrependDotCancellation.lean`. Remaining: identify the odd linear-difference
+square with its prescribed signed coefficient expression and consume
+cancellation in the global QP argument. No full QP identity is asserted.
