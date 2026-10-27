@@ -170,6 +170,20 @@ height `-h`, including the exceptional gamma at height zero. These raw
 factor identities alone are not yet a pre-Hom augmented inverse, a full
 Hom family, fusion, or a nonzero model construction.
 
+## Coefficient transport before presentation base change
+
+`ScalarChange.scalars` carries Brundan–Ellis (1.5)–(1.6) across an arbitrary
+commutative ring homomorphism, including units and the odd-colour invertibility
+condition on two. `ScalarChange.cScalars` preserves the shifted units (1.17).
+The two-odd-colour example specializes `ZMod 9` to `ZMod 3`, killing the
+nonzero element three while preserving the shifted bubble law. This verifies
+parameter admissibility under a noninjective specialization only. The map on
+free linear diagrams, preservation of every relation including interchange and
+arbitrary horizontal/vertical contexts, and descent to the presented Hom
+quotient remain open. These are prerequisites for the presentation tensor
+base-change equivalence; neither that equivalence nor arbitrary-ring
+nondegeneracy follows from parameter transport.
+
 ## Signed linear dot cancellation
 
 `LinearDotCancellation.lean` proves injectivity of `targetRightDot -
