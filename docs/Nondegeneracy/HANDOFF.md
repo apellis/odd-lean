@@ -61,12 +61,28 @@ The result is not yet an ideal-membership theorem. Both kinds of
 presentation generator now have typed restricted lifts: `inclusion_allRel`
 uses the raw relation parameters and handles both interchange parities.
 
-Open: restrict the whiskering context and pre/post compositions for each
-`IdealGen`, then lift its finite span derivation. The free-diagram,
-linear, and interchange results do not yet prove this finite-subtype
-derivation theorem. Only after that theorem can the finite-witness passage
-support arbitrary-colour detection. Neither that implication nor
-nondegeneracy is asserted here.
+`FiniteColourContextLift.lean` proves `supported_context_lift`. Its
+`ContextLift` records the restricted contextual generator and recovers the
+raw `AllRel` label, both whiskering contexts, pre/post linear diagrams and
+the complete value through inclusion. `ContextLift.idealGen` identifies
+the lifted value as an actual generator of the restricted presentation
+ideal. `inclusion_whiskerOK_iff` reflects whiskering compatibility;
+`supported_linear_lift_at` uses prescribed common endpoints rather than
+nested transports. No field, domain, flatness or independent-root
+hypothesis is needed. Raw labels survive zero-ring cancellation.
+
+The importing consumer uses a cup/cap relation with nonempty left and
+right whiskering and closed cup/cap pre/post diagrams. It also uses
+whiskered interchange with two-dot pre/post diagrams at both parities,
+over ℚ and the zero ring. It extracts ideal generation and exact recovery.
+
+Open: lift membership in `finiteColourIdeal` through its finite span
+derivation at common restricted endpoints, using `supported_context_lift`
+for the generator case and linear inclusion for addition and scalar
+multiplication. Exercise an actual sum. Then derive finite-presentation
+equality from `eq_finiteColourIdeal`; inclusion faithfulness of an
+arbitrarily preselected finite subset is not asserted. Arbitrary-colour
+detection and nondegeneracy remain separate obligations.
 
 ## Signed linear dot cancellation
 
