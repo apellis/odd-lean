@@ -1158,6 +1158,7 @@ import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.ScalarChange
+import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
