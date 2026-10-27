@@ -353,6 +353,44 @@ coordinates and the known alpha, beta and gamma normalizations at Hom
 height `-h`, including the exceptional gamma at height zero. These raw
 factor identities alone are not yet a pre-Hom augmented inverse, a full
 Hom family, fusion, or a nonzero model construction.
+## Decorated matching-family specialization
+
+`ScalarChangeMatchingFamily.lean` proves that coefficient change commutes with
+horizontal placement, `bubAt` on every closed diagram, and `xlay`/`xev` on
+every extended layer and word, including both normalized left bends. For the
+actual fixed `MatchingBasisChoice` and its serialized dots, the image formula
+`homMap_expansion_single` combines this with `homMap_betaSYM`; the finite
+`homMap_expansion` follows by additive induction, and
+`homBaseChange_expansion_single` expresses the same generator formula through
+the tensor comparison. The original datum, weight group, representatives and
+full odd/exterior coefficients remain unchanged. The two-odd-colour
+`ZMod 9 → ZMod 3` check uses an inhabited complete choice containing a literal
+oriented cup and two dots, together with an exterior/elementary bubble
+coefficient; separate layers exercise a normalized left cap.
+
+The remaining obligation for arbitrary-ring nondegeneracy is an independent
+universal diagram basis (equivalently injectivity of the matching expansion).
+Neither the image formula nor the tensor comparison proves that basis or
+injectivity of bubble evaluation.
+
+## Full coefficient and bubble specialization
+
+`ScalarChangeBubbleFamily.lean` constructs a ring homomorphism on the all-colour
+polynomial/exterior algebra `SYM` (1.21), fixing each elementary and exterior
+generator while applying the ground-ring homomorphism to coefficients. It
+preserves the prescribed shifted units and specializes the full left and right
+bubble families of Definition 2.3, including fake negative-dot cases and the
+odd bubble. `homMap_betaSYM` commutes with evaluation (1.22) for every `SYM`
+expression, not merely generators; `homBaseChange_betaSYM` expresses the same
+comparison through the proved tensor equivalence. The two-odd-colour
+`ZMod 9 → ZMod 3` consumer checks noninjective coefficient change, the
+exterior generator, arbitrary bubble indices and a mixed exterior/elementary
+product. No nonzero presented Hom class is asserted.
+
+The diagram-family image formula for the actual `MatchingBasisChoice.layers`
+is now proved above. It is distinct from independence of the family, which
+still requires the universal diagram basis; no nondegeneracy or injectivity
+of `betaSYM` follows from coefficient change.
 
 ## Coefficient change on the presented category
 
