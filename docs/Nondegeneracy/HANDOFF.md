@@ -1,10 +1,30 @@
 # Odd nondegeneracy: restart state
 
+
+
+
 The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
 ## Ground-ring descent retaining the original realization
+
+`SKM.linearIndependent_of_joint_scalar_images` formalizes the finite-relation
+argument of [GroundRingDescent.md](GroundRingDescent.md) §6: if ring maps
+`R → K_j` jointly detect zero and semilinear maps take a family in an
+`R`-module to independent families over every `K_j`, the original family is
+independent. The `K_j` may be commutative rings, not necessarily fields; no
+individual ring map or module map is assumed injective. Given spanning,
+`SKM.basisOfJointScalarImages` constructs the basis. The consumer applies it
+to the unit family over `ℚ × ℚ`, where neither projection alone is injective.
+This is a coefficientwise algebraic lemma, not SKM nondegeneracy.
+
+The next descent inputs are joint characteristic-zero field separation for
+the universal group-algebra parameter ring and semilinear transport of the
+actual SKM expansion family (including the full exterior coefficient basis).
+The universal parameter construction, scalar-change equivalence and expansion
+square, and the field candidate remain unformalized. The frozen candidate is
+unchanged.
 
 [GroundRingDescent.md](GroundRingDescent.md) gives a proposed deduction from
 `SwappedNondegeneracy.md` over characteristic-zero fields to its full scope
@@ -21,7 +41,8 @@ fields. Existing arbitrary-ring expansion spanning and the full exterior
 coefficient basis then give the universal basis from field independence;
 only that basis, not the field detecting action, is specialized.
 
-No Lean declaration is added. The precise remaining scalar-change target is
+The general ground-ring nondegeneracy endpoint is not formalized. The precise
+remaining scalar-change target is
 `R tensor_A H_A ≃ H_R` for the actual SKM presentation, with the raw-diagram
 formula, normalized bubble naturality and the expansion square. The note
 proves its contextual-presentation construction on paper. An integral
@@ -143,6 +164,28 @@ coefficient implementation only. Signed polynomial transport and the
 inductive QP calculation remain; no global QP, full coefficient-superalgebra
 extension, ideal-sum equality or projective resolution is asserted.
 
+## Normalized precomposition inverse at positive Hom height
+
+`homContentPreInvPos` supplies all five `SuperSumInvTo` identities for the
+prescribed normalized pre-Hom mate and dotted counits when the factor height
+k is nonpositive (Hom height −k ≥ 0). It transports the reversed factor cap
+window through the same homogeneous source and target coordinates and their
+even associators. The normalized cap comparison retains the inverse
+`leftAdjScalar` at the source height; its integral involutive coefficient is
+`homPreBeta`, including the sign depending on the dot power. The principal
+inverse retains gamma(k), including gamma(0)=(-1)^p, and the cap columns
+retain the ordered finite triangular series. `homContentPreInv_zero` identifies
+the two principal inverses at the empty window. The odd rank-one importing
+examples exercise all five products at Hom height 2, the nontrivial beta
+coefficient, and the zero-height principal comparison.
+
+The hypotheses remain a supplied Rouquier family in a Π-2-supercategory over
+a commutative ring. No nonzero factor model or inverse premise on the
+prescribed Hom maps is inferred. Remaining: bundle the pointwise inverses
+into supernatural natural transformations, then verify the central mixed
+blocks and full fusion; neither follows solely from these sector inverses.
+
+
 ## Normalized precomposition inverse at nonpositive Hom height
 
 `homContentPreInvNeg` in `RouquierHomPreInverse.lean` supplies all five
@@ -163,13 +206,10 @@ finite ordered triangular series in `leftWindowCupRowNat` is retained.
 identifying it with one. The importing odd rank-one examples exercise the
 inverse products at Hom heights −2 and 0 and the nontrivial alpha_1 sign.
 
-Remaining: the positive Hom-height cap-window orientation, with its beta_n
-coefficient and `leftAdjScalar` normalization, then zero-height agreement
-of the two principal inverses. The common coordinate isomorphisms and
-principal comparison are already available; use `leftWindowInvTo` and
-`homReservoirCap_coordinates` for that next orientation. Supernatural
-packaging, full fusion and nondegeneracy remain separate obligations.
-The factor family is still input data, not a constructed nonzero model.
+The positive Hom-height cap-window orientation and zero-height principal
+agreement are proved above. Supernatural packaging, full fusion and
+nondegeneracy remain separate obligations. The factor family is still input
+data, not a constructed nonzero model.
 
 ## Raw reversed left-window inverses
 
@@ -194,19 +234,74 @@ height `-h`, including the exceptional gamma at height zero. These raw
 factor identities alone are not yet a pre-Hom augmented inverse, a full
 Hom family, fusion, or a nonzero model construction.
 
-## Coefficient transport before presentation base change
+## Coefficient change on the presented category
+
 
 `ScalarChange.scalars` carries Brundan–Ellis (1.5)–(1.6) across an arbitrary
-commutative ring homomorphism, including units and the odd-colour invertibility
-condition on two. `ScalarChange.cScalars` preserves the shifted units (1.17).
-The two-odd-colour example specializes `ZMod 9` to `ZMod 3`, killing the
-nonzero element three while preserving the shifted bubble law. This verifies
-parameter admissibility under a noninjective specialization only. The map on
-free linear diagrams, preservation of every relation including interchange and
-arbitrary horizontal/vertical contexts, and descent to the presented Hom
-quotient remain open. These are prerequisites for the presentation tensor
-base-change equivalence; neither that equivalence nor arbitrary-ring
-nondegeneracy follows from parameter transport.
+commutative ring homomorphism `f : R →+* S`, including units and the odd-colour
+invertibility condition on two. `ScalarChange.cScalars` preserves (1.17).
+`ScalarChangePresentation.lean` now constructs the forward comparison for
+`GroundRingDescent.md`, §7, on the original datum and full weight group:
+
+- `coeffFunctor` uses the free additive-category lift with restricted target
+  scalars; `coeff` is the resulting semilinear map on raw linear diagrams.
+- `coeff_relation` proves preservation of every `Rel` constructor, including
+  all entries of both products for each augmented inverse matrix.
+  `coeff_interchange` preserves signed interchange.
+- `coeff_mem_ideal` proves preservation of the whole ideal, including arbitrary
+  horizontal contexts and arbitrary linear pre- and post-compositions.
+- `homMap` descends to the presented Hom quotient, and `presentationFunctor`
+  is the induced additive functor. `homMap_diag`, `homMap_layer`, `homMap_cl`
+  and `homMap_whisk` give diagram, generator and horizontal-context formulas.
+  `homMap_etaP` and `homMap_epsP` preserve the supplied normalized left cups
+  and caps, including inverse units and all height cases.
+
+The two-odd-colour `ZMod 9 → ZMod 3` consumer exercises the quotient map,
+relations and left adjunction, and sends three times an odd dot to zero.
+The coefficient three is proved nonzero in `ZMod 9`; no claim that its
+multiple of the presented dot is nonzero is needed or made. No injectivity,
+flatness, domain, field, finite-colour or nondegeneracy premise is added.
+
+The next obligation is the tensor comparison and its inverse: evaluate each
+target raw diagram as `1 ⊗` its source class and prove that the target
+contextual ideal vanishes under that evaluation. This functor alone is not
+the presentation tensor base-change equivalence and does not prove
+arbitrary-ring nondegeneracy.
+
+## Finite-subtype restriction of defining relations
+
+`FiniteColourRestriction.lean` constructs `Datum.restrictColours`,
+`Scalars.restrictColours` and `CScalars.restrictColours` on `J : Finset I`.
+The weight group remains the original `X`; roots, coroots, parity and
+parameters are inherited by evaluation on the subtype. Roots need not be
+independent, and the coefficient ring may be trivial.
+
+`FiniteColour.inclusion` is a parity-preserving signature map and therefore
+acts on all free diagrams. `diagram_mkD` computes its action on complete
+normal-form layer lists. `restrictLabel` handles every constructor of
+`Rel`, with `relationLabel_restrictLabel` proving the roundtrip.
+`linear_relation` proves compatibility with every defining linear
+expression, including all finite inversion sums and scalar coefficients.
+`linear_restrictLabel` and `relation_finite_lift` give the finite-subtype
+lift of each user relation. Their heterogeneous equality records only
+the explicit boundary-word identifications, not an additional hypothesis.
+
+`RelationContext.colours` now includes `allRelColours`: raw user-label
+parameters, or the two generating shapes and intervening word of an
+interchange instance. Expanded linear support alone is insufficient:
+the zero-ring consumer proves that the cup/cap relation has empty linear
+support while its raw support is the singleton containing its colour.
+`cupCapDiagram_support` computes the interior diagram support, and
+`cupCapRelation_restricted` lifts the relation to its computed singleton.
+The importing consumer also exercises the mixed braid relation on the
+connected odd/even datum with nonzero interior coefficients over ℚ.
+
+Open: restrict arbitrary supported context diagrams and interchange data,
+prove their roundtrips and compatibility with linear composition and
+whiskering, and lift the entire ideal derivation. Only then can the
+finite-witness passage support the arbitrary-colour detection implication.
+Neither that implication nor nondegeneracy is asserted here.
+
 
 ## Signed linear dot cancellation
 

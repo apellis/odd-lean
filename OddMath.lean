@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoefficientCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependDotCancellation
 import OddMath.QuiverHecke.CyclotomicAction.LinearDotCancellation
+import OddMath.SKM.FiniteColourRestriction
 import OddMath.SKM.FiniteColourRelationsExamples
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
@@ -1158,6 +1159,7 @@ import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
 import OddMath.SKM.ScalarChange
+import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
@@ -1237,6 +1239,7 @@ import OddMath.SKM.DistinctContextualCrossing
 import OddMath.SKM.DistinctExchangeIndependence
 import OddMath.SKM.ResidualCoefficientLift
 import OddMath.Algebra.FrobeniusResolvent
+import OddMath.SKM.JointScalarDescent
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison

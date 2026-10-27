@@ -5,13 +5,14 @@ import OddMath.SKM.RouquierHomPostInverse
 /-!
 # Precomposition augmented inverses
 
-The negative Hom-height orientation of `SwappedHomInversion.md`, §2 is
-`homContentPreInvNeg`: all five inverse identities for the prescribed mate and
-dotted normalized units, obtained from the reversed factor cup window. The
-actual coordinate isomorphisms include their associators. Alpha and gamma
-remain in the inverse entries, including the exceptional height-zero sign.
-The positive Hom-height cap-window orientation and supernatural packaging
-remain separate obligations.
+The two orientations of `SwappedHomInversion.md`, §2 are
+`homContentPreInvNeg` and `homContentPreInvPos`: all five inverse identities
+for the prescribed mate and dotted normalized units, obtained from the
+reversed factor cup and cap windows. The actual coordinate isomorphisms
+include their associators. Alpha, beta, gamma and the source-height cap
+normalization remain in the entries, including the exceptional zero-height
+sign. The two zero-height principal inverses agree. Supernatural packaging
+remains a separate obligation.
 -/
 noncomputable section
 namespace OddMath.SKM
@@ -234,6 +235,82 @@ theorem homContentPreInvNeg_zero_principal (hh : D.h i (-nuP) = 0)
           (T.loc i h₂ h).sig ▷ Z ≫
           (homContentPreInverseSource T W i muM h Z).inv) := by
   rw [homContentPreInvNeg_principal, homPreGamma, ite_eq_left hh]
+/-- The entire positive Hom-height inverse, obtained from the reversed
+factor cap window. The forward entries remain the prescribed normalized
+mate and dotted counits, with the source-height scalar in beta. -/
+def homContentPreInvPos (hh : D.h i (-nuP) ≤ 0)
+    (Z : homWeightSector T.obj W nuP muM) :
+    SuperSumInvTo (k := k) (homContentPreMate T W i muM h h₂ Z)
+      (fun n => homReservoirCap T W i muM h n Z)
+      (D.parity i) (fun n => n * D.parity i) (-D.h i (-nuP)).toNat := by
+  let J := ((T.loc i h₂ h).leftWindowInvTo hh).mapHomogeneousCoordinates
+    (homPost (k := k) Z)
+    (homContentPreInverseSource T W i muM h Z)
+    (homContentPreInverseTarget T W i muM h₂ Z) (leftUnitor Z).symm
+    (leftAdjParity D i (-nuP))
+    (homContentPreInverseSource_mem T W i muM h Z)
+    (homContentPreInverseTarget_mem T W i muM h₂ Z)
+    (inv_mem (leftUnitor Z) (TwoSupercategory.leftUnitor_hom_mem (R := k) Z))
+  let K := J.rescale (homPreGamma (D.parity i) (D.h i (-nuP)))
+    (fun n => homPreBeta (D.parity i) (leftAdjParity D i (-nuP))
+      (D.h i (-nuP)) n)
+    (homPreGamma_mul_self _ _) (fun n => homPreBeta_mul_self _ _ _ n)
+  let M := K.copyMaps _ _ (homContentPreMate_coordinates T W i muM h h₂ Z)
+    (funext fun n => homReservoirCap_factor T W i muM h h₂ n Z)
+  have hp (n : ℕ) : leftAdjParity D i (-nuP) +
+      (D.parity i * ((D.h i (-nuP) : ZMod 2) + 1) + n * D.parity i) =
+      n * D.parity i := by
+    simp only [leftAdjParity, ← add_assoc, zmod2_add_self, zero_add]
+  refine { M with g_mem := ?_, g'_mem := ?_ }
+  · intro n
+    have hm := M.g_mem n
+    rw [hp n] at hm
+    exact hm
+  · intro n
+    have hm := M.g'_mem n
+    rw [hp n] at hm
+    exact hm
+
+/-- The cap orientation's principal inverse retains gamma, including
+its exceptional zero-height value. -/
+theorem homContentPreInvPos_principal (hh : D.h i (-nuP) ≤ 0)
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreInvPos T W i muM h h₂ hh Z).f' =
+      homPreGamma (D.parity i) (D.h i (-nuP)) •
+        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
+          (T.loc i h₂ h).sig ▷ Z ≫
+          (homContentPreInverseSource T W i muM h Z).inv) := rfl
+
+/-- The inverse cap column retains beta and the ordered transition series. -/
+theorem homContentPreInvPos_column (hh : D.h i (-nuP) ≤ 0)
+    (Z : homWeightSector T.obj W nuP muM) (n : ℕ) :
+    (homContentPreInvPos T W i muM h h₂ hh Z).g' n =
+      homPreBeta (D.parity i) (leftAdjParity D i (-nuP)) (D.h i (-nuP)) n •
+        ((leftUnitor Z).inv ≫
+          (T.loc i h₂ h).leftWindowCapColumnNat n ▷ Z ≫
+          (homContentPreInverseSource T W i muM h Z).inv) := rfl
+
+/-- The two empty-window principal inverses coincide at factor height zero. -/
+theorem homContentPreInv_zero (hh : D.h i (-nuP) = 0)
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z).f' =
+      (homContentPreInvNeg T W i muM h h₂ (le_of_eq hh.symm) Z).f' := by
+  let P := homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z
+  let N := homContentPreInvNeg T W i muM h h₂ (le_of_eq hh.symm) Z
+  have hn : homContentPreMate T W i muM h h₂ Z ≫ N.f' = 𝟙 _ := N.ff
+  calc P.f' = P.f' ≫ (homContentPreMate T W i muM h h₂ Z ≫ N.f') := by
+         rw [hn, Category.comp_id]
+       _ = N.f' := by rw [← Category.assoc, P.ff, Category.id_comp]
+
+/-- At factor height zero gamma is the odd sign, also in the cap orientation. -/
+theorem homContentPreInvPos_zero_principal (hh : D.h i (-nuP) = 0)
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreInvPos T W i muM h h₂ (le_of_eq hh) Z).f' =
+      koszulSign (D.parity i) (D.parity i) •
+        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
+          (T.loc i h₂ h).sig ▷ Z ≫
+          (homContentPreInverseSource T W i muM h Z).inv) := by
+  rw [homContentPreInvPos_principal, homPreGamma, ite_eq_left hh]
 end Pre
 
 end OddMath.SKM
