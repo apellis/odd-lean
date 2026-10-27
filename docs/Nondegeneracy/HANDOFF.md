@@ -46,9 +46,19 @@ and `basisNF`. Thus `prependCoordinateEquiv` is the literal finite sum of
 laws. Its consumer includes repeated colours, old dots and a nonidentity
 permutation, height zero, and exponent zero.
 
-The next formalization is the balanced quotient map (9) in the written
-argument. Neither dot-difference injection follows from the affine result
-alone.
+`PrependTensorCoordinates.lean` now checks the balanced extension (9):
+`prependTensorEquiv` is an explicit additive equivalence for every unital
+left old-algebra module, including height zero. The maps are the finite
+sum of elementary prepend tensors and the balanced affine-coordinate
+extraction, with both round trips proved without flatness.
+`PrependCoefficientCoordinates.lean` specializes to the prescribed shifted
+`qCoefficient` at affine height r+1. `qPrependTensorEquiv_symm_insert`
+retains its parity involution; `qPrependTensorEquiv_symm_right` identifies
+the prescribed right cyclotomic action coordinatewise. These are additive
+and right-coefficient comparisons, not assertions of a new ambient action,
+k-linear tensor structure, or tensor grading. Content comparisons remain
+projectors on the uncut tensors. The next step is the degree-two raising
+formula and cancellation, not another coefficient commutation lemma.
 
 ## Prepend square-dot operator and missing cancellation coordinates
 
@@ -66,9 +76,10 @@ polynomial homogeneity; no monicity or projectivity assumption is added.
 The tensor statements retain positive coefficient height. The consumer
 uses an odd-degree cyclotomic polynomial and arbitrary height and content.
 
-**Neither dot-difference injection is proved.** The remaining construction
-is the balanced quotient of the checked right-old-algebra prepend
-coordinate isomorphism, with the first-dot degree visible.
+**Neither dot-difference injection is proved.** The balanced quotient of
+the checked right-old-algebra prepend coordinate isomorphism is now
+constructed, with the first-dot degree visible. The square-dot action
+still needs to be identified with degree-two raising in those coordinates.
 `basisNF` is a base-ring Hom basis, not this right-module decomposition.
 `shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
 output side; prepend balancing needs old coefficients on the input side
