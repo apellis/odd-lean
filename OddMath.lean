@@ -7,6 +7,7 @@ import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
+import OddMath.SKM.RouquierHomPostPowers
 import OddMath.SKM.RouquierHomReservoirPowers
 import OddMath.SKM.RouquierFTriangle
 import OddMath.SKM.RouquierNormalizedHomAdjunction

@@ -235,7 +235,17 @@ content, every weight and both parities over a commutative ring; no comparison
 premise is added. Odd-colour consumers apply this equality at odd and zero
 content shift, jointly importing the normalized precomposition principal
 theorem. The Rouquier family remains an input.
-No dotted-power, whole-matrix, swapping-mate, fusion or nonzero-model result is claimed.
+`RouquierHomPostPowers.lean` proves the natural-power part of §3 (9):
+`homContentPostCup_coordinates` and `homContentPostCap_coordinates` identify
+all dotted entries with the literal factor unit/counit words, including their
+whiskering and associators. `homContentPostDot_power` identifies powers of the
+prescribed shifted dot with shifted raw powers. Both comparison signs cancel;
+no transpose sign or invertibility assumption is introduced. These theorems
+apply to every finite window, both colour parities, all content and weights.
+The importing consumer checks both parities, zero and odd content, and powers
+zero and three, and audits every declaration owned by the module.
+Negative powers, the whole augmented inverse with its parity-completed
+identity summands, swapping mates, fusion and a nonzero model remain open.
 
 
 ## Raw normalized Hom mate coordinates
