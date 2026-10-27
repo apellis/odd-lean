@@ -192,6 +192,20 @@ The shifted target comparison and right coefficient/dot compatibility on
 both tensor carriers are supplied above. The
 zero-height case, QP and full nondegeneracy are not consequences of this step.
 
+## Bounded cyclic recovery
+
+`upwardCoefficientMap_injective_of_bounded_cyclic_recovery` consumes, for each
+fixed pair `t,t′` and degree `d`, one `BoundedCyclicRecovery` at a colourwise
+cutoff bounded below by `N > d + 2 * choose(length t, 2)`. It derives the pure
+coefficient observation from source precomposition and the normalized
+elementary/exterior bubble formulas, extends over `extensionBasis`, and applies
+C0 with the unchanged word indices. The theorem works over a commutative ring.
+No windows at other pairs or inadmissibly small cutoffs are required; degree
+zero still requires recovery, including identities and crossing-only vectors.
+The concrete two-colour importing consumer is conditional: construction of
+the cyclic action, normalized bubbles and bounded affine recovery remains open.
+No nonzero model or nondegeneracy theorem is asserted.
+
 ## Content-shifted postcomposition coordinates
 
 `RouquierHomPostCoordinates.lean` bundles the specified

@@ -1209,6 +1209,7 @@ import OddMath.SKM.WeakMateIndependence
 import OddMath.SKM.ContextualBoundaryInduction
 import OddMath.SKM.ContextualNondegeneracy
 import OddMath.QuiverHecke.UpwardCoefficientDetection
+import OddMath.QuiverHecke.BoundedCyclicRecovery
 import OddMath.QuiverHecke.AlphaPositional
 import OddMath.SKM.BottomMatchingChoice
 import OddMath.SKM.ContextualCrossDecorations

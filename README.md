@@ -22,6 +22,7 @@ zero height and QP remain open.
 
 | Research result | Source | Declaration | Hypotheses | Status |
 |---|---|---|---|---|
+| Bounded cyclic recovery | Vacuum recovery step | `upwardCoefficientMap_injective_of_bounded_cyclic_recovery` | Commutative ring; for each fixed word pair and degree, cyclic action/recovery at one sufficiently large colourwise cutoff | Conditional injectivity; no total-window or nonzero-action premise; construction of recovery remains open |
 | Shifted postcomposition principal mate | `HomProbeMatrix.md`, (B) | `homContentPostCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; arbitrary content and prescribed beta/xi crossing | Defined shifted mate equals insertion of the factor mixed mate in the specified endpoint coordinates, for every weight and both parities; no whole-matrix or fusion claim |
 | Normalized principal Hom mate | `HomPrincipalMate.md`, (10), (1) | `homContentCrossing_coordinates`, `homContentCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; specified inherited crossing | Proved at every height and both parities, including the exceptional height-zero scalar; no whole-matrix or fusion claim |
 
