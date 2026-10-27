@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Canonical written nondegeneracy proof
+
+[SwappedNondegeneracy](SwappedNondegeneracy.md) composes the full-ELV factor
+construction, swapped action assembly and cofinal bounded observations into
+the full written proof. Its exact scope is a purely even field with 2
+invertible, a compatible symmetrizable Cartan superdatum with positive
+integral symmetrizers, admissible homogeneous Sc with separate odd-exponent
+support and leading units, and supplied cs : CScalars Sc. Arbitrary colours
+are handled by finite contextual witnesses, retaining the whole weight group.
+The statement has no additional detecting-model hypothesis. It remains
+**proposed until checked in Lean**, not a formal nondegeneracy theorem.
+
+Remaining Lean work: full-ELV factor implementation, whole swapped action
+assembly, vacuum/bubble/bounded recovery realization, and final composition
+with finite-witness passage. The conditional notes below retain their local
+claim boundaries; the canonical document explains how their hypotheses
+are supplied at the written level. Their historical open-step summaries
+are not the status of the composed written proof.
+
 ## Cofinal bounded observations
 
 `SwappedDetectingFamily.md` supplies the written simultaneous parameter

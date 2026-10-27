@@ -1,5 +1,12 @@
 # Nondegeneracy for symmetrizable Cartan superdata: proof and open steps
 
+> **Historical route.** The current canonical theorem and full written proof
+> are in [SwappedNondegeneracy](SwappedNondegeneracy.md), with explicit field,
+> datum, parameter and CScalars hypotheses. That proof is proposed until
+> checked in Lean; the complete Lean realization remains unfinished. This
+> earlier route and its local open-step ledger are preserved as mathematical
+> background, including the section anchors used by companion notes.
+
 This document is the end-to-end argument of [GeneralRoute](GeneralRoute.md),
 written as a proof. Every step carries one of these statuses:
 

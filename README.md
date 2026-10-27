@@ -8,6 +8,7 @@ and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
 
 | Research result | Source | Declaration | Hypotheses | Status |
 |---|---|---|---|---|
+| Nondegeneracy by bounded swapped Hom observations | [Written theorem and proof](docs/Nondegeneracy/SwappedNondegeneracy.md) | No complete Lean theorem | Purely even field, 2 invertible; compatible symmetrizable Cartan superdatum with positive integral symmetrizers; admissible homogeneous Sc with separate odd-exponent support and leading units; supplied CScalars Sc | Full written proof, proposed until checked in Lean; factor/action/vacuum/recovery realization and final composition unfinished |
 | Shifted postcomposition principal mate | `HomProbeMatrix.md`, (B) | `homContentPostCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; arbitrary content and prescribed beta/xi crossing | Defined shifted mate equals insertion of the factor mixed mate in the specified endpoint coordinates, for every weight and both parities; no whole-matrix or fusion claim |
 | Normalized principal Hom mate | `HomPrincipalMate.md`, (10), (1) | `homContentCrossing_coordinates`, `homContentCrossing_principal` | Rouquier family in a Π-2-supercategory over a commutative ring; specified inherited crossing | Proved at every height and both parities, including the exceptional height-zero scalar; no whole-matrix or fusion claim |
 
