@@ -1,18 +1,37 @@
 # Odd nondegeneracy: restart state
 
-## Coefficient transport before presentation base change
+## Coefficient change on the presented category
 
 `ScalarChange.scalars` carries Brundan–Ellis (1.5)–(1.6) across an arbitrary
-commutative ring homomorphism, including units and the odd-colour invertibility
-condition on two. `ScalarChange.cScalars` preserves the shifted units (1.17).
-The two-odd-colour example specializes `ZMod 9` to `ZMod 3`, killing the
-nonzero element three while preserving the shifted bubble law. This verifies
-parameter admissibility under a noninjective specialization only. The map on
-free linear diagrams, preservation of every relation including interchange and
-arbitrary horizontal/vertical contexts, and descent to the presented Hom
-quotient remain open. These are prerequisites for the presentation tensor
-base-change equivalence; neither that equivalence nor arbitrary-ring
-nondegeneracy follows from parameter transport.
+commutative ring homomorphism `f : R →+* S`, including units and the odd-colour
+invertibility condition on two. `ScalarChange.cScalars` preserves (1.17).
+`ScalarChangePresentation.lean` now constructs the forward comparison for
+`GroundRingDescent.md`, §7, on the original datum and full weight group:
+
+- `coeffFunctor` uses the free additive-category lift with restricted target
+  scalars; `coeff` is the resulting semilinear map on raw linear diagrams.
+- `coeff_relation` proves preservation of every `Rel` constructor, including
+  all entries of both products for each augmented inverse matrix.
+  `coeff_interchange` preserves signed interchange.
+- `coeff_mem_ideal` proves preservation of the whole ideal, including arbitrary
+  horizontal contexts and arbitrary linear pre- and post-compositions.
+- `homMap` descends to the presented Hom quotient, and `presentationFunctor`
+  is the induced additive functor. `homMap_diag`, `homMap_layer`, `homMap_cl`
+  and `homMap_whisk` give diagram, generator and horizontal-context formulas.
+  `homMap_etaP` and `homMap_epsP` preserve the supplied normalized left cups
+  and caps, including inverse units and all height cases.
+
+The two-odd-colour `ZMod 9 → ZMod 3` consumer exercises the quotient map,
+relations and left adjunction, and sends three times an odd dot to zero.
+The coefficient three is proved nonzero in `ZMod 9`; no claim that its
+multiple of the presented dot is nonzero is needed or made. No injectivity,
+flatness, domain, field, finite-colour or nondegeneracy premise is added.
+
+The next obligation is the tensor comparison and its inverse: evaluate each
+target raw diagram as `1 ⊗` its source class and prove that the target
+contextual ideal vanishes under that evaluation. This functor alone is not
+the presentation tensor base-change equivalence and does not prove
+arbitrary-ring nondegeneracy.
 
 ## Signed linear dot cancellation
 
