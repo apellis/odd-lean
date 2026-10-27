@@ -87,13 +87,15 @@ extends the injection to `MvPolynomial`; its constant and variable formulas
 are checked. An order-two group algebra consumer verifies nonzero, distinct
 zero divisors survive and tests a nonconstant polynomial.
 
-This completes only the rationalization injection step of
-[GroundRingDescent](GroundRingDescent.md) §4. The allowed coefficient-slot
-construction and universal `Scalars` remain separate, as does reducedness of
-the rationalized group algebra. Injection into that algebra does **not** prove
-reducedness, field separation or SKM nondegeneracy. Next: establish
-reducedness of ℚ[G] without erasing torsion; instantiate its polynomial
-extension only after the actual coefficient-slot quotient is available.
+This completes the coefficientwise rationalization injection of
+[GroundRingDescent](GroundRingDescent.md) §4, for the unsaturated group and an
+arbitrary polynomial variable type. The actual allowed coefficient-slot
+ring is constructed below; the rational algebra on those slots is reduced
+and separated by fields. The comparison identifying the generic polynomial
+injection with these exact allowed slots is still required before applying
+joint field separation to the integral ring. None of this proves SKM
+nondegeneracy or constructs its universal matching basis.
+
 ## Reduced rational parameter rings
 
 `UniversalCoefficientReduced.rationalGroupAlgebra_isReduced` proves that
@@ -112,11 +114,14 @@ The dependent-root consumer retains the nonzero order-two endpoint and
 nonzero factors `u-1`, `u+1` with zero product, both in the group algebra and
 in its polynomial extension. Reducedness is not a domain assertion.
 
-This supplies the reducedness step of [GroundRingDescent](GroundRingDescent.md)
-§4. The next task is to combine it with coefficientwise rationalization
-injection to separate the integral parameter ring. That injection is not
-proved here. The field candidate, universal matching basis and final
-nondegeneracy deduction remain separate obligations.
+This supplies reducedness and characteristic-zero field separation for the
+rational parameter ring of [GroundRingDescent](GroundRingDescent.md) §4.
+Coefficientwise rationalization injection for the unsaturated group algebra
+and arbitrary polynomial variables is proved above. The next task is to
+instantiate this injection at exactly `Slot D` and identify its domain with
+the integral `ParameterRing D`, then compose with the separating fields.
+The field candidate, universal matching basis and nondegeneracy deduction
+remain separate obligations.
 
 ## Universal coefficient-slot polynomial ring
 
@@ -144,11 +149,13 @@ Separate odd-support tests kill left and right odd exponents, including
 unused positions. The earlier dependent-root unit fixture is unchanged.
 
 This completes the polynomial parameter construction of
-[GroundRingDescent](GroundRingDescent.md) §3, not nondegeneracy. Next:
-construct rationalization of this ring and prove injection coefficientwise.
-Reducedness of the rationalized group algebra and its polynomial extension
-is proved above. Exterior bubble generators remain outside the parameter ring.
-The universal basis and the final nondegeneracy deduction remain separate.
+[GroundRingDescent](GroundRingDescent.md) §3, not nondegeneracy. The
+coefficientwise rationalization injection is proved above for arbitrary
+polynomial variables, and reducedness of its rational allowed-slot target
+is also proved. The exact parameter-ring identification and combined
+separating-field map remain to be checked. Exterior bubble generators stay
+outside this purely even parameter ring; the universal matching basis and
+nondegeneracy deduction remain separate.
 
 ## Normalization unit ring over ℤ[1/2]
 
@@ -170,8 +177,10 @@ ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
 §3, not the full polynomial parameter ring or nondegeneracy.
 
 The coefficient-slot polynomial extension, universal Scalars/Homogeneous/CScalars
-and exact coefficient specialization are constructed above. Rationalization
-injection remains separate; rationalized reducedness is proved above.
+and exact coefficient specialization are constructed above. The group-algebra
+rationalization injection and arbitrary-variable polynomial extension are
+proved above, as is rationalized reducedness; their exact allowed-slot
+assembly remains separate.
 
 ## Unsaturated normalization parameter group
 
@@ -192,10 +201,11 @@ This realizes the group part of the proposed deduction in
 [GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
 
 The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
-above, together with its coefficient-slot polynomial extension and universal
-`Scalars`, homogeneity and `CScalars`. Rational injection remains a separate
-obligation; reducedness of the rationalized group algebra and polynomial
-ring is proved above.
+above, together with the allowed-slot polynomial extension and universal
+`Scalars`, homogeneity and `CScalars`. The rational group algebra is reduced;
+coefficientwise rationalization injection for it and arbitrary polynomial
+variables is proved. Identifying the exact integral parameter ring with this
+polynomial source and applying field separation remains open.
 
 ## Prime-quotient characteristic-zero fields
 
