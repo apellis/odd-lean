@@ -690,13 +690,40 @@ cup/cap and the signed-relation lift to two adjacent odd dots, over both ℚ
 and the zero ring. It also verifies that a cup/cap's expanded zero-ring
 support is empty while its raw and interior supports remain singleton.
 
-Open: extend the free-diagram lifts linearly at common restricted endpoints,
-prove compatibility with linear composition and whiskering, restrict each
-contextual `IdealGen`, and lift the entire span derivation. The supported
-free-diagram and interchange results do not yet prove this finite-subtype
-derivation theorem. Only after that theorem can the finite-witness passage
-support arbitrary-colour detection. Neither that implication nor
-nondegeneracy is asserted here.
+`FiniteColourIdealRestriction.lean` extends diagram restriction to finite
+linear combinations at canonical common restricted endpoints.
+`restrictDiagramAt` identifies all diagram summands at those endpoints;
+`include_restrictDiagramAt` and `include_restrictLinear` recover the entire
+free expression after inclusion and endpoint transport, over any
+commutative ring, including the zero ring. `inclusion_cast_comp` and
+`inclusion_lin_whisker` prove compatibility with composition and
+whiskering at transported endpoints, without changing region labels.
+The result is not yet an ideal-membership theorem. Both kinds of
+presentation generator now have typed restricted lifts: `inclusion_allRel`
+uses the raw relation parameters and handles both interchange parities.
+
+`FiniteColourContextLift.lean` proves `supported_context_lift`. Its
+`ContextLift` records the restricted contextual generator and recovers the
+raw `AllRel` label, both whiskering contexts, pre/post linear diagrams and
+the complete value through inclusion. `ContextLift.idealGen` identifies
+the lifted value as an actual generator of the restricted presentation
+ideal. `inclusion_whiskerOK_iff` reflects whiskering compatibility;
+`supported_linear_lift_at` uses prescribed common endpoints rather than
+nested transports. No field, domain, flatness or independent-root
+hypothesis is needed. Raw labels survive zero-ring cancellation.
+
+The importing consumer uses a cup/cap relation with nonempty left and
+right whiskering and closed cup/cap pre/post diagrams. It also uses
+whiskered interchange with two-dot pre/post diagrams at both parities,
+over ℚ and the zero ring. It extracts ideal generation and exact recovery.
+
+Open: lift membership in `finiteColourIdeal` through its finite span
+derivation at common restricted endpoints, using `supported_context_lift`
+for the generator case and linear inclusion for addition and scalar
+multiplication. Exercise an actual sum. Then derive finite-presentation
+equality from `eq_finiteColourIdeal`; inclusion faithfulness of an
+arbitrarily preselected finite subset is not asserted. Arbitrary-colour
+detection and nondegeneracy remain separate obligations.
 
 
 ## Signed linear dot cancellation
