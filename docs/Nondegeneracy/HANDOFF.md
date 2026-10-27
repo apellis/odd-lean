@@ -2,9 +2,9 @@
 
 ## Input-side prepend decomposition
 
-[PrependCoordinates.md](PrependCoordinates.md) gives a complete proposed
-written coordinate construction for the whole affine prepend corner at
-all heights, including height zero. It is **not a Lean-checked equivalence**.
+[PrependCoordinates.md](PrependCoordinates.md) records the construction for
+the whole affine prepend corner at all heights, including height zero.
+`PrependEquivalence.lean` now checks this affine coordinate equivalence.
 Inverting `parabolicEquiv` yields the unique factorization
 `w = d_j * blockPerm 1 v`; the input dot list splits uniquely into zeroes
 and shifted old dots. Unitriangularity then gives spanning and independence,
@@ -37,12 +37,18 @@ is valid for every old morphism and new exponent, including zero.
 allowed matrix entry, with scalar coefficients from `prependBasis.repr`
 and single old normal forms as the old-algebra coefficients.
 
-The next formalization is regrouping: assemble the scalar expansions into
-finite old-algebra coefficients and prove uniqueness. The right-old-algebra
-coordinate equivalence, its round trips, and the balanced quotient maps are
-not yet checked.
-The checked affine term laws alone do not prove the decomposition or either
-dot-difference injection.
+`CyclotomicAction/PrependEquivalence.lean` regroups finite scalar entry
+expansions into old-algebra coefficients. `prependExpansion_projection`
+identifies reassembly with multiplication by the actual prepend idempotent,
+and `prependExpansion_injective` recovers coefficients using `prependBasis`
+and `basisNF`. Thus `prependCoordinateEquiv` is the literal finite sum of
+`prependPBWCorner`, with both round trips and forward/inverse right-action
+laws. Its consumer includes repeated colours, old dots and a nonidentity
+permutation, height zero, and exponent zero.
+
+The next formalization is the balanced quotient map (9) in the written
+argument. Neither dot-difference injection follows from the affine result
+alone.
 
 ## Prepend square-dot operator and missing cancellation coordinates
 
@@ -61,16 +67,16 @@ The tensor statements retain positive coefficient height. The consumer
 uses an odd-degree cyclotomic polynomial and arbitrary height and content.
 
 **Neither dot-difference injection is proved.** The remaining construction
-is a right-old-algebra coordinate isomorphism for the prepend corner,
-followed by its balanced quotient, with the first-dot degree visible.
+is the balanced quotient of the checked right-old-algebra prepend
+coordinate isomorphism, with the first-dot degree visible.
 `basisNF` is a base-ring Hom basis, not this right-module decomposition.
 `shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
 output side; prepend balancing needs old coefficients on the input side
 of `Hom(i :: s,t)`. The input construction above supplies the written
 argument without reflection; its leading-index equivalence and scalar Hom
-triangularity are checked in `PrependBasis.lean`. Matrix assembly is still
-required. Base-ring linear independence alone cannot be tensored
-through the lower cyclotomic quotient to prove the required injection.
+triangularity are checked in `PrependBasis.lean`; matrix assembly and the
+whole-corner equivalence are now checked. Base-ring linear independence
+alone cannot be tensored through the lower cyclotomic quotient to prove the required injection.
 
 After that comparison, the square difference must have leading moving
 degree two with coefficient minus identity, and the odd linear difference
