@@ -22,8 +22,8 @@ zero height and QP remain open.
 
 | Research result | Source | Declaration | Hypotheses | Status |
 |---|---|---|---|---|
-| Normalized precomposition negative-height inverse | `SwappedHomInversion.md`, §2 | `homContentPreInvNeg`, `homContentPreInvNeg_principal`, `homContentPreInvNeg_row`, `homContentPreInvNeg_zero_principal` | Supplied Rouquier family in a Π-2-supercategory over a commutative ring; factor height k ≥ 0, hence Hom height −k ≤ 0 | All five pointwise inverse identities for the prescribed mate and dotted normalized units; actual homogeneous coordinates and associators, alpha and gamma retained, including gamma(0)=(-1)^p. Positive Hom-height cap orientation, supernatural packaging and full fusion remain open. |
-| Reversed left dotted-window inverses | `ReversedReservoirMatrix.md`, §§3–5 | `leftWindowCup_inverse`, `leftWindowCap_inverse`, `leftWindow_zero_inverse` | Existing local super Rouquier data over a commutative ring; arbitrary factor height and parity | All five raw inverse identities; ordered finite triangular series and homogeneous transformed entries; negative Hom-height coordinate transport is given above, positive Hom-height transport remains open |
+| Normalized precomposition inverses at both heights | `SwappedHomInversion.md`, §2 | `homContentPreInvNeg`, `homContentPreInvPos`, `homContentPreInv_zero`, principal and dotted entry comparisons | Supplied Rouquier family in a Π-2-supercategory over a commutative ring; any factor height k, with Hom height −k | All five pointwise inverse identities in both orientations for the prescribed mate and dotted normalized units; actual homogeneous coordinates and associators, alpha, beta and gamma retained, including gamma(0)=(-1)^p and source-height cap normalization. The two zero-height principal inverses agree. Supernatural packaging and full fusion remain open. |
+| Reversed left dotted-window inverses | `ReversedReservoirMatrix.md`, §§3–5 | `leftWindowCup_inverse`, `leftWindowCap_inverse`, `leftWindow_zero_inverse` | Existing local super Rouquier data over a commutative ring; arbitrary factor height and parity | All five raw inverse identities; ordered finite triangular series and homogeneous transformed entries; both Hom-height coordinate transports are given above |
 | Bounded cyclic recovery | Vacuum recovery step | `upwardCoefficientMap_injective_of_bounded_cyclic_recovery` | Commutative ring; for each fixed word pair and degree, cyclic action/recovery at one sufficiently large colourwise cutoff | Conditional injectivity; no total-window or nonzero-action premise; construction of recovery remains open |
 | Shifted postcomposition supernatural inverses | `HomProbeMatrix.md`, (10)–(13) | `homContentPostSuperInvPos`, `homContentPostSuperInvNeg` | Rouquier family with specified Π shifts over a commutative ring | Both heights and parities; all five identities in SCat Hom, signed naturality on odd morphisms, literal-Π even lifts and zero-height agreement; no full Hom-family or fusion claim |
 | Shifted postcomposition dotted entries | `HomProbeMatrix.md`, §3 (9), natural powers | `homContentPostCup_coordinates`, `homContentPostCap_coordinates` | Rouquier family in a Π-2-supercategory over a commutative ring; specified dot and adjunction | Every finite natural-power window, including power zero; no negative-power or whole-matrix claim |
@@ -1025,6 +1025,7 @@ has the same mathematical statement as a prior version.
 The code and proofs were produced with AI models under human direction and checked by Lean:
 
 - GPT-6 Astra
+- GPT-6 Sol
 - Muse Spark 1.3
 - Claude Opus 5.5
 

@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## Normalized precomposition inverse at positive Hom height
+
+`homContentPreInvPos` supplies all five `SuperSumInvTo` identities for the
+prescribed normalized pre-Hom mate and dotted counits when the factor height
+k is nonpositive (Hom height −k ≥ 0). It transports the reversed factor cap
+window through the same homogeneous source and target coordinates and their
+even associators. The normalized cap comparison retains the inverse
+`leftAdjScalar` at the source height; its integral involutive coefficient is
+`homPreBeta`, including the sign depending on the dot power. The principal
+inverse retains gamma(k), including gamma(0)=(-1)^p, and the cap columns
+retain the ordered finite triangular series. `homContentPreInv_zero` identifies
+the two principal inverses at the empty window. The odd rank-one importing
+examples exercise all five products at Hom height 2, the nontrivial beta
+coefficient, and the zero-height principal comparison.
+
+The hypotheses remain a supplied Rouquier family in a Π-2-supercategory over
+a commutative ring. No nonzero factor model or inverse premise on the
+prescribed Hom maps is inferred. Remaining: bundle the pointwise inverses
+into supernatural natural transformations, then verify the central mixed
+blocks and full fusion; neither follows solely from these sector inverses.
+
 ## Normalized precomposition inverse at nonpositive Hom height
 
 `homContentPreInvNeg` in `RouquierHomPreInverse.lean` supplies all five
@@ -20,13 +41,10 @@ finite ordered triangular series in `leftWindowCupRowNat` is retained.
 identifying it with one. The importing odd rank-one examples exercise the
 inverse products at Hom heights −2 and 0 and the nontrivial alpha_1 sign.
 
-Remaining: the positive Hom-height cap-window orientation, with its beta_n
-coefficient and `leftAdjScalar` normalization, then zero-height agreement
-of the two principal inverses. The common coordinate isomorphisms and
-principal comparison are already available; use `leftWindowInvTo` and
-`homReservoirCap_coordinates` for that next orientation. Supernatural
-packaging, full fusion and nondegeneracy remain separate obligations.
-The factor family is still input data, not a constructed nonzero model.
+The positive Hom-height cap-window orientation and zero-height principal
+agreement are proved above. Supernatural packaging, full fusion and
+nondegeneracy remain separate obligations. The factor family is still input
+data, not a constructed nonzero model.
 
 ## Raw reversed left-window inverses
 

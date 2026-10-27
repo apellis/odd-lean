@@ -75,6 +75,26 @@ theorem homPreGamma_mul_self (p : ZMod 2) (a : ℤ) :
   unfold homPreGamma
   split_ifs <;> exact koszulSign_mul_self _ _
 
+/-- The cap normalization in the precomposition window, including the
+source-height adjunction scalar. -/
+def homPreBeta (p σ : ZMod 2) (a : ℤ) (n : ℕ) : ℤ :=
+  koszulSign σ (1 + (n : ZMod 2) * p) *
+    (koszulSign σ σ * (if a < 0 then 1 else koszulSign p p))
+
+theorem homPreBeta_mul_self (p σ : ZMod 2) (a : ℤ) (n : ℕ) :
+    homPreBeta p σ a n * homPreBeta p σ a n = 1 := by
+  unfold homPreBeta
+  have h : (if a < 0 then 1 else koszulSign p p) *
+      (if a < 0 then 1 else koszulSign p p) = 1 := by
+    split_ifs <;> simp only [one_mul, koszulSign_mul_self]
+  calc
+    _ = (koszulSign σ (1 + (n : ZMod 2) * p) *
+        koszulSign σ (1 + (n : ZMod 2) * p)) *
+        (koszulSign σ σ * koszulSign σ σ) *
+        ((if a < 0 then 1 else koszulSign p p) *
+          (if a < 0 then 1 else koszulSign p p)) := by ring
+    _ = 1 := by rw [koszulSign_mul_self, koszulSign_mul_self, h]; ring
+
 /-- The literal cup–crossing–cap mate of the specified normalized pre adjunctions. -/
 def homContentPreMate (Z : homWeightSector T.obj W nuP muM) :
     (homContentPreE T W i muM h).obj ((homContentPreF T W i muM h).obj Z) ⟶
@@ -120,5 +140,29 @@ theorem homReservoirCup_factor (n : ℕ) (Z : homWeightSector T.obj W nuP muM) :
     SuperRouquierLoc.leftWindowCup, TwoSupercategory.comp_whiskerRight (R := k)]
   rw [pre_leftCup_loc T i h₂ h]
   rw [TwoSupercategory.associator_naturality_middle (R := k)]
+
+omit [TwoSupercategory k B] [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+private theorem pre_leftCap_loc {x y z : X}
+    (e₁ : x + D.α i = y) (e₂ : y + D.α i = z) :
+    T.leftCap i e₂ = (T.loc i e₁ e₂).capL := by
+  have hx : x = y - D.α i := eq_sub_of_add_eq e₁
+  subst x
+  rfl
+
+/-- The prescribed dotted normalized counit is the cap-window entry in
+actual source coordinates; beta retains the source-height scalar. -/
+theorem homReservoirCap_factor (n : ℕ) (Z : homWeightSector T.obj W nuP muM) :
+    homReservoirCap T W i muM h n Z =
+      homPreBeta (D.parity i) (leftAdjParity D i (-nuP)) (D.h i (-nuP)) n •
+        ((homContentPreInverseSource T W i muM h Z).hom ≫
+          (T.loc i h₂ h).leftWindowCap n ▷ Z ≫ (leftUnitor Z).hom) := by
+  rw [homReservoirCap_coordinates, T.leftAdjScalar_inv_coe]
+  rw [TwoSupercategory.smul_whiskerRight (R := k)]
+  simp only [homContentPreInverseSource, Iso.trans_hom, Iso.symm_hom,
+    Functor.mapIso_hom, homPre, SuperRouquierLoc.leftWindowCap,
+    TwoSupercategory.comp_whiskerRight (R := k), pre_leftCap_loc T i h₂ h,
+    Linear.comp_smul, Linear.smul_comp, homPreBeta, Category.assoc]
+  rw [TwoSupercategory.associator_inv_naturality_left_assoc (R := k)]
+  simp only [Int.cast_smul_eq_zsmul, smul_smul]
 
 end OddMath.SKM
