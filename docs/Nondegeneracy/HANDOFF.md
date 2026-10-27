@@ -23,6 +23,28 @@ coefficient implementation only. Signed polynomial transport and the
 inductive QP calculation remain; no global QP, full coefficient-superalgebra
 extension, ideal-sum equality or projective resolution is asserted.
 
+## Raw reversed left-window inverses
+
+`RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
+`ReversedReservoirMatrix.md`, §§3–5. At positive factor height the prescribed
+left dotted cup window, together with `-sigL`, has principal inverse `sig`
+and explicitly transformed inverse rows. At negative height the dual left
+cap window has explicitly transformed inverse columns. All five inverse
+identities hold in each regime; at zero height both windows are empty and
+both principal products are identities.
+
+The old window index is reversed. Its transition is unit triangular, and
+its inverse is the finite ordered series in `1 - transition`. Coefficients
+remain ordinary identity endomorphisms, not central scalars. The annihilation
+and old-coordinate expansion are derived from the existing inverse relations
+and signed dot slide. Window entries, inverse rows and inverse columns retain
+parity `p(h+1)+np`. Neither dot invertibility nor dot nilpotence is required.
+
+The next step is transport through the specified homogeneous pre-Hom
+coordinates and the known alpha, beta and gamma normalizations at Hom
+height `-h`, including the exceptional gamma at height zero. These raw
+factor identities alone are not yet a pre-Hom augmented inverse, a full
+Hom family, fusion, or a nonzero model construction.
 
 ## Signed linear dot cancellation
 
@@ -40,6 +62,7 @@ This is cancellation only. The all-prefix relation-killing step is now
 proved above for ordinary polynomial coefficients; signed polynomial
 transport and induction needed for global QP remain. No global QP,
 projective resolution or full nondegeneracy conclusion follows here.
+
 
 ## Supernatural postcomposition augmented inverses
 
