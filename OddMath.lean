@@ -2,6 +2,7 @@ import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
+import OddMath.QuiverHecke.CyclotomicAction.PrependEquivalence
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal

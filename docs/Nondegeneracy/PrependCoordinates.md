@@ -2,7 +2,12 @@
 
 ## Status and precise assertion
 
-This is a **proposed written proof, not a Lean-checked coordinate equivalence**.
+The whole affine corner coordinate equivalence is **Lean-checked** in
+`CyclotomicAction/PrependEquivalence.lean` as `prependCoordinateEquiv`. Its
+forward map is the literal finite sum of `prependPBWCorner`, its inverse is
+the entrywise assembly `prependCoefficients`, and both directions satisfy
+the right-old-algebra law. Balanced tensor descent below remains a written
+proof, not yet a Lean equivalence.
 The checked portion is `InputParabolic.lean` (unique input permutation and
 reduced concatenation), `PrependBasis.lean` (input leading-index equivalence,
 concrete diagram triangularity and scalar Hom basis), and
@@ -244,11 +249,13 @@ identified by `prependElt_eq_comp`. Its `Approx` statement is
 construction to each scalar Hom space. The index records the old target
 as `PrependIdx.oldTarget` and the old normal form as `PrependIdx.old`.
 
-Implement matrix assembly: identify the corresponding single-entry matrix
-with `prependPBWTerm` applied to the old basis matrix, and regroup finite
-scalar Hom expansions into old-algebra coefficients to obtain existence
-and injectivity of (1). Define choice coordinates only after
-these two results, prove both round trips, and then implement (9) for the
-existing balanced quotient. The checked permutation and affine term laws
-remove the need for a global reflection or super-opposite functor; they do
-not themselves assert this remaining Lean coordinate theorem or full QP.
+Matrix assembly is checked in `PrependMatrix.lean`. Finite regrouping,
+existence and injectivity are now `prependExpansion_projection`,
+`prependExpansion_exists`, and `prependExpansion_injective` in
+`PrependEquivalence.lean`. The latter uses the scalar prepend basis and
+`basisNF`, without tensoring independence. `prependCoordinateEquiv` supplies
+both round trips and the forward/inverse right-action laws.
+
+Remaining: implement (9) for the existing balanced quotient, then identify
+the prescribed coefficient action and cancellation operators. The affine
+coordinate equivalence does not itself establish these steps or full QP.
