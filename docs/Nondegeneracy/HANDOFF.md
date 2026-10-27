@@ -1,8 +1,5 @@
 # Odd nondegeneracy: restart state
 
-
-
-
 The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
@@ -117,6 +114,33 @@ fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
 
+## Source-coefficient polynomial transport
+
+`CoefficientPolynomialTransport.lean` proves
+`coefficientDotPolynomial_comp_moveHom` and
+`coefficientDotPolynomial_mem_comp_moveHom` in the existing `CoefficientH`
+category, with coefficients inserted by `sourceCoefficientHom`. If the
+coefficient of degree `m` has parity `P - m p(x)`, the polynomial moves
+through `moveHom i l ν` with the common sign `(-1)^(P p(i)p(ν))`.
+This applies both to the moving strand and to any old strand. The proof
+combines coefficient composition, `moveHom_parity` and the affine dot
+transport; it does not assume odd coefficients central. There is no
+field, finite-colour or monicity hypothesis, beyond the given commutative
+ground ring and scalar datum.
+
+The odd rank-one rational consumer proves its exterior generator `delta`
+nonzero and tests `1 + delta*x + x²` and `delta + x`. It includes moving
+and internal old strands, odd and even chain lengths, and an empty chain.
+For the even polynomial the coefficient sign cancels the odd-dot sign;
+for the odd polynomial both terms acquire the same overall sign.
+
+This establishes the affine full-source-coefficient identity in
+`DeformedProjectiveResolution.md` §1 (1). Descent through the finite ELV
+coefficient quotient, identification of its cyclotomic polynomial, and
+the repeated-colour induction on `contentTargetTensor` remain obligations.
+No finite ELV action or balanced QP identity is asserted. The next bounded
+step is coefficient-quotient descent retaining the even-cutoff top relation
+and the independent exterior generators.
 ## Signed ordinary-polynomial transport
 
 `SignedPolynomialTransport.lean` proves `dot_pow_comp_moveHom`,
@@ -133,13 +157,11 @@ at an even-length chain, an old strand inside a longer chain, and empty
 chain/zero-exponent boundaries.
 
 This proves only the ordinary-coefficient part of the transport in
-`DeformedProjectiveResolution.md` §1. With odd coefficients, their parity
-contributes another sign: the coefficient of `x^m` in total parity `P`
-has parity `P - m p(i)`. The next obligation is to prove the common total
-sign in the actual coefficient-extended category, then descend it through
-the full ELV relations and carry out the repeated-colour balanced QP
-induction of `DeformedGlobalQP.md` §3. Neither that induction nor a full
-ELV action is asserted by these polynomial identities.
+`DeformedProjectiveResolution.md` §1. The full source-coefficient sign is
+now proved in `CoefficientPolynomialTransport.lean`, as recorded above.
+Descent through the full ELV relations and the repeated-colour balanced
+QP induction of `DeformedGlobalQP.md` §3 remain open. Neither that induction
+nor a full ELV action is asserted by these polynomial identities.
 
 ## All-prefix cyclotomic relation killing
 
