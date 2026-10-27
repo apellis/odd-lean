@@ -1,5 +1,36 @@
 # Odd nondegeneracy: restart state
 
+## Content-shifted mixed Hom interchange
+
+`RouquierHomMixedInterchange.lean` constructs the prescribed J of
+`HomSwappingMates.md` §1 (1): remove the source content shift, apply the
+inverse pre/post associator, and insert the target shift. On the supplied
+factor families the shifts are κ(β) and κ(β+i); their sum is the colour
+parity. `homContentMixedInterchange_pre` and `_post` derive the q signs
+from super-interchange and homogeneous shift naturality.
+`homContentMixedDot_exchange` proves the shifted pre/post Koszul exchange.
+The two `_square` theorems transport dot squares with no residual sign.
+
+`homContentMixedSwap_products` composes the prescribed coefficient
+`-J^-1 a²` with this literal J on both sides, retaining the minus. Here a
+is an arbitrary AB endomorphism, not a constructed rational coefficient;
+this theorem does not assume or prove its finite expansion. Importing
+odd rank-one consumers check both dot signs, their anticommutation, the
+square transports, distinct content parities and the negative composite.
+No nonzero factor model is constructed. All statements hold over any
+commutative ring; there is no weight-height case split or additional
+field, domain, flatness, finite-colour or independent-root hypothesis.
+
+Next: construct the prescribed rational a from the actual unit pre dot
+and locally nilpotent post dot, then prove `SwappedHomInversion.md` §3
+(3) with a bound for each actual object/input. The even inverse and odd
+even-square inverse must be identified with the finite series, not
+defined by that series. Then bend in the specified adjunctions to prove
+(4) and raw comparisons (5), retaining alpha, beta, gamma, xi and the
+source-height normalization, including exceptional zero. No finite-sum
+consumer, literal mixed-entry comparison, fusion or detector is claimed
+by this prerequisite slice.
+
 ## Negative precomposition windows and the literal mate slide
 
 `RouquierHomPreMateSlide.lean` proves `homContentCrossing_slide` from the
