@@ -125,4 +125,82 @@ theorem include_restrictLinear {a b : Obj (sig D)} (f : LinDiagram k a b)
       exact (Finset.sum_subtype t.support (fun x => Iff.rfl)
         (fun x => Finsupp.single x (t x))).symm.trans (Finsupp.sum_single t)
 
+/-- Inclusion respects composition of arbitrary free linear combinations. -/
+theorem inclusion_lin_comp {a b c : Obj (sig (D.restrictColours J))}
+    (f : LinDiagram k a b) (g : LinDiagram k b c) :
+    (inclusion D J).toLayerMap.lin (f ≫ g) =
+      (inclusion D J).toLayerMap.lin f ≫ (inclusion D J).toLayerMap.lin g := by
+  let φ := (inclusion D J).toLayerMap
+  induction f using Finsupp.induction_linear with
+  | zero => simp [LayerMap.lin, Finsupp.mapDomain_zero]
+  | add f₁ f₂ h₁ h₂ =>
+    rw [Preadditive.add_comp, LayerMap.lin_add, h₁, h₂,
+      LayerMap.lin_add, Preadditive.add_comp]
+  | single d r =>
+    induction g using Finsupp.induction_linear with
+    | zero => simp [LayerMap.lin, Finsupp.mapDomain_zero]
+    | add g₁ g₂ h₁ h₂ =>
+      rw [Preadditive.comp_add, LayerMap.lin_add, h₁, h₂,
+        LayerMap.lin_add, Preadditive.comp_add]
+    | single e s =>
+      rw [Free.single_comp_single k (Obj (sig (D.restrictColours J))) d e r s]
+      simp only [LayerMap.lin, Finsupp.mapDomain_single,
+        Free.single_comp_single k (Obj (sig D)), LayerMap.map_comp]
+
+/-- The linear inclusion preserves composition after coherent endpoint transports. -/
+theorem inclusion_cast_comp {a b c : Obj (sig (D.restrictColours J))}
+    {a' b' c' : Obj (sig D)}
+    (ha : (inclusion D J).obj a = a')
+    (hb : (inclusion D J).obj b = b')
+    (hc : (inclusion D J).obj c = c')
+    (f : LinDiagram k a b) (g : LinDiagram k b c) :
+    LinDiagram.cast ((inclusion D J).toLayerMap.lin (f ≫ g)) ha hc =
+      LinDiagram.cast ((inclusion D J).toLayerMap.lin f) ha hb ≫
+        LinDiagram.cast ((inclusion D J).toLayerMap.lin g) hb hc := by
+  cases ha
+  cases hb
+  cases hc
+  simp only [LinDiagram.cast_rfl, inclusion_lin_comp]
+
+/-- Inclusion of a whiskered free diagram, including its boundary transport. -/
+theorem inclusion_diagram_whisker {a b : Obj (sig (D.restrictColours J))}
+    (d : a ⟶ b) (u : Obj (sig (D.restrictColours J)))
+    (v : List (sig (D.restrictColours J)).Colour) (hw : a.WhiskerOK u v) :
+    Diagram.cast ((inclusion D J).toLayerMap.map (Diagram.whisker d u v hw))
+      ((inclusion D J).obj_whisker a u v)
+      ((inclusion D J).obj_whisker b u v) =
+        Diagram.whisker ((inclusion D J).toLayerMap.map d)
+          ((inclusion D J).obj u) ((inclusion D J).word v)
+          ((inclusion D J).whiskerOK hw) := by
+  apply Diagram.ext
+  simp only [Diagram.layers_cast, LayerMap.layers_map, Diagram.layers_whisker,
+    List.map_map]
+  apply List.map_congr_left
+  intro L _
+  exact (inclusion D J).layer_whisker L u v
+
+/-- Whiskering commutes with inclusion of arbitrary free linear combinations. -/
+theorem inclusion_lin_whisker {a b : Obj (sig (D.restrictColours J))}
+    (f : LinDiagram k a b) (u : Obj (sig (D.restrictColours J)))
+    (v : List (sig (D.restrictColours J)).Colour) (hw : a.WhiskerOK u v) :
+    LinDiagram.cast ((inclusion D J).toLayerMap.lin (LinDiagram.whisker f u v hw))
+      ((inclusion D J).obj_whisker a u v)
+      ((inclusion D J).obj_whisker b u v) =
+        LinDiagram.whisker ((inclusion D J).toLayerMap.lin f)
+          ((inclusion D J).obj u) ((inclusion D J).word v)
+          ((inclusion D J).whiskerOK hw) := by
+  change Finsupp.mapDomain (fun d => Diagram.cast d
+      ((inclusion D J).obj_whisker a u v) ((inclusion D J).obj_whisker b u v))
+      (Finsupp.mapDomain (inclusion D J).toLayerMap.map
+        (Finsupp.mapDomain (fun d => Diagram.whisker d u v hw) f)) =
+    Finsupp.mapDomain (fun d => Diagram.whisker d
+        ((inclusion D J).obj u) ((inclusion D J).word v)
+        ((inclusion D J).whiskerOK hw))
+      (Finsupp.mapDomain (inclusion D J).toLayerMap.map f)
+  rw [← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp,
+    ← Finsupp.mapDomain_comp]
+  apply Finsupp.mapDomain_congr
+  intro d _
+  exact inclusion_diagram_whisker D J d u v hw
+
 end OddMath.SKM.FiniteColour
