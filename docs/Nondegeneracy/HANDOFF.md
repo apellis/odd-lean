@@ -96,6 +96,29 @@ fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
 
+## All-prefix cyclotomic relation killing
+
+`IntertwinerRelation.lean` proves `allPrefix_relation_tmul_zero`: for every
+finite prefix `ν`, moving colour `i`, and ambient left multiplier,
+`f_i(x₁) T_|ν| V_(|ν|+1)` on `(i,ν,i)` vanishes in the prescribed prepend
+balanced tensor with coefficient `qCoefficient`. The bare prefix is the
+recursive morphism `lastToFirstHom`; the theorem includes the empty prefix,
+repeated colours and arbitrary spectator parities. Polynomial parity is
+unchanged, so odd cutoffs and cubic odd-colour polynomials are allowed.
+
+`append_move_factor` reuses established moving-strand naturality and retains
+the parity involution on the entire old expression. The stronger
+`append_relation_move_tmul_zero` permits arbitrary inhomogeneous old factors
+on both sides of the relation. `prepend_kernel_tmul_zero` kills the resulting
+old quotient-kernel element by balancing, rather than assuming relation
+vanishing or using flatness. `prefix_relation_move_tmul_zero` supplies the
+typed word representative in the target of `parityCyclotomicContentQ`.
+
+This closes the relation-killing step for the existing ordinary-polynomial
+coefficient implementation only. Signed polynomial transport and the
+inductive QP calculation remain; no global QP, full coefficient-superalgebra
+extension, ideal-sum equality or projective resolution is asserted.
+
 ## Raw reversed left-window inverses
 
 `RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
@@ -131,9 +154,10 @@ the complementary product instead gives the difference of squares.
 onto the full target. No domain, flatness, monicity or nonzero-quotient
 hypothesis is added. Height zero and odd cubic shifts remain included.
 
-This is cancellation only. The all-prefix relation-killing and polynomial
-transport identities needed for global QP remain to be proved; no global
-QP, projective resolution or full nondegeneracy conclusion follows here.
+This is cancellation only. The all-prefix relation-killing step is now
+proved above for ordinary polynomial coefficients; signed polynomial
+transport and induction needed for global QP remain. No global QP,
+projective resolution or full nondegeneracy conclusion follows here.
 
 
 ## Supernatural postcomposition augmented inverses
