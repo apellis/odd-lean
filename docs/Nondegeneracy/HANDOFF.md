@@ -4,6 +4,26 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Rationalization injection for normalization parameters
+
+`SKM.UniversalCoefficientRationalization.coefficientMap_injective` embeds the
+actual `Localization.Away (2 : ℤ)` in ℚ. `rationalize_injective` maps the
+normalization group algebra coefficientwise into the ℚ-group algebra on the
+*same unsaturated group*, without requiring that algebra to be a domain or
+that the group be torsion-free. `rationalize_single`, `rationalize_groupUnit`,
+`rationalize_t` and `rationalize_c` compute the images of coefficients and
+universal group units. For every variable type, `rationalizePolynomial_injective`
+extends the injection to `MvPolynomial`; its constant and variable formulas
+are checked. An order-two group algebra consumer verifies nonzero, distinct
+zero divisors survive and tests a nonconstant polynomial.
+
+This completes only the rationalization injection step of
+[GroundRingDescent](GroundRingDescent.md) §4. The allowed coefficient-slot
+construction and universal `Scalars` remain separate, as does reducedness of
+the rationalized group algebra. Injection into that algebra does **not** prove
+reducedness, field separation or SKM nondegeneracy. Next: establish
+reducedness of ℚ[G] without erasing torsion; instantiate its polynomial
+extension only after the actual coefficient-slot quotient is available.
 ## Reduced rational parameter rings
 
 `UniversalCoefficientReduced.rationalGroupAlgebra_isReduced` proves that
@@ -119,11 +139,9 @@ assumption is used. In the trivial ring the spectrum is empty and reducedness
 makes the same conclusion valid. A `ℚ × ℚ` consumer retains its zero divisors,
 constructs the field family, and applies the coefficientwise basis theorem.
 
-This does not establish that the universal normalization-group parameter ring
-injects into its rationalization or that the rationalized group algebra is
-reduced. The next commutative-algebra target is to construct that ring and prove
-both facts without losing torsion in its normalization group. The actual SKM
-scalar-change/expansion comparison and the field candidate remain separate.
+This does not establish that the rationalized normalization-group algebra is
+reduced. The coefficientwise rationalization injection is proved above; the
+generic prime-field family applies only after reducedness is established.
 
 ## Ground-ring descent retaining the original realization
 
