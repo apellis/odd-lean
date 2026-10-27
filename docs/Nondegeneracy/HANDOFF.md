@@ -4,6 +4,60 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Normalization unit ring over ℤ[1/2]
+
+`SKM.UniversalCoefficientRing.UnitRing D` is the additive group algebra of
+`NormalizationParameterGroup.Group D` over `Localization.Away (2 : ℤ)`.
+`groupUnit`, `t`, and `c` supply genuine units; `t_self`, `t_symm`, and
+`c_shift` prove the endpoint, disconnected-symmetry and normalization laws.
+`two_isUnit` proves that 2 is invertible. `lift` uses the localization and
+additive group-algebra universal properties. `hom_ext` proves that the endpoint
+and normalization images determine a ring homomorphism; `specialize` and
+`specialize_unique` give its unique specialization to any supplied Scalars
+and CScalars over a commutative ring with 2 invertible. No independent roots,
+finiteness, field, domain, nontriviality or flatness are assumed.
+
+The importing consumer evaluates the dependent-root example in ℚ × ℚ,
+retaining the endpoint (1,-1), neither sign, and every normalization value.
+Further evaluations use ZMod 9 (the localized inverse of 2 maps to 5) and
+ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
+§3, not the full polynomial parameter ring or nondegeneracy.
+
+Next: construct the allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)`,
+including unused slots, with the actual `Scalars.s_eq_zero` and
+`Scalars.Homogeneous` conditions. Form the polynomial extension of `UnitRing`,
+construct universal Scalars/Homogeneous/CScalars, and prove exact coefficient
+specialization. The `(2,-1)` root fixture has no interior slot; a separate
+fixture must exercise a nonzero allowed interior coefficient. Exterior delta
+generators stay outside this purely even ring. Rationalization injection and
+reducedness of the rationalized group algebra are subsequent, separate
+obligations; the generic separating-field lemma does not establish them.
+
+## Unsaturated normalization parameter group
+
+`SKM.NormalizationParameterGroup.Group D` is the free abelian group on
+`T_ij` and every original `X`-labelled `C_(μ;i)`, modulo the subgroup generated
+by the diagonal, disconnected-symmetry and shift relators. No saturation is
+taken. `lift` constructs the universal additive homomorphism; `hom_ext`
+proves uniqueness. `specialize` sends the classes to the supplied units of
+any `Scalars D R` and `CScalars Sc`, with both generator formulas and
+`specialize_unique`. No finiteness, independent-root, domain or flatness
+hypothesis is used.
+
+The mixed-parity dependent-root consumer has `X = ℤ`, roots `(2,-1)` and
+symmetrizers `(4,1)`. Its parameter in `ℚ × ℚ` is `(1,-1)`, neither sign.
+It proves that `T_01 + T_01 = 0` but `T_01 ≠ 0` in the presented group itself.
+Thus the construction retains the torsion required by the original roots.
+This realizes the group part of the proposed deduction in
+[GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
+
+The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
+above. Its coefficient-slot polynomial extension, including unused allowed
+slots modulo swap symmetry, and universal `Scalars`, homogeneity and `CScalars`
+remain to be constructed. Rational
+injection and reducedness of the rationalized group algebra remain separate
+obligations; the generic prime-field family does not prove them.
+
 ## Prime-quotient characteristic-zero fields
 
 For every reduced commutative ℚ-algebra `A`, `SKM.primeFractionField A p`
