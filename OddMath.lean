@@ -5,6 +5,7 @@ import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.QuiverHecke.CyclotomicAction.PrependEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoefficientCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.PrependDotCancellation
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal

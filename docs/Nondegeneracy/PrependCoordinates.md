@@ -6,8 +6,8 @@ The whole affine corner coordinate equivalence is **Lean-checked** in
 `CyclotomicAction/PrependEquivalence.lean` as `prependCoordinateEquiv`. Its
 forward map is the literal finite sum of `prependPBWCorner`, its inverse is
 the entrywise assembly `prependCoefficients`, and both directions satisfy
-the right-old-algebra law. Balanced tensor descent below remains a written
-proof, not yet a Lean equivalence.
+the right-old-algebra law. Balanced tensor descent is also Lean-checked as
+`prependTensorEquiv`, an additive equivalence without k-linear packaging.
 The checked portion is `InputParabolic.lean` (unique input permutation and
 reduced concatenation), `PrependBasis.lean` (input leading-index equivalence,
 concrete diagram triangularity and scalar Hom basis), and
@@ -241,8 +241,19 @@ coefficient operator preserves m by (10). Their monic difference is
 injective by inspecting the largest occupied m; the leading coefficient
 is a unit identity map on M. Any use of an odd linear difference must
 also identify its square and its coefficient operator on the prescribed
-tensor; it is not inferred from scalar independence. These cancellation
-identifications remain separate Lean obligations.
+tensor; it is not inferred from scalar independence. The moving-dot
+square identification is now checked in `PrependDotCancellation.lean`:
+`prependPBWTerm_mul_sq` uses the displayed PBW order and
+`affineFirstDot_sq_comm`, and `targetRightDot_sq_prepend` transports the
+prescribed operator through the balanced equivalence.
+`qPrependTensorEquiv_symm_sq` is its inverse-coordinate formula.
+`targetRightDot_sq_sub_coefficient_injective` proves injectivity of the
+moving-dot square minus `targetRightCoefficient c`, for every cyclotomic
+coefficient c, including the prescribed last-dot square. The finite-support
+argument chooses a maximal occupied exponent and evaluates at that exponent
+plus two; the coefficient action is zero there. No nontriviality, domain,
+flatness or monicity premise is introduced. The odd linear-difference
+operator and its square identification remain separate Lean obligations.
 
 At n=0 there is one shuffle and one old empty-word idempotent; (1) is the
 one-strand dot basis over B=H₀≃k. There is no old last dot in this case.
@@ -266,6 +277,8 @@ both round trips and the forward/inverse right-action laws.
 
 The balanced quotient comparison and its prescribed coefficient action
 are checked in `prependTensorEquiv` and `qPrependTensorEquiv_symm_right`.
-Remaining: identify the moving-dot square as degree-two raising in these
-coordinates and prove the cancellation statements. Neither the affine nor
-the additive balanced equivalence alone establishes full QP.
+The moving-dot square is now identified with degree-two raising and its
+difference with every right coefficient is injective in
+`PrependDotCancellation.lean`. Remaining: identify the odd linear-difference
+square with its prescribed signed coefficient expression and consume
+cancellation in the global QP argument. No full QP identity is asserted.
