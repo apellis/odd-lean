@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Old-only ELV quotient module
+
+`ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
+`H e(i,β) / H F₂ R₁(β)e(i,β)` in the signed coefficient category.
+`ELVOld.insert` fixes coefficients and inserts the moving strand on the left.
+`ideal` is two-sided only in the old category; `relations` permits arbitrary
+ambient left multiplication, not arbitrary right multiplication. `Target`,
+`projection` and `act` give the quotient module and its identity/composition laws.
+
+`relation_mem_parity` and `twist_ideal` establish total-parity stability,
+including exterior coefficients. `pair` descends the signed multiplication
+pairing against the old quotient; `pair_balance` and
+`pair_balance_homogeneous` prove its balance. `insert_elvPolynomial`
+identifies the inserted polynomial with the second-position ELV polynomial,
+and `projection_elvPolynomial` kills every ambient continuation.
+`projection_top` retains the even-cutoff delta-times-top relation.
+Arbitrary colours, commutative ground rings and cutoffs are retained.
+
+The importing consumer tests positive odd/even and zero cutoffs, the empty old
+word, signed balance and the top relation. It defines the moving-polynomial
+class separately; it does not prove that class nonzero. A bundled signed tensor
+equivalence, the right PBW comparison for this coefficient extension, and
+moving-polynomial nonvanishing remain open. Full transported old-factor killing,
+all-prefix QP induction/cancellation and projective resolution are next obligations;
+no identification with ordinary `contentTargetTensor` is asserted.
+
 ## Signed ELV coefficient quotient category
 
 `ELVCoefficientCategory.lean` constructs the categorical coefficient quotient
