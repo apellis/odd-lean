@@ -185,6 +185,40 @@ remain separate. No total zero-window extension, full integer-graded
 fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
+## ELV coefficient-quotient tensor transport
+
+`ELVCoefficientTransport.lean` constructs `elvCoefficientQuotient` from
+abstract SYM to its exact `elvCoefficientIdeal` ring quotient, and
+`elvHomQuotient` from coefficient-extended affine Hom to
+`(SYM / elvCoefficientIdeal) ⊗ Hom`. The latter kills every ideal
+coefficient times every affine morphism, with no descent or flatness premise.
+Elementary truncations and `delta_i * chi_(cutoff_i/2)` at even cutoffs
+vanish; at cutoff zero the latter kills `delta_i` itself.
+
+`elvMonicCoefficient_mem_parity` proves that the degree-j coefficient has
+parity N-j. `elvDotPolynomial_first` identifies the polynomial at position
+zero with the existing `elvCyclotomic`; `elvHomQuotient_dotPolynomial`
+gives its coefficientwise image in the quotient tensor module.
+`elvDotPolynomial_transport` and `elvDotPolynomial_old_transport`
+transport its projected composites through the affine intertwiner chain
+with sign `(-1)^(N p(i)p(ν))`, for moving and old strands respectively.
+No field, domain, finite-colour or flatness assumption is introduced.
+
+The consumer retains a nonzero odd coefficient in the exact quotient at
+cutoffs two and three, checks the corresponding coefficient lists, tests
+the even-cutoff top relation both in the ring and after tensoring, and
+includes zero cutoff and empty chains. Transport and the top relation
+are also instantiated over `ZMod 9`, with invertible two and a nonzero
+square-zero element.
+
+This is transport in the coefficient-quotient tensor modules, not a
+construction of categorical composition on those modules or of an SKM
+action. The next obligation is to compare these coefficient-extended
+modules with the deformed old-cyclotomic balanced target and prove the
+relation-killing step there, then perform `DeformedGlobalQP.md` §3.
+The existing ordinary-polynomial `contentTargetTensor` does not supply
+that comparison. Full QP and the projective resolution remain open.
+
 
 ## Source-coefficient polynomial transport
 
@@ -207,12 +241,11 @@ For the even polynomial the coefficient sign cancels the odd-dot sign;
 for the odd polynomial both terms acquire the same overall sign.
 
 This establishes the affine full-source-coefficient identity in
-`DeformedProjectiveResolution.md` §1 (1). Descent through the finite ELV
-coefficient quotient, identification of its cyclotomic polynomial, and
-the repeated-colour induction on `contentTargetTensor` remain obligations.
-No finite ELV action or balanced QP identity is asserted. The next bounded
-step is coefficient-quotient descent retaining the even-cutoff top relation
-and the independent exterior generators.
+`DeformedProjectiveResolution.md` §1 (1). The finite ELV coefficient-quotient
+tensor transport and polynomial identification are now recorded above.
+The deformed balanced target comparison and repeated-colour induction
+remain obligations. No finite ELV action or balanced QP identity is asserted.
+
 ## Signed ordinary-polynomial transport
 
 `SignedPolynomialTransport.lean` proves `dot_pow_comp_moveHom`,
