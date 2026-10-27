@@ -2547,3 +2547,24 @@ and fusion's upward-block comparison. This is a written derivation, not a
 new Lean theorem or a construction of `RegularVacuumIdentification`.
 The normalized bubble inverse-block comparison remains separate.
 
+## Finite contextual colour witnesses
+
+`FiniteColourRelations.lean` proves `mem_finiteColourIdeal` for the actual
+`(pres D Sc).ideal a b`, not a free syntax surrogate. The proof inducts on
+its `Submodule.span` of `Presentation.IdealGen` and joins finite supports
+under addition. Each witnessed contextual generator records the defining
+relation or interchange law, both whiskering words, and finite linear
+pre/post compositions. Its colour set includes the vertices of every
+supported diagram, so a cup followed by a cap is not reduced to the empty
+external boundary. `eq_finiteColourIdeal` applies this witness to equality
+in the presented Hom via `Presentation.lin_eq_iff`.
+
+`FiniteColourRelationsExamples.lean` instantiates the fifth positive inverse
+matrix relation at the simple-root weight, with zero labels. Both external
+words are empty, while its defining summand has a decorated cup and cap of
+colour `i`; the consumer gives a finite contextual witness containing `i`.
+This is only finite support of a derivation. The next step is restriction
+of each supported contextual generator to a finite colour subtype while
+retaining the same weight group X and restricted datum/scalars, including
+its regions and interchange signs. No faithful embedding of the full
+infinite-colour presented Hom or nondegeneracy follows yet.
