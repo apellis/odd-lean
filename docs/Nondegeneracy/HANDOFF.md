@@ -34,12 +34,12 @@ individual ring map or module map is assumed injective. Given spanning,
 to the unit family over `ℚ × ℚ`, where neither projection alone is injective.
 This is a coefficientwise algebraic lemma, not SKM nondegeneracy.
 
-The next descent inputs are joint characteristic-zero field separation for
-the universal group-algebra parameter ring and semilinear transport of the
-actual SKM expansion family (including the full exterior coefficient basis).
-The universal parameter construction, scalar-change equivalence and expansion
-square, and the field candidate remain unformalized. The frozen candidate is
-unchanged.
+The remaining descent inputs are the universal parameter ring with a faithful
+map to its rationalization, reducedness of that rationalization, and the
+expansion family's compatibility with `homBaseChange` (including the full
+exterior coefficient basis). Joint field separation for a reduced rational
+algebra and the presented-Hom tensor equivalence are checked below. The field
+nondegeneracy candidate is still unformalized and unchanged.
 
 [GroundRingDescent.md](GroundRingDescent.md) gives a proposed deduction from
 `SwappedNondegeneracy.md` over characteristic-zero fields to its full scope
@@ -56,14 +56,14 @@ fields. Existing arbitrary-ring expansion spanning and the full exterior
 coefficient basis then give the universal basis from field independence;
 only that basis, not the field detecting action, is specialized.
 
-The general ground-ring nondegeneracy endpoint is not formalized. The precise
-remaining scalar-change target is
-`R tensor_A H_A ≃ H_R` for the actual SKM presentation, with the raw-diagram
-formula, normalized bubble naturality and the expansion square. The note
-proves its contextual-presentation construction on paper. An integral
-low-PBW-weight projection also replaces the candidate's bounded vector-space
-splitting whenever its stated high-ideal bound is available. Neither
-observation supplies the unfinished full-ELV field action or pre-Hom inverse.
+The general ground-ring nondegeneracy endpoint is not formalized. The
+presentation-level `S ⊗[R] Hom_R(a,b) ≃ₗ[S] Hom_S(a,b)` and its raw-diagram,
+inverse-entry and normalized-cup/cap formulas are checked below for any
+commutative scalar map; the universal expansion square and coefficient basis
+remain to be established. An integral low-PBW-weight projection also replaces
+the candidate's bounded vector-space splitting whenever its stated high-ideal
+bound is available. Neither observation supplies the unfinished full-ELV
+field action or the complete mixed Hom inversion.
 
 ## Canonical written nondegeneracy proof
 
@@ -246,9 +246,10 @@ coefficient, and the zero-height principal comparison.
 
 The hypotheses remain a supplied Rouquier family in a Π-2-supercategory over
 a commutative ring. No nonzero factor model or inverse premise on the
-prescribed Hom maps is inferred. Remaining: bundle the pointwise inverses
-into supernatural natural transformations, then verify the central mixed
-blocks and full fusion; neither follows solely from these sector inverses.
+prescribed Hom maps is inferred. Bundling the pointwise inverses into
+supernatural natural transformations is established above for both
+orientations. The remaining obligations are the central mixed blocks and full
+fusion; neither follows solely from these sector inverses.
 
 
 ## Normalized precomposition inverse at nonpositive Hom height
@@ -271,8 +272,8 @@ finite ordered triangular series in `leftWindowCupRowNat` is retained.
 identifying it with one. The importing odd rank-one examples exercise the
 inverse products at Hom heights −2 and 0 and the nontrivial alpha_1 sign.
 
-The positive Hom-height cap-window orientation and zero-height principal
-agreement are proved above. Supernatural packaging, full fusion and
+The positive Hom-height cap-window orientation, zero-height principal
+agreement and both supernatural lifts are proved above. Full fusion and
 nondegeneracy remain separate obligations. The factor family is still input
 data, not a constructed nonzero model.
 
