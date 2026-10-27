@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## Full coefficient and bubble specialization
+
+`ScalarChangeBubbleFamily.lean` constructs a ring homomorphism on the all-colour
+polynomial/exterior algebra `SYM` (1.21), fixing each elementary and exterior
+generator while applying the ground-ring homomorphism to coefficients. It
+preserves the prescribed shifted units and specializes the full left and right
+bubble families of Definition 2.3, including fake negative-dot cases and the
+odd bubble. `homMap_betaSYM` commutes with evaluation (1.22) for every `SYM`
+expression, not merely generators; `homBaseChange_betaSYM` expresses the same
+comparison through the proved tensor equivalence. The two-odd-colour
+`ZMod 9 → ZMod 3` consumer checks noninjective coefficient change, the
+exterior generator, arbitrary bubble indices and a mixed exterior/elementary
+product. No nonzero presented Hom class is asserted.
+
+The next obligation is the diagram-family image formula for the actual
+`MatchingBasisChoice.layers`: show specialization commutes with `xev` of every
+extended layer, including horizontally placed normalized cups and caps, and
+with `bubAt`, then apply the finite `F.expansion`. This is distinct from
+independence of the family, which still requires the universal diagram basis;
+no nondegeneracy or injectivity of `betaSYM` follows from coefficient change.
+
 ## Coefficient change on the presented category
 
 `ScalarChange.scalars` carries Brundan–Ellis (1.5)–(1.6) across an arbitrary
