@@ -1233,6 +1233,7 @@ import OddMath.Algebra.FrobeniusResolvent
 import OddMath.SKM.JointScalarDescent
 import OddMath.SKM.SeparatingFields
 import OddMath.SKM.NormalizationParameterGroup
+import OddMath.SKM.UniversalCoefficientRing
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
