@@ -4,6 +4,24 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Prime-quotient characteristic-zero fields
+
+For every reduced commutative ℚ-algebra `A`, `SKM.primeFractionField A p`
+constructs the fraction field of `A ⧸ p.asIdeal` at each prime `p`.
+`SKM.primeFractionMap A p` is the quotient map followed by fraction-field
+inclusion; each target has characteristic zero, and
+`SKM.primeFractionMaps_separate` proves the family jointly detects zero using
+the nilradical/prime-intersection theorem. No domain or finite-generation
+assumption is used. In the trivial ring the spectrum is empty and reducedness
+makes the same conclusion valid. A `ℚ × ℚ` consumer retains its zero divisors,
+constructs the field family, and applies the coefficientwise basis theorem.
+
+This does not establish that the universal normalization-group parameter ring
+injects into its rationalization or that the rationalized group algebra is
+reduced. The next commutative-algebra target is to construct that ring and prove
+both facts without losing torsion in its normalization group. The actual SKM
+scalar-change/expansion comparison and the field candidate remain separate.
+
 ## Ground-ring descent retaining the original realization
 
 `SKM.linearIndependent_of_joint_scalar_images` formalizes the finite-relation
