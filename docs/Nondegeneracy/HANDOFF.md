@@ -1,5 +1,39 @@
 # Odd nondegeneracy: restart state
 
+## Finite-subtype restriction of defining relations
+
+`FiniteColourRestriction.lean` constructs `Datum.restrictColours`,
+`Scalars.restrictColours` and `CScalars.restrictColours` on `J : Finset I`.
+The weight group remains the original `X`; roots, coroots, parity and
+parameters are inherited by evaluation on the subtype. Roots need not be
+independent, and the coefficient ring may be trivial.
+
+`FiniteColour.inclusion` is a parity-preserving signature map and therefore
+acts on all free diagrams. `diagram_mkD` computes its action on complete
+normal-form layer lists. `restrictLabel` handles every constructor of
+`Rel`, with `relationLabel_restrictLabel` proving the roundtrip.
+`linear_relation` proves compatibility with every defining linear
+expression, including all finite inversion sums and scalar coefficients.
+`linear_restrictLabel` and `relation_finite_lift` give the finite-subtype
+lift of each user relation. Their heterogeneous equality records only
+the explicit boundary-word identifications, not an additional hypothesis.
+
+`RelationContext.colours` now includes `allRelColours`: raw user-label
+parameters, or the two generating shapes and intervening word of an
+interchange instance. Expanded linear support alone is insufficient:
+the zero-ring consumer proves that the cup/cap relation has empty linear
+support while its raw support is the singleton containing its colour.
+`cupCapDiagram_support` computes the interior diagram support, and
+`cupCapRelation_restricted` lifts the relation to its computed singleton.
+The importing consumer also exercises the mixed braid relation on the
+connected odd/even datum with nonzero interior coefficients over ℚ.
+
+Open: restrict arbitrary supported context diagrams and interchange data,
+prove their roundtrips and compatibility with linear composition and
+whiskering, and lift the entire ideal derivation. Only then can the
+finite-witness passage support the arbitrary-colour detection implication.
+Neither that implication nor nondegeneracy is asserted here.
+
 ## Signed linear dot cancellation
 
 `LinearDotCancellation.lean` proves injectivity of `targetRightDot -

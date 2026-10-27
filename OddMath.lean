@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoefficientCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependDotCancellation
 import OddMath.QuiverHecke.CyclotomicAction.LinearDotCancellation
+import OddMath.SKM.FiniteColourRestriction
 import OddMath.SKM.FiniteColourRelationsExamples
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates

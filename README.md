@@ -1023,6 +1023,7 @@ has the same mathematical statement as a prior version.
 The code and proofs were produced with AI models under human direction and checked by Lean:
 
 - GPT-6 Astra
+- GPT-6 Sol
 - Muse Spark 1.3
 - Claude Opus 5.5
 
@@ -1032,6 +1033,10 @@ Released under the Apache License 2.0; see [`LICENSE`](LICENSE).
 
 
 ### Research branch: current nondegeneracy interfaces
+
+| Source step | Checked scope | Remaining |
+| --- | --- | --- |
+| Brundan–Ellis Definition 1.5; finite-witness passage in `SwappedActionAssembly` §8 | `FiniteColour.relation_finite_lift` restricts every user-defined linear relation to a finite colour subtype with the original weight group and coefficient ring. `Datum.restrictColours`, restricted scalar families, parity-preserving signature inclusion, normal-form diagram inclusion and raw-label roundtrips are proved. Contextual colour witnesses now include raw user/interchange parameters, even over the zero ring. | Restriction of arbitrary supported context diagrams and superinterchange, then lifting entire ideal derivations; finite-colour detection and nondegeneracy remain open. |
 
 The research branch reduces the odd/mixed conjecture to upward independence over full
 abstract `SYM` together with local exchange descent (`SKM.nondegeneracy_of_contextual_descent`,
