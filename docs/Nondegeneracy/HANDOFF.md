@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Supernatural postcomposition augmented inverses
+
+`RouquierHomPostNaturalInverse.lean` proves signed naturality against arbitrary
+homogeneous probe morphisms, including odd ones, for the prescribed dot
+powers, mate, cups, caps and both families of inverse entries. The even
+source and target coordinate comparisons are natural isomorphisms; the
+inverse entries are transported from the specified factor maps, with the
+original right adjoint `N S`. Every raw natural-number inverse entry is
+retained, while product identities use the finite height window.
+
+`RouquierHomPostSuperInverse.lean` constructs `homContentPostSuperInvPos`
+and `homContentPostSuperInvNeg` in the existing SCat Hom category. All five
+identities are lifted by homogeneous component extensionality, and the two
+zero-height principal inverses agree as supernatural transformations. The
+principal map equals the actual ordered cup–crossing–cap mate. The even
+natural lifts use literal `homParityShiftDatum` comparisons, including the
+identity summands, not unsigned shift identifications. No object-category
+biproduct hypothesis is needed.
+
+This closes the natural-transformation packaging of the same-colour local
+augmented inverse. It does not supply the remaining fields of a full Hom
+Rouquier family, mixed-sector braid relations, fusion, negative dot powers,
+or a nonzero factor model in Lean.
+
 ## Pointwise content-shifted postcomposition inverse
 
 `RouquierHomPostInverse.lean` constructs `homContentPostInvPos` and
@@ -12,9 +36,9 @@ or counit, rather than maps defined by conjugation.
 The even-component theorems retain the literal parity-shifted identity
 summands, including their diagonal and off-diagonal products. The principal
 inverse, inverse rows and columns have explicit factor-coordinate formulas;
-the zero-height presentations agree. These are pointwise data. Naturality
-and natural-family packaging remain separate, as do fusion and construction
-of a nonzero factor model in Lean.
+the zero-height presentations agree. These pointwise data are lifted to
+supernatural transformations by the modules above. Fusion and construction
+of a nonzero factor model in Lean remain separate.
 
 ## Input-side prepend decomposition
 

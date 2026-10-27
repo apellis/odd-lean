@@ -1,8 +1,11 @@
 # The content-shifted probe matrix
 
 **Status: principal equality (B), natural-power dotted identities (9), and
-pointwise whole augmented inverses (10)–(13) proved in Lean. Negative powers
-and natural-family packaging remain separate.** `RouquierHomPostInverse.lean`
+whole augmented inverses (10)–(13) proved in Lean, including supernatural
+transformation packaging in SCat. Negative powers and a full Hom Rouquier
+family remain separate.** `RouquierHomPostSuperInverse.lean` lifts all five
+products in each height regime, proves zero-height agreement and retains
+literal parity shifts in the even natural components. `RouquierHomPostInverse.lean`
 supplies both height regimes, all five products, the literal parity-shifted
 summands and zero-height overlap. `homContentPostCup_coordinates` and
 `homContentPostCap_coordinates` in `RouquierHomPostPowers.lean` supply every
