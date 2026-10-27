@@ -1,5 +1,101 @@
 # Odd nondegeneracy: restart state
 
+The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
+complete written argument from the checked Lean components and remaining
+formalization obligations, with exact code revisions.
+
+## Ground-ring descent retaining the original realization
+
+[GroundRingDescent.md](GroundRingDescent.md) gives a proposed deduction from
+`SwappedNondegeneracy.md` over characteristic-zero fields to its full scope
+over arbitrary commutative rings with 2 invertible, without inverting the
+symmetrizers. The frozen field candidate is unchanged and remains unformalized.
+
+The universal parameter ring is `Z[1/2][G][z_v]`, where the abelian group G
+presents all endpoint units and all original X-labelled CScalars with their
+shift equations. It need not be a domain: the compatible dependent-root
+datum with roots `(2,-1)` in Z and Cartan matrix `[[2,-1],[-4,2]]` forces a
+unit parameter to square to one without selecting its sign. The note proves
+that the universal ring nevertheless embeds in a product of characteristic-zero
+fields. Existing arbitrary-ring expansion spanning and the full exterior
+coefficient basis then give the universal basis from field independence;
+only that basis, not the field detecting action, is specialized.
+
+No Lean declaration is added. The precise remaining scalar-change target is
+`R tensor_A H_A ≃ H_R` for the actual SKM presentation, with the raw-diagram
+formula, normalized bubble naturality and the expansion square. The note
+proves its contextual-presentation construction on paper. An integral
+low-PBW-weight projection also replaces the candidate's bounded vector-space
+splitting whenever its stated high-ideal bound is available. Neither
+observation supplies the unfinished full-ELV field action or pre-Hom inverse.
+
+## Canonical written nondegeneracy proof
+
+[SwappedNondegeneracy](SwappedNondegeneracy.md) composes the full-ELV factor
+construction, swapped action assembly and cofinal bounded observations into
+the full written proof. Its exact scope is a purely even field with 2
+invertible, a compatible symmetrizable Cartan superdatum with positive
+integral symmetrizers, admissible homogeneous Sc with separate odd-exponent
+support and leading units, and supplied cs : CScalars Sc. Arbitrary colours
+are handled by finite contextual witnesses, retaining the whole weight group.
+The statement has no additional detecting-model hypothesis. It remains
+**proposed until checked in Lean**, not a formal nondegeneracy theorem.
+
+Remaining Lean work: full-ELV factor implementation, whole swapped action
+assembly, vacuum/bubble/bounded recovery realization, and final composition
+with finite-witness passage. The conditional notes below retain their local
+claim boundaries; the canonical document explains how their hypotheses
+are supplied at the written level. Their historical open-step summaries
+are not the status of the composed written proof.
+
+## Cofinal bounded observations
+
+`SwappedDetectingFamily.md` supplies the written simultaneous parameter
+choice from the full deformed factor inputs: fix the finite-colour pair and
+degree, set N0=d+2 choose(length(t),2)+1 and m=N0, use the balanced schedule
+at -mu, and truncate every positive even coefficient to power N0 in one
+common tower algebra. Probe content zero is nonzero (T_0=k) and already has
+the required external Hom weight; no positive-content reachability is assumed.
+Closure series lengths are chosen after the fixed-content grading bounds,
+independently of the cyclotomic cutoffs. Thus no circular inequality arises.
+The literal all-reservoir evaluation, all-height coefficient substitution,
+and bounded signed extraction supply the field-valued bounded cyclic
+recovery data at that pair and degree, including degree zero. This is a
+proposed written result relative to full factor existence, not a Lean
+instance, an arbitrary-ring splitting, or a global arbitrary-colour Hom
+action. Full factor construction and formalization remain separate.
+
+## Conditional finite-colour swapped superaction
+
+`SwappedActionAssembly.md` now states the conditional written finite-colour
+parity-superaction theorem with explicit factor inputs F1–F4 and a complete
+`Presentation.Rel` dictionary. The four distinct-colour blocks are inverted
+componentwise: normalized-left pre/pre with
+`delta=t_ij (-1)^(p_i p_j sigma) g(k-d_ij)/g(k)`, transported factor
+post/post, and the indexed mixed mates U_ji,V_ij for s_ij. The U calculation
+uses the exchanged (j,i) content square and parity shifts; V retains (i,j).
+The QJ mate bends the unit probe strand;
+its polynomial uses the normalized-left transposed probe dot Z and the
+surviving nilpotent reservoir dot Y, retaining the signed transpose powers
+and both dotless residual signs. Whole same-colour matrices, not merely
+the principal components, supply the height-window inverse generators.
+
+The specified vacuum has only its all-reservoir upward path.
+`SwappedVacuumBubbles.md` and `SwappedVacuumNonpositiveBubbles.md` give
+all-height elementary series `C_i(-z)/(1+z)^M_i` at odd colours and
+`E_i(-z)/(1-z)^P_i` at even colours, with odd bubble
+`(-1)^(N_i+1)L_delta_i`. Composing the filtration-preserving coefficient
+substitution with `SwappedVacuumCoordinates.md` gives recovery on the
+explicit admissible bounded windows. The arbitrary-colour finite-witness
+implication is conditional on finite-colour detecting models.
+
+These are written results. Factor existence and full formalization are
+not inferred; admissible-observation packaging and its detection consumer
+remain separate. No total zero-window extension, full integer-graded
+fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
+kernel-checked pre/post principal comparisons below are preserved as
+separate formalized results; they do not certify the whole matrices.
+
 ## Raw reversed left-window inverses
 
 `RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
@@ -803,6 +899,18 @@ This is not a Lean implementation. Hom-finiteness, fusion, detection and
 nondegeneracy remain open.
 
 ## Prescribed same-colour inversion on paper
+
+`DeformedCyclotomicTopRow.md` supplies a proposed written proof of the
+previously implicit cyclotomic top row. With the source's short-column
+inclusion, P' sends h tensor pi^epsilon b to
+h f_i(x_1)(tau_1 ... tau_(n−1)) tensor pi^p b. Its image is the kernel
+of the canonical quotient onto B e tensor_D Pi^p(e B), whose vertical
+arrow is a tensor pi^p b ↦ a tau_n b. The proof tensors the lower-height
+resolution only for right exactness; injectivity comes from P and the
+affine column embeddings. It retains total coefficient parity and the
+even-cutoff relation, including the absent-corner cases. This argument
+is not independently accepted or Lean-checked; it does not promote full
+factor/action existence. Review of this bridge is the next written target.
 
 `DeformedMackeyBoundary.md`, `DeformedBoundaryDivision.md`,
 `DeformedRouquierMatrix.md` and `DeformedMatrixComparison.md` now give a
