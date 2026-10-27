@@ -1,7 +1,15 @@
 # The content-shifted probe matrix
 
-**Status: principal equality (B) proved in Lean; the dotted and whole-matrix
-comparisons below remain written proofs.** The principal theorem is
+**Status: principal equality (B), natural-power dotted identities (9), and
+whole augmented inverses (10)–(13) proved in Lean, including supernatural
+transformation packaging in SCat. Negative powers and a full Hom Rouquier
+family remain separate.** `RouquierHomPostSuperInverse.lean` lifts all five
+products in each height regime, proves zero-height agreement and retains
+literal parity shifts in the even natural components. `RouquierHomPostInverse.lean`
+supplies both height regimes, all five products, the literal parity-shifted
+summands and zero-height overlap. `homContentPostCup_coordinates` and
+`homContentPostCap_coordinates` in `RouquierHomPostPowers.lean` supply every
+natural-power dotted entry, without requiring the factor dot to be invertible. The principal theorem is
 `homContentPostCrossing_principal` in `RouquierHomPostPrincipal.lean`. This computes the
 probe-sector input (B) of `HomCentralFeedback.md`, independently of its
 central-feedback argument. The conclusion is conditional on the probe factor's
