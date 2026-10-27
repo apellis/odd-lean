@@ -4,6 +4,23 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Integral universal parameter field family
+
+`UniversalParameterFields.point` composes coefficientwise rationalization of
+`ParameterRing D` with the prime-quotient fraction fields of the reduced
+rational parameter ring. `point_separate` and `exists_point_ne_zero` show
+joint zero reflection for the actual ring, retaining every colour, weight,
+allowed coefficient slot and unsaturated group relation. Every target is a
+characteristic-zero field. `point_t`, `point_c` and the allowed/forbidden
+coefficient formulas identify images; `scalars`, `homogeneous` and
+`normalizations` transport the universal systems on the unchanged datum.
+The importing consumer detects a nonzero allowed coefficient at some prime
+without choosing one and checks the empty-colour separation statement.
+The dependent-root zero divisors remain as before; no fixed point is asserted
+injective. The next mathematical obligation is the conditional scalar-change
+comparison for the actual SKM expansion and complete exterior coefficient
+basis; neither the field candidate nor nondegeneracy is proved here.
+
 ## Reduced rational parameter rings
 
 `UniversalCoefficientReduced.rationalGroupAlgebra_isReduced` proves that
@@ -23,10 +40,10 @@ nonzero factors `u-1`, `u+1` with zero product, both in the group algebra and
 in its polynomial extension. Reducedness is not a domain assertion.
 
 This supplies the reducedness step of [GroundRingDescent](GroundRingDescent.md)
-§4. The next task is to combine it with coefficientwise rationalization
-injection to separate the integral parameter ring. That injection is not
-proved here. The field candidate, universal matching basis and final
-nondegeneracy deduction remain separate obligations.
+§4. Combined with `UniversalCoefficientRationalization.rationalizePolynomial_injective`,
+this supplies the injection and reduced rationalization inputs for separation of
+the integral parameter ring. The field candidate, universal matching basis
+and final nondegeneracy deduction remain separate obligations.
 
 ## Universal coefficient-slot polynomial ring
 
@@ -53,12 +70,25 @@ degree equation; its swapped and diagonal counterparts are also tested.
 Separate odd-support tests kill left and right odd exponents, including
 unused positions. The earlier dependent-root unit fixture is unchanged.
 
-This completes the polynomial parameter construction of
-[GroundRingDescent](GroundRingDescent.md) §3, not nondegeneracy. Next:
-construct rationalization of this ring and prove injection coefficientwise.
-Reducedness of the rationalized group algebra and its polynomial extension
-is proved above. Exterior bubble generators remain outside the parameter ring.
-The universal basis and the final nondegeneracy deduction remain separate.
+The rationalization injection and reducedness of its rational group algebra
+and polynomial extension are proved above. Exterior bubble generators remain
+outside the parameter ring. The universal basis and final nondegeneracy
+connection remain separate.
+
+## Rationalization injection for normalization parameters
+
+`SKM.UniversalCoefficientRationalization.coefficientMap_injective` embeds
+`Localization.Away (2 : ℤ)` in ℚ. `rationalize_injective` maps the
+normalization group algebra coefficientwise into the ℚ-group algebra on the
+same unsaturated group, without assuming a domain or torsion-free group.
+`rationalize_single`, `rationalize_groupUnit`, `rationalize_t` and
+`rationalize_c` compute images of coefficients and universal group units.
+`rationalizePolynomial_injective` extends the injection to every variable
+type, including the actual `Slot D`; its constant and variable formulas are
+checked. An order-two group algebra consumer verifies nonzero zero divisors
+survive and tests a nonconstant polynomial. Together with the reducedness
+above, this supplies the ring-theoretic inputs to the integral separating
+field family, not the field candidate or SKM nondegeneracy.
 
 ## Normalization unit ring over ℤ[1/2]
 
@@ -81,7 +111,7 @@ ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
 
 The coefficient-slot polynomial extension, universal Scalars/Homogeneous/CScalars
 and exact coefficient specialization are constructed above. Rationalization
-injection remains separate; rationalized reducedness is proved above.
+injection and rationalized reducedness are proved separately.
 
 ## Unsaturated normalization parameter group
 
@@ -103,9 +133,8 @@ This realizes the group part of the proposed deduction in
 
 The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
 above, together with its coefficient-slot polynomial extension and universal
-`Scalars`, homogeneity and `CScalars`. Rational injection remains a separate
-obligation; reducedness of the rationalized group algebra and polynomial
-ring is proved above.
+`Scalars`, homogeneity and `CScalars`. Rational injection and reducedness of
+the rationalized group algebra and polynomial ring are proved above.
 
 ## Prime-quotient characteristic-zero fields
 
@@ -119,11 +148,9 @@ assumption is used. In the trivial ring the spectrum is empty and reducedness
 makes the same conclusion valid. A `ℚ × ℚ` consumer retains its zero divisors,
 constructs the field family, and applies the coefficientwise basis theorem.
 
-This does not establish that the universal normalization-group parameter ring
-injects into its rationalization or that the rationalized group algebra is
-reduced. The next commutative-algebra target is to construct that ring and prove
-both facts without losing torsion in its normalization group. The actual SKM
-scalar-change/expansion comparison and the field candidate remain separate.
+This does not establish that the rationalized normalization-group algebra is
+reduced. The coefficientwise rationalization injection is proved above; the
+generic prime-field family applies only after reducedness is established.
 
 ## Ground-ring descent retaining the original realization
 
