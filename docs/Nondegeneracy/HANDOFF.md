@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Signed ordinary-polynomial transport
+
+`SignedPolynomialTransport.lean` proves `dot_pow_comp_moveHom`,
+`polynomial_comp_moveHom` and `polynomial_mem_comp_moveHom`. For the moving
+strand, every ground-ring polynomial transports through the prescribed
+`moveHom i l ν` by substituting `(-1)^(p(i)p(ν))` times the destination dot.
+For an old strand of colour `x`, the substitution uses
+`(-1)^(p(x)p(i)p(ν))`. Powers include zero; polynomials may have mixed parity
+and need not be monic. No finiteness assumption on the colour set is used.
+
+The importing consumer has a fully specified odd rank-one datum over ℚ.
+It tests an inhomogeneous cubic at an odd-length chain, sign cancellation
+at an even-length chain, an old strand inside a longer chain, and empty
+chain/zero-exponent boundaries.
+
+This proves only the ordinary-coefficient part of the transport in
+`DeformedProjectiveResolution.md` §1. With odd coefficients, their parity
+contributes another sign: the coefficient of `x^m` in total parity `P`
+has parity `P - m p(i)`. The next obligation is to prove the common total
+sign in the actual coefficient-extended category, then descend it through
+the full ELV relations and carry out the repeated-colour balanced QP
+induction of `DeformedGlobalQP.md` §3. Neither that induction nor a full
+ELV action is asserted by these polynomial identities.
+
 ## All-prefix cyclotomic relation killing
 
 `IntertwinerRelation.lean` proves `allPrefix_relation_tmul_zero`: for every
