@@ -27,11 +27,29 @@ The coefficient three is proved nonzero in `ZMod 9`; no claim that its
 multiple of the presented dot is nonzero is needed or made. No injectivity,
 flatness, domain, field, finite-colour or nondegeneracy premise is added.
 
-The next obligation is the tensor comparison and its inverse: evaluate each
-target raw diagram as `1 ⊗` its source class and prove that the target
-contextual ideal vanishes under that evaluation. This functor alone is not
-the presentation tensor base-change equivalence and does not prove
-arbitrary-ring nondegeneracy.
+`ScalarChangeBaseChange.lean` supplies the tensor comparison and its inverse:
+
+- `tensorLin` evaluates each target raw diagram as `1 ⊗` its source class.
+- `exists_source_whiskRel` lifts each target relation label, including signed
+  interchange, through an identical source relation with any horizontal context.
+- `tensorLin_mem_ideal` kills the entire target ideal. The proof expands arbitrary
+  target linear pre- and post-compositions into raw diagrams; it does not assume
+  that those target contexts lift through the coefficient map.
+- `fromTensor` extends `homMap`; `toTensor` descends the inverse evaluation.
+  `toTensor_fromTensor` and `fromTensor_toTensor` prove both inverse identities.
+- `homBaseChange` is the resulting `S`-linear equivalence
+  `S ⊗[R] Hom_R(a,b) ≃ₗ[S] Hom_S(a,b)`, using explicitly `f.toAlgebra`.
+  `toTensor_cl`, `toTensor_etaP` and `toTensor_epsP` retain every inverse-entry
+  generator and the prescribed normalized cups and caps.
+
+The two-odd-colour `ZMod 9 → ZMod 3` tensor consumer exercises both directions,
+annihilation of the coefficient three inside the tensor product, both inverse-entry
+families, arbitrary contextual relations, and the normalization unit `-1`.
+This completes the presentation comparison of `GroundRingDescent.md`, §7,
+item 2, for arbitrary commutative rings and arbitrary unchanged datum and weights.
+It does not prove arbitrary-ring nondegeneracy. The next obligation is the
+universal diagram basis and its diagram-family image formula; only then can
+`homBaseChange` transport that basis to a specialization.
 
 ## Signed linear dot cancellation
 
