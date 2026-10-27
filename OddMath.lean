@@ -11,6 +11,8 @@ import OddMath.SKM.FiniteColourRelationsExamples
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
+import OddMath.SKM.RouquierHomPreCoordinates
+import OddMath.SKM.RouquierHomPreInverse
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers
