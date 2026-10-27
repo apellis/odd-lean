@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Signed linear dot cancellation
+
+`LinearDotCancellation.lean` proves injectivity of `targetRightDot -
+targetRightCoefficient z`, where `z` is the cyclotomic image of the old
+`affineLastDot`. The odd dot anticommutes with this coefficient, so the
+square is `targetRightDot² + targetRightCoefficient (z²)`. At even colour
+the complementary product instead gives the difference of squares.
+`contentTargetRightDot_sub_lastDot_injective` transfers cancellation through
+`contentTargetEquiv` into its fixed-projector submodule, not an equivalence
+onto the full target. No domain, flatness, monicity or nonzero-quotient
+hypothesis is added. Height zero and odd cubic shifts remain included.
+
+This is cancellation only. The all-prefix relation-killing and polynomial
+transport identities needed for global QP remain to be proved; no global
+QP, projective resolution or full nondegeneracy conclusion follows here.
+
 ## Supernatural postcomposition augmented inverses
 
 `RouquierHomPostNaturalInverse.lean` proves signed naturality against arbitrary
@@ -39,6 +55,7 @@ inverse, inverse rows and columns have explicit factor-coordinate formulas;
 the zero-height presentations agree. These pointwise data are lifted to
 supernatural transformations by the modules above. Fusion and construction
 of a nonzero factor model in Lean remain separate.
+
 
 ## Input-side prepend decomposition
 
@@ -97,10 +114,10 @@ retains its parity involution; `qPrependTensorEquiv_symm_right` identifies
 the prescribed right cyclotomic action coordinatewise. These are additive
 and right-coefficient comparisons, not assertions of a new ambient action,
 k-linear tensor structure, or tensor grading. Content comparisons remain
-projectors on the uncut tensors. The next step is the degree-two raising
-formula and cancellation, not another coefficient commutation lemma.
+projectors on the uncut tensors. The degree-two raising formula and
+coefficient-difference cancellation are checked below.
 
-## Prepend square-dot operator and missing cancellation coordinates
+## Prepend square-dot operator and coefficient cancellation
 
 `IntertwinerSquareDot.lean` checks the square operator needed for KKO I,
 arXiv:1206.5933v2, Lemma 8.1 and Theorem 8.5. `affineFirstDot_sq_comm`
@@ -116,28 +133,32 @@ polynomial homogeneity; no monicity or projectivity assumption is added.
 The tensor statements retain positive coefficient height. The consumer
 uses an odd-degree cyclotomic polynomial and arbitrary height and content.
 
-**Neither dot-difference injection is proved.** The balanced quotient of
-the checked right-old-algebra prepend coordinate isomorphism is now
-constructed, with the first-dot degree visible. The square-dot action
-still needs to be identified with degree-two raising in those coordinates.
-`basisNF` is a base-ring Hom basis, not this right-module decomposition.
-`shuffleBasis` expands `Hom(t,u' ++ v')` with the old coefficient on the
-output side; prepend balancing needs old coefficients on the input side
-of `Hom(i :: s,t)`. The input construction above supplies the written
-argument without reflection; its leading-index equivalence and scalar Hom
-triangularity are checked in `PrependBasis.lean`; matrix assembly and the
-whole-corner equivalence are now checked. Base-ring linear independence
-alone cannot be tensored through the lower cyclotomic quotient to prove the required injection.
+`PrependDotCancellation.lean` checks `prependPBWTerm_mul_sq` using the
+prescribed order `c_j x^m φ(b)` and whole-old-algebra square commutation.
+`targetRightDot_sq_prepend` and `qPrependTensorEquiv_symm_sq` identify the
+existing shifted right-dot square with raising m by two in the additive
+balanced coordinates. `targetRightDot_sq_sub_coefficient_injective` then
+proves injectivity of the square minus the existing right coefficient
+operator for arbitrary cyclotomic c; `targetRightDot_sq_sub_lastDot_sq_injective`
+specializes to the prescribed last-dot square. The proof uses a maximal
+occupied exponent in finite support, not tensoring scalar independence.
+It keeps all shuffle indices, repeated colours, polynomial parity and the
+shifted coefficient at affine height r+1. The consumer includes odd cubic
+polynomials, an odd coefficient shift, odd dot anticommutation, multiterm
+families, last-dot-square and nonhomogeneous coefficients, and zero boundaries.
 
-After that comparison, the square difference must have leading moving
-degree two with coefficient minus identity, and the odd linear difference
-can be tested through its square, the sum of the two dot squares. The
-old-dot contribution must use the coefficient right action; it need not
-be right-linear over the noncommutative old algebra. The empty old word
+The next step is to identify the odd linear difference and its square
+(the sum of the prescribed dot squares), then use this cancellation in
+the global QP argument. The coefficient-difference theorem permits negative
+coefficients as well; it does not itself identify that square or supply
+the QP map identity. Reversing the difference changes its leading sign
+but not injectivity. The old-dot contribution is the coefficient right
+action, not a right-linear endomorphism of the noncommutative old algebra.
+The empty old word
 has no old last dot and is the separate base case of the QP induction,
 not a case of cancelling a difference of a dot with itself. The proposed
 arguments in `DeformedGlobalQP.md` and `DeformedProjectiveResolution.md`
-remain conditional on this coordinate construction. No all-height QP,
+still require their remaining operator identifications and QP induction. No all-height QP,
 projectivity, literal P, or full coefficient-extension theorem follows.
 
 ## Repeated-odd two-strand cyclotomic error
