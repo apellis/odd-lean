@@ -1,5 +1,41 @@
 # Odd nondegeneracy: restart state
 
+## Rational mixed coefficients on a nilpotent component
+
+`RouquierHomMixedRational.lean` proves `SwappedHomInversion.md` §3
+(2)–(3) in a ring with a unit x and a supplied exponent y^n=0.
+`mixedEvenDenominator_isUnit` and `mixedOddDenominator_isUnit` establish
+the prescribed denominators as units, independently of the expansion.
+`mixedEvenInverse_expansion` identifies `Ring.inverse (x-y)` with
+the ordered sum x^(-r-1)y^r for r<n. `mixedOddInverse_expansion`
+identifies `(x-y) Ring.inverse (x²-y²)` with the ordered signed sum
+(-1)^r x^(-r-1)y^r for r<2n. The latter is an adequate, not minimal,
+cutoff. Pairing adjacent even and odd terms proves the identity; no
+rational square formula is assumed.
+
+`homContentMixedRational_even` and `_odd` apply these identities to the
+actual shifted pre and reservoir dots on the AB object, deriving their
+commutation from `homContentMixedDot_exchange`. Their hypotheses are
+invertibility of this pre dot and a nilpotence exponent on this object.
+There is no exponent uniform over a weight fibre and no extra field,
+domain, flatness, finite-colour or independent-root assumption. The
+ring identities do not require 2 invertible. The importing consumer uses
+odd off-diagonal 3-by-3 blocks over ℤ/9, where 2 is invertible but the
+ring has zero divisors. Its reservoir cube is zero and square nonzero;
+both inverse products and the failure of the unsigned series are checked.
+This matrix fixture is not a construction of either Rouquier family.
+
+The rational expression is available as a coefficient for the existing
+`homContentMixedSwap`; its ordered `-J⁻¹ a²` definition is unchanged.
+Remaining: assembly when only inputwise local nilpotence is available,
+then bending in the specified adjunctions to obtain (4) and raw
+comparisons (5), with alpha, beta, gamma, xi and exceptional zero intact.
+Factor actions, the rational square calculation needed for swapping
+inverses, fusion and coefficient detection remain obligations.
+Next target: assemble the component coefficients with their signed
+naturality, or supply the required objectwise bounds from the finite
+reservoir quotients, before proving the bent entries.
+
 ## Content-shifted mixed Hom interchange
 
 `RouquierHomMixedInterchange.lean` constructs the prescribed J of
@@ -21,15 +57,12 @@ No nonzero factor model is constructed. All statements hold over any
 commutative ring; there is no weight-height case split or additional
 field, domain, flatness, finite-colour or independent-root hypothesis.
 
-Next: construct the prescribed rational a from the actual unit pre dot
-and locally nilpotent post dot, then prove `SwappedHomInversion.md` §3
-(3) with a bound for each actual object/input. The even inverse and odd
-even-square inverse must be identified with the finite series, not
-defined by that series. Then bend in the specified adjunctions to prove
-(4) and raw comparisons (5), retaining alpha, beta, gamma, xi and the
-source-height normalization, including exceptional zero. No finite-sum
-consumer, literal mixed-entry comparison, fusion or detector is claimed
-by this prerequisite slice.
+The componentwise prescribed rational a and finite-series identity are
+now supplied by `RouquierHomMixedRational.lean` above. Assembly from
+inputwise local nilpotence, then bending in the specified adjunctions
+to prove (4) and raw comparisons (5), remain open. Retain alpha, beta,
+gamma, xi and the source-height normalization, including exceptional
+zero. No literal mixed-entry comparison, fusion or detector is claimed.
 
 ## Negative precomposition windows and the literal mate slide
 
