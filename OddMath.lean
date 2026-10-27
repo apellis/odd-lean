@@ -1155,6 +1155,7 @@ import OddMath.SKM.ScalarChange
 import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeBaseChange
 import OddMath.SKM.ScalarChangeBubbleFamily
+import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF

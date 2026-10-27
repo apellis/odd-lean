@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Decorated matching-family specialization
+
+`ScalarChangeMatchingFamily.lean` proves that coefficient change commutes with
+horizontal placement, `bubAt` on every closed diagram, and `xlay`/`xev` on
+every extended layer and word, including both normalized left bends. For the
+actual fixed `MatchingBasisChoice` and its serialized dots, the image formula
+`homMap_expansion_single` combines this with `homMap_betaSYM`; the finite
+`homMap_expansion` follows by additive induction, and
+`homBaseChange_expansion_single` expresses the same generator formula through
+the tensor comparison. The original datum, weight group, representatives and
+full odd/exterior coefficients remain unchanged. The two-odd-colour
+`ZMod 9 → ZMod 3` check uses an inhabited complete choice containing a literal
+oriented cup and two dots, together with an exterior/elementary bubble
+coefficient; separate layers exercise a normalized left cap.
+
+The remaining obligation for arbitrary-ring nondegeneracy is an independent
+universal diagram basis (equivalently injectivity of the matching expansion).
+Neither the image formula nor the tensor comparison proves that basis or
+injectivity of bubble evaluation.
+
 ## Full coefficient and bubble specialization
 
 `ScalarChangeBubbleFamily.lean` constructs a ring homomorphism on the all-colour
@@ -14,12 +34,10 @@ comparison through the proved tensor equivalence. The two-odd-colour
 exterior generator, arbitrary bubble indices and a mixed exterior/elementary
 product. No nonzero presented Hom class is asserted.
 
-The next obligation is the diagram-family image formula for the actual
-`MatchingBasisChoice.layers`: show specialization commutes with `xev` of every
-extended layer, including horizontally placed normalized cups and caps, and
-with `bubAt`, then apply the finite `F.expansion`. This is distinct from
-independence of the family, which still requires the universal diagram basis;
-no nondegeneracy or injectivity of `betaSYM` follows from coefficient change.
+The diagram-family image formula for the actual `MatchingBasisChoice.layers`
+is now proved above. It is distinct from independence of the family, which
+still requires the universal diagram basis; no nondegeneracy or injectivity
+of `betaSYM` follows from coefficient change.
 
 ## Coefficient change on the presented category
 
