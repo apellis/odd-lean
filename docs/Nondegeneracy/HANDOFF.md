@@ -1,5 +1,9 @@
 # Odd nondegeneracy: restart state
 
+The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
+complete written argument from the checked Lean components and remaining
+formalization obligations, with exact code revisions.
+
 ## Canonical written nondegeneracy proof
 
 [SwappedNondegeneracy](SwappedNondegeneracy.md) composes the full-ELV factor
