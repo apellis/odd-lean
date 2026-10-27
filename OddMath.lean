@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
@@ -1208,6 +1209,7 @@ import OddMath.SKM.WeakMateIndependence
 import OddMath.SKM.ContextualBoundaryInduction
 import OddMath.SKM.ContextualNondegeneracy
 import OddMath.QuiverHecke.UpwardCoefficientDetection
+import OddMath.QuiverHecke.BoundedCyclicRecovery
 import OddMath.QuiverHecke.AlphaPositional
 import OddMath.SKM.BottomMatchingChoice
 import OddMath.SKM.ContextualCrossDecorations

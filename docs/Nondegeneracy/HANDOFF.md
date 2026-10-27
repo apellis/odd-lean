@@ -29,10 +29,18 @@ gives `prependBasis`, a scalar basis of each `Hom(i :: s,t)`, including
 height zero and repeated colours. Its old coefficient is the existing
 normal form `PrependIdx.old.nf`.
 
-The next formalization is matrix assembly: identify these Hom diagrams with
-the matrix terms `prependPBWTerm` and assemble their scalar expansions into
-finite old-algebra coefficients. The right-old-algebra coordinate equivalence,
-its round trips, and the balanced quotient maps are not yet checked.
+`CyclotomicAction/PrependMatrix.lean` identifies the scalar prepend diagrams
+with matrix terms: `prependPBWTerm_old_nf` sends the single old normal form
+to the single `prependElt`. The intermediate formula `prependPBWTerm_single`
+is valid for every old morphism and new exponent, including zero.
+`prepend_single_expansion` gives the resulting finite expansion of every
+allowed matrix entry, with scalar coefficients from `prependBasis.repr`
+and single old normal forms as the old-algebra coefficients.
+
+The next formalization is regrouping: assemble the scalar expansions into
+finite old-algebra coefficients and prove uniqueness. The right-old-algebra
+coordinate equivalence, its round trips, and the balanced quotient maps are
+not yet checked.
 The checked affine term laws alone do not prove the decomposition or either
 dot-difference injection.
 
@@ -183,6 +191,20 @@ polynomial parity is needed only for Q.
 The shifted target comparison and right coefficient/dot compatibility on
 both tensor carriers are supplied above. The
 zero-height case, QP and full nondegeneracy are not consequences of this step.
+
+## Bounded cyclic recovery
+
+`upwardCoefficientMap_injective_of_bounded_cyclic_recovery` consumes, for each
+fixed pair `t,t′` and degree `d`, one `BoundedCyclicRecovery` at a colourwise
+cutoff bounded below by `N > d + 2 * choose(length t, 2)`. It derives the pure
+coefficient observation from source precomposition and the normalized
+elementary/exterior bubble formulas, extends over `extensionBasis`, and applies
+C0 with the unchanged word indices. The theorem works over a commutative ring.
+No windows at other pairs or inadmissibly small cutoffs are required; degree
+zero still requires recovery, including identities and crossing-only vectors.
+The concrete two-colour importing consumer is conditional: construction of
+the cyclic action, normalized bubbles and bounded affine recovery remains open.
+No nonzero model or nondegeneracy theorem is asserted.
 
 ## Content-shifted postcomposition coordinates
 
