@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.SKM.FiniteColourRelations
+import OddMath.SKM.FiniteColourRestriction
 import OddMath.SKM.SerrePolynomialExamples
 
 /-!
@@ -48,14 +48,49 @@ theorem cupCapRelation_finite_witness (i : I) :
   let u := ob D (D.α i) []
   have hw : t.dom.WhiskerOK u ([] : List (sig D).Colour) :=
     ⟨by trivial, rfl, by trivial⟩
-  obtain ⟨J, hJ⟩ := mem_finiteColourIdeal D Sc
-    ((pres D Sc).whisker_rel_mem_ideal t u [] hw)
-  refine ⟨insert i J, Finset.mem_insert_self _ _, ?_⟩
-  apply Submodule.span_mono (s := {f | ∃ c : RelationContext D Sc _ _,
-    c.colours ⊆ J ∧ c.value = f})
-  · rintro f ⟨c, hc, rfl⟩
-    exact ⟨c, hc.trans (Finset.subset_insert _ _), rfl⟩
-  · exact hJ
+  let c : RelationContext D Sc (t.dom.whisker u []) (t.cod.whisker u []) :=
+    ⟨t, u, [], hw, 𝟙 _, 𝟙 _⟩
+  refine ⟨c.colours, ?_, Submodule.subset_span ⟨c, Finset.Subset.rfl, ?_⟩⟩
+  · apply Finset.mem_union_right
+    simp [c, t, r, allRelColours, cupCapRelation, Rel.colours]
+  · simp only [RelationContext.value, c, Category.comp_id]
+    exact Category.id_comp _
+
+/-- The raw support is computed from the relation itself, not added to an
+unrelated finite witness. This remains true over the zero ring. -/
+@[simp] theorem cupCapRelation_raw_support (i : I) :
+    allRelColours D Sc (.user (cupCapRelation D i)) = {i} := by
+  simp [allRelColours, cupCapRelation, Rel.colours]
+
+/-- The nonidentity diagram of the zero-index inverse relation. -/
+def cupCapDiagram (i : I) : ob D (D.α i) [] ⟶ ob D (D.α i) [] :=
+  mkD D (D.α i) (dcupL i 0 ++ epsL i 0)
+    ((sChain_dcupL i 0).append (sChain_epsL i 0))
+
+/-- Its empty boundaries do not conceal the internal colour from diagram support. -/
+@[simp] theorem cupCapDiagram_support (i : I) :
+    diagramColours D (cupCapDiagram D i) = {i} := by
+  simp [diagramColours, cupCapDiagram, dcupL, epsL, dotsL, layList,
+    layerColours, wordColours, lay, Shape.dom, Shape.colours, wd]
+
+/-- The concrete inverse relation restricts to its computed singleton support;
+its full linear expression is recovered by inclusion. No ring nontriviality
+hypothesis is needed. -/
+theorem cupCapRelation_restricted (i : I) :
+    let J : Finset I := allRelColours D Sc (.user (cupCapRelation D i))
+    ∃ s : Rel (D.restrictColours J),
+      FiniteColour.relationLabel D J s = cupCapRelation D i ∧
+      HEq (FiniteColour.linear D J s.ν s.dom s.cod
+        (relation (D.restrictColours J) (Sc.restrictColours D J) s))
+        (relation D Sc (cupCapRelation D i)) := by
+  dsimp only
+  let J := allRelColours D Sc (.user (cupCapRelation D i))
+  have hr : ∀ j ∈ (cupCapRelation D i).colours, j ∈ J := by
+    intro j hj
+    simpa [J, cupCapRelation, Rel.colours] using hj
+  exact ⟨FiniteColour.restrictLabel D J (cupCapRelation D i) hr,
+    FiniteColour.relationLabel_restrictLabel D J (cupCapRelation D i) hr,
+    FiniteColour.linear_restrictLabel D J Sc (cupCapRelation D i) hr⟩
 
 /-- Instantiation on a connected odd/even datum over ℚ. -/
 example : ∃ J : Finset Bool, false ∈ J := by
