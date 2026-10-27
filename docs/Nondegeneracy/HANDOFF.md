@@ -96,6 +96,314 @@ fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
 
+## Raw reversed left-window inverses
+
+`RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
+`ReversedReservoirMatrix.md`, §§3–5. At positive factor height the prescribed
+left dotted cup window, together with `-sigL`, has principal inverse `sig`
+and explicitly transformed inverse rows. At negative height the dual left
+cap window has explicitly transformed inverse columns. All five inverse
+identities hold in each regime; at zero height both windows are empty and
+both principal products are identities.
+
+The old window index is reversed. Its transition is unit triangular, and
+its inverse is the finite ordered series in `1 - transition`. Coefficients
+remain ordinary identity endomorphisms, not central scalars. The annihilation
+and old-coordinate expansion are derived from the existing inverse relations
+and signed dot slide. Window entries, inverse rows and inverse columns retain
+parity `p(h+1)+np`. Neither dot invertibility nor dot nilpotence is required.
+
+The next step is transport through the specified homogeneous pre-Hom
+coordinates and the known alpha, beta and gamma normalizations at Hom
+height `-h`, including the exceptional gamma at height zero. These raw
+factor identities alone are not yet a pre-Hom augmented inverse, a full
+Hom family, fusion, or a nonzero model construction.
+
+## Signed linear dot cancellation
+
+`LinearDotCancellation.lean` proves injectivity of `targetRightDot -
+targetRightCoefficient z`, where `z` is the cyclotomic image of the old
+`affineLastDot`. The odd dot anticommutes with this coefficient, so the
+square is `targetRightDot² + targetRightCoefficient (z²)`. At even colour
+the complementary product instead gives the difference of squares.
+`contentTargetRightDot_sub_lastDot_injective` transfers cancellation through
+`contentTargetEquiv` into its fixed-projector submodule, not an equivalence
+onto the full target. No domain, flatness, monicity or nonzero-quotient
+hypothesis is added. Height zero and odd cubic shifts remain included.
+
+This is cancellation only. The all-prefix relation-killing and polynomial
+transport identities needed for global QP remain to be proved; no global
+QP, projective resolution or full nondegeneracy conclusion follows here.
+
+
+## Supernatural postcomposition augmented inverses
+
+`RouquierHomPostNaturalInverse.lean` proves signed naturality against arbitrary
+homogeneous probe morphisms, including odd ones, for the prescribed dot
+powers, mate, cups, caps and both families of inverse entries. The even
+source and target coordinate comparisons are natural isomorphisms; the
+inverse entries are transported from the specified factor maps, with the
+original right adjoint `N S`. Every raw natural-number inverse entry is
+retained, while product identities use the finite height window.
+
+`RouquierHomPostSuperInverse.lean` constructs `homContentPostSuperInvPos`
+and `homContentPostSuperInvNeg` in the existing SCat Hom category. All five
+identities are lifted by homogeneous component extensionality, and the two
+zero-height principal inverses agree as supernatural transformations. The
+principal map equals the actual ordered cup–crossing–cap mate. The even
+natural lifts use literal `homParityShiftDatum` comparisons, including the
+identity summands, not unsigned shift identifications. No object-category
+biproduct hypothesis is needed.
+
+This closes the natural-transformation packaging of the same-colour local
+augmented inverse. It does not supply the remaining fields of a full Hom
+Rouquier family, mixed-sector braid relations, fusion, negative dot powers,
+or a nonzero factor model in Lean.
+
+## Pointwise content-shifted postcomposition inverse
+
+`RouquierHomPostInverse.lean` constructs `homContentPostInvPos` and
+`homContentPostInvNeg` from the specified factor inverse and the checked
+principal and dotted-entry comparisons. All five finite-window products
+and homogeneous parities hold over a commutative ring, at every content
+and height. The forward maps remain the prescribed mate and dotted unit
+or counit, rather than maps defined by conjugation.
+
+The even-component theorems retain the literal parity-shifted identity
+summands, including their diagonal and off-diagonal products. The principal
+inverse, inverse rows and columns have explicit factor-coordinate formulas;
+the zero-height presentations agree. These pointwise data are lifted to
+supernatural transformations by the modules above. Fusion and construction
+of a nonzero factor model in Lean remain separate.
+
+
+## Input-side prepend decomposition
+
+[PrependCoordinates.md](PrependCoordinates.md) records the construction for
+the whole affine prepend corner at all heights, including height zero.
+`PrependEquivalence.lean` now checks this affine coordinate equivalence.
+Inverting `parabolicEquiv` yields the unique factorization
+`w = d_j * blockPerm 1 v`; the input dot list splits uniquely into zeroes
+and shifted old dots. Unitriangularity then gives spanning and independence,
+and associativity proves right-old-algebra compatibility. Explicit balanced
+forward and backward maps are supplied in the written argument; no flatness,
+projectivity, diagram reflection or coefficient centrality is assumed.
+
+`InputParabolic.lean` checks `prependPermutationEquiv`,
+`length_prependPermutation` and `prependCrossingWord_spec`.
+`CyclotomicAction/PrependCoordinates.lean` constructs the finite crossing
+sums `prependShuffleElement` and the prescribed terms `c_j x^m φ(b)`.
+`prependPBWTerm_corner` and `prependPBWCorner_right` check these terms in
+the existing corner and right action. The consumer also exercises the
+existing `qCoefficient` right action at the corresponding tensor terms.
+The whole corner has free old-algebra coefficients in the written proof;
+a fixed target word instead has idempotent-summand coefficients.
+
+`PrependBasis.lean` now checks the input leading-index equivalence
+`PrependIdx.leadEquiv`, the concrete chronological diagram comparison
+`prependElt_eq_comp`, and `prependElt_approx`. Applying `basisOfTriangular`
+gives `prependBasis`, a scalar basis of each `Hom(i :: s,t)`, including
+height zero and repeated colours. Its old coefficient is the existing
+normal form `PrependIdx.old.nf`.
+
+`CyclotomicAction/PrependMatrix.lean` identifies the scalar prepend diagrams
+with matrix terms: `prependPBWTerm_old_nf` sends the single old normal form
+to the single `prependElt`. The intermediate formula `prependPBWTerm_single`
+is valid for every old morphism and new exponent, including zero.
+`prepend_single_expansion` gives the resulting finite expansion of every
+allowed matrix entry, with scalar coefficients from `prependBasis.repr`
+and single old normal forms as the old-algebra coefficients.
+
+`CyclotomicAction/PrependEquivalence.lean` regroups finite scalar entry
+expansions into old-algebra coefficients. `prependExpansion_projection`
+identifies reassembly with multiplication by the actual prepend idempotent,
+and `prependExpansion_injective` recovers coefficients using `prependBasis`
+and `basisNF`. Thus `prependCoordinateEquiv` is the literal finite sum of
+`prependPBWCorner`, with both round trips and forward/inverse right-action
+laws. Its consumer includes repeated colours, old dots and a nonidentity
+permutation, height zero, and exponent zero.
+
+`PrependTensorCoordinates.lean` now checks the balanced extension (9):
+`prependTensorEquiv` is an explicit additive equivalence for every unital
+left old-algebra module, including height zero. The maps are the finite
+sum of elementary prepend tensors and the balanced affine-coordinate
+extraction, with both round trips proved without flatness.
+`PrependCoefficientCoordinates.lean` specializes to the prescribed shifted
+`qCoefficient` at affine height r+1. `qPrependTensorEquiv_symm_insert`
+retains its parity involution; `qPrependTensorEquiv_symm_right` identifies
+the prescribed right cyclotomic action coordinatewise. These are additive
+and right-coefficient comparisons, not assertions of a new ambient action,
+k-linear tensor structure, or tensor grading. Content comparisons remain
+projectors on the uncut tensors. The degree-two raising formula and
+coefficient-difference cancellation are checked below.
+
+## Prepend square-dot operator and coefficient cancellation
+
+`IntertwinerSquareDot.lean` checks the square operator needed for KKO I,
+arXiv:1206.5933v2, Lemma 8.1 and Theorem 8.5. `affineFirstDot_sq_comm`
+commutes the first-dot square with every old affine element, including at
+height zero. `targetRightDot_sq_tmul` identifies the square of the existing
+shifted right dot on `InductionAlong.Ind` with two first-dot corner actions
+and the unchanged `qCoefficient`. `targetDotCorner_twice_val` identifies
+that corner value with right multiplication by the first-dot square.
+`contentTargetRightDot_sq_tmul` proves the same cancellation of the
+coefficient involution on the unital content tensor. These require only
+the existing finite colours, scalar datum, commutative ground ring and
+polynomial homogeneity; no monicity or projectivity assumption is added.
+The tensor statements retain positive coefficient height. The consumer
+uses an odd-degree cyclotomic polynomial and arbitrary height and content.
+
+`PrependDotCancellation.lean` checks `prependPBWTerm_mul_sq` using the
+prescribed order `c_j x^m φ(b)` and whole-old-algebra square commutation.
+`targetRightDot_sq_prepend` and `qPrependTensorEquiv_symm_sq` identify the
+existing shifted right-dot square with raising m by two in the additive
+balanced coordinates. `targetRightDot_sq_sub_coefficient_injective` then
+proves injectivity of the square minus the existing right coefficient
+operator for arbitrary cyclotomic c; `targetRightDot_sq_sub_lastDot_sq_injective`
+specializes to the prescribed last-dot square. The proof uses a maximal
+occupied exponent in finite support, not tensoring scalar independence.
+It keeps all shuffle indices, repeated colours, polynomial parity and the
+shifted coefficient at affine height r+1. The consumer includes odd cubic
+polynomials, an odd coefficient shift, odd dot anticommutation, multiterm
+families, last-dot-square and nonhomogeneous coefficients, and zero boundaries.
+
+The next step is to identify the odd linear difference and its square
+(the sum of the prescribed dot squares), then use this cancellation in
+the global QP argument. The coefficient-difference theorem permits negative
+coefficients as well; it does not itself identify that square or supply
+the QP map identity. Reversing the difference changes its leading sign
+but not injectivity. The old-dot contribution is the coefficient right
+action, not a right-linear endomorphism of the noncommutative old algebra.
+The empty old word
+has no old last dot and is the separate base case of the QP induction,
+not a case of cancelling a difference of a dot with itself. The proposed
+arguments in `DeformedGlobalQP.md` and `DeformedProjectiveResolution.md`
+still require their remaining operator identifications and QP induction. No all-height QP,
+projectivity, literal P, or full coefficient-extension theorem follows.
+
+## Repeated-odd two-strand cyclotomic error
+
+`IntertwinerError.lean` proves the local quotient reduction needed in KKO I,
+arXiv:1206.5933v2, Theorem 8.5 for the word `[i,i]`, with `p(i)=1`.
+For `D=v²-u²`, `S=u²+v²`, the existing odd intertwiner `g` gives
+`K=Tg-S=S-D(v-u)T` and `H=v²+2uv-u²-(v+u)DT`.
+`error_pow` proves `u^m K = (if Even m then K else H) v^m` for every natural
+exponent. `error_polynomial` yields the corresponding right factorization
+for a central-coefficient polynomial supported in one parity.
+
+`repeatedOddError_factor` instantiates the presented quiver Hecke dots and
+crossing, using `oddTwo_block`; endomorphism products reverse composition.
+The existing `CyclotomicPolynomialParity` condition is **homogeneity**, not
+necessarily even support: odd degree uses H, even degree uses K. No extra
+even-degree, monicity, nontriviality or domain hypothesis is imposed.
+Constants and the zero polynomial are included.
+`prepend_generator_single` identifies the right factor with the shifted old
+cyclotomic generator, including its constant term. Balancing in the existing
+`InductionAlong.Ind` over `prependAlgebra`, with the existing `qCoefficient`,
+gives `repeatedOddError_tmul_zero` for arbitrary left multipliers and shifted
+coefficients. Thus the local reduction requires neither inversion nor
+cancellation of a dot difference.
+
+This is not a literal Q∘P theorem: P and its `T_i^{Λ_i}` source have not been
+constructed. The source's projectivity argument, full multicolour prefix
+induction, and super coefficient polynomials remain separate obligations.
+The consumer checks arbitrary monomial exponents, zero, and a polynomial
+with several even terms and a nonzero constant, in the prescribed tensor.
+
+## Content-tensor right dots
+
+`IntertwinerContentDot.lean` constructs the source last-dot and shifted target
+first-dot maps directly with `InductionAlong.Ind.lift` over `ContentAlgebra`.
+The even central content identity is fixed by the parity involution; its
+restriction pairs the corner dot with the coefficient involution in the
+balance proof. No tensor action is defined by equivalence conjugation.
+`contentTargetRightDot_insert` retains `(-1)^(p(i)p(β))`, the first dot and
+`φ_i` on the coefficient. The forward comparisons commute with the existing
+content-dot maps, and `contentTensorShiftedQ_rightDot` closes the dot generator
+of KKO I, arXiv:1206.5933v2, Proposition 8.4 alongside the coefficient theorem.
+The scope remains finite colours, positive coefficient height, polynomial
+parity and an arbitrary commutative ground ring, without nontriviality or
+signed-left premises. No graded comparison, zero-height extension, full ELV
+coefficients or QP conclusion is asserted.
+
+## Independent right coefficient descent
+
+`IntertwinerContentCoefficient.lean` defines the right operators directly by
+`InductionAlong.Ind.map`: source coefficients are multiplied in the unital
+cyclotomic content corner, and the target restricts the existing shifted
+right action to `qContentCoefficient`. Centrality gives source closure;
+commutation with the existing affine left action gives target closure and
+well-defined balancing. Neither operator is defined by equivalence conjugation.
+The pure-tensor formulas, compatibility with `sourceContentRightCoefficient`
+and `targetContentRightCoefficient`, and reverse composition law are proved.
+`contentTensorShiftedQ_rightCoefficient` intertwines these operators for the
+existing prescribed moving-strand Q. Finite colours, positive coefficient
+height, arbitrary commutative ground ring and polynomial parity are unchanged.
+
+This supplies the coefficient generator of KKO I Proposition 8.4; the dot
+generator and its first-dot/involution sign are supplied above.
+No signed-left-linearity premise is needed.
+The consumer checks all-odd and mixed data and audits every owned declaration.
+
+## Shifted target tensor over the content algebra
+
+For KKO I, arXiv:1206.5933v2, Proposition 8.4,
+`IntertwinerTargetTensor.lean` defines `contentTargetTensor` independently of
+`qTargetContent`: the first factor is the prepend left ideal over the unital
+`ContentAlgebra`, and the second is the content submodule of the existing
+`qCoefficient`. Its action is restricted from `qCoefficientModule`, retaining
+the parity-shift twist; no ring structure on the shifted coefficient is used.
+
+`contentTargetForward` includes both factors; `contentTargetBackward` cuts
+both by the content identity. `contentTargetBackward_forward` is identity,
+and `contentTargetForward_backward` is the existing target content projector,
+not identity on the entire height tensor. `contentTargetEquiv` gives the
+explicit two-sided comparison. `qContentCoefficientCut_insert` and
+`contentTargetEquiv_cut_tmul` identify the cuts with the prescribed shifted
+representatives. `contentTensorShiftedQ_representative` proves the literal
+moving-strand formula between the separately defined source and target tensors.
+
+Hypotheses remain finite colours, positive coefficient height and polynomial
+parity over the existing commutative ground ring and scalar datum. These are
+underlying left-module statements, not a graded identification. The direct
+right coefficient and dot actions and their Q compatibilities are supplied
+above, retaining the first dot, involution and `(-1)^(p(i)p(β))`. Enlarged target-block
+support, graded comparison, zero height, full ELV coefficients and QP are
+separate obligations.
+
+## Source tensor over the content algebra
+
+`contentSourceEquiv` in `IntertwinerContentTensor.lean` identifies the KKO I §8 source
+`R(β+αᵢ)e(β,i) ⊗[R(β)] RΛ(β)` with `qSourceContent`. Both coefficient
+algebras use Mathlib's unital idempotent corners; the coefficient action is
+the existing quotient map restricted to those corners. The append left ideal
+is supported on content `β+αᵢ` (`contentSourceCorner_support`).
+The forward map includes both factors. The inverse cuts both factors by their
+content identities, is balanced over the unital corner, and has two checked
+composites: identity on the source tensor, the content projection on the
+height tensor. No arbitrary choice of equivalence or new action axiom is used.
+`contentTensorQ_representative` gives the existing moving-strand formula on
+this source carrier. Finite colours and positive coefficient height remain;
+polynomial parity is needed only for Q.
+
+The shifted target comparison and right coefficient/dot compatibility on
+both tensor carriers are supplied above. The
+zero-height case, QP and full nondegeneracy are not consequences of this step.
+
+## Bounded cyclic recovery
+
+`upwardCoefficientMap_injective_of_bounded_cyclic_recovery` consumes, for each
+fixed pair `t,t′` and degree `d`, one `BoundedCyclicRecovery` at a colourwise
+cutoff bounded below by `N > d + 2 * choose(length t, 2)`. It derives the pure
+coefficient observation from source precomposition and the normalized
+elementary/exterior bubble formulas, extends over `extensionBasis`, and applies
+C0 with the unchanged word indices. The theorem works over a commutative ring.
+No windows at other pairs or inadmissibly small cutoffs are required; degree
+zero still requires recovery, including identities and crossing-only vectors.
+The concrete two-colour importing consumer is conditional: construction of
+the cyclic action, normalized bubbles and bounded affine recovery remains open.
+No nonzero model or nondegeneracy theorem is asserted.
+
 ## Content-shifted postcomposition coordinates
 
 `RouquierHomPostCoordinates.lean` bundles the specified
@@ -125,7 +433,19 @@ content, every weight and both parities over a commutative ring; no comparison
 premise is added. Odd-colour consumers apply this equality at odd and zero
 content shift, jointly importing the normalized precomposition principal
 theorem. The Rouquier family remains an input.
-No dotted-power, whole-matrix, swapping-mate, fusion or nonzero-model result is claimed.
+`RouquierHomPostPowers.lean` proves the natural-power part of §3 (9):
+`homContentPostCup_coordinates` and `homContentPostCap_coordinates` identify
+all dotted entries with the literal factor unit/counit words, including their
+whiskering and associators. `homContentPostDot_power` identifies powers of the
+prescribed shifted dot with shifted raw powers. Both comparison signs cancel;
+no transpose sign or invertibility assumption is introduced. These theorems
+apply to every finite window, both colour parities, all content and weights.
+The importing consumer checks both parities, zero and odd content, and powers
+zero and three, and audits every declaration owned by the module.
+The pointwise whole augmented inverse and literal parity-shifted summands
+are now checked as described above. Negative powers, natural inverse
+packaging, swapping mates, fusion and a nonzero model remain separate.
+
 
 ## Raw normalized Hom mate coordinates
 
