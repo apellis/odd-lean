@@ -4,6 +4,62 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Reduced rational parameter rings
+
+`UniversalCoefficientReduced.rationalGroupAlgebra_isReduced` proves that
+`AddMonoidAlgebra ℚ G` is reduced for every additive abelian group `G`.
+Inversion of group labels defines a ring involution. The coefficient at zero
+of `f * inversion f` is the sum of the squares of the rational coefficients,
+so its vanishing forces `f = 0`. If `f² = 0`, apply this detection first to
+`f * inversion f` and then to `f`; the square-zero criterion gives reducedness.
+There is no finite-generation or torsion-free hypothesis.
+
+`rationalParameters_isReduced` applies this to the exact unsaturated
+`NormalizationParameterGroup.Group D` and every allowed
+`UniversalPolynomialParameters.Slot D`. `rationalParameters_separate`
+connects this ring directly to the constructed prime-quotient fraction fields.
+The dependent-root consumer retains the nonzero order-two endpoint and
+nonzero factors `u-1`, `u+1` with zero product, both in the group algebra and
+in its polynomial extension. Reducedness is not a domain assertion.
+
+This supplies the reducedness step of [GroundRingDescent](GroundRingDescent.md)
+§4. The next task is to combine it with coefficientwise rationalization
+injection to separate the integral parameter ring. That injection is not
+proved here. The field candidate, universal matching basis and final
+nondegeneracy deduction remain separate obligations.
+
+## Universal coefficient-slot polynomial ring
+
+`SKM.UniversalPolynomialParameters.ParameterRing D` is the polynomial ring
+on allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)` over `UnitRing D`.
+`Allowed` imposes both separate odd-exponent support conditions everywhere,
+and the exact `Scalars.Homogeneous` degree equation only in the strict used
+rectangle. All other allowed positions, including diagonal and unused ones,
+remain independent variables modulo swap. No Symmetrizer choice is needed
+by this predicate. Colours and the original weight group are arbitrary.
+
+`scalars`, `homogeneous`, and `normalizations` construct the universal
+Scalars, its homogeneity proof, and every normalization unit. `specialize`
+extends the existing unit-ring specialization; `specialize_coefficient`
+recovers every supplied coefficient under precisely its homogeneity premise.
+`specialize_t`, `specialize_c`, `hom_ext`, and `specialize_unique` prove
+simultaneous parameter formulas and uniqueness. There is no field, domain,
+flatness, finiteness, independent-root or nontriviality assumption.
+
+The new consumer uses the two-even-colour matrix with off-diagonal entries
+-2 over ZMod 9: the interior slot `(1,1)` specializes to 3 and is nonzero
+universally. The unused slot `(0,5)` specializes to 4 despite failing the
+degree equation; its swapped and diagonal counterparts are also tested.
+Separate odd-support tests kill left and right odd exponents, including
+unused positions. The earlier dependent-root unit fixture is unchanged.
+
+This completes the polynomial parameter construction of
+[GroundRingDescent](GroundRingDescent.md) §3, not nondegeneracy. Next:
+construct rationalization of this ring and prove injection coefficientwise.
+Reducedness of the rationalized group algebra and its polynomial extension
+is proved above. Exterior bubble generators remain outside the parameter ring.
+The universal basis and the final nondegeneracy deduction remain separate.
+
 ## Normalization unit ring over ℤ[1/2]
 
 `SKM.UniversalCoefficientRing.UnitRing D` is the additive group algebra of
@@ -23,15 +79,9 @@ Further evaluations use ZMod 9 (the localized inverse of 2 maps to 5) and
 ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
 §3, not the full polynomial parameter ring or nondegeneracy.
 
-Next: construct the allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)`,
-including unused slots, with the actual `Scalars.s_eq_zero` and
-`Scalars.Homogeneous` conditions. Form the polynomial extension of `UnitRing`,
-construct universal Scalars/Homogeneous/CScalars, and prove exact coefficient
-specialization. The `(2,-1)` root fixture has no interior slot; a separate
-fixture must exercise a nonzero allowed interior coefficient. Exterior delta
-generators stay outside this purely even ring. Rationalization injection and
-reducedness of the rationalized group algebra are subsequent, separate
-obligations; the generic separating-field lemma does not establish them.
+The coefficient-slot polynomial extension, universal Scalars/Homogeneous/CScalars
+and exact coefficient specialization are constructed above. Rationalization
+injection remains separate; rationalized reducedness is proved above.
 
 ## Unsaturated normalization parameter group
 
@@ -52,11 +102,10 @@ This realizes the group part of the proposed deduction in
 [GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
 
 The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
-above. Its coefficient-slot polynomial extension, including unused allowed
-slots modulo swap symmetry, and universal `Scalars`, homogeneity and `CScalars`
-remain to be constructed. Rational
-injection and reducedness of the rationalized group algebra remain separate
-obligations; the generic prime-field family does not prove them.
+above, together with its coefficient-slot polynomial extension and universal
+`Scalars`, homogeneity and `CScalars`. Rational injection remains a separate
+obligation; reducedness of the rationalized group algebra and polynomial
+ring is proved above.
 
 ## Prime-quotient characteristic-zero fields
 
