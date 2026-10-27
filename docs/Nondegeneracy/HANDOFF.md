@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Signed linear dot cancellation
+
+`LinearDotCancellation.lean` proves injectivity of `targetRightDot -
+targetRightCoefficient z`, where `z` is the cyclotomic image of the old
+`affineLastDot`. The odd dot anticommutes with this coefficient, so the
+square is `targetRightDot² + targetRightCoefficient (z²)`. At even colour
+the complementary product instead gives the difference of squares.
+`contentTargetRightDot_sub_lastDot_injective` transfers cancellation through
+`contentTargetEquiv` into its fixed-projector submodule, not an equivalence
+onto the full target. No domain, flatness, monicity or nonzero-quotient
+hypothesis is added. Height zero and odd cubic shifts remain included.
+
+This is cancellation only. The all-prefix relation-killing and polynomial
+transport identities needed for global QP remain to be proved; no global
+QP, projective resolution or full nondegeneracy conclusion follows here.
+
 ## Input-side prepend decomposition
 
 [PrependCoordinates.md](PrependCoordinates.md) records the construction for
