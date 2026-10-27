@@ -91,10 +91,14 @@ injective map. This proves alpha and F injective over the given A.
 In particular im(alpha) is exactly L1' as the short column of
 `DeformedMackeyBoundary.md`: in its left PBW notation these are the
 x_(n+1)^l c tau_n ... tau_k terms with k≥2, including the empty string.
-They fix position 1. The omitted k=1 term is the long column extracted by
-B1. Changing between the two PBW orientations is triangular dot sliding;
-the deletion terms have shorter crossing word, and remain in the same
-short column since no crossing involving position 1 is introduced.
+The tails tau_n ... tau_k fix position 1; the whole terms need not do so.
+Expand c in old PBW words: its permutations fix position n+1, so each
+full permutation sends the distinguished first strand to a position at
+most n. The omitted k=1 term is the long column extracted by B1.
+Changing between the two PBW orientations is triangular dot sliding;
+deletion terms remain in the same short span, since subwords of the tail
+still fix position 1 and subwords of the old factor still fix position n+1.
+Conversely, the adapted d_j v words with j≤n factor through this short span.
 Thus this identifies the specified inclusion, not merely an isomorphic
 abstract source.
 
