@@ -1207,6 +1207,7 @@ import OddMath.SKM.DistinctContextualCrossing
 import OddMath.SKM.DistinctExchangeIndependence
 import OddMath.SKM.ResidualCoefficientLift
 import OddMath.Algebra.FrobeniusResolvent
+import OddMath.SKM.JointScalarDescent
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
