@@ -203,4 +203,77 @@ theorem inclusion_lin_whisker {a b : Obj (sig (D.restrictColours J))}
   intro d _
   exact inclusion_diagram_whisker D J d u v hw
 
+/-- Retypings of one linear diagram are heterogeneously identical. -/
+private theorem casts_heq {S : Signature} {a b a' b' a'' b'' : Obj S}
+    (f : LinDiagram k a b) (ha : a = a') (hb : b = b')
+    (ha' : a = a'') (hb' : b = b'') :
+    HEq (LinDiagram.cast f ha hb) (LinDiagram.cast f ha' hb') := by
+  cases ha
+  cases hb
+  cases ha'
+  cases hb'
+  rfl
+
+/-- A defining relation with supported raw label has a typed finite-colour lift. -/
+theorem inclusion_user_relation (r : Rel D)
+    (hr : r.colours.toFinset ⊆ J) :
+    ∃ s : Rel (D.restrictColours J),
+      relationLabel D J s = r ∧
+      ∃ (ha : (inclusion D J).obj (ob (D.restrictColours J) s.ν s.dom) =
+          ob D r.ν r.dom)
+        (hb : (inclusion D J).obj (ob (D.restrictColours J) s.ν s.cod) =
+          ob D r.ν r.cod),
+        LinDiagram.cast ((inclusion D J).toLayerMap.lin
+          (relation (D.restrictColours J) (Sc.restrictColours D J) s)) ha hb =
+          relation D Sc r := by
+  let support : ∀ i ∈ r.colours, i ∈ J := by
+    intro i hi
+    exact hr (List.mem_toFinset.mpr hi)
+  let s := restrictLabel D J r support
+  have hs : relationLabel D J s = r := relationLabel_restrictLabel D J r support
+  have ha : (inclusion D J).obj (ob (D.restrictColours J) s.ν s.dom) =
+      ob D r.ν r.dom := by
+    simp only [inclusion_ob, ← relationLabel_dom, ← relationLabel_region, hs]
+  have hb : (inclusion D J).obj (ob (D.restrictColours J) s.ν s.cod) =
+      ob D r.ν r.cod := by
+    simp only [inclusion_ob, ← relationLabel_cod, ← relationLabel_region, hs]
+  have hlin (q : LinDiagram k (ob (D.restrictColours J) s.ν s.dom)
+      (ob (D.restrictColours J) s.ν s.cod)) :
+      LinDiagram.cast ((inclusion D J).toLayerMap.lin q)
+        (inclusion_ob D J s.ν s.dom) (inclusion_ob D J s.ν s.cod) =
+        linear D J s.ν s.dom s.cod q := by
+    change Finsupp.mapDomain (fun d => Diagram.cast d
+        (inclusion_ob D J s.ν s.dom) (inclusion_ob D J s.ν s.cod))
+        (Finsupp.mapDomain (inclusion D J).toLayerMap.map q) =
+      Finsupp.mapDomain (diagram D J) q
+    rw [← Finsupp.mapDomain_comp]
+    rfl
+  have h := linear_restrictLabel D J Sc r support
+  refine ⟨s, hs, ha, hb, ?_⟩
+  -- The heterogeneous equality is solely between its transported boundary objects.
+  have hcast := hlin (relation (D.restrictColours J) (Sc.restrictColours D J) s)
+  exact eq_of_heq ((casts_heq
+    ((inclusion D J).toLayerMap.lin
+      (relation (D.restrictColours J) (Sc.restrictColours D J) s))
+    ha hb (inclusion_ob D J s.ν s.dom) (inclusion_ob D J s.ν s.cod)).trans
+    ((heq_of_eq hcast).trans h))
+
+/-- Every supported presentation generator lifts, including signed interchange. -/
+theorem inclusion_allRel (r : (pres D Sc).AllRel)
+    (hr : allRelColours D Sc r ⊆ J) :
+    ∃ s : (pres (D.restrictColours J) (Sc.restrictColours D J)).AllRel,
+      ∃ (ha : (inclusion D J).obj s.dom = r.dom)
+        (hb : (inclusion D J).obj s.cod = r.cod),
+        LinDiagram.cast ((inclusion D J).toLayerMap.lin s.rel) ha hb = r.rel := by
+  cases r with
+  | user r =>
+    obtain ⟨s, _, ha, hb, h⟩ := inclusion_user_relation D J Sc r (by
+      simpa only [allRelColours] using hr)
+    exact ⟨.user s, ha, hb, h⟩
+  | interchange x hx =>
+    obtain ⟨y, hy, ha, hb, _, _, _, _, h⟩ :=
+      supported_interchange_lift D J (k := k) x (by
+        simpa only [allRelColours, interchangeColours] using hr) hx
+    exact ⟨.interchange y hy, ha, hb, h⟩
+
 end OddMath.SKM.FiniteColour

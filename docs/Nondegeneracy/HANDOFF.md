@@ -57,10 +57,12 @@ free expression after inclusion and endpoint transport, over any
 commutative ring, including the zero ring. `inclusion_cast_comp` and
 `inclusion_lin_whisker` prove compatibility with composition and
 whiskering at transported endpoints, without changing region labels.
-The result is not yet an ideal-membership theorem.
+The result is not yet an ideal-membership theorem. Both kinds of
+presentation generator now have typed restricted lifts: `inclusion_allRel`
+uses the raw relation parameters and handles both interchange parities.
 
-Open: restrict each contextual `IdealGen` (including raw relation
-parameters), and lift the entire span derivation. The free-diagram,
+Open: restrict the whiskering context and pre/post compositions for each
+`IdealGen`, then lift its finite span derivation. The free-diagram,
 linear, and interchange results do not yet prove this finite-subtype
 derivation theorem. Only after that theorem can the finite-witness passage
 support arbitrary-colour detection. Neither that implication nor
