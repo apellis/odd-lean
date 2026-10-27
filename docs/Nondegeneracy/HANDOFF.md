@@ -4,6 +4,31 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Ground-ring descent retaining the original realization
+
+[GroundRingDescent.md](GroundRingDescent.md) gives a proposed deduction from
+`SwappedNondegeneracy.md` over characteristic-zero fields to its full scope
+over arbitrary commutative rings with 2 invertible, without inverting the
+symmetrizers. The frozen field candidate is unchanged and remains unformalized.
+
+The universal parameter ring is `Z[1/2][G][z_v]`, where the abelian group G
+presents all endpoint units and all original X-labelled CScalars with their
+shift equations. It need not be a domain: the compatible dependent-root
+datum with roots `(2,-1)` in Z and Cartan matrix `[[2,-1],[-4,2]]` forces a
+unit parameter to square to one without selecting its sign. The note proves
+that the universal ring nevertheless embeds in a product of characteristic-zero
+fields. Existing arbitrary-ring expansion spanning and the full exterior
+coefficient basis then give the universal basis from field independence;
+only that basis, not the field detecting action, is specialized.
+
+No Lean declaration is added. The precise remaining scalar-change target is
+`R tensor_A H_A ≃ H_R` for the actual SKM presentation, with the raw-diagram
+formula, normalized bubble naturality and the expansion square. The note
+proves its contextual-presentation construction on paper. An integral
+low-PBW-weight projection also replaces the candidate's bounded vector-space
+splitting whenever its stated high-ideal bound is available. Neither
+observation supplies the unfinished full-ELV field action or pre-Hom inverse.
+
 ## Canonical written nondegeneracy proof
 
 [SwappedNondegeneracy](SwappedNondegeneracy.md) composes the full-ELV factor
