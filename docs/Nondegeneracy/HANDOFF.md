@@ -1,5 +1,36 @@
 # Odd nondegeneracy: restart state
 
+## Inputwise locally finite mixed coefficients
+
+`LocallyNilpotentMixedInverse.lean` constructs a linear inverse of x-y
+from a unit linear operator x, a commuting linear operator y, and
+`∀ v, ∃ n, (y^n) v = 0`. Both inverse products and equality with the
+ring inverse are proved. `localMixedEvenInverse_expansion` identifies
+its value with the ordered finite series for every annihilating bound
+of the given input. Bound independence and linearity therefore follow
+without a uniform exponent. For anticommuting x and y,
+`localMixedOddCoefficient_rational` and `_expansion` identify
+(x-y)(x²-y²)⁻¹ with the signed ordered sum through 2n. The denominator
+inverse is constructed by the same local argument for x² and y².
+The two `_intertwine` theorems retain a common scalar sign c with c²=1
+on both dots; the square denominator transports without that sign.
+
+These are module-level results over an arbitrary commutative ring,
+without field, domain, flatness, finite-colour or independent-root
+hypotheses. The finite paired-sum and square-commutation lemmas from
+`RouquierHomMixedRational.lean` are exposed for reuse, not reproved.
+The scoped warning-as-error build and an importing headline axiom check
+pass. This is an incomplete application slice: no new non-vacuity
+consumer, in particular no unbounded lowering-shift example, has been
+supplied. The previous nonempty signed matrix consumer is unchanged.
+
+Remaining: test the construction on a genuinely locally but not globally
+nilpotent shift; evaluate the prescribed shifted Hom dots on modules
+and assemble the signed component maps into the required natural
+transformations. Then bend in the specified adjunctions to obtain
+`SwappedHomInversion.md` (4)–(5). No factor-action, fusion or detector
+claim is made.
+
 ## Rational mixed coefficients on a nilpotent component
 
 `RouquierHomMixedRational.lean` proves `SwappedHomInversion.md` §3

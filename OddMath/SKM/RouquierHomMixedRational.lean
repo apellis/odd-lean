@@ -57,7 +57,7 @@ private theorem mixedOdd_inverse_exchange (x : Rˣ) (y : R)
   have ht := congrArg (fun a : R => (↑x⁻¹ : R) * a * ↑x⁻¹) h
   simpa [mul_assoc] using ht
 
-private theorem mixedOdd_square_commute (x y : R) (h : x * y = -(y * x)) :
+theorem mixedOdd_square_commute (x y : R) (h : x * y = -(y * x)) :
     Commute x (y ^ 2) := by
   change x * y ^ 2 = y ^ 2 * x
   calc
@@ -78,7 +78,7 @@ theorem mixedOddDenominator_isUnit (x : Rˣ) (y : R)
     mixedEvenDenominator_isUnit (x ^ (2 : ℕ)) (y ^ 2) hh n hs
 
 /-- Pair even and odd powers without reversing their order. -/
-private theorem mixedOdd_paired_sum (x : Rˣ) (y : R)
+theorem mixedOdd_paired_sum (x : Rˣ) (y : R)
     (h : (x : R) * y = -(y * x)) (n : ℕ) :
     ((x : R) - y) * (∑ r ∈ Finset.range n, (↑x⁻¹ : R) ^ (2 * (r + 1)) * y ^ (2 * r)) =
       ∑ r ∈ Finset.range (2 * n), (-1 : R) ^ r * (↑x⁻¹ : R) ^ (r + 1) * y ^ r := by
