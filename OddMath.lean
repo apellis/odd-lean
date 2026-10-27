@@ -5,6 +5,8 @@ import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
+import OddMath.SKM.RouquierHomPreCoordinates
+import OddMath.SKM.RouquierHomPreInverse
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers

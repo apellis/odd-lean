@@ -1,31 +1,32 @@
 # Odd nondegeneracy: restart state
 
-## Precomposition inverse transport: incomplete
+## Normalized precomposition inverse at nonpositive Hom height
 
-`RouquierHomPreInverse.lean` contains preliminaries for
-`SwappedHomInversion.md`, §2, not the prescribed pre-Hom augmented inverses.
-`SuperSumInvTo.mapHomogeneousCoordinates` and its column counterpart
-transport along coordinates of common parity sigma, changing window parity
-from q(n) to sigma+q(n) while preserving principal parity. They are not yet
-specialized to the Hom coordinates.
+`homContentPreInvNeg` in `RouquierHomPreInverse.lean` supplies all five
+`SuperSumInvFrom` identities for the prescribed normalized pre-Hom mate and
+dotted units, with principal parity p, nth window parity np and window length
+k.toNat when the factor height k is nonnegative. The Hom height is −k.
+The hypotheses are a supplied Rouquier family in a Π-2-supercategory over a
+commutative ring; no inverse hypothesis is added on the Hom maps.
 
-`SuperRouquierLoc.leftWindowInvFrom` and `leftWindowInvTo` package the raw
-left-window identities at nonnegative and nonpositive factor heights.
-`leftWindowCupRowNat` and `leftWindowCapColumnNat` extend the finite inverse
-entries by zero outside the window. The zero-height branches use the two
-raw principal products. These preliminaries have a scoped strict build;
-there is no importing consumer or declaration axiom audit for this module,
-and it is not yet imported from the root.
+`RouquierHomPreCoordinates.lean` constructs the actual source and target
+isomorphisms, including their even associators, and proves that their
+homogeneous parities agree by the adjacent-height equation. The existing
+principal and dotted-unit formulas identify the forward entries after
+transport of `leftWindowInvFrom`. The inverse principal has coefficient
+gamma(k), the inverse rows have the involutive coefficient alpha_n, and the
+finite ordered triangular series in `leftWindowCupRowNat` is retained.
+`homContentPreInvNeg_zero_principal` keeps gamma(0)=(-1)^p rather than
+identifying it with one. The importing odd rank-one examples exercise the
+inverse products at Hom heights −2 and 0 and the nontrivial alpha_1 sign.
 
-Remaining: construct the prescribed source and target coordinate isomorphisms
-with their associators; identify their common parity using the adjacent
-height shift; specialize the homogeneous transport with the known alpha,
-beta and gamma coefficients; replace the forward entries by the specified
-mate and dotted normalized unit/counit using the existing comparison
-lemmas. Then give both inverse coordinate formulas and the zero-overlap
-identity, retaining gamma(0)=(-1)^p. The required all-height consumer,
-axiom audit and root integration remain open. No complete pre-Hom inverse,
-fusion, or nondegeneracy result is claimed.
+Remaining: the positive Hom-height cap-window orientation, with its beta_n
+coefficient and `leftAdjScalar` normalization, then zero-height agreement
+of the two principal inverses. The common coordinate isomorphisms and
+principal comparison are already available; use `leftWindowInvTo` and
+`homReservoirCap_coordinates` for that next orientation. Supernatural
+packaging, full fusion and nondegeneracy remain separate obligations.
+The factor family is still input data, not a constructed nonzero model.
 
 ## Raw reversed left-window inverses
 

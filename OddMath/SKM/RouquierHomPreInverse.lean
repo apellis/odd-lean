@@ -1,17 +1,17 @@
-import OddMath.SKM.RouquierHomPrincipal
-import OddMath.SKM.RouquierHomReservoirPowers
+import OddMath.SKM.RouquierHomPreCoordinates
 import OddMath.SKM.RouquierLeftWindowInverse
 import OddMath.SKM.RouquierHomPostInverse
 
 /-!
 # Precomposition augmented inverses
 
-Preliminaries for transport of the reversed left windows through the prescribed
-Hom coordinates in `SwappedHomInversion.md`, §2. The raw inverses extend to
-natural-number families by zero outside the finite window, including height zero.
-Homogeneous coordinate transport changes the window parity by the common
-coordinate parity. Its specialization to the prescribed Hom maps, including
-the alpha, beta and gamma normalizations, remains to be constructed.
+The negative Hom-height orientation of `SwappedHomInversion.md`, §2 is
+`homContentPreInvNeg`: all five inverse identities for the prescribed mate and
+dotted normalized units, obtained from the reversed factor cup window. The
+actual coordinate isomorphisms include their associators. Alpha and gamma
+remain in the inverse entries, including the exceptional height-zero sign.
+The positive Hom-height cap-window orientation and supernatural packaging
+remain separate obligations.
 -/
 noncomputable section
 namespace OddMath.SKM
@@ -162,5 +162,78 @@ def leftWindowInvTo (hh : h ≤ 0) :
     rw [leftWindowCapColumnNat, dite_eq_left hn]
     simpa only [Fin.mk.injEq] using L.leftWindowCap_column (by omega) ⟨n, hn⟩ ⟨m, hm⟩
 end SuperRouquierLoc
+
+section Pre
+variable [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {I X : Type*} [AddCommGroup X] {D : Datum I X}
+  (T : RouquierFamily (k := k) (B := B) D) (W : X → B)
+  (i : I) (muM : X) {muP nuP rhoP : X}
+  (h : -nuP + D.α i = -muP) (h₂ : -rhoP + D.α i = -nuP)
+
+/-- The entire negative Hom-height inverse, obtained from the reversed factor
+cup window. Its forward entries are the prescribed normalized mate and dotted
+unit; no inverse premise on those Hom maps is assumed. The Hom height is the
+negative of the factor height. -/
+def homContentPreInvNeg (hh : 0 ≤ D.h i (-nuP))
+    (Z : homWeightSector T.obj W nuP muM) :
+    SuperSumInvFrom (k := k) (homContentPreMate T W i muM h h₂ Z)
+      (fun n => homReservoirCup T W i muM h₂ n Z)
+      (D.parity i) (fun n => n * D.parity i) (D.h i (-nuP)).toNat := by
+  let J := ((T.loc i h₂ h).leftWindowInvFrom hh).mapHomogeneousCoordinates
+    (homPost (k := k) Z)
+    (homContentPreInverseTarget T W i muM h₂ Z)
+    (homContentPreInverseSource T W i muM h Z) (leftUnitor Z).symm
+    (leftAdjParity D i (-nuP))
+    (homContentPreInverseTarget_mem T W i muM h₂ Z)
+    (homContentPreInverseSource_mem T W i muM h Z)
+    (inv_mem (leftUnitor Z) (TwoSupercategory.leftUnitor_hom_mem (R := k) Z))
+  let K := J.rescale (homPreGamma (D.parity i) (D.h i (-nuP)))
+    (fun n => koszulSign (leftAdjParity D i (-nuP)) (n * D.parity i))
+    (homPreGamma_mul_self _ _) (fun _ => koszulSign_mul_self _ _)
+  let M := K.copyMaps _ _ (homContentPreMate_coordinates T W i muM h h₂ Z)
+    (funext fun n => homReservoirCup_factor T W i muM h h₂ n Z)
+  have hp (n : ℕ) : leftAdjParity D i (-nuP) +
+      (D.parity i * ((D.h i (-nuP) : ZMod 2) + 1) + n * D.parity i) =
+      n * D.parity i := by
+    simp only [leftAdjParity, ← add_assoc, zmod2_add_self, zero_add]
+  refine { M with g_mem := ?_, g'_mem := ?_ }
+  · intro n
+    have hm := M.g_mem n
+    rw [hp n] at hm
+    exact hm
+  · intro n
+    have hm := M.g'_mem n
+    rw [hp n] at hm
+    exact hm
+
+/-- Principal inverse with its gamma coefficient; the factor entry is `sig`,
+not an assumed inverse of a bare crossing. -/
+theorem homContentPreInvNeg_principal (hh : 0 ≤ D.h i (-nuP))
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreInvNeg T W i muM h h₂ hh Z).f' =
+      homPreGamma (D.parity i) (D.h i (-nuP)) •
+        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
+          (T.loc i h₂ h).sig ▷ Z ≫
+          (homContentPreInverseSource T W i muM h Z).inv) := rfl
+
+/-- Inverse rows retain the finite triangular window inverse and reciprocal
+alpha coefficient (alpha is involutive). Entries outside the window are zero. -/
+theorem homContentPreInvNeg_row (hh : 0 ≤ D.h i (-nuP))
+    (Z : homWeightSector T.obj W nuP muM) (n : ℕ) :
+    (homContentPreInvNeg T W i muM h h₂ hh Z).g' n =
+      koszulSign (leftAdjParity D i (-nuP)) (n * D.parity i) •
+        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
+          (T.loc i h₂ h).leftWindowCupRowNat n ▷ Z ≫ (leftUnitor Z).hom) := rfl
+
+/-- At factor height zero the principal inverse still has coefficient (-1)^p. -/
+theorem homContentPreInvNeg_zero_principal (hh : D.h i (-nuP) = 0)
+    (Z : homWeightSector T.obj W nuP muM) :
+    (homContentPreInvNeg T W i muM h h₂ (by omega) Z).f' =
+      koszulSign (D.parity i) (D.parity i) •
+        ((homContentPreInverseTarget T W i muM h₂ Z).hom ≫
+          (T.loc i h₂ h).sig ▷ Z ≫
+          (homContentPreInverseSource T W i muM h Z).inv) := by
+  rw [homContentPreInvNeg_principal, homPreGamma, ite_eq_left hh]
+end Pre
 
 end OddMath.SKM
