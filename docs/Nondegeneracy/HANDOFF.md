@@ -4,6 +4,18 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Full coefficient monomials under scalar change
+
+`ScalarChange.symMap_coefficientBasis` preserves each basis vector of the
+full polynomial/exterior `SYM` algebra under any commutative-ring map. Its
+exterior product uses the same chosen well-order on both sides, so no sign
+is lost. This is a basis-vector image formula, not coefficientwise joint
+separation. Next derive the coefficient-representation formula and infer
+joint detection from a jointly zero-reflecting family of scalar maps;
+then extend pointwise to finite matching-label coefficients. No claim is
+made about injectivity of diagrammatic bubble evaluation or matching
+expansion.
+
 ## Normalization unit ring over ℤ[1/2]
 
 `SKM.UniversalCoefficientRing.UnitRing D` is the additive group algebra of

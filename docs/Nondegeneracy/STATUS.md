@@ -16,6 +16,16 @@ Arbitrary colour sets are handled by finite contextual witnesses, retaining
 the original weight group. This does not assert existence of compatible
 `CScalars` for arbitrary parameters on a collapsed weight realization.
 
+## Full coefficient scalar change
+
+`ScalarChange.symMap_coefficientBasis` proves that an arbitrary ring map
+preserves every monomial in the complete polynomial/exterior `SYM` basis,
+with the same odd-generator order and signs. The noninjective projection
+`ℚ × ℚ → ℚ` is exercised by an importing consumer. The representation
+formula and joint detection of zero from jointly zero-reflecting scalar maps
+remain open, as does coefficientwise matching-label detection. No diagrammatic
+bubble or matching expansion injectivity is claimed.
+
 ## Comparison with the starting checkpoint
 
 The comparison point is

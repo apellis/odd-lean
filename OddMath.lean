@@ -1250,6 +1250,7 @@ import OddMath.SKM.DistinctExchangeIndependence
 import OddMath.SKM.ResidualCoefficientLift
 import OddMath.Algebra.FrobeniusResolvent
 import OddMath.SKM.JointScalarDescent
+import OddMath.SKM.ScalarChangeCoefficientSeparation
 import OddMath.SKM.SeparatingFields
 import OddMath.SKM.NormalizationParameterGroup
 import OddMath.SKM.UniversalCoefficientRing
