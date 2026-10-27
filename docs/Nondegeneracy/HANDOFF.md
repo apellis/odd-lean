@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Normalized precomposition supernatural inverses
+
+`homContentPreSuperInvNeg` and `homContentPreSuperInvPos` lift all five
+pointwise augmented inverse identities into the full Hom SCat superfunctor
+category at opposite factor-height signs. The normalized crossing mate is
+the literal adjunction mate, while every dotted unit and counit is the
+specified raw-power window. Signed naturality holds on arbitrary odd Hom
+morphisms for the mate, the dotted windows and every inverse principal,
+row and column. The two normalized shift-removal coordinates have equal
+left-adjunction parity; their contributions cancel around each transported
+factor inverse entry. The row and column proofs retain the left-adjunction
+parity inside the raw cup/cap windows; the cap column retains the beta
+coefficient at the source height, and both principals retain gamma.
+At zero height the principal supernatural inverses agree, with
+`homPreGamma p 0 = koszulSign p p`, not an implicit unit coefficient.
+
+The hypotheses are a supplied Rouquier family in a Π-2-supercategory over
+an arbitrary commutative ring. Odd rank-one importing examples check all
+five identities at Hom heights −2 and 2, odd–odd signed naturality for
+both inverse principals and the first dotted cup and cap, beta and gamma
+signs and the zero-height comparison. No nonzero factor action is
+constructed. Mixed-sector blocks, fusion and full nondegeneracy remain
+separate obligations; the next bounded target is the source's mixed Hom
+block comparison using these inverse transformations, not a conditional
+repackaging of them.
+
 ## Normalized precomposition inverse at positive Hom height
 
 `homContentPreInvPos` supplies all five `SuperSumInvTo` identities for the
