@@ -1,8 +1,10 @@
 # The content-shifted probe matrix
 
-**Status: principal equality (B) and the natural-power dotted identities (9)
-proved in Lean; negative powers and the whole-matrix comparisons below remain
-written proofs.** `homContentPostCup_coordinates` and
+**Status: principal equality (B), natural-power dotted identities (9), and
+pointwise whole augmented inverses (10)–(13) proved in Lean. Negative powers
+and natural-family packaging remain separate.** `RouquierHomPostInverse.lean`
+supplies both height regimes, all five products, the literal parity-shifted
+summands and zero-height overlap. `homContentPostCup_coordinates` and
 `homContentPostCap_coordinates` in `RouquierHomPostPowers.lean` supply every
 natural-power dotted entry, without requiring the factor dot to be invertible. The principal theorem is
 `homContentPostCrossing_principal` in `RouquierHomPostPrincipal.lean`. This computes the

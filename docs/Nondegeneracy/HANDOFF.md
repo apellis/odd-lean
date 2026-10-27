@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Pointwise content-shifted postcomposition inverse
+
+`RouquierHomPostInverse.lean` constructs `homContentPostInvPos` and
+`homContentPostInvNeg` from the specified factor inverse and the checked
+principal and dotted-entry comparisons. All five finite-window products
+and homogeneous parities hold over a commutative ring, at every content
+and height. The forward maps remain the prescribed mate and dotted unit
+or counit, rather than maps defined by conjugation.
+
+The even-component theorems retain the literal parity-shifted identity
+summands, including their diagonal and off-diagonal products. The principal
+inverse, inverse rows and columns have explicit factor-coordinate formulas;
+the zero-height presentations agree. These are pointwise data. Naturality
+and natural-family packaging remain separate, as do fusion and construction
+of a nonzero factor model in Lean.
+
 ## Input-side prepend decomposition
 
 [PrependCoordinates.md](PrependCoordinates.md) gives a complete proposed
@@ -244,8 +260,9 @@ no transpose sign or invertibility assumption is introduced. These theorems
 apply to every finite window, both colour parities, all content and weights.
 The importing consumer checks both parities, zero and odd content, and powers
 zero and three, and audits every declaration owned by the module.
-Negative powers, the whole augmented inverse with its parity-completed
-identity summands, swapping mates, fusion and a nonzero model remain open.
+The pointwise whole augmented inverse and literal parity-shifted summands
+are now checked as described above. Negative powers, natural inverse
+packaging, swapping mates, fusion and a nonzero model remain separate.
 
 
 ## Raw normalized Hom mate coordinates
