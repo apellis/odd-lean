@@ -4,6 +4,30 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Unsaturated normalization parameter group
+
+`SKM.NormalizationParameterGroup.Group D` is the free abelian group on
+`T_ij` and every original `X`-labelled `C_(μ;i)`, modulo the subgroup generated
+by the diagonal, disconnected-symmetry and shift relators. No saturation is
+taken. `lift` constructs the universal additive homomorphism; `hom_ext`
+proves uniqueness. `specialize` sends the classes to the supplied units of
+any `Scalars D R` and `CScalars Sc`, with both generator formulas and
+`specialize_unique`. No finiteness, independent-root, domain or flatness
+hypothesis is used.
+
+The mixed-parity dependent-root consumer has `X = ℤ`, roots `(2,-1)` and
+symmetrizers `(4,1)`. Its parameter in `ℚ × ℚ` is `(1,-1)`, neither sign.
+It proves that `T_01 + T_01 = 0` but `T_01 ≠ 0` in the presented group itself.
+Thus the construction retains the torsion required by the original roots.
+This realizes the group part of the proposed deduction in
+[GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
+
+Next: construct `Z[1/2][G]` and its coefficient-slot polynomial extension,
+including unused allowed slots modulo swap symmetry; construct universal
+`Scalars`, homogeneity and `CScalars`, and the ring specialization. Rational
+injection and reducedness of the rationalized group algebra remain separate
+obligations; the generic prime-field family does not prove them.
+
 ## Prime-quotient characteristic-zero fields
 
 For every reduced commutative ℚ-algebra `A`, `SKM.primeFractionField A p`
