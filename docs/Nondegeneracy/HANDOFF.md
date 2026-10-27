@@ -16,6 +16,10 @@ then extend pointwise to finite matching-label coefficients. No claim is
 made about injectivity of diagrammatic bubble evaluation or matching
 expansion.
 
+The unimported `research/Nondegeneracy/ScalarChangeCoefficientCoordinates.lean`
+preserves an incomplete attempt at the coordinate formula. Its final `basis_repr`
+proof does not elaborate; it is not part of the checked library.
+
 ## Normalization unit ring over ℤ[1/2]
 
 `SKM.UniversalCoefficientRing.UnitRing D` is the additive group algebra of
