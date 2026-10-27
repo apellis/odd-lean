@@ -7,7 +7,9 @@ parity-superaction theorem with explicit factor inputs F1–F4 and a complete
 `Presentation.Rel` dictionary. The four distinct-colour blocks are inverted
 componentwise: normalized-left pre/pre with
 `delta=t_ij (-1)^(p_i p_j sigma) g(k-d_ij)/g(k)`, transported factor
-post/post, and both mixed mates. The QJ mate bends the unit probe strand;
+post/post, and the indexed mixed mates U_ji,V_ij for s_ij. The U calculation
+uses the exchanged (j,i) content square and parity shifts; V retains (i,j).
+The QJ mate bends the unit probe strand;
 its polynomial uses the normalized-left transposed probe dot Z and the
 surviving nilpotent reservoir dot Y, retaining the signed transpose powers
 and both dotless residual signs. Whole same-colour matrices, not merely

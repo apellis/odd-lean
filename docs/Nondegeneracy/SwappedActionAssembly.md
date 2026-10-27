@@ -357,17 +357,42 @@ being substituted for the distinct right mate.
 
 ### Mixed sectors
 
-Use the independently labelled square and coordinate maps C_s,C_t,D_s,D_t
-of `SwappedDistinctMixedMates.md` (1)–(6). Put p=p_i, q=p_j,
-r=pq, t=q P(b), u=t+r, sigma=p(h_i(-Lambda_P+alpha(b-i))+1).
-For U=M(J^-1) and V=M(QJ), that note (8)–(15) proves
+Index the imported mates of `SwappedDistinctMixedMates.md` by their
+ordered pair: U_kl=M(J_kl^-1), V_kl=M(Q_kl J_kl). Its (2) types U_kl
+as a block of s_lk, but V_kl as a block of s_kl. Thus the mixed blocks
+of the fixed s_ij are **U_ji and V_ij**, not U_ij and V_ij.
 
-    C_s^-1;U;C_t=beta h_B,       beta=(-1)^(tr),
-    D_s^-1;V;D_t=alpha h_A;G,    alpha=(-1)^(sigma u),
-    U^-1=beta C_t;h_B^-1;C_s^-1,
-    V^-1=alpha D_t;G^-1;h_A^-1;D_s^-1.                 (A13)
+For V_ij retain that note's (i,j) square and D_s,D_t from (1)–(6):
+p=p_i, q=p_j, r=pq, t=q P(b), u=t+r,
+sigma=p(h_i(-Lambda_P+alpha(b-i))+1). Its raw interchange is
+h_A:post(E_j) pre(F_i) -> pre(F_i) post(E_j).
 
-Here h_A,h_B are even raw pre/post associator interchanges. Crucially
+For U_ji exchange i and j throughout the imported U calculation. To
+keep its content square separate, write b_U,c_U for its local contents:
+
+    D0_U=H_(b_U,c_U),       C0_U=H_(b_U-j,c_U),
+    D1_U=H_(b_U,c_U+i),     C1_U=H_(b_U-j,c_U+i),
+    L_U=pre(E_j^T),        M_U=post(E_i^W), N_U=post(F_i^W),
+    t_U=p_i P(b_U),        u_U=p_i P(b_U-j)=t_U+r,
+    T_U=N_U S_(t_U),       T'_U=N_U S_(u_U).
+
+Here L_U maps D_s_U to C_s_U, and T_U,T'_U lower the reservoir i edge.
+Functionally U_ji:L_U T_U -> T'_U L_U maps D1_U to C0_U. For H in D1_U
+the imported coordinate maps and even raw interchange are explicitly
+
+    C_s^U=L_U N_U(z_(t_U)(H)),
+    C_t^U=N_U(z_(u_U)(L_U H)),
+    h_B^U:L_U N_U -> N_U L_U.
+
+Thus the same universally quantified calculation (8)–(15), instantiated
+at (j,i) for U and at (i,j) for V, gives
+
+    (C_s^U)^-1;U_ji;C_t^U=beta_U h_B^U,  beta_U=(-1)^(t_U r),
+    D_s^-1;V_ij;D_t=alpha h_A;G,         alpha=(-1)^(sigma u),
+    U_ji^-1=beta_U C_t^U;(h_B^U)^-1;(C_s^U)^-1,
+    V_ij^-1=alpha D_t;G^-1;h_A^-1;D_s^-1.             (A13)
+
+Both raw interchanges are even associators. Crucially, in V_ij,
 **QJ bends the pre unit-probe strand**. On its raw target KM,
 
     Z_H=a_(KH);K(d_(KH));K(v_H),
@@ -387,7 +412,7 @@ E^N=0 and
     G^-1=(sum_(ell=0)^(N-1) (-E)^ell) A^-1.           (A15)
 
 Both products are identities in the commuting supported-power algebra.
-The dotless residual signs alpha,beta and the monomial transpose signs
+The dotless residual signs alpha,beta_U and the monomial transpose signs
 are part of the prescribed mates, not adjustable normalizations.
 
 ### Componentwise assembly and theorem
@@ -395,8 +420,8 @@ are part of the prescribed mates, not adjustable normalizations.
 Let P_src,P_tar be the even direct-sum permutations separating the four
 supports. Equations (A9), the post/post formula, and (A13) give
 
-    P_tar s_ij P_src^-1=diag(M_pre,M_post,U,V),
-    lcross(i,j)=P_src^-1 diag(N_pre,N_post,U^-1,V^-1) P_tar.
+    P_tar s_ij P_src^-1=diag(M_pre,M_post,U_ji,V_ij),
+    lcross(i,j)=P_src^-1 diag(N_pre,N_post,U_ji^-1,V_ij^-1) P_tar.
 
 Multiplication in either order is the identity: orthogonal sector
 projections remove off-diagonal entries and the four diagonal products
