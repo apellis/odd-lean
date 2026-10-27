@@ -1,5 +1,38 @@
 # Odd nondegeneracy: restart state
 
+## Negative precomposition windows and the literal mate slide
+
+`RouquierHomPreMateSlide.lean` proves `homContentCrossing_slide` from the
+factor’s `slide_left` relation and the prescribed reversed crossing
+`-q pre(t)`. Applying `rouquierMate_slide` to the specified normalized
+pre adjunctions gives `homContentPreMate_slide`, equation (1) of
+`SwappedHomInversion.md` §2. No slide for an inverse component is assumed.
+
+`RouquierHomPreNegativePowers.lean` defines exponent −n by the nth power
+of the inverse probe dot. Both whiskered inverse identities are proved.
+`homPreDotInverse_power_supernatural`, `homPreNegativeCup_supernatural`
+and `homPreNegativeCap_supernatural` give signed naturality on the full
+Hom supercategory. The coordinate theorems retain alpha at −n and beta
+at −n, including the inverse `leftAdjScalar` at the source height. At n=0
+they agree with the existing nonnegative windows. Gamma and xi conventions
+are unchanged; this slice does not use or alter either comparison.
+
+Hypotheses: supplied Rouquier family in a Π-2-supercategory over an
+arbitrary commutative ring; invertibility of the probe dot only for the
+negative powers. No field, domain, flatness, finite-colour, independent-root
+or global nilpotence-bound hypothesis is introduced. Importing odd rank-one
+examples verify the mate-slide sign, both inverse identities, odd and even
+negative-power naturality, both coordinates and exponent zero. These are
+consumers of supplied factor data, not a nonzero factor construction.
+
+Remaining and next target: prove `SwappedHomInversion.md` §3 (3), the finite
+expansion in the nilpotent postcomposition reservoir variable for the
+prescribed swapping entries, then bend them in their actual adjunctions
+to obtain the literal central entries (4) and raw comparisons (5). Retain
+`-J^-1 a²`, every alpha/beta/gamma and xi sign, and reservoir bounds local
+to each content. No central-entry comparison, fusion or detector theorem
+is asserted here.
+
 ## Normalized precomposition supernatural inverses
 
 `homContentPreSuperInvNeg` and `homContentPreSuperInvPos` lift all five
