@@ -96,6 +96,81 @@ fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
 
+## Signed ordinary-polynomial transport
+
+`SignedPolynomialTransport.lean` proves `dot_pow_comp_moveHom`,
+`polynomial_comp_moveHom` and `polynomial_mem_comp_moveHom`. For the moving
+strand, every ground-ring polynomial transports through the prescribed
+`moveHom i l ν` by substituting `(-1)^(p(i)p(ν))` times the destination dot.
+For an old strand of colour `x`, the substitution uses
+`(-1)^(p(x)p(i)p(ν))`. Powers include zero; polynomials may have mixed parity
+and need not be monic. No finiteness assumption on the colour set is used.
+
+The importing consumer has a fully specified odd rank-one datum over ℚ.
+It tests an inhomogeneous cubic at an odd-length chain, sign cancellation
+at an even-length chain, an old strand inside a longer chain, and empty
+chain/zero-exponent boundaries.
+
+This proves only the ordinary-coefficient part of the transport in
+`DeformedProjectiveResolution.md` §1. With odd coefficients, their parity
+contributes another sign: the coefficient of `x^m` in total parity `P`
+has parity `P - m p(i)`. The next obligation is to prove the common total
+sign in the actual coefficient-extended category, then descend it through
+the full ELV relations and carry out the repeated-colour balanced QP
+induction of `DeformedGlobalQP.md` §3. Neither that induction nor a full
+ELV action is asserted by these polynomial identities.
+
+## All-prefix cyclotomic relation killing
+
+`IntertwinerRelation.lean` proves `allPrefix_relation_tmul_zero`: for every
+finite prefix `ν`, moving colour `i`, and ambient left multiplier,
+`f_i(x₁) T_|ν| V_(|ν|+1)` on `(i,ν,i)` vanishes in the prescribed prepend
+balanced tensor with coefficient `qCoefficient`. The bare prefix is the
+recursive morphism `lastToFirstHom`; the theorem includes the empty prefix,
+repeated colours and arbitrary spectator parities. Polynomial parity is
+unchanged, so odd cutoffs and cubic odd-colour polynomials are allowed.
+
+`append_move_factor` reuses established moving-strand naturality and retains
+the parity involution on the entire old expression. The stronger
+`append_relation_move_tmul_zero` permits arbitrary inhomogeneous old factors
+on both sides of the relation. `prepend_kernel_tmul_zero` kills the resulting
+old quotient-kernel element by balancing, rather than assuming relation
+vanishing or using flatness. `prefix_relation_move_tmul_zero` supplies the
+typed word representative in the target of `parityCyclotomicContentQ`.
+
+This closes the relation-killing step for the existing ordinary-polynomial
+coefficient implementation only. Signed polynomial transport and the
+inductive QP calculation remain; no global QP, full coefficient-superalgebra
+extension, ideal-sum equality or projective resolution is asserted.
+
+## Normalized precomposition inverse at nonpositive Hom height
+
+`homContentPreInvNeg` in `RouquierHomPreInverse.lean` supplies all five
+`SuperSumInvFrom` identities for the prescribed normalized pre-Hom mate and
+dotted units, with principal parity p, nth window parity np and window length
+k.toNat when the factor height k is nonnegative. The Hom height is −k.
+The hypotheses are a supplied Rouquier family in a Π-2-supercategory over a
+commutative ring; no inverse hypothesis is added on the Hom maps.
+
+`RouquierHomPreCoordinates.lean` constructs the actual source and target
+isomorphisms, including their even associators, and proves that their
+homogeneous parities agree by the adjacent-height equation. The existing
+principal and dotted-unit formulas identify the forward entries after
+transport of `leftWindowInvFrom`. The inverse principal has coefficient
+gamma(k), the inverse rows have the involutive coefficient alpha_n, and the
+finite ordered triangular series in `leftWindowCupRowNat` is retained.
+`homContentPreInvNeg_zero_principal` keeps gamma(0)=(-1)^p rather than
+identifying it with one. The importing odd rank-one examples exercise the
+inverse products at Hom heights −2 and 0 and the nontrivial alpha_1 sign.
+
+Remaining: the positive Hom-height cap-window orientation, with its beta_n
+coefficient and `leftAdjScalar` normalization, then zero-height agreement
+of the two principal inverses. The common coordinate isomorphisms and
+principal comparison are already available; use `leftWindowInvTo` and
+`homReservoirCap_coordinates` for that next orientation. Supernatural
+packaging, full fusion and nondegeneracy remain separate obligations.
+The factor family is still input data, not a constructed nonzero model.
+
 ## Raw reversed left-window inverses
 
 `RouquierLeftWindowInverse.lean` proves the raw augmented inverses from
@@ -119,6 +194,20 @@ height `-h`, including the exceptional gamma at height zero. These raw
 factor identities alone are not yet a pre-Hom augmented inverse, a full
 Hom family, fusion, or a nonzero model construction.
 
+## Coefficient transport before presentation base change
+
+`ScalarChange.scalars` carries Brundan–Ellis (1.5)–(1.6) across an arbitrary
+commutative ring homomorphism, including units and the odd-colour invertibility
+condition on two. `ScalarChange.cScalars` preserves the shifted units (1.17).
+The two-odd-colour example specializes `ZMod 9` to `ZMod 3`, killing the
+nonzero element three while preserving the shifted bubble law. This verifies
+parameter admissibility under a noninjective specialization only. The map on
+free linear diagrams, preservation of every relation including interchange and
+arbitrary horizontal/vertical contexts, and descent to the presented Hom
+quotient remain open. These are prerequisites for the presentation tensor
+base-change equivalence; neither that equivalence nor arbitrary-ring
+nondegeneracy follows from parameter transport.
+
 ## Signed linear dot cancellation
 
 `LinearDotCancellation.lean` proves injectivity of `targetRightDot -
@@ -131,9 +220,10 @@ the complementary product instead gives the difference of squares.
 onto the full target. No domain, flatness, monicity or nonzero-quotient
 hypothesis is added. Height zero and odd cubic shifts remain included.
 
-This is cancellation only. The all-prefix relation-killing and polynomial
-transport identities needed for global QP remain to be proved; no global
-QP, projective resolution or full nondegeneracy conclusion follows here.
+This is cancellation only. The all-prefix relation-killing step is now
+proved above for ordinary polynomial coefficients; signed polynomial
+transport and induction needed for global QP remain. No global QP,
+projective resolution or full nondegeneracy conclusion follows here.
 
 
 ## Supernatural postcomposition augmented inverses
@@ -2523,3 +2613,24 @@ and fusion's upward-block comparison. This is a written derivation, not a
 new Lean theorem or a construction of `RegularVacuumIdentification`.
 The normalized bubble inverse-block comparison remains separate.
 
+## Finite contextual colour witnesses
+
+`FiniteColourRelations.lean` proves `mem_finiteColourIdeal` for the actual
+`(pres D Sc).ideal a b`, not a free syntax surrogate. The proof inducts on
+its `Submodule.span` of `Presentation.IdealGen` and joins finite supports
+under addition. Each witnessed contextual generator records the defining
+relation or interchange law, both whiskering words, and finite linear
+pre/post compositions. Its colour set includes the vertices of every
+supported diagram, so a cup followed by a cap is not reduced to the empty
+external boundary. `eq_finiteColourIdeal` applies this witness to equality
+in the presented Hom via `Presentation.lin_eq_iff`.
+
+`FiniteColourRelationsExamples.lean` instantiates the fifth positive inverse
+matrix relation at the simple-root weight, with zero labels. Both external
+words are empty, while its defining summand has a decorated cup and cap of
+colour `i`; the consumer gives a finite contextual witness containing `i`.
+This is only finite support of a derivation. The next step is restriction
+of each supported contextual generator to a finite colour subtype while
+retaining the same weight group X and restricted datum/scalars, including
+its regions and interchange signs. No faithful embedding of the full
+infinite-colour presented Hom or nondegeneracy follows yet.

@@ -7,9 +7,12 @@ import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoefficientCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.PrependDotCancellation
 import OddMath.QuiverHecke.CyclotomicAction.LinearDotCancellation
+import OddMath.SKM.FiniteColourRelationsExamples
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
+import OddMath.SKM.RouquierHomPreCoordinates
+import OddMath.SKM.RouquierHomPreInverse
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers
@@ -53,6 +56,8 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentCoefficient
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentDot
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerSquareDot
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerError
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRelation
+import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
@@ -1152,6 +1157,8 @@ import OddMath.SKM.PitchforkCap
 import OddMath.SKM.PitchforkCup
 import OddMath.SKM.PitchforkRot
 import OddMath.SKM.MoreGenerators
+import OddMath.SKM.ScalarChange
+import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
 import OddMath.SKM.Rewriting
