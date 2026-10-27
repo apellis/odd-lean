@@ -4,6 +4,60 @@ The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
 
+## Normalization unit ring over ℤ[1/2]
+
+`SKM.UniversalCoefficientRing.UnitRing D` is the additive group algebra of
+`NormalizationParameterGroup.Group D` over `Localization.Away (2 : ℤ)`.
+`groupUnit`, `t`, and `c` supply genuine units; `t_self`, `t_symm`, and
+`c_shift` prove the endpoint, disconnected-symmetry and normalization laws.
+`two_isUnit` proves that 2 is invertible. `lift` uses the localization and
+additive group-algebra universal properties. `hom_ext` proves that the endpoint
+and normalization images determine a ring homomorphism; `specialize` and
+`specialize_unique` give its unique specialization to any supplied Scalars
+and CScalars over a commutative ring with 2 invertible. No independent roots,
+finiteness, field, domain, nontriviality or flatness are assumed.
+
+The importing consumer evaluates the dependent-root example in ℚ × ℚ,
+retaining the endpoint (1,-1), neither sign, and every normalization value.
+Further evaluations use ZMod 9 (the localized inverse of 2 maps to 5) and
+ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
+§3, not the full polynomial parameter ring or nondegeneracy.
+
+Next: construct the allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)`,
+including unused slots, with the actual `Scalars.s_eq_zero` and
+`Scalars.Homogeneous` conditions. Form the polynomial extension of `UnitRing`,
+construct universal Scalars/Homogeneous/CScalars, and prove exact coefficient
+specialization. The `(2,-1)` root fixture has no interior slot; a separate
+fixture must exercise a nonzero allowed interior coefficient. Exterior delta
+generators stay outside this purely even ring. Rationalization injection and
+reducedness of the rationalized group algebra are subsequent, separate
+obligations; the generic separating-field lemma does not establish them.
+
+## Unsaturated normalization parameter group
+
+`SKM.NormalizationParameterGroup.Group D` is the free abelian group on
+`T_ij` and every original `X`-labelled `C_(μ;i)`, modulo the subgroup generated
+by the diagonal, disconnected-symmetry and shift relators. No saturation is
+taken. `lift` constructs the universal additive homomorphism; `hom_ext`
+proves uniqueness. `specialize` sends the classes to the supplied units of
+any `Scalars D R` and `CScalars Sc`, with both generator formulas and
+`specialize_unique`. No finiteness, independent-root, domain or flatness
+hypothesis is used.
+
+The mixed-parity dependent-root consumer has `X = ℤ`, roots `(2,-1)` and
+symmetrizers `(4,1)`. Its parameter in `ℚ × ℚ` is `(1,-1)`, neither sign.
+It proves that `T_01 + T_01 = 0` but `T_01 ≠ 0` in the presented group itself.
+Thus the construction retains the torsion required by the original roots.
+This realizes the group part of the proposed deduction in
+[GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
+
+The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
+above. Its coefficient-slot polynomial extension, including unused allowed
+slots modulo swap symmetry, and universal `Scalars`, homogeneity and `CScalars`
+remain to be constructed. Rational
+injection and reducedness of the rationalized group algebra remain separate
+obligations; the generic prime-field family does not prove them.
+
 ## Prime-quotient characteristic-zero fields
 
 For every reduced commutative ℚ-algebra `A`, `SKM.primeFractionField A p`
@@ -131,6 +185,40 @@ remain separate. No total zero-window extension, full integer-graded
 fusion, arbitrary-Hom base change or nondegeneracy is claimed. The
 kernel-checked pre/post principal comparisons below are preserved as
 separate formalized results; they do not certify the whole matrices.
+## ELV coefficient-quotient tensor transport
+
+`ELVCoefficientTransport.lean` constructs `elvCoefficientQuotient` from
+abstract SYM to its exact `elvCoefficientIdeal` ring quotient, and
+`elvHomQuotient` from coefficient-extended affine Hom to
+`(SYM / elvCoefficientIdeal) ⊗ Hom`. The latter kills every ideal
+coefficient times every affine morphism, with no descent or flatness premise.
+Elementary truncations and `delta_i * chi_(cutoff_i/2)` at even cutoffs
+vanish; at cutoff zero the latter kills `delta_i` itself.
+
+`elvMonicCoefficient_mem_parity` proves that the degree-j coefficient has
+parity N-j. `elvDotPolynomial_first` identifies the polynomial at position
+zero with the existing `elvCyclotomic`; `elvHomQuotient_dotPolynomial`
+gives its coefficientwise image in the quotient tensor module.
+`elvDotPolynomial_transport` and `elvDotPolynomial_old_transport`
+transport its projected composites through the affine intertwiner chain
+with sign `(-1)^(N p(i)p(ν))`, for moving and old strands respectively.
+No field, domain, finite-colour or flatness assumption is introduced.
+
+The consumer retains a nonzero odd coefficient in the exact quotient at
+cutoffs two and three, checks the corresponding coefficient lists, tests
+the even-cutoff top relation both in the ring and after tensoring, and
+includes zero cutoff and empty chains. Transport and the top relation
+are also instantiated over `ZMod 9`, with invertible two and a nonzero
+square-zero element.
+
+This is transport in the coefficient-quotient tensor modules, not a
+construction of categorical composition on those modules or of an SKM
+action. The next obligation is to compare these coefficient-extended
+modules with the deformed old-cyclotomic balanced target and prove the
+relation-killing step there, then perform `DeformedGlobalQP.md` §3.
+The existing ordinary-polynomial `contentTargetTensor` does not supply
+that comparison. Full QP and the projective resolution remain open.
+
 
 ## Source-coefficient polynomial transport
 
@@ -153,12 +241,11 @@ For the even polynomial the coefficient sign cancels the odd-dot sign;
 for the odd polynomial both terms acquire the same overall sign.
 
 This establishes the affine full-source-coefficient identity in
-`DeformedProjectiveResolution.md` §1 (1). Descent through the finite ELV
-coefficient quotient, identification of its cyclotomic polynomial, and
-the repeated-colour induction on `contentTargetTensor` remain obligations.
-No finite ELV action or balanced QP identity is asserted. The next bounded
-step is coefficient-quotient descent retaining the even-cutoff top relation
-and the independent exterior generators.
+`DeformedProjectiveResolution.md` §1 (1). The finite ELV coefficient-quotient
+tensor transport and polynomial identification are now recorded above.
+The deformed balanced target comparison and repeated-colour induction
+remain obligations. No finite ELV action or balanced QP identity is asserted.
+
 ## Signed ordinary-polynomial transport
 
 `SignedPolynomialTransport.lean` proves `dot_pow_comp_moveHom`,
@@ -203,6 +290,70 @@ This closes the relation-killing step for the existing ordinary-polynomial
 coefficient implementation only. Signed polynomial transport and the
 inductive QP calculation remain; no global QP, full coefficient-superalgebra
 extension, ideal-sum equality or projective resolution is asserted.
+## Content-shifted mixed Hom interchange
+
+`RouquierHomMixedInterchange.lean` constructs the prescribed J of
+`HomSwappingMates.md` §1 (1): remove the source content shift, apply the
+inverse pre/post associator, and insert the target shift. On the supplied
+factor families the shifts are κ(β) and κ(β+i); their sum is the colour
+parity. `homContentMixedInterchange_pre` and `_post` derive the q signs
+from super-interchange and homogeneous shift naturality.
+`homContentMixedDot_exchange` proves the shifted pre/post Koszul exchange.
+The two `_square` theorems transport dot squares with no residual sign.
+
+`homContentMixedSwap_products` composes the prescribed coefficient
+`-J^-1 a²` with this literal J on both sides, retaining the minus. Here a
+is an arbitrary AB endomorphism, not a constructed rational coefficient;
+this theorem does not assume or prove its finite expansion. Importing
+odd rank-one consumers check both dot signs, their anticommutation, the
+square transports, distinct content parities and the negative composite.
+No nonzero factor model is constructed. All statements hold over any
+commutative ring; there is no weight-height case split or additional
+field, domain, flatness, finite-colour or independent-root hypothesis.
+
+Next: construct the prescribed rational a from the actual unit pre dot
+and locally nilpotent post dot, then prove `SwappedHomInversion.md` §3
+(3) with a bound for each actual object/input. The even inverse and odd
+even-square inverse must be identified with the finite series, not
+defined by that series. Then bend in the specified adjunctions to prove
+(4) and raw comparisons (5), retaining alpha, beta, gamma, xi and the
+source-height normalization, including exceptional zero. No finite-sum
+consumer, literal mixed-entry comparison, fusion or detector is claimed
+by this prerequisite slice.
+
+## Negative precomposition windows and the literal mate slide
+
+`RouquierHomPreMateSlide.lean` proves `homContentCrossing_slide` from the
+factor’s `slide_left` relation and the prescribed reversed crossing
+`-q pre(t)`. Applying `rouquierMate_slide` to the specified normalized
+pre adjunctions gives `homContentPreMate_slide`, equation (1) of
+`SwappedHomInversion.md` §2. No slide for an inverse component is assumed.
+
+`RouquierHomPreNegativePowers.lean` defines exponent −n by the nth power
+of the inverse probe dot. Both whiskered inverse identities are proved.
+`homPreDotInverse_power_supernatural`, `homPreNegativeCup_supernatural`
+and `homPreNegativeCap_supernatural` give signed naturality on the full
+Hom supercategory. The coordinate theorems retain alpha at −n and beta
+at −n, including the inverse `leftAdjScalar` at the source height. At n=0
+they agree with the existing nonnegative windows. Gamma and xi conventions
+are unchanged; this slice does not use or alter either comparison.
+
+Hypotheses: supplied Rouquier family in a Π-2-supercategory over an
+arbitrary commutative ring; invertibility of the probe dot only for the
+negative powers. No field, domain, flatness, finite-colour, independent-root
+or global nilpotence-bound hypothesis is introduced. Importing odd rank-one
+examples verify the mate-slide sign, both inverse identities, odd and even
+negative-power naturality, both coordinates and exponent zero. These are
+consumers of supplied factor data, not a nonzero factor construction.
+
+Remaining and next target: prove `SwappedHomInversion.md` §3 (3), the finite
+expansion in the nilpotent postcomposition reservoir variable for the
+prescribed swapping entries, then bend them in their actual adjunctions
+to obtain the literal central entries (4) and raw comparisons (5). Retain
+`-J^-1 a²`, every alpha/beta/gamma and xi sign, and reservoir bounds local
+to each content. No central-entry comparison, fusion or detector theorem
+is asserted here.
+
 
 ## Normalized precomposition supernatural inverses
 
@@ -299,6 +450,44 @@ coordinates and the known alpha, beta and gamma normalizations at Hom
 height `-h`, including the exceptional gamma at height zero. These raw
 factor identities alone are not yet a pre-Hom augmented inverse, a full
 Hom family, fusion, or a nonzero model construction.
+## Decorated matching-family specialization
+
+`ScalarChangeMatchingFamily.lean` proves that coefficient change commutes with
+horizontal placement, `bubAt` on every closed diagram, and `xlay`/`xev` on
+every extended layer and word, including both normalized left bends. For the
+actual fixed `MatchingBasisChoice` and its serialized dots, the image formula
+`homMap_expansion_single` combines this with `homMap_betaSYM`; the finite
+`homMap_expansion` follows by additive induction, and
+`homBaseChange_expansion_single` expresses the same generator formula through
+the tensor comparison. The original datum, weight group, representatives and
+full odd/exterior coefficients remain unchanged. The two-odd-colour
+`ZMod 9 → ZMod 3` check uses an inhabited complete choice containing a literal
+oriented cup and two dots, together with an exterior/elementary bubble
+coefficient; separate layers exercise a normalized left cap.
+
+The remaining obligation for arbitrary-ring nondegeneracy is an independent
+universal diagram basis (equivalently injectivity of the matching expansion).
+Neither the image formula nor the tensor comparison proves that basis or
+injectivity of bubble evaluation.
+
+## Full coefficient and bubble specialization
+
+`ScalarChangeBubbleFamily.lean` constructs a ring homomorphism on the all-colour
+polynomial/exterior algebra `SYM` (1.21), fixing each elementary and exterior
+generator while applying the ground-ring homomorphism to coefficients. It
+preserves the prescribed shifted units and specializes the full left and right
+bubble families of Definition 2.3, including fake negative-dot cases and the
+odd bubble. `homMap_betaSYM` commutes with evaluation (1.22) for every `SYM`
+expression, not merely generators; `homBaseChange_betaSYM` expresses the same
+comparison through the proved tensor equivalence. The two-odd-colour
+`ZMod 9 → ZMod 3` consumer checks noninjective coefficient change, the
+exterior generator, arbitrary bubble indices and a mixed exterior/elementary
+product. No nonzero presented Hom class is asserted.
+
+The diagram-family image formula for the actual `MatchingBasisChoice.layers`
+is now proved above. It is distinct from independence of the family, which
+still requires the universal diagram basis; no nondegeneracy or injectivity
+of `betaSYM` follows from coefficient change.
 
 ## Coefficient change on the presented category
 

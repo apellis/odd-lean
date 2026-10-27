@@ -16,6 +16,9 @@ import OddMath.SKM.RouquierHomPrincipal
 import OddMath.SKM.RouquierHomPreCoordinates
 import OddMath.SKM.RouquierHomPreInverse
 import OddMath.SKM.RouquierHomPreSuperInverse
+import OddMath.SKM.RouquierHomPreNegativePowers
+import OddMath.SKM.RouquierHomPreMateSlide
+import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers
@@ -62,6 +65,7 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerError
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRelation
 import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.CoefficientPolynomialTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTransport
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.ExteriorTranslationRelations
@@ -1164,6 +1168,8 @@ import OddMath.SKM.MoreGenerators
 import OddMath.SKM.ScalarChange
 import OddMath.SKM.ScalarChangePresentation
 import OddMath.SKM.ScalarChangeBaseChange
+import OddMath.SKM.ScalarChangeBubbleFamily
+import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
@@ -1245,6 +1251,8 @@ import OddMath.SKM.ResidualCoefficientLift
 import OddMath.Algebra.FrobeniusResolvent
 import OddMath.SKM.JointScalarDescent
 import OddMath.SKM.SeparatingFields
+import OddMath.SKM.NormalizationParameterGroup
+import OddMath.SKM.UniversalCoefficientRing
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison
