@@ -354,11 +354,34 @@ support while its raw support is the singleton containing its colour.
 The importing consumer also exercises the mixed braid relation on the
 connected odd/even datum with nonzero interior coefficients over ℚ.
 
-Open: restrict arbitrary supported context diagrams and interchange data,
-prove their roundtrips and compatibility with linear composition and
-whiskering, and lift the entire ideal derivation. Only then can the
-finite-witness passage support the arbitrary-colour detection implication.
-Neither that implication nor nondegeneracy is asserted here.
+`FiniteColourContextRestriction.lean` now restricts arbitrary supported
+free diagrams, not only normal-form diagrams. `restrictWord`, `restrictObj`,
+`restrictShape`, `restrictLayer`, `restrictLayers` and `restrictDiagram`
+retain every original region label. `inclusion_layer_valid_iff` and
+`inclusion_chain_iff` reflect validity through the existing signature map.
+`diagram_restrictDiagram` and `supported_diagram_lift` recover the entire
+original free expression, using casts along proved boundary equalities.
+Internal colours of closed cup/cap diagrams are included.
+
+`restrictInterchange` restricts both generating vertices and the middle
+word from raw support. Its validity is proved; `restrictInterchange_odd`
+retains each generating parity and `restrictInterchange_sign` retains the
+integer sign. `includeInterchange_layers` recovers both ordered layer lists,
+and `includeInterchange_rel` / `supported_interchange_lift` recover the full
+signed linear relation over any commutative ring. `allRelColours_interchange`
+identifies this raw support with the one in `RelationContext.colours`.
+The importing consumer applies the free-diagram lift to a closed odd
+cup/cap and the signed-relation lift to two adjacent odd dots, over both ℚ
+and the zero ring. It also verifies that a cup/cap's expanded zero-ring
+support is empty while its raw and interior supports remain singleton.
+
+Open: extend the free-diagram lifts linearly at common restricted endpoints,
+prove compatibility with linear composition and whiskering, restrict each
+contextual `IdealGen`, and lift the entire span derivation. The supported
+free-diagram and interchange results do not yet prove this finite-subtype
+derivation theorem. Only after that theorem can the finite-witness passage
+support arbitrary-colour detection. Neither that implication nor
+nondegeneracy is asserted here.
 
 
 ## Signed linear dot cancellation
