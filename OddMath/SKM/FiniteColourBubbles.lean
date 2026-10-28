@@ -350,4 +350,151 @@ theorem pushS_genS (μ : X) (g : SYMGen (D.restrictColours J)) :
     split_ifs <;> rw [pushS_smulS, pushS_bubLS] <;> rfl
   · exact pushS_oddBubbleS cs i μ
 
+/-! ## Words in the coefficient generators -/
+
+/-- The formal sum of `betaSYM` applied to the product of a word of generators. -/
+def wordS (μ : X) : List (SYMGen D) → List (k × List (LayerData I))
+  | [] => [(1, [])]
+  | g :: w => compS [] [] (wordS μ w) (genS cs μ g)
+
+theorem evS_wordS (μ : X) (w : List (SYMGen D)) :
+    evS D Sc μ [] [] (wordS cs μ w) = betaSYM cs μ ((w.map (SYM.ι D k)).prod) := by
+  induction w with
+  | nil => rw [wordS, evS_one, List.map_nil, List.prod_nil, map_one]; rfl
+  | cons g w ih =>
+    rw [wordS, evS_compS, ih, evS_genS, List.map_cons, List.prod_cons, map_mul, betaSYM_ι]
+    rfl
+
+theorem pushS_wordS (μ : X) (w : List (SYMGen (D.restrictColours J))) :
+    pushS J (wordS (cs.restrictColours D J Sc) μ w) = wordS cs μ (w.map (genMap J)) := by
+  induction w with
+  | nil => rfl
+  | cons g w ih =>
+    rw [wordS, pushS_compS, ih, pushS_genS, List.map_cons, wordS]
+    rfl
+
+/-- The colour of a coefficient generator. -/
+def genColour : SYMGen D → I
+  | .inl (i, _) => i
+  | .inr i => i.val
+
+/-- A generator whose colour lies in `J` comes from the restriction to `J`. -/
+theorem exists_genMap_eq (g : SYMGen D) (hg : genColour g ∈ J) :
+    ∃ g' : SYMGen (D.restrictColours J), genMap J g' = g := by
+  rcases g with ⟨i, n⟩ | ⟨i, hi⟩
+  · exact ⟨.inl (⟨i, hg⟩, n), rfl⟩
+  · exact ⟨.inr ⟨⟨i, hg⟩, hi⟩, rfl⟩
+
+/-- A word whose colours lie in `J` comes from the restriction to `J`. -/
+theorem exists_map_genMap_eq (w : List (SYMGen D)) (hw : ∀ g ∈ w, genColour g ∈ J) :
+    ∃ w' : List (SYMGen (D.restrictColours J)), w'.map (genMap J) = w := by
+  induction w with
+  | nil => exact ⟨[], rfl⟩
+  | cons g w ih =>
+    obtain ⟨g', hg'⟩ := exists_genMap_eq J g (hw g List.mem_cons_self)
+    obtain ⟨w', hw'⟩ := ih fun g hg => hw g (List.mem_cons_of_mem _ hg)
+    exact ⟨g' :: w', by rw [List.map_cons, hg', hw']⟩
+
+/-! ## Inclusion of coefficient algebras -/
+
+variable (D k) in
+/-- Inclusion of the coefficient algebra of the restriction to `J`. -/
+def symRestrict : SYM (D.restrictColours J) k →ₐ[k] SYM D k :=
+  RingQuot.liftAlgHom k ⟨FreeAlgebra.lift k fun g => SYM.ι D k (genMap J g), by
+    intro a b h
+    cases h with
+    | polynomial a b =>
+      obtain ⟨i, m⟩ := a
+      obtain ⟨j, n⟩ := b
+      simpa [genMap, SYM.ι, map_mul] using
+        RingQuot.mkAlgHom_rel k (SYMRel.polynomial (D := D) (k := k) (i.val, m) (j.val, n))
+    | mixed a i =>
+      obtain ⟨j, n⟩ := a
+      simpa [genMap, SYM.ι, map_mul] using
+        RingQuot.mkAlgHom_rel k (SYMRel.mixed (D := D) (k := k) (j.val, n) ⟨i.val.val, i.property⟩)
+    | exterior i j =>
+      simpa [genMap, SYM.ι, map_mul] using
+        RingQuot.mkAlgHom_rel k (SYMRel.exterior (D := D) (k := k) ⟨i.val.val, i.property⟩
+          ⟨j.val.val, j.property⟩)
+    | square i =>
+      simpa [genMap, SYM.ι, map_pow] using
+        RingQuot.mkAlgHom_rel k (SYMRel.square (D := D) (k := k) ⟨i.val.val, i.property⟩)⟩
+
+theorem symRestrict_ι (g : SYMGen (D.restrictColours J)) :
+    symRestrict D J k (SYM.ι (D.restrictColours J) k g) = SYM.ι D k (genMap J g) := by
+  simp [symRestrict, SYM.ι]
+
+theorem symRestrict_prod (w : List (SYMGen (D.restrictColours J))) :
+    symRestrict D J k ((w.map (SYM.ι (D.restrictColours J) k)).prod) =
+      ((w.map (genMap J)).map (SYM.ι D k)).prod := by
+  induction w with
+  | nil => simp
+  | cons g w ih => rw [List.map_cons, List.prod_cons, map_mul, ih, symRestrict_ι]; rfl
+
+variable (D k) in
+/-- Products of words in the generators span the coefficient algebra. -/
+theorem span_wordProd :
+    Submodule.span k (Set.range fun w : List (SYMGen D) => (w.map (SYM.ι D k)).prod) = ⊤ := by
+  have hadj : Algebra.adjoin k (Set.range (SYM.ι D k)) = ⊤ := by
+    have : Set.range (SYM.ι D k) = SYM.mk D k '' Set.range (FreeAlgebra.ι k) := by
+      rw [← Set.range_comp]; rfl
+    rw [this, ← AlgHom.map_adjoin, FreeAlgebra.adjoin_range_ι, Algebra.map_top,
+      AlgHom.range_eq_top]
+    exact RingQuot.mkAlgHom_surjective k (SYMRel D k)
+  rw [eq_top_iff]
+  intro x _
+  have hx : x ∈ Subalgebra.toSubmodule (Algebra.adjoin k (Set.range (SYM.ι D k))) := by
+    rw [hadj]; trivial
+  rw [Algebra.adjoin_eq_span] at hx
+  refine Submodule.span_le.mpr ?_ hx
+  intro y hy
+  obtain ⟨l, hl, rfl⟩ := Submonoid.exists_list_of_mem_closure hy
+  have : ∃ w : List (SYMGen D), w.map (SYM.ι D k) = l := by
+    clear hy
+    induction l with
+    | nil => exact ⟨[], rfl⟩
+    | cons a l ih =>
+      obtain ⟨g, rfl⟩ := hl a List.mem_cons_self
+      obtain ⟨w, hw⟩ := ih fun b hb => hl b (List.mem_cons_of_mem _ hb)
+      exact ⟨g :: w, by rw [List.map_cons, hw]⟩
+  obtain ⟨w, rfl⟩ := this
+  exact Submodule.subset_span ⟨w, rfl⟩
+
+/-! ## Detection of relations among formal sums -/
+
+variable (D Sc) in
+theorem evS_eq_sum (μ : X) (s t : List (Letter I)) (L : List (k × List (LayerData I))) :
+    evS D Sc μ s t L = ∑ m ∈ Finset.range L.length,
+      (L.getD m (0, [])).1 • cl D Sc μ s t (L.getD m (0, [])).2 := by
+  induction L with
+  | nil => simp
+  | cons p L ih =>
+    rw [evS_cons, ih, List.length_cons, Finset.sum_range_succ']
+    simp only [List.getD_cons_succ, List.getD_cons_zero]
+    rw [add_comm]
+
+variable (D Sc) in
+/-- **Finite-colour detection of formal sums.** If a formal sum of full-colour classes
+vanishes, there is one finite colour set `J₁` such that every restricted formal sum
+including onto it, over any `J ⊇ J₁`, already vanishes. -/
+theorem evS_eq_zero_restrict (μ : X) (s t : List (Letter I)) (L : List (k × List (LayerData I)))
+    (h : evS D Sc μ s t L = 0) :
+    ∃ J₁ : Finset I, ∀ J : Finset I, J₁ ⊆ J →
+      ∀ (s' t' : List (Letter J)) (L' : List (k × List (LayerData J))),
+        s'.map (letter J) = s → t'.map (letter J) = t → pushS J L' = L →
+        evS (D.restrictColours J) (Sc.restrictColours D J) μ s' t' L' = 0 := by
+  rw [evS_eq_sum] at h
+  obtain ⟨J₁, hJ₁⟩ := sum_cl_eq_zero_restrict D Sc μ s t _ _ _ h
+  refine ⟨J₁, fun J hJ s' t' L' hs ht hL => ?_⟩
+  have hlen : L'.length = L.length := by rw [← hL, pushS, List.length_map]
+  rw [evS_eq_sum, hlen]
+  have hc : ∀ m, (L'.getD m (0, [])).1 = (L.getD m (0, [])).1 := by
+    intro m
+    rw [← hL, pushS, List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_map]
+    cases L'[m]? <;> rfl
+  simp only [hc]
+  refine hJ₁ J hJ s' t' (fun m => (L'.getD m (0, [])).2) hs ht fun m _ => ?_
+  rw [← hL, pushS, List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_map]
+  cases L'[m]? <;> rfl
+
 end OddMath.SKM.FiniteColour
