@@ -75,6 +75,94 @@ theorem compLayer_eq_of_path (gens : P.Generators) (L : Layer (SKM.sig D))
   subst hp hq
   exact compLayer_eq gens L pu pg qg pv Z
 
+open Classical in
+/-- **The entry of a composite chain** is the matrix product of the entries of its parts. -/
+theorem compList_append (gens : P.Generators) (ls ms : List (Layer (SKM.sig D)))
+    {a b c : Obj (SKM.sig D)} (h₁ : Chain a ls b) (h₂ : Chain b ms c) (h : Chain a (ls ++ ms) c)
+    {s t : Sector I} (p : SPath a.word s t) (q : SPath c.word s t) (Z : P.H t) :
+    letI := Fintype.ofFinite (SPath b.word s t)
+    compList gens (ls ++ ms) h p q Z =
+      ∑ m, compList gens ls h₁ p m Z ≫ compList gens ms h₂ m q Z := by
+  induction ls generalizing a with
+  | nil =>
+    obtain rfl : a = b := h₁
+    simp only [compList.eq_1, SPath.cast_self, dite_comp, Limits.zero_comp,
+      Finset.sum_dite_eq, Finset.mem_univ, ↓reduceIte, eqToHom_refl, Category.id_comp]
+    rfl
+  | cons L ls ih =>
+    obtain ⟨hv, rfl, hc⟩ := h₁
+    erw [compList_cons gens L (ls ++ ms) hv (hc.append h₂)]
+    simp only [compList.eq_2, SPath.cast_self, eqToHom_refl, Category.id_comp,
+      Preadditive.sum_comp, Category.assoc]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun pm _ => ?_
+    rw [ih hc (hc.append h₂) pm, Preadditive.comp_sum]
+
+/-- The entry of a dot layer vanishes off the diagonal. -/
+theorem compLayer_dot_eq_zero (gens : P.Generators) (μ : X) (u : List (Letter I)) (i : I)
+    (v : List (Letter I)) {s t : Sector I}
+    (p q : SPath (SKM.lay D μ u (SKM.Shape.dot i) v).dom.word s t) (hpq : p ≠ q) (Z : P.H t) :
+    compLayer gens (SKM.lay D μ u (SKM.Shape.dot i) v) p q Z = 0 := by
+  obtain ⟨d, rfl⟩ : ∃ d, SPath.Dec.path d = p := ⟨_, SPath.path_decOf _ _ p⟩
+  obtain ⟨e, rfl⟩ : ∃ e, SPath.Dec.path
+      (m := (SKM.sig D).cod (SKM.lay D μ u (SKM.Shape.dot i) v).gen) e = q :=
+    ⟨_, SPath.path_decOf _ _ q⟩
+  refine compLayer_eq_zero gens _ d e (fun ho => hpq ?_) Z
+  obtain ⟨⟨x, y⟩, pu, pg, pv⟩ := d
+  obtain ⟨⟨x', y'⟩, qu, qg, qv⟩ := e
+  simp only [SPath.Dec.outer, Prod.mk.injEq, Sigma.mk.injEq] at ho
+  obtain ⟨⟨rfl, hu⟩, ⟨rfl, hv⟩⟩ := ho
+  obtain rfl := eq_of_heq hu
+  obtain rfl := eq_of_heq hv
+  simp only [SPath.Dec.path]
+  rw [SPath.eq_of_single pg qg]
+
+/-- The `n`-fold composite of an endomorphism. -/
+def compPow {C : Type*} [Category C] {Y : C} (f : Y ⟶ Y) : ℕ → (Y ⟶ Y)
+  | 0 => 𝟙 Y
+  | n + 1 => f ≫ compPow f n
+
+/-- The entry of the dot on the left strand of `Eᵢ Eⱼ 1_ν` at a summand path. -/
+def leftDot (gens : P.Generators) (i j : I) (ν : X) {s t : Sector I}
+    (p : SPath (wd D ν [up i, up j]) s t) (Z : P.H t) : (P.pathFunctor p).obj Z ⟶ (P.pathFunctor p).obj Z :=
+  compLayer gens (SKM.lay D ν [] (SKM.Shape.dot i) [up j]) p p Z
+
+/-- The entry of the dot on the right strand of `Eᵢ Eⱼ 1_ν` at a summand path. -/
+def rightDot (gens : P.Generators) (i j : I) (ν : X) {s t : Sector I}
+    (p : SPath (wd D ν [up i, up j]) s t) (Z : P.H t) : (P.pathFunctor p).obj Z ⟶ (P.pathFunctor p).obj Z :=
+  compLayer gens (SKM.lay D ν [up i] (SKM.Shape.dot j) []) p p Z
+
+open Classical in
+/-- **The entry of `n` dots on one strand** is diagonal, with diagonal entry the `n`-th power
+of the entry of one dot. -/
+theorem compList_dotsL (gens : P.Generators) (μ : X) (u : List (Letter I)) (i : I)
+    (v : List (Letter I)) (n : ℕ)
+    (h : Chain (SKM.lay D μ u (SKM.Shape.dot i) v).dom
+      (SKM.layList D μ (SKM.dotsL u i v n)) (SKM.lay D μ u (SKM.Shape.dot i) v).dom)
+    {s t : Sector I} (p q : SPath (SKM.lay D μ u (SKM.Shape.dot i) v).dom.word s t)
+    (Z : P.H t) :
+    compList gens _ h p q Z =
+      if hpq : p = q then
+        compPow (compLayer gens (SKM.lay D μ u (SKM.Shape.dot i) v) p p Z) n ≫
+          eqToHom (congrArg (fun r => (P.pathFunctor r).obj Z) hpq)
+      else 0 := by
+  induction n generalizing p with
+  | zero =>
+    erw [compList_nil]
+    split_ifs with hpq
+    · subst hpq; simp [compPow]
+    · rfl
+  | succ n ih =>
+    obtain ⟨hv, h₁, hc⟩ := h
+    erw [compList_cons gens _ _ hv hc]
+    refine (Finset.sum_eq_single p (fun m _ hm => ?_) (by simp)).trans ?_
+    · erw [compLayer_dot_eq_zero gens μ u i v p m (Ne.symm hm) Z, Limits.zero_comp]
+    erw [ih hc p]
+    split_ifs with hpq
+    · subst hpq
+      simp only [eqToHom_refl, Category.comp_id, compPow]
+    · simp
+
 /-- The entry of a crossing layer without strands on either side is the crossing image. -/
 theorem compLayer_cross (gens : P.Generators) (i j : I) (ν : X) {s t : Sector I}
     (p : SPath (wd D ν [up i, up j]) s t) (q : SPath (wd D ν [up j, up i]) s t) (Z : P.H t) :
@@ -102,12 +190,12 @@ theorem compList_crossCross (gens : P.Generators) (i j : I) (ν : X)
   classical
   obtain ⟨hv, h₁, hc⟩ := h
   erw [compList.eq_2]
-  simp only [SKM.layList, SKM.crossL, List.cons_append, List.nil_append, List.map_cons,
+  simp only [SKM.crossL, List.append, List.map_cons,
     List.map_nil, compList_one, SPath.cast_self, eqToHom_refl, Category.id_comp,
     Category.comp_id]
   unfold crossCross
-  refine Finset.sum_congr (by congr; exact Subsingleton.elim _ _) fun m _ => ?_
-  erw [compLayer_cross, compLayer_cross]
+  refine Finset.sum_congr (by congr) fun m _ => ?_
+  rw [compLayer_cross, compLayer_cross]
 
 end ProbeReservoir
 
