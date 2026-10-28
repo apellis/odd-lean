@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Factor interface: Rouquier actions with all multicolour relations
+
+`OddMath/SKM/RouquierAction.lean` states the interface that a deformed cyclotomic factor
+model (`SwappedActionAssembly.md`, F1) supplies and the swapped Hom assembly consumes:
+`SKM.RouquierAction D Sc`, a `RouquierFamily D` (objects, `E`, `F`, right adjunctions,
+dots, crossings, same-colour quadratic and braid relations, same-colour inversions `loc`)
+together with every distinct-colour relation of Definition 1.5 with the action parameters
+`Sc`:
+
+* `slide_left_ne`, `slide_right_ne` (`slideL`, `slideR`, `i ≠ j`, Koszul sign
+  `koszulSign pᵢ pⱼ`);
+* `quad_zero`, `quad_ne` (`quadZero`, `quadNe`);
+* `braid_ne` (`braid`, outer colours distinct) and `braid_eq` (`braidEq` with its
+  `tᵢⱼ` and `sᵢⱼ^{pq}` correction sums);
+* `mixedInv` with `mixed_inv_left`, `mixed_inv_right`: a two-sided inverse of the mixed
+  mate `rouquierMixedMate (adj i _) (adj i _) (cross i j _ _ _ _) : Fᵢ Eⱼ → Eⱼ Fᵢ`
+  (`invNe₁`, `invNe₂`); at equal colours `rouquierMixedMate` is `rouquierMate`.
+
+Weights are free variables joined by the edge equations of each relation. The factor's
+reservoir bounds (F3: grading, nilpotence, specialization) are kept out of this structure
+and will be a separate predicate on a `RouquierAction`. Proposed: the deformed ELV factor
+`P_λ^A` is an instance of `RouquierAction` over the coefficient ring `A`, with the
+same-colour inversions supplied by the local inversion of `DeformedGlobalQP.md` §5.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of

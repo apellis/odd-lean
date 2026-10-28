@@ -14,6 +14,7 @@ import OddMath.SKM.FiniteColourIdealRestriction
 import OddMath.SKM.FiniteColourContextLift
 import OddMath.SKM.FiniteColourIdealDescent
 import OddMath.SKM.FiniteColourRelationsExamples
+import OddMath.SKM.RouquierAction
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
