@@ -1,28 +1,8 @@
 # Odd nondegeneracy: restart state
 
-## Factor interface: Rouquier actions with all multicolour relations
+## Deformed cyclotomic factor: checked steps and forms
 
-`OddMath/SKM/RouquierAction.lean` states the interface that a deformed cyclotomic factor
-model (`SwappedActionAssembly.md`, F1) supplies and the swapped Hom assembly consumes:
-`SKM.RouquierAction D Sc`, a `RouquierFamily D` (objects, `E`, `F`, right adjunctions,
-dots, crossings, same-colour quadratic and braid relations, same-colour inversions `loc`)
-together with every distinct-colour relation of Definition 1.5 with the action parameters
-`Sc`:
-
-* `slide_left_ne`, `slide_right_ne` (`slideL`, `slideR`, `i ≠ j`, Koszul sign
-  `koszulSign pᵢ pⱼ`);
-* `quad_zero`, `quad_ne` (`quadZero`, `quadNe`);
-* `braid_ne` (`braid`, outer colours distinct) and `braid_eq` (`braidEq` with its
-  `tᵢⱼ` and `sᵢⱼ^{pq}` correction sums);
-* `mixedInv` with `mixed_inv_left`, `mixed_inv_right`: a two-sided inverse of the mixed
-  mate `rouquierMixedMate (adj i _) (adj i _) (cross i j _ _ _ _) : Fᵢ Eⱼ → Eⱼ Fᵢ`
-  (`invNe₁`, `invNe₂`); at equal colours `rouquierMixedMate` is `rouquierMate`.
-
-Weights are free variables joined by the edge equations of each relation. The factor's
-reservoir bounds (F3: grading, nilpotence, specialization) are kept out of this structure
-and will be a separate predicate on a `RouquierAction`. Proposed: the deformed ELV factor
-`P_λ^A` is an instance of `RouquierAction` over the coefficient ring `A`, with the
-same-colour inversions supplied by the local inversion of `DeformedGlobalQP.md` §5.
+The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
 
 **Last-letter recursion (checked).** `CyclotomicAction/MoveHomSnoc.lean` proves
 `moveHom_append_singleton`: `moveHom i l (ν ++ [x])` is `moveHom i l ν ⊗ 1_x` followed by
@@ -32,7 +12,7 @@ the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (K
 `intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
 `lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
 
-**Normalizer and θ: forms to formalize.** `RouquierAction` contains neither the
+**Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
 are, use these forms, not the integer-shift form of the manuscript's normality step:
 
@@ -47,6 +27,43 @@ are, use these forms, not the integer-shift form of the manuscript's normality s
 * θ (`SwappedNondegeneracy.md` §4) is defined on the untruncated coefficient algebra
   (symmetric functions, or a free algebra), not on `A_N`: it does not preserve
   `δ χ_m = 0`. Recovery uses θ only before the quotient map `q_first`, as written there.
+
+## Swapped-action interfaces: factor relations and upward module action
+
+**Factor side (input F1 of `SwappedActionAssembly.md`).** A factor model is a
+`RouquierFamily T` together with `RouquierMulticolour T Sc`
+(`OddMath/SKM/RouquierMulticolour.lean`). The latter records the relations
+of `Presentation.Rel` that `RouquierFamily` omits, in bicategorical order
+(the word `[up i, up j]` at rightmost region `a` is `E j ≫ E i`; `cross i j`
+is `crossL [] i j []`; a dot on the rightmost letter acts on the first
+factor): `quadZero`, `quadNe` (1.7, `i ≠ j`, parameters `Sc`),
+`slideLeft`, `slideRight` (1.8, `i ≠ j`), `braid` (1.9, all triples except
+`i = k ≠ j`) and `braidEq` (its corrected form), and `invNe` (1.12): the
+sideways crossing `crossMate (adj i h₃) (adj i h₂) (cross i j …)` is an
+isomorphism for `i ≠ j`. `crossMate` is the cup–crossing–cap mate;
+`crossMate_eq_rouquierMate` identifies it with `rouquierMate` on equal
+colours. A factor construction (the deformed ELV kernels) should produce
+these two structures. F2 (probe left adjunction) is the existing
+`RouquierLeftAdjoints`; F3–F4 (reservoir bounds, contents) are not yet
+packaged.
+
+**Consumer side.** The finite-colour swapped action, evaluated on one Hom
+sector at rightmost weight `μ`, is to be supplied as
+`UpwardModuleAction D Sc μ` (`OddMath/QuiverHecke/UpwardModuleAction.lean`):
+modules `V t` on upward words, `act` with `act_id` and `act_comp`.
+`UpwardModuleAction.bubbles` is the derived algebra action of `SYM` through
+`betaSYM` and `bubAt` (multiplicativity proved from `bubAt_comp`).
+`toReservoirVacuumEvaluation` turns an upward action plus vacuum,
+reservoir, recovery maps, windows and affine coordinates into
+`ReservoirVacuumEvaluation`; its `bubbles_eq` holds by definition. The
+remaining content of the vacuum detection is then exactly
+`NormalizedBubbleFormula` and `affine_coordinates`.
+
+Neither structure is instantiated here. The open part of the third
+obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
+`RouquierMulticolour`, through the content-shifted Hom functors, the
+distinct-colour mate inverses of `SwappedActionAssembly.md` §5 and the
+mixed blocks.
 
 ## Old-only ELV quotient module
 
@@ -3358,3 +3375,55 @@ of each supported contextual generator to a finite colour subtype while
 retaining the same weight group X and restricted datum/scalars, including
 its regions and interchange signs. No faithful embedding of the full
 infinite-colour presented Hom or nondegeneracy follows yet.
+
+## Signed vacuum recovery interface
+
+`SwappedVacuumRecovery.lean` formalizes the recovery half of
+`SwappedNondegeneracy.md` §4 and its composition with §§5–6, conditional on one
+explicit interface. `SwappedVacuumEvaluation D Sc cs μ t t' d` packages exactly
+what the recovery uses at one weight, word pair and degree bound:
+
+- source and target actions on `V → W` respecting source composition, and a vacuum;
+- a raw coefficient action `SYM →ₐ End V`;
+- an algebra automorphism `θ` of `SYM` preserving the coefficient-weight filtration
+  (`PreservesCoefficientWeight`), with source-placed `bubAt (betaSYM a)` acting as the
+  raw action of `θ a`;
+- an ideal `K` contained in `ExtendedAtLeast bound` with `d < bound`;
+- a placement isomorphism `σ` of the coefficient-extended Hom space preserving the
+  degree-`d` window;
+- a coordinate map `W → Hom/K` with the literal evaluation
+  `coord(act(α f)(raw(b) vac)) = q_K(σ(b ⊗ f))` for every raw coefficient `b`.
+
+Checked: `coefficientSubstitution` (θ on the coefficient factor) with
+`coefficientSubstitution_source`; `sourceCoefficientHom_mem_extendedAtMost`;
+`coefficientSubstitution_mem_extendedAtMost`; `ker_windowQuotient` (the window injects
+into `Hom/K` by disjointness); over a field `windowSplitting` (a left inverse `L_d`),
+`recover = q ∘ θ⁻¹ ∘ σ⁻¹ ∘ incl ∘ L_d ∘ coord`, `recover_coordinates`,
+`toBoundedCyclicRecovery` (at every cutoff),
+`upwardCoefficientMap_injective_of_vacuum_evaluations` and the conditional field theorem
+`nondegeneracy_of_vacuum_evaluations`: vacuum evaluations at every equal-weight upward
+pair, weight and degree imply `NondegeneracyConjecture cs`. The two-odd-colour consumer
+`scripts/NonVacuity/SwappedVacuumRecovery.lean` instantiates both statements over `ℚ`.
+
+**Quotient match.** The recovered identity holds before any quotient: `recover` returns
+the bounded coefficient Hom itself, then applies `ELVRelationSpan` at cutoff
+`d + 2·choose(|t|,2) + 1` for every colour. `ELVRelationSpan` is the two-sided span of
+the ELV coefficient ideal together with the first-strand cyclotomic polynomials
+(`elvCyclotomic` at odd, `evenCyclotomic` at even colours), which is the standard
+first-boundary quotient of the written proof. There is no mismatch. The transformed
+last-boundary ideal `K` of §4 enters only through `ideal_le`.
+
+**Bubble normalization match.** `SwappedVacuumBubbles.md` §2 defines the normalized
+bubbles via the Lean generators `etaP`, `bubL`, `bubLs`, `oddBubble`, `betaGen` and
+`betaDGen`, including the `c_μ⁻¹` factors, so they are `betaSYM cs μ`; the
+nonpositive-height case in `SwappedVacuumNonpositiveBubbles.md` uses the same
+generators. The interface places them by `bubAt D Sc μ (upWord t)` at region weight `μ`,
+the placement used by `BoundedCyclicRecovery`. There is no mismatch.
+
+Open, in this line: (a) instantiate `θ` as the written triangular bubble substitution and
+prove `PreservesCoefficientWeight`; (b) instantiate `σ` as the ordered-source sign
+`(-1)^{|a||f|}` and prove window preservation; (c) the finite-colour passage: the
+interface is stated for the datum itself, while the written proof constructs evaluations
+for finite colour restrictions, so a comparison of `upwardCoefficientMap` under
+`Datum.restrictColours` is still needed for arbitrary colour sets; (d) construct the
+evaluations from the swapped action.
