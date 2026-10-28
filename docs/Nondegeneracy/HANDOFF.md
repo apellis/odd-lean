@@ -2625,7 +2625,14 @@ inductions agreeing on triple idempotent tensors are equal (`heightSuperInductio
 hence, with inner crossing `Ind(t)` and outer crossing `t_{Ind}`,
 `outer ≫ inner ≫ outer = inner ≫ outer ≫ inner` (`heightSuperInduction_braid_same`).
 The signed Rouquier crossing `-ψ` satisfies the same relation ((-1)³ on both sides).
-The transport through three successor blocks to weight spaces is still open.
+`GlobalWeightBraid.lean` (checked) transports it to weight spaces: on content blocks the
+two crossings are `Ind(t)` and `t_{Ind}` conjugated by height/content casts
+(`heightContentBraid`, reduced to the cast-free `heightContentBraidAux`), away from
+three-step successor blocks the triple composite vanishes (`globalEFunctor_comp₃_isZero`),
+so `t₂ t₁ t₂ = t₁ t₂ t₁` with `t₁ = t ▷ E`, `t₂ = E ◁ t` (`globalActionCross_braid`), and
+for `-ψ` (`globalActionSignedCross_braid`, `globalRouquierData_braid`): the `braid` field of
+`RouquierFamily` for `globalRouquierData`. Remaining fields: `adj` (have
+`globalActionAdjunction`), `loc` (slides to weight blocks, then local inversion).
 Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
 `heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
 `globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
