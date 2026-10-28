@@ -49,9 +49,22 @@ postcomposition; precompositions preserving it form `goodSubalgebra`, containing
 `x₁² − 1_i ⊗ c`. `CyclotomicAction/PrefixQPKilling.lean`: `killE_whiskerLeft_comp`
 (`(1_i ⊗ g) ≫ Y` kills when `g` lies in the old cyclotomic kernel) and (K) with an
 arbitrary right context, `killE_relation_context`: on `i :: (μ ++ [i] ++ σ)`,
-`((V_(μ++[i]) ≫ (T_μ ⊗ 1_i)) ⊗ 1_σ) ≫ f_i(x₁)` kills. Next: the snoc induction for
-eq. (3), `V_μ T_μ ≡ A_μ` modulo killing endomorphisms, with the distinct and repeated
-steps above.
+`((V_(μ++[i]) ≫ (T_μ ⊗ 1_i)) ⊗ 1_σ) ≫ f_i(x₁)` kills.
+
+**Global QP identity, eq. (3) (checked).** `CyclotomicAction/PrefixQPEquation.lean`
+proves `qpIdentity μ`: for every word `μ`, `(V_μ ≫ T_μ − A_μ) ≫ f_i(x₁)` lies in `KillAll μ`
+(its right whiskering by every `1_σ` is `KillE`). Here `A_μ = qpProduct μ` is the ordered
+product over the letters `μ_b` of `Q_(i,μ_b)(x₁, x_(b+2))` for `μ_b ≠ i`, of
+`(x_(b+2) − x₁)²` for `μ_b = i` odd, and of `−1` for `μ_b = i` even. The even factor
+`−1` (instead of `1`) comes from the library's crossing convention for the even
+same-colour intertwiner (`τ g = τ E`); it changes `A_μ` by a sign only and does not
+affect the balance argument. Proof by snoc induction: distinct letters by
+`moveHom_lastToFirstHom_append_ne` and good precomposition by `Q_ix`; odd repeated
+letters by (K) in context, cancellation of `x₁² − 1_i ⊗ x_(n+1)²` (`KillAll.of_sq_sub`)
+and `(x_(n+2) − x₁) D₀ = D₀ (x_(n+2) − x₁)`; even repeated letters by
+`KillAll.of_linear_even`. Arbitrary colours, parities and words.
+Next: P balance (`DeformedGlobalQP.md` §4), the ideal sum, the projective resolution
+and local inversion, then the factor as `RouquierFamily T` + `RouquierMulticolour T Sc`.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
