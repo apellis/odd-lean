@@ -28,6 +28,8 @@ import OddMath.SKM.RouquierHomDistinctMixed
 import OddMath.SKM.RouquierHomDistinctMixedPre
 import OddMath.SKM.RouquierHomDistinctMixedDots
 import OddMath.SKM.RouquierHomDistinctPost
+import OddMath.SKM.RouquierHomDistinctPostShift
+import OddMath.SKM.RouquierHomDistinctPreMate
 import OddMath.SKM.RouquierHomMixedRational
 import OddMath.SKM.LocallyNilpotentMixedInverse
 import OddMath.SKM.RouquierHomPostCoordinates
@@ -90,6 +92,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBlockCross
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBraid
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightDot
@@ -1311,6 +1314,7 @@ import OddMath.SKM.SourceFrozenSwap
 import OddMath.QuiverHecke.SwappedVacuumRecovery
 import OddMath.SKM.BubbleSubstitution
 import OddMath.QuiverHecke.PlacementSign
+import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward

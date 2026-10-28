@@ -219,22 +219,72 @@ for a crossing of either parity (no crossing passes a unit or counit).
 Hence `homPostCrossMateInv` is a two-sided inverse whenever the factor mate is
 invertible, and `homPostCrossMate_isIso` supplies this for distinct colours
 from `invNe`. The content shifts, i.e. the comparisons `E_src`, `E_tar` of
-the post/post paragraph of `SwappedActionAssembly.md` §5, are not yet added.
+the post/post paragraph of `SwappedActionAssembly.md` §5, are added in the
+shifted post/post entry below.
 
-**Next targets.** The pre/pre entry (A9) and post/post with content shifts
-are checked (see the sections on A9 and post/post). The remaining work is the
-assembly into `UpwardModuleAction`; its skeleton and the list of open
-obligations are in the next section.
+**Pre/pre entry (A9) (checked).** `RouquierHomDistinctPreMate.lean` defines
+the factor left mate `leftCrossMate` of a crossing `E_d E_c ⟶ E_b E_a` along
+left adjunctions `F_d ⊣ E_d`, `F_a ⊣ E_a` (unit of `F_d ⊣ E_d`, crossing,
+counit of `F_a ⊣ E_a`), and the literal mate `homDistinctPreMate` of the
+precomposed crossing along the two precomposition adjunctions (which carry the
+parity shifts `σd`, `σa`). `homDistinctPreMate_eq` proves that the latter is
+postcomposition by `leftCrossMate`, conjugated by associators and the shift
+isomorphisms, times `sign(σa + σd r + r σa + σd σa)` for a crossing of
+parity `r`; the sign is the slide of the crossing through the unit
+(`unit_slide`) and the super interchange with the counit. Hence
+`homDistinctPreMateInv` is a two-sided inverse whenever `leftCrossMate` is
+invertible (`homDistinctPreMate_isIso`), and
+`homContentDistinctPreMate_isIso` gives this for distinct colours on the
+content-shifted Hom functors under `LeftMateInvertible`.
 
-**Input needed for (A9).** The derivation of (A9) in
-`SwappedDistinctPreMate.md` uses the left cups and caps defined from the
-inverse of the presented calculus and the left-cyclicity relation of the
-distinct crossing. A `RouquierFamily` with `RouquierMulticolour` and an
-arbitrary `RouquierLeftAdjoints` supplies only the right mate inverse
-(`invNe` gives invertibility of `crossMate`). It does not force the left mate
-of the distinct crossing to be invertible, so (A9) needs either the presented
-left adjunction (an interpretation of the presented calculus into the target
-bicategory) or the left-mate inverse as an explicit input.
+**Next targets.** The pre/pre entry (A9) above and post/post with content
+shifts (`RouquierHomDistinctPostShift.lean`) are checked. The remaining work
+is the assembly into `UpwardModuleAction`; its skeleton and the list of open
+obligations are in the section "Upward-action skeleton and relation
+obligations".
+
+**The interface `LeftMateInvertible`.** It asserts that for `i ≠ j` the left
+mate of the distinct crossing along the chosen left adjunctions of
+`RouquierLeftAdjoints` is invertible. It does not follow from
+`RouquierMulticolour` with arbitrary `RouquierLeftAdjoints`: `invNe` inverts
+the right mate `crossMate`, and the left mate is a different 2-morphism whose
+invertibility needs the cyclicity of the crossing with respect to the chosen
+left and right adjunctions, which an arbitrary choice of left adjunctions does
+not provide. It is to be discharged from the ELV factor action: that
+2-representation interprets the presented calculus, in which the leftward
+crossing (defined with the left cups and caps) is a two-sided inverse of the
+left mate, by the left-cyclicity relation of the distinct crossing and the
+two inverse relations for `i ≠ j`. The final theorem therefore does not carry
+this hypothesis.
+
+**Shifted post/post entry (checked).** `RouquierHomDistinctPostShift` treats the
+post/post mate with the parity shifts: raising postcomposition by the colour of
+`E₁, E₂` carries `S_p`, and by the colour of `E₃, E₄` carries `S_q`; the shifted
+adjunctions are `homPostAdjunction ⋯ ⋙ S_p ⊣ S_p ⋙ homPostAdjunction ⋯` as in
+`homContentPostAdjunction`. The shifted crossing `homShiftedPostCrossing` is
+`Y ◁ t` transported along the two removals `Θ = S_p(z_q ▷ E₂) ; z_p` with
+coefficient `1`, as in `MixedColourBlockCompletion.md` (4).
+`homShiftedPostCrossMate_eq` proves, for `t` of parity `r`, that its literal mate
+equals `G_src ≫ homPostCrossMate ≫ G_tar`, where `G_src = z_q ; (z_p ▷ F₁) ▷ E₃`
+and `G_tar = z_q⁻¹ ▷ F₂ ; z_p⁻¹ ▷ F₂`, with **no residual sign**. The signs are
+`pq` (moving the outer removal through `S_p(z_q ▷ E₂)`), `pp` (the shifted
+counit), `qp` (the inner removal), `pr` (super interchange of `z_p ▷ F₁` with
+`t`), and `p(p+r)` (the outer shift square); they sum to zero mod 2. This
+confirms the residual sign `1` claimed for (A8) in the assembly note.
+`homShiftedPostCrossMate_isIso` gives invertibility for distinct colours by
+`invNe`, for all parities `p, q`.
+
+**Odd-dot sign (not needed).** The odd-dot sign of (11)–(12) is not an
+obligation of the assembly. A nonzero coefficient `t_{i,j;m,n}` of `Q_{ij}` has
+`p(i) m = 0` in `Z/2`, so for odd `i` every supported exponent `m` is even and
+`d^m` is an even map. The assembly therefore uses the conjugate
+`homPreDotConj (d^m)` of the power itself, as `homDistinctMixedPreMateDot_monomial`
+already does. The relation `c(d^m) = (-1)^{p binom(m,2)} c(d)^m` concerns the odd
+transpose `c(d)` of a single dot, which never occurs.
+
+**Next targets.** (iii) Componentwise assembly into `UpwardModuleAction`, which
+also needs the packaged probe and reservoir data and a check of every relation of
+the presentation. (iv) F3–F4.
 
 **Correction to the equal-colour mixed crossing (A6).** An exact check in the
 smallest mixed case (one odd and one even colour, small probe and reservoir)
@@ -242,7 +292,11 @@ shows that for an even colour (p=0) the matrix (A6), with `a=(x-y)^-1`, gives
 `τx₁-x₂τ=-1` on the mixed summand, and the jij braid relation fails there.
 The correct entry is `a=(y-x)^-1`, equivalently (A6) multiplied by `-q`
 (the scalar already used on the pure probe crossing). The same correction
-applies to (2)–(4) of `SwappedHomInversion.md` for p=0. The odd formula
+applies to (2)–(4) of `SwappedHomInversion.md` for p=0; both documents now
+carry the corrected entry. The §5 tables of `SwappedHomInversion.md` and the
+even bubble computations of `SwappedVacuumBubbles.md`,
+`SwappedVacuumNonpositiveBubbles.md` are still written with the earlier sign
+and are marked as proposed for even colours until rechecked. The odd formula
 `a=(x-y)(x²-y²)^-1` is correct. The check also fixes `J_ij=id`, the
 distinct-colour crossings `J^-1` and `Q_ij J` with `Q` itself (not the
 twisted `Q^alg`). The normalized even-colour bubble at height 0 picks up the
@@ -307,7 +361,8 @@ nilpotence used for the (A6) denominators) enter in the generator modules.
    - `Generators/Dot.lean`: pre dot on probe letters, shifted post dot on
      reservoir letters.
    - `Generators/Cross.lean`: pre/pre (A9), post/post, and the mixed
-     (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours).
+     (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours); the pre/pre
+     inverse uses `LeftMateInvertible` until it is discharged from the factor.
    - `Generators/CupCap.lean`: the sector units and counits of (A3).
    - `Generators/Leftward.lean`: `lcross`, `dcup`, `dcap` from the inverse
      entries (`SwappedHomInversion.md`).
@@ -2641,8 +2696,14 @@ diagrammatic order). For the Rouquier crossing `t = -ψ` these are exactly
 `c₁ = φ(c)` the appended crossing and `c₂` the last-pair crossing on three strands of
 colour `i`, `c₁ c₂ c₁ = c₂ c₁ c₂` on each word (`induction_braid_same`, positional
 `braid_ne`), in the affine algebra and at every height (`heightLastCrossing_braid_same`).
-The functor half (three-fold corner comparison and transport through three successor blocks)
-is still open.
+`GlobalHeightBraid.lean` (checked) gives the functor half at every height: the transported
+crossing acts on idempotent tensors `e₁ ⊗ e₀ ⊗ w` by left multiplication by the last-pair
+crossing (`heightSuperInductionCrossing_idempotent`); equal-parity maps out of three
+inductions agreeing on triple idempotent tensors are equal (`heightSuperInduction₃_hom_ext`);
+hence, with inner crossing `Ind(t)` and outer crossing `t_{Ind}`,
+`outer ≫ inner ≫ outer = inner ≫ outer ≫ inner` (`heightSuperInduction_braid_same`).
+The signed Rouquier crossing `-ψ` satisfies the same relation ((-1)³ on both sides).
+The transport through three successor blocks to weight spaces is still open.
 Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
 `heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
 `globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
@@ -3795,3 +3856,46 @@ Thus item (c) is closed: the remaining obligation of the vacuum-recovery chain i
 the construction of the vacuum evaluations for finitely many colours. The converse direction
 (the conjecture for `D` implies upward injectivity of the restrictions) is not proved and is
 not needed.
+
+Remaining for (c): express each extended basis vector's image under
+`upwardCoefficientMap` as a scalar multiple of one class `cl μ (upWord t) (upWord t') N`
+whose scalar and layer list are compatible with `Datum.restrictColours` (the bubble
+generators, `bubAt`, `betaSYM` on ordered generator products, and `alpha` via `alpha_cl`),
+lift extended basis indices to `J`, and combine with `sum_cl_eq_zero_restrict` to deduce
+injectivity of `upwardCoefficientMap` for `D` from injectivity for all finite restrictions.
+
+### Vacuum block (item (d), interface checked)
+
+`SwappedVacuumBlock.lean` fixes the schedule of `SwappedNondegeneracy.md` §2 and states
+the vacuum data of §4 as one structure on an upward module action. Schedule (checked):
+`vacuumCutoff t d = N₀ = d + 2·C(|t|,2) + 1`; `probeLevel = Pᵢ = 2N₀ + 2·max(hᵢ(μ),0)`;
+`reservoirLevel = Nᵢ = 2N₀ + |hᵢ(μ)|`; `probeExponent = Pᵢ/2` at odd and `Pᵢ` at even
+colours; `probeLevel_even`, `probeLevel_sub_reservoirLevel` (`Pᵢ - Nᵢ = hᵢ(μ)`),
+`vacuumCutoff_le_reservoirLevel` (`Nᵢ ≥ N₀`), `vacuumCutoff_sub_choose`
+(`N₀ - 2·C(|t|,2) = d + 1`); `vacuumSubstitution = probeSubstitution probeExponent
+reservoirLevel` is θ, with `vacuumSubstitution_weight`.
+
+`SwappedVacuumBlock D Sc cs μ t t' d` (the hypotheses supplied by the swapped and ELV
+factor actions) has fields:
+
+- `A : UpwardModuleAction D Sc μ` (the swapped action on Hom sectors at weight `μ`);
+- `vacuum : A.V t` and `raw : SYM →ₐ End (A.V t)` (raw reservoir coefficients);
+- `bubbles_eq : A.bubbles cs t a = raw (θ a)`: (A16);
+- `ideal` with `ideal_le : ideal ≤ ExtendedAtLeast (N₀ - 2·C(|t|,2))`: the transformed
+  last-boundary ideal `K_(N,T)` and its bound from `SwappedVacuumCoordinates.md` §6;
+- `coordinate : A.V t' → Hom/K` and `evaluation : coord(act(α f)(raw(θ a) vac)) =
+  q_K(σ(coefficientSubstitution θ (a ⊗ f)))`: (A18), with σ = `placementSign`.
+
+Proved downstream: `evaluation_raw` (the form for raw coefficients `b = θ a`),
+`toSwappedVacuumEvaluation` (bound `d + 1`, placement `placementSign`), and the
+conditional field theorem `nondegeneracy_of_vacuum_blocks`: blocks at every equal-weight
+upward pair, `μ` and `d` imply `NondegeneracyConjecture cs`. Consumer:
+`scripts/NonVacuity/SwappedVacuumBlock.lean` (schedule values at `h = -3`, the
+conditional theorems over `ℚ`).
+
+Remaining for (d): construct a block. `A` is the output of the swapped-action assembly
+(currently under an explicit left-mate-invertibility input, see the (A9) paragraph);
+`raw`, `vacuum`, `ideal`, `coordinate` come from the ELV factor at probe levels `Pᵢ` and
+reservoir levels `Nᵢ`; `bubbles_eq` is `NormalizedBubbleFormula` at this schedule, and
+`evaluation` is the vacuum computation of §4 with the identification of the swapped
+evaluation sign with `placementSign` on homogeneous `b ⊗ f`.

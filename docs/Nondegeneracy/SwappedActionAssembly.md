@@ -186,11 +186,18 @@ row/column order AB,BA the crossing is exactly
 
     [ -q a             J           ]
     [ -J^-1 a²         q J^-1 a J   ],   q=(-1)^p,          (A6)
-    a=(x-y)^-1                       (p=0),
+    a=(y-x)^-1                       (p=0),
     a=(x-y)(x²-y²)^-1                (p=1),
 
-where x is the pre probe dot and y the post reservoir dot. In particular
-neither swapping entry is changed when the nilpotent side is exchanged.
+where x is the pre probe dot and y the post reservoir dot. Equivalently,
+a=-q(x-y)^-1 for p=0 and a=-q(x-y)(x²-y²)^-1 for p=1, since -q=1 when p=1:
+the matrix is -q times the matrix with a=(x-y)^-1 (p=0). An earlier version
+had a=(x-y)^-1 for p=0; an exact computation in the smallest mixed case
+(one odd and one even colour) shows that this gives τx₁-x₂τ=-1 on the mixed
+summand and breaks the jij braid relation there, while a=(y-x)^-1 satisfies
+all relations. The same check fixes J_ij=id (A5) and the distinct-colour
+crossings J^-1 and Q_ij J with Q itself, not a twisted Q^alg. Neither
+swapping entry is changed when the nilpotent side is exchanged.
 
 At each fixed reservoir content the relevant dot is nilpotent, uniformly
 on all reservoir modules, because its multiplier belongs to a finite
@@ -516,6 +523,12 @@ coefficients (constant coefficient 1). Under F1–F4, at **every** sign of H_i,
     even i: sum beta(e_r)(V) z^r = L_(E_i(-z)/(1-z)^(P_i)). (A16)
 
 L on a formal series means coefficientwise left multiplication.
+With the corrected even entry of (A6), a=(y-x)^-1, the normalized even
+bubble at height 0 is multiplied by -q relative to the formula derived from
+the earlier entry a=(x-y)^-1; the odd values are unchanged. The even line of
+(A16) is to be read with this factor; the dependent bubble computations in
+`SwappedVacuumBubbles.md` and `SwappedVacuumNonpositiveBubbles.md` have not
+yet been rewritten for it.
 `SwappedVacuumBubbles.md` proves H_i>0 using the extreme inverse column.
 `SwappedVacuumNonpositiveBubbles.md` proves H_i<0 using the extreme inverse
 row and H_i=0 using the principal inverse; it computes the odd image
