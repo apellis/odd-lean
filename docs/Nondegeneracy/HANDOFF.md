@@ -3429,3 +3429,23 @@ for finite colour restrictions, so a comparison of `upwardCoefficientMap` under
 evaluations from the swapped action. `UpwardModuleAction.toSwappedVacuumEvaluation`
 (checked) takes the source and target actions from an `UpwardModuleAction` on the
 sectors `V t → V t'`, so (d) reduces to the vacuum data of §4 for that action.
+
+### Triangular bubble substitution (item (a))
+
+Checked (`OddMath/SKM/BubbleSubstitution.lean`): for any family `u_i` of power series
+with constant term one and scalars `s_i`, `substitutionHom` sends the generating series
+`G_i(z) = 1 + Σ e_(i,n) z^(n+1)` to `G_i(-z) u_i(z)` and `δ_i` to `s_i δ_i`; given
+`u_i w_i = 1` and `s_i t_i = 1`, `substitutionEquiv` is an automorphism of `SYM` whose
+inverse is the substitution by `w_i(-z)` and `t_i` (`polynomialSubstitution_comp`:
+`w(-z) u(z) = 1` makes the polynomial substitutions inverse). The weight filtration is
+multiplicative (`coefficientAtMost_mul`), the generators are basis vectors of their
+weights (`e_eq_coefficientBasis`, `delta_eq_coefficientBasis`), and
+`preservesWeight_of_generators` reduces weight preservation of an algebra endomorphism to
+its generators. Every substitution preserves the filtration
+(`substitutionHom_mem_coefficientAtMost`): `e_(i,n)` goes to a combination of `1` and
+`e_(i,m)`, `m ≤ n`. `probeSubstitution M N` is the written θ of §4 (odd:
+`C_i(z) ↦ C_i(-z)(1+z)^(-M_i)`, `δ_i ↦ (-1)^(N_i+1) δ_i`; even:
+`E_i(z) ↦ E_i(-z)(1-z)^(-M_i)`; `M_i = P_i/2` at odd and `P_i` at even colours); it and
+its inverse preserve the filtration, which is `PreservesCoefficientWeight` for the
+interface (`scripts/NonVacuity/BubbleSubstitution.lean`). The identification of `M`, `N`
+with the probe and reservoir levels of the constructed action belongs to item (d).
