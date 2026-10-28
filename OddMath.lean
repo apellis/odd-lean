@@ -1291,6 +1291,7 @@ import OddMath.QuiverHecke.ReservoirVacuumDetection
 import OddMath.QuiverHecke.ReservoirVacuumExamples
 import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.QuiverHecke.SwappedAssembly.Interpretation
+import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
