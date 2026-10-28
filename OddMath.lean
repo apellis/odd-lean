@@ -1294,3 +1294,4 @@ import OddMath.SKM.AdaptedSameColourChoices
 import OddMath.SKM.PointedMatching
 import OddMath.SKM.SourceFrozenSwap
 import OddMath.QuiverHecke.SwappedVacuumRecovery
+import OddMath.SKM.FiniteColourClassDetection
