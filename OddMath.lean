@@ -14,6 +14,7 @@ import OddMath.SKM.FiniteColourIdealRestriction
 import OddMath.SKM.FiniteColourContextLift
 import OddMath.SKM.FiniteColourIdealDescent
 import OddMath.SKM.FiniteColourRelationsExamples
+import OddMath.SKM.RouquierMulticolour
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
@@ -1274,6 +1275,7 @@ import OddMath.QuiverHecke.SpectatorSeparation
 import OddMath.QuiverHecke.SpectatorSeparationExamples
 import OddMath.QuiverHecke.ReservoirVacuumDetection
 import OddMath.QuiverHecke.ReservoirVacuumExamples
+import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices

@@ -1,5 +1,42 @@
 # Odd nondegeneracy: restart state
 
+## Swapped-action interfaces: factor relations and upward module action
+
+**Factor side (input F1 of `SwappedActionAssembly.md`).** A factor model is a
+`RouquierFamily T` together with `RouquierMulticolour T Sc`
+(`OddMath/SKM/RouquierMulticolour.lean`). The latter records the relations
+of `Presentation.Rel` that `RouquierFamily` omits, in bicategorical order
+(the word `[up i, up j]` at rightmost region `a` is `E j ≫ E i`; `cross i j`
+is `crossL [] i j []`; a dot on the rightmost letter acts on the first
+factor): `quadZero`, `quadNe` (1.7, `i ≠ j`, parameters `Sc`),
+`slideLeft`, `slideRight` (1.8, `i ≠ j`), `braid` (1.9, all triples except
+`i = k ≠ j`) and `braidEq` (its corrected form), and `invNe` (1.12): the
+sideways crossing `crossMate (adj i h₃) (adj i h₂) (cross i j …)` is an
+isomorphism for `i ≠ j`. `crossMate` is the cup–crossing–cap mate;
+`crossMate_eq_rouquierMate` identifies it with `rouquierMate` on equal
+colours. A factor construction (the deformed ELV kernels) should produce
+these two structures. F2 (probe left adjunction) is the existing
+`RouquierLeftAdjoints`; F3–F4 (reservoir bounds, contents) are not yet
+packaged.
+
+**Consumer side.** The finite-colour swapped action, evaluated on one Hom
+sector at rightmost weight `μ`, is to be supplied as
+`UpwardModuleAction D Sc μ` (`OddMath/QuiverHecke/UpwardModuleAction.lean`):
+modules `V t` on upward words, `act` with `act_id` and `act_comp`.
+`UpwardModuleAction.bubbles` is the derived algebra action of `SYM` through
+`betaSYM` and `bubAt` (multiplicativity proved from `bubAt_comp`).
+`toReservoirVacuumEvaluation` turns an upward action plus vacuum,
+reservoir, recovery maps, windows and affine coordinates into
+`ReservoirVacuumEvaluation`; its `bubbles_eq` holds by definition. The
+remaining content of the vacuum detection is then exactly
+`NormalizedBubbleFormula` and `affine_coordinates`.
+
+Neither structure is instantiated here. The open part of the third
+obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
+`RouquierMulticolour`, through the content-shifted Hom functors, the
+distinct-colour mate inverses of `SwappedActionAssembly.md` §5 and the
+mixed blocks.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
