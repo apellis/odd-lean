@@ -151,21 +151,40 @@ invertible, and `homPostCrossMate_isIso` supplies this for distinct colours
 from `invNe`. The content shifts, i.e. the comparisons `E_src`, `E_tar` of
 the post/post paragraph of `SwappedActionAssembly.md` §5, are not yet added.
 
-**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post with the
-content shifts `E_src`, `E_tar` on top of `homPostCrossMate_eq`. (iii) The odd-dot sign of (11)–(12) as a
-supernatural conjugate, if the assembly needs odd `d` powers before support
-reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
-needs the packaged probe and reservoir data.
+**Pre/pre entry (A9) (checked).** `RouquierHomDistinctPreMate.lean` defines
+the factor left mate `leftCrossMate` of a crossing `E_d E_c ⟶ E_b E_a` along
+left adjunctions `F_d ⊣ E_d`, `F_a ⊣ E_a` (unit of `F_d ⊣ E_d`, crossing,
+counit of `F_a ⊣ E_a`), and the literal mate `homDistinctPreMate` of the
+precomposed crossing along the two precomposition adjunctions (which carry the
+parity shifts `σd`, `σa`). `homDistinctPreMate_eq` proves that the latter is
+postcomposition by `leftCrossMate`, conjugated by associators and the shift
+isomorphisms, times `sign(σa + σd r + r σa + σd σa)` for a crossing of
+parity `r`; the sign is the slide of the crossing through the unit
+(`unit_slide`) and the super interchange with the counit. Hence
+`homDistinctPreMateInv` is a two-sided inverse whenever `leftCrossMate` is
+invertible (`homDistinctPreMate_isIso`), and
+`homContentDistinctPreMate_isIso` gives this for distinct colours on the
+content-shifted Hom functors under `LeftMateInvertible`.
 
-**Input needed for (A9).** The derivation of (A9) in
-`SwappedDistinctPreMate.md` uses the left cups and caps defined from the
-inverse of the presented calculus and the left-cyclicity relation of the
-distinct crossing. A `RouquierFamily` with `RouquierMulticolour` and an
-arbitrary `RouquierLeftAdjoints` supplies only the right mate inverse
-(`invNe` gives invertibility of `crossMate`). It does not force the left mate
-of the distinct crossing to be invertible, so (A9) needs either the presented
-left adjunction (an interpretation of the presented calculus into the target
-bicategory) or the left-mate inverse as an explicit input.
+**The interface `LeftMateInvertible`.** It asserts that for `i ≠ j` the left
+mate of the distinct crossing along the chosen left adjunctions of
+`RouquierLeftAdjoints` is invertible. It does not follow from
+`RouquierMulticolour` with arbitrary `RouquierLeftAdjoints`: `invNe` inverts
+the right mate `crossMate`, and the left mate is a different 2-morphism whose
+invertibility needs the cyclicity of the crossing with respect to the chosen
+left and right adjunctions, which an arbitrary choice of left adjunctions does
+not provide. It is to be discharged from the ELV factor action: that
+2-representation interprets the presented calculus, in which the leftward
+crossing (defined with the left cups and caps) is a two-sided inverse of the
+left mate, by the left-cyclicity relation of the distinct crossing and the
+two inverse relations for `i ≠ j`. The final theorem therefore does not carry
+this hypothesis.
+
+**Next targets.** (i) Post/post with the content shifts `E_src`, `E_tar` on
+top of `homPostCrossMate_eq`. (ii) The odd-dot sign of (11)–(12) as a
+supernatural conjugate, if the assembly needs odd `d` powers before support
+reduction. (iii) Componentwise assembly into `UpwardModuleAction`, which also
+needs the packaged probe and reservoir data. (iv) F3–F4.
 
 **Correction to the equal-colour mixed crossing (A6).** An exact check in the
 smallest mixed case (one odd and one even colour, small probe and reservoir)
