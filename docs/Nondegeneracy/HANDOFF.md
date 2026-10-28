@@ -237,6 +237,12 @@ invertible (`homDistinctPreMate_isIso`), and
 `homContentDistinctPreMate_isIso` gives this for distinct colours on the
 content-shifted Hom functors under `LeftMateInvertible`.
 
+**Next targets.** The pre/pre entry (A9) above and post/post with content
+shifts (`RouquierHomDistinctPostShift.lean`) are checked. The remaining work
+is the assembly into `UpwardModuleAction`; its skeleton and the list of open
+obligations are in the section "Upward-action skeleton and relation
+obligations".
+
 **The interface `LeftMateInvertible`.** It asserts that for `i ≠ j` the left
 mate of the distinct crossing along the chosen left adjunctions of
 `RouquierLeftAdjoints` is invertible. It does not follow from
@@ -302,6 +308,78 @@ obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
 `RouquierMulticolour`, through the content-shifted Hom functors, the
 distinct-colour mate inverses of `SwappedActionAssembly.md` §5 and the
 mixed blocks.
+
+## Upward-action skeleton and relation obligations
+
+**Skeleton (checked).** `OddMath/QuiverHecke/SwappedAssembly/`:
+
+- `Interpretation.lean`: `LayerRep S R` (a module `M a` for each object and a
+  linear map `act L : M L.dom → M L.cod` for each layer); `LayerRep.toLocal`
+  turns it into a `LocalInterpretation` with `κ = id`. The relations of
+  `SKM.Rel` are split into the groups `RelGroup` (`relGroup`):
+  quad = `quadEq`, `quadZero`, `quadNe`; slide = `slideL`, `slideLEq`,
+  `slideR`, `slideREq`; braid = `braid`, `braidEq`; zigzag = `zigE`, `zigF`;
+  inversion = `invNe₁`, `invNe₂`, `invP₁`–`invP₅`, `invM₁`–`invM₅`;
+  windowZero = `dcupZero`, `dcapZero`. Each group is a Prop obligation
+  (`QuadRelations`, `SlideRelations`, `BraidRelations`, `ZigzagRelations`,
+  `InversionRelations`, `WindowZeroRelations`): every relation of the group,
+  whiskered by any `u`, `v`, evaluates to `0`. `InterchangeLaw Q` is the
+  interchange obligation (it carries the Koszul sign of odd generators).
+  `SwappedObligations Sc Q` bundles the seven obligations;
+  `SwappedObligations.functor` is `Presentation.lift` of the induced
+  interpretation, and `SwappedObligations.upwardModuleAction μ` is the
+  resulting `UpwardModuleAction D Sc μ` (modules `Q.M` of the upward words at
+  rightmost weight `μ`, action by the lifted functor).
+- `Sectors.lean`: sectors `(b, c) ∈ (I →₀ ℕ)²` (probe content `b`, reservoir
+  content `c`), the summand paths `SPath w s t` of a word (each letter takes
+  the probe or the reservoir side; finitely many from each sector,
+  `SPath.finite`), and `ProbeReservoir k B D Sc`: a probe family `T` with left
+  adjoints `leftAdj`, a reservoir family `W`, their `RouquierMulticolour`
+  data and the probe and reservoir highest weights `ΛP`, `ΛR`. `P.H s` is the
+  Hom sector of `s`, `P.step` the content-shifted pre/post `E`/`F` functor of
+  one letter and side, `P.pathFunctor p` the composite along a path
+  (`pathFunctor_append`), and `wt_nextSector` the weight bookkeeping.
+- `Matrices.lean`: the objects `C_λ` as finite-support matrices.
+  `P.Mod Gs Ys a` is the module of entries `Gs s ⟶ F_p (Ys t)` over summand
+  paths `p` of `a.word` with `wt t = a.endR`. `Generators` is the interface for
+  the generator images: one field per shape (`dot`, `cross`, `cup`, `cap`,
+  `lcross`, `dcup`, `dcap`), each a component `F_p Z ⟶ F_p' Z` for every pair
+  of summand paths of the bottom and top boundaries. `layerMap` acts on the
+  middle of a layer and by the identity on its whiskers; `P.layerRep Gs Ys gens`
+  is the resulting `LayerRep`.
+
+The leftward crossing has no relation constructor of its own: it is the
+generator `lcross`, and the relations it must satisfy are the inversion
+relations. The skeleton is stated over `D` itself; the pairing extension
+`λ ↦ (λ, 0)` is not part of it. The factor hypotheses F1–F4 (in particular the
+nilpotence used for the (A6) denominators) enter in the generator modules.
+
+**Open obligations, one module each** (all under
+`OddMath/QuiverHecke/SwappedAssembly/`):
+
+1. Generator images, supplying the fields of `ProbeReservoir.Generators`:
+   - `Generators/Dot.lean`: pre dot on probe letters, shifted post dot on
+     reservoir letters.
+   - `Generators/Cross.lean`: pre/pre (A9), post/post, and the mixed
+     (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours); the pre/pre
+     inverse uses `LeftMateInvertible` until it is discharged from the factor.
+   - `Generators/CupCap.lean`: the sector units and counits of (A3).
+   - `Generators/Leftward.lean`: `lcross`, `dcup`, `dcap` from the inverse
+     entries (`SwappedHomInversion.md`).
+   - `Generators.lean`: assembles the four into a `Generators` value.
+2. `WhiskerReduction.lean` (shared helper): reduces `evalW` of a whiskered
+   relation for `P.layerRep` to the block-level identity between components.
+3. Relation modules, each proving its obligation for `P.layerRep Gs Ys gens`:
+   - `Quad.lean`: `QuadRelations`.
+   - `Slides.lean`: `SlideRelations`.
+   - `Braid.lean`: `BraidRelations`.
+   - `Zigzag.lean`: `ZigzagRelations`.
+   - `Inversion.lean`: `InversionRelations`.
+   - `WindowZero.lean`: `WindowZeroRelations`.
+   - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
+     odd generator images.
+4. `Action.lean`: combines these into `SwappedObligations` and hence
+   `upwardModuleAction`.
 
 ## Old-only ELV quotient module
 
