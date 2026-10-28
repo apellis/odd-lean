@@ -3398,4 +3398,6 @@ prove `PreservesCoefficientWeight`; (b) instantiate `σ` as the ordered-source s
 interface is stated for the datum itself, while the written proof constructs evaluations
 for finite colour restrictions, so a comparison of `upwardCoefficientMap` under
 `Datum.restrictColours` is still needed for arbitrary colour sets; (d) construct the
-evaluations from the swapped action.
+evaluations from the swapped action. `UpwardModuleAction.toSwappedVacuumEvaluation`
+(checked) takes the source and target actions from an `UpwardModuleAction` on the
+sectors `V t → V t'`, so (d) reduces to the vacuum data of §4 for that action.
