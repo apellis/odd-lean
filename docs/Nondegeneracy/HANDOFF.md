@@ -453,12 +453,33 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
 `w = (l² - r²)⁻¹` commuting with both dots when they anticommute
 (`q = 1`, resp. `q = -1`).
 
+**Interchange law (checked).** `SwappedAssembly/Interchange.lean`:
+`ProbeReservoir.interchangeLaw` proves `InterchangeLaw (P.layerRep Gs Ys gens)`
+from `GeneratorsSupernatural gens`: every entry `gens.image g p p'` is a
+homogeneous supernatural transformation of parity `|g|` from the functor of
+`p` to that of `p'`. The entry of either composite at an output path
+`pu · qa · pm · qb · pr` is the double sum over the bottom paths `pa`, `pb` of
+`g`, `g'`; termwise the two composites differ by moving `F_pm(η)` past `γ`,
+which costs `(-1)^{|g||g'|}` (`eqToHom_map_comp_exchange`, in arbitrary
+categories, with the path functors only as linear and parity-preserving).
+Ill-formed layers act by zero, and the interchange preserves well-formedness
+of the two layers (`valid_interchange_of_valid`). `LayerEntries.lean` holds
+the tools: entries of a layer at an explicit concatenation
+(`layerMap_apply_append`), transport of entries along equalities of objects
+(`Mod.cast_apply`, with `SPath.append_assoc_heq`), and the composite of two
+layers in `LayerRep.toLocal` (`LayerRep.res_op_op_ext`).
+Remaining for the interchange: discharge `GeneratorsSupernatural` for the
+generator images of item 1 below.
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
 1. Generator images, supplying the fields of `ProbeReservoir.Generators`:
-   - `Generators/Dot.lean`: pre dot on probe letters, shifted post dot on
-     reservoir letters.
+   - `Generators/Dot.lean` (**checked**): `dotImage i ν`, with
+     `dotImage_probe` (`T.dot i _ ▷ Z`) and `dotImage_reservoir`
+     (`homContentPostDot` at the probe content of the left sector); zero between
+     different summands. The helper `oneLetterDiag` builds a one-letter
+     generator from its diagonal components.
    - `Generators/Cross.lean`: pre/pre (A9), post/post, and the mixed
      (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours); the pre/pre
      inverse uses `LeftMateInvertible` until it is discharged from the factor.
@@ -487,11 +508,22 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
    - `Braid.lean`: `BraidRelations`.
    - `Zigzag.lean`: `ZigzagRelations`.
    - `Inversion.lean`: `InversionRelations`.
-   - `WindowZero.lean`: `WindowZeroRelations`.
-   - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
-     odd generator images.
+   - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
+   - `Interchange.lean`: `InterchangeLaw` (checked, conditional on
+     `GeneratorsSupernatural`, the supernaturality of the odd generator
+     images; see above).
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
+
+**Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
+`layerMap_eq_zero` (a layer whose generator image has only zero components
+acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
+`P.layerRep Gs Ys gens` from `DcupDcapWindowZero gens`, the assignment of zero
+to `dcup i n` with rightmost weight `ν` when `⟨hᵢ, ν⟩ ≤ n` and to `dcap i n`
+when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is used, so
+this does not depend on the even-colour bubble normalization at height `0`
+(both windows are empty there). The generator
+modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
 
 ## Old-only ELV quotient module
 
@@ -2815,12 +2847,22 @@ inductions agreeing on triple idempotent tensors are equal (`heightSuperInductio
 hence, with inner crossing `Ind(t)` and outer crossing `t_{Ind}`,
 `outer ≫ inner ≫ outer = inner ≫ outer ≫ inner` (`heightSuperInduction_braid_same`).
 The signed Rouquier crossing `-ψ` satisfies the same relation ((-1)³ on both sides).
-The transport through three successor blocks to weight spaces is still open.
-Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
-`heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
-`globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
-`GlobalRouquierData.globalActionCross_square` (t = `globalActionSignedCross` = -ψ for i = i);
-(b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
+`GlobalWeightBraid.lean` (checked) transports it to weight spaces: on content blocks the
+two crossings are `Ind(t)` and `t_{Ind}` conjugated by height/content casts
+(`heightContentBraid`, reduced to the cast-free `heightContentBraidAux`), away from
+three-step successor blocks the triple composite vanishes (`globalEFunctor_comp₃_isZero`),
+so `t₂ t₁ t₂ = t₁ t₂ t₁` with `t₁ = t ▷ E`, `t₂ = E ◁ t` (`globalActionCross_braid`), and
+for `-ψ` (`globalActionSignedCross_braid`, `globalRouquierData_braid`): the `braid` field of
+`RouquierFamily` for `globalRouquierData`.
+`GlobalWeightSlides.lean` (checked) transports the slides to weight spaces: normalized
+height forms `s (ψ x₁) - x₂ ψ = 1`, `s (x₁ ψ) - ψ x₂ = 1`
+(`heightInduction_slide_left_one`, `_right_one`), content forms conjugated by casts
+(`heightContentSlideLeft/Right`, reduced to the cast-free `…Aux`), and for `t = -ψ`
+`E₁ ◁ x₂ ≫ t - s (t ≫ x₁ ▷ E₂) = 1`, `t ≫ E₁ ◁ x₂ - s (x₁ ▷ E₂ ≫ t) = 1`
+(`globalActionSignedCross_slide_left/right`): the `slide_left/right` fields of
+`SuperRouquierLoc`. Remaining fields: `adj` (have `globalActionAdjunction`), `loc.invPos`,
+`loc.invNeg` (local inversion: P balance, ideal sum, projective resolution).
+Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
 an odd algebra-level BK Lemma 2.1 (none exists in odd-lean yet); not started.
