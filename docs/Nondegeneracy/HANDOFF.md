@@ -453,6 +453,24 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
 `w = (l² - r²)⁻¹` commuting with both dots when they anticommute
 (`q = 1`, resp. `q = -1`).
 
+**Interchange law (checked).** `SwappedAssembly/Interchange.lean`:
+`ProbeReservoir.interchangeLaw` proves `InterchangeLaw (P.layerRep Gs Ys gens)`
+from `GeneratorsSupernatural gens`: every entry `gens.image g p p'` is a
+homogeneous supernatural transformation of parity `|g|` from the functor of
+`p` to that of `p'`. The entry of either composite at an output path
+`pu · qa · pm · qb · pr` is the double sum over the bottom paths `pa`, `pb` of
+`g`, `g'`; termwise the two composites differ by moving `F_pm(η)` past `γ`,
+which costs `(-1)^{|g||g'|}` (`eqToHom_map_comp_exchange`, in arbitrary
+categories, with the path functors only as linear and parity-preserving).
+Ill-formed layers act by zero, and the interchange preserves well-formedness
+of the two layers (`valid_interchange_of_valid`). `LayerEntries.lean` holds
+the tools: entries of a layer at an explicit concatenation
+(`layerMap_apply_append`), transport of entries along equalities of objects
+(`Mod.cast_apply`, with `SPath.append_assoc_heq`), and the composite of two
+layers in `LayerRep.toLocal` (`LayerRep.res_op_op_ext`).
+Remaining for the interchange: discharge `GeneratorsSupernatural` for the
+generator images of item 1 below.
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
@@ -489,8 +507,9 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
      see below).
    - `Inversion.lean`: `InversionRelations`.
    - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
-   - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
-     odd generator images.
+   - `Interchange.lean`: `InterchangeLaw` (checked, conditional on
+     `GeneratorsSupernatural`, the supernaturality of the odd generator
+     images; see above).
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
 
