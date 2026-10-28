@@ -409,6 +409,119 @@ theorem compLayer_whisker (gens : P.Generators) (L : Layer (SKM.sig D)) (u : Obj
     · rw [compLayer_eq_zero gens L ⟨(x1, y1), pl, pg, pr⟩ ⟨(x2, y2), ql, qg, qr⟩ hout]
       simp
 
+/-- The entry of a whiskered layer vanishes between paths with different whisker parts. -/
+theorem compLayer_whisker_eq_zero (gens : P.Generators) (L : Layer (SKM.sig D))
+    (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour) {s x y x' y' t : Sector I}
+    (pu : SPath u.word s x) (p : SPath L.dom.word x y) (pv : SPath v y t)
+    (pu' : SPath u.word s x') (q : SPath L.cod.word x' y') (pv' : SPath v y' t)
+    (hne : ((⟨x, pu⟩ : Σ z, SPath u.word s z), (⟨y, pv⟩ : Σ z, SPath v z t)) ≠
+      (⟨x', pu'⟩, ⟨y', pv'⟩)) (Z : P.H t) :
+    compLayer gens (L.whisker u v)
+        (((pu.append p).append pv).cast (congrArg Obj.word (L.whisker_dom u v).symm))
+        (((pu'.append q).append pv').cast (congrArg Obj.word (L.whisker_cod u v).symm)) Z = 0 := by
+  obtain ⟨⟨⟨x1, y1⟩, pl, pg, pr⟩, rfl⟩ :
+      ∃ d : SPath.Dec L.left ((SKM.sig D).dom L.gen) L.right x y, d.path = p :=
+    ⟨_, SPath.path_decOf _ _ p⟩
+  obtain ⟨⟨⟨x2, y2⟩, ql, qg, qr⟩, rfl⟩ :
+      ∃ e : SPath.Dec L.left ((SKM.sig D).cod L.gen) L.right x' y', e.path = q :=
+    ⟨_, SPath.path_decOf _ _ q⟩
+  have he : SPath.decOf (L.whisker u v).left _
+      (((pu'.append (SPath.Dec.path ⟨(x2, y2), ql, qg, qr⟩)).append pv').cast
+        (congrArg Obj.word (L.whisker_cod u v).symm)) =
+      ⟨(x2, y2), pu'.append ql, qg, qr.append pv'⟩ := by
+    apply SPath.Dec.path_injective
+    rw [SPath.path_decOf]
+    simp only [SPath.Dec.path]
+    rw [SPath.append_append_reassoc, SPath.cast_cast]
+    rfl
+  have hp : ((pu.append (SPath.Dec.path ⟨(x1, y1), pl, pg, pr⟩)).append pv).cast
+        (congrArg Obj.word (L.whisker_dom u v).symm) =
+      SPath.Dec.path (m := (SKM.sig D).dom (L.whisker u v).gen)
+        ⟨(x1, y1), pu.append pl, pg, pr.append pv⟩ := by
+    simp only [SPath.Dec.path]
+    rw [SPath.append_append_reassoc, SPath.cast_cast]
+    rfl
+  refine (compLayer_eq_compLayerAt gens (L.whisker u v) _ _ Z _ he).trans ?_
+  rw [compLayerAt_eq_zero gens (L.whisker u v) _ _ Z _ hp fun h => hne ?_, Limits.zero_comp]
+  simp only [SPath.Dec.outer, Prod.mk.injEq] at h
+  exact Prod.ext (SPath.sigma_eq_of_append_left h.1) (SPath.sigma_eq_of_append_right h.2)
+
+/-! ## The entries of a chain of layers -/
+
+open Classical in
+/-- **The entry of a chain of layers** between a path `p` of its bottom and a path `q` of its
+top boundary: the sum over the intermediate paths of the products of the layer entries. -/
+def compList (gens : P.Generators) : (ls : List (Layer (SKM.sig D))) →
+    {a b : Obj (SKM.sig D)} → Chain a ls b → {s t : Sector I} → (p : SPath a.word s t) →
+    (q : SPath b.word s t) → (Z : P.H t) → ((P.pathFunctor p).obj Z ⟶ (P.pathFunctor q).obj Z)
+  | [], _, _, h, _, _, p, q, Z =>
+    if hq : p.cast (congrArg Obj.word h) = q then
+      eqToHom (by rw [← hq, pathFunctor_cast])
+    else 0
+  | L :: ls, _, _, h, s, t, p, q, Z =>
+    letI := Fintype.ofFinite (SPath L.cod.word s t)
+    ∑ pm, eqToHom (by rw [pathFunctor_cast]) ≫
+      compLayer gens L (p.cast (congrArg Obj.word h.2.1.symm)) pm Z ≫
+        compList gens ls h.2.2 pm q Z
+
+theorem compList_nil (gens : P.Generators) {a : Obj (SKM.sig D)} {s t : Sector I}
+    (p q : SPath a.word s t) (Z : P.H t) [Decidable (p = q)] :
+    compList gens [] (rfl : Chain a [] a) p q Z =
+      if hq : p = q then eqToHom (by rw [hq]) else 0 := by
+  simp only [compList, SPath.cast_self]
+  congr
+
+open Classical in
+theorem compList_cons (gens : P.Generators) (L : Layer (SKM.sig D)) (ls : List (Layer (SKM.sig D)))
+    {b : Obj (SKM.sig D)} (hv : L.Valid) (hc : Chain L.cod ls b) {s t : Sector I}
+    (p : SPath L.dom.word s t) (q : SPath b.word s t) (Z : P.H t) :
+    letI := Fintype.ofFinite (SPath L.cod.word s t)
+    compList gens (L :: ls) ⟨hv, rfl, hc⟩ p q Z =
+      ∑ pm, compLayer gens L p pm Z ≫ compList gens ls hc pm q Z := by
+  simp [compList]
+
+/-- Changing the bottom object of a chain along an equality. -/
+theorem compList_cast (gens : P.Generators) (ls : List (Layer (SKM.sig D)))
+    {a a' b : Obj (SKM.sig D)} (ha : a = a') (h : Chain a ls b) (h' : Chain a' ls b)
+    {s t : Sector I} (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t) :
+    compList gens ls h' (p.cast (congrArg Obj.word ha)) q Z =
+      eqToHom (by rw [pathFunctor_cast]) ≫ compList gens ls h p q Z := by
+  subst ha; simp
+
+theorem layerRep_toLocal_op_ext (gens : P.Generators) (L : Layer (SKM.sig D))
+    (x : P.Mod Gs Ys L.dom) :
+    (P.layerRep Gs Ys gens).toLocal.op L ((P.layerRep Gs Ys gens).toLocal.ext L.dom x) =
+      (P.layerRep Gs Ys gens).toLocal.ext L.cod (layerMap gens L x) := by
+  classical
+  simp [LayerRep.toLocal, layerRep]
+
+/-- **The evaluation of a chain of layers** in `layerRep` is the matrix product of its entries
+with the input family. -/
+theorem res_opList_ext_apply (gens : P.Generators) (ls : List (Layer (SKM.sig D)))
+    {a b : Obj (SKM.sig D)} (h : Chain a ls b) (x : P.Mod Gs Ys a) (s : Sector I)
+    (t : {t : Sector I // P.wt t = b.endR}) (q : SPath b.word s t.1)
+    [Fintype (SPath a.word s t.1)] :
+    ((P.layerRep Gs Ys gens).toLocal.res b
+        ((P.layerRep Gs Ys gens).toLocal.opList ls
+          ((P.layerRep Gs Ys gens).toLocal.ext a x)) : P.Mod Gs Ys b) s t q =
+      ∑ p, x s ⟨t.1, t.2.trans h.endR_eq⟩ p ≫ compList gens ls h p q (Ys t.1) := by
+  classical
+  induction ls generalizing a with
+  | nil =>
+    subst h
+    simp only [LocalInterpretation.opList_nil_apply, LocalInterpretation.res_ext_apply,
+      compList_nil, comp_dite, Limits.comp_zero]
+    rw [Finset.sum_dite_eq', ite_eq_left (Finset.mem_univ _)]
+    simp
+  | cons L ls ih =>
+    obtain ⟨hv, rfl, hc⟩ := h
+    let := Fintype.ofFinite (SPath L.cod.word s t.1)
+    rw [LocalInterpretation.opList_cons_apply, layerRep_toLocal_op_ext, ih hc]
+    simp only [layerMap_apply gens L hv, Preadditive.sum_comp, Category.assoc]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [compList_cons gens L ls hv hc, Preadditive.comp_sum]
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
