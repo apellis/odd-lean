@@ -2903,13 +2903,16 @@ two crossings are `Ind(t)` and `t_{Ind}` conjugated by height/content casts
 three-step successor blocks the triple composite vanishes (`globalEFunctor_comp₃_isZero`),
 so `t₂ t₁ t₂ = t₁ t₂ t₁` with `t₁ = t ▷ E`, `t₂ = E ◁ t` (`globalActionCross_braid`), and
 for `-ψ` (`globalActionSignedCross_braid`, `globalRouquierData_braid`): the `braid` field of
-`RouquierFamily` for `globalRouquierData`. Remaining fields: `adj` (have
-`globalActionAdjunction`), `loc` (slides to weight blocks, then local inversion).
-Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
-`heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
-`globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
-`GlobalRouquierData.globalActionCross_square` (t = `globalActionSignedCross` = -ψ for i = i);
-(b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
+`RouquierFamily` for `globalRouquierData`.
+`GlobalWeightSlides.lean` (checked) transports the slides to weight spaces: normalized
+height forms `s (ψ x₁) - x₂ ψ = 1`, `s (x₁ ψ) - ψ x₂ = 1`
+(`heightInduction_slide_left_one`, `_right_one`), content forms conjugated by casts
+(`heightContentSlideLeft/Right`, reduced to the cast-free `…Aux`), and for `t = -ψ`
+`E₁ ◁ x₂ ≫ t - s (t ≫ x₁ ▷ E₂) = 1`, `t ≫ E₁ ◁ x₂ - s (x₁ ▷ E₂ ≫ t) = 1`
+(`globalActionSignedCross_slide_left/right`): the `slide_left/right` fields of
+`SuperRouquierLoc`. Remaining fields: `adj` (have `globalActionAdjunction`), `loc.invPos`,
+`loc.invNeg` (local inversion: P balance, ideal sum, projective resolution).
+Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
 an odd algebra-level BK Lemma 2.1 (none exists in odd-lean yet); not started.
