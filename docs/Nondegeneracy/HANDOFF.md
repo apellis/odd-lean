@@ -89,13 +89,38 @@ on `F` whiskered by a post edge is the associator).
 arbitrary `RouquierLeftAdjoints L`, and `homContentDistinctMixedPreMate_eq`
 is (9) for the content adjunctions.
 
-**Next targets.** (i) The rest of the `V` block: the dotted `V` of (13)
-with the transposed probe dot, and the inverse (14) of `G`. The inverse needs
-explicit inputs beyond `RouquierFamily` + `RouquierMulticolour`: invertibility
-of the probe dot (F2-type datum) and nilpotence of the reservoir dot at each
-content (F3); these are to be packaged as structures, not assumed silently.
-(ii) The pre/pre entry (A9). (iii) Post/post via `crossMate` conjugation and
-`invNe`. (iv) Componentwise assembly into `UpwardModuleAction`.
+**Mixed block `V`, dots and inverses (checked).**
+`OddMath/SKM/RouquierHomDistinctMixedDots.lean` formalizes (13)–(15) for even
+dots, in a source-side form. `homDistinctMixedPreMateDot Φ` is the mate of
+`J ≫ S_u(Φ)` for an endomorphism `Φ` of `(E ≫ Z) ≫ E'`; it only depends on
+`Φ ≫ ε ▷ E'`. `MixedTransport g Φ` (`J ≫ S_u Φ = E ◁ g ≫ J`) is closed under
+`comp`, `add` and `smul`. It holds for the post dot (`mixedTransport_post`,
+`g = S_t(Z ◁ y)`) and for even middle maps (`mixedTransport_middle`, via
+`homMixedInterchange_naturality_even`).
+`homDistinctMixedPreMateDot_eq_comp` is (13): `V(Φ) = g ≫ V₀`.
+The probe dot is the Mathlib conjugate `homPreDotConj` of `x ▷ (-)` along the
+precomposition adjunction. `homPreDotConj_counit` gives
+`(x ▷ Z) ≫ ε = E ◁ c(x) ≫ ε`, i.e. the cup–dot–cap word (10). Further:
+`homPreDotConj_comp` (it reverses composition), `homPreDotConj_inv` ((11):
+even inverse dot ⇒ two-sided inverse) and `homPreDotConj_mem` (evenness, given
+even unit and counit). `homDistinctMixedPreMateDot_monomial` is (13) for one
+supported monomial. `homDistinctMixedPreMate_inv_products` is (15) for `V₀`
+with the explicit inverse `homDistinctMixedPreMateInv`.
+`homDistinctMixedPreMateDot_isIso` gives (15) for `V` from an invertible `g`.
+`isIso_add_of_isNilpotent` is (14): `A + N` is invertible when `A` is
+invertible and `N` is nilpotent and commutes with `A`.
+Scope: only even dot powers are handled. The supported monomials of (12) have
+even powers, but the relation `c(d^m) = ± c(d)^m` for an odd `d` (the sign
+`p binom(m,2)` in (11)–(12)) is not formalized, since `d ▷ (-)` is not a
+natural transformation. Probe invertibility and reservoir nilpotence enter as
+hypotheses of the lemmas (an even inverse of `x`, nilpotence of `N`). They are
+not fields of `RouquierFamily` or `RouquierMulticolour`.
+
+**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post via
+`crossMate` conjugation and `invNe`. (iii) The odd-dot sign of (11)–(12) as a
+supernatural conjugate, if the assembly needs odd `d` powers before support
+reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
+needs the packaged probe and reservoir data.
 
 Neither structure is instantiated here. The open part of the third
 obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
