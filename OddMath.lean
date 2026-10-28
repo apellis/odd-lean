@@ -1299,6 +1299,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
+import OddMath.QuiverHecke.SwappedAssembly.WindowZero
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange
