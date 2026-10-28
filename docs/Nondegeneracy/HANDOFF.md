@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Deformed cyclotomic factor: checked steps and forms
+
+The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
+
+**Last-letter recursion (checked).** `CyclotomicAction/MoveHomSnoc.lean` proves
+`moveHom_append_singleton`: `moveHom i l (ν ++ [x])` is `moveHom i l ν ⊗ 1_x` followed by
+the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (KKO's
+`V_(n+1) = g_(n+1)(V_n ⊗ 1)` in the global QP induction), with right-whiskering lemmas
+`genE_whiskerRight`, `dotE_whiskerRight`, `sameIntertwiner_whiskerRight`,
+`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
+`lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
+
+**Normalizer and θ: forms to formalize.** The factor interface contains neither the
+first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
+are, use these forms, not the integer-shift form of the manuscript's normality step:
+
+* the normalizer is the coefficient-twisted automorphism `ρ(x₁) = x₁ − 2δⱼ`, where `δⱼ`
+  is the odd deformation parameter of the coefficient ring (written `dⱼ` in
+  `DeformedGlobalQP.md` §4 and `DeformedProjectiveResolution.md` §4), not the integer
+  `2dⱼ` of a degree argument. At even cutoff `N` the identity `x fⱼ = fⱼ (x − 2δⱼ)` holds
+  only modulo `δⱼ χ_m = 0` (its defect is `2 χ_m δⱼ`), so `ρ` is defined on `A_N`, not on
+  the free coefficient ring. The parity action of `ρ` on coefficients as stated in the
+  manuscript is incorrect and must be rederived from the local relation before use;
+  only the fact that `ρ` fixes `x²` is relied on in the projectivity argument;
+* θ (`SwappedNondegeneracy.md` §4) is defined on the untruncated coefficient algebra
+  (symmetric functions, or a free algebra), not on `A_N`: it does not preserve
+  `δ χ_m = 0`. Recovery uses θ only before the quotient map `q_first`, as written there.
+
 ## Swapped-action interfaces: factor relations and upward module action
 
 **Factor side (input F1 of `SwappedActionAssembly.md`).** A factor model is a
@@ -3371,3 +3399,57 @@ of each supported contextual generator to a finite colour subtype while
 retaining the same weight group X and restricted datum/scalars, including
 its regions and interchange signs. No faithful embedding of the full
 infinite-colour presented Hom or nondegeneracy follows yet.
+
+## Signed vacuum recovery interface
+
+`SwappedVacuumRecovery.lean` formalizes the recovery half of
+`SwappedNondegeneracy.md` §4 and its composition with §§5–6, conditional on one
+explicit interface. `SwappedVacuumEvaluation D Sc cs μ t t' d` packages exactly
+what the recovery uses at one weight, word pair and degree bound:
+
+- source and target actions on `V → W` respecting source composition, and a vacuum;
+- a raw coefficient action `SYM →ₐ End V`;
+- an algebra automorphism `θ` of `SYM` preserving the coefficient-weight filtration
+  (`PreservesCoefficientWeight`), with source-placed `bubAt (betaSYM a)` acting as the
+  raw action of `θ a`;
+- an ideal `K` contained in `ExtendedAtLeast bound` with `d < bound`;
+- a placement isomorphism `σ` of the coefficient-extended Hom space preserving the
+  degree-`d` window;
+- a coordinate map `W → Hom/K` with the literal evaluation
+  `coord(act(α f)(raw(b) vac)) = q_K(σ(b ⊗ f))` for every raw coefficient `b`.
+
+Checked: `coefficientSubstitution` (θ on the coefficient factor) with
+`coefficientSubstitution_source`; `sourceCoefficientHom_mem_extendedAtMost`;
+`coefficientSubstitution_mem_extendedAtMost`; `ker_windowQuotient` (the window injects
+into `Hom/K` by disjointness); over a field `windowSplitting` (a left inverse `L_d`),
+`recover = q ∘ θ⁻¹ ∘ σ⁻¹ ∘ incl ∘ L_d ∘ coord`, `recover_coordinates`,
+`toBoundedCyclicRecovery` (at every cutoff),
+`upwardCoefficientMap_injective_of_vacuum_evaluations` and the conditional field theorem
+`nondegeneracy_of_vacuum_evaluations`: vacuum evaluations at every equal-weight upward
+pair, weight and degree imply `NondegeneracyConjecture cs`. The two-odd-colour consumer
+`scripts/NonVacuity/SwappedVacuumRecovery.lean` instantiates both statements over `ℚ`.
+
+**Quotient match.** The recovered identity holds before any quotient: `recover` returns
+the bounded coefficient Hom itself, then applies `ELVRelationSpan` at cutoff
+`d + 2·choose(|t|,2) + 1` for every colour. `ELVRelationSpan` is the two-sided span of
+the ELV coefficient ideal together with the first-strand cyclotomic polynomials
+(`elvCyclotomic` at odd, `evenCyclotomic` at even colours), which is the standard
+first-boundary quotient of the written proof. There is no mismatch. The transformed
+last-boundary ideal `K` of §4 enters only through `ideal_le`.
+
+**Bubble normalization match.** `SwappedVacuumBubbles.md` §2 defines the normalized
+bubbles via the Lean generators `etaP`, `bubL`, `bubLs`, `oddBubble`, `betaGen` and
+`betaDGen`, including the `c_μ⁻¹` factors, so they are `betaSYM cs μ`; the
+nonpositive-height case in `SwappedVacuumNonpositiveBubbles.md` uses the same
+generators. The interface places them by `bubAt D Sc μ (upWord t)` at region weight `μ`,
+the placement used by `BoundedCyclicRecovery`. There is no mismatch.
+
+Open, in this line: (a) instantiate `θ` as the written triangular bubble substitution and
+prove `PreservesCoefficientWeight`; (b) instantiate `σ` as the ordered-source sign
+`(-1)^{|a||f|}` and prove window preservation; (c) the finite-colour passage: the
+interface is stated for the datum itself, while the written proof constructs evaluations
+for finite colour restrictions, so a comparison of `upwardCoefficientMap` under
+`Datum.restrictColours` is still needed for arbitrary colour sets; (d) construct the
+evaluations from the swapped action. `UpwardModuleAction.toSwappedVacuumEvaluation`
+(checked) takes the source and target actions from an `UpwardModuleAction` on the
+sectors `V t → V t'`, so (d) reduces to the vacuum data of §4 for that action.
