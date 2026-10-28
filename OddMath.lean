@@ -1300,6 +1300,10 @@ import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
+import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.WindowZero
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
