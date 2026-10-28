@@ -115,6 +115,8 @@ import OddMath.QuiverHecke.CyclotomicAction.Comparison
 import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomSnoc
 import OddMath.QuiverHecke.CyclotomicAction.LastToFirstSnoc
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 import OddMath.QuiverHecke.CyclotomicAction.ConcreteRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
