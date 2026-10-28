@@ -141,8 +141,18 @@ natural transformation. Probe invertibility and reservoir nilpotence enter as
 hypotheses of the lemmas (an even inverse of `x`, nilpotence of `N`). They are
 not fields of `RouquierFamily` or `RouquierMulticolour`.
 
-**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post via
-`crossMate` conjugation and `invNe`. (iii) The odd-dot sign of (11)–(12) as a
+**Post/post core (checked).** `RouquierHomDistinctPost.lean` defines the
+literal mate (A8) of a postcomposed factor crossing along the two post
+adjunctions (`homPostCrossMate`) and proves `homPostCrossMate_eq`: it is
+postcomposition by the factor mate `crossMate`, conjugated by associators,
+for a crossing of either parity (no crossing passes a unit or counit).
+Hence `homPostCrossMateInv` is a two-sided inverse whenever the factor mate is
+invertible, and `homPostCrossMate_isIso` supplies this for distinct colours
+from `invNe`. The content shifts, i.e. the comparisons `E_src`, `E_tar` of
+the post/post paragraph of `SwappedActionAssembly.md` §5, are not yet added.
+
+**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post with the
+content shifts `E_src`, `E_tar` on top of `homPostCrossMate_eq`. (iii) The odd-dot sign of (11)–(12) as a
 supernatural conjugate, if the assembly needs odd `d` powers before support
 reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
 needs the packaged probe and reservoir data.
