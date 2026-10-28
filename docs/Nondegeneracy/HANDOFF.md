@@ -3634,3 +3634,39 @@ its generators. Every substitution preserves the filtration
 its inverse preserve the filtration, which is `PreservesCoefficientWeight` for the
 interface (`scripts/NonVacuity/BubbleSubstitution.lean`). The identification of `M`, `N`
 with the probe and reservoir levels of the constructed action belongs to item (d).
+
+### Placement sign (item (b))
+
+Checked in `PlacementSign.lean`: `placementSign D Sc t t'`, the linear involution of the
+coefficient-extended Hom space that is diagonal in `extensionBasis` with sign
+`(-1)^{|a|·par i}` on `coefficientBasis a ⊗ nf i`, where `|a|` is the size of the
+exterior part of `a` (the parity of the basis coefficient, `coefficientBasis_mem_parity`)
+and `par i` is `NFIdx.par` (the parity of the normal form, `NFIdx.nf_mem_parity`). Proved:
+`placementSign_symm` (involution), `placementSign_sourceCoefficientHom` (the Koszul sign
+on each tensor basis vector), and preservation of both `ExtendedAtMost d`
+(`placementSign_mem_extendedAtMost`, the `placement_bounded` field) and
+`ExtendedAtLeast s`. The consumer `scripts/NonVacuity/PlacementSign.lean` computes the
+sign `-1` for one odd exterior coefficient against one dot on an odd strand. The sign
+is fixed on the basis; identifying it with the sign produced by the swapped evaluation on
+general homogeneous `b ⊗ f` belongs to item (d).
+
+### Finite-colour detection of class relations (item (c), first step)
+
+`FiniteColourClassDetection.lean` (checked) proves `sum_cl_eq_zero_restrict`:
+if `∑ cₘ • cl D Sc μ s t (lsₘ) = 0` in the full-colour presentation, there is a finite
+`J₁` such that for every `J ⊇ J₁`, all restricted words `s', t'` and layer lists `ls'ₘ`
+over `J` that include onto `s, t, lsₘ`, the same relation
+`∑ cₘ • cl (D.restrictColours J) (Sc.restrictColours D J) μ s' t' (ls'ₘ) = 0` holds.
+`J₁` depends only on the full-colour relation. The proof uses the free representative
+`clLin` (`lin_clLin`, `linear_clLin`), `finiteColourIdeal_mono`, the descent
+`supported_ideal_lift_at`, injectivity of the inclusion of free diagrams
+(`letter_injective`, `shape_injective`, `inclusion_layer_injective`, `diagram_injective`,
+`linear_injective`) and reflection of well-formedness (`chain_of_map`, `chain_map_iff`).
+No presented-level functor or faithfulness statement is used.
+
+Remaining for (c): express each extended basis vector's image under
+`upwardCoefficientMap` as a scalar multiple of one class `cl μ (upWord t) (upWord t') N`
+whose scalar and layer list are compatible with `Datum.restrictColours` (the bubble
+generators, `bubAt`, `betaSYM` on ordered generator products, and `alpha` via `alpha_cl`),
+lift extended basis indices to `J`, and combine with `sum_cl_eq_zero_restrict` to deduce
+injectivity of `upwardCoefficientMap` for `D` from injectivity for all finite restrictions.
