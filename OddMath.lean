@@ -94,6 +94,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBlockCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBraid
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightBraid
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightDot
@@ -1303,7 +1304,11 @@ import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
+import OddMath.QuiverHecke.SwappedAssembly.WindowZero
+import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
+import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
+import OddMath.QuiverHecke.SwappedAssembly.Interchange
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices

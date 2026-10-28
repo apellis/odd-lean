@@ -486,6 +486,24 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
 `w = (l² - r²)⁻¹` commuting with both dots when they anticommute
 (`q = 1`, resp. `q = -1`).
 
+**Interchange law (checked).** `SwappedAssembly/Interchange.lean`:
+`ProbeReservoir.interchangeLaw` proves `InterchangeLaw (P.layerRep Gs Ys gens)`
+from `GeneratorsSupernatural gens`: every entry `gens.image g p p'` is a
+homogeneous supernatural transformation of parity `|g|` from the functor of
+`p` to that of `p'`. The entry of either composite at an output path
+`pu · qa · pm · qb · pr` is the double sum over the bottom paths `pa`, `pb` of
+`g`, `g'`; termwise the two composites differ by moving `F_pm(η)` past `γ`,
+which costs `(-1)^{|g||g'|}` (`eqToHom_map_comp_exchange`, in arbitrary
+categories, with the path functors only as linear and parity-preserving).
+Ill-formed layers act by zero, and the interchange preserves well-formedness
+of the two layers (`valid_interchange_of_valid`). `LayerEntries.lean` holds
+the tools: entries of a layer at an explicit concatenation
+(`layerMap_apply_append`), transport of entries along equalities of objects
+(`Mod.cast_apply`, with `SPath.append_assoc_heq`), and the composite of two
+layers in `LayerRep.toLocal` (`LayerRep.res_op_op_ext`).
+Remaining for the interchange: discharge `GeneratorsSupernatural` for the
+generator images of item 1 below.
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
@@ -521,13 +539,41 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
    - `Quad.lean`: `QuadRelations`.
    - `Slides.lean`: `SlideRelations`.
    - `Braid.lean`: `BraidRelations`.
-   - `Zigzag.lean`: `ZigzagRelations`.
+   - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
+     see below).
    - `Inversion.lean`: `InversionRelations`.
-   - `WindowZero.lean`: `WindowZeroRelations`.
-   - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
-     odd generator images.
+   - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
+   - `Interchange.lean`: `InterchangeLaw` (checked, conditional on
+     `GeneratorsSupernatural`, the supernaturality of the odd generator
+     images; see above).
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
+
+**Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
+`layerMap_eq_zero` (a layer whose generator image has only zero components
+acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
+`P.layerRep Gs Ys gens` from `DcupDcapWindowZero gens`, the assignment of zero
+to `dcup i n` with rightmost weight `ν` when `⟨hᵢ, ν⟩ ≤ n` and to `dcap i n`
+when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is used, so
+this does not depend on the even-colour bubble normalization at height `0`
+(both windows are empty there). The generator
+modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
+
+**Zigzag relations (checked).** `SwappedAssembly/Zigzag.lean`:
+`zigzagRelations`: `ZigzagRelations` for `P.layerRep Gs Ys gens` from
+`CupCapZigzag gens`. The boundary of `zigE` (resp. `zigF`) is the single strand
+`Eᵢ` (resp. `Fᵢ`), whose summand path is unique (`SPath.eq_of_single`), so each
+relation is one matrix identity per summand path `q` of that strand and object
+`Z`: the sum over the summand paths `m` of the cup's codomain and `r` of the
+cap's domain, restricted to the pairs for which the two middle paths agree as
+paths of the three-letter word (`zigE_word`, `zigF_word`), of the composite
+"cup entry, transport, cap entry" is the identity. `CupCapZigzag.zigE` and
+`.zigF` state exactly these identities; `zigE_entry` and `zigF_entry` identify
+them with the entries `compList` of the two-layer diagrams (in the `zigF` case
+the left strand of the cap layer has right weight `wt ν [up i, dn i]`, only
+propositionally equal to `ν`; `SPath.cast_cons_col` transports the path). No obstruction: the reduction is exact,
+and the generator modules must prove `CupCapZigzag` for their cup/cap images
+(the right adjunction (1.10) of the Hom-sector functors).
 
 ## Old-only ELV quotient module
 
@@ -2851,7 +2897,14 @@ inductions agreeing on triple idempotent tensors are equal (`heightSuperInductio
 hence, with inner crossing `Ind(t)` and outer crossing `t_{Ind}`,
 `outer ≫ inner ≫ outer = inner ≫ outer ≫ inner` (`heightSuperInduction_braid_same`).
 The signed Rouquier crossing `-ψ` satisfies the same relation ((-1)³ on both sides).
-The transport through three successor blocks to weight spaces is still open.
+`GlobalWeightBraid.lean` (checked) transports it to weight spaces: on content blocks the
+two crossings are `Ind(t)` and `t_{Ind}` conjugated by height/content casts
+(`heightContentBraid`, reduced to the cast-free `heightContentBraidAux`), away from
+three-step successor blocks the triple composite vanishes (`globalEFunctor_comp₃_isZero`),
+so `t₂ t₁ t₂ = t₁ t₂ t₁` with `t₁ = t ▷ E`, `t₂ = E ◁ t` (`globalActionCross_braid`), and
+for `-ψ` (`globalActionSignedCross_braid`, `globalRouquierData_braid`): the `braid` field of
+`RouquierFamily` for `globalRouquierData`. Remaining fields: `adj` (have
+`globalActionAdjunction`), `loc` (slides to weight blocks, then local inversion).
 Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
 `heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
 `globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
