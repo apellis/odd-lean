@@ -1262,6 +1262,7 @@ import OddMath.SKM.UniversalCoefficientRing
 import OddMath.SKM.UniversalPolynomialParameters
 import OddMath.SKM.UniversalCoefficientReduced
 import OddMath.SKM.UniversalCoefficientRationalization
+import OddMath.SKM.UniversalParameterFields
 import OddMath.Diagrams.OddNilHecke.SeparatedSquareNorm
 import OddMath.Diagrams.OddNilHecke.SeparatedCrossing
 import OddMath.QuiverHecke.CanonicalPBWChoiceComparison

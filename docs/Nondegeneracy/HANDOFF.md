@@ -121,6 +121,22 @@ and separated by fields. The comparison identifying the generic polynomial
 injection with these exact allowed slots is still required before applying
 joint field separation to the integral ring. None of this proves SKM
 nondegeneracy or constructs its universal matching basis.
+## Integral universal parameter field family
+
+`UniversalParameterFields.point` composes coefficientwise rationalization of
+`ParameterRing D` with the prime-quotient fraction fields of the reduced
+rational parameter ring. `point_separate` and `exists_point_ne_zero` show
+joint zero reflection for the actual ring, retaining every colour, weight,
+allowed coefficient slot and unsaturated group relation. Every target is a
+characteristic-zero field. `point_t`, `point_c` and the allowed/forbidden
+coefficient formulas identify images; `scalars`, `homogeneous` and
+`normalizations` transport the universal systems on the unchanged datum.
+The importing consumer detects a nonzero allowed coefficient at some prime
+without choosing one and checks the empty-colour separation statement.
+The dependent-root zero divisors remain as before; no fixed point is asserted
+injective. The next mathematical obligation is the conditional scalar-change
+comparison for the actual SKM expansion and complete exterior coefficient
+basis; neither the field candidate nor nondegeneracy is proved here.
 
 ## Reduced rational parameter rings
 
@@ -148,6 +164,11 @@ instantiate this injection at exactly `Slot D` and identify its domain with
 the integral `ParameterRing D`, then compose with the separating fields.
 The field candidate, universal matching basis and nondegeneracy deduction
 remain separate obligations.
+This supplies the reducedness step of [GroundRingDescent](GroundRingDescent.md)
+§4. Combined with `UniversalCoefficientRationalization.rationalizePolynomial_injective`,
+this supplies the injection and reduced rationalization inputs for separation of
+the integral parameter ring. The field candidate, universal matching basis
+and final nondegeneracy deduction remain separate obligations.
 
 ## Universal coefficient-slot polynomial ring
 
@@ -182,6 +203,25 @@ is also proved. The exact parameter-ring identification and combined
 separating-field map remain to be checked. Exterior bubble generators stay
 outside this purely even parameter ring; the universal matching basis and
 nondegeneracy deduction remain separate.
+The rationalization injection and reducedness of its rational group algebra
+and polynomial extension are proved above. Exterior bubble generators remain
+outside the parameter ring. The universal basis and final nondegeneracy
+connection remain separate.
+
+## Rationalization injection for normalization parameters
+
+`SKM.UniversalCoefficientRationalization.coefficientMap_injective` embeds
+`Localization.Away (2 : ℤ)` in ℚ. `rationalize_injective` maps the
+normalization group algebra coefficientwise into the ℚ-group algebra on the
+same unsaturated group, without assuming a domain or torsion-free group.
+`rationalize_single`, `rationalize_groupUnit`, `rationalize_t` and
+`rationalize_c` compute images of coefficients and universal group units.
+`rationalizePolynomial_injective` extends the injection to every variable
+type, including the actual `Slot D`; its constant and variable formulas are
+checked. An order-two group algebra consumer verifies nonzero zero divisors
+survive and tests a nonconstant polynomial. Together with the reducedness
+above, this supplies the ring-theoretic inputs to the integral separating
+field family, not the field candidate or SKM nondegeneracy.
 
 ## Normalization unit ring over ℤ[1/2]
 
@@ -207,6 +247,8 @@ and exact coefficient specialization are constructed above. The group-algebra
 rationalization injection and arbitrary-variable polynomial extension are
 proved above, as is rationalized reducedness; their exact allowed-slot
 assembly remains separate.
+and exact coefficient specialization are constructed above. Rationalization
+injection and rationalized reducedness are proved separately.
 
 ## Unsaturated normalization parameter group
 
@@ -232,6 +274,9 @@ above, together with the allowed-slot polynomial extension and universal
 coefficientwise rationalization injection for it and arbitrary polynomial
 variables is proved. Identifying the exact integral parameter ring with this
 polynomial source and applying field separation remains open.
+above, together with its coefficient-slot polynomial extension and universal
+`Scalars`, homogeneity and `CScalars`. Rational injection and reducedness of
+the rationalized group algebra and polynomial ring are proved above.
 
 ## Prime-quotient characteristic-zero fields
 
