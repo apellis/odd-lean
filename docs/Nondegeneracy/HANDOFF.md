@@ -105,7 +105,8 @@ letters by (K) in context, cancellation of `x₁² − 1_i ⊗ x_(n+1)²` (`Kill
 and `(x_(n+2) − x₁) D₀ = D₀ (x_(n+2) − x₁)`; even repeated letters by
 `KillAll.of_linear_even`. Arbitrary colours, parities and words.
 Next: P balance (`DeformedGlobalQP.md` §4), the ideal sum, the projective resolution
-and local inversion, then the factor as `RouquierFamily T` + `RouquierMulticolour T Sc`.
+and local inversion, supplying the hypothesis of `globalRouquierFamily`; then
+`RouquierMulticolour` for it.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
@@ -2910,8 +2911,12 @@ height forms `s (ψ x₁) - x₂ ψ = 1`, `s (x₁ ψ) - ψ x₂ = 1`
 (`heightContentSlideLeft/Right`, reduced to the cast-free `…Aux`), and for `t = -ψ`
 `E₁ ◁ x₂ ≫ t - s (t ≫ x₁ ▷ E₂) = 1`, `t ≫ E₁ ◁ x₂ - s (x₁ ▷ E₂ ≫ t) = 1`
 (`globalActionSignedCross_slide_left/right`): the `slide_left/right` fields of
-`SuperRouquierLoc`. Remaining fields: `adj` (have `globalActionAdjunction`), `loc.invPos`,
-`loc.invNeg` (local inversion: P balance, ideal sum, projective resolution).
+`SuperRouquierLoc`. `GlobalRouquierFamily.lean` (checked) assembles
+`globalRouquierFamily L : SKM.RouquierFamily D` on the weight spaces (`F`, `adj` =
+`globalActionAdjunction`, `square`, `braid`, and `loc` via `globalSuperRouquierLoc` with dots,
+crossing parity and both slides proved). The only hypothesis is `L`, a family of
+`GlobalLocalInversion`: exactly the `invPos`/`invNeg` inverses of the Rouquier mate at each
+middle weight (local inversion: P balance, ideal sum, projective resolution, not yet in Lean).
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
