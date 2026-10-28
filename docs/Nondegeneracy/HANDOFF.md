@@ -37,6 +37,14 @@ the expansion of `V ≫ g` for the same-colour intertwiner (`moveWhisker_comp_sa
 Next: the induction assembly in the `Ind.tmul` target: (K) for `n+1` from (K) for `n` via
 these two steps, cancelling `D₀`/`E₀` with `PrependDotCancellation`/`LinearDotCancellation`.
 
+**Right annihilators of the target (checked).** `CyclotomicAction/PrefixQPInduction.lean`
+defines `PrependKills z` (every `r z` acts by zero on `φ(1)` in `Ind q`) and proves closure
+under left multiplication, sums, scalars, right multiplication by `φ(x)` and by the first
+dot `x₁` (`PrependKills.mul_prepend`, `mul_firstDot`), membership of `φ(ker q)`
+(`prependKills_of_cyclotomicMk`), and square cancellation `PrependKills.of_sq_sub`:
+`PrependKills (z (x₁² − φ c)) → PrependKills z` for every `c`. Next: the morphism-level
+form on `End(i :: L)` and the snoc induction for (K).
+
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
 are, use these forms, not the integer-shift form of the manuscript's normality step:
