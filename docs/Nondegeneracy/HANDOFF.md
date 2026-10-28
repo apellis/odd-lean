@@ -428,6 +428,17 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
 The relation modules may state their obligations against these formulas as a
 hypothesis structure until the generator modules land.
 
+**Post/post slide (checked).** `OddMath/SKM/RouquierHomPostCrossingSlide.lean`:
+`homContentPostCrossing_slide_app` gives `c ; x_outer - q (x_inner ; c) = 1` for the
+reservoir/reservoir entry `c = homContentPostCrossingApp` (the parity-`p_i` component of
+`homContentPostCrossing`), with `x_outer = homContentPostDot` on the outer letter and
+`x_inner` the outer functor applied to the inner `homContentPostDot`. This is the same
+orientation as the pre/pre `homContentCrossing_slide`. It is deduced from the factor's
+`slide_right` through `homContentPostWordIso`: `homContentPostDot_outer_wordIso` and
+`homContentPostDot_inner_wordIso` transport the two dots to `Z ◁ (E ◁ x₂)` and
+`Z ◁ (x₁ ▷ E)`. The two parity-shift signs cancel (`homShiftConjugationIso_naturality`),
+and `SlideConj.conj_slide` transports the slide along the comparison.
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
