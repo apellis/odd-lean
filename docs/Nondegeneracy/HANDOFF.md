@@ -13,9 +13,18 @@ the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (K
 `CyclotomicAction/LastToFirstSnoc.lean` proves the same for the crossing map:
 `lastToFirstHom_eq_cl` writes `lastToFirstHom i ν` as the positioned word
 `crossingDescent |ν| = [cross (n-1), …, cross 0]`, and
-`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`. Next: compose the two
-recursions so that `T_(n+1)V_(n+1)` on `(i, ν, x)` is `(T_n V_n ⊗ 1_x)` times the local
-factor `τ_n g_n`, then the QP induction of `DeformedGlobalQP.md` §3.
+`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`.
+
+**Distinct-colour QP step (checked).** `CyclotomicAction/PrefixQPDistinct.lean` proves
+`moveHom_lastToFirstHom_append_ne`: for `x ≠ i`,
+`V_(n+1) ≫ T_(n+1) = Q_ix(x₁, x_(n+2)) ≫ ((V_n ≫ T_n) ⊗ 1_x)` on `i :: (ν ++ [x])`, with
+`Q_ix` the KLR polynomial `qPoly` evaluated at the dot on the moving strand and the dot on
+the new spectator (`DeformedGlobalQP.md` §3, case `ν_n ≠ i`). The transport of
+`Q_ix(xₙ, x_(n+1))` through `V_n ⊗ 1_x` (`comp_qPoly`) has trivial signs: an odd colour
+enters each monomial of `Q_ix` to an even power (`Sc.s_eq_zero`, `Datum.even_d_of_odd`).
+Arbitrary colours, parities and words; `d_ix = 0` included.
+Next: the repeated-colour step `x = i` (`D V = V D₀`, `E V = (−1)^h V E₀` and the
+square-dot cancellation), then the induction assembly in the `Ind.tmul` target.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
