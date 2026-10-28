@@ -13,9 +13,29 @@ the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (K
 `CyclotomicAction/LastToFirstSnoc.lean` proves the same for the crossing map:
 `lastToFirstHom_eq_cl` writes `lastToFirstHom i ν` as the positioned word
 `crossingDescent |ν| = [cross (n-1), …, cross 0]`, and
-`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`. Next: compose the two
-recursions so that `T_(n+1)V_(n+1)` on `(i, ν, x)` is `(T_n V_n ⊗ 1_x)` times the local
-factor `τ_n g_n`, then the QP induction of `DeformedGlobalQP.md` §3.
+`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`.
+
+**Distinct-colour QP step (checked).** `CyclotomicAction/PrefixQPDistinct.lean` proves
+`moveHom_lastToFirstHom_append_ne`: for `x ≠ i`,
+`V_(n+1) ≫ T_(n+1) = Q_ix(x₁, x_(n+2)) ≫ ((V_n ≫ T_n) ⊗ 1_x)` on `i :: (ν ++ [x])`, with
+`Q_ix` the KLR polynomial `qPoly` evaluated at the dot on the moving strand and the dot on
+the new spectator (`DeformedGlobalQP.md` §3, case `ν_n ≠ i`). The transport of
+`Q_ix(xₙ, x_(n+1))` through `V_n ⊗ 1_x` (`comp_qPoly`) has trivial signs: an odd colour
+enters each monomial of `Q_ix` to an even power (`Sc.s_eq_zero`, `Datum.even_d_of_odd`).
+Arbitrary colours, parities and words; `d_ix = 0` included.
+
+**Repeated-colour QP step (checked).** `CyclotomicAction/PrefixQPRepeated.lean` proves, on
+`i :: (ν ++ [i])` with `V = V_n ⊗ 1_i` (`moveWhisker`), `D = x_(n+1)² − x_n²`,
+`E = x_(n+1) − x_n`, `D₀ = x_(n+2)² − x₁²`, `E₀ = x_(n+2) − x₁`, `s = (−1)^(p_i·|ν|)`:
+`V ≫ D = D₀ ≫ V`, `V ≫ E = s E₀ ≫ V` (`moveWhisker_comp_squareDiff`, `moveWhisker_comp_sub`);
+the expansion of `V ≫ g` for the same-colour intertwiner (`moveWhisker_comp_sameIntertwiner_odd`,
+`_even`); and (`DeformedGlobalQP.md` §3, case `ν_n = i`)
+`V_(n+1) ≫ T_(n+1) = s D₀ ≫ E₀ ≫ V ≫ T_(n+1)` for odd `i`
+(`moveHom_lastToFirstHom_append_self_odd`) and `= E₀ ≫ V ≫ T_(n+1)` for even `i`
+(`_even`), where `T_(n+1) = τ_n ≫ (T_n ⊗ 1_i)` (`lastToFirstHom_append_self`). These use
+`τ g = τ D E` (odd) and `τ g = τ E` (even) from the two-strand identities.
+Next: the induction assembly in the `Ind.tmul` target: (K) for `n+1` from (K) for `n` via
+these two steps, cancelling `D₀`/`E₀` with `PrependDotCancellation`/`LinearDotCancellation`.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
@@ -94,13 +114,71 @@ on `F` whiskered by a post edge is the associator).
 arbitrary `RouquierLeftAdjoints L`, and `homContentDistinctMixedPreMate_eq`
 is (9) for the content adjunctions.
 
-**Next targets.** (i) The rest of the `V` block: the dotted `V` of (13)
-with the transposed probe dot, and the inverse (14) of `G`. The inverse needs
-explicit inputs beyond `RouquierFamily` + `RouquierMulticolour`: invertibility
-of the probe dot (F2-type datum) and nilpotence of the reservoir dot at each
-content (F3); these are to be packaged as structures, not assumed silently.
-(ii) The pre/pre entry (A9). (iii) Post/post via `crossMate` conjugation and
-`invNe`. (iv) Componentwise assembly into `UpwardModuleAction`.
+**Mixed block `V`, dots and inverses (checked).**
+`OddMath/SKM/RouquierHomDistinctMixedDots.lean` formalizes (13)–(15) for even
+dots, in a source-side form. `homDistinctMixedPreMateDot Φ` is the mate of
+`J ≫ S_u(Φ)` for an endomorphism `Φ` of `(E ≫ Z) ≫ E'`; it only depends on
+`Φ ≫ ε ▷ E'`. `MixedTransport g Φ` (`J ≫ S_u Φ = E ◁ g ≫ J`) is closed under
+`comp`, `add` and `smul`. It holds for the post dot (`mixedTransport_post`,
+`g = S_t(Z ◁ y)`) and for even middle maps (`mixedTransport_middle`, via
+`homMixedInterchange_naturality_even`).
+`homDistinctMixedPreMateDot_eq_comp` is (13): `V(Φ) = g ≫ V₀`.
+The probe dot is the Mathlib conjugate `homPreDotConj` of `x ▷ (-)` along the
+precomposition adjunction. `homPreDotConj_counit` gives
+`(x ▷ Z) ≫ ε = E ◁ c(x) ≫ ε`, i.e. the cup–dot–cap word (10). Further:
+`homPreDotConj_comp` (it reverses composition), `homPreDotConj_inv` ((11):
+even inverse dot ⇒ two-sided inverse) and `homPreDotConj_mem` (evenness, given
+even unit and counit). `homDistinctMixedPreMateDot_monomial` is (13) for one
+supported monomial. `homDistinctMixedPreMate_inv_products` is (15) for `V₀`
+with the explicit inverse `homDistinctMixedPreMateInv`.
+`homDistinctMixedPreMateDot_isIso` gives (15) for `V` from an invertible `g`.
+`isIso_add_of_isNilpotent` is (14): `A + N` is invertible when `A` is
+invertible and `N` is nilpotent and commutes with `A`.
+Scope: only even dot powers are handled. The supported monomials of (12) have
+even powers, but the relation `c(d^m) = ± c(d)^m` for an odd `d` (the sign
+`p binom(m,2)` in (11)–(12)) is not formalized, since `d ▷ (-)` is not a
+natural transformation. Probe invertibility and reservoir nilpotence enter as
+hypotheses of the lemmas (an even inverse of `x`, nilpotence of `N`). They are
+not fields of `RouquierFamily` or `RouquierMulticolour`.
+
+**Post/post core (checked).** `RouquierHomDistinctPost.lean` defines the
+literal mate (A8) of a postcomposed factor crossing along the two post
+adjunctions (`homPostCrossMate`) and proves `homPostCrossMate_eq`: it is
+postcomposition by the factor mate `crossMate`, conjugated by associators,
+for a crossing of either parity (no crossing passes a unit or counit).
+Hence `homPostCrossMateInv` is a two-sided inverse whenever the factor mate is
+invertible, and `homPostCrossMate_isIso` supplies this for distinct colours
+from `invNe`. The content shifts, i.e. the comparisons `E_src`, `E_tar` of
+the post/post paragraph of `SwappedActionAssembly.md` §5, are not yet added.
+
+**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post with the
+content shifts `E_src`, `E_tar` on top of `homPostCrossMate_eq`. (iii) The odd-dot sign of (11)–(12) as a
+supernatural conjugate, if the assembly needs odd `d` powers before support
+reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
+needs the packaged probe and reservoir data.
+
+**Input needed for (A9).** The derivation of (A9) in
+`SwappedDistinctPreMate.md` uses the left cups and caps defined from the
+inverse of the presented calculus and the left-cyclicity relation of the
+distinct crossing. A `RouquierFamily` with `RouquierMulticolour` and an
+arbitrary `RouquierLeftAdjoints` supplies only the right mate inverse
+(`invNe` gives invertibility of `crossMate`). It does not force the left mate
+of the distinct crossing to be invertible, so (A9) needs either the presented
+left adjunction (an interpretation of the presented calculus into the target
+bicategory) or the left-mate inverse as an explicit input.
+
+**Correction to the equal-colour mixed crossing (A6).** An exact check in the
+smallest mixed case (one odd and one even colour, small probe and reservoir)
+shows that for an even colour (p=0) the matrix (A6), with `a=(x-y)^-1`, gives
+`τx₁-x₂τ=-1` on the mixed summand, and the jij braid relation fails there.
+The correct entry is `a=(y-x)^-1`, equivalently (A6) multiplied by `-q`
+(the scalar already used on the pure probe crossing). The same correction
+applies to (2)–(4) of `SwappedHomInversion.md` for p=0. The odd formula
+`a=(x-y)(x²-y²)^-1` is correct. The check also fixes `J_ij=id`, the
+distinct-colour crossings `J^-1` and `Q_ij J` with `Q` itself (not the
+twisted `Q^alg`). The normalized even-colour bubble at height 0 picks up the
+same factor `-q`. The Lean results on the mixed blocks above are stated for
+an abstract crossing and do not use (A6).
 
 Neither structure is instantiated here. The open part of the third
 obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
