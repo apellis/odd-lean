@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerWords
+import OddMath.QuiverHecke.ShuffleBasis
 
 /-!
 # Peeling the last letter off the moving-strand map
@@ -25,7 +26,7 @@ Every statement holds for arbitrary colours, parities and words, including empty
 
 noncomputable section
 namespace OddMath.QuiverHecke
-open CategoryTheory StringDiagrams MonoidalCategory
+open CategoryTheory StringDiagrams MonoidalCategory SignedNilHecke
 
 variable {I X : Type*} [AddCommGroup X] (D : SKM.Datum I X) {k : Type*} [CommRing k]
   (Sc : SKM.Scalars D k)
@@ -62,19 +63,19 @@ theorem dotE_whiskerRight (w s : List I) (a : ℕ) (ha : a < w.length) :
 theorem sameIntertwiner_whiskerRight (l r s : List I) (i : I) :
     sameIntertwiner D Sc (l ++ [i, i] ++ r) l.length i ▷ (pres D Sc).obj (ob D s) =
       sameIntertwiner D Sc (l ++ [i, i] ++ r ++ s) l.length i := by
-  have hx : dotE D Sc (l ++ [i, i] ++ r) l.length ▷ (pres D Sc).obj (ob D s) =
+  have hx : whiskerWordRingHom D Sc (l ++ [i, i] ++ r) s (dotE D Sc (l ++ [i, i] ++ r) l.length) =
       dotE D Sc (l ++ [i, i] ++ r ++ s) l.length :=
-    dotE_whiskerRight D Sc _ s _ (by simp)
-  have hy : dotE D Sc (l ++ [i, i] ++ r) (l.length + 1) ▷ (pres D Sc).obj (ob D s) =
+    dotE_whiskerRight D Sc (l ++ [i, i] ++ r) s l.length (by simp)
+  have hy : whiskerWordRingHom D Sc (l ++ [i, i] ++ r) s
+      (dotE D Sc (l ++ [i, i] ++ r) (l.length + 1)) =
       dotE D Sc (l ++ [i, i] ++ r ++ s) (l.length + 1) :=
-    dotE_whiskerRight D Sc _ s _ (by simp; omega)
-  have hc : crossE D Sc (l ++ [i, i] ++ r) l.length ▷ (pres D Sc).obj (ob D s) =
+    dotE_whiskerRight D Sc (l ++ [i, i] ++ r) s (l.length + 1) (by simp)
+  have hc : whiskerWordRingHom D Sc (l ++ [i, i] ++ r) s (crossE D Sc (l ++ [i, i] ++ r) l.length) =
       crossE D Sc (l ++ [i, i] ++ r ++ s) l.length :=
     genE_whiskerRight D Sc _ s (.cross l.length) (sChain_cross l r i rfl rfl)
       (by simp [PG.pos, PG.width])
-  have hφ : ∀ f, f ▷ (pres D Sc).obj (ob D s) =
-      whiskerWordRingHom D Sc (l ++ [i, i] ++ r) s f := fun _ => rfl
-  rw [hφ] at hx hy hc ⊢
+  change whiskerWordRingHom D Sc (l ++ [i, i] ++ r) s
+      (sameIntertwiner D Sc (l ++ [i, i] ++ r) l.length i) = _
   unfold sameIntertwiner
   split_ifs
   · simp only [OddNilHecke.Intertwiner.element, OddNilHecke.Intertwiner.squareDiff, map_sub,
@@ -99,26 +100,38 @@ theorem intertwinerHom_congr {l l' r r' : List I} (hl : l = l') (hr : r = r') (i
   subst hl hr
   simp
 
+/-- Transporting a class along equalities of its source and target words. -/
+theorem cl_eq_eqToHom_comp {t t' u u' : List I} {gs : List PG} (e : t = u) (e' : t' = u')
+    (h : SChain t (pl t gs) t') (h' : SChain u (pl u gs) u') :
+    cl D Sc t t' gs h =
+      eqToHom (congrArg (fun w => (pres D Sc).obj (ob D w)) e) ≫ cl D Sc u u' gs h' ≫
+        eqToHom (congrArg (fun w => (pres D Sc).obj (ob D w)) e'.symm) := by
+  subst e e'
+  simp
+
 /-- Right whiskering of an intertwiner by a word is the intertwiner with the longer
 right context. -/
 theorem intertwinerHom_whiskerRight (l r s : List I) (i j : I) :
     intertwinerHom D Sc l r i j ▷ (pres D Sc).obj (ob D s) =
-      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp)) ≫
+      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+          (show l ++ [i, j] ++ r ++ s = l ++ [i, j] ++ (r ++ s) by simp)) ≫
         intertwinerHom D Sc l (r ++ s) i j ≫
-          eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp)) := by
+          eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+            (show l ++ [j, i] ++ (r ++ s) = l ++ [j, i] ++ r ++ s by simp)) := by
   by_cases h : i = j
   · subst h
     rw [intertwinerHom_self, intertwinerHom_self, sameIntertwiner_whiskerRight,
       sameIntertwiner_congr D Sc (show l ++ [i, i] ++ r ++ s = l ++ [i, i] ++ (r ++ s) by simp)]
-  · rw [intertwinerHom_of_ne D Sc _ _ h, intertwinerHom_of_ne D Sc _ _ h,
-      cl_whiskerRight D Sc [.cross l.length] _ s (by
-        intro g hg
-        simp only [List.mem_singleton] at hg
-        subst hg
-        simp [PG.pos, PG.width])]
-    rw [eqToHom_cl_eqToHom D Sc (t := l ++ [i, j] ++ r ++ s) (t' := l ++ [j, i] ++ r ++ s)
-      (s := l ++ [j, i] ++ r ++ s) (by simp) (by simp) rfl rfl]
-    simp
+  · have hf : Fits (l ++ [i, j] ++ r).length [.cross l.length] := by
+      intro g hg
+      simp only [List.mem_singleton] at hg
+      subst hg
+      simp [PG.pos, PG.width]
+    rw [intertwinerHom_of_ne D Sc _ _ h, intertwinerHom_of_ne D Sc _ _ h,
+      cl_whiskerRight D Sc [.cross l.length] _ s hf]
+    rw [cl_eq_eqToHom_comp D Sc (show l ++ [i, j] ++ r ++ s = l ++ [i, j] ++ (r ++ s) by simp)
+      (show l ++ [j, i] ++ r ++ s = l ++ [j, i] ++ (r ++ s) by simp) _
+      (sChain_crossAt l (r ++ s) i j)]
 
 /-- Right whiskering of an identification of words. -/
 theorem eqToHom_whiskerRight_word {w w' : List I} (h : w = w') (s : List I) :
@@ -127,26 +140,36 @@ theorem eqToHom_whiskerRight_word {w w' : List I} (h : w = w') (s : List I) :
   subst h
   exact MonoidalSupercategory.id_whiskerRight (R := k) _ _
 
+/-- Right whiskering of an arbitrary identification of objects. -/
+theorem eqToHom_whiskerRight_obj {Y Y' : (pres D Sc).Presented} (h : Y = Y')
+    (Z : (pres D Sc).Presented) :
+    eqToHom h ▷ Z = eqToHom (congrArg (· ⊗ Z) h) := by
+  subst h
+  exact MonoidalSupercategory.id_whiskerRight (R := k) _ _
+
 /-- KKO's `V_(n+1) = g_(n+1) (V_n ⊗ 1)`: the moving strand first crosses `ν`, then the
 final letter `x`. The left context `l` is arbitrary. -/
 theorem moveHom_append_singleton (i x : I) : ∀ (ν l : List I),
     moveHom D Sc i l (ν ++ [x]) =
-      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp)) ≫
+      eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+          (show l ++ i :: (ν ++ [x]) = l ++ i :: ν ++ [x] by simp)) ≫
         (moveHom D Sc i l ν ▷ (pres D Sc).obj (ob D [x])) ≫
-          eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp)) ≫
+          eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+            (show l ++ ν ++ [i] ++ [x] = l ++ ν ++ [i, x] ++ [] by simp)) ≫
             intertwinerHom D Sc (l ++ ν) [] i x ≫
-              eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) (by simp))
+              eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t))
+                (show l ++ ν ++ [x, i] ++ [] = l ++ (ν ++ [x]) ++ [i] by simp))
   | [], l => by
-    simp only [List.nil_append, moveHom, List.append_nil]
+    simp only [List.nil_append, moveHom]
     rw [eqToHom_whiskerRight_word D Sc (show l ++ [i] = l ++ [] ++ [i] by simp)]
     rw [intertwinerHom_congr D Sc (show l ++ [] = l by simp) rfl i x]
     simp
   | j :: ν, l => by
-    have ih := moveHom_append_singleton ν (l ++ [j])
+    have ih := moveHom_append_singleton i x ν (l ++ [j])
     simp only [List.cons_append, moveHom]
     rw [ih]
     simp only [MonoidalSupercategory.comp_whiskerRight (R := k), Category.assoc,
-      eqToHom_whiskerRight_word, intertwinerHom_whiskerRight]
+      eqToHom_whiskerRight_obj, intertwinerHom_whiskerRight]
     rw [intertwinerHom_congr D Sc (show l ++ [j] ++ ν = l ++ j :: ν by simp) rfl i x]
     simp
 

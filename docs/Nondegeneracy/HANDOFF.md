@@ -24,6 +24,14 @@ and will be a separate predicate on a `RouquierAction`. Proposed: the deformed E
 `P_λ^A` is an instance of `RouquierAction` over the coefficient ring `A`, with the
 same-colour inversions supplied by the local inversion of `DeformedGlobalQP.md` §5.
 
+**Last-letter recursion (checked).** `CyclotomicAction/MoveHomSnoc.lean` proves
+`moveHom_append_singleton`: `moveHom i l (ν ++ [x])` is `moveHom i l ν ⊗ 1_x` followed by
+the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (KKO's
+`V_(n+1) = g_(n+1)(V_n ⊗ 1)` in the global QP induction), with right-whiskering lemmas
+`genE_whiskerRight`, `dotE_whiskerRight`, `sameIntertwiner_whiskerRight`,
+`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
+`lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
+
 **Normalizer and θ: forms to formalize.** `RouquierAction` contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
 are, use these forms, not the integer-shift form of the manuscript's normality step:
