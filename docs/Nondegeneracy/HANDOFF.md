@@ -3857,5 +3857,25 @@ colours.
 Remaining: derive the moment formulas from generator images of the swapped action
 (slide (2), inverse column (3) and the probe/reservoir polynomials of
 `SwappedVacuumBubbles.md`; extreme inverse row/cap and the principal inverse of the
-nonpositive note), and the field `evaluation`. Consumer:
-`scripts/NonVacuity/SwappedVacuumBubbleSeries.lean`.
+nonpositive note). Consumer: `scripts/NonVacuity/SwappedVacuumBubbleSeries.lean`.
+
+### The vacuum evaluation from the tensor basis (checked)
+
+`SwappedVacuumBasisEvaluation.lean` reduces the field `evaluation` (A18) of
+`SwappedVacuumBlock` to the tensor basis `coefficientBasis a ⊗ nf i`.
+
+- `basisKoszulSign k a i = (-1)^(|a||i|)`; this is the sign `placementSign` puts on the
+  basis vector (`placementSign_sourceCoefficientHom`), i.e. the source-placement sign
+  `(-1)^(|b||z|) z b a = b z a` of `SwappedVacuumCoordinates.md` (2)–(3), §7.
+- `vacuum_evaluation_raw_of_basis`: if `coordK(act(α nf_i)(raw b_a · vac))` is
+  `(-1)^(|a||i|)` times the class of `b_a ⊗ nf_i` for every basis pair, then
+  `coordK(act(α f)(raw b · vac)) = q_K(σ(b ⊗ f))` for all `b`, `f` (both sides are
+  bilinear: `vacuumEvaluationBilin`, `placedCoefficientBilin`, `LinearMap.ext_basis`).
+- `vacuum_evaluation_of_basis`: the same for `raw (θ a)`, in the form of the field.
+- `SwappedVacuumBlock.ofMoments`: a vacuum block from an upward module action, a vacuum,
+  `raw`, `VacuumMoments` at the schedule, the ideal with `ideal_le`, the coordinates and
+  the basis values.
+
+Remaining: the basis values themselves (`SwappedVacuumCoordinates.md` §§2–7) from
+generator images of the swapped action. Consumer:
+`scripts/NonVacuity/SwappedVacuumBasisEvaluation.lean`.
