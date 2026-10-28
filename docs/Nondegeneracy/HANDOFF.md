@@ -428,6 +428,21 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
 The relation modules may state their obligations against these formulas as a
 hypothesis structure until the generator modules land.
 
+**Same-colour slide blocks (checked).** `SwappedAssembly/SlideBlocks.lean`,
+in an arbitrary preadditive category, reduces the four slide components of
+the mixed block to identities of its diagonal entry. With `U = (R,P)`,
+`V = (P,R)`, left/right dots `lU, rU`, `lV, rV`, `J : V ⟶ U` with two-sided
+inverse `Ji`, and the block `b`, `J`, `-(b ; b ; Ji)`, `-(J ; b ; Ji)`:
+`mixedBlock_slideL` (resp. `mixedBlock_slideR`) proves all four components
+of `slideLEq` (resp. `slideREq`) from: the dots intertwine across `J` with
+the sign `q` and the strands exchanged (`lV ; J = q (J ; rU)`,
+`rV ; J = q (J ; lU)`), the two diagonal slide identities of `b`, and the
+commutation of `b ; b` with the left (resp. right) dot.
+`slide_of_inv_even` and `slide_of_inv_odd` supply these diagonal hypotheses
+for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
+`w = (l² - r²)⁻¹` commuting with both dots when they anticommute
+(`q = 1`, resp. `q = -1`).
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
