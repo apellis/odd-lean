@@ -1,5 +1,46 @@
 # Odd nondegeneracy: restart state
 
+## Consequences of the field case: ground rings, Hom bases and K₀
+
+Checked (conditional on the field case). `SKM.CharZeroFieldNondegeneracy D`
+states the conjecture for the datum `D` over every field of characteristic
+zero, every homogeneous `Sc` and every `cs`; it is an explicit hypothesis,
+not proved. From it:
+
+* `SKM.nondegeneracyConjecture_scalarChange`: the conjecture transfers along
+  any ring map `R → S` (no flatness or injectivity), via
+  `ScalarChange.homBaseChange` and `ScalarChange.symMap_coefficientBasis`
+  (each polynomial/exterior coefficient monomial goes to the same-index
+  monomial; `SYM.coefficientBasis_eq_prod`).
+* `SKM.universal_nondegeneracy`: the conjecture over the universal parameter
+  ring, by joint detection through `UniversalParameterFields.point_separate`
+  and `ScalarChange.repr_symMap` (injectivity coefficientwise; surjectivity is
+  Theorem 8.1).
+* `SKM.nondegeneracyConjecture_of_charZeroField` (GroundRingDescent.md
+  §§1, 5–6): the conjecture over every commutative ring with `2` invertible,
+  for every homogeneous `Sc` and `cs`; no domain, Noetherian, finite-colour
+  or independent-root hypothesis. Comparison with the even case:
+  `EvenBridge.nondegeneracyConjecture_of_isEven` holds over every commutative
+  ring including those where `2` is not a unit, but only for Khovanov–Lauda
+  scalars and finitely many colours; the odd descent keeps `IsUnit 2`
+  because the universal ring is built over `ℤ[1/2]`.
+* `MatchingBasisChoice.homBasis`, `homBasis_apply_eq` and
+  `SKM.homBasisOfCharZeroField`: the explicit Hom basis
+  `β_μ(η) ⊗ D_t` (decorated matching `t`, coefficient monomial `η`). The
+  graded dimension formula is the existing
+  `SKM.hom_dimension_eq_form_mul_sym` with the conjecture discharged by the
+  descent.
+* `QuiverHecke.SerreComplex.gammaInt_bijective`, `gammaIntEquiv`
+  (ring isomorphism, `ℒ`-linear by `gammaIntEquiv_smul`) and
+  `gammaInt_bijective_of_charZeroField`: `K₀(𝔘̇) ≅ U̇_{q,π}(𝔤)_ℒ`
+  (Theorems 11.7 and 12.1), over every ground field with `2 ≠ 0`. Route
+  hypotheses inherited from Theorems 11.7 and 12.1: `DegreeLocallyFinite`,
+  finitely many colours, `X` free of finite rank, independent roots and
+  coroots. No missing published input was found.
+
+Open: the field case itself; removal of the route hypotheses above; the
+case of rings where `2` is not a unit, beyond the even Khovanov–Lauda case.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
@@ -3550,6 +3591,26 @@ for finite colour restrictions, so a comparison of `upwardCoefficientMap` under
 evaluations from the swapped action. `UpwardModuleAction.toSwappedVacuumEvaluation`
 (checked) takes the source and target actions from an `UpwardModuleAction` on the
 sectors `V t → V t'`, so (d) reduces to the vacuum data of §4 for that action.
+
+### Triangular bubble substitution (item (a))
+
+Checked (`OddMath/SKM/BubbleSubstitution.lean`): for any family `u_i` of power series
+with constant term one and scalars `s_i`, `substitutionHom` sends the generating series
+`G_i(z) = 1 + Σ e_(i,n) z^(n+1)` to `G_i(-z) u_i(z)` and `δ_i` to `s_i δ_i`; given
+`u_i w_i = 1` and `s_i t_i = 1`, `substitutionEquiv` is an automorphism of `SYM` whose
+inverse is the substitution by `w_i(-z)` and `t_i` (`polynomialSubstitution_comp`:
+`w(-z) u(z) = 1` makes the polynomial substitutions inverse). The weight filtration is
+multiplicative (`coefficientAtMost_mul`), the generators are basis vectors of their
+weights (`e_eq_coefficientBasis`, `delta_eq_coefficientBasis`), and
+`preservesWeight_of_generators` reduces weight preservation of an algebra endomorphism to
+its generators. Every substitution preserves the filtration
+(`substitutionHom_mem_coefficientAtMost`): `e_(i,n)` goes to a combination of `1` and
+`e_(i,m)`, `m ≤ n`. `probeSubstitution M N` is the written θ of §4 (odd:
+`C_i(z) ↦ C_i(-z)(1+z)^(-M_i)`, `δ_i ↦ (-1)^(N_i+1) δ_i`; even:
+`E_i(z) ↦ E_i(-z)(1-z)^(-M_i)`; `M_i = P_i/2` at odd and `P_i` at even colours); it and
+its inverse preserve the filtration, which is `PreservesCoefficientWeight` for the
+interface (`scripts/NonVacuity/BubbleSubstitution.lean`). The identification of `M`, `N`
+with the probe and reservoir levels of the constructed action belongs to item (d).
 
 ### Finite-colour detection of class relations (item (c), first step)
 
