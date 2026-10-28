@@ -50,8 +50,13 @@ The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next sect
 the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (KKO's
 `V_(n+1) = g_(n+1)(V_n ⊗ 1)` in the global QP induction), with right-whiskering lemmas
 `genE_whiskerRight`, `dotE_whiskerRight`, `sameIntertwiner_whiskerRight`,
-`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
-`lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
+`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words.
+`CyclotomicAction/LastToFirstSnoc.lean` proves the same for the crossing map:
+`lastToFirstHom_eq_cl` writes `lastToFirstHom i ν` as the positioned word
+`crossingDescent |ν| = [cross (n-1), …, cross 0]`, and
+`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`. Next: compose the two
+recursions so that `T_(n+1)V_(n+1)` on `(i, ν, x)` is `(T_n V_n ⊗ 1_x)` times the local
+factor `τ_n g_n`, then the QP induction of `DeformedGlobalQP.md` §3.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
@@ -114,9 +119,23 @@ unit–`J⁻¹`–counit word with `J = homMixedInterchange E E' κ τ`;
 parity `κ + τ`. The exponent is the written `tr` of (8) with `t = κ`,
 `r = κ + τ`; the Lean formula states `U` itself, i.e. (8) solved for `U`.
 
-**Next targets.** (i) The `V` block: generic counit formula of
-`homContentPreAdjunction` for an arbitrary `RouquierLeftAdjoints L` (today
-only for `T.leftAdjoints`), then (9) for `V0`, then the dotted `V` of (13)
+**Mixed block `V₀` (checked).** `OddMath/SKM/RouquierHomDistinctMixedPre.lean`
+formalizes `SwappedDistinctMixedMates.md` (3), the `V₀` line of (7) and (9),
+for a pre edge `E` with a shifted left adjunction `A : F ⊣ E` of parity `σ`
+and an arbitrary post edge `E'` with shifts `t` (source), `u` (target).
+`homDistinctMixedPreMate` is the literal unit–`J`–counit word with
+`J = homMixedInterchange E E' t u`, for any two precomposition adjunctions
+`homPre E ⊣ homPre F ⋙ S_σ`; `homDistinctMixedPreMate_eq` proves (9),
+`V₀_H = (-1)^(σu) · z_t ; z_σ(F≫H)▷E' ; α ; F◁z_u(H≫E')⁻¹ ; z_σ⁻¹`, given that
+their unit and counit are the normalized words (3) of `A`. Supporting lemmas:
+`ShiftedSuperAdjunction.unit_slide` (a parity-`q` map slides through the unit
+with `(-1)^(σq)`) and `ShiftedSuperAdjunction.left_triangle_post` (the zigzag
+on `F` whiskered by a post edge is the associator).
+`homContentPreAdjunction_counit_app` gives the counit word (3) for an
+arbitrary `RouquierLeftAdjoints L`, and `homContentDistinctMixedPreMate_eq`
+is (9) for the content adjunctions.
+
+**Next targets.** (i) The rest of the `V` block: the dotted `V` of (13)
 with the transposed probe dot, and the inverse (14) of `G`. The inverse needs
 explicit inputs beyond `RouquierFamily` + `RouquierMulticolour`: invertibility
 of the probe dot (F2-type datum) and nilpotence of the reservoir dot at each
