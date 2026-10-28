@@ -3821,3 +3821,41 @@ Remaining for (d): construct a block. `A` is the output of the swapped-action as
 reservoir levels `Nᵢ`; `bubbles_eq` is `NormalizedBubbleFormula` at this schedule, and
 `evaluation` is the vacuum computation of §4 with the identification of the swapped
 evaluation sign with `placementSign` on homogeneous `b ⊗ f`.
+
+### Vacuum bubbles from the right-bubble moments (checked)
+
+`SwappedVacuumBubbleSeries.lean` proves the last step of both bubble notes ((15) of
+`SwappedVacuumNonpositiveBubbles.md` §5, and its positive-height analogue): the field
+`bubbles_eq` of `SwappedVacuumBlock` follows from the moment formulas (12) and (14).
+
+- `VacuumSeries.substitutedSeries u i = G_i(-z)·u_i(z)` (its coefficients are the
+  generator images of `θ`: `coeff_succ_substitutedSeries`), and
+  `VacuumSeries.momentSeries w i = w_i(z)·G_i(-z)⁻¹`, inverse to it when `u w = 1`
+  (`substitutedSeries_mul_momentSeries`). With `w = probeSeriesInv M` the moment series
+  is `(1-z)^(M_i)/E_i(-z)` at even and `(1+z)^(M_i)/C_i(-z)` at odd colours.
+- `VacuumMoments cs A t raw M N` (Prop structure): `c_(μ,i)·bubRs(s)` (even) and
+  `c_(μ,i)·bubRs(2s)` (odd), acting on `V t`, equal `raw` of the coefficients of the
+  moment series, and `oddBubble` acts as `raw((-1)^(N_i+1) δ_i)`. Even colours with
+  `hᵢ(μ) = 0` are the separate field `even_zero`.
+- `VacuumMoments.bubbles_eq`: then `A.bubbles cs t a = raw (probeSubstitution M N a)`
+  for all `a`; `vacuum_bubbles_eq` is the case `M = probeExponent`, `N = reservoirLevel`,
+  i.e. the field `SwappedVacuumBlock.bubbles_eq`. Proof: Brundan–Ellis (1.19)/(5.4) as
+  `beta_h`, `betaD_h` (hold in the presentation), `Sym.e_h_rel`, uniqueness of left
+  inverses of a series with constant term one (`eq_of_sum_mul_eq_zero`), `SYM.hom_ext`.
+
+Open (bears on the truth of `even_zero` and of the even line of (A16) at height zero):
+with the corrected entry `a = (y-x)⁻¹` of (A6), the principal inverse `j = s⁻¹` used at
+`H = 0` changes sign, so every normalized right bubble `K_l`, `l ≥ 1`, of an even colour
+of height zero changes sign while `K_0 = 1`. If so, the moment series there is
+`2 - (1-z)^P/E(-z)` and `Σ beta(e_r) z^r = E(-z)/(2E(-z) - (1-z)^P)`, which is not of
+the form `θ` and would require changing `vacuumSubstitution` at those colours (the new
+map is still unitriangular for the coefficient weight). The written derivations have
+not yet been redone for the corrected entry; positive and negative heights are not
+affected (the inverse column/row conditions are invariant under `s ↦ -s`), nor are odd
+colours.
+
+Remaining: derive the moment formulas from generator images of the swapped action
+(slide (2), inverse column (3) and the probe/reservoir polynomials of
+`SwappedVacuumBubbles.md`; extreme inverse row/cap and the principal inverse of the
+nonpositive note), and the field `evaluation`. Consumer:
+`scripts/NonVacuity/SwappedVacuumBubbleSeries.lean`.
