@@ -31,6 +31,30 @@ reservoir, recovery maps, windows and affine coordinates into
 remaining content of the vacuum detection is then exactly
 `NormalizedBubbleFormula` and `affine_coordinates`.
 
+**Mixed block `U` (checked).** `OddMath/SKM/RouquierHomDistinctMixed.lean`
+formalizes `SwappedDistinctMixedMates.md` (7), (8) and the `U` half of (15)
+for a fixed pre edge `E` and an arbitrary even post adjunction `E' ⊣ F'`,
+shifted by `κ` (source) and `τ` (target); the content case is
+`homContentPostAdjunction`, which is `homShiftPostAdjunction (W.adj i h) _
+(homContentShift D i β)` by definition. `homDistinctMixedMate` is the literal
+unit–`J⁻¹`–counit word with `J = homMixedInterchange E E' κ τ`;
+`homDistinctMixedMate_eq` proves (8) in the form
+`U_H = (-1)^(κ(κ+τ)) · E◁(z_κ(H)▷F') ; α⁻¹ ; z_τ(E≫H)⁻¹▷F'`;
+`homDistinctMixedMateInv`, `homDistinctMixedMate_inv_products`,
+`homDistinctMixedMate_isIso` give (15); `homDistinctMixedMate_mem` its
+parity `κ + τ`. The exponent is the written `tr` of (8) with `t = κ`,
+`r = κ + τ`; the Lean formula states `U` itself, i.e. (8) solved for `U`.
+
+**Next targets.** (i) The `V` block: generic counit formula of
+`homContentPreAdjunction` for an arbitrary `RouquierLeftAdjoints L` (today
+only for `T.leftAdjoints`), then (9) for `V0`, then the dotted `V` of (13)
+with the transposed probe dot, and the inverse (14) of `G`. The inverse needs
+explicit inputs beyond `RouquierFamily` + `RouquierMulticolour`: invertibility
+of the probe dot (F2-type datum) and nilpotence of the reservoir dot at each
+content (F3); these are to be packaged as structures, not assumed silently.
+(ii) The pre/pre entry (A9). (iii) Post/post via `crossMate` conjugation and
+`invNe`. (iv) Componentwise assembly into `UpwardModuleAction`.
+
 Neither structure is instantiated here. The open part of the third
 obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
 `RouquierMulticolour`, through the content-shifted Hom functors, the
