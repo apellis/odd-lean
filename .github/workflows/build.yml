@@ -86,15 +86,13 @@ jobs:
       - name: Axiom audit
         if: steps.scope.outputs.docs_only != 'true'
         run: lake env lean -DwarningAsError=true scripts/AxiomAudit.lean
+      # The checks form the library `NonVacuity` (see `lakefile.lean`), so their `.olean` files are
+      # cached with the build and only checks whose imports changed are elaborated again.
       - name: Non-vacuity checks
         if: steps.scope.outputs.docs_only != 'true'
-        # Each file loads the OddMath environment separately; elaborate four at a time.
-        run: |
-          printf '%s\n' scripts/NonVacuity.lean scripts/NonVacuity/*.lean |
-            xargs -P 4 -I{} sh -c 'lake env lean -DwarningAsError=true \
-              -Dbackward.isDefEq.respectTransparency=false \
-              -Dbackward.isDefEq.respectTransparency.types=false \
-              "{}" < /dev/null || { echo "::error file={}::non-vacuity check failed"; exit 1; }'
+        env:
+          LEAN_NUM_THREADS: 2
+        run: lake build --wfail NonVacuity < /dev/null
       - name: Save Categorification cache
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
