@@ -173,7 +173,11 @@ shows that for an even colour (p=0) the matrix (A6), with `a=(x-y)^-1`, gives
 `τx₁-x₂τ=-1` on the mixed summand, and the jij braid relation fails there.
 The correct entry is `a=(y-x)^-1`, equivalently (A6) multiplied by `-q`
 (the scalar already used on the pure probe crossing). The same correction
-applies to (2)–(4) of `SwappedHomInversion.md` for p=0. The odd formula
+applies to (2)–(4) of `SwappedHomInversion.md` for p=0; both documents now
+carry the corrected entry. The §5 tables of `SwappedHomInversion.md` and the
+even bubble computations of `SwappedVacuumBubbles.md`,
+`SwappedVacuumNonpositiveBubbles.md` are still written with the earlier sign
+and are marked as proposed for even colours until rechecked. The odd formula
 `a=(x-y)(x²-y²)^-1` is correct. The check also fixes `J_ij=id`, the
 distinct-colour crossings `J^-1` and `Q_ij J` with `Q` itself (not the
 twisted `Q^alg`). The normalized even-colour bubble at height 0 picks up the
