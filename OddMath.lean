@@ -1298,6 +1298,8 @@ import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
+import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
+import OddMath.QuiverHecke.SwappedAssembly.Interchange
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
