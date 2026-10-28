@@ -102,6 +102,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
