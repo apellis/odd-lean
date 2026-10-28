@@ -41,9 +41,11 @@ proved here.
 
 noncomputable section
 
+open scoped Classical
+
 namespace OddMath.QuiverHecke.SerreComplex
 
-open CoveringQuantum CoveringQuantum.UDot LaurentPolynomial
+open CategoryTheory StringDiagrams LaurentPolynomial CoveringQuantum CoveringQuantum.UDot
 
 variable {I X : Type*} [AddCommGroup X] {k : Type*} [Field k]
 variable (Q : CoveringQuantum.RootDatum I X) {S : SKM.Scalars Q.toSKM k} (hS : S.Homogeneous)

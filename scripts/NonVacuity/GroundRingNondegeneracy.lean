@@ -15,6 +15,7 @@ namespace NonVacuity.GroundRingNondegeneracy
 open CategoryTheory StringDiagrams OddMath OddMath.SKM OddMath.QuiverHecke.SerreComplex
 open OddMath.CoveringQuantum.UDot.ContextualExchangeExamples
 open OddMath.SKM.LaurentianK0Examples OddMath.SKM.DimensionFormulaExamples
+open OddMath.SKM.Theorem103Examples
 
 theorem twoOdd_root_independent : LinearIndependent ℤ twoOddDatum.α := by
   rw [Fintype.linearIndependent_iff]
