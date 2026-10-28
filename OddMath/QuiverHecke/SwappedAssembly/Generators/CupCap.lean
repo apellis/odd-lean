@@ -48,25 +48,25 @@ variable (P : ProbeReservoir k B D Sc)
 omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
 theorem preE_obj_heq (i : I) {s s' : Sector I} (hs : s = s') {x : X}
     (h : -x + D.α i = -P.muP s) (h' : -x + D.α i = -P.muP s') (Z : P.H s') :
-    HEq ((homContentPreE P.T P.W.obj i (P.muM s) h).obj (hs ▸ Z))
+    HEq ((homContentPreE P.T P.W.obj i (P.muM s) h).obj (hs ▸ Z : P.H s))
       ((homContentPreE P.T P.W.obj i (P.muM s') h').obj Z) := by
   subst hs; rfl
 
 theorem preF_obj_heq (i : I) {s s' : Sector I} (hs : s = s') {x : X}
     (h : -P.muP s + D.α i = -x) (h' : -P.muP s' + D.α i = -x) (Z : P.H s') :
-    HEq ((homContentPreF P.T P.W.obj i (P.muM s) h).obj (hs ▸ Z))
+    HEq ((homContentPreF P.T P.W.obj i (P.muM s) h).obj (hs ▸ Z : P.H s))
       ((homContentPreF P.T P.W.obj i (P.muM s') h').obj Z) := by
   subst hs; rfl
 
 theorem postE_obj_heq (i : I) (β : I →₀ ℕ) {s s' : Sector I} (hs : s = s') {x : X}
     (h : P.muM s + D.α i = x) (h' : P.muM s' + D.α i = x) (Z : P.H s') :
-    HEq ((homContentPostE P.T.obj P.W i β (P.muP s) h).obj (hs ▸ Z))
+    HEq ((homContentPostE P.T.obj P.W i β (P.muP s) h).obj (hs ▸ Z : P.H s))
       ((homContentPostE P.T.obj P.W i β (P.muP s') h').obj Z) := by
   subst hs; rfl
 
 theorem postF_obj_heq (i : I) (β : I →₀ ℕ) {s s' : Sector I} (hs : s = s') {x : X}
     (h : x + D.α i = P.muM s) (h' : x + D.α i = P.muM s') (Z : P.H s') :
-    HEq ((homContentPostF P.T.obj P.W i β (P.muP s) h).obj (hs ▸ Z))
+    HEq ((homContentPostF P.T.obj P.W i β (P.muP s) h).obj (hs ▸ Z : P.H s))
       ((homContentPostF P.T.obj P.W i β (P.muP s') h').obj Z) := by
   subst hs; rfl
 
