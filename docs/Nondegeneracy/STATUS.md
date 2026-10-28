@@ -68,10 +68,12 @@ to carry new ground-ring-linear or integer-graded structure.
    on the prescribed quotients. Extend the required construction to the full
    ELV coefficient algebra; ordinary `Polynomial k` parameters alone do not
    realize the independent odd coefficient generators.
-2. **Precomposition inverse.** Transport the checked raw reversed windows
-   through the prescribed homogeneous Hom coordinates. Retain Hom height
-   minus the factor height, the dotted normalizations and the exceptional
-   principal sign at height zero; then prove the required natural packaging.
+2. **Precomposition inverse.** Done: `homContentPreInvNeg`,
+   `homContentPreInvPos` and their supernatural lifts
+   `homContentPreSuperInvNeg`, `homContentPreSuperInvPos` transport the raw
+   reversed windows through the prescribed Hom coordinates, with Hom height
+   minus the factor height, the alpha/beta/gamma normalizations and
+   gamma(0) at height zero (see HANDOFF).
 3. **Whole swapped action and fusion.** Assemble the remaining family fields,
    mixed-sector relations and augmented inversion from the specified maps.
    A pointwise local inverse or nilpotent feedback calculation alone does
@@ -86,13 +88,3 @@ remove the need to construct and check their Lean terms. No percentage of
 formal completion is assigned: the remaining work includes substantial
 constructions, not merely final theorem composition.
 
-## Preserved incomplete precomposition transport
-
-[`RouquierHomPreInverse.lean`](https://github.com/apellis/odd-lean/blob/a5f512a3bedf0838c8cb9eda331c2905d6ce5bb8/OddMath/SKM/RouquierHomPreInverse.lean)
-contains homogeneous-coordinate transport for both orientations and raw
-Nat-indexed left-window inverse packages, including zero-height boundaries.
-It has a scoped strict build but no importing consumer, owned-declaration
-axiom audit or root integration. It is not the completed pre-Hom inverse.
-Its accompanying mathematical handoff records the remaining coordinate,
-normalization and literal-forward-map identifications. It must not be used
-as evidence that the second remaining obligation above has been discharged.
