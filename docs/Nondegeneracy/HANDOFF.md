@@ -412,6 +412,13 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
   (`a ; (y - x) = 1 = (y - x) ; a`, resp. `a ; (x² - y²) = x - y`, natural in
   `Z`); its existence from F2–F3 (unit probe dot, nilpotent reservoir dot)
   is a separate lemma.
+  Checked: `Generators/Cross.lean` (`crossImage c i j ν`, with entries
+  `crossNeEntry`, `crossSameEntry`). The coefficient is the structure
+  `CrossCoeff` (field `a` on the path `(R,P)` of `Eᵢ Eᵢ`), and its identities
+  are `CrossCoeff.IsInverse` (not yet used by the image); `Q` is `mixedQ`, the
+  mixed interchange `mixedJ`. The `(P,P)` and `(R,R)` entries of distinct
+  colours end with the transport of the target strand along the equality of
+  right sectors (`preE_obj_heq`, `postE_obj_heq`).
 - `cup i`, `cap i`: diagonal. On `(R)`-letters the units and counits of
   `homContentPostAdjunction`; on `(P)`-letters those of
   `homContentPreAdjunction T _ T.leftAdjoints` (the inverse-defined left
