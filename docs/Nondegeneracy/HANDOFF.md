@@ -3507,9 +3507,40 @@ over `J` that include onto `s, t, lsₘ`, the same relation
 `linear_injective`) and reflection of well-formedness (`chain_of_map`, `chain_map_iff`).
 No presented-level functor or faithfulness statement is used.
 
-Remaining for (c): express each extended basis vector's image under
-`upwardCoefficientMap` as a scalar multiple of one class `cl μ (upWord t) (upWord t') N`
-whose scalar and layer list are compatible with `Datum.restrictColours` (the bubble
-generators, `bubAt`, `betaSYM` on ordered generator products, and `alpha` via `alpha_cl`),
-lift extended basis indices to `J`, and combine with `sum_cl_eq_zero_restrict` to deduce
-injectivity of `upwardCoefficientMap` for `D` from injectivity for all finite restrictions.
+### Finite-colour detection of upward injectivity (item (c), checked)
+
+`OddMath/SKM/FiniteColourBubbles.lean` writes the bubble generators as formal sums of
+layer lists (`etaPS`, `epsPS`, `bubLS`, `bubRS`, `oddBubbleS`, `genS`) whose value `evS`
+is the generator, and proves that colour inclusion `pushS J` carries the formal sums of
+`D.restrictColours J` onto those of `D` (`pushS_genS`). Words in the coefficient
+generators give `wordS` with `evS_wordS` (the value is `betaSYM` of the word product)
+and `pushS_wordS`. `symRestrict D J k : SYM (D.restrictColours J) k →ₐ SYM D k` sends
+generators to generators (`symRestrict_ι`), and word products span `SYM`
+(`span_wordProd`). `evS_eq_zero_restrict` is the formal-sum form of
+`sum_cl_eq_zero_restrict`.
+
+`OddMath/QuiverHecke/FiniteColourUpward.lean`: positioned generators commute with maps
+of colours (`pl_map`, `tgt_map`); normal-form indices pass between `J` and `D`
+(`NFIdx.push`, `NFIdx.lift`, `push_lift`, `gens_lift`). `termS` is a formal sum whose
+value is `bubAt (betaSYM (word)) ≫ alpha (x^l ψ_w)` (`evS_termS_nf`), compatible with
+`pushS` (`pushS_termS`), so `upwardCoefficientMap` of a finite combination of word
+products times normal forms is `evS` of one formal sum (`upwardCoefficientMap_list`),
+and every coefficient-extended morphism is such a combination (`exists_list_eq`).
+`homInclude` (on the normal-form basis, `homInclude_nf`) and `coefficientInclude`
+(`symRestrict ⊗ homInclude` through `sourceTensorEquiv`, `coefficientInclude_source`)
+include coefficient-extended Hom spaces of a restriction.
+
+**Theorem** `upwardCoefficientMap_injective_of_restrictColours`: if
+`upwardCoefficientMap` of `D.restrictColours J` is injective at every finite `J` and
+all restricted words `tJ`, `t'J` including onto `t`, `t'`, it is injective for `D` at
+`t`, `t'`. Proof: a vanishing image is `evS` of a formal sum; detection gives `J₁`;
+enlarge it to contain the colours of `t`, `t'` and of the generator words; lift words and
+indices to `J`; the restricted image vanishes, so the restricted element is zero, and
+`coefficientInclude` maps it onto the original. No restriction functor between presented
+categories and no independence of the restricted coefficient basis is used.
+Consumer: `scripts/NonVacuity/FiniteColourUpward.lean`.
+
+Remaining in this line: (d), and the composition of (c) with
+`upwardCoefficientMap_injective_of_vacuum_evaluations` at each finite restriction
+(proposed, not checked: the equal-weight condition passes to restrictions through
+`SKM.wt`).

@@ -1299,3 +1299,4 @@ import OddMath.QuiverHecke.SwappedVacuumRecovery
 import OddMath.SKM.BubbleSubstitution
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
+import OddMath.QuiverHecke.FiniteColourUpward
