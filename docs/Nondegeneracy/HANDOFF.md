@@ -42,8 +42,16 @@ defines `PrependKills z` (every `r z` acts by zero on `φ(1)` in `Ind q`) and pr
 under left multiplication, sums, scalars, right multiplication by `φ(x)` and by the first
 dot `x₁` (`PrependKills.mul_prepend`, `mul_firstDot`), membership of `φ(ker q)`
 (`prependKills_of_cyclotomicMk`), and square cancellation `PrependKills.of_sq_sub`:
-`PrependKills (z (x₁² − φ c)) → PrependKills z` for every `c`. Next: the morphism-level
-form on `End(i :: L)` and the snoc induction for (K).
+`PrependKills (z (x₁² − φ c)) → PrependKills z` for every `c`. The morphism-level form:
+`KillE w Y` (the corner of `Y ∈ End(i :: w)` is `PrependKills`), closed under
+postcomposition; precompositions preserving it form `goodSubalgebra`, containing
+`1_i ⊗ f` and `x₁` (`goodE_whiskerLeft`, `goodE_dotZero`); `KillE.of_sq_sub` cancels
+`x₁² − 1_i ⊗ c`. `CyclotomicAction/PrefixQPKilling.lean`: `killE_whiskerLeft_comp`
+(`(1_i ⊗ g) ≫ Y` kills when `g` lies in the old cyclotomic kernel) and (K) with an
+arbitrary right context, `killE_relation_context`: on `i :: (μ ++ [i] ++ σ)`,
+`((V_(μ++[i]) ≫ (T_μ ⊗ 1_i)) ⊗ 1_σ) ≫ f_i(x₁)` kills. Next: the snoc induction for
+eq. (3), `V_μ T_μ ≡ A_μ` modulo killing endomorphisms, with the distinct and repeated
+steps above.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
