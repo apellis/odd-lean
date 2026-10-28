@@ -92,6 +92,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBlockCross
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBraid
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightCrossing
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightDot
