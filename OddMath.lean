@@ -35,6 +35,7 @@ import OddMath.SKM.LocallyNilpotentMixedInverse
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers
+import OddMath.SKM.RouquierHomPostCrossingSlide
 import OddMath.SKM.RouquierHomPostInverse
 import OddMath.SKM.RouquierHomPostNaturalInverse
 import OddMath.SKM.RouquierSupernaturalInverse
