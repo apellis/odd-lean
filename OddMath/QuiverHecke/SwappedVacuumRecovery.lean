@@ -97,7 +97,7 @@ theorem sourceCoefficientHom_mem_extendedAtMost {t t' : List I} {n : ℕ} {a : S
     rw [← sourceTensorEquiv_tmul, TensorProduct.add_tmul, map_add]
     exact Submodule.add_mem _ hx hy
   | smul c x _ hx =>
-    rw [← sourceTensorEquiv_tmul, TensorProduct.smul_tmul', map_smul]
+    rw [← sourceTensorEquiv_tmul, ← TensorProduct.smul_tmul', map_smul]
     exact Submodule.smul_mem _ c hx
 
 /-- A weight-preserving substitution preserves every bounded PBW window. -/
@@ -111,7 +111,7 @@ theorem coefficientSubstitution_mem_extendedAtMost {θ : SKM.SYM D k ≃ₐ[k] S
     rw [extensionBasis_apply, coefficientSubstitution_source]
     have ha : SKM.SYM.coefficientBasis D k a ∈
         SKM.SYM.CoefficientAtMost D k (SKM.SYM.coefficientWeight D a) :=
-      Submodule.subset_span ⟨a, le_rfl, rfl⟩
+      Submodule.subset_span ⟨a, Set.mem_ofPred.mpr le_rfl, rfl⟩
     exact sourceCoefficientHom_mem_extendedAtMost D Sc (hθ _ _ ha) i hi
   | zero => simp
   | add x y _ _ hx hy => simpa only [map_add] using Submodule.add_mem _ hx hy
@@ -228,7 +228,7 @@ theorem recover_coordinates (cutoff : I → ℕ) (a : SKM.SYM D k)
     exact coefficientSubstitution_mem_extendedAtMost D Sc E.substitution_weight hf
   have hσ := E.placement_bounded _ hθ
   simp only [recover, LinearMap.coe_comp, Function.comp_apply, AlgHom.coe_comp,
-    AlgEquiv.coe_algHom, E.evaluation, E.windowSplitting_mk _ hσ, Submodule.subtype_apply,
+    AlgEquiv.coe_toAlgHom, E.evaluation, E.windowSplitting_mk _ hσ, Submodule.subtype_apply,
     LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]
   congr 1
   rw [LinearEquiv.symm_apply_eq, coefficientSubstitution_source]
@@ -243,9 +243,7 @@ def toBoundedCyclicRecovery (cutoff : I → ℕ) :
   act_comp := E.act_comp
   vacuum := E.vacuum
   bubbles := E.coefficientAct.comp E.substitution.toAlgHom
-  bubbles_eq a := by
-    rw [E.bubbles_eq]
-    rfl
+  bubbles_eq a := (E.bubbles_eq a).symm
   reservoir := E.coefficientAct.comp E.substitution.toAlgHom
   elementary _ _ := rfl
   exterior _ := rfl
