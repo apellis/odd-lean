@@ -147,6 +147,42 @@ theorem sigma_eq_of_append_right {l l' : List (Col I X)} {x x' y y' t : Sector I
   simp only [heq_eq_eq, Prod.mk.injEq] at h
   rw [h.2]
 
+@[simp] theorem cast_self {w : List (Col I X)} {s t : Sector I} (h : w = w) (p : SPath w s t) :
+    p.cast h = p := rfl
+
+theorem append_cast_left {l l' m : List (Col I X)} {s t r : Sector I} (h : l = l')
+    (p : SPath l s t) (q : SPath m t r) :
+    (p.cast h).append q = (p.append q).cast (congrArg (· ++ m) h) := by
+  subst h; rfl
+
+theorem append_cast_right {l m m' : List (Col I X)} {s t r : Sector I} (h : m = m')
+    (p : SPath l s t) (q : SPath m t r) :
+    p.append (q.cast h) = (p.append q).cast (congrArg (l ++ ·) h) := by
+  subst h; rfl
+
+/-- Reassociation of a whiskered decomposed path. -/
+theorem append_append_reassoc {lu l m r lv : List (Col I X)} {s x x' y' y t : Sector I}
+    (pu : SPath lu s x) (pl : SPath l x x') (pg : SPath m x' y') (pr : SPath r y' y)
+    (pv : SPath lv y t) :
+    (pu.append ((pl.append pg).append pr)).append pv =
+      (((pu.append pl).append pg).append (pr.append pv)).cast
+        (by simp only [List.append_assoc]) := by
+  simp only [append_assoc, append_cast_left, append_cast_right, cast_cast]
+
+theorem append_left_cancel {l m : List (Col I X)} {s x t : Sector I} (pu : SPath l s x)
+    {p q : SPath m x t} (h : pu.append p = pu.append q) : p = q := by
+  have h := congrArg (split l) h
+  rw [split_append, split_append] at h
+  simp only [Sigma.mk.injEq, heq_eq_eq, Prod.mk.injEq, true_and] at h
+  exact h
+
+theorem append_right_cancel {l m : List (Col I X)} {s x t : Sector I} {p q : SPath l s x}
+    (pv : SPath m x t) (h : p.append pv = q.append pv) : p = q := by
+  have h := congrArg (split l) h
+  rw [split_append, split_append] at h
+  simp only [Sigma.mk.injEq, heq_eq_eq, Prod.mk.injEq, true_and] at h
+  exact h.1
+
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]
@@ -288,6 +324,90 @@ theorem compLayer_eq_zero (gens : P.Generators) (L : Layer (SKM.sig D)) {s t : S
     (Z : P.H t) : compLayer gens L d.path e.path Z = 0 := by
   rw [compLayer_eq_compLayerAt gens L _ _ Z e (SPath.decOf_path e),
     compLayerAt_eq_zero gens L _ e Z d rfl hne, Limits.zero_comp]
+
+variable {Gs Ys : ∀ s, P.H s}
+
+open Classical in
+/-- **The action of a layer is the matrix product with its entries.** -/
+theorem layerMap_apply (gens : P.Generators) (L : Layer (SKM.sig D)) (hL : L.Valid)
+    (x : P.Mod Gs Ys L.dom) (sl : Sector I) (sr : {t : Sector I // P.wt t = L.cod.endR})
+    (q : SPath L.cod.word sl sr.1) [Fintype (SPath L.dom.word sl sr.1)] :
+    layerMap gens L x sl sr q =
+      ∑ p, x sl ⟨sr.1, sr.2.trans hL.endR_eq⟩ p ≫ compLayer gens L p q (Ys sr.1) := by
+  simp only [layerMap, LinearMap.coe_mk, AddHom.coe_mk, layerFun]
+  rw [dite_eq_left hL]
+  simp only [compLayer, compLayerAt, Preadditive.sum_comp, Preadditive.comp_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun pg _ => ?_
+  simp only [dite_comp, comp_dite, Limits.zero_comp, Limits.comp_zero]
+  rw [Finset.sum_dite_eq', ite_eq_left (Finset.mem_univ _)]
+  simp [layerEntry, SPath.decOf, SPath.Dec.path]
+
+/-! ## Whiskered layers -/
+
+theorem pathFunctor_map_append {l m : List (Col I X)} {s x t : Sector I} (pu : SPath l s x)
+    (pl : SPath m x t) {Z Z' : P.H t} (f : Z ⟶ Z') :
+    (P.pathFunctor (pu.append pl)).map f =
+      eqToHom (by rw [pathFunctor_append]; rfl) ≫ (P.pathFunctor pu).map ((P.pathFunctor pl).map f) ≫
+        eqToHom (by rw [pathFunctor_append]; rfl) := by
+  rw [Functor.congr_hom (P.pathFunctor_append pu pl) f]
+  rfl
+
+/-- **The entry of a whiskered layer** at whiskered paths: the entry of the layer, under the
+left whisker, at the object of the right whisker. -/
+theorem compLayer_whisker (gens : P.Generators) (L : Layer (SKM.sig D)) (u : Obj (SKM.sig D))
+    (v : List (SKM.sig D).Colour) {s x y t : Sector I} (pu : SPath u.word s x)
+    (p : SPath L.dom.word x y) (q : SPath L.cod.word x y) (pv : SPath v y t) (Z : P.H t) :
+    compLayer gens (L.whisker u v)
+        (((pu.append p).append pv).cast (congrArg Obj.word (L.whisker_dom u v).symm))
+        (((pu.append q).append pv).cast (congrArg Obj.word (L.whisker_cod u v).symm)) Z =
+      eqToHom (by rw [pathFunctor_cast]; exact P.pathFunctor_append_append_obj pu p pv Z) ≫
+        (P.pathFunctor pu).map (compLayer gens L p q ((P.pathFunctor pv).obj Z)) ≫
+        eqToHom (by rw [pathFunctor_cast]; exact (P.pathFunctor_append_append_obj pu q pv Z).symm) := by
+  obtain ⟨⟨⟨x1, y1⟩, pl, pg, pr⟩, rfl⟩ :
+      ∃ d : SPath.Dec L.left ((SKM.sig D).dom L.gen) L.right x y, d.path = p :=
+    ⟨_, SPath.path_decOf _ _ p⟩
+  obtain ⟨⟨⟨x2, y2⟩, ql, qg, qr⟩, rfl⟩ :
+      ∃ e : SPath.Dec L.left ((SKM.sig D).cod L.gen) L.right x y, e.path = q :=
+    ⟨_, SPath.path_decOf _ _ q⟩
+  have he : SPath.decOf (L.whisker u v).left _
+      (((pu.append (SPath.Dec.path ⟨(x2, y2), ql, qg, qr⟩)).append pv).cast
+        (congrArg Obj.word (L.whisker_cod u v).symm)) =
+      ⟨(x2, y2), pu.append ql, qg, qr.append pv⟩ := by
+    apply SPath.Dec.path_injective
+    rw [SPath.path_decOf]
+    simp only [SPath.Dec.path]
+    rw [SPath.append_append_reassoc, SPath.cast_cast]
+    rfl
+  refine (compLayer_eq_compLayerAt gens (L.whisker u v) _ _ Z _ he).trans ?_
+  have hp : ((pu.append (SPath.Dec.path ⟨(x1, y1), pl, pg, pr⟩)).append pv).cast
+        (congrArg Obj.word (L.whisker_dom u v).symm) =
+      SPath.Dec.path (m := (SKM.sig D).dom (L.whisker u v).gen)
+        ⟨(x1, y1), pu.append pl, pg, pr.append pv⟩ := by
+    simp only [SPath.Dec.path]
+    rw [SPath.append_append_reassoc, SPath.cast_cast]
+    rfl
+  by_cases hout : ((⟨x1, pl⟩, ⟨y1, pr⟩) : (Σ z, SPath L.left x z) × (Σ z, SPath L.right z y)) =
+      (⟨x2, ql⟩, ⟨y2, qr⟩)
+  · simp only [Prod.mk.injEq, Sigma.mk.injEq] at hout
+    obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := hout
+    cases h1; cases h2
+    refine (congrArg (· ≫ _) (compLayerAt_eq gens (L.whisker u v) _
+      ⟨(x1, y1), pu.append pl, qg, pr.append pv⟩ Z pg hp)).trans ?_
+    dsimp only [SPath.Dec.path]
+    rw [compLayer_eq, pathFunctor_map_append, Generators.image_congr gens (L.whisker u v).gen
+      pg qg (Functor.congr_obj (P.pathFunctor_append pr pv) Z)]
+    simp only [Functor.map_comp, eqToHom_map, Category.assoc, eqToHom_trans, eqToHom_trans_assoc]
+    rfl
+  · refine (congrArg (· ≫ _) (compLayerAt_eq_zero gens (L.whisker u v) _ _ Z _ hp ?_)).trans ?_
+    · intro h
+      apply hout
+      simp only [SPath.Dec.outer, Prod.mk.injEq, Sigma.mk.injEq] at h ⊢
+      obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := h
+      exact ⟨⟨rfl, heq_of_eq (SPath.append_left_cancel pu (eq_of_heq h1))⟩,
+        ⟨rfl, heq_of_eq (SPath.append_right_cancel pv (eq_of_heq h2))⟩⟩
+    · rw [compLayer_eq_zero gens L ⟨(x1, y1), pl, pg, pr⟩ ⟨(x2, y2), ql, qg, qr⟩ hout]
+      simp
 
 end ProbeReservoir
 
