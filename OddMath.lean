@@ -1308,3 +1308,6 @@ import OddMath.QuiverHecke.SwappedVacuumRecovery
 import OddMath.SKM.BubbleSubstitution
 import OddMath.QuiverHecke.PlacementSign
 import OddMath.SKM.FiniteColourClassDetection
+import OddMath.SKM.FiniteColourBubbles
+import OddMath.QuiverHecke.FiniteColourUpward
+import OddMath.QuiverHecke.FiniteColourNondegeneracy
