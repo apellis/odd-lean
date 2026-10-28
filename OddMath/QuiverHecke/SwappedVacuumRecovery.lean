@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.BoundedCyclicRecovery
 import OddMath.QuiverHecke.UpwardMatchingIndependence
 import OddMath.SKM.UpwardNondegeneracyReduction
+import OddMath.QuiverHecke.UpwardModuleAction
 
 /-! # Signed bounded recovery from a vacuum evaluation
 
@@ -186,6 +187,47 @@ theorem ker_windowQuotient : LinearMap.ker E.windowQuotient = ⊥ := by
     (E.ideal_le hmem)
 
 end SwappedVacuumEvaluation
+
+/-- An upward module action supplies the source and target actions of a vacuum
+evaluation on the sectors `V t → V t'`; the remaining fields are the vacuum
+data of §4. -/
+def UpwardModuleAction.toSwappedVacuumEvaluation {μ : X} (A : UpwardModuleAction D Sc μ)
+    {t t' : List I} {d : ℕ} (vacuum : A.V t)
+    (coefficientAct : SKM.SYM D k →ₐ[k] Module.End k (A.V t))
+    (substitution : SKM.SYM D k ≃ₐ[k] SKM.SYM D k)
+    (substitution_weight : PreservesCoefficientWeight D substitution.toLinearMap)
+    (bubbles_eq : ∀ a, A.act t t (SKM.bubAt D Sc μ (upWord t) (SKM.betaSYM cs μ a)) =
+      coefficientAct (substitution a))
+    (ideal : Submodule k (coefficientObj D Sc t ⟶ coefficientObj D Sc t')) (bound : ℤ)
+    (degree_lt_bound : (d : ℤ) < bound) (ideal_le : ideal ≤ ExtendedAtLeast D Sc t t' bound)
+    (placement : (coefficientObj D Sc t ⟶ coefficientObj D Sc t') ≃ₗ[k]
+      (coefficientObj D Sc t ⟶ coefficientObj D Sc t'))
+    (placement_bounded : ∀ x ∈ ExtendedAtMost D Sc t t' d,
+      placement x ∈ ExtendedAtMost D Sc t t' d)
+    (coordinate : A.V t' →ₗ[k] ((coefficientObj D Sc t ⟶ coefficientObj D Sc t') ⧸ ideal))
+    (evaluation : ∀ (b : SKM.SYM D k)
+      (f : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D t')),
+      coordinate (A.act t t' ((alpha D Sc μ).map f) (coefficientAct b vacuum)) =
+        ideal.mkQ (placement (sourceCoefficientHom D Sc b f))) :
+    SwappedVacuumEvaluation D Sc cs μ t t' d where
+  V := A.V t
+  W := A.V t'
+  sourceAct := A.act t t
+  act := A.act t t'
+  act_comp f g := A.act_comp t t t' f g
+  vacuum := vacuum
+  coefficientAct := coefficientAct
+  substitution := substitution
+  substitution_weight := substitution_weight
+  bubbles_eq := bubbles_eq
+  ideal := ideal
+  bound := bound
+  degree_lt_bound := degree_lt_bound
+  ideal_le := ideal_le
+  placement := placement
+  placement_bounded := placement_bounded
+  coordinate := coordinate
+  evaluation := evaluation
 
 section Field
 variable {I X k : Type u} [AddCommGroup X] [Field k]
