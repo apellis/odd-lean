@@ -354,6 +354,70 @@ relations. The skeleton is stated over `D` itself; the pairing extension
 `λ ↦ (λ, 0)` is not part of it. The factor hypotheses F1–F4 (in particular the
 nilpotence used for the (A6) denominators) enter in the generator modules.
 
+**Generator images: component formulas.** These are the entries that the
+modules `Generators/*.lean` define, in the conventions of `Sectors.lean` and
+`Matrices.lean`. A summand path of a word is a choice of side, P (probe) or
+R (reservoir), for each letter; the path functor applies the leftmost letter
+last, so a path `(σ₁, σ₂)` of a two-letter word at left sector `(b, c)` has
+object `F_{σ₁}(F_{σ₂} Z)`. Write `A_i = homContentPreE` (up letter on P),
+`B_i = homContentPostE` with `betaP` the probe content of the sector to the
+left of the letter (up letter on R), and their lowering partners
+`homContentPreF`, `homContentPostF`. In the notation of
+`SwappedActionAssembly.md` a word is read chronologically, so the path
+`(P, R)` is its `BA` and the path `(R, P)` its `AB`. All entries not listed
+are zero. The image of a generator of parity `r` is the parity-`r` component.
+
+- `dot i`: path `(P)`: the inherited pre dot `T.dot i _ ▷ Z`
+  (`homContentPreSuperDot`); path `(R)`: the shifted post dot
+  `homContentPostDot` (`betaP = b`).
+- `cross i j`, `i ≠ j`:
+  - `(P,P) → (P,P)`: the inherited reversed-label factor crossing,
+    `α⁻¹ ; T.cross j i _ ▷ Z ; α`, without sign.
+  - `(R,R) → (R,R)`: the post transport of `Z ◁ W.cross i j _`, by the even
+    comparison `S_(p_j P(b))(β_(M_j, p_i P(b))⁻¹) ; c_(p_j P(b), p_i P(b))`
+    of `SwappedActionAssembly.md` §2 (the two-colour form of
+    `homContentPostWordIso`).
+  - `(P,R) → (R,P)`: `J⁻¹`, and `(R,P) → (P,R)`: `J ; Q_ij(x, y)`, where
+    `J = homMixedInterchange (T.E _) (W.E _) κ τ Z` with `κ`, `τ` the
+    `homContentShift`s of the inner and outer reservoir letters at their own
+    sectors (not `homContentMixedInterchange`, whose content labels differ
+    from the sector labels by `2α_i`), and `Q_ij(x, y)` the parameter
+    polynomial of `Sc` with `x` the pre dot and `y` the post dot in the
+    target coordinates (the original `Q`, not `parameterTwist`).
+- `cross i i`, with `q = (-1)^(p_i)`:
+  - `(P,P) → (P,P)`: `homContentCrossing` (that is `-q` times the inherited
+    factor crossing);
+  - `(R,R) → (R,R)`: `homContentPostCrossing`;
+  - the mixed block (A6) with `a = (y - x)⁻¹` for `p_i = 0` and
+    `a = (x - y)(x² - y²)⁻¹` for `p_i = 1`, `a ∈ End(F_R(F_P Z))`:
+    `(R,P) → (R,P)`: `-q a`; `(P,R) → (R,P)`: `J`;
+    `(R,P) → (P,R)`: `-(a ; a ; J⁻¹)` (`homContentMixedSwap`);
+    `(P,R) → (P,R)`: `q (J⁻¹ ; a ; J)` (chronological `;`, with `J` here from
+    `(P,R)` to `(R,P)`).
+  The coefficient `a` enters as data with its two characterizing identities
+  (`a ; (y - x) = 1 = (y - x) ; a`, resp. `a ; (x² - y²) = x - y`, natural in
+  `Z`); its existence from F2–F3 (unit probe dot, nilpotent reservoir dot)
+  is a separate lemma.
+- `cup i`, `cap i`: diagonal. On `(R)`-letters the units and counits of
+  `homContentPostAdjunction`; on `(P)`-letters those of
+  `homContentPreAdjunction T _ T.leftAdjoints` (the inverse-defined left
+  adjunction of the factor, F2; `ProbeReservoir.leftAdj` is not used).
+- `lcross i j`, `i ≠ j`: the block permutation of
+  `SwappedActionAssembly.md` §5: `N_pre` (`homDistinctPreMateInv`, under
+  `LeftMateInvertible T T.leftAdjoints`), `N_post` (inverse of
+  `homShiftedPostCrossMate`), `U_ji⁻¹` (`homDistinctMixedMateInv`) and
+  `V_ij⁻¹` (`homDistinctMixedPreMateInv`, with `G⁻¹` from (A15)).
+- `lcross i i`, `dcup i n`, `dcap i n`: (A7) from the whole inverse of the
+  same-colour augmented map at height `H = h_i(ν)`: `lcross = -r`,
+  `dcup n = a_n` (`0 ≤ n < H`), `dcap n = b_n` (`0 ≤ n < -H`), zero outside
+  these windows. The whole inverse enters as data with its two-sided inverse
+  identities (the five products of §4 in each height regime). At even colours
+  with `H = 0` its entries depend on the bubble normalization, which is kept
+  as an explicit hypothesis until the independent recheck is done.
+
+The relation modules may state their obligations against these formulas as a
+hypothesis structure until the generator modules land.
+
 **Open obligations, one module each** (all under
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
