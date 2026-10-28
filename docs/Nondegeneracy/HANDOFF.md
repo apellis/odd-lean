@@ -390,10 +390,20 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
   - `(R,R) → (R,R)`: `homContentPostCrossing`;
   - the mixed block (A6) with `a = (y - x)⁻¹` for `p_i = 0` and
     `a = (x - y)(x² - y²)⁻¹` for `p_i = 1`, `a ∈ End(F_R(F_P Z))`:
-    `(R,P) → (R,P)`: `-q a`; `(P,R) → (R,P)`: `J`;
+    `(R,P) → (R,P)`: `a`; `(P,R) → (R,P)`: `J`;
     `(R,P) → (P,R)`: `-(a ; a ; J⁻¹)` (`homContentMixedSwap`);
-    `(P,R) → (P,R)`: `q (J⁻¹ ; a ; J)` (chronological `;`, with `J` here from
-    `(P,R)` to `(R,P)`).
+    `(P,R) → (P,R)`: `-(J ; a ; J⁻¹)` (chronological `;`, `J` from `(P,R)` to
+    `(R,P)`), for both parities.
+  Check: on the path `(R,P)` the left strand is the outer letter `R`, so the
+  diagonal components of `slideREq` and `slideLEq` there are
+  `a ; y - q (x ; a) = 1` and `y ; a - q (a ; x) = 1` (consistent with
+  `homContentCrossing_slide`), which hold for `a` above in both parities;
+  the square of the block vanishes and its `(P,R)` diagonal is forced to be
+  `-(J ; a ; J⁻¹)` by the off-diagonal components of `quadEq`. (An earlier
+  version of this list had `-q a` and `q (J⁻¹ ; a ; J)`: in
+  `CrossingNormalization.md` the letter `A` is the reservoir, so its `AB` is
+  the path `(P,R)`; the earlier list kept the sign on `(R,P)`, which is wrong
+  at even colours.)
   The coefficient `a` enters as data with its two characterizing identities
   (`a ; (y - x) = 1 = (y - x) ; a`, resp. `a ; (x² - y²) = x - y`, natural in
   `Z`); its existence from F2–F3 (unit probe dot, nilpotent reservoir dot)
