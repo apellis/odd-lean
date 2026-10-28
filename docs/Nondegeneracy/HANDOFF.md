@@ -9,8 +9,13 @@ The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next sect
 the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (KKO's
 `V_(n+1) = g_(n+1)(V_n ⊗ 1)` in the global QP induction), with right-whiskering lemmas
 `genE_whiskerRight`, `dotE_whiskerRight`, `sameIntertwiner_whiskerRight`,
-`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
-`lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
+`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words.
+`CyclotomicAction/LastToFirstSnoc.lean` proves the same for the crossing map:
+`lastToFirstHom_eq_cl` writes `lastToFirstHom i ν` as the positioned word
+`crossingDescent |ν| = [cross (n-1), …, cross 0]`, and
+`lastToFirstHom_append_singleton` gives `T_(n+1) = τ_n (T_n ⊗ 1)`. Next: compose the two
+recursions so that `T_(n+1)V_(n+1)` on `(i, ν, x)` is `(T_n V_n ⊗ 1_x)` times the local
+factor `τ_n g_n`, then the QP induction of `DeformedGlobalQP.md` §3.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
