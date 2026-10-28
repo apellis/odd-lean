@@ -377,13 +377,17 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
     comparison `S_(p_j P(b))(β_(M_j, p_i P(b))⁻¹) ; c_(p_j P(b), p_i P(b))`
     of `SwappedActionAssembly.md` §2 (the two-colour form of
     `homContentPostWordIso`).
-  - `(P,R) → (R,P)`: `J⁻¹`, and `(R,P) → (P,R)`: `J ; Q_ij(x, y)`, where
-    `J = homMixedInterchange (T.E _) (W.E _) κ τ Z` with `κ`, `τ` the
-    `homContentShift`s of the inner and outer reservoir letters at their own
-    sectors (not `homContentMixedInterchange`, whose content labels differ
-    from the sector labels by `2α_i`), and `Q_ij(x, y)` the parameter
-    polynomial of `Sc` with `x` the pre dot and `y` the post dot in the
-    target coordinates (the original `Q`, not `parameterTwist`).
+  - `(P,R) → (R,P)`: `J_ij`, and `(R,P) → (P,R)`: `J_ji⁻¹ ; Q_ji(x, y)`,
+    where `J_ij = homMixedInterchange (T.E i _) (W.E j _) κ τ Z` goes from the
+    path `(P,R)` of `Eᵢ Eⱼ` to the path `(R,P)` of `Eⱼ Eᵢ` (these are the only
+    type-correct directions; an earlier version of this list had them
+    inverted), with `κ`, `τ` the `homContentShift`s of the inner and outer
+    reservoir letters at their own sectors (not `homContentMixedInterchange`,
+    whose content labels differ from the sector labels by `2α_i`), and
+    `Q_ji(x, y)` the parameter polynomial of `Sc` on the target `(P,R)` of
+    `Eⱼ Eᵢ`, `x` the pre dot of its left letter and `y` the post dot of its
+    right letter: `t_ji x^(d_ji) + t_ij y^(d_ij) + Σ s_ji^(pq) (y^q ; x^p)`,
+    or `t_ji` if `d_ji = 0` (the original `Q`, not `parameterTwist`).
 - `cross i i`, with `q = (-1)^(p_i)`:
   - `(P,P) → (P,P)`: `homContentCrossing` (that is `-q` times the inherited
     factor crossing);
@@ -412,6 +416,11 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
   `homContentPostAdjunction`; on `(P)`-letters those of
   `homContentPreAdjunction T _ T.leftAdjoints` (the inverse-defined left
   adjunction of the factor, F2; `ProbeReservoir.leftAdj` is not used).
+  Checked: `Generators/CupCap.lean` (`cupImage`, `capImage`). The adjunction
+  is taken at the left sector; the inner strand is identified with the
+  adjoint along the propositional equality of the right sector with the left
+  sector (`preE_obj_heq`, `postE_obj_heq`, `preF_obj_heq`, `postF_obj_heq`).
+  The two-letter path splitting is `zeroTwo`, `twoZero`, `twoTwo`.
 - `lcross i j`, `i ≠ j`: the block permutation of
   `SwappedActionAssembly.md` §5: `N_pre` (`homDistinctPreMateInv`, under
   `LeftMateInvertible T T.leftAdjoints`), `N_post` (inverse of
