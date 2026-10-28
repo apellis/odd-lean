@@ -4008,3 +4008,57 @@ Remaining for (d): construct a block. `A` is the output of the swapped-action as
 reservoir levels `Nᵢ`; `bubbles_eq` is `NormalizedBubbleFormula` at this schedule, and
 `evaluation` is the vacuum computation of §4 with the identification of the swapped
 evaluation sign with `placementSign` on homogeneous `b ⊗ f`.
+
+### Vacuum bubbles from the right-bubble moments (checked)
+
+`SwappedVacuumBubbleSeries.lean` proves the last step of both bubble notes ((15) of
+`SwappedVacuumNonpositiveBubbles.md` §5, and its positive-height analogue): the field
+`bubbles_eq` of `SwappedVacuumBlock` follows from the moment formulas (12) and (14).
+
+- `VacuumSeries.substitutedSeries u i = G_i(-z)·u_i(z)` (its coefficients are the
+  generator images of `θ`: `coeff_succ_substitutedSeries`), and
+  `VacuumSeries.momentSeries w i = w_i(z)·G_i(-z)⁻¹`, inverse to it when `u w = 1`
+  (`substitutedSeries_mul_momentSeries`). With `w = probeSeriesInv M` the moment series
+  is `(1-z)^(M_i)/E_i(-z)` at even and `(1+z)^(M_i)/C_i(-z)` at odd colours.
+- `VacuumMoments cs A t raw M N` (Prop structure): `c_(μ,i)·bubRs(s)` (even) and
+  `c_(μ,i)·bubRs(2s)` (odd), acting on `V t`, equal `raw` of the coefficients of the
+  moment series, and `oddBubble` acts as `raw((-1)^(N_i+1) δ_i)`.
+- `VacuumMoments.bubbles_eq`: then `A.bubbles cs t a = raw (probeSubstitution M N a)`
+  for all `a`; `vacuum_bubbles_eq` is the case `M = probeExponent`, `N = reservoirLevel`,
+  i.e. the field `SwappedVacuumBlock.bubbles_eq`. Proof: Brundan–Ellis (1.19)/(5.4) as
+  `beta_h`, `betaD_h` (hold in the presentation), `Sym.e_h_rel`, uniqueness of left
+  inverses of a series with constant term one (`eq_of_sum_mul_eq_zero`), `SYM.hom_ext`.
+
+The moment formula is uniform in the height. At even colours of height zero (principal
+inverse `j = s⁻¹`, corrected entry `a = (y-x)⁻¹` of (A6)) the leftward-cup moments are
+`m_l = -[z^l] E(-z)/(1-z)^P` (the sign `-q` sits on the leftward cup only) and the
+right moments `m'_l` carry no sign, so `B = 1 - Σ m_l z^l`, `B' = 1 + Σ m'_l z^l` satisfy
+the infinite Grassmannian relation `B·B' = 1` with `B' = (1-z)^P/E(-z)`, as in
+`even`; moving the sign to the other orientation breaks it at order `z²`. Hence
+`vacuumSubstitution` is unchanged and `β(e_r) = (-1)^r [z^r] B = e_r +` lower.
+
+Remaining: derive the moment formulas from generator images of the swapped action
+(slide (2), inverse column (3) and the probe/reservoir polynomials of
+`SwappedVacuumBubbles.md`; extreme inverse row/cap and the principal inverse of the
+nonpositive note). Consumer: `scripts/NonVacuity/SwappedVacuumBubbleSeries.lean`.
+
+### The vacuum evaluation from the tensor basis (checked)
+
+`SwappedVacuumBasisEvaluation.lean` reduces the field `evaluation` (A18) of
+`SwappedVacuumBlock` to the tensor basis `coefficientBasis a ⊗ nf i`.
+
+- `basisKoszulSign k a i = (-1)^(|a||i|)`; this is the sign `placementSign` puts on the
+  basis vector (`placementSign_sourceCoefficientHom`), i.e. the source-placement sign
+  `(-1)^(|b||z|) z b a = b z a` of `SwappedVacuumCoordinates.md` (2)–(3), §7.
+- `vacuum_evaluation_raw_of_basis`: if `coordK(act(α nf_i)(raw b_a · vac))` is
+  `(-1)^(|a||i|)` times the class of `b_a ⊗ nf_i` for every basis pair, then
+  `coordK(act(α f)(raw b · vac)) = q_K(σ(b ⊗ f))` for all `b`, `f` (both sides are
+  bilinear: `vacuumEvaluationBilin`, `placedCoefficientBilin`, `LinearMap.ext_basis`).
+- `vacuum_evaluation_of_basis`: the same for `raw (θ a)`, in the form of the field.
+- `SwappedVacuumBlock.ofMoments`: a vacuum block from an upward module action, a vacuum,
+  `raw`, `VacuumMoments` at the schedule, the ideal with `ideal_le`, the coordinates and
+  the basis values.
+
+Remaining: the basis values themselves (`SwappedVacuumCoordinates.md` §§2–7) from
+generator images of the swapped action. Consumer:
+`scripts/NonVacuity/SwappedVacuumBasisEvaluation.lean`.
