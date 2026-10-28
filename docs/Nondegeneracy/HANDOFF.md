@@ -485,7 +485,8 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
    - `Quad.lean`: `QuadRelations`.
    - `Slides.lean`: `SlideRelations`.
    - `Braid.lean`: `BraidRelations`.
-   - `Zigzag.lean`: `ZigzagRelations`.
+   - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
+     see below).
    - `Inversion.lean`: `InversionRelations`.
    - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
    - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
@@ -502,6 +503,22 @@ when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is use
 this does not depend on the even-colour bubble normalization at height `0`
 (both windows are empty there). The generator
 modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
+
+**Zigzag relations (checked).** `SwappedAssembly/Zigzag.lean`:
+`zigzagRelations`: `ZigzagRelations` for `P.layerRep Gs Ys gens` from
+`CupCapZigzag gens`. The boundary of `zigE` (resp. `zigF`) is the single strand
+`Eᵢ` (resp. `Fᵢ`), whose summand path is unique (`SPath.eq_of_single`), so each
+relation is one matrix identity per summand path `q` of that strand and object
+`Z`: the sum over the summand paths `m` of the cup's codomain and `r` of the
+cap's domain, restricted to the pairs for which the two middle paths agree as
+paths of the three-letter word (`zigE_word`, `zigF_word`), of the composite
+"cup entry, transport, cap entry" is the identity. `CupCapZigzag.zigE` and
+`.zigF` state exactly these identities; `zigE_entry` and `zigF_entry` identify
+them with the entries `compList` of the two-layer diagrams (in the `zigF` case
+the left strand of the cap layer has right weight `wt ν [up i, dn i]`, only
+propositionally equal to `ν`; `SPath.cast_cons_col` transports the path). No obstruction: the reduction is exact,
+and the generator modules must prove `CupCapZigzag` for their cup/cap images
+(the right adjunction (1.10) of the Hom-sector functors).
 
 ## Old-only ELV quotient module
 
