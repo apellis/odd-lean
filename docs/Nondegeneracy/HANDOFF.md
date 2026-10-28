@@ -433,6 +433,15 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
   `LeftMateInvertible T T.leftAdjoints`), `N_post` (inverse of
   `homShiftedPostCrossMate`), `U_ji⁻¹` (`homDistinctMixedMateInv`) and
   `V_ij⁻¹` (`homDistinctMixedPreMateInv`, with `G⁻¹` from (A15)).
+  Checked: `Generators/Leftward.lean` defines `lcrossNeImage c i j ν` as the
+  entrywise inverse of the sideways crossing: its entry from `p` to `p'` is
+  `inv` of the entry `sigmaEntry c i j ν p' p Z` of `σ = sigmaL i j` (computed
+  by `compList` for `upwardGens c`, the upward images with zero leftward
+  generators) where that entry is invertible, and `0` otherwise. On a block
+  permutation with invertible blocks this is the two-sided inverse, so
+  `invNe₁`, `invNe₂` reduce to: the entries of `σ` vanish off the block
+  permutation, and its four blocks are invertible (the four inverses above
+  witness this).
 - `lcross i i`, `dcup i n`, `dcap i n`: (A7) from the whole inverse of the
   same-colour augmented map at height `H = h_i(ν)`: `lcross = -r`,
   `dcup n = a_n` (`0 ≤ n < H`), `dcap n = b_n` (`0 ≤ n < -H`), zero outside
@@ -440,6 +449,14 @@ are zero. The image of a generator of parity `r` is the parity-`r` component.
   identities (the five products of §4 in each height regime). At even colours
   with `H = 0` its entries depend on the bubble normalization, which is kept
   as an explicit hypothesis until the independent recheck is done.
+  Checked: these are the fields of the data structure `LeftwardData`
+  (`lcrossSame`, `dcup`, `dcap`); the identities they must satisfy are the
+  relations `invP₁`–`invM₅` and the window rules `dcupZero`, `dcapZero`.
+- Assembly (checked, `Generators.lean`): `swappedGens c L : P.Generators`,
+  with `swappedGens_lcross_of_ne`, `swappedGens_lcross_self`, and
+  `compList_sigmaL_swappedGens` (the entries of `σ` for `swappedGens c L` are
+  `sigmaEntry c`), from `compList_congr` (entries of a chain only depend on the
+  images of the generators in its layers).
 
 The relation modules may state their obligations against these formulas as a
 hypothesis structure until the generator modules land.
@@ -478,13 +495,13 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
      (`homContentPostDot` at the probe content of the left sector); zero between
      different summands. The helper `oneLetterDiag` builds a one-letter
      generator from its diagonal components.
-   - `Generators/Cross.lean`: pre/pre (A9), post/post, and the mixed
-     (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours); the pre/pre
-     inverse uses `LeftMateInvertible` until it is discharged from the factor.
-   - `Generators/CupCap.lean`: the sector units and counits of (A3).
-   - `Generators/Leftward.lean`: `lcross`, `dcup`, `dcap` from the inverse
-     entries (`SwappedHomInversion.md`).
-   - `Generators.lean`: assembles the four into a `Generators` value.
+   - `Generators/Cross.lean` (**checked**): `crossImage c i j ν`.
+   - `Generators/CupCap.lean` (**checked**): `cupImage`, `capImage`.
+   - `Generators/Leftward.lean` (**checked**): `upwardGens`, `sigmaEntry`,
+     `lcrossNeImage`, `LeftwardData`.
+   - `Generators.lean` (**checked**): `swappedGens c L`.
+   Remaining for the action: existence of `c` with `CrossCoeff.IsInverse`
+   (F2–F3), and the `LeftwardData` of (A7) with the relations `invP`/`invM`.
 2. `WhiskerReduction.lean` (shared helper, **checked**): reduces `evalW` of a
    whiskered relation for `P.layerRep` to the unwhiskered matrix entries.
    `compLayer gens L p q Z : F_p Z ⟶ F_q Z` is the entry of a layer between
