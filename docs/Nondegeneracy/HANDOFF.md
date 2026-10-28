@@ -487,11 +487,21 @@ for `b = (l - r)⁻¹` when the dots commute, and for `b = (l - r) ; w` with
    - `Braid.lean`: `BraidRelations`.
    - `Zigzag.lean`: `ZigzagRelations`.
    - `Inversion.lean`: `InversionRelations`.
-   - `WindowZero.lean`: `WindowZeroRelations`.
+   - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
    - `Interchange.lean`: `InterchangeLaw`, including supernaturality of the
      odd generator images.
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
+
+**Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
+`layerMap_eq_zero` (a layer whose generator image has only zero components
+acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
+`P.layerRep Gs Ys gens` from `DcupDcapWindowZero gens`, the assignment of zero
+to `dcup i n` with rightmost weight `ν` when `⟨hᵢ, ν⟩ ≤ n` and to `dcap i n`
+when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is used, so
+this does not depend on the even-colour bubble normalization at height `0`
+(both windows are empty there). The generator
+modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
 
 ## Old-only ELV quotient module
 
