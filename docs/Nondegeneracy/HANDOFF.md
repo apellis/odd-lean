@@ -1,8 +1,161 @@
 # Odd nondegeneracy: restart state
 
+## Signed ELV coefficient quotient category
+
+`ELVCoefficientCategory.lean` constructs the categorical coefficient quotient
+required before old-cyclotomic balancing in `DeformedGlobalQP.md` §3.
+`elvCoefficientIdeal_parity` proves stability of the exact two-sided ELV
+coefficient ideal under both parity projections. The generators used are the
+specified elementary truncations and the even-cutoff `delta_i * chi_top`
+relations, transported through the polynomial/exterior algebra equivalence.
+No field, domain, flatness, finite-colour or independent-root premise is added.
+
+`elvCoefficientGradedAlgebra` gives the quotient algebra its induced parity.
+`ELVCoefficientCategory` is its signed box product with the affine category.
+`elvQuotientMap_comp` and `elvQuotientMap_mem` prove preservation of actual
+categorical composition and parity; `elvQuotientFunctor` is linear and a
+superfunctor. `elvQuotientHomEquiv` identifies its Homs with
+`ELVCoefficientHom`, and `elvQuotientMap_eq` identifies its map with the earlier
+tensor quotient. `elvQuotientMap_kills_span` kills the two-sided span of the
+coefficient arm of `ELVGenerator`. `elvQuotient_odd_comp_odd` retains the
+negative sign when an odd coefficient passes an odd affine morphism.
+
+The consumer retains nonzero delta at cutoffs two and three, tests the even
+top relation inside categorical composites, checks the quotient map and
+parity, and instantiates signed composition over `ZMod 9` with invertible two.
+Cutoff zero and the empty word are included.
+
+This is a categorical coefficient quotient, not an old-cyclotomic balanced
+target or all-prefix relation killing. Neither old-strand nor moving-strand
+cyclotomic polynomials are imposed. The next task is to construct the
+old-strand cyclotomic quotient and its signed balanced tensor over this
+category, imposing only the old-strand relations, then prove the required
+relation killing there. The ordinary `contentTargetTensor` alone does not
+supply that construction. QP, projective resolution and nondegeneracy remain
+separate obligations.
+
+## Rational mixed coefficients on a nilpotent component
+
+`RouquierHomMixedRational.lean` proves `SwappedHomInversion.md` §3
+(2)–(3) in a ring with a unit x and a supplied exponent y^n=0.
+`mixedEvenDenominator_isUnit` and `mixedOddDenominator_isUnit` establish
+the prescribed denominators as units, independently of the expansion.
+`mixedEvenInverse_expansion` identifies `Ring.inverse (x-y)` with
+the ordered sum x^(-r-1)y^r for r<n. `mixedOddInverse_expansion`
+identifies `(x-y) Ring.inverse (x²-y²)` with the ordered signed sum
+(-1)^r x^(-r-1)y^r for r<2n. The latter is an adequate, not minimal,
+cutoff. Pairing adjacent even and odd terms proves the identity; no
+rational square formula is assumed.
+
+`homContentMixedRational_even` and `_odd` apply these identities to the
+actual shifted pre and reservoir dots on the AB object, deriving their
+commutation from `homContentMixedDot_exchange`. Their hypotheses are
+invertibility of this pre dot and a nilpotence exponent on this object.
+There is no exponent uniform over a weight fibre and no extra field,
+domain, flatness, finite-colour or independent-root assumption. The
+ring identities do not require 2 invertible. The importing consumer uses
+odd off-diagonal 3-by-3 blocks over ℤ/9, where 2 is invertible but the
+ring has zero divisors. Its reservoir cube is zero and square nonzero;
+both inverse products and the failure of the unsigned series are checked.
+This matrix fixture is not a construction of either Rouquier family.
+
+The rational expression is available as a coefficient for the existing
+`homContentMixedSwap`; its ordered `-J⁻¹ a²` definition is unchanged.
+Remaining: assembly when only inputwise local nilpotence is available,
+then bending in the specified adjunctions to obtain (4) and raw
+comparisons (5), with alpha, beta, gamma, xi and exceptional zero intact.
+Factor actions, the rational square calculation needed for swapping
+inverses, fusion and coefficient detection remain obligations.
+Next target: assemble the component coefficients with their signed
+naturality, or supply the required objectwise bounds from the finite
+reservoir quotients, before proving the bent entries.
+
 The consolidated [mathematical checkpoint](STATUS.md) distinguishes the
 complete written argument from the checked Lean components and remaining
 formalization obligations, with exact code revisions.
+
+## Rationalization injection for normalization parameters
+
+`SKM.UniversalCoefficientRationalization.coefficientMap_injective` embeds the
+actual `Localization.Away (2 : ℤ)` in ℚ. `rationalize_injective` maps the
+normalization group algebra coefficientwise into the ℚ-group algebra on the
+*same unsaturated group*, without requiring that algebra to be a domain or
+that the group be torsion-free. `rationalize_single`, `rationalize_groupUnit`,
+`rationalize_t` and `rationalize_c` compute the images of coefficients and
+universal group units. For every variable type, `rationalizePolynomial_injective`
+extends the injection to `MvPolynomial`; its constant and variable formulas
+are checked. An order-two group algebra consumer verifies nonzero, distinct
+zero divisors survive and tests a nonconstant polynomial.
+
+This completes the coefficientwise rationalization injection of
+[GroundRingDescent](GroundRingDescent.md) §4, for the unsaturated group and an
+arbitrary polynomial variable type. The actual allowed coefficient-slot
+ring is constructed below; the rational algebra on those slots is reduced
+and separated by fields. The comparison identifying the generic polynomial
+injection with these exact allowed slots is still required before applying
+joint field separation to the integral ring. None of this proves SKM
+nondegeneracy or constructs its universal matching basis.
+
+## Reduced rational parameter rings
+
+`UniversalCoefficientReduced.rationalGroupAlgebra_isReduced` proves that
+`AddMonoidAlgebra ℚ G` is reduced for every additive abelian group `G`.
+Inversion of group labels defines a ring involution. The coefficient at zero
+of `f * inversion f` is the sum of the squares of the rational coefficients,
+so its vanishing forces `f = 0`. If `f² = 0`, apply this detection first to
+`f * inversion f` and then to `f`; the square-zero criterion gives reducedness.
+There is no finite-generation or torsion-free hypothesis.
+
+`rationalParameters_isReduced` applies this to the exact unsaturated
+`NormalizationParameterGroup.Group D` and every allowed
+`UniversalPolynomialParameters.Slot D`. `rationalParameters_separate`
+connects this ring directly to the constructed prime-quotient fraction fields.
+The dependent-root consumer retains the nonzero order-two endpoint and
+nonzero factors `u-1`, `u+1` with zero product, both in the group algebra and
+in its polynomial extension. Reducedness is not a domain assertion.
+
+This supplies reducedness and characteristic-zero field separation for the
+rational parameter ring of [GroundRingDescent](GroundRingDescent.md) §4.
+Coefficientwise rationalization injection for the unsaturated group algebra
+and arbitrary polynomial variables is proved above. The next task is to
+instantiate this injection at exactly `Slot D` and identify its domain with
+the integral `ParameterRing D`, then compose with the separating fields.
+The field candidate, universal matching basis and nondegeneracy deduction
+remain separate obligations.
+
+## Universal coefficient-slot polynomial ring
+
+`SKM.UniversalPolynomialParameters.ParameterRing D` is the polynomial ring
+on allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)` over `UnitRing D`.
+`Allowed` imposes both separate odd-exponent support conditions everywhere,
+and the exact `Scalars.Homogeneous` degree equation only in the strict used
+rectangle. All other allowed positions, including diagonal and unused ones,
+remain independent variables modulo swap. No Symmetrizer choice is needed
+by this predicate. Colours and the original weight group are arbitrary.
+
+`scalars`, `homogeneous`, and `normalizations` construct the universal
+Scalars, its homogeneity proof, and every normalization unit. `specialize`
+extends the existing unit-ring specialization; `specialize_coefficient`
+recovers every supplied coefficient under precisely its homogeneity premise.
+`specialize_t`, `specialize_c`, `hom_ext`, and `specialize_unique` prove
+simultaneous parameter formulas and uniqueness. There is no field, domain,
+flatness, finiteness, independent-root or nontriviality assumption.
+
+The new consumer uses the two-even-colour matrix with off-diagonal entries
+-2 over ZMod 9: the interior slot `(1,1)` specializes to 3 and is nonzero
+universally. The unused slot `(0,5)` specializes to 4 despite failing the
+degree equation; its swapped and diagonal counterparts are also tested.
+Separate odd-support tests kill left and right odd exponents, including
+unused positions. The earlier dependent-root unit fixture is unchanged.
+
+This completes the polynomial parameter construction of
+[GroundRingDescent](GroundRingDescent.md) §3, not nondegeneracy. The
+coefficientwise rationalization injection is proved above for arbitrary
+polynomial variables, and reducedness of its rational allowed-slot target
+is also proved. The exact parameter-ring identification and combined
+separating-field map remain to be checked. Exterior bubble generators stay
+outside this purely even parameter ring; the universal matching basis and
+nondegeneracy deduction remain separate.
 
 ## Normalization unit ring over ℤ[1/2]
 
@@ -23,15 +176,11 @@ Further evaluations use ZMod 9 (the localized inverse of 2 maps to 5) and
 ZMod 1. This is the unit-ring part of [GroundRingDescent](GroundRingDescent.md)
 §3, not the full polynomial parameter ring or nondegeneracy.
 
-Next: construct the allowed coefficient slots modulo `(i,j,p,q) ↔ (j,i,q,p)`,
-including unused slots, with the actual `Scalars.s_eq_zero` and
-`Scalars.Homogeneous` conditions. Form the polynomial extension of `UnitRing`,
-construct universal Scalars/Homogeneous/CScalars, and prove exact coefficient
-specialization. The `(2,-1)` root fixture has no interior slot; a separate
-fixture must exercise a nonzero allowed interior coefficient. Exterior delta
-generators stay outside this purely even ring. Rationalization injection and
-reducedness of the rationalized group algebra are subsequent, separate
-obligations; the generic separating-field lemma does not establish them.
+The coefficient-slot polynomial extension, universal Scalars/Homogeneous/CScalars
+and exact coefficient specialization are constructed above. The group-algebra
+rationalization injection and arbitrary-variable polynomial extension are
+proved above, as is rationalized reducedness; their exact allowed-slot
+assembly remains separate.
 
 ## Unsaturated normalization parameter group
 
@@ -52,11 +201,11 @@ This realizes the group part of the proposed deduction in
 [GroundRingDescent.md](GroundRingDescent.md) §3, not the nondegeneracy endpoint.
 
 The unit ring `Z[1/2][G]` and its unique ring specialization are constructed
-above. Its coefficient-slot polynomial extension, including unused allowed
-slots modulo swap symmetry, and universal `Scalars`, homogeneity and `CScalars`
-remain to be constructed. Rational
-injection and reducedness of the rationalized group algebra remain separate
-obligations; the generic prime-field family does not prove them.
+above, together with the allowed-slot polynomial extension and universal
+`Scalars`, homogeneity and `CScalars`. The rational group algebra is reduced;
+coefficientwise rationalization injection for it and arbitrary polynomial
+variables is proved. Identifying the exact integral parameter ring with this
+polynomial source and applying field separation remains open.
 
 ## Prime-quotient characteristic-zero fields
 
@@ -70,11 +219,9 @@ assumption is used. In the trivial ring the spectrum is empty and reducedness
 makes the same conclusion valid. A `ℚ × ℚ` consumer retains its zero divisors,
 constructs the field family, and applies the coefficientwise basis theorem.
 
-This does not establish that the universal normalization-group parameter ring
-injects into its rationalization or that the rationalized group algebra is
-reduced. The next commutative-algebra target is to construct that ring and prove
-both facts without losing torsion in its normalization group. The actual SKM
-scalar-change/expansion comparison and the field candidate remain separate.
+This does not establish that the rationalized normalization-group algebra is
+reduced. The coefficientwise rationalization injection is proved above; the
+generic prime-field family applies only after reducedness is established.
 
 ## Ground-ring descent retaining the original realization
 
@@ -211,9 +358,10 @@ includes zero cutoff and empty chains. Transport and the top relation
 are also instantiated over `ZMod 9`, with invertible two and a nonzero
 square-zero element.
 
-This is transport in the coefficient-quotient tensor modules, not a
-construction of categorical composition on those modules or of an SKM
-action. The next obligation is to compare these coefficient-extended
+The transport module alone does not construct categorical composition;
+`ELVCoefficientCategory.lean` now supplies that structure and its quotient
+functor. It does not construct an SKM action. The next obligation is to
+compare these coefficient-extended
 modules with the deformed old-cyclotomic balanced target and prove the
 relation-killing step there, then perform `DeformedGlobalQP.md` §3.
 The existing ordinary-polynomial `contentTargetTensor` does not supply
@@ -311,15 +459,12 @@ No nonzero factor model is constructed. All statements hold over any
 commutative ring; there is no weight-height case split or additional
 field, domain, flatness, finite-colour or independent-root hypothesis.
 
-Next: construct the prescribed rational a from the actual unit pre dot
-and locally nilpotent post dot, then prove `SwappedHomInversion.md` §3
-(3) with a bound for each actual object/input. The even inverse and odd
-even-square inverse must be identified with the finite series, not
-defined by that series. Then bend in the specified adjunctions to prove
-(4) and raw comparisons (5), retaining alpha, beta, gamma, xi and the
-source-height normalization, including exceptional zero. No finite-sum
-consumer, literal mixed-entry comparison, fusion or detector is claimed
-by this prerequisite slice.
+The componentwise prescribed rational a and finite-series identity are
+now supplied by `RouquierHomMixedRational.lean` above. Assembly from
+inputwise local nilpotence, then bending in the specified adjunctions
+to prove (4) and raw comparisons (5), remain open. Retain alpha, beta,
+gamma, xi and the source-height normalization, including exceptional
+zero. No literal mixed-entry comparison, fusion or detector is claimed.
 
 ## Negative precomposition windows and the literal mate slide
 
@@ -590,13 +735,40 @@ cup/cap and the signed-relation lift to two adjacent odd dots, over both ℚ
 and the zero ring. It also verifies that a cup/cap's expanded zero-ring
 support is empty while its raw and interior supports remain singleton.
 
-Open: extend the free-diagram lifts linearly at common restricted endpoints,
-prove compatibility with linear composition and whiskering, restrict each
-contextual `IdealGen`, and lift the entire span derivation. The supported
-free-diagram and interchange results do not yet prove this finite-subtype
-derivation theorem. Only after that theorem can the finite-witness passage
-support arbitrary-colour detection. Neither that implication nor
-nondegeneracy is asserted here.
+`FiniteColourIdealRestriction.lean` extends diagram restriction to finite
+linear combinations at canonical common restricted endpoints.
+`restrictDiagramAt` identifies all diagram summands at those endpoints;
+`include_restrictDiagramAt` and `include_restrictLinear` recover the entire
+free expression after inclusion and endpoint transport, over any
+commutative ring, including the zero ring. `inclusion_cast_comp` and
+`inclusion_lin_whisker` prove compatibility with composition and
+whiskering at transported endpoints, without changing region labels.
+The result is not yet an ideal-membership theorem. Both kinds of
+presentation generator now have typed restricted lifts: `inclusion_allRel`
+uses the raw relation parameters and handles both interchange parities.
+
+`FiniteColourContextLift.lean` proves `supported_context_lift`. Its
+`ContextLift` records the restricted contextual generator and recovers the
+raw `AllRel` label, both whiskering contexts, pre/post linear diagrams and
+the complete value through inclusion. `ContextLift.idealGen` identifies
+the lifted value as an actual generator of the restricted presentation
+ideal. `inclusion_whiskerOK_iff` reflects whiskering compatibility;
+`supported_linear_lift_at` uses prescribed common endpoints rather than
+nested transports. No field, domain, flatness or independent-root
+hypothesis is needed. Raw labels survive zero-ring cancellation.
+
+The importing consumer uses a cup/cap relation with nonempty left and
+right whiskering and closed cup/cap pre/post diagrams. It also uses
+whiskered interchange with two-dot pre/post diagrams at both parities,
+over ℚ and the zero ring. It extracts ideal generation and exact recovery.
+
+Open: lift membership in `finiteColourIdeal` through its finite span
+derivation at common restricted endpoints, using `supported_context_lift`
+for the generator case and linear inclusion for addition and scalar
+multiplication. Exercise an actual sum. Then derive finite-presentation
+equality from `eq_finiteColourIdeal`; inclusion faithfulness of an
+arbitrarily preselected finite subset is not asserted. Arbitrary-colour
+detection and nondegeneracy remain separate obligations.
 
 
 ## Signed linear dot cancellation
