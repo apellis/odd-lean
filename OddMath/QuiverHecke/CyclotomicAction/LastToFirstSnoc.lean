@@ -27,7 +27,8 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams MonoidalCategory
 
-variable {I X : Type*} [AddCommGroup X] (D : SKM.Datum I X) {k : Type*} [CommRing k]
+universe u v
+variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X) [CommRing k]
   (Sc : SKM.Scalars D k)
 
 /-- The crossings `cross (n-1), …, cross 0`, in this order. -/
@@ -39,8 +40,10 @@ theorem crossingDescent_succ_shift : ∀ n : ℕ,
     crossingDescent (n + 1) = (crossingDescent n).map (PG.shift 1) ++ [.cross 0]
   | 0 => rfl
   | n + 1 => by
-    rw [crossingDescent, crossingDescent_succ_shift n, crossingDescent, List.map_cons,
-      PG.shift_cross, Nat.add_comm 1 n, List.cons_append]
+    show PG.cross (n + 1) :: crossingDescent (n + 1) =
+      (PG.cross n :: crossingDescent n).map (PG.shift 1) ++ [.cross 0]
+    rw [crossingDescent_succ_shift n, List.map_cons, PG.shift_cross, Nat.add_comm 1 n,
+      List.cons_append]
 
 theorem fits_crossingDescent (n : ℕ) : Fits (n + 1) (crossingDescent n) := by
   induction n with
@@ -57,7 +60,7 @@ theorem fits_crossingDescent (n : ℕ) : Fits (n + 1) (crossingDescent n) := by
 theorem lastToFirstHom_eq_cl (i : I) : ∀ ν : List I,
     ∃ h : SChain (ν ++ [i]) (pl (ν ++ [i]) (crossingDescent ν.length)) (i :: ν),
       lastToFirstHom D Sc i ν = cl D Sc _ _ (crossingDescent ν.length) h
-  | [] => ⟨by simpa using sChain_pl [i] [], by simp [lastToFirstHom, crossingDescent, cl_nil]⟩
+  | [] => ⟨sChain_pl [i] [], by simp [lastToFirstHom, crossingDescent, cl_nil]⟩
   | j :: ν => by
     obtain ⟨h, hν⟩ := lastToFirstHom_eq_cl i ν
     have h₂ : SChain (j :: i :: ν) (pl (j :: i :: ν) [.cross 0]) (i :: j :: ν) := by
@@ -68,8 +71,11 @@ theorem lastToFirstHom_eq_cl (i : I) : ∀ ν : List I,
     refine ⟨?_, ?_⟩
     · rw [List.length_cons, crossingDescent_succ_shift]
       exact sChain_append_of h₁ h₂
-    · rw [lastToFirstHom, hν, cl_whiskerLeft, cl_comp]
-      exact cl_congr_gs D Sc (by rw [List.length_cons, crossingDescent_succ_shift]; rfl) _ _
+    · rw [lastToFirstHom, hν, cl_whiskerLeft]
+      refine (cl_comp D Sc (t := j :: (ν ++ [i])) (t₁ := j :: i :: ν) (t' := i :: j :: ν)
+        _ _ h₁ h₂).trans ?_
+      exact cl_congr_gs D Sc
+        (by rw [show (j :: ν).length = ν.length + 1 from rfl, crossingDescent_succ_shift]; rfl) _ _
 
 /-- KKO's `T_(n+1) = τ_n (T_n ⊗ 1)`: moving the last strand to the front first crosses it
 past `x`, then past `ν`. -/
