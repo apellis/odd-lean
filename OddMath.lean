@@ -24,6 +24,7 @@ import OddMath.SKM.RouquierHomPreNegativePowers
 import OddMath.SKM.RouquierHomPreMateSlide
 import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomMixedRational
+import OddMath.SKM.LocallyNilpotentMixedInverse
 import OddMath.SKM.RouquierHomPostCoordinates
 import OddMath.SKM.RouquierHomPostPrincipal
 import OddMath.SKM.RouquierHomPostPowers
