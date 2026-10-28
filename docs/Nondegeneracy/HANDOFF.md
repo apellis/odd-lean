@@ -24,6 +24,22 @@ and will be a separate predicate on a `RouquierAction`. Proposed: the deformed E
 `P_λ^A` is an instance of `RouquierAction` over the coefficient ring `A`, with the
 same-colour inversions supplied by the local inversion of `DeformedGlobalQP.md` §5.
 
+**Normalizer and θ: forms to formalize.** `RouquierAction` contains neither the
+first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
+are, use these forms, not the integer-shift form of the manuscript's normality step:
+
+* the normalizer is the coefficient-twisted automorphism `ρ(x₁) = x₁ − 2δⱼ`, where `δⱼ`
+  is the odd deformation parameter of the coefficient ring (written `dⱼ` in
+  `DeformedGlobalQP.md` §4 and `DeformedProjectiveResolution.md` §4), not the integer
+  `2dⱼ` of a degree argument. At even cutoff `N` the identity `x fⱼ = fⱼ (x − 2δⱼ)` holds
+  only modulo `δⱼ χ_m = 0` (its defect is `2 χ_m δⱼ`), so `ρ` is defined on `A_N`, not on
+  the free coefficient ring. The parity action of `ρ` on coefficients as stated in the
+  manuscript is incorrect and must be rederived from the local relation before use;
+  only the fact that `ρ` fixes `x²` is relied on in the projectivity argument;
+* θ (`SwappedNondegeneracy.md` §4) is defined on the untruncated coefficient algebra
+  (symmetric functions, or a free algebra), not on `A_N`: it does not preserve
+  `δ χ_m = 0`. Recovery uses θ only before the quotient map `q_first`, as written there.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
