@@ -25,6 +25,7 @@ import OddMath.SKM.RouquierHomPreNegativePowers
 import OddMath.SKM.RouquierHomPreMateSlide
 import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomDistinctMixed
+import OddMath.SKM.RouquierHomDistinctMixedPre
 import OddMath.SKM.RouquierHomMixedRational
 import OddMath.SKM.LocallyNilpotentMixedInverse
 import OddMath.SKM.RouquierHomPostCoordinates
@@ -112,6 +113,7 @@ import OddMath.QuiverHecke.CyclotomicAction.BraidCorrection
 import OddMath.QuiverHecke.CyclotomicAction.Comparison
 import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomSnoc
+import OddMath.QuiverHecke.CyclotomicAction.LastToFirstSnoc
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 import OddMath.QuiverHecke.CyclotomicAction.ConcreteRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
