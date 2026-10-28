@@ -31,7 +31,7 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] (D : Datum I X)
 def oddOrdered (s : Finset {i : I // D.parity i = 1}) :
     Fin s.card → {i : I // D.parity i = 1} := by
   letI : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
-  exact Set.powersetCard.ofFinEmbEquiv.symm (Set.powersetCard.ofCard (rfl : s.card = s.card))
+  exact ⇑(Set.powersetCard.ofFinEmbEquiv.symm (Set.powersetCard.ofCard (rfl : s.card = s.card)))
 
 variable (k : Type w) [CommRing k]
 
@@ -40,42 +40,46 @@ theorem oddExteriorBasis_eq_prod (s : Finset {i : I // D.parity i = 1}) :
     oddExteriorBasis D k s =
       (List.ofFn fun j : Fin s.card =>
         ExteriorAlgebra.ι k (Finsupp.single (oddOrdered D s j) (1 : k))).prod := by
-  letI : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
+  let : LinearOrder {i : I // D.parity i = 1} := WellOrderingRel.isWellOrder.linearOrder
   let b : Module.Basis _ k (OddModule D k) := Finsupp.basisSingleOne
   change b.ExteriorAlgebra s = _
   rw [ExteriorAlgebra.basis_apply_ofCard b (rfl : s.card = s.card)]
   simp [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply, b, oddOrdered]
 
-/-- A coefficient basis vector is a product of elementary powers followed by
-an ordered product of odd generators. -/
+/-- The even polynomial part of `SYM`: the polynomial algebra on the elementary
+generators `e i r`, included through `polynomialExteriorEquiv`. -/
+def polynomialPart : MvPolynomial (I × ℕ) k →ₐ[k] SYM D k :=
+  (polynomialExteriorEquiv D k).symm.toAlgHom.comp Algebra.TensorProduct.includeLeft
+
+@[simp] theorem polynomialPart_X (x : I × ℕ) :
+    polynomialPart D k (MvPolynomial.X x) = e D k x.1 x.2 := by
+  apply (polynomialExteriorEquiv D k).injective
+  change _ = polynomialExteriorProjection D k (e D k x.1 x.2)
+  rw [polynomialExteriorProjection_e]
+  simp [polynomialPart]
+
+/-- A coefficient basis vector is a polynomial in the elementary generators
+followed by an ordered product of odd generators. -/
 theorem coefficientBasis_eq_prod (a : CoefficientIndex D) :
     coefficientBasis D k a =
-      (a.1.prod fun x n => e D k x.1 x.2 ^ n) *
+      polynomialPart D k (MvPolynomial.monomial a.1 1) *
         (List.ofFn fun j : Fin a.2.card => delta D k (oddOrdered D a.2 j)).prod := by
   let E := (polynomialExteriorEquiv D k).symm.toAlgHom
-  let φ : MvPolynomial (I × ℕ) k →ₐ[k] SYM D k :=
-    E.comp Algebra.TensorProduct.includeLeft
   let ψ : ExteriorAlgebra k (OddModule D k) →ₐ[k] SYM D k :=
     E.comp Algebra.TensorProduct.includeRight
-  have hφ : φ = MvPolynomial.aeval fun x => e D k x.1 x.2 := by
-    apply MvPolynomial.algHom_ext
-    intro x
-    apply (polynomialExteriorEquiv D k).injective
-    simp [φ, E, polynomialExteriorEquiv]
   have hψ (i : {i : I // D.parity i = 1}) :
       ψ (ExteriorAlgebra.ι k (Finsupp.single i 1)) = delta D k i := by
     apply (polynomialExteriorEquiv D k).injective
-    simp [ψ, E, polynomialExteriorEquiv]
+    change _ = polynomialExteriorProjection D k (delta D k i)
+    rw [polynomialExteriorProjection_delta]
+    simp [ψ, E]
   have hsplit : coefficientBasis D k a =
-      φ (MvPolynomial.monomial a.1 1) * ψ (oddExteriorBasis D k a.2) := by
+      polynomialPart D k (MvPolynomial.monomial a.1 1) * ψ (oddExteriorBasis D k a.2) := by
     apply (polynomialExteriorEquiv D k).injective
     rw [coefficientBasis_projection, map_mul]
-    simp [φ, ψ, E, Algebra.TensorProduct.tmul_mul_tmul]
-  rw [hsplit, hφ, MvPolynomial.aeval_monomial, map_one, one_mul,
-    oddExteriorBasis_eq_prod, map_list_prod, List.map_ofFn]
-  congr 2
-  funext j
-  exact hψ _
+    simp [polynomialPart, ψ, E, Algebra.TensorProduct.tmul_mul_tmul]
+  rw [hsplit, oddExteriorBasis_eq_prod, map_list_prod, List.map_ofFn]
+  simp only [Function.comp_def, hψ]
 
 end OddMath.SKM.SYM
 
@@ -89,25 +93,37 @@ variable {I : Type u} {X : Type v} [AddCommGroup X] {D : Datum I X}
 with the same index, including all exterior monomials. -/
 @[simp] theorem symMap_coefficientBasis (a : SYM.CoefficientIndex D) :
     symMap (D := D) f (SYM.coefficientBasis D R a) = SYM.coefficientBasis D S a := by
+  have hpoly : (symMap (D := D) f).comp (SYM.polynomialPart D R).toRingHom =
+      (SYM.polynomialPart D S).toRingHom.comp (MvPolynomial.map f) := by
+    apply MvPolynomial.ringHom_ext
+    · intro r
+      have hR : SYM.polynomialPart D R (MvPolynomial.C r) = algebraMap R (SYM D R) r :=
+        (SYM.polynomialPart D R).commutes r
+      have hS : SYM.polynomialPart D S (MvPolynomial.C (f r)) =
+          algebraMap S (SYM D S) (f r) := (SYM.polynomialPart D S).commutes (f r)
+      simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
+        MvPolynomial.map_C, hR, hS, symMap_algebraMap]
+    · intro x
+      simp [symMap_e]
+  have hmono := congrArg (fun g => g (MvPolynomial.monomial a.1 (1 : R))) hpoly
+  simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
+    MvPolynomial.map_monomial, map_one] at hmono
   rw [SYM.coefficientBasis_eq_prod, SYM.coefficientBasis_eq_prod, map_mul,
-    map_list_prod, List.map_ofFn, Finsupp.prod, Finsupp.prod, map_prod]
-  simp only [map_pow, symMap_e]
-  congr 2
-  funext j
-  exact symMap_delta f _
+    map_list_prod, List.map_ofFn, hmono]
+  simp only [Function.comp_def, symMap_delta]
 
 /-- Coefficient change acts on basis coordinates by the ring map itself. -/
 theorem repr_symMap (x : SYM D R) (a : SYM.CoefficientIndex D) :
     (SYM.coefficientBasis D S).repr (symMap (D := D) f x) a =
       f ((SYM.coefficientBasis D R).repr x a) := by
-  conv_lhs => rw [← (SYM.coefficientBasis D R).sum_repr x]
-  rw [map_sum]
+  conv_lhs => rw [← (SYM.coefficientBasis D R).linearCombination_repr x]
+  rw [Finsupp.linearCombination_apply, Finsupp.sum, map_sum]
   have hterm (b : SYM.CoefficientIndex D) :
       symMap (D := D) f ((SYM.coefficientBasis D R).repr x b • SYM.coefficientBasis D R b) =
         f ((SYM.coefficientBasis D R).repr x b) • SYM.coefficientBasis D S b := by
     rw [Algebra.smul_def, map_mul, symMap_algebraMap, symMap_coefficientBasis,
       ← Algebra.smul_def]
-  simp only [hterm, map_sum, map_smul, Module.Basis.repr_self, Finsupp.finset_sum_apply,
+  simp only [hterm, map_sum, map_smul, Module.Basis.repr_self, Finsupp.finsetSum_apply,
     Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
   rw [Finset.sum_ite_eq']
   split_ifs with h

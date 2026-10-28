@@ -147,7 +147,7 @@ theorem nondegeneracyConjecture_scalarChange {R : Type w} {S : Type w'} [CommRin
     NondegeneracyConjecture (ScalarChange.cScalars D f cs) := by
   rw [nondegeneracyConjecture_iff_injective]
   intro a b hab μ F
-  letI := f.toAlgebra
+  let _ : Algebra R S := f.toAlgebra
   let bR := F.homBasis cs μ (h a b hab μ F)
   let bS := (Algebra.TensorProduct.basis S bR).map
     (ScalarChange.homBaseChange f D Sc (ob D μ a) (ob D μ b))
