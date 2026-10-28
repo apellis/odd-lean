@@ -94,13 +94,61 @@ on `F` whiskered by a post edge is the associator).
 arbitrary `RouquierLeftAdjoints L`, and `homContentDistinctMixedPreMate_eq`
 is (9) for the content adjunctions.
 
-**Next targets.** (i) The rest of the `V` block: the dotted `V` of (13)
-with the transposed probe dot, and the inverse (14) of `G`. The inverse needs
-explicit inputs beyond `RouquierFamily` + `RouquierMulticolour`: invertibility
-of the probe dot (F2-type datum) and nilpotence of the reservoir dot at each
-content (F3); these are to be packaged as structures, not assumed silently.
-(ii) The pre/pre entry (A9). (iii) Post/post via `crossMate` conjugation and
-`invNe`. (iv) Componentwise assembly into `UpwardModuleAction`.
+**Mixed block `V`, dots and inverses (checked).**
+`OddMath/SKM/RouquierHomDistinctMixedDots.lean` formalizes (13)–(15) for even
+dots, in a source-side form. `homDistinctMixedPreMateDot Φ` is the mate of
+`J ≫ S_u(Φ)` for an endomorphism `Φ` of `(E ≫ Z) ≫ E'`; it only depends on
+`Φ ≫ ε ▷ E'`. `MixedTransport g Φ` (`J ≫ S_u Φ = E ◁ g ≫ J`) is closed under
+`comp`, `add` and `smul`. It holds for the post dot (`mixedTransport_post`,
+`g = S_t(Z ◁ y)`) and for even middle maps (`mixedTransport_middle`, via
+`homMixedInterchange_naturality_even`).
+`homDistinctMixedPreMateDot_eq_comp` is (13): `V(Φ) = g ≫ V₀`.
+The probe dot is the Mathlib conjugate `homPreDotConj` of `x ▷ (-)` along the
+precomposition adjunction. `homPreDotConj_counit` gives
+`(x ▷ Z) ≫ ε = E ◁ c(x) ≫ ε`, i.e. the cup–dot–cap word (10). Further:
+`homPreDotConj_comp` (it reverses composition), `homPreDotConj_inv` ((11):
+even inverse dot ⇒ two-sided inverse) and `homPreDotConj_mem` (evenness, given
+even unit and counit). `homDistinctMixedPreMateDot_monomial` is (13) for one
+supported monomial. `homDistinctMixedPreMate_inv_products` is (15) for `V₀`
+with the explicit inverse `homDistinctMixedPreMateInv`.
+`homDistinctMixedPreMateDot_isIso` gives (15) for `V` from an invertible `g`.
+`isIso_add_of_isNilpotent` is (14): `A + N` is invertible when `A` is
+invertible and `N` is nilpotent and commutes with `A`.
+Scope: only even dot powers are handled. The supported monomials of (12) have
+even powers, but the relation `c(d^m) = ± c(d)^m` for an odd `d` (the sign
+`p binom(m,2)` in (11)–(12)) is not formalized, since `d ▷ (-)` is not a
+natural transformation. Probe invertibility and reservoir nilpotence enter as
+hypotheses of the lemmas (an even inverse of `x`, nilpotence of `N`). They are
+not fields of `RouquierFamily` or `RouquierMulticolour`.
+
+**Next targets.** (i) The pre/pre entry (A9). (ii) Post/post via
+`crossMate` conjugation and `invNe`. (iii) The odd-dot sign of (11)–(12) as a
+supernatural conjugate, if the assembly needs odd `d` powers before support
+reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
+needs the packaged probe and reservoir data.
+
+**Input needed for (A9).** The derivation of (A9) in
+`SwappedDistinctPreMate.md` uses the left cups and caps defined from the
+inverse of the presented calculus and the left-cyclicity relation of the
+distinct crossing. A `RouquierFamily` with `RouquierMulticolour` and an
+arbitrary `RouquierLeftAdjoints` supplies only the right mate inverse
+(`invNe` gives invertibility of `crossMate`). It does not force the left mate
+of the distinct crossing to be invertible, so (A9) needs either the presented
+left adjunction (an interpretation of the presented calculus into the target
+bicategory) or the left-mate inverse as an explicit input.
+
+**Correction to the equal-colour mixed crossing (A6).** An exact check in the
+smallest mixed case (one odd and one even colour, small probe and reservoir)
+shows that for an even colour (p=0) the matrix (A6), with `a=(x-y)^-1`, gives
+`τx₁-x₂τ=-1` on the mixed summand, and the jij braid relation fails there.
+The correct entry is `a=(y-x)^-1`, equivalently (A6) multiplied by `-q`
+(the scalar already used on the pure probe crossing). The same correction
+applies to (2)–(4) of `SwappedHomInversion.md` for p=0. The odd formula
+`a=(x-y)(x²-y²)^-1` is correct. The check also fixes `J_ij=id`, the
+distinct-colour crossings `J^-1` and `Q_ij J` with `Q` itself (not the
+twisted `Q^alg`). The normalized even-colour bubble at height 0 picks up the
+same factor `-q`. The Lean results on the mixed blocks above are stated for
+an abstract crossing and do not use (A6).
 
 Neither structure is instantiated here. The open part of the third
 obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
