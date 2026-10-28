@@ -476,8 +476,11 @@ generator images of item 1 below.
 `OddMath/QuiverHecke/SwappedAssembly/`):
 
 1. Generator images, supplying the fields of `ProbeReservoir.Generators`:
-   - `Generators/Dot.lean`: pre dot on probe letters, shifted post dot on
-     reservoir letters.
+   - `Generators/Dot.lean` (**checked**): `dotImage i ν`, with
+     `dotImage_probe` (`T.dot i _ ▷ Z`) and `dotImage_reservoir`
+     (`homContentPostDot` at the probe content of the left sector); zero between
+     different summands. The helper `oneLetterDiag` builds a one-letter
+     generator from its diagonal components.
    - `Generators/Cross.lean`: pre/pre (A9), post/post, and the mixed
      (A5)/(A6) entries (with `a = (y − x)⁻¹` for even colours); the pre/pre
      inverse uses `LeftMateInvertible` until it is discharged from the factor.
