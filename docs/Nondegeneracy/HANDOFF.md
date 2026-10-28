@@ -122,6 +122,29 @@ supernatural conjugate, if the assembly needs odd `d` powers before support
 reduction. (iv) Componentwise assembly into `UpwardModuleAction`, which also
 needs the packaged probe and reservoir data.
 
+**Input needed for (A9).** The derivation of (A9) in
+`SwappedDistinctPreMate.md` uses the left cups and caps defined from the
+inverse of the presented calculus and the left-cyclicity relation of the
+distinct crossing. A `RouquierFamily` with `RouquierMulticolour` and an
+arbitrary `RouquierLeftAdjoints` supplies only the right mate inverse
+(`invNe` gives invertibility of `crossMate`). It does not force the left mate
+of the distinct crossing to be invertible, so (A9) needs either the presented
+left adjunction (an interpretation of the presented calculus into the target
+bicategory) or the left-mate inverse as an explicit input.
+
+**Correction to the equal-colour mixed crossing (A6).** An exact check in the
+smallest mixed case (one odd and one even colour, small probe and reservoir)
+shows that for an even colour (p=0) the matrix (A6), with `a=(x-y)^-1`, gives
+`τx₁-x₂τ=-1` on the mixed summand, and the jij braid relation fails there.
+The correct entry is `a=(y-x)^-1`, equivalently (A6) multiplied by `-q`
+(the scalar already used on the pure probe crossing). The same correction
+applies to (2)–(4) of `SwappedHomInversion.md` for p=0. The odd formula
+`a=(x-y)(x²-y²)^-1` is correct. The check also fixes `J_ij=id`, the
+distinct-colour crossings `J^-1` and `Q_ij J` with `Q` itself (not the
+twisted `Q^alg`). The normalized even-colour bubble at height 0 picks up the
+same factor `-q`. The Lean results on the mixed blocks above are stated for
+an abstract crossing and do not use (A6).
+
 Neither structure is instantiated here. The open part of the third
 obligation is to build `UpwardModuleAction` from a `RouquierFamily` with
 `RouquierMulticolour`, through the content-shifted Hom functors, the
