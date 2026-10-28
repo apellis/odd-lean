@@ -23,8 +23,19 @@ the new spectator (`DeformedGlobalQP.md` §3, case `ν_n ≠ i`). The transport 
 `Q_ix(xₙ, x_(n+1))` through `V_n ⊗ 1_x` (`comp_qPoly`) has trivial signs: an odd colour
 enters each monomial of `Q_ix` to an even power (`Sc.s_eq_zero`, `Datum.even_d_of_odd`).
 Arbitrary colours, parities and words; `d_ix = 0` included.
-Next: the repeated-colour step `x = i` (`D V = V D₀`, `E V = (−1)^h V E₀` and the
-square-dot cancellation), then the induction assembly in the `Ind.tmul` target.
+
+**Repeated-colour QP step (checked).** `CyclotomicAction/PrefixQPRepeated.lean` proves, on
+`i :: (ν ++ [i])` with `V = V_n ⊗ 1_i` (`moveWhisker`), `D = x_(n+1)² − x_n²`,
+`E = x_(n+1) − x_n`, `D₀ = x_(n+2)² − x₁²`, `E₀ = x_(n+2) − x₁`, `s = (−1)^(p_i·|ν|)`:
+`V ≫ D = D₀ ≫ V`, `V ≫ E = s E₀ ≫ V` (`moveWhisker_comp_squareDiff`, `moveWhisker_comp_sub`);
+the expansion of `V ≫ g` for the same-colour intertwiner (`moveWhisker_comp_sameIntertwiner_odd`,
+`_even`); and (`DeformedGlobalQP.md` §3, case `ν_n = i`)
+`V_(n+1) ≫ T_(n+1) = s D₀ ≫ E₀ ≫ V ≫ T_(n+1)` for odd `i`
+(`moveHom_lastToFirstHom_append_self_odd`) and `= E₀ ≫ V ≫ T_(n+1)` for even `i`
+(`_even`), where `T_(n+1) = τ_n ≫ (T_n ⊗ 1_i)` (`lastToFirstHom_append_self`). These use
+`τ g = τ D E` (odd) and `τ g = τ E` (even) from the two-strand identities.
+Next: the induction assembly in the `Ind.tmul` target: (K) for `n+1` from (K) for `n` via
+these two steps, cancelling `D₀`/`E₀` with `PrependDotCancellation`/`LinearDotCancellation`.
 
 **Normalizer and θ: forms to formalize.** The factor interface contains neither the
 first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
