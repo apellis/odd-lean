@@ -1305,4 +1305,5 @@ import OddMath.SKM.SourceFrozenSwap
 import OddMath.QuiverHecke.SwappedVacuumRecovery
 import OddMath.SKM.BubbleSubstitution
 import OddMath.QuiverHecke.PlacementSign
+import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.SKM.FiniteColourClassDetection

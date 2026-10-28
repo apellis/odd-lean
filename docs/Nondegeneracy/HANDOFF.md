@@ -3647,3 +3647,39 @@ whose scalar and layer list are compatible with `Datum.restrictColours` (the bub
 generators, `bubAt`, `betaSYM` on ordered generator products, and `alpha` via `alpha_cl`),
 lift extended basis indices to `J`, and combine with `sum_cl_eq_zero_restrict` to deduce
 injectivity of `upwardCoefficientMap` for `D` from injectivity for all finite restrictions.
+
+### Vacuum block (item (d), interface checked)
+
+`SwappedVacuumBlock.lean` fixes the schedule of `SwappedNondegeneracy.md` §2 and states
+the vacuum data of §4 as one structure on an upward module action. Schedule (checked):
+`vacuumCutoff t d = N₀ = d + 2·C(|t|,2) + 1`; `probeLevel = Pᵢ = 2N₀ + 2·max(hᵢ(μ),0)`;
+`reservoirLevel = Nᵢ = 2N₀ + |hᵢ(μ)|`; `probeExponent = Pᵢ/2` at odd and `Pᵢ` at even
+colours; `probeLevel_even`, `probeLevel_sub_reservoirLevel` (`Pᵢ - Nᵢ = hᵢ(μ)`),
+`vacuumCutoff_le_reservoirLevel` (`Nᵢ ≥ N₀`), `vacuumCutoff_sub_choose`
+(`N₀ - 2·C(|t|,2) = d + 1`); `vacuumSubstitution = probeSubstitution probeExponent
+reservoirLevel` is θ, with `vacuumSubstitution_weight`.
+
+`SwappedVacuumBlock D Sc cs μ t t' d` (the hypotheses supplied by the swapped and ELV
+factor actions) has fields:
+
+- `A : UpwardModuleAction D Sc μ` (the swapped action on Hom sectors at weight `μ`);
+- `vacuum : A.V t` and `raw : SYM →ₐ End (A.V t)` (raw reservoir coefficients);
+- `bubbles_eq : A.bubbles cs t a = raw (θ a)`: (A16);
+- `ideal` with `ideal_le : ideal ≤ ExtendedAtLeast (N₀ - 2·C(|t|,2))`: the transformed
+  last-boundary ideal `K_(N,T)` and its bound from `SwappedVacuumCoordinates.md` §6;
+- `coordinate : A.V t' → Hom/K` and `evaluation : coord(act(α f)(raw(θ a) vac)) =
+  q_K(σ(coefficientSubstitution θ (a ⊗ f)))`: (A18), with σ = `placementSign`.
+
+Proved downstream: `evaluation_raw` (the form for raw coefficients `b = θ a`),
+`toSwappedVacuumEvaluation` (bound `d + 1`, placement `placementSign`), and the
+conditional field theorem `nondegeneracy_of_vacuum_blocks`: blocks at every equal-weight
+upward pair, `μ` and `d` imply `NondegeneracyConjecture cs`. Consumer:
+`scripts/NonVacuity/SwappedVacuumBlock.lean` (schedule values at `h = -3`, the
+conditional theorems over `ℚ`).
+
+Remaining for (d): construct a block. `A` is the output of the swapped-action assembly
+(currently under an explicit left-mate-invertibility input, see the (A9) paragraph);
+`raw`, `vacuum`, `ideal`, `coordinate` come from the ELV factor at probe levels `Pᵢ` and
+reservoir levels `Nᵢ`; `bubbles_eq` is `NormalizedBubbleFormula` at this schedule, and
+`evaluation` is the vacuum computation of §4 with the identification of the swapped
+evaluation sign with `placementSign` on homogeneous `b ⊗ f`.
