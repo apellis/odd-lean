@@ -3674,7 +3674,25 @@ indices to `J`; the restricted image vanishes, so the restricted element is zero
 categories and no independence of the restricted coefficient basis is used.
 Consumer: `scripts/NonVacuity/FiniteColourUpward.lean`.
 
-Remaining in this line: (d), and the composition of (c) with
-`upwardCoefficientMap_injective_of_vacuum_evaluations` at each finite restriction
-(proposed, not checked: the equal-weight condition passes to restrictions through
-`SKM.wt`).
+### Finite-colour reduction of the conjecture (item (c), checked)
+
+`OddMath/QuiverHecke/FiniteColourNondegeneracy.lean` composes the detection theorem with
+`upward_independence_of_coefficientMap` and `SKM.nondegeneracy_of_upward_independence`.
+`wt_ups_restrictColours` shows that colour inclusion preserves the weight of upward words,
+so the equal-weight condition passes to restrictions.
+
+* `nondegeneracy_of_restrictColours_upward`: if `upwardCoefficientMap` of
+  `D.restrictColours J` is injective for every finite `J`, every equal-weight pair of
+  restricted upward words and every external weight, then `NondegeneracyConjecture cs`.
+  Commutative ground ring; no field, grading, homogeneity or independence premise.
+* `nondegeneracy_of_finiteColour_upward`: the same with the hypothesis stated for every
+  datum with a finite colour set (same weight lattice and ground ring).
+* `nondegeneracy_of_restrictColours_vacuum_evaluations`: over a field, a
+  `SwappedVacuumEvaluation` at every finite restriction, equal-weight word pair, external
+  weight and degree bound implies the conjecture for `D`.
+
+Consumer: `scripts/NonVacuity/FiniteColourNondegeneracy.lean` (a datum with colour set `ℕ`).
+Thus item (c) is closed: the remaining obligation of the vacuum-recovery chain is item (d),
+the construction of the vacuum evaluations for finitely many colours. The converse direction
+(the conjecture for `D` implies upward injectivity of the restrictions) is not proved and is
+not needed.
