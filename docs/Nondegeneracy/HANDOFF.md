@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Deformed cyclotomic factor: checked steps and forms
+
+The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
+
+**Last-letter recursion (checked).** `CyclotomicAction/MoveHomSnoc.lean` proves
+`moveHom_append_singleton`: `moveHom i l (ν ++ [x])` is `moveHom i l ν ⊗ 1_x` followed by
+the intertwiner `intertwinerHom (l ++ ν) [] i x`, up to word identifications (KKO's
+`V_(n+1) = g_(n+1)(V_n ⊗ 1)` in the global QP induction), with right-whiskering lemmas
+`genE_whiskerRight`, `dotE_whiskerRight`, `sameIntertwiner_whiskerRight`,
+`intertwinerHom_whiskerRight`. Arbitrary colours, parities and words. Next: the same for
+`lastToFirstHom`, then the QP induction of `DeformedGlobalQP.md` §3.
+
+**Normalizer and θ: forms to formalize.** The factor interface contains neither the
+first-dot normalizer nor the bubble substitution θ; neither is formalized yet. When they
+are, use these forms, not the integer-shift form of the manuscript's normality step:
+
+* the normalizer is the coefficient-twisted automorphism `ρ(x₁) = x₁ − 2δⱼ`, where `δⱼ`
+  is the odd deformation parameter of the coefficient ring (written `dⱼ` in
+  `DeformedGlobalQP.md` §4 and `DeformedProjectiveResolution.md` §4), not the integer
+  `2dⱼ` of a degree argument. At even cutoff `N` the identity `x fⱼ = fⱼ (x − 2δⱼ)` holds
+  only modulo `δⱼ χ_m = 0` (its defect is `2 χ_m δⱼ`), so `ρ` is defined on `A_N`, not on
+  the free coefficient ring. The parity action of `ρ` on coefficients as stated in the
+  manuscript is incorrect and must be rederived from the local relation before use;
+  only the fact that `ρ` fixes `x²` is relied on in the projectivity argument;
+* θ (`SwappedNondegeneracy.md` §4) is defined on the untruncated coefficient algebra
+  (symmetric functions, or a free algebra), not on `A_N`: it does not preserve
+  `δ χ_m = 0`. Recovery uses θ only before the quotient map `q_first`, as written there.
+
 ## Swapped-action interfaces: factor relations and upward module action
 
 **Factor side (input F1 of `SwappedActionAssembly.md`).** A factor model is a
