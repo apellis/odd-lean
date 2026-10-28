@@ -1187,6 +1187,9 @@ import OddMath.SKM.ScalarChangeBaseChange
 import OddMath.SKM.ScalarChangeBubbleFamily
 import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
+import OddMath.SKM.ScalarChangeCoefficientBasis
+import OddMath.SKM.GroundRingNondegeneracy
+import OddMath.QuiverHecke.GrothendieckIsomorphism
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
 import OddMath.SKM.Rewriting
