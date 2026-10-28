@@ -190,7 +190,8 @@ for a crossing of either parity (no crossing passes a unit or counit).
 Hence `homPostCrossMateInv` is a two-sided inverse whenever the factor mate is
 invertible, and `homPostCrossMate_isIso` supplies this for distinct colours
 from `invNe`. The content shifts, i.e. the comparisons `E_src`, `E_tar` of
-the post/post paragraph of `SwappedActionAssembly.md` §5, are not yet added.
+the post/post paragraph of `SwappedActionAssembly.md` §5, are added in the
+shifted post/post entry below.
 
 **Pre/pre entry (A9) (checked).** `RouquierHomDistinctPreMate.lean` defines
 the factor left mate `leftCrossMate` of a crossing `E_d E_c ⟶ E_b E_a` along
@@ -221,11 +222,34 @@ left mate, by the left-cyclicity relation of the distinct crossing and the
 two inverse relations for `i ≠ j`. The final theorem therefore does not carry
 this hypothesis.
 
-**Next targets.** (i) Post/post with the content shifts `E_src`, `E_tar` on
-top of `homPostCrossMate_eq`. (ii) The odd-dot sign of (11)–(12) as a
-supernatural conjugate, if the assembly needs odd `d` powers before support
-reduction. (iii) Componentwise assembly into `UpwardModuleAction`, which also
-needs the packaged probe and reservoir data. (iv) F3–F4.
+**Shifted post/post entry (checked).** `RouquierHomDistinctPostShift` treats the
+post/post mate with the parity shifts: raising postcomposition by the colour of
+`E₁, E₂` carries `S_p`, and by the colour of `E₃, E₄` carries `S_q`; the shifted
+adjunctions are `homPostAdjunction ⋯ ⋙ S_p ⊣ S_p ⋙ homPostAdjunction ⋯` as in
+`homContentPostAdjunction`. The shifted crossing `homShiftedPostCrossing` is
+`Y ◁ t` transported along the two removals `Θ = S_p(z_q ▷ E₂) ; z_p` with
+coefficient `1`, as in `MixedColourBlockCompletion.md` (4).
+`homShiftedPostCrossMate_eq` proves, for `t` of parity `r`, that its literal mate
+equals `G_src ≫ homPostCrossMate ≫ G_tar`, where `G_src = z_q ; (z_p ▷ F₁) ▷ E₃`
+and `G_tar = z_q⁻¹ ▷ F₂ ; z_p⁻¹ ▷ F₂`, with **no residual sign**. The signs are
+`pq` (moving the outer removal through `S_p(z_q ▷ E₂)`), `pp` (the shifted
+counit), `qp` (the inner removal), `pr` (super interchange of `z_p ▷ F₁` with
+`t`), and `p(p+r)` (the outer shift square); they sum to zero mod 2. This
+confirms the residual sign `1` claimed for (A8) in the assembly note.
+`homShiftedPostCrossMate_isIso` gives invertibility for distinct colours by
+`invNe`, for all parities `p, q`.
+
+**Odd-dot sign (not needed).** The odd-dot sign of (11)–(12) is not an
+obligation of the assembly. A nonzero coefficient `t_{i,j;m,n}` of `Q_{ij}` has
+`p(i) m = 0` in `Z/2`, so for odd `i` every supported exponent `m` is even and
+`d^m` is an even map. The assembly therefore uses the conjugate
+`homPreDotConj (d^m)` of the power itself, as `homDistinctMixedPreMateDot_monomial`
+already does. The relation `c(d^m) = (-1)^{p binom(m,2)} c(d)^m` concerns the odd
+transpose `c(d)` of a single dot, which never occurs.
+
+**Next targets.** (iii) Componentwise assembly into `UpwardModuleAction`, which
+also needs the packaged probe and reservoir data and a check of every relation of
+the presentation. (iv) F3–F4.
 
 **Correction to the equal-colour mixed crossing (A6).** An exact check in the
 smallest mixed case (one odd and one even colour, small probe and reservoir)
