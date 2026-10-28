@@ -462,7 +462,7 @@ acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
 to `dcup i n` with rightmost weight `ν` when `⟨hᵢ, ν⟩ ≤ n` and to `dcap i n`
 when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is used, so
 this does not depend on the even-colour bubble normalization at height `0`
-(both windows are empty there). Also `pathFunctor_additive`. The generator
+(both windows are empty there). The generator
 modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
 
 ## Old-only ELV quotient module

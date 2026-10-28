@@ -22,7 +22,7 @@ The proof uses no property of the generator images inside the windows; in partic
 does not depend on the normalization of the even-colour bubbles at height zero (at height
 zero both windows are empty and every `♦`-cup and cap is assigned zero).
 
-Main declarations: `ProbeReservoir.pathFunctor_additive`, `ProbeReservoir.layerMap_eq_zero`,
+Main declarations: `ProbeReservoir.layerMap_eq_zero`,
 `ProbeReservoir.DcupDcapWindowZero`, `ProbeReservoir.windowZeroRelations`.
 -/
 
@@ -46,12 +46,13 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
 /-- The Hom-sector functor of one strand is additive. -/
-instance step_additive (l : Letter I) (side : Bool) (s : Sector I) (hv : StepValid l side s) :
+private instance step_additive (l : Letter I) (side : Bool) (s : Sector I) (hv : StepValid l side s) :
     (P.step l side s hv).Additive := by
-  obtain ⟨_ | _, i⟩ := l <;> cases side <;> (dsimp only [step, homContentPreE, homContentPreF]; infer_instance)
+  obtain ⟨_ | _, i⟩ := l <;> cases side <;>
+    (dsimp only [step, homContentPreE, homContentPreF]; infer_instance)
 
 /-- The Hom-sector functor of a path is additive. -/
-instance pathFunctor_additive :
+private instance pathFunctor_additive :
     {w : List (Col I X)} → {s t : Sector I} → (p : SPath w s t) → (P.pathFunctor p).Additive
   | _, _, _, .nil _ => by rw [pathFunctor_nil]; infer_instance
   | _, _, _, .cons c side s hv p => by
