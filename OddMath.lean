@@ -26,6 +26,8 @@ import OddMath.SKM.RouquierHomPreMateSlide
 import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomDistinctMixed
 import OddMath.SKM.RouquierHomDistinctMixedPre
+import OddMath.SKM.RouquierHomDistinctMixedDots
+import OddMath.SKM.RouquierHomDistinctPost
 import OddMath.SKM.RouquierHomMixedRational
 import OddMath.SKM.LocallyNilpotentMixedInverse
 import OddMath.SKM.RouquierHomPostCoordinates
@@ -114,6 +116,8 @@ import OddMath.QuiverHecke.CyclotomicAction.Comparison
 import OddMath.QuiverHecke.CyclotomicAction.MixedComparison
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomSnoc
 import OddMath.QuiverHecke.CyclotomicAction.LastToFirstSnoc
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 import OddMath.QuiverHecke.CyclotomicAction.ConcreteRelationExamples
 import OddMath.QuiverHecke.CyclotomicAction.BraidOperators
@@ -1183,6 +1187,9 @@ import OddMath.SKM.ScalarChangeBaseChange
 import OddMath.SKM.ScalarChangeBubbleFamily
 import OddMath.SKM.ScalarChangeMatchingFamily
 import OddMath.SKM.ScalarChangeExamples
+import OddMath.SKM.ScalarChangeCoefficientBasis
+import OddMath.SKM.GroundRingNondegeneracy
+import OddMath.QuiverHecke.GrothendieckIsomorphism
 import OddMath.SKM.Presentation
 import OddMath.SKM.RelationsNF
 import OddMath.SKM.Rewriting
