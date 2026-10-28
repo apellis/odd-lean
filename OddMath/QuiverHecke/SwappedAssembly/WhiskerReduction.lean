@@ -183,6 +183,33 @@ theorem append_right_cancel {l m : List (Col I X)} {s x t : Sector I} {p q : SPa
   simp only [Sigma.mk.injEq, heq_eq_eq, Prod.mk.injEq, true_and] at h
   exact h.1
 
+/-- Sums over the paths of a word `l ++ m ++ r` (up to an equality of words) are sums over
+decompositions. -/
+theorem sum_cast_dec {M : Type*} [AddCommMonoid M] {l m r w : List (Col I X)}
+    (hw : l ++ m ++ r = w) {s t : Sector I} [Fintype (SPath w s t)] [Fintype (Dec l m r s t)]
+    (g : SPath w s t → M) : ∑ pm, g pm = ∑ d : Dec l m r s t, g (d.path.cast hw) :=
+  (Fintype.sum_equiv ((decEquiv l m r s t).symm.trans (castEquiv hw))
+    (fun d => g (d.path.cast hw)) g fun _ => rfl).symm
+
+/-- A sum over decompositions supported on fixed outer parts is a sum over middle parts. -/
+theorem sum_dec_eq {M : Type*} [AddCommMonoid M] {l m r : List (Col I X)}
+    {s x y t : Sector I} (pu : SPath l s x) (pv : SPath r y t) [Fintype (Dec l m r s t)]
+    [Fintype (SPath m x y)] (g : Dec l m r s t → M)
+    (hg : ∀ d : Dec l m r s t, d.outer ≠ (⟨x, pu⟩, ⟨y, pv⟩) → g d = 0) :
+    ∑ d, g d = ∑ mm : SPath m x y, g ⟨(x, y), pu, mm, pv⟩ := by
+  classical
+  let ι : SPath m x y → Dec l m r s t := fun mm => ⟨(x, y), pu, mm, pv⟩
+  have hinj : Set.InjOn ι (Finset.univ : Finset (SPath m x y)) := fun a _ b _ h => by
+    simpa [ι] using h
+  rw [← Finset.sum_image (f := g) hinj]
+  symm
+  refine Finset.sum_subset (Finset.subset_univ _) fun d _ hd => hg d fun h => hd ?_
+  obtain ⟨⟨x', y'⟩, pu', mm, pv'⟩ := d
+  simp only [Dec.outer, Prod.mk.injEq, Sigma.mk.injEq] at h
+  obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := h
+  cases h1; cases h2
+  exact Finset.mem_image_of_mem _ (Finset.mem_univ mm)
+
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]
@@ -521,6 +548,84 @@ theorem res_opList_ext_apply (gens : P.Generators) (ls : List (Layer (SKM.sig D)
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun p _ => ?_
     rw [compList_cons gens L ls hv hc, Preadditive.comp_sum]
+
+/-- The entry of a whiskered chain vanishes between paths with different whisker parts. -/
+theorem compList_whisker_eq_zero (gens : P.Generators) (u : Obj (SKM.sig D))
+    (v : List (SKM.sig D).Colour) (ls : List (Layer (SKM.sig D))) {a b : Obj (SKM.sig D)}
+    (h : Chain a ls b) (hw : a.WhiskerOK u v) {s x y x' y' t : Sector I}
+    (pu : SPath u.word s x) (p : SPath a.word x y) (pv : SPath v y t)
+    (pu' : SPath u.word s x') (q : SPath b.word x' y') (pv' : SPath v y' t)
+    (hne : ((⟨x, pu⟩ : Σ z, SPath u.word s z), (⟨y, pv⟩ : Σ z, SPath v z t)) ≠
+      (⟨x', pu'⟩, ⟨y', pv'⟩)) (Z : P.H t) :
+    compList gens (ls.map (·.whisker u v)) (h.whisker hw) ((pu.append p).append pv)
+      ((pu'.append q).append pv') Z = 0 := by
+  induction ls generalizing a x y pu p pv with
+  | nil =>
+    subst h
+    simp only [List.map_nil, compList]
+    refine dite_eq_right fun hq => hne ?_
+    exact congrArg SPath.Dec.outer (SPath.Dec.path_injective (l := u.word) (m := a.word) (r := v)
+      (a₁ := ⟨(x, y), pu, p, pv⟩) (a₂ := ⟨(x', y'), pu', q, pv'⟩) hq)
+  | cons L ls ih =>
+    obtain ⟨hv, rfl, hc⟩ := h
+    have hw' : L.cod.WhiskerOK u v := Chain.whiskerOK (ls := [L]) ⟨hv, rfl, rfl⟩ hw
+    erw [compList.eq_2]
+    let _ : Fintype (SPath.Dec u.word L.cod.word v s t) := Fintype.ofFinite _
+    let _ : Fintype (SPath (L.whisker u v).cod.word s t) := Fintype.ofFinite _
+    rw [SPath.sum_cast_dec (congrArg Obj.word (L.whisker_cod u v).symm)]
+    refine Finset.sum_eq_zero fun d _ => ?_
+    obtain ⟨⟨x'', y''⟩, pu'', m, pv''⟩ := d
+    by_cases hd : ((⟨x'', pu''⟩ : Σ z, SPath u.word s z), (⟨y'', pv''⟩ : Σ z, SPath v z t)) =
+        (⟨x, pu⟩, ⟨y, pv⟩)
+    · simp only [Prod.mk.injEq, Sigma.mk.injEq] at hd
+      obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := hd
+      cases h1; cases h2
+      erw [compList_cast gens _ (L.whisker_cod u v).symm (hc.whisker hw'), ih hc hw' _ m _ hne]
+      simp
+    · erw [compLayer_whisker_eq_zero gens L u v pu p pv pu'' m pv'' (Ne.symm hd)]
+      simp
+
+/-- **The entry of a whiskered chain** at whiskered paths: the entry of the chain, under the
+left whisker, at the object of the right whisker. -/
+theorem compList_whisker (gens : P.Generators) (u : Obj (SKM.sig D))
+    (v : List (SKM.sig D).Colour) (ls : List (Layer (SKM.sig D))) {a b : Obj (SKM.sig D)}
+    (h : Chain a ls b) (hw : a.WhiskerOK u v) {s x y t : Sector I} (pu : SPath u.word s x)
+    (p : SPath a.word x y) (q : SPath b.word x y) (pv : SPath v y t) (Z : P.H t) :
+    compList gens (ls.map (·.whisker u v)) (h.whisker hw) ((pu.append p).append pv)
+        ((pu.append q).append pv) Z =
+      eqToHom (P.pathFunctor_append_append_obj pu p pv Z) ≫
+        (P.pathFunctor pu).map (compList gens ls h p q ((P.pathFunctor pv).obj Z)) ≫
+        eqToHom (P.pathFunctor_append_append_obj pu q pv Z).symm := by
+  induction ls generalizing a pu p pv with
+  | nil =>
+    subst h
+    simp only [List.map_nil, compList, SPath.cast_self]
+    by_cases hpq : p = q
+    · subst hpq
+      rw [dite_eq_left rfl, dite_eq_left rfl]
+      simp
+    · rw [dite_eq_right fun hq => hpq ?_, dite_eq_right hpq]
+      · simp
+      have := SPath.Dec.path_injective (l := u.word) (m := a.word) (r := v)
+        (a₁ := ⟨(x, y), pu, p, pv⟩) (a₂ := ⟨(x, y), pu, q, pv⟩) hq
+      simpa using this
+  | cons L ls ih =>
+    obtain ⟨hv, rfl, hc⟩ := h
+    have hw' : L.cod.WhiskerOK u v := Chain.whiskerOK (ls := [L]) ⟨hv, rfl, rfl⟩ hw
+    let _ : Fintype (SPath L.cod.word x y) := Fintype.ofFinite _
+    rw [compList_cons gens L ls hv hc, Functor.map_sum, Preadditive.sum_comp,
+      Preadditive.comp_sum]
+    erw [compList.eq_2]
+    let _ : Fintype (SPath.Dec u.word L.cod.word v s t) := Fintype.ofFinite _
+    let _ : Fintype (SPath (L.whisker u v).cod.word s t) := Fintype.ofFinite _
+    rw [SPath.sum_cast_dec (congrArg Obj.word (L.whisker_cod u v).symm), SPath.sum_dec_eq pu pv]
+    · refine Finset.sum_congr rfl fun m _ => ?_
+      erw [compLayer_whisker gens L u v pu p m pv,
+        compList_cast gens _ (L.whisker_cod u v).symm (hc.whisker hw'), ih hc hw' pu m pv]
+      simp
+    · rintro ⟨⟨x'', y''⟩, pu'', m, pv''⟩ hd
+      erw [compLayer_whisker_eq_zero gens L u v pu p pv pu'' m pv'' (Ne.symm hd)]
+      simp
 
 end ProbeReservoir
 
