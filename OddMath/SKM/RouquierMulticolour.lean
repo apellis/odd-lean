@@ -56,6 +56,7 @@ def crossMate {a b c d : B} {E₁ : a ⟶ b} {F₁ : b ⟶ a} {E₂ : d ⟶ c} {
   (associator F₁ E₁ E₄).inv ▷ F₂ ≫
   (A₁.counit ▷ E₄) ▷ F₂ ≫ (leftUnitor E₄).hom ▷ F₂
 
+omit [TwoSupercategory k B] in
 /-- On equal colours the mate is the existing `rouquierMate`. -/
 theorem crossMate_eq_rouquierMate {a b c : B} {E₁ : a ⟶ b} {F₁ : b ⟶ a}
     {E₂ : b ⟶ c} {F₂ : c ⟶ b}

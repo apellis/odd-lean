@@ -63,7 +63,7 @@ def closedAct (t : List I) :
     rw [map_smul, SKM.bubAt_id, map_smul, A.act_id]
     rfl
 
-variable (cs) in
+
 /-- The bubble algebra acting on `V t` through `β` of (1.22). -/
 def bubbles (t : List I) : SKM.SYM D k →ₐ[k] Module.End k (A.V t) :=
   (A.closedAct t).comp (SKM.betaSYM cs μ)
@@ -71,7 +71,7 @@ def bubbles (t : List I) : SKM.SYM D k →ₐ[k] Module.End k (A.V t) :=
 theorem bubbles_apply (t : List I) (a : SKM.SYM D k) :
     A.bubbles cs t a = A.act t t (SKM.bubAt D Sc μ (upWord t) (SKM.betaSYM cs μ a)) := rfl
 
-variable (cs) in
+
 /-- An upward action, a vacuum, reservoir coordinates and their recovery maps
 give the reservoir-vacuum consumer. The bubble field is the derived action. -/
 def toReservoirVacuumEvaluation (cutoff : I → ℕ) (vacuum : ∀ t, A.V t)
