@@ -2571,8 +2571,14 @@ diagrammatic order). For the Rouquier crossing `t = -ψ` these are exactly
 `c₁ = φ(c)` the appended crossing and `c₂` the last-pair crossing on three strands of
 colour `i`, `c₁ c₂ c₁ = c₂ c₁ c₂` on each word (`induction_braid_same`, positional
 `braid_ne`), in the affine algebra and at every height (`heightLastCrossing_braid_same`).
-The functor half (three-fold corner comparison and transport through three successor blocks)
-is still open.
+`GlobalHeightBraid.lean` (checked) gives the functor half at every height: the transported
+crossing acts on idempotent tensors `e₁ ⊗ e₀ ⊗ w` by left multiplication by the last-pair
+crossing (`heightSuperInductionCrossing_idempotent`); equal-parity maps out of three
+inductions agreeing on triple idempotent tensors are equal (`heightSuperInduction₃_hom_ext`);
+hence, with inner crossing `Ind(t)` and outer crossing `t_{Ind}`,
+`outer ≫ inner ≫ outer = inner ≫ outer ≫ inner` (`heightSuperInduction_braid_same`).
+The signed Rouquier crossing `-ψ` satisfies the same relation ((-1)³ on both sides).
+The transport through three successor blocks to weight spaces is still open.
 Stream H restart point (paused 2026-10-26): (a) slides to weight blocks: lift
 `heightInduction_slide_left/right` through `heightBlockInduction₂`/`fullLiftTrans` and the
 `globalWeightCrossVia`/`globalWeightDotVia` eqToHom transports, in the shape of
