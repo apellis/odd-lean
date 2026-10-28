@@ -3987,24 +3987,20 @@ evaluation sign with `placementSign` on homogeneous `b ⊗ f`.
   is `(1-z)^(M_i)/E_i(-z)` at even and `(1+z)^(M_i)/C_i(-z)` at odd colours.
 - `VacuumMoments cs A t raw M N` (Prop structure): `c_(μ,i)·bubRs(s)` (even) and
   `c_(μ,i)·bubRs(2s)` (odd), acting on `V t`, equal `raw` of the coefficients of the
-  moment series, and `oddBubble` acts as `raw((-1)^(N_i+1) δ_i)`. Even colours with
-  `hᵢ(μ) = 0` are the separate field `even_zero`.
+  moment series, and `oddBubble` acts as `raw((-1)^(N_i+1) δ_i)`.
 - `VacuumMoments.bubbles_eq`: then `A.bubbles cs t a = raw (probeSubstitution M N a)`
   for all `a`; `vacuum_bubbles_eq` is the case `M = probeExponent`, `N = reservoirLevel`,
   i.e. the field `SwappedVacuumBlock.bubbles_eq`. Proof: Brundan–Ellis (1.19)/(5.4) as
   `beta_h`, `betaD_h` (hold in the presentation), `Sym.e_h_rel`, uniqueness of left
   inverses of a series with constant term one (`eq_of_sum_mul_eq_zero`), `SYM.hom_ext`.
 
-Open (bears on the truth of `even_zero` and of the even line of (A16) at height zero):
-with the corrected entry `a = (y-x)⁻¹` of (A6), the principal inverse `j = s⁻¹` used at
-`H = 0` changes sign, so every normalized right bubble `K_l`, `l ≥ 1`, of an even colour
-of height zero changes sign while `K_0 = 1`. If so, the moment series there is
-`2 - (1-z)^P/E(-z)` and `Σ beta(e_r) z^r = E(-z)/(2E(-z) - (1-z)^P)`, which is not of
-the form `θ` and would require changing `vacuumSubstitution` at those colours (the new
-map is still unitriangular for the coefficient weight). The written derivations have
-not yet been redone for the corrected entry; positive and negative heights are not
-affected (the inverse column/row conditions are invariant under `s ↦ -s`), nor are odd
-colours.
+The moment formula is uniform in the height. At even colours of height zero (principal
+inverse `j = s⁻¹`, corrected entry `a = (y-x)⁻¹` of (A6)) the leftward-cup moments are
+`m_l = -[z^l] E(-z)/(1-z)^P` (the sign `-q` sits on the leftward cup only) and the
+right moments `m'_l` carry no sign, so `B = 1 - Σ m_l z^l`, `B' = 1 + Σ m'_l z^l` satisfy
+the infinite Grassmannian relation `B·B' = 1` with `B' = (1-z)^P/E(-z)`, as in
+`even`; moving the sign to the other orientation breaks it at order `z²`. Hence
+`vacuumSubstitution` is unchanged and `β(e_r) = (-1)^r [z^r] B = e_r +` lower.
 
 Remaining: derive the moment formulas from generator images of the swapped action
 (slide (2), inverse column (3) and the probe/reservoir polynomials of

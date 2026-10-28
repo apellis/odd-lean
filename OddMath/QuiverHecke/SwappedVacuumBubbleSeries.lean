@@ -29,12 +29,11 @@ source-placed bubble algebra acts through `raw ∘ θ`. The proof uses Brundan�
 every action), and the uniqueness of the left inverse of a series with constant
 term one (`eq_of_sum_mul_eq_zero`).
 
-The even colours with `hᵢ(μ) = 0` are a separate field `even_zero` of
-`VacuumMoments`: at the vacuum schedule these are the colours of probe height
-zero, whose moments come from the principal inverse of the equal-colour
-crossing, and the even line of (A16) there is affected by the corrected even
-crossing entry `a = (y-x)⁻¹` of `SwappedActionAssembly.md` (A6). This file
-proves nothing about which moment formula holds; it records the implication.
+The moment formula is uniform in the height: at even colours of height zero
+(probe height zero, moments from the principal inverse of the equal-colour
+crossing) the right moments are again `(1-z)^P/E(-z)`, with the sign `-q` of the
+corrected even crossing entry on the leftward cup only, as the infinite
+Grassmannian relation requires.
 -/
 
 noncomputable section
@@ -152,17 +151,11 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 /-- The right-bubble moments of the source sector at probe exponents `M` and
 reservoir levels `N`, in terms of the raw coefficient action `raw`: (12) and
 (14) of `SwappedVacuumNonpositiveBubbles.md`, and their positive-height analogues
-in `SwappedVacuumBubbles.md`. Even colours with `hᵢ(μ) = 0` form the separate
-field `even_zero`. -/
+in `SwappedVacuumBubbles.md`. -/
 structure VacuumMoments {μ : X} (A : UpwardModuleAction D Sc μ) (t : List I)
     (raw : SKM.SYM D k →ₐ[k] Module.End k (A.V t)) (M N : I → ℕ) : Prop where
-  /-- Even colours of nonzero height: `Σ c·bubRs(l) z^l = (1-z)^(M_i)/E_i(-z)`. -/
-  even : ∀ i (_ : D.parity i = 0), D.h i μ ≠ 0 → ∀ s : ℕ,
-    A.closedAct t ((cs.c μ i : k) • SKM.bubRs cs i μ s) =
-      raw (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
-        (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
-  /-- Even colours of height zero, the same formula. -/
-  even_zero : ∀ i (_ : D.parity i = 0), D.h i μ = 0 → ∀ s : ℕ,
+  /-- Even colours: `Σ c·bubRs(l) z^l = (1-z)^(M_i)/E_i(-z)`. -/
+  even : ∀ i (_ : D.parity i = 0) (s : ℕ),
     A.closedAct t ((cs.c μ i : k) • SKM.bubRs cs i μ s) =
       raw (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k M) i)))
@@ -271,9 +264,7 @@ theorem bubbles_eq (h : VacuumMoments cs A t raw M N) (a : SKM.SYM D k) :
     rintro (⟨i, n⟩ | i)
     · show A.bubbles cs t (SKM.SYM.e D k i n) = _
       by_cases hi : D.parity i = 0
-      · by_cases hh : D.h i μ = 0
-        · exact bubbles_e_even i hi (h.even_zero i hi hh) n
-        · exact bubbles_e_even i hi (h.even i hi hh) n
+      · exact bubbles_e_even i hi (h.even i hi) n
       · have hi' := SKM.zmod2_eq_one_of_ne_zero hi
         exact bubbles_e_odd i hi' (h.odd i hi') n
     · show A.bubbles cs t (SKM.SYM.delta D k i) = _
