@@ -627,6 +627,108 @@ theorem compList_whisker (gens : P.Generators) (u : Obj (SKM.sig D))
       erw [compLayer_whisker_eq_zero gens L u v pu p pv pu'' m pv'' (Ne.symm hd)]
       simp
 
+/-! ## Entries of diagrams and of linear combinations -/
+
+/-- The entry of a diagram between summand paths of its boundaries. -/
+def compDiag (gens : P.Generators) {a b : Obj (SKM.sig D)} (d : a ⟶ b) {s t : Sector I}
+    (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t) :
+    (P.pathFunctor p).obj Z ⟶ (P.pathFunctor q).obj Z :=
+  compList gens (Diagram.layers d) (Diagram.chain d) p q Z
+
+/-- **The entry of a linear combination of diagrams** between summand paths of its
+boundaries. -/
+def compEval (gens : P.Generators) {a b : Obj (SKM.sig D)} (X : (a ⟶ b) →₀ k)
+    {s t : Sector I} (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t) :
+    (P.pathFunctor p).obj Z ⟶ (P.pathFunctor q).obj Z :=
+  X.sum fun d r => r • compDiag gens d p q Z
+
+@[simp] theorem Mod.zero_apply {a : Obj (SKM.sig D)} (s : Sector I)
+    (t : {t : Sector I // P.wt t = a.endR}) (p : SPath a.word s t.1) :
+    (0 : P.Mod Gs Ys a) s t p = 0 :=
+  rfl
+
+theorem Mod.sum_apply {a : Obj (SKM.sig D)} {ι : Type*} (S : Finset ι) (f : ι → P.Mod Gs Ys a)
+    (s : Sector I) (t : {t : Sector I // P.wt t = a.endR}) (p : SPath a.word s t.1) :
+    (∑ i ∈ S, f i) s t p = ∑ i ∈ S, f i s t p := by
+  classical
+  induction S using Finset.induction_on with
+  | empty => rfl
+  | insert i S hi ih => rw [Finset.sum_insert hi, Mod.add_apply, ih, Finset.sum_insert hi]
+
+/-- The entry of a whiskered linear combination at whiskered paths. -/
+theorem compEval_whisker (gens : P.Generators) (u : Obj (SKM.sig D))
+    (v : List (SKM.sig D).Colour) {a b : Obj (SKM.sig D)} (X : (a ⟶ b) →₀ k)
+    (hw : a.WhiskerOK u v) {s x y t : Sector I} (pu : SPath u.word s x) (p : SPath a.word x y)
+    (q : SPath b.word x y) (pv : SPath v y t) (Z : P.H t) :
+    (X.sum fun d r => r • compList gens ((Diagram.layers d).map (·.whisker u v))
+        ((Diagram.chain d).whisker hw) ((pu.append p).append pv) ((pu.append q).append pv) Z) =
+      eqToHom (P.pathFunctor_append_append_obj pu p pv Z) ≫
+        (P.pathFunctor pu).map (compEval gens X p q ((P.pathFunctor pv).obj Z)) ≫
+        eqToHom (P.pathFunctor_append_append_obj pu q pv Z).symm := by
+  simp only [compEval, compDiag, Finsupp.sum, Functor.map_sum, Functor.map_smul,
+    Preadditive.sum_comp, Preadditive.comp_sum, Linear.smul_comp, Linear.comp_smul]
+  refine Finset.sum_congr rfl fun d _ => ?_
+  rw [compList_whisker (hw := hw)]
+
+/-- **Reduction of a whiskered evaluation to entries**: a linear combination of diagrams
+whose entries all vanish evaluates to zero after every whiskering. -/
+theorem evalW_eq_zero_of_compEval (gens : P.Generators) {a b : Obj (SKM.sig D)}
+    (X : (a ⟶ b) →₀ k)
+    (hX : ∀ {s t : Sector I} (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t),
+      compEval gens X p q Z = 0)
+    (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour) (hw : a.WhiskerOK u v) :
+    (P.layerRep Gs Ys gens).toLocal.evalW (a.whisker u v) (b.whisker u v) u v X = 0 := by
+  classical
+  ext x : 1
+  funext s t Q
+  rw [LocalInterpretation.evalW, Finsupp.linearCombination_apply]
+  simp only [LinearMap.zero_apply]
+  rw [Finsupp.sum, LinearMap.sum_apply, Mod.sum_apply, Mod.zero_apply]
+  let _ : Fintype (SPath (a.whisker u v).word s t.1) := Fintype.ofFinite _
+  rcases X.support.eq_empty_or_nonempty with hX0 | ⟨d0, -⟩
+  · rw [hX0, Finset.sum_empty]
+  have hend : P.wt t.1 = (a.whisker u v).endR := t.2.trans ((Diagram.chain d0).whisker hw).endR_eq
+  have hterm : ∀ d : a ⟶ b,
+      ((X d • ((P.layerRep Gs Ys gens).toLocal.res (b.whisker u v) ∘ₗ
+        (P.layerRep Gs Ys gens).toLocal.opList ((Diagram.layers d).map (·.whisker u v)) ∘ₗ
+        (P.layerRep Gs Ys gens).toLocal.ext (a.whisker u v))) x :
+          P.Mod Gs Ys (b.whisker u v)) s t Q =
+      ∑ pp, x s ⟨t.1, hend⟩ pp ≫
+        (X d • compList gens _ ((Diagram.chain d).whisker hw) pp Q (Ys t.1)) := by
+    intro d
+    rw [LinearMap.smul_apply, Mod.smul_apply, LinearMap.comp_apply, LinearMap.comp_apply,
+      res_opList_ext_apply gens _ ((Diagram.chain d).whisker hw), Finset.smul_sum]
+    simp only [Linear.comp_smul]
+  erw [Finset.sum_congr rfl fun d _ => hterm d]
+  refine (Finset.sum_comm).trans (Finset.sum_eq_zero fun pp _ => ?_)
+  rw [← Preadditive.comp_sum]
+  obtain ⟨⟨⟨x1, y1⟩, pu, p, pv⟩, rfl⟩ :
+      ∃ d : SPath.Dec u.word a.word v s t.1, d.path = pp := ⟨_, SPath.path_decOf _ _ pp⟩
+  obtain ⟨⟨⟨x2, y2⟩, pu', q, pv'⟩, rfl⟩ :
+      ∃ e : SPath.Dec u.word b.word v s t.1, e.path = Q := ⟨_, SPath.path_decOf _ _ Q⟩
+  by_cases hout : ((⟨x1, pu⟩ : Σ z, SPath u.word s z), (⟨y1, pv⟩ : Σ z, SPath v z t.1)) =
+      (⟨x2, pu'⟩, ⟨y2, pv'⟩)
+  · simp only [Prod.mk.injEq, Sigma.mk.injEq] at hout
+    obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := hout
+    cases h1; cases h2
+    have := compEval_whisker gens u v X hw pu p q pv (Ys t.1)
+    simp only [Finsupp.sum] at this
+    erw [this, hX]
+    simp
+  · refine (congrArg _ (Finset.sum_eq_zero fun d _ => ?_)).trans (Limits.comp_zero)
+    erw [compList_whisker_eq_zero gens u v _ (Diagram.chain d) hw pu p pv pu' q pv' hout]
+    simp
+
+/-- **Reduction of a relation to its entries**: a relation of the presentation holds in the
+swapped layer representation (under every whiskering) once all entries of the unwhiskered
+relation vanish. -/
+theorem relHolds_of_compEval (gens : P.Generators) (r : SKM.Rel D)
+    (h : ∀ {s t : Sector I} (p : SPath ((SKM.pres D Sc).dom r).word s t)
+      (q : SPath ((SKM.pres D Sc).cod r).word s t) (Z : P.H t),
+      compEval gens ((SKM.pres D Sc).rel r) p q Z = 0) :
+    RelHolds Sc (P.layerRep Gs Ys gens) r := fun u v hw =>
+  evalW_eq_zero_of_compEval gens _ h u v hw
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
