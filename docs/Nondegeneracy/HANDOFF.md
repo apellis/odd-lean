@@ -4145,3 +4145,35 @@ nonpositive note). Consumer: `scripts/NonVacuity/SwappedVacuumBubbleSeries.lean`
 Remaining: the basis values themselves (`SwappedVacuumCoordinates.md` §§2–7) from
 generator images of the swapped action. Consumer:
 `scripts/NonVacuity/SwappedVacuumBasisEvaluation.lean`.
+
+### The vacuum basis values from a natural corner evaluation (checked)
+
+`SwappedVacuumCornerEvaluation.lean` derives the basis values above
+(`SwappedVacuumCoordinates.md` §§2–7) from an explicit interface for the part of the
+swapped action not yet assembled.
+
+- `VacuumCornerEvaluation D Sc A s raw vacuum` (the open input, stated as a structure):
+  submodules `K t` of `coefficientObj s ⟶ coefficientObj t` (the transformed ideal of §5),
+  linear maps `ev t : A.V t → (s ⟶ t) ⧸ K t` (evaluation at the reservoir corner pulled
+  back through `U` of §4), the generator square `ev_layer` (if `ev v = [y]`, then a
+  generating layer `L` applied to `v` evaluates to `[y ≫ (1 ⊗ L)]`, no sign), and
+  `ev_vacuum : ev s (raw a · vac) = [a ⊗ 1]` (§3).
+- `coefficientHom_one_comp`: `(1 ⊗ f) ≫ (b ⊗ g) = b ⊗ (f ≫ g)` for every `g` (the even
+  unit coefficient gives Koszul sign `1` against each homogeneous diagram).
+- `VacuumCornerEvaluation.ev_act`: the square for every affine morphism, by induction
+  over layers (`hom_induction_layers`).
+- `sourceCoefficientHom_id_comp`: `(a ⊗ 1) ≫ (1 ⊗ f) = σ(a ⊗ f)`, via
+  `reservoirSourceOrder_source` (`placementSign = reservoirSourceOrder`).
+- `VacuumCornerEvaluation.vacuum_evaluation`: (7),
+  `ev(act(α f)(raw a · vac)) = [σ(a ⊗ f)]`; `basis_values`: the hypothesis of
+  `SwappedVacuumBlock.ofMoments`.
+- `SwappedVacuumBlock.ofCornerEvaluation`: a vacuum block from `VacuumMoments`, a corner
+  evaluation and `ideal_le` for `K t'`.
+
+Remaining inputs, all in `VacuumCornerEvaluation`: `ev_layer` from the word values of
+§2 (`V_t(M) = B e_ν(t) ⊗ M`, dot ↦ `R_x`, crossing ↦ `ε_ij R_τ`) and `U` of §4 together
+with the closure of the §5 ideal; `ev_vacuum` from the coefficient action of §3. Not
+yet connected to the abstract `SwappedAssembly` layer representation, which is not yet
+specialized to the reservoir corner. Consumer:
+`scripts/NonVacuity/SwappedVacuumCornerEvaluation.lean` (includes the quotient by the
+whole Hom space as an instance of the structure).
