@@ -83,7 +83,7 @@ theorem sameIntertwiner_whiskerRight (l r s : List I) (i : I) :
   · simp only [gEven, phiEven, map_sub, map_mul, map_add, map_one, hx, hy, hc]
 
 /-- Transport of a same-colour intertwiner along an equality of words. -/
-theorem sameIntertwiner_congr {w w' : List I} (h : w = w') (a : ℕ) (i : I) :
+theorem sameIntertwiner_eq_transport {w w' : List I} (h : w = w') (a : ℕ) (i : I) :
     sameIntertwiner D Sc w a i =
       eqToHom (congrArg (fun t => (pres D Sc).obj (ob D t)) h) ≫
         sameIntertwiner D Sc w' a i ≫
@@ -101,7 +101,7 @@ theorem intertwinerHom_congr {l l' r r' : List I} (hl : l = l') (hr : r = r') (i
   simp
 
 /-- Transporting a class along equalities of its source and target words. -/
-theorem cl_eq_eqToHom_comp {t t' u u' : List I} {gs : List PG} (e : t = u) (e' : t' = u')
+theorem cl_eq_transport {t t' u u' : List I} {gs : List PG} (e : t = u) (e' : t' = u')
     (h : SChain t (pl t gs) t') (h' : SChain u (pl u gs) u') :
     cl D Sc t t' gs h =
       eqToHom (congrArg (fun w => (pres D Sc).obj (ob D w)) e) ≫ cl D Sc u u' gs h' ≫
@@ -121,7 +121,7 @@ theorem intertwinerHom_whiskerRight (l r s : List I) (i j : I) :
   by_cases h : i = j
   · subst h
     rw [intertwinerHom_self, intertwinerHom_self, sameIntertwiner_whiskerRight,
-      sameIntertwiner_congr D Sc (show l ++ [i, i] ++ r ++ s = l ++ [i, i] ++ (r ++ s) by simp)]
+      sameIntertwiner_eq_transport D Sc (show l ++ [i, i] ++ r ++ s = l ++ [i, i] ++ (r ++ s) by simp)]
   · have hf : Fits (l ++ [i, j] ++ r).length [.cross l.length] := by
       intro g hg
       simp only [List.mem_singleton] at hg
@@ -129,7 +129,7 @@ theorem intertwinerHom_whiskerRight (l r s : List I) (i j : I) :
       simp [PG.pos, PG.width]
     rw [intertwinerHom_of_ne D Sc _ _ h, intertwinerHom_of_ne D Sc _ _ h,
       cl_whiskerRight D Sc [.cross l.length] _ s hf]
-    rw [cl_eq_eqToHom_comp D Sc (show l ++ [i, j] ++ r ++ s = l ++ [i, j] ++ (r ++ s) by simp)
+    rw [cl_eq_transport D Sc (show l ++ [i, j] ++ r ++ s = l ++ [i, j] ++ (r ++ s) by simp)
       (show l ++ [j, i] ++ r ++ s = l ++ [j, i] ++ (r ++ s) by simp) _
       (sChain_crossAt l (r ++ s) i j)]
 
