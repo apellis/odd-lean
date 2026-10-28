@@ -484,8 +484,21 @@ generator images of item 1 below.
    - `Generators/Leftward.lean`: `lcross`, `dcup`, `dcap` from the inverse
      entries (`SwappedHomInversion.md`).
    - `Generators.lean`: assembles the four into a `Generators` value.
-2. `WhiskerReduction.lean` (shared helper): reduces `evalW` of a whiskered
-   relation for `P.layerRep` to the block-level identity between components.
+2. `WhiskerReduction.lean` (shared helper, **checked**): reduces `evalW` of a
+   whiskered relation for `P.layerRep` to the unwhiskered matrix entries.
+   `compLayer gens L p q Z : F_p Z ⟶ F_q Z` is the entry of a layer between
+   summand paths of its boundaries (the generator image in the middle, the
+   identity on the whiskers, zero when the outer parts differ); `compList`,
+   `compDiag`, `compEval` are the entries of a chain, a diagram and a linear
+   combination (sums over intermediate paths). `res_opList_ext_apply`: the
+   evaluation of a chain in `layerRep` is the matrix product of its entries
+   with the input family. `compList_whisker`, `compList_whisker_eq_zero`: the
+   entries of `u ⊗ d ⊗ v` are block diagonal in the outer paths, with block
+   `F_{pu}` applied to the entry of `d` at `F_{pv} Z`. Consumer interface:
+   `relHolds_of_compEval gens r h : RelHolds Sc (P.layerRep Gs Ys gens) r`
+   from `h : ∀ s t p q Z, compEval gens ((SKM.pres D Sc).rel r) p q Z = 0`,
+   for all summand paths `p`, `q` of the unwhiskered boundaries and all
+   `Z : P.H t`.
 3. Relation modules, each proving its obligation for `P.layerRep Gs Ys gens`:
    - `Quad.lean`: `QuadRelations`.
    - `Slides.lean`: `SlideRelations`.
