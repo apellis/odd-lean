@@ -1359,3 +1359,4 @@ import OddMath.QuiverHecke.FiniteColourNondegeneracy
 import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
+import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal

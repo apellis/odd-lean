@@ -4526,5 +4526,19 @@ Layer glue (checked, `SwappedVacuum/LayerAction.lean`):
   this is `P.layerMap (P.swappedGens c L) ((label D μ).layer L')`. So `ev_layer` is a
   statement about the swapped layer matrices of the labelled layers, entry by entry.
 
+Transformed ideal and the §6 bound (checked, `SwappedVacuum/TransformedIdeal.lean`):
+
+- `TransformedGenerator cutoff T`, `TransformedIdeal cutoff T s t`: the ideal `K_(N,T)` of
+  `SwappedVacuumCoordinates.md` §5, i.e. the two-sided span of `J_N`
+  (`elvCoefficientIdeal`), the coefficients in `T`, and the last-position polynomials (4)
+  `transformedCyclotomic v i N = Σ_j (-1)^(p(i) binom(j,2)) c_(i,j) ⊗ y_last^j` in the words
+  `v ++ [i]` (`c_(i,j)` = `factorCoefficient`, the literal monic factor coefficients).
+- `lastBoundaryPolynomial_mem_score`, `transformedIdeal_le_extendedAtLeast`: bound (5) when
+  `N₀ ≤ N_i` and every coefficient in `T` has weight `≥ N₀`;
+  `transformedIdeal_quotient_injective_on_extendedAtMost`: detection (6).
+- `transformedIdeal_le_vacuumWindow`: at the reservoir levels this is the `ideal_le` field of
+  `SwappedVacuumObservation`. So `ideal_le` follows from `corner.K t' ≤ TransformedIdeal …`.
+  The identity `K = U⁻¹(I_N)`, which needs the map `U` of §4, remains open.
+
 The written vacuum-recovery argument (schedule `P_i - N_i = h_i(μ)`, bubble series, §6
 bound) was checked against these interfaces; no discrepancy was found.
