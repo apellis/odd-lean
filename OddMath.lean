@@ -35,6 +35,7 @@ import OddMath.SKM.RouquierHomMixedInterchange
 import OddMath.SKM.RouquierHomDistinctMixed
 import OddMath.SKM.RouquierHomDistinctMixedPre
 import OddMath.SKM.RouquierHomDistinctMixedDots
+import OddMath.SKM.RouquierHomDistinctMixedPostDots
 import OddMath.SKM.RouquierHomDistinctPost
 import OddMath.SKM.RouquierHomDistinctPostShift
 import OddMath.SKM.RouquierHomDistinctPreMate
@@ -1347,6 +1348,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePair
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorDots
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.QuadSame
 import OddMath.QuiverHecke.SwappedAssembly.SlideSame
@@ -1384,6 +1386,7 @@ import OddMath.QuiverHecke.HalfTurn.Composite
 import OddMath.QuiverHecke.HalfTurn.CornerIdeal
 import OddMath.QuiverHecke.HalfTurn.Involution
 import OddMath.QuiverHecke.HalfTurn.IdealIdentification
+import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
