@@ -1020,6 +1020,13 @@ Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
 (`ε = (-1)^{pᵢpⱼ}`), then `ψ Q_ij(x₁, y) - Q_ij(x₂, y) ψ` equals the correction term of
 (1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
 the mixed interchanges to this form (block `PRP` first).
+Block `PRP` of `iji` (proposed, unchecked; WIP file
+`SwappedAssembly/BraidEq/ReservoirMiddle.lean` on
+`research/odd-nondegeneracy-wip/iji-reservoir`, paths and their uniqueness only):
+`braidLeft = G⁻¹ ψ' G Q` and `braidRight = G⁻¹ Q_ij(x₂, y') ψ' G`, with
+`G = P_i(J_{t₁})`, `ψ' = preCrossSame i t (R_j Z)`; the pair lemma `ψ' G J = G J R_j(ψ)`
+and `comp_qExpr` reduce this to `comp_qExpr_sub`. Remaining blocks: `RPR`, `PPP`, `RRR`,
+`{PPR, RPP}`, `{PRR, RRP}`; then patterns `iij`, `ijj`, `jii`, `ijk`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
