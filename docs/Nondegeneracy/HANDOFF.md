@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV signed QP regularity
+
+`ELVSignedMovingPower.lean` proves the moving-power coordinate shift for every
+exponent d, including odd moving dots. The old coefficient is transformed by
+`oldTwist (d • D.parity i)`, on its total coefficient-plus-diagram parity.
+`ELVRelationRegularity.lean` expands the prescribed deformed polynomial and
+uses its proved top coefficient 1 to establish `projection_relation_regular`.
+No monicity or filtration bound is supplied as a hypothesis to that theorem.
+
+`ELVQPRegularity.lean` proves `projection_qp_relation_regular`: for every i, v,
+w and full-coefficient h, vanishing of
+
+    projection (affineUnit (qpProduct i v) ≫ relation i v ≫ h)
+
+implies `projection h = 0`. The distinct-colour factors use their scalar unit
+`t i x` and strict interior exponent bounds; repeated-odd factors are cancelled
+as two linear differences, and repeated-even factors retain their minus sign.
+Every lower-degree coordinate vanishes above the finite input support. The
+leading coordinate is a unit times the invertible total-parity twist, even
+when old coefficients have zero divisors. Empty words and zero cutoffs are
+included, without finite-colour, domain, flatness or nonzero-model assumptions.
+
+`projection_move_relation_regular` combines this with `qp_projection_product`
+for the prescribed `moveHom ≫ lastToFirstHom` composite. This supplies the raw
+injectivity input of `DeformedSquareResolution.md` §3. Assembly with Q descent
+to prove `Function.Injective pMap` remains separate, as do B[s]-linearity,
+ideal-sum exactness and projectivity. General odd nondegeneracy is not proved.
+
 ## Full ELV P descent
 
 `ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
