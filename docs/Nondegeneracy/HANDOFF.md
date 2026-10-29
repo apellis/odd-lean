@@ -1117,7 +1117,20 @@ window) and `isIso_caseC_of_neg` (source `X ⊕ O^{d+b}`, target `Y ⊕ Oᵈ`; f
 After elimination the reduced corner is `q^l • (x^{∓l} ≫ s ≫ y^{±l})` by the window identities
 (4), and the reduced window is the probe window, or its shift (5), (6), conjugated by these
 powers (`IsCapInverse.conj`, `IsCupInverse.conj`) with slots reordered and multiplied by units.
-With (a), (d) this covers all four cases of §3. Next: the extraction (16)–(19).
+With (a), (d) this covers all four cases of §3.
+
+**Extraction (checked).** `SwappedAssembly/CentralInverse/Extraction.lean` proves (16)–(19) of
+§4 for any invertible `M = gMap s B Cc E : X ⊕ Oᴸ ⟶ Y ⊕ Oᵀ`, using only the four block equations
+of `M ≫ M⁻¹ = 𝟙` and `M⁻¹ ≫ M = 𝟙`. `ProbeWindow.isIso_capResidual`: if `(j, A)` inverts the cap
+window `[s; V]`, the residual `capResidual B Cc E j A : O^{h ⊕ L} ⟶ Oᵀ` (entries `A n ≫ Cc r`
+and `E l r - B l ≫ j ≫ Cc r`) is invertible, with inverse entries `B' r ≫ V n`, `E' r l`.
+`ProbeWindow.isIso_cupResidual`: if `(j, D)` inverts the cup window `[s, U]`, the residual
+`cupResidual B Cc E j D : Oᴸ ⟶ O^{T ⊕ b}` (entries `E l r - B l ≫ j ≫ Cc r`, `-(B l ≫ D n)`)
+is invertible, with inverse entries `E' r l`, `-(U n ≫ C' l)`. Here `M⁻¹ = [a', B'; C', E']`.
+Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
+(the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
+stabilization (13)/(14) and nilpotent lifting (12) of `SwappedHomInversion.md`; the nilpotence
+input is the obstruction recorded next.
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
