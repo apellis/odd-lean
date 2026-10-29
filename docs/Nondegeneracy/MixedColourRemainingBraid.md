@@ -45,7 +45,13 @@ without cancelling Q or a probe crossing. Its importing consumer retains
 arbitrary colours and arbitrary occupied content. Thus all three
 pairwise-distinct two-probe placements have explicit sector lemmas.
 
-The one-probe/two-unequal-reservoir placements, same-side factor-braid
+`BraidMixed/DistinctReservoirSector.lean` now proves the forward unequal-reservoir
+placement `PᵢRᵣRₛ → RₛRᵣPᵢ` as `distinctReservoir_braid`. The actual
+sector sums reduce by endpoint uniqueness; the prescribed `postCrossNe`
+edges and all endpoint transports are retained. This coefficient-one placement
+uses the shifted interchange triangle without cancelling a Q factor or crossing.
+
+Reverse and middle unequal-reservoir placements, same-side factor-braid
 transport and arbitrary-path assembly remain open. Repeated-outer corrections
 are separate obligations. The complete component calculation below retains
 its proposed status.

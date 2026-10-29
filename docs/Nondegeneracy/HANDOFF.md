@@ -224,6 +224,33 @@ The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
+## Forward unequal-reservoir sector braid
+
+`BraidMixed/DistinctReservoirSector.lean`: `distinctReservoir_braid` proves
+`PᵢRᵣRₛ → RₛRᵣPᵢ` for arbitrary pairwise distinct colours, weights,
+contents, commutative coefficient ring and supplied probe/reservoir data.
+The theorem is the literal equality of `braidLeft` and `braidRight` entries,
+not a freely chosen crossing or a triangle assumption.
+
+`postCrossNe_mixedJ_pair_heq` specializes the checked transported triangle
+one compositional edge at a time. Both reversed-target transports and the
+probe-source comparison remain explicit. The two reservoir crossing edges
+are evaluated using the prescribed `postCrossNe`; the mixed edges are the
+coefficient-one direction. Endpoint uniqueness reduces the actual path sums.
+No Q polynomial or factor crossing is inverted, and no additional mixed
+isomorphism cancellation is needed in this forward placement.
+
+`MixedDistinctReservoirForward.lean` applies the braid at arbitrary content
+`(β, γ + single r 1 + single s 1)`, proving all four step-validity conditions.
+It audits every declaration owned by the new module, including generated
+or private declarations. This is a supplied-data consumer, not an independent
+nonzero representation.
+
+Remaining: reverse and middle unequal-reservoir placements with individual
+Q transports; all-same-side factor braid transport and arbitrary-path
+assembly; repeated-outer correction separately. The checked transport module
+`InterchangePostPairTransport.lean` is unchanged.
+
 ## Three-distinct-colour two-probe sector braid
 
 `BraidMixed/DistinctProbeSector.lean`: `distinctProbe_braid` proves the literal
