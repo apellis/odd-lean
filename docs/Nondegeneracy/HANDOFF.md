@@ -3274,6 +3274,30 @@ Non-vacuity: `scripts/NonVacuity/BoundaryAssembly.lean`. Open (the concrete fiel
 tensoring with the cyclotomic quotient (`direct`, `Rt_F`, `Rt_j`), the short-coset extraction
 (`B₁`, `B₁_ρ`, `B₁_surjective`, `P_split`), `P ρ = R_t P`, and the reverse norm identity (5)
 giving `hz₀`; then the cap rows of (4) against `contentCapKernel`.
+`BoundaryCosets.lean` (checked): `B₁` and `A_∂` derived from the short-coset decomposition of
+`DeformedMackeyBoundary.md` §§2–3. `MackeyCosets σ L₁ L₀ L₀'` keeps `P`, `ρ`, `R_t`, `F`, `j`,
+`X`, `E` with `P_ρ`, `Rt_F`, `Rt_j`, `direct`, adds `span` (`L₀ = F(L₀') + j(V₀)`), a short
+subgroup `L₁'` with `ρ(L₁') ⊆ L₁'` and `C₀ P(L₁') = 0` (`P_short`: `P(L₁') ⊆ F(L₀')`), a lift
+`ℓ : V₁ → L₁` covering `L₁` mod `L₁'`, independent mod `L₁'`, with `ρ ℓ ≡ ℓ ρ̄` and
+`ℓ(v b) ≡ ℓ(v) b` mod `L₁'`, and right `B`-actions with `P`, `j` right linear and `F(L₀')`
+stable. Checked: `C₀`, `B₁` (coordinate mod `L₁'`, `B₁_ℓ`), `A = C₀ P ℓ`, `B₁_ρ`, `P_split`,
+`A_rsmul`, `toMackeyBoundary`, and `norm_of_short`, `window_pos_of_short`,
+`window_neg_of_short`, where the norm lift is only needed modulo `L₁'` (`z₀ ≡ ℓ(S)`).
+Non-vacuity: `scripts/NonVacuity/BoundaryCosets.lean`. Interface notes for the concrete
+instance (checked against the written argument, Lean global factors: `k` purely even, so the
+odd deformation parameters vanish, `ρ = ±x₁ ⊗ φ` and `w_k = v_k`): (i) `direct` forces `j`
+injective, so `B` must be the content-`β` corner of the cyclotomic quotient (with `σ`
+restricted to it), not the whole `heightAlgebra n`; with the whole algebra `e_R ⊗ b` kills the
+other content blocks. Correspondingly `L₁ = e_R K₁` and `L₀ = e_R H e_R ⊗ B`. (ii) `F(L₀')` is
+the left-oriented crossing summand `ι(R) τ_n ι(R)`; the right-oriented prepend coordinates of
+`PrependCoordinates.md` (`qPrependTensorEquiv`) give a different polynomial component with
+`E = 0`, which does not match the cap rows `[F̄; E; EX; …]`, so the append-side Mackey
+decomposition is needed. (iii) No error was found in the written steps for `C₀ P(L₁') = 0`,
+`B₁ ρ = ρ̄ B₁`, the extraction (6) (sign `(−1)^m`, factor `S = ∏(t^(1+p) − x_b^(1+p))²`), the
+reverse norm (5) (from `qpIdentity`, dot transport, `G J_L ⊆ J_L`, `J_R G ⊆ J_L`,
+`J_L G' ⊆ J_R` and injectivity of right multiplication by `K = G G'`), or the degree count
+`deg F − deg S = ⟨h_i, Λ − β⟩`. Open: the concrete `MackeyCosets` fields (construct `P`;
+the append-side Mackey decomposition after the cyclotomic quotient; `K`-injectivity).
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
