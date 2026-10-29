@@ -34,12 +34,13 @@ end ELVHomGradingConsumer
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
+  let moduleNames := env.header.moduleNames
   let owners := #[`OddMath.SKM.BubbleELVPolynomialGrading,
     `OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading]
   let mut count : Nat := 0
   for (name, _) in env.constants.toList do
     if let some idx := env.getModuleIdxFor? name then
-      if owners.contains env.header.moduleNames[idx.toNat]! then
+      if owners.contains moduleNames[idx.toNat]! then
         for ax in ← Lean.collectAxioms name do
           unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
             throwError "Disallowed axiom {ax} in {name}"
