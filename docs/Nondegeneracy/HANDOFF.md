@@ -519,8 +519,19 @@ generator images of item 1 below.
    - `Generators/Leftward.lean` (**checked**): `upwardGens`, `sigmaEntry`,
      `lcrossNeImage`, `LeftwardData`.
    - `Generators.lean` (**checked**): `swappedGens c L`.
-   Remaining for the action: existence of `c` with `CrossCoeff.IsInverse`
-   (F2–F3), and the `LeftwardData` of (A7) with the relations `invP`/`invM`.
+   - `Generators/CrossCoeffExistence.lean` (**checked**): existence of `c`.
+     `rpPreDot_comp_rpPostDot`: on the path `(R,P)` of `Eᵢ Eᵢ` the probe dot
+     `x` and the reservoir dot `y` supercommute, `x ≫ y = (-1)^{p_i} (y ≫ x)`
+     (super-interchange through the parity shift). `CrossCoeffInputs`: `x` is a
+     unit (F2) and `y` is nilpotent (F3), pointwise; `CrossCoeffInputs.of_factor`
+     derives it from invertibility of every probe dot and nilpotence of every
+     reservoir dot as 2-morphisms. `crossCoeffOfInputs h` is `(y - x)⁻¹` at even
+     colours and `(x² - y²)⁻¹ (x - y)` at odd colours (`x - y` commutes with
+     `x² - y²` since `x y = -y x`), and `crossCoeffOfInputs_isInverse` proves
+     `CrossCoeff.IsInverse`. Interface for the instance: the factor dot
+     hypotheses of `of_factor` (F2, F3).
+   Remaining for the action: the `LeftwardData` of (A7) with the relations
+   `invP`/`invM`.
 2. `WhiskerReduction.lean` (shared helper, **checked**): reduces `evalW` of a
    whiskered relation for `P.layerRep` to the unwhiskered matrix entries.
    `compLayer gens L p q Z : F_p Z ⟶ F_q Z` is the entry of a layer between
