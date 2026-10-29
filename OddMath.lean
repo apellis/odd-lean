@@ -7,6 +7,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOneStrand
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTruncation
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppendTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
@@ -20,6 +22,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPOdd
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPContext
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPProduct
+import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
@@ -41,6 +44,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendContentShortFactor
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentShortImage
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentBoundary
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentMoveCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.MoveHomLeading
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
