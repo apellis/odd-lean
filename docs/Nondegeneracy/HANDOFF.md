@@ -674,6 +674,20 @@ unless `i = k ≠ j`; for `Eᵢ Eⱼ Eᵢ`, `i ≠ j`, equality off the diagonal
 on the diagonal, `braidLeft - braidRight` equal to the `Q_ij` divided
 difference in the dot entries, with the signs and scalars of `braidEq`.
 Remaining: prove `CrossBraid (swappedGens c L)`.
+Whisker reduction of the crossing entries (checked,
+`SwappedAssembly/BraidEntries.lean`): on a three-letter word the left
+crossing entry `crossEntry gens ν [] i j [up k']` on paths `pg.append pv`,
+`qg.append pv` is `gens.cross i j (wt ν [up k'])` applied to the image of `Z`
+under the third summand (`crossEntry_left`) and vanishes when the third
+summands differ (`crossEntry_left_eq_zero`); the right crossing entry
+`crossEntry gens ν [up a] i j []` is the step-functor image of
+`gens.cross i j ν` (`crossEntry_right`) and vanishes when the first summands
+differ (`crossEntry_right_eq_zero`). The weight labels of the first letter in
+the layer and in the target word differ only propositionally; the generic
+transports `compLayer_cast_eq_of_path`, `compLayer_cast_eq_zero_of_path` absorb
+them. Next: the colour patterns of (1.9) for `swappedGens c L`, starting with
+the mixed probe/reservoir block of `iii` ((5A)/(5B) of
+`ThreeStrandSectorBraid.md`).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
