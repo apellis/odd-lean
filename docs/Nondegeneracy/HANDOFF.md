@@ -555,7 +555,8 @@ generator images of item 1 below.
    - `Braid.lean`: `BraidRelations` (checked, conditional on `CrossBraid`;
      see below).
    - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
-     see below).
+     see below). `CupCapZigzag.lean`: `CupCapZigzag (swappedGens c L)`
+     (checked, unconditional).
    - `Inversion.lean`: `InversionRelations` (checked, conditional on
      `SigmaPermutation` and `LeftwardData.IsInverse`; see below).
    - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
@@ -661,6 +662,22 @@ the left strand of the cap layer has right weight `wt ν [up i, dn i]`, only
 propositionally equal to `ν`; `SPath.cast_cons_col` transports the path). No obstruction: the reduction is exact,
 and the generator modules must prove `CupCapZigzag` for their cup/cap images
 (the right adjunction (1.10) of the Hom-sector functors).
+
+**`CupCapZigzag` for the swapped generators (checked).**
+`SwappedAssembly/CupCapZigzag.lean`: `cupCapZigzag_swappedGens c L :
+CupCapZigzag (P.swappedGens c L)`, with no hypotheses beyond the
+`ProbeReservoir` data; more generally `cupCapZigzag_of` for any generators whose
+cup and cap are `cupImage` and `capImage`. Proof: a closed path of a lowering
+and a raising strand of one colour stays in one summand
+(`SPath.side_eq_of_closed`, by the content bookkeeping of `nextSector`), so in
+each double sum exactly one pair `(m, r)` survives: both run through the summand
+`σ` of the given strand. On that pair the cup and cap entries are the unit and
+counit of one content-shifted adjunction (`homContentPostAdjunction` for
+`σ = false`, `homContentPreAdjunction` for `σ = true`), taken at indices equal
+up to the sector equality `nextSector (up i) σ (nextSector (dn i) σ s) = s`
+(or its `zigF` analogue), and the composite is the identity by the triangle
+identities (`triangle_left_of_eq`, `triangle_right_of_eq`). So `ZigzagRelations`
+holds for `P.layerRep Gs Ys (P.swappedGens c L)` unconditionally.
 
 ## Old-only ELV quotient module
 
@@ -3017,9 +3034,14 @@ the square resolution (`DeformedSquareResolution.md`), both proposed.
 `DeformedMatrixComparison.md`, `x ⊗ y ↦ -(-1)^{|i||x|} φ₂(x) τ φ₂(y) ⊗ e₂`, as a
 superbimodule morphism `B e ⊗_A e B ⟶ e₂C ⊗_C C e₂` of parity `|i|` (`rouquierMateKernel`,
 `rouquierMateKernel_parity`, `rouquierMateKernel_apply`); balance over `A` is the Koszul sign of
-`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`). Next:
-the dotted unit and counit kernels `u_k`, `c_k`, and the comparison of the functor-level mate
-with `rouquierMateKernel` on weight spaces.
+`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`).
+`RouquierCupCapKernel.lean` (checked): the dotted cup `j_m : B ⟶ e₂C ⊗_C C e₂`,
+`b ↦ x₂^m φ₂(b) ⊗ e₂` (`rouquierCupKernel`), and dotted cap `κ_m : B e ⊗_A e B ⟶ B`,
+`x ⊗ y ↦ (-1)^{mp|x|} x x₁^m y` (`rouquierCapKernel`), superbimodule morphisms of parity `m p`;
+in (2)/(4) of `DeformedMatrixComparison.md`, `u_m = d_m j_m` and `c_m = d_m κ_m`. Input:
+`heightAppend_mul_heightLastDot_pow`. Next: compare the functor-level `rouquierMate`, dotted
+unit and dotted counit of `globalRouquierData` with these kernels on weight spaces (tensoring
+with a module), then the boundary/division inputs and the window matrix.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
