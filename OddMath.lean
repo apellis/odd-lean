@@ -7,6 +7,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOneStrand
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTruncation
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppendTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading

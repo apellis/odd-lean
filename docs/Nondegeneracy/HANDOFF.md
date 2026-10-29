@@ -1,5 +1,37 @@
 # Odd nondegeneracy: restart state
 
+## Graded right append and affine transformations
+
+`ELVTruncatedAppend.lean` constructs `truncatedAppendGraded σ` on all words,
+using the existing `ELVOld.rightContext`. The old first-position ideal is
+preserved by `ideal_rightContext`; `coefficientHomIdeal_rightContext` proves
+preservation of the independent coefficient weight ideal. Their sum descends
+to `truncatedRightContext`. Identity, composition, linearity, total parity
+and integer degree are proved, for arbitrary words and cutoffs.
+
+`ELVTruncatedAppendTransform.lean` assigns each homogeneous affine morphism
+on the appended word its left-whiskered quotient component.
+`truncatedAppendComponent_supernatural` proves naturality against total
+coefficient-plus-diagram parity. The prescribed `dotE [i] 0` and
+`crossTwo i j` yield `truncatedAppendDot` and `truncatedAppendCross`, with
+parities `|i|` and `|i||j|` and degrees `2 dᵢ` and `dᵢ dᵢⱼ`.
+The crossing source and target are append `[i,j]` and append `[j,i]`;
+comparison with iterated one-strand append is not asserted.
+
+The existing ordinary consumers are `OddMath.QuiverHecke.inductionCorner`
+in `SuperInduction.lean` and the signed
+right-dot construction `inductionDotLinear_isHom` in `SuperDot.lean`.
+Their ELV analogues should use representable kernels of these append
+functors; this is not a new assumed action or a replacement corner axiom.
+The existing nonzero odd coefficient witness checks the negative sign in
+dot naturality, and arbitrary spectator lists check parity preservation.
+
+Remaining: representable induction/restriction kernels, their tensor
+comparison and adjunction, compatibility with iterated-append casts and
+weights, affine relation packaging for the full positive action, mixed
+factor closure and higher-content support. No left-context stability,
+monoidal quotient, inverse, boundedness, or `CentralInvertible` is claimed.
+
 ## The truncated ELV category and its actual endomorphism algebra
 
 `ELVTruncatedCategory.lean` packages words with literal `TruncatedOld` Hom
