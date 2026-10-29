@@ -102,7 +102,7 @@ def relGroup : SKM.Rel D → RelGroup
   | .invM₁ .. | .invM₂ .. | .invM₃ .. | .invM₄ .. | .invM₅ .. => .inversion
   | .dcupZero .. | .dcapZero .. => .windowZero
 
-variable (Sc) (Q : LayerRep.{u, u, u, u, u} (SKM.sig D) k)
+variable (Sc) (Q : LayerRep.{u, u, u, u, w₃} (SKM.sig D) k)
 
 /-- A relation holds in a layer representation: its whiskered evaluation vanishes. -/
 def RelHolds (r : SKM.Rel D) : Prop :=
@@ -164,7 +164,7 @@ theorem respects : (SKM.pres D Sc).Respects Q.toLocal.functor :=
     (fun x hx u v hw => h.interchange x hx u v hw)
 
 /-- The functor out of the presented 2-category. -/
-def functor : (SKM.pres D Sc).Presented ⥤ ModuleCat.{u} k := (SKM.pres D Sc).lift h.respects
+def functor : (SKM.pres D Sc).Presented ⥤ ModuleCat.{w₃} k := (SKM.pres D Sc).lift h.respects
 
 @[simp] theorem functor_obj (a : Obj (SKM.sig D)) :
     h.functor.obj ((SKM.pres D Sc).obj a) = ModuleCat.of k (Q.M a) := rfl
