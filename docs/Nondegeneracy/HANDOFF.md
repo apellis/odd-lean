@@ -1216,7 +1216,7 @@ of the single term into generator images and identify them with the probe mate o
 (`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
 `-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
 
-**Swapping entry `W_A` invertible (checked); `W_B` open, as a hypothesis.**
+**Swapping entries `W_A` and `W_B` invertible (checked).**
 `SwappedAssembly/Sigma/SwappingMate.lean`: `sigmaTerm_eq_of_paths` writes the single term
 through path decompositions of its three layers; `isIso_sigmaEntry_probe` proves that the entry
 with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ` to `(P,R)` of
@@ -1224,18 +1224,28 @@ with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ
 (`mixedJ`) and the probe counit, i.e. `isIso_probeMixedMate`, which is
 `isIso_homContentDistinctMixedPreMate_of_eq` (inverse: the word (15)) on the strand functors.
 `sides_upDn_dnUp_of_ne`: for `t ≠ s` the two paths are `((R,P),(P,R))` or `((P,R),(R,P))`.
-`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`,
-where `SwappingReservoirInvertible` is the invertibility of the other entries `W_B`
-(`(P,R) → (R,P)`, the reservoir mate of `-(a ; a ; J⁻¹)`). So
-`augmentedInvertible_of_central_of_swapping` needs `CentralInvertible c` and
-`SwappingReservoirInvertible c`. Open for `W_B`: unfold its single term in the same way
-(reservoir unit, the crossing entry `-(a ; a ; J⁻¹)`, reservoir counit) and prove the
-post-side mate invertible; its crossing carries the dots `a`, so the route is the dotted mate
-`homDistinctMixedMateDot_isIso` (`RouquierHomDistinctMixedPostDotsIso.lean`: `J⁻¹` followed by a
-polynomial with unit leading coefficient in an invertible dot and a nilpotent dot), not the
-undotted word (15). Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
+`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`.
+`SwappedAssembly/Sigma/SwappingReservoir.lean`: `isIso_sigmaEntry_reservoir` proves the other
+entries `W_B` (`(P,R) → (R,P)`) invertible. Its layers are the reservoir unit, the crossing
+entry `-(a ; a ; J⁻¹)` and the reservoir counit, i.e. the dotted post mate
+`homDistinctMixedMateDot` of `Φ = J (-(a²)) J⁻¹` (`isIso_homContentDistinctMixedPostMate_of_eq`
+matches the objects). In `SKM/RouquierHomDistinctMixedPostDotsComp.lean`, conjugation by `J`
+(`isoConjRingHom`) carries the dots `X`, `Y`, `Γ` on the target of `J⁻¹` to the dots on its
+source (`homMixedInterchange_pre/post/naturality_even`), so `a` commutes with `Y` and `Γ`
+(it is the inverse of a polynomial in commuting dots, `commute_of_mul_eq_of_isUnit`), and
+`(X - Y)² ≫ Φ = -1` (even, `a = (y - x)⁻¹`) or `(X² - Y²)² ≫ Φ = -(X² + Y²)` (odd,
+`a (x² - y²) = x - y`, `x y = -y x`): `homDistinctMixedMateDot_isIso_of_inverse` and
+`_of_inverse_odd`, from `homDistinctMixedMateDot_isIso_of_comp` (`X` invertible, `Y`
+nilpotent). Hypotheses used: `c.IsInverse`, every probe dot a unit and every reservoir dot
+nilpotent (the inputs of `CrossCoeffInputs.of_factor`); no bubble relation or reservoir-bubble
+nilpotence is needed. Corollaries `swappingReservoirInvertible`,
+`swappingInvertible_of_factor` and `augmentedInvertible_of_central : P.CentralInvertible c →
+P.AugmentedInvertible c` (with the same three hypotheses), so `AugmentedInvertible` now needs
+only `CentralInvertible c`. Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
 locally irreducible, so that unification compares sector expressions instead of computing
-with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit. The
+invertibility of the dotted mate is the separate lemma `isIso_crossMate_reservoir`, so that
+`isIso_sigmaEntry_reservoir` stays within the per-declaration heartbeat limit.
 
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
