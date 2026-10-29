@@ -932,6 +932,17 @@ Braid on the path `PPP` of `iii` (checked,
 `-q` times whiskered factor crossings of `T`. `whisker_braid` transports a braid relation
 of `x ⊗ 1`, `1 ⊗ y` on `E₁E₂E₃` through right whiskering by `Z` (pentagon), so
 `preCrossSame_braid` is `T.braid`, and `ppp_braid` is (1.9) on `PPP`. Next: `RRR`.
+Braid on the path `RRR` of `iii` (checked,
+`SwappedAssembly/BraidSame/ReservoirBlock.lean`). `RRR` is the only path to its endpoint
+(`eq_rrrPath`); both crossings are reservoir crossings (`rrrLeft_entry`, `rrrRight_entry`),
+factor crossings of `W` transported by the comparisons `Θ`. The comparisons
+`G = ξ₀ ≫ ξ₁ ▷ F₃ ≫ (ξ₂ ▷ F₂) ▷ F₃` of the three parity-`σ` shifts carry both crossings to
+the factor crossings on `((Z F₁) F₂) F₃` with the same sign `(-1)^(σ p)`: the left one by
+the super interchange law past `ξ₂`, the right one by the signed naturality
+`S(g) ξ = (-1)^(σ|g|) ξ g` of the outer shift (`shifted_post_braid`). The signs agree,
+so `postCrossSame_braid` is `W.braid` whiskered on the left (`post_whisker_braid`), with
+no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy. Next: assemble
+(1.9) for the pattern `iii` over all pairs of paths, then `iji`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
