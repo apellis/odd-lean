@@ -140,6 +140,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ReverseNorm
 import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierCupCapKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierKernelComparison
+import OddMath.QuiverHecke.CyclotomicAction.MixedMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
