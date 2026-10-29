@@ -114,6 +114,20 @@ Its descended vertical arrow is the prescribed a tau_n b, with total
 coefficient parity. That additional argument is not yet Lean-checked or
 independently accepted.
 
+### Checked ordinary-polynomial short-image inclusion
+
+`AppendContentShortImage.lean` proves the inclusion used with (4):
+`appendContentP_short_mem` sends every element of the prescribed short source
+into the prescribed F range, without an affine factorization hypothesis.
+`projected_short_multiplier_sum` first applies the left append projector to
+the entire PBW multiplier: final old colours unequal to i vanish. Each
+surviving matrix entry factors by `appendShortEntry_factor`. Append PBW on
+its old factor gives `appendLeftSum`; the lower-height coefficient crosses
+τ with twist parity p(i)p(i), retaining the original right tensor coefficient.
+The content parameter n means old height n+1, including height one at n=0;
+cutoff zero is allowed. This checks only the ordinary-polynomial specialization,
+not full ELV coefficients, the reverse inclusion or the full boundary construction.
+
 ## 3. Explicit lifts and first-order defect
 
 Define z₀=Ue_L⊗π^ε1 and z_k=ρ^k(z₀). These are specified elements of
