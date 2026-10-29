@@ -15,6 +15,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendContentMackeyMap
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCosets
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentRhoCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCrossingImage
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentShortWord
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap

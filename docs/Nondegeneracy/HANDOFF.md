@@ -23,9 +23,17 @@ specialization of `DeformedMackeyBoundary.md` (4)–(5):
   `ψ(1) * (prependPBWTerm u m 1 * W) = appendLeftSum(f)` for every non-long
   shuffle and every input-dot degree. These factorizations are not proved here.
 
-Next target: prove the short-shuffle canonical-word support, then factor its
-projected multiplier using `appendW_append` through the last equal-colour
-crossing and convert the old coefficient to `appendLeftSum` coordinates.
+The canonical-word step is supplied by `AppendContentShortWord.lean`.
+`prependShuffle_inv_last_of_ne_long` proves that a non-long inverse shuffle
+fixes the last position. `canWord_eq_short_codeWord` traces the chosen code:
+its top run is empty. Thus `canWord_prependShort_lt` excludes the last generator,
+and `canWord_prependShort_restrict` identifies the word literally with the
+canonical word on one fewer strand. `prependShort_cl_whiskerRight` embeds the
+corresponding diagram by right whiskering, without braid replacements.
+
+Next target: assemble the projected affine matrix multiplier using
+`appendW_append` through the last equal-colour crossing, then convert the
+old coefficient to `appendLeftSum` coordinates.
 The proposed argument must retain the left append projector: individual
 unprojected source PBW generators need not belong to the source corner.
 Neither `P(short) ⊆ range F` without the displayed factorization hypothesis,
