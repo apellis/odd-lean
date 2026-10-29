@@ -334,4 +334,109 @@ theorem crossLast_comp_whiskerRight {s u : List I} (x z : I) (y : O[s] ⟶ O[u])
 
 end CrossLast
 
+section Closure
+variable {a : I → _root_.Polynomial k} {i : I}
+
+theorem cycHom_comp_left {s' s u : List I} (p : O[s'] ⟶ O[s]) {y : O[s] ⟶ O[u]}
+    (hy : y ∈ cycHom D Sc a s u) : p ≫ y ∈ cycHom D Sc a s' u := by
+  induction hy using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨j, w, p', q, rfl⟩ := hf
+    exact Submodule.subset_span ⟨j, w, p ≫ p', q, by simp⟩
+  | zero => simp
+  | add f g _ _ hf hg => rw [Preadditive.comp_add]; exact add_mem hf hg
+  | smul c f _ hf => rw [Linear.comp_smul]; exact Submodule.smul_mem _ c hf
+
+theorem cycHom_comp_right {s u u' : List I} {y : O[s] ⟶ O[u]} (hy : y ∈ cycHom D Sc a s u)
+    (q : O[u] ⟶ O[u']) : y ≫ q ∈ cycHom D Sc a s u' := by
+  induction hy using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨j, w, p', q', rfl⟩ := hf
+    exact Submodule.subset_span ⟨j, w, p', q' ≫ q, by simp⟩
+  | zero => simp
+  | add f g _ _ hf hg => rw [Preadditive.add_comp]; exact add_mem hf hg
+  | smul c f _ hf => rw [Linear.smul_comp]; exact Submodule.smul_mem _ c hf
+
+theorem cycHom_whiskerRight {s u : List I} {y : O[s] ⟶ O[u]} (hy : y ∈ cycHom D Sc a s u)
+    (r : List I) : (y ▷ O[r] : O[s ++ r] ⟶ O[u ++ r]) ∈ cycHom D Sc a (s ++ r) (u ++ r) := by
+  induction hy using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨j, w, p', q', rfl⟩ := hf
+    refine Submodule.subset_span ⟨j, w ++ r, p' ▷ O[r], q' ▷ O[r], ?_⟩
+    rw [MonoidalSupercategory.comp_whiskerRight (R := k),
+      MonoidalSupercategory.comp_whiskerRight (R := k), firstDotPoly, firstDotPoly,
+      aeval_firstDot_whiskerRight D Sc (j :: w) r (by simp)]
+    rfl
+  | zero => rw [MonoidalSupercategory.zero_whiskerRight k]; exact zero_mem _
+  | add f g _ _ hf hg =>
+    rw [MonoidalSupercategory.add_whiskerRight (R := k)]; exact add_mem hf hg
+  | smul c f _ hf =>
+    rw [MonoidalSupercategory.smul_whiskerRight (R := k)]; exact Submodule.smul_mem _ c hf
+
+theorem cycHom_twist (ha : CyclotomicPolynomialParity D a) (q : ZMod 2) {s u : List I}
+    {y : O[s] ⟶ O[u]} (hy : y ∈ cycHom D Sc a s u) :
+    Supercategory.twist k q y ∈ cycHom D Sc a s u := by
+  induction hy using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨j, w, p', q', rfl⟩ := hf
+    rw [Supercategory.twist_comp, Supercategory.twist_comp,
+      Supercategory.twist_of_mem q (firstDotPoly_mem D Sc a ha j w), Linear.smul_comp,
+      Linear.comp_smul]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, w, _, _, rfl⟩)
+  | zero => rw [map_zero]; exact zero_mem _
+  | add f g _ _ hf hg => rw [map_add]; exact add_mem hf hg
+  | smul c f _ hf => rw [map_smul]; exact Submodule.smul_mem _ c hf
+
+variable (a i) in
+theorem cyc_mem_appendKill {s u t : List I} {y : O[s] ⟶ O[u]} (hy : y ∈ cycHom D Sc a s u)
+    (h : O[u ++ [i]] ⟶ O[i :: t]) :
+    ((y ▷ O[[i]]) ≫ h : O[s ++ [i]] ⟶ O[i :: t]) ∈ appendKill D Sc a i s t :=
+  Submodule.subset_span ⟨u, y, h, hy, rfl⟩
+
+theorem appendKill_comp {s t t' : List I} {K : O[s ++ [i]] ⟶ O[i :: t]}
+    (hK : K ∈ appendKill D Sc a i s t) (h' : O[i :: t] ⟶ O[i :: t']) :
+    K ≫ h' ∈ appendKill D Sc a i s t' := by
+  induction hK using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨u, y, h, hy, rfl⟩ := hf
+    rw [Category.assoc]
+    exact cyc_mem_appendKill D Sc a i hy _
+  | zero => simp
+  | add f g _ _ hf hg => rw [Preadditive.add_comp]; exact add_mem hf hg
+  | smul c f _ hf => rw [Linear.smul_comp]; exact Submodule.smul_mem _ c hf
+
+theorem whiskerRight_comp_mem_appendKill {s' s t : List I} (e : O[s'] ⟶ O[s])
+    {K : O[s ++ [i]] ⟶ O[i :: t]} (hK : K ∈ appendKill D Sc a i s t) :
+    ((e ▷ O[[i]]) ≫ K : O[s' ++ [i]] ⟶ O[i :: t]) ∈ appendKill D Sc a i s' t := by
+  induction hK using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨u, y, h, hy, rfl⟩ := hf
+    rw [← Category.assoc, ← MonoidalSupercategory.comp_whiskerRight (R := k)]
+    exact cyc_mem_appendKill D Sc a i (cycHom_comp_left D Sc e hy) _
+  | zero => simp
+  | add f g _ _ hf hg => rw [Preadditive.comp_add]; exact add_mem hf hg
+  | smul c f _ hf => rw [Linear.comp_smul]; exact Submodule.smul_mem _ c hf
+
+/-- `Kill` is stable under `K ↦ σ ≫ (K ▷ x)`. -/
+theorem crossLast_comp_mem_appendKill (ha : CyclotomicPolynomialParity D a) {s t : List I}
+    (x : I) {K : O[s ++ [i]] ⟶ O[i :: t]} (hK : K ∈ appendKill D Sc a i s t) :
+    (crossLast D Sc s x i ≫ (K ▷ O[[x]]) : O[s ++ [x] ++ [i]] ⟶ O[i :: (t ++ [x])]) ∈
+      appendKill D Sc a i (s ++ [x]) (t ++ [x]) := by
+  induction hK using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨u, y, h, hy, rfl⟩ := hf
+    rw [MonoidalSupercategory.comp_whiskerRight (R := k),
+      reassoc_of% (crossLast_comp_whiskerRight D Sc x i y)]
+    exact cyc_mem_appendKill D Sc a i
+      (cycHom_whiskerRight D Sc (cycHom_twist D Sc ha _ hy) [x]) _
+  | zero => rw [MonoidalSupercategory.zero_whiskerRight k]; simp
+  | add f g _ _ hf hg =>
+    rw [MonoidalSupercategory.add_whiskerRight (R := k), Preadditive.comp_add]
+    exact add_mem hf hg
+  | smul c f _ hf =>
+    rw [MonoidalSupercategory.smul_whiskerRight (R := k), Linear.comp_smul]
+    exact Submodule.smul_mem _ c hf
+
+end Closure
+
 end OddMath.QuiverHecke
