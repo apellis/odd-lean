@@ -734,4 +734,29 @@ theorem appendCornerEquiv_apply (i : I) (n : ℕ)
     (appendCornerEquiv D Sc i n p : Hn D Sc (n + 1 + 1)) =
       appendLeftSum D Sc i n p.1 + appendPolySum D Sc i n p.2 := rfl
 
+/-! ## Right `ψ(Hn (n+1))`-linearity of the summand maps -/
+
+theorem appendLeftSum_mul_appendAlgebra (i : I) (n : ℕ)
+    (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) (r : Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n (Finsupp.mapRange.addMonoidHom (AddMonoidHom.mulRight r) F) =
+      appendLeftSum D Sc i n F * appendAlgebra D Sc i (n + 1) r := by
+  induction F using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, map_add, hf, hg, map_add, add_mul]
+  | single q b =>
+    obtain ⟨j, m⟩ := q
+    simp only [Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
+      AddMonoidHom.coe_mulRight, appendLeftSum_single, map_mul, mul_assoc]
+
+theorem appendPolySum_mul_appendAlgebra (i : I) (n : ℕ) (G : ℕ →₀ Hn D Sc (n + 1))
+    (r : Hn D Sc (n + 1)) :
+    appendPolySum D Sc i n (Finsupp.mapRange.addMonoidHom (AddMonoidHom.mulRight r) G) =
+      appendPolySum D Sc i n G * appendAlgebra D Sc i (n + 1) r := by
+  induction G using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, map_add, hf, hg, map_add, add_mul]
+  | single m b =>
+    simp only [Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
+      AddMonoidHom.coe_mulRight, appendPolySum_single, map_mul, mul_assoc]
+
 end OddMath.QuiverHecke

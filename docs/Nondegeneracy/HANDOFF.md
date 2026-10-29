@@ -4958,9 +4958,13 @@ appendTwoSidedCorner`, `(F, G) ↦ appendLeftSum F + appendPolySum G`
 `ψ'(1) F_q = F_q` and `appendTwoSidedCorner = {y | ψ(1) y = y = y ψ(1)}`; this packages
 span and directness (surjectivity replaces `F` by `ψ'(1) F`, `appendLeftSum_appendLeftProj`).
 
+Checked (same file): right `ψ(Hn (n+1))`-linearity of both summand maps,
+`appendLeftSum_mul_appendAlgebra` (`F(u r) = F(u) ψ(r)`, coefficientwise right
+multiplication) and `appendPolySum_mul_appendAlgebra` (`j(g r) = j(g) ψ(r)`).
+
 Next: descend these affine identities through the cyclotomic quotient and `− ⊗_B M`
-to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear); then `short`
-and the lifts.
+to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear, now checked
+at the affine level); then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
