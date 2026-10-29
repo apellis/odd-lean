@@ -14,7 +14,7 @@ is selected only from a nonzero old Hom, so empty old Hom spaces are allowed.
 
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory MonoidalCategory
-open scoped TensorProduct Classical
+open scoped TensorProduct DirectSum Classical
 namespace OddMath.QuiverHecke
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -173,6 +173,113 @@ def prependOldCoordinate (p : ZMod 2) {i : I} {v w : List I} (x : PrependIdx i v
     {i : I} {v w : List I} (x : PrependIdx i v w) (h : hom D Sc cutoff (i :: v) w) :
     prependOldCoordinate D Sc cutoff p x (projection D Sc cutoff i v w h) =
       prependExtractOldQuotient D Sc cutoff p x h := rfl
+
+/-- Simultaneous old quotient coefficients, with finite support in the existing moving tails. -/
+abbrev PrependOldCoordinates (i : I) (v w : List I) :=
+  ⨁ (q : PrependIdx.Tail i v w), Old D Sc cutoff v q.representative.oldTarget
+
+/-- Reconstruct the old-only target from all moving-tail old quotient coefficients. -/
+def prependOldReconstruct (p : ZMod 2) (i : I) (v w : List I) :
+    PrependOldCoordinates D Sc cutoff i v w →ₗ[k] Target D Sc cutoff i v w :=
+  DirectSum.toModule k _ _ fun q => pair D Sc cutoff p i
+    ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+      prependTail D Sc q.representative)
+
+/-- Reconstruction followed by extraction is the specified direct-sum component. -/
+theorem prependOldCoordinate_reconstruct (p : ZMod 2) {i : I} {v w : List I}
+    (q : PrependIdx.Tail i v w) (f : PrependOldCoordinates D Sc cutoff i v w) :
+    prependOldCoordinate D Sc cutoff p q.representative
+      (prependOldReconstruct D Sc cutoff p i v w f) = f q := by
+  induction f using DirectSum.induction_on with
+  | zero => simp only [map_zero, DFinsupp.zero_apply]
+  | add f g hf hg => simp only [map_add, hf, hg, DirectSum.add_apply]
+  | of t a =>
+    change prependOldCoordinate D Sc cutoff p q.representative
+      (prependOldReconstruct D Sc cutoff p i v w (DirectSum.lof k _ _ t a)) = _
+    rw [prependOldReconstruct, DirectSum.toModule_lof]
+    obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v t.representative.oldTarget).mkQ_surjective a
+    rw [pair_mk, prependOldCoordinate_projection]
+    by_cases ht : t = q
+    · subst t
+      rw [prependExtractOldQuotient_insert_tail, twist_twist, DirectSum.of_eq_same]
+    · rw [prependExtractOldQuotient_insert_off_tail]
+      · symm
+        exact DirectSum.of_eq_of_ne _ _ _ (Ne.symm ht)
+      · intro h
+        apply ht
+        apply Subtype.ext
+        exact t.representative_tailKey.symm.trans (h.symm.trans q.representative_tailKey)
+
+/-- Simultaneous old quotient reconstruction is injective. -/
+theorem prependOldReconstruct_injective (p : ZMod 2) (i : I) (v w : List I) :
+    Function.Injective (prependOldReconstruct D Sc cutoff p i v w) := by
+  intro f g h
+  apply DFinsupp.ext
+  intro q
+  rw [← prependOldCoordinate_reconstruct D Sc cutoff p q f,
+    ← prependOldCoordinate_reconstruct D Sc cutoff p q g, h]
+
+private theorem prependOldReconstruct_range_tail (p : ZMod 2)
+    {i : I} {v w : List I} (x : PrependIdx i v w) (r : hom D Sc cutoff v x.oldTarget) :
+    projection D Sc cutoff i v w
+      (insert D Sc cutoff i v x.oldTarget r ≫
+        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+          prependTail D Sc x : hom D Sc cutoff (i :: x.oldTarget) w)) ∈
+      LinearMap.range (prependOldReconstruct D Sc cutoff p i v w) := by
+  let q : PrependIdx.Tail i v w := ⟨x.tailKey, x, rfl⟩
+  have hk : x.tailKey = q.representative.tailKey := q.representative_tailKey.symm
+  have ht := x.oldTarget_eq_of_tailKey_eq q.representative hk
+  refine ⟨DirectSum.lof k _ _ q
+    ((ideal D Sc cutoff v q.representative.oldTarget).mkQ (twist k p (ht ▸ r))), ?_⟩
+  rw [prependOldReconstruct, DirectSum.toModule_lof, pair_mk, twist_twist]
+  exact congrArg (projection D Sc cutoff i v w)
+    (insert_tail_transport D Sc cutoff ht r _ _
+      (prependTail_heq_of_tailKey_eq D Sc x q.representative hk)).symm
+
+/-- Every old-only class has finite simultaneous old quotient coordinates. -/
+theorem prependOldReconstruct_surjective (p : ZMod 2) (i : I) (v w : List I) :
+    Function.Surjective (prependOldReconstruct D Sc cutoff p i v w) := by
+  intro z
+  obtain ⟨h, rfl⟩ := projection_surjective D Sc cutoff i v w z
+  obtain ⟨f, rfl⟩ := (prependAffineEquiv D Sc cutoff i v w).symm.surjective h
+  change projection D Sc cutoff i v w ((prependAffineEquiv D Sc cutoff i v w).symm f) ∈
+    LinearMap.range (prependOldReconstruct D Sc cutoff p i v w)
+  induction f using Finsupp.induction_linear with
+  | zero => simp only [map_zero]; exact Submodule.zero_mem _
+  | add f g hf hg => simp only [map_add]; exact Submodule.add_mem _ hf hg
+  | single x a =>
+    rw [prependAffineEquiv_symm_single, ← prepend_insert_twisted_coefficient D Sc cutoff x a]
+    exact prependOldReconstruct_range_tail D Sc cutoff p x _
+
+/-- The full ELV old-only quotient is the direct sum of old quotient Hom coordinates.
+No flatness, finite-colour assumption, or moving cyclotomic relation is imposed. -/
+def prependOldCoordinateEquiv (p : ZMod 2) (i : I) (v w : List I) :
+    Target D Sc cutoff i v w ≃ₗ[k] PrependOldCoordinates D Sc cutoff i v w :=
+  (LinearEquiv.ofBijective (prependOldReconstruct D Sc cutoff p i v w)
+    ⟨prependOldReconstruct_injective D Sc cutoff p i v w,
+      prependOldReconstruct_surjective D Sc cutoff p i v w⟩).symm
+
+@[simp] theorem prependOldCoordinateEquiv_apply (p : ZMod 2) {i : I} {v w : List I}
+    (z : Target D Sc cutoff i v w) (q : PrependIdx.Tail i v w) :
+    prependOldCoordinateEquiv D Sc cutoff p i v w z q =
+      prependOldCoordinate D Sc cutoff p q.representative z := by
+  rw [← prependOldCoordinate_reconstruct D Sc cutoff p q]
+  exact congrArg (prependOldCoordinate D Sc cutoff p q.representative)
+    ((prependOldCoordinateEquiv D Sc cutoff p i v w).symm_apply_apply z)
+
+/-- Reconstruction is the left inverse of simultaneous extraction. -/
+@[simp] theorem prependOldReconstruct_coordinateEquiv (p : ZMod 2) (i : I) (v w : List I)
+    (z : Target D Sc cutoff i v w) :
+    prependOldReconstruct D Sc cutoff p i v w
+      (prependOldCoordinateEquiv D Sc cutoff p i v w z) = z :=
+  (prependOldCoordinateEquiv D Sc cutoff p i v w).symm_apply_apply z
+
+/-- Reconstruction is the right inverse of simultaneous extraction as well. -/
+@[simp] theorem prependOldCoordinateEquiv_reconstruct (p : ZMod 2) (i : I) (v w : List I)
+    (f : PrependOldCoordinates D Sc cutoff i v w) :
+    prependOldCoordinateEquiv D Sc cutoff p i v w
+      (prependOldReconstruct D Sc cutoff p i v w f) = f :=
+  (prependOldCoordinateEquiv D Sc cutoff p i v w).apply_symm_apply f
 
 end ELVOld
 end OddMath.QuiverHecke
