@@ -130,6 +130,27 @@ Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `
 `braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
+## Distinct-colour quadratic relation on the global factors: algebra level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedQuadratic.lean`), BE2
+arXiv:1701.04133v2 Definition 1.5, (1.7) for `i ≠ j`:
+
+- `pairQuadPoly D Sc i j A B`: `t_ij 1` if `d_ij = 0`, otherwise
+  `∑_{0<p<d_ij, 0<q<d_ji} s_ij^{pq} A^p B^q + t_ij A^{d_ij} + t_ji B^{d_ji}`, with
+  `map_pairQuadPoly` for algebra maps and `wordQuadratic_eq_pairQuadPoly`;
+- `affineLastCrossing_mul_mixed`: `c_ij c_ji = φᵢφⱼ(1) · Q_ji(φᵢ(y_j), y_i)` in the affine
+  algebra (via the diagonal matrices `pairDiag` on the words `w j i`);
+- `heightLastCrossing_mul_mixed`: the same identity at every height of the extended tower.
+
+No parameter change is made here. Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`:
+the corner square `Cr_ij ≫ Cr_ji` as a polynomial in the two signed right multiplications
+(power sign `koszulSign c (m p + ⌊m/2⌋)` for `m` multiplications by a dot of parity `c` on input
+parity `p`), transport through the comparison to the induction functors, the weight-level
+assembly, and matching with `parameterTwist`. A hand check: the `p`-dependent signs vanish
+because every surviving monomial has `p|i|` and `q|j|` even (`Sc.s_eq_zero`,
+`Datum.even_d_of_odd`), and the remaining signs `|i||j| + |i|⌊d_ij/2⌋` (resp. with
+`⌊p/2⌋`, `⌊q/2⌋`) are exactly those of `parameterTwist`.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
