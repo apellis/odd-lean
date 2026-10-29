@@ -887,6 +887,23 @@ mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is s
 hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
 and the braid would require opposite signs).
 
+**Probe window identities (checked).** `SwappedAssembly/CentralInverse/Windows.lean`
+proves the window identities (4) of `ProbeWindowInverse.md` in any preadditive category,
+from the slide `s ≫ y - q • (x ≫ s) = v ≫ u` with `q * q = 1` and automorphisms `x`, `y`:
+`ProbeWindow.window_neg` (`s + Σ_{r<l} q^(r+1) • (x^{-(r+1)} ≫ v ≫ u ≫ y^r) =
+q^l • (x^{-l} ≫ s ≫ y^l)`) and `ProbeWindow.window_pos` (`s - Σ_{r<l} q^(r+2) •
+(x^r ≫ v ≫ u ≫ y^{-(r+1)}) = q^l • (x^l ≫ s ≫ y^{-l})`), negative powers as powers of the
+inverse automorphisms. Next for `CentralInvertible`: the shifted-window inverses (5), (6), then
+the case analysis (7)–(14) and the extraction to `PosInverse`/`NegInverse` at `s = t`.
+
+**`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
+(proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
+coefficient ideal of `SwappedHomInversion.md` (closed reservoir bubbles) uses the gradings
+(G6)–(G8); it does not follow from the `ProbeReservoir` fields together with
+`CrossCoeffInputs` (unit probe dot, nilpotent transposed reservoir dot) alone. A Lean proof of
+`CentralInvertible` therefore needs that nilpotence as an explicit, documented hypothesis
+(to be removed later from a graded `ProbeReservoir`), or a route avoiding it.
+
 **`CentralInvertible` needs a weight restriction (interface).** As stated,
 `CentralInvertible` (and so `AugmentedInvertible`, `LeftwardData.IsInverse`) quantifies over
 all `ν` independently of the sector. The entries `σ`, `ε`, `η` do not depend on `ν`; only the

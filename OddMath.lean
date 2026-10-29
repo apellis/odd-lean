@@ -1317,6 +1317,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.WindowZero
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Windows
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
