@@ -31,9 +31,17 @@ and `canWord_prependShort_restrict` identifies the word literally with the
 canonical word on one fewer strand. `prependShort_cl_whiskerRight` embeds the
 corresponding diagram by right whiskering, without braid replacements.
 
-Next target: assemble the projected affine matrix multiplier using
-`appendW_append` through the last equal-colour crossing, then convert the
-old coefficient to `appendLeftSum` coordinates.
+The entrywise step is now checked in `AppendContentShortFactor.lean`.
+`firstDotPow_whiskerRight` and `appendDottedMove_append` separate the dot
+powers from the moving map. `appendDottedMove_short_factor` uses the literal
+short word for every final colour. `appendShortEntry_factor` gives the actual
+surviving single-matrix factorization as `appendAlgebra(oldEntry) * τ`, with
+τ the prescribed final equal-colour crossing. Small list-Hom and word-Hom
+wrappers keep elaboration bounded without new transparency settings.
+
+Next target: identify the projected affine multiplier with the sum of these
+surviving entries (and prove the other final-colour blocks vanish), then use
+the actual append PBW expansion to convert the old entries to `appendLeftSum`.
 The proposed argument must retain the left append projector: individual
 unprojected source PBW generators need not belong to the source corner.
 Neither `P(short) ⊆ range F` without the displayed factorization hypothesis,
