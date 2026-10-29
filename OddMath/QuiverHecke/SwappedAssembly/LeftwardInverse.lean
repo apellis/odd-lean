@@ -53,6 +53,8 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 
 namespace ProbeReservoir
 
+open Classical
+
 section Entries
 
 variable (P : ProbeReservoir k B D Sc)
@@ -130,12 +132,12 @@ crossing is minus the first component of the inverse of (1.13) for `⟨hᵢ, ν�
 component of the inverse of (1.14) otherwise; the `♦`-cups and caps are the remaining
 components. -/
 def leftwardOfInvertible (c : P.CrossCoeff) (h : P.AugmentedInvertible c) : P.LeftwardData where
-  lcrossSame i ν t s q p Z :=
+  lcrossSame i ν {t s} q p Z :=
     if hh : 0 ≤ D.h i ν then (((h i ν t s).1 hh).choose q p Z)
     else ((h i ν t s).2 (not_le.mp hh)).choose q p Z
-  dcup i n ν t s r p Z :=
+  dcup i n ν {t s} r p Z :=
     if hh : 0 ≤ D.h i ν then ((h i ν t s).1 hh).choose_spec.choose n r p Z else 0
-  dcap i n ν t s q r Z :=
+  dcap i n ν {t s} q r Z :=
     if hh : D.h i ν < 0 then ((h i ν t s).2 hh).choose_spec.choose n q r Z else 0
 
 end Entries
@@ -173,7 +175,7 @@ theorem compDiag_dcupL_swappedGens (c : P.CrossCoeff) (L : P.LeftwardData) (i : 
     compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.dcupL i n) (SKM.sChain_dcupL i n)) r p Z =
       L.dcup i n ν r p Z := by
   rw [compDiag_dcupL]
-  exact swappedGens_dcup_of_lt c L i n ν hn r p Z
+  exact P.swappedGens_dcup_of_lt c L i n ν hn r p Z
 
 theorem compDiag_dcapL_swappedGens (c : P.CrossCoeff) (L : P.LeftwardData) (i : I) (n : ℕ)
     (ν : X) (hn : (n : ℤ) < -D.h i ν) {t s : Sector I} (q : SPath (wd D ν [dn i, up i]) t s)
@@ -181,15 +183,15 @@ theorem compDiag_dcapL_swappedGens (c : P.CrossCoeff) (L : P.LeftwardData) (i : 
     compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.dcapL i n) (SKM.sChain_dcapL i n)) q r Z =
       L.dcap i n ν q r Z := by
   rw [compDiag_dcapL]
-  exact swappedGens_dcap_of_lt c L i n ν hn q r Z
+  exact P.swappedGens_dcap_of_lt c L i n ν hn q r Z
 
 theorem compDiag_id_eq_famDelta (gens : P.Generators) {w : List (Letter I)} (ν : X)
-    {t s : Sector I} (p q : SPath (wd D ν w) t s) (Z : P.H s) :
+    {t s : Sector I} {_inst : Fintype (SPath (wd D ν w) t s)} (p q : SPath (wd D ν w) t s)
+    (Z : P.H s) :
     compDiag gens (𝟙 (SKM.ob D ν w)) p q Z = famDelta (fun x => P.pathFunctor x) p q Z := by
   rw [compDiag_id]
-  by_cases hp : p = q
-  · subst hp; simp [famDelta]; rfl
-  · simp [famDelta, hp]
+  unfold famDelta
+  split_ifs <;> rfl
 
 /-! ## The inversion relations from the inverses -/
 
@@ -218,7 +220,8 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
         (SKM.sChain_lcrossL i i)]
     rw [Finset.sum_congr rfl fun n _ => compEval_dg_append gens ν (SKM.epsL i n) (SKM.dcupL i n)
       (SKM.sChain_epsL i n) (SKM.sChain_dcupL i n) p q Z]
-    rw [compEval_of, sub_eq_zero, compDiag_id_eq_famDelta, ← h₁ p q Z]
+    rw [compEval_of, sub_eq_zero, compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _),
+      ← h₁ p q Z]
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens,
       compDiag_epsL_swappedGens]
     congr 1
@@ -230,9 +233,10 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
     obtain ⟨-, h₂, -⟩ := hpos i ν hh s t
     simp only [SKM.relation]
     rw [compEval_add, compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.sigmaL i i)
-      (SKM.sChain_lcrossL i i) (SKM.sChain_sigmaL i i), compEval_of, compDiag_id_eq_famDelta]
+      (SKM.sChain_lcrossL i i) (SKM.sChain_sigmaL i i), compEval_of,
+      compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens]
-    rw [h₂ p q Z, neg_add_cancel]
+    exact eq_neg_iff_add_eq_zero.mp (h₂ p q Z)
   | invP₃ i ν m hm =>
     show compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [])
       (SKM.relation D Sc (.invP₃ i ν m hm)) p q Z = 0
@@ -259,9 +263,9 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
     rw [compEval_sub, compEval_dg_append gens ν (SKM.dcupL i n) (SKM.epsL i m)
       (SKM.sChain_dcupL i n) (SKM.sChain_epsL i m), sub_eq_zero]
     simp only [gens, compDiag_epsL_swappedGens, compDiag_dcupL_swappedGens c L i n ν hn]
-    rw [h₅ m n hm hn p q Z]
+    refine (h₅ m n hm hn p q Z).trans ?_
     split_ifs
-    · rw [compEval_of, compDiag_id_eq_famDelta]
+    · rw [compEval_of, compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     · rw [compEval_zero]
   | invM₁ i ν hh =>
     show compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [dn i, up i])
@@ -272,7 +276,8 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
         (SKM.sChain_sigmaL i i)]
     rw [Finset.sum_congr rfl fun n _ => compEval_dg_append gens ν (SKM.dcapL i n) (SKM.etaL i n)
       (SKM.sChain_dcapL i n) (SKM.sChain_etaL i n) p q Z]
-    rw [compEval_of, sub_eq_zero, compDiag_id_eq_famDelta]
+    rw [compEval_of, sub_eq_zero,
+      compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens,
       compDiag_etaL_swappedGens]
     rcases lt_or_eq_of_le hh with hlt | heq
@@ -282,22 +287,24 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
       refine Finset.sum_congr rfl fun n hn => Finset.sum_congr rfl fun r _ => ?_
       rw [compDiag_dcapL_swappedGens c L i n ν (Int.lt_toNat.mp (Finset.mem_range.mp hn))]
     · obtain ⟨-, h₂, -⟩ := hpos i ν heq.ge s t
-      rw [heq, neg_zero, Int.toNat_zero, Finset.range_zero, Finset.sum_empty, add_zero,
-        h₂ p q Z, neg_neg]
+      rw [heq, neg_zero, Int.toNat_zero, Finset.range_zero, Finset.sum_empty, add_zero]
+      exact neg_eq_iff_eq_neg.mpr (h₂ p q Z)
   | invM₂ i ν hh =>
     show compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [up i, dn i])
       (SKM.relation D Sc (.invM₂ i ν hh)) p q Z = 0
     simp only [SKM.relation]
     rw [compEval_add, compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.lcrossL i i)
-      (SKM.sChain_sigmaL i i) (SKM.sChain_lcrossL i i), compEval_of, compDiag_id_eq_famDelta]
+      (SKM.sChain_sigmaL i i) (SKM.sChain_lcrossL i i), compEval_of,
+      compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens]
     rcases lt_or_eq_of_le hh with hlt | heq
     · obtain ⟨-, h₂, -⟩ := hneg i ν hlt s t
-      rw [h₂ p q Z, neg_add_cancel]
+      exact eq_neg_iff_add_eq_zero.mp (h₂ p q Z)
     · obtain ⟨h₁, -⟩ := hpos i ν heq.ge s t
       have h := h₁ p q Z
       rw [heq, Int.toNat_zero, Finset.range_zero, Finset.sum_empty, add_zero] at h
-      rw [← h, neg_add_cancel]
+      rw [← h]
+      exact add_neg_cancel _
   | invM₃ i ν m hm =>
     show compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [up i, dn i])
       (SKM.relation D Sc (.invM₃ i ν m hm)) p q Z = 0
@@ -324,9 +331,9 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
     rw [compEval_sub, compEval_dg_append gens ν (SKM.etaL i m) (SKM.dcapL i n)
       (SKM.sChain_etaL i m) (SKM.sChain_dcapL i n), sub_eq_zero]
     simp only [gens, compDiag_etaL_swappedGens, compDiag_dcapL_swappedGens c L i n ν hn]
-    rw [h₅ m n hm hn p q Z]
+    refine (h₅ m n hm hn p q Z).trans ?_
     split_ifs
-    · rw [compEval_of, compDiag_id_eq_famDelta]
+    · rw [compEval_of, compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     · rw [compEval_zero]
   | invNe₁ => exact absurd trivial hne
   | invNe₂ => exact absurd trivial hne
@@ -345,8 +352,8 @@ theorem leftwardOfInvertible_isInverse (c : P.CrossCoeff) (h : P.AugmentedInvert
         ((h i ν t s).1 hh).choose_spec.choose := by
       funext n r p Z
       simp [leftwardOfInvertible, hh]
-    rw [e₁, e₂]
-    exact ((h i ν t s).1 hh).choose_spec.choose_spec
+    exact (congrArg₂ (P.PosInverse c i ν t s) e₁ e₂).mpr
+      ((h i ν t s).1 hh).choose_spec.choose_spec
   · have e₁ : (fun q p Z => (P.leftwardOfInvertible c h).lcrossSame i ν q p Z) =
         ((h i ν t s).2 hh).choose := by
       funext q p Z
@@ -355,8 +362,8 @@ theorem leftwardOfInvertible_isInverse (c : P.CrossCoeff) (h : P.AugmentedInvert
         ((h i ν t s).2 hh).choose_spec.choose := by
       funext n q r Z
       simp [leftwardOfInvertible, hh]
-    rw [e₁, e₂]
-    exact ((h i ν t s).2 hh).choose_spec.choose_spec
+    exact (congrArg₂ (P.NegInverse c i ν t s) e₁ e₂).mpr
+      ((h i ν t s).2 hh).choose_spec.choose_spec
 
 end ProbeReservoir
 
