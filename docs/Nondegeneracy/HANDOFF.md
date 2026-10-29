@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV Q descent and quotient composition
+
+`ELVQDescent.lean` constructs `qMap : AppendTarget →ₗ[k] Target` by
+precomposition with `affineUnit(moveHom i [] v)`. `move_comp_rightContext`
+uses total coefficient-plus-diagram parity; affine normal-form spanning
+shows the full Hom vanishes between different word parities, removing the
+naturality side condition. `move_appendRelations` proves preservation of
+every old ideal generator and arbitrary continuation, with no assumed descent.
+
+`qMap_comp_pMap` identifies the composite on the actual quotients with
+`signedQPMap`, precomposition by `affineUnit(qpProduct i v) ≫ relation i v`.
+The comparison uses `qp_projection_product` and ambient postcomposition;
+all words, cutoffs and exterior coefficients remain. Repeated-even factors
+are still −1. These are ground-ring linear maps only: the different twisted
+balanced-module labels K1 and K1prime have not been identified as module maps.
+Twisted B[s]-linearity, injectivity, exactness and projectivity remain separate.
+
 ## Full ELV P descent
 
 `ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
