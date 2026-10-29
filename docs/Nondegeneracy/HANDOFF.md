@@ -636,11 +636,24 @@ by a dot `cross p q ≫ rightDot q` (`compDiag_cross_rightDot`,
 `leftDot p ≫ cross = (-1)^{|i||j|} cross ≫ rightDot q` and
 `cross ≫ leftDot q = (-1)^{|i||j|} rightDot p ≫ cross`; for `i = j` the same
 differences with sign `(-1)^{|i|}` equal the identity entry (`eqToHom` on the
-diagonal, zero off it). Remaining: prove `CrossSlide (swappedGens c L)`:
-diagonal blocks from the probe and reservoir slide relations, same-colour
-mixed blocks from `SlideBlocks.lean`, distinct-colour mixed blocks from the
-signed dot intertwinings of `homMixedInterchange_pre/_post` (not yet
-formalized).
+diagonal, zero off it). **`CrossSlide (swappedGens c L)` is checked**
+(`SlideAssembly.lean`: `swappedGens_crossSlide c hc hin L`, for `c.IsInverse`
+and `CrossCoeffInputs`). The equal-colour fields are `swappedGens_slideEq`
+(`SlideSame.lean`); the distinct-colour fields are `swappedGens_slideNe`. For
+`i ≠ j` only the four pairs of paths `PP→PP`, `RR→RR`, `PR→RP`, `RP→PR` have
+equal right sectors. `SlideNe.lean` proves the slides of each distinct-colour
+crossing entry: `preCrossNe_slideL/R` and `postCrossNe_slideL/R` (the factor
+slides `probeRel.slideLeft/Right`, `reservoirRel.slideLeft/Right` transported
+through the associator, resp. the word isomorphism `postPairIso`), and
+`mixedJ_ne_slides`, `mixedJinvQ_ne_slides` for `J` and `J⁻¹ Q_ji`: the signed
+intertwinings `prPreDot_comp_mixedJ_ne`, `prPostDot_comp_mixedJ_ne` (sign
+`(-1)^{|i||j|}` from super interchange through the parity shift), the
+supercommutation `prPostDot_comp_prPreDot` of the two dots on `PR`, and
+`mixedQ_comm` (`Q_ji` commutes with both dots: in each monomial `x^a y^b` of
+`Q` the exponent of the odd variable is even, `comp_qExpr`).
+`SlideAssembly.lean` moves the entry slides to arbitrary paths by `HEq`
+transport (`slideL_of_heq`, `twoTwo_two_heq`, `leftDot_two_*_heq`,
+`rightDot_two_*_heq`).
 
 **Braid relations (checked).** `SwappedAssembly/Braid.lean`:
 `braidRelations`: `BraidRelations` for `P.layerRep Gs Ys gens` from
