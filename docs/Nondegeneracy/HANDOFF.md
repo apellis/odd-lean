@@ -832,6 +832,19 @@ pair of paths of the block, via `op_sectorRelations_even/_odd` and `sectorBraid`
 Since the block is the whole path set for these endpoints, no cross-block entries
 arise. No discrepancy with `ThreeStrandSectorBraid.md` (1)–(5A). Next: (5B) on
 `{PRR, RPR, RRP}`; then `PPP`, `RRR`.
+(5B) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePostPair.lean`):
+`postCrossSame_mixedJ_pair`: the reservoir crossing on the two right letters of
+`PRR`, followed by the two mixed interchanges `PRR → RPR → RRP`, equals the
+interchanges followed by the reservoir crossing on the two left letters of `RRP`.
+Generic form `homMixedInterchange_postPair_conj` (any 2-morphism `χ` on `F₁ ≫ F₂`
+transported by `Θ_σ = homShiftPairIso`, which is the word comparison of the
+content-shifted postcomposition, `homContentPostWordIso_app`). The pair of
+interchanges followed by `Θ_κ` is `(-1)^(κκ' + κ'κ')` times `Eᵢ ◁ Θ_κ'` followed by
+the associator (`homMixedInterchange_postPair`, (7) of `PairedHomInterchange.md`
+§4 with `κ' = κ + pᵢ`); the sign is common to both sides of (8). No discrepancy
+with the written proof. Next: dot algebra on `PRR` and the block assembly; then
+`PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
