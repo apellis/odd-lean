@@ -283,9 +283,21 @@ Hence, on components at a height-`n` module `M`:
 Every term has parity `0` (`d_ij |i| = 0`, and `s'^{pq}_ij ≠ 0` forces `p|i| = q|j| = 0`,
 `scalars_parity_of_s_ne_zero`), so only the `0`-components are compared; `E_j ◁ x_i` is the
 outer dot and `x_j ▷ E_i` the inner dot of `heightInduction_square_ne`. These are the `quadNe`,
-`quadZero` fields with scalars `parameterTwist D Sc` for the data built from `Sc`. Remaining:
-restate them for `globalRouquierFamily D (parameterTwist D Sc)` with scalars `Sc` via
-`parameterTwist_involutive`, together with the other fields.
+`quadZero` fields with scalars `parameterTwist D Sc` for the data built from `Sc`.
+
+**Family level (checked,** `CyclotomicAction/GlobalRouquierMulticolour.lean`**).** For
+`T = globalRouquierFamily D (parameterTwist D Sc) a ha Λ hdeg L` (the family in
+`nondegeneracy_of_global_factor_observations`), with the scalars `Sc` via
+`parameterTwist_involutive`:
+
+- `globalRouquierFamily_quadZero`, `globalRouquierFamily_quadNe`,
+  `globalRouquierFamily_slideLeft`, `globalRouquierFamily_slideRight`: the four fields;
+- `globalRouquierFamily_multicolour`: `SKM.RouquierMulticolour T Sc` from the remaining fields
+  `braid`, `braidEq` (1.9) and `invNe` (1.12), taken as hypotheses (intermediate statement).
+
+This holds for every cyclotomic family, so for both the probe and the reservoir of
+`nondegeneracy_of_global_factor_observations`. Open: `braid`, `braidEq`, `invNe` for these
+families; `invNe` needs the distinct-colour Mackey isomorphism for the global factors.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
