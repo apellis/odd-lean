@@ -49,6 +49,22 @@ example {t t' : List Bool} (P : List PG) (σ : List ℕ)
 example {n : ℕ} {σ : List ℕ} (hv : ValidWord n σ) (p : Fin n) :
     sourceDotPosition σ p = ((wordProd n σ)⁻¹ p : ℕ) := sourceDotPosition_eq hv p
 
+/-- Arbitrarily many interleaved decorations, in a genuinely mixed-parity datum. -/
+example {t t' : List Bool} (P R : List PG) (bs : List (ℕ × List ℕ))
+    (hv : ValidWord t.length (bs.map Prod.fst))
+    (hp : ∀ b ∈ bs, ∀ p ∈ b.2, p < t.length)
+    (h : SChain t (pl t (P ++ decoratedCrossingGens bs ++ R)) t') :
+    ∃ h' : SChain t
+        (pl t (P ++ (collectedSourceDots bs).map PG.dot ++ cw (bs.map Prod.fst) ++ R)) t',
+      cl mixedDatum mixedScalars t t' (P ++ decoratedCrossingGens bs ++ R) h -
+        collectedSourceSign mixedDatum (k := ℚ) (tgt t P) bs •
+          cl mixedDatum mixedScalars t t'
+            (P ++ (collectedSourceDots bs).map PG.dot ++ cw (bs.map Prod.fst) ++ R) h' ∈
+        Low mixedDatum mixedScalars t t' (crossCount P + bs.length + crossCount R) :=
+  decorated_crossings_normal_order mixedDatum mixedScalars P rfl bs hv hp R h
+
 #print axioms OddMath.QuiverHecke.cross_dot_move_signed
 #print axioms OddMath.QuiverHecke.dot_down_signed
+#print axioms OddMath.QuiverHecke.dots_down_signed
+#print axioms OddMath.QuiverHecke.decorated_crossings_normal_order
 end SignedDotNormalOrderConsumer

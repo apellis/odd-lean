@@ -2,17 +2,21 @@
 
 ## Signed source-endpoint dot transport
 
-`SignedDotNormalOrder.lean` proves `cross_dot_move_signed` and
-`dot_down_signed`. The latter moves an output dot through any valid crossing
-word in arbitrary left and right contexts, modulo `Low`, with its explicitly
-computed sign `sourceDotSign`. The input position is `sourceDotPosition`,
-identified with the inverse permutation by `sourceDotPosition_eq`.
+`SignedDotNormalOrder.lean` proves `decorated_crossings_normal_order`:
+arbitrarily many interleaved crossing/dot-monomial blocks collect at the
+source endpoint modulo `Low`, with the explicitly computed coefficient
+`collectedSourceSign` and chronological dot list `collectedSourceDots`.
+Its producers `cross_dot_move_signed`, `dot_down_signed` and
+`dots_down_signed` retain the sign of every local slide. The input dot
+position is identified with the inverse permutation by `sourceDotPosition_eq`.
 Incident slides contribute the product of the crossing colours' parities;
 distant slides also multiply by the dot colour's parity. All signs are
 derived from the positional relations, not extracted from `Approx`.
 
-**Residual:** transport is proved for a dot, not yet collected across all
-polynomial decorations of `leadingMoveHom`. The signed ordered polynomial,
+**Residual:** the monomial collection theorem preserves chronological dot
+order, rather than sorting odd variables. The finite-sum expansion connecting
+`leadingMoveHom` to these decorated monomials is not yet proved. Its
+collected polynomial still needs identification with the prescribed product;
 scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
 `homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
 No count of equal colours has been identified with the moving-dot degree.
