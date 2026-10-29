@@ -126,7 +126,16 @@ recursion gives the second; their product is one. Preservation follows from
 transport with the full relation and arbitrary continuation.
 `relations_rightContext` and `qpEval_of_projection_eq` prove spectator descent
 on the actual old-only quotient; `qp_nil` checks the empty signed-product base.
-Full-ELV all-word induction assembly remains open.
+Full-ELV all-word signed induction is proved in `ELVQPProduct.lean`:
+`ELVOld.qp_projection_product` gives the raw projected identity and `qp_product`
+extends it to all spectators and full-coefficient continuations. The subalgebra
+`relationPreserving` contains every dot and hence each `qpFactor`; preservation
+of old dots follows from the actual old-source quotient action. Reverse-word
+induction uses `qpProduct_append` in its existing order: its endomorphism product
+is the last factor followed by the right-whiskered previous product in diagram
+composition. Typed empty-context transport and right-context descent discharge
+spectator coherence, with no extra stability premise. This proves the signed
+product, not the proposed no-even-factor normalization below.
 
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
 The induction hypothesis is
