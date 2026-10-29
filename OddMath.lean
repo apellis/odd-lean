@@ -1312,6 +1312,9 @@ import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange
 import OddMath.QuiverHecke.SwappedAssembly.Quad
+import OddMath.QuiverHecke.SwappedAssembly.Inversion
+import OddMath.QuiverHecke.SwappedAssembly.Slides
+import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
