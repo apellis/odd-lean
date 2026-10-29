@@ -4920,8 +4920,20 @@ last dot of `Hn (n+2)`, `x` the last dot of `Hn (n+1)` and `s` the Koszul sign o
 appended colour; the lower sums are `appendDotSum` (`appendDotSum_single`,
 `appendDotSum_mul_lastDot`), and `appendAlgebra_pow_mul`.
 
-Next: the assembly of `F`, `direct`, `span` from (1), the factorization above and
-`appendCoordinateEquiv`; move `z^b` left past `ψ(·)` with `affineLastDot_twist_comm`.
+Checked (same file): the corner idempotent commutes with the low moving crossings,
+`ψ(1) c_j = c_j ψ(ψ(1))` (`appendOne_mul_appendShuffleElement_castSucc`), hence
+`ψ(1) c_j = ψ(c'_j) τ` (`appendOne_mul_appendShuffleElement_castSucc_eq`); the top moving
+crossing is the idempotent, `c_(n+1) = ψ(1)` (`appendShuffleElement_last`).
+
+Checked (same file): **span** of the two-sided corner,
+`mem_appendLeftSum_sup_appendPolySum`: every `y` with `ψ(1) y = y = y ψ(1)` lies in
+`range appendLeftSum ⊔ range appendPolySum`, where `appendLeftSum (single (j,m) b) =
+ψ(c'_j x^m) τ ψ(b)` and `appendPolySum (single m b) = z^m ψ(b)`. Proof: expand by
+`appendCoordinateEquiv (n+1)`; on `c_j z^m ψ(b)`, `j ≤ n`, use the factorization and (1);
+the lower sums and the top run reduce to `z^b ψ(·)` by `appendAlgebra_mul_lastDot_pow`
+(`ψ(r) z^b = z^b ψ(r')`, from `affineLastDot_twist_comm`).
+
+Next: `direct` (with coordinates of `appendLeftSum` in `e'B`), then `Rt_F`, `Rt_j`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 

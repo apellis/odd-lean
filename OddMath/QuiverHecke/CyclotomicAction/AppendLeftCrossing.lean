@@ -6,6 +6,8 @@ import OddMath.QuiverHecke.AppendShuffleRuns
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.Square
 import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
+import OddMath.QuiverHecke.CyclotomicAction.AppendEquivalence
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRightDot
 
 /-!
 # Factorization of the append moving crossings through the last crossing
@@ -290,5 +292,121 @@ theorem affineLastCrossing_mul_lastDot_pow (i : I) (n m : ℕ) :
       smul_sub, smul_smul, smul_smul, ← pow_succ]
     simp only [neg_smul, sub_eq_add_neg]
     abel
+
+/-! ## Spanning the two-sided corner -/
+
+/-- The moving crossing to the top position is the corner idempotent. -/
+theorem appendShuffleElement_last (i : I) (n : ℕ) :
+    appendShuffleElement D Sc i (appendRun n (Fin.last n)) = appendAlgebra D Sc i n 1 := by
+  rw [appendAlgebra_one_eq_sum]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  have hc : cw (canWord (n + 1) (appendRun n (Fin.last n)).1⁻¹) = [] := by
+    rw [canWord_appendRun]; simp
+  unfold appendShuffleHom
+  refine (single_cl_congr D Sc (s := appendWord i s) (t' := appendWord i s) _ ?_ hc).trans ?_
+  · exact sChain_pl _ _
+  · exact congrArg _ (cl_nil D Sc _ _)
+
+/-- Sums `Σ ψ(c'_j x^m) τ ψ(b)` of left-crossing terms. -/
+def appendLeftSum (i : I) (n : ℕ) :
+    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1 + 1) :=
+  Finsupp.liftAddHom fun p =>
+    (AddMonoidHom.mulLeft (appendAlgebra D Sc i (n + 1)
+        (appendShuffleElement D Sc i (appendRun n p.1) * affineLastDot D Sc i n ^ p.2) *
+      affineLastCrossing D Sc i i n)).comp (appendLinear D Sc i (n + 1)).toAddMonoidHom
+
+theorem appendLeftSum_single (i : I) (n : ℕ) (j : Fin (n + 1)) (m : ℕ) (b : Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n (Finsupp.single (j, m) b) =
+      appendAlgebra D Sc i (n + 1)
+          (appendShuffleElement D Sc i (appendRun n j) * affineLastDot D Sc i n ^ m) *
+        affineLastCrossing D Sc i i n * appendAlgebra D Sc i (n + 1) b := by
+  unfold appendLeftSum
+  simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.coe_comp, Function.comp_apply,
+    AddMonoidHom.coe_mulLeft, LinearMap.toAddMonoidHom_coe]
+  rfl
+
+/-- Sums `Σ x^m ψ(b)` with the new dot on the left. -/
+def appendPolySum (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1 + 1) :=
+  Finsupp.liftAddHom fun m =>
+    (AddMonoidHom.mulLeft (affineLastDot D Sc i (n + 1) ^ m)).comp
+      (appendLinear D Sc i (n + 1)).toAddMonoidHom
+
+theorem appendPolySum_single (i : I) (n m : ℕ) (b : Hn D Sc (n + 1)) :
+    appendPolySum D Sc i n (Finsupp.single m b) =
+      affineLastDot D Sc i (n + 1) ^ m * appendAlgebra D Sc i (n + 1) b := by
+  unfold appendPolySum
+  simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.coe_comp, Function.comp_apply,
+    AddMonoidHom.coe_mulLeft, LinearMap.toAddMonoidHom_coe]
+  rfl
+
+theorem appendAlgebra_mul_pow (i : I) (n : ℕ) (d x : Hn D Sc n) (m : ℕ) :
+    appendAlgebra D Sc i n d * appendAlgebra D Sc i n x ^ m =
+      appendAlgebra D Sc i n (d * x ^ m) := by
+  induction m generalizing d with
+  | zero =>
+    rw [pow_zero, pow_zero, mul_one, mul_one]
+  | succ m ih => rw [pow_succ', ← mul_assoc, ← map_mul, ih, mul_assoc, ← pow_succ']
+
+/-- Old coefficients move to the right of powers of the new dot, up to parity twists. -/
+theorem appendAlgebra_mul_lastDot_pow (i : I) (n : ℕ) (r : Hn D Sc n) (b : ℕ) :
+    ∃ r', appendAlgebra D Sc i n r * affineLastDot D Sc i n ^ b =
+      affineLastDot D Sc i n ^ b * appendAlgebra D Sc i n r' := by
+  induction b generalizing r with
+  | zero => exact ⟨r, by simp⟩
+  | succ b ih =>
+    obtain ⟨r', h⟩ := ih r
+    refine ⟨homMatrixTwist D Sc n (D.parity i) r', ?_⟩
+    rw [pow_succ, ← mul_assoc, h, mul_assoc, affineLastDot_twist_comm, ← mul_assoc]
+
+theorem appendAlgebra_mul_appendDotSum_mul_mem (i : I) (n : ℕ) (r d : Hn D Sc (n + 1))
+    (f : ℕ →₀ Hn D Sc (n + 1)) :
+    appendAlgebra D Sc i (n + 1) r * appendDotSum D Sc i n f * appendAlgebra D Sc i (n + 1) d ∈
+      (appendPolySum D Sc i n).range := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, mul_add, add_mul]; exact add_mem hf hg
+  | single b c =>
+    rw [appendDotSum_single, ← mul_assoc, ← map_mul]
+    obtain ⟨r', h⟩ := appendAlgebra_mul_lastDot_pow D Sc i (n + 1) (r * c) b
+    rw [h, mul_assoc, ← map_mul]
+    exact ⟨Finsupp.single b (r' * d), appendPolySum_single D Sc i n b _⟩
+
+theorem appendOne_mul_appendPBWTerm_mem (i : I) (n : ℕ) (u : AppendShuffleAt (n + 1)) (m : ℕ)
+    (c : Hn D Sc (n + 1)) :
+    appendAlgebra D Sc i (n + 1) 1 * appendPBWTerm D Sc i u m c ∈
+      (appendLeftSum D Sc i n).range ⊔ (appendPolySum D Sc i n).range := by
+  obtain ⟨j, rfl⟩ := (appendRunEquiv (n + 1)).surjective u
+  rw [appendRunEquiv_apply]
+  induction j using Fin.lastCases with
+  | last =>
+    apply AddSubgroup.mem_sup_right
+    rw [appendPBWTerm, appendShuffleElement_last, ← mul_assoc, ← mul_assoc, ← map_mul]
+    obtain ⟨r', h⟩ := appendAlgebra_mul_lastDot_pow D Sc i (n + 1) (1 * 1) m
+    rw [h, mul_assoc, ← map_mul]
+    exact ⟨Finsupp.single m (r' * c), appendPolySum_single D Sc i n m _⟩
+  | cast j =>
+    obtain ⟨f, hf⟩ := affineLastCrossing_mul_lastDot_pow D Sc i n m
+    rw [appendPBWTerm, ← mul_assoc, ← mul_assoc, appendOne_mul_appendShuffleElement_castSucc_eq,
+      mul_assoc _ (affineLastCrossing D Sc i i n), hf, mul_add, add_mul]
+    refine add_mem (AddSubgroup.mem_sup_left ?_) (AddSubgroup.mem_sup_right
+      (appendAlgebra_mul_appendDotSum_mul_mem D Sc i n _ _ f))
+    rw [mul_smul_comm, smul_mul_assoc, ← mul_assoc, appendAlgebra_mul_pow]
+    refine AddSubgroup.zsmul_mem _ (AddMonoidHom.mem_range.mpr ⟨Finsupp.single (j, m) c, ?_⟩) _
+    rw [appendLeftSum_single]
+
+/-- **Spanning the two-sided append corner**: every `y` with `ψ(1) y = y = y ψ(1)` is a sum of
+left-crossing terms `ψ(c'_j x^m) τ ψ(b)` and polynomial terms `x^m ψ(b)`
+(`AppendCoordinates.md` §4). -/
+theorem mem_appendLeftSum_sup_appendPolySum (i : I) (n : ℕ) (y : Hn D Sc (n + 1 + 1))
+    (hl : appendAlgebra D Sc i (n + 1) 1 * y = y) (hr : y * appendAlgebra D Sc i (n + 1) 1 = y) :
+    y ∈ (appendLeftSum D Sc i n).range ⊔ (appendPolySum D Sc i n).range := by
+  obtain ⟨b, hb⟩ := (appendCoordinateEquiv D Sc i (n + 1)).surjective ⟨y, hr⟩
+  rw [appendCoordinateEquiv_apply] at hb
+  have hy : y = ∑ q ∈ b.support, appendPBWTerm D Sc i q.1 q.2 (b q) := by
+    have h := congrArg Subtype.val hb
+    rw [Finsupp.sum, Submodule.coe_sum] at h
+    exact h.symm
+  rw [← hl, hy, Finset.mul_sum]
+  exact sum_mem fun q _ => appendOne_mul_appendPBWTerm_mem D Sc i n q.1 q.2 _
 
 end OddMath.QuiverHecke
