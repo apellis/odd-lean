@@ -17,13 +17,14 @@ by the positive-degree closed reservoir coefficients, acting on the Hom-sector o
 the result as the `ProbeWindow.CoefficientIdeal` consumed by
 `ProbeWindow.CoefficientIdeal.isIso_of_sub_mem`.
 
-Let `b` be an object with a coefficient grading (`CoeffGrading`): a `ℤ`-filtration of
+Let `b` be an object with a coefficient grading (`CoeffGrading`): a `ℤ`-indexed family in
 `End(𝟙 b)` with `𝟙` in degree `0`, additive degrees and parity-stable degrees. Only the
 coefficients are graded, not the whole category `b ⟶ b`; `CoeffGrading.ofGraded` builds one
 from a graded supercategory structure on `b ⟶ b`, as `SKM.RouquierGrading` provides. A coefficient
-`c : 𝟙 b ⟶ 𝟙 b` acts on every `Z : a ⟶ b` by `postCoeff Z c = ρ⁻¹ ≫ Z ◁ c ≫ ρ`. The `n`-th
-power of the ideal, `coeffIdeal n Z Y`, is the span of the `postCoeff Z c ≫ h` with `c`
-homogeneous of degree at least `n`. No grading of `a ⟶ b` is used: every 2-morphism
+`c : 𝟙 b ⟶ 𝟙 b` acts on every `Z : a ⟶ b` by `postCoeff Z c = ρ⁻¹ ≫ Z ◁ c ≫ ρ`. The degree-threshold
+filtration level `coeffIdeal n Z Y` is the span of the `postCoeff Z c ≫ h` with `c`
+homogeneous of degree at least `n`. Equality with the literal `n`-th power of the first
+level is not asserted or needed for matrix lifting. No grading of `a ⟶ b` is used: every 2-morphism
 `h : Z ⟶ Y`, in particular every probe word, super-commutes with `postCoeff` by the super
 interchange law (`comp_postCoeff`), with its Koszul sign. This is the step "move only reservoir
 coefficients past probe words by supernaturality" of §4 there; it needs no grading of the
@@ -117,7 +118,7 @@ end Action
 section Grading
 
 variable (k) in
-/-- A **coefficient grading** of `b`: a `ℤ`-filtration of `End(𝟙 b)` by subsets, with the
+/-- A **coefficient grading** of `b`: a `ℤ`-indexed family of subsets of `End(𝟙 b)`, with the
 identity in degree `0`, degrees additive under composition, and each degree stable under the
 parity projections. This is all the transport uses; it is what a grading of the reservoir
 coefficients alone provides, without a grading of the whole category `b ⟶ b`. -/
@@ -143,13 +144,13 @@ section Ideal
 
 variable {a b : B} (Gr : CoeffGrading k b)
 
-/-- Generators of the `n`-th power of the reservoir coefficient ideal: `postCoeff Z c ≫ h` with
+/-- Generators of level `n` of the reservoir coefficient filtration: `postCoeff Z c ≫ h` with
 `c` homogeneous of degree at least `n`. -/
 def coeffGen (n : ℕ) (Z Y : a ⟶ b) : Set (Z ⟶ Y) :=
   {f | ∃ m : ℤ, (n : ℤ) ≤ m ∧ ∃ c ∈ Gr.deg m, ∃ h : Z ⟶ Y,
     f = postCoeff Z c ≫ h}
 
-/-- The `n`-th power of the reservoir coefficient ideal on morphisms `Z ⟶ Y` of `a ⟶ b`
+/-- Level `n` of the reservoir coefficient filtration on morphisms `Z ⟶ Y` of `a ⟶ b`
 (`SwappedHomInversion.md` §4). -/
 def coeffIdeal (n : ℕ) (Z Y : a ⟶ b) : Submodule k (Z ⟶ Y) :=
   Submodule.span k (coeffGen Gr n Z Y)
@@ -168,7 +169,7 @@ theorem postCoeff_mem {n : ℕ} {m : ℤ} (hm : (n : ℤ) ≤ m) (Z : a ⟶ b)
     postCoeff Z c ∈ coeffIdeal Gr n Z Z := by
   simpa using postCoeff_comp_mem hm hc (𝟙 Z)
 
-/-- Every morphism lies in the zeroth power. -/
+/-- Every morphism lies in the zeroth filtration level. -/
 theorem mem_coeffIdeal_zero {Z Y : a ⟶ b} (f : Z ⟶ Y) : f ∈ coeffIdeal Gr 0 Z Y := by
   simpa [postCoeff_id (k := k)] using postCoeff_comp_mem (k := k) (le_refl (0 : ℤ))
     Gr.id_mem f
