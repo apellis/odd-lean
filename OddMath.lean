@@ -1328,6 +1328,8 @@ import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.QuadSame
 import OddMath.QuiverHecke.SwappedAssembly.SlideSame
+import OddMath.QuiverHecke.SwappedAssembly.SlideNe
+import OddMath.QuiverHecke.SwappedAssembly.SlideAssembly
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
