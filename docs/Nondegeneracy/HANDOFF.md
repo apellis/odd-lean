@@ -3311,6 +3311,16 @@ reverse norm (5) (from `qpIdentity`, dot transport, `G J_L ⊆ J_L`, `J_R G ⊆ 
 `J_L G' ⊆ J_R` and injectivity of right multiplication by `K = G G'`), or the degree count
 `deg F − deg S = ⟨h_i, Λ − β⟩`. Open: the concrete `MackeyCosets` fields (construct `P`;
 the append-side Mackey decomposition after the cyclotomic quotient; `K`-injectivity).
+`ReverseNorm.lean` (checked): the ring-theoretic part of `DeformedBoundaryDivision.md` §§2–3,
+with `J_L`, `J_R` left ideals (`Submodule H H`). `injective_of_leading`: an additive map on
+`ℕ →₀ V` raising moving degree by `d` with injective top coefficient is injective (the
+"largest moving exponent cannot disappear" step for `K = G G'`). `mem_of_mul_mem_of_injective`:
+injectivity of `· G G'` mod `J_R` and `J_L G' ⊆ J_R` give `h G ∈ J_L → h ∈ J_R`.
+`reverse_norm`: (3) `f T G ≡ f L_left (mod J_L)` and (4) `G f = ε f' G`, `G L_left = L G` give
+(5) `G f T ≡ ε f' L (mod J_R)`. Non-vacuity: `scripts/NonVacuity/ReverseNorm.lean`. Open for the
+concrete (5): the inputs `J_L G' ⊆ J_R` (reverse chain transport), the right-oriented PBW
+expansion of `K` with unit leading coefficient (feeding `injective_of_leading`), and (3), (4)
+from `qpIdentity` and intertwiner dot transport.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
