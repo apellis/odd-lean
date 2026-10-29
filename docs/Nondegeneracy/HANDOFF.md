@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Full content subcategories and product coefficient inversion
+
+Checked (`CentralInverse/ProductCoefficients.lean`, depending on PR #580):
+`restrictCoeff` restricts both parity components to a full subcategory, preserving
+composition and parity projections. `fullRealize` and `fullCoeffGrading` restrict
+the regular realization; `fullCoefficientIdeal` follows from explicit algebra support.
+`productRealize_total` compares each component with the original balanced tensor action;
+`productRealize_proj` preserves parity projections. `evalMat_map_apply` is the
+entrywise matrix comparison, and `assembleIso` assembles actual supernatural inverse
+entries from every component. `isIso_of_component_coefficient_error` uses a separate
+`K b` for each algebra; neither finite block indices nor a uniform supremum is assumed.
+`contentRestrictCoeff` and `weightSpace_isIso_of_eval` use the literal
+`GlobalContentModules` and `globalWeightSpace` APIs.
+
+The importing consumer exercises an infinite rational-module product with chosen
+bounds `b + 1`, proves that those bounds have no uniform upper bound, and proves
+the realized identity coefficient nonzero. It does not claim nonzero odd/positive
+coefficients, or a family whose *minimal* support bounds are unbounded.
+
+Remaining: construct the homogeneous full ELV component algebras and their upper
+support bounds, identify their actual action with the content-support targets, and
+prove that the actual closure/error matrices lie in the positive coefficient ideals.
+No actual closure-degree theorem or `CentralInvertible` is supplied here.
+
+
 ## Append Mackey boundary: balance of P
 
 Checked: `appendError_mem_appendKill`

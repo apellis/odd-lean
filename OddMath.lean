@@ -1362,6 +1362,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ReservoirCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.RegularCoefficientBound
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
