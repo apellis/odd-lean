@@ -39,6 +39,15 @@ Checked: obligation 1, `P ρ = R_t P`, up to a constant sign
 `R_t = appendTensorRightDot θ hθ`. To match `MackeyCosets` exactly, use `c • ρ` (or replace
 `θ` by `c θ`) when assembling.
 
+Checked: the source coordinates
+(`OddMath/QuiverHecke/CyclotomicAction/PrependTwistCoordinates.lean`). `TwistModule`
+(`N^ε`: `r` acts as `tw_ε(r)`), `prependTwistEquiv : Ind_(φ_ε) N ≃+ Ind_φ N^ε`
+(`z ⊗ m ↦ z ⊗ m`; `φ_ε(1) = φ(1)` and `tw_ε` is an involution), and
+`prependTwistCoordinates : ((PrependShuffle (n+1) × ℕ) →₀ N) ≃+ Ind_(φ_ε) N`,
+`single (u, l) m ↦ prependPBWCorner u l 1 ⊗ m`. The short span `L₁'` is the image of the
+coordinates supported off the long coset `U = U₁`; `cover` is then the coordinate split, and
+`ℓ_short` reduces to triangularity of the `w_k` of `DeformedMackeyBoundary.md` (6).
+
 Next target: the remaining source-side fields of `MackeyCosets` (`short`, `ℓ`, `cover`,
 `ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`, `P_short`) for the prepend-side module `Ind_(φ_ε) N` with the
 `Π^ε` shift, assembled with `MackeyCosets.ofTarget` against `appendContentMackeyTarget`.
