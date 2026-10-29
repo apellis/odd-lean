@@ -19,6 +19,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPrefixKilling
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPOdd
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPContext
+import OddMath.QuiverHecke.CyclotomicAction.ELVQPProduct
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic

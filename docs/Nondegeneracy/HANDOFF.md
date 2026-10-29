@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV all-word signed QP product
+
+`ELVQPProduct.lean` proves `ELVOld.qp_projection_product` and `qp_product`
+for every word, right spectator word, cutoff and full-coefficient continuation,
+over the existing arbitrary commutative ground ring and scalar datum. No finite
+colour, domain or flatness assumption is added. The reverse-word induction uses
+`qp_nil`, `qp_distinct`, `qp_repeated_even` and `qp_repeated_odd`.
+
+The subalgebra `relationPreserving` contains all positioned dots and every
+`qpFactor`; this is preservation of the defining relation span, not an assumed
+ideal closure. `projection_affine_whiskerRight_eq` extends the induction
+hypothesis, while typed empty-context transport recovers the raw projection
+from the context recursions. `qpProduct_append` fixes factor order without
+commuting factors. Repeated-even factors remain −1, so this does not establish
+the literal no-even-factor normalization in the proposed global calculation.
+The broader balanced-map and projective-resolution claims are not consequences
+asserted here. The consumer checks the unrestricted all-word statement and
+all declarations of the new module, including private/generated declarations.
+
 ## Full ELV QP spectator descent and distinct-colour recursion
 
 `ELVQPContext.lean` proves `ELVOld.relations_rightContext` by spanning-generator
