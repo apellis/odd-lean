@@ -4933,7 +4933,17 @@ Checked (same file): **span** of the two-sided corner,
 the lower sums and the top run reduce to `z^b ψ(·)` by `appendAlgebra_mul_lastDot_pow`
 (`ψ(r) z^b = z^b ψ(r')`, from `affineLastDot_twist_comm`).
 
-Next: `direct` (with coordinates of `appendLeftSum` in `e'B`), then `Rt_F`, `Rt_j`.
+Checked (same file): **directness**, `appendLeftSum_add_appendPolySum_eq_zero`: if
+`appendLeftSum F + appendPolySum G = 0` then `ψ'(1) F_q = 0` for all `q` and `G = 0`.
+Proof: `appendLeftSum` only sees `ψ'(1) F` (`appendLeftSum_single_appendOne_mul`, from
+`τ ψ(ψ'(1)) = τ`); in the append PBW coefficients (`appendCoefficients (n+1)`), polynomial
+terms are supported on the top run (`appendCoefficients_lastDot_pow_mul`), and
+`s^m · coeff(appendLeftSum F)` at `(c_j, m)`, `j ≤ n`, is `ψ'(1) F_(j,m)`
+(`appendCoefficients_appendLeftSum_castSucc`, via `appendPBWTerm_castSucc_eq`:
+`c_j z^m ψ(ψ'(1) b) = s^m ψ(c'_j x^m) τ ψ(b) + (polynomial terms)`). With the span theorem,
+the two-sided corner is `⊕_(j≤n, m) ψ(c'_j x^m) τ ψ(ψ'(1) B) ⊕ ⊕_m z^m ψ(B)`.
+
+Next: `Rt_F`, `Rt_j` of `MackeyCosets` for these maps, then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 

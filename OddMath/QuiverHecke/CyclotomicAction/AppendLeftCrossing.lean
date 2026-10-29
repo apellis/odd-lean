@@ -409,4 +409,164 @@ theorem mem_appendLeftSum_sup_appendPolySum (i : I) (n : ℕ) (y : Hn D Sc (n + 
   rw [← hl, hy, Finset.mul_sum]
   exact sum_mem fun q _ => appendOne_mul_appendPBWTerm_mem D Sc i n q.1 q.2 _
 
+/-! ## Directness of the decomposition -/
+
+theorem affineLastCrossing_mul_appendAppendOne (i : I) (n : ℕ) :
+    affineLastCrossing D Sc i i n * appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) =
+      affineLastCrossing D Sc i i n := by
+  rw [affineLastCrossing, Finset.sum_mul]
+  exact Finset.sum_congr rfl fun w _ => single_mul_appendAppendOne D Sc i _ w _
+
+theorem homMatrixTwist_appendAlgebra_one (i : I) (n : ℕ) (p : ZMod 2) :
+    homMatrixTwist D Sc (n + 1) p (appendAlgebra D Sc i n 1) = appendAlgebra D Sc i n 1 := by
+  rw [appendAlgebra_one_eq_sum, map_sum]
+  exact Finset.sum_congr rfl fun w _ => by rw [homMatrixTwist_single, Supercategory.twist_id]
+
+theorem appendAppendOne_mul_lastDot_pow (i : I) (n m : ℕ) :
+    appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) * affineLastDot D Sc i (n + 1) ^ m =
+      affineLastDot D Sc i (n + 1) ^ m * appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    rw [pow_succ, ← mul_assoc, ih, mul_assoc, affineLastDot_twist_comm,
+      homMatrixTwist_appendAlgebra_one, ← mul_assoc]
+
+/-- The left-crossing terms only see the coefficient on old words ending in the appended
+colour. -/
+theorem appendLeftSum_single_appendOne_mul (i : I) (n : ℕ) (j : Fin (n + 1)) (m : ℕ)
+    (b : Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n (Finsupp.single (j, m) (appendAlgebra D Sc i n 1 * b)) =
+      appendLeftSum D Sc i n (Finsupp.single (j, m) b) := by
+  rw [appendLeftSum_single, appendLeftSum_single,
+    map_mul (appendAlgebra D Sc i (n + 1)) (appendAlgebra D Sc i n 1) b, ← mul_assoc,
+    mul_assoc _ (affineLastCrossing D Sc i i n), affineLastCrossing_mul_appendAppendOne]
+
+theorem appendCoefficients_appendPBWTerm (i : I) (n : ℕ) (u : AppendShuffleAt n) (m : ℕ)
+    (b : Hn D Sc n) :
+    appendCoefficients D Sc i n (appendPBWTerm D Sc i u m b) = Finsupp.single (u, m) b := by
+  have h0 : appendPBWCorner D Sc i u m 0 = 0 :=
+    Subtype.ext (by simp [appendPBWCorner, appendPBWTerm])
+  have hc : appendCoordinateEquiv D Sc i n (Finsupp.single (u, m) b) =
+      appendPBWCorner D Sc i u m b := by
+    rw [appendCoordinateEquiv_apply]
+    exact Finsupp.sum_single_index h0
+  have h := (appendCoordinateEquiv D Sc i n).symm_apply_eq.mpr hc.symm
+  rw [appendCoordinateEquiv_symm_apply] at h
+  exact h
+
+theorem appendCoefficients_lastDot_pow_mul (i : I) (n k : ℕ) (r : Hn D Sc (n + 1)) :
+    appendCoefficients D Sc i (n + 1)
+        (affineLastDot D Sc i (n + 1) ^ k * appendAlgebra D Sc i (n + 1) r) =
+      Finsupp.single (appendRun (n + 1) (Fin.last (n + 1)), k) r := by
+  rw [← appendCoefficients_appendPBWTerm, appendPBWTerm, appendShuffleElement_last]
+  congr 1
+  cases k with
+  | zero =>
+    simp only [pow_zero, mul_one, one_mul]
+    rw [← map_mul, one_mul]
+  | succ k => rw [pow_succ', ← mul_assoc, append_one_mul_affineLastDot]
+
+theorem appendCoefficients_appendPolySum_last (i : I) (n : ℕ) (g : ℕ →₀ Hn D Sc (n + 1))
+    (k : ℕ) :
+    appendCoefficients D Sc i (n + 1) (appendPolySum D Sc i n g)
+        (appendRun (n + 1) (Fin.last (n + 1)), k) = g k := by
+  induction g using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, map_add, Finsupp.add_apply, hf, hg, Finsupp.add_apply]
+  | single k' r =>
+    rw [appendPolySum_single, appendCoefficients_lastDot_pow_mul]
+    simp only [Finsupp.single_apply, Prod.mk.injEq, true_and]
+
+theorem appendCoefficients_appendPolySum_castSucc (i : I) (n : ℕ) (g : ℕ →₀ Hn D Sc (n + 1))
+    (j : Fin (n + 1)) (m : ℕ) :
+    appendCoefficients D Sc i (n + 1) (appendPolySum D Sc i n g)
+        (appendRun (n + 1) j.castSucc, m) = 0 := by
+  induction g using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, map_add, Finsupp.add_apply, hf, hg, add_zero]
+  | single k r =>
+    have h' : (appendRun (n + 1) (Fin.last (n + 1)), k) ≠ (appendRun (n + 1) j.castSucc, m) :=
+      fun h' => Fin.castSucc_ne_last j (appendRun_injective _ (congrArg Prod.fst h')).symm
+    rw [appendPolySum_single, appendCoefficients_lastDot_pow_mul]
+    simp only [Finsupp.single_apply, h', ↓reduceIte]
+
+/-- A moving-crossing term with coefficient on old words ending in the appended colour is,
+up to the sign `s^m`, a left-crossing term plus polynomial terms. -/
+theorem appendPBWTerm_castSucc_eq (i : I) (n : ℕ) (j : Fin (n + 1)) (m : ℕ)
+    (b : Hn D Sc (n + 1)) :
+    ∃ g, appendPBWTerm D Sc i (appendRun (n + 1) j.castSucc) m (appendAlgebra D Sc i n 1 * b) =
+      Supercategory.koszulSign (D.parity i) (D.parity i) ^ m •
+          appendLeftSum D Sc i n (Finsupp.single (j, m) b) +
+        appendPolySum D Sc i n g := by
+  obtain ⟨f, hf⟩ := affineLastCrossing_mul_lastDot_pow D Sc i n m
+  obtain ⟨g, hg⟩ := appendAlgebra_mul_appendDotSum_mul_mem D Sc i n
+    (appendShuffleElement D Sc i (appendRun n j)) b f
+  have h1 : appendShuffleElement D Sc i (appendRun (n + 1) j.castSucc) *
+      affineLastDot D Sc i (n + 1) ^ m * appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) =
+      appendAlgebra D Sc i (n + 1) (appendShuffleElement D Sc i (appendRun n j)) *
+        (affineLastCrossing D Sc i i n * affineLastDot D Sc i (n + 1) ^ m) := by
+    rw [mul_assoc, ← appendAppendOne_mul_lastDot_pow, ← mul_assoc,
+      appendShuffleElement_castSucc_mul_corner, mul_assoc]
+  refine ⟨g, ?_⟩
+  rw [appendPBWTerm, map_mul, ← mul_assoc, h1, hf, mul_add, add_mul, ← hg, mul_smul_comm,
+    smul_mul_assoc, ← mul_assoc, appendAlgebra_mul_pow, appendLeftSum_single]
+
+theorem appendCoefficients_appendLeftSum_castSucc (i : I) (n : ℕ)
+    (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) (j : Fin (n + 1)) (m : ℕ) :
+    Supercategory.koszulSign (D.parity i) (D.parity i) ^ m •
+        appendCoefficients D Sc i (n + 1) (appendLeftSum D Sc i n F)
+          (appendRun (n + 1) j.castSucc, m) =
+      appendAlgebra D Sc i n 1 * F (j, m) := by
+  induction F using Finsupp.induction_linear with
+  | zero => simp
+  | add F G hF hG => rw [map_add, map_add, Finsupp.add_apply, smul_add, hF, hG,
+      Finsupp.add_apply, mul_add]
+  | single q b =>
+    obtain ⟨j', m'⟩ := q
+    obtain ⟨g, hg⟩ := appendPBWTerm_castSucc_eq D Sc i n j' m' b
+    set s := Supercategory.koszulSign (D.parity i) (D.parity i)
+    have hs : ∀ e : ℕ, s ^ e * s ^ e = 1 := fun e => by
+      rw [← mul_pow, Supercategory.koszulSign_mul_self, one_pow]
+    have hL : appendLeftSum D Sc i n (Finsupp.single (j', m') b) =
+        s ^ m' • (appendPBWTerm D Sc i (appendRun (n + 1) j'.castSucc) m'
+          (appendAlgebra D Sc i n 1 * b) - appendPolySum D Sc i n g) := by
+      rw [hg, add_sub_cancel_right, smul_smul, hs, one_smul]
+    rw [hL, map_zsmul, map_sub, appendCoefficients_appendPBWTerm, Finsupp.smul_apply,
+      Finsupp.sub_apply, appendCoefficients_appendPolySum_castSucc, sub_zero, smul_smul]
+    by_cases h : (j', m') = (j, m)
+    · obtain ⟨rfl, rfl⟩ := Prod.mk.inj h
+      rw [Finsupp.single_eq_same, Finsupp.single_eq_same, hs, one_smul]
+    · have h' : (appendRun (n + 1) j'.castSucc, m') ≠ (appendRun (n + 1) j.castSucc, m) := by
+        intro h'
+        obtain ⟨h1, h2⟩ := Prod.mk.inj h'
+        exact h (Prod.ext (Fin.castSucc_injective _ (appendRun_injective _ h1)) h2)
+      simp only [Finsupp.single_apply, h, h', ↓reduceIte, smul_zero, mul_zero]
+
+/-- **Directness of the two-sided corner decomposition**: a vanishing sum of left-crossing
+and polynomial terms has zero polynomial part and left-crossing coefficients killed by
+the idempotent `ψ'(1)` of old words ending in the appended colour. -/
+theorem appendLeftSum_add_appendPolySum_eq_zero (i : I) (n : ℕ)
+    (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) (G : ℕ →₀ Hn D Sc (n + 1))
+    (h : appendLeftSum D Sc i n F + appendPolySum D Sc i n G = 0) :
+    (∀ q, appendAlgebra D Sc i n 1 * F q = 0) ∧ G = 0 := by
+  have hF : ∀ q, appendAlgebra D Sc i n 1 * F q = 0 := by
+    rintro ⟨j, m⟩
+    have h' := congrArg (fun y => Supercategory.koszulSign (D.parity i) (D.parity i) ^ m •
+      appendCoefficients D Sc i (n + 1) y (appendRun (n + 1) j.castSucc, m)) h
+    simp only [map_add, Finsupp.add_apply, appendCoefficients_appendPolySum_castSucc,
+      smul_zero, add_zero, map_zero, Finsupp.zero_apply] at h'
+    rw [← appendCoefficients_appendLeftSum_castSucc]
+    exact h'
+  have hL : appendLeftSum D Sc i n F = 0 := by
+    rw [← Finsupp.sum_single F, map_finsuppSum]
+    refine Finset.sum_eq_zero fun q _ => ?_
+    obtain ⟨j, m⟩ := q
+    show appendLeftSum D Sc i n (Finsupp.single (j, m) (F (j, m))) = 0
+    rw [← appendLeftSum_single_appendOne_mul, hF, Finsupp.single_zero, map_zero]
+  refine ⟨hF, ?_⟩
+  rw [hL, zero_add] at h
+  ext k
+  rw [← appendCoefficients_appendPolySum_last D Sc i n G k, h, map_zero, Finsupp.zero_apply,
+    Finsupp.zero_apply]
+
 end OddMath.QuiverHecke
