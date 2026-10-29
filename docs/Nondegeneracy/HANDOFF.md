@@ -41,6 +41,27 @@ not proved. From it:
 Open: the field case itself; removal of the route hypotheses above; the
 case of rings where `2` is not a unit, beyond the even Khovanov–Lauda case.
 
+## Distinct-colour dot slides on the global factors: algebra half
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalMixedSlideAlgebra.lean`), towards the
+fields `slideLeft`, `slideRight` of `SKM.RouquierMulticolour` (Brundan–Ellis 1701.04133v2,
+(1.8)) for `globalRouquierFamily D (parameterTwist D Sc)` at distinct colours `i ≠ j`:
+
+- `inductionStrand_slide_left_ne`, `inductionStrand_slide_right_ne`: the local slides
+  `x_i τ = ε τ x_i`, `τ x_j = ε x_j τ`, `ε = (-1)^{|i||j|}`, on the two-strand word `[i, j]`;
+- `induction_slide_left_ne`, `induction_slide_right_ne`: their whiskered forms on
+  `w ++ [i, j]` (appended dot, last-pair crossing, new last dot);
+- `affineLastCrossing_slide_left_ne`, `affineLastCrossing_slide_right_ne` and, at every height,
+  `heightLastCrossing_slide_left_ne`, `heightLastCrossing_slide_right_ne`:
+  `c φⱼ(y_i) = ε y_i c` and `φᵢ(y_j) c = ε c y_j` in the algebra (matrix multiplication reverses
+  composition).
+
+Remaining for the module-level slides: two-colour corner multiplication data (the corner of
+`heightAppend i (n+1) ∘ heightAppend j n`), the outer/inner dot comparisons for `i ≠ j`, and the
+weight-level assembly modelled on `GlobalWeightSlides.lean`. A hand check of the Koszul signs
+of the right-multiplication module maps finds the same sign `ε` on both sides of each slide,
+so the algebra identities above are exactly what the module slides need (no extra sign).
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
@@ -887,6 +908,18 @@ observation (§4 of the bridge): the checked crossing entries are `-q` times the
 of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K` (the earlier
 `K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
 ones. To be rechecked against `ProbeWindowInverse.md` (4).
+
+**Swapping entries as single terms (checked).** `SwappedAssembly/Sigma/SwappingEntries.lean`:
+`sigmaEntry_eq_sum` writes `sigmaEntry c i j ν p q Z` as the double sum over the intermediate
+paths `m₁` (after the cup) and `m₂` (after the crossing) of `sigmaTerm` (cup entry, crossing
+entry, cap entry, joined by `eqToHom`s). `sides_of_sigmaTerm_ne_zero`: a nonzero term has
+`p.sides = [p₁, p₂]`, `q.sides = [q₁, q₂]`, `m₁.sides = [q₁, q₁, p₁, p₂]`,
+`m₂.sides = [q₁, q₂, p₂, p₂]` (the cup and cap force equal summands on their two strands, the
+crossing keeps the outer strands). `sigmaEntry_eq_sigmaTerm`: for any `m₁`, `m₂` with these
+sides the entry is that one term. Open for `SwappingInvertible`: unfold the three layer entries
+of the single term into generator images and identify them with the probe mate of `J`
+(`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
+`-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
 
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with

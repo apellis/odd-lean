@@ -100,6 +100,7 @@ import OddMath.QuiverHecke.CyclotomicAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.GlobalBraidAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
+import OddMath.QuiverHecke.CyclotomicAction.GlobalMixedSlideAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightBlockCross
@@ -1358,6 +1359,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SlideAssembly
 import OddMath.QuiverHecke.SwappedAssembly.QuadNe
 import OddMath.QuiverHecke.SwappedAssembly.LeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingEntries
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
