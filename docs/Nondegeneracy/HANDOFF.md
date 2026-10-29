@@ -22,10 +22,15 @@ colours supply such an `M`; no finiteness hypothesis is used in the descent.
 `truncatedSingle_eq_zero_of_cutoff_zero` separately kills the zero-cutoff corner.
 The rational odd cutoff-two, coefficient-cutoff-three consumer checks degree
 nine vanishing, internal gradings, the quotient map, and parity compatibility.
-The retained nonzero delta control is only a coefficient-ring control:
-nonvanishing in the positive-content quotient has not been established.
+`ELVTruncatedDetection.lean` now proves `truncatedSingle_delta_ne_zero` in this
+positive-content quotient. `truncatedSingleEval` evaluates the dot and elementary
+coefficients at zero while retaining delta in the exterior algebra.
+`singleEval_ideal` and `singleEval_coefficientIdeal` kill both defining ideals,
+including arbitrary surrounding morphisms and intermediate words. Rank-one word
+preservation reduces nonzero contexts to the one-strand corner. No evaluation
+faithfulness, coefficient injectivity into the Hom quotient, or freeness is assumed.
 
-Remaining: positive-content odd-coefficient survival, higher-content support
+Remaining: higher-content support
 bounds, regular-kernel realization, and the full factor action. There is no
 upper-support assertion for the untruncated old algebra or the enlarged `Target`.
 
