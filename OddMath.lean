@@ -13,6 +13,8 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendLeftCrossing
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCorner
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
+import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyRho
 import OddMath.QuiverHecke.CyclotomicAction.AppendTensorRightDot
 import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.QuiverHecke.CyclotomicAction.PrependEquivalence
@@ -124,8 +126,10 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedSlides
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
@@ -1347,6 +1351,8 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Extraction
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.TwoSector
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
