@@ -4350,6 +4350,14 @@ Glue not yet available (open):
   universe of `k`. To use the cyclotomic factors as `P.T`, `P.W`, generalize the universes of
   `ProbeReservoir`/`SwappedObligations`/`UpwardModuleAction`, or realize the factors in a
   small model. This is a universe matter, not a mathematical one.
+- `AdjunctionBubbleSeries` is not derivable from `SwappedRelationData`: the relation
+  identities constrain only the generator relations, while the series fixes the values of
+  the closed left bubbles (leftward cup with the sign `-q`, then the cap with dots) against
+  the raw coefficient action, with the contents `G_i` and exponents `P_i`, `N_i` of the
+  probe and reservoir summands, including the fake bubbles of (2.15)/(2.16). These values
+  are a computation in the concrete cyclotomic factors (their `homContent` adjunction
+  images on the summands), so the series stays an explicit hypothesis until the factors
+  are instantiated.
 - `ev_layer` and `ev_vacuum` are not derivable from the abstract `ProbeReservoir`: they need
   the corner model of `SwappedVacuumCoordinates.md` §§2–5 (the map `U`, the signed Hom-corner
   evaluation and the ideal `K_N`) for the specific factors. The remaining glue lemma is that
