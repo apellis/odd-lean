@@ -96,8 +96,8 @@ section Word
 variable {i j : I}
 
 /-- Conjugating a scalar two-strand identity by the associators. -/
-theorem associator_conj_smul {W Y₁ Y₂ Z₁ Z₂ : H D Sc} (f g : Y₁ ⊗ Y₂ ⟶ Z₁ ⊗ Z₂) (c : k)
-    (h : f = c • g) :
+theorem associator_conj_smul {W Y₁ Y₂ Z₁ Z₂ : H D Sc} (f g : Y₁ ⊗ Y₂ ⟶ Z₁ ⊗ Z₂)
+    (c : k) (h : f = c • g) :
     (α_ W Y₁ Y₂).hom ≫ W ◁ f ≫ (α_ W Z₁ Z₂).inv =
       c • ((α_ W Y₁ Y₂).hom ≫ W ◁ g ≫ (α_ W Z₁ Z₂).inv) := by
   rw [h, MonoidalSupercategory.whiskerLeft_smul (R := k), Linear.smul_comp,
@@ -149,7 +149,8 @@ end Word
 section Affine
 variable [Fintype I] {i j : I}
 
-theorem affineLastDot_mul_single (c : I) {m : ℕ} (t : Word I m) (s : Word I (m + 1))
+private theorem affineLastDot_mul_single (c : I) {m : ℕ} (t : Word I m)
+    (s : Word I (m + 1))
     (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord c t)) :
     affineLastDot D Sc c m * FiniteHomMatrix.single (appendWord c t) s f =
       FiniteHomMatrix.single (appendWord c t) s (f ≫ inductionLastDot D Sc c t) := by
@@ -160,7 +161,8 @@ theorem affineLastDot_mul_single (c : I) {m : ℕ} (t : Word I m) (s : Word I (m
       (fun h => hb (appendWord_injective c m h)) _ _
   · simp
 
-theorem single_mul_affineLastDot (c : I) {m : ℕ} (s : Word I m) (r : Word I (m + 1))
+private theorem single_mul_affineLastDot (c : I) {m : ℕ} (s : Word I m)
+    (r : Word I (m + 1))
     (f : wordObj D Sc (appendWord c s) ⟶ wordObj D Sc r) :
     FiniteHomMatrix.single r (appendWord c s) f * affineLastDot D Sc c m =
       FiniteHomMatrix.single r (appendWord c s) (inductionLastDot D Sc c s ≫ f) := by
@@ -171,7 +173,8 @@ theorem single_mul_affineLastDot (c : I) {m : ℕ} (s : Word I m) (r : Word I (m
       (fun h => hb (appendWord_injective c m h.symm)) _ _
   · simp
 
-theorem affineLastCrossing_mul_single {n : ℕ} (t : Word I n) (s : Word I (n + 1 + 1))
+private theorem affineLastCrossing_mul_single {n : ℕ} (t : Word I n)
+    (s : Word I (n + 1 + 1))
     (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord j (appendWord i t))) :
     affineLastCrossing D Sc i j n *
       FiniteHomMatrix.single (appendWord j (appendWord i t)) s f =
@@ -184,7 +187,8 @@ theorem affineLastCrossing_mul_single {n : ℕ} (t : Word I n) (s : Word I (n + 
       (fun h => hb (appendWord_injective i n (appendWord_injective j (n + 1) h))) _ _
   · simp
 
-theorem single_mul_affineLastCrossing {n : ℕ} (s : Word I n) (r : Word I (n + 1 + 1))
+private theorem single_mul_affineLastCrossing {n : ℕ} (s : Word I n)
+    (r : Word I (n + 1 + 1))
     (f : wordObj D Sc (appendWord i (appendWord j s)) ⟶ wordObj D Sc r) :
     FiniteHomMatrix.single r (appendWord i (appendWord j s)) f * affineLastCrossing D Sc i j n =
     FiniteHomMatrix.single r (appendWord j (appendWord i s))
@@ -196,7 +200,7 @@ theorem single_mul_affineLastCrossing {n : ℕ} (s : Word I n) (r : Word I (n + 
       (fun h => hb (appendWord_injective j n (appendWord_injective i (n + 1) h.symm))) _ _
   · simp
 
-theorem append_affineLastDot_eq_sum' (c d : I) (n : ℕ) :
+private theorem append_affineLastDot_eq_sum' (c d : I) (n : ℕ) :
     appendAlgebra D Sc d (n + 1) (affineLastDot D Sc c n) =
       ∑ w : Word I n, FiniteHomMatrix.single (appendWord d (appendWord c w))
         (appendWord d (appendWord c w)) (appendHom D Sc d _ _ (inductionLastDot D Sc c w)) := by
