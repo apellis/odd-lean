@@ -14,9 +14,17 @@ normalized same-colour crossing. The mixed crossings here are the prescribed
 `NonVacuity.MixedProbePairSector` specializes the theorem to distinct Boolean
 colours and a sector with one reservoir letter.
 
-Remaining: reverse Q-weighted directions, distinct probe colours, the
-one-probe/two-reservoir sector-path consumer and the other `CrossBraid` fields.
-The two universal interchange triangles alone do not establish those fields.
+`BraidMixed/ReservoirPairSector.lean`: `reservoirPair_braid` also proves
+`PᵢRᵣRᵣ → RᵣRᵣPᵢ` for arbitrary `i ≠ r`, with both reservoir steps valid.
+It evaluates the actual braid sums and shifted reservoir crossing via
+`postCrossSame_eq` and the same-colour post-pair triangle.
+`NonVacuity.MixedReservoirPairSector` supplies distinct Boolean colours and
+a sector containing two reservoir letters. Neither result needs an
+inverse-coefficient hypothesis.
+
+Remaining: reverse Q-weighted directions, unequal same-side colours and
+the other `CrossBraid` fields. The two universal interchange triangles and
+these two sector entries do not establish the remaining fields.
 
 ## Append Mackey boundary: balance of P
 
