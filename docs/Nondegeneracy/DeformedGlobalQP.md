@@ -122,7 +122,11 @@ recursion `ELVOld.qp_repeated_odd`: square cancellation and preservation by
 the odd source difference give the first prefix sign, and the affine
 recursion gives the second; their product is one. Preservation follows from
 `movingDot_insert`, with the twist on total coefficient-plus-diagram parity.
-Distinct-colour transport and full-ELV induction assembly remain open.
+`ELVQPContext.lean` proves `qp_distinct` by evaluating the checked affine
+transport with the full relation and arbitrary continuation.
+`relations_rightContext` and `qpEval_of_projection_eq` prove spectator descent
+on the actual old-only quotient; `qp_nil` checks the empty signed-product base.
+Full-ELV all-word induction assembly remains open.
 
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
 The induction hypothesis is

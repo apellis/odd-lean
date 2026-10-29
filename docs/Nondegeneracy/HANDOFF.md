@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV QP spectator descent and distinct-colour recursion
+
+`ELVQPContext.lean` proves `ELVOld.relations_rightContext` by spanning-generator
+induction from `ideal_rightContext` and `rightContext_insert`. Consequently
+`targetRightContext` is a map on the actual old-only quotient, not an assumed
+stability operation. `projection_rightContext_eq` also allows an arbitrary
+full-coefficient ambient continuation. `qpEval_of_projection_eq` transports
+a smaller-word QP equality through the full first-position relation, keeping
+all exterior coefficients.
+
+`qp_distinct` evaluates the existing signed affine distinct-colour transport
+in this same quotient, with arbitrary prefix, spectators and continuation.
+`qp_nil` checks the empty identity against the actual `qpProduct`. These
+complete the distinct recursion and empty base, but not the all-word product
+identity. The next target is the induction assembly: preservation of evaluated
+equalities by each positioned polynomial factor, coherent spectator reassociation,
+and combination with `qp_repeated_even` and `qp_repeated_odd`. The raw product
+retains the repeated-even factor −1. No crossing-normalization comparison or
+literal no-even-factor equation (3) is asserted.
+
 ## Full ELV repeated-odd QP recursion
 
 `ELVQPOdd.lean` proves `ELVOld.qp_repeated_odd` using `qpEval` and the
@@ -15,8 +35,9 @@ The affine odd recursion contributes the second s, and `s² = 1` gives the
 surviving factor E². The nonempty cancellation word is `μ ++ [i]`; this does
 not cancel a zero difference in the empty-word base case.
 
-Remaining: distinct-colour transport and right-context induction toward the
-raw signed `qpProduct`, including its existing repeated-even factor −1.
+The distinct-colour recursion and quotient spectator descent are supplied above.
+Remaining: all-word induction toward the raw signed `qpProduct`, including
+its existing repeated-even factor −1.
 No literal no-even-factor normalization, balanced resolution, full ELV action,
 or nondegeneracy conclusion follows from this recursion alone.
 
