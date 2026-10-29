@@ -5228,10 +5228,24 @@ two summands of `appendTensorCornerEquiv`, with `s = koszulSign (D.parity i) (D.
 So `Rt_F` holds with `X = s · appendTensorLeftShift θ`, `E = −s · appendTensorLeftDegree θ`,
 and `Rt_j` with `tShift`.
 
-Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
-module, so only the identification of `L₀` with the content-`β` corner remains) to
-instantiate the target side of `MackeyCosets` (`direct`, `span`, `Rt_F`, `Rt_j`, `F_r`,
-`j_r`); then `short` and the lifts.
+Checked (`CyclotomicAction/AppendMackeyTarget.lean`): `MackeyTarget σ L₀ L₀'` bundles the
+target-side fields of `MackeyCosets` (`Rt F j X E r₀` with `Rt_F Rt_j direct span F_r j_r`);
+`MackeyCosets.ofTarget` assembles a `MackeyCosets` from a `MackeyTarget` and the source-side
+data (`P ρ short ℓ r₁` with `P_ρ ρ_short P_short cover ℓ_short ρ_ℓ ℓ_r P_r`).
+`appendMackeyTarget` instantiates every target field for any ring `B` that is a left
+`Hn (n+1)`-module with `IsScalarTower (Hn (n+1)) B B` and any ring endomorphism `σ` with
+`σ (r • y) = tw(r) • σ y`: `L₀ = appendTensorFixed B`, `L₀' = appendTensorLeftCoordinates B`,
+`F`, `j` the two summands of `appendTensorCornerEquiv` (`appendTargetF`, `appendTargetJ`;
+`direct`, `span` from the equivalence), `R_t` the `σ`-twisted right dot (`appendTargetRt`),
+`X = s · shift σ` (`appendTargetX`), `E = −s · degree σ` (`appendTargetE`), and `r₀ b` the
+right action `z ⊗ y ↦ z ⊗ y b` (`appendTensorRightMul`, with `appendTensorRightMul_F`,
+`appendTensorRightMul_J`).
+
+Next: the content-`β` corner instance (`B_β = e (Hn (n+1)/I) e` for
+`e = cyclotomicContentIdempotent`, `σ` the restriction of `coefficientParityHom (D.parity i)`,
+which fixes `e`; `hσ` from `rightDotCoefficient_smul` once `coefficientParityHom (D.parity i)`
+is identified with `rightDotCoefficient`); then the source side `P ρ short ℓ r₁` and its
+fields.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
