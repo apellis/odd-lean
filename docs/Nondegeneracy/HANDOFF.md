@@ -1,5 +1,40 @@
 # Odd nondegeneracy: restart state
 
+## Global factor relations: algebra parameters and reservoir
+
+Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
+(`OddMath/QuiverHecke/GlobalFactorNondegeneracy.lean`) now build both cyclotomic factors on the
+quiver Hecke algebras with parameters `parameterTwist D Sc`; the hypotheses are
+`RouquierMulticolour (globalRouquierFamily D (parameterTwist D Sc) …) Sc` and
+`GlobalLocalInversion D (parameterTwist D Sc) …`. Before this correction the hypotheses used the
+algebra parameters `Sc`. By the parameter transport (9) of `DeformedActionAssembly.md` §6
+(signed right multiplication changes the coefficient of `u^r v^s` in `Q_ij` by
+`(-1)^(|i||j| + |i|⌊r/2⌋ + |j|⌊s/2⌋)`), the relations (1.7) of the action then hold with the
+parameters `parameterTwist D Sc`, not `Sc`, so the old hypotheses `RouquierMulticolour _ Sc` fail
+whenever the transport changes a coefficient whose dotted endomorphism is nonzero (for example
+`t_ij` with `i`, `j` odd). The transport is involutive (`parameterTwist_involutive`).
+
+Open obligation (reservoir). `SwappedActionAssembly.md` §1 F3 takes the reservoir to be the
+full-ELV factor over the deformed ring `Abar`, with odd deformation parameters and the character
+`χ`. `globalProbeReservoir` uses an undeformed cyclotomic factor over the purely even ground
+ring `k` as reservoir. The observation hypotheses `h` of the conditional theorem (bubbles and
+corner evaluations in the reservoir) are stated for the written reservoir; whether they can hold
+for the undeformed cyclotomic reservoir is not checked, and the written argument does not claim
+it. The reservoir of `globalProbeReservoir` should be replaced by the deformed factor once that
+factor is a `RouquierFamily`.
+
+Open obligations (multicolour relations of the cyclotomic factor). `RouquierMulticolour` for
+`globalRouquierFamily D (parameterTwist D Sc) …` is not proved. Its fields are the distinct-colour
+relations of Brundan–Ellis, arXiv:1701.04133v2, Definition 1.5: (1.7) `quadZero`, `quadNe`;
+(1.8) `slideLeft`, `slideRight`; (1.9) `braid` and the corrected `braidEq`; (1.12) `invNe`.
+The algebra inputs exist: `cyclotomicLastCrossing_mixed` and `compositionSuperCrossing_mixed_apply`
+(mixed quadratic), `BraidCorrection.lean` (braid correction). The same-colour slide chain
+`GlobalSlideAlgebra` → `GlobalHeightSlides` → `GlobalWeightSlides` is the template for the
+distinct-colour slides, generalizing `heightCompositionCorner D Sc i i` to two colours.
+`invNe` needs the distinct-colour Mackey isomorphism (the exact sequence and projectivity
+inputs of the written proof), which are not formalized; like `GlobalLocalInversion`, it is to be
+carried as an explicit hypothesis until they are.
+
 ## Consequences of the field case: ground rings, Hom bases and K₀
 
 Checked (conditional on the field case). `SKM.CharZeroFieldNondegeneracy D`
