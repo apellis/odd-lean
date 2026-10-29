@@ -104,6 +104,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
@@ -1338,7 +1339,9 @@ import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
 import OddMath.QuiverHecke.SwappedVacuumBasisEvaluation
 import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
+import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
+import OddMath.QuiverHecke.SwappedConditionalNondegeneracy

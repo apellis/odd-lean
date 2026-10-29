@@ -2998,7 +2998,24 @@ height forms `s (ψ x₁) - x₂ ψ = 1`, `s (x₁ ψ) - ψ x₂ = 1`
 `globalActionAdjunction`, `square`, `braid`, and `loc` via `globalSuperRouquierLoc` with dots,
 crossing parity and both slides proved). The only hypothesis is `L`, a family of
 `GlobalLocalInversion`: exactly the `invPos`/`invNeg` inverses of the Rouquier mate at each
-middle weight (local inversion: P balance, ideal sum, projective resolution, not yet in Lean).
+middle weight. Route for `L` (matrix chain, no projectivity): `DeformedMackeyBoundary.md`,
+`DeformedBoundaryDivision.md` ((U2), (L)), `DeformedRouquierMatrix.md` §4,
+`DeformedMatrixComparison.md` §4 (window `H_(r,k)`), `DeformedActionAssembly.md` §5; distinct
+colours by KKO I Thm 9.1 with deformed (9.3) (`DeformedActionAssembly.md` §2). Note: as stated,
+`GlobalLocalInversion` takes an arbitrary `a` with `CyclotomicPolynomialParity` and an unrelated
+`Λ`; it is false in that generality (`a i = 1`, `⟨h_i,Λ⟩ = 5`: at the weight with `x₁ = -Λ`
+the composites `M`, `N` vanish but the `5` dotted unit columns have nonzero source
+`B`, so `invNeg` fails). Discharging it needs `a i` monic of degree `⟨h_i,Λ⟩` (assumed throughout the notes); these
+hypotheses go on the dependent statements. The top-row cokernel step
+(`DeformedCyclotomicTopRow.md` §4) uses the lower-height ideal sum (`DeformedIdealSum.md`) and
+the square resolution (`DeformedSquareResolution.md`), both proposed.
+`RouquierMateKernel.lean` (checked): the mate kernel `s = -F̄J` of display (2) of
+`DeformedMatrixComparison.md`, `x ⊗ y ↦ -(-1)^{|i||x|} φ₂(x) τ φ₂(y) ⊗ e₂`, as a
+superbimodule morphism `B e ⊗_A e B ⟶ e₂C ⊗_C C e₂` of parity `|i|` (`rouquierMateKernel`,
+`rouquierMateKernel_parity`, `rouquierMateKernel_apply`); balance over `A` is the Koszul sign of
+`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`). Next:
+the dotted unit and counit kernels `u_k`, `c_k`, and the comparison of the functor-level mate
+with `rouquierMateKernel` on weight spaces.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
@@ -4276,3 +4293,88 @@ yet connected to the abstract `SwappedAssembly` layer representation, which is n
 specialized to the reservoir corner. Consumer:
 `scripts/NonVacuity/SwappedVacuumCornerEvaluation.lean` (includes the quotient by the
 whole Hom space as an instance of the structure).
+
+### The right-bubble moments from the left-bubble series (checked)
+
+`SwappedVacuumAdjunctionBubbles.lean` reduces `VacuumMoments` to the left bubbles, the
+composites of the leftward cup (with the sign `-q` of the corrected equal-colour crossing
+entry) and the rightward cap with dots, as given by the `homContent` adjunction images
+(`ProbeReservoir.cupImage`, `ProbeReservoir.capImage`).
+
+- `AdjunctionBubbleSeries cs A t raw M N` (the open input, stated as a structure), on the
+  source sector `A.V t` of an upward action: `left_even`,
+  `closedAct(c⁻¹ · bubLs(s)) = raw [z^s] G_i(-z) u_i(z)` with `u = SYM.probeSeries M`,
+  i.e. `B_i(z) = E_i(-z)/(1-z)^(P_i)`; `left_odd`, the same for `bubLs(2s)`, i.e.
+  `C_i(-z)/(1+z)^(M_i)`; `oddBubble`, the odd bubble acts as `(-1)^(N_i+1) δ_i`.
+- `eq_of_sum_mul_eq_zero_left`: right inverses of a series with constant term one are
+  unique (no commutativity needed).
+- `AdjunctionBubbleSeries.right_even`, `right_odd`: the normalized right bubbles act as
+  the coefficients of `B'_i = B_i⁻¹ = (1-z)^(P_i)/E_i(-z)` (resp. `(1+z)^(M_i)/C_i(-z)`),
+  by the infinite Grassmannian relations `SKM.eq_5_5`, `SKM.eq_5_6`, which hold in the
+  presented 2-category and so under `closedAct`. `B'` is derived, not assumed.
+- `AdjunctionBubbleSeries.vacuumMoments`, `bubbles_eq`: `VacuumMoments` and (A16).
+
+No hypothesis on the swapped action beyond `AdjunctionBubbleSeries` is needed: the closed
+bubbles act through `closedAct`, which is part of every `UpwardModuleAction`. Remaining
+input: the three fields, for every `s` (including the low-degree fake bubbles of (2.15),
+(2.16)), at the action built from the generator images, evaluated on the probe and
+reservoir summands. Consumer: `scripts/NonVacuity/SwappedVacuumAdjunctionBubbles.lean`
+(includes the zero source sector as an instance of the structure).
+
+### End-to-end conditional theorem (checked)
+
+`SwappedConditionalNondegeneracy.lean` composes the swapped action, the bubble series and the
+corner evaluation into one statement of the conjecture. A `SwappedVacuumObservation B D Sc cs
+μ t t' d` (in a target 2-supercategory `B` in the universe of `k`) bundles exactly the open
+inputs:
+
+1. `P : ProbeReservoir k B D Sc`: the probe and reservoir Rouquier families with their
+   multicolour relations and the probe's shifted left adjunctions (F1–F2).
+2. `c`, `L` and `relations : P.SwappedRelationData c L`: the entrywise identities of the
+   swapped generators (`quad`, `slide`, `braid`, `zigzag`, `sigma`, `leftward`,
+   `windowZero`, `supernatural`); with `Gs`, `Ys` these give the swapped action
+   `A = relations.upwardModuleAction Gs Ys μ`.
+3. `vacuum`, `raw`: the vacuum vector and the raw reservoir coefficient action on `A.V t`.
+4. `bubbles : AdjunctionBubbleSeries cs A t raw (probeExponent D μ t d)
+   (reservoirLevel D μ t d)`: the left-bubble series at the schedule of §2.
+5. `corner : VacuumCornerEvaluation D Sc A t raw vacuum` (`ev_layer`, `ev_vacuum`).
+6. `ideal_le`: the §6 weight bound `corner.K t' ≤ ExtendedAtLeast … (N₀ - 2·C(|t|,2))`.
+
+Checked:
+
+- `SwappedVacuumObservation.toSwappedVacuumBlock` (moments from
+  `AdjunctionBubbleSeries.vacuumMoments`, (A18) from `SwappedVacuumBlock.ofCornerEvaluation`).
+- `nondegeneracy_of_swapped_vacuum_observations`: observations for every equal-weight
+  upward word pair, `μ` and `d` give `SKM.NondegeneracyConjecture cs` over a field, via
+  `nondegeneracy_of_vacuum_blocks`.
+- `nondegeneracy_of_restrictColours_swapped_vacuum_observations`: the same from
+  observations for the finite restrictions of `D` (arbitrary colour set), via
+  `nondegeneracy_of_restrictColours_vacuum_evaluations`.
+
+Consumer: `scripts/NonVacuity/SwappedConditionalNondegeneracy.lean`.
+
+Glue not yet available (open):
+
+- `CyclotomicAction.GlobalLocalInversion` does not appear. `globalRouquierFamily` targets
+  `TwoSCat.of k (SCat k)`, whose objects and 2-morphisms lie one universe above `k`, while
+  `ProbeReservoir` and `UpwardModuleAction` (sectors `V : List I → Type u`) need `B` in the
+  universe of `k`. To use the cyclotomic factors as `P.T`, `P.W`, generalize the universes of
+  `ProbeReservoir`/`SwappedObligations`/`UpwardModuleAction`, or realize the factors in a
+  small model. This is a universe matter, not a mathematical one.
+- `AdjunctionBubbleSeries` is not derivable from `SwappedRelationData`: the relation
+  identities constrain only the generator relations, while the series fixes the values of
+  the closed left bubbles (leftward cup with the sign `-q`, then the cap with dots) against
+  the raw coefficient action, with the contents `G_i` and exponents `P_i`, `N_i` of the
+  probe and reservoir summands, including the fake bubbles of (2.15)/(2.16). These values
+  are a computation in the concrete cyclotomic factors (their `homContent` adjunction
+  images on the summands), so the series stays an explicit hypothesis until the factors
+  are instantiated.
+- `ev_layer` and `ev_vacuum` are not derivable from the abstract `ProbeReservoir`: they need
+  the corner model of `SwappedVacuumCoordinates.md` §§2–5 (the map `U`, the signed Hom-corner
+  evaluation and the ideal `K_N`) for the specific factors. The remaining glue lemma is that
+  the swapped action of the affine layer `alpha (diag (ofLayer L hv))` is `Q.act` of the
+  labelled SKM layer (via `LocalInterpretation.functor_map_layer_hom`), which would state
+  `ev_layer` against layer matrices.
+
+The written vacuum-recovery argument (schedule `P_i - N_i = h_i(μ)`, bubble series, §6
+bound) was checked against these interfaces; no discrepancy was found.
