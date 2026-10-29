@@ -1,5 +1,32 @@
 # Odd nondegeneracy: restart state
 
+## Reverse two-reservoir Q-weighted sector braid
+
+`BraidMixed/ReverseReservoirSector.lean`: `reverseReservoirPair_braid` proves
+the actual entry `RᵣRᵣPᵢ → PᵢRᵣRᵣ` for `i ≠ r`, arbitrary supplied
+coefficients and leftward data, and two valid reservoir steps. Both reverse
+mixed entries retain Q. The proof reduces the intermediate path sums and
+uses the prescribed shifted `postCrossSame`, not an assumed braid field.
+
+`ReservoirPairDots.lean` derives spectator transport, supercommutation and
+the two signed reservoir slides. The first interchange transports the second
+Q to the last reservoir dot; both mixed signs disappear by separate parity
+support. `ReservoirPairQCentrality.lean` reverses Q arguments with `qExpr_swap`
+and realizes the compressed reservoir dots and probe spectator in a generated
+commutative subalgebra. `polynomial_norm` proves centrality of the two-factor
+product without division. Ordinary End multiplication reverses categorical
+composition; the reversed-product norm is used explicitly.
+
+The importing `NonVacuity.MixedReverseReservoirSector` consumer supplies
+distinct Boolean colours and two occupied reservoir letters and audits every
+declaration of the three modules, including private/generated declarations,
+against `propext`, `Classical.choice`, and `Quot.sound`. It is an occupied-sector
+theorem application, not an independent nonzero model construction.
+
+Remaining: unequal same-side colours, repeated-outer-colour corrections and
+the other mixed-colour `CrossBraid` fields. These sector entries do not yet
+construct `CrossBraid`.
+
 ## Reverse probe-pair Q transport
 
 `BraidMixed/ProbePairDots.lean` generalizes the spectator dot transport to arbitrary
@@ -66,10 +93,9 @@ It evaluates the actual braid sums and shifted reservoir crossing via
 a sector containing two reservoir letters. Neither result needs an
 inverse-coefficient hypothesis.
 
-Remaining: the two-reservoir reverse Q-weighted direction, unequal same-side
-colours and the other `CrossBraid` fields. The two-probe reverse direction is
-now covered by `reverseProbePair_braid` above; these sector entries do not
-establish the remaining fields.
+Remaining: unequal same-side colours and the other `CrossBraid` fields.
+Both reverse repeated-side directions are covered above; these sector
+entries do not establish the remaining fields.
 
 ## Append content source: concrete moving-coset extraction
 
