@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV all-word signed QP product
+
+`ELVQPProduct.lean` proves `ELVOld.qp_projection_product` and `qp_product`
+for every word, right spectator word, cutoff and full-coefficient continuation,
+over the existing arbitrary commutative ground ring and scalar datum. No finite
+colour, domain or flatness assumption is added. The reverse-word induction uses
+`qp_nil`, `qp_distinct`, `qp_repeated_even` and `qp_repeated_odd`.
+
+The subalgebra `relationPreserving` contains all positioned dots and every
+`qpFactor`; this is preservation of the defining relation span, not an assumed
+ideal closure. `projection_affine_whiskerRight_eq` extends the induction
+hypothesis, while typed empty-context transport recovers the raw projection
+from the context recursions. `qpProduct_append` fixes factor order without
+commuting factors. Repeated-even factors remain −1, so this does not establish
+the literal no-even-factor normalization in the proposed global calculation.
+The broader balanced-map and projective-resolution claims are not consequences
+asserted here. The consumer checks the unrestricted all-word statement and
+all declarations of the new module, including private/generated declarations.
+
 ## Full ELV QP spectator descent and distinct-colour recursion
 
 `ELVQPContext.lean` proves `ELVOld.relations_rightContext` by spanning-generator
@@ -281,6 +300,34 @@ inverse-coefficient hypothesis.
 Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
+
+## Moving-chain source and filtered extraction
+
+`AppendContentMoveCoordinates.lean` constructs `appendContentMoveLift` from
+the prescribed `contentMove`, with arbitrary unchanged right coefficient.
+`appendContentMoveLift_extract` computes its normalized extraction as the
+long affine prepend coefficient, acted on by `homMatrixTwist` and then the
+degreewise moving sign. This is an exact identity on the existing source,
+but the affine coefficient on its right has not yet been evaluated.
+
+`canWord_longPrependShuffle` and `cw_longPrependShuffle` identify the
+canonical word literally with the full moving chain at every height.
+`low_le_span_prepend` and `prependBasis_long_repr_eq_zero_of_low` prove
+that errors with fewer crossings than the old height have zero long
+scalar PBW coordinate, including nontrivial old permutations.
+
+The importing consumer tests the coordinate identity for both colours of
+a mixed-parity datum and audits every declaration of this module. No
+cutoff, monicity, injectivity or polynomial-parity hypothesis is used.
+
+**Open general step:** prove the explicitly signed leading-polynomial
+expansion of `moveHom` modulo the lower-crossing filtration and transfer
+the scalar vanishing theorem to `prependCoefficients`. The existing
+`Approx` relation only records an unspecified unit, so it cannot determine
+the sign. The proposed library repeated-colour factor is positive for
+even colour and negative for odd colour; its full normalized extraction
+is not yet a theorem. Source equation (6) and downstream equation (7)
+remain separate; see `MackeyCrossingConventions.md`.
 
 ## Ordinary content Mackey boundary
 
