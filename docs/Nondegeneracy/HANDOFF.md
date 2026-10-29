@@ -540,7 +540,8 @@ generator images of item 1 below.
      below).
    - `Slides.lean`: `SlideRelations` (checked, conditional on `CrossSlide`;
      see below).
-   - `Braid.lean`: `BraidRelations`.
+   - `Braid.lean`: `BraidRelations` (checked, conditional on `CrossBraid`;
+     see below).
    - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
      see below).
    - `Inversion.lean`: `InversionRelations` (checked, conditional on
@@ -604,6 +605,20 @@ diagonal blocks from the probe and reservoir slide relations, same-colour
 mixed blocks from `SlideBlocks.lean`, distinct-colour mixed blocks from the
 signed dot intertwinings of `homMixedInterchange_pre/_post` (not yet
 formalized).
+
+**Braid relations (checked).** `SwappedAssembly/Braid.lean`:
+`braidRelations`: `BraidRelations` for `P.layerRep Gs Ys gens` from
+`CrossBraid gens`. The entry of each side of (1.9) is a triple matrix
+product of crossing entries over the summand paths of the intermediate
+words (`braidLeft`, `braidRight`; `crossEntry gens ν u i j v` is the entry
+of the one-layer crossing diagram `crossL u i j v`). The dot correction
+terms of `braidEq` are diagonal, with entries products of powers of the
+one-dot entries `dotEntry` on the three strands (`compDiag_dots_dots`,
+`compDiag_dots_dots_dots`). `CrossBraid gens` asks `braidLeft = braidRight`
+unless `i = k ≠ j`; for `Eᵢ Eⱼ Eᵢ`, `i ≠ j`, equality off the diagonal and,
+on the diagonal, `braidLeft - braidRight` equal to the `Q_ij` divided
+difference in the dot entries, with the signs and scalars of `braidEq`.
+Remaining: prove `CrossBraid (swappedGens c L)`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
