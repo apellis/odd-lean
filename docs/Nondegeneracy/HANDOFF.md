@@ -888,6 +888,18 @@ of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K
 `K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
 ones. To be rechecked against `ProbeWindowInverse.md` (4).
 
+**Swapping entries as single terms (checked).** `SwappedAssembly/Sigma/SwappingEntries.lean`:
+`sigmaEntry_eq_sum` writes `sigmaEntry c i j ν p q Z` as the double sum over the intermediate
+paths `m₁` (after the cup) and `m₂` (after the crossing) of `sigmaTerm` (cup entry, crossing
+entry, cap entry, joined by `eqToHom`s). `sides_of_sigmaTerm_ne_zero`: a nonzero term has
+`p.sides = [p₁, p₂]`, `q.sides = [q₁, q₂]`, `m₁.sides = [q₁, q₁, p₁, p₂]`,
+`m₂.sides = [q₁, q₂, p₂, p₂]` (the cup and cap force equal summands on their two strands, the
+crossing keeps the outer strands). `sigmaEntry_eq_sigmaTerm`: for any `m₁`, `m₂` with these
+sides the entry is that one term. Open for `SwappingInvertible`: unfold the three layer entries
+of the single term into generator images and identify them with the probe mate of `J`
+(`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
+`-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
+
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
 `a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
