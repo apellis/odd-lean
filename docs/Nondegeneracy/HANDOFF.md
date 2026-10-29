@@ -538,7 +538,8 @@ generator images of item 1 below.
 3. Relation modules, each proving its obligation for `P.layerRep Gs Ys gens`:
    - `Quad.lean`: `QuadRelations` (checked, conditional on `CrossQuad`; see
      below).
-   - `Slides.lean`: `SlideRelations`.
+   - `Slides.lean`: `SlideRelations` (checked, conditional on `CrossSlide`;
+     see below).
    - `Braid.lean`: `BraidRelations`.
    - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
      see below).
@@ -586,6 +587,23 @@ of a two-part normal-form diagram is the matrix product of the entries),
 `compDiag_lcrossL`, `compDiag_sigmaL_swappedGens`. Remaining: prove
 `SigmaPermutation c` from the block structure of `SwappedActionAssembly.md`
 §5, and construct `L` with `L.IsInverse c` (A7).
+
+**Slide relations (checked).** `SwappedAssembly/Slides.lean`:
+`slideRelations`: `SlideRelations` for `P.layerRep Gs Ys gens` from
+`CrossSlide gens`. Each relation (1.8) is one matrix identity per pair of
+summand paths `p` of `Eᵢ Eⱼ 1_ν`, `q` of `Eⱼ Eᵢ 1_ν` and object `Z`; dots are
+diagonal, so a dot followed by a crossing has entry `leftDot p ≫ cross p q`
+(`compDiag_leftDot_cross`, `compDiag_rightDot_cross`) and a crossing followed
+by a dot `cross p q ≫ rightDot q` (`compDiag_cross_rightDot`,
+`compDiag_cross_leftDot`). `CrossSlide gens` asks: for `i ≠ j`,
+`leftDot p ≫ cross = (-1)^{|i||j|} cross ≫ rightDot q` and
+`cross ≫ leftDot q = (-1)^{|i||j|} rightDot p ≫ cross`; for `i = j` the same
+differences with sign `(-1)^{|i|}` equal the identity entry (`eqToHom` on the
+diagonal, zero off it). Remaining: prove `CrossSlide (swappedGens c L)`:
+diagonal blocks from the probe and reservoir slide relations, same-colour
+mixed blocks from `SlideBlocks.lean`, distinct-colour mixed blocks from the
+signed dot intertwinings of `homMixedInterchange_pre/_post` (not yet
+formalized).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
