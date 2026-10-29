@@ -702,8 +702,18 @@ opposite of `End`). These four relations are proved from the dot algebra:
 `x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
 `sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
 `x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
-with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
-`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
+with `x₁² - z²`, `x₂² - z²` units).
+(5A) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePair.lean`):
+`preCrossSame_mixedJ_pair`: the probe crossing on the two left letters of
+`PPR`, followed by the two mixed interchanges `PPR → PRP → RPP`, equals the
+interchanges followed by the shifted probe crossing on the two right letters
+of `RPP`, without sign. Generic form `homMixedInterchange_pair_whiskerRight`
+(any homogeneous 2-morphism on `E₁ ≫ E₂`, equal outer shifts; the inner
+shift cancels, `homMixedInterchange_pair`). This is `PairedHomInterchange.md`
+§3 with all shifts retained; no discrepancy with the written proof. Next:
+transport the dot entries to `x₁, x₂, z` on the first path, then assemble the
+block; then (5B) on `{PRR, RPR, RRP}`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -4868,3 +4878,36 @@ an append shuffle is determined by `j = u⁻¹(n)`, `u⁻¹ = runPerm n j = s_j 
 `card_appendShuffle = n + 1`). Since `cw` reverses words, the moving crossings `c_j` first
 cross the last two strands and then the old strands only: `c_j = c'_j τ_n` (algebra order).
 Next: the left-oriented correction (2) of `AppendCoordinates.md`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
+
+### The half-turn on coefficient-extended Homs and `U(K_N) ⊆ I_N` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/CornerIdeal.lean` (`SwappedVacuumCoordinates.md` §§4–5):
+
+- `htPres s t : Hom(s, t) →ₗ Hom(t^rev, s^rev)` (the half-turn on Hom spaces, linear);
+  `htPres_diag_mkD`, `htPres_id`, and `htPres_diag_comp`: `U(f ≫ g) = (-1)^{|f||g|} U(g) ≫ U(f)`
+  for normal-form diagrams.
+- `htCoef s t` on coefficient-extended Homs, `htCoef_sourceCoefficientHom`:
+  `U(a ⊗ f) = a ⊗ U(f)`, no coefficient sign.
+- `htCoef_sandwich`: for homogeneous `α`, `γ` (`CoefParity`) and any `β`,
+  `U(α⊗A ≫ γ⊗B ≫ β⊗C) = ± α⊗U(C) ≫ γ⊗U(B) ≫ β⊗U(A)` with an explicit sign. The coefficients
+  keep their places, so no supercommutativity of `SYM` is used.
+- `htPres_lastDotPower`: `U(y_last^j) = (-1)^{p(i) C(j,2)} y_first^j` on `v ++ [i]`.
+- `coefParity_factorCoefficient`: `c_{i,j}` has parity `(N + j) p(i)`;
+  `elvCoefficientIdeal_le_homogeneousSpan`: `J_N` is spanned by its homogeneous elements.
+- `coef_induction`: coefficient-extended Homs are spanned by `α ⊗ mkD ls` with `α` homogeneous.
+- **`htCoef_transformedIdeal_le`**: `(TransformedIdeal D Sc cutoff ∅ s t).map (htCoef s t) ≤
+  ELVRelationSpan D (parameterTwist D Sc) cutoff t^rev s^rev`. Generators `J_N` go to themselves;
+  the transformed polynomial (4) of colour `i` goes to `±` the first-strand cyclotomic
+  (`elvCyclotomic` for odd `i`, `evenCyclotomic` for even `i`), with the sandwich sign
+  `N p(i)(|A|+|C|) + |α|(|A|+|C|) + |A||C|` independent of the power `j`
+  (`htCoef_cyclotomic_term`, `cyclotomic_sign_identity`).
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdeal.lean`.
+
+Open obligations for §5: the reverse inclusion `I_N ⊆ U(K_N)` (by the same computation run
+from the twisted side, or `U` being an involution up to the parameter twist); `T ≠ ∅` (needs
+`T` mapped into the coefficient ideal or carried as extra coefficient generators on the ELV
+side); and bijectivity of `htCoef` (inverse half-turn from `parameterTwist`), which would turn
+the inclusion into the identification `U(K_N) = I_N`.
