@@ -4761,3 +4761,15 @@ ideal `U⁻¹(I_N)` with `TransformedIdeal`.
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`. Next: `U` on the coefficient-extended
 Hom spaces (`U(a ⊗ f) = a ⊗ U(f)`), and the identification of the corner ideal `U⁻¹(I_N)`
 with `TransformedIdeal`.
+
+### Append-side PBW basis (checked) and the left-oriented Mackey summand (proposed)
+
+`OddMath/QuiverHecke/AppendParabolic.lean`, `OddMath/QuiverHecke/AppendBasis.lean`: the mirror of
+the prepend input basis (`AppendCoordinates.md` §§1–2). `appendPermutation h (v, u) = u⁻¹ (v × 1)`
+for `h : n + 1 = m` is bijective with additive length; `appendBasis D Sc : Basis (AppendIdx i s t)`
+of `Hom(s ++ [i], t)` with `appendBasis_apply`, `appendElt_eq_comp`
+(`(nf ▷ 1_i) ≫ last-strand dots ≫ moving crossings`) and `appendElt_approx`. Next
+(`AppendCoordinates.md` §§3–4, proposed): the right-oriented affine coordinate equivalence along
+`appendAlgebra` (mirror of `prependCoordinateEquiv`), its balanced tensor descent, and the
+left-oriented correction (2) giving `direct`, `span`, `Rt_F`, `Rt_j` of `MackeyCosets` with
+`F(L₀') = ψ(B) τ_n ψ(B)` and `X` a signed exponent shift.
