@@ -4860,5 +4860,6 @@ Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendEquivalence.lean`,
 `appendCoordinateEquiv i n : ((AppendShuffleAt n × ℕ) →₀ Hn n) ≃ₗ[k] Corner(appendAlgebra)`,
 the forward map the finite sum of `appendPBWCorner`, inverse the entrywise assembly
 `appendCoefficients`, both respecting the right old-algebra action
-(`appendCoordinateEquiv_right`, `_symm_right`). Next: balanced tensor descent (mirror of
-`PrependTensorCoordinates`) and the left-oriented correction (2) of `AppendCoordinates.md`.
+(`appendCoordinateEquiv_right`, `_symm_right`). Checked: `AppendTensorCoordinates.lean`, `appendTensorEquiv`, the balanced
+descent to any unital left old-algebra module. Next: the left-oriented correction (2) of
+`AppendCoordinates.md`.
