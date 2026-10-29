@@ -10,6 +10,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.AppendTensorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendCornerTensor
 import OddMath.QuiverHecke.CyclotomicAction.AppendLeftCrossing
+import OddMath.QuiverHecke.CyclotomicAction.AppendTensorRightDot
 import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.QuiverHecke.CyclotomicAction.PrependEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
@@ -116,6 +117,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
 import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces

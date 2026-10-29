@@ -111,8 +111,24 @@ Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedSlides.lean`):
   `(x ▷ E) ≫ τ = ε (τ ≫ E ◁ x)` and `τ ≫ (E ◁ x) = ε ((x ▷ E) ≫ τ)` for the height-level super
   induction functors, dot and crossing natural transformations, `i ≠ j`.
 
-Remaining: weight-level assembly through the content blocks (as in `GlobalWeightSlides.lean`),
-then the `slideLeft`/`slideRight` fields of `RouquierMulticolour` for `globalRouquierFamily`.
+## Distinct-colour dot slides on the global factors: weight level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalWeightMixedSlides.lean`):
+
+- `heightContentMixedSlideLeft`, `heightContentMixedSlideRight`: the slides on content blocks
+  with arbitrary height and content transports. For `i ≠ j` the block reached by `E_i` then
+  `E_j` is only propositionally equal to the one reached by `E_j` then `E_i`, so one content
+  transport `{j} + ({i} + γ) = {i} + ({j} + γ)` stays; `heightContentCast_map_hom` removes it;
+- `globalActionCross_slide_left_ne`, `globalActionCross_slide_right_ne`: (1.8) for `i ≠ j` on
+  the weight factors, with `koszulSign |i| |j|`;
+- `globalActionSignedCross_slide_left_ne`, `globalActionSignedCross_slide_right_ne`: exactly the
+  `slideLeft`, `slideRight` fields of `SKM.RouquierMulticolour` for the dot and crossing of
+  `globalRouquierData` (the signed crossing is `+ψ` at distinct colours), for every parameter
+  family, hence for both `parameterTwist D Sc` (probe) and the reservoir factor.
+
+Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `quadNe`,
+`braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
+factors, which is not formalized.
 
 ## Distinct-colour quadratic relation on the global factors: algebra level
 
@@ -5136,10 +5152,35 @@ balanced by the right linearity above (`appendCornerCoords_op_smul`). Generic he
 `appendFamilyTensor_coefficients` (`Σ Φ(single q 1) ⊗ c_q y = Φ(c) ⊗ y` for a right
 `ψ`-linear family `Φ` of corner elements).
 
+Encoding of the parity twist (decision). The new dot only supercommutes with the append
+map, `ψ(r) x = x ψ(tw r)` (`affineLastDot_twist_comm`, `tw = homMatrixTwist (n+1)
+(D.parity i)`), so right multiplication by it descends to `Ind M` only together with a
+twist of the coefficients. We twist by the parity involution: the coefficient module `M`
+comes with an additive `θ : M → M` satisfying `θ (r • y) = tw(r) • θ y`. No grading on
+`M` is required; the supermodule sign (for the cyclotomic regular supermodule,
+`rightDotCoefficient`, with `rightDotCoefficient_smul`) is one instance, and for the
+Mackey coefficient ring `B` the twist is the ring endomorphism `σ` (`φ` of the written
+proof).
+
+Checked (`CyclotomicAction/AppendTensorRightDot.lean`): the twisted right dot
+`appendTensorRightDot θ : z ⊗ y ↦ z x_(n+2) ⊗ θ y`, an `Hn (n+2)`-linear endomorphism of
+`Ind M`, preserving `appendTensorFixed` (`appendTensorRightDot_mem_fixed`). Its action on the
+two summands of `appendTensorCornerEquiv`, with `s = koszulSign (D.parity i) (D.parity i)`:
+* `appendTensorRightDot_polyTensor`: `R_t(Σ z^m ⊗ g_m) = Σ z^(m+1) ⊗ θ g_m`
+  (`appendTensorPolyShift θ`, which for `θ = σ` is `tShift σ`);
+* `appendTensorRightDot_leftTensor`: `R_t(Σ ψ(c'_j x^m) τ ⊗ f_(j,m)) =
+  s Σ ψ(c'_j x^(m+1)) τ ⊗ θ f_(j,m) − s (1 ⊗ Σ c'_j x^m ψ'(1) θ f_(j,m))`
+  (`appendTensorLeftShift θ`, `appendTensorLeftDegree θ`), from the corner identity
+  `rightDotCorner_appendLeftSum_single`;
+* `appendTensorLeftShift_mem`: the shift preserves the coordinates `ψ'(1) f_q = f_q`
+  (uses `tw(ψ'(1)) = ψ'(1)`).
+So `Rt_F` holds with `X = s · appendTensorLeftShift θ`, `E = −s · appendTensorLeftDegree θ`,
+and `Rt_j` with `tShift`.
+
 Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
 module, so only the identification of `L₀` with the content-`β` corner remains) to
-instantiate `MackeyCosets` (`direct`, `span`); the right-dot identities give `Rt_F`,
-`Rt_j` after applying `− ⊗ y`; then `short` and the lifts.
+instantiate the target side of `MackeyCosets` (`direct`, `span`, `Rt_F`, `Rt_j`, `F_r`,
+`j_r`); then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
