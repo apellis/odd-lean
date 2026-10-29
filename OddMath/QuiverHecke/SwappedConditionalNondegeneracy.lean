@@ -47,12 +47,11 @@ Everything between these inputs and the conjecture is proved:
   only for the restrictions of `D` to finite sets of colours (`SwappedNondegeneracy.md` §5,
   finite witnesses), for an arbitrary colour set.
 
-These theorems are **conditional**: the observations are hypotheses. In particular the factor
-interface `CyclotomicAction.GlobalLocalInversion` (KKO local inversion for the cyclotomic
-weight-space factors) does not appear: the cyclotomic action target lives in a higher universe
-than the one `ProbeReservoir` requires, so `CyclotomicAction.globalRouquierFamily` cannot yet
-be used as the probe or reservoir of a `ProbeReservoir`. The probe and reservoir families are
-therefore part of the observation.
+These theorems are **conditional**: the observations are hypotheses. The target `B` is
+arbitrary; `GlobalFactorNondegeneracy.lean` takes `B = Π-𝔖ℭ𝔞𝔱` and the cyclotomic factor
+families `CyclotomicAction.globalPiRouquierFamily` as probe and reservoir, so that the factor
+inputs become local inversion (`CyclotomicAction.GlobalLocalInversion`, under the degree
+condition) and the multicolour relations of the two families.
 -/
 
 noncomputable section

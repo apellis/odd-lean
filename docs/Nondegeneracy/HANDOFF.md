@@ -4381,20 +4381,26 @@ Consumer: `scripts/NonVacuity/SwappedConditionalNondegeneracy.lean`.
 
 Glue not yet available (open):
 
-- `CyclotomicAction.GlobalLocalInversion` does not appear. Universes (checked): the swapped
-  assembly (`ProbeReservoir`, `Generators`, `Mod`, `layerRep`, `SwappedRelationData`) now
-  takes `B : Type uB` with `BicategoryStruct.{w, v} B` (modules in `Type (max u w)`), and
-  `UpwardModuleAction`, `ReservoirVacuumEvaluation`, `SwappedVacuumEvaluation`,
-  `BoundedCyclicRecovery`, `SwappedVacuumBlock` take their modules in an arbitrary universe;
-  `nondegeneracy_of_swapped_vacuum_observations` holds for every such `B`. So
-  `TwoSCat.of k (SCat k)` is admissible universe-wise. Remaining gap (Π on Hom categories):
-  `ProbeReservoir` needs `[∀ a b : B, PiSupercategory k (a ⟶ b)]` (the parity shift
-  `homParityShift` of the content-shifted Hom functors), which `SCat k` does not provide.
-  The planned route: rebuild the global family on `PiSCat k` (whose 2-structure is that of
-  `SCat` on the underlying supercategories, and which is a Π-2-supercategory, so each Hom
-  category is a Π-supercategory by `PiTwoSupercategory.homPiLeft`), using that the weight
-  spaces are Π-supercategories (`SuperBimodule` is; `ContentSupported` is closed under
-  isomorphism; products of Π-supercategories). Engineering only.
+- Factor actions as probe and reservoir (checked): universes as above (the swapped
+  assembly takes `B : Type uB` with `BicategoryStruct.{w, v} B`). The Π-structure on Hom
+  categories is supplied by `Π-𝔖ℭ𝔞𝔱`:
+  - `SKM.RouquierFamily.toPiSCat`, `SKM.RouquierMulticolour.toPiSCat`
+    (`OddMath/SKM/RouquierPiSCat.lean`): a super Rouquier family in `𝔖ℭ𝔞𝔱` whose weight
+    spaces carry Π-structures is one in `Π-𝔖ℭ𝔞𝔱`, with the same data; multicolour relations
+    transfer (`rouquierPower_piSCat` compares the vertical powers).
+  - `CyclotomicAction.fullPiSupercategory`, `productPiSupercategory`,
+    `heightContentSupported_piObj` (the content idempotent is even, so `Π` preserves
+    content support), `globalWeightSpacePi`, `globalPiRouquierFamily`
+    (`CyclotomicAction/PiWeightSpaces.lean`).
+  - `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
+    (`GlobalFactorNondegeneracy.lean`): the probe and reservoir are
+    `globalPiRouquierFamily` at `(aP, ΛP)`, `(aR, ΛR)`, the probe's left adjunctions are
+    `RouquierFamily.leftAdjoints`. The `ProbeReservoir` obligation becomes: local inversion
+    `GlobalLocalInversion` under `CyclotomicDegreeCondition D a Λ` (each `aᵢ` monic of degree
+    `⟨hᵢ, Λ⟩`; local inversion is false without it), and `SKM.RouquierMulticolour` of the two
+    families `globalRouquierFamily` (open: quadZero, quadNe, slides, braid, braidEq, invNe for
+    distinct colours of the cyclotomic factors). The observations must have
+    `O.P = globalProbeReservoir …`; the other observation fields are unchanged.
 - `AdjunctionBubbleSeries` is not derivable from `SwappedRelationData`: the relation
   identities constrain only the generator relations, while the series fixes the values of
   the closed left bubbles (leftward cup with the sign `-q`, then the cap with dots) against
