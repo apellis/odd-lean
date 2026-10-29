@@ -126,16 +126,24 @@ reservoir dot, with xy=q yx. Keep, literally,
 
     a=(y-x)^-1                         (p=0),
     a=(x-y)(x^2-y^2)^-1                (p=1),
-    T=[[ -q a, J],[-J^-1 a^2, q J^-1 a J]],
+    T=[[ a, J],[-J^-1 a^2, -J^-1 a J]],
     J:BA->AB, J u=q y J, J v=q x J.                     (2)
 
-This is the corrected entry of `SwappedActionAssembly.md` (A6): for p=0
-the earlier a=(x-y)^-1 had the wrong sign. In both cases a=-q a_0 with
-a_0=(x-y)^-1 (p=0), a_0=(x-y)(x^2-y^2)^-1 (p=1), since -q=1 for p=1.
-The negative coefficient of the second swapping entry is not changed.
+**Correction (sign of the diagonal).** This is the entry of the Lean
+generators (`crossSameEntry`, `CrossCoeff.IsInverse` in
+`OddMath/QuiverHecke/SwappedAssembly/Generators/Cross.lean`), for which the
+formal slide relations `slideLEq`, `slideREq` of the presentation are proved
+(`crossCoeff_diag`, `swappedGens_slideEq`). An earlier version of this note
+used the diagonal of `SwappedActionAssembly.md` (A6) as then written, namely
+-q times the diagonal above; for p=0 that diagonal satisfies the slide with
+right side -1, not 1. For p=1 the two agree since -q=1. The off-diagonal
+entries are unchanged. In the notation of the earlier version the diagonal is
+-q a_0 with a_0=(x-y)^-1 (p=0), a_0=(x-y)(x^2-y^2)^-1 (p=1).
 Now x is a unit and y is nilpotent. The finite expansion is
 
-    a=-q sum_(r>=0) q^r x^(-r-1)y^r.                    (3)
+    a=-q sum_(r>=0) q^r x^(-r-1)y^r,                    (3)
+
+and the diagonal entry of (2) is a itself.
 
 For odd p this is the even-square geometric series separated into its
 even and odd y powers, with -q=1; for even p it is minus the usual
@@ -146,19 +154,19 @@ powers in every term commute with each other without an extra sign.
 Bending the two diagonals of (2), in their actual adjunctions, consequently
 gives the following **literal**, not normalized, central entries:
 
-    C:X_B->Y_A = -sum_r q^(r+1) u_A(-r-1) v_B(r),
-    D:X_A->Y_B = sum_r q^(r+2) u_B(r) v_A(-r-1).         (4)
+    C:X_B->Y_A = sum_r q^(r+2) u_A(-r-1) v_B(r),
+    D:X_A->Y_B = -sum_r q^(r+1) u_B(r) v_A(-r-1).        (4)
 
-(Each is -q times the corresponding entry obtained from a_0.)
+(Corrected: the earlier version of this note had -q times each entry.)
 
 This uses the same unit-map-cap calculation as `HomCentralFeedback.md`
 §2: a first-strand dot belongs before its cap, a second-strand dot after
 its cup. It uses no dot transposition. As an explicit raw-coordinate check,
 
     B_s^-1;C;A_t
-      =-sum_r q^(r+1) alpha_(-r-1) [post(capD_W(r));pre(U_(-r-1))],
+      =sum_r q^(r+2) alpha_(-r-1) [post(capD_W(r));pre(U_(-r-1))],
     A_s^-1;D;B_t
-      =sum_r q^(r+2) beta_(-r-1) [pre(V_(-r-1));post(cupD_W(r))]. (5)
+      =-sum_r q^(r+1) beta_(-r-1) [pre(V_(-r-1));post(cupD_W(r))]. (5)
 
 Thus c(k), every dotted scalar, and the negative bare-xi comparison have
 not been removed by declaring A and B interchangeable.
@@ -168,22 +176,22 @@ first sector R (reservoir), the second P (probe), and set
 
     ell=-h, t=-k, H=t-ell=h-k,
     X0=X_R+X_P=X_B+X_A, Y0=Y_R+Y_P=Y_B+Y_A,
-    C_RP=D= sum_r q^(r+2) u_R(r)v_P(-r-1),
-    D_PR=C=-sum_s q^(s+3) u_P(-s-1)v_R(s),
+    C_RP=D=-sum_r q^(r+1) u_R(r)v_P(-r-1),
+    D_PR=C= sum_s q^(s+2) u_P(-s-1)v_R(s),
     K=[0,C_RP;D_PR,0].                                  (6)
 
-**Sign status after the (A6) correction.** K in (6) is -q times the K of
-the earlier version. For p=1 nothing changes. For p=0 every entry of the
-§5 tables that contains one factor of C_RP or D_PR (all entries except the
-deltas and the v_P(a)a_P,n, b_P,n u_P(a) entries) is to be multiplied by
--q=-1. The tables in §5 below are still written with the earlier sign, and
-their identification with Hhat_± of `ProbeWindowInverse.md` (coefficients
-c_r=q^(r+1), d_s=q^(s+2), tied to the probe identity (4) there) has not
-been rechecked for p=0. Until it is, the even-colour case of §§5–6 is
-proposed, not checked.
+**Sign status (settled).** K in (6) is the K of the earlier version of this
+note, because the diagonal of (2) is the Lean entry (see the correction after
+(2)). Recomputing every entry of the §5 tables from (11), (7) and this K
+gives exactly the tables below, for both parities; they are Hhat_± of
+`ProbeWindowInverse.md` with c_r=q^(r+1), d_s=q^(s+2). Its window identities
+(4) follow from the literal slide (1), whose sign does not involve a; at
+l=1 they read s+q u_A(0)v_A(-1)=q y s x^-1 and s-u_A(-1)v_A(0)=q y^-1 s x.
+So §§5–6 go through as written for both parities. The intermediate version
+that multiplied K by -q is withdrawn.
 
-Up to the overall factor -q, these are the intrinsic-sector coefficients
-of the central table of the earlier version, since q^(s+2)=q^s. This is an even permutation of summand
+These are the intrinsic-sector coefficients of the central table of the
+earlier version, since q^(s+2)=q^s. This is an even permutation of summand
 labels, not a tensor interchange, transpose, or new adjunction. Heights,
 source and target objects, and every map in (6) have been specified.
 

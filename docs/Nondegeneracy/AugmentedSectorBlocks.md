@@ -89,7 +89,20 @@ signs are checked against the relations `quadEq` and `slideEq` (`QuadSame.lean`,
 (2) has `-q a` on `(R,P)` and `q J⁻¹ a J` on `(P,R)`, the checked entries are `a` and
 `-(J ; a ; J⁻¹)`. The off-diagonal swapping entries agree. Hence the central entries of the
 checked crossing are `-q` times (4) there, and the matrix `K` of (6) is replaced by `-q K`,
-which is the `K` of the earlier version for both parities. For `p = 1` nothing changes. For
-`p = 0` this would make the §5 tables, which are still written with the earlier sign, the
-correct ones. This reading of the labels is proposed and has to be rechecked against
-`ProbeWindowInverse.md` (4) before the even-colour case of §§5–6 there is used.
+which is the `K` of the earlier version for both parities. For `p = 1` nothing changes.
+
+**Settled.** `SwappedHomInversion.md` now uses the checked diagonal in (2), and (4), (6)
+are corrected accordingly. Recomputed from (11) and the contractions (7) there, the §5 tables
+are exactly `Hhat_±` of `ProbeWindowInverse.md` with `c_r = q^(r+1)`, `d_s = q^(s+2)`, and
+the window identities (4) of `ProbeWindowInverse.md` are consequences of the literal slide
+(1) of `SwappedHomInversion.md`, whose sign does not involve `a`. So §§5–6 there go through as
+written for both parities. The correction affects only the written proof route: the Lean
+entries were already the checked ones.
+
+**Interface caveat.** The augmented map at `s = t` does not depend on `ν` except through the
+window count `|⟨hᵢ, ν⟩|`, and the inversion of §§5–6 there holds at `ν` equal to the sector
+weight `P.wt t` only. Invertibility at two values of `⟨hᵢ, ν⟩` for the same objects forces
+the objects to be zero (adding one dotted window to an invertible map leaves a map that is not
+invertible), so `CentralInvertible` and `AugmentedInvertible` hold only in the form restricted
+to `ν = P.wt s`; this is the form that the action uses (`layerEntry` and `compEval` evaluate
+the generators only at weight-matched rightmost sectors).
