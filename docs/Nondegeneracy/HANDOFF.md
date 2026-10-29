@@ -3140,10 +3140,20 @@ in (2)/(4) of `DeformedMatrixComparison.md`, `u_m = d_m j_m` and `c_m = d_m κ_m
 unit then dot power `= d_m (j_m ⊗ M)` (`heightSuperUnit_dotPow`), dot power then counit
 `= d_m (κ_m ⊗ M)` (`heightDotPow_superCounit`), and unit at `n + 1`, crossing `ψ`, counit at `n`
 on `P ⊗ Q ⊗ M` `= -(s ⊗ M)` (`heightRouquierMate_eq`; for the signed crossing `-ψ` of
-`globalRouquierData` this is `s ⊗ M`), all up to unitors/associators. Next: carry these through
-content blocks and successor blocks to the weight-level `rouquierMate`, dotted units and dotted
-counits of `globalRouquierData` (pattern of `GlobalWeightSlides`), then the boundary/division
-inputs and the window matrix.
+`globalRouquierData` this is `s ⊗ M`), all up to unitors/associators.
+`GlobalRouquierMateKernel.lean` (checked): the same identifications on content blocks and at
+the weight level of `globalRouquierData`. Content level: `heightContentMate` (the content mate
+with all height transports is `-(s ⊗ N)`, `contentMateKernel`), `contentUnit_dotPow`
+(`= d_m contentCupKernel`), `contentDotPow_counit` (`= d_m contentCapKernel`). Weight level,
+at a block `β` and its successor: `globalRouquierMate_app_blockSucc` (the component of the
+weight-level `rouquierMate` of the signed crossing is the transported `contentMateKernel`),
+`globalActionDotPow_app_blockSucc` (dot powers are transported content dot powers),
+`globalDottedCounit_app_blockSucc` (`d_m` times the transported `contentCapKernel`) and
+`globalDottedUnit_app` (`d_m contentCupKernel` followed by the canonical object identification),
+all up to `eqToHom`s between the transported objects. The monic-degree hypothesis of
+`globalRouquierFamily` (`CyclotomicDegreeMatch`) is already on the research branch. Next: the
+boundary/division inputs and the window matrix of (2)/(4) in `DeformedMatrixComparison.md`,
+fed by these component formulas.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
