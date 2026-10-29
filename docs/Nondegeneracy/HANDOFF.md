@@ -4907,5 +4907,21 @@ Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnInvolution.lean`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdealIdentification.lean`.
 
-Open obligation for §5: `T ≠ ∅` (carry `T` as extra coefficient generators on the ELV side;
-the half-turn fixes `a ⊗ 1` up to the sandwich sign, so homogeneity of `T` is needed).
+### The half-turn with extra coefficient generators (checked)
+
+`OddMath/QuiverHecke/HalfTurn/CoefficientGenerators.lean` (`SwappedVacuumCoordinates.md` §§5–6):
+
+- `CoefficientGeneratorSpan T s t`: the two-sided span `(T)` of the generators `a ⊗ 1`, `a ∈ T`.
+- `transformedIdeal_eq_sup`: `K_(N,T) = K_N + (T)`.
+- `htCoef_coefficientGeneratorSpan_le`, **`map_htCoef_coefficientGeneratorSpan`**: `U((T)) = (T)`
+  (for the twisted parameters) when every `a ∈ T` is homogeneous (`∃ q, CoefParity D q a`);
+  `U(x ≫ a ⊗ 1 ≫ y)` is a sign times `U(y) ≫ a ⊗ 1 ≫ U(x)` by `htCoef_sandwich`.
+- **`map_htCoef_transformedIdeal_sup`**: `U(K_(N,T)) = I_N + (T)`;
+  **`comap_htCoef_elvRelationSpan_sup`**: `U⁻¹(I_N + (T)) = K_(N,T)`, for homogeneous `T`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnCoefficientGenerators.lean` (`T` with an even and
+an odd element).
+
+The half-turn ideal identification of §5 is complete for homogeneous `T` (the coefficient-power
+monomials of §6 are homogeneous). Inhomogeneous `T` is not covered: the sandwich sign depends on
+the parity of the middle coefficient; replace such `T` by its set of homogeneous components.

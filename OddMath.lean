@@ -1374,6 +1374,7 @@ import OddMath.QuiverHecke.HalfTurn.Composite
 import OddMath.QuiverHecke.HalfTurn.CornerIdeal
 import OddMath.QuiverHecke.HalfTurn.Involution
 import OddMath.QuiverHecke.HalfTurn.IdealIdentification
+import OddMath.QuiverHecke.HalfTurn.CoefficientGenerators
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
