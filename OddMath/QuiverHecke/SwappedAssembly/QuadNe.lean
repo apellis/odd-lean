@@ -283,6 +283,309 @@ theorem resCore_quad (hW : RouquierMulticolour W Sc) {i j : I} (hij : i ≠ j) (
 
 end ResCore
 
+/-! ## The mixed entries -/
+
+section Mixed
+
+variable (P : ProbeReservoir k B D Sc)
+
+/-- The parameter polynomial of the path `(P,R)` of `Eᵢ Eⱼ`, conjugated by the mixed
+interchange, is the parameter polynomial `Q_ji` in the transported dots of the path `(R,P)`
+of `Eⱼ Eᵢ`. -/
+theorem mixedJ_inv_mixedQ_hom (i j : I) (t : Sector I)
+    (hR : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    (P.mixedJ i j t hR Z).inv ≫ P.mixedQ i j t hR Z ≫ (P.mixedJ i j t hR Z).hom =
+      qExpr Sc (homContentPostDot P.T.obj P.W j t.1 (P.muP t) (P.muM_postE j hR)
+          ((P.step (true, i) true (nextSector (true, j) false t) trivial).obj Z))
+        ((P.step (true, j) false t hR).map (P.T.dot i (P.muP_preE i t) ▷ Z)) j i := by
+  set J := P.mixedJ i j t hR Z
+  set ε := zsign k (D.parity i * D.parity j)
+  have hε : ε * ε = 1 := zsign_mul_self' _
+  have hxy : P.prPreDot i j t hR Z * P.prPostDot i j t hR Z =
+      ε • (P.prPostDot i j t hR Z * P.prPreDot i j t hR Z) := by
+    simp only [End.mul_def]
+    exact P.prPostDot_comp_prPreDot i j t hR Z
+  have hQ : P.mixedQ i j t hR Z =
+      qExpr Sc (P.prPostDot i j t hR Z) (P.prPreDot i j t hR Z) j i :=
+    qExpr_swap Sc _ _ i j ε hxy (fun n hn => zsign_pow_of_mul_eq_zero _ _ n hn)
+  have hflip : ∀ {a : End (P.prObj i j t hR Z)} {a' : End (P.rpObj j i t hR Z)},
+      a ≫ J.hom = ε • (J.hom ≫ a') → J.inv ≫ a = ε • (a' ≫ J.inv) := by
+    intro a a' h
+    rw [inv_comp_signed J a a' ε hε h, smul_smul, hε, one_smul]
+  have hc := comp_qExpr (Sc := Sc) J.inv _ _ (P.prPostDot i j t hR Z)
+    (P.prPreDot i j t hR Z) j i ε ε (hflip (P.prPostDot_comp_mixedJ_ne i j t hR Z))
+    (hflip (P.prPreDot_comp_mixedJ_ne i j t hR Z))
+    (fun n hn => by
+      rw [show ε = zsign k (D.parity j * D.parity i) by rw [mul_comm]]
+      exact zsign_pow_of_mul_eq_zero _ _ n hn)
+    (fun n hn => zsign_pow_of_mul_eq_zero _ _ n hn)
+  rw [hQ, reassoc_of% hc, Iso.inv_hom_id, Category.comp_id]
+
+end Mixed
+
+/-! ## Transport of the entries -/
+
+section Transport
+
+variable {C : Type*} [Category C] [Preadditive C] [Linear k C]
+
+variable (Sc) in
+/-- A composite of two morphisms equal to the parameter polynomial transports along
+heterogeneous equalities of its factors and its dots. -/
+theorem quad_of_heq {A M A' M' : C} (hA : A = A') (hM : M = M') {f : A ⟶ M} {g : M ⟶ A}
+    {f' : A' ⟶ M'} {g' : M' ⟶ A'} {l r : A ⟶ A} {l' r' : A' ⟶ A'} (hf : HEq f f')
+    (hg : HEq g g') (hl : HEq l l') (hr : HEq r r') (i j : I)
+    (h : f' ≫ g' = qExpr Sc l' r' i j) : f ≫ g = qExpr Sc l r i j := by
+  subst hA hM
+  cases hf; cases hg; cases hl; cases hr
+  exact h
+
+omit [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)] [Preadditive C] [Linear k C] in
+/-- Postcomposition with the image of a transport is heterogeneously trivial. -/
+theorem comp_map_eqToHom_heq {E : Type*} [Category E] (F : C ⥤ E) {A : E} {Y Y' : C}
+    (e : Y = Y') (f : A ⟶ F.obj Y) : HEq (f ≫ F.map (eqToHom e)) f := by
+  subst e
+  simp
+
+end Transport
+
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] [TwoSupercategory k B] in
+theorem probeCore_heq (T : RouquierFamily (k := k) (B := B) D) (i j : I) {a b c d d' : X}
+    (h₁ : a + D.α i = b) (h₂ : b + D.α j = d) (h₃ : a + D.α j = c) (h₄ : c + D.α i = d)
+    (h₂' : b + D.α j = d') (h₄' : c + D.α i = d') (hd : d = d') {w w' : B}
+    (hw : w = w') (Z : T.obj d ⟶ w) (Z' : T.obj d' ⟶ w') (hZ : HEq Z Z') :
+    HEq (probeCore T i j h₁ h₂ h₃ h₄ Z) (probeCore T i j h₁ h₂' h₃ h₄' Z') := by
+  subst hd hw
+  cases hZ
+  rfl
+
+theorem resCore_heq (W : RouquierFamily (k := k) (B := B) D) (i j : I) (κi κj : ZMod 2)
+    {a a' b c d : X} (h₁ : a + D.α j = b) (h₂ : b + D.α i = d) (h₃ : a + D.α i = c)
+    (h₄ : c + D.α j = d) (h₁' : a' + D.α j = b) (h₃' : a' + D.α i = c) (ha : a = a')
+    {x x' : B} (hx : x = x') (Z : x ⟶ W.obj a) (Z' : x' ⟶ W.obj a') (hZ : HEq Z Z') :
+    HEq (resCore W i j κi κj h₁ h₂ h₃ h₄ Z) (resCore W i j κi κj h₁' h₂ h₃' h₄ Z') := by
+  subst ha hx
+  cases hZ
+  rfl
+
+section Assembly
+
+variable (P : ProbeReservoir k B D Sc)
+
+theorem preCrossNe_heq (i j : I) (t : Sector I)
+    (hs : nextSector (true, j) true (nextSector (true, i) true t) =
+      nextSector (true, i) true (nextSector (true, j) true t))
+    (Z : P.H (nextSector (true, i) true (nextSector (true, j) true t)))
+    (h₄ : -P.muP (nextSector (true, j) true t) + D.α i =
+      -P.muP (nextSector (true, j) true (nextSector (true, i) true t))) :
+    HEq (P.preCrossNe i j t hs Z) (probeCore P.T i j (P.muP_preE i t) (P.muP_preE j _)
+      (P.muP_preE j t) h₄ (hs ▸ Z)) := by
+  refine HEq.trans (heq_of_eq ?_) (comp_map_eqToHom_heq (P.step (true, j) true t trivial)
+    (eq_of_heq (P.preE_obj_heq i hs h₄ (P.muP_preE i _) Z)) (probeCore P.T i j (P.muP_preE i t)
+      (P.muP_preE j _) (P.muP_preE j t) h₄ (hs ▸ Z)))
+  simp only [preCrossNe, probeCore, Category.assoc]
+
+theorem postCrossNe_heq (i j : I) (t : Sector I) (hv₁ : StepValid (true, i) false t)
+    (hv₂ : StepValid (true, j) false (nextSector (true, i) false t))
+    (hw₁ : StepValid (true, j) false t)
+    (hw₂ : StepValid (true, i) false (nextSector (true, j) false t))
+    (hs : nextSector (true, j) false (nextSector (true, i) false t) =
+      nextSector (true, i) false (nextSector (true, j) false t))
+    (Z : P.H (nextSector (true, i) false (nextSector (true, j) false t)))
+    (h₃ : P.muM (nextSector (true, j) false (nextSector (true, i) false t)) + D.α i =
+      P.muM (nextSector (true, j) false t)) :
+    HEq (P.postCrossNe i j t hv₁ hv₂ hw₁ hw₂ hs Z)
+      (resCore P.W i j (homContentShift D i t.1) (homContentShift D j t.1)
+        (P.muM_postE j hv₂) (P.muM_postE i hv₁) h₃ (P.muM_postE j hw₁) (hs ▸ Z)) := by
+  refine HEq.trans (heq_of_eq ?_) (comp_map_eqToHom_heq (P.step (true, j) false t hw₁)
+    (eq_of_heq (P.postE_obj_heq i t.1 hs h₃ (P.muM_postE i hw₂) Z))
+    (resCore P.W i j (homContentShift D i t.1) (homContentShift D j t.1)
+      (P.muM_postE j hv₂) (P.muM_postE i hv₁) h₃ (P.muM_postE j hw₁) (hs ▸ Z)))
+  simp only [postCrossNe, resCore, Category.assoc]
+
+omit [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+/-- For distinct colours, a summand path of `Eᵢ Eⱼ` is determined by its end sectors. -/
+theorem path_eq_of_ne {i j : I} (hij : i ≠ j) {ν : X} {s t : Sector I}
+    (p q : SPath (wd D ν [up i, up j]) s t) : p = q := by
+  obtain ⟨σ₁, σ₂, hv₁, hv₂, e, rfl⟩ := SPath.exists_eq_two p
+  obtain ⟨τ₁, τ₂, hw₁, hw₂, e', rfl⟩ := SPath.exists_eq_two q
+  have hE := e.trans e'.symm
+  have hi := congrArg (fun x : Sector I => x.1 i) hE
+  have hj := congrArg (fun x : Sector I => x.1 j) hE
+  cases σ₁ <;> cases σ₂ <;> cases τ₁ <;> cases τ₂ <;>
+    simp [nextSector, hij, Ne.symm hij] at hi hj <;> rfl
+
+omit [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+theorem compPow_eq_pow {C : Type*} [Category C] {Y : C} (f : Y ⟶ Y) :
+    ∀ n : ℕ, compPow f n = (End.of f) ^ n
+  | 0 => rfl
+  | n + 1 => by
+    rw [pow_succ, End.mul_def, ← compPow_eq_pow f n]
+    rfl
+
+/-- **The diagonal entry of the two distinct-colour crossings** for the swapped generators is
+the parameter polynomial `Q_ij` in the dots on the two strands. -/
+theorem swappedGens_crossCrossNe (c : P.CrossCoeff Sc) (L : P.LeftwardData) (i j : I) (ν : X)
+    (hij : i ≠ j) {s t : Sector I} (p : SPath (wd D ν [up i, up j]) s t) (Z : P.H t) :
+    crossCross (P.swappedGens c L) i j ν p p Z =
+      qExpr Sc (leftDot (P.swappedGens c L) i j ν p Z) (rightDot (P.swappedGens c L) i j ν p Z)
+        i j := by
+  obtain ⟨σ₁, σ₂, hv₁, hv₂, e, rfl⟩ := SPath.exists_eq_two p
+  have key : ∀ m : SPath (wd D ν [up j, up i]) s t,
+      crossCross (P.swappedGens c L) i j ν (SPath.two σ₁ σ₂ hv₁ hv₂ e) (SPath.two σ₁ σ₂ hv₁ hv₂ e)
+        Z = P.twoTwo _ _ _ _ (P.crossNeEntry i j _ _ _ _) (SPath.two σ₁ σ₂ hv₁ hv₂ e) m rfl Z ≫
+          P.twoTwo _ _ _ _ (P.crossNeEntry j i _ _ _ _) m (SPath.two σ₁ σ₂ hv₁ hv₂ e) rfl Z := by
+    intro m
+    have : Subsingleton (SPath (wd D ν [up j, up i]) s t) := ⟨path_eq_of_ne hij.symm⟩
+    let : Fintype (SPath (wd D ν [up j, up i]) s t) := Fintype.ofFinite _
+    unfold crossCross
+    refine (Fintype.sum_subsingleton _ m).trans ?_
+    exact congrArg₂ (· ≫ ·) (P.crossImage_ne c hij ν _ m Z) (P.crossImage_ne c hij.symm ν m _ Z)
+  cases σ₁ <;> cases σ₂
+  case true.true =>
+    have e' : nextSector (true, i) true (nextSector (true, j) true s) = t := by
+      rw [← e]; simp only [nextSector, add_right_comm]
+    rw [key (SPath.two true true trivial trivial e')]
+    have hZ' := P.castH_obj_heq e' Z
+    have hZ'' := P.castH_obj_heq e Z
+    have hs := e.trans (rfl.trans e'.symm)
+    have hs2 := e'.trans (rfl.trans e.symm)
+    have hf := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry i j (SKM.wt D ν [up j]) (SKM.wt D ν []) (SKM.wt D ν [up i]) (SKM.wt D ν []))
+      true true true true hv₁ hv₂ trivial trivial e e' rfl Z _ hZ'
+    have hg := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry j i (SKM.wt D ν [up i]) (SKM.wt D ν []) (SKM.wt D ν [up j]) (SKM.wt D ν []))
+      true true true true trivial trivial hv₁ hv₂ e' e rfl Z _ hZ''
+    have hf' : HEq _ (P.preCrossNe i j s hs ((P.castH e').obj Z)) := hf
+    have hg' : HEq _ (P.preCrossNe j i s hs2 ((P.castH e).obj Z)) := hg
+    have hZ₀ : HEq (hs ▸ (P.castH e').obj Z : P.H _) Z := (P.sector_heq hs _).trans hZ'
+    have h₄ : -P.muP (nextSector (true, j) true s) + D.α i =
+        -P.muP (nextSector (true, j) true (nextSector (true, i) true s)) := by
+      rw [hs]; exact P.muP_preE i _
+    have h₄' : -P.muP (nextSector (true, i) true s) + D.α j =
+        -P.muP (nextSector (true, i) true (nextSector (true, j) true s)) := by
+      rw [← hs]; exact P.muP_preE j _
+    have hF := hf'.trans (P.preCrossNe_heq i j s hs _ h₄)
+    have hG := (hg'.trans (P.preCrossNe_heq j i s hs2 _ h₄')).trans
+      (probeCore_heq P.T j i _ _ _ _ h₄ (P.muP_preE j _) (congrArg (fun x => -P.muP x) hs2)
+        (congrArg (fun x => P.W.obj (P.muM x)) hs2) _ _
+        ((P.sector_heq hs2 _).trans (hZ''.trans hZ₀.symm)))
+    have hA := P.pathFunctor_two_obj true true hv₁ hv₂ e Z _ hZ₀
+    have hM := (P.pathFunctor_two_obj (c₁ := { l := (true, j), r := SKM.wt D ν [up i] }) (c₂ := { l := (true, i), r := SKM.wt D ν [] }) true true trivial trivial e' Z _ hZ').trans
+      (congrArg (P.step (true, j) true s trivial).obj
+        (eq_of_heq (P.preE_obj_heq i hs h₄ (P.muP_preE i _) ((P.castH e').obj Z))).symm)
+    exact quad_of_heq Sc hA hM hF hG (P.leftDot_two_probe_heq c L i j ν true hv₂ e Z _ hZ₀)
+      (P.rightDot_two_probe_heq c L i j ν true hv₁ e Z _ hZ₀) i j
+      (probeCore_quad P.T P.probeRel hij _ _ _ _ _)
+  case false.false =>
+    have hw₁ : StepValid (true, j) false s := by
+      simpa [StepValid, nextSector, Finsupp.single_apply, hij, Ne.symm hij] using hv₂
+    have hw₂ : StepValid (true, i) false (nextSector (true, j) false s) := by
+      simpa [StepValid, nextSector, Finsupp.single_apply, hij, Ne.symm hij] using hv₁
+    have e' : nextSector (true, i) false (nextSector (true, j) false s) = t := by
+      rw [← e]; simp only [nextSector, tsub_right_comm]
+    rw [key (SPath.two false false hw₁ hw₂ e')]
+    have hZ' := P.castH_obj_heq e' Z
+    have hZ'' := P.castH_obj_heq e Z
+    have hs := e.trans (rfl.trans e'.symm)
+    have hs2 := e'.trans (rfl.trans e.symm)
+    have hf := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry i j (SKM.wt D ν [up j]) (SKM.wt D ν []) (SKM.wt D ν [up i]) (SKM.wt D ν []))
+      false false false false hv₁ hv₂ hw₁ hw₂ e e' rfl Z _ hZ'
+    have hg := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry j i (SKM.wt D ν [up i]) (SKM.wt D ν []) (SKM.wt D ν [up j]) (SKM.wt D ν []))
+      false false false false hw₁ hw₂ hv₁ hv₂ e' e rfl Z _ hZ''
+    have hf' : HEq _ (P.postCrossNe i j s hv₁ hv₂ hw₁ hw₂ hs ((P.castH e').obj Z)) := hf
+    have hg' : HEq _ (P.postCrossNe j i s hw₁ hw₂ hv₁ hv₂ hs2 ((P.castH e).obj Z)) := hg
+    have hZ₀ : HEq (hs ▸ (P.castH e').obj Z : P.H _) Z := (P.sector_heq hs _).trans hZ'
+    have h₃ : P.muM (nextSector (true, j) false (nextSector (true, i) false s)) + D.α i =
+        P.muM (nextSector (true, j) false s) := by
+      rw [hs]; exact P.muM_postE i hw₂
+    have h₃' : P.muM (nextSector (true, i) false (nextSector (true, j) false s)) + D.α j =
+        P.muM (nextSector (true, i) false s) := by
+      rw [← hs]; exact P.muM_postE j hv₂
+    have hF := hf'.trans (P.postCrossNe_heq i j s hv₁ hv₂ hw₁ hw₂ hs _ h₃)
+    have hG := (hg'.trans (P.postCrossNe_heq j i s hw₁ hw₂ hv₁ hv₂ hs2 _ h₃')).trans
+      (resCore_heq P.W j i _ _ _ _ _ _ h₃ (P.muM_postE j hv₂) (congrArg P.muM hs2)
+        (congrArg (fun x => P.T.obj (-P.muP x)) hs2) _ _
+        ((P.sector_heq hs2 _).trans (hZ''.trans hZ₀.symm)))
+    have hA := P.pathFunctor_two_obj false false hv₁ hv₂ e Z _ hZ₀
+    have hM := (P.pathFunctor_two_obj (c₁ := { l := (true, j), r := SKM.wt D ν [up i] }) (c₂ := { l := (true, i), r := SKM.wt D ν [] }) false false hw₁ hw₂ e' Z _ hZ').trans
+      (congrArg (P.step (true, j) false s hw₁).obj
+        (eq_of_heq (P.postE_obj_heq i s.1 hs h₃ (P.muM_postE i hw₂) ((P.castH e').obj Z))).symm)
+    exact quad_of_heq Sc hA hM hF hG
+      (P.leftDot_two_reservoir_heq c L i j ν hv₁ false hv₂ e Z _ hZ₀)
+      (P.rightDot_two_reservoir_heq c L i j ν false hv₁ hv₂ e Z _ hZ₀) i j
+      (resCore_quad P.W P.reservoirRel hij _ _ _ _ _ _ _)
+  case true.false =>
+    have hw : StepValid (true, j) false s := hv₂
+    have e₂ : nextSector (true, i) true (nextSector (true, j) false s) = t := e
+    rw [key (SPath.two false true hw trivial e₂)]
+    have hZ' := P.castH_obj_heq e Z
+    have hZ₂ := P.castH_obj_heq e₂ Z
+    have hf := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry i j (SKM.wt D ν [up j]) (SKM.wt D ν []) (SKM.wt D ν [up i]) (SKM.wt D ν []))
+      true false false true hv₁ hv₂ hw trivial e e₂ rfl Z _ hZ₂
+    have hg := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry j i (SKM.wt D ν [up i]) (SKM.wt D ν []) (SKM.wt D ν [up j]) (SKM.wt D ν []))
+      false true true false hw trivial hv₁ hv₂ e₂ e rfl Z _ hZ'
+    have hf' : HEq _ (P.mixedJ i j s hw ((P.castH e₂).obj Z)).hom := hf
+    have hg' : HEq _ ((P.mixedJ i j s hw ((P.castH e₂).obj Z)).inv ≫
+        P.mixedQ i j s hw ((P.castH e₂).obj Z)) := hg
+    exact quad_of_heq Sc (P.pathFunctor_two_obj true false hv₁ hv₂ e Z _ hZ')
+      (P.pathFunctor_two_obj (c₁ := { l := (true, j), r := SKM.wt D ν [up i] })
+        (c₂ := { l := (true, i), r := SKM.wt D ν [] })
+        false true hw trivial e₂ Z _ hZ₂) hf' hg'
+      (P.leftDot_two_probe_heq c L i j ν false hv₂ e Z _ hZ')
+      (P.rightDot_two_reservoir_heq c L i j ν true hv₁ hv₂ e Z _ hZ') i j
+      (by rw [Iso.hom_inv_id_assoc]; rfl)
+  case false.true =>
+    have hw : StepValid (true, i) false (nextSector (true, j) true s) := hv₁
+    have e₂ : nextSector (true, i) false (nextSector (true, j) true s) = t := e
+    rw [key (SPath.two true false trivial hw e₂)]
+    have hZ' := P.castH_obj_heq e Z
+    have hZ₂ := P.castH_obj_heq e₂ Z
+    have hf := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry i j (SKM.wt D ν [up j]) (SKM.wt D ν []) (SKM.wt D ν [up i]) (SKM.wt D ν []))
+      false true true false hv₁ hv₂ trivial hw e e₂ rfl Z _ hZ₂
+    have hg := P.twoTwo_two_heq _ _ _ _
+      (P.crossNeEntry j i (SKM.wt D ν [up i]) (SKM.wt D ν []) (SKM.wt D ν [up j]) (SKM.wt D ν []))
+      true false false true trivial hw hv₁ hv₂ e₂ e rfl Z _ hZ'
+    have hf' : HEq _ ((P.mixedJ j i s hv₁ ((P.castH e₂).obj Z)).inv ≫
+        P.mixedQ j i s hv₁ ((P.castH e₂).obj Z)) := hf
+    have hg' : HEq _ (P.mixedJ j i s hv₁ ((P.castH e₂).obj Z)).hom := hg
+    exact quad_of_heq Sc (P.pathFunctor_two_obj false true hv₁ hv₂ e Z _ hZ')
+      (P.pathFunctor_two_obj (c₁ := { l := (true, j), r := SKM.wt D ν [up i] })
+        (c₂ := { l := (true, i), r := SKM.wt D ν [] })
+        true false trivial hw e₂ Z _ hZ₂) hf' hg'
+      (P.leftDot_two_reservoir_heq c L i j ν hv₁ true hv₂ e Z _ hZ')
+      (P.rightDot_two_probe_heq c L i j ν false hv₁ e Z _ hZ') i j
+      (by rw [Category.assoc]; exact P.mixedJ_inv_mixedQ_hom j i s hv₁ _)
+
+/-- **The quadratic relations (1.7)** for the swapped generators. -/
+theorem swappedGens_crossQuad (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
+    CrossQuad (P.swappedGens c L) where
+  quadEq i ν _ _ p q Z := P.swappedGens_quadEq c L i ν p q Z
+  offDiag _ _ _ hij _ _ p q _ hpq := absurd (path_eq_of_ne hij p q) hpq
+  quadZero i j ν hij hd _ _ p Z := by
+    rw [P.swappedGens_crossCrossNe c L i j ν hij p Z]
+    unfold qExpr
+    simp only [hd, ↓reduceIte]
+    rfl
+  quadNe i j ν hij hd _ _ p Z := by
+    rw [P.swappedGens_crossCrossNe c L i j ν hij p Z]
+    unfold qExpr
+    simp only [hd, ↓reduceIte, compPow_eq_pow, End.mul_def]
+
+end Assembly
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly

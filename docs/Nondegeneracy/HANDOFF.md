@@ -604,10 +604,16 @@ is the factor slide of `W` transported through the word isomorphism
 dots; the odd case uses that `x² - y²` is invertible, which `IsInverse.odd`
 alone does not give). Interface: the slides use `CrossCoeffInputs` in addition
 to `IsInverse`; both hold for `crossCoeffOfInputs`.
-Remaining: prove the other fields of `CrossQuad (swappedGens c L)` from the probe and reservoir
-quadratic relations (diagonal blocks) and the inverse property of `c`
-(equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
-intertwinings from `homMixedInterchange_pre/_post`.
+`QuadNe.lean` (**checked**): `swappedGens_crossQuad c L : CrossQuad (P.swappedGens c L)`
+for every `c` and `L`, with no further hypothesis. For `i ≠ j` a summand path of
+`Eᵢ Eⱼ` is determined by its end sectors (`path_eq_of_ne`), so `offDiag` is vacuous and
+`crossCross` reduces to the single partner path (`swappedGens_crossCrossNe`). The
+probe/probe and reservoir/reservoir entries are the multicolour (1.7) of the probe and
+reservoir families, whiskered and transported along the sector casts
+(`probeCore_quad`, `resCore_quad`, `quad_of_heq`); the probe/reservoir entry is
+`J ≫ J⁻¹ Q = Q`, and the reservoir/probe entry is `J⁻¹ Q J`, which is `qExpr` in the
+transported dots (`mixedJ_inv_mixedQ_hom`). `quadZero`/`quadNe` then read off the
+two branches of `qExpr`.
 
 **Inversion relations (checked).** `SwappedAssembly/Inversion.lean`:
 `inversionRelations`: `InversionRelations` for `P.layerRep Gs Ys
