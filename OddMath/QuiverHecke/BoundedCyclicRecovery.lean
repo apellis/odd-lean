@@ -14,7 +14,7 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 open scoped Classical TensorProduct
-universe u
+universe u w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
@@ -23,8 +23,8 @@ requirements at other word pairs or at smaller cutoffs. The two actions are
 only required to respect source precomposition. Normalization is a formula
 on coefficient generators, not an automorphism of the truncated quotient. -/
 structure BoundedCyclicRecovery (μ : X) (t t' : List I) (d : ℕ) (cutoff : I → ℕ) where
-  V : Type u
-  W : Type u
+  V : Type w
+  W : Type w
   [addV : AddCommGroup V]
   [moduleV : Module k V]
   [addW : AddCommGroup W]
