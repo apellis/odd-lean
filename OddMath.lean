@@ -18,6 +18,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendLeftCrossing
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCorner
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentMackeyMap
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCosets
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentRhoCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
@@ -1366,6 +1367,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparison
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ReservoirCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.RegularCoefficientBound
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ModuleCoefficients
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ProductCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
