@@ -31,8 +31,13 @@ Q invertibility or cancellation of a probe crossing is assumed.
 The importing consumer uses `Fin 3`, colours `0,1,2`, and reservoir content
 `single 2 1`. This is a checked occupied-sector application with arbitrary
 representation data, not a nonzero representation construction. The reverse
-Q-weighted direction for distinct probes and the other sectors remain open;
-the complete component calculation below retains its proposed status.
+Q-weighted direction for distinct probes is now proved by
+`BraidMixed/ReverseDistinctProbeSector.lean`, `reverseDistinctProbe_braid`.
+It derives the unequal-probe Q transport from the actual signed dot slides
+and supernaturalness, retains both Q factors with their shared reservoir
+spectator, and cancels only mixed comparison isomorphisms. Other sector
+placements and repeated-outer corrections remain open; the complete
+component calculation below retains its proposed status.
 
 ## 1. Typed entries and polynomial conventions
 
