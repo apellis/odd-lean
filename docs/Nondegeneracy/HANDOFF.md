@@ -3159,10 +3159,20 @@ in (2)/(4) of `DeformedMatrixComparison.md`, `u_m = d_m j_m` and `c_m = d_m κ_m
 unit then dot power `= d_m (j_m ⊗ M)` (`heightSuperUnit_dotPow`), dot power then counit
 `= d_m (κ_m ⊗ M)` (`heightDotPow_superCounit`), and unit at `n + 1`, crossing `ψ`, counit at `n`
 on `P ⊗ Q ⊗ M` `= -(s ⊗ M)` (`heightRouquierMate_eq`; for the signed crossing `-ψ` of
-`globalRouquierData` this is `s ⊗ M`), all up to unitors/associators. Next: carry these through
-content blocks and successor blocks to the weight-level `rouquierMate`, dotted units and dotted
-counits of `globalRouquierData` (pattern of `GlobalWeightSlides`), then the boundary/division
-inputs and the window matrix.
+`globalRouquierData` this is `s ⊗ M`), all up to unitors/associators.
+`GlobalRouquierMateKernel.lean` (checked): the same identifications on content blocks and at
+the weight level of `globalRouquierData`. Content level: `heightContentMate` (the content mate
+with all height transports is `-(s ⊗ N)`, `contentMateKernel`), `contentUnit_dotPow`
+(`= d_m contentCupKernel`), `contentDotPow_counit` (`= d_m contentCapKernel`). Weight level,
+at a block `β` and its successor: `globalRouquierMate_app_blockSucc` (the component of the
+weight-level `rouquierMate` of the signed crossing is the transported `contentMateKernel`),
+`globalActionDotPow_app_blockSucc` (dot powers are transported content dot powers),
+`globalDottedCounit_app_blockSucc` (`d_m` times the transported `contentCapKernel`) and
+`globalDottedUnit_app` (`d_m contentCupKernel` followed by the canonical object identification),
+all up to `eqToHom`s between the transported objects. The monic-degree hypothesis of
+`globalRouquierFamily` (`CyclotomicDegreeMatch`) is already on the research branch. Next: the
+boundary/division inputs and the window matrix of (2)/(4) in `DeformedMatrixComparison.md`,
+fed by these component formulas.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
@@ -4568,3 +4578,28 @@ bound) was checked against these interfaces; no discrepancy was found.
 Consumer: `scripts/NonVacuity/QuiverHeckeMirror.lean`. Next: the super flip
 `pres D Sc ⥤ SOp (pres D (parameterTwist D Sc))` (second factor of `U`), the composite `U`,
 and the identification of the corner ideal `U⁻¹(I_N)` with `TransformedIdeal`.
+
+### Super-flip factor of the half-turn `U` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/SuperFlip.lean` formalizes the second factor of `U`
+(`SwappedVacuumCoordinates.md` §4): the reflection in a horizontal axis, a contravariant
+superfunctor `flipFunctor D Sc : (pres D Sc).Presented ⥤ SOp k (pres D (parameterTwist D Sc)).Presented`.
+
+- Words are kept; dots are fixed; the crossing `Eᵢ Eⱼ → Eⱼ Eᵢ` goes to `flipWeight` times the
+  crossing `Eⱼ Eᵢ → Eᵢ Eⱼ`, `flipWeight (cross i j) = -(-1)^{|i||j|} ε_ij` with `ε_ii = -1`,
+  `ε_ij = 1` (`i ≠ j`). A normal-form diagram goes to its reversed layers times `flipC`, the
+  Koszul sign of the reversal times the weights (`flip_mkD`, `flipC_append`,
+  `flipC_replicate_dot`: `n` dots on an `i`-strand give `(-1)^{|i|⌊n/2⌋}`).
+- Target parameters `parameterTwist D Sc`: `t_ij ↦ (-1)^{|i||j|} t_ij`, `s_ij^{pq} ↦
+  (-1)^{|i||j| + |i|⌊p/2⌋ + |j|⌊q/2⌋} s_ij^{pq}` (`i ≠ j`).
+- `flip_rel D Sc r`: every defining relation (BE2 Def. 1.5, upward part) is killed. Images and
+  constants: quadEq ↦ quadEq (`(-1)^{|i|}`), quadZero, quadNe ↦ same (`(-1)^{|i||j|}`),
+  slideL(i,j) ↔ slideR(j,i) (`(-1)^{|i||j|}` times the crossing weight), slideLEq ↔ slideREq (1),
+  braid(i,j,m) ↦ braid(m,j,i) (`flipC` of the left side), braidEq ↦ braidEq
+  (`(-1)^{|i|(|j|+1)}`). The braidEq case uses `diag_dots_reverse_three` (reversal of three dot
+  blocks on `i j i`) and `parity_half_add` (`⌊x/2⌋ + ⌊r/2⌋ ≡ 1 + ⌊n/2⌋` when `x + r + 1 = n` is
+  even), applied with `n = dn_ij` and with `n = p` on the support of `s_ij^{pq}`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeSuperFlip.lean`. Next: the composite `U` of
+`mirrorFunctor` and `flipFunctor` (crossing weight `ε_ij`), and the identification of the corner
+ideal `U⁻¹(I_N)` with `TransformedIdeal`.
