@@ -1389,6 +1389,7 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePostPair
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairDots
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ProbePairQCentrality
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.QWeightedReverseSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReservoirPairSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.AllPaths
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlock

@@ -30,8 +30,19 @@ modules, `QCentralRealization`, and `ProbePairQCentrality` against the three
 standard axioms. No realization, centrality, Q-invertibility or braid hypothesis
 is added to `probePairQProduct_central`.
 
-Remaining: assemble the equality on the right of the preserved draft
-`reverseProbePair_braid_iff`. Centrality alone is not the sector braid.
+`BraidMixed/QWeightedReverseSector.lean` now proves `reverseProbePair_braid`:
+the entry `RᵣPᵢPᵢ → PᵢPᵢRᵣ` satisfies the braid for `i ≠ r`.
+Both reverse mixed entries retain their prescribed Q factors. The proof applies
+`reverseProbePair_braid_iff`, transports the central Q product through the
+mixed isomorphisms using the forward two-probe triangle, and collapses the
+unique intermediate sector paths. The coefficients and leftward data remain
+arbitrary; no braid field or inverse-coefficient hypothesis is assumed.
+The occupied Boolean-colour consumer `MixedReverseProbePairSector.lean`
+checks the sector equality and audits every declaration of the promoted module.
+The original reverse-sector WIP snapshot is unchanged.
+
+Remaining: other reverse Q-weighted sectors and the other mixed-colour
+`CrossBraid` fields; this is one sector entry, not a construction of that structure.
 
 ## Mixed-colour sector braid: two probes and one reservoir
 
@@ -55,9 +66,10 @@ It evaluates the actual braid sums and shifted reservoir crossing via
 a sector containing two reservoir letters. Neither result needs an
 inverse-coefficient hypothesis.
 
-Remaining: reverse Q-weighted directions, unequal same-side colours and
-the other `CrossBraid` fields. The two universal interchange triangles and
-these two sector entries do not establish the remaining fields.
+Remaining: the two-reservoir reverse Q-weighted direction, unequal same-side
+colours and the other `CrossBraid` fields. The two-probe reverse direction is
+now covered by `reverseProbePair_braid` above; these sector entries do not
+establish the remaining fields.
 
 ## Append content source: concrete moving-coset extraction
 
