@@ -20,6 +20,33 @@ identify the moving-square shift (and the even moving-dot shift) and prove
 cancellation by the leading finite-support coordinate. See
 `ELVPrependCoordinates.md` for the exact coefficient formula and source locator.
 
+## Mixed-colour sector braid: two probes and one reservoir
+
+`BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
+`PᵢPᵢRᵣ → RᵣPᵢPᵢ` of `braidLeft = braidRight` for arbitrary `i ≠ r`,
+sector, valid reservoir step, supplied probe/reservoir data, crossing
+coefficients and leftward data. It has no coefficient-inverse hypothesis.
+All intermediate path sums reduce by uniqueness of their sector contents.
+`BraidEntries` evaluates the four crossing entries with endpoint casts;
+the universal two-probe triangle then closes the equality, preserving the
+normalized same-colour crossing. The mixed crossings here are the prescribed
+`PR → RP` entries `mixedJ.hom`, not the Q-weighted reverse entries.
+`NonVacuity.MixedProbePairSector` specializes the theorem to distinct Boolean
+colours and a sector with one reservoir letter.
+
+`BraidMixed/ReservoirPairSector.lean`: `reservoirPair_braid` also proves
+`PᵢRᵣRᵣ → RᵣRᵣPᵢ` for arbitrary `i ≠ r`, with both reservoir steps valid.
+It evaluates the actual braid sums and shifted reservoir crossing via
+`postCrossSame_eq` and the same-colour post-pair triangle.
+`NonVacuity.MixedReservoirPairSector` supplies distinct Boolean colours and
+a sector containing two reservoir letters. Neither result needs an
+inverse-coefficient hypothesis.
+
+Remaining: reverse Q-weighted directions, unequal same-side colours and
+the other `CrossBraid` fields. The two universal interchange triangles and
+these two sector entries do not establish the remaining fields.
+
+
 ## Append content source: concrete moving-coset extraction
 
 Checked (`AppendContentCosets.lean`): `longPrependShuffle r` is `finRotate (r+1)`;
