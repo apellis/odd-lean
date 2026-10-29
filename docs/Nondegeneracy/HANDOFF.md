@@ -689,6 +689,21 @@ transports `compLayer_cast_eq_of_path`, `compLayer_cast_eq_zero_of_path` absorb
 them. Next: the colour patterns of (1.9) for `swappedGens c L`, starting with
 the mixed probe/reservoir block of `iii` ((5A)/(5B) of
 `ThreeStrandSectorBraid.md`).
+Sector algebra of the `iii` braid (checked,
+`SwappedAssembly/BraidSame/SectorAlgebra.lean`): on the block of paths
+`{AAB, ABA, BAA}`, transported to the first path by `Φ₀ = 1`, `Φ₁ = J`,
+`Φ₂ = J ≫ J`, the three-strand crossings become the matrices
+`sectorU D γ = [[D,0,0],[0,-γ,1],[0,-γ²,γ]]` and
+`sectorV D δ = [[-δ,1,0],[-δ²,δ,0],[0,0,D]]` (the last entry `D` is (5A)).
+`sectorBraid`: `U V U = V U V` follows from `D² = 0`, `Dγ = δD + γδ`,
+`Dδ = γD - δγ`, `γδ² = δ²γ`, `γ²δ = δγ²` (read in any ring; apply in the
+opposite of `End`). These four relations are proved from the dot algebra:
+`sectorRelations_even` (commuting dots `x₁, x₂, z`, `Dz = zD`, slides
+`x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
+`sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
+`x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
+with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
+`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -825,6 +840,28 @@ coordinates `Hom(T(-μ₋), W(μ₊))`; besides formalizing it, a bridge is need
 Hom-sector inverse to the summand-path entries of `AugmentedInvertible` (both describe the
 same 2-morphisms; the path entries are their matrix coefficients through
 `P.pathFunctor`).
+
+**Sector blocks of the equal-colour augmented maps (checked).**
+`SwappedAssembly/Sigma/SameColourBlocks.lean`: for one colour `i`, the paths of `Eᵢ Fᵢ` and
+`Fᵢ Eᵢ` change the sector by `0` (sides `(P,P)`, `(R,R)`) or by `±(i, i)` (mixed sides), and
+the empty word by `0`. Between distinct sectors the empty word has no path
+(`SPath.isEmpty_nil_of_ne`), `Eᵢ Fᵢ`, `Fᵢ Eᵢ` have at most one path each
+(`SPath.subsingleton_upDn_self`, `SPath.subsingleton_dnUp_self`), existing together
+(`SPath.nonempty_dnUp_self_iff`). So for `t ≠ s` the augmented maps are single `σ` entries:
+`posInverse_of_ne`, `negInverse_of_ne` (inverse component `lc = -σ⁻¹`, no `♦`-cups/caps).
+Reduction: `augmentedInvertible_of_central_of_swapping c hcentral hswap :
+P.AugmentedInvertible c` from `CentralInvertible c` (inverses at `s = t`, all dotted windows)
+and `SwappingInvertible c` (every `sigmaEntry c i i ν p q Z` with `t ≠ s` is an isomorphism).
+Proposed bridge: `AugmentedSectorBlocks.md`. The swapping entries are single terms (cup and cap
+force their sides): at `s = t + (i,i)` the reservoir mate of `-(a ; a ; J⁻¹)` (`W_B` of
+`SwappedHomInversion.md` §7), at `s = t - (i,i)` the probe mate of `J` (`W_A`). The central
+entries are single terms with crossing entries `-q·(probe crossing)`, reservoir crossing,
+`a` (`(P,P) → (R,R)`) and `-(J ; a ; J⁻¹)` (`(R,R) → (P,P)`). Open: `SwappingInvertible`
+(formalize §7 through these single terms) and `CentralInvertible` (§§2–6). Proposed sign
+observation (§4 of the bridge): the checked crossing entries are `-q` times the diagonal of (2)
+of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K` (the earlier
+`K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
+ones. To be rechecked against `ProbeWindowInverse.md` (4).
 
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
