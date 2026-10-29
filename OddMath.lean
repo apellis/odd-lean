@@ -1322,6 +1322,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Generators
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixInverse
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Relations
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange
