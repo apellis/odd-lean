@@ -29,3 +29,10 @@ require Categorification from git
 @[default_target]
 lean_lib OddMath where
   globs := #[.andSubmodules `OddMath]
+
+/-- The non-vacuity checks of `scripts/NonVacuity.lean` and `scripts/NonVacuity/` as a library, so
+that CI builds them incrementally and reuses the cached `.olean` files of unchanged checks. It is
+not a default target: `lake build NonVacuity` builds it. -/
+lean_lib NonVacuity where
+  srcDir := "scripts"
+  globs := #[.andSubmodules `NonVacuity]
