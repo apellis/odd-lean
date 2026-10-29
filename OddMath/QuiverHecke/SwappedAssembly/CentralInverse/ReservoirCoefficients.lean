@@ -39,7 +39,7 @@ probe.
 * `ProbeWindow.coeffIdeal`: the filtration; `coeffIdeal_comp_mem` (`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`),
   `eq_zero_of_mem_coeffIdeal` (vanishing above an upper degree bound of `End(𝟙 b)`).
 * `ProbeWindow.reservoirCoefficientIdeal`: the `ProbeWindow.CoefficientIdeal` it defines, for
-  any predicate on the objects of `a ⟶ b`.
+  the category `a ⟶ b`.
 * `ProbeReservoir.homCoefficientIdeal`: for a `ProbeReservoir` whose reservoir carries a
   `SKM.RouquierGrading` with `BoundedAbove`, the coefficient ideal on the Hom sector `P.H t` of
   every sector `t`. This discharges the coefficient-ideal hypothesis of the central inversion.
@@ -243,26 +243,34 @@ theorem eq_zero_of_mem_coeffIdeal {M : ℕ}
     exact Submodule.zero_mem _
   simpa using this hf
 
+omit [TwoSupercategory k B] in
+/-- The coefficient-ideal filtration is decreasing. -/
+theorem coeffIdeal_mono {m n : ℕ} (hmn : m ≤ n) (Z Y : a ⟶ b) :
+    coeffIdeal Gr n Z Y ≤ coeffIdeal Gr m Z Y := by
+  apply Submodule.span_mono
+  rintro f ⟨d, hd, c, hc, h, hf⟩
+  exact ⟨d, by omega, c, hc, h, hf⟩
+
 variable (a Gr) in
 /-- **The reservoir coefficient ideal** (`SwappedHomInversion.md` §4) as a
-`ProbeWindow.CoefficientIdeal` on `a ⟶ b`, for any predicate `Pr` on its objects, when
+`ProbeWindow.CoefficientIdeal` on `a ⟶ b`, when
 `End(𝟙 b)` vanishes in degrees `≥ M`. -/
 def reservoirCoefficientIdeal (M : ℕ)
-    (hM : ∀ m : ℤ, (M : ℤ) ≤ m → ∀ c ∈ Gr.deg m, c = 0)
-    (Pr : (a ⟶ b) → Prop) : CoefficientIdeal Pr where
+    (hM : ∀ m : ℤ, (M : ℤ) ≤ m → ∀ c ∈ Gr.deg m, c = 0) :
+    CoefficientIdeal (a ⟶ b) where
   mem n _ _ f := f ∈ coeffIdeal Gr n _ _
   zero_mem _ := Submodule.zero_mem _
   add_mem := Submodule.add_mem _
   neg_mem := Submodule.neg_mem _
-  mem_zero f _ _ := mem_coeffIdeal_zero f
+  mono := fun hf => coeffIdeal_mono (Nat.le_succ _) _ _ hf
   comp_mem := coeffIdeal_comp_mem
   bound := M
   eq_zero := eq_zero_of_mem_coeffIdeal hM
 
 @[simp] theorem reservoirCoefficientIdeal_mem (M : ℕ)
     (hM : ∀ m : ℤ, (M : ℤ) ≤ m → ∀ c ∈ Gr.deg m, c = 0)
-    (Pr : (a ⟶ b) → Prop) (n : ℕ) {Z Y : a ⟶ b} (f : Z ⟶ Y) :
-    (reservoirCoefficientIdeal a Gr M hM Pr).mem n f ↔ f ∈ coeffIdeal Gr n Z Y := Iff.rfl
+    (n : ℕ) {Z Y : a ⟶ b} (f : Z ⟶ Y) :
+    (reservoirCoefficientIdeal a Gr M hM).mem n f ↔ f ∈ coeffIdeal Gr n Z Y := Iff.rfl
 
 end Ideal
 
@@ -306,25 +314,25 @@ theorem mem_coeffGrading_deg {μ : X} {m : ℤ} {c : 𝟙 (P.W.obj μ) ⟶ 𝟙 
 /-- **The coefficient ideal on the Hom sector `P.H t`**: post-whiskering by the
 positive-degree reservoir coefficients at `P.muM t`, filtered by degree, with nilpotence bound
 from `BoundedAbove`. This is the `ProbeWindow.CoefficientIdeal` hypothesis of the central
-inversion (`SwappedHomInversion.md` §4), for any predicate `Pr` on the Hom-sector objects. -/
-def homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) (Pr : P.H t → Prop) :
-    CoefficientIdeal Pr :=
+inversion (`SwappedHomInversion.md` §4) on the whole Hom sector. -/
+def homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) :
+    CoefficientIdeal (P.H t) :=
   reservoirCoefficientIdeal (P.T.obj (-P.muP t)) (P.coeffGrading G (P.muM t))
     (P.exists_degree_eq_zero G hG (P.muM t)).choose
-    (P.exists_degree_eq_zero G hG (P.muM t)).choose_spec Pr
+    (P.exists_degree_eq_zero G hG (P.muM t)).choose_spec
 
-theorem homCoefficientIdeal_mem (hG : G.BoundedAbove) (t : Sector I) (Pr : P.H t → Prop)
+theorem homCoefficientIdeal_mem (hG : G.BoundedAbove) (t : Sector I)
     (n : ℕ) {Z Y : P.H t} (f : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t Pr).mem n f ↔
+    (P.homCoefficientIdeal G hG t).mem n f ↔
       f ∈ coeffIdeal (P.coeffGrading G (P.muM t)) n Z Y := Iff.rfl
 
 /-- **Positive-degree reservoir coefficients lie in `J₁`** on the Hom sector, with arbitrary
 Hom-sector morphisms (probe words included) on either side. -/
 theorem comp_postCoeff_comp_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I)
-    (Pr : P.H t → Prop) {m : ℤ} (hm : 0 < m)
+    {m : ℤ} (hm : 0 < m)
     {c : 𝟙 (P.W.obj (P.muM t)) ⟶ 𝟙 (P.W.obj (P.muM t))}
     (hc : c ∈ G.deg _ _ m) {V Z Y : P.H t} (h : V ⟶ Z) (h' : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t Pr).mem 1 (h ≫ ProbeWindow.postCoeff Z c ≫ h') :=
+    (P.homCoefficientIdeal G hG t).mem 1 (h ≫ ProbeWindow.postCoeff Z c ≫ h') :=
   ProbeWindow.comp_postCoeff_comp_mem (Gr := P.coeffGrading G (P.muM t)) (n := 1)
     (by omega) hc h h'
 
@@ -332,15 +340,15 @@ theorem comp_postCoeff_comp_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : S
 `SwappedHomInversion.md` (8), of degree `2dᵢ(r+s+1) > 0`, acts on every Hom-sector object by
 an element of `J₁`; hence products of more than the bound of them vanish
 (`CoefficientIdeal.isNilpotent`). -/
-theorem closure_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) (Pr : P.H t → Prop)
+theorem closure_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I)
     (i : I) {a c : X}
     (h₁ : a + D.α i = P.muM t) (h₂ : P.muM t + D.α i = c)
     {y : P.W.E i h₂ ≫ P.W.F i h₂ ⟶ P.W.F i h₁ ≫ P.W.E i h₁} (hy : y ∈ G.deg _ _ 0) (r s : ℕ)
     {V Z Y : P.H t} (h : V ⟶ Z) (h' : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t Pr).mem 1 (h ≫ ProbeWindow.postCoeff Z
+    (P.homCoefficientIdeal G hG t).mem 1 (h ≫ ProbeWindow.postCoeff Z
       (((P.W.adj i h₂).unit ≫ rouquierPower (P.W.dot i h₂) r ▷ P.W.F i h₂) ≫ y ≫
         (P.W.F i h₁ ◁ rouquierPower (P.W.dot i h₁) s ≫ (P.W.adj i h₁).counit)) ≫ h') := by
-  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t Pr ?_
+  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t ?_
     (G.closure_mem i h₁ h₂ hy r s) h h'
   have := sy.pos i
   positivity
@@ -348,14 +356,14 @@ theorem closure_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) (Pr
 /-- **(J) on the Hom sector, positive height**: the boundary contraction `(m, n)` with `n > m`
 (the `r > j` contractions `v_R(r) a_R,j` of `SwappedHomInversion.md` (7)), of degree
 `2dᵢ(n-m) > 0`, acts by an element of `J₁`. -/
-theorem boundaryPos_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) (Pr : P.H t → Prop)
+theorem boundaryPos_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I)
     (i : I)
     {a c : X} (h₁ : a + D.α i = P.muM t) (h₂ : P.muM t + D.α i = c)
     (hh : 0 ≤ D.h i (P.muM t)) {m n : ℕ} (hm : m < (D.h i (P.muM t)).toNat) (hmn : m < n)
     {V Z Y : P.H t} (h : V ⟶ Z) (h' : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t Pr).mem 1
+    (P.homCoefficientIdeal G hG t).mem 1
       (h ≫ ProbeWindow.postCoeff Z ((P.W.loc i h₁ h₂).boundaryPos hh m n) ≫ h') := by
-  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t Pr ?_
+  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t ?_
     (G.boundaryPos_mem i h₁ h₂ hh m n hm) h h'
   have := sy.pos i
   have : (0 : ℤ) < n - m := by omega
@@ -364,14 +372,14 @@ theorem boundaryPos_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I)
 /-- **(J) on the Hom sector, negative height**: the boundary contraction `(m, n)` with `m > n`
 (the `r > j` contractions `b_R,j u_R(r)` of `SwappedHomInversion.md` (7)), of degree
 `2dᵢ(m-n) > 0`, acts by an element of `J₁`. -/
-theorem boundaryNeg_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I) (Pr : P.H t → Prop)
+theorem boundaryNeg_mem_homCoefficientIdeal (hG : G.BoundedAbove) (t : Sector I)
     (i : I)
     {a c : X} (h₁ : a + D.α i = P.muM t) (h₂ : P.muM t + D.α i = c)
     (hh : D.h i (P.muM t) ≤ 0) {m n : ℕ} (hn : n < (-D.h i (P.muM t)).toNat) (hmn : n < m)
     {V Z Y : P.H t} (h : V ⟶ Z) (h' : Z ⟶ Y) :
-    (P.homCoefficientIdeal G hG t Pr).mem 1
+    (P.homCoefficientIdeal G hG t).mem 1
       (h ≫ ProbeWindow.postCoeff Z ((P.W.loc i h₁ h₂).boundaryNeg hh m n) ≫ h') := by
-  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t Pr ?_
+  refine P.comp_postCoeff_comp_mem_homCoefficientIdeal G hG t ?_
     (G.boundaryNeg_mem i h₁ h₂ hh m n hn) h h'
   have := sy.pos i
   have : (0 : ℤ) < m - n := by omega
