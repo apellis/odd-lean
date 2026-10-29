@@ -104,6 +104,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalMixedSlideAlgebra
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedCornerSquare
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedInductionSquare
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightMixedSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightCross

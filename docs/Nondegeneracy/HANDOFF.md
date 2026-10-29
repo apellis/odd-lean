@@ -160,10 +160,22 @@ where `t'`, `s'` are the parameters of `parameterTwist D Sc` (`parameterTwist_t_
 `dn_cast_mul_parity` (`d_ij |i| = 0`) and `Sc.s_eq_zero`, and the remaining signs are exactly
 those of `parameterTwist`. Arbitrary parities and heights; `i ≠ j`.
 
-Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: transport of the corner square
-through the two-colour comparison to the induction functors (`endoPower` becomes
-`rouquierPower`, `Dr` becomes `E j ◁ dot i`, `Dl` becomes `dot j ▷ E i`), then the
-weight-level assembly.
+**Induction functors (checked,** `CyclotomicAction/GlobalHeightMixedInductionSquare.lean`**).**
+Conjugation by the two-colour comparison, `heightTwoColourConj` (a `k`-linear map, with
+`heightTwoColourConj_id`, `_comp`, `_endoPower`, `_eq_of_comp`), sends `Dr` to the outer dot
+`x_out = (Dot_i).app |i| (Ind_j M)` and `Dl` to the inner dot `x_in = Ind_i.map ((Dot_j).app |j| M)`.
+Hence, on components at a height-`n` module `M`:
+
+- `heightInduction_square_ne`: `ψ_ij.app ≫ ψ_ji.app = t'_ij x_out^{d_ij} + t'_ji x_in^{d_ji}
+  + ∑ s'^{pq}_ij x_in^q ≫ x_out^p` (powers `endoPower`);
+- `heightInduction_square_zero`: `ψ_ij.app ≫ ψ_ji.app = t'_ij 𝟙`.
+
+Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: the weight-level assembly
+(template `GlobalWeightMixedSlides`; every term has parity `0`, so only the `0`-components are
+compared), with `rouquierPower (dot i)` on the outer induction becoming `endoPower x_out`
+componentwise (`E j ◁ dot i` is the outer dot, `dot j ▷ E i` the inner dot), and
+`parameterTwist_involutive` to state the fields for `globalRouquierFamily D (parameterTwist D Sc)`
+with parameters `Sc`.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
