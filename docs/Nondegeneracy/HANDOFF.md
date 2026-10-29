@@ -66,11 +66,69 @@ categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_
 `boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
 (products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
 
-Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
-`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
-`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
-the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
-cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
+Checked (`OddMath/QuiverHecke/SwappedAssembly/CentralInverse/ReservoirCoefficients.lean`):
+item (1), the transport to the Hom sector. `ProbeWindow.CoeffGrading` (a `ℤ`-filtration of
+`End(𝟙 b)` only: `𝟙` in degree `0`, additive, parity-stable; `CoeffGrading.ofGraded` from a
+graded `b ⟶ b`); `ProbeWindow.postCoeff` (`Z ◁ c` conjugated by `ρ`), `postCoeff_id`,
+`postCoeff_comp`, `postCoeff_add`, `postCoeff_zero`; `comp_postCoeff` (every 2-morphism of
+`a ⟶ b` super-commutes with `postCoeff`, by the super interchange law; no grading of the probe
+is used); `coeffIdeal` (span of `postCoeff Z c ≫ h`, `deg c ≥ n`), `coeffIdeal_comp_mem`
+(`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`), `coeffIdeal_mono` (the filtration is decreasing),
+`eq_zero_of_mem_coeffIdeal`; `reservoirCoefficientIdeal`, a
+`ProbeWindow.CoefficientIdeal` on the whole category `a ⟶ b` (the interface of
+`CentralInverse/CoefficientIdeal.lean` consumed by `isIso_of_sub_mem`,
+`isIso_gMap_of_sub_mem`). Every morphism belongs to `J₀` by `mem_coeffIdeal_zero`;
+no predicate on the objects is needed. For a `ProbeReservoir P` with
+`G : RouquierGrading P.W sy`, `hG : G.BoundedAbove`: `ProbeReservoir.homCoefficientIdeal P G
+hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
+in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
+(`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
+The `ReservoirCoefficients` consumer constructs a nonzero square-zero positive coefficient
+ideal over `ZMod 9` and checks post-whiskering, arbitrary left/right multiplication, decreasing
+powers and joint vanishing. It does not construct a cyclotomic Rouquier family.
+
+Checked (`CentralInverse/RegularCoefficientBound.lean`): a kernel-level construction avoids
+the arbitrary-superfunctor grading requirement. For a graded superalgebra `A`,
+`RegularReservoir.coeffGrading` grades only the endomorphisms of its regular bimodule inside
+the **ungraded** superbimodule 2-supercategory. `regular_apply` and
+`mem_coeffGrading_iff` identify a coefficient and its degree by evaluation at `1` (ordinary
+right linearity, with the signed left action retained). `coefficient_eq_zero` derives the
+coefficient bound from `A.degree n = ⊥` above the algebra bound, and `coefficientIdeal`
+constructs the jointly nilpotent ideal for arbitrary ungraded source algebras/bimodules.
+`closure_mem_coefficientIdeal` retains the kernel degrees `d(h+1+2r)`, `0`,
+`d(1-h+2s)`; `isIso_of_coefficient_error` discharges zeroth-ideal membership of every
+comparison inverse. The rational regular-bimodule consumer has nonzero identity and bound
+one; its positive coefficient ideal is zero. This does **not** construct the truncated
+ELV algebra, the graded factor kernels/inverse components, or their comparison with the
+`PiSCat` realization. Those remain necessary before applying this construction to the
+prescribed swapped action.
+
+Open (transport): identify the residual entries of the two-sector reduction (closures
+`Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
+`h ≫ postCoeff Z c ≫ h'` for the coefficients above (`AugmentedSectorBlocks` §3). The membership
+lemmas take that form with arbitrary `h`, `h'`.
+
+Open (2), scope of a `RouquierGrading` with `BoundedAbove` for the reservoir used
+(`globalProbeReservoir`, in `PiSCat k`, reservoir `globalPiRouquierFamily`):
+* The interface does not instantiate there as stated: `RouquierGrading.graded` asks for a
+  grading of the whole Hom category `W.obj μ ⟶ W.obj ν` of `PiSCat`, i.e. of all superfunctors
+  between the module categories, closed under whiskering by all of them. A grading exists only
+  on the full sub-2-category of `E`/`F` words (their 2-morphisms are graded bimodule
+  homomorphisms of the induction/restriction bimodules), plus `End(𝟙_{W μ})`, the supercentre
+  of the cyclotomic algebra. The transport above needs only `CoeffGrading` on `End(𝟙)`, so it
+  is unaffected; (G6)–(G8) and the closure degrees need the restricted interface (degrees on
+  the 2-morphisms between `E`/`F` words). This is an interface restriction, not new theory.
+* `globalPiRouquierFamily` is the undeformed cyclotomic factor. It is integer-homogeneous only
+  when every cyclotomic polynomial is a monomial, and `BoundedAbove` there needs cyclotomic
+  finite-dimensionality (not formalized). The written proof uses the full ELV deformed factor,
+  not yet constructed as a `RouquierFamily`; its untruncated form is not bounded above, so the
+  finite homogeneous truncation is needed (`SwappedHomInversion.md` §1).
+* Missing: (a) the deformed factor as a Rouquier family; (b) its finite homogeneous truncation
+  with a grading of the bimodules of `E`/`F` words and of the supercentre, `BoundedAbove` from
+  finite-dimensionality of the truncated algebras; (c) the restricted `RouquierGrading`
+  interface (Hom categories of words only) and the closure/boundary degree lemmas re-proved on
+  it (the proofs of `RouquierGrading.lean` go through unchanged on words). Estimate: 10–20 PRs
+  after (a), plus 1–2 for (c).
 
 ## Global factor relations: algebra parameters and reservoir
 
@@ -1605,10 +1663,21 @@ Arbitrary colours, commutative ground rings and cutoffs are retained.
 
 The importing consumer tests positive odd/even and zero cutoffs, the empty old
 word, signed balance and the top relation. It defines the moving-polynomial
-class separately; it does not prove that class nonzero. A bundled signed tensor
-equivalence, the right PBW comparison for this coefficient extension, and
-moving-polynomial nonvanishing remain open. Full transported old-factor killing,
-all-prefix QP induction/cancellation and projective resolution are next obligations;
+class separately; it does not prove that class nonzero.
+`ELVOld.balancedEquiv` in `ELVOldBalancedTensor.lean` now identifies
+the signed coend of coefficient-category Homs and `Old` with `Target`.
+Its explicit inverse inserts the old identity class; both composites and
+the signed representative formula are proved. The construction uses module
+tensors and a direct sum over old words, without finite-colour or flatness
+hypotheses. The right PBW comparison for this coefficient extension and
+moving-polynomial nonvanishing remain open.
+`ELVOld.oldPolynomial_move` transports the second-position old polynomial
+along the existing `moveHom` chain, with its full coefficient-and-dot sign.
+`projection_move_oldPolynomial` kills the resulting first-position output
+polynomial after this chain, including arbitrary ambient continuation.
+Repeated odd colours and odd/even/zero cutoffs are exercised. The prefix-crossing
+identity needed to turn this into (K), all-prefix QP induction/cancellation
+and projective resolution are next obligations;
 no identification with ordinary `contentTargetTensor` is asserted.
 
 ## Signed ELV coefficient quotient category
@@ -5741,3 +5810,41 @@ an odd element).
 The half-turn ideal identification of §5 is complete for homogeneous `T` (the coefficient-power
 monomials of §6 are homogeneous). Inhomogeneous `T` is not covered: the sandwich sign depends on
 the parity of the middle coefficient; replace such `T` by its set of homogeneous components.
+
+### Append Mackey transport on the actual content corner
+
+`CyclotomicAction/AppendContentMackeyMap.lean` instantiates the coefficient and
+left-idempotent restrictions in `AppendMackeySource.md` §4, using KKO I
+(8.3)–(8.5). Let `B = CyclotomicContentCorner D Sc a n β` and
+`ε = natDegree(aᵢ) p(i) + p(i) p(β)`. The source is the fixed part of
+`Ind B (prependTwist D Sc i n ε)` under left multiplication by the append
+idempotent. This is an actual subgroup, not an assumed Mackey decomposition.
+
+- `contentCorner_cyclotomic_smul` proves the old cyclotomic ideal annihilates `B`.
+- `contentCorner_word_smul_of_ne` and `contentCorner_appendQ_smul` prove the
+  content support and constant-parity conditions needed by `appendMackeyMap`.
+- `appendContentP` restricts the prescribed multiplier `h ⊗ b ↦ h W ⊗ b` to
+  that source and the existing `appendContentMackeyTarget` carrier.
+- `appendContentP_rightMul` proves the source transport field `P_r` with the
+  unchanged right coefficient action.
+- `appendContentRho` restricts the first-dot operator and multiplies it by
+  `(-1)^(ε - natDegree(aᵢ)p(i))`. `appendSourceSign_contentParity` identifies
+  this exponent with `p(i)p(β)`, including cutoff zero.
+- `appendContentP_rho` proves the exact field `P_ρ : Pρ = RtP`, with the target
+  dot and coefficient involution already present in `appendContentMackeyTarget`.
+
+The coefficient-module universe of `AppendMackeyMap` and `AppendMackeyRho` is
+independent of the weight-lattice universe, so the actual content corner can be
+substituted without identifying unrelated universes. Their formulas are unchanged.
+The importing consumer uses the existing asymmetric two-colour symmetrizable datum
+over `ℚ`, polynomials `X^m` for every `m`, and arbitrary content and positive
+coefficient height. The transport equations and module declaration audit use only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+**Remaining source boundary work:** construct the short-coset extraction from the
+balanced prepend coordinates, identify its kernel and compatible source lifts, then
+supply the span/independence fields of `MackeyCosets`. No `MackeyCosets`,
+`toMackeyBoundary`, reverse norm, or `GlobalLocalInversion` instance is asserted here.
+The coefficient height is still positive; the zero cutoff is retained, but rank
+zero is not discharged. Integer grading and the full exterior ELV coefficient
+extension also remain separate obligations.

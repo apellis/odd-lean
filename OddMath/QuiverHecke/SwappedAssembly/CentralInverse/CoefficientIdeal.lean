@@ -37,7 +37,7 @@ variable {C : Type*} [Category C] [Preadditive C]
 /-- A jointly nilpotent filtration of morphisms (`SwappedHomInversion.md` §4): `mem n f` says
 that `f` is a sum of terms with at least `n` positive-degree reservoir coefficients. -/
 structure CoefficientIdeal (C : Type*) [Category C] [Preadditive C] where
-  /-- `f` lies in the `n`-th power of the ideal. -/
+  /-- `f` lies in filtration level `n`; equality with a literal ideal power is not required. -/
   mem : ℕ → ∀ {X Y : C}, (X ⟶ Y) → Prop
   zero_mem : ∀ (n : ℕ) {X Y : C}, mem n (0 : X ⟶ Y)
   add_mem : ∀ {n : ℕ} {X Y : C} {f g : X ⟶ Y}, mem n f → mem n g → mem n (f + g)
