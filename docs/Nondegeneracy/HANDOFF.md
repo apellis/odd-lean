@@ -12,9 +12,16 @@ arbitrary full-ELV old morphisms and a prescribed moving tail. The resulting
 ideal (`prependExtractOldQuotient_insert_tail_eq_zero_iff`). No flatness,
 finite-colour hypothesis, assumed basis comparison, or moving polynomial is used.
 
-Remaining: prove extraction on different tails and on all old-relation generators,
-then assemble the simultaneous old-quotient coordinate equivalence. These
-fixed-tail inverse identities do not yet prove global quotient independence.
+Checked in `ELVPrependCrossTail.lean`: off-tail extraction vanishes for every
+old coefficient, before and after the old quotient. `PrependIdx.regroupEquiv`
+regroups the existing indices by moving exponent and shuffle, with both inverse
+laws; the intermediate old target is uniquely determined by the shuffle and
+final word. This is an index equivalence, not an old-quotient equivalence.
+
+Remaining: annihilate every generator `insert r ≫ h` of `relations` for arbitrary
+intermediate word and ambient continuation, then assemble the simultaneous
+old-quotient coordinate equivalence. The fixed-tail identities and off-tail
+vanishing do not yet prove this all-generator descent or quotient independence.
 The moving-square shift and difference injectivity are still open.
 
 ## Full ELV prepend PBW normalization
