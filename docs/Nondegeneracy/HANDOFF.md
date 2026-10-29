@@ -702,8 +702,18 @@ opposite of `End`). These four relations are proved from the dot algebra:
 `x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
 `sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
 `x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
-with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
-`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
+with `x₁² - z²`, `x₂² - z²` units).
+(5A) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePair.lean`):
+`preCrossSame_mixedJ_pair`: the probe crossing on the two left letters of
+`PPR`, followed by the two mixed interchanges `PPR → PRP → RPP`, equals the
+interchanges followed by the shifted probe crossing on the two right letters
+of `RPP`, without sign. Generic form `homMixedInterchange_pair_whiskerRight`
+(any homogeneous 2-morphism on `E₁ ≫ E₂`, equal outer shifts; the inner
+shift cancels, `homMixedInterchange_pair`). This is `PairedHomInterchange.md`
+§3 with all shifts retained; no discrepancy with the written proof. Next:
+transport the dot entries to `x₁, x₂, z` on the first path, then assemble the
+block; then (5B) on `{PRR, RPR, RRP}`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -929,6 +939,17 @@ P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
 vacuous. Remaining for `hσ`: invertibility of the four single-term blocks
 (probe/probe: `homContentDistinctPreMate`; reservoir/reservoir: the shifted post mate;
 mixed: `homDistinctMixedMate` and `homDistinctMixedPreMateDot`).
+
+**The sideways crossing entry is a single composite (checked).**
+`SwappedAssembly/Sigma/Entry.lean`: `sigmaEntry_eq c hij ν p q m₁ m₂ Z hp h₁ h₂`. For
+`i ≠ j` and a summand path `p` of `Eⱼ Fᵢ` with sides `[a, b]`, the three-layer sum defining
+`P.sigmaEntry c i j ν p q Z` (cup, crossing, cap) has exactly one nonzero term: the one
+through the middle paths `m₁` with sides `[b, b, a, b]` and `m₂` with sides `[b, a, b, b]`.
+So the entry is `cup(p, m₁) ≫ cross(m₁, m₂) ≫ cap(m₂, q)`, up to the path casts. The proof
+tracks sides through each layer (`sides_of_cup`, `sides_of_cross`, `sides_of_cap`): a
+nonzero cup entry duplicates one side, a crossing swaps two sides (`SPath.sides_upUp` for
+distinct colours), a cap removes a matching pair (`sigma_sides`). Remaining for `hσ`:
+invertibility of this composite in each of the four side patterns `[a, b]`.
 
 ## Old-only ELV quotient module
 
