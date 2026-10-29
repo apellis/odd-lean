@@ -106,6 +106,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
 import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierCupCapKernel
+import OddMath.QuiverHecke.CyclotomicAction.RouquierKernelComparison
 import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
@@ -1305,12 +1306,14 @@ import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
 import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.WindowZero
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange
@@ -1318,6 +1321,9 @@ import OddMath.QuiverHecke.SwappedAssembly.Quad
 import OddMath.QuiverHecke.SwappedAssembly.Inversion
 import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
+import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
+import OddMath.QuiverHecke.SwappedAssembly.QuadSame
+import OddMath.QuiverHecke.SwappedAssembly.SlideSame
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
