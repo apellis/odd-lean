@@ -5319,11 +5319,19 @@ data (`P ρ short ℓ r₁` with `P_ρ ρ_short P_short cover ℓ_short ρ_ℓ �
 right action `z ⊗ y ↦ z ⊗ y b` (`appendTensorRightMul`, with `appendTensorRightMul_F`,
 `appendTensorRightMul_J`).
 
-Next: the content-`β` corner instance (`B_β = e (Hn (n+1)/I) e` for
-`e = cyclotomicContentIdempotent`, `σ` the restriction of `coefficientParityHom (D.parity i)`,
-which fixes `e`; `hσ` from `rightDotCoefficient_smul` once `coefficientParityHom (D.parity i)`
-is identified with `rightDotCoefficient`); then the source side `P ρ short ℓ r₁` and its
-fields.
+Checked (`CyclotomicAction/AppendContentCorner.lean`): the content-`β` corner
+`CyclotomicContentCorner a n β = e(β) A e(β)` of the cyclotomic quotient `A` (Mathlib's
+`IsIdempotentElem.Corner`, a ring with unit `e(β)`; `e(β)` is central), a left
+`Hn (n+1)`-module through `A` with `IsScalarTower`; `contentCornerParity i ha`, the restriction
+of `coefficientParityHom (D.parity i)` (which fixes the even `e(β)`,
+`coefficientParityHom_contentIdempotent`), with `contentCornerParity_smul`
+(`σ_β (r • y) = tw(r) • σ_β y`, via `coefficientParityHom_parity_eq_rightDotCoefficient` and
+`rightDotCoefficient_smul`). `appendContentMackeyTarget` is the full target side of
+`MackeyCosets` on `L₀ = appendTensorFixed B_β`.
+
+Next: the source side `P ρ short ℓ r₁` of `MackeyCosets` on the content corner and its fields
+(`P_ρ`, `ρ_short`, `P_short`, `cover`, `ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`), then
+`MackeyCosets.ofTarget`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
