@@ -20,6 +20,10 @@ inverse is the explicit word (15) of `OddMath.SKM.homDistinctMixedPreMate_inv_pr
   precomposition adjunctions is invertible.
 * `OddMath.SKM.isIso_homContentDistinctMixedPreMate_of_eq`: the same, with the unit taken at a
   weight equal to that of the counit and the objects matched along equalities.
+* `ProbeReservoir.isIso_sigmaEntry_probe`: the entry `W_A` of `sigmaL i i`, from `(R,P)` to
+  `(P,R)`, is an isomorphism.
+* `ProbeReservoir.swappingInvertible_of_reservoir`: `SwappingInvertible` follows from the
+  invertibility of the other swapping entries `W_B` (`SwappingReservoirInvertible`).
 -/
 
 noncomputable section
