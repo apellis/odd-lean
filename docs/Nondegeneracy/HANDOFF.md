@@ -154,7 +154,7 @@ colours and the other `CrossBraid` fields. The two-probe reverse direction is
 now covered by `reverseProbePair_braid` above; these sector entries do not
 establish the remaining fields.
 
-## Crossing image and the remaining short multiplier factorization
+## Crossing image and the projected short-image inclusion
 
 Checked (`AppendContentCrossingImage.lean`), for the ordinary-polynomial
 specialization of `DeformedMackeyBoundary.md` (4)–(5):
@@ -175,7 +175,8 @@ specialization of `DeformedMackeyBoundary.md` (4)–(5):
 * `appendContentP_short_mem_of_factorizations` is explicitly conditional: it
   reduces the inclusion to affine matrix equalities
   `ψ(1) * (prependPBWTerm u m 1 * W) = appendLeftSum(f)` for every non-long
-  shuffle and every input-dot degree. These factorizations are not proved here.
+  shuffle and every input-dot degree. They are now discharged by
+  `projected_short_multiplier_factor` in `AppendContentShortImage.lean`.
 
 The canonical-word step is supplied by `AppendContentShortWord.lean`.
 `prependShuffle_inv_last_of_ne_long` proves that a non-long inverse shuffle
@@ -193,13 +194,23 @@ surviving single-matrix factorization as `appendAlgebra(oldEntry) * τ`, with
 τ the prescribed final equal-colour crossing. Small list-Hom and word-Hom
 wrappers keep elaboration bounded without new transparency settings.
 
-Next target: identify the projected affine multiplier with the sum of these
-surviving entries (and prove the other final-colour blocks vanish), then use
-the actual append PBW expansion to convert the old entries to `appendLeftSum`.
-The proposed argument must retain the left append projector: individual
-unprojected source PBW generators need not belong to the source corner.
-Neither `P(short) ⊆ range F` without the displayed factorization hypothesis,
-its reverse inclusion, nor `MackeyCosets`/`toMackeyBoundary` is constructed.
+Checked in `AppendContentShortImage.lean`: `projected_short_entry_ne` kills
+unwanted final-colour blocks. `projected_short_multiplier_sum` identifies the
+whole left-projected multiplier with the surviving single entries.
+`append_old_mul_crossing_mem` expands each old entry using append PBW and
+moves its old coefficient through the final crossing with the parity twist
+`p(i) * p(i)`. Its right coefficient is the inner append of that twisted
+coefficient, not a reversed product. `projected_short_multiplier_factor`
+therefore proves the required finite `appendLeftSum` equality, and
+`appendContentP_short_mem` proves `P(short) ⊆ range F` with no factorization
+hypothesis. The original right tensor coefficient remains unchanged.
+
+The left projector is retained throughout: individual unprojected PBW terms
+need not lie in the source corner. The strict `NonVacuity.AppendContentShortImage`
+consumer audits every owned declaration and applies the inclusion to the
+asymmetric two-colour datum for all cutoffs and positive old heights.
+Next target: the reverse inclusion and the remaining prescribed
+`MackeyCosets`/`toMackeyBoundary` identifications; none is asserted here.
 The content index still has old height `n+1`; no affine old-height-zero claim
 is made. All cutoffs, including zero, are permitted. The normalized rho lifts
 and coefficient order from the preceding module are unchanged; full ELV
@@ -259,9 +270,9 @@ including zero, and the consumer explicitly tests its zero-height moving shuffle
 A content-source recurrence at genuinely zero old height is not supplied by the
 current positive-height cyclotomic API. Zero cutoff is not zero height.
 
-Remaining: compute the short-image projection under P in the prescribed append
-coordinates and identify it with the crossing summand, then construct the actual
-`MackeyCosets`/`toMackeyBoundary`. No such image identification is assumed here.
+Remaining: prove the reverse crossing-image inclusion and construct the
+prescribed `MackeyCosets`/`toMackeyBoundary`. The forward short-image inclusion
+is now proved in `AppendContentShortImage.lean`; equality is not assumed.
 
 Verification: the focused modules and importing `NonVacuity.AppendContentCosets`
 and `NonVacuity.AppendContentRhoCoordinates` consumers build with warnings as errors; the consumer audits every declaration
@@ -2931,6 +2942,33 @@ proved above for ordinary polynomial coefficients; signed polynomial
 transport and induction needed for global QP remain. No global QP,
 projective resolution or full nondegeneracy conclusion follows here.
 
+
+## ELV repeated-even QP recursion
+
+`ELVQPRepeated.lean` proves `ELVOld.qp_repeated_even` in the old-only
+quotient, for every prefix, right spectator word, cutoff and full-coefficient
+continuation. In diagram order, put A = (V_n ⊗ 1)(T_n ⊗ 1),
+B = (V_n ⊗ 1)T_(n+1), and E = x_(n+2) − x_1. Relation (K) becomes
+[E(A + EB) f_i h] = 0. The proved moving-dot cancellation gives
+[EB f_i h] = −[A f_i h], while the affine repeated-even recursion identifies
+EB with V_(n+1)T_(n+1). No vanishing or cancellation hypothesis is supplied.
+The relation and h retain the entire ELV algebra, including exterior parameters
+at other colours; the proof never moves that polynomial across a bare crossing.
+
+**Convention boundary:** the existing `EvenTwo` convention gives a factor −1
+for each repeated-even letter, as already recorded in `PrefixQPEquation.lean`.
+The no-factor formula in `DeformedGlobalQP.md` §3 and
+`DeformedProjectiveResolution.md` (3) uses a different crossing normalization.
+The new theorem keeps the existing convention rather than silently identifying
+the two formulas. A normalized comparison remains necessary for literal (3).
+
+Remaining induction assembly: adapt the repeated-odd calculation using square
+cancellation and preservation of the old-only relation submodule under the odd
+source difference; the two prefix signs must then cancel. Lift the distinct-colour
+Q transport, prove right-context descent of the induction hypothesis, and assemble
+the reverse-list induction with its identity empty-word base. No last-minus-first
+cancellation is to be used in that base. Balanced P descent, ideal-sum equality and
+projective-resolution exactness are still separate obligations.
 
 ## Supernatural postcomposition augmented inverses
 
