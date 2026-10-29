@@ -1315,6 +1315,8 @@ import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Generators
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange

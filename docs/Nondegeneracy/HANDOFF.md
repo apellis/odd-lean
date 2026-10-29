@@ -743,6 +743,34 @@ Remaining for `GeneratorsSupernatural (P.swappedGens c L)`: the leftward crossin
 the degree-`n` cups and caps, which are data of `LeftwardData`, and the discharge of
 `c.IsSupernatural` for the coefficient constructed from `CrossCoeff.IsInverse`.
 
+**Supernaturality of the swapped generator images (checked).**
+`SwappedAssembly/Supernatural/Generators.lean`: `swappedGens_supernatural c L hc hσ hL :
+GeneratorsSupernatural (P.swappedGens c L)`, the hypothesis of `interchangeLaw`, under
+`hc : c.IsSupernatural`, `hσ : ∀ i j, i ≠ j → ∀ ν, P.SigmaPermutation c i j ν` and
+`hL : L.IsSupernatural` (`LeftwardData.IsSupernatural`: `L.lcrossSame i ν` of parity `pᵢ pᵢ`,
+`L.dcup i n ν` of parity `pᵢ n` for `n < ⟨hᵢ, ν⟩`, `L.dcap i n ν` of parity `pᵢ n` for
+`n < -⟨hᵢ, ν⟩`; outside the windows the swapped images are zero). Ingredients:
+`compList_supernatural` (the entries of a chain of layers are supernatural of the sum of
+the parities of its generators, for supernatural generator images; also `compLayer`,
+`compLayerAt`), `upwardGens_supernatural c hc`, `sigmaEntry_supernatural` (parity
+`pᵢ pⱼ`), `lcrossNeImage_supernatural c hc i j ν hσ` (entries off the permutation are
+`0`, those on it are inverses of supernatural isomorphisms). Remaining: discharge `hc`
+from `CrossCoeff.IsInverse`, `hσ` (`SigmaPermutation`) and `hL` for the leftward data
+constructed from `LeftwardData.IsInverse`.
+
+**Supernaturality of the same-colour crossing coefficient (checked).**
+`SwappedAssembly/Supernatural/CrossCoeff.lean`: `CrossCoeff.isSupernatural_of_isInverse c
+hc h : c.IsSupernatural` for `hc : c.IsInverse` and `h : P.CrossCoeffInputs` (F2: the probe
+dot `x` on `(R,P)` is a unit, F3: the reservoir dot `y` is nilpotent);
+`crossCoeffOfInputs_isSupernatural h`. The dots are supernatural of parity `pᵢ`
+(`rpPreDot_supernatural`, `rpPostDot_supernatural`, whiskerings of `dotDiag_supernatural`).
+At even colours `a` is the inverse of the even family `y - x` (`isSupernatural_iso_inv`);
+at odd colours `a = (x - y)(x² - y²)⁻¹` with `x² - y²` an even unit (`crossDenom`).
+The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the image of
+`x² - y²`, and does not determine `a` (or its parity) when `x² - y²` is not invertible.
+This is a property of the interface, not of the construction: the constructed coefficient
+satisfies both. Generic: `IsSupernatural.sub`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
