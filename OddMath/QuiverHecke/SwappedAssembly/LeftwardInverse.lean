@@ -120,25 +120,32 @@ def NegInverse (c : P.CrossCoeff) (i : I) (ν : X) (t s : Sector I)
         if m = n then famDelta (fun x => P.pathFunctor x) r r' Z else 0)
 
 /-- **The augmented maps are invertible**: at every colour `i`, weight `ν` and pair of
-sectors, the augmented map (1.13) has an inverse when `⟨hᵢ, ν⟩ ≥ 0` and (1.14) has one when
-`⟨hᵢ, ν⟩ < 0`. -/
+sectors whose rightmost sector `s` has weight `ν`, the augmented map (1.13) has an inverse when
+`⟨hᵢ, ν⟩ ≥ 0` and (1.14) has one when `⟨hᵢ, ν⟩ < 0`. (At other sectors the number of dotted
+windows does not match the summands and the maps are not invertible in general.) -/
 def AugmentedInvertible (c : P.CrossCoeff) : Prop :=
-  ∀ (i : I) (ν : X) (t s : Sector I),
+  ∀ (i : I) (ν : X) (t s : Sector I), P.wt s = ν →
     (0 ≤ D.h i ν → ∃ lc dc, P.PosInverse c i ν t s lc dc) ∧
     (D.h i ν < 0 → ∃ lc dc, P.NegInverse c i ν t s lc dc)
 
 /-- **The leftward data (A7)** built from inverses of the augmented maps: the leftward
 crossing is minus the first component of the inverse of (1.13) for `⟨hᵢ, ν⟩ ≥ 0` and the first
 component of the inverse of (1.14) otherwise; the `♦`-cups and caps are the remaining
-components. -/
+components. Off the weight-matched sectors (`P.wt s ≠ ν`) all three are zero. -/
 def leftwardOfInvertible (c : P.CrossCoeff) (h : P.AugmentedInvertible c) : P.LeftwardData where
   lcrossSame i ν {t s} q p Z :=
-    if hh : 0 ≤ D.h i ν then (((h i ν t s).1 hh).choose q p Z)
-    else ((h i ν t s).2 (not_le.mp hh)).choose q p Z
+    if hw : P.wt s = ν then
+      if hh : 0 ≤ D.h i ν then (((h i ν t s hw).1 hh).choose q p Z)
+      else ((h i ν t s hw).2 (not_le.mp hh)).choose q p Z
+    else 0
   dcup i n ν {t s} r p Z :=
-    if hh : 0 ≤ D.h i ν then ((h i ν t s).1 hh).choose_spec.choose n r p Z else 0
+    if hw : P.wt s = ν then
+      if hh : 0 ≤ D.h i ν then ((h i ν t s hw).1 hh).choose_spec.choose n r p Z else 0
+    else 0
   dcap i n ν {t s} q r Z :=
-    if hh : D.h i ν < 0 then ((h i ν t s).2 hh).choose_spec.choose n q r Z else 0
+    if hw : P.wt s = ν then
+      if hh : D.h i ν < 0 then ((h i ν t s hw).2 hh).choose_spec.choose n q r Z else 0
+    else 0
 
 end Entries
 
@@ -202,18 +209,18 @@ theorem compDiag_id_eq_famDelta (gens : P.Generators) {w : List (Letter I)} (ν 
 generators. (For `⟨hᵢ, ν⟩ = 0`, `invM₁`, `invM₂` are `invP₂`, `invP₁` up to sign, and
 `invM₃`–`invM₅` are vacuous.) -/
 theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : P.LeftwardData)
-    (hpos : ∀ i ν, 0 ≤ D.h i ν → ∀ t s, P.PosInverse c i ν t s
+    (hpos : ∀ i ν, 0 ≤ D.h i ν → ∀ t s, P.wt s = ν → P.PosInverse c i ν t s
       (fun q p Z => L.lcrossSame i ν q p Z) (fun n r p Z => L.dcup i n ν r p Z))
-    (hneg : ∀ i ν, D.h i ν < 0 → ∀ t s, P.NegInverse c i ν t s
+    (hneg : ∀ i ν, D.h i ν < 0 → ∀ t s, P.wt s = ν → P.NegInverse c i ν t s
       (fun q p Z => L.lcrossSame i ν q p Z) (fun n q r Z => L.dcap i n ν q r Z)) :
     L.IsInverse c := by
-  intro r hr hne s t p q Z
+  intro r hr hne s t p q Z hw
   let gens := P.swappedGens c L
   cases r with
   | invP₁ i ν hh =>
     show compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [up i, dn i])
       (SKM.relation D Sc (.invP₁ i ν hh)) p q Z = 0
-    obtain ⟨h₁, -⟩ := hpos i ν hh s t
+    obtain ⟨h₁, -⟩ := hpos i ν hh s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_sub, compEval_add, compEval_neg, compEval_sum,
       compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.lcrossL i i) (SKM.sChain_sigmaL i i)
@@ -230,7 +237,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invP₂ i ν hh =>
     show compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [dn i, up i])
       (SKM.relation D Sc (.invP₂ i ν hh)) p q Z = 0
-    obtain ⟨-, h₂, -⟩ := hpos i ν hh s t
+    obtain ⟨-, h₂, -⟩ := hpos i ν hh s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_add, compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.sigmaL i i)
       (SKM.sChain_lcrossL i i) (SKM.sChain_sigmaL i i), compEval_of,
@@ -240,7 +247,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invP₃ i ν m hm =>
     show compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [])
       (SKM.relation D Sc (.invP₃ i ν m hm)) p q Z = 0
-    obtain ⟨-, -, h₃, -⟩ := hpos i ν (by omega) s t
+    obtain ⟨-, -, h₃, -⟩ := hpos i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.epsL i m) (SKM.sChain_lcrossL i i)
       (SKM.sChain_epsL i m)]
@@ -249,7 +256,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invP₄ i ν n hn =>
     show compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [dn i, up i])
       (SKM.relation D Sc (.invP₄ i ν n hn)) p q Z = 0
-    obtain ⟨-, -, -, h₄, -⟩ := hpos i ν (by omega) s t
+    obtain ⟨-, -, -, h₄, -⟩ := hpos i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_dg_append gens ν (SKM.dcupL i n) (SKM.sigmaL i i) (SKM.sChain_dcupL i n)
       (SKM.sChain_sigmaL i i)]
@@ -258,7 +265,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invP₅ i ν m n hm hn =>
     show compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [])
       (SKM.relation D Sc (.invP₅ i ν m n hm hn)) p q Z = 0
-    obtain ⟨-, -, -, -, h₅⟩ := hpos i ν (by omega) s t
+    obtain ⟨-, -, -, -, h₅⟩ := hpos i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_sub, compEval_dg_append gens ν (SKM.dcupL i n) (SKM.epsL i m)
       (SKM.sChain_dcupL i n) (SKM.sChain_epsL i m), sub_eq_zero]
@@ -281,12 +288,12 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens,
       compDiag_etaL_swappedGens]
     rcases lt_or_eq_of_le hh with hlt | heq
-    · obtain ⟨h₁, -⟩ := hneg i ν hlt s t
+    · obtain ⟨h₁, -⟩ := hneg i ν hlt s t (hw.trans (SKM.ob_endR D ν _))
       rw [← h₁ p q Z]
       congr 1
       refine Finset.sum_congr rfl fun n hn => Finset.sum_congr rfl fun r _ => ?_
       rw [compDiag_dcapL_swappedGens c L i n ν (Int.lt_toNat.mp (Finset.mem_range.mp hn))]
-    · obtain ⟨-, h₂, -⟩ := hpos i ν heq.ge s t
+    · obtain ⟨-, h₂, -⟩ := hpos i ν heq.ge s t (hw.trans (SKM.ob_endR D ν _))
       rw [heq, neg_zero, Int.toNat_zero, Finset.range_zero, Finset.sum_empty, add_zero]
       exact neg_eq_iff_eq_neg.mpr (h₂ p q Z)
   | invM₂ i ν hh =>
@@ -298,9 +305,9 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
       compDiag_id_eq_famDelta (_inst := Fintype.ofFinite _)]
     simp only [gens, compDiag_sigmaL_swappedGens, compDiag_lcrossL_swappedGens]
     rcases lt_or_eq_of_le hh with hlt | heq
-    · obtain ⟨-, h₂, -⟩ := hneg i ν hlt s t
+    · obtain ⟨-, h₂, -⟩ := hneg i ν hlt s t (hw.trans (SKM.ob_endR D ν _))
       exact eq_neg_iff_add_eq_zero.mp (h₂ p q Z)
-    · obtain ⟨h₁, -⟩ := hpos i ν heq.ge s t
+    · obtain ⟨h₁, -⟩ := hpos i ν heq.ge s t (hw.trans (SKM.ob_endR D ν _))
       have h := h₁ p q Z
       rw [heq, Int.toNat_zero, Finset.range_zero, Finset.sum_empty, add_zero] at h
       rw [← h]
@@ -308,7 +315,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invM₃ i ν m hm =>
     show compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [up i, dn i])
       (SKM.relation D Sc (.invM₃ i ν m hm)) p q Z = 0
-    obtain ⟨-, -, h₃, -⟩ := hneg i ν (by omega) s t
+    obtain ⟨-, -, h₃, -⟩ := hneg i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_dg_append gens ν (SKM.etaL i m) (SKM.lcrossL i i) (SKM.sChain_etaL i m)
       (SKM.sChain_lcrossL i i)]
@@ -317,7 +324,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invM₄ i ν n hn =>
     show compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [])
       (SKM.relation D Sc (.invM₄ i ν n hn)) p q Z = 0
-    obtain ⟨-, -, -, h₄, -⟩ := hneg i ν (by omega) s t
+    obtain ⟨-, -, -, h₄, -⟩ := hneg i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.dcapL i n) (SKM.sChain_sigmaL i i)
       (SKM.sChain_dcapL i n)]
@@ -326,7 +333,7 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
   | invM₅ i ν m n hm hn =>
     show compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [])
       (SKM.relation D Sc (.invM₅ i ν m n hm hn)) p q Z = 0
-    obtain ⟨-, -, -, -, h₅⟩ := hneg i ν (by omega) s t
+    obtain ⟨-, -, -, -, h₅⟩ := hneg i ν (by omega) s t (hw.trans (SKM.ob_endR D ν _))
     simp only [SKM.relation]
     rw [compEval_sub, compEval_dg_append gens ν (SKM.etaL i m) (SKM.dcapL i n)
       (SKM.sChain_etaL i m) (SKM.sChain_dcapL i n), sub_eq_zero]
@@ -342,28 +349,35 @@ theorem LeftwardData.isInverse_of_posInverse_negInverse (c : P.CrossCoeff) (L : 
 /-- **The leftward data (A7) satisfy the inversion relations.** -/
 theorem leftwardOfInvertible_isInverse (c : P.CrossCoeff) (h : P.AugmentedInvertible c) :
     (P.leftwardOfInvertible c h).IsInverse c := by
-  refine LeftwardData.isInverse_of_posInverse_negInverse c _ (fun i ν hh t s => ?_)
-    (fun i ν hh t s => ?_)
+  refine LeftwardData.isInverse_of_posInverse_negInverse c _ (fun i ν hh t s hw => ?_)
+    (fun i ν hh t s hw => ?_)
   · have e₁ : (fun q p Z => (P.leftwardOfInvertible c h).lcrossSame i ν q p Z) =
-        ((h i ν t s).1 hh).choose := by
+        ((h i ν t s hw).1 hh).choose := by
       funext q p Z
-      simp [leftwardOfInvertible, hh]
+      simp [leftwardOfInvertible, hw, hh]
     have e₂ : (fun n r p Z => (P.leftwardOfInvertible c h).dcup i n ν r p Z) =
-        ((h i ν t s).1 hh).choose_spec.choose := by
+        ((h i ν t s hw).1 hh).choose_spec.choose := by
       funext n r p Z
-      simp [leftwardOfInvertible, hh]
+      simp [leftwardOfInvertible, hw, hh]
     exact (congrArg₂ (P.PosInverse c i ν t s) e₁ e₂).mpr
-      ((h i ν t s).1 hh).choose_spec.choose_spec
+      ((h i ν t s hw).1 hh).choose_spec.choose_spec
   · have e₁ : (fun q p Z => (P.leftwardOfInvertible c h).lcrossSame i ν q p Z) =
-        ((h i ν t s).2 hh).choose := by
+        ((h i ν t s hw).2 hh).choose := by
       funext q p Z
-      simp [leftwardOfInvertible, not_le.mpr hh]
+      simp [leftwardOfInvertible, hw, not_le.mpr hh]
     have e₂ : (fun n q r Z => (P.leftwardOfInvertible c h).dcap i n ν q r Z) =
-        ((h i ν t s).2 hh).choose_spec.choose := by
+        ((h i ν t s hw).2 hh).choose_spec.choose := by
       funext n q r Z
-      simp [leftwardOfInvertible, hh]
+      simp [leftwardOfInvertible, hw, hh]
     exact (congrArg₂ (P.NegInverse c i ν t s) e₁ e₂).mpr
-      ((h i ν t s).2 hh).choose_spec.choose_spec
+      ((h i ν t s hw).2 hh).choose_spec.choose_spec
+
+/-- The leftward data (A7) vanish off the weight-matched sectors. -/
+theorem leftwardOfInvertible_vanishesOffWeight (c : P.CrossCoeff) (h : P.AugmentedInvertible c) :
+    (P.leftwardOfInvertible c h).VanishesOffWeight :=
+  ⟨fun i ν t s p p' Z hw => by simp [leftwardOfInvertible, hw],
+    fun i n ν t s p p' Z hw => by simp [leftwardOfInvertible, hw],
+    fun i n ν t s p p' Z hw => by simp [leftwardOfInvertible, hw]⟩
 
 end ProbeReservoir
 
