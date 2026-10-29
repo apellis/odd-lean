@@ -1047,6 +1047,26 @@ q^l • (x^{-l} ≫ s ≫ y^l)`) and `ProbeWindow.window_pos` (`s - Σ_{r<l} q^(
 inverse automorphisms. Next for `CentralInvertible`: the shifted-window inverses (5), (6), then
 the case analysis (7)–(14) and the extraction to `PosInverse`/`NegInverse` at `s = t`.
 
+**Shifted cap windows (checked).** `SwappedAssembly/CentralInverse/CapWindows.lean` encodes a
+cap window `[s; w₀, …, w_{h-1}] : X → Y ⊕ O^h` as a morphism of `Mat_ C` (`ProbeWindow.capMap`)
+and proves `isIso_capMap_iff` (it is an isomorphism iff it has a two-sided inverse
+`[j | A₀ … A_{h-1}]` with the five relations `IsCapInverse`). `ProbeWindow.neg_shift_comp`
+gives `x^{-l} ≫ s = q^l • (s ≫ y^{-l}) + Σ_{n<l} q^n • (x^{n-l} ≫ v ≫ u ≫ y^{-n-1})`, and
+`ProbeWindow.exists_isCapInverse_shift` is (5): if `[s; xⁿ ≫ v]_{n<h}` is invertible, so is
+`[s; x^{n-l} ≫ v]_{n<h}` for every `l ≤ h`, via `x^{-l} ≫ F = F_l ≫ T` with `T` triangular
+(`q^l y^{-l}` on `Y`, identity on the window, column `q^n • (u ≫ y^{-n-1})` for `n < l`).
+`ProbeWindow.exists_isCupInverse_shift` is (6): if the cup window `[s, u ≫ yⁿ]_{n<h}` has a
+two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l ≤ h`; it is (5) in
+`Cᵒᵖ` (`isCupInverse_iff_op`), where the slide becomes `s ≫ x - q • (y ≫ s) = u ≫ (-q • v)`.
+`SwappedAssembly/CentralInverse/WindowCases.lean` proves the two pure-window cases of §3 there:
+`ProbeWindow.exists_isCapInverse_caseA` ((a), (7): rows `s`, `xᵗ ≫ v` for `t < H`,
+`q^(r+1) • (x^{-r-1} ≫ v)` for `r < k`, invertible when `[s; xⁿ ≫ v]_{n<H+k}` is) and
+`ProbeWindow.exists_isCupInverse_caseD` ((d), (14): columns `s`, `q^(r+2) • (u ≫ y^{-r-1})`
+for `r < a`, `-(u ≫ yᵗ)` for `t < g`, invertible when `[s, u ≫ yⁿ]_{n<a+g}` is), via
+`IsCapInverse.reindex`/`IsCupInverse.reindex` (reordering slots and multiplying them by units
+`c` with `c * c = 1`). Next: the mixed cases (b), (c) ((8)–(13)), whose maps have extra slots
+on both sides, and the extraction (16)–(19).
+
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
 coefficient ideal of `SwappedHomInversion.md` (closed reservoir bubbles) uses the gradings
