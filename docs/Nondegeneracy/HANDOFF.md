@@ -3211,10 +3211,20 @@ Checked: (9) `degLT_sub_tPow`, (10) `degLT_norm_sub_skewMul`, the leading term o
 `Σ_(j ≤ D) φ_(k+j) b_j = c F t^k` with `S` monic of degree `D`, `F` monic of degree `N = a + D`
 and `c` a `σ`-fixed unit, `φ_k = 0` if `N + k < D` and `c⁻¹ φ_k` is monic of degree `N + k − D`
 otherwise. Any ring `B` (no commutativity, zero divisors allowed). Non-vacuity:
-`scripts/NonVacuity/BoundaryDivision.lean`. Next: the window matrix of (2)/(4) (both signs of
-`a`, cap rows anti-diagonal) in the same abstract window, then the concrete boundary: identify
-`A_∂(w_k)` of the transported `contentCupKernel`/`contentCapKernel` with such a `φ`, and the
-norm (7) with the cyclotomic polynomial `a_i`.
+`scripts/NonVacuity/BoundaryDivision.lean`.
+`BoundaryWindow.lean` (checked): the window matrix of (2)/(4) in the same abstract window.
+`windowMap φ` is `A_∂ : Σ_k w_k b_k ↦ Σ_k φ_k b_k`; `LeadsAt φ c a` says `φ_k` has leading
+coefficient `c` in degree `a + k` (`leadsAt_of_monicDeg` converts the output of
+`boundary_division`). `a ≥ 0`: `windowMap_add_low_existsUnique` (every `p` is uniquely
+`A_∂ w + r`, `deg r < a`; display (2) bijective). `a = −m < 0` (`φ_k = 0` for `k < m`,
+`φ_(m+j)` leading `c` in degree `j`): `windowMap_surjective`, kernel `windowMap_eq_zero_iff`
+(`= ⊕_(k<m) w_k B`), cap rows `capRow σ φ r v = A_∂(v t^(r+1))(0)` with
+`capRow_single` (`= φ_(k+r+1)(0) σ^(r+1)(b)`) and `capRow_antidiagonal`, and
+`windowMap_cap_existsUnique` (for `σ` bijective, `v ↦ (A_∂ v, (G_r v)_(r<m))` is bijective;
+display (4)). Non-vacuity: `scripts/NonVacuity/BoundaryWindow.lean`. Next: the concrete
+boundary: identify `A_∂(w_k)` of the transported `contentCupKernel`/`contentCapKernel` with such
+a `φ`, the recurrence (8) and the norm (7) with the cyclotomic polynomial `a_i`, and the cap rows
+of (4) with `capRow`.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
