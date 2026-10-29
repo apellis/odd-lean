@@ -15,9 +15,22 @@ No hypothesis beyond the parity condition on `a`. The proof follows the written 
 `braid_comp_mem_appendKill` for the window `(i, x, i)`), assembled over positioned words and
 `span_normalForms` by induction on the length of the source word.
 
-Next target: the matrix form (2) and the descent of `P` to
-`Ind_(φ_L) B → Ind_ψ B` (`AppendMackeySource.md` §4), then the source-side fields of
-`MackeyCosets` and `P ρ = R_t P` (obligation 1).
+Checked: the matrix form (2) and the descent of `P`
+(`OddMath/QuiverHecke/CyclotomicAction/AppendMackeyMap.lean`, `AppendMackeySource.md` §4).
+With `ψ = appendAlgebra i (n+1)`, `φ_ε = prependAlgebra i (n+1) ∘ tw_ε` (`prependTwist`) and
+`W = Σ_s single (i :: s) (s ++ [i]) W_s` (`appendMoveMatrix`): `appendMoveMatrix_mul_append`
+and `prependTwist_mul_appendMoveMatrix` give the entries of `W ψ(a)` and `φ_ε(a) W`;
+`appendMove_balance_mem` shows `W ψ(c) - φ_ε(c) W` lies in `appendVanishing` (elements `y`
+with `z y ⊗ m = 0` in `Ind_ψ N`) for every left `Hn (n+1)`-module `N` killed by the cyclotomic
+ideal (`hcyc`) and by the diagonal idempotents of the words `t` with `q_t ≠ ε` (`hpar`);
+`appendMackeyMap : Ind_(φ_ε) N → Ind_ψ N`, `z ⊗ m ↦ z W ⊗ m`, is the descended map
+(`Ind.descend`). The content corner of parity `ε` satisfies `hpar` when all its words have
+`q_t = ε`; the hypotheses replace the content-corner bookkeeping of §4.
+
+Next target: the prepend-side source module with the `Π^ε` shift as the domain of
+`MackeyCosets` (fields `short`, `ℓ`, `cover`, `ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`, `ρ`,
+`P_short`), assembled with `MackeyCosets.ofTarget` against `appendContentMackeyTarget`; then
+`P ρ = R_t P` (obligation 1).
 
 ## Global factor relations: algebra parameters and reservoir
 
