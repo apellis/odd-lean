@@ -29,7 +29,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM
 
-universe u
+universe u uB v w
 
 namespace SPath
 
@@ -84,7 +84,7 @@ namespace LayerRep
 /-- Restriction to an index of the inclusion of an equal index is the transport along the
 equality. -/
 theorem proj_single_of_eq {S : Signature.{u, u, u}} {R : Type u} [CommRing R]
-    (Q : LayerRep.{u, u, u, u, u} S R) {_ : DecidableEq (Obj S)} {a b : Obj S} (h : a = b)
+    (Q : LayerRep.{u, u, u, u, w} S R) {_ : DecidableEq (Obj S)} {a b : Obj S} (h : a = b)
     (y : Q.M a) : LinearMap.proj (R := R) (φ := Q.M) b (LinearMap.single R Q.M a y) =
       cast (congrArg Q.M h) y := by
   subst h
@@ -93,7 +93,7 @@ theorem proj_single_of_eq {S : Signature.{u, u, u}} {R : Type u} [CommRing R]
 /-- The composite of two layers in the local interpretation of a layer representation, between
 indices that are only propositionally equal to the boundaries of the layers. -/
 theorem res_op_op_ext {S : Signature.{u, u, u}} {R : Type u} [CommRing R]
-    (Q : LayerRep.{u, u, u, u, u} S R) {a c : Obj S} (L₁ L₂ : Layer S) (h₁ : a = L₁.dom)
+    (Q : LayerRep.{u, u, u, u, w} S R) {a c : Obj S} (L₁ L₂ : Layer S) (h₁ : a = L₁.dom)
     (h₂ : L₁.cod = L₂.dom) (h₃ : L₂.cod = c) (x : Q.M a) :
     Q.toLocal.res c (Q.toLocal.op L₂ (Q.toLocal.op L₁ (Q.toLocal.ext a x))) =
       cast (congrArg Q.M h₃) (Q.act L₂ (cast (congrArg Q.M h₂)
@@ -103,14 +103,14 @@ theorem res_op_op_ext {S : Signature.{u, u, u}} {R : Type u} [CommRing R]
 
 /-- Transport of zero is zero. -/
 theorem cast_zero {S : Signature.{u, u, u}} {R : Type u} [CommRing R]
-    (Q : LayerRep.{u, u, u, u, u} S R) {a a' : Obj S} (h : a = a') :
+    (Q : LayerRep.{u, u, u, u, w} S R) {a a' : Obj S} (h : a = a') :
     cast (congrArg Q.M h) 0 = 0 := by
   subst h; rfl
 
 end LayerRep
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]

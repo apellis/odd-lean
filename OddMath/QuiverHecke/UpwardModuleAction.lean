@@ -25,13 +25,13 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 open scoped Classical TensorProduct
-universe u
+universe u w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
 /-- A functorial `k`-linear action of the upward Hom spaces at rightmost weight `μ`. -/
 structure UpwardModuleAction (μ : X) where
-  V : List I → Type u
+  V : List I → Type w
   [addV : ∀ t, AddCommGroup (V t)]
   [moduleV : ∀ t, Module k (V t)]
   act : ∀ t t', UpwardHom D Sc μ t t' →ₗ[k] (V t →ₗ[k] V t')
