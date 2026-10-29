@@ -85,9 +85,12 @@ The remaining indispensable step is to regroup these raw indices by
 moving exponent, inverse shuffle, and old target, prove the inverse with
 `Old(v,t)` coefficients, and identify the old relation span coordinatewise.
 That requires compatibility of extraction with arbitrary old composition,
-not only the individual old normal forms handled here. The checked scalar
-`prependCoefficients_right` supplies the affine matrix analogue, but does
-not by itself supply the full super coefficient/old-ideal comparison.
+not only the individual old normal forms handled here. The matrix lemmas
+`prependExpansion_right` and `prependCoordinateEquiv_symm_right` prove
+right-old-algebra compatibility, but do not by themselves supply the full
+super coefficient/old-ideal comparison. `ELVPrependOldExtraction.lean` now
+proves extraction of arbitrary old composition on a fixed moving tail;
+cross-tail extraction and descent on all old-relation generators remain.
 After that inverse is constructed, the moving square must be identified
 with the exponent shift by two (and the even moving dot with shift by one),
 and the finite-support leading-coordinate argument can prove the requested
