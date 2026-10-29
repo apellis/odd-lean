@@ -48,19 +48,22 @@ the augmented maps, and the mixed-block coefficient satisfies its characterizing
 with invertible denominators. -/
 theorem swappedGens_supernatural_of_isInverse (c : P.CrossCoeff) (L : P.LeftwardData)
     (hin : P.CrossCoeffInputs) (hc : c.IsInverse)
-    (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, P.SigmaPermutation c i j ν) (hL : L.IsInverse c) :
+    (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, P.SigmaPermutation c i j ν) (hL : L.IsInverse c)
+    (h0 : L.VanishesOffWeight) :
     GeneratorsSupernatural (P.swappedGens c L) :=
   have hcs := CrossCoeff.isSupernatural_of_isInverse P c hc hin
-  P.swappedGens_supernatural c L hcs hσ (L.isSupernatural_of_isInverse c hcs hL)
+  P.swappedGens_supernatural c L hcs hσ (L.isSupernatural_of_isInverse c hcs hL h0)
 
 /-- **`SwappedRelationData` without the interchange-law field**: the super interchange law
 `GeneratorsSupernatural` is a consequence of `sigma`, `leftward` and the characterizing
-identities of the mixed-block coefficient with invertible denominators. -/
+identities of the mixed-block coefficient with invertible denominators (the leftward data
+being normalized to vanish off the weight-matched sectors). -/
 theorem SwappedRelationData.ofIsInverse {c : P.CrossCoeff} {L : P.LeftwardData}
     (hin : P.CrossCoeffInputs) (hc : c.IsInverse)
     (quad : CrossQuad (P.swappedGens c L)) (slide : CrossSlide (P.swappedGens c L))
     (braid : CrossBraid (P.swappedGens c L)) (zigzag : CupCapZigzag (P.swappedGens c L))
     (sigma : ∀ i j ν, i ≠ j → P.SigmaPermutation c i j ν) (leftward : L.IsInverse c)
+    (leftwardZero : L.VanishesOffWeight)
     (windowZero : DcupDcapWindowZero (P.swappedGens c L)) : P.SwappedRelationData c L where
   quad := quad
   slide := slide
@@ -70,7 +73,7 @@ theorem SwappedRelationData.ofIsInverse {c : P.CrossCoeff} {L : P.LeftwardData}
   leftward := leftward
   windowZero := windowZero
   supernatural := swappedGens_supernatural_of_isInverse c L hin hc
-    (fun i j hij ν => sigma i j ν hij) leftward
+    (fun i j hij ν => sigma i j ν hij) leftward leftwardZero
 
 /-- The coefficient built from `CrossCoeffInputs` needs no further hypothesis. -/
 theorem SwappedRelationData.ofCrossCoeffInputs (hin : P.CrossCoeffInputs) {L : P.LeftwardData}
@@ -79,11 +82,11 @@ theorem SwappedRelationData.ofCrossCoeffInputs (hin : P.CrossCoeffInputs) {L : P
     (braid : CrossBraid (P.swappedGens (P.crossCoeffOfInputs hin) L))
     (zigzag : CupCapZigzag (P.swappedGens (P.crossCoeffOfInputs hin) L))
     (sigma : ∀ i j ν, i ≠ j → P.SigmaPermutation (P.crossCoeffOfInputs hin) i j ν)
-    (leftward : L.IsInverse (P.crossCoeffOfInputs hin))
+    (leftward : L.IsInverse (P.crossCoeffOfInputs hin)) (leftwardZero : L.VanishesOffWeight)
     (windowZero : DcupDcapWindowZero (P.swappedGens (P.crossCoeffOfInputs hin) L)) :
     P.SwappedRelationData (P.crossCoeffOfInputs hin) L :=
   .ofIsInverse hin (P.crossCoeffOfInputs_isInverse hin) quad slide braid zigzag sigma leftward
-    windowZero
+    leftwardZero windowZero
 
 end ProbeReservoir
 
