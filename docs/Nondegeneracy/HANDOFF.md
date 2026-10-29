@@ -4617,6 +4617,35 @@ ideal `U⁻¹(I_N)` with `TransformedIdeal`.
   `halfTurn_obj : t ↦ t^rev`); generator table `halfTurn_dot`, `halfTurn_cross` (§4 table, no
   coefficients yet).
 
-Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`. Next: `U` on the coefficient-extended
-Hom spaces (`U(a ⊗ f) = a ⊗ U(f)`), and the identification of the corner ideal `U⁻¹(I_N)`
-with `TransformedIdeal`.
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
+
+### The half-turn on coefficient-extended Homs and `U(K_N) ⊆ I_N` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/CornerIdeal.lean` (`SwappedVacuumCoordinates.md` §§4–5):
+
+- `htPres s t : Hom(s, t) →ₗ Hom(t^rev, s^rev)` (the half-turn on Hom spaces, linear);
+  `htPres_diag_mkD`, `htPres_id`, and `htPres_diag_comp`: `U(f ≫ g) = (-1)^{|f||g|} U(g) ≫ U(f)`
+  for normal-form diagrams.
+- `htCoef s t` on coefficient-extended Homs, `htCoef_sourceCoefficientHom`:
+  `U(a ⊗ f) = a ⊗ U(f)`, no coefficient sign.
+- `htCoef_sandwich`: for homogeneous `α`, `γ` (`CoefParity`) and any `β`,
+  `U(α⊗A ≫ γ⊗B ≫ β⊗C) = ± α⊗U(C) ≫ γ⊗U(B) ≫ β⊗U(A)` with an explicit sign. The coefficients
+  keep their places, so no supercommutativity of `SYM` is used.
+- `htPres_lastDotPower`: `U(y_last^j) = (-1)^{p(i) C(j,2)} y_first^j` on `v ++ [i]`.
+- `coefParity_factorCoefficient`: `c_{i,j}` has parity `(N + j) p(i)`;
+  `elvCoefficientIdeal_le_homogeneousSpan`: `J_N` is spanned by its homogeneous elements.
+- `coef_induction`: coefficient-extended Homs are spanned by `α ⊗ mkD ls` with `α` homogeneous.
+- **`htCoef_transformedIdeal_le`**: `(TransformedIdeal D Sc cutoff ∅ s t).map (htCoef s t) ≤
+  ELVRelationSpan D (parameterTwist D Sc) cutoff t^rev s^rev`. Generators `J_N` go to themselves;
+  the transformed polynomial (4) of colour `i` goes to `±` the first-strand cyclotomic
+  (`elvCyclotomic` for odd `i`, `evenCyclotomic` for even `i`), with the sandwich sign
+  `N p(i)(|A|+|C|) + |α|(|A|+|C|) + |A||C|` independent of the power `j`
+  (`htCoef_cyclotomic_term`, `cyclotomic_sign_identity`).
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdeal.lean`.
+
+Open obligations for §5: the reverse inclusion `I_N ⊆ U(K_N)` (by the same computation run
+from the twisted side, or `U` being an involution up to the parameter twist); `T ≠ ∅` (needs
+`T` mapped into the coefficient ideal or carried as extra coefficient generators on the ELV
+side); and bijectivity of `htCoef` (inverse half-turn from `parameterTwist`), which would turn
+the inclusion into the identification `U(K_N) = I_N`.
