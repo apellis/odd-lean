@@ -41,8 +41,9 @@ theorem oddWitness_parity : oddWitness ∈ reservoir.grading 1 := by
     coefficientIdentity_basis_parity datum scalars (fun _ => 2) [()] (0, {oddColour})
 
 theorem oddWitness_degree : oddWitness ∈ reservoir.degree 2 := by
-  simpa [reservoir, truncatedEndGSuperAlg, truncatedEndDegree, oddWitness, delta,
-    SKM.SYM.coefficientDegree, sy] using
+  change truncatedSingle datum scalars (fun _ => 2) 3 () delta 0 ∈
+    truncatedDegree datum scalars (fun _ => 2) sy homogeneous 3 [()] [()] 2
+  simpa [delta, SKM.SYM.coefficientDegree, sy] using
     truncatedSingle_basis_degree datum scalars (fun _ => 2) sy homogeneous 3 ()
       (0, {oddColour}) 0
 
