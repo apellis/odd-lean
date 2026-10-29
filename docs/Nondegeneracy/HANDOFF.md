@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV old-coefficient extraction
+
+Checked in `ELVPrependOldExtraction.lean`: `PrependIdx.replaceOld` retains
+the moving exponent and shuffle while ranging over the existing old normal-form
+basis. Restricting affine coordinates to this fibre, undoing coefficient parity,
+and rebuilding the old Hom gives `prependExtractOld`. Its
+`prependExtractOld_insert_comp_tail` theorem recovers `twist p (r ≫ b)` for
+arbitrary full-ELV old morphisms and a prescribed moving tail. The resulting
+`Old(v,t)` coordinate vanishes exactly when the old coefficient lies in the old
+ideal (`prependExtractOldQuotient_insert_tail_eq_zero_iff`). No flatness,
+finite-colour hypothesis, assumed basis comparison, or moving polynomial is used.
+
+Checked in `ELVPrependCrossTail.lean`: off-tail extraction vanishes for every
+old coefficient, before and after the old quotient. `PrependIdx.regroupEquiv`
+regroups the existing indices by moving exponent and shuffle, with both inverse
+laws; the intermediate old target is uniquely determined by the shuffle and
+final word. This is an index equivalence, not an old-quotient equivalence.
+
+Remaining: annihilate every generator `insert r ≫ h` of `relations` for arbitrary
+intermediate word and ambient continuation, then assemble the simultaneous
+old-quotient coordinate equivalence. The fixed-tail identities and off-tail
+vanishing do not yet prove this all-generator descent or quotient independence.
+The moving-square shift and difference injectivity are still open.
+
 ## Full ELV prepend PBW normalization
 
 Checked in `ELVPrependCoordinates.lean`: the tensor extension of the existing
@@ -19,6 +43,33 @@ including extraction compatibility with arbitrary old composition. Only then
 identify the moving-square shift (and the even moving-dot shift) and prove
 cancellation by the leading finite-support coordinate. See
 `ELVPrependCoordinates.md` for the exact coefficient formula and source locator.
+
+## Mixed-colour sector braid: two probes and one reservoir
+
+`BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
+`PᵢPᵢRᵣ → RᵣPᵢPᵢ` of `braidLeft = braidRight` for arbitrary `i ≠ r`,
+sector, valid reservoir step, supplied probe/reservoir data, crossing
+coefficients and leftward data. It has no coefficient-inverse hypothesis.
+All intermediate path sums reduce by uniqueness of their sector contents.
+`BraidEntries` evaluates the four crossing entries with endpoint casts;
+the universal two-probe triangle then closes the equality, preserving the
+normalized same-colour crossing. The mixed crossings here are the prescribed
+`PR → RP` entries `mixedJ.hom`, not the Q-weighted reverse entries.
+`NonVacuity.MixedProbePairSector` specializes the theorem to distinct Boolean
+colours and a sector with one reservoir letter.
+
+`BraidMixed/ReservoirPairSector.lean`: `reservoirPair_braid` also proves
+`PᵢRᵣRᵣ → RᵣRᵣPᵢ` for arbitrary `i ≠ r`, with both reservoir steps valid.
+It evaluates the actual braid sums and shifted reservoir crossing via
+`postCrossSame_eq` and the same-colour post-pair triangle.
+`NonVacuity.MixedReservoirPairSector` supplies distinct Boolean colours and
+a sector containing two reservoir letters. Neither result needs an
+inverse-coefficient hypothesis.
+
+Remaining: reverse Q-weighted directions, unequal same-side colours and
+the other `CrossBraid` fields. The two universal interchange triangles and
+these two sector entries do not establish the remaining fields.
+
 
 ## Append content source: concrete moving-coset extraction
 
