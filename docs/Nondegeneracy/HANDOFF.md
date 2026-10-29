@@ -4932,6 +4932,23 @@ paragraph):
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnInvolution.lean`.
 
-Open obligations for §5: the reverse inclusion `I_N ⊆ U(K_N)` (by the same computation run
-from the first-strand side, then `htCoef_htCoef`); `T ≠ ∅` (needs `T` carried as extra
-coefficient generators on the ELV side).
+### The half-turn identifies K_N with I_N (checked)
+
+`OddMath/QuiverHecke/HalfTurn/IdealIdentification.lean` (`SwappedVacuumCoordinates.md` §5):
+
+- `htPres_firstDotPower`: the half-turn sends the first-strand dot power to the last-strand dot
+  power, with the sign of `htPres_lastDotPower`.
+- `htCoef_firstCyclotomic_term`, `deformedCyclotomic_factorCoefficient_odd`/`_even`,
+  `htCoef_firstCyclotomic_mem`: each first-strand cyclotomic generator of `I_N` (odd and even
+  colours) goes to a last-strand transformed cyclotomic generator; the sign
+  `(-1)^C(j,2)` of the odd case is absorbed by `transformedCoefficient`
+  (`firstCyclotomic_sign_identity`).
+- `htCoef_elvRelationSpan_le`: `U(I_N) ⊆ K_N` (for `parameterTwist D Sc`).
+- **`map_htCoef_transformedIdeal`**: `U(K_N) = I_N`, from `htCoef_transformedIdeal_le`, the
+  previous inclusion for the twisted parameters and `htCoef_htCoef`.
+- **`comap_htCoef_elvRelationSpan`**: `U⁻¹(I_N) = K_N` (with `htCoef_injective`).
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdealIdentification.lean`.
+
+Open obligation for §5: `T ≠ ∅` (carry `T` as extra coefficient generators on the ELV side;
+the half-turn fixes `a ⊗ 1` up to the sandwich sign, so homogeneity of `T` is needed).
