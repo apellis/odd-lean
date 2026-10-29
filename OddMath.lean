@@ -16,6 +16,7 @@ import OddMath.SKM.FiniteColourIdealDescent
 import OddMath.SKM.FiniteColourRelationsExamples
 import OddMath.SKM.RouquierMulticolour
 import OddMath.SKM.RouquierPrincipalWord
+import OddMath.SKM.RouquierPiSCat
 import OddMath.SKM.RouquierHomMateCoordinates
 import OddMath.SKM.RouquierHomPrincipal
 import OddMath.SKM.RouquierHomPreCoordinates
@@ -105,6 +106,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryWindow
@@ -1379,5 +1381,6 @@ import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
 import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
+import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal

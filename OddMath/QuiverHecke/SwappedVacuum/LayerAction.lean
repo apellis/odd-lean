@@ -30,7 +30,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u w w₀ w₁ w₂ w₃
+universe u w w₀ w₁ w₂ w₃ uB wB vB
 
 namespace LayerRep
 
@@ -52,7 +52,7 @@ end LayerRep
 section Obligations
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  {D : Datum I X} {Sc : Scalars D k} {Q : LayerRep.{u, u, u, u, u} (SKM.sig D) k}
+  {D : Datum I X} {Sc : Scalars D k} {Q : LayerRep.{u, u, u, u, w₃} (SKM.sig D) k}
 
 namespace SwappedObligations
 
@@ -78,7 +78,7 @@ end Obligations
 namespace ProbeReservoir
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
