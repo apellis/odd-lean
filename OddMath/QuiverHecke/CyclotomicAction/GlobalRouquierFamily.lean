@@ -17,7 +17,9 @@ The remaining fields of `SKM.SuperRouquierLoc` are the two finite inverses of th
 mate (KKO I, arXiv:1206.5933v2, the local inversion of Theorem 8.5 / KK Theorem 5.2 in the
 even case). They are not proved here: `GlobalLocalInversion` packages exactly these two
 inverses at one pair of adjacent weight steps, and `globalRouquierFamily` takes a family of
-them as an explicit hypothesis. No other field is assumed.
+them as an explicit hypothesis. No other field is assumed. The family also records the degree
+hypothesis `CyclotomicDegreeMatch` (each `a i` monic of degree `⟨h_i, Λ⟩`), under which local
+inversion is expected to hold; for arbitrary `a` it can fail.
 -/
 
 noncomputable section
@@ -27,6 +29,14 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I] [DecidableEq I]
   (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (Λ : X)
+
+/-- The cyclotomic polynomials match the highest weight: each `a i` is monic of degree
+`⟨h_i, Λ⟩`. This is the standing assumption of KKO I and of the local-inversion route; without
+it `GlobalLocalInversion` can fail: for `a i = 1` and `⟨h_i, Λ⟩ = 5`, at the middle weight
+`x₁ = -Λ` the composites through the mate vanish while the five dotted-unit columns have nonzero
+source, so `invNeg` has no inverse. -/
+def CyclotomicDegreeMatch : Prop :=
+  ∀ i, (a i).Monic ∧ ((a i).natDegree : ℤ) = D.h i Λ
 
 /-- The two finite inverses of the Rouquier mate `F_i E_i ⟶ E_i F_i` at the weight steps
 `x₀ → x₁ → x₂`, with the dotted counits (positive height `D.h i x₁`) and the dotted units
@@ -68,8 +78,9 @@ def globalSuperRouquierLoc (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = 
 
 /-- **The cyclotomic factor family on weight spaces**, relative to local inversion: every field
 of `SKM.RouquierFamily` except the two inverses of the Rouquier mate is proved; those are the
-hypothesis `L` (KKO local inversion, not yet formalized). -/
-def globalRouquierFamily
+hypothesis `L` (KKO local inversion, not yet formalized), stated under the degree hypothesis
+`CyclotomicDegreeMatch`, without which `L` can fail. -/
+def globalRouquierFamily (_hdeg : CyclotomicDegreeMatch D a Λ)
     (L : ∀ (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
       GlobalLocalInversion D Sc a ha Λ i h₁ h₂) :
     SKM.RouquierFamily (k := k) (B := cyclotomicActionTarget (k := k)) D where
