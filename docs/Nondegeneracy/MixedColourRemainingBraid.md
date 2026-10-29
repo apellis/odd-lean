@@ -51,10 +51,20 @@ sector sums reduce by endpoint uniqueness; the prescribed `postCrossNe`
 edges and all endpoint transports are retained. This coefficient-one placement
 uses the shifted interchange triangle without cancelling a Q factor or crossing.
 
-Reverse and middle unequal-reservoir placements, same-side factor-braid
-transport and arbitrary-path assembly remain open. Repeated-outer corrections
-are separate obligations. The complete component calculation below retains
-its proposed status.
+`BraidMixed/MiddleDistinctReservoirSector.lean` proves the middle placement
+`RᵣPᵢR_q → R_qPᵢRᵣ` as `middleDistinctReservoir_braid`.
+`BraidMixed/ReverseDistinctReservoirSector.lean` proves the reverse placement
+`RᵣR_qPᵢ → PᵢR_qRᵣ` as `reverseDistinctReservoir_braid`, retaining both
+prescribed Q factors with their shared probe spectator. Individual Q transport
+uses the signed reservoir slides and crossing parity; three dot
+supercommutations and parity support prove commutation of the two Q factors.
+Only explicit mixed comparison isomorphisms are cancelled. The importing
+consumer retains arbitrary colours and occupied reservoir content.
+
+All six mixed pairwise-distinct placements now have sector lemmas. Same-side
+factor-braid transport and arbitrary-path assembly remain open. Cross-side
+colour equalities and repeated-outer corrections are separate obligations.
+The complete component calculation below retains its proposed status.
 
 ## 1. Typed entries and polynomial conventions
 
