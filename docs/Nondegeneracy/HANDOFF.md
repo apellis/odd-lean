@@ -639,8 +639,12 @@ acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
 to `dcup i n` with rightmost weight `ν` when `⟨hᵢ, ν⟩ ≤ n` and to `dcap i n`
 when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is used, so
 this does not depend on the even-colour bubble normalization at height `0`
-(both windows are empty there). The generator
-modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
+(both windows are empty there). Discharged for the swapped generators:
+`swappedGens c L` assigns `dcup i n ν` the entry of `L.dcup` inside the window
+`n < ⟨hᵢ, ν⟩` and zero outside it (likewise `dcap` inside `n < -⟨hᵢ, ν⟩`), as in
+(A7); `swappedGens_windowZero c L : DcupDcapWindowZero (swappedGens c L)` holds
+with no hypothesis, and `swappedGens_dcup_of_lt`, `swappedGens_dcap_of_lt`
+identify the in-window entries with those of `L` (`Generators.lean`).
 
 **Zigzag relations (checked).** `SwappedAssembly/Zigzag.lean`:
 `zigzagRelations`: `ZigzagRelations` for `P.layerRep Gs Ys gens` from
