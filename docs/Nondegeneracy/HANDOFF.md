@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Mixed-colour sector braid: two probes and one reservoir
+
+`BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
+`PᵢPᵢRᵣ → RᵣPᵢPᵢ` of `braidLeft = braidRight` for arbitrary `i ≠ r`,
+sector, valid reservoir step, supplied probe/reservoir data, crossing
+coefficients and leftward data. It has no coefficient-inverse hypothesis.
+All intermediate path sums reduce by uniqueness of their sector contents.
+`BraidEntries` evaluates the four crossing entries with endpoint casts;
+the universal two-probe triangle then closes the equality, preserving the
+normalized same-colour crossing. The mixed crossings here are the prescribed
+`PR → RP` entries `mixedJ.hom`, not the Q-weighted reverse entries.
+`NonVacuity.MixedProbePairSector` specializes the theorem to distinct Boolean
+colours and a sector with one reservoir letter.
+
+Remaining: reverse Q-weighted directions, distinct probe colours, the
+one-probe/two-reservoir sector-path consumer and the other `CrossBraid` fields.
+The two universal interchange triangles alone do not establish those fields.
+
 ## Append Mackey boundary: balance of P
 
 Checked: `appendError_mem_appendKill`
