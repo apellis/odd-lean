@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Ordinary right content polynomial modules
+
+`ELVOldCategory` assembles the full old cyclotomic Hom quotients into a linear
+category. `ELVEndpointPresheaf` descends the old action in both arguments for
+every pair of old words. `ELVContentModule` forms its finite content Hom-matrix
+ring B and the prescribed quotient matrices K₀, K₁ and K₁′ as ordinary right
+B[s]-modules. Source actions retain epsilon and eta respectively. The polynomial
+construction works for a noncommutative B, with no super-opposite convention.
+Words of fixed content are finite permutations of a chosen representative;
+no finiteness assumption on the colour type is needed. Empty content and zero
+quotient corners are allowed.
+
+`pPolynomial` is the prescribed componentwise P, right B[s]-linear and
+injective (`pPolynomial_injective`). Its right-linearity includes every old
+word-to-word arrow, not just diagonal operators. The central variable is the
+moving dot/square. `sourceContentCoordinateEquiv` retains ambient words, old
+words, moving shuffles and moving exponents in the established PBW quotient
+coordinates. `centralSource_pair_shift` keeps old coefficients unchanged,
+and `centralSource_residue` keeps the exponent modulo `centralDegree`.
+
+**Remaining:** reindex these simultaneous coordinates into finitely many
+old-idempotent B[s] summands and prove the resulting equivalence polynomial
+linear, for both endpoints. No finite-projectivity instance is asserted.
+The cokernel and ideal-sum exactness remain independent obligations.
+
 ## Central moving-variable linearity of ELV P
 
 `ELVAppendMovingSlide.lean` proves the decorated moving-dot deletion identity
@@ -15,8 +40,8 @@ coefficient relation are retained in the existing ELV coefficient algebra.
 `pCentralMap` is a k[s]-linear map on these quotients. `pCentralMap_oldSource`
 retains the total-parity twist `appendQ` on the source; both old operators
 are k[s]-linear and kill the old ideal. Old balance is reused, not assumed.
-Assembly into content-level ordinary right B[s]-modules, their projectivity,
-and the exact cokernel sequence are still separate obligations.
+The content-level ordinary right B[s]-module assembly is supplied above;
+projectivity and the exact cokernel sequence remain separate obligations.
 
 ## Injectivity of the actual full ELV P map
 
@@ -26,7 +51,7 @@ words, cutoffs and full exterior coefficients over the given commutative
 ground ring. No balance, monicity, freeness or injectivity assumption is added.
 This closes the injectivity step of `DeformedSquareResolution.md` §3;
 The central-variable and twisted old-action compatibility are supplied above;
-content-level B[s]-module assembly, the cokernel, exactness and projectivity remain.
+content-level B[s]-module assembly is supplied above; the cokernel, exactness and projectivity remain.
 
 ## Full ELV Q descent and quotient composition
 
