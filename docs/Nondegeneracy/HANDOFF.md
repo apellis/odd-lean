@@ -100,6 +100,24 @@ ELV algebra, the graded factor kernels/inverse components, or their comparison w
 `PiSCat` realization. Those remain necessary before applying this construction to the
 prescribed swapped action.
 
+Checked (`CentralInverse/ModuleCoefficients.lean`): `realize` sends a regular-bimodule
+coefficient to the identity supernatural transformation of `A-SMod-k`, using the existing
+`postCoeff` and balanced tensor unitors. Its total component is left multiplication by
+`c(1)`; evaluation on the explicitly constructed left regular module at `1` proves
+`realize_injective`. Linearity, identity, composition and parity projection are preserved;
+odd naturality follows from super-interchange, not ordinary naturality. `moduleCoeffGrading`
+is the **image** grading in `End(identity)` of the `PiSCat` module target; no surjectivity
+onto its entire supercentre is assumed or claimed. `module_coefficient_eq_zero` derives
+its bound from algebra support, and `moduleCoefficientIdeal` gives joint nilpotence on
+superfunctors from any probe Pi-supercategory. A rational importing consumer has nonzero
+realized identity, algebra bound one, and matrix inverse lifting in this superfunctor Hom.
+Its positive ideal is zero; it does not test a nonzero odd coefficient.
+
+Remaining for the prescribed reservoir: transport to products of full content-support
+subcategories, identify the actual cup/middle/cap closures through the existing
+`RouquierKernelComparison`, and supply the truncated ELV algebra/support and homogeneous
+kernel data. The new bridge does not construct an ELV action or `CentralInvertible`.
+
 Open (transport): identify the residual entries of the two-sector reduction (closures
 `Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
 `h ≫ postCoeff Z c ≫ h'` for the coefficients above (`AugmentedSectorBlocks` §3). The membership
