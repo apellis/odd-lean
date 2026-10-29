@@ -93,6 +93,21 @@ and the position where it vanishes. It is the deformed version of (8.17).
 The sign σ' is immaterial for vanishing; no such unspecified sign is used
 in the surviving QP calculation below.
 
+**Checked full-coefficient relation killing.** `ELVPrefixKilling.lean`
+proves `ELVOld.allPrefix_relation_context` using the actual `moveHom` and
+`lastToFirstHom`. It includes every prefix `μ`, spectator word `σ`, cutoff,
+and moving-colour parity, with an arbitrary ambient continuation in the
+full ELV category. The stronger `projection_prefix_relation_context`
+allows an arbitrary full-coefficient old Hom before its relation.
+`insert_comp_move` derives the needed naturality from
+`hom_comp_moveHom`, with the twist on total coefficient-plus-diagram
+parity. `ELVOldRightContext.lean` proves right-context composition,
+relation preservation, and containment of the extended old ideal.
+Vanishing therefore takes place in the actual old-only quotient, not in
+an ordinary polynomial specialization or an assumed relation-killing
+package. This establishes (K); the signed repeated-colour induction in
+§3 is not yet supplied by these declarations.
+
 ## 3. Induction, with the surviving signs
 
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
