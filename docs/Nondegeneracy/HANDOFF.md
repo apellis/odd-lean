@@ -73,11 +73,14 @@ graded `b ⟶ b`); `ProbeWindow.postCoeff` (`Z ◁ c` conjugated by `ρ`), `post
 `postCoeff_comp`, `postCoeff_add`, `postCoeff_zero`; `comp_postCoeff` (every 2-morphism of
 `a ⟶ b` super-commutes with `postCoeff`, by the super interchange law; no grading of the probe
 is used); `coeffIdeal` (span of `postCoeff Z c ≫ h`, `deg c ≥ n`), `coeffIdeal_comp_mem`
-(`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`), `eq_zero_of_mem_coeffIdeal`; `reservoirCoefficientIdeal`, a
-`ProbeWindow.CoefficientIdeal` (the interface of `CentralInverse/CoefficientIdeal.lean`
-consumed by `isIso_of_sub_mem`, `isIso_gMap_of_sub_mem`). For a `ProbeReservoir P` with
+(`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`), `coeffIdeal_mono` (the filtration is decreasing),
+`eq_zero_of_mem_coeffIdeal`; `reservoirCoefficientIdeal`, a
+`ProbeWindow.CoefficientIdeal` on the whole category `a ⟶ b` (the interface of
+`CentralInverse/CoefficientIdeal.lean` consumed by `isIso_of_sub_mem`,
+`isIso_gMap_of_sub_mem`). Every morphism belongs to `J₀` by `mem_coeffIdeal_zero`;
+no predicate on the objects is needed. For a `ProbeReservoir P` with
 `G : RouquierGrading P.W sy`, `hG : G.BoundedAbove`: `ProbeReservoir.homCoefficientIdeal P G
-hG t Pr` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
+hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
 in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
 (`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
 
