@@ -1338,6 +1338,7 @@ import OddMath.QuiverHecke.SwappedVacuumBlock
 import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
 import OddMath.QuiverHecke.SwappedVacuumBasisEvaluation
 import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
+import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
