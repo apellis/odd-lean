@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctReservoirSector
 import Lean.Util.CollectAxioms
 
 /-! Arbitrary supplied-data application at occupied reservoir content. -/
@@ -27,14 +27,22 @@ example (ν : X) (i r q : I) (hir : i ≠ r) (hiq : i ≠ q) (hrq : r ≠ q)
     let hsP : nextSector (true, q) false (nextSector (true, r) false (nextSector (true, i) true s)) =
         nextSector (true, r) false (nextSector (true, q) false (nextSector (true, i) true s)) := by
       simp only [nextSector, tsub_right_comm]
-    braidLeft (P.swappedGens c L) r i q ν
+    (braidLeft (P.swappedGens c L) r i q ν
       (distinctReservoirMiddle ν i r q s hr hq hsP)
       (distinctReservoirMiddle ν i q r s hq' hr' rfl) Z =
     braidRight (P.swappedGens c L) r i q ν
       (distinctReservoirMiddle ν i r q s hr hq hsP)
-      (distinctReservoirMiddle ν i q r s hq' hr' rfl) Z := by
+      (distinctReservoirMiddle ν i q r s hq' hr' rfl) Z) ∧
+    (braidLeft (P.swappedGens c L) r q i ν
+      (distinctReservoirTarget ν i r q s hr hq hsP)
+      (distinctReservoirSource ν i q r s hq' hr' rfl) Z =
+    braidRight (P.swappedGens c L) r q i ν
+      (distinctReservoirTarget ν i r q s hr hq hsP)
+      (distinctReservoirSource ν i q r s hq' hr' rfl) Z) := by
   dsimp only
-  exact P.middleDistinctReservoir_braid ν i r q _ _ _ _ _ c L hir hiq hrq _ Z
+  exact ⟨P.middleDistinctReservoir_braid ν i r q _ _ _ _ _ c L hir hiq hrq _ Z,
+    P.reverseDistinctReservoir_braid ν i r q _ _ _ _ _ c L hir hiq hrq _ Z⟩
+#print axioms OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir.reverseDistinctReservoir_braid
 #print axioms OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir.middleDistinctReservoir_braid
 end NonVacuity.MixedDistinctReservoirRemaining
 
@@ -42,7 +50,9 @@ open Lean Elab Command in
 run_cmd do
   let env ← getEnv
   for mod in #[`OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctReservoirQ,
-      `OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector] do
+      `OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector,
+      `OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctReservoirQPair,
+      `OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctReservoirSector] do
     let mut count : Nat := 0
     for i in [:env.header.moduleNames.size] do
       if env.header.moduleNames[i]! == mod then
