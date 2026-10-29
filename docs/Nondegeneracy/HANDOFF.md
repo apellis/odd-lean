@@ -8,7 +8,9 @@ induction from `ideal_rightContext` and `rightContext_insert`. Consequently
 stability operation. `projection_rightContext_eq` also allows an arbitrary
 full-coefficient ambient continuation. `qpEval_of_projection_eq` transports
 a smaller-word QP equality through the full first-position relation, keeping
-all exterior coefficients.
+all exterior coefficients. The concrete connected-colour consumer
+`ELVQPContextConsumer.connectedDistinct` includes a repeated prefix and nonempty
+spectators at arbitrary cutoff.
 
 `qp_distinct` evaluates the existing signed affine distinct-colour transport
 in this same quotient, with arbitrary prefix, spectators and continuation.

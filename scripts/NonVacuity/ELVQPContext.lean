@@ -4,13 +4,25 @@ import NonVacuity.ELVPrefixKilling
 
 noncomputable section
 namespace ELVQPContextConsumer
-open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke ELVOld
+open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke ELVOld MonoidalCategory
 open scoped TensorProduct
 open CyclotomicAction.AsymmetricParameters
 
 /-- Connected distinct colours, odd moving strand, spectators and arbitrary cutoff. -/
-example (N : ℕ) := qp_distinct datum scalars (fun _ => N) true false (by decide)
-  [false, true] [true] [true, false, true, false, true] (𝟙 _)
+theorem connectedDistinct (N : ℕ) :
+    qpEval datum scalars (fun _ => N) true [false, true, false] [true]
+      [true, false, true, false, true] (𝟙 _)
+      (moveHom datum scalars true [] [false, true, false] ≫
+        lastToFirstHom datum scalars true [false, true, false]) =
+    qpEval datum scalars (fun _ => N) true [false, true, false] [true]
+      [true, false, true, false, true] (𝟙 _)
+      (qPoly datum scalars (dotE datum scalars [true, false, true, false] 0)
+        (dotE datum scalars [true, false, true, false] 3) true false ≫
+        ((moveHom datum scalars true [] [false, true] ≫
+          lastToFirstHom datum scalars true [false, true]) ▷
+            (pres datum scalars).obj (ob datum [false]))) :=
+  qp_distinct datum scalars (fun _ => N) true false (by decide)
+    [false, true] [true] [true, false, true, false, true] (𝟙 _)
 
 /-- The continuation is not assumed homogeneous or confined to the affine factor. -/
 example (N : ℕ) (h : hom datum scalars (fun _ => N) [true, false, true] [false, true, true]) :=
