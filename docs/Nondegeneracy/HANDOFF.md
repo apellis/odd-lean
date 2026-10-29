@@ -896,6 +896,16 @@ q^l • (x^{-l} ≫ s ≫ y^l)`) and `ProbeWindow.window_pos` (`s - Σ_{r<l} q^(
 inverse automorphisms. Next for `CentralInvertible`: the shifted-window inverses (5), (6), then
 the case analysis (7)–(14) and the extraction to `PosInverse`/`NegInverse` at `s = t`.
 
+**Shifted cap windows (checked).** `SwappedAssembly/CentralInverse/CapWindows.lean` encodes a
+cap window `[s; w₀, …, w_{h-1}] : X → Y ⊕ O^h` as a morphism of `Mat_ C` (`ProbeWindow.capMap`)
+and proves `isIso_capMap_iff` (it is an isomorphism iff it has a two-sided inverse
+`[j | A₀ … A_{h-1}]` with the five relations `IsCapInverse`). `ProbeWindow.neg_shift_comp`
+gives `x^{-l} ≫ s = q^l • (s ≫ y^{-l}) + Σ_{n<l} q^n • (x^{n-l} ≫ v ≫ u ≫ y^{-n-1})`, and
+`ProbeWindow.exists_isCapInverse_shift` is (5): if `[s; xⁿ ≫ v]_{n<h}` is invertible, so is
+`[s; x^{n-l} ≫ v]_{n<h}` for every `l ≤ h`, via `x^{-l} ≫ F = F_l ≫ T` with `T` triangular
+(`q^l y^{-l}` on `Y`, identity on the window, column `q^n • (u ≫ y^{-n-1})` for `n < l`).
+Next: the cup-window form (6), then (7)–(14).
+
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
 coefficient ideal of `SwappedHomInversion.md` (closed reservoir bubbles) uses the gradings
