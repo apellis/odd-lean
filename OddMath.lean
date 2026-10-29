@@ -124,6 +124,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightInduction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedSlides
+import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
 import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
