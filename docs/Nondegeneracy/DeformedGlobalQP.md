@@ -1,9 +1,10 @@
 # Deformed all-prefix QP calculation
 
-**Status: proposed written proof; not a Lean theorem.** This supplies an
-all-prefix argument for equation (3) of `DeformedProjectiveResolution.md`
-and an old-generator balance argument for P. It does not construct an exact
-projective resolution or prove the ideal-sum assertion.
+**Status: the signed all-word QP identity is formalized.** The checked
+library convention retains a minus sign for each repeated-even factor;
+see §3. The source-normalized formula proposed below and the old-generator
+balance argument for P remain separate obligations. This does not construct
+an exact projective resolution or prove the ideal-sum assertion.
 
 Use the full coefficient algebra A and polynomials f_j of that document,
 including d_j χ_top=0 at positive even odd-colour cutoffs. Work on finite
@@ -56,8 +57,7 @@ that filtration by the actual old action. Finite support then proves
 `lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
 `lastDotDifference_projection` identifies those quotient maps with the
 positioned differences above for n > 0. This closes the cancellation
-ingredient only; the all-prefix calculation below is not thereby a Lean
-theorem.
+ingredient only; the separate all-word signed theorem is described in §3.
 
 ## 2. The relation-killing step for every prefix
 
