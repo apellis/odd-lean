@@ -23,6 +23,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVQPOdd
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPContext
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPProduct
 import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendRelations
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendBalance
+import OddMath.QuiverHecke.CyclotomicAction.ELVPDescent
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic

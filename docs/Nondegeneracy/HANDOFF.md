@@ -1,6 +1,6 @@
 # Odd nondegeneracy: restart state
 
-## ELV coefficient-only P balance
+## Full ELV P descent
 
 `ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
 for every word, cutoff and full ELV coefficient, with no homogeneity assumption
@@ -15,11 +15,17 @@ then includes both coefficient and diagram signs in the signed box product.
 This establishes the coefficient-generator case of `DeformedGlobalQP.md` §4,
 not a quotient map or an assumed balance package.
 
-Remaining: old-dot and old-crossing error containment in the append-old ideal,
-closure under arbitrary old composites, and preservation of every source old
-relation. Consequently the P map from `ELVOld.Target` to the append-old quotient
-and its ordinary twisted B[s]-linearity remain unconstructed. No injectivity,
-exactness or projectivity follows from coefficient balance alone.
+`ELVAppendBalance.lean` now proves old-dot and old-crossing error containment
+in `appendRelations`, including the exceptional braid correction. Spectator
+recursion, composition closure, affine normal-form spanning and coefficient
+factorization prove `appendError_mem_appendRelations` for every full ELV old
+morphism. `ELVPDescent.lean` proves `appendW_relations` and constructs
+`pMap : Target →ₗ[k] AppendTarget`, with `pMap_projection` giving exactly
+precomposition by W. The append span kills only right-extended old ideal
+elements followed by arbitrary ambient continuations.
+
+Remaining: ordinary twisted B[s]-linearity, injectivity, ideal-sum exactness
+and projectivity. No such conclusion is asserted by P descent alone.
 
 ## Full ELV all-word signed QP product
 
