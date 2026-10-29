@@ -1498,6 +1498,15 @@ has even powers of an odd dot, so the even case `homDistinctMixedMateDot_isIso` 
 case `i = j` is not part of `SigmaPermutation`; it is `SwappingInvertible`
 (`Sigma/SameColourBlocks.lean`).
 
+**The `(R,P)` sigma entry is invertible (checked).**
+`SwappedAssembly/Sigma/ReservoirProbeEntry.lean`:
+`ProbeReservoir.isIso_sigmaEntry_reservoir_probe`. For `i ≠ j`, the entry from the path `p` of
+`Eⱼ Fᵢ` with `Eⱼ` on the reservoir and `Fᵢ` on the probe (`p.sides = [false, true]`) to the path
+`q` of `Fᵢ Eⱼ` with `q.sides = [true, false]` is an isomorphism, with no hypothesis on dots: the
+cup and cap are probe unit and counit, and the crossing layer is the mixed interchange `J`
+alone (`isIso_probeMixedMateNe`, the distinct-colour analogue of `isIso_probeMixedMate`, via
+`isIso_homContentDistinctMixedPreMate_of_eq`). Remaining for `hσ`: `(R,R)` and `(P,P)`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
