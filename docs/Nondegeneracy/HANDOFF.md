@@ -5038,9 +5038,22 @@ Checked (same file): right `ψ(Hn (n+1))`-linearity of both summand maps,
 `appendLeftSum_mul_appendAlgebra` (`F(u r) = F(u) ψ(r)`, coefficientwise right
 multiplication) and `appendPolySum_mul_appendAlgebra` (`j(g r) = j(g) ψ(r)`).
 
-Next: descend these affine identities through the cyclotomic quotient and `− ⊗_B M`
-to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear, now checked
-at the affine level); then `short` and the lifts.
+Checked (`CyclotomicAction/AppendCornerTensor.lean`): the descent along the balanced
+tensor product. For any left `Hn (n+1)`-module `M`, `appendTensorCornerEquiv i n M :
+appendTensorLeftCoordinates × (ℕ →₀ M) ≃+ appendTensorFixed`, where the left coordinates
+are `f : (Fin (n+1) × ℕ) →₀ M` with `ψ'(1) f_q = f_q` and `appendTensorFixed` is the
+`ψ(1)`-fixed part of `Ind M = Hn (n+2) ψ(1) ⊗_(Hn (n+1)) M`; the map is
+`(f, g) ↦ Σ ψ(c'_j x^m) τ ⊗ f_(j,m) + Σ z^m ⊗ g_m` (`appendTensorCornerEquiv_apply`).
+So `ψ(1) Ind M ≅ ⊕_(j ≤ n, m) ψ'(1) M ⊕ ⊕_m M`. No flatness: the inverse is
+`z ⊗ y ↦ (F y, G y)` with `(F, G)` the `appendCornerEquiv` coordinates of `ψ(1) z`,
+balanced by the right linearity above (`appendCornerCoords_op_smul`). Generic helper:
+`appendFamilyTensor_coefficients` (`Σ Φ(single q 1) ⊗ c_q y = Φ(c) ⊗ y` for a right
+`ψ`-linear family `Φ` of corner elements).
+
+Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
+module, so only the identification of `L₀` with the content-`β` corner remains) to
+instantiate `MackeyCosets` (`direct`, `span`); the right-dot identities give `Rt_F`,
+`Rt_j` after applying `− ⊗ y`; then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
