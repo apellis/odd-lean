@@ -1619,10 +1619,21 @@ Arbitrary colours, commutative ground rings and cutoffs are retained.
 
 The importing consumer tests positive odd/even and zero cutoffs, the empty old
 word, signed balance and the top relation. It defines the moving-polynomial
-class separately; it does not prove that class nonzero. A bundled signed tensor
-equivalence, the right PBW comparison for this coefficient extension, and
-moving-polynomial nonvanishing remain open. Full transported old-factor killing,
-all-prefix QP induction/cancellation and projective resolution are next obligations;
+class separately; it does not prove that class nonzero.
+`ELVOld.balancedEquiv` in `ELVOldBalancedTensor.lean` now identifies
+the signed coend of coefficient-category Homs and `Old` with `Target`.
+Its explicit inverse inserts the old identity class; both composites and
+the signed representative formula are proved. The construction uses module
+tensors and a direct sum over old words, without finite-colour or flatness
+hypotheses. The right PBW comparison for this coefficient extension and
+moving-polynomial nonvanishing remain open.
+`ELVOld.oldPolynomial_move` transports the second-position old polynomial
+along the existing `moveHom` chain, with its full coefficient-and-dot sign.
+`projection_move_oldPolynomial` kills the resulting first-position output
+polynomial after this chain, including arbitrary ambient continuation.
+Repeated odd colours and odd/even/zero cutoffs are exercised. The prefix-crossing
+identity needed to turn this into (K), all-prefix QP induction/cancellation
+and projective resolution are next obligations;
 no identification with ordinary `contentTargetTensor` is asserted.
 
 ## Signed ELV coefficient quotient category
