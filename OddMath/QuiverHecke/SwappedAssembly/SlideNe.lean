@@ -397,6 +397,226 @@ theorem postCrossNe_slideR (i j : I) (hij : i ≠ j) (t : Sector I)
     exact hm
   exact conj_post_slideR (k := k) _ _ _ _ _ _ _ (P.W.dot_mem j _) _ _ hS _ _ _ hf
 
+/-! ## The mixed entries -/
+
+section QTransport
+
+variable {C : Type*} [Category C] [Preadditive C] [Linear k C]
+
+variable (Sc) in
+/-- The parameter polynomial `Q_ij(a, b)` in two endomorphisms, in the shape of `mixedQ`. -/
+def qExpr {A : C} (a b : End A) (i j : I) : End A :=
+  if D.d i j = 0 then (Sc.t i j : k) • (1 : End A) else
+    (Sc.t i j : k) • a ^ D.dn i j + (Sc.t j i : k) • b ^ D.dn j i +
+      ∑ p ∈ Finset.Ioo 0 (D.dn i j), ∑ q ∈ Finset.Ioo 0 (D.dn j i),
+        Sc.s i j p q • (a ^ p * b ^ q)
+
+private theorem comp_pow_signed {A A' : C} (g : A ⟶ A') (a' : End A) (a : End A') (e : k)
+    (h : g ≫ a = e • (a' ≫ g)) : ∀ n : ℕ, g ≫ a ^ n = e ^ n • ((a' ^ n : End A) ≫ g)
+  | 0 => by simp [End.one_def]
+  | n + 1 => by
+    rw [pow_succ, End.mul_def, ← Category.assoc, h, Linear.smul_comp, Category.assoc,
+      comp_pow_signed g a' a e h n, Linear.comp_smul, smul_smul, ← Category.assoc,
+      pow_succ, pow_succ, End.mul_def, mul_comm]
+
+private theorem comp_monomial_signed {A A' : C} (g : A ⟶ A') (a' b' : End A) (a b : End A')
+    (ea eb : k) (ha : g ≫ a = ea • (a' ≫ g)) (hb : g ≫ b = eb • (b' ≫ g)) (p q : ℕ) :
+    g ≫ (a ^ p * b ^ q) = (ea ^ p * eb ^ q) • ((a' ^ p * b' ^ q : End A) ≫ g) := by
+  rw [End.mul_def, ← Category.assoc, comp_pow_signed g b' b eb hb, Linear.smul_comp,
+    Category.assoc, comp_pow_signed g a' a ea ha, Linear.comp_smul, smul_smul,
+    End.mul_def, Category.assoc, mul_comm]
+
+private theorem zmod_two_eq_zero_of_ne_one' {a : ZMod 2} (h : a ≠ 1) : a = 0 := by
+  fin_cases a
+  · rfl
+  · exact absurd rfl h
+
+private theorem dn_mul_parity' (i x : I) : (D.dn i x : ZMod 2) * D.parity i = 0 := by
+  by_cases hi : D.parity i = 1
+  · by_cases hix : i = x
+    · subst hix
+      simp [SKM.Datum.dn, D.d_self]
+    · obtain ⟨m, hm⟩ := D.even_d_of_odd hi x
+      have hc : (D.dn i x : ℤ) = m + m := by rw [D.dn_cast hix, hm]
+      have : D.dn i x = m.toNat + m.toNat := by omega
+      rw [this, hi]
+      push_cast
+      ring_nf
+      rw [show (2 : ZMod 2) = 0 from rfl, mul_zero]
+  · rw [zmod_two_eq_zero_of_ne_one' hi, mul_zero]
+
+/-- `Q_ij` is transported along `g` when the two dots move with signs that are trivial on
+the powers of an odd colour that occur (`Sc.s_eq_zero`, `Datum.even_d_of_odd`). -/
+theorem comp_qExpr {A A' : C} (g : A ⟶ A') (a' b' : End A) (a b : End A') (i j : I)
+    (ea eb : k) (ha : g ≫ a = ea • (a' ≫ g)) (hb : g ≫ b = eb • (b' ≫ g))
+    (hea : ∀ n : ℕ, (n : ZMod 2) * D.parity i = 0 → ea ^ n = 1)
+    (heb : ∀ n : ℕ, (n : ZMod 2) * D.parity j = 0 → eb ^ n = 1) :
+    g ≫ qExpr Sc a b i j = qExpr Sc a' b' i j ≫ g := by
+  unfold qExpr
+  split_ifs with hd
+  · rw [End.one_def, End.one_def, Linear.comp_smul, Linear.smul_comp, Category.comp_id,
+      Category.id_comp]
+  · rw [Preadditive.comp_add, Preadditive.comp_add, Preadditive.add_comp,
+      Preadditive.add_comp, Linear.comp_smul, Linear.comp_smul, Linear.smul_comp,
+      Linear.smul_comp, comp_pow_signed g a' a ea ha, comp_pow_signed g b' b eb hb,
+      hea _ (dn_mul_parity' i j), heb _ (dn_mul_parity' j i), one_smul, one_smul]
+    congr 1
+    erw [Preadditive.comp_sum, Preadditive.sum_comp]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    erw [Preadditive.comp_sum, Preadditive.sum_comp]
+    refine Finset.sum_congr rfl fun q _ => ?_
+    erw [Linear.comp_smul, Linear.smul_comp]
+    by_cases hs : Sc.s i j p q = 0
+    · rw [hs, zero_smul, zero_smul]
+    · rw [comp_monomial_signed g a' b' a b ea eb ha hb p q,
+        hea p (zmod_two_eq_zero_of_ne_one' fun h => hs (Sc.s_eq_zero i j p q h)),
+        heb q (zmod_two_eq_zero_of_ne_one' fun h => hs (by
+          rw [Sc.s_symm]; exact Sc.s_eq_zero j i q p h)), one_mul, one_smul]
+
+/-- A relation `a ≫ J = e (J ≫ a')` with `e² = 1` across an isomorphism, inverted. -/
+theorem inv_comp_signed {A A' : C} (J : A ≅ A') (a : End A) (a' : End A') (e : k)
+    (he : e * e = 1) (h : a ≫ J.hom = e • (J.hom ≫ a')) :
+    a' ≫ J.inv = e • (J.inv ≫ a) := by
+  have h' : J.inv ≫ a ≫ J.hom = e • a' := by
+    rw [h, Linear.comp_smul, Iso.inv_hom_id_assoc]
+  calc a' ≫ J.inv = (e * e) • (a' ≫ J.inv) := by rw [he, one_smul]
+    _ = e • ((e • a') ≫ J.inv) := by rw [Linear.smul_comp, smul_smul]
+    _ = e • (J.inv ≫ a) := by rw [← h', Category.assoc, Category.assoc, Iso.hom_inv_id,
+        Category.comp_id]
+
+end QTransport
+
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] [TwoSupercategory k B] in
+theorem koszulSign_smul_eq_zsign {C : Type*} [Category C] [Preadditive C] [Linear k C]
+    {A A' : C} (p q : ZMod 2) (f : A ⟶ A') :
+    koszulSign p q • f = zsign k (p * q) • f := by
+  rcases Supercategory.parity_eq_zero_or_one p with rfl | rfl <;>
+    rcases Supercategory.parity_eq_zero_or_one q with rfl | rfl <;> simp [zsign, koszulSign]
+
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] [TwoSupercategory k B] in
+theorem zsign_pow_of_mul_eq_zero (p q : ZMod 2) (n : ℕ) (hn : (n : ZMod 2) * p = 0) :
+    zsign k (p * q) ^ n = 1 := by
+  rcases Supercategory.parity_eq_zero_or_one p with rfl | rfl
+  · simp [zsign]
+  · rw [mul_one] at hn
+    obtain ⟨m, rfl⟩ := (ZMod.natCast_eq_zero_iff n 2).1 hn
+    rw [pow_mul, sq, zsign_mul_self', one_pow]
+
+private theorem shift_sum_ne (i j : I) (β : I →₀ ℕ) :
+    homContentShift D j (β + Finsupp.single i 1) + homContentShift D j β =
+      D.parity i * D.parity j := by
+  rw [homContentShift_add_single, mul_comm]
+  generalize homContentShift D j β = a
+  generalize D.parity i * D.parity j = b
+  fin_cases a <;> fin_cases b <;> decide
+
+private theorem mul_left_self (p q : ZMod 2) : p * q * p = p * q := by
+  fin_cases p <;> fin_cases q <;> decide
+
+private theorem mul_right_self (p q : ZMod 2) : p * q * q = p * q := by
+  fin_cases p <;> fin_cases q <;> decide
+
+/-- The probe dot moves across the distinct-colour mixed interchange. -/
+theorem prPreDot_comp_mixedJ_ne (i j : I) (t : Sector I)
+    (hv : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    P.prPreDot i j t hv Z ≫ (P.mixedJ i j t hv Z).hom =
+      zsign k (D.parity i * D.parity j) • ((P.mixedJ i j t hv Z).hom ≫
+        (P.step (true, j) false t hv).map (P.T.dot i (P.muP_preE i t) ▷ Z)) := by
+  have h := homMixedInterchange_pre (k := k) (P.T.E i (P.muP_preE i t))
+    (P.W.E j (P.muM_postE j hv)) (homContentShift D j (t.1 + Finsupp.single i 1))
+    (homContentShift D j t.1) Z (P.T.dot i _) (P.T.dot_mem i _)
+  rw [shift_sum_ne, koszulSign_smul_eq_zsign (k := k), mul_left_self] at h
+  exact h
+
+/-- The reservoir dot moves across the distinct-colour mixed interchange. -/
+theorem prPostDot_comp_mixedJ_ne (i j : I) (t : Sector I)
+    (hv : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    P.prPostDot i j t hv Z ≫ (P.mixedJ i j t hv Z).hom =
+      zsign k (D.parity i * D.parity j) • ((P.mixedJ i j t hv Z).hom ≫
+        homContentPostDot P.T.obj P.W j t.1 (P.muP t) (P.muM_postE j hv)
+          ((P.step (true, i) true (nextSector (true, j) false t) trivial).obj Z)) := by
+  have h := homMixedInterchange_post (k := k) (P.T.E i (P.muP_preE i t))
+    (P.W.E j (P.muM_postE j hv)) (homContentShift D j (t.1 + Finsupp.single i 1))
+    (homContentShift D j t.1) Z (P.W.dot j _) (P.W.dot_mem j _)
+  rw [shift_sum_ne, koszulSign_smul_eq_zsign (k := k), mul_right_self] at h
+  exact h
+
+/-- The two dots on the path `(P,R)` of `Eᵢ Eⱼ` supercommute. -/
+theorem prPostDot_comp_prPreDot (i j : I) (t : Sector I)
+    (hv : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    P.prPostDot i j t hv Z ≫ P.prPreDot i j t hv Z =
+      zsign k (D.parity i * D.parity j) • (P.prPreDot i j t hv Z ≫ P.prPostDot i j t hv Z) := by
+  have hy : homContentPostDot P.T.obj P.W j (nextSector (true, i) true t).1
+      (P.muP (nextSector (true, i) true t)) (P.muM_postE j hv) Z ∈
+        parity (R := k) _ _ (D.parity j) :=
+    IsSuperfunctor.map_mem (R := k) (F := homParityShift (k := k) _)
+      (TwoSupercategory.whiskerLeft_mem Z (P.W.dot_mem j _))
+  have h := TwoSupercategory.super_interchange (R := k) (P.T.dot_mem i (P.muP_preE i t)) hy
+  rw [koszulSign_smul_eq_zsign (k := k)] at h
+  have h' := congrArg (zsign k (D.parity i * D.parity j) • ·) h
+  simp only [smul_smul, zsign_mul_self', one_smul] at h'
+  exact h'.symm
+
+/-- **The slides of the probe/reservoir entry** `J` of the distinct-colour crossing. -/
+theorem mixedJ_ne_slides (i j : I) (t : Sector I)
+    (hv : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    (P.prPreDot i j t hv Z ≫ (P.mixedJ i j t hv Z).hom =
+      zsign k (D.parity i * D.parity j) • ((P.mixedJ i j t hv Z).hom ≫
+        (P.step (true, j) false t hv).map (P.T.dot i (P.muP_preE i t) ▷ Z))) ∧
+    ((P.mixedJ i j t hv Z).hom ≫
+        homContentPostDot P.T.obj P.W j t.1 (P.muP t) (P.muM_postE j hv)
+          ((P.step (true, i) true (nextSector (true, j) false t) trivial).obj Z) =
+      zsign k (D.parity i * D.parity j) • (P.prPostDot i j t hv Z ≫
+        (P.mixedJ i j t hv Z).hom)) := by
+  refine ⟨P.prPreDot_comp_mixedJ_ne i j t hv Z, ?_⟩
+  rw [P.prPostDot_comp_mixedJ_ne i j t hv Z, smul_smul, zsign_mul_self', one_smul]
+
+/-- The parameter polynomial on the path `(P,R)` commutes with both dots. -/
+theorem mixedQ_comm (i j : I) (t : Sector I)
+    (hv : StepValid (true, j) false (nextSector (true, i) true t))
+    (Z : P.H (nextSector (true, j) false (nextSector (true, i) true t))) :
+    P.prPostDot i j t hv Z ≫ P.mixedQ i j t hv Z = P.mixedQ i j t hv Z ≫ P.prPostDot i j t hv Z ∧
+    P.prPreDot i j t hv Z ≫ P.mixedQ i j t hv Z = P.mixedQ i j t hv Z ≫ P.prPreDot i j t hv Z := by
+  have hxy := P.prPostDot_comp_prPreDot i j t hv Z
+  have hyx : P.prPreDot i j t hv Z ≫ P.prPostDot i j t hv Z =
+      zsign k (D.parity i * D.parity j) • (P.prPostDot i j t hv Z ≫ P.prPreDot i j t hv Z) := by
+    rw [hxy, smul_smul, zsign_mul_self', one_smul]
+  have e1 : ∀ n : ℕ, (n : ZMod 2) * D.parity i = 0 →
+      zsign k (D.parity i * D.parity j) ^ n = 1 :=
+    fun n hn => zsign_pow_of_mul_eq_zero _ _ n hn
+  have e2 : ∀ n : ℕ, (n : ZMod 2) * D.parity j = 0 →
+      zsign k (D.parity i * D.parity j) ^ n = 1 :=
+    fun n hn => by rw [mul_comm]; exact zsign_pow_of_mul_eq_zero _ _ n hn
+  refine ⟨comp_qExpr (Sc := Sc) _ _ _ _ _ i j _ 1 hxy (by rw [one_smul]) e1
+    (fun _ _ => one_pow _), comp_qExpr (Sc := Sc) _ _ _ _ _ i j 1 _ (by rw [one_smul]) hyx
+    (fun _ _ => one_pow _) e2⟩
+
+/-- **The slides of the reservoir/probe entry** `J⁻¹ Q` of the distinct-colour crossing, from
+`(R,P)` of `Eᵢ Eⱼ` to `(P,R)` of `Eⱼ Eᵢ`. -/
+theorem mixedJinvQ_ne_slides (i j : I) (t : Sector I)
+    (hw : StepValid (true, i) false (nextSector (true, j) true t))
+    (Z : P.H (nextSector (true, i) false (nextSector (true, j) true t))) :
+    (homContentPostDot P.T.obj P.W i t.1 (P.muP t) (P.muM_postE i hw)
+        ((P.step (true, j) true (nextSector (true, i) false t) trivial).obj Z) ≫
+        ((P.mixedJ j i t hw Z).inv ≫ P.mixedQ j i t hw Z) =
+      zsign k (D.parity i * D.parity j) • (((P.mixedJ j i t hw Z).inv ≫ P.mixedQ j i t hw Z) ≫
+        P.prPostDot j i t hw Z)) ∧
+    (((P.mixedJ j i t hw Z).inv ≫ P.mixedQ j i t hw Z) ≫ P.prPreDot j i t hw Z =
+      zsign k (D.parity i * D.parity j) • ((P.step (true, i) false t hw).map
+        (P.T.dot j (P.muP_preE j t) ▷ Z) ≫ ((P.mixedJ j i t hw Z).inv ≫ P.mixedQ j i t hw Z))) := by
+  obtain ⟨hQy, hQx⟩ := P.mixedQ_comm j i t hw Z
+  have hpost := inv_comp_signed _ _ _ _ (zsign_mul_self' _) (P.prPostDot_comp_mixedJ_ne j i t hw Z)
+  have hpre := inv_comp_signed _ _ _ _ (zsign_mul_self' _) (P.prPreDot_comp_mixedJ_ne j i t hw Z)
+  rw [mul_comm (D.parity j)] at hpost hpre
+  constructor
+  · rw [← Category.assoc, hpost, Linear.smul_comp, Category.assoc, Category.assoc, hQy]
+  · rw [Category.assoc, ← hQx, reassoc_of% hpre, Linear.smul_comp, smul_smul, zsign_mul_self',
+      one_smul, Category.assoc]
+
 end ProbeReservoir
 
 end OddMath.QuiverHecke.SwappedAssembly
