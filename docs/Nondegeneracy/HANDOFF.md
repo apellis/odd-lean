@@ -62,6 +62,37 @@ Identify the moving-square shift (and the even moving-dot shift), then prove
 cancellation by the leading finite-support coordinate. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
+## Reverse probe-pair Q transport
+
+`BraidMixed/ProbePairDots.lean` generalizes the spectator dot transport to arbitrary
+reservoir colour. Both probe dots and the same-colour crossing supercommute with
+the reservoir dot. `probePairFirstIso_conj_mixedQ` and `probePair_map_mixedQ`
+identify the two transported Q factors with `qExpr Sc x₁ z i r` and
+`qExpr Sc x₂ z i r` for the same spectator `z`. The mixed signs disappear only
+using the parity support of Q; no Q value is inverted.
+`NonVacuity.MixedProbePairDots` checks their product identification at distinct
+Boolean colours and an occupied reservoir sector. Its seven theorem axiom
+reports contain only the three standard axioms.
+
+The earlier polynomial and reverse-sector drafts remain outside library imports.
+The checked `WorkInProgress/QWeightedEvaluation.lean` adds the evaluation adapter:
+`qCoefficientPolynomial` has coefficients in a commutative spectator algebra,
+uses half-exponents exactly for odd colours, and retains the two leading terms
+and all supported mixed terms. `qExponent_allowed_pow` discharges the parity
+support. `probePairQProduct_eq_eval_product` rewrites the actual transported
+product as `φ (F.eval₂ c b * F.eval₂ c a)`, using one and the same polynomial F.
+The order is reversed because multiplication in End reverses composition.
+It requires a supplied commutative realization of the compressed dots; it does
+not assume centrality, invert Q, or prove existence of that realization.
+
+Still missing: construct the commutative algebra containing the two compressed
+probe dots, the compressed spectator and the slide correction; prove coefficient
+centrality and the two affine slides; apply `QWeightedDraft.polynomial_norm`;
+then assemble the equality on the right of `reverseProbePair_braid_iff`.
+`Algebra.isMulCommutative_adjoin` is a possible realization API. In the ordinary
+End convention, compute the slide correction sign before reusing the polynomial
+lemma. These transport and evaluation results do not close the reverse braid.
+
 ## Mixed-colour sector braid: two probes and one reservoir
 
 `BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
