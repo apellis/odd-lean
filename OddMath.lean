@@ -105,6 +105,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
 import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
+import OddMath.QuiverHecke.CyclotomicAction.RouquierCupCapKernel
 import OddMath.QuiverHecke.CyclotomicAction.GlobalCross
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRestriction
 import OddMath.QuiverHecke.CyclotomicAction.GlobalInduction
