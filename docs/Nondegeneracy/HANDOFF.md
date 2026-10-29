@@ -1015,6 +1015,11 @@ endpoints take the same number of probe summands (the probe content of the endpo
 `{PRR, RPR, RRP}`, `RRR`, each already checked. `braid_same c L ν i hc h p q Z` is the
 field `CrossBraid.braid` at `i = j = k'` for `swappedGens c L`, under `c.IsInverse` and
 `CrossCoeffInputs`. Next: the pattern `iji`.
+Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
+`comp_qExpr_sub`): if `ψ x₁ - (-1)^{pᵢ} x₂ ψ = 1`, `ψ y = ε y ψ` and `y x₂ = ε x₂ y`
+(`ε = (-1)^{pᵢpⱼ}`), then `ψ Q_ij(x₁, y) - Q_ij(x₂, y) ψ` equals the correction term of
+(1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
+the mixed interchanges to this form (block `PRP` first).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -1498,6 +1503,15 @@ has even powers of an odd dot, so the even case `homDistinctMixedMateDot_isIso` 
 `(R,R)` (`homShiftedPostCrossMate_isIso`), then `sigmaPermutation_of_isIso`. The same-colour
 case `i = j` is not part of `SigmaPermutation`; it is `SwappingInvertible`
 (`Sigma/SameColourBlocks.lean`).
+
+**The `(R,P)` sigma entry is invertible (checked).**
+`SwappedAssembly/Sigma/ReservoirProbeEntry.lean`:
+`ProbeReservoir.isIso_sigmaEntry_reservoir_probe`. For `i ≠ j`, the entry from the path `p` of
+`Eⱼ Fᵢ` with `Eⱼ` on the reservoir and `Fᵢ` on the probe (`p.sides = [false, true]`) to the path
+`q` of `Fᵢ Eⱼ` with `q.sides = [true, false]` is an isomorphism, with no hypothesis on dots: the
+cup and cap are probe unit and counit, and the crossing layer is the mixed interchange `J`
+alone (`isIso_probeMixedMateNe`, the distinct-colour analogue of `isIso_probeMixedMate`, via
+`isIso_homContentDistinctMixedPreMate_of_eq`). Remaining for `hσ`: `(R,R)` and `(P,P)`.
 
 ## Old-only ELV quotient module
 
