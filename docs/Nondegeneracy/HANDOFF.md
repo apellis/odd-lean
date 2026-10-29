@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Pairwise-distinct braid on arbitrary paths
+
+`ProbeReservoir.braid_pairwiseDistinct` proves the literal equality
+`braidLeft (P.swappedGens c L) i j r ν p q Z = braidRight ...` for arbitrary
+source and target paths and three pairwise-distinct colours. It imposes no
+additional relation hypothesis beyond the supplied probe/reservoir data.
+Arbitrary colours, weights, contents and commutative coefficients are retained.
+
+`distinctPureProbe_braid` and `distinctPureReservoir_braid` transport the supplied
+factor braids to the pure canonical paths. The reservoir proof retains the
+postcomparison beta/xi maps and all content-dependent parity signs. Together
+with the six mixed sectors, endpoint uniqueness and the eight source placements
+prove the arbitrary-path theorem. No Q polynomial or factor crossing is cancelled.
+`PairwiseDistinctBraid.lean` is a generic arbitrary-path consumer and audits every
+declaration owned by the three new modules, including generated/private declarations.
+
+Remaining: the non-correction cases with adjacent equal colours, and the
+repeated-outer diagonal correction and off-diagonal equality. This is not yet
+a complete `CrossBraid`, nor a nonzero model or nondegeneracy theorem.
+
 ## Reverse and middle unequal-reservoir sector braids
 
 `reverseDistinctReservoir_braid` proves `RᵣR_qPᵢ → PᵢR_qRᵣ`, retaining
