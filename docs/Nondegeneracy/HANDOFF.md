@@ -165,7 +165,23 @@ with reservoir content `single 2 1` and audits all declarations of the five new
 modules, including private/generated declarations. The supplied representation
 data and coefficients are arbitrary; no independent nonzero model is claimed.
 
-Remaining: other distinct-colour sectors and repeated-outer-colour corrections.
+`BraidMixed/MiddleDistinctProbeSector.lean`: `middleDistinctProbe_braid`
+proves `PᵢRᵣPⱼ → PⱼRᵣPᵢ` for arbitrary pairwise distinct colours,
+weights, contents, coefficients and supplied data. The individual inner Q
+factor is transported by `preCrossNe_qExpr_inner`, using the prescribed
+unequal-probe slide and supernaturalness. `distinctProbeInnerSectorQ_cross`
+keeps the sector transports and conjugates the target weight by the first
+mixed comparison. The braid reuses the forward two-probe braid and cancels
+only mixed comparison isomorphisms. No Q or probe crossing is inverted.
+The importing consumer uses arbitrary colours and arbitrary occupied content,
+not a finite representation, and audits every owned declaration.
+
+Exact pairwise-distinct residual: all three one-probe/two-reservoir placements
+with unequal reservoir colours; all-probe and all-reservoir sector transport
+from the factor braid; assembly for arbitrary source/target sector paths.
+The three two-probe placements have explicit sector lemmas. Separately,
+equalities between colours on different sides and repeated-outer-colour
+corrections remain before a complete `CrossBraid` construction.
 This theorem contributes one sector to `CrossBraid.braid`; it does not
 construct a complete `CrossBraid`.
 
