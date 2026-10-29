@@ -27,13 +27,22 @@ ideal (`hcyc`) and by the diagonal idempotents of the words `t` with `q_t ≠ ε
 (`Ind.descend`). The content corner of parity `ε` satisfies `hpar` when all its words have
 `q_t = ε`; the hypotheses replace the content-corner bookkeeping of §4.
 
-Next target: the prepend-side source module with the `Π^ε` shift as the domain of
-`MackeyCosets` (fields `short`, `ℓ`, `cover`, `ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`, `ρ`,
-`P_short`), assembled with `MackeyCosets.ofTarget` against `appendContentMackeyTarget`; then
-`P ρ = R_t P` (obligation 1).
-Next target: the matrix form (2) and the descent of `P` to
-`Ind_(φ_L) B → Ind_ψ B` (`AppendMackeySource.md` §4), then the source-side fields of
-`MackeyCosets` and `P ρ = R_t P` (obligation 1).
+Checked: obligation 1, `P ρ = R_t P`, up to a constant sign
+(`OddMath/QuiverHecke/CyclotomicAction/AppendMackeyRho.lean`). The last-dot slide
+`lastDot_comp_appendW_mem`: `x_last ≫ W_ν - (-1)^(p(i) p(ν)) (W_ν ≫ x₁)` lies in
+`appendKill ν ν`. On words `t` with `q_t = ε` the sign is the constant
+`c = (-1)^(ε - deg(a_i) p(i))` (`appendSourceSign`), so
+`affineFirstDot_mul_appendMoveMatrix_sub_mem`: `c (x₁ W) - W x_last` lies in
+`appendVanishing` under `hcyc`, `hpar`. The source dot `ρ = appendSourceDot θ hθ`
+(`z ⊗ m ↦ z x₁ ⊗ θ m` on `Ind_(φ_ε) N`, unsigned first dot) satisfies
+`appendMackeyMap_appendSourceDot`: `P (ρ t) = c • R_t (P t)` with
+`R_t = appendTensorRightDot θ hθ`. To match `MackeyCosets` exactly, use `c • ρ` (or replace
+`θ` by `c θ`) when assembling.
+
+Next target: the remaining source-side fields of `MackeyCosets` (`short`, `ℓ`, `cover`,
+`ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`, `P_short`) for the prepend-side module `Ind_(φ_ε) N` with the
+`Π^ε` shift, assembled with `MackeyCosets.ofTarget` against `appendContentMackeyTarget`.
+
 ## Integer grading of the reservoir: (N) and (J) for `CentralInvertible`
 
 Assessment: `ReservoirGradingRoute.md`. The two grading inputs of `SwappedHomInversion.md` §4,
