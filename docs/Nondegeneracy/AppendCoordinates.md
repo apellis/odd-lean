@@ -91,6 +91,13 @@ and `j(f) = Σ_l x^l ψ(f_l)`. By (2), `F = ε-signed right-oriented crossing pa
 
 These identities are right `B`-linear, so they descend through `− ⊗_B M`.
 
+*Domain.* All of this takes place in the two-sided corner `e A e`, `e = ψ(1)`: the
+crossing `τ_n` there is the equal-colour last crossing, so `ψ(c'_j x_n^m) τ_n ψ(u)`
+depends only on `e' u` with `e' = ψ'(1)` (old words whose last colour is the appended
+colour). The crossing coordinates are therefore `u : Fin n × ℕ →₀ e'B`, and the
+right-oriented coordinates of an element of `e A e` with `j < n` lie in `ψ(e'B)`. The
+matrix identity `c_j e = ψ(c'_j) τ_n` is `appendShuffleElement_castSucc_mul_corner`.
+
 Moreover `F(Fin n × ℕ →₀ B) = ψ(B) τ_n ψ(B)`: by the append basis one level down,
 `B = ⊕_(j<n,m) c'_j x_n^m ψ'(B')` as right `B'`-modules (`B' = Hn (n−1)`), and
 `ψψ'(B')` commutes with `τ_n` up to sign, so `ψ(a) τ_n ψ(b)` is a sum of

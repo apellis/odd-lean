@@ -4877,7 +4877,19 @@ an append shuffle is determined by `j = u⁻¹(n)`, `u⁻¹ = runPerm n j = s_j 
 `exists_canWord_eq_range'`), and `appendRunEquiv : Fin (n+1) ≃ AppendShuffle` (via
 `card_appendShuffle = n + 1`). Since `cw` reverses words, the moving crossings `c_j` first
 cross the last two strands and then the old strands only: `c_j = c'_j τ_n` (algebra order).
-Next: the left-oriented correction (2) of `AppendCoordinates.md`.
+Checked: `CyclotomicAction/AppendLeftCrossing.lean`. `appendShuffleHom_castSucc` (entry
+form) and `appendShuffleElement_castSucc_mul_corner`: on the two-sided corner,
+`c_j ψ(ψ(1)) = ψ(c'_j) τ` for `j ≤ n`, where `c_j` moves the appended strand of
+`Hn (n+2)` to position `j`, `c'_j` is the same moving crossing in `Hn (n+1)` and `τ` is
+`affineLastCrossing i i n`; with `single_cl_congr`, `cw_range'_succ`,
+`appendAlgebra_appendAlgebra_one_eq_sum`, `single_mul_affineLastCrossing`.
+
+Correction to the proposed §4 of `AppendCoordinates.md` (domain only): the crossing
+coordinates of `F` live in `e'B`, `e' = ψ'(1)` (old words ending in the appended
+colour), not in `B`; `F(u)` only depends on `e'u`. The decomposition is of the two-sided
+corner `ψ(1) A ψ(1) = ⊕_(j<n,m) c_j x^m ψ(e'B) ⊕ ⊕_m x^m ψ(B)`.
+
+Next: the dot slide (1) for `τ` and the assembly of `F`, `direct`, `span`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
