@@ -295,3 +295,94 @@ theorem dotDiag_swap (a b : ℕ) :
 end DotSwap
 
 end OddMath.QuiverHecke
+
+namespace OddMath.QuiverHecke
+open CategoryTheory StringDiagrams
+open SKM (zsign)
+variable {I : Type*} {X : Type*} [AddCommGroup X] (D : SKM.Datum I X)
+variable {k : Type*} [CommRing k] (Sc : SKM.Scalars D k)
+
+/-- The weighted reflection, as a functor on linear combinations of diagrams. -/
+abbrev mirrorLin : (Free k (Obj (sig D))) ⥤ (pres D Sc).Presented :=
+  freeLift k ((mirrorSig D).toLayerMap.toPresented (pres D Sc) (mirrorWeight D))
+
+/-- Expand the image of a relation and a relation of the target into classes of diagrams. -/
+macro "mirror_expand" : tactic => `(tactic|
+  simp only [relation, Functor.map_sub, Functor.map_smul, mirror_dg, mirror_idg,
+    eqToHom_refl, Category.id_comp, Category.comp_id, dotsL, crossL, List.map_replicate,
+    List.map_cons, List.map_nil, List.map_append, List.replicate_one, mirrorLD, Shape.mirror,
+    List.reverse_nil, List.reverse_cons, List.nil_append, List.cons_append, List.prod_cons,
+    List.prod_nil, List.singleton_append, mirrorWeight, mul_one, one_mul,
+    Presentation.lin_sub, Presentation.lin_smul, Presentation.lin_of, smul_sub])
+
+theorem mirror_rel_of {r : Rel D} (r' : Rel D) (hd : r'.dom = r.dom.reverse)
+    (hc : r'.cod = r.cod.reverse) (c : k)
+    (h : (mirrorLin D Sc).map (relation D Sc r) =
+      c • (eqToHom (congrArg (pres D Sc).obj ((mirrorSig_obj D r.dom).trans (by rw [hd]))) ≫
+        (pres D Sc).lin (relation D Sc r') ≫
+          eqToHom (congrArg (pres D Sc).obj ((mirrorSig_obj D r.cod).trans (by rw [hc])).symm))) :
+    (mirrorLin D Sc).map ((pres D Sc).rel r) = 0 := by
+  have h' := (pres D Sc).lin_rel_self r'
+  change (pres D Sc).lin (relation D Sc r') = 0 at h'
+  change (mirrorLin D Sc).map (relation D Sc r) = 0
+  rw [h, h']
+  simp
+
+theorem mirror_rel_quadEq (i : I) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.quadEq i)) = 0 := by
+  refine mirror_rel_of D Sc (.quadEq i) rfl rfl 1 ?_
+  mirror_expand
+  generalize D.parity i = a
+  fin_cases a <;> simp [zsign]
+
+theorem mirror_rel_quadZero (i j : I) (hij : i ≠ j) (hd : D.d i j = 0) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.quadZero i j hij hd)) = 0 := by
+  refine mirror_rel_of D Sc (.quadZero j i hij.symm ((D.d_eq_zero_iff i j).mp hd)) rfl rfl 1 ?_
+  mirror_expand
+  rw [Sc.t_symm_of_d_eq_zero i j hd]
+  generalize D.parity i = a
+  generalize D.parity j = b
+  fin_cases a <;> fin_cases b <;> simp [zsign] <;> rfl
+
+theorem mirror_rel_slideL (i j : I) (hij : i ≠ j) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.slideL i j hij)) = 0 := by
+  refine mirror_rel_of D Sc (.slideR j i hij.symm) rfl rfl 1 ?_
+  mirror_expand
+  generalize D.parity i = a
+  generalize D.parity j = b
+  fin_cases a <;> fin_cases b <;> simp [zsign] <;> module
+
+theorem mirror_rel_slideR (i j : I) (hij : i ≠ j) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.slideR i j hij)) = 0 := by
+  refine mirror_rel_of D Sc (.slideL j i hij.symm) rfl rfl 1 ?_
+  mirror_expand
+  generalize D.parity i = a
+  generalize D.parity j = b
+  fin_cases a <;> fin_cases b <;> simp [zsign] <;> module
+
+theorem mirror_rel_slideLEq (i : I) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.slideLEq i)) = 0 := by
+  refine mirror_rel_of D Sc (.slideREq i) rfl rfl 1 ?_
+  mirror_expand
+  generalize D.parity i = a
+  fin_cases a <;> simp [zsign] <;> module
+
+theorem mirror_rel_slideREq (i : I) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.slideREq i)) = 0 := by
+  refine mirror_rel_of D Sc (.slideLEq i) rfl rfl 1 ?_
+  mirror_expand
+  generalize D.parity i = a
+  fin_cases a <;> simp [zsign] <;> module
+
+theorem mirror_rel_braid (i j m : I) (h : ¬(i = m ∧ i ≠ j)) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.braid i j m h)) = 0 := by
+  refine mirror_rel_of D Sc (.braid m j i fun ⟨e, hne⟩ => h ⟨e.symm, e ▸ hne⟩) rfl rfl
+    (zsign k (D.parity i * D.parity j) * zsign k (D.parity i * D.parity m) *
+      zsign k (D.parity j * D.parity m)) ?_
+  mirror_expand
+  generalize D.parity i = a
+  generalize D.parity j = b
+  generalize D.parity m = c
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [zsign] <;> module
+
+end OddMath.QuiverHecke
