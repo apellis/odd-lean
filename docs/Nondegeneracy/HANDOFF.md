@@ -34,12 +34,70 @@ spectators at arbitrary cutoff.
 `qp_distinct` evaluates the existing signed affine distinct-colour transport
 in this same quotient, with arbitrary prefix, spectators and continuation.
 `qp_nil` checks the empty identity against the actual `qpProduct`. These
-complete the distinct recursion and empty base, but not the all-word product
-identity. The next target is the induction assembly: preservation of evaluated
-equalities by each positioned polynomial factor, coherent spectator reassociation,
-and combination with `qp_repeated_even` and `qp_repeated_odd`. The raw product
-retains the repeated-even factor −1. No crossing-normalization comparison or
-literal no-even-factor equation (3) is asserted.
+complete the distinct recursion and empty base. The subsequent all-word
+signed induction is now proved in `ELVQPProduct.lean`, as described above.
+The raw product retains the repeated-even factor −1. No crossing-normalization
+comparison or literal no-even-factor equation (3) is asserted.
+
+## Graded right append and affine transformations
+
+`ELVTruncatedAppend.lean` constructs `truncatedAppendGraded σ` on all words,
+using the existing `ELVOld.rightContext`. The old first-position ideal is
+preserved by `ideal_rightContext`; `coefficientHomIdeal_rightContext` proves
+preservation of the independent coefficient weight ideal. Their sum descends
+to `truncatedRightContext`. Identity, composition, linearity, total parity
+and integer degree are proved, for arbitrary words and cutoffs.
+
+`ELVTruncatedAppendTransform.lean` assigns each homogeneous affine morphism
+on the appended word its left-whiskered quotient component.
+`truncatedAppendComponent_supernatural` proves naturality against total
+coefficient-plus-diagram parity. The prescribed `dotE [i] 0` and
+`crossTwo i j` yield `truncatedAppendDot` and `truncatedAppendCross`, with
+parities `|i|` and `|i||j|` and degrees `2 dᵢ` and `dᵢ dᵢⱼ`.
+The crossing source and target are append `[i,j]` and append `[j,i]`;
+comparison with iterated one-strand append is not asserted.
+
+The existing ordinary consumers are `OddMath.QuiverHecke.inductionCorner`
+in `SuperInduction.lean` and the signed
+right-dot construction `inductionDotLinear_isHom` in `SuperDot.lean`.
+Their ELV analogues should use representable kernels of these append
+functors; this is not a new assumed action or a replacement corner axiom.
+The existing nonzero odd coefficient witness checks the negative sign in
+dot naturality, and arbitrary spectator lists check parity preservation.
+
+Remaining: representable induction/restriction kernels, their tensor
+comparison and adjunction, compatibility with iterated-append casts and
+weights, affine relation packaging for the full positive action, mixed
+factor closure and higher-content support. No left-context stability,
+monoidal quotient, inverse, boundedness, or `CentralInvertible` is claimed.
+
+## The truncated ELV category and its actual endomorphism algebra
+
+`ELVTruncatedCategory.lean` packages words with literal `TruncatedOld` Hom
+modules as a linear supercategory. Quotient composition descends through both
+two-sided ideals; identities, associativity, and bilinearity are proved on
+representatives. `truncatedGradedSupercategory` inherits the integer grading.
+`truncatedCategory_proj` and `truncatedCategory_dproj` identify both categorical
+projections with the established quotient projections.
+
+The headline `truncatedEndGSuperAlg` is the actual endomorphism algebra of any
+word, with multiplication `f * g = g ≫ f`, full coefficient classes and
+independent integer degree and parity. `ELVTruncatedModuleBound.lean` transfers
+the explicit one-strand bound to this algebra and supplies a natural threshold
+for finite colour sets. `truncatedSingle_regular_coefficients_bounded` applies
+`RegularReservoir.coefficient_eq_zero`; `truncatedSingle_module_coefficients_bounded`
+applies its faithful module-superfunctor realization. Neither uses an assumed
+comparison map, finite-dimensionality, or a bound on arbitrary module Hom spaces.
+
+The rational odd cutoff-two, coefficient-cutoff-three consumer retains the
+proved nonzero delta class as an element of this algebra, verifies parity one
+and integer degree two, and instantiates both regular and realized coefficient
+bounds. The carrier is definitionally the existing positive-content quotient.
+
+Remaining: higher-content upper support and homogeneous factor-closure maps,
+followed by the full factor action. No monoidal structure is asserted: prepending
+need not preserve the old first-position relation. There is no `CentralInvertible`
+conclusion and no upper bound on the untruncated old algebra or enlarged `Target`.
 
 ## Full ELV repeated-odd QP recursion
 
@@ -480,34 +538,6 @@ owned by the module against `propext`, `Classical.choice`, and `Quot.sound`. Its
 examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at content index `n=0` (old height one),
 and exact right action.
-
-## The truncated ELV category and its actual endomorphism algebra
-
-`ELVTruncatedCategory.lean` packages words with literal `TruncatedOld` Hom
-modules as a linear supercategory. Quotient composition descends through both
-two-sided ideals; identities, associativity, and bilinearity are proved on
-representatives. `truncatedGradedSupercategory` inherits the integer grading.
-`truncatedCategory_proj` and `truncatedCategory_dproj` identify both categorical
-projections with the established quotient projections.
-
-The headline `truncatedEndGSuperAlg` is the actual endomorphism algebra of any
-word, with multiplication `f * g = g ≫ f`, full coefficient classes and
-independent integer degree and parity. `ELVTruncatedModuleBound.lean` transfers
-the explicit one-strand bound to this algebra and supplies a natural threshold
-for finite colour sets. `truncatedSingle_regular_coefficients_bounded` applies
-`RegularReservoir.coefficient_eq_zero`; `truncatedSingle_module_coefficients_bounded`
-applies its faithful module-superfunctor realization. Neither uses an assumed
-comparison map, finite-dimensionality, or a bound on arbitrary module Hom spaces.
-
-The rational odd cutoff-two, coefficient-cutoff-three consumer retains the
-proved nonzero delta class as an element of this algebra, verifies parity one
-and integer degree two, and instantiates both regular and realized coefficient
-bounds. The carrier is definitionally the existing positive-content quotient.
-
-Remaining: higher-content upper support and homogeneous factor-closure maps,
-followed by the full factor action. No monoidal structure is asserted: prepending
-need not preserve the old first-position relation. There is no `CentralInvertible`
-conclusion and no upper bound on the untruncated old algebra or enlarged `Target`.
 
 ## Coefficient-truncated one-strand support
 
