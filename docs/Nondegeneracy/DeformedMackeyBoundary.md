@@ -126,7 +126,12 @@ its old factor gives `appendLeftSum`; the lower-height coefficient crosses
 τ with twist parity p(i)p(i), retaining the original right tensor coefficient.
 The content parameter n means old height n+1, including height one at n=0;
 cutoff zero is allowed. This checks only the ordinary-polynomial specialization,
-not full ELV coefficients, the reverse inclusion or the full boundary construction.
+not full ELV coefficients or the reverse inclusion. `AppendContentBoundary.lean`
+now assembles the ordinary content `MackeyCosets` and `toMackeyBoundary`
+using this forward inclusion. It identifies both extraction maps with their
+PBW coordinates, proves (5), and proves both identities in (8) for the
+normalized lifts. No monicity assumption is used. Full ELV coefficients,
+old height zero and the subsequent norm comparison remain separate.
 
 ## 3. Explicit lifts and first-order defect
 
