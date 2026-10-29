@@ -4823,3 +4823,11 @@ of `Hom(s ++ [i], t)` with `appendBasis_apply`, `appendElt_eq_comp`
 `appendAlgebra` (mirror of `prependCoordinateEquiv`), its balanced tensor descent, and the
 left-oriented correction (2) giving `direct`, `span`, `Rt_F`, `Rt_j` of `MackeyCosets` with
 `F(L₀') = ψ(B) τ_n ψ(B)` and `X` a signed exponent shift.
+
+Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendCoordinates.lean`, the matrix layer of
+the append expansion. `appendPBWTerm i u m b = c_u · x_last^m · appendAlgebra b` with its
+right old-algebra law and corner membership; `appendPBWTerm_single` (entry formula),
+`inductionLastDot_eq_dotE`, `appendPBWTerm_old_nf` (a term with a single old normal form
+coefficient is the matrix entry of `appendElt`) and `append_single_expansion` (every matrix
+entry with appended source is a finite sum of PBW terms, coefficients from `appendBasis`).
+Next: regroup into unique old-algebra coefficients (`appendCoordinateEquiv`).
