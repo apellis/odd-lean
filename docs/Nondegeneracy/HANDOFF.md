@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV prepend PBW normalization
+
+Checked in `ELVPrependCoordinates.lean`: the tensor extension of the existing
+`prependBasis` gives an affine coordinate equivalence over the full exterior
+coefficient algebra. For each existing input PBW index, the old-first factorization
+is proved, including the coefficient sign across the moving dots/crossings.
+Arbitrary coefficients are normalized by the tail-parity involution before the
+**total** old-morphism balance twist. `balancedEquiv_prependExpansion` compares
+this explicit finite expansion with the old-only projection through the proved
+`ELVOld.balancedEquiv`. The expansion is surjective and its kernel is exactly
+the affine coordinate preimage of the old-only relation span. No flatness or
+moving-polynomial quotient is assumed.
+
+Boundary: this is not an injective expansion over old quotient coefficients.
+Regroup the old PBW indices into `Old(v,t)` coefficients and prove an inverse,
+including extraction compatibility with arbitrary old composition. Only then
+identify the moving-square shift (and the even moving-dot shift) and prove
+cancellation by the leading finite-support coordinate. See
+`ELVPrependCoordinates.md` for the exact coefficient formula and source locator.
+
 ## Append content source: concrete moving-coset extraction
 
 Checked (`AppendContentCosets.lean`): `longPrependShuffle r` is `finRotate (r+1)`;
@@ -32,7 +52,6 @@ consumer build with warnings as errors; the consumer audits every declaration
 owned by the module against `propext`, `Classical.choice`, and `Quot.sound`. Its
 examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at rank zero, and exact right action.
-
 
 ## Append Mackey boundary: balance of P
 
