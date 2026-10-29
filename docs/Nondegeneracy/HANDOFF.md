@@ -1,5 +1,35 @@
 # Odd nondegeneracy: restart state
 
+## Unequal-reservoir transport prerequisite (forward sector still open)
+
+`BraidMixed/InterchangePostPairTransport.lean` adds
+`resCore_mixedInterchange_transport` and `probe_obj_sector_transport`.
+The first is the arbitrary-colour/content shifted interchange triangle with
+explicit equality transports on both reversed reservoir targets and on the
+source of the unshifted crossing. Its crossing is right-associated exactly
+as in `postCrossNe`; it specializes `resCore_mixedInterchange_pair`, with no
+new braid hypothesis and no inversion of Q or a factor crossing. The second
+commutes probe evaluation with sector equality transport.
+
+This checkpoint does **not** prove the requested forward braid entry
+`PᵢRᵣRₛ → RₛRᵣPᵢ` for pairwise distinct colours. The attempted direct
+`postCrossNe_mixedJ_pair_heq` specialization constructed its generic triangle
+instance but hit the default elaboration budget in the final whole-composite
+`exact ht` definitional comparison, after repairing the source transport. Unfolding
+sector-dependent types and simplifying globally also triggers Lean
+implicit-transparency type-correctness failures; do not paper over these
+with transparency overrides. Normalize the generic triangle before
+specializing, and split the large specialized expression into named typed
+maps/lemmas. The two direct-construction braid path reductions and final
+mixed-iso cancellation have not been implemented for unequal reservoirs.
+
+Remaining: that specialization and forward path assembly; separate reverse
+and middle placements with their individual unequal Q transports; all-same-side
+factor braid transport and arbitrary-path assembly; repeated-outer correction
+separately. Source target remains BE2, arXiv:1701.04133v2, Definition 1.5 (1.9).
+`MixedDistinctReservoirTransport.lean` validates only the transport prerequisite
+at arbitrary occupied content and audits the entire new module.
+
 ## Three-distinct-colour two-probe sector braid
 
 `BraidMixed/DistinctProbeSector.lean`: `distinctProbe_braid` proves the literal
