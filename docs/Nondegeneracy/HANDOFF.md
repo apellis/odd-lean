@@ -668,6 +668,28 @@ up to the sector equality `nextSector (up i) σ (nextSector (dn i) σ s) = s`
 identities (`triangle_left_of_eq`, `triangle_right_of_eq`). So `ZigzagRelations`
 holds for `P.layerRep Gs Ys (P.swappedGens c L)` unconditionally.
 
+**Supernaturality of the swapped dot, cup and cap (checked).**
+`SwappedAssembly/Supernatural/Basic.lean`, towards `GeneratorsSupernatural
+(P.swappedGens c L)`: `dotImage_supernatural` (parity `p_i`), `cupImage_supernatural`
+and `capImage_supernatural` (parity `0`), for all summand paths of the boundaries, with
+no hypotheses beyond the `ProbeReservoir` data. Tools: `castH h : P.H b ⥤ P.H a`, the
+transport of Hom-sector objects along `h : a = b` (additive, linear, a superfunctor),
+with `pathFunctor_one`, `pathFunctor_two` writing the path functor of a one- or
+two-letter path as `castH e` followed by the strand functors; the reductions
+`oneLetterDiag_supernatural`, `zeroTwo_supernatural`, `twoZero_supernatural` reduce a
+one-letter diagonal, empty-to-two-letter or two-letter-to-empty matrix to its
+components at arbitrary sectors; the generic `IsSupernatural.of_eq_conj` (conjugation by
+`eqToHom` along equalities of functors), `isSupernatural_eqToHom`,
+`isSupernatural_zero`. Components: the dot is `homPreTransform (T.dot i _)` on the probe
+summand and `homContentPostDot` (`homContentPostDot_power_supernatural`, `n = 1`) on the
+reservoir summand; the cup and cap are the unit and counit of the content-shifted
+adjunctions (even natural transformations, `*_unit_mem`, `*_counit_mem`), whiskered by
+`castH` and composed with `eqToHom` families between the transported strand functors
+(`preE_functor_heq` and its three analogues).
+Remaining for `GeneratorsSupernatural (P.swappedGens c L)`: the crossing (its
+entries involve the scalar `c.a`, the polynomials of `Sc` and the mixed interchange)
+and the leftward crossings (`LeftwardData`).
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
