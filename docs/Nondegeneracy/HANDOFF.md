@@ -904,7 +904,10 @@ gives `x^{-l} ≫ s = q^l • (s ≫ y^{-l}) + Σ_{n<l} q^n • (x^{n-l} ≫ v �
 `ProbeWindow.exists_isCapInverse_shift` is (5): if `[s; xⁿ ≫ v]_{n<h}` is invertible, so is
 `[s; x^{n-l} ≫ v]_{n<h}` for every `l ≤ h`, via `x^{-l} ≫ F = F_l ≫ T` with `T` triangular
 (`q^l y^{-l}` on `Y`, identity on the window, column `q^n • (u ≫ y^{-n-1})` for `n < l`).
-Next: the cup-window form (6), then (7)–(14).
+`ProbeWindow.exists_isCupInverse_shift` is (6): if the cup window `[s, u ≫ yⁿ]_{n<h}` has a
+two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l ≤ h`; it is (5) in
+`Cᵒᵖ` (`isCupInverse_iff_op`), where the slide becomes `s ≫ x - q • (y ≫ s) = u ≫ (-q • v)`.
+Next: the case analysis (7)–(14) and the extraction (16)–(19).
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir

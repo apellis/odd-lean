@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Mathlib.CategoryTheory.Preadditive.Mat
+import Mathlib.CategoryTheory.Preadditive.Opposite
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Windows
 
 /-! # Shifted cap windows
@@ -16,6 +17,12 @@ Shifting the window by `l ≤ h` dots, `F_l = [s; v_{-l}, …, v_{h-l-1}]`, pres
 invertibility (`ProbeWindow.exists_isCapInverse_shift`, (5) there): the first window identity
 (`ProbeWindow.window_neg`) says `x^{-l} ≫ F = F_l ≫ T` for a triangular matrix `T` whose
 diagonal is `q^l y^{-l}` and the identity (`ProbeWindow.tri`).
+
+Cup windows `P = [s, u₀, …, u_{h-1}] : X ⊕ Oʰ ⟶ Y` (`u_n = u ≫ yⁿ`, (3) there) have entrywise
+inverses `ProbeWindow.IsCupInverse`, which are cap inverses in `Cᵒᵖ`
+(`ProbeWindow.isCupInverse_iff_op`). In `Cᵒᵖ` the slide reads
+`s ≫ x - q • (y ≫ s) = u ≫ (-q • v)`, so the cap shift gives (6) there:
+`ProbeWindow.exists_isCupInverse_shift`.
 -/
 
 namespace OddMath.QuiverHecke.SwappedAssembly.ProbeWindow
@@ -297,5 +304,100 @@ theorem exists_isCapInverse_shift (s : X ⟶ Y) (x : Aut X) (y : Aut Y) (v : X �
   have : IsIso (x ^ (-(l : ℤ))).hom := Iso.isIso_hom (X := X) (Y := X) (x ^ (-(l : ℤ)))
   rw [hcap]
   infer_instance
+
+
+/-! ### Shifted cup windows, by duality -/
+
+section Cup
+
+open Opposite
+
+/-- Entrywise two-sided inverse `[j; D]` of the cup-window map `[s, w₀, …, w_{h-1}] :
+X ⊕ Oʰ ⟶ Y`, (3) of `ProbeWindowInverse.md` in execution order. -/
+def IsCupInverse {X Y O : C} {h : ℕ} (s : X ⟶ Y) (w : Fin h → (O ⟶ Y)) (j : Y ⟶ X)
+    (D : Fin h → (Y ⟶ O)) : Prop :=
+  s ≫ j = 𝟙 X ∧ (∀ n, s ≫ D n = 0) ∧ (∀ m, w m ≫ j = 0) ∧
+    (∀ m n, w m ≫ D n = if m = n then 𝟙 O else 0) ∧ j ≫ s + ∑ n, D n ≫ w n = 𝟙 Y
+
+omit [Preadditive C] in
+private lemma op_eq_iff {X Y : C} (f g : X ⟶ Y) : f.op = g.op ↔ f = g :=
+  ⟨fun h => Quiver.Hom.op_inj h, fun h => h ▸ rfl⟩
+
+/-- A cup inverse is a cap inverse in the opposite category. -/
+lemma isCupInverse_iff_op {X Y O : C} {h : ℕ} (s : X ⟶ Y) (w : Fin h → (O ⟶ Y)) (j : Y ⟶ X)
+    (D : Fin h → (Y ⟶ O)) :
+    IsCupInverse s w j D ↔
+      IsCapInverse s.op (fun n => (w n).op) j.op (fun n => (D n).op) := by
+  have e1 : j.op ≫ s.op = 𝟙 (op X) ↔ s ≫ j = 𝟙 X := op_eq_iff (s ≫ j) (𝟙 X)
+  have e2 : ∀ n, (D n).op ≫ s.op = 0 ↔ s ≫ D n = 0 := fun n => op_eq_iff (s ≫ D n) 0
+  have e3 : ∀ m, j.op ≫ (w m).op = 0 ↔ w m ≫ j = 0 := fun m => op_eq_iff (w m ≫ j) 0
+  have e4 : ∀ n m, ((D n).op ≫ (w m).op = if n = m then 𝟙 (op O) else 0) ↔
+      (w m ≫ D n = if m = n then 𝟙 O else 0) := fun n m => by
+    by_cases hnm : n = m
+    · subst hnm; simp only [↓reduceIte]; exact op_eq_iff (w n ≫ D n) (𝟙 O)
+    · have hmn : ¬ m = n := fun h => hnm h.symm
+      simp only [hnm, hmn, ↓reduceIte]; exact op_eq_iff (w m ≫ D n) 0
+  have e5 : s.op ≫ j.op + ∑ n, (w n).op ≫ (D n).op = 𝟙 (op Y) ↔
+      j ≫ s + ∑ n, D n ≫ w n = 𝟙 Y := by
+    rw [← op_eq_iff (j ≫ s + ∑ n, D n ≫ w n) (𝟙 Y), op_add, op_sum]
+    rfl
+  unfold IsCupInverse IsCapInverse
+  rw [e1, e5]
+  simp only [e2, e3, e4]
+  constructor
+  · rintro ⟨a, b, c, d, e⟩; exact ⟨a, b, c, fun n m => d m n, e⟩
+  · rintro ⟨a, b, c, d, e⟩; exact ⟨a, b, c, fun m n => d n m, e⟩
+
+/-- An automorphism of `Y` as an automorphism of `op Y`. -/
+def autOp {Y : C} (y : Aut Y) : Aut (op Y) := Iso.op y
+
+omit [Preadditive C] in
+@[simp] lemma autOp_hom {Y : C} (y : Aut Y) : (autOp y).hom = y.hom.op := rfl
+
+omit [Preadditive C] in
+private lemma aut_mul_hom {Z : C} (a b : Aut Z) : (a * b).hom = b.hom ≫ a.hom := rfl
+
+omit [Preadditive C] in
+private lemma aut_inv_hom {Z : C} (a : Aut Z) : (a⁻¹).hom = a.inv := rfl
+
+omit [Preadditive C] in
+lemma autOp_zpow_hom {Y : C} (y : Aut Y) (k : ℤ) :
+    (autOp y ^ k).hom = ((y ^ k).hom).op := by
+  induction k using Int.induction_on with
+  | zero => rw [zpow_zero_hom, zpow_zero_hom, op_id]
+  | succ i ih =>
+    rw [zpow_add_one, aut_mul_hom, ih, autOp_hom, ← op_comp,
+      ← zpow_one_hom y, zpow_hom_comp]
+  | pred i ih =>
+    rw [zpow_sub_one, aut_mul_hom, ih, aut_inv_hom]
+    change y.inv.op ≫ _ = _
+    rw [← op_comp, show y.inv = (y ^ (-1 : ℤ)).hom by rw [zpow_neg_one, aut_inv_hom],
+      zpow_hom_comp, zpow_hom_congr y (show -(i : ℤ) + -1 = -(i : ℤ) - 1 by ring)]
+
+/-- **Shifted cup windows**, (6) of `ProbeWindowInverse.md`: if the cup window
+`[s, u₀, …, u_{h-1}]` (`u_n = u ≫ yⁿ`) is invertible, so is `[s, u_{-l}, …, u_{h-l-1}]` for
+every `l ≤ h`. This is `exists_isCapInverse_shift` in the opposite category, with the slide
+`s ≫ x - q • (y ≫ s) = u ≫ (-q • v)` there. -/
+theorem exists_isCupInverse_shift (s : X ⟶ Y) (x : Aut X) (y : Aut Y) (v : X ⟶ O) (u : O ⟶ Y)
+    (q : ℤ) (hq : q * q = 1) (hslide : s ≫ y.hom - q • (x.hom ≫ s) = v ≫ u) {h l : ℕ}
+    (hl : l ≤ h) (h0 : ∃ j D, IsCupInverse s (fun n : Fin h => u ≫ (y ^ (n : ℤ)).hom) j D) :
+    ∃ j D, IsCupInverse s (fun n : Fin h => u ≫ (y ^ ((n : ℤ) - l)).hom) j D := by
+  have hslide' : s.op ≫ (autOp x).hom - q • ((autOp y).hom ≫ s.op) = u.op ≫ (-q • v.op) := by
+    apply Quiver.Hom.unop_inj
+    change x.hom ≫ s - q • (s ≫ y.hom) = (-q • v) ≫ u
+    rw [Preadditive.zsmul_comp, ← hslide, smul_sub, smul_smul, neg_mul, hq]
+    simp only [neg_smul, one_smul]
+    abel
+  obtain ⟨j, D, hjD⟩ := h0
+  obtain ⟨j', A', h'⟩ := exists_isCapInverse_shift s.op (autOp y) (autOp x) u.op (-q • v.op) q
+    hq hslide' hl ⟨j.op, fun n => (D n).op, by
+      rw [isCupInverse_iff_op] at hjD
+      convert hjD using 2
+      simp only [autOp_zpow_hom, op_comp]⟩
+  refine ⟨j'.unop, fun n => (A' n).unop, ?_⟩
+  rw [isCupInverse_iff_op]
+  convert h' using 2 <;> simp only [autOp_zpow_hom, op_comp, Quiver.Hom.op_unop]
+
+end Cup
 
 end OddMath.QuiverHecke.SwappedAssembly.ProbeWindow
