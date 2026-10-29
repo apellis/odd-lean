@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Middle unequal-reservoir sector braid
+
+`middleDistinctReservoir_braid` proves `RᵣPᵢR_q → R_qPᵢRᵣ` for arbitrary
+pairwise distinct colours, weights, contents, commutative coefficients and
+supplied data. `postCrossNe_qExpr_outer` derives individual Q transport from
+the prescribed reservoir slide and crossing parity. The conjugated second
+weight uses the full triple-parity sign of the last reservoir dot; supported
+powers remove this sign. Only mixed comparison isomorphisms are cancelled.
+The consumer `MixedDistinctReservoirRemaining.lean` uses arbitrary occupied
+content and audits all declarations of both new modules.
+
+Remaining: reverse unequal-reservoir placement retaining both Q factors;
+all-same-side factor transport and arbitrary-path assembly; repeated-outer
+correction separately. No complete `CrossBraid` is asserted.
+
 ## Forward unequal-reservoir sector braid
 
 `BraidMixed/DistinctReservoirSector.lean`: `distinctReservoir_braid` proves
