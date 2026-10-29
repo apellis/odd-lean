@@ -1370,6 +1370,7 @@ import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.QuiverHecke.HalfTurn.Mirror
 import OddMath.QuiverHecke.HalfTurn.SuperFlip
 import OddMath.QuiverHecke.HalfTurn.Composite
+import OddMath.QuiverHecke.HalfTurn.CornerIdeal
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
