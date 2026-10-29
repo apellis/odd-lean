@@ -110,7 +110,7 @@ package. This establishes (K); the signed repeated-colour induction in
 
 ## 3. Induction, with the surviving signs
 
-**Checked convention comparison.** `ELVOld.qp_repeated_even` in
+**Checked library convention.** `ELVOld.qp_repeated_even` in
 `ELVQPRepeated.lean` proves the repeated-even recursion in the full ELV
 old-only quotient, with arbitrary spectators and continuations. In the
 library's `EvenTwo` crossing convention the recursion has factor **−1**,
