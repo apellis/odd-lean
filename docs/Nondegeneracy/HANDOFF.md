@@ -84,6 +84,22 @@ hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z
 in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
 (`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
 
+Checked (`CentralInverse/RegularCoefficientBound.lean`): a kernel-level construction avoids
+the arbitrary-superfunctor grading requirement. For a graded superalgebra `A`,
+`RegularReservoir.coeffGrading` grades only the endomorphisms of its regular bimodule inside
+the **ungraded** superbimodule 2-supercategory. `regular_apply` and
+`mem_coeffGrading_iff` identify a coefficient and its degree by evaluation at `1` (ordinary
+right linearity, with the signed left action retained). `coefficient_eq_zero` derives the
+coefficient bound from `A.degree n = ⊥` above the algebra bound, and `coefficientIdeal`
+constructs the jointly nilpotent ideal for arbitrary ungraded source algebras/bimodules.
+`closure_mem_coefficientIdeal` retains the kernel degrees `d(h+1+2r)`, `0`,
+`d(1-h+2s)`; `isIso_of_coefficient_error` discharges zeroth-ideal membership of every
+comparison inverse. The rational regular-bimodule consumer has nonzero identity and bound
+one; its positive coefficient ideal is zero. This does **not** construct the truncated
+ELV algebra, the graded factor kernels/inverse components, or their comparison with the
+`PiSCat` realization. Those remain necessary before applying this construction to the
+prescribed swapped action.
+
 Open (transport): identify the residual entries of the two-sector reduction (closures
 `Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
 `h ≫ postCoeff Z c ≫ h'` for the coefficients above (`AugmentedSectorBlocks` §3). The membership

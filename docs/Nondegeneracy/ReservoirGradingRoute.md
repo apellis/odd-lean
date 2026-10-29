@@ -123,5 +123,43 @@ similar, plus cyclotomic finiteness, and it is not the written reservoir.
   `End(𝟙_μ)` of positive degree vanishes; with `closure_mem_degree` this is (N) at the
   reservoir.
 
-Open: the transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
-`ProbeReservoir` (post-whiskering), and route (b).
+The post-whiskering coefficient ideal is now checked in `CentralInverse/ReservoirCoefficients.lean`.
+It only requires a multiplicative, parity-stable `CoeffGrading` on `End(identity)`, not an
+integer grading of all the ambient Hom categories. Its filtered span is a **jointly**
+nilpotent ideal; individual-entry nilpotence would not justify the matrix inverse.
+
+### Regular-kernel construction
+
+`CentralInverse/RegularCoefficientBound.lean` supplies this smaller input for a graded
+superalgebra `A` in the **ungraded** superbimodule 2-supercategory. Set
+
+\[
+ C_m=\{f\in\operatorname{End}_{A-A}(A): f(A_d)\subseteq A_{d+m}\text{ for every }d\}.
+\]
+
+The endomorphisms are the actual supernatural bimodule maps: signed on the left and ordinary
+on the right. Right linearity gives `f(x)=f(1)x`, hence
+
+\[
+ f\in C_m\quad\Longleftrightarrow\quad f(1)\in A_m.
+\]
+
+Thus `A_m=0` for `m≥M` proves `C_m=0`, without a grading on arbitrary superfunctors or
+on the probe bimodules. Multiplication and parity projection preserve these degrees by the
+graded regular-bimodule construction. `coefficientIdeal` inserts this **proved** bound into
+the post-whiskering ideal; the arbitrary-source kernel sector is allowed to be ungraded.
+
+For chosen graded word kernels `U,V`, the actual composite `cup ≫ middle ≫ cap` has the sum
+of its three kernel degrees. In particular the degrees `d(h+1+2r)`, `0`, `d(1-h+2s)` give
+`2d(r+s+1)>0`. `closure_mem_coefficientIdeal` then places the post-whiskered composite,
+with arbitrary morphisms before and after it, in `J₁`. These hypotheses are **kernel degree
+proofs of the specified maps**, not licenses to replace their factor shifts or naturality.
+`isIso_of_coefficient_error` applies the existing matrix lifting theorem and discharges the
+comparison inverse's `J₀` membership automatically.
+
+Still open: the finite homogeneous full-ELV reservoir algebra and its support bound, its
+factor kernels and their generator/inverse-component degree proofs, the realization
+comparison with the prescribed `PiSCat` action, and identification of its residual entries
+with these post-whiskered closed coefficients. The rational regular-bimodule consumer
+checks a nonzero target with bound one, whose positive coefficient ideal is zero; it is not
+a truncated ELV factor example.
