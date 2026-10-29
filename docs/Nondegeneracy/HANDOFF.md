@@ -537,10 +537,12 @@ generator images of item 1 below.
    for all summand paths `p`, `q` of the unwhiskered boundaries and all
    `Z : P.H t`.
 3. Relation modules, each proving its obligation for `P.layerRep Gs Ys gens`:
-   - `Quad.lean`: `QuadRelations`.
+   - `Quad.lean`: `QuadRelations` (checked, conditional on `CrossQuad`; see
+     below).
    - `Slides.lean`: `SlideRelations`.
    - `Braid.lean`: `BraidRelations`.
-   - `Zigzag.lean`: `ZigzagRelations`.
+   - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
+     see below).
    - `Inversion.lean`: `InversionRelations`.
    - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
    - `Interchange.lean`: `InterchangeLaw` (checked, conditional on
@@ -548,6 +550,26 @@ generator images of item 1 below.
      images; see above).
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
+
+**Quadratic relations (checked).** `SwappedAssembly/Quad.lean`:
+`quadRelations`: `QuadRelations` for `P.layerRep Gs Ys gens` from
+`CrossQuad gens`. Each relation (1.7) is one matrix identity per pair of
+summand paths `p`, `q` of `Eᵢ Eⱼ 1_ν` and object `Z`. The entry of the two
+crossings is `crossCross gens i j ν p q Z`, the sum over summand paths `m` of
+`Eⱼ Eᵢ 1_ν` of the two crossing images (`compDiag_crossCross`). The entries of
+`n` dots on one strand are diagonal, equal to the `n`-th power (`compPow`) of
+the one-dot entry `leftDot` (left strand, `compLayer` of `dot i` whiskered by
+`up j`) or `rightDot` (`compDiag_leftDots`, `compDiag_rightDots`,
+`compDiag_rightDots_leftDots`). `CrossQuad gens` asks: `crossCross` vanishes
+for `i = j` and off the diagonal for `i ≠ j`; on the diagonal it is `t_ij` if
+`d_ij = 0` and `t_ij x₁^{d_ij} + t_ji x₂^{d_ji} + Σ s_ij^{ab} x₂^b x₁^a`
+(with `x₁ = leftDot`, `x₂ = rightDot`) otherwise. Supporting lemmas:
+`compList_append`, `compDiag_comp` (entries of composites are matrix
+products), `compEval_sub`, `compEval_smul`, `compEval_sum`, `compEval_of`.
+Remaining: prove `CrossQuad (swappedGens c L)` from the probe and reservoir
+quadratic relations (diagonal blocks) and the inverse property of `c`
+(equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
+intertwinings from `homMixedInterchange_pre/_post`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -558,6 +580,22 @@ when `-⟨hᵢ, ν⟩ ≤ n`. Nothing about the images inside the windows is use
 this does not depend on the even-colour bubble normalization at height `0`
 (both windows are empty there). The generator
 modules must supply `DcupDcapWindowZero` for their `dcup`/`dcap` fields.
+
+**Zigzag relations (checked).** `SwappedAssembly/Zigzag.lean`:
+`zigzagRelations`: `ZigzagRelations` for `P.layerRep Gs Ys gens` from
+`CupCapZigzag gens`. The boundary of `zigE` (resp. `zigF`) is the single strand
+`Eᵢ` (resp. `Fᵢ`), whose summand path is unique (`SPath.eq_of_single`), so each
+relation is one matrix identity per summand path `q` of that strand and object
+`Z`: the sum over the summand paths `m` of the cup's codomain and `r` of the
+cap's domain, restricted to the pairs for which the two middle paths agree as
+paths of the three-letter word (`zigE_word`, `zigF_word`), of the composite
+"cup entry, transport, cap entry" is the identity. `CupCapZigzag.zigE` and
+`.zigF` state exactly these identities; `zigE_entry` and `zigF_entry` identify
+them with the entries `compList` of the two-layer diagrams (in the `zigF` case
+the left strand of the cap layer has right weight `wt ν [up i, dn i]`, only
+propositionally equal to `ν`; `SPath.cast_cons_col` transports the path). No obstruction: the reduction is exact,
+and the generator modules must prove `CupCapZigzag` for their cup/cap images
+(the right adjunction (1.10) of the Hom-sector functors).
 
 ## Old-only ELV quotient module
 
