@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.Entry
 
 /-! # The swapping entries of the same-colour sideways crossing
 
@@ -86,13 +87,6 @@ theorem compList_three (gens : P.Generators) (L₁ L₂ L₃ : Layer (SKM.sig D)
   simp only [SPath.cast_self]
   rw [Finset.sum_eq_single q (fun x _ hx => by simp [hx]) (by simp)]
   simp
-
-omit [AddCommGroup X] in
-/-- A path along a word has one summand per letter. -/
-theorem _root_.OddMath.QuiverHecke.SwappedAssembly.SPath.length_sides :
-    {w : List (Col I X)} → {s t : Sector I} → (p : SPath w s t) → p.sides.length = w.length
-  | _, _, _, .nil _ => rfl
-  | _, _, _, .cons _ _ _ _ p => by simp [SPath.sides, SPath.length_sides p]
 
 /-- The summands of a nonzero cup entry of the sideways crossing. -/
 theorem sides_of_cup_ne_zero (gens : P.Generators) (i j : I) (ν : X) {t s : Sector I}
