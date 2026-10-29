@@ -71,6 +71,12 @@ theorem IsSupernatural.sum {p : ZMod 2} {F G : C ⥤ D} {ι : Type*} (s : Finset
     exact IsSupernatural.add (hx a (Finset.mem_insert_self a s))
       (ih fun b hb => hx b (Finset.mem_insert_of_mem hb))
 
+theorem IsSupernatural.zsmul {p : ZMod 2} {F G : C ⥤ D} {x : ∀ X, F.obj X ⟶ G.obj X}
+    (hx : IsSupernatural R p x) (n : ℤ) : IsSupernatural R p fun X => n • x X where
+  mem X := zsmul_mem (hx.mem X) n
+  naturality hf := by
+    rw [Preadditive.comp_zsmul, hx.naturality hf, smul_comm, Preadditive.zsmul_comp]
+
 theorem IsSupernatural.of_parity_eq {p q : ZMod 2} {F G : C ⥤ D}
     {x : ∀ X, F.obj X ⟶ G.obj X} (hx : IsSupernatural R p x) (h : p = q) :
     IsSupernatural R q x := h ▸ hx
@@ -108,13 +114,6 @@ section HomFunctors
 
 omit [∀ a b : B, PiSupercategory k (a ⟶ b)]
 
-/-- Precomposition by a composite is the composite of the precompositions. -/
-def homPreComp {a b c d : B} (E : a ⟶ b) (F : b ⟶ c) :
-    homPre (k := k) (c := d) F ⋙ homPre (k := k) E ≅ homPre (k := k) (E ≫ F) :=
-  NatIso.ofComponents (fun Z => (associator E F Z).symm) (by
-    intro Z Z' η
-    exact TwoSupercategory.associator_inv_naturality_right (R := k) E F η)
-
 theorem homPreComp_hom_mem {a b c d : B} (E : a ⟶ b) (F : b ⟶ c) (Z : c ⟶ d) :
     (homPreComp (k := k) E F).hom.app Z ∈ parity (R := k) _ _ 0 :=
   inv_mem _ (TwoSupercategory.associator_hom_mem (R := k) E F Z)
@@ -128,6 +127,26 @@ theorem homSectorInterchange_inv_mem {a b c d : B} (E : a ⟶ b) (F : c ⟶ d) (
   inv_mem _ (TwoSupercategory.associator_hom_mem (R := k) E Z F)
 
 end HomFunctors
+
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+/-- A two-morphism between composites, reassociated on both sides and whiskered by the
+argument, is supernatural of its parity on the precomposition functors. -/
+theorem homPreReassoc_supernatural {a b b' c d : B} (E₁ : a ⟶ b) (E₂ : b ⟶ c)
+    (E₂' : a ⟶ b') (E₁' : b' ⟶ c) {p : ZMod 2} (η : E₁ ≫ E₂ ⟶ E₂' ≫ E₁')
+    (hη : η ∈ parity (R := k) _ _ p) :
+    IsSupernatural k p
+      (F := homPre (k := k) (c := d) E₂ ⋙ homPre (k := k) E₁)
+      (G := homPre (k := k) (c := d) E₁' ⋙ homPre (k := k) E₂')
+      (fun Z => (associator E₁ E₂ Z).inv ≫ η ▷ Z ≫ (associator E₂' E₁' Z).hom) := by
+  have hA := isSupernatural_of_natTrans (R := k) (homPreComp (k := k) (d := d) E₁ E₂).hom
+    (homPreComp_hom_mem E₁ E₂)
+  have hB := (homPreTransform (k := k) (c := d) η hη).isSupernatural p
+  have hC := isSupernatural_of_natTrans (R := k) (homPreComp (k := k) (d := d) E₂' E₁').inv
+    (homPreComp_inv_mem E₂' E₁')
+  have := hA.comp (hB.comp hC)
+  simp only [add_zero, zero_add] at this
+  refine IsSupernatural.of_eq_conj rfl rfl this _ (fun _ => rfl) (fun _ => rfl) fun Z => ?_
+  simp [homPreComp, homPreTransform]
 
 /-- **The mixed interchange `J` is supernatural**, of the sum of the two shift parities. -/
 theorem homMixedInterchange_supernatural {a b c d : B} (E : a ⟶ b) (F : c ⟶ d)
@@ -148,6 +167,76 @@ theorem homMixedInterchange_supernatural {a b c d : B} (E : a ⟶ b) (F : c ⟶ 
   have := hA.comp (hB.comp hC)
   simp only [zero_add] at this
   exact this
+
+/-! ## Parity-shift comparisons -/
+
+section ParityShift
+
+variable {C : Type*} [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
+  [PiSupercategory k C]
+
+/-- The comparison of two successive parity shifts with a single shift is even. -/
+theorem homParityShiftAdd_hom_mem (p q : ZMod 2) (Z : C) :
+    (homParityShiftAdd (k := k) (C := C) p q).hom.app Z ∈ parity (R := k) _ _ 0 := by
+  rcases (show p = 0 ∨ p = 1 by fin_cases p; exact Or.inl rfl; exact Or.inr rfl) with rfl | rfl <;>
+  rcases (show q = 0 ∨ q = 1 by fin_cases q; exact Or.inl rfl; exact Or.inr rfl) with rfl | rfl
+  · simpa [homParityShiftAdd, homParityShift] using Supercategory.id_mem (R := k) Z
+  · simpa [homParityShiftAdd, homParityShift] using
+      Supercategory.id_mem (R := k) ((PiSupercategory.pi (R := k)).obj Z)
+  · simpa [homParityShiftAdd, homParityShift] using
+      Supercategory.id_mem (R := k) ((PiSupercategory.pi (R := k)).obj Z)
+  · simpa [homParityShiftAdd, homParityShift] using PiSupercategory.ξ_hom_mem (R := k) Z
+
+variable {C' : Type*} [Category C'] [Preadditive C'] [Linear k C'] [Supercategory k C']
+  [PiSupercategory k C']
+
+/-- Moving a parity shift past a superfunctor is even. -/
+theorem homParityShiftCommute_inv_mem (G : C ⥤ C') [G.Additive] [G.Linear k]
+    [IsSuperfunctor k G] (p : ZMod 2) (Z : C) :
+    (homParityShiftCommute (k := k) G p).inv.app Z ∈ parity (R := k) _ _ 0 := by
+  rw [homParityShiftCommute_inv_app]
+  have h := Supercategory.comp_mem
+    (IsSuperfunctor.map_mem (R := k) (F := G) ((homParityShiftDatum (k := k) p).hom_mem Z))
+    ((homParityShiftDatum (k := k) p).inv_mem (G.obj Z))
+  rw [Supercategory.zmod2_add_self] at h
+  exact h
+
+end ParityShift
+
+/-! ## Comparisons of postcomposition functors -/
+
+section HomPost
+
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)]
+
+theorem homPostComp_hom_mem {a b c d : B} (E : b ⟶ c) (F : c ⟶ d) (Z : a ⟶ b) :
+    (homPostComp (k := k) E F).hom.app Z ∈ parity (R := k) _ _ 0 :=
+  TwoSupercategory.associator_hom_mem (R := k) Z E F
+
+theorem homPostComp_inv_mem {a b c d : B} (E : b ⟶ c) (F : c ⟶ d) (Z : a ⟶ b) :
+    (homPostComp (k := k) E F).inv.app Z ∈ parity (R := k) _ _ 0 :=
+  inv_mem _ (TwoSupercategory.associator_hom_mem (R := k) Z E F)
+
+/-- A two-morphism between composites, whiskered by the argument and reassociated on both
+sides, is supernatural of its parity on the postcomposition functors. -/
+theorem homPostReassoc_supernatural {a b c c' d : B} (E₁ : b ⟶ c) (E₂ : c ⟶ d)
+    (E₂' : b ⟶ c') (E₁' : c' ⟶ d) {p : ZMod 2} (η : E₁ ≫ E₂ ⟶ E₂' ≫ E₁')
+    (hη : η ∈ parity (R := k) _ _ p) :
+    IsSupernatural k p
+      (F := homPost (k := k) (a := a) E₁ ⋙ homPost (k := k) E₂)
+      (G := homPost (k := k) (a := a) E₂' ⋙ homPost (k := k) E₁')
+      (fun Z => (associator Z E₁ E₂).hom ≫ Z ◁ η ≫ (associator Z E₂' E₁').inv) := by
+  have hA := isSupernatural_of_natTrans (R := k) (homPostComp (k := k) (a := a) E₁ E₂).hom
+    (homPostComp_hom_mem E₁ E₂)
+  have hB := (homPostTransform (k := k) (a := a) η hη).isSupernatural p
+  have hC := isSupernatural_of_natTrans (R := k) (homPostComp (k := k) (a := a) E₂' E₁').inv
+    (homPostComp_inv_mem E₂' E₁')
+  have := hA.comp (hB.comp hC)
+  simp only [add_zero, zero_add] at this
+  refine IsSupernatural.of_eq_conj rfl rfl this _ (fun _ => rfl) (fun _ => rfl) fun Z => ?_
+  simp [homPostComp, homPostTransform]
+
+end HomPost
 
 variable {D : Datum I X} {Sc : Scalars D k}
 
@@ -300,3 +389,129 @@ theorem mixedQ_supernatural (i j : I) (t : Sector I)
           (IsSupernatural.pow (P.prPreDot_supernatural i j t hR) p)
           (IsSupernatural.pow (P.prPostDot_supernatural i j t hR) q)) ?_) _
         rw [hp, hq, add_zero]
+
+/-! ## The probe/probe and reservoir/reservoir paths -/
+
+/-- The `(P,P)` entry of the distinct-colour crossing is supernatural of the parity of the
+crossing. -/
+theorem preCrossNe_supernatural (i j : I) (t : Sector I)
+    (hs : nextSector (true, j) true (nextSector (true, i) true t) =
+      nextSector (true, i) true (nextSector (true, j) true t)) :
+    IsSupernatural k (D.parity i * D.parity j)
+      (F := P.castH hs ⋙ P.step (true, j) true _ trivial ⋙ P.step (true, i) true t trivial)
+      (G := P.step (true, i) true _ trivial ⋙ P.step (true, j) true t trivial)
+      (P.preCrossNe i j t hs) := by
+  have h₄ : -P.muP (nextSector (true, j) true t) + D.α i =
+      -P.muP (nextSector (true, j) true (nextSector (true, i) true t)) := by
+    rw [hs]; exact P.muP_preE i _
+  have hx := (homPreReassoc_supernatural (k := k)
+    (d := P.W.obj (P.muM (nextSector (true, j) true (nextSector (true, i) true t))))
+    (P.T.E i (P.muP_preE i t)) (P.T.E j (P.muP_preE j _)) (P.T.E j (P.muP_preE j t))
+    (P.T.E i h₄) _
+    (P.T.cross_mem j i (P.muP_preE i t) (P.muP_preE j _) (P.muP_preE j t) h₄)).whiskerLeft
+      (P.castH hs)
+  have hE := (isSupernatural_eqToHom (R := k)
+    (eq_of_heq (P.preE_functor_heq i hs h₄ (P.muP_preE i _)))
+    (fun Z => eq_of_heq (P.preE_obj_heq i hs h₄ (P.muP_preE i _) Z))).whiskerRight
+      (P.step (true, j) true t trivial)
+  have := hx.comp hE
+  rw [add_zero, mul_comm] at this
+  refine IsSupernatural.of_eq_conj rfl rfl this _ (fun _ => rfl) (fun _ => rfl) fun Z => ?_
+  simp only [preCrossNe, Category.assoc, eqToHom_refl, Category.id_comp, Category.comp_id]
+  rfl
+
+/-- The `(P,P)` entry of the same-colour crossing is supernatural of the parity of the
+crossing. -/
+theorem preCrossSame_supernatural (i : I) (t : Sector I) :
+    IsSupernatural k (D.parity i * D.parity i)
+      (F := P.step (true, i) true _ trivial ⋙ P.step (true, i) true t trivial)
+      (G := P.step (true, i) true _ trivial ⋙ P.step (true, i) true t trivial)
+      (P.preCrossSame i t) := by
+  have hx := homPreReassoc_supernatural (k := k)
+    (d := P.W.obj (P.muM (nextSector (true, i) true (nextSector (true, i) true t))))
+    (P.T.E i (P.muP_preE i t)) (P.T.E i (P.muP_preE i _)) (P.T.E i (P.muP_preE i t))
+    (P.T.E i (P.muP_preE i _)) _
+    (P.T.cross_mem i i (P.muP_preE i t) (P.muP_preE i _) (P.muP_preE i t) (P.muP_preE i _))
+  exact IsSupernatural.zsmul hx _
+
+omit [AddCommGroup X] in
+/-- The comparison of the two parity shifts of a reservoir/reservoir path with a single shift
+is an even supernatural isomorphism. -/
+theorem postPairIso_supernatural {x a b c : B} (Ei : b ⟶ c) (Ej : a ⟶ b) (κi κj : ZMod 2) :
+    IsSupernatural k 0
+      (F := homPost (k := k) (a := x) Ej ⋙ homParityShift (k := k) κj ⋙
+        homPost (k := k) Ei ⋙ homParityShift (k := k) κi)
+      (G := homPost (k := k) (a := x) Ej ⋙ homPost (k := k) Ei ⋙
+        homParityShift (k := k) (κj + κi))
+      (fun Z => (postPairIso (k := k) Ei Z Ej κi κj).hom) := by
+  have hA := ((isSupernatural_of_natTrans (R := k)
+    (homParityShiftCommute (k := k) (homPost (k := k) (a := x) Ei) κj).inv
+    (fun Z => homParityShiftCommute_inv_mem _ κj Z)).whiskerLeft
+      (homPost (k := k) (a := x) Ej)).whiskerRight (homParityShift (k := k) κi)
+  have hB := (isSupernatural_of_natTrans (R := k)
+    (homParityShiftAdd (k := k) (C := x ⟶ c) κj κi).hom
+    (fun Z => homParityShiftAdd_hom_mem κj κi Z)).whiskerLeft
+      (homPost (k := k) (a := x) Ej ⋙ homPost (k := k) Ei)
+  have := hA.comp hB
+  rw [add_zero] at this
+  exact this
+
+/-- The `(R,R)` entry of the distinct-colour crossing is supernatural of the parity of the
+crossing. -/
+theorem postCrossNe_supernatural (i j : I) (t : Sector I) (hv₁ : StepValid (true, i) false t)
+    (hv₂ : StepValid (true, j) false (nextSector (true, i) false t))
+    (hw₁ : StepValid (true, j) false t)
+    (hw₂ : StepValid (true, i) false (nextSector (true, j) false t))
+    (hs : nextSector (true, j) false (nextSector (true, i) false t) =
+      nextSector (true, i) false (nextSector (true, j) false t)) :
+    IsSupernatural k (D.parity i * D.parity j)
+      (F := P.castH hs ⋙ P.step (true, j) false _ hv₂ ⋙ P.step (true, i) false t hv₁)
+      (G := P.step (true, i) false _ hw₂ ⋙ P.step (true, j) false t hw₁)
+      (P.postCrossNe i j t hv₁ hv₂ hw₁ hw₂ hs) := by
+  have h₃ : P.muM (nextSector (true, j) false (nextSector (true, i) false t)) + D.α i =
+      P.muM (nextSector (true, j) false t) := by
+    rw [hs]; exact P.muM_postE i hw₂
+  have h1 := postPairIso_supernatural (k := k)
+    (x := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+    (P.W.E i (P.muM_postE i hv₁)) (P.W.E j (P.muM_postE j hv₂))
+    (homContentShift D i t.1) (homContentShift D j t.1)
+  have h2 := (homPostReassoc_supernatural (k := k)
+    (a := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+    (P.W.E j (P.muM_postE j hv₂)) (P.W.E i (P.muM_postE i hv₁)) (P.W.E i h₃)
+    (P.W.E j (P.muM_postE j hw₁)) _
+    (P.W.cross_mem i j (P.muM_postE j hv₂) (P.muM_postE i hv₁) h₃
+      (P.muM_postE j hw₁))).whiskerRight
+    (homParityShift (k := k) (homContentShift D j t.1 + homContentShift D i t.1))
+  have h3 := isSupernatural_eqToHom (R := k)
+    (F := homPost (k := k)
+        (a := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+        (P.W.E i h₃) ⋙ homPost (k := k) (P.W.E j (P.muM_postE j hw₁)) ⋙
+      homParityShift (k := k) (homContentShift D j t.1 + homContentShift D i t.1))
+    (G := homPost (k := k)
+        (a := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+        (P.W.E i h₃) ⋙ homPost (k := k) (P.W.E j (P.muM_postE j hw₁)) ⋙
+      homParityShift (k := k) (homContentShift D i t.1 + homContentShift D j t.1))
+    (by rw [add_comm]) (fun _ => by rw [add_comm])
+  have h4 := isSupernatural_iso_inv (k := k)
+    (F := homPost (k := k)
+        (a := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+        (P.W.E i h₃) ⋙ homParityShift (k := k) (homContentShift D i t.1) ⋙
+      homPost (k := k) (P.W.E j (P.muM_postE j hw₁)) ⋙
+        homParityShift (k := k) (homContentShift D j t.1))
+    (G := homPost (k := k)
+        (a := P.T.obj (-P.muP (nextSector (true, j) false (nextSector (true, i) false t))))
+        (P.W.E i h₃) ⋙ homPost (k := k) (P.W.E j (P.muM_postE j hw₁)) ⋙
+      homParityShift (k := k) (homContentShift D i t.1 + homContentShift D j t.1))
+    (fun Z => postPairIso (k := k) (P.W.E j (P.muM_postE j hw₁)) Z (P.W.E i h₃)
+      (homContentShift D j t.1) (homContentShift D i t.1))
+    (postPairIso_supernatural (k := k) _ _ _ _)
+  have hx := (h1.comp (h2.comp (h3.comp h4))).whiskerLeft (P.castH hs)
+  have h5 := (isSupernatural_eqToHom (R := k)
+    (eq_of_heq (P.postE_functor_heq i t.1 hs h₃ (P.muM_postE i hw₂)))
+    (fun Z => eq_of_heq (P.postE_obj_heq i t.1 hs h₃ (P.muM_postE i hw₂) Z))).whiskerRight
+      (P.step (true, j) false t hw₁)
+  have := hx.comp h5
+  simp only [add_zero, zero_add] at this
+  refine IsSupernatural.of_eq_conj rfl rfl this _ (fun _ => rfl) (fun _ => rfl) fun Z => ?_
+  simp only [postCrossNe, Category.assoc, eqToHom_refl, Category.id_comp, Category.comp_id]
+  rfl
