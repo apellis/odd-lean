@@ -380,6 +380,30 @@ Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
 
+## Signed top-crossing chain
+
+`MoveHomLeading.lean` proves `moveHom_sub_leading_mem_low`: for every
+moving colour, prefix and old word, the prescribed chain differs from
+`leadingMoveHom` by `Low` at the old word length. Each equal-colour factor
+is explicitly `(v-u)^2 T` at even colour and `-(v²-u²)^2 T` at odd colour;
+unlike colours retain the prescribed crossing. All endpoint identifications
+and chronological order are retained. No unspecified unit or leading-term
+hypothesis is used.
+
+`moveHom_long_prepend_repr` transfers this congruence to every long scalar
+prepend coordinate, including coordinates with old permutations. The
+consumer applies both the universal filtration statement and coordinate
+identity to arbitrary words in a mixed-parity datum and audits all module
+declarations, including private and generated ones.
+
+**Residual:** the signed factors have not been collected into one ordered
+polynomial. This is a top-crossing decorated-chain theorem, not yet the
+ordered-polynomial expansion or evaluation of `prependCoefficients`
+as S. Normal-ordering must retain signed dot transport; then assemble the
+matrix coefficients and discharge `homMatrixTwist` and degreewise
+`movingSignNormalize`. The prescribed `contentMove`, B₁, source (6),
+downstream (7), and ordinary-polynomial/full-ELV distinction are unchanged.
+
 ## Moving-chain source and filtered extraction
 
 `AppendContentMoveCoordinates.lean` constructs `appendContentMoveLift` from
