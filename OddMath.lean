@@ -1348,6 +1348,8 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Extraction
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.TwoSector
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
