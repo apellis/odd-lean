@@ -1046,6 +1046,19 @@ Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
 (1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
 the mixed interchanges to this form (block `PRP` first).
 
+Two-probe mixed-colour triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePair.lean`):
+`RouquierData.cross_mixedInterchange_pair` moves a factor crossing through the
+prescribed pair of mixed interchanges at arbitrary content and all colours,
+including repeated colours. The source and target intermediate objects and
+shifts may differ. `homMixedInterchange_pair_cross` retains the two outer
+Koszul signs; `homContentShift_pair_cross_sign` cancels their product for
+crossing parity `pᵢ pⱼ`. This proves the unweighted two-probe triangle of
+`MixedColourRemainingBraid.md` §2, without inverting a factor crossing or Q.
+It does not yet evaluate the sector path sums, transport the Q weights, or
+supply the mixed-colour fields of `CrossBraid`. The one-probe/two-reservoir
+triangle and the `iji` correction assembly remain open.
+
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
 acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
