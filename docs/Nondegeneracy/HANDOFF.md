@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Reverse probe-pair Q transport
+
+`BraidMixed/ProbePairDots.lean` generalizes the spectator dot transport to arbitrary
+reservoir colour. Both probe dots and the same-colour crossing supercommute with
+the reservoir dot. `probePairFirstIso_conj_mixedQ` and `probePair_map_mixedQ`
+identify the two transported Q factors with `qExpr Sc x₁ z i r` and
+`qExpr Sc x₂ z i r` for the same spectator `z`. The mixed signs disappear only
+using the parity support of Q; no Q value is inverted.
+`NonVacuity.MixedProbePairDots` checks their product identification at distinct
+Boolean colours and an occupied reservoir sector. Its seven theorem axiom
+reports contain only the three standard axioms.
+
+The earlier polynomial and reverse-sector drafts remain outside library imports.
+Still missing: the common-polynomial evaluation adapter, concrete Q-product
+centrality, and assembly of the equality on the right of `reverseProbePair_braid_iff`.
+This transport result does not close the reverse braid.
+
 ## Mixed-colour sector braid: two probes and one reservoir
 
 `BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
