@@ -771,6 +771,19 @@ the parities of its generators, for supernatural generator images; also `compLay
 from `CrossCoeff.IsInverse`, `hσ` (`SigmaPermutation`) and `hL` for the leftward data
 constructed from `LeftwardData.IsInverse`.
 
+**Supernaturality of the same-colour crossing coefficient (checked).**
+`SwappedAssembly/Supernatural/CrossCoeff.lean`: `CrossCoeff.isSupernatural_of_isInverse c
+hc h : c.IsSupernatural` for `hc : c.IsInverse` and `h : P.CrossCoeffInputs` (F2: the probe
+dot `x` on `(R,P)` is a unit, F3: the reservoir dot `y` is nilpotent);
+`crossCoeffOfInputs_isSupernatural h`. The dots are supernatural of parity `pᵢ`
+(`rpPreDot_supernatural`, `rpPostDot_supernatural`, whiskerings of `dotDiag_supernatural`).
+At even colours `a` is the inverse of the even family `y - x` (`isSupernatural_iso_inv`);
+at odd colours `a = (x - y)(x² - y²)⁻¹` with `x² - y²` an even unit (`crossDenom`).
+The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the image of
+`x² - y²`, and does not determine `a` (or its parity) when `x² - y²` is not invertible.
+This is a property of the interface, not of the construction: the constructed coefficient
+satisfies both. Generic: `IsSupernatural.sub`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
