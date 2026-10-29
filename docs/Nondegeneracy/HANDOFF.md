@@ -689,6 +689,21 @@ transports `compLayer_cast_eq_of_path`, `compLayer_cast_eq_zero_of_path` absorb
 them. Next: the colour patterns of (1.9) for `swappedGens c L`, starting with
 the mixed probe/reservoir block of `iii` ((5A)/(5B) of
 `ThreeStrandSectorBraid.md`).
+Sector algebra of the `iii` braid (checked,
+`SwappedAssembly/BraidSame/SectorAlgebra.lean`): on the block of paths
+`{AAB, ABA, BAA}`, transported to the first path by `Φ₀ = 1`, `Φ₁ = J`,
+`Φ₂ = J ≫ J`, the three-strand crossings become the matrices
+`sectorU D γ = [[D,0,0],[0,-γ,1],[0,-γ²,γ]]` and
+`sectorV D δ = [[-δ,1,0],[-δ²,δ,0],[0,0,D]]` (the last entry `D` is (5A)).
+`sectorBraid`: `U V U = V U V` follows from `D² = 0`, `Dγ = δD + γδ`,
+`Dδ = γD - δγ`, `γδ² = δ²γ`, `γ²δ = δγ²` (read in any ring; apply in the
+opposite of `End`). These four relations are proved from the dot algebra:
+`sectorRelations_even` (commuting dots `x₁, x₂, z`, `Dz = zD`, slides
+`x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
+`sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
+`x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
+with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
+`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -3309,6 +3324,16 @@ reverse norm (5) (from `qpIdentity`, dot transport, `G J_L ⊆ J_L`, `J_R G ⊆ 
 `J_L G' ⊆ J_R` and injectivity of right multiplication by `K = G G'`), or the degree count
 `deg F − deg S = ⟨h_i, Λ − β⟩`. Open: the concrete `MackeyCosets` fields (construct `P`;
 the append-side Mackey decomposition after the cyclotomic quotient; `K`-injectivity).
+`ReverseNorm.lean` (checked): the ring-theoretic part of `DeformedBoundaryDivision.md` §§2–3,
+with `J_L`, `J_R` left ideals (`Submodule H H`). `injective_of_leading`: an additive map on
+`ℕ →₀ V` raising moving degree by `d` with injective top coefficient is injective (the
+"largest moving exponent cannot disappear" step for `K = G G'`). `mem_of_mul_mem_of_injective`:
+injectivity of `· G G'` mod `J_R` and `J_L G' ⊆ J_R` give `h G ∈ J_L → h ∈ J_R`.
+`reverse_norm`: (3) `f T G ≡ f L_left (mod J_L)` and (4) `G f = ε f' G`, `G L_left = L G` give
+(5) `G f T ≡ ε f' L (mod J_R)`. Non-vacuity: `scripts/NonVacuity/ReverseNorm.lean`. Open for the
+concrete (5): the inputs `J_L G' ⊆ J_R` (reverse chain transport), the right-oriented PBW
+expansion of `K` with unit leading coefficient (feeding `injective_of_leading`), and (3), (4)
+from `qpIdentity` and intertwiner dot transport.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs

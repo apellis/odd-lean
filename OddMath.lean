@@ -109,6 +109,7 @@ import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryWindow
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryAssembly
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryCosets
+import OddMath.QuiverHecke.CyclotomicAction.ReverseNorm
 import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierCupCapKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierKernelComparison
@@ -1335,6 +1336,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.QuadSame
 import OddMath.QuiverHecke.SwappedAssembly.SlideSame
 import OddMath.QuiverHecke.SwappedAssembly.SlideNe
