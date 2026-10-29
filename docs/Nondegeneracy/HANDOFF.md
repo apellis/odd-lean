@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Append Mackey boundary: balance of P
+
+Checked: `appendError_mem_appendKill`
+(`OddMath/QuiverHecke/CyclotomicAction/AppendBalance.lean`), the old-generator balance of the
+append map `P` (`AppendMackeySource.md` §§1–2; `DeformedGlobalQP.md` §4). For words `s`, `t`, a
+morphism `g : s ⟶ t`, the moving colour `i` and cyclotomic polynomials `a` with
+`CyclotomicPolynomialParity`, the error
+`E(g) = (g ▷ i) ≫ W_t - W_s ≫ (i ◁ tw_(q_s) g)` with `W_s = T_s ≫ f_i(x₁)` lies in
+`appendKill s t`, the span of `(y ▷ i) ≫ h` with `y` in the old cyclotomic ideal `cycHom`.
+No hypothesis beyond the parity condition on `a`. The proof follows the written argument:
+`appendError_comp_mem` (composites), `appendError_whiskerRight_mem` (inner generators, case
+(a)), `appendError_lastDot_mem` (case (b)), `appendError_crossLast_mem` (case (c), with
+`braid_comp_mem_appendKill` for the window `(i, x, i)`), assembled over positioned words and
+`span_normalForms` by induction on the length of the source word.
+
+Next target: the matrix form (2) and the descent of `P` to
+`Ind_(φ_L) B → Ind_ψ B` (`AppendMackeySource.md` §4), then the source-side fields of
+`MackeyCosets` and `P ρ = R_t P` (obligation 1).
+
 ## Global factor relations: algebra parameters and reservoir
 
 Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
