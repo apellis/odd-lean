@@ -18,7 +18,8 @@ regroups the existing indices by moving exponent and shuffle, with both inverse
 laws; the intermediate old target is uniquely determined by the shuffle and
 final word. This is an index equivalence, not an old-quotient equivalence.
 
-Remaining: the moving-square shift and difference injectivity are still open.
+The moving-square/even-dot shifts and finite-support difference injectivity
+are now proved in `ELVMovingShift.lean`; see the next section.
 
 ## Full ELV all-generator descent and simultaneous coordinates
 
@@ -39,9 +40,29 @@ old-Hom twist retained. `prependOldReconstruct_coordinateEquiv` and
 finite-colour hypothesis, or moving cyclotomic relation is imposed. The earlier
 raw PBW expansion remains a surjection, not an independent family.
 
-The remaining cancellation step is to identify the moving square with the
-exponent shift by two (the even moving dot with shift by one), then use finite
-support to prove difference injectivity.
+## Full ELV moving powers and actual difference cancellation
+
+`ELVMovingShift.lean` proves `movingPower_pair_shift` by super interchange
+with arbitrary old Homs, then reads back simultaneous quotient coordinates.
+`movingSquare_coordinate_shift` shifts by two and
+`movingEvenDot_coordinate_shift` shifts by one. No shift law is assumed.
+`oldSourceTarget_pair` proves that actual inserted old-source multiplication
+changes only the old quotient coefficient, with the total balance twist;
+`oldSourceTarget_above` establishes the required exponent filtration.
+The largest nonzero finite-support coordinate gives
+`lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
+
+For a nonempty old word, `lastDotDifference_projection` identifies the operator
+with precomposition by the positioned last-dot power minus first-dot power,
+i.e. the right difference in `DeformedGlobalQP.md` §1. The empty-word QP base
+case is separate; no cancellation of the zero difference is claimed there.
+All exterior coefficients, arbitrary old quotient Homs, nonreduced ground
+rings, arbitrary cutoffs and the existing scalar assumptions are retained.
+The consumer includes `1 + delta`, total balance parity one and `ZMod 9`.
+
+Remaining: all-prefix relation killing and QP, P balance, and the projective
+resolution/exactness comparisons. These are not consequences of cancellation
+alone. No full ELV 2-action or nondegeneracy conclusion is asserted.
 
 ## Full ELV prepend PBW normalization
 
@@ -58,8 +79,8 @@ moving-polynomial quotient is assumed.
 
 Boundary: the raw PBW expansion is not injective. The regrouped `Old(v,t)`
 equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
-Identify the moving-square shift (and the even moving-dot shift), then prove
-cancellation by the leading finite-support coordinate. See
+The moving-square/even-dot shifts and leading-coordinate cancellation are
+now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
 ## Reverse probe-pair Q transport

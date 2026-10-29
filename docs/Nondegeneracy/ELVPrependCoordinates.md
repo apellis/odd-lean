@@ -76,25 +76,49 @@ kernel is exactly the preimage of `ELVOld.relations`, the old-only relation
 span (`prependBalancedExpansion_eq_zero_iff`). The old quotient is kept
 as a coefficient object in every term; its flatness is never required.
 
-This is **not yet** a unique right-PBW expansion with old quotient Hom
-coefficients. The raw index `PrependIdx` still contains the old PBW index;
-its expansion therefore has nonzero kernel whenever old cyclotomic
-relations exist. Treating this surjection as injective would be incorrect.
+The **raw-index** expansion is not injective: `PrependIdx` still contains
+the old PBW index, and its kernel is the genuine preimage of the old
+cyclotomic relation span described above. It must not be confused with
+the following **old-Hom quotient** equivalence, which is now proved.
 
-The remaining indispensable step is to regroup these raw indices by
-moving exponent, inverse shuffle, and old target, prove the inverse with
-`Old(v,t)` coefficients, and identify the old relation span coordinatewise.
-That requires compatibility of extraction with arbitrary old composition,
-not only the individual old normal forms handled here. The matrix lemmas
-`prependExpansion_right` and `prependCoordinateEquiv_symm_right` prove
-right-old-algebra compatibility, but do not by themselves supply the full
-super coefficient/old-ideal comparison. `ELVPrependOldExtraction.lean` now
-proves extraction of arbitrary old composition on a fixed moving tail;
-cross-tail extraction and descent on all old-relation generators remain.
-After that inverse is constructed, the moving square must be identified
-with the exponent shift by two (and the even moving dot with shift by one),
-and the finite-support leading-coordinate argument can prove the requested
-difference injectivity. No such injectivity is asserted by this module.
+`ELVPrependCrossTail.lean` regroups by moving exponent and inverse shuffle
+and proves extraction vanishes on every different tail. The old target is
+retained through the dependent coefficient `Old(v,t)`.
+`ELVPrependDescent.lean` then kills every old-relation generator with an
+arbitrary continuation (`prependExtractOldQuotient_old_generator`),
+descends extraction, and proves both inverse laws for
+
+```
+prependOldCoordinateEquiv :
+  Target i v w ≃ₗ[k] ⨁ q : PrependIdx.Tail i v w, Old(v, q.oldTarget).
+```
+
+Thus simultaneous quotient coordinates, including arbitrary old Homs and
+all exterior coefficients, are no longer a remaining obligation. Neither
+this equivalence nor its proof asserts injectivity of the raw-index map.
+
+`ELVMovingShift.lean` identifies actual precomposition by the source
+moving power with shifting the existing tail exponent. Its
+`movingSquare_coordinate_shift` gives shift by two; its
+`movingEvenDot_coordinate_shift` gives shift by one at even moving colour.
+These use the old-Hom equivalence, not an assumed shift operator. Total
+balance parity and coefficient parity remain separate.
+
+The same module proves `oldSourceTarget_pair`: actual right multiplication
+by an inserted old source morphism changes only the old quotient coefficient
+by precomposition with its total-parity twist. Hence `oldSourceTarget_above`
+proves, rather than assumes, preservation of the moving-exponent filtration.
+The maximum nonzero finite-support coordinate gives
+`lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
+For a nonempty old word, `lastDotDifference_projection` identifies these
+operators with actual right multiplication by `x_(n+1)^2 - x_1^2`, or by
+`x_(n+1) - x_1` at even moving colour. The nonempty condition is essential
+for this identification: the empty-word initial case is not a cancellation
+of `x_1 - x_1`.
+
+Remaining: the all-prefix relation-killing, QP induction, old-generator P
+balance, and the resulting projective-resolution/exactness comparisons.
+The cancellation theorem is an ingredient, not an all-prefix QP theorem.
 
 The concrete consumer uses one old odd strand, one new odd dot, cutoff
 three, and the inhomogeneous coefficient `1 + delta`; it also checks that
