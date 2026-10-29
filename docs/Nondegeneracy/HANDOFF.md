@@ -1052,6 +1052,19 @@ transposed is the one on the postcomposed edge `E'`, along `E' ⊣ F'`. The inve
 argument (unit plus nilpotent) is unchanged. Next: assemble `Dot(Q) = G ≫ U` with `G` a
 unit from these lemmas, then link the four side patterns of `sigmaEntry_eq` to the mates.
 
+**Post-side dotted mixed mate is invertible (checked).**
+`SKM/RouquierHomDistinctMixedPostDotsIso.lean`. With `X = x ▷ _`, `Y = E ◁ Π^κ(_ ◁ y)` on
+the target of `J⁻¹` and `A = x ▷ _`, `B = E ◁ (Π^κ H ◁ yᵀ)` on the source of `U`:
+`homDistinctMixedMateDot_pow_mul_pow` (`Dot(Xᵖ Yᑫ) = Aᵖ Bᑫ ≫ U` for even `x`, `y`),
+`exists_homDistinctMixedMateDot_eq` (admissible combinations go to admissible combinations),
+and `homDistinctMixedMateDot_isIso`: for even `x` with `IsIso x`, even nilpotent `y`, a unit
+`c` and `N` an admissible combination with `q ≥ 1`, `Dot(c • Xᵉ + N)` is an isomorphism.
+Also `isNilpotent_rightTranspose` and `map_rouquierPower`. Applied to `mixedQ j i`
+(`t_ji • xᵈʲⁱ + t_ij • yᵈⁱʲ + Σ s xᵖ yᑫ`, `0 < q`; `t_ji • 1` when `d_ji = 0`), this needs the
+probe dot `P.T.dot j` invertible and the reservoir dot `P.W.dot i` nilpotent, which are
+interface hypotheses of the sigma linking step. Next: identify the `(P,R)` sigma entry with
+`homDistinctMixedMateDot` up to transports.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
