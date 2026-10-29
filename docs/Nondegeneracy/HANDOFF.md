@@ -4574,3 +4574,26 @@ superfunctor `flipFunctor D Sc : (pres D Sc).Presented ⥤ SOp k (pres D (parame
 Consumer: `scripts/NonVacuity/QuiverHeckeSuperFlip.lean`. Next: the composite `U` of
 `mirrorFunctor` and `flipFunctor` (crossing weight `ε_ij`), and the identification of the corner
 ideal `U⁻¹(I_N)` with `TransformedIdeal`.
+
+### The half-turn `U` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/Composite.lean` composes the two reflections into the map `U` of
+`SwappedVacuumCoordinates.md` §4:
+`halfTurnFunctor D Sc = mirrorFunctor D Sc ⋙ flipFunctor D Sc :
+(pres D Sc).Presented ⥤ SOp k (pres D (parameterTwist D Sc)).Presented`.
+
+- `halfTurnLD (u, g, v) = (v^rev, g, u^rev)` (dot at position `r` ↦ position `n+1-r`, crossing
+  at `r` ↦ crossing at `n-r`); `halfTurnL ls` = the half-turned layers in reverse order
+  (`flipL_map_mirrorLD`).
+- `halfTurnWeight`: `1` on dots, `ε_ij` on the crossing of `i` and `j` (`ε_ii = -1`);
+  `mirrorWeight_mul_flipWeight`: the two reflection weights `-(-1)^{|i||j|}` and
+  `-(-1)^{|i||j|}ε_ij` multiply to `ε_ij`.
+- `halfTurnC ls`: the weights times the Koszul signs of the reversal (super-opposite product
+  `U(f;g) = (-1)^{|f||g|} U(f)U(g)`); `mirror_prod_mul_flipC`.
+- `halfTurn_mkD`: `U(mkD ls) = halfTurnC ls • mkD (halfTurnL ls)` (retyped along
+  `halfTurn_obj : t ↦ t^rev`); generator table `halfTurn_dot`, `halfTurn_cross` (§4 table, no
+  coefficients yet).
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`. Next: `U` on the coefficient-extended
+Hom spaces (`U(a ⊗ f) = a ⊗ U(f)`), and the identification of the corner ideal `U⁻¹(I_N)`
+with `TransformedIdeal`.
