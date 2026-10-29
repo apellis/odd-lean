@@ -23,7 +23,8 @@ reduces them to the unwhiskered relation, entry by entry.
   product of its entries with the input family.
 * `compList_whisker`, `compList_whisker_eq_zero`: the entries of `u ⊗ d ⊗ v` are block
   diagonal in the outer parts, with block `F_{pu}` applied to the entry of `d` at `F_{pv} Z`.
-* `relHolds_of_compEval`: a relation holds in `layerRep` once its unwhiskered entries vanish.
+* `relHolds_of_compEval`: a relation holds in `layerRep` once its unwhiskered entries vanish;
+  `relHolds_of_compEval_wt`: it suffices that they vanish at weight-matched rightmost sectors.
 -/
 
 noncomputable section
@@ -670,12 +671,25 @@ theorem compEval_whisker (gens : P.Generators) (u : Obj (SKM.sig D))
   refine Finset.sum_congr rfl fun d _ => ?_
   rw [compList_whisker (hw := hw)]
 
-/-- **Reduction of a whiskered evaluation to entries**: a linear combination of diagrams
-whose entries all vanish evaluates to zero after every whiskering. -/
-theorem evalW_eq_zero_of_compEval (gens : P.Generators) {a b : Obj (SKM.sig D)}
+omit [TwoSupercategory k B] [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+/-- Along a summand path of a word that is well formed from the region `ρ`, the sector weights
+follow the regions of the word: if the rightmost sector has the weight of the rightmost region,
+the leftmost sector has weight `ρ`. -/
+theorem wt_eq_of_ok : {v : List (Col I X)} → {y t : Sector I} → (pv : SPath v y t) →
+    (ρ : X) → (SKM.sig D).ok ρ v → P.wt t = (SKM.sig D).endR ρ v → P.wt y = ρ
+  | _, _, _, .nil _, _, _, h => h
+  | _, _, _, .cons c side s hv p, ρ, hok, h => by
+    obtain ⟨h1, h2⟩ := hok
+    rw [P.wt_nextSector c.l side s hv, wt_eq_of_ok p c.r h2 h]
+    exact h1
+
+/-- **Reduction of a whiskered evaluation to weight-matched entries**: a linear combination of
+diagrams whose entries vanish whenever the rightmost sector has the weight of the rightmost
+region evaluates to zero after every whiskering. -/
+theorem evalW_eq_zero_of_compEval_wt (gens : P.Generators) {a b : Obj (SKM.sig D)}
     (X : (a ⟶ b) →₀ k)
     (hX : ∀ {s t : Sector I} (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t),
-      compEval gens X p q Z = 0)
+      P.wt t = a.endR → compEval gens X p q Z = 0)
     (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour) (hw : a.WhiskerOK u v) :
     (P.layerRep Gs Ys gens).toLocal.evalW (a.whisker u v) (b.whisker u v) u v X = 0 := by
   classical
@@ -711,13 +725,38 @@ theorem evalW_eq_zero_of_compEval (gens : P.Generators) {a b : Obj (SKM.sig D)}
   · simp only [Prod.mk.injEq, Sigma.mk.injEq] at hout
     obtain ⟨⟨rfl, h1⟩, ⟨rfl, h2⟩⟩ := hout
     cases h1; cases h2
+    have hy : P.wt y1 = a.endR := by
+      refine P.wt_eq_of_ok pv a.endR hw.2.2 (hend.trans ?_)
+      rw [Obj.endR, Obj.whisker_start, Obj.whisker_word, Signature.endR_append,
+        Signature.endR_append]
+      exact congrArg (fun r => (SKM.sig D).endR ((SKM.sig D).endR r a.word) v) hw.2.1
     have := compEval_whisker gens u v X hw pu p q pv (Ys t.1)
     simp only [Finsupp.sum] at this
-    erw [this, hX]
+    erw [this, hX p q _ hy]
     simp
   · refine (congrArg _ (Finset.sum_eq_zero fun d _ => ?_)).trans (Limits.comp_zero)
     erw [compList_whisker_eq_zero gens u v _ (Diagram.chain d) hw pu p pv pu' q pv' hout]
     simp
+
+/-- **Reduction of a whiskered evaluation to entries**: a linear combination of diagrams
+whose entries all vanish evaluates to zero after every whiskering. -/
+theorem evalW_eq_zero_of_compEval (gens : P.Generators) {a b : Obj (SKM.sig D)}
+    (X : (a ⟶ b) →₀ k)
+    (hX : ∀ {s t : Sector I} (p : SPath a.word s t) (q : SPath b.word s t) (Z : P.H t),
+      compEval gens X p q Z = 0)
+    (u : Obj (SKM.sig D)) (v : List (SKM.sig D).Colour) (hw : a.WhiskerOK u v) :
+    (P.layerRep Gs Ys gens).toLocal.evalW (a.whisker u v) (b.whisker u v) u v X = 0 :=
+  evalW_eq_zero_of_compEval_wt gens X (fun p q Z _ => hX p q Z) u v hw
+
+/-- **Reduction of a relation to its weight-matched entries**: a relation of the presentation
+holds in the swapped layer representation (under every whiskering) once the entries of the
+unwhiskered relation vanish at every rightmost sector of the weight of its rightmost region. -/
+theorem relHolds_of_compEval_wt (gens : P.Generators) (r : SKM.Rel D)
+    (h : ∀ {s t : Sector I} (p : SPath ((SKM.pres D Sc).dom r).word s t)
+      (q : SPath ((SKM.pres D Sc).cod r).word s t) (Z : P.H t),
+      P.wt t = ((SKM.pres D Sc).dom r).endR → compEval gens ((SKM.pres D Sc).rel r) p q Z = 0) :
+    RelHolds Sc (P.layerRep Gs Ys gens) r := fun u v hw =>
+  evalW_eq_zero_of_compEval_wt gens _ h u v hw
 
 /-- **Reduction of a relation to its entries**: a relation of the presentation holds in the
 swapped layer representation (under every whiskering) once all entries of the unwhiskered
