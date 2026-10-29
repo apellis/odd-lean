@@ -83,6 +83,9 @@ no predicate on the objects is needed. For a `ProbeReservoir P` with
 hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
 in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
 (`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
+The `ReservoirCoefficients` consumer constructs a nonzero square-zero positive coefficient
+ideal over `ZMod 9` and checks post-whiskering, arbitrary left/right multiplication, decreasing
+powers and joint vanishing. It does not construct a cyclotomic Rouquier family.
 
 Open (transport): identify the residual entries of the two-sector reduction (closures
 `Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
