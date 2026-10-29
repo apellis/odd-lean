@@ -542,7 +542,8 @@ generator images of item 1 below.
    - `Braid.lean`: `BraidRelations`.
    - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
      see below).
-   - `Inversion.lean`: `InversionRelations`.
+   - `Inversion.lean`: `InversionRelations` (checked, conditional on
+     `SigmaPermutation` and `LeftwardData.IsInverse`; see below).
    - `WindowZero.lean`: `WindowZeroRelations` (checked, see below).
    - `Interchange.lean`: `InterchangeLaw` (checked, conditional on
      `GeneratorsSupernatural`, the supernaturality of the odd generator
@@ -569,6 +570,22 @@ Remaining: prove `CrossQuad (swappedGens c L)` from the probe and reservoir
 quadratic relations (diagonal blocks) and the inverse property of `c`
 (equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
 intertwinings from `homMixedInterchange_pre/_post`.
+
+**Inversion relations (checked).** `SwappedAssembly/Inversion.lean`:
+`inversionRelations`: `InversionRelations` for `P.layerRep Gs Ys
+(P.swappedGens c L)` from two hypotheses. (1) `SigmaPermutation c i j ν` for
+`i ≠ j`: in every pair of sectors the matrix of `σ : Eⱼ Fᵢ → Fᵢ Eⱼ` is a
+permutation matrix (a bijection `f` of summand paths, zero entries off `f`)
+with invertible entries. Then the entrywise inverse `lcrossNeImage` is a
+two-sided inverse (`sigma_lcross_sum`, `lcross_sigma_sum`), which gives
+`invNe₁`, `invNe₂` (1.11), (1.12). (2) `LeftwardData.IsInverse L c`: the
+equal-colour relations `invP₁`–`invP₅`, `invM₁`–`invM₅` (1.13), (1.14) hold
+entrywise; these identities characterize `L` as the components of the
+inverses of the augmented maps. Supporting: `compEval_dg_append` (the entry
+of a two-part normal-form diagram is the matrix product of the entries),
+`compDiag_lcrossL`, `compDiag_sigmaL_swappedGens`. Remaining: prove
+`SigmaPermutation c` from the block structure of `SwappedActionAssembly.md`
+§5, and construct `L` with `L.IsInverse c` (A7).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components

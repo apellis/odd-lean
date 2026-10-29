@@ -19,7 +19,7 @@ For the swapped generators `swappedGens c L`:
 * distinct colours: the leftward crossing `lcrossNeImage` is the entrywise inverse of the
   matrix of `σ`. When that matrix is a permutation matrix with invertible entries
   (`SigmaPermutation`, the block structure of `docs/Nondegeneracy/SwappedActionAssembly.md`
-  §5), it is the two-sided inverse (`compEval_invNe₁`, `compEval_invNe₂`);
+  §5), it is the two-sided inverse (`sigma_lcross_sum`, `lcross_sigma_sum`);
 * equal colours: the identities characterizing the leftward data `L` are the remaining
   relations themselves (`LeftwardData.IsInverse`).
 
@@ -194,30 +194,34 @@ theorem inversionRelations {c : P.CrossCoeff} {L : P.LeftwardData}
     show compEval (P.swappedGens c L) (a := SKM.ob D ν [up j, dn i])
       (b := SKM.ob D ν [up j, dn i]) (SKM.relation D Sc (.invNe₁ i j ν hij)) p q Z = 0
     simp only [SKM.relation]
-    rw [compEval_sub, compEval_dg_append, compEval_of]
+    rw [compEval_sub, compEval_dg_append _ ν (SKM.sigmaL i j) (SKM.lcrossL i j)
+      (SKM.sChain_sigmaL i j) (SKM.sChain_lcrossL i j), compEval_of]
     have hs : ∀ m : SPath (wd D ν [dn i, up j]) _ _,
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.sigmaL i j) (SKM.sChain_sigmaL i j))
           p m Z ≫ compDiag (P.swappedGens c L)
             (SKM.mkD D ν (SKM.lcrossL i j) (SKM.sChain_lcrossL i j)) m q Z =
         P.sigmaEntry c i j ν p m Z ≫ P.lcrossNeImage c i j ν m q Z := fun m => by
-      erw [compDiag_sigmaL_swappedGens, compDiag_lcrossL, swappedGens_lcross_of_ne c L hij]
-    rw [Finset.sum_congr rfl fun m _ => hs m]
+      erw [compDiag_sigmaL_swappedGens, compDiag_lcrossL, P.swappedGens_lcross_of_ne c L hij]
+    rw [sub_eq_zero]
+    simp only [hs]
+    let : ∀ a b, Fintype (SPath (wd D ν [dn i, up j]) a b) := fun _ _ => Fintype.ofFinite _
     erw [sigma_lcross_sum (hσ i j ν hij), compDiag_id]
-    exact sub_self _
   | invNe₂ i j ν hij =>
     show compEval (P.swappedGens c L) (a := SKM.ob D ν [dn i, up j])
       (b := SKM.ob D ν [dn i, up j]) (SKM.relation D Sc (.invNe₂ i j ν hij)) p q Z = 0
     simp only [SKM.relation]
-    rw [compEval_sub, compEval_dg_append, compEval_of]
+    rw [compEval_sub, compEval_dg_append _ ν (SKM.lcrossL i j) (SKM.sigmaL i j)
+      (SKM.sChain_lcrossL i j) (SKM.sChain_sigmaL i j), compEval_of]
     have hs : ∀ m : SPath (wd D ν [up j, dn i]) _ _,
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.lcrossL i j) (SKM.sChain_lcrossL i j))
           p m Z ≫ compDiag (P.swappedGens c L)
             (SKM.mkD D ν (SKM.sigmaL i j) (SKM.sChain_sigmaL i j)) m q Z =
         P.lcrossNeImage c i j ν p m Z ≫ P.sigmaEntry c i j ν m q Z := fun m => by
-      erw [compDiag_sigmaL_swappedGens, compDiag_lcrossL, swappedGens_lcross_of_ne c L hij]
-    rw [Finset.sum_congr rfl fun m _ => hs m]
+      erw [compDiag_sigmaL_swappedGens, compDiag_lcrossL, P.swappedGens_lcross_of_ne c L hij]
+    rw [sub_eq_zero]
+    simp only [hs]
+    let : ∀ a b, Fintype (SPath (wd D ν [up j, dn i]) a b) := fun _ _ => Fintype.ofFinite _
     erw [lcross_sigma_sum (hσ i j ν hij), compDiag_id]
-    exact sub_self _
   | _ => exact hL _ hr (by simp [IsInvNe]) p q Z
 
 end ProbeReservoir
