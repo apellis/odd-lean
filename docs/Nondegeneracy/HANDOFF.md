@@ -200,8 +200,8 @@ Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalWeightMixedSlides.lean`):
   `globalRouquierData` (the signed crossing is `+ψ` at distinct colours), for every parameter
   family, hence for both `parameterTwist D Sc` (probe) and the reservoir factor.
 
-Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `quadNe`,
-`braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
+Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `braid`, `braidEq`, `invNe`
+(`quadZero`, `quadNe`: next section). `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
 ## Distinct-colour quadratic relation on the global factors: algebra level
@@ -244,12 +244,23 @@ Hence, on components at a height-`n` module `M`:
   + ∑ s'^{pq}_ij x_in^q ≫ x_out^p` (powers `endoPower`);
 - `heightInduction_square_zero`: `ψ_ij.app ≫ ψ_ji.app = t'_ij 𝟙`.
 
-Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: the weight-level assembly
-(template `GlobalWeightMixedSlides`; every term has parity `0`, so only the `0`-components are
-compared), with `rouquierPower (dot i)` on the outer induction becoming `endoPower x_out`
-componentwise (`E j ◁ dot i` is the outer dot, `dot j ▷ E i` the inner dot), and
-`parameterTwist_involutive` to state the fields for `globalRouquierFamily D (parameterTwist D Sc)`
-with parameters `Sc`.
+**Weight level (checked,** `CyclotomicAction/GlobalWeightMixedQuadratic.lean`**).**
+
+- `heightContentMixedSquareNe`, `heightContentMixedSquareZero`: the relation on content blocks
+  with arbitrary height and content transports;
+- `globalActionCross_square_ne` (`d_ij ≠ 0`): `ψ_ij ≫ ψ_ji = t'_ij (E_j ◁ x_i^{d_ij})
+  + t'_ji (x_j^{d_ji} ▷ E_i) + ∑_{0<p<d_ij, 0<q<d_ji} s'^{pq}_ij (x_j^q ▷ E_i ≫ E_j ◁ x_i^p)`
+  with `rouquierPower` and the parameters of `parameterTwist D Sc`;
+- `globalActionCross_square_zero` (`d_ij = 0`): `ψ_ij ≫ ψ_ji = t'_ij 𝟙`;
+- `globalActionSignedCross_square_ne`, `globalActionSignedCross_square_zero`: the same for the
+  signed crossing of `globalRouquierData` (`+ψ` at distinct colours).
+
+Every term has parity `0` (`d_ij |i| = 0`, and `s'^{pq}_ij ≠ 0` forces `p|i| = q|j| = 0`,
+`scalars_parity_of_s_ne_zero`), so only the `0`-components are compared; `E_j ◁ x_i` is the
+outer dot and `x_j ▷ E_i` the inner dot of `heightInduction_square_ne`. These are the `quadNe`,
+`quadZero` fields with scalars `parameterTwist D Sc` for the data built from `Sc`. Remaining:
+restate them for `globalRouquierFamily D (parameterTwist D Sc)` with scalars `Sc` via
+`parameterTwist_involutive`, together with the other fields.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
