@@ -1503,6 +1503,14 @@ cup and cap are probe unit and counit, and the crossing layer is the mixed inter
 alone (`isIso_probeMixedMateNe`, the distinct-colour analogue of `isIso_probeMixedMate`, via
 `isIso_homContentDistinctMixedPreMate_of_eq`). Remaining for `hσ`: `(R,R)` and `(P,P)`.
 
+The `(R,R)` sigma entry (proposed, not yet building): on branch
+`research/odd-nondegeneracy-wip/sigma-rr`, `Sigma/ReservoirEntry.lean` reduces the entry to
+`sign · homShiftedPostCrossMate` (`postCrossCore_eq`, checked lemmas `postPairIso_hom_comp`,
+`homParityShiftAdd_hom_app_comp`). The remaining step is a generic chain lemma that strips the
+eqToHom transports and applies `homShiftedPostCrossMate_isIso`. Open after that: the `(P,P)`
+entry via `homContentDistinctPreMate_isIso` (needs `LeftMateInvertible` as an interface
+hypothesis) and assembly of `hσ` via `sigmaPermutation_of_isIso`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
