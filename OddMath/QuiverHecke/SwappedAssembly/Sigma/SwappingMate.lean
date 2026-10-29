@@ -378,7 +378,8 @@ theorem sides_upDn_dnUp_of_ne {i : I} {ν : X} {t s : Sector I} (hts : t ≠ s)
 
 /-- The swapping entries `W_B` of the same-colour sideways crossing, from the path `(P,R)` of
 `Eᵢ Fᵢ` to the path `(R,P)` of `Fᵢ Eᵢ`, are invertible. This is the reservoir mate of
-`-(a;a;J⁻¹)`; it is a hypothesis here. -/
+`-(a;a;J⁻¹)`; `ProbeReservoir.swappingReservoirInvertible` (`Sigma/SwappingReservoir.lean`)
+proves it. -/
 def SwappingReservoirInvertible (P : ProbeReservoir k B D Sc) (c : P.CrossCoeff) : Prop :=
   ∀ (i : I) (ν : X) (t s : Sector I) (p : SPath (wd D ν [up i, dn i]) t s)
     (q : SPath (wd D ν [dn i, up i]) t s), p.sides = [true, false] → q.sides = [false, true] →

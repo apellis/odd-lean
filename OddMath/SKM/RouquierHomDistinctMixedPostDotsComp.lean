@@ -17,6 +17,15 @@ with `Y` and `Γ`, and `(c • Xᵈ + N) ≫ Φ = c' • Xᵉ + N'` with `c`, `c
 combinations of monomials with a positive power of `Y`, then the dotted mate of `Φ` is
 invertible. This is the case of a crossing that is the inverse of a polynomial up to a
 polynomial factor, for instance `a = (y - x)⁻¹`.
+
+For a crossing of the form `Φ = J (-α²) J⁻¹`, with `α` an endomorphism of the source of `J⁻¹`
+(the shape of the two-sided Rouquier crossing of a probe and a reservoir strand), conjugation by
+`J` (`isoConjRingHom`) carries the pre dot, the post dot and the transposed dot to the
+corresponding dots on the source of `J⁻¹` (`homDistinctMixedMateDot_isIso_of_conj`). This gives
+two consequences of the defining inverse identities of the crossing:
+`homDistinctMixedMateDot_isIso_of_inverse` (even colour: `α` inverts `Y - X`) and
+`homDistinctMixedMateDot_isIso_of_inverse_odd` (odd colour: `(X² - Y²) α = X - Y`, `X` a unit,
+`Y` nilpotent). Neither needs any assumption on bubbles.
 -/
 noncomputable section
 namespace OddMath.SKM
@@ -258,4 +267,343 @@ theorem homDistinctMixedMateDot_isIso_of_comp {x : E ⟶ E} (hx : x ∈ parity (
       End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F'))) _
 
 end Mate
+
+/-- Conjugation by an isomorphism, as a ring homomorphism of endomorphism rings. -/
+def isoConjRingHom {C : Type*} [Category C] [Preadditive C] {X Y : C} (α : X ≅ Y) :
+    End X →+* End Y where
+  toFun f := α.inv ≫ f ≫ α.hom
+  map_one' := by
+    change α.inv ≫ 𝟙 X ≫ α.hom = 𝟙 Y
+    simp
+  map_mul' f g := by
+    change α.inv ≫ (g ≫ f) ≫ α.hom = (α.inv ≫ g ≫ α.hom) ≫ (α.inv ≫ f ≫ α.hom)
+    simp
+  map_zero' := by
+    change α.inv ≫ (0 : X ⟶ X) ≫ α.hom = 0
+    simp
+  map_add' f g := by
+    change α.inv ≫ (f + g : X ⟶ X) ≫ α.hom = (α.inv ≫ f ≫ α.hom) + (α.inv ≫ g ≫ α.hom)
+    rw [Preadditive.add_comp, Preadditive.comp_add]
+
+theorem isoConjRingHom_apply {C : Type*} [Category C] [Preadditive C] {X Y : C} (α : X ≅ Y)
+    (f : End X) : isoConjRingHom α f = α.inv ≫ f ≫ α.hom := rfl
+
+theorem isoConjRingHom_smul {k : Type*} [CommRing k] {C : Type*} [Category C] [Preadditive C]
+    [Linear k C] {X Y : C} (α : X ≅ Y) (c : k) (f : End X) :
+    isoConjRingHom α (c • f) = c • isoConjRingHom α f := by
+  change α.inv ≫ (c • (f : X ⟶ X)) ≫ α.hom = c • (α.inv ≫ f ≫ α.hom)
+  rw [Linear.smul_comp, Linear.comp_smul]
+
+/-- An element that commutes with a unit `u` and with `v` commutes with every solution `a` of
+`a u = v`. -/
+theorem commute_of_mul_eq_of_isUnit {R : Type*} [Ring R] {a u v w : R} (hu : IsUnit u)
+    (hau : a * u = v) (hwu : Commute w u) (hwv : Commute w v) : Commute w a := by
+  obtain ⟨u, rfl⟩ := hu
+  have : a = v * ↑u⁻¹ := by rw [← hau, mul_assoc, Units.mul_inv, mul_one]
+  rw [this]
+  exact hwv.mul_right hwu.units_inv_right
+
+section Conj
+variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d} {F' : d ⟶ c}
+  (A : SuperAdjunction (k := k) E' F') (κ τ : ZMod 2) (H : b ⟶ d)
+
+/-- The pre dot on the source of `J⁻¹`. -/
+abbrev mixedPostJPreDot (x : E ⟶ E) :
+    End ((homParityShift (k := k) τ).obj ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')) :=
+  (homParityShift (k := k) τ).map ((x ▷ ((homParityShift (k := k) κ).obj H ≫ F')) ▷ E')
+
+/-- The post dot on the source of `J⁻¹`. -/
+abbrev mixedPostJPostDot (y : E' ⟶ E') :
+    End ((homParityShift (k := k) τ).obj ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')) :=
+  (homParityShift (k := k) τ).map ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ◁ y)
+
+/-- An even endomorphism of the middle letter on the source of `J⁻¹`. -/
+abbrev mixedPostJMidDot (g : (homParityShift (k := k) κ).obj H ≫ F' ⟶
+      (homParityShift (k := k) κ).obj H ≫ F') :
+    End ((homParityShift (k := k) τ).obj ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')) :=
+  (homParityShift (k := k) τ).map ((E ◁ g) ▷ E')
+
+theorem commute_mixedPostJPreDot_midDot (x : E ⟶ E) {g : (homParityShift (k := k) κ).obj H ≫ F' ⟶
+      (homParityShift (k := k) κ).obj H ≫ F'} (hg : g ∈ parity (R := k) _ _ 0) :
+    Commute (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x)
+      (mixedPostJMidDot (k := k) E κ τ H (E' := E') g) := by
+  change _ ≫ _ = _ ≫ _
+  rw [← Functor.map_comp, ← Functor.map_comp, ← TwoSupercategory.comp_whiskerRight (R := k),
+    ← TwoSupercategory.comp_whiskerRight (R := k),
+    TwoSupercategory.whisker_exchange_of_even_right (R := k) x hg]
+
+theorem commute_mixedPostJPostDot_midDot (y : E' ⟶ E') {g : (homParityShift (k := k) κ).obj H ≫ F' ⟶
+      (homParityShift (k := k) κ).obj H ≫ F'} (hg : g ∈ parity (R := k) _ _ 0) :
+    Commute (mixedPostJPostDot (k := k) E κ τ H (F' := F') y)
+      (mixedPostJMidDot (k := k) E κ τ H (E' := E') g) := by
+  change _ ≫ _ = _ ≫ _
+  rw [← Functor.map_comp, ← Functor.map_comp,
+    TwoSupercategory.whisker_exchange_of_even_left (R := k)
+      (TwoSupercategory.whiskerLeft_mem E hg) y]
+
+theorem commute_mixedPostJPreDot_postDot {x : E ⟶ E} {y : E' ⟶ E'}
+    (hx : x ∈ parity (R := k) E E 0) (hy : y ∈ parity (R := k) E' E' 0) :
+    Commute (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x)
+      (mixedPostJPostDot (k := k) E κ τ H (F' := F') y) := by
+  have h := homMixedInterchange_dot_exchange (k := k) E E' τ
+    ((homParityShift (k := k) κ).obj H ≫ F') x y hx hy
+  rw [koszulSign_zero_left, one_smul] at h
+  change _ ≫ _ = _ ≫ _
+  exact h.symm
+
+/-- **The dotted mate of a conjugated crossing.** Let `α` be an endomorphism of the source of
+`J⁻¹` that commutes with the post dot `y` and with the middle dot `Π^κ H ◁ yᵀ`, and suppose
+`α² (x - y)² = xᵉ + β y`. Then the dotted mate of `J (-α²) J⁻¹` is invertible when `x` is an
+even invertible dot and `y` an even nilpotent dot. -/
+theorem homDistinctMixedMateDot_isIso_of_conj {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
+    {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0) [IsIso x]
+    (hn : IsNilpotent (show End E' from y))
+    (α : End ((homParityShift (k := k) τ).obj
+      ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')))
+    (h₁ : Commute α (mixedPostJPostDot (k := k) E κ τ H (F' := F') y))
+    (h₂ : Commute α (mixedPostJMidDot (k := k) E κ τ H (E' := E')
+      ((homParityShift (k := k) κ).obj H ◁ SuperAdjunction.rightTranspose A A y)))
+    (e : ℕ) (β : k)
+    (h : α * α * ((mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y) *
+        (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y)) =
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ e +
+        β • mixedPostJPostDot (k := k) E κ τ H (F' := F') y) :
+    IsIso (homDistinctMixedMateDot E A κ τ H
+      ((homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).hom ≫
+        (-(α ≫ α ≫
+          (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv)))) := by
+  have hχ : ∀ f, isoConjRingHom
+      (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm f =
+      (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).hom ≫ f ≫
+        (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv :=
+    fun f => rfl
+  have hX : mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x =
+      isoConjRingHom
+        (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm
+        (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) := by
+    rw [hχ]
+    have h' := homMixedInterchange_pre (k := k) E E' κ τ
+      ((homParityShift (k := k) κ).obj H ≫ F') x hx
+    rw [koszulSign_zero_right, one_smul] at h'
+    rw [← reassoc_of% h', Iso.hom_inv_id, Category.comp_id]
+  have hY : mixedPostTargetPostDot (k := k) E κ H (F' := F') y =
+      isoConjRingHom
+        (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm
+        (mixedPostJPostDot (k := k) E κ τ H (F' := F') y) := by
+    rw [hχ]
+    have h' := homMixedInterchange_post (k := k) E E' κ τ
+      ((homParityShift (k := k) κ).obj H ≫ F') y hy
+    rw [koszulSign_zero_right, one_smul] at h'
+    rw [← reassoc_of% h', Iso.hom_inv_id, Category.comp_id]
+  have hΓ : mixedPostTargetTransposeDot (k := k) E κ H A y =
+      isoConjRingHom
+        (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm
+        (mixedPostJMidDot (k := k) E κ τ H (E' := E')
+          ((homParityShift (k := k) κ).obj H ◁ SuperAdjunction.rightTranspose A A y)) := by
+    rw [hχ]
+    have h' := homMixedInterchange_naturality_even (k := k) E E' κ τ
+      (TwoSupercategory.whiskerLeft_mem ((homParityShift (k := k) κ).obj H)
+        (SuperAdjunction.rightTranspose_mem A A hy))
+    rw [← reassoc_of% h', Iso.hom_inv_id, Category.comp_id]
+  have hΦ : (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).hom ≫
+        (-(α ≫ α ≫
+          (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv)) =
+      isoConjRingHom
+        (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm
+        (-(α * α)) := by
+    rw [hχ, End.mul_def]
+    erw [Preadditive.neg_comp]
+    rw [Preadditive.comp_neg, Category.assoc]
+    exact (Preadditive.comp_neg _ _).symm
+  have hc := commute_mixedPostJPreDot_postDot (k := k) E κ τ H (F' := F') hx hy
+  refine homDistinctMixedMateDot_isIso_of_comp (E := E) (A := A) (κ := κ) (τ := τ) (H := H)
+    hx hy hn _ ?_ ?_ 1 (-1) 2 e
+    (N := (-2 : k) • (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ 1 *
+        mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ 1) +
+      (1 : k) • (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ 0 *
+        mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ 2))
+    (N' := (-β) • (mixedPostTargetPreDot (k := k) E κ H (E' := E') (F' := F') x ^ 0 *
+        mixedPostTargetPostDot (k := k) E κ H (F' := F') y ^ 1)) ?_ ?_ ?_
+  · rw [hΦ, hY]
+    exact ((h₁.mul_left h₁).neg_left).map _
+  · rw [hΦ, hΓ]
+    exact ((h₂.mul_left h₂).neg_left).map _
+  · exact Submodule.add_mem _
+      (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, 1, trivial, trivial, le_rfl, rfl⟩))
+      (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 2, trivial, trivial, by norm_num, rfl⟩))
+  · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 1, trivial, trivial, le_rfl, rfl⟩)
+  · have hsq : (1 : k) • mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 2 +
+        ((-2 : k) • (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 1 *
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y ^ 1) +
+        (1 : k) • (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 0 *
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y ^ 2)) =
+        (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y) *
+        (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y) := by
+      rw [pow_one, pow_one, pow_zero, one_mul, one_smul, one_smul, pow_two, pow_two, sub_mul,
+        mul_sub, mul_sub, ← hc.eq, neg_smul, two_smul]
+      abel
+    have key : -(α * α) * ((1 : k) • mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 2 +
+        ((-2 : k) • (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 1 *
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y ^ 1) +
+        (1 : k) • (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 0 *
+          mixedPostJPostDot (k := k) E κ τ H (F' := F') y ^ 2))) =
+        (-1 : k) • mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ e +
+          (-β) • (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ^ 0 *
+            mixedPostJPostDot (k := k) E κ τ H (F' := F') y ^ 1) := by
+      rw [hsq, neg_mul, h, pow_zero, one_mul, pow_one, neg_smul, one_smul, neg_smul, neg_add]
+    have := congrArg (isoConjRingHom
+      (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm) key
+    simp only [map_mul, map_neg, map_add, map_pow, isoConjRingHom_smul] at this
+    rw [hΦ, hX, hY, ← End.mul_def, Units.val_one, Units.val_neg, Units.val_one]
+    simpa only [map_mul, map_neg, map_add, map_pow, isoConjRingHom_smul] using this
+
+/-- **Even case.** If `x` is an even invertible dot, `y` an even nilpotent dot and `α` is a
+two-sided inverse of `y - x` on the source of `J⁻¹`, then the dotted mate of `J (-α²) J⁻¹` is
+invertible. -/
+theorem homDistinctMixedMateDot_isIso_of_inverse {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
+    {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 0) (hxi : IsIso x)
+    (hn : IsNilpotent (show End E' from y))
+    (α : End ((homParityShift (k := k) τ).obj
+      ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')))
+    (h₁ : α ≫ (mixedPostJPostDot (k := k) E κ τ H (F' := F') y -
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) = 𝟙 _)
+    (h₂ : (mixedPostJPostDot (k := k) E κ τ H (F' := F') y -
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) ≫ α = 𝟙 _) :
+    IsIso (homDistinctMixedMateDot E A κ τ H
+      ((homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).hom ≫
+        (-(α ≫ α ≫
+          (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv)))) := by
+  have := hxi
+  have hau : α * (mixedPostJPostDot (k := k) E κ τ H (F' := F') y -
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) = 1 := h₂
+  have hua : (mixedPostJPostDot (k := k) E κ τ H (F' := F') y -
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) * α = 1 := h₁
+  have hu : IsUnit (mixedPostJPostDot (k := k) E κ τ H (F' := F') y -
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) := ⟨⟨_, α, hua, hau⟩, rfl⟩
+  have hc := commute_mixedPostJPreDot_postDot (k := k) E κ τ H (F' := F') hx hy
+  have hg := TwoSupercategory.whiskerLeft_mem ((homParityShift (k := k) κ).obj H)
+    (SuperAdjunction.rightTranspose_mem A A hy)
+  have hxg := commute_mixedPostJPreDot_midDot (k := k) E κ τ H (E' := E') x hg
+  have hyg := commute_mixedPostJPostDot_midDot (k := k) E κ τ H y hg
+  refine homDistinctMixedMateDot_isIso_of_conj E A κ τ H hx hy hn α ?_ ?_ 0 0 ?_
+  · exact (commute_of_mul_eq_of_isUnit hu hau ((Commute.refl _).sub_right hc.symm)
+      (Commute.one_right _)).symm
+  · exact (commute_of_mul_eq_of_isUnit hu hau (hyg.symm.sub_right hxg.symm)
+      (Commute.one_right _)).symm
+  · generalize mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x = X at hau ⊢
+    generalize mixedPostJPostDot (k := k) E κ τ H (F' := F') y = Y at hau ⊢
+    rw [← neg_sub Y X, neg_mul_neg, pow_zero, zero_smul, add_zero]
+    calc α * α * ((Y - X) * (Y - X)) = α * (α * (Y - X)) * (Y - X) := by
+          simp only [mul_assoc]
+      _ = 1 := by rw [hau, mul_one, hau]
+
+/-- **Odd case.** If `x` is an odd dot, `y` an odd nilpotent dot, the dot `X` of `x` on the
+source of `J⁻¹` is a unit, the dot `Y` of `y` is nilpotent, and `(X² - Y²) ≫ α = X - Y`, then
+the dotted mate of `J (-α²) J⁻¹` is invertible. -/
+theorem homDistinctMixedMateDot_isIso_of_inverse_odd {x : E ⟶ E}
+    (hx : x ∈ parity (R := k) E E 1) {y : E' ⟶ E'} (hy : y ∈ parity (R := k) E' E' 1)
+    (hxi : IsIso x) (hn : IsNilpotent (show End E' from y))
+    (hxu : IsUnit (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x))
+    (hyn : IsNilpotent (mixedPostJPostDot (k := k) E κ τ H (F' := F') y))
+    (α : End ((homParityShift (k := k) τ).obj
+      ((E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) ≫ E')))
+    (h₂ : (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x ≫
+        mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y ≫
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y) ≫ α =
+      (show _ ⟶ _ from mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x) -
+        (show _ ⟶ _ from mixedPostJPostDot (k := k) E κ τ H (F' := F') y)) :
+    IsIso (homDistinctMixedMateDot E A κ τ H
+      ((homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).hom ≫
+        (-(α ≫ α ≫
+          (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).inv)))) := by
+  have := hxi
+  have h11 : (1 : ZMod 2) + 1 = 0 := by decide
+  have hx2 : x ≫ x ∈ parity (R := k) E E 0 := h11 ▸ Supercategory.comp_mem hx hx
+  have hy2 : y ≫ y ∈ parity (R := k) E' E' 0 := h11 ▸ Supercategory.comp_mem hy hy
+  have hn2 : IsNilpotent (show End E' from y ≫ y) := by
+    obtain ⟨n, hn⟩ := hn
+    refine ⟨n, ?_⟩
+    change ((show End E' from y) * (show End E' from y)) ^ n = 0
+    rw [← pow_two, ← pow_mul, mul_comm, pow_mul, hn, zero_pow two_ne_zero]
+  have hX2 : mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') (x ≫ x) =
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x *
+        mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x := by
+    change (homParityShift (k := k) τ).map _ = _ ≫ _
+    rw [TwoSupercategory.comp_whiskerRight (R := k), TwoSupercategory.comp_whiskerRight (R := k),
+      Functor.map_comp]
+  have hY2 : mixedPostJPostDot (k := k) E κ τ H (F' := F') (y ≫ y) =
+      mixedPostJPostDot (k := k) E κ τ H (F' := F') y *
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y := by
+    change (homParityShift (k := k) τ).map _ = _ ≫ _
+    rw [TwoSupercategory.whiskerLeft_comp (R := k), Functor.map_comp]
+  -- the odd dots anticommute
+  have hac : mixedPostJPostDot (k := k) E κ τ H (F' := F') y *
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x =
+      -(mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x *
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y) := by
+    have h := homMixedInterchange_dot_exchange (k := k) E E' τ
+      ((homParityShift (k := k) κ).obj H ≫ F') x y hx hy
+    have hs : koszulSign (1 : ZMod 2) 1 = -1 := by simp [koszulSign]
+    rw [hs, neg_one_zsmul] at h
+    exact h
+  have hg := TwoSupercategory.whiskerLeft_mem ((homParityShift (k := k) κ).obj H)
+    (SuperAdjunction.rightTranspose_mem A A hy2)
+  have hXg := commute_mixedPostJPreDot_midDot (k := k) E κ τ H (E' := E') x hg
+  have hYg := commute_mixedPostJPostDot_midDot (k := k) E κ τ H y hg
+  have hau : α * (mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x *
+        mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y *
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y) =
+      mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x -
+        mixedPostJPostDot (k := k) E κ τ H (F' := F') y := h₂
+  obtain ⟨G, hG⟩ : ∃ G, G = mixedPostJMidDot (k := k) E κ τ H (E' := E')
+      ((homParityShift (k := k) κ).obj H ◁ SuperAdjunction.rightTranspose A A (y ≫ y)) :=
+    ⟨_, rfl⟩
+  rw [← hG] at hXg hYg
+  set X := mixedPostJPreDot (k := k) E κ τ H (E' := E') (F' := F') x
+  set Y := mixedPostJPostDot (k := k) E κ τ H (F' := F') y
+  have hYYX : Commute (Y * Y) X := by
+    change Y * Y * X = X * (Y * Y)
+    rw [mul_assoc, hac, mul_neg, ← mul_assoc, hac, neg_mul, neg_neg, mul_assoc]
+  have hXXY : Commute (X * X) Y := by
+    change X * X * Y = Y * (X * X)
+    rw [← mul_assoc Y X X, hac, neg_mul, mul_assoc X Y X, hac, mul_neg, neg_neg, mul_assoc]
+  have hYY : Commute (Y * Y) Y := (Commute.refl Y).mul_left (Commute.refl Y)
+  have hXX : Commute (X * X) X := (Commute.refl X).mul_left (Commute.refl X)
+  have hs : IsUnit (X * X - Y * Y) := by
+    rw [sub_eq_add_neg]
+    obtain ⟨m, hm⟩ := hyn
+    exact (show IsNilpotent (-(Y * Y)) from ⟨m, by
+        rw [neg_pow, ← pow_two, ← pow_mul, mul_comm 2 m, pow_mul, hm, zero_pow two_ne_zero,
+          mul_zero]⟩).isUnit_add_left_of_commute (hxu.mul hxu)
+      ((hXXY.mul_right hXXY).neg_right).symm
+  have hds : Commute (X - Y) (X * X - Y * Y) :=
+    ((hXX.symm.sub_right hYYX.symm)).sub_left (hXXY.symm.sub_right hYY.symm)
+  refine homDistinctMixedMateDot_isIso_of_conj E A κ τ H hx2 hy2 hn2 α ?_ ?_ 1 1 ?_
+  · rw [hY2]
+    exact (commute_of_mul_eq_of_isUnit hs hau ((hYYX.mul_right hYYX).sub_right (Commute.refl _))
+      (hYYX.sub_right hYY)).symm
+  · rw [← hG]
+    exact (commute_of_mul_eq_of_isUnit hs hau
+      ((hXg.symm.mul_right hXg.symm).sub_right (hYg.symm.mul_right hYg.symm))
+      (hXg.symm.sub_right hYg.symm)).symm
+  · rw [hX2, hY2, pow_one, one_smul]
+    calc α * α * ((X * X - Y * Y) * (X * X - Y * Y)) =
+          α * (α * (X * X - Y * Y)) * (X * X - Y * Y) := by simp only [mul_assoc]
+      _ = α * ((X * X - Y * Y) * (X - Y)) := by rw [hau, mul_assoc, hds.eq]
+      _ = (X - Y) * (X - Y) := by rw [← mul_assoc, hau]
+      _ = X * X + Y * Y := by
+          rw [sub_mul, mul_sub, mul_sub, hac]
+          abel
+
+end Conj
 end OddMath.SKM

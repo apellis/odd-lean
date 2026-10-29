@@ -1371,6 +1371,7 @@ import OddMath.QuiverHecke.SwappedAssembly.LeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingMate
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingReservoir
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices
