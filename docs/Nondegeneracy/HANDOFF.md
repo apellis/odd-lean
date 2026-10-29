@@ -4513,10 +4513,18 @@ Glue not yet available (open):
   are instantiated.
 - `ev_layer` and `ev_vacuum` are not derivable from the abstract `ProbeReservoir`: they need
   the corner model of `SwappedVacuumCoordinates.md` §§2–5 (the map `U`, the signed Hom-corner
-  evaluation and the ideal `K_N`) for the specific factors. The remaining glue lemma is that
-  the swapped action of the affine layer `alpha (diag (ofLayer L hv))` is `Q.act` of the
-  labelled SKM layer (via `LocalInterpretation.functor_map_layer_hom`), which would state
-  `ev_layer` against layer matrices.
+  evaluation and the ideal `K_N`) for the specific factors.
+
+Layer glue (checked, `SwappedVacuum/LayerAction.lean`):
+
+- `LayerRep.toLocal_functor_map_layer`: the functor of a layer representation sends a single
+  layer to its layer map, transported along the boundary equalities.
+- `SwappedObligations.upwardModuleAction_act_layer`: the upward action of the affine layer
+  `alpha (diag (ofLayer L hv))` is `Q.act ((label D μ).layer L)`, transported along
+  `(label D μ).dom_eq`, `cod_eq`.
+- `ProbeReservoir.SwappedRelationData.upwardModuleAction_act_layer`: for the swapped action
+  this is `P.layerMap (P.swappedGens c L) ((label D μ).layer L')`. So `ev_layer` is a
+  statement about the swapped layer matrices of the labelled layers, entry by entry.
 
 The written vacuum-recovery argument (schedule `P_i - N_i = h_i(μ)`, bubble series, §6
 bound) was checked against these interfaces; no discrepancy was found.
