@@ -42,7 +42,7 @@ namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams MonoidalCategory Categorification Categorification.InductionAlong
 open SKM (zsign)
 open scoped Classical
-universe u v
+universe u v w
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k)
 
@@ -245,7 +245,7 @@ end Matrix
 
 section Vanishing
 variable [Fintype I] {a : I → _root_.Polynomial k} {i : I} {n : ℕ} {ε : ZMod 2}
-  {N : Type v} [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
+  {N : Type w} [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
 
 local notation "ψ" =>
   (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
@@ -307,7 +307,7 @@ theorem sourceDotCorner_op_smul (z : InductionAlong.Corner (prependTwist D Sc i 
   rw [mul_assoc, prependTwist_mul_affineFirstDot, ← mul_assoc]
   rfl
 
-variable {N : Type v} [AddCommGroup N] [Module (Hn D Sc (n + 1)) N] (θ : N →+ N)
+variable {N : Type w} [AddCommGroup N] [Module (Hn D Sc (n + 1)) N] (θ : N →+ N)
   (hθ : ∀ (r : Hn D Sc (n + 1)) (y : N),
     θ (r • y) = homMatrixTwist D Sc (n + 1) (D.parity i) r • θ y)
 
