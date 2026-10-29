@@ -1305,6 +1305,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
 import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
