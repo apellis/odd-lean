@@ -1121,7 +1121,9 @@ nilpotence is needed. Corollaries `swappingReservoirInvertible`,
 P.AugmentedInvertible c` (with the same three hypotheses), so `AugmentedInvertible` now needs
 only `CentralInvertible c`. Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
 locally irreducible, so that unification compares sector expressions instead of computing
-with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit. The
+invertibility of the dotted mate is the separate lemma `isIso_crossMate_reservoir`, so that
+`isIso_sigmaEntry_reservoir` stays within the per-declaration heartbeat limit.
 
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with

@@ -23,6 +23,8 @@ no relation for bubbles is used.
 * `OddMath.SKM.isIso_homContentDistinctMixedPostMate_of_eq`: the dotted post-side mate for the
   content-shifted postcomposition adjunctions is invertible when it is pointwise, with the
   objects matched along equalities of weights.
+* `ProbeReservoir.isIso_crossMate_reservoir`: the dotted post-side mate of `-(a ; a ; J⁻¹)` is
+  invertible.
 * `ProbeReservoir.isIso_sigmaEntry_reservoir`: the entry `W_B` of `sigmaL i i`, from `(P,R)` to
   `(R,P)`, is an isomorphism.
 * `ProbeReservoir.swappingReservoirInvertible`, `ProbeReservoir.swappingInvertible_of_factor`:
@@ -131,6 +133,52 @@ theorem nextSector_dnR_upR {i : I} {t : Sector I} (h : StepValid (true, i) false
   simp only [nextSector, Prod.mk.injEq, true_and]
   exact tsub_add_cancel_of_le (Finsupp.single_le_iff.2 h)
 
+/-- The dotted post-side mate of the crossing entry `-(a ; a ; J⁻¹)` is invertible: at an even
+colour `a` inverts `y - x`, at an odd colour `(x² - y²) a = x - y`, with `x` the invertible
+probe dot and `y` the nilpotent reservoir dot. -/
+theorem isIso_crossMate_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
+    (hT : ∀ (i : I) {x y : X} (h : x + D.α i = y), IsUnit (show End (P.T.E i h) from P.T.dot i h))
+    (hW : ∀ (i : I) {x y : X} (h : x + D.α i = y),
+      IsNilpotent (show End (P.W.E i h) from P.W.dot i h)) (i : I) (t : Sector I)
+    (hR : StepValid (true, i) false t)
+    (hR' : StepValid (true, i) false (nextSector (true, i) true t))
+    (hE : -P.muP t + D.α i = -P.muP (nextSector (true, i) true t))
+    (h : P.muM (nextSector (true, i) true (nextSector (true, i) false t)) + D.α i = P.muM t)
+    (H : homWeightSector P.T.obj P.W.obj (P.muP (nextSector (true, i) true t)) (P.muM t)) :
+    IsIso (homDistinctMixedMateDot (P.T.E i hE) (P.W.adj i h)
+      (homContentShift D i (nextSector (true, i) true t).1) (homContentShift D i t.1) H
+      ((homMixedInterchange (k := k) (P.T.E i hE) (P.W.E i h)
+        (homContentShift D i (nextSector (true, i) true t).1) (homContentShift D i t.1)
+        ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
+          (P.muP (nextSector (true, i) true t)) h).obj H)).hom ≫
+        (-(c.a i t hR ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
+            (P.muP (nextSector (true, i) true t)) h).obj H) ≫
+          c.a i t hR ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
+            (P.muP (nextSector (true, i) true t)) h).obj H) ≫
+          (P.mixedJ i i t hR' ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
+            (P.muP (nextSector (true, i) true t)) h).obj H)).inv)))) := by
+  have hin := CrossCoeffInputs.of_factor P hT hW
+  rcases Supercategory.parity_eq_zero_or_one (D.parity i) with hi | hi
+  · apply homDistinctMixedMateDot_isIso_of_inverse
+    · exact hi ▸ P.T.dot_mem i _
+    · exact hi ▸ P.W.dot_mem i _
+    · exact (isUnit_iff_isIso _).1 (hT i _)
+    · exact hW i _
+    · exact (hc.even i hi t hR _).1
+    · exact (hc.even i hi t hR _).2
+  · apply homDistinctMixedMateDot_isIso_of_inverse_odd
+    · exact hi ▸ P.T.dot_mem i _
+    · exact hi ▸ P.W.dot_mem i _
+    · exact (isUnit_iff_isIso _).1 (hT i _)
+    · exact hW i _
+    · exact hin.preDot_isUnit i t hR _
+    · exact hin.postDot_isNilpotent i t hR _
+    · have h₂ := (hc.odd i hi t hR ((homContentPostF P.T.obj P.W i (nextSector (true, i) true t).1
+        (P.muP (nextSector (true, i) true t)) h).obj H)).2
+      refine Eq.trans (congrArg (· ≫ _) ?_) (h₂.trans ?_)
+      · rfl
+      · rfl
+
 /-- The swapping entry `W_B` of the same-colour sideways crossing, from the path `(P,R)` of
 `Eᵢ Fᵢ` to the path `(R,P)` of `Fᵢ Eᵢ`, is invertible: it is the reservoir mate of the
 crossing entry `-(a ; a ; J⁻¹)`, whose dotted mate is invertible by the inverse identities of
@@ -204,12 +252,12 @@ theorem isIso_sigmaEntry_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
   simp only [pu₂, pu₃, pathFunctor_cons, pathFunctor_nil, Functor.comp_map, Functor.id_map]
   simp only [Category.assoc]
   refine isIso_homContentDistinctMixedPostMate_of_eq P.T P.W i
-    (b := P.muM (nextSector (true, i) false s₀)) (b' := P.muM t) (nuM := P.muM t')
-    (nuP := P.muP t) (muP := P.muP s₀) ?eb _ _ _ s₀.1 t.1
+    (b := P.muM (nextSector (true, i) true (nextSector (true, i) false t'))) (b' := P.muM t) (nuM := P.muM t')
+    (nuP := P.muP t) (muP := P.muP s₀) ?eb _ _ _ s₀.1 t'.1
     (fun W₀ => -(c.a i t' hR W₀ ≫ c.a i t' hR W₀ ≫ (P.mixedJ i i t' hR' W₀).inv)) ?hC
     _ _ _ _ _ _ _ _ _ _ ?xY ?xZ
   case eb =>
-    simp only [ProbeReservoir.muM, s₀, t', nextSector]
+    simp only [ProbeReservoir.muM, t', nextSector]
     rw [add_tsub_cancel_right]
   case xY =>
     refine (eqRec_heq _ _).trans ?_
@@ -220,29 +268,7 @@ theorem isIso_sigmaEntry_reservoir (c : P.CrossCoeff) (hc : c.IsInverse)
     exact eq_of_heq (pathFunctor_one_obj_heq (nextSector_upR_upP t').symm false pv₂
       (congrArg (List.cons false) (SPath.sides_castTgt _ _)) hd Z
       ((eqRec_heq _ _).trans (pathFunctor_obj_heq_of_nil _ Z)))
-  case hC =>
-    intro H
-    have hin := CrossCoeffInputs.of_factor P hT hW
-    rcases Supercategory.parity_eq_zero_or_one (D.parity i) with hi | hi
-    · apply homDistinctMixedMateDot_isIso_of_inverse
-      · exact hi ▸ P.T.dot_mem i _
-      · exact hi ▸ P.W.dot_mem i _
-      · exact (isUnit_iff_isIso _).1 (hT i _)
-      · exact hW i _
-      · exact (hc.even i hi t' hR _).1
-      · exact (hc.even i hi t' hR _).2
-    · apply homDistinctMixedMateDot_isIso_of_inverse_odd
-      · exact hi ▸ P.T.dot_mem i _
-      · exact hi ▸ P.W.dot_mem i _
-      · exact (isUnit_iff_isIso _).1 (hT i _)
-      · exact hW i _
-      · exact hin.preDot_isUnit i t' hR _
-      · exact hin.postDot_isNilpotent i t' hR _
-      · have h := (hc.odd i hi t' hR ((homContentPostF P.T.obj P.W i s₀.1 (P.muP s₀)
-          (P.muM_postE i hR)).obj H)).2
-        refine Eq.trans (congrArg (· ≫ _) ?_) (h.trans ?_)
-        · rfl
-        · rfl
+  case hC => exact fun H => isIso_crossMate_reservoir c hc hT hW i t' hR hR' _ _ H
 
 /-- The swapping entries `W_B` are invertible for a coefficient with the characterizing inverse
 identities, when every probe dot is invertible and every reservoir dot is nilpotent. -/
