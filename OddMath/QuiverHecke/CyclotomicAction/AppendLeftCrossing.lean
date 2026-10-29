@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.AppendShuffleRuns
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.Square
+import OddMath.QuiverHecke.CyclotomicAction.GlobalSlideAlgebra
 
 /-!
 # Factorization of the append moving crossings through the last crossing
@@ -120,5 +121,73 @@ theorem appendShuffleElement_castSucc_mul_corner (i : I) (n : ℕ) (j : Fin (n +
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [appendShuffleElement_mul_single, Category.id_comp, appendShuffleHom_castSucc,
     appendLinear_single, single_mul_affineLastCrossing]
+
+/-! ## Sliding powers of the last dot through the last crossing -/
+
+/-- Sums `Σ_b ψ(f_b) x^b` with the new dot `x` on the right of the old coefficient. -/
+def appendDotSum (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1 + 1) :=
+  Finsupp.liftAddHom fun b =>
+    (AddMonoidHom.mulRight (affineLastDot D Sc i (n + 1) ^ b)).comp
+      (appendLinear D Sc i (n + 1)).toAddMonoidHom
+
+theorem appendDotSum_single (i : I) (n b : ℕ) (c : Hn D Sc (n + 1)) :
+    appendDotSum D Sc i n (Finsupp.single b c) =
+      appendAlgebra D Sc i (n + 1) c * affineLastDot D Sc i (n + 1) ^ b := by
+  unfold appendDotSum
+  simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.coe_comp, Function.comp_apply,
+    AddMonoidHom.coe_mulRight, LinearMap.toAddMonoidHom_coe]
+  rfl
+
+theorem appendDotSum_mul_lastDot (i : I) (n : ℕ) (f : ℕ →₀ Hn D Sc (n + 1)) :
+    appendDotSum D Sc i n f * affineLastDot D Sc i (n + 1) =
+      appendDotSum D Sc i n (Finsupp.mapDomain Nat.succ f) := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, add_mul, hf, hg, Finsupp.mapDomain_add, map_add]
+  | single b c => rw [Finsupp.mapDomain_single, appendDotSum_single, appendDotSum_single,
+      pow_succ, mul_assoc]
+
+theorem appendAlgebra_pow_mul (i : I) (n : ℕ) (x d : Hn D Sc n) (m : ℕ) :
+    appendAlgebra D Sc i n x ^ m * appendAlgebra D Sc i n d =
+      appendAlgebra D Sc i n (x ^ m * d) := by
+  induction m generalizing d with
+  | zero => simp
+  | succ m ih => rw [pow_succ, mul_assoc, ← map_mul, ih, ← mul_assoc, ← pow_succ]
+
+/-- **Dot slide through the last crossing**: `τ x_(n+2)^m = s^m x_(n+1)^m τ + Σ_b ψ(f_b) x_(n+2)^b`
+with `s` the Koszul sign of the appended colour (`AppendCoordinates.md` §4, (1)). -/
+theorem affineLastCrossing_mul_lastDot_pow (i : I) (n m : ℕ) :
+    ∃ f : ℕ →₀ Hn D Sc (n + 1),
+      affineLastCrossing D Sc i i n * affineLastDot D Sc i (n + 1) ^ m =
+        Supercategory.koszulSign (D.parity i) (D.parity i) ^ m •
+            (appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n) ^ m *
+              affineLastCrossing D Sc i i n) +
+          appendDotSum D Sc i n f := by
+  have hτz : affineLastCrossing D Sc i i n * affineLastDot D Sc i (n + 1) =
+      Supercategory.koszulSign (D.parity i) (D.parity i) •
+          (appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n) * affineLastCrossing D Sc i i n) -
+        Supercategory.koszulSign (D.parity i) (D.parity i) •
+          appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) := by
+    rw [← affineLastCrossing_slide_right D Sc i n, smul_sub _ _
+      (Supercategory.koszulSign (D.parity i) (D.parity i) • _),
+      Supercategory.koszulSign_smul_smul]
+    abel
+  set s := Supercategory.koszulSign (D.parity i) (D.parity i)
+  set Y := appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n)
+  set τ := affineLastCrossing D Sc i i n
+  set z := affineLastDot D Sc i (n + 1)
+  induction m with
+  | zero => exact ⟨0, by simp⟩
+  | succ m ih =>
+    obtain ⟨f, hf⟩ := ih
+    refine ⟨Finsupp.mapDomain Nat.succ f +
+      Finsupp.single 0 (-(s ^ (m + 1)) • (affineLastDot D Sc i n ^ m * appendAlgebra D Sc i n 1)),
+      ?_⟩
+    rw [pow_succ, ← mul_assoc, hf, add_mul, appendDotSum_mul_lastDot, smul_mul_assoc, mul_assoc,
+      hτz, mul_sub, mul_smul_comm, mul_smul_comm, ← mul_assoc, ← pow_succ,
+      appendAlgebra_pow_mul, map_add, appendDotSum_single, pow_zero, mul_one, map_zsmul,
+      smul_sub, smul_smul, smul_smul, ← pow_succ]
+    simp only [neg_smul, sub_eq_add_neg]
+    abel
 
 end OddMath.QuiverHecke

@@ -4914,7 +4914,14 @@ coordinates of `F` live in `e'B`, `e' = ψ'(1)` (old words ending in the appende
 colour), not in `B`; `F(u)` only depends on `e'u`. The decomposition is of the two-sided
 corner `ψ(1) A ψ(1) = ⊕_(j<n,m) c_j x^m ψ(e'B) ⊕ ⊕_m x^m ψ(B)`.
 
-Next: the dot slide (1) for `τ` and the assembly of `F`, `direct`, `span`.
+Checked (same file): the dot slide (1), `affineLastCrossing_mul_lastDot_pow`:
+`τ z^m = s^m (ψ(x))^m τ + Σ_b ψ(f_b) z^b` for some `f : ℕ →₀ Hn (n+1)`, with `z` the
+last dot of `Hn (n+2)`, `x` the last dot of `Hn (n+1)` and `s` the Koszul sign of the
+appended colour; the lower sums are `appendDotSum` (`appendDotSum_single`,
+`appendDotSum_mul_lastDot`), and `appendAlgebra_pow_mul`.
+
+Next: the assembly of `F`, `direct`, `span` from (1), the factorization above and
+`appendCoordinateEquiv`; move `z^b` left past `ψ(·)` with `affineLastDot_twist_comm`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
