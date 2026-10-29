@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Ordered product and normalized extraction
+
+The collected endpoint polynomial is now identified with the independently
+specified square product in `LeadingMoveSquareProduct.lean`:
+
+    leadingMoveEndpointPolynomial = zsign(p(i))^(count_i ν) • S_ν.
+
+Here S has factors `(z-x_b)^2` for even moving colour and
+`(z²-x_b²)^2` for odd moving colour, at equal-colour positions only.
+Factors retain chronological order (earlier factors on the right in the
+endomorphism ring). `LeadingMoveTransport.lean` proves every collected
+transport sign is one, including distant odd slides, and evaluates the
+source positions. `LeadingMoveProduct.lean` proves the finite expansion
+is this product rather than defining the product from the expansion.
+
+`LeadingMoveOrderedCoefficients.lean` separates old and moving dots by an
+exact parity-twist recurrence. It proves that all separation signs cancel
+for these factors, old dots are already PBW-sorted, and every nonidentity
+old-permutation coefficient vanishes. `prependWordCoefficients_moveHom_ordered`
+evaluates the prescribed moving homomorphism by a finite diagonal sum.
+
+`LeadingMoveExtraction.lean` proves old-twist invariance and moving-degree
+sign cancellation, then `appendContentMoveLift_extract_sum` evaluates the
+normalized extraction with no coordinate maps on its right. The old
+coefficient acts on the left of the unchanged right tensor coefficient.
+Affine coefficients include every old height; the ordinary-polynomial append
+source retains its existing old-height n+1 scope. Source equations (6)–(7),
+the full ELV boundary and corrected w_k identification remain separate.
+
 ## Collected moving-chain polynomial
 
 `LeadingIntertwinerExpansion.lean` expands the local even `(v-u)^2 T`
@@ -25,14 +54,11 @@ PBW regrouping of this explicit polynomial. `appendContentMoveLift_extract_colle
 transfers it to the existing source extraction, retaining `homMatrixTwist`
 and the degreewise `movingSignNormalize` sign.
 
-**Exact residual comparison:** sort/separate the collected source dots into
-old dots followed by moving-strand dots with their Koszul signs, evaluate
-the remaining `prependWordCoefficients`, and identify the resulting twisted,
-degree-normalized polynomial with S. The current polynomial is given as an
-explicit signed finite sum, not a simplified product in a chosen dot order.
-No equal-colour count is identified with moving-dot degree. The prescribed
-chain, B₁, source (6), downstream (7), and ordinary-polynomial versus full-ELV
-scope are unchanged.
+**Comparison:** the remaining separation, PBW regrouping and product
+identification are proved in the ordered-product section above. The global
+sign is derived independently of moving-dot degree. The prescribed chain,
+B₁, source (6), downstream (7), and ordinary-polynomial versus full-ELV scope
+are unchanged.
 
 ## Signed source-endpoint dot transport
 
@@ -47,10 +73,9 @@ Incident slides contribute the product of the crossing colours' parities;
 distant slides also multiply by the dot colour's parity. All signs are
 derived from the positional relations, not extracted from `Approx`.
 
-**Residual:** the monomial collection theorem preserves chronological dot
-order, rather than sorting odd variables. Its application to `leadingMoveHom`
-and scalar-to-matrix assembly are now proved above; evaluation of the
-remaining PBW regrouping and comparison with S are still open.
+**Application:** the monomial collection theorem preserves chronological dot
+order. Its application to `leadingMoveHom`, scalar-to-matrix assembly,
+PBW regrouping and comparison with S are proved above.
 
 ## Signed top-crossing chain
 

@@ -26,6 +26,8 @@ import OddMath.QuiverHecke.CyclotomicAction.LeadingIntertwinerExpansion
 import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveExpansion
 import OddMath.QuiverHecke.CyclotomicAction.LeadingMovePolynomial
 import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveExtraction
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveSquareProduct
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
