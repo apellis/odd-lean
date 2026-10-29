@@ -130,6 +130,27 @@ Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `
 `braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
+## Distinct-colour quadratic relation on the global factors: algebra level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedQuadratic.lean`), BE2
+arXiv:1701.04133v2 Definition 1.5, (1.7) for `i ≠ j`:
+
+- `pairQuadPoly D Sc i j A B`: `t_ij 1` if `d_ij = 0`, otherwise
+  `∑_{0<p<d_ij, 0<q<d_ji} s_ij^{pq} A^p B^q + t_ij A^{d_ij} + t_ji B^{d_ji}`, with
+  `map_pairQuadPoly` for algebra maps and `wordQuadratic_eq_pairQuadPoly`;
+- `affineLastCrossing_mul_mixed`: `c_ij c_ji = φᵢφⱼ(1) · Q_ji(φᵢ(y_j), y_i)` in the affine
+  algebra (via the diagonal matrices `pairDiag` on the words `w j i`);
+- `heightLastCrossing_mul_mixed`: the same identity at every height of the extended tower.
+
+No parameter change is made here. Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`:
+the corner square `Cr_ij ≫ Cr_ji` as a polynomial in the two signed right multiplications
+(power sign `koszulSign c (m p + ⌊m/2⌋)` for `m` multiplications by a dot of parity `c` on input
+parity `p`), transport through the comparison to the induction functors, the weight-level
+assembly, and matching with `parameterTwist`. A hand check: the `p`-dependent signs vanish
+because every surviving monomial has `p|i|` and `q|j|` even (`Sc.s_eq_zero`,
+`Datum.even_d_of_odd`), and the remaining signs `|i||j| + |i|⌊d_ij/2⌋` (resp. with
+`⌊p/2⌋`, `⌊q/2⌋`) are exactly those of `parameterTwist`.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
@@ -818,6 +839,33 @@ hypotheses of `sectorRelations_even/_odd` (read in `(End PPR)ᵐᵒᵖ`); the si
 `q` of `δ`'s arguments matches the written `a(qx₂, qz)`. No discrepancy. Next:
 assemble the block (path enumeration of the `iii` entries, block sums,
 `sectorBraid`); then (5B) on `{PRR, RPR, RRP}`; then `PPP`, `RRR`.
+Braid on the block `{PPR, PRP, RPP}` of `iii` (checked,
+`SwappedAssembly/BraidSame/MixedBlock.lean`): `blockPath` enumerates the paths of
+`[up i, up i, up i]` from `t` to `t + 2αᵢ - αᵢ` with one reservoir step; they are all
+the paths with these endpoints (`blockPath_injective`, `blockPath_surjective`,
+`sum_blockPath`). Transported by `blockIso` (`1`, `Φ₁`, `Φ₂`), the left and right
+crossings of `swappedGens c L` are `sectorU D γ` and `sectorV D δ` in
+`(End PPR)ᵐᵒᵖ` (`blockLeft_eq`, `blockRight_eq`; the entry `D` of `V` is (5A) via
+`preCrossSame_mixedJ_pair`), and both sides of (1.9) are the transported triple
+products (`block_braidLeft`, `block_braidRight`, `transportMatrix_mul_mul`).
+`block_braid` (under `c.IsInverse` and `CrossCoeffInputs`): (1.9) holds for every
+pair of paths of the block, via `op_sectorRelations_even/_odd` and `sectorBraid`.
+Since the block is the whole path set for these endpoints, no cross-block entries
+arise. No discrepancy with `ThreeStrandSectorBraid.md` (1)–(5A). Next: (5B) on
+`{PRR, RPR, RRP}`; then `PPP`, `RRR`.
+(5B) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePostPair.lean`):
+`postCrossSame_mixedJ_pair`: the reservoir crossing on the two right letters of
+`PRR`, followed by the two mixed interchanges `PRR → RPR → RRP`, equals the
+interchanges followed by the reservoir crossing on the two left letters of `RRP`.
+Generic form `homMixedInterchange_postPair_conj` (any 2-morphism `χ` on `F₁ ≫ F₂`
+transported by `Θ_σ = homShiftPairIso`, which is the word comparison of the
+content-shifted postcomposition, `homContentPostWordIso_app`). The pair of
+interchanges followed by `Θ_κ` is `(-1)^(κκ' + κ'κ')` times `Eᵢ ◁ Θ_κ'` followed by
+the associator (`homMixedInterchange_postPair`, (7) of `PairedHomInterchange.md`
+§4 with `κ' = κ + pᵢ`); the sign is common to both sides of (8). No discrepancy
+with the written proof. Next: dot algebra on `PRR` and the block assembly; then
+`PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -989,6 +1037,27 @@ of the single term into generator images and identify them with the probe mate o
 (`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
 `-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
 
+**Swapping entry `W_A` invertible (checked); `W_B` open, as a hypothesis.**
+`SwappedAssembly/Sigma/SwappingMate.lean`: `sigmaTerm_eq_of_paths` writes the single term
+through path decompositions of its three layers; `isIso_sigmaEntry_probe` proves that the entry
+with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ` to `(P,R)` of
+`Fᵢ Eᵢ`, at `s = t - (i,i)`) is an isomorphism: its layers are the probe unit, `J`
+(`mixedJ`) and the probe counit, i.e. `isIso_probeMixedMate`, which is
+`isIso_homContentDistinctMixedPreMate_of_eq` (inverse: the word (15)) on the strand functors.
+`sides_upDn_dnUp_of_ne`: for `t ≠ s` the two paths are `((R,P),(P,R))` or `((P,R),(R,P))`.
+`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`,
+where `SwappingReservoirInvertible` is the invertibility of the other entries `W_B`
+(`(P,R) → (R,P)`, the reservoir mate of `-(a ; a ; J⁻¹)`). So
+`augmentedInvertible_of_central_of_swapping` needs `CentralInvertible c` and
+`SwappingReservoirInvertible c`. Open for `W_B`: unfold its single term in the same way
+(reservoir unit, the crossing entry `-(a ; a ; J⁻¹)`, reservoir counit) and prove the
+post-side mate invertible; its crossing carries the dots `a`, so the route is the dotted mate
+`homDistinctMixedMateDot_isIso` (`RouquierHomDistinctMixedPostDotsIso.lean`: `J⁻¹` followed by a
+polynomial with unit leading coefficient in an invertible dot and a nilpotent dot), not the
+undotted word (15). Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
+locally irreducible, so that unification compares sector expressions instead of computing
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
+
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
 `a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
@@ -1002,6 +1071,43 @@ Open check: `SwappedActionAssembly.md` (A6) also asserts that this (Lean) diagon
 mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is still a
 hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
 and the braid would require opposite signs).
+
+**Probe window identities (checked).** `SwappedAssembly/CentralInverse/Windows.lean`
+proves the window identities (4) of `ProbeWindowInverse.md` in any preadditive category,
+from the slide `s ≫ y - q • (x ≫ s) = v ≫ u` with `q * q = 1` and automorphisms `x`, `y`:
+`ProbeWindow.window_neg` (`s + Σ_{r<l} q^(r+1) • (x^{-(r+1)} ≫ v ≫ u ≫ y^r) =
+q^l • (x^{-l} ≫ s ≫ y^l)`) and `ProbeWindow.window_pos` (`s - Σ_{r<l} q^(r+2) •
+(x^r ≫ v ≫ u ≫ y^{-(r+1)}) = q^l • (x^l ≫ s ≫ y^{-l})`), negative powers as powers of the
+inverse automorphisms. Next for `CentralInvertible`: the shifted-window inverses (5), (6), then
+the case analysis (7)–(14) and the extraction to `PosInverse`/`NegInverse` at `s = t`.
+
+**Shifted cap windows (checked).** `SwappedAssembly/CentralInverse/CapWindows.lean` encodes a
+cap window `[s; w₀, …, w_{h-1}] : X → Y ⊕ O^h` as a morphism of `Mat_ C` (`ProbeWindow.capMap`)
+and proves `isIso_capMap_iff` (it is an isomorphism iff it has a two-sided inverse
+`[j | A₀ … A_{h-1}]` with the five relations `IsCapInverse`). `ProbeWindow.neg_shift_comp`
+gives `x^{-l} ≫ s = q^l • (s ≫ y^{-l}) + Σ_{n<l} q^n • (x^{n-l} ≫ v ≫ u ≫ y^{-n-1})`, and
+`ProbeWindow.exists_isCapInverse_shift` is (5): if `[s; xⁿ ≫ v]_{n<h}` is invertible, so is
+`[s; x^{n-l} ≫ v]_{n<h}` for every `l ≤ h`, via `x^{-l} ≫ F = F_l ≫ T` with `T` triangular
+(`q^l y^{-l}` on `Y`, identity on the window, column `q^n • (u ≫ y^{-n-1})` for `n < l`).
+`ProbeWindow.exists_isCupInverse_shift` is (6): if the cup window `[s, u ≫ yⁿ]_{n<h}` has a
+two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l ≤ h`; it is (5) in
+`Cᵒᵖ` (`isCupInverse_iff_op`), where the slide becomes `s ≫ x - q • (y ≫ s) = u ≫ (-q • v)`.
+`SwappedAssembly/CentralInverse/WindowCases.lean` proves the two pure-window cases of §3 there:
+`ProbeWindow.exists_isCapInverse_caseA` ((a), (7): rows `s`, `xᵗ ≫ v` for `t < H`,
+`q^(r+1) • (x^{-r-1} ≫ v)` for `r < k`, invertible when `[s; xⁿ ≫ v]_{n<H+k}` is) and
+`ProbeWindow.exists_isCupInverse_caseD` ((d), (14): columns `s`, `q^(r+2) • (u ≫ y^{-r-1})`
+for `r < a`, `-(u ≫ yᵗ)` for `t < g`, invertible when `[s, u ≫ yⁿ]_{n<a+g}` is), via
+`IsCapInverse.reindex`/`IsCupInverse.reindex` (reordering slots and multiplying them by units
+`c` with `c * c = 1`). Next: the mixed cases (b), (c) ((8)–(13)), whose maps have extra slots
+on both sides, and the extraction (16)–(19).
+
+**`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
+(proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
+coefficient ideal of `SwappedHomInversion.md` (closed reservoir bubbles) uses the gradings
+(G6)–(G8); it does not follow from the `ProbeReservoir` fields together with
+`CrossCoeffInputs` (unit probe dot, nilpotent transposed reservoir dot) alone. A Lean proof of
+`CentralInvertible` therefore needs that nilpotence as an explicit, documented hypothesis
+(to be removed later from a graded `ProbeReservoir`), or a route avoiding it.
 
 **`CentralInvertible` needs a weight restriction (interface).** As stated,
 `CentralInvertible` (and so `AugmentedInvertible`, `LeftwardData.IsInverse`) quantifies over
