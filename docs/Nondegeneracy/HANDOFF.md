@@ -702,8 +702,18 @@ opposite of `End`). These four relations are proved from the dot algebra:
 `x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
 `sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
 `x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
-with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
-`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
+with `x₁² - z²`, `x₂² - z²` units).
+(5A) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePair.lean`):
+`preCrossSame_mixedJ_pair`: the probe crossing on the two left letters of
+`PPR`, followed by the two mixed interchanges `PPR → PRP → RPP`, equals the
+interchanges followed by the shifted probe crossing on the two right letters
+of `RPP`, without sign. Generic form `homMixedInterchange_pair_whiskerRight`
+(any homogeneous 2-morphism on `E₁ ≫ E₂`, equal outer shifts; the inner
+shift cancels, `homMixedInterchange_pair`). This is `PairedHomInterchange.md`
+§3 with all shifts retained; no discrepancy with the written proof. Next:
+transport the dot entries to `x₁, x₂, z` on the first path, then assemble the
+block; then (5B) on `{PRR, RPR, RRP}`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
