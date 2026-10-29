@@ -54,9 +54,15 @@ identity. Its factor (-1)^m must not be copied into the library crossing
 convention. Deriving the library expression requires the explicit signed
 leading-polynomial expansion of the entire chain, conversion from scalar
 PBW coefficients to `prependCoefficients`, and the displayed twist and
-degree normalization. These steps are not replaced by a supplied
-injectivity or extraction hypothesis. In particular, `Approx` alone is
-insufficient: it retains an unspecified leading unit.
+degree normalization. `LeadingMovePolynomial.lean` now proves the actual
+finite chronological endpoint expansion of `leadingMoveHom` and `moveHom`
+modulo lower crossing length. `LeadingMoveCoefficients.lean` proves its
+scalar-to-old-matrix coefficient comparison and the corresponding extraction,
+retaining the displayed twist and degree sign. Sorting old and moving dots,
+evaluating the residual `prependWordCoefficients`, and identifying the ordered
+product S remain open. None of these steps is replaced by a supplied
+injectivity or extraction hypothesis; `Approx` alone retains an unspecified
+leading unit and is insufficient.
 
 The local library factors suggest (-1)^(p(i)m), but the full normalized
 coefficient identity is not yet formalized. Equation (7) is not altered:

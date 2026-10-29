@@ -54,6 +54,10 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendContentBoundary
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentMoveCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomLeading
 import OddMath.QuiverHecke.CyclotomicAction.SignedDotNormalOrder
+import OddMath.QuiverHecke.CyclotomicAction.LeadingIntertwinerExpansion
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveExpansion
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMovePolynomial
+import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
