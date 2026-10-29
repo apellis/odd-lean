@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Full-coefficient output-parabolic spanning for the ideal sum
+
+`ELVParabolicSpan.lean` supplies the affine spanning input (C) of
+`DeformedIdealSum.md` using the output-oriented `shuffleBasis`.
+`shuffleAffineEquiv` tensors the existing basis equivalence with the entire
+ELV coefficient algebra. `shuffle_parabolic_factorization` places every
+coefficient in the two-block parabolic factor, after the shuffle in diagram
+order, without an extra coefficient sign. `hom_mem_of_shuffle_parabolic`
+proves these terms span; it does not assume a PBW decomposition or flatness.
+`ideal_nil` and `appendRelations_nil` handle the empty old word explicitly.
+
+The named IS2 consumer is
+`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its remaining
+hypothesis is a concrete shuffle-term containment. It is not discharged:
+one must move `relation j t` across `shuffleParabolic` using the full
+normalizer (first dot translated by −2 delta, total coefficient-plus-tail
+parity, and delta times the top coefficient zero), then identify short
+shuffles with appended old relations and the long shuffle with `appendW`.
+This is the output-oriented shuffle, not the inverse shuffle used in input
+prepend coordinates. No ideal-sum equality or cokernel identification is
+claimed. Those remain the next target; P injectivity is already proved below.
+
 ## Injectivity of the actual full ELV P map
 
 `ELVPInjective.lean` combines the quotient QP identity with moving-coordinate
