@@ -1365,6 +1365,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.AllPaths
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlock
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlockPost
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePair
