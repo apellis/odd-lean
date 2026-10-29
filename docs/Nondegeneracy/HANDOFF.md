@@ -4559,3 +4559,28 @@ bound) was checked against these interfaces; no discrepancy was found.
 Consumer: `scripts/NonVacuity/QuiverHeckeMirror.lean`. Next: the super flip
 `pres D Sc ⥤ SOp (pres D (parameterTwist D Sc))` (second factor of `U`), the composite `U`,
 and the identification of the corner ideal `U⁻¹(I_N)` with `TransformedIdeal`.
+
+### Super-flip factor of the half-turn `U` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/SuperFlip.lean` formalizes the second factor of `U`
+(`SwappedVacuumCoordinates.md` §4): the reflection in a horizontal axis, a contravariant
+superfunctor `flipFunctor D Sc : (pres D Sc).Presented ⥤ SOp k (pres D (parameterTwist D Sc)).Presented`.
+
+- Words are kept; dots are fixed; the crossing `Eᵢ Eⱼ → Eⱼ Eᵢ` goes to `flipWeight` times the
+  crossing `Eⱼ Eᵢ → Eᵢ Eⱼ`, `flipWeight (cross i j) = -(-1)^{|i||j|} ε_ij` with `ε_ii = -1`,
+  `ε_ij = 1` (`i ≠ j`). A normal-form diagram goes to its reversed layers times `flipC`, the
+  Koszul sign of the reversal times the weights (`flip_mkD`, `flipC_append`,
+  `flipC_replicate_dot`: `n` dots on an `i`-strand give `(-1)^{|i|⌊n/2⌋}`).
+- Target parameters `parameterTwist D Sc`: `t_ij ↦ (-1)^{|i||j|} t_ij`, `s_ij^{pq} ↦
+  (-1)^{|i||j| + |i|⌊p/2⌋ + |j|⌊q/2⌋} s_ij^{pq}` (`i ≠ j`).
+- `flip_rel D Sc r`: every defining relation (BE2 Def. 1.5, upward part) is killed. Images and
+  constants: quadEq ↦ quadEq (`(-1)^{|i|}`), quadZero, quadNe ↦ same (`(-1)^{|i||j|}`),
+  slideL(i,j) ↔ slideR(j,i) (`(-1)^{|i||j|}` times the crossing weight), slideLEq ↔ slideREq (1),
+  braid(i,j,m) ↦ braid(m,j,i) (`flipC` of the left side), braidEq ↦ braidEq
+  (`(-1)^{|i|(|j|+1)}`). The braidEq case uses `diag_dots_reverse_three` (reversal of three dot
+  blocks on `i j i`) and `parity_half_add` (`⌊x/2⌋ + ⌊r/2⌋ ≡ 1 + ⌊n/2⌋` when `x + r + 1 = n` is
+  even), applied with `n = dn_ij` and with `n = p` on the support of `s_ij^{pq}`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeSuperFlip.lean`. Next: the composite `U` of
+`mirrorFunctor` and `flipFunctor` (crossing weight `ε_ij`), and the identification of the corner
+ideal `U⁻¹(I_N)` with `TransformedIdeal`.
