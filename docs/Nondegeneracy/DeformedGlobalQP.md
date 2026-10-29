@@ -117,8 +117,12 @@ library's `EvenTwo` crossing convention the recursion has factor **−1**,
 not the factor +1 in the proposed calculation below. This agrees with
 `PrefixQPEquation.lean`. Thus the displayed no-factor global formula still
 requires a crossing-normalization comparison; the checked theorem does not
-assert that literal formula. Repeated-odd and distinct-colour full-ELV
-induction assembly remain open.
+assert that literal formula. `ELVQPOdd.lean` now proves the repeated-odd
+recursion `ELVOld.qp_repeated_odd`: square cancellation and preservation by
+the odd source difference give the first prefix sign, and the affine
+recursion gives the second; their product is one. Preservation follows from
+`movingDot_insert`, with the twist on total coefficient-plus-diagram parity.
+Distinct-colour transport and full-ELV induction assembly remain open.
 
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
 The induction hypothesis is
