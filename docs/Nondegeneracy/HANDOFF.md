@@ -1,5 +1,14 @@
 # Odd nondegeneracy: restart state
 
+## Injectivity of the actual full ELV P map
+
+`ELVPInjective.lean` combines the quotient QP identity with moving-coordinate
+regularity. `signedQPMap_injective` and `pMap_injective` hold for arbitrary
+words, cutoffs and full exterior coefficients over the given commutative
+ground ring. No balance, monicity, freeness or injectivity assumption is added.
+This closes the injectivity step of `DeformedSquareResolution.md` §3;
+B[s]-linearity, the cokernel identification, exactness and projectivity remain.
+
 ## Full ELV Q descent and quotient composition
 
 `ELVQDescent.lean` constructs `qMap : AppendTarget →ₗ[k] Target` by
@@ -15,7 +24,36 @@ The comparison uses `qp_projection_product` and ambient postcomposition;
 all words, cutoffs and exterior coefficients remain. Repeated-even factors
 are still −1. These are ground-ring linear maps only: the different twisted
 balanced-module labels K1 and K1prime have not been identified as module maps.
-Twisted B[s]-linearity, injectivity, exactness and projectivity remain separate.
+Injectivity of P is supplied above; twisted B[s]-linearity, exactness and
+projectivity remain separate.
+
+## Full ELV signed QP regularity
+
+`ELVSignedMovingPower.lean` proves the moving-power coordinate shift for every
+exponent d, including odd moving dots. The old coefficient is transformed by
+`oldTwist (d • D.parity i)`, on its total coefficient-plus-diagram parity.
+`ELVRelationRegularity.lean` expands the prescribed deformed polynomial and
+uses its proved top coefficient 1 to establish `projection_relation_regular`.
+No monicity or filtration bound is supplied as a hypothesis to that theorem.
+
+`ELVQPRegularity.lean` proves `projection_qp_relation_regular`: for every i, v,
+w and full-coefficient h, vanishing of
+
+    projection (affineUnit (qpProduct i v) ≫ relation i v ≫ h)
+
+implies `projection h = 0`. The distinct-colour factors use their scalar unit
+`t i x` and strict interior exponent bounds; repeated-odd factors are cancelled
+as two linear differences, and repeated-even factors retain their minus sign.
+Every lower-degree coordinate vanishes above the finite input support. The
+leading coordinate is a unit times the invertible total-parity twist, even
+when old coefficients have zero divisors. Empty words and zero cutoffs are
+included, without finite-colour, domain, flatness or nonzero-model assumptions.
+
+`projection_move_relation_regular` combines this with `qp_projection_product`
+for the prescribed `moveHom ≫ lastToFirstHom` composite. This supplies the raw
+injectivity input of `DeformedSquareResolution.md` §3. `ELVPInjective.lean`
+assembles it with Q descent to prove `Function.Injective pMap`. B[s]-linearity,
+ideal-sum exactness and projectivity remain open. General odd nondegeneracy is not proved.
 
 ## Full ELV P descent
 

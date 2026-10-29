@@ -22,11 +22,15 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPOdd
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPContext
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPProduct
+import OddMath.QuiverHecke.CyclotomicAction.ELVSignedMovingPower
+import OddMath.QuiverHecke.CyclotomicAction.ELVRelationRegularity
+import OddMath.QuiverHecke.CyclotomicAction.ELVQPRegularity
 import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.ELVPDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVQDescent
+import OddMath.QuiverHecke.CyclotomicAction.ELVPInjective
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
