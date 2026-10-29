@@ -49,10 +49,10 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
 
-universe u
+universe u uB v w
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -64,7 +64,7 @@ variable (P : ProbeReservoir k B D Sc)
 
 /-- The type of the entries between two two-letter words, by the summands of their letters
 (the argument of `twoTwo`). -/
-abbrev TwoEntry (c₁ c₂ d₁ d₂ : Col I X) : Type u :=
+abbrev TwoEntry (c₁ c₂ d₁ d₂ : Col I X) : Type (max u v w) :=
   ∀ (t : Sector I) (σ₁ σ₂ τ₁ τ₂ : Bool) (hv₁ : StepValid c₁.l σ₁ t)
     (hv₂ : StepValid c₂.l σ₂ (nextSector c₁.l σ₁ t)) (hw₁ : StepValid d₁.l τ₁ t)
     (hw₂ : StepValid d₂.l τ₂ (nextSector d₁.l τ₁ t))

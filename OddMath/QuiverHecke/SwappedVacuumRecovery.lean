@@ -47,7 +47,7 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 open scoped Classical TensorProduct
-universe u
+universe u w
 
 section CommRing
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -130,8 +130,8 @@ is the ordered-source sign `σ`, and the ideal is the transformed
 last-boundary ideal `K_(N,T)`; here they are retained abstractly with
 exactly the properties the recovery argument needs. -/
 structure SwappedVacuumEvaluation (μ : X) (t t' : List I) (d : ℕ) where
-  V : Type u
-  W : Type u
+  V : Type w
+  W : Type w
   [addV : AddCommGroup V]
   [moduleV : Module k V]
   [addW : AddCommGroup W]

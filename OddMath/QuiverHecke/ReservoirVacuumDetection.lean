@@ -22,7 +22,7 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 open scoped Classical TensorProduct
-universe u
+universe u w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cs : SKM.CScalars Sc)
 
@@ -49,7 +49,7 @@ normalization's categorical identification is NOT part of these data.
 module. It cannot be supplied by unrelated rank-one tests. No injection of an
 SKM Hom space, or of the action, is assumed. -/
 structure ReservoirVacuumEvaluation (μ : X) (cutoff : I → ℕ) where
-  V : List I → Type u
+  V : List I → Type w
   [addV : ∀ t, AddCommGroup (V t)]
   [moduleV : ∀ t, Module k (V t)]
   act : ∀ t t', UpwardHom D Sc μ t t' →ₗ[k] (V t →ₗ[k] V t')

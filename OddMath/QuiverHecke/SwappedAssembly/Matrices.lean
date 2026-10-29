@@ -36,10 +36,10 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u
+universe u uB v w
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -58,7 +58,7 @@ theorem pathFunctor_append_append_obj {l m r : List (Col I X)} {s t s' t' : Sect
 
 /-- The matrix entries of the image of the generator of shape `g` with rightmost weight `ν`:
 a component for each pair of summand paths of its bottom and top boundaries. -/
-def GenImage (g : SKM.Shape I) (ν : X) : Type u :=
+def GenImage (g : SKM.Shape I) (ν : X) : Type (max u v w) :=
   ∀ {t s : Sector I} (_p : SPath (wd D ν g.dom) t s) (_p' : SPath (wd D ν g.cod) t s)
     (Z : P.H s), (P.pathFunctor _p).obj Z ⟶ (P.pathFunctor _p').obj Z
 
@@ -96,7 +96,7 @@ variable (P) (Gs Ys : ∀ s, P.H s)
 /-- The module of an object: the matrix entries `Gs s ⟶ F_p (Ys t)` over all summand paths
 `p` of its word whose rightmost sector has the rightmost weight of the object. Each row `s`
 has finitely many entries (`SPath.finite`). -/
-def Mod (a : Obj (SKM.sig D)) : Type u :=
+def Mod (a : Obj (SKM.sig D)) : Type (max u w) :=
   ∀ (s : Sector I) (t : {t : Sector I // P.wt t = a.endR}) (p : SPath a.word s t.1),
     Gs s ⟶ (P.pathFunctor p).obj (Ys t.1)
 
@@ -174,7 +174,7 @@ def layerMap (gens : P.Generators) (L : Layer (SKM.sig D)) :
 variable (P Gs Ys) in
 /-- **The swapped layer representation** with generator images `gens`, evaluated at the
 families `Gs`, `Ys`. -/
-def layerRep (gens : P.Generators) : LayerRep.{u, u, u, u, u} (SKM.sig D) k where
+def layerRep (gens : P.Generators) : LayerRep.{u, u, u, u, max u w} (SKM.sig D) k where
   M := P.Mod Gs Ys
   act := layerMap gens
 
