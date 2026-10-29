@@ -3239,6 +3239,19 @@ display (4)). Non-vacuity: `scripts/NonVacuity/BoundaryWindow.lean`. Next: the c
 boundary: identify `A_∂(w_k)` of the transported `contentCupKernel`/`contentCapKernel` with such
 a `φ`, the recurrence (8) and the norm (7) with the cyclotomic polynomial `a_i`, and the cap rows
 of (4) with `capRow`.
+`BoundaryAssembly.lean` (checked): the abstract half of `DeformedMackeyBoundary.md` §3 and
+`DeformedBoundaryDivision.md` §§4–5. `MackeyBoundary σ L₁ L₀ L₀'` records, as additive maps,
+`P` with `P ρ = R_t P`, the direct decomposition `L₀ = F(L₀') ⊕ j(V₀)` with the dot slides
+`F(u) t = F(X u) + j(E u)` and `j(f) t = j(f t)`, the extraction `B₁` in corrected coordinates
+(`B₁ ρ = ρ̄ B₁`, surjective), and a right-linear boundary `A` with `P z ∈ F(L₀') + j(A(B₁ z))`.
+Checked: `recurrence` (8) for `φ_k = A(w_k)`, `A_eq_windowMap`, `norm` (7) for every `k` from
+one lift `z₀` of `S(ρ̄) w₀` with `P z₀ = j(c F)` (`σ`-fixed `S`, `c`), `division` (12), and
+the window displays `window_pos` ((2), `D ≤ N`) and `window_neg` ((4), `N < D`, `σ` bijective).
+Non-vacuity: `scripts/NonVacuity/BoundaryAssembly.lean`. Open (the concrete fields of
+`MackeyBoundary` for the global cyclotomic factors): the affine Mackey PBW decomposition after
+tensoring with the cyclotomic quotient (`direct`, `Rt_F`, `Rt_j`), the short-coset extraction
+(`B₁`, `B₁_ρ`, `B₁_surjective`, `P_split`), `P ρ = R_t P`, and the reverse norm identity (5)
+giving `hz₀`; then the cap rows of (4) against `contentCapKernel`.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
