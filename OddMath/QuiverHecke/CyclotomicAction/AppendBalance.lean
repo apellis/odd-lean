@@ -764,17 +764,6 @@ end LastCross
 section Main
 variable {a : I → _root_.Polynomial k} {i : I}
 
-theorem length_act (g : PG) (t : List I) : (g.act t).length = t.length := by
-  cases g with
-  | dot p => rfl
-  | cross b =>
-    simp only [PG.act]
-    split
-    · next x y r h =>
-      conv_rhs => rw [← List.take_append_drop b t, h]
-      simp
-    · rfl
-
 theorem appendQ_act (g : PG) (t : List I) : appendQ D a i (g.act t) = appendQ D a i t := by
   simp only [appendQ]
   rw [show g.act t = tgt t [g] from rfl, wordSumParity_tgt]
@@ -796,8 +785,14 @@ theorem ld_act_of_lt {g : PG} {t : List I} (hg : t.length < g.pos + g.width) :
     · rw [h] at hl; simp at hl
 
 theorem appendError_id (s : List I) : appendError D Sc a i s s (𝟙 _) = 0 := by
-  rw [appendError_apply, Supercategory.twist_id]
-  simp
+  rw [appendError_apply, Supercategory.twist_id, sub_eq_zero]
+  have e1 : (𝟙 O[s] ▷ O[[i]] : O[s] ⊗ O[[i]] ⟶ O[s] ⊗ O[[i]]) = 𝟙 _ :=
+    MonoidalSupercategory.id_whiskerRight (R := k) ..
+  have e2 : (O[[i]] ◁ 𝟙 O[s] : O[[i]] ⊗ O[s] ⟶ O[[i]] ⊗ O[s]) = 𝟙 _ :=
+    MonoidalSupercategory.whiskerLeft_id (R := k) ..
+  calc _ = 𝟙 _ ≫ appendW D Sc a i s := congrArg (· ≫ appendW D Sc a i s) e1
+    _ = appendW D Sc a i s ≫ 𝟙 _ := by rw [Category.id_comp, Category.comp_id]
+    _ = _ := (congrArg (appendW D Sc a i s ≫ ·) e2).symm
 
 /-- The balance for one positioned generator, given the balance on shorter words. -/
 theorem appendError_gen_mem (ha : CyclotomicPolynomialParity D a) {n : ℕ}
@@ -808,11 +803,16 @@ theorem appendError_gen_mem (ha : CyclotomicPolynomialParity D a) {n : ℕ}
   by_cases hfit : g.pos + g.width ≤ u.length
   swap
   · obtain ⟨hld, -⟩ := ld_act_of_lt (g := g) (t := u) (by omega)
-    have h' : SChain u (pl u []) u' := by simpa [hld] using h
-    obtain rfl : u = u' := h'
-    rw [cl_congr D Sc h h' (by simp [hld]), cl_nil, appendError_id]
+    have hpl : pl u [g] = pl u [] := by simp [hld]
+    have h' : SChain u (pl u []) u' := hpl ▸ h
+    have hu' : u = u' := h'
+    subst hu'
+    rw [cl_congr D Sc h h' hpl, cl_nil, appendError_id]
     exact zero_mem _
-  rcases List.eq_nil_or_concat u with rfl | ⟨ν, x, rfl⟩
+  obtain rfl | ⟨ν, x, rfl⟩ : u = [] ∨ ∃ ν x, u = ν ++ [x] := by
+    rcases List.eq_nil_or_concat u with h | ⟨ν, x, h⟩
+    · exact Or.inl h
+    · exact Or.inr ⟨ν, x, by simpa using h⟩
   · cases g <;> simp [PG.pos, PG.width] at hfit
   by_cases hin : g.pos + g.width ≤ ν.length
   · have hF : Fits ν.length [g] := by intro g' hg'; simp at hg'; subst hg'; exact hin
@@ -828,13 +828,16 @@ theorem appendError_gen_mem (ha : CyclotomicPolynomialParity D a) {n : ℕ}
     | dot p =>
       simp only [PG.pos, PG.width, List.length_append, List.length_singleton] at hfit hin
       obtain rfl : p = ν.length := by omega
-      obtain rfl : ν ++ [x] = u' := h.2
+      obtain rfl : ν ++ [x] = u' := sChain_target (sChain_dotAny _ ν.length) h
       rw [← dotE_eq_cl D Sc h]
       exact appendError_lastDot_mem D Sc ha ν x
     | cross b =>
       simp only [PG.pos, PG.width, List.length_append, List.length_singleton] at hfit hin
-      rcases List.eq_nil_or_concat ν with rfl | ⟨m, c, rfl⟩
-      · simp at hfit hin; omega
+      obtain rfl | ⟨m, c, rfl⟩ : ν = [] ∨ ∃ m c, ν = m ++ [c] := by
+        rcases List.eq_nil_or_concat ν with h | ⟨m, c, h⟩
+        · exact Or.inl h
+        · exact Or.inr ⟨m, c, by simpa using h⟩
+      · simp at hfit hin
       simp only [List.length_append, List.length_singleton] at hfit hin
       obtain rfl : b = m.length := by omega
       obtain rfl : m ++ [x] ++ [c] = u' :=
@@ -857,7 +860,7 @@ theorem appendError_cl_mem (ha : CyclotomicPolynomialParity D a) {n : ℕ}
     rw [show cl D Sc u u' (g :: gs) h = _ from e]
     refine appendError_comp_mem D Sc (appendQ_act D g u).symm
       (appendError_gen_mem D Sc ha ih g hu _) (ihg ?_ _)
-    rw [show tgt u [g] = g.act u from rfl, length_act, hu]
+    rw [length_act, hu]
 
 /-- **Balance of `P`.** For every morphism `g : s ⟶ t` of words, the error
 `(g ▷ i) ≫ W_t - W_s ≫ (i ◁ tw_(q_s) g)` lies in the span of the morphisms `(y ▷ i) ≫ h` with
@@ -873,13 +876,14 @@ theorem appendError_mem_appendKill (ha : CyclotomicPolynomialParity D a) {s t : 
     have ih' : ∀ s t : List I, s.length < n → ∀ g : O[s] ⟶ O[t],
         appendError D Sc a i s t g ∈ appendKill D Sc a i s t :=
       fun s t hlt g => ih _ hlt s t rfl g
-    have hle := Submodule.span_le (p := (appendKill D Sc a i s t).comap
-      (appendError D Sc a i s t)) |>.mpr (s := {f : O[s] ⟶ O[t] |
+    have hle : Submodule.span k {f : O[s] ⟶ O[t] |
         ∃ l : List ℕ, l.Pairwise (· ≤ ·) ∧ (∀ x ∈ l, x < s.length) ∧
           ∃ w : Equiv.Perm (Fin s.length),
-            ∃ h, cl D Sc s t (l.map PG.dot ++ cw (canWord s.length w)) h = f}) (by
-        rintro _ ⟨l, -, -, w, h, rfl⟩
-        exact appendError_cl_mem D Sc ha ih' _ hs h)
+            ∃ h, cl D Sc s t (l.map PG.dot ++ cw (Categorification.TypeA.canWord s.length w)) h = f} ≤
+        (appendKill D Sc a i s t).comap (appendError D Sc a i s t) := by
+      rw [Submodule.span_le]
+      rintro _ ⟨l, -, -, w, h, rfl⟩
+      exact appendError_cl_mem D Sc ha ih' _ hs h
     rw [span_normalForms D Sc s t] at hle
     exact hle Submodule.mem_top
 

@@ -32,12 +32,10 @@ private theorem poly_parity (m : ℕ) : CyclotomicPolynomialParity datum (poly m
   rw [hd]
   have : j = m + 2 ∨ j = m := by
     by_contra h
-    push_neg at h
+    simp only [not_or] at h
     simp [poly, _root_.Polynomial.coeff_X_pow, h.1, h.2] at hj
-  rcases this with rfl | rfl
-  · rfl
-  · change m • (1 : ZMod 2) = (m + 2) • (1 : ZMod 2)
-    rw [add_nsmul, show (2 • (1 : ZMod 2)) = 0 by decide, add_zero]
+  rcases this with h | h <;> rw [h]
+  rw [add_nsmul, two_nsmul, CharTwo.add_self_eq_zero, add_zero]
 
 /-- The balance of `P` for an arbitrary morphism between arbitrary words, with a cyclotomic
 polynomial with two terms and an odd moving colour. -/
