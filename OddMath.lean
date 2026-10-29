@@ -1338,6 +1338,8 @@ import OddMath.QuiverHecke.SwappedAssembly.WindowZero
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Windows
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.WindowCases
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic

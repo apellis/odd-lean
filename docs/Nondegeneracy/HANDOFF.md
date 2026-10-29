@@ -1098,8 +1098,26 @@ two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l �
 `ProbeWindow.exists_isCupInverse_caseD` ((d), (14): columns `s`, `q^(r+2) • (u ≫ y^{-r-1})`
 for `r < a`, `-(u ≫ yᵗ)` for `t < g`, invertible when `[s, u ≫ yⁿ]_{n<a+g}` is), via
 `IsCapInverse.reindex`/`IsCupInverse.reindex` (reordering slots and multiplying them by units
-`c` with `c * c = 1`). Next: the mixed cases (b), (c) ((8)–(13)), whose maps have extra slots
-on both sides, and the extraction (16)–(19).
+`c` with `c * c = 1`).
+
+**Mixed auxiliary maps (checked).** `SwappedAssembly/CentralInverse/BlockMaps.lean` encodes a
+map `X ⊕ Oᶥ → Y ⊕ Oᵏ` of `Mat_ C` by its corner, columns, rows and block (`ProbeWindow.gMap`)
+and eliminates an identity block: with target `Y ⊕ O^{ι ⊕ m}` and block the identity onto
+`O^ι`, the map is an isomorphism when the reduced cap window `[a - Σ Cc i ≫ B i; Cc (inr t)]`
+has an entrywise inverse (`isIso_gMap_of_isCapInverse`); dually with source `X ⊕ O^{κ ⊕ m}`
+and the reduced cup window `[a - Σ Cc r ≫ B r, B (inr n)]` (`isIso_gMap_of_isCupInverse`);
+the inverses are explicit. Summands are reordered by `gReindex`.
+`SwappedAssembly/CentralInverse/MixedCases.lean` proves the mixed cases (b), (c) of §3,
+(8)–(13): `ProbeWindow.isIso_caseB_of_nonneg` (source `X ⊕ Oᵈ`, target `Y ⊕ O^{d+h}`, corner `s`,
+columns `-(u ≫ yᵗ)`, rows `q^(r+1) • (x^{-r-1} ≫ v)`, identity block; invertible when
+`[s; xⁿ ≫ v]_{n<h}` is), `isIso_caseB_of_neg` (source `X ⊕ O^{k+b}`, target `Y ⊕ Oᵏ`;
+invertible when the cup window `[s, u ≫ yⁿ]_{n<b}` is), `isIso_caseC_of_nonneg` (source
+`X ⊕ Oᵃ`, target `Y ⊕ O^{a+h}`, columns `q^(t+2) • (u ≫ y^{-t-1})`, rows `xʳ ≫ v`; from the cap
+window) and `isIso_caseC_of_neg` (source `X ⊕ O^{d+b}`, target `Y ⊕ Oᵈ`; from the cup window).
+After elimination the reduced corner is `q^l • (x^{∓l} ≫ s ≫ y^{±l})` by the window identities
+(4), and the reduced window is the probe window, or its shift (5), (6), conjugated by these
+powers (`IsCapInverse.conj`, `IsCupInverse.conj`) with slots reordered and multiplied by units.
+With (a), (d) this covers all four cases of §3. Next: the extraction (16)–(19).
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
