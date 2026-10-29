@@ -1343,3 +1343,4 @@ import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
+import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
