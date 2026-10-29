@@ -839,6 +839,20 @@ hypotheses of `sectorRelations_even/_odd` (read in `(End PPR)ᵐᵒᵖ`); the si
 `q` of `δ`'s arguments matches the written `a(qx₂, qz)`. No discrepancy. Next:
 assemble the block (path enumeration of the `iii` entries, block sums,
 `sectorBraid`); then (5B) on `{PRR, RPR, RRP}`; then `PPP`, `RRR`.
+Braid on the block `{PPR, PRP, RPP}` of `iii` (checked,
+`SwappedAssembly/BraidSame/MixedBlock.lean`): `blockPath` enumerates the paths of
+`[up i, up i, up i]` from `t` to `t + 2αᵢ - αᵢ` with one reservoir step; they are all
+the paths with these endpoints (`blockPath_injective`, `blockPath_surjective`,
+`sum_blockPath`). Transported by `blockIso` (`1`, `Φ₁`, `Φ₂`), the left and right
+crossings of `swappedGens c L` are `sectorU D γ` and `sectorV D δ` in
+`(End PPR)ᵐᵒᵖ` (`blockLeft_eq`, `blockRight_eq`; the entry `D` of `V` is (5A) via
+`preCrossSame_mixedJ_pair`), and both sides of (1.9) are the transported triple
+products (`block_braidLeft`, `block_braidRight`, `transportMatrix_mul_mul`).
+`block_braid` (under `c.IsInverse` and `CrossCoeffInputs`): (1.9) holds for every
+pair of paths of the block, via `op_sectorRelations_even/_odd` and `sectorBraid`.
+Since the block is the whole path set for these endpoints, no cross-block entries
+arise. No discrepancy with `ThreeStrandSectorBraid.md` (1)–(5A). Next: (5B) on
+`{PRR, RPR, RRP}`; then `PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
