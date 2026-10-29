@@ -90,6 +90,20 @@ theorem twist_whiskerRight_obj' (p : ZMod 2) {A B : (pres D Sc).Presented} (f : 
   · rw [MonoidalSupercategory.add_whiskerRight (R := k), map_add, map_add, hg, hh,
       MonoidalSupercategory.add_whiskerRight (R := k)]
 
+/-- The parity twist commutes with right whiskering, on words. -/
+theorem twist_whiskerRight_word (p : ZMod 2) {ν ν' : List I} (f : O[ν] ⟶ O[ν']) (σ : List I) :
+    (Supercategory.twist k p (f ▷ O[σ]) : O[ν ++ σ] ⟶ O[ν' ++ σ]) =
+      Supercategory.twist k p f ▷ O[σ] := by
+  refine Supercategory.induction_on (R := k) f ?_ (fun q g hg => ?_) (fun g h hg hh => ?_)
+  · rw [map_zero, MonoidalSupercategory.zero_whiskerRight k, map_zero]
+  · have hm : (g ▷ O[σ] : O[ν ++ σ] ⟶ O[ν' ++ σ]) ∈
+        Supercategory.parity (R := k) O[ν ++ σ] O[ν' ++ σ] q :=
+      MonoidalSupercategory.whiskerRight_mem (R := k) O[σ] hg
+    rw [Supercategory.twist_of_mem p hg, Supercategory.twist_of_mem p hm,
+      MonoidalSupercategory.smul_whiskerRight (R := k)]
+  · rw [MonoidalSupercategory.add_whiskerRight (R := k), map_add, map_add, hg, hh,
+      MonoidalSupercategory.add_whiskerRight (R := k)]
+
 /-- Right whiskering of a left whiskering by a letter, on words. -/
 theorem whiskerLeft_whiskerRight_letter (i : I) {t t' : List I} (g : O[t] ⟶ O[t'])
     (σ : List I) :
@@ -438,5 +452,63 @@ theorem crossLast_comp_mem_appendKill (ha : CyclotomicPolynomialParity D a) {s t
     exact Submodule.smul_mem _ c hf
 
 end Closure
+
+section Error
+variable {a : I → _root_.Polynomial k} {i : I}
+
+/-- The error of a composite: `E(g₁ ≫ g₂) = (g₁ ▷ i) ≫ E(g₂) + E(g₁) ≫ (i ◁ tw g₂)`. -/
+theorem appendError_comp {s u t : List I} (hq : appendQ D a i s = appendQ D a i u)
+    (g₁ : O[s] ⟶ O[u]) (g₂ : O[u] ⟶ O[t]) :
+    appendError D Sc a i s t (g₁ ≫ g₂) =
+      ((g₁ ▷ O[[i]]) ≫ appendError D Sc a i u t g₂ : O[s ++ [i]] ⟶ O[i :: t]) +
+        (appendError D Sc a i s u g₁ ≫
+          (O[[i]] ◁ Supercategory.twist k (appendQ D a i s) g₂) : O[s ++ [i]] ⟶ O[i :: t]) := by
+  simp only [appendError_apply, Supercategory.twist_comp, MonoidalSupercategory.comp_whiskerRight
+    (R := k), MonoidalSupercategory.whiskerLeft_comp (R := k), Preadditive.comp_sub,
+    Preadditive.sub_comp, Category.assoc, hq]
+  abel
+
+theorem appendError_comp_mem {s u t : List I} (hq : appendQ D a i s = appendQ D a i u)
+    {g₁ : O[s] ⟶ O[u]} {g₂ : O[u] ⟶ O[t]} (h₁ : appendError D Sc a i s u g₁ ∈ appendKill D Sc a i s u)
+    (h₂ : appendError D Sc a i u t g₂ ∈ appendKill D Sc a i u t) :
+    appendError D Sc a i s t (g₁ ≫ g₂) ∈ appendKill D Sc a i s t := by
+  rw [appendError_comp D Sc hq]
+  exact add_mem (whiskerRight_comp_mem_appendKill D Sc g₁ h₂) (appendKill_comp D Sc h₁ _)
+
+/-- The error of a morphism whiskered by the last strand: (a) of the written proof. -/
+theorem appendError_whiskerRight {ν ν' : List I} (x : I) (f : O[ν] ⟶ O[ν']) :
+    appendError D Sc a i (ν ++ [x]) (ν' ++ [x]) (f ▷ O[[x]]) =
+      (crossLast D Sc ν x i ≫
+        (appendError D Sc a i ν ν' (Supercategory.twist k (D.parity i * D.parity x) f) ▷ O[[x]]) :
+          O[ν ++ [x] ++ [i]] ⟶ O[i :: (ν' ++ [x])]) := by
+  rw [appendError_apply, appendError_apply, appendW_append, appendW_append, sub_whiskerRight',
+    Preadditive.comp_sub]
+  congr 1
+  · have h := crossLast_comp_whiskerRight D Sc x i
+      (Supercategory.twist k (D.parity i * D.parity x) f)
+    rw [mul_comm (D.parity x), Supercategory.twist_twist] at h
+    rw [MonoidalSupercategory.comp_whiskerRight (R := k), reassoc_of% h]
+  · have e₁ : (Supercategory.twist k (D.parity i * D.parity x) (f ▷ O[[x]]) :
+        O[ν ++ [x]] ⟶ O[ν' ++ [x]]) =
+        Supercategory.twist k (D.parity i * D.parity x) f ▷ O[[x]] :=
+      twist_whiskerRight_word D Sc _ f [x]
+    have e₂ : (Supercategory.twist k (appendQ D a i ν)
+        (Supercategory.twist k (D.parity i * D.parity x) f ▷ O[[x]]) :
+          O[ν ++ [x]] ⟶ O[ν' ++ [x]]) =
+        Supercategory.twist k (appendQ D a i ν)
+          (Supercategory.twist k (D.parity i * D.parity x) f) ▷ O[[x]] :=
+      twist_whiskerRight_word D Sc _ _ [x]
+    rw [MonoidalSupercategory.comp_whiskerRight (R := k), Category.assoc, appendQ_append,
+      Supercategory.twist_add, e₁, e₂, whiskerLeft_whiskerRight_letter]
+
+theorem appendError_whiskerRight_mem (ha : CyclotomicPolynomialParity D a) {ν ν' : List I}
+    (x : I) {f : O[ν] ⟶ O[ν']}
+    (hf : ∀ q, appendError D Sc a i ν ν' (Supercategory.twist k q f) ∈ appendKill D Sc a i ν ν') :
+    appendError D Sc a i (ν ++ [x]) (ν' ++ [x]) (f ▷ O[[x]]) ∈
+      appendKill D Sc a i (ν ++ [x]) (ν' ++ [x]) := by
+  rw [appendError_whiskerRight]
+  exact crossLast_comp_mem_appendKill D Sc ha x (hf _)
+
+end Error
 
 end OddMath.QuiverHecke
