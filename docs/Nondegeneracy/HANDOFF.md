@@ -1,5 +1,40 @@
 # Odd nondegeneracy: restart state
 
+## Crossing image and the remaining short multiplier factorization
+
+Checked (`AppendContentCrossingImage.lean`), for the ordinary-polynomial
+specialization of `DeformedMackeyBoundary.md` (4)–(5):
+
+* `appendContentPolynomialProjection_ker` proves that the polynomial projection
+  on the prescribed target has kernel exactly `range appendTargetF`, using the
+  balanced `appendTensorCornerEquiv`. This is a target decomposition statement,
+  not the assertion that P maps the short source into that kernel.
+* `appendContentCrossingTensor_eq_F` identifies `appendLeftSum(f) ⊗ b` with
+  the prescribed crossing map applied to coefficients `ψ'(1) f(q) • b`.
+  `appendContentCrossingTensor_mem_range` is consequently an unconditional
+  inclusion in the `F` range of `appendContentMackeyTarget`.
+* `appendContentProjectCoordinates` projects the existing all-shuffle input
+  coordinates to the left append corner. `appendContentP_project_single`
+  computes P there as `ψ(1) • ((prependPBWTerm u m 1 * W) ⊗ b)`, keeping the
+  right coefficient unchanged. `appendContentP_short_expansion` proves the
+  finite expansion of P on every short source, excluding the full moving row.
+* `appendContentP_short_mem_of_factorizations` is explicitly conditional: it
+  reduces the inclusion to affine matrix equalities
+  `ψ(1) * (prependPBWTerm u m 1 * W) = appendLeftSum(f)` for every non-long
+  shuffle and every input-dot degree. These factorizations are not proved here.
+
+Next target: prove the short-shuffle canonical-word support, then factor its
+projected multiplier using `appendW_append` through the last equal-colour
+crossing and convert the old coefficient to `appendLeftSum` coordinates.
+The proposed argument must retain the left append projector: individual
+unprojected source PBW generators need not belong to the source corner.
+Neither `P(short) ⊆ range F` without the displayed factorization hypothesis,
+its reverse inclusion, nor `MackeyCosets`/`toMackeyBoundary` is constructed.
+The content index still has old height `n+1`; no affine old-height-zero claim
+is made. All cutoffs, including zero, are permitted. The normalized rho lifts
+and coefficient order from the preceding module are unchanged; full ELV
+coefficients, norm, and inversion remain outside this slice.
+
 ## Append content source: concrete moving-coset extraction
 
 Checked (`AppendContentCosets.lean`): `longPrependShuffle r` is `finRotate (r+1)`;
