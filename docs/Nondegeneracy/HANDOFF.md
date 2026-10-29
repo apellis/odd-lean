@@ -401,10 +401,15 @@ colours supply such an `M`; no finiteness hypothesis is used in the descent.
 `truncatedSingle_eq_zero_of_cutoff_zero` separately kills the zero-cutoff corner.
 The rational odd cutoff-two, coefficient-cutoff-three consumer checks degree
 nine vanishing, internal gradings, the quotient map, and parity compatibility.
-The retained nonzero delta control is only a coefficient-ring control:
-nonvanishing in the positive-content quotient has not been established.
+`ELVTruncatedDetection.lean` now proves `truncatedSingle_delta_ne_zero` in this
+positive-content quotient. `truncatedSingleEval` evaluates the dot and elementary
+coefficients at zero while retaining delta in the exterior algebra.
+`singleEval_ideal` and `singleEval_coefficientIdeal` kill both defining ideals,
+including arbitrary surrounding morphisms and intermediate words. Rank-one word
+preservation reduces nonzero contexts to the one-strand corner. No evaluation
+faithfulness, coefficient injectivity into the Hom quotient, or freeness is assumed.
 
-Remaining: positive-content odd-coefficient survival, higher-content support
+Remaining: higher-content support
 bounds, regular-kernel realization, and the full factor action. There is no
 upper-support assertion for the untruncated old algebra or the enlarged `Target`.
 
@@ -419,9 +424,11 @@ coefficient multiplication order is retained; no odd coefficient is specialized
 away. Both strand parities and all cutoffs are covered.
 `single_eq_zero_of_cutoff_zero` explicitly kills the corner at cutoff zero.
 No coefficient flatness, regularity, freeness or finiteness hypothesis is used.
-The rational consumers test both strand parities, odd-colour cutoffs 2 and 3, all
-cutoffs parametrically, and survival of the coefficient delta at positive
-cutoff (not independence of old dot classes).
+The spanning consumers test both strand parities, odd-colour cutoffs 2 and 3,
+and all cutoffs parametrically; their delta control is in the coefficient ring.
+`ELVTruncatedDetection` separately proves delta survives in the actual
+positive-content quotient at rational odd cutoff two and weight cutoff three.
+Independence of the old dot classes is not asserted.
 
 The further coefficient-truncated quotient and its one-strand bound are now
 constructed above. General-content finiteness, regular-kernel realization,
