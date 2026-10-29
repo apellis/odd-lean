@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Signed source-endpoint dot transport
+
+`SignedDotNormalOrder.lean` proves `cross_dot_move_signed` and
+`dot_down_signed`. The latter moves an output dot through any valid crossing
+word in arbitrary left and right contexts, modulo `Low`, with its explicitly
+computed sign `sourceDotSign`. The input position is `sourceDotPosition`,
+identified with the inverse permutation by `sourceDotPosition_eq`.
+Incident slides contribute the product of the crossing colours' parities;
+distant slides also multiply by the dot colour's parity. All signs are
+derived from the positional relations, not extracted from `Approx`.
+
+**Residual:** transport is proved for a dot, not yet collected across all
+polynomial decorations of `leadingMoveHom`. The signed ordered polynomial,
+scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
+`homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
+No count of equal colours has been identified with the moving-dot degree.
+
 ## Signed top-crossing chain
 
 `MoveHomLeading.lean` proves `moveHom_sub_leading_mem_low`: for every
