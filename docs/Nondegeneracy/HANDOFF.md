@@ -604,10 +604,16 @@ is the factor slide of `W` transported through the word isomorphism
 dots; the odd case uses that `x² - y²` is invertible, which `IsInverse.odd`
 alone does not give). Interface: the slides use `CrossCoeffInputs` in addition
 to `IsInverse`; both hold for `crossCoeffOfInputs`.
-Remaining: prove the other fields of `CrossQuad (swappedGens c L)` from the probe and reservoir
-quadratic relations (diagonal blocks) and the inverse property of `c`
-(equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
-intertwinings from `homMixedInterchange_pre/_post`.
+`QuadNe.lean` (**checked**): `swappedGens_crossQuad c L : CrossQuad (P.swappedGens c L)`
+for every `c` and `L`, with no further hypothesis. For `i ≠ j` a summand path of
+`Eᵢ Eⱼ` is determined by its end sectors (`path_eq_of_ne`), so `offDiag` is vacuous and
+`crossCross` reduces to the single partner path (`swappedGens_crossCrossNe`). The
+probe/probe and reservoir/reservoir entries are the multicolour (1.7) of the probe and
+reservoir families, whiskered and transported along the sector casts
+(`probeCore_quad`, `resCore_quad`, `quad_of_heq`); the probe/reservoir entry is
+`J ≫ J⁻¹ Q = Q`, and the reservoir/probe entry is `J⁻¹ Q J`, which is `qExpr` in the
+transported dots (`mixedJ_inv_mixedQ_hom`). `quadZero`/`quadNe` then read off the
+two branches of `qExpr`.
 
 **Inversion relations (checked).** `SwappedAssembly/Inversion.lean`:
 `inversionRelations`: `InversionRelations` for `P.layerRep Gs Ys
@@ -636,11 +642,24 @@ by a dot `cross p q ≫ rightDot q` (`compDiag_cross_rightDot`,
 `leftDot p ≫ cross = (-1)^{|i||j|} cross ≫ rightDot q` and
 `cross ≫ leftDot q = (-1)^{|i||j|} rightDot p ≫ cross`; for `i = j` the same
 differences with sign `(-1)^{|i|}` equal the identity entry (`eqToHom` on the
-diagonal, zero off it). Remaining: prove `CrossSlide (swappedGens c L)`:
-diagonal blocks from the probe and reservoir slide relations, same-colour
-mixed blocks from `SlideBlocks.lean`, distinct-colour mixed blocks from the
-signed dot intertwinings of `homMixedInterchange_pre/_post` (not yet
-formalized).
+diagonal, zero off it). **`CrossSlide (swappedGens c L)` is checked**
+(`SlideAssembly.lean`: `swappedGens_crossSlide c hc hin L`, for `c.IsInverse`
+and `CrossCoeffInputs`). The equal-colour fields are `swappedGens_slideEq`
+(`SlideSame.lean`); the distinct-colour fields are `swappedGens_slideNe`. For
+`i ≠ j` only the four pairs of paths `PP→PP`, `RR→RR`, `PR→RP`, `RP→PR` have
+equal right sectors. `SlideNe.lean` proves the slides of each distinct-colour
+crossing entry: `preCrossNe_slideL/R` and `postCrossNe_slideL/R` (the factor
+slides `probeRel.slideLeft/Right`, `reservoirRel.slideLeft/Right` transported
+through the associator, resp. the word isomorphism `postPairIso`), and
+`mixedJ_ne_slides`, `mixedJinvQ_ne_slides` for `J` and `J⁻¹ Q_ji`: the signed
+intertwinings `prPreDot_comp_mixedJ_ne`, `prPostDot_comp_mixedJ_ne` (sign
+`(-1)^{|i||j|}` from super interchange through the parity shift), the
+supercommutation `prPostDot_comp_prPreDot` of the two dots on `PR`, and
+`mixedQ_comm` (`Q_ji` commutes with both dots: in each monomial `x^a y^b` of
+`Q` the exponent of the odd variable is even, `comp_qExpr`).
+`SlideAssembly.lean` moves the entry slides to arbitrary paths by `HEq`
+transport (`slideL_of_heq`, `twoTwo_two_heq`, `leftDot_two_*_heq`,
+`rightDot_two_*_heq`).
 
 **Braid relations (checked).** `SwappedAssembly/Braid.lean`:
 `braidRelations`: `BraidRelations` for `P.layerRep Gs Ys gens` from
@@ -770,6 +789,18 @@ The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the imag
 `x² - y²`, and does not determine `a` (or its parity) when `x² - y²` is not invertible.
 This is a property of the interface, not of the construction: the constructed coefficient
 satisfies both. Generic: `IsSupernatural.sub`.
+
+**`SigmaPermutation` from entrywise invertibility (checked).**
+`SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
+P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
+`P.sigmaEntry c i j ν p q Z` is an isomorphism. For `i ≠ j` the summand paths of
+`Eⱼ Fᵢ` and `Fᵢ Eⱼ` between fixed sectors `t`, `s` are determined by their sides
+(`SPath.subsingleton_upDn`, `SPath.subsingleton_dnUp`), and one exists iff the other does
+(`SPath.nonempty_dnUp_iff`, the two steps commute: `SPath.exchange_upDn`,
+`SPath.exchange_dnUp`). So the permutation is forced and the off-diagonal condition is
+vacuous. Remaining for `hσ`: invertibility of the four single-term blocks
+(probe/probe: `homContentDistinctPreMate`; reservoir/reservoir: the shifted post mate;
+mixed: `homDistinctMixedMate` and `homDistinctMixedPreMateDot`).
 
 ## Old-only ELV quotient module
 
