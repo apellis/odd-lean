@@ -3,7 +3,9 @@
 **Status: written right-projectivity argument; not a Lean theorem.**
 This assembles right projectivity from the all-prefix identity and P balance
 in `DeformedGlobalQP.md` and the written ideal equality
-in `DeformedIdealSum.md`. These inputs are written mathematics, not Lean results.
+in `DeformedIdealSum.md`. Full ELV P/Q descent, the signed QP identity and
+injectivity of P are now proved in Lean; the polynomial-module structures,
+ideal-sum exactness and projectivity below remain written mathematics.
 No assertion about left projectivity or the specified Rouquier matrix is made.
 
 Sources read for this comparison: KKO I, arXiv:1206.5933v2, Lemma 7.3,
@@ -110,6 +112,13 @@ The same construction applies to K₁′. This is the required projective
 structure on the actual tensor quotients, not on replacement modules.
 
 ## 3. P-linearity and injectivity with the typed Q target
+
+**Checked injectivity.** `ELVPInjective.lean` proves `ELVOld.pMap_injective`
+for arbitrary words, cutoffs and full exterior coefficients. The actual
+quotient composite `qMap_comp_pMap` is `signedQPMap`; its injectivity follows
+from `projection_qp_relation_regular` and the proved moving PBW coordinates.
+This is injectivity of the ground-ring linear map, not yet a construction
+of the B[s]-module structures or their exact projective sequence.
 
 Put T=τ₁⋯τ_n and W=f_i(x₁)T e_R. The old balance in
 `DeformedGlobalQP.md` defines the even map
