@@ -1,5 +1,40 @@
 # Odd nondegeneracy: restart state
 
+## Global factor relations: algebra parameters and reservoir
+
+Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
+(`OddMath/QuiverHecke/GlobalFactorNondegeneracy.lean`) now build both cyclotomic factors on the
+quiver Hecke algebras with parameters `parameterTwist D Sc`; the hypotheses are
+`RouquierMulticolour (globalRouquierFamily D (parameterTwist D Sc) …) Sc` and
+`GlobalLocalInversion D (parameterTwist D Sc) …`. Before this correction the hypotheses used the
+algebra parameters `Sc`. By the parameter transport (9) of `DeformedActionAssembly.md` §6
+(signed right multiplication changes the coefficient of `u^r v^s` in `Q_ij` by
+`(-1)^(|i||j| + |i|⌊r/2⌋ + |j|⌊s/2⌋)`), the relations (1.7) of the action then hold with the
+parameters `parameterTwist D Sc`, not `Sc`, so the old hypotheses `RouquierMulticolour _ Sc` fail
+whenever the transport changes a coefficient whose dotted endomorphism is nonzero (for example
+`t_ij` with `i`, `j` odd). The transport is involutive (`parameterTwist_involutive`).
+
+Open obligation (reservoir). `SwappedActionAssembly.md` §1 F3 takes the reservoir to be the
+full-ELV factor over the deformed ring `Abar`, with odd deformation parameters and the character
+`χ`. `globalProbeReservoir` uses an undeformed cyclotomic factor over the purely even ground
+ring `k` as reservoir. The observation hypotheses `h` of the conditional theorem (bubbles and
+corner evaluations in the reservoir) are stated for the written reservoir; whether they can hold
+for the undeformed cyclotomic reservoir is not checked, and the written argument does not claim
+it. The reservoir of `globalProbeReservoir` should be replaced by the deformed factor once that
+factor is a `RouquierFamily`.
+
+Open obligations (multicolour relations of the cyclotomic factor). `RouquierMulticolour` for
+`globalRouquierFamily D (parameterTwist D Sc) …` is not proved. Its fields are the distinct-colour
+relations of Brundan–Ellis, arXiv:1701.04133v2, Definition 1.5: (1.7) `quadZero`, `quadNe`;
+(1.8) `slideLeft`, `slideRight`; (1.9) `braid` and the corrected `braidEq`; (1.12) `invNe`.
+The algebra inputs exist: `cyclotomicLastCrossing_mixed` and `compositionSuperCrossing_mixed_apply`
+(mixed quadratic), `BraidCorrection.lean` (braid correction). The same-colour slide chain
+`GlobalSlideAlgebra` → `GlobalHeightSlides` → `GlobalWeightSlides` is the template for the
+distinct-colour slides, generalizing `heightCompositionCorner D Sc i i` to two colours.
+`invNe` needs the distinct-colour Mackey isomorphism (the exact sequence and projectivity
+inputs of the written proof), which are not formalized; like `GlobalLocalInversion`, it is to be
+carried as an explicit hypothesis until they are.
+
 ## Consequences of the field case: ground rings, Hom bases and K₀
 
 Checked (conditional on the field case). `SKM.CharZeroFieldNondegeneracy D`
@@ -40,6 +75,27 @@ not proved. From it:
 
 Open: the field case itself; removal of the route hypotheses above; the
 case of rings where `2` is not a unit, beyond the even Khovanov–Lauda case.
+
+## Distinct-colour dot slides on the global factors: algebra half
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalMixedSlideAlgebra.lean`), towards the
+fields `slideLeft`, `slideRight` of `SKM.RouquierMulticolour` (Brundan–Ellis 1701.04133v2,
+(1.8)) for `globalRouquierFamily D (parameterTwist D Sc)` at distinct colours `i ≠ j`:
+
+- `inductionStrand_slide_left_ne`, `inductionStrand_slide_right_ne`: the local slides
+  `x_i τ = ε τ x_i`, `τ x_j = ε x_j τ`, `ε = (-1)^{|i||j|}`, on the two-strand word `[i, j]`;
+- `induction_slide_left_ne`, `induction_slide_right_ne`: their whiskered forms on
+  `w ++ [i, j]` (appended dot, last-pair crossing, new last dot);
+- `affineLastCrossing_slide_left_ne`, `affineLastCrossing_slide_right_ne` and, at every height,
+  `heightLastCrossing_slide_left_ne`, `heightLastCrossing_slide_right_ne`:
+  `c φⱼ(y_i) = ε y_i c` and `φᵢ(y_j) c = ε c y_j` in the algebra (matrix multiplication reverses
+  composition).
+
+Remaining for the module-level slides: two-colour corner multiplication data (the corner of
+`heightAppend i (n+1) ∘ heightAppend j n`), the outer/inner dot comparisons for `i ≠ j`, and the
+weight-level assembly modelled on `GlobalWeightSlides.lean`. A hand check of the Koszul signs
+of the right-multiplication module maps finds the same sign `ε` on both sides of each slide,
+so the algebra identities above are exactly what the module slides need (no extra sign).
 
 ## Deformed cyclotomic factor: checked steps and forms
 
@@ -902,6 +958,18 @@ of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K
 `K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
 ones. To be rechecked against `ProbeWindowInverse.md` (4).
 
+**Swapping entries as single terms (checked).** `SwappedAssembly/Sigma/SwappingEntries.lean`:
+`sigmaEntry_eq_sum` writes `sigmaEntry c i j ν p q Z` as the double sum over the intermediate
+paths `m₁` (after the cup) and `m₂` (after the crossing) of `sigmaTerm` (cup entry, crossing
+entry, cap entry, joined by `eqToHom`s). `sides_of_sigmaTerm_ne_zero`: a nonzero term has
+`p.sides = [p₁, p₂]`, `q.sides = [q₁, q₂]`, `m₁.sides = [q₁, q₁, p₁, p₂]`,
+`m₂.sides = [q₁, q₂, p₂, p₂]` (the cup and cap force equal summands on their two strands, the
+crossing keeps the outer strands). `sigmaEntry_eq_sigmaTerm`: for any `m₁`, `m₂` with these
+sides the entry is that one term. Open for `SwappingInvertible`: unfold the three layer entries
+of the single term into generator images and identify them with the probe mate of `J`
+(`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
+`-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
+
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
 `a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
@@ -979,6 +1047,37 @@ tracks sides through each layer (`sides_of_cup`, `sides_of_cross`, `sides_of_cap
 nonzero cup entry duplicates one side, a crossing swaps two sides (`SPath.sides_upUp` for
 distinct colours), a cap removes a matching pair (`sigma_sides`). Remaining for `hσ`:
 invertibility of this composite in each of the four side patterns `[a, b]`.
+
+**Mixed mate with a dotted crossing, post side (checked).**
+`SKM/RouquierHomDistinctMixedPostDots.lean`, the mirror of
+`homDistinctMixedPreMateDot` for the pattern where the crossing is `J⁻¹` followed by the
+action `Φ` of the parameter polynomial on `E ≫ Π^κ(Y ≫ E')`, `Y = Π^κ H ≫ F'`:
+`homDistinctMixedMateDot E A κ τ H Φ` (equal to `homDistinctMixedMate` at `Φ = 𝟙`,
+`homDistinctMixedMateDot_id`; linear in `Φ`, `homDistinctMixedMateDotLinear`).
+`homShiftPostAdjunction_counit_transpose`: an even post dot `Y ◁ y` before the shifted
+counit is the transposed dot `(Π^κ H ◁ yᵀ) ▷ E'`, `yᵀ = rightTranspose A A y`.
+`homDistinctMixedMateDot_monomial`: for even `x`, `y`, the dotted mate of
+`x ▷ _ ≫ E ◁ Π^κ(Y ◁ y)` is `(x ▷ Y ≫ E ◁ (Π^κ H ◁ yᵀ)) ≫ U`. Algebraic step (14):
+`isUnit_smul_pow_add_of_mem_admissibleMonomials` (`c • aᵈ + N` is a unit for `a` a unit,
+`b` nilpotent, `N` in the span of admissible monomials `aᵖ bᑫ`, `q ≥ 1`, with commuting
+admissible powers). Note: `Cross.lean` attaches `Q` after `J⁻¹`, while
+`SwappedDistinctMixedMates.md` §1 attaches it to `J`; for this orientation the dot to be
+transposed is the one on the postcomposed edge `E'`, along `E' ⊣ F'`. The invertibility
+argument (unit plus nilpotent) is unchanged. Next: assemble `Dot(Q) = G ≫ U` with `G` a
+unit from these lemmas, then link the four side patterns of `sigmaEntry_eq` to the mates.
+
+**Post-side dotted mixed mate is invertible (checked).**
+`SKM/RouquierHomDistinctMixedPostDotsIso.lean`. With `X = x ▷ _`, `Y = E ◁ Π^κ(_ ◁ y)` on
+the target of `J⁻¹` and `A = x ▷ _`, `B = E ◁ (Π^κ H ◁ yᵀ)` on the source of `U`:
+`homDistinctMixedMateDot_pow_mul_pow` (`Dot(Xᵖ Yᑫ) = Aᵖ Bᑫ ≫ U` for even `x`, `y`),
+`exists_homDistinctMixedMateDot_eq` (admissible combinations go to admissible combinations),
+and `homDistinctMixedMateDot_isIso`: for even `x` with `IsIso x`, even nilpotent `y`, a unit
+`c` and `N` an admissible combination with `q ≥ 1`, `Dot(c • Xᵉ + N)` is an isomorphism.
+Also `isNilpotent_rightTranspose` and `map_rouquierPower`. Applied to `mixedQ j i`
+(`t_ji • xᵈʲⁱ + t_ij • yᵈⁱʲ + Σ s xᵖ yᑫ`, `0 < q`; `t_ji • 1` when `d_ji = 0`), this needs the
+probe dot `P.T.dot j` invertible and the reservoir dot `P.W.dot i` nilpotent, which are
+interface hypotheses of the sigma linking step. Next: identify the `(P,R)` sigma entry with
+`homDistinctMixedMateDot` up to transports.
 
 ## Old-only ELV quotient module
 
@@ -4897,6 +4996,116 @@ ideal `U⁻¹(I_N)` with `TransformedIdeal`.
 - `halfTurn_mkD`: `U(mkD ls) = halfTurnC ls • mkD (halfTurnL ls)` (retyped along
   `halfTurn_obj : t ↦ t^rev`); generator table `halfTurn_dot`, `halfTurn_cross` (§4 table, no
   coefficients yet).
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`. Next: `U` on the coefficient-extended
+Hom spaces (`U(a ⊗ f) = a ⊗ U(f)`), and the identification of the corner ideal `U⁻¹(I_N)`
+with `TransformedIdeal`.
+
+### Append-side PBW basis (checked) and the left-oriented Mackey summand (proposed)
+
+`OddMath/QuiverHecke/AppendParabolic.lean`, `OddMath/QuiverHecke/AppendBasis.lean`: the mirror of
+the prepend input basis (`AppendCoordinates.md` §§1–2). `appendPermutation h (v, u) = u⁻¹ (v × 1)`
+for `h : n + 1 = m` is bijective with additive length; `appendBasis D Sc : Basis (AppendIdx i s t)`
+of `Hom(s ++ [i], t)` with `appendBasis_apply`, `appendElt_eq_comp`
+(`(nf ▷ 1_i) ≫ last-strand dots ≫ moving crossings`) and `appendElt_approx`. Next
+(`AppendCoordinates.md` §§3–4, proposed): the right-oriented affine coordinate equivalence along
+`appendAlgebra` (mirror of `prependCoordinateEquiv`), its balanced tensor descent, and the
+left-oriented correction (2) giving `direct`, `span`, `Rt_F`, `Rt_j` of `MackeyCosets` with
+`F(L₀') = ψ(B) τ_n ψ(B)` and `X` a signed exponent shift.
+
+Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendCoordinates.lean`, the matrix layer of
+the append expansion. `appendPBWTerm i u m b = c_u · x_last^m · appendAlgebra b` with its
+right old-algebra law and corner membership; `appendPBWTerm_single` (entry formula),
+`inductionLastDot_eq_dotE`, `appendPBWTerm_old_nf` (a term with a single old normal form
+coefficient is the matrix entry of `appendElt`) and `append_single_expansion` (every matrix
+entry with appended source is a finite sum of PBW terms, coefficients from `appendBasis`).
+Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendEquivalence.lean`,
+`appendCoordinateEquiv i n : ((AppendShuffleAt n × ℕ) →₀ Hn n) ≃ₗ[k] Corner(appendAlgebra)`,
+the forward map the finite sum of `appendPBWCorner`, inverse the entrywise assembly
+`appendCoefficients`, both respecting the right old-algebra action
+(`appendCoordinateEquiv_right`, `_symm_right`). Checked: `AppendTensorCoordinates.lean`, `appendTensorEquiv`, the balanced
+descent to any unital left old-algebra module. Checked: `QuiverHecke/AppendShuffleRuns.lean`:
+an append shuffle is determined by `j = u⁻¹(n)`, `u⁻¹ = runPerm n j = s_j ⋯ s_(n-1)`
+(`runPerm_val`), `canWord (n+1) u⁻¹ = [j, …, n-1]` (`canWord_appendRun`,
+`exists_canWord_eq_range'`), and `appendRunEquiv : Fin (n+1) ≃ AppendShuffle` (via
+`card_appendShuffle = n + 1`). Since `cw` reverses words, the moving crossings `c_j` first
+cross the last two strands and then the old strands only: `c_j = c'_j τ_n` (algebra order).
+Checked: `CyclotomicAction/AppendLeftCrossing.lean`. `appendShuffleHom_castSucc` (entry
+form) and `appendShuffleElement_castSucc_mul_corner`: on the two-sided corner,
+`c_j ψ(ψ(1)) = ψ(c'_j) τ` for `j ≤ n`, where `c_j` moves the appended strand of
+`Hn (n+2)` to position `j`, `c'_j` is the same moving crossing in `Hn (n+1)` and `τ` is
+`affineLastCrossing i i n`; with `single_cl_congr`, `cw_range'_succ`,
+`appendAlgebra_appendAlgebra_one_eq_sum`, `single_mul_affineLastCrossing`.
+
+Correction to the proposed §4 of `AppendCoordinates.md` (domain only): the crossing
+coordinates of `F` live in `e'B`, `e' = ψ'(1)` (old words ending in the appended
+colour), not in `B`; `F(u)` only depends on `e'u`. The decomposition is of the two-sided
+corner `ψ(1) A ψ(1) = ⊕_(j<n,m) c_j x^m ψ(e'B) ⊕ ⊕_m x^m ψ(B)`.
+
+Checked (same file): the dot slide (1), `affineLastCrossing_mul_lastDot_pow`:
+`τ z^m = s^m (ψ(x))^m τ + Σ_b ψ(f_b) z^b` for some `f : ℕ →₀ Hn (n+1)`, with `z` the
+last dot of `Hn (n+2)`, `x` the last dot of `Hn (n+1)` and `s` the Koszul sign of the
+appended colour; the lower sums are `appendDotSum` (`appendDotSum_single`,
+`appendDotSum_mul_lastDot`), and `appendAlgebra_pow_mul`.
+
+Checked (same file): the corner idempotent commutes with the low moving crossings,
+`ψ(1) c_j = c_j ψ(ψ(1))` (`appendOne_mul_appendShuffleElement_castSucc`), hence
+`ψ(1) c_j = ψ(c'_j) τ` (`appendOne_mul_appendShuffleElement_castSucc_eq`); the top moving
+crossing is the idempotent, `c_(n+1) = ψ(1)` (`appendShuffleElement_last`).
+
+Checked (same file): **span** of the two-sided corner,
+`mem_appendLeftSum_sup_appendPolySum`: every `y` with `ψ(1) y = y = y ψ(1)` lies in
+`range appendLeftSum ⊔ range appendPolySum`, where `appendLeftSum (single (j,m) b) =
+ψ(c'_j x^m) τ ψ(b)` and `appendPolySum (single m b) = z^m ψ(b)`. Proof: expand by
+`appendCoordinateEquiv (n+1)`; on `c_j z^m ψ(b)`, `j ≤ n`, use the factorization and (1);
+the lower sums and the top run reduce to `z^b ψ(·)` by `appendAlgebra_mul_lastDot_pow`
+(`ψ(r) z^b = z^b ψ(r')`, from `affineLastDot_twist_comm`).
+
+Checked (same file): **directness**, `appendLeftSum_add_appendPolySum_eq_zero`: if
+`appendLeftSum F + appendPolySum G = 0` then `ψ'(1) F_q = 0` for all `q` and `G = 0`.
+Proof: `appendLeftSum` only sees `ψ'(1) F` (`appendLeftSum_single_appendOne_mul`, from
+`τ ψ(ψ'(1)) = τ`); in the append PBW coefficients (`appendCoefficients (n+1)`), polynomial
+terms are supported on the top run (`appendCoefficients_lastDot_pow_mul`), and
+`s^m · coeff(appendLeftSum F)` at `(c_j, m)`, `j ≤ n`, is `ψ'(1) F_(j,m)`
+(`appendCoefficients_appendLeftSum_castSucc`, via `appendPBWTerm_castSucc_eq`:
+`c_j z^m ψ(ψ'(1) b) = s^m ψ(c'_j x^m) τ ψ(b) + (polynomial terms)`). With the span theorem,
+the two-sided corner is `⊕_(j≤n, m) ψ(c'_j x^m) τ ψ(ψ'(1) B) ⊕ ⊕_m z^m ψ(B)`.
+
+Checked (same file): the right-dot identities at the affine level, with `z` the new dot,
+`s` the Koszul sign of the appended colour and `tw` its parity twist on `Hn (n+1)`:
+`appendPolySum_mul_lastDot` (`j(g) z = j(t g)`, `t` = twist and shift `l ↦ l+1`,
+`appendPolyShift`) and `appendLeftSum_mul_lastDot`
+(`F(u) z = s F(X' u) − s j(single 0 (E' u))`, `X'` = twist and shift `m ↦ m+1`
+(`appendLeftShift`), `E'(u) = Σ c'_j x^m ψ'(1) tw(u_(j,m))` (`appendLeftDegree`)), from
+`affineLastCrossing_mul_lastDot` (`τ z = s Y τ − s ψ(ψ'(1))`). So `X = s X'`, `E = −s E'`
+and `σ = tw` in `Rt_F`, `Rt_j`.
+
+Checked (same file): `appendCornerEquiv i n : appendLeftCoordinates × (ℕ →₀ Hn (n+1)) ≃+
+appendTwoSidedCorner`, `(F, G) ↦ appendLeftSum F + appendPolySum G`
+(`appendCornerEquiv_apply`), where `appendLeftCoordinates` are the `F` with
+`ψ'(1) F_q = F_q` and `appendTwoSidedCorner = {y | ψ(1) y = y = y ψ(1)}`; this packages
+span and directness (surjectivity replaces `F` by `ψ'(1) F`, `appendLeftSum_appendLeftProj`).
+
+Checked (same file): right `ψ(Hn (n+1))`-linearity of both summand maps,
+`appendLeftSum_mul_appendAlgebra` (`F(u r) = F(u) ψ(r)`, coefficientwise right
+multiplication) and `appendPolySum_mul_appendAlgebra` (`j(g r) = j(g) ψ(r)`).
+
+Checked (`CyclotomicAction/AppendCornerTensor.lean`): the descent along the balanced
+tensor product. For any left `Hn (n+1)`-module `M`, `appendTensorCornerEquiv i n M :
+appendTensorLeftCoordinates × (ℕ →₀ M) ≃+ appendTensorFixed`, where the left coordinates
+are `f : (Fin (n+1) × ℕ) →₀ M` with `ψ'(1) f_q = f_q` and `appendTensorFixed` is the
+`ψ(1)`-fixed part of `Ind M = Hn (n+2) ψ(1) ⊗_(Hn (n+1)) M`; the map is
+`(f, g) ↦ Σ ψ(c'_j x^m) τ ⊗ f_(j,m) + Σ z^m ⊗ g_m` (`appendTensorCornerEquiv_apply`).
+So `ψ(1) Ind M ≅ ⊕_(j ≤ n, m) ψ'(1) M ⊕ ⊕_m M`. No flatness: the inverse is
+`z ⊗ y ↦ (F y, G y)` with `(F, G)` the `appendCornerEquiv` coordinates of `ψ(1) z`,
+balanced by the right linearity above (`appendCornerCoords_op_smul`). Generic helper:
+`appendFamilyTensor_coefficients` (`Σ Φ(single q 1) ⊗ c_q y = Φ(c) ⊗ y` for a right
+`ψ`-linear family `Φ` of corner elements).
+
+Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
+module, so only the identification of `L₀` with the content-`β` corner remains) to
+instantiate `MackeyCosets` (`direct`, `span`); the right-dot identities give `Rt_F`,
+`Rt_j` after applying `− ⊗ y`; then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
