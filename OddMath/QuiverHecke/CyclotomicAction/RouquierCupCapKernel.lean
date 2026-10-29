@@ -1,0 +1,266 @@
+/-
+Copyright (c) 2026 Alex Ellis. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+-/
+import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
+import OddMath.QuiverHecke.CyclotomicAction.GlobalHeightDot
+
+/-!
+# Dotted cup and cap kernels at one height
+
+With the notation of `RouquierMateKernel` (`A`, `B`, `C` the algebras at heights `n`, `n + 1`,
+`n + 2`, `φ : A → B`, `φ₂ : B → C`, corners `P₁ = B e`, `Q₁ = e B`, `P₂ = C e₂`, `Q₂ = e₂ C`),
+let `x₁ ∈ B` and `x₂ ∈ C` be the last dots and `p = |i|`. This file constructs the kernels
+of display (2)/(4) of `docs/Nondegeneracy/DeformedMatrixComparison.md` without the
+normalizing signs `d_k`:
+
+* the dotted cup `j_k : B ⟶ e₂ C ⊗_C C e₂`, `b ↦ x₂^k φ₂(b) ⊗ e₂` (so `u_k = d_k j_k`);
+* the dotted cap `κ_k : B e ⊗_A e B ⟶ B`, `x ⊗ y ↦ (-1)^{kp|x|} x x₁^k y`
+  (so `c_k = d_k κ_k`).
+
+Both are superbimodule morphisms of parity `k p`. The only input is the signed commutation
+`φ(r) x = (-1)^{p|r|} x φ(r)` of the last dot (`heightLastDot_comm`), iterated in
+`heightAppend_mul_heightLastDot_pow`.
+-/
+
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory
+open SuperBimodule
+namespace OddMath.QuiverHecke.CyclotomicAction
+universe u v
+variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
+  [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
+
+/-- The last dot commutes with the strand map up to the iterated Koszul sign. -/
+theorem heightAppend_mul_heightLastDot_pow (a : I → _root_.Polynomial k) (i : I)
+    (ha : CyclotomicPolynomialParity D a) (n : ℕ) {q : ZMod 2}
+    {r : heightAlgebra D Sc a n} (hr : r ∈ heightParity D Sc a ha n q) (m : ℕ) :
+    heightAppend D Sc a i n r * heightLastDot D Sc a i n ^ m =
+      koszulSign q ((m : ZMod 2) * D.parity i) •
+        (heightLastDot D Sc a i n ^ m * heightAppend D Sc a i n r) := by
+  induction m with
+  | zero => simp [koszulSign]
+  | succ m ih =>
+    rw [pow_succ, ← mul_assoc, ih, smul_mul_assoc, mul_assoc,
+      heightLastDot_comm D Sc a i ha n hr, mul_smul_comm, smul_smul, ← mul_assoc,
+      ← koszulSign_add_right, Nat.cast_succ, add_mul, one_mul]
+
+/-- Powers of the last dot are homogeneous of parity `m |i|`. -/
+theorem heightLastDot_pow_parity (a : I → _root_.Polynomial k) (i : I)
+    (ha : CyclotomicPolynomialParity D a) (n m : ℕ) :
+    heightLastDot D Sc a i n ^ m ∈ heightParity D Sc a ha (n + 1) ((m : ZMod 2) * D.parity i) := by
+  have h := SetLike.pow_mem_graded m (heightLastDot_parity D Sc a i ha n)
+  rwa [nsmul_eq_mul] at h
+
+variable (i : I) (a : I → _root_.Polynomial k) (ha : CyclotomicPolynomialParity D a) (n : ℕ)
+  (m : ℕ)
+
+local notation "B₁" => heightAlgebra D Sc a (n + 1)
+local notation "C₂" => heightAlgebra D Sc a (n + 1 + 1)
+local notation "GA" => heightParity D Sc a ha n
+local notation "GB" => heightParity D Sc a ha (n + 1)
+local notation "GC" => heightParity D Sc a ha (n + 1 + 1)
+local notation "φ₁" => heightAppend D Sc a i n
+local notation "φ₂" => heightAppend D Sc a i (n + 1)
+local notation "x₁" => heightLastDot D Sc a i n
+local notation "x₂" => heightLastDot D Sc a i (n + 1)
+local notation "P₁" => heightInductionCorner D Sc i a ha n
+local notation "Q₁" => heightRestrictionCorner D Sc i a ha n
+local notation "P₂" => heightInductionCorner D Sc i a ha (n + 1)
+local notation "Q₂" => heightRestrictionCorner D Sc i a ha (n + 1)
+local notation "p" => D.parity i
+local notation "kp" => ((m : ZMod 2) * D.parity i)
+
+/-! ### The dotted cup -/
+
+include ha in
+theorem rouquierCupElement_left (b : B₁) :
+    φ₂ 1 * (x₂ ^ m * φ₂ b) = x₂ ^ m * φ₂ b := by
+  rw [← mul_assoc, heightAppend_mul_heightLastDot_pow D Sc a i ha (n + 1)
+    (SetLike.one_mem_graded GB) m, smul_mul_assoc, mul_assoc, ← map_mul, one_mul]
+  simp [koszulSign]
+
+/-- The linear dotted cup `b ↦ x₂^m φ₂(b) ⊗ e₂`. -/
+def rouquierCupKernelLinear : B₁ →ₗ[k] (tensor Q₂ P₂).toSVec where
+  toFun b := btmul Q₂ P₂ ⟨x₂ ^ m * φ₂ b, rouquierCupElement_left D Sc i a ha n m b⟩
+    (heightInductionCornerIdempotent D Sc i a ha (n + 1))
+  map_add' b c := by
+    rw [← btmul_add_left]
+    congr 1
+    apply Subtype.ext
+    change x₂ ^ m * φ₂ (b + c) = x₂ ^ m * φ₂ b + x₂ ^ m * φ₂ c
+    rw [map_add, mul_add]
+  map_smul' c b := by
+    rw [RingHom.id_apply, ← btmul_smul_left]
+    congr 1
+    apply Subtype.ext
+    change x₂ ^ m * φ₂ (c • b) = c • (x₂ ^ m * φ₂ b)
+    rw [map_smul, mul_smul_comm]
+
+theorem rouquierCupKernelLinear_mem :
+    SVec.ofHom (rouquierCupKernelLinear D Sc i a ha n m) ∈
+      SVec.parityHom (regular GB).toSVec (tensor Q₂ P₂).toSVec kp := by
+  apply SVec.mem_parityHom_of_apply_mem
+  intro q b hb
+  rw [show q + kp = (kp + q) + 0 by ring]
+  apply btmul_mem_part
+  · apply (heightRestrictionCorner_mem_part_iff D Sc i a ha (n + 1)).mpr
+    exact SetLike.GradedMul.mul_mem (heightLastDot_pow_parity D Sc a i ha (n + 1) m)
+      (heightAppend_parity D Sc a ha i (n + 1) ((mem_regularSVec_part_iff GB).mp hb))
+  · exact heightInductionCornerIdempotent_mem D Sc i a ha (n + 1)
+
+/-- The dotted cup `j_m : B ⟶ e₂ C ⊗_C C e₂`, of parity `m |i|`. -/
+def rouquierCupKernel : regular GB ⟶ tensor Q₂ P₂ :=
+  ⟨SVec.ofHom (rouquierCupKernelLinear D Sc i a ha n m), by
+    apply (isHom_iff_of_mem (rouquierCupKernelLinear_mem D Sc i a ha n m)).mpr
+    constructor
+    · intro q b' hb'
+      apply SVec.hom_ext
+      intro (b : B₁)
+      change rouquierCupKernelLinear D Sc i a ha n m (b' * b) =
+        sign k (q * kp) • (tensor Q₂ P₂).lact b' (rouquierCupKernelLinear D Sc i a ha n m b)
+      change _ = sign k (q * kp) • btmul Q₂ P₂ ((Q₂).lact b' _) _
+      rw [← btmul_smul_left]
+      show btmul Q₂ P₂ _ _ = btmul Q₂ P₂ _ _
+      congr 1
+      apply Subtype.ext
+      change x₂ ^ m * φ₂ (b' * b) = sign k (q * kp) • (φ₂ b' * (x₂ ^ m * φ₂ b))
+      rw [← mul_assoc (φ₂ b'), heightAppend_mul_heightLastDot_pow D Sc a i ha (n + 1) hb' m,
+        smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul, koszulSign_smul_smul,
+        map_mul, mul_assoc]
+    · intro b'
+      apply SVec.hom_ext
+      intro (b : B₁)
+      change rouquierCupKernelLinear D Sc i a ha n m (b * b') =
+        (tensor Q₂ P₂).ract b' (rouquierCupKernelLinear D Sc i a ha n m b)
+      change _ = btmul Q₂ P₂ _ ((P₂).ract b' _)
+      have he : (P₂).ract b' (heightInductionCornerIdempotent D Sc i a ha (n + 1)) =
+          (P₂).lact (φ₂ b') (heightInductionCornerIdempotent D Sc i a ha (n + 1)) := by
+        apply Subtype.ext
+        change φ₂ 1 * φ₂ b' = φ₂ b' * φ₂ 1
+        rw [← map_mul, ← map_mul, mul_one, one_mul]
+      rw [he, ← btmul_ract_lact]
+      show btmul Q₂ P₂ _ _ = btmul Q₂ P₂ _ _
+      congr 1
+      apply Subtype.ext
+      change x₂ ^ m * φ₂ (b * b') = x₂ ^ m * φ₂ b * φ₂ b'
+      rw [map_mul, mul_assoc]⟩
+
+theorem rouquierCupKernel_parity :
+    rouquierCupKernel D Sc i a ha n m ∈ Supercategory.parity (R := k) _ _ kp :=
+  (mem_parity_iff).mpr (rouquierCupKernelLinear_mem D Sc i a ha n m)
+
+/-- Evaluation of the dotted cup. -/
+theorem rouquierCupKernel_apply (b : B₁) :
+    (rouquierCupKernel D Sc i a ha n m).1 b =
+      btmul Q₂ P₂ ⟨x₂ ^ m * φ₂ b, rouquierCupElement_left D Sc i a ha n m b⟩
+        (heightInductionCornerIdempotent D Sc i a ha (n + 1)) := rfl
+
+/-! ### The dotted cap -/
+
+/-- The bilinear dotted cap `x ⊗ y ↦ sgn_{m p}(x) x₁^m y`. -/
+def rouquierCapKernelBi : (P₁).toSVec →ₗ[k] (Q₁).toSVec →ₗ[k] B₁ where
+  toFun x :=
+    { toFun := fun y => ((P₁).toSVec.sgn kp x).val * x₁ ^ m * y.val
+      map_add' := fun y z => mul_add _ y.val z.val
+      map_smul' := fun c y => mul_smul_comm c _ y.val }
+  map_add' x y := by
+    ext z
+    change ((P₁).toSVec.sgn kp (x + y)).val * _ * _ = _
+    rw [map_add]
+    change (((P₁).toSVec.sgn kp x).val + ((P₁).toSVec.sgn kp y).val) * _ * _ = _
+    rw [add_mul, add_mul]
+    rfl
+  map_smul' c x := by
+    ext z
+    change ((P₁).toSVec.sgn kp (c • x)).val * _ * _ = _
+    rw [map_smul]
+    change (c • ((P₁).toSVec.sgn kp x).val) * _ * _ = _
+    rw [smul_mul_assoc, smul_mul_assoc]
+    rfl
+
+private theorem cap_sgn_action {q : ZMod 2} {f : (P₁).toSVec ⟶ (P₁).toSVec}
+    (hf : f ∈ SVec.parityHom (P₁).toSVec (P₁).toSVec q) (x : (P₁).toSVec) :
+    (P₁).toSVec.sgn kp (f x) = sign k (q * kp) • f ((P₁).toSVec.sgn kp x) :=
+  LinearMap.congr_fun (SVec.sgn_comp_of_mem hf kp) x
+
+theorem rouquierCapKernel_balance (x : (P₁).toSVec) (r : heightAlgebra D Sc a n)
+    (y : (Q₁).toSVec) :
+    rouquierCapKernelBi D Sc i a ha n m ((P₁).ract r x) y =
+      rouquierCapKernelBi D Sc i a ha n m x ((Q₁).lact r y) := by
+  induction r using SuperBimodule.alg_induction_on GA with
+  | zero => simp
+  | add r s hr hs =>
+    rw [map_add, map_add, SVec.add_apply, SVec.add_apply, map_add, LinearMap.add_apply, map_add,
+      hr, hs]
+  | hom q r hr =>
+    have h := cap_sgn_action D Sc i a ha n m ((P₁).ract_mem q r hr) x
+    change ((P₁).toSVec.sgn kp ((P₁).ract r x)).val * x₁ ^ m * y.val =
+      ((P₁).toSVec.sgn kp x).val * x₁ ^ m * (φ₁ r * y.val)
+    rw [h]
+    change (sign k (q * kp) • (((P₁).toSVec.sgn kp x).val * φ₁ r)) * x₁ ^ m * y.val = _
+    rw [smul_mul_assoc, smul_mul_assoc, mul_assoc _ (φ₁ r),
+      heightAppend_mul_heightLastDot_pow D Sc a i ha n hr m, mul_smul_comm, smul_mul_assoc,
+      Supercategory.sign_mul, Int.cast_smul_eq_zsmul, koszulSign_smul_smul, mul_assoc, mul_assoc,
+      mul_assoc]
+
+/-- The linear dotted cap on the balanced tensor product. -/
+def rouquierCapKernelLinear : (tensor P₁ Q₁).toSVec →ₗ[k] B₁ :=
+  tensorLift (rouquierCapKernelBi D Sc i a ha n m) (rouquierCapKernel_balance D Sc i a ha n m)
+
+@[simp] theorem rouquierCapKernelLinear_btmul (x : (P₁).toSVec) (y : (Q₁).toSVec) :
+    rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y) =
+      ((P₁).toSVec.sgn kp x).val * x₁ ^ m * y.val :=
+  tensorLift_btmul _ _ x y
+
+/-- On homogeneous `x` the cap displays the sign `(-1)^{m p |x|}`. -/
+theorem rouquierCapKernelLinear_btmul_of_mem {q : ZMod 2} {x : (P₁).toSVec}
+    (hx : x ∈ (P₁).toSVec.part q) (y : (Q₁).toSVec) :
+    rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y) =
+      koszulSign q kp • (x.val * x₁ ^ m * y.val) := by
+  rw [rouquierCapKernelLinear_btmul, SVec.sgn_apply_of_mem kp hx]
+  change (sign k (q * kp) • x.val) * _ * _ = _
+  rw [smul_mul_assoc, smul_mul_assoc, Supercategory.sign_mul, Int.cast_smul_eq_zsmul]
+
+theorem rouquierCapKernelLinear_mem :
+    SVec.ofHom (rouquierCapKernelLinear D Sc i a ha n m) ∈
+      SVec.parityHom (tensor P₁ Q₁).toSVec (regular GB).toSVec kp := by
+  apply tensor_mem_parity_of_btmul
+  intro q r x y hx hy
+  change rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y) ∈ (regularSVec GB).part _
+  rw [rouquierCapKernelLinear_btmul_of_mem D Sc i a ha n m hx, mem_regularSVec_part_iff]
+  have hm := SetLike.GradedMul.mul_mem (SetLike.GradedMul.mul_mem
+    ((heightInductionCorner_mem_part_iff D Sc i a ha n).mp hx)
+    (heightLastDot_pow_parity D Sc a i ha n m))
+    ((heightRestrictionCorner_mem_part_iff D Sc i a ha n).mp hy)
+  have he : q + r + kp = q + kp + r := by ring
+  rw [he]
+  exact Submodule.smul_of_tower_mem _ _ hm
+
+/-- The dotted cap `κ_m : B e ⊗_A e B ⟶ B`, of parity `m |i|`. -/
+def rouquierCapKernel : tensor P₁ Q₁ ⟶ regular GB :=
+  ⟨SVec.ofHom (rouquierCapKernelLinear D Sc i a ha n m), by
+    apply (isHom_iff_of_mem (rouquierCapKernelLinear_mem D Sc i a ha n m)).mpr
+    constructor
+    · intro q b hb
+      apply tensor_hom_ext P₁ Q₁
+      intro x y
+      change rouquierCapKernelLinear D Sc i a ha n m ((tensor P₁ Q₁).lact b (btmul P₁ Q₁ x y)) =
+        sign k (q * kp) • (b * rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y))
+      rw [lact_btmul, rouquierCapKernelLinear_btmul, rouquierCapKernelLinear_btmul,
+        cap_sgn_action D Sc i a ha n m ((P₁).lact_mem q b hb) x]
+      change (sign k (q * kp) • (b * ((P₁).toSVec.sgn kp x).val)) * _ * _ = _
+      rw [smul_mul_assoc, smul_mul_assoc, mul_assoc, mul_assoc, mul_assoc]
+    · intro b
+      apply tensor_hom_ext P₁ Q₁
+      intro x y
+      change rouquierCapKernelLinear D Sc i a ha n m ((tensor P₁ Q₁).ract b (btmul P₁ Q₁ x y)) =
+        rouquierCapKernelLinear D Sc i a ha n m (btmul P₁ Q₁ x y) * b
+      rw [ract_btmul, rouquierCapKernelLinear_btmul, rouquierCapKernelLinear_btmul]
+      exact (mul_assoc _ y.val b).symm⟩
+
+theorem rouquierCapKernel_parity :
+    rouquierCapKernel D Sc i a ha n m ∈ Supercategory.parity (R := k) _ _ kp :=
+  (mem_parity_iff).mpr (rouquierCapKernelLinear_mem D Sc i a ha n m)
+
+end OddMath.QuiverHecke.CyclotomicAction

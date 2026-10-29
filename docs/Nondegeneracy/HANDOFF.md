@@ -3023,9 +3023,14 @@ the square resolution (`DeformedSquareResolution.md`), both proposed.
 `DeformedMatrixComparison.md`, `x ⊗ y ↦ -(-1)^{|i||x|} φ₂(x) τ φ₂(y) ⊗ e₂`, as a
 superbimodule morphism `B e ⊗_A e B ⟶ e₂C ⊗_C C e₂` of parity `|i|` (`rouquierMateKernel`,
 `rouquierMateKernel_parity`, `rouquierMateKernel_apply`); balance over `A` is the Koszul sign of
-`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`). Next:
-the dotted unit and counit kernels `u_k`, `c_k`, and the comparison of the functor-level mate
-with `rouquierMateKernel` on weight spaces.
+`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`).
+`RouquierCupCapKernel.lean` (checked): the dotted cup `j_m : B ⟶ e₂C ⊗_C C e₂`,
+`b ↦ x₂^m φ₂(b) ⊗ e₂` (`rouquierCupKernel`), and dotted cap `κ_m : B e ⊗_A e B ⟶ B`,
+`x ⊗ y ↦ (-1)^{mp|x|} x x₁^m y` (`rouquierCapKernel`), superbimodule morphisms of parity `m p`;
+in (2)/(4) of `DeformedMatrixComparison.md`, `u_m = d_m j_m` and `c_m = d_m κ_m`. Input:
+`heightAppend_mul_heightLastDot_pow`. Next: compare the functor-level `rouquierMate`, dotted
+unit and dotted counit of `globalRouquierData` with these kernels on weight spaces (tensoring
+with a module), then the boundary/division inputs and the window matrix.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
