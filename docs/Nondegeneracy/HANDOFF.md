@@ -76,8 +76,24 @@ Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedSlides.lean`):
   `(x ▷ E) ≫ τ = ε (τ ≫ E ◁ x)` and `τ ≫ (E ◁ x) = ε ((x ▷ E) ≫ τ)` for the height-level super
   induction functors, dot and crossing natural transformations, `i ≠ j`.
 
-Remaining: weight-level assembly through the content blocks (as in `GlobalWeightSlides.lean`),
-then the `slideLeft`/`slideRight` fields of `RouquierMulticolour` for `globalRouquierFamily`.
+## Distinct-colour dot slides on the global factors: weight level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalWeightMixedSlides.lean`):
+
+- `heightContentMixedSlideLeft`, `heightContentMixedSlideRight`: the slides on content blocks
+  with arbitrary height and content transports. For `i ≠ j` the block reached by `E_i` then
+  `E_j` is only propositionally equal to the one reached by `E_j` then `E_i`, so one content
+  transport `{j} + ({i} + γ) = {i} + ({j} + γ)` stays; `heightContentCast_map_hom` removes it;
+- `globalActionCross_slide_left_ne`, `globalActionCross_slide_right_ne`: (1.8) for `i ≠ j` on
+  the weight factors, with `koszulSign |i| |j|`;
+- `globalActionSignedCross_slide_left_ne`, `globalActionSignedCross_slide_right_ne`: exactly the
+  `slideLeft`, `slideRight` fields of `SKM.RouquierMulticolour` for the dot and crossing of
+  `globalRouquierData` (the signed crossing is `+ψ` at distinct colours), for every parameter
+  family, hence for both `parameterTwist D Sc` (probe) and the reservoir factor.
+
+Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `quadNe`,
+`braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
+factors, which is not formalized.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
