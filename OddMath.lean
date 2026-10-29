@@ -130,6 +130,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightMixedQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
