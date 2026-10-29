@@ -1344,6 +1344,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.WindowCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.BlockMaps
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.MixedCases
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.Extraction
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.NilpotentLifting
 import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
@@ -1380,6 +1381,7 @@ import OddMath.QuiverHecke.SwappedAssembly.SlideAssembly
 import OddMath.QuiverHecke.SwappedAssembly.QuadNe
 import OddMath.QuiverHecke.SwappedAssembly.LeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SameColourBlocks
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedMatrix
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SwappingMate
 import OddMath.SKM.ReservoirBubbleCoordinates
