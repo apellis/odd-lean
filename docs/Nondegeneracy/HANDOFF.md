@@ -66,11 +66,47 @@ categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_
 `boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
 (products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
 
-Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
-`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
-`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
-the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
-cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
+Checked (`OddMath/QuiverHecke/SwappedAssembly/CentralInverse/ReservoirCoefficients.lean`):
+item (1), the transport to the Hom sector. `ProbeWindow.CoeffGrading` (a `ℤ`-filtration of
+`End(𝟙 b)` only: `𝟙` in degree `0`, additive, parity-stable; `CoeffGrading.ofGraded` from a
+graded `b ⟶ b`); `ProbeWindow.postCoeff` (`Z ◁ c` conjugated by `ρ`), `postCoeff_id`,
+`postCoeff_comp`, `postCoeff_add`, `postCoeff_zero`; `comp_postCoeff` (every 2-morphism of
+`a ⟶ b` super-commutes with `postCoeff`, by the super interchange law; no grading of the probe
+is used); `coeffIdeal` (span of `postCoeff Z c ≫ h`, `deg c ≥ n`), `coeffIdeal_comp_mem`
+(`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`), `eq_zero_of_mem_coeffIdeal`; `reservoirCoefficientIdeal`, a
+`ProbeWindow.CoefficientIdeal` (the interface of `CentralInverse/CoefficientIdeal.lean`
+consumed by `isIso_of_sub_mem`, `isIso_gMap_of_sub_mem`). For a `ProbeReservoir P` with
+`G : RouquierGrading P.W sy`, `hG : G.BoundedAbove`: `ProbeReservoir.homCoefficientIdeal P G
+hG t Pr` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
+in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
+(`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
+
+Open (transport): identify the residual entries of the two-sector reduction (closures
+`Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
+`h ≫ postCoeff Z c ≫ h'` for the coefficients above (`AugmentedSectorBlocks` §3). The membership
+lemmas take that form with arbitrary `h`, `h'`.
+
+Open (2), scope of a `RouquierGrading` with `BoundedAbove` for the reservoir used
+(`globalProbeReservoir`, in `PiSCat k`, reservoir `globalPiRouquierFamily`):
+* The interface does not instantiate there as stated: `RouquierGrading.graded` asks for a
+  grading of the whole Hom category `W.obj μ ⟶ W.obj ν` of `PiSCat`, i.e. of all superfunctors
+  between the module categories, closed under whiskering by all of them. A grading exists only
+  on the full sub-2-category of `E`/`F` words (their 2-morphisms are graded bimodule
+  homomorphisms of the induction/restriction bimodules), plus `End(𝟙_{W μ})`, the supercentre
+  of the cyclotomic algebra. The transport above needs only `CoeffGrading` on `End(𝟙)`, so it
+  is unaffected; (G6)–(G8) and the closure degrees need the restricted interface (degrees on
+  the 2-morphisms between `E`/`F` words). This is an interface restriction, not new theory.
+* `globalPiRouquierFamily` is the undeformed cyclotomic factor. It is integer-homogeneous only
+  when every cyclotomic polynomial is a monomial, and `BoundedAbove` there needs cyclotomic
+  finite-dimensionality (not formalized). The written proof uses the full ELV deformed factor,
+  not yet constructed as a `RouquierFamily`; its untruncated form is not bounded above, so the
+  finite homogeneous truncation is needed (`SwappedHomInversion.md` §1).
+* Missing: (a) the deformed factor as a Rouquier family; (b) its finite homogeneous truncation
+  with a grading of the bimodules of `E`/`F` words and of the supercentre, `BoundedAbove` from
+  finite-dimensionality of the truncated algebras; (c) the restricted `RouquierGrading`
+  interface (Hom categories of words only) and the closure/boundary degree lemmas re-proved on
+  it (the proofs of `RouquierGrading.lean` go through unchanged on words). Estimate: 10–20 PRs
+  after (a), plus 1–2 for (c).
 
 ## Global factor relations: algebra parameters and reservoir
 
