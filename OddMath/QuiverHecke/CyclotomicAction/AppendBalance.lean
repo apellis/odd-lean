@@ -5,6 +5,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.IntertwinerNaturality
 import OddMath.QuiverHecke.CyclotomicAction.LastToFirstSnoc
 import OddMath.QuiverHecke.CyclotomicAction.Parity
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerMeet
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
 
 /-!
 # Balance of the append Mackey map `P`
@@ -35,6 +37,7 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k)
 
+set_option quotPrecheck false in
 local notation "O[" l "]" => (pres D Sc).obj (ob D l)
 
 section Interchange
@@ -124,15 +127,16 @@ def whiskerListAlgHom (w s : List I) : End O[w] →ₐ[k] End O[w ++ s] where
       MonoidalSupercategory.id_whiskerRight (R := k)]
     rfl
 
+@[simp] theorem whiskerListAlgHom_apply (w s : List I) (f : End O[w]) :
+    whiskerListAlgHom D Sc w s f = f ▷ O[s] := rfl
+
 /-- A polynomial in the first dot keeps its meaning after right whiskering. -/
 theorem aeval_firstDot_whiskerRight (w s : List I) (hw : 0 < w.length)
     (q : _root_.Polynomial k) :
     _root_.Polynomial.aeval (dotE D Sc w 0) q ▷ O[s] =
       _root_.Polynomial.aeval (dotE D Sc (w ++ s) 0) q := by
-  change whiskerListAlgHom D Sc w s _ = _
-  rw [← _root_.Polynomial.aeval_algHom_apply]
-  change _root_.Polynomial.aeval (dotE D Sc w 0 ▷ O[s]) q = _
-  rw [dotE_whiskerRight D Sc w s 0 hw]
+  rw [← whiskerListAlgHom_apply, ← _root_.Polynomial.aeval_algHom_apply,
+    whiskerListAlgHom_apply, dotE_whiskerRight D Sc w s 0 hw]
 
 /-- Words related by a positioned word have the same letters. -/
 theorem wordSumParity_tgt (t : List I) (gs : List PG) :
@@ -209,8 +213,9 @@ def appendQ (ν : List I) : ZMod 2 :=
 
 /-- The balance error `E(g) = (g ▷ i) ≫ W_t - W_s ≫ (i ◁ tw_(q_s) g)`. -/
 def appendError (s t : List I) : (O[s] ⟶ O[t]) →ₗ[k] (O[s ++ [i]] ⟶ O[i :: t]) where
-  toFun g := (g ▷ O[[i]]) ≫ appendW D Sc a i t -
-    appendW D Sc a i s ≫ (O[[i]] ◁ Supercategory.twist k (appendQ D a i s) g)
+  toFun g := ((g ▷ O[[i]]) ≫ appendW D Sc a i t : O[s ++ [i]] ⟶ O[i :: t]) -
+    (appendW D Sc a i s ≫ (O[[i]] ◁ Supercategory.twist k (appendQ D a i s) g) :
+      O[s ++ [i]] ⟶ O[i :: t])
   map_add' f g := by
     simp only [map_add, MonoidalSupercategory.add_whiskerRight (R := k),
       MonoidalSupercategory.whiskerLeft_add (R := k), Preadditive.add_comp,
@@ -222,8 +227,10 @@ def appendError (s t : List I) : (O[s] ⟶ O[t]) →ₗ[k] (O[s ++ [i]] ⟶ O[i 
       RingHom.id_apply, smul_sub]
 
 theorem appendError_apply {s t : List I} (g : O[s] ⟶ O[t]) :
-    appendError D Sc a i s t g = (g ▷ O[[i]]) ≫ appendW D Sc a i t -
-      appendW D Sc a i s ≫ (O[[i]] ◁ Supercategory.twist k (appendQ D a i s) g) := rfl
+    appendError D Sc a i s t g =
+      ((g ▷ O[[i]]) ≫ appendW D Sc a i t : O[s ++ [i]] ⟶ O[i :: t]) -
+        (appendW D Sc a i s ≫ (O[[i]] ◁ Supercategory.twist k (appendQ D a i s) g) :
+          O[s ++ [i]] ⟶ O[i :: t]) := rfl
 
 end Defs
 
@@ -256,9 +263,12 @@ theorem lastToFirstHom_mem (ν : List I) :
       (by intro g hg; simp at hg; subst hg; simp [PG.pos, PG.width])
     have h := Supercategory.comp_mem (MonoidalSupercategory.whiskerLeft_mem (R := k)
       ((pres D Sc).obj (ob D [j])) ih) hc
-    convert h using 1
-    simp [chainParity, PG.par, wordSumParity]
-    ring
+    have e : D.parity i * wordSumParity D (j :: ν) =
+        D.parity i * wordSumParity D ν + chainParity D (j :: i :: ν) [.cross 0] := by
+      simp [chainParity, PG.par, wordSumParity]
+      ring
+    rw [e]
+    exact h
 
 variable (a i) in
 theorem firstDotPoly_mem (ha : CyclotomicPolynomialParity D a) (j : I) (w : List I) :
@@ -276,10 +286,52 @@ theorem firstDotPoly_mem (ha : CyclotomicPolynomialParity D a) (j : I) (w : List
 theorem appendW_mem (ha : CyclotomicPolynomialParity D a) (ν : List I) :
     appendW D Sc a i ν ∈ Supercategory.parity (R := k) _ _ (appendQ D a i ν) := by
   have := Supercategory.comp_mem (lastToFirstHom_mem D Sc (i := i) ν)
-    (firstDotPoly_mem D Sc a i ha i ν)
+    (firstDotPoly_mem D Sc a ha i ν)
   rw [appendQ, add_comm]
   exact this
 
 end Basic
+
+section CrossLast
+
+/-- The crossing of two strands `x, z`. -/
+def crossTwo (x z : I) : O[[x, z]] ⟶ O[[z, x]] :=
+  cl D Sc [x, z] [z, x] [.cross 0] (by simpa using sChain_crossAt [] [] x z)
+
+theorem crossTwo_mem (x z : I) :
+    crossTwo D Sc x z ∈ Supercategory.parity (R := k) _ _ (D.parity x * D.parity z) := by
+  have h := cl_mem_chainParity D Sc (k := k) (t := [x, z]) (t' := [z, x]) [.cross 0]
+    (by simpa using sChain_crossAt [] [] x z)
+    (by intro g hg; simp at hg; subst hg; simp [PG.pos, PG.width])
+  unfold crossTwo
+  simpa [chainParity, PG.par] using h
+
+theorem crossLast_eq (s : List I) (x z : I) :
+    crossLast D Sc s x z =
+      eqToHom (congrArg (fun w => O[w]) (List.append_assoc s [x] [z])) ≫
+        (O[s] ◁ crossTwo D Sc x z) ≫
+          eqToHom (congrArg (fun w => O[w]) (List.append_assoc s [z] [x]).symm) := by
+  rw [crossTwo, cl_whiskerLeft, eq_comm, eqToHom_comp_iff, comp_eqToHom_iff, Category.assoc,
+    crossLast, IntertwinerMeet.eqToHom_cl_eqToHom D Sc (e₂ := rfl)
+      (gs' := List.map (PG.shift s.length) [PG.cross 0]) (hg := by simp)]
+  · simp only [eqToHom_refl, Category.comp_id]
+    rfl
+  · simp
+  · exact List.append_assoc s [z] [x]
+
+/-- A crossing of the last two strands passes a morphism whiskered by both strands, twisting it
+by the parity of the crossing. -/
+theorem crossLast_comp_whiskerRight {s u : List I} (x z : I) (y : O[s] ⟶ O[u]) :
+    crossLast D Sc s x z ≫ ((y ▷ O[[z]]) ▷ O[[x]]) =
+      ((Supercategory.twist k (D.parity x * D.parity z) y ▷ O[[x]]) ▷ O[[z]]) ≫
+        crossLast D Sc u x z := by
+  rw [crossLast_eq, crossLast_eq, whiskerRight_whiskerRight_list D Sc y [z] [x],
+    whiskerRight_whiskerRight_list D Sc _ [x] [z]]
+  simp only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+  congr 1
+  erw [reassoc_of% (whiskerLeft_comp_whiskerRight_twist D Sc (crossTwo_mem D Sc x z) y)]
+  rfl
+
+end CrossLast
 
 end OddMath.QuiverHecke
