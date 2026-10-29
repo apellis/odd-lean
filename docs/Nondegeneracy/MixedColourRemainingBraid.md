@@ -15,7 +15,7 @@ cases. The parameter conditions are (1.2)–(1.4). In the library compare
 square declarations. Reversing displayed strand order to execution order
 interchanges the two braid paths, which leaves these zero equations intact.
 
-## Checked three-distinct-colour forward sector
+## Checked three-distinct-colour two-probe sectors
 
 `BraidMixed/DistinctProbeSector.lean` proves `distinctProbe_braid`, the entry
 `PᵢPⱼRᵣ → RᵣPⱼPᵢ` for pairwise distinct colours and a valid reservoir step.
@@ -35,9 +35,20 @@ Q-weighted direction for distinct probes is now proved by
 `BraidMixed/ReverseDistinctProbeSector.lean`, `reverseDistinctProbe_braid`.
 It derives the unequal-probe Q transport from the actual signed dot slides
 and supernaturalness, retains both Q factors with their shared reservoir
-spectator, and cancels only mixed comparison isomorphisms. Other sector
-placements and repeated-outer corrections remain open; the complete
-component calculation below retains its proposed status.
+spectator, and cancels only mixed comparison isomorphisms.
+
+`BraidMixed/MiddleDistinctProbeSector.lean` proves `middleDistinctProbe_braid`,
+the middle placement `PᵢRᵣPⱼ → PⱼRᵣPᵢ`. Transport of the individual inner
+Q factor uses the prescribed unequal-probe slide and supernaturalness; the
+forward braid and mixed comparison isomorphisms then give the middle braid
+without cancelling Q or a probe crossing. Its importing consumer retains
+arbitrary colours and arbitrary occupied content. Thus all three
+pairwise-distinct two-probe placements have explicit sector lemmas.
+
+The one-probe/two-unequal-reservoir placements, same-side factor-braid
+transport and arbitrary-path assembly remain open. Repeated-outer corrections
+are separate obligations. The complete component calculation below retains
+its proposed status.
 
 ## 1. Typed entries and polynomial conventions
 
