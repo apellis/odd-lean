@@ -492,6 +492,40 @@ Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
 
+## Collected moving-chain polynomial
+
+`LeadingIntertwinerExpansion.lean` expands the local even `(v-u)^2 T`
+and odd `-(v²-u²)^2 T` terms into four chronological monomials;
+unlike colours retain the prescribed crossing. `LeadingMoveExpansion.lean`
+proves `leadingMoveHom_expansion` for arbitrary prefixes and words, with
+explicit `MoveChoices`, `leadingMoveBlocks` and `leadingMoveCoeff`.
+
+`LeadingMovePolynomial.lean` applies `decorated_crossings_normal_order`
+to that expansion. Its `leadingMoveEndpointPolynomial` is the finite sum
+of `endpointDotMonomial (collectedSourceDots bs)` with exact coefficient
+`leadingMoveCoeff * collectedSourceSign`. The theorems
+`leadingMoveHom_sub_endpointPolynomial_mem_low` and
+`moveHom_sub_endpointPolynomial_mem_low` prove that polynomial followed
+by the prescribed crossing word equals the leading and full moving chains
+modulo `Low`. Both parity branches and every incident/distant sign remain
+explicit. This is a source-endpoint formula, not merely a transport API.
+
+`LeadingMoveCoefficients.lean` assembles the finite matrix
+`collectedContentMove`. `contentMove_long_prependCoefficients_sum` computes
+the longest coefficients of the prescribed `contentMove` by the wordwise
+PBW regrouping of this explicit polynomial. `appendContentMoveLift_extract_collected`
+transfers it to the existing source extraction, retaining `homMatrixTwist`
+and the degreewise `movingSignNormalize` sign.
+
+**Exact residual comparison:** sort/separate the collected source dots into
+old dots followed by moving-strand dots with their Koszul signs, evaluate
+the remaining `prependWordCoefficients`, and identify the resulting twisted,
+degree-normalized polynomial with S. The current polynomial is given as an
+explicit signed finite sum, not a simplified product in a chosen dot order.
+No equal-colour count is identified with moving-dot degree. The prescribed
+chain, B₁, source (6), downstream (7), and ordinary-polynomial versus full-ELV
+scope are unchanged.
+
 ## Signed source-endpoint dot transport
 
 `SignedDotNormalOrder.lean` proves `decorated_crossings_normal_order`:
@@ -506,12 +540,9 @@ distant slides also multiply by the dot colour's parity. All signs are
 derived from the positional relations, not extracted from `Approx`.
 
 **Residual:** the monomial collection theorem preserves chronological dot
-order, rather than sorting odd variables. The finite-sum expansion connecting
-`leadingMoveHom` to these decorated monomials is not yet proved. Its
-collected polynomial still needs identification with the prescribed product;
-scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
-`homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
-No count of equal colours has been identified with the moving-dot degree.
+order, rather than sorting odd variables. Its application to `leadingMoveHom`
+and scalar-to-matrix assembly are now proved above; evaluation of the
+remaining PBW regrouping and comparison with S are still open.
 
 
 ## Signed top-crossing chain
@@ -530,13 +561,11 @@ consumer applies both the universal filtration statement and coordinate
 identity to arbitrary words in a mixed-parity datum and audits all module
 declarations, including private and generated ones.
 
-**Residual:** the signed factors have not been collected into one ordered
-polynomial. This is a top-crossing decorated-chain theorem, not yet the
-ordered-polynomial expansion or evaluation of `prependCoefficients`
-as S. Normal-ordering must retain signed dot transport; then assemble the
-matrix coefficients and discharge `homMatrixTwist` and degreewise
-`movingSignNormalize`. The prescribed `contentMove`, B₁, source (6),
-downstream (7), and ordinary-polynomial/full-ELV distinction are unchanged.
+**Residual:** the explicit collected finite polynomial and affine coefficient
+comparison are proved above. Evaluation as S still requires dot separation,
+PBW regrouping, and the twist/degree-sign comparison. The prescribed
+`contentMove`, B₁, source (6), downstream (7), and ordinary-polynomial/full-ELV
+distinction are unchanged.
 
 ## Moving-chain source and filtered extraction
 
