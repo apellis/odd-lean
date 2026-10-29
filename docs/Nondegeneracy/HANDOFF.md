@@ -88,6 +88,40 @@ Remaining: reverse Q-weighted directions, unequal same-side colours and
 the other `CrossBraid` fields. The two universal interchange triangles and
 these two sector entries do not establish the remaining fields.
 
+## Crossing image and the remaining short multiplier factorization
+
+Checked (`AppendContentCrossingImage.lean`), for the ordinary-polynomial
+specialization of `DeformedMackeyBoundary.md` (4)–(5):
+
+* `appendContentPolynomialProjection_ker` proves that the polynomial projection
+  on the prescribed target has kernel exactly `range appendTargetF`, using the
+  balanced `appendTensorCornerEquiv`. This is a target decomposition statement,
+  not the assertion that P maps the short source into that kernel.
+* `appendContentCrossingTensor_eq_F` identifies `appendLeftSum(f) ⊗ b` with
+  the prescribed crossing map applied to coefficients `ψ'(1) f(q) • b`.
+  `appendContentCrossingTensor_mem_range` is consequently an unconditional
+  inclusion in the `F` range of `appendContentMackeyTarget`.
+* `appendContentProjectCoordinates` projects the existing all-shuffle input
+  coordinates to the left append corner. `appendContentP_project_single`
+  computes P there as `ψ(1) • ((prependPBWTerm u m 1 * W) ⊗ b)`, keeping the
+  right coefficient unchanged. `appendContentP_short_expansion` proves the
+  finite expansion of P on every short source, excluding the full moving row.
+* `appendContentP_short_mem_of_factorizations` is explicitly conditional: it
+  reduces the inclusion to affine matrix equalities
+  `ψ(1) * (prependPBWTerm u m 1 * W) = appendLeftSum(f)` for every non-long
+  shuffle and every input-dot degree. These factorizations are not proved here.
+
+Next target: prove the short-shuffle canonical-word support, then factor its
+projected multiplier using `appendW_append` through the last equal-colour
+crossing and convert the old coefficient to `appendLeftSum` coordinates.
+The proposed argument must retain the left append projector: individual
+unprojected source PBW generators need not belong to the source corner.
+Neither `P(short) ⊆ range F` without the displayed factorization hypothesis,
+its reverse inclusion, nor `MackeyCosets`/`toMackeyBoundary` is constructed.
+The content index still has old height `n+1`; no affine old-height-zero claim
+is made. All cutoffs, including zero, are permitted. The normalized rho lifts
+and coefficient order from the preceding module are unchanged; full ELV
+coefficients, norm, and inversion remain outside this slice.
 
 ## Append content source: concrete moving-coset extraction
 
@@ -154,6 +188,31 @@ examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at content index `n=0` (old height one),
 and exact right action.
 
+## Integer-graded ELV coefficient/vacuum algebra
+
+Checked (`BubbleCoefficientGrading.lean`, `BubbleELVGrading.lean`):
+`coefficientDegree` grades the actual polynomial/exterior coefficient basis by
+`deg δᵢ = 2dᵢ`, `deg eᵢ,r = 2dᵢ(r+1)` for even colours and `4dᵢ(r+1)`
+for odd colours. Both the exact ELV ideal (including the even-cutoff top
+relation) and the additional `coefficientIdeal N` are integer homogeneous.
+`elvCoefficientGSuperAlg` uses the existing ELV quotient and its existing
+exterior parity; integer degree modulo two is not that parity.
+`truncatedELVCoefficientGSuperAlg` is the further quotient by the sum of
+those ideals; `elvCoefficientTruncation` gives the actual factor map.
+
+For finite colours, `exists_coefficientDegree_bound` constructs a maximum
+of the finitely many `2dᵢ` and proves degree ≤ maximum × coefficient weight.
+`truncatedELVCoefficientDegree_bounded` then proves upper support vanishing.
+The untruncated ELV coefficient algebra is not asserted upper bounded.
+`truncatedELVCoefficient_quotient_injective` preserves every weight-≤d
+coefficient when all cutoffs are ≥d and d<N. The rational odd rank-one
+consumer retains a nonzero odd δ in integer degree 2 after cutoff 2 and
+weight truncation 3, and exercises both genuine `GSuperAlg` bundles.
+
+Remaining: positive-content cyclotomic finiteness/support, actual factor
+action, comparison to content targets, and closure/error degree bounds.
+No full action, `CentralInvertible`, or nondegeneracy is claimed.
+
 ## Full content subcategories and product coefficient inversion
 
 Checked (`CentralInverse/ProductCoefficients.lean`, depending on PR #580):
@@ -173,8 +232,8 @@ bounds `b + 1`, proves that those bounds have no uniform upper bound, and proves
 the realized identity coefficient nonzero. It does not claim nonzero odd/positive
 coefficients, or a family whose *minimal* support bounds are unbounded.
 
-Remaining: construct the homogeneous full ELV component algebras and their upper
-support bounds, identify their actual action with the content-support targets, and
+Remaining: construct the positive-content ELV component algebras and their upper
+support bounds beyond the coefficient/vacuum algebra above, identify their actual action with the content-support targets, and
 prove that the actual closure/error matrices lie in the positive coefficient ideals.
 No actual closure-degree theorem or `CentralInvertible` is supplied here.
 
