@@ -413,6 +413,28 @@ Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
 
+## Signed source-endpoint dot transport
+
+`SignedDotNormalOrder.lean` proves `decorated_crossings_normal_order`:
+arbitrarily many interleaved crossing/dot-monomial blocks collect at the
+source endpoint modulo `Low`, with the explicitly computed coefficient
+`collectedSourceSign` and chronological dot list `collectedSourceDots`.
+Its producers `cross_dot_move_signed`, `dot_down_signed` and
+`dots_down_signed` retain the sign of every local slide. The input dot
+position is identified with the inverse permutation by `sourceDotPosition_eq`.
+Incident slides contribute the product of the crossing colours' parities;
+distant slides also multiply by the dot colour's parity. All signs are
+derived from the positional relations, not extracted from `Approx`.
+
+**Residual:** the monomial collection theorem preserves chronological dot
+order, rather than sorting odd variables. The finite-sum expansion connecting
+`leadingMoveHom` to these decorated monomials is not yet proved. Its
+collected polynomial still needs identification with the prescribed product;
+scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
+`homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
+No count of equal colours has been identified with the moving-dot degree.
+
+
 ## Signed top-crossing chain
 
 `MoveHomLeading.lean` proves `moveHom_sub_leading_mem_low`: for every

@@ -48,6 +48,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendContentShortImage
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentBoundary
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentMoveCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.MoveHomLeading
+import OddMath.QuiverHecke.CyclotomicAction.SignedDotNormalOrder
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap

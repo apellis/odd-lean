@@ -1,9 +1,9 @@
 # Deformed all-prefix QP calculation
 
-**Status: the signed all-word QP identity is formalized.** The checked
+**Status: the signed all-word QP identity and full ELV P descent are formalized.** The checked
 library convention retains a minus sign for each repeated-even factor;
-see §3. The source-normalized formula proposed below and the old-generator
-balance argument for P remain separate obligations. This does not construct
+see §3. Old-generator balance and the quotient map P are proved in §4.
+The source-normalized formula proposed below remains a separate obligation. This does not construct
 an exact projective resolution or prove the ideal-sum assertion.
 
 Use the full coefficient algebra A and polynomials f_j of that document,
