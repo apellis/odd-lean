@@ -912,6 +912,17 @@ Braid on the path `PPP` of `iii` (checked,
 `-q` times whiskered factor crossings of `T`. `whisker_braid` transports a braid relation
 of `x ⊗ 1`, `1 ⊗ y` on `E₁E₂E₃` through right whiskering by `Z` (pentagon), so
 `preCrossSame_braid` is `T.braid`, and `ppp_braid` is (1.9) on `PPP`. Next: `RRR`.
+Braid on the path `RRR` of `iii` (checked,
+`SwappedAssembly/BraidSame/ReservoirBlock.lean`). `RRR` is the only path to its endpoint
+(`eq_rrrPath`); both crossings are reservoir crossings (`rrrLeft_entry`, `rrrRight_entry`),
+factor crossings of `W` transported by the comparisons `Θ`. The comparisons
+`G = ξ₀ ≫ ξ₁ ▷ F₃ ≫ (ξ₂ ▷ F₂) ▷ F₃` of the three parity-`σ` shifts carry both crossings to
+the factor crossings on `((Z F₁) F₂) F₃` with the same sign `(-1)^(σ p)`: the left one by
+the super interchange law past `ξ₂`, the right one by the signed naturality
+`S(g) ξ = (-1)^(σ|g|) ξ g` of the outer shift (`shifted_post_braid`). The signs agree,
+so `postCrossSame_braid` is `W.braid` whiskered on the left (`post_whisker_braid`), with
+no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy. Next: assemble
+(1.9) for the pattern `iii` over all pairs of paths, then `iji`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -1186,6 +1197,17 @@ gives `PosInverse`, `NegInverse` (with `lc = -b(.inl)`, `dc = b(.inr)` on `n < H
 `centralInvertible_of_isIso`: invertibility at `s = t` with `P.wt t = ν` for the sign of
 `D.h i ν` gives `CentralInvertible`. What remains is invertibility of `augPosMat`/`augNegMat`
 from the sector blocks.
+
+**Nilpotent lifting (checked; nilpotence as a hypothesis).**
+`SwappedAssembly/CentralInverse/NilpotentLifting.lean`, in any preadditive category.
+`ProbeWindow.isIso_of_isNilpotent_sub` is (12) of `SwappedHomInversion.md`: if `g` inverts `f`
+up to errors `𝟙 - f ≫ g`, `𝟙 - g ≫ f` that are nilpotent in `End`, then `f` is invertible
+(in `Mat_ C` this is nilpotence for the matrix ideal, as (12) requires, not entrywise).
+`ProbeWindow.isIso_unipotentBlock` is (10): `[1, l; m, 1]` on `A ⊞ B` is invertible when
+`m ≫ l` is nilpotent, via `[1, 0; m, 1] ≫ diag(1, 1 - m ≫ l) ≫ [1, l; 0, 1]`
+(`unipotentBlock_eq`). The nilpotence inputs, which `SwappedHomInversion.md` (8)–(9) derive
+from the gradings (G6)–(G8), are explicit hypotheses here; the same gradings are used in (7)
+to place the `r > j` contractions in the ideal `J`.
 
 Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
 (the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
