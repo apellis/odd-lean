@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV repeated-odd QP recursion
+
+`ELVQPOdd.lean` proves `ELVOld.qp_repeated_odd` using `qpEval` and the
+full-coefficient relation-killing theorem, with arbitrary prefixes, right
+spectators, cutoffs (including zero), and ambient continuations. Writing
+`E = x_last - x_first`, `Δ = x_last² - x_first²` and
+`s = (-1)^(p(i) p(μ))`, (K) gives `[Δ(s E A - Δ B)] = 0`.
+`qpEval_square_difference_cancel` yields `[s E A - Δ B] = 0`.
+`movingDot_insert` twists the total coefficient-plus-diagram parity of each
+old Hom; `movingDot_relations` and `qpEval_source_difference_zero` therefore
+prove preservation under E, rather than assuming it. Thus `[Δ E B] = s[E² A]`.
+The affine odd recursion contributes the second s, and `s² = 1` gives the
+surviving factor E². The nonempty cancellation word is `μ ++ [i]`; this does
+not cancel a zero difference in the empty-word base case.
+
+Remaining: distinct-colour transport and right-context induction toward the
+raw signed `qpProduct`, including its existing repeated-even factor −1.
+No literal no-even-factor normalization, balanced resolution, full ELV action,
+or nondegeneracy conclusion follows from this recursion alone.
+
 ## Full ELV old-coefficient extraction
 
 Checked in `ELVPrependOldExtraction.lean`: `PrependIdx.replaceOld` retains
