@@ -4292,3 +4292,53 @@ input: the three fields, for every `s` (including the low-degree fake bubbles of
 (2.16)), at the action built from the generator images, evaluated on the probe and
 reservoir summands. Consumer: `scripts/NonVacuity/SwappedVacuumAdjunctionBubbles.lean`
 (includes the zero source sector as an instance of the structure).
+
+### End-to-end conditional theorem (checked)
+
+`SwappedConditionalNondegeneracy.lean` composes the swapped action, the bubble series and the
+corner evaluation into one statement of the conjecture. A `SwappedVacuumObservation B D Sc cs
+μ t t' d` (in a target 2-supercategory `B` in the universe of `k`) bundles exactly the open
+inputs:
+
+1. `P : ProbeReservoir k B D Sc`: the probe and reservoir Rouquier families with their
+   multicolour relations and the probe's shifted left adjunctions (F1–F2).
+2. `c`, `L` and `relations : P.SwappedRelationData c L`: the entrywise identities of the
+   swapped generators (`quad`, `slide`, `braid`, `zigzag`, `sigma`, `leftward`,
+   `windowZero`, `supernatural`); with `Gs`, `Ys` these give the swapped action
+   `A = relations.upwardModuleAction Gs Ys μ`.
+3. `vacuum`, `raw`: the vacuum vector and the raw reservoir coefficient action on `A.V t`.
+4. `bubbles : AdjunctionBubbleSeries cs A t raw (probeExponent D μ t d)
+   (reservoirLevel D μ t d)`: the left-bubble series at the schedule of §2.
+5. `corner : VacuumCornerEvaluation D Sc A t raw vacuum` (`ev_layer`, `ev_vacuum`).
+6. `ideal_le`: the §6 weight bound `corner.K t' ≤ ExtendedAtLeast … (N₀ - 2·C(|t|,2))`.
+
+Checked:
+
+- `SwappedVacuumObservation.toSwappedVacuumBlock` (moments from
+  `AdjunctionBubbleSeries.vacuumMoments`, (A18) from `SwappedVacuumBlock.ofCornerEvaluation`).
+- `nondegeneracy_of_swapped_vacuum_observations`: observations for every equal-weight
+  upward word pair, `μ` and `d` give `SKM.NondegeneracyConjecture cs` over a field, via
+  `nondegeneracy_of_vacuum_blocks`.
+- `nondegeneracy_of_restrictColours_swapped_vacuum_observations`: the same from
+  observations for the finite restrictions of `D` (arbitrary colour set), via
+  `nondegeneracy_of_restrictColours_vacuum_evaluations`.
+
+Consumer: `scripts/NonVacuity/SwappedConditionalNondegeneracy.lean`.
+
+Glue not yet available (open):
+
+- `CyclotomicAction.GlobalLocalInversion` does not appear. `globalRouquierFamily` targets
+  `TwoSCat.of k (SCat k)`, whose objects and 2-morphisms lie one universe above `k`, while
+  `ProbeReservoir` and `UpwardModuleAction` (sectors `V : List I → Type u`) need `B` in the
+  universe of `k`. To use the cyclotomic factors as `P.T`, `P.W`, generalize the universes of
+  `ProbeReservoir`/`SwappedObligations`/`UpwardModuleAction`, or realize the factors in a
+  small model. This is a universe matter, not a mathematical one.
+- `ev_layer` and `ev_vacuum` are not derivable from the abstract `ProbeReservoir`: they need
+  the corner model of `SwappedVacuumCoordinates.md` §§2–5 (the map `U`, the signed Hom-corner
+  evaluation and the ideal `K_N`) for the specific factors. The remaining glue lemma is that
+  the swapped action of the affine layer `alpha (diag (ofLayer L hv))` is `Q.act` of the
+  labelled SKM layer (via `LocalInterpretation.functor_map_layer_hom`), which would state
+  `ev_layer` against layer matrices.
+
+The written vacuum-recovery argument (schedule `P_i - N_i = h_i(μ)`, bubble series, §6
+bound) was checked against these interfaces; no discrepancy was found.
