@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Integer and super gradings of the old ELV quotient
+
+Checked (`ELVOldGrading.lean`, depending on PR #598):
+`ELVOld.ideal_dproj_mem` proves that every integer component of the two-sided
+old cyclotomic ideal remains in that ideal, by homogeneous decomposition of
+both surrounding coefficient-category Homs. `oldDegree_internal` constructs
+the internal integer grading on `ELVOld.Old` itself; `mkQ_mem_oldDegree` and
+`oldDproj_mk` identify its homogeneous projection. The hypotheses are exactly
+the coefficient-category datum, symmetrizer, scalars with `Sc.Homogeneous`,
+cutoffs, and a commutative ground ring.
+
+`ideal_proj_mem`, `oldParity_internal`, and `oldProj_oldDproj` descend the
+independent total super parity and prove its projections commute with integer
+projections. The full exterior coefficients are retained, and no division by
+two is used. `oldCompose_mem_oldDegree` proves degree addition for the existing
+signed old action; `oldTwist_mem_oldDegree` preserves integer degree.
+
+Remaining: positive-content support bounds, grading on the enlarged `Target`,
+and the full factor action. None is asserted by this descent result.
+
 ## Integer grading of ELV coefficient diagram Homs
 
 Checked (`ELVHomGrading.lean`, depending on PR #593): `elvHomGrading`
@@ -14,9 +34,9 @@ degree `2 * sy.d j * cutoff j`, for both even and odd colours.
 monic coefficient. The odd rank-one consumer checks cutoffs 2 and 3, retaining
 a nonzero exterior coefficient.
 
-Remaining: prove that all integer projections preserve `ELVOld.ideal`, descend
-the grading to `ELVOld.Old`, and establish positive-content support bounds.
-No such bounds, old-quotient grading, or full factor action are asserted here.
+The old-ideal projection stability and grading descent are supplied by
+`ELVOldGrading.lean` above. Positive-content support bounds and the full factor
+action remain open.
 
 ## Integer-graded ELV coefficient/vacuum algebra
 
