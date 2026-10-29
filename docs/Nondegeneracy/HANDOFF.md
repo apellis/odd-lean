@@ -4756,12 +4756,26 @@ Consumer: `scripts/NonVacuity/SwappedConditionalNondegeneracy.lean`.
 
 Glue not yet available (open):
 
-- `CyclotomicAction.GlobalLocalInversion` does not appear. `globalRouquierFamily` targets
-  `TwoSCat.of k (SCat k)`, whose objects and 2-morphisms lie one universe above `k`, while
-  `ProbeReservoir` and `UpwardModuleAction` (sectors `V : List I → Type u`) need `B` in the
-  universe of `k`. To use the cyclotomic factors as `P.T`, `P.W`, generalize the universes of
-  `ProbeReservoir`/`SwappedObligations`/`UpwardModuleAction`, or realize the factors in a
-  small model. This is a universe matter, not a mathematical one.
+- Factor actions as probe and reservoir (checked): universes as above (the swapped
+  assembly takes `B : Type uB` with `BicategoryStruct.{w, v} B`). The Π-structure on Hom
+  categories is supplied by `Π-𝔖ℭ𝔞𝔱`:
+  - `SKM.RouquierFamily.toPiSCat`, `SKM.RouquierMulticolour.toPiSCat`
+    (`OddMath/SKM/RouquierPiSCat.lean`): a super Rouquier family in `𝔖ℭ𝔞𝔱` whose weight
+    spaces carry Π-structures is one in `Π-𝔖ℭ𝔞𝔱`, with the same data; multicolour relations
+    transfer (`rouquierPower_piSCat` compares the vertical powers).
+  - `CyclotomicAction.fullPiSupercategory`, `productPiSupercategory`,
+    `heightContentSupported_piObj` (the content idempotent is even, so `Π` preserves
+    content support), `globalWeightSpacePi`, `globalPiRouquierFamily`
+    (`CyclotomicAction/PiWeightSpaces.lean`).
+  - `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
+    (`GlobalFactorNondegeneracy.lean`): the probe and reservoir are
+    `globalPiRouquierFamily` at `(aP, ΛP)`, `(aR, ΛR)`, the probe's left adjunctions are
+    `RouquierFamily.leftAdjoints`. The `ProbeReservoir` obligation becomes: local inversion
+    `GlobalLocalInversion` under `CyclotomicDegreeMatch D a Λ` (each `aᵢ` monic of degree
+    `⟨hᵢ, Λ⟩`; local inversion is false without it), and `SKM.RouquierMulticolour` of the two
+    families `globalRouquierFamily` (open: quadZero, quadNe, slides, braid, braidEq, invNe for
+    distinct colours of the cyclotomic factors). The observations must have
+    `O.P = globalProbeReservoir …`; the other observation fields are unchanged.
 - `AdjunctionBubbleSeries` is not derivable from `SwappedRelationData`: the relation
   identities constrain only the generator relations, while the series fixes the values of
   the closed left bubbles (leftward cup with the sign `-q`, then the cap with dots) against
