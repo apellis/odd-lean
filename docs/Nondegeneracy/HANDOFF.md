@@ -884,14 +884,24 @@ window count `(D.h i ν).toNat` does. If `[σ; ε₀, …, ε_{H-1}]` is inverti
 more window row gives `[1; r]` times it, which is not invertible unless the object is zero. So
 the unrestricted statement fails as soon as some `P.H t` has a nonzero object. The action only
 uses weight-matched sectors (`layerEntry` needs `P.wt sr = L.cod.endR`; `compEval` is applied
-through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`). Next step: restrict
-`CentralInvertible`, `AugmentedInvertible` and `LeftwardData.IsInverse` to `P.wt s = ν`
-(rightmost sector), weight `relHolds_of_compEval`, and define `leftwardOfInvertible` as zero
-off weight. `SwappingInvertible` does not involve `ν` and is unaffected.
+through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`).
+
+*Restricted interface (checked).* `CentralInvertible`, `AugmentedInvertible` and
+`LeftwardData.IsInverse` now require their identities only when the rightmost sector carries
+the weight: `P.wt t = ν`, `P.wt s = ν`, `P.wt t = ((SKM.pres D Sc).dom r).endR` respectively.
+`WhiskerReduction.lean`: `wt_eq_of_ok` (a valid path ending at the weight of the right end
+starts at the weight of the left end), `evalW_eq_zero_of_compEval_wt`,
+`relHolds_of_compEval_wt` (only weight-matched `compEval` identities are needed);
+`inversionRelations` uses them. `leftwardOfInvertible` is zero off weight
+(`leftwardOfInvertible_vanishesOffWeight`), and the supernaturality of the leftward data needs
+`LeftwardData.VanishesOffWeight` (`isSupernatural_of_isInverse`,
+`swappedGens_supernatural_of_isInverse`, field `leftwardZero` of
+`SwappedRelationData.ofIsInverse`, `.ofCrossCoeffInputs`). `SwappingInvertible` does not
+involve `ν` and is unaffected.
 
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
-hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
+hc hL h0 : L.IsSupernatural` for `hc : c.IsSupernatural`, `hL : L.IsInverse c` and `h0 : L.VanishesOffWeight`. The entries of
 `L` are entries of the two-sided inverses of the augmented maps (1.13), (1.14) of BE2 Def. 1.5:
 `(σ, ε xⁿ)ₙ : Eᵢ Fᵢ → Fᵢ Eᵢ ⊕ 1^{⟨hᵢ,ν⟩}` with inverse `(-lcross, ♦-cupₙ)` for `⟨hᵢ, ν⟩ ≥ 0`
 (`leftward_supernatural_of_nonneg`, from `invP₁`–`invP₅`), and
