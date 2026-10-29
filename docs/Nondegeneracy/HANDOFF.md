@@ -18,11 +18,30 @@ regroups the existing indices by moving exponent and shuffle, with both inverse
 laws; the intermediate old target is uniquely determined by the shuffle and
 final word. This is an index equivalence, not an old-quotient equivalence.
 
-Remaining: annihilate every generator `insert r ≫ h` of `relations` for arbitrary
-intermediate word and ambient continuation, then assemble the simultaneous
-old-quotient coordinate equivalence. The fixed-tail identities and off-tail
-vanishing do not yet prove this all-generator descent or quotient independence.
-The moving-square shift and difference injectivity are still open.
+Remaining: the moving-square shift and difference injectivity are still open.
+
+## Full ELV all-generator descent and simultaneous coordinates
+
+`ELVPrependDescent.lean` proves `prependExtractOldQuotient_old_generator` for
+`insert i v s r ≫ h` with arbitrary intermediate word `s`, every old ideal
+coefficient `r`, and arbitrary ambient continuation `h`. Expanding `h` in the
+existing prepend basis reduces the claim to old composites `r ≫ b`. Zero
+composites vanish without any choice of normal form; a nonzero composite supplies
+an old normal-form index through `oldAffineEquiv`. `PrependIdx.rebase` then
+transports the prescribed moving tail to source `v`, preserving its positioned
+diagram. This covers empty old Hom spaces and retains full exterior coefficients.
+
+`prependOldCoordinateEquiv` identifies the actual `Target` with the direct sum
+of `Old(v,t)` coefficients indexed by `PrependIdx.Tail`. Its components are the
+descended extraction maps, with both coefficient-parity normalization and total
+old-Hom twist retained. `prependOldReconstruct_coordinateEquiv` and
+`prependOldCoordinateEquiv_reconstruct` prove both inverse laws. No flatness,
+finite-colour hypothesis, or moving cyclotomic relation is imposed. The earlier
+raw PBW expansion remains a surjection, not an independent family.
+
+The remaining cancellation step is to identify the moving square with the
+exponent shift by two (the even moving dot with shift by one), then use finite
+support to prove difference injectivity.
 
 ## Full ELV prepend PBW normalization
 
@@ -37,12 +56,11 @@ this explicit finite expansion with the old-only projection through the proved
 the affine coordinate preimage of the old-only relation span. No flatness or
 moving-polynomial quotient is assumed.
 
-Boundary: this is not an injective expansion over old quotient coefficients.
-Regroup the old PBW indices into `Old(v,t)` coefficients and prove an inverse,
-including extraction compatibility with arbitrary old composition. Only then
-identify the moving-square shift (and the even moving-dot shift) and prove
+Boundary: the raw PBW expansion is not injective. The regrouped `Old(v,t)`
+equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
+Identify the moving-square shift (and the even moving-dot shift), then prove
 cancellation by the leading finite-support coordinate. See
-`ELVPrependCoordinates.md` for the exact coefficient formula and source locator.
+`ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
 ## Mixed-colour sector braid: two probes and one reservoir
 
