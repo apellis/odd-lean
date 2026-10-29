@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.CyclotomicAction.PiWeightSpaces
+import OddMath.QuiverHecke.CyclotomicAction.ParameterTransport
 
 /-!
 # The Nondegeneracy Conjecture from the cyclotomic factor actions (conditional)
@@ -14,7 +15,14 @@ reservoir factors of `nondegeneracy_of_swapped_vacuum_observations` by the cyclo
 actions on weight spaces (`SwappedActionAssembly.md` §1, F1–F2), in the target `Π-𝔖ℭ𝔞𝔱`.
 
 * `globalProbeReservoir`: the probe and reservoir are `globalPiRouquierFamily` at the
-  cyclotomic parameters `aP`, `aR` and highest weights `ΛP`, `ΛR`. The probe's shifted left
+  cyclotomic parameters `aP`, `aR` and highest weights `ΛP`, `ΛR`, built on the quiver Hecke
+  algebras with parameters `parameterTwist D Sc`. This is the parameter transport (9) of
+  `DeformedActionAssembly.md` §6: signed right multiplication changes the coefficient of a
+  permitted monomial `u^r v^s` of `Q_ij` by `(-1)^(|i||j| + |i|⌊r/2⌋ + |j|⌊s/2⌋)`, so an action
+  with the parameters `Sc` of the 2-category starts from the algebra parameters
+  `parameterTwist D Sc` (the transport is involutive, `parameterTwist_involutive`). With the
+  algebra parameters `Sc` the multicolour relations `RouquierMulticolour _ Sc` fail whenever
+  the transport changes a coefficient whose dotted endomorphism is nonzero. The probe's shifted left
   adjunctions are `RouquierFamily.leftAdjoints` (proved for every super Rouquier family). The
   inputs are the local inversions (`GlobalLocalInversion`) and the multicolour relations
   (`SKM.RouquierMulticolour`) of the two families in `𝔖ℭ𝔞𝔱`.
@@ -50,17 +58,19 @@ def globalProbeReservoir
     (aP : I → _root_.Polynomial k) (haP : CyclotomicPolynomialParity D aP) (ΛP : X)
     (hdegP : CyclotomicDegreeMatch D aP ΛP)
     (LP : ∀ (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
-      GlobalLocalInversion D Sc aP haP ΛP i h₁ h₂)
+      GlobalLocalInversion D (parameterTwist D Sc) aP haP ΛP i h₁ h₂)
     (aR : I → _root_.Polynomial k) (haR : CyclotomicPolynomialParity D aR) (ΛR : X)
     (hdegR : CyclotomicDegreeMatch D aR ΛR)
     (LR : ∀ (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
-      GlobalLocalInversion D Sc aR haR ΛR i h₁ h₂)
-    (hP : SKM.RouquierMulticolour (globalRouquierFamily D Sc aP haP ΛP hdegP LP) Sc)
-    (hR : SKM.RouquierMulticolour (globalRouquierFamily D Sc aR haR ΛR hdegR LR) Sc) :
+      GlobalLocalInversion D (parameterTwist D Sc) aR haR ΛR i h₁ h₂)
+    (hP : SKM.RouquierMulticolour
+      (globalRouquierFamily D (parameterTwist D Sc) aP haP ΛP hdegP LP) Sc)
+    (hR : SKM.RouquierMulticolour
+      (globalRouquierFamily D (parameterTwist D Sc) aR haR ΛR hdegR LR) Sc) :
     ProbeReservoir k (PiSCat.{u, u, u + 1} k) D Sc where
-  T := globalPiRouquierFamily D Sc aP haP ΛP hdegP LP
-  W := globalPiRouquierFamily D Sc aR haR ΛR hdegR LR
-  leftAdj := (globalPiRouquierFamily D Sc aP haP ΛP hdegP LP).leftAdjoints
+  T := globalPiRouquierFamily D (parameterTwist D Sc) aP haP ΛP hdegP LP
+  W := globalPiRouquierFamily D (parameterTwist D Sc) aR haR ΛR hdegR LR
+  leftAdj := (globalPiRouquierFamily D (parameterTwist D Sc) aP haP ΛP hdegP LP).leftAdjoints
   probeRel := hP.toPiSCat _
   reservoirRel := hR.toPiSCat _
   ΛP := ΛP
@@ -83,14 +93,16 @@ theorem nondegeneracy_of_global_factor_observations
     (hdegP : CyclotomicDegreeMatch D aP ΛP)
     (LP : CyclotomicDegreeMatch D aP ΛP → ∀ (i : I) {x₀ x₁ x₂ : X}
       (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
-      GlobalLocalInversion D Sc aP haP ΛP i h₁ h₂)
+      GlobalLocalInversion D (parameterTwist D Sc) aP haP ΛP i h₁ h₂)
     (aR : I → _root_.Polynomial k) (haR : CyclotomicPolynomialParity D aR) (ΛR : X)
     (hdegR : CyclotomicDegreeMatch D aR ΛR)
     (LR : CyclotomicDegreeMatch D aR ΛR → ∀ (i : I) {x₀ x₁ x₂ : X}
       (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
-      GlobalLocalInversion D Sc aR haR ΛR i h₁ h₂)
-    (hP : SKM.RouquierMulticolour (globalRouquierFamily D Sc aP haP ΛP hdegP (LP hdegP)) Sc)
-    (hR : SKM.RouquierMulticolour (globalRouquierFamily D Sc aR haR ΛR hdegR (LR hdegR)) Sc)
+      GlobalLocalInversion D (parameterTwist D Sc) aR haR ΛR i h₁ h₂)
+    (hP : SKM.RouquierMulticolour
+      (globalRouquierFamily D (parameterTwist D Sc) aP haP ΛP hdegP (LP hdegP)) Sc)
+    (hR : SKM.RouquierMulticolour
+      (globalRouquierFamily D (parameterTwist D Sc) aR haR ΛR hdegR (LR hdegR)) Sc)
     (h : ∀ (t t' : List I), SKM.wt D 0 (SKM.ups t) = SKM.wt D 0 (SKM.ups t') →
       ∀ (μ : X) (d : ℕ), ∃ O : SwappedVacuumObservation (PiSCat.{u, u, u + 1} k) D Sc cs μ t t' d,
         O.P = globalProbeReservoir D Sc aP haP ΛP hdegP (LP hdegP) aR haR ΛR hdegR (LR hdegR)
