@@ -76,6 +76,27 @@ not proved. From it:
 Open: the field case itself; removal of the route hypotheses above; the
 case of rings where `2` is not a unit, beyond the even Khovanov–Lauda case.
 
+## Distinct-colour dot slides on the global factors: algebra half
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalMixedSlideAlgebra.lean`), towards the
+fields `slideLeft`, `slideRight` of `SKM.RouquierMulticolour` (Brundan–Ellis 1701.04133v2,
+(1.8)) for `globalRouquierFamily D (parameterTwist D Sc)` at distinct colours `i ≠ j`:
+
+- `inductionStrand_slide_left_ne`, `inductionStrand_slide_right_ne`: the local slides
+  `x_i τ = ε τ x_i`, `τ x_j = ε x_j τ`, `ε = (-1)^{|i||j|}`, on the two-strand word `[i, j]`;
+- `induction_slide_left_ne`, `induction_slide_right_ne`: their whiskered forms on
+  `w ++ [i, j]` (appended dot, last-pair crossing, new last dot);
+- `affineLastCrossing_slide_left_ne`, `affineLastCrossing_slide_right_ne` and, at every height,
+  `heightLastCrossing_slide_left_ne`, `heightLastCrossing_slide_right_ne`:
+  `c φⱼ(y_i) = ε y_i c` and `φᵢ(y_j) c = ε c y_j` in the algebra (matrix multiplication reverses
+  composition).
+
+Remaining for the module-level slides: two-colour corner multiplication data (the corner of
+`heightAppend i (n+1) ∘ heightAppend j n`), the outer/inner dot comparisons for `i ≠ j`, and the
+weight-level assembly modelled on `GlobalWeightSlides.lean`. A hand check of the Koszul signs
+of the right-multiplication module maps finds the same sign `ε` on both sides of each slide,
+so the algebra identities above are exactly what the module slides need (no extra sign).
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
