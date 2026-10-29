@@ -1344,6 +1344,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Quad
 import OddMath.QuiverHecke.SwappedAssembly.Inversion
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.Permutation
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.Entry
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntry
 import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries

@@ -994,8 +994,26 @@ and `homDistinctMixedMateDot_isIso`: for even `x` with `IsIso x`, even nilpotent
 Also `isNilpotent_rightTranspose` and `map_rouquierPower`. Applied to `mixedQ j i`
 (`t_ji • xᵈʲⁱ + t_ij • yᵈⁱʲ + Σ s xᵖ yᑫ`, `0 < q`; `t_ji • 1` when `d_ji = 0`), this needs the
 probe dot `P.T.dot j` invertible and the reservoir dot `P.W.dot i` nilpotent, which are
-interface hypotheses of the sigma linking step. Next: identify the `(P,R)` sigma entry with
-`homDistinctMixedMateDot` up to transports.
+interface hypotheses of the sigma linking step.
+
+**The `(P,R)` sigma entry is invertible (checked).**
+`SwappedAssembly/Sigma/MixedEntry.lean`: `ProbeReservoir.isIso_sigmaEntry_probe_reservoir`.
+For `i ≠ j`, the entry `P.sigmaEntry c i j ν p q Z` from the path `p` of `Eⱼ Fᵢ` with `Eⱼ` on
+the probe and `Fᵢ` on the reservoir is an isomorphism, assuming every probe dot `P.T.dot`
+is a unit and every reservoir dot `P.W.dot` is nilpotent (the hypotheses of
+`CrossCoeffInputs.of_factor`). Steps: `sigmaEntry_eq` reduces the entry to cup ≫ crossing ≫
+cap; the three layers are rewritten as the post unit, `J⁻¹ ≫ Q_ji` and the post counit with
+transports (`isIso_comp_layers`); `isIso_postCup_mixedCross_postCap` removes the transports
+(after `m₁ = m₀`, which holds since the probe letter does not change the reservoir weight)
+and leaves `homDistinctMixedMateDot (P.T.E j) (P.W.adj i) κ τ H (mixedQ j i …)`.
+`isIso_homDistinctMixedMateDot_param` proves this invertible for dots of any parity: by
+`Scalars.s_eq_zero`, `Scalars.s_symm` and `Datum.even_d_of_odd`, every supported monomial
+has even powers of an odd dot, so the even case `homDistinctMixedMateDot_isIso` applies to
+`x²` (resp. `y²`) (`isIso_homDistinctMixedMateDot_of_pow`). Remaining for `hσ`: the patterns
+`(R,P)` (`homDistinctMixedPreMateDot_isIso`), `(P,P)` (`homContentDistinctPreMate_isIso`) and
+`(R,R)` (`homShiftedPostCrossMate_isIso`), then `sigmaPermutation_of_isIso`. The same-colour
+case `i = j` is not part of `SigmaPermutation`; it is `SwappingInvertible`
+(`Sigma/SameColourBlocks.lean`).
 
 ## Old-only ELV quotient module
 
