@@ -4906,8 +4906,24 @@ Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdeal.lean`.
 
+### The half-turn is an involution (checked)
+
+`OddMath/QuiverHecke/HalfTurn/Involution.lean` (`SwappedVacuumCoordinates.md` §4, last
+paragraph):
+
+- `scalarsCast e hs ht`: coefficient-extended Hom spaces along `Sc₁ = Sc₂`, `s = s'`, `t = t'`;
+  `scalarsCast_sourceCoefficientHom_diag` (pure tensors of normal-form diagrams go to the same
+  tensors), `htCoef_scalarsCast` (naturality of the half-turn).
+- `halfTurnC_halfTurnL`: `halfTurnC (halfTurnL ls) = halfTurnC ls` (the scalar is a product over
+  unordered pairs of layers and the weights, so reversal does not change it).
+- **`htCoef_htCoef`**: `U' (U x) = x` for `U'` the half-turn of `parameterTwist D Sc`, transported
+  along `parameterTwist_involutive` and `s.reverse.reverse = s`; the scalar is
+  `halfTurnC ls ^ 2 = 1` and `halfTurnL (halfTurnL ls) = ls`.
+- `htCoefInv` (`U'` transported back), `htCoefInv_htCoef`, `htCoef_htCoefInv`,
+  **`htCoef_bijective`**, `htCoefEquiv : Hom(s, t) ≃ₗ Hom'(t^rev, s^rev)`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnInvolution.lean`.
+
 Open obligations for §5: the reverse inclusion `I_N ⊆ U(K_N)` (by the same computation run
-from the twisted side, or `U` being an involution up to the parameter twist); `T ≠ ∅` (needs
-`T` mapped into the coefficient ideal or carried as extra coefficient generators on the ELV
-side); and bijectivity of `htCoef` (inverse half-turn from `parameterTwist`), which would turn
-the inclusion into the identification `U(K_N) = I_N`.
+from the first-strand side, then `htCoef_htCoef`); `T ≠ ∅` (needs `T` carried as extra
+coefficient generators on the ELV side).
