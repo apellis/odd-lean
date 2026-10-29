@@ -200,6 +200,30 @@ Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
 
+## Ordinary content Mackey boundary
+
+`AppendContentBoundary.lean` assembles `appendContentMackeyCosets` from
+the prescribed target, P, corrected rho, short subgroup and sign-normalized
+`appendContentRhoLift`. Only the proved forward inclusion P(short) into
+range F is required; no reverse inclusion or factorization hypothesis is used.
+`appendContentMackeyBoundary` is its `toMackeyBoundary`.
+
+`appendContentMackeyCosets_B₁` identifies extraction with the normalized
+moving coefficient, and `appendContentMackeyCosets_C₀` identifies target
+projection with the polynomial PBW coordinate. `appendContentBoundary_factor`
+proves C₀P = A B₁. The crossing component is also the PBW coordinate of P
+on the normalized lift. `appendContentBoundary_firstOrder` proves both
+ψ(ρ̄ f) = Xψ(f) and A(ρ̄ f) = Eψ(f) + tShift(A(f));
+`appendContentBoundary_defect` and `appendContentBoundary_recurrence` give
+the explicit constant defect and the unit-monomial recurrence.
+
+The strict consumer applies the constructor and recurrence to the asymmetric
+two-colour datum, every cutoff, and the zero polynomial at old height one;
+it audits all declarations of the module. Only polynomial parity is assumed,
+not monicity. Right coefficient multiplication retains its original order.
+Next obligations: the prescribed norm comparison and subsequent division;
+full ELV coefficients and old height zero remain separate.
+
 ## Crossing image and the projected short-image inclusion
 
 Checked (`AppendContentCrossingImage.lean`), for the ordinary-polynomial
@@ -255,8 +279,8 @@ The left projector is retained throughout: individual unprojected PBW terms
 need not lie in the source corner. The strict `NonVacuity.AppendContentShortImage`
 consumer audits every owned declaration and applies the inclusion to the
 asymmetric two-colour datum for all cutoffs and positive old heights.
-Next target: the reverse inclusion and the remaining prescribed
-`MackeyCosets`/`toMackeyBoundary` identifications; none is asserted here.
+The prescribed `MackeyCosets`/`toMackeyBoundary` identifications are now
+constructed above. Reverse inclusion is not needed for this construction.
 The content index still has old height `n+1`; no affine old-height-zero claim
 is made. All cutoffs, including zero, are permitted. The normalized rho lifts
 and coefficient order from the preceding module are unchanged; full ELV
@@ -284,9 +308,10 @@ content coefficient ring are unchanged.
 
 Scope: `AppendContentRhoCoordinates.lean` now supplies the degreewise sign
 normalization of these input-first-dot coordinates; see below. Identification of
-this kernel under `P` with the prescribed crossing summand (`P_short`) is still
-required. No instantiated `MackeyCosets`, `toMackeyBoundary`, full exterior ELV
-source, or local/global inversion theorem is claimed here. The previously proved
+the image of this kernel under `P` as lying in the prescribed crossing summand
+(`P_short`) is proved in `AppendContentShortImage.lean`, and the boundary
+assembly is recorded above. Full exterior ELV source and local/global inversion
+remain open. The previously proved
 content-source `P_r` and `P_ρ` are unchanged.
 
 ## Corrected-rho normalization of the ordinary content source
