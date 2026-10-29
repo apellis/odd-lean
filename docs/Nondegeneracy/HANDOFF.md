@@ -1,5 +1,59 @@
 # Odd nondegeneracy: restart state
 
+## Append Mackey boundary: balance of P
+
+Checked: `appendError_mem_appendKill`
+(`OddMath/QuiverHecke/CyclotomicAction/AppendBalance.lean`), the old-generator balance of the
+append map `P` (`AppendMackeySource.md` §§1–2; `DeformedGlobalQP.md` §4). For words `s`, `t`, a
+morphism `g : s ⟶ t`, the moving colour `i` and cyclotomic polynomials `a` with
+`CyclotomicPolynomialParity`, the error
+`E(g) = (g ▷ i) ≫ W_t - W_s ≫ (i ◁ tw_(q_s) g)` with `W_s = T_s ≫ f_i(x₁)` lies in
+`appendKill s t`, the span of `(y ▷ i) ≫ h` with `y` in the old cyclotomic ideal `cycHom`.
+No hypothesis beyond the parity condition on `a`. The proof follows the written argument:
+`appendError_comp_mem` (composites), `appendError_whiskerRight_mem` (inner generators, case
+(a)), `appendError_lastDot_mem` (case (b)), `appendError_crossLast_mem` (case (c), with
+`braid_comp_mem_appendKill` for the window `(i, x, i)`), assembled over positioned words and
+`span_normalForms` by induction on the length of the source word.
+
+Checked: the matrix form (2) and the descent of `P`
+(`OddMath/QuiverHecke/CyclotomicAction/AppendMackeyMap.lean`, `AppendMackeySource.md` §4).
+With `ψ = appendAlgebra i (n+1)`, `φ_ε = prependAlgebra i (n+1) ∘ tw_ε` (`prependTwist`) and
+`W = Σ_s single (i :: s) (s ++ [i]) W_s` (`appendMoveMatrix`): `appendMoveMatrix_mul_append`
+and `prependTwist_mul_appendMoveMatrix` give the entries of `W ψ(a)` and `φ_ε(a) W`;
+`appendMove_balance_mem` shows `W ψ(c) - φ_ε(c) W` lies in `appendVanishing` (elements `y`
+with `z y ⊗ m = 0` in `Ind_ψ N`) for every left `Hn (n+1)`-module `N` killed by the cyclotomic
+ideal (`hcyc`) and by the diagonal idempotents of the words `t` with `q_t ≠ ε` (`hpar`);
+`appendMackeyMap : Ind_(φ_ε) N → Ind_ψ N`, `z ⊗ m ↦ z W ⊗ m`, is the descended map
+(`Ind.descend`). The content corner of parity `ε` satisfies `hpar` when all its words have
+`q_t = ε`; the hypotheses replace the content-corner bookkeeping of §4.
+
+Next target: the prepend-side source module with the `Π^ε` shift as the domain of
+`MackeyCosets` (fields `short`, `ℓ`, `cover`, `ℓ_short`, `ρ_ℓ`, `ℓ_r`, `P_r`, `ρ`,
+`P_short`), assembled with `MackeyCosets.ofTarget` against `appendContentMackeyTarget`; then
+`P ρ = R_t P` (obligation 1).
+Next target: the matrix form (2) and the descent of `P` to
+`Ind_(φ_L) B → Ind_ψ B` (`AppendMackeySource.md` §4), then the source-side fields of
+`MackeyCosets` and `P ρ = R_t P` (obligation 1).
+## Integer grading of the reservoir: (N) and (J) for `CentralInvertible`
+
+Assessment: `ReservoirGradingRoute.md`. The two grading inputs of `SwappedHomInversion.md` §4,
+(N) nilpotence of the contracted closures `b_(s,r)` and (J) positivity of the `r>j` boundary
+contractions, need an integer grading only on the Hom categories between reservoir objects.
+
+Checked (`OddMath/SKM/RouquierGrading.lean`): the interface `RouquierGrading W sy` (graded Hom
+categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_mem_degree`,
+`g'_mem_degree` and the `SuperSumInvFrom` versions); `RouquierGrading.mate_mem` (degree `0`),
+`dotCup_mem`, `dotCap_mem` ((G6)), `invPos_f'_mem`, `invPos_g'_mem`, `invNeg_f'_mem`,
+`invNeg_g'_mem`; `closure_mem` (`b_(s,r)` has degree `2dᵢ(r+s+1)`); `boundaryPos_mem`,
+`boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
+(products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
+
+Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
+`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
+`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
+the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
+cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
+
 ## Global factor relations: algebra parameters and reservoir
 
 Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
@@ -126,8 +180,8 @@ Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalWeightMixedSlides.lean`):
   `globalRouquierData` (the signed crossing is `+ψ` at distinct colours), for every parameter
   family, hence for both `parameterTwist D Sc` (probe) and the reservoir factor.
 
-Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `quadNe`,
-`braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
+Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `braid`, `braidEq`, `invNe`
+(`quadZero`, `quadNe`: next section). `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
 ## Distinct-colour quadratic relation on the global factors: algebra level
@@ -170,12 +224,23 @@ Hence, on components at a height-`n` module `M`:
   + ∑ s'^{pq}_ij x_in^q ≫ x_out^p` (powers `endoPower`);
 - `heightInduction_square_zero`: `ψ_ij.app ≫ ψ_ji.app = t'_ij 𝟙`.
 
-Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: the weight-level assembly
-(template `GlobalWeightMixedSlides`; every term has parity `0`, so only the `0`-components are
-compared), with `rouquierPower (dot i)` on the outer induction becoming `endoPower x_out`
-componentwise (`E j ◁ dot i` is the outer dot, `dot j ▷ E i` the inner dot), and
-`parameterTwist_involutive` to state the fields for `globalRouquierFamily D (parameterTwist D Sc)`
-with parameters `Sc`.
+**Weight level (checked,** `CyclotomicAction/GlobalWeightMixedQuadratic.lean`**).**
+
+- `heightContentMixedSquareNe`, `heightContentMixedSquareZero`: the relation on content blocks
+  with arbitrary height and content transports;
+- `globalActionCross_square_ne` (`d_ij ≠ 0`): `ψ_ij ≫ ψ_ji = t'_ij (E_j ◁ x_i^{d_ij})
+  + t'_ji (x_j^{d_ji} ▷ E_i) + ∑_{0<p<d_ij, 0<q<d_ji} s'^{pq}_ij (x_j^q ▷ E_i ≫ E_j ◁ x_i^p)`
+  with `rouquierPower` and the parameters of `parameterTwist D Sc`;
+- `globalActionCross_square_zero` (`d_ij = 0`): `ψ_ij ≫ ψ_ji = t'_ij 𝟙`;
+- `globalActionSignedCross_square_ne`, `globalActionSignedCross_square_zero`: the same for the
+  signed crossing of `globalRouquierData` (`+ψ` at distinct colours).
+
+Every term has parity `0` (`d_ij |i| = 0`, and `s'^{pq}_ij ≠ 0` forces `p|i| = q|j| = 0`,
+`scalars_parity_of_s_ne_zero`), so only the `0`-components are compared; `E_j ◁ x_i` is the
+outer dot and `x_j ▷ E_i` the inner dot of `heightInduction_square_ne`. These are the `quadNe`,
+`quadZero` fields with scalars `parameterTwist D Sc` for the data built from `Sc`. Remaining:
+restate them for `globalRouquierFamily D (parameterTwist D Sc)` with scalars `Sc` via
+`parameterTwist_involutive`, together with the other fields.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
@@ -921,8 +986,14 @@ the factor crossings on `((Z F₁) F₂) F₃` with the same sign `(-1)^(σ p)`:
 the super interchange law past `ξ₂`, the right one by the signed naturality
 `S(g) ξ = (-1)^(σ|g|) ξ g` of the outer shift (`shifted_post_braid`). The signs agree,
 so `postCrossSame_braid` is `W.braid` whiskered on the left (`post_whisker_braid`), with
-no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy. Next: assemble
-(1.9) for the pattern `iii` over all pairs of paths, then `iji`.
+no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy.
+(1.9) for the pattern `iii` on all pairs of paths (checked,
+`SwappedAssembly/BraidSame/AllPaths.lean`, `braid_same`): two paths with the same
+endpoints take the same number of probe summands (the probe content of the endpoint is
+`s.1 + a αᵢ`), so they lie in one of the blocks `PPP`, `{PPR, PRP, RPP}`,
+`{PRR, RPR, RRP}`, `RRR`, each already checked. `braid_same c L ν i hc h p q Z` is the
+field `CrossBraid.braid` at `i = j = k'` for `swappedGens c L`, under `c.IsInverse` and
+`CrossCoeffInputs`. Next: the pattern `iji`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -1134,10 +1205,17 @@ Correspondingly `C_RP = -Σ_r q^(r+1) u_R(r) v_P(-r-1)`, `D_PR = Σ_s q^(s+2) u_
 `ProbeWindowInverse.md` (`c_r = q^(r+1)`, `d_s = q^(s+2)`), and its window identities (4)
 follow from the literal slide (1), whose sign does not involve `a`. So §§5–6 of
 `SwappedHomInversion.md` hold as written for both parities; only the written route changed.
-Open check: `SwappedActionAssembly.md` (A6) also asserts that this (Lean) diagonal breaks the
-mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is still a
-hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
-and the braid would require opposite signs).
+Model check of the braid for the Lean sign (exact computation, not a proof).
+`SwappedActionAssembly.md` (A6) asserted that this (Lean) diagonal breaks the mixed `jij`
+braid in the smallest mixed case. `scripts/Nondegeneracy/swapped_braid_twist_model.py` models
+the swapped entries on a skew polynomial ring (twists for crossings of distinct colours or
+across the sides, the factor `Q` as in `crossNeEntry`, the odd Demazure operator on one side,
+the mixed entries `a`, `J`, `-(a a J⁻¹)`, `-(J a J⁻¹)` with the Lean `a`), which reproduces
+the proved slide and the proved `iii` blocks. In this model (1.9), with its correction, holds
+on every block of the words `iii`, `iji`, `iij`, `ijj`, `jii`, `jij`, `ijk`, for all parities
+and several exponents `dn` (including the `s` terms); negating `a` breaks `iii` and the mixed
+`jij` blocks. So the assertion of (A6) does not hold for the Lean entries in this model, and
+slide and braid do not require opposite signs; `CrossBraid` remains to be proved in Lean.
 
 **Probe window identities (checked).** `SwappedAssembly/CentralInverse/Windows.lean`
 proves the window identities (4) of `ProbeWindowInverse.md` in any preadditive category,
@@ -1218,6 +1296,51 @@ up to errors `𝟙 - f ≫ g`, `𝟙 - g ≫ f` that are nilpotent in `End`, the
 (`unipotentBlock_eq`). The nilpotence inputs, which `SwappedHomInversion.md` (8)–(9) derive
 from the gradings (G6)–(G8), are explicit hypotheses here; the same gradings are used in (7)
 to place the `r > j` contractions in the ideal `J`.
+
+**Two-sector reductions (checked).**
+`SwappedAssembly/CentralInverse/TwoSector.lean` handles the augmented matrices restricted to a
+reservoir sector `R` and a probe sector `P`, with the windows `Oᴴ` attached to the probe:
+`posMap sR sP Cx Dx vR rowP : XR ⊞ XP ⟶ YR ⊞ YP ⊞ Oᴴ` (blocks `[sR, Cx, vR; Dx, sP, rowP]`)
+and `negMap sR sP Cx Dx uR colP : XR ⊞ XP ⊞ Oᴳ ⟶ YR ⊞ YP` (blocks `[sR, Cx; Dx, sP; uR, colP]`).
+The reservoir block `sR` is a cap or cup window inverted by the case (a)/(d) inverse `(jR, AR)`
+or `(jR, BR)`; the reductions are exact, with no nilpotence input.
+`isIso_posMap_of_cap`: `posMap` is invertible if the probe residual
+`gMap (sP - Dx ≫ jR ≫ Cx) (AR n ≫ Cx) (rowP a - Dx ≫ jR ≫ vR a) (AR n ≫ vR a)` is.
+`isIso_posMap_of_cup`: the same with the residual
+`gMap (sP - Dx ≫ jR ≫ Cx) ∅ (Sum.elim (rowP a - Dx ≫ jR ≫ vR a) (Dx ≫ BR n)) ∅`.
+`isIso_negMap_of_cap`: residual `gMap (sP - Dx ≫ jR ≫ Cx) (Sum.elim (AR n ≫ Cx)
+(colP a - uR a ≫ jR ≫ Cx)) ∅ ∅`. `isIso_negMap_of_cup`: residual
+`gMap (sP - Dx ≫ jR ≫ Cx) (colP a - uR a ≫ jR ≫ Cx) (Dx ≫ BR n) (uR a ≫ BR n)`.
+Each is `S ≫ posMap ≫ T = diag(1, residual)` with explicit triangular `S`, `T`
+(`isIso_tMap_diag`, `isIso_tShear`, `isIso_tLowerShear`, `isIso_of_comp_eq_comp`).
+The residual terms `Dx ≫ jR ≫ Cx` are the reservoir closures (9) of `SwappedHomInversion.md`;
+`AR n ≫ Cx`, `Dx ≫ BR n` are the contraction terms (7). Comparing the residuals with the
+case (a)–(d) windows (proposed): `posMap`/cap ↔ case (c), `posMap`/cup ↔ case (a),
+`negMap`/cap ↔ case (d), `negMap`/cup ↔ case (b), modulo `J`.
+
+Next: the comparison of the four residuals with cases (a)–(d) modulo `J` (one lemma per case
+via `isIso_gMap_of_sub_mem`), the identification of `augPosMat`/`augNegMat` with
+`posMap`/`negMap` (formulas `Cx = Σ q^(s+2)•(vR s ≫ u ≫ y^(-s-1))`,
+`Dx = -Σ q^(r+1)•(x^(-r-1) ≫ v ≫ uR r)` of `AugmentedSectorBlocks.md` §3, proposed), and
+window counts.
+
+**Coefficient ideal (checked; route hypothesis).**
+`SwappedAssembly/CentralInverse/CoefficientIdeal.lean`. `ProbeWindow.CoefficientIdeal P` is a
+filtration `mem n` of morphisms (`J₀ ⊇ J₁ ⊇ …`) closed under `0`, `+`, `-`, with
+`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`, `J_bound = 0`, and every morphism between objects satisfying `P` in `J₀`.
+`CoefficientIdeal.isNilpotent`: an endomorphism in `Mat_ C` of `P`-objects with entries in
+`J₁` is nilpotent. `CoefficientIdeal.isIso_of_sub_mem` ((12)): if `G` is invertible and
+`F - G` has entries in `J₁`, then `F` is invertible. `isIso_gMap_of_sub_mem` is the blockwise
+form for `gMap`.
+*Route hypothesis, to be removed.* This one structure carries both inputs that
+`SwappedHomInversion.md` takes from the gradings (G6)–(G8): joint nilpotence of the reservoir
+closures `b_(s,r)` ((8)–(9)), and membership of the `r > j` contractions in `J` ((7)); these are
+the conditions `Dx ≫ jR ≫ Cx ∈ J₁` and the contraction defects in `J₁` to be supplied with it.
+Caveat: the structure asks for a two-sided filtration on all morphisms between probe objects
+(`mem_zero` for every such morphism), while §4 of the written argument only asserts joint
+nilpotence of the matrix ideal generated by closed reservoir coefficients on probe and window
+objects. Whether the gradings give this stronger form is not checked; a graded `ProbeReservoir`
+should supply exactly the ideal of §4.
 
 Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
 (the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
@@ -1334,8 +1457,26 @@ and `homDistinctMixedMateDot_isIso`: for even `x` with `IsIso x`, even nilpotent
 Also `isNilpotent_rightTranspose` and `map_rouquierPower`. Applied to `mixedQ j i`
 (`t_ji • xᵈʲⁱ + t_ij • yᵈⁱʲ + Σ s xᵖ yᑫ`, `0 < q`; `t_ji • 1` when `d_ji = 0`), this needs the
 probe dot `P.T.dot j` invertible and the reservoir dot `P.W.dot i` nilpotent, which are
-interface hypotheses of the sigma linking step. Next: identify the `(P,R)` sigma entry with
-`homDistinctMixedMateDot` up to transports.
+interface hypotheses of the sigma linking step.
+
+**The `(P,R)` sigma entry is invertible (checked).**
+`SwappedAssembly/Sigma/MixedEntry.lean`: `ProbeReservoir.isIso_sigmaEntry_probe_reservoir`.
+For `i ≠ j`, the entry `P.sigmaEntry c i j ν p q Z` from the path `p` of `Eⱼ Fᵢ` with `Eⱼ` on
+the probe and `Fᵢ` on the reservoir is an isomorphism, assuming every probe dot `P.T.dot`
+is a unit and every reservoir dot `P.W.dot` is nilpotent (the hypotheses of
+`CrossCoeffInputs.of_factor`). Steps: `sigmaEntry_eq` reduces the entry to cup ≫ crossing ≫
+cap; the three layers are rewritten as the post unit, `J⁻¹ ≫ Q_ji` and the post counit with
+transports (`isIso_comp_layers`); `isIso_postCup_mixedCross_postCap` removes the transports
+(after `m₁ = m₀`, which holds since the probe letter does not change the reservoir weight)
+and leaves `homDistinctMixedMateDot (P.T.E j) (P.W.adj i) κ τ H (mixedQ j i …)`.
+`isIso_homDistinctMixedMateDot_param` proves this invertible for dots of any parity: by
+`Scalars.s_eq_zero`, `Scalars.s_symm` and `Datum.even_d_of_odd`, every supported monomial
+has even powers of an odd dot, so the even case `homDistinctMixedMateDot_isIso` applies to
+`x²` (resp. `y²`) (`isIso_homDistinctMixedMateDot_of_pow`). Remaining for `hσ`: the patterns
+`(R,P)` (`homDistinctMixedPreMateDot_isIso`), `(P,P)` (`homContentDistinctPreMate_isIso`) and
+`(R,R)` (`homShiftedPostCrossMate_isIso`), then `sigmaPermutation_of_isIso`. The same-colour
+case `i = j` is not part of `SigmaPermutation`; it is `SwappingInvertible`
+(`Sigma/SameColourBlocks.lean`).
 
 ## Old-only ELV quotient module
 
