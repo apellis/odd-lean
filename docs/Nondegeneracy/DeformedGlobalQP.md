@@ -1,9 +1,9 @@
 # Deformed all-prefix QP calculation
 
-**Status: the signed all-word QP identity is formalized.** The checked
+**Status: the signed all-word QP identity and full ELV P descent are formalized.** The checked
 library convention retains a minus sign for each repeated-even factor;
-see §3. The source-normalized formula proposed below and the old-generator
-balance argument for P remain separate obligations. This does not construct
+see §3. Old-generator balance and the quotient map P are proved in §4.
+The source-normalized formula proposed below remains a separate obligation. This does not construct
 an exact projective resolution or prove the ideal-sum assertion.
 
 Use the full coefficient algebra A and polynomials f_j of that document,
@@ -204,11 +204,16 @@ and ε=p(i)(N_i+p(β)). The needed equation for homogeneous old b is
 
 **Checked coefficient case.** `ELVPScalar.oldGenerator_scalar_balance` proves
 this case for arbitrary words, cutoffs and coefficients in the existing ELV
-quotient category. `elv_comm` derives graded commutativity through homogeneous
-lifts; `scalar_slide` includes the signed box-product interchange. Its twist is
-on total coefficient-plus-diagram parity. The dot and crossing error arguments
-below, and therefore general old-relation preservation and P descent, remain
-unformalized for these full coefficients.
+quotient category. `elv_comm` derives graded commutativity through
+homogeneous lifts; `scalar_slide` includes the signed box-product interchange.
+`ELVAppendBalance.lean` proves dot and crossing error containment in the
+append-old relation span, including the exceptional braid correction. Spectator
+recursion and normal-form spanning extend balance to arbitrary old morphisms,
+with the twist on total coefficient-plus-diagram parity. `ELVPDescent.lean`
+then proves preservation of the prepend-old relation span and defines
+`ELVOld.pMap : Target →ₗ[k] AppendTarget`. Its representative formula is
+precomposition by the prescribed W; B[s]-linearity, injectivity and exactness
+are not asserted.
 
 For coefficients c∈A it holds exactly: W has parity ε, and c is
 supercentral. For idempotents it is exactly the strand permutation.

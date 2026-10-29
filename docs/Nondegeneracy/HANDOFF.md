@@ -1,6 +1,6 @@
 # Odd nondegeneracy: restart state
 
-## ELV coefficient-only P balance
+## Full ELV P descent
 
 `ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
 for every word, cutoff and full ELV coefficient, with no homogeneity assumption
@@ -15,11 +15,17 @@ then includes both coefficient and diagram signs in the signed box product.
 This establishes the coefficient-generator case of `DeformedGlobalQP.md` §4,
 not a quotient map or an assumed balance package.
 
-Remaining: old-dot and old-crossing error containment in the append-old ideal,
-closure under arbitrary old composites, and preservation of every source old
-relation. Consequently the P map from `ELVOld.Target` to the append-old quotient
-and its ordinary twisted B[s]-linearity remain unconstructed. No injectivity,
-exactness or projectivity follows from coefficient balance alone.
+`ELVAppendBalance.lean` now proves old-dot and old-crossing error containment
+in `appendRelations`, including the exceptional braid correction. Spectator
+recursion, composition closure, affine normal-form spanning and coefficient
+factorization prove `appendError_mem_appendRelations` for every full ELV old
+morphism. `ELVPDescent.lean` proves `appendW_relations` and constructs
+`pMap : Target →ₗ[k] AppendTarget`, with `pMap_projection` giving exactly
+precomposition by W. The append span kills only right-extended old ideal
+elements followed by arbitrary ambient continuations.
+
+Remaining: ordinary twisted B[s]-linearity, injectivity, ideal-sum exactness
+and projectivity. No such conclusion is asserted by P descent alone.
 
 ## Full ELV all-word signed QP product
 
@@ -406,6 +412,28 @@ inverse-coefficient hypothesis.
 Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
+
+## Signed source-endpoint dot transport
+
+`SignedDotNormalOrder.lean` proves `decorated_crossings_normal_order`:
+arbitrarily many interleaved crossing/dot-monomial blocks collect at the
+source endpoint modulo `Low`, with the explicitly computed coefficient
+`collectedSourceSign` and chronological dot list `collectedSourceDots`.
+Its producers `cross_dot_move_signed`, `dot_down_signed` and
+`dots_down_signed` retain the sign of every local slide. The input dot
+position is identified with the inverse permutation by `sourceDotPosition_eq`.
+Incident slides contribute the product of the crossing colours' parities;
+distant slides also multiply by the dot colour's parity. All signs are
+derived from the positional relations, not extracted from `Approx`.
+
+**Residual:** the monomial collection theorem preserves chronological dot
+order, rather than sorting odd variables. The finite-sum expansion connecting
+`leadingMoveHom` to these decorated monomials is not yet proved. Its
+collected polynomial still needs identification with the prescribed product;
+scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
+`homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
+No count of equal colours has been identified with the moving-dot degree.
+
 
 ## Signed top-crossing chain
 
