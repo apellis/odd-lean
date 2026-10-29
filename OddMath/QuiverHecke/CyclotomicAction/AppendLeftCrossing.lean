@@ -638,4 +638,100 @@ theorem appendLeftSum_mul_lastDot (i : I) (n : ℕ) (F : (Fin (n + 1) × ℕ) �
     simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft]
     rfl
 
+/-! ## The two-sided corner as a direct sum -/
+
+/-- Left multiplication by `ψ'(1)` on left-crossing coordinates. -/
+def appendLeftProj (i : I) (n : ℕ) :
+    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :=
+  Finsupp.mapRange.addMonoidHom (AddMonoidHom.mulLeft (appendAlgebra D Sc i n 1))
+
+theorem appendLeftSum_appendLeftProj (i : I) (n : ℕ) (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n (appendLeftProj D Sc i n F) = appendLeftSum D Sc i n F := by
+  induction F using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, map_add, hf, hg, map_add]
+  | single q b =>
+    obtain ⟨j, m⟩ := q
+    simp only [appendLeftProj, Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
+      AddMonoidHom.coe_mulLeft]
+    exact appendLeftSum_single_appendOne_mul D Sc i n j m b
+
+/-- Left-crossing coordinates on old words ending in the appended colour. -/
+def appendLeftCoordinates (i : I) (n : ℕ) : AddSubgroup ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) where
+  carrier := {F | ∀ q, appendAlgebra D Sc i n 1 * F q = F q}
+  add_mem' {F G} hF hG q := by rw [Finsupp.add_apply, mul_add, hF, hG]
+  zero_mem' q := by simp
+  neg_mem' {F} hF q := by rw [Finsupp.neg_apply, mul_neg, hF]
+
+/-- The two-sided append corner `ψ(1) Hn (n+2) ψ(1)`. -/
+def appendTwoSidedCorner (i : I) (n : ℕ) : AddSubgroup (Hn D Sc (n + 1 + 1)) where
+  carrier := {y | appendAlgebra D Sc i (n + 1) 1 * y = y ∧ y * appendAlgebra D Sc i (n + 1) 1 = y}
+  add_mem' {x y} hx hy := ⟨by rw [mul_add, hx.1, hy.1], by rw [add_mul, hx.2, hy.2]⟩
+  zero_mem' := ⟨by simp, by simp⟩
+  neg_mem' {x} hx := ⟨by rw [mul_neg, hx.1], by rw [neg_mul, hx.2]⟩
+
+theorem appendLeftSum_mem_appendTwoSidedCorner (i : I) (n : ℕ)
+    (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n F ∈ appendTwoSidedCorner D Sc i n := by
+  induction F using Finsupp.induction_linear with
+  | zero => exact zero_mem _
+  | add f g hf hg => rw [map_add]; exact add_mem hf hg
+  | single q b =>
+    obtain ⟨j, m⟩ := q
+    rw [appendLeftSum_single]
+    refine ⟨?_, ?_⟩
+    · rw [← mul_assoc, ← mul_assoc, ← map_mul, one_mul]
+    · rw [mul_assoc, ← map_mul, mul_one]
+
+theorem appendPolySum_mem_appendTwoSidedCorner (i : I) (n : ℕ) (G : ℕ →₀ Hn D Sc (n + 1)) :
+    appendPolySum D Sc i n G ∈ appendTwoSidedCorner D Sc i n := by
+  induction G using Finsupp.induction_linear with
+  | zero => exact zero_mem _
+  | add f g hf hg => rw [map_add]; exact add_mem hf hg
+  | single m b =>
+    rw [appendPolySum_single]
+    refine ⟨?_, ?_⟩
+    · cases m with
+      | zero => rw [pow_zero, one_mul, ← map_mul, one_mul]
+      | succ m => rw [pow_succ', ← mul_assoc, ← mul_assoc, append_one_mul_affineLastDot]
+    · rw [mul_assoc, ← map_mul, mul_one]
+
+/-- The sum map `(F, G) ↦ F(u) + j(G)` into the two-sided corner. -/
+def appendCornerSum (i : I) (n : ℕ) :
+    appendLeftCoordinates D Sc i n × (ℕ →₀ Hn D Sc (n + 1)) →+ appendTwoSidedCorner D Sc i n :=
+  AddMonoidHom.codRestrict
+    (((appendLeftSum D Sc i n).comp (appendLeftCoordinates D Sc i n).subtype).coprod
+      (appendPolySum D Sc i n))
+    (appendTwoSidedCorner D Sc i n) fun _ =>
+      add_mem (appendLeftSum_mem_appendTwoSidedCorner D Sc i n _)
+        (appendPolySum_mem_appendTwoSidedCorner D Sc i n _)
+
+/-- **Append-side Mackey decomposition of the two-sided corner** (`AppendCoordinates.md` §4):
+`ψ(1) Hn (n+2) ψ(1) = ⊕_(j ≤ n, m) ψ(c'_j x^m) τ ψ(ψ'(1) Hn (n+1)) ⊕ ⊕_m z^m ψ(Hn (n+1))`. -/
+def appendCornerEquiv (i : I) (n : ℕ) :
+    appendLeftCoordinates D Sc i n × (ℕ →₀ Hn D Sc (n + 1)) ≃+ appendTwoSidedCorner D Sc i n :=
+  AddEquiv.ofBijective (appendCornerSum D Sc i n) ⟨by
+    rw [injective_iff_map_eq_zero]
+    rintro ⟨⟨F, hF⟩, G⟩ h
+    have h' := congrArg Subtype.val h
+    obtain ⟨h1, h2⟩ := appendLeftSum_add_appendPolySum_eq_zero D Sc i n F G h'
+    refine Prod.ext (Subtype.ext (Finsupp.ext fun q => ?_)) h2
+    rw [← hF q, h1 q]
+    rfl, by
+    rintro ⟨y, hl, hr⟩
+    obtain ⟨F, hF, G, hG, hFG⟩ := AddSubgroup.mem_sup.mp
+      (mem_appendLeftSum_sup_appendPolySum D Sc i n y hl hr)
+    obtain ⟨F', rfl⟩ := hF
+    obtain ⟨G', rfl⟩ := hG
+    refine ⟨(⟨appendLeftProj D Sc i n F', fun q => ?_⟩, G'), Subtype.ext ?_⟩
+    · simp only [appendLeftProj, Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_apply,
+        AddMonoidHom.coe_mulLeft, ← mul_assoc, ← map_mul, one_mul]
+    · change appendLeftSum D Sc i n (appendLeftProj D Sc i n F') + appendPolySum D Sc i n G' = y
+      rw [appendLeftSum_appendLeftProj, hFG]⟩
+
+theorem appendCornerEquiv_apply (i : I) (n : ℕ)
+    (p : appendLeftCoordinates D Sc i n × (ℕ →₀ Hn D Sc (n + 1))) :
+    (appendCornerEquiv D Sc i n p : Hn D Sc (n + 1 + 1)) =
+      appendLeftSum D Sc i n p.1 + appendPolySum D Sc i n p.2 := rfl
+
 end OddMath.QuiverHecke

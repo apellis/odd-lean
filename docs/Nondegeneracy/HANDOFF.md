@@ -4952,6 +4952,12 @@ Checked (same file): the right-dot identities at the affine level, with `z` the 
 `affineLastCrossing_mul_lastDot` (`τ z = s Y τ − s ψ(ψ'(1))`). So `X = s X'`, `E = −s E'`
 and `σ = tw` in `Rt_F`, `Rt_j`.
 
+Checked (same file): `appendCornerEquiv i n : appendLeftCoordinates × (ℕ →₀ Hn (n+1)) ≃+
+appendTwoSidedCorner`, `(F, G) ↦ appendLeftSum F + appendPolySum G`
+(`appendCornerEquiv_apply`), where `appendLeftCoordinates` are the `F` with
+`ψ'(1) F_q = F_q` and `appendTwoSidedCorner = {y | ψ(1) y = y = y ψ(1)}`; this packages
+span and directness (surjectivity replaces `F` by `ψ'(1) F`, `appendLeftSum_appendLeftProj`).
+
 Next: descend these affine identities through the cyclotomic quotient and `− ⊗_B M`
 to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear); then `short`
 and the lifts.
