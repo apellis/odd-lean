@@ -130,6 +130,27 @@ Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `
 `braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
+## Distinct-colour quadratic relation on the global factors: algebra level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedQuadratic.lean`), BE2
+arXiv:1701.04133v2 Definition 1.5, (1.7) for `i ≠ j`:
+
+- `pairQuadPoly D Sc i j A B`: `t_ij 1` if `d_ij = 0`, otherwise
+  `∑_{0<p<d_ij, 0<q<d_ji} s_ij^{pq} A^p B^q + t_ij A^{d_ij} + t_ji B^{d_ji}`, with
+  `map_pairQuadPoly` for algebra maps and `wordQuadratic_eq_pairQuadPoly`;
+- `affineLastCrossing_mul_mixed`: `c_ij c_ji = φᵢφⱼ(1) · Q_ji(φᵢ(y_j), y_i)` in the affine
+  algebra (via the diagonal matrices `pairDiag` on the words `w j i`);
+- `heightLastCrossing_mul_mixed`: the same identity at every height of the extended tower.
+
+No parameter change is made here. Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`:
+the corner square `Cr_ij ≫ Cr_ji` as a polynomial in the two signed right multiplications
+(power sign `koszulSign c (m p + ⌊m/2⌋)` for `m` multiplications by a dot of parity `c` on input
+parity `p`), transport through the comparison to the induction functors, the weight-level
+assembly, and matching with `parameterTwist`. A hand check: the `p`-dependent signs vanish
+because every surviving monomial has `p|i|` and `q|j|` even (`Sc.s_eq_zero`,
+`Datum.even_d_of_odd`), and the remaining signs `|i||j| + |i|⌊d_ij/2⌋` (resp. with
+`⌊p/2⌋`, `⌊q/2⌋`) are exactly those of `parameterTwist`.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
@@ -832,6 +853,19 @@ pair of paths of the block, via `op_sectorRelations_even/_odd` and `sectorBraid`
 Since the block is the whole path set for these endpoints, no cross-block entries
 arise. No discrepancy with `ThreeStrandSectorBraid.md` (1)–(5A). Next: (5B) on
 `{PRR, RPR, RRP}`; then `PPP`, `RRR`.
+(5B) for the `iii` braid (checked,
+`SwappedAssembly/BraidSame/MixedInterchangePostPair.lean`):
+`postCrossSame_mixedJ_pair`: the reservoir crossing on the two right letters of
+`PRR`, followed by the two mixed interchanges `PRR → RPR → RRP`, equals the
+interchanges followed by the reservoir crossing on the two left letters of `RRP`.
+Generic form `homMixedInterchange_postPair_conj` (any 2-morphism `χ` on `F₁ ≫ F₂`
+transported by `Θ_σ = homShiftPairIso`, which is the word comparison of the
+content-shifted postcomposition, `homContentPostWordIso_app`). The pair of
+interchanges followed by `Θ_κ` is `(-1)^(κκ' + κ'κ')` times `Eᵢ ◁ Θ_κ'` followed by
+the associator (`homMixedInterchange_postPair`, (7) of `PairedHomInterchange.md`
+§4 with `κ' = κ + pᵢ`); the sign is common to both sides of (8). No discrepancy
+with the written proof. Next: dot algebra on `PRR` and the block assembly; then
+`PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -1002,6 +1036,27 @@ sides the entry is that one term. Open for `SwappingInvertible`: unfold the thre
 of the single term into generator images and identify them with the probe mate of `J`
 (`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
 `-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
+
+**Swapping entry `W_A` invertible (checked); `W_B` open, as a hypothesis.**
+`SwappedAssembly/Sigma/SwappingMate.lean`: `sigmaTerm_eq_of_paths` writes the single term
+through path decompositions of its three layers; `isIso_sigmaEntry_probe` proves that the entry
+with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ` to `(P,R)` of
+`Fᵢ Eᵢ`, at `s = t - (i,i)`) is an isomorphism: its layers are the probe unit, `J`
+(`mixedJ`) and the probe counit, i.e. `isIso_probeMixedMate`, which is
+`isIso_homContentDistinctMixedPreMate_of_eq` (inverse: the word (15)) on the strand functors.
+`sides_upDn_dnUp_of_ne`: for `t ≠ s` the two paths are `((R,P),(P,R))` or `((P,R),(R,P))`.
+`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`,
+where `SwappingReservoirInvertible` is the invertibility of the other entries `W_B`
+(`(P,R) → (R,P)`, the reservoir mate of `-(a ; a ; J⁻¹)`). So
+`augmentedInvertible_of_central_of_swapping` needs `CentralInvertible c` and
+`SwappingReservoirInvertible c`. Open for `W_B`: unfold its single term in the same way
+(reservoir unit, the crossing entry `-(a ; a ; J⁻¹)`, reservoir counit) and prove the
+post-side mate invertible; its crossing carries the dots `a`, so the route is the dotted mate
+`homDistinctMixedMateDot_isIso` (`RouquierHomDistinctMixedPostDotsIso.lean`: `J⁻¹` followed by a
+polynomial with unit leading coefficient in an invertible dot and a nilpotent dot), not the
+undotted word (15). Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
+locally irreducible, so that unification compares sector expressions instead of computing
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
 
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
@@ -5225,10 +5280,24 @@ two summands of `appendTensorCornerEquiv`, with `s = koszulSign (D.parity i) (D.
 So `Rt_F` holds with `X = s · appendTensorLeftShift θ`, `E = −s · appendTensorLeftDegree θ`,
 and `Rt_j` with `tShift`.
 
-Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
-module, so only the identification of `L₀` with the content-`β` corner remains) to
-instantiate the target side of `MackeyCosets` (`direct`, `span`, `Rt_F`, `Rt_j`, `F_r`,
-`j_r`); then `short` and the lifts.
+Checked (`CyclotomicAction/AppendMackeyTarget.lean`): `MackeyTarget σ L₀ L₀'` bundles the
+target-side fields of `MackeyCosets` (`Rt F j X E r₀` with `Rt_F Rt_j direct span F_r j_r`);
+`MackeyCosets.ofTarget` assembles a `MackeyCosets` from a `MackeyTarget` and the source-side
+data (`P ρ short ℓ r₁` with `P_ρ ρ_short P_short cover ℓ_short ρ_ℓ ℓ_r P_r`).
+`appendMackeyTarget` instantiates every target field for any ring `B` that is a left
+`Hn (n+1)`-module with `IsScalarTower (Hn (n+1)) B B` and any ring endomorphism `σ` with
+`σ (r • y) = tw(r) • σ y`: `L₀ = appendTensorFixed B`, `L₀' = appendTensorLeftCoordinates B`,
+`F`, `j` the two summands of `appendTensorCornerEquiv` (`appendTargetF`, `appendTargetJ`;
+`direct`, `span` from the equivalence), `R_t` the `σ`-twisted right dot (`appendTargetRt`),
+`X = s · shift σ` (`appendTargetX`), `E = −s · degree σ` (`appendTargetE`), and `r₀ b` the
+right action `z ⊗ y ↦ z ⊗ y b` (`appendTensorRightMul`, with `appendTensorRightMul_F`,
+`appendTensorRightMul_J`).
+
+Next: the content-`β` corner instance (`B_β = e (Hn (n+1)/I) e` for
+`e = cyclotomicContentIdempotent`, `σ` the restriction of `coefficientParityHom (D.parity i)`,
+which fixes `e`; `hσ` from `rightDotCoefficient_smul` once `coefficientParityHom (D.parity i)`
+is identified with `rightDotCoefficient`); then the source side `P ρ short ℓ r₁` and its
+fields.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 
