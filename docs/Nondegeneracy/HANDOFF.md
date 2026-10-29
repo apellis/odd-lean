@@ -952,8 +952,14 @@ the factor crossings on `((Z F₁) F₂) F₃` with the same sign `(-1)^(σ p)`:
 the super interchange law past `ξ₂`, the right one by the signed naturality
 `S(g) ξ = (-1)^(σ|g|) ξ g` of the outer shift (`shifted_post_braid`). The signs agree,
 so `postCrossSame_braid` is `W.braid` whiskered on the left (`post_whisker_braid`), with
-no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy. Next: assemble
-(1.9) for the pattern `iii` over all pairs of paths, then `iji`.
+no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy.
+(1.9) for the pattern `iii` on all pairs of paths (checked,
+`SwappedAssembly/BraidSame/AllPaths.lean`, `braid_same`): two paths with the same
+endpoints take the same number of probe summands (the probe content of the endpoint is
+`s.1 + a αᵢ`), so they lie in one of the blocks `PPP`, `{PPR, PRP, RPP}`,
+`{PRR, RPR, RRP}`, `RRR`, each already checked. `braid_same c L ν i hc h p q Z` is the
+field `CrossBraid.braid` at `i = j = k'` for `swappedGens c L`, under `c.IsInverse` and
+`CrossCoeffInputs`. Next: the pattern `iji`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
