@@ -724,6 +724,25 @@ Remaining for `GeneratorsSupernatural (P.swappedGens c L)`: the crossing (its
 entries involve the scalar `c.a`, the polynomials of `Sc` and the mixed interchange)
 and the leftward crossings (`LeftwardData`).
 
+**Supernaturality of the swapped upward crossing (checked).**
+`SwappedAssembly/Supernatural/Cross.lean`: `crossImage_supernatural c hc i j ν q q'`, the
+image of `τ : Eᵢ Eⱼ → Eⱼ Eᵢ` is supernatural of parity `pᵢ pⱼ` for all summand paths,
+under the single hypothesis `hc : c.IsSupernatural` (each `c.a i t hv` is supernatural
+of parity `pᵢ` on the path `(R,P)`); for `i ≠ j` no hypothesis is needed
+(`crossNeEntry_supernatural`). The reduction `twoTwo_supernatural` treats a matrix
+between two-letter words componentwise. Components: `(P,P)` the reassociated factor
+crossing `T.cross` (`preCrossNe_supernatural`, `preCrossSame_supernatural`); `(R,R)`
+`Z ◁ W.cross` conjugated by the parity-shift comparisons (`postCrossNe_supernatural`,
+`postPairIso_supernatural`) or by the word comparison (`postCrossSame_supernatural`);
+the mixed interchange `J` and its inverse (`mixedJ_supernatural`,
+`mixedJ_inv_supernatural`, parity `pᵢ pⱼ`); the polynomial `Q` is even
+(`mixedQ_supernatural`): a monomial `x^p y^q` with `sᵢⱼ^{pq} ≠ 0` has `p pᵢ = q pⱼ = 0`
+by the parity conditions on `Sc`, and `dᵢⱼ` is even when `pᵢ = 1`. Generic tools:
+`IsSupernatural.add`, `smul`, `zsmul`, `neg`, `sum`, `mul`, `pow`, `of_parity_eq`.
+Remaining for `GeneratorsSupernatural (P.swappedGens c L)`: the leftward crossings and
+the degree-`n` cups and caps, which are data of `LeftwardData`, and the discharge of
+`c.IsSupernatural` for the coefficient constructed from `CrossCoeff.IsInverse`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
