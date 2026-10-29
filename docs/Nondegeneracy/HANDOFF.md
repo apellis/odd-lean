@@ -711,9 +711,24 @@ interchanges followed by the shifted probe crossing on the two right letters
 of `RPP`, without sign. Generic form `homMixedInterchange_pair_whiskerRight`
 (any homogeneous 2-morphism on `E₁ ≫ E₂`, equal outer shifts; the inner
 shift cancels, `homMixedInterchange_pair`). This is `PairedHomInterchange.md`
-§3 with all shifts retained; no discrepancy with the written proof. Next:
-transport the dot entries to `x₁, x₂, z` on the first path, then assemble the
-block; then (5B) on `{PRR, RPR, RRP}`.
+§3 with all shifts retained; no discrepancy with the written proof.
+Dot algebra on the first path `PPR` (checked,
+`SwappedAssembly/BraidSame/SectorDots.lean`): `Φ₁ = Eᵢ ◁ J` (`pprToPrpIso`),
+`Φ₂ = Φ₁ ≫ J` (`pprToRppIso`), `x₁ = ppLeftDot`, `x₂ = ppRightDot`,
+`z = pprPostDot`, `γ = Φ₂ a Φ₂⁻¹` (`pprLeftCoeff`), `δ = Φ₁ (Eᵢ ◁ a) Φ₁⁻¹`
+(`pprRightCoeff`), `q = (-1)^{pᵢ}`. Conjugation by `Φ₂` carries the dots of
+`RPP` to `x₁, z`; conjugation by `Φ₁` carries those of `PRP` to `q x₂, q z`
+(`mixedJ_conj_rpPreDot`, `mixedJ_conj_rpPostDot`). Supercommutation with sign
+`q`: `ppLeftDot_comp_ppRightDot`, `ppLeftDot_comp_pprPostDot`,
+`ppRightDot_comp_pprPostDot`, `preCrossSame_comp_pprPostDot`. Under
+`c.IsInverse`: even `γ(z - x₁) = 1 = (z - x₁)γ`, `δ(z - x₂) = 1 = (z - x₂)δ`;
+odd `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂` (`pprLeftCoeff_even/_odd`,
+`pprRightCoeff_even/_odd`); under `CrossCoeffInputs` the odd denominators are
+units (`pprLeftDenom_isUnit`, `pprRightDenom_isUnit`). These are exactly the
+hypotheses of `sectorRelations_even/_odd` (read in `(End PPR)ᵐᵒᵖ`); the sign
+`q` of `δ`'s arguments matches the written `a(qx₂, qz)`. No discrepancy. Next:
+assemble the block (path enumeration of the `iii` entries, block sums,
+`sectorBraid`); then (5B) on `{PRR, RPR, RRP}`; then `PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -960,6 +975,24 @@ tracks sides through each layer (`sides_of_cup`, `sides_of_cross`, `sides_of_cap
 nonzero cup entry duplicates one side, a crossing swaps two sides (`SPath.sides_upUp` for
 distinct colours), a cap removes a matching pair (`sigma_sides`). Remaining for `hσ`:
 invertibility of this composite in each of the four side patterns `[a, b]`.
+
+**Mixed mate with a dotted crossing, post side (checked).**
+`SKM/RouquierHomDistinctMixedPostDots.lean`, the mirror of
+`homDistinctMixedPreMateDot` for the pattern where the crossing is `J⁻¹` followed by the
+action `Φ` of the parameter polynomial on `E ≫ Π^κ(Y ≫ E')`, `Y = Π^κ H ≫ F'`:
+`homDistinctMixedMateDot E A κ τ H Φ` (equal to `homDistinctMixedMate` at `Φ = 𝟙`,
+`homDistinctMixedMateDot_id`; linear in `Φ`, `homDistinctMixedMateDotLinear`).
+`homShiftPostAdjunction_counit_transpose`: an even post dot `Y ◁ y` before the shifted
+counit is the transposed dot `(Π^κ H ◁ yᵀ) ▷ E'`, `yᵀ = rightTranspose A A y`.
+`homDistinctMixedMateDot_monomial`: for even `x`, `y`, the dotted mate of
+`x ▷ _ ≫ E ◁ Π^κ(Y ◁ y)` is `(x ▷ Y ≫ E ◁ (Π^κ H ◁ yᵀ)) ≫ U`. Algebraic step (14):
+`isUnit_smul_pow_add_of_mem_admissibleMonomials` (`c • aᵈ + N` is a unit for `a` a unit,
+`b` nilpotent, `N` in the span of admissible monomials `aᵖ bᑫ`, `q ≥ 1`, with commuting
+admissible powers). Note: `Cross.lean` attaches `Q` after `J⁻¹`, while
+`SwappedDistinctMixedMates.md` §1 attaches it to `J`; for this orientation the dot to be
+transposed is the one on the postcomposed edge `E'`, along `E' ⊣ F'`. The invertibility
+argument (unit plus nilpotent) is unchanged. Next: assemble `Dot(Q) = G ≫ U` with `G` a
+unit from these lemmas, then link the four side patterns of `sigmaEntry_eq` to the mates.
 
 ## Old-only ELV quotient module
 
@@ -4942,5 +4975,21 @@ Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnInvolution.lean`.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnIdealIdentification.lean`.
 
-Open obligation for §5: `T ≠ ∅` (carry `T` as extra coefficient generators on the ELV side;
-the half-turn fixes `a ⊗ 1` up to the sandwich sign, so homogeneity of `T` is needed).
+### The half-turn with extra coefficient generators (checked)
+
+`OddMath/QuiverHecke/HalfTurn/CoefficientGenerators.lean` (`SwappedVacuumCoordinates.md` §§5–6):
+
+- `CoefficientGeneratorSpan T s t`: the two-sided span `(T)` of the generators `a ⊗ 1`, `a ∈ T`.
+- `transformedIdeal_eq_sup`: `K_(N,T) = K_N + (T)`.
+- `htCoef_coefficientGeneratorSpan_le`, **`map_htCoef_coefficientGeneratorSpan`**: `U((T)) = (T)`
+  (for the twisted parameters) when every `a ∈ T` is homogeneous (`∃ q, CoefParity D q a`);
+  `U(x ≫ a ⊗ 1 ≫ y)` is a sign times `U(y) ≫ a ⊗ 1 ≫ U(x)` by `htCoef_sandwich`.
+- **`map_htCoef_transformedIdeal_sup`**: `U(K_(N,T)) = I_N + (T)`;
+  **`comap_htCoef_elvRelationSpan_sup`**: `U⁻¹(I_N + (T)) = K_(N,T)`, for homogeneous `T`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurnCoefficientGenerators.lean` (`T` with an even and
+an odd element).
+
+The half-turn ideal identification of §5 is complete for homogeneous `T` (the coefficient-power
+monomials of §6 are homogeneous). Inhomogeneous `T` is not covered: the sandwich sign depends on
+the parity of the middle coefficient; replace such `T` by its set of homogeneous components.
