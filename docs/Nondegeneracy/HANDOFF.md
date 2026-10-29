@@ -1141,6 +1141,20 @@ and `E l r - B l ≫ j ≫ Cc r`) is invertible, with inverse entries `B' r ≫ 
 `ProbeWindow.isIso_cupResidual`: if `(j, D)` inverts the cup window `[s, U]`, the residual
 `cupResidual B Cc E j D : Oᴸ ⟶ O^{T ⊕ b}` (entries `E l r - B l ≫ j ≫ Cc r`, `-(B l ≫ D n)`)
 is invertible, with inverse entries `E' r l`, `-(U n ≫ C' l)`. Here `M⁻¹ = [a', B'; C', E']`.
+
+**Central inversion as a matrix isomorphism (checked).**
+`SwappedAssembly/Sigma/AugmentedMatrix.lean` packages the central entries as maps in `Mat_`:
+`augPosMat c i ν t s Z` has rows the `EF` paths and columns the `FE` paths together with
+`Fin (D.h i ν).toNat × nil`, with entries `σ p q` and `ε n p r`; `augNegMat` has rows the `EF`
+paths together with `Fin (-D.h i ν).toNat × nil`, columns the `FE` paths, entries `-σ p q` and
+`η n r q`. The generic `exists_famInverse_of_isIso` turns an inverse in `Mat_` of a map between
+finite families into entrywise inverse equations against `famId` (the `famDelta` identity).
+`posInverse_of_isIso`, `negInverse_of_isIso`: invertibility of these matrices for every `Z`
+gives `PosInverse`, `NegInverse` (with `lc = -b(.inl)`, `dc = b(.inr)` on `n < H`, `0` beyond).
+`centralInvertible_of_isIso`: invertibility at `s = t` with `P.wt t = ν` for the sign of
+`D.h i ν` gives `CentralInvertible`. What remains is invertibility of `augPosMat`/`augNegMat`
+from the sector blocks.
+
 Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
 (the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
 stabilization (13)/(14) and nilpotent lifting (12) of `SwappedHomInversion.md`; the nilpotence
