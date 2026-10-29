@@ -4344,12 +4344,20 @@ Consumer: `scripts/NonVacuity/SwappedConditionalNondegeneracy.lean`.
 
 Glue not yet available (open):
 
-- `CyclotomicAction.GlobalLocalInversion` does not appear. `globalRouquierFamily` targets
-  `TwoSCat.of k (SCat k)`, whose objects and 2-morphisms lie one universe above `k`, while
-  `ProbeReservoir` and `UpwardModuleAction` (sectors `V : List I → Type u`) need `B` in the
-  universe of `k`. To use the cyclotomic factors as `P.T`, `P.W`, generalize the universes of
-  `ProbeReservoir`/`SwappedObligations`/`UpwardModuleAction`, or realize the factors in a
-  small model. This is a universe matter, not a mathematical one.
+- `CyclotomicAction.GlobalLocalInversion` does not appear. Universes (checked): the swapped
+  assembly (`ProbeReservoir`, `Generators`, `Mod`, `layerRep`, `SwappedRelationData`) now
+  takes `B : Type uB` with `BicategoryStruct.{w, v} B` (modules in `Type (max u w)`), and
+  `UpwardModuleAction`, `ReservoirVacuumEvaluation`, `SwappedVacuumEvaluation`,
+  `BoundedCyclicRecovery`, `SwappedVacuumBlock` take their modules in an arbitrary universe;
+  `nondegeneracy_of_swapped_vacuum_observations` holds for every such `B`. So
+  `TwoSCat.of k (SCat k)` is admissible universe-wise. Remaining gap (Π on Hom categories):
+  `ProbeReservoir` needs `[∀ a b : B, PiSupercategory k (a ⟶ b)]` (the parity shift
+  `homParityShift` of the content-shifted Hom functors), which `SCat k` does not provide.
+  The planned route: rebuild the global family on `PiSCat k` (whose 2-structure is that of
+  `SCat` on the underlying supercategories, and which is a Π-2-supercategory, so each Hom
+  category is a Π-supercategory by `PiTwoSupercategory.homPiLeft`), using that the weight
+  spaces are Π-supercategories (`SuperBimodule` is; `ContentSupported` is closed under
+  isomorphism; products of Π-supercategories). Engineering only.
 - `AdjunctionBubbleSeries` is not derivable from `SwappedRelationData`: the relation
   identities constrain only the generator relations, while the series fixes the values of
   the closed left bubbles (leftward cup with the sign `-q`, then the cap with dots) against

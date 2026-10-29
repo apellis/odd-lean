@@ -58,11 +58,11 @@ therefore part of the observation.
 noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams SwappedAssembly
-universe u
+universe u uB v w
 
 section Observation
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (B : Type u) [BicategoryStruct.{u, u} B]
+  (B : Type uB) [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -123,7 +123,7 @@ end Observation
 
 section Field
 variable {I X k : Type u} [AddCommGroup X] [Field k]
-  (B : Type u) [BicategoryStruct.{u, u} B]
+  (B : Type uB) [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
