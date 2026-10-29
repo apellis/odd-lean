@@ -1,5 +1,33 @@
 # Odd nondegeneracy: restart state
 
+## The truncated ELV category and its actual endomorphism algebra
+
+`ELVTruncatedCategory.lean` packages words with literal `TruncatedOld` Hom
+modules as a linear supercategory. Quotient composition descends through both
+two-sided ideals; identities, associativity, and bilinearity are proved on
+representatives. `truncatedGradedSupercategory` inherits the integer grading.
+`truncatedCategory_proj` and `truncatedCategory_dproj` identify both categorical
+projections with the established quotient projections.
+
+The headline `truncatedEndGSuperAlg` is the actual endomorphism algebra of any
+word, with multiplication `f * g = g ≫ f`, full coefficient classes and
+independent integer degree and parity. `ELVTruncatedModuleBound.lean` transfers
+the explicit one-strand bound to this algebra and supplies a natural threshold
+for finite colour sets. `truncatedSingle_regular_coefficients_bounded` applies
+`RegularReservoir.coefficient_eq_zero`; `truncatedSingle_module_coefficients_bounded`
+applies its faithful module-superfunctor realization. Neither uses an assumed
+comparison map, finite-dimensionality, or a bound on arbitrary module Hom spaces.
+
+The rational odd cutoff-two, coefficient-cutoff-three consumer retains the
+proved nonzero delta class as an element of this algebra, verifies parity one
+and integer degree two, and instantiates both regular and realized coefficient
+bounds. The carrier is definitionally the existing positive-content quotient.
+
+Remaining: higher-content upper support and homogeneous factor-closure maps,
+followed by the full factor action. No monoidal structure is asserted: prepending
+need not preserve the old first-position relation. There is no `CentralInvertible`
+conclusion and no upper bound on the untruncated old algebra or enlarged `Target`.
+
 ## Coefficient-truncated one-strand support
 
 Checked (`ELVCoefficientTruncation.lean`): `TruncatedOld` is the quotient of the
@@ -30,8 +58,9 @@ including arbitrary surrounding morphisms and intermediate words. Rank-one word
 preservation reduces nonzero contexts to the one-strand corner. No evaluation
 faithfulness, coefficient injectivity into the Hom quotient, or freeness is assumed.
 
-Remaining: higher-content support
-bounds, regular-kernel realization, and the full factor action. There is no
+Remaining: higher-content support bounds, homogeneous factor-closure maps,
+and the full factor action. The regular and module coefficient bound for the
+actual one-strand endomorphism algebra is supplied above. There is no
 upper-support assertion for the untruncated old algebra or the enlarged `Target`.
 
 ## One-strand positive-content ELV spanning
