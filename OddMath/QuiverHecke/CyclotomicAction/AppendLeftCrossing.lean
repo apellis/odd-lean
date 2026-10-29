@@ -45,16 +45,16 @@ theorem cw_range'_succ {n j : ℕ} (hj : j ≤ n) :
   congr 2
   omega
 
-/-- The appended moving crossing on a word whose last old strand has the appended colour,
-as a last crossing followed by the moving crossing one level down. -/
-theorem appendShuffleHom_castSucc (i : I) {n : ℕ} (j : Fin (n + 1)) (w : Word I n) :
-    FiniteHomMatrix.single (appendShuffleTarget i (appendRun (n + 1) j.castSucc) (appendWord i w))
-        (appendWord i (appendWord i w))
-        (appendShuffleHom D Sc i (appendRun (n + 1) j.castSucc) (appendWord i w)) =
-      FiniteHomMatrix.single (appendWord i (appendShuffleTarget i (appendRun n j) w))
-        (appendWord i (appendWord i w))
-        (inductionLastCrossing D Sc i i w ≫
-          appendHom D Sc i _ _ (appendShuffleHom D Sc i (appendRun n j) w)) := by
+/-- The appended moving crossing on a word with last old colour `a`, as the last crossing
+followed by the moving crossing one level down. -/
+theorem appendShuffleHom_castSucc (i a : I) {n : ℕ} (j : Fin (n + 1)) (w : Word I n) :
+    FiniteHomMatrix.single (appendShuffleTarget i (appendRun (n + 1) j.castSucc) (appendWord a w))
+        (appendWord i (appendWord a w))
+        (appendShuffleHom D Sc i (appendRun (n + 1) j.castSucc) (appendWord a w)) =
+      FiniteHomMatrix.single (appendWord a (appendShuffleTarget i (appendRun n j) w))
+        (appendWord i (appendWord a w))
+        (inductionLastCrossing D Sc a i w ≫
+          appendHom D Sc a _ _ (appendShuffleHom D Sc i (appendRun n j) w)) := by
   have hfits : Fits (appendWord i w).1.length (cw (canWord (n + 1) (appendRun n j).1⁻¹)) := by
     apply fits_cw
     rw [canWord_appendRun]
@@ -62,14 +62,14 @@ theorem appendShuffleHom_castSucc (i : I) {n : ℕ} (j : Fin (n + 1)) (w : Word 
     simp only [List.mem_range'_1] at hx
     simp [appendWord]
     omega
-  have hR : appendHom D Sc i _ _ (appendShuffleHom D Sc i (appendRun n j) w) =
-      cl D Sc ((appendWord i w).1 ++ [i]) ((appendShuffleTarget i (appendRun n j) w).1 ++ [i])
+  have hR : appendHom D Sc a _ _ (appendShuffleHom D Sc i (appendRun n j) w) =
+      cl D Sc ((appendWord i w).1 ++ [a]) ((appendShuffleTarget i (appendRun n j) w).1 ++ [a])
         (cw (canWord (n + 1) (appendRun n j).1⁻¹)) (by
-          rw [pl_append_right [i] hfits]
+          rw [pl_append_right [a] hfits]
           simpa [appendShuffleTarget, appendWord] using sChain_wh (sChain_pl ((appendWord i w).1)
-            (cw (canWord (n + 1) (appendRun n j).1⁻¹))) [] [i]) := by
-    change appendShuffleHom D Sc i (appendRun n j) w ▷ (pres D Sc).obj (ob D [i]) = _
-    exact cl_whiskerRight D Sc _ _ [i] hfits
+            (cw (canWord (n + 1) (appendRun n j).1⁻¹))) [] [a]) := by
+    change appendShuffleHom D Sc i (appendRun n j) w ▷ (pres D Sc).obj (ob D [a]) = _
+    exact cl_whiskerRight D Sc _ _ [a] hfits
   rw [hR, inductionLastCrossing_eq_cl]
   erw [cl_comp]
   unfold appendShuffleHom
@@ -77,6 +77,31 @@ theorem appendShuffleHom_castSucc (i : I) {n : ℕ} (j : Fin (n + 1)) (w : Word 
   rw [canWord_appendRun, canWord_appendRun, Fin.val_castSucc,
     cw_range'_succ (Nat.lt_succ_iff.mp j.2)]
   simp
+
+/-- Words of length `n + 1` are the words `w ++ [a]`. -/
+theorem appendWord_pair_bijective (n : ℕ) :
+    Function.Bijective (fun p : Word I n × I => appendWord p.2 p.1) := by
+  constructor
+  · rintro ⟨w, a⟩ ⟨w', a'⟩ h
+    have h' := congrArg Subtype.val h
+    simp only [appendWord] at h'
+    obtain ⟨h₁, h₂⟩ := List.append_inj' h' rfl
+    simp only [List.cons.injEq, and_true] at h₂
+    rw [Subtype.ext h₁, h₂]
+  · intro s
+    have hs : s.1 ≠ [] := by
+      intro h; have := s.2; rw [h] at this; simp at this
+    refine ⟨(⟨s.1.dropLast, by simp [s.2]⟩, s.1.getLast hs), Subtype.ext ?_⟩
+    exact List.dropLast_append_getLast hs
+
+theorem appendWord_ne_of_ne {i a : I} (h : a ≠ i) {n : ℕ} (t t' : Word I n) :
+    appendWord i t ≠ appendWord a t' := by
+  intro e
+  have e' := congrArg Subtype.val e
+  simp only [appendWord] at e'
+  have := (List.append_inj' e' rfl).2
+  simp only [List.cons.injEq, and_true] at this
+  exact h this.symm
 
 variable [Fintype I]
 
@@ -121,6 +146,82 @@ theorem appendShuffleElement_castSucc_mul_corner (i : I) (n : ℕ) (j : Fin (n +
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [appendShuffleElement_mul_single, Category.id_comp, appendShuffleHom_castSucc,
     appendLinear_single, single_mul_affineLastCrossing]
+
+theorem appendAlgebra_one_eq_sum (i : I) (n : ℕ) :
+    appendAlgebra D Sc i n 1 =
+      ∑ w : Word I n, FiniteHomMatrix.single (appendWord i w) (appendWord i w) (𝟙 _) := by
+  change appendLinear D Sc i n (FiniteHomMatrix.localUnit Finset.univ) = _
+  rw [FiniteHomMatrix.localUnit, map_sum]
+  refine Finset.sum_congr rfl fun w _ => ?_
+  change appendLinear D Sc i n (FiniteHomMatrix.single w w (𝟙 _)) = _
+  rw [appendLinear_single]
+  change FiniteHomMatrix.single _ _ (appendEnd D Sc i w 1) = _
+  rw [map_one]
+  rfl
+
+theorem appendOne_mul_single (i : I) {n : ℕ} (t : Word I n) (s : Word I (n + 1))
+    (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord i t)) :
+    appendAlgebra D Sc i n 1 * FiniteHomMatrix.single (appendWord i t) s f =
+      FiniteHomMatrix.single (appendWord i t) s f := by
+  rw [appendAlgebra_one_eq_sum, Finset.sum_mul, Finset.sum_eq_single t]
+  · simp
+  · intro b _ hb
+    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
+      (fun h => hb (appendWord_injective i n h)) _ _
+  · simp
+
+theorem appendOne_mul_single_of_ne {i a : I} (h : a ≠ i) {n : ℕ} (t : Word I n)
+    (s : Word I (n + 1)) (f : wordObj D Sc s ⟶ wordObj D Sc (appendWord a t)) :
+    appendAlgebra D Sc i n 1 * FiniteHomMatrix.single (appendWord a t) s f = 0 := by
+  rw [appendAlgebra_one_eq_sum, Finset.sum_mul]
+  exact Finset.sum_eq_zero fun w _ =>
+    FiniteHomMatrix.single_mul_single_of_ne _ _ _ _ (appendWord_ne_of_ne h w t) _ _
+
+theorem single_mul_appendAppendOne (i : I) {n : ℕ} (t : Word I (n + 1 + 1)) (w : Word I n)
+    (f : wordObj D Sc (appendWord i (appendWord i w)) ⟶ wordObj D Sc t) :
+    FiniteHomMatrix.single t (appendWord i (appendWord i w)) f *
+        appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) =
+      FiniteHomMatrix.single t (appendWord i (appendWord i w)) f := by
+  rw [appendAlgebra_appendAlgebra_one_eq_sum, Finset.mul_sum, Finset.sum_eq_single w]
+  · simp
+  · intro b _ hb
+    exact FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
+      (fun h => hb (appendWord_injective i n (appendWord_injective i (n + 1) h.symm))) _ _
+  · simp
+
+theorem single_mul_appendAppendOne_of_ne {i a : I} (h : a ≠ i) {n : ℕ}
+    (t : Word I (n + 1 + 1)) (w : Word I n)
+    (f : wordObj D Sc (appendWord i (appendWord a w)) ⟶ wordObj D Sc t) :
+    FiniteHomMatrix.single t (appendWord i (appendWord a w)) f *
+        appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) = 0 := by
+  rw [appendAlgebra_appendAlgebra_one_eq_sum, Finset.mul_sum]
+  exact Finset.sum_eq_zero fun w' _ =>
+    FiniteHomMatrix.single_mul_single_of_ne _ _ _ _
+      (fun e => appendWord_ne_of_ne h w' w (appendWord_injective i _ e).symm) _ _
+
+/-- The moving crossings below the last old strand commute with the two corner idempotents:
+`ψ(1) c_j = c_j ψ(ψ(1))`. -/
+theorem appendOne_mul_appendShuffleElement_castSucc (i : I) (n : ℕ) (j : Fin (n + 1)) :
+    appendAlgebra D Sc i (n + 1) 1 * appendShuffleElement D Sc i (appendRun (n + 1) j.castSucc) =
+      appendShuffleElement D Sc i (appendRun (n + 1) j.castSucc) *
+        appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) := by
+  unfold appendShuffleElement
+  rw [Finset.mul_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  obtain ⟨⟨w, a⟩, rfl⟩ := (appendWord_pair_bijective n).2 s
+  dsimp only
+  rw [appendShuffleHom_castSucc D Sc i a j w]
+  by_cases h : a = i
+  · subst h
+    rw [appendOne_mul_single, single_mul_appendAppendOne]
+  · rw [appendOne_mul_single_of_ne D Sc h, single_mul_appendAppendOne_of_ne D Sc h]
+
+/-- **Left factorization on the two-sided corner**: `ψ(1) c_j = ψ(c'_j) τ`. -/
+theorem appendOne_mul_appendShuffleElement_castSucc_eq (i : I) (n : ℕ) (j : Fin (n + 1)) :
+    appendAlgebra D Sc i (n + 1) 1 * appendShuffleElement D Sc i (appendRun (n + 1) j.castSucc) =
+      appendAlgebra D Sc i (n + 1) (appendShuffleElement D Sc i (appendRun n j)) *
+        affineLastCrossing D Sc i i n := by
+  rw [appendOne_mul_appendShuffleElement_castSucc, appendShuffleElement_castSucc_mul_corner]
 
 /-! ## Sliding powers of the last dot through the last crossing -/
 
