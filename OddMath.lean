@@ -2,6 +2,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
+import OddMath.QuiverHecke.AppendShuffleRuns
 import OddMath.QuiverHecke.AppendBasis
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates

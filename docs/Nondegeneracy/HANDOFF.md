@@ -4861,5 +4861,10 @@ Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendEquivalence.lean`,
 the forward map the finite sum of `appendPBWCorner`, inverse the entrywise assembly
 `appendCoefficients`, both respecting the right old-algebra action
 (`appendCoordinateEquiv_right`, `_symm_right`). Checked: `AppendTensorCoordinates.lean`, `appendTensorEquiv`, the balanced
-descent to any unital left old-algebra module. Next: the left-oriented correction (2) of
-`AppendCoordinates.md`.
+descent to any unital left old-algebra module. Checked: `QuiverHecke/AppendShuffleRuns.lean`:
+an append shuffle is determined by `j = u⁻¹(n)`, `u⁻¹ = runPerm n j = s_j ⋯ s_(n-1)`
+(`runPerm_val`), `canWord (n+1) u⁻¹ = [j, …, n-1]` (`canWord_appendRun`,
+`exists_canWord_eq_range'`), and `appendRunEquiv : Fin (n+1) ≃ AppendShuffle` (via
+`card_appendShuffle = n + 1`). Since `cw` reverses words, the moving crossings `c_j` first
+cross the last two strands and then the old strands only: `c_j = c'_j τ_n` (algebra order).
+Next: the left-oriented correction (2) of `AppendCoordinates.md`.
