@@ -4459,3 +4459,24 @@ Glue not yet available (open):
 
 The written vacuum-recovery argument (schedule `P_i - N_i = h_i(μ)`, bubble series, §6
 bound) was checked against these interfaces; no discrepancy was found.
+
+### Reflection factor of the half-turn `U` (checked)
+
+`OddMath/QuiverHecke/HalfTurn/Mirror.lean` formalizes the first factor of the map `U` of
+`SwappedVacuumCoordinates.md` §4: the reflection of the quiver Hecke supercategory
+`pres D Sc` in a vertical axis, with the same parameters.
+
+- `mirrorSig D : SigMirror (sig D) (sig D)` reverses words; `mirrorWeight D` is `1` on dots and
+  `-(-1)^{|i||j|}` on the crossing of `i` and `j`.
+- `mirror_rel D Sc r` (every defining relation is killed). Images: quadEq ↦ quadEq,
+  quadZero(i,j) ↦ quadZero(j,i), quadNe(i,j) ↦ quadNe(j,i), slideL ↔ slideR, slideLEq ↔
+  slideREq (coefficient 1); braid(i,j,m) ↦ `z_ij z_im z_jm` braid(m,j,i);
+  braidEq(i,j) ↦ `(-1)^{|i|}` braidEq(i,j). The quadNe and braidEq cases use the interchange
+  of dot blocks on distinct strands (`dotDiag_swap`, `diag_dots_swap`,
+  `braidEq_dots_three`) and the reindexings `(p,q) ↦ (q,p)`, `s ↦ p-1-s`, `s ↦ dn-1-s`;
+  the Koszul signs vanish on the support of `s_ij` and because `dn_ij` is even for odd `i`.
+- `mirrorFunctor D Sc`, with `mirrorFunctor_obj` (words reversed) and `mirrorFunctor_diag`.
+
+Consumer: `scripts/NonVacuity/QuiverHeckeMirror.lean`. Next: the super flip
+`pres D Sc ⥤ SOp (pres D (parameterTwist D Sc))` (second factor of `U`), the composite `U`,
+and the identification of the corner ideal `U⁻¹(I_N)` with `TransformedIdeal`.
