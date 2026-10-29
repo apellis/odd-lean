@@ -826,6 +826,28 @@ Hom-sector inverse to the summand-path entries of `AugmentedInvertible` (both de
 same 2-morphisms; the path entries are their matrix coefficients through
 `P.pathFunctor`).
 
+**Sector blocks of the equal-colour augmented maps (checked).**
+`SwappedAssembly/Sigma/SameColourBlocks.lean`: for one colour `i`, the paths of `Eᵢ Fᵢ` and
+`Fᵢ Eᵢ` change the sector by `0` (sides `(P,P)`, `(R,R)`) or by `±(i, i)` (mixed sides), and
+the empty word by `0`. Between distinct sectors the empty word has no path
+(`SPath.isEmpty_nil_of_ne`), `Eᵢ Fᵢ`, `Fᵢ Eᵢ` have at most one path each
+(`SPath.subsingleton_upDn_self`, `SPath.subsingleton_dnUp_self`), existing together
+(`SPath.nonempty_dnUp_self_iff`). So for `t ≠ s` the augmented maps are single `σ` entries:
+`posInverse_of_ne`, `negInverse_of_ne` (inverse component `lc = -σ⁻¹`, no `♦`-cups/caps).
+Reduction: `augmentedInvertible_of_central_of_swapping c hcentral hswap :
+P.AugmentedInvertible c` from `CentralInvertible c` (inverses at `s = t`, all dotted windows)
+and `SwappingInvertible c` (every `sigmaEntry c i i ν p q Z` with `t ≠ s` is an isomorphism).
+Proposed bridge: `AugmentedSectorBlocks.md`. The swapping entries are single terms (cup and cap
+force their sides): at `s = t + (i,i)` the reservoir mate of `-(a ; a ; J⁻¹)` (`W_B` of
+`SwappedHomInversion.md` §7), at `s = t - (i,i)` the probe mate of `J` (`W_A`). The central
+entries are single terms with crossing entries `-q·(probe crossing)`, reservoir crossing,
+`a` (`(P,P) → (R,R)`) and `-(J ; a ; J⁻¹)` (`(R,R) → (P,P)`). Open: `SwappingInvertible`
+(formalize §7 through these single terms) and `CentralInvertible` (§§2–6). Proposed sign
+observation (§4 of the bridge): the checked crossing entries are `-q` times the diagonal of (2)
+of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K` (the earlier
+`K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
+ones. To be rechecked against `ProbeWindowInverse.md` (4).
+
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
 hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
