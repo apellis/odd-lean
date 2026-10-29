@@ -590,6 +590,20 @@ content, `nextSector_fst_same`); `preCrossSame_sq`, `postCrossSame_sq` are the
 factor relations `T.square`, `W.square` transported, and the four mixed
 entries of (A6) cancel. `CrossEntries.lean`: `SPath.mk₂`,
 `SPath.exists_eq_mk₂`, `leftDot_cons`, `rightDot_cons`.
+`SlideSame.lean` (**checked**): `swappedGens_slideEq c hc hin L i ν p q Z`
+proves the equal-colour slide fields `slideLEq` and `slideREq` of
+`CrossSlide (swappedGens c L)` entry by entry, for `c.IsInverse` and the inputs
+F2, F3 (`CrossCoeffInputs`: probe dot a unit, reservoir dot nilpotent on the
+path `RP`). The `PP` entry is the factor slide of `T` conjugated by the
+associator (`preCrossSame_slides`, via `conj_crossing_slides`); the `RR` entry
+is the factor slide of `W` transported through the word isomorphism
+(`postCrossSame_slides`); the four mixed entries are
+`SlideBlocks.mixedBlock_slideL/R` with the dot intertwinings
+`prPreDot_comp_mixedJ`, `prPostDot_comp_mixedJ` and the diagonal identities
+`crossCoeff_diag` (`y a - q a x = 1`, `a y - q x a = 1`, `a²` commutes with both
+dots; the odd case uses that `x² - y²` is invertible, which `IsInverse.odd`
+alone does not give). Interface: the slides use `CrossCoeffInputs` in addition
+to `IsInverse`; both hold for `crossCoeffOfInputs`.
 Remaining: prove the other fields of `CrossQuad (swappedGens c L)` from the probe and reservoir
 quadratic relations (diagonal blocks) and the inverse property of `c`
 (equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
