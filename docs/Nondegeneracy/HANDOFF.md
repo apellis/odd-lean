@@ -537,7 +537,8 @@ generator images of item 1 below.
    for all summand paths `p`, `q` of the unwhiskered boundaries and all
    `Z : P.H t`.
 3. Relation modules, each proving its obligation for `P.layerRep Gs Ys gens`:
-   - `Quad.lean`: `QuadRelations`.
+   - `Quad.lean`: `QuadRelations` (checked, conditional on `CrossQuad`; see
+     below).
    - `Slides.lean`: `SlideRelations`.
    - `Braid.lean`: `BraidRelations`.
    - `Zigzag.lean`: `ZigzagRelations` (checked, conditional on `CupCapZigzag`;
@@ -549,6 +550,26 @@ generator images of item 1 below.
      images; see above).
 4. `Action.lean`: combines these into `SwappedObligations` and hence
    `upwardModuleAction`.
+
+**Quadratic relations (checked).** `SwappedAssembly/Quad.lean`:
+`quadRelations`: `QuadRelations` for `P.layerRep Gs Ys gens` from
+`CrossQuad gens`. Each relation (1.7) is one matrix identity per pair of
+summand paths `p`, `q` of `Eᵢ Eⱼ 1_ν` and object `Z`. The entry of the two
+crossings is `crossCross gens i j ν p q Z`, the sum over summand paths `m` of
+`Eⱼ Eᵢ 1_ν` of the two crossing images (`compDiag_crossCross`). The entries of
+`n` dots on one strand are diagonal, equal to the `n`-th power (`compPow`) of
+the one-dot entry `leftDot` (left strand, `compLayer` of `dot i` whiskered by
+`up j`) or `rightDot` (`compDiag_leftDots`, `compDiag_rightDots`,
+`compDiag_rightDots_leftDots`). `CrossQuad gens` asks: `crossCross` vanishes
+for `i = j` and off the diagonal for `i ≠ j`; on the diagonal it is `t_ij` if
+`d_ij = 0` and `t_ij x₁^{d_ij} + t_ji x₂^{d_ji} + Σ s_ij^{ab} x₂^b x₁^a`
+(with `x₁ = leftDot`, `x₂ = rightDot`) otherwise. Supporting lemmas:
+`compList_append`, `compDiag_comp` (entries of composites are matrix
+products), `compEval_sub`, `compEval_smul`, `compEval_sum`, `compEval_of`.
+Remaining: prove `CrossQuad (swappedGens c L)` from the probe and reservoir
+quadratic relations (diagonal blocks) and the inverse property of `c`
+(equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
+intertwinings from `homMixedInterchange_pre/_post`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
