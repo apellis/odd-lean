@@ -1209,6 +1209,34 @@ up to errors `𝟙 - f ≫ g`, `𝟙 - g ≫ f` that are nilpotent in `End`, the
 from the gradings (G6)–(G8), are explicit hypotheses here; the same gradings are used in (7)
 to place the `r > j` contractions in the ideal `J`.
 
+**Two-sector reductions (checked).**
+`SwappedAssembly/CentralInverse/TwoSector.lean` handles the augmented matrices restricted to a
+reservoir sector `R` and a probe sector `P`, with the windows `Oᴴ` attached to the probe:
+`posMap sR sP Cx Dx vR rowP : XR ⊞ XP ⟶ YR ⊞ YP ⊞ Oᴴ` (blocks `[sR, Cx, vR; Dx, sP, rowP]`)
+and `negMap sR sP Cx Dx uR colP : XR ⊞ XP ⊞ Oᴳ ⟶ YR ⊞ YP` (blocks `[sR, Cx; Dx, sP; uR, colP]`).
+The reservoir block `sR` is a cap or cup window inverted by the case (a)/(d) inverse `(jR, AR)`
+or `(jR, BR)`; the reductions are exact, with no nilpotence input.
+`isIso_posMap_of_cap`: `posMap` is invertible if the probe residual
+`gMap (sP - Dx ≫ jR ≫ Cx) (AR n ≫ Cx) (rowP a - Dx ≫ jR ≫ vR a) (AR n ≫ vR a)` is.
+`isIso_posMap_of_cup`: the same with the residual
+`gMap (sP - Dx ≫ jR ≫ Cx) ∅ (Sum.elim (rowP a - Dx ≫ jR ≫ vR a) (Dx ≫ BR n)) ∅`.
+`isIso_negMap_of_cap`: residual `gMap (sP - Dx ≫ jR ≫ Cx) (Sum.elim (AR n ≫ Cx)
+(colP a - uR a ≫ jR ≫ Cx)) ∅ ∅`. `isIso_negMap_of_cup`: residual
+`gMap (sP - Dx ≫ jR ≫ Cx) (colP a - uR a ≫ jR ≫ Cx) (Dx ≫ BR n) (uR a ≫ BR n)`.
+Each is `S ≫ posMap ≫ T = diag(1, residual)` with explicit triangular `S`, `T`
+(`isIso_tMap_diag`, `isIso_tShear`, `isIso_tLowerShear`, `isIso_of_comp_eq_comp`).
+The residual terms `Dx ≫ jR ≫ Cx` are the reservoir closures (9) of `SwappedHomInversion.md`;
+`AR n ≫ Cx`, `Dx ≫ BR n` are the contraction terms (7). Comparing the residuals with the
+case (a)–(d) windows (proposed): `posMap`/cap ↔ case (c), `posMap`/cup ↔ case (a),
+`negMap`/cap ↔ case (d), `negMap`/cup ↔ case (b), modulo `J`.
+
+Next: the comparison of the four residuals with cases (a)–(d) modulo `J` (one lemma per case
+via `isIso_gMap_of_sub_mem`), the identification of `augPosMat`/`augNegMat` with
+`posMap`/`negMap` (formulas `Cx = Σ q^(s+2)•(vR s ≫ u ≫ y^(-s-1))`,
+`Dx = -Σ q^(r+1)•(x^(-r-1) ≫ v ≫ uR r)` of `AugmentedSectorBlocks.md` §3, proposed), and
+window counts.
+
+
 Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
 (the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
 stabilization (13)/(14) and nilpotent lifting (12) of `SwappedHomInversion.md`; the nilpotence
