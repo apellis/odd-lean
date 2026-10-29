@@ -130,6 +130,27 @@ Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `
 `braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
+## Distinct-colour quadratic relation on the global factors: algebra level
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedQuadratic.lean`), BE2
+arXiv:1701.04133v2 Definition 1.5, (1.7) for `i ≠ j`:
+
+- `pairQuadPoly D Sc i j A B`: `t_ij 1` if `d_ij = 0`, otherwise
+  `∑_{0<p<d_ij, 0<q<d_ji} s_ij^{pq} A^p B^q + t_ij A^{d_ij} + t_ji B^{d_ji}`, with
+  `map_pairQuadPoly` for algebra maps and `wordQuadratic_eq_pairQuadPoly`;
+- `affineLastCrossing_mul_mixed`: `c_ij c_ji = φᵢφⱼ(1) · Q_ji(φᵢ(y_j), y_i)` in the affine
+  algebra (via the diagonal matrices `pairDiag` on the words `w j i`);
+- `heightLastCrossing_mul_mixed`: the same identity at every height of the extended tower.
+
+No parameter change is made here. Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`:
+the corner square `Cr_ij ≫ Cr_ji` as a polynomial in the two signed right multiplications
+(power sign `koszulSign c (m p + ⌊m/2⌋)` for `m` multiplications by a dot of parity `c` on input
+parity `p`), transport through the comparison to the induction functors, the weight-level
+assembly, and matching with `parameterTwist`. A hand check: the `p`-dependent signs vanish
+because every surviving monomial has `p|i|` and `q|j|` even (`Sc.s_eq_zero`,
+`Datum.even_d_of_odd`), and the remaining signs `|i||j| + |i|⌊d_ij/2⌋` (resp. with
+`⌊p/2⌋`, `⌊q/2⌋`) are exactly those of `parameterTwist`.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
@@ -1030,6 +1051,27 @@ of the single term into generator images and identify them with the probe mate o
 (`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
 `-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
 
+**Swapping entry `W_A` invertible (checked); `W_B` open, as a hypothesis.**
+`SwappedAssembly/Sigma/SwappingMate.lean`: `sigmaTerm_eq_of_paths` writes the single term
+through path decompositions of its three layers; `isIso_sigmaEntry_probe` proves that the entry
+with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ` to `(P,R)` of
+`Fᵢ Eᵢ`, at `s = t - (i,i)`) is an isomorphism: its layers are the probe unit, `J`
+(`mixedJ`) and the probe counit, i.e. `isIso_probeMixedMate`, which is
+`isIso_homContentDistinctMixedPreMate_of_eq` (inverse: the word (15)) on the strand functors.
+`sides_upDn_dnUp_of_ne`: for `t ≠ s` the two paths are `((R,P),(P,R))` or `((P,R),(R,P))`.
+`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`,
+where `SwappingReservoirInvertible` is the invertibility of the other entries `W_B`
+(`(P,R) → (R,P)`, the reservoir mate of `-(a ; a ; J⁻¹)`). So
+`augmentedInvertible_of_central_of_swapping` needs `CentralInvertible c` and
+`SwappingReservoirInvertible c`. Open for `W_B`: unfold its single term in the same way
+(reservoir unit, the crossing entry `-(a ; a ; J⁻¹)`, reservoir counit) and prove the
+post-side mate invertible; its crossing carries the dots `a`, so the route is the dotted mate
+`homDistinctMixedMateDot_isIso` (`RouquierHomDistinctMixedPostDotsIso.lean`: `J⁻¹` followed by a
+polynomial with unit leading coefficient in an invertible dot and a nilpotent dot), not the
+undotted word (15). Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
+locally irreducible, so that unification compares sector expressions instead of computing
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
+
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
 `a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
@@ -1070,8 +1112,26 @@ two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l �
 `ProbeWindow.exists_isCupInverse_caseD` ((d), (14): columns `s`, `q^(r+2) • (u ≫ y^{-r-1})`
 for `r < a`, `-(u ≫ yᵗ)` for `t < g`, invertible when `[s, u ≫ yⁿ]_{n<a+g}` is), via
 `IsCapInverse.reindex`/`IsCupInverse.reindex` (reordering slots and multiplying them by units
-`c` with `c * c = 1`). Next: the mixed cases (b), (c) ((8)–(13)), whose maps have extra slots
-on both sides, and the extraction (16)–(19).
+`c` with `c * c = 1`).
+
+**Mixed auxiliary maps (checked).** `SwappedAssembly/CentralInverse/BlockMaps.lean` encodes a
+map `X ⊕ Oᶥ → Y ⊕ Oᵏ` of `Mat_ C` by its corner, columns, rows and block (`ProbeWindow.gMap`)
+and eliminates an identity block: with target `Y ⊕ O^{ι ⊕ m}` and block the identity onto
+`O^ι`, the map is an isomorphism when the reduced cap window `[a - Σ Cc i ≫ B i; Cc (inr t)]`
+has an entrywise inverse (`isIso_gMap_of_isCapInverse`); dually with source `X ⊕ O^{κ ⊕ m}`
+and the reduced cup window `[a - Σ Cc r ≫ B r, B (inr n)]` (`isIso_gMap_of_isCupInverse`);
+the inverses are explicit. Summands are reordered by `gReindex`.
+`SwappedAssembly/CentralInverse/MixedCases.lean` proves the mixed cases (b), (c) of §3,
+(8)–(13): `ProbeWindow.isIso_caseB_of_nonneg` (source `X ⊕ Oᵈ`, target `Y ⊕ O^{d+h}`, corner `s`,
+columns `-(u ≫ yᵗ)`, rows `q^(r+1) • (x^{-r-1} ≫ v)`, identity block; invertible when
+`[s; xⁿ ≫ v]_{n<h}` is), `isIso_caseB_of_neg` (source `X ⊕ O^{k+b}`, target `Y ⊕ Oᵏ`;
+invertible when the cup window `[s, u ≫ yⁿ]_{n<b}` is), `isIso_caseC_of_nonneg` (source
+`X ⊕ Oᵃ`, target `Y ⊕ O^{a+h}`, columns `q^(t+2) • (u ≫ y^{-t-1})`, rows `xʳ ≫ v`; from the cap
+window) and `isIso_caseC_of_neg` (source `X ⊕ O^{d+b}`, target `Y ⊕ Oᵈ`; from the cup window).
+After elimination the reduced corner is `q^l • (x^{∓l} ≫ s ≫ y^{±l})` by the window identities
+(4), and the reduced window is the probe window, or its shift (5), (6), conjugated by these
+powers (`IsCapInverse.conj`, `IsCupInverse.conj`) with slots reordered and multiplied by units.
+With (a), (d) this covers all four cases of §3. Next: the extraction (16)–(19).
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
