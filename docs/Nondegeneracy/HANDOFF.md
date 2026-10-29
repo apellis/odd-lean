@@ -18,6 +18,25 @@ No hypothesis beyond the parity condition on `a`. The proof follows the written 
 Next target: the matrix form (2) and the descent of `P` to
 `Ind_(φ_L) B → Ind_ψ B` (`AppendMackeySource.md` §4), then the source-side fields of
 `MackeyCosets` and `P ρ = R_t P` (obligation 1).
+## Integer grading of the reservoir: (N) and (J) for `CentralInvertible`
+
+Assessment: `ReservoirGradingRoute.md`. The two grading inputs of `SwappedHomInversion.md` §4,
+(N) nilpotence of the contracted closures `b_(s,r)` and (J) positivity of the `r>j` boundary
+contractions, need an integer grading only on the Hom categories between reservoir objects.
+
+Checked (`OddMath/SKM/RouquierGrading.lean`): the interface `RouquierGrading W sy` (graded Hom
+categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_mem_degree`,
+`g'_mem_degree` and the `SuperSumInvFrom` versions); `RouquierGrading.mate_mem` (degree `0`),
+`dotCup_mem`, `dotCap_mem` ((G6)), `invPos_f'_mem`, `invPos_g'_mem`, `invNeg_f'_mem`,
+`invNeg_g'_mem`; `closure_mem` (`b_(s,r)` has degree `2dᵢ(r+s+1)`); `boundaryPos_mem`,
+`boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
+(products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
+
+Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
+`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
+`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
+the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
+cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
 
 ## Global factor relations: algebra parameters and reservoir
 
@@ -940,8 +959,14 @@ the factor crossings on `((Z F₁) F₂) F₃` with the same sign `(-1)^(σ p)`:
 the super interchange law past `ξ₂`, the right one by the signed naturality
 `S(g) ξ = (-1)^(σ|g|) ξ g` of the outer shift (`shifted_post_braid`). The signs agree,
 so `postCrossSame_braid` is `W.braid` whiskered on the left (`post_whisker_braid`), with
-no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy. Next: assemble
-(1.9) for the pattern `iii` over all pairs of paths, then `iji`.
+no extra hypothesis, and `rrr_braid` is (1.9) on `RRR`. No discrepancy.
+(1.9) for the pattern `iii` on all pairs of paths (checked,
+`SwappedAssembly/BraidSame/AllPaths.lean`, `braid_same`): two paths with the same
+endpoints take the same number of probe summands (the probe content of the endpoint is
+`s.1 + a αᵢ`), so they lie in one of the blocks `PPP`, `{PPR, PRP, RPP}`,
+`{PRR, RPR, RRP}`, `RRR`, each already checked. `braid_same c L ν i hc h p q Z` is the
+field `CrossBraid.braid` at `i = j = k'` for `swappedGens c L`, under `c.IsInverse` and
+`CrossCoeffInputs`. Next: the pattern `iji`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components

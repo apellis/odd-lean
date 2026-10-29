@@ -26,6 +26,7 @@ import OddMath.SKM.FiniteColourIdealRestriction
 import OddMath.SKM.FiniteColourContextLift
 import OddMath.SKM.FiniteColourIdealDescent
 import OddMath.SKM.FiniteColourRelationsExamples
+import OddMath.SKM.RouquierGrading
 import OddMath.SKM.RouquierMulticolour
 import OddMath.SKM.RouquierPrincipalWord
 import OddMath.SKM.RouquierPiSCat
@@ -1366,6 +1367,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.AllPaths
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlock
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlockPost
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePair
