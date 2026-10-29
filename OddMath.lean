@@ -1315,6 +1315,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Zigzag
 import OddMath.QuiverHecke.SwappedAssembly.CupCapZigzag
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Basic
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Generators
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
@@ -1356,3 +1357,5 @@ import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
 import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
+import OddMath.QuiverHecke.SwappedVacuum.LayerAction
+import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
