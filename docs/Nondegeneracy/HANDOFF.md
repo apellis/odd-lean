@@ -3071,8 +3071,9 @@ colours by KKO I Thm 9.1 with deformed (9.3) (`DeformedActionAssembly.md` §2). 
 `GlobalLocalInversion` takes an arbitrary `a` with `CyclotomicPolynomialParity` and an unrelated
 `Λ`; it is false in that generality (`a i = 1`, `⟨h_i,Λ⟩ = 5`: at the weight with `x₁ = -Λ`
 the composites `M`, `N` vanish but the `5` dotted unit columns have nonzero source
-`B`, so `invNeg` fails). Discharging it needs `a i` monic of degree `⟨h_i,Λ⟩` (assumed throughout the notes); these
-hypotheses go on the dependent statements. The top-row cokernel step
+`B`, so `invNeg` fails). Discharging it needs `a i` monic of degree `⟨h_i,Λ⟩` (assumed throughout the notes);
+`CyclotomicDegreeMatch D a Λ` (checked definition) states this, and `globalRouquierFamily` now
+takes it as an explicit hypothesis `_hdeg` beside `L`. The top-row cokernel step
 (`DeformedCyclotomicTopRow.md` §4) uses the lower-height ideal sum (`DeformedIdealSum.md`) and
 the square resolution (`DeformedSquareResolution.md`), both proposed.
 `RouquierMateKernel.lean` (checked): the mate kernel `s = -F̄J` of display (2) of
@@ -3080,13 +3081,22 @@ the square resolution (`DeformedSquareResolution.md`), both proposed.
 superbimodule morphism `B e ⊗_A e B ⟶ e₂C ⊗_C C e₂` of parity `|i|` (`rouquierMateKernel`,
 `rouquierMateKernel_parity`, `rouquierMateKernel_apply`); balance over `A` is the Koszul sign of
 `J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`).
-`RouquierCupCapKernel.lean` (checked): the dotted cup `j_m : B ⟶ e₂C ⊗_C C e₂`,
-`b ↦ x₂^m φ₂(b) ⊗ e₂` (`rouquierCupKernel`), and dotted cap `κ_m : B e ⊗_A e B ⟶ B`,
+`RouquierCupCapKernel.lean` (checked): the dotted cup `j_m : A ⟶ e B ⊗_B B e`,
+`a ↦ x₁^m φ₁(a) ⊗ e` (`rouquierCupKernel`, stated at the same level `n` as the cap; in the
+mate at `x₀ → x₁ → x₂` it is applied one height up), and dotted cap `κ_m : B e ⊗_A e B ⟶ B`,
 `x ⊗ y ↦ (-1)^{mp|x|} x x₁^m y` (`rouquierCapKernel`), superbimodule morphisms of parity `m p`;
 in (2)/(4) of `DeformedMatrixComparison.md`, `u_m = d_m j_m` and `c_m = d_m κ_m`. Input:
-`heightAppend_mul_heightLastDot_pow`. Next: compare the functor-level `rouquierMate`, dotted
-unit and dotted counit of `globalRouquierData` with these kernels on weight spaces (tensoring
-with a module), then the boundary/division inputs and the window matrix.
+`heightAppend_mul_heightLastDot_pow`.
+`RouquierKernelComparison.lean` (checked): the height-level identifications. With the dot power
+`x^m` on `P = B e` (`heightInductionDotPow`, `y ↦ (-1)^{mp|y|} d_m y x₁^m`,
+`heightInductionDotPow_apply`) and `d_m = (-1)^{p(m choose 2)}` (`rouquierDotSign`):
+unit then dot power `= d_m (j_m ⊗ M)` (`heightSuperUnit_dotPow`), dot power then counit
+`= d_m (κ_m ⊗ M)` (`heightDotPow_superCounit`), and unit at `n + 1`, crossing `ψ`, counit at `n`
+on `P ⊗ Q ⊗ M` `= -(s ⊗ M)` (`heightRouquierMate_eq`; for the signed crossing `-ψ` of
+`globalRouquierData` this is `s ⊗ M`), all up to unitors/associators. Next: carry these through
+content blocks and successor blocks to the weight-level `rouquierMate`, dotted units and dotted
+counits of `globalRouquierData` (pattern of `GlobalWeightSlides`), then the boundary/division
+inputs and the window matrix.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
