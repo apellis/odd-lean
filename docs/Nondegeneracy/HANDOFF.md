@@ -756,6 +756,21 @@ Remaining for `GeneratorsSupernatural (P.swappedGens c L)`: the leftward crossin
 the degree-`n` cups and caps, which are data of `LeftwardData`, and the discharge of
 `c.IsSupernatural` for the coefficient constructed from `CrossCoeff.IsInverse`.
 
+**Supernaturality of the swapped generator images (checked).**
+`SwappedAssembly/Supernatural/Generators.lean`: `swappedGens_supernatural c L hc hσ hL :
+GeneratorsSupernatural (P.swappedGens c L)`, the hypothesis of `interchangeLaw`, under
+`hc : c.IsSupernatural`, `hσ : ∀ i j, i ≠ j → ∀ ν, P.SigmaPermutation c i j ν` and
+`hL : L.IsSupernatural` (`LeftwardData.IsSupernatural`: `L.lcrossSame i ν` of parity `pᵢ pᵢ`,
+`L.dcup i n ν` of parity `pᵢ n` for `n < ⟨hᵢ, ν⟩`, `L.dcap i n ν` of parity `pᵢ n` for
+`n < -⟨hᵢ, ν⟩`; outside the windows the swapped images are zero). Ingredients:
+`compList_supernatural` (the entries of a chain of layers are supernatural of the sum of
+the parities of its generators, for supernatural generator images; also `compLayer`,
+`compLayerAt`), `upwardGens_supernatural c hc`, `sigmaEntry_supernatural` (parity
+`pᵢ pⱼ`), `lcrossNeImage_supernatural c hc i j ν hσ` (entries off the permutation are
+`0`, those on it are inverses of supernatural isomorphisms). Remaining: discharge `hc`
+from `CrossCoeff.IsInverse`, `hσ` (`SigmaPermutation`) and `hL` for the leftward data
+constructed from `LeftwardData.IsInverse`.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
