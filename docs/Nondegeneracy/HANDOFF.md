@@ -905,6 +905,19 @@ source) index, so has its inverse. Proof: projecting `A B = 1` to parity `0` sho
 homogeneous parts of `B` form a right inverse, hence equal `B`; naturality from
 `B F(f) = Ĝ(f) B`, `Ĝ` the signed diagonal.
 
+**The interchange-law field of `SwappedRelationData` is redundant (checked).**
+`SwappedAssembly/Supernatural/Relations.lean`:
+`swappedGens_supernatural_of_isInverse c L hin hc hσ hL : GeneratorsSupernatural
+(P.swappedGens c L)` for `hin : P.CrossCoeffInputs`, `hc : c.IsInverse`,
+`hσ : ∀ i j, i ≠ j → ∀ ν, P.SigmaPermutation c i j ν` and `hL : L.IsInverse c`
+(combining `CrossCoeff.isSupernatural_of_isInverse`,
+`LeftwardData.isSupernatural_of_isInverse` and `swappedGens_supernatural`).
+`SwappedRelationData.ofIsInverse hin hc quad slide braid zigzag sigma leftward windowZero`
+builds `SwappedRelationData c L` without the `supernatural` field, and
+`SwappedRelationData.ofCrossCoeffInputs hin …` does so for `c = crossCoeffOfInputs hin`
+with no hypothesis on `c`. So `GeneratorsSupernatural` is no longer an independent
+obligation of `SwappedVacuumObservation`; `sigma` (`SigmaPermutation`) remains one.
+
 **`SigmaPermutation` from entrywise invertibility (checked).**
 `SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
 P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
