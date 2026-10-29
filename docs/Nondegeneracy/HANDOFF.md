@@ -1,5 +1,40 @@
 # Odd nondegeneracy: restart state
 
+## Global factor relations: algebra parameters and reservoir
+
+Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
+(`OddMath/QuiverHecke/GlobalFactorNondegeneracy.lean`) now build both cyclotomic factors on the
+quiver Hecke algebras with parameters `parameterTwist D Sc`; the hypotheses are
+`RouquierMulticolour (globalRouquierFamily D (parameterTwist D Sc) …) Sc` and
+`GlobalLocalInversion D (parameterTwist D Sc) …`. Before this correction the hypotheses used the
+algebra parameters `Sc`. By the parameter transport (9) of `DeformedActionAssembly.md` §6
+(signed right multiplication changes the coefficient of `u^r v^s` in `Q_ij` by
+`(-1)^(|i||j| + |i|⌊r/2⌋ + |j|⌊s/2⌋)`), the relations (1.7) of the action then hold with the
+parameters `parameterTwist D Sc`, not `Sc`, so the old hypotheses `RouquierMulticolour _ Sc` fail
+whenever the transport changes a coefficient whose dotted endomorphism is nonzero (for example
+`t_ij` with `i`, `j` odd). The transport is involutive (`parameterTwist_involutive`).
+
+Open obligation (reservoir). `SwappedActionAssembly.md` §1 F3 takes the reservoir to be the
+full-ELV factor over the deformed ring `Abar`, with odd deformation parameters and the character
+`χ`. `globalProbeReservoir` uses an undeformed cyclotomic factor over the purely even ground
+ring `k` as reservoir. The observation hypotheses `h` of the conditional theorem (bubbles and
+corner evaluations in the reservoir) are stated for the written reservoir; whether they can hold
+for the undeformed cyclotomic reservoir is not checked, and the written argument does not claim
+it. The reservoir of `globalProbeReservoir` should be replaced by the deformed factor once that
+factor is a `RouquierFamily`.
+
+Open obligations (multicolour relations of the cyclotomic factor). `RouquierMulticolour` for
+`globalRouquierFamily D (parameterTwist D Sc) …` is not proved. Its fields are the distinct-colour
+relations of Brundan–Ellis, arXiv:1701.04133v2, Definition 1.5: (1.7) `quadZero`, `quadNe`;
+(1.8) `slideLeft`, `slideRight`; (1.9) `braid` and the corrected `braidEq`; (1.12) `invNe`.
+The algebra inputs exist: `cyclotomicLastCrossing_mixed` and `compositionSuperCrossing_mixed_apply`
+(mixed quadratic), `BraidCorrection.lean` (braid correction). The same-colour slide chain
+`GlobalSlideAlgebra` → `GlobalHeightSlides` → `GlobalWeightSlides` is the template for the
+distinct-colour slides, generalizing `heightCompositionCorner D Sc i i` to two colours.
+`invNe` needs the distinct-colour Mackey isomorphism (the exact sequence and projectivity
+inputs of the written proof), which are not formalized; like `GlobalLocalInversion`, it is to be
+carried as an explicit hypothesis until they are.
+
 ## Consequences of the field case: ground rings, Hom bases and K₀
 
 Checked (conditional on the field case). `SKM.CharZeroFieldNondegeneracy D`
@@ -975,14 +1010,24 @@ window count `(D.h i ν).toNat` does. If `[σ; ε₀, …, ε_{H-1}]` is inverti
 more window row gives `[1; r]` times it, which is not invertible unless the object is zero. So
 the unrestricted statement fails as soon as some `P.H t` has a nonzero object. The action only
 uses weight-matched sectors (`layerEntry` needs `P.wt sr = L.cod.endR`; `compEval` is applied
-through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`). Next step: restrict
-`CentralInvertible`, `AugmentedInvertible` and `LeftwardData.IsInverse` to `P.wt s = ν`
-(rightmost sector), weight `relHolds_of_compEval`, and define `leftwardOfInvertible` as zero
-off weight. `SwappingInvertible` does not involve `ν` and is unaffected.
+through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`).
+
+*Restricted interface (checked).* `CentralInvertible`, `AugmentedInvertible` and
+`LeftwardData.IsInverse` now require their identities only when the rightmost sector carries
+the weight: `P.wt t = ν`, `P.wt s = ν`, `P.wt t = ((SKM.pres D Sc).dom r).endR` respectively.
+`WhiskerReduction.lean`: `wt_eq_of_ok` (a valid path ending at the weight of the right end
+starts at the weight of the left end), `evalW_eq_zero_of_compEval_wt`,
+`relHolds_of_compEval_wt` (only weight-matched `compEval` identities are needed);
+`inversionRelations` uses them. `leftwardOfInvertible` is zero off weight
+(`leftwardOfInvertible_vanishesOffWeight`), and the supernaturality of the leftward data needs
+`LeftwardData.VanishesOffWeight` (`isSupernatural_of_isInverse`,
+`swappedGens_supernatural_of_isInverse`, field `leftwardZero` of
+`SwappedRelationData.ofIsInverse`, `.ofCrossCoeffInputs`). `SwappingInvertible` does not
+involve `ν` and is unaffected.
 
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
-hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
+hc hL h0 : L.IsSupernatural` for `hc : c.IsSupernatural`, `hL : L.IsInverse c` and `h0 : L.VanishesOffWeight`. The entries of
 `L` are entries of the two-sided inverses of the augmented maps (1.13), (1.14) of BE2 Def. 1.5:
 `(σ, ε xⁿ)ₙ : Eᵢ Fᵢ → Fᵢ Eᵢ ⊕ 1^{⟨hᵢ,ν⟩}` with inverse `(-lcross, ♦-cupₙ)` for `⟨hᵢ, ν⟩ ≥ 0`
 (`leftward_supernatural_of_nonneg`, from `invP₁`–`invP₅`), and
@@ -1049,6 +1094,19 @@ admissible powers). Note: `Cross.lean` attaches `Q` after `J⁻¹`, while
 transposed is the one on the postcomposed edge `E'`, along `E' ⊣ F'`. The invertibility
 argument (unit plus nilpotent) is unchanged. Next: assemble `Dot(Q) = G ≫ U` with `G` a
 unit from these lemmas, then link the four side patterns of `sigmaEntry_eq` to the mates.
+
+**Post-side dotted mixed mate is invertible (checked).**
+`SKM/RouquierHomDistinctMixedPostDotsIso.lean`. With `X = x ▷ _`, `Y = E ◁ Π^κ(_ ◁ y)` on
+the target of `J⁻¹` and `A = x ▷ _`, `B = E ◁ (Π^κ H ◁ yᵀ)` on the source of `U`:
+`homDistinctMixedMateDot_pow_mul_pow` (`Dot(Xᵖ Yᑫ) = Aᵖ Bᑫ ≫ U` for even `x`, `y`),
+`exists_homDistinctMixedMateDot_eq` (admissible combinations go to admissible combinations),
+and `homDistinctMixedMateDot_isIso`: for even `x` with `IsIso x`, even nilpotent `y`, a unit
+`c` and `N` an admissible combination with `q ≥ 1`, `Dot(c • Xᵉ + N)` is an isomorphism.
+Also `isNilpotent_rightTranspose` and `map_rouquierPower`. Applied to `mixedQ j i`
+(`t_ji • xᵈʲⁱ + t_ij • yᵈⁱʲ + Σ s xᵖ yᑫ`, `0 < q`; `t_ji • 1` when `d_ji = 0`), this needs the
+probe dot `P.T.dot j` invertible and the reservoir dot `P.W.dot i` nilpotent, which are
+interface hypotheses of the sigma linking step. Next: identify the `(P,R)` sigma entry with
+`homDistinctMixedMateDot` up to transports.
 
 ## Old-only ELV quotient module
 
@@ -5061,9 +5119,22 @@ Checked (same file): right `ψ(Hn (n+1))`-linearity of both summand maps,
 `appendLeftSum_mul_appendAlgebra` (`F(u r) = F(u) ψ(r)`, coefficientwise right
 multiplication) and `appendPolySum_mul_appendAlgebra` (`j(g r) = j(g) ψ(r)`).
 
-Next: descend these affine identities through the cyclotomic quotient and `− ⊗_B M`
-to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear, now checked
-at the affine level); then `short` and the lifts.
+Checked (`CyclotomicAction/AppendCornerTensor.lean`): the descent along the balanced
+tensor product. For any left `Hn (n+1)`-module `M`, `appendTensorCornerEquiv i n M :
+appendTensorLeftCoordinates × (ℕ →₀ M) ≃+ appendTensorFixed`, where the left coordinates
+are `f : (Fin (n+1) × ℕ) →₀ M` with `ψ'(1) f_q = f_q` and `appendTensorFixed` is the
+`ψ(1)`-fixed part of `Ind M = Hn (n+2) ψ(1) ⊗_(Hn (n+1)) M`; the map is
+`(f, g) ↦ Σ ψ(c'_j x^m) τ ⊗ f_(j,m) + Σ z^m ⊗ g_m` (`appendTensorCornerEquiv_apply`).
+So `ψ(1) Ind M ≅ ⊕_(j ≤ n, m) ψ'(1) M ⊕ ⊕_m M`. No flatness: the inverse is
+`z ⊗ y ↦ (F y, G y)` with `(F, G)` the `appendCornerEquiv` coordinates of `ψ(1) z`,
+balanced by the right linearity above (`appendCornerCoords_op_smul`). Generic helper:
+`appendFamilyTensor_coefficients` (`Σ Φ(single q 1) ⊗ c_q y = Φ(c) ⊗ y` for a right
+`ψ`-linear family `Φ` of corner elements).
+
+Next: pass to the cyclotomic quotient (the module `M` above may be any quotient
+module, so only the identification of `L₀` with the content-`β` corner remains) to
+instantiate `MackeyCosets` (`direct`, `span`); the right-dot identities give `Rt_F`,
+`Rt_j` after applying `− ⊗ y`; then `short` and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 

@@ -181,7 +181,7 @@ entries of the equal-colour leftward crossing have parity `pᵢ²` and those of 
 with label `n < ⟨hᵢ, ν⟩` have parity `n pᵢ`. -/
 theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
     (hc : c.IsSupernatural) (hL : L.IsInverse c) (i : I) (ν : X) (hh : 0 ≤ D.h i ν)
-    {t s : Sector I} :
+    {t s : Sector I} (hw : P.wt s = ν) :
     (∀ (q : SPath (wd D ν [dn i, up i]) t s) (p : SPath (wd D ν [up i, dn i]) t s),
       IsSupernatural k (D.parity i * D.parity i) (fun Z =>
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.lcrossL i i) (SKM.sChain_lcrossL i i))
@@ -191,6 +191,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
       IsSupernatural k (((n : ℕ) : ZMod 2) * D.parity i) (fun Z =>
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.dcupL i n) (SKM.sChain_dcupL i n))
           r p Z)) := by
+  have hw' : ∀ w, P.wt s = (SKM.ob D ν w).endR := fun w => hw.trans (SKM.ob_endR D ν w).symm
   let gens := P.swappedGens c L
   let N := (D.h i ν).toNat
   let A := SPath (wd D ν [up i, dn i]) t s
@@ -234,7 +235,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
     intro p p' Z
     have h : compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [up i, dn i])
         (SKM.relation D Sc (.invP₁ i ν hh)) p p' Z = 0 :=
-      hL (.invP₁ i ν hh) rfl (by simp [IsInvNe]) p p' Z
+      hL (.invP₁ i ν hh) rfl (by simp [IsInvNe]) p p' Z (hw' _)
     simp only [SKM.relation] at h
     rw [compEval_sub, compEval_add, compEval_neg, compEval_sum,
       compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.lcrossL i i) (SKM.sChain_sigmaL i i)
@@ -257,7 +258,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
     rintro (q | ⟨n, r⟩) (q' | ⟨m, r'⟩) Z
     · have h : compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [dn i, up i])
           (SKM.relation D Sc (.invP₂ i ν hh)) q q' Z = 0 :=
-        hL (.invP₂ i ν hh) rfl (by simp [IsInvNe]) q q' Z
+        hL (.invP₂ i ν hh) rfl (by simp [IsInvNe]) q q' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_add, compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.sigmaL i i)
         (SKM.sChain_lcrossL i i) (SKM.sChain_sigmaL i i), compEval_of] at h
@@ -272,7 +273,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
       rfl
     · have h : compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [])
           (SKM.relation D Sc (.invP₃ i ν m (Int.lt_toNat.mp m.2))) q r' Z = 0 :=
-        hL (.invP₃ i ν m (Int.lt_toNat.mp m.2)) rfl (by simp [IsInvNe]) q r' Z
+        hL (.invP₃ i ν m (Int.lt_toNat.mp m.2)) rfl (by simp [IsInvNe]) q r' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.epsL i m) (SKM.sChain_lcrossL i i)
         (SKM.sChain_epsL i m)] at h
@@ -283,7 +284,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
       rfl
     · have h : compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [dn i, up i])
           (SKM.relation D Sc (.invP₄ i ν n (Int.lt_toNat.mp n.2))) r q' Z = 0 :=
-        hL (.invP₄ i ν n (Int.lt_toNat.mp n.2)) rfl (by simp [IsInvNe]) r q' Z
+        hL (.invP₄ i ν n (Int.lt_toNat.mp n.2)) rfl (by simp [IsInvNe]) r q' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_dg_append gens ν (SKM.dcupL i n) (SKM.sigmaL i i) (SKM.sChain_dcupL i n)
         (SKM.sChain_sigmaL i i)] at h
@@ -295,7 +296,7 @@ theorem leftward_supernatural_of_nonneg (c : P.CrossCoeff) (L : P.LeftwardData)
           (SKM.relation D Sc (.invP₅ i ν m n (Int.lt_toNat.mp m.2) (Int.lt_toNat.mp n.2)))
           r r' Z = 0 :=
         hL (.invP₅ i ν m n (Int.lt_toNat.mp m.2) (Int.lt_toNat.mp n.2)) rfl
-          (by simp [IsInvNe]) r r' Z
+          (by simp [IsInvNe]) r r' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_sub, compEval_dg_append gens ν (SKM.dcupL i n) (SKM.epsL i m)
         (SKM.sChain_dcupL i n) (SKM.sChain_epsL i m), sub_eq_zero] at h
@@ -331,7 +332,7 @@ entries of the equal-colour leftward crossing have parity `pᵢ²` and those of 
 with label `n < -⟨hᵢ, ν⟩` have parity `n pᵢ`. -/
 theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
     (hc : c.IsSupernatural) (hL : L.IsInverse c) (i : I) (ν : X) (hh : D.h i ν ≤ 0)
-    {t s : Sector I} :
+    {t s : Sector I} (hw : P.wt s = ν) :
     (∀ (q : SPath (wd D ν [dn i, up i]) t s) (p : SPath (wd D ν [up i, dn i]) t s),
       IsSupernatural k (D.parity i * D.parity i) (fun Z =>
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.lcrossL i i) (SKM.sChain_lcrossL i i))
@@ -341,6 +342,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
       IsSupernatural k (((n : ℕ) : ZMod 2) * D.parity i) (fun Z =>
         compDiag (P.swappedGens c L) (SKM.mkD D ν (SKM.dcapL i n) (SKM.sChain_dcapL i n))
           q r Z)) := by
+  have hw' : ∀ w, P.wt s = (SKM.ob D ν w).endR := fun w => hw.trans (SKM.ob_endR D ν w).symm
   let gens := P.swappedGens c L
   let N := (-D.h i ν).toNat
   let A := SPath (wd D ν [up i, dn i]) t s
@@ -384,7 +386,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
     rintro (p | ⟨n, r⟩) (p' | ⟨m, r'⟩) Z
     · have h : compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [up i, dn i])
           (SKM.relation D Sc (.invM₂ i ν hh)) p p' Z = 0 :=
-        hL (.invM₂ i ν hh) rfl (by simp [IsInvNe]) p p' Z
+        hL (.invM₂ i ν hh) rfl (by simp [IsInvNe]) p p' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_add, compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.lcrossL i i)
         (SKM.sChain_sigmaL i i) (SKM.sChain_lcrossL i i), compEval_of] at h
@@ -399,7 +401,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
       rfl
     · have h : compEval gens (a := SKM.ob D ν [up i, dn i]) (b := SKM.ob D ν [])
           (SKM.relation D Sc (.invM₄ i ν m (Int.lt_toNat.mp m.2))) p r' Z = 0 :=
-        hL (.invM₄ i ν m (Int.lt_toNat.mp m.2)) rfl (by simp [IsInvNe]) p r' Z
+        hL (.invM₄ i ν m (Int.lt_toNat.mp m.2)) rfl (by simp [IsInvNe]) p r' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_dg_append gens ν (SKM.sigmaL i i) (SKM.dcapL i m) (SKM.sChain_sigmaL i i)
         (SKM.sChain_dcapL i m)] at h
@@ -410,7 +412,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
       rfl
     · have h : compEval gens (a := SKM.ob D ν []) (b := SKM.ob D ν [up i, dn i])
           (SKM.relation D Sc (.invM₃ i ν n (Int.lt_toNat.mp n.2))) r p' Z = 0 :=
-        hL (.invM₃ i ν n (Int.lt_toNat.mp n.2)) rfl (by simp [IsInvNe]) r p' Z
+        hL (.invM₃ i ν n (Int.lt_toNat.mp n.2)) rfl (by simp [IsInvNe]) r p' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_dg_append gens ν (SKM.etaL i n) (SKM.lcrossL i i) (SKM.sChain_etaL i n)
         (SKM.sChain_lcrossL i i)] at h
@@ -422,7 +424,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
           (SKM.relation D Sc (.invM₅ i ν n m (Int.lt_toNat.mp n.2) (Int.lt_toNat.mp m.2)))
           r r' Z = 0 :=
         hL (.invM₅ i ν n m (Int.lt_toNat.mp n.2) (Int.lt_toNat.mp m.2)) rfl
-          (by simp [IsInvNe]) r r' Z
+          (by simp [IsInvNe]) r r' Z (hw' _)
       simp only [SKM.relation] at h
       rw [compEval_sub, compEval_dg_append gens ν (SKM.etaL i n) (SKM.dcapL i m)
         (SKM.sChain_etaL i n) (SKM.sChain_dcapL i m), sub_eq_zero] at h
@@ -448,7 +450,7 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
     intro q q' Z
     have h : compEval gens (a := SKM.ob D ν [dn i, up i]) (b := SKM.ob D ν [dn i, up i])
         (SKM.relation D Sc (.invM₁ i ν hh)) q q' Z = 0 :=
-      hL (.invM₁ i ν hh) rfl (by simp [IsInvNe]) q q' Z
+      hL (.invM₁ i ν hh) rfl (by simp [IsInvNe]) q q' Z (hw' _)
     simp only [SKM.relation] at h
     rw [compEval_sub, compEval_add, compEval_neg, compEval_sum,
       compEval_dg_append gens ν (SKM.lcrossL i i) (SKM.sigmaL i i) (SKM.sChain_lcrossL i i)
@@ -474,32 +476,49 @@ theorem leftward_supernatural_of_nonpos (c : P.CrossCoeff) (L : P.LeftwardData)
 /-! ## The equal-colour leftward data -/
 
 /-- **The equal-colour leftward data are supernatural** (`LeftwardData.IsSupernatural`) when
-they invert the augmented maps (1.13), (1.14) (`LeftwardData.IsInverse`) and the coefficient
-`a` of the equal-colour mixed block is supernatural. -/
+they invert the augmented maps (1.13), (1.14) at the weight-matched sectors
+(`LeftwardData.IsInverse`), vanish at the other sectors, and the coefficient `a` of the
+equal-colour mixed block is supernatural. -/
 theorem LeftwardData.isSupernatural_of_isInverse (c : P.CrossCoeff) (L : P.LeftwardData)
-    (hc : c.IsSupernatural) (hL : L.IsInverse c) : L.IsSupernatural where
+    (hc : c.IsSupernatural) (hL : L.IsInverse c) (h0 : L.VanishesOffWeight) :
+    L.IsSupernatural where
   lcrossSame i ν t s p p' := by
+    by_cases hw : P.wt s = ν
+    swap
+    · rw [show (fun Z => L.lcrossSame i ν p p' Z) = fun _ => 0 from
+        funext fun Z => h0.1 i ν p p' Z hw]
+      exact isSupernatural_zero _
     have e : ∀ Z, L.lcrossSame i ν p p' Z = compDiag (P.swappedGens c L)
         (SKM.mkD D ν (SKM.lcrossL i i) (SKM.sChain_lcrossL i i)) p p' Z := fun Z => by
       rw [compDiag_lcrossL, swappedGens_lcross_self]
     simp only [e]
     rcases le_total 0 (D.h i ν) with hh | hh
-    · exact (leftward_supernatural_of_nonneg c L hc hL i ν hh).1 p p'
-    · exact (leftward_supernatural_of_nonpos c L hc hL i ν hh).1 p p'
+    · exact (leftward_supernatural_of_nonneg c L hc hL i ν hh hw).1 p p'
+    · exact (leftward_supernatural_of_nonpos c L hc hL i ν hh hw).1 p p'
   dcup i n ν hn t s p p' := by
+    by_cases hw : P.wt s = ν
+    swap
+    · rw [show (fun Z => L.dcup i n ν p p' Z) = fun _ => 0 from
+        funext fun Z => h0.2.1 i n ν p p' Z hw]
+      exact isSupernatural_zero _
     have e : ∀ Z, L.dcup i n ν p p' Z = compDiag (P.swappedGens c L)
         (SKM.mkD D ν (SKM.dcupL i n) (SKM.sChain_dcupL i n)) p p' Z := fun Z => by
       rw [compDiag_dcupL, P.swappedGens_dcup_of_lt c L i n ν hn]
     simp only [e]
-    have := (leftward_supernatural_of_nonneg c L hc hL i ν (by omega)).2
+    have := (leftward_supernatural_of_nonneg c L hc hL i ν (by omega) hw).2
       ⟨n, Int.lt_toNat.mpr hn⟩ p p'
     rwa [mul_comm] at this
   dcap i n ν hn t s p p' := by
+    by_cases hw : P.wt s = ν
+    swap
+    · rw [show (fun Z => L.dcap i n ν p p' Z) = fun _ => 0 from
+        funext fun Z => h0.2.2 i n ν p p' Z hw]
+      exact isSupernatural_zero _
     have e : ∀ Z, L.dcap i n ν p p' Z = compDiag (P.swappedGens c L)
         (SKM.mkD D ν (SKM.dcapL i n) (SKM.sChain_dcapL i n)) p p' Z := fun Z => by
       rw [compDiag_dcapL, P.swappedGens_dcap_of_lt c L i n ν hn]
     simp only [e]
-    have := (leftward_supernatural_of_nonpos c L hc hL i ν (by omega)).2
+    have := (leftward_supernatural_of_nonpos c L hc hL i ν (by omega) hw).2
       ⟨n, Int.lt_toNat.mpr hn⟩ p p'
     rwa [mul_comm] at this
 
