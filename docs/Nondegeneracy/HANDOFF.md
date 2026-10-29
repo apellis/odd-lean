@@ -790,6 +790,22 @@ The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the imag
 This is a property of the interface, not of the construction: the constructed coefficient
 satisfies both. Generic: `IsSupernatural.sub`.
 
+**Supernaturality of the equal-colour leftward data (checked).**
+`SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
+hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
+`L` are entries of the two-sided inverses of the augmented maps (1.13), (1.14) of BE2 Def. 1.5:
+`(σ, ε xⁿ)ₙ : Eᵢ Fᵢ → Fᵢ Eᵢ ⊕ 1^{⟨hᵢ,ν⟩}` with inverse `(-lcross, ♦-cupₙ)` for `⟨hᵢ, ν⟩ ≥ 0`
+(`leftward_supernatural_of_nonneg`, from `invP₁`–`invP₅`), and
+`(-σ, xⁿ η)ₙ : Eᵢ Fᵢ ⊕ 1^{-⟨hᵢ,ν⟩} → Fᵢ Eᵢ` with inverse `(lcross, ♦-capₙ)` for
+`⟨hᵢ, ν⟩ ≤ 0` (`leftward_supernatural_of_nonpos`, from `invM₁`–`invM₅`). The augmented maps
+are built from upward generators, supernatural of parity `pᵢ²` on `σ` and `n pᵢ` on the
+`n`-th component. The generic lemma (`Supernatural/MatrixInverse.lean`,
+`isSupernatural_of_inverse_target` / `_source`): if a matrix of transformations with a
+two-sided inverse has supernatural entries of a parity depending only on the target (resp.
+source) index, so has its inverse. Proof: projecting `A B = 1` to parity `0` shows the
+homogeneous parts of `B` form a right inverse, hence equal `B`; naturality from
+`B F(f) = Ĝ(f) B`, `Ĝ` the signed diagonal.
+
 **`SigmaPermutation` from entrywise invertibility (checked).**
 `SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
 P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
@@ -3185,6 +3201,20 @@ all up to `eqToHom`s between the transported objects. The monic-degree hypothesi
 `globalRouquierFamily` (`CyclotomicDegreeMatch`) is already on the research branch. Next: the
 boundary/division inputs and the window matrix of (2)/(4) in `DeformedMatrixComparison.md`,
 fed by these component formulas.
+`BoundaryDivision.lean` (checked): the finite monic division of
+`DeformedBoundaryDivision.md` §5 in the abstract polynomial window. The window
+`⊕_l t^l B` is `ℕ →₀ B` with right coefficients and the semilinear moving dot
+`(t^l b) t = t^(l+1) σ(b)` (`tShift`, `tPow`); `skewMul` is the skew product with `b t = t σ(b)`.
+Checked: (9) `degLT_sub_tPow`, (10) `degLT_norm_sub_skewMul`, the leading term of `ψ ⋆ S`
+(`skewMul_top`), the monic quotient (11) ⇒ (12) (`monic_quotient`, `σ` injective) and
+`boundary_division`: from the recurrence (8) `deg(φ_(k+1) − φ_k t) < 1`, the norm identity (7)
+`Σ_(j ≤ D) φ_(k+j) b_j = c F t^k` with `S` monic of degree `D`, `F` monic of degree `N = a + D`
+and `c` a `σ`-fixed unit, `φ_k = 0` if `N + k < D` and `c⁻¹ φ_k` is monic of degree `N + k − D`
+otherwise. Any ring `B` (no commutativity, zero divisors allowed). Non-vacuity:
+`scripts/NonVacuity/BoundaryDivision.lean`. Next: the window matrix of (2)/(4) (both signs of
+`a`, cap rows anti-diagonal) in the same abstract window, then the concrete boundary: identify
+`A_∂(w_k)` of the transported `contentCupKernel`/`contentCapKernel` with such a `φ`, and the
+norm (7) with the cyclotomic polynomial `a_i`.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
