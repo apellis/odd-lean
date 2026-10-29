@@ -14,9 +14,9 @@ independent intermediate weights and the content shifts. The two triple-removal
 lemmas record the signs from super interchange and shift naturality separately.
 
 The canonical path entry lemmas identify left and right crossings with
-`postCrossNe`; the sum lemmas collapse both intermediate path sums. The final
-comparison of their sector transports with the common factor-weight grid is
-not asserted here.
+`postCrossNe`; the sum lemmas collapse both intermediate path sums.
+`distinctPureReservoir_braid` identifies the sector transports with the common
+factor-weight grid and proves the canonical all-reservoir braid equality.
 -/
 
 noncomputable section

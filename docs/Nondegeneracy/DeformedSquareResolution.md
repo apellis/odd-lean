@@ -4,8 +4,10 @@
 This assembles right projectivity from the all-prefix identity and P balance
 in `DeformedGlobalQP.md` and the written ideal equality
 in `DeformedIdealSum.md`. Full ELV P/Q descent, the signed QP identity and
-injectivity of P are now proved in Lean; the polynomial-module structures,
-ideal-sum exactness and projectivity below remain written mathematics.
+injectivity of P are now proved in Lean. `ELVPCentral.lean` constructs its
+wordwise k[s]-linear map and commuting twisted old operators. The content-level
+right B[s]-module structures, ideal-sum exactness and projectivity below remain
+written mathematics.
 No assertion about left projectivity or the specified Rouquier matrix is made.
 
 Sources read for this comparison: KKO I, arXiv:1206.5933v2, Lemma 7.3,

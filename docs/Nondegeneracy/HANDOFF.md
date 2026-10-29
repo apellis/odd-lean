@@ -1,5 +1,45 @@
 # Odd nondegeneracy: restart state
 
+## Full-coefficient output-parabolic spanning for the ideal sum
+
+`ELVParabolicSpan.lean` supplies the affine spanning input (C) of
+`DeformedIdealSum.md` using the output-oriented `shuffleBasis`.
+`shuffleAffineEquiv` tensors the existing basis equivalence with the entire
+ELV coefficient algebra. `shuffle_parabolic_factorization` places every
+coefficient in the two-block parabolic factor, after the shuffle in diagram
+order, without an extra coefficient sign. `hom_mem_of_shuffle_parabolic`
+proves these terms span; it does not assume a PBW decomposition or flatness.
+`ideal_nil` and `appendRelations_nil` handle the empty old word explicitly.
+
+The named IS2 consumer is
+`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its remaining
+hypothesis is a concrete shuffle-term containment. It is not discharged:
+one must move `relation j t` across `shuffleParabolic` using the full
+normalizer (first dot translated by −2 delta, total coefficient-plus-tail
+parity, and delta times the top coefficient zero), then identify short
+shuffles with appended old relations and the long shuffle with `appendW`.
+This is the output-oriented shuffle, not the inverse shuffle used in input
+prepend coordinates. No ideal-sum equality or cokernel identification is
+claimed. Those remain the next target; P injectivity is already proved below.
+
+## Central moving-variable linearity of ELV P
+
+`ELVAppendMovingSlide.lean` proves the decorated moving-dot deletion identity
+with the moving power before the full ELV relation. Two slides cancel the
+sign; the same-colour deletion lies in the append-old span.
+`ELVPCentral.lean` proves `pMap_movingSquare`, `pMap_movingEvenDot`, and
+`pMap_central` on the prescribed quotients, with arbitrary words, cutoffs
+and full exterior coefficients over any commutative ground ring. The even
+power commutes with the relation by its coefficient expansion, not by
+commuting an unchanged odd dot. Zero cutoff and the positive even odd-colour
+coefficient relation are retained in the existing ELV coefficient algebra.
+
+`pCentralMap` is a k[s]-linear map on these quotients. `pCentralMap_oldSource`
+retains the total-parity twist `appendQ` on the source; both old operators
+are k[s]-linear and kill the old ideal. Old balance is reused, not assumed.
+Assembly into content-level ordinary right B[s]-modules, their projectivity,
+and the exact cokernel sequence are still separate obligations.
+
 ## Injectivity of the actual full ELV P map
 
 `ELVPInjective.lean` combines the quotient QP identity with moving-coordinate
@@ -7,7 +47,8 @@ regularity. `signedQPMap_injective` and `pMap_injective` hold for arbitrary
 words, cutoffs and full exterior coefficients over the given commutative
 ground ring. No balance, monicity, freeness or injectivity assumption is added.
 This closes the injectivity step of `DeformedSquareResolution.md` §3;
-B[s]-linearity, the cokernel identification, exactness and projectivity remain.
+The central-variable and twisted old-action compatibility are supplied above;
+content-level B[s]-module assembly, the cokernel, exactness and projectivity remain.
 
 ## Full ELV Q descent and quotient composition
 

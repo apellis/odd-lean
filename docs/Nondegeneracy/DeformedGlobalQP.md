@@ -212,8 +212,9 @@ recursion and normal-form spanning extend balance to arbitrary old morphisms,
 with the twist on total coefficient-plus-diagram parity. `ELVPDescent.lean`
 then proves preservation of the prepend-old relation span and defines
 `ELVOld.pMap : Target →ₗ[k] AppendTarget`. Its representative formula is
-precomposition by the prescribed W; B[s]-linearity, injectivity and exactness
-are not asserted.
+precomposition by the prescribed W. `ELVPInjective.lean` proves injectivity;
+`ELVPCentral.lean` proves wordwise k[s]-linearity and twisted old-operator
+compatibility. Content-level B[s]-module assembly and exactness remain open.
 
 For coefficients c∈A it holds exactly: W has parity ε, and c is
 supercentral. For idempotents it is exactly the strand permutation.
