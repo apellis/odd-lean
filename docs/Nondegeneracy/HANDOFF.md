@@ -2987,7 +2987,24 @@ height forms `s (ψ x₁) - x₂ ψ = 1`, `s (x₁ ψ) - ψ x₂ = 1`
 `globalActionAdjunction`, `square`, `braid`, and `loc` via `globalSuperRouquierLoc` with dots,
 crossing parity and both slides proved). The only hypothesis is `L`, a family of
 `GlobalLocalInversion`: exactly the `invPos`/`invNeg` inverses of the Rouquier mate at each
-middle weight (local inversion: P balance, ideal sum, projective resolution, not yet in Lean).
+middle weight. Route for `L` (matrix chain, no projectivity): `DeformedMackeyBoundary.md`,
+`DeformedBoundaryDivision.md` ((U2), (L)), `DeformedRouquierMatrix.md` §4,
+`DeformedMatrixComparison.md` §4 (window `H_(r,k)`), `DeformedActionAssembly.md` §5; distinct
+colours by KKO I Thm 9.1 with deformed (9.3) (`DeformedActionAssembly.md` §2). Note: as stated,
+`GlobalLocalInversion` takes an arbitrary `a` with `CyclotomicPolynomialParity` and an unrelated
+`Λ`; it is false in that generality (`a i = 1`, `⟨h_i,Λ⟩ = 5`: at the weight with `x₁ = -Λ`
+the composites `M`, `N` vanish but the `5` dotted unit columns have nonzero source
+`B`, so `invNeg` fails). Discharging it needs `a i` monic of degree `⟨h_i,Λ⟩` (assumed throughout the notes); these
+hypotheses go on the dependent statements. The top-row cokernel step
+(`DeformedCyclotomicTopRow.md` §4) uses the lower-height ideal sum (`DeformedIdealSum.md`) and
+the square resolution (`DeformedSquareResolution.md`), both proposed.
+`RouquierMateKernel.lean` (checked): the mate kernel `s = -F̄J` of display (2) of
+`DeformedMatrixComparison.md`, `x ⊗ y ↦ -(-1)^{|i||x|} φ₂(x) τ φ₂(y) ⊗ e₂`, as a
+superbimodule morphism `B e ⊗_A e B ⟶ e₂C ⊗_C C e₂` of parity `|i|` (`rouquierMateKernel`,
+`rouquierMateKernel_parity`, `rouquierMateKernel_apply`); balance over `A` is the Koszul sign of
+`J` cancelling that of `heightLastCrossing_intertwines` (`rouquierMateKernel_balance`). Next:
+the dotted unit and counit kernels `u_k`, `c_k`, and the comparison of the functor-level mate
+with `rouquierMateKernel` on weight spaces.
 Stream H restart point: (a) slides: done (above); (b) braid functor half: a three-fold corner `C θ₃(1)` with comparison
 `Ind ⋙ Ind ⋙ Ind ≅ T₃ ⊗ -` (copy `heightInductionFunctorComparison`), carrying
 `heightLastCrossing_braid_same` to components, then blocks; (c) `GlobalNilpotent` needs
