@@ -34,7 +34,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u
+universe u uB v w
 
 variable {I X : Type u}
 
@@ -122,7 +122,7 @@ instance finite : (w : List (Col I X)) → (s t : Sector I) → Finite (SPath w 
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -178,7 +178,7 @@ def muM (s : Sector I) : X := -P.ΛR + contentWeight D s.2
 def wt (s : Sector I) : X := P.muP s + P.muM s
 
 /-- The Hom category of a sector. -/
-abbrev H (s : Sector I) : Type u := homWeightSector P.T.obj P.W.obj (P.muP s) (P.muM s)
+abbrev H (s : Sector I) : Type v := homWeightSector P.T.obj P.W.obj (P.muP s) (P.muM s)
 
 end ProbeReservoir
 
