@@ -240,6 +240,24 @@ examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at content index `n=0` (old height one),
 and exact right action.
 
+## Integer grading of ELV coefficient diagram Homs
+
+Checked (`ELVHomGrading.lean`, depending on PR #593): `elvHomGrading`
+constructs the integer grading on the existing `ELVCoefficientCategory`, using
+its full exterior coefficient quotient and affine `gdeg` under
+`Sc.Homogeneous`. The coefficient parity is unchanged.
+`elvHomDegree_internal` proves the Hom decomposition is an internal direct sum;
+composition adds degrees by the box-product graded supercategory structure.
+`ELVOld.relation_mem_degree` proves the existing first-position relation has
+degree `2 * sy.d j * cutoff j`, for both even and odd colours.
+`BubbleELVPolynomialGrading.lean` supplies the complementary degrees of every
+monic coefficient. The odd rank-one consumer checks cutoffs 2 and 3, retaining
+a nonzero exterior coefficient.
+
+Remaining: prove that all integer projections preserve `ELVOld.ideal`, descend
+the grading to `ELVOld.Old`, and establish positive-content support bounds.
+No such bounds, old-quotient grading, or full factor action are asserted here.
+
 ## Integer-graded ELV coefficient/vacuum algebra
 
 Checked (`BubbleCoefficientGrading.lean`, `BubbleELVGrading.lean`):
