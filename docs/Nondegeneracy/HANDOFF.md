@@ -689,6 +689,21 @@ transports `compLayer_cast_eq_of_path`, `compLayer_cast_eq_zero_of_path` absorb
 them. Next: the colour patterns of (1.9) for `swappedGens c L`, starting with
 the mixed probe/reservoir block of `iii` ((5A)/(5B) of
 `ThreeStrandSectorBraid.md`).
+Sector algebra of the `iii` braid (checked,
+`SwappedAssembly/BraidSame/SectorAlgebra.lean`): on the block of paths
+`{AAB, ABA, BAA}`, transported to the first path by `Φ₀ = 1`, `Φ₁ = J`,
+`Φ₂ = J ≫ J`, the three-strand crossings become the matrices
+`sectorU D γ = [[D,0,0],[0,-γ,1],[0,-γ²,γ]]` and
+`sectorV D δ = [[-δ,1,0],[-δ²,δ,0],[0,0,D]]` (the last entry `D` is (5A)).
+`sectorBraid`: `U V U = V U V` follows from `D² = 0`, `Dγ = δD + γδ`,
+`Dδ = γD - δγ`, `γδ² = δ²γ`, `γ²δ = δγ²` (read in any ring; apply in the
+opposite of `End`). These four relations are proved from the dot algebra:
+`sectorRelations_even` (commuting dots `x₁, x₂, z`, `Dz = zD`, slides
+`x₁D - Dx₂ = 1 = Dx₁ - x₂D`, `γ = (z - x₁)⁻¹`, `δ = (z - x₂)⁻¹`) and
+`sectorRelations_odd` (anticommuting dots, `Dz = -zD`, slides
+`x₁D + Dx₂ = 1 = Dx₁ + x₂D`, `γ(x₁² - z²) = x₁ - z`, `δ(x₂² - z²) = z - x₂`
+with `x₁² - z²`, `x₂² - z²` units). Next: transport the dot entries to
+`x₁, x₂, z` on the first path and prove (5A), then assemble the block.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
