@@ -892,6 +892,20 @@ the associator (`homMixedInterchange_postPair`, (7) of `PairedHomInterchange.md`
 §4 with `κ' = κ + pᵢ`); the sign is common to both sides of (8). No discrepancy
 with the written proof. Next: dot algebra on `PRR` and the block assembly; then
 `PPP`, `RRR`.
+Braid on the block `{PRR, RPR, RRP}` of `iii` (checked,
+`SwappedAssembly/BraidSame/SectorDotsPost.lean`, `.../MixedBlockPost.lean`). Dots on
+`PRR`: probe `x` (`prPreDot`), reservoir `y` (`prPostDot`), `z` (`prrPostDot`),
+crossing `D` of the two right letters (`prrCross`), `Φ₁ = J`, `Φ₂ = Φ₁ ≫ Eᵢ-step(J)`
+(`prrToRprIso`, `prrToRrpIso`). `Φ₂` carries `RRP`'s probe and middle reservoir dots to
+`x`, `z` and its left crossing to `D` ((5B)); `Φ₁` carries `RPR`'s dots to `q x`, `q y`.
+Hence `δ = Φ₁ a Φ₁⁻¹ = a(x, y)` and `γ = Φ₂ a Φ₂⁻¹ = a(x, z)` (`prrLeftCoeff_even/_odd`,
+`prrRightCoeff_even/_odd`, units `prrLeftDenom_isUnit`, `prrRightDenom_isUnit`), and `D`
+slides past `y`, `z` (`prrCross_slides`). Here the left crossing is `sectorV D δ` and
+the right crossing `sectorU D γ` (`blockLeftPost_eq`, `blockRightPost_eq`), the roles
+of the two crossings being exchanged relative to `{PPR, PRP, RPP}`; the relations of
+`sectorBraid` hold with `(x₁, x₂, z) = (-z, -y, -x)` at an even colour and `(z, y, x)`
+at an odd colour (`prr_sectorRelations`). `blockPost_braid`: (1.9) on every pair of
+paths of the block. No discrepancy with the written proof. Next: `PPP`, `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -1143,7 +1157,20 @@ window) and `isIso_caseC_of_neg` (source `X ⊕ O^{d+b}`, target `Y ⊕ Oᵈ`; f
 After elimination the reduced corner is `q^l • (x^{∓l} ≫ s ≫ y^{±l})` by the window identities
 (4), and the reduced window is the probe window, or its shift (5), (6), conjugated by these
 powers (`IsCapInverse.conj`, `IsCupInverse.conj`) with slots reordered and multiplied by units.
-With (a), (d) this covers all four cases of §3. Next: the extraction (16)–(19).
+With (a), (d) this covers all four cases of §3.
+
+**Extraction (checked).** `SwappedAssembly/CentralInverse/Extraction.lean` proves (16)–(19) of
+§4 for any invertible `M = gMap s B Cc E : X ⊕ Oᴸ ⟶ Y ⊕ Oᵀ`, using only the four block equations
+of `M ≫ M⁻¹ = 𝟙` and `M⁻¹ ≫ M = 𝟙`. `ProbeWindow.isIso_capResidual`: if `(j, A)` inverts the cap
+window `[s; V]`, the residual `capResidual B Cc E j A : O^{h ⊕ L} ⟶ Oᵀ` (entries `A n ≫ Cc r`
+and `E l r - B l ≫ j ≫ Cc r`) is invertible, with inverse entries `B' r ≫ V n`, `E' r l`.
+`ProbeWindow.isIso_cupResidual`: if `(j, D)` inverts the cup window `[s, U]`, the residual
+`cupResidual B Cc E j D : Oᴸ ⟶ O^{T ⊕ b}` (entries `E l r - B l ≫ j ≫ Cc r`, `-(B l ≫ D n)`)
+is invertible, with inverse entries `E' r l`, `-(U n ≫ C' l)`. Here `M⁻¹ = [a', B'; C', E']`.
+Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
+(the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
+stabilization (13)/(14) and nilpotent lifting (12) of `SwappedHomInversion.md`; the nilpotence
+input is the obstruction recorded next.
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
