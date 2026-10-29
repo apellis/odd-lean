@@ -1353,8 +1353,11 @@ import OddMath.QuiverHecke.SwappedVacuumBubbleSeries
 import OddMath.QuiverHecke.SwappedVacuumBasisEvaluation
 import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
 import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
+import OddMath.QuiverHecke.HalfTurn.Mirror
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
 import OddMath.QuiverHecke.FiniteColourNondegeneracy
 import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
+import OddMath.QuiverHecke.SwappedVacuum.LayerAction
+import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
