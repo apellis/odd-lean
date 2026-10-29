@@ -1,5 +1,26 @@
 # Odd nondegeneracy: restart state
 
+## ELV coefficient-only P balance
+
+`ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
+for every word, cutoff and full ELV coefficient, with no homogeneity assumption
+on that coefficient. Put `W = affineUnit(lastToFirstHom) ≫ relation i v` and
+`q = p(i) p(v) + N_i p(i)`. The exact equation is
+
+    W ≫ insert i (scalar a) = rightContext [i] (twist q (scalar a)) ≫ W.
+
+`elv_comm` proves graded commutativity from exterior anticommutation and
+homogeneous lifts through the existing coefficient quotient. `scalar_slide`
+then includes both coefficient and diagram signs in the signed box product.
+This establishes the coefficient-generator case of `DeformedGlobalQP.md` §4,
+not a quotient map or an assumed balance package.
+
+Remaining: old-dot and old-crossing error containment in the append-old ideal,
+closure under arbitrary old composites, and preservation of every source old
+relation. Consequently the P map from `ELVOld.Target` to the append-old quotient
+and its ordinary twisted B[s]-linearity remain unconstructed. No injectivity,
+exactness or projectivity follows from coefficient balance alone.
+
 ## Full ELV all-word signed QP product
 
 `ELVQPProduct.lean` proves `ELVOld.qp_projection_product` and `qp_product`

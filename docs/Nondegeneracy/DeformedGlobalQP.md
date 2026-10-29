@@ -202,6 +202,14 @@ and ε=p(i)(N_i+p(β)). The needed equation for homogeneous old b is
 
     ξ(b) W ≡ (−1)^(ε|b|) W b mod I₀.                 (P)
 
+**Checked coefficient case.** `ELVPScalar.oldGenerator_scalar_balance` proves
+this case for arbitrary words, cutoffs and coefficients in the existing ELV
+quotient category. `elv_comm` derives graded commutativity through homogeneous
+lifts; `scalar_slide` includes the signed box-product interchange. Its twist is
+on total coefficient-plus-diagram parity. The dot and crossing error arguments
+below, and therefore general old-relation preservation and P descent, remain
+unformalized for these full coefficients.
+
 For coefficients c∈A it holds exactly: W has parity ε, and c is
 supercentral. For idempotents it is exactly the strand permutation.
 For dots and crossings the following describes the error terms explicitly;
