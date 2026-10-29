@@ -76,7 +76,7 @@ namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams MonoidalCategory Categorification Categorification.InductionAlong
 open scoped Classical
 
-universe u v
+universe u v w
 variable {I k : Type u} {X : Type v} [AddCommGroup X] (D : SKM.Datum I X)
   [CommRing k] (Sc : SKM.Scalars D k) [Fintype I]
 
@@ -204,7 +204,7 @@ end Matrix
 
 section Descent
 variable (a : I → _root_.Polynomial k) (i : I) (n : ℕ) (ε : ZMod 2)
-  (N : Type v) [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
+  (N : Type w) [AddCommGroup N] [Module (Hn D Sc (n + 1)) N]
 
 local notation "ψ" =>
   (appendAlgebra D Sc i (n + 1) : Hn D Sc (n + 1) →ₙ+* Hn D Sc (n + 1 + 1))
