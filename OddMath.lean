@@ -106,6 +106,7 @@ import OddMath.QuiverHecke.CyclotomicAction.GlobalWeightSlides
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierFamily
 import OddMath.QuiverHecke.CyclotomicAction.GlobalRouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.BoundaryDivision
+import OddMath.QuiverHecke.CyclotomicAction.BoundaryWindow
 import OddMath.QuiverHecke.CyclotomicAction.RouquierMateKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierCupCapKernel
 import OddMath.QuiverHecke.CyclotomicAction.RouquierKernelComparison
@@ -1361,6 +1362,7 @@ import OddMath.QuiverHecke.SwappedVacuumCornerEvaluation
 import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.QuiverHecke.HalfTurn.Mirror
 import OddMath.QuiverHecke.HalfTurn.SuperFlip
+import OddMath.QuiverHecke.HalfTurn.Composite
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward
