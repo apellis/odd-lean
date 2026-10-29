@@ -1306,6 +1306,7 @@ import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
 import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Cross
+import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Generators
 import OddMath.QuiverHecke.SwappedAssembly.WhiskerReduction
@@ -1319,6 +1320,8 @@ import OddMath.QuiverHecke.SwappedAssembly.Quad
 import OddMath.QuiverHecke.SwappedAssembly.Inversion
 import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
+import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
+import OddMath.QuiverHecke.SwappedAssembly.QuadSame
 import OddMath.SKM.ReservoirBubbleCoordinates
 import OddMath.QuiverHecke.UpwardPBWCoordinates
 import OddMath.SKM.AdaptedDistinctChoices

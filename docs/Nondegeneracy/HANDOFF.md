@@ -519,8 +519,19 @@ generator images of item 1 below.
    - `Generators/Leftward.lean` (**checked**): `upwardGens`, `sigmaEntry`,
      `lcrossNeImage`, `LeftwardData`.
    - `Generators.lean` (**checked**): `swappedGens c L`.
-   Remaining for the action: existence of `c` with `CrossCoeff.IsInverse`
-   (F2–F3), and the `LeftwardData` of (A7) with the relations `invP`/`invM`.
+   - `Generators/CrossCoeffExistence.lean` (**checked**): existence of `c`.
+     `rpPreDot_comp_rpPostDot`: on the path `(R,P)` of `Eᵢ Eᵢ` the probe dot
+     `x` and the reservoir dot `y` supercommute, `x ≫ y = (-1)^{p_i} (y ≫ x)`
+     (super-interchange through the parity shift). `CrossCoeffInputs`: `x` is a
+     unit (F2) and `y` is nilpotent (F3), pointwise; `CrossCoeffInputs.of_factor`
+     derives it from invertibility of every probe dot and nilpotence of every
+     reservoir dot as 2-morphisms. `crossCoeffOfInputs h` is `(y - x)⁻¹` at even
+     colours and `(x² - y²)⁻¹ (x - y)` at odd colours (`x - y` commutes with
+     `x² - y²` since `x y = -y x`), and `crossCoeffOfInputs_isInverse` proves
+     `CrossCoeff.IsInverse`. Interface for the instance: the factor dot
+     hypotheses of `of_factor` (F2, F3).
+   Remaining for the action: the `LeftwardData` of (A7) with the relations
+   `invP`/`invM`.
 2. `WhiskerReduction.lean` (shared helper, **checked**): reduces `evalW` of a
    whiskered relation for `P.layerRep` to the unwhiskered matrix entries.
    `compLayer gens L p q Z : F_p Z ⟶ F_q Z` is the entry of a layer between
@@ -570,7 +581,16 @@ for `i = j` and off the diagonal for `i ≠ j`; on the diagonal it is `t_ij` if
 (with `x₁ = leftDot`, `x₂ = rightDot`) otherwise. Supporting lemmas:
 `compList_append`, `compDiag_comp` (entries of composites are matrix
 products), `compEval_sub`, `compEval_smul`, `compEval_sum`, `compEval_of`.
-Remaining: prove `CrossQuad (swappedGens c L)` from the probe and reservoir
+`QuadSame.lean` (**checked**): `swappedGens_quadEq c L i ν p q Z` proves the
+equal-colour field `quadEq` of `CrossQuad (swappedGens c L)` for every `c`
+(no identity of `a` is needed). The paths of `Eᵢ Eᵢ` between two sectors are
+`PP`, `RR`, or the mixed pair (`sum_paths_PP`, `sum_paths_RR`,
+`sum_paths_mixed`; the number of probe summands is read off the `i`-th probe
+content, `nextSector_fst_same`); `preCrossSame_sq`, `postCrossSame_sq` are the
+factor relations `T.square`, `W.square` transported, and the four mixed
+entries of (A6) cancel. `CrossEntries.lean`: `SPath.mk₂`,
+`SPath.exists_eq_mk₂`, `leftDot_cons`, `rightDot_cons`.
+Remaining: prove the other fields of `CrossQuad (swappedGens c L)` from the probe and reservoir
 quadratic relations (diagonal blocks) and the inverse property of `c`
 (equal-colour mixed blocks); distinct-colour mixed blocks need the signed dot
 intertwinings from `homMixedInterchange_pre/_post`.
