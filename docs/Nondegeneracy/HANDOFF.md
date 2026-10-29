@@ -771,6 +771,18 @@ The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the imag
 This is a property of the interface, not of the construction: the constructed coefficient
 satisfies both. Generic: `IsSupernatural.sub`.
 
+**`SigmaPermutation` from entrywise invertibility (checked).**
+`SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
+P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
+`P.sigmaEntry c i j ν p q Z` is an isomorphism. For `i ≠ j` the summand paths of
+`Eⱼ Fᵢ` and `Fᵢ Eⱼ` between fixed sectors `t`, `s` are determined by their sides
+(`SPath.subsingleton_upDn`, `SPath.subsingleton_dnUp`), and one exists iff the other does
+(`SPath.nonempty_dnUp_iff`, the two steps commute: `SPath.exchange_upDn`,
+`SPath.exchange_dnUp`). So the permutation is forced and the off-diagonal condition is
+vacuous. Remaining for `hσ`: invertibility of the four single-term blocks
+(probe/probe: `homContentDistinctPreMate`; reservoir/reservoir: the shifted post mate;
+mixed: `homDistinctMixedMate` and `homDistinctMixedPreMateDot`).
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
