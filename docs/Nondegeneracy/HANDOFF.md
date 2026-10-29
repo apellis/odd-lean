@@ -83,6 +83,9 @@ no predicate on the objects is needed. For a `ProbeReservoir P` with
 hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
 in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
 (`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
+The `ReservoirCoefficients` consumer constructs a nonzero square-zero positive coefficient
+ideal over `ZMod 9` and checks post-whiskering, arbitrary left/right multiplication, decreasing
+powers and joint vanishing. It does not construct a cyclotomic Rouquier family.
 
 Checked (`CentralInverse/RegularCoefficientBound.lean`): a kernel-level construction avoids
 the arbitrary-superfunctor grading requirement. For a graded superalgebra `A`,
@@ -1119,6 +1122,34 @@ Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
 (1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
 the mixed interchanges to this form (block `PRP` first).
 
+Two-probe mixed-colour triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePair.lean`):
+`RouquierData.cross_mixedInterchange_pair` moves a factor crossing through the
+prescribed pair of mixed interchanges at arbitrary content and all colours,
+including repeated colours. The source and target intermediate objects and
+shifts may differ. `homMixedInterchange_pair_cross` retains the two outer
+Koszul signs; `homContentShift_pair_cross_sign` cancels their product for
+crossing parity `pᵢ pⱼ`. This proves the unweighted two-probe triangle of
+`MixedColourRemainingBraid.md` §2, without inverting a factor crossing or Q.
+It does not yet evaluate the sector path sums, transport the Q weights, or
+supply the mixed-colour fields of `CrossBraid`. The one-probe/two-reservoir
+triangle is supplied below; the `iji` correction assembly remains open.
+
+One-probe/two-reservoir triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePostPair.lean`):
+`resCore_mixedInterchange_pair` intertwines the prescribed normalized reservoir
+factor crossing with two mixed interchanges at arbitrary content and unequal
+intermediate weights. `homMixedInterchange_postPair_shifts` retains the
+coefficient `(-1)^((κ₂ + κ₂′)κ₁′)`. `postPairIso_cross_remove` identifies
+the beta/xi normalized crossing with homogeneous-removal conjugation, retaining
+`(-1)^((κ₁ + κ₂)|χ|)` before specializing to crossing parity. Both signs
+are derived, not naturality assumptions. The full factor crossing is used
+through `resCore`, with no inverse of that crossing or of Q.
+
+Open: transport the endpoint casts into the three-letter sector path sums,
+transport their Q weights, and assemble the distinct and repeated-outer-colour
+`CrossBraid` cases. The existing `BraidSame` blocks are unchanged.
+
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
 acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
@@ -1650,10 +1681,21 @@ Arbitrary colours, commutative ground rings and cutoffs are retained.
 
 The importing consumer tests positive odd/even and zero cutoffs, the empty old
 word, signed balance and the top relation. It defines the moving-polynomial
-class separately; it does not prove that class nonzero. A bundled signed tensor
-equivalence, the right PBW comparison for this coefficient extension, and
-moving-polynomial nonvanishing remain open. Full transported old-factor killing,
-all-prefix QP induction/cancellation and projective resolution are next obligations;
+class separately; it does not prove that class nonzero.
+`ELVOld.balancedEquiv` in `ELVOldBalancedTensor.lean` now identifies
+the signed coend of coefficient-category Homs and `Old` with `Target`.
+Its explicit inverse inserts the old identity class; both composites and
+the signed representative formula are proved. The construction uses module
+tensors and a direct sum over old words, without finite-colour or flatness
+hypotheses. The right PBW comparison for this coefficient extension and
+moving-polynomial nonvanishing remain open.
+`ELVOld.oldPolynomial_move` transports the second-position old polynomial
+along the existing `moveHom` chain, with its full coefficient-and-dot sign.
+`projection_move_oldPolynomial` kills the resulting first-position output
+polynomial after this chain, including arbitrary ambient continuation.
+Repeated odd colours and odd/even/zero cutoffs are exercised. The prefix-crossing
+identity needed to turn this into (K), all-prefix QP induction/cancellation
+and projective resolution are next obligations;
 no identification with ordinary `contentTargetTensor` is asserted.
 
 ## Signed ELV coefficient quotient category
@@ -5786,3 +5828,41 @@ an odd element).
 The half-turn ideal identification of §5 is complete for homogeneous `T` (the coefficient-power
 monomials of §6 are homogeneous). Inhomogeneous `T` is not covered: the sandwich sign depends on
 the parity of the middle coefficient; replace such `T` by its set of homogeneous components.
+
+### Append Mackey transport on the actual content corner
+
+`CyclotomicAction/AppendContentMackeyMap.lean` instantiates the coefficient and
+left-idempotent restrictions in `AppendMackeySource.md` §4, using KKO I
+(8.3)–(8.5). Let `B = CyclotomicContentCorner D Sc a n β` and
+`ε = natDegree(aᵢ) p(i) + p(i) p(β)`. The source is the fixed part of
+`Ind B (prependTwist D Sc i n ε)` under left multiplication by the append
+idempotent. This is an actual subgroup, not an assumed Mackey decomposition.
+
+- `contentCorner_cyclotomic_smul` proves the old cyclotomic ideal annihilates `B`.
+- `contentCorner_word_smul_of_ne` and `contentCorner_appendQ_smul` prove the
+  content support and constant-parity conditions needed by `appendMackeyMap`.
+- `appendContentP` restricts the prescribed multiplier `h ⊗ b ↦ h W ⊗ b` to
+  that source and the existing `appendContentMackeyTarget` carrier.
+- `appendContentP_rightMul` proves the source transport field `P_r` with the
+  unchanged right coefficient action.
+- `appendContentRho` restricts the first-dot operator and multiplies it by
+  `(-1)^(ε - natDegree(aᵢ)p(i))`. `appendSourceSign_contentParity` identifies
+  this exponent with `p(i)p(β)`, including cutoff zero.
+- `appendContentP_rho` proves the exact field `P_ρ : Pρ = RtP`, with the target
+  dot and coefficient involution already present in `appendContentMackeyTarget`.
+
+The coefficient-module universe of `AppendMackeyMap` and `AppendMackeyRho` is
+independent of the weight-lattice universe, so the actual content corner can be
+substituted without identifying unrelated universes. Their formulas are unchanged.
+The importing consumer uses the existing asymmetric two-colour symmetrizable datum
+over `ℚ`, polynomials `X^m` for every `m`, and arbitrary content and positive
+coefficient height. The transport equations and module declaration audit use only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+**Remaining source boundary work:** construct the short-coset extraction from the
+balanced prepend coordinates, identify its kernel and compatible source lifts, then
+supply the span/independence fields of `MackeyCosets`. No `MackeyCosets`,
+`toMackeyBoundary`, reverse norm, or `GlobalLocalInversion` instance is asserted here.
+The coefficient height is still positive; the zero cutoff is retained, but rank
+zero is not discharged. Integer grading and the full exterior ELV coefficient
+extension also remain separate obligations.
