@@ -32,6 +32,8 @@ R_1(β); thus the displayed left submodule includes arbitrary old factors
 on both sides of F_2. Parity twisting the balanced coefficient factor does
 not change this vanishing submodule.
 
+For the cancellation step assume n > 0; the empty-prefix base case is
+separate, since its displayed last-minus-first difference would be zero.
 Use affine right PBW coset coordinates before tensoring with the old
 cyclotomic block B. Tensoring that direct-sum isomorphism gives polynomial
 coordinates with coefficients in B, without assuming B is A-flat. In these
@@ -43,6 +45,19 @@ balanced quotient: the old dot acts on B and the moving square commutes
 with the old algebra. This is the multicolour version of the checked local
 right-PBW argument, not cancellation in a cyclotomic algebra in which the
 moving dot has already been specialized.
+
+**Checked cancellation ingredient.** `ELVPrependDescent.lean` now supplies
+the actual full-ELV old-Hom coordinate equivalence, not just an affine
+raw-index surjection. In `ELVMovingShift.lean`,
+`movingSquare_coordinate_shift` and `movingEvenDot_coordinate_shift`
+identify actual source precomposition with the exponent shifts.
+`oldSourceTarget_pair` and `oldSourceTarget_above` prove preservation of
+that filtration by the actual old action. Finite support then proves
+`lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
+`lastDotDifference_projection` identifies those quotient maps with the
+positioned differences above for n > 0. This closes the cancellation
+ingredient only; the all-prefix calculation below is not thereby a Lean
+theorem.
 
 ## 2. The relation-killing step for every prefix
 
