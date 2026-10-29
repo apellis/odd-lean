@@ -863,6 +863,32 @@ of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K
 `K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
 ones. To be rechecked against `ProbeWindowInverse.md` (4).
 
+**Sign of the central entries: settled (written).** The diagonal of (2) of
+`SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
+`a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
+of (A6) that multiplied the diagonal by `-q` gives the even slide with right side `-1`.
+Correspondingly `C_RP = -Σ_r q^(r+1) u_R(r) v_P(-r-1)`, `D_PR = Σ_s q^(s+2) u_P(-s-1) v_R(s)`
+(the earlier `K`). Recomputed from (11) and (7) there, the §5 tables are exactly `Hhat_±` of
+`ProbeWindowInverse.md` (`c_r = q^(r+1)`, `d_s = q^(s+2)`), and its window identities (4)
+follow from the literal slide (1), whose sign does not involve `a`. So §§5–6 of
+`SwappedHomInversion.md` hold as written for both parities; only the written route changed.
+Open check: `SwappedActionAssembly.md` (A6) also asserts that this (Lean) diagonal breaks the
+mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is still a
+hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
+and the braid would require opposite signs).
+
+**`CentralInvertible` needs a weight restriction (interface).** As stated,
+`CentralInvertible` (and so `AugmentedInvertible`, `LeftwardData.IsInverse`) quantifies over
+all `ν` independently of the sector. The entries `σ`, `ε`, `η` do not depend on `ν`; only the
+window count `(D.h i ν).toNat` does. If `[σ; ε₀, …, ε_{H-1}]` is invertible, then adding one
+more window row gives `[1; r]` times it, which is not invertible unless the object is zero. So
+the unrestricted statement fails as soon as some `P.H t` has a nonzero object. The action only
+uses weight-matched sectors (`layerEntry` needs `P.wt sr = L.cod.endR`; `compEval` is applied
+through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`). Next step: restrict
+`CentralInvertible`, `AugmentedInvertible` and `LeftwardData.IsInverse` to `P.wt s = ν`
+(rightmost sector), weight `relHolds_of_compEval`, and define `leftwardOfInvertible` as zero
+off weight. `SwappingInvertible` does not involve `ν` and is unaffected.
+
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
 hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
