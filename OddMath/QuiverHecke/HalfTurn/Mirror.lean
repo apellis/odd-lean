@@ -385,4 +385,52 @@ theorem mirror_rel_braid (i j m : I) (h : ¬(i = m ∧ i ≠ j)) :
   generalize D.parity m = c
   fin_cases a <;> fin_cases b <;> fin_cases c <;> simp [zsign] <;> module
 
+theorem lin_sum {a b : Obj (sig D)} {ι : Type*} (s : Finset ι) (f : ι → LinDiagram k a b) :
+    (pres D Sc).lin (∑ x ∈ s, f x) = ∑ x ∈ s, (pres D Sc).lin (f x) := by
+  simp only [Presentation.lin, Functor.map_sum]
+
+/-- Two dot blocks on distinct strands commute up to the Koszul sign, for normal-form diagrams
+on any word equal to the underlying word. -/
+theorem diag_dots_swap {t : List I} (l m v : List I) (i j : I) (a b : ℕ) (x y : LayerData I)
+    (ht : t = swapWord l m v i j) (hx : x = dotI l m v i j) (hy : y = dotJ l m v i j)
+    (h : SChain t (List.replicate a x ++ List.replicate b y) t)
+    (h' : SChain t (List.replicate b y ++ List.replicate a x) t) :
+    (pres D Sc).diag (mkD D _ h) =
+      zsign k ((a : ZMod 2) * D.parity i * ((b : ZMod 2) * D.parity j)) •
+        (pres D Sc).diag (mkD D _ h') := by
+  subst ht hx hy
+  exact dotDiag_swap D Sc l m v i j a b
+
+theorem zmod2_eq_zero_of_ne_one {a : ZMod 2} (h : a ≠ 1) : a = 0 := by
+  fin_cases a
+  · rfl
+  · exact absurd rfl h
+
+theorem mirror_rel_quadNe (i j : I) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.quadNe i j hij hd)) = 0 := by
+  refine mirror_rel_of D Sc (.quadNe j i hij.symm (fun h => hd ((D.d_eq_zero_iff j i).mp h)))
+    rfl rfl 1 ?_
+  mirror_expand
+  simp only [List.prod_replicate, one_pow, one_smul, Functor.map_sum, Functor.map_smul,
+    mirror_dg, lin_sum, Presentation.lin_smul, Presentation.lin_of, List.map_append,
+    List.map_replicate, mirrorLD, Shape.mirror, mirrorWeight, List.reverse_nil,
+    List.reverse_cons, List.nil_append, List.prod_append, mul_one, eqToHom_refl,
+    Category.id_comp, Category.comp_id]
+  have hc : -zsign k (D.parity i * D.parity j) * -zsign k (D.parity j * D.parity i) = 1 := by
+    rw [mul_comm (D.parity j)]
+    generalize D.parity i * D.parity j = a
+    fin_cases a <;> simp [zsign]
+  rw [hc, one_smul]
+  congr 1
+  · exact sub_right_comm _ _ _
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_
+  rw [Sc.s_symm i j x y]
+  by_cases hs : Sc.s j i y x = 0
+  · simp [hs]
+  rw [diag_dots_swap D Sc (t := [j, i]) [] [] [] j i y x ([], Shape.dot j, [i])
+    ([j], Shape.dot i, []) rfl rfl rfl,
+    zmod2_eq_zero_of_ne_one (a := (y : ZMod 2) * D.parity j)
+      (fun h => hs (Sc.s_eq_zero j i y x h)), zero_mul, SKM.zsign_zero, one_smul]
+
 end OddMath.QuiverHecke
