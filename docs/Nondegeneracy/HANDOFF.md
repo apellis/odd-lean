@@ -1,5 +1,32 @@
 # Odd nondegeneracy: restart state
 
+## Three-distinct-colour two-probe sector braid
+
+`BraidMixed/DistinctProbeSector.lean`: `distinctProbe_braid` proves the literal
+entry `PᵢPⱼRᵣ → RᵣPⱼPᵢ` for pairwise distinct colours and one valid reservoir
+step. All intermediate paths are unique by their endpoint colour counts.
+The two probe crossings are the prescribed unequal-colour `preCrossNe`,
+not the same-colour crossing. The target reverses the probe order.
+
+`mixedInterchange_pair_transport` aligns the two final probe sectors through
+explicit object equalities and heterogeneous equality, then applies the
+signed universal interchange triangle. `preCrossNe_mixedJ_pair_heq` retains
+the sector casts and proves the triangle without any braid, dot-transport,
+Q-invertibility or crossing-invertibility hypothesis. The scalar product
+is one by `homContentShift_pair_cross_sign`. The endpoint equality argument
+is only commutativity of content addition, not an assumed transport law.
+
+`NonVacuity.MixedDistinctProbeSector` instantiates colours `0,1,2 : Fin 3`
+and reservoir content `single 2 1`, proves validity and endpoint equality,
+and audits every owned module declaration, including private/generated
+declarations. This is an occupied-sector application with arbitrary supplied
+representation data, not an independent nonzero representation.
+
+Remaining: the reverse Q-weighted direction with unequal probe colours,
+other distinct-colour sectors, and repeated-outer-colour corrections.
+This theorem contributes one sector to `CrossBraid.braid`; it does not
+construct a complete `CrossBraid`.
+
 ## Reverse two-reservoir Q-weighted sector braid
 
 `BraidMixed/ReverseReservoirSector.lean`: `reverseReservoirPair_braid` proves
