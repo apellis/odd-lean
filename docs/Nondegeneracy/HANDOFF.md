@@ -907,7 +907,14 @@ gives `x^{-l} ≫ s = q^l • (s ≫ y^{-l}) + Σ_{n<l} q^n • (x^{n-l} ≫ v �
 `ProbeWindow.exists_isCupInverse_shift` is (6): if the cup window `[s, u ≫ yⁿ]_{n<h}` has a
 two-sided inverse (`IsCupInverse`), so does `[s, u ≫ y^{n-l}]_{n<h}` for `l ≤ h`; it is (5) in
 `Cᵒᵖ` (`isCupInverse_iff_op`), where the slide becomes `s ≫ x - q • (y ≫ s) = u ≫ (-q • v)`.
-Next: the case analysis (7)–(14) and the extraction (16)–(19).
+`SwappedAssembly/CentralInverse/WindowCases.lean` proves the two pure-window cases of §3 there:
+`ProbeWindow.exists_isCapInverse_caseA` ((a), (7): rows `s`, `xᵗ ≫ v` for `t < H`,
+`q^(r+1) • (x^{-r-1} ≫ v)` for `r < k`, invertible when `[s; xⁿ ≫ v]_{n<H+k}` is) and
+`ProbeWindow.exists_isCupInverse_caseD` ((d), (14): columns `s`, `q^(r+2) • (u ≫ y^{-r-1})`
+for `r < a`, `-(u ≫ yᵗ)` for `t < g`, invertible when `[s, u ≫ yⁿ]_{n<a+g}` is), via
+`IsCapInverse.reindex`/`IsCupInverse.reindex` (reordering slots and multiplying them by units
+`c` with `c * c = 1`). Next: the mixed cases (b), (c) ((8)–(13)), whose maps have extra slots
+on both sides, and the extraction (16)–(19).
 
 **`CentralInvertible` needs a nilpotence input not present in `ProbeReservoir`
 (proposed obstruction to the current interface).** The §4 nilpotence of the reservoir
