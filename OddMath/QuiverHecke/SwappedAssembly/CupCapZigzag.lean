@@ -27,7 +27,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u v₁ v₂ u₁ u₂ w
+universe u v₁ v₂ u₁ u₂ w uB vB wB
 
 section Triangle
 
@@ -136,7 +136,7 @@ theorem side_eq_of_closed {a b : Bool} {i : I} {x y : X} {t : Sector I}
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]

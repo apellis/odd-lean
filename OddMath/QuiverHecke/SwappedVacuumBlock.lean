@@ -35,7 +35,7 @@ noncomputable section
 namespace OddMath.QuiverHecke
 open CategoryTheory StringDiagrams
 open scoped Classical TensorProduct
-universe u
+universe u w
 
 section Schedule
 variable {I X : Type u} [AddCommGroup X] (D : SKM.Datum I X)
@@ -94,7 +94,7 @@ degree bound `d`: an upward module action with the vacuum data of
 `SwappedVacuumCoordinates.md` §6 for the transformed last-boundary ideal. -/
 structure SwappedVacuumBlock (μ : X) (t t' : List I) (d : ℕ) where
   /-- The upward module action. -/
-  A : UpwardModuleAction D Sc μ
+  A : UpwardModuleAction.{u, w} D Sc μ
   /-- The vacuum vector of the source sector. -/
   vacuum : A.V t
   /-- The raw action of the reservoir coefficients on the source sector. -/

@@ -30,7 +30,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct
 
-universe u
+universe u uB v w
 
 variable {I X : Type u}
 
@@ -84,7 +84,7 @@ theorem sum_paths_mixed (h : 1 ≤ s.2 i)
 
 end Paths
 variable [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
