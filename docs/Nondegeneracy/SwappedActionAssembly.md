@@ -209,8 +209,12 @@ diagonal of (A6) as written the even slide has right side -1. So the
 diagonal of the earlier version is the one compatible with the formal slide,
 and the exact check quoted above must have used another identification of
 the two dots. The mixed jij braid relation for the Lean entries is the open
-hypothesis `CrossBraid` and has not been checked against that computation;
-until it is, the braid claim above is unconfirmed for the Lean sign.
+hypothesis `CrossBraid`. An exact model computation
+(`scripts/Nondegeneracy/swapped_braid_twist_model.py`, consistent with the proved
+slide and the proved iii braid blocks) finds the braid relation, with its
+correction, satisfied by the Lean entries on every block of every three-letter
+word, and violated after negating the diagonal; so the braid claim above does
+not hold for the Lean sign in that model. This is evidence, not a proof.
 
 At each fixed reservoir content the relevant dot is nilpotent, uniformly
 on all reservoir modules, because its multiplier belongs to a finite
