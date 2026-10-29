@@ -33,10 +33,10 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u
+universe u uB v w
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -171,11 +171,31 @@ def IsInvNe : SKM.Rel D → Prop
 /-- **The equal-colour leftward data invert the augmented maps** (1.13), (1.14): every
 equal-colour inversion relation (`invP₁`–`invP₅`, `invM₁`–`invM₅`) holds entrywise for the
 swapped generators. These identities characterize the leftward crossing `Fᵢ Eᵢ → Eᵢ Fᵢ` and
-the `♦`-cups and caps as the components of the inverses of the augmented maps. -/
+the `♦`-cups and caps as the components of the inverses of the augmented maps.
+
+The identities are required only when the rightmost sector carries the weight of the right
+region of the relation (`P.wt t = (dom r).endR`): these are the entries that the layer
+representation evaluates, and the augmented maps are not invertible at the other sectors
+(the number of dotted windows depends on the weight). -/
 def LeftwardData.IsInverse (L : P.LeftwardData) (c : P.CrossCoeff) : Prop :=
   ∀ r : SKM.Rel D, relGroup r = .inversion → ¬ IsInvNe r → ∀ {s t : Sector I}
     (p : SPath ((SKM.pres D Sc).dom r).word s t) (q : SPath ((SKM.pres D Sc).cod r).word s t)
-    (Z : P.H t), compEval (P.swappedGens c L) ((SKM.pres D Sc).rel r) p q Z = 0
+    (Z : P.H t), P.wt t = ((SKM.pres D Sc).dom r).endR →
+      compEval (P.swappedGens c L) ((SKM.pres D Sc).rel r) p q Z = 0
+
+/-- The equal-colour leftward data vanish at the sectors whose rightmost sector does not carry
+the weight `ν` of the right region. Only the weight-matched entries enter the layer
+representation; this normalizes the others. -/
+def LeftwardData.VanishesOffWeight (L : P.LeftwardData) : Prop :=
+  (∀ (i : I) (ν : X) {t s : Sector I} (p : SPath (wd D ν (SKM.Shape.lcross i i).dom) t s)
+      (p' : SPath (wd D ν (SKM.Shape.lcross i i).cod) t s) (Z : P.H s),
+      P.wt s ≠ ν → L.lcrossSame i ν p p' Z = 0) ∧
+  (∀ (i : I) (n : ℕ) (ν : X) {t s : Sector I} (p : SPath (wd D ν (SKM.Shape.dcup i n).dom) t s)
+      (p' : SPath (wd D ν (SKM.Shape.dcup i n).cod) t s) (Z : P.H s),
+      P.wt s ≠ ν → L.dcup i n ν p p' Z = 0) ∧
+  (∀ (i : I) (n : ℕ) (ν : X) {t s : Sector I} (p : SPath (wd D ν (SKM.Shape.dcap i n).dom) t s)
+      (p' : SPath (wd D ν (SKM.Shape.dcap i n).cod) t s) (Z : P.H s),
+      P.wt s ≠ ν → L.dcap i n ν p p' Z = 0)
 
 variable {Gs Ys : ∀ s, P.H s}
 
@@ -188,7 +208,7 @@ theorem inversionRelations {c : P.CrossCoeff} {L : P.LeftwardData}
     InversionRelations Sc (P.layerRep Gs Ys (P.swappedGens c L)) := by
   classical
   intro r hr
-  refine relHolds_of_compEval _ r fun p q Z => ?_
+  refine relHolds_of_compEval_wt _ r fun p q Z hw => ?_
   cases r with
   | invNe₁ i j ν hij =>
     show compEval (P.swappedGens c L) (a := SKM.ob D ν [up j, dn i])
@@ -222,7 +242,7 @@ theorem inversionRelations {c : P.CrossCoeff} {L : P.LeftwardData}
     simp only [hs]
     let : ∀ a b, Fintype (SPath (wd D ν [up j, dn i]) a b) := fun _ _ => Fintype.ofFinite _
     erw [lcross_sigma_sum (hσ i j ν hij), compDiag_id]
-  | _ => exact hL _ hr (by simp [IsInvNe]) p q Z
+  | _ => exact hL _ hr (by simp [IsInvNe]) p q Z hw
 
 end ProbeReservoir
 

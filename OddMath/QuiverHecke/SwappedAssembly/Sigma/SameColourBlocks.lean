@@ -242,11 +242,12 @@ theorem negInverse_of_ne (c : P.CrossCoeff) (i : I) (ν : X) {t s : Sector I} (h
     unfold famDelta
     simp
 
-/-- **The central blocks are invertible**: at every colour, weight and sector `t`, the
-augmented map between the sectors `t` and `t` (which carries all the dotted windows) has an
-inverse. -/
+/-- **The central blocks are invertible**: at every colour `i` and sector `t` of weight `ν`,
+the augmented map between the sectors `t` and `t` (which carries all the dotted windows) has an
+inverse. The weight restriction is essential: the summands at `t` do not depend on `ν`, while
+the number of dotted windows `|⟨hᵢ, ν⟩|` does. -/
 def CentralInvertible (P : ProbeReservoir k B D Sc) (c : P.CrossCoeff) : Prop :=
-  ∀ (i : I) (ν : X) (t : Sector I),
+  ∀ (i : I) (ν : X) (t : Sector I), P.wt t = ν →
     (0 ≤ D.h i ν → ∃ lc dc, P.PosInverse c i ν t t lc dc) ∧
     (D.h i ν < 0 → ∃ lc dc, P.NegInverse c i ν t t lc dc)
 
@@ -264,10 +265,10 @@ the augmented maps are invertible. -/
 theorem augmentedInvertible_of_central_of_swapping (c : P.CrossCoeff)
     (hcentral : P.CentralInvertible c) (hswap : P.SwappingInvertible c) :
     P.AugmentedInvertible c := by
-  intro i ν t s
+  intro i ν t s hw
   by_cases hts : t = s
   · subst hts
-    exact hcentral i ν t
+    exact hcentral i ν t hw
   · exact ⟨fun _ => posInverse_of_ne c i ν hts (hswap i ν t s hts),
       fun _ => negInverse_of_ne c i ν hts (hswap i ν t s hts)⟩
 
