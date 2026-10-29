@@ -4943,7 +4943,18 @@ terms are supported on the top run (`appendCoefficients_lastDot_pow_mul`), and
 `c_j z^m ψ(ψ'(1) b) = s^m ψ(c'_j x^m) τ ψ(b) + (polynomial terms)`). With the span theorem,
 the two-sided corner is `⊕_(j≤n, m) ψ(c'_j x^m) τ ψ(ψ'(1) B) ⊕ ⊕_m z^m ψ(B)`.
 
-Next: `Rt_F`, `Rt_j` of `MackeyCosets` for these maps, then `short` and the lifts.
+Checked (same file): the right-dot identities at the affine level, with `z` the new dot,
+`s` the Koszul sign of the appended colour and `tw` its parity twist on `Hn (n+1)`:
+`appendPolySum_mul_lastDot` (`j(g) z = j(t g)`, `t` = twist and shift `l ↦ l+1`,
+`appendPolyShift`) and `appendLeftSum_mul_lastDot`
+(`F(u) z = s F(X' u) − s j(single 0 (E' u))`, `X'` = twist and shift `m ↦ m+1`
+(`appendLeftShift`), `E'(u) = Σ c'_j x^m ψ'(1) tw(u_(j,m))` (`appendLeftDegree`)), from
+`affineLastCrossing_mul_lastDot` (`τ z = s Y τ − s ψ(ψ'(1))`). So `X = s X'`, `E = −s E'`
+and `σ = tw` in `Rt_F`, `Rt_j`.
+
+Next: descend these affine identities through the cyclotomic quotient and `− ⊗_B M`
+to instantiate `MackeyCosets` (`direct` and `span` are right `ψ(B)`-linear); then `short`
+and the lifts.
 
 Consumer: `scripts/NonVacuity/QuiverHeckeHalfTurn.lean`.
 

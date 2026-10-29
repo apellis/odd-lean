@@ -257,6 +257,18 @@ theorem appendAlgebra_pow_mul (i : I) (n : ℕ) (x d : Hn D Sc n) (m : ℕ) :
   | zero => simp
   | succ m ih => rw [pow_succ, mul_assoc, ← map_mul, ih, ← mul_assoc, ← pow_succ]
 
+/-- The dot slide `τ x_(n+2) = s x_(n+1) τ - s ψ(ψ(1))` on the equal-colour last crossing. -/
+theorem affineLastCrossing_mul_lastDot (i : I) (n : ℕ) :
+    affineLastCrossing D Sc i i n * affineLastDot D Sc i (n + 1) =
+      Supercategory.koszulSign (D.parity i) (D.parity i) •
+          (appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n) * affineLastCrossing D Sc i i n) -
+        Supercategory.koszulSign (D.parity i) (D.parity i) •
+          appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) := by
+  rw [← affineLastCrossing_slide_right D Sc i n, smul_sub _ _
+    (Supercategory.koszulSign (D.parity i) (D.parity i) • _),
+    Supercategory.koszulSign_smul_smul]
+  abel
+
 /-- **Dot slide through the last crossing**: `τ x_(n+2)^m = s^m x_(n+1)^m τ + Σ_b ψ(f_b) x_(n+2)^b`
 with `s` the Koszul sign of the appended colour (`AppendCoordinates.md` §4, (1)). -/
 theorem affineLastCrossing_mul_lastDot_pow (i : I) (n m : ℕ) :
@@ -266,15 +278,7 @@ theorem affineLastCrossing_mul_lastDot_pow (i : I) (n m : ℕ) :
             (appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n) ^ m *
               affineLastCrossing D Sc i i n) +
           appendDotSum D Sc i n f := by
-  have hτz : affineLastCrossing D Sc i i n * affineLastDot D Sc i (n + 1) =
-      Supercategory.koszulSign (D.parity i) (D.parity i) •
-          (appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n) * affineLastCrossing D Sc i i n) -
-        Supercategory.koszulSign (D.parity i) (D.parity i) •
-          appendAlgebra D Sc i (n + 1) (appendAlgebra D Sc i n 1) := by
-    rw [← affineLastCrossing_slide_right D Sc i n, smul_sub _ _
-      (Supercategory.koszulSign (D.parity i) (D.parity i) • _),
-      Supercategory.koszulSign_smul_smul]
-    abel
+  have hτz := affineLastCrossing_mul_lastDot D Sc i n
   set s := Supercategory.koszulSign (D.parity i) (D.parity i)
   set Y := appendAlgebra D Sc i (n + 1) (affineLastDot D Sc i n)
   set τ := affineLastCrossing D Sc i i n
@@ -568,5 +572,70 @@ theorem appendLeftSum_add_appendPolySum_eq_zero (i : I) (n : ℕ)
   ext k
   rw [← appendCoefficients_appendPolySum_last D Sc i n G k, h, map_zero, Finsupp.zero_apply,
     Finsupp.zero_apply]
+
+/-! ## Right multiplication by the new dot -/
+
+/-- The parity twist of the appended colour, coefficientwise. -/
+abbrev appendTwist (i : I) (n : ℕ) : Hn D Sc (n + 1) →+ Hn D Sc (n + 1) :=
+  (homMatrixTwist D Sc (n + 1) (D.parity i)).toAddMonoidHom
+
+/-- Shift of the dot exponent of left-crossing coordinates, with the parity twist. -/
+def appendLeftShift (i : I) (n : ℕ) :
+    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :=
+  (Finsupp.mapDomain.addMonoidHom fun p : Fin (n + 1) × ℕ => (p.1, p.2 + 1)).comp
+    (Finsupp.mapRange.addMonoidHom (appendTwist D Sc i n))
+
+/-- The degree-zero correction `Σ c'_j x^m ψ(1) tw(u_(j,m))`. -/
+def appendLeftDegree (i : I) (n : ℕ) :
+    ((Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) →+ Hn D Sc (n + 1) :=
+  Finsupp.liftAddHom fun p =>
+    (AddMonoidHom.mulLeft (appendShuffleElement D Sc i (appendRun n p.1) *
+      affineLastDot D Sc i n ^ p.2 * appendAlgebra D Sc i n 1)).comp (appendTwist D Sc i n)
+
+/-- Shift of the polynomial coordinates, with the parity twist. -/
+def appendPolyShift (i : I) (n : ℕ) : (ℕ →₀ Hn D Sc (n + 1)) →+ (ℕ →₀ Hn D Sc (n + 1)) :=
+  (Finsupp.mapDomain.addMonoidHom Nat.succ).comp
+    (Finsupp.mapRange.addMonoidHom (appendTwist D Sc i n))
+
+/-- `R_t(j f) = j(t f)`: right multiplication by the new dot on polynomial terms. -/
+theorem appendPolySum_mul_lastDot (i : I) (n : ℕ) (g : ℕ →₀ Hn D Sc (n + 1)) :
+    appendPolySum D Sc i n g * affineLastDot D Sc i (n + 1) =
+      appendPolySum D Sc i n (appendPolyShift D Sc i n g) := by
+  induction g using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg => rw [map_add, add_mul, hf, hg, map_add, map_add]
+  | single m b =>
+    simp only [appendPolyShift, AddMonoidHom.comp_apply, Finsupp.mapRange.addMonoidHom_apply,
+      Finsupp.mapRange_single, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single]
+    rw [appendPolySum_single, appendPolySum_single, mul_assoc, affineLastDot_twist_comm,
+      ← mul_assoc, ← pow_succ]
+    rfl
+
+/-- `R_t(F u) = F(X u) + j(E u)`: right multiplication by the new dot on left-crossing terms,
+with `X = s · appendLeftShift` and `E = -s · appendLeftDegree`. -/
+theorem appendLeftSum_mul_lastDot (i : I) (n : ℕ) (F : (Fin (n + 1) × ℕ) →₀ Hn D Sc (n + 1)) :
+    appendLeftSum D Sc i n F * affineLastDot D Sc i (n + 1) =
+      Supercategory.koszulSign (D.parity i) (D.parity i) •
+          appendLeftSum D Sc i n (appendLeftShift D Sc i n F) -
+        Supercategory.koszulSign (D.parity i) (D.parity i) •
+          appendPolySum D Sc i n (Finsupp.single 0 (appendLeftDegree D Sc i n F)) := by
+  induction F using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg =>
+    rw [map_add, add_mul, hf, hg, map_add, map_add, map_add, Finsupp.single_add, map_add]
+    simp only [smul_add]
+    abel
+  | single q b =>
+    obtain ⟨j, m⟩ := q
+    simp only [appendLeftShift, AddMonoidHom.comp_apply, Finsupp.mapRange.addMonoidHom_apply,
+      Finsupp.mapRange_single, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single]
+    rw [appendLeftSum_single, appendLeftSum_single, appendPolySum_single, pow_zero, one_mul,
+      mul_assoc, affineLastDot_twist_comm, ← mul_assoc, mul_assoc _ (affineLastCrossing D Sc i i n),
+      affineLastCrossing_mul_lastDot, mul_sub, sub_mul, mul_smul_comm, mul_smul_comm,
+      smul_mul_assoc, smul_mul_assoc, ← mul_assoc, ← map_mul, mul_assoc _ (affineLastDot D Sc i n ^ m),
+      ← pow_succ, ← map_mul, ← map_mul]
+    unfold appendLeftDegree
+    simp only [Finsupp.liftAddHom_apply_single, AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft]
+    rfl
 
 end OddMath.QuiverHecke
