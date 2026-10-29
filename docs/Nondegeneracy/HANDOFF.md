@@ -1187,6 +1187,17 @@ gives `PosInverse`, `NegInverse` (with `lc = -b(.inl)`, `dc = b(.inr)` on `n < H
 `D.h i ν` gives `CentralInvertible`. What remains is invertibility of `augPosMat`/`augNegMat`
 from the sector blocks.
 
+**Nilpotent lifting (checked; nilpotence as a hypothesis).**
+`SwappedAssembly/CentralInverse/NilpotentLifting.lean`, in any preadditive category.
+`ProbeWindow.isIso_of_isNilpotent_sub` is (12) of `SwappedHomInversion.md`: if `g` inverts `f`
+up to errors `𝟙 - f ≫ g`, `𝟙 - g ≫ f` that are nilpotent in `End`, then `f` is invertible
+(in `Mat_ C` this is nilpotence for the matrix ideal, as (12) requires, not entrywise).
+`ProbeWindow.isIso_unipotentBlock` is (10): `[1, l; m, 1]` on `A ⊞ B` is invertible when
+`m ≫ l` is nilpotent, via `[1, 0; m, 1] ≫ diag(1, 1 - m ≫ l) ≫ [1, l; 0, 1]`
+(`unipotentBlock_eq`). The nilpotence inputs, which `SwappedHomInversion.md` (8)–(9) derive
+from the gradings (G6)–(G8), are explicit hypotheses here; the same gradings are used in (7)
+to place the `r > j` contractions in the ideal `J`.
+
 Next: identify the central `σ`, `ε`, `η` entries of `CentralInvertible` with these sector blocks
 (the `compList` single-term reduction of `AugmentedSectorBlocks.md` §3, proposed), and supply the
 stabilization (13)/(14) and nilpotent lifting (12) of `SwappedHomInversion.md`; the nilpotence
