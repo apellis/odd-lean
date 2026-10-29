@@ -4286,3 +4286,30 @@ yet connected to the abstract `SwappedAssembly` layer representation, which is n
 specialized to the reservoir corner. Consumer:
 `scripts/NonVacuity/SwappedVacuumCornerEvaluation.lean` (includes the quotient by the
 whole Hom space as an instance of the structure).
+
+### The right-bubble moments from the left-bubble series (checked)
+
+`SwappedVacuumAdjunctionBubbles.lean` reduces `VacuumMoments` to the left bubbles, the
+composites of the leftward cup (with the sign `-q` of the corrected equal-colour crossing
+entry) and the rightward cap with dots, as given by the `homContent` adjunction images
+(`ProbeReservoir.cupImage`, `ProbeReservoir.capImage`).
+
+- `AdjunctionBubbleSeries cs A t raw M N` (the open input, stated as a structure), on the
+  source sector `A.V t` of an upward action: `left_even`,
+  `closedAct(c⁻¹ · bubLs(s)) = raw [z^s] G_i(-z) u_i(z)` with `u = SYM.probeSeries M`,
+  i.e. `B_i(z) = E_i(-z)/(1-z)^(P_i)`; `left_odd`, the same for `bubLs(2s)`, i.e.
+  `C_i(-z)/(1+z)^(M_i)`; `oddBubble`, the odd bubble acts as `(-1)^(N_i+1) δ_i`.
+- `eq_of_sum_mul_eq_zero_left`: right inverses of a series with constant term one are
+  unique (no commutativity needed).
+- `AdjunctionBubbleSeries.right_even`, `right_odd`: the normalized right bubbles act as
+  the coefficients of `B'_i = B_i⁻¹ = (1-z)^(P_i)/E_i(-z)` (resp. `(1+z)^(M_i)/C_i(-z)`),
+  by the infinite Grassmannian relations `SKM.eq_5_5`, `SKM.eq_5_6`, which hold in the
+  presented 2-category and so under `closedAct`. `B'` is derived, not assumed.
+- `AdjunctionBubbleSeries.vacuumMoments`, `bubbles_eq`: `VacuumMoments` and (A16).
+
+No hypothesis on the swapped action beyond `AdjunctionBubbleSeries` is needed: the closed
+bubbles act through `closedAct`, which is part of every `UpwardModuleAction`. Remaining
+input: the three fields, for every `s` (including the low-degree fake bubbles of (2.15),
+(2.16)), at the action built from the generator images, evaluated on the probe and
+reservoir summands. Consumer: `scripts/NonVacuity/SwappedVacuumAdjunctionBubbles.lean`
+(includes the zero source sector as an instance of the structure).
