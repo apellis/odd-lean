@@ -1037,6 +1037,27 @@ of the single term into generator images and identify them with the probe mate o
 (`homContentDistinctMixedPreMate_eq`, sides `(R,P) → (P,R)`) and the reservoir mate of
 `-(a ; a ; J⁻¹)` (sides `(P,R) → (R,P)`, no post-mate lemma yet).
 
+**Swapping entry `W_A` invertible (checked); `W_B` open, as a hypothesis.**
+`SwappedAssembly/Sigma/SwappingMate.lean`: `sigmaTerm_eq_of_paths` writes the single term
+through path decompositions of its three layers; `isIso_sigmaEntry_probe` proves that the entry
+with `p.sides = [false, true]`, `q.sides = [true, false]` (`(R,P)` of `Eᵢ Fᵢ` to `(P,R)` of
+`Fᵢ Eᵢ`, at `s = t - (i,i)`) is an isomorphism: its layers are the probe unit, `J`
+(`mixedJ`) and the probe counit, i.e. `isIso_probeMixedMate`, which is
+`isIso_homContentDistinctMixedPreMate_of_eq` (inverse: the word (15)) on the strand functors.
+`sides_upDn_dnUp_of_ne`: for `t ≠ s` the two paths are `((R,P),(P,R))` or `((P,R),(R,P))`.
+`swappingInvertible_of_reservoir : P.SwappingReservoirInvertible c → P.SwappingInvertible c`,
+where `SwappingReservoirInvertible` is the invertibility of the other entries `W_B`
+(`(P,R) → (R,P)`, the reservoir mate of `-(a ; a ; J⁻¹)`). So
+`augmentedInvertible_of_central_of_swapping` needs `CentralInvertible c` and
+`SwappingReservoirInvertible c`. Open for `W_B`: unfold its single term in the same way
+(reservoir unit, the crossing entry `-(a ; a ; J⁻¹)`, reservoir counit) and prove the
+post-side mate invertible; its crossing carries the dots `a`, so the route is the dotted mate
+`homDistinctMixedMateDot_isIso` (`RouquierHomDistinctMixedPostDotsIso.lean`: `J⁻¹` followed by a
+polynomial with unit leading coefficient in an invertible dot and a nilpotent dot), not the
+undotted word (15). Engineering note: in these files `Finsupp.zipWith` and `contentWeight` are
+locally irreducible, so that unification compares sector expressions instead of computing
+with finitely supported functions; without this, elaboration exceeds the heartbeat limit.
+
 **Sign of the central entries: settled (written).** The diagonal of (2) of
 `SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
 `a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
