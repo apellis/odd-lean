@@ -4830,4 +4830,9 @@ right old-algebra law and corner membership; `appendPBWTerm_single` (entry formu
 `inductionLastDot_eq_dotE`, `appendPBWTerm_old_nf` (a term with a single old normal form
 coefficient is the matrix entry of `appendElt`) and `append_single_expansion` (every matrix
 entry with appended source is a finite sum of PBW terms, coefficients from `appendBasis`).
-Next: regroup into unique old-algebra coefficients (`appendCoordinateEquiv`).
+Checked: `OddMath/QuiverHecke/CyclotomicAction/AppendEquivalence.lean`,
+`appendCoordinateEquiv i n : ((AppendShuffleAt n × ℕ) →₀ Hn n) ≃ₗ[k] Corner(appendAlgebra)`,
+the forward map the finite sum of `appendPBWCorner`, inverse the entrywise assembly
+`appendCoefficients`, both respecting the right old-algebra action
+(`appendCoordinateEquiv_right`, `_symm_right`). Next: balanced tensor descent (mirror of
+`PrependTensorCoordinates`) and the left-oriented correction (2) of `AppendCoordinates.md`.

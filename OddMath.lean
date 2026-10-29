@@ -5,6 +5,7 @@ import OddMath.QuiverHecke.AppendParabolic
 import OddMath.QuiverHecke.AppendBasis
 import OddMath.QuiverHecke.CyclotomicAction.PrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.AppendEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.PrependMatrix
 import OddMath.QuiverHecke.CyclotomicAction.PrependEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.PrependTensorCoordinates
