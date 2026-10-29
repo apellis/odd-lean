@@ -790,6 +790,22 @@ The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the imag
 This is a property of the interface, not of the construction: the constructed coefficient
 satisfies both. Generic: `IsSupernatural.sub`.
 
+**Supernaturality of the equal-colour leftward data (checked).**
+`SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
+hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
+`L` are entries of the two-sided inverses of the augmented maps (1.13), (1.14) of BE2 Def. 1.5:
+`(σ, ε xⁿ)ₙ : Eᵢ Fᵢ → Fᵢ Eᵢ ⊕ 1^{⟨hᵢ,ν⟩}` with inverse `(-lcross, ♦-cupₙ)` for `⟨hᵢ, ν⟩ ≥ 0`
+(`leftward_supernatural_of_nonneg`, from `invP₁`–`invP₅`), and
+`(-σ, xⁿ η)ₙ : Eᵢ Fᵢ ⊕ 1^{-⟨hᵢ,ν⟩} → Fᵢ Eᵢ` with inverse `(lcross, ♦-capₙ)` for
+`⟨hᵢ, ν⟩ ≤ 0` (`leftward_supernatural_of_nonpos`, from `invM₁`–`invM₅`). The augmented maps
+are built from upward generators, supernatural of parity `pᵢ²` on `σ` and `n pᵢ` on the
+`n`-th component. The generic lemma (`Supernatural/MatrixInverse.lean`,
+`isSupernatural_of_inverse_target` / `_source`): if a matrix of transformations with a
+two-sided inverse has supernatural entries of a parity depending only on the target (resp.
+source) index, so has its inverse. Proof: projecting `A B = 1` to parity `0` shows the
+homogeneous parts of `B` form a right inverse, hence equal `B`; naturality from
+`B F(f) = Ĝ(f) B`, `Ĝ` the signed diagonal.
+
 **`SigmaPermutation` from entrywise invertibility (checked).**
 `SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
 P.SigmaPermutation c i j ν` for `i ≠ j`, given only that every entry
