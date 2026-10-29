@@ -12,6 +12,7 @@ import OddMath.QuiverHecke.CyclotomicAction.AppendCornerTensor
 import OddMath.QuiverHecke.CyclotomicAction.AppendLeftCrossing
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentCorner
 import OddMath.QuiverHecke.CyclotomicAction.AppendContentMackeyMap
+import OddMath.QuiverHecke.CyclotomicAction.AppendContentCosets
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap

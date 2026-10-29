@@ -1,5 +1,39 @@
 # Odd nondegeneracy: restart state
 
+## Append content source: concrete moving-coset extraction
+
+Checked (`AppendContentCosets.lean`): `longPrependShuffle r` is `finRotate (r+1)`;
+its inverse moves the first strand to the last. `prependShuffleTarget_long` proves
+that its target is exactly `s ++ [i]`, including `r = 0`. Thus the append projector
+fixes its crossing matrix and every first-dot PBW power, rather than merely fixing
+their images in a replacement module.
+
+`appendContentLongExtract` reads this row of the existing `prependTwistCoordinates`
+on `appendContentSource`. `appendContentLongLift` is the corresponding sum of the
+specified moving PBW tensors in that actual source. Extraction after lifting is
+identity. `appendContentShort` is its kernel; `appendContentShort_iff_expansion`
+identifies it with the append-corner tensors admitting finite balanced expansions
+supported away from the moving row. `appendContentLong_cover` and
+`appendContentLongLift_short_iff` give covering and independence modulo this kernel.
+Both maps respect the existing right coefficient multiplication, and the kernel
+is stable under it. No positivity assumption on rank or cyclotomic cutoff is used;
+the parity-twisted balancing and cyclotomic content coefficient ring are unchanged.
+
+Scope: these are raw input-first-dot lifts. They are not yet the normalized
+`ρ^m(U)` lifts of `MackeyCosets`. Still required are the corrected-ρ normalization
+and recurrence, identification of this kernel under `P` with the prescribed
+crossing summand (`P_short`), and the boundary `w_k` triangularity needed for the
+final extraction `ℓ`. No instantiated `MackeyCosets`, `toMackeyBoundary`, full exterior
+ELV source, or local/global inversion theorem is claimed here. The previously
+proved content-source `P_r` and `P_ρ` are unchanged.
+
+Verification: the focused module and importing `NonVacuity.AppendContentCosets`
+consumer build with warnings as errors; the consumer audits every declaration
+owned by the module against `propext`, `Classical.choice`, and `Quot.sound`. Its
+examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
+both cutoff parities, two-term independence at rank zero, and exact right action.
+
+
 ## Append Mackey boundary: balance of P
 
 Checked: `appendError_mem_appendKill`
