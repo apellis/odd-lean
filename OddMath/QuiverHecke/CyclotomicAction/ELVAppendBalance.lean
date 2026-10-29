@@ -73,7 +73,7 @@ theorem appendQ_append (i x : I) (s : List I) :
     insert D Sc cutoff i v w (affineUnit D Sc cutoff v w f) =
       affineUnit D Sc cutoff _ _ (affineInsert D Sc i v w f) := rfl
 
-@[simp] theorem rightContext_id (σ v : List I) :
+@[simp] theorem appendRightContext_id (σ v : List I) :
     rightContext D Sc cutoff σ v v (𝟙 _) = 𝟙 _ := by
   change (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
     ((𝟙 O[v]) ▷ O[σ]) = _
@@ -185,7 +185,7 @@ theorem appendError_comp_mem (i : I) {s t u : List I}
 
 @[simp] theorem appendError_id (i : I) (s : List I) :
     appendError D Sc cutoff i s s (𝟙 _) = 0 := by
-  simp only [appendError_apply, twist_id, rightContext_id, insert_id,
+  simp only [appendError_apply, twist_id, appendRightContext_id, insert_id,
     Category.id_comp, Category.comp_id, sub_self]
 
 /-- Coefficient-only balance has zero error, before quotienting. -/
