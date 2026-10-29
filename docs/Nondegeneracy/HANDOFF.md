@@ -531,7 +531,8 @@ generator images of item 1 below.
      `CrossCoeff.IsInverse`. Interface for the instance: the factor dot
      hypotheses of `of_factor` (F2, F3).
    Remaining for the action: the `LeftwardData` of (A7) with the relations
-   `invP`/`invM`.
+   `invP`/`invM`. Reduced (checked, `SwappedAssembly/LeftwardInverse.lean`) to the
+   invertibility of the augmented maps; see "Leftward data from the inverses" below.
 2. `WhiskerReduction.lean` (shared helper, **checked**): reduces `evalW` of a
    whiskered relation for `P.layerRep` to the unwhiskered matrix entries.
    `compLayer gens L p q Z : F_p Z ⟶ F_q Z` is the entry of a layer between
@@ -674,6 +675,20 @@ unless `i = k ≠ j`; for `Eᵢ Eⱼ Eᵢ`, `i ≠ j`, equality off the diagonal
 on the diagonal, `braidLeft - braidRight` equal to the `Q_ij` divided
 difference in the dot entries, with the signs and scalars of `braidEq`.
 Remaining: prove `CrossBraid (swappedGens c L)`.
+Whisker reduction of the crossing entries (checked,
+`SwappedAssembly/BraidEntries.lean`): on a three-letter word the left
+crossing entry `crossEntry gens ν [] i j [up k']` on paths `pg.append pv`,
+`qg.append pv` is `gens.cross i j (wt ν [up k'])` applied to the image of `Z`
+under the third summand (`crossEntry_left`) and vanishes when the third
+summands differ (`crossEntry_left_eq_zero`); the right crossing entry
+`crossEntry gens ν [up a] i j []` is the step-functor image of
+`gens.cross i j ν` (`crossEntry_right`) and vanishes when the first summands
+differ (`crossEntry_right_eq_zero`). The weight labels of the first letter in
+the layer and in the target word differ only propositionally; the generic
+transports `compLayer_cast_eq_of_path`, `compLayer_cast_eq_zero_of_path` absorb
+them. Next: the colour patterns of (1.9) for `swappedGens c L`, starting with
+the mixed probe/reservoir block of `iii` ((5A)/(5B) of
+`ThreeStrandSectorBraid.md`).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
@@ -789,6 +804,27 @@ The inputs are needed at odd colours: `IsInverse.odd` only fixes `a` on the imag
 `x² - y²`, and does not determine `a` (or its parity) when `x² - y²` is not invertible.
 This is a property of the interface, not of the construction: the constructed coefficient
 satisfies both. Generic: `IsSupernatural.sub`.
+
+**Leftward data from the inverses of the augmented maps (checked).**
+`SwappedAssembly/LeftwardInverse.lean` (BE2 Def. 1.5 (1.13), (1.14); (A7) of
+`SwappedActionAssembly.md`). In the summand-path entries of a `ProbeReservoir`:
+`epsEntry`, `etaEntry` (entries of `ε xⁿ`, `xⁿ η` for the upward generators);
+`PosInverse c i ν t s lc dc` (for `⟨hᵢ, ν⟩ ≥ 0`: `(-lc, dcₙ)` is a two-sided inverse of
+`(σ, ε xⁿ)ₙ`, written as the five entry identities of `invP₁`–`invP₅`) and `NegInverse`
+(for `⟨hᵢ, ν⟩ < 0`: `(lc, dcₙ)` inverts `(-σ, xⁿ η)ₙ`, the identities of `invM₁`–`invM₅`);
+`AugmentedInvertible c` (such entries exist at every `i, ν, t, s`). Checked:
+`leftwardOfInvertible c h : P.LeftwardData` reads the leftward crossing and `♦`-cups/caps
+off the chosen inverses (zero cups for `⟨hᵢ, ν⟩ < 0`, zero caps for `⟨hᵢ, ν⟩ ≥ 0`), and
+`leftwardOfInvertible_isInverse c h : (P.leftwardOfInvertible c h).IsInverse c`; the
+general form is `LeftwardData.isInverse_of_posInverse_negInverse`. At `⟨hᵢ, ν⟩ = 0` the
+relations `invM₁`, `invM₂` follow from `invP₁`, `invP₂` (empty sums). With
+`isSupernatural_of_isInverse` (#507) the constructed data are supernatural.
+Open interface: `P.AugmentedInvertible c` for the unit-dot probe and the full-ELV reservoir
+(under F1–F4). Its written proof is `SwappedHomInversion.md`, which works in Hom-sector
+coordinates `Hom(T(-μ₋), W(μ₊))`; besides formalizing it, a bridge is needed from the
+Hom-sector inverse to the summand-path entries of `AugmentedInvertible` (both describe the
+same 2-morphisms; the path entries are their matrix coefficients through
+`P.pathFunctor`).
 
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
