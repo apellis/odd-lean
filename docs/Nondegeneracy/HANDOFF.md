@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Full ELV old-coefficient extraction
+
+Checked in `ELVPrependOldExtraction.lean`: `PrependIdx.replaceOld` retains
+the moving exponent and shuffle while ranging over the existing old normal-form
+basis. Restricting affine coordinates to this fibre, undoing coefficient parity,
+and rebuilding the old Hom gives `prependExtractOld`. Its
+`prependExtractOld_insert_comp_tail` theorem recovers `twist p (r ≫ b)` for
+arbitrary full-ELV old morphisms and a prescribed moving tail. The resulting
+`Old(v,t)` coordinate vanishes exactly when the old coefficient lies in the old
+ideal (`prependExtractOldQuotient_insert_tail_eq_zero_iff`). No flatness,
+finite-colour hypothesis, assumed basis comparison, or moving polynomial is used.
+
+Remaining: prove extraction on different tails and on all old-relation generators,
+then assemble the simultaneous old-quotient coordinate equivalence. These
+fixed-tail inverse identities do not yet prove global quotient independence.
+The moving-square shift and difference injectivity are still open.
+
 ## Full ELV prepend PBW normalization
 
 Checked in `ELVPrependCoordinates.lean`: the tensor extension of the existing
