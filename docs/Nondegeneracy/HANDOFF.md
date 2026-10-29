@@ -142,14 +142,40 @@ arXiv:1701.04133v2 Definition 1.5, (1.7) for `i ≠ j`:
   algebra (via the diagonal matrices `pairDiag` on the words `w j i`);
 - `heightLastCrossing_mul_mixed`: the same identity at every height of the extended tower.
 
-No parameter change is made here. Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`:
-the corner square `Cr_ij ≫ Cr_ji` as a polynomial in the two signed right multiplications
-(power sign `koszulSign c (m p + ⌊m/2⌋)` for `m` multiplications by a dot of parity `c` on input
-parity `p`), transport through the comparison to the induction functors, the weight-level
-assembly, and matching with `parameterTwist`. A hand check: the `p`-dependent signs vanish
-because every surviving monomial has `p|i|` and `q|j|` even (`Sc.s_eq_zero`,
-`Datum.even_d_of_odd`), and the remaining signs `|i||j| + |i|⌊d_ij/2⌋` (resp. with
-`⌊p/2⌋`, `⌊q/2⌋`) are exactly those of `parameterTwist`.
+No parameter change is made at the algebra level.
+
+**Corner square (checked,** `CyclotomicAction/GlobalHeightMixedCornerSquare.lean`**).** On the
+corner `T_ij = C θ(1)`, with `Dr` the signed right multiplication by the new last dot `y_i` and
+`Dl` the signed right multiplication by `φᵢ(y_j)` (both `heightTwoColourRightMul`), and
+`endoPower f m = f^m` with `f^(m+1) = f^m ≫ f`:
+
+- `heightTwoColourRightMul_pow_apply`: `m` signed multiplications by a dot of parity `c` on
+  input parity `p` give `(-1)^{c(mp + ⌊m/2⌋)} x u^m`;
+- `heightCompositionCorner_square_ne` (`d_ij ≠ 0`):
+  `Cr_ij ≫ Cr_ji = t'_ij Dr^{d_ij} + t'_ji Dl^{d_ji} + ∑_{0<p<d_ij, 0<q<d_ji} s'^{pq}_ij Dl^q ≫ Dr^p`;
+- `heightCompositionCorner_square_zero` (`d_ij = 0`): `Cr_ij ≫ Cr_ji = t'_ij 𝟙`;
+
+where `t'`, `s'` are the parameters of `parameterTwist D Sc` (`parameterTwist_t_of_ne`,
+`parameterTwist_s`). The hand check above is confirmed: the input parity drops out by
+`dn_cast_mul_parity` (`d_ij |i| = 0`) and `Sc.s_eq_zero`, and the remaining signs are exactly
+those of `parameterTwist`. Arbitrary parities and heights; `i ≠ j`.
+
+**Induction functors (checked,** `CyclotomicAction/GlobalHeightMixedInductionSquare.lean`**).**
+Conjugation by the two-colour comparison, `heightTwoColourConj` (a `k`-linear map, with
+`heightTwoColourConj_id`, `_comp`, `_endoPower`, `_eq_of_comp`), sends `Dr` to the outer dot
+`x_out = (Dot_i).app |i| (Ind_j M)` and `Dl` to the inner dot `x_in = Ind_i.map ((Dot_j).app |j| M)`.
+Hence, on components at a height-`n` module `M`:
+
+- `heightInduction_square_ne`: `ψ_ij.app ≫ ψ_ji.app = t'_ij x_out^{d_ij} + t'_ji x_in^{d_ji}
+  + ∑ s'^{pq}_ij x_in^q ≫ x_out^p` (powers `endoPower`);
+- `heightInduction_square_zero`: `ψ_ij.app ≫ ψ_ji.app = t'_ij 𝟙`.
+
+Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: the weight-level assembly
+(template `GlobalWeightMixedSlides`; every term has parity `0`, so only the `0`-components are
+compared), with `rouquierPower (dot i)` on the outer induction becoming `endoPower x_out`
+componentwise (`E j ◁ dot i` is the outer dot, `dot j ▷ E i` the inner dot), and
+`parameterTwist_involutive` to state the fields for `globalRouquierFamily D (parameterTwist D Sc)`
+with parameters `Sc`.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
