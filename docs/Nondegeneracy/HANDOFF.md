@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## One-strand positive-content ELV spanning
+
+Checked (`ELVOneStrand.lean`): `ELVOld.singleSpan_eq_top` proves that the
+actual `Old [i] [i]` is spanned by classes `a ⊗ dot^n` with `n < cutoff i`
+and arbitrary `a` in the full ELV coefficient algebra. The proof uses the
+one-strand affine PBW basis and `single_recurrence`, obtained by multiplying
+the actual monic first-position relation on its two specified sides. The
+coefficient multiplication order is retained; no odd coefficient is specialized
+away. Both strand parities and all cutoffs are covered.
+`single_eq_zero_of_cutoff_zero` explicitly kills the corner at cutoff zero.
+No coefficient flatness, regularity, freeness or finiteness hypothesis is used.
+The rational consumers test both strand parities, odd-colour cutoffs 2 and 3, all
+cutoffs parametrically, and survival of the coefficient delta at positive
+cutoff (not independence of old dot classes).
+
+Remaining: form the further positive-content quotient using
+`SKM.SYM.elvCoefficientTruncation` from `BubbleELVGrading`, inherit its integer grading, and
+combine the coefficient support bound with `n < cutoff i`. General-content
+finiteness, regular-kernel realization, and the full factor action remain open.
+The untruncated coefficient algebra and the enlarged moving-strand `Target`
+are not asserted upper bounded.
+
 ## Integer and super gradings of the old ELV quotient
 
 Checked (`ELVOldGrading.lean`, depending on PR #598):
