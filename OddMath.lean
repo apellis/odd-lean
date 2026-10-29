@@ -1384,6 +1384,7 @@ import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEq.Algebra
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePair
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.InterchangePostPair
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.AllPaths
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlock
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedBlockPost

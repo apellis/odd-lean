@@ -1115,7 +1115,22 @@ crossing parity `pᵢ pⱼ`. This proves the unweighted two-probe triangle of
 `MixedColourRemainingBraid.md` §2, without inverting a factor crossing or Q.
 It does not yet evaluate the sector path sums, transport the Q weights, or
 supply the mixed-colour fields of `CrossBraid`. The one-probe/two-reservoir
-triangle and the `iji` correction assembly remain open.
+triangle is supplied below; the `iji` correction assembly remains open.
+
+One-probe/two-reservoir triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePostPair.lean`):
+`resCore_mixedInterchange_pair` intertwines the prescribed normalized reservoir
+factor crossing with two mixed interchanges at arbitrary content and unequal
+intermediate weights. `homMixedInterchange_postPair_shifts` retains the
+coefficient `(-1)^((κ₂ + κ₂′)κ₁′)`. `postPairIso_cross_remove` identifies
+the beta/xi normalized crossing with homogeneous-removal conjugation, retaining
+`(-1)^((κ₁ + κ₂)|χ|)` before specializing to crossing parity. Both signs
+are derived, not naturality assumptions. The full factor crossing is used
+through `resCore`, with no inverse of that crossing or of Q.
+
+Open: transport the endpoint casts into the three-letter sector path sums,
+transport their Q weights, and assemble the distinct and repeated-outer-colour
+`CrossBraid` cases. The existing `BraidSame` blocks are unchanged.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
