@@ -155,7 +155,8 @@ abbrev dotI : LayerData I := (l, Shape.dot i, m ++ [j] ++ v)
 abbrev dotJ : LayerData I := (l ++ [i] ++ m, Shape.dot j, v)
 
 /-- The lists of dots on the two strands. -/
-def IsDotList (A : List (LayerData I)) : Prop := ∀ x ∈ A, x = dotI l m v i j ∨ x = dotJ l m v i j
+def IsDotList (A : List (LayerData I)) : Prop :=
+  ∀ x ∈ A, x = dotI l m v i j ∨ x = dotJ l m v i j
 
 theorem sChain_of_isDotList (A : List (LayerData I)) (hA : IsDotList l m v i j A) :
     SChain (swapWord l m v i j) A (swapWord l m v i j) := by
@@ -432,5 +433,182 @@ theorem mirror_rel_quadNe (i j : I) (hij : i ≠ j) (hd : D.d i j ≠ 0) :
     ([j], Shape.dot i, []) rfl rfl rfl,
     zmod2_eq_zero_of_ne_one (a := (y : ZMod 2) * D.parity j)
       (fun h => hs (Sc.s_eq_zero j i y x h)), zero_mul, SKM.zsign_zero, one_smul]
+
+/-- A list of dot layers, each on a strand of the word `t`, is a normal-form chain on `t`. -/
+theorem sChain_of_dots (t : List I) (L : List (LayerData I))
+    (hL : ∀ x ∈ L, ∃ c, x.2.1 = Shape.dot c ∧ x.1 ++ [c] ++ x.2.2 = t) : SChain t L t := by
+  induction L with
+  | nil => rfl
+  | cons x L ih =>
+    obtain ⟨c, hc, he⟩ := hL x (by simp)
+    obtain ⟨u, g, w⟩ := x
+    simp only at hc he
+    subst hc
+    refine ⟨by simpa [Shape.dom] using he.symm, ?_⟩
+    have e : u ++ (Shape.dot c).cod ++ w = t := by simpa [Shape.cod] using he
+    rw [e]
+    exact ih fun y hy => hL y (by simp [hy])
+
+/-- Dots on the outer strands of `i j i` pass each other, up to the Koszul sign. -/
+theorem braidEq_dots_two (i j : I) (a b : ℕ) (c : k)
+    (hab : ((a + b + 1 : ℕ) : ZMod 2) * D.parity i = 0)
+    (h : SChain [i, j, i] (List.replicate a ([], Shape.dot i, [j, i]) ++
+      List.replicate b ([i, j], Shape.dot i, [])) [i, j, i])
+    (h' : SChain [i, j, i] (List.replicate b ([i, j], Shape.dot i, []) ++
+      List.replicate a ([], Shape.dot i, [j, i])) [i, j, i]) :
+    (zsign k (D.parity i * (D.parity j + a)) * c) • (pres D Sc).diag (mkD D _ h) =
+      zsign k (D.parity i * D.parity i) •
+        ((zsign k (D.parity i * (D.parity j + b)) * c) • (pres D Sc).diag (mkD D _ h')) := by
+  rw [diag_dots_swap D Sc (t := [i, j, i]) [] [j] [] i i a b ([], Shape.dot i, [j, i])
+    ([i, j], Shape.dot i, []) rfl rfl rfl h h', smul_smul, smul_smul]
+  congr 1
+  have key : zsign k (D.parity i * (D.parity j + a)) *
+      zsign k ((a : ZMod 2) * D.parity i * ((b : ZMod 2) * D.parity i)) =
+      zsign k (D.parity i * D.parity i) * zsign k (D.parity i * (D.parity j + b)) := by
+    push_cast at hab
+    revert hab
+    generalize D.parity i = x
+    generalize D.parity j = y
+    generalize (a : ZMod 2) = a'
+    generalize (b : ZMod 2) = b'
+    fin_cases x <;> fin_cases y <;> fin_cases a' <;> fin_cases b' <;> simp [zsign]
+  linear_combination c * key
+
+/-- Membership in a concatenation of blocks of repeated layers. -/
+local macro "dots_mem" : tactic => `(tactic|
+  (intro x hx; simp only [List.mem_append, List.mem_replicate] at hx; tauto))
+
+local notation "rep" => List.replicate
+
+/-- Dots on the three strands of `i j i`: the outer blocks exchange past the middle one. -/
+theorem braidEq_dots_three (i j : I) (a q b : ℕ) (c : k)
+    (hab : ((a + b + 1 : ℕ) : ZMod 2) * D.parity i = 0) (hq : (q : ZMod 2) * D.parity j = 0)
+    (h : SChain [i, j, i] (List.replicate a ([], Shape.dot i, [j, i]) ++
+      List.replicate q ([i], Shape.dot j, [i]) ++
+      List.replicate b ([i, j], Shape.dot i, [])) [i, j, i])
+    (h' : SChain [i, j, i] (List.replicate b ([i, j], Shape.dot i, []) ++
+      List.replicate q ([i], Shape.dot j, [i]) ++
+      List.replicate a ([], Shape.dot i, [j, i])) [i, j, i]) :
+    (zsign k (D.parity i * (D.parity j + a)) * c) • (pres D Sc).diag (mkD D _ h) =
+      zsign k (D.parity i * D.parity i) •
+        ((zsign k (D.parity i * (D.parity j + b)) * c) • (pres D Sc).diag (mkD D _ h')) := by
+  set A : LayerData I := ([], Shape.dot i, [j, i]) with hA
+  set C : LayerData I := ([i], Shape.dot j, [i]) with hC
+  set B : LayerData I := ([i, j], Shape.dot i, []) with hB
+  have sc : ∀ L : List (LayerData I), (∀ x ∈ L, x = A ∨ x = C ∨ x = B) →
+      SChain [i, j, i] L [i, j, i] := fun L hL => sChain_of_dots _ L fun x hx => by
+    rcases hL x hx with rfl | rfl | rfl
+    exacts [⟨i, rfl, rfl⟩, ⟨j, rfl, rfl⟩, ⟨i, rfl, rfl⟩]
+  rw [diag_mkD_append D Sc (rep a A ++ rep q C) (rep b B) h _ _,
+    diag_dots_swap D Sc (t := [i, j, i]) [] [] [i] i j a q A C rfl rfl rfl _ _,
+    Linear.smul_comp, ← diag_mkD_append D Sc (rep q C ++ rep a A) (rep b B) _,
+    diag_mkD_congr D Sc (A := rep q C ++ rep a A ++ rep b B)
+      (B := rep q C ++ (rep a A ++ rep b B)) _ _ (List.append_assoc _ _ _),
+    diag_mkD_append D Sc (rep q C) (rep a A ++ rep b B) _ _ _,
+    diag_dots_swap D Sc (t := [i, j, i]) [] [j] [] i i a b A B rfl rfl rfl _ _,
+    Linear.comp_smul, ← diag_mkD_append D Sc (rep q C) (rep b B ++ rep a A) _,
+    diag_mkD_congr D Sc (A := rep q C ++ (rep b B ++ rep a A))
+      (B := rep q C ++ rep b B ++ rep a A) _ _ (List.append_assoc _ _ _).symm,
+    diag_mkD_append D Sc (rep q C ++ rep b B) (rep a A) _ _ _,
+    diag_dots_swap D Sc (t := [i, j, i]) [i] [] [] j i q b C B rfl rfl rfl _ _,
+    Linear.smul_comp, ← diag_mkD_append D Sc (rep b B ++ rep q C) (rep a A) h']
+  all_goals try exact sc _ (by dots_mem)
+  simp only [smul_smul]
+  congr 1
+  have key : zsign k (D.parity i * (D.parity j + a)) *
+      (zsign k ((a : ZMod 2) * D.parity i * ((q : ZMod 2) * D.parity j)) *
+        (zsign k ((a : ZMod 2) * D.parity i * ((b : ZMod 2) * D.parity i)) *
+          zsign k ((q : ZMod 2) * D.parity j * ((b : ZMod 2) * D.parity i)))) =
+      zsign k (D.parity i * D.parity i) * zsign k (D.parity i * (D.parity j + b)) := by
+    push_cast at hab
+    revert hab hq
+    generalize D.parity i = x
+    generalize D.parity j = y
+    generalize (a : ZMod 2) = a'
+    generalize (b : ZMod 2) = b'
+    generalize (q : ZMod 2) = q'
+    fin_cases x <;> fin_cases y <;> fin_cases a' <;> fin_cases b' <;> fin_cases q' <;>
+      simp [zsign]
+  linear_combination c * key
+
+theorem braidEq_rearrange {M : Type*} [AddCommGroup M] [Module k M] (z : k)
+    (T₁ T₂ S₁ S₁' S₂ S₂' : M) (h₁ : S₁ = z • S₁') (h₂ : S₂ = z • S₂') :
+    -z • T₂ - -z • T₁ - S₁ - S₂ = z • T₁ - z • T₂ - z • S₁' - z • S₂' := by
+  subst h₁ h₂
+  module
+
+theorem mirror_rel_braidEq (i j : I) (hij : i ≠ j) :
+    (mirrorLin D Sc).map ((pres D Sc).rel (Rel.braidEq i j hij)) = 0 := by
+  refine mirror_rel_of D Sc (.braidEq i j hij) rfl rfl (zsign k (D.parity i * D.parity i)) ?_
+  mirror_expand
+  simp only [List.prod_replicate, one_pow, one_smul, Functor.map_sum, Functor.map_smul,
+    mirror_dg, lin_sum, Presentation.lin_smul, Presentation.lin_of, List.map_append,
+    List.map_replicate, mirrorLD, Shape.mirror, mirrorWeight, List.reverse_nil,
+    List.reverse_cons, List.nil_append, List.cons_append, List.prod_append, mul_one,
+    eqToHom_refl, Category.id_comp, Category.comp_id]
+  have hw : ∀ x y : ZMod 2, -zsign k (x * y) * (-zsign k (x * x) * -zsign k (y * x)) =
+      -zsign k (x * x) := by
+    intro x y
+    fin_cases x <;> fin_cases y <;> simp [zsign]
+  have hw' : ∀ x y : ZMod 2, -zsign k (y * x) * (-zsign k (x * x) * -zsign k (x * y)) =
+      -zsign k (x * x) := by
+    intro x y
+    fin_cases x <;> fin_cases y <;> simp [zsign]
+  rw [hw, hw']
+  refine braidEq_rearrange _ _ _ _ _ _ _ ?_ ?_
+  · rw [Finset.smul_sum, ← Finset.sum_range_reflect _ (D.dn i j)]
+    refine Finset.sum_congr rfl fun x hx => ?_
+    have hx' := Finset.mem_range.mp hx
+    have e : D.dn i j - 1 - (D.dn i j - 1 - x) = x := by omega
+    simp only [e]
+    refine braidEq_dots_two D Sc i j _ _ _ ?_ _ _
+    rw [show D.dn i j - 1 - x + x + 1 = D.dn i j by omega, mul_comm]
+    exact SKM.parity_mul_dn D i j
+  · rw [Finset.smul_sum]
+    refine Finset.sum_congr rfl fun x _ => ?_
+    rw [Finset.smul_sum]
+    refine Finset.sum_congr rfl fun y _ => ?_
+    rw [Finset.smul_sum, ← Finset.sum_range_reflect _ x]
+    refine Finset.sum_congr rfl fun z hz => ?_
+    have hz' := Finset.mem_range.mp hz
+    by_cases hs : Sc.s i j x y = 0
+    · simp [hs]
+    have e : x - 1 - (x - 1 - z) = z := by omega
+    simp only [e]
+    refine braidEq_dots_three D Sc i j _ _ _ _ ?_ ?_ _ _
+    · rw [show x - 1 - z + z + 1 = x by omega]
+      exact zmod2_eq_zero_of_ne_one fun h => hs (Sc.s_eq_zero i j x y h)
+    · exact zmod2_eq_zero_of_ne_one fun h =>
+        hs (by rw [Sc.s_symm]; exact Sc.s_eq_zero j i y x h)
+
+/-- The weighted reflection kills every defining relation. -/
+theorem mirror_rel (r : Rel D) : (mirrorLin D Sc).map ((pres D Sc).rel r) = 0 := by
+  cases r with
+  | quadEq i => exact mirror_rel_quadEq D Sc i
+  | quadZero i j hij hd => exact mirror_rel_quadZero D Sc i j hij hd
+  | quadNe i j hij hd => exact mirror_rel_quadNe D Sc i j hij hd
+  | slideL i j hij => exact mirror_rel_slideL D Sc i j hij
+  | slideLEq i => exact mirror_rel_slideLEq D Sc i
+  | slideR i j hij => exact mirror_rel_slideR D Sc i j hij
+  | slideREq i => exact mirror_rel_slideREq D Sc i
+  | braid i j m h => exact mirror_rel_braid D Sc i j m h
+  | braidEq i j hij => exact mirror_rel_braidEq D Sc i j hij
+
+/-- **Reflection of the quiver Hecke supercategory** in a vertical axis. It reverses words,
+sends a dot to a dot and the crossing of `i` and `j` to `-(-1)^{|i||j|}` times the crossing of
+`j` and `i`. -/
+def mirrorFunctor : (pres D Sc).Presented ⥤ (pres D Sc).Presented :=
+  (mirrorSig D).lift (pres D Sc) (mirrorSig_odd D) (pres D Sc).wfDom_of_subsingleton
+    (mirror_rel D Sc)
+
+theorem mirrorFunctor_obj (t : List I) :
+    (mirrorFunctor D Sc).obj ((pres D Sc).obj (ob D t)) = (pres D Sc).obj (ob D t.reverse) := by
+  exact congrArg (pres D Sc).obj (mirrorSig_obj D t)
+
+theorem mirrorFunctor_diag {a b : Obj (sig D)} (d : a ⟶ b) :
+    (mirrorFunctor D Sc).map ((pres D Sc).diag d) =
+      Diagram.weight (mirrorWeight (k := k) D) d •
+        (pres D Sc).diag ((mirrorSig D).toLayerMap.map d) :=
+  SigMirror.lift_diag _ _ _ _ d
 
 end OddMath.QuiverHecke
