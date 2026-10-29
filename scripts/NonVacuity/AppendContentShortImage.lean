@@ -5,10 +5,11 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command
 run_cmd do
   let env ← getEnv
+  let moduleNames := env.header.moduleNames
   let mut count : Nat := 0
   for (name, _) in env.constants.toList do
     if let some idx := env.getModuleIdxFor? name then
-      if env.header.moduleNames[idx.toNat]! ==
+      if moduleNames[idx.toNat]! ==
           `OddMath.QuiverHecke.CyclotomicAction.AppendContentShortImage then
         for a in (← Lean.collectAxioms name) do
           unless #[`propext, `Classical.choice, `Quot.sound].contains a do

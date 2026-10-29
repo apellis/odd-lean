@@ -1,5 +1,6 @@
 # Odd nondegeneracy: restart state
 
+
 ## Ordered product and normalized extraction
 
 The collected endpoint polynomial is now identified with the independently
@@ -28,6 +29,560 @@ coefficient acts on the left of the unchanged right tensor coefficient.
 Affine coefficients include every old height; the ordinary-polynomial append
 source retains its existing old-height n+1 scope. Source equations (6)–(7),
 the full ELV boundary and corrected w_k identification remain separate.
+
+## Full-coefficient output-parabolic spanning for the ideal sum
+
+`ELVParabolicSpan.lean` supplies the affine spanning input (C) of
+`DeformedIdealSum.md` using the output-oriented `shuffleBasis`.
+`shuffleAffineEquiv` tensors the existing basis equivalence with the entire
+ELV coefficient algebra. `shuffle_parabolic_factorization` places every
+coefficient in the two-block parabolic factor, after the shuffle in diagram
+order, without an extra coefficient sign. `hom_mem_of_shuffle_parabolic`
+proves these terms span; it does not assume a PBW decomposition or flatness.
+`ideal_nil` and `appendRelations_nil` handle the empty old word explicitly.
+
+The named IS2 consumer is
+`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its remaining
+hypothesis is a concrete shuffle-term containment. It is not discharged:
+one must move `relation j t` across `shuffleParabolic` using the full
+normalizer (first dot translated by −2 delta, total coefficient-plus-tail
+parity, and delta times the top coefficient zero), then identify short
+shuffles with appended old relations and the long shuffle with `appendW`.
+This is the output-oriented shuffle, not the inverse shuffle used in input
+prepend coordinates. No ideal-sum equality or cokernel identification is
+claimed. Those remain the next target; P injectivity is already proved below.
+
+## Central moving-variable linearity of ELV P
+
+`ELVAppendMovingSlide.lean` proves the decorated moving-dot deletion identity
+with the moving power before the full ELV relation. Two slides cancel the
+sign; the same-colour deletion lies in the append-old span.
+`ELVPCentral.lean` proves `pMap_movingSquare`, `pMap_movingEvenDot`, and
+`pMap_central` on the prescribed quotients, with arbitrary words, cutoffs
+and full exterior coefficients over any commutative ground ring. The even
+power commutes with the relation by its coefficient expansion, not by
+commuting an unchanged odd dot. Zero cutoff and the positive even odd-colour
+coefficient relation are retained in the existing ELV coefficient algebra.
+
+`pCentralMap` is a k[s]-linear map on these quotients. `pCentralMap_oldSource`
+retains the total-parity twist `appendQ` on the source; both old operators
+are k[s]-linear and kill the old ideal. Old balance is reused, not assumed.
+Assembly into content-level ordinary right B[s]-modules, their projectivity,
+and the exact cokernel sequence are still separate obligations.
+
+## Injectivity of the actual full ELV P map
+
+`ELVPInjective.lean` combines the quotient QP identity with moving-coordinate
+regularity. `signedQPMap_injective` and `pMap_injective` hold for arbitrary
+words, cutoffs and full exterior coefficients over the given commutative
+ground ring. No balance, monicity, freeness or injectivity assumption is added.
+This closes the injectivity step of `DeformedSquareResolution.md` §3;
+The central-variable and twisted old-action compatibility are supplied above;
+content-level B[s]-module assembly, the cokernel, exactness and projectivity remain.
+
+## Full ELV Q descent and quotient composition
+
+`ELVQDescent.lean` constructs `qMap : AppendTarget →ₗ[k] Target` by
+precomposition with `affineUnit(moveHom i [] v)`. `move_comp_rightContext`
+uses total coefficient-plus-diagram parity; affine normal-form spanning
+shows the full Hom vanishes between different word parities, removing the
+naturality side condition. `move_appendRelations` proves preservation of
+every old ideal generator and arbitrary continuation, with no assumed descent.
+
+`qMap_comp_pMap` identifies the composite on the actual quotients with
+`signedQPMap`, precomposition by `affineUnit(qpProduct i v) ≫ relation i v`.
+The comparison uses `qp_projection_product` and ambient postcomposition;
+all words, cutoffs and exterior coefficients remain. Repeated-even factors
+are still −1. These are ground-ring linear maps only: the different twisted
+balanced-module labels K1 and K1prime have not been identified as module maps.
+Injectivity of P is supplied above; twisted B[s]-linearity, exactness and
+projectivity remain separate.
+
+## Full ELV signed QP regularity
+
+`ELVSignedMovingPower.lean` proves the moving-power coordinate shift for every
+exponent d, including odd moving dots. The old coefficient is transformed by
+`oldTwist (d • D.parity i)`, on its total coefficient-plus-diagram parity.
+`ELVRelationRegularity.lean` expands the prescribed deformed polynomial and
+uses its proved top coefficient 1 to establish `projection_relation_regular`.
+No monicity or filtration bound is supplied as a hypothesis to that theorem.
+
+`ELVQPRegularity.lean` proves `projection_qp_relation_regular`: for every i, v,
+w and full-coefficient h, vanishing of
+
+    projection (affineUnit (qpProduct i v) ≫ relation i v ≫ h)
+
+implies `projection h = 0`. The distinct-colour factors use their scalar unit
+`t i x` and strict interior exponent bounds; repeated-odd factors are cancelled
+as two linear differences, and repeated-even factors retain their minus sign.
+Every lower-degree coordinate vanishes above the finite input support. The
+leading coordinate is a unit times the invertible total-parity twist, even
+when old coefficients have zero divisors. Empty words and zero cutoffs are
+included, without finite-colour, domain, flatness or nonzero-model assumptions.
+
+`projection_move_relation_regular` combines this with `qp_projection_product`
+for the prescribed `moveHom ≫ lastToFirstHom` composite. This supplies the raw
+injectivity input of `DeformedSquareResolution.md` §3. `ELVPInjective.lean`
+assembles it with Q descent to prove `Function.Injective pMap`. B[s]-linearity,
+ideal-sum exactness and projectivity remain open. General odd nondegeneracy is not proved.
+
+## Full ELV P descent
+
+`ELVPScalarBalance.lean` proves `ELVPScalar.oldGenerator_scalar_balance`
+for every word, cutoff and full ELV coefficient, with no homogeneity assumption
+on that coefficient. Put `W = affineUnit(lastToFirstHom) ≫ relation i v` and
+`q = p(i) p(v) + N_i p(i)`. The exact equation is
+
+    W ≫ insert i (scalar a) = rightContext [i] (twist q (scalar a)) ≫ W.
+
+`elv_comm` proves graded commutativity from exterior anticommutation and
+homogeneous lifts through the existing coefficient quotient. `scalar_slide`
+then includes both coefficient and diagram signs in the signed box product.
+This establishes the coefficient-generator case of `DeformedGlobalQP.md` §4,
+not a quotient map or an assumed balance package.
+
+`ELVAppendBalance.lean` now proves old-dot and old-crossing error containment
+in `appendRelations`, including the exceptional braid correction. Spectator
+recursion, composition closure, affine normal-form spanning and coefficient
+factorization prove `appendError_mem_appendRelations` for every full ELV old
+morphism. `ELVPDescent.lean` proves `appendW_relations` and constructs
+`pMap : Target →ₗ[k] AppendTarget`, with `pMap_projection` giving exactly
+precomposition by W. The append span kills only right-extended old ideal
+elements followed by arbitrary ambient continuations.
+
+Remaining: ordinary twisted B[s]-linearity, injectivity, ideal-sum exactness
+and projectivity. No such conclusion is asserted by P descent alone.
+
+## Full ELV all-word signed QP product
+
+`ELVQPProduct.lean` proves `ELVOld.qp_projection_product` and `qp_product`
+for every word, right spectator word, cutoff and full-coefficient continuation,
+over the existing arbitrary commutative ground ring and scalar datum. No finite
+colour, domain or flatness assumption is added. The reverse-word induction uses
+`qp_nil`, `qp_distinct`, `qp_repeated_even` and `qp_repeated_odd`.
+
+The subalgebra `relationPreserving` contains all positioned dots and every
+`qpFactor`; this is preservation of the defining relation span, not an assumed
+ideal closure. `projection_affine_whiskerRight_eq` extends the induction
+hypothesis, while typed empty-context transport recovers the raw projection
+from the context recursions. `qpProduct_append` fixes factor order without
+commuting factors. Repeated-even factors remain −1, so this does not establish
+the literal no-even-factor normalization in the proposed global calculation.
+The broader balanced-map and projective-resolution claims are not consequences
+asserted here. The consumer checks the unrestricted all-word statement and
+all declarations of the new module, including private/generated declarations.
+
+## Full ELV QP spectator descent and distinct-colour recursion
+
+`ELVQPContext.lean` proves `ELVOld.relations_rightContext` by spanning-generator
+induction from `ideal_rightContext` and `rightContext_insert`. Consequently
+`targetRightContext` is a map on the actual old-only quotient, not an assumed
+stability operation. `projection_rightContext_eq` also allows an arbitrary
+full-coefficient ambient continuation. `qpEval_of_projection_eq` transports
+a smaller-word QP equality through the full first-position relation, keeping
+all exterior coefficients. The concrete connected-colour consumer
+`ELVQPContextConsumer.connectedDistinct` includes a repeated prefix and nonempty
+spectators at arbitrary cutoff.
+
+`qp_distinct` evaluates the existing signed affine distinct-colour transport
+in this same quotient, with arbitrary prefix, spectators and continuation.
+`qp_nil` checks the empty identity against the actual `qpProduct`. These
+complete the distinct recursion and empty base. The subsequent all-word
+signed induction is now proved in `ELVQPProduct.lean`, as described above.
+The raw product retains the repeated-even factor −1. No crossing-normalization
+comparison or literal no-even-factor equation (3) is asserted.
+
+## Graded right append and affine transformations
+
+`ELVTruncatedAppend.lean` constructs `truncatedAppendGraded σ` on all words,
+using the existing `ELVOld.rightContext`. The old first-position ideal is
+preserved by `ideal_rightContext`; `coefficientHomIdeal_rightContext` proves
+preservation of the independent coefficient weight ideal. Their sum descends
+to `truncatedRightContext`. Identity, composition, linearity, total parity
+and integer degree are proved, for arbitrary words and cutoffs.
+
+`ELVTruncatedAppendTransform.lean` assigns each homogeneous affine morphism
+on the appended word its left-whiskered quotient component.
+`truncatedAppendComponent_supernatural` proves naturality against total
+coefficient-plus-diagram parity. The prescribed `dotE [i] 0` and
+`crossTwo i j` yield `truncatedAppendDot` and `truncatedAppendCross`, with
+parities `|i|` and `|i||j|` and degrees `2 dᵢ` and `dᵢ dᵢⱼ`.
+The crossing source and target are append `[i,j]` and append `[j,i]`;
+comparison with iterated one-strand append is not asserted.
+
+The existing ordinary consumers are `OddMath.QuiverHecke.inductionCorner`
+in `SuperInduction.lean` and the signed
+right-dot construction `inductionDotLinear_isHom` in `SuperDot.lean`.
+Their ELV analogues should use representable kernels of these append
+functors; this is not a new assumed action or a replacement corner axiom.
+The existing nonzero odd coefficient witness checks the negative sign in
+dot naturality, and arbitrary spectator lists check parity preservation.
+
+Remaining: representable induction/restriction kernels, their tensor
+comparison and adjunction, compatibility with iterated-append casts and
+weights, affine relation packaging for the full positive action, mixed
+factor closure and higher-content support. No left-context stability,
+monoidal quotient, inverse, boundedness, or `CentralInvertible` is claimed.
+
+## The truncated ELV category and its actual endomorphism algebra
+
+`ELVTruncatedCategory.lean` packages words with literal `TruncatedOld` Hom
+modules as a linear supercategory. Quotient composition descends through both
+two-sided ideals; identities, associativity, and bilinearity are proved on
+representatives. `truncatedGradedSupercategory` inherits the integer grading.
+`truncatedCategory_proj` and `truncatedCategory_dproj` identify both categorical
+projections with the established quotient projections.
+
+The headline `truncatedEndGSuperAlg` is the actual endomorphism algebra of any
+word, with multiplication `f * g = g ≫ f`, full coefficient classes and
+independent integer degree and parity. `ELVTruncatedModuleBound.lean` transfers
+the explicit one-strand bound to this algebra and supplies a natural threshold
+for finite colour sets. `truncatedSingle_regular_coefficients_bounded` applies
+`RegularReservoir.coefficient_eq_zero`; `truncatedSingle_module_coefficients_bounded`
+applies its faithful module-superfunctor realization. Neither uses an assumed
+comparison map, finite-dimensionality, or a bound on arbitrary module Hom spaces.
+
+The rational odd cutoff-two, coefficient-cutoff-three consumer retains the
+proved nonzero delta class as an element of this algebra, verifies parity one
+and integer degree two, and instantiates both regular and realized coefficient
+bounds. The carrier is definitionally the existing positive-content quotient.
+
+Remaining: higher-content upper support and homogeneous factor-closure maps,
+followed by the full factor action. No monoidal structure is asserted: prepending
+need not preserve the old first-position relation. There is no `CentralInvertible`
+conclusion and no upper bound on the untruncated old algebra or enlarged `Target`.
+
+## Full ELV repeated-odd QP recursion
+
+`ELVQPOdd.lean` proves `ELVOld.qp_repeated_odd` using `qpEval` and the
+full-coefficient relation-killing theorem, with arbitrary prefixes, right
+spectators, cutoffs (including zero), and ambient continuations. Writing
+`E = x_last - x_first`, `Δ = x_last² - x_first²` and
+`s = (-1)^(p(i) p(μ))`, (K) gives `[Δ(s E A - Δ B)] = 0`.
+`qpEval_square_difference_cancel` yields `[s E A - Δ B] = 0`.
+`movingDot_insert` twists the total coefficient-plus-diagram parity of each
+old Hom; `movingDot_relations` and `qpEval_source_difference_zero` therefore
+prove preservation under E, rather than assuming it. Thus `[Δ E B] = s[E² A]`.
+The affine odd recursion contributes the second s, and `s² = 1` gives the
+surviving factor E². The nonempty cancellation word is `μ ++ [i]`; this does
+not cancel a zero difference in the empty-word base case.
+
+The distinct-colour recursion and quotient spectator descent are supplied above.
+Remaining: all-word induction toward the raw signed `qpProduct`, including
+its existing repeated-even factor −1.
+No literal no-even-factor normalization, balanced resolution, full ELV action,
+or nondegeneracy conclusion follows from this recursion alone.
+
+## Full ELV old-coefficient extraction
+
+Checked in `ELVPrependOldExtraction.lean`: `PrependIdx.replaceOld` retains
+the moving exponent and shuffle while ranging over the existing old normal-form
+basis. Restricting affine coordinates to this fibre, undoing coefficient parity,
+and rebuilding the old Hom gives `prependExtractOld`. Its
+`prependExtractOld_insert_comp_tail` theorem recovers `twist p (r ≫ b)` for
+arbitrary full-ELV old morphisms and a prescribed moving tail. The resulting
+`Old(v,t)` coordinate vanishes exactly when the old coefficient lies in the old
+ideal (`prependExtractOldQuotient_insert_tail_eq_zero_iff`). No flatness,
+finite-colour hypothesis, assumed basis comparison, or moving polynomial is used.
+
+Checked in `ELVPrependCrossTail.lean`: off-tail extraction vanishes for every
+old coefficient, before and after the old quotient. `PrependIdx.regroupEquiv`
+regroups the existing indices by moving exponent and shuffle, with both inverse
+laws; the intermediate old target is uniquely determined by the shuffle and
+final word. This is an index equivalence, not an old-quotient equivalence.
+
+The moving-square/even-dot shifts and finite-support difference injectivity
+are now proved in `ELVMovingShift.lean`; see the next section.
+
+## Full ELV all-generator descent and simultaneous coordinates
+
+`ELVPrependDescent.lean` proves `prependExtractOldQuotient_old_generator` for
+`insert i v s r ≫ h` with arbitrary intermediate word `s`, every old ideal
+coefficient `r`, and arbitrary ambient continuation `h`. Expanding `h` in the
+existing prepend basis reduces the claim to old composites `r ≫ b`. Zero
+composites vanish without any choice of normal form; a nonzero composite supplies
+an old normal-form index through `oldAffineEquiv`. `PrependIdx.rebase` then
+transports the prescribed moving tail to source `v`, preserving its positioned
+diagram. This covers empty old Hom spaces and retains full exterior coefficients.
+
+`prependOldCoordinateEquiv` identifies the actual `Target` with the direct sum
+of `Old(v,t)` coefficients indexed by `PrependIdx.Tail`. Its components are the
+descended extraction maps, with both coefficient-parity normalization and total
+old-Hom twist retained. `prependOldReconstruct_coordinateEquiv` and
+`prependOldCoordinateEquiv_reconstruct` prove both inverse laws. No flatness,
+finite-colour hypothesis, or moving cyclotomic relation is imposed. The earlier
+raw PBW expansion remains a surjection, not an independent family.
+
+## Full ELV moving powers and actual difference cancellation
+
+`ELVMovingShift.lean` proves `movingPower_pair_shift` by super interchange
+with arbitrary old Homs, then reads back simultaneous quotient coordinates.
+`movingSquare_coordinate_shift` shifts by two and
+`movingEvenDot_coordinate_shift` shifts by one. No shift law is assumed.
+`oldSourceTarget_pair` proves that actual inserted old-source multiplication
+changes only the old quotient coefficient, with the total balance twist;
+`oldSourceTarget_above` establishes the required exponent filtration.
+The largest nonzero finite-support coordinate gives
+`lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
+
+For a nonempty old word, `lastDotDifference_projection` identifies the operator
+with precomposition by the positioned last-dot power minus first-dot power,
+i.e. the right difference in `DeformedGlobalQP.md` §1. The empty-word QP base
+case is separate; no cancellation of the zero difference is claimed there.
+All exterior coefficients, arbitrary old quotient Homs, nonreduced ground
+rings, arbitrary cutoffs and the existing scalar assumptions are retained.
+The consumer includes `1 + delta`, total balance parity one and `ZMod 9`.
+
+Remaining: all-prefix relation killing and QP, P balance, and the projective
+resolution/exactness comparisons. These are not consequences of cancellation
+alone. No full ELV 2-action or nondegeneracy conclusion is asserted.
+
+## Full ELV prepend PBW normalization
+
+Checked in `ELVPrependCoordinates.lean`: the tensor extension of the existing
+`prependBasis` gives an affine coordinate equivalence over the full exterior
+coefficient algebra. For each existing input PBW index, the old-first factorization
+is proved, including the coefficient sign across the moving dots/crossings.
+Arbitrary coefficients are normalized by the tail-parity involution before the
+**total** old-morphism balance twist. `balancedEquiv_prependExpansion` compares
+this explicit finite expansion with the old-only projection through the proved
+`ELVOld.balancedEquiv`. The expansion is surjective and its kernel is exactly
+the affine coordinate preimage of the old-only relation span. No flatness or
+moving-polynomial quotient is assumed.
+
+Boundary: the raw PBW expansion is not injective. The regrouped `Old(v,t)`
+equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
+The moving-square/even-dot shifts and leading-coordinate cancellation are
+now supplied by `ELVMovingShift`. See
+`ELVPrependCoordinates.md` for the coefficient formula and source locator.
+
+## Pairwise-distinct braid on arbitrary paths
+
+`ProbeReservoir.braid_pairwiseDistinct` proves the literal equality
+`braidLeft (P.swappedGens c L) i j r ν p q Z = braidRight ...` for arbitrary
+source and target paths and three pairwise-distinct colours. It imposes no
+additional relation hypothesis beyond the supplied probe/reservoir data.
+Arbitrary colours, weights, contents and commutative coefficients are retained.
+
+`distinctPureProbe_braid` and `distinctPureReservoir_braid` transport the supplied
+factor braids to the pure canonical paths. The reservoir proof retains the
+postcomparison beta/xi maps and all content-dependent parity signs. Together
+with the six mixed sectors, endpoint uniqueness and the eight source placements
+prove the arbitrary-path theorem. No Q polynomial or factor crossing is cancelled.
+`PairwiseDistinctBraid.lean` is a generic arbitrary-path consumer and audits every
+declaration owned by the three new modules, including generated/private declarations.
+
+Remaining: the non-correction cases with adjacent equal colours, and the
+repeated-outer diagonal correction and off-diagonal equality. This is not yet
+a complete `CrossBraid`, nor a nonzero model or nondegeneracy theorem.
+
+## Reverse and middle unequal-reservoir sector braids
+
+`reverseDistinctReservoir_braid` proves `RᵣR_qPᵢ → PᵢR_qRᵣ`, retaining
+both prescribed Q factors. `postCrossNe_qExpr_pair` derives their transport
+from the two signed unequal reservoir slides and crossing parity. The two
+polynomials share one probe spectator; their commutation is derived from the
+three dot supercommutations and supported powers, not assumed.
+
+`middleDistinctReservoir_braid` proves `RᵣPᵢR_q → R_qPᵢRᵣ` for arbitrary
+pairwise distinct colours, weights, contents, commutative coefficients and
+supplied data. `postCrossNe_qExpr_outer` derives individual Q transport from
+the prescribed reservoir slide and crossing parity. The conjugated second
+weight uses the full triple-parity sign of the last reservoir dot; supported
+powers remove this sign. Only mixed comparison isomorphisms are cancelled.
+The consumer `MixedDistinctReservoirRemaining.lean` uses arbitrary occupied
+content and audits all declarations of the four new modules, including generated
+and private declarations. Both headline theorems have arbitrary-colour occupied
+content applications; no independent nonzero representation is claimed.
+
+All six mixed pairwise-distinct placements now have sector lemmas. Remaining:
+all-same-side factor transport and arbitrary-path assembly; repeated-outer
+correction and cross-side colour equalities separately. No complete `CrossBraid`
+is asserted.
+
+
+## Forward unequal-reservoir sector braid
+
+`BraidMixed/DistinctReservoirSector.lean`: `distinctReservoir_braid` proves
+`PᵢRᵣRₛ → RₛRᵣPᵢ` for arbitrary pairwise distinct colours, weights,
+contents, commutative coefficient ring and supplied probe/reservoir data.
+The theorem is the literal equality of `braidLeft` and `braidRight` entries,
+not a freely chosen crossing or a triangle assumption.
+
+`postCrossNe_mixedJ_pair_heq` specializes the checked transported triangle
+one compositional edge at a time. Both reversed-target transports and the
+probe-source comparison remain explicit. The two reservoir crossing edges
+are evaluated using the prescribed `postCrossNe`; the mixed edges are the
+coefficient-one direction. Endpoint uniqueness reduces the actual path sums.
+No Q polynomial or factor crossing is inverted, and no additional mixed
+isomorphism cancellation is needed in this forward placement.
+
+`MixedDistinctReservoirForward.lean` applies the braid at arbitrary content
+`(β, γ + single r 1 + single s 1)`, proving all four step-validity conditions.
+It audits every declaration owned by the new module, including generated
+or private declarations. This is a supplied-data consumer, not an independent
+nonzero representation.
+
+Remaining: all-same-side factor braid transport and arbitrary-path
+assembly; repeated-outer correction separately. Reverse and middle
+unequal-reservoir placements are proved above. The checked transport module
+`InterchangePostPairTransport.lean` is unchanged.
+
+## Three-distinct-colour two-probe sector braid
+
+`BraidMixed/DistinctProbeSector.lean`: `distinctProbe_braid` proves the literal
+entry `PᵢPⱼRᵣ → RᵣPⱼPᵢ` for pairwise distinct colours and one valid reservoir
+step. All intermediate paths are unique by their endpoint colour counts.
+The two probe crossings are the prescribed unequal-colour `preCrossNe`,
+not the same-colour crossing. The target reverses the probe order.
+
+`mixedInterchange_pair_transport` aligns the two final probe sectors through
+explicit object equalities and heterogeneous equality, then applies the
+signed universal interchange triangle. `preCrossNe_mixedJ_pair_heq` retains
+the sector casts and proves the triangle without any braid, dot-transport,
+Q-invertibility or crossing-invertibility hypothesis. The scalar product
+is one by `homContentShift_pair_cross_sign`. The endpoint equality argument
+is only commutativity of content addition, not an assumed transport law.
+
+`NonVacuity.MixedDistinctProbeSector` instantiates colours `0,1,2 : Fin 3`
+and reservoir content `single 2 1`, proves validity and endpoint equality,
+and audits every owned module declaration, including private/generated
+declarations. This is an occupied-sector application with arbitrary supplied
+representation data, not an independent nonzero representation.
+
+The reverse direction is proved by `reverseDistinctProbe_braid` in
+`BraidMixed/ReverseDistinctProbeSector.lean`: `RᵣPᵢPⱼ → PⱼPᵢRᵣ`.
+`DistinctProbeDots` identifies both mixed weights with the two different Q
+polynomials on the same reservoir spectator. `DistinctQTransport` derives
+Q-factor commutation from dot supercommutation and the parameter parity
+support. `preCrossNe_qExpr_pair` derives the transport from the actual unequal
+probe slides and supernaturalness of `preCrossNe`, with no supplied transport
+or centrality hypothesis. `distinctProbeSectorWeight_cross` carries that
+identity to the typed sector entries. `reverseDistinctProbe_move_eq` retains
+both prescribed Q factors. The final proof reuses `distinctProbe_braid` and
+cancels only `distinctProbeMoveIso.hom`, never Q or the probe crossing.
+
+`NonVacuity.MixedReverseDistinctProbeSector` checks colours `0,1,2 : Fin 3`
+with reservoir content `single 2 1` and audits all declarations of the five new
+modules, including private/generated declarations. The supplied representation
+data and coefficients are arbitrary; no independent nonzero model is claimed.
+
+`BraidMixed/MiddleDistinctProbeSector.lean`: `middleDistinctProbe_braid`
+proves `PᵢRᵣPⱼ → PⱼRᵣPᵢ` for arbitrary pairwise distinct colours,
+weights, contents, coefficients and supplied data. The individual inner Q
+factor is transported by `preCrossNe_qExpr_inner`, using the prescribed
+unequal-probe slide and supernaturalness. `distinctProbeInnerSectorQ_cross`
+keeps the sector transports and conjugates the target weight by the first
+mixed comparison. The braid reuses the forward two-probe braid and cancels
+only mixed comparison isomorphisms. No Q or probe crossing is inverted.
+The importing consumer uses arbitrary colours and arbitrary occupied content,
+not a finite representation, and audits every owned declaration.
+
+Exact pairwise-distinct residual: all-probe and all-reservoir sector transport
+from the factor braid; assembly for arbitrary source/target sector paths.
+All six mixed placements have explicit sector lemmas. Separately,
+equalities between colours on different sides and repeated-outer-colour
+corrections remain before a complete `CrossBraid` construction.
+This theorem contributes one sector to `CrossBraid.braid`; it does not
+construct a complete `CrossBraid`.
+
+## Reverse two-reservoir Q-weighted sector braid
+
+`BraidMixed/ReverseReservoirSector.lean`: `reverseReservoirPair_braid` proves
+the actual entry `RᵣRᵣPᵢ → PᵢRᵣRᵣ` for `i ≠ r`, arbitrary supplied
+coefficients and leftward data, and two valid reservoir steps. Both reverse
+mixed entries retain Q. The proof reduces the intermediate path sums and
+uses the prescribed shifted `postCrossSame`, not an assumed braid field.
+
+`ReservoirPairDots.lean` derives spectator transport, supercommutation and
+the two signed reservoir slides. The first interchange transports the second
+Q to the last reservoir dot; both mixed signs disappear by separate parity
+support. `ReservoirPairQCentrality.lean` reverses Q arguments with `qExpr_swap`
+and realizes the compressed reservoir dots and probe spectator in a generated
+commutative subalgebra. `polynomial_norm` proves centrality of the two-factor
+product without division. Ordinary End multiplication reverses categorical
+composition; the reversed-product norm is used explicitly.
+
+The importing `NonVacuity.MixedReverseReservoirSector` consumer supplies
+distinct Boolean colours and two occupied reservoir letters and audits every
+declaration of the three modules, including private/generated declarations,
+against `propext`, `Classical.choice`, and `Quot.sound`. It is an occupied-sector
+theorem application, not an independent nonzero model construction.
+
+Remaining: unequal same-side colours, repeated-outer-colour corrections and
+the other mixed-colour `CrossBraid` fields. These sector entries do not yet
+construct `CrossBraid`.
+
+## Reverse probe-pair Q transport
+
+`BraidMixed/ProbePairDots.lean` generalizes the spectator dot transport to arbitrary
+reservoir colour. Both probe dots and the same-colour crossing supercommute with
+the reservoir dot. `probePairFirstIso_conj_mixedQ` and `probePair_map_mixedQ`
+identify the two transported Q factors with `qExpr Sc x₁ z i r` and
+`qExpr Sc x₂ z i r` for the same spectator `z`. The mixed signs disappear only
+using the parity support of Q; no Q value is inverted.
+`NonVacuity.MixedProbePairDots` checks their product identification at distinct
+Boolean colours and an occupied reservoir sector. Its seven theorem axiom
+reports contain only the three standard axioms.
+
+`BraidMixed/ProbePairQCentrality.lean` now proves `probePairQProduct_central`
+for arbitrary supplied probe/reservoir data, reservoir colour and valid step.
+The commutative realization is the subalgebra generated by the two compressed
+probe dots, the compressed spectator and the slide correction. Coefficients
+are polynomials evaluated at the compressed spectator; their crossing centrality
+is proved, not assumed. In ordinary End multiplication the slides have correction
+`1` for even probe colour and `x₁ - x₂` for odd probe colour. The correction
+commutes with the generators but need not commute with the crossing.
+
+`QWeightedDraft.polynomial_norm` in `QWeightedPolynomial` applies
+without cancellation or inversion. `QWeightedEvaluation` identifies both Q
+factors with the same polynomial; categorical composition reverses their
+ordinary End product order. The original outside-import drafts are preserved.
+The occupied Boolean-colour consumer audits all declarations in these two
+modules, `QCentralRealization`, and `ProbePairQCentrality` against the three
+standard axioms. No realization, centrality, Q-invertibility or braid hypothesis
+is added to `probePairQProduct_central`.
+
+`BraidMixed/QWeightedReverseSector.lean` now proves `reverseProbePair_braid`:
+the entry `RᵣPᵢPᵢ → PᵢPᵢRᵣ` satisfies the braid for `i ≠ r`.
+Both reverse mixed entries retain their prescribed Q factors. The proof applies
+`reverseProbePair_braid_iff`, transports the central Q product through the
+mixed isomorphisms using the forward two-probe triangle, and collapses the
+unique intermediate sector paths. The coefficients and leftward data remain
+arbitrary; no braid field or inverse-coefficient hypothesis is assumed.
+The occupied Boolean-colour consumer `MixedReverseProbePairSector.lean`
+checks the sector equality and audits every declaration of the promoted module.
+The original reverse-sector WIP snapshot is unchanged.
+
+Remaining: other reverse Q-weighted sectors and the other mixed-colour
+`CrossBraid` fields; this is one sector entry, not a construction of that structure.
+
+## Mixed-colour sector braid: two probes and one reservoir
+
+`BraidMixed/ProbePairSector.lean`: `probePair_braid` proves the entry
+`PᵢPᵢRᵣ → RᵣPᵢPᵢ` of `braidLeft = braidRight` for arbitrary `i ≠ r`,
+sector, valid reservoir step, supplied probe/reservoir data, crossing
+coefficients and leftward data. It has no coefficient-inverse hypothesis.
+All intermediate path sums reduce by uniqueness of their sector contents.
+`BraidEntries` evaluates the four crossing entries with endpoint casts;
+the universal two-probe triangle then closes the equality, preserving the
+normalized same-colour crossing. The mixed crossings here are the prescribed
+`PR → RP` entries `mixedJ.hom`, not the Q-weighted reverse entries.
+`NonVacuity.MixedProbePairSector` specializes the theorem to distinct Boolean
+colours and a sector with one reservoir letter.
+
+`BraidMixed/ReservoirPairSector.lean`: `reservoirPair_braid` also proves
+`PᵢRᵣRᵣ → RᵣRᵣPᵢ` for arbitrary `i ≠ r`, with both reservoir steps valid.
+It evaluates the actual braid sums and shifted reservoir crossing via
+`postCrossSame_eq` and the same-colour post-pair triangle.
+`NonVacuity.MixedReservoirPairSector` supplies distinct Boolean colours and
+a sector containing two reservoir letters. Neither result needs an
+inverse-coefficient hypothesis.
+
+Remaining: unequal same-side colours and the other `CrossBraid` fields.
+Both reverse repeated-side directions are covered above; these sector
+entries do not establish the remaining fields.
+
 
 ## Collected moving-chain polynomial
 
@@ -77,6 +632,7 @@ derived from the positional relations, not extracted from `Approx`.
 order. Its application to `leadingMoveHom`, scalar-to-matrix assembly,
 PBW regrouping and comparison with S are proved above.
 
+
 ## Signed top-crossing chain
 
 `MoveHomLeading.lean` proves `moveHom_sub_leading_mem_low`: for every
@@ -118,14 +674,13 @@ The importing consumer tests the coordinate identity for both colours of
 a mixed-parity datum and audits every declaration of this module. No
 cutoff, monicity, injectivity or polynomial-parity hypothesis is used.
 
-**Open general step:** prove the explicitly signed leading-polynomial
-expansion of `moveHom` modulo the lower-crossing filtration and transfer
-the scalar vanishing theorem to `prependCoefficients`. The existing
-`Approx` relation only records an unspecified unit, so it cannot determine
-the sign. The proposed library repeated-colour factor is positive for
-even colour and negative for odd colour; its full normalized extraction
-is not yet a theorem. Source equation (6) and downstream equation (7)
-remain separate; see `MackeyCrossingConventions.md`.
+The signed expansion, scalar-to-matrix comparison, ordered product and
+normalized ordinary extraction are proved by the modules described above.
+The library repeated-colour square factor has positive sign for even colour
+and negative sign for odd colour; this is proved without choosing the
+unspecified unit in `Approx`. Source equation (6) as a full ELV boundary
+identity and downstream equation (7) remain separate; see
+`MackeyCrossingConventions.md`.
 
 ## Ordinary content Mackey boundary
 
@@ -229,8 +784,9 @@ identifies it with the append-corner tensors admitting finite balanced expansion
 supported away from the moving row. `appendContentLong_cover` and
 `appendContentLongLift_short_iff` give covering and independence modulo this kernel.
 Both maps respect the existing right coefficient multiplication, and the kernel
-is stable under it. No positivity assumption on rank or cyclotomic cutoff is used;
-the parity-twisted balancing and cyclotomic content coefficient ring are unchanged.
+is stable under it. The content API has old height `n+1`; no positivity assumption
+on the cyclotomic cutoff is used. The parity-twisted balancing and cyclotomic
+content coefficient ring are unchanged.
 
 Scope: `AppendContentRhoCoordinates.lean` now supplies the degreewise sign
 normalization of these input-first-dot coordinates; see below. Identification of
@@ -275,7 +831,153 @@ Verification: the focused modules and importing `NonVacuity.AppendContentCosets`
 and `NonVacuity.AppendContentRhoCoordinates` consumers build with warnings as errors; the consumer audits every declaration
 owned by the module against `propext`, `Classical.choice`, and `Quot.sound`. Its
 examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
-both cutoff parities, two-term independence at rank zero, and exact right action.
+both cutoff parities, two-term independence at content index `n=0` (old height one),
+and exact right action.
+
+## Coefficient-truncated one-strand support
+
+Checked (`ELVCoefficientTruncation.lean`): `TruncatedOld` is the quotient of the
+original coefficient-category Hom by the old cyclotomic ideal plus the two-sided
+ideal generated by coefficient basis identities of weight at least `N`.
+`truncateOld` is surjective. The added ideal is stable under composition,
+integer projections, and independent total-parity projections.
+`truncatedDegree_internal`, `truncatedParity_internal`, and
+`truncatedProj_truncatedDproj` prove graded descent and compatibility.
+
+`truncatedSingle_eq_of_coefficient_eq` relates these positive-content classes
+to the exact bounded coefficient quotient of `BubbleELVGrading`, not a new
+coefficient algebra. Combining the old one-strand spanning theorem with the
+coefficient degree/weight estimate gives `truncatedSingle_degree_eq_bot`:
+
+`degree > M * N + 2 * sy.d i * (cutoff i - 1 : ℕ)` implies the degree part is zero.
+
+Here `M ≥ 0` bounds coefficient degree divided by coefficient weight. Finite
+colours supply such an `M`; no finiteness hypothesis is used in the descent.
+`truncatedSingle_eq_zero_of_cutoff_zero` separately kills the zero-cutoff corner.
+The rational odd cutoff-two, coefficient-cutoff-three consumer checks degree
+nine vanishing, internal gradings, the quotient map, and parity compatibility.
+`ELVTruncatedDetection.lean` now proves `truncatedSingle_delta_ne_zero` in this
+positive-content quotient. `truncatedSingleEval` evaluates the dot and elementary
+coefficients at zero while retaining delta in the exterior algebra.
+`singleEval_ideal` and `singleEval_coefficientIdeal` kill both defining ideals,
+including arbitrary surrounding morphisms and intermediate words. Rank-one word
+preservation reduces nonzero contexts to the one-strand corner. No evaluation
+faithfulness, coefficient injectivity into the Hom quotient, or freeness is assumed.
+
+Remaining: higher-content support bounds, homogeneous factor-closure maps,
+and the full factor action. The regular and module coefficient bound for the
+actual one-strand endomorphism algebra is supplied above. There is no
+upper-support assertion for the untruncated old algebra or the enlarged `Target`.
+
+## One-strand positive-content ELV spanning
+
+Checked (`ELVOneStrand.lean`): `ELVOld.singleSpan_eq_top` proves that the
+actual `Old [i] [i]` is spanned by classes `a ⊗ dot^n` with `n < cutoff i`
+and arbitrary `a` in the full ELV coefficient algebra. The proof uses the
+one-strand affine PBW basis and `single_recurrence`, obtained by multiplying
+the actual monic first-position relation on its two specified sides. The
+coefficient multiplication order is retained; no odd coefficient is specialized
+away. Both strand parities and all cutoffs are covered.
+`single_eq_zero_of_cutoff_zero` explicitly kills the corner at cutoff zero.
+No coefficient flatness, regularity, freeness or finiteness hypothesis is used.
+The spanning consumers test both strand parities, odd-colour cutoffs 2 and 3,
+and all cutoffs parametrically; their delta control is in the coefficient ring.
+`ELVTruncatedDetection` separately proves delta survives in the actual
+positive-content quotient at rational odd cutoff two and weight cutoff three.
+Independence of the old dot classes is not asserted.
+
+The further coefficient-truncated quotient and its one-strand bound are now
+constructed above. General-content finiteness, regular-kernel realization,
+and the full factor action remain open.
+The untruncated coefficient algebra and the enlarged moving-strand `Target`
+are not asserted upper bounded.
+
+## Integer and super gradings of the old ELV quotient
+
+Checked (`ELVOldGrading.lean`, depending on PR #598):
+`ELVOld.ideal_dproj_mem` proves that every integer component of the two-sided
+old cyclotomic ideal remains in that ideal, by homogeneous decomposition of
+both surrounding coefficient-category Homs. `oldDegree_internal` constructs
+the internal integer grading on `ELVOld.Old` itself; `mkQ_mem_oldDegree` and
+`oldDproj_mk` identify its homogeneous projection. The hypotheses are exactly
+the coefficient-category datum, symmetrizer, scalars with `Sc.Homogeneous`,
+cutoffs, and a commutative ground ring.
+
+`ideal_proj_mem`, `oldParity_internal`, and `oldProj_oldDproj` descend the
+independent total super parity and prove its projections commute with integer
+projections. The full exterior coefficients are retained, and no division by
+two is used. `oldCompose_mem_oldDegree` proves degree addition for the existing
+signed old action; `oldTwist_mem_oldDegree` preserves integer degree.
+
+Remaining: positive-content support bounds, grading on the enlarged `Target`,
+and the full factor action. None is asserted by this descent result.
+
+## Integer grading of ELV coefficient diagram Homs
+
+Checked (`ELVHomGrading.lean`, depending on PR #593): `elvHomGrading`
+constructs the integer grading on the existing `ELVCoefficientCategory`, using
+its full exterior coefficient quotient and affine `gdeg` under
+`Sc.Homogeneous`. The coefficient parity is unchanged.
+`elvHomDegree_internal` proves the Hom decomposition is an internal direct sum;
+composition adds degrees by the box-product graded supercategory structure.
+`ELVOld.relation_mem_degree` proves the existing first-position relation has
+degree `2 * sy.d j * cutoff j`, for both even and odd colours.
+`BubbleELVPolynomialGrading.lean` supplies the complementary degrees of every
+monic coefficient. The odd rank-one consumer checks cutoffs 2 and 3, retaining
+a nonzero exterior coefficient.
+
+The old-ideal projection stability and grading descent are supplied by
+`ELVOldGrading.lean` above. Positive-content support bounds and the full factor
+action remain open.
+
+## Integer-graded ELV coefficient/vacuum algebra
+
+Checked (`BubbleCoefficientGrading.lean`, `BubbleELVGrading.lean`):
+`coefficientDegree` grades the actual polynomial/exterior coefficient basis by
+`deg δᵢ = 2dᵢ`, `deg eᵢ,r = 2dᵢ(r+1)` for even colours and `4dᵢ(r+1)`
+for odd colours. Both the exact ELV ideal (including the even-cutoff top
+relation) and the additional `coefficientIdeal N` are integer homogeneous.
+`elvCoefficientGSuperAlg` uses the existing ELV quotient and its existing
+exterior parity; integer degree modulo two is not that parity.
+`truncatedELVCoefficientGSuperAlg` is the further quotient by the sum of
+those ideals; `elvCoefficientTruncation` gives the actual factor map.
+
+For finite colours, `exists_coefficientDegree_bound` constructs a maximum
+of the finitely many `2dᵢ` and proves degree ≤ maximum × coefficient weight.
+`truncatedELVCoefficientDegree_bounded` then proves upper support vanishing.
+The untruncated ELV coefficient algebra is not asserted upper bounded.
+`truncatedELVCoefficient_quotient_injective` preserves every weight-≤d
+coefficient when all cutoffs are ≥d and d<N. The rational odd rank-one
+consumer retains a nonzero odd δ in integer degree 2 after cutoff 2 and
+weight truncation 3, and exercises both genuine `GSuperAlg` bundles.
+
+Remaining: positive-content cyclotomic finiteness/support, actual factor
+action, comparison to content targets, and closure/error degree bounds.
+No full action, `CentralInvertible`, or nondegeneracy is claimed.
+
+## Full content subcategories and product coefficient inversion
+
+Checked (`CentralInverse/ProductCoefficients.lean`, depending on PR #580):
+`restrictCoeff` restricts both parity components to a full subcategory, preserving
+composition and parity projections. `fullRealize` and `fullCoeffGrading` restrict
+the regular realization; `fullCoefficientIdeal` follows from explicit algebra support.
+`productRealize_total` compares each component with the original balanced tensor action;
+`productRealize_proj` preserves parity projections. `evalMat_map_apply` is the
+entrywise matrix comparison, and `assembleIso` assembles actual supernatural inverse
+entries from every component. `isIso_of_component_coefficient_error` uses a separate
+`K b` for each algebra; neither finite block indices nor a uniform supremum is assumed.
+`contentRestrictCoeff` and `weightSpace_isIso_of_eval` use the literal
+`GlobalContentModules` and `globalWeightSpace` APIs.
+
+The importing consumer exercises an infinite rational-module product with chosen
+bounds `b + 1`, proves that those bounds have no uniform upper bound, and proves
+the realized identity coefficient nonzero. It does not claim nonzero odd/positive
+coefficients, or a family whose *minimal* support bounds are unbounded.
+
+Remaining: construct the positive-content ELV component algebras and their upper
+support bounds beyond the coefficient/vacuum algebra above, identify their actual action with the content-support targets, and
+prove that the actual closure/error matrices lie in the positive coefficient ideals.
+No actual closure-degree theorem or `CentralInvertible` is supplied here.
 
 
 ## Append Mackey boundary: balance of P
@@ -344,11 +1046,87 @@ categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_
 `boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
 (products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
 
-Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
-`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
-`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
-the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
-cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
+Checked (`OddMath/QuiverHecke/SwappedAssembly/CentralInverse/ReservoirCoefficients.lean`):
+item (1), the transport to the Hom sector. `ProbeWindow.CoeffGrading` (a `ℤ`-filtration of
+`End(𝟙 b)` only: `𝟙` in degree `0`, additive, parity-stable; `CoeffGrading.ofGraded` from a
+graded `b ⟶ b`); `ProbeWindow.postCoeff` (`Z ◁ c` conjugated by `ρ`), `postCoeff_id`,
+`postCoeff_comp`, `postCoeff_add`, `postCoeff_zero`; `comp_postCoeff` (every 2-morphism of
+`a ⟶ b` super-commutes with `postCoeff`, by the super interchange law; no grading of the probe
+is used); `coeffIdeal` (span of `postCoeff Z c ≫ h`, `deg c ≥ n`), `coeffIdeal_comp_mem`
+(`Jₘ ≫ Jₙ ⊆ Jₘ₊ₙ`), `coeffIdeal_mono` (the filtration is decreasing),
+`eq_zero_of_mem_coeffIdeal`; `reservoirCoefficientIdeal`, a
+`ProbeWindow.CoefficientIdeal` on the whole category `a ⟶ b` (the interface of
+`CentralInverse/CoefficientIdeal.lean` consumed by `isIso_of_sub_mem`,
+`isIso_gMap_of_sub_mem`). Every morphism belongs to `J₀` by `mem_coeffIdeal_zero`;
+no predicate on the objects is needed. For a `ProbeReservoir P` with
+`G : RouquierGrading P.W sy`, `hG : G.BoundedAbove`: `ProbeReservoir.homCoefficientIdeal P G
+hG t` on `P.H t`, and `closure_mem_homCoefficientIdeal` ((N): `h ≫ postCoeff Z b_(s,r) ≫ h'`
+in `J₁`), `boundaryPos_mem_homCoefficientIdeal` (`n > m`), `boundaryNeg_mem_homCoefficientIdeal`
+(`m > n`) ((J)), `comp_postCoeff_comp_mem_homCoefficientIdeal` (any positive-degree coefficient).
+The `ReservoirCoefficients` consumer constructs a nonzero square-zero positive coefficient
+ideal over `ZMod 9` and checks post-whiskering, arbitrary left/right multiplication, decreasing
+powers and joint vanishing. It does not construct a cyclotomic Rouquier family.
+
+Checked (`CentralInverse/RegularCoefficientBound.lean`): a kernel-level construction avoids
+the arbitrary-superfunctor grading requirement. For a graded superalgebra `A`,
+`RegularReservoir.coeffGrading` grades only the endomorphisms of its regular bimodule inside
+the **ungraded** superbimodule 2-supercategory. `regular_apply` and
+`mem_coeffGrading_iff` identify a coefficient and its degree by evaluation at `1` (ordinary
+right linearity, with the signed left action retained). `coefficient_eq_zero` derives the
+coefficient bound from `A.degree n = ⊥` above the algebra bound, and `coefficientIdeal`
+constructs the jointly nilpotent ideal for arbitrary ungraded source algebras/bimodules.
+`closure_mem_coefficientIdeal` retains the kernel degrees `d(h+1+2r)`, `0`,
+`d(1-h+2s)`; `isIso_of_coefficient_error` discharges zeroth-ideal membership of every
+comparison inverse. The rational regular-bimodule consumer has nonzero identity and bound
+one; its positive coefficient ideal is zero. This does **not** construct the truncated
+ELV algebra, the graded factor kernels/inverse components, or their comparison with the
+`PiSCat` realization. Those remain necessary before applying this construction to the
+prescribed swapped action.
+
+Checked (`CentralInverse/ModuleCoefficients.lean`): `realize` sends a regular-bimodule
+coefficient to the identity supernatural transformation of `A-SMod-k`, using the existing
+`postCoeff` and balanced tensor unitors. Its total component is left multiplication by
+`c(1)`; evaluation on the explicitly constructed left regular module at `1` proves
+`realize_injective`. Linearity, identity, composition and parity projection are preserved;
+odd naturality follows from super-interchange, not ordinary naturality. `moduleCoeffGrading`
+is the **image** grading in `End(identity)` of the `PiSCat` module target; no surjectivity
+onto its entire supercentre is assumed or claimed. `module_coefficient_eq_zero` derives
+its bound from algebra support, and `moduleCoefficientIdeal` gives joint nilpotence on
+superfunctors from any probe Pi-supercategory. A rational importing consumer has nonzero
+realized identity, algebra bound one, and matrix inverse lifting in this superfunctor Hom.
+Its positive ideal is zero; it does not test a nonzero odd coefficient.
+
+Remaining for the prescribed reservoir: transport to products of full content-support
+subcategories, identify the actual cup/middle/cap closures through the existing
+`RouquierKernelComparison`, and supply the truncated ELV algebra/support and homogeneous
+kernel data. The new bridge does not construct an ELV action or `CentralInvertible`.
+
+Open (transport): identify the residual entries of the two-sector reduction (closures
+`Dx ≫ jR ≫ Cx`, contractions `AR n ≫ vR a`, `uR a ≫ BR n`) with
+`h ≫ postCoeff Z c ≫ h'` for the coefficients above (`AugmentedSectorBlocks` §3). The membership
+lemmas take that form with arbitrary `h`, `h'`.
+
+Open (2), scope of a `RouquierGrading` with `BoundedAbove` for the reservoir used
+(`globalProbeReservoir`, in `PiSCat k`, reservoir `globalPiRouquierFamily`):
+* The interface does not instantiate there as stated: `RouquierGrading.graded` asks for a
+  grading of the whole Hom category `W.obj μ ⟶ W.obj ν` of `PiSCat`, i.e. of all superfunctors
+  between the module categories, closed under whiskering by all of them. A grading exists only
+  on the full sub-2-category of `E`/`F` words (their 2-morphisms are graded bimodule
+  homomorphisms of the induction/restriction bimodules), plus `End(𝟙_{W μ})`, the supercentre
+  of the cyclotomic algebra. The transport above needs only `CoeffGrading` on `End(𝟙)`, so it
+  is unaffected; (G6)–(G8) and the closure degrees need the restricted interface (degrees on
+  the 2-morphisms between `E`/`F` words). This is an interface restriction, not new theory.
+* `globalPiRouquierFamily` is the undeformed cyclotomic factor. It is integer-homogeneous only
+  when every cyclotomic polynomial is a monomial, and `BoundedAbove` there needs cyclotomic
+  finite-dimensionality (not formalized). The written proof uses the full ELV deformed factor,
+  not yet constructed as a `RouquierFamily`; its untruncated form is not bounded above, so the
+  finite homogeneous truncation is needed (`SwappedHomInversion.md` §1).
+* Missing: (a) the deformed factor as a Rouquier family; (b) its finite homogeneous truncation
+  with a grading of the bimodules of `E`/`F` words and of the supercentre, `BoundedAbove` from
+  finite-dimensionality of the truncated algebras; (c) the restricted `RouquierGrading`
+  interface (Hom categories of words only) and the closure/boundary degree lemmas re-proved on
+  it (the proofs of `RouquierGrading.lean` go through unchanged on words). Estimate: 10–20 PRs
+  after (a), plus 1–2 for (c).
 
 ## Global factor relations: algebra parameters and reservoir
 
@@ -1324,6 +2102,34 @@ Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
 (1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
 the mixed interchanges to this form (block `PRP` first).
 
+Two-probe mixed-colour triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePair.lean`):
+`RouquierData.cross_mixedInterchange_pair` moves a factor crossing through the
+prescribed pair of mixed interchanges at arbitrary content and all colours,
+including repeated colours. The source and target intermediate objects and
+shifts may differ. `homMixedInterchange_pair_cross` retains the two outer
+Koszul signs; `homContentShift_pair_cross_sign` cancels their product for
+crossing parity `pᵢ pⱼ`. This proves the unweighted two-probe triangle of
+`MixedColourRemainingBraid.md` §2, without inverting a factor crossing or Q.
+It does not yet evaluate the sector path sums, transport the Q weights, or
+supply the mixed-colour fields of `CrossBraid`. The one-probe/two-reservoir
+triangle is supplied below; the `iji` correction assembly remains open.
+
+One-probe/two-reservoir triangle (checked,
+`SwappedAssembly/BraidMixed/InterchangePostPair.lean`):
+`resCore_mixedInterchange_pair` intertwines the prescribed normalized reservoir
+factor crossing with two mixed interchanges at arbitrary content and unequal
+intermediate weights. `homMixedInterchange_postPair_shifts` retains the
+coefficient `(-1)^((κ₂ + κ₂′)κ₁′)`. `postPairIso_cross_remove` identifies
+the beta/xi normalized crossing with homogeneous-removal conjugation, retaining
+`(-1)^((κ₁ + κ₂)|χ|)` before specializing to crossing parity. Both signs
+are derived, not naturality assumptions. The full factor crossing is used
+through `resCore`, with no inverse of that crossing or of Q.
+
+Open: transport the endpoint casts into the three-letter sector path sums,
+transport their Q weights, and assemble the distinct and repeated-outer-colour
+`CrossBraid` cases. The existing `BraidSame` blocks are unchanged.
+
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
 acts by zero) and `windowZeroRelations`: `WindowZeroRelations` for
@@ -1855,10 +2661,21 @@ Arbitrary colours, commutative ground rings and cutoffs are retained.
 
 The importing consumer tests positive odd/even and zero cutoffs, the empty old
 word, signed balance and the top relation. It defines the moving-polynomial
-class separately; it does not prove that class nonzero. A bundled signed tensor
-equivalence, the right PBW comparison for this coefficient extension, and
-moving-polynomial nonvanishing remain open. Full transported old-factor killing,
-all-prefix QP induction/cancellation and projective resolution are next obligations;
+class separately; it does not prove that class nonzero.
+`ELVOld.balancedEquiv` in `ELVOldBalancedTensor.lean` now identifies
+the signed coend of coefficient-category Homs and `Old` with `Target`.
+Its explicit inverse inserts the old identity class; both composites and
+the signed representative formula are proved. The construction uses module
+tensors and a direct sum over old words, without finite-colour or flatness
+hypotheses. The right PBW comparison for this coefficient extension and
+moving-polynomial nonvanishing remain open.
+`ELVOld.oldPolynomial_move` transports the second-position old polynomial
+along the existing `moveHom` chain, with its full coefficient-and-dot sign.
+`projection_move_oldPolynomial` kills the resulting first-position output
+polynomial after this chain, including arbitrary ambient continuation.
+Repeated odd colours and odd/even/zero cutoffs are exercised. The prefix-crossing
+identity needed to turn this into (K), all-prefix QP induction/cancellation
+and projective resolution are next obligations;
 no identification with ordinary `contentTargetTensor` is asserted.
 
 ## Signed ELV coefficient quotient category
@@ -2736,6 +3553,33 @@ proved above for ordinary polynomial coefficients; signed polynomial
 transport and induction needed for global QP remain. No global QP,
 projective resolution or full nondegeneracy conclusion follows here.
 
+
+## ELV repeated-even QP recursion
+
+`ELVQPRepeated.lean` proves `ELVOld.qp_repeated_even` in the old-only
+quotient, for every prefix, right spectator word, cutoff and full-coefficient
+continuation. In diagram order, put A = (V_n ⊗ 1)(T_n ⊗ 1),
+B = (V_n ⊗ 1)T_(n+1), and E = x_(n+2) − x_1. Relation (K) becomes
+[E(A + EB) f_i h] = 0. The proved moving-dot cancellation gives
+[EB f_i h] = −[A f_i h], while the affine repeated-even recursion identifies
+EB with V_(n+1)T_(n+1). No vanishing or cancellation hypothesis is supplied.
+The relation and h retain the entire ELV algebra, including exterior parameters
+at other colours; the proof never moves that polynomial across a bare crossing.
+
+**Convention boundary:** the existing `EvenTwo` convention gives a factor −1
+for each repeated-even letter, as already recorded in `PrefixQPEquation.lean`.
+The no-factor formula in `DeformedGlobalQP.md` §3 and
+`DeformedProjectiveResolution.md` (3) uses a different crossing normalization.
+The new theorem keeps the existing convention rather than silently identifying
+the two formulas. A normalized comparison remains necessary for literal (3).
+
+Remaining induction assembly: adapt the repeated-odd calculation using square
+cancellation and preservation of the old-only relation submodule under the odd
+source difference; the two prefix signs must then cancel. Lift the distinct-colour
+Q transport, prove right-context descent of the induction hypothesis, and assemble
+the reverse-list induction with its identity empty-word base. No last-minus-first
+cancellation is to be used in that base. Balanced P descent, ideal-sum equality and
+projective-resolution exactness are still separate obligations.
 
 ## Supernatural postcomposition augmented inverses
 

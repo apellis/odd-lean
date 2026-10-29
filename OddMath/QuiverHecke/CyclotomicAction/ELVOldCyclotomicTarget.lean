@@ -20,9 +20,10 @@ and satisfies signed balance using total parity, including exterior coefficients
 `insert_elvPolynomial` identifies the old polynomial with F₂, and
 `projection_elvPolynomial` proves its vanishing. No moving F₁ relation is imposed.
 
-A bundled tensor equivalence, right PBW coordinates for this coefficient
-extension, nonvanishing of the moving polynomial, and all-prefix QP/cancellation
-remain unproved. No flatness or cyclotomic freeness is assumed.
+`ELVOldBalancedTensor` supplies the bundled signed tensor equivalence.
+Right PBW coordinates for this coefficient extension, nonvanishing of the
+moving polynomial, and all-prefix QP/cancellation remain unproved.
+No flatness or cyclotomic freeness is assumed.
 -/
 
 noncomputable section

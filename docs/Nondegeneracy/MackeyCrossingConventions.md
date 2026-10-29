@@ -66,12 +66,13 @@ even moving crossings have zero parity, whereas odd dot decorations occur
 in pairs, squaring each incident or distant slide sign.
 
 Old/moving separation is checked by `endpointDotMonomial_separate` and
-`leadingSourceDots_oldSourceSign`. Old factors are already PBW-sorted;
-`leadingSource_oldPBWCoordinate` makes every nonidentity old-permutation
-coefficient zero. `prependWordCoefficients_moveHom_ordered` evaluates the
+`sourceOldCoefficient_leadingSourceDots`. Old factors are already PBW-sorted;
+`sourceOldCoefficient_leadingSourceDots_basis` identifies their basis vectors,
+and `leadingMoveOrderedCoefficients_nonidentity` makes every nonidentity
+old-permutation coefficient zero. `prependWordCoefficients_moveHom_ordered` evaluates the
 longest coordinates as an explicit finite diagonal sum.
 
-`leadingMoveContentCoefficient_homMatrixTwist` proves the old twist fixes
+`leadingMoveContentCoefficient_twist` proves the old twist fixes
 these coefficients. `leadingMoveContentCoefficient_degreeSign` proves the
 moving-degree normalization fixes them: odd moving dots occur in pairs.
 This does not identify equal-colour count with moving-dot degree.
