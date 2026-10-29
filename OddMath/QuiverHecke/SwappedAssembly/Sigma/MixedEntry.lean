@@ -49,22 +49,24 @@ theorem isIso_postCup_mixedCross_postCap (T : X → B) (W : RouquierFamily (k :=
     {S O1 O5 O6 O7 O13 O14 O15 O16 O22 O23 Tg : T (-μ₀) ⟶ W.obj m₀}
     {O4 O8 O12 : T (-μ₀) ⟶ W.obj n} {O17 O21 : T (-μ₁) ⟶ W.obj n}
     {O18 : T (-μ₁) ⟶ W.obj m₁}
-    (p1 : S = O1) (p2 : O1 = A)
+    (p1 : S = O1) (f2 : O1 ⟶ A) (hf2 : ∃ p : O1 = A, f2 = eqToHom p)
     (p4 : (homContentPostE T W i β₀ μ₀ h₀).obj A = O4)
-    (p5 : (homContentPostF T W i β₀ μ₀ h₀).obj O4 = O5) (p6 : O5 = O6) (p7 : O6 = O7)
+    (f5 : (homContentPostF T W i β₀ μ₀ h₀).obj O4 ⟶ O5)
+    (hf5 : ∃ p : (homContentPostF T W i β₀ μ₀ h₀).obj O4 = O5, f5 = eqToHom p) (p6 : O5 = O6) (p7 : O6 = O7)
     (p8 : O7 = (homContentPostF T W i β₀ μ₀ h₀).obj O8)
     (p9 : O8 = (homParityShift (k := k) (homContentShift D i β₀)).obj ((E ≫ B') ≫ W.E i h₁))
     (p12 : E ≫ (homContentPostE T W i β₁ μ₁ h₁).obj B' = O12)
     (p13 : (homContentPostF T W i β₀ μ₀ h₀).obj O12 = O13) (p14 : O13 = O14) (p15 : O14 = O15)
     (p16 : O15 = O16) (p17 : O16 = (homContentPostF T W i β₀ μ₀ h₀).obj (E ≫ O17))
-    (p18 : O17 = (homContentPostE T W i β₁ μ₁ h₁).obj O18)
-    (p19 : O18 = (homContentPostF T W i β₁ μ₁ h₁).obj C) (p21 : C = O21)
+    (f18 : O17 ⟶ (homContentPostE T W i β₁ μ₁ h₁).obj O18)
+    (hf18 : ∃ p : O17 = (homContentPostE T W i β₁ μ₁ h₁).obj O18, f18 = eqToHom p)
+    (p19 : O18 = (homContentPostF T W i β₁ μ₁ h₁).obj C) (f21 : C ⟶ O21) (hf21 : ∃ p : C = O21, f21 = eqToHom p)
     (p22 : (homContentPostF T W i β₀ μ₀ h₀).obj (E ≫ O21) = O22) (p23 : O22 = O23)
     (p24 : O23 = Tg) :
-    IsIso (eqToHom p1 ≫ eqToHom p2 ≫
+    IsIso (eqToHom p1 ≫ f2 ≫
       (homContentPostAdjunction T W i β₀ μ₀ h₀).unit.app A ≫
       (homContentPostF T W i β₀ μ₀ h₀).map (eqToHom p4) ≫
-      eqToHom p5 ≫ eqToHom p6 ≫ eqToHom p7 ≫ eqToHom p8 ≫
+      f5 ≫ eqToHom p6 ≫ eqToHom p7 ≫ eqToHom p8 ≫
       (homContentPostF T W i β₀ μ₀ h₀).map (eqToHom p9) ≫
       (homContentPostF T W i β₀ μ₀ h₀).map
         (homMixedInterchange (k := k) E (W.E i h₁) (homContentShift D i β₁)
@@ -72,18 +74,22 @@ theorem isIso_postCup_mixedCross_postCap (T : X → B) (W : RouquierFamily (k :=
       (homContentPostF T W i β₀ μ₀ h₀).map (Qf B') ≫
       (homContentPostF T W i β₀ μ₀ h₀).map (eqToHom p12) ≫
       eqToHom p13 ≫ eqToHom p14 ≫ eqToHom p15 ≫ eqToHom p16 ≫ eqToHom p17 ≫
-      (homContentPostF T W i β₀ μ₀ h₀).map (E ◁ eqToHom p18) ≫
+      (homContentPostF T W i β₀ μ₀ h₀).map (E ◁ f18) ≫
       (homContentPostF T W i β₀ μ₀ h₀).map
         (E ◁ (homContentPostE T W i β₁ μ₁ h₁).map (eqToHom p19)) ≫
       (homContentPostF T W i β₀ μ₀ h₀).map
         (E ◁ (homContentPostAdjunction T W i β₁ μ₁ h₁).counit.app C) ≫
-      (homContentPostF T W i β₀ μ₀ h₀).map (E ◁ eqToHom p21) ≫
+      (homContentPostF T W i β₀ μ₀ h₀).map (E ◁ f21) ≫
       eqToHom p22 ≫ eqToHom p23 ≫ eqToHom p24) := by
   have hwl : ∀ {f g : T (-μ₁) ⟶ W.obj n} (p : f = g),
       E ◁ eqToHom p = eqToHom (congrArg (E ≫ ·) p) := by
     intro f g p
     subst p
     simp only [eqToHom_refl, TwoSupercategory.whiskerLeft_id (R := k)]
+  obtain ⟨p2, rfl⟩ := hf2
+  obtain ⟨p5, rfl⟩ := hf5
+  obtain ⟨p18, rfl⟩ := hf18
+  obtain ⟨p21, rfl⟩ := hf21
   simp only [eqToHom_map, hwl, eqToHom_trans, eqToHom_trans_assoc]
   subst hm hB hA
   obtain rfl : h₀ = h₁ := rfl
@@ -106,9 +112,42 @@ theorem isIso_comp_layers {C : Type*} [Category C] {a b c d e f : C} {L₁ A₁ 
   subst h₁ h₂ h₃
   exact h
 
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
+/-- The functor of an upward strand on the left whiskers by its generator. -/
+theorem homContentPreE_map (T : RouquierFamily (k := k) (B := B) D) (W : X → B) (i : I)
+    (muM : X) {muP nuP : X} (h : -nuP + D.α i = -muP)
+    {f g : homWeightSector T.obj W muP muM} (η : f ⟶ g) :
+    (homContentPreE T W i muM h).map η = T.E i h ◁ η := rfl
+
+open Lean Elab Tactic Meta in
+/-- Close a goal `∃ p, f = eqToHom p`, where `f` is `eqToHom h` or its image under functors
+that act as the identity on it, with the witness `h`. Unification alone leaves
+the witness unassigned, since proofs of the same proposition are definitionally equal. -/
+elab "eqToHom_witness" : tactic => withMainContext do
+  let g ← getMainGoal
+  let t ← instantiateMVars (← whnfR (← g.getType))
+  let some (_, body) := t.app2? ``Exists | throwError "eqToHom_witness: not an existential"
+  let .lam _ _ e _ := body | throwError "eqToHom_witness: unexpected predicate"
+  let some (_, lhs, _) := e.eq? | throwError "eqToHom_witness: not an equation"
+  let lhs ← instantiateMVars lhs
+  -- A transport may sit under functors acting as the identity on it.
+  let mut inner := lhs
+  while inner.isAppOf ``Prefunctor.map || inner.isAppOf ``CategoryTheory.Functor.map do
+    inner := inner.appArg!
+  unless inner.isAppOf ``CategoryTheory.eqToHom do
+    throwError "eqToHom_witness: not a transport: {lhs}"
+  let w := inner.appArg!
+  let prf ← mkEqRefl lhs
+  g.assign (← mkAppOptM ``Exists.intro #[none, some body, some w, some prf])
+  replaceMainGoal []
+
 namespace ProbeReservoir
 
 variable (P : ProbeReservoir k B D Sc)
+
+/-- The functor of an empty path acts as the identity on morphisms. -/
+theorem pathFunctor_nil_map (s : Sector I) {Y Y' : P.H s} (f : Y ⟶ Y') :
+    (P.pathFunctor (SPath.nil (X := X) s)).map f = f := rfl
 
 /-- An entry of a layer at paths equal to given ones. -/
 theorem compLayer_congr (gens : P.Generators) (L : Layer (SKM.sig D)) {s t : Sector I}
@@ -135,6 +174,7 @@ theorem twoTwo_two (c₁ c₂ d₁ d₂ : Col I X) (f : P.TwoEntry c₁ c₂ d�
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
   rfl
 
+attribute [local irreducible] Finsupp.zipWith Finsupp.single Finsupp.onFinset in
 example (c : P.CrossCoeff) {i j : I} (hij : i ≠ j) (ν : X) (t : Sector I)
     (q : SPath (wd D ν [dn i, up j]) t
       (nextSector (dn i) false (nextSector (up j) true t)))
@@ -210,7 +250,8 @@ example (c : P.CrossCoeff) {i j : I} (hij : i ≠ j) (ν : X) (t : Sector I)
     rw [P.zeroTwo_two (hZ := eqRec_heq e₀.symm _)]
     simp only [cupEntry]
     unfold postCup
-    simp only [Functor.map_comp, Category.assoc]
+    simp only [pathFunctor_cons, pathFunctor_nil_map, Functor.comp_map, Functor.id_map, dn, up, step,
+      homContentPreE_map, Functor.map_comp, Category.assoc]
   conv at h₂ =>
     rhs
     dsimp only [SKM.lay]
@@ -218,7 +259,8 @@ example (c : P.CrossCoeff) {i j : I} (hij : i ≠ j) (ν : X) (t : Sector I)
     rw [P.twoTwo_two (hZ := eqRec_heq e₂.symm _)]
     simp only [crossNeEntry]
     unfold mixedJ
-    simp only [Functor.map_comp, Category.assoc]
+    simp only [pu₂, pathFunctor_cons, pathFunctor_nil_map, Functor.comp_map, Functor.id_map, dn, up,
+      step, homContentPreE_map, Functor.map_comp, Category.assoc]
   conv at h₃ =>
     rhs
     dsimp only [SKM.lay]
@@ -226,7 +268,8 @@ example (c : P.CrossCoeff) {i j : I} (hij : i ≠ j) (ν : X) (t : Sector I)
     rw [P.twoZero_two (hZ := eqRec_heq ecap.symm _)]
     simp only [capEntry]
     unfold postCap
-    simp only [Functor.map_comp, Category.assoc]
+    simp only [pu₃, pathFunctor_cons, pathFunctor_nil_map, Functor.comp_map, Functor.id_map, dn, up,
+      step, homContentPreE_map, Functor.map_comp, Category.assoc]
   have h₂' := P.compLayer_congr (P.upwardGens c)
     (SKM.lay D ν [dn i] (SKM.Shape.cross i j) [dn i]) hm₁ (rfl : m₂ = m₂) Z
   rw [h₂] at h₂'
@@ -237,7 +280,8 @@ example (c : P.CrossCoeff) {i j : I} (hij : i ≠ j) (ν : X) (t : Sector I)
   simp only [Category.assoc]
   refine isIso_postCup_mixedCross_postCap P.T.obj P.W i _ _ _ ?hm _ _ _
     (fun Y => P.mixedQ j i t' hR' Y) ?hiso _ ?hA _ ?hB
-    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+    _ _ ?hf2 _ _ ?hf5 _ _ _ _ _ _ _ _ _ _ _ ?hf18 _ _ ?hf21 _ _ _
+  case hf2 | hf5 | hf18 | hf21 => eqToHom_witness
   all_goals set_option pp.proofs false in trace_state
   all_goals sorry
 
