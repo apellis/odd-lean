@@ -148,8 +148,24 @@ and audits every owned module declaration, including private/generated
 declarations. This is an occupied-sector application with arbitrary supplied
 representation data, not an independent nonzero representation.
 
-Remaining: the reverse Q-weighted direction with unequal probe colours,
-other distinct-colour sectors, and repeated-outer-colour corrections.
+The reverse direction is proved by `reverseDistinctProbe_braid` in
+`BraidMixed/ReverseDistinctProbeSector.lean`: `RᵣPᵢPⱼ → PⱼPᵢRᵣ`.
+`DistinctProbeDots` identifies both mixed weights with the two different Q
+polynomials on the same reservoir spectator. `DistinctQTransport` derives
+Q-factor commutation from dot supercommutation and the parameter parity
+support. `preCrossNe_qExpr_pair` derives the transport from the actual unequal
+probe slides and supernaturalness of `preCrossNe`, with no supplied transport
+or centrality hypothesis. `distinctProbeSectorWeight_cross` carries that
+identity to the typed sector entries. `reverseDistinctProbe_move_eq` retains
+both prescribed Q factors. The final proof reuses `distinctProbe_braid` and
+cancels only `distinctProbeMoveIso.hom`, never Q or the probe crossing.
+
+`NonVacuity.MixedReverseDistinctProbeSector` checks colours `0,1,2 : Fin 3`
+with reservoir content `single 2 1` and audits all declarations of the five new
+modules, including private/generated declarations. The supplied representation
+data and coefficients are arbitrary; no independent nonzero model is claimed.
+
+Remaining: other distinct-colour sectors and repeated-outer-colour corrections.
 This theorem contributes one sector to `CrossBraid.braid`; it does not
 construct a complete `CrossBraid`.
 
