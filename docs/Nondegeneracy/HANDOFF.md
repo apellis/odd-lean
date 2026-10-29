@@ -5795,3 +5795,41 @@ an odd element).
 The half-turn ideal identification of §5 is complete for homogeneous `T` (the coefficient-power
 monomials of §6 are homogeneous). Inhomogeneous `T` is not covered: the sandwich sign depends on
 the parity of the middle coefficient; replace such `T` by its set of homogeneous components.
+
+### Append Mackey transport on the actual content corner
+
+`CyclotomicAction/AppendContentMackeyMap.lean` instantiates the coefficient and
+left-idempotent restrictions in `AppendMackeySource.md` §4, using KKO I
+(8.3)–(8.5). Let `B = CyclotomicContentCorner D Sc a n β` and
+`ε = natDegree(aᵢ) p(i) + p(i) p(β)`. The source is the fixed part of
+`Ind B (prependTwist D Sc i n ε)` under left multiplication by the append
+idempotent. This is an actual subgroup, not an assumed Mackey decomposition.
+
+- `contentCorner_cyclotomic_smul` proves the old cyclotomic ideal annihilates `B`.
+- `contentCorner_word_smul_of_ne` and `contentCorner_appendQ_smul` prove the
+  content support and constant-parity conditions needed by `appendMackeyMap`.
+- `appendContentP` restricts the prescribed multiplier `h ⊗ b ↦ h W ⊗ b` to
+  that source and the existing `appendContentMackeyTarget` carrier.
+- `appendContentP_rightMul` proves the source transport field `P_r` with the
+  unchanged right coefficient action.
+- `appendContentRho` restricts the first-dot operator and multiplies it by
+  `(-1)^(ε - natDegree(aᵢ)p(i))`. `appendSourceSign_contentParity` identifies
+  this exponent with `p(i)p(β)`, including cutoff zero.
+- `appendContentP_rho` proves the exact field `P_ρ : Pρ = RtP`, with the target
+  dot and coefficient involution already present in `appendContentMackeyTarget`.
+
+The coefficient-module universe of `AppendMackeyMap` and `AppendMackeyRho` is
+independent of the weight-lattice universe, so the actual content corner can be
+substituted without identifying unrelated universes. Their formulas are unchanged.
+The importing consumer uses the existing asymmetric two-colour symmetrizable datum
+over `ℚ`, polynomials `X^m` for every `m`, and arbitrary content and positive
+coefficient height. The transport equations and module declaration audit use only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+**Remaining source boundary work:** construct the short-coset extraction from the
+balanced prepend coordinates, identify its kernel and compatible source lifts, then
+supply the span/independence fields of `MackeyCosets`. No `MackeyCosets`,
+`toMackeyBoundary`, reverse norm, or `GlobalLocalInversion` instance is asserted here.
+The coefficient height is still positive; the zero cutoff is retained, but rank
+zero is not discharged. Integer grading and the full exterior ELV coefficient
+extension also remain separate obligations.
