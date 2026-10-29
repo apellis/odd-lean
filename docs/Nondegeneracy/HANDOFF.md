@@ -4429,7 +4429,7 @@ Glue not yet available (open):
     (`GlobalFactorNondegeneracy.lean`): the probe and reservoir are
     `globalPiRouquierFamily` at `(aP, ΛP)`, `(aR, ΛR)`, the probe's left adjunctions are
     `RouquierFamily.leftAdjoints`. The `ProbeReservoir` obligation becomes: local inversion
-    `GlobalLocalInversion` under `CyclotomicDegreeCondition D a Λ` (each `aᵢ` monic of degree
+    `GlobalLocalInversion` under `CyclotomicDegreeMatch D a Λ` (each `aᵢ` monic of degree
     `⟨hᵢ, Λ⟩`; local inversion is false without it), and `SKM.RouquierMulticolour` of the two
     families `globalRouquierFamily` (open: quadZero, quadNe, slides, braid, braidEq, invNe for
     distinct colours of the cyclotomic factors). The observations must have

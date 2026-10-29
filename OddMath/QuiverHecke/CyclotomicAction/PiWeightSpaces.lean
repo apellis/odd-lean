@@ -114,11 +114,11 @@ variable {I k : Type u} {X : Type u} [AddCommGroup X] (D : SKM.Datum I X)
 
 /-- **The cyclotomic factor family in `Π-𝔖ℭ𝔞𝔱`**, relative to local inversion: the family
 `globalRouquierFamily` with the Π-structures `globalWeightSpacePi` on its weight spaces. -/
-def globalPiRouquierFamily
+def globalPiRouquierFamily (hdeg : CyclotomicDegreeMatch D a Λ)
     (L : ∀ (i : I) {x₀ x₁ x₂ : X} (h₁ : x₀ + D.α i = x₁) (h₂ : x₁ + D.α i = x₂),
       GlobalLocalInversion D Sc a ha Λ i h₁ h₂) :
     SKM.RouquierFamily (k := k) (B := PiSCat.{u, u, u + 1} k) D :=
-  (globalRouquierFamily D Sc a ha Λ L).toPiSCat fun x => globalWeightSpacePi D Sc a ha Λ x
+  (globalRouquierFamily D Sc a ha Λ hdeg L).toPiSCat fun x => globalWeightSpacePi D Sc a ha Λ x
 
 end Family
 
