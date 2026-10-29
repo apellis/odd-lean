@@ -1031,6 +1031,11 @@ endpoints take the same number of probe summands (the probe content of the endpo
 `{PRR, RPR, RRP}`, `RRR`, each already checked. `braid_same c L ν i hc h p q Z` is the
 field `CrossBraid.braid` at `i = j = k'` for `swappedGens c L`, under `c.IsInverse` and
 `CrossCoeffInputs`. Next: the pattern `iji`.
+Pattern `iji`, algebraic core (checked, `SwappedAssembly/BraidEq/Algebra.lean`,
+`comp_qExpr_sub`): if `ψ x₁ - (-1)^{pᵢ} x₂ ψ = 1`, `ψ y = ε y ψ` and `y x₂ = ε x₂ y`
+(`ε = (-1)^{pᵢpⱼ}`), then `ψ Q_ij(x₁, y) - Q_ij(x₂, y) ψ` equals the correction term of
+(1.9) at `iji` in the dots `εx₂`, `εy`, `εx₁`. Next: on each block of `iji`, conjugate by
+the mixed interchanges to this form (block `PRP` first).
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
