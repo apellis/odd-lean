@@ -1285,6 +1285,7 @@ import OddMath.SKM.OddDotTranslation
 import OddMath.SKM.RightCapAttachment
 import OddMath.SKM.PositiveDotTransport
 import OddMath.SKM.BubbleCoefficientBasis
+import OddMath.SKM.BubbleCoefficientGrading
 import OddMath.Diagrams.OddNilHecke.CyclotomicNorm
 import OddMath.QuiverHecke.CoefficientExtension
 import OddMath.SKM.UpwardWordTransport
@@ -1307,6 +1308,7 @@ import OddMath.SKM.WeakMateCoverage
 import OddMath.SKM.WeakMateLayers
 import OddMath.SKM.BubbleELVCoefficients
 import OddMath.SKM.BubbleELVSpecialization
+import OddMath.SKM.BubbleELVGrading
 import OddMath.QuiverHecke.ELVCyclotomicSeparation
 import OddMath.SKM.MatchingChoiceCast
 import OddMath.SKM.TopMatchingChoiceList

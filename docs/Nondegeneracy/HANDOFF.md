@@ -188,6 +188,31 @@ examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at content index `n=0` (old height one),
 and exact right action.
 
+## Integer-graded ELV coefficient/vacuum algebra
+
+Checked (`BubbleCoefficientGrading.lean`, `BubbleELVGrading.lean`):
+`coefficientDegree` grades the actual polynomial/exterior coefficient basis by
+`deg δᵢ = 2dᵢ`, `deg eᵢ,r = 2dᵢ(r+1)` for even colours and `4dᵢ(r+1)`
+for odd colours. Both the exact ELV ideal (including the even-cutoff top
+relation) and the additional `coefficientIdeal N` are integer homogeneous.
+`elvCoefficientGSuperAlg` uses the existing ELV quotient and its existing
+exterior parity; integer degree modulo two is not that parity.
+`truncatedELVCoefficientGSuperAlg` is the further quotient by the sum of
+those ideals; `elvCoefficientTruncation` gives the actual factor map.
+
+For finite colours, `exists_coefficientDegree_bound` constructs a maximum
+of the finitely many `2dᵢ` and proves degree ≤ maximum × coefficient weight.
+`truncatedELVCoefficientDegree_bounded` then proves upper support vanishing.
+The untruncated ELV coefficient algebra is not asserted upper bounded.
+`truncatedELVCoefficient_quotient_injective` preserves every weight-≤d
+coefficient when all cutoffs are ≥d and d<N. The rational odd rank-one
+consumer retains a nonzero odd δ in integer degree 2 after cutoff 2 and
+weight truncation 3, and exercises both genuine `GSuperAlg` bundles.
+
+Remaining: positive-content cyclotomic finiteness/support, actual factor
+action, comparison to content targets, and closure/error degree bounds.
+No full action, `CentralInvertible`, or nondegeneracy is claimed.
+
 ## Full content subcategories and product coefficient inversion
 
 Checked (`CentralInverse/ProductCoefficients.lean`, depending on PR #580):
@@ -207,8 +232,8 @@ bounds `b + 1`, proves that those bounds have no uniform upper bound, and proves
 the realized identity coefficient nonzero. It does not claim nonzero odd/positive
 coefficients, or a family whose *minimal* support bounds are unbounded.
 
-Remaining: construct the homogeneous full ELV component algebras and their upper
-support bounds, identify their actual action with the content-support targets, and
+Remaining: construct the positive-content ELV component algebras and their upper
+support bounds beyond the coefficient/vacuum algebra above, identify their actual action with the content-support targets, and
 prove that the actual closure/error matrices lie in the positive coefficient ideals.
 No actual closure-degree theorem or `CentralInvertible` is supplied here.
 
