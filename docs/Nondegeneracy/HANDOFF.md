@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Integer grading of the reservoir: (N) and (J) for `CentralInvertible`
+
+Assessment: `ReservoirGradingRoute.md`. The two grading inputs of `SwappedHomInversion.md` §4,
+(N) nilpotence of the contracted closures `b_(s,r)` and (J) positivity of the `r>j` boundary
+contractions, need an integer grading only on the Hom categories between reservoir objects.
+
+Checked (`OddMath/SKM/RouquierGrading.lean`): the interface `RouquierGrading W sy` (graded Hom
+categories, generator degrees of BE2 §1); (G8) as a theorem (`SuperSumInvTo.f'_mem_degree`,
+`g'_mem_degree` and the `SuperSumInvFrom` versions); `RouquierGrading.mate_mem` (degree `0`),
+`dotCup_mem`, `dotCap_mem` ((G6)), `invPos_f'_mem`, `invPos_g'_mem`, `invNeg_f'_mem`,
+`invNeg_g'_mem`; `closure_mem` (`b_(s,r)` has degree `2dᵢ(r+s+1)`); `boundaryPos_mem`,
+`boundaryNeg_mem` (degrees `2dᵢ(n-m)`, `2dᵢ(m-n)`); `BoundedAbove.exists_foldr_eq_zero`
+(products of more than the bound of positive-degree elements of `End(𝟙_μ)` vanish).
+
+Open: (1) transport of (N) and (J) to the coefficient ideal on the Hom-sector windows of a
+`ProbeReservoir` (post-whiskering by reservoir 1-morphisms); (2) a `RouquierGrading` with
+`BoundedAbove` for the reservoir the final assembly uses (the finite homogeneous truncation of
+the deformed factor). The undeformed cyclotomic reservoir is integer-homogeneous only when every
+cyclotomic polynomial is a monomial, and its bound needs cyclotomic finiteness, not formalized.
+
 ## Global factor relations: algebra parameters and reservoir
 
 Checked: `globalProbeReservoir` and `nondegeneracy_of_global_factor_observations`
