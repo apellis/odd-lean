@@ -15,6 +15,25 @@ cases. The parameter conditions are (1.2)–(1.4). In the library compare
 square declarations. Reversing displayed strand order to execution order
 interchanges the two braid paths, which leaves these zero equations intact.
 
+## Checked three-distinct-colour forward sector
+
+`BraidMixed/DistinctProbeSector.lean` proves `distinctProbe_braid`, the entry
+`PᵢPⱼRᵣ → RᵣPⱼPᵢ` for pairwise distinct colours and a valid reservoir step.
+It reduces both finite sums by endpoint-wise uniqueness of the sector paths.
+`distinctProbe_left` and `distinctProbe_right` identify the literal probe
+edges with `preCrossNe`, including the equality transports between the two
+probe orders; `distinctProbe_move_heq` identifies the other two-edge paths
+with the two prescribed mixed interchanges. A typed transport lemma aligns
+the raw triangle before applying `homMixedInterchange_pair_cross`; the two
+content-shift signs multiply to one. No factor braid, transported-dot law,
+Q invertibility or cancellation of a probe crossing is assumed.
+
+The importing consumer uses `Fin 3`, colours `0,1,2`, and reservoir content
+`single 2 1`. This is a checked occupied-sector application with arbitrary
+representation data, not a nonzero representation construction. The reverse
+Q-weighted direction for distinct probes and the other sectors remain open;
+the complete component calculation below retains its proposed status.
+
 ## 1. Typed entries and polynomial conventions
 
 Words are in execution order. Products of maps below act rightmost first;
