@@ -906,6 +906,12 @@ of the two crossings being exchanged relative to `{PPR, PRP, RPP}`; the relation
 `sectorBraid` hold with `(x₁, x₂, z) = (-z, -y, -x)` at an even colour and `(z, y, x)`
 at an odd colour (`prr_sectorRelations`). `blockPost_braid`: (1.9) on every pair of
 paths of the block. No discrepancy with the written proof. Next: `PPP`, `RRR`.
+Braid on the path `PPP` of `iii` (checked,
+`SwappedAssembly/BraidSame/PureBlock.lean`). `PPP` is the only path to its endpoint
+(`eq_pppPath`); both crossings are probe crossings (`pppLeft_entry`, `pppRight_entry`),
+`-q` times whiskered factor crossings of `T`. `whisker_braid` transports a braid relation
+of `x ⊗ 1`, `1 ⊗ y` on `E₁E₂E₃` through right whiskering by `Z` (pentagon), so
+`preCrossSame_braid` is `T.braid`, and `ppp_braid` is (1.9) on `PPP`. Next: `RRR`.
 
 **Window-zero relations (checked).** `SwappedAssembly/WindowZero.lean`:
 `layerMap_eq_zero` (a layer whose generator image has only zero components
