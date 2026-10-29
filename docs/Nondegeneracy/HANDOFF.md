@@ -966,6 +966,24 @@ nonzero cup entry duplicates one side, a crossing swaps two sides (`SPath.sides_
 distinct colours), a cap removes a matching pair (`sigma_sides`). Remaining for `hσ`:
 invertibility of this composite in each of the four side patterns `[a, b]`.
 
+**Mixed mate with a dotted crossing, post side (checked).**
+`SKM/RouquierHomDistinctMixedPostDots.lean`, the mirror of
+`homDistinctMixedPreMateDot` for the pattern where the crossing is `J⁻¹` followed by the
+action `Φ` of the parameter polynomial on `E ≫ Π^κ(Y ≫ E')`, `Y = Π^κ H ≫ F'`:
+`homDistinctMixedMateDot E A κ τ H Φ` (equal to `homDistinctMixedMate` at `Φ = 𝟙`,
+`homDistinctMixedMateDot_id`; linear in `Φ`, `homDistinctMixedMateDotLinear`).
+`homShiftPostAdjunction_counit_transpose`: an even post dot `Y ◁ y` before the shifted
+counit is the transposed dot `(Π^κ H ◁ yᵀ) ▷ E'`, `yᵀ = rightTranspose A A y`.
+`homDistinctMixedMateDot_monomial`: for even `x`, `y`, the dotted mate of
+`x ▷ _ ≫ E ◁ Π^κ(Y ◁ y)` is `(x ▷ Y ≫ E ◁ (Π^κ H ◁ yᵀ)) ≫ U`. Algebraic step (14):
+`isUnit_smul_pow_add_of_mem_admissibleMonomials` (`c • aᵈ + N` is a unit for `a` a unit,
+`b` nilpotent, `N` in the span of admissible monomials `aᵖ bᑫ`, `q ≥ 1`, with commuting
+admissible powers). Note: `Cross.lean` attaches `Q` after `J⁻¹`, while
+`SwappedDistinctMixedMates.md` §1 attaches it to `J`; for this orientation the dot to be
+transposed is the one on the postcomposed edge `E'`, along `E' ⊣ F'`. The invertibility
+argument (unit plus nilpotent) is unchanged. Next: assemble `Dot(Q) = G ≫ U` with `G` a
+unit from these lemmas, then link the four side patterns of `sigmaEntry_eq` to the mates.
+
 ## Old-only ELV quotient module
 
 `ELVOldCyclotomicTarget.lean` constructs matrix-Hom components of
