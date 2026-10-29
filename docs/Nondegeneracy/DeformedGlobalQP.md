@@ -110,6 +110,16 @@ package. This establishes (K); the signed repeated-colour induction in
 
 ## 3. Induction, with the surviving signs
 
+**Checked convention comparison.** `ELVOld.qp_repeated_even` in
+`ELVQPRepeated.lean` proves the repeated-even recursion in the full ELV
+old-only quotient, with arbitrary spectators and continuations. In the
+library's `EvenTwo` crossing convention the recursion has factor **−1**,
+not the factor +1 in the proposed calculation below. This agrees with
+`PrefixQPEquation.lean`. Thus the displayed no-factor global formula still
+requires a crossing-normalization comparison; the checked theorem does not
+assert that literal formula. Repeated-odd and distinct-colour full-ELV
+induction assembly remain open.
+
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
 The induction hypothesis is
 

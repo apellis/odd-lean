@@ -2672,6 +2672,33 @@ transport and induction needed for global QP remain. No global QP,
 projective resolution or full nondegeneracy conclusion follows here.
 
 
+## ELV repeated-even QP recursion
+
+`ELVQPRepeated.lean` proves `ELVOld.qp_repeated_even` in the old-only
+quotient, for every prefix, right spectator word, cutoff and full-coefficient
+continuation. In diagram order, put A = (V_n ⊗ 1)(T_n ⊗ 1),
+B = (V_n ⊗ 1)T_(n+1), and E = x_(n+2) − x_1. Relation (K) becomes
+[E(A + EB) f_i h] = 0. The proved moving-dot cancellation gives
+[EB f_i h] = −[A f_i h], while the affine repeated-even recursion identifies
+EB with V_(n+1)T_(n+1). No vanishing or cancellation hypothesis is supplied.
+The relation and h retain the entire ELV algebra, including exterior parameters
+at other colours; the proof never moves that polynomial across a bare crossing.
+
+**Convention boundary:** the existing `EvenTwo` convention gives a factor −1
+for each repeated-even letter, as already recorded in `PrefixQPEquation.lean`.
+The no-factor formula in `DeformedGlobalQP.md` §3 and
+`DeformedProjectiveResolution.md` (3) uses a different crossing normalization.
+The new theorem keeps the existing convention rather than silently identifying
+the two formulas. A normalized comparison remains necessary for literal (3).
+
+Remaining induction assembly: adapt the repeated-odd calculation using square
+cancellation and preservation of the old-only relation submodule under the odd
+source difference; the two prefix signs must then cancel. Lift the distinct-colour
+Q transport, prove right-context descent of the induction hypothesis, and assemble
+the reverse-list induction with its identity empty-word base. No last-minus-first
+cancellation is to be used in that base. Balanced P descent, ideal-sum equality and
+projective-resolution exactness are still separate obligations.
+
 ## Supernatural postcomposition augmented inverses
 
 `RouquierHomPostNaturalInverse.lean` proves signed naturality against arbitrary
