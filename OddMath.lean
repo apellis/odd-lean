@@ -1325,16 +1325,19 @@ import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Generators
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Leftward
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixInverse
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Relations
 import OddMath.QuiverHecke.SwappedAssembly.SlideBlocks
 import OddMath.QuiverHecke.SwappedAssembly.LayerEntries
 import OddMath.QuiverHecke.SwappedAssembly.Interchange
 import OddMath.QuiverHecke.SwappedAssembly.Quad
 import OddMath.QuiverHecke.SwappedAssembly.Inversion
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.Permutation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.Entry
 import OddMath.QuiverHecke.SwappedAssembly.Slides
 import OddMath.QuiverHecke.SwappedAssembly.Braid
 import OddMath.QuiverHecke.SwappedAssembly.CrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.BraidEntries
+import OddMath.QuiverHecke.SwappedAssembly.BraidSame.MixedInterchangePair
 import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.QuadSame
 import OddMath.QuiverHecke.SwappedAssembly.SlideSame
@@ -1370,6 +1373,7 @@ import OddMath.QuiverHecke.SwappedVacuumAdjunctionBubbles
 import OddMath.QuiverHecke.HalfTurn.Mirror
 import OddMath.QuiverHecke.HalfTurn.SuperFlip
 import OddMath.QuiverHecke.HalfTurn.Composite
+import OddMath.QuiverHecke.HalfTurn.CornerIdeal
 import OddMath.SKM.FiniteColourClassDetection
 import OddMath.SKM.FiniteColourBubbles
 import OddMath.QuiverHecke.FiniteColourUpward

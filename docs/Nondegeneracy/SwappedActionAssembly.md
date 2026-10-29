@@ -199,6 +199,19 @@ all relations. The same check fixes J_ij=id (A5) and the distinct-colour
 crossings J^-1 and Q_ij J with Q itself, not a twisted Q^alg. Neither
 swapping entry is changed when the nilpotent side is exchanged.
 
+**Correction to the correction (diagonal sign).** The Lean generators
+(`Generators/Cross.lean`) have diagonal entries a on (R,P) and -J^-1 a J on
+(P,R), with a=(y-x)^-1 for p=0 and a=(x-y)(x²-y²)^-1 for p=1: that is,
+-q times the diagonal of (A6) as written above, which is the diagonal of the
+earlier version. For these entries the formal slide relations of the
+presentation are proved (`crossCoeff_diag`, `swappedGens_slideEq`); with the
+diagonal of (A6) as written the even slide has right side -1. So the
+diagonal of the earlier version is the one compatible with the formal slide,
+and the exact check quoted above must have used another identification of
+the two dots. The mixed jij braid relation for the Lean entries is the open
+hypothesis `CrossBraid` and has not been checked against that computation;
+until it is, the braid claim above is unconfirmed for the Lean sign.
+
 At each fixed reservoir content the relevant dot is nilpotent, uniformly
 on all reservoir modules, because its multiplier belongs to a finite
 integer-graded algebra and has positive degree. This uses the fixed tower
