@@ -19,16 +19,46 @@ Both maps respect the existing right coefficient multiplication, and the kernel
 is stable under it. No positivity assumption on rank or cyclotomic cutoff is used;
 the parity-twisted balancing and cyclotomic content coefficient ring are unchanged.
 
-Scope: these are raw input-first-dot lifts. They are not yet the normalized
-`ρ^m(U)` lifts of `MackeyCosets`. Still required are the corrected-ρ normalization
-and recurrence, identification of this kernel under `P` with the prescribed
-crossing summand (`P_short`), and the boundary `w_k` triangularity needed for the
-final extraction `ℓ`. No instantiated `MackeyCosets`, `toMackeyBoundary`, full exterior
-ELV source, or local/global inversion theorem is claimed here. The previously
-proved content-source `P_r` and `P_ρ` are unchanged.
+Scope: `AppendContentRhoCoordinates.lean` now supplies the degreewise sign
+normalization of these input-first-dot coordinates; see below. Identification of
+this kernel under `P` with the prescribed crossing summand (`P_short`) is still
+required. No instantiated `MackeyCosets`, `toMackeyBoundary`, full exterior ELV
+source, or local/global inversion theorem is claimed here. The previously proved
+content-source `P_r` and `P_ρ` are unchanged.
 
-Verification: the focused module and importing `NonVacuity.AppendContentCosets`
-consumer build with warnings as errors; the consumer audits every declaration
+## Corrected-rho normalization of the ordinary content source
+
+Checked (`AppendContentRhoCoordinates.lean`): writing
+`c = (-1)^(p(i) p(β))`, the normalized monomial lift is the existing full moving
+PBW tensor `U x₁^m ⊗ c^m b`. The normalized extraction multiplies its degree-`m`
+raw coefficient by the same `c^m`. `movingSignNormalize_twice` and
+`appendContentRhoExtract_lift` prove the roundtrip without choosing an inverse.
+`appendContentRhoExtract_eq_zero_iff` identifies its kernel with the existing
+`appendContentShort`, and `appendContentRho_cover` proves covering modulo it.
+
+`appendSourceDot_coordinates_single`, `_coordinate_zero`, and `_coordinate_succ`
+compute the prescribed source dot on every shuffle in the balanced induction.
+Consequently `appendContentRho_lift` and `appendContentRhoExtract_rho` intertwine
+corrected rho with `single m b ↦ single (m+1) (σ_β b)` on the full source.
+`appendContentShort_rho` proves short stability, not an assumed kernel equality.
+`appendContentRhoLift_rightMul` retains unchanged right coefficients, while
+`appendContentP_rhoLift` transports the recurrence through the prescribed P.
+This is the ordinary-polynomial specialization of `DeformedMackeyBoundary.md`
+(6)–(7), not the exterior deformation with its additional constant term.
+
+Height and cutoff: all content-source theorems have old height `n+1`, including
+old height one at `n=0`; they impose no positivity on the cyclotomic cutoff.
+The affine lemma `prependPBWTerm_one_mul_firstDot` covers every old height,
+including zero, and the consumer explicitly tests its zero-height moving shuffle.
+A content-source recurrence at genuinely zero old height is not supplied by the
+current positive-height cyclotomic API. Zero cutoff is not zero height.
+
+Remaining: compute the short-image projection under P in the prescribed append
+coordinates and identify it with the crossing summand, then construct the actual
+`MackeyCosets`/`toMackeyBoundary`. No such image identification is assumed here.
+
+Verification: the focused modules and importing `NonVacuity.AppendContentCosets`
+and `NonVacuity.AppendContentRhoCoordinates` consumers build with warnings as errors; the consumer audits every declaration
 owned by the module against `propext`, `Classical.choice`, and `Quot.sound`. Its
 examples use the asymmetric two-colour datum over ℚ, including cutoff zero,
 both cutoff parities, two-term independence at rank zero, and exact right action.
