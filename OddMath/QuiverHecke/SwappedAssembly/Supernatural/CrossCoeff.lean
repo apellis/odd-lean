@@ -33,7 +33,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams Supercategory OddMath.SKM BicategoryStruct
 
-universe u
+universe u uB v w
 
 section Generic
 
@@ -49,7 +49,7 @@ theorem IsSupernatural.sub {p : ZMod 2} {F G : C ⥤ D} {x y : ∀ X, F.obj X �
 end Generic
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{w, v} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
