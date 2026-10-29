@@ -851,6 +851,54 @@ Hom-sector inverse to the summand-path entries of `AugmentedInvertible` (both de
 same 2-morphisms; the path entries are their matrix coefficients through
 `P.pathFunctor`).
 
+**Sector blocks of the equal-colour augmented maps (checked).**
+`SwappedAssembly/Sigma/SameColourBlocks.lean`: for one colour `i`, the paths of `Eᵢ Fᵢ` and
+`Fᵢ Eᵢ` change the sector by `0` (sides `(P,P)`, `(R,R)`) or by `±(i, i)` (mixed sides), and
+the empty word by `0`. Between distinct sectors the empty word has no path
+(`SPath.isEmpty_nil_of_ne`), `Eᵢ Fᵢ`, `Fᵢ Eᵢ` have at most one path each
+(`SPath.subsingleton_upDn_self`, `SPath.subsingleton_dnUp_self`), existing together
+(`SPath.nonempty_dnUp_self_iff`). So for `t ≠ s` the augmented maps are single `σ` entries:
+`posInverse_of_ne`, `negInverse_of_ne` (inverse component `lc = -σ⁻¹`, no `♦`-cups/caps).
+Reduction: `augmentedInvertible_of_central_of_swapping c hcentral hswap :
+P.AugmentedInvertible c` from `CentralInvertible c` (inverses at `s = t`, all dotted windows)
+and `SwappingInvertible c` (every `sigmaEntry c i i ν p q Z` with `t ≠ s` is an isomorphism).
+Proposed bridge: `AugmentedSectorBlocks.md`. The swapping entries are single terms (cup and cap
+force their sides): at `s = t + (i,i)` the reservoir mate of `-(a ; a ; J⁻¹)` (`W_B` of
+`SwappedHomInversion.md` §7), at `s = t - (i,i)` the probe mate of `J` (`W_A`). The central
+entries are single terms with crossing entries `-q·(probe crossing)`, reservoir crossing,
+`a` (`(P,P) → (R,R)`) and `-(J ; a ; J⁻¹)` (`(R,R) → (P,P)`). Open: `SwappingInvertible`
+(formalize §7 through these single terms) and `CentralInvertible` (§§2–6). Proposed sign
+observation (§4 of the bridge): the checked crossing entries are `-q` times the diagonal of (2)
+of `SwappedHomInversion.md` read with A = probe, so its `K` is replaced by `-q K` (the earlier
+`K`); for `p = 0` this would make the §5 tables, written with the earlier sign, the correct
+ones. To be rechecked against `ProbeWindowInverse.md` (4).
+
+**Sign of the central entries: settled (written).** The diagonal of (2) of
+`SwappedHomInversion.md` is now the Lean entry (`a` on `(R,P)`, `-J⁻¹ a J` on `(P,R)`, with
+`a = (y-x)⁻¹` for `p = 0`), for which `crossCoeff_diag` proves the formal slides; the version
+of (A6) that multiplied the diagonal by `-q` gives the even slide with right side `-1`.
+Correspondingly `C_RP = -Σ_r q^(r+1) u_R(r) v_P(-r-1)`, `D_PR = Σ_s q^(s+2) u_P(-s-1) v_R(s)`
+(the earlier `K`). Recomputed from (11) and (7) there, the §5 tables are exactly `Hhat_±` of
+`ProbeWindowInverse.md` (`c_r = q^(r+1)`, `d_s = q^(s+2)`), and its window identities (4)
+follow from the literal slide (1), whose sign does not involve `a`. So §§5–6 of
+`SwappedHomInversion.md` hold as written for both parities; only the written route changed.
+Open check: `SwappedActionAssembly.md` (A6) also asserts that this (Lean) diagonal breaks the
+mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is still a
+hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
+and the braid would require opposite signs).
+
+**`CentralInvertible` needs a weight restriction (interface).** As stated,
+`CentralInvertible` (and so `AugmentedInvertible`, `LeftwardData.IsInverse`) quantifies over
+all `ν` independently of the sector. The entries `σ`, `ε`, `η` do not depend on `ν`; only the
+window count `(D.h i ν).toNat` does. If `[σ; ε₀, …, ε_{H-1}]` is invertible, then adding one
+more window row gives `[1; r]` times it, which is not invertible unless the object is zero. So
+the unrestricted statement fails as soon as some `P.H t` has a nonzero object. The action only
+uses weight-matched sectors (`layerEntry` needs `P.wt sr = L.cod.endR`; `compEval` is applied
+through `evalW_eq_zero_of_compEval` with `hend : P.wt t.1 = …endR`). Next step: restrict
+`CentralInvertible`, `AugmentedInvertible` and `LeftwardData.IsInverse` to `P.wt s = ν`
+(rightmost sector), weight `relHolds_of_compEval`, and define `leftwardOfInvertible` as zero
+off weight. `SwappingInvertible` does not involve `ν` and is unaffected.
+
 **Supernaturality of the equal-colour leftward data (checked).**
 `SwappedAssembly/Supernatural/Leftward.lean`: `LeftwardData.isSupernatural_of_isInverse c L
 hc hL : L.IsSupernatural` for `hc : c.IsSupernatural` and `hL : L.IsInverse c`. The entries of
@@ -866,6 +914,19 @@ two-sided inverse has supernatural entries of a parity depending only on the tar
 source) index, so has its inverse. Proof: projecting `A B = 1` to parity `0` shows the
 homogeneous parts of `B` form a right inverse, hence equal `B`; naturality from
 `B F(f) = Ĝ(f) B`, `Ĝ` the signed diagonal.
+
+**The interchange-law field of `SwappedRelationData` is redundant (checked).**
+`SwappedAssembly/Supernatural/Relations.lean`:
+`swappedGens_supernatural_of_isInverse c L hin hc hσ hL : GeneratorsSupernatural
+(P.swappedGens c L)` for `hin : P.CrossCoeffInputs`, `hc : c.IsInverse`,
+`hσ : ∀ i j, i ≠ j → ∀ ν, P.SigmaPermutation c i j ν` and `hL : L.IsInverse c`
+(combining `CrossCoeff.isSupernatural_of_isInverse`,
+`LeftwardData.isSupernatural_of_isInverse` and `swappedGens_supernatural`).
+`SwappedRelationData.ofIsInverse hin hc quad slide braid zigzag sigma leftward windowZero`
+builds `SwappedRelationData c L` without the `supernatural` field, and
+`SwappedRelationData.ofCrossCoeffInputs hin …` does so for `c = crossCoeffOfInputs hin`
+with no hypothesis on `c`. So `GeneratorsSupernatural` is no longer an independent
+obligation of `SwappedVacuumObservation`; `sigma` (`SigmaPermutation`) remains one.
 
 **`SigmaPermutation` from entrywise invertibility (checked).**
 `SwappedAssembly/Sigma/Permutation.lean`: `sigmaPermutation_of_isIso hij ν h :
