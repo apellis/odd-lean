@@ -189,8 +189,8 @@ Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalWeightMixedSlides.lean`):
   `globalRouquierData` (the signed crossing is `+ψ` at distinct colours), for every parameter
   family, hence for both `parameterTwist D Sc` (probe) and the reservoir factor.
 
-Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `quadZero`, `quadNe`,
-`braid`, `braidEq`, `invNe`. `invNe` needs the distinct-colour Mackey isomorphism for the global
+Remaining `RouquierMulticolour` fields for `globalRouquierFamily`: `braid`, `braidEq`, `invNe`
+(`quadZero`, `quadNe`: next section). `invNe` needs the distinct-colour Mackey isomorphism for the global
 factors, which is not formalized.
 
 ## Distinct-colour quadratic relation on the global factors: algebra level
@@ -233,12 +233,23 @@ Hence, on components at a height-`n` module `M`:
   + ∑ s'^{pq}_ij x_in^q ≫ x_out^p` (powers `endoPower`);
 - `heightInduction_square_zero`: `ψ_ij.app ≫ ψ_ji.app = t'_ij 𝟙`.
 
-Remaining for `quadNe`/`quadZero` of `RouquierMulticolour`: the weight-level assembly
-(template `GlobalWeightMixedSlides`; every term has parity `0`, so only the `0`-components are
-compared), with `rouquierPower (dot i)` on the outer induction becoming `endoPower x_out`
-componentwise (`E j ◁ dot i` is the outer dot, `dot j ▷ E i` the inner dot), and
-`parameterTwist_involutive` to state the fields for `globalRouquierFamily D (parameterTwist D Sc)`
-with parameters `Sc`.
+**Weight level (checked,** `CyclotomicAction/GlobalWeightMixedQuadratic.lean`**).**
+
+- `heightContentMixedSquareNe`, `heightContentMixedSquareZero`: the relation on content blocks
+  with arbitrary height and content transports;
+- `globalActionCross_square_ne` (`d_ij ≠ 0`): `ψ_ij ≫ ψ_ji = t'_ij (E_j ◁ x_i^{d_ij})
+  + t'_ji (x_j^{d_ji} ▷ E_i) + ∑_{0<p<d_ij, 0<q<d_ji} s'^{pq}_ij (x_j^q ▷ E_i ≫ E_j ◁ x_i^p)`
+  with `rouquierPower` and the parameters of `parameterTwist D Sc`;
+- `globalActionCross_square_zero` (`d_ij = 0`): `ψ_ij ≫ ψ_ji = t'_ij 𝟙`;
+- `globalActionSignedCross_square_ne`, `globalActionSignedCross_square_zero`: the same for the
+  signed crossing of `globalRouquierData` (`+ψ` at distinct colours).
+
+Every term has parity `0` (`d_ij |i| = 0`, and `s'^{pq}_ij ≠ 0` forces `p|i| = q|j| = 0`,
+`scalars_parity_of_s_ne_zero`), so only the `0`-components are compared; `E_j ◁ x_i` is the
+outer dot and `x_j ▷ E_i` the inner dot of `heightInduction_square_ne`. These are the `quadNe`,
+`quadZero` fields with scalars `parameterTwist D Sc` for the data built from `Sc`. Remaining:
+restate them for `globalRouquierFamily D (parameterTwist D Sc)` with scalars `Sc` via
+`parameterTwist_involutive`, together with the other fields.
 
 ## Deformed cyclotomic factor: checked steps and forms
 
@@ -1193,10 +1204,17 @@ Correspondingly `C_RP = -Σ_r q^(r+1) u_R(r) v_P(-r-1)`, `D_PR = Σ_s q^(s+2) u_
 `ProbeWindowInverse.md` (`c_r = q^(r+1)`, `d_s = q^(s+2)`), and its window identities (4)
 follow from the literal slide (1), whose sign does not involve `a`. So §§5–6 of
 `SwappedHomInversion.md` hold as written for both parities; only the written route changed.
-Open check: `SwappedActionAssembly.md` (A6) also asserts that this (Lean) diagonal breaks the
-mixed `jij` braid in the smallest mixed case; the Lean braid (`CrossBraid`) is still a
-hypothesis, so that assertion must be rechecked against the Lean dots (if it held, the slide
-and the braid would require opposite signs).
+Model check of the braid for the Lean sign (exact computation, not a proof).
+`SwappedActionAssembly.md` (A6) asserted that this (Lean) diagonal breaks the mixed `jij`
+braid in the smallest mixed case. `scripts/Nondegeneracy/swapped_braid_twist_model.py` models
+the swapped entries on a skew polynomial ring (twists for crossings of distinct colours or
+across the sides, the factor `Q` as in `crossNeEntry`, the odd Demazure operator on one side,
+the mixed entries `a`, `J`, `-(a a J⁻¹)`, `-(J a J⁻¹)` with the Lean `a`), which reproduces
+the proved slide and the proved `iii` blocks. In this model (1.9), with its correction, holds
+on every block of the words `iii`, `iji`, `iij`, `ijj`, `jii`, `jij`, `ijk`, for all parities
+and several exponents `dn` (including the `s` terms); negating `a` breaks `iii` and the mixed
+`jij` blocks. So the assertion of (A6) does not hold for the Lean entries in this model, and
+slide and braid do not require opposite signs; `CrossBraid` remains to be proved in Lean.
 
 **Probe window identities (checked).** `SwappedAssembly/CentralInverse/Windows.lean`
 proves the window identities (4) of `ProbeWindowInverse.md` in any preadditive category,
