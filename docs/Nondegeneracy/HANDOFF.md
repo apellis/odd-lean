@@ -98,6 +98,22 @@ distinct-colour slides, generalizing `heightCompositionCorner D Sc i i` to two c
 inputs of the written proof), which are not formalized; like `GlobalLocalInversion`, it is to be
 carried as an explicit hypothesis until they are.
 
+## Distinct-colour mate of the cyclotomic action (towards (1.12) `invNe`)
+
+Checked: `mixedMateKernel` and `heightMixedMate_eq`
+(`OddMath/QuiverHecke/CyclotomicAction/MixedMateKernel.lean`). For colours `i`, `j` at height
+`n`, the mate of the last crossing `P_i(n+1) ⊗ P_j(n) → P_j(n+1) ⊗ P_i(n)` under the
+`(E_i, F_i)` height adjunction is right whiskering (between associators) of the bimodule map
+`P_j(n) ⊗ Q_i(n) → Q_i(n+1) ⊗ P_j(n+1)`,
+`x ⊗ y ↦ (-1)^{|x||i||j|} φ_i(x) c φ_j(y) ⊗ e_j`, `c` the last crossing of parity `|i||j|`
+(KKO arXiv:1206.5933v2 Thm 9.1, (9.2)–(9.3)). No sign appears because the global signed cross
+is `+ψ` for `i ≠ j`.
+
+Next: carry this through content blocks and weight products (as `GlobalRouquierMateKernel.lean`
+does for one colour) and prove `invNe` for `globalRouquierFamily D (parameterTwist D Sc) …` from
+the explicit hypothesis that `mixedMateKernel D Sc i j a ha n` is invertible for `i ≠ j` and all
+`n` (the cyclotomic distinct-colour Mackey isomorphism, not formalized).
+
 ## Consequences of the field case: ground rings, Hom bases and K₀
 
 Checked (conditional on the field case). `SKM.CharZeroFieldNondegeneracy D`
