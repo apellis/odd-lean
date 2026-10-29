@@ -47,3 +47,27 @@ example (i : I) (v w : List I) (c : hom D Sc cutoff v v)
 example (i : I) (v w : List I) (z : CentralTarget D Sc cutoff i v w) :
     centralOldSource D Sc cutoff i v w 0 z = 0 :=
   centralOldSource_ideal D Sc cutoff i v w (Submodule.zero_mem _) z
+
+#print axioms pMap_movingSquare
+#print axioms pMap_movingEvenDot
+#print axioms pCentralMap
+#print axioms pCentralMap_oldSource
+
+open Lean Elab Command in
+run_cmd do
+  let env ← getEnv
+  let mut total : Nat := 0
+  for owner in #[`OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSlide,
+      `OddMath.QuiverHecke.CyclotomicAction.ELVPCentral] do
+    let some idx := env.header.moduleNames.idxOf? owner
+      | throwError "Module was not imported: {owner}"
+    let mut count : Nat := 0
+    for name in env.header.moduleData[idx]!.constNames do
+      for axiomName in (← Lean.collectAxioms name) do
+        unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
+          throwError "Disallowed axiom {axiomName} in {name}"
+      count := count + 1
+    if count == 0 then throwError "Empty declaration inventory: {owner}"
+    logInfo m!"Audited {count} declarations in {owner}; all axioms allowed."
+    total := total + count
+  logInfo m!"Audited {total} declarations in the central-linearity modules."
