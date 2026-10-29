@@ -230,6 +230,31 @@ The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
+## Reverse and middle unequal-reservoir sector braids
+
+`reverseDistinctReservoir_braid` proves `RᵣR_qPᵢ → PᵢR_qRᵣ`, retaining
+both prescribed Q factors. `postCrossNe_qExpr_pair` derives their transport
+from the two signed unequal reservoir slides and crossing parity. The two
+polynomials share one probe spectator; their commutation is derived from the
+three dot supercommutations and supported powers, not assumed.
+
+`middleDistinctReservoir_braid` proves `RᵣPᵢR_q → R_qPᵢRᵣ` for arbitrary
+pairwise distinct colours, weights, contents, commutative coefficients and
+supplied data. `postCrossNe_qExpr_outer` derives individual Q transport from
+the prescribed reservoir slide and crossing parity. The conjugated second
+weight uses the full triple-parity sign of the last reservoir dot; supported
+powers remove this sign. Only mixed comparison isomorphisms are cancelled.
+The consumer `MixedDistinctReservoirRemaining.lean` uses arbitrary occupied
+content and audits all declarations of the four new modules, including generated
+and private declarations. Both headline theorems have arbitrary-colour occupied
+content applications; no independent nonzero representation is claimed.
+
+All six mixed pairwise-distinct placements now have sector lemmas. Remaining:
+all-same-side factor transport and arbitrary-path assembly; repeated-outer
+correction and cross-side colour equalities separately. No complete `CrossBraid`
+is asserted.
+
+
 ## Forward unequal-reservoir sector braid
 
 `BraidMixed/DistinctReservoirSector.lean`: `distinctReservoir_braid` proves
@@ -252,9 +277,9 @@ It audits every declaration owned by the new module, including generated
 or private declarations. This is a supplied-data consumer, not an independent
 nonzero representation.
 
-Remaining: reverse and middle unequal-reservoir placements with individual
-Q transports; all-same-side factor braid transport and arbitrary-path
-assembly; repeated-outer correction separately. The checked transport module
+Remaining: all-same-side factor braid transport and arbitrary-path
+assembly; repeated-outer correction separately. Reverse and middle
+unequal-reservoir placements are proved above. The checked transport module
 `InterchangePostPairTransport.lean` is unchanged.
 
 ## Three-distinct-colour two-probe sector braid
@@ -307,10 +332,9 @@ only mixed comparison isomorphisms. No Q or probe crossing is inverted.
 The importing consumer uses arbitrary colours and arbitrary occupied content,
 not a finite representation, and audits every owned declaration.
 
-Exact pairwise-distinct residual: all three one-probe/two-reservoir placements
-with unequal reservoir colours; all-probe and all-reservoir sector transport
+Exact pairwise-distinct residual: all-probe and all-reservoir sector transport
 from the factor braid; assembly for arbitrary source/target sector paths.
-The three two-probe placements have explicit sector lemmas. Separately,
+All six mixed placements have explicit sector lemmas. Separately,
 equalities between colours on different sides and repeated-outer-colour
 corrections remain before a complete `CrossBraid` construction.
 This theorem contributes one sector to `CrossBraid.braid`; it does not
