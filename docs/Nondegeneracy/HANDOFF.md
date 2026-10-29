@@ -97,6 +97,23 @@ weight-level assembly modelled on `GlobalWeightSlides.lean`. A hand check of the
 of the right-multiplication module maps finds the same sign `ε` on both sides of each slide,
 so the algebra identities above are exactly what the module slides need (no extra sign).
 
+## Distinct-colour dot slides on the global factors: height-level modules
+
+Checked (`OddMath/QuiverHecke/CyclotomicAction/GlobalHeightMixedSlides.lean`):
+
+- `TwoColourCornerMulData`, `heightTwoColourRightMul`: signed right multiplication on the corner
+  of `heightAppend i (n+1) ∘ heightAppend j n`, with the two instances
+  `twoColourCornerMulData_lastDot` (new last dot of colour `i`) and
+  `twoColourCornerMulData_appendDot` (appended dot of colour `j`);
+- `heightCompositionCorner_slide_left_ne`, `heightCompositionCorner_slide_right_ne`: the corner
+  crossing commutes with these up to `koszulSign |i| |j|`;
+- `heightInduction_slide_left_ne`, `heightInduction_slide_right_ne`: the slides
+  `(x ▷ E) ≫ τ = ε (τ ≫ E ◁ x)` and `τ ≫ (E ◁ x) = ε ((x ▷ E) ≫ τ)` for the height-level super
+  induction functors, dot and crossing natural transformations, `i ≠ j`.
+
+Remaining: weight-level assembly through the content blocks (as in `GlobalWeightSlides.lean`),
+then the `slideLeft`/`slideRight` fields of `RouquierMulticolour` for `globalRouquierFamily`.
+
 ## Deformed cyclotomic factor: checked steps and forms
 
 The factor targets `RouquierFamily T` with `RouquierMulticolour T Sc` (next section).
