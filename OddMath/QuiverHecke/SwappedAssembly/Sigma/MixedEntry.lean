@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.Entry
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.Cross
 import OddMath.SKM.RouquierHomDistinctMixedPostDotsIso
 
 /-! # The sideways crossing on a probe/reservoir path
@@ -187,23 +188,6 @@ theorem compLayer_congr (gens : P.Generators) (L : Layer (SKM.sig D)) {s t : Sec
     compLayer gens L p q Z =
       eqToHom (by rw [hp]) ≫ compLayer gens L p' q' Z ≫ eqToHom (by rw [hq]) := by
   subst hp hq; simp
-
-/-- The entry of a matrix between two two-letter words at the paths through given
-summands. -/
-theorem twoTwo_two (c₁ c₂ d₁ d₂ : Col I X) (f : P.TwoEntry c₁ c₂ d₁ d₂)
-    {t s s' : Sector I} (σ₁ σ₂ τ₁ τ₂ : Bool) (hv₁ : StepValid c₁.l σ₁ t)
-    (hv₂ : StepValid c₂.l σ₂ (nextSector c₁.l σ₁ t)) (hw₁ : StepValid d₁.l τ₁ t)
-    (hw₂ : StepValid d₂.l τ₂ (nextSector d₁.l τ₁ t))
-    (e : nextSector c₂.l σ₂ (nextSector c₁.l σ₁ t) = s)
-    (e' : nextSector d₂.l τ₂ (nextSector d₁.l τ₁ t) = s') (hs : s = s') (Z : P.H s')
-    (Z' : P.H (nextSector d₂.l τ₂ (nextSector d₁.l τ₁ t))) (hZ : HEq Z' Z) :
-    P.twoTwo c₁ c₂ d₁ d₂ f (SPath.two σ₁ σ₂ hv₁ hv₂ e) (SPath.two τ₁ τ₂ hw₁ hw₂ e') hs Z =
-      eqToHom (by subst e'; subst e; obtain rfl := eq_of_heq hZ; rfl) ≫
-        f t σ₁ σ₂ τ₁ τ₂ hv₁ hv₂ hw₁ hw₂ (e.trans (hs.trans e'.symm)) Z' ≫
-        eqToHom (by subst e'; subst e; obtain rfl := eq_of_heq hZ; rfl) := by
-  subst e'; subst e; obtain rfl := eq_of_heq hZ
-  simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
-  rfl
 
 omit [AddCommGroup X] in
 /-- A power `p` with `p a ≠ 1` in `ZMod 2` is a multiple of `2` when `a = 1`. -/
