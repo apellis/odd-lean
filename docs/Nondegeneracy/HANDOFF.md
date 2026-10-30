@@ -13,7 +13,16 @@ No nilpotence, bounded-support, domain, or nonzero-ring premise is added.
 This supplies quotient-level post-dot nilpotence for the reservoir coefficient
 construction, not probe units or an assembled factor action. Transport to the
 chosen reservoir action still requires its identification with these quotient
-dots. The arbitrary-colour high-cutoff detection theorem is unchanged.
+dots. `ELVModuleNilpotence.moduleRestrictionDot_pow_zero` now transports the
+same exponent to the existing restriction-dot component on every module.
+`moduleInduction_positive_pow_zero` applies to the target-word action on the
+balanced induction module; it does not identify a normalized induction dot.
+`homContentPostDot_power` is the existing subsequent signed transport through
+left whiskering and the content parity shift. The outstanding coupling is the
+fixed-content identification with `W.dot`, not preservation of its powers.
+Probe-dot units remain separate. The arbitrary-colour high-cutoff detection
+theorem is unchanged. A generic consumer combines its nonzero PBW classes
+with the new nilpotence theorem in the same truncated quotient.
 
 ## Cutoff-independent source lower degrees
 

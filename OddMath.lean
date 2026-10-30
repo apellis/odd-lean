@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
