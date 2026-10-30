@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Actual polynomial-row normal forms in both height ranges
+
+The integer difference M−D, where M is `endpointQPDegree` and D is
+`outputSDegree`, equals `cutoff i − sum_v Cartan(i,v)` for all moving colours.
+For odd moving colour, the actual boundary A on a corrected source vector has
+the explicit scalar-unit times total-parity-twist leading coefficient map.
+Finite pivot elimination gives a unique high corrected-source quotient and
+literal low output remainder for this actual map over arbitrary full old
+coefficients. No nonzero old identity or coefficient centrality is assumed.
+
+For D ≤ M, `boundaryPositiveEquiv` has forward map `(f,r) ↦ A(f)+r`, and the
+actual cokernel is the polynomial window below M−D. For M ≤ D, the actual
+kernel is the corrected-source window below D−M; `boundaryNegativeEquiv`
+reconstructs as `C(low)+section(g)`, with inverse second coordinate exactly A.
+Both equivalences are k-linear, include height zero and annihilated corners,
+and use the existing boundary and corrected-coordinate equivalence rather
+than replacement maps or a postulated row interface.
+
+These polynomial-row results do not yet identify the epsilon-shifted balanced
+P′ column or the categorical snake/matrix inverse, prove integer homogeneity
+of that inverse, construct the full detecting action, or prove nondegeneracy.
+
 ## Whole comparison coherence and the prescribed cyclotomic source
 
 `contentETripleComparison_assoc` now identifies the original pair-first and
@@ -36,8 +58,9 @@ B = d + endpointQPDegree. The signed quotient has the prescribed scalar-unit
 times identity coefficient at B−D only when D ≤ B; it is actually zero when
 B < D. These statements include annihilated old corners and do not assert
 nonzero support or natDegree equality. The independent polynomial S is not A.
-The Cartan-height identity, actual polynomial-row normal forms, balanced
-cyclotomic top quotient and categorical matrix inverse remain separate.
+The Cartan-height identity and actual polynomial-row normal forms are now
+checked above. The prescribed cyclotomic top quotient is constructed separately;
+the epsilon-shifted P′ column and categorical matrix inverse remain open.
 
 The complete Ri Rj Pi (001) correction and the adjacent Pi Ri Rj to Rj Pi Ri
 coefficient entry are also checked as literal path formulas, including both
