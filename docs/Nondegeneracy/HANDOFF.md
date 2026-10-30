@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Actual raw repeated-outer diagonal
+
+`repeatedOuterDiagonal_correction` proves the two explicit signed sums for
+the actual three-crossing raw routes on `Rᵢ Pⱼ Pᵢ`, under `c.IsInverse`,
+`CrossCoeffInputs`, and `i ≠ j`. Mixed Q conjugation and the forward/back
+probe quadratic relation identify the two polynomials. Coefficient/Q
+commutation is derived, including the odd supported-power signs. The back
+probe crossing is the opposite generator with its exact object transport,
+not an inverse. All repeated-outer supporting modules are exported by the
+library root. Remaining here is the literal path-matrix identification;
+other repeated-outer placements and full `CrossBraid` are not yet supplied.
+
 ## Actual repeated-outer dot coordinates
 
 `repeatedOuter_qExpr_correction` now supplies the full correction for actual
