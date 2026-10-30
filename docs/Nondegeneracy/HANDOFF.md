@@ -22,6 +22,41 @@ relation with the corrected longest-output coordinates. The factor results
 and product regularity do not by themselves establish right divisibility,
 polynomial degree additivity, or local inversion.
 
+## Actual full-cyclotomic monic annihilator and bounded moving powers
+
+`EndpointNormPolynomial` computes the leading scalar unit of each literal full
+chain norm factor over a possibly noncommutative ring, then normalizes the
+ordered product to a monic polynomial. Repeated-even and repeated-odd factors
+have leading unit −1; disconnected factors retain `Sc.t j i`, and connected
+unequal factors retain `Sc.t i j`. `EndpointNormEvaluation` proves evaluation
+on the actual old and last dots: only parity-supported old powers commute with
+the moving dot. This full norm is not the QP polynomial or the boundary S.
+
+`ELVMonicPolynomial` constructs the concrete full-coefficient polynomial
+`monicELVEndpointProduct`, namely the endpoint ELV polynomial times the
+normalized full norm in End multiplication. It is monic without a nontriviality
+assumption. `ELVMonicAnnihilator` proves its evaluation belongs to the actual
+full cyclotomic ideal and hence has zero quotient class. The proof sandwiches
+the first-position relation by the reverse and moving chains, consumes
+`relation_comp_move`, and removes only a scalar parity sign. No norm is
+cancelled after imposing the full ideal.
+
+`ELVMonicOldCoefficients.oldMonicELVEndpointProduct_map` gives an explicit
+old-endomorphism polynomial whose right-context image is this concrete
+polynomial. Every coefficient therefore lies in the actual old insertion range.
+`ELVMovingReduction.movingDot_pow_mem_bounded_old_span` uses its monic recurrence
+to reduce every last-dot power below its degree modulo the full ideal, with
+old endomorphisms on the left. Multiplication of the recurrence is on the right;
+arbitrary old coefficients are not commuted past an odd dot. Degree zero and
+zero rings are included.
+
+Remaining support step: extend this last-dot reduction through the finite
+append-shuffle spanning family and the homogeneous old-Hom induction, then
+apply coefficient-weight truncation to obtain the all-content integer upper
+bound. Neither that bound, reservoir nilpotence, nor the central inverse is
+claimed by these six modules. The default consumer audits every declaration
+owned by all six modules against the standard three axioms.
+
 
 ## Ordered reverse boundary polynomial and all corrected iterates
 
