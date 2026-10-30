@@ -557,6 +557,192 @@ concrete reverse boundary norm from full QP. None of these final implications
 is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
+## Separated right diagonal route
+
+`RepeatedOuterLiteralDiagonal.separatedOuter_braidRight` (namespace
+`ProbeReservoir`) identifies the complete finite right diagonal braid sum
+on `PᵢPⱼRᵢ` with `-(S ≫ Qn)`, where S is the separated conjugated
+coefficient and Qn is the mapped inner mixed Q. The three literal crossing
+entries are evaluated from `swappedGens c L`; no inverse or braid hypothesis
+is required. `separatedOuter_braidLeft` now reduces the complete left sum to
+`-((F ≫ f) ≫ S)`, with F and f the two literal crossing entries including
+terminal casts. The coefficient slide is derived from `c.IsInverse` and
+`CrossCoeffInputs`, not assumed. `separatedOuter_literal_probe_quad` now
+identifies the actual terminal-cast probe pair with Qxy by the supplied
+quadratic relation and typed path append transports. Consequently
+`separatedOuter_braidLeft_qExpr` and `separatedOuter_braidRight_qExpr` identify
+both complete matrix sums as `-(Qxy ≫ S)` and `-(S ≫ Qzy)` respectively.
+Qzy uses `qExpr_swap`, retaining the actual signed dot commutation. The
+S/Qzy commutation is now derived from the mapped genuine inverse identities
+and the denominator unit. `separatedOuter_braid_difference` is the actual
+matrix difference with both native finite sums. `separatedOuter_dotX/Y/Z`
+identify all three literal dots; `separatedOuter_braidEq_diag` is the FULL
+literal `Pi Pj Ri` diagonal correction, retaining every dotEntry power, Sc.t,
+Sc.s and zsign factor. It assumes only the supplied c.IsInverse,
+CrossCoeffInputs, i ≠ j, a valid reservoir step and genuine sector equalities.
+`separatedOuter_braidEq_diag_transport` removes the auxiliary sector equality
+arguments and handles every genuine terminal transport. As continuation,
+`repeatedOuter_oneReservoir_offDiag` joins both checked off-diagonal directions
+for arbitrary distinct paths in that endpoint sector. Finite source/target
+path classifications eliminate incompatible cases, without restrictions on I,
+parity, field structure or a nilpotence cutoff.
+The full CrossBraid producer and the remaining mixed placements are still open.
+Earlier entries below describing the Pi Pj Ri diagonal as open are historical;
+the literal diagonal result above supersedes those particular gaps.
+
+## Separated correction coordinates
+
+`RepeatedOuterSeparatedCoordinates` gives `separatedOuter_qExpr_correction`:
+the native `PᵢPⱼRᵢ` dots satisfy the two signed correction sums. The coefficient
+is `-(-1)^(pᵢpⱼ)` times the raw separated conjugate, rather than the normalization
+used in the earlier single-edge slide. Both denominator identities are proved
+from `c.IsInverse` using actual mixed-isomorphism conjugations; the signed dot
+relations come from super interchange. The later `RepeatedOuterLiteralDiagonal` identifies the actual crossing routes
+and literal diagonal matrix equation. Other mixed placements remain open.
+
+## Weighted repeated-outer forward equality
+
+`RepeatedOuterWeightedSquare.repeatedOuter_forward_braid` (in namespace
+`ProbeReservoir`) identifies the full literal finite-sum braid entries from
+`RᵢPⱼPᵢ` to `PᵢPⱼRᵢ` for `P.swappedGens c L`. Its assumptions are
+`c.IsInverse`, `CrossCoeffInputs`, `i ≠ j`, a valid reservoir step and genuine
+sector transports. The local mixed-Q/coefficient commutation follows from the
+coefficient inverse identities and denominator unit. The supported outer Q
+transport is instantiated at the actual reservoir endpoints. The weighted
+square cancels only the established mixed isomorphisms. The generic importing
+consumer audits all module declarations, including private helpers.
+
+The `PᵢPⱼRᵢ` diagonal correction is now supplied by
+`RepeatedOuterLiteralDiagonal`. Other mixed placements remain open;
+this is not a proof of full `CrossBraid` or nondegeneracy.
+
+## Forward mixed routes and outer Q transport
+
+`repeatedOuter_forward_left_route` and `repeatedOuter_forward_right_route`
+reduce the complete finite `braidLeft` and `braidRight` sums from
+`RᵢPⱼPᵢ` to `PᵢPⱼRᵢ` to one route each. These exact path equations hold
+for arbitrary generators, with `i ≠ j` and one valid reservoir step.
+The equal mixed edge remains explicitly in each route; no braid equality
+is assumed or asserted. `preCrossNe_qExpr_outer` transports one outer Q
+factor across the actual unequal probe crossing, for an arbitrary homogeneous
+spectator, by the supplied dot slide and supernaturalness; every supported
+coefficient is retained. It does not invert Q or the crossing.
+The local coefficient–Q commutation and endpoint identifications are now
+supplied by `RepeatedOuterWeightedSquare`, proving equality of these routes
+for coefficient-derived generators.
+
+## Single probe edge for the separated mixed coefficient
+
+`repeatedOuterMixed_probe_coeff` transports the unsigned conjugated coefficient
+along the actual `adjacentReverseProbeCross` from `PⱼPᵢRᵢ` to `PᵢPⱼRᵢ`,
+including its terminal cast. It uses `c.IsInverse`, `CrossCoeffInputs`,
+`i ≠ j`, and one valid reservoir step. The established coefficient and
+comparison rectangles determine this single edge after cancellation of the
+last mixed comparison isomorphism. No probe crossing or Q is inverted.
+`repeatedOuterMixed_probe_coeff_signed` retains the source normalization
+`(-1)^pᵢ` and target normalization `(-1)^(pᵢ+pᵢpⱼ)`, yielding the
+single-edge Koszul sign. No braid or coefficient-slide hypothesis is added.
+This supports the PPR diagonal correction and coefficient-bearing forward
+off-diagonal equation now supplied by `RepeatedOuterLiteralDiagonal` and
+`RepeatedOuterWeightedSquare`. The other mixed placements and full
+`CrossBraid` remain open.
+
+## Repeated-outer reverse off-diagonal
+
+`repeatedOuter_other_offDiag` proves equality of the actual full finite-sum
+`braidLeft` and `braidRight` entries from `PᵢPⱼRᵢ` to `RᵢPⱼPᵢ`.
+It needs `i ≠ j` and the one valid reservoir step, but neither
+`c.IsInverse` nor `CrossCoeffInputs`. The new mixed-move comparison permits
+equal colors; the two route reductions explicitly discard spectator-zero
+entries. The generic importing consumer applies the result without any
+matrix-braid hypothesis. The forward off-diagonal and other diagonal at this endpoint are supplied
+by `RepeatedOuterWeightedSquare` and `RepeatedOuterLiteralDiagonal`.
+Other mixed endpoints and the full `CrossBraid` producer remain open.
+
+## Literal pure-reservoir diagonal correction
+
+`repeatedOuterPureReservoir_braidEq_diag` proves the exact two signed
+`dotEntry` sums for every path at a valid pure-reservoir endpoint, with
+`i ≠ j` and no inverse/coefficient-input assumption. All three shifted dots
+are transported through the total normalization. Their scalar powers agree
+on every supported monomial with the existing corrected-route scalar.
+Both pure diagonal corrections are now literal path-matrix equations.
+Remaining mixed entries/placements and the full `CrossBraid` producer remain open.
+
+## Literal pure-probe diagonal correction
+
+`repeatedOuterPureProbe_braidEq_diag` now proves the exact two signed
+`dotEntry` sums of `CrossBraid.braidEq_diag` for every path at a pure-probe
+endpoint. It needs `i ≠ j` but no inverse or coefficient-input hypothesis.
+The factor polynomial is compared to all three literal dots and their
+arbitrary powers; finite-sum reflection cancels the equal-crossing scalar.
+Odd outer-degree and interior-support conditions come from the datum and
+original scalar data, over an arbitrary commutative ground ring.
+The remaining mixed entries/placements are still open; this is not a full
+`CrossBraid` producer.
+
+## Literal repeated-outer diagonal and pure-factor corrections
+
+`repeatedOuter_braidEq_diag` proves the literal `braidLeft - braidRight`
+equals exactly the two `CrossBraid.braidEq_diag` sums for `Rᵢ Pⱼ Pᵢ`.
+All finite intermediate-path sums, object transports, and three literal
+`dotEntry` powers are identified. The row reductions cover arbitrary target paths. The other three entries
+for these two path placements are now supplied by the weighted-forward
+and literal-separated-diagonal results.
+
+The pure-probe and pure-reservoir factor corrections and actual canonical
+path-route transports are also proved, with their equal-crossing and
+content-shift signs. Their factor polynomials and individual dotted powers are identified with
+the literal swapped path correction by `RepeatedOuterPureProbeMatrix` and
+`RepeatedOuterPureReservoirMatrix`.
+Pure-sector off-diagonal vanishing is proved. None of these results supplies
+the complete `CrossBraid` producer yet.
+
+## Actual raw repeated-outer diagonal
+
+`repeatedOuterDiagonal_correction` proves the two explicit signed sums for
+the actual three-crossing raw routes on `Rᵢ Pⱼ Pᵢ`, under `c.IsInverse`,
+`CrossCoeffInputs`, and `i ≠ j`. Mixed Q conjugation and the forward/back
+probe quadratic relation identify the two polynomials. Coefficient/Q
+commutation is derived, including the odd supported-power signs. The back
+probe crossing is the opposite generator with its exact object transport,
+not an inverse. All repeated-outer supporting modules are exported by the
+library root. The literal RPP path-matrix identification is supplied by
+`RepeatedOuterBraid`. Other repeated-outer placements and full `CrossBraid`
+are not yet supplied.
+
+## Actual repeated-outer dot coordinates
+
+`repeatedOuter_qExpr_correction` now supplies the full correction for actual
+`Rᵢ Pⱼ Pᵢ` coordinates under `c.IsInverse` alone. Its two signed dot relations
+and even/odd denominator equations are proved from the mixed comparison and
+dot supernaturality, with exact valid-step and terminal-object transports.
+No additional dot or coefficient identity is assumed. The later `RepeatedOuterDiagonal` and `RepeatedOuterBraid` identify this
+Q difference with the literal RPP three-crossing/path-matrix correction.
+
+## Repeated-outer polynomial and single-edge coefficient
+
+`repeatedOuterProbeCross_coeff` proves the signed coefficient slide through
+the actual single unequal probe crossing on `Rᵢ Pⱼ Pᵢ`. The separated
+coefficient is the prescribed mixed-comparison conjugate with its Koszul
+normalization. The proof removes only the mixed comparison from the already
+proved dot-slide/denominator transport, not the probe crossing or Q.
+
+`RepeatedOuterPolynomial.odd_correction_smul` proves the unrestricted-degree
+ordered alternating sum for anticommuting outer dots. The even telescoping
+identity is also proved. `RepeatedOuterQCorrection.qExpr_correction` applies
+these to the complete existing `qExpr`: both leading terms and every interior
+coefficient, all parities and disconnected pairs. Parameter support proves
+even outer exponents and commutation of supported middle powers; odd middle
+dots themselves are not assumed to commute. The output is precisely the two
+coefficient sums of `CrossBraid.braidEq_diag` in functional End order.
+
+The later coordinate, diagonal and pure-factor matrix modules identify the
+RPP/PPR crossing differences, denominator identities and literal dot powers.
+Remaining mixed placements and the full `CrossBraid` structure are not
+supplied by this algebraic theorem. Consumers include general
+applications, a nonzero categorical example over `ZMod 9`, and odd
+noncommuting rational matrix dots with arbitrary exponents.
 
 ## Signed coefficient transport
 
