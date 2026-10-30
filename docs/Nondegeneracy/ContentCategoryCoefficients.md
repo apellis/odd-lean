@@ -1,0 +1,13 @@
+# Coefficients on exact-content ELV module categories
+
+Fix a multiset β, the full coefficient truncation N, and cutoff data. Let Cβ be the full truncated ELV category on **all** words with content β. The target is exactly `ContentModules β = Superfunctor k Cβ (SVec k)`, the category on which `contentE` and `contentF` are defined, not modules over a single word's endomorphism ring.
+
+`ELVCategoryCoefficients.lean` constructs its parity shift pointwise, packaging the same category as `contentModuleTarget : PiSCat k`. A coefficient is a supernatural endomorphism of the identity of Cβ. Its realization acts on a module M by applying M to the coefficient components. Super interchange proves naturality against odd as well as even module maps. Realization is linear, preserves composition and identity, and commutes with parity projections.
+
+The integer degree of a coefficient requires every component at every word to have that degree in Cβ. `contentModuleCoeffGrading` is the image of these degrees under realization. It is not a grading on all morphisms between module functors, nor a claim that every module-category central endomorphism lies in the image.
+
+For finite colours, `truncatedContent_bounded` supplies the bound at each word. The finite list of permutations of β yields a common threshold for the diagonal source components at this content. Thus a high-degree central family is zero, and its realization is zero. `contentModuleCoefficientIdeal` applies the existing coefficient-filtration theorem to produce the joint nilpotent ideal on functors into this exact module target, including arbitrary intervening morphisms. The exponent is content-dependent; no finite weight fibre or common exponent over infinitely many contents is asserted. No arithmetic hypothesis beyond the finite-colour source theorem is added. The ground ring remains any commutative ring, not only a field or a fixed numerical specialization.
+
+## Remaining reservoir dependency
+
+This result does not identify the sigma/window residuals with the image coefficients. That requires the specified local augmented inverse and the literal cup–middle–cap closure, with the middle equal to the principal block of the **whole** inverse. No freely chosen inverse of a principal submatrix suffices. The required integer degrees remain d(h+1+2r), 0, and d(1-h+2s). A closure therefore has degree 2d(1+r+s), but identifying that closure with a coefficient in this image, and identifying the actual residual entries with its whiskerings, are separate obligations. This module neither assumes those memberships nor concludes central invertibility. Missing zero-content sectors must still be treated without a blanket two-summand reindexing.
