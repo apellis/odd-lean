@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Append output dot on crossing generators
+
+`ELVAppendOutputDot.lean` constructs `appendOutputEmbedding` with coefficients
+in `Old(v,t)` and `appendOutputDot` by output postcomposition on `AppendTarget`.
+`appendOutputEmbedding_map` identifies the raw output polynomial map after
+coefficientwise quotient; `appendOutputDot_embedding` proves exponent shift.
+`appendOutputDot_crossingClass` proves the crossing-generator dot identity
+with arbitrary old input/output arrows and total old-Hom parity. For odd i,
+`appendOutputDot_crossingClass_odd` gives minus the old-dot crossing plus the
+positive degree-zero polynomial term. No crossing tensor presentation or
+independent contraction map is assumed.
+
+This is the local identity preceding (8) in `DeformedMackeyBoundary.md`, not
+C0 or the global first-order boundary defect. Corrected output projection,
+recovery, crossing annihilation, splitting/kernel identification and descent
+of contraction to the crossing image remain open.
+
 ## Append crossing triangular correction
 
 `ELVAppendCrossingTriangular.appendCrossing_power_triangular` computes every
