@@ -1,10 +1,15 @@
 # Deformed boundary norm and polynomial division
 
-**Status: written proof; not a Lean result.** The boundary construction and
+**Status: written proof, partially formalized in Lean.** The boundary construction and
 compatible lifts are supplied by `DeformedMackeyBoundary.md`. This note supplies the
 norm comparison and division calculation for those specified maps, rather
 than assuming their leading-degree conclusion. It uses the full-coefficient
 QP identity of `DeformedGlobalQP.md`, with the local sign correction in §2.
+
+`ELVEndpointLeading`, `ELVQPDivisionEquiv` and `ELVOutputCompatibleLifts`
+formalize the leading action, signed append-coordinate numerator division and
+compatible long section. The output S identity, degree-zero boundary defect
+and prescribed matrix comparison remain open; numerator division is not (11).
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
@@ -244,5 +249,5 @@ The source matrices `[F̄,j(1),…,j(t^(a−1))]` for a≥0 and
 fixed tensor-unit/counit mate and the prescribed signed dot/crossing maps
 of `DeformedRouquierMatrix.md`. In particular the cap rows EX^r are
 not identified here with the required categorical dotted caps. No full
-action, opposite-side projectivity, reverse adjunction or Lean theorem
-is asserted.
+action, opposite-side projectivity, reverse adjunction or assembled Lean proof
+of (7)–(12) is asserted.

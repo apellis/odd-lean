@@ -26,6 +26,103 @@ These targets are not definitionally the full content-module category.
 Realizing coefficients there, identifying the literal cup–whole-inverse–cap
 errors, and proving `CentralInvertible` remain separate. See
 `CyclotomicContentSupport.md` for the proof and scope.
+## Compatible normalized long lifts
+
+`ELVOutputCompatibleLifts.lean` constructs `outputLongSection` from finite sums
+of the specified normalized prepend-long tails, rather than choosing preimages.
+`outputLongExtraction_section` is its right-inverse identity and
+`boundaryRho_outputLongSection` its corrected-rho intertwining. The coefficient
+operator is the existing `outputCoefficientRho`, retaining total old parity and
+the signed, balance-twisted delta action. `outputCorrectedLift` iterates the
+literal `boundaryRho` on the bare-long class; `outputLongSection_rho_iterate`
+identifies its lift and `outputLongExtraction_correctedLift` its extraction.
+
+`outputCorrectedLift_even` and `outputCorrectedLift_odd` compute every iterate:
+even degree is the normalized monomial, and odd degree has the total old twist
+in the next monomial plus `outputDeltaCoefficient` in the preceding even degree.
+`outputCorrectedCoordinateEquiv` is the explicit invertible triangular change
+on all finite rows, not just pairs; its singleton theorem identifies these
+coordinates with the actual corrected lifts. `outputLongSection_pair_inverse`
+also gives the inverse lift formula on each adjacent coefficient pair.
+
+`ELVBoundaryFirstOrder.lean` supplies the literal P-image `outputLiftBoundary`,
+its unprojected first-order intertwining, and `pMap_sub_outputLiftBoundary_mem`:
+every P-image minus the lifted long-coordinate image is a chronological
+crossing class. `pMap_outputCorrectedLift` computes every corrected P-image.
+
+These statements allow every old word, including empty, every cutoff and full
+old endomorphism coefficients over a commutative ground ring. Variation of the
+old target and the degree-zero polynomial defect remain open. The missing
+producer for the latter is the full-ELV crossing/output-polynomial splitting
+with its moving-dot contraction formula; the raw append-tail coordinate
+equivalence is not identified with that splitting. No canonical S comparison
+or prescribed matrix inverse is concluded here.
+
+
+## Signed old-Hom right division
+
+`ELVQPBoundaryDivision.lean` proves the whole ordered numerator's highest
+old-Hom action (`endpointQP_top`): its explicit scalar unit times the full
+`oldTwist (cutoff i • parity i)`. After inverse-unit normalization,
+`normalizedEndpointQPNumerator_top` retains exactly that invertible twist.
+`endpointQP_above` bounds every higher coordinate.
+
+`endpointQP_division` now gives, for every old-only append target `z`, an
+actual append Hom `g` and remainder `r` with
+`z = appendProjection (appendQP ≫ endpointELV ≫ g) + r`; every supported
+remainder coordinate is strictly below `endpointQPDegree`. The proof uses
+inverse-unit/twist cancellation on single tails and finite-support degree
+induction, not arbitrary polynomial-evaluation multiplicativity.
+
+`ELVQPDivisionEquiv.lean` proves uniqueness, descends the actual numerator
+action to `AppendTarget`, and constructs the canonical linear quotient/remainder
+equivalence `endpointQPDivisionEquiv`. Its `..._numerator` theorem returns
+exactly `(appendProjection g, 0)` on the literal numerator image;
+`endpointQP_remainder_zero_iff` characterizes that image.
+
+Remaining: identify the separate output S/rho/balanced coordinate relation
+and compare the resulting boundary map with the prescribed categorical matrix.
+The local numerator division inverse does not by itself identify that matrix.
+
+## Literal normalized endpoint–QP numerator
+
+`ELVQPNumerator.lean` constructs the separate ordered append-QP polynomial
+and normalizes each factor by its actual scalar unit. Repeated odd factors
+are `C(oldDot²) + X²`; repeated even factors are `−1`. The endpoint ELV
+polynomial stays on the left. `normalizedEndpointQPPolynomial_monic` proves
+monicity, and `normalizedEndpointQPPolynomial_eval` identifies evaluation
+with the literal ordered numerator including its explicit inverse unit.
+`normalizedEndpointQPNumerator_regular` consumes the signed highest-action
+regularity on the old-only append quotient.
+
+The module supplies polynomial right division and a zero-or-strictly-lower
+remainder bound over the noncommutative endomorphism ring, plus evaluation
+of right moving powers. This polynomial result alone does not give arbitrary
+old-Hom division: evaluation of an arbitrary polynomial quotient need not be
+multiplicative, because full ELV coefficients need not commute with the moving
+dot. The signed coordinate argument above supplies the missing division step;
+the output S/rho comparison and boundary inverse remain separate obligations.
+
+## Endpoint ELV leading action at every cutoff
+
+`ELVAppendSignedMovingSupport.lean` proves that an arbitrary append moving
+power shifts the moving exponent and applies `oldTwist (d • parity i)` to
+the entire old coefficient. The degree bound holds with no even-power
+restriction, both alone and followed by arbitrary old-source action.
+
+`ELVEndpointLeading.lean` proves `endpointELV_top` and `endpointELV_above`
+for the actual finite `singleCoefficient` sum. Its leading coefficient is 1,
+and its highest action on arbitrary old coefficients is exactly the total
+old-Hom twist of parity `cutoff i • parity i`. Finite maximal append support
+and involutivity of that twist prove `appendProjection_endpointELV_regular`.
+The actual ordered QP–ELV numerator is then regular by
+`appendProjection_qp_endpointELV_regular`, directly on the old-only append
+quotient; no final-cyclotomic-quotient G cancellation is used.
+
+The explicit unit leading action and signed quotient/remainder division of
+the whole numerator are proved above. Canonical S, its inter-word balanced
+output identification, the full-ELV output-polynomial splitting and the
+prescribed categorical matrix comparison remain separate.
 
 ## Actual append QP highest coefficients
 
@@ -190,6 +287,7 @@ long crossing because repeated-colour factors are nonunits.
 The default-options consumer `scripts/NonVacuity/ELVOutputLongExtraction.lean`
 checks arbitrary words/full coefficients and inventories every declaration of
 the five modules for the standard three axioms.
+
 
 ## Append endpoint norm regularity and G injectivity
 
