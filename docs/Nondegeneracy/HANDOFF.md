@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Reverse repeated-outer two-reservoir 001 to 100 entry
+
+`RepeatedOuterReservoirReverse.braid_entry_path` proves the literal
+`Ri Rj Pi → Pi Rj Ri` braid entry, reducing both complete finite sums.
+The reverse equal crossing retains `-(a ≫ a ≫ J.inv)`, and the unequal reverse
+crossings retain Q. A weighted-square argument combines the actual comparison
+rectangle, unsigned coefficient transport, and supported Q transport. The
+needed Q/coefficient commutation is proved using the two native dot coordinates
+and the existing coefficient denominator unit. No Q or reservoir crossing is
+inverted. The arbitrary-terminal-sector path consumer retains both validity
+pairs, both endpoint equalities, c.IsInverse, CrossCoeffInputs, and i≠j.
+Focused warning-as-error build and strict default-option actual-path consumer
+pass; all 14 owned declarations use only the standard three axioms.
+Other adjacent placements and global structural dispatch remain open.
+This supersedes earlier sections listing reverse 001 to 100 as open.
+
 ## Adjacent-equal two-reservoir 010 to 001 entry
 
 `AdjacentReservoirPreCoefficient.braid_entry_path` proves the literal
