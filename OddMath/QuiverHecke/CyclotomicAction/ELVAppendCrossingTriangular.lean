@@ -14,7 +14,8 @@ an equal-colour final crossing is a signed old-output-dot crossing plus an
 explicit identity output-row polynomial. Arbitrary old input and output
 arrows carry the full ELV coefficient algebra; the correction retains the
 total-Hom parity twist. The equality projects to the actual append-old
-quotient. Global PBW-tail identification, directness, and C0 are not asserted.
+quotient. Canonical castSucc word tails are factored explicitly; global
+nonidentity-coordinate assembly, directness, and C0 are not asserted.
 -/
 
 noncomputable section
@@ -172,5 +173,100 @@ theorem appendOutputPolynomial_precomp (i : I) (v s t : List I)
   | single d g =>
     simp only [Finsupp.lsum_single, LinearMap.comp_apply, Linear.leftComp_apply,
       Finsupp.lsingle_apply, appendOutputPolynomial_single, rightContext_comp, Category.assoc]
+
+open Categorification.TypeA in
+/-- Word-level castSucc factorization before coefficient extension, without matrices. -/
+theorem appendRun_castSucc_factor (i : I) (s t : List I) (j : Fin (s.length + 1))
+    (h : SChain (s ++ [i])
+      (pl (s ++ [i]) (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹))) t)
+    (h' : SChain (s ++ [i] ++ [i])
+      (pl (s ++ [i] ++ [i])
+        (cw (canWord (s.length + 2) (appendRun (s.length + 1) j.castSucc).1⁻¹))) (t ++ [i])) :
+    cl D Sc _ _ (cw (canWord (s.length + 2)
+      (appendRun (s.length + 1) j.castSucc).1⁻¹)) h' =
+      crossLast D Sc s i i ≫ affineRightContext D Sc [i] _ _
+        (cl D Sc _ _ (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹)) h) := by
+  have hf : Fits (s ++ [i]).length
+      (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹)) := by
+    apply fits_cw
+    rw [canWord_appendRun]
+    intro x hx
+    simp only [List.mem_range'_1] at hx
+    simp only [List.length_append, List.length_singleton]
+    omega
+  change _ = crossLast D Sc s i i ≫
+    (cl D Sc _ _ _ h ▷ (pres D Sc).obj (ob D [i]))
+  rw [cl_whiskerRight D Sc _ _ [i] hf, crossLast]
+  erw [cl_comp]
+  apply cl_congr
+  congr 1
+  rw [canWord_appendRun, canWord_appendRun, Fin.val_castSucc]
+  have hj : j.val ≤ s.length := Nat.lt_succ_iff.mp j.2
+  rw [show s.length + 1 - j.val = (s.length - j.val) + 1 by omega,
+    List.range'_concat, cw_append]
+  simp only [cw, List.reverse_singleton, List.map_singleton,
+    List.cons_append, List.nil_append]
+  congr 2
+  omega
+
+open Categorification.TypeA in
+/-- The categorical full-coefficient castSucc triangular identity for append PBW runs. -/
+theorem appendRun_castSucc_triangular (i : I) (v s t u : List I)
+    (j : Fin (s.length + 1)) (m : ℕ)
+    (h : SChain (s ++ [i])
+      (pl (s ++ [i]) (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹))) t)
+    (h' : SChain (s ++ [i] ++ [i])
+      (pl (s ++ [i] ++ [i])
+        (cw (canWord (s.length + 2) (appendRun (s.length + 1) j.castSucc).1⁻¹))) (t ++ [i]))
+    (r : hom D Sc cutoff v (s ++ [i])) (b : hom D Sc cutoff t u) :
+    let g := affineUnit D Sc cutoff _ _
+      (cl D Sc _ _ (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹)) h) ≫ b
+    rightContext D Sc cutoff [i] _ _ r ≫
+        appendMovingPower D Sc cutoff i (s ++ [i]) m ≫
+        affineUnit D Sc cutoff _ _
+          (cl D Sc _ _ (cw (canWord (s.length + 2)
+            (appendRun (s.length + 1) j.castSucc).1⁻¹)) h') ≫
+        rightContext D Sc cutoff [i] _ _ b =
+      SKM.zsign k (D.parity i * D.parity i) ^ m •
+        (rightContext D Sc cutoff [i] _ _ r ≫
+          affineUnit D Sc cutoff _ _ (crossLast D Sc s i i) ≫
+          rightContext D Sc cutoff [i] _ _ (appendMovingPower D Sc cutoff i s m ≫ g)) +
+      rightContext D Sc cutoff [i] _ _ r ≫
+        appendOutputPolynomial D Sc cutoff i (s ++ [i]) u
+          (appendCrossingCorrection D Sc cutoff i s u m g) := by
+  dsimp only
+  rw [appendRun_castSucc_factor, affineUnit_comp, Category.assoc,
+    ← rightContext_affineUnit, ← rightContext_comp]
+  exact appendCrossing_power_triangular_comp D Sc cutoff i v s u m r _
+
+open Categorification.TypeA in
+/-- The castSucc PBW identity in the actual append-old quotient. -/
+theorem appendProjection_run_castSucc_triangular (i : I) (v s t u : List I)
+    (j : Fin (s.length + 1)) (m : ℕ)
+    (h : SChain (s ++ [i])
+      (pl (s ++ [i]) (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹))) t)
+    (h' : SChain (s ++ [i] ++ [i])
+      (pl (s ++ [i] ++ [i])
+        (cw (canWord (s.length + 2) (appendRun (s.length + 1) j.castSucc).1⁻¹))) (t ++ [i]))
+    (r : hom D Sc cutoff v (s ++ [i])) (b : hom D Sc cutoff t u) :
+    let g := affineUnit D Sc cutoff _ _
+      (cl D Sc _ _ (cw (canWord (s.length + 1) (appendRun s.length j).1⁻¹)) h) ≫ b
+    appendProjection D Sc cutoff i v (u ++ [i])
+      (rightContext D Sc cutoff [i] _ _ r ≫
+        appendMovingPower D Sc cutoff i (s ++ [i]) m ≫
+        affineUnit D Sc cutoff _ _
+          (cl D Sc _ _ (cw (canWord (s.length + 2)
+            (appendRun (s.length + 1) j.castSucc).1⁻¹)) h') ≫
+        rightContext D Sc cutoff [i] _ _ b) =
+    appendProjection D Sc cutoff i v (u ++ [i])
+      (SKM.zsign k (D.parity i * D.parity i) ^ m •
+        (rightContext D Sc cutoff [i] _ _ r ≫
+          affineUnit D Sc cutoff _ _ (crossLast D Sc s i i) ≫
+          rightContext D Sc cutoff [i] _ _ (appendMovingPower D Sc cutoff i s m ≫ g)) +
+      rightContext D Sc cutoff [i] _ _ r ≫
+        appendOutputPolynomial D Sc cutoff i (s ++ [i]) u
+          (appendCrossingCorrection D Sc cutoff i s u m g)) := by
+  exact congrArg (appendProjection D Sc cutoff i v (u ++ [i]))
+    (appendRun_castSucc_triangular D Sc cutoff i v s t u j m h h' r b)
 
 end OddMath.QuiverHecke.ELVOld

@@ -12,8 +12,14 @@ actual append-old quotient. `appendOutputPolynomial_precomp` proves the
 correction stays in the identity output row after arbitrary old input arrows.
 No finite-colour, positive-height, field, or parity restriction is imposed.
 
-Still needed: identify these chronological crossing lifts with every nonidentity
-word-level append PBW tail, prove directness, and prove the corrected identity
+`appendRun_castSucc_factor` factors the actual canonical append run as a
+word-level Hom, without matrix singles. `appendRun_castSucc_triangular` applies
+the full-coefficient correction to that canonical castSucc tail with arbitrary
+old input/output arrows; `appendProjection_run_castSucc_triangular` gives its
+append-old quotient equality.
+
+Still needed: assemble these tail identities into global crossing lifts with
+prescribed nonidentity coordinates, prove directness, and prove the corrected identity
 functional kills the old-ideal relation span. C0 and its output-dot contraction
 and degree-zero defect are not constructed. The empty-word case has no crossing
 tail; the local theorem does not replace that separate global decomposition.
