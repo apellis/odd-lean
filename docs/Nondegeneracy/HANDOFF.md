@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## Append crossing triangular correction
+
+`ELVAppendCrossingTriangular.appendCrossing_power_triangular` computes every
+moving-dot power across the final equal-colour crossing on raw full-coefficient
+Homs. `appendCrossingCorrection` explicitly recurses in old output arrows with
+the total-Hom twist; `appendOutputPolynomial` reconstructs the identity output
+row. `appendCrossing_power_triangular_comp` allows arbitrary old input arrows,
+and `appendProjection_crossing_power_triangular` projects the equality to the
+actual append-old quotient. `appendOutputPolynomial_precomp` proves the
+correction stays in the identity output row after arbitrary old input arrows.
+No finite-colour, positive-height, field, or parity restriction is imposed.
+
+Still needed: identify these chronological crossing lifts with every nonidentity
+word-level append PBW tail, prove directness, and prove the corrected identity
+functional kills the old-ideal relation span. C0 and its output-dot contraction
+and degree-zero defect are not constructed. The empty-word case has no crossing
+tail; the local theorem does not replace that separate global decomposition.
+
 ## Compatible normalized long lifts
 
 `ELVOutputCompatibleLifts.lean` constructs `outputLongSection` from finite sums
