@@ -49,6 +49,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceWord
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumWordEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumWordPairing
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumHomAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentYoneda
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleYoneda

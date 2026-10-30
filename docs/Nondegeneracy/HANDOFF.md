@@ -20,9 +20,15 @@ the supplied scalar-data restrictions remain.
 isomorphism with two independent successive representable evaluations after
 twice mapping the existing prefix isomorphism. The terminal-content cast is
 retained; the independent evaluation is not defined from the extended-word iso.
-The bridge to the named `wordPairCoordinates` and the combined source-and-reservoir
-`wordPairing` crossing postcomposition formula remain open. These results do not
-construct a detecting model or final vacuum/corner evaluation.
+`VacuumWordPairing.wordHomEquiv_cross` now proves the combined source-and-reservoir
+Hom crossing formula using the existing whole-word `wordHomEquiv`. The source
+operator is the actual `contentEPairCrossTransform` transported by canonical
+module equalities, not an operator defined by conjugating the word isomorphism.
+Bundled comparison and naturality precede Yoneda evaluation. Mixed and equal
+colours and the explicit total-parity sign are supplied; the reservoir Hom
+need not be even. The separate named `wordPairCoordinates` bridge is not
+required. Strict-default consumers use two actual extended-word modules.
+These results do not construct a detecting model or final vacuum/corner evaluation.
 
 ## Actual polynomial-row normal forms in both height ranges
 
