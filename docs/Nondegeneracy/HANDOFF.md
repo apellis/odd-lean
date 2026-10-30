@@ -223,6 +223,43 @@ is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
 
+## Signed coefficient transport
+
+`CrossCoeff.signed_transport` derives coefficient transport from the two
+signed dot slides for arbitrary linear-functor images of mixed pairs.
+The sign squares to one; the even inverse difference and odd square-difference
+denominator cases are both proved. Only `crossDenom` is cancelled. The
+hypotheses do not contain coefficient transport or a braid identity.
+
+This is a supporting algebraic theorem, not the repeated-outer braid:
+the concrete single-edge dot identifications, finite polynomial correction,
+pure-factor correction transports and complete `CrossBraid` assembly remain.
+The importing consumer audits all declarations and checks the arbitrary-data
+application under default elaboration options, not existence of a model.
+
+## Reverse adjacent split rectangle
+
+`adjacentReverse_splitMatrix` proves the four raw comparison-grid equations
+for the reverse placement `j i i → i i j` with one repeated-colour reservoir
+and two probes. `adjacentReverseMove_preDot` and
+`adjacentReverseMove_postDot` prove the two unsigned repeated-dot slides.
+`adjacentReverseMove_coeff` transports the actual inverse coefficient using
+`c.IsInverse` and `CrossCoeffInputs`; only its known denominator unit is
+cancelled. `adjacentReverse_J_rectangle` is the actual homogeneous
+probe-pair interchange triangle. No Q polynomial or crossing is inverted.
+
+`adjacentReverse_braid` identifies all literal path entries and finite sums
+with these four raw entries, proving the reverse braid for arbitrary source
+and target paths at this occupied endpoint. Its four producers are
+`adjacentReverse_braid_diag`, `adjacentReverse_braid_J`,
+`adjacentReverse_braid_square`, and `adjacentReverse_braid_conj`.
+`AdjacentReverseReduction` proves the exhaustive finite-path reductions;
+`AdjacentReverseMatrix` proves all actual edge comparisons.
+`scripts/NonVacuity/AdjacentReverseBraid.lean` applies the arbitrary-path theorem
+at generic occupied content and audits every declaration owned by all six
+reverse modules. Other mixed endpoints and the repeated-outer correction
+remain open; complete `CrossBraid` and nondegeneracy are not concluded.
+
 ## Adjacent-equal pure-reservoir braids
 
 `pureReservoir_braid` proves literal braid equality for arbitrary source and
