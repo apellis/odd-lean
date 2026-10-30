@@ -125,7 +125,7 @@ private theorem induction_eq {C B : Type u} [Category.{u} C] [Category.{u} B]
   subst K
   rfl
 
-private def inductionCompOfEq
+def inductionCompOfEq
     {C B E : Type u} [Category.{u} C] [Category.{u} B] [Category.{u} E]
     [Preadditive C] [Linear k C] [Supercategory k C]
     [Preadditive B] [Linear k B] [Supercategory k B]
@@ -207,7 +207,7 @@ def contentEPairComparison (β : Multiset I) (i j : I) :
   contentInductionComp D Sc cutoff N β [i] [j] _ rfl _
 
 
-private theorem inductionCompOfEq_hom_total_tensor
+theorem inductionCompOfEq_hom_total_tensor
     {C B E : Type u} [Category.{u} C] [Category.{u} B] [Category.{u} E]
     [Preadditive C] [Linear k C] [Supercategory k C]
     [Preadditive B] [Linear k B] [Supercategory k B]

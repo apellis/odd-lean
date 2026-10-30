@@ -7,7 +7,10 @@ comparison on arbitrary nested balanced pure tensors. Its result retains the
 endpoint equality morphism from the content-append comparison, before the
 mapped inner arrow and outer arrow. This supplies a pointwise route to the
 content associativity square without converting whole induced functor trees.
-The square and triple whiskering identifications remain open.
+`contentInductionCompTo_hom_total_tensor` extends the same formula to an
+explicit intermediate content equality. Its proof first decomposes the named
+comparison, rather than eliminating that equality through an entire tensor
+statement. The square and triple whiskering identifications remain open.
 
 ## Induction whiskering comparison
 

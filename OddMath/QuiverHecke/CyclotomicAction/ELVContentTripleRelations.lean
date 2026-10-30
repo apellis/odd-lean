@@ -82,6 +82,15 @@ private theorem tripleHomogeneous_total
   rcases parity_eq_zero_or_one p with rfl | rfl <;>
     simp [SuperNatTrans.total, IsSupernatural.toSuperNatTrans]
 
+theorem contentAppend_compTo_eq (β : Multiset I) (σ : List I) (δ : Multiset I)
+    (hδ : β + (σ : Multiset I) = δ) (τ : List I) (γ : Multiset I)
+    (hγ : δ + (τ : Multiset I) = γ)
+    (h : β + ((σ ++ τ : List I) : Multiset I) = γ) :
+    contentAppendTo D Sc cutoff N β σ δ hδ ⋙ contentAppendTo D Sc cutoff N δ τ γ hγ =
+      contentAppendTo D Sc cutoff N β (σ ++ τ) γ h := by
+  subst δ
+  exact contentAppend_comp_eq D Sc cutoff N β σ τ γ hγ h
+
 /-- The intermediate content equality is explicit as well. -/
 def contentInductionCompTo (β : Multiset I) (σ : List I) (δ : Multiset I)
     (hδ : β + (σ : Multiset I) = δ) (τ : List I) (γ : Multiset I)
