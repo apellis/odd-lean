@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Adjacent-equal two-reservoir 010 to 001 entry
+
+`AdjacentReservoirPreCoefficient.braid_entry_path` proves the literal
+`Ri Pi Rj → Rj Ri Pi` braid entry at arbitrary terminal sectors and paths
+identified with these constructors. Both complete finite sums are reduced;
+the native coefficient slide is transported through the unequal mixed
+comparison's forward map. Both reservoir-order validity pairs and endpoint
+equalities remain explicit, along with c.IsInverse and CrossCoeffInputs.
+No Q or reservoir crossing is inverted. The focused warning-as-error build
+and strict default-option actual-entry consumer pass; the whole owner audit
+checks 11 declarations with only the standard three axioms.
+Reverse repeated-outer 001 to 100 and global CrossBraid dispatch remain open.
+
 ## Adjacent-equal two-reservoir coefficient entry
 
 `AdjacentReservoirCoefficient.braid_entry_path` proves the actual complete
