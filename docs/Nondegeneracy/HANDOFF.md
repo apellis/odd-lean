@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Integer support at arbitrary strand content
+
+`ELVAppendSpanning.appendFiniteRangeSpan_eq_top` factors finite crossing-skeleton
+and bounded-moving-power ranges through the smaller coefficient-truncated Hom.
+The source-positioned powers retain the old parity twist and do not commute
+arbitrary exterior coefficients past a dot. `ELVAppendDegree` proves the degree
+shift of each range. `ELVVacuumSupport` uses the coefficient-weight truncation
+on the full polynomial/exterior coefficient basis, not just even powers.
+
+Reverse word induction in `ELVContentSupport` then proves
+`truncatedContent_bounded`: every truncated Hom has bounded integer support
+for finite colour data, with no bound on word lengths, repetitions or parities.
+A symmetrizer and homogeneous scalars are required for the integer grading;
+the ground ring is any ordinary commutative ring. For arbitrary colour sets,
+`truncatedContent_bounded_of_bound` instead takes the explicit arithmetic
+coefficient degree/weight bound. Finiteness of colours is used only to derive
+that bound at the vacuum; finite boundary-word content alone does not control
+coefficients at unrelated colours.
+
+`ELVContentModuleBound` supplies the resulting word-endomorphism regular and
+module-superfunctor coefficient ideals with content-dependent thresholds.
+These targets are not definitionally the full content-module category.
+Realizing coefficients there, identifying the literal cup–whole-inverse–cap
+errors, and proving `CentralInvertible` remain separate. See
+`CyclotomicContentSupport.md` for the proof and scope.
+
 ## Actual append QP highest coefficients
 
 `appendQPFactor_odd` proves the repeated-odd signed QP factor is
@@ -50,12 +76,11 @@ old endomorphisms on the left. Multiplication of the recurrence is on the right;
 arbitrary old coefficients are not commuted past an odd dot. Degree zero and
 zero rings are included.
 
-Remaining support step: extend this last-dot reduction through the finite
-append-shuffle spanning family and the homogeneous old-Hom induction, then
-apply coefficient-weight truncation to obtain the all-content integer upper
-bound. Neither that bound, reservoir nilpotence, nor the central inverse is
-claimed by these six modules. The default consumer audits every declaration
-owned by all six modules against the standard three axioms.
+The finite append spanning and homogeneous content induction described above
+now extend this reduction to the all-content integer-support bound after
+coefficient-weight truncation. The closure comparison and central inverse are
+not supplied by these six monic-reduction modules. The default consumer audits
+every declaration owned by all six against the standard three axioms.
 
 
 ## Ordered reverse boundary polynomial and all corrected iterates
