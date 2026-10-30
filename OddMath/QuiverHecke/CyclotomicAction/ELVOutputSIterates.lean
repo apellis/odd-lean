@@ -14,6 +14,10 @@ source iterate with the finite sum of the prescribed corrected long coordinates.
 The coefficients are the independently defined ordered square product, not an
 extraction-defined polynomial. Their even support and total-twist invariance are
 proved before using the corrected even/odd lift formulas.
+`outputLongExtraction_boundaryRho_move_polynomial` further gives the literal
+finite operator sum S(rhobar) w_d, where w_d is the actual corrected lift of
+the old identity. Chronological coefficient postcomposition intertwines
+rhobar by `outputCoefficientRho_postcomp`; centrality is not assumed.
 
 `reverseBoundary_sub_correctedS_mem` couples this extraction to the ordered
 reverse-QP P-image modulo the chronological crossing image. This is the input
@@ -240,4 +244,99 @@ theorem outputLongExtraction_boundaryRho_move_balanced (p : ZMod 2)
     outputCoefficientRho_iterate_even_single D Sc cutoff p j v n
       (independentOutputS_support_even D Sc cutoff j.1 j.2 v hn)]
 
+private theorem twist_oldComp (p : ZMod 2) (v : List I) (b c : Old D Sc cutoff v v) :
+    oldTwist D Sc cutoff p v v (oldComp D Sc cutoff v v v b c) =
+      oldComp D Sc cutoff v v v (oldTwist D Sc cutoff p v v b)
+        (oldTwist D Sc cutoff p v v c) := by
+  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  change (ideal D Sc cutoff v v).mkQ (twist k p (b ≫ c)) =
+    (ideal D Sc cutoff v v).mkQ (twist k p b ≫ twist k p c)
+  rw [twist_comp]
+
+private theorem precomp_oldComp (v : List I) (a : hom D Sc cutoff v v)
+    (b c : Old D Sc cutoff v v) :
+    oldPrecomp D Sc cutoff v v a (oldComp D Sc cutoff v v v b c) =
+      oldComp D Sc cutoff v v v (oldPrecomp D Sc cutoff v v a b) c := by
+  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  change (ideal D Sc cutoff v v).mkQ (a ≫ (b ≫ c)) =
+    (ideal D Sc cutoff v v).mkQ ((a ≫ b) ≫ c)
+  rw [Category.assoc]
+
+/-- Coefficient-operator intertwining in chronological composition order.
+No commutation or centrality of the old coefficient is assumed. -/
+theorem outputCoefficientRho_postcomp (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (f : ℕ →₀ Old D Sc cutoff v v) :
+    outputCoefficientRho D Sc cutoff p j v
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputCoefficientRho D Sc cutoff p j v f) := by
+  induction f using Finsupp.induction_linear with
+  | zero => simp only [map_zero]
+  | add f g hf hg => simp only [map_add, hf, hg]
+  | single m b =>
+    simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single,
+      LinearMap.flip_apply, outputCoefficientRho_single, map_add, map_smul]
+    rw [twist_oldComp, hc, precomp_oldComp]
+
+theorem outputCoefficientRho_iterate_postcomp (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (d : ℕ) (f : ℕ →₀ Old D Sc cutoff v v) :
+    (outputCoefficientRho D Sc cutoff p j v)^[d]
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        ((outputCoefficientRho D Sc cutoff p j v)^[d] f) := by
+  induction d with
+  | zero => rfl
+  | succ d ih =>
+    rw [Function.iterate_succ_apply', ih, outputCoefficientRho_postcomp D Sc cutoff p j v c hc,
+      Function.iterate_succ_apply']
+
+theorem outputCorrectedLift_coefficient (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c) :
+    outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d c) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputLongExtraction D Sc cutoff p j.1 v
+          (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _)))) := by
+  rw [outputLongExtraction_correctedLift, outputLongExtraction_correctedLift,
+    ← outputCoefficientRho_iterate_postcomp D Sc cutoff p j v c hc]
+  congr 1
+  simp only [Finsupp.mapRange.linearMap_apply, Finsupp.mapRange_single, LinearMap.flip_apply]
+  congr 1
+  obtain ⟨c, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  rw [oldComp_mk, Category.id_comp]
+
+/-- The independent polynomial evaluated at the actual coefficient rho on the
+prescribed corrected unit vector. Coefficient action is chronological
+postcomposition, and its intertwining is proved, not stipulated. -/
+theorem outputLongExtraction_boundaryRho_move_polynomial (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+        (projection D Sc cutoff j.1 v (v ++ [j.1])
+          (affineUnit D Sc cutoff (j.1 :: v) (v ++ [j.1]) (moveHom D Sc j.1 [] v)))) =
+      SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+        ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          Finsupp.mapRange.linearMap
+            ((oldComp D Sc cutoff v v v).flip (independentOutputS D Sc cutoff j.1 v n))
+            ((outputCoefficientRho D Sc cutoff p j v)^[n]
+              (outputLongExtraction D Sc cutoff p j.1 v
+                (outputCorrectedLift D Sc cutoff p j v d
+                  ((ideal D Sc cutoff v v).mkQ (𝟙 _))))) := by
+  rw [outputLongExtraction_boundaryRho_move_independentS]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro n _
+  rw [outputCorrectedLift_coefficient D Sc cutoff p j v (d + n) _
+    (independentOutputS_oldTwist D Sc cutoff j.1 v n (D.parity j.1)),
+    outputLongExtraction_correctedLift, outputLongExtraction_correctedLift,
+    Nat.add_comm d n, Function.iterate_add_apply]
 end OddMath.QuiverHecke.ELVOld

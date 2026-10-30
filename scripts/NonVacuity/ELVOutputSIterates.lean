@@ -106,6 +106,55 @@ example (p : ZMod 2)
               (oldComp D Sc cutoff v v v b (independentOutputS D Sc cutoff j.1 v n))) :=
   outputLongExtraction_boundaryRho_move_balanced D Sc cutoff p j v d b
 
+
+example (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (f : ℕ →₀ Old D Sc cutoff v v) :
+    outputCoefficientRho D Sc cutoff p j v
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputCoefficientRho D Sc cutoff p j v f) :=
+  outputCoefficientRho_postcomp D Sc cutoff p j v c hc f
+
+example (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c)
+    (d : ℕ) (f : ℕ →₀ Old D Sc cutoff v v) :
+    (outputCoefficientRho D Sc cutoff p j v)^[d]
+      (Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c) f) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        ((outputCoefficientRho D Sc cutoff p j v)^[d] f) :=
+  outputCoefficientRho_iterate_postcomp D Sc cutoff p j v c hc d f
+
+example (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ)
+    (c : Old D Sc cutoff v v)
+    (hc : oldTwist D Sc cutoff (D.parity j.1) v v c = c) :
+    outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d c) =
+      Finsupp.mapRange.linearMap ((oldComp D Sc cutoff v v v).flip c)
+        (outputLongExtraction D Sc cutoff p j.1 v
+          (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _)))) :=
+  outputCorrectedLift_coefficient D Sc cutoff p j v d c hc
+
+example (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    outputLongExtraction D Sc cutoff p j.1 v
+      ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d]
+        (projection D Sc cutoff j.1 v (v ++ [j.1])
+          (affineUnit D Sc cutoff (j.1 :: v) (v ++ [j.1]) (moveHom D Sc j.1 [] v)))) =
+      SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+        ∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          Finsupp.mapRange.linearMap
+            ((oldComp D Sc cutoff v v v).flip (independentOutputS D Sc cutoff j.1 v n))
+            ((outputCoefficientRho D Sc cutoff p j v)^[n]
+              (outputLongExtraction D Sc cutoff p j.1 v
+                (outputCorrectedLift D Sc cutoff p j v d
+                  ((ideal D Sc cutoff v v).mkQ (𝟙 _))))) :=
+  outputLongExtraction_boundaryRho_move_polynomial D Sc cutoff p j v d
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv

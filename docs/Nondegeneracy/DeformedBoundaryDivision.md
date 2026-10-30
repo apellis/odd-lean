@@ -155,6 +155,18 @@ convention at odd moving colour, including empty old words. Its P-comparison
 is modulo the chronological crossing span; the polynomial projection needed
 for (7) remains separate. The ordinary append extraction retains old height n+1.
 
+More precisely, put C_c(f)(m) = oldComp(f(m), c), in chronological
+composition order, and w_d = outputLongExtraction(outputCorrectedLift(d, 1)).
+The checked polynomial identity is
+
+    extraction(rho^d(move)) = zsign(p_i)^count_i · Σ_n C_(S_n)(rhobar^n(w_d)).
+
+`outputCoefficientRho_postcomp` proves C_c commutes with rhobar when the
+old twist fixes c, and `independentOutputS_oldTwist` verifies this for every
+S_n. Neither commutativity of the full exterior coefficient algebra nor
+centrality of S is imposed. The corrected basis and coefficient operator
+are the existing actual full-ELV constructions, not newly declared actions.
+
 In expanding G, only the term taking the crossing part of every g_a
 has permutation U. Any omitted crossing has smaller Coxeter length.
 The equal-colour crossing coefficient is minus the square difference

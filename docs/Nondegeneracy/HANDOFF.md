@@ -9,6 +9,10 @@ prescribed corrected long coordinates with independent S coefficients.
 even support and total-twist invariance from the ordered dot monomials. The
 even/odd coordinate formulas retain the signed, balance-twisted delta action;
 the balanced version retains an arbitrary full old quotient coefficient.
+`outputLongExtraction_boundaryRho_move_polynomial` is the literal finite
+operator sum S(rhobar) w_d. Its coefficient operation is chronological
+postcomposition; `outputCoefficientRho_postcomp` proves the necessary
+intertwining for twist-fixed coefficients without a centrality assumption.
 
 `reverseBoundary_sub_correctedS_mem` couples those coordinates to the ordered
 reverse-QP P-image modulo the chronological crossing span, with both library
