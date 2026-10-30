@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Repeated-outer polynomial and single-edge coefficient
+
+`repeatedOuterProbeCross_coeff` proves the signed coefficient slide through
+the actual single unequal probe crossing on `Rᵢ Pⱼ Pᵢ`. The separated
+coefficient is the prescribed mixed-comparison conjugate with its Koszul
+normalization. The proof removes only the mixed comparison from the already
+proved dot-slide/denominator transport, not the probe crossing or Q.
+
+`RepeatedOuterPolynomial.odd_correction_smul` proves the unrestricted-degree
+ordered alternating sum for anticommuting outer dots. The even telescoping
+identity is also proved. `RepeatedOuterQCorrection.qExpr_correction` applies
+these to the complete existing `qExpr`: both leading terms and every interior
+coefficient, all parities and disconnected pairs. Parameter support proves
+even outer exponents and commutation of supported middle powers; odd middle
+dots themselves are not assumed to commute. The output is precisely the two
+coefficient sums of `CrossBraid.braidEq_diag` in functional End order.
+
+Remaining: identify the actual three-crossing difference with this polynomial
+difference, prove the separated coefficient's dot-coordinate denominator
+identities, identify the literal path dots, finish the other repeated-outer
+entries and pure-factor correction transports, and assemble `CrossBraid`.
+The algebraic theorem is not yet a braid producer. Consumers include general
+applications, a nonzero categorical example over `ZMod 9`, and odd
+noncommuting rational matrix dots with arbitrary exponents.
+
 ## Signed coefficient transport
 
 `CrossCoeff.signed_transport` derives coefficient transport from the two
