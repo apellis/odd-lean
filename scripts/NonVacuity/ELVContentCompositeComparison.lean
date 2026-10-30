@@ -30,6 +30,25 @@ example (β : Multiset I) (σ τ : List I) (γ : Multiset I)
         (contentInductionTo D Sc cutoff N β (σ ++ τ) γ h').map f :=
   contentInductionComp_naturality D Sc cutoff N β σ τ γ h h' f
 
+example (β : Multiset I) (σ τ : List I)
+    (γ : Multiset I) (h : (β + (σ : Multiset I)) + (τ : Multiset I) = γ)
+    (h' : β + ((σ ++ τ : List I) : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (v : ContentCategory D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + (σ : Multiset I)))
+    (z : ContentCategory D Sc cutoff N γ)
+    (g : (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h).obj w ⟶ z)
+    (a : (contentAppend D Sc cutoff N β σ).obj v ⟶ w) (m : M.obj v) :
+    ((contentInductionComp D Sc cutoff N β σ τ γ h h').hom.app M).total z
+      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h)
+        (BalancedInduction.induced (contentAppend D Sc cutoff N β σ) M).toFunctor w g
+        (BalancedInduction.tensor (contentAppend D Sc cutoff N β σ) M.toFunctor v a m)) =
+    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β (σ ++ τ) γ h') M.toFunctor v
+      (eqToHom (congrArg (fun F => F.obj v)
+        (contentAppend_comp_eq D Sc cutoff N β σ τ γ h h')).symm ≫
+        (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h).map a ≫ g) m := by
+  apply contentInductionComp_hom_total_tensor
+
+#print axioms contentInductionComp_hom_total_tensor
 #print axioms contentEPairComparison
 #print axioms contentInductionComp_mem
 #print axioms contentInductionComp_naturality

@@ -125,7 +125,7 @@ private theorem induction_eq {C B : Type u} [Category.{u} C] [Category.{u} B]
   subst K
   rfl
 
-private def inductionCompOfEq
+def inductionCompOfEq
     {C B E : Type u} [Category.{u} C] [Category.{u} B] [Category.{u} E]
     [Preadditive C] [Linear k C] [Supercategory k C]
     [Preadditive B] [Linear k B] [Supercategory k B]
@@ -205,5 +205,47 @@ def contentEPairComparison (β : Multiset I) (i j : I) :
         ((β + ([i] : Multiset I)) + ([j] : Multiset I))
         (by rw [add_assoc]; rfl) :=
   contentInductionComp D Sc cutoff N β [i] [j] _ rfl _
+
+
+theorem inductionCompOfEq_hom_total_tensor
+    {C B E : Type u} [Category.{u} C] [Category.{u} B] [Category.{u} E]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    [Preadditive B] [Linear k B] [Supercategory k B]
+    [Preadditive E] [Linear k E] [Supercategory k E]
+    (J : C ⥤ B) (K : B ⥤ E) (L : C ⥤ E)
+    [J.Additive] [J.Linear k] [IsSuperfunctor k J]
+    [K.Additive] [K.Linear k] [IsSuperfunctor k K]
+    [L.Additive] [L.Linear k] [IsSuperfunctor k L] (e : J ⋙ K = L)
+    (M : Superfunctor k C (SVec k)) (v : C) (w : B) (z : E)
+    (g : K.obj w ⟶ z) (a : J.obj v ⟶ w) (m : M.obj v) :
+    ((inductionCompOfEq J K L e).hom.app M).total z
+      (BalancedInduction.tensor K (BalancedInduction.induced J M).toFunctor w g
+        (BalancedInduction.tensor J M.toFunctor v a m)) =
+    BalancedInduction.tensor L M.toFunctor v
+      (eqToHom (congrArg (fun F : C ⥤ E => F.obj v) e).symm ≫ K.map a ≫ g) m := by
+  subst L
+  simpa only [inductionCompOfEq, eqToIso_refl, Iso.trans_refl, eqToHom_refl,
+    Category.id_comp] using BalancedInduction.inductionComp_hom_total_tensor J K M v w z g a m
+
+/-- The content comparison flattens balanced tensors, retaining its endpoint cast. -/
+theorem contentInductionComp_hom_total_tensor (β : Multiset I) (σ τ : List I)
+    (γ : Multiset I) (h : (β + (σ : Multiset I)) + (τ : Multiset I) = γ)
+    (h' : β + ((σ ++ τ : List I) : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (v : ContentCategory D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + (σ : Multiset I)))
+    (z : ContentCategory D Sc cutoff N γ)
+    (g : (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h).obj w ⟶ z)
+    (a : (contentAppend D Sc cutoff N β σ).obj v ⟶ w) (m : M.obj v) :
+    ((contentInductionComp D Sc cutoff N β σ τ γ h h').hom.app M).total z
+      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h)
+        (BalancedInduction.induced (contentAppend D Sc cutoff N β σ) M).toFunctor w g
+        (BalancedInduction.tensor (contentAppend D Sc cutoff N β σ) M.toFunctor v a m)) =
+    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β (σ ++ τ) γ h') M.toFunctor v
+      (eqToHom (congrArg (fun F => F.obj v)
+        (contentAppend_comp_eq D Sc cutoff N β σ τ γ h h')).symm ≫
+        (contentAppendTo D Sc cutoff N (β + (σ : Multiset I)) τ γ h).map a ≫ g) m :=
+by
+  unfold contentInductionComp
+  apply inductionCompOfEq_hom_total_tensor
 
 end OddMath.QuiverHecke.ELVOld
