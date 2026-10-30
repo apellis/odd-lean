@@ -40,7 +40,14 @@ through any algebra map from the affine height algebra into a possibly
 noncommutative algebra and on every left module. Separate support constraints
 remove the total input parity from the signed dot-power exponent. This is
 not yet an identification with the exact-content induction operators.
-Presentation-relation identification on those operators, transport from
+`ELVContentModuleRelations.contentInductionCross_square` proves square-zero
+for the actual normalized crossing as a module-map equality. Both normalized
+nilHecke slides are proved on every induced module object using the actual
+two-strand dots; `contentInductionCross_linear_eq_neg` identifies the crossing
+with the negative raw operator, including its coefficient parity twist.
+No source nilHecke relation is assumed: the proof uses the affine quotient
+relation and the actual ELV quotient/balanced tensor composition.
+Mixed presentation-relation identification on those operators, transport from
 composite content append to word append, weight assembly, and local
 inversion matrices remain separate;
 no full factor action is claimed. Integer grading of the source categories
