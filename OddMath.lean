@@ -35,6 +35,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVParabolicSpan
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVPCentral
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRowsEquivalence
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVPolynomialIdempotents
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceProjective
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
