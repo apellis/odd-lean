@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Two-reservoir forward off-diagonal
+
+`RepeatedOuterReservoirOffDiagonal.repeatedReservoir_offDiag_transport`
+(namespace `ProbeReservoir`) proves the literal `Pi Rj Ri → Ri Rj Pi`
+entry for arbitrary terminal sectors, supplied swapped generators and
+commutative ground rings. Both full intermediate sums reduce by spectator
+vanishing to the mixed-comparison rectangle with the unequal reservoir
+crossing. No coefficient inverse or polynomial invertibility is assumed.
+The reverse two-reservoir off-diagonal, the four remaining mixed repeated-outer
+diagonal placements, and both adjacent-equal two-reservoir blocks remain open.
+Thus neither a full `CrossBraid` producer nor full nondegeneracy is claimed.
+
 ## Separated right diagonal route
 
 `RepeatedOuterLiteralDiagonal.separatedOuter_braidRight` (namespace
