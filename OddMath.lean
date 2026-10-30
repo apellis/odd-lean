@@ -57,6 +57,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRowsEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVPolynomialIdempotents
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceProjective
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSupport
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientPresheaf
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentExactness
