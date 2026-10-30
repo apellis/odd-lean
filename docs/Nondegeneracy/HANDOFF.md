@@ -1,5 +1,19 @@
 # Odd nondegeneracy: restart state
 
+## Signed coefficient transport
+
+`CrossCoeff.signed_transport` derives coefficient transport from the two
+signed dot slides for arbitrary linear-functor images of mixed pairs.
+The sign squares to one; the even inverse difference and odd square-difference
+denominator cases are both proved. Only `crossDenom` is cancelled. The
+hypotheses do not contain coefficient transport or a braid identity.
+
+This is a supporting algebraic theorem, not the repeated-outer braid:
+the concrete single-edge dot identifications, finite polynomial correction,
+pure-factor correction transports and complete `CrossBraid` assembly remain.
+The importing consumer audits all declarations and checks the arbitrary-data
+application under default elaboration options, not existence of a model.
+
 ## Reverse adjacent split rectangle
 
 `adjacentReverse_splitMatrix` proves the four raw comparison-grid equations
