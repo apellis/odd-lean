@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Adjacent-equal split repeated-colour component
+
+`adjacentMixed_braid` proves literal `braidLeft = braidRight` on
+`Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` for `i ≠ j`, arbitrary supplied data, weights,
+contents and commutative coefficients, under `c.IsInverse` and `CrossCoeffInputs`.
+The two-path expansions are evaluated: spectator-bit zeros remove off-route
+terms and the surviving products are the source coefficient followed by the
+prescribed Q-weighted two-crossing map, and that map followed by the target
+coefficient. Both repeated-dot transports are derived from local and spectator
+slides; their two signs multiply to one. The odd inverse-coefficient transport
+cancels only the mapped target unit denominator. Transport of `a²` is also proved.
+
+`adjacentMixed_J_rectangle` proves the Q-weighted comparison rectangle on
+`Pᵢ Rᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` from the two-probe interchange identity and supported
+polynomial transport. It cancels only mixed comparison isomorphisms, not Q or
+factor crossings. `AdjacentSplitBraid.lean` applies the braid theorem at generic
+occupied reservoir content and audits every declaration owned by the four new
+modules, including private and generated declarations.
+
+Remaining: the other split-sector entries, the pure-reservoir adjacent-equal
+cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+a complete `CrossBraid`, nor nondegeneracy is concluded.
+
 ## Adjacent-equal pure-probe braids and split-sector support
 
 `pureProbe_braid` proves the literal swapped braid equality for arbitrary source
@@ -16,11 +39,9 @@ is unique under `c.IsInverse` and `CrossCoeffInputs`; the odd case cancels only
 the genuine unit mixed denominator. These are supporting results, not a
 split-sector braid theorem.
 
-Remaining: identify the surviving crossing products after support reduction;
-prove both repeated-colour dot transports through the prescribed two crossings
-with the local and spectator signs; transfer to `a` and `a²`; retain the Q
-weight and derive the J rectangle. The pure-reservoir adjacent-equal sector and
-the other split-sector placements also remain. Thus neither arbitrary-endpoint
+The surviving products, both repeated-dot transports, inverse-coefficient
+transport and Q-weighted J rectangle for the component above are now proved.
+The pure-reservoir adjacent-equal sector and other split-sector placements remain. Thus neither arbitrary-endpoint
 `iij`/`ijj` nor `CrossBraid.braid` is concluded. Existing `braid_same` additionally
 uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir dot).
 

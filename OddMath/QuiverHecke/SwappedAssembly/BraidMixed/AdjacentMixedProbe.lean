@@ -9,16 +9,11 @@ import OddMath.QuiverHecke.SwappedAssembly.Supernatural.CrossCoeff
 
 Supporting finite-sum reductions for Brundan–Ellis (1.9), in the component
 `Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ`. Repeated colours give two paths with the same endpoints.
-This module does not yet prove the braid component. The exact remaining obligations
-are to specialize the displayed sums to `Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ`, kill the
-three off-route terms on each side using the literal distinct crossing entries,
-and identify the remaining products with `a_source ≫ R` and `R ≫ a_target`.
-Here `R` contains the prescribed probe crossing and Q-weighted inverse mixed
-interchange; the parameter polynomial must be retained, not cancelled.
-One must derive unsigned transport of both repeated-colour dots through this
-actual two-crossing map from the local and spectator slides (each sign occurs
-twice), then transport the even inverse or odd unit denominator. No such dot
-transport or braid is a hypothesis of any theorem below.
+This module supplies the expansions used by `AdjacentMixedBraid`, which proves
+the component after evaluating the crossing entries and applying the repeated-dot
+and inverse-coefficient transports of `AdjacentMixedTransport` and
+`AdjacentMixedCoefficient`. The prescribed Q factor is retained throughout.
+No dot transport or braid is a hypothesis of any theorem below.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
