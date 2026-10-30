@@ -17,10 +17,19 @@ the source action retains p while the output action has shift zero.
 shift; `evenPolynomialBoundary_shift_high` derives the actual row's positive
 coefficient recurrence from P and the constant C₀ defect.
 
-These are boundary bridge identities, not the leading law for A(single d b).
-That leading/support law with its normalization twist, and even-moving division
-and height splittings remain open. Independent S support
-alone does not fill this gap. No balanced categorical inverse is asserted.
+`evenPolynomialBoundary_single_above` and `evenPolynomialBoundary_single_top`
+now prove the genuine full-coefficient support and leading laws. Writing
+M = endpointQPDegree, D = outputSDegree, the value on single d b vanishes in
+coefficient m when d+M < m+D. If D ≤ d+M, its coefficient d+M−D is exactly
+`appendQPProductUnit • oldTwist p b`. `evenBoundaryLeadingEquiv` is this unit
+multiplication after the total p twist. If d+M < D the whole value is zero.
+The proof first links the actual row to the ordered reverse numerator, then
+uses the actual positive-coordinate recurrence to obtain convolution; it does
+not infer a boundary theorem from independent S alone. The existing all-colour
+integer Cartan-height identity applies unchanged.
+
+Even-moving division and height splittings remain open. No balanced categorical
+inverse is asserted.
 
 ## Vacuum source comparison and iterated crossing coordinates
 
