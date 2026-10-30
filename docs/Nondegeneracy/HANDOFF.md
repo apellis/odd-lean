@@ -65,6 +65,141 @@ consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
 
 
+## Adjacent-equal split repeated-colour component
+
+`adjacentMixed_braid` proves literal `braidLeft = braidRight` on
+`Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` for `i ≠ j`, arbitrary supplied data, weights,
+contents and commutative coefficients, under `c.IsInverse` and `CrossCoeffInputs`.
+The two-path expansions are evaluated: spectator-bit zeros remove off-route
+terms and the surviving products are the source coefficient followed by the
+prescribed Q-weighted two-crossing map, and that map followed by the target
+coefficient. Both repeated-dot transports are derived from local and spectator
+slides; their two signs multiply to one. The odd inverse-coefficient transport
+cancels only the mapped target unit denominator. Transport of `a²` is also proved.
+
+`adjacentMixed_J_rectangle` proves the Q-weighted comparison rectangle on
+`Pᵢ Rᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` from the two-probe interchange identity and supported
+polynomial transport. It cancels only mixed comparison isomorphisms, not Q or
+factor crossings. `AdjacentSplitBraid.lean` applies the braid theorem at generic
+occupied reservoir content and audits every declaration owned by the four new
+modules, including private and generated declarations.
+
+Remaining: the other split-sector entries, the pure-reservoir adjacent-equal
+cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+a complete `CrossBraid`, nor nondegeneracy is concluded.
+
+## Adjacent-equal pure-probe braids and split-sector support
+
+`pureProbe_braid` proves the literal swapped braid equality for arbitrary source
+and target paths at the pure-probe endpoint whenever the outer colours differ.
+`adjacentPureProbe_iij` and `adjacentPureProbe_ijj` specialize it. The proof
+retains the equal-colour negative Koszul normalization and uses the supplied
+probe factor braid. Pure-probe endpoint uniqueness follows from total probe
+content, not distinctness or independence of roots.
+
+`AdjacentMixedProbe` classifies the two paths at the endpoint with one repeated
+colour on each side and the other colour on the probe. Its `iij`, `iji`, and
+`jii` finite sums and both literal braid expansions are proved. The coefficient
+is unique under `c.IsInverse` and `CrossCoeffInputs`; the odd case cancels only
+the genuine unit mixed denominator. These are supporting results, not a
+split-sector braid theorem.
+
+The surviving products, both repeated-dot transports, inverse-coefficient
+transport and Q-weighted J rectangle for the component above are now proved.
+The pure-reservoir adjacent-equal sector and other split-sector placements remain. Thus neither arbitrary-endpoint
+`iij`/`ijj` nor `CrossBraid.braid` is concluded. Existing `braid_same` additionally
+uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir dot).
+
+
+
+
+## Full ELV ideal sum and P cokernel
+
+`ELVFirstDotTransport.firstDot_relation_transport` proves the inverse-normalizer
+step in diagram order: `x ≫ f = f ≫ (x + 2(-1)^N delta)`. Thus the shift is
++2 delta at even cutoff and −2 delta at odd cutoff. It uses the actual full
+coefficient quotient; the even-cutoff top relation also covers cutoff zero.
+`ELVParabolicTransport.outputParabolic_relation_transport` combines this with
+coefficient and tail parity transport and singleton first-block normal forms.
+
+`OutputShuffle` identifies the short output shuffles as right extensions and
+the long output shuffle as `lastToFirstHom`, not its inverse.
+`ELVIdealSum.parabolic_term_mem_appendRelations_sup_range` discharges the
+previous concrete term hypothesis. `ideal_eq_appendRelations_sup_range` is
+(IS2), with all words, cutoffs and exterior coefficients, without additional
+normality, flatness, finite-colour or field assumptions.
+
+`ELVCokernel.canonicalAppendTarget` maps the append-old quotient to
+`Old (v ++ [i]) w`; `ker_canonicalAppendTarget` is exactly `range pMap`.
+`pMapCokernelEquiv` identifies the quotient by this range with that actual
+cyclotomic quotient and agrees with the canonical map on representatives.
+These wordwise ground-ring statements feed the content polynomial exact
+sequence below. Finite projectivity and the full nondegeneracy theorem remain
+separate.
+
+
+## Ordinary right content polynomial modules
+
+`ELVOldCategory` assembles the full old cyclotomic Hom quotients into a linear
+category. `ELVEndpointPresheaf` descends the old action in both arguments for
+every pair of old words. `ELVContentModule` forms its finite content Hom-matrix
+ring B and the prescribed quotient matrices K₀, K₁ and K₁′ as ordinary right
+B[s]-modules. Source actions retain epsilon and eta respectively. The polynomial
+construction works for a noncommutative B, with no super-opposite convention.
+Words of fixed content are finite permutations of a chosen representative;
+no finiteness assumption on the colour type is needed. Empty content and zero
+quotient corners are allowed.
+
+`pPolynomial` is the prescribed componentwise P, right B[s]-linear and
+injective (`pPolynomial_injective`). Its right-linearity includes every old
+word-to-word arrow, not just diagonal operators. The central variable is the
+moving dot/square. `sourceContentCoordinateEquiv` retains ambient words, old
+words, moving shuffles and moving exponents in the established PBW quotient
+coordinates. `centralSource_pair_shift` keeps old coefficients unchanged,
+and `centralSource_residue` keeps the exponent modulo `centralDegree`.
+
+
+**Source endpoints completed:** `ELVSourceRows` reconstructs entire old rows
+across every source column, and `ELVSourceRowsEquivalence` proves both inverse
+laws. `ELVSourcePolynomialRows` splits the moving exponent into central blocks
+and residues and constructs a polynomial-linear finite-free section/retraction.
+`ELVPolynomialIdempotents` identifies its image literally with the finite family
+of right ideals e(v)B[s]. `ELVOld.K1IdempotentEquiv` and
+`K1PrimeIdempotentEquiv` give the actual endpoint equivalences; `K1_projective`,
+`K1_finite`, `K1Prime_projective`, and `K1Prime_finite` follow from those concrete
+retracts. Epsilon and eta remain in reconstruction and signed PBW extraction.
+`sourceEndpointTwistEquiv` proves an equivalence rather than identifying their
+actions. Arbitrary off-diagonal old coefficients and the central variable are
+respected; empty content, zero cutoff and zero corners require no exceptions.
+
+**Remaining in this slice:** the append-side K₀ decomposition is not constructed.
+It needs the full signed-coefficient append PBW descent and common-row assembly;
+the ordinary-coefficient append package is not a substitute. Consequently this
+slice proves the two source finite-projectivity inputs, not the complete pair
+of finite-projective endpoints. Cokernel and ideal-sum exactness are supplied
+by the independent constructions below, not reproved or assumed here.
+
+The importing consumer `scripts/NonVacuity/ELVSourceProjective.lean` exercises
+both polynomial equivalences, actual projectivity instances, mixed moving
+parities, zero cutoff and empty content, full noncommutative scalar compatibility,
+and literal idempotent-ideal membership. Its audit enumerates all declarations
+from each of the five owned modules via `moduleData.constNames`, including
+generated and private declarations.
+
+`ELVQuotientPresheaf` constructs the enlarged quotient action by appending
+old arrows on representatives and precomposing by the moving dot/square.
+Both ideal closures and naturality of the canonical quotient are proved.
+`ELVContentExactness.canonicalAppendPolynomial` assembles the canonical
+B[s]-linear surjection; `ker_canonicalAppendPolynomial` identifies its kernel
+with the prescribed epsilon-twisted `pPolynomial` image using IS2.
+`pPolynomialCokernelEquiv` is polynomial-linear, agrees with the canonical
+map on representatives, and targets these enlarged cyclotomic quotients.
+`contentShortComplex_shortExact` proves the literal sequence
+0 → K₁ → K₀ → F → 0, with arbitrary colours and cutoffs, including zero and
+empty content. No finite-projectivity assertion is included.
+
+
+
 ## Ordered product and normalized extraction
 
 The collected endpoint polynomial is now identified with the independently
@@ -94,6 +229,7 @@ Affine coefficients include every old height; the ordinary-polynomial append
 source retains its existing old-height n+1 scope. Source equations (6)–(7),
 the full ELV boundary and corrected w_k identification remain separate.
 
+
 ## Full-coefficient output-parabolic spanning for the ideal sum
 
 `ELVParabolicSpan.lean` supplies the affine spanning input (C) of
@@ -106,15 +242,17 @@ proves these terms span; it does not assume a PBW decomposition or flatness.
 `ideal_nil` and `appendRelations_nil` handle the empty old word explicitly.
 
 The named IS2 consumer is
-`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its remaining
-hypothesis is a concrete shuffle-term containment. It is not discharged:
-one must move `relation j t` across `shuffleParabolic` using the full
-normalizer (first dot translated by −2 delta, total coefficient-plus-tail
-parity, and delta times the top coefficient zero), then identify short
-shuffles with appended old relations and the long shuffle with `appendW`.
-This is the output-oriented shuffle, not the inverse shuffle used in input
-prepend coordinates. No ideal-sum equality or cokernel identification is
-claimed. Those remain the next target; P injectivity is already proved below.
+`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its concrete
+shuffle-term containment hypothesis is discharged by `ELVIdealSum` above.
+The reduction transports `relation j t` across `shuffleParabolic` using
+the inverse normalizer (first dot translated by +2(-1)^N delta, total
+coefficient-plus-tail parity, and delta times the top coefficient zero),
+then identifies short shuffles with appended old relations and the long
+shuffle with `appendW`. This is the output-oriented shuffle, not the
+inverse shuffle used in input prepend coordinates. The ideal-sum equality
+and cokernel identification are now proved above; P injectivity is already
+proved below.
+
 
 ## Central moving-variable linearity of ELV P
 
@@ -131,8 +269,8 @@ coefficient relation are retained in the existing ELV coefficient algebra.
 `pCentralMap` is a k[s]-linear map on these quotients. `pCentralMap_oldSource`
 retains the total-parity twist `appendQ` on the source; both old operators
 are k[s]-linear and kill the old ideal. Old balance is reused, not assumed.
-Assembly into content-level ordinary right B[s]-modules, their projectivity,
-and the exact cokernel sequence are still separate obligations.
+The content-level ordinary right B[s]-module assembly is supplied above;
+projectivity and the exact cokernel sequence remain separate obligations.
 
 ## Injectivity of the actual full ELV P map
 
@@ -142,7 +280,7 @@ words, cutoffs and full exterior coefficients over the given commutative
 ground ring. No balance, monicity, freeness or injectivity assumption is added.
 This closes the injectivity step of `DeformedSquareResolution.md` §3;
 The central-variable and twisted old-action compatibility are supplied above;
-content-level B[s]-module assembly, the cokernel, exactness and projectivity remain.
+content-level B[s]-module assembly is supplied above; the cokernel, exactness and projectivity remain.
 
 ## Full ELV Q descent and quotient composition
 
@@ -419,6 +557,7 @@ equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
 The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
+
 
 ## Pairwise-distinct braid on arbitrary paths
 

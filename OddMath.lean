@@ -41,8 +41,27 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVQDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVPInjective
 import OddMath.QuiverHecke.CyclotomicAction.ELVParabolicSpan
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVFirstDotTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVParabolicTransport
+import OddMath.QuiverHecke.OutputShuffle
+import OddMath.QuiverHecke.CyclotomicAction.ELVIdealSum
+import OddMath.QuiverHecke.CyclotomicAction.ELVCokernel
+
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVPCentral
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRowsEquivalence
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVPolynomialIdempotents
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceProjective
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientPresheaf
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentExactness
+
+
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
@@ -1457,6 +1476,12 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctReservoirSe
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureProbeSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureReservoirSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.PairwiseDistinct
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentPureProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedTransport
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedCoefficient
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedBraid
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedRectangle
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctProbeSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctProbeSector
