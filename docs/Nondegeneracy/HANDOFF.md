@@ -10,9 +10,21 @@ roundtrips, naturality for every target arrow and evenness of both maps are
 proved over an arbitrary ordinary commutative ground ring, with the full ELV
 coefficient quotient retained. This is the representable step of
 `DeformedActionAssembly.md` §5 toward vacuum word realization. No local
-inverse or factor-model assumption is used. Iterated vacuum-word and
-normalized dot/cross comparisons, rank-zero coefficient/corner identification,
-and the actual bubble values remain separate obligations.
+inverse or factor-model assumption is used.
+
+`ELVVacuumRepresentable.VacuumRepresentable.wordIso` then identifies actual
+iterated one-colour induction from the empty-word representable with the
+representable of the reversed operator list (`wordObject_word`). The rank-zero
+module is the full coefficient-truncated ELV representable, not an asserted
+ordinary-even-power quotient. `dot_coordinates` and `equalCross_coordinates`
+compute raw appended generators on represented prefixes: `a_v ≫ twist k p h`,
+with `appendEnd_coordinates_of_mem` displaying `sign k (p*r)` for the total
+coefficient-plus-diagram parity `r`. `appendEnd_identity` evaluates to the
+actual quotient class of the whiskered affine map. These are precomposition
+formulas, not the postcomposition required by the swapped corner evaluator.
+Mixed-crossing common-content transport, normalization and compatibility of
+block generators with iterated single-colour induction remain separate, as do
+rank-zero coefficient/corner identification and actual bubble values.
 
 ## Actual full-cyclotomic monic annihilator and bounded moving powers
 
