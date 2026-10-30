@@ -690,6 +690,47 @@ concrete reverse boundary norm from full QP. None of these final implications
 is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
+## Literal middle-probe diagonal correction
+
+`ProbeReservoir.middleProbe_braidEq_diag_transport` proves the complete
+`Ri Pj Ri` diagonal at arbitrary terminal sectors and paths with that endpoint.
+The actual finite sums give the reverse Q commutator of the reservoir crossing.
+Its signed ordered correction follows from the opposite slide and supported
+sum reflection, with all three literal dot coordinates retained. No Q or
+crossing inversion is introduced. The remaining repeated-outer mixed diagonals
+are `Pi Rj Ri` and `Ri Rj Pi`; the whole `CrossBraid` is not assembled.
+
+## Literal middle-reservoir diagonal correction
+
+`ProbeReservoir.middleReservoir_braidEq_diag_transport` proves the complete
+`Pi Rj Pi` diagonal field at arbitrary terminal sectors and paths with its
+endpoint. Both literal braid sums reduce by path uniqueness. Mixed comparison
+conjugation identifies their difference with the normalized probe crossing's
+Q commutator. All three literal dot entries, all their powers and both signed
+coefficient sums are transported by the same comparison. No coefficient-inverse
+assumption or Q/probe-crossing inverse is used. Together with the middle-probe
+result above, the remaining mixed diagonals are `Pi Rj Ri` and `Ri Rj Pi`.
+
+## Adjacent-equal reservoir comparison entry
+
+`ProbeReservoir.adjacentReservoir_comparison_braid_transport` proves the literal
+`Pi Ri Rj → Rj Ri Pi` entry at arbitrary terminal sectors. The comparison
+rectangle retains the actual unequal reservoir crossing and uses no coefficient
+inverse assumption. This is one entry of the adjacent-equal two-reservoir block,
+not its full assembly.
+
+## Two-reservoir forward off-diagonal
+
+`RepeatedOuterReservoirOffDiagonal.repeatedReservoir_offDiag_transport`
+(namespace `ProbeReservoir`) proves the literal `Pi Rj Ri → Ri Rj Pi`
+entry for arbitrary terminal sectors, supplied swapped generators and
+commutative ground rings. Both full intermediate sums reduce by spectator
+vanishing to the mixed-comparison rectangle with the unequal reservoir
+crossing. No coefficient inverse or polynomial invertibility is assumed.
+The reverse two-reservoir off-diagonal, the two remaining mixed repeated-outer
+diagonals `Pi Rj Ri` and `Ri Rj Pi`, and the other adjacent-equal two-reservoir
+entries remain open.
+Thus neither a full `CrossBraid` producer nor full nondegeneracy is claimed.
 ## Separated right diagonal route
 
 `RepeatedOuterLiteralDiagonal.separatedOuter_braidRight` (namespace
