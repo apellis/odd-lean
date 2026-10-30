@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## All-module content induction comparison
+
+`ELVContentCompositeComparison.contentInductionComp` compares successive
+content induction with block induction at an explicit common target.
+`contentEPairComparison` specializes it to the literal composite of the two
+existing single-letter `contentE` functors. Both directions are even
+(`contentInductionComp_mem`), and ordinary naturality includes every
+supernatural module map, including odd maps. The construction uses the
+existing balanced composition isomorphism and the proved associativity of
+right append on full coefficient tensors and quotient morphisms. No
+additional scalar, flatness, finite-colour or parity hypotheses are used.
+Transport of prescribed crossings/dots, the composite quadratic, coherent
+triples and composite mixed braid remain the next obligations; these are
+not consequences asserted by this comparison alone.
+
 ## Common-content mixed braid
 
 `ELVContentMixedBraid.contentMixedBraid_source_linear` proves the normalized

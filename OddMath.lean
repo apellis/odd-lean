@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCompositeComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentOperatorQuadratic
