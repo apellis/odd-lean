@@ -211,6 +211,83 @@ inversion; none follows merely from injectivity. The expected QP leading
 unit retains the repeated-even sign and every distinct-colour `Sc.t i j`,
 including disconnected colours. Earlier open-status statements below are
 superseded only for the concrete quotient reverse identity and its iterates.
+## Independent leading-source output monomials
+
+`ELVLeadingSourceTransport.leading_source_output_transport` transports each
+independently specified ordered-product source-dot monomial followed by bare U
+to chronological U–old-dots–last-dots modulo the exact chronological short span.
+`leading_source_output_extraction` evaluates that monomial using
+`canonical_output_extraction`: its only coefficient is the old quotient class
+of its independent old dot word, in its independently counted moving degree.
+Both results hold for arbitrary colour types, words, cutoffs and commutative
+ground rings, in both moving parities. The proof separates the Hom-level source
+dot recurrence, uses old-dot twist invariance, and compares first/last dot
+coordinates; it assumes no transport.
+
+`ELVOutputSComparison` now sums these genuine terms.
+`independentOutputS` is the explicit finite choice sum, with old quotient dot
+monomials and independently counted moving degrees, multiplied by
+`zsign k (parity i) ^ v.count i`. It is not defined using any extractor.
+`outputLongExtraction_squareProduct` identifies extraction of the independent
+unsigned square product followed by bare U with this coefficient row, using
+`leadingSource_expansion_eq_sign_smul`. The actual moving chain satisfies
+`outputLongExtraction_move_independentS`: its extraction is exactly
+`zsign k (parity i) ^ v.count i • independentOutputS`.
+`outputLongCoordinate_move_independentS_balanced` retains an arbitrary full-ELV
+old quotient coefficient b by chronological `oldComp b` on the left. No finite
+colour assumption, field specialization or exterior commutativity is used.
+This completes the independent fixed-word output polynomial comparison, not
+the corrected-rho lift compatibility, first-order boundary/division or prescribed
+inverse; those remain separate downstream steps.
+
+## Two-sided output-order balanced extractor
+
+`ELVOutputOrderBalance.outputLongCoordinate_outputOld` identifies actual output
+old action for every quotient element and degree. `outputOldExtraction` descends
+that actual action to arbitrary old quotient coefficients.
+`outputLongCoordinate_twoSided_balanced` gives left oldComp by the source coefficient
+and right oldComp by the output coefficient twisted by
+`p + parity i * wordSumParity v + n * parity i`. The proof uses all dotted
+bare-long rows, the exact chronological kernel and a finite normalized long
+section; it assumes neither transport nor balancing. These extraction APIs are
+on fixed old-word summands; `bareUFull_transport` itself has arbitrary endpoints.
+`canonical_output_balanced` and `canonical_output_extraction` identify the literal
+chronological U–old–last-dots monomial: degree m extracts to
+`oldComp b (oldTwist (p + parity i * wordSumParity v) c)`, and other degrees
+vanish. The moving-degree twist cancels by actual graded dot/old commutation;
+last dots are after the output old factor. Identifying the independently evaluated
+S in corrected rho coordinates remains open.
+
+## Output old relative stability
+
+`ELVOutputOldTransport.act_appendInsert_chronologicalShortSpan` proves stability
+of the chronological short span under arbitrary full-ELV output old arrows,
+including distinct old source and target words. The exact kernel theorem gives
+`outputLongExtraction_act_appendInsert_congr`: equal extracted rows remain equal
+after an old output endomorphism. This avoids the invalid total-crossing-length
+bound. `bareLong_cross_chronologicalShort` now proves the actual old crossing
+generator slide across the bare long chain, for arbitrary left/right old contexts
+and arbitrary full ELV coefficient. Its sign is
+`zsign k (parity i * wordSumParity v * parity a * parity b)`. The one braid
+correction has fewer than `v.length` crossings; far sweeps are exact. This
+estimate is used only for a single generator, not for arbitrary old composites.
+`tmul_shortSpan` lifts relative scalar shortness to chronological shortness.
+`bareLong_dot_chronologicalShort` proves the old dot slide for arbitrary old
+contexts and full ELV coefficients: output position `l.length` becomes input
+position `l.length+1`, and the sign is
+`zsign k (parity i * wordSumParity v * parity a)`. Both generator types are
+therefore transported without replacing bare U by the moving intertwiner.
+`OutputOldComposite.error_mem` now transports every scalar old arrow, with
+`twist k (parity i * wordSumParity v)`. `bareU_homogeneous_transport` gives
+the corresponding explicit homogeneous sign. Its proof uses actual positioned-word
+induction and PBW linear spanning, and `short_comp_old` proves output stability
+of the entire relative scalar span. `bareUFull_transport` now lifts the actual
+transport to arbitrary full ELV old arrows and arbitrary endpoints, with twist
+`parity i * wordSumParity v` on total coefficient-plus-diagram parity. The
+coefficient twist cancels the box-product composition sign.
+`bareUFull_old_representative_independent` makes the bare-long row depend only
+on the old quotient arrow. The fixed-word two-sided balanced identification is
+proved in `ELVOutputOrderBalance`; canonical S remains open.
 
 ## Old source action on normalized output coordinates
 
