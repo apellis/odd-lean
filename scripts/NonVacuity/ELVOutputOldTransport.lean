@@ -42,6 +42,24 @@ example (i a b : I) (l r : List I)
       chronologicalShortSpan D Sc cutoff i (l ++ a :: b :: r) (l ++ b :: a :: r) :=
   bareLong_cross_chronologicalShort D Sc cutoff i a b l r c h h'
 
+example (i a : I) (l r : List I)
+    (c : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
+    (h : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]))
+      ((l ++ a :: r) ++ [i]))
+    (h' : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))))
+      ((l ++ a :: r) ++ [i])) :
+    projection D Sc cutoff i (l ++ a :: r) ((l ++ a :: r) ++ [i])
+      (c ⊗ₜ[k] (cl D Sc _ _
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]) h -
+        SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) •
+        cl D Sc _ _ ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))) h')) ∈
+      chronologicalShortSpan D Sc cutoff i (l ++ a :: r) (l ++ a :: r) :=
+  bareLong_dot_chronologicalShort D Sc cutoff i a l r c h h'
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv

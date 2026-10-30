@@ -490,3 +490,183 @@ theorem bareLong_cross_chronologicalShort (i a b : I) (l r : List I)
     List.append_assoc, List.cons_append] using hh
 
 end OddMath.QuiverHecke.ELVOld
+
+noncomputable section
+open CategoryTheory StringDiagrams Categorification.TypeA
+namespace OddMath.QuiverHecke
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k] (D : SKM.Datum I X)
+
+private theorem sourceDotPosition_leadingMoveWord_before (q s : List I) (p : ℕ) (hp : p < q.length) :
+    sourceDotPosition (leadingMoveWord q s) p = p := by
+  induction s generalizing q with
+  | nil => rfl
+  | cons j s ih =>
+    rw [leadingMoveWord, sourceDotPosition_append, ih (q ++ [j]) (by simp; omega)]
+    simp [sourceDotPosition, swapNat, show p ≠ q.length by omega,
+      show p ≠ q.length + 1 by omega]
+
+private theorem sourceDotSign_leadingMoveWord_before (i a : I) (q s : List I) (p : ℕ)
+    (hp : p < q.length) (ha : q[p]? = some a) :
+    sourceDotSign D (k := k) (q ++ i :: s) (leadingMoveWord q s) p =
+      SKM.zsign k (D.parity i * wordSumParity D s * D.parity a) := by
+  induction s generalizing q with
+  | nil => simp [leadingMoveWord, sourceDotSign, wordSumParity, SKM.zsign]
+  | cons j s ih =>
+    rw [leadingMoveWord, sourceDotSign_append,
+      sourceDotPosition_leadingMoveWord_before _ _ _ (by simp; omega)]
+    have ht : tgt (q ++ i :: j :: s) (cw [q.length]) = (q ++ [j]) ++ i :: s := by
+      simp [cw, PG.act, List.append_assoc]
+    rw [ht, ih (q ++ [j]) (by simp; omega) (by simpa [List.getElem?_append_left hp])]
+    have hd : (PG.dot p).par D (q ++ i :: j :: s) = D.parity a := by
+      simp [PG.par, List.getElem?_append_left hp, ha]
+    simp [sourceDotSign, crossDotExponent, show p ≠ q.length by omega,
+      show p ≠ q.length + 1 by omega, PG.par, List.getElem?_append_left hp, ha,
+      wordSumParity, mul_add, zsign_add_aux, mul_comm]
+
+theorem sourceDotPosition_leadingMoveWord_old (q l r : List I) (a : I) :
+    sourceDotPosition (leadingMoveWord q (l ++ a :: r)) (q.length + l.length) =
+      q.length + l.length + 1 := by
+  induction l generalizing q with
+  | nil =>
+    rw [List.nil_append, leadingMoveWord, sourceDotPosition_append,
+      sourceDotPosition_leadingMoveWord_before _ _ _ (by simp)]
+    simp [sourceDotPosition, swapNat]
+  | cons b l ih =>
+    rw [List.cons_append, leadingMoveWord, sourceDotPosition_append]
+    have he : q.length + (b :: l).length = (q ++ [b]).length + l.length := by simp; omega
+    rw [he, ih]
+    simp only [sourceDotPosition, swapNat]
+    split_ifs <;> simp_all only [List.length_append, List.length_cons] <;> omega
+
+theorem sourceDotSign_leadingMoveWord_old (i a : I) (q l r : List I) :
+    sourceDotSign D (k := k) (q ++ i :: (l ++ a :: r))
+      (leadingMoveWord q (l ++ a :: r)) (q.length + l.length) =
+      SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) := by
+  induction l generalizing q with
+  | nil =>
+    simp only [List.nil_append, List.length_nil, Nat.add_zero]
+    rw [leadingMoveWord, sourceDotSign_append,
+      sourceDotPosition_leadingMoveWord_before _ _ _ (by simp)]
+    have ht : tgt (q ++ i :: a :: r) (cw [q.length]) = (q ++ [a]) ++ i :: r := by
+      simp [cw, PG.act, List.append_assoc]
+    rw [ht, sourceDotSign_leadingMoveWord_before D i a (q ++ [a]) r q.length
+      (by simp) (by simp)]
+    have hs : sourceDotSign D (k := k) (q ++ i :: a :: r) [q.length] q.length =
+        SKM.zsign k (D.parity i * D.parity a) := by
+      simp [sourceDotSign, crossDotExponent, PG.par]
+    rw [hs]
+    rw [← zsign_add_aux]
+    congr 1
+    simp only [wordSumParity, List.map_cons, List.sum_cons]
+    have ha := SKM.zmod2_mul_self (D.parity a)
+    linear_combination -D.parity i * ha
+  | cons b l ih =>
+    rw [List.cons_append, leadingMoveWord, sourceDotSign_append]
+    have he : q.length + (b :: l).length = (q ++ [b]).length + l.length := by simp; omega
+    rw [he, sourceDotPosition_leadingMoveWord_old]
+    have ht : tgt (q ++ i :: b :: (l ++ a :: r)) (cw [q.length]) =
+        (q ++ [b]) ++ i :: (l ++ a :: r) := by simp [cw, PG.act, List.append_assoc]
+    rw [ht, ih]
+    have hd : (PG.dot ((q ++ [b]).length + l.length + 1)).par D
+        (q ++ i :: b :: (l ++ a :: r)) = D.parity a := by
+      have hh : (q ++ [b]).length + l.length + 1 = (q ++ [i,b] ++ l).length := by simp; omega
+      rw [hh]
+      have hw : q ++ i :: b :: (l ++ a :: r) = (q ++ [i,b] ++ l) ++ a :: r := by simp
+      rw [hw]
+      simp [PG.par]
+    have hn : (q ++ [b]).length + l.length + 1 ≠ q.length := by simp; omega
+    have hn' : (q ++ [b]).length + l.length + 1 ≠ q.length + 1 := by simp; omega
+    simp only [sourceDotSign, crossDotExponent, hn, hn', false_or, ite_false, cw, List.reverse_nil, List.map_nil, tgt_nil, hd, mul_one]
+    have hc : (PG.cross q.length).par D (q ++ i :: b :: (l ++ a :: r)) =
+        D.parity i * D.parity b := by simp [PG.par]
+    rw [hc, ← zsign_add_aux]
+    congr 1
+    simp [wordSumParity, mul_add, add_mul]
+    ring
+
+private theorem leadingMoveWord_length_oldDot (q s : List I) :
+    (leadingMoveWord q s).length = s.length := by
+  induction s generalizing q with
+  | nil => rfl
+  | cons a s ih => simp [leadingMoveWord, ih]
+
+variable (Sc : SKM.Scalars D k)
+
+/-- The old output dot crosses the bare long shuffle, with sharp old-length error. -/
+theorem bareLong_dot_low (i a : I) (l r : List I)
+    (h : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]))
+      ((l ++ a :: r) ++ [i]))
+    (h' : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))))
+      ((l ++ a :: r) ++ [i])) :
+    cl D Sc _ _ (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]) h -
+      SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) •
+        cl D Sc _ _ ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))) h' ∈
+      Low D Sc _ _ (l ++ a :: r).length := by
+  have hp : sourceDotPosition (leadingMoveWord [] (l ++ a :: r)) l.length =
+      l.length + 1 := by simpa using sourceDotPosition_leadingMoveWord_old [] l r a
+  have hs : sourceDotSign D (k := k) (i :: (l ++ a :: r))
+      (leadingMoveWord [] (l ++ a :: r)) l.length =
+      SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) := by
+    simpa using sourceDotSign_leadingMoveWord_old D i a [] l r
+  have hv : ValidWord ((i :: (l ++ a :: r)).length)
+      (leadingMoveWord [] (l ++ a :: r)) := by
+    simpa using leadingMoveWord_valid ([] : List I) (l ++ a :: r)
+  have hh := dots_down_signed D Sc (t' := (l ++ a :: r) ++ [i]) [] rfl
+    (leadingMoveWord [] (l ++ a :: r)) hv
+    [l.length] (by intro p hp; simp only [List.mem_singleton] at hp; subst p; simp) []
+    (by simpa using h)
+  simp only [List.nil_append, List.append_nil, List.map_cons, List.map_nil,
+    hp, sourceDotsSign, List.prod_cons, List.prod_nil, mul_one, tgt_nil, hs,
+    crossCount_nil, Nat.zero_add, Nat.add_zero, leadingMoveWord_length_oldDot] at hh
+  obtain ⟨_, hh⟩ := hh
+  exact hh
+
+open scoped TensorProduct
+namespace ELVOld
+variable (cutoff : I → ℕ)
+
+/-- The generator slide modulo the exact chronological short span, with arbitrary
+full exterior coefficients; no restriction on colours, parity, or old length. -/
+theorem bareLong_dot_chronologicalShort (i a : I) (l r : List I)
+    (c : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
+    (h : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]))
+      ((l ++ a :: r) ++ [i]))
+    (h' : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))))
+      ((l ++ a :: r) ++ [i])) :
+    projection D Sc cutoff i (l ++ a :: r) ((l ++ a :: r) ++ [i])
+      (c ⊗ₜ[k] (cl D Sc _ _
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]) h -
+        SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: r) * D.parity a) •
+        cl D Sc _ _ ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))) h')) ∈
+      chronologicalShortSpan D Sc cutoff i (l ++ a :: r) (l ++ a :: r) := by
+  apply tmul_shortSpan D Sc cutoff
+  apply SmallerTailNormalization.low_le_shortSpan D Sc
+  exact bareLong_dot_low D Sc i a l r h h'
+
+theorem bareLong_dot_chains (i a : I) (l r : List I) :
+    SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        (cw (leadingMoveWord [] (l ++ a :: r)) ++ [.dot l.length]))
+      ((l ++ a :: r) ++ [i]) ∧
+    SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r))
+        ([.dot (l.length+1)] ++ cw (leadingMoveWord [] (l ++ a :: r))))
+      ((l ++ a :: r) ++ [i]) := by
+  have hU : SChain (i :: (l ++ a :: r))
+      (pl (i :: (l ++ a :: r)) (cw (leadingMoveWord [] (l ++ a :: r))))
+      ((l ++ a :: r) ++ [i]) := by
+    simpa only [List.nil_append] using leadingMoveWord_sChain i [] (l ++ a :: r)
+  exact ⟨sChain_append_of hU (sChain_dotAny _ _),
+    sChain_append_of (sChain_dotAny _ _) hU⟩
+
+end ELVOld
+end OddMath.QuiverHecke
