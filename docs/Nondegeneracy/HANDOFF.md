@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Induction whiskering comparison
+
+`ELVInductionWhiskering.compForward_transform_inner` and
+`compForward_transform_outer` identify the canonical balanced composition
+comparison with independently defined inner and outer supernatural whiskering
+on every module over an arbitrary commutative ring. They preserve the full
+outer-kernel twist, without defining either whiskering by transport. These
+comparison squares are the first step toward identifying the content pair
+and triple transported maps with whiskered generators. Content recasts,
+associativity of comparison trees, and the resulting whiskered quadratic
+and mixed braid still require proof.
+
 ## All-module content induction comparison
 
 `ELVContentCompositeComparison.contentInductionComp` compares successive
