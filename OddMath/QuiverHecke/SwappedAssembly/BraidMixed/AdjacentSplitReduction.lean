@@ -28,7 +28,7 @@ variable (ν : X) (i j : I) (s : Sector I) (hR : StepValid (true, i) false s)
     nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))
   (Z : P.H (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s))))
 
-/-- The left braid sum has only its diagonal route at this endpoint. -/
+/-- Evaluate the left braid sum for an arbitrary source and fixed target. -/
 theorem adjacentSplit_left_q (hij : i ≠ j)
     (p : SPath (wd D ν [up i, up i, up j]) s
       (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))) :
@@ -69,7 +69,7 @@ theorem adjacentSplit_left_q (hij : i ≠ j)
   simp only [Limits.comp_zero, add_zero, Category.assoc]
   rfl
 
-/-- The left braid sum has only its diagonal route at this endpoint. -/
+/-- Evaluate the left braid sum for an arbitrary source and fixed target. -/
 theorem adjacentSplit_left_v (hij : i ≠ j)
     (p : SPath (wd D ν [up i, up i, up j]) s
       (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))) :
@@ -110,7 +110,7 @@ theorem adjacentSplit_left_v (hij : i ≠ j)
   simp only [Limits.comp_zero, zero_add, Category.assoc]
   rfl
 
-/-- The right braid sum has only its diagonal route at this endpoint. -/
+/-- Evaluate the right braid sum for a fixed source and arbitrary target. -/
 theorem adjacentSplit_right_a (hij : i ≠ j)
     (p : SPath (wd D ν [up j, up i, up i]) s
       (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))) :
@@ -151,7 +151,7 @@ theorem adjacentSplit_right_a (hij : i ≠ j)
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero]
   rfl
 
-/-- The right braid sum has only its diagonal route at this endpoint. -/
+/-- Evaluate the right braid sum for a fixed source and arbitrary target. -/
 theorem adjacentSplit_right_b (hij : i ≠ j)
     (p : SPath (wd D ν [up j, up i, up i]) s
       (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))) :

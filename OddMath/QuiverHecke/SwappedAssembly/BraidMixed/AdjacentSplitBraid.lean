@@ -77,12 +77,17 @@ include hs₀
 /-- The raw square rectangle, before path endpoint transport. -/
 theorem adjacentSplit_square_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInputs)
     (hij : i ≠ j) :
-    (-(c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫ c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫ (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).inv)) ≫ ((P.step (true, i) true s trivial).map
+    (-(c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
+        c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
+        (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).inv)) ≫
+        ((P.step (true, i) true s trivial).map
         ((P.mixedJ j i (nextSector (true, i) true s) hR (hs ▸ Z)).inv ≫
           P.mixedQ j i (nextSector (true, i) true s) hR (hs ▸ Z)) ≫
         P.adjacentMixedProbeCross i j s hR hs₀ Z) =
       (P.adjacentMixedMove i j s hR hs Z) ≫ (P.step (true, j) true s trivial).map
-        (-(c.a i (nextSector (true, j) true s) hR Z ≫ c.a i (nextSector (true, j) true s) hR Z ≫ (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
+        (-(c.a i (nextSector (true, j) true s) hR Z ≫
+        c.a i (nextSector (true, j) true s) hR Z ≫
+        (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
   let J := P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))
   let K := (P.step (true, j) true s trivial).mapIso
     (P.mixedJ i i (nextSector (true, j) true s) hR Z)
@@ -105,7 +110,10 @@ theorem adjacentSplit_square_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInput
 /-- The raw conj rectangle, before path endpoint transport. -/
 theorem adjacentSplit_conj_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInputs)
     (hij : i ≠ j) :
-    (-((P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).hom ≫ c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫ (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).inv)) ≫ ((P.step (true, i) true s trivial).map
+    (-((P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).hom ≫
+        c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
+        (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).inv)) ≫
+        ((P.step (true, i) true s trivial).map
         ((P.mixedJ j i (nextSector (true, i) true s) hR (hs ▸ Z)).inv ≫
           P.mixedQ j i (nextSector (true, i) true s) hR (hs ▸ Z)) ≫
         P.adjacentMixedProbeCross i j s hR hs₀ Z) =
@@ -113,7 +121,9 @@ theorem adjacentSplit_conj_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInputs)
         ((P.mixedJ j i (nextSector (true, i) true s) hR (hs ▸ Z)).inv ≫
           P.mixedQ j i (nextSector (true, i) true s) hR (hs ▸ Z)) ≫
         P.adjacentMixedProbeCross i j s hR hs₀ Z) ≫ (P.step (true, j) true s trivial).map
-        (-((P.mixedJ i i (nextSector (true, j) true s) hR Z).hom ≫ c.a i (nextSector (true, j) true s) hR Z ≫ (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
+        (-((P.mixedJ i i (nextSector (true, j) true s) hR Z).hom ≫
+        c.a i (nextSector (true, j) true s) hR Z ≫
+        (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
   let J := P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))
   let K := (P.step (true, j) true s trivial).mapIso
     (P.mixedJ i i (nextSector (true, j) true s) hR Z)

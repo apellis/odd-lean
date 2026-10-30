@@ -39,7 +39,7 @@ theorem adjacentSplit_source_J_heq :
     (SPath.two true false trivial hR rfl) (SPath.two false true hR trivial rfl)
     (.cons _ true _ trivial (.nil _)) Z)).trans ?_
   refine (sandwich_heq _ _ _).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 /-- The source square-coefficient entry. -/
@@ -55,7 +55,7 @@ theorem adjacentSplit_source_square_heq :
     (SPath.two false true hR trivial rfl) (SPath.two true false trivial hR rfl)
     (.cons _ true _ trivial (.nil _)) Z)).trans ?_
   refine (sandwich_heq _ _ _).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 /-- The source conjugate-coefficient entry. -/
@@ -71,7 +71,7 @@ theorem adjacentSplit_source_conj_heq :
     (SPath.two true false trivial hR rfl) (SPath.two true false trivial hR rfl)
     (.cons _ true _ trivial (.nil _)) Z)).trans ?_
   refine (sandwich_heq _ _ _).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 end Edges
@@ -94,7 +94,7 @@ theorem adjacentSplit_target_J :
         (P.mixedJ i i (nextSector (true, j) true s) hR Z).hom := by
   refine (crossEntry_right (P.swappedGens c L) ν j i i true trivial
     (SPath.two true false trivial hR rfl) (SPath.two false true hR trivial rfl) Z).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 /-- The target square-coefficient entry. -/
@@ -108,7 +108,7 @@ theorem adjacentSplit_target_square :
           (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
   refine (crossEntry_right (P.swappedGens c L) ν j i i true trivial
     (SPath.two false true hR trivial rfl) (SPath.two true false trivial hR rfl) Z).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 /-- The target conjugate-coefficient entry. -/
@@ -122,7 +122,7 @@ theorem adjacentSplit_target_conj :
           (P.mixedJ i i (nextSector (true, j) true s) hR Z).inv)) := by
   refine (crossEntry_right (P.swappedGens c L) ν j i i true trivial
     (SPath.two true false trivial hR rfl) (SPath.two true false trivial hR rfl) Z).trans ?_
-  rw [swappedGens_cross_self]
+  erw [swappedGens_cross_self]
   rfl
 
 /-- The inner mixed crossing retains its Q weight. -/
@@ -140,7 +140,7 @@ theorem adjacentSplit_inner_heq (hij : i ≠ j) :
     (SPath.two false true hR trivial rfl) (SPath.two true false trivial hR rfl) Z)).trans ?_
   apply heq_of_eq
   dsimp only [swappedGens]
-  rw [P.crossImage_ne c hij]
+  erw [P.crossImage_ne c hij]
   rfl
 
 /-- The outer probe crossing, with repeated reservoir colour permitted. -/
@@ -168,10 +168,10 @@ theorem adjacentSplit_probe_heq (hij : i ≠ j) :
   have hq : SPath.three (c₁ := ⟨up j, SKM.wt D ν [up i, up i]⟩)
       (c₂ := ⟨up i, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       true true false trivial trivial hR rfl = qg.append pv := rfl
-  rw [hp, hq, crossEntry_left]
+  erw [hp, hq, crossEntry_left]
   refine (sandwich_heq _ _ _).trans ?_
   dsimp only [swappedGens]
-  rw [P.crossImage_ne c hij]
+  erw [P.crossImage_ne c hij]
   have hc := P.twoTwo_two_heq
       ⟨up i, SKM.wt D (SKM.wt D ν [up i]) [up j]⟩ ⟨up j, SKM.wt D ν [up i]⟩
       ⟨up j, SKM.wt D (SKM.wt D ν [up i]) [up i]⟩ ⟨up i, SKM.wt D ν [up i]⟩
