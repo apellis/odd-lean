@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Extraction for the prescribed short crossing column
+
+`CyclotomicCrossingTensor.ShortCrossCoordinates.decode` is defined on all of
+`AppendTarget(i,v,t ++ [i])` with values in the independently balanced
+`ShortTarget(i,v,t)`. `decode_comp_shortCross` proves its left-inverse identity
+on every balanced class; `shortCross_injective` is a consequence, not a premise.
+`range_shortCross` identifies its range with `appendCrossingSpan`, and
+`crossingEquiv` identifies the original balanced source with that span.
+
+On each nonidentity normalized append tail, the decoder strips the boundary
+crossing and retains the signed moving power on the smaller old-last strand.
+`decode_canonical_crossing` uses the complete triangular crossing/dot identity;
+its long polynomial correction is killed by the separately proved
+`decode_outputPolynomial_precomp`. Full coefficient transfer uses the prescribed
+parity-twisted balance. Repeated-tail representatives and zero Hom corners are
+included. No commutative structure on the exterior coefficient algebra, finite
+colour assumption, flatness or extra injectivity hypothesis is used.
+
+Both short columns are now injective. The categorical snake, compatibility with
+the polynomial-row equivalences, integer grading/naturality, the full augmented
+inverse and a detecting action remain separate obligations.
+
 ## Extraction for the prescribed short source column
 
 `CyclotomicCrossingTensor.extract` maps the original
@@ -13,8 +35,8 @@ Consequently alpha is injective. The actual short-column square and the
 existing `pMap_injective` then prove `pprime_injective`, without assuming
 crossing-column injectivity. The prescribed first row is now short exact.
 These results retain arbitrary colours, words, cutoffs and full old coefficients,
-including empty Hom corners. They do not supply crossing-column injectivity,
-the categorical snake, integer degree/naturality or the augmented inverse.
+including empty Hom corners. Crossing-column injectivity is supplied above;
+the categorical snake, integer degree/naturality and the augmented inverse remain open.
 
 ## Short-column diagram, swapped braid assembly and independent triple operators
 
@@ -22,7 +44,7 @@ The epsilon-balanced P′, its literal moving-word formula and range P′ = ker 
 are constructed independently of a crossing image. Both short columns descend
 with the full old coefficient twist. The two squares commute as whole linear
 maps, and both rows are right exact. Alpha and P′ injectivity are supplied above;
-crossing injectivity, the categorical snake and the augmented inverse remain open.
+crossing injectivity is also supplied above. The categorical snake and the augmented inverse remain open.
 
 `ProbeReservoir.crossBraidOfInputs` derives all three CrossBraid fields for the
 existing `swappedGens c L`, from `c.IsInverse` and `CrossCoeffInputs`. Its path
