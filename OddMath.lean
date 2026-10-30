@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentOperatorQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentOperatorPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleRelations

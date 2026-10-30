@@ -50,7 +50,13 @@ Its generic power formula retains the twist on the entire kernel morphism.
 The two operator powers are ordered in reverse of End multiplication on
 the source: the first-position power acts first. The original coefficient
 `Sc.s` is retained, and its two support constraints are derived rather than
-assumed. Leading terms, polynomial assembly and mixed corrected braid remain open.
+assumed. `ELVContentOperatorQuadratic.contentInduction_quadratic_linear`
+now assembles both leading terms and all interior coefficients, including the
+single disconnected constant, into an equality of the crossing square and
+`contentInductionPairPolynomial` on every common-content induction object.
+This polynomial uses powers of the actual positioned dot operators and
+exactly the specified `Sc`; no source-polynomial placeholder remains in its
+right-hand side. Mixed corrected braid and composite/weight assembly remain open.
 `ELVContentModuleRelations.contentInductionCross_square` proves square-zero
 for the actual normalized crossing as a module-map equality. Both normalized
 nilHecke slides are proved on every induced module object using the actual
