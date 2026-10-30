@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful
 noncomputable section
 open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke ELVOld
 universe u
@@ -17,13 +17,18 @@ example (c d : ContentCoefficient D Sc cutoff N β) :
       contentRealize D Sc cutoff N β c ≫ contentRealize D Sc cutoff N β d :=
   contentRealize_comp D Sc cutoff N β c d
 
+example : Function.Injective (contentRealize D Sc cutoff N β) :=
+  contentRealize_injective D Sc cutoff N β
+
+#print axioms contentRealize_injective
 #print axioms contentModuleCoefficientIdeal
 #print axioms contentModule_coefficient_eq_zero
 
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
-  let owners := #[`OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients]
+  let owners := #[`OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients,
+    `OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful]
   for owner in owners do
     let some idx := env.header.moduleNames.idxOf? owner
       | throwError "Module was not imported: {owner}"
