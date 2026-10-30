@@ -670,3 +670,344 @@ theorem bareLong_dot_chains (i a : I) (l r : List I) :
 
 end ELVOld
 end OddMath.QuiverHecke
+
+noncomputable section
+open CategoryTheory StringDiagrams MonoidalCategory Categorification.TypeA
+namespace OddMath.QuiverHecke.SmallerTailNormalization
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
+
+private theorem prependTail_short_factor (i : I) (v t : List I)
+    (x : PrependIdx i v (t ++ [i]))
+    (hx : x.1.2.2.2 ≠ longPrependShuffle v.length) :
+    ∃ (s : List I) (_hs : x.oldTarget = s ++ [i])
+      (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D t)),
+      HEq (ELVOld.prependTail D Sc x) (f ▷ (pres D Sc).obj (ob D [i])) := by
+  have hv : 0 < v.length := by
+    cases v with
+    | nil =>
+      apply False.elim
+      apply hx
+      apply Subtype.ext
+      apply Equiv.ext
+      intro z
+      apply Fin.ext
+      have h₁ := (x.1.2.2.2.1 z).isLt
+      have h₂ := ((longPrependShuffle (([] : List I).length)).1 z).isLt
+      simp only [List.length_nil] at h₁ h₂ ⊢
+      omega
+    | cons a v => simp
+  obtain ⟨n, hn⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hv)
+  have hlen : x.oldTarget.length = n + 1 := by
+    simp [PrependIdx.oldTarget, hn]
+  obtain ⟨s, j, hs⟩ : ∃ s j, x.oldTarget = s ++ [j] := by
+    generalize x.oldTarget = q at hlen ⊢
+    induction q using List.reverseRecOn with
+    | nil => simp at hlen
+    | append_singleton q j ih => exact ⟨q, j, rfl⟩
+  have hsl : s.length = n := by rw [hs] at hlen; simp only [List.length_append,
+    List.length_singleton] at hlen; omega
+  have hf : Fits (i :: s).length (cw (canWord (v.length + 1) x.1.2.2.2.1⁻¹)) := by
+    apply fits_cw
+    intro b hb
+    have hb' : b < n := by
+      have aux (m : ℕ) (u : PrependShuffle m) (hu : u ≠ longPrependShuffle m)
+          (hm : m = n + 1) : ∀ b ∈ canWord (m + 1) u.1⁻¹, b < n := by
+        subst m
+        exact canWord_prependShort_lt n u hu
+      exact aux v.length x.1.2.2.2 hx hn b hb
+    simp only [List.length_cons, hsl]
+    omega
+  have he := x.moving_target
+  rw [hs] at he
+  change tgt ((i :: s) ++ [j]) _ = _ at he
+  rw [tgt_append_right [j] hf] at he
+  have hj : j = i := by
+    have hh := congrArg List.getLast? he
+    simpa using hh
+  subst j
+  have hfull : Fits (i :: s).length
+      (((List.replicate x.1.1 0).map PG.dot) ++
+        cw (canWord (v.length + 1) x.1.2.2.2.1⁻¹)) := by
+    intro g hg
+    rcases List.mem_append.mp hg with hg | hg
+    · obtain ⟨b, hb, rfl⟩ := List.mem_map.mp hg
+      have hb0 := (List.mem_replicate.mp hb).2
+      subst b
+      simp [PG.pos, PG.width]
+    · exact hf g hg
+  refine ⟨s, hs, cl D Sc _ _ (((List.replicate x.1.1 0).map PG.dot) ++
+      cw (canWord (v.length + 1) x.1.2.2.2.1⁻¹)) ?_, ?_⟩
+  · have ht := x.moving_target
+    rw [hs] at ht
+    change tgt ((i :: s) ++ [i]) _ = _ at ht
+    rw [tgt_append_right [i] hf] at ht
+    have ht' := List.append_cancel_right ht
+    have hd := sChain_pl (i :: s)
+      (((List.replicate x.1.1 0).map PG.dot) ++
+        cw (canWord (v.length + 1) x.1.2.2.2.1⁻¹))
+    simpa only [tgt_append, tgt_map_dot, ht'] using hd
+  · rw [cl_whiskerRight D Sc _ _ [i] hfull]
+    unfold ELVOld.prependTail
+    have aux {q q' t : List I} (e : q = q') (gs : List PG)
+        (h : SChain q (pl q gs) t) (h' : SChain q' (pl q' gs) t) :
+        HEq (cl D Sc q t gs h) (cl D Sc q' t gs h') := by
+      subst q'; rfl
+    exact aux (congrArg (List.cons i) hs) _ _ _
+
+theorem short_comp_old {i : I} {v t w : List I}
+    (f : (pres D Sc).obj (ob D (i :: v)) ⟶ (pres D Sc).obj (ob D (t ++ [i])))
+    (g : (pres D Sc).obj (ob D t) ⟶ (pres D Sc).obj (ob D w))
+    (hf : f ∈ shortSpan D Sc i v (t ++ [i])) :
+    f ≫ (g ▷ (pres D Sc).obj (ob D [i])) ∈ shortSpan D Sc i v (w ++ [i]) := by
+  induction hf using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨x, hx, rfl⟩ := hf
+    rw [prependBasis_apply, ELVOld.prependElt_insert_tail]
+    obtain ⟨s, hs, h, hh⟩ := prependTail_short_factor D Sc i v t x hx
+    have aux {q : List I} (e : q = s ++ [i])
+        (r : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D q))
+        (z : (pres D Sc).obj (ob D (i :: q)) ⟶ (pres D Sc).obj (ob D (t ++ [i])))
+        (hz : HEq z (h ▷ (pres D Sc).obj (ob D [i]))) :
+        (ELVOld.affineInsert D Sc i v q r ≫ z) ≫
+          (g ▷ (pres D Sc).obj (ob D [i])) ∈ shortSpan D Sc i v (w ++ [i]) := by
+      subst q
+      cases hz
+      erw [Category.assoc, ← MonoidalSupercategory.comp_whiskerRight (R := k)]
+      exact chronological_scalar_short D Sc r (h ≫ g)
+    exact aux hs x.old.nf _ hh
+  | zero =>
+    erw [Limits.zero_comp]
+    exact Submodule.zero_mem _
+  | add f h _ _ hf hh =>
+    erw [Preadditive.add_comp]
+    exact Submodule.add_mem _ hf hh
+  | smul a f _ hf =>
+    erw [Linear.smul_comp]
+    exact Submodule.smul_mem _ a hf
+
+end OddMath.QuiverHecke.SmallerTailNormalization
+
+namespace OddMath.QuiverHecke.OutputOldComposite
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
+local notation "O[" t "]" => Presentation.obj (pres D Sc) (ob D t)
+open SmallerTailNormalization Supercategory
+
+def bareU (i : I) (v : List I) : O[i :: v] ⟶ O[v ++ [i]] :=
+  cl D Sc _ _ (cw (leadingMoveWord [] v))
+    (by simpa only [List.nil_append] using leadingMoveWord_sChain i [] v)
+
+def error (i : I) (v w : List I) : (O[v] ⟶ O[w]) →ₗ[k] (O[i :: v] ⟶ O[w ++ [i]]) where
+  toFun g := (bareU D Sc i v ≫ (g ▷ O[[i]]) : O[i :: v] ⟶ O[w ++ [i]]) -
+    ((O[[i]] ◁ twist k (D.parity i * wordSumParity D v) g) ≫ bareU D Sc i w :
+      O[i :: v] ⟶ O[w ++ [i]])
+  map_add' g h := by
+    erw [map_add, MonoidalSupercategory.add_whiskerRight (R := k),
+      MonoidalSupercategory.whiskerLeft_add (R := k), Preadditive.comp_add,
+      Preadditive.add_comp]
+    abel
+  map_smul' a g := by
+    erw [map_smul, MonoidalSupercategory.smul_whiskerRight,
+      MonoidalSupercategory.whiskerLeft_smul, Linear.comp_smul, Linear.smul_comp,
+      smul_sub]
+    rfl
+
+ private theorem error_id (i : I) (v : List I) : error D Sc i v v (𝟙 _) = 0 := by
+  change (bareU D Sc i v ≫ ((𝟙 O[v]) ▷ O[[i]]) : O[i :: v] ⟶ O[v ++ [i]]) -
+    ((O[[i]] ◁ twist k (D.parity i * wordSumParity D v) (𝟙 O[v])) ≫ bareU D Sc i v :
+      O[i :: v] ⟶ O[v ++ [i]]) = 0
+  erw [twist_id, MonoidalSupercategory.id_whiskerRight (R := k),
+    MonoidalSupercategory.whiskerLeft_id (R := k), Category.comp_id, Category.id_comp, sub_self]
+
+private theorem error_comp_mem (i : I) {v w z : List I}
+    (f : O[v] ⟶ O[w]) (g : O[w] ⟶ O[z])
+    (hp : wordSumParity D v = wordSumParity D w)
+    (hf : error D Sc i v w f ∈ shortSpan D Sc i v (w ++ [i]))
+    (hg : error D Sc i w z g ∈ shortSpan D Sc i w (z ++ [i])) :
+    error D Sc i v z (f ≫ g) ∈ shortSpan D Sc i v (z ++ [i]) := by
+  have h₁ := short_comp_old D Sc _ g hf
+  have h₂ := old_comp_short D Sc
+    (twist k (D.parity i * wordSumParity D v) f) _ hg
+  have he : error D Sc i v z (f ≫ g) =
+      (error D Sc i v w f ≫ (g ▷ O[[i]]) : O[i :: v] ⟶ O[z ++ [i]]) +
+      ELVOld.affineInsert D Sc i v w (twist k (D.parity i * wordSumParity D v) f) ≫
+        error D Sc i w z g := by
+    dsimp only [error, ELVOld.affineInsert, LinearMap.coe_mk, AddHom.coe_mk]
+    erw [twist_comp, MonoidalSupercategory.comp_whiskerRight (R := k),
+      MonoidalSupercategory.whiskerLeft_comp (R := k)]
+    rw [hp]
+    have aux {A B C E F G : (pres D Sc).Presented}
+        (u : A ⟶ B) (u' : C ⟶ E) (u'' : F ⟶ G)
+        (f : B ⟶ E) (g : E ⟶ G) (f' : A ⟶ C) (g' : C ⟶ F) :
+        u ≫ (f ≫ g) - (f' ≫ g') ≫ u'' =
+          (u ≫ f - f' ≫ u') ≫ g + f' ≫ (u' ≫ g - g' ≫ u'') := by
+      simp only [Preadditive.sub_comp, Preadditive.comp_sub, Category.assoc]
+      abel
+    exact aux _ _ _ _ _ _ _
+  rw [he]
+  exact Submodule.add_mem _ h₁ h₂
+
+private theorem error_cl (i : I) {v w : List I} (gs : List PG)
+    (h : SChain v (pl v gs) w) (hf : Fits v.length gs) :
+    error D Sc i v w (cl D Sc v w gs h) =
+      cl D Sc _ _ (cw (leadingMoveWord [] v) ++ gs)
+        (sChain_append_of (by simpa using leadingMoveWord_sChain i [] v)
+          (by simpa using sChain_append_one i h hf)) -
+      SKM.zsign k (D.parity i * wordSumParity D v * chainParity D v gs) •
+        cl D Sc _ _ (gs.map (PG.shift 1) ++ cw (leadingMoveWord [] w))
+          (sChain_append_of (by simpa using sChain_shift_one i h)
+            (by simpa using leadingMoveWord_sChain i [] w)) := by
+  dsimp only [error, LinearMap.coe_mk, AddHom.coe_mk]
+  erw [twist_of_mem _ (cl_mem_chainParity D Sc gs h hf),
+    MonoidalSupercategory.whiskerLeft_smul (R := k), Linear.smul_comp]
+  rw [cl_whiskerRight D Sc gs h [i] hf, cl_whiskerLeft]
+  unfold bareU
+  erw [cl_comp, cl_comp]
+  rw [sign_eq_zsign]
+  rfl
+
+private theorem error_dot_mem (i a : I) (l r : List I) :
+    error D Sc i (l ++ a :: r) (l ++ a :: r)
+      (cl D Sc _ _ [.dot l.length] (sChain_dotAny _ _)) ∈
+        shortSpan D Sc i (l ++ a :: r) ((l ++ a :: r) ++ [i]) := by
+  rw [error_cl D Sc i _ _ (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
+  have hc := ELVOld.bareLong_dot_chains i a l r
+  have h := low_le_shortSpan D Sc i (l ++ a :: r) ((l ++ a :: r) ++ [i])
+    (bareLong_dot_low D Sc i a l r hc.1 hc.2)
+  simpa [PG.shift, chainParity, PG.par, Nat.add_comm] using h
+
+private theorem cross_short (i a b : I) (l r : List I)
+    (h : SChain (i :: (l ++ a :: b :: r))
+      (pl (i :: (l ++ a :: b :: r))
+        (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]))
+      ((l ++ b :: a :: r) ++ [i]))
+    (h' : SChain (i :: (l ++ a :: b :: r))
+      (pl (i :: (l ++ a :: b :: r))
+        ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))))
+      ((l ++ b :: a :: r) ++ [i]))
+    : cl D Sc _ _ (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]) h -
+      SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: b :: r) * D.parity a * D.parity b) •
+        cl D Sc _ _ ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))) h' ∈
+      shortSpan D Sc i (l ++ a :: b :: r) ((l ++ b :: a :: r) ++ [i]) := by
+  apply low_le_shortSpan
+  have transport {s t t' : List I} (ht : t = t')
+      (Q R : List PG) (z : k) (n : ℕ)
+      (hQ : SChain s (pl s Q) t) (hR : SChain s (pl s R) t)
+      (hQ' : SChain s (pl s Q) t') (hR' : SChain s (pl s R) t')
+      (he : cl D Sc s t Q hQ - z • cl D Sc s t R hR ∈ Low D Sc s t n) :
+      cl D Sc s t' Q hQ' - z • cl D Sc s t' R hR' ∈ Low D Sc s t' n := by
+    subst t'; exact he
+  apply transport (t := l ++ b :: a :: (r ++ [i])) (by simp) _ _ _ _
+    (by simpa only [List.append_assoc, List.cons_append] using h)
+    (by simpa only [List.append_assoc, List.cons_append] using h')
+  have hh := OutputOldCrossTransport.all_length_slide D Sc i a b l r
+    (by simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
+      List.append_assoc, List.cons_append] using h)
+    (by simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
+      List.append_assoc, List.cons_append] using h')
+  simpa only [OutputOldCrossTransport.run_eq_leading, List.length_nil,
+    List.append_assoc, List.cons_append] using hh
+
+private theorem error_cross_mem (i a b : I) (l r : List I) :
+    error D Sc i (l ++ a :: b :: r) (l ++ b :: a :: r)
+      (cl D Sc _ _ [.cross l.length] (by simpa using sChain_crossAt l r a b)) ∈
+        shortSpan D Sc i (l ++ a :: b :: r) ((l ++ b :: a :: r) ++ [i]) := by
+  rw [error_cl D Sc i _ _ (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
+  have hU (s : List I) : SChain (i :: s) (pl (i :: s) (cw (leadingMoveWord [] s))) (s ++ [i]) :=
+    by simpa using leadingMoveWord_sChain i [] s
+  have hC : SChain (l ++ a :: b :: r) (pl (l ++ a :: b :: r) [.cross l.length]) (l ++ b :: a :: r) :=
+    by simpa using sChain_crossAt l r a b
+  have hf : Fits (l ++ a :: b :: r).length [.cross l.length] :=
+    by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width]
+  have hc := sChain_append_of (hU (l ++ a :: b :: r)) (sChain_append_one i hC hf)
+  have hc' : SChain (i :: (l ++ a :: b :: r))
+      (pl (i :: (l ++ a :: b :: r)) ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))))
+      ((l ++ b :: a :: r) ++ [i]) := by
+    simpa [PG.shift, Nat.add_comm] using sChain_append_of (sChain_shift_one i hC) (hU (l ++ b :: a :: r))
+  have h := cross_short D Sc i a b l r hc hc'
+  simpa [PG.shift, chainParity, PG.par, Nat.add_comm, mul_assoc] using h
+
+private theorem error_gen_mem (i : I) (g : PG) {v w : List I}
+    (h : SChain v (pl v [g]) w) (hf : g.pos + g.width ≤ v.length) :
+    error D Sc i v w (cl D Sc v w [g] h) ∈ shortSpan D Sc i v (w ++ [i]) := by
+  cases g with
+  | dot p =>
+    have hp : p < v.length := by simpa [PG.pos, PG.width] using hf
+    obtain ⟨l, a, r, hv, hl⟩ : ∃ l a r, v = l ++ a :: r ∧ l.length = p := by
+      cases hd : v.drop p with
+      | nil => have hh : (v.drop p).length = v.length - p := List.length_drop; rw [hd] at hh; simp at hh; omega
+      | cons a r =>
+        exact ⟨v.take p, a, r, (List.take_append_drop p v).symm.trans (by rw [hd]),
+          List.length_take_of_le (by omega)⟩
+    subst v
+    subst p
+    have hw : l ++ a :: r = w := sChain_target (sChain_dotAny _ _) h
+    subst w
+    exact error_dot_mem D Sc i a l r
+  | cross p =>
+    have hp : p + 2 ≤ v.length := hf
+    obtain ⟨l, a, b, r, hv, hl⟩ : ∃ l a b r, v = l ++ a :: b :: r ∧ l.length = p := by
+      cases hd : v.drop p with
+      | nil => have hh : (v.drop p).length = v.length - p := List.length_drop; rw [hd] at hh; simp at hh; omega
+      | cons a q =>
+        cases q with
+        | nil => have hh : (v.drop p).length = v.length - p := List.length_drop; rw [hd] at hh; simp at hh; omega
+        | cons b r =>
+          exact ⟨v.take p, a, b, r, (List.take_append_drop p v).symm.trans (by rw [hd]),
+            List.length_take_of_le (by omega)⟩
+    subst v
+    subst p
+    have hw : l ++ b :: a :: r = w := sChain_target (by simpa using sChain_crossAt l r a b) h
+    subst w
+    exact error_cross_mem D Sc i a b l r
+
+private theorem error_word_mem (i : I) (gs : List PG) {v w : List I}
+    (h : SChain v (pl v gs) w) (hf : Fits v.length gs) :
+    error D Sc i v w (cl D Sc v w gs h) ∈ shortSpan D Sc i v (w ++ [i]) := by
+  induction gs generalizing v with
+  | nil =>
+    obtain rfl : v = w := h
+    erw [cl_nil, error_id]
+    exact Submodule.zero_mem _
+  | cons g gs ih =>
+    have e := cl_append D Sc [g] gs h
+    rw [show cl D Sc v w (g :: gs) h = _ from e]
+    apply error_comp_mem D Sc i
+    · exact (wordSumParity_tgt D v [g]).symm
+    · exact error_gen_mem D Sc i g _ (hf g (by simp))
+    · apply ih
+      intro x hx
+      simpa only [length_tgt] using hf x (List.mem_cons_of_mem g hx)
+
+theorem error_mem (i : I) {v w : List I} (g : O[v] ⟶ O[w]) :
+    error D Sc i v w g ∈ shortSpan D Sc i v (w ++ [i]) := by
+  have hg : g ∈ Submodule.span k (Set.range (basisNF D Sc v w)) := by
+    rw [Module.Basis.span_eq]
+    trivial
+  induction hg using Submodule.span_induction with
+  | mem f hf =>
+    obtain ⟨x, rfl⟩ := hf
+    rw [basisNF_apply]
+    exact error_word_mem D Sc i _ _ (fits_append (fits_dots x.2.2.1)
+      (fits_cw (isReduced_canWord v.length x.1.2).1))
+  | zero => rw [map_zero]; exact Submodule.zero_mem _
+  | add f h _ _ hf hh => rw [map_add]; exact Submodule.add_mem _ hf hh
+  | smul a f _ hf => rw [map_smul]; exact Submodule.smul_mem _ a hf
+
+/-- Arbitrary scalar old arrows, with the total homogeneous super sign. -/
+theorem bareU_homogeneous_transport (i : I) {v w : List I} {q : ZMod 2}
+    (g : O[v] ⟶ O[w]) (hg : g ∈ Supercategory.parity (R := k) O[v] O[w] q) :
+    (bareU D Sc i v ≫ (g ▷ O[[i]]) : O[i :: v] ⟶ O[w ++ [i]]) -
+      SKM.zsign k (D.parity i * wordSumParity D v * q) •
+        ((O[[i]] ◁ g) ≫ bareU D Sc i w : O[i :: v] ⟶ O[w ++ [i]]) ∈
+      shortSpan D Sc i v (w ++ [i]) := by
+  have h := error_mem D Sc i g
+  dsimp only [error, LinearMap.coe_mk, AddHom.coe_mk] at h
+  erw [twist_of_mem _ hg, MonoidalSupercategory.whiskerLeft_smul (R := k),
+    Linear.smul_comp, sign_eq_zsign] at h
+  exact h
+
+end OddMath.QuiverHecke.OutputOldComposite

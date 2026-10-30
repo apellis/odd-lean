@@ -60,6 +60,12 @@ example (i a : I) (l r : List I)
       chronologicalShortSpan D Sc cutoff i (l ++ a :: r) (l ++ a :: r) :=
   bareLong_dot_chronologicalShort D Sc cutoff i a l r c h h'
 
+example (i : I) {v w : List I}
+    (g : (pres D Sc).obj (ob D v) ⟶ (pres D Sc).obj (ob D w)) :
+    OutputOldComposite.error D Sc i v w g ∈
+      SmallerTailNormalization.shortSpan D Sc i v (w ++ [i]) :=
+  OutputOldComposite.error_mem D Sc i g
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv

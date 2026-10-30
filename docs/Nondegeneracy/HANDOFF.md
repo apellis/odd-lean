@@ -19,7 +19,12 @@ contexts and full ELV coefficients: output position `l.length` becomes input
 position `l.length+1`, and the sign is
 `zsign k (parity i * wordSumParity v * parity a)`. Both generator types are
 therefore transported without replacing bare U by the moving intertwiner.
-Extension to arbitrary old arrows and canonical balanced coefficients/S remain open.
+`OutputOldComposite.error_mem` now transports every scalar old arrow, with
+`twist k (parity i * wordSumParity v)`. `bareU_homogeneous_transport` gives
+the corresponding explicit homogeneous sign. Its proof uses actual positioned-word
+induction and PBW linear spanning, and `short_comp_old` proves output stability
+of the entire relative scalar span. Full exterior old-arrow lifting, quotient
+output action and canonical balanced coefficients/S remain open.
 
 ## Old source action on normalized output coordinates
 
