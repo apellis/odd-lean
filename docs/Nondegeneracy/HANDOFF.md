@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Actual append QP highest coefficients
+
+`appendQPFactor_odd` proves the repeated-odd signed QP factor is
+`x_b^2 + t^2` by the disjoint-dot super interchange, not a commuting-square
+calculation. `ELVAppendQPLeading.lean` defines its concrete degree and unit:
+unequal colours use `dn i j` and `Sc.t i j`, repeated odd uses 2 and 1,
+repeated even uses 0 and −1. Disconnected colours retain their degree-zero
+unit rather than being silently replaced by 1.
+
+`appendQPFactor_top` gives exactly this unit times the input old coefficient
+at a maximal append moving exponent, retaining arbitrary full-ELV old
+coefficients. `appendQPFactor_above` proves the corresponding vanishing bound.
+`appendProjection_qpProduct_regular` applies finite maximal support and then
+ordered-factor induction to the actual all-word append QP product. It does
+not transport prepend regularity or use the different full-chain norm.
+
+Next: assemble the explicit highest coefficient of the whole numerator
+`f(t)L(t)` in the required coordinate normalization, and identify its
+relation with the corrected longest-output coordinates. The factor results
+and product regularity do not by themselves establish right divisibility,
+polynomial degree additivity, or local inversion.
+
+
 ## Ordered reverse boundary polynomial and all corrected iterates
 
 `AppendQPTransport.lean` independently defines `appendQPProduct` at the last

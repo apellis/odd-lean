@@ -100,4 +100,25 @@ theorem qpProduct_comp_moveHom (i : I) (v : List I) :
       rw [qpFactor_comp_moveHom D Sc i v b (hl b (by simp)),
         ← Category.assoc, ih (fun c hc => hl c (by simp [hc])), Category.assoc]
   exact h _ (fun b hb => List.mem_range.mp hb)
+/-- The repeated-odd QP factor has positive unit highest moving coefficient.
+The mixed terms cancel by the actual disjoint-dot super interchange. -/
+theorem appendQPFactor_odd (i : I) (hi : D.parity i = 1) (v : List I)
+    (b : ℕ) (hb : b < v.length) (hx : v.getD b i = i) :
+    appendQPFactor D Sc i v i b =
+      dotE D Sc (v ++ [i]) b ^ 2 + dotE D Sc (v ++ [i]) v.length ^ 2 := by
+  have hs : v = v.take b ++ [i] ++ v.drop (b + 1) := by
+    simpa only [hx] using split_getD v i b hb
+  have ht := genE_interchange D Sc (w := v ++ [i])
+    (v.take b) (v.drop (b + 1)) [] (.dot i) (.dot i) rfl rfl
+    (by simpa only [Shape.dom, List.append_nil] using congrArg (· ++ [i]) hs)
+    (p := b) (q := v.length)
+    (by simp only [List.length_take, Nat.min_eq_left (Nat.le_of_lt hb)])
+    (by exact congrArg List.length hs.symm)
+  change dotE D Sc (v ++ [i]) v.length * dotE D Sc (v ++ [i]) b =
+    SKM.zsign k (D.parity i * D.parity i) •
+      (dotE D Sc (v ++ [i]) b * dotE D Sc (v ++ [i]) v.length) at ht
+  simp only [hi, one_mul, SKM.zsign, ite_eq_left, neg_one_smul] at ht
+  rw [appendQPFactor, ite_eq_left rfl, ite_eq_left hi, pow_two, sub_mul, mul_sub, mul_sub, ht]
+  noncomm_ring
+
 end OddMath.QuiverHecke

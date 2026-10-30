@@ -76,6 +76,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendNormRegularity
 import OddMath.QuiverHecke.CyclotomicAction.AppendQPTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVEndpointPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVReverseBoundary
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQPLeading
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientPresheaf
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentExactness
