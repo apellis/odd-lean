@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Graded content representable Hom coordinates
+
+`ELVContentYoneda` constructs `homEquiv : (H_v ⟶ H_w) ≃ₗ[k] (w ⟶ v)`
+by evaluating both supernatural components at the identity. Its explicit inverse
+has component `h ↦ proj_p(f) ≫ twist_p(h)`. Both roundtrips are proved;
+`evaluate_proj` retains both total-parity projections. `composition_component`
+proves the super-opposite convolution: the odd-odd term is negative.
+This is a covariant-representable precomposition formula, not the reservoir
+postcomposition action. Transport through vacuum word isomorphisms, mixed
+common-content/block coordinates, prescribed coefficient/opposite normalization
+and the untruncated reservoir comparison remain open here.
+
+
 ## Induction of content representables
 
 `ELVInductionRepresentable.InductionRepresentable.iso` identifies balanced
