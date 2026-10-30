@@ -18,11 +18,17 @@ prescribed source. The descended crossing has the actual diagram order
 `append(b) ≫ crossLast ≫ append(c)` (algebra order `c τₙ b`). No flatness,
 nonzero-corner or crossing-injectivity premise is used.
 
-The epsilon-shifted balanced domain and descended P′ are not yet constructed;
-therefore this does not yet prove `range P′ = ker q` for that map. Fixed-content
-matrix-algebra identification, integer degrees and the categorical snake/inverse
-remain separate. The actual source-word comparison and concrete detecting
-action are not completed by these comparison and quotient theorems.
+`CyclotomicCrossingTensor.PprimeDomain` now constructs the independently
+prescribed `Rf ⊗_(S,j_L) Π^epsilon(eB)`. Its coefficient shift is
+`epsilon = p(i) wordSumParity(v) + cutoff(i) p(i)`. On a supported coefficient
+corner this equals `appendQ(i,s) + p(i)`; unsupported corners vanish. The full
+ELV moving-word error proves lower balance, including exterior coefficients.
+The descended map `pprime` sends `h ⊗ pi^epsilon b` to
+`(appendW(i,s) ≫ h) ⊗ pi^p b`, without a further sign or coefficient permutation.
+`range_pprime_eq_ker_q` proves right exactness with the prescribed cyclotomic
+source. Neither injectivity of P′ nor of the crossing column follows here.
+The unquotiented short-column comparison, fixed-content matrix-algebra
+identification, integer degrees and categorical snake/inverse remain separate.
 
 ## Actual independent-S division and further literal braid entries
 
