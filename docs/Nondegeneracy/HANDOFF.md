@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Two-sided output-order balanced extractor
+
+`ELVOutputOrderBalance.outputLongCoordinate_outputOld` identifies actual output
+old action for every quotient element and degree. `outputOldExtraction` descends
+that actual action to arbitrary old quotient coefficients.
+`outputLongCoordinate_twoSided_balanced` gives left oldComp by the source coefficient
+and right oldComp by the output coefficient twisted by
+`p + parity i * wordSumParity v + n * parity i`. The proof uses all dotted
+bare-long rows, the exact chronological kernel and a finite normalized long
+section; it assumes neither transport nor balancing. These extraction APIs are
+on fixed old-word summands; `bareUFull_transport` itself has arbitrary endpoints.
+Identifying the independently evaluated S in corrected rho coordinates remains open.
+
 ## Output old relative stability
 
 `ELVOutputOldTransport.act_appendInsert_chronologicalShortSpan` proves stability
@@ -28,7 +41,8 @@ transport to arbitrary full ELV old arrows and arbitrary endpoints, with twist
 `parity i * wordSumParity v` on total coefficient-plus-diagram parity. The
 coefficient twist cancels the box-product composition sign.
 `bareUFull_old_representative_independent` makes the bare-long row depend only
-on the old quotient arrow. Canonical balanced coefficients/S remain open.
+on the old quotient arrow. The fixed-word two-sided balanced identification is
+proved in `ELVOutputOrderBalance`; canonical S remains open.
 
 ## Old source action on normalized output coordinates
 

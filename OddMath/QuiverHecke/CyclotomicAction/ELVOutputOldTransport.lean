@@ -11,10 +11,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVQDescent
 The relative-coset stability needed for `DeformedMackeyBoundary.md` (2).
 Arbitrary full-ELV output old arrows preserve the chronological short span.
 By its exact kernel identification, equal long extractions remain equal after
-old output endomorphisms. The crossing generator transports across the bare long chain with explicit
-sign and sharp relative-short error, for arbitrary old words and full ELV
-coefficients. Extension to arbitrary old arrows and balanced coefficients remains
-a separate obligation.
+old output endomorphisms. Both generator types transport across the bare long chain with explicit signs
+and sharp relative-short errors. Relative composition and PBW spanning extend
+this to arbitrary scalar old arrows; full coefficient-parity cancellation then
+proves transport for arbitrary full ELV old arrows and endpoints. Bare-long
+rows descend to old quotient arrows.
 -/
 
 noncomputable section
