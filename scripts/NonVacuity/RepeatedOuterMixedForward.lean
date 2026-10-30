@@ -84,4 +84,3 @@ run_cmd do
   if count == 0 then
     throwError "Missing owned module {owner}"
   logInfo m!"{owner}: audited {count} declarations; standard axioms only"
-
