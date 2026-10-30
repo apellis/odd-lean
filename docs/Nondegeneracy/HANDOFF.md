@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Reservoir Hom action of normalized induction crossings
+
+`VacuumHomAction.pairing` evaluates a supernatural map from the induced
+representable to a reservoir representable on the even identity tensor.
+`mixedCross_postcompose` proves `Φτ(g ≫ t) = twist_p(Φσ(t)) ≫ a_v`;
+`equalCross_postcompose` has the additional source minus sign. The kernel
+is the full ELV source arrow `r ⟶ Jσ(v)`, including exterior and diagram
+parity, for arbitrary commutative rings and represented prefixes. The proof
+uses the normalized tensor formula and supernatural naturality, not an
+assumed pairing or block-to-iterated comparison. Coherence with iterated
+source words, other generators and full action/corner assembly remain open.
+
 ## Mixed normalized crossing on induced representables
 
 `ELVVacuumGeneratorCoordinates.mixedCross_coordinates` computes the normalized
@@ -9,8 +21,8 @@ induction crossing by `equivTo` gives `a_v ≫ twist_p(h)`, where `a_v` is the
 appended quotient class of `crossTwo i j` and `p = parity i * parity j`.
 The twist retains exterior and diagram parity, over every commutative ring.
 The source arrow and induction map have opposite directions. Comparison with
-two successive one-letter inductions and the resulting reservoir-Hom
-postcomposition action remain open. `equalCross_coordinates` computes the
+two successive one-letter inductions remains open. The reservoir-Hom
+postcomposition action is proved separately above. `equalCross_coordinates` computes the
 normalized equal-colour generator with the additional source minus sign.
 
 ## The source-centre realization converse
