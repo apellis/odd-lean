@@ -7,10 +7,12 @@
 long section. `outputPolynomialBoundary_independentS` compares its literal
 independent S(rhobar) w_d value with C0 of the ordered reverse numerator,
 with both library signs retained. No equality or inverse is assumed.
-The next step is explicit output-polynomial numerator identification and
-the appropriate boundary recurrence before monic S-division. The existing
-global C0 defect is for OUTPUT postcomposition; the rho/P intertwiner uses
-INPUT precomposition. Their identification cannot be taken for granted.
+`ELVBoundaryInputDefect` additionally proves the global polynomial-constant
+defect for INPUT precomposition and the resulting `outputPolynomialBoundary_rho`
+recurrence. Its shift applies the total old twist before incrementing the
+exponent. This is not the untwisted OUTPUT-postcomposition shift.
+Explicit numerator output coordinates, coefficient compatibility for ordered
+S-division, and the monic quotient identification remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 

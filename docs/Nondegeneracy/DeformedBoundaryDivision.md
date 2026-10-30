@@ -13,8 +13,12 @@ fixed-word output S polynomial with the actual moving-chain extraction, in the
 library crossing convention. `ELVOutputSIterates` proves the odd-moving-colour
 corrected-rho extraction for every iterate and couples its corrected-basis
 P-image to the reverse polynomial modulo the chronological crossing span.
-The degree-zero boundary defect, polynomial projection and prescribed matrix
-comparison remain open; numerator division is not (11).
+`ELVBoundaryPolynomial` now proves C0 P = A B1 on the original source column
+and projects the independent corrected-rho S comparison to C0 of the ordered
+reverse numerator. `ELVBoundaryInputDefect` proves its first-order recurrence
+with the total-twisted INPUT shift and polynomial-constant defect. Explicit
+numerator output coordinates and ordered S-division remain open; the existing
+QP numerator division is not (11), and no prescribed matrix inverse is claimed.
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
