@@ -231,6 +231,101 @@ Next: assemble the explicit highest coefficient of the whole numerator
 relation with the corrected longest-output coordinates. The factor results
 and product regularity do not by themselves establish right divisibility,
 polynomial degree additivity, or local inversion.
+## Reservoir Hom action of normalized induction crossings
+
+`VacuumHomAction.pairing` evaluates a supernatural map from the induced
+representable to a reservoir representable on the even identity tensor.
+`mixedCross_postcompose` proves `Φτ(g ≫ t) = twist_p(Φσ(t)) ≫ a_v`;
+`equalCross_postcompose` has the additional source minus sign. The kernel
+is the full ELV source arrow `r ⟶ Jσ(v)`, including exterior and diagram
+parity, for arbitrary commutative rings and represented prefixes. The proof
+uses the normalized tensor formula and supernatural naturality, not an
+assumed pairing or block-to-iterated comparison. `pairing_proj` retains each
+parity component; `cross_postcompose_of_mem` exposes `sign(p*q)`.
+`cross_word_postcompose` uses the constructed `wordIsoAt` on the reservoir
+target only. Coherence with iterated
+source words, other generators and full action/corner assembly remain open.
+
+## Mixed normalized crossing on induced representables
+
+`ELVVacuumGeneratorCoordinates.mixedCross_coordinates` computes the normalized
+distinct-colour crossing between block inductions of an arbitrary content
+representable. The two orders use one common target content. Conjugating the
+induction crossing by `equivTo` gives `a_v ≫ twist_p(h)`, where `a_v` is the
+appended quotient class of `crossTwo i j` and `p = parity i * parity j`.
+The twist retains exterior and diagram parity, over every commutative ring.
+The source arrow and induction map have opposite directions. Comparison with
+two successive one-letter inductions remains open. The reservoir-Hom
+postcomposition action is proved separately above. `equalCross_coordinates` computes the
+normalized equal-colour generator with the additional source minus sign.
+
+## The source-centre realization converse
+
+`ELVModuleCentre` proves `contentRealize_surjective` and the explicit linear
+`centreEquiv`, also typed as `centrePiEquiv` on the existing content-module
+PiSCat target. The inverse has coefficient
+`c_p(v) = ((η.app p H_v).app p v)(id_v)`. `action_of_mem` applies module
+naturality along the homogeneous Yoneda map of `m`; its supernatural sign
+`sign(p*q)` cancels the twist sign `sign(q*p)`. This includes odd against odd
+over every ordinary commutative ring. `action` extends to all elements.
+`coefficient_naturality` follows by comparing that action on representables
+with their all-arrow Yoneda formula. `realize_reconstruct` and
+`reconstruct_realize` prove both roundtrips; `reconstruct_proj` retains parity.
+
+Thus a constructed supernatural endomorphism of the module identity has a
+unique source-supercentral family. No whole-inverse cup/cap closure has been
+constructed here. Its source degree, prescribed inverse, sigma residuals,
+bubble/corner evaluations and nondegeneracy remain separate obligations.
+
+## Evaluation on arbitrary content supermodules
+
+`ELVModuleYoneda.ModuleYoneda.homEquiv` proves `(H_v ⟶ M) ≃ₗ[k] M.obj v`
+for every exact-content supermodule. The inverse component sends `h` to
+`M.map (twist k p h) (proj_p m)`. Both roundtrips, both parity projections
+and the formula for every arrow are proved. No finite-colour or nonzero-ring
+hypothesis is imposed. This is the evaluation step toward the source-centre
+realization converse in `DeformedActionAssembly.md` §5, not a construction
+of a reservoir closure or its prescribed inverse.
+
+## Graded content representable Hom coordinates
+
+`ELVContentYoneda` constructs `homEquiv : (H_v ⟶ H_w) ≃ₗ[k] (w ⟶ v)`
+by evaluating both supernatural components at the identity. Its explicit inverse
+has component `h ↦ proj_p(f) ≫ twist_p(h)`. Both roundtrips are proved;
+`evaluate_proj` retains both total-parity projections. `composition_component`
+proves the super-opposite convolution: the odd-odd term is negative.
+This is a covariant-representable precomposition formula, not the reservoir
+postcomposition action. `VacuumRepresentable.wordHomEquiv` transports the equivalence
+through the checked iterated vacuum `wordIso`, for any two words reindexed into
+the same content. Mixed generator/block coordinates, prescribed coefficient/opposite
+normalization and the untruncated reservoir comparison remain open here.
+
+
+## Induction of content representables
+
+`ELVInductionRepresentable.InductionRepresentable.iso` identifies balanced
+`contentInduction σ` of the covariant representable at `v` with the
+representable at the appended word. Its forward map sends `[h ⊗ g]` to
+`J(g) ≫ h`; its inverse sends `h` to `[h ⊗ id_v]`. Both quotient
+roundtrips, naturality for every target arrow and evenness of both maps are
+proved over an arbitrary ordinary commutative ground ring, with the full ELV
+coefficient quotient retained. This is the representable step of
+`DeformedActionAssembly.md` §5 toward vacuum word realization. No local
+inverse or factor-model assumption is used.
+
+`ELVVacuumRepresentable.VacuumRepresentable.wordIso` then identifies actual
+iterated one-colour induction from the empty-word representable with the
+representable of the reversed operator list (`wordObject_word`). The rank-zero
+module is the full coefficient-truncated ELV representable, not an asserted
+ordinary-even-power quotient. `dot_coordinates` and `equalCross_coordinates`
+compute raw appended generators on represented prefixes: `a_v ≫ twist k p h`,
+with `appendEnd_coordinates_of_mem` displaying `sign k (p*r)` for the total
+coefficient-plus-diagram parity `r`. `appendEnd_identity` evaluates to the
+actual quotient class of the whiskered affine map. These are precomposition
+formulas, not the postcomposition required by the swapped corner evaluator.
+Mixed-crossing common-content transport, normalization and compatibility of
+block generators with iterated single-colour induction remain separate, as do
+rank-zero coefficient/corner identification and actual bubble values.
 
 ## Actual full-cyclotomic monic annihilator and bounded moving powers
 
@@ -490,9 +585,47 @@ actual additive linear superfunctor. Unit/counit formulas, naturality on
 source/target arrows are proved. `ELVOld.moduleAdjunction`
 constructs the actual ELV induction–restriction adjunction; its unit and
 counit are even, natural against every module map, and satisfy both
-triangles. Normalized induction generators, parameter twist, integer
-grading, content/weight indexing, and local inversion matrices remain
-separate; no full factor action is claimed.
+triangles. `ELVContentModuleAction` supplies exact-content module categories,
+right append between them, and concrete `contentE ⊣ contentF`.
+`ELVModuleInductionTransform` constructs the homogeneous induction mates
+`[h ⊗ m] ↦ [α_v ≫ twist_p(h) ⊗ m]` and instantiates raw ELV dots/crossings.
+`ELVModuleInductionRelations.transform_comp` proves the superopposite law:
+`T(β) ≫ T(α) = sign k (p*q) • T(α≫β)`. In particular odd–odd composition
+is signed, not ordinary reversal. The unit compatibility is also checked.
+`ELVContentModuleTransform` constructs exact-content dots and crossings,
+using a common explicit endpoint for both colour orders and the source's
+equal-colour minus. `ELVModuleInductionComp.inductionComp` gives the even
+composition isomorphism, natural against all module maps; its tensor map
+is `[g ⊗ [h ⊗ m]] ↦ [K(h) ≫ g ⊗ m]` and its inverse inserts the inner
+identity. The source convention is E=induction, F=restriction.
+`ELVParameterUntwist` proves the ordered mixed quadratic coefficient
+cancellation for `parameterTwist Sc`, including the single disconnected
+constant, leading terms and all interior terms. The calculation applies
+through any algebra map from the affine height algebra into a possibly
+noncommutative algebra and on every left module. Separate support constraints
+remove the total input parity from the signed dot-power exponent.
+`ELVContentModuleQuadratic.contentInduction_quadratic_tensor` now proves
+that the two actual normalized distinct-colour induction crossings at one
+common exact-content endpoint compose to this original-Sc ordered evaluation
+on every balanced tensor. This bridge uses the two-word source relation and
+has no finite-colour assumption. Identifying the resulting evaluation with
+ordered powers of the dotted module operators remains separate.
+`ELVContentModuleRelations.contentInductionCross_square` proves square-zero
+for the actual normalized crossing as a module-map equality. Both normalized
+nilHecke slides are proved on every induced module object using the actual
+two-strand dots; `contentInductionCross_linear_eq_neg` identifies the crossing
+with the negative raw operator, including its coefficient parity twist.
+No source nilHecke relation is assumed: the proof uses the affine quotient
+relation and the actual ELV quotient/balanced tensor composition.
+The equal-colour braid is also proved on every exact-content induced module
+object for the negative appended three-strand crossings; identification with
+whiskered single-letter E-generators still needs the content composition transport.
+Mixed presentation-relation identification on those operators, transport from
+composite content append to word append, weight assembly, and local
+inversion matrices remain separate;
+no full factor action is claimed. Integer grading of the source categories
+and kernels is retained; a graded module-category framework is not needed
+by the current Rouquier target.
 
 ## Reverse three-strand crossing naturality
 
