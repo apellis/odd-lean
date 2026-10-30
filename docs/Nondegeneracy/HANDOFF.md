@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Global actual CrossBraid assembled
+
+`ProbeReservoir.crossBraidOfInputs` in `SwappedAssembly.BraidAssembly` now
+constructs all three actual `CrossBraid` fields for `P.swappedGens c L`:
+non-correction braids, repeated-outer off-diagonals, and the full repeated-outer
+diagonal correction with all three literal dot coordinates and both original
+signed Sc.t/Sc.s sums. Colours, weights, source/terminal sectors, and source
+and target paths are arbitrary. Exhaustive structural path and colour cases
+derive the opposite reservoir-order validity and endpoint equalities; these
+are no longer extra hypotheses of the global producer.
+
+`ProbeReservoir.braidRelationsOfInputs` supplies the resulting `BraidRelations`
+on the actual layer representation. Hypotheses remain `P`, `L`, the supplied
+coefficient `c`, `c.IsInverse`, and `P.CrossCoeffInputs`, over CommRing in both
+parities. Ground-unit data, including two_isUnit, are retained through P.
+No Q or reservoir crossing is inverted, no abstract braid interface is assumed,
+and no PBW or nondegeneracy assumption is added. This is not itself a nonzero
+model or the nondegeneracy theorem.
+
+Focused warning-as-error builds pass. Strict default-option consumers of the
+global non-correction field, full diagonal formula, complete CrossBraid,
+off-diagonal actual paths, and layer BraidRelations pass. Complete owner audits
+check 3/1/3 declarations in BraidNonRepeated/BraidRepeatedDiagonal/BraidAssembly,
+using only propext, Classical.choice, and Quot.sound. The six new mixed-entry
+modules have their own complete owner audits and actual-path/block consumers.
+Root imports are updated. Full-package CI and independent source review are
+separate integration gates. Earlier entries listing global CrossBraid or these
+mixed entries as open are superseded by this section.
+
 ## Both adjacent two-reservoir blocks assembled
 
 `AdjacentReservoirReverseComparison.braid_entry_path` supplies the Q-weighted
