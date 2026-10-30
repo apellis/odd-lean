@@ -1,5 +1,35 @@
 # Odd nondegeneracy: restart state
 
+## Ordered reverse boundary polynomial and all corrected iterates
+
+`AppendQPTransport.lean` independently defines `appendQPProduct` at the last
+strand and proves `qpProduct_comp_moveHom` for every word. Its factors are
+Q at unequal colours, −1 at repeated even colour, and `(x_b − t)^2` at
+repeated odd colour. This polynomial is neither the full chain norm nor S.
+
+`ELVEndpointPolynomial.lean` defines `endpointELV` as the literal finite
+coefficient sum, and proves `relation_comp_move` in both parities with sign
+`(−1)^((cutoff i • p(i)) * (p(i) * p(v)))`. Exterior coefficients remain in
+the full ELV algebra; only the ground scalar ring is commutative.
+
+`ELVReverseBoundary.lean` proves `pMap_move_projection` by canceling the
+already-injective qMap on its old-only append domain. For arbitrary h:
+
+    P [move ≫ h] = sign • [appendQPProduct ≫ endpointELV ≫ h].
+
+The chronological order on the right means `f(t) L(t)` in End algebra
+notation. `pMap_boundaryRho_move_iterate` proves every corrected odd iterate
+has image `sign • [t^d ≫ appendQPProduct ≫ endpointELV ≫ h]`;
+`pMap_evenDot_move_iterate` proves the even case without a correction or
+parity sign. The moving dot is not commuted through f(t).
+
+Next: identify this quotient identity with the full-ELV longest-output
+coordinate relation and prove the explicit unit-leading normalization of
+this numerator. These are still needed for right divisibility and local
+inversion; none follows merely from injectivity. The expected QP leading
+unit retains the repeated-even sign and every distinct-colour `Sc.t i j`,
+including disconnected colours. Earlier open-status statements below are
+superseded only for the concrete quotient reverse identity and its iterates.
 
 ## Append endpoint norm regularity and G injectivity
 
