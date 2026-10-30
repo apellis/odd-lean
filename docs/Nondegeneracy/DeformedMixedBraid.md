@@ -1,8 +1,13 @@
 # Corrected mixed braid under signed right multiplication
 
-**Status: written proof, not a Lean theorem.** This proves the corrected
-braid comparison used in `DeformedActionAssembly.md` §6. It does not by itself
-certify that note's other action data or assert a full SKM action.
+**Status: common-content operator braid checked in Lean.**
+`ELVContentMixedBraid.contentMixedBraid_source_linear` formalizes §2 on
+normalized common-content induction operators.
+`ELVContentMixedPolynomial.contentMixedBraid_polynomial_linear` formalizes
+the ordered original-Sc polynomial comparison in §3, including the full
+residual twist and arbitrary-exponent support identity. The block-to-iterated
+single-letter comparison in §4 is not supplied by these theorems. This does
+not certify the other action data or assert a full SKM action.
 
 The target is exactly `SKM/Presentation.lean`, `relation` at
 `Rel.braidEq i j λ hij` (lines 264–278). The algebra input is the independent
@@ -196,9 +201,10 @@ operator identity for ordinary cyclotomic polynomials, but still leaves
 relation. Its generic multiplier calculation is consistent with (3)–(5).
 The new content here is that explicit arbitrary-exponent comparison.
 
-This is a written relation proof, not a new Lean declaration. Combined
-with `DeformedActionAssembly.md` it supplies the underlying supercategory
-action; `DeformedGradedAction.md` supplies its standard integer grading.
-The construction and comparison of
-the full-ELV category/functors remain unimplemented, and fusion, bubble
-normalization, fixed-weight detection and nondegeneracy remain separate.
+The common-content mixed relation is now a Lean linear-map equality,
+`contentMixedBraid_polynomial_linear`. The remaining passage from appended
+blocks to iterated single-letter induction, other action relations and
+weight assembly are not consequences of this equality alone. The proposed
+action and integer grading in `DeformedActionAssembly.md` and
+`DeformedGradedAction.md`, fusion, bubble normalization, fixed-weight
+detection and nondegeneracy retain their separate proof obligations.

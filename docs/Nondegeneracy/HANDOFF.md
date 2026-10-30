@@ -8,9 +8,17 @@ three-crossing difference equals the signed source correction over
 The two intermediate words are `[i,i,j]` and `[j,i,i]`.
 `contentMixedBraid_tensor` retains `twist k (D.parity i)` of the entire
 kernel morphism, including exterior coefficients. No braid relation on
-module operators is assumed. The ordered three-dot-power polynomial with
-original Sc coefficients remains to be identified; block/single-letter
-comparison, weight assembly and nondegeneracy remain open.
+module operators is assumed.
+
+`ELVContentMixedPolynomial.contentMixedBraid_polynomial_linear` identifies
+that difference with `contentMixedBraidPolynomial`: the leading t term and
+interior s terms have exactly the prescribed Sc coefficients, multiplied
+by sign(p(q+l)), and ordered operator powers X₃^(r-1-l) X₂^s X₁^l.
+`contentInduction_three_powers` retains the full-parity twist for arbitrary
+exponents; `mixed_braid_sign_identity` proves the symbolic support identity.
+Support is derived from Sc, and reflection of the correction index never
+commutes dots. Block/single-letter comparison, weight assembly and
+nondegeneracy remain open.
 
 ## ELV module restriction
 
