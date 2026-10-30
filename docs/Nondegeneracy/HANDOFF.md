@@ -9,10 +9,16 @@ degrees, over any commutative ground ring with a symmetrizer and homogeneous
 scalars. No finite-colour or coefficient-weight upper-bound hypothesis is
 needed. The generic consumer audits every declaration in this module.
 
-This is a source bound, not quotient injectivity. The next obligations are
-a uniform bound over the finite permutations of fixed content, the
-cyclotomic and coefficient-truncation kernel bounds, and injectivity of the
-actual affine-to-truncated quotient map on bounded-degree subspaces.
+`ELVKernelDegree.exists_ideal_degree_bound` now derives the actual old-ideal
+bound: for fixed content there is `L`, independent of cutoff, such that every
+ideal element has zero degree-`n` projection when `n < L + C + L` and
+`C ≤ 2*d_j*cutoff_j` for colours in that content. Finite permutations supply
+`L`; no finite-colour assumption is used. `exists_old_degree_injective`
+therefore proves injectivity of the actual old quotient on each such
+homogeneous part, over any commutative ground ring.
+
+Coefficient-truncation kernel bounds and the affine-to-truncated comparison
+on bounded-degree sums remain open.
 
 
 
