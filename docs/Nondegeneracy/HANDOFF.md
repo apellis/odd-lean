@@ -94,9 +94,34 @@ words, moving shuffles and moving exponents in the established PBW quotient
 coordinates. `centralSource_pair_shift` keeps old coefficients unchanged,
 and `centralSource_residue` keeps the exponent modulo `centralDegree`.
 
-**Remaining:** reindex these simultaneous coordinates into finitely many
-old-idempotent B[s] summands and prove the resulting equivalence polynomial
-linear, for both endpoints. No finite-projectivity instance is asserted.
+
+**Source endpoints completed:** `ELVSourceRows` reconstructs entire old rows
+across every source column, and `ELVSourceRowsEquivalence` proves both inverse
+laws. `ELVSourcePolynomialRows` splits the moving exponent into central blocks
+and residues and constructs a polynomial-linear finite-free section/retraction.
+`ELVPolynomialIdempotents` identifies its image literally with the finite family
+of right ideals e(v)B[s]. `ELVOld.K1IdempotentEquiv` and
+`K1PrimeIdempotentEquiv` give the actual endpoint equivalences; `K1_projective`,
+`K1_finite`, `K1Prime_projective`, and `K1Prime_finite` follow from those concrete
+retracts. Epsilon and eta remain in reconstruction and signed PBW extraction.
+`sourceEndpointTwistEquiv` proves an equivalence rather than identifying their
+actions. Arbitrary off-diagonal old coefficients and the central variable are
+respected; empty content, zero cutoff and zero corners require no exceptions.
+
+**Remaining in this slice:** the append-side K₀ decomposition is not constructed.
+It needs the full signed-coefficient append PBW descent and common-row assembly;
+the ordinary-coefficient append package is not a substitute. Consequently this
+slice proves the two source finite-projectivity inputs, not the complete pair
+of finite-projective endpoints. Cokernel and ideal-sum exactness are supplied
+by the independent constructions below, not reproved or assumed here.
+
+The importing consumer `scripts/NonVacuity/ELVSourceProjective.lean` exercises
+both polynomial equivalences, actual projectivity instances, mixed moving
+parities, zero cutoff and empty content, full noncommutative scalar compatibility,
+and literal idempotent-ideal membership. Its audit enumerates all declarations
+from each of the five owned modules via `moduleData.constNames`, including
+generated and private declarations.
+
 `ELVQuotientPresheaf` constructs the enlarged quotient action by appending
 old arrows on representatives and precomposing by the moving dot/square.
 Both ideal closures and naturality of the canonical quotient are proved.
@@ -108,6 +133,7 @@ map on representatives, and targets these enlarged cyclotomic quotients.
 `contentShortComplex_shortExact` proves the literal sequence
 0 → K₁ → K₀ → F → 0, with arbitrary colours and cutoffs, including zero and
 empty content. No finite-projectivity assertion is included.
+
 
 
 ## Ordered product and normalized extraction
