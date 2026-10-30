@@ -1,5 +1,19 @@
 # Odd nondegeneracy: restart state
 
+## Adjacent-equal two-reservoir coefficient entry
+
+`AdjacentReservoirCoefficient.braid_entry_path` proves the actual complete
+`Pi Ri Rj → Rj Pi Ri` braid entry (iij → jii, bits 100 → 010), at arbitrary
+terminal sectors and paths identified with those constructors. Both full finite
+sums reduce by spectator vanishing. The resulting identity uses the new unsigned
+coefficient transport, with the native negative PR diagonal signs preserved.
+It retains both reservoir-order validity pairs, both endpoint equalities,
+c.IsInverse, CrossCoeffInputs and i≠j; no Q or crossing inverse is used.
+Focused warning-as-error build and the strict default-option real-entry consumer
+pass. The complete owner audit checks 10 declarations using only the standard
+three axioms. This is a consequential real entry, not the reverse 001→100 entry
+and not full adjacent block/global dispatch coverage.
+
 ## Full literal two-reservoir 001 diagonal
 
 `RepeatedOuterPre.full_diag_path` proves the FULL literal `Ri Rj Pi` diagonal:
