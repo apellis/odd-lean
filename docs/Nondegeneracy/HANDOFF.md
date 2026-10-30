@@ -14,8 +14,12 @@ recursive flattening trees as linear maps on every induced module. `ELVContentWh
 `contentInductionComp_outer` insert the exact content transports into both
 whiskering squares for arbitrary affine endomorphisms, proving the source
 identifications through the truncated quotient. The two content comparison
-trees still need their equality transports inserted into associativity. The resulting whiskered quadratic and mixed braid still
-require proof.
+trees still need their equality transports inserted into associativity.
+`ELVContentPairWhiskeredRelations.contentEPairDot_zero_eq_inner` and
+`contentEPairDot_one_eq_outer` identify the canonical pair dots with independent
+single-letter actions. `contentEPair_whiskered_quadratic` is the ordered
+original-Sc quadratic in these independently whiskered dots. The triple
+crossing identifications and resulting whiskered mixed braid still require proof.
 
 ## All-module content induction comparison
 
