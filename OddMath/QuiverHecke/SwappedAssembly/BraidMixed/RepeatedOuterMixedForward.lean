@@ -68,7 +68,8 @@ variable (G : P.Generators)
   (Z : P.H (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
 
 /-- The full forward off-diagonal left sum has one surviving route.
-The middle equal crossing is the prescribed coefficient-square entry. -/
+For the supplied swapped generators, its middle equal crossing is the
+prescribed coefficient-square entry. No assumption on this entry is used here. -/
 theorem repeatedOuter_forward_left_route (hij : i ≠ j) :
     let m : SPath (wd D ν [up i, up j, up i]) s
       (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))) :=

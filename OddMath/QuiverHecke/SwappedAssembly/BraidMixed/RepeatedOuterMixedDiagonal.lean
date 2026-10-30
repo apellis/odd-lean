@@ -93,7 +93,7 @@ theorem repeatedOuterMixed_probe_coeff (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (P.adjacentReverseProbeCross i j s hR hs₀ Z) he hj
   exact he'
 
-/-- With the physical-dot normalization, the single edge has the Koszul sign.
+/-- With explicit sign normalizations, the single edge has the Koszul sign.
 The source normalization is `(-1)^pᵢ`, and the separated target normalization
 is `(-1)^(pᵢ+pᵢpⱼ)`. Both total parities are retained. -/
 theorem repeatedOuterMixed_probe_coeff_signed (c : P.CrossCoeff Sc) (hc : c.IsInverse)

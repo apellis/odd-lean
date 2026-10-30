@@ -21,7 +21,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
     nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s)))
   (Z : P.H (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
 
-/-- With the physical-dot normalization, the single edge has the Koszul sign.
+/-- With explicit sign normalizations, the single edge has the Koszul sign.
 The source normalization is `(-1)^pᵢ`, and the separated target normalization
 is `(-1)^(pᵢ+pᵢpⱼ)`. Both total parities are retained. -/
 theorem repeatedOuterMixed_signed_edge_obligation (c : P.CrossCoeff Sc) (hc : c.IsInverse)
