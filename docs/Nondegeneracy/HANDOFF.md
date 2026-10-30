@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Compatible normalized long lifts
+
+`ELVOutputCompatibleLifts.lean` constructs `outputLongSection` from finite sums
+of the specified normalized prepend-long tails, rather than choosing preimages.
+`outputLongExtraction_section` is its right-inverse identity and
+`boundaryRho_outputLongSection` its corrected-rho intertwining. The coefficient
+operator is the existing `outputCoefficientRho`, retaining total old parity and
+the signed, balance-twisted delta action. `outputCorrectedLift` iterates the
+literal `boundaryRho` on the bare-long class; `outputLongSection_rho_iterate`
+identifies its lift and `outputLongExtraction_correctedLift` its extraction.
+
+These statements allow every old word, including empty, every cutoff and full
+old endomorphism coefficients over a commutative ground ring. The explicit
+inverse triangular coordinate change, variation of the old target, and the
+degree-zero defect after the prescribed P and append projection remain open.
+No canonical S comparison or prescribed matrix inverse is concluded here.
+
 
 ## Actual signed old-Hom right division
 
