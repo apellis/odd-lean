@@ -41,8 +41,14 @@ and remainder supported strictly below D. Quotient and remainder are unique.
 For B=d+endpointQPDegree, signed phi vanishes above B-D; its coefficient
 at B-D is the prescribed signed appendQPProductUnit times [id] when D≤B.
 When B<D, phi_d=0. These statements include annihilated old corners.
-The separate rewrite of B-D to the Cartan-height expression and individual
-boundary leading components remain to be proved.
+`ELVBoundaryRowLeading` identifies endpointQPDegree-outputSDegree with
+cutoff(i) minus the sum of the Cartan row on the word, using integer subtraction.
+For every full old coefficient, the boundary of the corrected lift vanishes
+above the height bound and its top map is `outputBoundaryLeadingEquiv`: the
+explicit product of sigma, epsilon and appendQPProductUnit, followed by the
+total old parity twist. Low corrected vectors are killed in negative height.
+Polynomial-row division and the full kernel/window direct-sum equivalences
+remain to be constructed.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 
