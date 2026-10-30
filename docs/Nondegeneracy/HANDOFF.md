@@ -27,6 +27,10 @@ fold induction, including the disconnected scalar units and repeated-even minus
 signs. The shifted C0 numerator has the same unit top at every input power.
 Zero rings and annihilated old objects are included; no support membership or
 natDegree equality is inferred from the coefficient formula.
+`ELVOutputSLeading` proves the independent S has support at most
+`outputSDegree = (if odd then 4 else 2) * count_i(v)` and coefficient
+`[id_v]` at that bound. The proof selects the unique nonzero top choice
+in the independently defined finite expansion; it includes zero old corners.
 Coefficient compatibility for ordered S-division, the monic quotient
 identification, and individual boundary leading components remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced

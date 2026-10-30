@@ -29,6 +29,9 @@ fold support by `endpointQPDegree = cutoff i + Σ_b appendQPDegree(i,v_b)`.
 vanishes. The proof follows the finite endpoint row and each ordered QP step,
 not ordinary commutative polynomial multiplication. The corresponding C0 bound
 and top coefficient hold at every input power after the full old twist.
+`ELVOutputSLeading.independentOutputS_support` and `independentOutputS_top`
+prove the independent S bound `D = (if odd then 4 else 2) * count_i(v)`
+and its literal top coefficient `[id_v]`, including annihilated old corners.
 Ordered S-division remains open; the existing
 QP numerator division is not (11), and no prescribed matrix inverse is claimed.
 
