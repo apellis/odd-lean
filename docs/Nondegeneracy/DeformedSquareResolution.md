@@ -6,8 +6,9 @@ in `DeformedGlobalQP.md` and the written ideal equality
 in `DeformedIdealSum.md`. Full ELV P/Q descent, the signed QP identity and
 injectivity of P are now proved in Lean. `ELVContentModule.lean` constructs
 the content-level ordinary right B[s]-modules and the injective B[s]-linear P.
-The finite-projective PBW decomposition and ideal-sum exactness below remain
-written mathematics.
+`ELVIdealSum.lean` and `ELVCokernel.lean` prove the ideal sum and canonical
+ground-ring-linear cokernel. The finite-projective PBW decomposition and
+content-level B[s]-linear exactness below remain written mathematics.
 No assertion about left projectivity or the specified Rouquier matrix is made.
 
 Sources read for this comparison: KKO I, arXiv:1206.5933v2, Lemma 7.3,

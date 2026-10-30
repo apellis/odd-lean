@@ -1,6 +1,30 @@
 # Odd nondegeneracy: restart state
 
 
+## Full ELV ideal sum and P cokernel
+
+`ELVFirstDotTransport.firstDot_relation_transport` proves the inverse-normalizer
+step in diagram order: `x ≫ f = f ≫ (x + 2(-1)^N delta)`. Thus the shift is
++2 delta at even cutoff and −2 delta at odd cutoff. It uses the actual full
+coefficient quotient; the even-cutoff top relation also covers cutoff zero.
+`ELVParabolicTransport.outputParabolic_relation_transport` combines this with
+coefficient and tail parity transport and singleton first-block normal forms.
+
+`OutputShuffle` identifies the short output shuffles as right extensions and
+the long output shuffle as `lastToFirstHom`, not its inverse.
+`ELVIdealSum.parabolic_term_mem_appendRelations_sup_range` discharges the
+previous concrete term hypothesis. `ideal_eq_appendRelations_sup_range` is
+(IS2), with all words, cutoffs and exterior coefficients, without additional
+normality, flatness, finite-colour or field assumptions.
+
+`ELVCokernel.canonicalAppendTarget` maps the append-old quotient to
+`Old (v ++ [i]) w`; `ker_canonicalAppendTarget` is exactly `range pMap`.
+`pMapCokernelEquiv` identifies the quotient by this range with that actual
+cyclotomic quotient and agrees with the canonical map on representatives.
+These are ground-ring statements. Twisted B[s]-linearity, projectivity and
+the full nondegeneracy theorem remain separate.
+
+
 ## Ordinary right content polynomial modules
 
 `ELVOldCategory` assembles the full old cyclotomic Hom quotients into a linear
@@ -24,7 +48,8 @@ and `centralSource_residue` keeps the exponent modulo `centralDegree`.
 **Remaining:** reindex these simultaneous coordinates into finitely many
 old-idempotent B[s] summands and prove the resulting equivalence polynomial
 linear, for both endpoints. No finite-projectivity instance is asserted.
-The cokernel and ideal-sum exactness remain independent obligations.
+The ground-ring cokernel and ideal sum are proved above; their content-level
+B[s]-linear exactness remains a separate obligation.
 
 
 ## Ordered product and normalized extraction
@@ -56,6 +81,7 @@ Affine coefficients include every old height; the ordinary-polynomial append
 source retains its existing old-height n+1 scope. Source equations (6)–(7),
 the full ELV boundary and corrected w_k identification remain separate.
 
+
 ## Full-coefficient output-parabolic spanning for the ideal sum
 
 `ELVParabolicSpan.lean` supplies the affine spanning input (C) of
@@ -68,15 +94,16 @@ proves these terms span; it does not assume a PBW decomposition or flatness.
 `ideal_nil` and `appendRelations_nil` handle the empty old word explicitly.
 
 The named IS2 consumer is
-`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its remaining
-hypothesis is a concrete shuffle-term containment. It is not discharged:
-one must move `relation j t` across `shuffleParabolic` using the full
-normalizer (first dot translated by −2 delta, total coefficient-plus-tail
-parity, and delta times the top coefficient zero), then identify short
-shuffles with appended old relations and the long shuffle with `appendW`.
-This is the output-oriented shuffle, not the inverse shuffle used in input
-prepend coordinates. No ideal-sum equality or cokernel identification is
-claimed. Those remain the next target; P injectivity is already proved below.
+`ideal_le_appendRelations_sup_range_of_parabolic_terms`. Its concrete
+shuffle-term containment hypothesis is discharged by `ELVIdealSum` above.
+The reduction transports `relation j t` across `shuffleParabolic` using
+the inverse normalizer (first dot translated by +2(-1)^N delta, total
+coefficient-plus-tail parity, and delta times the top coefficient zero),
+then identifies short shuffles with appended old relations and the long
+shuffle with `appendW`. This is the output-oriented shuffle, not the
+inverse shuffle used in input prepend coordinates. The ideal-sum equality
+and cokernel identification are now proved above; P injectivity is already
+proved below.
 
 
 ## Central moving-variable linearity of ELV P
