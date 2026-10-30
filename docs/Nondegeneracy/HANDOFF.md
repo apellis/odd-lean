@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Opposite adjacent-equal 001 to 010 entry
+
+`AdjacentReservoirReverseCoefficient.braid_entry_path` proves the actual
+`Rj Ri Pi → Ri Pi Rj` entry. Both complete finite sums retain the unequal
+reverse mixed Q factor. The proof uses the backwards unsigned coefficient
+slide and the proved Q/coefficient commutation. Focused warning-as-error build,
+strict default-option arbitrary-path consumer, and all 10 owner declarations
+pass with only the standard three axioms. The other opposite adjacent entries
+and global assembly remain open.
+
 ## Complete adjacent-equal iij to jii two-reservoir block
 
 `AdjacentReservoirSquareBlock.square_braid_entry_transport` proves the actual
