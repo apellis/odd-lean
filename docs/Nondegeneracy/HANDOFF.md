@@ -17,8 +17,15 @@ ideal element has zero degree-`n` projection when `n < L + C + L` and
 therefore proves injectivity of the actual old quotient on each such
 homogeneous part, over any commutative ground ring.
 
-Coefficient-truncation kernel bounds and the affine-to-truncated comparison
-on bounded-degree sums remain open.
+`ELVTruncatedKernelDegree.exists_truncatedIdeal_degree_bound` adds the
+coefficient-weight ideal: every coefficient has degree at least twice its
+weight, including colours outside the boundary. The complete kernel has no
+components below `L + min C (2*N) + L`.
+`exists_truncated_degreeBelow_injective` proves injectivity of the literal
+`TruncatedOld` projection on all source Homs supported strictly below `B`
+when `B` is at most this bound. No finite-colour hypothesis is needed.
+The remaining affine comparison must still establish injectivity of the
+unit-coefficient insertion and apply this result to affine PBW degree spans.
 
 
 
