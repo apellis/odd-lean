@@ -18,9 +18,23 @@ positioned dots. `contentEPairCrossTransform` is a genuine supernatural
 transformation on all modules; `contentEPairCross_total` verifies its evaluated
 map equals the crossing used in the relation. The common-target second E is
 explicitly recast and specializes definitionally to literal successive E at
-its sequential target. Coherent triples, composite mixed braid, compatibility
-with separately whiskered single-letter dot maps and weight assembly remain
-next obligations.
+its sequential target.
+
+`ELVContentTripleRelations` supplies the recursively constructed even comparison
+for three actual successive E functors, explicit intermediate/final content
+transport, genuine supernatural source transformations and verified total maps.
+`contentETripleMap_comparison` fixes the same comparison at each intermediate
+word; `contentETripleMixedBraid_comparison` proves both paths transport through
+these comparisons. `contentETriple_mixedBraid` is the original-Sc ordered
+three-dot correction, with both equal-crossing minus signs retained.
+`contentETriple_mixedBraid_tensor` exposes the residual outside-colour twist on
+the entire coefficient/diagram kernel.
+
+**Precise remaining coherence gap:** these transported source-positioned maps
+are not yet identified with independently whiskered pair crossings and
+single-letter dots; equality of the two recursive associativity comparisons
+is not proved. This is path-compatible transport, not a claim of full
+monoidal/action coherence. Weight assembly and local inversions remain open.
 
 ## Common-content mixed braid
 
