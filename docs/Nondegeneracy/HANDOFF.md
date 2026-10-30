@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Literal pure-reservoir diagonal correction
+
+`repeatedOuterPureReservoir_braidEq_diag` proves the exact two signed
+`dotEntry` sums for every path at a valid pure-reservoir endpoint, with
+`i ≠ j` and no inverse/coefficient-input assumption. All three shifted dots
+are transported through the total normalization. Their scalar powers agree
+on every supported monomial with the existing corrected-route scalar.
+Both pure diagonal corrections are now literal path-matrix equations.
+Remaining mixed entries/placements and the full `CrossBraid` producer remain open.
+
 ## Literal pure-probe diagonal correction
 
 `repeatedOuterPureProbe_braidEq_diag` now proves the exact two signed
@@ -9,8 +19,8 @@ The factor polynomial is compared to all three literal dots and their
 arbitrary powers; finite-sum reflection cancels the equal-crossing scalar.
 Odd outer-degree and interior-support conditions come from the datum and
 original scalar data, over an arbitrary commutative ground ring.
-The pure-reservoir literal diagonal and remaining mixed entries/placements
-are still open; this is not a full `CrossBraid` producer.
+The remaining mixed entries/placements are still open; this is not a full
+`CrossBraid` producer.
 
 ## Literal repeated-outer diagonal and pure-factor corrections
 
