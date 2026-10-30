@@ -7,6 +7,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOutputSComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVLeadingSourceTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputOrderBalance
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputOldTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendOutputDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendCrossingTriangular
 import OddMath.QuiverHecke.CyclotomicAction.ELVPrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVPrependOldExtraction
@@ -101,6 +102,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVMonicOldCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVMovingReduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSpanning
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVLowerDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedKernelDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVAffineDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSupport
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupport
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleBound
