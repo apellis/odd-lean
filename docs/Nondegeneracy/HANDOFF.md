@@ -1,5 +1,34 @@
 # Odd nondegeneracy: restart state
 
+## Actual independent-S division and further literal braid entries
+
+The full-coefficient boundary now satisfies its actual graded right-coefficient
+covariance, with different source and output balance shifts. The independently
+specified S has coefficient the old identity at its prescribed bound D, and
+for odd moving colour the actual boundary values phi_d occur as the unique
+quotients in epsilon N_d = (sigma phi_d) S + sigma R_d, with support(R_d) < D.
+No arbitrary coefficient is assumed central or twist-fixed. Put
+B = d + endpointQPDegree. The signed quotient has the prescribed scalar-unit
+times identity coefficient at B−D only when D ≤ B; it is actually zero when
+B < D. These statements include annihilated old corners and do not assert
+nonzero support or natDegree equality. The independent polynomial S is not A.
+The Cartan-height identity, actual polynomial-row normal forms, balanced
+cyclotomic top quotient and categorical matrix inverse remain separate.
+
+The complete Ri Rj Pi (001) correction and the adjacent Pi Ri Rj to Rj Pi Ri
+coefficient entry are also checked as literal path formulas, including both
+whole braid sums. The 001 normalization is positive epsilon times C, unlike
+the negative 100 normalization. Only the supplied coefficient-denominator
+units are used; no Q or crossing inverse is introduced. Both reservoir-order
+validities and endpoint equalities remain explicit. Reverse 001 to 100,
+remaining adjacent placements and the global CrossBraid dispatch are not
+completed by these particular formulas.
+
+The earlier generator associativity calculation still does not establish the
+whole named comparison-map square or independently whiskered triple operators.
+All scalar-data unit/parity conditions, including Sc.two_isUnit, remain intact.
+
+
 ## Full-coefficient boundary and content calculations
 
 All statements retain the defining unit and parity conditions of their supplied
