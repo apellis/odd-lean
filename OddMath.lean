@@ -25,6 +25,15 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVQPProduct
 import OddMath.QuiverHecke.CyclotomicAction.ELVSignedMovingPower
 import OddMath.QuiverHecke.CyclotomicAction.ELVRelationRegularity
 import OddMath.QuiverHecke.CyclotomicAction.ELVQPRegularity
+import OddMath.QuiverHecke.CyclotomicAction.ELVMovingNormRegularity
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerChain
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNorm
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerEqual
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerBalance
+import OddMath.QuiverHecke.CyclotomicAction.ELVRDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendBalance
@@ -48,6 +57,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRowsEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVPolynomialIdempotents
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceProjective
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSupport
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientPresheaf
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentExactness

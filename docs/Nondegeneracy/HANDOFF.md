@@ -1,5 +1,69 @@
 # Odd nondegeneracy: restart state
 
+## Reverse three-strand crossing naturality
+
+`ReverseIntertwinerMeet.lean` proves `reverseMeetLeft_eq_all` (in namespace
+`OddMath.QuiverHecke`): the reverse chronological square
+`ψ₀ g₁ g₀ = g₁ g₀ ψ₁` for arbitrary colours and surrounding words.
+The actual normalized odd and even variants are invariant under passage to
+an opposite signed nilHecke ring; this proves the reverse all-equal braid.
+The moving-colour coincidence cases use palindromic and two-crossing dot
+transport identities. No inverse or cancellation of a moving chain is used.
+`cross_comp_reverseMoveHom_pair_all` applies the square to the defined
+reverse chain on two old strands, without colour restrictions.
+
+`ReverseIntertwinerCrossing.lean` proves
+`OddMath.QuiverHecke.cross_comp_reverseMoveHom_all`: old-crossing
+transport on arbitrary old words, by prefix and suffix induction with the
+outside-crossing parity sign. `ReverseIntertwinerBalance.lean` extends
+the generator slides to arbitrary old diagrams. `ELVRDescent.lean` proves
+`reverseMove_comp_insert` for the full coefficient-plus-diagram parity twist,
+including parity-mismatched Hom spaces. `reverseMove_relations` then proves
+old-ideal descent; `rMap : Target →ₗ[k] AppendTarget` is precomposition by
+the defined reverse chain. `rMap_qMap_projection` identifies reverse-after-
+forward with the append-end norm operation. Append-end norm regularity and
+G injectivity remain separate obligations; no cancellation is assumed.
+
+## Actual reverse-chain endpoint norm; G injectivity remains open
+
+`ReverseIntertwinerChain.lean` defines the reverse of the actual moving chain
+and proves its local squares for unequal, repeated-even and repeated-odd
+colours. `ReverseIntertwinerNorm.lean` proves, for every prefix and word,
+
+    reverseMoveHom ≫ moveHom = endpointNorm.
+
+The right side is independently defined from dot polynomials. The append-end
+factors are Q at unequal colours, −(t−x)² at repeated even colour, and
+−(t²−x²)²(x²+t²) at repeated odd colour. The first encountered factor is
+leftmost in End multiplication, hence last in categorical composition.
+Transport through the forward tail uses parity support, not an assumed norm
+identity. No source/library crossing normalization is changed.
+
+`ReverseIntertwinerNaturality.lean` proves reverse moving-dot, distant-dot
+and arbitrary old-dot transport with the full word-parity signs. It also
+proves reverse crossing transport for a pair of old colours both different
+from the moving colour (the old colours may coincide). The unrestricted
+local meet is now supplied by `ReverseIntertwinerMeet.lean` above.
+Full reverse old-ideal descent and the quotient reverse-chain map are now
+proved in `ELVRDescent.lean` above.
+
+`ELVMovingNormRegularity.lean` proves regularity of the independently
+prescribed prepend-end norm polynomial on the full old-only ELV quotient.
+It uses actual finite PBW support, the invertible parity twist for a linear
+moving dot, and the prescribed unit leading coefficient for unequal Q.
+The odd sum-of-squares factor is retained. This prepend result is not
+regularity of the append-end `endpointNorm`: the append-coordinate quotient
+comparison remains to be constructed. In particular neither QP nor P
+injectivity is used to claim G injectivity.
+
+Next obligations for `DeformedBoundaryDivision.md` §§2–3:
+construct append-old PBW quotient coordinates and prove the actual append
+endpoint norm regular there; deduce G injectivity and only then derive the
+concrete reverse boundary norm from full QP. None of these final implications
+is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
+consumes the new producers on a mixed-parity repeated-colour word and audits
+every owned module declaration, including generated and private names.
+
 
 ## Complete occupied adjacent-equal split matrix
 
@@ -136,12 +200,22 @@ retracts. Epsilon and eta remain in reconstruction and signed PBW extraction.
 actions. Arbitrary off-diagonal old coefficients and the central variable are
 respected; empty content, zero cutoff and zero corners require no exceptions.
 
-**Remaining in this slice:** the append-side K₀ decomposition is not constructed.
-It needs the full signed-coefficient append PBW descent and common-row assembly;
-the ordinary-coefficient append package is not a substitute. Consequently this
-slice proves the two source finite-projectivity inputs, not the complete pair
-of finite-projective endpoints. Cokernel and ideal-sum exactness are supplied
-by the independent constructions below, not reproved or assumed here.
+**Append endpoint completed:** `ELVAppendCoordinates` uses the input-side append
+PBW basis and retains the exterior coefficient twist. `ELVAppendOldExtraction`,
+`ELVAppendCrossTail` and `ELVAppendDescent` descend extraction through exactly
+`appendRelations` and prove both inverse laws. `ELVAppendRowsEquivalence`
+assembles the actual common rows across all old source columns, respecting
+every old word-to-word arrow. `ELVAppendRowsShift` proves the central last-dot
+or last-square action is exponent translation. `ELVAppendPolynomialIdempotents`
+and `ELVAppendProjective` give `K0IdempotentEquiv`, `K0_projective`, and
+`K0_finite`: literal finite e(v)B[s] rows and their finite-free retract.
+No ordinary-coefficient quotient or comparison through a moving-map injection
+is substituted. `ELVAppendSupport` records finite moving support, arbitrary old
+action nonincrease and central-shift compatibility on the actual decoder.
+Append endpoint norm regularity and moving-map injectivity remain separate.
+The consumer `scripts/NonVacuity/ELVAppendProjective.lean` exercises the endpoint
+and audits every declaration in the eleven append-coordinate modules, including
+private and generated declarations.
 
 The importing consumer `scripts/NonVacuity/ELVSourceProjective.lean` exercises
 both polynomial equivalences, actual projectivity instances, mixed moving
