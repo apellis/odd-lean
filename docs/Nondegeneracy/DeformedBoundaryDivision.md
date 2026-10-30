@@ -10,8 +10,48 @@ QP identity of `DeformedGlobalQP.md`, with the local sign correction in §2.
 formalize the leading action, signed append-coordinate numerator division and
 compatible long section. `ELVOutputSComparison` identifies the independent
 fixed-word output S polynomial with the actual moving-chain extraction, in the
-library crossing convention. Corrected-rho S iterates, the degree-zero boundary
-defect and prescribed matrix comparison remain open; numerator division is not (11).
+library crossing convention. `ELVOutputSIterates` proves the odd-moving-colour
+corrected-rho extraction for every iterate and couples its corrected-basis
+P-image to the reverse polynomial modulo the chronological crossing span.
+`ELVBoundaryPolynomial` now proves C0 P = A B1 on the original source column
+and projects the independent corrected-rho S comparison to C0 of the ordered
+reverse numerator. `ELVBoundaryInputDefect` proves its first-order recurrence
+with the total-twisted INPUT shift and polynomial-constant defect.
+`ELVBoundaryNumeratorCoefficients.appendC0_orderedReverseNumerator` computes the
+ordered numerator in full old output coefficients by the explicit finite
+`qpOutputCoefficientStep` fold, starting at `endpointOutputCoefficients` and
+ending with `inputCoefficientShift`. Old composition order and all input parity
+twists are retained; the formula has no C0 on its coefficient side.
+`ELVBoundaryNumeratorLeading.orderedReverseNumerator_support` bounds the literal
+fold support by `endpointQPDegree = cutoff i + Σ_b appendQPDegree(i,v_b)`.
+`orderedReverseNumerator_top` identifies its coefficient there as
+`appendQPProductUnit • [id_v]`. Both assertions hold even if the old identity
+vanishes. The proof follows the finite endpoint row and each ordered QP step,
+not ordinary commutative polynomial multiplication. The corresponding C0 bound
+and top coefficient hold at every input power after the full old twist.
+Ordered S-division remains open; the existing
+QP numerator division is not (11), and no prescribed matrix inverse is claimed.
+
+The checked coefficient formula can be read without quotient projections. Put
+`T_d(f)_(d+n) = twist_(d p(i))(f_n)` and `T_d(f)_m = 0` for `m < d`,
+and let `O_(b,a)(f)_n = [x_b^a] ≫ f_n` in chronological old composition.
+Start with `E_a = [twist_(a p(i))(scalar(c_a))]`, for `0 ≤ a ≤ cutoff i`.
+For each old position b in increasing order, replace f by the following row,
+where j is its colour:
+
+- j=i odd: `O_(b,2)(f) + T_2(f)`; j=i even: `-f`;
+- j≠i disconnected: `t_ij • f`;
+- otherwise: `Σ_(e,a) s_ij(e,a) • O_(b,a)(T_e(f)) +
+  t_ij • T_(d_ij)(f) + t_ji • O_(b,d_ji)(f)`, over the open exponent ranges.
+
+Call the final row N. The projected numerator at input power d is exactly
+`T_d(N)`. The mixed term order is O after T, not T after O.
+`inputCoefficientShift_apply` and `inputCoefficientShift_apply_add` prove
+the pointwise formula. `outputPolynomialBoundary_independentS_coefficients`
+substitutes N into the independent corrected-rho S comparison, retaining both
+library signs. This gives explicit boundary values on those S evaluations;
+it does not yet identify the monic S quotient or individual boundary leading
+components.
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
@@ -146,9 +186,23 @@ Equations (6)–(7) in this section use the source crossing convention τ.
 They are not statements for the unchanged library crossing T without
 conversion. See `MackeyCrossingConventions.md` for the proved local
 comparison and the evaluated library ordered-product formula, including
-old-twist invariance and moving-degree normalization. The full ELV boundary
-and corrected-iterate identification in (6)–(7) remain open; the checked
-ordinary append extraction retains old height n+1.
+old-twist invariance and moving-degree normalization. The full ELV
+`ELVOutputSIterates` now proves the corrected-iterate extraction in the library
+convention at odd moving colour, including empty old words. Its P-comparison
+is modulo the chronological crossing span; the polynomial projection needed
+for (7) remains separate. The ordinary append extraction retains old height n+1.
+
+More precisely, put C_c(f)(m) = oldComp(f(m), c), in chronological
+composition order, and w_d = outputLongExtraction(outputCorrectedLift(d, 1)).
+The checked polynomial identity is
+
+    extraction(rho^d(move)) = zsign(p_i)^count_i · Σ_n C_(S_n)(rhobar^n(w_d)).
+
+`outputCoefficientRho_postcomp` proves C_c commutes with rhobar when the
+old twist fixes c, and `independentOutputS_oldTwist` verifies this for every
+S_n. Neither commutativity of the full exterior coefficient algebra nor
+centrality of S is imposed. The corrected basis and coefficient operator
+are the existing actual full-ELV constructions, not newly declared actions.
 
 In expanding G, only the term taking the crossing part of every g_a
 has permutation U. Any omitted crossing has smaller Coxeter length.
