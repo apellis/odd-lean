@@ -11,9 +11,12 @@ arbitrary balanced generator. `contentEPairComparison_outer_tensor` then applies
 the pair formula inside that outer tensor, with explicit induced module types
 and the same content cast. `contentEPairComparison_comp_tensor` then applies the
 named outer content-composition comparison: for a singleton suffix this is the
-fully flattened pair-first leg of the triple square. The other leg, equality
-of the two cast-bearing tensor arrows, and hence the named triple associativity
-square remain open.
+fully flattened pair-first leg of the triple square.
+`contentInductionComp_suffix_tensor` now evaluates the suffix-first leg, first
+combining the second letter with the suffix, then combining with the first
+letter. `contentInductionComp_suffix_apply` handles arbitrary inner elements.
+Equality of the two cast-bearing tensor arrows and hence the named triple
+associativity square remain open.
 
 ## Content comparison on balanced generators
 

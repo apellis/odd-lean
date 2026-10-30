@@ -6,6 +6,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTensorCoherence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairOuterTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSingleLetterRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCompositeComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedPolynomial
