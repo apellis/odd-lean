@@ -1,5 +1,16 @@
 # Odd nondegeneracy: restart state
 
+## Literal middle-reservoir diagonal correction
+
+`ProbeReservoir.middleReservoir_braidEq_diag_transport` proves the complete
+`Pi Rj Pi` diagonal field at arbitrary terminal sectors and paths with its
+endpoint. Both literal braid sums reduce by path uniqueness. Mixed comparison
+conjugation identifies their difference with the normalized probe crossing's
+Q commutator. All three literal dot entries, all their powers and both signed
+coefficient sums are transported by the same comparison. No coefficient-inverse
+assumption or Q/probe-crossing inverse is used. The remaining mixed repeated-outer
+diagonal placements are `Ri Pj Ri`, `Pi Rj Ri`, and `Ri Rj Pi`.
+
 ## Adjacent-equal reservoir comparison entry
 
 `ProbeReservoir.adjacentReservoir_comparison_braid_transport` proves the literal
