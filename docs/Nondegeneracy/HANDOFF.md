@@ -1,5 +1,14 @@
 # Odd nondegeneracy: restart state
 
+## Old source action on normalized output coordinates
+
+`ELVOutputOldAction.prependOldCoordinate_oldSource` and
+`outputLongCoordinate_oldSource` prove coefficientwise compatibility with
+arbitrary full-ELV old source endomorphisms. The acting old morphism retains
+its total-parity twist, and the normalized output formula includes the endpoint
+transport. This supplies old-source linearity, not output-old balancing or
+identification of S. Corrected-rho output coordinates remain to be computed.
+
 ## Chronological short kernel inclusions
 
 `SmallerTailNormalization` isolates the moving tail before restoring arbitrary
