@@ -24,8 +24,25 @@ components below `L + min C (2*N) + L`.
 `exists_truncated_degreeBelow_injective` proves injectivity of the literal
 `TruncatedOld` projection on all source Homs supported strictly below `B`
 when `B` is at most this bound. No finite-colour hypothesis is needed.
-The remaining affine comparison must still establish injectivity of the
-unit-coefficient insertion and apply this result to affine PBW degree spans.
+`ELVAffineDetection.affinePBW_detected_at_high_cutoffs` completes the affine
+comparison: for every content `ν` and integer degree ceiling `B` there is
+`K : ℕ` such that the actual affine-to-`TruncatedOld` quotient map is
+injective on the span of affine PBW normal forms of degree `< B` whenever
+`cutoff j ≥ K` for `j ∈ ν` and the coefficient-weight cutoff `N ≥ K`.
+Cutoffs remain non-uniform, and colours outside `ν` require no lower bound.
+
+Unit-coefficient insertion is proved injective using survival of the
+coefficient unit and a linear functional splitting it over a field. This
+uses no coefficient-algebra commutativity or assumed freeness/flatness.
+The result holds over every field (in particular every characteristic-zero
+field), with the original homogeneous scalars and symmetrizer. Full
+exterior parity is retained. No `Finite I` or global coefficient-degree
+upper bound occurs. The generic consumer checks this conclusion and audits
+all declarations, including generated ones, in all four new modules.
+
+Remaining programme work is integration with faithful bounded-observation
+consumers and the separately owned action/relations comparisons, not a
+missing kernel premise in this detection theorem.
 
 
 
