@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Actual repeated-outer dot coordinates
+
+`repeatedOuter_qExpr_correction` now supplies the full correction for actual
+`Rᵢ Pⱼ Pᵢ` coordinates under `c.IsInverse` alone. Its two signed dot relations
+and even/odd denominator equations are proved from the mixed comparison and
+dot supernaturality, with exact valid-step and terminal-object transports.
+No additional dot or coefficient identity is assumed. It still remains to
+identify the literal three-crossing difference with this Q difference and
+transport the displayed coordinates to the path-matrix fields.
+
 ## Repeated-outer polynomial and single-edge coefficient
 
 `repeatedOuterProbeCross_coeff` proves the signed coefficient slide through
