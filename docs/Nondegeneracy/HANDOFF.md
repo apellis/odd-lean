@@ -17,6 +17,53 @@ C0 or the global first-order boundary defect. Corrected output projection,
 recovery, crossing annihilation, splitting/kernel identification and descent
 of contraction to the crossing image remain open.
 
+## Corrected-rho S comparison
+
+`ELVOutputSIterates.outputLongExtraction_boundaryRho_move_independentS` proves
+all odd-moving-colour corrected iterates equal the signed finite sum of the
+prescribed corrected long coordinates with independent S coefficients.
+`independentOutputS_support_even` and `independentOutputS_oldTwist` derive
+even support and total-twist invariance from the ordered dot monomials. The
+even/odd coordinate formulas retain the signed, balance-twisted delta action;
+the balanced version retains an arbitrary full old quotient coefficient.
+`outputLongExtraction_boundaryRho_move_polynomial` is the literal finite
+operator sum S(rhobar) w_d. Its coefficient operation is chronological
+postcomposition; `outputCoefficientRho_postcomp` proves the necessary
+intertwining for twist-fixed coefficients without a centrality assumption.
+
+`reverseBoundary_sub_correctedS_mem` couples those coordinates to the ordered
+reverse-QP P-image modulo the chronological crossing span, with both library
+and reverse-boundary signs explicit. This is not an equality after an assumed
+C₀: constructing the polynomial projection, S-division and the prescribed
+augmented matrix inverse remains separate. Even-moving-colour iterates are
+not identified by this module.
+
+
+## Integer support at arbitrary strand content
+
+`ELVAppendSpanning.appendFiniteRangeSpan_eq_top` factors finite crossing-skeleton
+and bounded-moving-power ranges through the smaller coefficient-truncated Hom.
+The source-positioned powers retain the old parity twist and do not commute
+arbitrary exterior coefficients past a dot. `ELVAppendDegree` proves the degree
+shift of each range. `ELVVacuumSupport` uses the coefficient-weight truncation
+on the full polynomial/exterior coefficient basis, not just even powers.
+
+Reverse word induction in `ELVContentSupport` then proves
+`truncatedContent_bounded`: every truncated Hom has bounded integer support
+for finite colour data, with no bound on word lengths, repetitions or parities.
+A symmetrizer and homogeneous scalars are required for the integer grading;
+the ground ring is any ordinary commutative ring. For arbitrary colour sets,
+`truncatedContent_bounded_of_bound` instead takes the explicit arithmetic
+coefficient degree/weight bound. Finiteness of colours is used only to derive
+that bound at the vacuum; finite boundary-word content alone does not control
+coefficients at unrelated colours.
+
+`ELVContentModuleBound` supplies the resulting word-endomorphism regular and
+module-superfunctor coefficient ideals with content-dependent thresholds.
+These targets are not definitionally the full content-module category.
+Realizing coefficients there, identifying the literal cup–whole-inverse–cap
+errors, and proving `CentralInvertible` remain separate. See
+`CyclotomicContentSupport.md` for the proof and scope.
 ## Append crossing triangular correction
 
 `ELVAppendCrossingTriangular.appendCrossing_power_triangular` computes every
@@ -74,7 +121,7 @@ equivalence is not identified with that splitting. No canonical S comparison
 or prescribed matrix inverse is concluded here.
 
 
-## Actual signed old-Hom right division
+## Signed old-Hom right division
 
 `ELVQPBoundaryDivision.lean` proves the whole ordered numerator's highest
 old-Hom action (`endpointQP_top`): its explicit scalar unit times the full
@@ -134,12 +181,10 @@ The actual ordered QP–ELV numerator is then regular by
 `appendProjection_qp_endpointELV_regular`, directly on the old-only append
 quotient; no final-cyclotomic-quotient G cancellation is used.
 
-Remaining: assemble the whole numerator's explicit unit leading polynomial
-with old coefficients, identify its corrected longest-output coordinate
-relation, and prove the right-divisibility/local-inversion conclusion.
-The individual factor leading formulas and actual numerator regularity
-are not yet those conclusions.
-
+The explicit unit leading action and signed quotient/remainder division of
+the whole numerator are proved above. Canonical S, its inter-word balanced
+output identification, the full-ELV output-polynomial splitting and the
+prescribed categorical matrix comparison remain separate.
 
 ## Actual append QP highest coefficients
 
@@ -162,6 +207,40 @@ Next: assemble the explicit highest coefficient of the whole numerator
 relation with the corrected longest-output coordinates. The factor results
 and product regularity do not by themselves establish right divisibility,
 polynomial degree additivity, or local inversion.
+
+## Actual full-cyclotomic monic annihilator and bounded moving powers
+
+`EndpointNormPolynomial` computes the leading scalar unit of each literal full
+chain norm factor over a possibly noncommutative ring, then normalizes the
+ordered product to a monic polynomial. Repeated-even and repeated-odd factors
+have leading unit −1; disconnected factors retain `Sc.t j i`, and connected
+unequal factors retain `Sc.t i j`. `EndpointNormEvaluation` proves evaluation
+on the actual old and last dots: only parity-supported old powers commute with
+the moving dot. This full norm is not the QP polynomial or the boundary S.
+
+`ELVMonicPolynomial` constructs the concrete full-coefficient polynomial
+`monicELVEndpointProduct`, namely the endpoint ELV polynomial times the
+normalized full norm in End multiplication. It is monic without a nontriviality
+assumption. `ELVMonicAnnihilator` proves its evaluation belongs to the actual
+full cyclotomic ideal and hence has zero quotient class. The proof sandwiches
+the first-position relation by the reverse and moving chains, consumes
+`relation_comp_move`, and removes only a scalar parity sign. No norm is
+cancelled after imposing the full ideal.
+
+`ELVMonicOldCoefficients.oldMonicELVEndpointProduct_map` gives an explicit
+old-endomorphism polynomial whose right-context image is this concrete
+polynomial. Every coefficient therefore lies in the actual old insertion range.
+`ELVMovingReduction.movingDot_pow_mem_bounded_old_span` uses its monic recurrence
+to reduce every last-dot power below its degree modulo the full ideal, with
+old endomorphisms on the left. Multiplication of the recurrence is on the right;
+arbitrary old coefficients are not commuted past an odd dot. Degree zero and
+zero rings are included.
+
+The finite append spanning and homogeneous content induction described above
+now extend this reduction to the all-content integer-support bound after
+coefficient-weight truncation. The closure comparison and central inverse are
+not supplied by these six monic-reduction modules. The default consumer audits
+every declaration owned by all six against the standard three axioms.
 
 
 ## Ordered reverse boundary polynomial and all corrected iterates
@@ -194,6 +273,83 @@ inversion; none follows merely from injectivity. The expected QP leading
 unit retains the repeated-even sign and every distinct-colour `Sc.t i j`,
 including disconnected colours. Earlier open-status statements below are
 superseded only for the concrete quotient reverse identity and its iterates.
+## Independent leading-source output monomials
+
+`ELVLeadingSourceTransport.leading_source_output_transport` transports each
+independently specified ordered-product source-dot monomial followed by bare U
+to chronological U–old-dots–last-dots modulo the exact chronological short span.
+`leading_source_output_extraction` evaluates that monomial using
+`canonical_output_extraction`: its only coefficient is the old quotient class
+of its independent old dot word, in its independently counted moving degree.
+Both results hold for arbitrary colour types, words, cutoffs and commutative
+ground rings, in both moving parities. The proof separates the Hom-level source
+dot recurrence, uses old-dot twist invariance, and compares first/last dot
+coordinates; it assumes no transport.
+
+`ELVOutputSComparison` now sums these genuine terms.
+`independentOutputS` is the explicit finite choice sum, with old quotient dot
+monomials and independently counted moving degrees, multiplied by
+`zsign k (parity i) ^ v.count i`. It is not defined using any extractor.
+`outputLongExtraction_squareProduct` identifies extraction of the independent
+unsigned square product followed by bare U with this coefficient row, using
+`leadingSource_expansion_eq_sign_smul`. The actual moving chain satisfies
+`outputLongExtraction_move_independentS`: its extraction is exactly
+`zsign k (parity i) ^ v.count i • independentOutputS`.
+`outputLongCoordinate_move_independentS_balanced` retains an arbitrary full-ELV
+old quotient coefficient b by chronological `oldComp b` on the left. No finite
+colour assumption, field specialization or exterior commutativity is used.
+This completes the independent fixed-word output polynomial comparison, not
+the corrected-rho lift compatibility, first-order boundary/division or prescribed
+inverse; those remain separate downstream steps.
+
+## Two-sided output-order balanced extractor
+
+`ELVOutputOrderBalance.outputLongCoordinate_outputOld` identifies actual output
+old action for every quotient element and degree. `outputOldExtraction` descends
+that actual action to arbitrary old quotient coefficients.
+`outputLongCoordinate_twoSided_balanced` gives left oldComp by the source coefficient
+and right oldComp by the output coefficient twisted by
+`p + parity i * wordSumParity v + n * parity i`. The proof uses all dotted
+bare-long rows, the exact chronological kernel and a finite normalized long
+section; it assumes neither transport nor balancing. These extraction APIs are
+on fixed old-word summands; `bareUFull_transport` itself has arbitrary endpoints.
+`canonical_output_balanced` and `canonical_output_extraction` identify the literal
+chronological U–old–last-dots monomial: degree m extracts to
+`oldComp b (oldTwist (p + parity i * wordSumParity v) c)`, and other degrees
+vanish. The moving-degree twist cancels by actual graded dot/old commutation;
+last dots are after the output old factor. Identifying the independently evaluated
+S in corrected rho coordinates remains open.
+
+## Output old relative stability
+
+`ELVOutputOldTransport.act_appendInsert_chronologicalShortSpan` proves stability
+of the chronological short span under arbitrary full-ELV output old arrows,
+including distinct old source and target words. The exact kernel theorem gives
+`outputLongExtraction_act_appendInsert_congr`: equal extracted rows remain equal
+after an old output endomorphism. This avoids the invalid total-crossing-length
+bound. `bareLong_cross_chronologicalShort` now proves the actual old crossing
+generator slide across the bare long chain, for arbitrary left/right old contexts
+and arbitrary full ELV coefficient. Its sign is
+`zsign k (parity i * wordSumParity v * parity a * parity b)`. The one braid
+correction has fewer than `v.length` crossings; far sweeps are exact. This
+estimate is used only for a single generator, not for arbitrary old composites.
+`tmul_shortSpan` lifts relative scalar shortness to chronological shortness.
+`bareLong_dot_chronologicalShort` proves the old dot slide for arbitrary old
+contexts and full ELV coefficients: output position `l.length` becomes input
+position `l.length+1`, and the sign is
+`zsign k (parity i * wordSumParity v * parity a)`. Both generator types are
+therefore transported without replacing bare U by the moving intertwiner.
+`OutputOldComposite.error_mem` now transports every scalar old arrow, with
+`twist k (parity i * wordSumParity v)`. `bareU_homogeneous_transport` gives
+the corresponding explicit homogeneous sign. Its proof uses actual positioned-word
+induction and PBW linear spanning, and `short_comp_old` proves output stability
+of the entire relative scalar span. `bareUFull_transport` now lifts the actual
+transport to arbitrary full ELV old arrows and arbitrary endpoints, with twist
+`parity i * wordSumParity v` on total coefficient-plus-diagram parity. The
+coefficient twist cancels the box-product composition sign.
+`bareUFull_old_representative_independent` makes the bare-long row depend only
+on the old quotient arrow. The fixed-word two-sided balanced identification is
+proved in `ELVOutputOrderBalance`; canonical S remains open.
 
 ## Old source action on normalized output coordinates
 
@@ -218,7 +374,7 @@ and identification of the ordered S polynomial remain open. The theorem
 `outputLongExtraction_balanced_move` extends the collected endpoint-polynomial
 comparison to arbitrary old quotient coefficients in the balanced tensor.
 
-## Chronological short kernel inclusions
+## Chronological short kernel
 
 `SmallerTailNormalization` isolates the moving tail before restoring arbitrary
 old coefficients. `ELVChronologicalKernel` lifts its vanishing to full exterior
@@ -230,8 +386,9 @@ every nonlong prepend tail with arbitrary old coefficient is chronological short
 identifies the entire kernel using the finite old-quotient coordinate equivalence.
 Equal tail keys preserve total-parity-normalized coordinates; the evaluated
 output sign is self-inverse, including over the zero ring. Thus only nonlong
-tails remain in the finite reconstruction. S/rho and balanced output-order
-comparisons remain separate obligations.
+tails remain in the finite reconstruction. The normalized output-rho identity
+is supplied above; canonical S and the full balanced output-order comparison
+remain separate obligations.
 
 `ELVOutputMoveComparison.outputLongExtraction_move_endpointPolynomial` proves
 that the prescribed moving chain and its independently collected endpoint
@@ -240,6 +397,7 @@ with arbitrary exterior coefficients. Their difference is chronological short.
 This does not replace the moving chain by the bare long chain: its repeated-colour
 polynomial factors remain. Evaluating that polynomial as S in the corrected
 rho coordinates is the next comparison.
+
 
 ## Last-output-dot coordinates on the bare long shuffle
 
@@ -270,7 +428,6 @@ checks arbitrary words/full coefficients and inventories every declaration of
 the five modules for the standard three axioms.
 
 
-
 ## Append endpoint norm regularity and G injectivity
 
 `ELVAppendMovingSupport.lean` proves exponent translation and old-action
@@ -289,6 +446,29 @@ boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
 iterates of §4 remain to be assembled. Earlier open-status descriptions
 below are superseded only for append norm regularity and G injectivity.
 
+## ELV module restriction
+
+`ELVModuleRestriction.lean` constructs `TruncatedModules`, the supercategory
+of all `SVec k`-valued superfunctors on the truncated ELV category.
+`moduleRestriction` is right-append restriction, linear and parity-preserving.
+`moduleRestrictionComponent_supernatural` proves the evaluation transformations
+are supernatural against all module maps, including odd maps.
+`moduleRestrictionTransform_app` identifies their values with the specified
+quotient morphisms. Dots and raw crossings are instantiated. The scalar ring
+is k; exterior coefficients remain morphisms in the source category.
+
+`ELVModuleInductionTensor`, `ELVModuleInductionGrading`, and
+`ELVModuleInductionMap` now construct the balanced induction coend, its
+quotient parity grading, and induction on every supernatural module map.
+The formula is `[h ⊗ m] ↦ [twist k p h ⊗ f.app p v m]`; it includes odd
+maps and all balancing relations. `BalancedInduction.induction` is an
+actual additive linear superfunctor. Unit/counit formulas, naturality on
+source/target arrows are proved. `ELVOld.moduleAdjunction`
+constructs the actual ELV induction–restriction adjunction; its unit and
+counit are even, natural against every module map, and satisfy both
+triangles. Normalized induction generators, parameter twist, integer
+grading, content/weight indexing, and local inversion matrices remain
+separate; no full factor action is claimed.
 
 ## Reverse three-strand crossing naturality
 
@@ -354,6 +534,64 @@ is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
 
+## Signed coefficient transport
+
+`CrossCoeff.signed_transport` derives coefficient transport from the two
+signed dot slides for arbitrary linear-functor images of mixed pairs.
+The sign squares to one; the even inverse difference and odd square-difference
+denominator cases are both proved. Only `crossDenom` is cancelled. The
+hypotheses do not contain coefficient transport or a braid identity.
+
+This is a supporting algebraic theorem, not the repeated-outer braid:
+the concrete single-edge dot identifications, finite polynomial correction,
+pure-factor correction transports and complete `CrossBraid` assembly remain.
+The importing consumer audits all declarations and checks the arbitrary-data
+application under default elaboration options, not existence of a model.
+
+## Reverse adjacent split rectangle
+
+`adjacentReverse_splitMatrix` proves the four raw comparison-grid equations
+for the reverse placement `j i i → i i j` with one repeated-colour reservoir
+and two probes. `adjacentReverseMove_preDot` and
+`adjacentReverseMove_postDot` prove the two unsigned repeated-dot slides.
+`adjacentReverseMove_coeff` transports the actual inverse coefficient using
+`c.IsInverse` and `CrossCoeffInputs`; only its known denominator unit is
+cancelled. `adjacentReverse_J_rectangle` is the actual homogeneous
+probe-pair interchange triangle. No Q polynomial or crossing is inverted.
+
+`adjacentReverse_braid` identifies all literal path entries and finite sums
+with these four raw entries, proving the reverse braid for arbitrary source
+and target paths at this occupied endpoint. Its four producers are
+`adjacentReverse_braid_diag`, `adjacentReverse_braid_J`,
+`adjacentReverse_braid_square`, and `adjacentReverse_braid_conj`.
+`AdjacentReverseReduction` proves the exhaustive finite-path reductions;
+`AdjacentReverseMatrix` proves all actual edge comparisons.
+`scripts/NonVacuity/AdjacentReverseBraid.lean` applies the arbitrary-path theorem
+at generic occupied content and audits every declaration owned by all six
+reverse modules. Other mixed endpoints and the repeated-outer correction
+remain open; complete `CrossBraid` and nondegeneracy are not concluded.
+
+## Adjacent-equal pure-reservoir braids
+
+`pureReservoir_braid` proves literal braid equality for arbitrary source and
+target paths when probe content is unchanged and the outer colours differ.
+It includes both `adjacentPureReservoir_iij` and `adjacentPureReservoir_ijj`.
+Path classification recovers all three reservoir validity witnesses, including
+repeated-colour multiplicities, from the supplied paths. No independence of
+roots or inequality between adjacent colours is used.
+
+`postCrossSame_eq_postCrossNe` identifies the actual equal reservoir entry
+with the general normalized core. The six edge comparisons retain the
+content-dependent shifts and super interchange signs. The previous
+`distinctPureReservoir_braid` remains a specialization with its original
+interface. `scripts/NonVacuity/AdjacentPureReservoir.lean` applies both adjacent
+patterns and audits all declarations in both owned modules.
+
+The remaining obligations are other mixed adjacent-equal endpoints, their
+assembly, and the actual repeated-outer polynomial correction. These results
+do not construct complete `CrossBraid` or prove nondegeneracy.
+
+
 
 ## Complete occupied adjacent-equal split matrix
 
@@ -379,8 +617,8 @@ occupied reservoir content and audits every declaration owned by these three
 modules, including private and generated declarations. It remains a supplied-data
 consumer, not a construction of the probe/reservoir input representation.
 
-Other endpoint patterns, pure-reservoir adjacent-equal braids and the
-repeated-outer correction remain separate. Neither arbitrary-endpoint
+Other mixed endpoint patterns and the repeated-outer correction remain
+separate; pure-reservoir adjacent-equal braids are proved above. Neither arbitrary-endpoint
 `iij`/`ijj`, complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Supporting adjacent-equal split repeated-colour component
@@ -403,7 +641,7 @@ occupied reservoir content and audits every declaration owned by the four new
 modules, including private and generated declarations.
 
 The other entries at this occupied endpoint are assembled above. Remaining:
-other endpoint patterns, pure-reservoir adjacent-equal cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+other mixed endpoint patterns and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
 a complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Adjacent-equal pure-probe braids and split-sector support
@@ -747,6 +985,21 @@ complete the distinct recursion and empty base. The subsequent all-word
 signed induction is now proved in `ELVQPProduct.lean`, as described above.
 The raw product retains the repeated-even factor −1. No crossing-normalization
 comparison or literal no-even-factor equation (3) is asserted.
+
+## Graded append endomorphism kernels
+
+`ELVAppendKernel.lean` constructs `truncatedAppendAlgHom` on the actual
+word endomorphism algebras, preserving their independent integer degree
+and total coefficient-plus-diagram parity. `truncatedAppendInduction` and
+`truncatedAppendRestriction` restrict the target regular bimodule along
+this map on the right and left respectively. The ground scalar ring is
+`k`; the full exterior coefficient algebra is not treated as commutative.
+The action formulas are ordinary multiplication by the appended class.
+These constructions cover arbitrary words and spectator lists, including
+zero corners, but do not supply the off-diagonal content-matrix kernels,
+their tensor/module comparisons or right adjunction. In particular they
+do not establish higher-content support, homogeneous principal inverse
+components, or identification of the swapped residual coefficient entries.
 
 ## Graded right append and affine transformations
 

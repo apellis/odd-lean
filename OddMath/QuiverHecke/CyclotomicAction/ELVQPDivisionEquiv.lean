@@ -292,4 +292,3 @@ theorem endpointQP_remainder_zero_iff (i : I) (v w : List I)
     rw [endpointQPDivisionEquiv_numerator]
 
 end OddMath.QuiverHecke.ELVOld
-

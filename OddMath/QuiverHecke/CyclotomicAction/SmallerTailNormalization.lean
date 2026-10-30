@@ -269,4 +269,3 @@ theorem chronological_scalar_output_stability {i j : I} {v s t t' : List I}
   exact chronological_scalar_short D Sc r (h ≫ g)
 
 end OddMath.QuiverHecke.SmallerTailNormalization
-

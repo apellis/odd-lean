@@ -1,10 +1,20 @@
 # Deformed boundary norm and polynomial division
 
-**Status: written proof; not a Lean result.** The boundary construction and
+**Status: written proof, partially formalized in Lean.** The boundary construction and
 compatible lifts are supplied by `DeformedMackeyBoundary.md`. This note supplies the
 norm comparison and division calculation for those specified maps, rather
 than assuming their leading-degree conclusion. It uses the full-coefficient
 QP identity of `DeformedGlobalQP.md`, with the local sign correction in §2.
+
+`ELVEndpointLeading`, `ELVQPDivisionEquiv` and `ELVOutputCompatibleLifts`
+formalize the leading action, signed append-coordinate numerator division and
+compatible long section. `ELVOutputSComparison` identifies the independent
+fixed-word output S polynomial with the actual moving-chain extraction, in the
+library crossing convention. `ELVOutputSIterates` proves the odd-moving-colour
+corrected-rho extraction for every iterate and couples its corrected-basis
+P-image to the reverse polynomial modulo the chronological crossing span.
+The degree-zero boundary defect, polynomial projection and prescribed matrix
+comparison remain open; numerator division is not (11).
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
@@ -139,9 +149,23 @@ Equations (6)–(7) in this section use the source crossing convention τ.
 They are not statements for the unchanged library crossing T without
 conversion. See `MackeyCrossingConventions.md` for the proved local
 comparison and the evaluated library ordered-product formula, including
-old-twist invariance and moving-degree normalization. The full ELV boundary
-and corrected-iterate identification in (6)–(7) remain open; the checked
-ordinary append extraction retains old height n+1.
+old-twist invariance and moving-degree normalization. The full ELV
+`ELVOutputSIterates` now proves the corrected-iterate extraction in the library
+convention at odd moving colour, including empty old words. Its P-comparison
+is modulo the chronological crossing span; the polynomial projection needed
+for (7) remains separate. The ordinary append extraction retains old height n+1.
+
+More precisely, put C_c(f)(m) = oldComp(f(m), c), in chronological
+composition order, and w_d = outputLongExtraction(outputCorrectedLift(d, 1)).
+The checked polynomial identity is
+
+    extraction(rho^d(move)) = zsign(p_i)^count_i · Σ_n C_(S_n)(rhobar^n(w_d)).
+
+`outputCoefficientRho_postcomp` proves C_c commutes with rhobar when the
+old twist fixes c, and `independentOutputS_oldTwist` verifies this for every
+S_n. Neither commutativity of the full exterior coefficient algebra nor
+centrality of S is imposed. The corrected basis and coefficient operator
+are the existing actual full-ELV constructions, not newly declared actions.
 
 In expanding G, only the term taking the crossing part of every g_a
 has permutation U. Any omitted crossing has smaller Coxeter length.
@@ -244,5 +268,5 @@ The source matrices `[F̄,j(1),…,j(t^(a−1))]` for a≥0 and
 fixed tensor-unit/counit mate and the prescribed signed dot/crossing maps
 of `DeformedRouquierMatrix.md`. In particular the cap rows EX^r are
 not identified here with the required categorical dotted caps. No full
-action, opposite-side projectivity, reverse adjunction or Lean theorem
-is asserted.
+action, opposite-side projectivity, reverse adjunction or assembled Lean proof
+of (7)–(12) is asserted.
