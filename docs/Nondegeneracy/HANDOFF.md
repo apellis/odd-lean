@@ -1,5 +1,6 @@
 # Odd nondegeneracy: restart state
 
+
 ## Append endpoint norm regularity and G injectivity
 
 `ELVAppendMovingSupport.lean` proves exponent translation and old-action
@@ -83,6 +84,27 @@ is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
 
+## Adjacent-equal pure-reservoir braids
+
+`pureReservoir_braid` proves literal braid equality for arbitrary source and
+target paths when probe content is unchanged and the outer colours differ.
+It includes both `adjacentPureReservoir_iij` and `adjacentPureReservoir_ijj`.
+Path classification recovers all three reservoir validity witnesses, including
+repeated-colour multiplicities, from the supplied paths. No independence of
+roots or inequality between adjacent colours is used.
+
+`postCrossSame_eq_postCrossNe` identifies the actual equal reservoir entry
+with the general normalized core. The six edge comparisons retain the
+content-dependent shifts and super interchange signs. The previous
+`distinctPureReservoir_braid` remains a specialization with its original
+interface. `scripts/NonVacuity/AdjacentPureReservoir.lean` applies both adjacent
+patterns and audits all declarations in both owned modules.
+
+The remaining obligations are other mixed adjacent-equal endpoints, their
+assembly, and the actual repeated-outer polynomial correction. These results
+do not construct complete `CrossBraid` or prove nondegeneracy.
+
+
 
 ## Complete occupied adjacent-equal split matrix
 
@@ -108,8 +130,8 @@ occupied reservoir content and audits every declaration owned by these three
 modules, including private and generated declarations. It remains a supplied-data
 consumer, not a construction of the probe/reservoir input representation.
 
-Other endpoint patterns, pure-reservoir adjacent-equal braids and the
-repeated-outer correction remain separate. Neither arbitrary-endpoint
+Other mixed endpoint patterns and the repeated-outer correction remain
+separate; pure-reservoir adjacent-equal braids are proved above. Neither arbitrary-endpoint
 `iij`/`ijj`, complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Supporting adjacent-equal split repeated-colour component
@@ -132,7 +154,7 @@ occupied reservoir content and audits every declaration owned by the four new
 modules, including private and generated declarations.
 
 The other entries at this occupied endpoint are assembled above. Remaining:
-other endpoint patterns, pure-reservoir adjacent-equal cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+other mixed endpoint patterns and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
 a complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Adjacent-equal pure-probe braids and split-sector support

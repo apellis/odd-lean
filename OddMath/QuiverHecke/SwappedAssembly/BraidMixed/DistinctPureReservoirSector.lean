@@ -305,11 +305,43 @@ def distinctPureReservoirPath (ν : X) (i j r : I) (s : Sector I)
     (e : nextSector (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)) = t) :
     SPath (wd D ν [up i, up j, up r]) s t := SPath.three false false false hi hj hr e
 
+/-- Minimal probe content forces every choice to be reservoir, even when
+colours repeat. -/
+theorem pureReservoirPath_unique {ν : X} {i j r : I} {s t : Sector I}
+    (hi : StepValid (true, i) false s)
+    (hj : StepValid (true, j) false (nextSector (true, i) false s))
+    (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
+    (e : nextSector (true, r) false (nextSector (true, j) false
+      (nextSector (true, i) false s)) = t)
+    (p : SPath (wd D ν [up i, up j, up r]) s t) :
+    p = distinctPureReservoirPath ν i j r s hi hj hr e := by
+  obtain ⟨a, b, c, ha, hb, hc, e', rfl⟩ := SPath.exists_eq_three p
+  have h := congrArg (fun x : Sector I => x.1.sum (fun _ n => n)) (e'.trans e.symm)
+  cases a <;> cases b <;> cases c <;>
+    first | rfl | (exfalso; simp [nextSector,
+      Finsupp.sum_add_index' (h := fun (_ : I) (n : ℕ) => n)
+        (fun _ => rfl) (fun _ _ _ => rfl)] at h <;> omega)
+
 variable (P : ProbeReservoir k B D Sc)
+
+/-- Equal reservoir crossings are the same normalized core as distinct ones. -/
+theorem postCrossSame_eq_postCrossNe (i : I) (s : Sector I)
+    (hi : StepValid (true, i) false s)
+    (hj : StepValid (true, i) false (nextSector (true, i) false s))
+    (Z : P.H (nextSector (true, i) false (nextSector (true, i) false s))) :
+    P.postCrossSame i s hi hj Z = P.postCrossNe i i s hi hj hi hj rfl Z := by
+  have h := eq_of_heq (P.postCrossNe_heq i i s hi hj hi hj rfl Z (P.muM_postE i hj))
+  rw [h, resCore_content_eq, postCrossSame_eq]
+  have he {a b c d : B} (E : b ⟶ c) (F : c ⟶ d) (σ : ZMod 2) (Y : a ⟶ b) :
+      homShiftPairIso (k := k) E F σ Y = homPostPairRemoval E F σ σ Y := by
+    apply Iso.ext
+    rw [homShiftPairIso_hom]
+    rfl
+  rw [he]
 
 /-- Identification of each right edge of the all-reservoir braid. -/
 theorem distinctPureReservoir_right (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ν : X) (i j r : I) (hjr : j ≠ r) (s : Sector I)
+    (ν : X) (i j r : I) (s : Sector I)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
     (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
@@ -329,6 +361,11 @@ theorem distinctPureReservoir_right (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (c₁ := ⟨up j, SKM.wt D ν [up r]⟩) (c₂ := ⟨up r, SKM.wt D ν []⟩)
     (t := nextSector (true, i) false s)
     false false hj hr e Z _ (P.sector_heq e Z)) rfl
+  classical
+  by_cases hjr : j = r
+  · subst r
+    rw [swappedGens_cross_self]
+    exact heq_of_eq (P.postCrossSame_eq_postCrossNe j _ hj hr Z)
   dsimp only [swappedGens]
   erw [P.crossImage_ne c hjr]
   exact P.twoTwo_two_heq
@@ -340,7 +377,7 @@ theorem distinctPureReservoir_right (c : P.CrossCoeff Sc) (L : P.LeftwardData)
 /-- Identification of each left edge of the all-reservoir braid. The source
 path is compared with the pair-tail decomposition by endpoint uniqueness. -/
 theorem distinctPureReservoir_left (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (ν : X) (i j r : I) (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r) (s : Sector I)
+    (ν : X) (i j r : I) (s : Sector I)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
     (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
@@ -368,11 +405,16 @@ theorem distinctPureReservoir_left (c : P.CrossCoeff Sc) (L : P.LeftwardData)
       (nextSector (true, r) false (nextSector (true, i) false (nextSector (true, j) false s))) :=
     .cons _ false _ hr' (.nil _)
   have hp : distinctPureReservoirPath (D := D) ν i j r s hi hj hr e = pg.append pv :=
-    path_eq_three_distinct hij hir hjr _ _
+    (pureReservoirPath_unique hi hj hr e (pg.append pv)).symm
   have hq : distinctPureReservoirPath (D := D) ν j i r s hj' hi' hr' rfl = qg.append pv := rfl
   rw [hp, hq]
   erw [crossEntry_left]
   refine (sandwich_heq _ _ _).trans ?_
+  classical
+  by_cases hij : i = j
+  · subst j
+    rw [swappedGens_cross_self]
+    exact heq_of_eq (P.postCrossSame_eq_postCrossNe i s hi hj _)
   dsimp only [swappedGens]
   erw [P.crossImage_ne c hij]
   exact P.twoTwo_two_heq
@@ -509,7 +551,6 @@ theorem reservoirPair_obj_normalized (i j : I) (s : Sector I)
 /-- The left all-reservoir edge in common factor coordinates. -/
 theorem distinctPureReservoir_left_core (ν : X) (i j r : I) (s : Sector I)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
     (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
@@ -536,7 +577,7 @@ theorem distinctPureReservoir_left_core (ν : X) (i j r : I) (s : Sector I)
         ((homParityShift (k := k) (homContentShift D r s.1)).obj
           ((hf ▸ Z : P.T.obj (-P.muP t) ⟶ P.W.obj f) ≫ P.W.E r hrw))) := by
   subst e'
-  refine (P.distinctPureReservoir_left c L ν i j r hij hir hjr s
+  refine (P.distinctPureReservoir_left c L ν i j r s
     hi hj hr hj' hi' hr' hs e Z).trans ?_
   exact P.postCrossNe_normalized_heq i j s hi hj hj' hi' hs _ hd hb hb' rfl rfl
     hjw hiw hiw' hjw' _
@@ -545,7 +586,7 @@ theorem distinctPureReservoir_left_core (ν : X) (i j r : I) (s : Sector I)
 
 /-- The right all-reservoir edge in common factor coordinates. -/
 theorem distinctPureReservoir_right_core (ν : X) (i j r : I) (s : Sector I)
-    (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hjr : j ≠ r)
+    (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
     (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
@@ -568,7 +609,7 @@ theorem distinctPureReservoir_right_core (ν : X) (i j r : I) (s : Sector I)
         (resCore P.W j r (homContentShift D j s.1) (homContentShift D r s.1)
           hrw' hjw hjw' hrw (hf ▸ Z : P.T.obj (-P.muP t) ⟶ P.W.obj f) ▷ P.W.E i hiw)) := by
   subst e' b f
-  refine (P.distinctPureReservoir_right c L ν i j r hjr s hi hj hr hr' hj' e Z).trans ?_
+  refine (P.distinctPureReservoir_right c L ν i j r s hi hj hr hr' hj' e Z).trans ?_
   have hA := P.reservoirPair_obj_normalized j r (nextSector (true, i) false s)
     hj hr e Z rfl hd rfl rfl hjw hrw' Z HEq.rfl
   have hB := P.reservoirPair_obj_normalized r j (nextSector (true, i) false s)
@@ -589,12 +630,12 @@ theorem pureReservoir_valid_iff (i j : I) (hij : i ≠ j) (s : Sector I) :
       StepValid (true, j) false s := by
   simp [StepValid, nextSector, hij.symm]
 
-/-- The canonical all-reservoir sector of the pairwise-distinct braid relation.
+/-- The canonical all-reservoir braid with unequal outer colours, allowing
+either adjacent pair to coincide.
 The supplied reservoir braid is transported through all six actual crossing
 entries, including their content-dependent parity shifts. -/
-theorem distinctPureReservoir_braid (ν : X) (i j r : I) (s : Sector I)
-    (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r)
+theorem pureReservoir_braid_canonical (ν : X) (i j r : I) (s : Sector I)
+    (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hir : i ≠ r)
     (hi : StepValid (true, i) false s)
     (hj : StepValid (true, j) false (nextSector (true, i) false s))
     (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
@@ -614,15 +655,25 @@ theorem distinctPureReservoir_braid (ν : X) (i j r : I) (s : Sector I)
   classical
   subst e'
   let t := nextSector (true, i) false (nextSector (true, j) false (nextSector (true, r) false s))
-  have vj := (pureReservoir_valid_iff i j hij s).mp hj
-  have vji := (pureReservoir_valid_iff j i hij.symm s).mpr hi
-  have vir := (pureReservoir_valid_iff i r hir s).mpr hr'
-  have vjr := (pureReservoir_valid_iff j r hjr s).mpr hr'
-  have vri := (pureReservoir_valid_iff r i hir.symm s).mpr hi
-  have vjir := (pureReservoir_valid_iff i r hir _).mpr vjr
-  have vjri := (pureReservoir_valid_iff r i hir.symm _).mpr vji
-  have virj := (pureReservoir_valid_iff r j hjr.symm _).mpr hj
-  have vrij := (pureReservoir_valid_iff i j hij _).mpr hj'
+  have valid_swap (i j : I) (s : Sector I)
+      (hi : StepValid (true, i) false s)
+      (hj : StepValid (true, j) false (nextSector (true, i) false s)) :
+      StepValid (true, j) false s ∧
+        StepValid (true, i) false (nextSector (true, j) false s) := by
+    by_cases hij : i = j
+    · subst j; exact ⟨hi, hj⟩
+    exact ⟨(pureReservoir_valid_iff i j hij s).mp hj,
+      (pureReservoir_valid_iff j i (Ne.symm hij) s).mpr hi⟩
+  obtain ⟨vj, vji⟩ := valid_swap i j s hi hj
+  have vjir : StepValid (true, r) false
+      (nextSector (true, i) false (nextSector (true, j) false s)) := by
+    rw [← pureReservoir_swap i j s]; exact hr
+  obtain ⟨vjr, vjri⟩ := valid_swap i r _ vji vjir
+  obtain ⟨vir, virj⟩ := valid_swap j r _ hj hr
+  obtain ⟨_, vri⟩ := valid_swap i r s hi vir
+  have vrij : StepValid (true, j) false
+      (nextSector (true, i) false (nextSector (true, r) false s)) := by
+    rw [← pureReservoir_swap i r s]; exact virj
   have e213 : nextSector (true, r) false (nextSector (true, i) false (nextSector (true, j) false s)) = t :=
     (congrArg (nextSector (true, r) false) (pureReservoir_swap j i s)).trans e
   have e231 : nextSector (true, i) false (nextSector (true, r) false (nextSector (true, j) false s)) = t :=
@@ -631,12 +682,27 @@ theorem distinctPureReservoir_braid (ν : X) (i j r : I) (s : Sector I)
     (pureReservoir_swap r j _).trans e
   have e312 : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, r) false s)) = t :=
     (pureReservoir_swap i j _).trans rfl
-  rw [P.distinctPureReservoir_braidLeft_sum c L ν i j r hij hir hjr _
-    (distinctPureReservoirPath ν j i r s vj vji vjir e213)
-    (distinctPureReservoirPath ν j r i s vj vjr vjri e231),
-    P.distinctPureReservoir_braidRight_sum c L ν i j r hij hir hjr _
-    (distinctPureReservoirPath ν i r j s hi vir virj e132)
-    (distinctPureReservoirPath ν r i j s hr' vri vrij e312)]
+  let : Subsingleton (SPath (wd D ν [up j, up i, up r]) s t) :=
+    ⟨fun p q => (pureReservoirPath_unique vj vji vjir e213 p).trans
+      (pureReservoirPath_unique vj vji vjir e213 q).symm⟩
+  let : Subsingleton (SPath (wd D ν [up j, up r, up i]) s t) :=
+    ⟨fun p q => (pureReservoirPath_unique vj vjr vjri e231 p).trans
+      (pureReservoirPath_unique vj vjr vjri e231 q).symm⟩
+  let : Subsingleton (SPath (wd D ν [up i, up r, up j]) s t) :=
+    ⟨fun p q => (pureReservoirPath_unique hi vir virj e132 p).trans
+      (pureReservoirPath_unique hi vir virj e132 q).symm⟩
+  let : Subsingleton (SPath (wd D ν [up r, up i, up j]) s t) :=
+    ⟨fun p q => (pureReservoirPath_unique hr' vri vrij e312 p).trans
+      (pureReservoirPath_unique hr' vri vrij e312 q).symm⟩
+  let := Fintype.ofFinite (SPath (wd D ν [up j, up i, up r]) s t)
+  let := Fintype.ofFinite (SPath (wd D ν [up j, up r, up i]) s t)
+  let := Fintype.ofFinite (SPath (wd D ν [up i, up r, up j]) s t)
+  let := Fintype.ofFinite (SPath (wd D ν [up r, up i, up j]) s t)
+  unfold braidLeft braidRight
+  rw [Fintype.sum_subsingleton _ (distinctPureReservoirPath (D := D) ν j r i s vj vjr vjri e231),
+    Fintype.sum_subsingleton _ (distinctPureReservoirPath (D := D) ν j i r s vj vji vjir e213),
+    Fintype.sum_subsingleton _ (distinctPureReservoirPath (D := D) ν r i j s hr' vri vrij e312),
+    Fintype.sum_subsingleton _ (distinctPureReservoirPath (D := D) ν i r j s hi vir virj e132)]
   have wji := congrArg P.muM (pureReservoir_swap i j s)
   have wri := congrArg P.muM (pureReservoir_swap i r s)
   have wrj := congrArg P.muM (pureReservoir_swap j r s)
@@ -672,24 +738,47 @@ theorem distinctPureReservoir_braid (ν : X) (i j r : I) (s : Sector I)
       (P.muM_postE i hi) (P.muM_postE r vir) hd13 Z HEq.rfl))
     (eq_of_heq (P.distinctPureReservoir_obj ν r i j s hr' vri vrij e312 Z rfl wri rfl rfl
       (P.muM_postE r hr') hri hd13 Z HEq.rfl))
-    (P.distinctPureReservoir_left_core ν i j r s c L hij hir hjr hi hj hr vj vji vjir
+    (P.distinctPureReservoir_left_core ν i j r s c L hi hj hr vj vji vjir
       (pureReservoir_swap i j s) e e213 Z rfl rfl rfl rfl
       (P.muM_postE i hi) (P.muM_postE j hj) (P.muM_postE j vj) hji hd12)
-    (P.distinctPureReservoir_right_core ν j i r s c L hir vj vji vjir vjr vjri e213 e231 Z
+    (P.distinctPureReservoir_right_core ν j i r s c L vj vji vjir vjr vjri e213 e231 Z
       rfl wji rfl rfl (P.muM_postE j vj) hji (P.muM_postE r vjr) hd12 hd23)
-    (P.distinctPureReservoir_left_core ν j r i s c L hjr hij.symm hir.symm
+    (P.distinctPureReservoir_left_core ν j r i s c L
       vj vjr vjri hr' hj' hi' (pureReservoir_swap j r s) e231 rfl Z rfl rfl rfl rfl
       (P.muM_postE j vj) (P.muM_postE r vjr) (P.muM_postE r hr') hrj hd23)
-    (P.distinctPureReservoir_right_core ν i j r s c L hjr hi hj hr vir virj e e132 Z
+    (P.distinctPureReservoir_right_core ν i j r s c L hi hj hr vir virj e e132 Z
       rfl rfl rfl rfl (P.muM_postE i hi) (P.muM_postE j hj) (P.muM_postE r vir) hd12 hd13)
-    (P.distinctPureReservoir_left_core ν i r j s c L hir hij hjr.symm hi vir virj hr' vri vrij
+    (P.distinctPureReservoir_left_core ν i r j s c L hi vir virj hr' vri vrij
       (pureReservoir_swap i r s) e132 e312 Z rfl rfl rfl rfl
       (P.muM_postE i hi) (P.muM_postE r vir) (P.muM_postE r hr') hri hd13)
-    (P.distinctPureReservoir_right_core ν r i j s c L hij hr' vri vrij hj' hi' e312 rfl Z
+    (P.distinctPureReservoir_right_core ν r i j s c L hr' vri vrij hj' hi' e312 rfl Z
       rfl wri wrj rfl (P.muM_postE r hr') hri hrj hd13 hd23)
     (P.distinctPureReservoir_factor_braid r j i hir s.1 hd12 hd13 hd23
       (P.muM_postE j hj) (P.muM_postE r vir) hji (P.muM_postE r vjr) hri hrj
       (P.muM_postE i hi) (P.muM_postE j vj) (P.muM_postE r hr') Z).symm
+
+/-- The pairwise-distinct specialization of the pure-reservoir braid. -/
+theorem distinctPureReservoir_braid (ν : X) (i j r : I) (s : Sector I)
+    (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hij : i ≠ j) (hir : i ≠ r) (hjr : j ≠ r)
+    (hi : StepValid (true, i) false s)
+    (hj : StepValid (true, j) false (nextSector (true, i) false s))
+    (hr : StepValid (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)))
+    (hr' : StepValid (true, r) false s)
+    (hj' : StepValid (true, j) false (nextSector (true, r) false s))
+    (hi' : StepValid (true, i) false (nextSector (true, j) false (nextSector (true, r) false s)))
+    {t : Sector I}
+    (e : nextSector (true, r) false (nextSector (true, j) false (nextSector (true, i) false s)) = t)
+    (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, r) false s)) = t)
+    (Z : P.H t) :
+    braidLeft (P.swappedGens c L) i j r ν
+      (distinctPureReservoirPath ν i j r s hi hj hr e)
+      (distinctPureReservoirPath ν r j i s hr' hj' hi' e') Z =
+    braidRight (P.swappedGens c L) i j r ν
+      (distinctPureReservoirPath ν i j r s hi hj hr e)
+      (distinctPureReservoirPath ν r j i s hr' hj' hi' e') Z :=
+  (fun (_ : i ≠ j) (_ : j ≠ r) =>
+    P.pureReservoir_braid_canonical ν i j r s c L hir hi hj hr hr' hj' hi' e e' Z) hij hjr
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
