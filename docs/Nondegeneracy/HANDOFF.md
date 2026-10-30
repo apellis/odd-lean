@@ -1,5 +1,13 @@
 # Odd nondegeneracy: restart state
 
+## Raising-pair tensor comparison
+
+`contentEPairComparison_hom_total_tensor` evaluates the named pair comparison
+on arbitrary nested balanced generators, with the explicit sequential content
+and endpoint equality morphism. `contentEPairComparison_eq` separates the named
+comparison from its generic constructor without changing the definition.
+Outer whiskering and the named triple associativity square remain open.
+
 ## Content comparison on balanced generators
 
 `contentInductionComp_hom_total_tensor` evaluates the named content composition
