@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputBalancedComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVQDescent
 
 /-!
 # Output old action and the chronological short span
@@ -1011,3 +1012,162 @@ theorem bareU_homogeneous_transport (i : I) {v w : List I} {q : ZMod 2}
   exact h
 
 end OddMath.QuiverHecke.OutputOldComposite
+
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory
+open scoped TensorProduct
+namespace OddMath.QuiverHecke.ELVOld
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+local notation "O[" t "]" => Presentation.obj (pres D Sc) (ob D t)
+
+private theorem run_parity (i : I) (l r : List I) :
+    chainParity D (l ++ i :: r) (OutputOldCrossTransport.run l.length r) =
+      D.parity i * wordSumParity D r := by
+  induction r generalizing l with
+  | nil => simp [OutputOldCrossTransport.run, wordSumParity]
+  | cons a r ih =>
+    rw [OutputOldCrossTransport.run, chainParity_cons]
+    have ht : (PG.cross l.length).act (l ++ i :: a :: r) = (l ++ [a]) ++ i :: r := by
+      simp [PG.act, List.append_assoc]
+    rw [ht]
+    have hp : PG.par D (l ++ i :: a :: r) (.cross l.length) = D.parity i * D.parity a := by
+      simp [PG.par]
+    rw [hp, show l.length + 1 = (l ++ [a]).length by simp, ih]
+    simp [wordSumParity, mul_add]
+
+private theorem run_fits (l r : List I) :
+    Fits (l.length + 1 + r.length) (OutputOldCrossTransport.run l.length r) := by
+  induction r generalizing l with
+  | nil => intro g hg; simp [OutputOldCrossTransport.run] at hg
+  | cons a r ih =>
+    intro g hg
+    simp only [OutputOldCrossTransport.run, List.mem_cons] at hg
+    rcases hg with rfl | hg
+    · simp [PG.pos, PG.width]; omega
+    · have hh := ih (l ++ [a]) g (by simpa using hg)
+      simpa [List.length_append, List.length_cons, List.length_singleton, Nat.add_assoc,
+        Nat.add_comm, Nat.add_left_comm] using hh
+
+theorem bareU_parity (i : I) (v : List I) :
+    OutputOldComposite.bareU D Sc i v ∈ parity (R := k) _ _
+      (D.parity i * wordSumParity D v) := by
+  have hp := run_parity D i [] v
+  have hf := run_fits ([] : List I) v
+  rw [← OutputOldCrossTransport.run_eq_leading] at hp hf
+  simpa only [List.nil_append, List.length_nil, zero_add] using
+    (hp ▸ cl_mem_chainParity D Sc (cw (leadingMoveWord [] v))
+      (by simpa using leadingMoveWord_sChain i [] v) (by simpa [Nat.add_comm] using hf))
+
+-- The coefficient-parity contribution cancels against the box-product sign.
+private theorem lift_twisted_error_tmul {v w a b c d : List I} {p r s : ZMod 2}
+    (L : (O[v] ⟶ O[w]) →ₗ[k] (O[a] ⟶ O[b]))
+    (R : (O[v] ⟶ O[w]) →ₗ[k] (O[c] ⟶ O[d]))
+    (u : O[a] ⟶ O[c]) (z : O[b] ⟶ O[d])
+    (hz : z ∈ parity (R := k) _ _ p)
+    (aa : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
+    (ha : aa ∈ SKM.SYM.elvCoefficientParity D cutoff r)
+    (f : O[v] ⟶ O[w]) (hf : f ∈ parity (R := k) _ _ s)
+    (hR : R f ∈ parity (R := k) _ _ s) :
+    (affineUnit D Sc cutoff a c u ≫ TensorProduct.map LinearMap.id R (aa ⊗ₜ[k] f) -
+      TensorProduct.map LinearMap.id L (twist k p (aa ⊗ₜ[k] f) : hom D Sc cutoff v w) ≫
+        affineUnit D Sc cutoff b d z : hom D Sc cutoff a d) =
+      aa ⊗ₜ[k] (u ≫ R f - L (twist k p f) ≫ z) := by
+  have ht := BoxProd.tmul_mem_parity (X := obj D Sc cutoff v)
+    (Y := obj D Sc cutoff w) ha hf
+  erw [twist_of_mem p ht, ← koszulSign_smul, map_zsmul, Preadditive.zsmul_comp]
+  change (BoxProd.tmulHom (X := obj D Sc cutoff a) (Y := obj D Sc cutoff c) (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) u ≫
+      BoxProd.tmulHom (X := obj D Sc cutoff c) (Y := obj D Sc cutoff d) aa (R f)) -
+    koszulSign p (r + s) •
+      (BoxProd.tmulHom (X := obj D Sc cutoff a) (Y := obj D Sc cutoff b) aa (L f) ≫
+        BoxProd.tmulHom (X := obj D Sc cutoff b) (Y := obj D Sc cutoff d) (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) z) = _
+  rw [BoxProd.tmulHom_comp_tmulHom (X := obj D Sc cutoff a)
+    (Y := obj D Sc cutoff c) (Z := obj D Sc cutoff d)
+    (show (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ∈
+      SKM.SYM.elvCoefficientParity D cutoff 0 from SetLike.GradedOne.one_mem) u aa hR,
+    BoxProd.tmulHom_comp_tmulHom (X := obj D Sc cutoff a)
+      (Y := obj D Sc cutoff b) (Z := obj D Sc cutoff d) ha (L f)
+      (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) hz]
+  simp only [koszulSign_zero_left, one_smul]
+  change (aa * 1) ⊗ₜ[k] (u ≫ R f) -
+    koszulSign p (r + s) • (koszulSign r p • ((1 * aa) ⊗ₜ[k] (L f ≫ z))) = _
+  rw [mul_one, one_mul, twist_of_mem p hf, ← koszulSign_smul,
+    map_zsmul, Preadditive.zsmul_comp, TensorProduct.tmul_sub, TensorProduct.tmul_smul,
+    smul_smul, koszulSign_add_right, koszulSign_comm r p,
+    mul_right_comm, koszulSign_mul_self, one_mul]
+
+def bareUFull (i : I) (v : List I) : hom D Sc cutoff (i :: v) (v ++ [i]) :=
+  affineUnit D Sc cutoff _ _ (OutputOldComposite.bareU D Sc i v)
+
+def bareUFullError (i : I) (v w : List I) : hom D Sc cutoff v w →ₗ[k]
+    hom D Sc cutoff (i :: v) (w ++ [i]) where
+  toFun g := bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g -
+    insert D Sc cutoff i v w (twist k (D.parity i * wordSumParity D v) g) ≫
+      bareUFull D Sc cutoff i w
+  map_add' g h := by
+    simp only [map_add, Preadditive.comp_add, Preadditive.add_comp]
+    abel
+  map_smul' a g := by
+    simp only [map_smul, Linear.comp_smul, Linear.smul_comp, smul_sub]
+    rfl
+
+theorem bareUFull_transport (i : I) {v w : List I} (g : hom D Sc cutoff v w) :
+    projection D Sc cutoff i v (w ++ [i])
+      (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g -
+        insert D Sc cutoff i v w (twist k (D.parity i * wordSumParity D v) g) ≫
+          bareUFull D Sc cutoff i w) ∈ chronologicalShortSpan D Sc cutoff i v w := by
+  change projection D Sc cutoff i v (w ++ [i]) (bareUFullError D Sc cutoff i v w g) ∈ _
+  by_cases hp : wordSumParity D w = wordSumParity D v
+  · induction g using BoxProd.induction_on_homogeneous with
+    | zero =>
+      erw [map_zero, map_zero]
+      exact Submodule.zero_mem _
+    | add g h hg hh =>
+      erw [(bareUFullError D Sc cutoff i v w).map_add,
+        (projection D Sc cutoff i v (w ++ [i])).map_add]
+      exact Submodule.add_mem _ hg hh
+    | tmul p q a f ha hf =>
+      have hz := bareU_parity D Sc i w
+      rw [hp] at hz
+      have he := lift_twisted_error_tmul D Sc cutoff
+        (affineInsert D Sc i v w) (affineRightContext D Sc [i] v w)
+        (OutputOldComposite.bareU D Sc i v) (OutputOldComposite.bareU D Sc i w)
+        hz a ha f hf
+        (MonoidalSupercategory.whiskerRight_mem (R := k) O[[i]] hf)
+      change bareUFullError D Sc cutoff i v w (BoxProd.tmulHom a f) =
+        a ⊗ₜ[k] OutputOldComposite.error D Sc i v w f at he
+      erw [he]
+      exact tmul_shortSpan D Sc cutoff i v w a (OutputOldComposite.error_mem D Sc i f)
+  · rw [hom_zero_of_wordParity_ne D Sc cutoff hp g, map_zero, map_zero]
+    exact Submodule.zero_mem _
+
+theorem bareUFull_ideal (i : I) {v w : List I} {g : hom D Sc cutoff v w}
+    (hg : g ∈ ideal D Sc cutoff v w) :
+    projection D Sc cutoff i v (w ++ [i])
+      (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g) ∈
+      chronologicalShortSpan D Sc cutoff i v w := by
+  have h := bareUFull_transport D Sc cutoff i g
+  rw [map_sub, projection_old_ideal D Sc cutoff i (twist_ideal D Sc cutoff _ hg),
+    sub_zero] at h
+  exact h
+
+/-- The bare-long row does not depend on a representative of the old quotient arrow. -/
+theorem bareUFull_old_representative_independent (i : I) {v w : List I}
+    (g h : hom D Sc cutoff v w)
+    (he : (ideal D Sc cutoff v w).mkQ g = (ideal D Sc cutoff v w).mkQ h) :
+    (chronologicalShortSpan D Sc cutoff i v w).mkQ
+      (projection D Sc cutoff i v (w ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g)) =
+    (chronologicalShortSpan D Sc cutoff i v w).mkQ
+      (projection D Sc cutoff i v (w ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w h)) := by
+  apply sub_eq_zero.mp
+  rw [← map_sub, ← map_sub, ← Preadditive.comp_sub, ← map_sub]
+  apply (Submodule.Quotient.mk_eq_zero _).mpr
+  apply bareUFull_ideal D Sc cutoff i
+  apply (Submodule.Quotient.mk_eq_zero _).mp
+  change (ideal D Sc cutoff v w).mkQ (g - h) = 0
+  rw [map_sub, he, sub_self]
+
+end OddMath.QuiverHecke.ELVOld

@@ -66,6 +66,24 @@ example (i : I) {v w : List I}
       SmallerTailNormalization.shortSpan D Sc i v (w ++ [i]) :=
   OutputOldComposite.error_mem D Sc i g
 
+example (i : I) {v w : List I} (g : hom D Sc cutoff v w) :
+    projection D Sc cutoff i v (w ++ [i])
+      (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g -
+        insert D Sc cutoff i v w (twist k (D.parity i * wordSumParity D v) g) ≫
+          bareUFull D Sc cutoff i w) ∈ chronologicalShortSpan D Sc cutoff i v w :=
+  bareUFull_transport D Sc cutoff i g
+
+example (i : I) {v w : List I}
+    (g h : hom D Sc cutoff v w)
+    (he : (ideal D Sc cutoff v w).mkQ g = (ideal D Sc cutoff v w).mkQ h) :
+    (chronologicalShortSpan D Sc cutoff i v w).mkQ
+      (projection D Sc cutoff i v (w ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w g)) =
+    (chronologicalShortSpan D Sc cutoff i v w).mkQ
+      (projection D Sc cutoff i v (w ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v w h)) :=
+  bareUFull_old_representative_independent D Sc cutoff i g h he
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv

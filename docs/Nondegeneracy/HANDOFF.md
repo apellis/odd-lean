@@ -23,8 +23,12 @@ therefore transported without replacing bare U by the moving intertwiner.
 `twist k (parity i * wordSumParity v)`. `bareU_homogeneous_transport` gives
 the corresponding explicit homogeneous sign. Its proof uses actual positioned-word
 induction and PBW linear spanning, and `short_comp_old` proves output stability
-of the entire relative scalar span. Full exterior old-arrow lifting, quotient
-output action and canonical balanced coefficients/S remain open.
+of the entire relative scalar span. `bareUFull_transport` now lifts the actual
+transport to arbitrary full ELV old arrows and arbitrary endpoints, with twist
+`parity i * wordSumParity v` on total coefficient-plus-diagram parity. The
+coefficient twist cancels the box-product composition sign.
+`bareUFull_old_representative_independent` makes the bare-long row depend only
+on the old quotient arrow. Canonical balanced coefficients/S remain open.
 
 ## Old source action on normalized output coordinates
 
