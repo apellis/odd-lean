@@ -1,5 +1,30 @@
 # Odd nondegeneracy: restart state
 
+## Short-column diagram, swapped braid assembly and independent triple operators
+
+The epsilon-balanced P′, its literal moving-word formula and range P′ = ker q
+are constructed independently of a crossing image. Both short columns descend
+with the full old coefficient twist. The two squares commute as whole linear
+maps, and both rows are right exact. This does not prove alpha, P′ or crossing
+injectivity, the categorical snake or the prescribed augmented inverse.
+
+`ProbeReservoir.crossBraidOfInputs` derives all three CrossBraid fields for the
+existing `swappedGens c L`, from `c.IsInverse` and `CrossCoeffInputs`. Its path
+dispatch covers arbitrary sectors and paths; the necessary reverse validity
+witnesses are derived. The repeated-outer diagonal retains both complete
+signed correction sums and all three dot powers. `braidRelationsOfInputs`
+transports this to the existing layer representation. The ProbeReservoir and
+its coefficient inputs are still supplied data, not concrete detecting factors.
+
+For content induction, both independently whiskered pair crossings now agree
+with their named block transports, including swapped source/target words and
+the explicit intermediate-content recast. All three independent single-letter
+dots agree with the corresponding transported dots. The original-Sc ordered
+polynomial correction is expressed on these independent dots over the
+parameter-twisted categories. Equal crossings retain their minus normalization;
+no old coefficient is assumed even. The composed independently whiskered mixed
+braid remains separate, as do concrete factors, inverses and final observations.
+
 ## Vacuum source comparison and iterated crossing coordinates
 
 `VacuumSourceComparison.comparison` identifies the canonical block comparison
@@ -48,8 +73,8 @@ of that inverse, construct the full detecting action, or prove nondegeneracy.
 suffix-first comparison trees as natural isomorphisms, with all four functor
 equality transports retained. `contentETripleComparison_assoc_total` identifies
 their whole linear maps on every module. This uses uniqueness of left adjoints
-without changing the comparison definitions. Independently whiskered triple
-dot/crossing identifications and their mixed braid remain separate.
+without changing the comparison definitions. Independent triple dot/crossing
+identifications are supplied above; their composed mixed braid remains separate.
 
 `CyclotomicCrossingTensor.Source` independently constructs the lower-balanced
 cyclotomic source with the prescribed parity-shifted, total-twisted coefficient
@@ -93,8 +118,9 @@ times identity coefficient at B−D only when D ≤ B; it is actually zero when
 B < D. These statements include annihilated old corners and do not assert
 nonzero support or natDegree equality. The independent polynomial S is not A.
 The Cartan-height identity and actual polynomial-row normal forms are now
-checked above. The prescribed cyclotomic top quotient is constructed separately;
-the epsilon-shifted P′ column and categorical matrix inverse remain open.
+checked above. The prescribed cyclotomic top quotient and epsilon-shifted P′
+column are constructed; column injectivity and the categorical matrix inverse
+remain open.
 
 The complete Ri Rj Pi (001) correction and the adjacent Pi Ri Rj to Rj Pi Ri
 coefficient entry are also checked as literal path formulas, including both
@@ -106,8 +132,8 @@ remaining adjacent placements and the global CrossBraid dispatch are not
 completed by these particular formulas.
 
 The earlier generator associativity calculation is supplemented by the whole
-named comparison-map square above; independently whiskered triple operators
-remain separate.
+named comparison-map square and independent triple operator identifications
+above; their composed mixed braid remains separate.
 All scalar-data unit/parity conditions, including Sc.two_isUnit, remain intact.
 
 
