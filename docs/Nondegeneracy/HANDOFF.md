@@ -1,5 +1,25 @@
 # Odd nondegeneracy: restart state
 
+## Vacuum source comparison and iterated crossing coordinates
+
+`VacuumSourceComparison.comparison` identifies the canonical block comparison
+on the whole balanced quotient with two independently defined successive
+representable evaluations, retaining the endpoint cast. `pairCross_mixed_coordinates`
+then computes the existing `contentEPairCross` with both source and output in
+these iterated coordinates, on arbitrary represented prefixes.
+
+`wordPairCoordinates_comparison` proves compatibility with the existing
+recursive prefix `wordIsoAt`. On two single-letter inductions of any vacuum-word
+prefix, `wordPairCross_mixed`, `wordPairCross_equal` and `wordPairCross_of_mem`
+retain the full kernel twist, equal-colour minus and total coefficient-plus-diagram
+parity sign. The induction order `[i,j]` corresponds to `j::i::rho`.
+No even-kernel, field, flatness, finite-colour or detection premise is introduced;
+the supplied scalar-data restrictions remain.
+
+Equality with `wordIsoAt` for the entire extended word, and the combined
+source-and-reservoir `wordPairing` postcomposition formula, remain separate.
+These results do not construct a detecting model or final vacuum/corner evaluation.
+
 ## Actual polynomial-row normal forms in both height ranges
 
 The integer difference M−D, where M is `endpointQPDegree` and D is
@@ -413,8 +433,10 @@ uses the normalized tensor formula and supernatural naturality, not an
 assumed pairing or block-to-iterated comparison. `pairing_proj` retains each
 parity component; `cross_postcompose_of_mem` exposes `sign(p*q)`.
 `cross_word_postcompose` uses the constructed `wordIsoAt` on the reservoir
-target only. Coherence with iterated
-source words, other generators and full action/corner assembly remain open.
+target only. The source comparison and two-letter crossing through an iterated
+vacuum-word prefix are checked above; the entire extended-word comparison and
+combined source-and-reservoir pairing, other generators and full action/corner
+assembly remain open.
 
 ## Mixed normalized crossing on induced representables
 
