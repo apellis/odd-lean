@@ -19,6 +19,22 @@ boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
 iterates of §4 remain to be assembled. Earlier open-status descriptions
 below are superseded only for append norm regularity and G injectivity.
 
+## ELV module restriction
+
+`ELVModuleRestriction.lean` constructs `TruncatedModules`, the supercategory
+of all `SVec k`-valued superfunctors on the truncated ELV category.
+`moduleRestriction` is right-append restriction, linear and parity-preserving.
+`moduleRestrictionComponent_supernatural` proves the evaluation transformations
+are supernatural against all module maps, including odd maps.
+`moduleRestrictionTransform_app` identifies their values with the specified
+quotient morphisms. Dots and raw crossings are instantiated. The scalar ring
+is k; exterior coefficients remain morphisms in the source category.
+
+This is the restriction side of `DeformedActionAssembly.md` §5, not a full
+factor action. Next: construct the balanced induction coend and its even
+unit/counit, then identify normalized induction dots/crossings and the
+parameter twist. Integer-graded modules, content/weight indexing, and the
+local inversion matrices are not supplied here.
 
 ## Reverse three-strand crossing naturality
 
