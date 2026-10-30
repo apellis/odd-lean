@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Cutoff-independent source lower degrees
+
+`ELVLowerDegree.exists_elvHomDegree_lower_bound` derives a lower integer
+bound for each full-ELV Hom, uniform over all non-uniform coefficient
+cutoffs. It uses affine PBW and nonnegative polynomial/exterior coefficient
+degrees, over any commutative ground ring with a symmetrizer and homogeneous
+scalars. No finite-colour or coefficient-weight upper-bound hypothesis is
+needed. The generic consumer audits every declaration in this module.
+
+This is a source bound, not quotient injectivity. The next obligations are
+a uniform bound over the finite permutations of fixed content, the
+cyclotomic and coefficient-truncation kernel bounds, and injectivity of the
+actual affine-to-truncated quotient map on bounded-degree subspaces.
+
+
 
 ## Integer support at arbitrary strand content
 
