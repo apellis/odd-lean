@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Mixed normalized crossing on induced representables
+
+`ELVVacuumGeneratorCoordinates.mixedCross_coordinates` computes the normalized
+distinct-colour crossing between block inductions of an arbitrary content
+representable. The two orders use one common target content. Conjugating the
+induction crossing by `equivTo` gives `a_v ≫ twist_p(h)`, where `a_v` is the
+appended quotient class of `crossTwo i j` and `p = parity i * parity j`.
+The twist retains exterior and diagram parity, over every commutative ring.
+The source arrow and induction map have opposite directions. Comparison with
+two successive one-letter inductions, normalized equal-colour coordinates and
+the resulting reservoir-Hom postcomposition action remain open.
+
 ## The source-centre realization converse
 
 `ELVModuleCentre` proves `contentRealize_surjective` and the explicit linear
