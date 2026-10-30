@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Literal pure-probe diagonal correction
+
+`repeatedOuterPureProbe_braidEq_diag` now proves the exact two signed
+`dotEntry` sums of `CrossBraid.braidEq_diag` for every path at a pure-probe
+endpoint. It needs `i ≠ j` but no inverse or coefficient-input hypothesis.
+The factor polynomial is compared to all three literal dots and their
+arbitrary powers; finite-sum reflection cancels the equal-crossing scalar.
+Odd outer-degree and interior-support conditions come from the datum and
+original scalar data, over an arbitrary commutative ground ring.
+The pure-reservoir literal diagonal and remaining mixed entries/placements
+are still open; this is not a full `CrossBraid` producer.
+
 ## Literal repeated-outer diagonal and pure-factor corrections
 
 `repeatedOuter_braidEq_diag` proves the literal `braidLeft - braidRight`
