@@ -512,5 +512,49 @@ lemma separatedOuter_braidEq_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
       (P.separatedOuter_dotX ν i j s hR Z c L).symm
       (P.separatedOuter_dotY ν i j s hR Z c L).symm
       (P.separatedOuter_dotZ ν i j s hR Z c L).symm)
+include hR in
+/-- Both off-diagonal directions in the one-reservoir repeated-outer
+sector, for arbitrary source and target paths and terminal sector. -/
+lemma repeatedOuter_oneReservoir_offDiag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) {t : Sector I}
+    (e₀ : nextSector (true, i) true (nextSector (true, j) true
+      (nextSector (true, i) false s)) = t)
+    (e₁ : nextSector (true, i) false (nextSector (true, j) true
+      (nextSector (true, i) true s)) = t)
+    (p q : SPath (wd D ν [up i, up j, up i]) s t) (W : P.H t) (hpq : p ≠ q) :
+    braidLeft (P.swappedGens c L) i j i ν p q W =
+      braidRight (P.swappedGens c L) i j i ν p q W := by
+  rcases adjacentMixed_iji_cases hij hR e₀ e₁ p with rfl | rfl <;>
+    rcases adjacentMixed_iji_cases hij hR e₀ e₁ q with rfl | rfl
+  · exact (hpq rfl).elim
+  · subst e₁
+    exact P.repeatedOuter_forward_braid i j s hR
+      (by simp only [nextSector, add_right_comm]) e₀ W ν c L hc h hij
+  · subst e₀
+    exact P.repeatedOuter_other_offDiag ν i j s hR c L hij e₁ W
+  · exact (hpq rfl).elim
+/-- The literal correction at every terminal transport of Pi Pj Ri. -/
+lemma separatedOuter_braidEq_diag_transport {t : Sector I}
+    (e : nextSector (true, i) false (nextSector (true, j) true (nextSector (true, i) true s)) = t)
+    (W : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR e
+    braidLeft (P.swappedGens c L) i j i ν n n W -
+      braidRight (P.swappedGens c L) i j i ν n n W =
+      ∑ a ∈ Finset.range (D.dn i j),
+        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n W)
+              (D.dn i j - 1 - a)) +
+      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n W) d ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n W) (b - 1 - a)) := by
+  subst e
+  exact P.separatedOuter_braidEq_diag ν i j s hR W c L hc h hij
+    (by simp only [nextSector, add_right_comm])
+    (by simp only [nextSector, add_right_comm])
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

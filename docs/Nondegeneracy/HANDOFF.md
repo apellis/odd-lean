@@ -23,7 +23,15 @@ identify all three literal dots; `separatedOuter_braidEq_diag` is the FULL
 literal `Pi Pj Ri` diagonal correction, retaining every dotEntry power, Sc.t,
 Sc.s and zsign factor. It assumes only the supplied c.IsInverse,
 CrossCoeffInputs, i ≠ j, a valid reservoir step and genuine sector equalities.
+`separatedOuter_braidEq_diag_transport` removes the auxiliary sector equality
+arguments and handles every genuine terminal transport. As continuation,
+`repeatedOuter_oneReservoir_offDiag` joins both checked off-diagonal directions
+for arbitrary distinct paths in that endpoint sector. Finite source/target
+path classifications eliminate incompatible cases, without restrictions on I,
+parity, field structure or a nilpotence cutoff.
 The full CrossBraid producer and the remaining mixed placements are still open.
+Earlier entries below describing the Pi Pj Ri diagonal as open are historical;
+the literal diagonal result above supersedes those particular gaps.
 
 ## Separated correction coordinates
 

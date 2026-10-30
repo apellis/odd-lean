@@ -82,10 +82,42 @@ theorem separatedOuter_braidEq_diag_obligation (c : P.CrossCoeff Sc) (L : P.Left
             compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫
             compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z) (b - 1 - a)) :=
   P.separatedOuter_braidEq_diag ν i j s hR Z c L hc h hij hs₀ hs
+include hR in
+theorem repeatedOuter_oneReservoir_offDiag_obligation (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) {t : Sector I}
+    (e₀ : nextSector (true, i) true (nextSector (true, j) true
+      (nextSector (true, i) false s)) = t)
+    (e₁ : nextSector (true, i) false (nextSector (true, j) true
+      (nextSector (true, i) true s)) = t)
+    (p q : SPath (wd D ν [up i, up j, up i]) s t) (W : P.H t) (hpq : p ≠ q) :
+    braidLeft (P.swappedGens c L) i j i ν p q W =
+      braidRight (P.swappedGens c L) i j i ν p q W :=
+  P.repeatedOuter_oneReservoir_offDiag ν i j s hR c L hc h hij e₀ e₁ p q W hpq
+theorem separatedOuter_braidEq_diag_transport_obligation (ν : X) {t : Sector I}
+    (e : nextSector (true, i) false (nextSector (true, j) true (nextSector (true, i) true s)) = t)
+    (W : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR e
+    braidLeft (P.swappedGens c L) i j i ν n n W -
+      braidRight (P.swappedGens c L) i j i ν n n W =
+      ∑ a ∈ Finset.range (D.dn i j),
+        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n W)
+              (D.dn i j - 1 - a)) +
+      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n W) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n W) d ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n W) (b - 1 - a)) :=
+  P.separatedOuter_braidEq_diag_transport ν i j s hR e W c L hc h hij
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
 
 #print axioms OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir.separatedOuter_braidRight_obligation
+#print axioms OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir.separatedOuter_braidEq_diag_transport_obligation
+#print axioms OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir.repeatedOuter_oneReservoir_offDiag_obligation
 
 open Lean Elab Command in
 run_cmd do
