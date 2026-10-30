@@ -499,6 +499,21 @@ signed induction is now proved in `ELVQPProduct.lean`, as described above.
 The raw product retains the repeated-even factor −1. No crossing-normalization
 comparison or literal no-even-factor equation (3) is asserted.
 
+## Graded append endomorphism kernels
+
+`ELVAppendKernel.lean` constructs `truncatedAppendAlgHom` on the actual
+word endomorphism algebras, preserving their independent integer degree
+and total coefficient-plus-diagram parity. `truncatedAppendInduction` and
+`truncatedAppendRestriction` restrict the target regular bimodule along
+this map on the right and left respectively. The ground scalar ring is
+`k`; the full exterior coefficient algebra is not treated as commutative.
+The action formulas are ordinary multiplication by the appended class.
+These constructions cover arbitrary words and spectator lists, including
+zero corners, but do not supply the off-diagonal content-matrix kernels,
+their tensor/module comparisons or right adjunction. In particular they
+do not establish higher-content support, homogeneous principal inverse
+components, or identification of the swapped residual coefficient entries.
+
 ## Graded right append and affine transformations
 
 `ELVTruncatedAppend.lean` constructs `truncatedAppendGraded σ` on all words,
