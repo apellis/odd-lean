@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleRestriction
 import OddMath.QuiverHecke.CyclotomicAction.ELVPrependCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVPrependOldExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVPrependCrossTail
@@ -8,6 +9,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTruncation
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedCategory
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppendTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
@@ -1482,6 +1484,7 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureProbeSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.DistinctPureReservoirSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.PairwiseDistinct
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentPureProbe
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentPureReservoir
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedProbe
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedTransport
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedCoefficient

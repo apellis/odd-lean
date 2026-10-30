@@ -1,5 +1,6 @@
 # Odd nondegeneracy: restart state
 
+
 ## Append endpoint norm regularity and G injectivity
 
 `ELVAppendMovingSupport.lean` proves exponent translation and old-action
@@ -18,6 +19,22 @@ boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
 iterates of §4 remain to be assembled. Earlier open-status descriptions
 below are superseded only for append norm regularity and G injectivity.
 
+## ELV module restriction
+
+`ELVModuleRestriction.lean` constructs `TruncatedModules`, the supercategory
+of all `SVec k`-valued superfunctors on the truncated ELV category.
+`moduleRestriction` is right-append restriction, linear and parity-preserving.
+`moduleRestrictionComponent_supernatural` proves the evaluation transformations
+are supernatural against all module maps, including odd maps.
+`moduleRestrictionTransform_app` identifies their values with the specified
+quotient morphisms. Dots and raw crossings are instantiated. The scalar ring
+is k; exterior coefficients remain morphisms in the source category.
+
+This is the restriction side of `DeformedActionAssembly.md` §5, not a full
+factor action. Next: construct the balanced induction coend and its even
+unit/counit, then identify normalized induction dots/crossings and the
+parameter twist. Integer-graded modules, content/weight indexing, and the
+local inversion matrices are not supplied here.
 
 ## Reverse three-strand crossing naturality
 
@@ -83,6 +100,27 @@ is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
 consumes the new producers on a mixed-parity repeated-colour word and audits
 every owned module declaration, including generated and private names.
 
+## Adjacent-equal pure-reservoir braids
+
+`pureReservoir_braid` proves literal braid equality for arbitrary source and
+target paths when probe content is unchanged and the outer colours differ.
+It includes both `adjacentPureReservoir_iij` and `adjacentPureReservoir_ijj`.
+Path classification recovers all three reservoir validity witnesses, including
+repeated-colour multiplicities, from the supplied paths. No independence of
+roots or inequality between adjacent colours is used.
+
+`postCrossSame_eq_postCrossNe` identifies the actual equal reservoir entry
+with the general normalized core. The six edge comparisons retain the
+content-dependent shifts and super interchange signs. The previous
+`distinctPureReservoir_braid` remains a specialization with its original
+interface. `scripts/NonVacuity/AdjacentPureReservoir.lean` applies both adjacent
+patterns and audits all declarations in both owned modules.
+
+The remaining obligations are other mixed adjacent-equal endpoints, their
+assembly, and the actual repeated-outer polynomial correction. These results
+do not construct complete `CrossBraid` or prove nondegeneracy.
+
+
 
 ## Complete occupied adjacent-equal split matrix
 
@@ -108,8 +146,8 @@ occupied reservoir content and audits every declaration owned by these three
 modules, including private and generated declarations. It remains a supplied-data
 consumer, not a construction of the probe/reservoir input representation.
 
-Other endpoint patterns, pure-reservoir adjacent-equal braids and the
-repeated-outer correction remain separate. Neither arbitrary-endpoint
+Other mixed endpoint patterns and the repeated-outer correction remain
+separate; pure-reservoir adjacent-equal braids are proved above. Neither arbitrary-endpoint
 `iij`/`ijj`, complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Supporting adjacent-equal split repeated-colour component
@@ -132,7 +170,7 @@ occupied reservoir content and audits every declaration owned by the four new
 modules, including private and generated declarations.
 
 The other entries at this occupied endpoint are assembled above. Remaining:
-other endpoint patterns, pure-reservoir adjacent-equal cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+other mixed endpoint patterns and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
 a complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Adjacent-equal pure-probe braids and split-sector support
@@ -476,6 +514,21 @@ complete the distinct recursion and empty base. The subsequent all-word
 signed induction is now proved in `ELVQPProduct.lean`, as described above.
 The raw product retains the repeated-even factor −1. No crossing-normalization
 comparison or literal no-even-factor equation (3) is asserted.
+
+## Graded append endomorphism kernels
+
+`ELVAppendKernel.lean` constructs `truncatedAppendAlgHom` on the actual
+word endomorphism algebras, preserving their independent integer degree
+and total coefficient-plus-diagram parity. `truncatedAppendInduction` and
+`truncatedAppendRestriction` restrict the target regular bimodule along
+this map on the right and left respectively. The ground scalar ring is
+`k`; the full exterior coefficient algebra is not treated as commutative.
+The action formulas are ordinary multiplication by the appended class.
+These constructions cover arbitrary words and spectator lists, including
+zero corners, but do not supply the off-diagonal content-matrix kernels,
+their tensor/module comparisons or right adjunction. In particular they
+do not establish higher-content support, homogeneous principal inverse
+components, or identification of the swapped residual coefficient entries.
 
 ## Graded right append and affine transformations
 
