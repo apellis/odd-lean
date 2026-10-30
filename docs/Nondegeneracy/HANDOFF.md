@@ -27,8 +27,15 @@ right append between them, and concrete `contentE ⊣ contentF`.
 `ELVModuleInductionRelations.transform_comp` proves the superopposite law:
 `T(β) ≫ T(α) = sign k (p*q) • T(α≫β)`. In particular odd–odd composition
 is signed, not ordinary reversal. The unit compatibility is also checked.
-Normalized generators, parameter twist, content-generator endpoint
-transports, weight assembly, and local inversion matrices remain separate;
+`ELVContentModuleTransform` constructs exact-content dots and crossings,
+using a common explicit endpoint for both colour orders and the source's
+equal-colour minus. `ELVModuleInductionComp.inductionComp` gives the even
+composition isomorphism, natural against all module maps; its tensor map
+is `[g ⊗ [h ⊗ m]] ↦ [K(h) ≫ g ⊗ m]` and its inverse inserts the inner
+identity. The source convention is E=induction, F=restriction.
+Parameter twist and presentation-relation identification, transport from
+composite content append to word append, weight assembly, and local
+inversion matrices remain separate;
 no full factor action is claimed. Integer grading of the source categories
 and kernels is retained; a graded module-category framework is not needed
 by the current Rouquier target.
