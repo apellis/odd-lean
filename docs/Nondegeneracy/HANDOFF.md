@@ -7,7 +7,13 @@
 arbitrary full-ELV old source endomorphisms. The acting old morphism retains
 its total-parity twist, and the normalized output formula includes the endpoint
 transport. This supplies old-source linearity, not output-old balancing or
-identification of S. Corrected-rho output coordinates remain to be computed.
+identification of S. `ELVOutputRhoCoordinates` now computes the literal
+corrected-rho recurrence in every normalized output coordinate, including degree
+zero, for arbitrary quotient elements. If E_m denotes extraction, sigma the total
+old-parity involution, epsilon the output sign and C the twisted old delta action,
+then E_(m+1)(rho z) = sigma(E_m(z)) + epsilon * 2*(-1)^cutoff * C(E_(m+1)(z));
+the zero coefficient contains only the delta term. Thus rho is not an ordinary
+polynomial shift on these coefficients. Output-old balancing and S remain open.
 
 ## Chronological short kernel inclusions
 
