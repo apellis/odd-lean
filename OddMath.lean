@@ -1473,6 +1473,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedTransport
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedCoefficient
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedBraid
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentMixedRectangle
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitMatrix
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitReduction
+import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentSplitBraid
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctReservoirSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.ReverseDistinctProbeSector
 import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.MiddleDistinctProbeSector
