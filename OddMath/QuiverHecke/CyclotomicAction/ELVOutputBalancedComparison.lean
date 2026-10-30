@@ -104,9 +104,14 @@ theorem outputLongExtraction_balanced_move (p : ZMod 2) (i : I) (v : List I)
           (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
             cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b)) := by
   ext m
-  simp only [outputLongExtraction_apply, outputLongCoordinate_balanced]
-  apply congrArg (oldComp D Sc cutoff v v v b)
-  exact congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f m)
-    (outputLongExtraction_move_endpointPolynomial D Sc cutoff p i v a)
+  simp only [outputLongExtraction_apply]
+  exact (outputLongCoordinate_balanced D Sc cutoff p i v m
+    (a ⊗ₜ[k] moveHom D Sc i [] v) b).trans
+    ((congrArg (oldComp D Sc cutoff v v v b)
+      (congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f m)
+        (outputLongExtraction_move_endpointPolynomial D Sc cutoff p i v a))).trans
+      (outputLongCoordinate_balanced D Sc cutoff p i v m
+        (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
+          cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b).symm)
 
 end OddMath.QuiverHecke.ELVOld

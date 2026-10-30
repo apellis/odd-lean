@@ -48,9 +48,13 @@ theorem prependOldCoordinate_signedMoving (p : ZMod 2) {i : I} {v w : List I}
   obtain ⟨f, rfl⟩ := prependOldReconstruct_surjective D Sc cutoff p i v w z
   induction f using DirectSum.induction_on with
   | zero =>
-    calc
-      _ = (0 : Old D Sc cutoff v (x.shift d).oldTarget) := by simp only [map_zero]
-      _ = _ := by symm; simp only [map_zero]
+    exact Eq.trans
+      (map_zero ((prependOldCoordinate D Sc cutoff p (x.shift d)).comp
+        ((signedMovingPowerTarget D Sc cutoff i v w d).comp
+          (prependOldReconstruct D Sc cutoff p i v w))))
+      (map_zero ((oldTwist D Sc cutoff (d • D.parity i) v x.oldTarget).comp
+        ((prependOldCoordinate D Sc cutoff p x).comp
+          (prependOldReconstruct D Sc cutoff p i v w)))).symm
   | add f g hf hg =>
     exact (map_add ((prependOldCoordinate D Sc cutoff p (x.shift d)).comp
       ((signedMovingPowerTarget D Sc cutoff i v w d).comp
