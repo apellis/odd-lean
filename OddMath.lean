@@ -29,6 +29,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVMovingNormRegularity
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerChain
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNorm
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerEqual
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet
 import OddMath.QuiverHecke.CyclotomicAction.ELVPScalarBalance
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendBalance
