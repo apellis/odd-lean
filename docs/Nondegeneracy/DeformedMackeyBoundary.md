@@ -2,8 +2,13 @@
 
 **Status: written proof, partially formalized in Lean.** The corrected source
 operator, normalized long lifts and local full-ELV append-crossing triangularity
-are checked. The global crossing/output splitting and its first-order polynomial
-defect are not yet constructed. The subsequent norm/division
+are checked. The actual global polynomial projection, crossing-span kernel and
+image splitting are now constructed in `ELVAppendC0Candidate.lean`.
+`ELVBoundaryInputDefect.lean` proves the input-oriented polynomial-constant
+defect, with the total old-coefficient twist. This does not identify input
+precomposition with output postcomposition or certify that the written shift
+convention below has already been identified with the checked operator.
+The prescribed balanced crossing-column comparison remains separate. The norm/division
 identity is in `DeformedBoundaryDivision.md`; the prescribed tensor-matrix
 comparison and its all-height consequence are in `DeformedMatrixComparison.md`.
 

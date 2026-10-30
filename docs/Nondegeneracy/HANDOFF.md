@@ -1,5 +1,98 @@
 # Odd nondegeneracy: restart state
 
+## Full-coefficient boundary and content calculations
+
+All statements retain the defining unit and parity conditions of their supplied
+scalar data, including `Sc.two_isUnit`; no existence over incompatible rings is
+asserted.
+
+The append target now has an actual polynomial projection C₀, recovery on the
+output embedding, and kernel exactly the chronological crossing span. Its
+splitting has the crossing image as first factor; identifying the prescribed
+balanced crossing-column source remains separate. For the corrected odd-moving
+boundary, C₀P = A B₁ holds on the original target. The input-dot recurrence twists
+the entire old coefficient and has a polynomial-constant defect; it is not the
+output-postcomposition formula or an assertion of integer degree.
+
+The independently specified S has proved coefficient twist invariance and actual
+corrected-rho operator evaluation. The ordered reverse QP–ELV numerator has an
+explicit full-coefficient fold, a support bound, and prescribed top coefficient
+unit times the old identity, including zero rings and annihilated objects.
+This does not establish nonzero support membership, natDegree equality, the
+additional boundary leading law, ordered division or the categorical inverse.
+
+The original-Sc content quadratic and mixed correction are actual ordered
+operator formulas, with all residual twists. Induction comparisons intertwine
+inner and outer supernatural whiskering. The named pair-first and suffix-first
+composition trees have equal cast-bearing arrows and equal values on every
+nested balanced generator. Equality of the composite maps and the named content
+triple associativity square remain separate, as do independently whiskered
+triple operator identifications.
+
+Positive integer-degree support gives fixed-content nilpotence in the actual
+quotient and on all modules. The independently defined induction dot is also
+nilpotent as a module endomorphism, with the same bound for every ground-scalar
+normalization. Finite-colour or explicit-bound restrictions remain as stated.
+The assembled reservoir family, its chosen W.dot identification and probe-dot
+units are not constructed by these results.
+
+The literal Pi Rj Ri correction has both full signed sums and all three actual
+dot powers, under its stated inverse/coefficient, endpoint and both-order
+validity hypotheses. Deriving the arbitrary-path dispatch and the remaining
+placements is not a full CrossBraid producer. Vacuum/corner evaluation and
+nondegeneracy remain open.
+
+
+## Content induction dot nilpotence
+
+`ELVContentInductionNilpotence.contentInductionDot_module_pow_zero` derives a
+uniform positive exponent for the independently defined `contentInductionDot`,
+as an endomorphism in the module supercategory, on every module at fixed source
+content. `contentInductionDot_pow_zero` gives its evaluated linear operators;
+`contentInductionDot_smul_pow_zero` uses the same exponent for every ground-scalar
+normalization, including either sign. Assumptions are a commutative ground ring,
+symmetrizer, homogeneous scalars and finite colours. No module boundedness,
+assumed nilpotence or identification with `W.dot` occurs.
+
+The proof uses the quotient's positive integer degree bound on the appended
+source components, not target-word module action. The checked induction formula
+has scalar `sign k (p * (n / 2))` and twists the entire kernel morphism by `n*p`,
+including exterior coefficient parity. Total evaluation preserves module
+endomorphism powers and detects zero by the two parity projections. The
+coefficient algebra retains its exterior multiplication; arbitrary module Hom
+spaces are not given an integer grading.
+
+The content induction functors and their comparisons are present, but their
+Rouquier/reservoir-family assembly and identification with that family's `W.dot`
+remain separate obligations. The polynomial cyclotomic `globalRouquierFamily`
+is a different construction and still takes local inversion data. Consequently
+this is the checked induction-dot nilpotence input, not a completed reservoir
+F3 proof, infinite-colour result, or exponent uniform over all weights.
+
+## Truncated positive-degree nilpotence
+
+`ELVTruncatedNilpotence.truncatedContent_positive_pow_zero` derives one
+positive exponent for every positive-integer-degree endomorphism of every
+permutation of a fixed content in `TruncatedOld`. The hypotheses are a
+commutative ground ring, symmetrizer, homogeneous scalars, and finite colours;
+`_of_bound` instead takes an explicit coefficient degree/weight bound.
+`truncatedContent_dot_pow_zero` applies this to every active positioned affine
+dot, and `truncatedAppendDot_pow_zero` to the existing append transformation.
+No nilpotence, bounded-support, domain, or nonzero-ring premise is added.
+This supplies quotient-level post-dot nilpotence for the reservoir coefficient
+construction, not probe units or an assembled factor action. Transport to the
+chosen reservoir action still requires its identification with these quotient
+dots. `ELVModuleNilpotence.moduleRestrictionDot_pow_zero` now transports the
+same exponent to the existing restriction-dot component on every module.
+`moduleInduction_positive_pow_zero` applies to the target-word action on the
+balanced induction module; it does not identify a normalized induction dot.
+`homContentPostDot_power` is the existing subsequent signed transport through
+left whiskering and the content parity shift. The outstanding coupling is the
+fixed-content identification with `W.dot`, not preservation of its powers.
+Probe-dot units remain separate. The arbitrary-colour high-cutoff detection
+theorem is unchanged. A generic consumer combines its nonzero PBW classes
+with the new nilpotence theorem in the same truncated quotient.
+
 ## Cutoff-independent source lower degrees
 
 `ELVLowerDegree.exists_elvHomDegree_lower_bound` derives a lower integer
@@ -564,6 +657,84 @@ cutoffs and zero quotient corners are included. The consequential reverse
 boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
 iterates of §4 remain to be assembled. Earlier open-status descriptions
 below are superseded only for append norm regularity and G injectivity.
+## Induction whiskering comparison
+
+`ELVInductionWhiskering.compForward_transform_inner` and
+`compForward_transform_outer` identify the canonical balanced composition
+comparison with independently defined inner and outer supernatural whiskering
+on every module over an arbitrary commutative ring. They preserve the full
+outer-kernel twist, without defining either whiskering by transport. These
+comparison squares are the first step toward identifying the content pair
+and triple transported maps with whiskered generators.
+`ELVInductionAssociativity.compForward_assoc` now proves equality of the two
+recursive flattening trees as linear maps on every induced module. `ELVContentWhiskering.contentInductionComp_inner` and
+`contentInductionComp_outer` insert the exact content transports into both
+whiskering squares for arbitrary affine endomorphisms, proving the source
+identifications through the truncated quotient. The two content comparison
+trees still need their equality transports inserted into associativity.
+`ELVContentPairWhiskeredRelations.contentEPairDot_zero_eq_inner` and
+`contentEPairDot_one_eq_outer` identify the canonical pair dots with independent
+single-letter actions. `contentEPair_whiskered_quadratic` is the ordered
+original-Sc quadratic in these independently whiskered dots. The triple
+crossing identifications and resulting whiskered mixed braid still require proof.
+
+## All-module content induction comparison
+
+`ELVContentCompositeComparison.contentInductionComp` compares successive
+content induction with block induction at an explicit common target.
+`contentEPairComparison` specializes it to the literal composite of the two
+existing single-letter `contentE` functors. Both directions are even
+(`contentInductionComp_mem`), and ordinary naturality includes every
+supernatural module map, including odd maps. The construction uses the
+existing balanced composition isomorphism and the proved associativity of
+right append on full coefficient tensors and quotient morphisms. No
+additional scalar, flatness, finite-colour or parity hypotheses are used.
+`ELVContentSingleLetterRelations.contentEPair_quadratic` now proves the
+original-Sc ordered quadratic on successive single-letter induction at a
+common target, using the prescribed normalized source crossing and transported
+positioned dots. `contentEPairCrossTransform` is a genuine supernatural
+transformation on all modules; `contentEPairCross_total` verifies its evaluated
+map equals the crossing used in the relation. The common-target second E is
+explicitly recast and specializes definitionally to literal successive E at
+its sequential target.
+
+`ELVContentTripleRelations` supplies the recursively constructed even comparison
+for three actual successive E functors, explicit intermediate/final content
+transport, genuine supernatural source transformations and verified total maps.
+`contentETripleMap_comparison` fixes the same comparison at each intermediate
+word; `contentETripleMixedBraid_comparison` proves both paths transport through
+these comparisons. `contentETriple_mixedBraid` is the original-Sc ordered
+three-dot correction, with both equal-crossing minus signs retained.
+`contentETriple_mixedBraid_tensor` exposes the residual outside-colour twist on
+the entire coefficient/diagram kernel.
+
+**Precise remaining coherence gap:** the triple transported source-positioned
+maps are not yet identified with independently whiskered pair crossings and
+single-letter dots; equality of the two content-recursive associativity
+comparisons is not proved. The pair dots themselves are identified with
+independent single-letter actions in `ELVContentPairWhiskeredRelations`,
+and generic induction flattening associativity is proved. This is path-compatible transport, not a claim of full
+monoidal/action coherence. Weight assembly and local inversions remain open.
+
+## Common-content mixed braid
+
+`ELVContentMixedBraid.contentMixedBraid_source_linear` proves the normalized
+three-crossing difference equals the signed source correction over
+`parameterTwist Sc`, as linear maps on every common-content induced module.
+The two intermediate words are `[i,i,j]` and `[j,i,i]`.
+`contentMixedBraid_tensor` retains `twist k (D.parity i)` of the entire
+kernel morphism, including exterior coefficients. No braid relation on
+module operators is assumed.
+
+`ELVContentMixedPolynomial.contentMixedBraid_polynomial_linear` identifies
+that difference with `contentMixedBraidPolynomial`: the leading t term and
+interior s terms have exactly the prescribed Sc coefficients, multiplied
+by sign(p(q+l)), and ordered operator powers X₃^(r-1-l) X₂^s X₁^l.
+`contentInduction_three_powers` retains the full-parity twist for arbitrary
+exponents; `mixed_braid_sign_identity` proves the symbolic support identity.
+Support is derived from Sc, and reflection of the correction index never
+commutes dots. Block/single-letter comparison, weight assembly and
+nondegeneracy remain open.
 
 ## ELV module restriction
 
@@ -609,7 +780,19 @@ that the two actual normalized distinct-colour induction crossings at one
 common exact-content endpoint compose to this original-Sc ordered evaluation
 on every balanced tensor. This bridge uses the two-word source relation and
 has no finite-colour assumption. Identifying the resulting evaluation with
-ordered powers of the dotted module operators remains separate.
+ordered powers of the dotted module operators is now proved termwise for
+every interior coefficient by `ELVContentOperatorPolynomial.contentInduction_dot_monomial`.
+Its generic power formula retains the twist on the entire kernel morphism.
+The two operator powers are ordered in reverse of End multiplication on
+the source: the first-position power acts first. The original coefficient
+`Sc.s` is retained, and its two support constraints are derived rather than
+assumed. `ELVContentOperatorQuadratic.contentInduction_quadratic_linear`
+now assembles both leading terms and all interior coefficients, including the
+single disconnected constant, into an equality of the crossing square and
+`contentInductionPairPolynomial` on every common-content induction object.
+This polynomial uses powers of the actual positioned dot operators and
+exactly the specified `Sc`; no source-polynomial placeholder remains in its
+right-hand side. Mixed corrected braid and composite/weight assembly remain open.
 `ELVContentModuleRelations.contentInductionCross_square` proves square-zero
 for the actual normalized crossing as a module-map equality. Both normalized
 nilHecke slides are proved on every induced module object using the actual
