@@ -160,4 +160,62 @@ theorem equalCross_postcompose (β : Multiset I) (i : I)
   rw [cross_postcompose, contentCrossAffine_equal, contentAppendToComponent_neg,
     Preadditive.comp_neg]
 
+/-- The pairing retains each total-parity projection. -/
+theorem pairing_proj (t : BalancedInduction.induced J (contentRepresentable D Sc cutoff N β v) ⟶
+    contentRepresentable D Sc cutoff N γ r) (q : ZMod 2) :
+    proj k q (pairing D Sc cutoff N J v r t) =
+      t.app q (J.obj v) (identityTensor D Sc cutoff N J v) := by
+  unfold pairing
+  rw [map_add]
+  rcases parity_eq_zero_or_one q with rfl | rfl
+  · rw [proj_of_mem (component_mem D Sc cutoff N J v r t 0),
+      proj_of_mem_ne (component_mem D Sc cutoff N J v r t 1) (by decide), add_zero]
+  · rw [proj_of_mem_ne (component_mem D Sc cutoff N J v r t 0) (by decide),
+      proj_of_mem (component_mem D Sc cutoff N J v r t 1), zero_add]
+
+/-- Homogeneous full kernels exhibit the Koszul sign explicitly. -/
+theorem cross_postcompose_of_mem (β : Multiset I) (i j : I)
+    (v : ContentCategory D Sc cutoff N β)
+    (r : ContentCategory D Sc cutoff N (β + ([i, j] : Multiset I)))
+    (t : (contentInductionTo D Sc cutoff N β [i, j] _ rfl).obj
+        (contentRepresentable D Sc cutoff N β v) ⟶
+      contentRepresentable D Sc cutoff N _ r) (q : ZMod 2)
+    (ht : pairing D Sc cutoff N (contentAppendTo D Sc cutoff N β [i, j] _ rfl) v r t ∈
+      parity (R := k) _ _ q) :
+    pairing D Sc cutoff N
+      (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)) v r
+      ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j)
+        (contentRepresentable D Sc cutoff N β v) ≫ t) =
+    sign k ((D.parity i * D.parity j) * q) •
+      (pairing D Sc cutoff N (contentAppendTo D Sc cutoff N β [i, j] _ rfl) v r t ≫
+        contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
+          (contentCrossAffine D Sc i j) v) := by
+  rw [cross_postcompose, twist_of_mem _ ht, Linear.smul_comp]
+
+/-- Use the constructed vacuum-word isomorphism on the reservoir side only.
+No block/iterated identification on the source side is assumed. -/
+def wordPairing (ρ : List I) (hρ : VacuumRepresentable.content ρ = γ)
+    (t : BalancedInduction.induced J (contentRepresentable D Sc cutoff N β v) ⟶
+      VacuumRepresentable.wordModuleAt D Sc cutoff N ρ γ hρ) :
+    VacuumRepresentable.wordObjectAt D Sc cutoff N ρ γ hρ ⟶ J.obj v :=
+  pairing D Sc cutoff N J v _ (t ≫ (VacuumRepresentable.wordIsoAt D Sc cutoff N ρ γ hρ).hom)
+
+/-- Normalized crossing on a real iterated reservoir target. -/
+theorem cross_word_postcompose (β : Multiset I) (i j : I)
+    (v : ContentCategory D Sc cutoff N β) (ρ : List I)
+    (hρ : VacuumRepresentable.content ρ = β + ([i, j] : Multiset I))
+    (t : (contentInductionTo D Sc cutoff N β [i, j] _ rfl).obj
+        (contentRepresentable D Sc cutoff N β v) ⟶
+      VacuumRepresentable.wordModuleAt D Sc cutoff N ρ _ hρ) :
+    wordPairing D Sc cutoff N
+      (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)) v ρ hρ
+      ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j)
+        (contentRepresentable D Sc cutoff N β v) ≫ t) =
+    twist k (D.parity i * D.parity j)
+      (wordPairing D Sc cutoff N (contentAppendTo D Sc cutoff N β [i, j] _ rfl) v ρ hρ t) ≫
+      contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
+        (contentCrossAffine D Sc i j) v := by
+  unfold wordPairing
+  rw [Category.assoc, cross_postcompose]
+
 end OddMath.QuiverHecke.ELVOld.VacuumHomAction

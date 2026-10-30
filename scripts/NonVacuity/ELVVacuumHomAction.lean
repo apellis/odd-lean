@@ -42,6 +42,25 @@ theorem reservoirEqualCross_consumer (β : Multiset I) (i : I)
 #print axioms mixedCross_postcompose
 #print axioms equalCross_postcompose
 
+theorem reservoirWordCross_consumer (β : Multiset I) (i j : I)
+    (v : ContentCategory D Sc cutoff N β) (ρ : List I)
+    (hρ : VacuumRepresentable.content ρ = β + ([i, j] : Multiset I))
+    (t : (contentInductionTo D Sc cutoff N β [i, j] _ rfl).obj
+        (contentRepresentable D Sc cutoff N β v) ⟶
+      VacuumRepresentable.wordModuleAt D Sc cutoff N ρ _ hρ) :
+    wordPairing D Sc cutoff N
+      (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)) v ρ hρ
+      ((contentInductionCross D Sc cutoff N β i j).app (D.parity i * D.parity j)
+        (contentRepresentable D Sc cutoff N β v) ≫ t) =
+    twist k (D.parity i * D.parity j)
+      (wordPairing D Sc cutoff N (contentAppendTo D Sc cutoff N β [i, j] _ rfl) v ρ hρ t) ≫
+      contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i j)
+        (contentCrossAffine D Sc i j) v :=
+  cross_word_postcompose D Sc cutoff N β i j v ρ hρ t
+
+#print axioms cross_word_postcompose
+#print axioms cross_postcompose_of_mem
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv

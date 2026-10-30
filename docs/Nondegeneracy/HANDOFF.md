@@ -9,7 +9,10 @@ representable to a reservoir representable on the even identity tensor.
 is the full ELV source arrow `r ⟶ Jσ(v)`, including exterior and diagram
 parity, for arbitrary commutative rings and represented prefixes. The proof
 uses the normalized tensor formula and supernatural naturality, not an
-assumed pairing or block-to-iterated comparison. Coherence with iterated
+assumed pairing or block-to-iterated comparison. `pairing_proj` retains each
+parity component; `cross_postcompose_of_mem` exposes `sign(p*q)`.
+`cross_word_postcompose` uses the constructed `wordIsoAt` on the reservoir
+target only. Coherence with iterated
 source words, other generators and full action/corner assembly remain open.
 
 ## Mixed normalized crossing on induced representables
