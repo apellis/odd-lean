@@ -43,16 +43,16 @@ open Lean Elab Command in
 run_cmd do
   let env ← getEnv
   let owner := `OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicAlphaCoordinates
+  let some idx := env.header.moduleNames.idxOf? owner
+    | throwError "Missing production module {owner}"
   let mut count : Nat := 0
   let mut privateCount : Nat := 0
-  for (name, _) in env.constants.toList do
-    if let some idx := env.getModuleIdxFor? name then
-      if env.header.moduleNames[idx.toNat]! == owner then
-        for axiomName in (← Lean.collectAxioms name) do
-          unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
-            throwError "Disallowed axiom {axiomName} in {name}"
-        count := count + 1
-        if name.getRoot == `_private then privateCount := privateCount + 1
+  for name in env.header.moduleData[idx]!.constNames do
+    for axiomName in (← Lean.collectAxioms name) do
+      unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
+        throwError "Disallowed axiom {axiomName} in {name}"
+    count := count + 1
+    if name.getRoot == `_private then privateCount := privateCount + 1
   if count == 0 then throwError "Empty declaration inventory: {owner}"
   if privateCount == 0 then throwError "Private declarations absent: {owner}"
   logInfo m!"Audited {count} declarations owned by {owner}, including {privateCount} private declarations; all transitive axioms allowed."

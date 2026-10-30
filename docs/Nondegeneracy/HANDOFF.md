@@ -1,12 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Extraction for the prescribed short source column
+
+`CyclotomicCrossingTensor.extract` maps the original
+`Target(i,v,t ++ [i])` to the independently prescribed `PprimeDomain(i,v,t)`.
+It strips literal canonical short tails in the existing old quotient coordinates;
+tails meeting the final strand are sent to zero. Full PBW coefficient transfer
+through epsilon balance, representative independence and extension by a final
+fixed strand prove `extract_comp_alpha` on every balanced class.
+
+Consequently alpha is injective. The actual short-column square and the
+existing `pMap_injective` then prove `pprime_injective`, without assuming
+crossing-column injectivity. The prescribed first row is now short exact.
+These results retain arbitrary colours, words, cutoffs and full old coefficients,
+including empty Hom corners. They do not supply crossing-column injectivity,
+the categorical snake, integer degree/naturality or the augmented inverse.
+
 ## Short-column diagram, swapped braid assembly and independent triple operators
 
 The epsilon-balanced P′, its literal moving-word formula and range P′ = ker q
 are constructed independently of a crossing image. Both short columns descend
 with the full old coefficient twist. The two squares commute as whole linear
-maps, and both rows are right exact. This does not prove alpha, P′ or crossing
-injectivity, the categorical snake or the prescribed augmented inverse.
+maps, and both rows are right exact. Alpha and P′ injectivity are supplied above;
+crossing injectivity, the categorical snake and the augmented inverse remain open.
 
 `ProbeReservoir.crossBraidOfInputs` derives all three CrossBraid fields for the
 existing `swappedGens c L`, from `c.IsInverse` and `CrossCoeffInputs`. Its path
