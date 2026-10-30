@@ -16,9 +16,13 @@ parity sign. The induction order `[i,j]` corresponds to `j::i::rho`.
 No even-kernel, field, flatness, finite-colour or detection premise is introduced;
 the supplied scalar-data restrictions remain.
 
-Equality with `wordIsoAt` for the entire extended word, and the combined
-source-and-reservoir `wordPairing` postcomposition formula, remain separate.
-These results do not construct a detecting model or final vacuum/corner evaluation.
+`wordIsoAt_doubleEvaluation` now identifies the existing entire extended-word
+isomorphism with two independent successive representable evaluations after
+twice mapping the existing prefix isomorphism. The terminal-content cast is
+retained; the independent evaluation is not defined from the extended-word iso.
+The bridge to the named `wordPairCoordinates` and the combined source-and-reservoir
+`wordPairing` crossing postcomposition formula remain open. These results do not
+construct a detecting model or final vacuum/corner evaluation.
 
 ## Actual polynomial-row normal forms in both height ranges
 
