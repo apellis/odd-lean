@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Projected boundary and independent S
+
+`ELVBoundaryPolynomial.appendC0_pMap` proves C0 P = A B1 on the original
+`Target i v (v ++ [i])` column, with A defined by C0 P on the specified
+long section. `outputPolynomialBoundary_independentS` compares its literal
+independent S(rhobar) w_d value with C0 of the ordered reverse numerator,
+with both library signs retained. No equality or inverse is assumed.
+The next step is explicit output-polynomial numerator identification and
+the appropriate boundary recurrence before monic S-division. The existing
+global C0 defect is for OUTPUT postcomposition; the rho/P intertwiner uses
+INPUT precomposition. Their identification cannot be taken for granted.
+The crossing-image splitting does not identify the prescribed balanced
+crossing-column domain, and no categorical matrix inverse is claimed.
+
+
 ## Append output dot on crossing generators
 
 `ELVAppendOutputDot.lean` constructs `appendOutputEmbedding` with coefficients
