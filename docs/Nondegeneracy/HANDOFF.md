@@ -1,5 +1,6 @@
 # Odd nondegeneracy: restart state
 
+
 ## Integer support at arbitrary strand content
 
 `ELVAppendSpanning.appendFiniteRangeSpan_eq_top` factors finite crossing-skeleton
@@ -113,6 +114,54 @@ inversion; none follows merely from injectivity. The expected QP leading
 unit retains the repeated-even sign and every distinct-colour `Sc.t i j`,
 including disconnected colours. Earlier open-status statements below are
 superseded only for the concrete quotient reverse identity and its iterates.
+
+## Old source action on normalized output coordinates
+
+`ELVOutputOldAction.prependOldCoordinate_oldSource` and
+`outputLongCoordinate_oldSource` prove coefficientwise compatibility with
+arbitrary full-ELV old source endomorphisms. The acting old morphism retains
+its total-parity twist, and the normalized output formula includes the endpoint
+transport. This supplies old-source linearity, not output-old balancing or
+identification of S. `ELVOutputRhoCoordinates` now computes the literal
+corrected-rho recurrence in every normalized output coordinate, including degree
+zero, for arbitrary quotient elements. If E_m denotes extraction, sigma the total
+old-parity involution, epsilon the output sign and C the twisted old delta action,
+then E_(m+1)(rho z) = sigma(E_m(z)) + epsilon * 2*(-1)^cutoff * C(E_(m+1)(z));
+the zero coefficient contains only the delta term. Thus rho is not an ordinary
+polynomial shift on these coefficients. `ELVOutputBalancedComparison` packages
+the specified finite coefficient operator as `outputCoefficientRho` and proves
+`outputLongExtraction_boundaryRho`, hence preservation of the exact chronological
+short kernel. `outputLongCoordinate_balanced` computes arbitrary old quotient
+coefficients on the fixed old-word balanced summand as literal `oldComp`, with
+no assumed old-linearity. Moving an output-old factor across the bare long chain
+and identification of the ordered S polynomial remain open. The theorem
+`outputLongExtraction_balanced_move` extends the collected endpoint-polynomial
+comparison to arbitrary old quotient coefficients in the balanced tensor.
+
+## Chronological short kernel
+
+`SmallerTailNormalization` isolates the moving tail before restoring arbitrary
+old coefficients. `ELVChronologicalKernel` lifts its vanishing to full exterior
+coefficients and proves `chronologicalShortSpan_le_ker_outputLongExtraction`
+for arbitrary total balance parity over any commutative ground ring.
+`ELVShortTailSpan.prepend_short_mem` proves the converse structural inclusion:
+every nonlong prepend tail with arbitrary old coefficient is chronological short.
+`ELVOutputKernel.ker_outputLongExtraction_eq_chronologicalShortSpan` now
+identifies the entire kernel using the finite old-quotient coordinate equivalence.
+Equal tail keys preserve total-parity-normalized coordinates; the evaluated
+output sign is self-inverse, including over the zero ring. Thus only nonlong
+tails remain in the finite reconstruction. The normalized output-rho identity
+is supplied above; canonical S and the full balanced output-order comparison
+remain separate obligations.
+
+`ELVOutputMoveComparison.outputLongExtraction_move_endpointPolynomial` proves
+that the prescribed moving chain and its independently collected endpoint
+polynomial followed by the bare long chain have equal normalized extraction,
+with arbitrary exterior coefficients. Their difference is chronological short.
+This does not replace the moving chain by the bare long chain: its repeated-colour
+polynomial factors remain. Evaluating that polynomial as S in the corrected
+rho coordinates is the next comparison.
+
 
 ## Last-output-dot coordinates on the bare long shuffle
 
