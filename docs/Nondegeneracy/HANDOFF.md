@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Whole comparison coherence and the prescribed cyclotomic source
+
+`contentETripleComparison_assoc` now identifies the original pair-first and
+suffix-first comparison trees as natural isomorphisms, with all four functor
+equality transports retained. `contentETripleComparison_assoc_total` identifies
+their whole linear maps on every module. This uses uniqueness of left adjoints
+without changing the comparison definitions. Independently whiskered triple
+dot/crossing identifications and their mixed braid remain separate.
+
+`CyclotomicCrossingTensor.Source` independently constructs the lower-balanced
+cyclotomic source with the prescribed parity-shifted, total-twisted coefficient
+action. The canonical quotient from `ShortTarget` changes the affine first
+factor to its cyclotomic class and is surjective. Its kernel is exactly the span
+of literal lower moving-word tensors, and the quotient by that span is the
+prescribed source. The descended crossing has the actual diagram order
+`append(b) ≫ crossLast ≫ append(c)` (algebra order `c τₙ b`). No flatness,
+nonzero-corner or crossing-injectivity premise is used.
+
+The epsilon-shifted balanced domain and descended P′ are not yet constructed;
+therefore this does not yet prove `range P′ = ker q` for that map. Fixed-content
+matrix-algebra identification, integer degrees and the categorical snake/inverse
+remain separate. The actual source-word comparison and concrete detecting
+action are not completed by these comparison and quotient theorems.
+
 ## Actual independent-S division and further literal braid entries
 
 The full-coefficient boundary now satisfies its actual graded right-coefficient
@@ -24,8 +48,9 @@ validities and endpoint equalities remain explicit. Reverse 001 to 100,
 remaining adjacent placements and the global CrossBraid dispatch are not
 completed by these particular formulas.
 
-The earlier generator associativity calculation still does not establish the
-whole named comparison-map square or independently whiskered triple operators.
+The earlier generator associativity calculation is supplemented by the whole
+named comparison-map square above; independently whiskered triple operators
+remain separate.
 All scalar-data unit/parity conditions, including Sc.two_isUnit, remain intact.
 
 
