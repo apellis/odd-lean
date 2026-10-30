@@ -18,8 +18,12 @@ single-letter induction and the normalized pair crossing.
 single-letter dots for arbitrary three-letter words and terminal content.
 `contentETriplePolynomial_whiskered` identifies the full ordered original-Sc
 correction with those independent dots, including the leading t term and all
-s terms. Composing the independent crossing identifications into the whole
-mixed braid remains a separate check.
+s terms. `contentWhiskeredPrefixCross_equal` and
+`contentWhiskeredSuffixCross_equal` retain the negative equal-colour crossing
+on the repeated-colour corners; their distinct-colour counterparts retain the
+positive crossing. These are actual independently whiskered maps, not assumed
+relations. Their composition into the full whiskered mixed braid and a complete
+positive-half action remains unfinished.
 
 ## Whole comparison coherence and the prescribed cyclotomic source
 
