@@ -127,14 +127,14 @@ def contentAdjunction (β : Multiset I) (σ : List I) :
     contentInduction D Sc cutoff N β σ ⊣ contentRestriction D Sc cutoff N β σ :=
   BalancedInduction.adjunction (contentAppend D Sc cutoff N β σ)
 
-/-- The one-colour raising functor. -/
-abbrev contentF (β : Multiset I) (i : I) := contentInduction D Sc cutoff N β [i]
-/-- The one-colour lowering functor, with source content `β + {i}`. -/
-abbrev contentE (β : Multiset I) (i : I) := contentRestriction D Sc cutoff N β [i]
+/-- The one-colour raising functor (`E` in the source convention). -/
+abbrev contentE (β : Multiset I) (i : I) := contentInduction D Sc cutoff N β [i]
+/-- The one-colour lowering functor (`F` in the source convention). -/
+abbrev contentF (β : Multiset I) (i : I) := contentRestriction D Sc cutoff N β [i]
 
-/-- Right adjunction for the one-colour induction and restriction functors. -/
-def contentFEAdjunction (β : Multiset I) (i : I) :
-    contentF D Sc cutoff N β i ⊣ contentE D Sc cutoff N β i :=
+/-- The source right adjunction: raising induction `E` is left adjoint to `F`. -/
+def contentEFAdjunction (β : Multiset I) (i : I) :
+    contentE D Sc cutoff N β i ⊣ contentF D Sc cutoff N β i :=
   contentAdjunction D Sc cutoff N β [i]
 
 end OddMath.QuiverHecke.ELVOld

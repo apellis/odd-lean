@@ -33,14 +33,14 @@ example (M : ContentModules D Sc cutoff N (β + (σ : Multiset I)))
 
 example (i : I) :
     (ContentModules D Sc cutoff N β ⥤ ContentModules D Sc cutoff N (β + ({i} : Multiset I))) :=
-  contentF D Sc cutoff N β i
+  contentE D Sc cutoff N β i
 
 example (i : I) :
     (ContentModules D Sc cutoff N (β + ({i} : Multiset I)) ⥤ ContentModules D Sc cutoff N β) :=
-  contentE D Sc cutoff N β i
+  contentF D Sc cutoff N β i
 
-example (i : I) : contentF D Sc cutoff N β i ⊣ contentE D Sc cutoff N β i :=
-  contentFEAdjunction D Sc cutoff N β i
+example (i : I) : contentE D Sc cutoff N β i ⊣ contentF D Sc cutoff N β i :=
+  contentEFAdjunction D Sc cutoff N β i
 
 example (M : ContentModules D Sc cutoff N β) :
     (contentInduction D Sc cutoff N β σ).map ((contentAdjunction D Sc cutoff N β σ).unit.app M) ≫

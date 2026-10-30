@@ -21,7 +21,7 @@ source/target arrows are proved. `ELVModuleAdjunction.moduleAdjunction`
 constructs the actual ELV induction–restriction adjunction; its unit and
 counit are even, natural against every module map, and satisfy both
 triangles. `ELVContentModuleAction` supplies exact-content module categories,
-right append between them, and concrete `contentF ⊣ contentE`.
+right append between them, and concrete `contentE ⊣ contentF`.
 `ELVModuleInductionTransform` constructs the homogeneous induction mates
 `[h ⊗ m] ↦ [α_v ≫ twist_p(h) ⊗ m]` and instantiates raw ELV dots/crossings.
 `ELVModuleInductionRelations.transform_comp` proves the superopposite law:
