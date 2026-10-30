@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Last-output-dot coordinates on the bare long shuffle
+
+`LongOutputDotTransport.lean` evaluates the transported last position as zero
+and its sign as `zsign k (D.parity i * wordSumParity D v)`.
+`ELVOutputDotCoordinates.lean` proves the affine long-coordinate comparison
+for arbitrary output-dot lists and its last-dot-power specialization with full
+exterior coefficients. `ELVOutputLongExtraction.lean` descends that comparison
+to `prependOldCoordinate`, and defines prescribed normalized individual
+functionals `outputLongCoordinate : Target ... i v (v ++ [i]) →ₗ[k] Old ... v v`.
+No exterior `CommRing` instance or assumed extraction is used.
+
+The functional is not yet a proved full Mackey extractor: finite polynomial
+assembly, arbitrary old-output-arrow transport, relative-short stability,
+S evaluation of the actual moving class, rho intertwining and P(short)
+inclusion remain open. Total crossing `Low (n + oldLength)` is insufficient
+for the relative-short argument; isolate old coefficients before normalizing
+the short moving tail. The intertwiner `move` cannot substitute for the bare
+long crossing because repeated-colour factors are nonunits.
+
+The default-options consumer `scripts/NonVacuity/ELVOutputLongExtraction.lean`
+checks arbitrary words/full coefficients and inventories every declaration of
+the three modules for the standard three axioms.
+
+
 ## Append endpoint norm regularity and G injectivity
 
 `ELVAppendMovingSupport.lean` proves exponent translation and old-action
