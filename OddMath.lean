@@ -83,6 +83,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVMonicPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVMonicAnnihilator
 import OddMath.QuiverHecke.CyclotomicAction.ELVMonicOldCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVMovingReduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSpanning
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSupport
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupport
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleBound
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientPresheaf
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentExactness
