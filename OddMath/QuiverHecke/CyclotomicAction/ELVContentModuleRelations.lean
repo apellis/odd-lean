@@ -31,9 +31,12 @@ theorem contentAppendToComponent_comp {β γ : Multiset I} {σ τ υ : List I}
       contentAppendToComponent D Sc cutoff N hτ hυ b v =
     contentAppendToComponent D Sc cutoff N hσ hυ (a ≫ b) v := by
   have he := BoxProd.tmulHom_comp_tmulHom
-    (X := obj D Sc cutoff (v.obj.word ++ σ))
-    (Y := obj D Sc cutoff (v.obj.word ++ τ))
-    (Z := obj D Sc cutoff (v.obj.word ++ υ))
+    (X := ⟨(obj D Sc cutoff v.obj.word).fst,
+      (pres D Sc).obj (ob D v.obj.word) ⊗ (pres D Sc).obj (ob D σ)⟩)
+    (Y := ⟨(obj D Sc cutoff v.obj.word).fst,
+      (pres D Sc).obj (ob D v.obj.word) ⊗ (pres D Sc).obj (ob D τ)⟩)
+    (Z := ⟨(obj D Sc cutoff v.obj.word).fst,
+      (pres D Sc).obj (ob D v.obj.word) ⊗ (pres D Sc).obj (ob D υ)⟩)
     (id_mem (R := k) (obj D Sc cutoff v.obj.word).fst)
     ((pres D Sc).obj (ob D v.obj.word) ◁ a) (𝟙 _)
     (MonoidalSupercategory.whiskerLeft_mem ((pres D Sc).obj (ob D v.obj.word)) hb)
@@ -45,8 +48,7 @@ theorem contentAppendToComponent_comp {β γ : Multiset I} {σ τ υ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
     (v : ContentCategory D Sc cutoff N β) :
     contentAppendToComponent D Sc cutoff N hσ hτ 0 v = 0 := by
-  simp [contentAppendToComponent, truncatedAppendComponent, appendComponent,
-    MonoidalSupercategory.whiskerLeft_zero k]
+  exact (contentAppendToLinear D Sc cutoff N hσ hτ v).map_zero
 
 theorem contentCrossAffine_square (i : I) :
     contentCrossAffine D Sc i i ≫ contentCrossAffine D Sc i i = 0 := by
@@ -102,12 +104,15 @@ theorem transformComponent_square_of_linear {p : ZMod 2} {a : ∀ v, J.obj v ⟶
   apply Superfunctor.hom_ext
   intro r w
   have he := hs w
+  simp only [Superfunctor.comp_app, transformComponent_app, Superfunctor.zero_app]
+  change (if r = p then transformLinear ha M w else 0).comp
+      (if 0 = p then transformLinear ha M w else 0) +
+    (if r + 1 = p then transformLinear ha M w else 0).comp
+      (if 1 = p then transformLinear ha M w else 0) = 0
   rcases parity_eq_zero_or_one p with rfl | rfl <;>
     rcases parity_eq_zero_or_one r with rfl | rfl <;>
-    simp only [Superfunctor.comp_app, transformComponent_app,
-      SVec.zmod2_one_add_one, zero_add, add_zero, ↓reduceIte, one_ne_zero, zero_ne_one,
-      CategoryTheory.Limits.comp_zero, CategoryTheory.Limits.zero_comp,
-      Superfunctor.zero_app] <;> first | rfl | exact he
+    simp only [SVec.zmod2_one_add_one, zero_add, add_zero, ↓reduceIte, one_ne_zero, zero_ne_one,
+      LinearMap.comp_zero, LinearMap.zero_comp] <;> first | rfl | exact he
 /-- A nilHecke slide descends through balanced induction with the negative crossing. -/
 theorem transformLinear_slide {p : ZMod 2} {a b c : ∀ v, J.obj v ⟶ J.obj v}
     (ha : IsSupernatural k p a) (hb : IsSupernatural k p b) (hc : IsSupernatural k p c)
@@ -185,10 +190,10 @@ theorem contentInductionCross_square (β : Multiset I) (i : I)
     contentAppendToComponent D Sc cutoff N rfl rfl (a - r • b) v =
       contentAppendToComponent D Sc cutoff N rfl rfl a v -
         r • contentAppendToComponent D Sc cutoff N rfl rfl b v := by
-  simp [contentAppendToComponent, truncatedAppendComponent, appendComponent, sub_eq_add_neg,
-    MonoidalSupercategory.whiskerLeft_add k, MonoidalSupercategory.whiskerLeft_neg k,
-    MonoidalSupercategory.whiskerLeft_smul (R := k), TensorProduct.tmul_add,
-    TensorProduct.tmul_neg, TensorProduct.tmul_smul]
+  change contentAppendToLinear D Sc cutoff N rfl rfl v (a - r • b) =
+    contentAppendToLinear D Sc cutoff N rfl rfl v a -
+      r • contentAppendToLinear D Sc cutoff N rfl rfl v b
+  rw [map_sub, map_smul]
 
 @[simp] theorem contentAppendToComponent_id {β : Multiset I} {σ : List I}
     (v : ContentCategory D Sc cutoff N β) :

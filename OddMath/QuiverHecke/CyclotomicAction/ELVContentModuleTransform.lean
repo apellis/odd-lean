@@ -36,8 +36,8 @@ theorem transform_app_tensor {p : ZMod 2} {α : ∀ v, J.obj v ⟶ K.obj v}
       tensor J M.toFunctor v (α v ≫ twist k p h) m := by
   simp only [transform, IsSupernatural.toSuperNatTrans, ↓reduceIte]
   change (transformComponent hα M).app p w (tensor K M.toFunctor v h m) = _
-  rw [transformComponent_apply]
-  simp only [↓reduceIte, transformLinear_tensor]
+  rw [transformComponent_apply, ite_eq_left rfl]
+  exact transformLinear_tensor hα M w v h m
 end BalancedInduction
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -81,14 +81,36 @@ def contentAppendToComponent {β γ : Multiset I} {σ τ : List I}
       (contentAppendTo D Sc cutoff N β τ γ hτ).obj v :=
   truncatedAppendComponent D Sc cutoff N a v.obj
 
+/-- The concrete quotient component as a linear map in its affine input. -/
+def contentAppendToLinear {β γ : Multiset I} {σ τ : List I}
+    (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
+    (v : ContentCategory D Sc cutoff N β) :
+    ((pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)) →ₗ[k]
+      ((contentAppendTo D Sc cutoff N β σ γ hσ).obj v ⟶
+       (contentAppendTo D Sc cutoff N β τ γ hτ).obj v) := by
+  let L : ((pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)) →ₗ[k]
+      ((pres D Sc).obj (ob D (v.obj.word ++ σ)) ⟶
+       (pres D Sc).obj (ob D (v.obj.word ++ τ))) :=
+    { toFun := fun a => MonoidalCategoryStruct.whiskerLeft ((pres D Sc).obj (ob D v.obj.word)) a
+      map_add' := fun a b => MonoidalSupercategory.whiskerLeft_add k _ a b
+      map_smul' := fun r a => MonoidalSupercategory.whiskerLeft_smul (R := k) _ r a }
+  exact (truncatedIdeal D Sc cutoff N _ _).mkQ.comp
+    ((TensorProduct.mk k (End (obj D Sc cutoff v.obj.word).fst) _ (𝟙 _)).comp L)
+
+@[simp] theorem contentAppendToLinear_apply {β γ : Multiset I} {σ τ : List I}
+    (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
+    (v : ContentCategory D Sc cutoff N β)
+    (a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ)) :
+    contentAppendToLinear D Sc cutoff N hσ hτ v a =
+      contentAppendToComponent D Sc cutoff N hσ hτ a v := rfl
+
 @[simp] theorem contentAppendToComponent_neg {β γ : Multiset I} {σ τ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
     (a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D τ))
     (v : ContentCategory D Sc cutoff N β) :
     contentAppendToComponent D Sc cutoff N hσ hτ (-a) v =
       -contentAppendToComponent D Sc cutoff N hσ hτ a v := by
-  simp [contentAppendToComponent, truncatedAppendComponent, appendComponent,
-    MonoidalSupercategory.whiskerLeft_neg k, TensorProduct.tmul_neg]
+  exact (contentAppendToLinear D Sc cutoff N hσ hτ v).map_neg a
 
 /-- Restrict the appended affine transformation to exact-content objects. -/
 theorem contentAppendTo_supernatural {β γ : Multiset I} {σ τ : List I}
@@ -217,7 +239,8 @@ theorem contentInductionCross_equal_tensor (β : Multiset I) (i : I)
         (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) m := by
   rw [contentInductionCross_tensor, contentCrossAffine_equal, contentAppendToComponent_neg,
     Preadditive.neg_comp]
-  simp only [BalancedInduction.tensor, TensorProduct.neg_tmul, map_neg]
+  exact (congrArg (BalancedInduction.inclusion _ M.toFunctor w v)
+    (TensorProduct.neg_tmul _ _)).trans ((BalancedInduction.inclusion _ M.toFunctor w v).map_neg _)
 
 /-- In distinct colours the affine crossing has no extra normalization sign. -/
 theorem contentInductionCross_distinct_tensor (β : Multiset I) (i j : I) (hij : i ≠ j)

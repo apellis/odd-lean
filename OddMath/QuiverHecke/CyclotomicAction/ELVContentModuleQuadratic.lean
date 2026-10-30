@@ -46,8 +46,7 @@ theorem crossTwo_comp_parameterUntwist {i j : I} (hij : i ≠ j) :
     (v : ContentCategory D Sc cutoff N β) :
     contentAppendToComponent D Sc cutoff N hσ hτ (r • a) v =
       r • contentAppendToComponent D Sc cutoff N hσ hτ a v := by
-  simp [contentAppendToComponent, truncatedAppendComponent, appendComponent,
-    MonoidalSupercategory.whiskerLeft_smul (R := k), TensorProduct.tmul_smul]
+  exact (contentAppendToLinear D Sc cutoff N hσ hτ v).map_smul r a
 
 /-- Two crossed append maps on the same content endpoint, evaluated on an actual
 balanced induction tensor. The resulting ordered polynomial has original Sc. -/
