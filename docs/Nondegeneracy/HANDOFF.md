@@ -11,8 +11,14 @@ with both library signs retained. No equality or inverse is assumed.
 defect for INPUT precomposition and the resulting `outputPolynomialBoundary_rho`
 recurrence. Its shift applies the total old twist before incrementing the
 exponent. This is not the untwisted OUTPUT-postcomposition shift.
-Explicit numerator output coordinates, coefficient compatibility for ordered
-S-division, and the monic quotient identification remain to be proved.
+`ELVBoundaryNumeratorCoefficients.appendC0_orderedReverseNumerator` now computes
+the full output coefficients: start with the finite endpoint coefficients twisted
+by their exponent parity, fold the explicit QP steps in the prescribed list order,
+then apply the total-twisted input shift. Each step is an explicit finite sum of
+old-dot precomposition and twisted exponent translation. No C0 or boundary map
+occurs on the coefficient side. This works at every colour and over zero rings.
+Coefficient compatibility for ordered S-division and the monic quotient
+identification remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 

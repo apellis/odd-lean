@@ -16,8 +16,13 @@ P-image to the reverse polynomial modulo the chronological crossing span.
 `ELVBoundaryPolynomial` now proves C0 P = A B1 on the original source column
 and projects the independent corrected-rho S comparison to C0 of the ordered
 reverse numerator. `ELVBoundaryInputDefect` proves its first-order recurrence
-with the total-twisted INPUT shift and polynomial-constant defect. Explicit
-numerator output coordinates and ordered S-division remain open; the existing
+with the total-twisted INPUT shift and polynomial-constant defect.
+`ELVBoundaryNumeratorCoefficients.appendC0_orderedReverseNumerator` computes the
+ordered numerator in full old output coefficients by the explicit finite
+`qpOutputCoefficientStep` fold, starting at `endpointOutputCoefficients` and
+ending with `inputCoefficientShift`. Old composition order and all input parity
+twists are retained; the formula has no C0 on its coefficient side.
+Ordered S-division remains open; the existing
 QP numerator division is not (11), and no prescribed matrix inverse is claimed.
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
