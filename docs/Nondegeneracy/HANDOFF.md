@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Separated correction coordinates
+
+`RepeatedOuterSeparatedCoordinates` gives `separatedOuter_qExpr_correction`:
+the native `PᵢPⱼRᵢ` dots satisfy the two signed correction sums. The coefficient
+is `-(-1)^(pᵢpⱼ)` times the raw separated conjugate, rather than the normalization
+used in the earlier single-edge slide. Both denominator identities are proved
+from `c.IsInverse` using actual mixed-isomorphism conjugations; the signed dot
+relations come from super interchange. The raw crossing-route identification and
+literal diagonal matrix equation remain open.
+
 ## Weighted repeated-outer forward equality
 
 `RepeatedOuterWeightedSquare.repeatedOuter_forward_braid` (in namespace
