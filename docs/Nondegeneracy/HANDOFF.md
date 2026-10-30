@@ -12,6 +12,14 @@ short crossing column in these coordinates. This is ground-ring linear, not yet
 a bimodule or natural categorical inverse. Crossing-column injectivity and the
 full snake comparison remain separate.
 
+`ELVSourcePolynomialQuotient` identifies the cokernel of this prescribed alpha
+with the existing polynomial old module; the inverse is the class of the
+corrected section. For every normalization parity and odd moving colour, the
+prescribed composite C₀P descends through this cokernel and is exactly the
+existing `outputPolynomialBoundary` after the quotient equivalence. Thus its
+row on source coordinates ignores the short component, with all old
+coefficients retained. The even polynomial-row comparison is not asserted here.
+
 ## Extraction for the prescribed short source column
 
 `CyclotomicCrossingTensor.extract` maps the original
