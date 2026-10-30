@@ -17,8 +17,11 @@ by their exponent parity, fold the explicit QP steps in the prescribed list orde
 then apply the total-twisted input shift. Each step is an explicit finite sum of
 old-dot precomposition and twisted exponent translation. No C0 or boundary map
 occurs on the coefficient side. This works at every colour and over zero rings.
-Coefficient compatibility for ordered S-division and the monic quotient
-identification remain to be proved.
+`inputCoefficientShift_apply_add` identifies every shifted coefficient, and
+`outputPolynomialBoundary_independentS_coefficients` gives explicit boundary
+values on the independent corrected-rho S evaluations with both signs.
+Coefficient compatibility for ordered S-division, the monic quotient
+identification, and individual boundary leading components remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 

@@ -186,4 +186,45 @@ theorem appendC0_orderedReverseNumerator (i : I) (v : List I) (d : ℕ) :
   rw [← appendMovingPowerTarget_projection, H, inputCoefficientShift_embedding,
     appendC0_embedding]
 
+/-- Every coefficient of an input shift, including degrees below the shift. -/
+theorem inputCoefficientShift_apply (i : I) (v : List I) (d : ℕ)
+    (f : ℕ →₀ Old D Sc cutoff v v) (n : ℕ) :
+    inputCoefficientShift D Sc cutoff i v d f n =
+      ∑ m ∈ f.support, if d + m = n then
+        oldTwist D Sc cutoff (d • D.parity i) v v (f m) else 0 := by
+  simp only [inputCoefficientShift, Finsupp.lsum_apply, Finsupp.sum,
+    LinearMap.comp_apply, Finsupp.lsingle_apply, Finsupp.coe_finsetSum,
+    Finset.sum_apply, Finsupp.single_apply]
+
+/-- Input translation at its shifted coefficient is exactly the full old twist. -/
+theorem inputCoefficientShift_apply_add (i : I) (v : List I) (d : ℕ)
+    (f : ℕ →₀ Old D Sc cutoff v v) (n : ℕ) :
+    inputCoefficientShift D Sc cutoff i v d f (d + n) =
+      oldTwist D Sc cutoff (d • D.parity i) v v (f n) := by
+  rw [inputCoefficientShift_apply]
+  simp only [Nat.add_left_cancel_iff]
+  rw [Finset.sum_ite_eq']
+  split_ifs with h
+  · rfl
+  · rw [Finsupp.notMem_support_iff.mp h, map_zero]
+
+/-- The ordered coefficient expansion gives explicit values of the boundary on
+independently defined corrected-rho S evaluations. The moving colour is odd. -/
+theorem outputPolynomialBoundary_independentS_coefficients (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (d : ℕ) :
+    SKM.zsign k (D.parity j.1) ^ v.count j.1 •
+      outputPolynomialBoundary D Sc cutoff p j v
+        (∑ n ∈ (independentOutputS D Sc cutoff j.1 v).support,
+          Finsupp.mapRange.linearMap
+            ((oldComp D Sc cutoff v v v).flip (independentOutputS D Sc cutoff j.1 v n))
+            ((outputCoefficientRho D Sc cutoff p j v)^[n]
+              (outputLongExtraction D Sc cutoff p j.1 v
+                (outputCorrectedLift D Sc cutoff p j v d
+                  ((ideal D Sc cutoff v v).mkQ (𝟙 _)))))) =
+    sign k ((cutoff j.1 • D.parity j.1) * (D.parity j.1 * wordSumParity D v)) •
+      inputCoefficientShift D Sc cutoff j.1 v d
+        (orderedQPOutputCoefficients D Sc cutoff j.1 v (List.range v.length)
+          (endpointOutputCoefficients D Sc cutoff j.1 v)) := by
+  rw [outputPolynomialBoundary_independentS, appendC0_orderedReverseNumerator]
+
 end OddMath.QuiverHecke.ELVOld

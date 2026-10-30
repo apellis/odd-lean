@@ -25,6 +25,27 @@ twists are retained; the formula has no C0 on its coefficient side.
 Ordered S-division remains open; the existing
 QP numerator division is not (11), and no prescribed matrix inverse is claimed.
 
+The checked coefficient formula can be read without quotient projections. Put
+`T_d(f)_(d+n) = twist_(d p(i))(f_n)` and `T_d(f)_m = 0` for `m < d`,
+and let `O_(b,a)(f)_n = [x_b^a] ≫ f_n` in chronological old composition.
+Start with `E_a = [twist_(a p(i))(scalar(c_a))]`, for `0 ≤ a ≤ cutoff i`.
+For each old position b in increasing order, replace f by the following row,
+where j is its colour:
+
+- j=i odd: `O_(b,2)(f) + T_2(f)`; j=i even: `-f`;
+- j≠i disconnected: `t_ij • f`;
+- otherwise: `Σ_(e,a) s_ij(e,a) • O_(b,a)(T_e(f)) +
+  t_ij • T_(d_ij)(f) + t_ji • O_(b,d_ji)(f)`, over the open exponent ranges.
+
+Call the final row N. The projected numerator at input power d is exactly
+`T_d(N)`. The mixed term order is O after T, not T after O.
+`inputCoefficientShift_apply` and `inputCoefficientShift_apply_add` prove
+the pointwise formula. `outputPolynomialBoundary_independentS_coefficients`
+substitutes N into the independent corrected-rho S comparison, retaining both
+library signs. This gives explicit boundary values on those S evaluations;
+it does not yet identify the monic S quotient or individual boundary leading
+components.
+
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
 odd deformation coefficients is the argument below, not a claim of that paper.
