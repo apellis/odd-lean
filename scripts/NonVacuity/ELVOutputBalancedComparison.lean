@@ -18,6 +18,19 @@ example (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
       (outputLongCoordinate D Sc cutoff p i v m (projection D Sc cutoff i v (v ++ [i]) h)) :=
   outputLongCoordinate_balanced D Sc cutoff p i v m h b
 
+open scoped TensorProduct
+example (p : ZMod 2) (i : I) (v : List I)
+    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (b : Old D Sc cutoff v v) :
+    outputLongExtraction D Sc cutoff p i v
+      (balancedForward D Sc cutoff p i v (v ++ [i])
+        (balancedTmul D Sc cutoff p i (a ⊗ₜ[k] moveHom D Sc i [] v) b)) =
+    outputLongExtraction D Sc cutoff p i v
+      (balancedForward D Sc cutoff p i v (v ++ [i])
+        (balancedTmul D Sc cutoff p i
+          (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
+            cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b)) :=
+  outputLongExtraction_balanced_move D Sc cutoff p i v a b
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv

@@ -19,7 +19,9 @@ the specified finite coefficient operator as `outputCoefficientRho` and proves
 short kernel. `outputLongCoordinate_balanced` computes arbitrary old quotient
 coefficients on the fixed old-word balanced summand as literal `oldComp`, with
 no assumed old-linearity. Moving an output-old factor across the bare long chain
-and identification of the ordered S polynomial remain open.
+and identification of the ordered S polynomial remain open. The theorem
+`outputLongExtraction_balanced_move` extends the collected endpoint-polynomial
+comparison to arbitrary old quotient coefficients in the balanced tensor.
 
 ## Chronological short kernel inclusions
 

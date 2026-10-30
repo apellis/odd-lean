@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputRhoCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputMoveComparison
 /-!
 # Balanced coefficients and finite output rho
 
@@ -89,5 +90,23 @@ theorem boundaryRho_chronologicalShortSpan (p : ZMod 2)
   change outputLongExtraction D Sc cutoff p j.1 v z = 0 at hz
   change outputLongExtraction D Sc cutoff p j.1 v _ = 0
   rw [outputLongExtraction_boundaryRho, hz, map_zero]
+
+/-- The ordered endpoint-polynomial comparison holds with arbitrary old
+quotient coefficients in the signed balanced tensor, not just scalars. -/
+theorem outputLongExtraction_balanced_move (p : ZMod 2) (i : I) (v : List I)
+    (a : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) (b : Old D Sc cutoff v v) :
+    outputLongExtraction D Sc cutoff p i v
+      (balancedForward D Sc cutoff p i v (v ++ [i])
+        (balancedTmul D Sc cutoff p i (a ⊗ₜ[k] moveHom D Sc i [] v) b)) =
+    outputLongExtraction D Sc cutoff p i v
+      (balancedForward D Sc cutoff p i v (v ++ [i])
+        (balancedTmul D Sc cutoff p i
+          (a ⊗ₜ[k] (leadingMoveEndpointPolynomial D Sc i [] v ≫
+            cl D Sc _ _ (cw (leadingMoveWord [] v)) (leadingMoveWord_sChain i [] v))) b)) := by
+  ext m
+  simp only [outputLongExtraction_apply, outputLongCoordinate_balanced]
+  apply congrArg (oldComp D Sc cutoff v v v b)
+  exact congrArg (fun f : ℕ →₀ Old D Sc cutoff v v => f m)
+    (outputLongExtraction_move_endpointPolynomial D Sc cutoff p i v a)
 
 end OddMath.QuiverHecke.ELVOld

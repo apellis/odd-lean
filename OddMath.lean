@@ -61,6 +61,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputMoveComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputBalancedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows
