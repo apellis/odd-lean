@@ -10,8 +10,11 @@ QP identity of `DeformedGlobalQP.md`, with the local sign correction in §2.
 formalize the leading action, signed append-coordinate numerator division and
 compatible long section. `ELVOutputSComparison` identifies the independent
 fixed-word output S polynomial with the actual moving-chain extraction, in the
-library crossing convention. Corrected-rho S iterates, the degree-zero boundary
-defect and prescribed matrix comparison remain open; numerator division is not (11).
+library crossing convention. `ELVOutputSIterates` proves the odd-moving-colour
+corrected-rho extraction for every iterate and couples its corrected-basis
+P-image to the reverse polynomial modulo the chronological crossing span.
+The degree-zero boundary defect, polynomial projection and prescribed matrix
+comparison remain open; numerator division is not (11).
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to
@@ -146,9 +149,11 @@ Equations (6)–(7) in this section use the source crossing convention τ.
 They are not statements for the unchanged library crossing T without
 conversion. See `MackeyCrossingConventions.md` for the proved local
 comparison and the evaluated library ordered-product formula, including
-old-twist invariance and moving-degree normalization. The full ELV boundary
-and corrected-iterate identification in (6)–(7) remain open; the checked
-ordinary append extraction retains old height n+1.
+old-twist invariance and moving-degree normalization. The full ELV
+`ELVOutputSIterates` now proves the corrected-iterate extraction in the library
+convention at odd moving colour, including empty old words. Its P-comparison
+is modulo the chronological crossing span; the polynomial projection needed
+for (7) remains separate. The ordinary append extraction retains old height n+1.
 
 In expanding G, only the term taking the crossing part of every g_a
 has permutation U. Any omitted crossing has smaller Coxeter length.

@@ -1,5 +1,22 @@
 # Odd nondegeneracy: restart state
 
+## Corrected-rho S comparison
+
+`ELVOutputSIterates.outputLongExtraction_boundaryRho_move_independentS` proves
+all odd-moving-colour corrected iterates equal the signed finite sum of the
+prescribed corrected long coordinates with independent S coefficients.
+`independentOutputS_support_even` and `independentOutputS_oldTwist` derive
+even support and total-twist invariance from the ordered dot monomials. The
+even/odd coordinate formulas retain the signed, balance-twisted delta action;
+the balanced version retains an arbitrary full old quotient coefficient.
+
+`reverseBoundary_sub_correctedS_mem` couples those coordinates to the ordered
+reverse-QP P-image modulo the chronological crossing span, with both library
+and reverse-boundary signs explicit. This is not an equality after an assumed
+C₀: constructing the polynomial projection, S-division and the prescribed
+augmented matrix inverse remains separate. Even-moving-colour iterates are
+not identified by this module.
+
 
 ## Integer support at arbitrary strand content
 
