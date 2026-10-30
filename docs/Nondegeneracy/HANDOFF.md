@@ -1,7 +1,35 @@
 # Odd nondegeneracy: restart state
 
 
-## Adjacent-equal split repeated-colour component
+## Complete occupied adjacent-equal split matrix
+
+`adjacentSplit_braid` proves literal `braidLeft = braidRight` for arbitrary
+source and target paths at the `i i j → j i i` endpoint with one repeated-colour
+reservoir and two probes. It works for arbitrary supplied data, colour sets,
+weights, contents and commutative coefficients, with `i ≠ j`, `c.IsInverse` and
+`CrossCoeffInputs`. Both path types have two placements; the theorem uses their
+actual classifications, not a uniqueness assumption.
+
+Besides the existing coefficient entry, `adjacentSplit_braid_J` evaluates both
+finite sums using the proved Q-weighted J rectangle. The square and conjugate
+entries (`adjacentSplit_braid_square`, `adjacentSplit_braid_conj`) follow from
+that rectangle and the already derived coefficient transport. Their signs and
+all Q factors are retained. Only comparison isomorphisms are cancelled; no
+crossing, Q factor, or additional assumed transport is used.
+
+`AdjacentSplitMatrix` identifies the actual generator entries;
+`AdjacentSplitReduction` evaluates both braid sums; `AdjacentSplitBraid`
+proves the remaining entries and assembles arbitrary paths.
+`scripts/NonVacuity/AdjacentSplitMatrix.lean` applies the result at generic
+occupied reservoir content and audits every declaration owned by these three
+modules, including private and generated declarations. It remains a supplied-data
+consumer, not a construction of the probe/reservoir input representation.
+
+Other endpoint patterns, pure-reservoir adjacent-equal braids and the
+repeated-outer correction remain separate. Neither arbitrary-endpoint
+`iij`/`ijj`, complete `CrossBraid`, nor nondegeneracy is concluded.
+
+## Supporting adjacent-equal split repeated-colour component
 
 `adjacentMixed_braid` proves literal `braidLeft = braidRight` on
 `Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` for `i ≠ j`, arbitrary supplied data, weights,
@@ -20,8 +48,8 @@ factor crossings. `AdjacentSplitBraid.lean` applies the braid theorem at generic
 occupied reservoir content and audits every declaration owned by the four new
 modules, including private and generated declarations.
 
-Remaining: the other split-sector entries, the pure-reservoir adjacent-equal
-cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+The other entries at this occupied endpoint are assembled above. Remaining:
+other endpoint patterns, pure-reservoir adjacent-equal cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
 a complete `CrossBraid`, nor nondegeneracy is concluded.
 
 ## Adjacent-equal pure-probe braids and split-sector support
@@ -42,7 +70,7 @@ split-sector braid theorem.
 
 The surviving products, both repeated-dot transports, inverse-coefficient
 transport and Q-weighted J rectangle for the component above are now proved.
-The pure-reservoir adjacent-equal sector and other split-sector placements remain. Thus neither arbitrary-endpoint
+The pure-reservoir adjacent-equal sector and other endpoint patterns remain. Thus neither arbitrary-endpoint
 `iij`/`ijj` nor `CrossBraid.braid` is concluded. Existing `braid_same` additionally
 uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir dot).
 
