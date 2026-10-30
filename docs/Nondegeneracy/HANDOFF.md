@@ -1,5 +1,13 @@
 # Odd nondegeneracy: restart state
 
+## Adjacent-equal reservoir comparison entry
+
+`ProbeReservoir.adjacentReservoir_comparison_braid_transport` proves the literal
+`Pi Ri Rj → Rj Ri Pi` entry at arbitrary terminal sectors. The comparison
+rectangle retains the actual unequal reservoir crossing and uses no coefficient
+inverse assumption. This is one entry of the adjacent-equal two-reservoir block,
+not its full assembly.
+
 ## Two-reservoir forward off-diagonal
 
 `RepeatedOuterReservoirOffDiagonal.repeatedReservoir_offDiag_transport`
