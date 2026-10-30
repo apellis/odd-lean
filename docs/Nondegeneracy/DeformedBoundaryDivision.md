@@ -8,8 +8,10 @@ QP identity of `DeformedGlobalQP.md`, with the local sign correction in §2.
 
 `ELVEndpointLeading`, `ELVQPDivisionEquiv` and `ELVOutputCompatibleLifts`
 formalize the leading action, signed append-coordinate numerator division and
-compatible long section. The output S identity, degree-zero boundary defect
-and prescribed matrix comparison remain open; numerator division is not (11).
+compatible long section. `ELVOutputSComparison` identifies the independent
+fixed-word output S polynomial with the actual moving-chain extraction, in the
+library crossing convention. Corrected-rho S iterates, the degree-zero boundary
+defect and prescribed matrix comparison remain open; numerator division is not (11).
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
 diagram (9.5), Proposition 9.3, Lemma 9.5 and Theorem 9.6. The extension to

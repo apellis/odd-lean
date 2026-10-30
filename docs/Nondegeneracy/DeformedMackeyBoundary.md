@@ -1,7 +1,9 @@
 # First-order deformed Mackey boundary
 
-**Status: written proof; not a Lean result.** This supplies the first-order
-polynomial defect using explicit PBW lifts. The subsequent norm/division
+**Status: written proof, partially formalized in Lean.** The corrected source
+operator, normalized long lifts and local full-ELV append-crossing triangularity
+are checked. The global crossing/output splitting and its first-order polynomial
+defect are not yet constructed. The subsequent norm/division
 identity is in `DeformedBoundaryDivision.md`; the prescribed tensor-matrix
 comparison and its all-height consequence are in `DeformedMatrixComparison.md`.
 
