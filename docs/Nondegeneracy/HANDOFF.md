@@ -1,5 +1,18 @@
 # Odd nondegeneracy: restart state
 
+## Complete adjacent-equal iij to jii two-reservoir block
+
+`AdjacentReservoirSquareBlock.square_braid_entry_transport` proves the actual
+010 to 010 coefficient-square entry, with both complete finite sums reduced.
+`braid_block` then handles arbitrary source and target paths in this sector:
+it derives the opposite-order StepValid pair and terminal endpoint equality,
+and exhaustively dispatches to the four actual entries. It does not assume
+path identifications or opposite-order validity. The existing coefficient-free
+100 to 001 comparison entry is reused, not replaced.
+Focused warning-as-error build and strict default-option block consumer pass;
+all 11 owned declarations use only the standard three axioms.
+The opposite jii to iij block and global CrossBraid assembly remain open.
+
 ## Reverse repeated-outer two-reservoir 001 to 100 entry
 
 `RepeatedOuterReservoirReverse.braid_entry_path` proves the literal
