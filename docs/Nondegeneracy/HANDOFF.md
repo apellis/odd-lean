@@ -1,5 +1,29 @@
 # Odd nondegeneracy: restart state
 
+## Full literal two-reservoir 001 diagonal
+
+`RepeatedOuterPre.full_diag_path` proves the FULL literal `Ri Rj Pi` diagonal:
+actual braid sums, all three dotEntry powers, and both signed Sc.t/Sc.s sums.
+The native coefficient is conjugated by the mapped unequal mixed comparison;
+its dot images are epsilon*z and epsilon*x, and A=epsilon*C (not the 100 sign).
+Both reservoir-crossing directions have unsigned coefficient transport, using
+only the prescribed denominator unit in the odd case. The complete left/right
+sums are Qxy≫C and Qzy≫C; no Q or crossing inverse is used.
+
+The four `RepeatedOuterPre{Routes,Coordinates,Transport,Diagonal}` modules pass
+focused `lake --wfail build`. Four strict default-option full-field consumers
+pass; complete owner audits check 10/25/24/20 declarations, respectively, with
+only propext/Classical.choice/Quot.sound. Root imports are updated.
+
+This is a conditional full field at the specified 001 path, NOT global case
+dispatch or a nonzero detecting model. The theorem retains c.IsInverse,
+CrossCoeffInputs, unequal colours, both reservoir-order validity pairs and both
+terminal endpoint equalities. The remaining gaps include reverse 001→100,
+other adjacent-equal two-reservoir entries, and full CrossBraid assembly.
+Opposite-order witnesses are expected to be derived from actual paths in the
+assembly, not treated as a mathematical obstruction. Earlier sections listing
+001 as open are superseded by this section.
+
 ## Full literal two-reservoir 100 diagonal
 
 `RepeatedOuterPost.full_diag_path` proves the FULL literal `Pi Rj Ri`
