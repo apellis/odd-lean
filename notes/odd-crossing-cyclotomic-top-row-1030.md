@@ -27,16 +27,18 @@ full scalar data, including its unit hypotheses. There is no commutative-ring
 instance on the exterior coefficient algebra, no domain/nonzero-corner
 hypothesis, and no finite-colour or height restriction.
 
-## Remaining source identification
+## Subsequent source identification and remaining comparison
 
-The epsilon-shifted balanced domain `Rf ⊗_(S,jL) Π^epsilon(eB)` and its map P′
-are not yet constructed. Consequently `ker_q_eq_movingImage` is a concrete
-kernel calculation, not yet a theorem `range P′ = ker q` for that named map.
-The next step is its lower-balance descent using the moving-word transport
-and the prescribed epsilon shift. Then identify its range with `movingImage`
-and compare the literal unquotiented short-column maps with the existing
-Mackey source and append target. Fixed-content matrix-algebra identification,
-integer-degree identities, and the all-height snake conclusion remain open.
+`ELVCyclotomicPprime` now constructs the epsilon-shifted balanced domain
+`Rf ⊗_(S,jL) Π^epsilon(eB)` and its actual map P′, with the full moving-word
+transport and prescribed epsilon shift. Its range is `movingImage`, hence
+`range P′ = ker q`. `ELVCyclotomicShortColumns` supplies both literal columns
+and their whole commutative squares. `ELVCyclotomicAlphaCoordinates` constructs
+an actual left inverse for alpha and derives P′ injectivity from that square
+and the independently proved `pMap_injective`.
+
+Crossing-column injectivity, fixed-content matrix-algebra identification,
+integer-degree identities and the all-height categorical snake remain open.
 
 No injection is claimed for the descended crossing `Source → Old`.
 
