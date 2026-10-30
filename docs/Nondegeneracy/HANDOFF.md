@@ -1,5 +1,16 @@
 # Odd nondegeneracy: restart state
 
+## Chronological short kernel inclusions
+
+`SmallerTailNormalization` isolates the moving tail before restoring arbitrary
+old coefficients. `ELVChronologicalKernel` lifts its vanishing to full exterior
+coefficients and proves `chronologicalShortSpan_le_ker_outputLongExtraction`
+for arbitrary total balance parity over any commutative ground ring.
+`ELVShortTailSpan.prepend_short_mem` proves the converse structural inclusion:
+every nonlong prepend tail with arbitrary old coefficient is chronological short.
+The finite quotient-coordinate argument identifying the entire kernel, and
+the S/rho and balanced-extractor comparisons, remain to be assembled.
+
 ## Last-output-dot coordinates on the bare long shuffle
 
 `LongOutputDotTransport.lean` evaluates the transported last position as zero
