@@ -1,5 +1,48 @@
 # Odd nondegeneracy: restart state
 
+## Full-coefficient boundary and content calculations
+
+All statements retain the defining unit and parity conditions of their supplied
+scalar data, including `Sc.two_isUnit`; no existence over incompatible rings is
+asserted.
+
+The append target now has an actual polynomial projection C₀, recovery on the
+output embedding, and kernel exactly the chronological crossing span. Its
+splitting has the crossing image as first factor; identifying the prescribed
+balanced crossing-column source remains separate. For the corrected odd-moving
+boundary, C₀P = A B₁ holds on the original target. The input-dot recurrence twists
+the entire old coefficient and has a polynomial-constant defect; it is not the
+output-postcomposition formula or an assertion of integer degree.
+
+The independently specified S has proved coefficient twist invariance and actual
+corrected-rho operator evaluation. The ordered reverse QP–ELV numerator has an
+explicit full-coefficient fold, a support bound, and prescribed top coefficient
+unit times the old identity, including zero rings and annihilated objects.
+This does not establish nonzero support membership, natDegree equality, the
+additional boundary leading law, ordered division or the categorical inverse.
+
+The original-Sc content quadratic and mixed correction are actual ordered
+operator formulas, with all residual twists. Induction comparisons intertwine
+inner and outer supernatural whiskering. The named pair-first and suffix-first
+composition trees have equal cast-bearing arrows and equal values on every
+nested balanced generator. Equality of the composite maps and the named content
+triple associativity square remain separate, as do independently whiskered
+triple operator identifications.
+
+Positive integer-degree support gives fixed-content nilpotence in the actual
+quotient and on all modules. The independently defined induction dot is also
+nilpotent as a module endomorphism, with the same bound for every ground-scalar
+normalization. Finite-colour or explicit-bound restrictions remain as stated.
+The assembled reservoir family, its chosen W.dot identification and probe-dot
+units are not constructed by these results.
+
+The literal Pi Rj Ri correction has both full signed sums and all three actual
+dot powers, under its stated inverse/coefficient, endpoint and both-order
+validity hypotheses. Deriving the arbitrary-path dispatch and the remaining
+placements is not a full CrossBraid producer. Vacuum/corner evaluation and
+nondegeneracy remain open.
+
+
 ## Content induction dot nilpotence
 
 `ELVContentInductionNilpotence.contentInductionDot_module_pow_zero` derives a

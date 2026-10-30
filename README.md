@@ -5,6 +5,27 @@ Littlewood–Richardson rule, together with machine-checked errata to the source
 
 Research branch: [odd nondegeneracy progress board](docs/Nondegeneracy/PROGRESS.md)
 and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
+
+## Full-coefficient append and content calculations
+
+The defining unit and parity conditions of `Sc` are retained throughout,
+including `Sc.two_isUnit` where it is part of the supplied scalar data.
+Generality over commutative ground rings does not assert that such data exist
+over every ring.
+
+| Result | Source | Lean declaration | Hypotheses | Status |
+| --- | --- | --- | --- | --- |
+| Global append polynomial projection | Full-ELV append coordinates | `appendC0Splitting` | Arbitrary colours, words and commutative ground ring | Actual output recovery and exact crossing-span kernel; splitting uses the crossing image, not the prescribed balanced crossing domain. |
+| Input boundary polynomial defect | `DeformedBoundaryDivision.md` | `appendC0_pMap`, `outputPolynomialBoundary_rho` | Odd moving colour for the corrected-rho boundary, fixed old word, full coefficients | C₀P = A B₁ on the original target; the input-oriented defect has polynomial support at zero. Input precomposition twists the whole old coefficient; this is not an integer-degree assertion. |
+| Corrected-rho independent S iterates | `DeformedBoundaryDivision.md` | `outputLongExtraction_boundaryRho_move_polynomial`, `independentOutputS_oldTwist` | Odd moving colour for rho; arbitrary commutative ground ring and full old coefficients | Actual finite S(rhobar) evaluation and coefficient intertwining; coefficient invariance is proved, not centrality. Boundary division and the categorical inverse remain open. |
+| Ordered reverse numerator output coefficients | `DeformedBoundaryDivision.md` | `appendC0_orderedReverseNumerator`, `orderedReverseNumerator_support`, `orderedReverseNumerator_top` | All colours, words, cutoffs and commutative ground rings, including zero rings | Explicit ordered coefficient fold and whole input twist; support bound and prescribed scalar-unit times identity coefficient. No nonzero support or natDegree assertion on annihilated objects. |
+| Truncated positive-degree and dot nilpotence | Full-ELV quotient support | `truncatedContent_positive_pow_zero`, `truncatedContent_dot_pow_zero`, `moduleRestrictionDot_pow_zero` | Symmetrizer, homogeneous scalars, finite colours; an explicit coefficient bound suffices for the quotient theorem | A fixed-content exponent for all positive-degree homogeneous endomorphisms and active dots, transported to every module and restriction dot. |
+| Content induction dot nilpotence | Full-ELV induction | `contentInductionDot_module_pow_zero`, `contentInductionDot_smul_pow_zero` | Symmetrizer, homogeneous scalars and finite colours over a commutative ground ring | The independently defined induction dot is nilpotent on every module at fixed content, with the same exponent under any ground-scalar normalization. Reservoir identification and probe units remain open. |
+| Source content polynomial relations | `DeformedActionAssembly.md` | `contentInduction_quadratic_linear`, `contentMixedBraid_polynomial_linear` | Distinct colours, existing content categories, arbitrary commutative coefficients | Original-Sc ordered quadratic and three-dot-power mixed correction, retaining the full residual twist. This is not independently whiskered triple coherence. |
+| Induction whiskering comparison | `DeformedActionAssembly.md` | `compForward_transform_inner`, `compForward_transform_outer`, `contentEPair_whiskered_quadratic` | Arbitrary commutative coefficients and superfunctor modules | Canonical flattening intertwines inner and outer supernatural whiskering; positioned pair dots agree with the independent single-letter actions. |
+| All-module content induction composition | `DeformedActionAssembly.md` | `contentEPairComparison_comp_tensor`, `contentInductionComp_suffix_tensor`, `contentInductionComp_assoc_tensor` | Arbitrary colours, contents, modules and commutative coefficients | Both actual composition trees and their cast-bearing arrows agree on every nested balanced generator. Composite-map equality and the named triple square remain separate. |
+| Literal repeated-outer 100 correction | Brundan–Ellis | `RepeatedOuterPost.full_diag_path` | Supplied inverse/coefficient inputs, distinct colours, both reservoir-order validities and endpoint equalities | Complete Pi Rj Ri correction with both signed sums and all three dot powers. Global path dispatch, other placements and full CrossBraid remain open. |
+
 The KKO I §8 source tensor over the unital content algebra now has an explicit
 two-sided comparison with its height-quotient content image
 (`IntertwinerContentTensor`), preserving the Q representative formula.
