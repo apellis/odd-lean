@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Independent leading-source output monomials
+
+`ELVLeadingSourceTransport.leading_source_output_transport` transports each
+independently specified ordered-product source-dot monomial followed by bare U
+to chronological U–old-dots–last-dots modulo the exact chronological short span.
+`leading_source_output_extraction` evaluates that monomial using
+`canonical_output_extraction`: its only coefficient is the old quotient class
+of its independent old dot word, in its independently counted moving degree.
+Both results hold for arbitrary colour types, words, cutoffs and commutative
+ground rings, in both moving parities. The proof separates the Hom-level source
+dot recurrence, uses old-dot twist invariance, and compares first/last dot
+coordinates; it assumes no transport. Summing the independent expansion and
+identifying its global sign with the boundary polynomial remains the next step.
+Corrected-rho identification and the prescribed inverse are not asserted.
+
 ## Two-sided output-order balanced extractor
 
 `ELVOutputOrderBalance.outputLongCoordinate_outputOld` identifies actual output
