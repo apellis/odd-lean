@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Truncated positive-degree nilpotence
+
+`ELVTruncatedNilpotence.truncatedContent_positive_pow_zero` derives one
+positive exponent for every positive-integer-degree endomorphism of every
+permutation of a fixed content in `TruncatedOld`. The hypotheses are a
+commutative ground ring, symmetrizer, homogeneous scalars, and finite colours;
+`_of_bound` instead takes an explicit coefficient degree/weight bound.
+`truncatedContent_dot_pow_zero` applies this to every active positioned affine
+dot, and `truncatedAppendDot_pow_zero` to the existing append transformation.
+No nilpotence, bounded-support, domain, or nonzero-ring premise is added.
+This supplies quotient-level post-dot nilpotence for the reservoir coefficient
+construction, not probe units or an assembled factor action. Transport to the
+chosen reservoir action still requires its identification with these quotient
+dots. The arbitrary-colour high-cutoff detection theorem is unchanged.
+
 ## Cutoff-independent source lower degrees
 
 `ELVLowerDegree.exists_elvHomDegree_lower_bound` derives a lower integer
