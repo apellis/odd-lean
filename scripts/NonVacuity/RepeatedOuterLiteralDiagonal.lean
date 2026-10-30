@@ -61,6 +61,27 @@ theorem separatedOuter_native_routes_obligation (ν : X) (c : P.CrossCoeff Sc)
           (P.distinctProbeInnerDot i j i s hR Z) i j)) :=
   ⟨P.separatedOuter_braidLeft_qExpr ν i j s hR Z hs₀ hs c L hc h hij,
     P.separatedOuter_braidRight_qExpr ν i j s hR Z c L hij⟩
+theorem separatedOuter_braidEq_diag_obligation (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
+      nextSector (true, j) true (nextSector (true, i) true s))
+    (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
+      nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR rfl
+    braidLeft (P.swappedGens c L) i j i ν n n Z -
+      braidRight (P.swappedGens c L) i j i ν n n Z =
+      ∑ a ∈ Finset.range (D.dn i j),
+        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z)
+              (D.dn i j - 1 - a)) +
+      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z) (b - 1 - a)) :=
+  P.separatedOuter_braidEq_diag ν i j s hR Z c L hc h hij hs₀ hs
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
 

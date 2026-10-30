@@ -6,9 +6,12 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterSeparatedCoor
 
 /-! # Separated repeated-outer diagonal routes
 
-The finite right braid sum on `Pᵢ Pⱼ Rᵢ` is the negative separated
-coefficient followed by the inner mixed Q. This identifies the matrix route
-needed to apply the separated-coordinate correction calculation.
+The full literal `Pᵢ Pⱼ Rᵢ` diagonal correction is proved for the supplied
+coefficient-derived swapped generators. Both finite crossing sums are evaluated,
+the terminal-cast probe quadratic is identified, and the separated coefficient
+commutes with inner Q by mapped inverse identities and the denominator unit.
+All three literal dotEntry powers and both signed coefficient sums are retained.
+This supplies one diagonal component, not yet the full CrossBraid producer.
 -/
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
@@ -269,5 +272,245 @@ lemma separatedOuter_braidRight_qExpr (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   exact (P.separatedOuter_braidRight ν i j s hR Z c L hij).trans
     (congrArg (fun q => -(P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫ q))
       (P.separatedOuter_innerQ i j s hR Z))
+private lemma signed_reverse {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {V : C} (x y : End V) (ε : k) (hε : ε * ε = 1)
+    (h : x ≫ y = ε • (y ≫ x)) : y ≫ x = ε • (x ≫ y) := by
+  rw [h, smul_smul, hε, one_smul]
+
+lemma separatedOuterDots_xy :
+    P.distinctProbeOuterDot i j i s hR Z ≫ P.distinctProbeInnerDot i j i s hR Z =
+      zsign k (D.parity i * D.parity j) •
+        (P.distinctProbeInnerDot i j i s hR Z ≫ P.distinctProbeOuterDot i j i s hR Z) := by
+  have he := TwoSupercategory.super_interchange (R := k)
+    (P.T.dot_mem i (P.muP_preE i s))
+    ((P.prPreDot_supernatural j i (nextSector (true, i) true s) hR).mem Z)
+  rw [koszulSign_smul_eq_zsign (k := k)] at he
+  exact he
+
+lemma separatedOuter_x_innerQ :
+    P.distinctProbeOuterDot i j i s hR Z ≫
+        qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j =
+      qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j ≫
+        P.distinctProbeOuterDot i j i s hR Z := by
+  have hxz := signed_reverse _ _ _ (zsign_mul_self' _)
+    (P.separatedOuterDots_xz i j s hR Z)
+  exact comp_qExpr (Sc := Sc) _ _ _ _ _ i j
+    (zsign k (D.parity i)) (zsign k (D.parity i * D.parity j)) hxz
+    (P.separatedOuterDots_xy i j s hR Z)
+    (fun n hn => by
+      simpa only [mul_one] using
+        (zsign_pow_of_mul_eq_zero (k := k) (D.parity i) 1 n hn))
+    (fun n hn => by
+      simpa only [mul_comm (D.parity i)] using
+        (zsign_pow_of_mul_eq_zero (k := k) (D.parity j) (D.parity i) n hn))
+
+lemma separatedOuter_z_innerQ :
+    P.distinctProbeSpectatorDot i j i s hR Z ≫
+        qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j =
+      qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j ≫
+        P.distinctProbeSpectatorDot i j i s hR Z := by
+  have hzy := signed_reverse _ _ _ (zsign_mul_self' _)
+    (P.separatedOuterDots_zy i j s hR Z)
+  exact comp_qExpr (Sc := Sc) _ _ _ _ _ i j
+    (1 : k) (zsign k (D.parity i * D.parity j)) (one_smul _ _).symm hzy
+    (fun n _ => one_pow n)
+    (fun n hn => by
+      simpa only [mul_comm (D.parity i)] using
+        (zsign_pow_of_mul_eq_zero (k := k) (D.parity j) (D.parity i) n hn))
+private lemma smul_commuting {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {V : C} (x q : End V) (scalar : k) (h : x ≫ q = q ≫ x) :
+    (scalar • x) ≫ q = q ≫ (scalar • x) := by
+  rw [Linear.smul_comp, Linear.comp_smul, h]
+
+private lemma mapped_coefficient_commuting (c : P.CrossCoeff Sc) (hc : c.IsInverse)
+    (h : P.CrossCoeffInputs)
+    (V : P.H (nextSector (true, i) true (nextSector (true, i) false s)))
+    {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
+    (φ : End (P.rpObj i i s hR V) →ₐ[k] End Y) (Q : End Y)
+    (hx : φ (P.rpPreDot i s hR V) ≫ Q = Q ≫ φ (P.rpPreDot i s hR V))
+    (hz : φ (P.rpPostDot i s hR V) ≫ Q = Q ≫ φ (P.rpPostDot i s hR V)) :
+    φ (c.a i s hR V) ≫ Q = Q ≫ φ (c.a i s hR V) := by
+  have hmap (a b : End (P.rpObj i i s hR V)) : φ (a ≫ b) = φ a ≫ φ b :=
+    φ.map_mul b a
+  by_cases hi : D.parity i = 0
+  · have ha := congrArg φ (hc.even i hi s hR V).1
+    have hb := congrArg φ (hc.even i hi s hR V).2
+    simp only [hmap, map_sub, show φ (𝟙 _) = 𝟙 _ from φ.map_one] at ha hb
+    simpa only [one_smul] using signed_inverse_difference_transport
+      _ _ _ _ _ _ Q (1 : k) (one_mul _) (hx.trans (one_smul _ _).symm)
+      (hz.trans (one_smul _ _).symm) ha hb
+  · have hi' := (Supercategory.parity_eq_zero_or_one (D.parity i)).resolve_left hi
+    have ha := congrArg φ (hc.odd i hi' s hR V).1
+    simp only [hmap, map_sub] at ha
+    have hd : (P.crossDenom h i s hR V : End (P.rpObj i i s hR V)) =
+        P.rpPreDot i s hR V ≫ P.rpPreDot i s hR V -
+          P.rpPostDot i s hR V ≫ P.rpPostDot i s hR V := by
+      simp [crossDenom, hi, sub_eq_add_neg, add_comm, pow_two, End.mul_def]
+    have hd' := congrArg φ hd
+    simp only [hmap, map_sub] at hd'
+    simpa only [one_smul] using signed_odd_coefficient_transport
+      _ _ _ _ _ _ Q (1 : k) (one_mul _) (hx.trans (one_smul _ _).symm)
+      (hz.trans (one_smul _ _).symm) ha ha
+      (Units.map φ.toMonoidHom (P.crossDenom h i s hR V)) hd'
+
+/-- The separated coefficient commutes with the inner Q by the mapped
+inverse identities and the actual denominator unit, not by a new hypothesis. -/
+lemma separatedOuter_coeff_innerQ (c : P.CrossCoeff Sc) (hc : c.IsInverse)
+    (h : P.CrossCoeffInputs) :
+    P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫
+        qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j =
+      qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j ≫
+        P.repeatedOuterMixedSeparatedCoeff i j s hR Z c := by
+  let V := (P.step (true, j) true _ trivial).obj Z
+  let φ := P.separatedOuterAlg i j s hR Z
+  let Q := qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+    (P.distinctProbeInnerDot i j i s hR Z) i j
+  have hx : φ (P.rpPreDot i s hR V) ≫ Q = Q ≫ φ (P.rpPreDot i s hR V) := by
+    rw [P.separatedOuterAlg_pre i j s hR Z]
+    exact smul_commuting _ _ _ (P.separatedOuter_x_innerQ i j s hR Z)
+  have hz : φ (P.rpPostDot i s hR V) ≫ Q = Q ≫ φ (P.rpPostDot i s hR V) := by
+    rw [P.separatedOuterAlg_post i j s hR Z]
+    exact smul_commuting _ _ _ (P.separatedOuter_z_innerQ i j s hR Z)
+  have hresult := mapped_coefficient_commuting P i s hR c hc h V φ Q hx hz
+  have he := P.separatedOuterAlg_coeff i j s hR Z c
+  exact (congrArg₂ (fun a b => a ≫ Q = Q ≫ b) he he) ▸ hresult
+private lemma difference_normalization {R : Type u} [Ring R] [Algebra k R]
+    (a q r : R) (ε : k) (hε : ε * ε = 1) (hr : r * a = a * r) :
+    -(a * q) - (-(r * a)) = ε • (((-ε) • a) * (q - r)) := by
+  rw [hr, smul_mul_assoc, smul_smul, mul_neg, hε, neg_one_smul]
+  noncomm_ring
+
+/-- The actual diagonal matrix difference equals the checked separated
+coordinate correction, with the original two finite sums and all signs. -/
+lemma separatedOuter_braid_difference (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
+      nextSector (true, j) true (nextSector (true, i) true s))
+    (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
+      nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR rfl
+    let x := P.distinctProbeOuterDot i j i s hR Z
+    let y := P.distinctProbeInnerDot i j i s hR Z
+    let z := P.distinctProbeSpectatorDot i j i s hR Z
+    braidLeft (P.swappedGens c L) i j i ν n n Z -
+      braidRight (P.swappedGens c L) i j i ν n n Z =
+      (∑ a ∈ Finset.range (D.dn i j),
+        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+          (x ^ (D.dn i j - 1 - a) * z ^ a)) +
+      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i),
+        ∑ a ∈ Finset.range b,
+          (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+            (x ^ (b - 1 - a) * y ^ d * z ^ a) := by
+  dsimp only
+  have hl := P.separatedOuter_braidLeft_qExpr ν i j s hR Z hs₀ hs c L hc h hij
+  have hr := P.separatedOuter_braidRight_qExpr ν i j s hR Z c L hij
+  refine (congrArg₂ (· - ·) hl hr).trans ?_
+  have hn := difference_normalization (End.of (P.repeatedOuterMixedSeparatedCoeff i j s hR Z c))
+    (qExpr Sc (P.distinctProbeOuterDot i j i s hR Z) (P.distinctProbeInnerDot i j i s hR Z) i j)
+    (qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z) (P.distinctProbeInnerDot i j i s hR Z) i j)
+    (zsign k (D.parity i * D.parity j)) (zsign_mul_self' _)
+    (P.separatedOuter_coeff_innerQ i j s hR Z c hc h)
+  have ha : (-zsign k (D.parity i * D.parity j)) •
+      P.repeatedOuterMixedSeparatedCoeff i j s hR Z c =
+      P.separatedOuterCoeff i j s hR Z c :=
+    congrArg (fun a => (-zsign k (D.parity i * D.parity j)) • a)
+      (P.separatedOuterAlg_coeff i j s hR Z c).symm
+  rw [ha] at hn
+  exact hn.trans (P.separatedOuter_qExpr_correction i j s hR Z c hc)
+/-- The literal outer dot is the native separated x. -/
+lemma separatedOuter_dotX (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
+    dotEntry (P.swappedGens c L) ν [] i [up j, up i]
+      (SPath.three true true false trivial trivial hR rfl) Z =
+      P.distinctProbeOuterDot i j i s hR Z := by
+  unfold dotEntry
+  refine eq_of_heq ((heq_of_eq (compLayer_eq_of_path (P.swappedGens c L)
+    (SKM.lay D ν [] (SKM.Shape.dot i) [up j, up i]) (.nil s)
+    (.cons _ true _ trivial (.nil _)) (.cons _ true _ trivial (.nil _))
+    (SPath.two true false trivial hR rfl) _ _ rfl rfl Z)).trans ?_)
+  refine (sandwich_heq _ _ _).trans ?_
+  exact heq_of_eq (P.dotImage_probe i (SKM.wt D ν [up j, up i]) s trivial trivial _)
+
+/-- The literal middle dot is the native separated y. -/
+lemma separatedOuter_dotY (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
+    dotEntry (P.swappedGens c L) ν [up i] j [up i]
+      (SPath.three true true false trivial trivial hR rfl) Z =
+      P.distinctProbeInnerDot i j i s hR Z := by
+  unfold dotEntry
+  refine eq_of_heq ((heq_of_eq (compLayer_eq_of_path (P.swappedGens c L)
+    (SKM.lay D ν [up i] (SKM.Shape.dot j) [up i]) (.cons _ true s trivial (.nil _))
+    (.cons _ true _ trivial (.nil _)) (.cons _ true _ trivial (.nil _))
+    (.cons _ false _ hR (.nil _)) _ _ rfl rfl Z)).trans ?_)
+  refine (sandwich_heq _ _ _).trans ?_
+  exact heq_of_eq (congrArg (P.step (true, i) true s trivial).map
+    (P.dotImage_probe j (SKM.wt D ν [up i]) (nextSector (true, i) true s) trivial trivial
+      ((P.step (true, i) false
+        (nextSector (true, j) true (nextSector (true, i) true s)) hR).obj Z)))
+
+/-- The literal reservoir dot is the native separated z. -/
+lemma separatedOuter_dotZ (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
+    dotEntry (P.swappedGens c L) ν [up i, up j] i []
+      (SPath.three true true false trivial trivial hR rfl) Z =
+      P.distinctProbeSpectatorDot i j i s hR Z := by
+  unfold dotEntry
+  refine eq_of_heq ((heq_of_eq (compLayer_eq_of_path (P.swappedGens c L)
+    (SKM.lay D ν [up i, up j] (SKM.Shape.dot i) []) (SPath.two true true trivial trivial rfl)
+    (.cons _ false _ hR (.nil _)) (.cons _ false _ hR (.nil _))
+    (.nil _) _ _ rfl rfl Z)).trans ?_)
+  refine (sandwich_heq _ _ _).trans ?_
+  exact heq_of_eq (congrArg (fun f => (P.step (true, i) true s trivial).map
+    ((P.step (true, j) true _ trivial).map f))
+    (P.dotImage_reservoir i ν (nextSector (true, j) true (nextSector (true, i) true s))
+      hR hR Z))
+private lemma correction_coordinates {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {V : C} (x y z x' y' z' : End V) (hx : x = x') (hy : y = y') (hz : z = z') :
+    ((∑ a ∈ Finset.range (D.dn i j),
+      (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+        (x ^ (D.dn i j - 1 - a) * z ^ a)) +
+    ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+        (x ^ (b - 1 - a) * y ^ d * z ^ a)) =
+    (∑ a ∈ Finset.range (D.dn i j),
+      (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+        (compPow z' a ≫ compPow x' (D.dn i j - 1 - a))) +
+    ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+      (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+        (compPow z' a ≫ compPow y' d ≫ compPow x' (b - 1 - a)) := by
+  subst x'; subst y'; subst z'
+  simp only [compPow_eq_pow, ← End.mul_def]
+
+/-- The full literal `Pᵢ Pⱼ Rᵢ` diagonal field of CrossBraid, with every
+literal dotEntry power and both original coefficient sums. -/
+lemma separatedOuter_braidEq_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
+      nextSector (true, j) true (nextSector (true, i) true s))
+    (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
+      nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR rfl
+    braidLeft (P.swappedGens c L) i j i ν n n Z -
+      braidRight (P.swappedGens c L) i j i ν n n Z =
+      ∑ a ∈ Finset.range (D.dn i j),
+        (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z)
+              (D.dn i j - 1 - a)) +
+      ∑ b ∈ Finset.Ioo 0 (D.dn i j), ∑ d ∈ Finset.Ioo 0 (D.dn j i), ∑ a ∈ Finset.range b,
+        (zsign k (D.parity i * (D.parity j + a)) * Sc.s i j b d) •
+          (compPow (dotEntry (P.swappedGens c L) ν [up i, up j] i [] n Z) a ≫
+            compPow (dotEntry (P.swappedGens c L) ν [up i] j [up i] n Z) d ≫
+            compPow (dotEntry (P.swappedGens c L) ν [] i [up j, up i] n Z) (b - 1 - a)) := by
+  exact (P.separatedOuter_braid_difference ν i j s hR Z c L hc h hij hs₀ hs).trans
+    (correction_coordinates i j _ _ _ _ _ _
+      (P.separatedOuter_dotX ν i j s hR Z c L).symm
+      (P.separatedOuter_dotY ν i j s hR Z c L).symm
+      (P.separatedOuter_dotZ ν i j s hR Z c L).symm)
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

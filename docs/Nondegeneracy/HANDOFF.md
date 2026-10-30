@@ -16,7 +16,14 @@ quadratic relation and typed path append transports. Consequently
 `separatedOuter_braidLeft_qExpr` and `separatedOuter_braidRight_qExpr` identify
 both complete matrix sums as `-(Qxy ≫ S)` and `-(S ≫ Qzy)` respectively.
 Qzy uses `qExpr_swap`, retaining the actual signed dot commutation. The
-S/Qzy commutation and literal dotEntry correction sums remain to be joined.
+S/Qzy commutation is now derived from the mapped genuine inverse identities
+and the denominator unit. `separatedOuter_braid_difference` is the actual
+matrix difference with both native finite sums. `separatedOuter_dotX/Y/Z`
+identify all three literal dots; `separatedOuter_braidEq_diag` is the FULL
+literal `Pi Pj Ri` diagonal correction, retaining every dotEntry power, Sc.t,
+Sc.s and zsign factor. It assumes only the supplied c.IsInverse,
+CrossCoeffInputs, i ≠ j, a valid reservoir step and genuine sector equalities.
+The full CrossBraid producer and the remaining mixed placements are still open.
 
 ## Separated correction coordinates
 
