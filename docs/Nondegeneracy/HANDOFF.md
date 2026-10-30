@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Literal normalized endpoint–QP numerator
+
+`ELVQPNumerator.lean` constructs the separate ordered append-QP polynomial
+and normalizes each factor by its actual scalar unit. Repeated odd factors
+are `C(oldDot²) + X²`; repeated even factors are `−1`. The endpoint ELV
+polynomial stays on the left. `normalizedEndpointQPPolynomial_monic` proves
+monicity, and `normalizedEndpointQPPolynomial_eval` identifies evaluation
+with the literal ordered numerator including its explicit inverse unit.
+`normalizedEndpointQPNumerator_regular` consumes the signed highest-action
+regularity on the old-only append quotient.
+
+The module supplies polynomial right division and a zero-or-strictly-lower
+remainder bound over the noncommutative endomorphism ring, plus evaluation
+of right moving powers. This is **not yet arbitrary old-Hom division**:
+evaluation of an arbitrary polynomial quotient need not be multiplicative,
+because full ELV coefficients need not commute with the moving dot. The
+whole-product signed highest old-Hom action, signed division, and the
+output S/rho comparison still need assembly. No boundary inverse is claimed.
+
 ## Endpoint ELV leading action at every cutoff
 
 `ELVAppendSignedMovingSupport.lean` proves that an arbitrary append moving
