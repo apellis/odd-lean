@@ -12,12 +12,17 @@ transport identities. No inverse or cancellation of a moving chain is used.
 `cross_comp_reverseMoveHom_pair_all` applies the square to the defined
 reverse chain on two old strands, without colour restrictions.
 
-`ReverseIntertwinerCrossing.cross_comp_reverseMoveHom_all` is provided as
-`OddMath.QuiverHecke.cross_comp_reverseMoveHom_all`: it proves old-crossing
+`ReverseIntertwinerCrossing.lean` proves
+`OddMath.QuiverHecke.cross_comp_reverseMoveHom_all`: old-crossing
 transport on arbitrary old words, by prefix and suffix induction with the
-outside-crossing parity sign. Full coefficient-sensitive reverse old-ideal
-descent and a quotient `rMap` remain to be assembled. Append-end
-norm regularity and G injectivity remain separate obligations.
+outside-crossing parity sign. `ReverseIntertwinerBalance.lean` extends
+the generator slides to arbitrary old diagrams. `ELVRDescent.lean` proves
+`reverseMove_comp_insert` for the full coefficient-plus-diagram parity twist,
+including parity-mismatched Hom spaces. `reverseMove_relations` then proves
+old-ideal descent; `rMap : Target →ₗ[k] AppendTarget` is precomposition by
+the defined reverse chain. `rMap_qMap_projection` identifies reverse-after-
+forward with the append-end norm operation. Append-end norm regularity and
+G injectivity remain separate obligations; no cancellation is assumed.
 
 ## Actual reverse-chain endpoint norm; G injectivity remains open
 
@@ -39,7 +44,8 @@ and arbitrary old-dot transport with the full word-parity signs. It also
 proves reverse crossing transport for a pair of old colours both different
 from the moving colour (the old colours may coincide). The unrestricted
 local meet is now supplied by `ReverseIntertwinerMeet.lean` above.
-Full reverse old-ideal descent and a quotient reverse-chain map remain open.
+Full reverse old-ideal descent and the quotient reverse-chain map are now
+proved in `ELVRDescent.lean` above.
 
 `ELVMovingNormRegularity.lean` proves regularity of the independently
 prescribed prepend-end norm polynomial on the full old-only ELV quotient.
@@ -50,8 +56,7 @@ regularity of the append-end `endpointNorm`: the append-coordinate quotient
 comparison remains to be constructed. In particular neither QP nor P
 injectivity is used to claim G injectivity.
 
-Next obligations for `DeformedBoundaryDivision.md` §§2–3: lift reverse
-naturality through total coefficient-plus-diagram parity;
+Next obligations for `DeformedBoundaryDivision.md` §§2–3:
 construct append-old PBW quotient coordinates and prove the actual append
 endpoint norm regular there; deduce G injectivity and only then derive the
 concrete reverse boundary norm from full QP. None of these final implications

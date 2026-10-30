@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVRDescent
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNaturality
 
 noncomputable section
@@ -57,13 +57,48 @@ example (l m v : List I) (i j : I) :
 #print axioms cross_comp_reverseMoveHom_pair_all
 end ReverseCrossingConsumer
 
+namespace ReverseDescentConsumer
+open CategoryTheory OddMath OddMath.QuiverHecke ELVOld StringDiagrams.Supercategory
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+/-- Unrestricted full-coefficient old morphisms, including parity mismatch. -/
+example (i : I) (v t : List I) (r : hom D Sc cutoff v t) :
+    reverseMove D Sc cutoff i v ≫
+      insert D Sc cutoff i v t (twist k (D.parity i * wordSumParity D v) r) =
+    rightContext D Sc cutoff [i] v t r ≫ reverseMove D Sc cutoff i t :=
+  reverseMove_comp_insert D Sc cutoff i r
+
+/-- A repeated moving colour is allowed in the full quotient reverse map. -/
+example (i j : I) (w : List I) (h : hom D Sc cutoff (i :: [j, i, j]) w) :
+    rMap D Sc cutoff i [j, i, j] w (projection D Sc cutoff i [j, i, j] w h) =
+      appendProjection D Sc cutoff i [j, i, j] w
+        (affineUnit D Sc cutoff _ _ (reverseMoveHom D Sc i [] [j, i, j]) ≫ h) :=
+  rMap_projection D Sc cutoff i [j, i, j] w h
+
+example (i : I) (v w : List I) (h : hom D Sc cutoff (v ++ [i]) w) :
+    rMap D Sc cutoff i v w (qMap D Sc cutoff i v w (appendProjection D Sc cutoff i v w h)) =
+      appendProjection D Sc cutoff i v w
+        (affineUnit D Sc cutoff _ _
+          (reverseMoveHom D Sc i [] v ≫ moveHom D Sc i [] v) ≫ h) :=
+  rMap_qMap_projection D Sc cutoff i v w h
+
+#print axioms reverseMove_comp_insert
+#print axioms reverseMove_relations
+#print axioms rMap
+#print axioms rMap_qMap_projection
+end ReverseDescentConsumer
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
   let owners := #[
     `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerEqual,
     `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet,
-    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing]
+    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing,
+    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerBalance,
+    `OddMath.QuiverHecke.CyclotomicAction.ELVRDescent]
   for owner in owners do
     let some idx := env.header.moduleNames.idxOf? owner
       | throwError "Module was not imported: {owner}"
