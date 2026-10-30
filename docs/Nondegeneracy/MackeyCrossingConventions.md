@@ -47,18 +47,49 @@ sequence of crossings. `prependBasis_long_repr_eq_zero_of_low` proves
 that every term with fewer than n+1 crossings has zero long scalar PBW
 coordinate, even when that coordinate carries an old permutation.
 
+## Evaluated ordered product
+
+`leadingMoveEndpointPolynomial_eq_sign_smul_squareProduct` now proves,
+for every prefix and word and either parity,
+
+    endpoint_ν = zsign(p(i))^(count_i ν) • S_ν,
+    S_ν = ordered product over b with ν_b=i of
+          (z^(1+p(i)) - x_b^(1+p(i)))².
+
+The exponent 1+p(i) means 1 for even i and 2 for odd i; the Lean
+producer uses those branches explicitly. Earlier factors are on the right
+in the endomorphism ring, matching chronological composition. The unsigned
+product is independently defined, not defined by the endpoint expansion.
+The local four-term coefficients are `[1,-1,-1,1]` for even colour and
+`[-1,1,1,-1]` for odd colour. All collected crossing signs cancel:
+even moving crossings have zero parity, whereas odd dot decorations occur
+in pairs, squaring each incident or distant slide sign.
+
+Old/moving separation is checked by `endpointDotMonomial_separate` and
+`sourceOldCoefficient_leadingSourceDots`. Old factors are already PBW-sorted;
+`sourceOldCoefficient_leadingSourceDots_basis` identifies their basis vectors,
+and `leadingMoveOrderedCoefficients_nonidentity` makes every nonidentity
+old-permutation coefficient zero. `prependWordCoefficients_moveHom_ordered` evaluates the
+longest coordinates as an explicit finite diagonal sum.
+
+`leadingMoveContentCoefficient_twist` proves the old twist fixes
+these coefficients. `leadingMoveContentCoefficient_degreeSign` proves the
+moving-degree normalization fixes them: odd moving dots occur in pairs.
+This does not identify equal-colour count with moving-dot degree.
+`appendContentMoveLift_extract_sum` gives the normalized source extraction
+with no unevaluated coordinate map and with the right coefficient b unchanged.
+Affine coefficients include height zero; the ordinary append source retains
+its existing old-height n+1 scope.
+
 ## Remaining comparison
 
 Equation (6) in `DeformedBoundaryDivision.md` remains a **source-convention**
-identity. Its factor (-1)^m must not be copied into the library crossing
-convention. Deriving the library expression requires the explicit signed
-leading-polynomial expansion of the entire chain, conversion from scalar
-PBW coefficients to `prependCoefficients`, and the displayed twist and
-degree normalization. These steps are not replaced by a supplied
-injectivity or extraction hypothesis. In particular, `Approx` alone is
-insufficient: it retains an unspecified leading unit.
+identity: its (-1)^(count_i ν) is not the library sign. The corresponding
+library sign (-1)^(p(i) count_i ν) is now derived from the full chain,
+including scalar PBW regrouping, old twist and moving-degree normalization.
+No unspecified unit from `Approx` is used.
 
-The local library factors suggest (-1)^(p(i)m), but the full normalized
-coefficient identity is not yet formalized. Equation (7) is not altered:
-its P, QP and T conventions must be compared independently. The existing
-repeated-even QP factor remains -1.
+Equation (7) is not altered: its norm, P, QP, T and right-ordered
+f_i(t)L(t)t^k conventions must be compared independently. The existing
+repeated-even QP factor remains -1. No full ELV boundary or corrected w_k
+identification is asserted; ordinary append height zero also remains open.

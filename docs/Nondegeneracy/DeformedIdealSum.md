@@ -1,9 +1,17 @@
 # Deformed cyclotomic ideal sum
 
-**Status: proposed written proof, pending independent review; not a Lean theorem.**
-The ideal equality below does not depend on the proposed P balance or QP
-calculation. Its application to a projective resolution does depend on those
-inputs and on the specified right square-variable actions.
+**Status: the componentwise full-ELV ideal sum and canonical ground-ring-linear
+P cokernel are proved in `ELVIdealSum.lean` and `ELVCokernel.lean`.** The statements
+use the prescribed scalar datum (including its condition on 2 when odd colours
+exist) and the actual ELV coefficient quotient, with arbitrary words and cutoffs.
+Content-level B[s]-linear exactness and finite projectivity remain separate.
+The ideal equality itself does not depend on P balance or QP.
+
+The checked inverse transport is `x ≫ F = F ≫ (x + 2(-1)^N d)`.
+Endomorphism multiplication reverses diagram composition, so this is
+`F x = (x + 2(-1)^N d) F`. It agrees with the forward normalizer below:
+rho(x)=x−2d and rho(d)=(-1)^N d give rho⁻¹(x)=x+2(-1)^N d.
+The two directions must not be assigned the same uniform shift.
 
 The source is KKO I, arXiv:1206.5933v2: Proposition 4.2 and Lemma 4.4
 (p. 20), the cyclotomic definition in §7.1 (p. 35), and (8.1)–(8.6),

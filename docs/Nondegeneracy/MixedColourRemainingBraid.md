@@ -1,6 +1,6 @@
 # Zero-correction mixed-colour braid components
 
-**Status: proposed written proof, not a Lean theorem.** This evaluates the
+**Status: pairwise-distinct case formalized; adjacent-equal cases remain proposed.** This evaluates the
 component equations (13) of `MixedColourBlockCompletion.md` for iij, ijj
 and pairwise-distinct ijk. The unequal-probe comparison used here is the written calculation
 in that note, with its prescribed beta/xi maps. The conclusion is
@@ -61,10 +61,15 @@ supercommutations and parity support prove commutation of the two Q factors.
 Only explicit mixed comparison isomorphisms are cancelled. The importing
 consumer retains arbitrary colours and occupied reservoir content.
 
-All six mixed pairwise-distinct placements now have sector lemmas. Same-side
-factor-braid transport and arbitrary-path assembly remain open. Cross-side
-colour equalities and repeated-outer corrections are separate obligations.
-The complete component calculation below retains its proposed status.
+`BraidMixed/PairwiseDistinct.lean` now proves `braid_pairwiseDistinct` for
+arbitrary source and target paths. The two pure placements are transported
+from the supplied probe and reservoir factor braids, retaining the shifted
+reservoir comparisons and signs. Endpoint uniqueness reduces the arbitrary
+paths to these two pure placements and the six mixed placements above.
+No further relation hypothesis, Q cancellation or crossing inverse is used.
+The cases with adjacent equal colours, including equal colours across the
+two sides, and the repeated-outer corrections remain separate obligations.
+The full `CrossBraid` construction is not yet proved.
 
 ## 1. Typed entries and polynomial conventions
 

@@ -1,5 +1,6 @@
 # Odd nondegeneracy: restart state
 
+
 ## Full ELV ideal sum and P cokernel
 
 `ELVFirstDotTransport.firstDot_relation_transport` proves the inverse-normalizer
@@ -22,6 +23,64 @@ normality, flatness, finite-colour or field assumptions.
 cyclotomic quotient and agrees with the canonical map on representatives.
 These are ground-ring statements. Twisted B[s]-linearity, projectivity and
 the full nondegeneracy theorem remain separate.
+
+
+## Ordinary right content polynomial modules
+
+`ELVOldCategory` assembles the full old cyclotomic Hom quotients into a linear
+category. `ELVEndpointPresheaf` descends the old action in both arguments for
+every pair of old words. `ELVContentModule` forms its finite content Hom-matrix
+ring B and the prescribed quotient matrices K₀, K₁ and K₁′ as ordinary right
+B[s]-modules. Source actions retain epsilon and eta respectively. The polynomial
+construction works for a noncommutative B, with no super-opposite convention.
+Words of fixed content are finite permutations of a chosen representative;
+no finiteness assumption on the colour type is needed. Empty content and zero
+quotient corners are allowed.
+
+`pPolynomial` is the prescribed componentwise P, right B[s]-linear and
+injective (`pPolynomial_injective`). Its right-linearity includes every old
+word-to-word arrow, not just diagonal operators. The central variable is the
+moving dot/square. `sourceContentCoordinateEquiv` retains ambient words, old
+words, moving shuffles and moving exponents in the established PBW quotient
+coordinates. `centralSource_pair_shift` keeps old coefficients unchanged,
+and `centralSource_residue` keeps the exponent modulo `centralDegree`.
+
+**Remaining:** reindex these simultaneous coordinates into finitely many
+old-idempotent B[s] summands and prove the resulting equivalence polynomial
+linear, for both endpoints. No finite-projectivity instance is asserted.
+The ground-ring cokernel and ideal sum are proved above; their content-level
+B[s]-linear exactness remains a separate obligation.
+
+
+## Ordered product and normalized extraction
+
+The collected endpoint polynomial is now identified with the independently
+specified square product in `LeadingMoveSquareProduct.lean`:
+
+    leadingMoveEndpointPolynomial = zsign(p(i))^(count_i ν) • S_ν.
+
+Here S has factors `(z-x_b)^2` for even moving colour and
+`(z²-x_b²)^2` for odd moving colour, at equal-colour positions only.
+Factors retain chronological order (earlier factors on the right in the
+endomorphism ring). `LeadingMoveTransport.lean` proves every collected
+transport sign is one, including distant odd slides, and evaluates the
+source positions. `LeadingMoveProduct.lean` proves the finite expansion
+is this product rather than defining the product from the expansion.
+
+`LeadingMoveOrderedCoefficients.lean` separates old and moving dots by an
+exact parity-twist recurrence. It proves that all separation signs cancel
+for these factors, old dots are already PBW-sorted, and every nonidentity
+old-permutation coefficient vanishes. `prependWordCoefficients_moveHom_ordered`
+evaluates the prescribed moving homomorphism by a finite diagonal sum.
+
+`LeadingMoveExtraction.lean` proves old-twist invariance and moving-degree
+sign cancellation, then `appendContentMoveLift_extract_sum` evaluates the
+normalized extraction with no coordinate maps on its right. The old
+coefficient acts on the left of the unchanged right tensor coefficient.
+Affine coefficients include every old height; the ordinary-polynomial append
+source retains its existing old-height n+1 scope. Source equations (6)–(7),
+the full ELV boundary and corrected w_k identification remain separate.
+
 
 ## Full-coefficient output-parabolic spanning for the ideal sum
 
@@ -46,6 +105,25 @@ inverse shuffle used in input prepend coordinates. The ideal-sum equality
 and cokernel identification are now proved above; P injectivity is already
 proved below.
 
+
+## Central moving-variable linearity of ELV P
+
+`ELVAppendMovingSlide.lean` proves the decorated moving-dot deletion identity
+with the moving power before the full ELV relation. Two slides cancel the
+sign; the same-colour deletion lies in the append-old span.
+`ELVPCentral.lean` proves `pMap_movingSquare`, `pMap_movingEvenDot`, and
+`pMap_central` on the prescribed quotients, with arbitrary words, cutoffs
+and full exterior coefficients over any commutative ground ring. The even
+power commutes with the relation by its coefficient expansion, not by
+commuting an unchanged odd dot. Zero cutoff and the positive even odd-colour
+coefficient relation are retained in the existing ELV coefficient algebra.
+
+`pCentralMap` is a k[s]-linear map on these quotients. `pCentralMap_oldSource`
+retains the total-parity twist `appendQ` on the source; both old operators
+are k[s]-linear and kill the old ideal. Old balance is reused, not assumed.
+The content-level ordinary right B[s]-module assembly is supplied above;
+projectivity and the exact cokernel sequence remain separate obligations.
+
 ## Injectivity of the actual full ELV P map
 
 `ELVPInjective.lean` combines the quotient QP identity with moving-coordinate
@@ -53,7 +131,8 @@ regularity. `signedQPMap_injective` and `pMap_injective` hold for arbitrary
 words, cutoffs and full exterior coefficients over the given commutative
 ground ring. No balance, monicity, freeness or injectivity assumption is added.
 This closes the injectivity step of `DeformedSquareResolution.md` §3;
-B[s]-linearity, the cokernel identification, exactness and projectivity remain.
+The central-variable and twisted old-action compatibility are supplied above;
+content-level B[s]-module assembly is supplied above; the cokernel, exactness and projectivity remain.
 
 ## Full ELV Q descent and quotient composition
 
@@ -331,6 +410,26 @@ The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
 
+## Pairwise-distinct braid on arbitrary paths
+
+`ProbeReservoir.braid_pairwiseDistinct` proves the literal equality
+`braidLeft (P.swappedGens c L) i j r ν p q Z = braidRight ...` for arbitrary
+source and target paths and three pairwise-distinct colours. It imposes no
+additional relation hypothesis beyond the supplied probe/reservoir data.
+Arbitrary colours, weights, contents and commutative coefficients are retained.
+
+`distinctPureProbe_braid` and `distinctPureReservoir_braid` transport the supplied
+factor braids to the pure canonical paths. The reservoir proof retains the
+postcomparison beta/xi maps and all content-dependent parity signs. Together
+with the six mixed sectors, endpoint uniqueness and the eight source placements
+prove the arbitrary-path theorem. No Q polynomial or factor crossing is cancelled.
+`PairwiseDistinctBraid.lean` is a generic arbitrary-path consumer and audits every
+declaration owned by the three new modules, including generated/private declarations.
+
+Remaining: the non-correction cases with adjacent equal colours, and the
+repeated-outer diagonal correction and off-diagonal equality. This is not yet
+a complete `CrossBraid`, nor a nonzero model or nondegeneracy theorem.
+
 ## Reverse and middle unequal-reservoir sector braids
 
 `reverseDistinctReservoir_braid` proves `RᵣR_qPᵢ → PᵢR_qRᵣ`, retaining
@@ -538,6 +637,38 @@ Remaining: unequal same-side colours and the other `CrossBraid` fields.
 Both reverse repeated-side directions are covered above; these sector
 entries do not establish the remaining fields.
 
+
+## Collected moving-chain polynomial
+
+`LeadingIntertwinerExpansion.lean` expands the local even `(v-u)^2 T`
+and odd `-(v²-u²)^2 T` terms into four chronological monomials;
+unlike colours retain the prescribed crossing. `LeadingMoveExpansion.lean`
+proves `leadingMoveHom_expansion` for arbitrary prefixes and words, with
+explicit `MoveChoices`, `leadingMoveBlocks` and `leadingMoveCoeff`.
+
+`LeadingMovePolynomial.lean` applies `decorated_crossings_normal_order`
+to that expansion. Its `leadingMoveEndpointPolynomial` is the finite sum
+of `endpointDotMonomial (collectedSourceDots bs)` with exact coefficient
+`leadingMoveCoeff * collectedSourceSign`. The theorems
+`leadingMoveHom_sub_endpointPolynomial_mem_low` and
+`moveHom_sub_endpointPolynomial_mem_low` prove that polynomial followed
+by the prescribed crossing word equals the leading and full moving chains
+modulo `Low`. Both parity branches and every incident/distant sign remain
+explicit. This is a source-endpoint formula, not merely a transport API.
+
+`LeadingMoveCoefficients.lean` assembles the finite matrix
+`collectedContentMove`. `contentMove_long_prependCoefficients_sum` computes
+the longest coefficients of the prescribed `contentMove` by the wordwise
+PBW regrouping of this explicit polynomial. `appendContentMoveLift_extract_collected`
+transfers it to the existing source extraction, retaining `homMatrixTwist`
+and the degreewise `movingSignNormalize` sign.
+
+**Comparison:** the remaining separation, PBW regrouping and product
+identification are proved in the ordered-product section above. The global
+sign is derived independently of moving-dot degree. The prescribed chain,
+B₁, source (6), downstream (7), and ordinary-polynomial versus full-ELV scope
+are unchanged.
+
 ## Signed source-endpoint dot transport
 
 `SignedDotNormalOrder.lean` proves `decorated_crossings_normal_order`:
@@ -551,13 +682,9 @@ Incident slides contribute the product of the crossing colours' parities;
 distant slides also multiply by the dot colour's parity. All signs are
 derived from the positional relations, not extracted from `Approx`.
 
-**Residual:** the monomial collection theorem preserves chronological dot
-order, rather than sorting odd variables. The finite-sum expansion connecting
-`leadingMoveHom` to these decorated monomials is not yet proved. Its
-collected polynomial still needs identification with the prescribed product;
-scalar-to-old-matrix assembly, longest `prependCoefficients(contentMove)`,
-`homMatrixTwist` and degreewise `movingSignNormalize` remain to be evaluated.
-No count of equal colours has been identified with the moving-dot degree.
+**Application:** the monomial collection theorem preserves chronological dot
+order. Its application to `leadingMoveHom`, scalar-to-matrix assembly,
+PBW regrouping and comparison with S are proved above.
 
 
 ## Signed top-crossing chain
@@ -576,13 +703,11 @@ consumer applies both the universal filtration statement and coordinate
 identity to arbitrary words in a mixed-parity datum and audits all module
 declarations, including private and generated ones.
 
-**Residual:** the signed factors have not been collected into one ordered
-polynomial. This is a top-crossing decorated-chain theorem, not yet the
-ordered-polynomial expansion or evaluation of `prependCoefficients`
-as S. Normal-ordering must retain signed dot transport; then assemble the
-matrix coefficients and discharge `homMatrixTwist` and degreewise
-`movingSignNormalize`. The prescribed `contentMove`, B₁, source (6),
-downstream (7), and ordinary-polynomial/full-ELV distinction are unchanged.
+**Residual:** the explicit collected finite polynomial and affine coefficient
+comparison are proved above. Evaluation as S still requires dot separation,
+PBW regrouping, and the twist/degree-sign comparison. The prescribed
+`contentMove`, B₁, source (6), downstream (7), and ordinary-polynomial/full-ELV
+distinction are unchanged.
 
 ## Moving-chain source and filtered extraction
 
@@ -603,14 +728,13 @@ The importing consumer tests the coordinate identity for both colours of
 a mixed-parity datum and audits every declaration of this module. No
 cutoff, monicity, injectivity or polynomial-parity hypothesis is used.
 
-**Open general step:** prove the explicitly signed leading-polynomial
-expansion of `moveHom` modulo the lower-crossing filtration and transfer
-the scalar vanishing theorem to `prependCoefficients`. The existing
-`Approx` relation only records an unspecified unit, so it cannot determine
-the sign. The proposed library repeated-colour factor is positive for
-even colour and negative for odd colour; its full normalized extraction
-is not yet a theorem. Source equation (6) and downstream equation (7)
-remain separate; see `MackeyCrossingConventions.md`.
+The signed expansion, scalar-to-matrix comparison, ordered product and
+normalized ordinary extraction are proved by the modules described above.
+The library repeated-colour square factor has positive sign for even colour
+and negative sign for odd colour; this is proved without choosing the
+unspecified unit in `Approx`. Source equation (6) as a full ELV boundary
+identity and downstream equation (7) remain separate; see
+`MackeyCrossingConventions.md`.
 
 ## Ordinary content Mackey boundary
 
