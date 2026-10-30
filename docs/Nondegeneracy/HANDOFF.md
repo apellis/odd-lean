@@ -15,6 +15,14 @@ output sign is self-inverse, including over the zero ring. Thus only nonlong
 tails remain in the finite reconstruction. S/rho and balanced output-order
 comparisons remain separate obligations.
 
+`ELVOutputMoveComparison.outputLongExtraction_move_endpointPolynomial` proves
+that the prescribed moving chain and its independently collected endpoint
+polynomial followed by the bare long chain have equal normalized extraction,
+with arbitrary exterior coefficients. Their difference is chronological short.
+This does not replace the moving chain by the bare long chain: its repeated-colour
+polynomial factors remain. Evaluating that polynomial as S in the corrected
+rho coordinates is the next comparison.
+
 ## Last-output-dot coordinates on the bare long shuffle
 
 `LongOutputDotTransport.lean` evaluates the transported last position as zero
