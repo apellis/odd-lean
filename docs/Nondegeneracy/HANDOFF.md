@@ -1,5 +1,46 @@
 # Odd nondegeneracy: restart state
 
+## Actual reverse-chain endpoint norm; G injectivity remains open
+
+`ReverseIntertwinerChain.lean` defines the reverse of the actual moving chain
+and proves its local squares for unequal, repeated-even and repeated-odd
+colours. `ReverseIntertwinerNorm.lean` proves, for every prefix and word,
+
+    reverseMoveHom ≫ moveHom = endpointNorm.
+
+The right side is independently defined from dot polynomials. The append-end
+factors are Q at unequal colours, −(t−x)² at repeated even colour, and
+−(t²−x²)²(x²+t²) at repeated odd colour. The first encountered factor is
+leftmost in End multiplication, hence last in categorical composition.
+Transport through the forward tail uses parity support, not an assumed norm
+identity. No source/library crossing normalization is changed.
+
+`ReverseIntertwinerNaturality.lean` proves reverse moving-dot, distant-dot
+and arbitrary old-dot transport with the full word-parity signs. It also
+proves reverse crossing transport for a pair of old colours both different
+from the moving colour (the old colours may coincide). The remaining local
+reverse meet has a moving/old coincidence; the existing forward meet is not
+its proof merely by symmetry of equality. Thus no full reverse old-ideal
+descent, and no quotient reverse-chain map, is claimed.
+
+`ELVMovingNormRegularity.lean` proves regularity of the independently
+prescribed prepend-end norm polynomial on the full old-only ELV quotient.
+It uses actual finite PBW support, the invertible parity twist for a linear
+moving dot, and the prescribed unit leading coefficient for unequal Q.
+The odd sum-of-squares factor is retained. This prepend result is not
+regularity of the append-end `endpointNorm`: the append-coordinate quotient
+comparison remains to be constructed. In particular neither QP nor P
+injectivity is used to claim G injectivity.
+
+Next obligations for `DeformedBoundaryDivision.md` §§2–3: finish the reverse
+meet and lift its naturality through total coefficient-plus-diagram parity;
+construct append-old PBW quotient coordinates and prove the actual append
+endpoint norm regular there; deduce G injectivity and only then derive the
+concrete reverse boundary norm from full QP. None of these final implications
+is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
+consumes the new producers on a mixed-parity repeated-colour word and audits
+every owned module declaration, including generated and private names.
+
 
 ## Ordered product and normalized extraction
 
