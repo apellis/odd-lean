@@ -7,8 +7,14 @@ of the chronological short span under arbitrary full-ELV output old arrows,
 including distinct old source and target words. The exact kernel theorem gives
 `outputLongExtraction_act_appendInsert_congr`: equal extracted rows remain equal
 after an old output endomorphism. This avoids the invalid total-crossing-length
-bound. It does not yet move an old output factor across the bare long chain or
-identify the canonical balanced coefficients or S.
+bound. `bareLong_cross_chronologicalShort` now proves the actual old crossing
+generator slide across the bare long chain, for arbitrary left/right old contexts
+and arbitrary full ELV coefficient. Its sign is
+`zsign k (parity i * wordSumParity v * parity a * parity b)`. The one braid
+correction has fewer than `v.length` crossings; far sweeps are exact. This
+estimate is used only for a single generator, not for arbitrary old composites.
+`tmul_shortSpan` lifts relative scalar shortness to chronological shortness.
+Extension to arbitrary old arrows and canonical balanced coefficients/S remain open.
 
 ## Old source action on normalized output coordinates
 

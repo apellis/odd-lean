@@ -21,6 +21,27 @@ example (p : ZMod 2) (i : I) (v : List I) (g : hom D Sc cutoff v v)
       (act D Sc cutoff i (appendInsert D Sc cutoff i v v g) y) :=
   outputLongExtraction_act_appendInsert_congr D Sc cutoff p i v g h
 
+open scoped TensorProduct
+example (i a b : I) (l r : List I)
+    (c : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff)
+    (h : SChain (i :: (l ++ a :: b :: r))
+      (pl (i :: (l ++ a :: b :: r))
+        (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]))
+      ((l ++ b :: a :: r) ++ [i]))
+    (h' : SChain (i :: (l ++ a :: b :: r))
+      (pl (i :: (l ++ a :: b :: r))
+        ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))))
+      ((l ++ b :: a :: r) ++ [i])) :
+    projection D Sc cutoff i (l ++ a :: b :: r) ((l ++ b :: a :: r) ++ [i])
+      (c ⊗ₜ[k] (cl D Sc _ _
+        (cw (leadingMoveWord [] (l ++ a :: b :: r)) ++ [.cross l.length]) h -
+        SKM.zsign k (D.parity i * wordSumParity D (l ++ a :: b :: r) *
+          D.parity a * D.parity b) •
+        cl D Sc _ _
+          ([.cross (l.length+1)] ++ cw (leadingMoveWord [] (l ++ b :: a :: r))) h')) ∈
+      chronologicalShortSpan D Sc cutoff i (l ++ a :: b :: r) (l ++ b :: a :: r) :=
+  bareLong_cross_chronologicalShort D Sc cutoff i a b l r c h h'
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv
