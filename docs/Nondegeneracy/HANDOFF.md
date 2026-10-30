@@ -11,9 +11,23 @@ of its independent old dot word, in its independently counted moving degree.
 Both results hold for arbitrary colour types, words, cutoffs and commutative
 ground rings, in both moving parities. The proof separates the Hom-level source
 dot recurrence, uses old-dot twist invariance, and compares first/last dot
-coordinates; it assumes no transport. Summing the independent expansion and
-identifying its global sign with the boundary polynomial remains the next step.
-Corrected-rho identification and the prescribed inverse are not asserted.
+coordinates; it assumes no transport.
+
+`ELVOutputSComparison` now sums these genuine terms.
+`independentOutputS` is the explicit finite choice sum, with old quotient dot
+monomials and independently counted moving degrees, multiplied by
+`zsign k (parity i) ^ v.count i`. It is not defined using any extractor.
+`outputLongExtraction_squareProduct` identifies extraction of the independent
+unsigned square product followed by bare U with this coefficient row, using
+`leadingSource_expansion_eq_sign_smul`. The actual moving chain satisfies
+`outputLongExtraction_move_independentS`: its extraction is exactly
+`zsign k (parity i) ^ v.count i • independentOutputS`.
+`outputLongCoordinate_move_independentS_balanced` retains an arbitrary full-ELV
+old quotient coefficient b by chronological `oldComp b` on the left. No finite
+colour assumption, field specialization or exterior commutativity is used.
+This completes the independent fixed-word output polynomial comparison, not
+the corrected-rho lift compatibility, first-order boundary/division or prescribed
+inverse; those remain separate downstream steps.
 
 ## Two-sided output-order balanced extractor
 
