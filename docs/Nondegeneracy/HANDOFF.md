@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Endpoint ELV leading action at every cutoff
+
+`ELVAppendSignedMovingSupport.lean` proves that an arbitrary append moving
+power shifts the moving exponent and applies `oldTwist (d • parity i)` to
+the entire old coefficient. The degree bound holds with no even-power
+restriction, both alone and followed by arbitrary old-source action.
+
+`ELVEndpointLeading.lean` proves `endpointELV_top` and `endpointELV_above`
+for the actual finite `singleCoefficient` sum. Its leading coefficient is 1,
+and its highest action on arbitrary old coefficients is exactly the total
+old-Hom twist of parity `cutoff i • parity i`. Finite maximal append support
+and involutivity of that twist prove `appendProjection_endpointELV_regular`.
+The actual ordered QP–ELV numerator is then regular by
+`appendProjection_qp_endpointELV_regular`, directly on the old-only append
+quotient; no final-cyclotomic-quotient G cancellation is used.
+
+Remaining: assemble the whole numerator's explicit unit leading polynomial
+with old coefficients, identify its corrected longest-output coordinate
+relation, and prove the right-divisibility/local-inversion conclusion.
+The individual factor leading formulas and actual numerator regularity
+are not yet those conclusions.
+
+
 ## Actual append QP highest coefficients
 
 `appendQPFactor_odd` proves the repeated-odd signed QP factor is
