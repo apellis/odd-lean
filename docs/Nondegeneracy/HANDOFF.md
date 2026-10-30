@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Both adjacent two-reservoir blocks assembled
+
+`AdjacentReservoirReverseComparison.braid_entry_path` supplies the Q-weighted
+opposite 010 to 010 comparison entry. `AdjacentReservoirReverseBlock` proves
+the remaining 001 to 100 square and 010 to 100 diagonal-coefficient entries,
+reducing their actual finite sums. These follow from the already established
+weighted comparison and coefficient slide by the native equal-crossing matrix
+formulas; no extra Q commutation or inversion is assumed.
+Its `braid_block` exhaustively handles arbitrary jii to iij paths in this sector,
+deriving opposite-order validity and terminal endpoint equality. Together with
+`AdjacentReservoirSquareBlock.braid_block`, both adjacent-equal two-reservoir
+blocks are now assembled. Focused warning-as-error builds and strict default
+actual-path/block consumers pass; complete owner audits check 12 and 17
+declarations, respectively, with only the standard three axioms.
+Global CrossBraid assembly across all colour and sector cases remains open.
+
 ## Opposite adjacent-equal 001 to 010 entry
 
 `AdjacentReservoirReverseCoefficient.braid_entry_path` proves the actual
