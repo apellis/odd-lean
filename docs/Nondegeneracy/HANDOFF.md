@@ -11,9 +11,16 @@ supernatural module map, including odd maps. The construction uses the
 existing balanced composition isomorphism and the proved associativity of
 right append on full coefficient tensors and quotient morphisms. No
 additional scalar, flatness, finite-colour or parity hypotheses are used.
-Transport of prescribed crossings/dots, the composite quadratic, coherent
-triples and composite mixed braid remain the next obligations; these are
-not consequences asserted by this comparison alone.
+`ELVContentSingleLetterRelations.contentEPair_quadratic` now proves the
+original-Sc ordered quadratic on successive single-letter induction at a
+common target, using the prescribed normalized source crossing and transported
+positioned dots. `contentEPairCrossTransform` is a genuine supernatural
+transformation on all modules; `contentEPairCross_total` verifies its evaluated
+map equals the crossing used in the relation. The common-target second E is
+explicitly recast and specializes definitionally to literal successive E at
+its sequential target. Coherent triples, composite mixed braid, compatibility
+with separately whiskered single-letter dot maps and weight assembly remain
+next obligations.
 
 ## Common-content mixed braid
 
