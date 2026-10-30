@@ -11,11 +11,26 @@ the signed, balance-twisted delta action. `outputCorrectedLift` iterates the
 literal `boundaryRho` on the bare-long class; `outputLongSection_rho_iterate`
 identifies its lift and `outputLongExtraction_correctedLift` its extraction.
 
+`outputCorrectedLift_even` and `outputCorrectedLift_odd` compute every iterate:
+even degree is the normalized monomial, and odd degree has the total old twist
+in the next monomial plus `outputDeltaCoefficient` in the preceding even degree.
+`outputCorrectedCoordinateEquiv` is the explicit invertible triangular change
+on all finite rows, not just pairs; its singleton theorem identifies these
+coordinates with the actual corrected lifts. `outputLongSection_pair_inverse`
+also gives the inverse lift formula on each adjacent coefficient pair.
+
+`ELVBoundaryFirstOrder.lean` supplies the literal P-image `outputLiftBoundary`,
+its unprojected first-order intertwining, and `pMap_sub_outputLiftBoundary_mem`:
+every P-image minus the lifted long-coordinate image is a chronological
+crossing class. `pMap_outputCorrectedLift` computes every corrected P-image.
+
 These statements allow every old word, including empty, every cutoff and full
-old endomorphism coefficients over a commutative ground ring. The explicit
-inverse triangular coordinate change, variation of the old target, and the
-degree-zero defect after the prescribed P and append projection remain open.
-No canonical S comparison or prescribed matrix inverse is concluded here.
+old endomorphism coefficients over a commutative ground ring. Variation of the
+old target and the degree-zero polynomial defect remain open. The missing
+producer for the latter is the full-ELV crossing/output-polynomial splitting
+with its moving-dot contraction formula; the raw append-tail coordinate
+equivalence is not identified with that splitting. No canonical S comparison
+or prescribed matrix inverse is concluded here.
 
 
 ## Actual signed old-Hom right division

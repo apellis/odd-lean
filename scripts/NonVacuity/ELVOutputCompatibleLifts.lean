@@ -18,6 +18,16 @@ example (p : ZMod 2) (j : {j : I // D.parity j = 1}) (d : ℕ)
     outputLongExtraction D Sc cutoff p j.1 [] (outputCorrectedLift D Sc cutoff p j [] d b) =
       (outputCoefficientRho D Sc cutoff p j [])^[d] (Finsupp.single 0 b) :=
   outputLongExtraction_correctedLift D Sc cutoff p j [] d b
+example (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I)
+    (m : ℕ) (b : Old D Sc cutoff v v) :
+    outputCorrectedCoordinateEquiv D Sc cutoff p j v (Finsupp.single m b) =
+      outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v m b) :=
+  outputCorrectedCoordinateEquiv_single D Sc cutoff p j v m b
+example (p : ZMod 2) (j : {j : I // D.parity j = 1}) (v : List I)
+    (f : ℕ →₀ Old D Sc cutoff v v) :
+    (outputCorrectedCoordinateEquiv D Sc cutoff p j v).symm
+      (outputCorrectedCoordinateEquiv D Sc cutoff p j v f) = f :=
+  (outputCorrectedCoordinateEquiv D Sc cutoff p j v).symm_apply_apply f
 open Lean in
 run_cmd do
   let env ← Lean.getEnv
