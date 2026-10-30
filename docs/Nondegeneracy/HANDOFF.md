@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Even-moving polynomial boundary and reverse numerator
+
+`evenPolynomialBoundary` is C₀ composed with P and the existing long section,
+with arbitrary normalization p and full old coefficients. Its factorization
+through long extraction holds on the original target for either moving parity.
+For even moving colour and arbitrary mixed old words,
+`evenPolynomialBoundary_reverseNumerator` computes its value on the extraction
+of every moving-dot iterate of the intertwiner as the explicit ordered reverse
+numerator. At exponent zero, `evenPolynomialBoundary_independentS` proves
+A(S) = QP·endpoint in the checked coefficient convention.
+
+These are boundary bridge identities, not the leading law for A(single d b).
+That leading/support law with its normalization twist, the coefficient covariance,
+and even-moving division and height splittings remain open. Independent S support
+alone does not fill this gap. No balanced categorical inverse is asserted.
+
 ## Vacuum source comparison and iterated crossing coordinates
 
 `VacuumSourceComparison.comparison` identifies the canonical block comparison
