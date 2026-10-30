@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Separated right diagonal route
+
+`RepeatedOuterLiteralDiagonal.separatedOuter_braidRight` (namespace
+`ProbeReservoir`) identifies the complete finite right diagonal braid sum
+on `PᵢPⱼRᵢ` with `-(S ≫ Qn)`, where S is the separated conjugated
+coefficient and Qn is the mapped inner mixed Q. The three literal crossing
+entries are evaluated from `swappedGens c L`; no inverse or braid hypothesis
+is required. The left route, terminal-cast quadratic, Q commutation and
+literal dotEntry correction sums remain to be joined.
+
 ## Separated correction coordinates
 
 `RepeatedOuterSeparatedCoordinates` gives `separatedOuter_qExpr_correction`:
