@@ -1,6 +1,54 @@
 # Odd nondegeneracy: restart state
 
 
+## Adjacent-equal split repeated-colour component
+
+`adjacentMixed_braid` proves literal `braidLeft = braidRight` on
+`Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` for `i ≠ j`, arbitrary supplied data, weights,
+contents and commutative coefficients, under `c.IsInverse` and `CrossCoeffInputs`.
+The two-path expansions are evaluated: spectator-bit zeros remove off-route
+terms and the surviving products are the source coefficient followed by the
+prescribed Q-weighted two-crossing map, and that map followed by the target
+coefficient. Both repeated-dot transports are derived from local and spectator
+slides; their two signs multiply to one. The odd inverse-coefficient transport
+cancels only the mapped target unit denominator. Transport of `a²` is also proved.
+
+`adjacentMixed_J_rectangle` proves the Q-weighted comparison rectangle on
+`Pᵢ Rᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` from the two-probe interchange identity and supported
+polynomial transport. It cancels only mixed comparison isomorphisms, not Q or
+factor crossings. `AdjacentSplitBraid.lean` applies the braid theorem at generic
+occupied reservoir content and audits every declaration owned by the four new
+modules, including private and generated declarations.
+
+Remaining: the other split-sector entries, the pure-reservoir adjacent-equal
+cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+a complete `CrossBraid`, nor nondegeneracy is concluded.
+
+## Adjacent-equal pure-probe braids and split-sector support
+
+`pureProbe_braid` proves the literal swapped braid equality for arbitrary source
+and target paths at the pure-probe endpoint whenever the outer colours differ.
+`adjacentPureProbe_iij` and `adjacentPureProbe_ijj` specialize it. The proof
+retains the equal-colour negative Koszul normalization and uses the supplied
+probe factor braid. Pure-probe endpoint uniqueness follows from total probe
+content, not distinctness or independence of roots.
+
+`AdjacentMixedProbe` classifies the two paths at the endpoint with one repeated
+colour on each side and the other colour on the probe. Its `iij`, `iji`, and
+`jii` finite sums and both literal braid expansions are proved. The coefficient
+is unique under `c.IsInverse` and `CrossCoeffInputs`; the odd case cancels only
+the genuine unit mixed denominator. These are supporting results, not a
+split-sector braid theorem.
+
+The surviving products, both repeated-dot transports, inverse-coefficient
+transport and Q-weighted J rectangle for the component above are now proved.
+The pure-reservoir adjacent-equal sector and other split-sector placements remain. Thus neither arbitrary-endpoint
+`iij`/`ijj` nor `CrossBraid.braid` is concluded. Existing `braid_same` additionally
+uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir dot).
+
+
+
+
 ## Full ELV ideal sum and P cokernel
 
 `ELVFirstDotTransport.firstDot_relation_transport` proves the inverse-normalizer
@@ -419,6 +467,7 @@ equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
 The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
+
 
 ## Pairwise-distinct braid on arbitrary paths
 
