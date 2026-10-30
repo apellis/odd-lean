@@ -1,5 +1,117 @@
 # Odd nondegeneracy: restart state
 
+## Reverse three-strand crossing naturality
+
+`ReverseIntertwinerMeet.lean` proves `reverseMeetLeft_eq_all` (in namespace
+`OddMath.QuiverHecke`): the reverse chronological square
+`ψ₀ g₁ g₀ = g₁ g₀ ψ₁` for arbitrary colours and surrounding words.
+The actual normalized odd and even variants are invariant under passage to
+an opposite signed nilHecke ring; this proves the reverse all-equal braid.
+The moving-colour coincidence cases use palindromic and two-crossing dot
+transport identities. No inverse or cancellation of a moving chain is used.
+`cross_comp_reverseMoveHom_pair_all` applies the square to the defined
+reverse chain on two old strands, without colour restrictions.
+
+`ReverseIntertwinerCrossing.lean` proves
+`OddMath.QuiverHecke.cross_comp_reverseMoveHom_all`: old-crossing
+transport on arbitrary old words, by prefix and suffix induction with the
+outside-crossing parity sign. `ReverseIntertwinerBalance.lean` extends
+the generator slides to arbitrary old diagrams. `ELVRDescent.lean` proves
+`reverseMove_comp_insert` for the full coefficient-plus-diagram parity twist,
+including parity-mismatched Hom spaces. `reverseMove_relations` then proves
+old-ideal descent; `rMap : Target →ₗ[k] AppendTarget` is precomposition by
+the defined reverse chain. `rMap_qMap_projection` identifies reverse-after-
+forward with the append-end norm operation. Append-end norm regularity and
+G injectivity remain separate obligations; no cancellation is assumed.
+
+## Actual reverse-chain endpoint norm; G injectivity remains open
+
+`ReverseIntertwinerChain.lean` defines the reverse of the actual moving chain
+and proves its local squares for unequal, repeated-even and repeated-odd
+colours. `ReverseIntertwinerNorm.lean` proves, for every prefix and word,
+
+    reverseMoveHom ≫ moveHom = endpointNorm.
+
+The right side is independently defined from dot polynomials. The append-end
+factors are Q at unequal colours, −(t−x)² at repeated even colour, and
+−(t²−x²)²(x²+t²) at repeated odd colour. The first encountered factor is
+leftmost in End multiplication, hence last in categorical composition.
+Transport through the forward tail uses parity support, not an assumed norm
+identity. No source/library crossing normalization is changed.
+
+`ReverseIntertwinerNaturality.lean` proves reverse moving-dot, distant-dot
+and arbitrary old-dot transport with the full word-parity signs. It also
+proves reverse crossing transport for a pair of old colours both different
+from the moving colour (the old colours may coincide). The unrestricted
+local meet is now supplied by `ReverseIntertwinerMeet.lean` above.
+Full reverse old-ideal descent and the quotient reverse-chain map are now
+proved in `ELVRDescent.lean` above.
+
+`ELVMovingNormRegularity.lean` proves regularity of the independently
+prescribed prepend-end norm polynomial on the full old-only ELV quotient.
+It uses actual finite PBW support, the invertible parity twist for a linear
+moving dot, and the prescribed unit leading coefficient for unequal Q.
+The odd sum-of-squares factor is retained. This prepend result is not
+regularity of the append-end `endpointNorm`: the append-coordinate quotient
+comparison remains to be constructed. In particular neither QP nor P
+injectivity is used to claim G injectivity.
+
+Next obligations for `DeformedBoundaryDivision.md` §§2–3:
+construct append-old PBW quotient coordinates and prove the actual append
+endpoint norm regular there; deduce G injectivity and only then derive the
+concrete reverse boundary norm from full QP. None of these final implications
+is asserted by this slice. `scripts/NonVacuity/ReverseMovingNorm.lean`
+consumes the new producers on a mixed-parity repeated-colour word and audits
+every owned module declaration, including generated and private names.
+
+
+## Adjacent-equal split repeated-colour component
+
+`adjacentMixed_braid` proves literal `braidLeft = braidRight` on
+`Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` for `i ≠ j`, arbitrary supplied data, weights,
+contents and commutative coefficients, under `c.IsInverse` and `CrossCoeffInputs`.
+The two-path expansions are evaluated: spectator-bit zeros remove off-route
+terms and the surviving products are the source coefficient followed by the
+prescribed Q-weighted two-crossing map, and that map followed by the target
+coefficient. Both repeated-dot transports are derived from local and spectator
+slides; their two signs multiply to one. The odd inverse-coefficient transport
+cancels only the mapped target unit denominator. Transport of `a²` is also proved.
+
+`adjacentMixed_J_rectangle` proves the Q-weighted comparison rectangle on
+`Pᵢ Rᵢ Pⱼ → Pⱼ Rᵢ Pᵢ` from the two-probe interchange identity and supported
+polynomial transport. It cancels only mixed comparison isomorphisms, not Q or
+factor crossings. `AdjacentSplitBraid.lean` applies the braid theorem at generic
+occupied reservoir content and audits every declaration owned by the four new
+modules, including private and generated declarations.
+
+Remaining: the other split-sector entries, the pure-reservoir adjacent-equal
+cases, and repeated-outer correction. Neither arbitrary-endpoint `iij`/`ijj`,
+a complete `CrossBraid`, nor nondegeneracy is concluded.
+
+## Adjacent-equal pure-probe braids and split-sector support
+
+`pureProbe_braid` proves the literal swapped braid equality for arbitrary source
+and target paths at the pure-probe endpoint whenever the outer colours differ.
+`adjacentPureProbe_iij` and `adjacentPureProbe_ijj` specialize it. The proof
+retains the equal-colour negative Koszul normalization and uses the supplied
+probe factor braid. Pure-probe endpoint uniqueness follows from total probe
+content, not distinctness or independence of roots.
+
+`AdjacentMixedProbe` classifies the two paths at the endpoint with one repeated
+colour on each side and the other colour on the probe. Its `iij`, `iji`, and
+`jii` finite sums and both literal braid expansions are proved. The coefficient
+is unique under `c.IsInverse` and `CrossCoeffInputs`; the odd case cancels only
+the genuine unit mixed denominator. These are supporting results, not a
+split-sector braid theorem.
+
+The surviving products, both repeated-dot transports, inverse-coefficient
+transport and Q-weighted J rectangle for the component above are now proved.
+The pure-reservoir adjacent-equal sector and other split-sector placements remain. Thus neither arbitrary-endpoint
+`iij`/`ijj` nor `CrossBraid.braid` is concluded. Existing `braid_same` additionally
+uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir dot).
+
+
+
 
 ## Full ELV ideal sum and P cokernel
 
@@ -455,6 +567,7 @@ equivalence and all-generator descent are now supplied by `ELVPrependDescent`.
 The moving-square/even-dot shifts and leading-coordinate cancellation are
 now supplied by `ELVMovingShift`. See
 `ELVPrependCoordinates.md` for the coefficient formula and source locator.
+
 
 ## Pairwise-distinct braid on arbitrary paths
 
