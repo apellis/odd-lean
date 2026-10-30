@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Repeated-outer reverse off-diagonal
+
+`repeatedOuter_other_offDiag` proves equality of the actual full finite-sum
+`braidLeft` and `braidRight` entries from `PᵢPⱼRᵢ` to `RᵢPⱼPᵢ`.
+It needs `i ≠ j` and the one valid reservoir step, but neither
+`c.IsInverse` nor `CrossCoeffInputs`. The new mixed-move comparison permits
+equal colors; the two route reductions explicitly discard spectator-zero
+entries. The generic importing consumer applies the result without any
+matrix-braid hypothesis. The forward off-diagonal and the other diagonal
+at this endpoint, the other mixed endpoints, and the full `CrossBraid`
+producer remain open.
+
 ## Literal pure-reservoir diagonal correction
 
 `repeatedOuterPureReservoir_braidEq_diag` proves the exact two signed
