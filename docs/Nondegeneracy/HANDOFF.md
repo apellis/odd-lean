@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Weighted repeated-outer forward equality
+
+`RepeatedOuterWeightedSquare.repeatedOuter_forward_braid` (in namespace
+`ProbeReservoir`) identifies the full literal finite-sum braid entries from
+`RᵢPⱼPᵢ` to `PᵢPⱼRᵢ` for `P.swappedGens c L`. Its assumptions are
+`c.IsInverse`, `CrossCoeffInputs`, `i ≠ j`, a valid reservoir step and genuine
+sector transports. The local mixed-Q/coefficient commutation follows from the
+coefficient inverse identities and denominator unit. The supported outer Q
+transport is instantiated at the actual reservoir endpoints. The weighted
+square cancels only the established mixed isomorphisms. The generic importing
+consumer audits all module declarations, including private helpers.
+
+The `PᵢPⱼRᵢ` diagonal correction and remaining mixed placements are still open;
+this is one component, not a proof of full `CrossBraid` or nondegeneracy.
+
 ## Forward mixed routes and outer Q transport
 
 `repeatedOuter_forward_left_route` and `repeatedOuter_forward_right_route`
@@ -11,8 +26,9 @@ is assumed or asserted. `preCrossNe_qExpr_outer` transports one outer Q
 factor across the actual unequal probe crossing, for an arbitrary homogeneous
 spectator, by the supplied dot slide and supernaturalness; every supported
 coefficient is retained. It does not invert Q or the crossing.
-The weighted square rectangle still requires its local coefficient–Q
-commutation and endpoint identifications before these two routes agree.
+The local coefficient–Q commutation and endpoint identifications are now
+supplied by `RepeatedOuterWeightedSquare`, proving equality of these routes
+for coefficient-derived generators.
 
 ## Single probe edge for the separated mixed coefficient
 
