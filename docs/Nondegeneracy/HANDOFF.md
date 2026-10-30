@@ -47,6 +47,9 @@ two-strand dots; `contentInductionCross_linear_eq_neg` identifies the crossing
 with the negative raw operator, including its coefficient parity twist.
 No source nilHecke relation is assumed: the proof uses the affine quotient
 relation and the actual ELV quotient/balanced tensor composition.
+The equal-colour braid is also proved on every exact-content induced module
+object for the negative appended three-strand crossings; identification with
+whiskered single-letter E-generators still needs the content composition transport.
 Mixed presentation-relation identification on those operators, transport from
 composite content append to word append, weight assembly, and local
 inversion matrices remain separate;

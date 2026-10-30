@@ -35,6 +35,16 @@ example (β : Multiset I) (i : I) (M : ContentModules D Sc cutoff N β)
       LinearMap.id :=
   contentInduction_normalized_slide_right_linear D Sc cutoff N β i M w
 
+example (β : Multiset I) (i : I) (M : ContentModules D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i,i,i] : Multiset I))) :
+    (-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w).comp
+      ((-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w).comp
+        (-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w)) =
+    (-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w).comp
+      ((-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w).comp
+        (-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w)) :=
+  contentInduction_equal_braid_linear D Sc cutoff N β i M w
+
 -- Every owned module is audited from its serialized declaration inventory,
 -- not an environment scan which can omit generated or private declarations.
 open Lean Elab Command in

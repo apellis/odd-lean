@@ -152,6 +152,21 @@ theorem transformLinear_slide_right {p : ZMod 2} {a b c : ∀ v, J.obj v ⟶ J.o
     tensor, TensorProduct.sub_tmul, ← TensorProduct.smul_tmul', map_sub, map_smul] at he ⊢
   simpa only [sub_eq_add_neg, add_comm] using he
 
+/-- The common Koszul factor on the two homogeneous three-crossing words agrees. -/
+theorem transformLinear_braid {p : ZMod 2} {a b : ∀ v, J.obj v ⟶ J.obj v}
+    (ha : IsSupernatural k p a) (hb : IsSupernatural k p b)
+    (hrel : ∀ v, a v ≫ b v ≫ a v = b v ≫ a v ≫ b v)
+    (M : Superfunctor k C (SVec k)) (w : B) :
+    (transformLinear ha M w).comp ((transformLinear hb M w).comp (transformLinear ha M w)) =
+      (transformLinear hb M w).comp ((transformLinear ha M w).comp (transformLinear hb M w)) := by
+  apply hom_ext
+  intro v h m
+  simp only [LinearMap.comp_apply, transformLinear_tensor, twist_comp,
+    twist_of_mem p (ha.mem v), twist_of_mem p (hb.mem v), map_smul,
+    Linear.smul_comp, Linear.comp_smul]
+  rw [← Category.assoc (b v) (a v), ← Category.assoc (a v) (b v),
+    ← Category.assoc (a v) (b v ≫ a v), ← Category.assoc (b v) (a v ≫ b v), hrel v]
+
 end BalancedInduction
 
 /-- Square-zero for the specified normalized crossing, as an equality of module maps. -/
@@ -277,5 +292,44 @@ theorem contentInduction_normalized_slide_right_linear (β : Multiset I) (i : I)
   change crossTwo D Sc i i ≫ dotE D Sc [i,i] 0 -
     sign k (D.parity i * D.parity i) • (dotE D Sc [i,i] 1 ≫ crossTwo D Sc i i) = 𝟙 _ at he
   rw [he, contentAppendToComponent_id]
+
+theorem tripleCross_zero_parity (i : I) :
+    crossE D Sc [i,i,i] 0 ∈ parity (R := k) _ _ (D.parity i * D.parity i) := by
+  unfold crossE
+  rw [genE_eq D Sc (show SChain [i,i,i] (pl [i,i,i] [.cross 0]) [i,i,i] from
+    sChain_cross [] [i] i rfl rfl)]
+  exact positionedCross_parity D Sc [] [i] i i
+
+theorem tripleCross_one_parity (i : I) :
+    crossE D Sc [i,i,i] 1 ∈ parity (R := k) _ _ (D.parity i * D.parity i) := by
+  unfold crossE
+  rw [genE_eq D Sc (show SChain [i,i,i] (pl [i,i,i] [.cross 1]) [i,i,i] from
+    sChain_cross [i] [] i rfl rfl)]
+  exact positionedCross_parity D Sc [i] [] i i
+
+/-- The equal-colour braid for the signed appended crossings on every induced module. -/
+theorem contentInduction_equal_braid_linear (β : Multiset I) (i : I)
+    (M : ContentModules D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i,i,i] : Multiset I))) :
+    (-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w).comp
+      ((-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w).comp
+        (-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w)) =
+    (-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w).comp
+      ((-contentInductionEndLinear D Sc cutoff N (tripleCross_zero_parity D Sc i) M w).comp
+        (-contentInductionEndLinear D Sc cutoff N (tripleCross_one_parity D Sc i) M w)) := by
+  simp only [LinearMap.neg_comp, LinearMap.comp_neg, neg_neg]
+  congr 1
+  apply BalancedInduction.transformLinear_braid
+  intro v
+  rw [contentAppendToComponent_comp D Sc cutoff N rfl rfl rfl _ (tripleCross_zero_parity D Sc i),
+    contentAppendToComponent_comp D Sc cutoff N rfl rfl rfl _ (tripleCross_one_parity D Sc i),
+    contentAppendToComponent_comp D Sc cutoff N rfl rfl rfl _
+      (comp_mem (tripleCross_one_parity D Sc i) (tripleCross_zero_parity D Sc i)),
+    contentAppendToComponent_comp D Sc cutoff N rfl rfl rfl _
+      (comp_mem (tripleCross_zero_parity D Sc i) (tripleCross_one_parity D Sc i))]
+  have he := crossE_braid D Sc (w := [i,i,i]) [] [] i (j := 0) rfl rfl
+  change crossE D Sc [i,i,i] 0 ≫ (crossE D Sc [i,i,i] 1 ≫ crossE D Sc [i,i,i] 0) =
+    crossE D Sc [i,i,i] 1 ≫ (crossE D Sc [i,i,i] 0 ≫ crossE D Sc [i,i,i] 1) at he
+  rw [he]
 
 end OddMath.QuiverHecke.ELVOld
