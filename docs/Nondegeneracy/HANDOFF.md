@@ -13,8 +13,13 @@ same-colour normalization. No extra flatness or finiteness premise is used.
 of `contentEPairCrossTransform`, with explicit equality transports to a common
 intermediate content. Both operators are independently defined using only
 single-letter induction and the normalized pair crossing.
-The three independently whiskered dots and original-Sc whiskered mixed braid
-remain to be identified.
+`contentETripleMap_first_dot`, `contentETripleMap_middle_dot`, and
+`contentETripleMap_last_dot` identify all three independently whiskered
+single-letter dots for arbitrary three-letter words and terminal content.
+`contentETriplePolynomial_whiskered` identifies the full ordered original-Sc
+correction with those independent dots, including the leading t term and all
+s terms. Composing the independent crossing identifications into the whole
+mixed braid remains a separate check.
 
 ## Whole comparison coherence and the prescribed cyclotomic source
 
