@@ -26,6 +26,21 @@ theorem separatedOuter_braidRight_obligation (ν : X) (c : P.CrossCoeff Sc)
         (P.step (true, i) true s trivial).map
           (P.mixedQ j i (nextSector (true, i) true s) hR Z)) :=
   P.separatedOuter_braidRight ν i j s hR Z c L hij
+theorem separatedOuter_braidLeft_obligation (ν : X) (c : P.CrossCoeff Sc)
+    (L : P.LeftwardData) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
+      nextSector (true, j) true (nextSector (true, i) true s))
+    (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
+      nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR rfl
+    let b : SPath (wd D ν [up j, up i, up i]) s _ :=
+      SPath.three true true false trivial trivial hR hs
+    braidLeft (P.swappedGens c L) i j i ν n n Z =
+      -((crossEntry (P.swappedGens c L) ν [] i j [up i] n b Z ≫
+        crossEntry (P.swappedGens c L) ν [] j i [up i] b n Z) ≫
+        P.repeatedOuterMixedSeparatedCoeff i j s hR Z c) :=
+  P.separatedOuter_braidLeft ν i j s hR Z hs₀ hs c L hc h hij
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
 
