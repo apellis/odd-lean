@@ -10,9 +10,11 @@ outer-kernel twist, without defining either whiskering by transport. These
 comparison squares are the first step toward identifying the content pair
 and triple transported maps with whiskered generators.
 `ELVInductionAssociativity.compForward_assoc` now proves equality of the two
-recursive flattening trees as linear maps on every induced module. Content
-equality transports still need to be inserted to identify the two content
-comparison trees. The resulting whiskered quadratic and mixed braid still
+recursive flattening trees as linear maps on every induced module. `ELVContentWhiskering.contentInductionComp_inner` and
+`contentInductionComp_outer` insert the exact content transports into both
+whiskering squares for arbitrary affine endomorphisms, proving the source
+identifications through the truncated quotient. The two content comparison
+trees still need their equality transports inserted into associativity. The resulting whiskered quadratic and mixed braid still
 require proof.
 
 ## All-module content induction comparison
