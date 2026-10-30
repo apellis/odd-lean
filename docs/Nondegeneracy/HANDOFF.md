@@ -1,6 +1,26 @@
 # Odd nondegeneracy: restart state
 
 
+## Corrected full-ELV source dot
+
+`ELVBoundaryRho` constructs the odd source operator on the prescribed old-only
+quotient, not on a replacement polynomial module. Its first-dot multiplier is
+`x + 2(-1)^N delta`, followed by the moving-content sign. Both cutoff parities,
+zero cutoff, empty old words and arbitrary mixed old words are included.
+`pMap_boundaryRho` proves the first-order identity `P rho = R_t P` directly
+from the decorated deletion slide and full-coefficient normalizer.
+`boundaryRho_square` identifies its square with the unchanged moving square,
+using the previously proved injectivity of P. `boundaryRho_iterate_even`,
+`boundaryRho_iterate_odd_projection`, and `pMap_boundaryRho_iterate` determine
+all corrected iterates and their P-images, without any norm or inverse input.
+
+The full-ELV long/short extraction and target crossing/polynomial splitting,
+short-image inclusion, corrected-coordinate norm extraction, monic boundary
+values and prescribed matrix inverse remain open. The ordinary
+`GlobalLocalInversion` interface is not the full-ELV action: its coefficient
+model cannot absorb the noncentral odd algebra as a commutative scalar ring.
+A signed kernel/module action over the ground ring k is still required.
+
 ## Full ELV ideal sum and P cokernel
 
 `ELVFirstDotTransport.firstDot_relation_transport` proves the inverse-normalizer
