@@ -173,6 +173,101 @@ lemma separatedOuter_braidLeft (c : P.CrossCoeff Sc) (L : P.LeftwardData)
       (SPath.three true true false trivial trivial hR hs) Z ≫ f)
       (P.separatedOuter_literal_coeff_slide ν i j s hR Z hs₀ hs c L hc h hij)).trans
         (neg_assoc _ _ _))
+include hs₀ in
+/-- The literal terminal-cast probe pair is exactly the native outer Q. -/
+lemma separatedOuter_literal_probe_quad (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hij : i ≠ j) :
+    let n : SPath (wd D ν [up i, up j, up i]) s _ :=
+      SPath.three true true false trivial trivial hR rfl
+    let b : SPath (wd D ν [up j, up i, up i]) s _ :=
+      SPath.three true true false trivial trivial hR hs
+    crossEntry (P.swappedGens c L) ν [] i j [up i] n b Z ≫
+      crossEntry (P.swappedGens c L) ν [] j i [up i] b n Z =
+      qExpr Sc (P.distinctProbeOuterDot i j i s hR Z)
+        (P.distinctProbeInnerDot i j i s hR Z) i j := by
+  classical
+  dsimp only
+  let pg : SPath (wd D (SKM.wt D ν [up i]) [up i, up j]) s
+      (nextSector (true, j) true (nextSector (true, i) true s)) :=
+    SPath.two true true trivial trivial rfl
+  let qg : SPath (wd D (SKM.wt D ν [up i]) [up j, up i]) s
+      (nextSector (true, j) true (nextSector (true, i) true s)) :=
+    SPath.two true true trivial trivial hs₀
+  let pv : SPath (wd D ν [up i])
+      (nextSector (true, j) true (nextSector (true, i) true s))
+      (nextSector (true, i) false (nextSector (true, j) true (nextSector (true, i) true s))) :=
+    .cons _ false _ hR (.nil _)
+  have hb : SPath.three (c₁ := ⟨up j, SKM.wt D ν [up i, up i]⟩)
+      (c₂ := ⟨up i, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
+      true true false trivial trivial hR hs = qg.append pv := by
+    rcases adjacentMixed_jii_cases hij hR hs hs (qg.append pv) with h | h
+    · cases h
+    · exact h.symm
+  have hM : (P.pathFunctor (qg.append pv)).obj Z =
+      (P.pathFunctor qg).obj ((P.pathFunctor pv).obj Z) := by
+    rw [P.pathFunctor_append]; rfl
+  have hf := (heq_of_eq (crossEntry_left (P.swappedGens c L) ν i j i pg qg pv Z)).trans
+    (sandwich_heq _ _ _)
+  have hg := (heq_of_eq (crossEntry_left (P.swappedGens c L) ν j i i qg pg pv Z)).trans
+    (sandwich_heq _ _ _)
+  have hp := eq_of_heq (comp_common_grid_heq rfl hM rfl hf hg)
+  have hquad := P.swappedGens_crossCrossNe c L i j (SKM.wt D ν [up i]) hij pg
+    ((P.pathFunctor pv).obj Z)
+  have : Subsingleton (SPath (wd D (SKM.wt D ν [up i]) [up j, up i]) s
+      (nextSector (true, j) true (nextSector (true, i) true s))) := ⟨path_eq_of_ne hij.symm⟩
+  let : Fintype (SPath (wd D (SKM.wt D ν [up i]) [up j, up i]) s
+      (nextSector (true, j) true (nextSector (true, i) true s))) := Fintype.ofFinite _
+  unfold crossCross at hquad
+  have hsum := Fintype.sum_subsingleton (fun m : SPath
+    (wd D (SKM.wt D ν [up i]) [up j, up i]) s
+      (nextSector (true, j) true (nextSector (true, i) true s)) =>
+    (P.swappedGens c L).cross i j (SKM.wt D ν [up i]) pg m ((P.pathFunctor pv).obj Z) ≫
+      (P.swappedGens c L).cross j i (SKM.wt D ν [up i]) m pg ((P.pathFunctor pv).obj Z)) qg
+  have hquad := hsum.symm.trans hquad
+  have hx := eq_of_heq (P.leftDot_two_probe_heq c L i j (SKM.wt D ν [up i])
+    true trivial rfl ((P.pathFunctor pv).obj Z) _ HEq.rfl)
+  have hy := eq_of_heq (P.rightDot_two_probe_heq c L i j (SKM.wt D ν [up i])
+    true trivial rfl ((P.pathFunctor pv).obj Z) _ HEq.rfl)
+  have hfinal := hp.trans (hquad.trans (congrArg₂ (fun x y => qExpr Sc x y i j) hx hy))
+  erw [hb]
+  exact hfinal
+include hs₀ hs in
+/-- The full left diagonal matrix entry in the native separated dots. -/
+lemma separatedOuter_braidLeft_qExpr (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    braidLeft (P.swappedGens c L) i j i ν
+      (SPath.three true true false trivial trivial hR rfl)
+      (SPath.three true true false trivial trivial hR rfl) Z =
+      -(qExpr Sc (P.distinctProbeOuterDot i j i s hR Z)
+        (P.distinctProbeInnerDot i j i s hR Z) i j ≫
+        P.repeatedOuterMixedSeparatedCoeff i j s hR Z c) := by
+  exact (P.separatedOuter_braidLeft ν i j s hR Z hs₀ hs c L hc h hij).trans
+    (congrArg (fun q => -(q ≫ P.repeatedOuterMixedSeparatedCoeff i j s hR Z c))
+      (P.separatedOuter_literal_probe_quad ν i j s hR Z hs₀ hs c L hij))
 end Left
+
+lemma separatedOuter_innerQ :
+    (P.step (true, i) true s trivial).map
+      (P.mixedQ j i (nextSector (true, i) true s) hR Z) =
+      qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+        (P.distinctProbeInnerDot i j i s hR Z) i j := by
+  exact (P.distinctProbe_map_mixedQ i j i s hR Z).trans
+    (qExpr_swap Sc _ _ i j (zsign k (D.parity i * D.parity j))
+      (P.separatedOuterDots_zy i j s hR Z)
+      (zsign_pow_of_mul_eq_zero (k := k) (D.parity i) (D.parity j))).symm
+
+/-- The full right diagonal matrix entry, with Q written in the native
+spectator and inner probe dots in the order required by the correction. -/
+lemma separatedOuter_braidRight_qExpr (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hij : i ≠ j) :
+    braidRight (P.swappedGens c L) i j i ν
+      (SPath.three true true false trivial trivial hR rfl)
+      (SPath.three true true false trivial trivial hR rfl) Z =
+      -(P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫
+        qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
+          (P.distinctProbeInnerDot i j i s hR Z) i j) := by
+  exact (P.separatedOuter_braidRight ν i j s hR Z c L hij).trans
+    (congrArg (fun q => -(P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫ q))
+      (P.separatedOuter_innerQ i j s hR Z))
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

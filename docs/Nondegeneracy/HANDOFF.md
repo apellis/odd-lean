@@ -10,8 +10,13 @@ entries are evaluated from `swappedGens c L`; no inverse or braid hypothesis
 is required. `separatedOuter_braidLeft` now reduces the complete left sum to
 `-((F ≫ f) ≫ S)`, with F and f the two literal crossing entries including
 terminal casts. The coefficient slide is derived from `c.IsInverse` and
-`CrossCoeffInputs`, not assumed. The terminal-cast quadratic, Q commutation
-and literal dotEntry correction sums remain to be joined.
+`CrossCoeffInputs`, not assumed. `separatedOuter_literal_probe_quad` now
+identifies the actual terminal-cast probe pair with Qxy by the supplied
+quadratic relation and typed path append transports. Consequently
+`separatedOuter_braidLeft_qExpr` and `separatedOuter_braidRight_qExpr` identify
+both complete matrix sums as `-(Qxy ≫ S)` and `-(S ≫ Qzy)` respectively.
+Qzy uses `qExpr_swap`, retaining the actual signed dot commutation. The
+S/Qzy commutation and literal dotEntry correction sums remain to be joined.
 
 ## Separated correction coordinates
 
