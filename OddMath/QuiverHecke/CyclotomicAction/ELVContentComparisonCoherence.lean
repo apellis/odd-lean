@@ -161,5 +161,21 @@ theorem contentETripleComparison_assoc (l : I) (γ : Multiset I)
           (by rw [add_assoc, add_assoc]; exact h) hs) ≪≫
       contentInductionComp D Sc cutoff N β [i] [j,l] γ hs h :=
   contentInductionComp_assoc D Sc cutoff N β i j [l] γ _ hs h
+/-- Equality of the whole linear maps of the two named triple comparison trees. -/
+theorem contentETripleComparison_assoc_total (l : I) (γ : Multiset I)
+    (h : β + ([i,j,l] : Multiset I) = γ)
+    (hs : δ₁ + ([j,l] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (t : ContentCategory D Sc cutoff N γ) :
+    ((contentETripleComparison D Sc cutoff N β i j l γ h).hom.app M).total t =
+    ((Functor.associator (contentE D Sc cutoff N β i) (contentE D Sc cutoff N δ₁ j)
+      (contentInductionTo D Sc cutoff N δ₂ [l] γ
+        (by rw [add_assoc, add_assoc]; exact h)) ≪≫
+      Functor.isoWhiskerLeft (contentE D Sc cutoff N β i)
+        (contentInductionComp D Sc cutoff N δ₁ [j] [l] γ
+          (by rw [add_assoc, add_assoc]; exact h) hs) ≪≫
+      contentInductionComp D Sc cutoff N β [i] [j,l] γ hs h).hom.app M).total t := by
+  exact congrArg (fun e => (e.hom.app M).total t)
+    (contentETripleComparison_assoc D Sc cutoff N β i j l γ h hs)
+
 end Content
 end OddMath.QuiverHecke.ELVOld
