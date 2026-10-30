@@ -1,5 +1,31 @@
 # Odd nondegeneracy: restart state
 
+## Content induction dot nilpotence
+
+`ELVContentInductionNilpotence.contentInductionDot_module_pow_zero` derives a
+uniform positive exponent for the independently defined `contentInductionDot`,
+as an endomorphism in the module supercategory, on every module at fixed source
+content. `contentInductionDot_pow_zero` gives its evaluated linear operators;
+`contentInductionDot_smul_pow_zero` uses the same exponent for every ground-scalar
+normalization, including either sign. Assumptions are a commutative ground ring,
+symmetrizer, homogeneous scalars and finite colours. No module boundedness,
+assumed nilpotence or identification with `W.dot` occurs.
+
+The proof uses the quotient's positive integer degree bound on the appended
+source components, not target-word module action. The checked induction formula
+has scalar `sign k (p * (n / 2))` and twists the entire kernel morphism by `n*p`,
+including exterior coefficient parity. Total evaluation preserves module
+endomorphism powers and detects zero by the two parity projections. The
+coefficient algebra retains its exterior multiplication; arbitrary module Hom
+spaces are not given an integer grading.
+
+The content induction functors and their comparisons are present, but their
+Rouquier/reservoir-family assembly and identification with that family's `W.dot`
+remain separate obligations. The polynomial cyclotomic `globalRouquierFamily`
+is a different construction and still takes local inversion data. Consequently
+this is the checked induction-dot nilpotence input, not a completed reservoir
+F3 proof, infinite-colour result, or exponent uniform over all weights.
+
 ## Truncated positive-degree nilpotence
 
 `ELVTruncatedNilpotence.truncatedContent_positive_pow_zero` derives one
