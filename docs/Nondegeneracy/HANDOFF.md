@@ -38,8 +38,13 @@ cancellation for `parameterTwist Sc`, including the single disconnected
 constant, leading terms and all interior terms. The calculation applies
 through any algebra map from the affine height algebra into a possibly
 noncommutative algebra and on every left module. Separate support constraints
-remove the total input parity from the signed dot-power exponent. This is
-not yet an identification with the exact-content induction operators.
+remove the total input parity from the signed dot-power exponent.
+`ELVContentModuleQuadratic.contentInduction_quadratic_tensor` now proves
+that the two actual normalized distinct-colour induction crossings at one
+common exact-content endpoint compose to this original-Sc ordered evaluation
+on every balanced tensor. This bridge uses the two-word source relation and
+has no finite-colour assumption. Identifying the resulting evaluation with
+ordered powers of the dotted module operators remains separate.
 `ELVContentModuleRelations.contentInductionCross_square` proves square-zero
 for the actual normalized crossing as a module-map equality. Both normalized
 nilHecke slides are proved on every induced module object using the actual
