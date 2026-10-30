@@ -13,7 +13,13 @@ zero, for arbitrary quotient elements. If E_m denotes extraction, sigma the tota
 old-parity involution, epsilon the output sign and C the twisted old delta action,
 then E_(m+1)(rho z) = sigma(E_m(z)) + epsilon * 2*(-1)^cutoff * C(E_(m+1)(z));
 the zero coefficient contains only the delta term. Thus rho is not an ordinary
-polynomial shift on these coefficients. Output-old balancing and S remain open.
+polynomial shift on these coefficients. `ELVOutputBalancedComparison` packages
+the specified finite coefficient operator as `outputCoefficientRho` and proves
+`outputLongExtraction_boundaryRho`, hence preservation of the exact chronological
+short kernel. `outputLongCoordinate_balanced` computes arbitrary old quotient
+coefficients on the fixed old-word balanced summand as literal `oldComp`, with
+no assumed old-linearity. Moving an output-old factor across the bare long chain
+and identification of the ordered S polynomial remain open.
 
 ## Chronological short kernel inclusions
 
