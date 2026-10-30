@@ -138,8 +138,37 @@ right append between them, and concrete `contentE ⊣ contentF`.
 `ELVModuleInductionRelations.transform_comp` proves the superopposite law:
 `T(β) ≫ T(α) = sign k (p*q) • T(α≫β)`. In particular odd–odd composition
 is signed, not ordinary reversal. The unit compatibility is also checked.
-Normalized generators, parameter twist, content-generator endpoint
-transports, weight assembly, and local inversion matrices remain separate;
+`ELVContentModuleTransform` constructs exact-content dots and crossings,
+using a common explicit endpoint for both colour orders and the source's
+equal-colour minus. `ELVModuleInductionComp.inductionComp` gives the even
+composition isomorphism, natural against all module maps; its tensor map
+is `[g ⊗ [h ⊗ m]] ↦ [K(h) ≫ g ⊗ m]` and its inverse inserts the inner
+identity. The source convention is E=induction, F=restriction.
+`ELVParameterUntwist` proves the ordered mixed quadratic coefficient
+cancellation for `parameterTwist Sc`, including the single disconnected
+constant, leading terms and all interior terms. The calculation applies
+through any algebra map from the affine height algebra into a possibly
+noncommutative algebra and on every left module. Separate support constraints
+remove the total input parity from the signed dot-power exponent.
+`ELVContentModuleQuadratic.contentInduction_quadratic_tensor` now proves
+that the two actual normalized distinct-colour induction crossings at one
+common exact-content endpoint compose to this original-Sc ordered evaluation
+on every balanced tensor. This bridge uses the two-word source relation and
+has no finite-colour assumption. Identifying the resulting evaluation with
+ordered powers of the dotted module operators remains separate.
+`ELVContentModuleRelations.contentInductionCross_square` proves square-zero
+for the actual normalized crossing as a module-map equality. Both normalized
+nilHecke slides are proved on every induced module object using the actual
+two-strand dots; `contentInductionCross_linear_eq_neg` identifies the crossing
+with the negative raw operator, including its coefficient parity twist.
+No source nilHecke relation is assumed: the proof uses the affine quotient
+relation and the actual ELV quotient/balanced tensor composition.
+The equal-colour braid is also proved on every exact-content induced module
+object for the negative appended three-strand crossings; identification with
+whiskered single-letter E-generators still needs the content composition transport.
+Mixed presentation-relation identification on those operators, transport from
+composite content append to word append, weight assembly, and local
+inversion matrices remain separate;
 no full factor action is claimed. Integer grading of the source categories
 and kernels is retained; a graded module-category framework is not needed
 by the current Rouquier target.
