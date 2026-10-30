@@ -4,9 +4,9 @@
 This assembles right projectivity from the all-prefix identity and P balance
 in `DeformedGlobalQP.md` and the written ideal equality
 in `DeformedIdealSum.md`. Full ELV P/Q descent, the signed QP identity and
-injectivity of P are now proved in Lean. `ELVPCentral.lean` constructs its
-wordwise k[s]-linear map and commuting twisted old operators. The content-level
-right B[s]-module structures, ideal-sum exactness and projectivity below remain
+injectivity of P are now proved in Lean. `ELVContentModule.lean` constructs
+the content-level ordinary right B[s]-modules and the injective B[s]-linear P.
+The finite-projective PBW decomposition and ideal-sum exactness below remain
 written mathematics.
 No assertion about left projectivity or the specified Rouquier matrix is made.
 
@@ -119,8 +119,9 @@ structure on the actual tensor quotients, not on replacement modules.
 for arbitrary words, cutoffs and full exterior coefficients. The actual
 quotient composite `qMap_comp_pMap` is `signedQPMap`; its injectivity follows
 from `projection_qp_relation_regular` and the proved moving PBW coordinates.
-This is injectivity of the ground-ring linear map, not yet a construction
-of the B[s]-module structures or their exact projective sequence.
+`ELVOld.pPolynomial_injective` now transports this injectivity to
+the content-level ordinary right B[s]-linear map. The exact projective
+sequence, including the finite-projective PBW identification, remains open.
 
 Put T=τ₁⋯τ_n and W=f_i(x₁)T e_R. The old balance in
 `DeformedGlobalQP.md` defines the even map

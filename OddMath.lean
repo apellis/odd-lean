@@ -34,6 +34,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPInjective
 import OddMath.QuiverHecke.CyclotomicAction.ELVParabolicSpan
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVPCentral
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 import OddMath.QuiverHecke.InputParabolic
 import OddMath.QuiverHecke.PrependBasis
 import OddMath.QuiverHecke.AppendParabolic
