@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Literal middle-probe diagonal correction
+
+`ProbeReservoir.middleProbe_braidEq_diag_transport` proves the complete
+`Ri Pj Ri` diagonal at arbitrary terminal sectors and paths with that endpoint.
+The actual finite sums give the reverse Q commutator of the reservoir crossing.
+Its signed ordered correction follows from the opposite slide and supported
+sum reflection, with all three literal dot coordinates retained. No Q or
+crossing inversion is introduced. The remaining repeated-outer mixed diagonals
+are `Pi Rj Ri` and `Ri Rj Pi`; the whole `CrossBraid` is not assembled.
+
 ## Literal middle-reservoir diagonal correction
 
 `ProbeReservoir.middleReservoir_braidEq_diag_transport` proves the complete
