@@ -28,8 +28,18 @@ uses the actual positive-coordinate recurrence to obtain convolution; it does
 not infer a boundary theorem from independent S alone. The existing all-colour
 integer Cartan-height identity applies unchanged.
 
-Even-moving division and height splittings remain open. No balanced categorical
-inverse is asserted.
+Finite pivot elimination using these proved actual coefficient laws gives
+`evenBoundaryRowDivisionEquiv`: high-source quotients plus literal low-output
+remainders reconstruct by `(q,r) ↦ A(q)+r`. The kernel is exactly the low-source
+window. For D ≤ M, `evenBoundaryPositiveEquiv` is `(f,r) ↦ A(f)+r`, and
+`evenBoundaryPositiveCokernelEquiv` identifies the actual cokernel with the
+window below M−D. For M ≤ D, `evenBoundaryNegativeEquiv` is
+`(low,g) ↦ low + section(g)`, with section constructed from division; its inverse
+second coordinate is exactly A. Both branches include height zero.
+
+These are full-coefficient k-linear row splittings. A Γ-balanced, integer-graded
+categorical matrix inverse and its source/snake comparison remain separate;
+none is asserted by these row results.
 
 ## Vacuum source comparison and iterated crossing coordinates
 
