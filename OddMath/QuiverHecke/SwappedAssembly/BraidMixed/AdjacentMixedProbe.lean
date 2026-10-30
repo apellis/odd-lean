@@ -205,7 +205,10 @@ theorem adjacentMixed_braidLeft_sum (P : ProbeReservoir k B D Sc)
   classical
   dsimp only
   unfold braidLeft
-  simp only [adjacentMixed_iji_sum hij hR e₂ e₃, adjacentMixed_iij_sum hij hR e₀ e₁]
+  refine (adjacentMixed_iji_sum hij hR e₂ e₃ _).trans ?_
+  refine congrArg₂ (· + ·) ?_ ?_
+  · exact congrArg (fun f => f ≫ _) (adjacentMixed_iij_sum hij hR e₀ e₁ _)
+  · exact congrArg (fun f => f ≫ _) (adjacentMixed_iij_sum hij hR e₀ e₁ _)
 
 /-- Literal right braid sum at the occupied mixed endpoint: four terms before
 using the off-diagonal zeros of the distinct-colour crossings. -/
@@ -236,7 +239,10 @@ theorem adjacentMixed_braidRight_sum (P : ProbeReservoir k B D Sc)
   classical
   dsimp only
   unfold braidRight
-  simp only [adjacentMixed_jii_sum hij hR e₂ e₃, adjacentMixed_iji_sum hij hR e₀ e₁]
+  refine (adjacentMixed_jii_sum hij hR e₂ e₃ _).trans ?_
+  refine congrArg₂ (· + ·) ?_ ?_
+  · exact congrArg (fun f => f ≫ _) (adjacentMixed_iji_sum hij hR e₀ e₁ _)
+  · exact congrArg (fun f => f ≫ _) (adjacentMixed_iji_sum hij hR e₀ e₁ _)
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
