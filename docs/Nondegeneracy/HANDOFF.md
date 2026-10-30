@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Literal repeated-outer diagonal and pure-factor corrections
+
+`repeatedOuter_braidEq_diag` proves the literal `braidLeft - braidRight`
+equals exactly the two `CrossBraid.braidEq_diag` sums for `Rᵢ Pⱼ Pᵢ`.
+All finite intermediate-path sums, object transports, and three literal
+`dotEntry` powers are identified. The row reductions cover arbitrary target
+paths, but the other three entries involving `Pᵢ Pⱼ Rᵢ` remain unproved.
+
+The pure-probe and pure-reservoir factor corrections and actual canonical
+path-route transports are also proved, with their equal-crossing and
+content-shift signs. Their diagonal outputs are explicit factor polynomials
+transported through the normalization isomorphism; individual dotted powers
+still require identification with the literal swapped path correction.
+Pure-sector off-diagonal vanishing is proved. None of these results supplies
+the complete `CrossBraid` producer yet.
+
 ## Actual raw repeated-outer diagonal
 
 `repeatedOuterDiagonal_correction` proves the two explicit signed sums for
