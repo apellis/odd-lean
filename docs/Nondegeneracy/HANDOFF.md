@@ -15,9 +15,15 @@ remainder coordinate is strictly below `endpointQPDegree`. The proof uses
 inverse-unit/twist cancellation on single tails and finite-support degree
 induction, not arbitrary polynomial-evaluation multiplicativity.
 
-Remaining: uniqueness and prescribed local inverse, and identification with
-the separate output S/rho/balanced coordinate relation. Division alone does
-not identify the final reverse boundary inverse.
+`ELVQPDivisionEquiv.lean` proves uniqueness, descends the actual numerator
+action to `AppendTarget`, and constructs the canonical linear quotient/remainder
+equivalence `endpointQPDivisionEquiv`. Its `..._numerator` theorem returns
+exactly `(appendProjection g, 0)` on the literal numerator image;
+`endpointQP_remainder_zero_iff` characterizes that image.
+
+Remaining: identify the separate output S/rho/balanced coordinate relation
+and compare the resulting boundary map with the prescribed categorical matrix.
+The local numerator division inverse does not by itself identify that matrix.
 
 ## Literal normalized endpoint–QP numerator
 
