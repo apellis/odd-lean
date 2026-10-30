@@ -33,7 +33,14 @@ equal-colour minus. `ELVModuleInductionComp.inductionComp` gives the even
 composition isomorphism, natural against all module maps; its tensor map
 is `[g ⊗ [h ⊗ m]] ↦ [K(h) ≫ g ⊗ m]` and its inverse inserts the inner
 identity. The source convention is E=induction, F=restriction.
-Parameter twist and presentation-relation identification, transport from
+`ELVParameterUntwist` proves the ordered mixed quadratic coefficient
+cancellation for `parameterTwist Sc`, including the single disconnected
+constant, leading terms and all interior terms. The calculation applies
+through any algebra map from the affine height algebra into a possibly
+noncommutative algebra and on every left module. Separate support constraints
+remove the total input parity from the signed dot-power exponent. This is
+not yet an identification with the exact-content induction operators.
+Presentation-relation identification on those operators, transport from
 composite content append to word append, weight assembly, and local
 inversion matrices remain separate;
 no full factor action is claimed. Integer grading of the source categories
