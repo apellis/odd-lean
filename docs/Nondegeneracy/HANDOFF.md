@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Suffix crossing on three content induction functors
+
+`contentETripleMap_suffix_cross` identifies canonical triple transport of
+`[i] ◁ contentCrossAffine j l` with the independently defined pair crossing
+evaluated on the first single-letter induced module. Its source and target
+are the successive induction spaces for `[i,l,j]` and `[i,j,l]`, respectively.
+The proof uses the whole comparison coherence square, and includes arbitrary
+modules, terminal content objects, repeated colours and the negative
+same-colour normalization. No extra flatness or finiteness premise is used.
+The other crossing placement, three independently whiskered dots, and the
+original-Sc whiskered mixed braid remain to be identified.
+
 ## Whole comparison coherence and the prescribed cyclotomic source
 
 `contentETripleComparison_assoc` now identifies the original pair-first and
