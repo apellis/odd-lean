@@ -1,5 +1,19 @@
 # Odd nondegeneracy: restart state
 
+## Induction of content representables
+
+`ELVInductionRepresentable.InductionRepresentable.iso` identifies balanced
+`contentInduction σ` of the covariant representable at `v` with the
+representable at the appended word. Its forward map sends `[h ⊗ g]` to
+`J(g) ≫ h`; its inverse sends `h` to `[h ⊗ id_v]`. Both quotient
+roundtrips, naturality for every target arrow and evenness of both maps are
+proved over an arbitrary ordinary commutative ground ring, with the full ELV
+coefficient quotient retained. This is the representable step of
+`DeformedActionAssembly.md` §5 toward vacuum word realization. No local
+inverse or factor-model assumption is used. Iterated vacuum-word and
+normalized dot/cross comparisons, rank-zero coefficient/corner identification,
+and the actual bubble values remain separate obligations.
+
 ## Actual full-cyclotomic monic annihilator and bounded moving powers
 
 `EndpointNormPolynomial` computes the leading scalar unit of each literal full

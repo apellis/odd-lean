@@ -3,6 +3,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
