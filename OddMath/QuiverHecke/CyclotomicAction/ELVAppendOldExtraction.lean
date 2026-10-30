@@ -8,7 +8,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPrependOldExtraction
 /-!
 # ELV old-Hom extraction from append PBW coordinates
 
-The extraction step of `ELVPrependCoordinates.md`, needed for the old-only
+The append-coordinate extraction step, needed for the old-only
 coordinate comparison in `DeformedGlobalQP.md` §1. Only the old normal-form
 component of the existing `AppendIdx` is replaced; the moving exponent and
 inverse shuffle remain unchanged. No finite-colour or flatness assumption is used.

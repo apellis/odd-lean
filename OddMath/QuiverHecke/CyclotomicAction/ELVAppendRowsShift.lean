@@ -31,7 +31,7 @@ theorem appendTail_shift {i : I} {v w : List I} (x : AppendIdx i v w) (d : ℕ) 
   simp only [AppendIdx.shift, List.replicate_add, List.map_append, List.append_assoc,
     List.map_replicate, hl]
 
-/-- Moving a central power through a common tail works for every old append. -/
+/-- Moving a central power through a common tail works for every old source word. -/
 theorem centralAppend_pair (i : I) {v t w : List I}
     (h : hom D Sc cutoff (t ++ [i]) w) (b : Old D Sc cutoff v t) :
     centralAppend D Sc cutoff i v w (appendPair D Sc cutoff 0 i h b) =

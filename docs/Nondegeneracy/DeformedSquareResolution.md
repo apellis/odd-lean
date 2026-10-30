@@ -10,7 +10,12 @@ the content-level ordinary right B[s]-modules and the injective B[s]-linear P.
 ground-ring-linear cokernel. `ELVQuotientPresheaf.lean` and
 `ELVContentExactness.lean` construct the quotient action on representatives
 and prove the canonical content B[s]-linear cokernel and short exact sequence.
-The finite-projective PBW decomposition remains written mathematics.
+The finite-projective PBW decompositions are now formalized for all three
+endpoints: `ELVSourceProjective.lean` proves `K1_projective` and
+`K1Prime_projective`; `ELVAppendProjective.lean` proves `K0_projective`.
+The equivalences are polynomial-linear and their rows are the literal right
+ideals e(v)B[s]. Later homological deductions in this document remain written
+mathematics.
 No assertion about left projectivity or the specified Rouquier matrix is made.
 
 Sources read for this comparison: KKO I, arXiv:1206.5933v2, Lemma 7.3,

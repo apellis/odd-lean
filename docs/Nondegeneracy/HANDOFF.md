@@ -60,12 +60,22 @@ retracts. Epsilon and eta remain in reconstruction and signed PBW extraction.
 actions. Arbitrary off-diagonal old coefficients and the central variable are
 respected; empty content, zero cutoff and zero corners require no exceptions.
 
-**Remaining in this slice:** the append-side K₀ decomposition is not constructed.
-It needs the full signed-coefficient append PBW descent and common-row assembly;
-the ordinary-coefficient append package is not a substitute. Consequently this
-slice proves the two source finite-projectivity inputs, not the complete pair
-of finite-projective endpoints. Cokernel and ideal-sum exactness are supplied
-by the independent constructions below, not reproved or assumed here.
+**Append endpoint completed:** `ELVAppendCoordinates` uses the input-side append
+PBW basis and retains the exterior coefficient twist. `ELVAppendOldExtraction`,
+`ELVAppendCrossTail` and `ELVAppendDescent` descend extraction through exactly
+`appendRelations` and prove both inverse laws. `ELVAppendRowsEquivalence`
+assembles the actual common rows across all old source columns, respecting
+every old word-to-word arrow. `ELVAppendRowsShift` proves the central last-dot
+or last-square action is exponent translation. `ELVAppendPolynomialIdempotents`
+and `ELVAppendProjective` give `K0IdempotentEquiv`, `K0_projective`, and
+`K0_finite`: literal finite e(v)B[s] rows and their finite-free retract.
+No ordinary-coefficient quotient or comparison through a moving-map injection
+is substituted. `ELVAppendSupport` records finite moving support, arbitrary old
+action nonincrease and central-shift compatibility on the actual decoder.
+Append endpoint norm regularity and moving-map injectivity remain separate.
+The consumer `scripts/NonVacuity/ELVAppendProjective.lean` exercises the endpoint
+and audits every declaration in the eleven append-coordinate modules, including
+private and generated declarations.
 
 The importing consumer `scripts/NonVacuity/ELVSourceProjective.lean` exercises
 both polynomial equivalences, actual projectivity instances, mixed moving
