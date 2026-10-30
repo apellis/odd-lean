@@ -15,8 +15,9 @@ fully flattened pair-first leg of the triple square.
 `contentInductionComp_suffix_tensor` now evaluates the suffix-first leg, first
 combining the second letter with the suffix, then combining with the first
 letter. `contentInductionComp_suffix_apply` handles arbitrary inner elements.
-Equality of the two cast-bearing tensor arrows and hence the named triple
-associativity square remain open.
+`contentInductionComp_cast_arrow` identifies the two cast-bearing tensor
+arrows using functor composition and proof irrelevance. The named triple
+associativity square remains to be deduced by generator extensionality.
 
 ## Content comparison on balanced generators
 
