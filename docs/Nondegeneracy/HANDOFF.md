@@ -44,7 +44,13 @@ that the two actual normalized distinct-colour induction crossings at one
 common exact-content endpoint compose to this original-Sc ordered evaluation
 on every balanced tensor. This bridge uses the two-word source relation and
 has no finite-colour assumption. Identifying the resulting evaluation with
-ordered powers of the dotted module operators remains separate.
+ordered powers of the dotted module operators is now proved termwise for
+every interior coefficient by `ELVContentOperatorPolynomial.contentInduction_dot_monomial`.
+Its generic power formula retains the twist on the entire kernel morphism.
+The two operator powers are ordered in reverse of End multiplication on
+the source: the first-position power acts first. The original coefficient
+`Sc.s` is retained, and its two support constraints are derived rather than
+assumed. Leading terms, polynomial assembly and mixed corrected braid remain open.
 `ELVContentModuleRelations.contentInductionCross_square` proves square-zero
 for the actual normalized crossing as a module-map equality. Both normalized
 nilHecke slides are proved on every induced module object using the actual
