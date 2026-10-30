@@ -11,9 +11,15 @@ of every moving-dot iterate of the intertwiner as the explicit ordered reverse
 numerator. At exponent zero, `evenPolynomialBoundary_independentS` proves
 A(S) = QP·endpoint in the checked coefficient convention.
 
+`evenPolynomialBoundary_rightAction_even` proves full-coefficient covariance:
+the source action retains p while the output action has shift zero.
+`outputLongExtraction_evenDot` identifies the extracted even dot with exponent
+shift; `evenPolynomialBoundary_shift_high` derives the actual row's positive
+coefficient recurrence from P and the constant C₀ defect.
+
 These are boundary bridge identities, not the leading law for A(single d b).
-That leading/support law with its normalization twist, the coefficient covariance,
-and even-moving division and height splittings remain open. Independent S support
+That leading/support law with its normalization twist, and even-moving division
+and height splittings remain open. Independent S support
 alone does not fill this gap. No balanced categorical inverse is asserted.
 
 ## Vacuum source comparison and iterated crossing coordinates

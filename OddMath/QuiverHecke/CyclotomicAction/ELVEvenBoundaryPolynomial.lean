@@ -3,6 +3,7 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryNumeratorCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryCoefficientAction
 
 /-!
 # Polynomial boundary on the long section at an even moving colour
@@ -95,5 +96,34 @@ theorem evenPolynomialBoundary_independentS (p : ZMod 2) (i : I)
     rw [twist_zero]
   rw [hz] at h
   exact h
+
+/-- Covariance of the section-defined row retains the normalization and the
+whole old coefficient. No commutativity of the old endomorphism algebra is used. -/
+theorem evenPolynomialBoundary_rightAction (p : ZMod 2) (i : I) (v : List I)
+    (c : Old D Sc cutoff v v) (f : ℕ →₀ Old D Sc cutoff v v) :
+    evenPolynomialBoundary D Sc cutoff p i v
+      (outputCoefficientRightAction D Sc cutoff i
+        (p + D.parity i * wordSumParity D v) v c f) =
+    outputCoefficientRightAction D Sc cutoff i 0 v c
+      (evenPolynomialBoundary D Sc cutoff p i v f) := by
+  obtain ⟨g, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+  have h := evenPolynomialBoundary_factor D Sc cutoff p i v
+    (act D Sc cutoff i (appendInsert D Sc cutoff i v v g)
+      (outputLongSection D Sc cutoff p i v f))
+  rw [outputLongExtraction_rightAction, outputLongExtraction_section] at h
+  rw [← h, pMap_postcomp, appendC0_postcomp]
+  rfl
+
+/-- Even moving parity removes the moving-degree signs, but not the global p
+normalization on arbitrary full old coefficients. -/
+theorem evenPolynomialBoundary_rightAction_even (p : ZMod 2) (i : I)
+    (hi : D.parity i = 0) (v : List I)
+    (c : Old D Sc cutoff v v) (f : ℕ →₀ Old D Sc cutoff v v) :
+    evenPolynomialBoundary D Sc cutoff p i v
+      (outputCoefficientRightAction D Sc cutoff i p v c f) =
+    outputCoefficientRightAction D Sc cutoff i 0 v c
+      (evenPolynomialBoundary D Sc cutoff p i v f) := by
+  simpa only [hi, zero_mul, add_zero] using
+    evenPolynomialBoundary_rightAction D Sc cutoff p i v c f
 
 end OddMath.QuiverHecke.ELVOld
