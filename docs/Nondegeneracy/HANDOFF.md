@@ -18,8 +18,8 @@ endpoint. Both literal braid sums reduce by path uniqueness. Mixed comparison
 conjugation identifies their difference with the normalized probe crossing's
 Q commutator. All three literal dot entries, all their powers and both signed
 coefficient sums are transported by the same comparison. No coefficient-inverse
-assumption or Q/probe-crossing inverse is used. The remaining mixed repeated-outer
-diagonal placements are `Ri Pj Ri`, `Pi Rj Ri`, and `Ri Rj Pi`.
+assumption or Q/probe-crossing inverse is used. Together with the middle-probe
+result above, the remaining mixed diagonals are `Pi Rj Ri` and `Ri Rj Pi`.
 
 ## Adjacent-equal reservoir comparison entry
 
@@ -37,8 +37,9 @@ entry for arbitrary terminal sectors, supplied swapped generators and
 commutative ground rings. Both full intermediate sums reduce by spectator
 vanishing to the mixed-comparison rectangle with the unequal reservoir
 crossing. No coefficient inverse or polynomial invertibility is assumed.
-The reverse two-reservoir off-diagonal, the four remaining mixed repeated-outer
-diagonal placements, and both adjacent-equal two-reservoir blocks remain open.
+The reverse two-reservoir off-diagonal, the two remaining mixed repeated-outer
+diagonals `Pi Rj Ri` and `Ri Rj Pi`, and the other adjacent-equal two-reservoir
+entries remain open.
 Thus neither a full `CrossBraid` producer nor full nondegeneracy is claimed.
 
 ## Separated right diagonal route
