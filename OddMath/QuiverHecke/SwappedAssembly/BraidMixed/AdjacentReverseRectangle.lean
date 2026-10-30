@@ -83,5 +83,23 @@ theorem adjacentReverse_splitMatrix (c : P.CrossCoeff Sc) (hc : c.IsInverse)
   · exact splitMatrix_square _ _ _ _ _ _ hA hJ'
   · exact splitMatrix_conj _ _ _ _ _ _ hA hJ'
 
+/-- The reverse square entry in functor-mapped crossing form. -/
+theorem adjacentReverse_square_rectangle (c : P.CrossCoeff Sc) (hc : c.IsInverse)
+    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (P.step (true, j) true s trivial).map
+      (-(c.a i (nextSector (true, j) true s) hR ((P.castH hs).obj Z) ≫
+        c.a i (nextSector (true, j) true s) hR ((P.castH hs).obj Z) ≫
+        (P.mixedJ i i (nextSector (true, j) true s) hR ((P.castH hs).obj Z)).inv)) ≫
+      (P.adjacentReverseProbeCross i j s hR hs₀ Z ≫
+        (P.step (true, i) true s trivial).map
+          (P.mixedJ j i (nextSector (true, i) true s) hR Z).hom) =
+    P.adjacentReverseMove i j s hR hs Z ≫
+      (-(c.a i s hR ((P.step (true, j) true _ trivial).obj Z) ≫
+        c.a i s hR ((P.step (true, j) true _ trivial).obj Z) ≫
+        (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj Z)).inv)) := by
+  have hr := (P.adjacentReverse_splitMatrix i j s hR hs₀ hs Z c hc h hij).2.2.1
+  simpa only [Functor.map_neg, Functor.map_comp, Functor.mapIso_inv,
+    Preadditive.neg_comp, Preadditive.comp_neg, Category.assoc] using hr
+
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

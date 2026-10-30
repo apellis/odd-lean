@@ -11,10 +11,17 @@ and two probes. `adjacentReverseMove_preDot` and
 cancelled. `adjacentReverse_J_rectangle` is the actual homogeneous
 probe-pair interchange triangle. No Q polynomial or crossing is inverted.
 
-The remaining step for this placement is identification of all literal braid
-path entries and their finite sums with the four raw rectangle entries.
-`AdjacentReverseRectangle.lean` is not yet an arbitrary-path reverse braid
-theorem or a `CrossBraid` producer.
+`adjacentReverse_braid` identifies all literal path entries and finite sums
+with these four raw entries, proving the reverse braid for arbitrary source
+and target paths at this occupied endpoint. Its four producers are
+`adjacentReverse_braid_diag`, `adjacentReverse_braid_J`,
+`adjacentReverse_braid_square`, and `adjacentReverse_braid_conj`.
+`AdjacentReverseReduction` proves the exhaustive finite-path reductions;
+`AdjacentReverseMatrix` proves all actual edge comparisons.
+`scripts/NonVacuity/AdjacentReverseBraid.lean` applies the arbitrary-path theorem
+at generic occupied content and audits every declaration owned by all six
+reverse modules. Other mixed endpoints and the repeated-outer correction
+remain open; complete `CrossBraid` and nondegeneracy are not concluded.
 
 ## Adjacent-equal pure-reservoir braids
 
