@@ -1,5 +1,19 @@
 # Odd nondegeneracy: restart state
 
+## Forward mixed routes and outer Q transport
+
+`repeatedOuter_forward_left_route` and `repeatedOuter_forward_right_route`
+reduce the complete finite `braidLeft` and `braidRight` sums from
+`RᵢPⱼPᵢ` to `PᵢPⱼRᵢ` to one route each. These exact path equations hold
+for arbitrary generators, with `i ≠ j` and one valid reservoir step.
+The equal mixed edge remains explicitly in each route; no braid equality
+is assumed or asserted. `preCrossNe_qExpr_outer` transports one outer Q
+factor across the actual unequal probe crossing, for an arbitrary homogeneous
+spectator, by the supplied dot slide and supernaturalness; every supported
+coefficient is retained. It does not invert Q or the crossing.
+The weighted square rectangle still requires its local coefficient–Q
+commutation and endpoint identifications before these two routes agree.
+
 ## Single probe edge for the separated mixed coefficient
 
 `repeatedOuterMixed_probe_coeff` transports the unsigned conjugated coefficient
