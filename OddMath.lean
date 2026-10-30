@@ -63,6 +63,13 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
+import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel
+import OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputKernel
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputMoveComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputOldAction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputRhoCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputBalancedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows
