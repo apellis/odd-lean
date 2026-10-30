@@ -153,4 +153,50 @@ theorem composition_component {z : ContentCategory D Sc cutoff N β}
     twist_of_mem (p + 1) (evaluate_part D Sc cutoff N β s 1)]
   simp only [mul_zero, mul_one, sign_zero, one_smul, Linear.comp_smul]
 
+/-- Transport the established Hom coordinates through supplied module isomorphisms. -/
+def homEquivOfIso {M P : ContentModules D Sc cutoff N β}
+    (a : M ≅ contentRepresentable D Sc cutoff N β v)
+    (b : P ≅ contentRepresentable D Sc cutoff N β w) : (M ⟶ P) ≃ₗ[k] (w ⟶ v) := by
+  let e : (M ⟶ P) ≃ₗ[k] (contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D Sc cutoff N β w) :=
+    LinearEquiv.ofLinearMap
+    ({
+      toFun := fun t => a.inv ≫ t ≫ b.hom
+      map_add' := by intros; simp only [Preadditive.comp_add, Preadditive.add_comp]
+      map_smul' := by intros; simp only [Linear.comp_smul, Linear.smul_comp, RingHom.id_apply] } :
+      (M ⟶ P) →ₗ[k] (contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D Sc cutoff N β w))
+    { toFun := fun t => a.hom ≫ t ≫ b.inv
+      map_add' := by intros; simp only [Preadditive.comp_add, Preadditive.add_comp]
+      map_smul' := by intros; simp only [Linear.comp_smul, Linear.smul_comp, RingHom.id_apply] }
+    (by ext t; simp) (by ext t; simp)
+  exact e.trans (homEquiv D Sc cutoff N β)
+
 end OddMath.QuiverHecke.ELVOld.ContentYoneda
+
+namespace OddMath.QuiverHecke.ELVOld.VacuumRepresentable
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
+
+/-- Reindex the checked iterated vacuum module into a specified common content. -/
+def wordModuleAt (σ : List I) (β : Multiset I) (h : content σ = β) :
+    ContentModules D Sc cutoff N β := h ▸ wordModule D Sc cutoff N σ
+
+def wordObjectAt (σ : List I) (β : Multiset I) (h : content σ = β) :
+    ContentCategory D Sc cutoff N β := h ▸ wordObject D Sc cutoff N σ
+
+def wordIsoAt (σ : List I) (β : Multiset I) (h : content σ = β) :
+    wordModuleAt D Sc cutoff N σ β h ≅
+      contentRepresentable D Sc cutoff N β (wordObjectAt D Sc cutoff N σ β h) := by
+  subst β
+  exact wordIso D Sc cutoff N σ
+
+/-- Actual vacuum-word morphisms have reverse word-Hom coordinates, for any
+pair of operator words of the same content, not just one word's endomorphisms. -/
+def wordHomEquiv (σ τ : List I) (β : Multiset I)
+    (hσ : content σ = β) (hτ : content τ = β) :
+    (wordModuleAt D Sc cutoff N σ β hσ ⟶ wordModuleAt D Sc cutoff N τ β hτ) ≃ₗ[k]
+      (wordObjectAt D Sc cutoff N τ β hτ ⟶ wordObjectAt D Sc cutoff N σ β hσ) :=
+  ContentYoneda.homEquivOfIso D Sc cutoff N β
+    (wordIsoAt D Sc cutoff N σ β hσ) (wordIsoAt D Sc cutoff N τ β hτ)
+
+end OddMath.QuiverHecke.ELVOld.VacuumRepresentable

@@ -21,6 +21,15 @@ example (t : contentRepresentable D Sc cutoff N β v ⟶ contentRepresentable D 
       proj k p (ContentYoneda.evaluate D Sc cutoff N β t) :=
   ContentYoneda.evaluate_proj D Sc cutoff N β t p
 
+example (σ τ : List I) (hσ : VacuumRepresentable.content σ = β)
+    (hτ : VacuumRepresentable.content τ = β) :
+    (VacuumRepresentable.wordModuleAt D Sc cutoff N σ β hσ ⟶
+      VacuumRepresentable.wordModuleAt D Sc cutoff N τ β hτ) ≃ₗ[k]
+    (VacuumRepresentable.wordObjectAt D Sc cutoff N τ β hτ ⟶
+      VacuumRepresentable.wordObjectAt D Sc cutoff N σ β hσ) :=
+  VacuumRepresentable.wordHomEquiv D Sc cutoff N σ τ β hσ hτ
+
+#print axioms VacuumRepresentable.wordHomEquiv
 #print axioms ContentYoneda.homEquiv
 #print axioms ContentYoneda.composition_component
 

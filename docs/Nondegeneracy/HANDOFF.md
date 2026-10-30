@@ -8,9 +8,10 @@ has component `h ↦ proj_p(f) ≫ twist_p(h)`. Both roundtrips are proved;
 `evaluate_proj` retains both total-parity projections. `composition_component`
 proves the super-opposite convolution: the odd-odd term is negative.
 This is a covariant-representable precomposition formula, not the reservoir
-postcomposition action. Transport through vacuum word isomorphisms, mixed
-common-content/block coordinates, prescribed coefficient/opposite normalization
-and the untruncated reservoir comparison remain open here.
+postcomposition action. `VacuumRepresentable.wordHomEquiv` transports the equivalence
+through the checked iterated vacuum `wordIso`, for any two words reindexed into
+the same content. Mixed generator/block coordinates, prescribed coefficient/opposite
+normalization and the untruncated reservoir comparison remain open here.
 
 
 ## Induction of content representables
