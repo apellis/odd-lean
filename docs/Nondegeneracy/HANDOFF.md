@@ -13,6 +13,12 @@ from the decorated deletion slide and full-coefficient normalizer.
 using the previously proved injectivity of P. `boundaryRho_iterate_even`,
 `boundaryRho_iterate_odd_projection`, and `pMap_boundaryRho_iterate` determine
 all corrected iterates and their P-images, without any norm or inverse input.
+`ELVBoundaryRhoCoordinates` computes every iterate on every input PBW tail:
+even iterates shift the moving exponent without changing the old coefficient;
+odd iterates have an explicit shifted term with total-parity-twisted old
+coefficient and an unshifted delta-action term with balance-parity twist.
+These formulas do not identify input PBW coordinates with the output-last-dot
+Mackey extraction.
 
 The full-ELV long/short extraction and target crossing/polynomial splitting,
 short-image inclusion, corrected-coordinate norm extraction, monic boundary
