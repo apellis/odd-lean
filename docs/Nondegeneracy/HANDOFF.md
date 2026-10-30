@@ -1,5 +1,58 @@
 # Odd nondegeneracy: restart state
 
+## Ordered reverse boundary polynomial and all corrected iterates
+
+`AppendQPTransport.lean` independently defines `appendQPProduct` at the last
+strand and proves `qpProduct_comp_moveHom` for every word. Its factors are
+Q at unequal colours, −1 at repeated even colour, and `(x_b − t)^2` at
+repeated odd colour. This polynomial is neither the full chain norm nor S.
+
+`ELVEndpointPolynomial.lean` defines `endpointELV` as the literal finite
+coefficient sum, and proves `relation_comp_move` in both parities with sign
+`(−1)^((cutoff i • p(i)) * (p(i) * p(v)))`. Exterior coefficients remain in
+the full ELV algebra; only the ground scalar ring is commutative.
+
+`ELVReverseBoundary.lean` proves `pMap_move_projection` by canceling the
+already-injective qMap on its old-only append domain. For arbitrary h:
+
+    P [move ≫ h] = sign • [appendQPProduct ≫ endpointELV ≫ h].
+
+The chronological order on the right means `f(t) L(t)` in End algebra
+notation. `pMap_boundaryRho_move_iterate` proves every corrected odd iterate
+has image `sign • [t^d ≫ appendQPProduct ≫ endpointELV ≫ h]`;
+`pMap_evenDot_move_iterate` proves the even case without a correction or
+parity sign. The moving dot is not commuted through f(t).
+
+Next: identify this quotient identity with the full-ELV longest-output
+coordinate relation and prove the explicit unit-leading normalization of
+this numerator. These are still needed for right divisibility and local
+inversion; none follows merely from injectivity. The expected QP leading
+unit retains the repeated-even sign and every distinct-colour `Sc.t i j`,
+including disconnected colours. Earlier open-status statements below are
+superseded only for the concrete quotient reverse identity and its iterates.
+
+## Last-output-dot coordinates on the bare long shuffle
+
+`LongOutputDotTransport.lean` evaluates the transported last position as zero
+and its sign as `zsign k (D.parity i * wordSumParity D v)`.
+`ELVOutputDotCoordinates.lean` proves the affine long-coordinate comparison
+for arbitrary output-dot lists and its last-dot-power specialization with full
+exterior coefficients. `ELVOutputLongExtraction.lean` descends that comparison
+to `prependOldCoordinate`, and defines prescribed normalized individual
+functionals `outputLongCoordinate : Target ... i v (v ++ [i]) →ₗ[k] Old ... v v`.
+No exterior `CommRing` instance or assumed extraction is used.
+
+The functional is not yet a proved full Mackey extractor: finite polynomial
+assembly, arbitrary old-output-arrow transport, relative-short stability,
+S evaluation of the actual moving class, rho intertwining and P(short)
+inclusion remain open. Total crossing `Low (n + oldLength)` is insufficient
+for the relative-short argument; isolate old coefficients before normalizing
+the short moving tail. The intertwiner `move` cannot substitute for the bare
+long crossing because repeated-colour factors are nonunits.
+
+The default-options consumer `scripts/NonVacuity/ELVOutputLongExtraction.lean`
+checks arbitrary words/full coefficients and inventories every declaration of
+the three modules for the standard three axioms.
 
 ## Append endpoint norm regularity and G injectivity
 
