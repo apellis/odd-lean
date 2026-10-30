@@ -6,7 +6,10 @@
 on arbitrary nested balanced generators, with the explicit sequential content
 and endpoint equality morphism. `contentEPairComparison_eq` separates the named
 comparison from its generic constructor without changing the definition.
-Outer whiskering and the named triple associativity square remain open.
+`contentEPairComparison_outer_apply` evaluates its single outer whiskering on an
+arbitrary balanced generator. `contentEPairComparison_outer_tensor` then applies
+the pair formula inside that outer tensor, with explicit induced module types
+and the same content cast. The named triple associativity square remains open.
 
 ## Content comparison on balanced generators
 
