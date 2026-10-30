@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputKernel
 import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
@@ -18,12 +19,18 @@ example (i : I) (v t : List I) (x : PrependIdx i v (t ++ [i]))
         affineUnit D Sc cutoff _ _ (prependTail D Sc x)) ∈
       chronologicalShortSpan D Sc cutoff i v t :=
   prepend_short_mem D Sc cutoff i v t x hx r
+example (p : ZMod 2) (i : I) (v : List I) :
+    LinearMap.ker (outputLongExtraction D Sc cutoff p i v) =
+      chronologicalShortSpan D Sc cutoff i v v :=
+  ker_outputLongExtraction_eq_chronologicalShortSpan D Sc cutoff p i v
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv
   for owner in #[`OddMath.QuiverHecke.CyclotomicAction.SmallerTailNormalization,
       `OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel,
-      `OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan] do
+      `OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan,
+      `OddMath.QuiverHecke.CyclotomicAction.ELVOutputKernel] do
     let some idx := env.header.moduleNames.idxOf? owner
       | throwError "Missing module {owner}"
     let mut count : Nat := 0

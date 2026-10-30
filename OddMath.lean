@@ -59,6 +59,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVShortTailSpan
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceRows

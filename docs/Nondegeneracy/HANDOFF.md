@@ -8,8 +8,12 @@ coefficients and proves `chronologicalShortSpan_le_ker_outputLongExtraction`
 for arbitrary total balance parity over any commutative ground ring.
 `ELVShortTailSpan.prepend_short_mem` proves the converse structural inclusion:
 every nonlong prepend tail with arbitrary old coefficient is chronological short.
-The finite quotient-coordinate argument identifying the entire kernel, and
-the S/rho and balanced-extractor comparisons, remain to be assembled.
+`ELVOutputKernel.ker_outputLongExtraction_eq_chronologicalShortSpan` now
+identifies the entire kernel using the finite old-quotient coordinate equivalence.
+Equal tail keys preserve total-parity-normalized coordinates; the evaluated
+output sign is self-inverse, including over the zero ring. Thus only nonlong
+tails remain in the finite reconstruction. S/rho and balanced output-order
+comparisons remain separate obligations.
 
 ## Last-output-dot coordinates on the bare long shuffle
 
