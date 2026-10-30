@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Append endpoint norm regularity and G injectivity
+
+`ELVAppendMovingSupport.lean` proves exponent translation and old-action
+nonincrease directly in the signed append quotient coordinates. Its finite
+maximal-support argument retains all old Hom and exterior coefficients.
+`ELVAppendNormRegularity.lean` proves `appendProjection_endpointNorm_regular`
+for the independently defined `endpointNorm`, on `AppendTarget` for every word
+and cutoff. The unequal-colour highest moving coefficient is `Sc.t i j`;
+parity support removes the mixed terms with odd moving degree. Repeated odd
+colours retain both square differences and the sum of squares.
+
+`ELVOld.qMap_injective` follows from the reverse-chain composite. It uses
+neither prepend norm regularity nor P/QP injectivity. Empty old words, zero
+cutoffs and zero quotient corners are included. The consequential reverse
+boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
+iterates of §4 remain to be assembled. Earlier open-status descriptions
+below are superseded only for append norm regularity and G injectivity.
+
+
 ## Reverse three-strand crossing naturality
 
 `ReverseIntertwinerMeet.lean` proves `reverseMeetLeft_eq_all` (in namespace
@@ -140,6 +159,32 @@ uses `c.IsInverse` and `CrossCoeffInputs` (unit probe dot, nilpotent reservoir d
 
 
 
+
+## Corrected full-ELV source dot
+
+`ELVBoundaryRho` constructs the odd source operator on the prescribed old-only
+quotient, not on a replacement polynomial module. Its first-dot multiplier is
+`x + 2(-1)^N delta`, followed by the moving-content sign. Both cutoff parities,
+zero cutoff, empty old words and arbitrary mixed old words are included.
+`pMap_boundaryRho` proves the first-order identity `P rho = R_t P` directly
+from the decorated deletion slide and full-coefficient normalizer.
+`boundaryRho_square` identifies its square with the unchanged moving square,
+using the previously proved injectivity of P. `boundaryRho_iterate_even`,
+`boundaryRho_iterate_odd_projection`, and `pMap_boundaryRho_iterate` determine
+all corrected iterates and their P-images, without any norm or inverse input.
+`ELVBoundaryRhoCoordinates` computes every iterate on every input PBW tail:
+even iterates shift the moving exponent without changing the old coefficient;
+odd iterates have an explicit shifted term with total-parity-twisted old
+coefficient and an unshifted delta-action term with balance-parity twist.
+These formulas do not identify input PBW coordinates with the output-last-dot
+Mackey extraction.
+
+The full-ELV long/short extraction and target crossing/polynomial splitting,
+short-image inclusion, corrected-coordinate norm extraction, monic boundary
+values and prescribed matrix inverse remain open. The ordinary
+`GlobalLocalInversion` interface is not the full-ELV action: its coefficient
+model cannot absorb the noncentral odd algebra as a commutative scalar ring.
+A signed kernel/module action over the ground ring k is still required.
 
 ## Full ELV ideal sum and P cokernel
 
