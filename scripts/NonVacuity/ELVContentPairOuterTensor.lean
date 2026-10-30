@@ -34,6 +34,30 @@ example
       (BalancedInduction.tensor A M.toFunctor v
         (eqToHom (congrArg (fun F => F.obj v) e).symm ≫ (K).map a ≫ b) m) := by
   apply contentEPairComparison_outer_tensor
+example
+    (τ : List I) (γ : Multiset I) (hγ : δ₂ + (τ : Multiset I) = γ)
+    (h : β + (([i,j] ++ τ : List I) : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (v : ContentCategory D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N δ₁) (z : ContentCategory D Sc cutoff N δ₂)
+    (t : ContentCategory D Sc cutoff N γ)
+    (g : (contentAppendTo D Sc cutoff N δ₂ τ γ hγ).obj z ⟶ t)
+    (b : (K).obj w ⟶ z) (a : (J).obj v ⟶ w) (m : M.obj v) :
+    ((contentInductionCompTo D Sc cutoff N β [i,j] δ₂ (contentPair_sum β i j)
+      τ γ hγ h).hom.app M).total t
+      (((BalancedInduction.induction (contentAppendTo D Sc cutoff N δ₂ τ γ hγ)).map
+      ((contentEPairComparison D Sc cutoff N β i j).hom.app M)).total t
+      (BalancedInduction.tensor (contentAppendTo D Sc cutoff N δ₂ τ γ hγ)
+        (BalancedInduction.induced K (BalancedInduction.induced J M)).toFunctor z g
+        (BalancedInduction.tensor K (BalancedInduction.induced J M).toFunctor w b
+          (BalancedInduction.tensor J M.toFunctor v a m)))) =
+    BalancedInduction.tensor (contentAppendTo D Sc cutoff N β ([i,j] ++ τ) γ h)
+      M.toFunctor v
+      (eqToHom (congrArg (fun F => F.obj v)
+        (contentAppend_compTo_eq D Sc cutoff N β [i,j] δ₂ (contentPair_sum β i j)
+          τ γ hγ h)).symm ≫
+        (contentAppendTo D Sc cutoff N δ₂ τ γ hγ).map
+          (eqToHom (congrArg (fun F => F.obj v) e).symm ≫ (K).map a ≫ b) ≫ g) m := by
+  apply contentEPairComparison_comp_tensor
 end Pair
 end OddMath.QuiverHecke.ELVOld
 #print axioms OddMath.QuiverHecke.ELVOld.contentEPairComparison_outer_tensor

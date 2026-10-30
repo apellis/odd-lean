@@ -9,7 +9,11 @@ comparison from its generic constructor without changing the definition.
 `contentEPairComparison_outer_apply` evaluates its single outer whiskering on an
 arbitrary balanced generator. `contentEPairComparison_outer_tensor` then applies
 the pair formula inside that outer tensor, with explicit induced module types
-and the same content cast. The named triple associativity square remains open.
+and the same content cast. `contentEPairComparison_comp_tensor` then applies the
+named outer content-composition comparison: for a singleton suffix this is the
+fully flattened pair-first leg of the triple square. The other leg, equality
+of the two cast-bearing tensor arrows, and hence the named triple associativity
+square remain open.
 
 ## Content comparison on balanced generators
 
