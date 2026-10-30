@@ -51,8 +51,14 @@ total old parity twist. Low corrected vectors are killed in negative height.
 corrected-source quotient and literal low polynomial remainder. Its assembly
 is a linear equivalence at every height; the corrected-source kernel is exactly
 the low window d+M<D. The original polynomial boundary is injective for D≤M
-and surjective for M≤D. Explicit transport to the unrestricted-source
-positive direct sum and the augmented negative direct sum remains.
+and surjective for M≤D. `ELVBoundaryRowSplitting` constructs the original-row
+positive direct sum `(f,r) ↦ A(f)+r`, its inverse, and the equivalence from the
+actual cokernel to the polynomial window below a=M-D. For negative height
+-m=M-D it identifies the actual kernel with the low corrected window below m,
+and splits the polynomial source as that window plus the actual output row.
+The negative inverse has second component exactly A. Height zero and zero
+corners need no separate nonvanishing assumptions. The subsequent snake
+identifications and categorical augmented-inverse construction remain.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 
