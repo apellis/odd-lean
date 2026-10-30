@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Actual append QP highest coefficients
+
+`appendQPFactor_odd` proves the repeated-odd signed QP factor is
+`x_b^2 + t^2` by the disjoint-dot super interchange, not a commuting-square
+calculation. `ELVAppendQPLeading.lean` defines its concrete degree and unit:
+unequal colours use `dn i j` and `Sc.t i j`, repeated odd uses 2 and 1,
+repeated even uses 0 and −1. Disconnected colours retain their degree-zero
+unit rather than being silently replaced by 1.
+
+`appendQPFactor_top` gives exactly this unit times the input old coefficient
+at a maximal append moving exponent, retaining arbitrary full-ELV old
+coefficients. `appendQPFactor_above` proves the corresponding vanishing bound.
+`appendProjection_qpProduct_regular` applies finite maximal support and then
+ordered-factor induction to the actual all-word append QP product. It does
+not transport prepend regularity or use the different full-chain norm.
+
+Next: assemble the explicit highest coefficient of the whole numerator
+`f(t)L(t)` in the required coordinate normalization, and identify its
+relation with the corrected longest-output coordinates. The factor results
+and product regularity do not by themselves establish right divisibility,
+polynomial degree additivity, or local inversion.
+
+
 ## Ordered reverse boundary polynomial and all corrected iterates
 
 `AppendQPTransport.lean` independently defines `appendQPProduct` at the last
@@ -42,17 +65,22 @@ to `prependOldCoordinate`, and defines prescribed normalized individual
 functionals `outputLongCoordinate : Target ... i v (v ++ [i]) →ₗ[k] Old ... v v`.
 No exterior `CommRing` instance or assumed extraction is used.
 
-The functional is not yet a proved full Mackey extractor: finite polynomial
-assembly, arbitrary old-output-arrow transport, relative-short stability,
-S evaluation of the actual moving class, rho intertwining and P(short)
-inclusion remain open. Total crossing `Low (n + oldLength)` is insufficient
+The functional is not yet a proved full Mackey extractor: arbitrary
+old-output-arrow transport, relative-short stability, S evaluation of the actual
+moving class and rho intertwining remain open. `ELVOutputPolynomialExtraction`
+now supplies finite polynomial-row assembly from an arbitrary representative's
+finite affine PBW support. `ELVChronologicalShort` supplies the actual P image
+inclusion for the chronological short span into the explicit final-crossing
+span, with the old factor twisted by `appendQ`. Equality of the chronological
+short span with the PBW short summand, and of the crossing span with the balanced
+tensor target, remain separate. Total crossing `Low (n + oldLength)` is insufficient
 for the relative-short argument; isolate old coefficients before normalizing
 the short moving tail. The intertwiner `move` cannot substitute for the bare
 long crossing because repeated-colour factors are nonunits.
 
 The default-options consumer `scripts/NonVacuity/ELVOutputLongExtraction.lean`
 checks arbitrary words/full coefficients and inventories every declaration of
-the three modules for the standard three axioms.
+the five modules for the standard three axioms.
 
 ## Append endpoint norm regularity and G injectivity
 

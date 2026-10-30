@@ -1,4 +1,5 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
+import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
 import Lean.Util.CollectAxioms
 
 noncomputable section
@@ -44,12 +45,31 @@ example (p : ZMod 2) (i : I) (s t : List I)
 example (p : ZMod 2) (i : I) (m : ℕ) :
     outputLongCoordinate D Sc (fun _ => 0) p i [] m 0 = 0 := map_zero _
 
+example (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) (m : ℕ) :
+    outputLongExtraction D Sc cutoff p i v z m =
+      outputLongCoordinate D Sc cutoff p i v m z :=
+  outputLongExtraction_apply D Sc cutoff p i v z m
+
+example (p : ZMod 2) (i : I) (v : List I)
+    (z : Target D Sc cutoff i v (v ++ [i])) :
+    ∃ N : ℕ, ∀ m, N ≤ m → outputLongExtraction D Sc cutoff p i v z m = 0 :=
+  outputLongCoordinate_finite_support D Sc cutoff p i v z
+
+example (i : I) (v t : List I)
+    (z : Target D Sc cutoff i v (t ++ [i]))
+    (hz : z ∈ chronologicalShortSpan D Sc cutoff i v t) :
+    pMap D Sc cutoff i v (t ++ [i]) z ∈ chronologicalCrossingSpan D Sc cutoff i v t :=
+  pMap_chronologicalShortSpan_le D Sc cutoff i v t ⟨z, hz, rfl⟩
+
 open Lean in
 run_cmd do
   let env ← Lean.getEnv
   for owner in #[`OddMath.QuiverHecke.CyclotomicAction.LongOutputDotTransport,
       `OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotCoordinates,
-      `OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction] do
+      `OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction,
+      `OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction,
+      `OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort] do
     let some idx := env.header.moduleNames.idxOf? owner
       | throwError "Missing module {owner}"
     let mut count : Nat := 0
