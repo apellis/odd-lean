@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Actual signed old-Hom right division
+
+`ELVQPBoundaryDivision.lean` proves the whole ordered numerator's highest
+old-Hom action (`endpointQP_top`): its explicit scalar unit times the full
+`oldTwist (cutoff i • parity i)`. After inverse-unit normalization,
+`normalizedEndpointQPNumerator_top` retains exactly that invertible twist.
+`endpointQP_above` bounds every higher coordinate.
+
+`endpointQP_division` now gives, for every old-only append target `z`, an
+actual append Hom `g` and remainder `r` with
+`z = appendProjection (appendQP ≫ endpointELV ≫ g) + r`; every supported
+remainder coordinate is strictly below `endpointQPDegree`. The proof uses
+inverse-unit/twist cancellation on single tails and finite-support degree
+induction, not arbitrary polynomial-evaluation multiplicativity.
+
+Remaining: uniqueness and prescribed local inverse, and identification with
+the separate output S/rho/balanced coordinate relation. Division alone does
+not identify the final reverse boundary inverse.
+
 ## Literal normalized endpoint–QP numerator
 
 `ELVQPNumerator.lean` constructs the separate ordered append-QP polynomial
@@ -13,11 +32,11 @@ regularity on the old-only append quotient.
 
 The module supplies polynomial right division and a zero-or-strictly-lower
 remainder bound over the noncommutative endomorphism ring, plus evaluation
-of right moving powers. This is **not yet arbitrary old-Hom division**:
-evaluation of an arbitrary polynomial quotient need not be multiplicative,
-because full ELV coefficients need not commute with the moving dot. The
-whole-product signed highest old-Hom action, signed division, and the
-output S/rho comparison still need assembly. No boundary inverse is claimed.
+of right moving powers. This polynomial result alone does not give arbitrary
+old-Hom division: evaluation of an arbitrary polynomial quotient need not be
+multiplicative, because full ELV coefficients need not commute with the moving
+dot. The signed coordinate argument above supplies the missing division step;
+the output S/rho comparison and boundary inverse remain separate obligations.
 
 ## Endpoint ELV leading action at every cutoff
 
