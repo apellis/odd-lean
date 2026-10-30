@@ -129,4 +129,3 @@ theorem odd_square_slides (ψ x z : R)
       _ = (x * x) * ψ - (x - z) := by rw [hz']; noncomm_ring
 
 end QWeightedDraft
-

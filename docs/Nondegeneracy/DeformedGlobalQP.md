@@ -1,9 +1,10 @@
 # Deformed all-prefix QP calculation
 
-**Status: proposed written proof; not a Lean theorem.** This supplies an
-all-prefix argument for equation (3) of `DeformedProjectiveResolution.md`
-and an old-generator balance argument for P. It does not construct an exact
-projective resolution or prove the ideal-sum assertion.
+**Status: the signed all-word QP identity and full ELV P descent are formalized.** The checked
+library convention retains a minus sign for each repeated-even factor;
+see §3. Old-generator balance and the quotient map P are proved in §4.
+The source-normalized formula proposed below remains a separate obligation. This does not construct
+an exact projective resolution or prove the ideal-sum assertion.
 
 Use the full coefficient algebra A and polynomials f_j of that document,
 including d_j χ_top=0 at positive even odd-colour cutoffs. Work on finite
@@ -32,6 +33,8 @@ R_1(β); thus the displayed left submodule includes arbitrary old factors
 on both sides of F_2. Parity twisting the balanced coefficient factor does
 not change this vanishing submodule.
 
+For the cancellation step assume n > 0; the empty-prefix base case is
+separate, since its displayed last-minus-first difference would be zero.
 Use affine right PBW coset coordinates before tensoring with the old
 cyclotomic block B. Tensoring that direct-sum isomorphism gives polynomial
 coordinates with coefficients in B, without assuming B is A-flat. In these
@@ -43,6 +46,18 @@ balanced quotient: the old dot acts on B and the moving square commutes
 with the old algebra. This is the multicolour version of the checked local
 right-PBW argument, not cancellation in a cyclotomic algebra in which the
 moving dot has already been specialized.
+
+**Checked cancellation ingredient.** `ELVPrependDescent.lean` now supplies
+the actual full-ELV old-Hom coordinate equivalence, not just an affine
+raw-index surjection. In `ELVMovingShift.lean`,
+`movingSquare_coordinate_shift` and `movingEvenDot_coordinate_shift`
+identify actual source precomposition with the exponent shifts.
+`oldSourceTarget_pair` and `oldSourceTarget_above` prove preservation of
+that filtration by the actual old action. Finite support then proves
+`lastDotSquareDifference_injective` and `lastDotEvenDifference_injective`.
+`lastDotDifference_projection` identifies those quotient maps with the
+positioned differences above for n > 0. This closes the cancellation
+ingredient only; the separate all-word signed theorem is described in §3.
 
 ## 2. The relation-killing step for every prefix
 
@@ -78,7 +93,49 @@ and the position where it vanishes. It is the deformed version of (8.17).
 The sign σ' is immaterial for vanishing; no such unspecified sign is used
 in the surviving QP calculation below.
 
+**Checked full-coefficient relation killing.** `ELVPrefixKilling.lean`
+proves `ELVOld.allPrefix_relation_context` using the actual `moveHom` and
+`lastToFirstHom`. It includes every prefix `μ`, spectator word `σ`, cutoff,
+and moving-colour parity, with an arbitrary ambient continuation in the
+full ELV category. The stronger `projection_prefix_relation_context`
+allows an arbitrary full-coefficient old Hom before its relation.
+`insert_comp_move` derives the needed naturality from
+`hom_comp_moveHom`, with the twist on total coefficient-plus-diagram
+parity. `ELVOldRightContext.lean` proves right-context composition,
+relation preservation, and containment of the extended old ideal.
+Vanishing therefore takes place in the actual old-only quotient, not in
+an ordinary polynomial specialization or an assumed relation-killing
+package. This establishes (K); the signed repeated-colour induction in
+§3 is not yet supplied by these declarations.
+
 ## 3. Induction, with the surviving signs
+
+**Checked library convention.** `ELVOld.qp_repeated_even` in
+`ELVQPRepeated.lean` proves the repeated-even recursion in the full ELV
+old-only quotient, with arbitrary spectators and continuations. In the
+library's `EvenTwo` crossing convention the recursion has factor **−1**,
+not the factor +1 in the proposed calculation below. This agrees with
+`PrefixQPEquation.lean`. Thus the displayed no-factor global formula still
+requires a crossing-normalization comparison; the checked theorem does not
+assert that literal formula. `ELVQPOdd.lean` now proves the repeated-odd
+recursion `ELVOld.qp_repeated_odd`: square cancellation and preservation by
+the odd source difference give the first prefix sign, and the affine
+recursion gives the second; their product is one. Preservation follows from
+`movingDot_insert`, with the twist on total coefficient-plus-diagram parity.
+`ELVQPContext.lean` proves `qp_distinct` by evaluating the checked affine
+transport with the full relation and arbitrary continuation.
+`relations_rightContext` and `qpEval_of_projection_eq` prove spectator descent
+on the actual old-only quotient; `qp_nil` checks the empty signed-product base.
+Full-ELV all-word signed induction is proved in `ELVQPProduct.lean`:
+`ELVOld.qp_projection_product` gives the raw projected identity and `qp_product`
+extends it to all spectators and full-coefficient continuations. The subalgebra
+`relationPreserving` contains every dot and hence each `qpFactor`; preservation
+of old dots follows from the actual old-source quotient action. Reverse-word
+induction uses `qpProduct_append` in its existing order: its endomorphism product
+is the last factor followed by the right-whiskered previous product in diagram
+composition. Typed empty-context transport and right-context descent discharge
+spectator coherence, with no extra stability premise. This proves the signed
+product, not the proposed no-even-factor normalization below.
 
 Let A_(ν<) denote f_i(x_1) times the required product for ν_1,…,ν_(n−1).
 The induction hypothesis is
@@ -144,6 +201,20 @@ positions 1,…,n. Write I₀=H_n F_1 R(β)e(β,i), W=F_1 T_n e(β,i),
 and ε=p(i)(N_i+p(β)). The needed equation for homogeneous old b is
 
     ξ(b) W ≡ (−1)^(ε|b|) W b mod I₀.                 (P)
+
+**Checked coefficient case.** `ELVPScalar.oldGenerator_scalar_balance` proves
+this case for arbitrary words, cutoffs and coefficients in the existing ELV
+quotient category. `elv_comm` derives graded commutativity through
+homogeneous lifts; `scalar_slide` includes the signed box-product interchange.
+`ELVAppendBalance.lean` proves dot and crossing error containment in the
+append-old relation span, including the exceptional braid correction. Spectator
+recursion and normal-form spanning extend balance to arbitrary old morphisms,
+with the twist on total coefficient-plus-diagram parity. `ELVPDescent.lean`
+then proves preservation of the prepend-old relation span and defines
+`ELVOld.pMap : Target →ₗ[k] AppendTarget`. Its representative formula is
+precomposition by the prescribed W. `ELVPInjective.lean` proves injectivity;
+`ELVPCentral.lean` proves wordwise k[s]-linearity and twisted old-operator
+compatibility. Content-level B[s]-module assembly and exactness remain open.
 
 For coefficients c∈A it holds exactly: W has parity ε, and c is
 supercentral. For idempotents it is exactly the strand permutation.

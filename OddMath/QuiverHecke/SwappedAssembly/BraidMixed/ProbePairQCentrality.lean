@@ -164,4 +164,3 @@ theorem probePairQProduct_central :
   · exact (P.preCrossSame_slides i s _).2
 end ProbePair
 end OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir
-

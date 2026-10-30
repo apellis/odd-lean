@@ -172,4 +172,3 @@ theorem reverseProbePair_braid (hir : i ≠ r) :
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
-

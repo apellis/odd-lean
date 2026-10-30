@@ -135,6 +135,14 @@ unverified ordinary anti-involution on the coefficient superalgebra.
 
 ## 4. Longest extraction and every corrected iterate
 
+Equations (6)–(7) in this section use the source crossing convention τ.
+They are not statements for the unchanged library crossing T without
+conversion. See `MackeyCrossingConventions.md` for the proved local
+comparison and the evaluated library ordered-product formula, including
+old-twist invariance and moving-degree normalization. The full ELV boundary
+and corrected-iterate identification in (6)–(7) remain open; the checked
+ordinary append extraction retains old height n+1.
+
 In expanding G, only the term taking the crossing part of every g_a
 has permutation U. Any omitted crossing has smaller Coxeter length.
 The equal-colour crossing coefficient is minus the square difference
