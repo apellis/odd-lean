@@ -96,11 +96,27 @@ are supernatural against all module maps, including odd maps.
 quotient morphisms. Dots and raw crossings are instantiated. The scalar ring
 is k; exterior coefficients remain morphisms in the source category.
 
-This is the restriction side of `DeformedActionAssembly.md` §5, not a full
-factor action. Next: construct the balanced induction coend and its even
-unit/counit, then identify normalized induction dots/crossings and the
-parameter twist. Integer-graded modules, content/weight indexing, and the
-local inversion matrices are not supplied here.
+`ELVModuleInductionTensor`, `ELVModuleInductionGrading`, and
+`ELVModuleInductionMap` now construct the balanced induction coend, its
+quotient parity grading, and induction on every supernatural module map.
+The formula is `[h ⊗ m] ↦ [twist k p h ⊗ f.app p v m]`; it includes odd
+maps and all balancing relations. `BalancedInduction.induction` is an
+actual additive linear superfunctor. Unit/counit formulas, naturality on
+source/target arrows are proved. `ELVModuleAdjunction.moduleAdjunction`
+constructs the actual ELV induction–restriction adjunction; its unit and
+counit are even, natural against every module map, and satisfy both
+triangles. `ELVContentModuleAction` supplies exact-content module categories,
+right append between them, and concrete `contentE ⊣ contentF`.
+`ELVModuleInductionTransform` constructs the homogeneous induction mates
+`[h ⊗ m] ↦ [α_v ≫ twist_p(h) ⊗ m]` and instantiates raw ELV dots/crossings.
+`ELVModuleInductionRelations.transform_comp` proves the superopposite law:
+`T(β) ≫ T(α) = sign k (p*q) • T(α≫β)`. In particular odd–odd composition
+is signed, not ordinary reversal. The unit compatibility is also checked.
+Normalized generators, parameter twist, content-generator endpoint
+transports, weight assembly, and local inversion matrices remain separate;
+no full factor action is claimed. Integer grading of the source categories
+and kernels is retained; a graded module-category framework is not needed
+by the current Rouquier target.
 
 ## Reverse three-strand crossing naturality
 
