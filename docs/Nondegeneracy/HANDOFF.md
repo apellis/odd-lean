@@ -1,5 +1,20 @@
 # Odd nondegeneracy: restart state
 
+## Single probe edge for the separated mixed coefficient
+
+`repeatedOuterMixed_probe_coeff` transports the unsigned conjugated coefficient
+along the actual `adjacentReverseProbeCross` from `PⱼPᵢRᵢ` to `PᵢPⱼRᵢ`,
+including its terminal cast. It uses `c.IsInverse`, `CrossCoeffInputs`,
+`i ≠ j`, and one valid reservoir step. The established coefficient and
+comparison rectangles determine this single edge after cancellation of the
+last mixed comparison isomorphism. No probe crossing or Q is inverted.
+`repeatedOuterMixed_probe_coeff_signed` retains the source normalization
+`(-1)^pᵢ` and target normalization `(-1)^(pᵢ+pᵢpⱼ)`, yielding the
+single-edge Koszul sign. No braid or coefficient-slide hypothesis is added.
+This supports, but does not yet prove, the PPR diagonal correction and the
+coefficient-bearing forward off-diagonal finite-sum equation. Both remain
+open, as do the one-probe/two-reservoir placements and full `CrossBraid`.
+
 ## Repeated-outer reverse off-diagonal
 
 `repeatedOuter_other_offDiag` proves equality of the actual full finite-sum
