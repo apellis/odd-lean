@@ -9,8 +9,9 @@ induction crossing by `equivTo` gives `a_v ≫ twist_p(h)`, where `a_v` is the
 appended quotient class of `crossTwo i j` and `p = parity i * parity j`.
 The twist retains exterior and diagram parity, over every commutative ring.
 The source arrow and induction map have opposite directions. Comparison with
-two successive one-letter inductions, normalized equal-colour coordinates and
-the resulting reservoir-Hom postcomposition action remain open.
+two successive one-letter inductions and the resulting reservoir-Hom
+postcomposition action remain open. `equalCross_coordinates` computes the
+normalized equal-colour generator with the additional source minus sign.
 
 ## The source-centre realization converse
 

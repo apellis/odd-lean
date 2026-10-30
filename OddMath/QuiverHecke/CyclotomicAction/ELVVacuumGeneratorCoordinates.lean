@@ -69,4 +69,26 @@ theorem mixedCross_coordinates (β : Multiset I) (i j : I) (hij : i ≠ j)
         (crossTwo D Sc i j) v ≫ twist k (D.parity i * D.parity j) h) (𝟙 v)).trans
       (by rw [CategoryTheory.Functor.map_id, Category.id_comp]))
 
+/-- Normalized equal-colour crossing carries the source minus sign.
+The induction mate reverses the crossing; total coefficient parity remains in the twist. -/
+theorem equalCross_coordinates (β : Multiset I) (i : I)
+    (v : ContentCategory D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i, i] : Multiset I)))
+    (h : (contentAppendTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i)).obj v ⟶ w) :
+    equivTo D Sc cutoff N β [i, i] _ rfl v w
+      (((contentInductionCross D Sc cutoff N β i i).app (D.parity i * D.parity i)
+        (contentRepresentable D Sc cutoff N β v)).app (D.parity i * D.parity i) w
+        ((equivTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i) v w).symm h)) =
+      -(contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i i)
+        (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) := by
+  rw [equivTo_symm]
+  have ht := contentInductionCross_equal_tensor D Sc cutoff N β i
+    (contentRepresentable D Sc cutoff N β v) w v h (𝟙 v)
+  have he := equivTo_tensor D Sc cutoff N β [i, i] _ rfl v v w
+    (contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i i)
+      (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) (𝟙 v)
+  exact (congrArg (equivTo D Sc cutoff N β [i, i] _ rfl v w) ht).trans
+    ((map_neg (equivTo D Sc cutoff N β [i, i] _ rfl v w) _).trans
+      (congrArg Neg.neg (he.trans (by rw [CategoryTheory.Functor.map_id, Category.id_comp]))))
+
 end OddMath.QuiverHecke.ELVOld.VacuumGeneratorCoordinates

@@ -7,7 +7,7 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-example (β : Multiset I) (i j : I) (hij : i ≠ j)
+theorem mixedCross_consumer (β : Multiset I) (i j : I) (hij : i ≠ j)
     (v : ContentCategory D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N (β + ([i, j] : Multiset I)))
     (h : (contentAppendTo D Sc cutoff N β [j, i] _ (content_pair_swap β i j)).obj v ⟶ w) :
@@ -20,6 +20,20 @@ example (β : Multiset I) (i j : I) (hij : i ≠ j)
   mixedCross_coordinates D Sc cutoff N β i j hij v w h
 
 #print axioms mixedCross_coordinates
+
+theorem equalCross_consumer (β : Multiset I) (i : I)
+    (v : ContentCategory D Sc cutoff N β)
+    (w : ContentCategory D Sc cutoff N (β + ([i, i] : Multiset I)))
+    (h : (contentAppendTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i)).obj v ⟶ w) :
+    equivTo D Sc cutoff N β [i, i] _ rfl v w
+      (((contentInductionCross D Sc cutoff N β i i).app (D.parity i * D.parity i)
+        (contentRepresentable D Sc cutoff N β v)).app (D.parity i * D.parity i) w
+        ((equivTo D Sc cutoff N β [i, i] _ (content_pair_swap β i i) v w).symm h)) =
+      -(contentAppendToComponent D Sc cutoff N rfl (content_pair_swap β i i)
+        (crossTwo D Sc i i) v ≫ twist k (D.parity i * D.parity i) h) :=
+  VacuumGeneratorCoordinates.equalCross_coordinates D Sc cutoff N β i v w h
+
+#print axioms VacuumGeneratorCoordinates.equalCross_coordinates
 
 open Lean Elab Command in
 run_cmd do
