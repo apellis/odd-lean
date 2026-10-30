@@ -1,5 +1,24 @@
 # Odd nondegeneracy: restart state
 
+## Append endpoint norm regularity and G injectivity
+
+`ELVAppendMovingSupport.lean` proves exponent translation and old-action
+nonincrease directly in the signed append quotient coordinates. Its finite
+maximal-support argument retains all old Hom and exterior coefficients.
+`ELVAppendNormRegularity.lean` proves `appendProjection_endpointNorm_regular`
+for the independently defined `endpointNorm`, on `AppendTarget` for every word
+and cutoff. The unequal-colour highest moving coefficient is `Sc.t i j`;
+parity support removes the mixed terms with odd moving degree. Repeated odd
+colours retain both square differences and the sum of squares.
+
+`ELVOld.qMap_injective` follows from the reverse-chain composite. It uses
+neither prepend norm regularity nor P/QP injectivity. Empty old words, zero
+cutoffs and zero quotient corners are included. The consequential reverse
+boundary norm of `DeformedBoundaryDivision.md` §3 and corrected boundary
+iterates of §4 remain to be assembled. Earlier open-status descriptions
+below are superseded only for append norm regularity and G injectivity.
+
+
 ## Reverse three-strand crossing naturality
 
 `ReverseIntertwinerMeet.lean` proves `reverseMeetLeft_eq_all` (in namespace
