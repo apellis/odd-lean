@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Common-content mixed braid
+
+`ELVContentMixedBraid.contentMixedBraid_source_linear` proves the normalized
+three-crossing difference equals the signed source correction over
+`parameterTwist Sc`, as linear maps on every common-content induced module.
+The two intermediate words are `[i,i,j]` and `[j,i,i]`.
+`contentMixedBraid_tensor` retains `twist k (D.parity i)` of the entire
+kernel morphism, including exterior coefficients. No braid relation on
+module operators is assumed. The ordered three-dot-power polynomial with
+original Sc coefficients remains to be identified; block/single-letter
+comparison, weight assembly and nondegeneracy remain open.
+
 ## ELV module restriction
 
 `ELVModuleRestriction.lean` constructs `TruncatedModules`, the supercategory
