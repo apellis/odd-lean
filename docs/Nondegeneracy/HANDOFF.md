@@ -21,8 +21,9 @@ normality, flatness, finite-colour or field assumptions.
 `Old (v ++ [i]) w`; `ker_canonicalAppendTarget` is exactly `range pMap`.
 `pMapCokernelEquiv` identifies the quotient by this range with that actual
 cyclotomic quotient and agrees with the canonical map on representatives.
-These are ground-ring statements. Twisted B[s]-linearity, projectivity and
-the full nondegeneracy theorem remain separate.
+These wordwise ground-ring statements feed the content polynomial exact
+sequence below. Finite projectivity and the full nondegeneracy theorem remain
+separate.
 
 
 ## Ordinary right content polynomial modules
@@ -48,8 +49,17 @@ and `centralSource_residue` keeps the exponent modulo `centralDegree`.
 **Remaining:** reindex these simultaneous coordinates into finitely many
 old-idempotent B[s] summands and prove the resulting equivalence polynomial
 linear, for both endpoints. No finite-projectivity instance is asserted.
-The ground-ring cokernel and ideal sum are proved above; their content-level
-B[s]-linear exactness remains a separate obligation.
+`ELVQuotientPresheaf` constructs the enlarged quotient action by appending
+old arrows on representatives and precomposing by the moving dot/square.
+Both ideal closures and naturality of the canonical quotient are proved.
+`ELVContentExactness.canonicalAppendPolynomial` assembles the canonical
+B[s]-linear surjection; `ker_canonicalAppendPolynomial` identifies its kernel
+with the prescribed epsilon-twisted `pPolynomial` image using IS2.
+`pPolynomialCokernelEquiv` is polynomial-linear, agrees with the canonical
+map on representatives, and targets these enlarged cyclotomic quotients.
+`contentShortComplex_shortExact` proves the literal sequence
+0 → K₁ → K₀ → F → 0, with arbitrary colours and cutoffs, including zero and
+empty content. No finite-projectivity assertion is included.
 
 
 ## Ordered product and normalized extraction
