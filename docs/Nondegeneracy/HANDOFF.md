@@ -42,17 +42,22 @@ to `prependOldCoordinate`, and defines prescribed normalized individual
 functionals `outputLongCoordinate : Target ... i v (v ++ [i]) →ₗ[k] Old ... v v`.
 No exterior `CommRing` instance or assumed extraction is used.
 
-The functional is not yet a proved full Mackey extractor: finite polynomial
-assembly, arbitrary old-output-arrow transport, relative-short stability,
-S evaluation of the actual moving class, rho intertwining and P(short)
-inclusion remain open. Total crossing `Low (n + oldLength)` is insufficient
+The functional is not yet a proved full Mackey extractor: arbitrary
+old-output-arrow transport, relative-short stability, S evaluation of the actual
+moving class and rho intertwining remain open. `ELVOutputPolynomialExtraction`
+now supplies finite polynomial-row assembly from an arbitrary representative's
+finite affine PBW support. `ELVChronologicalShort` supplies the actual P image
+inclusion for the chronological short span into the explicit final-crossing
+span, with the old factor twisted by `appendQ`. Equality of the chronological
+short span with the PBW short summand, and of the crossing span with the balanced
+tensor target, remain separate. Total crossing `Low (n + oldLength)` is insufficient
 for the relative-short argument; isolate old coefficients before normalizing
 the short moving tail. The intertwiner `move` cannot substitute for the bare
 long crossing because repeated-colour factors are nonunits.
 
 The default-options consumer `scripts/NonVacuity/ELVOutputLongExtraction.lean`
 checks arbitrary words/full coefficients and inventories every declaration of
-the three modules for the standard three axioms.
+the five modules for the standard three axioms.
 
 ## Append endpoint norm regularity and G injectivity
 
