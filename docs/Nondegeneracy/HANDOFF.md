@@ -31,8 +31,18 @@ natDegree equality is inferred from the coefficient formula.
 `outputSDegree = (if odd then 4 else 2) * count_i(v)` and coefficient
 `[id_v]` at that bound. The proof selects the unique nonzero top choice
 in the independently defined finite expansion; it includes zero old corners.
-Coefficient compatibility for ordered S-division, the monic quotient
-identification, and individual boundary leading components remain to be proved.
+`ELVBoundaryCoefficientAction.outputPolynomialBoundary_rightAction` proves
+full graded coefficient covariance: A E_(p+eta)(c) = E_0(c) A, with
+E_q(c)(f)_n = oldComp(f_n, oldTwist(q+n*p_i)(c)). Applying the existing
+S-coefficient twist invariance gives actual A postcomposition compatibility.
+`ELVIndependentSBoundaryDivision` then proves finite ordered S division of
+the explicit signed numerator, with quotient the actual signed phi_d=A(w_d)
+and remainder supported strictly below D. Quotient and remainder are unique.
+For B=d+endpointQPDegree, signed phi vanishes above B-D; its coefficient
+at B-D is the prescribed signed appendQPProductUnit times [id] when D≤B.
+When B<D, phi_d=0. These statements include annihilated old corners.
+The separate rewrite of B-D to the Cartan-height expression and individual
+boundary leading components remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 
