@@ -27,8 +27,16 @@ The descended map `pprime` sends `h ⊗ pi^epsilon b` to
 `(appendW(i,s) ≫ h) ⊗ pi^p b`, without a further sign or coefficient permutation.
 `range_pprime_eq_ker_q` proves right exactness with the prescribed cyclotomic
 source. Neither injectivity of P′ nor of the crossing column follows here.
-The unquotiented short-column comparison, fixed-content matrix-algebra
-identification, integer degrees and categorical snake/inverse remain separate.
+The unquotiented short columns `alpha` and `shortCross` now descend to the
+original `Target` and `AppendTarget`. Their literal formulas retain the
+`epsilon` twist on the source coefficient and the order
+`append(b) ≫ crossLast ≫ append(c)` on the append side.
+`shortColumn_square` proves `pMap ∘ alpha = shortCross ∘ pprime` as whole
+linear maps. `shortColumn_quotient_square` proves
+`canonicalAppendTarget ∘ shortCross = toCyclotomic ∘ q`. Together with the
+existing exactness of the lower row, these give the actual commutative diagram
+of two right-exact rows. Injectivity of the columns, categorical snake/inverse,
+fixed-content matrix-algebra identification and integer degrees remain separate.
 
 ## Actual independent-S division and further literal braid entries
 
