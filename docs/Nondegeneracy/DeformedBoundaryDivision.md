@@ -22,6 +22,13 @@ ordered numerator in full old output coefficients by the explicit finite
 `qpOutputCoefficientStep` fold, starting at `endpointOutputCoefficients` and
 ending with `inputCoefficientShift`. Old composition order and all input parity
 twists are retained; the formula has no C0 on its coefficient side.
+`ELVBoundaryNumeratorLeading.orderedReverseNumerator_support` bounds the literal
+fold support by `endpointQPDegree = cutoff i + Σ_b appendQPDegree(i,v_b)`.
+`orderedReverseNumerator_top` identifies its coefficient there as
+`appendQPProductUnit • [id_v]`. Both assertions hold even if the old identity
+vanishes. The proof follows the finite endpoint row and each ordered QP step,
+not ordinary commutative polynomial multiplication. The corresponding C0 bound
+and top coefficient hold at every input power after the full old twist.
 Ordered S-division remains open; the existing
 QP numerator division is not (11), and no prescribed matrix inverse is claimed.
 

@@ -20,6 +20,13 @@ occurs on the coefficient side. This works at every colour and over zero rings.
 `inputCoefficientShift_apply_add` identifies every shifted coefficient, and
 `outputPolynomialBoundary_independentS_coefficients` gives explicit boundary
 values on the independent corrected-rho S evaluations with both signs.
+`ELVBoundaryNumeratorLeading` proves the explicit fold has support bounded by
+`endpointQPDegree` and coefficient `appendQPProductUnit` times the old identity
+at that bound. The proof is directly by finite endpoint coefficients and ordered
+fold induction, including the disconnected scalar units and repeated-even minus
+signs. The shifted C0 numerator has the same unit top at every input power.
+Zero rings and annihilated old objects are included; no support membership or
+natDegree equality is inferred from the coefficient formula.
 Coefficient compatibility for ordered S-division, the monic quotient
 identification, and individual boundary leading components remain to be proved.
 The crossing-image splitting does not identify the prescribed balanced
