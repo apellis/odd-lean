@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Direct extraction on the prescribed short balanced source
+
+`CyclotomicCrossingTensor.extract` is a linear map from the larger
+old-only target to the actual epsilon-balanced `PprimeDomain`.
+`extract_comp_alpha` proves it is a left inverse on every balanced class.
+The construction strips the literal canonical short tail, descends through
+actual old quotient coordinates, and transfers the full normalized old
+coefficient across epsilon balance. `alphaStripTerm_tailKey` removes the
+choice of repeated tail representative; `alphaExtendedIndex` and
+`extract_alpha_tail` handle arbitrary old coefficient sources and empty Hom
+corners. Coefficient-tail parity and total epsilon parity remain distinct.
+
+Consequently `alpha_injective` and `pprime_injective` hold for all words,
+cutoffs and colours with the original scalar datum and full exterior
+coefficients. The P′ implication uses `shortColumn_square` and
+`pMap_injective`; it does not require injectivity of `shortCross`, flatness,
+or a tensor inverse inferred from an image-span splitting.
+
+Crossing-column injectivity, the integer degree and naturality of the full
+categorical inverse, the categorical snake assembly, and odd/mixed
+nondegeneracy remain separate obligations.
+
 ## Vacuum source comparison and iterated crossing coordinates
 
 `VacuumSourceComparison.comparison` identifies the canonical block comparison
