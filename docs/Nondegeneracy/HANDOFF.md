@@ -1,5 +1,23 @@
 # Odd nondegeneracy: restart state
 
+## The source-centre realization converse
+
+`ELVModuleCentre` proves `contentRealize_surjective` and the explicit linear
+`centreEquiv`, also typed as `centrePiEquiv` on the existing content-module
+PiSCat target. The inverse has coefficient
+`c_p(v) = ((η.app p H_v).app p v)(id_v)`. `action_of_mem` applies module
+naturality along the homogeneous Yoneda map of `m`; its supernatural sign
+`sign(p*q)` cancels the twist sign `sign(q*p)`. This includes odd against odd
+over every ordinary commutative ring. `action` extends to all elements.
+`coefficient_naturality` follows by comparing that action on representables
+with their all-arrow Yoneda formula. `realize_reconstruct` and
+`reconstruct_realize` prove both roundtrips; `reconstruct_proj` retains parity.
+
+Thus a constructed supernatural endomorphism of the module identity has a
+unique source-supercentral family. No whole-inverse cup/cap closure has been
+constructed here. Its source degree, prescribed inverse, sigma residuals,
+bubble/corner evaluations and nondegeneracy remain separate obligations.
+
 ## Evaluation on arbitrary content supermodules
 
 `ELVModuleYoneda.ModuleYoneda.homEquiv` proves `(H_v ⟶ M) ≃ₗ[k] M.obj v`
