@@ -47,8 +47,12 @@ For every full old coefficient, the boundary of the corrected lift vanishes
 above the height bound and its top map is `outputBoundaryLeadingEquiv`: the
 explicit product of sigma, epsilon and appendQPProductUnit, followed by the
 total old parity twist. Low corrected vectors are killed in negative height.
-Polynomial-row division and the full kernel/window direct-sum equivalences
-remain to be constructed.
+`ELVBoundaryRowDivision` proves finite division by this boundary with high
+corrected-source quotient and literal low polynomial remainder. Its assembly
+is a linear equivalence at every height; the corrected-source kernel is exactly
+the low window d+M<D. The original polynomial boundary is injective for D≤M
+and surjective for M≤D. Explicit transport to the unrestricted-source
+positive direct sum and the augmented negative direct sum remains.
 The crossing-image splitting does not identify the prescribed balanced
 crossing-column domain, and no categorical matrix inverse is claimed.
 
