@@ -51,10 +51,12 @@ three-dot correction, with both equal-crossing minus signs retained.
 `contentETriple_mixedBraid_tensor` exposes the residual outside-colour twist on
 the entire coefficient/diagram kernel.
 
-**Precise remaining coherence gap:** these transported source-positioned maps
-are not yet identified with independently whiskered pair crossings and
-single-letter dots; equality of the two recursive associativity comparisons
-is not proved. This is path-compatible transport, not a claim of full
+**Precise remaining coherence gap:** the triple transported source-positioned
+maps are not yet identified with independently whiskered pair crossings and
+single-letter dots; equality of the two content-recursive associativity
+comparisons is not proved. The pair dots themselves are identified with
+independent single-letter actions in `ELVContentPairWhiskeredRelations`,
+and generic induction flattening associativity is proved. This is path-compatible transport, not a claim of full
 monoidal/action coherence. Weight assembly and local inversions remain open.
 
 ## Common-content mixed braid
