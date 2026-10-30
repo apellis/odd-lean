@@ -43,6 +43,15 @@ The deletion terms vanish by the old-ideal calculation used for P in
 the cross terms cancel since x₁d=-dx₁, and d²=0. This checks both cutoff
 parities without replacing x₁ by the crossing-contraction operator X.
 
+**Checked source operator:** `ELVBoundaryRho.lean` constructs (1) on the
+actual full-ELV old-only quotient. `pMap_boundaryRho` proves its first-order
+intertwining with P; `boundaryRho_square` proves the square-dot identity.
+`boundaryRho_iterate_even` and `boundaryRho_iterate_odd_projection` give all
+corrected iterates, and `pMap_boundaryRho_iterate` their prescribed P-images.
+This is valid for arbitrary old words, including empty content, and both
+cutoff parities. It does not yet construct the extraction (2), the descended
+operator (3), or the full boundary (5).
+
 Here are explicit coordinates for the first column. Put U_k=τ_n⋯τ_k
 for 1≤k≤n and U_(n+1)=1, and U=U₁. Choose the affine PBW words
 adapted to these cosets. The short-coset submodule L₁′ is spanned by
