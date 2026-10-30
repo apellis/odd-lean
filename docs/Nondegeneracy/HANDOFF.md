@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Output old relative stability
+
+`ELVOutputOldTransport.act_appendInsert_chronologicalShortSpan` proves stability
+of the chronological short span under arbitrary full-ELV output old arrows,
+including distinct old source and target words. The exact kernel theorem gives
+`outputLongExtraction_act_appendInsert_congr`: equal extracted rows remain equal
+after an old output endomorphism. This avoids the invalid total-crossing-length
+bound. It does not yet move an old output factor across the bare long chain or
+identify the canonical balanced coefficients or S.
+
 ## Old source action on normalized output coordinates
 
 `ELVOutputOldAction.prependOldCoordinate_oldSource` and
