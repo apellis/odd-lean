@@ -1,5 +1,21 @@
 # Odd nondegeneracy: restart state
 
+## Reverse adjacent split rectangle
+
+`adjacentReverse_splitMatrix` proves the four raw comparison-grid equations
+for the reverse placement `j i i → i i j` with one repeated-colour reservoir
+and two probes. `adjacentReverseMove_preDot` and
+`adjacentReverseMove_postDot` prove the two unsigned repeated-dot slides.
+`adjacentReverseMove_coeff` transports the actual inverse coefficient using
+`c.IsInverse` and `CrossCoeffInputs`; only its known denominator unit is
+cancelled. `adjacentReverse_J_rectangle` is the actual homogeneous
+probe-pair interchange triangle. No Q polynomial or crossing is inverted.
+
+The remaining step for this placement is identification of all literal braid
+path entries and their finite sums with the four raw rectangle entries.
+`AdjacentReverseRectangle.lean` is not yet an arbitrary-path reverse braid
+theorem or a `CrossBraid` producer.
+
 ## Adjacent-equal pure-reservoir braids
 
 `pureReservoir_braid` proves literal braid equality for arbitrary source and
