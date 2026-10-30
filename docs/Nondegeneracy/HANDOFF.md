@@ -41,6 +41,47 @@ parameter-twisted categories. Equal crossings retain their minus normalization;
 no old coefficient is assumed even. The composed independently whiskered mixed
 braid remains separate, as do concrete factors, inverses and final observations.
 
+## Even-moving polynomial boundary and reverse numerator
+
+`evenPolynomialBoundary` is C₀ composed with P and the existing long section,
+with arbitrary normalization p and full old coefficients. Its factorization
+through long extraction holds on the original target for either moving parity.
+For even moving colour and arbitrary mixed old words,
+`evenPolynomialBoundary_reverseNumerator` computes its value on the extraction
+of every moving-dot iterate of the intertwiner as the explicit ordered reverse
+numerator. At exponent zero, `evenPolynomialBoundary_independentS` proves
+A(S) = QP·endpoint in the checked coefficient convention.
+
+`evenPolynomialBoundary_rightAction_even` proves full-coefficient covariance:
+the source action retains p while the output action has shift zero.
+`outputLongExtraction_evenDot` identifies the extracted even dot with exponent
+shift; `evenPolynomialBoundary_shift_high` derives the actual row's positive
+coefficient recurrence from P and the constant C₀ defect.
+
+`evenPolynomialBoundary_single_above` and `evenPolynomialBoundary_single_top`
+now prove the genuine full-coefficient support and leading laws. Writing
+M = endpointQPDegree, D = outputSDegree, the value on single d b vanishes in
+coefficient m when d+M < m+D. If D ≤ d+M, its coefficient d+M−D is exactly
+`appendQPProductUnit • oldTwist p b`. `evenBoundaryLeadingEquiv` is this unit
+multiplication after the total p twist. If d+M < D the whole value is zero.
+The proof first links the actual row to the ordered reverse numerator, then
+uses the actual positive-coordinate recurrence to obtain convolution; it does
+not infer a boundary theorem from independent S alone. The existing all-colour
+integer Cartan-height identity applies unchanged.
+
+Finite pivot elimination using these proved actual coefficient laws gives
+`evenBoundaryRowDivisionEquiv`: high-source quotients plus literal low-output
+remainders reconstruct by `(q,r) ↦ A(q)+r`. The kernel is exactly the low-source
+window. For D ≤ M, `evenBoundaryPositiveEquiv` is `(f,r) ↦ A(f)+r`, and
+`evenBoundaryPositiveCokernelEquiv` identifies the actual cokernel with the
+window below M−D. For M ≤ D, `evenBoundaryNegativeEquiv` is
+`(low,g) ↦ low + section(g)`, with section constructed from division; its inverse
+second coordinate is exactly A. Both branches include height zero.
+
+These are full-coefficient k-linear row splittings. A Γ-balanced, integer-graded
+categorical matrix inverse and its source/snake comparison remain separate;
+none is asserted by these row results.
+
 ## Vacuum source comparison and iterated crossing coordinates
 
 `VacuumSourceComparison.comparison` identifies the canonical block comparison
