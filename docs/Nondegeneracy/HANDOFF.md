@@ -1,5 +1,27 @@
 # Odd nondegeneracy: restart state
 
+## Full literal two-reservoir 100 diagonal
+
+`RepeatedOuterPost.full_diag_path` proves the FULL literal `Pi Rj Ri`
+diagonal field: the two actual finite braid sums, all three literal dotEntry
+powers, and both original signed Sc.t/Sc.s correction sums. The four
+`RepeatedOuterPost{Coordinates,Transport,Routes,Diagonal}` modules connect the
+coefficient-coordinate bridge to the actual reservoir crossing and both routes.
+The source coefficient is transported UNSIGNED to the target coefficient;
+only the existing coefficient denominator is cancelled. No Q or crossing is
+inverted. The final theorem works over CommRing, in both parities, at arbitrary
+terminal sectors and paths identified with the 100 placement. It explicitly
+retains c.IsInverse, CrossCoeffInputs, unequal colours, both reservoir-order
+validity proofs and their terminal endpoint equalities.
+
+Focused `lake --wfail build` and all four strict default-option consumers pass.
+Whole-owner audits check 26/9/22/8 declarations respectively, with only
+propext/Classical.choice/Quot.sound. These are generic conditional consumers,
+not a nonzero detecting model. The remaining repeated-outer diagonal is
+`Ri Rj Pi` (001); reverse `001 → 100`, the remaining adjacent-equal
+reservoir entries, and full CrossBraid assembly remain open. Earlier status
+entries listing 100 as open are superseded by this section.
+
 ## Literal middle-probe diagonal correction
 
 `ProbeReservoir.middleProbe_braidEq_diag_transport` proves the complete
