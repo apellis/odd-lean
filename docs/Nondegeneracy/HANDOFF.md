@@ -1,5 +1,14 @@
 # Odd nondegeneracy: restart state
 
+## Content comparison on balanced generators
+
+`contentInductionComp_hom_total_tensor` evaluates the named content composition
+comparison on arbitrary nested balanced pure tensors. Its result retains the
+endpoint equality morphism from the content-append comparison, before the
+mapped inner arrow and outer arrow. This supplies a pointwise route to the
+content associativity square without converting whole induced functor trees.
+The square and triple whiskering identifications remain open.
+
 ## Induction whiskering comparison
 
 `ELVInductionWhiskering.compForward_transform_inner` and
