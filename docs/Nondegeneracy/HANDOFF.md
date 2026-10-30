@@ -1,5 +1,28 @@
 # Odd nondegeneracy: restart state
 
+## Cyclotomic quotient of the short column
+
+`ELVCyclotomicCrossingTensor` constructs the diagram-category balanced source
+`Be ⊗_D Πᵖ(eB)` using the existing balanced-induction quotient, with the total
+coefficient-parity twist in the left action. Both factors are old cyclotomic
+Hom spaces, not crossing-image coordinates. Its map to the enlarged old
+quotient has the literal algebra-order formula `c τₙ b`.
+
+`ELVCyclotomicTopQuotient` constructs the affine balanced source
+`Re ⊗_S Πᵖ(eB)`, the canonical first-factor quotient `q`, and proves its
+surjectivity. `ELVCyclotomicTopKernel.ker_q_eq_movingImage` identifies its kernel
+with the span of tensors `(h W₋) ⊗ πᵖb`, using the proved full-ELV ideal sum;
+`quotientEquiv` identifies that quotient with the prescribed cyclotomic balanced
+source. Here `movingImage` is a relation submodule of the affine source, not a
+replacement source or the image of the descended crossing.
+
+Still open: constructing the prescribed epsilon-shifted balanced domain of P′,
+proving its range equals this relation submodule, its injection before quotient,
+and the comparison with the original short Mackey column. The matrix/snake
+argument is therefore not complete. No injectivity of the descended crossing,
+fixed-content matrix-algebra equivalence, or integer-degree refinement is
+asserted by these modules.
+
 ## Full-coefficient boundary and content calculations
 
 All statements retain the defining unit and parity conditions of their supplied
