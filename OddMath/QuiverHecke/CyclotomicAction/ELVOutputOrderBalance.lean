@@ -413,3 +413,161 @@ theorem outputLongCoordinate_twoSided_balanced (p : ZMod 2) (i : I) (v : List I)
 
 
 end OddMath.QuiverHecke.ELVOld
+
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory Categorification.TypeA
+open scoped TensorProduct
+namespace OddMath.QuiverHecke.ELVOld
+universe u
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+theorem canonical_last_commute (i : I) (v : List I) (m : ℕ)
+    (g : hom D Sc cutoff v v) :
+    appendInsert D Sc cutoff i v v g ≫ appendMovingPower D Sc cutoff i v m =
+      appendMovingPower D Sc cutoff i v m ≫
+        appendInsert D Sc cutoff i v v (twist k ((m : ZMod 2) * D.parity i) g) := by
+  symm
+  change appendMovingPower D Sc cutoff i v m ≫ rightContext D Sc cutoff [i] v v _ =
+    rightContext D Sc cutoff [i] v v g ≫ appendMovingPower D Sc cutoff i v m
+  rw [appendMovingPower_whisker, trailing_comp_rightContext D Sc cutoff
+    (firstDot_pow_parity D Sc i [] m)]
+  simp only [nsmul_eq_mul, twist_twist]
+
+theorem canonical_pure_compare (p : ZMod 2) (i : I) (v : List I) (m n : ℕ) :
+    outputLongCoordinate D Sc cutoff p i v n
+      (projection D Sc cutoff i v (v ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendMovingPower D Sc cutoff i v m)) =
+    (SKM.zsign k (D.parity i * wordSumParity D v)) ^ m •
+    outputLongCoordinate D Sc cutoff p i v n
+      (projection D Sc cutoff i v (v ++ [i])
+        (movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v)) := by
+  have hw : cw (canWord (v.length + 1) (longPrependShuffle v.length).1⁻¹) =
+      cw (leadingMoveWord [] v) := by
+    rw [canWord_longPrependShuffle, leadingMoveWord_eq_descRun]
+    rfl
+  have hu : SChain (i :: v)
+      (pl (i :: v) (cw (canWord (v.length + 1) (longPrependShuffle v.length).1⁻¹)))
+      (v ++ [i]) := by
+    rw [hw]
+    exact leadingMoveWord_sChain i [] v
+  have hd := sChain_dot_pow (v ++ [i]) v.length m
+  have h := sChain_append_of hu hd
+  rw [← List.map_replicate] at h
+  obtain ⟨h', he⟩ := prependOldCoordinate_long_last_dots D Sc cutoff p i v (v ++ [i]) 1 m h
+  have hcl : cl D Sc _ _ _ h =
+      OutputOldComposite.bareU D Sc i v ≫ dotE D Sc (v ++ [i]) v.length ^ m := by
+    simp only [OutputOldComposite.bareU, dotE_pow, cl_comp, List.map_replicate, hw]
+  have hcl' : cl D Sc _ _ _ h' =
+      (dotE D Sc (i :: v) 0 ^ m) ≫ OutputOldComposite.bareU D Sc i v := by
+    simp only [OutputOldComposite.bareU, dotE_pow, cl_comp, List.map_replicate, hw]
+  have hn := he (longOutputIndex i v n) rfl
+  rw [hcl, hcl'] at hn
+  have hc : bareUFull D Sc cutoff i v ≫ appendMovingPower D Sc cutoff i v m =
+      (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+        (OutputOldComposite.bareU D Sc i v ≫ dotE D Sc (v ++ [i]) v.length ^ m) :=
+    (affineUnit_comp D Sc cutoff _ _).symm
+  have hc' : movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v =
+      (1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+        ((dotE D Sc (i :: v) 0 ^ m) ≫ OutputOldComposite.bareU D Sc i v) :=
+    (affineUnit_comp D Sc cutoff _ _).symm
+  have hn' : prependOldCoordinate D Sc cutoff p (longOutputIndex i v n)
+      (projection D Sc cutoff i v (v ++ [i])
+        (bareUFull D Sc cutoff i v ≫ appendMovingPower D Sc cutoff i v m)) =
+      (SKM.zsign k (D.parity i * wordSumParity D v)) ^ m •
+      prependOldCoordinate D Sc cutoff p (longOutputIndex i v n)
+        (projection D Sc cutoff i v (v ++ [i])
+          (movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v)) := by
+    rw [hc, hc']
+    exact hn
+  rw [output_coordinate_cast, output_coordinate_cast, hn']
+  have cast_smul {t t' : List I} (e : t = t') (a : k) (b : Old D Sc cutoff v t) :
+      Eq.mp (congrArg (Old D Sc cutoff v) e) (a • b) =
+        a • Eq.mp (congrArg (Old D Sc cutoff v) e) b := by subst t'; rfl
+  rw [cast_smul (longOutputIndex_oldTarget i v n), smul_comm]
+
+theorem canonical_pair_compare (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
+    (b : Old D Sc cutoff v v) :
+    outputLongCoordinate D Sc cutoff p i v n
+      (pair D Sc cutoff p i (bareUFull D Sc cutoff i v ≫ appendMovingPower D Sc cutoff i v m) b) =
+    (SKM.zsign k (D.parity i * wordSumParity D v)) ^ m •
+    outputLongCoordinate D Sc cutoff p i v n
+      (pair D Sc cutoff p i (movingPower D Sc cutoff i v m ≫ bareUFull D Sc cutoff i v) b) := by
+  have hb (h : hom D Sc cutoff (i :: v) (v ++ [i])) :=
+    outputLongCoordinate_balanced D Sc cutoff p i v n h b
+  simp only [balancedForward_tmul] at hb
+  rw [hb, hb, canonical_pure_compare, map_smul]
+
+theorem canonical_pair_monomial (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
+    (b : Old D Sc cutoff v v) :
+    outputLongCoordinate D Sc cutoff p i v n
+      (pair D Sc cutoff p i (bareUFull D Sc cutoff i v ≫ appendMovingPower D Sc cutoff i v m) b) =
+      if n = m then b else 0 := by
+  rw [canonical_pair_compare, coordinate_long_row]
+  split_ifs
+  · rw [smul_smul, ← mul_pow, SKM.zsign_mul_self', one_pow, one_smul]
+  · rw [smul_zero]
+
+/-- Literal chronological U, output old arrow, then last dots. -/
+theorem canonical_output_monomial (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
+    (b c : Old D Sc cutoff v v) (g : hom D Sc cutoff v v)
+    (hg : (ideal D Sc cutoff v v).mkQ g = c) :
+    outputLongCoordinate D Sc cutoff p i v n
+      (pair D Sc cutoff p i
+        ((bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v v g) ≫
+          appendMovingPower D Sc cutoff i v m) b) =
+      if n = m then oldComp D Sc cutoff v v v b
+        (oldTwist D Sc cutoff (p + D.parity i * wordSumParity D v) v v c) else 0 := by
+  rw [Category.assoc, canonical_last_commute, ← Category.assoc]
+  have hp (h : hom D Sc cutoff (i :: v) (v ++ [i])) (f : hom D Sc cutoff v v) :
+      pair D Sc cutoff p i (h ≫ appendInsert D Sc cutoff i v v f) b =
+        act D Sc cutoff i (appendInsert D Sc cutoff i v v f) (pair D Sc cutoff p i h b) := by
+    obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective b
+    simp only [pair_mk]
+    change projection D Sc cutoff i v (v ++ [i]) (_ ≫ (_ ≫ _)) =
+      projection D Sc cutoff i v (v ++ [i]) ((_ ≫ _) ≫ _)
+    rw [Category.assoc]
+  rw [hp, outputLongCoordinate_outputOld, canonical_pair_monomial]
+  by_cases hn : n = m
+  · subst n
+    simp only [ite_true]
+    have ht : (ideal D Sc cutoff v v).mkQ (twist k ((m : ZMod 2) * D.parity i) g) =
+        oldTwist D Sc cutoff ((m : ZMod 2) * D.parity i) v v c := by rw [← hg]; rfl
+    rw [ht]
+    congr 1
+    obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v v).mkQ_surjective c
+    change (ideal D Sc cutoff v v).mkQ (twist k _ (twist k _ r)) =
+      (ideal D Sc cutoff v v).mkQ (twist k _ r)
+    have hpar : p + ((m : ZMod 2) * D.parity i + D.parity i * wordSumParity D v) =
+        (p + D.parity i * wordSumParity D v) + (m : ZMod 2) * D.parity i := by abel
+    rw [hpar, twist_add, twist_twist]
+  · simp only [ite_eq_right hn, map_zero, LinearMap.zero_apply]
+
+theorem canonical_output_balanced (p : ZMod 2) (i : I) (v : List I) (m n : ℕ)
+    (b c : Old D Sc cutoff v v) (g : hom D Sc cutoff v v)
+    (hg : (ideal D Sc cutoff v v).mkQ g = c) :
+    outputLongCoordinate D Sc cutoff p i v n
+      (balancedForward D Sc cutoff p i v (v ++ [i])
+        (balancedTmul D Sc cutoff p i
+          ((bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v v g) ≫
+            appendMovingPower D Sc cutoff i v m) b)) =
+      if n = m then oldComp D Sc cutoff v v v b
+        (oldTwist D Sc cutoff (p + D.parity i * wordSumParity D v) v v c) else 0 := by
+  rw [balancedForward_tmul]
+  exact canonical_output_monomial D Sc cutoff p i v m n b c g hg
+
+theorem canonical_output_extraction (p : ZMod 2) (i : I) (v : List I) (m : ℕ)
+    (b c : Old D Sc cutoff v v) (g : hom D Sc cutoff v v)
+    (hg : (ideal D Sc cutoff v v).mkQ g = c) :
+    outputLongExtraction D Sc cutoff p i v
+      (pair D Sc cutoff p i
+        ((bareUFull D Sc cutoff i v ≫ appendInsert D Sc cutoff i v v g) ≫
+          appendMovingPower D Sc cutoff i v m) b) =
+      Finsupp.single m (oldComp D Sc cutoff v v v b
+        (oldTwist D Sc cutoff (p + D.parity i * wordSumParity D v) v v c)) := by
+  ext n
+  rw [outputLongExtraction_apply, canonical_output_monomial D Sc cutoff p i v m n b c g hg]
+  by_cases hn : n = m
+  · subst n; simp only [ite_true, Finsupp.single_eq_same]
+  · rw [ite_eq_right hn, Finsupp.single_eq_of_ne hn]
+end OddMath.QuiverHecke.ELVOld

@@ -11,7 +11,12 @@ and right oldComp by the output coefficient twisted by
 bare-long rows, the exact chronological kernel and a finite normalized long
 section; it assumes neither transport nor balancing. These extraction APIs are
 on fixed old-word summands; `bareUFull_transport` itself has arbitrary endpoints.
-Identifying the independently evaluated S in corrected rho coordinates remains open.
+`canonical_output_balanced` and `canonical_output_extraction` identify the literal
+chronological U–old–last-dots monomial: degree m extracts to
+`oldComp b (oldTwist (p + parity i * wordSumParity v) c)`, and other degrees
+vanish. The moving-degree twist cancels by actual graded dot/old commutation;
+last dots are after the output old factor. Identifying the independently evaluated
+S in corrected rho coordinates remains open.
 
 ## Output old relative stability
 
