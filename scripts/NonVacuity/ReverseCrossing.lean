@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet
+import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerNaturality
 
 noncomputable section
@@ -42,6 +42,17 @@ example (l : List I) (i j c : I) :
         (sChain_cross_succ l [] i j c) :=
   cross_comp_reverseMoveHom_pair_all D Sc l i j c
 
+/-- Arbitrary old words and moving-colour coincidence. -/
+example (l m v : List I) (i j : I) :
+    cl D Sc _ _ [.cross (l.length + m.length)] (sChain_mid₂ l m v i j i) ≫
+        reverseMoveHom D Sc i l (m ++ i :: j :: v) =
+      SKM.zsign k (D.parity j * D.parity i *
+        (D.parity i * (wordSumParity D m + wordSumParity D v))) •
+        (reverseMoveHom D Sc i l (m ++ j :: i :: v) ≫
+          cl D Sc _ _ [.cross (l.length + 1 + m.length)] (sChain_mid₁ l m v i j i)) :=
+  cross_comp_reverseMoveHom_all D Sc v i j i m l
+
+#print axioms cross_comp_reverseMoveHom_all
 #print axioms reverseMeetLeft_eq_all
 #print axioms cross_comp_reverseMoveHom_pair_all
 end ReverseCrossingConsumer
@@ -51,7 +62,8 @@ run_cmd do
   let env ← getEnv
   let owners := #[
     `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerEqual,
-    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet]
+    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerMeet,
+    `OddMath.QuiverHecke.CyclotomicAction.ReverseIntertwinerCrossing]
   for owner in owners do
     let some idx := env.header.moduleNames.idxOf? owner
       | throwError "Module was not imported: {owner}"

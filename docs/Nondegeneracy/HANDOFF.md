@@ -12,8 +12,11 @@ transport identities. No inverse or cancellation of a moving chain is used.
 `cross_comp_reverseMoveHom_pair_all` applies the square to the defined
 reverse chain on two old strands, without colour restrictions.
 
-Arbitrary old-word crossing transport, full coefficient-sensitive reverse
-old-ideal descent and a quotient `rMap` remain to be assembled. Append-end
+`ReverseIntertwinerCrossing.cross_comp_reverseMoveHom_all` is provided as
+`OddMath.QuiverHecke.cross_comp_reverseMoveHom_all`: it proves old-crossing
+transport on arbitrary old words, by prefix and suffix induction with the
+outside-crossing parity sign. Full coefficient-sensitive reverse old-ideal
+descent and a quotient `rMap` remain to be assembled. Append-end
 norm regularity and G injectivity remain separate obligations.
 
 ## Actual reverse-chain endpoint norm; G injectivity remains open
@@ -47,7 +50,8 @@ regularity of the append-end `endpointNorm`: the append-coordinate quotient
 comparison remains to be constructed. In particular neither QP nor P
 injectivity is used to claim G injectivity.
 
-Next obligations for `DeformedBoundaryDivision.md` §§2–3: finish arbitrary-word reverse crossing naturality and lift it through total coefficient-plus-diagram parity;
+Next obligations for `DeformedBoundaryDivision.md` §§2–3: lift reverse
+naturality through total coefficient-plus-diagram parity;
 construct append-old PBW quotient coordinates and prove the actual append
 endpoint norm regular there; deduce G injectivity and only then derive the
 concrete reverse boundary norm from full QP. None of these final implications
