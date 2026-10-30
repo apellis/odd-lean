@@ -1,5 +1,17 @@
 # Odd nondegeneracy: restart state
 
+## Prescribed source splitting
+
+`ELVSourceSplitting` identifies range alpha with the chronological short span for
+arbitrary source/output words. On diagonal output this is the kernel of every
+normalized long extraction. `sourceCoordinateEquiv` gives coordinates in the
+independently prescribed `PprimeDomain` and the existing polynomial old module.
+Its inverse is alpha plus the PBW section corrected by alpha times its short
+decoder. Both composites hold on all classes; the actual P map has the original
+short crossing column in these coordinates. This is ground-ring linear, not yet
+a bimodule or natural categorical inverse. Crossing-column injectivity and the
+full snake comparison remain separate.
+
 ## Extraction for the prescribed short source column
 
 `CyclotomicCrossingTensor.extract` maps the original
