@@ -9,8 +9,12 @@ are the successive induction spaces for `[i,l,j]` and `[i,j,l]`, respectively.
 The proof uses the whole comparison coherence square, and includes arbitrary
 modules, terminal content objects, repeated colours and the negative
 same-colour normalization. No extra flatness or finiteness premise is used.
-The other crossing placement, three independently whiskered dots, and the
-original-Sc whiskered mixed braid remain to be identified.
+`contentETripleMap_prefix_cross` now handles the other placement as induction
+of `contentEPairCrossTransform`, with explicit equality transports to a common
+intermediate content. Both operators are independently defined using only
+single-letter induction and the normalized pair crossing.
+The three independently whiskered dots and original-Sc whiskered mixed braid
+remain to be identified.
 
 ## Whole comparison coherence and the prescribed cyclotomic source
 
