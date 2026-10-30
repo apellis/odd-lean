@@ -29,8 +29,12 @@ fold support by `endpointQPDegree = cutoff i + Σ_b appendQPDegree(i,v_b)`.
 vanishes. The proof follows the finite endpoint row and each ordered QP step,
 not ordinary commutative polynomial multiplication. The corresponding C0 bound
 and top coefficient hold at every input power after the full old twist.
-Ordered S-division remains open; the existing
-QP numerator division is not (11), and no prescribed matrix inverse is claimed.
+`ELVOutputSLeading.independentOutputS_support` and `independentOutputS_top`
+prove the independent S bound `D = (if odd then 4 else 2) * count_i(v)`
+and its literal top coefficient `[id_v]`, including annihilated old corners.
+`ELVIndependentSBoundaryDivision` proves the genuine ordered S quotient/remainder
+and both height branches for actual phi; see §5 below. The existing QP numerator
+division is a different result. No prescribed matrix inverse is claimed.
 
 The checked coefficient formula can be read without quotient projections. Put
 `T_d(f)_(d+n) = twist_(d p(i))(f_n)` and `T_d(f)_m = 0` for `m < d`,
@@ -50,7 +54,8 @@ Call the final row N. The projected numerator at input power d is exactly
 the pointwise formula. `outputPolynomialBoundary_independentS_coefficients`
 substitutes N into the independent corrected-rho S comparison, retaining both
 library signs. This gives explicit boundary values on those S evaluations;
-it does not yet identify the monic S quotient or individual boundary leading
+the additional coefficient covariance and finite division in §5 identify the S
+quotient. They do not yet identify individual boundary leading
 components.
 
 Sources compared: KKO I, arXiv:1206.5933v2, (8.4)–(8.5), Corollary 8.6,
@@ -190,7 +195,8 @@ old-twist invariance and moving-degree normalization. The full ELV
 `ELVOutputSIterates` now proves the corrected-iterate extraction in the library
 convention at odd moving colour, including empty old words. Its P-comparison
 is modulo the chronological crossing span; the polynomial projection needed
-for (7) remains separate. The ordinary append extraction retains old height n+1.
+for (7) is supplied by `ELVBoundaryPolynomial` and the quotient by §5 below.
+The ordinary append extraction retains old height n+1.
 
 More precisely, put C_c(f)(m) = oldComp(f(m), c), in chronological
 composition order, and w_d = outputLongExtraction(outputCorrectedLift(d, 1)).
@@ -244,6 +250,41 @@ Eψ(S(ρ̄)w_k)=0. No equality of the two crossing components themselves
 is required.
 
 ## 5. Finite monic division
+
+**Checked full-ELV library form.** `ELVOutputSLeading` proves support ≤D
+and S_D=[id] directly from the independent choices. S is not A=C₀Pℓ.
+`ELVBoundaryCoefficientAction` proves the exact full-coefficient law
+
+    A E_(p+eta)(c) = E_0(c) A,
+    E_q(c)(f)_n = oldComp(f_n, oldTwist(q+n*p_i)(c)).
+
+Thus ordinary right linearity is not assumed on arbitrary exterior
+coefficients. Existing `independentOutputS_oldTwist` removes these twists
+for S_n, giving `outputPolynomialBoundary_independentS_postcomp`.
+`ELVIndependentSBoundaryDivision.outputPolynomialBoundary_iterate_high`
+telescopes the input-oriented recurrence exactly at degree n+m, retaining
+the n-fold total twist on A(f)_m. It gives a remainder with support <D.
+The proved even support of S removes the total twist from its right product:
+`independentSRightProduct_single` is literal chronological convolution on
+arbitrary full old coefficients.
+
+Write sigma=zsign(p_i)^count_i(v), epsilon for the checked reverse-boundary
+sign, N_d for the explicit input-shifted numerator and phi_d=A(w_d). Then
+`independentS_boundary_division` proves
+
+    epsilon • N_d = (sigma • phi_d) S + sigma • R_d,
+    support(R_d) ⊆ range(D).
+
+`independentS_division_unique` proves uniqueness of this quotient/remainder.
+Set B=d+endpointQPDegree. `outputBoundaryPhi_signed_above` proves coefficient
+vanishing whenever B<m+D; `outputBoundaryPhi_signed_top` proves the
+coefficient of sigma•phi_d at B-D is epsilon•q•[id] when D≤B.
+`outputBoundaryPhi_eq_zero_of_negative` proves phi_d=0 when B<D.
+No nonzero old corner, `natDegree` equality, or universal monicity is used.
+The source formulas below are thereby realized with explicit degree bounds
+and library signs; rewriting B-D as the Cartan-height expression remains a
+separate identification. The prescribed categorical matrix remains separate.
+
 
 Put φ_k=A_∂(w_k), D=deg_t S=2(1+p)m and a=⟨h_i,Λ−β⟩.
 The compatible-lift identity gives
@@ -304,6 +345,7 @@ The source matrices `[F̄,j(1),…,j(t^(a−1))]` for a≥0 and
 `[F̄;E;EX;…;EX^(−a−1)]` for a<0 are compared there with the
 fixed tensor-unit/counit mate and the prescribed signed dot/crossing maps
 of `DeformedRouquierMatrix.md`. In particular the cap rows EX^r are
-not identified here with the required categorical dotted caps. No full
-action, opposite-side projectivity, reverse adjunction or assembled Lean proof
-of (7)–(12) is asserted.
+not identified here with the required categorical dotted caps. The library
+forms of (7), (11), and both branches of (12) are now proved above using
+explicit degree bounds and library signs. The Cartan-height rewrite, full
+action, opposite-side projectivity and reverse adjunction are not asserted.
