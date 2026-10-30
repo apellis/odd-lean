@@ -1,5 +1,15 @@
 # Odd nondegeneracy: restart state
 
+## Evaluation on arbitrary content supermodules
+
+`ELVModuleYoneda.ModuleYoneda.homEquiv` proves `(H_v ⟶ M) ≃ₗ[k] M.obj v`
+for every exact-content supermodule. The inverse component sends `h` to
+`M.map (twist k p h) (proj_p m)`. Both roundtrips, both parity projections
+and the formula for every arrow are proved. No finite-colour or nonzero-ring
+hypothesis is imposed. This is the evaluation step toward the source-centre
+realization converse in `DeformedActionAssembly.md` §5, not a construction
+of a reservoir closure or its prescribed inverse.
+
 ## Graded content representable Hom coordinates
 
 `ELVContentYoneda` constructs `homEquiv : (H_v ⟶ H_w) ≃ₗ[k] (w ⟶ v)`

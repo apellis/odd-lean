@@ -9,6 +9,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentYoneda
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleYoneda
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
