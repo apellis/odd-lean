@@ -100,6 +100,7 @@ private theorem cyclotomicGenerator_mem_entrySpan (w : Word I (n + 1)) :
 private theorem entrySpan_entry {x : Hn D Sc (n + 1)}
     (hx : x ∈ cyclotomicEntrySpan D Sc a n) (t s : Word I (n + 1)) :
     x (t, s) ∈ cycHom D Sc a s.val t.val := by
+  let : DecidableEq (Word I (n + 1)) := Classical.decEq _
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨u, w, f, hf, rfl⟩ := hx
