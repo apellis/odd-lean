@@ -26,6 +26,7 @@ example (v s t : C) (g : s ⟶ t) (b : v ⟶ s) (m : M.obj v) :
       BalancedInduction.tensor J (J ⋙ M) s g (M.map b m) := by
   change IndResKernel.forward J M t _ = _
   rw [IndResKernel.forward_tensor, IndResKernel.evaluate_tensor]
+  rfl
 
 example (s t : C) (g : s ⟶ t) (m : M.obj s) :
     (IndResKernel.equiv J M t).symm (BalancedInduction.tensor J (J ⋙ M) s g m) =
