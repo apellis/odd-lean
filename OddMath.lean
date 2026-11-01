@@ -1737,3 +1737,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPositiveCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundarySnake
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCapCoordinateTransport
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCrossingInputDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapInputRecurrence
