@@ -24,6 +24,7 @@ variable {k : Type r} [CommRing k] {B : Type u} [BicategoryStruct.{w,v} B]
   {a b c d : B} (E : a ⟶ b) {E' : c ⟶ d} {F' : d ⟶ c}
   (A : SuperAdjunction (k := k) E' F') (κ : ZMod 2) (H : b ⟶ d)
 
+omit [∀ a b : B, PiSupercategory k (a ⟶ b)] in
 /-- Signed reversal preserves nilpotence of a homogeneous endomorphism. -/
 theorem isNilpotent_rightTranspose_of_mem {p : ZMod 2} {y : End E'}
     (hy : y ∈ parity (R := k) _ _ p) (hn : IsNilpotent y) :
@@ -67,7 +68,7 @@ theorem mixedPostSource_difference_isUnit_of_nilpotent {x : End E} (hx : x ∈ p
     (hu : IsUnit x) (hn : IsNilpotent y) :
     IsUnit (mixedPostSourcePreDot (k := k) E κ H (F' := F') x -
       mixedPostSourcePostDot (k := k) E κ H A y) := by
-  have hu' := mixedPostSourcePreDot_isUnit E κ H hu
+  have hu' := mixedPostSourcePreDot_isUnit (F' := F') E κ H hu
   have hn' := mixedPostSourcePostDot_isNilpotent E A κ H hy hn
   have hc := (commute_mixedPostSource E A κ H hx (y := y)).symm
   simpa only [sub_eq_add_neg, add_comm] using
