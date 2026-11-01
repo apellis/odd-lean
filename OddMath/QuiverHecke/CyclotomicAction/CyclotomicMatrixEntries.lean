@@ -88,7 +88,8 @@ private theorem cyclotomicGenerator_mem_entrySpan (w : Word I (n + 1)) :
   cases l with
   | nil => simp at hl
   | cons j l =>
-    change FiniteHomMatrix.single (⟨j :: l, hl⟩ : Word I (n + 1))
+    change FiniteHomMatrix.single (obj := wordObj D Sc (n := n + 1))
+      (⟨j :: l, hl⟩ : Word I (n + 1))
       (⟨j :: l, hl⟩ : Word I (n + 1)) (firstDotPoly D Sc a j l) ∈ _
     apply Submodule.subset_span
     refine ⟨⟨j :: l, hl⟩, ⟨j :: l, hl⟩, firstDotPoly D Sc a j l, ?_, rfl⟩
@@ -107,13 +108,11 @@ private theorem entrySpan_entry {x : Hn D Sc (n + 1)}
       · subst s
         simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_same] using hf
       · have h : (u, s) ≠ (u, w) := fun h => hs (congrArg Prod.snd h)
-        change DFinsupp.single (u, w) f (u, s) ∈ _
-        rw [DFinsupp.single_eq_of_ne h]
-        exact Submodule.zero_mem _
+        simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_of_ne h] using
+          (Submodule.zero_mem (cycHom D Sc a s.val u.val))
     · have h : (t, s) ≠ (u, w) := fun h => ht (congrArg Prod.fst h)
-      change DFinsupp.single (u, w) f (t, s) ∈ _
-      rw [DFinsupp.single_eq_of_ne h]
-      exact Submodule.zero_mem _
+      simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_of_ne h] using
+        (Submodule.zero_mem (cycHom D Sc a s.val t.val))
   | zero => exact Submodule.zero_mem _
   | add x y _ _ hx hy =>
     change x (t, s) + y (t, s) ∈ _
