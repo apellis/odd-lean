@@ -82,14 +82,25 @@ theorem moduleMateLinear_apply (t : OldCategory D Sc cutoff)
     mateSourceEvaluation D Sc cutoff i M v t m z =
       moduleSourceEvaluation D Sc cutoff i M v t m z := rfl
 
+theorem mateSourceEvaluation_tensor (v s t : OldCategory D Sc cutoff) (m : M.obj v)
+    (g : (append D Sc cutoff i).obj s ⟶ t)
+    (b : v ⟶ (append D Sc cutoff i).obj s) :
+    mateSourceEvaluation D Sc cutoff i M v t m
+      (BalancedInduction.tensor (append D Sc cutoff i)
+        ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
+      BalancedInduction.tensor (append D Sc cutoff i)
+        ((BalancedInduction.restriction (append D Sc cutoff i)).obj M).toFunctor
+          s g (M.map b m) :=
+  IndResKernel.evaluate_tensor (append D Sc cutoff i) M.toFunctor v t m s g b
+
 /-- The established mate coefficient equality, now between the matching module endpoints. -/
 theorem mateEvaluationEndpoints_eq (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     kernelMateEvaluationEndpoint D Sc cutoff i M v t m =
       moduleMateEvaluationEndpoint D Sc cutoff i M v t m := by
-  apply LinearMap.ext
-  intro z
+  apply BalancedInduction.hom_ext
+  intro s g b
   rw [kernelMateEvaluationEndpoint_apply, moduleMateEvaluationEndpoint_apply,
-    mateCoefficientEvaluation_apply, mateSourceEvaluation_apply, moduleMateLinear_apply]
-  exact LinearMap.congr_fun (actualMateKernel_evaluate D Sc cutoff i M v t m) z
+    mateCoefficientEvaluation_apply, mateSourceEvaluation_tensor, moduleMateLinear_apply]
+  exact actualMateKernel_evaluate_tensor D Sc cutoff i M v t m s g b
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
