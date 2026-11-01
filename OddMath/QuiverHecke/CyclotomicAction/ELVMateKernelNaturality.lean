@@ -1,3 +1,4 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVActualMatrixFamilies
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateFirstRow
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
@@ -43,10 +44,9 @@ private theorem kernelNatTrans_apply
 /-- The representable coefficient functors agree literally in the old category. -/
 def oldSourceKernelEquiv (i : I) (v t : OldCategory D Sc cutoff) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t ≃ₗ[k]
-      ((BalancedInduction.induction (append D Sc cutoff i)).obj
-        ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-          (oldRepresentable D Sc cutoff v))).obj t :=
-  LinearEquiv.refl k _
+      (actualUnshiftedSourceModule D Sc cutoff i v.word).obj t := by
+  cases v with
+  | mk v => exact LinearEquiv.refl k _
 
 @[simp] theorem oldSourceKernelEquiv_tensor (i : I) (v s t : OldCategory D Sc cutoff)
     (g : (append D Sc cutoff i).obj s ⟶ t)
@@ -56,15 +56,45 @@ def oldSourceKernelEquiv (i : I) (v t : OldCategory D Sc cutoff) :
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
       BalancedInduction.tensor (append D Sc cutoff i)
         ((BalancedInduction.restriction (append D Sc cutoff i)).obj
-          (oldRepresentable D Sc cutoff v)).toFunctor s g b := rfl
+          (oldRepresentable D Sc cutoff (⟨v.word⟩ : OldCategory D Sc cutoff))).toFunctor s g b := by
+  cases v
+  rfl
+
+private theorem matrixMateRow_total (i : I) (v t : List I)
+    (z : (actualUnshiftedSourceModule D Sc cutoff i v).obj
+      (⟨t⟩ : OldCategory D Sc cutoff)) :
+    matrixMateRow D Sc cutoff i v t z =
+      OldInductionRepresentable.upperHomEquiv D Sc cutoff i
+        (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)
+        ((matrixMateComponent D Sc cutoff i
+          (oldRepresentable D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff))).total
+            (⟨t⟩ : OldCategory D Sc cutoff) z) := rfl
 
 /-- The chosen actual mate, evaluated in canonical upper-Hom coordinates. -/
 def actualMateKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
-      ((append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t) :=
-  (OldInductionRepresentable.upperHomEquiv D Sc cutoff i v t).toLinearMap.comp
-    ((SVec.toLinearMap ((matrixMateComponent D Sc cutoff i (oldRepresentable D Sc cutoff v)).total t)).comp
-      (oldSourceKernelEquiv D Sc cutoff i v t).toLinearMap)
+      ((append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t) := by
+  cases v with
+  | mk v =>
+    cases t with
+    | mk t =>
+      exact
+        { toFun := fun z => matrixMateRow D Sc cutoff i v t
+            (oldSourceKernelEquiv D Sc cutoff i ⟨v⟩ ⟨t⟩ z)
+          map_add' := by
+            intro x y
+            simp only [map_add]
+          map_smul' := by
+            intro r x
+            simp only [map_smul, RingHom.id_apply] }
+
+/-- The stored mate row with both old endpoints in literal word coordinates. -/
+theorem actualMateKernelComponent_row (i : I) (v t : List I)
+    (z : IndResKernel.Component (k := k) (append D Sc cutoff i)
+      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)) :
+    actualMateKernelComponent D Sc cutoff i ⟨v⟩ ⟨t⟩ z =
+      matrixMateRow D Sc cutoff i v t
+        (oldSourceKernelEquiv D Sc cutoff i ⟨v⟩ ⟨t⟩ z) := rfl
 
 @[simp] theorem actualMateKernelComponent_tensor (i : I)
     (v s t : OldCategory D Sc cutoff) (g : (append D Sc cutoff i).obj s ⟶ t)
@@ -74,13 +104,14 @@ def actualMateKernelComponent (i : I) (v t : OldCategory D Sc cutoff) :
         ((append D Sc cutoff i) ⋙ IndResKernel.homModule (k := k) v) s g b) =
     -((append D Sc cutoff i).map b ≫ equalCrossComponent D Sc cutoff i s ≫
       twist k (D.parity i) ((append D Sc cutoff i).map g)) := by
-  rw [actualMateKernelComponent, equiv_total_comp_apply, oldSourceKernelEquiv_tensor]
   cases v with
   | mk v =>
     cases s with
     | mk s =>
       cases t with
       | mk t =>
+        rw [actualMateKernelComponent_row]
+        rw [oldSourceKernelEquiv_tensor, matrixMateRow_total]
         have hp : D.parity i * D.parity i = D.parity i := by
           rcases parity_eq_zero_or_one (D.parity i) with h | h <;> simp [h]
         have ht := oldModuleMate_upper_tensor D Sc cutoff i v s t g b
