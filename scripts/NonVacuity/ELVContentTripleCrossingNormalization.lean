@@ -14,12 +14,7 @@ theorem importing_contentWhiskeredPrefixCross_distinct (β : Multiset I) {i j : 
     (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
     (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i j δ
-            ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-            (D.parity i * D.parity j) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M).total z =
+    contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z =
       contentETripleMap D Sc cutoff N h ht (contentTripleLeft_parity D Sc i j l) M z :=
   contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij l δ γ hδ hδ' h ht hγ M z
 
@@ -35,12 +30,7 @@ theorem importing_contentWhiskeredPrefixCross_equal (β : Multiset I) (i l : I)
     (δ γ : Multiset I) (hδ : (β + ([i] : Multiset I)) + ([i] : Multiset I) = δ)
     (h : β + ([i,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    ((contentETripleMiddleIso D Sc cutoff N β i i l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i i δ
-            ((contentPair_sum β i i).trans hδ) ((contentPair_sum β i i).trans hδ)).app
-            (D.parity i * D.parity i) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β i i l δ γ hδ h hγ).hom.app M).total z =
+    contentPrefixCrossComponent D Sc cutoff N β i i l δ γ hδ hδ h h hγ M z =
       -contentETripleMap D Sc cutoff N h h (contentTripleLeft_parity D Sc i i l) M z :=
   contentWhiskeredPrefixCross_equal D Sc cutoff N β i l δ γ hδ h hγ M z
 
