@@ -14,7 +14,7 @@ homParityShift functor, exactly as in homContentPostDot. Every unit is
 transported through this functor; no alternative action or dot gauge is used.
 -/
 noncomputable section
-open CategoryTheory StringDiagrams Supercategory
+open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke.ELVOld
 open OddMath.QuiverHecke.CyclotomicAction
 universe u
@@ -107,6 +107,11 @@ theorem elvPostProbe_square_sum_isUnit [Finite I]
     (elvPostProbeDot_isUnit D Sc cutoff bound i Λ h F α hu)
     (elvPostProbe_odd_anticomm D Sc cutoff bound i Λ h F α)
 
+private theorem functor_map_end_pow {C C' : Type*} [Category C] [Category C']
+    (G : C ⥤ C') (M : C) (f : End M) (n : ℕ) :
+    G.map (f ^ n) = (show End (G.obj M) from G.map f) ^ n :=
+  (G.mapEnd M).map_pow f n
+
 abbrev elvShiftedPostInduction (κ : ZMod 2) :
     A ⟶ elvWeightSpace D Sc cutoff bound Λ y :=
   (SKM.homParityShift (k := k) (C := A ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj
@@ -160,9 +165,7 @@ theorem elvShiftedPostProbe_square_difference_isUnit [Finite I]
   change IsUnit (show End (S.obj (elvPostInduction D Sc cutoff bound i Λ h F)) from
     S.map (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 -
       elvPostDot D Sc cutoff bound i Λ h F ^ 2)) at hh
-  rw [Functor.map_sub,
-    (S.mapEnd _).map_pow (elvPostProbeDot D Sc cutoff bound i Λ h F α) 2,
-    (S.mapEnd _).map_pow (elvPostDot D Sc cutoff bound i Λ h F) 2] at hh
+  rw [Functor.map_sub, functor_map_end_pow, functor_map_end_pow] at hh
   exact hh
 
 theorem elvShiftedPostProbe_square_sum_isUnit [Finite I]
@@ -179,9 +182,7 @@ theorem elvShiftedPostProbe_square_sum_isUnit [Finite I]
   change IsUnit (show End (S.obj (elvPostInduction D Sc cutoff bound i Λ h F)) from
     S.map (elvPostProbeDot D Sc cutoff bound i Λ h F α ^ 2 +
       elvPostDot D Sc cutoff bound i Λ h F ^ 2)) at hh
-  rw [Functor.map_add,
-    (S.mapEnd _).map_pow (elvPostProbeDot D Sc cutoff bound i Λ h F α) 2,
-    (S.mapEnd _).map_pow (elvPostDot D Sc cutoff bound i Λ h F) 2] at hh
+  rw [Functor.map_add, functor_map_end_pow, functor_map_end_pow] at hh
   exact hh
 
 end OddMath.QuiverHecke.ELVOld
