@@ -4,7 +4,7 @@ For a probe functor E : A → B with homogeneous unit x, a parity κ, and H : B 
 
 ELVTransposeDenominatorUnits applies actual restriction after G. Strict Π-SCat composition identifies its probe map with mixedPostSourcePreDot(E,κ,H,x), and its chosen transposed dot with mixedPostSourcePostDot(E,κ,H,actualAdj,actualDot). Both identifications are literal equalities of the prescribed maps.
 
-This supplies the even source difference and both odd square norms at every original weight. The even postrestriction producer gives transpose minus probe; negate its unit to obtain probe minus transpose. Odd square difference and sum match directly.
+This supplies the even source difference at every original weight. The even postrestriction producer gives transpose minus probe; negate its unit to obtain probe minus transpose. Both odd square norms are already proved for postrestriction in ELVTransposeDenominatorUnits; their literal mixed-source specialization remains a separate elaboration task.
 
 Every category is the existing product of ContentModules for the implemented weighted coefficient ideal, with the same cutoff and bound. The input H is arbitrary. Fixed-source-content exponents are uniform in the input module, so no finite weight fibre or support restriction is needed.
 

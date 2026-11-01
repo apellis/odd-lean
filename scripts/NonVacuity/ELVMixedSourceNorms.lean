@@ -36,18 +36,21 @@ private theorem hc : Sc.Homogeneous := by
 
 private theorem step : (0 : Bool → ℤ) + D.α false = D.α false := zero_add _
 private abbrev A := elvWeightSpace D Sc (fun _ => 12) 12 (0 : Bool → ℤ) (D.α false)
-private abbrev E : A ⟶ A := 𝟙 A
-private abbrev H : A ⟶ A := 𝟙 A
+private def E : A ⟶ A := 𝟙 A
+private def H : A ⟶ A := 𝟙 A
 
 
-/-- The shifted actual module-category source uses the prescribed mate operators. -/
-example : IsUnit (SKM.mixedPostSourcePreDot (k := ℚ) E 1 H
+/-- The actual full-ELV target retains the prescribed mate operators for arbitrary source functors. -/
+private theorem actualSourceNorm (E H : A ⟶ A) : IsUnit (SKM.mixedPostSourcePreDot (k := ℚ) E 1 H
       (F' := elvF D Sc (fun _ => 12) 12 false 0 step) (1 : End E) -
     SKM.mixedPostSourcePostDot (k := ℚ) E 1 H
       (elvActionAdjunction D Sc (fun _ => 12) 12 false 0 step)
       (elvActionDot D Sc (fun _ => 12) 12 false 0 step)) :=
   elvMixedSource_difference_isUnit D Sc (fun _ => 12) 12 false 0 step E 1 H
     sy hc rfl 1 (id_mem E) isUnit_one
+
+/-- A closed specialization takes both source functors to the actual category identity. -/
+example := actualSourceNorm E H
 
 example : elvPostTransposeDot D Sc (fun _ => 12) 12 false 0 step
       (E ≫ (SKM.homParityShift (k := ℚ) 1).obj H) =
