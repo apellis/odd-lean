@@ -95,7 +95,7 @@ theorem evenInputContraction_representative (i : I) (hi : D.parity i = 0)
     (shortCross D Sc cutoff i v t
       (shortTensor D Sc cutoff i v s t g ((ideal D Sc cutoff _ _).mkQ r))) 0 = _
   rw [ShortCrossCoordinates.column_mk, appendC0InputDefect_crossing]
-  simp only [Finsupp.smul_apply, Finsupp.single_eq_same, hi, zero_mul,
+  simp only [Finsupp.neg_apply, Finsupp.single_eq_same, hi, zero_mul,
     SKM.zsign_zero, twist_zero, neg_one_smul]
 
 /-- The input dot is the decoded ordinary append moving dot. -/
