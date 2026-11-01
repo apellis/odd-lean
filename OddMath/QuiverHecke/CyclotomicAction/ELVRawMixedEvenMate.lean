@@ -62,6 +62,21 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   {A B : PiSCat.{u, u, u + 1} k} (E : A ⟶ B) (κ τ : ZMod 2)
   (H : B ⟶ elvWeightSpace D Sc cutoff bound Λ y)
 
+/-- The restriction probe gives the source norm at the actual weight-module carrier. -/
+private theorem restrictionSourceNorm [Finite I]
+    (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0) :
+    ∀ (G : Superfunctor k A.carrier (ELVWeightProduct D Sc cutoff bound Λ y))
+      (b : End G), b ∈ parity (R := k) _ _ 0 → IsUnit b →
+      IsUnit (show End (G.comp (elvF D Sc cutoff bound i Λ h)) from
+        Superfunctor.whiskerLeft G (elvActionDotTranspose D Sc cutoff bound i Λ h) -
+          Superfunctor.whiskerRight b (elvF D Sc cutoff bound i Λ h)) := by
+  intro G b hb hu
+  have hG := elvRestrictionProbe_difference_isUnit (A := A) D Sc cutoff bound i Λ h G
+    sy hc hi b hb hu
+  set_option backward.dsimp.instances true in
+    dsimp only [elvPostTransposeDot, elvRestrictionProbeDot, elvPostRestriction] at hG
+  exact hG
+
 /-- The literal even source norm uses the raw coefficient's Hom-shift witness. -/
 theorem elvRawMixedSource_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0)
@@ -71,20 +86,13 @@ theorem elvRawMixedSource_difference_isUnit [Finite I]
       SKM.mixedPostSourcePostDot (k := k) E κ H
         (elvActionAdjunction D Sc cutoff bound i Λ h)
         (elvActionDot D Sc cutoff bound i Λ h)) := by
-  have hNorm : ∀ (G : Superfunctor k A.carrier (ELVWeightProduct D Sc cutoff bound Λ y))
-      (b : End G), b ∈ parity (R := k) _ _ 0 → IsUnit b →
-      IsUnit (show End (G.comp (elvF D Sc cutoff bound i Λ h)) from
-        Superfunctor.whiskerLeft G (elvActionDotTranspose D Sc cutoff bound i Λ h) -
-          Superfunctor.whiskerRight b (elvF D Sc cutoff bound i Λ h)) := by
-    intro G b hb hu
-    have hG := elvRestrictionProbe_difference_isUnit (A := A) D Sc cutoff bound i Λ h G
-      sy hc hi b hb hu
-    set_option backward.dsimp.instances true in
-      dsimp only [elvPostTransposeDot, elvRestrictionProbeDot, elvPostRestriction] at hG
-    exact hG
-  exact mixedSourceNorm_ofTranspose E κ H
+  exact mixedSourceNorm_ofTranspose (k := k) (A := A) (B := B)
+    (C := elvWeightSpace D Sc cutoff bound Λ y)
+    (Q := elvWeightSpace D Sc cutoff bound Λ x)
+    (E' := elvE D Sc cutoff bound i Λ h) (F' := elvF D Sc cutoff bound i Λ h) E κ H
     (elvActionAdjunction D Sc cutoff bound i Λ h) (elvActionDot D Sc cutoff bound i Λ h)
-    hNorm a (hi ▸ ha) hu
+    (restrictionSourceNorm (D := D) (Sc := Sc) (cutoff := cutoff) (bound := bound)
+      (Λ := Λ) (x := x) (i := i) (h := h) (A := A) sy hc hi) a (hi ▸ ha) hu
 
 /-- The raw arbitrary-Z even coefficient has invertible prescribed dotted mate. -/
 theorem elvRawMixedEvenMateDot_isIso [Finite I]
