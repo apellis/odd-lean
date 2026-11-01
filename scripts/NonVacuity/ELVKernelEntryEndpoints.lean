@@ -20,7 +20,7 @@ example (i : Bool) (v t : C) (m : M.obj v)
     (z : IndResKernel.Component (k := ℚ) (append datum scalars cutoff i) v t) :
     moduleMateEvaluationEndpoint datum scalars cutoff i M v t m z =
       moduleMateLinear datum scalars cutoff i M t
-        (moduleSourceEvaluation datum scalars cutoff i M v t m z) :=
+        (mateSourceEvaluation datum scalars cutoff i M v t m z) :=
   moduleMateEvaluationEndpoint_apply datum scalars cutoff i M v t m z
 
 example (i : Bool) (t : C) (z : mateSourceSpace datum scalars cutoff i M t) :

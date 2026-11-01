@@ -35,6 +35,12 @@ def mateCoefficientEvaluation (v t : OldCategory D Sc cutoff) (m : M.obj v) :
   BalancedInduction.coefficientEvaluation (append D Sc cutoff i) M.toFunctor
     v ((append D Sc cutoff i).obj t) m
 
+/-- Source coefficient evaluation with the literal mate-source dictionary. -/
+def mateSourceEvaluation (v t : OldCategory D Sc cutoff) (m : M.obj v) :
+    IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
+      mateSourceSpace D Sc cutoff i M t :=
+  moduleSourceEvaluation D Sc cutoff i M v t m
+
 def kernelMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
       mateTargetSpace D Sc cutoff i M t :=
@@ -45,7 +51,7 @@ def moduleMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     IndResKernel.Component (k := k) (append D Sc cutoff i) v t →ₗ[k]
       mateTargetSpace D Sc cutoff i M t :=
   (moduleMateLinear D Sc cutoff i M t).comp
-    (moduleSourceEvaluation D Sc cutoff i M v t m)
+    (mateSourceEvaluation D Sc cutoff i M v t m)
 
 @[simp] theorem kernelMateEvaluationEndpoint_apply (v t : OldCategory D Sc cutoff)
     (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
@@ -57,15 +63,7 @@ def moduleMateEvaluationEndpoint (v t : OldCategory D Sc cutoff) (m : M.obj v) :
     (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
     moduleMateEvaluationEndpoint D Sc cutoff i M v t m z =
       moduleMateLinear D Sc cutoff i M t
-        (moduleSourceEvaluation D Sc cutoff i M v t m z) := rfl
-
-/-- The established mate coefficient equality, now between the matching module endpoints. -/
-theorem mateEvaluationEndpoints_eq (v t : OldCategory D Sc cutoff) (m : M.obj v) :
-    kernelMateEvaluationEndpoint D Sc cutoff i M v t m =
-      moduleMateEvaluationEndpoint D Sc cutoff i M v t m := by
-  apply LinearMap.ext
-  intro z
-  exact LinearMap.congr_fun (actualMateKernel_evaluate D Sc cutoff i M v t m) z
+        (mateSourceEvaluation D Sc cutoff i M v t m z) := rfl
 
 @[simp] theorem mateCoefficientEvaluation_apply (v t : OldCategory D Sc cutoff)
     (m : M.obj v)
@@ -78,5 +76,20 @@ theorem moduleMateLinear_apply (t : OldCategory D Sc cutoff)
     (z : mateSourceSpace D Sc cutoff i M t) :
     moduleMateLinear D Sc cutoff i M t z =
       (matrixMateComponent D Sc cutoff i M).total t z := rfl
+
+@[simp] theorem mateSourceEvaluation_apply (v t : OldCategory D Sc cutoff)
+    (m : M.obj v) (z : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) :
+    mateSourceEvaluation D Sc cutoff i M v t m z =
+      moduleSourceEvaluation D Sc cutoff i M v t m z := rfl
+
+/-- The established mate coefficient equality, now between the matching module endpoints. -/
+theorem mateEvaluationEndpoints_eq (v t : OldCategory D Sc cutoff) (m : M.obj v) :
+    kernelMateEvaluationEndpoint D Sc cutoff i M v t m =
+      moduleMateEvaluationEndpoint D Sc cutoff i M v t m := by
+  apply LinearMap.ext
+  intro z
+  rw [kernelMateEvaluationEndpoint_apply, moduleMateEvaluationEndpoint_apply,
+    mateCoefficientEvaluation_apply, mateSourceEvaluation_apply, moduleMateLinear_apply]
+  exact LinearMap.congr_fun (actualMateKernel_evaluate D Sc cutoff i M v t m) z
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
