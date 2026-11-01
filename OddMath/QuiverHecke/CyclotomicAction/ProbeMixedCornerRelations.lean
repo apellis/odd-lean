@@ -102,7 +102,7 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
     change (q (probeMixedCross D Sc pre post i j ≫
       probeMixedCross D Sc pre post j i)).val =
       (q ((Sc.t i j : k) • u^(D.dn i j))).val + (q Rright).val * (q v).val
-    rw [hr, map_add q, map_mul q]
+    rw [hr, q.map_add', q.map_mul']
     rfl
   · unfold probeMixedEntry
     rw [← cyclotomicWordEntry_comp]
