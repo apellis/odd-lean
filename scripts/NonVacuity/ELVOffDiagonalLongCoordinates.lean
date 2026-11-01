@@ -17,11 +17,7 @@ private theorem crossingTarget :
     (t := [false, true]) rfl q
   rw [Categorification.TypeA.wordProd_canWord] at he
   rw [he]
-  interval_cases n
-  · change [false, true][((Equiv.swap (0 : Fin 2) 1)⁻¹ 0).val] = [true, false][0]
-    decide
-  · change [false, true][((Equiv.swap (0 : Fin 2) 1)⁻¹ 1).val] = [true, false][1]
-    decide
+  interval_cases n <;> norm_num [q, Equiv.swap_apply_def, Fin.ext_iff]
 
 private def crossingIndex : NFIdx [false, true] [true, false] := by
   refine ⟨([], Equiv.swap 0 1), by simp, by simp, ?_⟩
