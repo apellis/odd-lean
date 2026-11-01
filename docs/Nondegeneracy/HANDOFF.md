@@ -8,7 +8,8 @@ This file records the next mathematical targets, not session telemetry.
 
 | Target | Ready to start? | Existing inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Check the diagonal snake/augmented inverse, then extend arbitrary-Hom boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
+| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use verified diagonal raw negative matrix (#777) and height consequences (#760); check the positive matrix, then extend arbitrary-Hom boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
+| Even-moving full-ELV inverse | Separate action prerequisite | Generic coordinates and repeated-even norm recursion; ordinary-polynomial global wrapper is conditional | Prove the even-moving boundary leading/division and categorical matrix with all other colours’ exterior coefficients retained; do not regard the full superalgebra as a commutative scalar ring |
 | Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
 | Full-ELV factor family | Actual categories and adjunction verified; inverse assembly blocked | Canonical content parity and actual weight E/F adjunction (#755, #757), full-ELV polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
 | Whole swapped action | Local comparisons ready; concrete assembly blocked | Conditional assembly; braid from inverse/coefficient inputs; Hom mate and word comparisons | Supply compatible full-ELV factors and concrete crossing/leftward coefficient inputs, then all whole inverse and relation fields |
@@ -126,14 +127,15 @@ a raw cap row is not yet an identified categorical counit.
 ## Checked height and dot inputs
 
 `ELVCrossingHeight` (#760) supplies the actual diagonal crossing's height
-injectivity/surjectivity and zero-height equivalence. Its raw augmented
-positive and negative matrices are checked separately in #776 and #777;
-those drafts are not yet established categorical inverses.
+injectivity/surjectivity and zero-height equivalence. Its raw negative matrix, actual snake and dotted input contractions are
+verified in #777, including height zero. The raw positive matrix is checked
+separately in #776. These diagonal odd-colour results are not categorical
+factor inverses on all old morphisms.
 
 `ELVWeightDot` (#772) supplies the actual normalized weight dot and its
-per-content nilpotence. The next transpose input is a bound at each fixed
-target block uniform over the input module, followed by actual adjunction
-transport. This still permits different exponents at different contents.
+per-content nilpotence. That bound is now strengthened in #778: a single exponent at each fixed
+target-content block works for every input module. Actual adjunction
+transpose transport is the next construction. This still permits different exponents at different contents.
 Use direct probe units (#768) rather than requiring finite dimension solely
 to turn same-colour injectivity into a unit. Raw append spanning (#766)
 remains a verified independent specialization input.
