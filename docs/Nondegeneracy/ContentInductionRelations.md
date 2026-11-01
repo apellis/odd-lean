@@ -20,6 +20,12 @@ No separate equality that unfolds a prefix alias is required by these proofs.
 The comparison with the source-positioned map remains a separate proof; no
 kernel or elaborator budget is increased.
 
+The distinct-slide draft uses the positioned diagram slide relations directly;
+it does not identify the singleton diagram dot by definitional equality with
+the indexed dot. Pair comparison proofs expand the named conjugation formula
+rather than reducing its implementation recursively. Parity witnesses of both
+source arrows are supplied explicitly after the two-transform tensor calculation.
+
 Whole natural-transformation and weight-family relations additionally require
 total-evaluation extensionality and compatibility with the actual successor
 block functors. No local inverse, factor-action or nondegeneracy construction
