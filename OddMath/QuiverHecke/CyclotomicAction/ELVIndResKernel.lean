@@ -99,15 +99,25 @@ theorem evaluate_add (v t : D) (m m' : M.obj v) :
     evaluate J M v t (m + m') = evaluate J M v t m + evaluate J M v t m' := by
   apply BalancedInduction.hom_ext
   intro s g b
-  simp only [evaluate_tensor, LinearMap.add_apply, map_add,
-    BalancedInduction.tensor, tmul_add]
+  change evaluate J M v t (m + m')
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) =
+    evaluate J M v t m
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) +
+    evaluate J M v t m'
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b)
+  rw [evaluate_tensor, evaluate_tensor, evaluate_tensor, map_add]
+  simp only [BalancedInduction.tensor, tmul_add, map_add]
 
 theorem evaluate_smul (v t : D) (r : k) (m : M.obj v) :
     evaluate J M v t (r • m) = r • evaluate J M v t m := by
   apply BalancedInduction.hom_ext
   intro s g b
-  simp only [evaluate_tensor, LinearMap.smul_apply, map_smul,
-    BalancedInduction.tensor, tmul_smul]
+  change evaluate J M v t (r • m)
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) =
+    r • evaluate J M v t m
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b)
+  rw [evaluate_tensor, evaluate_tensor, map_smul]
+  simp only [BalancedInduction.tensor, tmul_smul, map_smul]
 
 def evaluatePair (v t : D) :
     Component (k := k) J v t →ₗ[k] M.obj v →ₗ[k] BalancedInduction.Obj J (J ⋙ M) t where
@@ -175,6 +185,7 @@ def backward (t : D) : BalancedInduction.Obj J (J ⋙ M) t →ₗ[k]
       exact BalancedKernelTensor.balance (kernel (k := k) J t) M (J.map f)
         (identityLift (k := k) J t s' g) m)
 
+omit [M.Additive] [M.Linear k] in
 @[simp] theorem backward_tensor (t : D) (s : C) (g : J.obj s ⟶ t)
     (m : M.obj (J.obj s)) :
     backward J M t (BalancedInduction.tensor J (J ⋙ M) s g m) =
