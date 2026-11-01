@@ -2,10 +2,7 @@
 
 The even arbitrary-input coefficient is specialized to ΠH≫F for its
 prescribed dotted mate. The existing generic chosen-transpose norm producer
-supplies the source difference unit. The entire legacy norm producer is supplied as a function on arbitrary
-native superfunctors before specializing the actual input. A generic
-strict-Superfunctor composition lemma performs the reassociation before
-coend specialization; no product-unit proof is repeated.
+supplies the source difference unit. The entire norm producer remains a function on arbitrary native superfunctors. The candidate `mixedSourceNorm_ofTranspose` identifies the norm with its prescribed mixed source operators while the four categories and adjunction remain abstract. The ELV theorem then specializes this identity without unfolding the entire actual adjunction and dot. The strict reassociation remains `sourceNorm_ofProducer`; no product-unit proof is repeated.
 
 The raw coefficient's two proved inverse identities then supply the generic
 even dotted-mate criterion under the same existing Hom-shift witness. The
