@@ -7,7 +7,7 @@ namespace CapSignNormalizationConsumer
 private def V : SVec ℚ where
   carrier := ℚ × ℚ
   odd := (0 : (ℚ × ℚ) →ₗ[ℚ] ℚ).prod (LinearMap.snd ℚ ℚ ℚ)
-  odd_comp_odd := by ext x <;> rfl
+  odd_comp_odd := by rfl
 private def flip : V →ₗ[ℚ] V where
   toFun x := (x.2, x.1)
   map_add' _ _ := rfl
@@ -15,7 +15,15 @@ private def flip : V →ₗ[ℚ] V where
 private theorem flip_odd : flip ∈ SVec.parityHom V V 1 := by
   intro q
   rcases parity_eq_zero_or_one q with rfl | rfl
-  all_goals ext x <;> norm_num [V, flip, SVec.proj]
+  · apply LinearMap.ext
+    rintro ⟨x, y⟩
+    change (y - y, x - 0) = (0, x)
+    simp
+  · rw [SVec.zmod2_one_add_one]
+    apply LinearMap.ext
+    rintro ⟨x, y⟩
+    change (y, 0) = (y - 0, x - x)
+    simp
 example : flip (1, 0) = (0, 1) := rfl
 example (n : ℕ) (z : V) :
     capRowSign (k := ℚ) n • V.sgn (n : ZMod 2) ((flip.comp (V.sgn 1))^[n] z) =
@@ -34,3 +42,4 @@ run_cmd do
     for axiomName in (← Lean.collectAxioms name) do
       unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
         throwError "Disallowed axiom {axiomName} in {name}"
+
