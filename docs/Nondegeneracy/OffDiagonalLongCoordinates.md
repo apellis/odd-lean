@@ -60,3 +60,18 @@ Consequently no inhabitation assumption is needed. This exact-kernel
 extension passed full build, global axiom audit and concrete consumers before
 research integration in #764.
 The off-diagonal polynomial boundary and leading-map transport remain next.
+
+## Proposed arbitrary-old-Hom polynomial boundary
+
+`ELVOffDiagonalBoundary` evaluates the actual C₀P on the prescribed
+off-diagonal long section to define `offDiagonalPolynomialBoundary`.
+Subtracting section after extraction lands in the exact chronological
+short kernel; P sends that kernel into the actual crossing span, which C₀
+kills. Therefore the literal map factors as
+
+    C₀ P = offDiagonalPolynomialBoundary ∘ offDiagonalLongExtraction.
+
+The construction retains arbitrary old endpoints and both moving parities.
+It assumes no boundary-leading law, action or inverse. This source draft
+awaits checking together with the preceding kernel extension. Arbitrary-output
+old-arrow covariance and the leading coefficient comparison remain separate.
