@@ -28,3 +28,22 @@ dot/q representative bridge; the production owner has an axiom audit.
 These additions and their actual-module/leading-coordinate prerequisites
 await CI. They supply the concrete matrix inputs; the full arbitrary-Hom
 augmented inverse and normalized unshifted categorical rows remain separate.
+
+## The actual augmented matrix on arbitrary old endpoints
+
+The further draft `ELVOffDiagonalNegativeCrossing` uses the concrete cap
+rows E X^r above, where E and X come from actual shifted categorical maps.
+On the actual snake kernel, reversing the low corrected columns gives a
+finite triangular map with diagonal exactly the proved old-Hom leading
+equivalence. The existing checked finite triangular lemma therefore supplies
+its inverse. Crossing surjectivity then reconstructs the full matrix.
+
+The resulting `offDiagonalNegativeCrossingEquiv` maps the independently
+defined Source(j,v,t) to the actual enlarged old Hom, together with m copies
+of Old(v,t), at height -m. It has no diagonal-endpoint, ring-on-Hom,
+finite-dimensionality, field or action premise, and includes m=0.
+A mixed B2 reversed-word negative-height instance and a zero-row instance
+exercise both inverse products; the owners' declarations are axiom audited.
+This proposed extension awaits CI with its source/cap dependencies.
+Rowwise sign/twist conversion and the canonical unshifted-source J remain
+separate before identification with the prescribed categorical inversion.
