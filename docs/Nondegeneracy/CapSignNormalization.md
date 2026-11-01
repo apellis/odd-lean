@@ -1,6 +1,6 @@
 # Dotted cap sign normalization
 
-Status: producer, concrete nonzero odd-operator consumer and audit of every owned declaration pass scoped checks with warnings as errors and the repository compatibility settings. Full CI remains pending.
+Status: full build with warnings as errors, global axiom audit and concrete consumers passed before research integration in #803.
 
 ELVCapSignNormalization defines the prescribed cap scalar e_n and proves its exponent is exactly n(n+1)/2. It proves e_n sgn(n) (T composed with sgn(1))^n = T^n for an odd operator on a superspace. The concrete induction dot supplies the odd-operator hypothesis in the categorical cap-row comparison; this is an intermediate linear-algebra identity, not a matrix or action theorem.
 

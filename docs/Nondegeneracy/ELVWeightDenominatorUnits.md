@@ -1,7 +1,6 @@
 # Actual reservoir denominator inverses
 
-Status: proposed source, pending CI. ProductDenominatorUnits is independent
-of the broad swapped coefficient/braid input refactor (#767).
+Status: full-CI verified in #794; the concrete commutation and shift construction is verified in #801. The broader denominator-interface refactor is verified in #767.
 
 An arbitrary source superfunctor is followed by the actual existing full-ELV
 weight induction. Its postdot is the whiskering of elvActionDot with the exact
