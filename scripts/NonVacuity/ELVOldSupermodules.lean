@@ -3,10 +3,10 @@ import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OldSupermodulesConsumer
-open OddMath.QuiverHecke.ELVOld
+open OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+  (D : OddMath.SKM.Datum I X) (Sc : OddMath.SKM.Scalars D k) (cutoff : I → ℕ)
 example (v w : OldCategory D Sc cutoff) (p : ZMod 2) (f : v ⟶ w) :
     proj k p f = oldProj D Sc cutoff v.word w.word p f :=
   oldCategory_proj D Sc cutoff v w p f
