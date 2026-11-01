@@ -14,8 +14,11 @@ pair crossing, induced by the final letter and transported only through the
 specified intermediate-content equality. This encoding retains the carrier
 instances of the natural maps, avoiding repeated conversion through expanded
 `ContentETripleSpace` abbreviations. It does not define a crossing by
-conjugating a source operator. The comparison with the source-positioned map
-is a separate proof; no kernel or elaborator budget is increased.
+conjugating a source operator. The two repeated-outer paths inline their literal prefix factors and compose
+the existing normalization equalities by congruence of linear-map composition.
+No separate equality that unfolds a prefix alias is required by these proofs.
+The comparison with the source-positioned map remains a separate proof; no
+kernel or elaborator budget is increased.
 
 Whole natural-transformation and weight-family relations additionally require
 total-evaluation extensionality and compatibility with the actual successor
