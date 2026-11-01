@@ -72,3 +72,14 @@ Record exact declaration names, hypotheses and whether a result is proposed,
 implemented, scoped-checked or full-CI verified. Conditional constructors must
 list their unconstructed inputs. Do not report workers, sessions or old build
 processes as live. Follow AGENTS.md for toolchain, CI and axiom policy.
+
+## Probe dot kernel propagation
+
+`SignedNilHecke.EvenTwo.right_mul_injective` and
+`OddTwo.right_mul_injective` propagate dot injectivity from the first dot
+to the second using the actual intertwiner identities. `distinct_dot_kernel`
+uses the literal slide and quadratic relation with a unit-leading term.
+Finite-dimensional `isUnit_right` corollaries and nonzero rational matrix
+consumers pass scoped warning-free Lean checks with allowed axioms.
+Full CI is a separate merge gate. These ring statements still require
+application to the specialized word corners to give all-position probe units.
