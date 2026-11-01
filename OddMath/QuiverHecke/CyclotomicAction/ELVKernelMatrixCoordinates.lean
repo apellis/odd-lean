@@ -68,17 +68,48 @@ def negativeKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)�
     (r : Fin m) :
     (negativeKernelCoordinates D Sc cutoff i m v t z).2 r = z (some r) := rfl
 
-/-- The literal kernel-object mate coefficient is the actual inverted mate row. -/
-theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
-    (t : OldCategory D Sc cutoff)
+/-- Pointwise evaluation of the stored kernel coefficient equality. -/
+theorem actualMateKernelLinear_apply_component (i : I)
+    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff)
     (z : (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v) :
     actualMateKernelLinear D Sc cutoff i v t z =
+      actualMateKernelComponent D Sc cutoff i v.unop t z :=
+  LinearMap.congr_fun (actualMateKernelLinear_eq_component D Sc cutoff i v t) z
+
+/-- The stored kernel coefficient agrees with its matrix row on every source vector. -/
+def KernelMateRowIdentity (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+    (t : OldCategory D Sc cutoff) : Prop :=
+  ∀ z : (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v,
+    actualMateKernelLinear D Sc cutoff i v t z =
       matrixMateRow D Sc cutoff i v.unop.word t.word
-        (kernelSourceCoordinates D Sc cutoff i v t z) := by
+        (kernelSourceCoordinates D Sc cutoff i v t z)
+
+/-- The coefficient row at literal old-word endpoints. -/
+theorem actualMateKernelLinear_row_boxed (i : I) (v t : List I) :
+    KernelMateRowIdentity D Sc cutoff i (op ⟨v⟩) ⟨t⟩ := by
+  intro z
+  calc
+    _ = actualMateKernelComponent D Sc cutoff i ⟨v⟩ ⟨t⟩ z :=
+      actualMateKernelLinear_apply_component D Sc cutoff i (op ⟨v⟩) ⟨t⟩ z
+    _ = matrixMateRow D Sc cutoff i v t (oldSourceKernelLinear D Sc cutoff i v t z) :=
+      actualMateKernelComponent_row D Sc cutoff i v t z
+    _ = _ := congrArg (matrixMateRow D Sc cutoff i v t)
+      (kernelSourceCoordinates_boxed D Sc cutoff i v t z).symm
+
+/-- Extend a predicate on literal words to the category wrappers. -/
+private theorem oldWordPairs
+    {P : (OldCategory D Sc cutoff)ᵒᵖ → OldCategory D Sc cutoff → Prop}
+    (h : ∀ v t : List I, P (op ⟨v⟩) ⟨t⟩)
+    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff) : P v t := by
   rcases v with ⟨⟨v⟩⟩
   rcases t with ⟨t⟩
-  have h := actualMateKernelComponent_row D Sc cutoff i v t z
-  have hc := kernelSourceCoordinates_boxed D Sc cutoff i v t z
-  exact h.trans (congrArg (matrixMateRow D Sc cutoff i v t) hc.symm)
+  exact h v t
+
+/-- The literal kernel-object mate coefficient is the actual inverted mate row. -/
+theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+    (t : OldCategory D Sc cutoff) : KernelMateRowIdentity D Sc cutoff i v t :=
+  oldWordPairs D Sc cutoff
+    (P := KernelMateRowIdentity D Sc cutoff i)
+    (actualMateKernelLinear_row_boxed D Sc cutoff i) v t
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
