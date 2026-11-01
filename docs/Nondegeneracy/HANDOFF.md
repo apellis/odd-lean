@@ -85,3 +85,12 @@ and zero Hom corners. The decoder kills the separately proved polynomial
 triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
+
+## Proposed parity structure on full-ELV module categories
+
+`ELVContentParity` constructs the parity shift of the existing
+`ContentModules` by postcomposition with vector parity and the whiskered odd
+isomorphism. This is the Pi-supercategory prerequisite for the full-ELV factor
+weight objects; it needs no local inverse or ordinary-polynomial replacement.
+Its production file and concrete asymmetric vacuum consumer are proposed and
+await full CI; no completed factor or global weight-family construction is claimed.
