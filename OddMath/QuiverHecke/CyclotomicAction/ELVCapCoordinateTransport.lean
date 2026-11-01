@@ -85,8 +85,7 @@ theorem inputDefect_pMap_sourceLongSection (p : ZMod 2)
   rw [CyclotomicCrossingTensor.sourceLongSection, LinearMap.sub_apply,
     LinearMap.comp_apply, LinearMap.comp_apply, map_sub, map_sub]
   have hs := LinearMap.congr_fun (CyclotomicCrossingTensor.shortColumn_square D Sc cutoff j.1 v v)
-    (CyclotomicCrossingTensor.extract D Sc cutoff j.1 v v
-      (outputLongSection D Sc cutoff p j.1 v f))
+    (CyclotomicCrossingTensor.extract D Sc cutoff j.1 v v (outputLongSection D Sc cutoff p j.1 v f))
   simp only [LinearMap.comp_apply] at hs
   rw [hs]
   rfl
@@ -153,6 +152,30 @@ theorem inputContraction_representative (j : {j : I // D.parity j = 1})
       (shortTensor D Sc cutoff j.1 v s v g ((ideal D Sc cutoff _ _).mkQ r))) 0 = _
   rw [ShortCrossCoordinates.column_mk, appendC0InputDefect_crossing]
   simp only [Finsupp.smul_apply, Finsupp.single_eq_same]
+
+
+/-- Canonical source shift and total output parity turn this actual
+zeroth contraction into ordinary composition, with all coefficients retained. -/
+theorem inputContraction_shifted_representative (j : {j : I // D.parity j = 1})
+    (v s : List I) (r : hom D Sc cutoff v (s ++ [j.1]))
+    (g : hom D Sc cutoff (s ++ [j.1]) v) :
+    oldTwist D Sc cutoff (D.parity j.1) v v
+      (inputContraction D Sc cutoff j v
+        (q D Sc cutoff j.1 v v
+          (shortTensor D Sc cutoff j.1 v s v (twist k (D.parity j.1) g)
+            ((ideal D Sc cutoff v (s ++ [j.1])).mkQ r)))) =
+      (ideal D Sc cutoff v v).mkQ (r ≫ g) := by
+  rw [inputContraction_representative, map_smul]
+  have he : oldTwist D Sc cutoff (D.parity j.1) v v
+      ((ideal D Sc cutoff v v).mkQ
+        (twist k (D.parity j.1) r ≫ twist k (D.parity j.1) g)) =
+      (ideal D Sc cutoff v v).mkQ (r ≫ g) := by
+    change (ideal D Sc cutoff v v).mkQ
+      (twist k (D.parity j.1)
+        (twist k (D.parity j.1) r ≫ twist k (D.parity j.1) g)) = _
+    rw [← twist_comp, twist_twist]
+  rw [he]
+  simp only [j.property, one_mul, SKM.zsign_one', neg_neg, one_smul]
 
 end CyclotomicCrossingTensor
 

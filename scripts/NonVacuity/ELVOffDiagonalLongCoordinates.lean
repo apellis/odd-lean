@@ -20,6 +20,17 @@ example : Function.Surjective
     (longHomExtraction datum scalars (fun _ => 12) 0 true crossingIndex) :=
   longHomExtraction_surjective datum scalars (fun _ => 12) 0 true crossingIndex
 
+example (f : ℕ →₀ Old datum scalars (fun _ => 12) [false, true] [true, false]) :
+    offDiagonalLongExtraction datum scalars (fun _ => 12) 1 false [false, true] [true, false]
+      (offDiagonalLongSection datum scalars (fun _ => 12) 1 false [false, true] [true, false] f) = f :=
+  offDiagonalLongExtraction_section datum scalars (fun _ => 12) 1 false _ _ f
+
+/-- Different strand counts give an empty old Hom; no index is silently assumed. -/
+example (f : ℕ →₀ Old datum scalars (fun _ => 12) [] [false]) :
+    offDiagonalLongExtraction datum scalars (fun _ => 12) 0 true [] [false]
+      (offDiagonalLongSection datum scalars (fun _ => 12) 0 true [] [false] f) = f :=
+  offDiagonalLongExtraction_section datum scalars (fun _ => 12) 0 true _ _ f
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
