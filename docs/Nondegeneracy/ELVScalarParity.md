@@ -2,4 +2,4 @@
 
 The scalar evaluation on the exact untruncated ELV coefficient algebra is already integrated. `ELVScalarParity.lean` proves that every odd homogeneous coefficient evaluates to zero, using a representative argument outside the central coefficient-category module. `ELVScalarSpecializationFunctor.lean` uses the existing box-product map and unitor to construct the actual signed affine Hom specialization; it is surjective on affine Homs.
 
-These producers and the global axiom audit passed CI at d887fc965bff912fffe401ed7b7faddfd45c44bd. Its concrete parity consumer required only an explicit cutoff annotation, now supplied. Fresh full CI must verify the corrected consumer before integration. Cyclotomic relation descent and full action specialization are separate obligations.
+These producers, the corrected concrete parity consumer and global axiom audit passed full CI before research integration in #762. The literal polynomial comparisons are verified in #765, and the prescribed probe's original cyclotomic ideal descent in #814. The content/module-action specialization and its categorical inverse comparison remain separate obligations.
