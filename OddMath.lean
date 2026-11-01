@@ -1733,3 +1733,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskeredMixedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVPositiveCrossing
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundarySnake
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapCoordinateTransport
