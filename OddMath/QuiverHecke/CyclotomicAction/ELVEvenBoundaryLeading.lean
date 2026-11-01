@@ -92,7 +92,7 @@ theorem evenLongShift_iterate_single (v t : List I) (n m : ℕ)
     (evenLongShift D Sc cutoff v t)^[n] (Finsupp.single m b) =
       Finsupp.single (n + m) b := by
   induction n with
-  | zero => rfl
+  | zero => simp only [Function.iterate_zero, id_eq, Nat.zero_add]
   | succ n ih =>
     rw [Function.iterate_succ_apply', ih, evenLongShift_single]
     congr 1
@@ -112,7 +112,7 @@ theorem evenSAtShift_single_id (i : I) (v : List I) (d : ℕ) :
       ∑ n ∈ (independentOutputS D Sc cutoff i v).support,
         Finsupp.single (d + n) (independentOutputS D Sc cutoff i v n) := by
     conv_lhs => rw [← Finsupp.sum_single (independentOutputS D Sc cutoff i v)]
-    rw [← Module.End.coe_pow, map_sum]
+    rw [← Module.End.coe_pow, Finsupp.sum, map_sum]
     simp only [Module.End.pow_apply, evenLongShift_iterate_single]
   rw [hs]
   simp only [evenSAtShift, LinearMap.sum_apply, LinearMap.comp_apply, Module.End.pow_apply,
