@@ -7,7 +7,7 @@ namespace ProbeMixedCornerConsumer
 
 private def D : SKM.Datum Bool (Bool → ℤ) where
   cd :=
-    { root := fun i j => if i = j then 2 else 0
+    { root := fun i j => if i = j then 2 else -2
       coroot := fun i => LinearMap.proj i
       coroot_root_self := fun i => by simp }
   isGCM :=
@@ -22,7 +22,7 @@ private def D : SKM.Datum Bool (Bool → ℤ) where
   parity := fun _ => 1
   even_of_odd := by
     intro i j _
-    change Even (if j = i then (2 : ℤ) else 0)
+    change Even (if j = i then (2 : ℤ) else -2)
     split_ifs <;> norm_num
 
 private def Sc : SKM.Scalars D ℚ where
