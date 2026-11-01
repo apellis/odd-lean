@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonCoherence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairWhiskeredRelations
 
 /-! # Whiskering of crossings on three content induction functors -/
 noncomputable section
@@ -307,6 +308,18 @@ theorem contentETripleComparison_middle (β : Multiset I) (i j l : I) (δ γ : M
   simp only [contentETripleMiddleIso, eqToIso_refl, Iso.refl_trans]
   rfl
 
+private theorem prefixComparison_app
+    {C B : Type*} {T : Type u} [Category* C] [Category* B]
+    [Category.{u} T] [Preadditive T] [Linear k T] [Supercategory k T]
+    (G H : C ⥤ B) (K : B ⥤ Superfunctor k T (SVec k))
+    (F R : C ⥤ Superfunctor k T (SVec k))
+    (e₀ : F ≅ G ⋙ K) (e₁ : G ≅ H) (e₂ : H ⋙ K ≅ R) (M : C) :
+    ((e₀ ≪≫ Functor.isoWhiskerRight e₁ K ≪≫ e₂).app M) =
+      e₀.app M ≪≫ K.mapIso (e₁.app M) ≪≫ e₂.app M := by
+  apply Iso.ext
+  simp only [Iso.app_hom, Iso.trans_hom, NatTrans.comp_app,
+    Functor.isoWhiskerRight_hom, Functor.whiskerRight_app, Functor.mapIso_hom]
+
 private theorem prefixIso_linearEquiv
     {C B : Type*} {T : Type u} [Category* C] [Category* B]
     [Category.{u} T] [Preadditive T] [Linear k T] [Supercategory k T]
@@ -317,12 +330,7 @@ private theorem prefixIso_linearEquiv
       (moduleIsoLinearEquiv (e₀.app M) z).trans
         ((moduleIsoLinearEquiv (K.mapIso (e₁.app M)) z).trans
           (moduleIsoLinearEquiv (e₂.app M) z)) := by
-  have he : ((e₀ ≪≫ Functor.isoWhiskerRight e₁ K ≪≫ e₂).app M) =
-      e₀.app M ≪≫ K.mapIso (e₁.app M) ≪≫ e₂.app M := by
-    apply Iso.ext
-    simp only [Iso.app_hom, Iso.trans_hom, NatTrans.comp_app,
-      Functor.isoWhiskerRight_hom, Functor.whiskerRight_app, Functor.mapIso_hom]
-  rw [he, moduleIsoLinearEquiv_trans, moduleIsoLinearEquiv_trans]
+  rw [prefixComparison_app, moduleIsoLinearEquiv_trans, moduleIsoLinearEquiv_trans]
 
 theorem contentETripleEquiv_prefix (β : Multiset I) (i j l : I) (δ γ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
@@ -361,41 +369,21 @@ private theorem map_transform_total
     ((BalancedInduction.induction J).map f).total z = BalancedInduction.mapComponent J f p z :=
   total_of_mem (Supercategory.map_mem (BalancedInduction.induction J) hf) z
 
-private theorem map_conjugate_total
-    {B : Type*} [Category* B] {T : Type u} [Category.{u} T]
-    [Preadditive T] [Linear k T] [Supercategory k T]
-    (K : B ⥤ Superfunctor k T (SVec k))
-    {A B₁ A' B₁' : B} (e : A ≅ B₁) (e' : A' ≅ B₁') (a : B₁' ⟶ B₁) (z : T) :
-    (K.map (e'.hom ≫ a ≫ e.inv)).total z =
-      (moduleIsoLinearEquiv (K.mapIso e) z).symm.toLinearMap ∘ₗ
-        (K.map a).total z ∘ₗ (moduleIsoLinearEquiv (K.mapIso e') z).toLinearMap := by
-  rw [Functor.map_comp, Functor.map_comp, Superfunctor.comp_total, Superfunctor.comp_total]
-  rfl
-
-private theorem prefix_transport_square
-    {B : Type*} [Category* B] {T : Type u} [Category.{u} T]
-    [Preadditive T] [Linear k T] [Supercategory k T]
-    (K : B ⥤ Superfunctor k T (SVec k))
-    {A B₁ A' B₁' : B} (e : A ≅ B₁) (e' : A' ≅ B₁') (a : B₁' ⟶ B₁) (z : T)
-    {V V' : Superfunctor k T (SVec k)} (d : V ≅ K.obj A) (d' : V' ≅ K.obj A')
-    {W W' : Type u} [AddCommGroup W] [Module k W] [AddCommGroup W'] [Module k W']
-    (f : (K.obj B₁).obj z ≃ₗ[k] W) (f' : (K.obj B₁').obj z ≃ₗ[k] W')
-    (c : W' →ₗ[k] W)
-    (h : f.toLinearMap ∘ₗ (K.map a).total z = c ∘ₗ f'.toLinearMap) :
-    ((moduleIsoLinearEquiv d z).trans ((moduleIsoLinearEquiv (K.mapIso e) z).trans f)).symm.toLinearMap ∘ₗ
-        c ∘ₗ ((moduleIsoLinearEquiv d' z).trans
-          ((moduleIsoLinearEquiv (K.mapIso e') z).trans f')).toLinearMap =
-      d.inv.total z ∘ₗ (K.map (e'.hom ≫ a ≫ e.inv)).total z ∘ₗ d'.hom.total z := by
-  rw [map_conjugate_total]
-  apply LinearMap.ext
-  intro x
-  change (moduleIsoLinearEquiv d z).symm
-      ((moduleIsoLinearEquiv (K.mapIso e) z).symm
-        (f.symm (c (f' ((moduleIsoLinearEquiv (K.mapIso e') z) ((moduleIsoLinearEquiv d' z) x)))))) = _
-  have hx := congrArg (fun q => q ((moduleIsoLinearEquiv (K.mapIso e') z) ((moduleIsoLinearEquiv d' z) x))) h
-  change f ((K.map a).total z _) = c (f' _) at hx
-  rw [← hx, f.symm_apply_apply]
-  rfl
+private theorem homogeneous_total_ext
+    {C B : Type*} [Category* C] [Category* B]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    [Preadditive B] [Linear k B] [Supercategory k B]
+    {F G : Superfunctor k C B} {p : ZMod 2} {f g : F ⟶ G}
+    (hf : f ∈ parity (R := k) _ _ p) (hg : g ∈ parity (R := k) _ _ p)
+    (h : ∀ z, f.total z = g.total z) : f = g := by
+  apply SuperNatTrans.ext
+  funext q z
+  by_cases hq : q = p
+  · subst q
+    rw [← total_of_mem hf, ← total_of_mem hg]
+    exact h z
+  · rw [Superfunctor.app_eq_zero_of_mem hf hq,
+      Superfunctor.app_eq_zero_of_mem hg hq]
 
 private theorem contentInductionTransform_app
     {β γ : Multiset I} {σ τ : List I}
@@ -408,7 +396,139 @@ private theorem contentInductionTransform_app
     (BalancedInduction.transformComponent_supernatural
       (contentAppendTo_supernatural D Sc cutoff N hσ hτ ha))) M
 
-/-- Prefix crossing is induction of the normalized pair crossing, with explicit middle recasts. -/
+/-- Inner-arrow comparison before evaluating the target module. -/
+theorem contentInductionCompTo_inner_map (β : Multiset I) (σ σ' : List I)
+    (δ : Multiset I) (hδ : β + (σ : Multiset I) = δ) (hδ' : β + (σ' : Multiset I) = δ)
+    (τ : List I) (γ : Multiset I) (hγ : δ + (τ : Multiset I) = γ)
+    (h : β + ((σ ++ τ : List I) : Multiset I) = γ)
+    (h' : β + ((σ' ++ τ : List I) : Multiset I) = γ)
+    {p : ZMod 2} {a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D σ')}
+    (ha : a ∈ parity (R := k) _ _ p) (M : ContentModules D Sc cutoff N β) :
+    (contentInductionTo D Sc cutoff N δ τ γ hγ).map
+        ((contentInductionTransform D Sc cutoff N hδ hδ' ha).app p M) ≫
+      (contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h).hom.app M =
+    (contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h').hom.app M ≫
+      (contentInductionTransform D Sc cutoff N h h'
+        (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha)).app p M := by
+  have hm := (contentInductionTransform D Sc cutoff N hδ hδ' ha).app_mem p M
+  have hc := (contentInductionTransform D Sc cutoff N h h'
+    (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha)).app_mem p M
+  have hf := (contentInductionCompTo_mem D Sc cutoff N β σ δ hδ τ γ hγ h M).1
+  have hf' := (contentInductionCompTo_mem D Sc cutoff N β σ' δ hδ' τ γ hγ h' M).1
+  apply homogeneous_total_ext (p := p)
+    (by simpa only [Functor.comp_obj, add_zero] using
+      comp_mem (Supercategory.map_mem (contentInductionTo D Sc cutoff N δ τ γ hγ) hm) hf)
+    (by simpa only [Functor.comp_obj, zero_add] using comp_mem hf' hc)
+  intro z
+  rw [Superfunctor.comp_total, Superfunctor.comp_total]
+  change (moduleIsoLinearEquiv
+      ((contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h).app M) z).toLinearMap ∘ₗ
+      ((contentInductionTo D Sc cutoff N δ τ γ hγ).map
+        ((contentInductionTransform D Sc cutoff N hδ hδ' ha).app p M)).total z =
+    ((contentInductionTransform D Sc cutoff N h h'
+        (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha)).app p M).total z ∘ₗ
+      (moduleIsoLinearEquiv
+        ((contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h').app M) z).toLinearMap
+  rw [contentInductionTransform_total,
+    map_transform_total _ hm, contentInductionTransform_app]
+  exact contentInductionCompTo_inner_arrow D Sc cutoff N β σ σ' δ hδ hδ' τ γ hγ h h' ha M z
+
+private theorem prefixModuleSquare
+    {B C : Type*} [Category* B] [Category* C]
+    (K : B ⥤ C) {A B₁ A' B₁' : B}
+    (e : A ≅ B₁) (e' : A' ≅ B₁') (a : B₁' ⟶ B₁)
+    {V V' W W' : C} (d : V ≅ K.obj A) (d' : V' ≅ K.obj A')
+    (f : K.obj B₁ ≅ W) (f' : K.obj B₁' ≅ W') (c : W' ⟶ W)
+    (h : K.map a ≫ f.hom = f'.hom ≫ c) :
+    (((d' ≪≫ K.mapIso e' ≪≫ f').hom ≫ c) ≫ (d ≪≫ K.mapIso e ≪≫ f).inv) =
+      ((d'.hom ≫ K.map ((e'.hom ≫ a) ≫ e.inv)) ≫ d.inv) := by
+  have hx := congrArg
+    (fun t : K.obj B₁' ⟶ W =>
+      d'.hom ≫ K.map e'.hom ≫ t ≫ f.inv ≫ K.map e.inv ≫ d.inv) h
+  simpa only [Iso.trans_hom, Iso.trans_inv, Functor.mapIso_hom,
+    Functor.mapIso_inv, Functor.map_comp, Category.assoc, Iso.hom_inv_id_assoc] using hx.symm
+
+private theorem prefixModuleSquare_eq
+    {B C : Type*} [Category* B] [Category* C]
+    (K : B ⥤ C) {A B₁ A' B₁' : B}
+    (e : A ≅ B₁) (e' : A' ≅ B₁') (a : B₁' ⟶ B₁)
+    {V V' W W' : C} (d : V ≅ K.obj A) (d' : V' ≅ K.obj A')
+    (f : K.obj B₁ ≅ W) (f' : K.obj B₁' ≅ W') (c : W' ⟶ W)
+    (g : V ≅ W) (g' : V' ≅ W') (b : A' ⟶ A)
+    (hg : g = d ≪≫ K.mapIso e ≪≫ f) (hg' : g' = d' ≪≫ K.mapIso e' ≪≫ f')
+    (hb : b = (e'.hom ≫ a) ≫ e.inv)
+    (h : K.map a ≫ f.hom = f'.hom ≫ c) :
+    ((g'.hom ≫ c) ≫ g.inv) = ((d'.hom ≫ K.map b) ≫ d.inv) := by
+  rw [hg, hg', hb]
+  exact prefixModuleSquare K e e' a d d' f f' c h
+
+/-- The prefix pair crossing is an independently induced module morphism. -/
+def contentPrefixCrossMorphism (β : Multiset I) (i j l : I) (δ γ : Multiset I)
+    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
+    (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
+    (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
+    (hγ : δ + ([l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β) :
+    (contentETripleTo D Sc cutoff N β j i l γ ht).obj M ⟶
+      (contentETripleTo D Sc cutoff N β i j l γ h).obj M :=
+  (((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M ≫
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ).map
+      ((contentEPairCrossTransform D Sc cutoff N β i j δ
+        ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
+        (D.parity i * D.parity j) M)) ≫
+    (contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M)
+
+def contentPrefixCrossComponent (β : Multiset I) (i j l : I) (δ γ : Multiset I)
+    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
+    (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
+    (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
+    (hγ : δ + ([l] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
+  (contentPrefixCrossMorphism D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M).total z
+
+theorem contentETripleTransform_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Multiset I)
+    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
+    (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
+    (h : β + ([i,j,l] : Multiset I) = γ)
+    (ht : β + ([j,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) :
+    (contentETripleTransform D Sc cutoff N h ht
+      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
+        (contentCrossAffine_mem D Sc i j))).app (D.parity i * D.parity j) M =
+      contentPrefixCrossMorphism D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M := by
+  rw [contentETripleTransform_component]
+  unfold contentPrefixCrossMorphism
+  apply prefixModuleSquare_eq
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M)
+    ((contentEPairToComparison D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).app M)
+    ((contentInductionTransform D Sc cutoff N ((contentPair_sum β i j).trans hδ)
+      ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
+      (D.parity i * D.parity j) M)
+    ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).app M)
+    ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).app M)
+    ((contentInductionCompTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)
+      [l] γ hγ h).app M)
+    ((contentInductionCompTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ')
+      [l] γ hγ ht).app M)
+    ((contentInductionTransform D Sc cutoff N h ht
+      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
+        (contentCrossAffine_mem D Sc i j))).app (D.parity i * D.parity j) M)
+    ((contentETripleComparison D Sc cutoff N β i j l γ h).app M)
+    ((contentETripleComparison D Sc cutoff N β j i l γ ht).app M)
+    ((contentEPairCrossTransform D Sc cutoff N β i j δ
+      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
+      (D.parity i * D.parity j) M)
+  · rw [contentETripleComparison_middle D Sc cutoff N β i j l δ γ hδ h hγ]
+    exact prefixComparison_app _ _ _ _ _ _ _ _ M
+  · rw [contentETripleComparison_middle D Sc cutoff N β j i l δ γ hδ' ht hγ]
+    exact prefixComparison_app _ _ _ _ _ _ _ _ M
+  · exact contentEPairCross_component D Sc cutoff N β i j δ
+      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') M
+  · exact contentInductionCompTo_inner_map D Sc cutoff N β [i,j] [j,i] δ
+      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') [l] γ hγ h ht
+      (contentCrossAffine_mem D Sc i j) M
+
+/-- Evaluation of the independently induced prefix crossing. -/
 theorem contentETripleMap_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
     (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
@@ -418,29 +538,9 @@ theorem contentETripleMap_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Mu
     contentETripleMap D Sc cutoff N h ht
       (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
         (contentCrossAffine_mem D Sc i j)) M z =
-      ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i j δ
-            ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-            (D.parity i * D.parity j) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M).total z := by
-  unfold contentETripleMap
-  rw [contentETripleEquiv_prefix D Sc cutoff N β i j l δ γ hδ h hγ,
-    contentETripleEquiv_prefix D Sc cutoff N β j i l δ γ hδ' ht hγ,
-    contentEPairCross_component]
-  simp only [Category.assoc]
-  apply prefix_transport_square
-    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
-    ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M)
-    ((contentEPairToComparison D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).app M)
-    ((contentInductionTransform D Sc cutoff N ((contentPair_sum β i j).trans hδ)
-      ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
-      (D.parity i * D.parity j) M) z
-    ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).app M)
-    ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).app M)
-  rw [contentInductionTransform_app, map_transform_total _ (BalancedInduction.transformComponent_mem _ _)]
-  exact contentInductionCompTo_inner_arrow D Sc cutoff N β [i,j] [j,i] δ
-    ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') [l] γ hγ h ht
-    (contentCrossAffine_mem D Sc i j) M z
-
+      contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z := by
+  have hx := congrArg (fun f => f.total z)
+    (contentETripleTransform_prefix_cross D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M)
+  rw [contentETripleTransform_total] at hx
+  exact hx
 end OddMath.QuiverHecke.ELVOld

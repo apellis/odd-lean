@@ -5,7 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairWhiskeredRelations
 import OddMath.QuiverHecke.CyclotomicAction.GlobalMixedSlideAlgebra
 
-/-! # Distinct-colour slides on actual content induction
+/-! # Distinct-colour slides on content induction
 
 Brundan–Ellis Definition 1.5, (1.8). The pair crossing and both single-letter
 dots are independently constructed. Common target content is retained at
@@ -46,6 +46,13 @@ private theorem sourceTransform_congr {β γ : Multiset I} {σ : List I}
   cases hab
   rfl
 
+private theorem square_comp_right_congr {A B : Type u}
+    [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
+    {f g : Module.End k B} (h : f = g) (e : A →ₗ[k] B) :
+    f.comp e = g.comp e := by
+  cases h
+  rfl
+
 private theorem pairInner_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
@@ -70,8 +77,8 @@ private theorem pairInner_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [j]))
       (firstDot_parity D Sc i []))
     (firstDot_parity D Sc i [j]) (dotE_whiskerRight D Sc [i] [j] 0 (by simp)) M z
-  exact hc.trans (congrArg (fun q => q ∘ₗ
-    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap) hf)
+  exact hc.trans (square_comp_right_congr (k := k) hf
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap)
 
 private theorem pairOuter_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
@@ -94,8 +101,19 @@ private theorem pairOuter_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [i]))
       (firstDot_parity D Sc j []))
     (contentPairDot_one_parity D Sc i j) (whiskerLeft_letter_dotE D Sc i [j] 0) M z
-  exact hc.trans (congrArg (fun q => q ∘ₗ
-    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap) hf)
+  exact hc.trans (square_comp_right_congr (k := k) hf
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap)
+
+private theorem equivalence_transport_square
+    {A B C E : Type u}
+    [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C] [AddCommGroup E] [Module k E]
+    (e : A ≃ₗ[k] B) (f : C ≃ₗ[k] E) (a : E →ₗ[k] B) :
+    e.toLinearMap.comp (e.symm.toLinearMap.comp (a.comp f.toLinearMap)) =
+      a.comp f.toLinearMap := by
+  apply LinearMap.ext
+  intro x
+  exact e.apply_symm_apply _
 
 private theorem pairCross_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ) (ht : β + ([j,i] : Multiset I) = γ)
@@ -105,10 +123,11 @@ private theorem pairCross_square (β : Multiset I) (i j : I) (γ : Multiset I)
     BalancedInduction.transformLinear
       (contentAppendTo_supernatural D Sc cutoff N h ht (contentCrossAffine_mem D Sc i j)) M z ∘ₗ
       (contentEPairEquiv D Sc cutoff N β j i γ ht M z).toLinearMap := by
-  apply LinearMap.ext
-  intro a
-  simp only [contentEPairCross, LinearMap.comp_apply, LinearEquiv.coe_coe,
-    LinearEquiv.apply_symm_apply]
+  exact equivalence_transport_square (k := k)
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z)
+    (contentEPairEquiv D Sc cutoff N β j i γ ht M z)
+    (BalancedInduction.transformLinear
+      (contentAppendTo_supernatural D Sc cutoff N h ht (contentCrossAffine_mem D Sc i j)) M z)
 
 private theorem contentTwoTransform_tensor {β γ : Multiset I} {σ τ υ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
@@ -268,5 +287,37 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
     (pairInner_square D Sc cutoff N β j i γ hji M z) h'.symm
   have H' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) H
   simpa only [smul_smul, Supercategory.sign_mul_self, one_smul] using H'.symm
+private theorem sign_slide_reverse {V : Type u} [AddCommGroup V] [Module k V]
+    (p : ZMod 2) {a b : V} (h : a = sign k p • b) : b = sign k p • a := by
+  rw [h, smul_smul, Supercategory.sign_mul_self, one_smul]
+
+/-- The left distinct-colour slide in the orientation of
+`RouquierMulticolour.slideLeft`, after total evaluation. -/
+theorem contentEPair_slideLeft (β : Multiset I) {i j : I} (hij : i ≠ j)
+    (γ : Multiset I) (hij' : β + ([i,j] : Multiset I) = γ)
+    (hji : β + ([j,i] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
+        (contentPairOuterDotAt D Sc cutoff N β j i γ hji M z) =
+      sign k (D.parity i * D.parity j) •
+        (contentPairInnerDotAt D Sc cutoff N β i j γ hij' M z).comp
+          (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
+  exact sign_slide_reverse (k := k) _
+    (contentEPair_distinct_slide_left D Sc cutoff N β hij γ hij' hji M z)
+
+/-- The right distinct-colour slide in the orientation of
+`RouquierMulticolour.slideRight`, after total evaluation. -/
+theorem contentEPair_slideRight (β : Multiset I) {i j : I} (hij : i ≠ j)
+    (γ : Multiset I) (hij' : β + ([i,j] : Multiset I) = γ)
+    (hji : β + ([j,i] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    (contentPairOuterDotAt D Sc cutoff N β i j γ hij' M z).comp
+        (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) =
+      sign k (D.parity i * D.parity j) •
+        (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
+          (contentPairInnerDotAt D Sc cutoff N β j i γ hji M z) := by
+  exact sign_slide_reverse (k := k) _
+    (contentEPair_distinct_slide_right D Sc cutoff N β hij γ hij' hji M z)
+
 end OddMath.QuiverHecke.ELVOld
 

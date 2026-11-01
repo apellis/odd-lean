@@ -37,15 +37,11 @@ def contentWhiskeredPathIij (β : Multiset I) (i j : I) (δ : Multiset I)
     (h : β + ([i,i,j] : Multiset I) = β + ([i,j,i] : Multiset I))
     (M : ContentModules D Sc cutoff N β)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
-    Module.End k (ContentETripleSpace D Sc cutoff N β i j i _ rfl M z) :=
-  (contentWhiskeredSuffixCross D Sc cutoff N β i j i _ rfl h M z).comp
-    ((((contentETripleMiddleIso D Sc cutoff N β i i j δ _ hδ h hγ).inv.app M).total z ∘ₗ
-      ((contentInductionTo D Sc cutoff N δ [j] _ hγ).map
-        ((contentEPairCrossTransform D Sc cutoff N β i i δ
-          ((contentPair_sum β i i).trans hδ) ((contentPair_sum β i i).trans hδ)).app
-          (D.parity i * D.parity i) M)).total z ∘ₗ
-      ((contentETripleMiddleIso D Sc cutoff N β i i j δ _ hδ h hγ).hom.app M).total z).comp
-      (contentWhiskeredSuffixCross D Sc cutoff N β i i j _ h rfl M z))
+    ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z ⟶
+      ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z :=
+  (contentWhiskeredSuffixCross D Sc cutoff N β i i j _ h rfl M z ≫
+    contentPrefixCrossComponent D Sc cutoff N β i i j δ _ hδ hδ h h hγ M z) ≫
+    contentWhiskeredSuffixCross D Sc cutoff N β i j i _ rfl h M z
 
 def contentWhiskeredPathJii (β : Multiset I) (i j : I) (δ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
@@ -54,22 +50,27 @@ def contentWhiskeredPathJii (β : Multiset I) (i j : I) (δ : Multiset I)
     (h : β + ([j,i,i] : Multiset I) = β + ([i,j,i] : Multiset I))
     (M : ContentModules D Sc cutoff N β)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
-    Module.End k (ContentETripleSpace D Sc cutoff N β i j i _ rfl M z) :=
-  (((contentETripleMiddleIso D Sc cutoff N β i j i δ _ hδ rfl hγ).inv.app M).total z ∘ₗ
-    ((contentInductionTo D Sc cutoff N δ [i] _ hγ).map
-      ((contentEPairCrossTransform D Sc cutoff N β i j δ
-        ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-        (D.parity i * D.parity j) M)).total z ∘ₗ
-    ((contentETripleMiddleIso D Sc cutoff N β j i i δ _ hδ' h hγ).hom.app M).total z).comp
-      ((contentWhiskeredSuffixCross D Sc cutoff N β j i i _ h h M z).comp
-        (((contentETripleMiddleIso D Sc cutoff N β j i i δ _ hδ' h hγ).inv.app M).total z ∘ₗ
-          ((contentInductionTo D Sc cutoff N δ [i] _ hγ).map
-            ((contentEPairCrossTransform D Sc cutoff N β j i δ
-              ((contentPair_sum β j i).trans hδ') ((contentPair_sum β i j).trans hδ)).app
-              (D.parity j * D.parity i) M)).total z ∘ₗ
-          ((contentETripleMiddleIso D Sc cutoff N β i j i δ _ hδ rfl hγ).hom.app M).total z))
+    ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z ⟶
+      ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z :=
+  (contentPrefixCrossComponent D Sc cutoff N β j i i δ _ hδ' hδ h rfl hγ M z ≫
+    contentWhiskeredSuffixCross D Sc cutoff N β j i i _ h h M z) ≫
+    contentPrefixCrossComponent D Sc cutoff N β i j i δ _ hδ hδ' rfl h hγ M z
 
-theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
+private def canonicalPathIij (β : Multiset I) (i j : I)
+    (M : ContentModules D Sc cutoff N β)
+    (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
+    ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z ⟶
+      ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z :=
+  contentETriplePathIij D Sc cutoff N β i j M z
+
+private def canonicalPathJii (β : Multiset I) (i j : I)
+    (M : ContentModules D Sc cutoff N β)
+    (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
+    ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z ⟶
+      ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z :=
+  contentETriplePathJii D Sc cutoff N β i j M z
+
+private theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (δ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([i] : Multiset I) = δ)
     (hγ : δ + ([j] : Multiset I) = β + ([i,j,i] : Multiset I))
@@ -77,15 +78,16 @@ theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (M : ContentModules D Sc cutoff N β)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathIij D Sc cutoff N β i j δ hδ hγ h M z =
-      contentETriplePathIij D Sc cutoff N β i j M z :=
-by
-  unfold contentWhiskeredPathIij contentETriplePathIij
-  dsimp only
-  rw [contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm,
+      canonicalPathIij D Sc cutoff N β i j M z := by
+  unfold contentWhiskeredPathIij
+  rw [contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij,
     contentWhiskeredPrefixCross_equal D Sc cutoff N β i j,
-    contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij]
+    contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm]
+  apply SVec.hom_ext
+  intro x
+  rfl
 
-theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
+private theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (δ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
     (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
@@ -94,13 +96,14 @@ theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (M : ContentModules D Sc cutoff N β)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathJii D Sc cutoff N β i j δ hδ hδ' hγ h M z =
-      contentETriplePathJii D Sc cutoff N β i j M z :=
-by
-  unfold contentWhiskeredPathJii contentETriplePathJii
-  dsimp only
-  rw [contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij i,
+      canonicalPathJii D Sc cutoff N β i j M z := by
+  unfold contentWhiskeredPathJii
+  rw [contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm i,
     contentWhiskeredSuffixCross_equal D Sc cutoff N β j i,
-    contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm i]
+    contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij i]
+  apply SVec.hom_ext
+  intro x
+  rfl
 
 /-- The bookkeeping equalities identify the actual intermediate contents;
 they assert no action, inverse, grading, independence or coefficient property. -/
@@ -120,8 +123,10 @@ theorem contentWhiskered_mixedBraid (β : Multiset I) {i j : I} (hij : i ≠ j)
       contentWhiskeredPathJii D (parameterTwist D Sc) cutoff N β i j δij hijδ hjiδ hijγ hjii M z =
         contentWhiskeredPolynomial D Sc cutoff N β i j M z := by
   rw [contentWhiskeredPathIij_eq D _ cutoff N β hij,
-    contentWhiskeredPathJii_eq D _ cutoff N β hij,
-    ← contentETripleMixedBraid, contentETriple_mixedBraid D Sc cutoff N β hij,
-    contentETriplePolynomial_whiskered]
+    contentWhiskeredPathJii_eq D _ cutoff N β hij]
+  have h := (contentETriple_mixedBraid D Sc cutoff N β hij M z).trans
+    (contentETriplePolynomial_whiskered D Sc cutoff N β i j M z)
+  simpa only [canonicalPathIij, canonicalPathJii, contentETripleMixedBraid] using h
+
 end OddMath.QuiverHecke.ELVOld
 

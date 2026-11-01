@@ -32,12 +32,7 @@ theorem importing_triple_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Mul
     contentETripleMap D Sc cutoff N h ht
       (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
         (contentCrossAffine_mem D Sc i j)) M z =
-      ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i j δ
-            ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-            (D.parity i * D.parity j) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M).total z :=
+      contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z :=
   contentETripleMap_prefix_cross D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z
 end OddMath.QuiverHecke.ELVOld
 

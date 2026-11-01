@@ -26,6 +26,23 @@ example :=
     (⟨⟨[true,false]⟩, by simp⟩ :
       ContentCategory datum scalars (fun _ => 12) 12
         (0 + ([true,false] : Multiset Bool)))
+example :=
+  contentEPair_slideLeft datum scalars (fun _ => 12) 12
+    (0 : Multiset Bool) (i := false) (j := true) (by decide)
+    (0 + ([false,true] : Multiset Bool)) rfl (by decide)
+    (vacuumModule datum scalars (fun _ => 12) 12)
+    (⟨⟨[false,true]⟩, by simp⟩ :
+      ContentCategory datum scalars (fun _ => 12) 12
+        (0 + ([false,true] : Multiset Bool)))
+
+example :=
+  contentEPair_slideRight datum scalars (fun _ => 12) 12
+    (0 : Multiset Bool) (i := true) (j := false) (by decide)
+    (0 + ([true,false] : Multiset Bool)) rfl (by decide)
+    (vacuumModule datum scalars (fun _ => 12) 12)
+    (⟨⟨[true,false]⟩, by simp⟩ :
+      ContentCategory datum scalars (fun _ => 12) 12
+        (0 + ([true,false] : Multiset Bool)))
 end OddMath.QuiverHecke.ELVOld.DistinctSlidesConsumer
 
 open Lean Elab Command in
