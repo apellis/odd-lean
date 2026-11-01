@@ -96,7 +96,7 @@ private lemma negate_slide {C : Type u} [Category C] [Preadditive C]
   simpa only [Preadditive.neg_comp, Preadditive.comp_neg] using congrArg Neg.neg h
 
 lemma native_entry (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     (-(RepeatedOuterPost.targetAlg P i j s hi hj (hs ▸ Y)
         (c.a i s hi (RepeatedOuterPre.rest P i j s hj (hs ▸ Y))))) ≫
       RepeatedOuterPre.probeReservoirCross P i j s hi hj hj0 hi0 hs Y ≫
@@ -116,7 +116,7 @@ lemma native_entry (c : P.CrossCoeff Sc) (hc : c.IsInverse)
   simpa only [Functor.map_comp, Category.assoc] using he
 
 lemma braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three true false false trivial hi hj hs)
       (SPath.three false true false hj0 trivial hi0 rfl) Y =
@@ -143,7 +143,7 @@ lemma braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three true false false trivial hi hj e)
       (SPath.three false true false hj0 trivial hi0 e') Z =
@@ -165,7 +165,7 @@ lemma braid_entry_path (ν : X) {t : Sector I}
       (c₂ := ⟨up i, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       false true false hj0 trivial hi0 e')
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν p q Z =
       braidRight (P.swappedGens c L) i i j ν p q Z := by
   subst p q

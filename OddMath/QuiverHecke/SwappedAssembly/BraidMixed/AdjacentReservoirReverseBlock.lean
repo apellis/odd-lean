@@ -195,7 +195,7 @@ lemma target_square (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
 lemma native_pair
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
-    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let E := P.mixedJ i i s hi (RepeatedOuterPre.rest P i j s hj Z)
     let K := (P.step (true, j) false s hj0).mapIso
       (P.mixedJ i i (nextSector (true, j) false s) hi0 (hs ▸ Z))
@@ -217,7 +217,7 @@ lemma native_pair
       (Category.assoc _ _ _)
 
 lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three false false true hj0 hi0 trivial hs)
       (SPath.three true false false trivial hi hj rfl) Z =
@@ -249,7 +249,7 @@ lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (native_pair P i j s hi hj hj0 hi0 hs Z hs0 c hc h hij).1).trans hr'.symm))
 
 lemma diag_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three false true false hj0 trivial hi0 hs)
       (SPath.three true false false trivial hi hj rfl) Z =
@@ -281,7 +281,7 @@ lemma square_braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three false false true hj0 hi0 trivial e)
       (SPath.three true false false trivial hi hj e') Z =
@@ -295,7 +295,7 @@ lemma diag_braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three false true false hj0 trivial hi0 e)
       (SPath.three true false false trivial hi hj e') Z =
@@ -312,7 +312,7 @@ lemma braid_block (ν : X) {t : Sector I}
     (Z : P.H t) (p : SPath (wd D ν [up j, up i, up i]) s t)
     (q : SPath (wd D ν [up i, up i, up j]) s t)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν p q Z =
       braidRight (P.swappedGens c L) j i i ν p q Z := by
   obtain ⟨hi, hj⟩ := AdjacentReservoirSquareBlock.opposite_valid j i s hj0 hi0 hij.symm

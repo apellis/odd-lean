@@ -227,7 +227,7 @@ theorem adjacentMixed_braidRight_reduced (hij : i ≠ j) :
 /-- The literal braid equality on `Rᵢ Pᵢ Pⱼ → Pⱼ Rᵢ Pᵢ`.
 Only inverse coefficients and the existing coefficient inputs are required;
 no crossing or mixed Q polynomial is assumed invertible. -/
-theorem adjacentMixed_braid (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+theorem adjacentMixed_braid (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true true hR trivial trivial hs)
       (SPath.three true false true trivial hR trivial rfl) Z =
