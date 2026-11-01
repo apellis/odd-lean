@@ -44,15 +44,13 @@ private def ordinaryEvenSuperAdjunction
   left_triangle := by
     apply Superfunctor.hom_ext_parity
     · intro M
-      simpa [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj] using
-        adj.left_triangle_components M
+      simp [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj]
     · intro M
       simp [SuperNatTrans.ofNatTrans]
   right_triangle := by
     apply Superfunctor.hom_ext_parity
     · intro N
-      simpa [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj] using
-        adj.right_triangle_components N
+      simp [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj]
     · intro N
       simp [SuperNatTrans.ofNatTrans]
 
