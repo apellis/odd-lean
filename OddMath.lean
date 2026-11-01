@@ -309,6 +309,7 @@ import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.CoefficientPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientWindowTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVJointPBWDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientCategory
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
