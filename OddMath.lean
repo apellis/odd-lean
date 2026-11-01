@@ -1733,3 +1733,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
