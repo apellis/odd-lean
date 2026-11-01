@@ -45,7 +45,7 @@ theorem longHomLift_zero_pair (p : ZMod 2) (i : I) {v t : List I}
     (longHomIndex_oldTarget i y 0) rfl _ _ ht
   have hv := congrArg (fun f : Old D Sc cutoff v t →ₗ[k]
     Target D Sc cutoff i v (t ++ [i]) => f b) h
-  simpa only [longHomLift, pow_zero, one_smul, bareUFull] using hv
+  simpa only [longHomLift, pow_zero, one_smul, bareUFull, affineUnit] using hv
 
 theorem offDiagonalLongSection_single_zero_pair (p : ZMod 2) (i : I) (v t : List I)
     (b : Old D Sc cutoff v t) :
@@ -66,7 +66,7 @@ theorem outputLongLift_zero_pair (p : ZMod 2) (i : I) (v : List I)
     (longOutputIndex_oldTarget i v 0) rfl _ _ (tail_long_zero D Sc i v)
   have hv := congrArg (fun f : Old D Sc cutoff v v →ₗ[k]
     Target D Sc cutoff i v (v ++ [i]) => f b) h
-  simpa only [outputLongLift, pow_zero, one_smul, bareUFull] using hv
+  simpa only [outputLongLift, pow_zero, one_smul, bareUFull, affineUnit] using hv
 
 /-- The source balance and bare-long parity determine the whole output twist. -/
 theorem offDiagonalLongSection_zero_transport (p : ZMod 2) (i : I) (v t : List I)
