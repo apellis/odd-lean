@@ -73,6 +73,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCapSignNormalization
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionMap
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleRestriction
@@ -100,10 +101,17 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVEvenCoefficientModule
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenInputComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenInputOperators
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMateTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateFirstRow
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.SKM.BubbleELVPolynomialGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
@@ -175,6 +183,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotColumns
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedMatrixFamilies
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapInput
+import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedSourceLinearEquiv
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCapComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongKernel
