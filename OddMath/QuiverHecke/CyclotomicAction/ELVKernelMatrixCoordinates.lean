@@ -87,6 +87,8 @@ theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
       matrixMateRow D Sc cutoff i v.unop.word t.word
         (kernelSourceCoordinates D Sc cutoff i v t z) := by
   have h := LinearMap.congr_fun (actualMateKernelLinear_eq_row D Sc cutoff i v t) z
-  simpa only [kernelMateRowLinear, LinearMap.comp_apply, LinearEquiv.coe_toLinearMap] using h
+  set_option backward.dsimp.instances true in
+    dsimp only [kernelMateRowLinear, LinearMap.comp_apply, LinearEquiv.coe_toLinearMap] at h ⊢
+  exact h
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
