@@ -24,3 +24,5 @@ declarations audited. The mixed negative-height fixture has three cap
 slots, distinct endpoint orders, positive cutoffs, both inverse products,
 the complete canonical-coordinate equality, and each actual counit row.
 Full CI and the global audit remain required.
+
+The component and entry comparisons use the same canonical module parity structure throughout.
