@@ -40,6 +40,22 @@ private theorem sourceNorm_ofProducer {k : Type u} [CommRing k]
       Superfunctor.whiskerLeft (E.comp K) t)
   exact hh'
 
+/-- Attach a source norm to its prescribed mixed dots before specializing the categories. -/
+private theorem mixedSourceNorm_ofTranspose {k : Type u} [CommRing k]
+    {A B C Q : PiSCat.{u, u, u + 1} k} (E : A ⟶ B) (κ : ZMod 2) (H : B ⟶ C)
+    {E' : Q ⟶ C} {F' : C ⟶ Q} (adj : SKM.SuperAdjunction (k := k) E' F') (d : End E')
+    (hNorm : ∀ (G : Superfunctor k A.carrier C.carrier) (b : End G),
+      b ∈ parity (R := k) _ _ 0 → IsUnit b →
+        IsUnit (show End (G.comp F') from
+          Superfunctor.whiskerLeft G (SKM.SuperAdjunction.rightTranspose adj adj d) -
+            Superfunctor.whiskerRight b F'))
+    (a : End E) (ha : a ∈ parity (R := k) _ _ 0) (hu : IsUnit a) :
+    IsUnit (SKM.mixedPostSourcePreDot (k := k) E κ H (F' := F') a -
+      SKM.mixedPostSourcePostDot (k := k) E κ H adj d) := by
+  let K : B ⟶ C := (SKM.homParityShift (k := k) (C := B ⟶ C) κ).obj H
+  exact sourceNorm_ofProducer F' (SKM.SuperAdjunction.rightTranspose adj adj d)
+    hNorm E K a ha hu
+
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
   (Λ x : X) (i : I) {y : X} (h : x + D.α i = y)
@@ -55,8 +71,6 @@ theorem elvRawMixedSource_difference_isUnit [Finite I]
       SKM.mixedPostSourcePostDot (k := k) E κ H
         (elvActionAdjunction D Sc cutoff bound i Λ h)
         (elvActionDot D Sc cutoff bound i Λ h)) := by
-  let K : B ⟶ elvWeightSpace D Sc cutoff bound Λ y := (SKM.homParityShift (k := k)
-    (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H
   have hNorm : ∀ (G : Superfunctor k A.carrier (ELVWeightProduct D Sc cutoff bound Λ y))
       (b : End G), b ∈ parity (R := k) _ _ 0 → IsUnit b →
       IsUnit (show End (G.comp (elvF D Sc cutoff bound i Λ h)) from
@@ -68,14 +82,9 @@ theorem elvRawMixedSource_difference_isUnit [Finite I]
     set_option backward.dsimp.instances true in
       dsimp only [elvPostTransposeDot, elvRestrictionProbeDot, elvPostRestriction] at hG
     exact hG
-  have hh' := sourceNorm_ofProducer (A := A) (B := B)
-    (C := elvWeightSpace D Sc cutoff bound Λ y) (Q := elvWeightSpace D Sc cutoff bound Λ x)
-    (elvF D Sc cutoff bound i Λ h) (elvActionDotTranspose D Sc cutoff bound i Λ h)
-    hNorm E K a (hi ▸ ha) hu
-  set_option backward.dsimp.instances true in
-    dsimp only [K] at hh'
-  delta SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostDot elvActionDotTranspose at hh' ⊢
-  exact hh'
+  exact mixedSourceNorm_ofTranspose E κ H
+    (elvActionAdjunction D Sc cutoff bound i Λ h) (elvActionDot D Sc cutoff bound i Λ h)
+    hNorm a (hi ▸ ha) hu
 
 /-- The raw arbitrary-Z even coefficient has invertible prescribed dotted mate. -/
 theorem elvRawMixedEvenMateDot_isIso [Finite I]
