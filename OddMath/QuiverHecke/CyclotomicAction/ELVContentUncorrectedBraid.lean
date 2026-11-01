@@ -63,22 +63,30 @@ def contentWhiskeredBraidLeft (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h1 : β + ([j,i,l] : Multiset I) = γ)
     (h2 : β + ([j,l,i] : Multiset I) = γ)
     (h3 : β + ([l,j,i] : Multiset I) = γ)
+    (δij : Multiset I)
+    (hij : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δij)
+    (hji : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δij)
+    (hijγ : δij + ([l] : Multiset I) = γ)
+    (δjl : Multiset I)
+    (hjl : (β + ([j] : Multiset I)) + ([l] : Multiset I) = δjl)
+    (hlj : (β + ([l] : Multiset I)) + ([j] : Multiset I) = δjl)
+    (hjlγ : δjl + ([i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
-  let A := ((contentETripleMiddleIso D Sc cutoff N β i j l ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl h0 (by rw [add_assoc, add_assoc]; exact h0)).inv.app M).total z ∘ₗ
-      ((contentInductionTo D Sc cutoff N ((β + ([i] : Multiset I)) + ([j] : Multiset I)) [l] γ (by rw [add_assoc, add_assoc]; exact h0)).map
-        ((contentEPairCrossTransform D Sc cutoff N β i j ((β + ([i] : Multiset I)) + ([j] : Multiset I))
-          ((contentPair_sum β i j).trans rfl)
-          ((contentPair_sum β j i).trans (by ac_rfl))).app
+  let A := ((contentETripleMiddleIso D Sc cutoff N β i j l δij γ hij h0 hijγ).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N δij [l] γ hijγ).map
+        ((contentEPairCrossTransform D Sc cutoff N β i j δij
+          ((contentPair_sum β i j).trans hij)
+          ((contentPair_sum β j i).trans hji)).app
           (D.parity i * D.parity j) M)).total z ∘ₗ
-      ((contentETripleMiddleIso D Sc cutoff N β j i l ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ (by ac_rfl) h1 (by rw [add_assoc, add_assoc]; exact h0)).hom.app M).total z
+      ((contentETripleMiddleIso D Sc cutoff N β j i l δij γ hji h1 hijγ).hom.app M).total z
   let B := contentWhiskeredSuffixCross D Sc cutoff N β j i l γ h1 h2 M z
-  let C := ((contentETripleMiddleIso D Sc cutoff N β j l i ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ rfl h2 (by rw [add_assoc, add_assoc]; exact h2)).inv.app M).total z ∘ₗ
-      ((contentInductionTo D Sc cutoff N ((β + ([j] : Multiset I)) + ([l] : Multiset I)) [i] γ (by rw [add_assoc, add_assoc]; exact h2)).map
-        ((contentEPairCrossTransform D Sc cutoff N β j l ((β + ([j] : Multiset I)) + ([l] : Multiset I))
-          ((contentPair_sum β j l).trans rfl)
-          ((contentPair_sum β l j).trans (by ac_rfl))).app
+  let C := ((contentETripleMiddleIso D Sc cutoff N β j l i δjl γ hjl h2 hjlγ).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N δjl [i] γ hjlγ).map
+        ((contentEPairCrossTransform D Sc cutoff N β j l δjl
+          ((contentPair_sum β j l).trans hjl)
+          ((contentPair_sum β l j).trans hlj)).app
           (D.parity j * D.parity l) M)).total z ∘ₗ
-      ((contentETripleMiddleIso D Sc cutoff N β l j i ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ (by ac_rfl) h3 (by rw [add_assoc, add_assoc]; exact h2)).hom.app M).total z
+      ((contentETripleMiddleIso D Sc cutoff N β l j i δjl γ hlj h3 hjlγ).hom.app M).total z
   A.comp (B.comp C)
 
 def contentWhiskeredBraidRight (β : Multiset I) (i j l : I) (γ : Multiset I)
@@ -86,15 +94,19 @@ def contentWhiskeredBraidRight (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h4 : β + ([i,l,j] : Multiset I) = γ)
     (h5 : β + ([l,i,j] : Multiset I) = γ)
     (h3 : β + ([l,j,i] : Multiset I) = γ)
+    (δil : Multiset I)
+    (hil : (β + ([i] : Multiset I)) + ([l] : Multiset I) = δil)
+    (hli : (β + ([l] : Multiset I)) + ([i] : Multiset I) = δil)
+    (hilγ : δil + ([j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
   let A := contentWhiskeredSuffixCross D Sc cutoff N β i j l γ h0 h4 M z
-  let B := ((contentETripleMiddleIso D Sc cutoff N β i l j ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ rfl h4 (by rw [add_assoc, add_assoc]; exact h4)).inv.app M).total z ∘ₗ
-      ((contentInductionTo D Sc cutoff N ((β + ([i] : Multiset I)) + ([l] : Multiset I)) [j] γ (by rw [add_assoc, add_assoc]; exact h4)).map
-        ((contentEPairCrossTransform D Sc cutoff N β i l ((β + ([i] : Multiset I)) + ([l] : Multiset I))
-          ((contentPair_sum β i l).trans rfl)
-          ((contentPair_sum β l i).trans (by ac_rfl))).app
+  let B := ((contentETripleMiddleIso D Sc cutoff N β i l j δil γ hil h4 hilγ).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N δil [j] γ hilγ).map
+        ((contentEPairCrossTransform D Sc cutoff N β i l δil
+          ((contentPair_sum β i l).trans hil)
+          ((contentPair_sum β l i).trans hli)).app
           (D.parity i * D.parity l) M)).total z ∘ₗ
-      ((contentETripleMiddleIso D Sc cutoff N β l i j ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ (by ac_rfl) h5 (by rw [add_assoc, add_assoc]; exact h4)).hom.app M).total z
+      ((contentETripleMiddleIso D Sc cutoff N β l i j δil γ hli h5 hilγ).hom.app M).total z
   let C := contentWhiskeredSuffixCross D Sc cutoff N β l i j γ h5 h3 M z
   A.comp (B.comp C)
 
@@ -134,30 +146,43 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
     (h3 : β + ([l,j,i] : Multiset I) = γ)
     (h4 : β + ([i,l,j] : Multiset I) = γ)
     (h5 : β + ([l,i,j] : Multiset I) = γ)
+    (δij : Multiset I)
+    (hij : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δij)
+    (hji : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δij)
+    (hijγ : δij + ([l] : Multiset I) = γ)
+    (δil : Multiset I)
+    (hil : (β + ([i] : Multiset I)) + ([l] : Multiset I) = δil)
+    (hli : (β + ([l] : Multiset I)) + ([i] : Multiset I) = δil)
+    (hilγ : δil + ([j] : Multiset I) = γ)
+    (δjl : Multiset I)
+    (hjl : (β + ([j] : Multiset I)) + ([l] : Multiset I) = δjl)
+    (hlj : (β + ([l] : Multiset I)) + ([j] : Multiset I) = δjl)
+    (hjlγ : δjl + ([i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3 M z =
-      contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3 M z := by
-  have hL : contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3 M z =
+    contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3
+      δij hij hji hijγ δjl hjl hlj hjlγ M z =
+      contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3
+      δil hil hli hilγ M z := by
+  have hL : contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3
+      δij hij hji hijγ δjl hjl hlj hjlγ M z =
       (contentETripleMap D Sc cutoff N h0 h1 (contentNormalizedLeft_mem D Sc i j l) M z).comp
         ((contentETripleMap D Sc cutoff N h1 h2 (contentNormalizedRight_mem D Sc j i l) M z).comp
           (contentETripleMap D Sc cutoff N h2 h3 (contentNormalizedLeft_mem D Sc j l i) M z)) := by
     exact congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i j l
-      ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl (by ac_rfl)
-      h0 h1 (by rw [add_assoc, add_assoc]; exact h0) M z).symm
+      δij γ hij hji h0 h1 hijγ M z).symm
       (congrArg₂ LinearMap.comp
         (contentWhiskeredSuffixCross_comparison D Sc cutoff N β j i l γ h1 h2 M z)
         (contentETripleMap_prefix_cross D Sc cutoff N β j l i
-      ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ rfl (by ac_rfl)
-      h2 h3 (by rw [add_assoc, add_assoc]; exact h2) M z).symm)
-  have hR : contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3 M z =
+      δjl γ hjl hlj h2 h3 hjlγ M z).symm)
+  have hR : contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3
+      δil hil hli hilγ M z =
       (contentETripleMap D Sc cutoff N h0 h4 (contentNormalizedRight_mem D Sc i j l) M z).comp
         ((contentETripleMap D Sc cutoff N h4 h5 (contentNormalizedLeft_mem D Sc i l j) M z).comp
           (contentETripleMap D Sc cutoff N h5 h3 (contentNormalizedRight_mem D Sc l i j) M z)) := by
     exact congrArg₂ LinearMap.comp
       (contentWhiskeredSuffixCross_comparison D Sc cutoff N β i j l γ h0 h4 M z)
       (congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i l j
-      ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ rfl (by ac_rfl)
-      h4 h5 (by rw [add_assoc, add_assoc]; exact h4) M z).symm
+      δil γ hil hli h4 h5 hilγ M z).symm
         (contentWhiskeredSuffixCross_comparison D Sc cutoff N β l i j γ h5 h3 M z))
   rw [hL, hR, triple_transport_comp, triple_transport_comp]
   congr 2
