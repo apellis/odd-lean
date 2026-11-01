@@ -1,6 +1,6 @@
 # Denominator units from probe units in shifted ELV postcomposition
 
-Status: proposed source, pending CI; depends on contentwise ELV denominator units.
+Status: full-CI verified and integrated into research in #801, using the contentwise denominator units verified in #794.
 
 For an arbitrary PiSCat source A and functor F into the existing ELV source
 weight category, take the probe-precomposition map α : End F. The probe dot
