@@ -56,6 +56,6 @@ theorem adjunctionParitySourceIso_counit
       ((adjunctionCounit A).app (supermoduleParityObj N) ≫
         (supermoduleParityIso N).hom) = (adjunctionCounit A).app N
   rw [← hn, ← Category.assoc, ← Functor.map_comp, Iso.inv_hom_id,
-    Functor.map_id, Category.id_comp]
+    CategoryTheory.Functor.map_id, Category.id_comp]
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
