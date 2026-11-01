@@ -27,7 +27,7 @@ theorem OddTwo.isUnit_right_direct {u v T : B} (h : OddTwo u v T) (hu : IsUnit u
   rcases hu with ⟨U, rfl⟩
   let a : B := ↑(U⁻¹)
   let φ : B := phiOdd (U : B) v T
-  have hua : (U : B) * a = 1 := Units.val_inv_eq_one U
+  have hua : (U : B) * a = 1 := U.val_inv
   have hphi : v * φ * a = -φ := by
     have he := congrArg (fun z : B => z * a) h.x_succ_mul_phiOdd
     change (v * φ) * a = -(φ * (U : B)) * a at he
@@ -52,7 +52,10 @@ theorem OddTwo.isUnit_right_direct {u v T : B} (h : OddTwo u v T) (hu : IsUnit u
   refine ⟨hinj, ?_⟩
   intro z
   refine ⟨((-φ * a * φ - v) * (a * a)) * z, ?_⟩
-  rw [← mul_assoc, hr, one_mul]
+  change v * (((-φ * a * φ - v) * (a * a)) * z) = z
+  calc
+    _ = (v * ((-φ * a * φ - v) * (a * a))) * z := (mul_assoc _ _ _).symm
+    _ = z := by rw [hr, one_mul]
 
 end OddMath.QuiverHecke.SignedNilHecke
 
