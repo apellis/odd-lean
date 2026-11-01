@@ -1,6 +1,6 @@
 # Arbitrary-output covariance of C0
 
-Status: proposed Lean source; producer, consumer and axiom audit await CI.
+Status: full-CI verified in #779 at exact head `56db92cc` (run 41290062006), integrated into research.
 
 ELVOffDiagonalCoefficientAction generalizes the existing append quotient postcomposition laws to arbitrary old endpoints. The actual C0 projection is covariant with degree-dependent total parity on the complete old coefficient. It imposes no diagonal-corner, field, flatness or action hypothesis.
 
