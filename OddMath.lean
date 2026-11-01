@@ -1877,3 +1877,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelEntryEndpoints
