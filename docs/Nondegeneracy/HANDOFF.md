@@ -86,14 +86,23 @@ triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
 
-## Proposed parity structure on full-ELV module categories
+## Probe dot kernel propagation
 
-`ELVContentParity` constructs the parity shift of the existing
-`ContentModules` by postcomposition with vector parity and the whiskered odd
-isomorphism. This is the Pi-supercategory prerequisite for the full-ELV factor
-weight objects; it needs no local inverse or ordinary-polynomial replacement.
-Its production file and concrete asymmetric vacuum consumer are proposed and
-await full CI; no completed factor or global weight-family construction is claimed.
+`ProbeDotPropagation` proves ordinary next-dot kernel propagation through the
+even/odd nilHecke intertwiners and distinct-colour slide/quadratic relation.
+Finite-dimensional unit corollaries and nonzero rational matrix consumers are
+included. The original PR #751 head passed full build, axiom audit and consumers;
+this merge reconciliation retains those exact source/consumer blobs. Applying
+these lemmas to actual cyclotomic word corners is separate work in #752.
+
+## Actual probe word corners
+
+`ProbeWordCorner` constructs the literal unital affine End-to-cyclotomic-corner
+map, transports both same-colour nilHecke relations, and propagates injectivity
+inside those actual corners. Its odd quadratic specialization proves a unit
+first dot and injective second dot with explicit defining relations. Source and
+concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
+full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
 
 ## Canonical module parity and the actual counit
 
