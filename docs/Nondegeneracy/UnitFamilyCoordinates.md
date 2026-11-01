@@ -31,3 +31,5 @@ positive cutoffs, three unit summands, both inverse identities, the whole
 forward formula, and a nontrivial d_2 = -1 coordinate. All twenty-two
 owned declarations pass the consumer axiom audit. Full CI and the global
 audit remain integration gates.
+
+The component and entry comparisons use the same canonical module parity structure throughout.
