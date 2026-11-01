@@ -39,6 +39,21 @@ induction comparison for inner/outer whiskering. Transport of a slide applies
 the comparison's injectivity; it does not unfold a conjugation or inverse. Parity witnesses of both
 source arrows are supplied explicitly after the two-transform tensor calculation.
 
+## Public representation changes
+
+The pair/triple space abbreviations evaluate the same induction functors as
+before, retaining their SVec carrier instances. Pair inner/outer dot definitions
+now evaluate actual module morphisms: induction maps the existing first-dot
+component, and the last-dot component is evaluated at its recast target.
+The public statements `contentEPairDot_zero_whisker`,
+`contentEPairDot_zero_singleLetter` and `contentEPairDot_one_whisker` use
+these actual-map total evaluations in place of raw `mapComponent` or
+`transformLinear` notation. Their operators and hypotheses are unchanged.
+The generic `contentInductionMap_total_of_mem` and
+`contentInductionTransform_total` compare the two notations. The headline
+equalities with independent inner/outer dots and the ordered quadratic retain
+their statements. Existing consumers of those headline results are unchanged.
+
 Whole natural-transformation and weight-family relations additionally require
 total-evaluation extensionality and compatibility with the actual successor
 block functors. No local inverse, factor-action or nondegeneracy construction
