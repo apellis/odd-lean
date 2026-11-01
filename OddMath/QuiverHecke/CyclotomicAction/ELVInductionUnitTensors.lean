@@ -56,3 +56,26 @@ theorem moduleMap_total_tensor_even
     LinearMap.zero_apply, tensor_zero_right, add_zero]
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
+
+namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
+universe u
+
+/-- Total evaluation of the five comparison legs, with shared module endpoints. -/
+theorem composition_total_apply
+    {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    {F₀ F₁ F₂ F₃ F₄ F₅ : Superfunctor k C (SVec k)}
+    (f₁ : F₀ ⟶ F₁) (f₂ : F₁ ⟶ F₂) (f₃ : F₂ ⟶ F₃)
+    (f₄ : F₃ ⟶ F₄) (f₅ : F₄ ⟶ F₅) (w : C) (b : F₀.obj w) :
+    (f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅).total w b =
+      f₅.total w (f₄.total w (f₃.total w (f₂.total w (f₁.total w b)))) := by
+  calc
+    _ = (f₂ ≫ f₃ ≫ f₄ ≫ f₅).total w (f₁.total w b) :=
+      LinearMap.congr_fun (Superfunctor.comp_total f₁ _ w) b
+    _ = (f₃ ≫ f₄ ≫ f₅).total w (f₂.total w (f₁.total w b)) :=
+      LinearMap.congr_fun (Superfunctor.comp_total f₂ _ w) _
+    _ = (f₄ ≫ f₅).total w (f₃.total w (f₂.total w (f₁.total w b))) :=
+      LinearMap.congr_fun (Superfunctor.comp_total f₃ _ w) _
+    _ = _ := LinearMap.congr_fun (Superfunctor.comp_total f₄ f₅ w) _
+
+end OddMath.QuiverHecke.ELVOld.BalancedInduction
