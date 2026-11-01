@@ -19,8 +19,8 @@ universe u
 private def finIioEquiv (m : ℕ) : Fin m ≃ Set.Iio m where
   toFun i := ⟨i.val, i.isLt⟩
   invFun i := ⟨i.val, i.property⟩
-  left_inv i := rfl
-  right_inv i := rfl
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 private def lowVectorEquiv {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
     (m : ℕ) : (Fin m → M) ≃ₗ[k] Finsupp.supported M k (Set.Iio m) :=
@@ -35,6 +35,7 @@ private theorem lowVectorEquiv_single {k M : Type*} [CommRing k]
   simp only [lowVectorEquiv, LinearEquiv.trans_apply,
     Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
     Finsupp.supportedEquivFinsupp_symm_single]
+  rfl
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -56,30 +57,30 @@ private def kernelWindowVectorEquiv (j : {j : I // D.parity j = 1})
     (v : List I) (m : ℕ)
     (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
     (Fin m → Old D Sc cutoff v v) ≃ₗ[k] boundaryKernelWindow D Sc cutoff j v where
-  toFun f := ⟨(lowVectorEquiv m f).val, by
+  toFun f := ⟨(lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m f).val, by
     intro d hd
-    have hlt : d < m := (lowVectorEquiv m f).property hd
+    have hlt : d < m := (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m f).property hd
     change d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v
     omega⟩
-  invFun f := (lowVectorEquiv m).symm ⟨f.val, by
+  invFun f := (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).symm ⟨f.val, by
     intro d hd
     have hlt := f.property hd
     change d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v at hlt
     change d < m
     omega⟩
   left_inv f := by
-    apply (lowVectorEquiv m).injective
+    apply (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).injective
     rw [LinearEquiv.apply_symm_apply]
     rfl
   right_inv f := by
     apply Subtype.ext
-    exact congrArg Subtype.val ((lowVectorEquiv m).apply_symm_apply _)
+    exact congrArg Subtype.val ((lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).apply_symm_apply _)
   map_add' f g := by
     apply Subtype.ext
-    exact congrArg Subtype.val (map_add (lowVectorEquiv m) f g)
+    exact congrArg Subtype.val (map_add (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) f g)
   map_smul' c f := by
     apply Subtype.ext
-    exact congrArg Subtype.val (map_smul (lowVectorEquiv m) c f)
+    exact congrArg Subtype.val (map_smul (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) c f)
 
 /-- Coordinates in the actual boundary kernel, using the corrected low window. -/
 def boundaryKernelVectorEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
@@ -98,7 +99,7 @@ theorem boundaryKernelVectorEquiv_single (p : ZMod 2)
       ℕ →₀ Old D Sc cutoff v v) =
       outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d.val b) := by
   change outputCorrectedCoordinateEquiv D Sc cutoff p j v
-    ((lowVectorEquiv m (Pi.single d b)).val) = _
+    ((lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m (Pi.single d b)).val) = _
   rw [lowVectorEquiv_single, outputCorrectedCoordinateEquiv_single]
 
 def crossingKernelVectorEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
@@ -134,7 +135,7 @@ private theorem reversedVector_single {k M : Type*} [CommRing k]
     reversedVector (k := k) m (Pi.single d b) = Pi.single d.rev b := by
   classical
   ext i
-  change Pi.single d b i.rev = Pi.single d.rev b i
+  change (Pi.single d b : Fin m → M) i.rev = (Pi.single d.rev b : Fin m → M) i
   by_cases hi : i = d.rev
   · subst i; simp
   · have hr : i.rev ≠ d := by
@@ -186,7 +187,7 @@ theorem capOnKernelVector_bijective (p : ZMod 2)
       change F (R (Pi.single b x)) a = 0
       rw [reversedVector_single, capOnKernelVector_single]
       apply inputContractionAffine_corrected_below
-      have hb := Fin.rev_val b
+      have hb : b.rev.val = m - (b.val + 1) := rfl
       have ha := a.isLt
       have hb' := b.isLt
       have hab' : a.val < b.val := hab
@@ -195,7 +196,7 @@ theorem capOnKernelVector_bijective (p : ZMod 2)
       change F (R (Pi.single a x)) a = _
       rw [reversedVector_single, capOnKernelVector_single]
       apply inputContractionAffine_corrected_pivot
-      have ha := Fin.rev_val a
+      have ha : a.rev.val = m - (a.val + 1) := rfl
       have ha' := a.isLt
       omega
   constructor
@@ -219,6 +220,7 @@ theorem inputCapVector_kernel_bijective (p : ZMod 2)
   have hb := capOnKernelVector_bijective D Sc cutoff p j v m hm
   constructor
   · intro f g hfg
+    change inputCapVector D Sc cutoff j v m f.val = inputCapVector D Sc cutoff j v m g.val at hfg
     have he : e.symm f = e.symm g := by
       apply hb.1
       change inputCapVector D Sc cutoff j v m (e (e.symm f)).val =

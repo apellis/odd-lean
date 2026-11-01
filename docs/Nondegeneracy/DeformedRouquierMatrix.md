@@ -7,21 +7,18 @@ prescribed tensor comparison and the coefficient-sensitive interpretation of
 the cap rows. The requirements recorded below are thus discharged for the
 stated full-ELV coefficients; they are not additional inversion hypotheses.
 
-## Lean construction boundary
+## Raw negative-height implementation
 
-The proposed raw negative-height construction is
-`CyclotomicCrossingTensor.negativeCrossingEquiv` in
-`ELVNegativeCrossing.lean`, with concrete odd rank-one consumers.
-It uses the independently prescribed cyclotomic crossing, the descended
-input contraction and moving input dot, the actual snake kernel coordinates,
-and the anti-diagonal leading-map theorems.
-`FiniteTriangularCoordinates.bijective` supplies finite module-valued
-coordinate elimination; the concrete cap operator discharges its hypotheses.
+The proposed `negativeCrossingEquiv` uses the independently prescribed
+cyclotomic crossing, the descended input contraction and input dot, and the
+actual snake kernel coordinates. The concrete cap operator supplies the
+anti-diagonal hypotheses of `FiniteTriangularCoordinates.bijective`.
+The Mathlib-only finite elimination source has compiled; the full new matrix
+module and concrete consumers remain unverified pending CI.
 
-This isolated construction remains **unverified pending CI**. Its scope is
-an odd moving colour and diagonal old Hom over the supplied commutative ground
-ring, retaining full ELV coefficients and height zero. Categorical signed-dot/
-cap normalization, off-diagonal inversion, naturality and full factor/action
+Scope: odd moving colour and diagonal old Hom, over the supplied commutative
+ground ring with full ELV coefficients, including height zero. Arbitrary-Hom
+inversion, categorical signed cap/dot comparison, naturality and factor/action
 synthesis remain separate. See [STATUS](STATUS.md) for integrated status.
 
 ## 1. Source, coefficients, and orientation
