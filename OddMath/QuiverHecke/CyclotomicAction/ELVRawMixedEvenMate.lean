@@ -23,13 +23,22 @@ private theorem sourceNorm_ofProducer {k : Type u} [CommRing k]
         IsUnit (show End (G.comp F) from
           Superfunctor.whiskerLeft G t - Superfunctor.whiskerRight b F))
     (E : A ⟶ B) (K : B ⟶ C) (a : End E)
-    (ha : Superfunctor.whiskerRight a K ∈ parity (R := k) _ _ 0)
-    (hu : IsUnit (show End (E.comp K) from Superfunctor.whiskerRight a K)) :
+    (ha : a ∈ parity (R := k) _ _ 0) (hu : IsUnit a) :
     IsUnit (show End (E ≫ (K ≫ F)) from
       Superfunctor.whiskerRight a (K.comp F) -
         Superfunctor.whiskerLeft E (Superfunctor.whiskerLeft K t)) := by
-  have hh := hNorm (E.comp K) (Superfunctor.whiskerRight a K) ha hu
-  simpa only [neg_sub] using hh.neg
+  have hv : IsUnit (show End (E.comp K) from Superfunctor.whiskerRight a K) := by
+    change IsUnit (show End (E ≫ K) from a ▷ K)
+    exact hu.map ((SKM.homPost (k := k) (B := PiSCat.{u, u, u + 1} k)
+      (a := A) (b := B) (c := C) K).mapEnd E)
+  have hh := hNorm (E.comp K) (Superfunctor.whiskerRight a K)
+    (Superfunctor.whiskerRight_mem ha K) hv
+  have hh' := hh.neg
+  simp only [neg_sub] at hh'
+  change IsUnit (show End ((E.comp K).comp F) from
+    Superfunctor.whiskerRight (Superfunctor.whiskerRight a K) F -
+      Superfunctor.whiskerLeft (E.comp K) t)
+  exact hh'
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
@@ -48,23 +57,21 @@ theorem elvRawMixedSource_difference_isUnit [Finite I]
         (elvActionDot D Sc cutoff bound i Λ h)) := by
   let K : B ⟶ elvWeightSpace D Sc cutoff bound Λ y := (SKM.homParityShift (k := k)
     (C := B ⟶ elvWeightSpace D Sc cutoff bound Λ y) κ).obj H
-  have hx := Superfunctor.whiskerRight_mem (hi ▸ ha) K
-  have hv : IsUnit (show End (E ≫ K) from a ▷ K) :=
-    hu.map ((SKM.homPost (k := k) (B := PiSCat.{u, u, u + 1} k)
-      (a := A) (b := B) (c := elvWeightSpace D Sc cutoff bound Λ y) K).mapEnd E)
   have hNorm : ∀ (G : Superfunctor k A.carrier (ELVWeightProduct D Sc cutoff bound Λ y))
       (b : End G), b ∈ parity (R := k) _ _ 0 → IsUnit b →
       IsUnit (show End (G.comp (elvF D Sc cutoff bound i Λ h)) from
         Superfunctor.whiskerLeft G (elvActionDotTranspose D Sc cutoff bound i Λ h) -
           Superfunctor.whiskerRight b (elvF D Sc cutoff bound i Λ h)) := by
     intro G b hb hu
-    simpa only [elvPostTransposeDot, elvRestrictionProbeDot] using
-      (elvRestrictionProbe_difference_isUnit (A := A) D Sc cutoff bound i Λ h G
-        sy hc hi b hb hu)
+    have hG := elvRestrictionProbe_difference_isUnit (A := A) D Sc cutoff bound i Λ h G
+      sy hc hi b hb hu
+    set_option backward.dsimp.instances true in
+      dsimp only [elvPostTransposeDot, elvRestrictionProbeDot, elvPostRestriction] at hG
+    exact hG
   have hh' := sourceNorm_ofProducer (A := A) (B := B)
     (C := elvWeightSpace D Sc cutoff bound Λ y) (Q := elvWeightSpace D Sc cutoff bound Λ x)
     (elvF D Sc cutoff bound i Λ h) (elvActionDotTranspose D Sc cutoff bound i Λ h)
-    hNorm E K a hx hv
+    hNorm E K a (hi ▸ ha) hu
   set_option backward.dsimp.instances true in
     dsimp only [K] at hh'
   delta SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostDot elvActionDotTranspose at hh' ⊢
