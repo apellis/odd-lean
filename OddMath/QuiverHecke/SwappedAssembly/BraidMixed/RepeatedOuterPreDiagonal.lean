@@ -111,7 +111,7 @@ lemma literalCoeff_heq (ν : X) {t : Sector I}
 
 include hs0 in
 lemma left_literal_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial hs
     let b : SPath (wd D ν [up j, up i, up i]) s _ := SPath.three false false true hj0 hi0 trivial rfl
     crossEntry (P.swappedGens c L) ν [] i j [up i] n b Y ≫
@@ -192,7 +192,7 @@ lemma left_mid_heq (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
   exact heq_of_eq (left_mid P i j s hj0 hi0 Z ν c L)
 
 lemma left_last_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial rfl
     let b : SPath (wd D ν [up j, up i, up i]) s _ := SPath.three false false true hj0 hi0 trivial e
     crossEntry (P.swappedGens c L) ν [up j] i i [] b b Z ≫
@@ -216,7 +216,7 @@ lemma left_last_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
 
 include hj0 hi0 e in
 lemma braidLeft_coefficient (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three false false true hi hj trivial rfl)
       (SPath.three false false true hi hj trivial rfl) Z =
@@ -256,7 +256,7 @@ lemma braidRight_q (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : i 
 
 include hj0 hi0 e in
 lemma correction (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three false false true hi hj trivial rfl)
       (SPath.three false false true hi hj trivial rfl) Z -
@@ -275,7 +275,7 @@ lemma correction (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
 include hj0 hi0 e in
 /-- The complete literal 001 diagonal field, including both signed finite sums. -/
 lemma full_diag (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial rfl
     braidLeft (P.swappedGens c L) i j i ν n n Z -
       braidRight (P.swappedGens c L) i j i ν n n Z =
@@ -302,7 +302,7 @@ lemma full_diag_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ := SPath.three false false true hi hj trivial e
     braidLeft (P.swappedGens c L) i j i ν n n Z -
       braidRight (P.swappedGens c L) i j i ν n n Z =
@@ -328,7 +328,7 @@ lemma full_diag_path (ν : X) {t : Sector I}
       (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       false false true hi hj trivial e)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν p p Z -
       braidRight (P.swappedGens c L) i j i ν p p Z =
       ∑ a ∈ Finset.range (D.dn i j),

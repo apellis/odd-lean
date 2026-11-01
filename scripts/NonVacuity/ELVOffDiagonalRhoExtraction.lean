@@ -9,19 +9,19 @@ open CyclotomicAction.AsymmetricParameters
 private def oddColour : {i : Bool // datum.parity i = 1} := ⟨false, rfl⟩
 
 /-- Every class is allowed; no hypothesis restricts z to the selected long section. -/
-example (z : Target datum scalars (fun _ => 12) false [false, true] ([true, false] ++ [false])) :
-    offDiagonalLongExtraction datum scalars (fun _ => 12) 1 false [false, true] [true, false]
-      (boundaryRho datum scalars (fun _ => 12) oddColour [false, true] ([true, false] ++ [false]) z) =
+example (z : Target datum scalars (fun _ => 12) oddColour.1 [false, true] ([true, false] ++ [oddColour.1])) :
+    offDiagonalLongExtraction datum scalars (fun _ => 12) 1 oddColour.1 [false, true] [true, false]
+      (boundaryRho datum scalars (fun _ => 12) oddColour [false, true] ([true, false] ++ [oddColour.1]) z) =
     offDiagonalCoefficientRho datum scalars (fun _ => 12) 1 oddColour [false, true] [true, false]
-      (offDiagonalLongExtraction datum scalars (fun _ => 12) 1 false [false, true] [true, false] z) :=
-  offDiagonalLongExtraction_boundaryRho datum scalars (fun _ => 12) 1 oddColour _ _ z
+      (offDiagonalLongExtraction datum scalars (fun _ => 12) 1 oddColour.1 [false, true] [true, false] z) :=
+  offDiagonalLongExtraction_boundaryRho datum scalars (fun _ => 12) 1 oddColour [false, true] [true, false] z
 
-example (z : Target datum scalars (fun _ => 12) false [] [true, false]) :
-    offDiagonalLongExtraction datum scalars (fun _ => 12) 0 false [] [true]
-      (boundaryRho datum scalars (fun _ => 12) oddColour [] [true, false] z) =
+example (z : Target datum scalars (fun _ => 12) oddColour.1 [] ([true] ++ [oddColour.1])) :
+    offDiagonalLongExtraction datum scalars (fun _ => 12) 0 oddColour.1 [] [true]
+      (boundaryRho datum scalars (fun _ => 12) oddColour [] ([true] ++ [oddColour.1]) z) =
     offDiagonalCoefficientRho datum scalars (fun _ => 12) 0 oddColour [] [true]
-      (offDiagonalLongExtraction datum scalars (fun _ => 12) 0 false [] [true] z) :=
-  offDiagonalLongExtraction_boundaryRho datum scalars (fun _ => 12) 0 oddColour _ _ z
+      (offDiagonalLongExtraction datum scalars (fun _ => 12) 0 oddColour.1 [] [true] z) :=
+  offDiagonalLongExtraction_boundaryRho datum scalars (fun _ => 12) 0 oddColour [] [true] z
 
 open Lean Elab Command in
 run_cmd do
