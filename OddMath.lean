@@ -68,6 +68,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCapSignNormalization
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
