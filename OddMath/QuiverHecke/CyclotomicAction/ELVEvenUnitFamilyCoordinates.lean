@@ -14,7 +14,7 @@ open OddMath.LowPolynomialCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance evenUnitFamilyPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 /-- Even ordinary columns require the identity coefficient diagonal. -/

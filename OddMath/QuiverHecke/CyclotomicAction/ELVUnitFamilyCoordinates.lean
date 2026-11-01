@@ -18,7 +18,7 @@ open OddMath.LowPolynomialCoordinates
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance unitFamilyPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 /-- The prescribed dot-power scalar as a unit, including either moving parity. -/

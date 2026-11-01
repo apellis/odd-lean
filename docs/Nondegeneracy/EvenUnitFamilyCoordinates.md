@@ -23,3 +23,5 @@ has four finite unit slots, distinct endpoint orders, positive cutoffs,
 both inverse identities, the complete forward formula, and identity
 coefficient normalization. All fifteen owned declarations pass the
 consumer audit. Full CI and the global audit remain required.
+
+The component and entry comparisons use the same canonical module parity structure throughout.
