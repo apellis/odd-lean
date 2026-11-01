@@ -29,13 +29,19 @@ abbrev elvPostInduction := F.comp (elvE D Sc cutoff bound i Λ h)
 abbrev elvPostDot : End (elvPostInduction D Sc cutoff bound i Λ h F) :=
   Superfunctor.whiskerLeft F (elvActionDot D Sc cutoff bound i Λ h)
 
+/-- A typed endomorphism component of the actual postinduction functor. -/
+abbrev elvPostEndComponent
+    (g : End (elvPostInduction D Sc cutoff bound i Λ h F)) (p : ZMod 2)
+    (M : C) (δ : WeightBlocks D Λ y) :
+    End (((elvPostInduction D Sc cutoff bound i Λ h F).obj M) δ) := g.app p M δ
+
 theorem elvPostDot_mem :
     elvPostDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ (D.parity i) :=
   Superfunctor.whiskerLeft_mem F (elvActionDot_mem D Sc cutoff bound i Λ h)
 
 include sy hc in
 theorem elvPostDot_component_isNilpotent [Finite I] (M : C) (δ : WeightBlocks D Λ y) :
-    IsNilpotent ((elvPostDot D Sc cutoff bound i Λ h F).app (D.parity i) M δ) :=
+    IsNilpotent (elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) (D.parity i) M δ) :=
   elvWeightDotComponent_isNilpotent D Sc cutoff bound i Λ h sy hc (F.obj M) δ
 
 include sy hc in
@@ -44,7 +50,7 @@ theorem elvPostDot_difference_isUnit [Finite I] (hi : D.parity i = 0)
     (hx : X ∈ parity (R := k) _ _ 0)
     (hu : IsUnit X)
     (hcomm : ∀ M δ, Commute
-      ((elvPostDot D Sc cutoff bound i Λ h F).app 0 M δ) (X.app 0 M δ)) :
+      (elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 0 M δ) (elvPostEndComponent D Sc cutoff bound i Λ h F X 0 M δ)) :
     IsUnit (elvPostDot D Sc cutoff bound i Λ h F - X) := by
   apply superfunctorEnd_isUnit
   · exact Submodule.sub_mem _
@@ -65,8 +71,8 @@ theorem elvPostDot_square_difference_isUnit [Finite I] (hi : D.parity i = 1)
     (hx : X ∈ parity (R := k) _ _ 1)
     (hu : IsUnit X)
     (hanti : ∀ M δ,
-      (elvPostDot D Sc cutoff bound i Λ h F).app 1 M δ * X.app 1 M δ =
-        -(X.app 1 M δ * (elvPostDot D Sc cutoff bound i Λ h F).app 1 M δ)) :
+      elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ =
+        -(elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ)) :
     IsUnit (X ^ 2 - elvPostDot D Sc cutoff bound i Λ h F ^ 2) := by
   have hy : elvPostDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ 1 :=
     hi ▸ elvPostDot_mem D Sc cutoff bound i Λ h F
@@ -93,8 +99,8 @@ theorem elvPostDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
     (hx : X ∈ parity (R := k) _ _ 1)
     (hu : IsUnit X)
     (hanti : ∀ M δ,
-      (elvPostDot D Sc cutoff bound i Λ h F).app 1 M δ * X.app 1 M δ =
-        -(X.app 1 M δ * (elvPostDot D Sc cutoff bound i Λ h F).app 1 M δ)) :
+      elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ =
+        -(elvPostEndComponent D Sc cutoff bound i Λ h F X 1 M δ * elvPostEndComponent D Sc cutoff bound i Λ h F (elvPostDot D Sc cutoff bound i Λ h F) 1 M δ)) :
     IsUnit (X ^ 2 + elvPostDot D Sc cutoff bound i Λ h F ^ 2) := by
   have hy : elvPostDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ 1 :=
     hi ▸ elvPostDot_mem D Sc cutoff bound i Λ h F

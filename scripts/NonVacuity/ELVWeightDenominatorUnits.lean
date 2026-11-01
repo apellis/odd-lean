@@ -46,8 +46,10 @@ example :
 
 example :
     IsNilpotent
-      ((elvPostDot D Sc (fun _ => 12) 12 false (0 : X) step
-        (Superfunctor.id ℚ (ELVWeightProduct D Sc (fun _ => 12) 12 (0 : X) 0))).app
+      (elvPostEndComponent D Sc (fun _ => 12) 12 false (0 : X) step
+        (Superfunctor.id ℚ (ELVWeightProduct D Sc (fun _ => 12) 12 (0 : X) 0))
+        (elvPostDot D Sc (fun _ => 12) 12 false (0 : X) step
+          (Superfunctor.id ℚ (ELVWeightProduct D Sc (fun _ => 12) 12 (0 : X) 0)))
         (D.parity false) sourceVacuum (blockSucc D 0 false step vacuumBlock)) :=
   elvPostDot_component_isNilpotent D Sc (fun _ => 12) 12
     AsymmetricParameters.symmetrizer AsymmetricParameters.homogeneous

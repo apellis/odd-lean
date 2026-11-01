@@ -28,41 +28,48 @@ private theorem product_commute_sq_of_anticommute {R : Type*} [Ring R] {x y : R}
   · show y * (x * x) = x * x * y
     rw [← mul_assoc, h, neg_mul, mul_assoc, h, mul_neg, neg_neg, ← mul_assoc]
 
+/-- Typed evaluation of a product endomorphism at its actual component. -/
+abbrev productEndComponent (M : ∀ a, C a) (f : End M) (a : A) : End (M a) := f a
+
 /-- Actual endomorphisms of a product object are units when every component is. -/
 theorem productEnd_isUnit (M : ∀ a, C a) (f : End M)
-    (hf : ∀ a, IsUnit (f a)) : IsUnit f := by
+    (hf : ∀ a, IsUnit (productEndComponent C M f a)) : IsUnit f := by
   classical
   let us : ∀ a, (End (M a))ˣ := fun a => (hf a).unit
-  refine ⟨{ val := f, inv := fun a => (↑((us a)⁻¹) : End (M a)),
-    val_inv := ?_, inv_val := ?_ }, rfl⟩
+  refine ⟨{
+    val := f
+    inv := fun a => (↑((us a)⁻¹) : End (M a))
+    val_inv := ?_
+    inv_val := ?_ }, rfl⟩
   · funext a
-    change f a * (↑((us a)⁻¹) : End (M a)) = 1
-    have hu : ((us a : (End (M a))ˣ) : End (M a)) = f a := (hf a).unit_spec
+    change productEndComponent C M f a * (↑((us a)⁻¹) : End (M a)) = 1
+    have hu : ((us a : (End (M a))ˣ) : End (M a)) = productEndComponent C M f a := (hf a).unit_spec
     rw [← hu]
     exact (us a).val_inv
   · funext a
-    change (↑((us a)⁻¹) : End (M a)) * f a = 1
-    have hu : ((us a : (End (M a))ˣ) : End (M a)) = f a := (hf a).unit_spec
+    change (↑((us a)⁻¹) : End (M a)) * productEndComponent C M f a = 1
+    have hu : ((us a : (End (M a))ˣ) : End (M a)) = productEndComponent C M f a := (hf a).unit_spec
     rw [← hu]
     exact (us a).inv_val
 
 /-- The even denominator is a unit using only componentwise nilpotence. -/
 theorem product_difference_isUnit (M : ∀ a, C a) (x y : End M)
-    (hx : ∀ a, IsUnit (x a)) (hy : ∀ a, IsNilpotent (y a))
-    (hcomm : ∀ a, Commute (y a) (x a)) : IsUnit (y - x) := by
+    (hx : ∀ a, IsUnit (productEndComponent C M x a)) (hy : ∀ a, IsNilpotent (productEndComponent C M y a))
+    (hcomm : ∀ a, Commute (productEndComponent C M y a) (productEndComponent C M x a)) : IsUnit (y - x) := by
   apply productEnd_isUnit C M
   intro a
-  change IsUnit (y a - x a)
+  change IsUnit (productEndComponent C M y a - productEndComponent C M x a)
   simpa only [sub_eq_add_neg, add_comm] using
     (hy a).isUnit_add_left_of_commute (hx a).neg (hcomm a).neg_right
 
 /-- The odd denominator is a unit with no global nilpotence requirement. -/
 theorem product_square_difference_isUnit (M : ∀ a, C a) (x y : End M)
-    (hx : ∀ a, IsUnit (x a)) (hy : ∀ a, IsNilpotent (y a))
-    (hanti : ∀ a, y a * x a = -(x a * y a)) : IsUnit (x ^ 2 - y ^ 2) := by
+    (hx : ∀ a, IsUnit (productEndComponent C M x a)) (hy : ∀ a, IsNilpotent (productEndComponent C M y a))
+    (hanti : ∀ a, productEndComponent C M y a * productEndComponent C M x a =
+      -(productEndComponent C M x a * productEndComponent C M y a)) : IsUnit (x ^ 2 - y ^ 2) := by
   apply productEnd_isUnit C M
   intro a
-  change IsUnit (x a ^ 2 - y a ^ 2)
+  change IsUnit (productEndComponent C M x a ^ 2 - productEndComponent C M y a ^ 2)
   have hc := product_commute_sq_of_anticommute (hanti a)
   have hu := ((hy a).pow_of_pos two_ne_zero).neg.isUnit_add_left_of_commute
     ((hx a).pow 2)
@@ -71,11 +78,12 @@ theorem product_square_difference_isUnit (M : ∀ a, C a) (x y : End M)
 
 /-- The companion square norm used by the odd mate is also componentwise a unit. -/
 theorem product_square_sum_isUnit (M : ∀ a, C a) (x y : End M)
-    (hx : ∀ a, IsUnit (x a)) (hy : ∀ a, IsNilpotent (y a))
-    (hanti : ∀ a, y a * x a = -(x a * y a)) : IsUnit (x ^ 2 + y ^ 2) := by
+    (hx : ∀ a, IsUnit (productEndComponent C M x a)) (hy : ∀ a, IsNilpotent (productEndComponent C M y a))
+    (hanti : ∀ a, productEndComponent C M y a * productEndComponent C M x a =
+      -(productEndComponent C M x a * productEndComponent C M y a)) : IsUnit (x ^ 2 + y ^ 2) := by
   apply productEnd_isUnit C M
   intro a
-  change IsUnit (x a ^ 2 + y a ^ 2)
+  change IsUnit (productEndComponent C M x a ^ 2 + productEndComponent C M y a ^ 2)
   have hc := product_commute_sq_of_anticommute (hanti a)
   have hu := ((hy a).pow_of_pos two_ne_zero).isUnit_add_left_of_commute
     ((hx a).pow 2)
@@ -93,26 +101,38 @@ theorem superfunctorEnd_isUnit
     [StringDiagrams.Supercategory R E]
     (F : StringDiagrams.Supercategory.Superfunctor R B E) (x : End F)
     (heven : x ∈ StringDiagrams.Supercategory.parity (R := R) F F 0)
-    (hunit : ∀ M, IsUnit (x.app 0 M)) : IsUnit x := by
+    (hunit : ∀ M, IsUnit (show End (F.obj M) from x.app 0 M)) : IsUnit x := by
   classical
-  letI : ∀ M, IsIso (x.app 0 M) := fun M => (isUnit_iff_isIso _).1 (hunit M)
+  let es : ∀ M, F.obj M ≅ F.obj M := fun M => {
+    hom := x.app 0 M
+    inv := ↑((hunit M).unit⁻¹)
+    hom_inv_id := by
+      change (↑((hunit M).unit⁻¹) : End (F.obj M)) *
+        (show End (F.obj M) from x.app 0 M) = 1
+      rw [← (hunit M).unit_spec]
+      exact (hunit M).unit.inv_val
+    inv_hom_id := by
+      change (show End (F.obj M) from x.app 0 M) *
+        (↑((hunit M).unit⁻¹) : End (F.obj M)) = 1
+      rw [← (hunit M).unit_spec]
+      exact (hunit M).unit.val_inv }
   let e : F.toFunctor ≅ F.toFunctor :=
-    NatIso.ofComponents (fun M => asIso (x.app 0 M))
-      (by intro M N f; exact x.toNatTrans.naturality f)
+    NatIso.ofComponents es (by intro M N f; exact x.toNatTrans.naturality f)
   let b : End F := StringDiagrams.Supercategory.SuperNatTrans.ofNatTrans e.inv
     (fun M => by
-      change (asIso (x.app 0 M)).inv ∈
+      change (e.app M).inv ∈
         StringDiagrams.Supercategory.parity (R := R) _ _ 0
-      exact StringDiagrams.Supercategory.inv_mem
-        (asIso (x.app 0 M)) (x.app_mem 0 M))
+      apply StringDiagrams.Supercategory.inv_mem (e.app M)
+      exact x.app_mem 0 M)
   have hx1 : ∀ M, x.app 1 M = 0 := fun M =>
     StringDiagrams.Supercategory.Superfunctor.app_eq_zero_of_mem heven (by decide) M
   have hxb : x ≫ b = 𝟙 F := by
     apply StringDiagrams.Supercategory.Superfunctor.hom_ext_parity
     · intro M
       change x.app 0 M ≫ e.inv.app M + x.app 1 M ≫ 0 = 𝟙 _
-      simpa only [Limits.comp_zero, add_zero] using
-        (asIso (x.app 0 M)).hom_inv_id
+      have hh := NatTrans.congr_app e.hom_inv_id M
+      change x.app 0 M ≫ e.inv.app M = 𝟙 _ at hh
+      simpa only [Limits.comp_zero, add_zero] using hh
     · intro M
       change x.app 0 M ≫ 0 + x.app 1 M ≫ e.inv.app M = 0
       simp only [hx1, Limits.comp_zero, Limits.zero_comp, add_zero]
@@ -120,8 +140,9 @@ theorem superfunctorEnd_isUnit
     apply StringDiagrams.Supercategory.Superfunctor.hom_ext_parity
     · intro M
       change e.inv.app M ≫ x.app 0 M + 0 ≫ x.app 1 M = 𝟙 _
-      simpa only [Limits.zero_comp, add_zero] using
-        (asIso (x.app 0 M)).inv_hom_id
+      have hh := NatTrans.congr_app e.inv_hom_id M
+      change e.inv.app M ≫ x.app 0 M = 𝟙 _ at hh
+      simpa only [Limits.zero_comp, add_zero] using hh
     · intro M
       change e.inv.app M ≫ x.app 1 M + 0 ≫ x.app 0 M = 0
       simp only [hx1, Limits.comp_zero, Limits.zero_comp, add_zero]
@@ -138,7 +159,7 @@ theorem superfunctorProductEnd_isUnit
     (F : StringDiagrams.Supercategory.Superfunctor R B (∀ a, C a))
     (x : End F)
     (heven : x ∈ StringDiagrams.Supercategory.parity (R := R) F F 0)
-    (hunit : ∀ M a, IsUnit (x.app 0 M a)) : IsUnit x :=
+    (hunit : ∀ M a, IsUnit (productEndComponent C (F.obj M) (x.app 0 M) a)) : IsUnit x :=
   superfunctorEnd_isUnit F x heven
     (fun M => productEnd_isUnit C (F.obj M) (x.app 0 M) (hunit M))
 
@@ -150,7 +171,7 @@ theorem superfunctorEnd_total_isUnit
     {E : Type*} [Category E] [Preadditive E] [Linear R E]
     [StringDiagrams.Supercategory R E]
     (F : StringDiagrams.Supercategory.Superfunctor R B E)
-    (x : End F) (hx : IsUnit x) (M : B) : IsUnit (x.total M) := by
+    (x : End F) (hx : IsUnit x) (M : B) : IsUnit (show End (F.obj M) from x.total M) := by
   let ev : End F →* End (F.obj M) := {
     toFun := fun f => f.total M
     map_one' := by simp [StringDiagrams.Supercategory.SuperNatTrans.total]
@@ -168,10 +189,10 @@ theorem superfunctorProductEnd_component_isUnit
     (F : StringDiagrams.Supercategory.Superfunctor R B (∀ a, C a))
     (x : End F) (hx : IsUnit x) (p : ZMod 2)
     (hp : x ∈ StringDiagrams.Supercategory.parity (R := R) F F p)
-    (M : B) (a : A) : IsUnit (x.app p M a) := by
+    (M : B) (a : A) : IsUnit (productEndComponent C (F.obj M) (x.app p M) a) := by
   have hu := (superfunctorEnd_total_isUnit F x hx M).map
     ((CategoryTheory.Pi.eval C a).mapEnd (F.obj M))
-  change IsUnit (x.total M a) at hu
+  change IsUnit (productEndComponent C (F.obj M) (x.total M) a) at hu
   rcases StringDiagrams.Supercategory.parity_eq_zero_or_one p with rfl | rfl
   · simpa only [StringDiagrams.Supercategory.SuperNatTrans.total,
       StringDiagrams.Supercategory.Superfunctor.app_eq_zero_of_mem hp
