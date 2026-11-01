@@ -28,3 +28,21 @@ commutative ground ring and scalar data. This source draft requires CI.
 It supplies no coefficient/output covariance, leading law, categorical
 counit/cap identification, matrix inverse, or full factor action; those
 remain distinct comparisons in the overall proof.
+
+## Proposed extraction recurrence on every old-only class
+
+`ELVOffDiagonalRhoExtraction` extends the comparison from the selected
+section to every z in Target(j,v,t++[j]). Generic PBW coordinate identities
+give normalized moving-power transport, the old-source action, zero-degree
+vanishing for positive moving powers, and the literal zero/successor
+corrected-rho coefficient recurrence. Finite assembly and the empty-index
+case give
+
+    offDiagonalLongExtraction (boundaryRho z)
+      = offDiagonalCoefficientRho (offDiagonalLongExtraction z).
+
+Thus the actual extraction kernel is rho-stable. Combining the separately
+proved exact chronological kernel identifies this with the required
+chronological-short stability, permitting rho iteration of a base
+modulo-short comparison. This all-class extension is proposed until CI;
+it does not identify categorical cap rows or assert an inverse.
