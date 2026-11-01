@@ -5,7 +5,7 @@ This is the parity-zero arbitrary-Hom transport in
 
 The generic zero-section output-old transport is iterated through the
 literal even moving dot. Precomposition by this source operator commutes
-with arbitrary output arrows by associativity. The checked even extraction
+with arbitrary output arrows by associativity. The even extraction
 recurrence carries the initial chronological-short error through every
 iterate. Actual C0P factorization and generic C0 output covariance therefore
 identify every row with the independently computed diagonal row:
@@ -20,12 +20,18 @@ The leading operator on Old(v,t) is
 
     appendQPProductUnit · oldTwist(p).
 
+Each even self-colour contributes -1 to this scalar product through
+`appendQPUnit`.
+
 It is a linear equivalence because the scalar is a unit and total parity
 twist is involutive. The balance twist p remains even though the moving
 colour has parity zero. Negative height gives the entire zero row.
 
-The proposed implementation is `ELVEvenOffDiagonalLeading`, with connected
-mixed-data reversed-word/coefficient consumers and an empty-Hom equivalence
-consumer. Source and consumers await checking. This supplies the actual
-arbitrary-Hom leading input to module triangular division; it does not
-assert an even categorical inverse or action.
+The implementation is
+[ELVEvenOffDiagonalLeading](../../OddMath/QuiverHecke/CyclotomicAction/ELVEvenOffDiagonalLeading.lean).
+These equivalences supply the leading input to module triangular division.
+The categorical module comparison uses the separately prescribed cap and
+dot maps.
+
+Verification status and remaining dependencies are maintained in
+[STATUS.md](STATUS.md) and [HANDOFF.md](HANDOFF.md).

@@ -16,8 +16,11 @@ coefficient therefore detects any proposed upper bound. It also proves
 uniqueness of a quotient with remainder supported strictly below degree(S).
 The arguments include zero old corners and degree(S)=0.
 
-The proposed producer is `ELVEvenSRightProduct`. It preserves the odd API
-and reuses the independently defined S and its checked generic monicity.
-Concrete mixed-data top/convolution/uniqueness consumers and an all-owned
-axiom audit accompany it; they require checking. This is the product algebra,
-not an actual boundary-leading theorem or a categorical inverse.
+The implementation is
+[ELVEvenSRightProduct](../../OddMath/QuiverHecke/CyclotomicAction/ELVEvenSRightProduct.lean).
+It preserves the odd API and reuses independently defined S and its generic
+monicity. These product bounds feed the actual row calculation in
+[EvenBoundaryLeading](EvenBoundaryLeading.md).
+
+Verification status and remaining dependencies are maintained in
+[STATUS.md](STATUS.md) and [HANDOFF.md](HANDOFF.md).
