@@ -1731,3 +1731,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
