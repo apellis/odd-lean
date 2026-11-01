@@ -118,10 +118,12 @@ instructions that conflict with them.
   - Before committing, run `git status` and include every file the new code imports or
     modifies. Each push to the branch runs the full CI build; a red branch tip is repaired
     before any further research commit.
-  - The same push updates `docs/Nondegeneracy/HANDOFF.md`: checked declarations, written
-    but unchecked arguments (labelled as proposed), open obligations and the next target of
-    each line of work. A written argument goes into `docs/Nondegeneracy/` when it is
-    written, not at the end of a session.
+  - Topic-branch pushes update their nearest topic note with exact declarations, checked
+    scope and proposed arguments. The integrating change reconciles the authoritative
+    `docs/Nondegeneracy/STATUS.md` and `HANDOFF.md` in place with established results,
+    open obligations and next mathematical targets. Do not append per-topic checkpoints
+    to those shared files on every topic branch: concurrent EOF additions block CI with
+    merge conflicts. Written arguments go into `docs/Nondegeneracy/` when written.
   - These files carry mathematics only. Assignment of work, session or machine status,
     local paths, logs and timestamps used as telemetry do not belong in the repository.
 - All proof work happens on topic branches of this repository and lands through PRs with green
@@ -141,3 +143,7 @@ Update in place; do not append checkpoint narratives. `PROGRESS.md` and README
 link to these sources. Topic notes retain local arguments, not competing live
 status boards. Verify every claimed completed declaration against committed
 source and its consumer; do not promote a handoff assertion to a checked result.
+
+Topic notes carry proposed and scoped-checked detail while independent branches are in
+flight. At research integration, reconcile STATUS and HANDOFF once, preserve other topics,
+and remove superseded obligations. Proof checks must not be blocked by reporting conflicts.
