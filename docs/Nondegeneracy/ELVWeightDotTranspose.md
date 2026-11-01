@@ -16,3 +16,5 @@ The asymmetric all-odd consumer applies the transpose to the actual induced
 vacuum product and audits all declarations. Transposed norm units and the
 whole swapping-mate inverse remain subsequent work; no full factor/action
 or nondegeneracy claim is made.
+
+The proof evaluates dot powers through the total and content-component ring homomorphisms. The transposed natural maps are frozen as variables before evaluation, so checking a content component does not unfold the entire coend map. Dot-power annihilation and signed transpose-power transport are separate lemmas; the source-content exponent is retained unchanged.
