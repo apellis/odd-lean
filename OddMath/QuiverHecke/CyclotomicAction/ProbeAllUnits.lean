@@ -17,6 +17,7 @@ variable {I : Type u} {X : Type v} [AddCommGroup X]
   {k : Type w} [CommRing k] (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
   [Fintype I]
 
+omit [Fintype I] in
 private theorem probeWord_split_two {n : ℕ} (s : Word I (n+1))
     (r : ℕ) (hr : r+1 < n+1) :
     ∃ (pre : List I) (i j : I) (post : List I),

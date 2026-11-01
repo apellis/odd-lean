@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ProbeAllUnits
 import OddMath.QuiverHecke.CyclotomicAction.LastDot
+import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
 
 /-! # The actual append-corner inverse of the probe last dot
 
@@ -16,6 +17,7 @@ universe u v
 variable {I k : Type u} {X : Type v} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) [Fintype I]
 
+omit [Fintype I] in
 theorem inductionLastDot_eq_position (i : I) {n : ℕ} (w : Word I n) :
     inductionLastDot D Sc i w = dotE D Sc (appendWord i w).val n := by
   have hs : inductionStrandDot D Sc i = dotE D Sc [i] 0 := by

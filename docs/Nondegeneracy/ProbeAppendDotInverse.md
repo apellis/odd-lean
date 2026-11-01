@@ -1,7 +1,7 @@
-# Actual append-corner last-dot inverse
+# Probe append-corner last-dot inverses
 
-The probe algebra and existing induction action explicitly assume a finite colour type. `ProbeAppendDotInverse.lean` retains this hypothesis and sums inverses over Word I (n+1), a finite type under that assumption. It makes no assertion that words are finite in number for arbitrary colours.
+The existing probe algebra and induction action assume a finite colour type. `ProbeAppendDotInverse.lean` retains this hypothesis and sums inverses over Word I (n+1), proving both products equal the append idempotent in the literal cyclotomic corner.
 
-The source identifies the existing inductionLastDot with the actual last-position dot, assembles the finite word-corner inverses, proves both products equal the genuine append idempotent, and projects the inverse into its literal corner. This is the actual algebraic input for the signed-right induction-dot inverse.
+`ProbeHeightDotInverse.lean` makes the same construction uniformly over Word I n for the existing all-height action. At n=0 this is the unique empty word, whose appended one-strand dot is a unit by the defining probe relation. Thus the vacuum needs no new induction functor.
 
-This is source in progress until full CI passes. Its next obligation is the inverse as a homogeneous superbimodule map and supernatural transformation, with the odd inverse's required extra parity sign. No full-action matrix comparison follows merely from the append-corner unit.
+Both producers passed strict direct Lean checks. The signed homogeneous superbimodule and supernatural inverse is supplied by ProbeSuperDotInverse.lean, including the odd extra parity sign. Full branch CI remains the integration gate. Coefficient-specialized comparison of the entire action and prescribed inverse matrices is separate.

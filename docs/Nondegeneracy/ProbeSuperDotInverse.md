@@ -1,7 +1,9 @@
-# Signed inverse of the actual induction dot
+# Signed inverse of the probe induction dot
 
-The source uses the existing inductionCorner superbimodule and inductionDotLinear. The explicit inverse is right multiplication by the actual append-corner inverse followed by the parity sign; both products are checked on the literal induction ideal. Its SVec isomorphism and Supercategory.inv_mem give inverse parity, and cancellation gives the actual signed-left/ordinary-right superbimodule Hom equations.
+`ProbeSuperDotInverse.lean` uses the existing all-height `heightInductionCorner`, `heightInductionDotLinear` and `heightSuperInductionDot`. Thus the construction includes induction from the vacuum and every positive height. The inverse applies right multiplication by the append-corner inverse followed by the parity sign.
 
-On a homogeneous vector of parity p the inverse is sign_k(d+p*d)·(x·X), retaining the extra sign for an odd induction colour. Whiskering packages the inverse as a supernatural transformation on the whole existing module supercategory, with both product identities.
+The SVec isomorphism and `Supercategory.inv_mem` supply inverse parity. Cancellation proves signed left linearity and ordinary right linearity. On a homogeneous element of parity p, the inverse is sign_k(d+p*d)·(x·X), including the extra sign for an odd induction colour.
 
-The closed rational odd-colour consumer uses the independent ProbePolynomialParity producer to discharge the action object's original parity premise and instantiate both the actual superbimodule and supernatural isomorphisms. This remains draft source until its stacked dependencies and full CI pass. Full inverse matrices and the broader action specialization/fusion obligations remain separate.
+`probeHeightInductionSuperDotIso` and `probeHeightSuperDotIso` give the superbimodule and supernatural isomorphisms, with both inverse products. The source retains exactly the polynomial parity input required by the existing action. `probePolynomial_parity` supplies that input for the prescribed probes.
+
+The producer and closed rational odd-colour consumers at vacuum and positive heights have passed strict direct Lean checks, including the full owned-declaration axiom audit. Full branch CI remains the integration gate. This supplies the all-height dot input of InvertibleDotProbe.md Section 5, equation (6). Content-block restriction, coefficient-specialized comparison of the full action and prescribed inverse matrices, and fusion/nondegeneracy remain separate.

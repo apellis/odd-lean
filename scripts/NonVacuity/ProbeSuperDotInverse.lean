@@ -3,7 +3,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbePolynomialParity
 import Lean.Util.CollectAxioms
 
 noncomputable section
-open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke
+open CategoryTheory StringDiagrams OddMath OddMath.QuiverHecke OddMath.QuiverHecke.CyclotomicAction
 namespace ProbeFirstDotConsumer
 
 private def D : SKM.Datum Unit ℤ where
@@ -33,16 +33,24 @@ private def m : Unit → ℕ := fun _ => 3
 private def a : Unit → Polynomial ℚ := probePolynomial (probeDotExponent D) m
 private theorem ha : CyclotomicPolynomialParity D a := probePolynomial_parity D m
 
-example : IsIso (inductionSuperDot D Sc () a ha 0) := by
-  change IsIso (probeInductionSuperDotIso D Sc () m ha 0).hom
+example : IsIso (heightInductionSuperDot D Sc () a ha 0) := by
+  change IsIso (probeHeightInductionSuperDotIso D Sc () m ha 0).hom
   infer_instance
 
-private abbrev F : Supercategory.Superfunctor ℚ
-    (CyclotomicSupermodules D Sc a ha 0) (CyclotomicSupermodules D Sc a ha 1) :=
-  ⟨cyclotomicSuperInduction D Sc () a ha 0⟩
+private abbrev F (n : ℕ) : Supercategory.Superfunctor ℚ
+    (HeightModules D Sc a ha n) (HeightModules D Sc a ha (n+1)) :=
+  ⟨heightSuperInduction D Sc () a ha n⟩
 
-example : IsIso (cyclotomicSuperInductionDot D Sc () a ha 0 : F ⟶ F) := by
-  change IsIso (probeCyclotomicSuperDotIso D Sc () m ha 0).hom
+example : IsIso (C := Supercategory.Superfunctor ℚ
+    (HeightModules D Sc a ha 0) (HeightModules D Sc a ha 1))
+    (X := F 0) (Y := F 0) (heightSuperInductionDot D Sc () a ha 0) := by
+  change IsIso (probeHeightSuperDotIso D Sc () m ha 0).hom
+  infer_instance
+
+example : IsIso (C := Supercategory.Superfunctor ℚ
+    (HeightModules D Sc a ha 2) (HeightModules D Sc a ha 3))
+    (X := F 2) (Y := F 2) (heightSuperInductionDot D Sc () a ha 2) := by
+  change IsIso (probeHeightSuperDotIso D Sc () m ha 2).hom
   infer_instance
 
 end ProbeFirstDotConsumer
