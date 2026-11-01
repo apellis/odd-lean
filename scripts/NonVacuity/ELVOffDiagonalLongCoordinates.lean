@@ -6,12 +6,24 @@ open CategoryTheory StringDiagrams
 open OddMath OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
 open CyclotomicAction.AsymmetricParameters
 
+private theorem crossingTarget :
+    tgt [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) = [true, false] := by
+  apply List.ext_getElem (by simp)
+  intro n hn hm
+  have hn2 : n < 2 := by simpa using hn
+  let q : Fin 2 := ⟨n, hn2⟩
+  have he := tgt_cw_getElem
+    (Categorification.TypeA.validWord_canWord 2 (Equiv.swap 0 1))
+    (t := [false, true]) rfl q
+  rw [Categorification.TypeA.wordProd_canWord] at he
+  rw [he]
+  interval_cases n <;> decide
+
 private def crossingIndex : NFIdx [false, true] [true, false] := by
   refine ⟨([], Equiv.swap 0 1), by simp, by simp, ?_⟩
   change SChain [false, true]
     (pl [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))) [true, false]
-  have ht : tgt [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) =
-      [true, false] := by decide
+  have ht := crossingTarget
   simpa only [ht] using
     sChain_pl [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))
 
@@ -43,7 +55,12 @@ private def dottedCrossingIndex : NFIdx [false, true] [true, false] := by
     (pl [false, true] (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))))
     [true, false]
   have ht : tgt [false, true]
-      (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) = [true, false] := by decide
+      (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) = [true, false] := by
+    change tgt [false, true]
+      (([0] : List ℕ).map PG.dot ++ cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) =
+      [true, false]
+    rw [tgt_append, tgt_map_dot]
+    exact crossingTarget
   simpa only [ht] using
     sChain_pl [false, true] (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))
 
