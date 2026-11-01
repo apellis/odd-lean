@@ -174,4 +174,7 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
       D.parity j * D.parity l +
         (D.parity i * D.parity l + D.parity i * D.parity j) := by ring
   rw [hs, hp, contentNormalized_braid D Sc i j l hb]
+  all_goals first
+    | exact contentNormalizedLeft_mem D Sc _ _ _
+    | exact contentNormalizedRight_mem D Sc _ _ _
 end OddMath.QuiverHecke.ELVOld
