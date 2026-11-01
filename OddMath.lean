@@ -46,6 +46,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVParameterUntwist
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficientFaithful
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRepresentable
@@ -63,6 +64,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionMap
@@ -87,6 +89,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppendTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.SKM.BubbleELVPolynomialGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
@@ -1732,8 +1735,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner
 
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWordEntries
