@@ -32,7 +32,9 @@ def supernaturalTotalEndAlgHom
         change r • f.app 0 M + r • f.app 1 M = r • (f.app 0 M + f.app 1 M)
         exact (smul_add r _ _).symm }
     (SuperNatTrans.id_total F.toFunctor M)
-    (fun f g => by rw [End.mul_def, Superfunctor.comp_total, End.mul_def])
+    (fun f g => by
+      change (g ≫ f).total M = g.total M ≫ f.total M
+      exact Superfunctor.comp_total g f M)
 
 theorem contentTripleLast_target_eq (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) :
