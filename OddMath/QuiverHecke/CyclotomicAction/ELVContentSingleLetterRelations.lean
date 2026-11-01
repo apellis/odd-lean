@@ -65,19 +65,18 @@ def contentEPairToComparison (β : Multiset I) (i j : I) (γ : Multiset I)
     contentEPairTo D Sc cutoff N β i j γ h ≅ contentInductionTo D Sc cutoff N β [i,j] γ h :=
   contentInductionComp D Sc cutoff N β [i] [j] γ _ h
 
+/-- The carrier of the actual evaluated pair functor. Keeping its SVec object
+intact aligns all inherited module instances with independent whiskering maps. -/
 abbrev ContentEPairSpace (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N γ) :=
-  BalancedInduction.Obj
-    (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j] γ
-      (by rw [add_assoc]; exact h))
-    (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M).toFunctor w
+    (w : ContentCategory D Sc cutoff N γ) : Type u :=
+  (((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj w).carrier
 
 def contentEPairEquiv (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
     ContentEPairSpace D Sc cutoff N β i j γ h M w ≃ₗ[k]
-      BalancedInduction.Obj (contentAppendTo D Sc cutoff N β [i,j] γ h) M.toFunctor w :=
+      (((contentInductionTo D Sc cutoff N β [i,j] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentEPairToComparison D Sc cutoff N β i j γ h).app M) w
 
 /-- Transport of a homogeneous transformation through even natural comparisons. -/
@@ -248,3 +247,4 @@ theorem contentEPair_quadratic (β : Multiset I) {i j : I} (hij : i ≠ j)
   exact contentEPairPolynomial_comparison D Sc cutoff N β i j M w
 
 end OddMath.QuiverHecke.ELVOld
+
