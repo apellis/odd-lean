@@ -63,9 +63,7 @@ theorem boundarySnake_injective (p : ZMod 2)
     intro x y hxy
     apply sub_eq_zero.mp
     apply hzero (x - y)
-    have hs : boundarySnake D Sc cutoff p j v (x - y) = boundarySnake D Sc cutoff p j v x - boundarySnake D Sc cutoff p j v y :=
-      map_sub (boundarySnake D Sc cutoff p j v) x y
-    exact hs.trans (sub_eq_zero.mpr hxy)
+    rw [(boundarySnake D Sc cutoff p j v).map_sub, hxy, sub_self]
   intro f hf
   have hy : ShortCrossCoordinates.decode D Sc cutoff j.1 v v
       (pMap D Sc cutoff j.1 v (v ++ [j.1]) (sourceLongSection D Sc cutoff p j.1 v f)) ∈

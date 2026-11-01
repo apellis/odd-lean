@@ -86,24 +86,17 @@ triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
 
-## Probe dot kernel propagation
+## Probe factors
 
-`ProbeDotPropagation` proves ordinary next-dot kernel propagation through the
-even/odd nilHecke intertwiners and distinct-colour slide/quadratic relation.
-Finite-dimensional unit corollaries and nonzero rational matrix consumers are
-included. The original PR #751 head passed full build, axiom audit and consumers;
-this merge reconciliation retains those exact source/consumer blobs. Applying
-these lemmas to actual cyclotomic word corners is separate work in #752.
+`ProbeDotPropagation` and `ProbeWordCorner` are integrated after full CI
+in #751 and #752. Use the actual corner map and its nilHecke relations.
+`ProbeWordEntries` adds actual rectangular entries, their word supports,
+target-row cancellation by corner units, and the distinct-kernel criterion;
+source and consumer await CI. Supply its actual distinct-colour slide,
+ordered quadratic, and unit leading corner term next. A word-corner unit
+is not a left-regular element of the entire algebra.
 
-## Actual probe word corners
-
-`ProbeWordCorner` constructs the literal unital affine End-to-cyclotomic-corner
-map, transports both same-colour nilHecke relations, and propagates injectivity
-inside those actual corners. Its odd quadratic specialization proves a unit
-first dot and injective second dot with explicit defining relations. Source and
-concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
-full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
-
-## Proposed construction under verification
-
-Actual crossing height, augmented/snake maps, cap input pivots, independent braids and off-diagonal coordinates are preserved as proposed source with concrete consumers. Scope remains odd/diagonal for the current raw inverse. Full CI, actual categorical cap comparison, off-diagonal boundary transport and full factor/action realization remain open.
+Cofinal probe powers and all-position unit propagation remain separate work.
+For finite dimension use raw finite append spanning and ordinary coefficient
+specialization; positive-weight coefficient truncation cannot specialize to
+nonnilpotent binomial constants.

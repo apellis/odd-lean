@@ -38,9 +38,7 @@ theorem positiveCrossingAssembly_injective (p : ZMod 2)
     intro x y hxy
     apply sub_eq_zero.mp
     apply hzero (x - y)
-    have hs : positiveCrossingAssembly D Sc cutoff j v (x - y) = positiveCrossingAssembly D Sc cutoff j v x - positiveCrossingAssembly D Sc cutoff j v y :=
-      map_sub (positiveCrossingAssembly D Sc cutoff j v) x y
-    exact hs.trans (sub_eq_zero.mpr hxy)
+    rw [(positiveCrossingAssembly D Sc cutoff j v).map_sub, hxy, sub_self]
   rintro ⟨s, r⟩ hz
   obtain ⟨y, rfl⟩ := q_surjective D Sc cutoff j.1 v v s
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y

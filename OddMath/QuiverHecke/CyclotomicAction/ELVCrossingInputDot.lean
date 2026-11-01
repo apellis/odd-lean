@@ -57,6 +57,7 @@ theorem shortCross_crossingInputDotAffine (j : {j : I // D.parity j = 1})
   change shortCross D Sc cutoff j.1 v v
     (ShortCrossCoordinates.decode D Sc cutoff j.1 v v _) = _
   rw [shortCross_decode_residual, hdef]
+  rfl
 
 /-- The moving input dot sends every Pprime relation to another Pprime relation. -/
 theorem crossingInputDotAffine_pprime (j : {j : I // D.parity j = 1}) (v : List I)

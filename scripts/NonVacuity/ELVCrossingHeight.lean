@@ -12,8 +12,7 @@ def zeroHeightCrossing :
       Old datum scalars (fun _ => 2) [(), ()] [(), ()] := by
   apply toCyclotomicEquiv_zero_height datum scalars (fun _ => 2) 0 oddColour [()]
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 2) () [()]
-  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢
-  omega
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢ <;> omega
 
 example (z : Source datum scalars (fun _ => 2) () [()] [()]) :
     zeroHeightCrossing.symm (zeroHeightCrossing z) = z :=
@@ -26,14 +25,12 @@ example (z : Old datum scalars (fun _ => 2) [(), ()] [(), ()]) :
 example : Function.Injective (toCyclotomic datum scalars (fun _ => 4) () [()] [()]) := by
   apply toCyclotomic_injective_of_nonnegative_height datum scalars (fun _ => 4) 0 oddColour [()]
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 4) () [()]
-  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢
-  omega
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢ <;> omega
 
 example : Function.Surjective (toCyclotomic datum scalars (fun _ => 1) () [()] [()]) := by
   apply toCyclotomic_surjective_of_nonpositive_height datum scalars (fun _ => 1) 0 oddColour [()]
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 1) () [()]
-  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢
-  omega
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢ <;> omega
 
 open Lean Elab Command in
 run_cmd do
