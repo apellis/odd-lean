@@ -93,7 +93,8 @@ theorem offDiagonalCorrectedLift_odd (p : ZMod 2) (j : {j : I // D.parity j = 1}
     (offDiagonalCorrectedLift D Sc cutoff p j v t (2 * q) b) = _
   rw [offDiagonalCorrectedLift_even, boundaryRho_offDiagonalLongSection,
     offDiagonalCoefficientRho_single, map_add]
-  simp only [offDiagonalDeltaCoefficient, LinearMap.smul_apply, Finsupp.single_smul, map_smul]
+  simp only [offDiagonalDeltaCoefficient, LinearMap.smul_apply, ← Finsupp.smul_single,
+    map_smul]
 
 theorem offDiagonalCorrectedLift_coordinates (p : ZMod 2) (j : {j : I // D.parity j = 1})
     (v t : List I) (q : ℕ) (b : Old D Sc cutoff v t) :
