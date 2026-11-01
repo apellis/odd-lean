@@ -29,7 +29,7 @@ theorem probePolynomial_support_dvd (e m : I → ℕ) (i : I)
     e i ∣ n := by
   by_contra hd
   apply hn
-  rw [probePolynomial_eq_expand, Polynomial.coeff_expand he, if_neg hd]
+  rw [probePolynomial_eq_expand, Polynomial.coeff_expand he, ite_eq_right hd]
 
 private theorem probe_parity_cases (p : ZMod 2) : p = 0 ∨ p = 1 := by
   fin_cases p
@@ -44,13 +44,14 @@ theorem probePolynomial_parity (D : SKM.Datum I X) (m : I → ℕ) :
   intro i n hn
   rcases probe_parity_cases (D.parity i) with hi | hi
   · simp only [hi, nsmul_zero]
-  · have he : probeDotExponent D i = 2 := by simp only [probeDotExponent, hi, if_pos rfl]
+  · have he : probeDotExponent D i = 2 := by simp [probeDotExponent, hi]
     have hd : 2 ∣ n := by
       simpa only [he] using
         (probePolynomial_support_dvd (probeDotExponent D) m i
           (by rw [he]; decide) hn)
     rw [probePolynomial_eq_expand, Polynomial.natDegree_expand, hi, he]
     obtain ⟨r, rfl⟩ := hd
-    norm_num [nsmul_eq_mul]
+    simp only [nsmul_eq_mul, Nat.cast_mul, mul_one]
+    rw [show (2 : ZMod 2) = 0 by decide, zero_mul, mul_zero]
 
 end OddMath.QuiverHecke
