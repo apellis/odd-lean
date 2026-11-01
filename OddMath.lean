@@ -101,6 +101,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVEvenInputComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVEvenCounitInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenUnitPositiveInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotColumns
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenPositiveCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVEvenInputMatrix
 import OddMath.QuiverHecke.CyclotomicAction.ELVEvenInputPivots
 import OddMath.Algebra.LowPolynomialCoordinates
