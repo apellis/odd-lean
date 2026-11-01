@@ -86,33 +86,24 @@ triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
 
-## Proposed next constructions under verification
+## Probe dot kernel propagation
 
-The risk-reduction topic branch contains unverified source drafts and consumers:
-`ELVCrossingHeight` (actual crossing injectivity/surjectivity by height and the
-zero-height equivalence), `ELVContentWhiskeredMixedBraid` (composed independent
-crossings and independent-dot correction), and `ProbeDotPropagation` (ordinary
-kernel propagation through same/distinct-colour relations). These are not yet
-verified results or concrete full factor/observation instances. The probe note
-uses the simpler kernel proof; actual word-corner application remains separate.
+`ProbeDotPropagation` proves ordinary next-dot kernel propagation through the
+even/odd nilHecke intertwiners and distinct-colour slide/quadratic relation.
+Finite-dimensional unit corollaries and nonzero rational matrix consumers are
+included. The original PR #751 head passed full build, axiom audit and consumers;
+this merge reconciliation retains those exact source/consumer blobs. Applying
+these lemmas to actual cyclotomic word corners is separate work in #752.
 
-## Saved proof drafts and next verification targets
+## Actual probe word corners
 
-The risk-reduction topic branch preserves these additional UNCHECKED drafts:
-`ELVPositiveCrossing`, `ELVBoundarySnake`, `ELVCapCoordinateTransport`,
-`ELVCrossingInputDot`, `ELVContentUncorrectedBraid`,
-`ELVOffDiagonalLongCoordinates`, and `ProbeWordCorner`.
-The corresponding consumers are included where present. The first two are
-restricted to diagonal old Hom and odd moving colour. Cap transport constructs
-input-oriented contraction/dot descent with the polynomial defect retained;
-its identification with the actual categorical dotted counit remains open.
-The off-diagonal coordinate draft still takes an old normal-form index: canonical
-choice independence and the empty-index case remain to be completed.
-ProbeWordCorner is an unfinished transport into the actual cyclotomic eAe corner.
+`ProbeWordCorner` constructs the literal unital affine End-to-cyclotomic-corner
+map, transports both same-colour nilHecke relations, and propagates injectivity
+inside those actual corners. Its odd quadratic specialization proves a unit
+first dot and injective second dot with explicit defining relations. Source and
+concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
+full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
 
-Only `ProbeDotPropagation` and its concrete consumer have passed scoped checks
-in this continuation; its independent PR is #751 and full CI remains required.
-The other new constructions must be elaborated, corrected, consumed and audited
-before being recorded as verified. Build their named module targets, then their
-NonVacuity targets. The negative cap matrix, off-diagonal/naturality extension,
-full factor/action and actual observations remain the critical chain.
+## Proposed construction under verification
+
+Actual crossing height, augmented/snake maps, cap input pivots, independent braids and off-diagonal coordinates are preserved as proposed source with concrete consumers. Scope remains odd/diagonal for the current raw inverse. Full CI, actual categorical cap comparison, off-diagonal boundary transport and full factor/action realization remain open.
