@@ -8,7 +8,7 @@ This file records the next mathematical targets, not session telemetry.
 
 | Target | Ready to start? | Existing inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Yes: highest-priority risk | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; alpha/Pprime injectivity claims require source verification | Identify balanced crossing source with the actual kernel/image data; derive the snake and prescribed augmented inverse, retaining full coefficient twists and all heights |
+| Prescribed categorical inverse | Yes: highest-priority risk | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Identify balanced crossing source with the actual kernel/image data; derive the snake and prescribed augmented inverse, retaining full coefficient twists and all heights |
 | Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
 | Full-ELV factor family | Partly: construction/comparison work can start | Existing full-ELV content module functors and polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
 | Whole swapped action | Local comparisons ready; concrete assembly blocked | Conditional assembly; braid from inverse/coefficient inputs; Hom mate and word comparisons | Supply compatible full-ELV factors and concrete crossing/leftward coefficient inputs, then all whole inverse and relation fields |
@@ -27,10 +27,12 @@ Read the top-row, boundary and matrix chain:
 Use the independently defined `PprimeDomain`, `Source`, `alpha`,
 `pprime`, `shortCross` and quotient maps in
 `ELVCyclotomicCrossingTensor` / `ELVCyclotomicShortColumns`.
-The previous handoff claims `extract_comp_alpha` and `pprime_injective`, but
-these were not located in the reviewed short-column source or consumer. First
-locate their exact committed module and check its consumer; if absent, construct
-the extraction and prove these injectivity statements before using short exactness. Match the existing actual boundary normal forms to this diagram;
+`ELVCyclotomicAlphaCoordinates` proves `extract_comp_alpha`, `alpha_injective`
+and `pprime_injective`, with the consumer of the same name; the earlier report
+that these were unlocated was an inspection error. `ELVSourceSplitting` now
+identifies the source with its prescribed short and polynomial coordinates;
+`ELVSourcePolynomialQuotient.sourceQuotientBoundary_eq` identifies the actual odd
+induced boundary. Use these committed producers directly. Match the existing actual boundary normal forms to this diagram;
 a decomposition using the crossing image is insufficient to identify the
 prescribed balanced crossing source. Keep zero corners, height zero, full
 exterior coefficients and source/target twists explicit. The immediate output
@@ -72,13 +74,3 @@ Record exact declaration names, hypotheses and whether a result is proposed,
 implemented, scoped-checked or full-CI verified. Conditional constructors must
 list their unconstructed inputs. Do not report workers, sessions or old build
 processes as live. Follow AGENTS.md for toolchain, CI and axiom policy.
-
-## Prescribed source coordinates
-
-`ELVSourceSplitting.sourceCoordinateEquiv` identifies the original source with
-its epsilon-balanced short source and existing polynomial coordinates, using
-`ELVCyclotomicAlphaCoordinates.extract_comp_alpha`. The latter and
-`pprime_injective` are committed proofs, not missing prerequisites.
-`ELVSourcePolynomialQuotient.sourceQuotientBoundary_eq` identifies the actual
-induced odd polynomial row. Crossing-column identification and the categorical
-snake/augmented inverse remain separate targets.
