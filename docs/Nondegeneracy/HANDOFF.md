@@ -8,7 +8,7 @@ This file records the next mathematical targets, not session telemetry.
 
 | Target | Ready to start? | Existing inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Yes: highest-priority risk | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Identify balanced crossing source with the actual kernel/image data; derive the snake and prescribed augmented inverse, retaining full coefficient twists and all heights |
+| Prescribed categorical inverse | Yes: highest-priority risk | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use proved balanced crossing/source coordinates and actual kernel/image data; derive the snake and prescribed augmented inverse, retaining full coefficient twists and all heights |
 | Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
 | Full-ELV factor family | Partly: construction/comparison work can start | Existing full-ELV content module functors and polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
 | Whole swapped action | Local comparisons ready; concrete assembly blocked | Conditional assembly; braid from inverse/coefficient inputs; Hom mate and word comparisons | Supply compatible full-ELV factors and concrete crossing/leftward coefficient inputs, then all whole inverse and relation fields |
@@ -74,3 +74,14 @@ Record exact declaration names, hypotheses and whether a result is proposed,
 implemented, scoped-checked or full-CI verified. Conditional constructors must
 list their unconstructed inputs. Do not report workers, sessions or old build
 processes as live. Follow AGENTS.md for toolchain, CI and axiom policy.
+
+## Balanced crossing coordinates
+
+`ELVCyclotomicCrossCoordinates` supplies the actual decoder and
+`ShortCrossCoordinates.decode_comp_shortCross`, `shortCross_injective`,
+`range_shortCross` and `crossingEquiv`. These identify the prescribed short
+balanced source with the original crossing span, including full coefficients
+and zero Hom corners. The decoder kills the separately proved polynomial
+triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
+the categorical snake; graded/natural compatibility and augmented inversion
+remain open.
