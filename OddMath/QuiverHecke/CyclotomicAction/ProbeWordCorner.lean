@@ -148,4 +148,42 @@ theorem quadraticProbe_secondDot_injective (post : List I) (i : I) :
   exact (IsUnit.isUnit_iff_mulLeft_bijective.mp
     (quadraticProbe_firstDot_isUnit D Sc (probeBlockWord [] post i))).1
 
+abbrev cyclotomicRepeatedDot (n : ℕ) (i : I) (r : ℕ) :
+    CyclotomicWordCorner D Sc a (repeatedWord i (n + 1)) :=
+  cyclotomicWordEnd D Sc a (repeatedWord i (n + 1))
+    (dotE D Sc (List.replicate (n + 1) i) r)
+
+/-- Adjacent-dot propagation on one fixed actual monochromatic word corner,
+so induction never changes the corner or introduces a transport cast. -/
+theorem cyclotomicRepeated_dot_step (n : ℕ) (i : I) (r : ℕ) (hr : r < n)
+    (hu : Function.Injective (fun z : CyclotomicWordCorner D Sc a (repeatedWord i (n + 1)) =>
+      cyclotomicRepeatedDot D Sc a n i r * z)) :
+    Function.Injective (fun z : CyclotomicWordCorner D Sc a (repeatedWord i (n + 1)) =>
+      cyclotomicRepeatedDot D Sc a n i (r + 1) * z) := by
+  let q := cyclotomicWordEnd D Sc a (repeatedWord i (n + 1))
+  have hF := isSignedNilHeckeFamily_block D Sc [] [] i (n + 1)
+  have hw : ([] : List I) ++ List.replicate (n + 1) i ++ [] =
+      List.replicate (n + 1) i := by simp
+  rw [hw] at hF
+  simp only [List.length_nil] at hF
+  rcases Supercategory.parity_eq_zero_or_one (D.parity i) with hi | hi
+  · rw [hi, show zunit (0 : ZMod 2) = 1 by simp [zunit]] at hF
+    exact (evenTwo_map q (hF.evenTwo (j := r) (by omega) (by omega))).right_mul_injective hu
+  · rw [hi, show zunit (1 : ZMod 2) = -1 by simp [zunit]] at hF
+    exact (oddTwo_map q (hF.oddTwo (j := r) (by omega) (by omega))).right_mul_injective hu
+
+/-- Every dot of a monochromatic word is injective if its first dot is. -/
+theorem cyclotomicRepeated_dots_injective (n : ℕ) (i : I)
+    (hzero : Function.Injective (fun z : CyclotomicWordCorner D Sc a (repeatedWord i (n + 1)) =>
+      cyclotomicRepeatedDot D Sc a n i 0 * z)) :
+    ∀ r < n + 1, Function.Injective
+      (fun z : CyclotomicWordCorner D Sc a (repeatedWord i (n + 1)) =>
+        cyclotomicRepeatedDot D Sc a n i r * z) := by
+  intro r
+  induction r with
+  | zero => intro _; exact hzero
+  | succ r ih =>
+    intro hr
+    exact cyclotomicRepeated_dot_step D Sc a n i r (by omega) (ih (by omega))
+
 end OddMath.QuiverHecke
