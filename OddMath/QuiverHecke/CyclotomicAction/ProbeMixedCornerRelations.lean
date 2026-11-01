@@ -118,8 +118,16 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
     change (q (probeMixedCross D Sc pre post i j ≫
       probeMixedCross D Sc pre post j i)).val =
       (q ((Sc.t i j : k) • u^(D.dn i j))).val + (q v).val * (q Rleft).val
-    rw [hl, map_add q, map_mul q]
-    rfl
+    have hq : q (probeMixedCross D Sc pre post i j ≫
+        probeMixedCross D Sc pre post j i) =
+        q ((Sc.t i j : k) • u^(D.dn i j)) + q v * q Rleft := by
+      calc
+        _ = q ((Sc.t i j : k) • u^(D.dn i j) + v*Rleft) :=
+          congrArg (fun f : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))) => q f) hl
+        _ = q ((Sc.t i j : k) • u^(D.dn i j)) + q (v*Rleft) := q.map_add' _ _
+        _ = _ := congrArg (fun z : CyclotomicWordCorner D Sc a s =>
+          q ((Sc.t i j : k) • u^(D.dn i j)) + z) (q.map_mul' v Rleft)
+    exact congrArg (fun z : CyclotomicWordCorner D Sc a s => z.val) hq
 
 
 /-- The disconnected quadratic supplies the same two remainder statements,
