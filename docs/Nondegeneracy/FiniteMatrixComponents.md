@@ -9,8 +9,8 @@ morphisms.
 unitMatrixComponent is the finite sum of unitMatrixEntry totals.
 capMatrixComponent is the vector of capMatrixEntry totals.
 Their source and target superspaces have pointwise grading on the
-actual shifted module families. Both assembled maps are even for every
-old supermodule and every moving colour.
+actual shifted module families. Evenness holds before any height condition: both assembled maps are even
+for every old supermodule and every moving colour.
 
 The named first-source and first-target parity isomorphisms expose
 literal module endpoints. They identify the none entries with the
