@@ -51,7 +51,8 @@ theorem offDiagonalLongSection_diagonal (p : ZMod 2) (i : I) (v : List I)
     (f : ℕ →₀ Old D Sc cutoff v v) :
     offDiagonalLongSection D Sc cutoff p i v v f = outputLongSection D Sc cutoff p i v f := by
   let y : NFIdx v v :=
-    (longOutputIndex_oldTarget i v 0) ▸ (longOutputIndex i v 0).old
+    Eq.mp (congrArg (fun t => NFIdx v t) (longOutputIndex_oldTarget i v 0))
+      (longOutputIndex i v 0).old
   rw [offDiagonalLongSection_eq D Sc cutoff p i y]
   induction f using Finsupp.induction_linear with
   | zero => simp only [map_zero]
