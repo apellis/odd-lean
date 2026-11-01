@@ -1745,8 +1745,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeDistinctUnits
 import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedRelations
 import OddMath.QuiverHecke.CyclotomicAction.ProbeMixedCornerRelations
 import OddMath.QuiverHecke.CyclotomicAction.ProbeAllUnits
+import OddMath.QuiverHecke.CyclotomicAction.ProbeAppendDotInverse
+import OddMath.QuiverHecke.CyclotomicAction.ProbeSuperDotInverse
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeFirstDot
+import OddMath.QuiverHecke.CyclotomicAction.ProbePolynomialParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
