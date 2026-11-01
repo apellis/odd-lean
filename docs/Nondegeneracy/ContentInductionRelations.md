@@ -8,8 +8,11 @@ distinct-colour slides on the same pair crossing and explicit common target
 content. These sources and their concrete asymmetric odd consumers are drafts
 until their build, consumers and axiom checks pass.
 
-The prefix crossing has the SVec Hom type between evaluations of the actual
-triple induction functors. Its definition remains the existing independent
+The corrected paths take their common intermediate contents and endpoint
+equalities explicitly, retaining them as abstract variables through the source
+comparison rather than expanding computed multiset transports. The concrete
+consumers provide all these bookkeeping equalities. The prefix crossing is the
+SVec Hom between evaluations of the actual triple induction functors. Its definition remains the existing independent
 pair crossing, induced by the final letter and transported only through the
 specified intermediate-content equality. This encoding retains the carrier
 instances of the natural maps, avoiding repeated conversion through expanded
