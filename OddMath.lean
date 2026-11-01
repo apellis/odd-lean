@@ -83,6 +83,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVMateKernelNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapKernelNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionMap
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleRestriction
@@ -184,6 +185,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputMatrix
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotColumns
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedMatrixFamilies
+import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryTotals
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapInput
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedSourceLinearEquiv
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCapComparison
