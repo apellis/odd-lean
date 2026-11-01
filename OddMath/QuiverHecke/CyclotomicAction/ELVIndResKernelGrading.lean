@@ -81,7 +81,9 @@ theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
     (precompose (k := k) J a t :
       BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t ⟶
         BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t) ∈
-      parity (R := k) _ _ p := by
+      parity (R := k)
+        (BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t)
+        (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t) p := by
   change ∀ q, precompose (k := k) J a t ∘ₗ
       (BalancedInduction.superspace J (J ⋙ homModule (k := k) w) t).proj q =
     (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj (q + p) ∘ₗ
@@ -91,7 +93,7 @@ theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
   intro s g b
   have hl : (Linear.leftComp k (J.obj s) a :
       homSVec k D w (J.obj s) ⟶ homSVec k D v (J.obj s)) ∈
-      parity (R := k) _ _ p := by
+      parity (R := k) (homSVec k D w (J.obj s)) (homSVec k D v (J.obj s)) p := by
     apply SVec.mem_parityHom_of_apply_mem
     intro r c hc
     apply (mem_homSVec_part_iff k).2

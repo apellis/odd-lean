@@ -23,14 +23,18 @@ example (v w t : C) (a : v ⟶ w) :
     (IndResKernel.precompose (k := ℚ) J (proj ℚ 1 a) t :
       BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) w) t ⟶
         BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t) ∈
-      parity (R := ℚ) _ _ 1 :=
+      parity (R := ℚ)
+        (BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) w) t)
+        (BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t) 1 :=
   IndResKernel.precompose_mem J (proj ℚ 1 a) (proj_mem 1 a) t
 
 example (v t : C) :
     (IndResKernel.precompose (k := ℚ) J (𝟙 v) t :
       BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t ⟶
         BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t) ∈
-      parity (R := ℚ) _ _ 0 :=
+      parity (R := ℚ)
+        (BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t)
+        (BalancedInduction.superspace J (J ⋙ IndResKernel.homModule (k := ℚ) v) t) 0 :=
   IndResKernel.precompose_mem J (𝟙 v) (id_mem v) t
 
 example (t v : C) :
