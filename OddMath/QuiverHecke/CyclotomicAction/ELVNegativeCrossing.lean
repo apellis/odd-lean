@@ -71,16 +71,15 @@ private def kernelWindowVectorEquiv (j : {j : I // D.parity j = 1})
   left_inv f := by
     apply (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).injective
     rw [LinearEquiv.apply_symm_apply]
-    rfl
   right_inv f := by
     apply Subtype.ext
-    exact congrArg Subtype.val ((lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).apply_symm_apply _)
+    exact congrArg (fun z : Finsupp.supported (Old D Sc cutoff v v) k (Set.Iio m) => (z : ℕ →₀ Old D Sc cutoff v v)) ((lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m).apply_symm_apply _)
   map_add' f g := by
     apply Subtype.ext
-    exact congrArg Subtype.val (map_add (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) f g)
+    exact congrArg (fun z : Finsupp.supported (Old D Sc cutoff v v) k (Set.Iio m) => (z : ℕ →₀ Old D Sc cutoff v v)) (map_add (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) f g)
   map_smul' c f := by
     apply Subtype.ext
-    exact congrArg Subtype.val (map_smul (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) c f)
+    exact congrArg (fun z : Finsupp.supported (Old D Sc cutoff v v) k (Set.Iio m) => (z : ℕ →₀ Old D Sc cutoff v v)) (map_smul (lowVectorEquiv (k := k) (M := Old D Sc cutoff v v) m) c f)
 
 /-- Coordinates in the actual boundary kernel, using the corrected low window. -/
 def boundaryKernelVectorEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
@@ -143,7 +142,7 @@ private theorem reversedVector_single {k M : Type*} [CommRing k]
       have hh := congrArg Fin.rev h
       simp only [Fin.rev_rev] at hh
       exact hi hh
-    simp [Pi.single_apply, hi, hr]
+    simp [hi, hr]
 
 /-- The actual cap vector evaluated on the actual snake kernel coordinates. -/
 def capOnKernelVector (p : ZMod 2) (j : {j : I // D.parity j = 1})
