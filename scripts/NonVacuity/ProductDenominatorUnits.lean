@@ -12,12 +12,12 @@ private def upper (a : ℚ) : End V :=
   ModuleCat.ofHom {
     toFun := fun v => (a * v.2, 0)
     map_add' := by intros; ext <;> simp [mul_add]
-    map_smul' := by intros; ext <;> simp [mul_comm, mul_left_comm, mul_assoc] }
+    map_smul' := by intros; ext <;> simp [mul_left_comm] }
 
 private def diagonal : End V :=
   ModuleCat.ofHom {
     toFun := fun v => (v.1, -v.2)
-    map_add' := by intros; ext <;> simp
+    map_add' := by intros; ext <;> simp [add_comm]
     map_smul' := by intros; ext <;> simp }
 
 private theorem upper_nilpotent (a : ℚ) : IsNilpotent (upper a) := by
@@ -41,7 +41,8 @@ private theorem upper_diagonal (a : ℚ) :
   apply ModuleCat.hom_ext
   apply LinearMap.ext
   intro v
-  apply Prod.ext <;> simp [upper, diagonal, End.mul_def]
+  change (a * (-v.2), (0 : ℚ)) = (-(a * v.2), 0)
+  apply Prod.ext <;> simp
 
 private abbrev Categories : ℕ → Type 1 := fun _ => ModuleCat ℚ
 private abbrev Objects : ∀ n : ℕ, Categories n := fun _ => V
