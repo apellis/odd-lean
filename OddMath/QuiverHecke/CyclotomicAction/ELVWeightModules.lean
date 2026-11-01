@@ -26,21 +26,29 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
 
 /-- The zero vector superspace used for genuinely absent content predecessors. -/
-def elvZeroSpace : SVec.{u} k where
+abbrev elvZeroSpace : SVec.{u} k where
   carrier := PUnit.{u + 1}
   odd := 0
   odd_comp_odd := LinearMap.ext fun _ => rfl
 
+/-- The underlying zero-module functor, before bundling its super structure. -/
+abbrev elvZeroModuleFunctor (β : Multiset I) :
+    ContentCategory D Sc cutoff bound β ⥤ SVec.{u} k where
+  obj := fun _ => elvZeroSpace (k := k)
+  map := fun _ => 0
+  map_id := by intro v; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _
+  map_comp := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _
+
+instance (β : Multiset I) : (elvZeroModuleFunctor D Sc cutoff bound β).Additive where
+  map_add := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _
+instance (β : Multiset I) : (elvZeroModuleFunctor D Sc cutoff bound β).Linear k where
+  map_smul := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _
+instance (β : Multiset I) : IsSuperfunctor k (elvZeroModuleFunctor D Sc cutoff bound β) where
+  map_mem _ := Submodule.zero_mem _
+
 /-- The zero module on the existing exact-content category. -/
-def elvZeroModule (β : Multiset I) : ContentModules D Sc cutoff bound β where
-  toFunctor := {
-    obj := fun _ => elvZeroSpace (k := k)
-    map := fun _ => 0
-    map_id := by intro v; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _
-    map_comp := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _ }
-  additive := { map_add := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _ }
-  linear := { map_smul := by intros; apply SVec.hom_ext; intro x; exact Subsingleton.elim _ _ }
-  isSuperfunctor := { map_mem := fun _ => Submodule.zero_mem _ }
+abbrev elvZeroModule (β : Multiset I) : ContentModules D Sc cutoff bound β :=
+  ⟨elvZeroModuleFunctor D Sc cutoff bound β⟩
 
 theorem elvZeroModule_isZero (β : Multiset I) :
     Limits.IsZero (elvZeroModule D Sc cutoff bound β) := by
@@ -77,7 +85,7 @@ def elvWeightPi (Λ x : X) : PiSupercategory k (ELVWeightProduct D Sc cutoff bou
   letI := fun β : WeightBlocks D Λ x => contentModulesPi D Sc cutoff bound β.1
   productPiSupercategory _
 
-def elvWeightSpace (Λ x : X) : PiSCat.{u, u, u + 1} k :=
+abbrev elvWeightSpace (Λ x : X) : PiSCat.{u, u, u + 1} k :=
   letI := elvWeightPi D Sc cutoff bound Λ x
   PiSCat.of k (ELVWeightProduct D Sc cutoff bound Λ x)
 
