@@ -1733,3 +1733,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWordEntries
+
+import OddMath.QuiverHecke.CyclotomicAction.ProbeFirstDot

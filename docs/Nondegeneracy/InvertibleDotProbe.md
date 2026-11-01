@@ -139,6 +139,14 @@ It commutes with word idempotents, so its inverse does too. Hence each
 x_r e(nu) is a unit in its word corner. The inverse is homogeneous of the
 same parity as the dot on that corner.
 
+Checked cofinal probe extension: `ProbeFirstDot.lean` proves that every first dot for
+`(X^(e i)-1)^(m i)` with `e i ≠ 0` is a literal unit in its actual word corner.
+For the prescribed parity-dependent exponents, it supplies first-dot units,
+second same-colour dot injectivity, and all-position injectivity in every
+monochromatic word corner. These conclusions require neither finite-dimensionality
+nor an assumed unit. Distinct-colour propagation and promotion of later-dot
+injectivity to units remain separate obligations.
+
 ## 4. Descent to the stated base ring
 
 Return to arbitrary nonzero k with 2 invertible. B_beta is finite over k
