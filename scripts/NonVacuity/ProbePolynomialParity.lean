@@ -21,9 +21,12 @@ example :
   exact inductionSuperDot_parity D Sc false a ha 2
 
 example : (a false).coeff 1 = 0 := by
-  rw [a, probePolynomial_eq_expand]
-  norm_num [probeDotExponent, D, CyclotomicAction.AsymmetricParameters.datum,
-    Polynomial.coeff_expand]
+  by_contra h
+  have hd := probePolynomial_support_dvd (k := ℚ) (probeDotExponent D)
+    (fun _ => 3) false (by decide) h
+  have he : probeDotExponent D false = 2 := rfl
+  rw [he] at hd
+  exact (by decide : ¬ (2 ∣ (1 : ℕ))) hd
 
 example : CyclotomicPolynomialParity (k := ℚ) D
     (probePolynomial (probeDotExponent D) (fun _ => 0)) :=

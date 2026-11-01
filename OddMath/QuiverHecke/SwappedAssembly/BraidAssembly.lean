@@ -19,7 +19,7 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
 lemma braid_repeated_offDiag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (i j : I) (ν : X) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (i j : I) (ν : X) (hij : i ≠ j)
     {s t : Sector I} (p q : SPath (wd D ν [up i, up j, up i]) s t)
     (Z : P.H t) (hpq : p ≠ q) :
     braidLeft (P.swappedGens c L) i j i ν p q Z =
@@ -57,17 +57,27 @@ lemma braid_repeated_offDiag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
 /-- All three literal matrix fields of the Brundan–Ellis braid relation.
 The proof dispatches arbitrary paths and derives the necessary sector witnesses;
 no braid field or additional model assumption is supplied. -/
-theorem crossBraidOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) : CrossBraid (P.swappedGens c L) where
+theorem crossBraidOfDenominatorUnits (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) : CrossBraid (P.swappedGens c L) where
   braid := P.braid_nonRepeated c L hc h
   braidEq_offDiag := P.braid_repeated_offDiag c L hc h
   braidEq_diag := P.braid_repeated_diag c L hc h
 
 /-- The assembled braid relation on the actual layer representation. -/
+theorem braidRelationsOfDenominatorUnits (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) {Gs Ys : ∀ s, P.H s} :
+    BraidRelations Sc (P.layerRep Gs Ys (P.swappedGens c L)) :=
+  P.braidRelations (P.crossBraidOfDenominatorUnits c L hc h)
+
+/-- The original nilpotence-based braid criterion is retained as a corollary. -/
+theorem crossBraidOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) : CrossBraid (P.swappedGens c L) :=
+  P.crossBraidOfDenominatorUnits c L hc (h : P.CrossDenominatorUnits)
+
 theorem braidRelationsOfInputs (c : P.CrossCoeff Sc) (L : P.LeftwardData)
     (hc : c.IsInverse) (h : P.CrossCoeffInputs) {Gs Ys : ∀ s, P.H s} :
     BraidRelations Sc (P.layerRep Gs Ys (P.swappedGens c L)) :=
-  P.braidRelations (P.crossBraidOfInputs c L hc h)
+  P.braidRelationsOfDenominatorUnits c L hc (h : P.CrossDenominatorUnits)
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly

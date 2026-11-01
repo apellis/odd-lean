@@ -2,9 +2,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeFirstDot
 import OddMath.QuiverHecke.CyclotomicAction.Parity
 import Mathlib.Algebra.Polynomial.Expand
 import Mathlib.Tactic.FinCases
-import Mathlib.Tactic.NormNum
 
-/-! # Parity of the actual cofinal probe polynomials
+/-! # Parity of cofinal probe polynomials
 
 Odd-colour probes have support in even exponents. This gives the exact
 polynomial-parity input of the existing cyclotomic supermodule construction,

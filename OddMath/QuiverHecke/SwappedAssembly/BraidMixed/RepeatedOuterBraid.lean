@@ -243,7 +243,7 @@ theorem repeatedOuter_dotZ_heq {t : Sector I}
       trivial trivial Z))
 
 /-- The full braid difference, on the raw common object grid. -/
-theorem repeatedOuter_difference_heq (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem repeatedOuter_difference_heq (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hij : i ≠ j) :
     let p : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three false true true hR trivial trivial hs
@@ -279,7 +279,7 @@ theorem repeatedOuter_correction_heq :
 
 /-- The literal `CrossBraid.braidEq_diag` correction for `Rᵢ Pⱼ Pᵢ`.
 Both parity cases and all coefficient terms are retained. -/
-theorem repeatedOuter_braidEq_diag (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem repeatedOuter_braidEq_diag (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hij : i ≠ j) :
     let p : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three false true true hR trivial trivial hs
