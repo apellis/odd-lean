@@ -8,7 +8,7 @@ distinct-colour slides on the same pair crossing and explicit common target
 content. These sources and their concrete asymmetric odd consumers are drafts
 until their build, consumers and axiom checks pass.
 
-The corrected paths take their common intermediate contents and endpoint
+The corrected and uncorrected paths take their common intermediate contents and endpoint
 equalities explicitly, retaining them as abstract variables through the source
 comparison rather than expanding computed multiset transports. The concrete
 consumers provide all these bookkeeping equalities. The prefix crossing is the
