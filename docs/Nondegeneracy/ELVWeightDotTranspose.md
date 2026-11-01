@@ -1,6 +1,6 @@
 # Actual blockwise dot transpose
 
-Status: proposed source, pending CI; depends on the actual weight superadjunction.
+Status: full build, global axiom audit and concrete consumers passed before research integration in #790; uses the actual weight superadjunction.
 
 The actual right transpose is evaluated via its literal cup/map/cap formula.
 At source content β, restriction selects only the successor block blockSucc β.

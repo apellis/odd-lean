@@ -8,7 +8,7 @@ This file records the next mathematical targets, not session telemetry.
 
 | Target | Ready to start? | Existing inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use verified diagonal raw negative matrix (#777) and height consequences (#760); check the positive matrix, use verified arbitrary-Hom long coordinates (#753), then finish the exact short kernel, boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
+| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use verified diagonal raw negative matrix (#777) and height consequences (#760); check the positive matrix, use verified arbitrary-Hom long coordinates (#753), then use the verified exact short kernel (#764), then finish boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
 | Even-moving full-ELV inverse | Separate action prerequisite | Generic coordinates and repeated-even norm recursion; ordinary-polynomial global wrapper is conditional | Prove the even-moving boundary leading/division and categorical matrix with all other colours’ exterior coefficients retained; do not regard the full superalgebra as a commutative scalar ring |
 | Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
 | Full-ELV factor family | Actual categories and adjunction verified; inverse assembly blocked | Canonical content parity and actual weight E/F adjunction (#755, #757), full-ELV polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
@@ -38,7 +38,8 @@ a decomposition using the crossing image is insufficient to identify the
 prescribed balanced crossing source. Keep zero corners, height zero, full
 exterior coefficients and source/target twists explicit. The immediate output
 is the named categorical matrix inverse on these maps, with its required
-compatibilities, not another abstract inverse interface.
+compatibilities. The canonical old induction/representable comparison is
+verified in #806 and supplies its actual upper-Hom target coordinates.
 
 ## Parallel mathematical target: independent braid
 
@@ -75,6 +76,9 @@ joint window, with bounds fixed before the cutoffs, and proves that the
 actual quotients jointly separate every source Hom for finite colours.
 
 Next connect these maps to the normalized action and vacuum coordinates.
+The actual weighted module/map/isomorphism descent is verified in #825;
+show old induction preserves this annihilator class and compare the induced
+module and adjunction with the existing truncated construction.
 The weighted coefficient ideal contains odd generators; no even-powers
 replacement was used. A quotient must preserve the action and its
 prescribed inverse, not merely append maps. Binomial probe specialization
@@ -112,8 +116,9 @@ including vacuum, on the existing content and weight categories.
 
 Canonical binomial specialization is verified in #813, and its original
 cyclotomic ideal descent, identity/composition and append compatibility in
-#814. Next extend these Hom maps to the existing content algebras and module
-action, retaining the exact prescribed dots, adjunction and inverse matrices.
+#814. The untruncated content-ring map and all-height/vacuum append laws are
+verified in #823. Next construct the actual old-content module action,
+retaining the exact prescribed dots, adjunction and inverse matrices.
 Scalar specialization is not faithful on the full coefficient algebra;
 source coefficient detection belongs to the separate reservoir.
 
@@ -128,7 +133,7 @@ Two prerequisites must remain explicit during synthesis.
 * Boundary division and the current augmented matrix use diagonal old
   endomorphism coefficients. The full module action needs arbitrary
   `Old(v,t)`. Use verified arbitrary-Hom long extraction/section (#753) and output-arrow
-  covariance (#779); finish the exact short kernel and reuse the diagonal leading polynomial
+  covariance (#779); use the verified exact short kernel (#764) and reuse the diagonal leading polynomial
   by composition with arbitrary old morphisms. General module division and
   cap pivots must then be checked; do not infer them from diagonal inverses.
 * Nilpotence of the actual induced dot is per target-content block. Use verified componentwise denominator units and their even natural inverse
@@ -152,6 +157,6 @@ factor inverses on all old morphisms.
 `ELVWeightDot` (#772) supplies the actual normalized weight dot and its
 per-content nilpotence. That bound is now strengthened in #778: a single exponent at each fixed
 target-content block works for every input module. Actual adjunction
-transpose transport is the next construction. This still permits different exponents at different contents.
+transpose transport is verified in #790; derive its concrete norm units next. This still permits different exponents at different contents.
 Use all-position mixed-word probe units (#807) without a finite-dimensionality premise. Raw append spanning (#766)
 remains a verified independent specialization input.
