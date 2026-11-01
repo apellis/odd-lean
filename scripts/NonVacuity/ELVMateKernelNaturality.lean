@@ -49,6 +49,14 @@ example (i : Bool) (v s t : C)
       twist ℚ (mixedDatum.parity i) ((append mixedDatum mixedScalars (fun _ => 4) i).map g)) :=
   actualMateKernelComponent_tensor mixedDatum mixedScalars (fun _ => 4) i v s t g b
 
+example (i : Bool) (v t : List Bool)
+    (z : IndResKernel.Component (k := ℚ) (append mixedDatum mixedScalars (fun _ => 4) i)
+      (⟨v⟩ : C) (⟨t⟩ : C)) :
+    actualMateKernelComponent mixedDatum mixedScalars (fun _ => 4) i ⟨v⟩ ⟨t⟩ z =
+      matrixMateRow mixedDatum mixedScalars (fun _ => 4) i v t
+        (oldSourceKernelLinear mixedDatum mixedScalars (fun _ => 4) i v t z) :=
+  actualMateKernelComponent_row mixedDatum mixedScalars (fun _ => 4) i v t z
+
 end MateKernelNaturalityConsumer
 
 open Lean Elab Command in
