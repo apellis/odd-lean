@@ -88,7 +88,8 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
       probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
         U.val + (probeMixedCornerDot D Sc a pre post i j (pre.length+1)).val * Rleft.val := by
   let s := probeMixedWord pre post i j
-  let q := cyclotomicWordEnd D Sc a s
+  let q : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))) →+* CyclotomicWordCorner D Sc a s :=
+    cyclotomicWordEnd D Sc a s
   let u := dotE D Sc (pre ++ [i,j] ++ post) pre.length
   let v := dotE D Sc (pre ++ [i,j] ++ post) (pre.length+1)
   obtain ⟨Rright, hr⟩ := probeMixedCross_remainder_right D Sc pre post i j hij hd
@@ -96,7 +97,7 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
   refine ⟨q ((Sc.t i j : k) • u^(D.dn i j)), q Rright, q Rleft, ?_, ?_, ?_⟩
   · rw [Algebra.smul_def, map_mul, map_pow]
     exact (((Sc.t i j).isUnit.map
-      (algebraMap k (End (wordObj D Sc s)))).map q).mul (hu.pow _)
+      (algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))))).map q).mul (hu.pow _)
   · unfold probeMixedEntry
     rw [← cyclotomicWordEntry_comp]
     change (q (probeMixedCross D Sc pre post i j ≫
@@ -126,8 +127,9 @@ theorem probeMixedCorner_remainders (pre post : List I) (i j : I)
         U.val + (probeMixedCornerDot D Sc a pre post i j (pre.length+1)).val * Rleft.val := by
   by_cases hd : D.d i j = 0
   · let s := probeMixedWord pre post i j
-    let q := cyclotomicWordEnd D Sc a s
-    let c := algebraMap k (End (wordObj D Sc s)) (Sc.t i j : k)
+    let q : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))) →+* CyclotomicWordCorner D Sc a s :=
+    cyclotomicWordEnd D Sc a s
+    let c := algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))) (Sc.t i j : k)
     have hBA : probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
         (q c).val := by
       unfold probeMixedEntry
@@ -135,11 +137,11 @@ theorem probeMixedCorner_remainders (pre post : List I) (i j : I)
       change (q (probeMixedCross D Sc pre post i j ≫
         probeMixedCross D Sc pre post j i)).val = (q c).val
       rw [probeMixedCross_quadratic_zero D Sc pre post i j hij hd]
-      change (q ((Sc.t i j : k) • (1 : End (wordObj D Sc s)))).val =
-        (q (algebraMap k (End (wordObj D Sc s)) (Sc.t i j : k))).val
+      change (q ((Sc.t i j : k) • (1 : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))))).val =
+        (q (algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))) (Sc.t i j : k))).val
       rw [Algebra.algebraMap_eq_smul_one]
     refine ⟨q c, 0, 0,
-      (((Sc.t i j).isUnit.map (algebraMap k (End (wordObj D Sc s)))).map q), ?_, ?_⟩
+      (((Sc.t i j).isUnit.map (algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))))).map q), ?_, ?_⟩
     · change probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
         (q c).val + (0 : CyclotomicAlgebra D Sc a (pre.length+post.length+1)) *
           (probeMixedCornerDot D Sc a pre post i j (pre.length+1)).val
@@ -161,7 +163,8 @@ theorem probeMixedCorner_dot_isUnit (pre post : List I) (i j : I) (hij : i ≠ j
     IsUnit (probeMixedCornerDot D Sc a pre post i j (pre.length+1)) := by
   let s := probeMixedWord pre post i j
   let t := probeMixedWord pre post j i
-  let q := cyclotomicWordEnd D Sc a t
+  let q : End ((pres D Sc).obj (ob D (pre ++ [j,i] ++ post))) →+* CyclotomicWordCorner D Sc a t :=
+    cyclotomicWordEnd D Sc a t
   let ε := SKM.zsign k (D.parity i * D.parity j)
   let v := probeMixedCornerDot D Sc a pre post i j (pre.length+1)
   let A := probeMixedEntry D Sc a pre post i j
@@ -173,7 +176,7 @@ theorem probeMixedCorner_dot_isUnit (pre post : List I) (i j : I) (hij : i ≠ j
   have hW : IsUnit W := by
     change IsUnit (q (ε • dotE D Sc (pre ++ [j,i] ++ post) pre.length))
     rw [Algebra.smul_def, map_mul]
-    exact ((hε.map (algebraMap k (End (wordObj D Sc t)))).map q).mul hw
+    exact ((hε.map (algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [j,i] ++ post)))))).map q).mul hw
   have hWval : W.val = ε • w.val := by
     change cyclotomicWordEntry D Sc a t t
       (ε • dotE D Sc (pre ++ [j,i] ++ post) pre.length) =
