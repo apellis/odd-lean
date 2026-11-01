@@ -33,6 +33,17 @@ example : (elvActionUnit D Sc (fun _ => 12) 12 false (0 : X) step).app 0 sourceV
     (elvWeightUnit D Sc (fun _ => 12) 12 false (0 : X) step).app sourceVacuum := rfl
 
 
+example : SKM.SuperAdjunction (k := ℚ)
+    (elvE D Sc (fun _ => 12) 12 false (0 : X) step)
+    (elvF D Sc (fun _ => 12) 12 false (0 : X) step) :=
+  ordinaryEvenSuperAdjunction
+    (elvE D Sc (fun _ => 12) 12 false (0 : X) step)
+    (elvF D Sc (fun _ => 12) 12 false (0 : X) step)
+    (elvWeightAdjunction D Sc (fun _ => 12) 12 false (0 : X) step)
+    (elvWeightUnit_mem D Sc (fun _ => 12) 12 false (0 : X) step)
+    (elvWeightCounit_mem D Sc (fun _ => 12) 12 false (0 : X) step)
+
+
 end OddMath.QuiverHecke.ELVWeightSuperAdjunctionExamples
 
 open Lean Elab Command in
