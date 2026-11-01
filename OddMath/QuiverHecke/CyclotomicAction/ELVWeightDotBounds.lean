@@ -45,7 +45,7 @@ private theorem end_eqToHom_conj_pow
     {C : Type*} [Category C] [Preadditive C]
     {M N : C} (e : M = N) (d : End N) (n : ℕ) :
     (show End M from eqToHom e ≫ d ≫ eqToHom e.symm) ^ n =
-      eqToHom e ≫ d ^ n ≫ eqToHom e.symm := by
+      eqToHom e ≫ (d ^ n) ≫ eqToHom e.symm := by
   subst e
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
 
