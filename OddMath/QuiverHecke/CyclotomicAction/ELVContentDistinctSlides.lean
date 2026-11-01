@@ -141,9 +141,12 @@ private theorem block_slide_left (β : Multiset I) {i j : I} (hij : i ≠ j) (γ
   intro v h m
   rw [contentTwoTransform_tensor, LinearMap.smul_apply, contentTwoTransform_tensor,
     firstDot_slide_source D Sc hij, contentAppendToComponent_smul, Linear.smul_comp]
+  simp only [add_comm (D.parity i) (D.parity i * D.parity j),
+    mul_comm (D.parity i) (D.parity i * D.parity j)]
   simp only [BalancedInduction.tensor, ← TensorProduct.smul_tmul', map_smul, smul_smul,
     sign_eq_zsign]
-  congr 2 <;> ring
+  congr 1
+  ring
 
 private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
     (hij' : β + ([i,j] : Multiset I) = γ)
@@ -162,9 +165,12 @@ private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (�
   intro v h m
   rw [contentTwoTransform_tensor, LinearMap.smul_apply, contentTwoTransform_tensor,
     lastDot_slide_source D Sc hij, contentAppendToComponent_smul, Linear.smul_comp]
+  simp only [add_comm (D.parity i * D.parity j) (D.parity j),
+    mul_comm (D.parity i * D.parity j) (D.parity j)]
   simp only [BalancedInduction.tensor, ← TensorProduct.smul_tmul', map_smul, smul_smul,
     sign_eq_zsign]
-  congr 2 <;> ring
+  congr 1
+  ring
 
 private theorem transport_slide
     {A B C E : Type u} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
