@@ -1,6 +1,6 @@
 # Fixed-content bounds uniform in modules
 
-Status: proposed source, pending CI; depends on ELVWeightDot.
+Status: full-CI verified in #778 at exact head `d5206c0d` (run 41290495713), integrated into research; depends on ELVWeightDot.
 
 elvWeightDotComponent_pow_zero proves the precise quantifiers needed before
 adjunction transpose: for each actual target weight-content block δ there

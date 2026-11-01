@@ -50,6 +50,11 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Direct probe units | Odd/even ring-theoretic propagation and all-position cofinal monochromatic units, without finite dimension; full-CI verified in [#768](https://github.com/apellis/odd-lean/pull/768). Mixed-word propagation is under verification | [ProbeUnitPropagation](../../OddMath/QuiverHecke/CyclotomicAction/ProbeUnitPropagation.lean) |
 | Actual weight dot | Normalized content induction dot assembled on actual weight E, with nilpotence at each target-content block; full-CI verified in [#772](https://github.com/apellis/odd-lean/pull/772). No common exponent over a weight fibre is asserted | [ELVWeightDot](../../OddMath/QuiverHecke/CyclotomicAction/ELVWeightDot.lean) |
 | Raw append spanning | Actual append ranges are finitely spanned before coefficient truncation; full-CI verified in [#766](https://github.com/apellis/odd-lean/pull/766). Specialization and product-category dimension are separate statements | [ELVRawAppendSpanning](../../OddMath/QuiverHecke/CyclotomicAction/ELVRawAppendSpanning.lean) |
+| Raw negative-height matrix | Actual crossing plus descended dotted input contractions is bijective, including height zero; full coefficients over a commutative ring, odd moving colour and diagonal old endpoints. Full-CI verified in [#777](https://github.com/apellis/odd-lean/pull/777) | [ELVNegativeCrossing](../../OddMath/QuiverHecke/CyclotomicAction/ELVNegativeCrossing.lean), `negativeCrossingEquiv`; actual snake, cap descent and recurrence are included |
+| Actual old modules and counit parity | Old quotient supercategory and representables, canonical induction-parity tensor formulas and whole counit naturality; full-CI verified in [#761](https://github.com/apellis/odd-lean/pull/761). Coefficient(1), J and dotted normalization remain separate | `ELVOldSupermodules`, `ELVInductionParityComparison` |
+| Arbitrary-output C0 covariance | Actual append quotient projection covariant under arbitrary old output morphisms, with full degree-dependent coefficient twist; full-CI verified in [#779](https://github.com/apellis/odd-lean/pull/779) | [ELVOffDiagonalCoefficientAction](../../OddMath/QuiverHecke/CyclotomicAction/ELVOffDiagonalCoefficientAction.lean) |
+| Fixed-content module-uniform dot bound | For each target-content block, one positive exponent kills its actual normalized dot for every input module; full-CI verified in [#778](https://github.com/apellis/odd-lean/pull/778). The exponent may vary with the block; transpose remains separate | [ELVWeightDotBounds](../../OddMath/QuiverHecke/CyclotomicAction/ELVWeightDotBounds.lean), `elvWeightDotComponent_pow_zero` |
+| Scalar parity and affine Hom specialization | Actual signed Hom specialization superfunctor, retaining full coefficient parity; full-CI verified in [#762](https://github.com/apellis/odd-lean/pull/762). Cyclotomic ideal/image comparison is separate | `ELVScalarParity` and `ELVScalarHom` |
 
 ## Remaining critical chain
 
@@ -60,7 +65,12 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
    proved prescribed source/crossing decompositions and polynomial
    boundary in the exact categorical diagram; derive the snake/
    augmented inverse at every height, including zero. Supply the required
-   coefficient compatibility, naturality and integer-degree comparisons.
+   coefficient compatibility and naturality comparisons. The existing full-ELV
+   boundary leading/division and raw inverse results cover an odd moving
+   colour. An actual even-moving full-ELV inverse is still required for the
+   mixed-parity action; the ordinary-polynomial global wrapper assumes its
+   local inversions and does not discharge this obligation. Other colours'
+   exterior coefficients cannot be treated as a commutative ground ring.
 2. Construct the full-ELV factor families from that inverse and the independent
    content induction maps; finish their composed mixed braid and multicolour
    presentation comparison with algebra parameters `parameterTwist Sc`.

@@ -27,7 +27,7 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
 lemma braid_adjacent_iij (ν : X) (i j : I) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) {s t : Sector I}
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) {s t : Sector I}
     (p : SPath (wd D ν [up i, up i, up j]) s t)
     (q : SPath (wd D ν [up j, up i, up i]) s t) (Z : P.H t) :
     braidLeft (P.swappedGens c L) i i j ν p q Z =
@@ -55,7 +55,7 @@ lemma braid_adjacent_iij (ν : X) (i j : I) (c : P.CrossCoeff Sc) (L : P.Leftwar
   · exact P.adjacentPureProbe_iij ν i j s c L hij e p q Z
 
 lemma braid_adjacent_jii (ν : X) (i j : I) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) {s t : Sector I}
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) {s t : Sector I}
     (p : SPath (wd D ν [up j, up i, up i]) s t)
     (q : SPath (wd D ν [up i, up i, up j]) s t) (Z : P.H t) :
     braidLeft (P.swappedGens c L) j i i ν p q Z =
@@ -85,7 +85,7 @@ lemma braid_adjacent_jii (ν : X) (i j : I) (c : P.CrossCoeff Sc) (L : P.Leftwar
 /-- The entire non-correction field of CrossBraid, for arbitrary colours,
 sectors, and paths. -/
 lemma braid_nonRepeated (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (i j r : I) (ν : X) (hn : ¬(i = r ∧ i ≠ j)) {s t : Sector I}
     (p : SPath (wd D ν [up i, up j, up r]) s t)
     (q : SPath (wd D ν [up r, up j, up i]) s t) (Z : P.H t) :

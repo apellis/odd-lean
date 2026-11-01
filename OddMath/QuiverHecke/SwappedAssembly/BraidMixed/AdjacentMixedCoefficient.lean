@@ -23,7 +23,7 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   {D : Datum I X} {Sc : Scalars D k}
 namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc) (c : P.CrossCoeff Sc)
-  (hc : c.IsInverse) (h : P.CrossCoeffInputs) (i j : I) (s : Sector I)
+  (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (i j : I) (s : Sector I)
   (hR : StepValid (true, i) false s)
   (hs : nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s)) =
     nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)))
