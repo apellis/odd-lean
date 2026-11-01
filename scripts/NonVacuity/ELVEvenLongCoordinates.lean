@@ -21,7 +21,6 @@ private def mixedScalars : SKM.Scalars mixedDatum ℚ where
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := by intro _; norm_num
 
-
 private theorem evenMovingParity : mixedDatum.parity false = 0 := rfl
 
 private theorem evenMovingOneParity : (1 : ℕ) • mixedDatum.parity false = 0 := by
@@ -57,14 +56,16 @@ private def exteriorOld : Old mixedDatum mixedScalars (fun _ => 4) [true] [true]
     (boundaryDelta mixedDatum mixedScalars (fun _ => 4) ⟨true, rfl⟩ [true])
 
 example :
-    movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false [true] [true, false] 1 evenMovingOneParity
+    movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false [true] ([true] ++ [false]) 1
+      (by simpa only [one_nsmul] using evenMovingParity)
       (offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false [true] [true]
         (Finsupp.single 0 exteriorOld)) =
     offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false [true] [true]
       (Finsupp.single 1 exteriorOld) := by
-  simpa only [evenLongShift_single] using
-    evenMoving_offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4)
-      1 false evenMovingParity [true] [true] (Finsupp.single 0 exteriorOld)
+  exact (evenMoving_offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4)
+      1 false evenMovingParity [true] [true] (Finsupp.single 0 exteriorOld)).trans
+    (congrArg (offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false [true] [true])
+      (evenLongShift_single mixedDatum mixedScalars (fun _ => 4) [true] [true] 0 exteriorOld))
 end EvenLongCoordinatesConsumer
 
 open Lean Elab Command in
@@ -80,3 +81,4 @@ run_cmd do
     count := count + 1
   if count == 0 then throwError "Empty declaration inventory"
   logInfo m!"Audited {count} declarations; all axioms allowed."
+
