@@ -103,8 +103,16 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
     change (q (probeMixedCross D Sc pre post i j ≫
       probeMixedCross D Sc pre post j i)).val =
       (q ((Sc.t i j : k) • u^(D.dn i j))).val + (q Rright).val * (q v).val
-    rw [hr, q.map_add', q.map_mul']
-    rfl
+    have hq : q (probeMixedCross D Sc pre post i j ≫
+        probeMixedCross D Sc pre post j i) =
+        q ((Sc.t i j : k) • u^(D.dn i j)) + q Rright * q v := by
+      calc
+        _ = q ((Sc.t i j : k) • u^(D.dn i j) + Rright*v) :=
+          congrArg (fun f : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))) => q f) hr
+        _ = q ((Sc.t i j : k) • u^(D.dn i j)) + q (Rright*v) := q.map_add' _ _
+        _ = _ := congrArg (fun z : CyclotomicWordCorner D Sc a s =>
+          q ((Sc.t i j : k) • u^(D.dn i j)) + z) (q.map_mul' Rright v)
+    exact congrArg (fun z : CyclotomicWordCorner D Sc a s => z.val) hq
   · unfold probeMixedEntry
     rw [← cyclotomicWordEntry_comp]
     change (q (probeMixedCross D Sc pre post i j ≫
