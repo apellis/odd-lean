@@ -6,8 +6,14 @@ open CategoryTheory StringDiagrams
 open OddMath OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
 open CyclotomicAction.AsymmetricParameters
 
-private def crossingIndex : NFIdx [false, true] [true, false] :=
-  ⟨([], Equiv.swap 0 1), by simp, by simp, by decide⟩
+private def crossingIndex : NFIdx [false, true] [true, false] := by
+  refine ⟨([], Equiv.swap 0 1), by simp, by simp, ?_⟩
+  change SChain [false, true]
+    (pl [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))) [true, false]
+  have ht : tgt [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) =
+      [true, false] := by decide
+  simpa only [ht] using
+    sChain_pl [false, true] (cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))
 
 /-- A genuinely off-diagonal old Hom on connected odd data, with every
 index and scalar hypothesis supplied. -/
@@ -31,8 +37,15 @@ example (f : ℕ →₀ Old datum scalars (fun _ => 12) [] [false]) :
       (offDiagonalLongSection datum scalars (fun _ => 12) 0 true [] [false] f) = f :=
   offDiagonalLongExtraction_section datum scalars (fun _ => 12) 0 true _ _ f
 
-private def dottedCrossingIndex : NFIdx [false, true] [true, false] :=
-  ⟨([0], Equiv.swap 0 1), by decide, by decide, by decide⟩
+private def dottedCrossingIndex : NFIdx [false, true] [true, false] := by
+  refine ⟨([0], Equiv.swap 0 1), by decide, by decide, ?_⟩
+  change SChain [false, true]
+    (pl [false, true] (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))))
+    [true, false]
+  have ht : tgt [false, true]
+      (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1))) = [true, false] := by decide
+  simpa only [ht] using
+    sChain_pl [false, true] (PG.dot 0 :: cw (Categorification.TypeA.canWord 2 (Equiv.swap 0 1)))
 
 /-- Different old normal forms compute the same long coordinate functional. -/
 example (z : Target datum scalars (fun _ => 12) false [false, true] ([true, false] ++ [false])) :
