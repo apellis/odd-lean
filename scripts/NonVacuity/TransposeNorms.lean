@@ -32,7 +32,7 @@ private theorem oddNorms {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) (x : End E)
   have hz : IsNilpotent (0 : End (𝟙 B)) := ⟨1, by simp⟩
   have hh := mixedPostSource_square_norms_isUnit_of_nilpotent E (identityAdj B) 1 (𝟙 B)
     hx (zero_mem _) hu hz
-  exact ⟨mixedPostSourcePreDot_isUnit E 1 (𝟙 B) hu,
+  exact ⟨mixedPostSourcePreDot_isUnit (k := ℚ) E 1 (𝟙 B) hu,
     mixedPostSourcePostDot_isNilpotent E (identityAdj B) 1 (𝟙 B)
       (zero_mem (parity (R := ℚ) (𝟙 B) (𝟙 B) 1)) hz, hh.1, hh.2⟩
 

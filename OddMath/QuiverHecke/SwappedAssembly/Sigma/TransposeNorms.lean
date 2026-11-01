@@ -68,7 +68,7 @@ theorem mixedPostSource_difference_isUnit_of_nilpotent {x : End E} (hx : x ∈ p
     (hu : IsUnit x) (hn : IsNilpotent y) :
     IsUnit (mixedPostSourcePreDot (k := k) E κ H (F' := F') x -
       mixedPostSourcePostDot (k := k) E κ H A y) := by
-  have hu' := mixedPostSourcePreDot_isUnit (F' := F') E κ H hu
+  have hu' := mixedPostSourcePreDot_isUnit (k := k) (F' := F') E κ H hu
   have hn' := mixedPostSourcePostDot_isNilpotent E A κ H hy hn
   have hc := (commute_mixedPostSource E A κ H hx (y := y)).symm
   simpa only [sub_eq_add_neg, add_comm] using
@@ -84,7 +84,7 @@ theorem mixedPostSource_square_norms_isUnit_of_nilpotent {x : End E} (hx : x ∈
       mixedPostSourcePostDot (k := k) E κ H A y ^ 2) := by
   let a := mixedPostSourcePreDot (k := k) E κ H (F' := F') x
   let b := mixedPostSourcePostDot (k := k) E κ H A y
-  have ha : IsUnit a := mixedPostSourcePreDot_isUnit E κ H hu
+  have ha : IsUnit a := mixedPostSourcePreDot_isUnit (k := k) E κ H hu
   have hb : IsNilpotent b := mixedPostSourcePostDot_isNilpotent E A κ H hy hn
   have hg := TwoSupercategory.whiskerLeft_mem (R := k)
     ((homParityShift (k := k) κ).obj H) (SuperAdjunction.rightTranspose_mem A A hy)
