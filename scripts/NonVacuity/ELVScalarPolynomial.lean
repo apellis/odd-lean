@@ -84,7 +84,7 @@ example :
   congr 1
   norm_num [scalarCoefficientPolynomial, Fin.sum_univ_succ, elvMonicCoefficient,
     elvCoefficient, elvChi, probeValues]
-  ring
+  simp only [map_ofNat] <;> ring
 
 end ELVScalarHomConsumer
 
