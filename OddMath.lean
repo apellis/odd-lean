@@ -1743,3 +1743,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCrossingInputDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVCapInputRecurrence
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongCoordinates
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapRepresentativePowers
