@@ -61,6 +61,17 @@ instance kernel_additive (t : D) : (kernel (k := k) J t).Additive where
       precompose (k := k) J a.unop t + precompose (k := k) J b.unop t
     exact precompose_add J a.unop b.unop t
 
+/-- A balanced tensor with the coefficient bound as a raw category arrow. -/
+def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
+    (b : v ⟶ J.obj s) : Component (k := k) J v t :=
+  BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b
+
+@[simp] theorem precompose_componentTensor {v w : D} (a : v ⟶ w) (t : D)
+    (s : C) (g : J.obj s ⟶ t) (b : w ⟶ J.obj s) :
+    precompose (k := k) J a t (componentTensor (k := k) J w t s g b) =
+      componentTensor (k := k) J v t s g (a ≫ b) :=
+  precompose_tensor J a t s g b
+
 variable [Preadditive C] [Linear k C] [Supercategory k C]
   [J.Additive] [J.Linear k] [IsSuperfunctor k J]
 
@@ -75,17 +86,6 @@ theorem coefficientSpace_eq (t v : D) :
     BalancedKernelTensor.coefficientSpace (coefficientGrading (k := k) J t) v =
       BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t := rfl
 
-/-- A balanced tensor with the coefficient bound as a raw category arrow. -/
-def componentTensor (v t : D) (s : C) (g : J.obj s ⟶ t)
-    (b : v ⟶ J.obj s) : Component (k := k) J v t :=
-  BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b
-
-@[simp] theorem precompose_componentTensor {v w : D} (a : v ⟶ w) (t : D)
-    (s : C) (g : J.obj s ⟶ t) (b : w ⟶ J.obj s) :
-    precompose (k := k) J a t (componentTensor (k := k) J w t s g b) =
-      componentTensor (k := k) J v t s g (a ≫ b) :=
-  precompose_tensor J a t s g b
-
 /-- Sum projection with the coefficient exposed as a raw category arrow. -/
 theorem component_proj_tensor (v t : D) (q : ZMod 2) (s : C)
     (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
@@ -98,7 +98,7 @@ theorem component_proj_tensor (v t : D) (q : ZMod 2) (s : C)
       (proj k q g) ((homSVec k D v (J.obj s)).proj 0 b) +
     BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
       (proj k (q + 1) g) ((homSVec k D v (J.obj s)).proj 1 b) at h
-  simpa only [homSVec_proj] using h
+  simpa only [homSVec_proj, componentTensor] using h
 
 /-- Ordinary precomposition has the source arrow's full parity. -/
 theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
