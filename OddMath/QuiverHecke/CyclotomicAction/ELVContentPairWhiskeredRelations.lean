@@ -99,7 +99,10 @@ theorem contentEPairDot_zero_whisker (β : Multiset I) (i j : I)
   have ht := contentInductionMap_total_of_mem
     (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
       (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl))
-    (BalancedInduction.transformComponent_mem _ _) w
+    (BalancedInduction.transformComponent_mem
+      (contentAppendTo_supernatural D Sc cutoff N
+        (β := β) (γ := β + ([i] : Multiset I)) rfl rfl
+        (firstDot_parity D Sc i [])) M) w
   rw [← ht] at h
   have he := endLinear_source_congr D Sc cutoff N
     (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [j]))
