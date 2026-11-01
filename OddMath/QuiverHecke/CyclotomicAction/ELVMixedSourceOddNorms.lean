@@ -19,6 +19,14 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
   (Λ x : X)
 
+/-- Use the bicategory's original Hom data rather than the strict-category Quiver path. -/
+local instance elvOddPiQuiver : Quiver.{u + 1} (PiSCat.{u, u, u + 1} k) :=
+  (PiSCat.instBicategoryStruct (R := k)).toCategoryStruct.toQuiver
+
+local instance elvOddPiCategoryStruct :
+    CategoryStruct.{u + 1} (PiSCat.{u, u, u + 1} k) :=
+  (PiSCat.instBicategoryStruct (R := k)).toCategoryStruct
+
 /-- Fix the bundled Hom category before inserting actual coend endomorphisms. -/
 local instance elvOddHomCategory (A B : PiSCat.{u, u, u + 1} k) :
     Category.{u + 1} (A ⟶ B) :=
@@ -78,11 +86,11 @@ private theorem mixedOddNorms (E : A ⟶ B)
       (show End (E ≫ K) from E ◁ t) ^ 2) ∧
     IsUnit ((show End (E ≫ K) from a ▷ K) ^ 2 +
       (show End (E ≫ K) from E ◁ t) ^ 2) := by
-  apply oddEndNorms D Sc cutoff bound Λ x (E ≫ K)
+  apply oddEndNorms (A := A) D Sc cutoff bound Λ x (E ≫ K)
     (a ▷ K) (E ◁ t)
     (Superfunctor.whiskerRight_mem ha K) (Superfunctor.whiskerLeft_mem E ht)
     (hu.map ((SKM.homPost (k := k) (B := PiSCat.{u, u, u + 1} k)
-      (a := A) K).mapEnd E))
+      (a := A) (b := B) (c := elvWeightSpace D Sc cutoff bound Λ x) K).mapEnd E))
   · intro M δ
     exact hn (E.obj M) δ
   · intro M δ
@@ -129,7 +137,11 @@ private theorem elvMixedSource_oddNorms [Finite I]
     change (show End (((elvF D Sc cutoff bound i Λ h).obj (K.obj M)) δ) from
       (elvActionDotTranspose D Sc cutoff bound i Λ h).app 1 (K.obj M) δ) ^ n = 0
     simpa only [hi] using hn (K.obj M)
-  have hh := mixedOddNorms D Sc cutoff bound Λ x E F a t ht ha hu hn
+  have hh := mixedOddNorms (A := A) (B := B) D Sc cutoff bound Λ x E F a t ht ha hu hn
+  set_option backward.dsimp.instances true in
+    dsimp only [K, F, t] at hh
+  delta elvOddPiQuiver elvOddPiCategoryStruct elvOddHomCategory
+    SKM.mixedPostSourcePreDot SKM.mixedPostSourcePostDot elvActionDotTranspose at hh ⊢
   exact hh
 
 /-- The literal odd source square difference is a unit without a whole-fibre exponent. -/

@@ -1,11 +1,13 @@
 # Literal odd mixed-source norm units
 
-The source object is the prescribed right-associated E followed by (Π^κ H followed by the actual reservoir restriction). The probe map and chosen right-transposed dot are the literal mixedPostSourcePreDot and mixedPostSourcePostDot operators.
+The source is the prescribed right-associated E followed by (Π^κ H followed by the actual reservoir restriction). The probe map and chosen right-transposed dot are exactly mixedPostSourcePreDot and mixedPostSourcePostDot.
 
-The construction derives odd anticommutation from supernatural naturality, and both square-norm units from the actual per-source-content transpose bound. The exponent may depend on the content block; there is no whole-weight-fibre nilpotence or finite-support hypothesis.
+The construction derives anticommutation by supernatural naturality and both square-norm units from the actual per-source-content transpose bound. The exponent may depend on the content block. No whole-fibre nilpotence or finite-support hypothesis is introduced.
 
-Generic componentwise norm lemmas are stated in the actual Π-SCat Hom category before the coend maps are specialized. A local alias selects BicategoryStruct.homCategory for these End rings, matching the dictionaries retained by the generic SKM literal operators; it constructs no category data or Π structure.
+The private norm interface uses Π-SCat 1-morphisms and their End rings before actual coend maps are supplied. The isolated class normalization fixes the existing bicategory Quiver, CategoryStruct and Hom category; it constructs no new data. This avoids the strict-category/ReflQuiver path otherwise selected for concrete Π-SCat arrow notation. The named existing bicategory instance is used directly rather than through an inferInstance wrapper.
 
-The consumer uses the proved odd probe-dot unit for (1+z^2)^3 with highest-weight parameter six at original edge zero to two, and actual full-ELV reservoir cutoff/highest-weight parameter twelve at the same edge. The Hom-sector object H is arbitrary and the parity shift is one. Both positions avoid the former edge six to eight beyond the usual probe highest-weight window; no nonzero-category theorem is claimed by this API consumer alone.
+A bounded stored-Expr comparison found zero differences after only these alias/operator expansions and local let reduction. The final proof now performs that exact selective normalization explicitly, including instance terms, without changing recursion or heartbeat limits.
 
-Checkpoint status: the generic norm proofs, actual per-content nilpotence bound, parity and naturality checked in the preceding source iteration. Final conversion to the literal result still hit a recursion-depth limit. The current local bundled-Hom category alias is the next isolated repair and awaits source/consumer verification. No integration or completed factor-family claim is made until full checks pass.
+The consumer uses the actual odd probe-dot unit for (1+z^2)^3 at ΛP=6, original edge0→2, and actual full-ELV reservoir cutoff/ΛR=12 at the same edge, with κ=1 and arbitrary Hom-sector H. These positions avoid the former edge6→8 above the usual probe highest-weight window; this API test alone does not assert that the categories are nonzero.
+
+Checkpoint validation: generic norm algebra, actual component nilpotence, parity and naturality checked. The selective final normalization advanced to a redundant dsimp no-progress diagnostic; that line is removed in this head. Final source/consumer verification remains pending. No integration or completed factor-family claim is made until full gates pass.
