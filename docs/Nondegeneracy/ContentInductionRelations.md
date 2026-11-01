@@ -8,6 +8,12 @@ distinct-colour slides on the same pair crossing and explicit common target
 content. These sources and their concrete asymmetric odd consumers are drafts
 until their build, consumers and axiom checks pass.
 
+The pair/triple carrier abbreviations now evaluate the actual induction
+functor and take the resulting SVec carrier, instead of manually reproducing
+the nested balanced-induction carrier. The objects are unchanged; their
+inherited module instances now occur syntactically as those of the independent
+maps. Full CI checks all existing modules against this representation change.
+
 The corrected and uncorrected paths take their common intermediate contents and endpoint
 equalities explicitly, retaining them as abstract variables through the source
 comparison rather than expanding computed multiset transports. The concrete
