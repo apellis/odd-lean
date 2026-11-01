@@ -29,3 +29,13 @@ specializing to content modules. Negation of a transported triple map likewise
 uses linear-map composition before specialization. No extra action, inverse,
 independence or grading hypothesis is introduced. The independent composed
 braid and distinct-slide relations remain separate obligations.
+
+The concrete consumer `ELVContentCarrierComparisons.lean` applies the pair dot
+comparisons, original-parameter quadratic, three triple dot comparisons,
+correction polynomial comparison and total-evaluation identity to the connected
+asymmetric all-odd datum and its vacuum representable. All bookkeeping
+equalities and distinctness premises are discharged. It also audits every
+owned declaration of the seven changed producer modules. The existing
+ModuleAction consumer uses that same exact module inventory in place of
+scanning the entire imported environment; the allowlist and coverage are
+unchanged.
