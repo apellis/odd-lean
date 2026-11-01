@@ -6,7 +6,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossingTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicPprime
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicShortColumns
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicAlphaCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicTopKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicTopQuotient
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryCoefficientAction
@@ -55,6 +54,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumGeneratorCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSourceWord
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumWordEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumWordPairing
 import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumHomAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentYoneda
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleYoneda
@@ -1720,3 +1721,9 @@ import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialQuotient
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
