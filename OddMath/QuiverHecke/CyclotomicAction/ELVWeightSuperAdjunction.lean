@@ -29,7 +29,8 @@ def elvActionCounit : elvF D Sc cutoff bound i Λ h ≫ elvE D Sc cutoff bound i
   SuperNatTrans.ofNatTrans (elvWeightCounit D Sc cutoff bound i Λ h)
     (elvWeightCounit_mem D Sc cutoff bound i Λ h)
 
-private def ordinaryEvenSuperAdjunction
+/-- Lift an ordinary adjunction with even components to the superadjunction interface. -/
+def ordinaryEvenSuperAdjunction
     {A B : PiSCat.{u, u, u + 1} k} (E : A ⟶ B) (F : B ⟶ A)
     (adj : E.toFunctor ⊣ F.toFunctor)
     (hη : ∀ M, adj.unit.app M ∈ parity (R := k) _ _ 0)
