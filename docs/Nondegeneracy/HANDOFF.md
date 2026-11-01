@@ -94,3 +94,19 @@ isomorphism. This is the Pi-supercategory prerequisite for the full-ELV factor
 weight objects; it needs no local inverse or ordinary-polynomial replacement.
 Its production file and concrete asymmetric vacuum consumer are proposed and
 await full CI; no completed factor or global weight-family construction is claimed.
+
+## Canonical module parity and the actual counit
+
+Candidate source modules `ELVContentParity`, `ELVInductionParityComparison`
+and `ELVOldSupermodules` construct the module parity operation, its canonical
+transport through actual balanced induction, the whole counit comparison,
+and actual representable supermodules on the existing old quotient category.
+These terms await their full CI gate; they are not a completed factor action.
+
+The next specialization identifies `CyclotomicCrossingTensor.coefficient 1`
+with the parity-shifted restriction of the old representable. Retain the
+existing coend, full coefficient parity, independently defined counit and
+all target arrows. Then transport through coefficient truncation and exact
+content, and compare actual dotted counits with the already specified
+input contraction rows. Neither ordinary-polynomial factors nor an
+unspecified kernel isomorphism supplies this comparison.
