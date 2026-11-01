@@ -47,3 +47,26 @@ These additions await CI together with their proposed leading-coordinate
 dependencies. They do not assert the balanced crossing inverse or the
 categorically normalized cap matrix; the arbitrary-Hom snake and cap
 comparison remain subsequent prerequisites.
+
+## Actual balanced source and snake
+
+The further draft `ELVOffDiagonalSourceSplitting` identifies the kernel of
+the actual long extraction with the prescribed balanced alpha range, then
+corrects the literal long section by its alpha coordinate. This source
+normal form holds at arbitrary old endpoints and every moving colour.
+
+For odd moving colour, `ELVOffDiagonalCrossingHeight` chases the actual
+short-column square to obtain crossing injectivity in nonnegative height
+and surjectivity in nonpositive height. `ELVOffDiagonalBoundarySnake`
+constructs q composed with the actual short-cross decoder, P, and that
+source section. Its range is exactly the actual cyclotomic crossing kernel;
+both inverse products are packaged as a kernel equivalence. The snake class
+is unchanged when the section is replaced by any lift with the same long
+coordinate. This permits later cap evaluation on actual corrected rho lifts.
+
+The proposed proofs use the arbitrary-Hom row division above, retain full
+coefficients, and add no exact-sequence, action, field or inverse premise.
+Mixed B2 source reconstruction, height consequences and both snake inverse
+products are included as concrete consumers. All new source and consumers
+await CI. The raw negative cap matrix at arbitrary endpoints remains next;
+no categorical cap normalization is asserted here.
