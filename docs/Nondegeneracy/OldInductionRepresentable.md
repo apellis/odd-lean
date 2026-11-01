@@ -1,6 +1,6 @@
 # Canonical upper-Hom comparison for old quotient modules
 
-Status: proposed source and concrete consumers; pending CI. The isolated branch copies the required old append superfunctor source from #769 without claiming its ancestry or disturbing its run.
+Status: full build, global axiom audit and concrete consumers passed before research integration in #806, including the canonical old append superfunctor.
 
 ELVOldInductionRepresentable constructs the even natural module isomorphism from right-append induction of the old Hom representable to the representable of the appended word. Its forward map is [h tensor b] ↦ append(b) composed with h; its inverse inserts the old identity. The upperHomEquiv is the resulting concrete identification of Res(Ind representable_v) at t with Old(v+i,t+i). No target-isomorphism, field, flatness or action premise is supplied.
 

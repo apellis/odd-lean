@@ -9,6 +9,8 @@ For even dots x and y, write X,Y for the existing target dots and A,B for their 
 
 Thus (X−Y)² ≫ Φ = c Xⁿ+d Y and units of (A−B)² and c Aⁿ+d B suffice for invertibility of Dot(Φ). This does not assume whole-fibre nilpotence, an integer grading, or invertibility of the desired dotted mate.
 
+Full build, global axiom audit and concrete consumers passed before research integration in #810.
+
 The paired consumer uses the asymmetric ELV induction/restriction superadjunction, both parity shifts equal to one, and the crossing minus the identity. All owned declarations are included in the axiom inventory.
 
 The remaining application is to derive the concrete source units from the fixed-content transpose bounds and to retain the Koszul minus sign in the right transpose of an odd square. This module does not claim the completed swapped action or the arbitrary-endpoint categorical factor inverse.

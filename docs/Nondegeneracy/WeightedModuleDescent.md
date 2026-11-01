@@ -25,7 +25,7 @@ consumer axiom audit. The consumer constructs actual truncated covariant
 representables on connected odd data, pulls them back, and descends a
 nonidentity negation isomorphism. Its action is tested on an odd-coefficient
 mixed-crossing vector proved nonzero at every sufficiently large cutoff.
-Full CI remains the integration gate.
+Full build, global axiom audit and concrete consumers passed before research integration in #825.
 
 This does not prove that old induction preserves the annihilator class,
 nor compare old and truncated balanced induction or its adjunction.
