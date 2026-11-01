@@ -26,7 +26,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (F : Superfunctor k C (ELVWeightProduct D Sc cutoff bound Λ y))
 
 abbrev elvPostRestriction := F.comp (elvF D Sc cutoff bound i Λ h)
-abbrev elvPostTransposeDot : End (elvPostRestriction D Sc cutoff bound i Λ h F) :=
+def elvPostTransposeDot : End (elvPostRestriction D Sc cutoff bound i Λ h F) :=
   Superfunctor.whiskerLeft F (elvActionDotTranspose D Sc cutoff bound i Λ h)
 
 /-- A typed endomorphism component of the postrestriction functor. -/
@@ -78,6 +78,13 @@ theorem elvPostTransposeDot_square_difference_isUnit [Finite I] (hi : D.parity i
     IsUnit (X ^ 2 - elvPostTransposeDot D Sc cutoff bound i Λ h F ^ 2) := by
   have hy : elvPostTransposeDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ 1 :=
     hi ▸ elvPostTransposeDot_mem D Sc cutoff bound i Λ h F
+  have hnil : ∀ M δ, IsNilpotent
+      (elvRestrictionEndComponent D Sc cutoff bound i Λ h F
+        (elvPostTransposeDot D Sc cutoff bound i Λ h F) 1 M δ) := by
+    intro M δ
+    simpa only [hi] using
+      elvPostTransposeDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
+  generalize elvPostTransposeDot D Sc cutoff bound i Λ h F = Y at hy hnil hanti ⊢
   apply superfunctorEnd_isUnit
   · simpa only [pow_two, End.mul_def, SuperNatTrans.zmod2_one_add_one] using
       Submodule.sub_mem _ (comp_mem hx hx) (comp_mem hy hy)
@@ -85,19 +92,17 @@ theorem elvPostTransposeDot_square_difference_isUnit [Finite I] (hi : D.parity i
     change IsUnit (
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from (X ^ 2).app 0 M) -
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostTransposeDot D Sc cutoff bound i Λ h F ^ 2).app 0 M))
+        (Y ^ 2).app 0 M))
     rw [superfunctor_odd_square_app_zero _ X hx M,
-      superfunctor_odd_square_app_zero _ (elvPostTransposeDot D Sc cutoff bound i Λ h F) hy M]
+      superfunctor_odd_square_app_zero _ Y hy M]
     exact product_square_difference_isUnit
       (fun δ : WeightBlocks D Λ x => ContentModules D Sc cutoff bound δ.1)
       ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M)
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from X.app 1 M)
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostTransposeDot D Sc cutoff bound i Λ h F).app 1 M)
+        Y.app 1 M)
       (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
-      (fun δ => by
-        simpa only [hi] using
-          elvPostTransposeDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ)
+      (hnil M)
       (hanti M)
 
 include sy hc in
@@ -111,6 +116,13 @@ theorem elvPostTransposeDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
     IsUnit (X ^ 2 + elvPostTransposeDot D Sc cutoff bound i Λ h F ^ 2) := by
   have hy : elvPostTransposeDot D Sc cutoff bound i Λ h F ∈ parity (R := k) _ _ 1 :=
     hi ▸ elvPostTransposeDot_mem D Sc cutoff bound i Λ h F
+  have hnil : ∀ M δ, IsNilpotent
+      (elvRestrictionEndComponent D Sc cutoff bound i Λ h F
+        (elvPostTransposeDot D Sc cutoff bound i Λ h F) 1 M δ) := by
+    intro M δ
+    simpa only [hi] using
+      elvPostTransposeDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
+  generalize elvPostTransposeDot D Sc cutoff bound i Λ h F = Y at hy hnil hanti ⊢
   apply superfunctorEnd_isUnit
   · simpa only [pow_two, End.mul_def, SuperNatTrans.zmod2_one_add_one] using
       Submodule.add_mem _ (comp_mem hx hx) (comp_mem hy hy)
@@ -118,19 +130,17 @@ theorem elvPostTransposeDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
     change IsUnit (
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from (X ^ 2).app 0 M) +
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostTransposeDot D Sc cutoff bound i Λ h F ^ 2).app 0 M))
+        (Y ^ 2).app 0 M))
     rw [superfunctor_odd_square_app_zero _ X hx M,
-      superfunctor_odd_square_app_zero _ (elvPostTransposeDot D Sc cutoff bound i Λ h F) hy M]
+      superfunctor_odd_square_app_zero _ Y hy M]
     exact product_square_sum_isUnit
       (fun δ : WeightBlocks D Λ x => ContentModules D Sc cutoff bound δ.1)
       ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M)
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from X.app 1 M)
       (show End ((elvPostRestriction D Sc cutoff bound i Λ h F).obj M) from
-        (elvPostTransposeDot D Sc cutoff bound i Λ h F).app 1 M)
+        Y.app 1 M)
       (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
-      (fun δ => by
-        simpa only [hi] using
-          elvPostTransposeDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ)
+      (hnil M)
       (hanti M)
 
 
@@ -140,7 +150,7 @@ variable {A : PiSCat.{u, u, u + 1} k}
   (G : A ⟶ elvWeightSpace D Sc cutoff bound Λ y)
 
 /-- The literal postcomposition image of the probe-precomposition dot. -/
-abbrev elvRestrictionProbeDot (α : End G) : End (elvPostRestriction D Sc cutoff bound i Λ h G) :=
+def elvRestrictionProbeDot (α : End G) : End (elvPostRestriction D Sc cutoff bound i Λ h G) :=
   Superfunctor.whiskerRight α (elvF D Sc cutoff bound i Λ h)
 
 theorem elvRestrictionProbeDot_isUnit (α : End G) (hu : IsUnit α) :
@@ -152,37 +162,37 @@ theorem elvRestrictionProbeDot_mem {p : ZMod 2} (α : End G)
     elvRestrictionProbeDot D Sc cutoff bound i Λ h G α ∈ parity (R := k) _ _ p :=
   Superfunctor.whiskerRight_mem hα (elvF D Sc cutoff bound i Λ h)
 
-private theorem elvRestrictionProbe_even_comm (α : End G) (M : A) (δ : WeightBlocks D Λ x) :
+private theorem elvRestrictionProbe_even_comm (t : End (elvF D Sc cutoff bound i Λ h)) (α : End G) (M : A) (δ : WeightBlocks D Λ x) :
     Commute
       (elvRestrictionEndComponent D Sc cutoff bound i Λ h G
-        (elvPostTransposeDot D Sc cutoff bound i Λ h G) 0 M δ)
+        (Superfunctor.whiskerLeft G t) 0 M δ)
       (elvRestrictionEndComponent D Sc cutoff bound i Λ h G
         (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) 0 M δ) := by
   change
     ((elvF D Sc cutoff bound i Λ h).map (α.app 0 M)) δ ≫
-        (elvActionDotTranspose D Sc cutoff bound i Λ h).app 0 (G.obj M) δ =
-      (elvActionDotTranspose D Sc cutoff bound i Λ h).app 0 (G.obj M) δ ≫
+        t.app 0 (G.obj M) δ =
+      t.app 0 (G.obj M) δ ≫
         ((elvF D Sc cutoff bound i Λ h).map (α.app 0 M)) δ
-  have hh := (elvActionDotTranspose D Sc cutoff bound i Λ h).naturality
+  have hh := t.naturality
     0 (α.app 0 M) (α.app_mem 0 M)
   simp only [koszulSign_zero_left, one_smul] at hh
   exact congrArg (fun f => f δ) hh
 
-private theorem elvRestrictionProbe_odd_anticomm (α : End G) (M : A) (δ : WeightBlocks D Λ x) :
+private theorem elvRestrictionProbe_odd_anticomm (t : End (elvF D Sc cutoff bound i Λ h)) (α : End G) (M : A) (δ : WeightBlocks D Λ x) :
     elvRestrictionEndComponent D Sc cutoff bound i Λ h G
-        (elvPostTransposeDot D Sc cutoff bound i Λ h G) 1 M δ *
+        (Superfunctor.whiskerLeft G t) 1 M δ *
       elvRestrictionEndComponent D Sc cutoff bound i Λ h G
         (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) 1 M δ =
     -(elvRestrictionEndComponent D Sc cutoff bound i Λ h G
         (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) 1 M δ *
       elvRestrictionEndComponent D Sc cutoff bound i Λ h G
-        (elvPostTransposeDot D Sc cutoff bound i Λ h G) 1 M δ) := by
+        (Superfunctor.whiskerLeft G t) 1 M δ) := by
   change
     ((elvF D Sc cutoff bound i Λ h).map (α.app 1 M)) δ ≫
-        (elvActionDotTranspose D Sc cutoff bound i Λ h).app 1 (G.obj M) δ =
-      -((elvActionDotTranspose D Sc cutoff bound i Λ h).app 1 (G.obj M) δ ≫
+        t.app 1 (G.obj M) δ =
+      -(t.app 1 (G.obj M) δ ≫
         ((elvF D Sc cutoff bound i Λ h).map (α.app 1 M)) δ)
-  have hh := (elvActionDotTranspose D Sc cutoff bound i Λ h).naturality
+  have hh := t.naturality
     1 (α.app 1 M) (α.app_mem 1 M)
   have hs : koszulSign (1 : ZMod 2) 1 = -1 := by simp [koszulSign]
   rw [hs, neg_one_zsmul] at hh
@@ -190,34 +200,35 @@ private theorem elvRestrictionProbe_odd_anticomm (α : End G) (M : A) (δ : Weig
 
 theorem elvRestrictionProbe_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 0)
-    (α : End G) (hα : α ∈ parity (R := k) _ _ 0) (hu : IsUnit α) :
-    IsUnit (elvPostTransposeDot D Sc cutoff bound i Λ h G -
-      elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) :=
-  elvPostTransposeDot_difference_isUnit D Sc cutoff bound sy hc i Λ h G hi _
-    (elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα)
-    (elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu)
-    (elvRestrictionProbe_even_comm D Sc cutoff bound i Λ h G α)
+    (α : End G) (hα : α ∈ parity (R := by
+  apply elvPostTransposeDot_difference_isUnit D Sc cutoff bound sy hc i Λ h G hi
+    (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
+  · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
+  · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
+  · exact elvRestrictionProbe_even_comm D Sc cutoff bound i Λ h G
+      (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 theorem elvRestrictionProbe_square_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
-    (α : End G) (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
-    IsUnit (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α ^ 2 -
-      elvPostTransposeDot D Sc cutoff bound i Λ h G ^ 2) :=
-  elvPostTransposeDot_square_difference_isUnit D Sc cutoff bound sy hc i Λ h G hi _
-    (elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα)
-    (elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu)
-    (elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G α)
+    (α : End G) (hα : α ∈ parity (R := by
+  apply elvPostTransposeDot_square_difference_isUnit D Sc cutoff bound sy hc i Λ h G hi
+    (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
+  · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
+  · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
+  · exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
+      (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 theorem elvRestrictionProbe_square_sum_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
-    (α : End G) (hα : α ∈ parity (R := k) _ _ 1) (hu : IsUnit α) :
-    IsUnit (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α ^ 2 +
-      elvPostTransposeDot D Sc cutoff bound i Λ h G ^ 2) :=
-  elvPostTransposeDot_square_sum_isUnit D Sc cutoff bound sy hc i Λ h G hi _
-    (elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα)
-    (elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu)
-    (elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G α)
+    (α : End G) (hα : α ∈ parity (R := by
+  apply elvPostTransposeDot_square_sum_isUnit D Sc cutoff bound sy hc i Λ h G hi
+    (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
+  · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
+  · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
+  · exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
+      (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 
 end Probe
 end OddMath.QuiverHecke.ELVOld
+

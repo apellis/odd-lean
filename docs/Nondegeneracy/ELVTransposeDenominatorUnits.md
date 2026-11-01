@@ -7,3 +7,5 @@ Postcomposing any source functor with actual restriction gives this literal tran
 The paired consumer uses the asymmetric two-colour root datum with even parity and a nonzero identity probe dot on the actual weight category. The generic nonzero odd product test remains in ProductDenominatorUnits.
 
 The application to the written odd mixed-mate polynomial must retain rightTranspose(y²)=−rightTranspose(y)² before rewriting norms. This module does not assert the whole swapped categorical action or the arbitrary-endpoint factor inverse.
+
+The norm argument freezes the postdot before projecting odd squares. Naturality is proved first for an arbitrary natural endomorphism of the prescribed restriction functor, then specialized to the literal transpose. This keeps evaluation from expanding the coend construction; the final probe constructor still discharges commutation itself.
