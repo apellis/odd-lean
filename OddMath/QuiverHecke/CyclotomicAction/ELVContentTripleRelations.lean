@@ -136,21 +136,18 @@ theorem contentETripleComparison_mem (β : Multiset I) (i j l : I) (γ : Multise
     (contentInductionCompTo_mem D Sc cutoff N β [i,j]
       ((β + ([i] : Multiset I)) + ([j] : Multiset I)) (by rw [add_assoc]; rfl) [l] γ _ h M)
 
+/-- The carrier of the actual evaluated triple functor, with its inherited
+SVec module instances shared by the independent natural transformations. -/
 abbrev ContentETripleSpace (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
-    (w : ContentCategory D Sc cutoff N γ) :=
-  BalancedInduction.Obj
-    (contentAppendTo D Sc cutoff N ((β + ([i] : Multiset I)) + ([j] : Multiset I)) [l] γ
-      (by rw [add_assoc, add_assoc]; exact h))
-    (BalancedInduction.induced
-      (contentAppend D Sc cutoff N (β + ([i] : Multiset I)) [j])
-      (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)).toFunctor w
+    (w : ContentCategory D Sc cutoff N γ) : Type u :=
+  (((contentETripleTo D Sc cutoff N β i j l γ h).obj M).obj w).carrier
 
 def contentETripleEquiv (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
     ContentETripleSpace D Sc cutoff N β i j l γ h M w ≃ₗ[k]
-      BalancedInduction.Obj (contentAppendTo D Sc cutoff N β [i,j,l] γ h) M.toFunctor w :=
+      (((contentInductionTo D Sc cutoff N β [i,j,l] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentETripleComparison D Sc cutoff N β i j l γ h).app M) w
 
 /-- The source-positioned map on three successive E functors. -/
@@ -453,3 +450,4 @@ theorem contentETriple_mixedBraid_tensor (β : Multiset I) {i j : I} (hij : i �
   exact contentMixedBraid_tensor D Sc cutoff N β hij M w v h m
 
 end OddMath.QuiverHecke.ELVOld
+

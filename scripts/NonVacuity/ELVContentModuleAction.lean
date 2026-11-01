@@ -81,13 +81,11 @@ open Lean Elab Command in
 run_cmd do
   let env ← getEnv
   let owner := `OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
-  let mut count : Nat := 0
-  for (name, _) in env.constants.toList do
-    if let some idx := env.getModuleIdxFor? name then
-      if env.header.moduleNames[idx.toNat]! == owner then
-        for ax in ← Lean.collectAxioms name do
-          unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
-            throwError "Disallowed axiom {ax} in {name}"
-        count := count + 1
-  if count == 0 then throwError "No owned declarations audited"
-  logInfo m!"Audited {count} declarations in {owner}."
+  let some idx := env.header.moduleNames.idxOf? owner | throwError "Missing owned module {owner}"
+  let names := env.header.moduleData[idx]!.constNames
+  if names.isEmpty then throwError "No owned declarations audited"
+  for name in names do
+    for ax in ← Lean.collectAxioms name do
+      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+        throwError "Disallowed axiom {ax} in {name}"
+  logInfo m!"Audited {names.size} declarations in {owner}."

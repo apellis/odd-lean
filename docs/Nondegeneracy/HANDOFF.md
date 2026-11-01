@@ -2,161 +2,136 @@
 
 Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
-This file records the next mathematical targets, not session telemetry.
+This file records next mathematical dependencies, not session telemetry.
 
 ## Dependency order and readiness
 
-| Target | Ready to start? | Existing inputs | Completion criterion / blocker |
+| Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use verified diagonal raw negative matrix (#777) and height consequences (#760); check the positive matrix, use verified arbitrary-Hom long coordinates (#753), then use the verified exact short kernel (#764), then finish boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
-| Even-moving full-ELV inverse | Separate action prerequisite | Generic coordinates and repeated-even norm recursion; ordinary-polynomial global wrapper is conditional | Prove the even-moving boundary leading/division and categorical matrix with all other colours’ exterior coefficients retained; do not regard the full superalgebra as a commutative scalar ring |
-| Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
-| Full-ELV factor family | Actual categories and adjunction verified; inverse assembly blocked | Canonical content parity and actual weight E/F adjunction (#755, #757), full-ELV polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
-| Whole swapped action | Local comparisons ready; concrete assembly blocked | Conditional assembly; braid from inverse/coefficient inputs; Hom mate and word comparisons | Supply compatible full-ELV factors and concrete crossing/leftward coefficient inputs, then all whole inverse and relation fields |
-| Vacuum and bubble recovery | Literal coordinate comparisons ready; final instance blocked | Whole-word Hom crossing; transformed ideal comparisons; abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation and all-height bubble series |
-| Final nondegeneracy composition | Blocked on observations | Finite-colour reduction and upward/oriented equivalence are implemented | Construct observations for every finite colour restriction, fixed weight, upward pair and bound; invoke existing consumer |
+| Odd categorical inverse | Raw arbitrary-Hom inverse verified; actual-map attachment has prerequisites | Full source, leading, division, snake, pivot and input-matrix chain (#828), coefficient module (#769), canonical source/shifted input comparison (#838), old induction representables (#806) | Finish ordinary higher-row normalization; prove the first-row ordered crossing mate identity; assemble the prescribed shifted finite module family with naturality |
+| Even categorical inverse | Leading boundary verified; raw matrices under verification | Polynomial boundary, monic right-product bounds, recurrence and arbitrary-Hom leading equivalence (#839); generic module division (#843) | Integrate even division, pivots and both raw matrices after CI; attach verified coefficient(0) source/counit (#859), actual dot, mate and shifted module family |
+| Independent content braid | Ready alongside inverse work | Canonical carriers and independent triple maps (#832), distinct slides (#836), coherent composition comparisons | Prove composed independently whiskered braid on the same maps, with ordered correction polynomial, parameter twist and equal-colour minus |
+| Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is scoped-checked in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
+| Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Literal source-norm specialization; compatible factors, crossing coefficients and whole inverse/relation fields |
+| Vacuum and bubble recovery | Coordinate comparisons ready; final instance blocked | Joint full-coefficient source detection (#812, #819, #820), whole-word evaluation, abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation, all-height bubble series and bounded recovery identity |
+| Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
-## First assignment: categorical inverse
+## Categorical inverse: precise interfaces
 
-Read the top-row, boundary and matrix chain:
-[DeformedCyclotomicTopRow](DeformedCyclotomicTopRow.md),
+Read [DeformedCyclotomicTopRow](DeformedCyclotomicTopRow.md),
 [DeformedMackeyBoundary](DeformedMackeyBoundary.md),
 [DeformedBoundaryDivision](DeformedBoundaryDivision.md),
-[DeformedRouquierMatrix](DeformedRouquierMatrix.md),
+[DeformedRouquierMatrix](DeformedRouquierMatrix.md) and
 [DeformedMatrixComparison](DeformedMatrixComparison.md).
 
-Use the independently defined `PprimeDomain`, `Source`, `alpha`,
-`pprime`, `shortCross` and quotient maps in
-`ELVCyclotomicCrossingTensor` / `ELVCyclotomicShortColumns`.
-`ELVCyclotomicAlphaCoordinates` proves `extract_comp_alpha`, `alpha_injective`
-and `pprime_injective`, with the consumer of the same name; the earlier report
-that these were unlocated was an inspection error. `ELVSourceSplitting` now
-identifies the source with its prescribed short and polynomial coordinates;
-`ELVSourcePolynomialQuotient.sourceQuotientBoundary_eq` identifies the actual odd
-induced boundary. Use these committed producers directly. Match the existing actual boundary normal forms to this diagram;
-a decomposition using the crossing image is insufficient to identify the
-prescribed balanced crossing source. Keep zero corners, height zero, full
-exterior coefficients and source/target twists explicit. The immediate output
-is the named categorical matrix inverse on these maps, with its required
-compatibilities. The canonical old induction/representable comparison is
-verified in #806 and supplies its actual upper-Hom target coordinates.
+Use the independently defined balanced source, alpha, pprime, short crossing
+and quotient maps. The extraction splitting and source/polynomial coordinates
+are proved; do not replace the prescribed source by its image. The odd
+arbitrary-Hom raw matrix now covers both height ranges and zero corners
+(#828). The even leading boundary is verified (#839), while even raw matrix
+extensions are under verification. Neither is alone an identified categorical
+factor inverse.
 
-## Parallel mathematical target: independent braid
+The coefficient(1) moving supermodule is verified in #769. Canonical induced
+J and the shifted cap/dot identification are verified in #838; ordinary
+higher-row normalization remains under verification. The first-row
+ordered crossing mate identity is the decisive remaining actual-map step.
+The ordinary positive polynomial columns and the parity-shifted finite module
+family must use the printed profiles of DeformedMatrixComparison §4.
+For even moving colours use coefficient(0), even J and the constant negative
+ordinary counit; the comparison in #859 is full-CI verified. Its raw operator attachment,
+ordinary dotted-row normalization and both matrix transfers are under verification. Do not insert odd
+higher-row scalars or output twists into the even case. Retain the separate
+self-colour leading unit.
 
-Use the existing content composition comparisons and whole associativity,
-together with independent single-letter dots and pair crossings. Prove their
-composed mixed braid rather than replacing an independently defined operator
-by a conjugated one. Retain every intermediate-content cast, ordered polynomial
-coefficient, full kernel parity and equal-colour crossing normalization.
+Keep arbitrary old endpoints, empty Hom corners, height zero, full exterior
+coefficients and source/target twists explicit. Other colours' exterior
+coefficients are not a commutative ground ring.
 
-## Subsequent synthesis
+## Independent braid and factor assembly
 
-Build the full-ELV Rouquier/reservoir family and compare its dot with the
-proved nilpotent content induction dot. Obtain probe units from its chosen
-specialization. Then supply `ProbeReservoir`, coefficient and inverse inputs
-for the existing swapped assembly. Use `ELVVacuumWordPairing` for actual
-word evaluation before constructing `VacuumCornerEvaluation` and
-`AdjunctionBubbleSeries`. The field-linear recovery consumer already exists;
-construct its data instead of adding a new equivalent interface.
+Use existing whole associativity and independent single-letter dots and pair
+crossings. Canonical carriers and foundational relations are verified in
+#832, distinct slides in #836. The composed independently whiskered braid
+remains open. Retain intermediate-content transports, ordered polynomial
+coefficients, full kernel parity and equal-colour crossing normalization.
 
-The proposed cutoff schedule chooses observation bounds, factor cutoffs and
-one coefficient truncation before support bounds and terminating-series lengths.
-Preserve that dependency order. Do not assume coefficient flatness, evenness of
-arbitrary kernels, uniform nilpotence over every weight, or an automorphism
-of a finite quotient when only bounded-window substitution is proved.
+A full-ELV factor family still requires the categorical inverse, these
+multicolour relations and their naturality. The older ordinary-polynomial
+global constructor assumes local inversions and does not construct the
+full exterior-coefficient family. The written pairing extension and balanced
+cutoff schedule preserve the original weight realization; supplied CScalars,
+its extension and the action restriction are verified in #864. This includes
+parameterTwist compatibility and every RouquierMulticolour restriction field;
+the construction still needs the concrete extended factor family.
 
-## Joint coefficient and strand detection
+## Weighted quotient and source detection
 
-This input is full-CI verified. `ELVCoefficientWindowTensor` (#812)
-uses affine PBW freeness to retain bounded polynomial/exterior coefficients.
-`ELVJointPBWDetection` (#819) combines that injection with the actual
-truncated-kernel degree bound. `ELVBoundedSourceDetection` (#820)
-embeds the exact bounded-recovery `ExtendedAtMost` window into one such
-joint window, with bounds fixed before the cutoffs, and proves that the
-actual quotients jointly separate every source Hom for finite colours.
+ELVCoefficientWindowTensor (#812) uses affine PBW freeness to retain the
+entire bounded polynomial/exterior coefficient window. ELVJointPBWDetection
+(#819) combines this injection with the actual truncated-kernel degree bound.
+ELVBoundedSourceDetection (#820) embeds the exact ExtendedAtMost recovery
+window with bounds fixed before cutoffs and jointly separates every source
+Hom for finite colours. All three are full-CI verified.
 
-Next connect these maps to the normalized action and vacuum coordinates.
-The actual weighted module/map/isomorphism descent is verified in #825;
-show old induction preserves this annihilator class and compare the induced
-module and adjunction with the existing truncated construction.
-The weighted coefficient ideal contains odd generators; no even-powers
-replacement was used. A quotient must preserve the action and its
-prescribed inverse, not merely append maps. Binomial probe specialization
-belongs to the untruncated old category and is a separate construction.
+Weighted module/map/isomorphism descent is verified in #825. The actual
+quotient-induction counit is an even module isomorphism (#835); old induction
+preserves the weighted annihilator, and its descended module is pointwise
+isomorphic to truncated append induction (#840). Input-module naturality is now scoped-checked in #868. Finish chosen
+dot/crossing/adjunction compatibility, then content/weight transport.
 
-## Reporting and verification discipline
+Keep the literal weighted coefficient ideal, including all odd generators.
+No even-powers replacement is justified. A quotient must preserve the action
+and its prescribed inverse, not merely append maps.
 
-Update STATUS in place when an obligation closes. Keep this handoff limited
-to the current next targets and dependencies; keep PROGRESS as a pointer.
-README links here rather than accumulating research checkpoint tables.
-Topic notes retain their local arguments and anchors; historical status text
-in them is subordinate to STATUS. Previous detailed inventories are in git history.
-Record exact declaration names, hypotheses and whether a result is proposed,
-implemented, scoped-checked or full-CI verified. Conditional constructors must
-list their unconstructed inputs. Do not report workers, sessions or old build
-processes as live. Follow AGENTS.md for toolchain, CI and axiom policy.
+## Probe specialization and denominators
 
-## Balanced crossing coordinates
+Dimension-free signed dot units at every mixed-word position, all heights
+including vacuum, and actual content/weight dot isomorphisms are verified in
+#807. Binomial specialization and original cyclotomic ideal descent are
+verified in #813/#814; untruncated content-ring and append laws in #823.
+The old content category and genuine probe module are verified in #831,
+scalar module factorization in #842.
 
-`ELVCyclotomicCrossCoordinates` supplies the actual decoder and
-`ShortCrossCoordinates.decode_comp_shortCross`, `shortCross_injective`,
-`range_shortCross` and `crossingEquiv`. These identify the prescribed short
-balanced source with the original crossing span, including full coefficients
-and zero Hom corners. The decoder kills the separately proved polynomial
-triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
-the categorical snake; graded/natural compatibility and augmented inversion
-remain open.
+Finish the ordinary quotient/action and induction comparison, retaining the
+exact dots, adjunction and inverse matrices. Scalar induction closure, exact
+ideal images, ordinary quotient categories and append comparison are under
+verification. The reverse matrix-entry cyclotomic-ideal lemma is a concrete
+prerequisite for the direct height-tensor inverse; no flatness hypothesis is
+needed for that step.
 
-## Probe factors
+Scalar specialization is not faithful on the full coefficient algebra.
+Positive-weight coefficient truncation cannot specialize to nonnilpotent
+binomial constants. Finite-dimensionality requires the independently proved
+raw finite append spanning (#766) and ordinary coefficient specialization.
 
-The dimension-free unit stack is full-CI verified in #807: actual signed
-slides and ordered quadratic identities yield units at every mixed-word
-position, and these give signed induction-dot isomorphisms at all heights,
-including vacuum, on the existing content and weight categories.
+Nilpotence is per target-content block, with an exponent uniform in input
+modules but varying across a weight fibre (#778). Use verified componentwise
+denominator inverses (#794), commutation and parity transport (#801),
+actual adjunction transpose bounds (#790), and prescribed transposed norm
+units (#811). The reservoir Sigma interface accepts literal transposed
+source norms and target denominator units (#834); old whole-dot nilpotence
+remains a sufficient corollary. Inverse-unit mate criteria are verified in
+#817. The actual module-category universe instance is verified in #861. Next
+specialize the literal source norms. Do not assume a common exponent over
+all contents or add another conditional factor-family wrapper.
 
-Canonical binomial specialization is verified in #813, and its original
-cyclotomic ideal descent, identity/composition and append compatibility in
-#814. The untruncated content-ring map and all-height/vacuum append laws are
-verified in #823. Next construct the actual old-content module action,
-retaining the exact prescribed dots, adjunction and inverse matrices.
-Scalar specialization is not faithful on the full coefficient algebra;
-source coefficient detection belongs to the separate reservoir.
+## Final synthesis and verification
 
-For finite dimension use raw finite append spanning and ordinary coefficient
-specialization; positive-weight coefficient truncation cannot specialize to
-nonnilpotent binomial constants.
+Construct the actual vacuum and normalized adjunction bubbles, using
+ELVVacuumWordPairing and the existing VacuumCornerEvaluation and
+AdjunctionBubbleSeries interfaces. Prove the bounded recovery identity, then
+instantiate the field-linear observation consumer and apply finite-colour
+and upward-to-oriented reductions.
 
-## Quantifiers and arbitrary endpoints
+Choose observation bounds, factor cutoffs and one coefficient truncation
+before support bounds and terminating-series lengths. Do not assume
+coefficient flatness, evenness of arbitrary kernels, uniform weight-fibre
+nilpotence, or a finite-quotient automorphism from bounded-window substitution.
 
-Two prerequisites must remain explicit during synthesis.
-
-* Boundary division and the current augmented matrix use diagonal old
-  endomorphism coefficients. The full module action needs arbitrary
-  `Old(v,t)`. Use verified arbitrary-Hom long extraction/section (#753) and output-arrow
-  covariance (#779); use the verified exact short kernel (#764) and reuse the diagonal leading polynomial
-  by composition with arbitrary old morphisms. General module division and
-  cap pivots must then be checked; do not infer them from diagonal inverses.
-* Nilpotence of the actual induced dot is per target-content block. Use verified componentwise denominator units and their even natural inverse
-  (#794), together with concrete dot commutation and parity-shift transport (#801).
-  Do not assume a common exponent over all contents in one weight fibre.
-  The old strong nilpotence constructor may remain as a sufficient corollary.
-
-The old-module parity and whole-counit comparison is verified in #761;
-canonical J, its induced source comparison and the categorical higher rows
-remain under verification. The standalone odd-dot cap-sign identity is
-verified in #803. Keep their complete output twist and higher-row signs;
-a raw cap row is not yet an identified categorical counit.
-
-## Checked height and dot inputs
-
-`ELVCrossingHeight` (#760) supplies the actual diagonal crossing's height
-injectivity/surjectivity and zero-height equivalence. Its raw negative matrix, actual snake and dotted input contractions are
-verified in #777, including height zero. The raw positive matrix in #776 remains under verification. These diagonal odd-colour results are not categorical
-factor inverses on all old morphisms.
-
-`ELVWeightDot` (#772) supplies the actual normalized weight dot and its
-per-content nilpotence. That bound is now strengthened in #778: a single exponent at each fixed
-target-content block works for every input module. Actual adjunction
-transpose transport is verified in #790; derive its concrete norm units next. This still permits different exponents at different contents.
-Use all-position mixed-word probe units (#807) without a finite-dimensionality premise. Raw append spanning (#766)
-remains a verified independent specialization input.
+Update STATUS in place when obligations close. PROGRESS and README remain
+pointers. Topic notes retain mathematical arguments; historical status text
+is subordinate to STATUS. Distinguish proposed, scoped-checked and full-CI
+verified results. Follow AGENTS.md for strict builds, concrete consumers and
+the axiom policy.

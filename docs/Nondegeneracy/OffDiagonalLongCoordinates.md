@@ -29,19 +29,13 @@ index exists, the affine old Hom and its actual quotient vanish. Thus
 old index, include empty old Homs, and satisfy extraction after section =
 identity. In particular extraction is surjective and section is injective.
 
-## Claim boundary and next comparison
+## Companion comparisons
 
-The coordinate source and concrete consumers passed full build, global axiom
-audit and non-vacuity checks before research integration in #753.
-The consumer uses connected all-odd data with reversed old words and also
-different strand counts, so both off-diagonal and empty-Hom cases occur.
-
-The companion exact-kernel theorem below identifies the chronological short
-span. Output-old transport,
-off-diagonal polynomial boundary and leading-map comparison, naturality,
-and the full categorical inverse remain subsequent obligations. A diagonal
-matrix equivalence is not silently promoted to an off-diagonal bimodule
-equivalence.
+Concrete consumers use connected all-odd data with reversed old words and
+different strand counts. The exact kernel and polynomial-boundary arguments
+below operate on arbitrary old Homs. Output-old transport and the odd/even
+leading comparisons are developed in the companion source modules; none
+requires promotion of a diagonal-corner equivalence to a bimodule equivalence.
 
 ## Exact short kernel
 
@@ -56,7 +50,23 @@ gives exactly
 
 If the old normal-form index type is empty, every occurring tail must be
 short, since a long one would itself supply an old normal-form index.
-Consequently no inhabitation assumption is needed. This exact-kernel
-extension passed full build, global axiom audit and concrete consumers before
-research integration in #764.
-The off-diagonal polynomial boundary and leading-map transport remain next.
+Consequently no inhabitation assumption is needed.
+
+## Arbitrary-old-Hom polynomial boundary
+
+`ELVOffDiagonalBoundary` evaluates the actual C₀P on the prescribed
+off-diagonal long section to define `offDiagonalPolynomialBoundary`.
+Subtracting section after extraction lands in the exact chronological
+short kernel; P sends that kernel into the actual crossing span, which C₀
+kills. Therefore the literal map factors as
+
+    C₀ P = offDiagonalPolynomialBoundary ∘ offDiagonalLongExtraction.
+
+The construction retains arbitrary old endpoints and both moving parities.
+Its factorization uses the prescribed section and exact short kernel.
+Odd and even leading transport are developed in
+[ELVOffDiagonalBoundaryLeading](../../OddMath/QuiverHecke/CyclotomicAction/ELVOffDiagonalBoundaryLeading.lean)
+and [EvenOffDiagonalLeading](EvenOffDiagonalLeading.md), respectively.
+
+Verification status and remaining dependencies are maintained in
+[STATUS.md](STATUS.md) and [HANDOFF.md](HANDOFF.md).
