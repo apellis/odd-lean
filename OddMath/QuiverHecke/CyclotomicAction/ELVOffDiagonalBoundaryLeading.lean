@@ -64,15 +64,38 @@ theorem offDiagonalBoundary_corrected_rightAction (p : ZMod 2)
         (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _)))) =
       offDiagonalLongExtraction D Sc cutoff p j.1 v t
         (offDiagonalCorrectedLift D Sc cutoff p j v t d ((ideal D Sc cutoff v t).mkQ r)) := by
-    change offDiagonalLongExtraction D Sc cutoff p j.1 v t
-      (act D Sc cutoff j.1 (appendInsert D Sc cutoff j.1 v t g)
-        ((boundaryRho D Sc cutoff j v (v ++ [j.1]))^[d] z)) = _
+    have hstart : outputLongLift D Sc cutoff p j.1 v 0
+        ((ideal D Sc cutoff v v).mkQ (𝟙 _)) = z :=
+      (outputLongSection_single D Sc cutoff p j.1 v 0
+        ((ideal D Sc cutoff v v).mkQ (𝟙 _))).symm
+    rw [outputCorrectedLift, hstart]
     rw [← boundaryRho_iterate_act, offDiagonalLongExtraction_rho_iterate,
       he0, offDiagonalLongExtraction_correctedLift]
   have hrow := congrArg (offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t) he
-  rw [← appendC0_pMap_offDiagonal, ← appendC0_pMap_offDiagonal,
-    pMap_postcomp, appendC0_postcomp_general, appendC0_pMap D Sc cutoff p j v] at hrow
-  exact hrow.symm
+  have hphi : appendC0 D Sc cutoff j.1 v v
+      (pMap D Sc cutoff j.1 v (v ++ [j.1])
+        (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _)))) =
+      outputBoundaryPhi D Sc cutoff p j v d :=
+    appendC0_pMap D Sc cutoff p j v _
+  have hg : (ideal D Sc cutoff v t).mkQ g =
+      oldTwist D Sc cutoff (p + D.parity j.1 * wordSumParity D v) v t
+        ((ideal D Sc cutoff v t).mkQ r) := rfl
+  have hcov := appendC0_postcomp_general D Sc cutoff j.1 v v t g
+    (pMap D Sc cutoff j.1 v (v ++ [j.1])
+      (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _))))
+  rw [hg, hphi] at hcov
+  calc
+    offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t
+        (offDiagonalLongExtraction D Sc cutoff p j.1 v t
+          (offDiagonalCorrectedLift D Sc cutoff p j v t d ((ideal D Sc cutoff v t).mkQ r))) =
+      appendC0 D Sc cutoff j.1 v t
+        (pMap D Sc cutoff j.1 v (t ++ [j.1])
+          (act D Sc cutoff j.1 (appendInsert D Sc cutoff j.1 v t g)
+            (outputCorrectedLift D Sc cutoff p j v d ((ideal D Sc cutoff v v).mkQ (𝟙 _))))) :=
+      hrow.symm.trans (appendC0_pMap_offDiagonal D Sc cutoff p j.1 v t _).symm
+    _ = _ := by
+      rw [pMap_postcomp]
+      exact hcov
 
 private theorem hom_twist_add (a b : ZMod 2) (v t : List I)
     (c : Old D Sc cutoff v t) :
