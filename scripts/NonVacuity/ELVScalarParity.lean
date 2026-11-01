@@ -39,7 +39,12 @@ example : elvScalarEvaluation D cutoff values hvalues
   apply elvScalarEvaluation_odd_zero
   have h := elvModelQuotient_mem D (cutoff := cutoff)
     (polynomialExterior_delta_mem_odd D ℚ ⟨(), rfl⟩)
-  simpa only [elvModelQuotient, AlgHom.comp_apply, AlgEquiv.symm_apply_apply] using h
+  change elvCoefficientQuotient D cutoff
+    ((polynomialExteriorEquiv D ℚ).symm
+      (polynomialExteriorEquiv D ℚ (delta D ℚ ⟨(), rfl⟩))) ∈
+      elvCoefficientParity D cutoff 1 at h
+  rw [AlgEquiv.symm_apply_apply] at h
+  exact h
 
 end ELVScalarParityConsumer
 
