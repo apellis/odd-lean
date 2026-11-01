@@ -168,9 +168,9 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
       (contentETripleMap D Sc cutoff N h0 h1 (contentNormalizedLeft_mem D Sc i j l) M z).comp
         ((contentETripleMap D Sc cutoff N h1 h2 (contentNormalizedRight_mem D Sc j i l) M z).comp
           (contentETripleMap D Sc cutoff N h2 h3 (contentNormalizedLeft_mem D Sc j l i) M z)) := by
-    exact congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i j l
+    exact contentLinear_comp_congr (k := k) (contentETripleMap_prefix_cross D Sc cutoff N β i j l
       δij γ hij hji h0 h1 hijγ M z).symm
-      (congrArg₂ LinearMap.comp
+      (contentLinear_comp_congr (k := k)
         (contentWhiskeredSuffixCross_comparison D Sc cutoff N β j i l γ h1 h2 M z)
         (contentETripleMap_prefix_cross D Sc cutoff N β j l i
       δjl γ hjl hlj h2 h3 hjlγ M z).symm)
@@ -179,9 +179,9 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
       (contentETripleMap D Sc cutoff N h0 h4 (contentNormalizedRight_mem D Sc i j l) M z).comp
         ((contentETripleMap D Sc cutoff N h4 h5 (contentNormalizedLeft_mem D Sc i l j) M z).comp
           (contentETripleMap D Sc cutoff N h5 h3 (contentNormalizedRight_mem D Sc l i j) M z)) := by
-    exact congrArg₂ LinearMap.comp
+    exact contentLinear_comp_congr (k := k)
       (contentWhiskeredSuffixCross_comparison D Sc cutoff N β i j l γ h0 h4 M z)
-      (congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i l j
+      (contentLinear_comp_congr (k := k) (contentETripleMap_prefix_cross D Sc cutoff N β i l j
       δil γ hil hli h4 h5 hilγ M z).symm
         (contentWhiskeredSuffixCross_comparison D Sc cutoff N β l i j γ h5 h3 M z))
   rw [hL, hR, triple_transport_comp, triple_transport_comp]

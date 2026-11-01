@@ -248,7 +248,7 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
           (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
   have h := block_slide_right D Sc cutoff N β hij γ hij' hji M z
   have h' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) h
-  simp only [smul_smul, sign_mul_self, one_smul] at h'
+  simp only [smul_smul, Supercategory.sign_mul_self, one_smul] at h'
   have H := transport_slide_square
     (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
     (contentEPairEquiv D Sc cutoff N β j i γ hji M z)
@@ -256,5 +256,5 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
     (pairCross_square D Sc cutoff N β i j γ hij' hji M z)
     (pairInner_square D Sc cutoff N β j i γ hji M z) h'.symm
   have H' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) H
-  simpa only [smul_smul, sign_mul_self, one_smul] using H'.symm
+  simpa only [smul_smul, Supercategory.sign_mul_self, one_smul] using H'.symm
 end OddMath.QuiverHecke.ELVOld

@@ -19,7 +19,10 @@ instances of the natural maps, avoiding repeated conversion through expanded
 `ContentETripleSpace` abbreviations. It does not define a crossing by
 conjugating a source operator. Both the corrected and uncorrected paths inline their literal prefix factors and compose
 the existing normalization equalities by congruence of linear-map composition.
-No separate equality that unfolds a prefix alias is required by these proofs.
+A single k-linear composition-congruence lemma fixes the ring and module
+types before combining these equalities; no polymorphic semilinear composition
+is inferred against expanded carrier terms. No separate equality that unfolds
+a prefix alias is required by these proofs.
 The comparison with the source-positioned map remains a separate proof; no
 kernel or elaborator budget is increased.
 

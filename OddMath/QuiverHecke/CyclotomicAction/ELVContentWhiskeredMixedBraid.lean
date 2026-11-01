@@ -20,6 +20,17 @@ namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
+/-- Congruence for composition with the ground ring fixed. This avoids
+higher-order inference of semilinear composition on nested module carriers. -/
+theorem contentLinear_comp_congr
+    {A B C : Type u} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C]
+    {f f' : B →ₗ[k] A} {g g' : C →ₗ[k] B}
+    (hf : f = f') (hg : g = g') : f.comp g = f'.comp g' := by
+  cases hf
+  cases hg
+  rfl
+
 def contentWhiskeredPathIij (β : Multiset I) (i j : I) (δ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([i] : Multiset I) = δ)
     (hγ : δ + ([j] : Multiset I) = β + ([i,j,i] : Multiset I))
@@ -67,9 +78,9 @@ theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathIij D Sc cutoff N β i j δ hδ hγ h M z =
       contentETriplePathIij D Sc cutoff N β i j M z :=
-  congrArg₂ LinearMap.comp
+  contentLinear_comp_congr (k := k)
     (contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm _ rfl h M z)
-    (congrArg₂ LinearMap.comp
+    (contentLinear_comp_congr (k := k)
       (contentWhiskeredPrefixCross_equal D Sc cutoff N β i j δ _ hδ h hγ M z)
       (contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij _ h rfl M z))
 
@@ -83,9 +94,9 @@ theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathJii D Sc cutoff N β i j δ hδ hδ' hγ h M z =
       contentETriplePathJii D Sc cutoff N β i j M z :=
-  congrArg₂ LinearMap.comp
+  contentLinear_comp_congr (k := k)
     (contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij i δ _ hδ hδ' rfl h hγ M z)
-    (congrArg₂ LinearMap.comp
+    (contentLinear_comp_congr (k := k)
       (contentWhiskeredSuffixCross_equal D Sc cutoff N β j i _ h M z)
       (contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm i δ _ hδ' hδ h rfl hγ M z))
 
