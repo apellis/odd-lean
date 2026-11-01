@@ -1731,3 +1731,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner
+
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWordEntries
