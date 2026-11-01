@@ -7,7 +7,7 @@ import StringDiagrams.Super.PiTwo
 import Lean.Util.CollectAxioms
 
 noncomputable section
-open CategoryTheory StringDiagrams Supercategory BicategoryStruct OddMath.SKM
+open CategoryTheory StringDiagrams Supercategory BicategoryStruct OddMath OddMath.SKM
 open OddMath.QuiverHecke OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.ELVOld
 namespace NonVacuity.RouquierHomPostInverseUnits
 
@@ -86,10 +86,10 @@ private theorem evenIdentity {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :
         (-1 : End (jSource E)) ≫ (interchange E).inv)))) := by
   apply homDistinctMixedMateDot_isIso_of_inverse_units E (identityAdj B) 1 1 (𝟙 B)
     (id_mem E) (zero_mem _) (-1 : End (jSource E))
-  · rw [j_zero, j_identity]
+  · rw [j_zero, j_identity, zero_sub]
     change (-1 : End (jSource E)) * (-1) = 1
     simp
-  · rw [j_zero, j_identity]
+  · rw [j_zero, j_identity, zero_sub]
     change (-1 : End (jSource E)) * (-1) = 1
     simp
   · rw [source_zero, sub_zero]
