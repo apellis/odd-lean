@@ -7,6 +7,23 @@ prescribed tensor comparison and the coefficient-sensitive interpretation of
 the cap rows. The requirements recorded below are thus discharged for the
 stated full-ELV coefficients; they are not additional inversion hypotheses.
 
+## Lean construction boundary
+
+The proposed raw negative-height construction is
+`CyclotomicCrossingTensor.negativeCrossingEquiv` in
+`ELVNegativeCrossing.lean`, with concrete odd rank-one consumers.
+It uses the independently prescribed cyclotomic crossing, the descended
+input contraction and moving input dot, the actual snake kernel coordinates,
+and the anti-diagonal leading-map theorems.
+`FiniteTriangularCoordinates.bijective` supplies finite module-valued
+coordinate elimination; the concrete cap operator discharges its hypotheses.
+
+This isolated construction remains **unverified pending CI**. Its scope is
+an odd moving colour and diagonal old Hom over the supplied commutative ground
+ring, retaining full ELV coefficients and height zero. Categorical signed-dot/
+cap normalization, off-diagonal inversion, naturality and full factor/action
+synthesis remain separate. See [STATUS](STATUS.md) for integrated status.
+
 ## 1. Source, coefficients, and orientation
 
 The sources are KKO II, arXiv:1303.1916v2, §8.3 and Theorem 8.13, and KKO I,

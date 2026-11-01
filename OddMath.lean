@@ -1741,3 +1741,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeFirstDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
+import OddMath.QuiverHecke.CyclotomicAction.ELVNegativeCrossing
