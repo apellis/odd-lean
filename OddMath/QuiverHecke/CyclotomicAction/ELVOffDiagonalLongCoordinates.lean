@@ -69,10 +69,13 @@ theorem longHomLift_independent (p : ZMod 2) (i : I) {v t : List I}
     (y y' : NFIdx v t) (m : ℕ) :
     longHomLift D Sc cutoff p i y m = longHomLift D Sc cutoff p i y' m := by
   unfold longHomLift
-  congr 1
-  apply castPair_eq_of_heq
-  exact prependTail_heq_of_tailKey_eq D Sc (longHomIndex i y m)
-    (longHomIndex i y' m) rfl
+  exact congrArg
+    (fun f : Old D Sc cutoff v t →ₗ[k] Target D Sc cutoff i v (t ++ [i]) =>
+      (SKM.zsign k (D.parity i * wordSumParity D v)) ^ m • f)
+    (castPair_eq_of_heq D Sc cutoff p i
+      (longHomIndex_oldTarget i y m) (longHomIndex_oldTarget i y' m) _ _
+      (prependTail_heq_of_tailKey_eq D Sc (longHomIndex i y m)
+        (longHomIndex i y' m) rfl))
 
 @[simp] theorem longHomCoordinate_lift (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) (m : ℕ) (b : Old D Sc cutoff v t) :
@@ -260,6 +263,10 @@ theorem longHomCoordinate_independent (p : ZMod 2) (i : I) {v t : List I}
   | zero => simp only [map_zero]
   | add f g hf hg => simp only [map_add, hf, hg]
   | of q b =>
+    change longHomCoordinate D Sc cutoff p i y m
+        (prependOldReconstruct D Sc cutoff p i v (t ++ [i]) (DirectSum.lof k _ _ q b)) =
+      longHomCoordinate D Sc cutoff p i y' m
+        (prependOldReconstruct D Sc cutoff p i v (t ++ [i]) (DirectSum.lof k _ _ q b))
     rw [prependOldReconstruct, DirectSum.toModule_lof]
     have hkey : (longHomIndex i y m).tailKey = (longHomIndex i y' m).tailKey := rfl
     by_cases hq : (longHomIndex i y m).tailKey = q.representative.tailKey
@@ -300,7 +307,10 @@ theorem longHomCoordinate_independent (p : ZMod 2) (i : I) {v t : List I}
 theorem longHomExtraction_independent (p : ZMod 2) (i : I) {v t : List I}
     (y y' : NFIdx v t) :
     longHomExtraction D Sc cutoff p i y = longHomExtraction D Sc cutoff p i y' := by
-  ext z m
+  apply LinearMap.ext
+  intro z
+  apply Finsupp.ext
+  intro m
   exact longHomCoordinate_independent D Sc cutoff p i y y' m z
 
 /-- Empty old normal-form index type forces the actual old quotient Hom to vanish. -/
@@ -331,14 +341,14 @@ def offDiagonalLongSection (p : ZMod 2) (i : I) (v t : List I) :
 theorem offDiagonalLongExtraction_eq (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) :
     offDiagonalLongExtraction D Sc cutoff p i v t = longHomExtraction D Sc cutoff p i y := by
-  simp only [offDiagonalLongExtraction, dif_pos (show Nonempty (NFIdx v t) from ⟨y⟩)]
+  simp only [offDiagonalLongExtraction, dite_eq_left (show Nonempty (NFIdx v t) from ⟨y⟩)]
   exact longHomExtraction_independent D Sc cutoff p i _ y
 
 /-- Every available old index likewise computes the same prescribed section. -/
 theorem offDiagonalLongSection_eq (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) :
     offDiagonalLongSection D Sc cutoff p i v t = longHomSection D Sc cutoff p i y := by
-  simp only [offDiagonalLongSection, dif_pos (show Nonempty (NFIdx v t) from ⟨y⟩)]
+  simp only [offDiagonalLongSection, dite_eq_left (show Nonempty (NFIdx v t) from ⟨y⟩)]
   exact longHomSection_independent D Sc cutoff p i _ y
 
 /-- The actual finite off-diagonal row is split surjective, including empty old Homs. -/
@@ -347,7 +357,7 @@ theorem offDiagonalLongSection_eq (p : ZMod 2) (i : I) {v t : List I}
     offDiagonalLongExtraction D Sc cutoff p i v t
       (offDiagonalLongSection D Sc cutoff p i v t f) = f := by
   by_cases h : Nonempty (NFIdx v t)
-  · simp only [offDiagonalLongExtraction, offDiagonalLongSection, dif_pos h]
+  · simp only [offDiagonalLongExtraction, offDiagonalLongSection, dite_eq_left h]
     exact longHomExtraction_section D Sc cutoff p i (Classical.choice h) f
   · have hf : f = 0 := by
       ext n
