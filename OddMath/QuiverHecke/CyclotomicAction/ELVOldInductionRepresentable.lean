@@ -265,12 +265,14 @@ theorem iso_hom_mem : (iso D Sc cutoff i v).hom ∈ parity (R := k) _ _ 0 := by
   apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
   intro q hq
   funext w
+  change (forwardTransform D Sc cutoff i v).app q w = 0
   rw [forwardTransform_app, if_neg hq]
 
 theorem iso_inv_mem : (iso D Sc cutoff i v).inv ∈ parity (R := k) _ _ 0 := by
   apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
   intro q hq
   funext w
+  change (backwardTransform D Sc cutoff i v).app q w = 0
   rw [backwardTransform_app, if_neg hq]
 
 theorem iso_hom_total_tensor (w z : OldCategory D Sc cutoff)
@@ -278,14 +280,14 @@ theorem iso_hom_total_tensor (w z : OldCategory D Sc cutoff)
     ((iso D Sc cutoff i v).hom).total w
       (BalancedInduction.tensor J (H v) z h g) = (J).map g ≫ h := by
   simp only [iso, SuperNatTrans.total, forwardTransform_app, ↓reduceIte,
-    one_ne_zero, SVec.add_apply, SVec.zero_apply, add_zero]
+    one_ne_zero, add_zero]
   exact forward_tensor D Sc cutoff i v w z h g
 
 theorem iso_inv_total_apply (w : OldCategory D Sc cutoff) (h : (J).obj v ⟶ w) :
     ((iso D Sc cutoff i v).inv).total w h =
       BalancedInduction.tensor J (H v) v h (𝟙 v) := by
   simp only [iso, SuperNatTrans.total, backwardTransform_app, ↓reduceIte,
-    one_ne_zero, SVec.add_apply, SVec.zero_apply, add_zero]
+    one_ne_zero, add_zero]
   exact backward_apply D Sc cutoff i v w h
 
 /-- The actual restriction-induction target is the upper old Hom, canonically. -/
