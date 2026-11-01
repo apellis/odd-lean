@@ -1,3 +1,4 @@
+import OddMath.SKM.ELVScalarSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowLeading
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowDivision
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRowSplitting
@@ -1732,4 +1733,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner
 
-import OddMath.SKM.ELVScalarSpecialization
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWordEntries

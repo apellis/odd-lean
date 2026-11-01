@@ -60,17 +60,6 @@ The equality is the canonical presentation isomorphism: tensoring the
 presentation imposes the specialized relations and their two-sided ideal.
 No flatness is required. Put B_0=k and use zero for absent contents.
 
-### Formal coefficient specialization
-
-`ELVScalarSpecialization` constructs ordinary scalar evaluation of abstract
-SYM and its descent through the exact full ELV coefficient ideal. Elementary
-scalar images must vanish beyond their precise colour rank; exterior images
-are zero, including in the even-cutoff top relation. The source passed the
-full build and axiom audit; its concrete importing consumer is being checked.
-It sends a positive-degree generator to a nonnilpotent scalar, so this is
-not specialization of the positive-weight truncation. Identification of the
-binomial polynomial and specialization of old-strand Homs remain separate.
-
 ## 2. Finite generation, before any inverse assertion
 
 The polynomials (2) belong to the purely even-coefficient KKO subfamily.
