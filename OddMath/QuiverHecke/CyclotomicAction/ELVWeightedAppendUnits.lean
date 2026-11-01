@@ -33,7 +33,11 @@ theorem quotientCounit_moduleMap_unit_tensor (i : I)
       (quotientInductionCounitIso D Sc cutoff N M).hom =
       BalancedInduction.moduleMap (truncatedAppend D Sc cutoff N [i])
         (quotientInductionCounitIso D Sc cutoff N M).hom := rfl
-  rw [hm, BalancedInduction.moduleMap_total_tensor_even _ _ hf]
+  rw [hm]
+  refine (BalancedInduction.moduleMap_total_tensor_even
+    (truncatedAppend D Sc cutoff N [i])
+    (quotientInductionCounitIso D Sc cutoff N M).hom hf w ((Q).obj s) g
+    (BalancedInduction.unit Q (weightedRestriction D Sc cutoff N M).toFunctor s b)).trans ?_
   have hb : (quotientInductionCounitIso D Sc cutoff N M).hom.app 0 ((Q).obj s)
       (BalancedInduction.unit Q (weightedRestriction D Sc cutoff N M).toFunctor s b) = b := by
     change BalancedInduction.counit Q M.toFunctor ((Q).obj s)
@@ -73,19 +77,48 @@ theorem appendWeightedModuleIso_hom_unit
     (appendWeightedModuleIso D Sc cutoff N i M).hom.total ((Q).obj ((J).obj s))
       (BalancedInduction.unit J (R).toFunctor s b) =
       BalancedInduction.unit T M.toFunctor ((Q).obj s) b := by
+  let w := (Q).obj ((J).obj s)
+  let F₀ := weightedModule D Sc cutoff N L hL
+  let F₁ := BalancedInduction.induced Q L
+  let F₂ := BalancedInduction.induced (J ⋙ Q) R
+  let F₃ := BalancedInduction.induced (Q ⋙ T) R
+  let F₄ := BalancedInduction.induced T (BalancedInduction.induced Q R)
+  let F₅ := BalancedInduction.induced T M
+  let f₁ : F₀ ⟶ F₁ := (quotientInducedWeightedModuleIso D Sc cutoff N L hL).inv
+  let f₂ : F₁ ⟶ F₂ := (BalancedInduction.inductionComp J Q).hom.app R
+  let f₃ : F₂ ⟶ F₃ := (BalancedInduction.inducedIsoOfFunctorEq (J ⋙ Q) (Q ⋙ T)
+    (oldAppend_truncate D Sc cutoff N i) R).hom
+  let f₄ : F₃ ⟶ F₄ := (BalancedInduction.inductionComp Q T).inv.app R
+  let f₅ : F₄ ⟶ F₅ := BalancedInduction.moduleMap T
+    (quotientInductionCounitIso D Sc cutoff N M).hom
+  let x₀ : F₀.obj w := BalancedInduction.unit J (R).toFunctor s b
   have he : (appendWeightedModuleIso D Sc cutoff N i M).hom =
-      (quotientInducedWeightedModuleIso D Sc cutoff N L hL).inv ≫
-        (BalancedInduction.inductionComp J Q).hom.app R ≫
-          (BalancedInduction.inducedIsoOfFunctorEq (J ⋙ Q) (Q ⋙ T)
-            (oldAppend_truncate D Sc cutoff N i) R).hom ≫
-            (BalancedInduction.inductionComp Q T).inv.app R ≫
-              BalancedInduction.moduleMap T
-                (quotientInductionCounitIso D Sc cutoff N M).hom := rfl
-  rw [he]
-  simp only [Superfunctor.comp_total, SVec.comp_apply]
-  rw [quotientInducedWeightedModuleIso_inv_tensor,
-    BalancedInduction.inductionComp_hom_total_unit, weightedAppendSquare_unit,
-    BalancedInduction.inductionComp_inv_total_unit]
-  exact quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s ((T).obj ((Q).obj s)) (𝟙 _) b
+      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := rfl
+  have hc : (appendWeightedModuleIso D Sc cutoff N i M).hom.total w x₀ =
+      f₅.total w (f₄.total w (f₃.total w (f₂.total w (f₁.total w x₀)))) :=
+    (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
+      (BalancedInduction.composition_total_apply f₁ f₂ f₃ f₄ f₅ w x₀)
+  have h₁ : f₁.total w x₀ = BalancedInduction.unit Q (L).toFunctor ((J).obj s) x₀ := by
+    exact (quotientInducedWeightedModuleIso_inv_tensor D Sc cutoff N L hL w x₀).trans
+      (BalancedInduction.unit_apply Q (L).toFunctor ((J).obj s) x₀).symm
+  have h₂ : f₂.total w (BalancedInduction.unit Q (L).toFunctor ((J).obj s) x₀) =
+      BalancedInduction.unit (J ⋙ Q) (R).toFunctor s b :=
+    BalancedInduction.inductionComp_hom_total_unit J Q R s b
+  have h₃ : f₃.total w (BalancedInduction.unit (J ⋙ Q) (R).toFunctor s b) =
+      BalancedInduction.unit (Q ⋙ T) (R).toFunctor s b :=
+    weightedAppendSquare_unit D Sc cutoff N i M s b
+  have h₄ : f₄.total w (BalancedInduction.unit (Q ⋙ T) (R).toFunctor s b) =
+      BalancedInduction.unit T (BalancedInduction.induced Q R).toFunctor ((Q).obj s)
+        (BalancedInduction.unit Q (R).toFunctor s b) :=
+    BalancedInduction.inductionComp_inv_total_unit Q T R s b
+  have h₅ : f₅.total w
+      (BalancedInduction.unit T (BalancedInduction.induced Q R).toFunctor ((Q).obj s)
+        (BalancedInduction.unit Q (R).toFunctor s b)) =
+      BalancedInduction.unit T M.toFunctor ((Q).obj s) b := by
+    simpa only [BalancedInduction.unit_apply] using
+      quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s ((T).obj ((Q).obj s)) (𝟙 _) b
+  refine hc.trans ?_
+  rw [h₁, h₂, h₃, h₄]
+  exact h₅
 
 end OddMath.QuiverHecke.ELVOld
