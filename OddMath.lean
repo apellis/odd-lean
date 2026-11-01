@@ -68,6 +68,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapSignNormalization
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
@@ -94,6 +95,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppendTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.SKM.BubbleELVPolynomialGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCyclotomicTarget
@@ -135,10 +138,27 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendMovingSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVPCentral
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRho
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryRhoCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRho
 import OddMath.QuiverHecke.CyclotomicAction.LongOutputDotTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalBoundary
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRho
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRhoExtraction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalBoundaryLeading
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCorrectedCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRowDivision
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRowSplitting
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalSourceSplitting
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCrossingHeight
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalBoundarySnake
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalPositiveCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputOperators
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputPivots
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel
@@ -307,6 +327,9 @@ import OddMath.QuiverHecke.CyclotomicAction.IntertwinerRelation
 import OddMath.QuiverHecke.CyclotomicAction.SignedPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.CoefficientPolynomialTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientWindowTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVJointPBWDetection
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundedSourceDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientCategory
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import OddMath.QuiverHecke.CyclotomicAction.LocalRelationExamples
@@ -1733,6 +1756,9 @@ import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentSpecialization
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
@@ -1761,3 +1787,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbePolynomialParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent

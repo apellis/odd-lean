@@ -1,6 +1,6 @@
 # Separated denominator inputs on content products
 
-Status: proposed source refactor, pending CI.
+Status: full build with warnings as errors, axiom audit and concrete consumers passed before research integration in #767.
 
 The coefficient and braid algebra require units of y−x (even colour) and
 x²−y² (odd colour). The older CrossCoeffInputs supplies these from an
@@ -19,9 +19,8 @@ component units, deriving the even difference and odd square difference/sum
 from componentwise nilpotence. Its infinite-product module consumer tests
 these identities. superfunctorEnd_isUnit and superfunctorProductEnd_isUnit
 lift objectwise units to actual even natural inverses, preserving the existing
-functor and target product. No uniform exponent is introduced. These source
-additions remain pending CI; actual normalized full-ELV dot specialization
-is still required. The Sigma/SwappingReservoir mate invertibility
+functor and target product. No uniform exponent is introduced. These constructions are full-CI verified in #794; their actual normalized
+full-ELV postdot specialization and commutation follow in #801. The Sigma/SwappingReservoir mate invertibility
 producer still has its original strong hypotheses; its positive/square-norm
 and cap comparisons require a separate componentwise refactor.
 
