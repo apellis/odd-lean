@@ -178,7 +178,7 @@ theorem elvWeightDotComponent_isNilpotent [Finite I] (sy : SKM.Symmetrizer D)
       (elvBlockDot_isNilpotent D Sc cutoff bound i Λ h sy hc β (M β))
   · rw [(elvInductionComponent_isZero D Sc cutoff bound i Λ h δ hδ M).eq_of_src
       (elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i) M δ) 0]
-    exact isNilpotent_zero
+    exact ⟨1, by simp⟩
 
 /-- Only the component of the colour parity is nonzero. -/
 theorem elvWeightDot_homogeneous :
