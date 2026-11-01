@@ -12,6 +12,11 @@ namespace OddMath.QuiverHecke.ELVOld.VacuumSourceComparison
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
+private theorem square_apply {A B C E : SVec.{u} k}
+    (e : A ≃ₗ[k] B) (f : C ≃ₗ[k] E) (c : C ⟶ A) (t : E ⟶ B)
+    (h : e.toLinearMap ∘ₗ c = t ∘ₗ f.toLinearMap) (x : C) :
+    e (c x) = t (f x) := LinearMap.congr_fun h x
+
 theorem flatten_cross (β : Multiset I) (i j : I) (γ : Multiset I)
     (hij : β + ([i,j] : Multiset I) = γ) (hji : β + ([j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (w : ContentCategory D Sc cutoff N γ) :
@@ -34,11 +39,23 @@ theorem pairCross_coordinates (β : Multiset I) (i j : I) (γ : Multiset I)
       contentAppendToComponent D Sc cutoff N hij hji (contentCrossAffine D Sc i j) v ≫
         twist k (D.parity i * D.parity j) (pairCoordinates D Sc cutoff N β j i γ hji v w x) := by
   rw [pairCoordinates_comparison, pairCoordinates_comparison]
-  have hf := congrArg (fun f => f x)
-    (flatten_cross D Sc cutoff N β i j γ hij hji (contentRepresentable D Sc cutoff N β v) w)
-  change contentEPairEquiv D Sc cutoff N β i j γ hij (contentRepresentable D Sc cutoff N β v) w
-    (contentEPairCross D Sc cutoff N β i j γ hij hji (contentRepresentable D Sc cutoff N β v) w x) = _ at hf
-  rw [hf]
+  have hf := square_apply
+    (A := ((contentEPairTo D Sc cutoff N β i j γ hij).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (B := ((contentInductionTo D Sc cutoff N β [i,j] γ hij).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (C := ((contentEPairTo D Sc cutoff N β j i γ hji).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (E := ((contentInductionTo D Sc cutoff N β [j,i] γ hji).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (contentEPairEquiv D Sc cutoff N β i j γ hij (contentRepresentable D Sc cutoff N β v) w)
+    (contentEPairEquiv D Sc cutoff N β j i γ hji (contentRepresentable D Sc cutoff N β v) w)
+    (contentEPairCross D Sc cutoff N β i j γ hij hji (contentRepresentable D Sc cutoff N β v) w)
+    (BalancedInduction.transformLinear
+      (contentAppendTo_supernatural D Sc cutoff N hij hji (contentCrossAffine_mem D Sc i j))
+      (contentRepresentable D Sc cutoff N β v) w)
+    (flatten_cross D Sc cutoff N β i j γ hij hji (contentRepresentable D Sc cutoff N β v) w) x
+  refine (congrArg (VacuumGeneratorCoordinates.equivTo D Sc cutoff N β [i,j] γ hij v w) hf).trans ?_
   suffices he : ∀ y : BalancedInduction.Obj (contentAppendTo D Sc cutoff N β [j,i] γ hji)
       (contentRepresentableFunctor D Sc cutoff N β v) w,
       VacuumGeneratorCoordinates.equivTo D Sc cutoff N β [i,j] γ hij v w
@@ -72,3 +89,4 @@ theorem pairCross_mixed_coordinates (β : Multiset I) (i j : I) (hne : i ≠ j) 
   rw [pairCross_coordinates, contentCrossAffine_distinct D Sc i j hne]
 
 end OddMath.QuiverHecke.ELVOld.VacuumSourceComparison
+

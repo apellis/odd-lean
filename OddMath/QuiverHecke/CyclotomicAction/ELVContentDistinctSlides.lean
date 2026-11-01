@@ -21,7 +21,8 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
 def contentPairInnerDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    Module.End k (ContentEPairSpace D Sc cutoff N β i j γ h M z) :=
+    ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z ⟶
+      ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z :=
   ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j] γ
       ((contentPair_sum β i j).symm.trans h)).map
     ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total z
@@ -29,7 +30,8 @@ def contentPairInnerDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
 def contentPairOuterDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    Module.End k (ContentEPairSpace D Sc cutoff N β i j γ h M z) :=
+    ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z ⟶
+      ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj z :=
   ((contentInductionTransform D Sc cutoff N
     (β := β + ([i] : Multiset I)) (γ := γ)
     ((contentPair_sum β i j).symm.trans h) ((contentPair_sum β i j).symm.trans h)
@@ -227,8 +229,7 @@ private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (�
     | exact contentPairDot_one_parity D Sc i j
 
 private theorem transport_slide_square
-    {A B C E : Type u} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
-    [AddCommGroup C] [Module k C] [AddCommGroup E] [Module k E]
+    {A B C E : SVec.{u} k}
     (e : A ≃ₗ[k] B) (f : C ≃ₗ[k] E)
     {x : Module.End k A} {c : C →ₗ[k] A} {y : Module.End k C}
     {X : Module.End k B} {b : E →ₗ[k] B} {Y : Module.End k E} {s : k}
@@ -259,6 +260,10 @@ theorem contentEPair_distinct_slide_left (β : Multiset I) {i j : I} (hij : i �
         (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
           (contentPairOuterDotAt D Sc cutoff N β j i γ hji M z) := by
   exact transport_slide_square
+    (A := ((contentEPairTo D Sc cutoff N β i j γ hij').obj M).obj z)
+    (B := ((contentInductionTo D Sc cutoff N β [i,j] γ hij').obj M).obj z)
+    (C := ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj z)
+    (E := ((contentInductionTo D Sc cutoff N β [j,i] γ hji).obj M).obj z)
     (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
     (contentEPairEquiv D Sc cutoff N β j i γ hji M z)
     (pairInner_square D Sc cutoff N β i j γ hij' M z)
@@ -280,6 +285,10 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
   have h' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) h
   simp only [smul_smul, Supercategory.sign_mul_self, one_smul] at h'
   have H := transport_slide_square
+    (A := ((contentEPairTo D Sc cutoff N β i j γ hij').obj M).obj z)
+    (B := ((contentInductionTo D Sc cutoff N β [i,j] γ hij').obj M).obj z)
+    (C := ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj z)
+    (E := ((contentInductionTo D Sc cutoff N β [j,i] γ hji).obj M).obj z)
     (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
     (contentEPairEquiv D Sc cutoff N β j i γ hji M z)
     (pairOuter_square D Sc cutoff N β i j γ hij' M z)
@@ -287,8 +296,8 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
     (pairInner_square D Sc cutoff N β j i γ hji M z) h'.symm
   have H' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) H
   simpa only [smul_smul, Supercategory.sign_mul_self, one_smul] using H'.symm
-private theorem sign_slide_reverse {V : Type u} [AddCommGroup V] [Module k V]
-    (p : ZMod 2) {a b : V} (h : a = sign k p • b) : b = sign k p • a := by
+private theorem sign_slide_reverse {A B : SVec.{u} k}
+    (p : ZMod 2) {a b : A ⟶ B} (h : a = sign k p • b) : b = sign k p • a := by
   rw [h, smul_smul, Supercategory.sign_mul_self, one_smul]
 
 /-- The left distinct-colour slide in the orientation of
@@ -302,7 +311,9 @@ theorem contentEPair_slideLeft (β : Multiset I) {i j : I} (hij : i ≠ j)
       sign k (D.parity i * D.parity j) •
         (contentPairInnerDotAt D Sc cutoff N β i j γ hij' M z).comp
           (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
-  exact sign_slide_reverse (k := k) _
+  exact sign_slide_reverse (k := k)
+    (A := ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj z)
+    (B := ((contentEPairTo D Sc cutoff N β i j γ hij').obj M).obj z) _
     (contentEPair_distinct_slide_left D Sc cutoff N β hij γ hij' hji M z)
 
 /-- The right distinct-colour slide in the orientation of
@@ -316,8 +327,11 @@ theorem contentEPair_slideRight (β : Multiset I) {i j : I} (hij : i ≠ j)
       sign k (D.parity i * D.parity j) •
         (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
           (contentPairInnerDotAt D Sc cutoff N β j i γ hji M z) := by
-  exact sign_slide_reverse (k := k) _
+  exact sign_slide_reverse (k := k)
+    (A := ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj z)
+    (B := ((contentEPairTo D Sc cutoff N β i j γ hij').obj M).obj z) _
     (contentEPair_distinct_slide_right D Sc cutoff N β hij γ hij' hji M z)
 
 end OddMath.QuiverHecke.ELVOld
+
 
