@@ -36,8 +36,10 @@ def supermoduleParityIso (M : Superfunctor k C (SVec.{u} k)) :
   inv := Superfunctor.whiskerLeft M (PiSCat.ζHom (PiSCat.of k (SVec.{u} k))).inv
   hom_inv_id := by
     rw [← Superfunctor.whiskerLeft_comp, Iso.hom_inv_id, Superfunctor.whiskerLeft_id]
+    rfl
   inv_hom_id := by
     rw [← Superfunctor.whiskerLeft_comp, Iso.inv_hom_id, Superfunctor.whiskerLeft_id]
+    rfl
 
 theorem supermoduleParityIso_hom_mem (M : Superfunctor k C (SVec.{u} k)) :
     (supermoduleParityIso M).hom ∈ parity (R := k) (supermoduleParityObj M) M 1 :=
