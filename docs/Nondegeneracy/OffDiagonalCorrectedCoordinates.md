@@ -70,3 +70,19 @@ Mixed B2 source reconstruction, height consequences and both snake inverse
 products are included as concrete consumers. All new source and consumers
 await CI. The raw negative cap matrix at arbitrary endpoints remains next;
 no categorical cap normalization is asserted here.
+
+## Positive crossing on arbitrary old endpoints
+
+The further draft `ELVOffDiagonalPositiveCrossing` augments the actual
+cyclotomic crossing by the literal low output-polynomial columns. Applying
+the actual C0 coordinate and arbitrary-Hom row division proves injectivity
+and reconstructs every output. Its forward map retains the prescribed
+crossing and actual embedding; the equivalence is not a chosen substitute.
+
+The moving colour is odd, the height is nonnegative, and both old endpoints
+are arbitrary. No ring structure on Old(v,t), field, finite-dimensionality,
+action or inverse premise is added. A connected mixed B2 consumer reverses
+the source/target word order and checks both inverse products as well as the
+literal forward formula. The production owner is axiom audited. This
+extension and its source/row dependencies await CI; naturality and the
+prescribed categorical inversion comparison remain separate.
