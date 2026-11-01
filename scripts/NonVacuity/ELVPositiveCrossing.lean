@@ -13,8 +13,7 @@ def positiveWindowCrossing :
       Old datum scalars (fun _ => 4) [(), ()] [(), ()] := by
   apply positiveCrossingEquiv datum scalars (fun _ => 4) 0 oddColour [()]
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 4) () [()]
-  norm_num [datum] at h
-  omega
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢ <;> omega
 
 example (z : Source datum scalars (fun _ => 4) () [()] [()] ×
     boundaryRowWindow datum scalars (fun _ => 4) oddColour [()]) :

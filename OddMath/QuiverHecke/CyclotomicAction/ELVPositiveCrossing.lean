@@ -38,7 +38,7 @@ theorem positiveCrossingAssembly_injective (p : ZMod 2)
     intro x y hxy
     apply sub_eq_zero.mp
     apply hzero (x - y)
-    rw [map_sub, hxy, sub_self]
+    rw [(positiveCrossingAssembly D Sc cutoff j v).map_sub, hxy, sub_self]
   rintro ⟨s, r⟩ hz
   obtain ⟨y, rfl⟩ := q_surjective D Sc cutoff j.1 v v s
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y
@@ -64,8 +64,11 @@ theorem positiveCrossingAssembly_injective (p : ZMod 2)
     rw [boundaryPositiveEquiv_symm_boundary, hrcoord] at he
     exact he.symm
   apply Prod.ext
-  · apply toCyclotomic_injective_of_nonnegative_height D Sc cutoff p j v h
-    simpa only [positiveCrossingAssembly_apply, hr, ZeroMemClass.coe_zero, map_zero, add_zero] using hz
+  · change q D Sc cutoff j.1 v v y = 0
+    apply toCyclotomic_injective_of_nonnegative_height D Sc cutoff p j v h
+    have hz' : toCyclotomic D Sc cutoff j.1 v v (q D Sc cutoff j.1 v v y) = 0 := by
+      simpa only [positiveCrossingAssembly_apply, hr, ZeroMemClass.coe_zero, map_zero, add_zero] using hz
+    exact hz'.trans ((toCyclotomic D Sc cutoff j.1 v v).map_zero.symm)
   · exact hr
 
 theorem positiveCrossingAssembly_surjective (p : ZMod 2)
