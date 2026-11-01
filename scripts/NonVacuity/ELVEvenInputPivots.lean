@@ -36,7 +36,8 @@ example (b : Old mixedDatum mixedScalars (fun _ => 1) [true, false, false] [fals
       [true, false, false] [false, true, false] b := by
   apply evenInputContraction_pivot mixedDatum mixedScalars (fun _ => 1) 1 false rfl
     [true, false, false] [false, true, false] 0 0 b
-  norm_num [endpointQPDegree, appendQPDegree, outputSDegree, SKM.Datum.dn, SKM.Datum.d, mixedDatum, datum]
+  norm_num [endpointQPDegree, appendQPDegree, outputSDegree, List.range_succ, List.getD,
+    SKM.Datum.dn, SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, mixedDatum, datum]
 
 example (b : Old mixedDatum mixedScalars (fun _ => 1)
     [true, false, false, false] [false, true, false, false]) :
@@ -50,7 +51,8 @@ example (b : Old mixedDatum mixedScalars (fun _ => 1)
             [true, false, false, false] [false, true, false, false] (Finsupp.single 0 b)))) = 0 := by
   apply evenInputContraction_below mixedDatum mixedScalars (fun _ => 1) 1 false rfl
     [true, false, false, false] [false, true, false, false] 0 0 b
-  norm_num [endpointQPDegree, appendQPDegree, outputSDegree, SKM.Datum.dn, SKM.Datum.d, mixedDatum, datum]
+  norm_num [endpointQPDegree, appendQPDegree, outputSDegree, List.range_succ, List.getD,
+    SKM.Datum.dn, SKM.Datum.d, SKM.Datum.h, SKM.Datum.α, mixedDatum, datum]
 
 example (r d : ℕ)
     (b : Old mixedDatum mixedScalars (fun _ => 1) [true, false, false] [false, true, false]) :
