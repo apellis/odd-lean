@@ -23,7 +23,7 @@ namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance matrixEntryTotalsPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 /-- The actual unit column on components is the ordinary unit followed by the dot power. -/

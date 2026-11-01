@@ -24,3 +24,5 @@ uses both moving parities, distinct endpoint orders, positive cutoffs,
 all ordinary dot powers, and every shifted unit/cap slot in a three-slot
 family. All nine owned declarations pass its axiom audit. Full CI and the
 global audit remain integration gates.
+
+The component and entry comparisons use the same canonical module parity structure throughout.
