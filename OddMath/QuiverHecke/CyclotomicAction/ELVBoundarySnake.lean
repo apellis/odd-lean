@@ -59,8 +59,11 @@ theorem toCyclotomic_boundarySnake (p : ZMod 2)
 theorem boundarySnake_injective (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v : List I) :
     Function.Injective (boundarySnake D Sc cutoff p j v) := by
-  apply LinearMap.ker_eq_bot.mp
-  rw [LinearMap.ker_eq_bot']
+  suffices hzero : ∀ z, boundarySnake D Sc cutoff p j v z = 0 → z = 0 by
+    intro x y hxy
+    apply sub_eq_zero.mp
+    apply hzero (x - y)
+    rw [map_sub, hxy, sub_self]
   intro f hf
   have hy : ShortCrossCoordinates.decode D Sc cutoff j.1 v v
       (pMap D Sc cutoff j.1 v (v ++ [j.1]) (sourceLongSection D Sc cutoff p j.1 v f)) ∈

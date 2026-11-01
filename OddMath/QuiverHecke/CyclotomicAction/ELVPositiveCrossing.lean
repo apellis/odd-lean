@@ -34,8 +34,11 @@ theorem positiveCrossingAssembly_injective (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v : List I)
     (h : outputSDegree D j.1 v ≤ endpointQPDegree D cutoff j.1 v) :
     Function.Injective (positiveCrossingAssembly D Sc cutoff j v) := by
-  apply LinearMap.ker_eq_bot.mp
-  rw [LinearMap.ker_eq_bot']
+  suffices hzero : ∀ z, positiveCrossingAssembly D Sc cutoff j v z = 0 → z = 0 by
+    intro x y hxy
+    apply sub_eq_zero.mp
+    apply hzero (x - y)
+    rw [map_sub, hxy, sub_self]
   rintro ⟨s, r⟩ hz
   obtain ⟨y, rfl⟩ := q_surjective D Sc cutoff j.1 v v s
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y

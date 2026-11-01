@@ -175,7 +175,7 @@ theorem inputContraction_shifted_representative (j : {j : I // D.parity j = 1})
         (twist k (D.parity j.1) r ≫ twist k (D.parity j.1) g)) = _
     rw [← twist_comp, twist_twist]
   rw [he]
-  simp only [j.property, one_mul, SKM.zsign_one', neg_neg, one_smul]
+  simp [j.property, SKM.zsign]
 
 end CyclotomicCrossingTensor
 
