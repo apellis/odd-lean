@@ -165,6 +165,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVMonicAnnihilator
 import OddMath.QuiverHecke.CyclotomicAction.ELVMonicOldCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVMovingReduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendSpanning
+import OddMath.QuiverHecke.CyclotomicAction.ELVRawAppendSpanning
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendDegree
 import OddMath.QuiverHecke.CyclotomicAction.ELVLowerDegree
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelDegree
