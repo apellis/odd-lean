@@ -21,13 +21,19 @@ private def mixedScalars : SKM.Scalars mixedDatum ℚ where
   s_eq_zero := fun _ _ _ _ _ => rfl
   two_isUnit := by intro _; norm_num
 
+
+private theorem evenMovingParity : mixedDatum.parity false = 0 := rfl
+
+private theorem evenMovingOneParity : (1 : ℕ) • mixedDatum.parity false = 0 := by
+  simpa only [one_nsmul] using evenMovingParity
+
 /-- Even moving colour, reversed old words, and unrestricted full old classes. -/
 example (z : Target mixedDatum mixedScalars (fun _ => 4) false
     [false, true] ([true, false] ++ [false])) :
     offDiagonalLongExtraction mixedDatum mixedScalars (fun _ => 4) 1 false
       [false, true] [true, false]
       (movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false
-        [false, true] ([true, false] ++ [false]) 1 (by decide) z) =
+        [false, true] ([true, false] ++ [false]) 1 evenMovingOneParity z) =
     evenLongShift mixedDatum mixedScalars (fun _ => 4) [false, true] [true, false]
       (offDiagonalLongExtraction mixedDatum mixedScalars (fun _ => 4) 1 false
         [false, true] [true, false] z) :=
@@ -36,7 +42,7 @@ example (z : Target mixedDatum mixedScalars (fun _ => 4) false
 
 example (f : ℕ →₀ Old mixedDatum mixedScalars (fun _ => 4) [false, true] [true, false]) :
     movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false
-      [false, true] ([true, false] ++ [false]) 1 (by decide)
+      [false, true] ([true, false] ++ [false]) 1 evenMovingOneParity
       (offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false
         [false, true] [true, false] f) =
     offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false
@@ -51,13 +57,14 @@ private def exteriorOld : Old mixedDatum mixedScalars (fun _ => 4) [true] [true]
     (boundaryDelta mixedDatum mixedScalars (fun _ => 4) ⟨true, rfl⟩ [true])
 
 example :
-    movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false [true] [true, false] 1 (by decide)
+    movingPowerTarget mixedDatum mixedScalars (fun _ => 4) false [true] [true, false] 1 evenMovingOneParity
       (offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false [true] [true]
         (Finsupp.single 0 exteriorOld)) =
     offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false [true] [true]
       (Finsupp.single 1 exteriorOld) := by
-  rw [evenMoving_offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4) 1 false rfl,
-    evenLongShift_single]
+  simpa only [evenLongShift_single] using
+    evenMoving_offDiagonalLongSection mixedDatum mixedScalars (fun _ => 4)
+      1 false evenMovingParity [true] [true] (Finsupp.single 0 exteriorOld)
 end EvenLongCoordinatesConsumer
 
 open Lean Elab Command in
