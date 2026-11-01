@@ -25,6 +25,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentInductionNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairWhiskeredRelations
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionAssociativity
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionWhiskering
