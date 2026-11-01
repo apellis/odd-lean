@@ -102,14 +102,14 @@ theorem probeMixedCorner_remainders_connected (pre post : List I) (i j : I)
     change (q (probeMixedCross D Sc pre post i j ≫
       probeMixedCross D Sc pre post j i)).val =
       (q ((Sc.t i j : k) • u^(D.dn i j))).val + (q Rright).val * (q v).val
-    rw [hr, map_add, map_mul]
+    rw [hr, map_add q, map_mul q]
     rfl
   · unfold probeMixedEntry
     rw [← cyclotomicWordEntry_comp]
     change (q (probeMixedCross D Sc pre post i j ≫
       probeMixedCross D Sc pre post j i)).val =
       (q ((Sc.t i j : k) • u^(D.dn i j))).val + (q v).val * (q Rleft).val
-    rw [hl, map_add, map_mul]
+    rw [hl, map_add q, map_mul q]
     rfl
 
 
@@ -140,8 +140,16 @@ theorem probeMixedCorner_remainders (pre post : List I) (i j : I)
       rw [Algebra.algebraMap_eq_smul_one]
     refine ⟨q c, 0, 0,
       (((Sc.t i j).isUnit.map (algebraMap k (End (wordObj D Sc s)))).map q), ?_, ?_⟩
-    · simpa only [zero_mul, add_zero] using hBA
-    · simpa only [Subsemigroup.coe_zero, mul_zero, add_zero] using hBA
+    · change probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
+        (q c).val + (0 : CyclotomicAlgebra D Sc a (pre.length+post.length+1)) *
+          (probeMixedCornerDot D Sc a pre post i j (pre.length+1)).val
+      rw [zero_mul, add_zero]
+      exact hBA
+    · change probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
+        (q c).val + (probeMixedCornerDot D Sc a pre post i j (pre.length+1)).val *
+          (0 : CyclotomicAlgebra D Sc a (pre.length+post.length+1))
+      rw [mul_zero, add_zero]
+      exact hBA
   · exact probeMixedCorner_remainders_connected D Sc a pre post i j hij hd hu
 
 /-- The actual distinct-colour probe step: preceding dots in the source and
