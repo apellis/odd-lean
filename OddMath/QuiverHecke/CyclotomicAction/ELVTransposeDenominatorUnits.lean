@@ -216,9 +216,10 @@ theorem elvRestrictionProbe_difference_isUnit [Finite I]
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
   · rw [elvPostTransposeDot_eq]
+    generalize elvActionDotTranspose D Sc cutoff bound i Λ h = t
     intro M δ
     exact elvRestrictionProbe_even_comm D Sc cutoff bound i Λ h G
-      (elvActionDotTranspose D Sc cutoff bound i Λ h) α M δ
+      t α M δ
 
 theorem elvRestrictionProbe_square_difference_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
@@ -230,9 +231,10 @@ theorem elvRestrictionProbe_square_difference_isUnit [Finite I]
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
   · rw [elvPostTransposeDot_eq]
+    generalize elvActionDotTranspose D Sc cutoff bound i Λ h = t
     intro M δ
     exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
-      (elvActionDotTranspose D Sc cutoff bound i Λ h) α M δ
+      t α M δ
 
 theorem elvRestrictionProbe_square_sum_isUnit [Finite I]
     (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (hi : D.parity i = 1)
@@ -244,9 +246,10 @@ theorem elvRestrictionProbe_square_sum_isUnit [Finite I]
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
   · rw [elvPostTransposeDot_eq]
+    generalize elvActionDotTranspose D Sc cutoff bound i Λ h = t
     intro M δ
     exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
-      (elvActionDotTranspose D Sc cutoff bound i Λ h) α M δ
+      t α M δ
 
 end Probe
 end OddMath.QuiverHecke.ELVOld
