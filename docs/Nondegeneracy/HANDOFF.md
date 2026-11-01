@@ -106,8 +106,11 @@ The corresponding consumers are included where present. The first two are
 restricted to diagonal old Hom and odd moving colour. Cap transport constructs
 input-oriented contraction/dot descent with the polynomial defect retained;
 its identification with the actual categorical dotted counit remains open.
-The off-diagonal coordinate draft still takes an old normal-form index: canonical
-choice independence and the empty-index case remain to be completed.
+The off-diagonal coordinate draft now removes its intermediate old normal-form
+index using choice independence and the proved zero old Hom in the empty-index
+case. It gives unconditional finite extraction/section maps and a split row;
+these extensions remain unchecked until CI, and exact short kernel plus
+boundary/leading transport remain open.
 ProbeWordCorner is an unfinished transport into the actual cyclotomic eAe corner.
 
 Only `ProbeDotPropagation` and its concrete consumer have passed scoped checks
@@ -116,15 +119,3 @@ The other new constructions must be elaborated, corrected, consumed and audited
 before being recorded as verified. Build their named module targets, then their
 NonVacuity targets. The negative cap matrix, off-diagonal/naturality extension,
 full factor/action and actual observations remain the critical chain.
-
-## Proposed off-diagonal long coordinates
-
-`ELVOffDiagonalLongCoordinates` extends long extraction and explicit finite
-sections to full old Homs `Old(v,t)`. Intermediate constructions use an old
-normal-form index; the proposed final maps remove it using choice-independence
-and the proved zero Hom in the empty-index case. Same/off-exponent readback,
-finite support, split surjectivity and section injectivity are drafted with
-concrete connected all-odd off-diagonal and empty-Hom consumers. These latest
-extensions remain unchecked until CI. Exact relative-short kernel and
-boundary/leading-map transport are subsequent obligations; no full factor
-inverse or nondegeneracy instance is claimed.

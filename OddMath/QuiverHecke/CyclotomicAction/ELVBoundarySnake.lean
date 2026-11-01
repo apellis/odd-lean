@@ -47,6 +47,7 @@ theorem toCyclotomic_boundarySnake (p : ZMod 2)
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v)
     (ShortCrossCoordinates.decode D Sc cutoff j.1 v v
       (pMap D Sc cutoff j.1 v (v ++ [j.1]) (sourceLongSection D Sc cutoff p j.1 v f)))
+  simp only [LinearMap.comp_apply] at hs
   change _ = toCyclotomic D Sc cutoff j.1 v v (boundarySnake D Sc cutoff p j v f) at hs
   rw [← hs, boundarySnake_lift]
   have hm : pMap D Sc cutoff j.1 v (v ++ [j.1]) (sourceLongSection D Sc cutoff p j.1 v f) ∈
@@ -69,6 +70,7 @@ theorem boundarySnake_injective (p : ZMod 2)
   have he : alpha D Sc cutoff j.1 v v a = sourceLongSection D Sc cutoff p j.1 v f := by
     apply pMap_injective D Sc cutoff j.1 v (v ++ [j.1])
     have hs := LinearMap.congr_fun (shortColumn_square D Sc cutoff j.1 v v) a
+    simp only [LinearMap.comp_apply] at hs
     exact hs.trans (by rw [ha, boundarySnake_lift])
   have hb := congrArg (outputLongExtraction D Sc cutoff p j.1 v) he
   rw [outputLongExtraction_alpha, outputLongExtraction_sourceLongSection] at hb
@@ -90,6 +92,7 @@ theorem boundarySnake_eq_lift (p : ZMod 2)
   rw [← he, map_add]
   have hs := LinearMap.congr_fun (shortColumn_square D Sc cutoff j.1 v v)
     (extract D Sc cutoff j.1 v v z)
+  simp only [LinearMap.comp_apply] at hs
   rw [hs, map_add, ShortCrossCoordinates.decode_shortCross, map_add]
   have hq : q D Sc cutoff j.1 v v
       (pprime D Sc cutoff j.1 v v (extract D Sc cutoff j.1 v v z)) = 0 := by
@@ -132,6 +135,7 @@ theorem range_boundarySnake (p : ZMod 2)
       apply ShortCrossCoordinates.shortCross_injective D Sc cutoff j.1 v v
       rw [map_add, boundarySnake_lift]
       have hs := LinearMap.congr_fun (shortColumn_square D Sc cutoff j.1 v v) a
+      simp only [LinearMap.comp_apply] at hs
       rw [← hs, ← map_add, source_reconstruction, hx]
     refine ⟨f, ?_⟩
     have hqa : q D Sc cutoff j.1 v v (pprime D Sc cutoff j.1 v v a) = 0 := by

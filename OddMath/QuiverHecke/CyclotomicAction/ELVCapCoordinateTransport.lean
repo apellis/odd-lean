@@ -61,8 +61,10 @@ theorem inputDefect_shortCross_pprime (p : ZMod 2)
     appendC0InputDefect D Sc cutoff j.1 v v
       (CyclotomicCrossingTensor.shortCross D Sc cutoff j.1 v v
         (CyclotomicCrossingTensor.pprime D Sc cutoff j.1 v v a)) = 0 := by
-  rw [← LinearMap.congr_fun
-    (CyclotomicCrossingTensor.shortColumn_square D Sc cutoff j.1 v v) a]
+  have hs := LinearMap.congr_fun
+    (CyclotomicCrossingTensor.shortColumn_square D Sc cutoff j.1 v v) a
+  simp only [LinearMap.comp_apply] at hs
+  rw [← hs]
   exact inputDefect_pMap_alpha D Sc cutoff p j v a
 
 /-- The actual polynomial-constant defect changes by the prescribed Pprime
@@ -82,7 +84,11 @@ theorem inputDefect_pMap_sourceLongSection (p : ZMod 2)
                 (outputLongSection D Sc cutoff p j.1 v f)))) := by
   rw [CyclotomicCrossingTensor.sourceLongSection, LinearMap.sub_apply,
     LinearMap.comp_apply, LinearMap.comp_apply, map_sub, map_sub]
-  rw [LinearMap.congr_fun (CyclotomicCrossingTensor.shortColumn_square D Sc cutoff j.1 v v)]
+  have hs := LinearMap.congr_fun (CyclotomicCrossingTensor.shortColumn_square D Sc cutoff j.1 v v)
+    (CyclotomicCrossingTensor.extract D Sc cutoff j.1 v v
+      (outputLongSection D Sc cutoff p j.1 v f))
+  simp only [LinearMap.comp_apply] at hs
+  rw [hs]
   rfl
 
 /-- The actual zeroth contraction is independent of the alpha correction. -/
