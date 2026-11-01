@@ -1,0 +1,352 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVBoundarySnake
+import OddMath.QuiverHecke.CyclotomicAction.ELVCapInputRecurrence
+import Mathlib.LinearAlgebra.Finsupp.Supported
+import Mathlib.RingTheory.Nilpotent.Basic
+
+/-! # The negative-height crossing and its actual input-contraction rows
+
+The cap vector is formed from the descended input contraction and moving
+input dot. Its restriction to the concrete snake kernel has the prescribed
+anti-triangular pivots. Finite elimination yields the whole raw augmented
+matrix, before categorical signed-dot/cap comparison and naturality.
+-/
+noncomputable section
+namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
+open CategoryTheory StringDiagrams Supercategory
+open scoped BigOperators
+universe u
+
+private def pointwiseEquiv {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
+    (m : ℕ) (L : M ≃ₗ[k] M) : (Fin m → M) ≃ₗ[k] (Fin m → M) where
+  toFun f i := L (f i)
+  invFun f i := L.symm (f i)
+  left_inv f := by ext i; exact L.symm_apply_apply (f i)
+  right_inv f := by ext i; exact L.apply_symm_apply (f i)
+  map_add' f g := by ext i; exact map_add L (f i) (g i)
+  map_smul' c f := by ext i; exact map_smul L c (f i)
+
+/-- Finite lower-triangular elimination for module-valued coordinates.
+The concrete cap operator below supplies both hypotheses. -/
+private theorem finiteTriangular_bijective {k M : Type*}
+    [CommRing k] [AddCommGroup M] [Module k M] (m : ℕ)
+    (F : (Fin m → M) →ₗ[k] (Fin m → M)) (L : M ≃ₗ[k] M)
+    (hzero : ∀ a b : Fin m, a < b → ∀ x : M, F (Pi.single b x) a = 0)
+    (hdiag : ∀ a : Fin m, ∀ x : M, F (Pi.single a x) a = L x) :
+    Function.Bijective F := by
+  classical
+  let D := pointwiseEquiv m L
+  let N : Module.End k (Fin m → M) := 1 - D.symm.toLinearMap.comp F
+  have hsingle (a b : Fin m) (hab : a ≤ b) (x : M) :
+      N (Pi.single b x) a = 0 := by
+    change Pi.single b x a - L.symm (F (Pi.single b x) a) = 0
+    by_cases he : a = b
+    · subst b
+      rw [Pi.single_eq_same, hdiag, LinearEquiv.symm_apply_apply, sub_self]
+    · have hlt : a < b := lt_of_le_of_ne hab he
+      simp only [Pi.single_eq_of_ne he, hzero a b hlt x, map_zero, sub_self]
+  have hrow (a : Fin m) (f : Fin m → M)
+      (hf : ∀ b : Fin m, b < a → f b = 0) : N f a = 0 := by
+    have hs : f = ∑ b : Fin m, Pi.single b (f b) := by
+      ext b
+      simp [Pi.single_apply]
+    rw [hs, map_sum, Finset.sum_apply]
+    apply Finset.sum_eq_zero
+    intro b _
+    by_cases hb : b < a
+    · simp only [hf b hb, Pi.single_zero, map_zero, Pi.zero_apply]
+    · exact hsingle a b (le_of_not_gt hb) (f b)
+  have hp : ∀ n : ℕ, ∀ f : Fin m → M, ∀ a : Fin m,
+      a.val < n → ((N ^ n) f) a = 0 := by
+    intro n
+    induction n with
+    | zero => intro f a ha; omega
+    | succ n ih =>
+      intro f a ha
+      rw [pow_succ']
+      change N ((N ^ n) f) a = 0
+      apply hrow
+      intro b hb
+      exact ih f b (by have : b.val < a.val := hb; omega)
+  have hn : N ^ m = 0 := by
+    ext f a
+    exact hp m f a a.isLt
+  have hu := (show IsNilpotent N from ⟨m, hn⟩).isUnit_one_sub
+  have ht : IsUnit (D.symm.toLinearMap.comp F) := by
+    simpa only [N, sub_sub_cancel] using hu
+  have hb := (Module.End.isUnit_iff (D.symm.toLinearMap.comp F)).mp ht
+  constructor
+  · intro f g hfg
+    apply hb.1
+    change D.symm (F f) = D.symm (F g)
+    rw [hfg]
+  · intro f
+    obtain ⟨g, hg⟩ := hb.2 (D.symm f)
+    exact ⟨g, D.symm.injective hg⟩
+
+private def finIioEquiv (m : ℕ) : Fin m ≃ Set.Iio m where
+  toFun i := ⟨i.val, i.isLt⟩
+  invFun i := ⟨i.val, i.property⟩
+  left_inv i := rfl
+  right_inv i := rfl
+
+private def lowVectorEquiv {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
+    (m : ℕ) : (Fin m → M) ≃ₗ[k] Finsupp.supported M k (Set.Iio m) :=
+  ((Finsupp.linearEquivFunOnFinite k M (Fin m)).symm.trans
+    (Finsupp.domLCongr (finIioEquiv m))).trans
+      (Finsupp.supportedEquivFinsupp (R := k) (M := M) (Set.Iio m)).symm
+
+private theorem lowVectorEquiv_single {k M : Type*} [CommRing k]
+    [AddCommGroup M] [Module k M] (m : ℕ) (d : Fin m) (b : M) :
+    ((lowVectorEquiv (k := k) (M := M) m (Pi.single d b) :
+      Finsupp.supported M k (Set.Iio m)) : ℕ →₀ M) = Finsupp.single d.val b := by
+  simp only [lowVectorEquiv, LinearEquiv.trans_apply,
+    Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
+    Finsupp.supportedEquivFinsupp_symm_single]
+
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+
+/-- The raw cap vector uses the actual descended contraction and input dot. -/
+def inputCapVector (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ) :
+    Source D Sc cutoff j.1 v v →ₗ[k] (Fin m → Old D Sc cutoff v v) :=
+  LinearMap.pi fun r : Fin m =>
+    (inputContraction D Sc cutoff j v).comp ((crossingInputDot D Sc cutoff j v) ^ r.val)
+
+@[simp] theorem inputCapVector_apply (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ) (s : Source D Sc cutoff j.1 v v) (r : Fin m) :
+    inputCapVector D Sc cutoff j v m s r =
+      inputContraction D Sc cutoff j v ((crossingInputDot D Sc cutoff j v)^[r.val] s) := by
+  exact congrArg (inputContraction D Sc cutoff j v)
+    (Module.End.pow_apply (crossingInputDot D Sc cutoff j v) r.val s)
+
+private def kernelWindowVectorEquiv (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    (Fin m → Old D Sc cutoff v v) ≃ₗ[k] boundaryKernelWindow D Sc cutoff j v where
+  toFun f := ⟨(lowVectorEquiv m f).val, by
+    intro d hd
+    have hlt : d < m := (lowVectorEquiv m f).property hd
+    change d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v
+    omega⟩
+  invFun f := (lowVectorEquiv m).symm ⟨f.val, by
+    intro d hd
+    have hlt := f.property hd
+    change d + endpointQPDegree D cutoff j.1 v < outputSDegree D j.1 v at hlt
+    change d < m
+    omega⟩
+  left_inv f := by
+    apply (lowVectorEquiv m).injective
+    rw [LinearEquiv.apply_symm_apply]
+    rfl
+  right_inv f := by
+    apply Subtype.ext
+    exact congrArg Subtype.val ((lowVectorEquiv m).apply_symm_apply _)
+  map_add' f g := by
+    apply Subtype.ext
+    exact congrArg Subtype.val (map_add (lowVectorEquiv m) f g)
+  map_smul' c f := by
+    apply Subtype.ext
+    exact congrArg Subtype.val (map_smul (lowVectorEquiv m) c f)
+
+/-- Coordinates in the actual boundary kernel, using the corrected low window. -/
+def boundaryKernelVectorEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    (Fin m → Old D Sc cutoff v v) ≃ₗ[k]
+      LinearMap.ker (outputPolynomialBoundary D Sc cutoff p j v) :=
+  (kernelWindowVectorEquiv D Sc cutoff j v m hm).trans
+    (boundaryKernelEquiv D Sc cutoff p j v)
+
+theorem boundaryKernelVectorEquiv_single (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
+    (d : Fin m) (b : Old D Sc cutoff v v) :
+    ((boundaryKernelVectorEquiv D Sc cutoff p j v m hm (Pi.single d b)) :
+      ℕ →₀ Old D Sc cutoff v v) =
+      outputLongExtraction D Sc cutoff p j.1 v (outputCorrectedLift D Sc cutoff p j v d.val b) := by
+  change outputCorrectedCoordinateEquiv D Sc cutoff p j v
+    ((lowVectorEquiv m (Pi.single d b)).val) = _
+  rw [lowVectorEquiv_single, outputCorrectedCoordinateEquiv_single]
+
+def crossingKernelVectorEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    (Fin m → Old D Sc cutoff v v) ≃ₗ[k]
+      LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v) :=
+  (boundaryKernelVectorEquiv D Sc cutoff p j v m hm).trans
+    (boundarySnakeKernelEquiv D Sc cutoff p j v)
+
+/-- The actual boundary snake equals the decoded original long lift in the quotient. -/
+theorem boundarySnake_eq_boundaryCrossCoordinates (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I)
+    (f : LinearMap.ker (outputPolynomialBoundary D Sc cutoff p j v)) :
+    boundarySnake D Sc cutoff p j v f =
+      q D Sc cutoff j.1 v v (boundaryCrossCoordinates D Sc cutoff p j v f) := by
+  exact boundarySnake_eq_lift D Sc cutoff p j v f
+    (outputLongSection D Sc cutoff p j.1 v f)
+    (outputLongExtraction_section D Sc cutoff p j.1 v f)
+
+
+private def reversedVector {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
+    (m : ℕ) : (Fin m → M) ≃ₗ[k] (Fin m → M) where
+  toFun f i := f i.rev
+  invFun f i := f i.rev
+  left_inv f := by ext i; simp only [Fin.rev_rev]
+  right_inv f := by ext i; simp only [Fin.rev_rev]
+  map_add' f g := rfl
+  map_smul' c f := rfl
+
+private theorem reversedVector_single {k M : Type*} [CommRing k]
+    [AddCommGroup M] [Module k M] (m : ℕ) (d : Fin m) (b : M) :
+    reversedVector (k := k) m (Pi.single d b) = Pi.single d.rev b := by
+  classical
+  ext i
+  change Pi.single d b i.rev = Pi.single d.rev b i
+  by_cases hi : i = d.rev
+  · subst i; simp
+  · have hr : i.rev ≠ d := by
+      intro h
+      have hh := congrArg Fin.rev h
+      simp only [Fin.rev_rev] at hh
+      exact hi hh
+    simp [Pi.single_apply, hi, hr]
+
+/-- The actual cap vector evaluated on the actual snake kernel coordinates. -/
+def capOnKernelVector (p : ZMod 2) (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    (Fin m → Old D Sc cutoff v v) →ₗ[k] (Fin m → Old D Sc cutoff v v) :=
+  (inputCapVector D Sc cutoff j v m).comp
+    ((LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v)).subtype.comp
+      (crossingKernelVectorEquiv D Sc cutoff p j v m hm).toLinearMap)
+
+theorem capOnKernelVector_single (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m)
+    (r d : Fin m) (b : Old D Sc cutoff v v) :
+    capOnKernelVector D Sc cutoff p j v m hm (Pi.single d b) r =
+      inputContractionAffine D Sc cutoff j v
+        ((crossingInputDotAffine D Sc cutoff j v)^[r.val]
+          (boundaryCrossCoordinates D Sc cutoff p j v
+            (outputLongExtraction D Sc cutoff p j.1 v
+              (outputCorrectedLift D Sc cutoff p j v d.val b)))) := by
+  change inputCapVector D Sc cutoff j v m
+    ((crossingKernelVectorEquiv D Sc cutoff p j v m hm (Pi.single d b)).val) r = _
+  rw [inputCapVector_apply]
+  change inputContraction D Sc cutoff j v
+    ((crossingInputDot D Sc cutoff j v)^[r.val]
+      (boundarySnake D Sc cutoff p j v
+        (boundaryKernelVectorEquiv D Sc cutoff p j v m hm (Pi.single d b)))) = _
+  rw [boundarySnake_eq_boundaryCrossCoordinates, inputContraction_iterate_q,
+    boundaryKernelVectorEquiv_single]
+
+theorem capOnKernelVector_bijective (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    Function.Bijective (capOnKernelVector D Sc cutoff p j v m hm) := by
+  classical
+  let R := reversedVector (k := k) (M := Old D Sc cutoff v v) m
+  let F := capOnKernelVector D Sc cutoff p j v m hm
+  have ht : Function.Bijective (F.comp R.toLinearMap) := by
+    apply finiteTriangular_bijective m _ (outputBoundaryLeadingEquiv D Sc cutoff p j v 0)
+    · intro a b hab x
+      change F (R (Pi.single b x)) a = 0
+      rw [reversedVector_single, capOnKernelVector_single]
+      apply inputContractionAffine_corrected_below
+      have hb := Fin.rev_val b
+      have ha := a.isLt
+      have hb' := b.isLt
+      have hab' : a.val < b.val := hab
+      omega
+    · intro a x
+      change F (R (Pi.single a x)) a = _
+      rw [reversedVector_single, capOnKernelVector_single]
+      apply inputContractionAffine_corrected_pivot
+      have ha := Fin.rev_val a
+      have ha' := a.isLt
+      omega
+  constructor
+  · intro f g hfg
+    have he : R.symm f = R.symm g := by
+      apply ht.1
+      change F (R (R.symm f)) = F (R (R.symm g))
+      simpa only [LinearEquiv.apply_symm_apply] using hfg
+    exact R.symm.injective he
+  · intro f
+    obtain ⟨g, hg⟩ := ht.2 f
+    exact ⟨R g, hg⟩
+
+/-- Cap rows detect exactly the kernel of the prescribed crossing. -/
+theorem inputCapVector_kernel_bijective (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    Function.Bijective ((inputCapVector D Sc cutoff j v m).comp
+      (LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v)).subtype) := by
+  let e := crossingKernelVectorEquiv D Sc cutoff p j v m hm
+  have hb := capOnKernelVector_bijective D Sc cutoff p j v m hm
+  constructor
+  · intro f g hfg
+    have he : e.symm f = e.symm g := by
+      apply hb.1
+      change inputCapVector D Sc cutoff j v m (e (e.symm f)).val =
+        inputCapVector D Sc cutoff j v m (e (e.symm g)).val
+      simpa only [LinearEquiv.apply_symm_apply] using hfg
+    exact e.symm.injective he
+  · intro f
+    obtain ⟨g, hg⟩ := hb.2 f
+    exact ⟨e g, hg⟩
+
+/-- The negative branch uses the prescribed crossing and actual dotted input contractions. -/
+def negativeCrossingAssembly (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ) :
+    Source D Sc cutoff j.1 v v →ₗ[k]
+      (Old D Sc cutoff (v ++ [j.1]) (v ++ [j.1]) × (Fin m → Old D Sc cutoff v v)) :=
+  (toCyclotomic D Sc cutoff j.1 v v).prod (inputCapVector D Sc cutoff j v m)
+
+theorem negativeCrossingAssembly_bijective (p : ZMod 2)
+    (j : {j : I // D.parity j = 1}) (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    Function.Bijective (negativeCrossingAssembly D Sc cutoff j v m) := by
+  have hb := inputCapVector_kernel_bijective D Sc cutoff p j v m hm
+  constructor
+  · intro f g hfg
+    have hcross := congrArg Prod.fst hfg
+    have hcap := congrArg Prod.snd hfg
+    change toCyclotomic D Sc cutoff j.1 v v f = toCyclotomic D Sc cutoff j.1 v v g at hcross
+    change inputCapVector D Sc cutoff j v m f = inputCapVector D Sc cutoff j v m g at hcap
+    let d : LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v) :=
+      ⟨f - g, by
+        rw [LinearMap.mem_ker, map_sub]
+        exact sub_eq_zero.mpr hcross⟩
+    have hd : d = 0 := hb.1 (by
+      change inputCapVector D Sc cutoff j v m (f - g) = _
+      rw [map_sub, hcap, sub_self, map_zero])
+    exact sub_eq_zero.mp (congrArg Subtype.val hd)
+  · rintro ⟨n, b⟩
+    obtain ⟨z, hz⟩ := toCyclotomic_surjective_of_nonpositive_height
+      D Sc cutoff p j v (by omega) n
+    obtain ⟨f, hf⟩ := hb.2 (b - inputCapVector D Sc cutoff j v m z)
+    refine ⟨z + f.val, ?_⟩
+    apply Prod.ext
+    · change toCyclotomic D Sc cutoff j.1 v v (z + f.val) = n
+      have hfk := f.property
+      change toCyclotomic D Sc cutoff j.1 v v f.val = 0 at hfk
+      rw [map_add, hz, hfk, add_zero]
+    · change inputCapVector D Sc cutoff j v m (z + f.val) = b
+      rw [map_add]
+      change inputCapVector D Sc cutoff j v m z +
+        ((inputCapVector D Sc cutoff j v m).comp
+          (LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v)).subtype) f = b
+      rw [hf]
+      abel
+
+/-- The whole raw negative-height augmented matrix on the independently defined source. -/
+def negativeCrossingEquiv (p : ZMod 2) (j : {j : I // D.parity j = 1})
+    (v : List I) (m : ℕ)
+    (hm : outputSDegree D j.1 v = endpointQPDegree D cutoff j.1 v + m) :
+    Source D Sc cutoff j.1 v v ≃ₗ[k]
+      (Old D Sc cutoff (v ++ [j.1]) (v ++ [j.1]) × (Fin m → Old D Sc cutoff v v)) :=
+  LinearEquiv.ofBijective (negativeCrossingAssembly D Sc cutoff j v m)
+    (negativeCrossingAssembly_bijective D Sc cutoff p j v m hm)
+
+end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
