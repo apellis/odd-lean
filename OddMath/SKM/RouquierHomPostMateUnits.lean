@@ -38,6 +38,8 @@ local notation "TY" => mixedPostTargetPostDot (k := k) E κ H (F' := F') y
 local notation "SX" => mixedPostSourcePreDot (k := k) E κ H (F' := F') x
 local notation "SY" => mixedPostSourcePostDot (k := k) E κ H A y
 
+include hx hy
+
 /-- A two-term polynomial moves to its literal source polynomial. -/
 theorem homDistinctMixedMateDot_smul_pow_add (c d : k) (n : ℕ) :
     homDistinctMixedMateDot E A κ τ H (c • TX ^ n + d • TY) =
