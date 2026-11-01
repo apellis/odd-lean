@@ -28,6 +28,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairWhiskeredRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentSuffixCrossingTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionAssociativity
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleRelations
@@ -1818,3 +1819,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
+
