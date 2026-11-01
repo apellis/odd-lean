@@ -101,7 +101,7 @@ private theorem anticommute_of_odd (i : I) (hi : D.parity i = 1) (t : Sector I)
   simpa [koszulSign] using h
 
 /-- In a ring, if `y x = -(x y)` then `x` commutes with `y²` and `y` commutes with `x²`. -/
-private theorem commute_sq_of_anticommute {R : Type*} [Ring R] {x y : R}
+theorem commute_sq_of_anticommute {R : Type*} [Ring R] {x y : R}
     (h : y * x = -(x * y)) : Commute x (y * y) ∧ Commute y (x * x) := by
   constructor
   · have h' : x * y = -(y * x) := by rw [h, neg_neg]
@@ -119,7 +119,7 @@ private theorem parity_eq_one {p : ZMod 2} (hp : p ≠ 0) : p = 1 := by
 def CrossCoeffInputs.toDenominatorUnits (h : P.CrossCoeffInputs) :
     P.CrossDenominatorUnits where
   even i hi t hv Z := by
-    simpa only [sub_eq_add_neg] using
+    simpa only [sub_eq_add_neg, add_comm] using
       (h.postDot_isNilpotent i t hv Z).isUnit_add_left_of_commute
         (h.preDot_isUnit i t hv Z).neg
         ((P.commute_of_even i hi t hv Z).neg_right)
@@ -158,7 +158,7 @@ theorem crossCoeffOfDenominatorUnits_isInverse (h : P.CrossDenominatorUnits) :
   · intro i hi t hv Z
     have hd : ((P.crossDenom h i t hv Z : (End (P.rpObj i i t hv Z))ˣ) :
         End (P.rpObj i i t hv Z)) = P.rpPostDot i t hv Z - P.rpPreDot i t hv Z := by
-      simp [crossDenom, hi, sub_eq_add_neg, add_comm]
+      simp [crossDenom, hi, sub_eq_add_neg]
     simp only [crossCoeffOfDenominatorUnits, hi, ↓reduceIte]
     refine ⟨?_, ?_⟩
     · rw [← End.mul_def, ← hd, Units.mul_inv]; rfl
