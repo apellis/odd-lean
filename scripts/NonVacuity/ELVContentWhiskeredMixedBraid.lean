@@ -4,44 +4,36 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumRepresentable
 import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
-universe u
-namespace OddMath.QuiverHecke.ELVOld
-variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
-
-example (β : Multiset I) {i j : I} (hij : i ≠ j)
-    (M : ContentModules D (parameterTwist D Sc) cutoff N β)
-    (z : ContentCategory D (parameterTwist D Sc) cutoff N (β + ([i,j,i] : Multiset I))) :
-    contentWhiskeredPathIij D (parameterTwist D Sc) cutoff N β i j M z -
-        contentWhiskeredPathJii D (parameterTwist D Sc) cutoff N β i j M z =
-      contentWhiskeredPolynomial D Sc cutoff N β i j M z :=
-  contentWhiskered_mixedBraid D Sc cutoff N β hij M z
-
-namespace WhiskeredMixedBraidConsumer
+namespace OddMath.QuiverHecke.ELVOld.WhiskeredMixedBraidConsumer
 open CyclotomicAction.AsymmetricParameters
 
-/-- Connected asymmetric all-odd datum, with its actual coefficient-truncated
-vacuum representable and a literal three-strand target. Neither a zero module
-nor an assumed action or braid proof is supplied. -/
+/-- Connected asymmetric all-odd data and the actual vacuum representable.
+Every intermediate-content equality is discharged on the concrete words. -/
 example :=
   contentWhiskered_mixedBraid datum scalars (fun _ => 12) 12 (0 : Multiset Bool)
     (i := true) (j := false) (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([true] : Multiset Bool))
+    rfl (by decide) (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([false] : Multiset Bool))
+    rfl (by decide) (by decide) (by decide)
     (vacuumModule datum (parameterTwist datum scalars) (fun _ => 12) 12)
-    (⟨⟨[true, false, true]⟩, by simp⟩ :
+    (⟨⟨[true,false,true]⟩, by simp⟩ :
       ContentCategory datum (parameterTwist datum scalars) (fun _ => 12) 12
-        (0 + ([true, false, true] : Multiset Bool)))
+        (0 + ([true,false,true] : Multiset Bool)))
 
-/-- Reverse the outside colour: this tests the other asymmetric Cartan entry. -/
+/-- The other outer colour tests the unequal Cartan exponent. -/
 example :=
   contentWhiskered_mixedBraid datum scalars (fun _ => 12) 12 (0 : Multiset Bool)
     (i := false) (j := true) (by decide)
+    ((0 + ([false] : Multiset Bool)) + ([false] : Multiset Bool))
+    rfl (by decide) (by decide)
+    ((0 + ([false] : Multiset Bool)) + ([true] : Multiset Bool))
+    rfl (by decide) (by decide) (by decide)
     (vacuumModule datum (parameterTwist datum scalars) (fun _ => 12) 12)
-    (⟨⟨[false, true, false]⟩, by simp⟩ :
+    (⟨⟨[false,true,false]⟩, by simp⟩ :
       ContentCategory datum (parameterTwist datum scalars) (fun _ => 12) 12
-        (0 + ([false, true, false] : Multiset Bool)))
-end WhiskeredMixedBraidConsumer
-
-end OddMath.QuiverHecke.ELVOld
+        (0 + ([false,true,false] : Multiset Bool)))
+end OddMath.QuiverHecke.ELVOld.WhiskeredMixedBraidConsumer
 
 open Lean Elab Command in
 run_cmd do
