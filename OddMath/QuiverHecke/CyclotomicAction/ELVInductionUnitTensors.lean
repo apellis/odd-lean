@@ -35,6 +35,30 @@ theorem inductionComp_inv_total_unit (v : C) (b : M.obj v) :
   simp only [unit_apply]
   exact inductionComp_inv_total_tensor J K M v ((J ⋙ K).obj v) (𝟙 _) b
 
+/-- A composable chain evaluates at prescribed vectors when each leg does. -/
+theorem composition_total_apply_of_steps
+    {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    {F₀ F₁ F₂ F₃ F₄ F₅ : Superfunctor k C (SVec k)}
+    (f₁ : F₀ ⟶ F₁) (f₂ : F₁ ⟶ F₂) (f₃ : F₂ ⟶ F₃)
+    (f₄ : F₃ ⟶ F₄) (f₅ : F₄ ⟶ F₅) (w : C)
+    (x₀ : F₀.obj w) (x₁ : F₁.obj w) (x₂ : F₂.obj w)
+    (x₃ : F₃.obj w) (x₄ : F₄.obj w) (x₅ : F₅.obj w)
+    (h₁ : f₁.total w x₀ = x₁) (h₂ : f₂.total w x₁ = x₂)
+    (h₃ : f₃.total w x₂ = x₃) (h₄ : f₄.total w x₃ = x₄)
+    (h₅ : f₅.total w x₄ = x₅) :
+    (f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅).total w x₀ = x₅ := by
+  refine (composition_total_apply f₁ f₂ f₃ f₄ f₅ w x₀).trans ?_
+  calc
+    _ = f₅.total w (f₄.total w (f₃.total w (f₂.total w x₁))) :=
+      congrArg (fun y => f₅.total w (f₄.total w (f₃.total w (f₂.total w y)))) h₁
+    _ = f₅.total w (f₄.total w (f₃.total w x₂)) :=
+      congrArg (fun y => f₅.total w (f₄.total w (f₃.total w y))) h₂
+    _ = f₅.total w (f₄.total w x₃) :=
+      congrArg (fun y => f₅.total w (f₄.total w y)) h₃
+    _ = f₅.total w x₄ := congrArg (f₅.total w) h₄
+    _ = x₅ := h₅
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
