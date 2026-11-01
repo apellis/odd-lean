@@ -1731,6 +1731,7 @@ import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
