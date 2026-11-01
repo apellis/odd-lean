@@ -205,4 +205,22 @@ theorem superfunctorProductEnd_component_isUnit
       StringDiagrams.Supercategory.Superfunctor.app_eq_zero_of_mem hp
         (by decide : (0 : ZMod 2) ≠ 1), zero_add] using hu
 
+/-- At an odd homogeneous endomorphism, the even component of its square
+is the square of its odd component. Proved before any concrete category is unfolded. -/
+theorem superfunctor_odd_square_app_zero
+    {R : Type*} [CommRing R]
+    {B : Type*} [Category B] [Preadditive B] [Linear R B]
+    [StringDiagrams.Supercategory R B]
+    {E : Type*} [Category E] [Preadditive E] [Linear R E]
+    [StringDiagrams.Supercategory R E]
+    (F : StringDiagrams.Supercategory.Superfunctor R B E) (x : End F)
+    (hx : x ∈ StringDiagrams.Supercategory.parity (R := R) F F 1) (M : B) :
+    (show End (F.obj M) from (x ^ 2).app 0 M) =
+      (show End (F.obj M) from x.app 1 M) ^ 2 := by
+  have hx0 := StringDiagrams.Supercategory.Superfunctor.app_eq_zero_of_mem hx
+    (by decide : (0 : ZMod 2) ≠ 1) M
+  simp only [pow_two, End.mul_def,
+    StringDiagrams.Supercategory.Superfunctor.comp_app_zero,
+    hx0, Limits.zero_comp, zero_add]
+
 end OddMath.QuiverHecke.SwappedAssembly

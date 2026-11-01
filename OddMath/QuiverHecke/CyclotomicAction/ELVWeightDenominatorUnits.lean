@@ -81,19 +81,23 @@ theorem elvPostDot_square_difference_isUnit [Finite I] (hi : D.parity i = 1)
   · simpa only [pow_two, End.mul_def, SuperNatTrans.zmod2_one_add_one] using
       Submodule.sub_mem _ (comp_mem hx hx) (comp_mem hy hy)
   · intro M
-    have hx0 := Superfunctor.app_eq_zero_of_mem hx (by decide : (0 : ZMod 2) ≠ 1) M
-    have hy0 := Superfunctor.app_eq_zero_of_mem hy (by decide : (0 : ZMod 2) ≠ 1) M
-    change IsUnit (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
-      (X ^ 2 - elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
-    simp only [Superfunctor.sub_app, pow_two, End.mul_def, Superfunctor.comp_app_zero,
-      hx0, hy0, Limits.zero_comp, zero_add]
-    apply product_square_difference_isUnit
+    change IsUnit (
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from (X ^ 2).app 0 M) -
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+        (elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M))
+    rw [superfunctor_odd_square_app_zero _ X hx M,
+      superfunctor_odd_square_app_zero _ (elvPostDot D Sc cutoff bound i Λ h F) hy M]
+    exact product_square_difference_isUnit
       (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
-    · exact fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ
-    · intro δ
-      simpa only [hi] using
-        elvPostDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
-    · exact hanti M
+      ((elvPostInduction D Sc cutoff bound i Λ h F).obj M)
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from X.app 1 M)
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+        (elvPostDot D Sc cutoff bound i Λ h F).app 1 M)
+      (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
+      (fun δ => by
+        simpa only [hi] using
+          elvPostDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ)
+      (hanti M)
 
 include sy hc in
 theorem elvPostDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
@@ -110,18 +114,22 @@ theorem elvPostDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
   · simpa only [pow_two, End.mul_def, SuperNatTrans.zmod2_one_add_one] using
       Submodule.add_mem _ (comp_mem hx hx) (comp_mem hy hy)
   · intro M
-    have hx0 := Superfunctor.app_eq_zero_of_mem hx (by decide : (0 : ZMod 2) ≠ 1) M
-    have hy0 := Superfunctor.app_eq_zero_of_mem hy (by decide : (0 : ZMod 2) ≠ 1) M
-    change IsUnit (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
-      (X ^ 2 + elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
-    simp only [Superfunctor.add_app, pow_two, End.mul_def, Superfunctor.comp_app_zero,
-      hx0, hy0, Limits.zero_comp, zero_add]
-    apply product_square_sum_isUnit
+    change IsUnit (
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from (X ^ 2).app 0 M) +
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+        (elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M))
+    rw [superfunctor_odd_square_app_zero _ X hx M,
+      superfunctor_odd_square_app_zero _ (elvPostDot D Sc cutoff bound i Λ h F) hy M]
+    exact product_square_sum_isUnit
       (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
-    · exact fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ
-    · intro δ
-      simpa only [hi] using
-        elvPostDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ
-    · exact hanti M
+      ((elvPostInduction D Sc cutoff bound i Λ h F).obj M)
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from X.app 1 M)
+      (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+        (elvPostDot D Sc cutoff bound i Λ h F).app 1 M)
+      (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
+      (fun δ => by
+        simpa only [hi] using
+          elvPostDot_component_isNilpotent D Sc cutoff bound sy hc i Λ h F M δ)
+      (hanti M)
 
 end OddMath.QuiverHecke.ELVOld
