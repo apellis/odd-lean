@@ -2,7 +2,8 @@
 
 This is the parity-zero polynomial projection in
 [DeformedMackeyBoundary](DeformedMackeyBoundary.md), equation (5).
-The proposed implementation is `ELVEvenPolynomialBoundary`.
+The implementation is
+[ELVEvenPolynomialBoundary](../../OddMath/QuiverHecke/CyclotomicAction/ELVEvenPolynomialBoundary.lean).
 
 Canonical arbitrary-Hom long sections restrict to the existing normalized
 diagonal sections: their moving tails have identical tail keys. Equality of
@@ -23,6 +24,10 @@ on S: parity of the moving colour is zero, so its shift acts trivially on
 every old coefficient at every degree. The concrete consumer uses connected
 mixed-parity data and both diagonal compatibility maps.
 
-The proposed identity is a polynomial-boundary prerequisite. Degree bounds,
-monic-S division and the resulting even categorical inverse remain separate.
-Source and concrete consumers require checking.
+The support bounds and top coefficients are developed in
+[EvenBoundaryLeading](EvenBoundaryLeading.md), using the recurrence in
+[EvenBoundaryRecurrence](EvenBoundaryRecurrence.md) and the independent-S
+product bounds in [EvenSRightProduct](EvenSRightProduct.md).
+
+Verification status and remaining dependencies are maintained in
+[STATUS.md](STATUS.md) and [HANDOFF.md](HANDOFF.md).

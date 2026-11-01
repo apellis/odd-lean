@@ -25,9 +25,11 @@ If d+endpointQPDegree < degree(S), the entire actual row is zero.
 These are prescribed support bounds and top values, including zero old
 corners; they do not assert a nonzero degree.
 
-The proposed producer is `ELVEvenBoundaryLeading`, with concrete connected
-mixed-data top/above/negative consumers and an all-owned axiom audit.
-They await checking. The result is diagonal. Arbitrary-Hom leading requires
-the output-old-arrow transport comparison; its leading operator retains
-balance twist oldTwist(p), even though the moving colour is even.
-No even categorical inverse is asserted.
+The implementation is
+[ELVEvenBoundaryLeading](../../OddMath/QuiverHecke/CyclotomicAction/ELVEvenBoundaryLeading.lean).
+The result concerns the diagonal identity row.
+[EvenOffDiagonalLeading](EvenOffDiagonalLeading.md) transports it to arbitrary
+old Homs, retaining balance twist oldTwist(p).
+
+Verification status and remaining dependencies are maintained in
+[STATUS.md](STATUS.md) and [HANDOFF.md](HANDOFF.md).
