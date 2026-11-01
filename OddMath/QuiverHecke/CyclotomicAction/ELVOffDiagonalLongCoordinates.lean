@@ -6,11 +6,14 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVMovingShift
 The first off-diagonal prerequisite of `DeformedMackeyBoundary.md` (2).
 An existing old normal-form index selects a long tail with arbitrary old
 source and target. Extraction and reconstruction retain the entire old Hom,
-not just its endomorphism ring. The supplied old index is an intermediate
-hypothesis; canonical regrouping and independence of that index remain separate.
+not just its endomorphism ring. The supplied old index is used only in the intermediate construction. The final
+finite-row maps choose an index when one exists and handle empty old Homs
+explicitly; they carry no old-index hypothesis. Independence of this auxiliary
+choice is proved. Identification of the full relative-short kernel and
+transport of the polynomial boundary remain separate.
 -/
 noncomputable section
-open CategoryTheory StringDiagrams Categorification.TypeA
+open CategoryTheory StringDiagrams Categorification.TypeA Supercategory
 open scoped TensorProduct Classical
 namespace OddMath.QuiverHecke.ELVOld
 universe u
@@ -46,6 +49,30 @@ def longHomLift (p : ZMod 2) (i : I) {v t : List I} (y : NFIdx v t) (m : ℕ) :
       (pair D Sc cutoff p i
         ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
           prependTail D Sc (longHomIndex i y m)))
+
+private theorem castPair_eq_of_heq (p : ZMod 2) (i : I) {v t w s s' : List I}
+    (e : s = t) (e' : s' = t)
+    (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D w))
+    (g : (pres D Sc).obj (ob D (i :: s')) ⟶ (pres D Sc).obj (ob D w))
+    (h : HEq f g) :
+    Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k] Target D Sc cutoff i v w) e)
+      (pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] f)) =
+    Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k] Target D Sc cutoff i v w) e')
+      (pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] g)) := by
+  subst s
+  subst s'
+  cases h
+  rfl
+
+/-- The long lift is independent of the auxiliary old normal-form index. -/
+theorem longHomLift_independent (p : ZMod 2) (i : I) {v t : List I}
+    (y y' : NFIdx v t) (m : ℕ) :
+    longHomLift D Sc cutoff p i y m = longHomLift D Sc cutoff p i y' m := by
+  unfold longHomLift
+  congr 1
+  apply castPair_eq_of_heq
+  exact prependTail_heq_of_tailKey_eq D Sc (longHomIndex i y m)
+    (longHomIndex i y' m) rfl
 
 @[simp] theorem longHomCoordinate_lift (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) (m : ℕ) (b : Old D Sc cutoff v t) :
@@ -156,6 +183,15 @@ def longHomSection (p : ZMod 2) (i : I) {v t : List I} (y : NFIdx v t) :
     (ℕ →₀ Old D Sc cutoff v t) →ₗ[k] Target D Sc cutoff i v (t ++ [i]) :=
   Finsupp.lsum k (longHomLift D Sc cutoff p i y)
 
+/-- Consequently the finite long section does not depend on the chosen old index. -/
+theorem longHomSection_independent (p : ZMod 2) (i : I) {v t : List I}
+    (y y' : NFIdx v t) :
+    longHomSection D Sc cutoff p i y = longHomSection D Sc cutoff p i y' := by
+  unfold longHomSection
+  congr 1
+  funext m
+  exact longHomLift_independent D Sc cutoff p i y y' m
+
 @[simp] theorem longHomExtraction_lift (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) (m : ℕ) (b : Old D Sc cutoff v t) :
     longHomExtraction D Sc cutoff p i y (longHomLift D Sc cutoff p i y m b) =
@@ -181,5 +217,153 @@ theorem longHomExtraction_surjective (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) : Function.Surjective (longHomExtraction D Sc cutoff p i y) := by
   intro f
   exact ⟨longHomSection D Sc cutoff p i y f, longHomExtraction_section D Sc cutoff p i y f⟩
+
+private theorem homCoordinate_pair_transport (p : ZMod 2) {i : I} {v w : List I}
+    (x y : PrependIdx i v w) (e : x.oldTarget = y.oldTarget)
+    (ht : HEq (prependTail D Sc x) (prependTail D Sc y))
+    (b : Old D Sc cutoff v y.oldTarget) :
+    prependOldCoordinate D Sc cutoff p x
+      (pair D Sc cutoff p i
+        ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+          prependTail D Sc y) b) = e.symm ▸ b := by
+  have transport {s s' : List I} (e : s = s')
+      (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D w))
+      (g : (pres D Sc).obj (ob D (i :: s')) ⟶ (pres D Sc).obj (ob D w))
+      (hf : HEq f g) (b : Old D Sc cutoff v s') :
+      pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] g) b =
+      pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] f) (e.symm ▸ b) := by
+    subst s'
+    cases hf
+    rfl
+  rw [transport e _ _ ht b, prependOldCoordinate_pair]
+
+private theorem castHomCoordinate_pair_value (i : I) {v t w s s' : List I}
+    (e : s = t) (e' : s' = t)
+    (f : Target D Sc cutoff i v w →ₗ[k] Old D Sc cutoff v s)
+    (g : Old D Sc cutoff v s' →ₗ[k] Target D Sc cutoff i v w)
+    (hf : ∀ b, f (g b) = (e'.trans e.symm) ▸ b) (a : k)
+    (b : Old D Sc cutoff v s') :
+    (Eq.mp (congrArg (fun s => Target D Sc cutoff i v w →ₗ[k]
+      Old D Sc cutoff v s) e) (a • f)) (g b) = a • (e' ▸ b) := by
+  subst s
+  subst s'
+  change a • f (g b) = a • b
+  rw [hf]
+
+/-- The coefficient functional also forgets the auxiliary old normal form. -/
+theorem longHomCoordinate_independent (p : ZMod 2) (i : I) {v t : List I}
+    (y y' : NFIdx v t) (m : ℕ) (z : Target D Sc cutoff i v (t ++ [i])) :
+    longHomCoordinate D Sc cutoff p i y m z =
+      longHomCoordinate D Sc cutoff p i y' m z := by
+  obtain ⟨f, rfl⟩ := prependOldReconstruct_surjective D Sc cutoff p i v (t ++ [i]) z
+  induction f using DirectSum.induction_on with
+  | zero => simp only [map_zero]
+  | add f g hf hg => simp only [map_add, hf, hg]
+  | of q b =>
+    rw [prependOldReconstruct, DirectSum.toModule_lof]
+    have hkey : (longHomIndex i y m).tailKey = (longHomIndex i y' m).tailKey := rfl
+    by_cases hq : (longHomIndex i y m).tailKey = q.representative.tailKey
+    · have hq' : (longHomIndex i y' m).tailKey = q.representative.tailKey := hkey.symm.trans hq
+      have eq : q.representative.oldTarget = t :=
+        ((longHomIndex i y m).oldTarget_eq_of_tailKey_eq q.representative hq).symm.trans
+          (longHomIndex_oldTarget i y m)
+      unfold longHomCoordinate
+      have left := castHomCoordinate_pair_value D Sc cutoff i
+        (longHomIndex_oldTarget i y m) eq
+        (prependOldCoordinate D Sc cutoff p (longHomIndex i y m)) _
+        (fun b => homCoordinate_pair_transport D Sc cutoff p _ _
+          ((longHomIndex i y m).oldTarget_eq_of_tailKey_eq q.representative hq)
+          (prependTail_heq_of_tailKey_eq D Sc _ _ hq) b)
+        ((SKM.zsign k (D.parity i * wordSumParity D v)) ^ m) b
+      have right := castHomCoordinate_pair_value D Sc cutoff i
+        (longHomIndex_oldTarget i y' m) eq
+        (prependOldCoordinate D Sc cutoff p (longHomIndex i y' m)) _
+        (fun b => homCoordinate_pair_transport D Sc cutoff p _ _
+          ((longHomIndex i y' m).oldTarget_eq_of_tailKey_eq q.representative hq')
+          (prependTail_heq_of_tailKey_eq D Sc _ _ hq') b)
+        ((SKM.zsign k (D.parity i * wordSumParity D v)) ^ m) b
+      exact left.trans right.symm
+    · have hq' : (longHomIndex i y' m).tailKey ≠ q.representative.tailKey := by
+        intro h
+        exact hq (hkey.trans h)
+      have hz (u : NFIdx v t)
+          (h : (longHomIndex i u m).tailKey ≠ q.representative.tailKey) :
+          longHomCoordinate D Sc cutoff p i u m
+            (pair D Sc cutoff p i
+              ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k]
+                prependTail D Sc q.representative) b) = 0 := by
+        unfold longHomCoordinate
+        apply castHomCoordinate_zero D Sc cutoff i (longHomIndex_oldTarget i u m)
+        rw [LinearMap.smul_apply, prependOldCoordinate_pair_off D Sc cutoff p _ _ h, smul_zero]
+      rw [hz y hq, hz y' hq']
+
+theorem longHomExtraction_independent (p : ZMod 2) (i : I) {v t : List I}
+    (y y' : NFIdx v t) :
+    longHomExtraction D Sc cutoff p i y = longHomExtraction D Sc cutoff p i y' := by
+  ext z m
+  exact longHomCoordinate_independent D Sc cutoff p i y y' m z
+
+/-- Empty old normal-form index type forces the actual old quotient Hom to vanish. -/
+theorem old_eq_zero_of_no_normal_form {v t : List I} (h : ¬ Nonempty (NFIdx v t))
+    (b : Old D Sc cutoff v t) : b = 0 := by
+  obtain ⟨r, rfl⟩ := (ideal D Sc cutoff v t).mkQ_surjective b
+  have hr : r = 0 := by
+    by_contra hn
+    exact h (exists_oldIndex_of_ne_zero D Sc cutoff r hn)
+  rw [hr, map_zero]
+
+/-- Off-diagonal long extraction with no supplied normal-form index.
+In the empty-index case its codomain is proved zero. -/
+def offDiagonalLongExtraction (p : ZMod 2) (i : I) (v t : List I) :
+    Target D Sc cutoff i v (t ++ [i]) →ₗ[k] (ℕ →₀ Old D Sc cutoff v t) :=
+  if h : Nonempty (NFIdx v t) then
+    longHomExtraction D Sc cutoff p i (Classical.choice h)
+  else 0
+
+/-- Explicit finite long lift with no supplied normal-form index. -/
+def offDiagonalLongSection (p : ZMod 2) (i : I) (v t : List I) :
+    (ℕ →₀ Old D Sc cutoff v t) →ₗ[k] Target D Sc cutoff i v (t ++ [i]) :=
+  if h : Nonempty (NFIdx v t) then
+    longHomSection D Sc cutoff p i (Classical.choice h)
+  else 0
+
+/-- Every available normal-form index computes the same off-diagonal extraction. -/
+theorem offDiagonalLongExtraction_eq (p : ZMod 2) (i : I) {v t : List I}
+    (y : NFIdx v t) :
+    offDiagonalLongExtraction D Sc cutoff p i v t = longHomExtraction D Sc cutoff p i y := by
+  simp only [offDiagonalLongExtraction, dif_pos (show Nonempty (NFIdx v t) from ⟨y⟩)]
+  exact longHomExtraction_independent D Sc cutoff p i _ y
+
+/-- Every available old index likewise computes the same prescribed section. -/
+theorem offDiagonalLongSection_eq (p : ZMod 2) (i : I) {v t : List I}
+    (y : NFIdx v t) :
+    offDiagonalLongSection D Sc cutoff p i v t = longHomSection D Sc cutoff p i y := by
+  simp only [offDiagonalLongSection, dif_pos (show Nonempty (NFIdx v t) from ⟨y⟩)]
+  exact longHomSection_independent D Sc cutoff p i _ y
+
+/-- The actual finite off-diagonal row is split surjective, including empty old Homs. -/
+@[simp] theorem offDiagonalLongExtraction_section (p : ZMod 2) (i : I) (v t : List I)
+    (f : ℕ →₀ Old D Sc cutoff v t) :
+    offDiagonalLongExtraction D Sc cutoff p i v t
+      (offDiagonalLongSection D Sc cutoff p i v t f) = f := by
+  by_cases h : Nonempty (NFIdx v t)
+  · simp only [offDiagonalLongExtraction, offDiagonalLongSection, dif_pos h]
+    exact longHomExtraction_section D Sc cutoff p i (Classical.choice h) f
+  · have hf : f = 0 := by
+      ext n
+      exact old_eq_zero_of_no_normal_form D Sc cutoff h (f n)
+    rw [hf, map_zero, map_zero]
+
+theorem offDiagonalLongExtraction_surjective (p : ZMod 2) (i : I) (v t : List I) :
+    Function.Surjective (offDiagonalLongExtraction D Sc cutoff p i v t) := by
+  intro f
+  exact ⟨offDiagonalLongSection D Sc cutoff p i v t f,
+    offDiagonalLongExtraction_section D Sc cutoff p i v t f⟩
+
+theorem offDiagonalLongSection_injective (p : ZMod 2) (i : I) (v t : List I) :
+    Function.Injective (offDiagonalLongSection D Sc cutoff p i v t) := by
+  intro f g h
+  have he := congrArg (offDiagonalLongExtraction D Sc cutoff p i v t) h
+  simpa only [offDiagonalLongExtraction_section] using he
 
 end OddMath.QuiverHecke.ELVOld

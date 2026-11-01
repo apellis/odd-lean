@@ -116,3 +116,15 @@ The other new constructions must be elaborated, corrected, consumed and audited
 before being recorded as verified. Build their named module targets, then their
 NonVacuity targets. The negative cap matrix, off-diagonal/naturality extension,
 full factor/action and actual observations remain the critical chain.
+
+## Proposed off-diagonal long coordinates
+
+`ELVOffDiagonalLongCoordinates` extends long extraction and explicit finite
+sections to full old Homs `Old(v,t)`. Intermediate constructions use an old
+normal-form index; the proposed final maps remove it using choice-independence
+and the proved zero Hom in the empty-index case. Same/off-exponent readback,
+finite support, split surjectivity and section injectivity are drafted with
+concrete connected all-odd off-diagonal and empty-Hom consumers. These latest
+extensions remain unchecked until CI. Exact relative-short kernel and
+boundary/leading-map transport are subsequent obligations; no full factor
+inverse or nondegeneracy instance is claimed.
