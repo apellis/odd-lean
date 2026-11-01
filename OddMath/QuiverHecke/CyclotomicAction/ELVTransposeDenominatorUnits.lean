@@ -29,6 +29,10 @@ abbrev elvPostRestriction := F.comp (elvF D Sc cutoff bound i Λ h)
 def elvPostTransposeDot : End (elvPostRestriction D Sc cutoff bound i Λ h F) :=
   Superfunctor.whiskerLeft F (elvActionDotTranspose D Sc cutoff bound i Λ h)
 
+theorem elvPostTransposeDot_eq :
+    elvPostTransposeDot D Sc cutoff bound i Λ h F =
+      Superfunctor.whiskerLeft F (elvActionDotTranspose D Sc cutoff bound i Λ h) := rfl
+
 /-- A typed endomorphism component of the postrestriction functor. -/
 abbrev elvRestrictionEndComponent
     (g : End (elvPostRestriction D Sc cutoff bound i Λ h F)) (p : ZMod 2)
@@ -153,6 +157,10 @@ variable {A : PiSCat.{u, u, u + 1} k}
 def elvRestrictionProbeDot (α : End G) : End (elvPostRestriction D Sc cutoff bound i Λ h G) :=
   Superfunctor.whiskerRight α (elvF D Sc cutoff bound i Λ h)
 
+theorem elvRestrictionProbeDot_eq (α : End G) :
+    elvRestrictionProbeDot D Sc cutoff bound i Λ h G α =
+      Superfunctor.whiskerRight α (elvF D Sc cutoff bound i Λ h) := rfl
+
 theorem elvRestrictionProbeDot_isUnit (α : End G) (hu : IsUnit α) :
     IsUnit (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α) :=
   hu.map ((SKM.homPost (k := k) (a := A) (elvF D Sc cutoff bound i Λ h)).mapEnd G)
@@ -207,7 +215,8 @@ theorem elvRestrictionProbe_difference_isUnit [Finite I]
     (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
-  · exact elvRestrictionProbe_even_comm D Sc cutoff bound i Λ h G
+  · rw [elvPostTransposeDot_eq]
+    exact elvRestrictionProbe_even_comm D Sc cutoff bound i Λ h G
       (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 theorem elvRestrictionProbe_square_difference_isUnit [Finite I]
@@ -219,7 +228,8 @@ theorem elvRestrictionProbe_square_difference_isUnit [Finite I]
     (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
-  · exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
+  · rw [elvPostTransposeDot_eq]
+    exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
       (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 theorem elvRestrictionProbe_square_sum_isUnit [Finite I]
@@ -231,7 +241,8 @@ theorem elvRestrictionProbe_square_sum_isUnit [Finite I]
     (elvRestrictionProbeDot D Sc cutoff bound i Λ h G α)
   · exact elvRestrictionProbeDot_mem D Sc cutoff bound i Λ h G α hα
   · exact elvRestrictionProbeDot_isUnit D Sc cutoff bound i Λ h G α hu
-  · exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
+  · rw [elvPostTransposeDot_eq]
+    exact elvRestrictionProbe_odd_anticomm D Sc cutoff bound i Λ h G
       (elvActionDotTranspose D Sc cutoff bound i Λ h) α
 
 end Probe
