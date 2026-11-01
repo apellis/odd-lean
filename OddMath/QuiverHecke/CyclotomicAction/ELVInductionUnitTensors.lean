@@ -22,18 +22,16 @@ theorem inductionComp_hom_total_unit (v : C) (b : M.obj v) :
     ((inductionComp J K).hom.app M).total (K.obj (J.obj v))
       (unit K (induced J M).toFunctor (J.obj v) (unit J M.toFunctor v b)) =
       unit (J ⋙ K) M.toFunctor v b := by
-  change ((inductionComp J K).hom.app M).total (K.obj (J.obj v))
-    (tensor K (induced J M).toFunctor (J.obj v) (𝟙 _)
-      (tensor J M.toFunctor v (𝟙 _) b)) = _
+  simp only [unit_apply]
   rw [inductionComp_hom_total_tensor, K.map_id, Category.id_comp]
-  rfl
 
 /-- The canonical unflattening sends the composite unit to the nested unit. -/
 theorem inductionComp_inv_total_unit (v : C) (b : M.obj v) :
     ((inductionComp J K).inv.app M).total ((J ⋙ K).obj v)
       (unit (J ⋙ K) M.toFunctor v b) =
-      unit K (induced J M).toFunctor (J.obj v) (unit J M.toFunctor v b) :=
-  inductionComp_inv_total_tensor J K M v ((J ⋙ K).obj v) (𝟙 _) b
+      unit K (induced J M).toFunctor (J.obj v) (unit J M.toFunctor v b) := by
+  simp only [unit_apply]
+  exact inductionComp_inv_total_tensor J K M v ((J ⋙ K).obj v) (𝟙 _) b
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
