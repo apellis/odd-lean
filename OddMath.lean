@@ -70,6 +70,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentre
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionComp
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCapSignNormalization
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
@@ -1825,6 +1826,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarHomDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryCategory
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuotientInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuotientTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryWordCorner
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldDotUnit
@@ -1864,4 +1867,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
