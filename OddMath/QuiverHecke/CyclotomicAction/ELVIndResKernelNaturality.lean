@@ -44,12 +44,12 @@ def kernelFunctor : D ⥤ (Dᵒᵖ ⥤ ModuleCat k) where
   map := targetMap (k := k) J
   map_id t := by
     apply NatTrans.ext
-    intro v
+    funext v
     apply ModuleCat.hom_ext
     exact BalancedInduction.postcompose_id J (J ⋙ homModule (k := k) v.unop) t
   map_comp a b := by
     apply NatTrans.ext
-    intro v
+    funext v
     apply ModuleCat.hom_ext
     exact BalancedInduction.postcompose_comp J (J ⋙ homModule (k := k) v.unop) a b
 
@@ -74,6 +74,7 @@ theorem forward_targetMap {t t' : D} (a : t ⟶ t') :
   exact congrArg (fun f => f x) (evaluate_postcompose J M a v m)
 
 /-- Inverse target naturality follows from the checked quotient roundtrips. -/
+omit [M.Additive] [M.Linear k] in
 theorem backward_postcompose {t t' : D} (a : t ⟶ t') :
     backward J M t' ∘ₗ BalancedInduction.postcompose J (J ⋙ M) a =
       BalancedKernelTensor.map M (targetMap (k := k) J a) ∘ₗ backward J M t := by
@@ -83,16 +84,29 @@ theorem backward_postcompose {t t' : D} (a : t ⟶ t') :
     backward_tensor, BalancedKernelTensor.map_tensor, targetMap_app, identityLift_apply]
 
 /-- Target action on the coefficient tensor quotients, before grading. -/
+omit [M.Additive] [M.Linear k] in
 def tensorFunctor : D ⥤ ModuleCat k where
   obj t := ModuleCat.of k (BalancedKernelTensor.Obj (kernel (k := k) J t) M)
   map a := ModuleCat.ofHom (BalancedKernelTensor.map M (targetMap (k := k) J a))
   map_id t := by
     apply ModuleCat.hom_ext
-    change BalancedKernelTensor.map M ((kernelFunctor (k := k) J).map (𝟙 t)) = _
-    simpa only [Functor.map_id, BalancedKernelTensor.map_id]
+    apply BalancedKernelTensor.hom_ext
+    intro v x m
+    change BalancedKernelTensor.map M (targetMap (k := k) J (𝟙 t))
+      (BalancedKernelTensor.tensor (kernel (k := k) J t) M v x m) =
+      BalancedKernelTensor.tensor (kernel (k := k) J t) M v x m
+    simp only [BalancedKernelTensor.map_tensor, targetMap_app,
+      BalancedInduction.postcompose_id, LinearMap.id_apply]
   map_comp a b := by
     apply ModuleCat.hom_ext
-    change BalancedKernelTensor.map M ((kernelFunctor (k := k) J).map (a ≫ b)) = _
-    simpa only [Functor.map_comp, BalancedKernelTensor.map_comp]
+    apply BalancedKernelTensor.hom_ext
+    intro v x m
+    change BalancedKernelTensor.map M (targetMap (k := k) J (a ≫ b))
+      (BalancedKernelTensor.tensor (kernel (k := k) J _) M v x m) =
+      BalancedKernelTensor.map M (targetMap (k := k) J b)
+        (BalancedKernelTensor.map M (targetMap (k := k) J a)
+          (BalancedKernelTensor.tensor (kernel (k := k) J _) M v x m))
+    simp only [BalancedKernelTensor.map_tensor, targetMap_app,
+      BalancedInduction.postcompose_comp, LinearMap.comp_apply]
 
 end OddMath.QuiverHecke.ELVOld.IndResKernel
