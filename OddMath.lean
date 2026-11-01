@@ -99,6 +99,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
