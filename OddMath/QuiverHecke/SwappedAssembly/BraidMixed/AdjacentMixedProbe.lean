@@ -136,7 +136,7 @@ At odd colour this uses the genuine unit denominator from `CrossCoeffInputs`,
 not cancellation of a crossing or a Q polynomial. -/
 theorem adjacentMixed_coeff_unique (P : ProbeReservoir k B D Sc)
     (c d : P.CrossCoeff Sc) (hc : c.IsInverse) (hd : d.IsInverse)
-    (h : P.CrossCoeffInputs) (i : I) (s : Sector I)
+    (h : P.CrossDenominatorUnits) (i : I) (s : Sector I)
     (hv : StepValid (true, i) false s)
     (Z : P.H (nextSector (true, i) true (nextSector (true, i) false s))) :
     c.a i s hv Z = d.a i s hv Z := by
