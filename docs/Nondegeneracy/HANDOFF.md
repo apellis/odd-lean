@@ -45,17 +45,25 @@ in #896. The fixed-content counts in #900/#903 use the exact content height
 Q−S, so one finite count applies throughout each block. It is not a constant
 on the entire old category.
 
-Build the actual ordinary-right kernel maps and prove their pointwise
-bijectivity using these fixed-content inverses. Keep the literal action
+The actual ordinary-right kernel maps are scoped-checked in #911 and their
+entry evaluation on arbitrary supermodules in #915. Prove their pointwise
+bijectivity using these fixed-content inverses and the off-content zero
+lemma, scoped-checked in #914. With the count fixed by target content,
+matching source content uses the representable inverse and every other
+source component is zero. Keep the literal action
 a ↦ precomposition by a, with its verified tensor covariance; it must not be
 silently identified with a supernatural representing map that includes
 projection and twist. Tensor the resulting kernel isomorphism with an
 arbitrary input module, and identify both endpoints with the actual action
 modules, including grading, shifts and finite sums.
 
-The fixed-content kernel is indexed by its full content subcategory, while
-the established old induction coend ranges over the entire old category.
-An explicit realization bridge is required. Fully faithful induction along the content inclusion recovers the original
+A direct whole-old-category kernel with target-fixed count is available
+once matching-content inversion and off-content vanishing are combined.
+Its arbitrary-module matrix evenness is already scoped-checked in #896;
+underlying kernel-tensor bijectivity then gives an even inverse. Separately,
+the concrete factor action uses fixed-content module categories, while the
+old induction coend ranges over the entire old category, so its content
+action realization still needs an explicit comparison. Fully faithful induction along the content inclusion recovers the original
 module after restriction in the scoped-checked #909; its append comparison
 must agree with the chosen action. Do not assume
 an equivalence between content modules and arbitrary modules on the entire

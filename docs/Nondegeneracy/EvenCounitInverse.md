@@ -16,12 +16,14 @@ invertible row change makes every cap row the ordinary counit.
 balanced crossing after J. `evenCounitMatrixEquiv_cap` identifies every
 other row with the ordinary counit after the actual induction-dot power.
 No coefficient elimination is repeated, and full exterior coefficients
-are retained. The ordered categorical mate identity remains separate;
-this result does not assume it.
+are retained. The ordered categorical mate attachment is in
+[ActualMatrixFamilies](ActualMatrixFamilies.md); this result does not assume it.
 
 The strict source and consumer pass, including all nine owned-declaration
 axiom checks. The concrete consumer uses mixed even/odd colours,
 arbitrary old endpoints with three cap coordinates, checks both inverse
 products and every cap row, and includes height zero with no cap
-coordinates. Full CI is required before integration; see
-[STATUS](STATUS.md).
+coordinates. The producer and consumer are integrated through the full-CI verified
+representable inverse closure [#889](https://github.com/apellis/odd-lean/pull/889),
+including global audit and non-vacuity checks. See [STATUS](STATUS.md) for
+current remaining obligations.

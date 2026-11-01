@@ -29,6 +29,9 @@ The source and concrete consumer pass strict scoped checks and all nine
 owned-declaration axiom checks. The consumer retains the nonzero mixed
 crossing with an odd coefficient of the other colour, tests both operator
 equalities on arbitrary balanced classes, and applies the normalization at
-all row indices, including zero. Full CI is required before integration.
-The actual ordered crossing mate and shifted module-family assembly remain
-separate obligations; see [STATUS](STATUS.md).
+all row indices, including zero. These declarations were integrated after
+full CI in [#862](https://github.com/apellis/odd-lean/pull/862); the actual
+ordered crossing mate and representable shifted-family attachments are
+verified in [#889](https://github.com/apellis/odd-lean/pull/889).
+Arbitrary-module inversion and content/weight transport remain tracked in
+[STATUS](STATUS.md).
