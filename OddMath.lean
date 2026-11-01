@@ -142,6 +142,7 @@ import OddMath.QuiverHecke.CyclotomicAction.LongOutputDotTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputDotCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputLongExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalKernel

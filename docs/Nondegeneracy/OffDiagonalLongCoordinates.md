@@ -42,3 +42,20 @@ off-diagonal polynomial boundary and leading-map comparison, naturality,
 and the full categorical inverse remain subsequent obligations. A diagonal
 matrix equivalence is not silently promoted to an off-diagonal bimodule
 equivalence.
+
+## Proposed exact short kernel
+
+The companion module `ELVOffDiagonalLongKernel` extends the chronological
+kernel calculation to arbitrary v,t. Long shuffles ending at t++[i] have
+old target t; every other moving tail belongs to the chronological short
+span. Existing arbitrary-endpoint chronological normalization kills each
+short generator under the full coefficient extraction. Reconstruction then
+gives exactly
+
+    ker(offDiagonalLongExtraction p i v t) = chronologicalShortSpan i v t.
+
+If the old normal-form index type is empty, every occurring tail must be
+short, since a long one would itself supply an old normal-form index.
+Consequently no inhabitation assumption is needed. This exact-kernel
+extension is proposed until its source, consumer and full CI gates pass.
+The off-diagonal polynomial boundary and leading-map transport remain next.
