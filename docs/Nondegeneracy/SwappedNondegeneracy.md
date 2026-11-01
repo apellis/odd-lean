@@ -263,14 +263,16 @@ proves the theorem. The precise formal reductions are recorded below. ∎
 
 ## 6. What is formalized, and what remains
 
+Current implementation status and prerequisites are maintained in [STATUS](STATUS.md)
+and [HANDOFF](HANDOFF.md). The local inventory below is explanatory.
+
 The existing Lean reductions are conditional, not implementations of the
 constructed detecting models:
 
 * `OddMath.QuiverHecke.upwardCoefficientMap_injective_of_bounded_cyclic_recovery`
   in `BoundedCyclicRecovery.lean` takes, for each d, cutoffs with a common
   strict lower bound and a `BoundedCyclicRecovery` at the selected pair.
-  This separate consumer is not included in this documentation tree's Lean
-  sources. Its statement is the conditional implication used in §5, not
+  This consumer is implemented in `OddMath/QuiverHecke/BoundedCyclicRecovery.lean`. Its statement is the conditional implication used in §5, not
   a theorem that the required cyclic data exist.
 * `OddMath.QuiverHecke.upward_independence_of_coefficientMap` in
   [UpwardMatchingIndependence.lean](../../OddMath/QuiverHecke/UpwardMatchingIndependence.lean)

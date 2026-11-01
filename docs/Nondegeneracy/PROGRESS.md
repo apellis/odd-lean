@@ -1,19 +1,9 @@
-# Odd nondegeneracy: status board
+# Odd nondegeneracy: progress entrypoint
 
-Branch `research/odd-nondegeneracy`. Restart state, open obligations and next targets:
-[HANDOFF.md](HANDOFF.md). Every push to this branch runs the full CI build (build, axiom
-audit, non-vacuity); the branch tip is expected to be green.
+[STATUS.md](STATUS.md) is the single current status board: scope, established
+reductions, concrete inputs, remaining obligations and verification evidence.
+[HANDOFF.md](HANDOFF.md) gives readiness, dependencies and next targets.
+[SwappedNondegeneracy.md](SwappedNondegeneracy.md) is the proposed written proof.
 
-| Line of work | Lean on this branch | Open |
-| --- | --- | --- |
-| Short moving-map entries, DeformedMackeyBoundary (4) | `appendDottedMove_short_factor`, `appendShortEntry_factor`: literal short-word restriction and concrete surviving matrix entry factorization through the final crossing; arbitrary dot degrees including zero | projected multiplier sum, actual append PBW coordinates, unconditional P(short) inclusion |
-| Finite contextual colour witness, SwappedActionAssembly §8 | `SKM.mem_finiteColourIdeal`, `SKM.eq_finiteColourIdeal`, with raw user/interchange support; `FiniteColour.relation_finite_lift` for every defining user relation, retaining X and the coefficient ring; computed cup/cap support; `FiniteColour.supported_diagram_lift` for arbitrary supported free diagrams and `supported_interchange_lift` for valid superinterchange, including both ordered layer lists, parities and the signed linear relation; consumers over ℚ and the zero ring | lifting contextual ideal generators and entire ideal derivations; finite-colour detection and nondegeneracy |
-| Reservoir principal word, `HomPrincipalMate.md` §3 | `RouquierFamily.leftCrossingWord_eq`: unnormalized word at every height, coefficient one at zero; `principalWord_scalar`: gamma(0)=(-1)^p | specified shifted Hom mate substitution and shift removal (10); full principal comparison, augmented inversion, fusion |
-| Upward → oriented reduction | assembly `SKM.nondegeneracy_of_contextual_descent`; sorted boundaries `WeakMate.sorted_independence`; choice independence `expansion_injective_choice_iff`; distinct-colour target descent `SKM.distinct_target_exchange_descent`; distinct-colour source adapted families; complete same-colour target choices `exists_same_colour_adapted_equiv` | source exchange descent; same-colour target and source descent |
-| Upward independence | conditional consumers `upward_independence_of_finite_observations`, `upward_independence_of_spectators`; spectator evaluation interface; fixed-spectator cofinal ELV separation and weighted signed quotient detection | action-derived product law and joint detection; fixed-weight separation with moving spectator strands |
-| Deformed actions | local norm, translation and Frobenius resolvent identities; cyclotomic exterior obstruction | multicolour action (proposed for even cutoffs), odd heights, fixed-weight bubble images; coupling for weights not reached by dominant vacua |
-
-Full nondegeneracy for odd or mixed data is not proved. Python scripts in
-`scripts/Nondegeneracy/` are finite models of particular instances.
-
-Earlier checkpoint history is in the git history of this file.
+Full odd/mixed nondegeneracy remains open in Lean. Historical checkpoint
+narratives are available in git history; this file does not duplicate them.
