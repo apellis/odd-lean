@@ -98,56 +98,39 @@ therefore gives a two-sided polynomial inverse to x_1 on each V_nu.
 We prove by induction on r that x_r is invertible on every V_nu. This is
 not an assertion that the first-position relation holds at position r.
 
-Assume the result at r. For each word let
+Assume injectivity at position r on every word summand. It suffices to
+prove that the kernel of v=x_(r+1) is zero. This avoids generalized
+zero-primary spaces altogether. Let vz=0 and put u=x_r.
 
-    W_nu = ker(x_(r+1)^(2d) : V_nu -> V_nu),
+**Distinct colours i,j.** The dot slide gives u' tau z=tau v z=0
+on the swapped word summand. By induction u' is injective, so tau z=0.
+The quadratic relation gives Q_ij(u,v)z=0. In the prescribed ordered
+polynomial, every term with positive v exponent annihilates z. Its
+remaining term is t_ij u^(-a_ij)z. The coefficient is a unit and every
+power of the injective u is injective, so z=0. This includes disconnected
+colours, where the degree is zero and Q is the single constant unit.
+No inverse or localization of Q is used. The ring-level kernel calculation
+is `distinct_dot_kernel` in `ProbeDotPropagation.lean`; applying it to
+word corners still requires the literal slide and polynomial factorization.
 
-where d is large enough that this kernel stabilizes. The space W_nu is
-preserved by both neighbouring dots, and by x_r^(-1), since they commute
-with x_(r+1)^2. Put u=x_r, v=x_(r+1). On W_nu, u is invertible and v is
-nilpotent. We show W_nu=0 separately in all three cases.
+**Equal even colours.** Normalize T=-tau and put phi=1+(v-u)T.
+The identities u phi=phi v and phi^2=1 imply u phi z=0, hence phi z=0
+by injectivity of u, and finally z=0. The ring-level implication is
+`EvenTwo.right_mul_injective` in `ProbeDotPropagation.lean`.
 
-**Distinct colours i,j.** The crossing tau sends W_nu to the generalized
-zero space for x_r^2 on V_(s_r nu), by the distinct-colour dot slides.
-That space is zero by the induction hypothesis; hence tau W_nu=0.
-But its square on V_nu is Q_ij(u,v). On W_nu this is a unit:
-write Q_ij(u,v)=t_ij u^(-a_ij)+H. All monomials of H have positive
-v-exponent. The permitted monomials lie in the commuting algebra generated
-by u^(1+p(i)) and v^(1+p(j)), so
+**Equal odd colours.** Put T=tau and
+phi=(v-u)-(v^2-u^2)T. The identities u phi=-phi v and
+phi^2=u^2+v^2 imply phi z=0 and then u^2 z=0. Injectivity of u
+again gives z=0. Here uv=-vu is retained; no eigenvectors of odd dots
+or odd-dot commutativity are used. The ring-level implication is
+`OddTwo.right_mul_injective` in `ProbeDotPropagation.lean`.
 
-    (t_ij u^(-a_ij))^(-1) H
-
-is nilpotent on W_nu. The finite geometric series gives the inverse of Q.
-This includes the disconnected case H=0. Thus tau^2 cannot annihilate a
-nonzero vector of W_nu, a contradiction. Notice the use of both the actual
-Q admissibility and the nonzero/zero distinction; arbitrary Q would not do.
-
-**Equal even colours.** Normalize T=-tau so that
-Tu-vT=1=uT-Tv and T^2=0. Put phi=1+(v-u)T. The nilHecke identities give
-
-    u phi=phi v,       v phi=phi u,       phi^2=1.           (4)
-
-Thus phi maps W_nu to the zero generalized space of u^2, while being
-injective. Again W_nu=0. Inverting tau itself here would be false.
-
-**Equal odd colours.** Now T=tau, Tu+vT=1=uT+Tv, uv=-vu and T^2=0.
-Put phi=(v-u)-(v^2-u^2)T. Then
-
-    u phi=-phi v,      v phi=-phi u,      phi^2=u^2+v^2.     (5)
-
-These are the polynomial identities `OddTwo.x_mul_phiOdd`,
-`OddTwo.x_succ_mul_phiOdd`, `OddTwo.phiOdd_mul_phiOdd` in
-`CyclotomicAction/Intertwiner.lean`; (4) is its `EvenTwo` counterpart.
-The last equality in (5) uses uv+vu=0. No odd dot eigenvector is invoked.
-The first two identities show that phi exchanges the two square operators.
-It therefore kills W_nu, since u^2 is invertible. On W_nu its square
-u^2+v^2 is invertible: u^2 is invertible, v^2 nilpotent, and they commute.
-This forces W_nu=0.
-
-Finite dimension now implies v is invertible on V_nu. This completes the
-induction for every r, every word and every content. It does not assert
-that every word summand is nonzero. No algebraic closure or splitting of
-all joint spectra was used; the zero-primary kernel is defined over K.
+Thus every dot is injective on every word summand, by induction on position.
+Finite dimensionality now makes every dot bijective. The three ring-level
+kernel lemmas isolate this argument, but do not themselves instantiate all
+word corners of the specialized cyclotomic algebra or prove the finite
+dimensionality input. Those applications and the full action comparison
+remain separate obligations.
 
 For completeness, these operator inverses give algebra units. The global
 position element X_r=sum_nu x_r e(nu) acts bijectively on the left regular

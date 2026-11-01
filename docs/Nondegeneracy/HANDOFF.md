@@ -85,3 +85,12 @@ and zero Hom corners. The decoder kills the separately proved polynomial
 triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
+
+## Probe dot kernel propagation
+
+`ProbeDotPropagation` proves ordinary next-dot kernel propagation through the
+even/odd nilHecke intertwiners and distinct-colour slide/quadratic relation.
+Finite-dimensional unit corollaries and nonzero rational matrix consumers are
+included. The original PR #751 head passed full build, axiom audit and consumers;
+this merge reconciliation retains those exact source/consumer blobs. Applying
+these lemmas to actual cyclotomic word corners is separate work in #752.
