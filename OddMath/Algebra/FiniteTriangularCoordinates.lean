@@ -36,7 +36,7 @@ theorem bijective {k M : Type*}
   let N : Module.End k (Fin m → M) := 1 - D.symm.toLinearMap.comp F
   have hsingle (a b : Fin m) (hab : a ≤ b) (x : M) :
       N (Pi.single b x) a = 0 := by
-    change Pi.single b x a - L.symm (F (Pi.single b x) a) = 0
+    change (Pi.single b x : Fin m → M) a - L.symm (F (Pi.single b x) a) = 0
     by_cases he : a = b
     · subst b
       rw [Pi.single_eq_same, hdiag, LinearEquiv.symm_apply_apply, sub_self]
@@ -66,7 +66,9 @@ theorem bijective {k M : Type*}
       intro b hb
       exact ih f b (by have : b.val < a.val := hb; omega)
   have hn : N ^ m = 0 := by
-    ext f a
+    apply LinearMap.ext
+    intro f
+    funext a
     exact hp m f a a.isLt
   have hu := (show IsNilpotent N from ⟨m, hn⟩).isUnit_one_sub
   have ht : IsUnit (D.symm.toLinearMap.comp F) := by
