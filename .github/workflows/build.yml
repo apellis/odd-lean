@@ -38,6 +38,13 @@ jobs:
           else
             echo "docs_only=false" >> "$GITHUB_OUTPUT"
           fi
+      # Leave room for both the Mathlib cache and the first cold build of our dependencies.
+      # These preinstalled SDKs are unused by this Lean-only job.
+      - name: Free runner space for Lean artifacts
+        if: steps.scope.outputs.docs_only != 'true'
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h .
       - name: Set up Lean and fetch the Mathlib cache
         if: steps.scope.outputs.docs_only != 'true'
         uses: leanprover/lean-action@v1
@@ -47,8 +54,9 @@ jobs:
           lint: false
           use-mathlib-cache: true
           use-github-cache: false
-      # Only master builds write the cache (one entry per run); pull requests restore the newest
-      # master entry, so their entries cannot evict master's from the repository's cache quota.
+      # Branch builds write caches; pull requests only restore them. Exclude generated Lean
+      # setup JSON: Lake writes it before compilation, and transitive import metadata can
+      # otherwise consume many GB when restoring a cache. Retain proof artifacts and traces.
       # Restores fall back to the newest entry for the same toolchain and manifest, then to the
       # newest entry for the toolchain (oleans of modules unaffected by a dependency bump stay
       # valid; Lake rebuilds the rest).
@@ -61,21 +69,25 @@ jobs:
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
             .lake/packages/LieLean/.lake/build
-          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+            !.lake/build/ir/**/*.setup.json
+            !.lake/packages/*/.lake/build/ir/**/*.setup.json
+          key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
-            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
       # Keep this dependency separate: changing the paths of the main cache invalidates
       # its cache version, including entries selected by restore-keys.
       - name: Restore Categorification cache
         if: steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/restore@v4
         with:
-          path: .lake/packages/Categorification/.lake/build
-          key: categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .lake/packages/Categorification/.lake/build
+            !.lake/packages/Categorification/.lake/build/ir/**/*.setup.json
+          key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
-            categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
-            categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+            categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
       # Fail on a changed producer or its consumer before building unrelated modules.
       # Lake reuses these outputs in the mandatory full build and NonVacuity gate below.
       - name: Check changed Lean modules and paired consumers
@@ -129,8 +141,10 @@ jobs:
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
-          path: .lake/packages/Categorification/.lake/build
-          key: categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .lake/packages/Categorification/.lake/build
+            !.lake/packages/Categorification/.lake/build/ir/**/*.setup.json
+          key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
@@ -140,4 +154,6 @@ jobs:
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
             .lake/packages/LieLean/.lake/build
-          key: lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+            !.lake/build/ir/**/*.setup.json
+            !.lake/packages/*/.lake/build/ir/**/*.setup.json
+          key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
