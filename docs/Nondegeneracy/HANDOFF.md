@@ -86,36 +86,17 @@ triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
 
-## Proposed next constructions under verification
+## Probe factors
 
-The risk-reduction topic branch contains unverified source drafts and consumers:
-`ELVCrossingHeight` (actual crossing injectivity/surjectivity by height and the
-zero-height equivalence), `ELVContentWhiskeredMixedBraid` (composed independent
-crossings and independent-dot correction), and `ProbeDotPropagation` (ordinary
-kernel propagation through same/distinct-colour relations). These are not yet
-verified results or concrete full factor/observation instances. The probe note
-uses the simpler kernel proof; actual word-corner application remains separate.
+`ProbeDotPropagation` and `ProbeWordCorner` are integrated after full CI
+in #751 and #752. Use the actual corner map and its nilHecke relations.
+`ProbeWordEntries` adds actual rectangular entries, their word supports,
+target-row cancellation by corner units, and the distinct-kernel criterion;
+source and consumer await CI. Supply its actual distinct-colour slide,
+ordered quadratic, and unit leading corner term next. A word-corner unit
+is not a left-regular element of the entire algebra.
 
-## Saved proof drafts and next verification targets
-
-The risk-reduction topic branch preserves these additional UNCHECKED drafts:
-`ELVPositiveCrossing`, `ELVBoundarySnake`, `ELVCapCoordinateTransport`,
-`ELVCrossingInputDot`, `ELVContentUncorrectedBraid`,
-`ELVOffDiagonalLongCoordinates`, and `ProbeWordCorner`.
-The corresponding consumers are included where present. The first two are
-restricted to diagonal old Hom and odd moving colour. Cap transport constructs
-input-oriented contraction/dot descent with the polynomial defect retained;
-its identification with the actual categorical dotted counit remains open.
-The off-diagonal coordinate draft now removes its intermediate old normal-form
-index using choice independence and the proved zero old Hom in the empty-index
-case. It gives unconditional finite extraction/section maps and a split row;
-these extensions remain unchecked until CI, and exact short kernel plus
-boundary/leading transport remain open.
-ProbeWordCorner is an unfinished transport into the actual cyclotomic eAe corner.
-
-Only `ProbeDotPropagation` and its concrete consumer have passed scoped checks
-in this continuation; its independent PR is #751 and full CI remains required.
-The other new constructions must be elaborated, corrected, consumed and audited
-before being recorded as verified. Build their named module targets, then their
-NonVacuity targets. The negative cap matrix, off-diagonal/naturality extension,
-full factor/action and actual observations remain the critical chain.
+Cofinal probe powers and all-position unit propagation remain separate work.
+For finite dimension use raw finite append spanning and ordinary coefficient
+specialization; positive-weight coefficient truncation cannot specialize to
+nonnilpotent binomial constants.
