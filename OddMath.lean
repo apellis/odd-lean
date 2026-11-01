@@ -1820,6 +1820,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEntryParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentCategory
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentRestrictionExtension
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentRestrictionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupportedExtension
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullyFaithfulInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffContentZero
