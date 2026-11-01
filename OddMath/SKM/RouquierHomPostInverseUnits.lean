@@ -64,7 +64,7 @@ theorem homDistinctMixedMateDot_isIso_of_inverse_units {x : E ⟶ E} (hx : x ∈
           simp only [mul_assoc]
       _ = 1 := by rw [hau, mul_one, hau]
 
-  · simpa only [pow_zero, zero_smul, add_zero, neg_one_smul] using
+  · simpa only [pow_zero, neg_zero, zero_smul, add_zero, neg_one_smul] using
       (isUnit_one : IsUnit (1 : End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F')))).neg
 
 
@@ -175,9 +175,10 @@ theorem homDistinctMixedMateDot_isIso_of_inverse_odd_units {x : E ⟶ E}
 
   · rw [hSX2, hSY2, sub_neg_eq_add]
     exact hPlus.pow 2
-  · rw [pow_one, hSX2, hSY2, neg_one_smul, neg_one_smul, neg_neg, ← neg_sub]
-    exact hMinus.neg
+  · rw [pow_one, hSX2, hSY2, neg_one_smul, neg_one_smul, neg_neg]
+    simpa only [sub_eq_add_neg, neg_add, neg_neg] using hMinus.neg
 
 
 end Conj
 end OddMath.SKM
+
