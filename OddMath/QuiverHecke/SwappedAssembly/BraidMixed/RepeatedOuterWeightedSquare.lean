@@ -27,7 +27,7 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 variable (i : I)
 private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (t : Sector I) (hv : StepValid (true, i) false t)
+    (h : P.CrossDenominatorUnits) (t : Sector I) (hv : StepValid (true, i) false t)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
     {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i t hv V) →ₐ[k] End Y) (f : End Y)
@@ -63,7 +63,7 @@ lemma mixedQ_comp_repeatedOuterCoeff
     (V : P.H (nextSector (true, i) true
       (nextSector (true, i) false (nextSector (true, j) true s))))
     (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) :
+    (h : P.CrossDenominatorUnits) :
     P.mixedQ j i s hR
         ((P.step (true, i) true
           (nextSector (true, i) false (nextSector (true, j) true s))
@@ -210,7 +210,7 @@ private lemma map_square {C C' : Type u} [Category C] [Preadditive C]
   simp only [Functor.map_neg, Functor.map_comp]
 
 lemma repeatedOuter_weighted_square (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let E := P.mixedJ j i s hR ((P.step (true, i) true _ trivial).obj ((P.castH hs).obj Z))
     let J := (P.step (true, j) true s trivial).mapIso
       (P.mixedJ i i (nextSector (true, j) true s) hR ((P.castH hs).obj Z))
@@ -347,7 +347,7 @@ private theorem forward_right_grid (ν : X) (c : P.CrossCoeff Sc)
 
 include hs₀ in
 lemma repeatedOuter_forward_braid (ν : X) (c : P.CrossCoeff Sc)
-    (L : P.LeftwardData) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (L : P.LeftwardData) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three false true true hR trivial trivial hs)
       (SPath.three true true false trivial trivial hR rfl) Z =

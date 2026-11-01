@@ -60,7 +60,7 @@ theorem adjacentReverse_J_rectangle :
 library diagonal convention. The comparison and coefficient entries determine
 the square and conjugate entries without cancelling crossings. -/
 theorem adjacentReverse_splitMatrix (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let J := (P.step (true, j) true s trivial).mapIso
       (P.mixedJ i i (nextSector (true, j) true s) hR ((P.castH hs).obj Z))
     let K := P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj Z)
@@ -85,7 +85,7 @@ theorem adjacentReverse_splitMatrix (c : P.CrossCoeff Sc) (hc : c.IsInverse)
 
 /-- The reverse square entry in functor-mapped crossing form. -/
 theorem adjacentReverse_square_rectangle (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     (P.step (true, j) true s trivial).map
       (-(c.a i (nextSector (true, j) true s) hR ((P.castH hs).obj Z) ≫
         c.a i (nextSector (true, j) true s) hR ((P.castH hs).obj Z) ≫

@@ -32,7 +32,7 @@ variable (ν : X) (i j : I) (s : Sector I) (hR : StepValid (true, i) false s)
 include hs₀
 
 /-- The literal reverse split diag entry. -/
-theorem adjacentReverse_braid_diag (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+theorem adjacentReverse_braid_diag (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three true false true trivial hR trivial hs) (SPath.three false true true hR trivial trivial rfl) Z =
     braidRight (P.swappedGens c L) j i i ν
@@ -58,7 +58,7 @@ theorem adjacentReverse_braid_diag (hc : c.IsInverse) (h : P.CrossCoeffInputs) (
     Functor.mapIso_inv, Preadditive.neg_comp, Preadditive.comp_neg, Category.assoc] using hr
 
 /-- The literal reverse split J entry. -/
-theorem adjacentReverse_braid_J (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+theorem adjacentReverse_braid_J (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three true true false trivial trivial hR hs) (SPath.three false true true hR trivial trivial rfl) Z =
     braidRight (P.swappedGens c L) j i i ν
@@ -132,7 +132,7 @@ theorem adjacentReverse_square_right_heq (hij : i ≠ j) :
   exact comp_common_grid_heq hQ rfl rfl hM hT
 
 /-- The square rectangle after literal crossing-entry identification. -/
-theorem adjacentReverse_square_entries (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem adjacentReverse_square_entries (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hij : i ≠ j) :
     crossEntry (P.swappedGens c L) ν [up j] i i []
       (SPath.three true false true trivial hR trivial hs) (SPath.three true true false trivial trivial hR hs) Z ≫
@@ -152,7 +152,7 @@ theorem adjacentReverse_square_entries (hc : c.IsInverse) (h : P.CrossCoeffInput
   exact eq_of_heq (hleft.trans (hraw.trans hright.symm))
 
 /-- The literal reverse split square entry. -/
-theorem adjacentReverse_braid_square (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+theorem adjacentReverse_braid_square (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three true false true trivial hR trivial hs) (SPath.three true false true trivial hR trivial rfl) Z =
     braidRight (P.swappedGens c L) j i i ν
@@ -164,7 +164,7 @@ theorem adjacentReverse_braid_square (hc : c.IsInverse) (h : P.CrossCoeffInputs)
   exact P.adjacentReverse_square_entries ν i j s hR c L hs₀ hs Z hc h hij
 
 /-- The literal reverse split conj entry. -/
-theorem adjacentReverse_braid_conj (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+theorem adjacentReverse_braid_conj (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) j i i ν
       (SPath.three true true false trivial trivial hR hs) (SPath.three true false true trivial hR trivial rfl) Z =
     braidRight (P.swappedGens c L) j i i ν
@@ -195,7 +195,7 @@ end CommonGrid
 split endpoint, with one repeated-colour reservoir and two probes. -/
 theorem adjacentReverse_braid (ν : X) (i j : I) (s : Sector I)
     (hR : StepValid (true, i) false s) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j)
     (p : SPath (wd D ν [up j, up i, up i]) s
       (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
     (q : SPath (wd D ν [up i, up i, up j]) s

@@ -41,7 +41,7 @@ variable {P : ProbeReservoir k B D Sc} (c : P.CrossCoeff Sc) (L : P.LeftwardData
   (ν : X) (i : I) (t : Sector I)
 
 /-- (1.9) on the block `{PPR, PRP, RPP}`, for every pair of paths. -/
-theorem block_braid_all (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem block_braid_all (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hR : StepValid (true, i) false (nextSector (true, i) true (nextSector (true, i) true t)))
     (p q : SPath (wd D ν [up i, up i, up i]) t
       (nextSector (true, i) false (nextSector (true, i) true (nextSector (true, i) true t))))
@@ -53,7 +53,7 @@ theorem block_braid_all (hc : c.IsInverse) (h : P.CrossCoeffInputs)
   exact block_braid ν i t hR Z c L hc h m n
 
 /-- (1.9) on the block `{PRR, RPR, RRP}`, for every pair of paths. -/
-theorem blockPost_braid_all (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem blockPost_braid_all (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hv : StepValid (true, i) false t)
     (hw : StepValid (true, i) false (nextSector (true, i) false t))
     (p q : SPath (wd D ν [up i, up i, up i]) t
@@ -67,7 +67,7 @@ theorem blockPost_braid_all (hc : c.IsInverse) (h : P.CrossCoeffInputs)
 
 /-- **(1.9) for the colour pattern `iii`**: the entries `braidLeft` and `braidRight` of the
 swapped generators agree on every pair of paths of `Eᵢ Eᵢ Eᵢ`. -/
-theorem braid_same (hc : c.IsInverse) (h : P.CrossCoeffInputs) {s t : Sector I}
+theorem braid_same (hc : c.IsInverse) (h : P.CrossDenominatorUnits) {s t : Sector I}
     (p q : SPath (wd D ν [up i, up i, up i]) s t) (Z : P.H t) :
     braidLeft (P.swappedGens c L) i i i ν p q Z = braidRight (P.swappedGens c L) i i i ν p q Z := by
   cases p with
