@@ -1,6 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientWindowTensor
 import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
-import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Tactic.NormNum
 import Lean.Util.CollectAxioms
 
@@ -50,11 +49,13 @@ private def testTensor : coefficientWindowTensor D Sc 3 [false, true] [true, fal
   oddCoefficient ⊗ₜ[ℚ] crossing
 
 private theorem testTensor_ne_zero : testTensor ≠ 0 := by
-  have hc : oddCoefficient ≠ 0 := by
-    intro h
-    apply (SKM.SYM.coefficientBasis D ℚ).ne_zero exteriorIndex
-    exact congrArg (fun a : U => a.val) h
-  obtain ⟨φ, hφ⟩ := Module.Projective.exists_dual_eq_one ℚ hc
+  let φ : U →ₗ[ℚ] ℚ :=
+    ((SKM.SYM.coefficientBasis D ℚ).coord exteriorIndex).comp
+      (SKM.SYM.CoefficientAtMost D ℚ 3).subtype
+  have hφ : φ oddCoefficient = 1 := by
+    change ((SKM.SYM.coefficientBasis D ℚ).repr
+      (SKM.SYM.coefficientBasis D ℚ exteriorIndex)) exteriorIndex = 1
+    simp
   intro hz
   have he : (TensorProduct.lid ℚ H)
       (TensorProduct.map φ (LinearMap.id : H →ₗ[ℚ] H) testTensor) = 0 := by

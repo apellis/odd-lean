@@ -8,7 +8,7 @@ no coefficient-flatness assumption is added. The corresponding restriction
 of elvHomQuotient is on a literal submodule of the existing source.
 
 The mixed-word rational consumer tests a nonzero odd-coefficient tensor on
-a crossing normal form. Producer and consumers are proposed pending checks.
+a crossing normal form. Producer and concrete consumer pass pinned direct Lean with warnings as errors and both compatibility settings; the consumer audits all 12 owned declarations. Full branch CI remains the integration gate.
 This is not yet joint detection after the first-strand cyclotomic and weight
 truncation ideals; the existing full coefficient degree-bound theorem supplies
 the next independent input. No categorical action or nondegeneracy is claimed.

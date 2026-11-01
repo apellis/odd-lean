@@ -48,7 +48,7 @@ theorem coefficientWindowMap_injective (cutoff : I → ℕ) (d : ℕ)
   have hf : Function.Injective f := by
     intro a b hab
     exact SKM.SYM.elvCoefficient_quotient_injective D k hd hab
-  letI : Module.Free k H := Module.Free.of_basis (basisNF D Sc v w)
+  let _ : Module.Free k H := Module.Free.of_basis (basisNF D Sc v w)
   change Function.Injective (f.rTensor H)
   exact Module.Flat.rTensor_preserves_injective_linearMap f hf
 
@@ -74,12 +74,11 @@ theorem elvHomQuotient_coefficientWindowSourceMap (cutoff : I → ℕ)
     (d : ℕ) (v w : List I) (x : coefficientWindowTensor D Sc d v w) :
     elvHomQuotient D Sc cutoff v w (coefficientWindowSourceMap D Sc d v w x) =
       coefficientWindowMap D Sc cutoff d v w x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero]
-  | add x y hx hy => simp only [map_add, hx, hy]
+  induction x using TensorProduct.inductionOn with
   | tmul a f =>
     rw [coefficientWindowSourceMap_tmul, elvHomQuotient_source,
       coefficientWindowMap_tmul]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 /-- The prescribed full coefficient-quotient map is injective on this actual
 source submodule, with no affine degree bound or faithfulness input. -/
