@@ -37,3 +37,5 @@ Whole supernatural-transformation and weight-family relations additionally
 require total-evaluation extensionality and compatibility with the actual
 successor-block functors. No local inverse, factor-action or nondegeneracy
 construction is supplied by these component braid drafts.
+
+The proposed prefix comparison is formulated as a square of module morphisms before taking its homogeneous total component. Its four inputs are the evaluated induction comparison, the pair crossing component, the canonical affine prefix source and the generic categorical square. The inputs have been checked separately, but their specialization to the proposed prefix definition still exceeds the kernel reduction budget. Thus the proposed braid consumer remains unchecked; the carrier foundation and distinct-slide results are established independently.

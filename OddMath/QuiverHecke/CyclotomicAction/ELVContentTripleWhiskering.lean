@@ -308,6 +308,33 @@ theorem contentETripleComparison_middle (β : Multiset I) (i j l : I) (δ γ : M
   simp only [contentETripleMiddleIso, eqToIso_refl, Iso.refl_trans]
   rfl
 
+private def compIsoApp {C B E : Type*} [Category* C] [Category* B] [Category* E]
+    (J : C ⥤ B) (K : B ⥤ E) (L : C ⥤ E) (e : J ⋙ K ≅ L) (M : C) :
+    K.obj (J.obj M) ≅ L.obj M := e.app M
+
+private def isoCompApp {C B E : Type*} [Category* C] [Category* B] [Category* E]
+    (V : C ⥤ E) (J : C ⥤ B) (K : B ⥤ E) (e : V ≅ J ⋙ K) (M : C) :
+    V.obj M ≅ K.obj (J.obj M) := e.app M
+
+private theorem compIsoApp_hom_mem
+    {C B E : Type*} [Category* C] [Category* B] [Category* E]
+    [Preadditive E] [Linear k E] [Supercategory k E]
+    (J : C ⥤ B) (K : B ⥤ E) (L : C ⥤ E) (e : J ⋙ K ≅ L) (M : C)
+    {p : ZMod 2} (he : e.hom.app M ∈ parity (R := k) _ _ p) :
+    (compIsoApp J K L e M).hom ∈ parity (R := k) _ _ p := he
+
+private theorem prefixComparison_app_canonical
+    {C B : Type*} {T : Type u} [Category* C] [Category* B]
+    [Category.{u} T] [Preadditive T] [Linear k T] [Supercategory k T]
+    (G H : C ⥤ B) (K : B ⥤ Superfunctor k T (SVec k))
+    (F R : C ⥤ Superfunctor k T (SVec k))
+    (e₀ : F ≅ G ⋙ K) (e₁ : G ≅ H) (e₂ : H ⋙ K ≅ R) (M : C) :
+    ((e₀ ≪≫ Functor.isoWhiskerRight e₁ K ≪≫ e₂).app M) =
+      isoCompApp F G K e₀ M ≪≫ K.mapIso (e₁.app M) ≪≫ compIsoApp H K R e₂ M := by
+  apply Iso.ext
+  simp only [isoCompApp, compIsoApp, Iso.app_hom, Iso.trans_hom, NatTrans.comp_app,
+    Functor.isoWhiskerRight_hom, Functor.whiskerRight_app, Functor.mapIso_hom]
+
 private theorem prefixComparison_app
     {C B : Type*} {T : Type u} [Category* C] [Category* B]
     [Category.{u} T] [Preadditive T] [Linear k T] [Supercategory k T]
@@ -369,6 +396,37 @@ private theorem map_transform_total
     ((BalancedInduction.induction J).map f).total z = BalancedInduction.mapComponent J f p z :=
   total_of_mem (Supercategory.map_mem (BalancedInduction.induction J) hf) z
 
+theorem contentTripleLeft_whisker (i j l : I) :
+    contentTripleLeft D Sc i j l = crossTwo D Sc i j ▷ (pres D Sc).obj (ob D [l]) := by
+  rw [crossTwo, cl_whiskerRight D Sc _ _ [l]
+    (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
+  rfl
+
+/-- The normalized prefix source on the canonical three-letter objects. -/
+def contentTriplePrefixAffine (i j l : I) :
+    (pres D Sc).obj (ob D [i,j,l]) ⟶ (pres D Sc).obj (ob D [j,i,l]) := by
+  classical
+  exact if i = j then -contentTripleLeft D Sc i j l else contentTripleLeft D Sc i j l
+
+theorem contentTriplePrefixAffine_mem (i j l : I) :
+    contentTriplePrefixAffine D Sc i j l ∈
+      parity (R := k) _ _ (D.parity i * D.parity j) := by
+  classical
+  unfold contentTriplePrefixAffine
+  split_ifs
+  · exact Submodule.neg_mem _ (contentTripleLeft_parity D Sc i j l)
+  · exact contentTripleLeft_parity D Sc i j l
+
+theorem contentTriplePrefixAffine_eq_whisker (i j l : I) :
+    contentTriplePrefixAffine D Sc i j l =
+      contentCrossAffine D Sc i j ▷ (pres D Sc).obj (ob D [l]) := by
+  classical
+  by_cases hij : i = j
+  · simp only [contentTriplePrefixAffine, contentCrossAffine, ite_eq_left hij,
+      MonoidalSupercategory.neg_whiskerRight (R := k), contentTripleLeft_whisker]
+  · simp only [contentTriplePrefixAffine, contentCrossAffine, ite_eq_right hij,
+      contentTripleLeft_whisker]
+
 private theorem homogeneous_total_ext
     {C B : Type*} [Category* C] [Category* B]
     [Preadditive C] [Linear k C] [Supercategory k C]
@@ -406,19 +464,37 @@ theorem contentInductionCompTo_inner_map (β : Multiset I) (σ σ' : List I)
     (ha : a ∈ parity (R := k) _ _ p) (M : ContentModules D Sc cutoff N β) :
     (contentInductionTo D Sc cutoff N δ τ γ hγ).map
         ((contentInductionTransform D Sc cutoff N hδ hδ' ha).app p M) ≫
-      (contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h).hom.app M =
-    (contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h').hom.app M ≫
+      (compIsoApp
+      (contentInductionTo D Sc cutoff N β σ δ hδ)
+      (contentInductionTo D Sc cutoff N δ τ γ hγ)
+      (contentInductionTo D Sc cutoff N β (σ ++ τ) γ h)
+      (contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h) M).hom =
+    (compIsoApp
+      (contentInductionTo D Sc cutoff N β σ' δ hδ')
+      (contentInductionTo D Sc cutoff N δ τ γ hγ)
+      (contentInductionTo D Sc cutoff N β (σ' ++ τ) γ h')
+      (contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h') M).hom ≫
       (contentInductionTransform D Sc cutoff N h h'
         (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha)).app p M := by
   have hm := (contentInductionTransform D Sc cutoff N hδ hδ' ha).app_mem p M
   have hc := (contentInductionTransform D Sc cutoff N h h'
     (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D τ)) ha)).app_mem p M
-  have hf := (contentInductionCompTo_mem D Sc cutoff N β σ δ hδ τ γ hγ h M).1
-  have hf' := (contentInductionCompTo_mem D Sc cutoff N β σ' δ hδ' τ γ hγ h' M).1
+  have hf := compIsoApp_hom_mem
+    (contentInductionTo D Sc cutoff N β σ δ hδ)
+    (contentInductionTo D Sc cutoff N δ τ γ hγ)
+    (contentInductionTo D Sc cutoff N β (σ ++ τ) γ h)
+    (contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h) M
+    (contentInductionCompTo_mem D Sc cutoff N β σ δ hδ τ γ hγ h M).1
+  have hf' := compIsoApp_hom_mem
+    (contentInductionTo D Sc cutoff N β σ' δ hδ')
+    (contentInductionTo D Sc cutoff N δ τ γ hγ)
+    (contentInductionTo D Sc cutoff N β (σ' ++ τ) γ h')
+    (contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h') M
+    (contentInductionCompTo_mem D Sc cutoff N β σ' δ hδ' τ γ hγ h' M).1
   apply homogeneous_total_ext (p := p)
-    (by simpa only [Functor.comp_obj, add_zero] using
+    (by simpa only [add_zero] using
       comp_mem (Supercategory.map_mem (contentInductionTo D Sc cutoff N δ τ γ hγ) hm) hf)
-    (by simpa only [Functor.comp_obj, zero_add] using comp_mem hf' hc)
+    (by simpa only [zero_add] using comp_mem hf' hc)
   intro z
   rw [Superfunctor.comp_total, Superfunctor.comp_total]
   change (moduleIsoLinearEquiv
@@ -432,6 +508,49 @@ theorem contentInductionCompTo_inner_map (β : Multiset I) (σ σ' : List I)
   rw [contentInductionTransform_total,
     map_transform_total _ hm, contentInductionTransform_app]
   exact contentInductionCompTo_inner_arrow D Sc cutoff N β σ σ' δ hδ hδ' τ γ hγ h h' ha M z
+
+/-- Intermediate source-arrow form of the module comparison. The equality
+identifies the supplied arrow with the same right-whiskered source; the prefix
+comparison discharges it with `contentTriplePrefixAffine_eq_whisker`. -/
+theorem contentInductionCompTo_inner_map_of_eq (β : Multiset I) (σ σ' : List I)
+    (δ : Multiset I) (hδ : β + (σ : Multiset I) = δ) (hδ' : β + (σ' : Multiset I) = δ)
+    (τ : List I) (γ : Multiset I) (hγ : δ + (τ : Multiset I) = γ)
+    (h : β + ((σ ++ τ : List I) : Multiset I) = γ)
+    (h' : β + ((σ' ++ τ : List I) : Multiset I) = γ)
+    {p : ZMod 2} {a : (pres D Sc).obj (ob D σ) ⟶ (pres D Sc).obj (ob D σ')}
+    (ha : a ∈ parity (R := k) _ _ p)
+    {b : (pres D Sc).obj (ob D (σ ++ τ)) ⟶ (pres D Sc).obj (ob D (σ' ++ τ))}
+    (hb : b ∈ parity (R := k) _ _ p)
+    (hab : b = a ▷ (pres D Sc).obj (ob D τ))
+    (M : ContentModules D Sc cutoff N β) :
+    (contentInductionTo D Sc cutoff N δ τ γ hγ).map
+        ((contentInductionTransform D Sc cutoff N hδ hδ' ha).app p M) ≫
+      (compIsoApp
+      (contentInductionTo D Sc cutoff N β σ δ hδ)
+      (contentInductionTo D Sc cutoff N δ τ γ hγ)
+      (contentInductionTo D Sc cutoff N β (σ ++ τ) γ h)
+      (contentInductionCompTo D Sc cutoff N β σ δ hδ τ γ hγ h) M).hom =
+    (compIsoApp
+      (contentInductionTo D Sc cutoff N β σ' δ hδ')
+      (contentInductionTo D Sc cutoff N δ τ γ hγ)
+      (contentInductionTo D Sc cutoff N β (σ' ++ τ) γ h')
+      (contentInductionCompTo D Sc cutoff N β σ' δ hδ' τ γ hγ h') M).hom ≫
+      (contentInductionTransform D Sc cutoff N h h' hb).app p M := by
+  cases hab
+  exact contentInductionCompTo_inner_map D Sc cutoff N β σ σ' δ hδ hδ' τ γ hγ h h' ha M
+
+private def comparisonConjugate {C : Type*} [Category* C]
+    {V V' W W' : C} (g : V ≅ W) (g' : V' ≅ W') (c : W' ⟶ W) : V' ⟶ V :=
+  (g'.hom ≫ c) ≫ g.inv
+
+private theorem comparisonConjugate_app
+    {C E : Type*} [Category* C] [Category* E]
+    {F G F' G' : C ⥤ E} (g : F ≅ G) (g' : F' ≅ G') (M : C)
+    (a : G'.obj M ⟶ G.obj M) :
+    ((g'.hom.app M ≫ a) ≫ g.inv.app M) =
+      comparisonConjugate (g.app M) (g'.app M) a := by
+  unfold comparisonConjugate
+  simp only [Iso.app_hom, Iso.app_inv]
 
 private theorem prefixModuleSquare
     {B C : Type*} [Category* B] [Category* C]
@@ -458,7 +577,8 @@ private theorem prefixModuleSquare_eq
     (hg : g = d ≪≫ K.mapIso e ≪≫ f) (hg' : g' = d' ≪≫ K.mapIso e' ≪≫ f')
     (hb : b = (e'.hom ≫ a) ≫ e.inv)
     (h : K.map a ≫ f.hom = f'.hom ≫ c) :
-    ((g'.hom ≫ c) ≫ g.inv) = ((d'.hom ≫ K.map b) ≫ d.inv) := by
+    comparisonConjugate g g' c = comparisonConjugate d d' (K.map b) := by
+  unfold comparisonConjugate
   rw [hg, hg', hb]
   exact prefixModuleSquare K e e' a d d' f f' c h
 
@@ -470,12 +590,29 @@ def contentPrefixCrossMorphism (β : Multiset I) (i j l : I) (δ γ : Multiset I
     (hγ : δ + ([l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β) :
     (contentETripleTo D Sc cutoff N β j i l γ ht).obj M ⟶
       (contentETripleTo D Sc cutoff N β i j l γ h).obj M :=
-  (((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M ≫
-    (contentInductionTo D Sc cutoff N δ [l] γ hγ).map
+  comparisonConjugate (C := ContentModules D Sc cutoff N γ)
+    (V := (contentETripleTo D Sc cutoff N β i j l γ h).obj M)
+    (V' := (contentETripleTo D Sc cutoff N β j i l γ ht).obj M)
+    (W := (contentInductionTo D Sc cutoff N δ [l] γ hγ).obj
+      ((contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).obj M))
+    (W' := (contentInductionTo D Sc cutoff N δ [l] γ hγ).obj
+      ((contentEPairTo D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).obj M))
+    (isoCompApp
+    (contentETripleTo D Sc cutoff N β i j l γ h)
+    (contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ) M)
+    (isoCompApp
+    (contentETripleTo D Sc cutoff N β j i l γ ht)
+    (contentEPairTo D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ'))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ) M)
+    ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
+      (X := (contentEPairTo D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).obj M)
+      (Y := (contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).obj M)
       ((contentEPairCrossTransform D Sc cutoff N β i j δ
         ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-        (D.parity i * D.parity j) M)) ≫
-    (contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M)
+        (D.parity i * D.parity j) M))
 
 def contentPrefixCrossComponent (β : Multiset I) (i j l : I) (δ γ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
@@ -485,48 +622,159 @@ def contentPrefixCrossComponent (β : Multiset I) (i j l : I) (δ γ : Multiset 
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
   (contentPrefixCrossMorphism D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M).total z
 
+section PrefixComparisonPremises
+variable
+  (β : Multiset I) (i j l : I) (δ γ : Multiset I)
+  (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
+  (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
+  (h : β + ([i,j,l] : Multiset I) = γ)
+  (ht : β + ([j,i,l] : Multiset I) = γ)
+  (hγ : δ + ([l] : Multiset I) = γ)
+  (M : ContentModules D Sc cutoff N β)
+
+
+private theorem prefixTransform_component :
+    (contentETripleTransform D Sc cutoff N (β := β) (γ := γ) (i := i) (j := j) (l := l) (a := j) (b := i) (c := l) h ht
+      (contentTriplePrefixAffine_mem D Sc i j l)).app (D.parity i * D.parity j) M =
+      comparisonConjugate (C := ContentModules D Sc cutoff N γ)
+        (V := (contentETripleTo D Sc cutoff N β i j l γ h).obj M)
+        (V' := (contentETripleTo D Sc cutoff N β j i l γ ht).obj M)
+        (W := (contentInductionTo D Sc cutoff N β [i,j,l] γ h).obj M)
+        (W' := (contentInductionTo D Sc cutoff N β [j,i,l] γ ht).obj M)
+        ((contentETripleComparison D Sc cutoff N β i j l γ h).app M)
+        ((contentETripleComparison D Sc cutoff N β j i l γ ht).app M)
+        ((contentInductionTransform D Sc cutoff N (β := β) (γ := γ)
+      (σ := [i,j,l]) (τ := [j,i,l]) h ht (contentTriplePrefixAffine_mem D Sc i j l)).app
+      (D.parity i * D.parity j) M) := by
+  exact (contentETripleTransform_component D Sc cutoff N (β := β) (γ := γ) (i := i) (j := j) (l := l) (a := j) (b := i) (c := l) h ht
+    (contentTriplePrefixAffine_mem D Sc i j l) M).trans
+    (comparisonConjugate_app
+      (F := contentETripleTo D Sc cutoff N β i j l γ h)
+      (G := contentInductionTo D Sc cutoff N β [i,j,l] γ h)
+      (F' := contentETripleTo D Sc cutoff N β j i l γ ht)
+      (G' := contentInductionTo D Sc cutoff N β [j,i,l] γ ht)
+      (contentETripleComparison D Sc cutoff N β i j l γ h)
+      (contentETripleComparison D Sc cutoff N β j i l γ ht) M
+      ((contentInductionTransform D Sc cutoff N (β := β) (γ := γ)
+      (σ := [i,j,l]) (τ := [j,i,l]) h ht (contentTriplePrefixAffine_mem D Sc i j l)).app
+      (D.parity i * D.parity j) M))
+
+private theorem prefixComparison_at :
+    (contentETripleComparison D Sc cutoff N β i j l γ h).app M =
+      (isoCompApp
+    (contentETripleTo D Sc cutoff N β i j l γ h)
+    (contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ) M) ≪≫
+        (contentInductionTo D Sc cutoff N δ [l] γ hγ).mapIso ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M) ≪≫
+        (compIsoApp
+    (contentInductionTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentInductionTo D Sc cutoff N β [i,j,l] γ h)
+    (contentInductionCompTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)
+      [l] γ hγ h) M) := by
+  rw [contentETripleComparison_middle D Sc cutoff N β i j l δ γ hδ h hγ]
+  exact prefixComparison_app_canonical _ _ _ _ _ _ _ _ M
+
+
+private theorem prefixPair_component : ((contentEPairCrossTransform D Sc cutoff N β i j δ
+    ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
+    (D.parity i * D.parity j) M) = (((contentEPairToComparison D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).app M).hom ≫ ((contentInductionTransform D Sc cutoff N (β := β) (γ := δ)
+    (σ := [i,j]) (τ := [j,i]) ((contentPair_sum β i j).trans hδ)
+    ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
+    (D.parity i * D.parity j) M)) ≫ ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M).inv :=
+  contentEPairCross_component D Sc cutoff N β i j δ
+    ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') M
+
+
+private theorem prefixInner_map :
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ).map ((contentInductionTransform D Sc cutoff N (β := β) (γ := δ)
+    (σ := [i,j]) (τ := [j,i]) ((contentPair_sum β i j).trans hδ)
+    ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
+    (D.parity i * D.parity j) M) ≫
+      (compIsoApp
+    (contentInductionTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentInductionTo D Sc cutoff N β [i,j,l] γ h)
+    (contentInductionCompTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)
+      [l] γ hγ h) M).hom =
+      (compIsoApp
+    (contentInductionTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ'))
+    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+    (contentInductionTo D Sc cutoff N β [j,i,l] γ ht)
+    (contentInductionCompTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ')
+      [l] γ hγ ht) M).hom ≫ ((contentInductionTransform D Sc cutoff N (β := β) (γ := γ)
+    (σ := [i,j,l]) (τ := [j,i,l]) h ht (contentTriplePrefixAffine_mem D Sc i j l)).app
+    (D.parity i * D.parity j) M) :=
+  contentInductionCompTo_inner_map_of_eq D Sc cutoff N β [i,j] [j,i] δ
+    ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') [l] γ hγ h ht
+    (contentCrossAffine_mem D Sc i j) (contentTriplePrefixAffine_mem D Sc i j l)
+    (contentTriplePrefixAffine_eq_whisker D Sc i j l) M
+
+
+end PrefixComparisonPremises
+
 theorem contentETripleTransform_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Multiset I)
     (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
     (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
     (h : β + ([i,j,l] : Multiset I) = γ)
     (ht : β + ([j,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) :
-    (contentETripleTransform D Sc cutoff N h ht
-      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
-        (contentCrossAffine_mem D Sc i j))).app (D.parity i * D.parity j) M =
+    (contentETripleTransform D Sc cutoff N (β := β) (γ := γ) (i := i) (j := j) (l := l) (a := j) (b := i) (c := l) h ht
+      (contentTriplePrefixAffine_mem D Sc i j l)).app (D.parity i * D.parity j) M =
       contentPrefixCrossMorphism D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M := by
-  rw [contentETripleTransform_component]
-  unfold contentPrefixCrossMorphism
-  apply prefixModuleSquare_eq
-    (contentInductionTo D Sc cutoff N δ [l] γ hγ)
-    ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M)
-    ((contentEPairToComparison D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).app M)
-    ((contentInductionTransform D Sc cutoff N ((contentPair_sum β i j).trans hδ)
-      ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
-      (D.parity i * D.parity j) M)
-    ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).app M)
-    ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).app M)
-    ((contentInductionCompTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)
-      [l] γ hγ h).app M)
-    ((contentInductionCompTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ')
-      [l] γ hγ ht).app M)
-    ((contentInductionTransform D Sc cutoff N h ht
-      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
-        (contentCrossAffine_mem D Sc i j))).app (D.parity i * D.parity j) M)
-    ((contentETripleComparison D Sc cutoff N β i j l γ h).app M)
-    ((contentETripleComparison D Sc cutoff N β j i l γ ht).app M)
-    ((contentEPairCrossTransform D Sc cutoff N β i j δ
-      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-      (D.parity i * D.parity j) M)
-  · rw [contentETripleComparison_middle D Sc cutoff N β i j l δ γ hδ h hγ]
-    exact prefixComparison_app _ _ _ _ _ _ _ _ M
-  · rw [contentETripleComparison_middle D Sc cutoff N β j i l δ γ hδ' ht hγ]
-    exact prefixComparison_app _ _ _ _ _ _ _ _ M
-  · exact contentEPairCross_component D Sc cutoff N β i j δ
-      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') M
-  · exact contentInductionCompTo_inner_map D Sc cutoff N β [i,j] [j,i] δ
-      ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ') [l] γ hγ h ht
-      (contentCrossAffine_mem D Sc i j) M
+    exact (prefixTransform_component D Sc cutoff N β i j l γ h ht M).trans
+      (prefixModuleSquare_eq
+      (B := ContentModules D Sc cutoff N δ) (C := ContentModules D Sc cutoff N γ)
+      (A := (contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).obj M)
+      (B₁ := (contentInductionTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)).obj M)
+      (A' := (contentEPairTo D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).obj M)
+      (B₁' := (contentInductionTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ')).obj M)
+      (V := (contentETripleTo D Sc cutoff N β i j l γ h).obj M)
+      (V' := (contentETripleTo D Sc cutoff N β j i l γ ht).obj M)
+      (W := (contentInductionTo D Sc cutoff N β [i,j,l] γ h).obj M)
+      (W' := (contentInductionTo D Sc cutoff N β [j,i,l] γ ht).obj M)
+      (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+      ((contentEPairToComparison D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ)).app M)
+      ((contentEPairToComparison D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ')).app M)
+      ((contentInductionTransform D Sc cutoff N (β := β) (γ := δ)
+        (σ := [i,j]) (τ := [j,i]) ((contentPair_sum β i j).trans hδ)
+        ((contentPair_sum β j i).trans hδ') (contentCrossAffine_mem D Sc i j)).app
+        (D.parity i * D.parity j) M)
+      (isoCompApp
+      (contentETripleTo D Sc cutoff N β i j l γ h)
+      (contentEPairTo D Sc cutoff N β i j δ ((contentPair_sum β i j).trans hδ))
+      (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+      (contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ) M)
+      (isoCompApp
+      (contentETripleTo D Sc cutoff N β j i l γ ht)
+      (contentEPairTo D Sc cutoff N β j i δ ((contentPair_sum β j i).trans hδ'))
+      (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+      (contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ) M)
+      (compIsoApp
+      (contentInductionTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ))
+      (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+      (contentInductionTo D Sc cutoff N β [i,j,l] γ h)
+      (contentInductionCompTo D Sc cutoff N β [i,j] δ ((contentPair_sum β i j).trans hδ)
+        [l] γ hγ h) M)
+      (compIsoApp
+      (contentInductionTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ'))
+      (contentInductionTo D Sc cutoff N δ [l] γ hγ)
+      (contentInductionTo D Sc cutoff N β [j,i,l] γ ht)
+      (contentInductionCompTo D Sc cutoff N β [j,i] δ ((contentPair_sum β j i).trans hδ')
+        [l] γ hγ ht) M)
+      ((contentInductionTransform D Sc cutoff N (β := β) (γ := γ)
+        (σ := [i,j,l]) (τ := [j,i,l]) h ht
+        (contentTriplePrefixAffine_mem D Sc i j l)).app (D.parity i * D.parity j) M)
+      ((contentETripleComparison D Sc cutoff N β i j l γ h).app M)
+      ((contentETripleComparison D Sc cutoff N β j i l γ ht).app M)
+      ((contentEPairCrossTransform D Sc cutoff N β i j δ
+        ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
+        (D.parity i * D.parity j) M)
+      (prefixComparison_at D Sc cutoff N β i j l δ γ hδ h hγ M)
+      (prefixComparison_at D Sc cutoff N β j i l δ γ hδ' ht hγ M)
+      (prefixPair_component D Sc cutoff N β i j δ hδ hδ' M)
+      (prefixInner_map D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M))
 
 /-- Evaluation of the independently induced prefix crossing. -/
 theorem contentETripleMap_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Multiset I)
@@ -535,12 +783,12 @@ theorem contentETripleMap_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Mu
     (h : β + ([i,j,l] : Multiset I) = γ)
     (ht : β + ([j,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    contentETripleMap D Sc cutoff N h ht
-      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
-        (contentCrossAffine_mem D Sc i j)) M z =
+    contentETripleMap D Sc cutoff N (β := β) (γ := γ) (i := i) (j := j) (l := l) (a := j) (b := i) (c := l) h ht
+      (contentTriplePrefixAffine_mem D Sc i j l) M z =
       contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z := by
   have hx := congrArg (fun f => f.total z)
     (contentETripleTransform_prefix_cross D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M)
-  rw [contentETripleTransform_total] at hx
+  rw [contentETripleTransform_total D Sc cutoff N (β := β) (γ := γ) (i := i) (j := j) (l := l) (a := j) (b := i) (c := l) h ht
+    (contentTriplePrefixAffine_mem D Sc i j l) M z] at hx
   exact hx
 end OddMath.QuiverHecke.ELVOld

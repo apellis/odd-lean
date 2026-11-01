@@ -13,12 +13,6 @@ namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-theorem contentTripleLeft_whisker (i j l : I) :
-    contentTripleLeft D Sc i j l = crossTwo D Sc i j ▷ (pres D Sc).obj (ob D [l]) := by
-  rw [crossTwo, cl_whiskerRight D Sc _ _ [l]
-    (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
-  rfl
-
 theorem contentTripleRight_whisker (i j l : I) :
     contentTripleRight D Sc i j l = (pres D Sc).obj (ob D [i]) ◁ crossTwo D Sc j l := by
   rw [crossTwo, cl_whiskerLeft]
@@ -94,7 +88,7 @@ theorem contentWhiskeredPrefixCross_distinct (β : Multiset I) {i j : I} (hij : 
       contentETripleMap D Sc cutoff N h ht (contentTripleLeft_parity D Sc i j l) M z := by
   rw [← contentETripleMap_prefix_cross]
   apply tripleMap_congr
-  rw [contentCrossAffine_distinct D Sc i j hij, contentTripleLeft_whisker]
+  simp only [contentTriplePrefixAffine, ite_eq_right hij]
 
 theorem contentWhiskeredSuffixCross_distinct (β : Multiset I) (i : I) {j l : I} (hjl : j ≠ l)
     (γ : Multiset I) (h : β + ([i,j,l] : Multiset I) = γ)
@@ -114,7 +108,7 @@ theorem contentWhiskeredPrefixCross_equal (β : Multiset I) (i l : I)
       -contentETripleMap D Sc cutoff N h h (contentTripleLeft_parity D Sc i i l) M z := by
   rw [← contentETripleMap_prefix_cross, ← tripleMap_neg]
   apply tripleMap_congr
-  rw [contentCrossAffine_equal, MonoidalSupercategory.neg_whiskerRight (R := k), contentTripleLeft_whisker]
+  simp only [contentTriplePrefixAffine, ite_eq_left rfl]
 
 theorem contentWhiskeredSuffixCross_equal (β : Multiset I) (j i : I)
     (γ : Multiset I) (h : β + ([j,i,i] : Multiset I) = γ)
