@@ -63,7 +63,7 @@ theorem coefficientOne_map (i : I) (v : List I) {s t : OldCategory D Sc cutoff}
     (twist k 1 ((oldRepresentableFunctor D Sc cutoff (⟨v⟩ : OldCategory D Sc cutoff)).map
       ((append D Sc cutoff i).map f))) b
   rw [← oldCategory_twist D Sc cutoff s t 1 f,
-    Superfunctor.map_twist, Superfunctor.map_twist]
+    Supercategory.map_twist, Supercategory.map_twist]
 
 /-- The comparison is defined on the actual functors and is identity on every
 underlying old quotient coefficient. -/

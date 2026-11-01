@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedAppend
 
 /-! # The existing old append functor preserves the full super grading
 
@@ -13,30 +14,6 @@ namespace OddMath.QuiverHecke.ELVOld
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-
-theorem rightContext_mem_parity (σ : List I) {v w : List I} {p : ZMod 2}
-    {a : hom D Sc cutoff v w}
-    (ha : a ∈ parity (R := k) (obj D Sc cutoff v) (obj D Sc cutoff w) p) :
-    rightContext D Sc cutoff σ v w a ∈
-      parity (R := k) (obj D Sc cutoff (v ++ σ)) (obj D Sc cutoff (w ++ σ)) p := by
-  let K := Supercategory.homSVec k _ (obj D Sc cutoff v).fst (obj D Sc cutoff w).fst
-  let U := Supercategory.homSVec k _ (obj D Sc cutoff v).snd (obj D Sc cutoff w).snd
-  let U' := Supercategory.homSVec k _ (obj D Sc cutoff (v ++ σ)).snd
-    (obj D Sc cutoff (w ++ σ)).snd
-  let g : U ⟶ U' := affineRightContext D Sc σ v w
-  have hg : g ∈ SVec.parityHom U U' 0 := by
-    apply SVec.mem_parityHom_of_apply_mem
-    intro q f hf
-    change affineRightContext D Sc σ v w f ∈ U'.part (q + 0)
-    simpa only [add_zero] using
-      (Supercategory.mem_homSVec_part_iff k).2
-        (MonoidalSupercategory.whiskerRight_mem ((pres D Sc).obj (ob D σ))
-          ((Supercategory.mem_homSVec_part_iff k).1 hf))
-  change a ∈ (SVec.tensorObj K U).part p at ha
-  change rightContext D Sc cutoff σ v w a ∈ (SVec.tensorObj K U').part p
-  have hp := SVec.apply_mem_part (SVec.whiskerLeft_mem K hg) ha
-  rw [SVec.whiskerLeft_even K hg] at hp
-  simpa only [add_zero] using hp
 
 namespace CyclotomicCrossingTensor
 
