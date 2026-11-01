@@ -266,14 +266,14 @@ theorem iso_hom_mem : (iso D Sc cutoff i v).hom ∈ parity (R := k) _ _ 0 := by
   intro q hq
   funext w
   change (forwardTransform D Sc cutoff i v).app q w = 0
-  rw [forwardTransform_app, if_neg hq]
+  rw [forwardTransform_app, ite_eq_right hq]
 
 theorem iso_inv_mem : (iso D Sc cutoff i v).inv ∈ parity (R := k) _ _ 0 := by
   apply Superfunctor.mem_parity_iff_isHomogeneous.mpr
   intro q hq
   funext w
   change (backwardTransform D Sc cutoff i v).app q w = 0
-  rw [backwardTransform_app, if_neg hq]
+  rw [backwardTransform_app, ite_eq_right hq]
 
 theorem iso_hom_total_tensor (w z : OldCategory D Sc cutoff)
     (h : (J).obj z ⟶ w) (g : v ⟶ z) :
