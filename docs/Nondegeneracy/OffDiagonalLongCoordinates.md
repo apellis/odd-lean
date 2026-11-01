@@ -31,8 +31,8 @@ identity. In particular extraction is surjective and section is injective.
 
 ## Claim boundary and next comparison
 
-The source has compiled with warnings as errors; the importing concrete
-consumers and full package/axiom gates remain required before integration.
+The coordinate source and concrete consumers passed full build, global axiom
+audit and non-vacuity checks before research integration in #753.
 The consumer uses connected all-odd data with reversed old words and also
 different strand counts, so both off-diagonal and empty-Hom cases occur.
 

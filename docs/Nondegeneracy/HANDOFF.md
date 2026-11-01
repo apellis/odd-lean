@@ -116,8 +116,9 @@ including vacuum, on the existing content and weight categories.
 
 Canonical binomial specialization is verified in #813, and its original
 cyclotomic ideal descent, identity/composition and append compatibility in
-#814. Next extend these Hom maps to the existing content algebras and module
-action, retaining the exact prescribed dots, adjunction and inverse matrices.
+#814. The untruncated content-ring map and all-height/vacuum append laws are
+verified in #823. Next construct the actual old-content module action,
+retaining the exact prescribed dots, adjunction and inverse matrices.
 Scalar specialization is not faithful on the full coefficient algebra;
 source coefficient detection belongs to the separate reservoir.
 
