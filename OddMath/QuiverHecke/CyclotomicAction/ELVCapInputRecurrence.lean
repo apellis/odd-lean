@@ -82,7 +82,12 @@ theorem inputContractionAffine_corrected_iterate (p : ZMod 2)
   rw [crossingInputDotAffine_iterate_boundaryCrossCoordinates,
     inputContractionAffine_boundaryCrossCoordinates]
   simp only [outputLongExtraction_correctedLift]
-  rw [← Function.iterate_add_apply, ← Function.iterate_succ_apply']
+  rw [← Function.iterate_add_apply]
+  have hs : (outputCoefficientRho D Sc cutoff p j v)^[r + d + 1] (Finsupp.single 0 b) =
+      outputCoefficientRho D Sc cutoff p j v
+        ((outputCoefficientRho D Sc cutoff p j v)^[r + d] (Finsupp.single 0 b)) :=
+    Function.iterate_succ_apply' _ _ _
+  rw [hs]
 
 theorem inputContractionAffine_corrected_below (p : ZMod 2)
     (j : {j : I // D.parity j = 1}) (v : List I) (r d : ℕ)

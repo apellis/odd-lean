@@ -58,32 +58,28 @@ theorem contentNormalized_braid (i j l : I) (hb : ¬ (i = l ∧ i ≠ j)) :
   congr 1
   ring
 
-/-- The independently induced prefix crossing at its canonical intermediate content. -/
-def contentPrefixAt (β : Multiset I) (i j l : I) (γ : Multiset I)
-    (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
-    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
-  contentWhiskeredPrefixCross D Sc cutoff N β i j l
-    ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl (by ac_rfl) h ht
-    (by rw [add_assoc, add_assoc]; exact h) M z
-
-theorem contentPrefixAt_comparison (β : Multiset I) (i j l : I) (γ : Multiset I)
-    (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
-    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    contentPrefixAt D Sc cutoff N β i j l γ h ht M z =
-      contentETripleMap D Sc cutoff N h ht (contentNormalizedLeft_mem D Sc i j l) M z := by
-  exact (contentETripleMap_prefix_cross D Sc cutoff N β i j l
-    ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl (by ac_rfl)
-    h ht (by rw [add_assoc, add_assoc]; exact h) M z).symm
-
 def contentWhiskeredBraidLeft (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h0 : β + ([i,j,l] : Multiset I) = γ)
     (h1 : β + ([j,i,l] : Multiset I) = γ)
     (h2 : β + ([j,l,i] : Multiset I) = γ)
     (h3 : β + ([l,j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
-  (contentPrefixAt D Sc cutoff N β i j l γ h0 h1 M z).comp
-    ((contentWhiskeredSuffixCross D Sc cutoff N β j i l γ h1 h2 M z).comp
-      (contentPrefixAt D Sc cutoff N β j l i γ h2 h3 M z))
+  let A := ((contentETripleMiddleIso D Sc cutoff N β i j l ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl h0 (by rw [add_assoc, add_assoc]; exact h0)).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N ((β + ([i] : Multiset I)) + ([j] : Multiset I)) [l] γ (by rw [add_assoc, add_assoc]; exact h0)).map
+        ((contentEPairCrossTransform D Sc cutoff N β i j ((β + ([i] : Multiset I)) + ([j] : Multiset I))
+          ((contentPair_sum β i j).trans rfl)
+          ((contentPair_sum β j i).trans (by ac_rfl))).app
+          (D.parity i * D.parity j) M)).total z ∘ₗ
+      ((contentETripleMiddleIso D Sc cutoff N β j i l ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ (by ac_rfl) h1 (by rw [add_assoc, add_assoc]; exact h0)).hom.app M).total z
+  let B := contentWhiskeredSuffixCross D Sc cutoff N β j i l γ h1 h2 M z
+  let C := ((contentETripleMiddleIso D Sc cutoff N β j l i ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ rfl h2 (by rw [add_assoc, add_assoc]; exact h2)).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N ((β + ([j] : Multiset I)) + ([l] : Multiset I)) [i] γ (by rw [add_assoc, add_assoc]; exact h2)).map
+        ((contentEPairCrossTransform D Sc cutoff N β j l ((β + ([j] : Multiset I)) + ([l] : Multiset I))
+          ((contentPair_sum β j l).trans rfl)
+          ((contentPair_sum β l j).trans (by ac_rfl))).app
+          (D.parity j * D.parity l) M)).total z ∘ₗ
+      ((contentETripleMiddleIso D Sc cutoff N β l j i ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ (by ac_rfl) h3 (by rw [add_assoc, add_assoc]; exact h2)).hom.app M).total z
+  A.comp (B.comp C)
 
 def contentWhiskeredBraidRight (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h0 : β + ([i,j,l] : Multiset I) = γ)
@@ -91,9 +87,16 @@ def contentWhiskeredBraidRight (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h5 : β + ([l,i,j] : Multiset I) = γ)
     (h3 : β + ([l,j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :=
-  (contentWhiskeredSuffixCross D Sc cutoff N β i j l γ h0 h4 M z).comp
-    ((contentPrefixAt D Sc cutoff N β i l j γ h4 h5 M z).comp
-      (contentWhiskeredSuffixCross D Sc cutoff N β l i j γ h5 h3 M z))
+  let A := contentWhiskeredSuffixCross D Sc cutoff N β i j l γ h0 h4 M z
+  let B := ((contentETripleMiddleIso D Sc cutoff N β i l j ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ rfl h4 (by rw [add_assoc, add_assoc]; exact h4)).inv.app M).total z ∘ₗ
+      ((contentInductionTo D Sc cutoff N ((β + ([i] : Multiset I)) + ([l] : Multiset I)) [j] γ (by rw [add_assoc, add_assoc]; exact h4)).map
+        ((contentEPairCrossTransform D Sc cutoff N β i l ((β + ([i] : Multiset I)) + ([l] : Multiset I))
+          ((contentPair_sum β i l).trans rfl)
+          ((contentPair_sum β l i).trans (by ac_rfl))).app
+          (D.parity i * D.parity l) M)).total z ∘ₗ
+      ((contentETripleMiddleIso D Sc cutoff N β l i j ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ (by ac_rfl) h5 (by rw [add_assoc, add_assoc]; exact h4)).hom.app M).total z
+  let C := contentWhiskeredSuffixCross D Sc cutoff N β l i j γ h5 h3 M z
+  A.comp (B.comp C)
 
 private theorem triple_transport_comp
     {β γ : Multiset I} {i j l a b c d e f g h q : I}
@@ -116,7 +119,8 @@ private theorem triple_transport_comp
         ((BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h1 h2 hy) M z).comp
           (BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h2 h3 ht) M z)) ∘ₗ
       (contentETripleEquiv D Sc cutoff N β g h q γ h3 M z).toLinearMap := by
-  ext v
+  apply LinearMap.ext
+  intro v
   simp only [contentETripleMap, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearEquiv.apply_symm_apply]
 
@@ -133,11 +137,29 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
     contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3 M z =
       contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3 M z := by
-  unfold contentWhiskeredBraidLeft contentWhiskeredBraidRight
-  rw [contentPrefixAt_comparison, contentWhiskeredSuffixCross_comparison,
-    contentPrefixAt_comparison, contentWhiskeredSuffixCross_comparison,
-    contentPrefixAt_comparison, contentWhiskeredSuffixCross_comparison,
-    triple_transport_comp, triple_transport_comp]
+  have hL : contentWhiskeredBraidLeft D Sc cutoff N β i j l γ h0 h1 h2 h3 M z =
+      (contentETripleMap D Sc cutoff N h0 h1 (contentNormalizedLeft_mem D Sc i j l) M z).comp
+        ((contentETripleMap D Sc cutoff N h1 h2 (contentNormalizedRight_mem D Sc j i l) M z).comp
+          (contentETripleMap D Sc cutoff N h2 h3 (contentNormalizedLeft_mem D Sc j l i) M z)) := by
+    exact congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i j l
+      ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl (by ac_rfl)
+      h0 h1 (by rw [add_assoc, add_assoc]; exact h0) M z).symm
+      (congrArg₂ LinearMap.comp
+        (contentWhiskeredSuffixCross_comparison D Sc cutoff N β j i l γ h1 h2 M z)
+        (contentETripleMap_prefix_cross D Sc cutoff N β j l i
+      ((β + ([j] : Multiset I)) + ([l] : Multiset I)) γ rfl (by ac_rfl)
+      h2 h3 (by rw [add_assoc, add_assoc]; exact h2) M z).symm)
+  have hR : contentWhiskeredBraidRight D Sc cutoff N β i j l γ h0 h4 h5 h3 M z =
+      (contentETripleMap D Sc cutoff N h0 h4 (contentNormalizedRight_mem D Sc i j l) M z).comp
+        ((contentETripleMap D Sc cutoff N h4 h5 (contentNormalizedLeft_mem D Sc i l j) M z).comp
+          (contentETripleMap D Sc cutoff N h5 h3 (contentNormalizedRight_mem D Sc l i j) M z)) := by
+    exact congrArg₂ LinearMap.comp
+      (contentWhiskeredSuffixCross_comparison D Sc cutoff N β i j l γ h0 h4 M z)
+      (congrArg₂ LinearMap.comp (contentETripleMap_prefix_cross D Sc cutoff N β i l j
+      ((β + ([i] : Multiset I)) + ([l] : Multiset I)) γ rfl (by ac_rfl)
+      h4 h5 (by rw [add_assoc, add_assoc]; exact h4) M z).symm
+        (contentWhiskeredSuffixCross_comparison D Sc cutoff N β l i j γ h5 h3 M z))
+  rw [hL, hR, triple_transport_comp, triple_transport_comp]
   congr 2
   apply BalancedInduction.hom_ext
   intro v h m
@@ -153,4 +175,7 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
       D.parity j * D.parity l +
         (D.parity i * D.parity l + D.parity i * D.parity j) := by ring
   rw [hs, hp, contentNormalized_braid D Sc i j l hb]
+  all_goals first
+    | exact contentNormalizedLeft_mem D Sc _ _ _
+    | exact contentNormalizedRight_mem D Sc _ _ _
 end OddMath.QuiverHecke.ELVOld
