@@ -73,8 +73,8 @@ theorem forward_targetMap {t t' : D} (a : t ⟶ t') :
     targetMap_app]
   exact congrArg (fun f => f x) (evaluate_postcompose J M a v m)
 
-/-- Inverse target naturality follows from the checked quotient roundtrips. -/
 omit [M.Additive] [M.Linear k] in
+/-- Inverse target naturality follows from the checked quotient roundtrips. -/
 theorem backward_postcompose {t t' : D} (a : t ⟶ t') :
     backward J M t' ∘ₗ BalancedInduction.postcompose J (J ⋙ M) a =
       BalancedKernelTensor.map M (targetMap (k := k) J a) ∘ₗ backward J M t := by
@@ -83,8 +83,8 @@ theorem backward_postcompose {t t' : D} (a : t ⟶ t') :
   simp only [LinearMap.comp_apply, BalancedInduction.postcompose_tensor,
     backward_tensor, BalancedKernelTensor.map_tensor, targetMap_app, identityLift_apply]
 
-/-- Target action on the coefficient tensor quotients, before grading. -/
 omit [M.Additive] [M.Linear k] in
+/-- Target action on the coefficient tensor quotients, before grading. -/
 def tensorFunctor : D ⥤ ModuleCat k where
   obj t := ModuleCat.of k (BalancedKernelTensor.Obj (kernel (k := k) J t) M)
   map a := ModuleCat.ofHom (BalancedKernelTensor.map M (targetMap (k := k) J a))
