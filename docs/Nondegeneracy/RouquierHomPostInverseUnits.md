@@ -9,3 +9,5 @@ For odd x,y, the relation (JX²−JY²)α=JX−JY needs the target unit JX²−J
 The paired consumer uses the proved odd cyclotomic probe dot unit over ℚ, original integer weights, multiplicity three, and both parity shifts equal to one. It constructs α from the transported unit inverse and supplies every target/source norm unit. A separate even identity-dot specialization tests both inverse identities. The reservoir test dot is zero; the nonzero odd nilpotent norm calculation is independently exercised by ProductDenominatorUnits.
 
 The actual full-ELV transpose-bound producer supplies the matching source norms separately. Applying these lemmas to the swapping Sigma entry still requires the literal family/action identifications and arbitrary-endpoint categorical inverses; this module does not assert that completed action.
+
+The concrete odd consumer retains the equation that its coefficient is the inverse of the transported prescribed probe dot. Its construction is proved first with the ambient categories and probe functor abstract, then instantiated with the checked cyclotomic probe, so no coend data is unfolded during categorical ring normalization.

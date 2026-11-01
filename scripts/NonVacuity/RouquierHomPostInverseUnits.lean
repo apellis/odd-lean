@@ -11,6 +11,90 @@ open CategoryTheory StringDiagrams Supercategory BicategoryStruct OddMath.SKM
 open OddMath.QuiverHecke OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.ELVOld
 namespace NonVacuity.RouquierHomPostInverseUnits
 
+local instance homPi {A B : PiSCat.{0, 0, 1} ℚ} : PiSupercategory ℚ (A ⟶ B) :=
+  PiTwoSupercategory.homPiLeft A B
+
+private def identityAdj (B : PiSCat.{0, 0, 1} ℚ) :
+    SuperAdjunction (k := ℚ) (𝟙 B) (𝟙 B) :=
+  ordinaryEvenSuperAdjunction (𝟙 B) (𝟙 B) Adjunction.id
+    (fun M => id_mem M) (fun M => id_mem M)
+
+private abbrev middle (B : PiSCat.{0, 0, 1} ℚ) :=
+  (homParityShift (k := ℚ) (C := B ⟶ B) 1).obj (𝟙 B) ≫ 𝟙 B
+
+private abbrev jSource {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :=
+  (homParityShift (k := ℚ) (C := A ⟶ B) 1).obj ((E ≫ middle B) ≫ 𝟙 B)
+
+private abbrev interchange {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :=
+  homMixedInterchange (k := ℚ) E (𝟙 B) 1 1 (middle B)
+
+private abbrev InverseWitness {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) (x : End E) : Prop :=
+  ∃ α : End (jSource E),
+    α * mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) x = 1 ∧
+      IsIso (homDistinctMixedMateDot E (identityAdj B) 1 1 (𝟙 B)
+        ((interchange E).hom ≫ (-(α ≫ α ≫ (interchange E).inv))))
+
+private theorem source_zero {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :
+    mixedPostSourcePostDot (k := ℚ) E 1 (𝟙 B) (identityAdj B) (0 : End (𝟙 B)) = 0 := by
+  have hz : SuperAdjunction.rightTranspose (identityAdj B) (identityAdj B)
+      (0 : End (𝟙 B)) = 0 := (SuperAdjunction.rightTransposeLinear _ _).map_zero
+  rw [mixedPostSourcePostDot, hz, whiskerLeft_zero' (k := ℚ), whiskerLeft_zero' (k := ℚ)]
+
+private theorem j_zero {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :
+    mixedPostJPostDot (k := ℚ) E 1 1 (𝟙 B) (F' := 𝟙 B) (0 : End (𝟙 B)) = 0 := by
+  rw [mixedPostJPostDot, whiskerLeft_zero' (k := ℚ)]
+  exact (homParityShift (k := ℚ) (C := A ⟶ B) 1).map_zero _ _
+
+private theorem j_identity {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :
+    mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) (𝟙 E) =
+      (1 : End (jSource E)) := by
+  rw [mixedPostJPreDot, TwoSupercategory.id_whiskerRight (R := ℚ),
+    TwoSupercategory.id_whiskerRight (R := ℚ)]
+  exact (homParityShift (k := ℚ) (C := A ⟶ B) 1).map_id _
+
+private theorem oddWitness {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) (x : End E)
+    (hx : x ∈ parity (R := ℚ) _ _ 1) (hu : IsUnit x) : InverseWitness E x := by
+  have huS : IsUnit (mixedPostSourcePreDot (k := ℚ) E 1 (𝟙 B) (F' := 𝟙 B) x) :=
+    hu.map ((homPost (k := ℚ) (middle B)).mapEnd E)
+  have huJ : IsUnit (mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) x) :=
+    ((hu.map ((homPost (k := ℚ) (middle B)).mapEnd E)).map
+      ((homPost (k := ℚ) (𝟙 B)).mapEnd (E ≫ middle B))).map
+      ((homParityShift (k := ℚ) (C := A ⟶ B) 1).mapEnd ((E ≫ middle B) ≫ 𝟙 B))
+  obtain ⟨u, huj⟩ := huJ
+  refine ⟨(↑u⁻¹ : End (jSource E)), ?_, ?_⟩
+  · rw [← huj]
+    exact Units.inv_mul u
+  · apply homDistinctMixedMateDot_isIso_of_inverse_odd_units E (identityAdj B) 1 1 (𝟙 B)
+      hx (zero_mem _)
+    · rw [j_zero, zero_pow two_ne_zero, sub_zero]
+      exact (show IsUnit (mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B)
+        (E' := 𝟙 B) (F' := 𝟙 B) x) from ⟨u, huj⟩).pow 2
+    · rw [source_zero, zero_pow two_ne_zero, sub_zero]
+      exact huS.pow 2
+    · rw [source_zero, zero_pow two_ne_zero, add_zero]
+      exact huS.pow 2
+    · rw [j_zero, Limits.zero_comp, sub_zero, sub_zero]
+      change (↑u⁻¹ : End (jSource E)) *
+        (mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) x *
+          mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) x) =
+        mixedPostJPreDot (k := ℚ) E 1 1 (𝟙 B) (E' := 𝟙 B) (F' := 𝟙 B) x
+      rw [← huj, ← mul_assoc, Units.inv_mul, one_mul]
+
+private theorem evenIdentity {A B : PiSCat.{0, 0, 1} ℚ} (E : A ⟶ B) :
+    IsIso (homDistinctMixedMateDot E (identityAdj B) 1 1 (𝟙 B)
+      ((interchange E).hom ≫ (-((-1 : End (jSource E)) ≫
+        (-1 : End (jSource E)) ≫ (interchange E).inv)))) := by
+  apply homDistinctMixedMateDot_isIso_of_inverse_units E (identityAdj B) 1 1 (𝟙 B)
+    (id_mem E) (zero_mem _) (-1 : End (jSource E))
+  · rw [j_zero, j_identity]
+    change (-1 : End (jSource E)) * (-1) = 1
+    simp
+  · rw [j_zero, j_identity]
+    change (-1 : End (jSource E)) * (-1) = 1
+    simp
+  · rw [source_zero, sub_zero]
+    exact (isUnit_one : IsUnit (1 : End E)).map ((homPost (k := ℚ) (middle B)).mapEnd E)
+
 private def D : SKM.Datum Unit ℤ where
   cd :=
     { root := fun _ => 2
@@ -49,73 +133,16 @@ private def B : PiSCat.{0, 0, 1} ℚ where
   pi := globalWeightSpacePi D Sc a ha 6 8
 private abbrev E : A ⟶ B := globalActionE D Sc a ha () 6 h
 private abbrev x : End E := globalActionDot D Sc a ha () 6 h
-private abbrev R : B ⟶ B := 𝟙 B
-private abbrev H : B ⟶ B := 𝟙 B
-private def adj : SuperAdjunction (k := ℚ) R R :=
-  ordinaryEvenSuperAdjunction R R Adjunction.id (fun M => id_mem M) (fun M => id_mem M)
 
-local instance homPi {C D : PiSCat.{0, 0, 1} ℚ} : PiSupercategory ℚ (C ⟶ D) :=
-  PiTwoSupercategory.homPiLeft C D
+/-- The coefficient is an actual inverse of the transported odd probe dot,
+on the original integer weight spaces with both shifts nontrivial. -/
+example : InverseWitness E x :=
+  oddWitness E x (globalActionDot_mem D Sc a ha () 6 h)
+    (probeGlobalActionDot_isUnit D Sc m ha () 6 h)
 
-private abbrev Y := (homParityShift (k := ℚ) 1).obj H ≫ R
-private abbrev S := E ≫ Y
-private abbrev JSource := (homParityShift (k := ℚ) 1).obj (S ≫ R)
-private abbrev J := homMixedInterchange (k := ℚ) E R 1 1 Y
-
-private theorem source_zero :
-    mixedPostSourcePostDot (k := ℚ) E 1 H adj (0 : R ⟶ R) = 0 := by
-  have hz : SuperAdjunction.rightTranspose adj adj (0 : R ⟶ R) = 0 :=
-    (SuperAdjunction.rightTransposeLinear adj adj).map_zero
-  rw [mixedPostSourcePostDot, hz, whiskerLeft_zero', whiskerLeft_zero']
-
-private theorem j_zero :
-    mixedPostJPostDot (k := ℚ) E 1 1 H (F' := R) (0 : R ⟶ R) = 0 := by
-  simp only [mixedPostJPostDot, whiskerLeft_zero', Functor.map_zero]
-
-/-- A concrete odd cyclotomic probe, original integer weight, and nontrivial
-parity shifts supply every norm unit of the odd categorical inverse criterion. -/
-example : ∃ α : End JSource, IsIso (homDistinctMixedMateDot E adj 1 1 H
-    (J.hom ≫ (-(α ≫ α ≫ J.inv)))) := by
-  have hx : x ∈ parity (R := ℚ) _ _ 1 := globalActionDot_mem D Sc a ha () 6 h
-  have hu : IsUnit x := probeGlobalActionDot_isUnit D Sc m ha () 6 h
-  have huS : IsUnit (mixedPostSourcePreDot (k := ℚ) E 1 H (F' := R) x) :=
-    hu.map ((homPost (k := ℚ) Y).mapEnd E)
-  have huJ : IsUnit (mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) x) :=
-    ((hu.map ((homPost (k := ℚ) Y).mapEnd E)).map
-      ((homPost (k := ℚ) R).mapEnd S)).map
-      ((homParityShift (k := ℚ) 1).mapEnd (S ≫ R))
-  obtain ⟨u, huj⟩ := huJ
-  refine ⟨(↑u⁻¹ : End JSource), ?_⟩
-  apply homDistinctMixedMateDot_isIso_of_inverse_odd_units E adj 1 1 H hx (zero_mem _)
-  · rw [j_zero, zero_pow two_ne_zero, sub_zero]
-    exact (show IsUnit (mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) x) from
-      ⟨u, huj⟩).pow 2
-  · rw [source_zero, zero_pow two_ne_zero, sub_zero]
-    exact huS.pow 2
-  · rw [source_zero, zero_pow two_ne_zero, add_zero]
-    exact huS.pow 2
-  · rw [j_zero, Limits.zero_comp, sub_zero, sub_zero]
-    change (↑u⁻¹ : End JSource) *
-      (mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) x *
-        mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) x) =
-      mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) x
-    rw [← huj, ← mul_assoc, Units.inv_mul, one_mul]
-
-private theorem j_identity :
-    mixedPostJPreDot (k := ℚ) E 1 1 H (E' := R) (F' := R) (𝟙 E) =
-      (1 : End JSource) := by
-  simp only [mixedPostJPreDot, TwoSupercategory.id_whiskerRight (R := ℚ), Functor.map_id]
-
-/-- The even inverse identities on the same nonzero category also need no
-whole-fibre reservoir nilpotence. -/
-example : IsIso (homDistinctMixedMateDot E adj 1 1 H
-    (J.hom ≫ (-((-1 : End JSource) ≫ -1 ≫ J.inv)))) := by
-  apply homDistinctMixedMateDot_isIso_of_inverse_units E adj 1 1 H
-    (id_mem E) (zero_mem _) (-1 : End JSource)
-  · simp [j_zero, j_identity, ← End.mul_def]
-  · simp [j_zero, j_identity, ← End.mul_def]
-  · rw [source_zero, sub_zero]
-    exact (isUnit_one : IsUnit (1 : End E)).map ((homPost (k := ℚ) Y).mapEnd E)
+example : IsIso (homDistinctMixedMateDot E (identityAdj B) 1 1 (𝟙 B)
+    ((interchange E).hom ≫ (-((-1 : End (jSource E)) ≫
+      (-1 : End (jSource E)) ≫ (interchange E).inv)))) := evenIdentity E
 
 end NonVacuity.RouquierHomPostInverseUnits
 
