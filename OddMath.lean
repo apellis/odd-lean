@@ -1864,3 +1864,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullyFaithfulInduction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentExtensionAppend
