@@ -38,9 +38,9 @@ arbitrary-module inversion is still a separate obligation.
 ### Arbitrary-module kernel transfer
 
 The generic coefficient-kernel tensor isomorphism is verified (#878).
-Concrete Hom-kernel and IndRes realizations, finite products and grading are
-scoped-checked in #883/#886/#888/#890/#904 and successor branches; they still
-need full CI. The actual finite SVec maps and even inverses are scoped-checked
+Finite kernel products are verified in #890. Concrete Hom-kernel and IndRes
+realizations and grading are scoped-checked in #883/#886/#888/#904 and
+successor branches; they still need full CI. The actual finite SVec maps and even inverses are scoped-checked
 in #896. The fixed-content counts in #900/#903 use the exact content height
 Q−S, so one finite count applies throughout each block. It is not a constant
 on the entire old category.
@@ -55,9 +55,9 @@ modules, including grading, shifts and finite sums.
 
 The fixed-content kernel is indexed by its full content subcategory, while
 the established old induction coend ranges over the entire old category.
-An explicit realization bridge is required. Fully faithful induction along
-the content inclusion must recover the original module after restriction,
-and its append comparison must agree with the chosen action. Do not assume
+An explicit realization bridge is required. Fully faithful induction along the content inclusion recovers the original
+module after restriction in the scoped-checked #909; its append comparison
+must agree with the chosen action. Do not assume
 an equivalence between content modules and arbitrary modules on the entire
 old category.
 
@@ -117,7 +117,7 @@ The reverse matrix-entry cyclotomic-ideal lemma is verified in #863.
 The chosen old-to-ordinary induction module comparison and quotient-inverse
 unit-tensor formula are scoped-checked in #885/#897. Finish their whole
 generator formula and the exact dot, adjunction and inverse-matrix
-comparison. The signed ordinary induction-dot unit is scoped-checked in
+comparison. The signed ordinary induction-dot unit is full-CI verified in
 #893; no finite-dimensionality premise is needed for that unit.
 
 Scalar specialization is not faithful on the full coefficient algebra.
