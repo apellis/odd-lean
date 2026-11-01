@@ -63,15 +63,21 @@ instance contentInclusion_faithful (β : Multiset I) :
     (contentInclusion D Sc cutoff N β).Faithful where
   map_injective h := h
 
-/-- Append between exact-content categories, with no restriction on colours. -/
-def contentAppend (β : Multiset I) (σ : List I) :
-    ContentCategory D Sc cutoff N β ⥤ ContentCategory D Sc cutoff N (β + (σ : Multiset I)) where
+/-- Append with an explicit common target content. -/
+def contentAppendTo (β : Multiset I) (σ : List I) (γ : Multiset I)
+    (hσ : β + (σ : Multiset I) = γ) :
+    ContentCategory D Sc cutoff N β ⥤ ContentCategory D Sc cutoff N γ where
   obj v := ⟨(truncatedAppend D Sc cutoff N σ).obj v.obj, by
-    change ((v.obj.word ++ σ : List I) : Multiset I) = _
-    rw [← Multiset.coe_add, v.content]⟩
+    change ((v.obj.word ++ σ : List I) : Multiset I) = γ
+    rw [← Multiset.coe_add, v.content, hσ]⟩
   map f := (truncatedAppend D Sc cutoff N σ).map f
   map_id v := (truncatedAppend D Sc cutoff N σ).map_id v.obj
   map_comp f g := (truncatedAppend D Sc cutoff N σ).map_comp f g
+
+/-- Append to the canonical target content. -/
+def contentAppend (β : Multiset I) (σ : List I) :
+    ContentCategory D Sc cutoff N β ⥤ ContentCategory D Sc cutoff N (β + (σ : Multiset I)) :=
+  contentAppendTo D Sc cutoff N β σ _ rfl
 
 instance contentAppend_additive (β : Multiset I) (σ : List I) :
     (contentAppend D Sc cutoff N β σ).Additive where

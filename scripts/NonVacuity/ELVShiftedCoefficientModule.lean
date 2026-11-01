@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
+import OddMath.QuiverHecke.CyclotomicAction.AsymmetricParameters
 import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -21,6 +22,21 @@ def literalSource (j : {j : I // D.parity j = 1}) (v t : List I) :
   coefficientOneSourceEquiv D Sc cutoff j v t
 
 end ShiftedCoefficientModuleConsumer
+
+namespace MovingCoefficientConcreteConsumer
+open OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld CyclotomicCrossingTensor
+private abbrev D := CyclotomicAction.AsymmetricParameters.datum
+private abbrev Sc := CyclotomicAction.AsymmetricParameters.scalars
+private abbrev cutoff : Bool → ℕ := fun _ => 12
+private abbrev j : {i : Bool // D.parity i = 1} := ⟨false, rfl⟩
+example : movingCoefficientModule D Sc cutoff j [true, false] ≅
+    coefficientOneModule D Sc cutoff false [true, false] :=
+  movingCoefficientIso D Sc cutoff j [true, false]
+example : Function.Bijective
+    (coefficientOneSourceEquiv D Sc cutoff j [true, false] [true, false]) :=
+  (coefficientOneSourceEquiv D Sc cutoff j [true, false] [true, false]).bijective
+end MovingCoefficientConcreteConsumer
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv

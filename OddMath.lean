@@ -14,6 +14,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicTopQuotient
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryCoefficientAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCoefficientAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndependentSBoundaryDivision
+import OddMath.QuiverHecke.CyclotomicAction.ELVEvenSRightProduct
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputSLeading
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendC0Candidate
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryInputDefect
@@ -25,6 +26,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentInductionNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairWhiskeredRelations
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionAssociativity
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionWhiskering
@@ -96,6 +98,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedModuleBound
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
+import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVHomGrading
 import OddMath.SKM.BubbleELVPolynomialGrading
@@ -160,8 +164,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputOperators
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputPivots
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputMatrix
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendDot
-import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
-import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapInput
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedSourceLinearEquiv
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCapComparison
@@ -1799,3 +1801,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
