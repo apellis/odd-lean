@@ -74,6 +74,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCapSignNormalization
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionParityComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernelGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
