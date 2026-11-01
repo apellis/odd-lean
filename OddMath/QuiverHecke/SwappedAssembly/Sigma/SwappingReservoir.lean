@@ -263,19 +263,19 @@ theorem isIso_sigmaEntry_reservoir_of_units (c : P.CrossCoeff) (hc : c.IsInverse
 theorem swappingReservoirInvertible_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
     (hD : P.CrossDenominatorUnits) (hS : P.CrossTransposeNormUnits) :
     P.SwappingReservoirInvertible c := by
-  fun i ν _ _ p q hp hq Z => isIso_sigmaEntry_reservoir_of_units c hc hD hS i ν p q hp hq Z
+  exact fun i ν _ _ p q hp hq Z => isIso_sigmaEntry_reservoir_of_units c hc hD hS i ν p q hp hq Z
 
 /-- All swapping entries follow from denominator and transposed source units. -/
 theorem swappingInvertible_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
     (hD : P.CrossDenominatorUnits) (hS : P.CrossTransposeNormUnits) :
     P.SwappingInvertible c := by
-  swappingInvertible_of_reservoir c (swappingReservoirInvertible_of_units c hc hD hS)
+  exact swappingInvertible_of_reservoir c (swappingReservoirInvertible_of_units c hc hD hS)
 
 /-- The augmented block uses central invertibility and the precise swapping norm inputs. -/
 theorem augmentedInvertible_of_central_of_units (c : P.CrossCoeff) (hc : c.IsInverse)
     (hD : P.CrossDenominatorUnits) (hS : P.CrossTransposeNormUnits)
     (hcentral : P.CentralInvertible c) : P.AugmentedInvertible c := by
-  augmentedInvertible_of_central_of_swapping c hcentral (swappingInvertible_of_units c hc hD hS)
+  exact augmentedInvertible_of_central_of_swapping c hcentral (swappingInvertible_of_units c hc hD hS)
 
 /-- The dotted post-side mate of the crossing entry `-(a ; a ; J⁻¹)` is invertible: at an even
 colour `a` inverts `y - x`, at an odd colour `(x² - y²) a = x - y`, with `x` the invertible
