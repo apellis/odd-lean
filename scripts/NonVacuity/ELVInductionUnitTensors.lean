@@ -22,7 +22,7 @@ example (i : Bool) (b : M.obj v) :
   BalancedInduction.inductionComp_hom_total_unit (J i) Q M v b
 
 example (i : Bool) (b : M.obj v) :
-    ((BalancedInduction.inductionComp (J i) Q).inv.app M).total (Q.obj ((J i).obj v))
+    ((BalancedInduction.inductionComp (J i) Q).inv.app M).total ((J i ⋙ Q).obj v)
       (BalancedInduction.unit (J i ⋙ Q) M.toFunctor v b) =
       BalancedInduction.unit Q (BalancedInduction.induced (J i) M).toFunctor
         ((J i).obj v) (BalancedInduction.unit (J i) M.toFunctor v b) :=
