@@ -1782,6 +1782,12 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEntryParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentCategory
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarModules
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarHomDescent
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuotientInduction
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
