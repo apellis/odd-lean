@@ -154,7 +154,7 @@ theorem offDiagonalLongExtraction_boundaryRho (p : ZMod 2)
         (offDiagonalLongExtraction D Sc cutoff p j.1 v t z) := by
   by_cases h : Nonempty (NFIdx v t)
   · obtain ⟨y⟩ := h
-    rw [offDiagonalLongExtraction_eq D Sc cutoff p j.1 y]
+    simp only [offDiagonalLongExtraction_eq D Sc cutoff p j.1 y]
     exact longHomExtraction_boundaryRho D Sc cutoff p j y z
   · simp only [offDiagonalLongExtraction, dite_eq_right h, LinearMap.zero_apply, map_zero]
 
