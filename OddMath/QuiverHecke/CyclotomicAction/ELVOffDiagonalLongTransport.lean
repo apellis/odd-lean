@@ -17,17 +17,15 @@ universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
-private theorem castPair_heq (p : ZMod 2) (i : I) {v t w s s' : List I}
-    (e : s = t) (e' : s' = t)
+private theorem castPair_heq (p : ZMod 2) (i : I) {v t w s : List I}
+    (e : s = t)
     (f : (pres D Sc).obj (ob D (i :: s)) ⟶ (pres D Sc).obj (ob D w))
-    (g : (pres D Sc).obj (ob D (i :: s')) ⟶ (pres D Sc).obj (ob D w))
+    (g : (pres D Sc).obj (ob D (i :: t)) ⟶ (pres D Sc).obj (ob D w))
     (h : HEq f g) :
     Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k] Target D Sc cutoff i v w) e)
-      (pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] f)) =
-    Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k] Target D Sc cutoff i v w) e')
-      (pair D Sc cutoff p i ((1 : SKM.SYM.ELVCoefficientAlgebra (k := k) D cutoff) ⊗ₜ[k] g)) := by
+      (pair D Sc cutoff p i (affineUnit D Sc cutoff _ _ f)) =
+    pair D Sc cutoff p i (affineUnit D Sc cutoff _ _ g) := by
   subst s
-  subst s'
   cases h
   rfl
 
@@ -42,10 +40,17 @@ theorem longHomLift_zero_pair (p : ZMod 2) (i : I) {v t : List I}
       (OutputOldComposite.bareU D Sc i t) :=
     hr.trans (tail_long_zero D Sc i t)
   have h := castPair_heq D Sc cutoff p i (v := v)
-    (longHomIndex_oldTarget i y 0) rfl _ _ ht
+    (longHomIndex_oldTarget i y 0) _ _ ht
   have hv := congrArg (fun f : Old D Sc cutoff v t →ₗ[k]
     Target D Sc cutoff i v (t ++ [i]) => f b) h
-  simpa only [longHomLift, pow_zero, one_smul, bareUFull, affineUnit] using hv
+  unfold longHomLift
+  rw [pow_zero, one_smul]
+  change Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k]
+    Target D Sc cutoff i v (t ++ [i])) (longHomIndex_oldTarget i y 0))
+      (pair D Sc cutoff p i (affineUnit D Sc cutoff _ _
+        (prependTail D Sc (longHomIndex i y 0)))) b =
+    pair D Sc cutoff p i (affineUnit D Sc cutoff _ _ (OutputOldComposite.bareU D Sc i t)) b
+  exact hv
 
 theorem offDiagonalLongSection_single_zero_pair (p : ZMod 2) (i : I) (v t : List I)
     (b : Old D Sc cutoff v t) :
@@ -63,10 +68,17 @@ theorem outputLongLift_zero_pair (p : ZMod 2) (i : I) (v : List I)
     outputLongLift D Sc cutoff p i v 0 b =
       pair D Sc cutoff p i (bareUFull D Sc cutoff i v) b := by
   have h := castPair_heq D Sc cutoff p i (v := v)
-    (longOutputIndex_oldTarget i v 0) rfl _ _ (tail_long_zero D Sc i v)
+    (longOutputIndex_oldTarget i v 0) _ _ (tail_long_zero D Sc i v)
   have hv := congrArg (fun f : Old D Sc cutoff v v →ₗ[k]
     Target D Sc cutoff i v (v ++ [i]) => f b) h
-  simpa only [outputLongLift, pow_zero, one_smul, bareUFull, affineUnit] using hv
+  unfold outputLongLift
+  rw [pow_zero, one_smul]
+  change Eq.mp (congrArg (fun a => Old D Sc cutoff v a →ₗ[k]
+    Target D Sc cutoff i v (v ++ [i])) (longOutputIndex_oldTarget i v 0))
+      (pair D Sc cutoff p i (affineUnit D Sc cutoff _ _
+        (prependTail D Sc (longOutputIndex i v 0)))) b =
+    pair D Sc cutoff p i (affineUnit D Sc cutoff _ _ (OutputOldComposite.bareU D Sc i v)) b
+  exact hv
 
 /-- The source balance and bare-long parity determine the whole output twist. -/
 theorem offDiagonalLongSection_zero_transport (p : ZMod 2) (i : I) (v t : List I)
