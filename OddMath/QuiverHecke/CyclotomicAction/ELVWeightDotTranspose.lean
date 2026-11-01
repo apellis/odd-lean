@@ -77,12 +77,12 @@ private theorem end_total_eq_app
   · simp only [SuperNatTrans.total,
       Superfunctor.app_eq_zero_of_mem hf (by decide : (0 : ZMod 2) ≠ 1), zero_add]
 
-private theorem adjointTranspose_total
+private theorem cupMapCap_total
     {A B : PiSCat.{u, u, u + 1} k} {E : A ⟶ B} {F : B ⟶ A}
-    (adj : SKM.SuperAdjunction (k := k) E F) (f : End E) (N : B) :
-    (SKM.SuperAdjunction.rightTranspose adj adj f).total N =
-      adj.unit.total (F.obj N) ≫ F.map (f.total (F.obj N) ≫ adj.counit.total N) := by
-  rw [SKM.SuperAdjunction.rightTranspose_apply]
+    (η : 𝟙 A ⟶ E ≫ F) (ε : F ≫ E ⟶ 𝟙 B) (f : End E) (N : B) :
+    ((rightUnitor F).inv ≫ F ◁ η ≫ (associator F E F).inv ≫
+      (F ◁ f ≫ ε) ▷ F ≫ (leftUnitor F).hom).total N =
+      η.total (F.obj N) ≫ F.map (f.total (F.obj N) ≫ ε.total N) := by
   erw [Superfunctor.comp_total, Superfunctor.comp_total,
     Superfunctor.comp_total, Superfunctor.comp_total]
   simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom]
@@ -91,10 +91,46 @@ private theorem adjointTranspose_total
   erw [total_whiskerLeft, total_whiskerRight, Superfunctor.comp_total]
   rfl
 
+private theorem adjointTranspose_total
+    {A B : PiSCat.{u, u, u + 1} k} {E : A ⟶ B} {F : B ⟶ A}
+    (adj : SKM.SuperAdjunction (k := k) E F) (f : End E) (N : B) :
+    (SKM.SuperAdjunction.rightTranspose adj adj f).total N =
+      adj.unit.total (F.obj N) ≫ F.map (f.total (F.obj N) ≫ adj.counit.total N) := by
+  rw [SKM.SuperAdjunction.rightTranspose_apply]
+  exact cupMapCap_total adj.unit adj.counit f N
+
 private theorem ringHom_zsmul_pow {R S : Type*} [Ring R] [Ring S]
     (φ : R →+* S) (s : ℤ) (x : R) (n : ℕ) :
     φ (s • x ^ n) = s • (φ x) ^ n := by
   rw [map_zsmul, map_pow]
+
+private theorem transpose_power_zero
+    {A B : PiSCat.{u, u, u + 1} k} {E : A ⟶ B} {F : B ⟶ A}
+    (adj : SKM.SuperAdjunction (k := k) E F) (d : End E)
+    (p : ZMod 2) (hd : d ∈ parity (R := k) _ _ p)
+    {R S : Type*} [Ring R] [Ring S]
+    (evd : End E →+* R) (evt : End F →+* S) (n : ℕ)
+    (hz : evd (d ^ n) = 0)
+    (htransfer : ∀ f : End E, evd f = 0 →
+      evt (SKM.SuperAdjunction.rightTranspose adj adj f) = 0) :
+    (evt (SKM.SuperAdjunction.rightTranspose adj adj d)) ^ n = 0 := by
+  have hs := SKM.SuperAdjunction.rightTranspose_power adj hd n
+  rw [SKM.rouquierPower_eq_pow, SKM.rouquierPower_eq_pow] at hs
+  let s : ℤ := koszulSign p p ^ (n.choose 2)
+  have hh : evt (SKM.SuperAdjunction.rightTranspose adj adj (d ^ n)) =
+      s • (evt (SKM.SuperAdjunction.rightTranspose adj adj d)) ^ n := by
+    calc
+      _ = evt (s • (show End F from SKM.SuperAdjunction.rightTranspose adj adj d) ^ n) :=
+        congrArg evt hs
+      _ = _ := ringHom_zsmul_pow evt s _ n
+  rw [htransfer _ hz] at hh
+  have hss : s * s = 1 := by
+    dsimp [s]
+    rw [← mul_pow, koszulSign_mul_self, one_pow]
+  calc
+    _ = s • (s • ((evt (SKM.SuperAdjunction.rightTranspose adj adj d)) ^ n)) := by
+      rw [smul_smul, hss, one_smul]
+    _ = 0 := by rw [← hh]; simp
 
 /-- The actual dot transpose through the actual induction/restriction adjunction. -/
 abbrev elvActionDotTranspose : End (elvF D Sc cutoff bound i Λ h) :=
@@ -134,22 +170,17 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
   refine ⟨e, he, fun N => ?_⟩
   let A := elvActionAdjunction D Sc cutoff bound i Λ h
   let d : End (elvE D Sc cutoff bound i Λ h) := elvActionDot D Sc cutoff bound i Λ h
-  let t : End (elvF D Sc cutoff bound i Λ h) := elvActionDotTranspose D Sc cutoff bound i Λ h
   have hd : d ∈ parity (R := k) _ _ (D.parity i) :=
     elvActionDot_mem D Sc cutoff bound i Λ h
-  have ht : t ∈ parity (R := k) _ _ (D.parity i) :=
-    elvActionDotTranspose_mem D Sc cutoff bound i Λ h
-  have hzero : (d ^ e).total ((elvF D Sc cutoff bound i Λ h).obj N)
-      (blockSucc D Λ i h β) = 0 := by
-    let evd : End (elvE D Sc cutoff bound i Λ h) →+*
-        End (((elvE D Sc cutoff bound i Λ h).obj
-          ((elvF D Sc cutoff bound i Λ h).obj N)) (blockSucc D Λ i h β)) :=
-      (componentEndRingHom
-        (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
-        ((elvE D Sc cutoff bound i Λ h).obj ((elvF D Sc cutoff bound i Λ h).obj N))
-        (blockSucc D Λ i h β)).comp
-        (totalEndRingHom (elvE D Sc cutoff bound i Λ h) ((elvF D Sc cutoff bound i Λ h).obj N))
-    change evd (d ^ e) = 0
+  let evd : End (elvE D Sc cutoff bound i Λ h) →+*
+      End (((elvE D Sc cutoff bound i Λ h).obj
+        ((elvF D Sc cutoff bound i Λ h).obj N)) (blockSucc D Λ i h β)) :=
+    (componentEndRingHom
+      (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
+      ((elvE D Sc cutoff bound i Λ h).obj ((elvF D Sc cutoff bound i Λ h).obj N))
+      (blockSucc D Λ i h β)).comp
+      (totalEndRingHom (elvE D Sc cutoff bound i Λ h) ((elvF D Sc cutoff bound i Λ h).obj N))
+  have hzero : evd (d ^ e) = 0 := by
     rw [map_pow]
     have hv : evd d =
         (show End (((elvE D Sc cutoff bound i Λ h).obj
@@ -161,30 +192,17 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
       rfl
     rw [hv]
     exact hp ((elvF D Sc cutoff bound i Λ h).obj N)
-  have htr := elvTranspose_total_component_zero D Sc cutoff bound i Λ h
-    (d ^ e) N β hzero
-  have hs := SKM.SuperAdjunction.rightTranspose_power A hd e
-  rw [SKM.rouquierPower_eq_pow, SKM.rouquierPower_eq_pow] at hs
   let ev : End (elvF D Sc cutoff bound i Λ h) →+*
       End (((elvF D Sc cutoff bound i Λ h).obj N) β) :=
     (componentEndRingHom
       (fun γ : WeightBlocks D Λ x => ContentModules D Sc cutoff bound γ.1)
       ((elvF D Sc cutoff bound i Λ h).obj N) β).comp
       (totalEndRingHom (elvF D Sc cutoff bound i Λ h) N)
-  let s : ℤ := koszulSign (D.parity i) (D.parity i) ^ (e.choose 2)
-  have hh : ev (SKM.SuperAdjunction.rightTranspose A A (d ^ e)) = s • (ev t) ^ e := by
-    calc
-      _ = ev (s • t ^ e) := congrArg ev hs
-      _ = _ := ringHom_zsmul_pow ev s t e
-  have hz : ev (SKM.SuperAdjunction.rightTranspose A A (d ^ e)) = 0 := htr
-  rw [hz] at hh
-  have hss : s * s = 1 := by
-    dsimp [s]
-    rw [← mul_pow, koszulSign_mul_self, one_pow]
-  have hnil : (ev t) ^ e = 0 := by
-    calc
-      _ = s • (s • ((ev t) ^ e)) := by rw [smul_smul, hss, one_smul]
-      _ = 0 := by rw [← hh]; simp
+  have hnil := transpose_power_zero A d (D.parity i) hd evd ev e hzero
+    (fun f hf => elvTranspose_total_component_zero D Sc cutoff bound i Λ h f N β hf)
+  let t : End (elvF D Sc cutoff bound i Λ h) := elvActionDotTranspose D Sc cutoff bound i Λ h
+  have ht : t ∈ parity (R := k) _ _ (D.parity i) :=
+    elvActionDotTranspose_mem D Sc cutoff bound i Λ h
   change (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from t.total N β) ^ e = 0 at hnil
   simpa only [end_total_eq_app t (D.parity i) ht] using hnil
 
