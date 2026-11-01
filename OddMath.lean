@@ -1790,6 +1790,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEntryParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixHeight
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarModules
 
