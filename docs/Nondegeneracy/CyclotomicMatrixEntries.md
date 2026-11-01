@@ -23,8 +23,10 @@ presentation, monicity, a parity hypothesis on the polynomials, or tensor
 flatness. The finite-colour hypothesis is the one already needed for the
 unital Hn algebra.
 
-The proposed implementation is CyclotomicMatrixEntries. Concrete connected
+The implementation is [CyclotomicMatrixEntries](../../OddMath/QuiverHecke/CyclotomicAction/CyclotomicMatrixEntries.lean). Concrete connected
 odd-data consumers use an inhomogeneous polynomial, actual generators with
 arbitrary right and left matrix factors, and the single-entry equivalence.
-Source and consumers await checking. Quotient-corner equivalences and the
+The producer and concrete consumer passed strict local checking, including the
+all-owned-declaration axiom audit. Full integration uses the repository CI gate.
+Quotient-corner equivalences and the
 height-tensor inverse are separate consumers of this comparison.
