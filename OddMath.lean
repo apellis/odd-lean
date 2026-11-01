@@ -1727,3 +1727,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePolynomialQuotient
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCrossingHeight
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskeredMixedBraid
+import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation

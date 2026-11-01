@@ -85,3 +85,13 @@ and zero Hom corners. The decoder kills the separately proved polynomial
 triangular correction. Combine this with `ELVSourcePolynomialQuotient` for
 the categorical snake; graded/natural compatibility and augmented inversion
 remain open.
+
+## Proposed next constructions under verification
+
+The risk-reduction topic branch contains unverified source drafts and consumers:
+`ELVCrossingHeight` (actual crossing injectivity/surjectivity by height and the
+zero-height equivalence), `ELVContentWhiskeredMixedBraid` (composed independent
+crossings and independent-dot correction), and `ProbeDotPropagation` (ordinary
+kernel propagation through same/distinct-colour relations). These are not yet
+verified results or concrete full factor/observation instances. The probe note
+uses the simpler kernel proof; actual word-corner application remains separate.
