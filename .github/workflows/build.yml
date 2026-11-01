@@ -55,7 +55,7 @@ jobs:
           use-mathlib-cache: true
           use-github-cache: false
       # Branch builds write caches; pull requests only restore them. Exclude generated Lean
-      # setup JSON: Lake writes it before compilation, and transitive import metadata can
+      # setup JSON before saving: Lake writes it before compilation, and import metadata can
       # otherwise consume many GB when restoring a cache. Retain proof artifacts and traces.
       # Restores fall back to the newest entry for the same toolchain and manifest, then to the
       # newest entry for the toolchain (oleans of modules unaffected by a dependency bump stay
@@ -69,8 +69,6 @@ jobs:
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
             .lake/packages/LieLean/.lake/build
-            !.lake/build/ir/**/*.setup.json
-            !.lake/packages/*/.lake/build/ir/**/*.setup.json
           key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
@@ -83,7 +81,6 @@ jobs:
         with:
           path: |
             .lake/packages/Categorification/.lake/build
-            !.lake/packages/Categorification/.lake/build/ir/**/*.setup.json
           key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: |
             categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
@@ -137,13 +134,22 @@ jobs:
         env:
           LEAN_NUM_THREADS: 2
         run: lake build --wfail NonVacuity < /dev/null
+      # Cache directory inputs are archived recursively; nested negative globs do not
+      # reliably omit these files. All Lean processes have finished before this cleanup.
+      - name: Remove regenerated Lean setup metadata
+        if: always() && steps.scope.outputs.docs_only != 'true'
+        run: |
+          for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
+            if [ -d "$build/ir" ]; then
+              find "$build/ir" -type f -name '*.setup.json' -delete
+            fi
+          done
       - name: Save Categorification cache
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
             .lake/packages/Categorification/.lake/build
-            !.lake/packages/Categorification/.lake/build/ir/**/*.setup.json
           key: categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Save build cache
         if: always() && github.event_name != 'pull_request' && steps.scope.outputs.docs_only != 'true'
@@ -154,6 +160,4 @@ jobs:
             .lake/packages/DG/.lake/build
             .lake/packages/StringDiagrams/.lake/build
             .lake/packages/LieLean/.lake/build
-            !.lake/build/ir/**/*.setup.json
-            !.lake/packages/*/.lake/build/ir/**/*.setup.json
           key: lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
