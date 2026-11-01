@@ -10,7 +10,7 @@ not just its endomorphism ring. The supplied old index is an intermediate
 hypothesis; canonical regrouping and independence of that index remain separate.
 -/
 noncomputable section
-open CategoryTheory StringDiagrams Categorification.TypeA
+open CategoryTheory StringDiagrams Supercategory Categorification.TypeA
 open scoped TensorProduct Classical
 namespace OddMath.QuiverHecke.ELVOld
 universe u

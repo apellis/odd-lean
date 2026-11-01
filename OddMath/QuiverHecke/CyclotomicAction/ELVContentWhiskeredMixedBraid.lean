@@ -36,6 +36,29 @@ def contentWhiskeredPrefixCross (β : Multiset I) (i j l : I) (δ γ : Multiset 
         (D.parity i * D.parity j) M)).total z ∘ₗ
     ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M).total z
 
+
+/-- Compare the typed prefix wrapper without unfolding its carrier transports
+inside a larger linear-map expression. -/
+theorem contentWhiskeredPrefixCross_map_of_ne (β : Multiset I) {i j : I} (hij : i ≠ j)
+    (l : I) (δ γ : Multiset I)
+    (hδ : (β + ([i] : Multiset I)) + ([j] : Multiset I) = δ)
+    (hδ' : (β + ([j] : Multiset I)) + ([i] : Multiset I) = δ)
+    (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
+    (hγ : δ + ([l] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    contentWhiskeredPrefixCross D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z =
+      contentETripleMap D Sc cutoff N h ht (contentTripleLeft_parity D Sc i j l) M z :=
+  contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij l δ γ hδ hδ' h ht hγ M z
+
+theorem contentWhiskeredPrefixCross_map_equal (β : Multiset I) (i l : I)
+    (δ γ : Multiset I)
+    (hδ : (β + ([i] : Multiset I)) + ([i] : Multiset I) = δ)
+    (h : β + ([i,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    contentWhiskeredPrefixCross D Sc cutoff N β i i l δ γ hδ hδ h h hγ M z =
+      -contentETripleMap D Sc cutoff N h h (contentTripleLeft_parity D Sc i i l) M z :=
+  contentWhiskeredPrefixCross_equal D Sc cutoff N β i l δ γ hδ h hγ M z
+
 private theorem middle_swap (β : Multiset I) (i j : I) :
     (β + ([j] : Multiset I)) + ([i] : Multiset I) =
       (β + ([i] : Multiset I)) + ([j] : Multiset I) := by ac_rfl
@@ -75,9 +98,9 @@ theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathIij D Sc cutoff N β i j M z =
       contentETriplePathIij D Sc cutoff N β i j M z := by
-  unfold contentWhiskeredPathIij contentWhiskeredPrefixCross
+  dsimp only [contentWhiskeredPathIij]
   rw [contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm,
-    contentWhiskeredPrefixCross_equal,
+    contentWhiskeredPrefixCross_map_equal,
     contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij]
   rfl
 
@@ -86,10 +109,10 @@ theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathJii D Sc cutoff N β i j M z =
       contentETriplePathJii D Sc cutoff N β i j M z := by
-  unfold contentWhiskeredPathJii contentWhiskeredPrefixCross
-  rw [contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij,
+  dsimp only [contentWhiskeredPathJii]
+  rw [contentWhiskeredPrefixCross_map_of_ne D Sc cutoff N β hij,
     contentWhiskeredSuffixCross_equal,
-    contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm]
+    contentWhiskeredPrefixCross_map_of_ne D Sc cutoff N β hij.symm]
   rfl
 
 /-- Full original-Sc mixed correction on the independently whiskered crossings
