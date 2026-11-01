@@ -27,6 +27,10 @@ example (v : C) (m : M.obj v) :
 example : Function.Bijective (BalancedKernelTensor.map M swapKernel.hom) :=
   (BalancedKernelTensor.equiv M swapKernel).bijective
 
+example : BalancedKernelTensor.Obj K M ≃ₗ[ℚ] BalancedKernelTensor.Obj K M :=
+  BalancedKernelTensor.equivOfBijective M swapKernel.hom
+    (fun _ => (LinearEquiv.prodComm ℚ ℚ ℚ).bijective)
+
 /-- The quotient balance uses an arbitrary old quotient arrow. -/
 example {v w : C} (a : v ⟶ w) (x : K.obj (op w)) (m : M.obj v) :
     BalancedKernelTensor.tensor K M v (K.map a.op x) m =

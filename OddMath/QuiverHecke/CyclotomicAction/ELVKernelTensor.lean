@@ -119,4 +119,19 @@ def equiv (e : K ≅ L) : Obj K M ≃ₗ[k] Obj L M :=
     equiv M e (tensor K M v x m) = tensor L M v (e.hom.app (op v) x) m :=
   map_tensor M e.hom v x m
 
+/-- Bijectivity of the forward components supplies inverse naturality.
+No chosen component inverse is assumed natural as an additional hypothesis. -/
+def coefficientIso (e : K ⟶ L) (he : ∀ v, Function.Bijective (e.app v)) : K ≅ L :=
+  NatIso.ofComponents
+    (fun v => (LinearEquiv.ofBijective (e.app v).hom (he v)).toModuleIso)
+    (by
+      intro v w a
+      change K.map a ≫ e.app w = e.app v ≫ L.map a
+      exact e.naturality a)
+
+/-- Componentwise bijective natural kernel maps induce quotient equivalences. -/
+def equivOfBijective (e : K ⟶ L) (he : ∀ v, Function.Bijective (e.app v)) :
+    Obj K M ≃ₗ[k] Obj L M :=
+  equiv M (coefficientIso e he)
+
 end OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
