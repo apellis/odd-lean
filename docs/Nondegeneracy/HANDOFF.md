@@ -94,3 +94,12 @@ Finite-dimensional unit corollaries and nonzero rational matrix consumers are
 included. The original PR #751 head passed full build, axiom audit and consumers;
 this merge reconciliation retains those exact source/consumer blobs. Applying
 these lemmas to actual cyclotomic word corners is separate work in #752.
+
+## Actual probe word corners
+
+`ProbeWordCorner` constructs the literal unital affine End-to-cyclotomic-corner
+map, transports both same-colour nilHecke relations, and propagates injectivity
+inside those actual corners. Its odd quadratic specialization proves a unit
+first dot and injective second dot with explicit defining relations. Source and
+concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
+full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
