@@ -115,7 +115,10 @@ theorem appendWeightedModuleIso_hom_unit
     simpa only [BalancedInduction.unit_apply] using
       quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s ((T).obj ((Q).obj s)) (𝟙 _) b
   exact (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
-    (BalancedInduction.composition_total_apply_of_steps f₁ f₂ f₃ f₄ f₅ w
+    (BalancedInduction.composition_total_apply_of_steps
+      (k := k) (C := TruncatedCategory D Sc cutoff N)
+      (F₀ := F₀) (F₁ := F₁) (F₂ := F₂) (F₃ := F₃) (F₄ := F₄) (F₅ := F₅)
+      f₁ f₂ f₃ f₄ f₅ w
       x₀ _ _ _ _ _ h₁ h₂ h₃ h₄ h₅)
 
 end OddMath.QuiverHecke.ELVOld
