@@ -25,8 +25,9 @@ kernel or elaborator budget is increased.
 
 The distinct-slide draft uses the positioned diagram slide relations directly;
 it does not identify the singleton diagram dot by definitional equality with
-the indexed dot. Pair comparison proofs expand the named conjugation formula
-rather than reducing its implementation recursively. Parity witnesses of both
+the indexed dot. Pair comparison proofs use the forward commutative squares of the existing
+induction comparison for inner/outer whiskering. Transport of a slide applies
+the comparison's injectivity; it does not unfold a conjugation or inverse. Parity witnesses of both
 source arrows are supplied explicitly after the two-transform tensor calculation.
 
 Whole natural-transformation and weight-family relations additionally require
