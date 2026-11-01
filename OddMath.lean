@@ -1210,6 +1210,7 @@ import OddMath.PbwSpanning
 import OddMath.QuiverHecke.Examples
 import OddMath.SKM.Basic
 import OddMath.QuiverHecke.CyclotomicAction.ProbeGlobalDotInverse
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWeightDotInverse
 import OddMath.SKM.Beta
 import OddMath.SKM.Bubbles
 import OddMath.SKM.BubbleSeries
