@@ -1899,3 +1899,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixEvaluation
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelUnitMatrixEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffContentZero
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
