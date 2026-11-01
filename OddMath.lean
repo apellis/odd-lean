@@ -1874,3 +1874,11 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
 
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentUncorrectedBraid
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBraidTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDotTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
