@@ -156,4 +156,18 @@ theorem signedLastELV_quotient_injective_on_extendedAtMost
     (weightedRelationSpan_le_extendedAtLeast D Sc t t' N
       (signedLastELVRelationSpan_le_weighted D Sc hN t t' hm))
 
+/-- Every fixed colourwise parity schedule detects the full abstract
+coefficient extension. This is algebraic separation, not an action. -/
+theorem signedLastELV_parity_quotients_jointly_detect (ε : I → ℕ)
+    {t t' : List I} (f : coefficientObj D Sc t ⟶ coefficientObj D Sc t')
+    (hf : ∀ m, (SignedLastELVRelationSpan D Sc
+      (fun i => 2 * m + ε i) t t').mkQ f = 0) : f = 0 := by
+  obtain ⟨d, hd⟩ := exists_mem_extendedAtMost D Sc t t' f
+  let m := d + 2 * t.length.choose 2 + 1
+  have hinj := signedLastELV_quotient_injective_on_extendedAtMost D Sc
+    (cutoff := fun i => 2 * m + ε i) (t := t) (t' := t') (d := d) (N := 2 * m)
+    (fun _ => by omega) (by omega)
+  have h := hinj (a₁ := ⟨f, hd⟩) (a₂ := 0) (by simpa using hf m)
+  exact congrArg Subtype.val h
+
 end OddMath.QuiverHecke
