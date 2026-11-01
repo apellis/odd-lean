@@ -25,10 +25,13 @@ private def mixedScalars : SKM.Scalars mixedDatum ℚ where
 example (b : Old mixedDatum mixedScalars (fun _ => 4) [false, true] [false, true]) :
     independentSRightProduct mixedDatum mixedScalars (fun _ => 4) false [false, true]
       (Finsupp.single 2 b) (2 + outputSDegree mixedDatum false [false, true]) = b := by
-  apply independentSRightProduct_even_top mixedDatum mixedScalars (fun _ => 4)
-    false rfl [false, true] (Finsupp.single 2 b) 2
-  intro n hn
-  exact Finsupp.single_eq_of_ne (by omega)
+  have hb : ∀ n, 2 < n →
+      (Finsupp.single 2 b : ℕ →₀ Old mixedDatum mixedScalars (fun _ => 4) [false, true] [false, true]) n = 0 := by
+    intro n hn
+    exact Finsupp.single_eq_of_ne (by omega)
+  simpa only [Finsupp.single_eq_same] using
+    independentSRightProduct_even_top mixedDatum mixedScalars (fun _ => 4)
+      false rfl [false, true] (Finsupp.single 2 b) 2 hb
 
 example (b : Old mixedDatum mixedScalars (fun _ => 4) [false, true] [false, true]) :
     independentSRightProduct mixedDatum mixedScalars (fun _ => 4) false [false, true]
@@ -58,3 +61,4 @@ run_cmd do
       unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
         throwError "Disallowed axiom {axiomName} in {name}"
   logInfo m!"Audited ALL {names.size} owned declarations including private/generated"
+
