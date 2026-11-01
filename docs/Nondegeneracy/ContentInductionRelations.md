@@ -50,8 +50,10 @@ The public statements `contentEPairDot_zero_whisker`,
 these actual-map total evaluations in place of raw `mapComponent` or
 `transformLinear` notation. Their operators and hypotheses are unchanged.
 The generic `contentInductionMap_total_of_mem` and
-`contentInductionTransform_total` compare the two notations. The headline
-equalities with independent inner/outer dots and the ordered quadratic retain
+`contentInductionTransform_total` compare the two notations. The independent last-dot definition on three inductions likewise evaluates
+its actual single-letter component; its source comparison uses the same generic
+total-evaluation identity. The headline equalities with independent inner/outer
+dots, the triple positioned-dot comparisons and the ordered quadratic retain
 their statements. Existing consumers of those headline results are unchanged.
 
 Whole natural-transformation and weight-family relations additionally require
