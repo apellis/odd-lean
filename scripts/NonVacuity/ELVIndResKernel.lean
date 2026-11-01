@@ -10,6 +10,12 @@ private def cutoff (_ : Bool) : ℕ := 2
 private abbrev C := OldCategory datum scalars cutoff
 private def M : C ⥤ SVec ℚ :=
   oldRepresentableFunctor datum scalars cutoff ⟨[false, true]⟩
+private instance : M.Additive := by
+  unfold M
+  infer_instance
+private instance : M.Linear ℚ := by
+  unfold M
+  infer_instance
 private abbrev J : C ⥤ C := 𝟭 C
 
 /-- Both balances are evaluated on arbitrary old quotient arrows. -/
