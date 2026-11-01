@@ -13,7 +13,7 @@ def negativeRawCrossing :
         (Fin 1 → Old datum scalars (fun _ => 1) [()] [()])) := by
   apply negativeCrossingEquiv datum scalars (fun _ => 1) 0 oddColour [()] 1
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 1) () [()]
-  norm_num [datum] at h
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢
   omega
 
 example (z : Source datum scalars (fun _ => 1) () [()] [()]) :
@@ -32,7 +32,7 @@ def zeroRawCrossing :
         (Fin 0 → Old datum scalars (fun _ => 2) [()] [()])) := by
   apply negativeCrossingEquiv datum scalars (fun _ => 2) 0 oddColour [()] 0
   have h := endpointQPDegree_sub_outputSDegree datum (fun _ => 2) () [()]
-  norm_num [datum] at h
+  norm_num [SKM.Datum.h, SKM.Datum.α, datum, oddColour] at h ⊢
   omega
 
 example (z : Source datum scalars (fun _ => 2) () [()] [()]) :
