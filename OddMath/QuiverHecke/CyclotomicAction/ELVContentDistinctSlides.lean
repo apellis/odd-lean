@@ -51,7 +51,8 @@ private theorem pairInner_transport (β : Multiset I) (i j : I) (γ : Multiset I
   subst γ
   change contentEPairInnerDot D Sc cutoff N β i j M z = _
   rw [← contentEPairDot_zero_eq_inner]
-  rfl
+  simp only [contentEPairDot, ite_true, contentInductionEndLinear,
+    LinearEquiv.conjAlgEquiv_apply, LinearEquiv.symm_symm]
 
 private theorem pairOuter_transport (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
@@ -65,7 +66,8 @@ private theorem pairOuter_transport (β : Multiset I) (i j : I) (γ : Multiset I
   subst γ
   change contentEPairOuterDot D Sc cutoff N β i j M z = _
   rw [← contentEPairDot_one_eq_outer]
-  rfl
+  simp only [contentEPairDot, show (1 : Fin 2) ≠ 0 by decide, ite_false,
+    contentInductionEndLinear, LinearEquiv.conjAlgEquiv_apply, LinearEquiv.symm_symm]
 
 private theorem contentTwoTransform_tensor {β γ : Multiset I} {σ τ υ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
@@ -95,34 +97,16 @@ private theorem firstDot_slide_source {i j : I} (hij : i ≠ j) :
       SKM.zsign k (D.parity i * D.parity j) •
         (contentCrossAffine D Sc i j ≫ dotE D Sc [j,i] 1) := by
   rw [contentCrossAffine_distinct D Sc i j hij]
-  have h := inductionStrand_slide_left_ne D Sc hij
-  have h0 : inductionStrandDot D Sc i ▷ (pres D Sc).obj (ob D [j]) =
-      dotE D Sc [i,j] 0 := by
-    change dotE D Sc [i] 0 ▷ (pres D Sc).obj (ob D [j]) = _
-    exact dotE_whiskerRight D Sc [i] [j] 0 (by simp)
-  have h1 : (pres D Sc).obj (ob D [j]) ◁ inductionStrandDot D Sc i =
-      dotE D Sc [j,i] 1 := by
-    change (pres D Sc).obj (ob D [j]) ◁ dotE D Sc [i] 0 = _
-    exact whiskerLeft_letter_dotE D Sc j [i] 0
-  rw [h0, h1] at h
-  exact h
+  simp only [dotE_eq, crossTwo, cl_comp]
+  exact slide_left_ne D Sc [] [] i j hij _ _
 
 private theorem lastDot_slide_source {i j : I} (hij : i ≠ j) :
     contentCrossAffine D Sc i j ≫ dotE D Sc [j,i] 0 =
       SKM.zsign k (D.parity i * D.parity j) •
         (dotE D Sc [i,j] 1 ≫ contentCrossAffine D Sc i j) := by
   rw [contentCrossAffine_distinct D Sc i j hij]
-  have h := inductionStrand_slide_right_ne D Sc hij
-  have h0 : inductionStrandDot D Sc j ▷ (pres D Sc).obj (ob D [i]) =
-      dotE D Sc [j,i] 0 := by
-    change dotE D Sc [j] 0 ▷ (pres D Sc).obj (ob D [i]) = _
-    exact dotE_whiskerRight D Sc [j] [i] 0 (by simp)
-  have h1 : (pres D Sc).obj (ob D [i]) ◁ inductionStrandDot D Sc j =
-      dotE D Sc [i,j] 1 := by
-    change (pres D Sc).obj (ob D [i]) ◁ dotE D Sc [j] 0 = _
-    exact whiskerLeft_letter_dotE D Sc i [j] 0
-  rw [h0, h1] at h
-  exact h
+  simp only [dotE_eq, crossTwo, cl_comp]
+  exact slide_right_ne D Sc [] [] i j hij _ _
 
 private theorem block_slide_left (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
     (hij' : β + ([i,j] : Multiset I) = γ)
@@ -147,6 +131,12 @@ private theorem block_slide_left (β : Multiset I) {i j : I} (hij : i ≠ j) (γ
     sign_eq_zsign]
   congr 1
   ring
+  all_goals first
+    | exact contentCrossAffine_mem D Sc i j
+    | exact firstDot_parity D Sc i [j]
+    | exact firstDot_parity D Sc j [i]
+    | exact contentPairDot_one_parity D Sc i j
+    | exact contentPairDot_one_parity D Sc j i
 
 private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
     (hij' : β + ([i,j] : Multiset I) = γ)
@@ -171,6 +161,12 @@ private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (�
     sign_eq_zsign]
   congr 1
   ring
+  all_goals first
+    | exact contentCrossAffine_mem D Sc i j
+    | exact firstDot_parity D Sc i [j]
+    | exact firstDot_parity D Sc j [i]
+    | exact contentPairDot_one_parity D Sc i j
+    | exact contentPairDot_one_parity D Sc j i
 
 private theorem transport_slide
     {A B C E : Type u} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
@@ -198,7 +194,9 @@ theorem contentEPair_distinct_slide_left (β : Multiset I) {i j : I} (hij : i �
         (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
           (contentPairOuterDotAt D Sc cutoff N β j i γ hji M z) := by
   rw [pairInner_transport, pairOuter_transport]
-  exact transport_slide _ _ _ _ _ _
+  exact transport_slide
+    (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
+    (contentEPairEquiv D Sc cutoff N β j i γ hji M z) _ _ _ _
     (block_slide_left D Sc cutoff N β hij γ hij' hji M z)
 
 /-- Right slide, retaining the explicit common target content after swapping. -/
@@ -213,7 +211,8 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
           (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
   rw [pairInner_transport, pairOuter_transport]
   have h := block_slide_right D Sc cutoff N β hij γ hij' hji M z
-  ext a
+  apply LinearMap.ext
+  intro a
   have ha := LinearMap.congr_fun h ((contentEPairEquiv D Sc cutoff N β j i γ hji M z) a)
   simpa only [contentEPairCross, LinearMap.comp_apply, LinearMap.smul_apply,
     LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_smul] using
