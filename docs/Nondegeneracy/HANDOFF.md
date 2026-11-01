@@ -94,3 +94,14 @@ isomorphism. This is the Pi-supercategory prerequisite for the full-ELV factor
 weight objects; it needs no local inverse or ordinary-polynomial replacement.
 Its production file and concrete asymmetric vacuum consumer are proposed and
 await full CI; no completed factor or global weight-family construction is claimed.
+
+## Proposed full-ELV weight categories and adjunction
+
+`ELVWeightModules` uses the actual product over all contents of each original
+weight, actual append induction at the unique predecessor and zero at absent
+predecessors, and restriction along the same append. It constructs the plain
+weight-space induction/restriction adjunction with even unit and counit. It
+keeps the common full coefficient cutoff/truncation tower and has no local
+inverse or finite-colour premise. This producer and its actual asymmetric
+vacuum consumer are unverified drafts pending CI. Dots/crossings on weights,
+the Rouquier interface and its local inverse remain separate targets.
