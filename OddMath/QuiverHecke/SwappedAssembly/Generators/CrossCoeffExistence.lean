@@ -21,7 +21,8 @@ content the reservoir dot is nilpotent). Under these two inputs, stated pointwis
 and `crossCoeffOfInputs` satisfies `CrossCoeff.IsInverse`.
 
 `CrossCoeffInputs.of_factor` derives the pointwise inputs from invertibility of every probe
-dot and nilpotence of every reservoir dot as 2-morphisms.
+dot and nilpotence of every reservoir dot as 2-morphisms. This remains a sufficient
+criterion; the general product construction uses `CrossDenominatorUnits` instead.
 
 ## Main results
 
@@ -67,6 +68,15 @@ structure CrossCoeffInputs : Prop where
   /-- The reservoir dot on the outer letter is nilpotent. -/
   postDot_isNilpotent : ∀ (i : I) t hv Z, IsNilpotent (P.rpPostDot i t hv Z)
 
+/-- The actual denominator hypotheses needed by coefficient algebra and braid
+proofs. These allow componentwise inverses on infinite products; they do not
+assert one nilpotence exponent on an entire weight fibre. -/
+structure CrossDenominatorUnits : Prop where
+  even : ∀ (i : I), D.parity i = 0 → ∀ t hv Z,
+    IsUnit (P.rpPostDot i t hv Z - P.rpPreDot i t hv Z)
+  odd : ∀ (i : I), D.parity i = 1 → ∀ t hv Z,
+    IsUnit (P.rpPreDot i t hv Z ^ 2 - P.rpPostDot i t hv Z ^ 2)
+
 private theorem rp_mul_eq (i : I) (t : Sector I) (hv : StepValid (true, i) false t)
     (Z : P.H (nextSector (true, i) true (nextSector (true, i) false t))) :
     P.rpPostDot i t hv Z * P.rpPreDot i t hv Z =
@@ -105,46 +115,57 @@ private theorem parity_eq_one {p : ZMod 2} (hp : p ≠ 0) : p = 1 := by
   · exact absurd rfl hp
   · rfl
 
-/-- The denominator of the coefficient, as a unit of the endomorphism ring: `y - x` at even
-colours and `x² - y²` at odd colours. -/
-def crossDenom (h : P.CrossCoeffInputs) (i : I) (t : Sector I)
+/-- The old unit/nilpotence criterion supplies the weaker denominator units. -/
+def CrossCoeffInputs.toDenominatorUnits (h : P.CrossCoeffInputs) :
+    P.CrossDenominatorUnits where
+  even i hi t hv Z := by
+    simpa only [sub_eq_add_neg] using
+      (h.postDot_isNilpotent i t hv Z).isUnit_add_left_of_commute
+        (h.preDot_isUnit i t hv Z).neg
+        ((P.commute_of_even i hi t hv Z).neg_right)
+  odd i hi t hv Z := by
+    have hu := ((h.postDot_isNilpotent i t hv Z).pow_of_pos two_ne_zero).neg.isUnit_add_left_of_commute
+      ((h.preDot_isUnit i t hv Z).pow 2)
+      (by
+        have hc := commute_sq_of_anticommute (P.anticommute_of_odd i hi t hv Z)
+        simpa [pow_two] using ((hc.2.symm.mul_right hc.2.symm).symm).neg_left)
+    simpa only [sub_eq_add_neg, add_comm] using hu
+
+instance : Coe P.CrossCoeffInputs P.CrossDenominatorUnits where
+  coe := CrossCoeffInputs.toDenominatorUnits P
+
+/-- Denominator as a unit, using only its actual unit property. -/
+def crossDenom (h : P.CrossDenominatorUnits) (i : I) (t : Sector I)
     (hv : StepValid (true, i) false t)
     (Z : P.H (nextSector (true, i) true (nextSector (true, i) false t))) :
     (End (P.rpObj i i t hv Z))ˣ :=
   if hi : D.parity i = 0 then
-    ((h.postDot_isNilpotent i t hv Z).isUnit_add_left_of_commute
-      (h.preDot_isUnit i t hv Z).neg
-      ((P.commute_of_even i hi t hv Z).neg_right)).unit
+    (h.even i hi t hv Z).unit
   else
-    (((h.postDot_isNilpotent i t hv Z).pow_of_pos two_ne_zero).neg.isUnit_add_left_of_commute
-      ((h.preDot_isUnit i t hv Z).pow 2)
-      (by
-        have hc := commute_sq_of_anticommute (P.anticommute_of_odd i
-          (parity_eq_one hi) t hv Z)
-        simpa [pow_two] using ((hc.2.symm.mul_right hc.2.symm).symm).neg_left)).unit
+    (h.odd i (parity_eq_one hi) t hv Z).unit
 
 /-- The same-colour crossing coefficient: `(y - x)⁻¹` at even colours and
 `(x - y)(x² - y²)⁻¹` at odd colours. -/
-def crossCoeffOfInputs (h : P.CrossCoeffInputs) : P.CrossCoeff Sc where
+def crossCoeffOfDenominatorUnits (h : P.CrossDenominatorUnits) : P.CrossCoeff Sc where
   a i t hv Z :=
     if D.parity i = 0 then ((P.crossDenom h i t hv Z)⁻¹ : (End (P.rpObj i i t hv Z))ˣ)
     else ((P.crossDenom h i t hv Z)⁻¹ : (End (P.rpObj i i t hv Z))ˣ) *
       (P.rpPreDot i t hv Z - P.rpPostDot i t hv Z)
 
-theorem crossCoeffOfInputs_isInverse (h : P.CrossCoeffInputs) :
-    (P.crossCoeffOfInputs h).IsInverse := by
+theorem crossCoeffOfDenominatorUnits_isInverse (h : P.CrossDenominatorUnits) :
+    (P.crossCoeffOfDenominatorUnits h).IsInverse := by
   constructor
   · intro i hi t hv Z
     have hd : ((P.crossDenom h i t hv Z : (End (P.rpObj i i t hv Z))ˣ) :
         End (P.rpObj i i t hv Z)) = P.rpPostDot i t hv Z - P.rpPreDot i t hv Z := by
       simp [crossDenom, hi, sub_eq_add_neg, add_comm]
-    simp only [crossCoeffOfInputs, hi, ↓reduceIte]
+    simp only [crossCoeffOfDenominatorUnits, hi, ↓reduceIte]
     refine ⟨?_, ?_⟩
     · rw [← End.mul_def, ← hd, Units.mul_inv]; rfl
     · rw [← End.mul_def, ← hd, Units.inv_mul]; rfl
   · intro i hi t hv Z
     have hi0 : D.parity i ≠ 0 := by rw [hi]; decide
-    simp only [crossCoeffOfInputs, hi0, ↓reduceIte]
+    simp only [crossCoeffOfDenominatorUnits, hi0, ↓reduceIte]
     have hc := commute_sq_of_anticommute (P.anticommute_of_odd i hi t hv Z)
     set x := P.rpPreDot i t hv Z
     set y := P.rpPostDot i t hv Z
@@ -163,6 +184,15 @@ theorem crossCoeffOfInputs_isInverse (h : P.CrossCoeffInputs) :
     refine ⟨?_, ?_⟩
     · rw [← End.mul_def, ← hd, ← mul_assoc, Units.mul_inv, one_mul]
     · rw [← End.mul_def, ← hd, mul_assoc, hcomm.eq, ← mul_assoc, Units.inv_mul, one_mul]
+
+/-- Compatibility producer from the original unit/nilpotence criterion. -/
+abbrev crossCoeffOfInputs (h : P.CrossCoeffInputs) : P.CrossCoeff Sc :=
+  P.crossCoeffOfDenominatorUnits (h : P.CrossDenominatorUnits)
+
+/-- The original conditional coefficient producer remains a corollary. -/
+theorem crossCoeffOfInputs_isInverse (h : P.CrossCoeffInputs) :
+    (P.crossCoeffOfInputs h).IsInverse :=
+  P.crossCoeffOfDenominatorUnits_isInverse (h : P.CrossDenominatorUnits)
 
 /-- The pointwise inputs follow from invertibility of every probe dot and nilpotence of every
 reservoir dot as 2-morphisms (F2, F3). -/

@@ -65,7 +65,7 @@ lemma probe_post_slide (hij : i ≠ j) :
   exact scale_slide _ _ _ _ _ h
 
 lemma probe_coeff_slide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     RepeatedOuterPost.targetAlg P i j s hi hj (hs ▸ Y)
         (c.a i s hi (rest P i j s hj (hs ▸ Y))) ≫
       probeReservoirCross P i j s hi hj hj0 hi0 hs Y =
@@ -129,7 +129,7 @@ def reservoirCross :=
         (nextSector (true, j) false s)) trivial).obj Y)
 
 lemma coeff_slide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     coefficientAlg P i j s hi hj (hs ▸ Y) (c.a i s hi (rest P i j s hj (hs ▸ Y))) ≫
       reservoirCross P i j s hi hj hj0 hi0 Y hs0 =
     reservoirCross P i j s hi hj hj0 hi0 Y hs0 ≫
@@ -169,7 +169,7 @@ def reservoirBack :=
         (nextSector (true, i) false s)) trivial).obj Z)
 
 lemma coeff_slide_back (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     (P.step (true, j) false s hj0).map
         (c.a i (nextSector (true, j) false s) hi0 (hs.symm ▸ Z)) ≫
       reservoirBack P i j s hi hj hj0 hi0 hs0 Z =

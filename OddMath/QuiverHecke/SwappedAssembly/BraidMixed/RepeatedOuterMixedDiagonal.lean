@@ -74,7 +74,7 @@ def repeatedOuterMixedSeparatedCoeff (c : P.CrossCoeff Sc) :=
 /-- One actual probe edge, with its explicit terminal transport, carries the
 raw conjugated coefficient. No coefficient slide or braid is assumed. -/
 theorem repeatedOuterMixed_probe_coeff (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     P.repeatedOuterMixedAdjacentCoeff i j s hR hs Z c ≫
         P.adjacentReverseProbeCross i j s hR hs₀ Z =
       P.adjacentReverseProbeCross i j s hR hs₀ Z ≫
@@ -97,7 +97,7 @@ theorem repeatedOuterMixed_probe_coeff (c : P.CrossCoeff Sc) (hc : c.IsInverse)
 The source normalization is `(-1)^pᵢ`, and the separated target normalization
 is `(-1)^(pᵢ+pᵢpⱼ)`. Both total parities are retained. -/
 theorem repeatedOuterMixed_probe_coeff_signed (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     (zsign k (D.parity i) • P.repeatedOuterMixedAdjacentCoeff i j s hR hs Z c) ≫
         P.adjacentReverseProbeCross i j s hR hs₀ Z =
       zsign k (D.parity i * D.parity j) •
