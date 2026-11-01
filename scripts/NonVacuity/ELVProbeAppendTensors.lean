@@ -63,14 +63,14 @@ example (b : N.obj v) :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN false).hom.total (w false)
       (ELVOld.BalancedInduction.tensor (J false) N.toFunctor v (𝟙 ((J false).obj v)) b) =
     ELVOld.BalancedInduction.tensor (T false) O.toFunctor qv
-      ((U false).map (𝟙 ((J false).obj v))) b :=
+      ((U false).map (X := (J false).obj v) (Y := (J false).obj v) (𝟙 ((J false).obj v))) b :=
   probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN false v ((J false).obj v) (𝟙 ((J false).obj v)) b
 
 example (b : N.obj v) :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN true).hom.total (w true)
       (ELVOld.BalancedInduction.tensor (J true) N.toFunctor v (𝟙 ((J true).obj v)) b) =
     ELVOld.BalancedInduction.tensor (T true) O.toFunctor qv
-      ((U true).map (𝟙 ((J true).obj v))) b :=
+      ((U true).map (X := (J true).obj v) (Y := (J true).obj v) (𝟙 ((J true).obj v))) b :=
   probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN true v ((J true).obj v) (𝟙 ((J true).obj v)) b
 
 private abbrev χg := probeOldCoefficient D m Sc (false :: ν) ((J false).obj v) χ
@@ -80,12 +80,12 @@ private abbrev δg := probeOldCoefficient D m Sc (true :: ν) ((J true).obj v) �
 example (b : N.obj v) :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN false).hom.total (w false)
       (ELVOld.BalancedInduction.tensor (J false) N.toFunctor v χg b) =
-    ELVOld.BalancedInduction.tensor (T false) O.toFunctor qv ((U false).map χg) b :=
+    ELVOld.BalancedInduction.tensor (T false) O.toFunctor qv ((U false).map (X := (J false).obj v) (Y := (J false).obj v) χg) b :=
   probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN false v ((J false).obj v) χg b
 example (b : N.obj v) :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN true).hom.total (w true)
       (ELVOld.BalancedInduction.tensor (J true) N.toFunctor v δg b) =
-    ELVOld.BalancedInduction.tensor (T true) O.toFunctor qv ((U true).map δg) b :=
+    ELVOld.BalancedInduction.tensor (T true) O.toFunctor qv ((U true).map (X := (J true).obj v) (Y := (J true).obj v) δg) b :=
   probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN true v ((J true).obj v) δg b
 
 end ELVProbeAppendTensorsConsumer
