@@ -87,7 +87,7 @@ theorem contentEPairDot_zero_whisker (β : Multiset I) (i j : I)
     (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
     contentEPairDot D Sc cutoff N β i j M w 0 =
       ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-          (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl)).map
+          (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
         (BalancedInduction.transformComponent
           (contentAppendTo_supernatural D Sc cutoff N rfl rfl
             (firstDot_parity D Sc i [])) M)).total w := by
@@ -95,10 +95,10 @@ theorem contentEPairDot_zero_whisker (β : Multiset I) (i j : I)
   simp only [ite_true]
   apply conj_of_square
   have h := contentInductionComp_inner D Sc cutoff N β [i] [j]
-    (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl) rfl (firstDot_parity D Sc i []) M w
+    (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm rfl (firstDot_parity D Sc i []) M w
   have ht := contentInductionMap_total_of_mem
     (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-      (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl))
+      (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm)
     (BalancedInduction.transformComponent_mem
       (contentAppendTo_supernatural D Sc cutoff N
         (β := β) (γ := β + ([i] : Multiset I)) rfl rfl
@@ -108,9 +108,11 @@ theorem contentEPairDot_zero_whisker (β : Multiset I) (i j : I)
     (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [j]))
       (firstDot_parity D Sc i [])) (firstDot_parity D Sc i [j])
     (dotE_whiskerRight D Sc [i] [j] 0 (by simp)) M w
-  calc
-    _ = _ := h
-    _ = _ := by rw [he]
+  unfold contentInductionEndLinear at he
+  apply LinearMap.ext
+  intro x
+  exact (LinearMap.congr_fun h x).trans
+    (LinearMap.congr_fun he ((contentEPairEquiv D Sc cutoff N β i j _ rfl M w) x))
 
 theorem contentEPairDot_one_whisker (β : Multiset I) (i j : I)
     (M : ContentModules D Sc cutoff N β)
@@ -119,18 +121,19 @@ theorem contentEPairDot_one_whisker (β : Multiset I) (i j : I)
       ((contentInductionTransform D Sc cutoff N
         (β := β + ([i] : Multiset I))
         (γ := β + ([i,j] : Multiset I))
-        (by rw [add_assoc]; rfl) (by rw [add_assoc]; rfl)
+        (contentPair_sum β i j).symm (contentPair_sum β i j).symm
         (firstDot_parity D Sc j [])).app (D.parity j)
         (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)).total w := by
   unfold contentEPairDot
   simp only [show (1 : Fin 2) ≠ 0 by decide, ite_false]
   apply conj_of_square
   have h := contentInductionComp_outer D Sc cutoff N β [i] [j]
-    (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl) rfl (firstDot_parity D Sc j []) M w
+    (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm rfl (firstDot_parity D Sc j []) M w
   have ht := contentInductionTransform_total D Sc cutoff N
     (β := β + ([i] : Multiset I)) (γ := β + ([i,j] : Multiset I))
-    (by rw [add_assoc]; rfl) (by rw [add_assoc]; rfl) (firstDot_parity D Sc j [])
+    (contentPair_sum β i j).symm (contentPair_sum β i j).symm (firstDot_parity D Sc j [])
     (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M) w
+  dsimp only [contentAppend] at ht
   rw [← ht] at h
   have he := endLinear_source_congr D Sc cutoff N
     (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [i]))
@@ -154,7 +157,7 @@ theorem contentEPairDot_zero_singleLetter (β : Multiset I) (i j : I)
     (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
     contentEPairDot D Sc cutoff N β i j M w 0 =
       ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-          (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl)).map
+          (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
         ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total w := by
   rw [contentInductionDot_component]
   exact contentEPairDot_zero_whisker D Sc cutoff N β i j M w
@@ -165,7 +168,7 @@ def contentEPairInnerDot (β : Multiset I) (i j : I)
     (w : ContentCategory D Sc cutoff N (β + ([i,j] : Multiset I))) :
     Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
   ((contentInductionTo D Sc cutoff N (β + ([i] : Multiset I)) [j]
-      (β + ([i,j] : Multiset I)) (by rw [add_assoc]; rfl)).map
+      (β + ([i,j] : Multiset I)) (contentPair_sum β i j).symm).map
     ((contentInductionDot D Sc cutoff N β i).app (D.parity i) M)).total w
 
 /-- The actual single-letter dot component at the explicitly recast target. -/
@@ -175,7 +178,7 @@ def contentEPairOuterDot (β : Multiset I) (i j : I)
     Module.End k (ContentEPairSpace D Sc cutoff N β i j _ rfl M w) :=
   ((contentInductionTransform D Sc cutoff N
     (β := β + ([i] : Multiset I)) (γ := β + ([i,j] : Multiset I))
-    (by rw [add_assoc]; rfl) (by rw [add_assoc]; rfl)
+    (contentPair_sum β i j).symm (contentPair_sum β i j).symm
     (firstDot_parity D Sc j [])).app (D.parity j)
     (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)).total w
 
