@@ -12,6 +12,9 @@ example :=
   contentWhiskered_braid datum scalars (fun _ => 12) 12 (0 : Multiset Bool)
     true true true (by simp) (0 + ([true,true,true] : Multiset Bool))
     rfl rfl rfl rfl rfl rfl
+    ((0 + ([true] : Multiset Bool)) + ([true] : Multiset Bool)) rfl rfl (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([true] : Multiset Bool)) rfl rfl (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([true] : Multiset Bool)) rfl rfl (by decide)
     (vacuumModule datum scalars (fun _ => 12) 12)
     (⟨⟨[true,true,true]⟩, by simp⟩ :
       ContentCategory datum scalars (fun _ => 12) 12
@@ -22,6 +25,9 @@ example :=
   contentWhiskered_braid datum scalars (fun _ => 12) 12 (0 : Multiset Bool)
     true true false (by decide) (0 + ([true,true,false] : Multiset Bool))
     rfl rfl (by decide) (by decide) (by decide) (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([true] : Multiset Bool)) rfl rfl (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([false] : Multiset Bool)) rfl (by decide) (by decide)
+    ((0 + ([true] : Multiset Bool)) + ([false] : Multiset Bool)) rfl (by decide) (by decide)
     (vacuumModule datum scalars (fun _ => 12) 12)
     (⟨⟨[true,true,false]⟩, by simp⟩ :
       ContentCategory datum scalars (fun _ => 12) 12
