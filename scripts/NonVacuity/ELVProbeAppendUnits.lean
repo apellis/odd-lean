@@ -1,10 +1,10 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendUnits
 import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath OddMath.QuiverHecke
 open OddMath.QuiverHecke.CyclotomicAction OddMath.SKM.SYM
 open scoped TensorProduct
-namespace ELVProbeAppendTensorsConsumer
+namespace ELVProbeAppendUnitsConsumer
 private def D : SKM.Datum Bool (Bool → ℤ) where
   cd :=
     { root := fun i j => if i = j then 2 else 0
@@ -59,40 +59,34 @@ private abbrev T (i : Bool) := probeOrdinaryAppend D Sc m ν i
 private abbrev U (i : Bool) := probeOldOrdinaryFunctor D Sc m (i :: ν)
 private abbrev w (i : Bool) := (U i).obj ((J i).obj v)
 
-example (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN false).hom.total (w false)
-      (ELVOld.BalancedInduction.tensor (J false) N.toFunctor v (𝟙 ((J false).obj v)) b) =
-    ELVOld.BalancedInduction.tensor (T false) O.toFunctor qv
-      ((U false).map (X := (J false).obj v) (Y := (J false).obj v) (𝟙 ((J false).obj v))) b :=
-  probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN false v ((J false).obj v) (𝟙 ((J false).obj v)) b
+example (i : Bool) (b : N.obj v) :
+    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total (w i)
+      (ELVOld.BalancedInduction.unit (J i) N.toFunctor v b) =
+    ELVOld.BalancedInduction.unit (T i) O.toFunctor qv b :=
+  probeAppendOrdinaryModuleIso_hom_unit D Sc m ν N hN i v b
 
-example (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN true).hom.total (w true)
-      (ELVOld.BalancedInduction.tensor (J true) N.toFunctor v (𝟙 ((J true).obj v)) b) =
-    ELVOld.BalancedInduction.tensor (T true) O.toFunctor qv
-      ((U true).map (X := (J true).obj v) (Y := (J true).obj v) (𝟙 ((J true).obj v))) b :=
-  probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN true v ((J true).obj v) (𝟙 ((J true).obj v)) b
+private abbrev M0 := SuperBimodule.regular (heightParity D Sc a (probePolynomial_parity D m) 0)
+private abbrev N0 := probeOldModule D m Sc [] M0
+private abbrev hN0 := probeOldModule_evaluatesCoefficients D m Sc [] M0
+private abbrev O0 := probeOrdinaryModuleSuperfunctor D Sc m [] N0 hN0
+private abbrev v0 : ELVOld.OldContentCategory D Sc cut [] :=
+  ELVOld.oldContentObject D Sc cut [] ⟨[],List.Perm.refl []⟩
+private abbrev J0 (i : Bool) := ELVOld.oldContentAppend D Sc cut [] i
+private abbrev T0 (i : Bool) := probeOrdinaryAppend D Sc m [] i
+private abbrev Q0 := probeOldOrdinaryFunctor D Sc m []
+private abbrev U0 (i : Bool) := probeOldOrdinaryFunctor D Sc m [i]
 
-private abbrev χg := probeOldCoefficient D m Sc (false :: ν) ((J false).obj v) χ
-private abbrev δg := probeOldCoefficient D m Sc (true :: ν) ((J true).obj v) δ
+example (i : Bool) (b : N0.obj v0) :
+    (probeAppendOrdinaryModuleIso D Sc m [] N0 hN0 i).hom.total ((U0 i).obj ((J0 i).obj v0))
+      (ELVOld.BalancedInduction.unit (J0 i) N0.toFunctor v0 b) =
+    ELVOld.BalancedInduction.unit (T0 i) O0.toFunctor (Q0.obj v0) b :=
+  probeAppendOrdinaryModuleIso_hom_unit D Sc m [] N0 hN0 i v0 b
 
-/-- Actual nontrivial full-coefficient arrows are specialized, not discarded before induction. -/
-example (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN false).hom.total (w false)
-      (ELVOld.BalancedInduction.tensor (J false) N.toFunctor v χg b) =
-    ELVOld.BalancedInduction.tensor (T false) O.toFunctor qv ((U false).map (X := (J false).obj v) (Y := (J false).obj v) χg) b :=
-  probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN false v ((J false).obj v) χg b
-example (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN true).hom.total (w true)
-      (ELVOld.BalancedInduction.tensor (J true) N.toFunctor v δg b) =
-    ELVOld.BalancedInduction.tensor (T true) O.toFunctor qv ((U true).map (X := (J true).obj v) (Y := (J true).obj v) δg) b :=
-  probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN true v ((J true).obj v) δg b
-
-end ELVProbeAppendTensorsConsumer
+end ELVProbeAppendUnitsConsumer
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
-  let owner := `OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
+  let owner := `OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendUnits
   let some idx := env.header.moduleNames.idxOf? owner
     | throwError "Missing owned module {owner}"
   let names := env.header.moduleData[idx]!.constNames

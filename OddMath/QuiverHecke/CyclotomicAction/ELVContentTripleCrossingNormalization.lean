@@ -13,12 +13,6 @@ namespace OddMath.QuiverHecke.ELVOld
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-theorem contentTripleLeft_whisker (i j l : I) :
-    contentTripleLeft D Sc i j l = crossTwo D Sc i j ▷ (pres D Sc).obj (ob D [l]) := by
-  rw [crossTwo, cl_whiskerRight D Sc _ _ [l]
-    (by intro g hg; simp only [List.mem_singleton] at hg; subst g; simp [PG.pos, PG.width])]
-  rfl
-
 theorem contentTripleRight_whisker (i j l : I) :
     contentTripleRight D Sc i j l = (pres D Sc).obj (ob D [i]) ◁ crossTwo D Sc j l := by
   rw [crossTwo, cl_whiskerLeft]
@@ -66,8 +60,8 @@ private theorem tripleMap_neg {β γ : Multiset I} {i j l a b c : I}
 def contentWhiskeredSuffixCross (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([i,l,j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    ContentETripleSpace D Sc cutoff N β i l j γ ht M z →ₗ[k]
-      ContentETripleSpace D Sc cutoff N β i j l γ h M z :=
+    ((contentETripleTo D Sc cutoff N β i l j γ ht).obj M).obj z ⟶
+      ((contentETripleTo D Sc cutoff N β i j l γ h).obj M).obj z :=
   ((contentEPairCrossTransform D Sc cutoff N (β + ([i] : Multiset I)) j l γ
     (by rw [add_assoc]; exact h) (by rw [add_assoc]; exact ht)).app
     (D.parity j * D.parity l)
@@ -90,16 +84,11 @@ theorem contentWhiskeredPrefixCross_distinct (β : Multiset I) {i j : I} (hij : 
     (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([j,i,l] : Multiset I) = γ)
     (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    ((contentETripleMiddleIso D Sc cutoff N β i j l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i j δ
-            ((contentPair_sum β i j).trans hδ) ((contentPair_sum β j i).trans hδ')).app
-            (D.parity i * D.parity j) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β j i l δ γ hδ' ht hγ).hom.app M).total z =
+    contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z =
       contentETripleMap D Sc cutoff N h ht (contentTripleLeft_parity D Sc i j l) M z := by
   rw [← contentETripleMap_prefix_cross]
   apply tripleMap_congr
-  rw [contentCrossAffine_distinct D Sc i j hij, contentTripleLeft_whisker]
+  simp only [contentTriplePrefixAffine, ite_eq_right hij]
 
 theorem contentWhiskeredSuffixCross_distinct (β : Multiset I) (i : I) {j l : I} (hjl : j ≠ l)
     (γ : Multiset I) (h : β + ([i,j,l] : Multiset I) = γ)
@@ -115,16 +104,11 @@ theorem contentWhiskeredPrefixCross_equal (β : Multiset I) (i l : I)
     (δ γ : Multiset I) (hδ : (β + ([i] : Multiset I)) + ([i] : Multiset I) = δ)
     (h : β + ([i,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    ((contentETripleMiddleIso D Sc cutoff N β i i l δ γ hδ h hγ).inv.app M).total z ∘ₗ
-        ((contentInductionTo D Sc cutoff N δ [l] γ hγ).map
-          ((contentEPairCrossTransform D Sc cutoff N β i i δ
-            ((contentPair_sum β i i).trans hδ) ((contentPair_sum β i i).trans hδ)).app
-            (D.parity i * D.parity i) M)).total z ∘ₗ
-        ((contentETripleMiddleIso D Sc cutoff N β i i l δ γ hδ h hγ).hom.app M).total z =
+    contentPrefixCrossComponent D Sc cutoff N β i i l δ γ hδ hδ h h hγ M z =
       -contentETripleMap D Sc cutoff N h h (contentTripleLeft_parity D Sc i i l) M z := by
   rw [← contentETripleMap_prefix_cross, ← tripleMap_neg]
   apply tripleMap_congr
-  rw [contentCrossAffine_equal, MonoidalSupercategory.neg_whiskerRight (R := k), contentTripleLeft_whisker]
+  simp only [contentTriplePrefixAffine, ite_true]
 
 theorem contentWhiskeredSuffixCross_equal (β : Multiset I) (j i : I)
     (γ : Multiset I) (h : β + ([j,i,i] : Multiset I) = γ)
