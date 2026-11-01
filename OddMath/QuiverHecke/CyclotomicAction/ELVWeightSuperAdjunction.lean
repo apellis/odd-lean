@@ -29,38 +29,40 @@ def elvActionCounit : elvF D Sc cutoff bound i Λ h ≫ elvE D Sc cutoff bound i
   SuperNatTrans.ofNatTrans (elvWeightCounit D Sc cutoff bound i Λ h)
     (elvWeightCounit_mem D Sc cutoff bound i Λ h)
 
-/-- **The even adjunction `E_i ⊣ F_i` on weight spaces** in the Rouquier interface. -/
-def elvActionAdjunction :
-    SKM.SuperAdjunction (k := k) (elvE D Sc cutoff bound i Λ h) (elvF D Sc cutoff bound i Λ h) where
-  unit := elvActionUnit D Sc cutoff bound i Λ h
-  counit := elvActionCounit D Sc cutoff bound i Λ h
+private def ordinaryEvenSuperAdjunction
+    {A B : PiSCat.{u, u, u + 1} k} (E : A ⟶ B) (F : B ⟶ A)
+    (adj : E.toFunctor ⊣ F.toFunctor)
+    (hη : ∀ M, adj.unit.app M ∈ parity (R := k) _ _ 0)
+    (hε : ∀ N, adj.counit.app N ∈ parity (R := k) _ _ 0) :
+    SKM.SuperAdjunction (k := k) E F where
+  unit := SuperNatTrans.ofNatTrans adj.unit hη
+  counit := SuperNatTrans.ofNatTrans adj.counit hε
   unit_mem := Superfunctor.mem_parity_iff_isHomogeneous.2
     (SuperNatTrans.ofNatTrans_isHomogeneous _ _)
   counit_mem := Superfunctor.mem_parity_iff_isHomogeneous.2
     (SuperNatTrans.ofNatTrans_isHomogeneous _ _)
   left_triangle := by
-    simp only [PiSCat.leftUnitor_inv, PiSCat.associator_hom, PiSCat.rightUnitor_hom]
-    erw [Category.id_comp, Category.id_comp, Category.comp_id]
     apply Superfunctor.hom_ext_parity
     · intro M
-      change _ = 𝟙 ((elvEFunctor D Sc cutoff bound i Λ h).obj M)
-      simp [elvActionUnit, elvActionCounit, SuperNatTrans.ofNatTrans,
-        elvE, Superfunctor.map,
-        Superfunctor.obj]
-      exact (elvWeightAdjunction D Sc cutoff bound i Λ h).left_triangle_components M
+      simpa [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj] using
+        adj.left_triangle_components M
     · intro M
-      simp [elvActionUnit, elvActionCounit, SuperNatTrans.ofNatTrans]
+      simp [SuperNatTrans.ofNatTrans]
   right_triangle := by
-    simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom]
-    erw [Category.id_comp, Category.id_comp, Category.comp_id]
     apply Superfunctor.hom_ext_parity
     · intro N
-      change _ = 𝟙 ((elvF D Sc cutoff bound i Λ h).toFunctor.obj N)
-      simp [elvActionUnit, elvActionCounit, SuperNatTrans.ofNatTrans,
-        elvF, Superfunctor.map,
-        Superfunctor.obj]
-      exact (elvWeightAdjunction D Sc cutoff bound i Λ h).right_triangle_components N
+      simpa [SuperNatTrans.ofNatTrans, Superfunctor.map, Superfunctor.obj] using
+        adj.right_triangle_components N
     · intro N
-      simp [elvActionUnit, elvActionCounit, SuperNatTrans.ofNatTrans]
+      simp [SuperNatTrans.ofNatTrans]
+
+/-- The actual even induction/restriction adjunction in the PiSCat target. -/
+def elvActionAdjunction :
+    SKM.SuperAdjunction (k := k) (elvE D Sc cutoff bound i Λ h)
+      (elvF D Sc cutoff bound i Λ h) :=
+  ordinaryEvenSuperAdjunction (elvE D Sc cutoff bound i Λ h)
+    (elvF D Sc cutoff bound i Λ h) (elvWeightAdjunction D Sc cutoff bound i Λ h)
+    (elvWeightUnit_mem D Sc cutoff bound i Λ h)
+    (elvWeightCounit_mem D Sc cutoff bound i Λ h)
 
 end OddMath.QuiverHecke.ELVOld
