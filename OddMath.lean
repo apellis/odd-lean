@@ -34,6 +34,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTripleCrossingNormalization
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWhiskeredMixedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentTensorCoherence
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPairOuterTensor
@@ -1818,3 +1819,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVAppendQuotientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
+
