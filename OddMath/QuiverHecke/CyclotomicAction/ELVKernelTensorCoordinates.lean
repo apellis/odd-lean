@@ -65,6 +65,23 @@ def resIndKernelCoordinates (i : I) (t : OldCategory D Sc cutoff) :
   BalancedKernelTensor.inductionKernelEquiv (append D Sc cutoff i) M.toFunctor
     ((append D Sc cutoff i).obj t)
 
+theorem indResKernelCoordinates_tensor (i : I) (v t : OldCategory D Sc cutoff)
+    (x : IndResKernel.Component (k := k) (append D Sc cutoff i) v t) (m : M.obj v) :
+    indResKernelCoordinates D Sc cutoff M i t
+      (BalancedKernelTensor.tensor (IndResKernel.kernel (k := k) (append D Sc cutoff i) t)
+        M.toFunctor v x m) =
+      IndResKernel.evaluate (append D Sc cutoff i) M.toFunctor v t m x :=
+  IndResKernel.forward_tensor (append D Sc cutoff i) M.toFunctor t v x m
+
+theorem resIndKernelCoordinates_tensor (i : I) (v t : OldCategory D Sc cutoff)
+    (g : (append D Sc cutoff i).obj v ⟶ (append D Sc cutoff i).obj t) (m : M.obj v) :
+    resIndKernelCoordinates D Sc cutoff M i t
+      (BalancedKernelTensor.tensor (BalancedKernelTensor.inductionKernel (k := k)
+        (append D Sc cutoff i) ((append D Sc cutoff i).obj t)) M.toFunctor v g m) =
+      BalancedInduction.tensor (append D Sc cutoff i) M.toFunctor v g m :=
+  BalancedKernelTensor.inductionKernelEquiv_tensor (append D Sc cutoff i) M.toFunctor
+    ((append D Sc cutoff i).obj t) v g m
+
 /-- Each unit-source slot uses exactly the canonical source parity coordinate. -/
 def positiveSlotCoordinates (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
     (a : Option (Fin m)) :
@@ -88,6 +105,58 @@ def negativeSlotCoordinates (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
   | some r => (identityKernelCoordinates D Sc cutoff M t).trans
       (moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
         (r.val • D.parity i)).iso M) t).symm
+
+/-- Removing the named first source shift returns the IndRes kernel evaluation. -/
+theorem positiveSlotCoordinates_none (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
+    (z : BalancedKernelTensor.Obj (positiveKernelFamily D Sc cutoff i m t none) M.toFunctor) :
+    moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i M m) t
+        (positiveSlotCoordinates D Sc cutoff M i m t none z) =
+      indResKernelCoordinates D Sc cutoff M i t z := by
+  change moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i M m) t
+      ((moduleIsoLinearEquiv (unitMatrixFirstSourceIso D Sc cutoff i M m) t).symm
+        (indResKernelCoordinates D Sc cutoff M i t z)) = _
+  exact LinearEquiv.apply_symm_apply _ _
+
+/-- Removing a named identity-slot source shift returns ordinary Hom evaluation. -/
+theorem positiveSlotCoordinates_some (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
+    (r : Fin m)
+    (z : BalancedKernelTensor.Obj (positiveKernelFamily D Sc cutoff i m t (some r)) M.toFunctor) :
+    moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+        (r.val • D.parity i)).iso M) t
+        (positiveSlotCoordinates D Sc cutoff M i m t (some r) z) =
+      identityKernelCoordinates D Sc cutoff M t z := by
+  change moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+      (r.val • D.parity i)).iso M) t
+      ((moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+        (r.val • D.parity i)).iso M) t).symm
+          (identityKernelCoordinates D Sc cutoff M t z)) = _
+  exact LinearEquiv.apply_symm_apply _ _
+
+/-- Removing the named first target shift returns the upper Hom kernel evaluation. -/
+theorem negativeSlotCoordinates_none (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
+    (z : BalancedKernelTensor.Obj (negativeKernelFamily D Sc cutoff i m t none) M.toFunctor) :
+    moduleIsoLinearEquiv (capMatrixFirstTargetIso D Sc cutoff i M m) t
+        (negativeSlotCoordinates D Sc cutoff M i m t none z) =
+      resIndKernelCoordinates D Sc cutoff M i t z := by
+  change moduleIsoLinearEquiv (capMatrixFirstTargetIso D Sc cutoff i M m) t
+      ((moduleIsoLinearEquiv (capMatrixFirstTargetIso D Sc cutoff i M m) t).symm
+        (resIndKernelCoordinates D Sc cutoff M i t z)) = _
+  exact LinearEquiv.apply_symm_apply _ _
+
+/-- Removing a named identity-slot target shift returns ordinary Hom evaluation. -/
+theorem negativeSlotCoordinates_some (i : I) (m : ℕ) (t : OldCategory D Sc cutoff)
+    (r : Fin m)
+    (z : BalancedKernelTensor.Obj (negativeKernelFamily D Sc cutoff i m t (some r)) M.toFunctor) :
+    moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+        (r.val • D.parity i)).iso M) t
+        (negativeSlotCoordinates D Sc cutoff M i m t (some r) z) =
+      identityKernelCoordinates D Sc cutoff M t z := by
+  change moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+      (r.val • D.parity i)).iso M) t
+      ((moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+        (r.val • D.parity i)).iso M) t).symm
+          (identityKernelCoordinates D Sc cutoff M t z)) = _
+  exact LinearEquiv.apply_symm_apply _ _
 
 /-- The finite source coend realizes the exact shifted unit-matrix source. -/
 def positiveKernelCoordinates (i : I) (m : ℕ) (t : OldCategory D Sc cutoff) :
