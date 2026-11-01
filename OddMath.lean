@@ -1737,6 +1737,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentSpecialization
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEntryParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
