@@ -80,6 +80,14 @@ def wordPairCoordinates (ρ : List I) (β : Multiset I) (hρ : VacuumRepresentab
     pairMap D Sc cutoff N β i j γ h
       (VacuumRepresentable.wordIsoAt D Sc cutoff N ρ β hρ).hom w
 
+private theorem coordinate_square_apply {A B C E : SVec.{u} k} {Y Z : Type u}
+    (u : E ⟶ B) (v : C ⟶ E) (u' : A ⟶ B) (v' : C ⟶ A)
+    (P : B → Y) (Q : E → Z) (S : Z → Y)
+    (h : u.comp v = u'.comp v') (hc : ∀ y, P (u y) = S (Q y)) (x : C) :
+    P (u' (v' x)) = S (Q (v x)) := by
+  have hx : u (v x) = u' (v' x) := LinearMap.congr_fun h x
+  exact (congrArg P hx.symm).trans (hc (v x))
+
 theorem pairCross_coordinates_of_even (β : Multiset I) (i j : I) (γ : Multiset I)
     (hij : β + ([i,j] : Multiset I) = γ) (hji : β + ([j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (v : ContentCategory D Sc cutoff N β)
@@ -87,17 +95,30 @@ theorem pairCross_coordinates_of_even (β : Multiset I) (i j : I) (γ : Multiset
     (w : ContentCategory D Sc cutoff N γ)
     (x : ContentEPairSpace D Sc cutoff N β j i γ hji M w) :
     pairCoordinates D Sc cutoff N β i j γ hij v w
-      (pairMap D Sc cutoff N β i j γ hij f w
+      (pairMap D Sc cutoff N β i j γ hij (M := M) (L := contentRepresentable D Sc cutoff N β v) f w
         (contentEPairCross D Sc cutoff N β i j γ hij hji M w x)) =
     contentAppendToComponent D Sc cutoff N hij hji (contentCrossAffine D Sc i j) v ≫
       twist k (D.parity i * D.parity j)
         (pairCoordinates D Sc cutoff N β j i γ hji v w
-          (pairMap D Sc cutoff N β j i γ hji f w x)) := by
-  have he := congrArg (fun l => l x)
-    (pairCross_even_naturality D Sc cutoff N β i j γ hij hji f hf w)
-  erw [← he]
-  exact pairCross_coordinates D Sc cutoff N β i j γ hij hji v w
-    (pairMap D Sc cutoff N β j i γ hji f w x)
+          (pairMap D Sc cutoff N β j i γ hji (M := M) (L := contentRepresentable D Sc cutoff N β v) f w x)) := by
+  exact coordinate_square_apply
+    (A := ((contentEPairTo D Sc cutoff N β i j γ hij).obj M).obj w)
+    (B := ((contentEPairTo D Sc cutoff N β i j γ hij).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (C := ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj w)
+    (E := ((contentEPairTo D Sc cutoff N β j i γ hji).obj
+      (contentRepresentable D Sc cutoff N β v)).obj w)
+    (contentEPairCross D Sc cutoff N β i j γ hij hji (contentRepresentable D Sc cutoff N β v) w)
+    (pairMap D Sc cutoff N β j i γ hji (M := M) (L := contentRepresentable D Sc cutoff N β v) f w)
+    (pairMap D Sc cutoff N β i j γ hij (M := M) (L := contentRepresentable D Sc cutoff N β v) f w)
+    (contentEPairCross D Sc cutoff N β i j γ hij hji M w)
+    (pairCoordinates D Sc cutoff N β i j γ hij v w)
+    (pairCoordinates D Sc cutoff N β j i γ hji v w)
+    (fun y => contentAppendToComponent D Sc cutoff N hij hji (contentCrossAffine D Sc i j) v ≫
+      twist k (D.parity i * D.parity j) y)
+    (pairCross_even_naturality D Sc cutoff N β i j γ hij hji
+      (M := M) (L := contentRepresentable D Sc cutoff N β v) f hf w)
+    (pairCross_coordinates D Sc cutoff N β i j γ hij hji v w) x
 
 /-- Normalized crossing on an actual iterated vacuum-word source, through the
 canonical source comparison, not merely on a represented reservoir target. -/
@@ -207,3 +228,4 @@ theorem wordPairCross_of_mem (ρ : List I) (β : Multiset I)
   rw [wordPairCross_coordinates, twist_of_mem _ hx, Linear.comp_smul]
 
 end OddMath.QuiverHecke.ELVOld.VacuumSourceComparison
+

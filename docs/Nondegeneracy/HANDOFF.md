@@ -8,8 +8,8 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Arbitrary-module categorical inverse | Representable component inverses verified; kernel transfer has explicit prerequisites | All four actual component inverses (#889), generic arbitrary-module kernel tensor (#878) | Finish concrete graded kernel matrices, coend realizations, finite SVec assembly and fixed-content inclusion/extension bridge; then prove arbitrary-module bijectivity |
-| Independent content braid | Ready alongside inverse work | Canonical carriers and independent triple maps (#832), distinct slides (#836), coherent composition comparisons | Prove composed independently whiskered braid on the same maps, with ordered correction polynomial, parameter twist and equal-colour minus |
+| Arbitrary-module categorical inverse | Whole forward comparisons scoped-checked; matching coefficient conjugations next | Four representable inverses (#889), arbitrary-module kernel tensor and finite products (#878/#890); scoped quotient coordinates and whole maps (#923/#932) | Finish matching-content kernel bijectivity at the target-fixed count, use off-content zero (#914/#928), then combine actual matrix evenness (#896) with the transferred inverse |
+| Independent content braid | Whole polynomial lift ready after three-dot-family interface | Canonical carriers/slides (#832/#836), prefix/suffix natural families (#901/#906), corrected component relation (#894) | Finish whole corrected polynomial braid in the same independent maps; whole uncorrected relation is scoped-checked (#926); then content/weight assembly |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
@@ -37,37 +37,38 @@ arbitrary-module inversion is still a separate obligation.
 
 ### Arbitrary-module kernel transfer
 
-The generic coefficient-kernel tensor isomorphism is verified (#878).
-Finite kernel products are verified in #890. Concrete Hom-kernel and IndRes
-realizations and grading are scoped-checked in #883/#886/#888/#904 and
-successor branches; they still need full CI. The actual finite SVec maps and even inverses are scoped-checked
-in #896. The fixed-content counts in #900/#903 use the exact content height
-Q−S, so one finite count applies throughout each block. It is not a constant
-on the entire old category.
+The generic coefficient-kernel tensor isomorphism and finite kernel
+products are verified (#878/#890). The actual ordinary-right kernel
+matrices, source-right covariance, Hom/IndRes/finite-family quotient
+coordinates, and both whole arbitrary-module forward-map identities are
+scoped-checked (#911/#915/#916/#921/#923/#932). Their consumers retain
+cofinally nonzero full exterior-coefficient inputs, with both moving
+parities and zero finite counts. The actual finite SVec maps and their
+evenness for every input module are scoped-checked in #896.
 
-The actual ordinary-right kernel maps are scoped-checked in #911 and their
-entry evaluation on arbitrary supermodules in #915. Prove their pointwise
-bijectivity using these fixed-content inverses and the off-content zero
-lemma, scoped-checked in #914. With the count fixed by target content,
-matching source content uses the representable inverse and every other
-source component is zero. Keep the literal action
-a ↦ precomposition by a, with its verified tensor covariance; it must not be
-silently identified with a supernatural representing map that includes
-projection and twist. Tensor the resulting kernel isomorphism with an
-arbitrary input module, and identify both endpoints with the actual action
-modules, including grading, shifts and finite sums.
+The target count is fixed by its content height Q−S (#900/#903).
+Prove the coefficient matrix bijective on matching source content using
+the actual representable inverses. Different source content has zero
+Hom and IndRes coefficient components, with actual matrix bijectivity
+scoped-checked in #914/#928. This gives a single full-old-category kernel
+map at the target-fixed count. Tensor its isomorphism with the arbitrary
+input module, use the whole forward identities, and use #896's actual
+matrix evenness to obtain an even inverse. Coefficient-kernel grading
+is an alternative checked interface, not an extra assumption on this
+route.
 
-A direct whole-old-category kernel with target-fixed count is available
-once matching-content inversion and off-content vanishing are combined.
-Its arbitrary-module matrix evenness is already scoped-checked in #896;
-underlying kernel-tensor bijectivity then gives an even inverse. Separately,
-the concrete factor action uses fixed-content module categories, while the
-old induction coend ranges over the entire old category, so its content
-action realization still needs an explicit comparison. Fully faithful induction along the content inclusion recovers the original
-module after restriction in the scoped-checked #909; its append comparison
-must agree with the chosen action. Do not assume
-an equivalence between content modules and arbitrary modules on the entire
-old category.
+The coefficient action remains literal ordinary precomposition on every
+arrow, including inhomogeneous arrows. It must not be identified silently
+with a supernatural representing map involving projection and twist.
+
+The concrete factor action uses fixed-content module categories. The
+fully faithful inclusion unit (#909), append-extension comparison (#910),
+supported inclusion counit (#918), complementary restriction-extension
+comparison and its tensor formula (#918/#920), and append tensor formula
+(#924) are scoped-checked. Complete compatibility of this canonical E/F
+pair with the actual unit/counit, dots and crossings before transporting
+the full factor presentation. No equivalence with arbitrary modules on
+the whole old category is assumed.
 
 Keep arbitrary old endpoints, empty Hom corners, height zero, full exterior
 coefficients and source/target twists explicit. Other colours' exterior
@@ -77,9 +78,12 @@ coefficients are not a commutative ground ring.
 
 Use existing whole associativity and independent single-letter dots and pair
 crossings. Canonical carriers and foundational relations are verified in
-#832, distinct slides in #836. The composed prefix, corrected and uncorrected component braids and natural
-crossing families are scoped-checked in #892/#894/#899/#901/#906. Full CI,
-whole-transformation relations and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
+#832, distinct slides in #836. The prefix/suffix natural crossing families and corrected component braid
+are full-CI verified and integrated in #901/#906/#894. The whole uncorrected
+natural braid is scoped-checked in #926. The whole corrected ordered
+polynomial relation still needs all three independently defined dot
+families; preserve the original coefficient order and parameter twist.
+Whole multicolour and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
 coefficients, full kernel parity and equal-colour crossing normalization.
 
 A full-ELV factor family still requires the categorical inverse, these
@@ -89,7 +93,10 @@ full exterior-coefficient family. The written pairing extension and balanced
 cutoff schedule preserve the original weight realization; supplied CScalars,
 its extension and the action restriction are verified in #864. This includes
 parameterTwist compatibility and every RouquierMulticolour restriction field;
-the construction still needs the concrete extended factor family.
+the construction still needs the concrete extended factor family. Choose
+cofinal probe/reservoir weights by the written balanced schedule in the
+pairing extension; the original weight group need not contain cofinal
+dominant directions. Do not insert such an assumption on the original X.
 
 ## Weighted quotient and source detection
 
@@ -123,10 +130,14 @@ The exact scalar ideal images, ordinary quotient category, append, literal
 word-corner equivalences and ordinary dot units are verified in #891.
 The reverse matrix-entry cyclotomic-ideal lemma is verified in #863.
 The chosen old-to-ordinary induction module comparison and quotient-inverse
-unit-tensor formula are scoped-checked in #885/#897. Finish their whole
+unit-tensor formula are full-CI verified and integrated in #897. Finish their whole
 generator formula and the exact dot, adjunction and inverse-matrix
 comparison. The signed ordinary induction-dot unit is full-CI verified in
-#893; no finite-dimensionality premise is needed for that unit.
+#893. The prescribed signed dot on the actual old append coend is also a
+unit for scalar-evaluated modules, with the canonical probe specialization
+full-CI verified and integrated in #927. Neither result requires finite
+dimension or a coend-comparison premise. The selected ordinary model and
+its exact generator/adjunction transport remain required.
 
 Scalar specialization is not faithful on the full coefficient algebra.
 Positive-weight coefficient truncation cannot specialize to nonnilpotent
