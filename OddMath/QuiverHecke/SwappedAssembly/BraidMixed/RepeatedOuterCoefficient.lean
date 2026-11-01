@@ -41,7 +41,7 @@ def repeatedOuterProbeCoeff :=
 /-- The actual single unequal probe crossing transports the separated
 coefficient with its Koszul sign. The underlying two dot signs and denominator
 cancellation are supplied by `adjacentReverseMove_coeff`. -/
-theorem repeatedOuterProbeCross_coeff (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+theorem repeatedOuterProbeCross_coeff (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (hij : i ≠ j) :
     (P.step (true, i) false s hR).map
         (P.preCrossNe j i (nextSector (true, i) false s) hs Z) ≫
