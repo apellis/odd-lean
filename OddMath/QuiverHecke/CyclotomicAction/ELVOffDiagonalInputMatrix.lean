@@ -2,6 +2,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalBoundarySnake
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputPivots
 import Mathlib.LinearAlgebra.Finsupp.Supported
 import OddMath.Algebra.FiniteTriangularCoordinates
+import OddMath.Algebra.LowPolynomialCoordinates
 
 /-! # The negative-height crossing and its actual input-contraction rows
 
@@ -16,28 +17,8 @@ noncomputable section
 namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 open CategoryTheory StringDiagrams Supercategory
 open scoped BigOperators
+open OddMath.LowPolynomialCoordinates
 universe u
-
-private def finIioEquiv (m : ℕ) : Fin m ≃ Set.Iio m where
-  toFun i := ⟨i.val, i.isLt⟩
-  invFun i := ⟨i.val, i.property⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-private def lowVectorEquiv {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
-    (m : ℕ) : (Fin m → M) ≃ₗ[k] Finsupp.supported M k (Set.Iio m) :=
-  ((Finsupp.linearEquivFunOnFinite k M (Fin m)).symm.trans
-    (Finsupp.domLCongr (finIioEquiv m))).trans
-      (Finsupp.supportedEquivFinsupp (R := k) (M := M) (Set.Iio m)).symm
-
-private theorem lowVectorEquiv_single {k M : Type*} [CommRing k]
-    [AddCommGroup M] [Module k M] (m : ℕ) (d : Fin m) (b : M) :
-    ((lowVectorEquiv (k := k) (M := M) m (Pi.single d b) :
-      Finsupp.supported M k (Set.Iio m)) : ℕ →₀ M) = Finsupp.single d.val b := by
-  simp only [lowVectorEquiv, LinearEquiv.trans_apply,
-    Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
-    Finsupp.supportedEquivFinsupp_symm_single]
-  rfl
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -121,30 +102,6 @@ theorem offDiagonalBoundarySnake_eq_boundaryCrossCoordinates (p : ZMod 2)
     (offDiagonalLongSection D Sc cutoff p j.1 v t f)
     (offDiagonalLongExtraction_section D Sc cutoff p j.1 v t f)
 
-
-private def reversedVector {k M : Type*} [CommRing k] [AddCommGroup M] [Module k M]
-    (m : ℕ) : (Fin m → M) ≃ₗ[k] (Fin m → M) where
-  toFun f i := f i.rev
-  invFun f i := f i.rev
-  left_inv f := by ext i; simp only [Fin.rev_rev]
-  right_inv f := by ext i; simp only [Fin.rev_rev]
-  map_add' f g := rfl
-  map_smul' c f := rfl
-
-private theorem reversedVector_single {k M : Type*} [CommRing k]
-    [AddCommGroup M] [Module k M] (m : ℕ) (d : Fin m) (b : M) :
-    reversedVector (k := k) m (Pi.single d b) = Pi.single d.rev b := by
-  classical
-  ext i
-  change (Pi.single d b : Fin m → M) i.rev = (Pi.single d.rev b : Fin m → M) i
-  by_cases hi : i = d.rev
-  · subst i; simp
-  · have hr : i.rev ≠ d := by
-      intro h
-      have hh := congrArg Fin.rev h
-      simp only [Fin.rev_rev] at hh
-      exact hi hh
-    simp [hi, hr]
 
 /-- The actual cap vector evaluated on the actual snake kernel coordinates. -/
 def offDiagonalCapOnKernelVector (p : ZMod 2) (j : {j : I // D.parity j = 1})
