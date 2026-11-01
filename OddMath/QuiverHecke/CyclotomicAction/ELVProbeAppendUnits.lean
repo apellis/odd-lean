@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuotientTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitTensors
 
 /-! # Units of the scalar old-to-ordinary append comparison
 The chosen comparison is first computed on coend units. The full generator
@@ -11,14 +12,6 @@ universe u
 section Comparison
 variable {k : Type u} [CommRing k]
   {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-
-private theorem probeMorphismChainTotal
-    {F₀ F₁ F₂ F₃ F₄ F₅ : Superfunctor k C (SVec k)}
-    (f₁ : F₀ ⟶ F₁) (f₂ : F₁ ⟶ F₂) (f₃ : F₂ ⟶ F₃)
-    (f₄ : F₃ ⟶ F₄) (f₅ : F₄ ⟶ F₅) (w : C) (x : F₀.obj w) :
-    (f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅).total w x =
-      f₅.total w (f₄.total w (f₃.total w (f₂.total w (f₁.total w x)))) := by
-  simp only [Superfunctor.comp_total, SVec.comp_apply]
 
 private theorem probeEvenIsoApp0AfterInv
     {F G : Superfunctor k C (SVec k)} (e : F ≅ G)
@@ -42,90 +35,7 @@ private theorem probeEqToHom_even {F G : Superfunctor k C (SVec k)} (h : F = G) 
   exact id_mem F
 end Comparison
 
-section ModuleMap
-variable {k : Type u} [CommRing k]
-  {C D' : Type u} [Category.{u} C] [Category.{u} D']
-  [Preadditive C] [Linear k C] [Supercategory k C]
-  [Preadditive D'] [Linear k D'] [Supercategory k D']
-  (J : C ⥤ D') [J.Additive] [J.Linear k] [IsSuperfunctor k J]
 
-private theorem probeModuleMapEvenTensor
-    {M L : Superfunctor k C (SVec k)} (f : M ⟶ L)
-    (hf : f ∈ parity (R := k) _ _ 0) (w : D') (v : C)
-    (g : (J).obj v ⟶ w) (b : M.obj v) :
-    (ELVOld.BalancedInduction.moduleMap J f).total w
-      (ELVOld.BalancedInduction.tensor J M.toFunctor v g b) =
-      ELVOld.BalancedInduction.tensor J (L).toFunctor v g (f.app 0 v b) := by
-  rw [ELVOld.BalancedInduction.moduleMap_total_tensor,
-    Superfunctor.app_eq_zero_of_mem hf (q := 1) (by decide),
-    LinearMap.zero_apply, ELVOld.BalancedInduction.tensor_zero_right, add_zero]
-
-private def probeFlattenModule
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) :
-    ELVOld.BalancedInduction.induced K (ELVOld.BalancedInduction.induced J N) ⟶
-      ELVOld.BalancedInduction.induced (J ⋙ K) N :=
-  (ELVOld.BalancedInduction.inductionComp J K).hom.app N
-
-private def probeUnflattenModule
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) :
-    ELVOld.BalancedInduction.induced (J ⋙ K) N ⟶
-      ELVOld.BalancedInduction.induced K (ELVOld.BalancedInduction.induced J N) :=
-  (ELVOld.BalancedInduction.inductionComp J K).inv.app N
-
-private theorem probeFlattenUnitTensor
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) (v : C) (t : D')
-    (g : J.obj v ⟶ t) (b : N.obj v) :
-    (probeFlattenModule J K N).total (K.obj t)
-      (ELVOld.BalancedInduction.tensor K (ELVOld.BalancedInduction.induced J N).toFunctor t
-        (𝟙 (K.obj t)) (ELVOld.BalancedInduction.tensor J N.toFunctor v g b)) =
-      ELVOld.BalancedInduction.tensor (J ⋙ K) N.toFunctor v (K.map (X := J.obj v) (Y := t) g) b := by
-  have h := ELVOld.BalancedInduction.inductionComp_hom_total_tensor J K N v t (K.obj t)
-    (𝟙 (K.obj t)) g b
-  exact h.trans (congrArg (fun z : K.obj (J.obj v) ⟶ K.obj t =>
-    ELVOld.BalancedInduction.tensor (J ⋙ K) N.toFunctor v z b) (Category.comp_id (K.map (X := J.obj v) (Y := t) g)))
-
-private theorem probeUnflattenTensor
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) (v : C) (w : E)
-    (g : (J ⋙ K).obj v ⟶ w) (b : N.obj v) :
-    (probeUnflattenModule J K N).total w
-      (ELVOld.BalancedInduction.tensor (J ⋙ K) N.toFunctor v g b) =
-      ELVOld.BalancedInduction.tensor K (ELVOld.BalancedInduction.induced J N).toFunctor
-        (J.obj v) g (ELVOld.BalancedInduction.tensor J N.toFunctor v (𝟙 (J.obj v)) b) :=
-  ELVOld.BalancedInduction.inductionComp_inv_total_tensor J K N v w g b
-
-private theorem probeFlattenUnits
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) (v : C) (b : N.obj v) :
-    (probeFlattenModule J K N).total (K.obj (J.obj v))
-      (ELVOld.BalancedInduction.unit K (ELVOld.BalancedInduction.induced J N).toFunctor
-        (J.obj v) (ELVOld.BalancedInduction.unit J N.toFunctor v b)) =
-      ELVOld.BalancedInduction.unit (J ⋙ K) N.toFunctor v b := by
-  change (probeFlattenModule J K N).total (K.obj (J.obj v))
-    (ELVOld.BalancedInduction.tensor K (ELVOld.BalancedInduction.induced J N).toFunctor
-      (J.obj v) (𝟙 _) (ELVOld.BalancedInduction.tensor J N.toFunctor v (𝟙 _) b)) = _
-  rw [probeFlattenUnitTensor, K.map_id]
-  rfl
-
-private theorem probeUnflattenUnits
-    {E : Type u} [Category.{u} E] [Preadditive E] [Linear k E] [Supercategory k E]
-    (K : D' ⥤ E) [K.Additive] [K.Linear k] [IsSuperfunctor k K]
-    (N : Superfunctor k C (SVec k)) (v : C) (b : N.obj v) :
-    (probeUnflattenModule J K N).total ((J ⋙ K).obj v)
-      (ELVOld.BalancedInduction.unit (J ⋙ K) N.toFunctor v b) =
-      ELVOld.BalancedInduction.unit K (ELVOld.BalancedInduction.induced J N).toFunctor
-        (J.obj v) (ELVOld.BalancedInduction.unit J N.toFunctor v b) :=
-  probeUnflattenTensor J K N v ((J ⋙ K).obj v) (𝟙 _) b
-
-end ModuleMap
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ) (ν : List I)
@@ -179,14 +89,6 @@ local notation "O" => probeOrdinaryModuleSuperfunctor D Sc m ν N hN
 local notation "C₊" => ELVOld.OldContentCategory D Sc cut (i :: ν)
 local notation "B₊" => OrdinaryContentCategory D Sc a (i :: ν)
 
-private theorem probeAppendFlatten_unit
-    (v : ELVOld.OldContentCategory D Sc cut ν) (b : N.obj v) :
-    (probeFlattenModule J U N).total ((U).obj ((J).obj v))
-      (ELVOld.BalancedInduction.unit U (L).toFunctor ((J).obj v)
-        (ELVOld.BalancedInduction.unit J N.toFunctor v b)) =
-      ELVOld.BalancedInduction.unit (J ⋙ U) N.toFunctor v b :=
-  probeFlattenUnits J U N v b
-
 private theorem probeAppendSquare_unit
     (v : ELVOld.OldContentCategory D Sc cut ν) (b : N.obj v) :
     (ELVOld.BalancedInduction.inducedIsoOfFunctorEq (J ⋙ U) (Q ⋙ T)
@@ -205,33 +107,28 @@ private theorem probeAppendSquare_unit
   exact congrArg (fun z : (Q ⋙ T).obj v ⟶ (Q ⋙ T).obj v =>
     ELVOld.BalancedInduction.tensor (Q ⋙ T) N.toFunctor v z b) hi
 
-private theorem probeAppendUnflatten_unit
-    (v : ELVOld.OldContentCategory D Sc cut ν) (b : N.obj v) :
-    (probeUnflattenModule Q T N).total ((T).obj ((Q).obj v))
-      (ELVOld.BalancedInduction.unit (Q ⋙ T) N.toFunctor v b) =
-      ELVOld.BalancedInduction.unit T (ELVOld.BalancedInduction.induced Q N).toFunctor
-        ((Q).obj v) (ELVOld.BalancedInduction.unit Q N.toFunctor v b) :=
-  probeUnflattenUnits Q T N v b
-
 /-- The selected old-to-ordinary append comparison on source coend units. -/
 theorem probeAppendOrdinaryModuleIso_hom_unit
     (v : ELVOld.OldContentCategory D Sc cut ν) (b : N.obj v) :
     (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total ((U).obj ((J).obj v))
       (ELVOld.BalancedInduction.unit J N.toFunctor v b) =
       ELVOld.BalancedInduction.unit T (O).toFunctor ((Q).obj v) b := by
-  change ((probeQuotientInducedModuleIso D Sc m (i :: ν) L
-    (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN)).inv ≫
-      probeFlattenModule J U N ≫
-        (ELVOld.BalancedInduction.inducedIsoOfFunctorEq (J ⋙ U) (Q ⋙ T)
-          (probeOldOrdinaryFunctor_append D Sc m ν i) N).hom ≫
-            probeUnflattenModule Q T N ≫
+  have he : (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom =
+      (probeQuotientInducedModuleIso D Sc m (i :: ν) L
+        (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN)).inv ≫
+        (ELVOld.BalancedInduction.inductionComp J U).hom.app N ≫
+          (ELVOld.BalancedInduction.inducedIsoOfFunctorEq (J ⋙ U) (Q ⋙ T)
+            (probeOldOrdinaryFunctor_append D Sc m ν i) N).hom ≫
+            (ELVOld.BalancedInduction.inductionComp Q T).inv.app N ≫
               ELVOld.BalancedInduction.moduleMap T
-                (probeQuotientInducedModuleIso D Sc m ν N hN).hom).total
-    ((U).obj ((J).obj v)) (ELVOld.BalancedInduction.unit J N.toFunctor v b) = _
+                (probeQuotientInducedModuleIso D Sc m ν N hN).hom := rfl
+  rw [he]
   simp only [Superfunctor.comp_total, SVec.comp_apply]
-  rw [probeQuotientInducedModuleIso_inv_tensor, probeAppendFlatten_unit,
-    probeAppendSquare_unit, probeAppendUnflatten_unit]
-  exact (probeModuleMapEvenTensor T (probeQuotientInducedModuleIso D Sc m ν N hN).hom
+  rw [probeQuotientInducedModuleIso_inv_tensor,
+    ELVOld.BalancedInduction.inductionComp_hom_total_unit, probeAppendSquare_unit,
+    ELVOld.BalancedInduction.inductionComp_inv_total_unit]
+  exact (ELVOld.BalancedInduction.moduleMap_total_tensor_even T
+    (probeQuotientInducedModuleIso D Sc m ν N hN).hom
     (probeQuotientInducedModuleIso_hom_even D Sc m ν N hN)
     ((T).obj ((Q).obj v)) ((Q).obj v) (𝟙 _)
     (ELVOld.BalancedInduction.unit Q N.toFunctor v b)).trans
