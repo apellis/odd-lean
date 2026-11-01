@@ -71,54 +71,135 @@ private theorem weightedAppendSquare_unit (s : OldCategory D Sc cutoff) (b : M.o
   exact congrArg (fun z : (Q ⋙ T).obj s ⟶ (Q ⋙ T).obj s =>
     BalancedInduction.tensor (Q ⋙ T) (R).toFunctor s z b) hi
 
+namespace WeightedAppendUnits
+
+private abbrev sourceModule := weightedModule D Sc cutoff N L hL
+private abbrev quotientModule := (BalancedInduction.induction Q).obj ((BalancedInduction.induction J).obj R)
+private abbrev compositeModule := (BalancedInduction.induction (J ⋙ Q)).obj R
+private abbrev squareModule := (BalancedInduction.induction (Q ⋙ T)).obj R
+private abbrev iteratedModule := (BalancedInduction.induction T).obj ((BalancedInduction.induction Q).obj R)
+private abbrev targetModule := (BalancedInduction.induction T).obj M
+private abbrev targetObject (s : OldCategory D Sc cutoff) := (Q).obj ((J).obj s)
+
+local notation "S₀" => sourceModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "S₁" => quotientModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "S₂" => compositeModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "S₃" => squareModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "S₄" => iteratedModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "S₅" => targetModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)
+local notation "w" => targetObject (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i)
+
+private def quotientInverse : S₀ ⟶ S₁ :=
+  (quotientInducedWeightedModuleIso D Sc cutoff N L hL).inv
+private def flatten : S₁ ⟶ S₂ := (BalancedInduction.inductionComp J Q).hom.app R
+private def square : S₂ ⟶ S₃ :=
+  (BalancedInduction.inducedIsoOfFunctorEq (J ⋙ Q) (Q ⋙ T)
+    (oldAppend_truncate D Sc cutoff N i) R).hom
+private def unflatten : S₃ ⟶ S₄ := (BalancedInduction.inductionComp Q T).inv.app R
+private def counit : S₄ ⟶ S₅ :=
+  (BalancedInduction.induction T).map (quotientInductionCounitIso D Sc cutoff N M).hom
+
+private def restrictionVector (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (R).obj s := b
+local notation "rvec" => restrictionVector (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (M := M)
+
+private def sourceUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₀).obj (w s) :=
+  BalancedInduction.unit J (R).toFunctor s (rvec s b)
+private def quotientUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₁).obj (w s) :=
+  BalancedInduction.unit Q (L).toFunctor ((J).obj s) (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+private def compositeUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₂).obj (w s) :=
+  BalancedInduction.unit (J ⋙ Q) (R).toFunctor s (rvec s b)
+private def squareUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₃).obj (w s) :=
+  BalancedInduction.unit (Q ⋙ T) (R).toFunctor s (rvec s b)
+private def iteratedUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₄).obj (w s) :=
+  BalancedInduction.unit T (BalancedInduction.induced Q R).toFunctor ((Q).obj s)
+    (BalancedInduction.unit Q (R).toFunctor s (rvec s b))
+private def targetUnit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) : (S₅).obj (w s) :=
+  BalancedInduction.unit T M.toFunctor ((Q).obj s) b
+
+private theorem quotientInverse_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (quotientInverse (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)).total (w s) (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) =
+      quotientUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b :=
+  (quotientInducedWeightedModuleIso_inv_tensor D Sc cutoff N L hL (w s)
+    (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)).trans
+    (BalancedInduction.unit_apply Q (L).toFunctor ((J).obj s)
+      (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)).symm
+
+private theorem flatten_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (flatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)).total (w s) (quotientUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) =
+      compositeUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b :=
+  by
+    have h := BalancedInduction.inductionComp_hom_total_unit J Q R s (rvec s b)
+    set_option backward.dsimp.instances true in
+      dsimp only [BalancedInduction.induction] at h
+    set_option backward.dsimp.instances true in
+      dsimp only [flatten, quotientUnit, sourceUnit, compositeUnit, sourceModule,
+        quotientModule, compositeModule, targetObject, BalancedInduction.induction]
+    exact h
+
+private theorem square_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (square (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)).total (w s) (compositeUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) =
+      squareUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b :=
+  weightedAppendSquare_unit D Sc cutoff N i M s b
+
+private theorem unflatten_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (unflatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)).total (w s) (squareUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) =
+      iteratedUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b :=
+  by
+    have h := BalancedInduction.inductionComp_inv_total_tensor Q T R s (w s) (𝟙 _) (rvec s b)
+    set_option backward.dsimp.instances true in
+      dsimp only [BalancedInduction.induction] at h
+    set_option backward.dsimp.instances true in
+      dsimp only [unflatten, squareUnit, iteratedUnit, squareModule, iteratedModule,
+        targetObject, BalancedInduction.induction]
+    simp only [BalancedInduction.unit_apply]
+    set_option backward.dsimp.instances true in
+      dsimp only [squareModule, iteratedModule, targetObject, BalancedInduction.induction] at h ⊢
+    exact h
+
+private theorem counit_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (counit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)).total (w s) (iteratedUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) =
+      targetUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b := by
+  simpa only [counit, iteratedUnit, targetUnit, restrictionVector, iteratedModule, targetModule, targetObject, BalancedInduction.induction, BalancedInduction.unit_apply] using
+    quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s (w s) (𝟙 _) b
+
+private theorem comparison_hom :
+    (appendWeightedModuleIso D Sc cutoff N i M).hom =
+      quotientInverse (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) ≫ flatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) ≫
+        square (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) ≫ unflatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) ≫ counit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) := rfl
+
+private theorem comparison_unit (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
+    (appendWeightedModuleIso D Sc cutoff N i M).hom.total (w s)
+      (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) = targetUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b := by
+  exact (congrArg (fun f : sourceModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) ⟶ targetModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) =>
+    f.total (targetObject (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) s) (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b))
+      (comparison_hom (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))).trans
+    (BalancedInduction.composition_total_apply_of_steps
+      (k := k) (C := TruncatedCategory D Sc cutoff N)
+      (F₀ := sourceModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (F₁ := quotientModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))
+      (F₂ := compositeModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (F₃ := squareModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))
+      (F₄ := iteratedModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (F₅ := targetModule (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))
+      (quotientInverse (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (flatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))
+      (square (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (unflatten (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M)) (counit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M))
+      (targetObject (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) s)
+      (sourceUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) (quotientUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+      (compositeUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) (squareUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+      (iteratedUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) (targetUnit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+      (quotientInverse_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) (flatten_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+      (square_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b) (unflatten_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b)
+      (counit_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b))
+
+
+end WeightedAppendUnits
+
+open WeightedAppendUnits in
 /-- The selected comparison retains the source vector on a coend unit. -/
 theorem appendWeightedModuleIso_hom_unit
     (s : OldCategory D Sc cutoff) (b : M.obj ((Q).obj s)) :
     (appendWeightedModuleIso D Sc cutoff N i M).hom.total ((Q).obj ((J).obj s))
       (BalancedInduction.unit J (R).toFunctor s b) =
       BalancedInduction.unit T M.toFunctor ((Q).obj s) b := by
-  let w := (Q).obj ((J).obj s)
-  let F₀ := weightedModule D Sc cutoff N L hL
-  let F₁ := BalancedInduction.induced Q L
-  let F₂ := BalancedInduction.induced (J ⋙ Q) R
-  let F₃ := BalancedInduction.induced (Q ⋙ T) R
-  let F₄ := BalancedInduction.induced T (BalancedInduction.induced Q R)
-  let F₅ := BalancedInduction.induced T M
-  let f₁ : F₀ ⟶ F₁ := (quotientInducedWeightedModuleIso D Sc cutoff N L hL).inv
-  let f₂ : F₁ ⟶ F₂ := (BalancedInduction.inductionComp J Q).hom.app R
-  let f₃ : F₂ ⟶ F₃ := (BalancedInduction.inducedIsoOfFunctorEq (J ⋙ Q) (Q ⋙ T)
-    (oldAppend_truncate D Sc cutoff N i) R).hom
-  let f₄ : F₃ ⟶ F₄ := (BalancedInduction.inductionComp Q T).inv.app R
-  let f₅ : F₄ ⟶ F₅ := BalancedInduction.moduleMap T
-    (quotientInductionCounitIso D Sc cutoff N M).hom
-  let x₀ : F₀.obj w := BalancedInduction.unit J (R).toFunctor s b
-  have he : (appendWeightedModuleIso D Sc cutoff N i M).hom =
-      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := by
-    as_aux_lemma => rfl
-  have h₁ : f₁.total w x₀ = BalancedInduction.unit Q (L).toFunctor ((J).obj s) x₀ := by
-    exact (quotientInducedWeightedModuleIso_inv_tensor D Sc cutoff N L hL w x₀).trans
-      (BalancedInduction.unit_apply Q (L).toFunctor ((J).obj s) x₀).symm
-  have h₂ : f₂.total w (BalancedInduction.unit Q (L).toFunctor ((J).obj s) x₀) =
-      BalancedInduction.unit (J ⋙ Q) (R).toFunctor s b :=
-    BalancedInduction.inductionComp_hom_total_unit J Q R s b
-  have h₃ : f₃.total w (BalancedInduction.unit (J ⋙ Q) (R).toFunctor s b) =
-      BalancedInduction.unit (Q ⋙ T) (R).toFunctor s b :=
-    weightedAppendSquare_unit D Sc cutoff N i M s b
-  have h₄ : f₄.total w (BalancedInduction.unit (Q ⋙ T) (R).toFunctor s b) =
-      BalancedInduction.unit T (BalancedInduction.induced Q R).toFunctor ((Q).obj s)
-        (BalancedInduction.unit Q (R).toFunctor s b) :=
-    BalancedInduction.inductionComp_inv_total_unit Q T R s b
-  have h₅ : f₅.total w
-      (BalancedInduction.unit T (BalancedInduction.induced Q R).toFunctor ((Q).obj s)
-        (BalancedInduction.unit Q (R).toFunctor s b)) =
-      BalancedInduction.unit T M.toFunctor ((Q).obj s) b := by
-    simpa only [BalancedInduction.unit_apply] using
-      quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s ((T).obj ((Q).obj s)) (𝟙 _) b
-  exact (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
-    (BalancedInduction.composition_total_apply_of_steps
-      (k := k) (C := TruncatedCategory D Sc cutoff N)
-      (F₀ := F₀) (F₁ := F₁) (F₂ := F₂) (F₃ := F₃) (F₄ := F₄) (F₅ := F₅)
-      f₁ f₂ f₃ f₄ f₅ w
-      x₀ _ _ _ _ _ h₁ h₂ h₃ h₄ h₅)
+  simpa only [sourceUnit, targetUnit, restrictionVector, sourceModule, targetModule, targetObject, BalancedInduction.induction] using
+    comparison_unit (D := D) (Sc := Sc) (cutoff := cutoff) (N := N) (i := i) (M := M) s b
 
 end OddMath.QuiverHecke.ELVOld
