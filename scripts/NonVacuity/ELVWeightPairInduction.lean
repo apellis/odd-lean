@@ -41,7 +41,7 @@ private theorem innerMissing : ¬ ∃ β,
     blockSucc_injective D (0 : X) true outerPresentStep hβ
   have hm : false ∈ vacuumBlock.1 :=
     (exists_blockSucc_iff D (0 : X) false innerMissingStep vacuumBlock).mp ⟨β, he⟩
-  simpa [vacuumBlock] using hm
+  simp [vacuumBlock] at hm
 
 /-- The outer predecessor exists, but the inner predecessor does not. -/
 example := elvEFunctor_comp₂_isZero D Sc (fun _ => 12) 12 true false (0 : X)
@@ -56,7 +56,7 @@ private theorem outerMissing : ¬ ∃ β,
   have hm : true ∈ vacuumBlock.1 :=
     (exists_blockSucc_iff D (0 : X) true outerMissingStep vacuumBlock).mp
       ⟨blockSucc D (0 : X) false earlierStep β, hβ⟩
-  simpa [vacuumBlock] using hm
+  simp [vacuumBlock] at hm
 
 /-- The outer predecessor itself is absent. -/
 example := elvEFunctor_comp₂_isZero D Sc (fun _ => 12) 12 true false (0 : X)

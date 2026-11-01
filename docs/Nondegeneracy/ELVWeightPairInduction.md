@@ -18,3 +18,8 @@ hypothesis is added. The cutoff is not identified with the weight height here.
 This supplies the support and comparison prerequisites for the actual global
 crossing. Definition of that crossing, comparison of its whiskerings to the
 independent content families, and transfer of their relations remain separate.
+
+The producer and its asymmetric mixed-colour vacuum consumer pass scoped Lean
+checks with warnings as errors and the pinned compatibility settings. The
+consumer tests both missing-inner and missing-outer predecessor cases and
+audits all nine owned declarations. Full CI remains the integration gate.
