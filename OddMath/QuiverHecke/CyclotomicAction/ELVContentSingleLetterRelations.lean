@@ -75,7 +75,7 @@ abbrev ContentEPairSpace (β : Multiset I) (i j : I) (γ : Multiset I)
 def contentEPairEquiv (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
-    ContentEPairSpace D Sc cutoff N β i j γ h M w ≃ₗ[k]
+    ((contentEPairTo D Sc cutoff N β i j γ h).obj M).obj w ≃ₗ[k]
       (((contentInductionTo D Sc cutoff N β [i,j] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentEPairToComparison D Sc cutoff N β i j γ h).app M) w
 
@@ -141,8 +141,8 @@ private theorem comparison_cross_comp
 def contentEPairCross (β : Multiset I) (i j : I) (γ : Multiset I)
     (hij : β + ([i,j] : Multiset I) = γ) (hji : β + ([j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (w : ContentCategory D Sc cutoff N γ) :
-    ContentEPairSpace D Sc cutoff N β j i γ hji M w →ₗ[k]
-      ContentEPairSpace D Sc cutoff N β i j γ hij M w :=
+    ((contentEPairTo D Sc cutoff N β j i γ hji).obj M).obj w ⟶
+      ((contentEPairTo D Sc cutoff N β i j γ hij).obj M).obj w :=
   (contentEPairEquiv D Sc cutoff N β i j γ hij M w).symm.toLinearMap.comp
     ((BalancedInduction.transformLinear
       (contentAppendTo_supernatural D Sc cutoff N hij hji (contentCrossAffine_mem D Sc i j)) M w).comp
