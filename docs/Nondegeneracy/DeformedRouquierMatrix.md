@@ -14,8 +14,9 @@ The proposed raw negative-height construction is
 `ELVNegativeCrossing.lean`, with concrete odd rank-one consumers.
 It uses the independently prescribed cyclotomic crossing, the descended
 input contraction and moving input dot, the actual snake kernel coordinates,
-and the proved-form anti-diagonal leading map. Finite elimination acts on
+and the proved-form anti-diagonal leading map. Finite elimination uses `FiniteTriangularCoordinates.bijective` on
 module-valued coordinates and assumes no determinant or coefficient flatness.
+The concrete cap operator supplies its triangular and leading-map hypotheses.
 
 This new module remains **unverified pending CI**. Its scope is an odd moving
 colour and diagonal old Hom over the supplied commutative ground ring, with

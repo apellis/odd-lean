@@ -42,12 +42,14 @@ example (z : Source datum scalars (fun _ => 2) () [()] [()]) :
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
-  let owner := `OddMath.QuiverHecke.CyclotomicAction.ELVNegativeCrossing
-  let some idx := env.header.moduleNames.idxOf? owner | throwError "Missing owner {owner}"
-  let names := env.header.moduleData[idx]!.constNames
-  if names.isEmpty then throwError "Empty owner {owner}"
-  for name in names do
-    for ax in (← Lean.collectAxioms name) do
-      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
-        throwError "Disallowed axiom {ax} in {name}"
-  logInfo m!"Audited all {names.size} declarations in {owner}, including private helpers"
+  let owners := #[`OddMath.Algebra.FiniteTriangularCoordinates,
+    `OddMath.QuiverHecke.CyclotomicAction.ELVNegativeCrossing]
+  for owner in owners do
+    let some idx := env.header.moduleNames.idxOf? owner | throwError "Missing owner {owner}"
+    let names := env.header.moduleData[idx]!.constNames
+    if names.isEmpty then throwError "Empty owner {owner}"
+    for name in names do
+      for ax in (← Lean.collectAxioms name) do
+        unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+          throwError "Disallowed axiom {ax} in {name}"
+    logInfo m!"Audited all {names.size} declarations in {owner}, including private helpers"
