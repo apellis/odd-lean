@@ -71,7 +71,6 @@ theorem contentPrefixAt_comparison (β : Multiset I) (i j l : I) (γ : Multiset 
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
     contentPrefixAt D Sc cutoff N β i j l γ h ht M z =
       contentETripleMap D Sc cutoff N h ht (contentNormalizedLeft_mem D Sc i j l) M z := by
-  unfold contentPrefixAt contentWhiskeredPrefixCross
   exact (contentETripleMap_prefix_cross D Sc cutoff N β i j l
     ((β + ([i] : Multiset I)) + ([j] : Multiset I)) γ rfl (by ac_rfl)
     h ht (by rw [add_assoc, add_assoc]; exact h) M z).symm
