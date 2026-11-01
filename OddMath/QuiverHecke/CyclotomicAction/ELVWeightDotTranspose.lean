@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightDotBounds
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuperAdjunction
 import OddMath.SKM.RouquierRightTranspose
+import OddMath.SKM.RouquierCoupled
 
 /-! # Fixed-content nilpotence of the actual full-ELV dot transpose
 
@@ -17,7 +18,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory BicategoryStruct
 namespace OddMath.QuiverHecke.ELVOld
 open OddMath.QuiverHecke.CyclotomicAction
-universe u
+universe u v w t
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
@@ -33,23 +34,38 @@ private theorem total_whiskerRight
     (f ▷ H).total M = H.map (f.total M) := by
   change H.map (f.app 0 M) + H.map (f.app 1 M) =
     H.map (f.app 0 M + f.app 1 M)
-  exact (H.toFunctor.map_add _ _).symm
+  exact H.toFunctor.map_add.symm
 
-private theorem end_total_pow
-    {A B : PiSCat.{u, u, u + 1} k} (F : A ⟶ B) (f : End F) (n : ℕ) (M : A) :
-    (f ^ n).total M = (show End (F.obj M) from f.total M) ^ n := by
-  let ev : End F →* End (F.obj M) := {
-    toFun := fun g => g.total M
-    map_one' := by simp [SuperNatTrans.total]
-    map_mul' := by intro g g'; exact Superfunctor.comp_total g' g M }
-  exact ev.map_pow f n
+private def totalEndRingHom
+    {A B : PiSCat.{u, u, u + 1} k} (F : A ⟶ B) (M : A) :
+    End F →+* End (F.obj M) where
+  toFun f := f.total M
+  map_zero' := by
+    change (0 : End (F.obj M)) + 0 = 0
+    exact add_zero 0
+  map_one' := by
+    change (𝟙 (F.obj M) : End (F.obj M)) + 0 = 1
+    exact add_zero _
+  map_add' f g := by
+    change (f.app 0 M + g.app 0 M) + (f.app 1 M + g.app 1 M) =
+      (f.app 0 M + f.app 1 M) + (g.app 0 M + g.app 1 M)
+    abel
+  map_mul' f g := Superfunctor.comp_total g f M
 
-private theorem end_total_zsmul
-    {A B : PiSCat.{u, u, u + 1} k} {F G : A ⟶ B}
-    (z : ℤ) (f : F ⟶ G) (M : A) :
-    (z • f).total M = z • f.total M := by
-  simpa only [SuperNatTrans.total, Superfunctor.zsmul_app] using
-    (smul_add z (f.app 0 M) (f.app 1 M)).symm
+private def componentEndRingHom {J : Type v} (C : J → Type w)
+    [∀ a, Category.{t} (C a)] [∀ a, Preadditive (C a)]
+    (M : ∀ a, C a) (a : J) : End M →+* End (M a) where
+  toFun f := f a
+  map_zero' := rfl
+  map_one' := rfl
+  map_add' _ _ := rfl
+  map_mul' _ _ := rfl
+
+private theorem end_total_id {A B : PiSCat.{u, u, u + 1} k}
+    (F : A ⟶ B) (M : A) :
+    (𝟙 F : End F).total M = 𝟙 (F.obj M) := by
+  change (𝟙 (F.obj M) : End (F.obj M)) + 0 = 𝟙 _
+  exact add_zero _
 
 private theorem end_total_eq_app
     {A B : PiSCat.{u, u, u + 1} k} {F G : A ⟶ B}
@@ -67,10 +83,10 @@ private theorem adjointTranspose_total
     (SKM.SuperAdjunction.rightTranspose adj adj f).total N =
       adj.unit.total (F.obj N) ≫ F.map (f.total (F.obj N) ≫ adj.counit.total N) := by
   rw [SKM.SuperAdjunction.rightTranspose_apply]
-  simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom]
-  erw [Category.id_comp, Category.id_comp, Category.comp_id]
-  rw [Superfunctor.comp_total, total_whiskerLeft, total_whiskerRight,
-    Superfunctor.comp_total, total_whiskerLeft]
+  simp only [Superfunctor.comp_total]
+  simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom,
+    end_total_id, Category.id_comp, Category.comp_id]
+  rw [total_whiskerLeft, total_whiskerRight, Superfunctor.comp_total, total_whiskerLeft]
 
 /-- The actual dot transpose through the actual induction/restriction adjunction. -/
 abbrev elvActionDotTranspose : End (elvF D Sc cutoff bound i Λ h) :=
@@ -117,29 +133,50 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
     elvActionDotTranspose_mem D Sc cutoff bound i Λ h
   have hzero : (d ^ e).total ((elvF D Sc cutoff bound i Λ h).obj N)
       (blockSucc D Λ i h β) = 0 := by
-    rw [end_total_pow, end_total_eq_app d (D.parity i) hd]
+    let evd : End (elvE D Sc cutoff bound i Λ h) →+*
+        End (((elvE D Sc cutoff bound i Λ h).obj
+          ((elvF D Sc cutoff bound i Λ h).obj N)) (blockSucc D Λ i h β)) :=
+      (componentEndRingHom
+        (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
+        ((elvE D Sc cutoff bound i Λ h).obj ((elvF D Sc cutoff bound i Λ h).obj N))
+        (blockSucc D Λ i h β)).comp
+        (totalEndRingHom (elvE D Sc cutoff bound i Λ h) ((elvF D Sc cutoff bound i Λ h).obj N))
+    change evd (d ^ e) = 0
+    rw [map_pow]
+    have hv : evd d =
+        (show End (((elvE D Sc cutoff bound i Λ h).obj
+          ((elvF D Sc cutoff bound i Λ h).obj N)) (blockSucc D Λ i h β)) from
+          elvWeightDotComponent D Sc cutoff bound i Λ h (D.parity i)
+            ((elvF D Sc cutoff bound i Λ h).obj N) (blockSucc D Λ i h β)) := by
+      change d.total ((elvF D Sc cutoff bound i Λ h).obj N) (blockSucc D Λ i h β) = _
+      rw [end_total_eq_app d (D.parity i) hd]
+      rfl
+    rw [hv]
     exact hp ((elvF D Sc cutoff bound i Λ h).obj N)
   have htr := elvTranspose_total_component_zero D Sc cutoff bound i Λ h
     (d ^ e) N β hzero
   have hs := SKM.SuperAdjunction.rightTranspose_power A hd e
   rw [SKM.rouquierPower_eq_pow, SKM.rouquierPower_eq_pow] at hs
-  have hh := congrArg (fun f : End (elvF D Sc cutoff bound i Λ h) => f.total N β) hs
-  rw [end_total_zsmul, end_total_pow] at hh
-  change
-    (SKM.SuperAdjunction.rightTranspose A A (d ^ e)).total N β =
-      koszulSign (D.parity i) (D.parity i) ^ (e.choose 2) •
-        ((show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from t.total N β) ^ e) at hh
-  rw [htr] at hh
+  let ev : End (elvF D Sc cutoff bound i Λ h) →+*
+      End (((elvF D Sc cutoff bound i Λ h).obj N) β) :=
+    (componentEndRingHom
+      (fun γ : WeightBlocks D Λ x => ContentModules D Sc cutoff bound γ.1)
+      ((elvF D Sc cutoff bound i Λ h).obj N) β).comp
+      (totalEndRingHom (elvF D Sc cutoff bound i Λ h) N)
+  have hh := congrArg ev hs
+  rw [map_zsmul, map_pow] at hh
+  have hz : ev (SKM.SuperAdjunction.rightTranspose A A (d ^ e)) = 0 := htr
+  rw [hz] at hh
+  change 0 = koszulSign (D.parity i) (D.parity i) ^ (e.choose 2) • (ev t) ^ e at hh
   let s : ℤ := koszulSign (D.parity i) (D.parity i) ^ (e.choose 2)
   have hss : s * s = 1 := by
     dsimp [s]
     rw [← mul_pow, koszulSign_mul_self, one_pow]
-  have hnil :
-      (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from t.total N β) ^ e = 0 := by
+  have hnil : (ev t) ^ e = 0 := by
     calc
-      _ = s • (s • ((show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from
-          t.total N β) ^ e)) := by rw [smul_smul, hss, one_smul]
+      _ = s • (s • ((ev t) ^ e)) := by rw [smul_smul, hss, one_smul]
       _ = 0 := by rw [← hh]; simp
+  change (show End (((elvF D Sc cutoff bound i Λ h).obj N) β) from t.total N β) ^ e = 0 at hnil
   simpa only [end_total_eq_app t (D.parity i) ht] using hnil
 
 end OddMath.QuiverHecke.ELVOld
