@@ -32,6 +32,7 @@ private theorem product_commute_sq_of_anticommute {R : Type*} [Ring R] {x y : R}
 abbrev productEndComponent (M : ∀ a, C a) (f : End M) (a : A) : End (M a) := f a
 
 /-- Actual endomorphisms of a product object are units when every component is. -/
+omit [∀ a, Preadditive (C a)] in
 theorem productEnd_isUnit (M : ∀ a, C a) (f : End M)
     (hf : ∀ a, IsUnit (productEndComponent C M f a)) : IsUnit f := by
   classical
@@ -105,7 +106,7 @@ theorem superfunctorEnd_isUnit
   classical
   let es : ∀ M, F.obj M ≅ F.obj M := fun M => {
     hom := x.app 0 M
-    inv := ↑((hunit M).unit⁻¹)
+    inv := (↑((hunit M).unit⁻¹) : End (F.obj M))
     hom_inv_id := by
       change (↑((hunit M).unit⁻¹) : End (F.obj M)) *
         (show End (F.obj M) from x.app 0 M) = 1
