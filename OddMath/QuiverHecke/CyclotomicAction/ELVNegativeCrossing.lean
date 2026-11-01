@@ -249,11 +249,19 @@ theorem negativeCrossingAssembly_bijective (p : ZMod 2)
     change inputCapVector D Sc cutoff j v m f = inputCapVector D Sc cutoff j v m g at hcap
     let d : LinearMap.ker (toCyclotomic D Sc cutoff j.1 v v) :=
       ⟨f - g, by
-        rw [LinearMap.mem_ker, map_sub]
-        exact sub_eq_zero.mpr hcross⟩
+        change toCyclotomic D Sc cutoff j.1 v v (f - g) = 0
+        have hs : toCyclotomic D Sc cutoff j.1 v v (f - g) =
+            toCyclotomic D Sc cutoff j.1 v v f - toCyclotomic D Sc cutoff j.1 v v g :=
+          map_sub (toCyclotomic D Sc cutoff j.1 v v) f g
+        exact hs.trans (sub_eq_zero.mpr hcross)⟩
     have hd : d = 0 := hb.1 (by
-      change inputCapVector D Sc cutoff j v m (f - g) = _
-      rw [map_sub, hcap, sub_self, map_zero])
+      change inputCapVector D Sc cutoff j v m (f - g) =
+        inputCapVector D Sc cutoff j v m (0 : Source D Sc cutoff j.1 v v)
+      have hs : inputCapVector D Sc cutoff j v m (f - g) =
+          inputCapVector D Sc cutoff j v m f - inputCapVector D Sc cutoff j v m g :=
+        map_sub (inputCapVector D Sc cutoff j v m) f g
+      exact hs.trans ((sub_eq_zero.mpr hcap).trans
+        (inputCapVector D Sc cutoff j v m).map_zero.symm))
     exact sub_eq_zero.mp (congrArg Subtype.val hd)
   · rintro ⟨n, b⟩
     obtain ⟨z, hz⟩ := toCyclotomic_surjective_of_nonpositive_height
