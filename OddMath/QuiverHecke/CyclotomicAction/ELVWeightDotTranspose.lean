@@ -44,7 +44,7 @@ private def totalEndRingHom
     change (0 : End (F.obj M)) + 0 = 0
     exact add_zero 0
   map_one' := by
-    change (𝟙 (F.obj M) : End (F.obj M)) + 0 = 1
+    change (𝟙 (F.obj M) : End (F.obj M)) + 0 = (1 : End (F.obj M))
     exact add_zero _
   map_add' f g := by
     change (f.app 0 M + g.app 0 M) + (f.app 1 M + g.app 1 M) =
