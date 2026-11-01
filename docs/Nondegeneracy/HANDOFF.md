@@ -103,19 +103,3 @@ inside those actual corners. Its odd quadratic specialization proves a unit
 first dot and injective second dot with explicit defining relations. Source and
 concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
 full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
-
-## Canonical module parity and the actual counit
-
-Candidate source modules `ELVContentParity`, `ELVInductionParityComparison`
-and `ELVOldSupermodules` construct the module parity operation, its canonical
-transport through actual balanced induction, the whole counit comparison,
-and actual representable supermodules on the existing old quotient category.
-These terms await their full CI gate; they are not a completed factor action.
-
-The next specialization identifies `CyclotomicCrossingTensor.coefficient 1`
-with the parity-shifted restriction of the old representable. Retain the
-existing coend, full coefficient parity, independently defined counit and
-all target arrows. Then transport through coefficient truncation and exact
-content, and compare actual dotted counits with the already specified
-input contraction rows. Neither ordinary-polynomial factors nor an
-unspecified kernel isomorphism supplies this comparison.
