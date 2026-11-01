@@ -8,12 +8,11 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Odd categorical inverse | Raw arbitrary-Hom inverse verified; actual-map attachment has prerequisites | Full source, leading, division, snake, pivot and input-matrix chain (#828), coefficient module (#769), canonical source/shifted input comparison (#838), old induction representables (#806) | Finish ordinary higher-row normalization; prove the first-row ordered crossing mate identity; assemble the prescribed shifted finite module family with naturality |
-| Even categorical inverse | Leading boundary verified; raw matrices under verification | Polynomial boundary, monic right-product bounds, recurrence and arbitrary-Hom leading equivalence (#839); generic module division (#843) | Integrate even division, pivots and both raw matrices after CI; attach verified coefficient(0) source/counit (#859), actual dot, mate and shifted module family |
+| Arbitrary-module categorical inverse | Representable component inverses verified; kernel transfer has explicit prerequisites | All four actual component inverses (#889), generic arbitrary-module kernel tensor (#878) | Finish concrete graded kernel matrices, coend realizations, finite SVec assembly and fixed-content inclusion/extension bridge; then prove arbitrary-module bijectivity |
 | Independent content braid | Ready alongside inverse work | Canonical carriers and independent triple maps (#832), distinct slides (#836), coherent composition comparisons | Prove composed independently whiskered braid on the same maps, with ordered correction polynomial, parameter twist and equal-colour minus |
-| Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is scoped-checked in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
+| Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
-| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Literal source-norm specialization; compatible factors, crossing coefficients and whole inverse/relation fields |
+| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even literal source norm verified (#844), odd scoped-checked (#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Coordinate comparisons ready; final instance blocked | Joint full-coefficient source detection (#812, #819, #820), whole-word evaluation, abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
@@ -26,24 +25,41 @@ Read [DeformedCyclotomicTopRow](DeformedCyclotomicTopRow.md),
 [DeformedMatrixComparison](DeformedMatrixComparison.md).
 
 Use the independently defined balanced source, alpha, pprime, short crossing
-and quotient maps. The extraction splitting and source/polynomial coordinates
-are proved; do not replace the prescribed source by its image. The odd
-arbitrary-Hom raw matrix now covers both height ranges and zero corners
-(#828). The even leading boundary is verified (#839), while even raw matrix
-extensions are under verification. Neither is alone an identified categorical
-factor inverse.
+and quotient maps. The arbitrary-Hom raw inverse and its actual categorical
+attachment are now verified for both height signs and both moving parities
+(#828/#889). The actual first row is the ordered crossing mate; the other
+entries are the literal ordinary unit/dotted cap maps in the prescribed
+parity-shifted coordinates. For even moving colours, canonical J uses
+coefficient(0) and every cap row has the constant negative ordinary
+normalization (#862). Retain the printed odd profiles and the separate
+self-colour leading unit. These are representable component inverses;
+arbitrary-module inversion is still a separate obligation.
 
-The coefficient(1) moving supermodule is verified in #769. Canonical induced
-J and the shifted cap/dot identification are verified in #838; ordinary
-higher-row normalization remains under verification. The first-row
-ordered crossing mate identity is the decisive remaining actual-map step.
-The ordinary positive polynomial columns and the parity-shifted finite module
-family must use the printed profiles of DeformedMatrixComparison §4.
-For even moving colours use coefficient(0), even J and the constant negative
-ordinary counit; the comparison in #859 is full-CI verified. Its raw operator attachment,
-ordinary dotted-row normalization and both matrix transfers are under verification. Do not insert odd
-higher-row scalars or output twists into the even case. Retain the separate
-self-colour leading unit.
+### Arbitrary-module kernel transfer
+
+The generic coefficient-kernel tensor isomorphism is verified (#878).
+Concrete Hom-kernel and IndRes realizations, finite products and grading are
+scoped-checked in #883/#886/#888/#890/#904 and successor branches; they still
+need full CI. The actual finite SVec maps and even inverses are scoped-checked
+in #896. The fixed-content counts in #900/#903 use the exact content height
+Q−S, so one finite count applies throughout each block. It is not a constant
+on the entire old category.
+
+Build the actual ordinary-right kernel maps and prove their pointwise
+bijectivity using these fixed-content inverses. Keep the literal action
+a ↦ precomposition by a, with its verified tensor covariance; it must not be
+silently identified with a supernatural representing map that includes
+projection and twist. Tensor the resulting kernel isomorphism with an
+arbitrary input module, and identify both endpoints with the actual action
+modules, including grading, shifts and finite sums.
+
+The fixed-content kernel is indexed by its full content subcategory, while
+the established old induction coend ranges over the entire old category.
+An explicit realization bridge is required. Fully faithful induction along
+the content inclusion must recover the original module after restriction,
+and its append comparison must agree with the chosen action. Do not assume
+an equivalence between content modules and arbitrary modules on the entire
+old category.
 
 Keep arbitrary old endpoints, empty Hom corners, height zero, full exterior
 coefficients and source/target twists explicit. Other colours' exterior
@@ -53,8 +69,9 @@ coefficients are not a commutative ground ring.
 
 Use existing whole associativity and independent single-letter dots and pair
 crossings. Canonical carriers and foundational relations are verified in
-#832, distinct slides in #836. The composed independently whiskered braid
-remains open. Retain intermediate-content transports, ordered polynomial
+#832, distinct slides in #836. The composed prefix, corrected and uncorrected component braids and natural
+crossing families are scoped-checked in #892/#894/#899/#901/#906. Full CI,
+whole-transformation relations and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
 coefficients, full kernel parity and equal-colour crossing normalization.
 
 A full-ELV factor family still requires the categorical inverse, these
@@ -78,7 +95,7 @@ Hom for finite colours. All three are full-CI verified.
 Weighted module/map/isomorphism descent is verified in #825. The actual
 quotient-induction counit is an even module isomorphism (#835); old induction
 preserves the weighted annihilator, and its descended module is pointwise
-isomorphic to truncated append induction (#840). Input-module naturality is now scoped-checked in #868. Finish chosen
+isomorphic to truncated append induction (#840). Input-module naturality for every supernatural module map is verified in #868. Finish chosen
 dot/crossing/adjunction compatibility, then content/weight transport.
 
 Keep the literal weighted coefficient ideal, including all odd generators.
@@ -94,12 +111,14 @@ verified in #813/#814; untruncated content-ring and append laws in #823.
 The old content category and genuine probe module are verified in #831,
 scalar module factorization in #842.
 
-Finish the ordinary quotient/action and induction comparison, retaining the
-exact dots, adjunction and inverse matrices. Scalar induction closure, exact
-ideal images, ordinary quotient categories and append comparison are under
-verification. The reverse matrix-entry cyclotomic-ideal lemma is a concrete
-prerequisite for the direct height-tensor inverse; no flatness hypothesis is
-needed for that step.
+The exact scalar ideal images, ordinary quotient category, append, literal
+word-corner equivalences and ordinary dot units are verified in #891.
+The reverse matrix-entry cyclotomic-ideal lemma is verified in #863.
+The chosen old-to-ordinary induction module comparison and quotient-inverse
+unit-tensor formula are scoped-checked in #885/#897. Finish their whole
+generator formula and the exact dot, adjunction and inverse-matrix
+comparison. The signed ordinary induction-dot unit is scoped-checked in
+#893; no finite-dimensionality premise is needed for that unit.
 
 Scalar specialization is not faithful on the full coefficient algebra.
 Positive-weight coefficient truncation cannot specialize to nonnilpotent
@@ -113,8 +132,9 @@ actual adjunction transpose bounds (#790), and prescribed transposed norm
 units (#811). The reservoir Sigma interface accepts literal transposed
 source norms and target denominator units (#834); old whole-dot nilpotence
 remains a sufficient corollary. Inverse-unit mate criteria are verified in
-#817. The actual module-category universe instance is verified in #861. Next
-specialize the literal source norms. Do not assume a common exponent over
+#817. The actual module-category universe instance is verified in #861. The literal even source norm is verified in #844; the odd source norms are
+scoped-checked in #882. Construct the prescribed crossing coefficient from
+the target norm unit and prove the actual mixed mate is an isomorphism. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
 ## Final synthesis and verification
