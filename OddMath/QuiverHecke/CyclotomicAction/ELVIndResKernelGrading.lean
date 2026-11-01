@@ -75,6 +75,22 @@ theorem coefficientSpace_eq (t v : D) :
     BalancedKernelTensor.coefficientSpace (coefficientGrading (k := k) J t) v =
       BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t := rfl
 
+/-- Sum projection with the coefficient exposed as a raw category arrow. -/
+theorem component_proj_tensor (v t : D) (q : ZMod 2) (s : C)
+    (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
+    (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj q
+        (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) =
+      BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
+          (proj k q g) (proj k 0 b) +
+        BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
+          (proj k (q + 1) g) (proj k 1 b) := by
+  have h := BalancedInduction.proj_tensor J (J ⋙ homModule (k := k) v) t q s g b
+  change _ = BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
+      (proj k q g) ((homSVec k D v (J.obj s)).proj 0 b) +
+    BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s
+      (proj k (q + 1) g) ((homSVec k D v (J.obj s)).proj 1 b) at h
+  simpa only [homSVec_proj] using h
+
 /-- Ordinary precomposition has the source arrow's full parity. -/
 theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
     (ha : a ∈ parity (R := k) v w p) (t : D) :
@@ -91,13 +107,14 @@ theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
   intro q
   apply BalancedInduction.hom_ext
   intro s g b
+  change w ⟶ J.obj s at b
   have hl : (Linear.leftComp k (J.obj s) a :
       homSVec k D w (J.obj s) ⟶ homSVec k D v (J.obj s)) ∈
       parity (R := k) (homSVec k D w (J.obj s)) (homSVec k D v (J.obj s)) p := by
     apply SVec.mem_parityHom_of_apply_mem
     intro r c hc
     apply (mem_homSVec_part_iff k).2
-    simpa only [add_comm p r] using
+    simpa only [Linear.leftComp_apply, add_comm p r] using
       comp_mem ha ((mem_homSVec_part_iff k).1 hc)
   have h0 := SVec.apply_proj_of_mem hl 0 b
   have h1 := SVec.apply_proj_of_mem hl 1 b
@@ -110,8 +127,7 @@ theorem precompose_mem {v w : D} {p : ZMod 2} (a : v ⟶ w)
     (BalancedInduction.superspace J (J ⋙ homModule (k := k) v) t).proj (q + p)
       (precompose (k := k) J a t
         (BalancedInduction.tensor J (J ⋙ homModule (k := k) w) s g b))
-  simp only [BalancedInduction.proj_tensor, map_add, precompose_tensor,
-    homSVec_proj]
+  simp only [component_proj_tensor, map_add, precompose_tensor]
   rcases parity_eq_zero_or_one p with rfl | rfl
   · simp only [add_zero] at h0 h1 ⊢
     rw [← h0, ← h1]
