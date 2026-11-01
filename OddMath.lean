@@ -171,6 +171,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputOperators
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputPivots
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalInputMatrix
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotColumns
+import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedMatrixFamilies
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapInput
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedSourceLinearEquiv
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCapComparison
