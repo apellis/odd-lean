@@ -34,8 +34,8 @@ example : IsUnit (cyclotomicBlockDot D Sc a [] [] () 1) := by
 
 
 example : IsUnit (cyclotomicRepeatedDot D Sc
-    (probePolynomial (probeDotExponent D) (fun _ => 3)) 3 () 3) :=
-  probeRepeated_dots_isUnit D Sc (fun _ => 3) 3 () 3 (by omega)
+    (probePolynomial (probeDotExponent D) (fun _ => 5)) 3 () 3) :=
+  probeRepeated_dots_isUnit D Sc (fun _ => 5) 3 () 3 (by omega)
 
 end ProbeFirstDotConsumer
 
