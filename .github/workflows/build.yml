@@ -76,6 +76,38 @@ jobs:
           restore-keys: |
             categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+      # Fail on a changed producer or its consumer before building unrelated modules.
+      # Lake reuses these outputs in the mandatory full build and NonVacuity gate below.
+      - name: Check changed Lean modules and paired consumers
+        if: github.event_name == 'pull_request' && steps.scope.outputs.docs_only != 'true'
+        env:
+          LEAN_NUM_THREADS: 2
+          SCOPED_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          targets=()
+          while IFS= read -r -d '' path; do
+            case "$path" in
+              OddMath/*.lean)
+                module="${path%.lean}"
+                targets+=("+${module//\//.}")
+                consumer="scripts/NonVacuity/${path##*/}"
+                if [ -f "$consumer" ]; then
+                  module="${consumer#scripts/}"
+                  module="${module%.lean}"
+                  targets+=("+${module//\//.}")
+                fi
+                ;;
+              scripts/NonVacuity/*.lean)
+                module="${path#scripts/}"
+                module="${module%.lean}"
+                targets+=("+${module//\//.}")
+                ;;
+            esac
+          done < <(git diff --diff-filter=AM --name-only -z "$SCOPED_BASE" HEAD -- OddMath scripts/NonVacuity)
+          if [ "${#targets[@]}" -gt 0 ]; then
+            mapfile -t targets < <(printf '%s\n' "${targets[@]}" | sort -u)
+            lake build --wfail "${targets[@]}" < /dev/null
+          fi
       # The largest modules need up to about 6 GB and the runner has 16 GB: two concurrent Lean
       # processes.
       - name: Build
