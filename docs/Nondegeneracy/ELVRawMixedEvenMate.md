@@ -1,14 +1,7 @@
 # Even dotted mate of the raw coefficient
 
-The even arbitrary-input coefficient is specialized to ΠH≫F for its
-prescribed dotted mate. The existing generic chosen-transpose norm producer
-supplies the source difference unit. The entire norm producer remains a function on arbitrary native superfunctors. The candidate `mixedSourceNorm_ofTranspose` identifies the norm with its prescribed mixed source operators while the four categories and adjunction remain abstract. The ELV theorem then specializes this identity without unfolding the entire actual adjunction and dot. The strict reassociation remains `sourceNorm_ofProducer`; no product-unit proof is repeated.
+The even arbitrary-input coefficient is specialized to ΠH≫F for its prescribed dotted mate. The proposed proof factors the generic reassociation through `sourceNorm_ofProducer` and `mixedSourceNorm_ofTranspose`. The restriction probe supplies `restrictionSourceNorm` at the underlying product carrier. Converting that source norm to the raw coefficient's chosen weight-space Hom category remains unverified; the proposed actual even-source and dotted-mate statements are not established.
 
-The raw coefficient's two proved inverse identities then supply the generic
-even dotted-mate criterion under the same existing Hom-shift witness. The
-proposed actual producer assumes no new nilpotence, support, commutation,
-or restriction-factorization input.
+The raw coefficient's existing two inverse identities would then supply the generic even dotted-mate criterion under the same Hom-shift witness. No new nilpotence, support, commutation, or restriction-factorization input is assumed. Both public theorem statements retain their original hypotheses and conclusions.
 
-An existing even probe/full-ELV consumer at degree6, with both Hom shifts
-nontrivial, is prepared. This source and consumer are proposed and unverified;
-CI is the verification gate.
+The degree-six even probe/full-ELV consumer, with both Hom shifts nontrivial, is prepared. The specialized producer and paired consumer remain unverified.
