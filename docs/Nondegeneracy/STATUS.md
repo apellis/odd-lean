@@ -93,7 +93,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Actual representable matrix inverses | The actual ordered crossing mate, literal ordinary unit/dotted cap entries and canonical parity-shifted finite coordinates give component linear equivalences for both height signs and both moving parities, including zero counts. Full-CI verified in [#889](https://github.com/apellis/odd-lean/pull/889). Arbitrary-module inversion remains open; SVec assembly and content-uniform counts are scoped-checked in #896/#903 | `ELVActualMatrixFamilies` and its odd/even comparison chain |
 | Arbitrary-module coefficient-kernel tensor | A coefficient-kernel isomorphism induces an isomorphism after balanced tensoring with any module, without flatness. Full-CI verified in [#878](https://github.com/apellis/odd-lean/pull/878). Finite kernel products and their tensor equivalence are verified in #890. The concrete kernel matrix, its grading and its source/target realization remain under verification | `ELVKernelTensor` |
 | Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and its generator formula remain under verification | `ELVProbeOrdinaryCategory` and companion probe comparison modules |
-| Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are scoped-checked in #882; constructing the prescribed coefficient and actual reservoir mate is a further step | `ELVMixedSourceNorms` and companion norm modules |
+| Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882; the constructed coefficients and actual reservoir mates are scoped-checked in #913/#917 | `ELVMixedSourceNorms` and companion norm modules |
 
 ## Remaining critical chain
 
@@ -116,8 +116,10 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 3. Instantiate the verified target denominator and transposed source-norm
    interfaces (#811, #817, #834) on compatible full-ELV factors. The actual
    module-category universes and even source norm are verified (#861, #844);
-   finish the odd source norms, construct the prescribed coefficients and
-   actual mixed mate isomorphisms. Ordinary scalar probe categories, word
+   the odd source norms are also verified (#882). The prescribed coefficients
+   and actual mixed mate isomorphisms are scoped-checked in #913/#917;
+   finish their full-package integration and the literal coefficient-input
+   assembly. Ordinary scalar probe categories, word
    corners and dot units are verified (#891); chosen ordinary induction,
    generator and inverse-matrix comparisons remain. Keep separate
    target-content exponents. Supply the whole swapped inverse/relation fields.

@@ -12,7 +12,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Independent content braid | Ready alongside inverse work | Canonical carriers and independent triple maps (#832), distinct slides (#836), coherent composition comparisons | Prove composed independently whiskered braid on the same maps, with ordered correction polynomial, parameter twist and equal-colour minus |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
-| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even literal source norm verified (#844), odd scoped-checked (#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
+| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Coordinate comparisons ready; final instance blocked | Joint full-coefficient source detection (#812, #819, #820), whole-word evaluation, abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
@@ -141,8 +141,10 @@ units (#811). The reservoir Sigma interface accepts literal transposed
 source norms and target denominator units (#834); old whole-dot nilpotence
 remains a sufficient corollary. Inverse-unit mate criteria are verified in
 #817. The actual module-category universe instance is verified in #861. The literal even source norm is verified in #844; the odd source norms are
-scoped-checked in #882. Construct the prescribed crossing coefficient from
-the target norm unit and prove the actual mixed mate is an isomorphism. Do not assume a common exponent over
+verified in #882. The prescribed coefficients, actual dotted-mate
+isomorphisms and coefficient parity are scoped-checked in #913/#917/#919.
+Finish their full-package integration and the remaining literal
+CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
 ## Final synthesis and verification
