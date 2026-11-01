@@ -73,4 +73,64 @@ theorem product_square_sum_isUnit (M : ∀ a, C a) (x y : End M)
     (by simpa [pow_two] using ((hc.2.symm.mul_right hc.2.symm).symm))
   simpa only [add_comm] using hu
 
+/-- An even supernatural endomorphism is invertible when its even component
+is invertible at every object. The inverse is natural and even; no common
+polynomial expression or nilpotence exponent is required. -/
+theorem superfunctorEnd_isUnit
+    {R : Type*} [CommRing R]
+    {B : Type*} [Category B] [Preadditive B] [Linear R B]
+    [StringDiagrams.Supercategory R B]
+    {E : Type*} [Category E] [Preadditive E] [Linear R E]
+    [StringDiagrams.Supercategory R E]
+    (F : StringDiagrams.Supercategory.Superfunctor R B E) (x : End F)
+    (heven : x ∈ StringDiagrams.Supercategory.parity (R := R) F F 0)
+    (hunit : ∀ M, IsUnit (x.app 0 M)) : IsUnit x := by
+  classical
+  letI : ∀ M, IsIso (x.app 0 M) := fun M => (isUnit_iff_isIso _).1 (hunit M)
+  let e : F.toFunctor ≅ F.toFunctor :=
+    NatIso.ofComponents (fun M => asIso (x.app 0 M))
+      (by intro M N f; exact x.toNatTrans.naturality f)
+  let b : End F := StringDiagrams.Supercategory.SuperNatTrans.ofNatTrans e.inv
+    (fun M => by
+      change (asIso (x.app 0 M)).inv ∈
+        StringDiagrams.Supercategory.parity (R := R) _ _ 0
+      exact StringDiagrams.Supercategory.inv_mem
+        (asIso (x.app 0 M)) (x.app_mem 0 M))
+  have hx1 : ∀ M, x.app 1 M = 0 := fun M =>
+    StringDiagrams.Supercategory.Superfunctor.app_eq_zero_of_mem heven (by decide) M
+  have hxb : x ≫ b = 𝟙 F := by
+    apply StringDiagrams.Supercategory.Superfunctor.hom_ext_parity
+    · intro M
+      change x.app 0 M ≫ e.inv.app M + x.app 1 M ≫ 0 = 𝟙 _
+      simpa only [Limits.comp_zero, add_zero] using
+        (asIso (x.app 0 M)).hom_inv_id
+    · intro M
+      change x.app 0 M ≫ 0 + x.app 1 M ≫ e.inv.app M = 0
+      simp only [hx1, Limits.comp_zero, Limits.zero_comp, add_zero]
+  have hbx : b ≫ x = 𝟙 F := by
+    apply StringDiagrams.Supercategory.Superfunctor.hom_ext_parity
+    · intro M
+      change e.inv.app M ≫ x.app 0 M + 0 ≫ x.app 1 M = 𝟙 _
+      simpa only [Limits.zero_comp, add_zero] using
+        (asIso (x.app 0 M)).inv_hom_id
+    · intro M
+      change e.inv.app M ≫ x.app 1 M + 0 ≫ x.app 0 M = 0
+      simp only [hx1, Limits.comp_zero, Limits.zero_comp, add_zero]
+  exact ⟨⟨x, b, hbx, hxb⟩, rfl⟩
+
+/-- Componentwise units on the actual target product assemble to a unit of
+the whole even supernatural endomorphism. Both object and content indices
+may be infinite. -/
+theorem superfunctorProductEnd_isUnit
+    {R : Type*} [CommRing R]
+    [∀ a, Linear R (C a)] [∀ a, StringDiagrams.Supercategory R (C a)]
+    {B : Type*} [Category B] [Preadditive B] [Linear R B]
+    [StringDiagrams.Supercategory R B]
+    (F : StringDiagrams.Supercategory.Superfunctor R B (∀ a, C a))
+    (x : End F)
+    (heven : x ∈ StringDiagrams.Supercategory.parity (R := R) F F 0)
+    (hunit : ∀ M a, IsUnit (x.app 0 M a)) : IsUnit x :=
+  superfunctorEnd_isUnit F x heven
+    (fun M => productEnd_isUnit C (F.obj M) (x.app 0 M) (hunit M))
+
 end OddMath.QuiverHecke.SwappedAssembly
