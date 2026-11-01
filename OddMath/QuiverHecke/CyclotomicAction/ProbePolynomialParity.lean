@@ -51,7 +51,8 @@ theorem probePolynomial_parity (D : SKM.Datum I X) (m : I → ℕ) :
           (by rw [he]; decide) hn)
     rw [probePolynomial_eq_expand, Polynomial.natDegree_expand, hi, he]
     obtain ⟨r, rfl⟩ := hd
-    simp only [nsmul_eq_mul, Nat.cast_mul, mul_one]
-    rw [show (2 : ZMod 2) = 0 by decide, zero_mul, mul_zero]
+    have hz : (2 : ℕ) • (1 : ZMod 2) = 0 := by decide
+    rw [Nat.mul_comm 2 r, mul_smul, mul_smul]
+    rw [hz, smul_zero, smul_zero]
 
 end OddMath.QuiverHecke
