@@ -83,10 +83,18 @@ private theorem adjointTranspose_total
     (SKM.SuperAdjunction.rightTranspose adj adj f).total N =
       adj.unit.total (F.obj N) ≫ F.map (f.total (F.obj N) ≫ adj.counit.total N) := by
   rw [SKM.SuperAdjunction.rightTranspose_apply]
-  simp only [Superfunctor.comp_total]
-  simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom,
-    end_total_id, Category.id_comp, Category.comp_id]
-  rw [total_whiskerLeft, total_whiskerRight, Superfunctor.comp_total, total_whiskerLeft]
+  erw [Superfunctor.comp_total, Superfunctor.comp_total,
+    Superfunctor.comp_total, Superfunctor.comp_total]
+  simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom]
+  erw [end_total_id, end_total_id]
+  erw [Category.id_comp, Category.id_comp, Category.comp_id]
+  erw [total_whiskerLeft, total_whiskerRight, Superfunctor.comp_total]
+  rfl
+
+private theorem ringHom_zsmul_pow {R S : Type*} [Ring R] [Ring S]
+    (φ : R →+* S) (s : ℤ) (x : R) (n : ℕ) :
+    φ (s • x ^ n) = s • (φ x) ^ n := by
+  rw [map_zsmul, map_pow]
 
 /-- The actual dot transpose through the actual induction/restriction adjunction. -/
 abbrev elvActionDotTranspose : End (elvF D Sc cutoff bound i Λ h) :=
@@ -163,12 +171,13 @@ theorem elvActionDotTranspose_component_pow_zero [Finite I]
       (fun γ : WeightBlocks D Λ x => ContentModules D Sc cutoff bound γ.1)
       ((elvF D Sc cutoff bound i Λ h).obj N) β).comp
       (totalEndRingHom (elvF D Sc cutoff bound i Λ h) N)
-  have hh := congrArg ev hs
-  rw [map_zsmul, map_pow] at hh
+  let s : ℤ := koszulSign (D.parity i) (D.parity i) ^ (e.choose 2)
+  have hh : ev (SKM.SuperAdjunction.rightTranspose A A (d ^ e)) = s • (ev t) ^ e := by
+    calc
+      _ = ev (s • t ^ e) := congrArg ev hs
+      _ = _ := ringHom_zsmul_pow ev s t e
   have hz : ev (SKM.SuperAdjunction.rightTranspose A A (d ^ e)) = 0 := htr
   rw [hz] at hh
-  change 0 = koszulSign (D.parity i) (D.parity i) ^ (e.choose 2) • (ev t) ^ e at hh
-  let s : ℤ := koszulSign (D.parity i) (D.parity i) ^ (e.choose 2)
   have hss : s * s = 1 := by
     dsimp [s]
     rw [← mul_pow, koszulSign_mul_self, one_pow]
