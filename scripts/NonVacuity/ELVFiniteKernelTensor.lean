@@ -52,6 +52,15 @@ example (z : BalancedKernelTensor.Obj (piKernel kernels) coeffModule) :
 
 end FiniteKernelTensorConsumer
 
+section UniverseContract
+universe u
+open CategoryTheory Opposite StringDiagrams
+open OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
+variable {k C : Type u} [CommRing k] [Category.{u} C]
+example (m : ℕ) (K : Option (Fin m) → Cᵒᵖ ⥤ ModuleCat k) (M : C ⥤ SVec k) :
+    Obj (piKernel K) M ≃ₗ[k] (∀ a, Obj (K a) M) := piEquiv K M
+end UniverseContract
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv

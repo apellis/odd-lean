@@ -12,7 +12,7 @@ noncomputable section
 open CategoryTheory Opposite StringDiagrams TensorProduct
 namespace OddMath.QuiverHecke.ELVOld.BalancedKernelTensor
 universe u
-variable {k C ι : Type u} [CommRing k] [Category.{u} C]
+variable {k C : Type u} {ι : Type} [CommRing k] [Category.{u} C]
 variable (K : ι → Cᵒᵖ ⥤ ModuleCat k)
 
 /-- Pointwise finite product of ordinary-right coefficient kernels. -/
