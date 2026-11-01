@@ -245,6 +245,7 @@ import OddMath.QuiverHecke.CyclotomicAction.LeadingMoveSquareProduct
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyTarget
 import OddMath.QuiverHecke.CyclotomicAction.AppendBalance
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyMap
+import OddMath.QuiverHecke.CyclotomicAction.CyclotomicMatrixEntries
 import OddMath.QuiverHecke.CyclotomicAction.AppendMackeyRho
 import OddMath.QuiverHecke.CyclotomicAction.PrependTwistCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.AppendTensorRightDot
@@ -1769,6 +1770,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarHomDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryCategory
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryWordCorner
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
