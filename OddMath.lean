@@ -1723,3 +1723,5 @@ import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
+
+import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner

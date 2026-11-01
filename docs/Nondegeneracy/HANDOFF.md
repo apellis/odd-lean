@@ -83,3 +83,15 @@ Finite-dimensional `isUnit_right` corollaries and nonzero rational matrix
 consumers pass scoped warning-free Lean checks with allowed axioms.
 Full CI is a separate merge gate. These ring statements still require
 application to the specialized word corners to give all-position probe units.
+
+## Actual probe word corners
+
+`ProbeWordCorner` constructs the unital map from the affine word endomorphism
+ring into the actual cyclotomic idempotent corner and transports the exact
+same-colour nilHecke relations. Dot injectivity propagates inside those corners
+for both parities. In the odd quadratic-probe specialization the first dot is
+explicitly a unit and the second dot is injective, with no additional inverse,
+finite-dimensionality or nonzero-corner premise. Source and concrete rational
+rank-one importing consumer pass scoped checks, including all 29 owned declarations
+in the axiom audit. General cofinal probe powers, arbitrary positions and the
+distinct-colour corner comparison remain separate prerequisites; full CI pending.
