@@ -56,7 +56,8 @@ theorem elvPostDot_difference_isUnit [Finite I] (hi : D.parity i = 0)
   · exact Submodule.sub_mem _
       (hi ▸ elvPostDot_mem D Sc cutoff bound i Λ h F) hx
   · intro M
-    change IsUnit ((elvPostDot D Sc cutoff bound i Λ h F).app 0 M - X.app 0 M)
+    change IsUnit (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+      (elvPostDot D Sc cutoff bound i Λ h F).app 0 M - X.app 0 M)
     apply product_difference_isUnit
       (fun δ : WeightBlocks D Λ y => ContentModules D Sc cutoff bound δ.1)
     · exact fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 0 hx M δ
@@ -82,7 +83,8 @@ theorem elvPostDot_square_difference_isUnit [Finite I] (hi : D.parity i = 1)
   · intro M
     have hx0 := Superfunctor.app_eq_zero_of_mem hx (by decide : (0 : ZMod 2) ≠ 1) M
     have hy0 := Superfunctor.app_eq_zero_of_mem hy (by decide : (0 : ZMod 2) ≠ 1) M
-    change IsUnit ((X ^ 2 - elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
+    change IsUnit (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+      (X ^ 2 - elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
     simp only [Superfunctor.sub_app, pow_two, End.mul_def, Superfunctor.comp_app_zero,
       hx0, hy0, Limits.zero_comp, zero_add]
     apply product_square_difference_isUnit
@@ -110,7 +112,8 @@ theorem elvPostDot_square_sum_isUnit [Finite I] (hi : D.parity i = 1)
   · intro M
     have hx0 := Superfunctor.app_eq_zero_of_mem hx (by decide : (0 : ZMod 2) ≠ 1) M
     have hy0 := Superfunctor.app_eq_zero_of_mem hy (by decide : (0 : ZMod 2) ≠ 1) M
-    change IsUnit ((X ^ 2 + elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
+    change IsUnit (show End ((elvPostInduction D Sc cutoff bound i Λ h F).obj M) from
+      (X ^ 2 + elvPostDot D Sc cutoff bound i Λ h F ^ 2).app 0 M)
     simp only [Superfunctor.add_app, pow_two, End.mul_def, Superfunctor.comp_app_zero,
       hx0, hy0, Limits.zero_comp, zero_add]
     apply product_square_sum_isUnit
