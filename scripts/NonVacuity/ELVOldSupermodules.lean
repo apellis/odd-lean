@@ -3,7 +3,7 @@ import Lean.Util.CollectAxioms
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OldSupermodulesConsumer
-open OddMath.QuiverHecke.ELVOld
+open OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
