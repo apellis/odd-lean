@@ -102,7 +102,6 @@ theorem longHomExtraction_evenMoving (p : ZMod 2) (i : I) (hi : D.parity i = 0)
       longHomCoordinate_evenMoving_zero D Sc cutoff p i hi y z]
     simp only [evenLongShift, Finsupp.lmapDomain_apply]
     rw [Finsupp.mapDomain_of_notMem_range _ _ (by simp)]
-    rfl
   | succ m =>
     rw [longHomExtraction_apply]
     have h := longHomCoordinate_evenMoving_succ D Sc cutoff p i hi y m z
