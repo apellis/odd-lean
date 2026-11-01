@@ -19,3 +19,7 @@ hypothesis on the resulting polynomial.
 
 Transport to weight-product successor blocks and packaging the remaining
 Rouquier action fields are separate.
+
+Evaluated powers are typed as endomorphisms of the actual SVec object before
+forming the polynomial; an untyped Hom expression does not supply the End
+multiplicative structure to instance synthesis.

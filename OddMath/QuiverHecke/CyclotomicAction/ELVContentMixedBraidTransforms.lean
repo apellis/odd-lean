@@ -77,12 +77,13 @@ theorem contentTripleDotSumTransform_evaluation (β : Multiset I) (i j : I)
     (contentETripleSuperfunctor D Sc cutoff N β i j i _ rfl) M z
   change ev (contentTripleDotSumTransform D Sc cutoff N β i j r s d) = _
   simp only [contentTripleDotSumTransform, map_sum, map_smul, map_mul, map_pow]
+  let W : SVec k := ((contentETripleTo D Sc cutoff N β i j i _ rfl).obj M).obj z
   change (∑ q ∈ Finset.range r,
     (SKM.zsign k (D.parity i * (D.parity j + q)) * d) •
-      ((((contentTripleLastDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^
+      ((show End W from ((contentTripleLastDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^
         (r - 1 - q) *
-       (((contentTripleMiddleDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^ s *
-       (((contentTripleFirstDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^ q)) = _
+       (show End W from ((contentTripleMiddleDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^ s *
+       (show End W from ((contentTripleFirstDotTransform D Sc cutoff N β i j i _ rfl).total M).total z) ^ q)) = _
   simp only [contentTripleFirstDotTransform_evaluation, contentTripleMiddleDotTransform_evaluation,
     contentTripleLastDotTransform_evaluation, contentWhiskeredDotSum]
 
