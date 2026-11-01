@@ -35,5 +35,7 @@ declarations are audited. One connected mixed asymmetric datum tests
 all four parity/height cases, with distinct endpoint orders and positive
 cutoffs. Unit windows have six and four slots; cap windows each have
 three. Every case checks both inverse products and the complete actual
-mate/unit/cap forward formula. Full CI and the global audit remain
-integration gates.
+mate/unit/cap forward formula. The complete representable closure was integrated after full build,
+global axiom audit and non-vacuity checks in
+[#889](https://github.com/apellis/odd-lean/pull/889). See [STATUS](STATUS.md)
+for the subsequent arbitrary-module transfer.
