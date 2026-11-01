@@ -20,13 +20,6 @@ def kernelSourceCoordinates (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
       (actualUnshiftedSourceModule D Sc cutoff i v.unop.word).obj t :=
   oldSourceKernelEquiv D Sc cutoff i v.unop t
 
-/-- At literal old words, the coordinates are the stored source linear map. -/
-theorem kernelSourceCoordinates_boxed (i : I) (v t : List I)
-    (z : IndResKernel.Component (k := k) (append D Sc cutoff i)
-      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)) :
-    kernelSourceCoordinates D Sc cutoff i (op ⟨v⟩) ⟨t⟩ z =
-      oldSourceKernelLinear D Sc cutoff i v t z := rfl
-
 /-- The ordinary Option-family source splits into its actual source and coefficient vector. -/
 def positiveKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
@@ -68,48 +61,32 @@ def negativeKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)�
     (r : Fin m) :
     (negativeKernelCoordinates D Sc cutoff i m v t z).2 r = z (some r) := rfl
 
-/-- Pointwise evaluation of the stored kernel coefficient equality. -/
-theorem actualMateKernelLinear_apply_component (i : I)
-    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff)
-    (z : (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v) :
-    actualMateKernelLinear D Sc cutoff i v t z =
-      actualMateKernelComponent D Sc cutoff i v.unop t z :=
-  LinearMap.congr_fun (actualMateKernelLinear_eq_component D Sc cutoff i v t) z
+/-- The row map in the same bundled kernel endpoints as the stored coefficient. -/
+def kernelMateRowLinear (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+    (t : OldCategory D Sc cutoff) :
+    (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v →ₗ[k]
+      (BalancedKernelTensor.inductionKernel (k := k) (append D Sc cutoff i)
+        ((append D Sc cutoff i).obj t)).obj v :=
+  (matrixMateRow D Sc cutoff i v.unop.word t.word).comp
+    (kernelSourceCoordinates D Sc cutoff i v t).toLinearMap
 
-/-- The stored kernel coefficient agrees with its matrix row on every source vector. -/
-def KernelMateRowIdentity (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
-    (t : OldCategory D Sc cutoff) : Prop :=
-  ∀ z : (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v,
-    actualMateKernelLinear D Sc cutoff i v t z =
-      matrixMateRow D Sc cutoff i v.unop.word t.word
-        (kernelSourceCoordinates D Sc cutoff i v t z)
-
-/-- The coefficient row at literal old-word endpoints. -/
-theorem actualMateKernelLinear_row_boxed (i : I) (v t : List I) :
-    KernelMateRowIdentity D Sc cutoff i (op ⟨v⟩) ⟨t⟩ := by
-  intro z
-  calc
-    _ = actualMateKernelComponent D Sc cutoff i ⟨v⟩ ⟨t⟩ z :=
-      actualMateKernelLinear_apply_component D Sc cutoff i (op ⟨v⟩) ⟨t⟩ z
-    _ = matrixMateRow D Sc cutoff i v t (oldSourceKernelLinear D Sc cutoff i v t z) :=
-      actualMateKernelComponent_row D Sc cutoff i v t z
-    _ = _ := congrArg (matrixMateRow D Sc cutoff i v t)
-      (kernelSourceCoordinates_boxed D Sc cutoff i v t z).symm
-
-/-- Extend a predicate on literal words to the category wrappers. -/
-private theorem oldWordPairs
-    {P : (OldCategory D Sc cutoff)ᵒᵖ → OldCategory D Sc cutoff → Prop}
-    (h : ∀ v t : List I, P (op ⟨v⟩) ⟨t⟩)
-    (v : (OldCategory D Sc cutoff)ᵒᵖ) (t : OldCategory D Sc cutoff) : P v t := by
+/-- The prescribed coefficient and row agree as maps before evaluation. -/
+theorem actualMateKernelLinear_eq_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
+    (t : OldCategory D Sc cutoff) :
+    actualMateKernelLinear D Sc cutoff i v t = kernelMateRowLinear D Sc cutoff i v t := by
   rcases v with ⟨⟨v⟩⟩
   rcases t with ⟨t⟩
-  exact h v t
+  rw [actualMateKernelLinear_eq_component]
+  rfl
 
 /-- The literal kernel-object mate coefficient is the actual inverted mate row. -/
 theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
-    (t : OldCategory D Sc cutoff) : KernelMateRowIdentity D Sc cutoff i v t :=
-  oldWordPairs D Sc cutoff
-    (P := KernelMateRowIdentity D Sc cutoff i)
-    (actualMateKernelLinear_row_boxed D Sc cutoff i) v t
+    (t : OldCategory D Sc cutoff)
+    (z : (IndResKernel.kernel (k := k) (append D Sc cutoff i) t).obj v) :
+    actualMateKernelLinear D Sc cutoff i v t z =
+      matrixMateRow D Sc cutoff i v.unop.word t.word
+        (kernelSourceCoordinates D Sc cutoff i v t z) := by
+  have h := LinearMap.congr_fun (actualMateKernelLinear_eq_row D Sc cutoff i v t) z
+  simpa only [kernelMateRowLinear, LinearMap.comp_apply, LinearEquiv.coe_toLinearMap] using h
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
