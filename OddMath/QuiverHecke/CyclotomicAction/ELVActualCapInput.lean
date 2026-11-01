@@ -107,7 +107,7 @@ theorem shiftedSourceCounit_total_tensor (i : I) (v s t : List I)
   rw [BalancedInduction.counit_tensor]
   change (twist k 1 ((oldRepresentable D Sc cutoff
     (⟨v⟩ : OldCategory D Sc cutoff)).map g)) b = _
-  rw [← Superfunctor.map_twist, oldCategory_twist]
+  rw [← Supercategory.map_twist, oldCategory_twist]
   rfl
 
 /-- The actual cap retains parity on the entire coefficient, with arbitrary endpoints. -/
