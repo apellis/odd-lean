@@ -103,3 +103,12 @@ inside those actual corners. Its odd quadratic specialization proves a unit
 first dot and injective second dot with explicit defining relations. Source and
 concrete rank-one consumer pass scoped checks and module-wide allowed-axiom audit;
 full CI is pending. Cofinal probe powers and arbitrary positions remain separate.
+
+## Prescribed crossing by height
+
+`ELVCrossingHeight` proves actual toCyclotomic injectivity in nonnegative KKO
+height, surjectivity in nonpositive KKO height, and the zero-height equivalence.
+Scope is odd moving colour and diagonal old Hom, full ELV coefficients over the
+supplied commutative ground ring. The source compiled in the #750 integration
+build; its dedicated concrete consumer and full gates are being checked here.
+This is not a complete natural factor inverse or off-diagonal theorem.
