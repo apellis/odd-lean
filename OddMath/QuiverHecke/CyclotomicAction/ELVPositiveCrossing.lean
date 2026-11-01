@@ -39,6 +39,7 @@ theorem positiveCrossingAssembly_injective (p : ZMod 2)
   rintro ⟨s, r⟩ hz
   obtain ⟨y, rfl⟩ := q_surjective D Sc cutoff j.1 v v s
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y
+  simp only [LinearMap.comp_apply] at hs
   have hm : shortCross D Sc cutoff j.1 v v y + appendOutputEmbedding D Sc cutoff j.1 v v r ∈
       LinearMap.ker (canonicalAppendTarget D Sc cutoff j.1 v (v ++ [j.1])) := by
     rw [LinearMap.mem_ker, map_add, hs]
@@ -87,8 +88,7 @@ theorem positiveCrossingAssembly_surjective (p : ZMod 2)
   refine ⟨(q D Sc cutoff j.1 v v y, r), ?_⟩
   rw [positiveCrossingAssembly_apply]
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y
-  change canonicalAppendTarget D Sc cutoff j.1 v (v ++ [j.1])
-    (shortCross D Sc cutoff j.1 v v y) = _ at hs
+  simp only [LinearMap.comp_apply] at hs
   rw [← hs, hy, map_sub, map_sub]
   have hx : pMap D Sc cutoff j.1 v (v ++ [j.1]) x ∈
       LinearMap.ker (canonicalAppendTarget D Sc cutoff j.1 v (v ++ [j.1])) := by

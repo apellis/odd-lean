@@ -49,6 +49,7 @@ theorem toCyclotomic_injective_of_nonnegative_height (p : ZMod 2)
   have he : pprime D Sc cutoff j.1 v v a = y := by
     apply ShortCrossCoordinates.shortCross_injective D Sc cutoff j.1 v v
     have hs := LinearMap.congr_fun (shortColumn_square D Sc cutoff j.1 v v) a
+    simp only [LinearMap.comp_apply] at hs
     exact hs.symm.trans (by rw [ha]; exact hx)
   have hq : pprime D Sc cutoff j.1 v v a ∈ LinearMap.ker (q D Sc cutoff j.1 v v) := by
     rw [← range_pprime_eq_ker_q]
@@ -74,8 +75,7 @@ theorem toCyclotomic_surjective_of_nonpositive_height (p : ZMod 2)
   obtain ⟨y, hy⟩ := hc
   refine ⟨q D Sc cutoff j.1 v v y, ?_⟩
   have hs := LinearMap.congr_fun (shortColumn_quotient_square D Sc cutoff j.1 v v) y
-  change canonicalAppendTarget D Sc cutoff j.1 v (v ++ [j.1])
-    (shortCross D Sc cutoff j.1 v v y) = _ at hs
+  simp only [LinearMap.comp_apply] at hs
   rw [← hs, hy, map_sub]
   have hx : pMap D Sc cutoff j.1 v (v ++ [j.1]) x ∈
       LinearMap.ker (canonicalAppendTarget D Sc cutoff j.1 v (v ++ [j.1])) := by
