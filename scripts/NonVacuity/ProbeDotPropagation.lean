@@ -24,6 +24,10 @@ example : Function.Injective (fun x : Matrix (Fin 2) (Fin 2) ℚ => oddV * x) :=
   have hh := congrArg (fun a => oddU * a) h
   simpa only [← mul_assoc, oddU_mul_self, one_mul] using hh
 
+example : IsUnit oddV := by
+  apply oddRelations.isUnit_right (k := ℚ)
+  exact ⟨⟨oddU, oddU, oddU_mul_self, oddU_mul_self⟩, rfl⟩
+
 private def evenU : Matrix (Fin 2) (Fin 2) ℚ := !![1, 0; 0, 2]
 private def evenV : Matrix (Fin 2) (Fin 2) ℚ := !![2, 0; 0, 1]
 private def evenT : Matrix (Fin 2) (Fin 2) ℚ := !![-1, 1; -1, 1]
@@ -43,6 +47,12 @@ example : Function.Injective (fun x : Matrix (Fin 2) (Fin 2) ℚ => evenV * x) :
   have hh := congrArg (fun a => evenUInv * a) h
   simpa only [← mul_assoc, evenUInv_mul, one_mul] using hh
 
+example : IsUnit evenV := by
+  apply evenRelations.isUnit_right (k := ℚ)
+  refine ⟨⟨evenU, evenUInv, ?_, evenUInv_mul⟩, rfl⟩
+  ext i j <;> fin_cases i <;> fin_cases j <;>
+    norm_num [evenU, evenUInv, Matrix.mul_apply, Fin.sum_univ_two]
+
 example : Function.Injective (fun x : ℚ => (3 : ℚ) * x) := by
   intro x y h
   apply sub_eq_zero.mp
@@ -59,4 +69,6 @@ example : Function.Injective (fun x : ℚ => (3 : ℚ) * x) := by
 #print axioms OddMath.QuiverHecke.SignedNilHecke.OddTwo.right_mul_injective
 #print axioms OddMath.QuiverHecke.SignedNilHecke.EvenTwo.right_mul_injective
 #print axioms OddMath.QuiverHecke.SignedNilHecke.distinct_dot_kernel
+#print axioms OddMath.QuiverHecke.SignedNilHecke.OddTwo.isUnit_right
+#print axioms OddMath.QuiverHecke.SignedNilHecke.EvenTwo.isUnit_right
 end OddMath.ProbeDotPropagationExamples

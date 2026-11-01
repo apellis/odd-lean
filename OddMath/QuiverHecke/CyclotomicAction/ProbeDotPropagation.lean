@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.Intertwiner
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-! # Kernel propagation for probe dots
 
@@ -75,5 +76,23 @@ theorem OddTwo.right_mul_injective {u v T : B} (h : OddTwo u v T)
   intro x y hxy
   apply sub_eq_zero.mp
   exact h.right_mul_eq_zero hu (by rw [mul_sub, hxy, sub_self])
+
+section FiniteDimensional
+variable {k : Type*} [Field k] [Algebra k B] [FiniteDimensional k B]
+
+/-- The field probe application uses finite dimensionality only here, to
+turn injectivity of left multiplication into a two-sided unit. -/
+theorem EvenTwo.isUnit_right {u v T : B} (h : EvenTwo u v T) (hu : IsUnit u) :
+    IsUnit v := by
+  have hv := h.right_mul_injective (IsUnit.isUnit_iff_mulLeft_bijective.mp hu).1
+  apply IsUnit.isUnit_iff_mulLeft_bijective.mpr
+  exact ⟨hv, (LinearMap.injective_iff_surjective (f := (Algebra.lmul k B) v)).mp hv⟩
+
+theorem OddTwo.isUnit_right {u v T : B} (h : OddTwo u v T) (hu : IsUnit u) :
+    IsUnit v := by
+  have hv := h.right_mul_injective (IsUnit.isUnit_iff_mulLeft_bijective.mp hu).1
+  apply IsUnit.isUnit_iff_mulLeft_bijective.mpr
+  exact ⟨hv, (LinearMap.injective_iff_surjective (f := (Algebra.lmul k B) v)).mp hv⟩
+end FiniteDimensional
 
 end OddMath.QuiverHecke.SignedNilHecke
