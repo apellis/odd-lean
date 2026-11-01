@@ -108,7 +108,7 @@ theorem contentWhiskeredPrefixCross_equal (β : Multiset I) (i l : I)
       -contentETripleMap D Sc cutoff N h h (contentTripleLeft_parity D Sc i i l) M z := by
   rw [← contentETripleMap_prefix_cross, ← tripleMap_neg]
   apply tripleMap_congr
-  simp only [contentTriplePrefixAffine, ite_eq_left rfl]
+  simp only [contentTriplePrefixAffine, ite_true]
 
 theorem contentWhiskeredSuffixCross_equal (β : Multiset I) (j i : I)
     (γ : Multiset I) (h : β + ([j,i,i] : Multiset I) = γ)

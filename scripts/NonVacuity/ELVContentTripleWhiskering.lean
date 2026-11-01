@@ -30,8 +30,7 @@ theorem importing_triple_prefix_cross (β : Multiset I) (i j l : I) (δ γ : Mul
     (ht : β + ([j,i,l] : Multiset I) = γ) (hγ : δ + ([l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
     contentETripleMap D Sc cutoff N h ht
-      (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [l]))
-        (contentCrossAffine_mem D Sc i j)) M z =
+      (contentTriplePrefixAffine_mem D Sc i j l) M z =
       contentPrefixCrossComponent D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z :=
   contentETripleMap_prefix_cross D Sc cutoff N β i j l δ γ hδ hδ' h ht hγ M z
 end OddMath.QuiverHecke.ELVOld
