@@ -105,7 +105,7 @@ private theorem flip_koszul {C : Type*} [Category C] [Preadditive C] {A : C} (p 
   rw [h, smul_smul, koszulSign_mul_self, one_smul]
 
 /-- At an odd colour the denominator `x² - y²` on a path `(R,P)` is a unit. -/
-private theorem rpDenom_isUnit' (i : I) (h : P.CrossDenominatorUnits) (hi : D.parity i = 1)
+private theorem rpDenom_isUnit' (i : I) (h : P.CrossCoeffInputs) (hi : D.parity i = 1)
     (s : Sector I) (hv : StepValid (true, i) false s)
     (W : P.H (nextSector (true, i) true (nextSector (true, i) false s))) :
     IsUnit (M := End (P.rpObj i i s hv W))
@@ -423,7 +423,7 @@ theorem prrRightCoeff_odd (c : P.CrossCoeff Sc) (hc : c.IsInverse) (hi : D.parit
   rw [← neg_sub, Preadditive.comp_neg, P.prrRightCoeff_odd' i t hv hw Z c hc hi, neg_sub]
 
 /-- **At an odd colour `z² - x²` is a unit.** -/
-theorem prrRightDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1) :
+theorem prrRightDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) :
     IsUnit (M := End _) (P.prrPostDot i t hv hw Z ≫ P.prrPostDot i t hv hw Z -
       P.prPreDot i i t hv (P.prrRest i t hw Z) ≫ P.prPreDot i i t hv (P.prrRest i t hw Z)) := by
   rw [← neg_sub]
@@ -434,7 +434,7 @@ theorem prrRightDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1)
     ((P.step (true, i) false t hv).mapEnd (X := _))))
 
 /-- **At an odd colour `y² - x²` is a unit.** -/
-theorem prrLeftDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1) :
+theorem prrLeftDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) :
     IsUnit (M := End _) (P.prPostDot i i t hv (P.prrRest i t hw Z) ≫
         P.prPostDot i i t hv (P.prrRest i t hw Z) -
       P.prPreDot i i t hv (P.prrRest i t hw Z) ≫ P.prPreDot i i t hv (P.prrRest i t hw Z)) := by

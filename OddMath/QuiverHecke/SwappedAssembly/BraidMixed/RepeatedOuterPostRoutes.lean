@@ -219,7 +219,7 @@ lemma right_mid (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
   rfl
 
 lemma right_coeff_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     HEq (crossEntry (P.swappedGens c L) ν [up i] j i []
         (SPath.three true false false trivial hj0 hi0 hs)
         (SPath.three true false false trivial hi hj rfl) Y ≫
@@ -239,7 +239,7 @@ lemma right_coeff_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   rw [Preadditive.comp_neg, Preadditive.neg_comp, coeff_slide P i j s hj0 hi0 hi hj hs Y c hc h hij]
 
 lemma right_literal_slide (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true false false trivial hj0 hi0 hs
     let b : SPath (wd D ν [up i, up i, up j]) s _ :=
@@ -303,7 +303,7 @@ lemma right_quad (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : i �
 
 include hi hj in
 lemma braidRight_coefficient (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     HEq (braidRight (P.swappedGens c L) i j i ν
       (SPath.three true false false trivial hj0 hi0 hs)
       (SPath.three true false false trivial hj0 hi0 hs) Y)

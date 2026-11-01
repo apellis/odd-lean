@@ -39,21 +39,38 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Polynomial boundary | Actual corrected-row leading equivalences and division, with kernel/cokernel windows in both height ranges | [ELVBoundaryRowDivision](../../OddMath/QuiverHecke/CyclotomicAction/ELVBoundaryRowDivision.lean); these are not the categorical matrix inverse |
 | Induction and vacuum comparisons | Whole comparison coherence; independent triple dot/crossing comparisons; whole-word evaluation and combined Hom crossing | `ELVContentTensorCoherence`, `ELVVacuumWordPairing` and companion content comparison modules |
 | Swapped braid | All braid fields derived from inverse and coefficient inputs | `SwappedAssembly/BraidAssembly`, `crossBraidOfInputs`; concrete inputs remain to be supplied |
-
 | Probe kernel propagation | Ordinary kernel propagation and finite-dimensional unit corollaries; integrated after full CI in [#751](https://github.com/apellis/odd-lean/pull/751) | [ProbeDotPropagation](../../OddMath/QuiverHecke/CyclotomicAction/ProbeDotPropagation.lean) |
 | Actual probe corners | Literal unital End-to-corner map, exact same-colour relations, quadratic first-dot unit and second-dot injectivity; integrated after full CI in [#752](https://github.com/apellis/odd-lean/pull/752) | [ProbeWordCorner](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordCorner.lean) |
-| Rectangular probe cancellation | Actual entries and support, target-corner row cancellation and distinct-kernel criterion are submitted for CI; actual slide/quadratic inputs remain to be constructed | [ProbeWordEntries](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordEntries.lean) |
+| Rectangular probe cancellation | Actual entries and support, target-corner row cancellation and distinct-kernel criterion are full-CI verified in [#756](https://github.com/apellis/odd-lean/pull/756); actual slide/quadratic unit propagation remains separate | [ProbeWordEntries](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordEntries.lean) |
+| Cofinal first-dot probes | Cofinal binomial powers give first-dot units; same-colour quadratic relations propagate injectivity in every position, verified in [#754](https://github.com/apellis/odd-lean/pull/754). Direct monochromatic unit propagation is now verified in #768 | [ProbeWordCorner](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordCorner.lean) and companion probe modules |
+| Actual content parity | Parity shifts on the existing full-ELV supernatural module categories, reusing the canonical content-module target, full-CI verified in [#755](https://github.com/apellis/odd-lean/pull/755) | [ELVContentParity](../../OddMath/QuiverHecke/CyclotomicAction/ELVContentParity.lean) |
+| Actual weight categories and adjunction | Product over every content of each original weight, actual append induction and restriction, even adjunction unit/counit; full-CI verified in [#757](https://github.com/apellis/odd-lean/pull/757). Factor inverses and action relations are not supplied | [ELVWeightModules](../../OddMath/QuiverHecke/CyclotomicAction/ELVWeightModules.lean) |
+| Scalar specialization | Full-ELV coefficient evaluation and exact quotient specialization, full-CI verified in [#758](https://github.com/apellis/odd-lean/pull/758). Positive-weight truncations do not specialize to nonnilpotent constants | [ELVScalarSpecialization](../../OddMath/SKM/ELVScalarSpecialization.lean) |
+| Crossing-height consequences | Prescribed crossing injective at nonnegative height, surjective at nonpositive height, and an equivalence at height zero; odd moving colour and diagonal old endpoints. Full-CI verified in [#760](https://github.com/apellis/odd-lean/pull/760) | [ELVCrossingHeight](../../OddMath/QuiverHecke/CyclotomicAction/ELVCrossingHeight.lean) |
+| Direct probe units | Odd/even ring-theoretic propagation and all-position cofinal monochromatic units, without finite dimension; full-CI verified in [#768](https://github.com/apellis/odd-lean/pull/768). Mixed-word propagation is under verification | [ProbeUnitPropagation](../../OddMath/QuiverHecke/CyclotomicAction/ProbeUnitPropagation.lean) |
+| Actual weight dot | Normalized content induction dot assembled on actual weight E, with nilpotence at each target-content block; full-CI verified in [#772](https://github.com/apellis/odd-lean/pull/772). No common exponent over a weight fibre is asserted | [ELVWeightDot](../../OddMath/QuiverHecke/CyclotomicAction/ELVWeightDot.lean) |
+| Raw append spanning | Actual append ranges are finitely spanned before coefficient truncation; full-CI verified in [#766](https://github.com/apellis/odd-lean/pull/766). Specialization and product-category dimension are separate statements | [ELVRawAppendSpanning](../../OddMath/QuiverHecke/CyclotomicAction/ELVRawAppendSpanning.lean) |
 
 ## Remaining critical chain
 
-1. Combine the proved prescribed source/crossing decompositions and polynomial
+1. Extend the boundary and inverse from diagonal old endomorphisms to arbitrary
+   old source/target words. Arbitrary-Hom long coordinates and the exact
+   short-kernel construction are under verification; diagonal inverses alone
+   do not imply invertibility on all representable components. Combine the
+   proved prescribed source/crossing decompositions and polynomial
    boundary in the exact categorical diagram; derive the snake/
    augmented inverse at every height, including zero. Supply the required
    coefficient compatibility, naturality and integer-degree comparisons.
 2. Construct the full-ELV factor families from that inverse and the independent
    content induction maps; finish their composed mixed braid and multicolour
    presentation comparison with algebra parameters `parameterTwist Sc`.
-3. Supply concrete probe/reservoir data, crossing coefficients and whole swapped
+3. Repair the denominator interface at the correct quantifier: actual postdots
+   are nilpotent separately on each target-content block. A weight fibre can
+   be infinite, so no uniform exponent on its entire product is available.
+   Componentwise denominator units and their even natural inverses are under
+   verification; the older whole-endomorphism nilpotence constructor is only
+   a sufficient special case. Supply concrete probe/reservoir data, crossing
+   coefficients and whole swapped
    inverse/relation inputs. Existing conditional assembly then yields the action.
 4. Construct its literal vacuum/corner evaluation and all-height normalized
    bubbles, prove the bounded recovery identity, and instantiate the existing
@@ -67,12 +84,10 @@ full-ELV family construction is a prerequisite for final synthesis.
 
 ## Verification
 
-The reviewed source snapshot is
-[e522e775](https://github.com/apellis/odd-lean/commit/e522e7753f37c5510c628ea83a90902a3abd7dea).
-Its [branch build](https://github.com/apellis/odd-lean/actions/runs/41081958632)
-was cancelled; no full-green claim is made for that exact snapshot.
-Its parent [b23baa2 build](https://github.com/apellis/odd-lean/actions/runs/41076454671)
-passed. Subsequent commits must use their own CI evidence.
-Required gates remain full build with warnings as errors, axiom audit and
-non-vacuity consumers. Finite Python models are evidence about their instances,
-not proofs of the general action or conjecture.
+The initial reviewed snapshot was e522e775; its cancelled build is not a
+verification claim. Subsequent integrations use their own exact-head CI.
+The latest integrated mathematical additions above passed full build with
+warnings as errors, axiom audit and concrete non-vacuity consumers before
+merge. Topic branches and proposed source are not established by submission
+alone. Finite Python models are evidence about their instances, not proofs of
+the general action or conjecture.

@@ -25,7 +25,7 @@ namespace ProbeReservoir
 variable (P : ProbeReservoir k B D Sc)
 
 lemma braid_repeated_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (i j : I) (ν : X) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (i j : I) (ν : X) (hij : i ≠ j)
     {s t : Sector I} (p : SPath (wd D ν [up i, up j, up i]) s t) (Z : P.H t) :
     braidLeft (P.swappedGens c L) i j i ν p p Z -
       braidRight (P.swappedGens c L) i j i ν p p Z =

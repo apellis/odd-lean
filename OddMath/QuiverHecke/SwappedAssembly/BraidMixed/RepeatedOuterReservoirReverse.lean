@@ -27,7 +27,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
   (Y : P.H (nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s))))
 
 private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (t : Sector I) (hv : StepValid (true, i) false t)
+    (h : P.CrossCoeffInputs) (t : Sector I) (hv : StepValid (true, i) false t)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
     {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i t hv V) →ₐ[k] End Y) (f : End Y)
@@ -59,7 +59,7 @@ private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
 
 
 lemma mixedQ_coefficient_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits)
+    (h : P.CrossCoeffInputs)
     (Z : P.H (nextSector (true, j) false
       (nextSector (true, i) false (nextSector (true, i) true s)))) :
     c.a i s hi (RepeatedOuterPre.rest P i j s hj Z) ≫
@@ -113,7 +113,7 @@ private lemma weighted_square {C : Type u} [Category C] [Preadditive C]
 lemma weighted_entry
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
-    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     let E := P.mixedJ i i s hi (RepeatedOuterPre.rest P i j s hj (hs ▸ Y))
     let J := RepeatedOuterPre.rightIso P i j s hi hj (hs ▸ Y)
     let H := RepeatedOuterPost.firstIso P i j s hj0 hi0 Y
@@ -243,7 +243,7 @@ lemma right_first (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : i �
   exact heq_of_eq (RepeatedOuterPre.right_first P i j s hi hj Y ν c L hij)
 
 lemma braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three false false true hi hj trivial hs)
       (SPath.three true false false trivial hj0 hi0 rfl) Y =
@@ -282,7 +282,7 @@ lemma braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three false false true hi hj trivial e)
       (SPath.three true false false trivial hj0 hi0 e') Z =
@@ -304,7 +304,7 @@ lemma braid_entry_path (ν : X) {t : Sector I}
       (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       true false false trivial hj0 hi0 e')
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν p q Z =
       braidRight (P.swappedGens c L) i j i ν p q Z := by
   subst p q

@@ -75,7 +75,7 @@ variable (ν : X) (i j : I) (s : Sector I) (hR : StepValid (true, i) false s)
 include hs₀
 
 /-- The raw square rectangle, before path endpoint transport. -/
-theorem adjacentSplit_square_rectangle (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
+theorem adjacentSplit_square_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInputs)
     (hij : i ≠ j) :
     (-(c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
         c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
@@ -108,7 +108,7 @@ theorem adjacentSplit_square_rectangle (hc : c.IsInverse) (h : P.CrossDenominato
     splitMatrix_square J K A B M U hAM hJU
 
 /-- The raw conj rectangle, before path endpoint transport. -/
-theorem adjacentSplit_conj_rectangle (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
+theorem adjacentSplit_conj_rectangle (hc : c.IsInverse) (h : P.CrossCoeffInputs)
     (hij : i ≠ j) :
     (-((P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z))).hom ≫
         c.a i s hR ((P.step (true, j) true _ trivial).obj (hs ▸ Z)) ≫
@@ -166,7 +166,7 @@ theorem adjacentSplit_braid_J (hij : i ≠ j) :
   exact hJ.trans (heq_of_eq (Category.assoc _ _ _).symm)
 
 /-- The literal occupied split-sector square braid entry. -/
-theorem adjacentSplit_braid_square (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+theorem adjacentSplit_braid_square (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true true hR trivial trivial hs) (SPath.three true true false trivial trivial hR rfl) Z =
     braidRight (P.swappedGens c L) i i j ν
@@ -187,7 +187,7 @@ theorem adjacentSplit_braid_square (hc : c.IsInverse) (h : P.CrossDenominatorUni
   exact heq_of_eq (P.adjacentSplit_square_rectangle i j s hR c hs hs₀ Z hc h hij)
 
 /-- The literal occupied split-sector conj braid entry. -/
-theorem adjacentSplit_braid_conj (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+theorem adjacentSplit_braid_conj (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three true false true trivial hR trivial hs) (SPath.three true true false trivial trivial hR rfl) Z =
     braidRight (P.swappedGens c L) i i j ν
@@ -214,7 +214,7 @@ endpoint. The repeated colour has one reservoir and one probe step, and the
 other colour has a probe step. No uniqueness of either path type is assumed. -/
 theorem adjacentSplit_braid (ν : X) (i j : I) (s : Sector I)
     (hR : StepValid (true, i) false s) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
     (p : SPath (wd D ν [up i, up i, up j]) s
       (nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s))))
     (q : SPath (wd D ν [up j, up i, up i]) s

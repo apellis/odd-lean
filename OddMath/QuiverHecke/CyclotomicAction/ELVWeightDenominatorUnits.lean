@@ -17,12 +17,12 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld
 open OddMath.QuiverHecke.CyclotomicAction OddMath.QuiverHecke.SwappedAssembly
-universe u
+universe u v w
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (bound : ℕ)
   (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
   (i : I) (Λ : X) {x y : X} (h : x + D.α i = y)
-  {C : Type u} [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
+  {C : Type v} [Category.{w} C] [Preadditive C] [Linear k C] [Supercategory k C]
   (F : Superfunctor k C (ELVWeightProduct D Sc cutoff bound Λ x))
 
 abbrev elvPostInduction := F.comp (elvE D Sc cutoff bound i Λ h)

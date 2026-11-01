@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.SwappedAssembly.Generators.CrossCoeffExistence
+import Mathlib.RingTheory.Nilpotent.Basic
 import OddMath.QuiverHecke.CyclotomicAction.GlobalProduct
 
 /-! # Separated denominator units on arbitrary products of content categories
@@ -18,6 +18,15 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 universe u v w
 variable {A : Type u} (C : A → Type v) [∀ a, Category.{w} (C a)]
   [∀ a, Preadditive (C a)]
+
+private theorem product_commute_sq_of_anticommute {R : Type*} [Ring R] {x y : R}
+    (h : y * x = -(x * y)) : Commute x (y * y) ∧ Commute y (x * x) := by
+  constructor
+  · have h' : x * y = -(y * x) := by rw [h, neg_neg]
+    show x * (y * y) = y * y * x
+    rw [← mul_assoc, h', neg_mul, mul_assoc, h', mul_neg, neg_neg, ← mul_assoc]
+  · show y * (x * x) = x * x * y
+    rw [← mul_assoc, h, neg_mul, mul_assoc, h, mul_neg, neg_neg, ← mul_assoc]
 
 /-- Actual endomorphisms of a product object are units when every component is. -/
 theorem productEnd_isUnit (M : ∀ a, C a) (f : End M)
@@ -54,7 +63,7 @@ theorem product_square_difference_isUnit (M : ∀ a, C a) (x y : End M)
   apply productEnd_isUnit C M
   intro a
   change IsUnit (x a ^ 2 - y a ^ 2)
-  have hc := ProbeReservoir.commute_sq_of_anticommute (hanti a)
+  have hc := product_commute_sq_of_anticommute (hanti a)
   have hu := ((hy a).pow_of_pos two_ne_zero).neg.isUnit_add_left_of_commute
     ((hx a).pow 2)
     (by simpa [pow_two] using ((hc.2.symm.mul_right hc.2.symm).symm).neg_left)
@@ -67,7 +76,7 @@ theorem product_square_sum_isUnit (M : ∀ a, C a) (x y : End M)
   apply productEnd_isUnit C M
   intro a
   change IsUnit (x a ^ 2 + y a ^ 2)
-  have hc := ProbeReservoir.commute_sq_of_anticommute (hanti a)
+  have hc := product_commute_sq_of_anticommute (hanti a)
   have hu := ((hy a).pow_of_pos two_ne_zero).isUnit_add_left_of_commute
     ((hx a).pow 2)
     (by simpa [pow_two] using ((hc.2.symm.mul_right hc.2.symm).symm))

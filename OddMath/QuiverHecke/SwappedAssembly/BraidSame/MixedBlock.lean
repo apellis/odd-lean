@@ -470,7 +470,7 @@ theorem block_braidRight (m n : Fin 3) :
       (blockPath ν i t hR l') Z) m n
 
 /-- **(1.9) on the block `{PPR, PRP, RPP}` of the colour pattern `iii`.** -/
-theorem block_braid (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (m n : Fin 3) :
+theorem block_braid (hc : c.IsInverse) (h : P.CrossCoeffInputs) (m n : Fin 3) :
     braidLeft (P.swappedGens c L) i i i ν (blockPath ν i t hR m) (blockPath ν i t hR n) Z =
       braidRight (P.swappedGens c L) i i i ν (blockPath ν i t hR m) (blockPath ν i t hR n) Z := by
   have hrel : SectorRelations

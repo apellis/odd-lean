@@ -109,7 +109,7 @@ private lemma unconjugate_slide {C : Type u} [Category C]
 lemma native_entry
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
-    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     (c.a i s hi (RepeatedOuterPre.rest P i j s hj (hs ▸ Y)) ≫
       (RepeatedOuterPre.rightIso P i j s hi hj (hs ▸ Y)).hom) ≫
         RepeatedOuterPre.reservoirCross P i j s hi hj hj0 hi0 Y hs0 =
@@ -120,7 +120,7 @@ lemma native_entry
     (RepeatedOuterPre.coeff_slide P i j s hi hj hj0 hi0 hs Y hs0 c hc h hij)
 
 lemma braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true false hi trivial hj hs)
       (SPath.three false false true hj0 hi0 trivial rfl) Y =
@@ -152,7 +152,7 @@ lemma braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true false hi trivial hj e)
       (SPath.three false false true hj0 hi0 trivial e') Z =
@@ -174,7 +174,7 @@ lemma braid_entry_path (ν : X) {t : Sector I}
       (c₂ := ⟨up i, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       false false true hj0 hi0 trivial e')
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν p q Z =
       braidRight (P.swappedGens c L) i i j ν p q Z := by
   subst p q

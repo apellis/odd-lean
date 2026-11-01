@@ -307,7 +307,7 @@ theorem postCrossSame_slides (i : I) (t : Sector I) (hv : StepValid (true, i) fa
 `y = rpPostDot` and the right dot `x = rpPreDot`, `y a - q a x = 1`, `a y - q x a = 1`, and
 `a ≫ a` commutes with both dots. The odd case uses the invertibility of `x² - y²`
 (`CrossCoeffInputs`). -/
-theorem crossCoeff_diag (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
+theorem crossCoeff_diag (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs)
     (i : I) (t : Sector I) (hv : StepValid (true, i) false t)
     (Z : P.H (nextSector (true, i) true (nextSector (true, i) false t))) :
     (P.rpPostDot i t hv Z ≫ c.a i t hv Z - koszulSign (D.parity i) (D.parity i) •
@@ -348,7 +348,7 @@ open Classical in
 /-- **The same-colour slides `slideLEq` and `slideREq`** for the swapped generators, entry by
 entry, for a crossing coefficient satisfying its characterizing identities under the inputs
 F2, F3 of the written proof (`CrossCoeffInputs`). -/
-theorem swappedGens_slideEq (c : P.CrossCoeff Sc) (hc : c.IsInverse) (hin : P.CrossDenominatorUnits)
+theorem swappedGens_slideEq (c : P.CrossCoeff Sc) (hc : c.IsInverse) (hin : P.CrossCoeffInputs)
     (L : P.LeftwardData) (i : I) (ν : X) {s t : Sector I}
     (p q : SPath (wd D ν [up i, up i]) s t) (Z : P.H t) :
     (leftDot (P.swappedGens c L) i i ν p Z ≫ (P.swappedGens c L).cross i i ν p q Z -

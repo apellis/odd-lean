@@ -30,7 +30,7 @@ variable (P : ProbeReservoir k B D Sc)
   (Z : P.H (nextSector (true, j) true (nextSector (true, i) true (nextSector (true, i) false s))))
 
 private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (t : Sector I) (hv : StepValid (true, i) false t)
+    (h : P.CrossCoeffInputs) (t : Sector I) (hv : StepValid (true, i) false t)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
     {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i t hv V) →ₐ[k] End Y) (f : End Y)
@@ -190,7 +190,7 @@ lemma repeatedOuterZ_comp_Q :
       exact zsign_pow_of_mul_eq_zero _ _ n hn)
 
 lemma repeatedOuterCoeff_comp_Q (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) :
+    (h : P.CrossCoeffInputs) :
     P.repeatedOuterProbeCoeff c i j s hR hs Z ≫
       qExpr Sc (P.repeatedOuterZ i j s hR hs Z) (P.repeatedOuterY i j s hR hs Z) i j =
     qExpr Sc (P.repeatedOuterZ i j s hR hs Z) (P.repeatedOuterY i j s hR hs Z) i j ≫
@@ -241,7 +241,7 @@ lemma repeatedOuterDiagonalLeft_eq (c : P.CrossCoeff Sc) :
     repeatedOuterDiagonalLeft]
 
 lemma repeatedOuterDiagonalRight_eq (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     P.repeatedOuterDiagonalRight i j s hR hs Z c =
       zsign k (D.parity i * D.parity j) •
         (qExpr Sc (P.repeatedOuterZ i j s hR hs Z) (P.repeatedOuterY i j s hR hs Z) i j *
@@ -262,7 +262,7 @@ lemma repeatedOuterDiagonalRight_eq (c : P.CrossCoeff Sc) (hc : c.IsInverse)
 
 /-- Reduction of the two raw routes, with the order of the coefficient retained. -/
 theorem repeatedOuterDiagonal_raw (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     let x := P.repeatedOuterX i j s hR hs Z
     let y := P.repeatedOuterY i j s hR hs Z
     let z := P.repeatedOuterZ i j s hR hs Z
@@ -279,7 +279,7 @@ theorem repeatedOuterDiagonal_raw (c : P.CrossCoeff Sc) (hc : c.IsInverse)
 /-- The actual raw repeated-outer diagonal difference is the two signed
 coefficient sums. Neither probe crossing nor the Q polynomial is inverted. -/
 theorem repeatedOuterDiagonal_correction (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     let x := P.repeatedOuterX i j s hR hs Z
     let y := P.repeatedOuterY i j s hR hs Z
     let z := P.repeatedOuterZ i j s hR hs Z

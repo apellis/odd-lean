@@ -47,7 +47,7 @@ distinct colours have permutation matrices with invertible entries, the leftward
 the augmented maps, and the mixed-block coefficient satisfies its characterizing identities
 with invertible denominators. -/
 theorem swappedGens_supernatural_of_isInverse (c : P.CrossCoeff) (L : P.LeftwardData)
-    (hin : P.CrossDenominatorUnits) (hc : c.IsInverse)
+    (hin : P.CrossCoeffInputs) (hc : c.IsInverse)
     (hσ : ∀ i j : I, i ≠ j → ∀ ν : X, P.SigmaPermutation c i j ν) (hL : L.IsInverse c)
     (h0 : L.VanishesOffWeight) :
     GeneratorsSupernatural (P.swappedGens c L) :=
@@ -59,7 +59,7 @@ theorem swappedGens_supernatural_of_isInverse (c : P.CrossCoeff) (L : P.Leftward
 identities of the mixed-block coefficient with invertible denominators (the leftward data
 being normalized to vanish off the weight-matched sectors). -/
 theorem SwappedRelationData.ofIsInverse {c : P.CrossCoeff} {L : P.LeftwardData}
-    (hin : P.CrossDenominatorUnits) (hc : c.IsInverse)
+    (hin : P.CrossCoeffInputs) (hc : c.IsInverse)
     (quad : CrossQuad (P.swappedGens c L)) (slide : CrossSlide (P.swappedGens c L))
     (braid : CrossBraid (P.swappedGens c L)) (zigzag : CupCapZigzag (P.swappedGens c L))
     (sigma : ∀ i j ν, i ≠ j → P.SigmaPermutation c i j ν) (leftward : L.IsInverse c)

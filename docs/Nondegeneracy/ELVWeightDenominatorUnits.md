@@ -1,9 +1,12 @@
 # Actual reservoir denominator inverses
 
-Status: proposed source, pending CI; depends on ELVWeightDot and the separated
-denominator refactor. An arbitrary source superfunctor is followed by the
-actual existing full-ELV weight induction. Its postdot is the whiskering of
-elvActionDot with the exact contentInductionDot normalization.
+Status: proposed source, pending CI. ProductDenominatorUnits is independent
+of the broad swapped coefficient/braid input refactor (#767).
+
+An arbitrary source superfunctor is followed by the actual existing full-ELV
+weight induction. Its postdot is the whiskering of elvActionDot with the exact
+contentInductionDot normalization. The source category has independent object
+and Hom universes, including the actual factor weight categories.
 
 The even difference and odd square difference/sum are units from the actual
 per-content nilpotence theorem, whole homogeneous probe-dot invertibility,
@@ -13,5 +16,5 @@ finiteness of either source objects or weight blocks is introduced.
 
 The concrete asymmetric vacuum-product consumer checks the actual whiskered
 postdot and audits all declarations. Identification of generic reservoir
-pre/post dots with these actual operators, and the swapping-mate inverse,
-remain separate assembly work; no full action or nondegeneracy is claimed.
+pre/post dots with these actual operators, and swapping-mate inversion,
+remain separate assembly work. No full action or nondegeneracy is claimed.

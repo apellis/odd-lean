@@ -81,7 +81,7 @@ variable (P : ProbeReservoir k B D Sc)
 mixed pairs. The hypotheses concern only the two dots, not the coefficient or
 any braid. This includes whiskered and conjugated pairs through linear functors. -/
 theorem CrossCoeff.signed_transport (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (i : I) (s t : Sector I)
+    (h : P.CrossCoeffInputs) (i : I) (s t : Sector I)
     (hs : StepValid (true, i) false s) (ht : StepValid (true, i) false t)
     (Z : P.H (nextSector (true, i) true (nextSector (true, i) false s)))
     (W : P.H (nextSector (true, i) true (nextSector (true, i) false t)))

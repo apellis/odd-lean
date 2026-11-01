@@ -89,7 +89,7 @@ its characterizing identities `CrossCoeff.IsInverse` and the denominators are in
 colours the identities alone suffice; at odd colours they do not determine the coefficient
 without the invertibility of `x² - y²`. -/
 theorem CrossCoeff.isSupernatural_of_isInverse (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) : c.IsSupernatural := by
+    (h : P.CrossCoeffInputs) : c.IsSupernatural := by
   intro i t hv
   let Fn := P.step (true, i) true (nextSector (true, i) false t) trivial ⋙
     P.step (true, i) false t hv

@@ -94,7 +94,7 @@ lemma post_slide (hij : i ≠ j) :
   simp only [smul_smul, ProbeReservoir.zsign_mul_self', one_smul] at h'
   exact h'.symm
 lemma coeff_slide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
+    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
     coefficientAlg P i j s hj0 hi0 (hs ▸ Y)
         (c.a i (nextSector (true, j) false s) hi0 (hs ▸ Y)) ≫
       reservoirCross P i j s hj0 hi0 hi hj hs Y =

@@ -459,7 +459,7 @@ theorem blockPost_braidRight (m n : Fin 3) :
       (blockPathPost ν i t hv hw l') Z) m n
 
 /-- The relations of `sectorBraid` for `D`, `γ`, `δ` on the first path `PRR`. -/
-theorem prr_sectorRelations (hc : c.IsInverse) (h : P.CrossDenominatorUnits) :
+theorem prr_sectorRelations (hc : c.IsInverse) (h : P.CrossCoeffInputs) :
     SectorRelations (MulOpposite.op (P.prrCross i t hv hw Z) : (End (P.prrObj i t hv hw Z))ᵐᵒᵖ)
       (MulOpposite.op (P.prrRightCoeff i t hv hw Z c))
       (MulOpposite.op (P.prrLeftCoeff i t hv hw Z c)) := by
@@ -488,7 +488,7 @@ theorem prr_sectorRelations (hc : c.IsInverse) (h : P.CrossDenominatorUnits) :
       exact hsl.1
 
 /-- **(1.9) on the block `{PRR, RPR, RRP}` of the colour pattern `iii`.** -/
-theorem blockPost_braid (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (m n : Fin 3) :
+theorem blockPost_braid (hc : c.IsInverse) (h : P.CrossCoeffInputs) (m n : Fin 3) :
     braidLeft (P.swappedGens c L) i i i ν (blockPathPost ν i t hv hw m)
         (blockPathPost ν i t hv hw n) Z =
       braidRight (P.swappedGens c L) i i i ν (blockPathPost ν i t hv hw m)
