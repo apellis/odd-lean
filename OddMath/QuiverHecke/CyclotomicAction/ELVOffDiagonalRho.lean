@@ -115,7 +115,7 @@ theorem boundaryRho_offDiagonalLongSection (p : ZMod 2)
         (offDiagonalCoefficientRho D Sc cutoff p j v t f) := by
   by_cases h : Nonempty (NFIdx v t)
   · obtain ⟨y⟩ := h
-    rw [offDiagonalLongSection_eq D Sc cutoff p j.1 y]
+    simp only [offDiagonalLongSection_eq D Sc cutoff p j.1 y]
     exact boundaryRho_longHomSection D Sc cutoff p j y f
   · have hf : f = 0 := by
       ext n

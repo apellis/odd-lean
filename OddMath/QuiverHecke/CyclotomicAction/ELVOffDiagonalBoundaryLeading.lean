@@ -153,7 +153,9 @@ theorem offDiagonalBoundary_corrected_top (p : ZMod 2)
     (outputBoundaryLeadingUnit D Sc cutoff j v : k) • oldTwist D Sc cutoff _ v t c
   rw [map_smul, LinearMap.smul_apply]
   congr 1
-  obtain ⟨b, hb⟩ := (ideal D Sc cutoff v t).mkQ_surjective (oldTwist D Sc cutoff _ v t c)
+  obtain ⟨b, hb⟩ := (ideal D Sc cutoff v t).mkQ_surjective
+    (oldTwist D Sc cutoff
+      (n • D.parity j.1 + (p + D.parity j.1 * wordSumParity D v)) v t c)
   rw [← hb, oldComp_mk, Category.id_comp]
 
 end OddMath.QuiverHecke.ELVOld
