@@ -24,7 +24,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
   (Z : P.H (nextSector (true, i) false
     (nextSector (true, j) false (nextSector (true, i) true s))))
 
-lemma coeff_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs)
+lemma coeff_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits)
     (f : End (obj P i j s hj0 hi0 Z))
     (hx : outerDot P i j s hj0 hi0 Z ≫ f = f ≫ outerDot P i j s hj0 hi0 Z)
     (hz : innerDot P i j s hj0 hi0 Z ≫ f = f ≫ innerDot P i j s hj0 hi0 Z) :
@@ -63,7 +63,7 @@ lemma coeff_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInput
       (one_mul _) hx' hz' ha ha
       (Units.map φ.toMonoidHom (P.crossDenom h i (nextSector (true, j) false s) hi0 Z)) hd'
 
-lemma q_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs) :
+lemma q_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) :
     let C := coefficientAlg P i j s hj0 hi0 Z (c.a i (nextSector (true, j) false s) hi0 Z)
     let x := outerDot P i j s hj0 hi0 Z
     let y := middleDot P i j s hj0 hi0 Z
@@ -122,7 +122,7 @@ lemma full_diag (ν : X)
       nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)))
     (Y : P.H (nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s))))
     (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true false false trivial hj0 hi0 hs
     braidLeft (P.swappedGens c L) i j i ν n n Y -
@@ -178,7 +178,7 @@ lemma full_diag_transport (ν : X)
     (e' : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (Y : P.H t)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true false false trivial hj0 hi0 e
     braidLeft (P.swappedGens c L) i j i ν n n Y -
@@ -207,7 +207,7 @@ lemma full_diag_path (ν : X)
       (c₂ := ⟨up j, SKM.wt D ν [up i]⟩) (c₃ := ⟨up i, ν⟩)
       true false false trivial hj0 hi0 e)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν p p Y -
       braidRight (P.swappedGens c L) i j i ν p p Y =
       ∑ a ∈ Finset.range (D.dn i j),

@@ -126,7 +126,7 @@ private lemma neg_slide {C : Type u} [Category C] [Preadditive C]
 
 include hs₀ in
 lemma separatedOuter_literal_coeff_slide (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true true false trivial trivial hR rfl
     let b : SPath (wd D ν [up j, up i, up i]) s _ :=
@@ -159,7 +159,7 @@ include hs₀ in
 /-- The full left diagonal sum with the coefficient moved through the
 literal terminal-cast probe edge. No probe crossing is cancelled. -/
 lemma separatedOuter_braidLeft (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true true false trivial trivial hR rfl
     let b : SPath (wd D ν [up j, up i, up i]) s _ :=
@@ -237,7 +237,7 @@ lemma separatedOuter_literal_probe_quad (c : P.CrossCoeff Sc) (L : P.LeftwardDat
 include hs₀ hs in
 /-- The full left diagonal matrix entry in the native separated dots. -/
 lemma separatedOuter_braidLeft_qExpr (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i j i ν
       (SPath.three true true false trivial trivial hR rfl)
       (SPath.three true true false trivial trivial hR rfl) Z =
@@ -327,7 +327,7 @@ private lemma smul_commuting {C : Type u} [Category C] [Preadditive C] [Linear k
   rw [Linear.smul_comp, Linear.comp_smul, h]
 
 private lemma mapped_coefficient_commuting (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs)
+    (h : P.CrossDenominatorUnits)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false s)))
     {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i s hR V) →ₐ[k] End Y) (Q : End Y)
@@ -360,7 +360,7 @@ private lemma mapped_coefficient_commuting (c : P.CrossCoeff Sc) (hc : c.IsInver
 /-- The separated coefficient commutes with the inner Q by the mapped
 inverse identities and the actual denominator unit, not by a new hypothesis. -/
 lemma separatedOuter_coeff_innerQ (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (h : P.CrossCoeffInputs) :
+    (h : P.CrossDenominatorUnits) :
     P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫
         qExpr Sc (P.distinctProbeSpectatorDot i j i s hR Z)
           (P.distinctProbeInnerDot i j i s hR Z) i j =
@@ -389,7 +389,7 @@ private lemma difference_normalization {R : Type u} [Ring R] [Algebra k R]
 /-- The actual diagonal matrix difference equals the checked separated
 coordinate correction, with the original two finite sums and all signs. -/
 lemma separatedOuter_braid_difference (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j)
     (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
       nextSector (true, j) true (nextSector (true, i) true s))
     (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
@@ -488,7 +488,7 @@ private lemma correction_coordinates {C : Type u} [Category C] [Preadditive C] [
 /-- The full literal `Pᵢ Pⱼ Rᵢ` diagonal field of CrossBraid, with every
 literal dotEntry power and both original coefficient sums. -/
 lemma separatedOuter_braidEq_diag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j)
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j)
     (hs₀ : nextSector (true, i) true (nextSector (true, j) true s) =
       nextSector (true, j) true (nextSector (true, i) true s))
     (hs : nextSector (true, i) true (nextSector (true, j) true (nextSector (true, i) false s)) =
@@ -516,7 +516,7 @@ include hR in
 /-- Both off-diagonal directions in the one-reservoir repeated-outer
 sector, for arbitrary source and target paths and terminal sector. -/
 lemma repeatedOuter_oneReservoir_offDiag (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) {t : Sector I}
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) {t : Sector I}
     (e₀ : nextSector (true, i) true (nextSector (true, j) true
       (nextSector (true, i) false s)) = t)
     (e₁ : nextSector (true, i) false (nextSector (true, j) true
@@ -537,7 +537,7 @@ lemma repeatedOuter_oneReservoir_offDiag (c : P.CrossCoeff Sc) (L : P.LeftwardDa
 lemma separatedOuter_braidEq_diag_transport {t : Sector I}
     (e : nextSector (true, i) false (nextSector (true, j) true (nextSector (true, i) true s)) = t)
     (W : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let n : SPath (wd D ν [up i, up j, up i]) s _ :=
       SPath.three true true false trivial trivial hR e
     braidLeft (P.swappedGens c L) i j i ν n n W -
