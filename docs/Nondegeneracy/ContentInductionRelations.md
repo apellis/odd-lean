@@ -41,8 +41,10 @@ source arrows are supplied explicitly after the two-transform tensor calculation
 
 ## Public representation changes
 
-The pair/triple space abbreviations evaluate the same induction functors as
-before, retaining their SVec carrier instances. Pair inner/outer dot definitions
+The pair/triple space abbreviations and the block codomains of
+`contentEPairEquiv` and `contentETripleEquiv` evaluate the same induction
+functors as before, retaining their SVec carrier instances. The equivalences
+remain evaluations of the same module isomorphisms. Pair inner/outer dot definitions
 now evaluate actual module morphisms: induction maps the existing first-dot
 component, and the last-dot component is evaluated at its recast target.
 The public statements `contentEPairDot_zero_whisker`,
@@ -50,8 +52,9 @@ The public statements `contentEPairDot_zero_whisker`,
 these actual-map total evaluations in place of raw `mapComponent` or
 `transformLinear` notation. Their operators and hypotheses are unchanged.
 Named `contentPair_sum` equalities identify pair endpoints without relying on
-implicit reduction of list-coercion proof terms. Forward squares are composed
-pointwise, so no rewrite unfolds their large dependent carriers. The generic
+implicit reduction of list-coercion proof terms. Forward squares are composed by a generic source-typed equality and
+k-linear right-composition congruence, so no rewrite unfolds their large
+dependent carriers. The generic
 `contentInductionMap_total_of_mem` and
 `contentInductionTransform_total` compare the two notations. The independent last-dot definition on three inductions likewise evaluates
 its actual single-letter component; its source comparison uses the same generic
@@ -63,3 +66,12 @@ Whole natural-transformation and weight-family relations additionally require
 total-evaluation extensionality and compatibility with the actual successor
 block functors. No local inverse, factor-action or nondegeneracy construction
 is supplied by these component relation drafts.
+
+The explicit-target functor `contentAppendTo` is defined with its existing object
+and map formulas in `ELVContentModuleAction`; `contentAppend` is its canonical
+rfl-target specialization. This removes duplicate functor records from the
+single-letter induction comparisons while retaining explicit arbitrary content
+transports. The declaration moves to an earlier module without changing its
+arguments, object formula or map formula. Its additive, linear and superfunctor
+instances remain in `ELVContentModuleTransform`.
+

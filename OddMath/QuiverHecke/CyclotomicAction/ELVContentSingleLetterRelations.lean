@@ -76,7 +76,7 @@ def contentEPairEquiv (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
     ContentEPairSpace D Sc cutoff N β i j γ h M w ≃ₗ[k]
-      BalancedInduction.Obj (contentAppendTo D Sc cutoff N β [i,j] γ h) M.toFunctor w :=
+      (((contentInductionTo D Sc cutoff N β [i,j] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentEPairToComparison D Sc cutoff N β i j γ h).app M) w
 
 /-- Transport of a homogeneous transformation through even natural comparisons. -/
@@ -247,3 +247,4 @@ theorem contentEPair_quadratic (β : Multiset I) {i j : I} (hij : i ≠ j)
   exact contentEPairPolynomial_comparison D Sc cutoff N β i j M w
 
 end OddMath.QuiverHecke.ELVOld
+

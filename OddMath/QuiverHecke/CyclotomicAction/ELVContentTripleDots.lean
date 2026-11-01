@@ -174,9 +174,8 @@ theorem contentETripleMap_last_dot (β : Multiset I) (i j l : I) (γ : Multiset 
     have ht := contentInductionTransform_total D Sc cutoff N
       (β := (β + ([i] : Multiset I)) + ([j] : Multiset I)) (γ := γ)
       hl hl (firstDot_parity D Sc l [])
-      (BalancedInduction.induced (contentAppend D Sc cutoff N (β + ([i] : Multiset I)) [j])
+      (BalancedInduction.induced (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j] _ rfl)
         (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)) z
-    dsimp only [contentAppend] at ht
     rw [← ht] at hc
     exact hc
   · exact contentInductionComp_outer D Sc cutoff N β [i] [j,l] γ hs h
@@ -270,3 +269,4 @@ theorem contentETriplePolynomial_whiskered (β : Multiset I) (i j : I)
       contentWhiskeredPolynomial D Sc cutoff N β i j M z := by
   simp only [contentETriplePolynomial, contentWhiskeredPolynomial, contentETripleDotSum_whiskered]
 end OddMath.QuiverHecke.ELVOld
+

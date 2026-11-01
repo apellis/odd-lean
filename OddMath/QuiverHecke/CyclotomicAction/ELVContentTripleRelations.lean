@@ -147,7 +147,7 @@ def contentETripleEquiv (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
     ContentETripleSpace D Sc cutoff N β i j l γ h M w ≃ₗ[k]
-      BalancedInduction.Obj (contentAppendTo D Sc cutoff N β [i,j,l] γ h) M.toFunctor w :=
+      (((contentInductionTo D Sc cutoff N β [i,j,l] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentETripleComparison D Sc cutoff N β i j l γ h).app M) w
 
 /-- The source-positioned map on three successive E functors. -/
@@ -450,3 +450,4 @@ theorem contentETriple_mixedBraid_tensor (β : Multiset I) {i j : I} (hij : i �
   exact contentMixedBraid_tensor D Sc cutoff N β hij M w v h m
 
 end OddMath.QuiverHecke.ELVOld
+

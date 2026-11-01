@@ -78,11 +78,12 @@ theorem contentWhiskeredPathIij_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathIij D Sc cutoff N β i j δ hδ hγ h M z =
       contentETriplePathIij D Sc cutoff N β i j M z :=
-  contentLinear_comp_congr (k := k)
-    (contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm _ rfl h M z)
-    (contentLinear_comp_congr (k := k)
-      (contentWhiskeredPrefixCross_equal D Sc cutoff N β i j δ _ hδ h hγ M z)
-      (contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij _ h rfl M z))
+by
+  unfold contentWhiskeredPathIij contentETriplePathIij
+  dsimp only
+  rw [contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij.symm,
+    contentWhiskeredPrefixCross_equal D Sc cutoff N β i j,
+    contentWhiskeredSuffixCross_distinct D Sc cutoff N β i hij]
 
 theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (δ : Multiset I)
@@ -94,11 +95,12 @@ theorem contentWhiskeredPathJii_eq (β : Multiset I) {i j : I} (hij : i ≠ j)
     (z : ContentCategory D Sc cutoff N (β + ([i,j,i] : Multiset I))) :
     contentWhiskeredPathJii D Sc cutoff N β i j δ hδ hδ' hγ h M z =
       contentETriplePathJii D Sc cutoff N β i j M z :=
-  contentLinear_comp_congr (k := k)
-    (contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij i δ _ hδ hδ' rfl h hγ M z)
-    (contentLinear_comp_congr (k := k)
-      (contentWhiskeredSuffixCross_equal D Sc cutoff N β j i _ h M z)
-      (contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm i δ _ hδ' hδ h rfl hγ M z))
+by
+  unfold contentWhiskeredPathJii contentETriplePathJii
+  dsimp only
+  rw [contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij i,
+    contentWhiskeredSuffixCross_equal D Sc cutoff N β j i,
+    contentWhiskeredPrefixCross_distinct D Sc cutoff N β hij.symm i]
 
 /-- The bookkeeping equalities identify the actual intermediate contents;
 they assert no action, inverse, grading, independence or coefficient property. -/
@@ -122,3 +124,4 @@ theorem contentWhiskered_mixedBraid (β : Multiset I) {i j : I} (hij : i ≠ j)
     ← contentETripleMixedBraid, contentETriple_mixedBraid D Sc cutoff N β hij,
     contentETriplePolynomial_whiskered]
 end OddMath.QuiverHecke.ELVOld
+

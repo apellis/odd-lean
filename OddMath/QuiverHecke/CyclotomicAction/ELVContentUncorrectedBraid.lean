@@ -204,3 +204,4 @@ theorem contentWhiskered_braid (β : Multiset I) (i j l : I)
     | exact contentNormalizedLeft_mem D Sc _ _ _
     | exact contentNormalizedRight_mem D Sc _ _ _
 end OddMath.QuiverHecke.ELVOld
+

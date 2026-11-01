@@ -269,3 +269,4 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
   have H' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) H
   simpa only [smul_smul, Supercategory.sign_mul_self, one_smul] using H'.symm
 end OddMath.QuiverHecke.ELVOld
+

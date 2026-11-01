@@ -47,3 +47,4 @@ run_cmd do
         throwError "Disallowed axiom {ax} in {name}"
   logInfo m!"Audited ALL {names.size} owned declarations, including private/generated"
 #print axioms OddMath.QuiverHecke.ELVOld.contentWhiskered_braid
+

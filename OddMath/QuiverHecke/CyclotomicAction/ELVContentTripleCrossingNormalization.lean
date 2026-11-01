@@ -34,6 +34,14 @@ private theorem tripleMap_congr {β γ : Multiset I} {i j l a b c : I}
   cases hfg
   rfl
 
+private theorem linearMap_comp_neg_comp
+    {A B C E : Type u}
+    [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
+    [AddCommGroup C] [Module k C] [AddCommGroup E] [Module k E]
+    (e : B →ₗ[k] A) (f : E →ₗ[k] C) (g : C →ₗ[k] B) :
+    e.comp ((-g).comp f) = -(e.comp (g.comp f)) := by
+  rw [LinearMap.neg_comp, LinearMap.comp_neg]
+
 private theorem tripleMap_neg {β γ : Multiset I} {i j l a b c : I}
     (h : β + ([i,j,l] : Multiset I) = γ) (ht : β + ([a,b,c] : Multiset I) = γ)
     {p : ZMod 2}
@@ -52,8 +60,7 @@ private theorem tripleMap_neg {β γ : Multiset I} {i j l a b c : I}
     simp only [BalancedInduction.tensor, TensorProduct.neg_tmul, map_neg]
   unfold contentETripleMap
   rw [hn]
-  ext x
-  simp only [LinearMap.comp_apply, LinearMap.neg_apply, LinearEquiv.coe_coe, map_neg]
+  exact linearMap_comp_neg_comp (k := k) _ _ _
 
 /-- Suffix crossing defined by the pair crossing on the first induced module. -/
 def contentWhiskeredSuffixCross (β : Multiset I) (i j l : I) (γ : Multiset I)
