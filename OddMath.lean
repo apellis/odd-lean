@@ -1772,3 +1772,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbePolynomialParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent
