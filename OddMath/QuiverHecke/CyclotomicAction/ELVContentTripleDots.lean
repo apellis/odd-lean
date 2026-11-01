@@ -112,13 +112,12 @@ def contentWhiskeredLastDot (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
     Module.End k (ContentETripleSpace D Sc cutoff N β i j l γ h M z) :=
-  BalancedInduction.transformLinear
-    (contentAppendTo_supernatural D Sc cutoff N
-      (β := (β + ([i] : Multiset I)) + ([j] : Multiset I)) (γ := γ)
-      (by rw [add_assoc, add_assoc]; exact h) (by rw [add_assoc, add_assoc]; exact h)
-      (firstDot_parity D Sc l []))
+  ((contentInductionTransform D Sc cutoff N
+    (β := (β + ([i] : Multiset I)) + ([j] : Multiset I)) (γ := γ)
+    (by rw [add_assoc, add_assoc]; exact h) (by rw [add_assoc, add_assoc]; exact h)
+    (firstDot_parity D Sc l [])).app (D.parity l)
     (BalancedInduction.induced (contentAppend D Sc cutoff N (β + ([i] : Multiset I)) [j])
-      (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)) z
+      (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M))).total z
 
 theorem contentETripleMap_middle_dot (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ)
@@ -169,9 +168,16 @@ theorem contentETripleMap_last_dot (β : Multiset I) (i j l : I) (γ : Multiset 
         (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [j]))
           (firstDot_parity D Sc l [])))
       (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M) z)
-  · exact contentInductionComp_outer D Sc cutoff N (β + ([i] : Multiset I)) [j] [l]
+  · have hc := contentInductionComp_outer D Sc cutoff N (β + ([i] : Multiset I)) [j] [l]
       γ hl hs (firstDot_parity D Sc l [])
       (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M) z
+    have ht := contentInductionTransform_total D Sc cutoff N
+      (β := (β + ([i] : Multiset I)) + ([j] : Multiset I)) (γ := γ)
+      hl hl (firstDot_parity D Sc l [])
+      (BalancedInduction.induced (contentAppendTo D Sc cutoff N (β + ([i] : Multiset I)) [j] _ rfl)
+        (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M)) z
+    rw [← ht] at hc
+    exact hc
   · exact contentInductionComp_outer D Sc cutoff N β [i] [j,l] γ hs h
       (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [j]))
         (firstDot_parity D Sc l [])) M z
@@ -263,3 +269,4 @@ theorem contentETriplePolynomial_whiskered (β : Multiset I) (i j : I)
       contentWhiskeredPolynomial D Sc cutoff N β i j M z := by
   simp only [contentETriplePolynomial, contentWhiskeredPolynomial, contentETripleDotSum_whiskered]
 end OddMath.QuiverHecke.ELVOld
+

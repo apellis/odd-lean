@@ -43,17 +43,6 @@ end BalancedInduction
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-/-- Append with an explicit common target content. -/
-def contentAppendTo (β : Multiset I) (σ : List I) (γ : Multiset I)
-    (hσ : β + (σ : Multiset I) = γ) :
-    ContentCategory D Sc cutoff N β ⥤ ContentCategory D Sc cutoff N γ where
-  obj v := ⟨(truncatedAppend D Sc cutoff N σ).obj v.obj, by
-    change ((v.obj.word ++ σ : List I) : Multiset I) = γ
-    rw [← Multiset.coe_add, v.content, hσ]⟩
-  map f := (truncatedAppend D Sc cutoff N σ).map f
-  map_id v := (truncatedAppend D Sc cutoff N σ).map_id v.obj
-  map_comp f g := (truncatedAppend D Sc cutoff N σ).map_comp f g
-
 instance contentAppendTo_additive (β : Multiset I) (σ : List I) (γ : Multiset I)
     (hσ : β + (σ : Multiset I) = γ) :
     (contentAppendTo D Sc cutoff N β σ γ hσ).Additive where
