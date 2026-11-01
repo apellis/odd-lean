@@ -32,6 +32,11 @@ example : IsUnit (cyclotomicBlockDot D Sc a [] [] () 1) := by
   apply cyclotomicBlock_evenDot_isUnit D Sc a [] [] () rfl
   exact quadraticProbe_firstDot_isUnit D Sc (probeBlockWord [] [] ())
 
+
+example : IsUnit (cyclotomicRepeatedDot D Sc
+    (probePolynomial (probeDotExponent D) (fun _ => 3)) 3 () 3) :=
+  probeRepeated_dots_isUnit D Sc (fun _ => 3) 3 () 3 (by omega)
+
 end ProbeFirstDotConsumer
 
 open Lean Elab Command in

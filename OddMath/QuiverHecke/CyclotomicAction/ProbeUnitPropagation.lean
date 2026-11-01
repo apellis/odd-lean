@@ -1,4 +1,4 @@
-import OddMath.QuiverHecke.CyclotomicAction.ProbeWordCorner
+import OddMath.QuiverHecke.CyclotomicAction.ProbeFirstDot
 
 /-! # Direct units in same-colour nilHecke probe blocks
 
@@ -77,5 +77,57 @@ theorem cyclotomicBlock_dot_isUnit (pre post : List I) (i : I)
   rcases StringDiagrams.Supercategory.parity_eq_zero_or_one (D.parity i) with hi | hi
   · exact (cyclotomicBlock_evenTwo D Sc a pre post i hi).isUnit_right_direct hu
   · exact (cyclotomicBlock_oddTwo D Sc a pre post i hi).isUnit_right_direct hu
+
+
+private theorem unit_oddTwo_map {R S : Type*} [Ring R] [Ring S] (q : R →+* S)
+    {u v T : R} (h : SignedNilHecke.OddTwo u v T) :
+    SignedNilHecke.OddTwo (q u) (q v) (q T) where
+  t_u := by simpa only [map_add, map_mul, map_one] using congrArg q h.t_u
+  u_t := by simpa only [map_add, map_mul, map_one] using congrArg q h.u_t
+  u_v := by simpa only [map_mul, map_neg] using congrArg q h.u_v
+  t_t := by simpa only [map_mul, map_zero] using congrArg q h.t_t
+
+private theorem unit_evenTwo_map {R S : Type*} [Ring R] [Ring S] (q : R →+* S)
+    {u v T : R} (h : SignedNilHecke.EvenTwo u v T) :
+    SignedNilHecke.EvenTwo (q u) (q v) (q T) where
+  t_u := by simpa only [map_sub, map_mul, map_one] using congrArg q h.t_u
+  u_t := by simpa only [map_sub, map_mul, map_one] using congrArg q h.u_t
+  u_v := by simpa only [map_mul] using congrArg q h.u_v
+  t_t := by simpa only [map_mul, map_zero] using congrArg q h.t_t
+
+
+/-- Direct unit propagation in a single fixed monochromatic corner. -/
+theorem cyclotomicRepeated_dot_unit_step (n : ℕ) (i : I) (r : ℕ) (hr : r < n)
+    (hu : IsUnit (cyclotomicRepeatedDot D Sc a n i r)) :
+    IsUnit (cyclotomicRepeatedDot D Sc a n i (r+1)) := by
+  let q := cyclotomicWordEnd D Sc a (repeatedWord i (n+1))
+  have hF := isSignedNilHeckeFamily_block D Sc [] [] i (n+1)
+  have hw : ([] : List I) ++ List.replicate (n+1) i ++ [] =
+      List.replicate (n+1) i := by simp
+  rw [hw] at hF
+  simp only [List.length_nil] at hF
+  rcases StringDiagrams.Supercategory.parity_eq_zero_or_one (D.parity i) with hi | hi
+  · rw [hi, show zunit (0 : ZMod 2) = 1 by simp [zunit]] at hF
+    exact (unit_evenTwo_map q (hF.evenTwo (j := r) (by omega) (by omega))).isUnit_right_direct hu
+  · rw [hi, show zunit (1 : ZMod 2) = -1 by simp [zunit]] at hF
+    exact (unit_oddTwo_map q (hF.oddTwo (j := r) (by omega) (by omega))).isUnit_right_direct hu
+
+theorem cyclotomicRepeated_dots_isUnit (n : ℕ) (i : I)
+    (hzero : IsUnit (cyclotomicRepeatedDot D Sc a n i 0)) :
+    ∀ r < n+1, IsUnit (cyclotomicRepeatedDot D Sc a n i r) := by
+  intro r
+  induction r with
+  | zero => intro _; exact hzero
+  | succ r ih =>
+    intro hr
+    exact cyclotomicRepeated_dot_unit_step D Sc a n i r (by omega) (ih (by omega))
+
+/-- Every dot of the prescribed cofinal monochromatic probe is a unit,
+over any ground ring, with the first-dot premise supplied by its relation. -/
+theorem probeRepeated_dots_isUnit (m : I → ℕ) (n : ℕ) (i : I) (r : ℕ) (hr : r < n+1) :
+    IsUnit (cyclotomicRepeatedDot D Sc (probePolynomial (probeDotExponent D) m) n i r) :=
+  cyclotomicRepeated_dots_isUnit D Sc (probePolynomial (probeDotExponent D) m) n i
+    (probe_firstDot_isUnit D Sc m (repeatedWord i (n+1))) r hr
+
 
 end OddMath.QuiverHecke
