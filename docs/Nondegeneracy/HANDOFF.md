@@ -8,7 +8,7 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Arbitrary-module categorical inverse | Whole forward comparisons scoped-checked; matching coefficient conjugations next | Four representable inverses (#889), arbitrary-module kernel tensor and finite products (#878/#890); scoped quotient coordinates and whole maps (#923/#932) | Finish matching-content kernel bijectivity at the target-fixed count, use off-content zero (#914/#928), then combine actual matrix evenness (#896) with the transferred inverse |
+| Arbitrary-module categorical inverse | Whole forward comparisons full-CI verified and integrated in #932; matching coefficient conjugations next | Four representable inverses (#889), arbitrary-module kernel tensor and finite products (#878/#890); integrated quotient coordinates and whole maps (#923/#932) | Finish matching-content kernel bijectivity at the target-fixed count, use off-content zero (#914/#928), then combine actual matrix evenness (#896) with the transferred inverse |
 | Independent content braid | Whole polynomial lift ready after three-dot-family interface | Canonical carriers/slides (#832/#836), prefix/suffix natural families (#901/#906), corrected component relation (#894) | Finish whole corrected polynomial braid in the same independent maps; whole uncorrected relation is scoped-checked (#926); then content/weight assembly |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
@@ -41,10 +41,12 @@ The generic coefficient-kernel tensor isomorphism and finite kernel
 products are verified (#878/#890). The actual ordinary-right kernel
 matrices, source-right covariance, Hom/IndRes/finite-family quotient
 coordinates, and both whole arbitrary-module forward-map identities are
-scoped-checked (#911/#915/#916/#921/#923/#932). Their consumers retain
+full-CI verified and integrated through #932 (#911/#915/#916/#921/#923).
+Their consumers retain
 cofinally nonzero full exterior-coefficient inputs, with both moving
 parities and zero finite counts. The actual finite SVec maps and their
-evenness for every input module are scoped-checked in #896.
+evenness for every input module are full-CI verified and integrated through
+#932, retaining the exact #896 producers.
 
 The target count is fixed by its content height Q−S (#900/#903).
 Prove the coefficient matrix bijective on matching source content using
