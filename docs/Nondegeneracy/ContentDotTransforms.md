@@ -16,3 +16,7 @@ to whole natural transformations. The whole correction must use the three
 independent families, original scalar parameters and the parameter-twisted
 module category. That polynomial identity and transport to the weight-product
 functors remain separate.
+
+The multiplicative evaluation law is stated on the typed total morphisms before
+specializing module carriers; this keeps categorical End multiplication and
+linear-map constructor projections from obscuring the composition law.
