@@ -31,10 +31,16 @@ premises. This keeps the dependent induction objects identical without
 rebuilding proof-irrelevant target transports. The underlying map formulas
 are unchanged.
 
+The independent pair dots and slide-transport squares likewise use the actual
+evaluated SVec Hom spaces. The representable crossing-coordinate comparison
+uses the pointwise form of its linear square, established generically before
+specializing to the content coends. These preserve the existing coordinate
+and slide relations under the evaluated-map signatures.
+
 The four affected producers have passed strict scoped checks. The new
 connected asymmetric all-odd vacuum consumer applies the whole morphism and
 total-component comparisons to equal and distinct first colours, with every
 premise supplied. It audits all 50 declarations owned by the whiskering module;
-the two existing importing consumers also pass. Full CI remains the integration
+the two existing importing consumers also pass. The affected distinct-slide and vacuum crossing-coordinate producers and their consumers also pass their scoped checks. Full CI remains the integration
 gate. The independently composed three-crossing braid and the weight-family
 supernatural-transformation packaging are separate remaining obligations.
