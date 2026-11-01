@@ -84,6 +84,7 @@ theorem actualSourceInputContraction_q (j : {j : I // D.parity j = 1}) (v t : Li
     LinearMap.congr_fun h z
   apply BalancedInduction.hom_ext
   intro s g b
+  simp only [LinearMap.comp_apply]
   change actualSourceInputContraction D Sc cutoff j v t
     (q D Sc cutoff j.1 v t (shortTensor D Sc cutoff j.1 v s.word t g b)) = _
   rw [q_shortTensor, actualSourceInputContraction_tensor]
@@ -106,6 +107,7 @@ theorem actualSourceInputDot_q (j : {j : I // D.parity j = 1}) (v t : List I)
     LinearMap.congr_fun h z
   apply BalancedInduction.hom_ext
   intro s g b
+  simp only [LinearMap.comp_apply]
   change actualSourceInputDot D Sc cutoff j v t
     (q D Sc cutoff j.1 v t (shortTensor D Sc cutoff j.1 v s.word t g b)) = _
   rw [q_shortTensor, actualSourceInputDot_tensor, oldAppendDotComponent_eq]
@@ -191,8 +193,8 @@ theorem actualSourceInputContraction_boundaryCoordinates (p : ZMod 2)
       (offDiagonalBoundaryCoordinates D Sc cutoff p j v t f) =
       offDiagonalPolynomialBoundary D Sc cutoff p j.1 v t
         (offDiagonalCoefficientRho D Sc cutoff p j v t f) 0 := by
-  rw [offDiagonalBoundaryCoordinates, LinearMap.comp_apply, LinearMap.comp_apply,
-    actualSourceInputContraction_q_decode]
+  simp only [offDiagonalBoundaryCoordinates, LinearMap.comp_apply]
+  rw [actualSourceInputContraction_q_decode]
   change (appendC0 D Sc cutoff j.1 v t
     (appendMovingPowerTarget D Sc cutoff j.1 v (t ++ [j.1]) 1
       (offDiagonalBoundaryLift D Sc cutoff p j v t f)) -
