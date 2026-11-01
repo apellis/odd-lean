@@ -128,7 +128,7 @@ theorem probeMixedCorner_remainders (pre post : List I) (i j : I)
   by_cases hd : D.d i j = 0
   · let s := probeMixedWord pre post i j
     let q : End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post))) →+* CyclotomicWordCorner D Sc a s :=
-    cyclotomicWordEnd D Sc a s
+      cyclotomicWordEnd D Sc a s
     let c := algebraMap k (End ((pres D Sc).obj (ob D (pre ++ [i,j] ++ post)))) (Sc.t i j : k)
     have hBA : probeMixedEntry D Sc a pre post j i * probeMixedEntry D Sc a pre post i j =
         (q c).val := by
