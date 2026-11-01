@@ -116,7 +116,7 @@ private theorem parity_eq_one {p : ZMod 2} (hp : p ≠ 0) : p = 1 := by
   · rfl
 
 /-- The old unit/nilpotence criterion supplies the weaker denominator units. -/
-def CrossCoeffInputs.toDenominatorUnits (h : P.CrossCoeffInputs) :
+theorem CrossCoeffInputs.toDenominatorUnits (h : P.CrossCoeffInputs) :
     P.CrossDenominatorUnits where
   even i hi t hv Z := by
     simpa only [sub_eq_add_neg, add_comm] using
