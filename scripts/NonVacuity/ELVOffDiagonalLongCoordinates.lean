@@ -31,6 +31,22 @@ example (f : ℕ →₀ Old datum scalars (fun _ => 12) [] [false]) :
       (offDiagonalLongSection datum scalars (fun _ => 12) 0 true [] [false] f) = f :=
   offDiagonalLongExtraction_section datum scalars (fun _ => 12) 0 true _ _ f
 
+private def dottedCrossingIndex : NFIdx [false, true] [true, false] :=
+  ⟨([0], Equiv.swap 0 1), by decide, by decide, by decide⟩
+
+/-- Different old normal forms compute the same long coordinate functional. -/
+example (z : Target datum scalars (fun _ => 12) false [false, true] ([true, false] ++ [false])) :
+    longHomCoordinate datum scalars (fun _ => 12) 1 false crossingIndex 3 z =
+      longHomCoordinate datum scalars (fun _ => 12) 1 false dottedCrossingIndex 3 z :=
+  longHomCoordinate_independent datum scalars (fun _ => 12) 1 false
+    crossingIndex dottedCrossingIndex 3 z
+
+example :
+    longHomSection datum scalars (fun _ => 12) 0 true crossingIndex =
+      longHomSection datum scalars (fun _ => 12) 0 true dottedCrossingIndex :=
+  longHomSection_independent datum scalars (fun _ => 12) 0 true
+    crossingIndex dottedCrossingIndex
+
 open Lean Elab Command in
 run_cmd do
   let env ← getEnv
