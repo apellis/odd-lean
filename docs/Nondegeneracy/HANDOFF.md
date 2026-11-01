@@ -66,14 +66,19 @@ of a finite quotient when only bounded-window substitution is proved.
 
 ## Joint coefficient and strand detection
 
-The existing full truncated-kernel degree bound already retains polynomial
-and exterior coefficients. Combine it with injectivity of the bounded
-coefficient quotient tensored with affine Homs, using their proved PBW
-freeness. Check that a single finite coefficient/PBW window has a uniform
-integer-degree bound before choosing cutoffs. The weighted coefficient
-ideal in the implemented quotient contains odd generators; do not replace
-it silently by an ideal generated only by even powers. A further quotient
-must preserve the action and normalized inverse, not merely append maps.
+This input is full-CI verified. `ELVCoefficientWindowTensor` (#812)
+uses affine PBW freeness to retain bounded polynomial/exterior coefficients.
+`ELVJointPBWDetection` (#819) combines that injection with the actual
+truncated-kernel degree bound. `ELVBoundedSourceDetection` (#820)
+embeds the exact bounded-recovery `ExtendedAtMost` window into one such
+joint window, with bounds fixed before the cutoffs, and proves that the
+actual quotients jointly separate every source Hom for finite colours.
+
+Next connect these maps to the normalized action and vacuum coordinates.
+The weighted coefficient ideal contains odd generators; no even-powers
+replacement was used. A quotient must preserve the action and its
+prescribed inverse, not merely append maps. Binomial probe specialization
+belongs to the untruncated old category and is a separate construction.
 
 ## Reporting and verification discipline
 
