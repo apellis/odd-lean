@@ -95,3 +95,24 @@ crossings and independent-dot correction), and `ProbeDotPropagation` (ordinary
 kernel propagation through same/distinct-colour relations). These are not yet
 verified results or concrete full factor/observation instances. The probe note
 uses the simpler kernel proof; actual word-corner application remains separate.
+
+## Saved proof drafts and next verification targets
+
+The risk-reduction topic branch preserves these additional UNCHECKED drafts:
+`ELVPositiveCrossing`, `ELVBoundarySnake`, `ELVCapCoordinateTransport`,
+`ELVCrossingInputDot`, `ELVContentUncorrectedBraid`,
+`ELVOffDiagonalLongCoordinates`, and `ProbeWordCorner`.
+The corresponding consumers are included where present. The first two are
+restricted to diagonal old Hom and odd moving colour. Cap transport constructs
+input-oriented contraction/dot descent with the polynomial defect retained;
+its identification with the actual categorical dotted counit remains open.
+The off-diagonal coordinate draft still takes an old normal-form index: canonical
+choice independence and the empty-index case remain to be completed.
+ProbeWordCorner is an unfinished transport into the actual cyclotomic eAe corner.
+
+Only `ProbeDotPropagation` and its concrete consumer have passed scoped checks
+in this continuation; its independent PR is #751 and full CI remains required.
+The other new constructions must be elaborated, corrected, consumed and audited
+before being recorded as verified. Build their named module targets, then their
+NonVacuity targets. The negative cap matrix, off-diagonal/naturality extension,
+full factor/action and actual observations remain the critical chain.
