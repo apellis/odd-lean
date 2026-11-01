@@ -21,10 +21,9 @@ Producer and concrete consumers pass pinned direct Lean with warnings as
 errors and both compatibility settings. All 12 owned declarations pass
 the consumer axiom audit. A nonzero odd exterior coefficient times a
 mixed crossing survives both ideals for every sufficiently large common
-cutoff; the vacuum instance is also checked. Full branch CI remains the
-integration gate.
+cutoff; the vacuum instance is also checked. Full build with warnings as errors, global axiom audit and concrete consumers passed before research integration.
 
 This supplies the joint detection input to SwappedVacuumCoordinates §6,
 not the action itself. Descent of the categorical inverse and full action
 to the weighted coefficient quotient, the normalized vacuum comparison,
-and the source-window comparison needed by recovery remain separate.
+remain separate. The exact source-window comparison needed by recovery is verified in #820.

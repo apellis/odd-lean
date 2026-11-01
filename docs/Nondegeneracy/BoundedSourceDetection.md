@@ -20,7 +20,7 @@ Producer and closed consumers passed pinned direct Lean with warnings as
 errors and both compatibility settings; all eight owned declarations passed
 the consumer axiom audit. Consumers include survival of a nonzero odd
 exterior coefficient times a mixed crossing, vacuum, unequal strand counts,
-and the jointly-detecting statement. Full CI remains the integration gate.
+and the jointly-detecting statement. Full build with warnings as errors, global axiom audit and concrete consumers passed before research integration.
 
 This supplies the bounded source comparison in SwappedVacuumCoordinates §6
 and tracking #345. The intermediate statements work over a commutative
