@@ -161,6 +161,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRhoExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalBoundaryLeading
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCorrectedCoordinates
 import OddMath.Algebra.DegreeShiftRowDivision
+import OddMath.Algebra.LowPolynomialCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRowDivision
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalRowSplitting
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalSourceSplitting
