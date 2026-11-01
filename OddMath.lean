@@ -1789,3 +1789,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVQuotientInduction
