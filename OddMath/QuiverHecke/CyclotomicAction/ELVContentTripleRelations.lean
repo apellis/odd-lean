@@ -146,7 +146,7 @@ abbrev ContentETripleSpace (β : Multiset I) (i j l : I) (γ : Multiset I)
 def contentETripleEquiv (β : Multiset I) (i j l : I) (γ : Multiset I)
     (h : β + ([i,j,l] : Multiset I) = γ) (M : ContentModules D Sc cutoff N β)
     (w : ContentCategory D Sc cutoff N γ) :
-    ContentETripleSpace D Sc cutoff N β i j l γ h M w ≃ₗ[k]
+    ((contentETripleTo D Sc cutoff N β i j l γ h).obj M).obj w ≃ₗ[k]
       (((contentInductionTo D Sc cutoff N β [i,j,l] γ h).obj M).obj w).carrier :=
   moduleIsoLinearEquiv ((contentETripleComparison D Sc cutoff N β i j l γ h).app M) w
 
@@ -157,8 +157,8 @@ def contentETripleMap {β γ : Multiset I} {i j l a b c : I}
     {f : (pres D Sc).obj (ob D [i,j,l]) ⟶ (pres D Sc).obj (ob D [a,b,c])}
     (hf : f ∈ parity (R := k) _ _ p)
     (M : ContentModules D Sc cutoff N β) (w : ContentCategory D Sc cutoff N γ) :
-    ContentETripleSpace D Sc cutoff N β a b c γ hτ M w →ₗ[k]
-      ContentETripleSpace D Sc cutoff N β i j l γ hσ M w :=
+    ((contentETripleTo D Sc cutoff N β a b c γ hτ).obj M).obj w ⟶
+      ((contentETripleTo D Sc cutoff N β i j l γ hσ).obj M).obj w :=
   (contentETripleEquiv D Sc cutoff N β i j l γ hσ M w).symm.toLinearMap.comp
     ((BalancedInduction.transformLinear
       (contentAppendTo_supernatural D Sc cutoff N hσ hτ hf) M w).comp

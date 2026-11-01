@@ -36,3 +36,8 @@ These are component relations. Whole supernatural-transformation and weight
 family fields still require total-evaluation extensionality and comparison
 with the weight successor-block functors. No mixed braid, local inverse or
 nondegeneracy conclusion is supplied by this module.
+
+The three independent operator types are Hom spaces of the evaluated SVec
+objects. The slide square and sign reversal keep those objects fixed before
+the actual content maps are supplied, sharing their inherited module
+structures throughout the comparison.
