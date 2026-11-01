@@ -40,13 +40,10 @@ private def E : A ⟶ A := 𝟙 A
 private def H : A ⟶ A := 𝟙 A
 
 
-/-- The actual full-ELV target retains the prescribed mate operators for arbitrary source functors. -/
-private theorem actualSourceNorm (E H : A ⟶ A) :=
+/-- Closed actual module-category source with the prescribed identity probe dot. -/
+example :=
   elvMixedSource_difference_isUnit D Sc (fun _ => 12) 12 false 0 step E 1 H
     sy hc rfl 1 (id_mem E) isUnit_one
-
-/-- A closed specialization takes both source functors to the actual category identity. -/
-example := actualSourceNorm E H
 
 example : elvPostTransposeDot D Sc (fun _ => 12) 12 false 0 step
       (E ≫ (SKM.homParityShift (k := ℚ) 1).obj H) =
