@@ -39,35 +39,65 @@ def contentPairOuterDotAt (β : Multiset I) (i j : I) (γ : Multiset I)
       (firstDot_parity D Sc j []))
     (BalancedInduction.induced (contentAppend D Sc cutoff N β [i]) M) z
 
-private theorem pairInner_transport (β : Multiset I) (i j : I) (γ : Multiset I)
-    (h : β + ([i,j] : Multiset I) = γ)
+private theorem sourceTransform_congr {β γ : Multiset I} {σ : List I}
+    (h : β + (σ : Multiset I) = γ) {p : ZMod 2}
+    {a b : End ((pres D Sc).obj (ob D σ))}
+    (ha : a ∈ parity (R := k) _ _ p) (hb : b ∈ parity (R := k) _ _ p) (hab : a = b)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    contentPairInnerDotAt D Sc cutoff N β i j γ h M z =
-      (contentEPairEquiv D Sc cutoff N β i j γ h M z).symm.toLinearMap ∘ₗ
-        BalancedInduction.transformLinear
-          (contentAppendTo_supernatural D Sc cutoff N h h
-            (firstDot_parity D Sc i [j])) M z ∘ₗ
-        (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap := by
-  subst γ
-  change contentEPairInnerDot D Sc cutoff N β i j M z = _
-  rw [← contentEPairDot_zero_eq_inner]
-  simp only [contentEPairDot, ite_true, contentInductionEndLinear,
-    LinearEquiv.conjAlgEquiv_apply, LinearEquiv.symm_symm]
+    BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h h ha) M z =
+      BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h h hb) M z := by
+  cases hab
+  rfl
 
-private theorem pairOuter_transport (β : Multiset I) (i j : I) (γ : Multiset I)
+private theorem pairInner_square (β : Multiset I) (i j : I) (γ : Multiset I)
     (h : β + ([i,j] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
-    contentPairOuterDotAt D Sc cutoff N β i j γ h M z =
-      (contentEPairEquiv D Sc cutoff N β i j γ h M z).symm.toLinearMap ∘ₗ
-        BalancedInduction.transformLinear
-          (contentAppendTo_supernatural D Sc cutoff N h h
-            (contentPairDot_one_parity D Sc i j)) M z ∘ₗ
-        (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap := by
-  subst γ
-  change contentEPairOuterDot D Sc cutoff N β i j M z = _
-  rw [← contentEPairDot_one_eq_outer]
-  simp only [contentEPairDot, show (1 : Fin 2) ≠ 0 by decide, ite_false,
-    contentInductionEndLinear, LinearEquiv.conjAlgEquiv_apply, LinearEquiv.symm_symm]
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap ∘ₗ
+      contentPairInnerDotAt D Sc cutoff N β i j γ h M z =
+    BalancedInduction.transformLinear
+      (contentAppendTo_supernatural D Sc cutoff N h h (firstDot_parity D Sc i [j])) M z ∘ₗ
+      (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap := by
+  unfold contentPairInnerDotAt
+  rw [contentInductionDot_component]
+  have hc := contentInductionComp_inner D Sc cutoff N β [i] [j] γ
+    (by rw [add_assoc]; exact h) h (firstDot_parity D Sc i []) M z
+  have hf := sourceTransform_congr D Sc cutoff N h
+    (MonoidalSupercategory.whiskerRight_mem (R := k) ((pres D Sc).obj (ob D [j]))
+      (firstDot_parity D Sc i []))
+    (firstDot_parity D Sc i [j]) (dotE_whiskerRight D Sc [i] [j] 0 (by simp)) M z
+  exact hc.trans (congrArg (fun q => q ∘ₗ
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap) hf)
+
+private theorem pairOuter_square (β : Multiset I) (i j : I) (γ : Multiset I)
+    (h : β + ([i,j] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap ∘ₗ
+      contentPairOuterDotAt D Sc cutoff N β i j γ h M z =
+    BalancedInduction.transformLinear
+      (contentAppendTo_supernatural D Sc cutoff N h h (contentPairDot_one_parity D Sc i j)) M z ∘ₗ
+      (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap := by
+  unfold contentPairOuterDotAt
+  have hc := contentInductionComp_outer D Sc cutoff N β [i] [j] γ
+    (by rw [add_assoc]; exact h) h (firstDot_parity D Sc j []) M z
+  have hf := sourceTransform_congr D Sc cutoff N h
+    (MonoidalSupercategory.whiskerLeft_mem (R := k) ((pres D Sc).obj (ob D [i]))
+      (firstDot_parity D Sc j []))
+    (contentPairDot_one_parity D Sc i j) (whiskerLeft_letter_dotE D Sc i [j] 0) M z
+  exact hc.trans (congrArg (fun q => q ∘ₗ
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap) hf)
+
+private theorem pairCross_square (β : Multiset I) (i j : I) (γ : Multiset I)
+    (h : β + ([i,j] : Multiset I) = γ) (ht : β + ([j,i] : Multiset I) = γ)
+    (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
+    (contentEPairEquiv D Sc cutoff N β i j γ h M z).toLinearMap ∘ₗ
+      contentEPairCross D Sc cutoff N β i j γ h ht M z =
+    BalancedInduction.transformLinear
+      (contentAppendTo_supernatural D Sc cutoff N h ht (contentCrossAffine_mem D Sc i j)) M z ∘ₗ
+      (contentEPairEquiv D Sc cutoff N β j i γ ht M z).toLinearMap := by
+  apply LinearMap.ext
+  intro a
+  simp only [contentEPairCross, LinearMap.comp_apply, LinearEquiv.coe_coe,
+    LinearEquiv.apply_symm_apply]
 
 private theorem contentTwoTransform_tensor {β γ : Multiset I} {σ τ υ : List I}
     (hσ : β + (σ : Multiset I) = γ) (hτ : β + (τ : Multiset I) = γ)
@@ -163,25 +193,30 @@ private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (�
   ring
   all_goals first
     | exact contentCrossAffine_mem D Sc i j
-    | exact firstDot_parity D Sc i [j]
     | exact firstDot_parity D Sc j [i]
     | exact contentPairDot_one_parity D Sc i j
-    | exact contentPairDot_one_parity D Sc j i
 
-private theorem transport_slide
+private theorem transport_slide_square
     {A B C E : Type u} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
     [AddCommGroup C] [Module k C] [AddCommGroup E] [Module k E]
     (e : A ≃ₗ[k] B) (f : C ≃ₗ[k] E)
-    (x : Module.End k B) (c : E →ₗ[k] B) (y : Module.End k E) (s : k)
-    (h : x.comp c = s • c.comp y) :
-    (e.symm.toLinearMap ∘ₗ x ∘ₗ e.toLinearMap).comp
-        (e.symm.toLinearMap ∘ₗ c ∘ₗ f.toLinearMap) =
-      s • (e.symm.toLinearMap ∘ₗ c ∘ₗ f.toLinearMap).comp
-        (f.symm.toLinearMap ∘ₗ y ∘ₗ f.toLinearMap) := by
-  ext a
-  have ha := LinearMap.congr_fun h (f a)
-  simpa only [LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe,
-    LinearEquiv.apply_symm_apply, map_smul] using congrArg e.symm ha
+    {x : Module.End k A} {c : C →ₗ[k] A} {y : Module.End k C}
+    {X : Module.End k B} {b : E →ₗ[k] B} {Y : Module.End k E} {s : k}
+    (hx : e.toLinearMap ∘ₗ x = X ∘ₗ e.toLinearMap)
+    (hc : e.toLinearMap ∘ₗ c = b ∘ₗ f.toLinearMap)
+    (hy : f.toLinearMap ∘ₗ y = Y ∘ₗ f.toLinearMap)
+    (h : X.comp b = s • b.comp Y) : x.comp c = s • c.comp y := by
+  apply LinearMap.ext
+  intro a
+  apply e.injective
+  change e (x (c a)) = e (s • c (y a))
+  rw [map_smul]
+  calc
+    e (x (c a)) = X (e (c a)) := LinearMap.congr_fun hx (c a)
+    _ = X (b (f a)) := congrArg X (LinearMap.congr_fun hc a)
+    _ = s • b (Y (f a)) := LinearMap.congr_fun h (f a)
+    _ = s • b (f (y a)) := congrArg (fun v => s • b v) (LinearMap.congr_fun hy a).symm
+    _ = s • e (c (y a)) := congrArg (fun v => s • v) (LinearMap.congr_fun hc (y a)).symm
 
 /-- Left slide for the actual pair crossing and independent first/last dots. -/
 theorem contentEPair_distinct_slide_left (β : Multiset I) {i j : I} (hij : i ≠ j)
@@ -193,10 +228,12 @@ theorem contentEPair_distinct_slide_left (β : Multiset I) {i j : I} (hij : i �
       sign k (D.parity i * D.parity j) •
         (contentEPairCross D Sc cutoff N β i j γ hij' hji M z).comp
           (contentPairOuterDotAt D Sc cutoff N β j i γ hji M z) := by
-  rw [pairInner_transport, pairOuter_transport]
-  exact transport_slide
+  exact transport_slide_square
     (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
-    (contentEPairEquiv D Sc cutoff N β j i γ hji M z) _ _ _ _
+    (contentEPairEquiv D Sc cutoff N β j i γ hji M z)
+    (pairInner_square D Sc cutoff N β i j γ hij' M z)
+    (pairCross_square D Sc cutoff N β i j γ hij' hji M z)
+    (pairOuter_square D Sc cutoff N β j i γ hji M z)
     (block_slide_left D Sc cutoff N β hij γ hij' hji M z)
 
 /-- Right slide, retaining the explicit common target content after swapping. -/
@@ -209,12 +246,15 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
       sign k (D.parity i * D.parity j) •
         (contentPairOuterDotAt D Sc cutoff N β i j γ hij' M z).comp
           (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
-  rw [pairInner_transport, pairOuter_transport]
   have h := block_slide_right D Sc cutoff N β hij γ hij' hji M z
-  apply LinearMap.ext
-  intro a
-  have ha := LinearMap.congr_fun h ((contentEPairEquiv D Sc cutoff N β j i γ hji M z) a)
-  simpa only [contentEPairCross, LinearMap.comp_apply, LinearMap.smul_apply,
-    LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_smul] using
-    congrArg (contentEPairEquiv D Sc cutoff N β i j γ hij' M z).symm ha
+  have h' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) h
+  simp only [smul_smul, sign_mul_self, one_smul] at h'
+  have H := transport_slide_square
+    (contentEPairEquiv D Sc cutoff N β i j γ hij' M z)
+    (contentEPairEquiv D Sc cutoff N β j i γ hji M z)
+    (pairOuter_square D Sc cutoff N β i j γ hij' M z)
+    (pairCross_square D Sc cutoff N β i j γ hij' hji M z)
+    (pairInner_square D Sc cutoff N β j i γ hji M z) h'.symm
+  have H' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) H
+  simpa only [smul_smul, sign_mul_self, one_smul] using H'.symm
 end OddMath.QuiverHecke.ELVOld
