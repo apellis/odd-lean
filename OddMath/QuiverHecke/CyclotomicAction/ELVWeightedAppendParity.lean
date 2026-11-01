@@ -20,7 +20,7 @@ theorem moduleIsoOfEvenNatIso_hom_mem (F G : Superfunctor k C (SVec k))
   intro q hq
   funext w
   change (if q = 0 then e.hom.app w else 0) = 0
-  exact if_neg hq
+  exact ite_eq_right hq
 
 theorem moduleIsoOfEvenNatIso_inv_mem (F G : Superfunctor k C (SVec k))
     (e : F.toFunctor ≅ G.toFunctor)
@@ -115,32 +115,14 @@ theorem quotientInducedWeightedModuleIso_inv_mem
 theorem appendWeightedModuleIso_hom_mem (i : I)
     (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
     (appendWeightedModuleIso D Sc cutoff N i M).hom ∈ parity (R := k) _ _ 0 := by
-  let J := CyclotomicCrossingTensor.append D Sc cutoff i
-  let T := truncatedAppend D Sc cutoff N [i]
-  let R := weightedRestriction D Sc cutoff N M
-  let F := BalancedInduction.induced J R
-  let hF := induced_killsWeightedCoefficients D Sc cutoff N i R
-    (weightedRestriction_kills D Sc cutoff N M)
-  let e₁ := (quotientInducedWeightedModuleIso D Sc cutoff N F hF).symm
-  let e₂ := (BalancedInduction.inductionComp J Q).app R
-  let e₃ := BalancedInduction.inducedIsoOfFunctorEq (J ⋙ Q) (Q ⋙ T)
-    (oldAppend_truncate D Sc cutoff N i) R
-  let e₄ := ((BalancedInduction.inductionComp Q T).app R).symm
-  let e₅ := (BalancedInduction.induction T).mapIso (quotientInductionCounitIso D Sc cutoff N M)
-  have h₁ : e₁.hom ∈ parity (R := k) _ _ 0 :=
-    quotientInducedWeightedModuleIso_inv_mem D Sc cutoff N F hF
-  have h₂ : e₂.hom ∈ parity (R := k) _ _ 0 :=
-    BalancedInduction.inductionComp_hom_mem J Q R
-  have h₃ : e₃.hom ∈ parity (R := k) _ _ 0 :=
-    BalancedInduction.inducedIsoOfFunctorEq_hom_mem (J ⋙ Q) (Q ⋙ T)
-      (oldAppend_truncate D Sc cutoff N i) R
-  have h₄ : e₄.hom ∈ parity (R := k) _ _ 0 :=
-    BalancedInduction.inductionComp_inv_mem Q T R
-  have h₅ : e₅.hom ∈ parity (R := k) _ _ 0 :=
-    IsSuperfunctor.map_mem (F := BalancedInduction.induction T)
+  unfold appendWeightedModuleIso
+  apply fiveIsoHom_mem
+  · exact quotientInducedWeightedModuleIso_inv_mem D Sc cutoff N _ _
+  · exact BalancedInduction.inductionComp_hom_mem _ _ _
+  · exact BalancedInduction.inducedIsoOfFunctorEq_hom_mem _ _ _ _
+  · exact BalancedInduction.inductionComp_inv_mem _ _ _
+  · exact IsSuperfunctor.map_mem (F := BalancedInduction.induction _)
       (quotientInductionCounitIso_hom_mem D Sc cutoff N M)
-  change (e₁ ≪≫ e₂ ≪≫ e₃ ≪≫ e₄ ≪≫ e₅).hom ∈ parity (R := k) _ _ 0
-  exact fiveIsoHom_mem e₁ e₂ e₃ e₄ e₅ h₁ h₂ h₃ h₄ h₅
 
 theorem appendWeightedModuleIso_inv_mem (i : I)
     (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k)) :
