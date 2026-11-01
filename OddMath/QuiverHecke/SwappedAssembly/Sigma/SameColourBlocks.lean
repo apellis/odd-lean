@@ -38,7 +38,7 @@ namespace OddMath.QuiverHecke.SwappedAssembly
 
 open CategoryTheory StringDiagrams OddMath.SKM
 
-universe u
+universe u uB vB wB
 
 variable {I X : Type u}
 
@@ -172,7 +172,7 @@ theorem nonempty_dnUp_self_iff {t s : Sector I} (hts : t ≠ s) (r₁ r₂ r₁'
 end SPath
 
 variable [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
