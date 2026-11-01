@@ -144,6 +144,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOutputOldAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputRhoCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputBalancedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputCompatibleLifts
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCorrectedCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVBoundaryFirstOrder
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModule
 
