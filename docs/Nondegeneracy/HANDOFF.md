@@ -97,8 +97,9 @@ ordered quadratic, and unit leading corner term next. A word-corner unit
 is not a left-regular element of the entire algebra.
 
 Cofinal first-dot probe powers and monochromatic all-position injectivity are
-verified in #754. Dimension-free all-position units and actual distinct-colour
-unit transport are under verification.
+verified in #754. Dimension-free monochromatic all-position units are verified in #768.
+Actual distinct-colour unit transport and mixed-word induction remain under
+verification.
 For finite dimension use raw finite append spanning and ordinary coefficient
 specialization; positive-weight coefficient truncation cannot specialize to
 nonnilpotent binomial constants.
@@ -121,3 +122,18 @@ Two prerequisites must remain explicit during synthesis.
 The actual old-module parity/canonical J and whole-counit comparisons are
 under verification. Keep their complete output twist and higher-row signs;
 a raw cap row is not yet an identified categorical counit.
+
+## Checked height and dot inputs
+
+`ELVCrossingHeight` (#760) supplies the actual diagonal crossing's height
+injectivity/surjectivity and zero-height equivalence. Its raw augmented
+positive and negative matrices are checked separately in #776 and #777;
+those drafts are not yet established categorical inverses.
+
+`ELVWeightDot` (#772) supplies the actual normalized weight dot and its
+per-content nilpotence. The next transpose input is a bound at each fixed
+target block uniform over the input module, followed by actual adjunction
+transport. This still permits different exponents at different contents.
+Use direct probe units (#768) rather than requiring finite dimension solely
+to turn same-colour injectivity into a unit. Raw append spanning (#766)
+remains a verified independent specialization input.
