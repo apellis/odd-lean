@@ -49,7 +49,10 @@ The public statements `contentEPairDot_zero_whisker`,
 `contentEPairDot_zero_singleLetter` and `contentEPairDot_one_whisker` use
 these actual-map total evaluations in place of raw `mapComponent` or
 `transformLinear` notation. Their operators and hypotheses are unchanged.
-The generic `contentInductionMap_total_of_mem` and
+Named `contentPair_sum` equalities identify pair endpoints without relying on
+implicit reduction of list-coercion proof terms. Forward squares are composed
+pointwise, so no rewrite unfolds their large dependent carriers. The generic
+`contentInductionMap_total_of_mem` and
 `contentInductionTransform_total` compare the two notations. The independent last-dot definition on three inductions likewise evaluates
 its actual single-letter component; its source comparison uses the same generic
 total-evaluation identity. The headline equalities with independent inner/outer
