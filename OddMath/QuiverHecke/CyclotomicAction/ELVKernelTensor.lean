@@ -55,6 +55,7 @@ def lift (q : ∀ v : C, (K.obj (op v)) ⊗[k] M.obj v →ₗ[k] V)
   (relations K M).liftQ (DirectSum.toModule k C V q) (by
     apply Submodule.span_le.mpr
     rintro z ⟨v, w, a, x, m, rfl⟩
+    change (DirectSum.toModule k C V q) _ = 0
     simp only [map_sub, rawTensor, DirectSum.toModule_lof]
     exact sub_eq_zero.mpr (hq v w a x m))
 
