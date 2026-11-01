@@ -114,7 +114,6 @@ theorem probeAppendOrdinaryModuleIso_hom_unit
       (ELVOld.BalancedInduction.unit J N.toFunctor v b) =
       ELVOld.BalancedInduction.unit T (O).toFunctor ((Q).obj v) b := by
   let w : B₊ := (U).obj ((J).obj v)
-  let x₀ := ELVOld.BalancedInduction.unit J N.toFunctor v b
   let F₀ := probeOrdinaryModuleSuperfunctor D Sc m (i :: ν) L
     (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN)
   let F₁ := ELVOld.BalancedInduction.induced U L
@@ -122,6 +121,7 @@ theorem probeAppendOrdinaryModuleIso_hom_unit
   let F₃ := ELVOld.BalancedInduction.induced (Q ⋙ T) N
   let F₄ := ELVOld.BalancedInduction.induced T (ELVOld.BalancedInduction.induced Q N)
   let F₅ := ELVOld.BalancedInduction.induced T O
+  let x₀ : F₀.obj w := ELVOld.BalancedInduction.unit J N.toFunctor v b
   let f₁ : F₀ ⟶ F₁ := (probeQuotientInducedModuleIso D Sc m (i :: ν) L
     (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN)).inv
   let f₂ : F₁ ⟶ F₂ := (ELVOld.BalancedInduction.inductionComp J U).hom.app N
@@ -130,32 +130,24 @@ theorem probeAppendOrdinaryModuleIso_hom_unit
   let f₄ : F₃ ⟶ F₄ := (ELVOld.BalancedInduction.inductionComp Q T).inv.app N
   let f₅ : F₄ ⟶ F₅ := ELVOld.BalancedInduction.moduleMap T
     (probeQuotientInducedModuleIso D Sc m ν N hN).hom
-  let a₁ := f₁.total w
-  let a₂ := f₂.total w
-  let a₃ := f₃.total w
-  let a₄ := f₄.total w
-  let a₅ := f₅.total w
   have he : (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom =
-      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := rfl
-  have hc : (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total w x₀ =
-      a₅ (a₄ (a₃ (a₂ (a₁ x₀)))) :=
-    (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
-      (ELVOld.BalancedInduction.composition_total_apply f₁ f₂ f₃ f₄ f₅ w x₀)
+      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := by
+    as_aux_lemma => rfl
   have hq := probeQuotientInducedModuleIso_inv_tensor D Sc m (i :: ν) L
     (probeOldInduced_evaluatesCoefficients D m Sc ν i N hN) w x₀
-  have h₁ : a₁ x₀ = ELVOld.BalancedInduction.unit U (L).toFunctor ((J).obj v) x₀ :=
+  have h₁ : (f₁.total w) x₀ = ELVOld.BalancedInduction.unit U (L).toFunctor ((J).obj v) x₀ :=
     hq.trans (ELVOld.BalancedInduction.unit_apply U (L).toFunctor ((J).obj v) x₀).symm
-  have h₂ : a₂ (ELVOld.BalancedInduction.unit U (L).toFunctor ((J).obj v) x₀) =
+  have h₂ : (f₂.total w) (ELVOld.BalancedInduction.unit U (L).toFunctor ((J).obj v) x₀) =
       ELVOld.BalancedInduction.unit (J ⋙ U) N.toFunctor v b :=
     ELVOld.BalancedInduction.inductionComp_hom_total_unit J U N v b
-  have h₃ : a₃ (ELVOld.BalancedInduction.unit (J ⋙ U) N.toFunctor v b) =
+  have h₃ : (f₃.total w) (ELVOld.BalancedInduction.unit (J ⋙ U) N.toFunctor v b) =
       ELVOld.BalancedInduction.unit (Q ⋙ T) N.toFunctor v b :=
     probeAppendSquare_unit D Sc m ν N i v b
-  have h₄ : a₄ (ELVOld.BalancedInduction.unit (Q ⋙ T) N.toFunctor v b) =
+  have h₄ : (f₄.total w) (ELVOld.BalancedInduction.unit (Q ⋙ T) N.toFunctor v b) =
       ELVOld.BalancedInduction.unit T (ELVOld.BalancedInduction.induced Q N).toFunctor
         ((Q).obj v) (ELVOld.BalancedInduction.unit Q N.toFunctor v b) :=
     ELVOld.BalancedInduction.inductionComp_inv_total_unit Q T N v b
-  have h₅ : a₅ (ELVOld.BalancedInduction.unit T
+  have h₅ : (f₅.total w) (ELVOld.BalancedInduction.unit T
       (ELVOld.BalancedInduction.induced Q N).toFunctor ((Q).obj v)
       (ELVOld.BalancedInduction.unit Q N.toFunctor v b)) =
       ELVOld.BalancedInduction.unit T (O).toFunctor ((Q).obj v) b := by
@@ -164,10 +156,10 @@ theorem probeAppendOrdinaryModuleIso_hom_unit
       (probeQuotientInducedModuleIso_hom_even D Sc m ν N hN)
       w ((Q).obj v) (𝟙 w) (ELVOld.BalancedInduction.unit Q N.toFunctor v b)
     calc
-      _ = a₅ (ELVOld.BalancedInduction.tensor T
+      _ = (f₅.total w) (ELVOld.BalancedInduction.tensor T
           (ELVOld.BalancedInduction.induced Q N).toFunctor ((Q).obj v) (𝟙 w)
           (ELVOld.BalancedInduction.unit Q N.toFunctor v b)) :=
-        congrArg a₅ (ELVOld.BalancedInduction.unit_apply T
+        congrArg (f₅.total w) (ELVOld.BalancedInduction.unit_apply T
           (ELVOld.BalancedInduction.induced Q N).toFunctor ((Q).obj v)
             (ELVOld.BalancedInduction.unit Q N.toFunctor v b))
       _ = ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) (𝟙 w)
@@ -177,14 +169,11 @@ theorem probeAppendOrdinaryModuleIso_hom_unit
         congrArg (ELVOld.BalancedInduction.tensor T (O).toFunctor ((Q).obj v) (𝟙 w))
           (probeQuotientInducedModuleIso_hom_unit D Sc m ν N hN ((Q).obj v) b)
       _ = _ := (ELVOld.BalancedInduction.unit_apply T (O).toFunctor ((Q).obj v) b).symm
-  exact hc.trans
-    ((congrArg (fun z : ELVOld.BalancedInduction.Obj U (L).toFunctor w =>
-      a₅ (a₄ (a₃ (a₂ z)))) h₁).trans
-      ((congrArg (fun z : ELVOld.BalancedInduction.Obj (J ⋙ U) N.toFunctor w =>
-        a₅ (a₄ (a₃ z))) h₂).trans
-        ((congrArg (fun z : ELVOld.BalancedInduction.Obj (Q ⋙ T) N.toFunctor w =>
-          a₅ (a₄ z)) h₃).trans
-            ((congrArg a₅ h₄).trans h₅))))
+  exact (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
+    (ELVOld.BalancedInduction.composition_total_apply_of_steps
+      (k := k) (C := B₊) (F₀ := F₀) (F₁ := F₁) (F₂ := F₂)
+      (F₃ := F₃) (F₄ := F₄) (F₅ := F₅) f₁ f₂ f₃ f₄ f₅ w
+      x₀ _ _ _ _ _ h₁ h₂ h₃ h₄ h₅)
 
 end AppendMaps
 end OddMath.QuiverHecke
