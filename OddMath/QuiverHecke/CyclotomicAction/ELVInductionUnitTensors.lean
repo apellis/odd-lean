@@ -23,7 +23,9 @@ theorem inductionComp_hom_total_unit (v : C) (b : M.obj v) :
       (unit K (induced J M).toFunctor (J.obj v) (unit J M.toFunctor v b)) =
       unit (J ⋙ K) M.toFunctor v b := by
   simp only [unit_apply]
-  rw [inductionComp_hom_total_tensor, K.map_id, Category.id_comp]
+  rw [inductionComp_hom_total_tensor, K.map_id]
+  exact congrArg (fun h : K.obj (J.obj v) ⟶ K.obj (J.obj v) =>
+    tensor (J ⋙ K) M.toFunctor v h b) (Category.comp_id (𝟙 (K.obj (J.obj v))))
 
 /-- The canonical unflattening sends the composite unit to the nested unit. -/
 theorem inductionComp_inv_total_unit (v : C) (b : M.obj v) :
