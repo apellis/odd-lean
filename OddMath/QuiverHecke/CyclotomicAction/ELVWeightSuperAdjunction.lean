@@ -39,7 +39,7 @@ def elvActionAdjunction :
   counit_mem := Superfunctor.mem_parity_iff_isHomogeneous.2
     (SuperNatTrans.ofNatTrans_isHomogeneous _ _)
   left_triangle := by
-    simp only [SCat.leftUnitor_inv, SCat.associator_hom, SCat.rightUnitor_hom]
+    simp only [PiSCat.leftUnitor_inv, PiSCat.associator_hom, PiSCat.rightUnitor_hom]
     erw [Category.id_comp, Category.id_comp, Category.comp_id]
     apply Superfunctor.hom_ext_parity
     · intro M
@@ -51,7 +51,7 @@ def elvActionAdjunction :
     · intro M
       simp [elvActionUnit, elvActionCounit, SuperNatTrans.ofNatTrans]
   right_triangle := by
-    simp only [SCat.rightUnitor_inv, SCat.associator_inv, SCat.leftUnitor_hom]
+    simp only [PiSCat.rightUnitor_inv, PiSCat.associator_inv, PiSCat.leftUnitor_hom]
     erw [Category.id_comp, Category.id_comp, Category.comp_id]
     apply Superfunctor.hom_ext_parity
     · intro N
