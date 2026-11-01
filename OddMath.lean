@@ -1737,3 +1737,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldSupermodules
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendSuperfunctor
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
