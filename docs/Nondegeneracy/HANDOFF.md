@@ -8,9 +8,9 @@ This file records the next mathematical targets, not session telemetry.
 
 | Target | Ready to start? | Existing inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Prescribed categorical inverse | Yes: highest-priority risk | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Use proved balanced crossing/source coordinates and actual kernel/image data; derive the snake and prescribed augmented inverse, retaining full coefficient twists and all heights |
+| Prescribed categorical inverse | Diagonal construction ready; full action has prerequisites | Actual short-column squares; `ELVBoundaryRowDivision` and height identity; `ELVCyclotomicAlphaCoordinates.extract_comp_alpha` and `pprime_injective` | Check the diagonal snake/augmented inverse, then extend arbitrary-Hom boundary leading terms, division and cap pivots. No diagonal-to-all-representables reduction is proved; retain full twists and all heights |
 | Independent content mixed braid | Yes, alongside inverse work | Coherent composition comparisons and independent triple crossing/dot identifications; ordered correction polynomial | Prove the composed independently whiskered braid on these same maps, with parameter twist and equal-colour minus |
-| Full-ELV factor family | Partly: construction/comparison work can start | Existing full-ELV content module functors and polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
+| Full-ELV factor family | Actual categories and adjunction verified; inverse assembly blocked | Canonical content parity and actual weight E/F adjunction (#755, #757), full-ELV polynomial relations | Finished family requires the categorical inverse, multicolour relations, naturality and required degree transports; ordinary-polynomial global wrapper does not supply it |
 | Whole swapped action | Local comparisons ready; concrete assembly blocked | Conditional assembly; braid from inverse/coefficient inputs; Hom mate and word comparisons | Supply compatible full-ELV factors and concrete crossing/leftward coefficient inputs, then all whole inverse and relation fields |
 | Vacuum and bubble recovery | Literal coordinate comparisons ready; final instance blocked | Whole-word Hom crossing; transformed ideal comparisons; abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation and all-height bubble series |
 | Final nondegeneracy composition | Blocked on observations | Finite-colour reduction and upward/oriented equivalence are implemented | Construct observations for every finite colour restriction, fixed weight, upward pair and bound; invoke existing consumer |
@@ -92,11 +92,32 @@ remain open.
 in #751 and #752. Use the actual corner map and its nilHecke relations.
 `ProbeWordEntries` adds actual rectangular entries, their word supports,
 target-row cancellation by corner units, and the distinct-kernel criterion;
-source and consumer await CI. Supply its actual distinct-colour slide,
+source and consumer passed full CI in #756. Supply its actual distinct-colour slide,
 ordered quadratic, and unit leading corner term next. A word-corner unit
 is not a left-regular element of the entire algebra.
 
-Cofinal probe powers and all-position unit propagation remain separate work.
+Cofinal first-dot probe powers and monochromatic all-position injectivity are
+verified in #754. Dimension-free all-position units and actual distinct-colour
+unit transport are under verification.
 For finite dimension use raw finite append spanning and ordinary coefficient
 specialization; positive-weight coefficient truncation cannot specialize to
 nonnilpotent binomial constants.
+
+## Quantifiers and arbitrary endpoints
+
+Two prerequisites must remain explicit during synthesis.
+
+* Boundary division and the current augmented matrix use diagonal old
+  endomorphism coefficients. The full module action needs arbitrary
+  `Old(v,t)`. Extend the actual long extraction/short-kernel factorization,
+  prove output-arrow covariance, and reuse the diagonal leading polynomial
+  by composition with arbitrary old morphisms. General module division and
+  cap pivots must then be checked; do not infer them from diagonal inverses.
+* Nilpotence of the actual induced dot is per target-content block. Build
+  denominator units componentwise and assemble their even natural inverse.
+  Do not assume a common exponent over all contents in one weight fibre.
+  The old strong nilpotence constructor may remain as a sufficient corollary.
+
+The actual old-module parity/canonical J and whole-counit comparisons are
+under verification. Keep their complete output twist and higher-row signs;
+a raw cap row is not yet an identified categorical counit.
