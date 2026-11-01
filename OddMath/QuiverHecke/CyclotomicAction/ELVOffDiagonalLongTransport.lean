@@ -35,11 +35,13 @@ theorem longHomLift_zero_pair (p : ZMod 2) (i : I) {v t : List I}
     (y : NFIdx v t) (b : Old D Sc cutoff v t) :
     longHomLift D Sc cutoff p i y 0 b =
       pair D Sc cutoff p i (bareUFull D Sc cutoff i t) b := by
+  let z : PrependIdx i t (t ++ [i]) := longOutputIndex i t 0
+  let y' : NFIdx v z.oldTarget := (longOutputIndex_oldTarget i t 0).symm ▸ y
+  have hr := prependTail_rebase D Sc (i := i) (v := v) (s := t) (w := t ++ [i]) z y'
   have ht : HEq (prependTail D Sc (longHomIndex i y 0))
       (OutputOldComposite.bareU D Sc i t) :=
-    (prependTail_rebase D Sc (longOutputIndex i t 0)
-      ((longOutputIndex_oldTarget i t 0).symm ▸ y)).trans (tail_long_zero D Sc i t)
-  have h := castPair_heq D Sc cutoff p i
+    hr.trans (tail_long_zero D Sc i t)
+  have h := castPair_heq D Sc cutoff p i (v := v)
     (longHomIndex_oldTarget i y 0) rfl _ _ ht
   have hv := congrArg (fun f : Old D Sc cutoff v t →ₗ[k]
     Target D Sc cutoff i v (t ++ [i]) => f b) h
@@ -60,7 +62,7 @@ theorem outputLongLift_zero_pair (p : ZMod 2) (i : I) (v : List I)
     (b : Old D Sc cutoff v v) :
     outputLongLift D Sc cutoff p i v 0 b =
       pair D Sc cutoff p i (bareUFull D Sc cutoff i v) b := by
-  have h := castPair_heq D Sc cutoff p i
+  have h := castPair_heq D Sc cutoff p i (v := v)
     (longOutputIndex_oldTarget i v 0) rfl _ _ (tail_long_zero D Sc i v)
   have hv := congrArg (fun f : Old D Sc cutoff v v →ₗ[k]
     Target D Sc cutoff i v (v ++ [i]) => f b) h
@@ -80,7 +82,7 @@ theorem offDiagonalLongSection_zero_transport (p : ZMod 2) (i : I) (v t : List I
       (p + D.parity i * wordSumParity D v) = p := by
     calc
       _ = p + (D.parity i * wordSumParity D v + D.parity i * wordSumParity D v) := by abel
-      _ = p := by rw [SVec.zmod2_add_self, add_zero]
+      _ = p := by rw [Supercategory.zmod2_add_self, add_zero]
   have he : twist k (D.parity i * wordSumParity D v)
       (twist k (p + D.parity i * wordSumParity D v) r) = twist k p r := by
     rw [← twist_add, hp]
