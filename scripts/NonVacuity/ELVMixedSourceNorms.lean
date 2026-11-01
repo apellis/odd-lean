@@ -41,11 +41,7 @@ private def H : A ⟶ A := 𝟙 A
 
 
 /-- The actual full-ELV target retains the prescribed mate operators for arbitrary source functors. -/
-private theorem actualSourceNorm (E H : A ⟶ A) : IsUnit (SKM.mixedPostSourcePreDot (k := ℚ) E 1 H
-      (F' := elvF D Sc (fun _ => 12) 12 false 0 step) (1 : End E) -
-    SKM.mixedPostSourcePostDot (k := ℚ) E 1 H
-      (elvActionAdjunction D Sc (fun _ => 12) 12 false 0 step)
-      (elvActionDot D Sc (fun _ => 12) 12 false 0 step)) :=
+private theorem actualSourceNorm (E H : A ⟶ A) :=
   elvMixedSource_difference_isUnit D Sc (fun _ => 12) 12 false 0 step E 1 H
     sy hc rfl 1 (id_mem E) isUnit_one
 
