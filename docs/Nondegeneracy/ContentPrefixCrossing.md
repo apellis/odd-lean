@@ -37,6 +37,12 @@ uses the pointwise form of its linear square, established generically before
 specializing to the content coends. These preserve the existing coordinate
 and slide relations under the evaluated-map signatures.
 
+The iterated vacuum-word coordinate comparison uses the corresponding
+generic coordinate-square constructor: its entire coordinate law is supplied
+before a complicated mapped vector is substituted. The word-source,
+word-evaluation and word-pairing producers and their consumers have passed
+the affected-closure checks.
+
 The four affected producers have passed strict scoped checks. The new
 connected asymmetric all-odd vacuum consumer applies the whole morphism and
 total-component comparisons to equal and distinct first colours, with every
