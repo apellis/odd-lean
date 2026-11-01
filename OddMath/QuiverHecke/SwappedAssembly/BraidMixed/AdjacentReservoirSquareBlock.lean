@@ -110,7 +110,7 @@ private lemma square {C : Type u} [Category C] [Preadditive C]
 lemma square_native
     (hs0 : nextSector (true, j) false (nextSector (true, i) false s) =
       nextSector (true, i) false (nextSector (true, j) false s))
-    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (c : P.CrossCoeff Sc) (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     let E := P.mixedJ i i s hi (RepeatedOuterPre.rest P i j s hj (hs ▸ Y))
     let J := RepeatedOuterPre.rightIso P i j s hi hj (hs ▸ Y)
     let H := RepeatedOuterPost.firstIso P i j s hj0 hi0 Y
@@ -141,7 +141,7 @@ lemma square_last (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : i �
   rfl
 
 lemma square_braid_entry (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true false hi trivial hj hs)
       (SPath.three false true false hj0 trivial hi0 rfl) Y =
@@ -176,7 +176,7 @@ lemma square_braid_entry_transport (ν : X) {t : Sector I}
     (e : nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)) = t)
     (e' : nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)) = t)
     (Z : P.H t) (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν
       (SPath.three false true false hi trivial hj e)
       (SPath.three false true false hj0 trivial hi0 e') Z =
@@ -201,7 +201,7 @@ lemma braid_block (ν : X) {t : Sector I}
     (Z : P.H t) (p : SPath (wd D ν [up i, up i, up j]) s t)
     (q : SPath (wd D ν [up j, up i, up i]) s t)
     (c : P.CrossCoeff Sc) (L : P.LeftwardData)
-    (hc : c.IsInverse) (h : P.CrossCoeffInputs) (hij : i ≠ j) :
+    (hc : c.IsInverse) (h : P.CrossDenominatorUnits) (hij : i ≠ j) :
     braidLeft (P.swappedGens c L) i i j ν p q Z =
       braidRight (P.swappedGens c L) i i j ν p q Z := by
   obtain ⟨hj0, hi0⟩ := opposite_valid i j s hi hj hij
