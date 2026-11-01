@@ -43,6 +43,18 @@ private theorem source_post :
     (SuperAdjunction.rightTransposeLinear adj adj).map_zero
   rw [mixedPostSourcePostDot, hz, whiskerLeft_zero', whiskerLeft_zero']
 
+private abbrev jSource :=
+  (homParityShift (k := ℚ) 1).obj ((E ≫ ((homParityShift (k := ℚ) 1).obj H ≫ Q)) ≫ P)
+
+private theorem j_pre :
+    mixedPostJPreDot (k := ℚ) E 1 1 H (E' := P) (F' := Q) (𝟙 E) =
+      (1 : End jSource) := by
+  simp only [mixedPostJPreDot, TwoSupercategory.id_whiskerRight (R := ℚ), Functor.map_id]
+
+private theorem j_post :
+    mixedPostJPostDot (k := ℚ) E 1 1 H (F' := Q) (0 : P ⟶ P) = 0 := by
+  simp only [mixedPostJPostDot, whiskerLeft_zero', Functor.map_zero]
+
 /-- A nonidentity crossing on the actual asymmetric ELV adjunction,
 with both parity shifts nontrivial, satisfies the explicit source-unit criterion. -/
 example : IsIso (homDistinctMixedMateDot E adj 1 1 H (-1 : End target)) := by
@@ -56,6 +68,20 @@ example : IsIso (homDistinctMixedMateDot E adj 1 1 H (-1 : End target)) := by
     (-1 : ℚ) 0 0
   · simp [target_pre, target_post]
   · exact hL
+  · simpa using (isUnit_one : IsUnit (1 : End source)).neg
+
+/-- The conjugated coefficient-square crossing uses the same literal units. -/
+example : IsIso (homDistinctMixedMateDot E adj 1 1 H
+    ((homMixedInterchange (k := ℚ) E P 1 1 ((homParityShift (k := ℚ) 1).obj H ≫ Q)).hom ≫
+      (-((1 : End jSource) ≫ 1 ≫
+        (homMixedInterchange (k := ℚ) E P 1 1
+          ((homParityShift (k := ℚ) 1).obj H ≫ Q)).inv)))) := by
+  apply homDistinctMixedMateDot_isIso_of_conj_units E adj 1 1 H
+    (id_mem E) (zero_mem _) (1 : End jSource)
+    (Commute.one_left _) (Commute.one_left _) 0 (0 : ℚ)
+  · simp [j_pre, j_post]
+  · rw [source_post, sub_zero]
+    exact ((isUnit_one : IsUnit (1 : End E)).map ((homPost (k := ℚ) _).mapEnd E)).pow 2
   · simpa using (isUnit_one : IsUnit (1 : End source)).neg
 
 end NonVacuity.RouquierHomPostMateUnits

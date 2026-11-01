@@ -69,10 +69,9 @@ theorem homDistinctMixedMateDot_square_sub_comp
   rw [commute_square_sub (commute_mixedPostTarget E κ H hx (y := y)),
     commute_square_sub (commute_mixedPostSource E A κ H hx (y := y)),
     Preadditive.add_comp, Preadditive.sub_comp, Preadditive.add_comp,
-    ← homDistinctMixedMateDotLinear_apply, map_add, map_sub, map_add,
-    homDistinctMixedMateDotLinear_apply, homDistinctMixedMateDotLinear_apply,
-    homDistinctMixedMateDotLinear_apply, homDistinctMixedMateDotLinear_apply,
-    h20, h11, h02, ← Preadditive.add_comp, ← Preadditive.sub_comp,
+    ← homDistinctMixedMateDotLinear_apply, map_add, map_sub, map_add]
+  simp only [homDistinctMixedMateDotLinear_apply]
+  rw [h20, h11, h02, ← Preadditive.add_comp, ← Preadditive.sub_comp,
     ← Preadditive.add_comp]
 
 /-- Two explicit source-unit inputs imply invertibility of the mixed mate.
@@ -187,7 +186,7 @@ theorem homDistinctMixedMateDot_isIso_of_conj_units {x : E ⟶ E} (hx : x ∈ pa
       (homMixedInterchange (k := k) E E' κ τ ((homParityShift (k := k) κ).obj H ≫ F')).symm) key
     simp only [map_mul, map_neg, map_sub, map_pow, map_add, isoConjRingHom_smul] at hh
     rw [hΦ, hX, hY, ← End.mul_def]
-    exact hh
+    simpa only [map_neg, map_mul] using hh
 
 end Conj
 
