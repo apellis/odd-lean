@@ -165,6 +165,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapInput
 import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedSourceLinearEquiv
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalCapComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVActualCapParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCapRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVCounitInputInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVOffDiagonalLongKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVOutputPolynomialExtraction
 import OddMath.QuiverHecke.CyclotomicAction.ELVChronologicalShort
