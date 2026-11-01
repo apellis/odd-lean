@@ -93,11 +93,8 @@ theorem appendWeightedModuleIso_hom_unit
     (quotientInductionCounitIso D Sc cutoff N M).hom
   let x₀ : F₀.obj w := BalancedInduction.unit J (R).toFunctor s b
   have he : (appendWeightedModuleIso D Sc cutoff N i M).hom =
-      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := rfl
-  have hc : (appendWeightedModuleIso D Sc cutoff N i M).hom.total w x₀ =
-      f₅.total w (f₄.total w (f₃.total w (f₂.total w (f₁.total w x₀)))) :=
-    (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
-      (BalancedInduction.composition_total_apply f₁ f₂ f₃ f₄ f₅ w x₀)
+      (show F₀ ⟶ F₅ from f₁ ≫ f₂ ≫ f₃ ≫ f₄ ≫ f₅) := by
+    as_aux_lemma => rfl
   have h₁ : f₁.total w x₀ = BalancedInduction.unit Q (L).toFunctor ((J).obj s) x₀ := by
     exact (quotientInducedWeightedModuleIso_inv_tensor D Sc cutoff N L hL w x₀).trans
       (BalancedInduction.unit_apply Q (L).toFunctor ((J).obj s) x₀).symm
@@ -117,8 +114,8 @@ theorem appendWeightedModuleIso_hom_unit
       BalancedInduction.unit T M.toFunctor ((Q).obj s) b := by
     simpa only [BalancedInduction.unit_apply] using
       quotientCounit_moduleMap_unit_tensor D Sc cutoff N i M s ((T).obj ((Q).obj s)) (𝟙 _) b
-  refine hc.trans ?_
-  rw [h₁, h₂, h₃, h₄]
-  exact h₅
+  exact (congrArg (fun f : F₀ ⟶ F₅ => f.total w x₀) he).trans
+    (BalancedInduction.composition_total_apply_of_steps f₁ f₂ f₃ f₄ f₅ w
+      x₀ _ _ _ _ _ h₁ h₂ h₃ h₄ h₅)
 
 end OddMath.QuiverHecke.ELVOld
