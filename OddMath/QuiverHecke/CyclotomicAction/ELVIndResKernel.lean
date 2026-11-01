@@ -32,44 +32,44 @@ variable (J : C ⥤ D)
 abbrev Component (v t : D) := BalancedInduction.Obj J (J ⋙ homModule (k := k) v) t
 
 def precompose {u v : D} (a : u ⟶ v) (t : D) :
-    Component J v t →ₗ[k] Component J u t :=
-  BalancedInduction.lift J (J ⋙ homModule v) t
-    (fun s => BalancedInduction.inclusion J (J ⋙ homModule u) t s ∘ₗ
+    Component (k := k) J v t →ₗ[k] Component (k := k) J u t :=
+  BalancedInduction.lift J (J ⋙ homModule (k := k) v) t
+    (fun s => BalancedInduction.inclusion J (J ⋙ homModule (k := k) u) t s ∘ₗ
       TensorProduct.map LinearMap.id (Linear.leftComp k (J.obj s) a)) (by
         intro s s' f g b
-        change BalancedInduction.tensor J (J ⋙ homModule u) s (J.map f ≫ g) (a ≫ b) =
-          BalancedInduction.tensor J (J ⋙ homModule u) s' g (a ≫ (b ≫ J.map f))
+        change BalancedInduction.tensor J (J ⋙ homModule (k := k) u) s (J.map f ≫ g) (a ≫ b) =
+          BalancedInduction.tensor J (J ⋙ homModule (k := k) u) s' g (a ≫ (b ≫ J.map f))
         rw [BalancedInduction.balance]
         congr 1
         exact Category.assoc a b (J.map f))
 
 @[simp] theorem precompose_tensor {u v : D} (a : u ⟶ v) (t : D)
     (s : C) (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
-    precompose J a t (BalancedInduction.tensor J (J ⋙ homModule v) s g b) =
-      BalancedInduction.tensor J (J ⋙ homModule u) s g (a ≫ b) := by
+    precompose (k := k) J a t (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) =
+      BalancedInduction.tensor J (J ⋙ homModule (k := k) u) s g (a ≫ b) := by
   rw [precompose, BalancedInduction.lift_tensor]
   rfl
 
 /-- The ordinary-right coefficient presheaf for induction after restriction. -/
 def kernel (t : D) : Dᵒᵖ ⥤ ModuleCat k where
-  obj v := ModuleCat.of k (Component J v.unop t)
-  map a := ModuleCat.ofHom (precompose J a.unop t)
+  obj v := ModuleCat.of k (Component (k := k) J v.unop t)
+  map a := ModuleCat.ofHom (precompose (k := k) J a.unop t)
   map_id v := by
     apply ModuleCat.hom_ext
     apply BalancedInduction.hom_ext
     intro s g b
-    change precompose J (𝟙 v.unop) t
-      (BalancedInduction.tensor J (J ⋙ homModule v.unop) s g b) = _
+    change precompose (k := k) J (𝟙 v.unop) t
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v.unop) s g b) = _
     rw [precompose_tensor, Category.id_comp]
     rfl
   map_comp a b := by
     apply ModuleCat.hom_ext
     apply BalancedInduction.hom_ext
     intro s g h
-    change precompose J (b.unop ≫ a.unop) t
-      (BalancedInduction.tensor J (J ⋙ homModule _) s g h) =
-      precompose J b.unop t (precompose J a.unop t
-        (BalancedInduction.tensor J (J ⋙ homModule _) s g h))
+    change precompose (k := k) J (b.unop ≫ a.unop) t
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) _) s g h) =
+      precompose (k := k) J b.unop t (precompose (k := k) J a.unop t
+        (BalancedInduction.tensor J (J ⋙ homModule (k := k) _) s g h))
     simp only [precompose_tensor]
     rw [Category.assoc]
 
@@ -77,8 +77,8 @@ variable (M : D ⥤ SVec k) [M.Additive] [M.Linear k]
 
 /-- Evaluate the old representable factor on an arbitrary module element. -/
 def evaluate (v t : D) (m : M.obj v) :
-    Component J v t →ₗ[k] BalancedInduction.Obj J (J ⋙ M) t :=
-  BalancedInduction.lift J (J ⋙ homModule v) t
+    Component (k := k) J v t →ₗ[k] BalancedInduction.Obj J (J ⋙ M) t :=
+  BalancedInduction.lift J (J ⋙ homModule (k := k) v) t
     (fun s => BalancedInduction.inclusion J (J ⋙ M) t s ∘ₗ
       TensorProduct.map LinearMap.id
         ((M.mapLinearMap (R := k)).flip m)) (by
@@ -90,7 +90,7 @@ def evaluate (v t : D) (m : M.obj v) :
 
 @[simp] theorem evaluate_tensor (v t : D) (m : M.obj v)
     (s : C) (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) :
-    evaluate J M v t m (BalancedInduction.tensor J (J ⋙ homModule v) s g b) =
+    evaluate J M v t m (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) =
       BalancedInduction.tensor J (J ⋙ M) s g (M.map b m) := by
   rw [evaluate, BalancedInduction.lift_tensor]
   rfl
@@ -110,7 +110,7 @@ theorem evaluate_smul (v t : D) (r : k) (m : M.obj v) :
     BalancedInduction.tensor, tmul_smul]
 
 def evaluatePair (v t : D) :
-    Component J v t →ₗ[k] M.obj v →ₗ[k] BalancedInduction.Obj J (J ⋙ M) t where
+    Component (k := k) J v t →ₗ[k] M.obj v →ₗ[k] BalancedInduction.Obj J (J ⋙ M) t where
   toFun x := {
     toFun := fun m => evaluate J M v t m x
     map_add' := fun m m' => congrArg (fun f => f x) (evaluate_add J M v t m m')
@@ -119,7 +119,7 @@ def evaluatePair (v t : D) :
   map_smul' r x := by ext m; exact map_smul (evaluate J M v t m) r x
 
 theorem evaluate_precompose {v w : D} (a : v ⟶ w) (t : D) (m : M.obj v) :
-    evaluate J M v t m ∘ₗ precompose J a t =
+    evaluate J M v t m ∘ₗ precompose (k := k) J a t =
       evaluate J M w t (M.map a m) := by
   apply BalancedInduction.hom_ext
   intro s g b
@@ -127,58 +127,58 @@ theorem evaluate_precompose {v w : D} (a : v ⟶ w) (t : D) (m : M.obj v) :
   rfl
 
 /-- Flatten the two balances by evaluating the representable factor. -/
-def forward (t : D) : BalancedKernelTensor.Obj (kernel J t) M →ₗ[k]
+def forward (t : D) : BalancedKernelTensor.Obj (kernel (k := k) J t) M →ₗ[k]
     BalancedInduction.Obj J (J ⋙ M) t :=
-  BalancedKernelTensor.lift (kernel J t) M
+  BalancedKernelTensor.lift (kernel (k := k) J t) M
     (fun v => TensorProduct.lift (evaluatePair J M v t)) (by
       intro v w a x m
-      change evaluate J M v t m (precompose J a t x) =
+      change evaluate J M v t m (precompose (k := k) J a t x) =
         evaluate J M w t (M.map a m) x
-      exact congrArg (fun f => f x) (evaluate_precompose J M a t m))
+      exact congrArg (fun f => f x) (evaluate_precompose (k := k) J M a t m))
 
-@[simp] theorem forward_tensor (t v : D) (x : Component J v t) (m : M.obj v) :
-    forward J M t (BalancedKernelTensor.tensor (kernel J t) M v x m) =
+@[simp] theorem forward_tensor (t v : D) (x : Component (k := k) J v t) (m : M.obj v) :
+    forward J M t (BalancedKernelTensor.tensor (kernel (k := k) J t) M v x m) =
       evaluate J M v t m x := by
   rw [forward, BalancedKernelTensor.lift_tensor]
   rfl
 
 /-- Insert the identity into the representable factor. -/
-def identityLift (t : D) (s : C) : (J.obj s ⟶ t) →ₗ[k] Component J (J.obj s) t :=
-  BalancedInduction.inclusion J (J ⋙ homModule (J.obj s)) t s ∘ₗ
+def identityLift (t : D) (s : C) : (J.obj s ⟶ t) →ₗ[k] Component (k := k) J (J.obj s) t :=
+  BalancedInduction.inclusion J (J ⋙ homModule (k := k) (J.obj s)) t s ∘ₗ
     (TensorProduct.mk k (J.obj s ⟶ t) (J.obj s ⟶ J.obj s)).flip (𝟙 _)
 
 @[simp] theorem identityLift_apply (t : D) (s : C) (g : J.obj s ⟶ t) :
-    identityLift J t s g =
-      BalancedInduction.tensor J (J ⋙ homModule (J.obj s)) s g (𝟙 _) := rfl
+    identityLift (k := k) J t s g =
+      BalancedInduction.tensor J (J ⋙ homModule (k := k) (J.obj s)) s g (𝟙 _) := rfl
 
 theorem identityLift_balance {s s' : C} (f : s ⟶ s') (t : D) (g : J.obj s' ⟶ t) :
-    identityLift J t s (J.map f ≫ g) =
-      precompose J (J.map f) t (identityLift J t s' g) := by
+    identityLift (k := k) J t s (J.map f ≫ g) =
+      precompose (k := k) J (J.map f) t (identityLift (k := k) J t s' g) := by
   rw [identityLift_apply, identityLift_apply, precompose_tensor,
     BalancedInduction.balance]
-  change BalancedInduction.tensor J (J ⋙ homModule (J.obj s)) s' g
+  change BalancedInduction.tensor J (J ⋙ homModule (k := k) (J.obj s)) s' g
     (𝟙 _ ≫ J.map f) =
-    BalancedInduction.tensor J (J ⋙ homModule (J.obj s)) s' g (J.map f ≫ 𝟙 _)
+    BalancedInduction.tensor J (J ⋙ homModule (k := k) (J.obj s)) s' g (J.map f ≫ 𝟙 _)
   rw [Category.id_comp, Category.comp_id]
 
 def backward (t : D) : BalancedInduction.Obj J (J ⋙ M) t →ₗ[k]
-    BalancedKernelTensor.Obj (kernel J t) M :=
+    BalancedKernelTensor.Obj (kernel (k := k) J t) M :=
   BalancedInduction.lift J (J ⋙ M) t
-    (fun s => BalancedKernelTensor.inclusion (kernel J t) M (J.obj s) ∘ₗ
-      TensorProduct.map (identityLift J t s) LinearMap.id) (by
+    (fun s => BalancedKernelTensor.inclusion (kernel (k := k) J t) M (J.obj s) ∘ₗ
+      TensorProduct.map (identityLift (k := k) J t s) LinearMap.id) (by
       intro s s' f g m
-      change BalancedKernelTensor.tensor (kernel J t) M (J.obj s)
-        (identityLift J t s (J.map f ≫ g)) m =
-        BalancedKernelTensor.tensor (kernel J t) M (J.obj s')
-          (identityLift J t s' g) (M.map (J.map f) m)
+      change BalancedKernelTensor.tensor (kernel (k := k) J t) M (J.obj s)
+        (identityLift (k := k) J t s (J.map f ≫ g)) m =
+        BalancedKernelTensor.tensor (kernel (k := k) J t) M (J.obj s')
+          (identityLift (k := k) J t s' g) (M.map (J.map f) m)
       rw [identityLift_balance]
-      exact BalancedKernelTensor.balance (kernel J t) M (J.map f)
-        (identityLift J t s' g) m)
+      exact BalancedKernelTensor.balance (kernel (k := k) J t) M (J.map f)
+        (identityLift (k := k) J t s' g) m)
 
 @[simp] theorem backward_tensor (t : D) (s : C) (g : J.obj s ⟶ t)
     (m : M.obj (J.obj s)) :
     backward J M t (BalancedInduction.tensor J (J ⋙ M) s g m) =
-      BalancedKernelTensor.tensor (kernel J t) M (J.obj s) (identityLift J t s g) m := by
+      BalancedKernelTensor.tensor (kernel (k := k) J t) M (J.obj s) (identityLift (k := k) J t s g) m := by
   rw [backward, BalancedInduction.lift_tensor]
   rfl
 
@@ -193,28 +193,28 @@ theorem backward_forward (t : D) : backward J M t ∘ₗ forward J M t = LinearM
   apply BalancedKernelTensor.hom_ext
   intro v x m
   have h : backward J M t ∘ₗ evaluate J M v t m =
-      BalancedKernelTensor.inclusion (kernel J t) M v ∘ₗ
-        (TensorProduct.mk k (Component J v t) (M.obj v)).flip m := by
+      BalancedKernelTensor.inclusion (kernel (k := k) J t) M v ∘ₗ
+        (TensorProduct.mk k (Component (k := k) J v t) (M.obj v)).flip m := by
     apply BalancedInduction.hom_ext
     intro s g b
     change backward J M t (evaluate J M v t m
-      (BalancedInduction.tensor J (J ⋙ homModule v) s g b)) =
-      BalancedKernelTensor.tensor (kernel J t) M v
-        (BalancedInduction.tensor J (J ⋙ homModule v) s g b) m
+      (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b)) =
+      BalancedKernelTensor.tensor (kernel (k := k) J t) M v
+        (BalancedInduction.tensor J (J ⋙ homModule (k := k) v) s g b) m
     rw [evaluate_tensor, backward_tensor]
-    have hb := BalancedKernelTensor.balance (kernel J t) M b (identityLift J t s g) m
-    change BalancedKernelTensor.tensor (kernel J t) M v
-      (precompose J b t (identityLift J t s g)) m = _ at hb
+    have hb := BalancedKernelTensor.balance (kernel (k := k) J t) M b (identityLift (k := k) J t s g) m
+    change BalancedKernelTensor.tensor (kernel (k := k) J t) M v
+      (precompose (k := k) J b t (identityLift (k := k) J t s g)) m = _ at hb
     rw [identityLift_apply, precompose_tensor, Category.comp_id] at hb
     exact hb.symm
   change backward J M t (forward J M t
-    (BalancedKernelTensor.tensor (kernel J t) M v x m)) = _
+    (BalancedKernelTensor.tensor (kernel (k := k) J t) M v x m)) = _
   rw [forward_tensor]
   exact congrArg (fun f => f x) h
 
 /-- The coefficient kernel of induction-restriction acts on every module by
 the existing balanced induction after restriction. No exactness is assumed. -/
-def equiv (t : D) : BalancedKernelTensor.Obj (kernel J t) M ≃ₗ[k]
+def equiv (t : D) : BalancedKernelTensor.Obj (kernel (k := k) J t) M ≃ₗ[k]
     BalancedInduction.Obj J (J ⋙ M) t :=
   LinearEquiv.ofLinearMap (forward J M t) (backward J M t)
     (forward_backward J M t) (backward_forward J M t)

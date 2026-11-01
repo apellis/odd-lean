@@ -15,16 +15,16 @@ private abbrev J : C ⥤ C := 𝟭 C
 /-- Both balances are evaluated on arbitrary old quotient arrows. -/
 example (v s t : C) (g : s ⟶ t) (b : v ⟶ s) (m : M.obj v) :
     IndResKernel.equiv J M t
-      (BalancedKernelTensor.tensor (IndResKernel.kernel J t) M v
-        (BalancedInduction.tensor J (J ⋙ IndResKernel.homModule v) s g b) m) =
+      (BalancedKernelTensor.tensor (IndResKernel.kernel (k := ℚ) J t) M v
+        (BalancedInduction.tensor J (J ⋙ IndResKernel.homModule (k := ℚ) v) s g b) m) =
       BalancedInduction.tensor J (J ⋙ M) s g (M.map b m) := by
   change IndResKernel.forward J M t _ = _
   rw [IndResKernel.forward_tensor, IndResKernel.evaluate_tensor]
 
 example (s t : C) (g : s ⟶ t) (m : M.obj s) :
     (IndResKernel.equiv J M t).symm (BalancedInduction.tensor J (J ⋙ M) s g m) =
-      BalancedKernelTensor.tensor (IndResKernel.kernel J t) M s
-        (BalancedInduction.tensor J (J ⋙ IndResKernel.homModule s) s g (𝟙 s)) m :=
+      BalancedKernelTensor.tensor (IndResKernel.kernel (k := ℚ) J t) M s
+        (BalancedInduction.tensor J (J ⋙ IndResKernel.homModule (k := ℚ) s) s g (𝟙 s)) m :=
   IndResKernel.backward_tensor J M t s g m
 
 example (t : C) : Function.Bijective (IndResKernel.forward J M t) :=
