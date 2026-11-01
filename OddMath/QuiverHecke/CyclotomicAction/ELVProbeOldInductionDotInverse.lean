@@ -1,10 +1,11 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeInductionDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarInduction
 
-/-! # Ordinary Hom actions on the old scalar probe coend
-These same-vector action identities are inputs to a direct inverse construction for
-the prescribed old induction dot. They use scalar-kernel closure, not a
-weighted coefficient-truncation specialization or a chosen coend comparison.
+/-! # Signed dot inverse on old scalar probe coends
+This supplies the probe-unit roadmap input for the prescribed old append induction.
+The inverse is constructed on the original balanced quotient using scalar-kernel
+closure and the inverse ordinary appended dot. The canonical probe module discharges
+the scalar-evaluation condition. No finite-dimensionality or coend comparison is used.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
@@ -380,14 +381,18 @@ theorem probeOldContentInductionDot_comp_inverse
   let hf := probeOrdinaryInverseHom D Sc m ν i v t g
   let ad := (U).map (X := (J).obj v) (Y := (J).obj v) (probeOldContentAppendDot D Sc m ν i v)
   let uv := ELVOld.BalancedInduction.unit J N.toFunctor v b
-  have hθ : IsSupernatural k (D.parity i) (F := (L).toFunctor) (G := (L).toFunctor)
-      (fun w => show (L).obj w ⟶ (L).obj w from probeOldContentInductionDot D Sc m ν i N w) :=
-    ELVOld.BalancedInduction.transformLinear_supernatural
-      (probeOldContentAppendDot_supernatural D Sc m ν i) N
-  have hn := probeScalarAction_naturality D Sc m (i :: ν) L hL
-    (fun w => show (L).obj w ⟶ (L).obj w from probeOldContentInductionDot D Sc m ν i N w)
-    hθ ((J).obj v) t hf
-  have hv := congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj t => z uv) hn
+  have hv : probeOldContentInductionDot D Sc m ν i N t
+      (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t hf uv) =
+      probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t
+        (twist k (D.parity i) hf)
+        (probeOldContentInductionDot D Sc m ν i N ((J).obj v) uv) := by
+    obtain ⟨fr, hfr⟩ := elvProbeOldHom_surjective D m Sc ((J).obj v).obj.word t.obj.word hf
+    let f₀ : (J).obj v ⟶ t := fr
+    have hfr' : (U).map (X := (J).obj v) (Y := t) f₀ = hf := hfr
+    rw [← hfr', probeScalarAction_old, ← map_twist (U) (D.parity i) f₀,
+      probeScalarAction_old]
+    exact LinearMap.congr_fun (ELVOld.BalancedInduction.transformLinear_naturality
+      (probeOldContentAppendDot_supernatural D Sc m ν i) N f₀) uv
   have hc := probeScalarAction_comp D Sc m (i :: ν) L hL ((J).obj v) ((J).obj v) t
     ad (twist k (D.parity i) hf)
   have hcv := congrArg (fun z : (L).obj ((J).obj v) ⟶ (L).obj t => z uv) hc
@@ -397,7 +402,7 @@ theorem probeOldContentInductionDot_comp_inverse
         probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t (twist k (D.parity i) hf)
           (probeOldContentInductionDot D Sc m ν i N ((J).obj v) uv) := by
       exact congrArg (fun z => sign k (D.parity i * D.parity i) • z)
-        (by simpa only [SVec.comp_apply, hf, uv] using hv)
+        hv
     _ = sign k (D.parity i * D.parity i) •
         probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) t (twist k (D.parity i) hf)
           (probeOrdinaryModuleHom D m Sc (i :: ν) L hL ((J).obj v) ((J).obj v) ad uv) :=
@@ -421,7 +426,8 @@ theorem probeOldContentInductionDot_comp_inverse
       (probeScalarAction_old D Sc m (i :: ν) L hL ((J).obj v) t g)).trans
         (ELVOld.BalancedInduction.postcompose_unit J N.toFunctor g b)
 
-/-- A unit of the prescribed old signed dot on the actual old coend. -/
+/-- Intermediate unit for a scalar-evaluated old module. The canonical probe-module
+specialization below proves the scalar-evaluation hypothesis. -/
 def probeOldContentInductionDotUnit
     (t : ELVOld.OldContentCategory D Sc cut (i :: ν)) :
     (End (ELVOld.BalancedInduction.superspace J N.toFunctor t))ˣ where

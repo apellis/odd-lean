@@ -1833,6 +1833,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOrdinaryAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeInductionDotUnit
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldInductionDotInverse
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVSourceSplitting
 
