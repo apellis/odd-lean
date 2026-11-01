@@ -31,19 +31,19 @@ identity. In particular extraction is surjective and section is injective.
 
 ## Claim boundary and next comparison
 
-The source has compiled with warnings as errors; the importing concrete
-consumers and full package/axiom gates remain required before integration.
+The coordinate source and concrete consumers passed full build, global axiom
+audit and non-vacuity checks before research integration in #753.
 The consumer uses connected all-odd data with reversed old words and also
 different strand counts, so both off-diagonal and empty-Hom cases occur.
 
-These coordinate maps alone do not identify their entire kernel with the
-chronological short span. That exact kernel, output-old transport,
+The companion exact-kernel theorem below identifies the chronological short
+span. Output-old transport,
 off-diagonal polynomial boundary and leading-map comparison, naturality,
 and the full categorical inverse remain subsequent obligations. A diagonal
 matrix equivalence is not silently promoted to an off-diagonal bimodule
 equivalence.
 
-## Proposed exact short kernel
+## Exact short kernel
 
 The companion module `ELVOffDiagonalLongKernel` extends the chronological
 kernel calculation to arbitrary v,t. Long shuffles ending at t++[i] have
@@ -57,5 +57,6 @@ gives exactly
 If the old normal-form index type is empty, every occurring tail must be
 short, since a long one would itself supply an old normal-form index.
 Consequently no inhabitation assumption is needed. This exact-kernel
-extension is proposed until its source, consumer and full CI gates pass.
+extension passed full build, global axiom audit and concrete consumers before
+research integration in #764.
 The off-diagonal polynomial boundary and leading-map transport remain next.

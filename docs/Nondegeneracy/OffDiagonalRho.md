@@ -2,7 +2,7 @@
 
 This is the arbitrary-old-Hom source-operator comparison for
 [DeformedMackeyBoundary](DeformedMackeyBoundary.md), equations (2)-(3).
-The proposed implementation is `ELVOffDiagonalRho`.
+The implementation is `ELVOffDiagonalRho`, full-CI verified in #785.
 
 For an odd moving colour j and old source v, target t, the finite row
 operator `offDiagonalCoefficientRho` is
@@ -24,7 +24,8 @@ iterate, and extraction of that actual corrected lift is exactly the
 corresponding coefficient-rho iterate.
 
 All coefficients are full polynomial/exterior old Homs over the supplied
-commutative ground ring and scalar data. This source draft requires CI.
+commutative ground ring and scalar data. The source and concrete consumer passed full build, global axiom audit and
+non-vacuity checks before research integration in #785.
 It supplies no coefficient/output covariance, leading law, categorical
 counit/cap identification, matrix inverse, or full factor action; those
 remain distinct comparisons in the overall proof.
