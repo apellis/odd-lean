@@ -1,11 +1,28 @@
 # The deformed Rouquier matrix and its polynomial boundary
 
-**Status: written matrix argument, not a full action theorem or a Lean result.**
+**Status: proposed written categorical matrix argument; scoped raw Lean results below.**
+The full action and arbitrary-endpoint categorical inverse remain open.
 The boundary identities required below are supplied by `DeformedMackeyBoundary.md`
 and `DeformedBoundaryDivision.md`. `DeformedMatrixComparison.md` supplies the
 prescribed tensor comparison and the coefficient-sensitive interpretation of
 the cap rows. The requirements recorded below are thus discharged for the
 stated full-ELV coefficients; they are not additional inversion hypotheses.
+
+## Raw negative-height implementation
+
+The verified `negativeCrossingEquiv` uses the independently prescribed
+cyclotomic crossing, the descended input contraction and input dot, and the
+actual snake kernel coordinates. The concrete cap operator supplies the
+anti-diagonal hypotheses of `FiniteTriangularCoordinates.bijective`.
+The finite elimination lemma, full raw matrix module, cap/snake dependencies
+and concrete consumers passed full build, axiom audit and non-vacuity gates
+in [run 41290856153](https://github.com/apellis/odd-lean/actions/runs/41290856153)
+at exact head `f4cd5465`, before research integration in #777.
+
+Scope: odd moving colour and diagonal old Hom, over the supplied commutative
+ground ring with full ELV coefficients, including height zero. Arbitrary-Hom
+inversion, categorical signed cap/dot comparison, naturality and factor/action
+synthesis remain separate. See [STATUS](STATUS.md) for integrated status.
 
 ## 1. Source, coefficients, and orientation
 

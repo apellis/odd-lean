@@ -227,7 +227,7 @@ open Classical in
 satisfying its characterizing identities under the inputs F2, F3 of the written proof
 (`CrossCoeffInputs`). -/
 theorem swappedGens_crossSlide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
-    (hin : P.CrossCoeffInputs) (L : P.LeftwardData) : CrossSlide (P.swappedGens c L) where
+    (hin : P.CrossDenominatorUnits) (L : P.LeftwardData) : CrossSlide (P.swappedGens c L) where
   slideL i j ν hij _ _ p q Z := (P.swappedGens_slideNe c L i j ν hij p q Z).1
   slideLEq i ν _ _ p q Z := (P.swappedGens_slideEq c hc hin L i ν p q Z).1
   slideR i j ν hij _ _ p q Z := (P.swappedGens_slideNe c L i j ν hij p q Z).2

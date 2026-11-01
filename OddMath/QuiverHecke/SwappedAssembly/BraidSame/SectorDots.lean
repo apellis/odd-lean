@@ -407,7 +407,7 @@ theorem pprRightCoeff_odd (c : P.CrossCoeff Sc) (hc : c.IsInverse) (hi : D.parit
   exact conj_odd _ (map_odd _ (hc.odd i hi (nextSector (true, i) true t) hR Z).1)
 
 /-- At an odd colour the denominator `x² - y²` on a path `(R,P)` is a unit. -/
-private theorem rpDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) (s : Sector I)
+private theorem rpDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1) (s : Sector I)
     (hv : StepValid (true, i) false s)
     (W : P.H (nextSector (true, i) true (nextSector (true, i) false s))) :
     IsUnit (M := End (P.rpObj i i s hv W))
@@ -419,7 +419,7 @@ private theorem rpDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) (s
   simpa only [pow_two, End.mul_def, sub_eq_add_neg] using hu
 
 /-- **At an odd colour `x₁² - z²` is a unit.** -/
-theorem pprLeftDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) :
+theorem pprLeftDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1) :
     IsUnit (M := End _) (P.ppLeftDot i t ((P.step (true, i) false _ hR).obj Z) ≫
         P.ppLeftDot i t ((P.step (true, i) false _ hR).obj Z) -
       P.pprPostDot i t hR Z ≫ P.pprPostDot i t hR Z) := by
@@ -428,7 +428,7 @@ theorem pprLeftDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) :
   exact conj_isUnit _ (P.rpDenom_isUnit i h hi t hR _)
 
 /-- **At an odd colour `x₂² - z²` is a unit.** -/
-theorem pprRightDenom_isUnit (h : P.CrossCoeffInputs) (hi : D.parity i = 1) :
+theorem pprRightDenom_isUnit (h : P.CrossDenominatorUnits) (hi : D.parity i = 1) :
     IsUnit (M := End _) (P.ppRightDot i t ((P.step (true, i) false _ hR).obj Z) ≫
         P.ppRightDot i t ((P.step (true, i) false _ hR).obj Z) -
       P.pprPostDot i t hR Z ≫ P.pprPostDot i t hR Z) := by
