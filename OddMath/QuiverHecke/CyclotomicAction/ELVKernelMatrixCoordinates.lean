@@ -20,6 +20,13 @@ def kernelSourceCoordinates (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
       (actualUnshiftedSourceModule D Sc cutoff i v.unop.word).obj t :=
   oldSourceKernelEquiv D Sc cutoff i v.unop t
 
+/-- At literal old words, the coordinates are the stored source linear map. -/
+theorem kernelSourceCoordinates_boxed (i : I) (v t : List I)
+    (z : IndResKernel.Component (k := k) (append D Sc cutoff i)
+      (⟨v⟩ : OldCategory D Sc cutoff) (⟨t⟩ : OldCategory D Sc cutoff)) :
+    kernelSourceCoordinates D Sc cutoff i (op ⟨v⟩) ⟨t⟩ z =
+      oldSourceKernelLinear D Sc cutoff i v t z := rfl
+
 /-- The ordinary Option-family source splits into its actual source and coefficient vector. -/
 def positiveKernelCoordinates (i : I) (m : ℕ) (v : (OldCategory D Sc cutoff)ᵒᵖ)
     (t : OldCategory D Sc cutoff) :
@@ -70,8 +77,8 @@ theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
         (kernelSourceCoordinates D Sc cutoff i v t z) := by
   rcases v with ⟨⟨v⟩⟩
   rcases t with ⟨t⟩
-  dsimp only [IndResKernel.kernel, BalancedKernelTensor.inductionKernel, ModuleCat.of] at z ⊢
-  rw [actualMateKernelLinear_eq_component, actualMateKernelComponent, LinearMap.comp_apply]
-  rfl
+  have h := actualMateKernelComponent_row D Sc cutoff i v t z
+  have hc := kernelSourceCoordinates_boxed D Sc cutoff i v t z
+  exact h.trans (congrArg (matrixMateRow D Sc cutoff i v t) hc.symm)
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
