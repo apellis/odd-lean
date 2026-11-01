@@ -119,7 +119,8 @@ private theorem triple_transport_comp
         ((BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h1 h2 hy) M z).comp
           (BalancedInduction.transformLinear (contentAppendTo_supernatural D Sc cutoff N h2 h3 ht) M z)) ∘ₗ
       (contentETripleEquiv D Sc cutoff N β g h q γ h3 M z).toLinearMap := by
-  ext v
+  apply LinearMap.ext
+  intro v
   simp only [contentETripleMap, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearEquiv.apply_symm_apply]
 
