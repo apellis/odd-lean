@@ -8,7 +8,7 @@ open OddMath.QuiverHecke OddMath.QuiverHecke.ELVOld
 open CyclotomicCrossingTensor BalancedInduction
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
-  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
+  (D : OddMath.SKM.Datum I X) (Sc : OddMath.SKM.Scalars D k) (cutoff : I → ℕ)
 
 example (i : I) (v w : OldCategory D Sc cutoff) (p : ZMod 2) (f : v ⟶ w)
     (hf : f ∈ parity (R := k) v w p) :

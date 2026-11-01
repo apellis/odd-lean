@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
+import OddMath.QuiverHecke.CyclotomicAction.ELVCategoryCoefficients
 import StringDiagrams.Super.PiTwo
 
 /-! # Parity shifts on the full-ELV content module categories
@@ -72,15 +72,8 @@ end Supermodules
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
 
-/-- Pi on the existing full-coefficient exact-content module category. -/
-@[instance_reducible]
-def contentModulesPi (β : Multiset I) :
-    PiSupercategory k (ContentModules D Sc cutoff N β) :=
-  supermodulePiSupercategory
-
-/-- The exact-content module category as the intended factor target object. -/
-def contentModulePiSCat (β : Multiset I) : PiSCat.{u, u, u + 1} k :=
-  letI := contentModulesPi D Sc cutoff N β
-  PiSCat.of k (ContentModules D Sc cutoff N β)
+/-- The exact-content module category uses its existing canonical parity structure. -/
+abbrev contentModulePiSCat (β : Multiset I) : PiSCat.{u, u, u + 1} k :=
+  contentModuleTarget D Sc cutoff N β
 
 end OddMath.QuiverHecke.ELVOld
