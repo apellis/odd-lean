@@ -82,6 +82,7 @@ private theorem entrySpan_mul_right {x : Hn D Sc (n + 1)}
     rw [smul_mul_assoc]
     exact Submodule.smul_mem _ c hx
 
+omit [Fintype I] in
 private theorem cyclotomicGenerator_mem_entrySpan (w : Word I (n + 1)) :
     cyclotomicGenerator D Sc a w ∈ cyclotomicEntrySpan D Sc a n := by
   rcases w with ⟨l, hl⟩
@@ -108,11 +109,15 @@ private theorem entrySpan_entry {x : Hn D Sc (n + 1)}
       · subst s
         simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_same] using hf
       · have h : (u, s) ≠ (u, w) := fun h => hs (congrArg Prod.snd h)
-        simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_of_ne h] using
-          (Submodule.zero_mem (cycHom D Sc a s.val u.val))
+        have hz : (FiniteHomMatrix.single (obj := wordObj D Sc (n := n + 1))
+            u w f) (u, s) = 0 := DFinsupp.single_eq_of_ne h
+        rw [hz]
+        exact Submodule.zero_mem _
     · have h : (t, s) ≠ (u, w) := fun h => ht (congrArg Prod.fst h)
-      simpa only [FiniteHomMatrix.single, DFinsupp.single_eq_of_ne h] using
-        (Submodule.zero_mem (cycHom D Sc a s.val t.val))
+      have hz : (FiniteHomMatrix.single (obj := wordObj D Sc (n := n + 1))
+          u w f) (t, s) = 0 := DFinsupp.single_eq_of_ne h
+      rw [hz]
+      exact Submodule.zero_mem _
   | zero => exact Submodule.zero_mem _
   | add x y _ _ hx hy =>
     change x (t, s) + y (t, s) ∈ _
@@ -149,3 +154,4 @@ theorem single_mem_cyclotomicIdeal_iff (t s : Word I (n + 1))
   · exact single_mem_cyclotomicIdeal D Sc a n t s
 
 end OddMath.QuiverHecke
+
