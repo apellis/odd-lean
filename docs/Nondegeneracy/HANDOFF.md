@@ -275,6 +275,8 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
+| Scalar probe counit comparison | `f5a4db3ddbbf6806d1e554a40de3731dea8404e4` | The tensor calculation is proposed; final counit coordinate/operator conversion and paired consumer verification remain open. Producer `ELVProbeCounitComparison` and its topic note are outside the checked library |
+| Two-letter induction-square coherence | `f49b8d7ccdecbc686b236a016fd50d8a5c7853bb` | Proposed flattening/coherence argument; specialized inner coend conversion and concrete consumer gates remain open. Producer `ELVInductionSquareComposition` and its topic note are outside the checked library |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by scoped-checked `ELVWeightedAppendTensors`/`ELVWeightedAppendDot`. Restriction/counit and crossing transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has scoped-checked literal tensor/unit, parity and signed-dot comparison. Chosen adjunction/inverse-matrix transport remains open |
 | Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
