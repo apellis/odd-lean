@@ -222,3 +222,14 @@ and do not supersede the four main restart points in HANDOFF.
 | --- | --- | --- |
 | matrix row conversion | [4dc49448a6](https://github.com/apellis/odd-lean/commit/4dc49448a663188557d7af04ed76a36c9f58e8c5) | `OddMath/QuiverHecke/CyclotomicAction/ELVKernelMatrixCoordinates.lean` |
 | weighted append conversion | [bc47db64e0](https://github.com/apellis/odd-lean/commit/bc47db64e065ba3019e398ae2ed4fa7c5abcad01) | `OddMath/QuiverHecke/CyclotomicAction/ELVWeightedAppendUnits.lean` |
+
+## Earlier branches without the research prefix
+
+These older nondegeneracy topic heads were already ancestors of the primary
+research branch and have also been retired. Branch inventories must check topic
+and ancestry, rather than relying only on a branch-name prefix.
+
+| Retired topic | Preserved commit |
+| --- | --- |
+| `mixed-mate-r12` | [5eb39999ad](https://github.com/apellis/odd-lean/commit/5eb39999ade91cdf9ba6d2c3459c9ad2b4cd2c25) |
+| `nonvacuum-block-inversion` | [192af291c9](https://github.com/apellis/odd-lean/commit/192af291c917faf9de11d821b637c616eba8cc4b) |
