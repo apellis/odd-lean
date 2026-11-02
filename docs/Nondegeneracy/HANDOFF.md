@@ -68,18 +68,18 @@ or flatness premise is introduced. The concrete mixed-data consumer checks
 both inverse products on representables and audits all owned declarations.
 See [ModuleMatrixInverse](ModuleMatrixInverse.md).
 
-`ELVContentMatrixInverse` supplies scoped-checked natural isomorphisms for
+`ELVContentMatrixInverse` supplies full-CI verified natural isomorphisms for
 the restrictions of the old-category matrices to fixed output content.
 Its `contentUnitMatrixIso` and `contentCapMatrixIso` are even supermodule
 isomorphisms, with literal component identities and inverse naturality along
 arbitrary output arrows. The paired mixed consumer and axiom audit pass
-locally; full CI is pending. This does not yet identify these restricted
+locally and in the integrated full CI for #953/#954. This does not yet identify these restricted
 modules with the chosen content E/F composites.
-`ELVMatrixEntryNaturality` now gives scoped-checked input-module naturality
+`ELVMatrixEntryNaturality` now gives full-CI verified input-module naturality
 of every literal shifted unit/cap entry. Its dot-power, unit, cap and mate
 families retain their supernatural parity before shifting. The paired
-mixed representable consumer and owned-axiom audit pass locally; full CI is
-pending. Assemble these summand maps into the finite-family source/target
+mixed representable consumer and owned-axiom audit pass locally and in
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41489136665). Assemble these summand maps into the finite-family source/target
 functors and prove whole-matrix input-module naturality, then use the
 existing output-content component inverses. The entry families alone do
 not yet give a natural isomorphism in the input module.
@@ -123,7 +123,12 @@ Whole multicolour and weight assembly remain open. Retain intermediate-content t
 coefficients, full kernel parity and equal-colour crossing normalization.
 
 A full-ELV factor family still requires the categorical inverse, these
-multicolour relations and their naturality. The older ordinary-polynomial
+multicolour relations and their naturality. Its distinct-colour factor mate
+inverse (Brundan--Ellis (1.12)) is a separate open construction: formalize
+`DeformedActionAssembly` sections 2--4, including the distinct outer-colour
+ideal identity, crossing-coset PBW inverse and literal cup-crossing-cap
+comparison. Existing ordinary-polynomial mate formulas and swapped raw
+mixed-mate isomorphisms do not prove this full-ELV factor input. The older ordinary-polynomial
 global constructor assumes local inversions and does not construct the
 full exterior-coefficient family. The written pairing extension and balanced
 cutoff schedule preserve the original weight realization; supplied CScalars,
@@ -200,6 +205,14 @@ CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
 ## Final synthesis and verification
+
+`SwappedVacuum/InverseCapMoments` is scoped-checked with occupied level-one
+and degree-two concrete consumers and an owned-declaration axiom audit.
+Its signed recurrence derives the principal cap and all positive-index
+right moments from the slide, probe polynomial and coefficient-extraction
+window. Attach the latter window and the literal inverse maps to the
+actual vacuum; no actual bubble-series interface is instantiated yet.
+See [InverseCapMoments](InverseCapMoments.md). Full CI is pending.
 
 Construct the actual vacuum and normalized adjunction bubbles, using
 ELVVacuumWordPairing and the existing VacuumCornerEvaluation and

@@ -132,20 +132,31 @@ including full build, axiom audit and all concrete consumers.
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
 
-`ELVContentMatrixInverse` adds scoped-checked output-arrow naturality:
+`ELVContentMatrixInverse` adds full-CI verified output-arrow naturality:
 `contentUnitMatrixIso` and `contentCapMatrixIso` are even supermodule
 isomorphisms on each fixed output-content block for every old input module.
 The pointwise product families retain literal entries; inverse naturality
 holds along arbitrary old arrows. The mixed consumer checks both moving
 parities, a permuted output word, zero counts, inverse products and all owned
-axioms. Full CI is pending. `ELVMatrixEntryNaturality` additionally gives scoped-checked input-module
+axioms. `ELVMatrixEntryNaturality` additionally gives full-CI verified input-module
 naturality of all prescribed shifted entries on the whole old module
 category, with additive, linear, parity-preserving summand functors. Its
 mixed consumer checks the literal endpoint transports, every finite slot,
 the zero-count mate and the odd third-dot Koszul sign; all owned axioms pass.
-Full CI for this entry-level step is pending. Whole finite-family matrix
+Both additions are verified by the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41489136665)
+on research head `f070980ac0a0ba23b6faf79dd53faaadfce27aa2` (#953/#954). Whole finite-family matrix
 assembly in the input module and compatibility with the chosen
 fixed-content/weight E/F composites remain open.
+
+`SwappedVacuum/InverseCapMoments` proves the signed coefficient-window
+recurrence and the height-zero principal cap identity from the literal slide,
+a monic probe relation and the coefficient-extraction window. It determines
+all positive-index right moments of the prescribed inverse; it assumes no
+bubble-series formula. Occupied level-one and degree-two companion/nilpotent
+consumers pass strict local checking and the owned-declaration axiom audit.
+Full CI is pending. The coefficient-extraction window and map identifications
+still need attachment to the concrete swapped action; this is not yet its
+normalized bubble theorem. See [InverseCapMoments](InverseCapMoments.md).
 
 ## Remaining critical chain
 
@@ -155,11 +166,16 @@ fixed-content/weight E/F composites remain open.
    tensor transfer identifies their inverses with the prescribed unit/cap
    matrices on every old supermodule (#952). Both signs, moving parities,
    zero counts and inverse evenness are included. Retain these exact
-   coordinates. Output-arrow naturality on fixed output content is now scoped-checked
+   coordinates. Output-arrow naturality on fixed output content is full-CI verified
    in `ELVContentMatrixInverse`; prove input-module naturality and compatibility
    with the chosen induction, restriction, crossing and adjunction maps.
    No arbitrary-kernel evenness or tensor-flatness assumption is needed.
-2. Complete multicolour/weight assembly with `parameterTwist Sc`. The whole
+2. Complete multicolour/weight assembly with `parameterTwist Sc`.
+   The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
+   also remains open: formalize the distinct outer-colour ideal identity,
+   crossing-coset PBW equivalence and prescribed mate comparison of
+   `DeformedActionAssembly` sections 2--4. The swapped raw mixed-mate
+   isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content
    comparisons and inner-unit tensor identity are implemented (#941/#946).
