@@ -10,7 +10,7 @@ This file records next mathematical dependencies, not session telemetry.
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI pending) |
-| Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
+| Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit scoped-checked | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
 | Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI pending | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Extend the distinct-colour inverse to arbitrary modules; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI pending; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Construct the paper's power-coefficient quotient/action bridge, actual swapped mixed caps, corner evaluation, all-height bubble series and bounded recovery identity |
@@ -188,11 +188,19 @@ maps send every old tensor to its quotient tensor with unchanged vector,
 including the exact units. Both signed-dot intertwining identities and
 scalar hom/inverse parity passed strict mixed/vacuum consumers, owned
 audits and [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662)
-at source head `a3384f38`, integrated in #963. Finish the chosen counit, crossing
-and inverse-matrix compatibility, then content/weight transport.
+at source head `a3384f38`, integrated in #963. `ELVWeightedAppendAdjunction` now gives the
+even identity-vector `weightedAppendRestrictionNaturalIso`, natural in every
+supermodule map, and the exact ordinary counit comparison
+`appendWeightedModuleIso_hom_counit`. The latter uses the prescribed counits
+on literal restricted-module coends and the degree-zero induction component
+of that same even restriction comparison. Its producer/consumer and all
+26 owned axioms pass strict scoped checks; full CI for this addition is
+pending. Finish the chosen double-append crossing, inverse and normalized
+content/weight compatibility; scalar ordinary adjunction remains separate.
 See [InductionSquareTensors](InductionSquareTensors.md),
 [WeightedAppendTensors](WeightedAppendTensors.md),
-[WeightedAppendDot](WeightedAppendDot.md) and
+[WeightedAppendDot](WeightedAppendDot.md),
+[WeightedAppendAdjunction](WeightedAppendAdjunction.md) and
 [ProbeAppendTensors](ProbeAppendTensors.md).
 
 `ELVInductionSquareTransform` defines the canonical raw-coend map
@@ -342,7 +350,7 @@ The following are unfinished specializations, not completed inverse/action resul
 | --- | --- | --- |
 | Scalar probe counit comparison | `f5a4db3ddbbf6806d1e554a40de3731dea8404e4` | The tensor calculation is proposed; final counit coordinate/operator conversion and paired consumer verification remain open. Producer `ELVProbeCounitComparison` and its topic note are outside the checked library |
 | Two-letter induction-square coherence | `f49b8d7ccdecbc686b236a016fd50d8a5c7853bb` | Proposed flattening/coherence argument; specialized inner coend conversion and concrete consumer gates remain open. Producer `ELVInductionSquareComposition` and its topic note are outside the checked library |
-| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by full-CI verified `ELVWeightedAppendTensors`/`ELVWeightedAppendDot` (#963). Restriction/counit and crossing transport remain open |
+| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed source, superseded by the full-CI verified tensor/unit and signed-dot formulas (#963) and scoped-checked `ELVWeightedAppendAdjunction` restriction/counit formulas. Double-append crossing, inverse and normalized content/weight transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 | Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 

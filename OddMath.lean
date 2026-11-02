@@ -1986,3 +1986,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctSourceParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctMateDecoder
 import OddMath.QuiverHecke.CyclotomicAction.ELVRawMixedEvenMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVRawCoefficientComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendAdjunction
