@@ -13,6 +13,14 @@ checked successor sources rather than replacing them with older versions.
 
 | Retired topic | Preserved commit |
 | --- | --- |
+| `research/raw-even-mate` | [2925c6f92a](https://github.com/apellis/odd-lean/commit/2925c6f92aa8ae1bdfd3289efbd9a478c6f302ec) |
+| `research/distinct-mate` | [3e53f42238](https://github.com/apellis/odd-lean/commit/3e53f4223816ac1847c2aa5657ffcc0bc7821aaf) |
+| `research/weight-crossing-assembly` | [7804284a57](https://github.com/apellis/odd-lean/commit/7804284a57a7fbcc6e9d59f7ff68bd52ee92e4d4) |
+| `research/weighted-append-transport` | [7bf6ea3513](https://github.com/apellis/odd-lean/commit/7bf6ea3513a02f488cae55cd5abfeab8c27f3172) |
+| `research/induction-transform-square` | [445e087cf7](https://github.com/apellis/odd-lean/commit/445e087cf78704846bd8ec693fc04e45d1c7d1f0) |
+| `research/unit-coefficient-rows` | [adf2ebd8ce](https://github.com/apellis/odd-lean/commit/adf2ebd8cea3ee626ddb73563d9788f604c05094) |
+| `research/scalar-append-transport` | [4495bdff24](https://github.com/apellis/odd-lean/commit/4495bdff24bd18d9901cd22ca68799d8af0d36ae) |
+| `research/content-append-dot` | [29e4f0553d](https://github.com/apellis/odd-lean/commit/29e4f0553d6ab6adda3f38b17e99fad87ca6c8f4) |
 | `-append-left` | [f8fb8e92c6](https://github.com/apellis/odd-lean/commit/f8fb8e92c628c4704dacd65fbdf1ee3a2b6ce6d0) |
 | `-cap-family-coordinates` | [b1fbed5b3b](https://github.com/apellis/odd-lean/commit/b1fbed5b3b5f638aba4e0119b28ebc3038f27494) |
 | `-coend-ordinary-PBW-1030` | [773b5fd07f](https://github.com/apellis/odd-lean/commit/773b5fd07f0a48b350580d0b1f1d056bdf8e8d0c) |
