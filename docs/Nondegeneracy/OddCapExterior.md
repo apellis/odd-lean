@@ -51,6 +51,3 @@ than a scalar specialization killing delta, but it remains one occupied
 model. It proves no general bubble series or action attachment. The
 consumer passes scoped Lean checking with warnings as errors; full CI is
 the integration gate.
-
-The complete consumer passed the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41524661890)
-at source head `850368d580676fd551bfc0e2558570ec910db909`, integrated in [#957](https://github.com/apellis/odd-lean/pull/957).

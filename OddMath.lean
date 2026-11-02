@@ -1904,9 +1904,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
-import OddMath.Algebra.FiniteSupermoduleFunctor
-import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixFunctorInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteMatrixComponents
@@ -1943,10 +1940,3 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
 import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctIdealSpan
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTensors
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
