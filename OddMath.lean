@@ -1950,3 +1950,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVRawMixedEvenMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVRawCoefficientComparison

@@ -8,7 +8,7 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses scoped-checked | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
+| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
@@ -88,9 +88,9 @@ in the input module. Both functors are additive, linear and parity preserving.
 and `contentCapMatrixFunctorNatIso`, combining this naturality with the existing
 output-content component inverses. They are natural along every input-module
 map and retain literal forward components and even inverses, including both
-height signs/parities and zero finite counts. Strict scoped producer and
-paired-consumer checks pass, including all 64 owned-declaration axiom checks;
-full CI is pending. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
+height signs/parities and zero finite counts. The producers and
+paired consumers passed full CI and are integrated in #961, including all 64
+owned-declaration axiom checks. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
 
 Next compare these natural isomorphisms with the actual fixed-content functors,
 then transfer to original-weight functors. Keep the target-fixed count,
@@ -172,8 +172,8 @@ now evaluated on literal balanced coends by `ELVInductionSquareTensors`.
 `ELVWeightedAppendTensors` and `ELVProbeAppendTensors` prove the selected
 maps send every old tensor to its quotient tensor with unchanged vector,
 including the exact units. Both signed-dot intertwining identities and
-scalar hom/inverse parity are scoped-checked with mixed/vacuum consumers
-and owned audits; full CI is pending. Finish the chosen counit, crossing
+scalar hom/inverse parity are full-CI verified in #963 with mixed/vacuum
+consumers and owned audits. Finish the chosen counit, crossing
 and inverse-matrix compatibility, then content/weight transport.
 See [InductionSquareTensors](InductionSquareTensors.md),
 [WeightedAppendTensors](WeightedAppendTensors.md),
@@ -222,9 +222,15 @@ remains a sufficient corollary. Inverse-unit mate criteria are verified in
 verified in #882. The prescribed coefficients, actual dotted-mate
 isomorphisms, coefficient parity, both odd coefficient identities and raw odd
 mate passed original exact-head full CI in #913/#917/#919/#922/#925/#930.
-They are full-CI verified and integrated through #949; the raw even mate remains unfinished.
-Finish the remaining literal
-CrossCoeff input assembly. Do not assume a common exponent over
+They are full-CI verified and integrated through #949. The raw even source norm
+and `elvRawMixedEvenMateDot_isIso` now pass strict scoped producer/consumer checks.
+`ELVRawCoefficientComparison` additionally proves one-sided uniqueness, the
+inverse-first odd formula, exact earlier-coefficient identifications and the
+parity-unified raw dotted mate. Degree-six even/odd and mixed identity-functor
+consumers pass, including all eleven owned-declaration axiom checks; full CI is
+pending. See [ELVRawMixedEvenMate](ELVRawMixedEvenMate.md) and
+[ELVRawCoefficientComparison](ELVRawCoefficientComparison.md). Finish compatible
+factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
 ## Final synthesis and verification
@@ -275,10 +281,8 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
-| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by scoped-checked `ELVWeightedAppendTensors`/`ELVWeightedAppendDot`. Restriction/counit and crossing transport remain open |
-| Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has scoped-checked literal tensor/unit, parity and signed-dot comparison. Chosen adjunction/inverse-matrix transport remains open |
-| Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
-| Input-module finite matrix assembly | `532b47927d45c384e4a6af1ed9cd57dfcdcb05ee` | Generic finite product maps are scoped-checked; whole input-module naturality and content functor inverse sources and their consumers remain unverified |
+| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by full-CI verified `ELVWeightedAppendTensors`/`ELVWeightedAppendDot` in #963. Restriction/counit and crossing transport remain open |
+| Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison in #963. Chosen adjunction/inverse-matrix transport remains open |
 | Actual vacuum coefficient functional | `658f64966768431d4d6a3011496546061e89bce2` | Proposed inverse-row extraction, literal dot/unit window and exterior naturality on the old vacuum; concrete producer/consumer checks and final weighted/swapped attachment remain open |
 | Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 
