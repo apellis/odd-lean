@@ -78,7 +78,8 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Even-moving leading boundary | Literal polynomial boundary, right-product monic bounds, recurrence and arbitrary-endpoint leading equivalence are full-CI verified in [#839](https://github.com/apellis/odd-lean/pull/839). Even division, raw input matrices and actual representable matrix attachment are now verified in #889; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly remains open | `ELVEvenPolynomialBoundary`, `ELVEvenSRightProduct`, `ELVEvenBoundaryLeading`, `ELVEvenOffDiagonalLeading` |
 | Generic module row division | Degree-shift elimination with module coefficients and invertible specified leading maps; the existing odd API is retained as corollaries. Full-CI verified in [#843](https://github.com/apellis/odd-lean/pull/843) | `DegreeShiftRowDivision` |
 | Actual quotient-induction counit | The prescribed old-to-truncated induction counit is an even module isomorphism, full-CI verified in [#835](https://github.com/apellis/odd-lean/pull/835) | `ELVQuotientInduction` |
-| Weighted append comparison | Old append induction preserves the full weighted coefficient annihilator, including odd generators; its descended module is canonically isomorphic to truncated append induction for each input module. Full-CI verified in [#840](https://github.com/apellis/odd-lean/pull/840). Input-module naturality for every supernatural module map is verified in #868; chosen generator/adjunction comparisons remain open | `ELVWeightedInduction`, `ELVAppendQuotientComparison` |
+| Weighted append comparison | Old append induction preserves the full weighted coefficient annihilator, including odd generators; its descended module is canonically isomorphic to truncated append induction for each input module. Full-CI verified in [#840](https://github.com/apellis/odd-lean/pull/840). Input-module naturality is verified in #868; the selected tensor/unit and signed-dot formulas are full-CI verified in #963. The ordinary restriction-square and counit comparison is scoped-checked in `ELVWeightedAppendAdjunction`; crossing/inverse and content/weight transport remain open | `ELVWeightedInduction`, `ELVAppendQuotientComparison` |
+| Homogeneous coefficient annihilators | Actual old E/F preserve annihilation by any homogeneous full coefficient, including the paper's even power generators; every supernatural module map commutes with even coefficients, retaining chosen inverse maps | `ELVCoefficientAnnihilation`; producer, concrete even-square/exterior consumer and all 12 owned-declaration axiom checks pass strict scoped checks; full CI pending. The power-annihilated subcategory, weighted/power comparison and actual evaluation kernel remain open. [CoefficientAnnihilation](CoefficientAnnihilation.md) |
 | Independent content maps and slides | Canonical append/carrier and whiskered dot foundations (#832), and distinct-colour slides (#836), are full-CI verified. The independent prefix and suffix natural families (#901/#906) and corrected component braid (#894) are now full-CI verified and integrated; the whole corrected content relation is implemented in #933/#934 with original full CI; weight assembly remains open | `ELVContentModuleAction`, `ELVContentDistinctSlides` |
 | Transposed denominator units | Contentwise transpose bounds yield the prescribed squared/cross transposed norm units, without a common exponent over the weight fibre. Full-CI verified in [#811](https://github.com/apellis/odd-lean/pull/811) | `ELVTransposeDenominatorUnits` |
 | Reservoir Sigma norm interface | Literal transposed source norms and target denominator units suffice for the reservoir Sigma inversion; older whole-dot nilpotence assumptions remain sufficient corollaries. Full-CI verified in [#834](https://github.com/apellis/odd-lean/pull/834), with inverse-unit mate criteria in #817. The actual module-category universe application is verified in #861; compatible factor inputs remain open | `SwappedAssembly/Sigma/SwappingReservoir`, `Sigma/TransposeNorms`, `RouquierHomPostInverseUnits` |
@@ -92,7 +93,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Pairing extension and action restriction | Extend parameters and the supplied CScalars by first projection, preserve symmetrizer/homogeneity, commute with parameterTwist, and restrict every RouquierMulticolour field to the original weight group. Full-CI verified in [#864](https://github.com/apellis/odd-lean/pull/864); no concrete factor family is constructed by this restriction | `ReservoirWeightParameters` |
 | Actual representable matrix inverses | The actual ordered crossing mate, literal ordinary unit/dotted cap entries and canonical parity-shifted finite coordinates give component linear equivalences for both height signs and both moving parities, including zero counts. Full-CI verified in [#889](https://github.com/apellis/odd-lean/pull/889). Arbitrary-module component inverses are verified in #952; fixed-content/weight assembly remains open. SVec assembly and content-uniform counts are full-CI verified and integrated through #932 | `ELVActualMatrixFamilies` and its odd/even comparison chain |
 | Arbitrary-module coefficient-kernel tensor | A coefficient-kernel isomorphism induces an isomorphism after balanced tensoring with any module, without flatness. Full-CI verified in [#878](https://github.com/apellis/odd-lean/pull/878). Finite kernel products and their tensor equivalence are verified in #890. The concrete kernel maps, both arbitrary-module whole-matrix identifications and explicit quotient realizations are full-CI verified and integrated in [#932](https://github.com/apellis/odd-lean/pull/932), including #911/#915/#916/#921/#923. Target-fixed coefficient bijectivity and both prescribed arbitrary-module component inverses are full-CI verified in #951/#952; inverse parity follows from actual-matrix evenness (#896). Fixed-content/weight functor assembly remains open | `ELVKernelTensor` |
-| Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897; its whole generator transport remains under verification | `ELVProbeOrdinaryCategory` and companion probe comparison modules |
+| Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897. Literal tensor/unit and signed-dot transport, and equality of scalar-descended old restriction with ordinary restriction, are scoped-checked; counit, crossing and inverse-matrix transport remain open | `ELVProbeOrdinaryCategory`, `ELVProbeAppendTensors`, `ELVProbeRestrictionComparison` and companion probe comparison modules |
 | Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882. Constructed coefficients, both parity mate applications and arbitrary-intermediate-functor coefficients are in #913/#917/#925/#930; these inputs are full-CI verified and integrated through #949 | `ELVMixedSourceNorms` and companion norm modules |
 
 ## Consolidated implementations and verification boundary
@@ -119,17 +120,26 @@ including full build, axiom audit and all concrete consumers.
 | Whole corrected content braid | Independent three-dot families, ordered polynomial evaluation and `contentMixedBraidTransform` | #933/#934 full CI; transfer to actual weight functors remains open |
 | Fixed-content E/F comparisons | Fully faithful unit, supported counit, restriction/extension, nested tensor and actual inner-unit formulas | #941/#946 full CI, incorporating #909/#910/#918/#920/#924; whole generator/adjunction compatibility remains open |
 | Graded coefficient tensors | Sum grading, even tensor equivalences, induction and IndRes kernel grading | #942/#905 full CI; finite kernel-product grading #907 remains a historical failed attempt |
-| Mixed coefficients and mates | Both parity coefficients, parity, odd identities and raw odd dotted mate | #913/#917/#919/#922/#925/#930 full CI; raw even mate remains unfinished |
+| Mixed coefficients and mates | Both raw moving-parity dotted mates, one-sided coefficient uniqueness, inverse-first odd formula and exact earlier-coefficient comparisons | #913/#917/#919/#922/#925/#930 full CI; `ELVRawMixedEvenMate` and `ELVRawCoefficientComparison` producers, paired degree-six consumers and all 11 owned-declaration audits scoped-checked, full CI pending. Concrete factor-family and CrossCoeff assembly remain open |
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization; canonical kernel/source and finite-family coordinates, with bundled mate-row equality | #929/#950 full CI; target-fixed all-content coefficient bijectivity is verified in #951 |
 | Target-fixed coefficient matrices | Positive and negative kernel maps are bijective at every old source for the target-content count, using the prescribed representable matrices and off-content zero | #951 full CI; `ELVKernelMatrixBijective` |
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
-| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Strict scoped producer/consumer checks and all 64 owned-declaration axiom checks pass; full CI pending. Chosen content E/F and original-weight assembly remain open |
+| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Full CI passed in #961 at source head `55c6d763`; [exact-head run](https://github.com/apellis/odd-lean/actions/runs/41532403900). Chosen content E/F and original-weight assembly remain open |
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
-| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits scoped-checked, full CI pending. Chosen counit/crossing/inverse transport remains open |
-| Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
+| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662) at source head `a3384f38`, integrated in #963. Weighted restriction and ordinary counit transport are scoped-checked below; scalar counit, crossing and inverse transport remain open |
+| Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
+| Distinct-colour crossing and mate | Explicit mixed PBW decoder, both outer cyclotomic quotient spans, and literal rectangular cup-crossing-cap inverse on every old representable corner | Strict scoped producers/consumers and all 208 owned-declaration axiom checks pass; full CI pending. Arbitrary-module inverse and exact-content/weight transport remain open |
+| Homogeneous coend square transport | The canonical map for a commuting functor square retains the literal tensor arrow and intertwines homogeneous append transformations with their full coefficient twist | `ELVInductionSquareTransform`, strict producer/mixed-quotient consumer checks and all 15 owned-declaration axiom checks pass; full CI pending. Selected weighted map and two-letter crossing comparisons remain separate |
+| Chosen weighted ordinary adjunction | Even identity-vector restriction-square natural isomorphism for arbitrary input-module maps, and literal ordinary counit transport through the selected append comparison | `ELVWeightedAppendAdjunction`: producer/consumer and all 26 owned declarations scoped-checked; full CI pending. Normalized content/weight and crossing compatibility remain separate |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
+| Old vacuum coefficient extraction and signed moments | Prescribed unit-inverse rows give literal coefficient windows and full-coefficient superlinearity; the empty-word representable has zero mate source. Canonical upper-Hom transport gives the raw monomial window, actual higher cyclotomic recurrence and all-exponent signed-dot comparison | Three producers and paired mixed/exterior consumers pass strict scoped checks; all 62 owned declarations pass the axiom allowlist. Full CI pending. [UnitCoefficientRows](UnitCoefficientRows.md), [VacuumMoments](VacuumMoments.md), [VacuumSignedMoments](VacuumSignedMoments.md). Final power-quotient/swapped factor and mixed caps remain open |
+
+The occupied two-odd-colour consumer additionally checks both vacuum coefficient
+operator orders, their minus sign on reversal, and a nonzero ordered product
+after both coefficient and old cyclotomic quotients. Strict local checking
+passes; see [VacuumTwoOddCoefficients](VacuumTwoOddCoefficients.md).
 
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
@@ -144,7 +154,7 @@ axioms. `ELVMatrixEntryNaturality` additionally gives full-CI verified input-mod
 naturality of all prescribed shifted entries on the whole old module
 category, with additive, linear, parity-preserving summand functors. Its
 mixed consumer checks the literal endpoint transports, every finite slot,
-the zero-count mate and the odd third-dot Koszul sign; all owned axioms pass.
+the zero-count mate and the odd third-dot Koszul sign; all owned declarations pass.
 Both additions are verified by the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41489136665)
 on research head `f070980ac0a0ba23b6faf79dd53faaadfce27aa2` (#953/#954).
 
@@ -157,10 +167,23 @@ uses the existing fixed-output-content isomorphisms as literal components of
 The forward-map identities and even inverse components remain unchanged.
 Both height signs, both moving parities and zero counts are included.
 All three producers, both paired mixed-colour consumers and the audit of
-all 64 owned declarations pass strict scoped checks; full CI is pending.
+all 64 owned declarations passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41532403900)
+at source head `55c6d763`, integrated in #961.
 Compatibility with the chosen fixed-content E/F composites, their generators
 and adjunction maps, and original-weight assembly remain open. See
 [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
+
+`ELVRawMixedEvenMate` now proves the literal even source difference unit and
+`elvRawMixedEvenMateDot_isIso` for the arbitrary-input raw coefficient.
+`ELVRawCoefficientComparison` proves uniqueness from one prescribed identity,
+the inverse-first odd formula, exact comparison with the earlier even/odd mate
+coefficients and the parity-unified `elvRawMixedMateDot_isIso`. Strict scoped
+producer/consumer checks pass for degree-six probes of both parities and a mixed
+identity-functor instance whose one-strand block restricts to vacuum. Both owned
+audits pass, covering eleven declarations; full CI is pending. These results do
+not construct compatible factors or a concrete `ProbeReservoir`. See
+[ELVRawMixedEvenMate](ELVRawMixedEvenMate.md) and
+[ELVRawCoefficientComparison](ELVRawCoefficientComparison.md).
 
 `SwappedVacuum/InverseCapMoments` proves the signed coefficient-window
 recurrence and the height-zero principal cap identity from the literal slide,
@@ -170,7 +193,11 @@ bubble-series formula. Occupied level-one and degree-two companion/nilpotent
 consumers pass strict local checking and the owned-declaration axiom audit.
 [Full CI](https://github.com/apellis/odd-lean/actions/runs/41522225499) passed
 for source head `532683e2db4770b22950a5356863935e9c1d8851`, integrated in #955.
-The coefficient-extraction window and map identifications still need attachment to the concrete swapped action; this is not yet its
+The coefficient-extraction window, raw monomial normalization, signed higher
+moments and full-coefficient naturality are now scoped-checked on the actual
+old empty-word representable in `ELVUnitCoefficientRows`, `ELVVacuumMoments`
+and `ELVVacuumSignedMoments`. The final coefficient quotient, swapped factor
+and mixed inverse-cap identifications remain open; this is not yet their
 normalized bubble theorem. See [InverseCapMoments](InverseCapMoments.md).
 
 `SwappedVacuum/NegativeCapMoments` proves the negative-height polynomial
@@ -185,17 +212,24 @@ The general actual augmented-matrix
 attachment and normalized bubble-series construction remain open.
 See [NegativeCapMoments](NegativeCapMoments.md).
 
-`ELVDistinctIdealSpan.ideal_eq_appendRelations_sup_outputOldRelations`
-proves the full-ELV word-corner form of KKO I (9.3). For distinct final
-colours the cyclotomic ideal is exactly the sum of the two literal outer
-old ideals. The checked output-last shuffle support excludes the long
-term before relation transport; all total coefficient parity is retained.
-Both producers and the mixed/exterior, repeated-word and zero-cutoff
-consumers passed the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41528015864)
-at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated in #958.
-All 24 owned declarations pass the axiom allowlist. The explicit mixed PBW decoder,
-balanced quotient comparison and prescribed categorical mate remain open.
-See [DistinctIdealSpan](DistinctIdealSpan.md).
+`ideal_eq_appendRelations_sup_outputOldRelations` in `ELVDistinctIdealSpan`
+proves the full-ELV word-corner form of KKO I (9.3), with
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41528015864) passed
+at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated in #958. The cyclotomic ideal in distinct final-colour
+corners is exactly the sum of the two literal outer old ideals.
+`cyclotomicEquiv` in `ELVDistinctCrossingQuotient` supplies the independently
+balanced crossing isomorphism and the explicit inverse `q ∘ decode` on
+arbitrary full-coefficient affine representatives. The ordinary right
+action is retained. `moduleMate_crossing` identifies the evaluated literal
+`SKM.rectangularMate` with this crossing after canonical J, which twists
+the entire first tensor factor. `moduleMateEquiv_apply` attaches the
+inverse on every old representable corner, including empty words and
+zero cutoff. These twelve producers and both concrete mixed/exterior
+consumers pass strict scoped checks; all 208 owned declarations pass the
+axiom audit. Full CI remains pending. The inverse on arbitrary old modules,
+exact-content and weight transport, and the full factor family remain open.
+See [DistinctCrossingDecoder](DistinctCrossingDecoder.md) and
+[DistinctMateComparison](DistinctMateComparison.md).
 
 The chosen append comparisons now have literal generator formulas in
 `ELVProbeAppendTensors` and `ELVWeightedAppendTensors`: the selected maps
@@ -204,13 +238,32 @@ The canonical `ELVInductionSquareTensors` chain is evaluated on raw balanced
 coends before specialization. Scalar hom/inverse parity and the scalar and
 weighted signed-dot intertwining identities are included. All producers,
 connected mixed/vacuum consumers and the audits of 113 owned declarations
-pass strict local checking; full CI is pending. The scalar probe specialization
+passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662)
+at source head `a3384f38`, integrated in #963. The scalar probe specialization
 retains its documented coefficient-evaluation hypothesis, discharged by the
 actual probe consumer. These results supply neither a faithful scalar
 specialization nor the remaining adjunction/crossing/inverse-matrix transport.
+`ELVProbeRestrictionComparison` additionally proves that old append restriction
+preserves scalar coefficient evaluation and that its scalar descent equals
+the prescribed ordinary restriction. The equality comparison is identity in
+parity zero and zero in parity one. Its connected mixed/vacuum consumer and
+audit of all 21 owned declarations pass strict local checks; full CI is pending.
+This identifies the restriction modules, without asserting preservation of
+the chosen counit or normalized caps.
 See [ProbeAppendTensors](ProbeAppendTensors.md),
+[ProbeRestrictionComparison](ProbeRestrictionComparison.md),
 [WeightedAppendTensors](WeightedAppendTensors.md) and
 [WeightedAppendDot](WeightedAppendDot.md).
+
+`ELVWeightedAppendAdjunction` additionally supplies
+the even identity-vector restriction-square natural isomorphism and the
+ordinary counit comparison with the selected weighted append map. Its exact
+coend formula retains the degree-zero induction component of that even
+restriction comparison. The producer, paired mixed consumer and audit of all
+26 owned declarations pass strict scoped checking; full CI is pending for
+this adjunction addition. Faithful scalar specialization, crossing/inverse
+and normalized content/weight transport are not asserted.
+
 
 ## Remaining critical chain
 
@@ -222,39 +275,56 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    zero counts and inverse evenness are included. Retain these exact
    coordinates. Output-arrow naturality on fixed output content is full-CI verified
    in `ELVContentMatrixInverse`. Whole finite-family input-module naturality
-   and the fixed-output-content natural inverse functors are now scoped-checked
-   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse`;
-   full CI is pending. Compare these with the chosen content induction,
+   and the fixed-output-content natural inverse functors are full-CI verified
+   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse` (#961). Compare these with the chosen content induction,
    restriction, crossing and adjunction maps, then assemble original-weight
    functors. No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
    The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
-   also remains open. The distinct outer-colour ideal identity is now
-   scoped-checked in `ELVDistinctIdealSpan`; construct the crossing-coset
-   PBW equivalence, balanced quotient comparison and prescribed mate of
-   `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
+   remains open on arbitrary modules and the chosen content/weight functors.
+   The distinct outer-colour ideal identity is full-CI verified (#958); the
+   explicit crossing-coset PBW inverse, both outer quotient spans and
+   prescribed rectangular mate attachment on every old representable corner
+   are scoped-checked, with full CI pending. Extend the inverse to arbitrary
+   modules and transport it through the chosen exact-content and weight
+   comparisons of `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
    isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content
    comparisons and inner-unit tensor identity are implemented (#941/#946).
-   Complete unit/counit and generator compatibility, actual global crossings,
+   Global crossing and whole canonical pair coherence are scoped-checked.
+   Complete unit/counit and generator compatibility,
    and pair/triple whiskering transfer; two-successor induction is implemented
-   (#945). The old/truncated append comparison now has scoped-checked literal
-   tensor/unit and signed-dot transport. Complete its chosen crossing and
-   adjunction transport, then the inverse and content/weight comparisons.
+   (#945). The old/truncated append comparison has full-CI verified literal
+   tensor/unit and signed-dot transport in #963. `ELVInductionSquareTransform`
+   now supplies scoped-checked canonical raw-coend and homogeneous transform
+   transport through a commuting functor square; its full CI is pending.
+   Identify this map with the selected weighted comparison and prove two-letter
+   flattening/crossing coherence. Complete chosen crossing and adjunction
+   transport, then the inverse and content/weight comparisons.
+   The weighted ordinary restriction-square and counit transport is scoped-checked
+   in `ELVWeightedAppendAdjunction`; scalar counit transport remains open.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
    Source norms, target denominators, mate criteria, weak Sigma and actual
    category universes are verified (#811/#817/#834/#844/#861/#882).
    The ordinary probe quotient/induction comparison is verified (#891/#897),
-   and its actual old-coend dot unit is verified (#927); whole generator
-   transport remains open. Constructed mixed coefficients, inverse
+   and its actual old-coend dot unit is verified (#927). Literal tensor/unit,
+   signed-dot and restriction comparisons are scoped-checked; complete the
+   chosen counit, crossing and inverse-matrix transport. Constructed mixed coefficients, inverse
    identities and raw odd mate applications passed original full CI
    (#913/#917/#919/#922/#925/#930) and are included in the consolidation.
-   Complete the raw even mate, family identifications and remaining assembly. Use the pairing-weight extension and supplied
+   The raw even mate and literal earlier-coefficient comparisons are now scoped-checked in
+   `ELVRawMixedEvenMate` and `ELVRawCoefficientComparison`, with full CI pending.
+   Complete compatible family identification and concrete CrossCoeff assembly. Use the pairing-weight extension and supplied
    CScalars transport (#864), retaining separate target-content exponents.
 
 4. Use the verified joint source detection (#819, #820), retaining the actual
-   weighted coefficient ideal, including odd generators. Construct the action's
+   weighted coefficient ideal, including odd generators. The paper's
+   even-generator power ideal T is a different quotient: explicitly construct
+   its action and inverse-map preservation, the weighted/power quotient bridge,
+   and the evaluation-kernel identification before applying detection to it.
+   Old-vacuum extraction and signed higher moments are scoped-checked, with
+   full CI pending. Construct the action's
    literal vacuum/corner evaluation and all-height normalized bubbles, prove
    the bounded recovery identity, and instantiate the existing observation
    consumer. Apply the finite-colour and upward-to-oriented reductions.
