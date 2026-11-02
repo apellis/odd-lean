@@ -212,7 +212,19 @@ Its signed recurrence derives the principal cap and all positive-index
 right moments from the slide, probe polynomial and coefficient-extraction
 window. Attach the latter window and the literal inverse maps to the
 actual vacuum; no actual bubble-series interface is instantiated yet.
-See [InverseCapMoments](InverseCapMoments.md). Full CI is pending.
+See [InverseCapMoments](InverseCapMoments.md). Its source head
+`532683e2db4770b22950a5356863935e9c1d8851` passed
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41522225499) and
+is integrated in #955.
+
+`SwappedVacuum/NegativeCapMoments` now proves the negative-height
+annihilation and low-unit window tests from the same signed slide and
+probe polynomial. Its concrete occupied level-two/probe-level-one consumer
+identifies the polynomial candidate with the final row of a nontrivial
+whole augmented inverse. Strict local checks and the owned audit pass;
+full CI is pending. Next attach these tests to the actual module matrices,
+then derive the all-height normalized bubble series.
+See [NegativeCapMoments](NegativeCapMoments.md).
 
 Construct the actual vacuum and normalized adjunction bubbles, using
 ELVVacuumWordPairing and the existing VacuumCornerEvaluation and

@@ -154,9 +154,20 @@ a monic probe relation and the coefficient-extraction window. It determines
 all positive-index right moments of the prescribed inverse; it assumes no
 bubble-series formula. Occupied level-one and degree-two companion/nilpotent
 consumers pass strict local checking and the owned-declaration axiom audit.
-Full CI is pending. The coefficient-extraction window and map identifications
-still need attachment to the concrete swapped action; this is not yet its
+[Full CI](https://github.com/apellis/odd-lean/actions/runs/41522225499) passed
+for source head `532683e2db4770b22950a5356863935e9c1d8851`, integrated in #955.
+The coefficient-extraction window and map identifications still need attachment to the concrete swapped action; this is not yet its
 normalized bubble theorem. See [InverseCapMoments](InverseCapMoments.md).
+
+`SwappedVacuum/NegativeCapMoments` proves the negative-height polynomial
+cap tests: the signed slide and probe relation make the candidate cap
+annihilate the mate, and monicity gives the extreme low-unit Kronecker
+window. Its occupied level-two/probe-level-one consumer checks these maps
+against a nontrivial whole augmented inverse, including the literal last
+inverse row. Strict local checks and the audit of all eleven owned
+declarations pass; full CI is pending. The general actual augmented-matrix
+attachment and normalized bubble-series construction remain open.
+See [NegativeCapMoments](NegativeCapMoments.md).
 
 ## Remaining critical chain
 

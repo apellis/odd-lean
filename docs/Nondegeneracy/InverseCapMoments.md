@@ -60,3 +60,7 @@ with these endpoints and use the full monic-remainder moments of the
 one-strand reservoir. The positive and negative height windows remain
 separate from this principal-inverse case. Full CI remains the integration
 gate; scoped checks do not establish the entire action or nondegeneracy.
+
+The producer and both consumers passed the full build, global axiom audit and
+all non-vacuity checks at source head
+`532683e2db4770b22950a5356863935e9c1d8851` in [#955](https://github.com/apellis/odd-lean/pull/955).
