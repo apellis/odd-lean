@@ -45,6 +45,21 @@ example (i : Bool) :
         ((BalancedInduction.induction (T i)).obj M) 0 :=
   BalancedInduction.squareComparison_mem (J i) Q Q (T i)
     (oldAppend_truncate D Sc cut 8 i) R M c c_even
+
+/-- The same chosen square computes directly on the literal old coends. -/
+example (i : Bool) (w : OldCategory D Sc cut) (g : (J i).obj s ⟶ w)
+    (b : R.obj s) :
+    BalancedInduction.squareLinear (J i) Q Q (T i)
+      (oldAppend_truncate D Sc cut 8 i) R M c (Q.obj w)
+      (BalancedInduction.tensor Q (BalancedInduction.induced (J i) R).toFunctor
+        w (𝟙 (Q.obj w)) (BalancedInduction.tensor (J i) R.toFunctor s g b)) =
+      BalancedInduction.tensor (T i) M.toFunctor (Q.obj s)
+        (eqToHom (congrArg
+          (fun H : OldCategory D Sc cut ⥤ TruncatedCategory D Sc cut 8 => H.obj s)
+          (oldAppend_truncate D Sc cut 8 i)).symm ≫ Q.map g)
+        (SuperNatTrans.app c 0 (Q.obj s) (BalancedInduction.unit Q R.toFunctor s b)) :=
+  BalancedInduction.squareLinear_tensor (J i) Q Q (T i)
+    (oldAppend_truncate D Sc cut 8 i) R M c c_even s w g b
 end InductionSquareTensorsConsumer
 
 open Lean Elab Command in
