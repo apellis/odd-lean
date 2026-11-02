@@ -14,6 +14,33 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld
 universe u
+section CounitCarriers
+variable {k : Type u} [CommRing k]
+  {C D : Type u} [Category.{u} C] [Category.{u} D]
+  [Preadditive C] [Linear k C] [Supercategory k C]
+  [Preadditive D] [Linear k D] [Supercategory k D]
+  (J : C ⥤ D) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
+  (M : Superfunctor k D (SVec k))
+
+/-- The ordinary counit on the literal coend of the restricted module. -/
+def restrictionCounitLinear (w : D) :
+    BalancedInduction.Obj J ((BalancedInduction.restriction J).obj M).toFunctor w →ₗ[k] M.obj w :=
+  BalancedInduction.counit J M.toFunctor w
+
+/-- This carrier realization is the prescribed ordinary counit. -/
+theorem restrictionCounitLinear_apply (w : D)
+    (b : BalancedInduction.Obj J ((BalancedInduction.restriction J).obj M).toFunctor w) :
+    restrictionCounitLinear J M w b = BalancedInduction.counit J M.toFunctor w b := rfl
+
+/-- The canonical counit evaluates its exact tensor arrow. -/
+theorem restrictionCounitLinear_tensor (v : C) (w : D) (g : J.obj v ⟶ w)
+    (b : M.obj (J.obj v)) :
+    restrictionCounitLinear J M w
+      (BalancedInduction.tensor J ((BalancedInduction.restriction J).obj M).toFunctor v g b) =
+      M.map g b :=
+  BalancedInduction.counit_tensor J M.toFunctor w v g b
+end CounitCarriers
+
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (N : ℕ)
   (i : I) (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
@@ -54,18 +81,26 @@ theorem weightedAppendRestrictionIso_naturality
         (BalancedInduction.restriction J).map ((BalancedInduction.restriction Q).map f) := by
   apply Superfunctor.hom_ext
   intro p s
-  rcases parity_eq_zero_or_one p with rfl | rfl <;>
-    simp only [Superfunctor.comp_app, weightedAppendRestrictionIso_hom_app,
-      BalancedInduction.restriction, Superfunctor.whiskerLeft_app,
-      ↓reduceIte, zero_add, SVec.zmod2_one_add_one, one_ne_zero,
-      LinearMap.id_comp, LinearMap.comp_id, LinearMap.zero_comp,
-      LinearMap.comp_zero, add_zero, zero_add]
+  let v : TruncatedCategory D Sc cutoff N := ⟨s.word ++ [i]⟩
+  rcases parity_eq_zero_or_one p with rfl | rfl
+  · change (LinearMap.id : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 0 v +
+        (0 : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 1 v =
+      f.app 0 v ∘ₗ (LinearMap.id : M.obj v →ₗ[k] M.obj v) +
+        f.app 1 v ∘ₗ (0 : M.obj v →ₗ[k] M.obj v)
+    simp only [LinearMap.id_comp, LinearMap.zero_comp, LinearMap.comp_id,
+      LinearMap.comp_zero, add_zero]
+  · change (0 : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 0 v +
+        (LinearMap.id : L.obj v →ₗ[k] L.obj v) ∘ₗ f.app 1 v =
+      f.app 1 v ∘ₗ (LinearMap.id : M.obj v →ₗ[k] M.obj v) +
+        f.app 0 v ∘ₗ (0 : M.obj v →ₗ[k] M.obj v)
+    simp only [LinearMap.zero_comp, LinearMap.id_comp, LinearMap.comp_id,
+      LinearMap.comp_zero, zero_add, add_zero]
 
 /-- The whole restriction square uses the same identity-vector
 comparisons as the ordinary counit formula. -/
 def weightedAppendRestrictionNaturalIso :
-    BalancedInduction.restriction T ⋙ BalancedInduction.restriction Q ≅
-      BalancedInduction.restriction Q ⋙ BalancedInduction.restriction J :=
+    BalancedInduction.restriction (k := k) T ⋙ BalancedInduction.restriction (k := k) Q ≅
+      BalancedInduction.restriction (k := k) Q ⋙ BalancedInduction.restriction (k := k) J :=
   NatIso.ofComponents (weightedAppendRestrictionIso D Sc cutoff N i)
     (fun f => weightedAppendRestrictionIso_naturality D Sc cutoff N i _ f)
 
@@ -73,27 +108,32 @@ def weightedAppendRestrictionNaturalIso :
 ordinary counit to the truncated counit. The old-side source is identified
 by the canonical even restriction-square comparison above. -/
 theorem appendWeightedModuleIso_hom_counit (w : OldCategory D Sc cutoff) :
-    BalancedInduction.counit T M.toFunctor ((Q).obj w) ∘ₗ
-        (appendWeightedModuleIso D Sc cutoff N i
-          ((BalancedInduction.restriction T).obj M)).hom.total ((Q).obj w) =
-      BalancedInduction.counit J (weightedRestriction D Sc cutoff N M).toFunctor w ∘ₗ
-        ((BalancedInduction.induction J).map
-          (weightedAppendRestrictionIso D Sc cutoff N i M).hom).total w := by
+    restrictionCounitLinear T M ((Q).obj w) ∘ₗ
+        weightedAppendComparisonLinear D Sc cutoff N i
+          ((BalancedInduction.restriction T).obj M) w =
+      restrictionCounitLinear J (weightedRestriction D Sc cutoff N M) w ∘ₗ
+        BalancedInduction.mapComponent J
+          (weightedAppendRestrictionIso D Sc cutoff N i M).hom 0 w := by
   apply BalancedInduction.hom_ext
   intro s g b
-  simp only [LinearMap.comp_apply, appendWeightedModuleIso_hom_tensor,
-    BalancedInduction.counit_tensor]
-  have ht := BalancedInduction.moduleMap_total_tensor_even J
-    (weightedAppendRestrictionIso D Sc cutoff N i M).hom
-    (weightedAppendRestrictionIso_hom_mem D Sc cutoff N i M) w s g b
-  have hb : (weightedAppendRestrictionIso D Sc cutoff N i M).hom.app 0 s b = b := rfl
-  rw [hb] at ht
-  rw [show ((BalancedInduction.induction J).map
-      (weightedAppendRestrictionIso D Sc cutoff N i M).hom).total w
-      (BalancedInduction.tensor J
-        (weightedRestriction D Sc cutoff N ((BalancedInduction.restriction T).obj M)).toFunctor
-        s g b) = _ from ht,
-    BalancedInduction.counit_tensor]
-  rfl
+  let A := weightedRestriction D Sc cutoff N ((BalancedInduction.restriction T).obj M)
+  let B := (BalancedInduction.restriction J).obj (weightedRestriction D Sc cutoff N M)
+  let e := weightedAppendRestrictionIso D Sc cutoff N i M
+  have ht := appendWeightedModuleIso_hom_tensor D Sc cutoff N i
+    ((BalancedInduction.restriction T).obj M) s w g b
+  have hT := restrictionCounitLinear_tensor T M ((Q).obj s) ((Q).obj w) ((Q).map g) b
+  have hm := BalancedInduction.mapComponent_tensor J e.hom 0 w s g b
+  have hb : e.hom.app 0 s b = b := rfl
+  have hx : BalancedInduction.mapComponent J e.hom 0 w
+      (BalancedInduction.tensor J A.toFunctor s g b) =
+      BalancedInduction.tensor J B.toFunctor s g b := by
+    refine hm.trans ?_
+    exact congrArg₂ (fun z x => BalancedInduction.tensor J B.toFunctor s z x)
+      (twist_zero g) hb
+  have hJ := restrictionCounitLinear_tensor J (weightedRestriction D Sc cutoff N M) s w g b
+  have hleft := (congrArg (restrictionCounitLinear T M ((Q).obj w)) ht).trans hT
+  have hright :=
+    (congrArg (restrictionCounitLinear J (weightedRestriction D Sc cutoff N M) w) hx).trans hJ
+  exact hleft.trans hright.symm
 
 end OddMath.QuiverHecke.ELVOld
