@@ -125,7 +125,7 @@ including full build, axiom audit and all concrete consumers.
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
 | Append comparison helpers | Three unit-tensor formulas, arbitrary even induction-map evaluation and chosen weighted-comparison parity | #936/#940/#938 full CI; scalar/weighted five-map specializations remain unfinished |
-| Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
+| Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Strict local consumer check passes; full CI pending. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
@@ -191,9 +191,10 @@ See [NegativeCapMoments](NegativeCapMoments.md).
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content
    comparisons and inner-unit tensor identity are implemented (#941/#946).
-   Complete unit/counit and generator compatibility, actual global crossings,
-   and pair/triple whiskering transfer; two-successor induction is implemented
-   (#945). The old/truncated append comparison still needs its chosen
+   The global homogeneous weight crossing and whole canonical pair comparison
+   are scoped-checked; full CI remains pending. Complete unit/counit and
+   generator compatibility and pair/triple whiskering relation transfer;
+   two-successor induction is implemented (#945). The old/truncated append comparison still needs its chosen
    dot/crossing/adjunction transport, despite verified naturality and parity.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
    Source norms, target denominators, mate criteria, weak Sigma and actual

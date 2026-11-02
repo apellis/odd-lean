@@ -9,7 +9,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
-| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
+| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; full CI pending) |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
@@ -119,8 +119,13 @@ is retained from #939. Independent dot families and the whole corrected ordered
 polynomial relation are implemented in #933/#934; both original exact heads
 passed full CI. Use `ELVContentMixedBraidTransforms.contentMixedBraidTransform`,
 preserving the original coefficient order and parameter twist.
-Whole multicolour and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
-coefficients, full kernel parity and equal-colour crossing normalization.
+The global homogeneous weight crossing `elvWeightCross` and whole canonical
+pair coherence `elvWeightPairComparison_eq` are scoped-checked with paired
+consumers; full CI remains pending. The crossing retains the prescribed
+equal-colour normalization and the zero coordinates without a double
+predecessor. Pair/triple whiskering relation transfer and the full factor
+action remain open. Retain intermediate-content transports, ordered polynomial
+coefficients and full kernel parity.
 
 A full-ELV factor family still requires the categorical inverse, these
 multicolour relations and their naturality. Its distinct-colour factor mate

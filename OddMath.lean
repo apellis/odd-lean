@@ -1887,6 +1887,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairInduction
 
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossing
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossingComparison
+
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
 
