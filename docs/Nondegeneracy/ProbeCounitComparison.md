@@ -1,26 +1,31 @@
 # Scalar comparison of the ordinary counit
 
-**Proposed specialization; unverified.** The producer's whole operator identity
-and its paired consumer are not established. No completed counit transport is
-claimed here.
+**Scoped-checked; full CI pending.** The producer and its paired connected,
+mixed-parity consumer pass the pinned strict checks. All 40 owned declarations
+pass the axiom allowlist.
 
-The proposed map uses four prescribed legs: the selected append comparison,
+`probeAppendOrdinaryCounitLinear` uses four prescribed legs: the selected append comparison,
 induction of `probeOrdinaryRestrictionModule_eq`, the literal ordinary counit,
 and the existing scalar-restriction equality isomorphism back to the old module
 values. The last coordinate map is identity on vectors; it exposes the source
 and target supervector spaces explicitly rather than relying on implicit
 retargeting of a linear map.
 
-On an old generator `[g ⊗ b]`, the intended calculation sends it first to
+On an old generator `[g ⊗ b]`, the calculation sends it first to
 `[U.map g ⊗ b]`, keeps its vector under the restriction equality, evaluates the
 ordinary counit to `O.map (U.map g) b`, and then uses scalar quotient action to
-obtain `N.map g b`. This is the value of the prescribed old counit. The input
+obtain `N.map g b`. `probeAppendOrdinaryCounitLinear_eq` identifies the whole
+composite with the literal old counit on every output word and every coend
+vector. The input
 module retains the documented scalar coefficient evaluation hypothesis;
-no faithfulness, dimension or homogeneous-generator premise is proposed.
+no faithfulness, dimension or homogeneous-generator premise is introduced.
 
-The remaining encoding obligation is to identify this full composite with
-the literal old counit on exactly matching coend and supermodule coordinates.
-The draft currently reaches the final operator conversion without a complete
-strict check. Its companion consumer proposes connected mixed-parity regular
-probe modules, including vacuum source content. Normalized caps, crossings,
+The proof computes the transpose on raw coends with an independent input
+supermodule before specializing it to the restriction of the target module.
+The identity input map then recovers the canonical counit. This keeps the
+chosen module coordinates throughout the operator comparison.
+
+The companion consumer uses connected mixed-parity regular probe modules,
+with both moving parities and vacuum source content. This result compares
+the ordinary unshifted adjunction counit. Normalized caps, crossings,
 inverse matrices and full factor assembly remain separate.
