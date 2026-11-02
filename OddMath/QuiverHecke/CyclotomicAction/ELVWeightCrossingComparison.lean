@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossing
 
-/-! # Comparison with the independent content pair crossing
+/-! # Canonical content comparison for weight pair induction
 
 The intermediate-content transport needed by `DeformedActionAssembly.md` §6
 identifies the actual two-successor induction with the canonical successive
@@ -145,54 +145,6 @@ theorem elvWeightPairComparison_eq (β : WeightBlocks D Λ x₀)
         (elvBlockPairComparison D Sc cutoff bound i j Λ h₁ h₂ β) = _
   rw [elvBlockPairComparison_eq, Functor.isoWhiskerLeft_trans,
     crossing_eqIso_whiskerLeft, ← Iso.trans_assoc, eqToIso_trans]
-
-theorem elvWeightPairComparison_hom (β : WeightBlocks D Λ x₀)
-    (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightPairComparison D Sc cutoff bound i j Λ h₁ h₂ β ε hε).hom.app M =
-      eqToHom (Functor.congr_obj
-        (elvEFunctor_comp₂_contentPair_eq D Sc cutoff bound i j Λ h₁ h₂ β ε hε) M) ≫
-        (contentEPairToComparison D Sc cutoff bound β.1 j i ε.1
-          (elvWeightPair_content_eq D i j Λ h₁ h₂ β ε hε)).hom.app (M β) := by
-  rw [elvWeightPairComparison_eq]
-  simp only [Iso.trans_hom, NatTrans.comp_app,
-    eqToIso.hom, eqToHom_app, Functor.isoWhiskerLeft_hom, Functor.whiskerLeft_app]
-  rfl
-
-theorem elvWeightPairComparison_inv (β : WeightBlocks D Λ x₀)
-    (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightPairComparison D Sc cutoff bound i j Λ h₁ h₂ β ε hε).inv.app M =
-      (contentEPairToComparison D Sc cutoff bound β.1 j i ε.1
-          (elvWeightPair_content_eq D i j Λ h₁ h₂ β ε hε)).inv.app (M β) ≫
-        eqToHom (Functor.congr_obj
-          (elvEFunctor_comp₂_contentPair_eq D Sc cutoff bound i j Λ h₁ h₂ β ε hε) M).symm := by
-  rw [elvWeightPairComparison_eq]
-  simp only [Iso.trans_inv, NatTrans.comp_app,
-    eqToIso.inv, eqToHom_app, Functor.isoWhiskerLeft_inv, Functor.whiskerLeft_app]
-  rfl
-
-/-- The newly assembled weight crossing is the independently normalized
-content pair crossing under the literal endpoint equalities. -/
-theorem elvWeightCross_contentPair (β : WeightBlocks D Λ x₀)
-    (ε : WeightBlocks D Λ x₃) (hε : blockSucc₂ D i j Λ h₁ h₂ β = ε)
-    (M : ELVWeightProduct D Sc cutoff bound Λ x₀) :
-    (elvWeightCross D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄).app
-        (D.parity i * D.parity j) M ε =
-      eqToHom (Functor.congr_obj
-        (elvEFunctor_comp₂_contentPair_eq D Sc cutoff bound i j Λ h₁ h₂ β ε hε) M) ≫
-        (contentEPairCrossTransform D Sc cutoff bound β.1 i j ε.1
-          (elvWeightPair_content_eq D j i Λ h₃ h₄ β ε
-            (blockSucc₂_swap D i j Λ h₁ h₂ h₃ h₄ hε))
-          (elvWeightPair_content_eq D i j Λ h₁ h₂ β ε hε)).app
-            (D.parity i * D.parity j) (M β) ≫
-        eqToHom (Functor.congr_obj
-          (elvEFunctor_comp₂_contentPair_eq D Sc cutoff bound j i Λ h₃ h₄ β ε
-            (blockSucc₂_swap D i j Λ h₁ h₂ h₃ h₄ hε)) M).symm := by
-  rw [elvWeightCross_supported D Sc cutoff bound i j Λ h₁ h₂ h₃ h₄ _ M β ε hε,
-    elvWeightCrossVia_component, contentEPairCross_component,
-    elvWeightPairComparison_hom, elvWeightPairComparison_inv]
-  simp only [Category.assoc]
 
 end Weight
 end OddMath.QuiverHecke.ELVOld

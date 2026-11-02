@@ -28,8 +28,11 @@ parities. Neither finite colours nor finite weight fibres are assumed.
 This construction does not yet transfer the independent pair/triple
 whiskerings or their polynomial relations to the weight functors. Those
 comparisons, followed by the categorical inverse and adjunction
-compatibilities, remain necessary for the full factor action. The source is
-under local verification; no full-CI claim is made here.
+compatibilities, remain necessary for the full factor action. The crossing
+producer and its mixed-colour consumer pass strict scoped Lean checks;
+the consumer retains equal-colour crossings, the absent inner predecessor,
+and naturality on the canonical odd isomorphism of the vacuum family.
+All 28 owned declarations pass its axiom audit. Full CI remains separate.
 
 ## Independent pair comparison
 
@@ -42,10 +45,13 @@ canonical pair comparison introduces no second associativity choice.
 
 `elvBlockPairCanonical_eq` applies this construction to the actual block
 pair, and `elvEFunctor_comp₂_contentPair_eq` includes evaluation at the source
-weight block. `elvWeightCross_contentPair` identifies the assembled weight
-crossing with the independently normalized `contentEPairCrossTransform`,
-retaining both endpoint equality maps. The scope is an equality of whole
-module morphisms for arbitrary input modules, rather than an equality only
-on chosen balanced generators. Triple whiskering and relation transport
-remain subsequent obligations. This comparison source is also under local
-verification.
+weight block. `elvWeightPairComparison_eq` proves coherence as an equality of
+whole natural isomorphisms: the existing direct-word comparison is the
+literal endpoint equality followed by the independent canonical content
+pair comparison. This retains both directions without expanding the large
+product-induction component casts. The direct affine crossing formula is
+already supplied by `elvWeightCrossVia_component`; triple whiskering and
+relation transport remain subsequent obligations. The comparison producer
+and its asymmetric vacuum consumer pass strict scoped Lean checks, including
+the twisted parameter category and both comparison directions. Its consumer
+audits all ten owned declarations. Full CI remains the integration gate.

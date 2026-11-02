@@ -34,10 +34,16 @@ example (i j : Bool) := elvBlockPairComparison_hom D Sc (fun _ => 12) 12 i j (0 
 example (i j : Bool) := elvBlockPairComparison_inv D Sc (fun _ => 12) 12 i j (0 : X)
   (step j) (step₂ i j) vacuumBlock
 
-/-- The original product functors carry exactly the independent pair crossing
-on the actual vacuum family, with both endpoint transports retained. -/
-example (i j : Bool) := elvWeightCross_contentPair D Sc (fun _ => 12) 12 i j (0 : X)
-  (step j) (step₂ i j) (step i) (step₄ i j) vacuumBlock _ rfl sourceVacuum
+/-- The original product-induction coordinate agrees with the independent
+canonical content pair on the actual vacuum family. -/
+example (i j : Bool) := Functor.congr_obj
+  (elvEFunctor_comp₂_contentPair_eq D Sc (fun _ => 12) 12 i j (0 : X)
+    (step j) (step₂ i j) vacuumBlock _ rfl) sourceVacuum
+
+/-- The whole comparison commutes with that endpoint equality, for both
+directions and without expanding the product-induction component casts. -/
+example (i j : Bool) := elvWeightPairComparison_eq D Sc (fun _ => 12) 12 i j (0 : X)
+  (step j) (step₂ i j) vacuumBlock _ rfl
 
 /-- The twisted parameter category has the same chosen crossing comparison. -/
 example := elvBlockPairComparison_hom D (parameterTwist D Sc) (fun _ => 12) 12
