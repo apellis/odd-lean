@@ -7,6 +7,16 @@ We compute its five canonical maps on coend units before extending to tensors.
 -/
 noncomputable section
 open CategoryTheory StringDiagrams Supercategory
+namespace OddMath.QuiverHecke
+universe u
+private theorem appendComparison_comp_total_apply
+    {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    {F G H : Superfunctor k C (SVec k)} (f : F ⟶ G) (g : G ⟶ H)
+    (w : C) (b : F.obj w) :
+    (f ≫ g).total w b = g.total w (f.total w b) :=
+  LinearMap.congr_fun (Superfunctor.comp_total f g w) b
+end OddMath.QuiverHecke
 namespace OddMath.QuiverHecke.ELVOld
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -33,7 +43,11 @@ theorem quotientCounit_moduleMap_unit_tensor (i : I)
       (quotientInductionCounitIso D Sc cutoff N M).hom =
       BalancedInduction.moduleMap (truncatedAppend D Sc cutoff N [i])
         (quotientInductionCounitIso D Sc cutoff N M).hom := rfl
-  rw [hm, BalancedInduction.moduleMap_total_tensor_even _ _ hf]
+  rw [hm]
+  refine (BalancedInduction.moduleMap_total_tensor_even
+    (truncatedAppend D Sc cutoff N [i])
+    (quotientInductionCounitIso D Sc cutoff N M).hom hf w ((Q).obj s) g
+    (BalancedInduction.unit Q (weightedRestriction D Sc cutoff N M).toFunctor s b)).trans ?_
   have hb : (quotientInductionCounitIso D Sc cutoff N M).hom.app 0 ((Q).obj s)
       (BalancedInduction.unit Q (weightedRestriction D Sc cutoff N M).toFunctor s b) = b := by
     change BalancedInduction.counit Q M.toFunctor ((Q).obj s)
@@ -82,7 +96,8 @@ theorem appendWeightedModuleIso_hom_unit
               BalancedInduction.moduleMap T
                 (quotientInductionCounitIso D Sc cutoff N M).hom := rfl
   rw [he]
-  simp only [Superfunctor.comp_total, SVec.comp_apply]
+  erw [appendComparison_comp_total_apply, appendComparison_comp_total_apply,
+    appendComparison_comp_total_apply, appendComparison_comp_total_apply]
   rw [quotientInducedWeightedModuleIso_inv_tensor,
     BalancedInduction.inductionComp_hom_total_unit, weightedAppendSquare_unit,
     BalancedInduction.inductionComp_inv_total_unit]
