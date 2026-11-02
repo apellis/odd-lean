@@ -1973,3 +1973,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAnnihilation
 
 import OddMath.SKM.ELVCoefficientPowers
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerParity
