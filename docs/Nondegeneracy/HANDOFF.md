@@ -8,7 +8,7 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
+| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses scoped-checked | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
@@ -79,17 +79,25 @@ modules with the chosen content E/F composites.
 of every literal shifted unit/cap entry. Its dot-power, unit, cap and mate
 families retain their supernatural parity before shifting. The paired
 mixed representable consumer and owned-axiom audit pass locally and in
-[full CI](https://github.com/apellis/odd-lean/actions/runs/41489136665). Assemble these summand maps into the finite-family source/target
-functors and prove whole-matrix input-module naturality, then use the
-existing output-content component inverses. The entry families alone do
-not yet give a natural isomorphism in the input module.
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41489136665).
+
+`ELVMatrixFunctorNaturality` now assembles these summand maps into the
+finite-family source/target functors and whole unit/cap natural transformations
+in the input module. Both functors are additive, linear and parity preserving.
+`ELVContentMatrixFunctorInverse` provides `contentUnitMatrixFunctorNatIso`
+and `contentCapMatrixFunctorNatIso`, combining this naturality with the existing
+output-content component inverses. They are natural along every input-module
+map and retain literal forward components and even inverses, including both
+height signs/parities and zero finite counts. Strict scoped producer and
+paired-consumer checks pass, including all 64 owned-declaration axiom checks;
+full CI is pending. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
 
 Next compare these natural isomorphisms with the actual fixed-content functors,
 then transfer to original-weight functors. Keep the target-fixed count,
 chosen source parity coordinates and literal ordinary unit/cap entries.
 Prove compatibility with the selected dot, crossing and adjunction maps
-before using these inverses in a full-ELV factor action. The component
-isomorphisms alone do not supply that action.
+before using these inverses in a full-ELV factor action. These old-category
+natural isomorphisms alone do not supply that action.
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
