@@ -1975,3 +1975,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAnnihilation
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
+
+import OddMath.SKM.ELVCoefficientPowers
