@@ -46,6 +46,22 @@ It concerns output-arrow naturality of the restricted old-category matrices.
 It does not establish naturality in input-module maps or identify the source
 and target with the chosen fixed-content E/F composites.
 
+`ELVMatrixEntryNaturality` supplies the next input-module step. The actual
+induction-dot powers, ordinary dotted units and caps, and fixed ordered mate
+are homogeneous supernatural families in the input module. The source and
+target parity shifts yield `unitMatrixEntryNatTrans` and
+`capMatrixEntryNatTrans` on the entire old module category, including odd
+and inhomogeneous module maps. Their component comparison lemmas retain
+explicit endpoint equalities with the existing finite matrix entries;
+there is no entry rescaling. The summand functors are additive, linear and
+parity-preserving.
+
+This entry-level step and its mixed representable consumer pass strict local
+checks and the owned-declaration axiom audit. Full CI is pending. Naturality
+of the assembled matrix and its inverse in the input module still needs
+finite-family map assembly; entry-level naturality alone is not a bundled
+natural isomorphism of module functors.
+
 Next, compare these old-category module components with the actual fixed-content
 and original-weight functors, retaining their chosen dot, crossing and adjunction
 normalizations. This result supplies neither a completed full-ELV factor action

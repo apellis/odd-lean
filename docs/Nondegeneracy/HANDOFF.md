@@ -74,7 +74,15 @@ Its `contentUnitMatrixIso` and `contentCapMatrixIso` are even supermodule
 isomorphisms, with literal component identities and inverse naturality along
 arbitrary output arrows. The paired mixed consumer and axiom audit pass
 locally; full CI is pending. This does not yet identify these restricted
-modules with the chosen content E/F composites or prove input-module naturality.
+modules with the chosen content E/F composites.
+`ELVMatrixEntryNaturality` now gives scoped-checked input-module naturality
+of every literal shifted unit/cap entry. Its dot-power, unit, cap and mate
+families retain their supernatural parity before shifting. The paired
+mixed representable consumer and owned-axiom audit pass locally; full CI is
+pending. Assemble these summand maps into the finite-family source/target
+functors and prove whole-matrix input-module naturality, then use the
+existing output-content component inverses. The entry families alone do
+not yet give a natural isomorphism in the input module.
 
 Next compare these natural isomorphisms with the actual fixed-content functors,
 then transfer to original-weight functors. Keep the target-fixed count,
