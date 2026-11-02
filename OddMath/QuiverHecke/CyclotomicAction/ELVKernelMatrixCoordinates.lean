@@ -70,8 +70,6 @@ theorem actualMateKernelLinear_row (i : I) (v : (OldCategory D Sc cutoff)ᵒᵖ)
         (kernelSourceCoordinates D Sc cutoff i v t z) := by
   rcases v with ⟨⟨v⟩⟩
   rcases t with ⟨t⟩
-  dsimp only [IndResKernel.kernel, BalancedKernelTensor.inductionKernel, ModuleCat.of] at z ⊢
-  rw [actualMateKernelLinear_eq_component, actualMateKernelComponent, LinearMap.comp_apply]
-  rfl
+  exact actualMateKernelComponent_row D Sc cutoff i v t z
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
