@@ -375,6 +375,12 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
+| Arbitrary-module distinct mate identity | `a9c1dbe5935a884e944e6865bb759099933eb32c` | Five kernel producers checked; the final whole forward-map identity and its arbitrary-module consumer are unverified in this snapshot. |
+| Chosen content E/F charts | `d4b6bf20961c7fb3e0b99764013c15baa4c53078` | Proposed chart naturality and native component transports; the adjunction predecessor is separately scoped-checked. |
+| Selected scalar double append | `79f6c9ea86addb31fb53f3df83197e7d4e37c2b2` | Two proposed producers; final nested tensor and homogeneous transform conversions remain unverified. |
+| Selected weighted mate transport | `829dabe55cf56cb35c459286f9fb7fd8aa7750ca` | Proposed cup-crossing-cap transport; signed output coend comparison remains unverified. |
+| Old power-quotient vacuum | `e5b7b48a7dce67e32b5cf4e5bac777282e7f3052` | Empty coefficient embedding has a scoped producer check; universe packaging of the old regular vacuum and its consumer remain unverified. |
+| Reversed quotient bounded detection | `890307122c1de62321e20eea5fc14b9edccdc645` | Producer has a scoped check; concrete homogeneous coefficient-power consumers remain unverified in this snapshot. |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed source, superseded by the full-CI verified tensor/unit and signed-dot formulas (#963) and full-CI verified `ELVWeightedAppendAdjunction` restriction/counit formulas (#972). Double-append crossing, inverse and normalized content/weight transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 
