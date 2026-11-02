@@ -1986,3 +1986,13 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVMixedIndResKernel
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateKernelMap
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCoefficientIso
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateLinear
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctMateKernel
