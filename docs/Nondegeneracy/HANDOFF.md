@@ -252,9 +252,15 @@ remains a sufficient corollary. Inverse-unit mate criteria are verified in
 verified in #882. The prescribed coefficients, actual dotted-mate
 isomorphisms, coefficient parity, both odd coefficient identities and raw odd
 mate passed original exact-head full CI in #913/#917/#919/#922/#925/#930.
-They are full-CI verified and integrated through #949; the raw even mate remains unfinished.
-Finish the remaining literal
-CrossCoeff input assembly. Do not assume a common exponent over
+They are full-CI verified and integrated through #949. The raw even source norm
+and `elvRawMixedEvenMateDot_isIso` now pass strict scoped producer/consumer checks.
+`ELVRawCoefficientComparison` additionally proves one-sided uniqueness, the
+inverse-first odd formula, exact earlier-coefficient identifications and the
+parity-unified raw dotted mate. Degree-six even/odd and mixed identity-functor
+consumers pass, including all eleven owned-declaration axiom checks; full CI is
+pending. See [ELVRawMixedEvenMate](ELVRawMixedEvenMate.md) and
+[ELVRawCoefficientComparison](ELVRawCoefficientComparison.md). Finish compatible
+factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
 ## Final synthesis and verification
@@ -318,7 +324,6 @@ The following are unfinished specializations, not completed inverse/action resul
 | Two-letter induction-square coherence | `f49b8d7ccdecbc686b236a016fd50d8a5c7853bb` | Proposed flattening/coherence argument; specialized inner coend conversion and concrete consumer gates remain open. Producer `ELVInductionSquareComposition` and its topic note are outside the checked library |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by full-CI verified `ELVWeightedAppendTensors`/`ELVWeightedAppendDot` (#963). Restriction/counit and crossing transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
-| Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
 | Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 
 Recover a file with `git show <commit>:<repository-path>`. These preserved source trees are outside the checked library until their

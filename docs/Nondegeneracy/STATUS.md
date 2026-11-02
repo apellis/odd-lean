@@ -119,7 +119,7 @@ including full build, axiom audit and all concrete consumers.
 | Whole corrected content braid | Independent three-dot families, ordered polynomial evaluation and `contentMixedBraidTransform` | #933/#934 full CI; transfer to actual weight functors remains open |
 | Fixed-content E/F comparisons | Fully faithful unit, supported counit, restriction/extension, nested tensor and actual inner-unit formulas | #941/#946 full CI, incorporating #909/#910/#918/#920/#924; whole generator/adjunction compatibility remains open |
 | Graded coefficient tensors | Sum grading, even tensor equivalences, induction and IndRes kernel grading | #942/#905 full CI; finite kernel-product grading #907 remains a historical failed attempt |
-| Mixed coefficients and mates | Both parity coefficients, parity, odd identities and raw odd dotted mate | #913/#917/#919/#922/#925/#930 full CI; raw even mate remains unfinished |
+| Mixed coefficients and mates | Both raw moving-parity dotted mates, one-sided coefficient uniqueness, inverse-first odd formula and exact earlier-coefficient comparisons | #913/#917/#919/#922/#925/#930 full CI; `ELVRawMixedEvenMate` and `ELVRawCoefficientComparison` producers, paired degree-six consumers and all 11 owned-declaration audits scoped-checked, full CI pending. Concrete factor-family and CrossCoeff assembly remain open |
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization; canonical kernel/source and finite-family coordinates, with bundled mate-row equality | #929/#950 full CI; target-fixed all-content coefficient bijectivity is verified in #951 |
 | Target-fixed coefficient matrices | Positive and negative kernel maps are bijective at every old source for the target-content count, using the prescribed representable matrices and off-content zero | #951 full CI; `ELVKernelMatrixBijective` |
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
@@ -164,6 +164,18 @@ at source head `55c6d763`, integrated in #961.
 Compatibility with the chosen fixed-content E/F composites, their generators
 and adjunction maps, and original-weight assembly remain open. See
 [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
+
+`ELVRawMixedEvenMate` now proves the literal even source difference unit and
+`elvRawMixedEvenMateDot_isIso` for the arbitrary-input raw coefficient.
+`ELVRawCoefficientComparison` proves uniqueness from one prescribed identity,
+the inverse-first odd formula, exact comparison with the earlier even/odd mate
+coefficients and the parity-unified `elvRawMixedMateDot_isIso`. Strict scoped
+producer/consumer checks pass for degree-six probes of both parities and a mixed
+identity-functor instance whose one-strand block restricts to vacuum. Both owned
+audits pass, covering eleven declarations; full CI is pending. These results do
+not construct compatible factors or a concrete `ProbeReservoir`. See
+[ELVRawMixedEvenMate](ELVRawMixedEvenMate.md) and
+[ELVRawCoefficientComparison](ELVRawCoefficientComparison.md).
 
 `SwappedVacuum/InverseCapMoments` proves the signed coefficient-window
 recurrence and the height-zero principal cap identity from the literal slide,
@@ -268,7 +280,9 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    transport remains open. Constructed mixed coefficients, inverse
    identities and raw odd mate applications passed original full CI
    (#913/#917/#919/#922/#925/#930) and are included in the consolidation.
-   Complete the raw even mate, family identifications and remaining assembly. Use the pairing-weight extension and supplied
+   The raw even mate and literal earlier-coefficient comparisons are now scoped-checked in
+   `ELVRawMixedEvenMate` and `ELVRawCoefficientComparison`, with full CI pending.
+   Complete compatible family identification and concrete CrossCoeff assembly. Use the pairing-weight extension and supplied
    CScalars transport (#864), retaining separate target-content exponents.
 
 4. Use the verified joint source detection (#819, #820), retaining the actual
