@@ -1,5 +1,9 @@
 # Extension from a full content category
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 This supplies the content-module realization step in SwappedVacuumCoordinates §6.
 The finite matrix multiplicities are constant on a fixed content block. Its
 input modules therefore cannot silently be treated as arbitrary modules on

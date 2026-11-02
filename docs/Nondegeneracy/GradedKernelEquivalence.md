@@ -1,5 +1,9 @@
 # Graded arbitrary-module kernel transfer
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 DeformedMatrixComparison §4 needs an even, componentwise bijective
 ordinary-right kernel matrix to induce an even isomorphism for every input
 supermodule. The balanced quotient and its sum grading are the existing

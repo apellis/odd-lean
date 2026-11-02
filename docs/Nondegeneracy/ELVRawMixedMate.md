@@ -1,5 +1,9 @@
 # Dotted mate of the raw coefficient
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The raw arbitrary-input coefficient is now specialized to the input
 `ΠH≫F` used by the dotted mate. Every shift and operator uses the same
 existing post-induction Π-Hom witness as the raw constructor; no equality

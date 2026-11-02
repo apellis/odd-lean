@@ -1,5 +1,9 @@
 # Corrected supernatural mixed braid
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 Both whole paths are vertical compositions of the independently induced prefix
 and suffix crossing families. In the repeated-outer case, the general right
 path is Iij and the general left path is Jii.

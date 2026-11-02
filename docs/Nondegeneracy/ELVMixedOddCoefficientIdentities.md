@@ -1,5 +1,9 @@
 # Both odd square-denominator identities
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 `CrossCoeff.IsInverse` requires both chronological compositions with the odd
 square denominator. The dotted-mate theorem needs one of them; this topic
 supplies the other for the same numerator-first coefficient.

@@ -1,5 +1,9 @@
 # Grading of the induction-restriction coefficient kernel
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The kernel tensor transfer in [DeformedMatrixComparison](DeformedMatrixComparison.md), section 4, needs the grading of its ordinary-right coefficient kernels. The proposed ELVIndResKernelGrading supplies generic additive, linear and superfunctor instances for IndResKernel.homModule; its values retain the full Hom superspace.
 
 The ordinary-right coefficient source presheaf is additive. IndResKernel.coefficientGrading uses the existing balanced-induction odd projector on U_t(v), with no replacement of its module or quotient. Its coefficientSpace is definitionally the existing BalancedInduction.superspace.

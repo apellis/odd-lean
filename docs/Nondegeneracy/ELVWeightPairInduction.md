@@ -1,5 +1,9 @@
 # Actual pair induction on the weight product
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The supported coordinate of the actual product induction is the composite of
 its two actual block inductions, preceded by evaluation at the unique source
 block. Their true intermediate block content is retained. The natural even

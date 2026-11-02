@@ -1,5 +1,9 @@
 # Canonical old-content induction comparison on tensors
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 Supports SwappedVacuumCoordinates §6 and the pending content-adjunction compatibility step. `oldContentAppendExtensionIso_hom` normalizes the established #910 E comparison as canonical induction-composition flattening followed by canonical insertion. `oldContentAppendExtensionIso_tensor` computes its total map on every nested generator `[h ⊗ [g ⊗ b]]`: the coefficient arrow is `g ≫ h`, and the output is `[g ≫ h ⊗ [id ⊗ b]]` in old append of the content extension. `BalancedInduction.inductionInsertedTensor` fixes this nested value at its induced superspace endpoint. `inductionInsertedTensor_balance` is the existing balance relation in these coordinates.
 
 Both moving parities and full coefficient modules are retained. Source coefficients are unchanged. Producer and paired concrete mixed-parity consumer passed strict direct Lean; all16 owned declarations audited against propext, Classical.choice, Quot.sound. Proofs use separate opaque flatten/insertion equalities rather than increased budgets. Full integrated CI pending.

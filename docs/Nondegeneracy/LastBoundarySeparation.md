@@ -1,5 +1,9 @@
 # Signed last-boundary weighted separation
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 **Status: unverified draft.** This module targets the explicit candidate
 inverse-image ideal in SwappedVacuumCoordinates §§5–6. It does not assert
 an affine presentation equivalence, equality with an action kernel,

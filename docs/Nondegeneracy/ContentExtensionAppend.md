@@ -1,5 +1,9 @@
 # Append and full-content extension
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 For a word ν and colour i, the existing old-content append and inclusion
 commute literally. Composing the established balanced-induction composition
 isomorphisms with that equality gives

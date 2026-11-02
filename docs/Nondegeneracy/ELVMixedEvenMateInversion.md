@@ -1,5 +1,9 @@
 # Even mixed inverse coefficient and dotted mate
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 This is the even companion to ELVMixedMateInversion. It retains the coefficient-
 truncated full-ELV weight categories and their chosen induction, restriction, dot,
 and adjunction. The target-J difference is a unit by componentwise dot bounds;

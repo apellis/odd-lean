@@ -1,5 +1,9 @@
 # Ordinary-right covariance of the actual mate coefficient kernel
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 `ELVMateKernelNaturality.actualMateKernel` is a natural map from the concrete ordinary-right IndResKernel.kernel to the actual upper Hom inductionKernel. Its components are the fixed typed matrixMateComponent followed by the canonical co-Yoneda comparison; the source carrier comparison is a literal reflexive linear equivalence.
 
 `actualMateKernelComponent_precompose` proves covariance for every old source arrow a, including inhomogeneous arrows: source b ↦ a composed with b becomes left composition by append(a) on the output. The ordered mate tensor formula twists only the first factor g; the full coefficient b remains untwisted. This is the ordinary-right convention required for the explicit kernel tensor, rather than a conclusion about only even module maps.

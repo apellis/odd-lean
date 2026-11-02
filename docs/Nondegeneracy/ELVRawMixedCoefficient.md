@@ -1,5 +1,9 @@
 # Raw mixed coefficient for arbitrary input functors
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The raw `(R,P)` coefficient ranges over an arbitrary functor `Z:B→Wx`.
 The dotted-mate target-J construction only saw the special input `ΠH≫F`.
 This topic retains the actual full-ELV weight-module categories and post-

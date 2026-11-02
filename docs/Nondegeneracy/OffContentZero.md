@@ -1,5 +1,9 @@
 # Off-content coefficient kernels vanish
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 ELVOffContentZero descends the existing full-coefficient no-permutation zero theorem through the actual old quotient. Old-Hom(v,t) vanishes when the two colour multisets differ. Appending the same moving colour preserves that mismatch by multiset cancellation, so the upper Hom vanishes too.
 
 `indResKernel_eq_zero_of_content_ne` proves the actual IndRes coefficient coend vanishes off content for ANY ordinary functor J:C→OldCategory. Each pure tensor has arrows v→J(s)→t; either v and J(s) differ in content, killing the coefficient, or J(s) and t differ, killing the first factor. This is a proof in the literal quotient, not a whole-category/content equivalence or a density assertion.

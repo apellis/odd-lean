@@ -1,5 +1,9 @@
 # Even induction maps and unit generators
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 `ELVInductionUnitNaturality` proposes `BalancedInduction.moduleMorphism_total_tensor_even`: for any even module morphism f from balanced induction to an arbitrary target module H, f([g⊗b]) equals H(g) applied to f(unit(b)). The arrow g is fully inhomogeneous. The statement assumes no unit-compatibility conclusion; it is the ordinary naturality of an even module map evaluated on the unit, followed by `postcompose_unit`.
 
 The producer and paired actual old-append/representable-counit consumers are unverified drafts. No new checked comparison claim is asserted.

@@ -1,5 +1,9 @@
 # Parity of the prescribed mixed coefficients
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The unit of an endomorphism ring determines its existing categorical
 isomorphism through `Aut.unitsEndEquivAut`. The supercategory inverse-parity
 lemma therefore preserves the parity of a homogeneous unit inverse.

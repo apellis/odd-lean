@@ -1,5 +1,9 @@
 # Three independent dots on a content triple
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The first dot is the single-letter induction dot mapped through the following
 pair induction. The middle dot is the second induction dot mapped through the
 last induction. The last dot is the final induction transform on the twice

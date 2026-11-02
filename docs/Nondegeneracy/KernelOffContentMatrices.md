@@ -1,5 +1,9 @@
 # Kernel matrices outside the target content
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 DeformedMatrixComparison, section 4, requires one coefficient-presheaf matrix at a fixed target-content count before passing to arbitrary modules. This note records its zero-support branch.
 
 For any moving colour (i), finite count (m), and old words (v,t) with different colour multisets, `ELVOffContentZero` makes both the ordinary Hom coefficient and the IndRes coefficient zero. The upper append-Hom coefficient also vanishes by multiset cancellation. Hence all Option-indexed source and target coefficient spaces of the prescribed finite matrices are subsingletons.

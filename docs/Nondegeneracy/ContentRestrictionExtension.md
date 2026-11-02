@@ -1,5 +1,9 @@
 # Canonical content extension and restriction
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 This supplies the fixed-content realization prerequisite of SwappedVacuumCoordinates §6. `ELVContentSupportedExtension` proves that extension along the full old content inclusion vanishes off that content, and that its established balanced induction counit is an even supermodule isomorphism on every supported module. On matching content its inverse is the fully faithful inclusion unit; elsewhere both components vanish by full-coefficient content conservation.
 
 `ELVContentRestrictionExtension.oldContentRestrictionExtensionIso` identifies extension of the fixed-content restriction with old restriction of the canonical extension. It composes the existing inclusion unit, the literal append/inclusion restriction square, and the supported counit. It applies to both moving parities and arbitrary full coefficient modules, including the vacuum. No flatness or equivalence with arbitrary whole-old-category modules is assumed.

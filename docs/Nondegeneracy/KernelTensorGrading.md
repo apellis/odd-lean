@@ -1,5 +1,9 @@
 # Grading of coefficient-kernel tensors
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 The arbitrary-module kernel transport in
 [DeformedMatrixComparison §4](DeformedMatrixComparison.md) retains the sum
 parity, in addition to the underlying balanced quotient.

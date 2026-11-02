@@ -1,5 +1,9 @@
 # Graded Hom-kernel realization
 
+Current scope and verification are maintained in [STATUS](STATUS.md). Any original
+topic-head pending checks below are historical; they do not override the consolidated
+status or establish completion of the full conjecture.
+
 This supplies the target-kernel grading comparison in
 [DeformedMatrixComparison §4](DeformedMatrixComparison.md).
 The kernel is the existing ordinary-right Hom(J−,w) from
