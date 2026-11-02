@@ -49,8 +49,7 @@ evenness for every input module are full-CI verified and integrated through
 #932, retaining the exact #896 producers.
 
 Canonical kernel/source and finite-family coordinates, with bundled mate-row
-equality, are implemented in `ELVKernelMatrixCoordinates` and pass strict scoped
-producer/consumer checks; their full CI gate is pending. Use this bundled interface
+equality, are full-CI verified in #950 (`ELVKernelMatrixCoordinates`). Use this bundled interface
 rather than the old generic pointwise row wrapper. Matrix conjugations and
 arbitrary-module inversion are not supplied by these coordinate equivalences.
 
