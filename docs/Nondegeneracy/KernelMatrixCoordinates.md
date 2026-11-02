@@ -36,7 +36,7 @@ No inverse hypothesis, flatness, field or finite-colour premise is added.
 Strict producer, concrete consumer and umbrella-export checks pass. The consumer
 uses mixed rational data, reversed matching-content words and off-content empty
 words for both height signs and audits all 25 owned declarations.
-Full repository CI remains the integration gate.
-Arbitrary-module inversion remains separate: tensor these coefficient
-isomorphisms and use the verified whole forward-map identifications and
-matrix evenness.
+Full build, axiom audit and all concrete consumers passed in #951.
+The arbitrary-module component inverse transfer is verified in #952; see
+[ModuleMatrixInverse](ModuleMatrixInverse.md). Fixed-content/weight functor
+assembly remains a separate obligation.

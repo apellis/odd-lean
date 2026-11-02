@@ -8,10 +8,10 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Arbitrary-module categorical inverse | Whole forward comparisons full-CI verified and integrated in #932; matching coefficient conjugations next | Four representable inverses (#889), arbitrary-module kernel tensor and finite products (#878/#890); integrated quotient coordinates and whole maps (#923/#932) | Finish matching-content kernel bijectivity at the target-fixed count, use off-content zero (#914/#928), then combine actual matrix evenness (#896) with the transferred inverse |
+| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
-| Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Coordinate comparisons ready; final instance blocked | Joint full-coefficient source detection (#812, #819, #820), whole-word evaluation, abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
@@ -32,8 +32,8 @@ entries are the literal ordinary unit/dotted cap maps in the prescribed
 parity-shifted coordinates. For even moving colours, canonical J uses
 coefficient(0) and every cap row has the constant negative ordinary
 normalization (#862). Retain the printed odd profiles and the separate
-self-colour leading unit. These are representable component inverses;
-arbitrary-module inversion is still a separate obligation.
+self-colour leading unit. Their arbitrary-module component transfer is now
+verified in #951/#952; fixed-content/weight functor assembly remains separate.
 
 ### Arbitrary-module kernel transfer
 
@@ -49,21 +49,31 @@ evenness for every input module are full-CI verified and integrated through
 #932, retaining the exact #896 producers.
 
 Canonical kernel/source and finite-family coordinates, with bundled mate-row
-equality, are full-CI verified in #950 (`ELVKernelMatrixCoordinates`). Use this bundled interface
-rather than the old generic pointwise row wrapper. Matrix conjugations and
-arbitrary-module inversion are not supplied by these coordinate equivalences.
+equality, are full-CI verified in #950. `ELVKernelMatrixBijective` (#951)
+compares both moving parities and height signs to the prescribed representable
+matrices at literal word endpoints. Abstract parity elimination keeps the
+coefficient maps folded during subtype conversion.
 
-The target count is fixed by its content height Q−S (#900/#903).
-Prove the coefficient matrix bijective on matching source content using
-the actual representable inverses. Different source content has zero
-Hom and IndRes coefficient components (#914). The actual off-content matrix
-bijections (#928) are full-CI verified and integrated through #949; the
-previous cache-restoration failure is superseded. This gives a single full-old-category kernel
-map at the target-fixed count. Tensor its isomorphism with the arbitrary
-input module, use the whole forward identities, and use #896's actual
-matrix evenness to obtain an even inverse. Coefficient-kernel grading
-is an alternative checked interface, not an extra assumption on this
-route.
+The target count is fixed by content height Q−S (#900/#903). Matching-content
+bijectivity combines with the off-content zero-component matrices (#914/#928)
+to give `actualPositiveKernelMap_bijective` and
+`actualNegativeKernelMap_bijective` on every old source at that count.
+
+`ELVModuleMatrixInverse` (#952) tensors these coefficient isomorphisms with
+every old supermodule. `moduleUnitMatrixIso` and `moduleCapMatrixIso` have
+exactly the prescribed unit/cap matrices as their forward maps, for both
+height signs and moving parities, including empty finite families. Their
+forward parity (#896) implies inverse parity; no arbitrary-kernel evenness
+or flatness premise is introduced. The concrete mixed-data consumer checks
+both inverse products on representables and audits all owned declarations.
+See [ModuleMatrixInverse](ModuleMatrixInverse.md).
+
+Next assemble natural isomorphisms on the actual fixed-content functors,
+then transfer to original-weight functors. Keep the target-fixed count,
+chosen source parity coordinates and literal ordinary unit/cap entries.
+Prove compatibility with the selected dot, crossing and adjunction maps
+before using these inverses in a full-ELV factor action. The component
+isomorphisms alone do not supply that action.
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
@@ -200,7 +210,6 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
-| Arbitrary-module matrix inverse | `88dd731f29ab17042e455edce268ef0e56a849e9` | Bundled row equality was isolated-checked; pointwise row normalization, matching-content bijectivity and the inverse consumer remain unverified |
 | Weighted append unit comparison | `198f6d1f89da28073ce5dcc85ad79e331d08a086` | Shared composition helpers were scoped-checked; the literal inverse-composition specialization remains unverified |
 | Scalar probe append unit comparison | `7440ac59fc65cd9b33b1ee036839e30b4838ca97` | The literal five-map unit chain and mixed/vacuum consumer remain unverified |
 | Raw even mixed mate | `2d91f33ec39f83c3d3620d0289e8e9c5cd9e0132` | Convert the factored norm to the prescribed raw weight-space Hom category and check the degree-six consumer |
