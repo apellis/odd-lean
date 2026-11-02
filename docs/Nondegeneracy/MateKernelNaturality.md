@@ -9,3 +9,6 @@ Verification: producer and concrete mixed-parity/mixed-endpoint consumer passed 
 Remaining scope: dot/counit power row covariance, the finite normalized matrix coefficient map and its parity, and tensor realization of the whole arbitrary-module inverse. This first-entry naturality result alone does not assert the completed matrix or action.
 
 The kernel-object endpoint alias actualMateKernelLinear and its separate raw linear-map equality keep application proofs in the exact ModuleCat kernel objects. This changes no signed map or covariance statement; both the producer and paired consumer were rechecked after the encoding change.
+
+
+The stored matrixMateRow now receives a separately named oldSourceKernelLinear with its exact module endpoint. The component is constructed after both old endpoints are in word coordinates, and its boxed getter exposes only the composition of those two named linear maps. This preserves the original source-equivalence API and the ordered signed mate formula. The revised endpoint encoding and its concrete row consumer passed strict local checking, including the audit of every owned declaration. Repository CI remains the integration gate.
