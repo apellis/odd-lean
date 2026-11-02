@@ -197,14 +197,22 @@ The exact scalar ideal images, ordinary quotient category, append, literal
 word-corner equivalences and ordinary dot units are verified in #891.
 The reverse matrix-entry cyclotomic-ideal lemma is verified in #863.
 The chosen old-to-ordinary induction module comparison and quotient-inverse
-unit-tensor formula are full-CI verified and integrated in #897. Finish their whole
-generator formula and the exact dot, adjunction and inverse-matrix
-comparison. The signed ordinary induction-dot unit is full-CI verified in
+unit-tensor formula are full-CI verified and integrated in #897.
+`ELVProbeAppendTensors` supplies scoped-checked literal tensor/unit and signed-dot
+formulas. `ELVProbeRestrictionComparison` now proves that old append restriction
+preserves scalar coefficient evaluation and that its scalar descent equals the
+chosen ordinary restriction. `probeRestrictionEqToHom_app` is identity in parity
+zero and zero in parity one. The connected mixed/vacuum consumer and all 21
+owned axioms pass strict local checks; full CI is pending. Compose the append
+and restriction comparisons with the actual ordinary counit and establish its
+literal old counit value; then finish crossing and inverse-matrix transport.
+See [ProbeRestrictionComparison](ProbeRestrictionComparison.md).
+The signed ordinary induction-dot unit is full-CI verified in
 #893. The prescribed signed dot on the actual old append coend is also a
 unit for scalar-evaluated modules, with the canonical probe specialization
 full-CI verified and integrated in #927. Neither result requires finite
-dimension or a coend-comparison premise. The selected ordinary model and
-its exact generator/adjunction transport remain required.
+dimension or a coend-comparison premise. The selected ordinary model's chosen
+counit, crossing and inverse-matrix transport remain required.
 
 Scalar specialization is not faithful on the full coefficient algebra.
 Positive-weight coefficient truncation cannot specialize to nonnilpotent

@@ -92,7 +92,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Pairing extension and action restriction | Extend parameters and the supplied CScalars by first projection, preserve symmetrizer/homogeneity, commute with parameterTwist, and restrict every RouquierMulticolour field to the original weight group. Full-CI verified in [#864](https://github.com/apellis/odd-lean/pull/864); no concrete factor family is constructed by this restriction | `ReservoirWeightParameters` |
 | Actual representable matrix inverses | The actual ordered crossing mate, literal ordinary unit/dotted cap entries and canonical parity-shifted finite coordinates give component linear equivalences for both height signs and both moving parities, including zero counts. Full-CI verified in [#889](https://github.com/apellis/odd-lean/pull/889). Arbitrary-module component inverses are verified in #952; fixed-content/weight assembly remains open. SVec assembly and content-uniform counts are full-CI verified and integrated through #932 | `ELVActualMatrixFamilies` and its odd/even comparison chain |
 | Arbitrary-module coefficient-kernel tensor | A coefficient-kernel isomorphism induces an isomorphism after balanced tensoring with any module, without flatness. Full-CI verified in [#878](https://github.com/apellis/odd-lean/pull/878). Finite kernel products and their tensor equivalence are verified in #890. The concrete kernel maps, both arbitrary-module whole-matrix identifications and explicit quotient realizations are full-CI verified and integrated in [#932](https://github.com/apellis/odd-lean/pull/932), including #911/#915/#916/#921/#923. Target-fixed coefficient bijectivity and both prescribed arbitrary-module component inverses are full-CI verified in #951/#952; inverse parity follows from actual-matrix evenness (#896). Fixed-content/weight functor assembly remains open | `ELVKernelTensor` |
-| Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897; its whole generator transport remains under verification | `ELVProbeOrdinaryCategory` and companion probe comparison modules |
+| Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897. Literal tensor/unit and signed-dot transport, and equality of scalar-descended old restriction with ordinary restriction, are scoped-checked; counit, crossing and inverse-matrix transport remain open | `ELVProbeOrdinaryCategory`, `ELVProbeAppendTensors`, `ELVProbeRestrictionComparison` and companion probe comparison modules |
 | Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882. Constructed coefficients, both parity mate applications and arbitrary-intermediate-functor coefficients are in #913/#917/#925/#930; these inputs are full-CI verified and integrated through #949 | `ELVMixedSourceNorms` and companion norm modules |
 
 ## Consolidated implementations and verification boundary
@@ -208,7 +208,15 @@ pass strict local checking; full CI is pending. The scalar probe specialization
 retains its documented coefficient-evaluation hypothesis, discharged by the
 actual probe consumer. These results supply neither a faithful scalar
 specialization nor the remaining adjunction/crossing/inverse-matrix transport.
+`ELVProbeRestrictionComparison` additionally proves that old append restriction
+preserves scalar coefficient evaluation and that its scalar descent equals
+the prescribed ordinary restriction. The equality comparison is identity in
+parity zero and zero in parity one. Its connected mixed/vacuum consumer and
+audit of all 21 owned declarations pass strict local checks; full CI is pending.
+This identifies the restriction modules, without asserting preservation of
+the chosen counit or normalized caps.
 See [ProbeAppendTensors](ProbeAppendTensors.md),
+[ProbeRestrictionComparison](ProbeRestrictionComparison.md),
 [WeightedAppendTensors](WeightedAppendTensors.md) and
 [WeightedAppendDot](WeightedAppendDot.md).
 
@@ -246,8 +254,9 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    Source norms, target denominators, mate criteria, weak Sigma and actual
    category universes are verified (#811/#817/#834/#844/#861/#882).
    The ordinary probe quotient/induction comparison is verified (#891/#897),
-   and its actual old-coend dot unit is verified (#927); whole generator
-   transport remains open. Constructed mixed coefficients, inverse
+   and its actual old-coend dot unit is verified (#927). Literal tensor/unit,
+   signed-dot and restriction comparisons are scoped-checked; complete the
+   chosen counit, crossing and inverse-matrix transport. Constructed mixed coefficients, inverse
    identities and raw odd mate applications passed original full CI
    (#913/#917/#919/#922/#925/#930) and are included in the consolidation.
    Complete the raw even mate, family identifications and remaining assembly. Use the pairing-weight extension and supplied
