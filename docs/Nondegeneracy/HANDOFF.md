@@ -195,6 +195,18 @@ See [InductionSquareTensors](InductionSquareTensors.md),
 [WeightedAppendDot](WeightedAppendDot.md) and
 [ProbeAppendTensors](ProbeAppendTensors.md).
 
+`ELVInductionSquareTransform` defines the canonical raw-coend map
+`coendSquareMap` for a commuting functor square; its tensor formula preserves the input
+vector and maps the full coefficient arrow through that square.
+`coendSquareMap_transform` proves compatibility with homogeneous
+transformations when their literal coefficient families agree through the
+square, retaining the full twist of arbitrary inhomogeneous arrows.
+The producer, mixed old/truncated quotient consumer and all 15 owned
+axiom checks pass strict scoped checks; full CI is pending. Identify the
+raw map with the selected weighted append comparison using its literal
+tensor formula, then prove two-letter flattening and chosen crossing
+compatibility. See [InductionSquareTransform](InductionSquareTransform.md).
+
 Keep the literal weighted coefficient ideal, including odd generators,
 distinct from the paper's power ideal T=(c_a^L_a) on the positive even
 coefficient generators. The required bridge is not yet constructed.

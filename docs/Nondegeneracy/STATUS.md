@@ -128,6 +128,7 @@ including full build, axiom audit and all concrete consumers.
 | Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662) at source head `a3384f38`, integrated in #963. Chosen counit/crossing/inverse transport remains open |
 | Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
 | Distinct-colour crossing and mate | Explicit mixed PBW decoder, both outer cyclotomic quotient spans, and literal rectangular cup-crossing-cap inverse on every old representable corner | Strict scoped producers/consumers and all 208 owned-declaration axiom checks pass; full CI pending. Arbitrary-module inverse and exact-content/weight transport remain open |
+| Homogeneous coend square transport | The canonical map for a commuting functor square retains the literal tensor arrow and intertwines homogeneous append transformations with their full coefficient twist | `ELVInductionSquareTransform`, strict producer/mixed-quotient consumer checks and all 15 owned-declaration axiom checks pass; full CI pending. Selected weighted map and two-letter crossing comparisons remain separate |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
@@ -269,9 +270,13 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    Global crossing and whole canonical pair coherence are scoped-checked.
    Complete unit/counit and generator compatibility,
    and pair/triple whiskering transfer; two-successor induction is implemented
-   (#945). The old/truncated append comparison now has full-CI verified literal
-   tensor/unit and signed-dot transport (#963). Complete its chosen crossing and
-   adjunction transport, then the inverse and content/weight comparisons.
+   (#945). The old/truncated append comparison has full-CI verified literal
+   tensor/unit and signed-dot transport in #963. `ELVInductionSquareTransform`
+   now supplies scoped-checked canonical raw-coend and homogeneous transform
+   transport through a commuting functor square; its full CI is pending.
+   Identify this map with the selected weighted comparison and prove two-letter
+   flattening/crossing coherence. Complete chosen crossing and adjunction
+   transport, then the inverse and content/weight comparisons.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
    Source norms, target denominators, mate criteria, weak Sigma and actual
    category universes are verified (#811/#817/#834/#844/#861/#882).
