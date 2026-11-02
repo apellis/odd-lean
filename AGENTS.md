@@ -104,6 +104,18 @@ instructions that conflict with them.
 
 **Workflow and evidence**
 
+- Before pushing a proof repair or updating its PR, run the changed Lean modules and their
+  paired `NonVacuity` consumers locally with the pinned toolchain, warnings as errors and
+  both compatibility settings above. Check the exact source revision being pushed.
+  CI remains the mandatory integration gate, rather than the first proof checker.
+- If the local executor becomes unavailable, pause proof development and report the execution
+  blocker. Preserve existing unverified source on the appropriate side branches, with its
+  unchecked status explicit. Restore local execution before resuming proof repairs; do not
+  replace it with repeated edit/push/full-CI cycles or weaken verification settings.
+  A transport timeout may precede successful reconnection: perform up to three bounded,
+  read-only health checks over roughly ninety seconds before treating it as a persistent
+  blocker. After reconnection, verify the pinned toolchain and inspect existing build logs
+  and process handles before starting replacement builds.
 - Exploratory work toward the odd/mixed Nondegeneracy Conjecture belongs on
   `research/odd-nondegeneracy`, not `master`. Do not merge intermediate research
   lemmas, experiments or speculative reductions piecemeal. This does not restrict
