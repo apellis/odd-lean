@@ -154,4 +154,3 @@ run_cmd do
       unless #[`propext, `Classical.choice, `Quot.sound].contains axiomName do
         throwError "Disallowed axiom {axiomName} in {name}"
   logInfo m!"Audited {names.size} owned declarations: standard axioms only"
-
