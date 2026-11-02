@@ -251,12 +251,16 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
-| Weighted append unit comparison | `198f6d1f89da28073ce5dcc85ad79e331d08a086` | Shared composition helpers were scoped-checked; the literal inverse-composition specialization remains unverified |
-| Scalar probe append unit comparison | `7440ac59fc65cd9b33b1ee036839e30b4838ca97` | The literal five-map unit chain and mixed/vacuum consumer remain unverified |
-| Raw even mixed mate | `2d91f33ec39f83c3d3620d0289e8e9c5cd9e0132` | Convert the factored norm to the prescribed raw weight-space Hom category and check the degree-six consumer |
+| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Proposed literal tensor, dot and restriction/counit comparison sources; producer and consumer checks remain open. The shared induction-square helper has separate scoped checks |
+| Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Proposed literal whole generator and signed-dot transport; source endpoint conversion and paired consumer remain unverified |
+| Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
+| Input-module finite matrix assembly | `532b47927d45c384e4a6af1ed9cd57dfcdcb05ee` | Generic finite product maps are scoped-checked; whole input-module naturality and content functor inverse sources and their consumers remain unverified |
+| Actual vacuum coefficient functional | `658f64966768431d4d6a3011496546061e89bce2` | Proposed inverse-row extraction, literal dot/unit window and exterior naturality on the old vacuum; concrete producer/consumer checks and final weighted/swapped attachment remain open |
+| Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 
-Recover a file with `git show <commit>:<repository-path>`. These attempts hit
-normalization/conversion limits; redesign endpoint encodings and reusable comparison
+Recover a file with `git show <commit>:<repository-path>`. These preserved source trees are outside the checked library until their
+producer and paired consumer checks pass. Reachability is not a verification
+claim. Earlier attempts hit normalization/conversion limits; redesign endpoint encodings and reusable comparison
 lemmas rather than raising heartbeat or recursion budgets. The shared helper extensions
 at the append restart commits have scoped checks only; the integrated #936 source has
 its own full-CI boundary and must not be confused with those later extensions.
