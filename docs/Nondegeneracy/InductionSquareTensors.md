@@ -19,6 +19,12 @@ The literal equality transport is retained, so applications must identify
 the chosen square's object component explicitly. Arrows and vectors need
 not be homogeneous.
 
+`squareLinear` exposes the same comparison as a linear map on the literal
+underlying balanced coends. `squareLinear_apply` identifies its value with
+the selected module map, and `squareLinear_tensor` gives the generator
+formula on those carriers. The carrier conversion is performed with
+abstract functors before specializing to scalar or weighted quotients.
+
 The paired consumer uses the actual append/truncation square and a
 restricted truncated mixed representable, the actual quotient-induction
 counit, both moving parities and arbitrary old output arrows.

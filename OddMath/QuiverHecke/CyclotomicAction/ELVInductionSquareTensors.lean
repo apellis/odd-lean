@@ -140,4 +140,32 @@ theorem squareComparison_total_tensor
     Superfunctor.comp_total, SVec.comp_apply]
   exact (congrArg (f.total (U.obj w)) hd).trans hf
 
+/-- The same canonical comparison on the literal underlying coends.
+Exposing these carriers before specializing the square keeps the
+induction superspace projections out of subsequent generator formulas. -/
+def squareLinear (w : D) :
+    Obj U (induced J R).toFunctor w →ₗ[k] Obj T M.toFunctor w :=
+  (squareComparison J U Q T h R M c).total w
+
+/-- The literal coend realization agrees with the selected module map. -/
+theorem squareLinear_apply (w : D) (b : Obj U (induced J R).toFunctor w) :
+    squareLinear J U Q T h R M c w b =
+      (squareComparison J U Q T h R M c).total w b := rfl
+
+/-- Generator formula on literal coends, normalized while the four
+functors and their module endpoints are still abstract. -/
+theorem squareLinear_tensor
+    (hc : c ∈ parity (R := k) _ _ 0)
+    (s : C) (w : A) (g : J.obj s ⟶ w) (b : R.obj s) :
+    squareLinear J U Q T h R M c (U.obj w)
+      (tensor U (induced J R).toFunctor w (𝟙 (U.obj w))
+        (tensor J R.toFunctor s g b)) =
+      tensor T M.toFunctor (Q.obj s)
+        (eqToHom (congrArg (fun F : C ⥤ D => F.obj s) h).symm ≫ U.map g)
+        (c.app 0 (Q.obj s) (unit Q R.toFunctor s b)) := by
+  have hs := squareComparison_total_tensor J U Q T h R M c hc s w g b
+  set_option backward.dsimp.instances true in
+    dsimp only [squareLinear, induction] at hs ⊢
+  exact hs
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
