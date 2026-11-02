@@ -68,7 +68,15 @@ or flatness premise is introduced. The concrete mixed-data consumer checks
 both inverse products on representables and audits all owned declarations.
 See [ModuleMatrixInverse](ModuleMatrixInverse.md).
 
-Next assemble natural isomorphisms on the actual fixed-content functors,
+`ELVContentMatrixInverse` supplies scoped-checked natural isomorphisms for
+the restrictions of the old-category matrices to fixed output content.
+Its `contentUnitMatrixIso` and `contentCapMatrixIso` are even supermodule
+isomorphisms, with literal component identities and inverse naturality along
+arbitrary output arrows. The paired mixed consumer and axiom audit pass
+locally; full CI is pending. This does not yet identify these restricted
+modules with the chosen content E/F composites or prove input-module naturality.
+
+Next compare these natural isomorphisms with the actual fixed-content functors,
 then transfer to original-weight functors. Keep the target-fixed count,
 chosen source parity coordinates and literal ordinary unit/cap entries.
 Prove compatibility with the selected dot, crossing and adjunction maps
