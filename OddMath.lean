@@ -1977,3 +1977,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
 
 import OddMath.SKM.ELVCoefficientPowers
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
