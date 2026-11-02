@@ -79,7 +79,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Generic module row division | Degree-shift elimination with module coefficients and invertible specified leading maps; the existing odd API is retained as corollaries. Full-CI verified in [#843](https://github.com/apellis/odd-lean/pull/843) | `DegreeShiftRowDivision` |
 | Actual quotient-induction counit | The prescribed old-to-truncated induction counit is an even module isomorphism, full-CI verified in [#835](https://github.com/apellis/odd-lean/pull/835) | `ELVQuotientInduction` |
 | Weighted append comparison | Old append induction preserves the full weighted coefficient annihilator, including odd generators; its descended module is canonically isomorphic to truncated append induction for each input module. Full-CI verified in [#840](https://github.com/apellis/odd-lean/pull/840). Input-module naturality for every supernatural module map is verified in #868; chosen generator/adjunction comparisons remain open | `ELVWeightedInduction`, `ELVAppendQuotientComparison` |
-| Independent content maps and slides | Canonical append/carrier and whiskered dot foundations (#832), and distinct-colour slides (#836), are full-CI verified. The independent prefix and suffix natural families (#901/#906) and corrected component braid (#894) are now full-CI verified and integrated; the whole corrected polynomial relation and weight assembly remain open | `ELVContentModuleAction`, `ELVContentDistinctSlides` |
+| Independent content maps and slides | Canonical append/carrier and whiskered dot foundations (#832), and distinct-colour slides (#836), are full-CI verified. The independent prefix and suffix natural families (#901/#906) and corrected component braid (#894) are now full-CI verified and integrated; the whole corrected content relation is implemented in #933/#934 with original full CI; weight assembly remains open | `ELVContentModuleAction`, `ELVContentDistinctSlides` |
 | Transposed denominator units | Contentwise transpose bounds yield the prescribed squared/cross transposed norm units, without a common exponent over the weight fibre. Full-CI verified in [#811](https://github.com/apellis/odd-lean/pull/811) | `ELVTransposeDenominatorUnits` |
 | Reservoir Sigma norm interface | Literal transposed source norms and target denominator units suffice for the reservoir Sigma inversion; older whole-dot nilpotence assumptions remain sufficient corollaries. Full-CI verified in [#834](https://github.com/apellis/odd-lean/pull/834), with inverse-unit mate criteria in #817. The actual module-category universe application is verified in #861; compatible factor inputs remain open | `SwappedAssembly/Sigma/SwappingReservoir`, `Sigma/TransposeNorms`, `RouquierHomPostInverseUnits` |
 | Untruncated probe modules | The old content category, its genuine all-height probe module (#831), and scalar module factorization (#842) are full-CI verified. The ordinary scalar quotient, word corners and dot units are verified in #891; chosen induction/action comparisons remain separate | `ELVOldContentCategory`, `ELVProbeOldModule`, `ELVProbeScalarModules` |
@@ -95,6 +95,33 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897; its whole generator transport remains under verification | `ELVProbeOrdinaryCategory` and companion probe comparison modules |
 | Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882. Constructed coefficients, both parity mate applications and arbitrary-intermediate-functor coefficients are in #913/#917/#925/#930; these topic results retain their separate CI and integration boundaries | `ELVMixedSourceNorms` and companion norm modules |
 
+## Consolidated implementations and verification boundary
+
+The research branch is the sole persistent development line. Retired source heads
+are reachable through its history and indexed in [ResearchHistory](ResearchHistory.md).
+Unfinished historical source is not imported into the checked library; exact restart
+points are in [HANDOFF](HANDOFF.md). History preservation establishes no theorem.
+
+The following additions are included in the consolidated tree. Original exact-head
+full CI succeeded for the listed PRs unless stated otherwise. The combined tree
+requires its own full build, axiom audit and concrete consumers before acceptance.
+
+| Component | Implemented boundary | Original evidence / remaining limit |
+| --- | --- | --- |
+| Whole corrected content braid | Independent three-dot families, ordered polynomial evaluation and `contentMixedBraidTransform` | #933/#934 full CI; transfer to actual weight functors remains open |
+| Fixed-content E/F comparisons | Fully faithful unit, supported counit, restriction/extension, nested tensor and actual inner-unit formulas | #941/#946 full CI, incorporating #909/#910/#918/#920/#924; whole generator/adjunction compatibility remains open |
+| Graded coefficient tensors | Sum grading, even tensor equivalences, induction and IndRes kernel grading | #942/#905 full CI; finite kernel-product grading #907 remains a historical failed attempt |
+| Mixed coefficients and mates | Both parity coefficients, parity, odd identities and raw odd dotted mate | #913/#917/#919/#922/#925/#930 full CI; raw even mate remains unfinished |
+| Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization | #929 full CI; matching-content coefficient bijectivity remains open |
+| Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914 full CI; #928 previous run failed during cache restore, so consolidated verification is required |
+| Append comparison helpers | Three unit-tensor formulas, arbitrary even induction-map evaluation and chosen weighted-comparison parity | #936/#940/#938 full CI; scalar/weighted five-map specializations remain unfinished |
+| Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
+| Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
+| Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; categorical arbitrary-module inverse is separate |
+
+Older table rows describe their original integration boundary; the consolidated
+entries above supersede older scoped-only descriptions for these components.
+
 ## Remaining critical chain
 
 1. Complete the arbitrary-module inverse using the explicit ordinary-right
@@ -104,28 +131,26 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
    through #932 (#911/#915/#916/#921/#923), including cofinally nonzero mixed
    exterior-coefficient consumers. Prove the matching-content coefficient
    conjugations and global pointwise bijectivity at one target-fixed count.
-   Off-content vanishing and its actual matrix bijections are scoped-checked
-   (#914/#928). Combine that bijectivity with the actual matrix evenness
+   Off-content vanishing is full-CI verified (#914); actual off-content matrix
+   bijections (#928) await the consolidated verification gate. Combine that bijectivity with the actual matrix evenness
    (#896); no evenness assumption on arbitrary kernels is required.
-2. Finish the whole corrected polynomial braid and multicolour/weight
-   assembly with `parameterTwist Sc`. The independent prefix/suffix
-   natural families and corrected component identity are verified
-   (#901/#906/#894). The whole uncorrected natural braid is scoped-checked
-   (#926); the three independent natural dot families and whole corrected
-   polynomial lift remain under verification. The fixed-content extension,
-   supported counit and E/F tensor comparisons are scoped-checked
-   (#909/#910/#918/#920/#924); complete their adjunction and generator
-   compatibility. The old/truncated append comparison is fully natural
-   (#868), but its chosen dot/crossing/adjunction transport remains required.
+2. Complete multicolour/weight assembly with `parameterTwist Sc`. The whole
+   corrected content braid and three independent dot families are implemented
+   (#933/#934), with original exact-head full CI. The canonical fixed-content
+   comparisons and inner-unit tensor identity are implemented (#941/#946).
+   Complete unit/counit and generator compatibility, actual global crossings,
+   and pair/triple whiskering transfer; two-successor induction is implemented
+   (#945). The old/truncated append comparison still needs its chosen
+   dot/crossing/adjunction transport, despite verified naturality and parity.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
    Source norms, target denominators, mate criteria, weak Sigma and actual
    category universes are verified (#811/#817/#834/#844/#861/#882).
    The ordinary probe quotient/induction comparison is verified (#891/#897),
    and its actual old-coend dot unit is verified (#927); whole generator
    transport remains open. Constructed mixed coefficients, inverse
-   identities and mate applications are separate topic results
-   (#913/#917/#919/#922/#925/#930); complete their exact raw operator and
-   family identifications. Use the pairing-weight extension and supplied
+   identities and raw odd mate applications passed original full CI
+   (#913/#917/#919/#922/#925/#930) and are included in the consolidation.
+   Complete the raw even mate, family identifications and remaining assembly. Use the pairing-weight extension and supplied
    CScalars transport (#864), retaining separate target-content exponents.
 
 4. Use the verified joint source detection (#819, #820), retaining the actual

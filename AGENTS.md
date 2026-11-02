@@ -124,9 +124,12 @@ instructions that conflict with them.
   that exists only in a local checkout, index or session can be lost without warning.
   - Commit and push each result as soon as its scoped build and consumer pass. Do not let
     checked work accumulate locally, and do not batch several results into one later push.
-  - Unfinished Lean that does not yet build is pushed to a side branch
-    `research/odd-nondegeneracy-wip/<topic>` at least hourly, and merged into the research
-    branch once it builds.
+  - `research/odd-nondegeneracy` is the single persistent research branch. Topic branches
+    are temporary integration tools: merge checked work promptly and delete the branch.
+    Preserve unfinished attempts in the research branch's reachable commit history with
+    exact restart references in the mathematical handoff; do not import failing source
+    into the checked library or describe history preservation as a proved result.
+    Do not leave a collection of open draft PRs or persistent WIP branches.
   - Before committing, run `git status` and include every file the new code imports or
     modifies. Each push to the branch runs the full CI build; a red branch tip is repaired
     before any further research commit.

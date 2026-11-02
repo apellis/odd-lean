@@ -73,6 +73,7 @@ jobs:
           restore-keys: |
             lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             lake-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+            lake-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
       # Keep this dependency separate: changing the paths of the main cache invalidates
       # its cache version, including entries selected by restore-keys.
       - name: Restore Categorification cache
@@ -85,6 +86,18 @@ jobs:
           restore-keys: |
             categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
             categorification-artifacts-v2-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-
+            categorification-${{ runner.os }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
+      # Migrate an exact-toolchain/manifest legacy cache when v2 has not yet been seeded.
+      # Runner space was freed before restoration; discard regenerated setup metadata
+      # immediately, while keeping the compiled proof artifacts for the strict checks.
+      - name: Remove restored Lean setup metadata
+        if: steps.scope.outputs.docs_only != 'true'
+        run: |
+          for build in .lake/build .lake/packages/{DG,StringDiagrams,LieLean,Categorification}/.lake/build; do
+            if [ -d "$build/ir" ]; then
+              find "$build/ir" -type f -name '*.setup.json' -delete
+            fi
+          done
       # Fail on a changed producer or its consumer before building unrelated modules.
       # Lake reuses these outputs in the mandatory full build and NonVacuity gate below.
       - name: Check changed Lean modules and paired consumers

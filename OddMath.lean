@@ -82,6 +82,16 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteKernelTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernelGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVGradedKernelEquivalence
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernelGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionMap
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleRestriction
@@ -1825,6 +1835,13 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentSpecialization
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEntryParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentCategory
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentExtensionAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentRestrictionTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentRestrictionExtension
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentSupportedExtension
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullyFaithfulInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOffContentZero
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeScalarHomDescent
@@ -1847,6 +1864,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVNegativeCrossing
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCyclotomicCrossCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVCrossingHeight
+import OddMath.QuiverHecke.CyclotomicAction.ELVPositiveCrossing
 
 import OddMath.QuiverHecke.CyclotomicAction.ProbeDotPropagation
 import OddMath.QuiverHecke.CyclotomicAction.ProbeUnitPropagation
@@ -1867,6 +1885,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ProbePolynomialParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightModules
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairInduction
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedModuleDescent
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInduction
@@ -1880,6 +1899,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInductionNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorCoordinates
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualKernelMatrices
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteMatrixComponents
 
@@ -1904,3 +1924,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixEvaluation
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelUnitMatrixEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentUncorrectedBraid
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBraidTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDotTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms

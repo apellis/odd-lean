@@ -77,7 +77,8 @@ private theorem oddEndNorms
         (fun δ => superfunctorProductEnd_component_isUnit _ _ X hu 1 hx M δ)
         (hn M) (ha M)
 
-private theorem mixedOddNorms (E : A ⟶ B)
+/-- Odd composition norms from the componentwise bounds of an arbitrary module-valued functor. -/
+theorem mixedOddNorms (E : A ⟶ B)
     (K : B ⟶ elvWeightSpace D Sc cutoff bound Λ x)
     (a : End E) (t : End K) (ht : t ∈ parity (R := k) _ _ 1)
     (ha : a ∈ parity (R := k) _ _ 1) (hu : IsUnit a)

@@ -9,7 +9,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Arbitrary-module categorical inverse | Whole forward comparisons full-CI verified and integrated in #932; matching coefficient conjugations next | Four representable inverses (#889), arbitrary-module kernel tensor and finite products (#878/#890); integrated quotient coordinates and whole maps (#923/#932) | Finish matching-content kernel bijectivity at the target-fixed count, use off-content zero (#914/#928), then combine actual matrix evenness (#896) with the transferred inverse |
-| Independent content braid | Whole polynomial lift ready after three-dot-family interface | Canonical carriers/slides (#832/#836), prefix/suffix natural families (#901/#906), corrected component relation (#894) | Finish whole corrected polynomial braid in the same independent maps; whole uncorrected relation is scoped-checked (#926); then content/weight assembly |
+| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories and adjunction verified; inverse and relation assembly blocked | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Categorical inverse, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
@@ -51,8 +51,9 @@ evenness for every input module are full-CI verified and integrated through
 The target count is fixed by its content height Q−S (#900/#903).
 Prove the coefficient matrix bijective on matching source content using
 the actual representable inverses. Different source content has zero
-Hom and IndRes coefficient components, with actual matrix bijectivity
-scoped-checked in #914/#928. This gives a single full-old-category kernel
+Hom and IndRes coefficient components (#914). The actual off-content matrix
+bijections (#928) are implemented; its previous CI failed during cache restoration,
+so the consolidated source requires full verification. This gives a single full-old-category kernel
 map at the target-fixed count. Tensor its isomorphism with the arbitrary
 input module, use the whole forward identities, and use #896's actual
 matrix evenness to obtain an even inverse. Coefficient-kernel grading
@@ -67,7 +68,8 @@ The concrete factor action uses fixed-content module categories. The
 fully faithful inclusion unit (#909), append-extension comparison (#910),
 supported inclusion counit (#918), complementary restriction-extension
 comparison and its tensor formula (#918/#920), and append tensor formula
-(#924) are scoped-checked. Complete compatibility of this canonical E/F
+(#924), together with the actual inner-unit tensor identity (#946), passed
+original exact-head full CI and are included in the consolidation. Complete compatibility of this canonical E/F
 pair with the actual unit/counit, dots and crossings before transporting
 the full factor presentation. No equivalence with arbitrary modules on
 the whole old category is assumed.
@@ -81,10 +83,11 @@ coefficients are not a commutative ground ring.
 Use existing whole associativity and independent single-letter dots and pair
 crossings. Canonical carriers and foundational relations are verified in
 #832, distinct slides in #836. The prefix/suffix natural crossing families and corrected component braid
-are full-CI verified and integrated in #901/#906/#894. The whole uncorrected
-natural braid is scoped-checked in #926. The whole corrected ordered
-polynomial relation still needs all three independently defined dot
-families; preserve the original coefficient order and parameter twist.
+are full-CI verified in #901/#906/#894. The whole uncorrected natural braid
+is retained from #939. Independent dot families and the whole corrected ordered
+polynomial relation are implemented in #933/#934; both original exact heads
+passed full CI. Use `ELVContentMixedBraidTransforms.contentMixedBraidTransform`,
+preserving the original coefficient order and parameter twist.
 Whole multicolour and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
 coefficients, full kernel parity and equal-colour crossing normalization.
 
@@ -112,7 +115,10 @@ Hom for finite colours. All three are full-CI verified.
 Weighted module/map/isomorphism descent is verified in #825. The actual
 quotient-induction counit is an even module isomorphism (#835); old induction
 preserves the weighted annihilator, and its descended module is pointwise
-isomorphic to truncated append induction (#840). Input-module naturality for every supernatural module map is verified in #868. Finish chosen
+isomorphic to truncated append induction (#840). Input-module naturality for every supernatural module map is verified in #868;
+chosen comparison parity and generic induction/unit formulas are implemented in
+#938/#940/#936, with original full CI. Finish the literal scalar/weighted unit
+specializations and chosen
 dot/crossing/adjunction compatibility, then content/weight transport.
 
 Keep the literal weighted coefficient ideal, including all odd generators.
@@ -155,8 +161,10 @@ source norms and target denominator units (#834); old whole-dot nilpotence
 remains a sufficient corollary. Inverse-unit mate criteria are verified in
 #817. The actual module-category universe instance is verified in #861. The literal even source norm is verified in #844; the odd source norms are
 verified in #882. The prescribed coefficients, actual dotted-mate
-isomorphisms and coefficient parity are scoped-checked in #913/#917/#919.
-Finish their full-package integration and the remaining literal
+isomorphisms, coefficient parity, both odd coefficient identities and raw odd
+mate passed original exact-head full CI in #913/#917/#919/#922/#925/#930.
+They are included in the consolidation; the raw even mate remains unfinished.
+Finish the remaining literal
 CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
@@ -178,3 +186,22 @@ pointers. Topic notes retain mathematical arguments; historical status text
 is subordinate to STATUS. Distinguish proposed, scoped-checked and full-CI
 verified results. Follow AGENTS.md for strict builds, concrete consumers and
 the axiom policy.
+
+## Unfinished attempts and restart points
+
+All retired topic heads are retained in the primary research history; see
+[ResearchHistory](ResearchHistory.md). Reachability preserves source, not verification.
+The following are unfinished specializations, not completed inverse/action results:
+
+| Target | Preserved source commit | Remaining obligation |
+| --- | --- | --- |
+| Arbitrary-module matrix inverse | `88dd731f29ab17042e455edce268ef0e56a849e9` | Bundled row equality was isolated-checked; pointwise row normalization, matching-content bijectivity and the inverse consumer remain unverified |
+| Weighted append unit comparison | `198f6d1f89da28073ce5dcc85ad79e331d08a086` | Shared composition helpers were scoped-checked; the literal inverse-composition specialization remains unverified |
+| Scalar probe append unit comparison | `7440ac59fc65cd9b33b1ee036839e30b4838ca97` | The literal five-map unit chain and mixed/vacuum consumer remain unverified |
+| Raw even mixed mate | `2d91f33ec39f83c3d3620d0289e8e9c5cd9e0132` | Convert the factored norm to the prescribed raw weight-space Hom category and check the degree-six consumer |
+
+Recover a file with `git show <commit>:<repository-path>`. These attempts hit
+normalization/conversion limits; redesign endpoint encodings and reusable comparison
+lemmas rather than raising heartbeat or recursion budgets. The shared helper extensions
+at the append restart commits have scoped checks only; the integrated #936 source has
+its own full-CI boundary and must not be confused with those later extensions.
