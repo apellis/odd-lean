@@ -1,9 +1,9 @@
 # Scalar append comparison on generators
 
-**Proposed specialization, not a verified result.** The shared commuting-square
-tensor calculation is scoped-checked separately. The scalar specialization and
-its mixed/vacuum consumer below remain unverified; endpoint normalization is
-still needed where the square's output vector enters the scalar module.
+**Scoped-checked; full CI pending.** The producer and paired mixed/vacuum
+consumer pass with the pinned toolchain, warnings as errors and both
+compatibility settings. The consumer audits all 55 owned declarations against
+the standard axiom allowlist.
 
 The comparison in `probeAppendOrdinaryModuleIso` is the prescribed composite:
 inverse quotient counit, flattening of balanced induction, the literal
@@ -22,6 +22,10 @@ image. The final quotient counit cancels its inner unit tensor. Thus
 `[g ⊗ b]` to `[U.map g ⊗ b]` in the selected ordinary append coend, for arbitrary
 old arrows and arbitrary module vectors. In particular,
 `probeAppendOrdinaryModuleIso_hom_unit` intertwines the chosen append units.
+The literal map is exposed as `probeAppendComparisonLinear`, defined from
+the selected isomorphism's total map on the same old and ordinary coends.
+Its intermediate square remains the shared `squareLinear` expression;
+the module coordinates are fixed before any generator equality is used.
 
 `probeAppendOrdinaryModuleIso_hom_dot` applies this generator formula to the
 prescribed signed dot transforms. The source-arrow identity uses the scalar

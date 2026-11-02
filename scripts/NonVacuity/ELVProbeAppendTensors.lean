@@ -39,8 +39,8 @@ private def m : Bool → ℕ := fun i => if i then 5 else 3
 private abbrev cut := probeCutoff D m
 private abbrev a : Bool → Polynomial ℚ := probePolynomial (probeDotExponent D) m
 private abbrev ν : List Bool := [false,true]
-private abbrev M := SuperBimodule.regular (heightParity D Sc a (probePolynomial_parity D m) 2)
-private abbrev N := probeOldModule D m Sc ν M
+private def M := SuperBimodule.regular (heightParity D Sc a (probePolynomial_parity D m) 2)
+private def N := probeOldModule D m Sc ν M
 private abbrev v : ELVOld.OldContentCategory D Sc cut ν :=
   ELVOld.oldContentObject D Sc cut ν ⟨ν,List.Perm.refl ν⟩
 private abbrev g : (pres D Sc).obj (ob D ν) ⟶ (pres D Sc).obj (ob D ν) :=
@@ -60,7 +60,7 @@ example : ev χ = -3 := by
 private abbrev hN := probeOldModule_evaluatesCoefficients D m Sc ν M
 private abbrev Q := probeOldOrdinaryFunctor D Sc m ν
 private abbrev qv := Q.obj v
-private abbrev O := probeOrdinaryModuleSuperfunctor D Sc m ν N hN
+private def O := probeOrdinaryModuleSuperfunctor D Sc m ν N hN
 private abbrev J (i : Bool) := ELVOld.oldContentAppend D Sc cut ν i
 private abbrev T (i : Bool) := probeOrdinaryAppend D Sc m ν i
 private abbrev U (i : Bool) := probeOldOrdinaryFunctor D Sc m (i :: ν)
@@ -82,33 +82,29 @@ private abbrev appendDot (i : Bool) : (J i).obj v ⟶ (J i).obj v :=
 example : twist ℚ 1 (appendDot false) = -appendDot false := by
   have hg : appendDot false ∈ parity (R := ℚ) _ _ 1 :=
     Submodule.mem_map_of_mem
-      (ELVOld.affineUnit_mem D Sc cut (firstDot_parity D Sc false [true,false]))
-  simpa only [one_mul, sign_one, neg_one_smul] using twist_of_mem 1 hg
+      (ELVPScalar.affineUnit_mem D Sc cut (firstDot_parity D Sc false [true,false]))
+  simpa only [one_mul, Supercategory.sign_one, neg_one_smul] using twist_of_mem 1 hg
 
-example (i : Bool) (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total (w i)
-      (ELVOld.BalancedInduction.tensor (J i) N.toFunctor v (𝟙 _ + appendDot i) b) =
-    ELVOld.BalancedInduction.tensor (T i) O.toFunctor qv ((U i).map (𝟙 _ + appendDot i)) b :=
+/-- Instantiate the full generator formula on an inhomogeneous old arrow. -/
+example (i : Bool) (b : N.obj v) :=
   probeAppendOrdinaryModuleIso_hom_tensor D Sc m ν N hN i v ((J i).obj v) (𝟙 _ + appendDot i) b
 
 example (i : Bool) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total (w i) ∘ₗ
+    probeAppendComparisonLinear D Sc m ν N hN i ((J i).obj v) ∘ₗ
       probeOldContentInductionDot D Sc m ν i N ((J i).obj v) =
     ELVOld.BalancedInduction.transformLinear
       (probeOrdinaryAppendDot_supernatural D Sc m ν i) O (w i) ∘ₗ
-      (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total (w i) :=
+      probeAppendComparisonLinear D Sc m ν N hN i ((J i).obj v) :=
   probeAppendOrdinaryModuleIso_hom_dot D Sc m ν N hN i ((J i).obj v)
 
-example (i : Bool) (b : N.obj v) :
-    (probeAppendOrdinaryModuleIso D Sc m ν N hN i).hom.total (w i)
-      (ELVOld.BalancedInduction.unit (J i) N.toFunctor v b) =
-    ELVOld.BalancedInduction.unit (T i) O.toFunctor qv b :=
+/-- Both moving parities intertwine the literal append units. -/
+example (i : Bool) (b : N.obj v) :=
   probeAppendOrdinaryModuleIso_hom_unit D Sc m ν N hN i v b
 
-private abbrev M0 := SuperBimodule.regular (heightParity D Sc a (probePolynomial_parity D m) 0)
-private abbrev N0 := probeOldModule D m Sc [] M0
+private def M0 := SuperBimodule.regular (heightParity D Sc a (probePolynomial_parity D m) 0)
+private def N0 := probeOldModule D m Sc [] M0
 private abbrev hN0 := probeOldModule_evaluatesCoefficients D m Sc [] M0
-private abbrev O0 := probeOrdinaryModuleSuperfunctor D Sc m [] N0 hN0
+private def O0 := probeOrdinaryModuleSuperfunctor D Sc m [] N0 hN0
 private abbrev v0 : ELVOld.OldContentCategory D Sc cut [] :=
   ELVOld.oldContentObject D Sc cut [] ⟨[],List.Perm.refl []⟩
 private abbrev J0 (i : Bool) := ELVOld.oldContentAppend D Sc cut [] i
@@ -116,10 +112,8 @@ private abbrev T0 (i : Bool) := probeOrdinaryAppend D Sc m [] i
 private abbrev Q0 := probeOldOrdinaryFunctor D Sc m []
 private abbrev U0 (i : Bool) := probeOldOrdinaryFunctor D Sc m [i]
 
-example (i : Bool) (b : N0.obj v0) :
-    (probeAppendOrdinaryModuleIso D Sc m [] N0 hN0 i).hom.total ((U0 i).obj ((J0 i).obj v0))
-      (ELVOld.BalancedInduction.unit (J0 i) N0.toFunctor v0 b) =
-    ELVOld.BalancedInduction.unit (T0 i) O0.toFunctor (Q0.obj v0) b :=
+/-- The same prescribed unit formula includes vacuum content. -/
+example (i : Bool) (b : N0.obj v0) :=
   probeAppendOrdinaryModuleIso_hom_unit D Sc m [] N0 hN0 i v0 b
 
 end ELVProbeAppendTensorsConsumer
