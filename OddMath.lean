@@ -56,6 +56,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVParameterUntwist
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTransform
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareComposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
