@@ -161,6 +161,17 @@ Keep the literal weighted coefficient ideal, including all odd generators.
 No even-powers replacement is justified. A quotient must preserve the action
 and its prescribed inverse, not merely append maps.
 
+`ELVInductionSquareTensors.squareComparison_total_tensor` evaluates the four
+canonical induction-composition, functor-equality and induced-counit legs
+for arbitrary generators in a commuting square of four categories.
+`squareComparison_eq` retains the original chosen four-leg chain and
+`squareComparison_mem` proves its parity from the even input map. The
+producer, connected mixed representable consumer and the audit of all ten owned
+declarations pass strict local checks; full CI is pending. Use its folded induction
+functor endpoints in the literal weighted and scalar append specializations.
+These specializations and their dot/counit comparison remain open.
+See [InductionSquareTensors](InductionSquareTensors.md).
+
 ## Probe specialization and denominators
 
 Dimension-free signed dot units at every mixed-word position, all heights
