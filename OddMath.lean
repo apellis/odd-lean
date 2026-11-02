@@ -1971,3 +1971,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVRawMixedEvenMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVRawCoefficientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAnnihilation
+
+import OddMath.SKM.ELVCoefficientPowers
