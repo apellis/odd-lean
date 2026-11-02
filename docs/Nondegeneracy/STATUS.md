@@ -93,7 +93,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Actual representable matrix inverses | The actual ordered crossing mate, literal ordinary unit/dotted cap entries and canonical parity-shifted finite coordinates give component linear equivalences for both height signs and both moving parities, including zero counts. Full-CI verified in [#889](https://github.com/apellis/odd-lean/pull/889). Arbitrary-module inversion remains open; SVec assembly and content-uniform counts are full-CI verified and integrated through #932 | `ELVActualMatrixFamilies` and its odd/even comparison chain |
 | Arbitrary-module coefficient-kernel tensor | A coefficient-kernel isomorphism induces an isomorphism after balanced tensoring with any module, without flatness. Full-CI verified in [#878](https://github.com/apellis/odd-lean/pull/878). Finite kernel products and their tensor equivalence are verified in #890. The concrete kernel maps, both arbitrary-module whole-matrix identifications and explicit quotient realizations are full-CI verified and integrated in [#932](https://github.com/apellis/odd-lean/pull/932), including #911/#915/#916/#921/#923. Matching-content coefficient bijectivity and final inverse assembly remain open; actual-matrix evenness (#896) supplies the required inverse grading | `ELVKernelTensor` |
 | Scalar ordinary probe category | Exact scalar ideal images, ordinary quotient category and append, literal word-corner ring equivalences and ordinary dot units are full-CI verified in [#891](https://github.com/apellis/odd-lean/pull/891). The signed ordinary induction-dot unit is verified in #893. The chosen old-to-ordinary induction comparison and quotient-inverse unit-tensor formula are verified in #897; its whole generator transport remains under verification | `ELVProbeOrdinaryCategory` and companion probe comparison modules |
-| Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882. Constructed coefficients, both parity mate applications and arbitrary-intermediate-functor coefficients are in #913/#917/#925/#930; these topic results retain their separate CI and integration boundaries | `ELVMixedSourceNorms` and companion norm modules |
+| Literal source norm specialization | The literal source operators and even-moving mixed source norm are full-CI verified in [#844](https://github.com/apellis/odd-lean/pull/844). The odd-moving source norms are full-CI verified in #882. Constructed coefficients, both parity mate applications and arbitrary-intermediate-functor coefficients are in #913/#917/#925/#930; these inputs are full-CI verified and integrated through #949 | `ELVMixedSourceNorms` and companion norm modules |
 
 ## Consolidated implementations and verification boundary
 
@@ -102,9 +102,12 @@ are reachable through its history and indexed in [ResearchHistory](ResearchHisto
 Unfinished historical source is not imported into the checked library; exact restart
 points are in [HANDOFF](HANDOFF.md). History preservation establishes no theorem.
 
-The following additions are included in the consolidated tree. Original exact-head
-full CI succeeded for the listed PRs unless stated otherwise. The combined tree
-requires its own full build, axiom audit and concrete consumers before acceptance.
+The following additions are integrated through [#949](https://github.com/apellis/odd-lean/pull/949).
+Its exact source head `0cd06dc2b6978fd9b505bc0cfa343e56df05c38b` passed
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41395159509): changed producers
+and consumers, the full build with warnings as errors, the axiom audit and all
+non-vacuity checks. Original topic-head evidence below is supplemented by that
+combined integration gate.
 
 | Component | Implemented boundary | Original evidence / remaining limit |
 | --- | --- | --- |
@@ -113,7 +116,7 @@ requires its own full build, axiom audit and concrete consumers before acceptanc
 | Graded coefficient tensors | Sum grading, even tensor equivalences, induction and IndRes kernel grading | #942/#905 full CI; finite kernel-product grading #907 remains a historical failed attempt |
 | Mixed coefficients and mates | Both parity coefficients, parity, odd identities and raw odd dotted mate | #913/#917/#919/#922/#925/#930 full CI; raw even mate remains unfinished |
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization | #929 full CI; matching-content coefficient bijectivity remains open |
-| Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914 full CI; #928 previous run failed during cache restore, so consolidated verification is required |
+| Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
 | Append comparison helpers | Three unit-tensor formulas, arbitrary even induction-map evaluation and chosen weighted-comparison parity | #936/#940/#938 full CI; scalar/weighted five-map specializations remain unfinished |
 | Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
@@ -131,8 +134,8 @@ entries above supersede older scoped-only descriptions for these components.
    through #932 (#911/#915/#916/#921/#923), including cofinally nonzero mixed
    exterior-coefficient consumers. Prove the matching-content coefficient
    conjugations and global pointwise bijectivity at one target-fixed count.
-   Off-content vanishing is full-CI verified (#914); actual off-content matrix
-   bijections (#928) await the consolidated verification gate. Combine that bijectivity with the actual matrix evenness
+   Off-content vanishing and actual off-content matrix bijections (#914/#928)
+   are full-CI verified and integrated through #949. Combine that bijectivity with the actual matrix evenness
    (#896); no evenness assumption on arbitrary kernels is required.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The whole
    corrected content braid and three independent dot families are implemented

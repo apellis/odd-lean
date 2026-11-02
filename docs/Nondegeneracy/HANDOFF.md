@@ -52,8 +52,8 @@ The target count is fixed by its content height Q−S (#900/#903).
 Prove the coefficient matrix bijective on matching source content using
 the actual representable inverses. Different source content has zero
 Hom and IndRes coefficient components (#914). The actual off-content matrix
-bijections (#928) are implemented; its previous CI failed during cache restoration,
-so the consolidated source requires full verification. This gives a single full-old-category kernel
+bijections (#928) are full-CI verified and integrated through #949; the
+previous cache-restoration failure is superseded. This gives a single full-old-category kernel
 map at the target-fixed count. Tensor its isomorphism with the arbitrary
 input module, use the whole forward identities, and use #896's actual
 matrix evenness to obtain an even inverse. Coefficient-kernel grading
@@ -69,7 +69,7 @@ fully faithful inclusion unit (#909), append-extension comparison (#910),
 supported inclusion counit (#918), complementary restriction-extension
 comparison and its tensor formula (#918/#920), and append tensor formula
 (#924), together with the actual inner-unit tensor identity (#946), passed
-original exact-head full CI and are included in the consolidation. Complete compatibility of this canonical E/F
+original exact-head full CI and are integrated with full CI through #949. Complete compatibility of this canonical E/F
 pair with the actual unit/counit, dots and crossings before transporting
 the full factor presentation. No equivalence with arbitrary modules on
 the whole old category is assumed.
@@ -163,7 +163,7 @@ remains a sufficient corollary. Inverse-unit mate criteria are verified in
 verified in #882. The prescribed coefficients, actual dotted-mate
 isomorphisms, coefficient parity, both odd coefficient identities and raw odd
 mate passed original exact-head full CI in #913/#917/#919/#922/#925/#930.
-They are included in the consolidation; the raw even mate remains unfinished.
+They are full-CI verified and integrated through #949; the raw even mate remains unfinished.
 Finish the remaining literal
 CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.

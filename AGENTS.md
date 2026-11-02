@@ -127,7 +127,8 @@ instructions that conflict with them.
   - `research/odd-nondegeneracy` is the single persistent research branch. Topic branches
     are temporary integration tools: merge checked work promptly and delete the branch.
     Preserve unfinished attempts in the research branch's reachable commit history with
-    exact restart references in the mathematical handoff; do not import failing source
+    exact restart references in the mathematical handoff, at least hourly while work
+    is active; do not import failing source
     into the checked library or describe history preservation as a proved result.
     Do not leave a collection of open draft PRs or persistent WIP branches.
   - Before committing, run `git status` and include every file the new code imports or
