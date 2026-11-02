@@ -1978,3 +1978,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
