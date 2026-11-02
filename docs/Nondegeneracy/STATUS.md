@@ -128,6 +128,7 @@ including full build, axiom audit and all concrete consumers.
 | Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
+| Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Strict local consumer check passes; full CI pending. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
 
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
