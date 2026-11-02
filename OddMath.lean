@@ -1902,6 +1902,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVActualKernelMatrices
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelOffContentMatrices
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteMatrixComponents

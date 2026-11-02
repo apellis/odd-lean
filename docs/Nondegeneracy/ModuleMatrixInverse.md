@@ -27,13 +27,24 @@ and audits every owned declaration. Both inverse products are checked on concret
 All 17 owned declarations, including private/generated ones, pass the axiom
 allowlist audit. Full build, axiom audit and all concrete consumers passed in #952.
 
-For the next naturality step, fix a content block so the finite count is constant.
-If its prescribed forward maps satisfy
-`A_t ≫ T(f) = S(f) ≫ A_t′`, their inverse products give
-`A_t.inv ≫ S(f) = T(f) ≫ A_t′.inv` by composition on the left and right.
-Both matrix maps are even, so this passage adds no super interchange sign.
-The remaining work is to construct the exact source/target functors and prove
-the forward square for the chosen action maps, then apply this identity.
+`ELVContentMatrixInverse` now implements the output-content naturality step.
+`unitMatrixSourceModule` and `capMatrixTargetModule` use the pointwise
+superspace product of the prescribed shifted families. `unitMatrixNatTrans`
+and `capMatrixNatTrans` assemble their even module entries naturally along
+all old-category arrows, including inhomogeneous arrows. Restricting to a
+fixed output permutation class makes the finite count constant.
+`contentUnitMatrixNatIso` and `contentCapMatrixNatIso` assemble the verified
+components and their inverses into ordinary natural isomorphisms.
+`contentUnitMatrixIso` and `contentCapMatrixIso` lift these to even
+supermodule isomorphisms. Their `_hom_total` lemmas identify the literal
+matrix components, and `_even` checks both directions as module morphisms.
+
+This step is scoped-checked with a mixed-colour consumer, including arbitrary
+old input modules, both moving parities, reordered output words, inverse
+naturality, height zero and the axiom allowlist. Full CI is pending.
+It concerns output-arrow naturality of the restricted old-category matrices.
+It does not establish naturality in input-module maps or identify the source
+and target with the chosen fixed-content E/F composites.
 
 Next, compare these old-category module components with the actual fixed-content
 and original-weight functors, retaining their chosen dot, crossing and adjunction

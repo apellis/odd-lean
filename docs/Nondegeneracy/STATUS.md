@@ -132,6 +132,15 @@ including full build, axiom audit and all concrete consumers.
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
 
+`ELVContentMatrixInverse` adds scoped-checked output-arrow naturality:
+`contentUnitMatrixIso` and `contentCapMatrixIso` are even supermodule
+isomorphisms on each fixed output-content block for every old input module.
+The pointwise product families retain literal entries; inverse naturality
+holds along arbitrary old arrows. The mixed consumer checks both moving
+parities, a permuted output word, zero counts, inverse products and all owned
+axioms. Full CI is pending. Input-module naturality and compatibility with
+the chosen fixed-content/weight E/F composites remain open.
+
 ## Remaining critical chain
 
 1. Assemble the verified arbitrary-module component inverses on the actual
@@ -140,7 +149,8 @@ entries above supersede older scoped-only descriptions for these components.
    tensor transfer identifies their inverses with the prescribed unit/cap
    matrices on every old supermodule (#952). Both signs, moving parities,
    zero counts and inverse evenness are included. Retain these exact
-   coordinates while proving content/module naturality and compatibility
+   coordinates. Output-arrow naturality on fixed output content is now scoped-checked
+   in `ELVContentMatrixInverse`; prove input-module naturality and compatibility
    with the chosen induction, restriction, crossing and adjunction maps.
    No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The whole
