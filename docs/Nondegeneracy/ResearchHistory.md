@@ -212,3 +212,13 @@ checked successor sources rather than replacing them with older versions.
 | `-wip/whisker` | [986f266ca1](https://github.com/apellis/odd-lean/commit/986f266ca12b4f5952b3315a05d747b3f2cecdfe) |
 | `-wip/whole-corrected-content-braid` | [854456133f](https://github.com/apellis/odd-lean/commit/854456133fcb51a79b25f6c02d2579a99f647cec) |
 | `-wip/written-proof-r52` | [74642e640b](https://github.com/apellis/odd-lean/commit/74642e640ba66747b7ecbc512c34e6e782e75048) |
+
+## Additional unfinished conversion variants
+
+These local variants are also retained in reachable history. They are unverified
+and do not supersede the four main restart points in HANDOFF.
+
+| Attempt | Preserved commit | Source |
+| --- | --- | --- |
+| matrix row conversion | [4dc49448a6](https://github.com/apellis/odd-lean/commit/4dc49448a663188557d7af04ed76a36c9f58e8c5) | `OddMath/QuiverHecke/CyclotomicAction/ELVKernelMatrixCoordinates.lean` |
+| weighted append conversion | [bc47db64e0](https://github.com/apellis/odd-lean/commit/bc47db64e065ba3019e398ae2ed4fa7c5abcad01) | `OddMath/QuiverHecke/CyclotomicAction/ELVWeightedAppendUnits.lean` |
