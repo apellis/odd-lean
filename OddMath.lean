@@ -1982,3 +1982,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
+
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
