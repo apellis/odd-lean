@@ -1936,3 +1936,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBraidTransforms
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentDotTransforms
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
+
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments

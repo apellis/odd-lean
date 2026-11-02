@@ -184,37 +184,21 @@ unit direction A_i B_j→B_j A_i is J_ij^-1; the reverse is Q_ij J_ij,
 with Q evaluated in the target dot coordinates. For equal colour, in
 row/column order AB,BA the crossing is exactly
 
-    [ -q a             J           ]
-    [ -J^-1 a²         q J^-1 a J   ],   q=(-1)^p,          (A6)
+    [ a                J           ]
+    [ -J^-1 a²        -J^-1 a J     ],                     (A6)
     a=(y-x)^-1                       (p=0),
     a=(x-y)(x²-y²)^-1                (p=1),
 
-where x is the pre probe dot and y the post reservoir dot. Equivalently,
-a=-q(x-y)^-1 for p=0 and a=-q(x-y)(x²-y²)^-1 for p=1, since -q=1 when p=1:
-the matrix is -q times the matrix with a=(x-y)^-1 (p=0). An earlier version
-had a=(x-y)^-1 for p=0; an exact computation in the smallest mixed case
-(one odd and one even colour) shows that this gives τx₁-x₂τ=-1 on the mixed
-summand and breaks the jij braid relation there, while a=(y-x)^-1 satisfies
-all relations. The same check fixes J_ij=id (A5) and the distinct-colour
-crossings J^-1 and Q_ij J with Q itself, not a twisted Q^alg. Neither
-swapping entry is changed when the nilpotent side is exchanged.
-
-**Correction to the correction (diagonal sign).** The Lean generators
-(`Generators/Cross.lean`) have diagonal entries a on (R,P) and -J^-1 a J on
-(P,R), with a=(y-x)^-1 for p=0 and a=(x-y)(x²-y²)^-1 for p=1: that is,
--q times the diagonal of (A6) as written above, which is the diagonal of the
-earlier version. For these entries the formal slide relations of the
-presentation are proved (`crossCoeff_diag`, `swappedGens_slideEq`); with the
-diagonal of (A6) as written the even slide has right side -1. So the
-diagonal of the earlier version is the one compatible with the formal slide,
-and the exact check quoted above must have used another identification of
-the two dots. The mixed jij braid relation for the Lean entries is the open
-hypothesis `CrossBraid`. An exact model computation
-(`scripts/Nondegeneracy/swapped_braid_twist_model.py`, consistent with the proved
-slide and the proved iii braid blocks) finds the braid relation, with its
-correction, satisfied by the Lean entries on every block of every three-letter
-word, and violated after negating the diagonal; so the braid claim above does
-not hold for the Lean sign in that model. This is evidence, not a proof.
+where x is the pre probe dot and y the post reservoir dot. The diagonal
+entries are a and -J^-1 a J in both parities. These are the entries of
+`Generators/Cross.lean`: `crossCoeff_diag` and `swappedGens_slideEq` prove
+their prescribed slide. Multiplying these diagonal entries by -q at even
+colours reverses the slide's constant term and is not the chosen crossing.
+The scalar -q belongs to the pre/pre factor crossing, not to this diagonal.
+The mixed jij braid is supplied by `crossBraidOfInputs` when its coefficient
+inputs are given. The exact model `scripts/Nondegeneracy/swapped_braid_twist_model.py` is an additional
+finite check, not its proof. Neither swapping entry changes when the
+nilpotent side is exchanged.
 
 At each fixed reservoir content the relevant dot is nilpotent, uniformly
 on all reservoir modules, because its multiplier belongs to a finite
@@ -540,12 +524,15 @@ coefficients (constant coefficient 1). Under F1–F4, at **every** sign of H_i,
     even i: sum beta(e_r)(V) z^r = L_(E_i(-z)/(1-z)^(P_i)). (A16)
 
 L on a formal series means coefficientwise left multiplication.
-With the corrected even entry of (A6), a=(y-x)^-1, the normalized even
-bubble at height 0 is multiplied by -q relative to the formula derived from
-the earlier entry a=(x-y)^-1; the odd values are unchanged. The even line of
-(A16) is to be read with this factor; the dependent bubble computations in
-`SwappedVacuumBubbles.md` and `SwappedVacuumNonpositiveBubbles.md` have not
-yet been rewritten for it.
+At even height zero the right moments remain `(1-z)^P/E(-z)`,
+with constant term 1. The principal inverse is taken after the literal
+slide `y s-s x=u v`; its cap is `v s^-1=lambda g(y)`, where
+`g(T)=(T-1)^P` and lambda is the normalized coefficient extraction. Thus
+no overall minus sign multiplies the right-moment or elementary series.
+The leftward cup keeps its separately prescribed sign. The generic
+coefficient-extraction step is formalized in
+`SwappedVacuum/InverseCapMoments.lean`; attachment to the actual vacuum
+adjunction and its complete moment calculation remains to be constructed.
 `SwappedVacuumBubbles.md` proves H_i>0 using the extreme inverse column.
 `SwappedVacuumNonpositiveBubbles.md` proves H_i<0 using the extreme inverse
 row and H_i=0 using the principal inverse; it computes the odd image
