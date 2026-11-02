@@ -45,3 +45,6 @@ adjunction. The remaining attachment must supply these literal inputs
 from the actual coefficient algebra and match the homogeneous maps to
 the chosen augmented inverse. Computing the full high-dot moments and
 the resulting bubble series remains separate.
+
+The producer, owned axiom audit and all concrete consumers passed full CI
+at source head `39301885c8edff5e07c020246ff86ad5ebd0da5a`, integrated in [#956](https://github.com/apellis/odd-lean/pull/956).
