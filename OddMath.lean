@@ -1940,3 +1940,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
 import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctIdealSpan

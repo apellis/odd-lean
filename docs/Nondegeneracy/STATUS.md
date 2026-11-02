@@ -128,7 +128,7 @@ including full build, axiom audit and all concrete consumers.
 | Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
-| Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Strict local consumer check passes; full CI pending. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
+| Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
 
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
@@ -166,9 +166,22 @@ annihilate the mate, and monicity gives the extreme low-unit Kronecker
 window. Its occupied level-two/probe-level-one consumer checks these maps
 against a nontrivial whole augmented inverse, including the literal last
 inverse row. Strict local checks and the audit of all eleven owned
-declarations pass; full CI is pending. The general actual augmented-matrix
+declarations pass; [full CI](https://github.com/apellis/odd-lean/actions/runs/41523687379)
+passed for source head `39301885c8edff5e07c020246ff86ad5ebd0da5a`, integrated in #956.
+The general actual augmented-matrix
 attachment and normalized bubble-series construction remain open.
 See [NegativeCapMoments](NegativeCapMoments.md).
+
+`ELVDistinctIdealSpan.ideal_eq_appendRelations_sup_outputOldRelations`
+proves the full-ELV word-corner form of KKO I (9.3). For distinct final
+colours the cyclotomic ideal is exactly the sum of the two literal outer
+old ideals. The checked output-last shuffle support excludes the long
+term before relation transport; all total coefficient parity is retained.
+Both producers and the mixed/exterior, repeated-word and zero-cutoff
+consumers pass strict local checking; all 24 owned declarations pass the
+axiom allowlist. Full CI is pending. The explicit mixed PBW decoder,
+balanced quotient comparison and prescribed categorical mate remain open.
+See [DistinctIdealSpan](DistinctIdealSpan.md).
 
 ## Remaining critical chain
 
@@ -184,9 +197,10 @@ See [NegativeCapMoments](NegativeCapMoments.md).
    No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
    The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
-   also remains open: formalize the distinct outer-colour ideal identity,
-   crossing-coset PBW equivalence and prescribed mate comparison of
-   `DeformedActionAssembly` sections 2--4. The swapped raw mixed-mate
+   also remains open. The distinct outer-colour ideal identity is now
+   scoped-checked in `ELVDistinctIdealSpan`; construct the crossing-coset
+   PBW equivalence, balanced quotient comparison and prescribed mate of
+   `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
    isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content

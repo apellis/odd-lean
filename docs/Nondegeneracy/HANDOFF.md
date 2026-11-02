@@ -124,10 +124,14 @@ coefficients, full kernel parity and equal-colour crossing normalization.
 
 A full-ELV factor family still requires the categorical inverse, these
 multicolour relations and their naturality. Its distinct-colour factor mate
-inverse (Brundan--Ellis (1.12)) is a separate open construction: formalize
-`DeformedActionAssembly` sections 2--4, including the distinct outer-colour
-ideal identity, crossing-coset PBW inverse and literal cup-crossing-cap
-comparison. Existing ordinary-polynomial mate formulas and swapped raw
+inverse (Brundan--Ellis (1.12)) is a separate open construction.
+`ELVDistinctIdealSpan` now proves the distinct outer-colour ideal identity
+(KKO I (9.3)) with the two literal outer old ideals. Its output-last
+shuffle and mixed/exterior consumers pass strict local checks and the
+owned-declaration audit; full CI is pending. Next construct the explicit
+crossing-coset PBW inverse and balanced quotient comparison, then the
+literal cup-crossing-cap attachment of `DeformedActionAssembly` sections
+3--4. See [DistinctIdealSpan](DistinctIdealSpan.md). Existing ordinary-polynomial mate formulas and swapped raw
 mixed-mate isomorphisms do not prove this full-ELV factor input. The older ordinary-polynomial
 global constructor assumes local inversions and does not construct the
 full exterior-coefficient family. The written pairing extension and balanced
@@ -221,8 +225,9 @@ is integrated in #955.
 annihilation and low-unit window tests from the same signed slide and
 probe polynomial. Its concrete occupied level-two/probe-level-one consumer
 identifies the polynomial candidate with the final row of a nontrivial
-whole augmented inverse. Strict local checks and the owned audit pass;
-full CI is pending. Next attach these tests to the actual module matrices,
+whole augmented inverse. Strict local checks, the owned audit and
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41523687379) passed
+at source head `39301885c8edff5e07c020246ff86ad5ebd0da5a`, integrated in #956. Next attach these tests to the actual module matrices,
 then derive the all-height normalized bubble series.
 See [NegativeCapMoments](NegativeCapMoments.md).
 
