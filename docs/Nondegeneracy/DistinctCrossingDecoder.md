@@ -5,7 +5,7 @@ This develops Brundan–Ellis (1.12) through
 ordinary right action throughout. The two-colour balanced source has induction
 endpoint `i`, coefficient endpoint `j`, and coefficient shift `p(i)p(j)`.
 
-`ELVDistinctCrossingTensor.toCyclotomic` is the prescribed affine crossing
+`toCyclotomic` is the prescribed affine crossing
 column after both outer cyclotomic quotients and lower balance. Its tensor
 formula retains arbitrary full exterior coefficients. The canonical map `q`
 changes only the first factor. `shortCross_quotient_square` identifies the two
@@ -26,10 +26,13 @@ The remaining quotient argument uses the checked full-ELV equality (9.3),
 output relation acts on the first tensor factor, so its preimage under the
 crossing equivalence belongs to the literal `firstIdeal`. Conversely that
 first ideal is killed by the target cyclotomic quotient. Its exact kernel
-is proved without any flatness hypothesis. These identifications are intended
-to establish `cyclotomicEquiv`; the full quotient module and paired consumer
-are currently proposed and await strict checking. The tensor source, tail
-support, dot slides, and old-only decoder equivalence are scoped-checked.
+is proved without any flatness hypothesis. These identifications establish `cyclotomicEquiv`, with inverse
+`q ∘ decode` on arbitrary affine representatives, as stated by
+`cyclotomicEquiv_symm_mk`. All six producers and the paired concrete consumer
+pass strict scoped Lean checks. The consumer covers mixed parities, two
+distinct odd colours, full exterior-coefficient crossing tensors, empty
+words and zero cutoff, and audits all 135 owned declarations. Full CI remains
+the integration gate.
 
 The prescribed cup-crossing-cap mate comparison, its parity-shift source
 isomorphism, naturality, and attachment to the full factor family remain open.

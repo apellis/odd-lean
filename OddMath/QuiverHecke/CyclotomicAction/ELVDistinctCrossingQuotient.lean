@@ -31,48 +31,29 @@ def outputPost (i : I) (v : List I) {w z : List I} (r : hom D Sc cutoff w z) :
     outputPost D Sc cutoff i v r (appendProjection D Sc cutoff i v w f) =
       appendProjection D Sc cutoff i v z (f ≫ r) := rfl
 
-/-- Output action on the prescribed first tensor factor. -/
-abbrev shortPost (i j : I) (v : List I) {w z : List I} (r : hom D Sc cutoff w z) :=
-  BalancedInduction.postcompose (affineAppend D Sc cutoff i)
-    (quotient D Sc cutoff ⋙ coefficient D Sc cutoff (D.parity i * D.parity j) j v) r
-
-@[simp] theorem shortPost_tensor (i j : I) (v s w z : List I)
-    (r : hom D Sc cutoff w z) (c : hom D Sc cutoff (s ++ [i]) w)
-    (b : Old D Sc cutoff v (s ++ [j])) :
-    shortPost D Sc cutoff i j v r (shortTensor D Sc cutoff i j v s w c b) =
-      shortTensor D Sc cutoff i j v s z (c ≫ r) b :=
-  BalancedInduction.postcompose_tensor _ _ r ⟨s⟩ c b
-
-/-- The crossing column intertwines literal ordinary output postcomposition. -/
-theorem shortCross_post (i j : I) (v w z : List I) (r : hom D Sc cutoff w z) :
-    shortCross D Sc cutoff i j v z ∘ₗ shortPost D Sc cutoff i j v r =
-      outputPost D Sc cutoff i v (rightContext D Sc cutoff [j] _ _ r) ∘ₗ
-        shortCross D Sc cutoff i j v w := by
-  apply BalancedInduction.hom_ext
-  intro s c b
-  obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v (s.word ++ [j])).mkQ_surjective b
-  change shortCross D Sc cutoff i j v z
-    (shortPost D Sc cutoff i j v r (shortTensor D Sc cutoff i j v s.word w c _)) =
-    outputPost D Sc cutoff i v _
-      (shortCross D Sc cutoff i j v w (shortTensor D Sc cutoff i j v s.word w c _))
-  rw [shortPost_tensor, shortCross_tensor, shortCrossPair_mk,
-    shortCross_tensor, shortCrossPair_mk, outputPost_projection, rightContext_comp]
-  simp only [Category.assoc]
-
-/-- Every old output relation acts into the literal first-factor ideal span. -/
-theorem shortPost_mem_firstIdeal (i j : I) (v w z : List I)
+/-- Postcomposing a crossing class by an old ideal arrow lands in the
+image of the literal first-factor tensor ideal. -/
+theorem outputPost_shortCross_mem_map (i j : I) (v w z : List I)
     (r : hom D Sc cutoff w z) (hr : r ∈ ideal D Sc cutoff w z)
     (a : ShortTarget D Sc cutoff i j v w) :
-    shortPost D Sc cutoff i j v r a ∈ firstIdeal D Sc cutoff i j v z := by
-  have hzero : (firstIdeal D Sc cutoff i j v z).mkQ ∘ₗ
-      shortPost D Sc cutoff i j v r = 0 := by
+    outputPost D Sc cutoff i v (rightContext D Sc cutoff [j] _ _ r)
+      (shortCross D Sc cutoff i j v w a) ∈
+      (firstIdeal D Sc cutoff i j v z).map (shortCross D Sc cutoff i j v z) := by
+  let S := (firstIdeal D Sc cutoff i j v z).map (shortCross D Sc cutoff i j v z)
+  have hzero : S.mkQ ∘ₗ outputPost D Sc cutoff i v
+      (rightContext D Sc cutoff [j] _ _ r) ∘ₗ shortCross D Sc cutoff i j v w = 0 := by
     apply BalancedInduction.hom_ext
     intro s c b
-    change (firstIdeal D Sc cutoff i j v z).mkQ
-      (shortPost D Sc cutoff i j v r (shortTensor D Sc cutoff i j v s.word w c b)) = 0
-    rw [shortPost_tensor]
-    exact (Submodule.Quotient.mk_eq_zero _).mpr
-      (Submodule.subset_span ⟨s.word, c ≫ r, comp_ideal D Sc cutoff c hr, b, rfl⟩)
+    obtain ⟨b, rfl⟩ := (ideal D Sc cutoff v (s.word ++ [j])).mkQ_surjective b
+    change S.mkQ (outputPost D Sc cutoff i v _
+      (shortCross D Sc cutoff i j v w (shortTensor D Sc cutoff i j v s.word w c _))) = 0
+    apply (Submodule.Quotient.mk_eq_zero _).mpr
+    refine ⟨shortTensor D Sc cutoff i j v s.word z (c ≫ r)
+      ((ideal D Sc cutoff v (s.word ++ [j])).mkQ b),
+        Submodule.subset_span ⟨s.word, c ≫ r, comp_ideal D Sc cutoff c hr, _, rfl⟩, ?_⟩
+    rw [shortCross_tensor, shortCrossPair_mk, shortCross_tensor, shortCrossPair_mk,
+      outputPost_projection, rightContext_comp]
+    simp only [Category.assoc]
   exact (Submodule.Quotient.mk_eq_zero _).mp (LinearMap.congr_fun hzero a)
 
 /-- The second outer ideal is precisely accounted for by the first tensor ideal. -/
@@ -86,13 +67,11 @@ theorem projection_outputOldRelations_mem_map (i j : I) (hij : i ≠ j) (v t : L
     obtain ⟨s, r, hr, c, rfl⟩ := hf
     obtain ⟨a, ha⟩ := shortCross_surjective D Sc cutoff i j hij v s
       (appendProjection D Sc cutoff i v (s ++ [j]) c)
-    refine ⟨shortPost D Sc cutoff i j v r a,
-      shortPost_mem_firstIdeal D Sc cutoff i j v s t r hr a, ?_⟩
-    have hs := LinearMap.congr_fun (shortCross_post D Sc cutoff i j v s t r) a
-    change shortCross D Sc cutoff i j v t (shortPost D Sc cutoff i j v r a) = _ at hs
+    have hs := outputPost_shortCross_mem_map D Sc cutoff i j v s t r hr a
     rw [ha, outputPost_projection] at hs
     exact hs
-  | zero => simpa only [map_zero] using Submodule.zero_mem
+  | zero =>
+    simpa only [map_zero] using Submodule.zero_mem
       ((firstIdeal D Sc cutoff i j v t).map (shortCross D Sc cutoff i j v t))
   | add a b _ _ ha hb => simpa only [map_add] using Submodule.add_mem _ ha hb
   | smul a b _ hb => simpa only [map_smul] using Submodule.smul_mem _ a hb
