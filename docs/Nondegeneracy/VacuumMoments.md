@@ -66,5 +66,7 @@ not identify a final swapped factor, impose the paper's even-generator
 power ideal, or compute its bubble series. Converting the recurrence to
 the normalized right-moment sequence used by the cap calculation still
 requires the signed higher-dot comparison and coefficient-superlinearity
-in those exact coordinates. Ordinary right precomposition cannot be
-silently identified with the signed supernatural dot.
+in those exact coordinates. These two attachments for the old vacuum are
+provided by [VacuumSignedMoments](VacuumSignedMoments.md). Ordinary right
+precomposition cannot be silently identified with the signed supernatural
+dot.
