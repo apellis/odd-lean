@@ -48,6 +48,12 @@ parities and zero finite counts. The actual finite SVec maps and their
 evenness for every input module are full-CI verified and integrated through
 #932, retaining the exact #896 producers.
 
+Canonical kernel/source and finite-family coordinates, with bundled mate-row
+equality, are implemented in `ELVKernelMatrixCoordinates` and pass strict scoped
+producer/consumer checks; their full CI gate is pending. Use this bundled interface
+rather than the old generic pointwise row wrapper. Matrix conjugations and
+arbitrary-module inversion are not supplied by these coordinate equivalences.
+
 The target count is fixed by its content height Q−S (#900/#903).
 Prove the coefficient matrix bijective on matching source content using
 the actual representable inverses. Different source content has zero
