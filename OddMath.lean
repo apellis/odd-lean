@@ -56,6 +56,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVParameterUntwist
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTransform
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareComposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionRelations
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentModuleAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentParity
@@ -1941,8 +1942,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctIdealSpan
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRestrictionComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCounitComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -1971,3 +1974,15 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVRawMixedEvenMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVRawCoefficientComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAnnihilation
+
+import OddMath.SKM.ELVCoefficientPowers
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
+
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
