@@ -52,9 +52,9 @@ ideal, nor adopted as a replacement reservoir.
 ## Boundary
 
 The required algebraic containments remain explicit hypotheses here.
-Applying the separate finite power-bound results to the actual chosen
-coefficient family and matching the universal ideal's quotient image with
-`coefficientWeightedIdeal` is still required. Equivalences with literal
+The actual elementary-power instance and quotient-image inclusions are
+provided in [CoefficientPowerSandwich](CoefficientPowerSandwich.md), using
+[CoefficientPowers](CoefficientPowers.md). Equivalences with literal
 quotient-algebra module categories, complete E/F/crossing comparison
 coherence and the actual vacuum evaluation-kernel identification are not
 claimed.

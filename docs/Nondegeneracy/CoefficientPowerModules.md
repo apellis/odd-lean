@@ -55,7 +55,8 @@ subcategory; it does not identify the weighted quotient with T.
 
 No finiteness of the coefficient family or positivity of the powers is needed
 for these category restrictions. The paper's finite positive-power family is
-an instance. The weighted/power ideal sandwich, comparison with literal
-quotient-algebra modules and the actual vacuum evaluation kernel remain
-separate. Parity-shift closure and full finite-family/crossing restrictions
-must be supplied before using this category as the final factor target.
+an instance. The weighted/power sandwich is supplied by
+[CoefficientPowerSandwich](CoefficientPowerSandwich.md), and parity closure
+by [CoefficientPowerParity](CoefficientPowerParity.md). Literal quotient-algebra
+module comparison, full finite-family/crossing restrictions and the actual
+vacuum evaluation kernel remain separate.
