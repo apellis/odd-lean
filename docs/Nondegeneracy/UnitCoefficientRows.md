@@ -1,17 +1,13 @@
 # Coefficient functionals from the prescribed unit inverse
 
-This is the proposed attachment of the normalized coefficient-extraction
+This constructs the normalized coefficient-extraction
 window in [SwappedVacuumNonpositiveBubbles, §2](SwappedVacuumNonpositiveBubbles.md)
 to the existing arbitrary-module unit matrices. It supports research issue
 #345 and the cap calculations in [InverseCapMoments](InverseCapMoments.md)
-and [NegativeCapMoments](NegativeCapMoments.md). The declarations described
-here still require scoped verification before their integration.
-
-The producer and paired concrete consumer are unverified source. Separate
-scoped checks of generic inversion, homogeneous components, source-shift
-naturality and coordinate projection do not verify these old-module
-declarations. No result in this note is promoted to an established
-coefficient-functional attachment until those scoped checks pass.
+and [NegativeCapMoments](NegativeCapMoments.md). The producer and paired
+concrete consumer pass scoped Lean checks with warnings as errors and the
+pinned compatibility settings. All 37 owned declarations pass the standard
+axiom allowlist audit. Full CI remains the integration gate.
 
 Fix an old supermodule M, an old output word t, and a moving colour i at
 nonnegative content height. Put m=contentUnitCount(i,t). The verified

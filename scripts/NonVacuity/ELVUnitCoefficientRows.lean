@@ -53,7 +53,7 @@ example (i : Bool) (z : vacuum.obj emptyWord) :
       ((moduleUnitColumn mixedDatum mixedScalars cutoff i vacuum (lowSlot i).val).total
         emptyWord z) = 0 := by
   exact moduleUnitCoefficient_column_ne mixedDatum mixedScalars cutoff vacuum i emptyWord (height i)
-    (topSlot i) (lowSlot i) (by intro h; have := congrArg Fin.val h; simp [topSlot, lowSlot] at this) z
+    (topSlot i) (lowSlot i) (by intro h; have hv : (1 : ℕ) = 0 := congrArg Fin.val h; exact Nat.one_ne_zero hv) z
 
 /-- The literal shifted extraction coordinate is even before removing its
 selected parity comparison. -/
@@ -81,9 +81,17 @@ private def oddCoefficient : emptyWord ⟶ emptyWord :=
     (coefficientIdentity mixedDatum mixedScalars cutoff []
       (SKM.SYM.coefficientBasis mixedDatum ℚ oddIndex))
 private theorem oddCoefficient_mem : oddCoefficient ∈ parity (R := ℚ) emptyWord emptyWord 1 := by
-  apply Submodule.mem_map_of_mem
-  simpa only [oddIndex, Finset.card_singleton, Nat.cast_one] using
-    coefficientIdentity_basis_parity mixedDatum mixedScalars cutoff [] oddIndex
+  have hp : coefficientIdentity mixedDatum mixedScalars cutoff []
+      (SKM.SYM.coefficientBasis mixedDatum ℚ oddIndex) ∈
+      parity (R := ℚ) (obj mixedDatum mixedScalars cutoff [])
+        (obj mixedDatum mixedScalars cutoff []) 1 := by
+    simpa only [oddIndex, Finset.card_singleton, Nat.cast_one] using
+      coefficientIdentity_basis_parity mixedDatum mixedScalars cutoff [] oddIndex
+  change (ideal mixedDatum mixedScalars cutoff [] []).mkQ
+    (coefficientIdentity mixedDatum mixedScalars cutoff []
+      (SKM.SYM.coefficientBasis mixedDatum ℚ oddIndex)) ∈
+        oldParity mixedDatum mixedScalars cutoff [] [] 1
+  exact Submodule.mem_map_of_mem hp
 
 /-- A literal full-coefficient old endomorphism supplies the odd
 superlinearity check on the selected top row. -/
@@ -96,7 +104,8 @@ example :
       -((SVec.toLinearMap (vacuum.map oddCoefficient)).comp
         (moduleUnitCoefficient mixedDatum mixedScalars cutoff vacuum true emptyWord (height true)
           (topSlot true))) := by
-  simpa [topSlot, mixedDatum] using
+  have hs : (topSlot true).val • mixedDatum.parity true = (1 : ZMod 2) := rfl
+  simpa only [hs, koszulSign_one_one, neg_smul, one_smul] using
     moduleUnitCoefficient_end_naturality mixedDatum mixedScalars cutoff vacuum true emptyWord
       (height true) (topSlot true) oddCoefficient oddCoefficient_mem
 
@@ -114,8 +123,11 @@ example (i : Bool)
     VacuumCoefficient.functional mixedDatum mixedScalars cutoff i (by simp [cutoff])
       ((((BalancedInduction.adjunction (append mixedDatum mixedScalars cutoff i)).unit.app
         (VacuumCoefficient.coefficientModule mixedDatum mixedScalars cutoff)).total ⟨[]⟩) z) = 0 := by
-  simpa [cutoff] using VacuumCoefficient.functional_dot_window mixedDatum mixedScalars cutoff i
-    (by simp [cutoff]) 0 (by simp [cutoff]) z
+  have h := VacuumCoefficient.functional_dot_window mixedDatum mixedScalars cutoff i
+    (by change 0 < 2; decide) 0 (by change 0 < 2; decide) z
+  have hz : (0 + 1 : ℕ) ≠ cutoff i := by change (1 : ℕ) ≠ 2; decide
+  rw [ite_eq_right hz] at h
+  simpa only [pow_zero, Module.End.one_apply] using h
 
 example (i : Bool) :
     VacuumCoefficient.functional mixedDatum mixedScalars cutoff i (by simp [cutoff]) ∈
@@ -124,8 +136,11 @@ example (i : Bool) :
           (VacuumCoefficient.coefficientModule mixedDatum mixedScalars cutoff) ⟨[]⟩)
         ((VacuumCoefficient.coefficientModule mixedDatum mixedScalars cutoff).obj ⟨[]⟩)
         (mixedDatum.parity i) := by
-  simpa [cutoff] using
-    VacuumCoefficient.functional_mem mixedDatum mixedScalars cutoff i (by simp [cutoff])
+  have hs : (cutoff i - 1) • mixedDatum.parity i = mixedDatum.parity i := by
+    change 1 • mixedDatum.parity i = mixedDatum.parity i
+    exact one_nsmul _
+  simpa only [hs] using
+    VacuumCoefficient.functional_mem mixedDatum mixedScalars cutoff i (by change 0 < 2; decide)
 
 /-- At zero finite count the first inverse row still extracts the mate
 coordinate; no finite slot or inhabited lower-content corner is assumed. -/

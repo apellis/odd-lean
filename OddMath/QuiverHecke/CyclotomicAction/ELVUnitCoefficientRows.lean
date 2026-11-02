@@ -50,19 +50,26 @@ theorem moduleUnitCoefficientRow_component (i : I) (t : OldCategory D Sc cutoff)
     simpa only [SVec.comp_apply, SVec.id_apply] using h
   exact congrFun h' a
 
-private theorem unitMatrixComponent_single (i : I) (m : ℕ)
-    (t : OldCategory D Sc cutoff) (a : Option (Fin m))
-    (z : (unitMatrixFamily D Sc cutoff i M m a).obj t) :
-    unitMatrixComponent D Sc cutoff i M m t (Pi.single a z) =
-      (unitMatrixEntry D Sc cutoff i M m a).total t z := by
-  classical
-  rw [unitMatrixComponent, OddMath.FiniteSuperspace.assembleColumns_apply]
+private theorem assembled_single {ι : Type} [Fintype ι] [DecidableEq ι]
+    (V : ι → SVec k) (W : SVec k) (f : ∀ a, V a ⟶ W) (a : ι) (z : V a) :
+    OddMath.FiniteSuperspace.assembleColumns V W f (Pi.single a z) = f a z := by
+  change (∑ b, f b ((Pi.single a z : (b : ι) → V b) b)) = _
   rw [Finset.sum_eq_single a]
   · simp
   · intro b _ hb
     rw [Pi.single_eq_of_ne hb]
     exact map_zero _
   · simp
+
+private theorem unitMatrixComponent_single (i : I) (m : ℕ)
+    (t : OldCategory D Sc cutoff) (a : Option (Fin m))
+    (z : (unitMatrixFamily D Sc cutoff i M m a).obj t) :
+    unitMatrixComponent D Sc cutoff i M m t (Pi.single a z) =
+      (unitMatrixEntry D Sc cutoff i M m a).total t z := by
+  classical
+  exact assembled_single (fun a => (unitMatrixFamily D Sc cutoff i M m a).obj t)
+    (mateTargetSpace D Sc cutoff i M t)
+    (fun a => (unitMatrixEntry D Sc cutoff i M m a).total t) a z
 
 /-- Each inverse coefficient row is a left inverse to its prescribed
 dotted-unit column (or the first mate column). -/
@@ -107,6 +114,10 @@ theorem moduleUnitCoefficientRow_even (i : I) (t : OldCategory D Sc cutoff)
   rw [add_zero]
   have h := SVec.apply_mem_part
     (moduleUnitMatrixIso_inv_even D Sc cutoff M i t hh) hz
+  rw [add_zero] at h
+  change (moduleUnitMatrixIso D Sc cutoff M i t hh).inv z ∈
+    (OddMath.FiniteSuperspace.product fun a => (unitMatrixFamily D Sc cutoff i M
+      (contentUnitCount D cutoff i (t.word : Multiset I)) a).obj t).part q at h
   exact (OddMath.FiniteSuperspace.mem_product_part _ q _).mp h a
 
 local instance unitCoefficientRowsPi :
@@ -174,12 +185,19 @@ theorem moduleUnitCoefficient_column (i : I) (t : OldCategory D Sc cutoff)
       ((moduleUnitColumn D Sc cutoff i M r.val).total t z) = z := by
   let e := moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
     (r.val • D.parity i)).iso M) t
-  have h := moduleUnitCoefficientRow_entry D Sc cutoff M i t hh (some r) (e.symm z)
-  rw [unitMatrixEntry_some_total] at h
-  simp only [LinearEquiv.apply_symm_apply] at h
-  change e (moduleUnitCoefficientRow D Sc cutoff M i t hh (some r)
-    ((moduleUnitColumn D Sc cutoff i M r.val).total t z)) = z
-  rw [h, LinearEquiv.apply_symm_apply]
+  let row : mateTargetSpace D Sc cutoff i M t →ₗ[k]
+      (((SKM.homParityShift (k := k) (r.val • D.parity i)).obj M).obj t) :=
+    moduleUnitCoefficientRow D Sc cutoff M i t hh (some r)
+  let col := (moduleUnitColumn D Sc cutoff i M r.val).total t
+  have hcolumn : (unitMatrixEntry D Sc cutoff i M
+      (contentUnitCount D cutoff i (t.word : Multiset I)) (some r)).total t (e.symm z) = col z :=
+    (unitMatrixEntry_some_total D Sc cutoff i M t _ r (e.symm z)).trans
+      (congrArg col (e.apply_symm_apply z))
+  have hentry := moduleUnitCoefficientRow_entry D Sc cutoff M i t hh (some r) (e.symm z)
+  have hrow : row (col z) = e.symm z :=
+    (congrArg row hcolumn).symm.trans hentry
+  change e (row (col z)) = z
+  exact (congrArg e hrow).trans (e.apply_symm_apply z)
 
 /-- Every other low dotted-unit column is killed in the original module
 coordinates. Together with the preceding equality this supplies the full
@@ -192,15 +210,21 @@ theorem moduleUnitCoefficient_column_ne (i : I) (t : OldCategory D Sc cutoff)
       ((moduleUnitColumn D Sc cutoff i M s.val).total t z) = 0 := by
   let e := moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
     (s.val • D.parity i)).iso M) t
-  have h := moduleUnitCoefficientRow_entry_ne D Sc cutoff M i t hh (some r) (some s)
+  let er := moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
+    (r.val • D.parity i)).iso M) t
+  let row : mateTargetSpace D Sc cutoff i M t →ₗ[k]
+      (((SKM.homParityShift (k := k) (r.val • D.parity i)).obj M).obj t) :=
+    moduleUnitCoefficientRow D Sc cutoff M i t hh (some r)
+  let col := (moduleUnitColumn D Sc cutoff i M s.val).total t
+  have hcolumn : (unitMatrixEntry D Sc cutoff i M
+      (contentUnitCount D cutoff i (t.word : Multiset I)) (some s)).total t (e.symm z) = col z :=
+    (unitMatrixEntry_some_total D Sc cutoff i M t _ s (e.symm z)).trans
+      (congrArg col (e.apply_symm_apply z))
+  have hentry := moduleUnitCoefficientRow_entry_ne D Sc cutoff M i t hh (some r) (some s)
     (by simpa only [ne_eq, Option.some.injEq] using hrs) (e.symm z)
-  rw [unitMatrixEntry_some_total] at h
-  simp only [LinearEquiv.apply_symm_apply] at h
-  change (moduleIsoLinearEquiv ((SKM.homParityShiftDatum (k := k)
-    (r.val • D.parity i)).iso M) t)
-      (moduleUnitCoefficientRow D Sc cutoff M i t hh (some r)
-        ((moduleUnitColumn D Sc cutoff i M s.val).total t z)) = 0
-  rw [h, map_zero]
+  have hrow : row (col z) = 0 := (congrArg row hcolumn).symm.trans hentry
+  change er (row (col z)) = 0
+  exact (congrArg er hrow).trans (map_zero er)
 
 /-- The coefficient-extraction window on the chosen signed induction dot
 and ordinary adjunction unit, with no unit-column abstraction remaining. -/
@@ -265,7 +289,7 @@ theorem moduleUnitCoefficient_end_naturality (i : I) (t : OldCategory D Sc cutof
     koszulSign (r.val • D.parity i) q • (e.inv ≫ pr ≫ es.hom.total t ≫ M.map f)
   rw [← Category.assoc (T.map f) e.inv, hi, Category.assoc,
     ← Category.assoc (S.map f) pr, hp, Category.assoc, hs]
-  simp only [Preadditive.comp_zsmul, Category.assoc]
+  simp only [Preadditive.comp_zsmul]
 
 end OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
 
