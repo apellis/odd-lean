@@ -77,12 +77,15 @@ theorem elvRawMixedCoefficient_odd_inverseFirst [Finite I]
         elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z ^ 2) * ↑(U.unit⁻¹) =
       (1 : End (elvRawMixedTarget D Sc cutoff bound Λ x i h E τ Z)) := by
     simpa only [U.unit_spec] using U.unit.mul_inv
-  change
-    (elvRawMixedPreDot D Sc cutoff bound Λ x i h E τ Z a ^ 2 -
-      elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z ^ 2) *
-      (↑(U.unit⁻¹) * (elvRawMixedPreDot D Sc cutoff bound Λ x i h E τ Z a -
-        elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z)) = _
-  rw [← mul_assoc, hh, one_mul]
+  have hp :
+      (elvRawMixedPreDot D Sc cutoff bound Λ x i h E τ Z a ^ 2 -
+        elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z ^ 2) *
+        (↑(U.unit⁻¹) * (elvRawMixedPreDot D Sc cutoff bound Λ x i h E τ Z a -
+          elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z)) =
+      elvRawMixedPreDot D Sc cutoff bound Λ x i h E τ Z a -
+        elvRawMixedPostDot D Sc cutoff bound Λ x i h E τ Z := by
+    rw [← mul_assoc, hh, one_mul]
+  simpa only [pow_two, End.mul_def, U] using hp
 
 variable (κ : ZMod 2) (H : B ⟶ elvWeightSpace D Sc cutoff bound Λ y)
 
