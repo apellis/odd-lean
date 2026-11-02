@@ -241,3 +241,19 @@ and ancestry, rather than relying only on a branch-name prefix.
 | --- | --- |
 | `mixed-mate-r12` | [5eb39999ad](https://github.com/apellis/odd-lean/commit/5eb39999ade91cdf9ba6d2c3459c9ad2b4cd2c25) |
 | `nonvacuum-block-inversion` | [192af291c9](https://github.com/apellis/odd-lean/commit/192af291c917faf9de11d821b637c616eba8cc4b) |
+
+## Proposed comparison source trees
+
+These trees retain proposed arguments outside the checked library. Their
+research-parent copies preserve the exact source without making any open
+proof integration head a history ancestor. Scope at each snapshot is in
+HANDOFF; later checked successors do not turn these variants into evidence.
+
+| Proposed argument | Preserved tree commit |
+| --- | --- |
+| Arbitrary-module distinct mate identity | [a9c1dbe593](https://github.com/apellis/odd-lean/commit/a9c1dbe5935a884e944e6865bb759099933eb32c) |
+| Chosen content E/F charts | [d4b6bf2096](https://github.com/apellis/odd-lean/commit/d4b6bf20961c7fb3e0b99764013c15baa4c53078) |
+| Selected scalar double append | [79f6c9ea86](https://github.com/apellis/odd-lean/commit/79f6c9ea86addb31fb53f3df83197e7d4e37c2b2) |
+| Selected weighted mate transport | [829dabe55c](https://github.com/apellis/odd-lean/commit/829dabe55cf56cb35c459286f9fb7fd8aa7750ca) |
+| Old power-quotient vacuum | [e5b7b48a7d](https://github.com/apellis/odd-lean/commit/e5b7b48a7dce67e32b5cf4e5bac777282e7f3052) |
+| Reversed quotient bounded detection | [890307122c](https://github.com/apellis/odd-lean/commit/890307122c1de62321e20eea5fc14b9edccdc645) |
