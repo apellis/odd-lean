@@ -11,7 +11,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI pending) |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
-| Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI pending | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Extend the distinct-colour inverse to arbitrary modules; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI pending; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Construct the paper's power-coefficient quotient/action bridge, actual swapped mixed caps, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
@@ -138,16 +138,24 @@ coefficients and full kernel parity.
 
 A full-ELV factor family still requires the categorical inverse, these
 multicolour relations and their naturality. Its distinct-colour factor mate
-inverse (Brundan--Ellis (1.12)) is a separate open construction.
-`ELVDistinctIdealSpan` now proves the distinct outer-colour ideal identity
-(KKO I (9.3)) with the two literal outer old ideals. Its output-last
-shuffle and mixed/exterior consumers pass strict local checks and the
-owned-declaration audit; [full CI](https://github.com/apellis/odd-lean/actions/runs/41528015864)
-passed at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated
-in #958. Next construct the explicit
-crossing-coset PBW inverse and balanced quotient comparison, then the
-literal cup-crossing-cap attachment of `DeformedActionAssembly` sections
-3--4. See [DistinctIdealSpan](DistinctIdealSpan.md). Existing ordinary-polynomial mate formulas and swapped raw
+inverse (Brundan--Ellis (1.12)) remains open on arbitrary modules and the
+chosen content/weight functors. `ELVDistinctIdealSpan` proves the distinct
+outer-colour ideal identity (KKO I (9.3));
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41528015864) passed
+at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated in #958.
+The explicit signed crossing-coset PBW decoder, the balanced quotient by
+both outer ideals, and the literal `SKM.rectangularMate` attachment are
+scoped-checked on every old representable corner; full CI remains pending.
+`cyclotomicEquiv_symm_mk` gives the quotient inverse as `q ∘ decode`.
+`moduleMate_crossing` identifies the evaluated mate with the crossing
+column after canonical J, and `moduleMateEquiv_apply` attaches its inverse.
+J twists the entire first tensor factor and retains the ordinary right
+action. The mixed/exterior, all-odd, empty-word and zero-cutoff consumers
+pass strict checks and audit all 208 owned declarations. Next extend this
+inverse to every old module using the literal ordinary-right coefficient
+kernels, then compare the chosen exact-content and weight functors.
+See [DistinctCrossingDecoder](DistinctCrossingDecoder.md) and
+[DistinctMateComparison](DistinctMateComparison.md). Existing ordinary-polynomial mate formulas and swapped raw
 mixed-mate isomorphisms do not prove this full-ELV factor input. The older ordinary-polynomial
 global constructor assumes local inversions and does not construct the
 full exterior-coefficient family. The written pairing extension and balanced

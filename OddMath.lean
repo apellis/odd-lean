@@ -1958,3 +1958,27 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctAppendTails
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingPowers
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingCoordinates
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingKernel
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingQuotient
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMixedCrossTensor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMixedMateTensor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVSCatRectangularMate
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleMate
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctSourceParity
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctMateDecoder

@@ -127,6 +127,7 @@ including full build, axiom audit and all concrete consumers.
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
 | Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662) at source head `a3384f38`, integrated in #963. Chosen counit/crossing/inverse transport remains open |
 | Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
+| Distinct-colour crossing and mate | Explicit mixed PBW decoder, both outer cyclotomic quotient spans, and literal rectangular cup-crossing-cap inverse on every old representable corner | Strict scoped producers/consumers and all 208 owned-declaration axiom checks pass; full CI pending. Arbitrary-module inverse and exact-content/weight transport remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
@@ -191,17 +192,24 @@ The general actual augmented-matrix
 attachment and normalized bubble-series construction remain open.
 See [NegativeCapMoments](NegativeCapMoments.md).
 
-`ELVDistinctIdealSpan.ideal_eq_appendRelations_sup_outputOldRelations`
-proves the full-ELV word-corner form of KKO I (9.3). For distinct final
-colours the cyclotomic ideal is exactly the sum of the two literal outer
-old ideals. The checked output-last shuffle support excludes the long
-term before relation transport; all total coefficient parity is retained.
-Both producers and the mixed/exterior, repeated-word and zero-cutoff
-consumers passed the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41528015864)
-at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated in #958.
-All 24 owned declarations pass the axiom allowlist. The explicit mixed PBW decoder,
-balanced quotient comparison and prescribed categorical mate remain open.
-See [DistinctIdealSpan](DistinctIdealSpan.md).
+`ideal_eq_appendRelations_sup_outputOldRelations` in `ELVDistinctIdealSpan`
+proves the full-ELV word-corner form of KKO I (9.3), with
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41528015864) passed
+at source head `62b981b8a0c47c013e34a7c813375f166b809c67`, integrated in #958. The cyclotomic ideal in distinct final-colour
+corners is exactly the sum of the two literal outer old ideals.
+`cyclotomicEquiv` in `ELVDistinctCrossingQuotient` supplies the independently
+balanced crossing isomorphism and the explicit inverse `q ∘ decode` on
+arbitrary full-coefficient affine representatives. The ordinary right
+action is retained. `moduleMate_crossing` identifies the evaluated literal
+`SKM.rectangularMate` with this crossing after canonical J, which twists
+the entire first tensor factor. `moduleMateEquiv_apply` attaches the
+inverse on every old representable corner, including empty words and
+zero cutoff. These twelve producers and both concrete mixed/exterior
+consumers pass strict scoped checks; all 208 owned declarations pass the
+axiom audit. Full CI remains pending. The inverse on arbitrary old modules,
+exact-content and weight transport, and the full factor family remain open.
+See [DistinctCrossingDecoder](DistinctCrossingDecoder.md) and
+[DistinctMateComparison](DistinctMateComparison.md).
 
 The chosen append comparisons now have literal generator formulas in
 `ELVProbeAppendTensors` and `ELVWeightedAppendTensors`: the selected maps
@@ -235,10 +243,13 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    functors. No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
    The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
-   also remains open. The distinct outer-colour ideal identity is now
-   full-CI verified in `ELVDistinctIdealSpan` (#958); construct the crossing-coset
-   PBW equivalence, balanced quotient comparison and prescribed mate of
-   `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
+   remains open on arbitrary modules and the chosen content/weight functors.
+   The distinct outer-colour ideal identity is full-CI verified (#958); the
+   explicit crossing-coset PBW inverse, both outer quotient spans and
+   prescribed rectangular mate attachment on every old representable corner
+   are scoped-checked, with full CI pending. Extend the inverse to arbitrary
+   modules and transport it through the chosen exact-content and weight
+   comparisons of `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
    isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content
