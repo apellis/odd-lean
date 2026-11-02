@@ -216,23 +216,22 @@ tensor formula, then prove two-letter flattening and chosen crossing
 compatibility. See [InductionSquareTransform](InductionSquareTransform.md).
 
 Keep the literal weighted coefficient ideal, including odd generators,
-distinct from the paper's power ideal T=(c_a^L_a) on the positive even
-coefficient generators. The required bridge is not yet constructed.
-If each power generator has weight at least N0, then T is contained in
-the coefficient-weight ideal W_N0. Finite dimensionality of A/T gives
-some R with W_(R+1) contained in T; the quotient arrows are therefore
-weighted(R+1) -> power(T) -> weighted(N0). Bounded injectivity for the
-larger ideal W_N0 implies it for T, not conversely. The cofinal cutoff
-schedule in #820 must satisfy its actual quantitative hypotheses.
+distinct from the paper's even-generator power ideal T. The new
+`ELVCoefficientAnnihilation` proves old E/F preserve each homogeneous
+coefficient annihilator, including every even power generator; all
+supernatural maps commute with even coefficients, so the same applies to
+both maps of chosen isomorphisms. The producer, actual pulled-back
+representable consumer and all 12 owned-declaration axiom checks pass
+strict scoped checks; full CI is pending. See
+[CoefficientAnnihilation](CoefficientAnnihilation.md).
 
-`SwappedVacuum/TransformedIdeal` already permits an arbitrary generator
-set T and proves its bounded-window quotient injectivity from generator
-weight bounds. It does not identify that ideal with the actual vacuum
-evaluation kernel. Construct this identification and prove that T's
-annihilator class is preserved by E/F, all chosen generators and inverse
-maps. Existing weighted preservation alone does not establish these
-power-quotient statements. The abstract nilpotent `CentralInverse/CoefficientIdeal`
-does not supply the missing coefficient quotient.
+Next construct the literal T-annihilated module subcategory and its E/F,
+generator and inverse restrictions. Prove the bridge
+W_(R+1) contained in T contained in W_N0, giving quotient arrows
+weighted(R+1) -> power(T) -> weighted(N0). Do not identify these quotients
+or infer injectivity after imposing an additional quotient. The existing
+arbitrary-T `TransformedIdeal` bounded detection result still requires the
+actual vacuum evaluation-kernel identification.
 
 ## Probe specialization and denominators
 
