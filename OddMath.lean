@@ -1946,6 +1946,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCounitComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -1983,6 +1985,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendAdjunction
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerQuotient
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridComposition
