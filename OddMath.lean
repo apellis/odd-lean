@@ -1914,3 +1914,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixEvaluation
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelUnitMatrixEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentUncorrectedBraid
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBraidTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDotTransforms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
