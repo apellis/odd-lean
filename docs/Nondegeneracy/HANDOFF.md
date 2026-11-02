@@ -8,8 +8,8 @@ This file records next mathematical dependencies, not session telemetry.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses scoped-checked | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
-| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish global crossing and pair/triple whiskering comparisons |
+| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
+| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI pending) |
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
@@ -127,8 +127,13 @@ is retained from #939. Independent dot families and the whole corrected ordered
 polynomial relation are implemented in #933/#934; both original exact heads
 passed full CI. Use `ELVContentMixedBraidTransforms.contentMixedBraidTransform`,
 preserving the original coefficient order and parameter twist.
-Whole multicolour and weight assembly remain open. Retain intermediate-content transports, ordered polynomial
-coefficients, full kernel parity and equal-colour crossing normalization.
+The global homogeneous weight crossing `elvWeightCross` and whole canonical
+pair coherence `elvWeightPairComparison_eq` are scoped-checked with paired
+consumers; full CI remains pending. The crossing retains the prescribed
+equal-colour normalization and the zero coordinates without a double
+predecessor. Pair/triple whiskering relation transfer and the full factor
+action remain open. Retain intermediate-content transports, ordered polynomial
+coefficients and full kernel parity.
 
 A full-ELV factor family still requires the categorical inverse, these
 multicolour relations and their naturality. Its distinct-colour factor mate
@@ -172,8 +177,8 @@ now evaluated on literal balanced coends by `ELVInductionSquareTensors`.
 `ELVWeightedAppendTensors` and `ELVProbeAppendTensors` prove the selected
 maps send every old tensor to its quotient tensor with unchanged vector,
 including the exact units. Both signed-dot intertwining identities and
-scalar hom/inverse parity are scoped-checked with mixed/vacuum consumers
-and owned audits; full CI is pending. Finish the chosen counit, crossing
+scalar hom/inverse parity are full-CI verified in #963 with mixed/vacuum consumers
+and owned audits. Finish the chosen counit, crossing
 and inverse-matrix compatibility, then content/weight transport.
 See [InductionSquareTensors](InductionSquareTensors.md),
 [WeightedAppendTensors](WeightedAppendTensors.md),
@@ -277,10 +282,10 @@ The following are unfinished specializations, not completed inverse/action resul
 | --- | --- | --- |
 | Scalar probe counit comparison | `f5a4db3ddbbf6806d1e554a40de3731dea8404e4` | The tensor calculation is proposed; final counit coordinate/operator conversion and paired consumer verification remain open. Producer `ELVProbeCounitComparison` and its topic note are outside the checked library |
 | Two-letter induction-square coherence | `f49b8d7ccdecbc686b236a016fd50d8a5c7853bb` | Proposed flattening/coherence argument; specialized inner coend conversion and concrete consumer gates remain open. Producer `ELVInductionSquareComposition` and its topic note are outside the checked library |
-| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by scoped-checked `ELVWeightedAppendTensors`/`ELVWeightedAppendDot`. Restriction/counit and crossing transport remain open |
-| Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has scoped-checked literal tensor/unit, parity and signed-dot comparison. Chosen adjunction/inverse-matrix transport remains open |
+| Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by full-CI verified `ELVWeightedAppendTensors`/`ELVWeightedAppendDot` (#963). Restriction/counit and crossing transport remain open |
+| Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 | Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
-| Input-module finite matrix assembly | `532b47927d45c384e4a6af1ed9cd57dfcdcb05ee` | Generic finite product maps are scoped-checked; whole input-module naturality and content functor inverse sources and their consumers remain unverified |
+| Input-module finite matrix assembly | `532b47927d45c384e4a6af1ed9cd57dfcdcb05ee` | Superseded by full-CI verified finite products, whole input-module naturality and fixed-output-content natural inverse functors in #961; chosen content E/F and weight transport remain open |
 | Actual vacuum coefficient functional | `658f64966768431d4d6a3011496546061e89bce2` | Proposed inverse-row extraction, literal dot/unit window and exterior naturality on the old vacuum; concrete producer/consumer checks and final weighted/swapped attachment remain open |
 | Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 

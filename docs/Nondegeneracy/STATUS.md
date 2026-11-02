@@ -123,10 +123,10 @@ including full build, axiom audit and all concrete consumers.
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization; canonical kernel/source and finite-family coordinates, with bundled mate-row equality | #929/#950 full CI; target-fixed all-content coefficient bijectivity is verified in #951 |
 | Target-fixed coefficient matrices | Positive and negative kernel maps are bijective at every old source for the target-content count, using the prescribed representable matrices and off-content zero | #951 full CI; `ELVKernelMatrixBijective` |
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
-| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Strict scoped producer/consumer checks and all 64 owned-declaration axiom checks pass; full CI pending. Chosen content E/F and original-weight assembly remain open |
+| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Full-CI verified and integrated in #961, including all 64 owned-declaration axiom checks. Chosen content E/F and original-weight assembly remain open |
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
-| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits scoped-checked, full CI pending. Chosen counit/crossing/inverse transport remains open |
-| Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
+| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits full-CI verified and integrated in #963. Chosen counit/crossing/inverse transport remains open |
+| Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
@@ -157,7 +157,7 @@ uses the existing fixed-output-content isomorphisms as literal components of
 The forward-map identities and even inverse components remain unchanged.
 Both height signs, both moving parities and zero counts are included.
 All three producers, both paired mixed-colour consumers and the audit of
-all 64 owned declarations pass strict scoped checks; full CI is pending.
+all 64 owned declarations passed the full build and audits in #961.
 Compatibility with the chosen fixed-content E/F composites, their generators
 and adjunction maps, and original-weight assembly remain open. See
 [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
@@ -204,7 +204,7 @@ The canonical `ELVInductionSquareTensors` chain is evaluated on raw balanced
 coends before specialization. Scalar hom/inverse parity and the scalar and
 weighted signed-dot intertwining identities are included. All producers,
 connected mixed/vacuum consumers and the audits of 113 owned declarations
-pass strict local checking; full CI is pending. The scalar probe specialization
+passed the full build and audits in #963. The scalar probe specialization
 retains its documented coefficient-evaluation hypothesis, discharged by the
 actual probe consumer. These results supply neither a faithful scalar
 specialization nor the remaining adjunction/crossing/inverse-matrix transport.
@@ -222,24 +222,24 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    zero counts and inverse evenness are included. Retain these exact
    coordinates. Output-arrow naturality on fixed output content is full-CI verified
    in `ELVContentMatrixInverse`. Whole finite-family input-module naturality
-   and the fixed-output-content natural inverse functors are now scoped-checked
-   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse`;
-   full CI is pending. Compare these with the chosen content induction,
+   and the fixed-output-content natural inverse functors are full-CI verified in #961
+   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse`. Compare these with the chosen content induction,
    restriction, crossing and adjunction maps, then assemble original-weight
    functors. No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
    The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
    also remains open. The distinct outer-colour ideal identity is now
-   scoped-checked in `ELVDistinctIdealSpan`; construct the crossing-coset
+   full-CI verified in `ELVDistinctIdealSpan` (#958); construct the crossing-coset
    PBW equivalence, balanced quotient comparison and prescribed mate of
    `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
    isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
    (#933/#934), with original exact-head full CI. The canonical fixed-content
    comparisons and inner-unit tensor identity are implemented (#941/#946).
-   Complete unit/counit and generator compatibility, actual global crossings,
+   Global crossing and whole canonical pair coherence are scoped-checked.
+   Complete unit/counit and generator compatibility,
    and pair/triple whiskering transfer; two-successor induction is implemented
-   (#945). The old/truncated append comparison now has scoped-checked literal
+   (#945). The old/truncated append comparison now has full-CI verified literal (#963)
    tensor/unit and signed-dot transport. Complete its chosen crossing and
    adjunction transport, then the inverse and content/weight comparisons.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
