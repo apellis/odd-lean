@@ -1976,3 +1976,4 @@ import OddMath.SKM.ELVCoefficientPowers
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
