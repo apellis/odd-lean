@@ -123,6 +123,7 @@ including full build, axiom audit and all concrete consumers.
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization; canonical kernel/source and finite-family coordinates, with bundled mate-row equality | #929/#950 full CI; target-fixed all-content coefficient bijectivity is verified in #951 |
 | Target-fixed coefficient matrices | Positive and negative kernel maps are bijective at every old source for the target-content count, using the prescribed representable matrices and off-content zero | #951 full CI; `ELVKernelMatrixBijective` |
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
+| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Strict scoped producer/consumer checks and all 64 owned-declaration axiom checks pass; full CI pending. Chosen content E/F and original-weight assembly remain open |
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
 | Append comparison helpers | Three unit-tensor formulas, arbitrary even induction-map evaluation and chosen weighted-comparison parity | #936/#940/#938 full CI; scalar/weighted five-map specializations remain unfinished |
 | Two-successor weight induction | Actual composed induction coordinates, even comparison and absent-predecessor zero cases | #945 full CI; global crossing and pair/triple relation transfer remain open |
@@ -145,9 +146,21 @@ category, with additive, linear, parity-preserving summand functors. Its
 mixed consumer checks the literal endpoint transports, every finite slot,
 the zero-count mate and the odd third-dot Koszul sign; all owned axioms pass.
 Both additions are verified by the [full build and audits](https://github.com/apellis/odd-lean/actions/runs/41489136665)
-on research head `f070980ac0a0ba23b6faf79dd53faaadfce27aa2` (#953/#954). Whole finite-family matrix
-assembly in the input module and compatibility with the chosen
-fixed-content/weight E/F composites remain open.
+on research head `f070980ac0a0ba23b6faf79dd53faaadfce27aa2` (#953/#954).
+
+`ELVMatrixFunctorNaturality` now assembles the whole finite-family matrices
+in the input module. Its source/target functors are additive, linear and
+parity preserving; the unit/cap matrices are natural in arbitrary module
+maps, including odd and inhomogeneous maps. `ELVContentMatrixFunctorInverse`
+uses the existing fixed-output-content isomorphisms as literal components of
+`contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso`.
+The forward-map identities and even inverse components remain unchanged.
+Both height signs, both moving parities and zero counts are included.
+All three producers, both paired mixed-colour consumers and the audit of
+all 64 owned declarations pass strict scoped checks; full CI is pending.
+Compatibility with the chosen fixed-content E/F composites, their generators
+and adjunction maps, and original-weight assembly remain open. See
+[MatrixFunctorNaturality](MatrixFunctorNaturality.md).
 
 `SwappedVacuum/InverseCapMoments` proves the signed coefficient-window
 recurrence and the height-zero principal cap identity from the literal slide,
@@ -179,9 +192,12 @@ See [NegativeCapMoments](NegativeCapMoments.md).
    matrices on every old supermodule (#952). Both signs, moving parities,
    zero counts and inverse evenness are included. Retain these exact
    coordinates. Output-arrow naturality on fixed output content is full-CI verified
-   in `ELVContentMatrixInverse`; prove input-module naturality and compatibility
-   with the chosen induction, restriction, crossing and adjunction maps.
-   No arbitrary-kernel evenness or tensor-flatness assumption is needed.
+   in `ELVContentMatrixInverse`. Whole finite-family input-module naturality
+   and the fixed-output-content natural inverse functors are now scoped-checked
+   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse`;
+   full CI is pending. Compare these with the chosen content induction,
+   restriction, crossing and adjunction maps, then assemble original-weight
+   functors. No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
    The full-ELV distinct-colour factor mate inverse (Brundan--Ellis (1.12))
    also remains open: formalize the distinct outer-colour ideal identity,
