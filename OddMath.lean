@@ -2009,3 +2009,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCoefficientIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateLinear
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctMateKernel
+
+import OddMath.QuiverHecke.HalfTurn.BoundedDetection
