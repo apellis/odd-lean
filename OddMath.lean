@@ -1944,6 +1944,10 @@ import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitCoefficientRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumSignedMoments
+
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctIdealSpan
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSquareTensors
