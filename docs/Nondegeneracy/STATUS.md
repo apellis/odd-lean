@@ -138,8 +138,14 @@ isomorphisms on each fixed output-content block for every old input module.
 The pointwise product families retain literal entries; inverse naturality
 holds along arbitrary old arrows. The mixed consumer checks both moving
 parities, a permuted output word, zero counts, inverse products and all owned
-axioms. Full CI is pending. Input-module naturality and compatibility with
-the chosen fixed-content/weight E/F composites remain open.
+axioms. Full CI is pending. `ELVMatrixEntryNaturality` additionally gives scoped-checked input-module
+naturality of all prescribed shifted entries on the whole old module
+category, with additive, linear, parity-preserving summand functors. Its
+mixed consumer checks the literal endpoint transports, every finite slot,
+the zero-count mate and the odd third-dot Koszul sign; all owned axioms pass.
+Full CI for this entry-level step is pending. Whole finite-family matrix
+assembly in the input module and compatibility with the chosen
+fixed-content/weight E/F composites remain open.
 
 ## Remaining critical chain
 

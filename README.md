@@ -5,7 +5,7 @@ Littlewood–Richardson rule, together with machine-checked errata to the source
 
 Research branch: [odd nondegeneracy progress board](docs/Nondegeneracy/PROGRESS.md)
 and [continuation handoff](docs/Nondegeneracy/HANDOFF.md).
-The current matrix-assembly boundary is detailed in [ModuleMatrixInverse](docs/Nondegeneracy/ModuleMatrixInverse.md).
+The current matrix-assembly and input-module naturality boundary is detailed in [ModuleMatrixInverse](docs/Nondegeneracy/ModuleMatrixInverse.md).
 
 Research status is maintained only in [STATUS](docs/Nondegeneracy/STATUS.md);
 [HANDOFF](docs/Nondegeneracy/HANDOFF.md) gives the dependency order and next targets.
