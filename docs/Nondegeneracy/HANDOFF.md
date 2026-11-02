@@ -194,7 +194,7 @@ supermodule map, and the exact ordinary counit comparison
 `appendWeightedModuleIso_hom_counit`. The latter uses the prescribed counits
 on literal restricted-module coends and the degree-zero induction component
 of that same even restriction comparison. Its producer/consumer and all
-26 owned axioms pass strict scoped checks; full CI for this addition is
+26 owned declarations pass strict scoped checks; full CI for this addition is
 pending. Finish the chosen double-append crossing, inverse and normalized
 content/weight compatibility; scalar ordinary adjunction remains separate.
 See [InductionSquareTensors](InductionSquareTensors.md),
@@ -247,12 +247,12 @@ word-corner equivalences and ordinary dot units are verified in #891.
 The reverse matrix-entry cyclotomic-ideal lemma is verified in #863.
 The chosen old-to-ordinary induction module comparison and quotient-inverse
 unit-tensor formula are full-CI verified and integrated in #897.
-`ELVProbeAppendTensors` supplies scoped-checked literal tensor/unit and signed-dot
+`ELVProbeAppendTensors` supplies full-CI verified (#963) literal tensor/unit and signed-dot
 formulas. `ELVProbeRestrictionComparison` now proves that old append restriction
 preserves scalar coefficient evaluation and that its scalar descent equals the
 chosen ordinary restriction. `probeRestrictionEqToHom_app` is identity in parity
 zero and zero in parity one. The connected mixed/vacuum consumer and all 21
-owned axioms pass strict local checks; full CI is pending. Compose the append
+owned declarations pass strict local checks; full CI is pending. Compose the append
 and restriction comparisons with the actual ordinary counit and establish its
 literal old counit value; then finish crossing and inverse-matrix transport.
 See [ProbeRestrictionComparison](ProbeRestrictionComparison.md).
@@ -304,7 +304,10 @@ and coefficient superlinearity. All three producers and concrete consumers
 pass strict scoped checks, including all 62 owned-declaration axiom checks;
 full CI is pending. See [UnitCoefficientRows](UnitCoefficientRows.md),
 [VacuumMoments](VacuumMoments.md) and
-[VacuumSignedMoments](VacuumSignedMoments.md). Attach the prescribed mixed
+[VacuumSignedMoments](VacuumSignedMoments.md). The occupied
+[VacuumTwoOddCoefficients](VacuumTwoOddCoefficients.md) consumer checks both
+operator orders and a nonzero independent exterior product in the actual old
+vacuum; the super-opposite order is explicit. Attach the prescribed mixed
 inverse maps and probe relation on the final power-quotient/swapped action;
 no actual bubble-series interface is instantiated yet.
 See [InverseCapMoments](InverseCapMoments.md). Its source head
@@ -351,7 +354,6 @@ The following are unfinished specializations, not completed inverse/action resul
 | Two-letter induction-square coherence | `f49b8d7ccdecbc686b236a016fd50d8a5c7853bb` | Proposed flattening/coherence argument; specialized inner coend conversion and concrete consumer gates remain open. Producer `ELVInductionSquareComposition` and its topic note are outside the checked library |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed source, superseded by the full-CI verified tensor/unit and signed-dot formulas (#963) and scoped-checked `ELVWeightedAppendAdjunction` restriction/counit formulas. Double-append crossing, inverse and normalized content/weight transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
-| Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 
 Recover a file with `git show <commit>:<repository-path>`. These preserved source trees are outside the checked library until their
 producer and paired consumer checks pass. Reachability is not a verification
