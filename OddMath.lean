@@ -1996,3 +1996,5 @@ import OddMath.SKM.PolynomialExteriorSupercomm
 
 import OddMath.QuiverHecke.HalfTurn.Homogeneous
 import OddMath.QuiverHecke.HalfTurn.QuotientEquivalence
+
+import OddMath.QuiverHecke.HalfTurn.BoundedDetection
