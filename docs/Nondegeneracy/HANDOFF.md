@@ -11,7 +11,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI verified in #972) |
 | Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit full-CI verified in #972 | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
-| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners full-CI verified in #972; ordinary-right kernel isomorphism/tensor transfer scoped-checked, full CI pending | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Identify the ordinary-right kernel tensor inverse with the whole categorical mate on arbitrary modules; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Extend the distinct-colour inverse to arbitrary modules; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical weighted/power bridge scoped-checked; finish quotient-algebra identification, full factor and actual swapped caps, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
@@ -163,20 +163,11 @@ scoped-checked on every old representable corner; full CI verified in #972.
 column after canonical J, and `moduleMateEquiv_apply` attaches its inverse.
 J twists the entire first tensor factor and retains the ordinary right
 action. The mixed/exterior, all-odd, empty-word and zero-cutoff consumers
-pass strict checks and audit all 208 owned declarations.
-`ELVDistinctMateKernel` now constructs the literal ordinary-right coefficient
-kernel isomorphism. `ELVMixedIndResKernel` gives the explicit two-functor
-coend realization, and the kernel inverse tensors with every old module.
-The coefficient natural isomorphism is applied before induction; the
-ordered categorical mate retains its whole coend source-coordinate equality.
-These five producers and the shifted-module, mixed/exterior, all-odd and
-empty-boundary consumer pass strict checks and audit all 108 owned
-declarations; full CI remains pending for this kernel transfer. Next identify
-the resulting tensor inverse with the whole categorical mate on arbitrary
-modules, then compare the chosen exact-content and weight functors.
+pass strict checks and audit all 208 owned declarations. Next extend this
+inverse to every old module using the literal ordinary-right coefficient
+kernels, then compare the chosen exact-content and weight functors.
 See [DistinctCrossingDecoder](DistinctCrossingDecoder.md) and
-[DistinctMateComparison](DistinctMateComparison.md) and
-[DistinctMateKernel](DistinctMateKernel.md). Existing ordinary-polynomial mate formulas and swapped raw
+[DistinctMateComparison](DistinctMateComparison.md). Existing ordinary-polynomial mate formulas and swapped raw
 mixed-mate isomorphisms do not prove this full-ELV factor input. The older ordinary-polynomial
 global constructor assumes local inversions and does not construct the
 full exterior-coefficient family. The written pairing extension and balanced

@@ -129,7 +129,6 @@ including full build, axiom audit and all concrete consumers.
 | Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662) at source head `a3384f38`, integrated in #963. Weighted restriction and ordinary counit transport are scoped-checked below; scalar ordinary counit is scoped-checked below; crossing and inverse transport remain open |
 | Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI verified in #972; pair/triple whiskering relations remain open |
 | Distinct-colour crossing and mate | Explicit mixed PBW decoder, both outer cyclotomic quotient spans, and literal rectangular cup-crossing-cap inverse on every old representable corner | Strict scoped producers/consumers and all 208 owned-declaration axiom checks pass; full CI verified in #972. Arbitrary-module inverse and exact-content/weight transport remain open |
-| Distinct ordinary-right kernel transfer | Two-functor coend realization, explicit full-coefficient kernel isomorphism and inverse naturality, arbitrary-module kernel tensor transfer, and ordered-mate coend coordinates | Five strict-scoped producers and paired shifted-module/mixed/exterior consumer pass, auditing all 108 owned declarations; full CI pending. Whole arbitrary-module categorical forward-map identity and exact-content/weight transport remain open |
 | Homogeneous coend square transport | The canonical map for a commuting functor square retains the literal tensor arrow and intertwines homogeneous append transformations with their full coefficient twist | `ELVInductionSquareTransform`, strict producer/mixed-quotient consumer checks and all 15 owned-declaration axiom checks pass; full CI verified in #972. Selected weighted map and two-letter crossing comparisons remain separate |
 | Chosen weighted ordinary adjunction | Even identity-vector restriction-square natural isomorphism for arbitrary input-module maps, and literal ordinary counit transport through the selected append comparison | `ELVWeightedAppendAdjunction`: producer/consumer and all 26 owned declarations checked; full CI verified in #972. Normalized content/weight and crossing compatibility remain separate |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
@@ -237,19 +236,10 @@ the entire first tensor factor. `moduleMateEquiv_apply` attaches the
 inverse on every old representable corner, including empty words and
 zero cutoff. These twelve producers and both concrete mixed/exterior
 consumers pass strict scoped checks; all 208 owned declarations pass the
-axiom audit. Full CI is verified in #972. The ordinary-right coefficient
-kernel isomorphism is now constructed in `ELVDistinctMateKernel`, with the
-explicit two-functor coend realization and arbitrary-module tensor transfer.
-Its source coefficient comparison occurs before induction and retains
-canonical J and the full quotient PBW decoder. Five producers and their
-paired shifted-module, mixed/exterior and empty-boundary consumer pass strict
-scoped checks and audit all 108 owned declarations; full CI is pending.
-The final whole-map identity attaching this tensor inverse to the actual
-arbitrary-module categorical mate, exact-content and weight transport, and
-the full factor family remain open.
+axiom audit. full CI verified in #972. The inverse on arbitrary old modules,
+exact-content and weight transport, and the full factor family remain open.
 See [DistinctCrossingDecoder](DistinctCrossingDecoder.md) and
-[DistinctMateComparison](DistinctMateComparison.md) and
-[DistinctMateKernel](DistinctMateKernel.md).
+[DistinctMateComparison](DistinctMateComparison.md).
 
 The chosen append comparisons now have literal generator formulas in
 `ELVProbeAppendTensors` and `ELVWeightedAppendTensors`: the selected maps
@@ -305,10 +295,8 @@ and normalized content/weight transport are not asserted.
    The distinct outer-colour ideal identity is full-CI verified (#958); the
    explicit crossing-coset PBW inverse, both outer quotient spans and
    prescribed rectangular mate attachment on every old representable corner
-   are full-CI verified in #972. The ordinary-right kernel isomorphism and
-   arbitrary-module kernel tensor transfer are scoped-checked with full CI
-   pending. Identify the tensor inverse with the whole prescribed categorical
-   mate on arbitrary modules, then transport through the chosen exact-content and weight
+   are scoped-checked, with full CI verified in #972. Extend the inverse to arbitrary
+   modules and transport it through the chosen exact-content and weight
    comparisons of `DeformedActionAssembly` sections 3--4. The swapped raw mixed-mate
    isomorphisms do not supply this factor inverse. The whole
    corrected content braid and three independent dot families are implemented
