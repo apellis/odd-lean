@@ -25,6 +25,11 @@ the selected module map, and `squareLinear_tensor` gives the generator
 formula on those carriers. The carrier conversion is performed with
 abstract functors before specializing to scalar or weighted quotients.
 
+`composition_total_linear` and `total_linear_congr` expose total-map
+composition and equality as linear-map statements while the endpoint
+supermodules are abstract. The scalar and weighted selected comparisons
+use them before evaluating concrete coend generators.
+
 The paired consumer uses the actual append/truncation square and a
 restricted truncated mixed representable, the actual quotient-induction
 counit, both moving parities and arbitrary old output arrows.
