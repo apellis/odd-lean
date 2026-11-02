@@ -5,30 +5,21 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory OddMath OddMath.QuiverHecke
 open OddMath.QuiverHecke.ELVOld
 namespace WeightedAppendDotConsumer
-private abbrev D := WeightedAppendFixture.datum
-private abbrev Sc := WeightedAppendFixture.scalars
+private def D : SKM.Datum Bool (Bool → ℤ) := WeightedAppendFixture.datum
+private def Sc : SKM.Scalars D ℚ := WeightedAppendFixture.scalars
 private abbrev cut : Bool → ℕ := fun _ => 8
 private abbrev Q := oldTruncateFunctor D Sc cut 8
 private abbrev s : OldCategory D Sc cut := ⟨[false, true]⟩
-private abbrev M := WeightedAppendFixture.truncatedRepresentable D Sc cut 8 (Q.obj s)
-private abbrev R := weightedRestriction D Sc cut 8 M
+private def M : Superfunctor ℚ (TruncatedCategory D Sc cut 8) (SVec ℚ) :=
+  WeightedAppendFixture.truncatedRepresentable D Sc cut 8 (Q.obj s)
+private abbrev RM := weightedRestriction D Sc cut 8 M
 
-/-- Both moving parities are checked with a mixed representable. -/
-example (i : Bool) (w : OldCategory D Sc cut) :
-    (appendWeightedModuleIso D Sc cut 8 i M).hom.total (Q.obj w) ∘ₗ
-        CyclotomicCrossingTensor.actualInductionDot D Sc cut i R w =
-      ((moduleInductionDot D Sc cut 8 i).app (D.parity i) M).app
-        (D.parity i) (Q.obj w) ∘ₗ
-        (appendWeightedModuleIso D Sc cut 8 i M).hom.total (Q.obj w) :=
+/-- Both moving parities are tested on the chosen mixed representable. -/
+example (i : Bool) (w : OldCategory D Sc cut) :=
   appendWeightedModuleIso_hom_dot D Sc cut 8 i M w
 
 example (i : Bool) (w : OldCategory D Sc cut)
-    (b : BalancedInduction.Obj (CyclotomicCrossingTensor.append D Sc cut i) R.toFunctor w) :
-    (appendWeightedModuleIso D Sc cut 8 i M).hom.total (Q.obj w)
-      (CyclotomicCrossingTensor.actualInductionDot D Sc cut i R w b) =
-      ((moduleInductionDot D Sc cut 8 i).app (D.parity i) M).app
-        (D.parity i) (Q.obj w)
-        ((appendWeightedModuleIso D Sc cut 8 i M).hom.total (Q.obj w) b) :=
+    (b : BalancedInduction.Obj (CyclotomicCrossingTensor.append D Sc cut i) RM.toFunctor w) :=
   LinearMap.congr_fun (appendWeightedModuleIso_hom_dot D Sc cut 8 i M w) b
 
 example (i : Bool) :

@@ -19,7 +19,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (i : I) (M : Superfunctor k (TruncatedCategory D Sc cutoff N) (SVec k))
 local notation "Q" => oldTruncateFunctor D Sc cutoff N
 local notation "J" => CyclotomicCrossingTensor.append D Sc cutoff i
-local notation "R" => weightedRestriction D Sc cutoff N M
+local notation "RM" => weightedRestriction D Sc cutoff N M
 
 /-- The old dot maps to the same appended affine diagram in the literal
 weighted quotient. -/
@@ -31,16 +31,18 @@ theorem oldTruncateFunctor_map_appendDot (s : OldCategory D Sc cutoff) :
 old coend dot and the prescribed truncated dot on every output word.
 No homogeneous-arrow or homogeneous-vector restriction is needed. -/
 theorem appendWeightedModuleIso_hom_dot (w : OldCategory D Sc cutoff) :
-    (appendWeightedModuleIso D Sc cutoff N i M).hom.total ((Q).obj w) ∘ₗ
-        CyclotomicCrossingTensor.actualInductionDot D Sc cutoff i R w =
-      ((moduleInductionDot D Sc cutoff N i).app (D.parity i) M).app
-        (D.parity i) ((Q).obj w) ∘ₗ
-        (appendWeightedModuleIso D Sc cutoff N i M).hom.total ((Q).obj w) := by
+    weightedAppendComparisonLinear D Sc cutoff N i M w ∘ₗ
+        CyclotomicCrossingTensor.actualInductionDot D Sc cutoff i RM w =
+      BalancedInduction.transformLinear
+        (truncatedAppendComponent_supernatural D Sc cutoff N (by
+          simpa only [pow_one, one_nsmul] using firstDot_pow_parity D Sc i [] 1)) M ((Q).obj w) ∘ₗ
+        weightedAppendComparisonLinear D Sc cutoff N i M w := by
   apply BalancedInduction.hom_ext
   intro s g b
   simp only [LinearMap.comp_apply,
     CyclotomicCrossingTensor.actualInductionDot_tensor,
-    appendWeightedModuleIso_hom_tensor, moduleInductionDot_tensor]
+    appendWeightedModuleIso_hom_tensor, BalancedInduction.transformLinear_tensor]
   rw [(Q).map_comp, map_twist, oldTruncateFunctor_map_appendDot]
+  rfl
 
 end OddMath.QuiverHecke.ELVOld
