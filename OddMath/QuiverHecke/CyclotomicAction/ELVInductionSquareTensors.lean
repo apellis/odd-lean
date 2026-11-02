@@ -15,24 +15,6 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld.BalancedInduction
 universe u
-
-/-- Total composition as a linear-map equality, with the endpoint
-instances fixed while the supermodules are abstract. -/
-theorem composition_total_linear
-    {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G H : Superfunctor k C (SVec k)} (f : F ⟶ G) (g : G ⟶ H) (w : C) :
-    (f ≫ g).total w = g.total w ∘ₗ f.total w :=
-  Superfunctor.comp_total f g w
-
-/-- Equality of module maps gives equality of their total linear maps
-without introducing a new concrete endpoint presentation. -/
-theorem total_linear_congr
-    {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
-    [Preadditive C] [Linear k C] [Supercategory k C]
-    {F G : Superfunctor k C (SVec k)} {f g : F ⟶ G} (h : f = g) (w : C) :
-    f.total w = g.total w := congrArg (fun a : F ⟶ G => a.total w) h
-
 private theorem four_mem
     {k : Type u} [CommRing k] {E : Type*} [Category E]
     [Preadditive E] [Linear k E] [Supercategory k E]

@@ -41,8 +41,7 @@ matrix components, and `_even` checks both directions as module morphisms.
 
 This step is scoped-checked with a mixed-colour consumer, including arbitrary
 old input modules, both moving parities, reordered output words, inverse
-naturality, height zero and the axiom allowlist. Full CI passed in #953 and
-in the integrated research-head check for #954.
+naturality, height zero and the axiom allowlist. Full CI is pending.
 It concerns output-arrow naturality of the restricted old-category matrices.
 It does not establish naturality in input-module maps or identify the source
 and target with the chosen fixed-content E/F composites.
@@ -58,9 +57,7 @@ there is no entry rescaling. The summand functors are additive, linear and
 parity-preserving.
 
 This entry-level step and its mixed representable consumer pass strict local
-checks and the owned-declaration axiom audit. The integrated research head
-`f070980ac0a0ba23b6faf79dd53faaadfce27aa2` passed
-[full CI](https://github.com/apellis/odd-lean/actions/runs/41489136665). Naturality
+checks and the owned-declaration axiom audit. Full CI is pending. Naturality
 of the assembled matrix and its inverse in the input module still needs
 finite-family map assembly; entry-level naturality alone is not a bundled
 natural isomorphism of module functors.
