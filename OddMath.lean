@@ -82,6 +82,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernel
 import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteKernelTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVKernelTensorGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionKernelGrading
+import OddMath.QuiverHecke.CyclotomicAction.ELVGradedKernelEquivalence
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionGrading
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionMap
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleRestriction
