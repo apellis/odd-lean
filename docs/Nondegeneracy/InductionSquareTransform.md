@@ -5,8 +5,8 @@ in [DeformedActionAssembly](DeformedActionAssembly.md), sections 5–6.
 It uses the literal ordinary balanced tensors and retains full coefficient
 parity in homogeneous transformations.
 
-For a commuting square `J ⋙ U = Q ⋙ T`,
-`ELVInductionSquareTransform.coendSquareMap` sends the coend for `J` with
+For a commuting square `J ⋙ U = Q ⋙ T`, `ELVInductionSquareTransform`
+defines `coendSquareMap`, sending the coend for `J` with
 input `Q ⋙ M` at `w` to the coend for `T` with input `M` at `U(w)`.
 It sends `[g ⊗ b]` to `[U(g) ⊗ b]`, with the explicit endpoint equality
 from the commuting square. `coendSquareCoefficient_balance` proves
