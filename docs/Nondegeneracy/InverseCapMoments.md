@@ -46,7 +46,11 @@ checks occupied rational module examples at N=P=1 and N=P=2. The degree-two
 example uses a nonzero nilpotent reservoir dot, a companion probe dot for
 (T-1)², and the literal coefficient-extraction window; every hypothesis is
 proved. The consumer also audits all owned declarations against the
-standard axiom allowlist.
+standard axiom allowlist. The separate signed consumer
+`scripts/NonVacuity/SwappedInverseCapSigned.lean` checks q=-1 and g(T)=T²+1
+on an occupied rational two-dimensional example, including its next right
+moment. It retains the signed probe square x²=-1 and a nonzero nilpotent
+reservoir dot.
 
 This is an intermediate algebraic identification. It does not construct
 the actual swapped vacuum, its coefficient-extraction functional or its
