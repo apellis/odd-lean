@@ -123,13 +123,14 @@ including full build, axiom audit and all concrete consumers.
 | Ordinary-right kernel endpoints | Prescribed mate source endpoint normalization; canonical kernel/source and finite-family coordinates, with bundled mate-row equality | #929/#950 full CI; target-fixed all-content coefficient bijectivity is verified in #951 |
 | Target-fixed coefficient matrices | Positive and negative kernel maps are bijective at every old source for the target-content count, using the prescribed representable matrices and off-content zero | #951 full CI; `ELVKernelMatrixBijective` |
 | Arbitrary-module matrix inverses | Prescribed unit and cap matrix isomorphisms on every old supermodule, with literal forward-map identity and even inverse, including height zero | #952 full CI; `ELVModuleMatrixInverse`; content/weight natural-functor assembly remains open |
-| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Full-CI verified and integrated in #961, including all 64 owned-declaration axiom checks. Chosen content E/F and original-weight assembly remain open |
+| Whole matrix input-module naturality | Literal finite unit/cap matrices are natural in every old module map; `contentUnitMatrixFunctorNatIso` and `contentCapMatrixFunctorNatIso` give the fixed-output-content natural inverses, retaining both signs/parities, zero counts and even inverse components | Full CI passed in #961 at source head `55c6d763`; [exact-head run](https://github.com/apellis/odd-lean/actions/runs/41532403900). Chosen content E/F and original-weight assembly remain open |
 | Off-content coefficient matrices | Actual positive and negative kernel-map bijectivity outside target content | #914/#928 verified together in #949; the earlier #928 cache-restore failure is superseded |
-| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits full-CI verified and integrated in #963. Chosen counit/crossing/inverse transport remains open |
+| Chosen append tensor and dot comparisons | The canonical induction-square formula on literal balanced coends identifies the selected scalar and weighted append maps on every generator and unit; both signed-dot transports are proved | Existing helpers #936/#940/#938 full CI; new `ELVInductionSquareTensors`, `ELVProbeAppendTensors`, `ELVWeightedAppendTensors` and `ELVWeightedAppendDot` producers/consumers/owned audits passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662) at source head `a3384f38`, integrated in #963. Chosen counit/crossing/inverse transport remains open |
 | Two-successor weight induction and crossing | Composed induction coordinates, global homogeneous crossing and whole canonical pair comparison; absent-predecessor zero cases | #945 full CI; crossing and pair coherence scoped-checked, full CI pending; pair/triple whiskering relations remain open |
 | Last-boundary separation | Weighted separation for signed odd and ordinary even positioned last-boundary polynomials | #944 full CI; no affine reversal equivalence or identification of an action kernel is supplied |
 | Diagonal positive crossing | Prescribed crossing augmented by literal low polynomial columns | #776 full CI; arbitrary-module component inverses are verified in #952; fixed-content/weight assembly is separate |
 | Odd exterior principal cap model | Occupied level-two model with nonzero odd exterior coefficient, signed probe square −1, homogeneous/superlinear maps and literal inverse moments K₁=−δ, K₂=1, K₃=−δ | Full-CI verified and integrated in #957. [OddCapExterior](OddCapExterior.md); this is a concrete normalization test, not the actual action attachment |
+| Old vacuum coefficient extraction and signed moments | Prescribed unit-inverse rows give literal coefficient windows and full-coefficient superlinearity; the empty-word representable has zero mate source. Canonical upper-Hom transport gives the raw monomial window, actual higher cyclotomic recurrence and all-exponent signed-dot comparison | Three producers and paired mixed/exterior consumers pass strict scoped checks; all 62 owned declarations pass the axiom allowlist. Full CI pending. [UnitCoefficientRows](UnitCoefficientRows.md), [VacuumMoments](VacuumMoments.md), [VacuumSignedMoments](VacuumSignedMoments.md). Final power-quotient/swapped factor and mixed caps remain open |
 
 Older table rows describe their original integration boundary; the consolidated
 entries above supersede older scoped-only descriptions for these components.
@@ -157,7 +158,8 @@ uses the existing fixed-output-content isomorphisms as literal components of
 The forward-map identities and even inverse components remain unchanged.
 Both height signs, both moving parities and zero counts are included.
 All three producers, both paired mixed-colour consumers and the audit of
-all 64 owned declarations passed the full build and audits in #961.
+all 64 owned declarations passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41532403900)
+at source head `55c6d763`, integrated in #961.
 Compatibility with the chosen fixed-content E/F composites, their generators
 and adjunction maps, and original-weight assembly remain open. See
 [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
@@ -170,7 +172,11 @@ bubble-series formula. Occupied level-one and degree-two companion/nilpotent
 consumers pass strict local checking and the owned-declaration axiom audit.
 [Full CI](https://github.com/apellis/odd-lean/actions/runs/41522225499) passed
 for source head `532683e2db4770b22950a5356863935e9c1d8851`, integrated in #955.
-The coefficient-extraction window and map identifications still need attachment to the concrete swapped action; this is not yet its
+The coefficient-extraction window, raw monomial normalization, signed higher
+moments and full-coefficient naturality are now scoped-checked on the actual
+old empty-word representable in `ELVUnitCoefficientRows`, `ELVVacuumMoments`
+and `ELVVacuumSignedMoments`. The final coefficient quotient, swapped factor
+and mixed inverse-cap identifications remain open; this is not yet their
 normalized bubble theorem. See [InverseCapMoments](InverseCapMoments.md).
 
 `SwappedVacuum/NegativeCapMoments` proves the negative-height polynomial
@@ -204,7 +210,8 @@ The canonical `ELVInductionSquareTensors` chain is evaluated on raw balanced
 coends before specialization. Scalar hom/inverse parity and the scalar and
 weighted signed-dot intertwining identities are included. All producers,
 connected mixed/vacuum consumers and the audits of 113 owned declarations
-passed the full build and audits in #963. The scalar probe specialization
+passed [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662)
+at source head `a3384f38`, integrated in #963. The scalar probe specialization
 retains its documented coefficient-evaluation hypothesis, discharged by the
 actual probe consumer. These results supply neither a faithful scalar
 specialization nor the remaining adjunction/crossing/inverse-matrix transport.
@@ -222,8 +229,8 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    zero counts and inverse evenness are included. Retain these exact
    coordinates. Output-arrow naturality on fixed output content is full-CI verified
    in `ELVContentMatrixInverse`. Whole finite-family input-module naturality
-   and the fixed-output-content natural inverse functors are full-CI verified in #961
-   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse`. Compare these with the chosen content induction,
+   and the fixed-output-content natural inverse functors are full-CI verified
+   in `ELVMatrixFunctorNaturality` and `ELVContentMatrixFunctorInverse` (#961). Compare these with the chosen content induction,
    restriction, crossing and adjunction maps, then assemble original-weight
    functors. No arbitrary-kernel evenness or tensor-flatness assumption is needed.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`.
@@ -239,8 +246,8 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    Global crossing and whole canonical pair coherence are scoped-checked.
    Complete unit/counit and generator compatibility,
    and pair/triple whiskering transfer; two-successor induction is implemented
-   (#945). The old/truncated append comparison now has full-CI verified literal (#963)
-   tensor/unit and signed-dot transport. Complete its chosen crossing and
+   (#945). The old/truncated append comparison now has full-CI verified literal
+   tensor/unit and signed-dot transport (#963). Complete its chosen crossing and
    adjunction transport, then the inverse and content/weight comparisons.
 3. Assemble compatible full-ELV factors and the concrete swapped action.
    Source norms, target denominators, mate criteria, weak Sigma and actual
@@ -254,7 +261,12 @@ See [ProbeAppendTensors](ProbeAppendTensors.md),
    CScalars transport (#864), retaining separate target-content exponents.
 
 4. Use the verified joint source detection (#819, #820), retaining the actual
-   weighted coefficient ideal, including odd generators. Construct the action's
+   weighted coefficient ideal, including odd generators. The paper's
+   even-generator power ideal T is a different quotient: explicitly construct
+   its action and inverse-map preservation, the weighted/power quotient bridge,
+   and the evaluation-kernel identification before applying detection to it.
+   Old-vacuum extraction and signed higher moments are scoped-checked, with
+   full CI pending. Construct the action's
    literal vacuum/corner evaluation and all-height normalized bubbles, prove
    the bounded recovery identity, and instantiate the existing observation
    consumer. Apply the finite-colour and upward-to-oriented reductions.

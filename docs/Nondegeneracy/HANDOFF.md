@@ -13,7 +13,7 @@ This file records next mathematical dependencies, not session telemetry.
 | Old/truncated action comparison | Pointwise append module isomorphism verified | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840) | Input-module naturality is verified in #868; finish chosen dot/crossing/adjunction transport, then exact content and weight assembly |
 | Full-ELV factor family | Categories, adjunction and old-module component inverses verified; content/weight relation assembly remains open | Content parity (#755), weight E/F and adjunction (#757, #781), polynomial relations | Content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
-| Vacuum and bubble recovery | Coordinate comparisons ready; final instance blocked | Joint full-coefficient source detection (#812, #819, #820), whole-word evaluation, abstract signed bounded recovery | Actual action and normalized adjunction must produce its vacuum, corner evaluation, all-height bubble series and bounded recovery identity |
+| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI pending; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Construct the paper's power-coefficient quotient/action bridge, actual swapped mixed caps, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
 ## Categorical inverse: precise interfaces
@@ -89,8 +89,9 @@ and `contentCapMatrixFunctorNatIso`, combining this naturality with the existing
 output-content component inverses. They are natural along every input-module
 map and retain literal forward components and even inverses, including both
 height signs/parities and zero finite counts. Strict scoped producer and
-paired-consumer checks pass, including all 64 owned-declaration axiom checks;
-full CI is pending. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
+paired-consumer checks and all 64 owned-declaration axiom checks passed
+[full CI](https://github.com/apellis/odd-lean/actions/runs/41532403900)
+at source head `55c6d763`, integrated in #961. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
 
 Next compare these natural isomorphisms with the actual fixed-content functors,
 then transfer to original-weight functors. Keep the target-fixed count,
@@ -177,17 +178,33 @@ now evaluated on literal balanced coends by `ELVInductionSquareTensors`.
 `ELVWeightedAppendTensors` and `ELVProbeAppendTensors` prove the selected
 maps send every old tensor to its quotient tensor with unchanged vector,
 including the exact units. Both signed-dot intertwining identities and
-scalar hom/inverse parity are full-CI verified in #963 with mixed/vacuum consumers
-and owned audits. Finish the chosen counit, crossing
+scalar hom/inverse parity passed strict mixed/vacuum consumers, owned
+audits and [full CI](https://github.com/apellis/odd-lean/actions/runs/41535042662)
+at source head `a3384f38`, integrated in #963. Finish the chosen counit, crossing
 and inverse-matrix compatibility, then content/weight transport.
 See [InductionSquareTensors](InductionSquareTensors.md),
 [WeightedAppendTensors](WeightedAppendTensors.md),
 [WeightedAppendDot](WeightedAppendDot.md) and
 [ProbeAppendTensors](ProbeAppendTensors.md).
 
-Keep the literal weighted coefficient ideal, including all odd generators.
-No even-powers replacement is justified. A quotient must preserve the action
-and its prescribed inverse, not merely append maps.
+Keep the literal weighted coefficient ideal, including odd generators,
+distinct from the paper's power ideal T=(c_a^L_a) on the positive even
+coefficient generators. The required bridge is not yet constructed.
+If each power generator has weight at least N0, then T is contained in
+the coefficient-weight ideal W_N0. Finite dimensionality of A/T gives
+some R with W_(R+1) contained in T; the quotient arrows are therefore
+weighted(R+1) -> power(T) -> weighted(N0). Bounded injectivity for the
+larger ideal W_N0 implies it for T, not conversely. The cofinal cutoff
+schedule in #820 must satisfy its actual quantitative hypotheses.
+
+`SwappedVacuum/TransformedIdeal` already permits an arbitrary generator
+set T and proves its bounded-window quotient injectivity from generator
+weight bounds. It does not identify that ideal with the actual vacuum
+evaluation kernel. Construct this identification and prove that T's
+annihilator class is preserved by E/F, all chosen generators and inverse
+maps. Existing weighted preservation alone does not establish these
+power-quotient statements. The abstract nilpotent `CentralInverse/CoefficientIdeal`
+does not supply the missing coefficient quotient.
 
 ## Probe specialization and denominators
 
@@ -238,8 +255,17 @@ all contents or add another conditional factor-family wrapper.
 and degree-two concrete consumers and an owned-declaration axiom audit.
 Its signed recurrence derives the principal cap and all positive-index
 right moments from the slide, probe polynomial and coefficient-extraction
-window. Attach the latter window and the literal inverse maps to the
-actual vacuum; no actual bubble-series interface is instantiated yet.
+window. The window is now attached to the actual old empty-word
+representable by `ELVUnitCoefficientRows`; `ELVVacuumMoments` and
+`ELVVacuumSignedMoments` prove its full-coefficient raw normalization,
+higher cyclotomic recurrence, all-exponent actual signed-dot comparison
+and coefficient superlinearity. All three producers and concrete consumers
+pass strict scoped checks, including all 62 owned-declaration axiom checks;
+full CI is pending. See [UnitCoefficientRows](UnitCoefficientRows.md),
+[VacuumMoments](VacuumMoments.md) and
+[VacuumSignedMoments](VacuumSignedMoments.md). Attach the prescribed mixed
+inverse maps and probe relation on the final power-quotient/swapped action;
+no actual bubble-series interface is instantiated yet.
 See [InverseCapMoments](InverseCapMoments.md). Its source head
 `532683e2db4770b22950a5356863935e9c1d8851` passed
 [full CI](https://github.com/apellis/odd-lean/actions/runs/41522225499) and
@@ -285,8 +311,6 @@ The following are unfinished specializations, not completed inverse/action resul
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed sources; tensor/unit and signed-dot comparison are superseded by full-CI verified `ELVWeightedAppendTensors`/`ELVWeightedAppendDot` (#963). Restriction/counit and crossing transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 | Raw even mixed mate and coefficient comparison | `159914dd525f8caca2d979cb068ecdcfedc095f6` | Proposed literal componentwise source norm, even mate, coefficient uniqueness and parity-unified attachment; both producer/consumer pairs remain unverified |
-| Input-module finite matrix assembly | `532b47927d45c384e4a6af1ed9cd57dfcdcb05ee` | Superseded by full-CI verified finite products, whole input-module naturality and fixed-output-content natural inverse functors in #961; chosen content E/F and weight transport remain open |
-| Actual vacuum coefficient functional | `658f64966768431d4d6a3011496546061e89bce2` | Proposed inverse-row extraction, literal dot/unit window and exterior naturality on the old vacuum; concrete producer/consumer checks and final weighted/swapped attachment remain open |
 | Global weight crossing comparison | `cd6341f610847f5a72b92a7b20c8c09061da0593` | Proposed whole crossings and pair comparison; the first producer has a scoped check, while this preserved combined source does not establish the consumer or second comparison |
 
 Recover a file with `git show <commit>:<repository-path>`. These preserved source trees are outside the checked library until their
