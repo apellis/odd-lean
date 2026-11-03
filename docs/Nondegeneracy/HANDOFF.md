@@ -42,14 +42,21 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`HalfTurn.ContextualOldGenerators.dot` and `.cross` now identify the
+actual extended physical OLD generators with the half-turn of the
+original affine layer, retaining arbitrary contexts, exact endpoint
+transports and the negative equal crossing. Strict occupied mixed/two-odd
+consumer checks audit all 25 declarations. Use these equalities with the
+quotient coordinate square, then attach the actual path/layer matrix and
+source-bubble maps; see [ContextualOldGenerators](ContextualOldGenerators.md).
+
 `HalfTurn.PowerWordQuotientCoordinates.quotientEquiv` now identifies the
 full source Hom modulo the exact transformed boundary and elementary-power
 ideal with every actual regular-power word vector. Its inverse coordinate
 and the chronological square for the existing signed OLD source map are
 proved, including full inhomogeneous coefficient arrows and the literal
 source-order sign. Strict occupied mixed/two-odd consumers audit all
-eighteen declarations. Next identify the contextual append generators
-with the half-turn of the diagram layer, attach the actual layer matrix,
+eighteen declarations. The contextual generator equalities are checked above; next attach the actual layer matrix,
 and identify source-placed bubbles with coefficient insertion. The complete
 chosen factor and central matrix obligations remain prerequisites for an
 observation; see [PowerWordQuotientCoordinates](PowerWordQuotientCoordinates.md).
