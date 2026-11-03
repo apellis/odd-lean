@@ -2255,3 +2255,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCharts
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightDistinctSlides
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightDistinctSlideRelations
