@@ -1922,6 +1922,13 @@ gradings on the represented shifted kernels, prove that the prescribed
 forward matrix has degree zero, then use inverse homogeneity and Yoneda
 to realize the positive-degree closure on every module. Do not infer an
 integer grading on arbitrary ungraded module Homs.
+`ELVModuleCentreDegree` now supplies the reconstruction implication:
+represented parity-component degree is equivalent to the degree of the
+recovered source coefficient, whose realization equals the whole natural
+transformation on every exact-content module. Strict nonzero odd
+positive-content checks audit all three declarations. The actual
+inverse-defined closure and its positive represented degree remain
+unsupplied; see [ModuleCentreDegree](ModuleCentreDegree.md).
 
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
