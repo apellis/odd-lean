@@ -40,13 +40,36 @@ The complete inventory of preserved topic variants is in
 | Global probe adjunction and dot | [ef53181050](https://github.com/apellis/odd-lean/commit/ef53181050a914dcfb682c996412ae41326e85c0) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeWeightAdjunction.lean`) | Both global right-adjunction and signed-dot producer/consumer pairs passed scoped checks; whole weight dot-unit and complete probe-family assembly remain open. |
 | Local pre-adjunction preparation | [e661ef0b68](https://github.com/apellis/odd-lean/commit/e661ef0b682ae0876cbc60cdd4a038c65bd4df4c) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeVacuumPreAdjunction.lean`) | Private zero-lower braid and height-transport helpers checked; actual adjacent-record specialization and paired consumer remain pending. |
 
+## Exact source classes for power-word vectors
+
+`HalfTurn.PowerWordQuotientCoordinates.quotientEquiv` now identifies the
+full source Hom modulo the exact transformed boundary and elementary-power
+ideal with every actual regular-power word vector. Its inverse coordinate
+and the chronological square for the existing signed OLD source map are
+proved, including full inhomogeneous coefficient arrows and the literal
+source-order sign. Strict occupied mixed/two-odd consumers audit all
+eighteen declarations. Next identify the contextual append generators
+with the half-turn of the diagram layer, attach the actual layer matrix,
+and identify source-placed bubbles with coefficient insertion. The complete
+chosen factor and central matrix obligations remain prerequisites for an
+observation; see [PowerWordQuotientCoordinates](PowerWordQuotientCoordinates.md).
+
 ## Dependency order and readiness
+
+The distinct-relation and reservoir-row integration #1018 passed the full
+warning-free build, global axiom audit and all concrete consumers at source
+`e32a8614` (run 41701950651), integrated at `3014d062`. This verifies the
+selected quadratic block, both global distinct slides, raw and nested
+uncorrected multicolour inputs, reindexed inverse entries and pair chart,
+all dotted reservoir rows, contextual vacuum words and Hom-entry evaluation.
+Later canonical local, corrected braid and quotient-coordinate additions
+retain their separate scoped-check/full-integration boundaries below.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full CI verified in #1014; use the selected factor in the swapped assembly |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs pass strict checks; finish chosen local records and remaining multicolour transport |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs passed full CI in #1018; finish chosen local records and remaining multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
@@ -745,11 +768,45 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVContentMissingLocal.contentMissingLoc` now constructs the untruncated
+local record at arbitrary content missing the moving colour, including
+both inverse orientations at height zero. Its coefficients are the
+prescribed missing-colour inverse rows. Three changed producers and the
+mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
+74 owned declarations; the legacy vacuum consumer also passes. Restrict
+to evaluated modules, transport the upper append to its stored content,
+and compare the absent global lower loop with zero; see
+[ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeReindexRows` now preserves both prescribed dotted unit/counit
+rows through the same append comparisons, for every exponent including
+zero and arbitrary module input. Strict mixed reordered-content/shifted
+consumer checks audit all 36 owned declarations. Combine these with the
+whole mate square to identify the evaluated/natural local fields and
+transported inverse. The absent-lower-predecessor sectors and whole-weight
+assembly are still separate; see [ProbeReindexRows](ProbeReindexRows.md).
+`ELVProbeReindexMateNatural` now proves the whole OLD module-map mate
+square through the exact lower append comparison and restricted upper
+comparison. Strict mixed reordered-content/shifted consumer checks audit
+all 39 owned declarations. Attach the dotted unit/counit rows and the
+canonical evaluated fields; see [ProbeReindexMateNatural](ProbeReindexMateNatural.md).
+`ELVProbeReindexMate` now proves the all-vector chosen negative-mate
+square through the same two append comparisons, preserving every
+coefficient arrow and twist. Strict producer and mixed reordered-content/
+shifted consumer checks audit all 38 owned declarations. Lift to whole
+module/natural maps and attach the prescribed dotted unit/counit rows
+before constructing the canonical local record. See
+[ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeReindexCrossing` now identifies the prescribed positive crossing
+through the selected pair comparison on all raw vectors, whole module
+maps and full evaluated categories. Strict mixed regular-probe/odd-map
+consumer checks audit all 179 owned declarations. Attach the distinct
+mate inverse and negative equal normalization; see
+[ProbeReindexCrossing](ProbeReindexCrossing.md).
 `ELVProbeReindexPair` now gives the exact upper-then-lower append
 comparison on raw and evaluated modules, with evenness and an all-vector
 nested tensor formula retaining both coefficient arrows. Strict producer
 and mixed reordered-content/odd-input consumer checks audit all 67 owned
-declarations. Compare the selected pair crossing and distinct mate next;
+declarations. The selected positive crossing square is checked above; attach the distinct mate next;
 see [ProbeReindexPair](ProbeReindexPair.md).
 The prescribed lower and upper local loops now have even representative
 comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
@@ -785,6 +842,45 @@ the matching superopposite signs in both path orders. Strict producer and
 concrete OLD-path consumer checks audit all four owned declarations.
 Attach the literal OLD braid and rectangular nested comparisons; see
 [ModuleMulticolourBraid](ModuleMulticolourBraid.md).
+`ELVInductionTripleCorrection` now constructs the source polynomial
+supernaturality and proves the whole ordered original-Sc correction
+operator equality, without a supplied naturality or braid premise.
+Strict mixed/three-odd/interior-parameter consumer checks audit all eight
+owned declarations. Identify the literal OLD coefficient correction and
+selected nested/evaluated braid difference; see
+[InductionTripleCorrection](InductionTripleCorrection.md).
+`ELVInductionTriplePolynomial` now evaluates the ordered original-Sc
+three-dot correction on every balanced tensor, retaining the reversed
+twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
+interior-parameter consumer checks audit all ten owned declarations.
+Attach the whole operator and literal OLD braid difference; see
+[InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVInductionTriplePolynomialMaps.inductionTripleFlattening_polynomial`
+now transports the entire ordered original-Sc correction into the three
+independently whiskered nested dots through the same chart. Strict mixed/
+three-odd/interior/changing-content consumer checks audit all five owned
+declarations. Combine this with the signed direct braid and six crossing
+squares, then transfer to evaluated and weight functors; see
+[InductionTriplePolynomialMaps](InductionTriplePolynomialMaps.md).
+`ELVInductionTripleDots` now supplies all three whole nested-dot squares
+through the same chosen triple flattening, across four arbitrary
+categories. Strict mixed/three-odd/changing-content/shifted consumer
+checks audit all five owned declarations. Use these to transport the
+entire ordered correction polynomial and combine the six crossing
+squares; see [InductionTripleDots](InductionTripleDots.md).
+`ELVOldCorrectedInductionBraid.oldDirectMixedBraid_polynomial` now proves
+the signed direct braid difference with its negative equal crossing and
+original-Sc ordered correction. Strict occupied mixed/three-odd/interior/
+odd-kernel consumer checks audit all sixteen owned declarations. Use the three checked nested-dot squares to transport the correction,
+then lift the corrected relation to evaluated and weight functors; see
+[OldCorrectedInductionBraid](OldCorrectedInductionBraid.md).
+`ELVOldTriplePolynomial.oldTriplePolynomial_operator` now identifies the
+whole original-Sc correction operator with the polynomial in all three
+independent OLD dots, retaining their exact source positions and every
+interior coefficient. Strict occupied mixed/three-odd consumer checks
+audit all twenty owned declarations. The signed direct braid
+difference is checked above; transfer the dots through the chosen nested charts; see
+[OldTriplePolynomial](OldTriplePolynomial.md).
 `ELVOldNestedMulticolourBraid.normalizedNestedTripleCross_braid` now
 proves the actual nested uncorrected braid with independent pair
 whiskerings, negative equal and positive distinct crossings, through the
@@ -818,6 +914,33 @@ audits. `ELVModuleInductionSlides` now transfers a rectangular source
 slide to whole induced module maps, with strict concrete OLD checks and
 five owned audits. Apply the chosen pair flattenings before weight
 transport. See [OldDistinctSlides](OldDistinctSlides.md).
+`ELVOldPairPolynomial` identifies the literal source polynomial with
+the independent OLD pair dots, and `ELVInductionPairPolynomial` proves
+its supported-power, interior-monomial and whole linear operator
+evaluation. Both producers and mixed/interior/two-odd consumer pass strict
+checks and all 23 owned audits. Transport through the chosen flattening
+to the selected block and global dot operators; see
+[OldPairPolynomial](OldPairPolynomial.md).
+`ELVProbeQuadraticFields` now supplies both exact bundled presentation
+fields, `probeOldRouquierData_quadZero` and `probeOldRouquierData_quadNe`,
+using its literal crossing and independently whiskered dot powers with
+original Sc. Strict connected/interior/two-odd and disconnected parameter-2
+consumer checks audit all ten owned declarations. Assemble the remaining
+multicolour fields; see [ProbeQuadraticFields](ProbeQuadraticFields.md).
+`ELVProbeWeightQuadratic.probeOldActionDistinctCross_quadratic` now
+proves the whole original-weight crossing square as the ordered
+original-Sc polynomial of both actual global dots over `parameterTwist D Sc`.
+Closed block-natural and absent-source-zero cases are included. Strict
+mixed/interior/two-odd/shifted/absent consumer checks audit all seventeen
+owned declarations. The exact quadratic fields are checked above; complete the remaining
+multicolour fields; see [ProbeWeightQuadratic](ProbeWeightQuadratic.md).
+`ELVProbeBlockQuadraticDots` now identifies the actual selected crossing
+square with the original-Sc ordered polynomial of both independently
+chosen dot totals on whole underlying module maps. Its generic chart
+transport is `ELVInductionPairPolynomialMaps`; both producers and the
+mixed/interior/two-odd consumer pass strict checks and all 36 owned audits.
+Lift to closed block-natural maps and all weight sectors next; see
+[ProbeBlockQuadraticDots](ProbeBlockQuadraticDots.md).
 `ELVProbeBlockDistinctQuadratic` now identifies the actual two selected
 positive crossings over `parameterTwist D Sc` with the balanced transform
 of the literal original-Sc signed polynomial. Its generic changing-content
@@ -863,11 +986,27 @@ The retained inner transports are now composed in
 residual-error closure remain open. See
 [ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
 
+`SwappedAssembly.ReservoirLayerEntries` now collapses the actual
+upward/probe-zero layer sums to the given single `layerEntry`, preserving
+both whiskers and every append transport. Strict producer and supplied
+complete-ELV-pair matrix consumer checks audit both declarations. This is
+a theorem about a supplied complete factor pair; the matrix fixture has
+no nonzero-vector claim. Attach the intended OLD record, chosen path
+coordinates and signed quotient/vacuum values next; see
+[ReservoirLayerEntries](ReservoirLayerEntries.md).
+
+`ELVTensorHomContexts` now retains both inner and further outer E-word
+contexts on the literal dot/crossing Hom entries, with the chosen context
+charts and all-vector formulas for arbitrary input Hom maps. Strict
+occupied nonempty mixed/two-odd consumers audit all 25 owned declarations.
+Transport through the actual path/layer matrices and attach the signed
+quotient classes to `ev_layer`; see [ELVTensorHomContexts](ELVTensorHomContexts.md).
+
 `ELVTensorHomEntries` now proves the surviving reservoir dot/crossing
 entry squares for arbitrary source Hom objects, whole input maps and
 every vector, using the same selected word charts. Strict occupied mixed
 and two-odd consumers audit all sixteen owned declarations. Its note gives
-the specified supported `Gs`/`Ys` recipe; further outer-E contexts, unique-path
+the specified supported `Gs`/`Ys` recipe; outer-E contexts are now checked above. Unique-path
 matrix transports and quotient-class attachment to `ev_layer` remain.
 Evaluation at the regular probe is not asserted faithful on all Hom
 transformations. See [ELVTensorHomEntries](ELVTensorHomEntries.md).

@@ -68,4 +68,48 @@ def moduleZeroBoundaryLoc (hm : 0 < m) :
   invNeg _ := by
     simpa only [neg_neg, Int.toNat_natCast] using moduleZeroBoundaryInverse C B A x p m V
 
+/-- A missing lower edge also admits height zero: the empty upper unit
+matrix forces the upper loop to have zero identity. Thus both required
+inverse orientations at height zero follow from the same coefficient record. -/
+def moduleZeroBoundaryLoc_nonpositive :
+    SKM.SuperRouquierLoc A₀ A (0 : End Z) x (0 : End (Z ≫ E)) p (-(m : ℤ)) where
+  dot₁_mem := Submodule.zero_mem _
+  dot₂_mem := V.dot_mem
+  cross_mem := Submodule.zero_mem _
+  slide_left := by
+    rw [zeroModuleCell_comp_id C B E]
+    simp only [Limits.comp_zero, Limits.zero_comp, smul_zero, sub_zero]
+  slide_right := by
+    rw [zeroModuleCell_comp_id C B E]
+    simp only [Limits.comp_zero, Limits.zero_comp, smul_zero, sub_zero]
+  invPos hh := by
+    have hm : m = 0 := by omega
+    subst m
+    have hUpper : (0 : End (E ≫ F)) = 𝟙 (E ≫ F) := by
+      simpa only [Finset.range_zero, Finset.sum_empty] using V.total
+    refine {
+      f' := 0
+      g' := fun _ => 0
+      f_mem := ?_
+      g_mem := ?_
+      f'_mem := Submodule.zero_mem _
+      g'_mem := fun _ => Submodule.zero_mem _
+      total := ?_
+      ff := ?_
+      fg := ?_
+      gf := ?_
+      gg := ?_ }
+    · rw [zeroLowerMate]; exact Submodule.zero_mem _
+    · intro n
+      simp only [zeroModuleCellAdjunction, Limits.comp_zero]
+      exact Submodule.zero_mem _
+    · simp only [Limits.comp_zero, Finset.sum_const_zero, add_zero]
+      exact (zeroModuleCell_comp_id C (inductionModulePiCategory (k := k) C) Z).symm
+    · simpa only [Limits.zero_comp] using hUpper
+    · intro n hn; omega
+    · intro n hn; omega
+    · intro n l hn hl; omega
+  invNeg _ := by
+    simpa only [neg_neg, Int.toNat_natCast] using moduleZeroBoundaryInverse C B A x p m V
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
