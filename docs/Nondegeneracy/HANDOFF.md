@@ -836,6 +836,13 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeAppendUpperLoop` now supplies the selected even evaluated
+upper-loop chart and the whole unit-column square for every exponent,
+without a lower predecessor. Strict mixed/nonempty-missing/reordered/
+shifted consumer checks audit all 36 owned declarations. Transport the
+constructed evaluated missing-colour coefficients through this chart,
+then attach the actual zero lower cell and global coordinates; see
+[ProbeAppendUpperLoop](ProbeAppendUpperLoop.md).
 `ELVProbeReindexUnitColumns` now preserves the unit and every dotted
 column through a single arbitrary append comparison, without assuming
 a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted

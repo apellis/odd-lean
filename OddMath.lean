@@ -2489,3 +2489,4 @@ import OddMath.QuiverHecke.HalfTurn.PowerWordLayerClasses
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightMixedMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexUnitColumns
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCorrectedGrid
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendUpperLoop
