@@ -59,8 +59,8 @@ Its product with the same-colour δ is also proved nonzero by the actual
 bounded coefficient injection and a polynomial/exterior basis coordinate.
 Thus the next odd coefficient tests both its polynomial and exterior factors.
 
-These are scalar values on the actual ordinary unit vector 1. The full
-higher-moment map on arbitrary A/T vectors, the probe-polynomial numerator,
-and identification with the mixed inverse caps and final swapped bubbles
-remain to be attached. No vacuum evaluation-kernel identity or all-height
+The full higher-moment maps on arbitrary A/T vectors are identified in
+[CoefficientPowerMomentMaps](CoefficientPowerMomentMaps.md). The
+probe-polynomial numerator and identification with the mixed inverse caps
+and final swapped bubbles remain to be attached. No vacuum evaluation-kernel identity or all-height
 bubble theorem is asserted.
