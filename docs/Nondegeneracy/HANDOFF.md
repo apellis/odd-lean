@@ -860,6 +860,13 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeWeightMixedMate` now defines the actual chosen global sideways
+mate, its parity and coordinate formula. Adding a distinct colour cannot
+create a missing predecessor, so both absent coordinates are zero and
+the prescribed map is invertible there. Strict occupied/empty-content
+consumer checks audit all 33 owned declarations. Compare supported
+coordinates with the stored-target inverse, then assemble global `invNe`;
+see [ProbeWeightMixedMate](ProbeWeightMixedMate.md).
 `ELVProbeReindexDistinctMate` now constructs the prescribed distinct-mate
 inverse on every stored-target OLD input and full evaluated category.
 `probeAppendToCrossMate_eq` and `_isIso` retain the chosen positive
