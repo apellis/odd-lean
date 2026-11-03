@@ -960,6 +960,14 @@ slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
 
+`ELVProbeWeightDistinctCrossing` supplies the positive crossing on the
+selected weight E functors using all four stored-target appends. Its
+producer and connected mixed/two-odd consumer pass strict checks and
+all 72 owned audits. The exact components, supported conjugation and
+absent predecessors are retained. Transport the standard-cons mate
+inverse through arbitrary canonical representatives and the same chosen
+unit/counit maps. See [ProbeWeightDistinctCrossing](ProbeWeightDistinctCrossing.md).
+
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
 upper j-adjunctions with the constructed invertible OLD mate. Its producer,
