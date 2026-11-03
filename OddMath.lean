@@ -2200,6 +2200,12 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapWindow
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerVacuumCapComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientMaps
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHecke
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHeckeRelation
@@ -2215,8 +2221,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleComparisonCoherence
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitCoefficientWindow
 
-import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendUnits
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSourceDots
@@ -2226,7 +2230,6 @@ import OddMath.Algebra.FiniteSupermoduleCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapModuleWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraidComponents
 
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTriplePairComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraidComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleLastPairComparison
@@ -2249,9 +2252,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVGridLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapPrecomposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapPreCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapPreDotSigns
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientRows
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerVacuumCapComparison
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCharts
@@ -2287,3 +2287,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentUnitColumnSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedCapInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPolynomialCaps
