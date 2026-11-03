@@ -19,5 +19,7 @@ swapped layer entries. This constructor alone does not prove that
 identification or supply a nondegeneracy observation. The producer and
 paired consumer pass strict scoped checks with the pinned toolchain,
 warnings as errors and both compatibility settings; all 27 owned
-declarations pass the consumer's axiom audit. Full integration verification
-remains separate.
+declarations pass the consumer's axiom audit. The full build, global axiom audit and all non-vacuity checks passed in
+[#1010](https://github.com/apellis/odd-lean/pull/1010), at source head
+`066fc97a28cb36b2034dc37e9913f6d958b08f62`
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41680334616)).

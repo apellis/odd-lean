@@ -14,7 +14,7 @@ open OddMath.SKM
 universe u
 variable {I X : Type u}
 
-/-- Formal colour content, retaining the labels before any weight-lattice map. -/
+/-- Formal colour content, before applying any weight-lattice map. -/
 def wordContent : List (Col I X) → I →₀ ℕ
   | [] => 0
   | c :: w => Finsupp.single c.l.2 1 + wordContent w
