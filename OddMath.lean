@@ -2036,3 +2036,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders
 import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
