@@ -297,6 +297,20 @@ producer/consumer checks and combined imports; full integration is pending.
 | Weighted moments and polynomial cap | Actual weighted cap after every given unit/dot column equals the full-coefficient moment operator on every vector. `ELVWeightedPolynomialCaps` constructs λ·(D²+1)^M as a homogeneous module map and proves every closure, the nonpositive-height first closure and the sign-sensitive second closure on surviving odd input | Identify the prescribed mixed inverse and swapped bubble operators |
 
 
+The next three producer/consumer pairs pass strict checks and combined imports;
+their full integration gate is pending. `AugmentedInverseNaturality` derives
+principal and finite auxiliary inverse-entry supernaturality from the given
+forward families and pointwise local inverses, then bundles both inversion
+structures. Auxiliary entries outside the finite window are canonically zero;
+no inverse-naturality premise is added. `ELVWeightTripleDotComparison` identifies
+all three literal positioned dots through the same chosen triple chart.
+`ELVWeightedCapWindows` identifies the actual weighted unit/dot cap window,
+including the polynomial low window, as whole content-zero module identities
+in exactly the operator form needed by `InverseCapMoments`. Concrete natural
+local-inverse assembly, the corrected mixed polynomial field and the chosen
+mixed cap/bubble identification remain open.
+
+
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
 after both coefficient and old cyclotomic quotients. Strict local checking
