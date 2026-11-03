@@ -2219,3 +2219,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendUnits
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSourceDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockCapPowers
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHecke
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHeckeRelation
