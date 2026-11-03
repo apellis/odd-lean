@@ -712,8 +712,12 @@ natural isomorphisms alone do not supply that action.
 `ELVOld.CyclotomicCrossingTensor` namespace) supplies the untruncated
 coefficient braid for the actual prefix and suffix equal crossings. Its
 producer, concrete representable consumer and both owned audits pass
-strict scoped checks. Transport this equation through the selected triple
-induction flattening; it does not yet prove the probe weight braid.
+strict scoped checks. `oldTripleCross_braid` in `ELVOldInductionBraid` proves
+the subsequent whole-map braid on direct triple induction, with its
+superopposite signs; its producer, occupied consumer and all 15 owned
+audits also pass. Transport this equation through the selected triple
+induction flattening and identify the prescribed negative prefix/suffix
+crossings; these results do not yet prove the probe weight braid.
 See [OldAppendBraid](OldAppendBraid.md).
 
 The coefficient action remains literal ordinary precomposition on every

@@ -20,3 +20,19 @@ errors and both compatibility settings. The consumer checks both moving parities
 empty and mixed old contexts, and the actual representable action on
 every vector and an identity-plus-dot vector, and audits both owned
 declarations against the axiom allowlist. Full integration remains pending.
+
+`ELVOldInductionBraid` supplies the subsequent direct-induction equation.
+`oldTriplePrefixCross` and `oldTripleSuffixCross` are the independent
+balanced transformations induced by those same two physical crossings.
+`oldTripleCross_braid` proves their whole module-map braid on every input
+old module. The superopposite signs introduced by contravariant induction
+agree on the two paths; no evenness of the crossing is assumed.
+
+This producer and its concrete consumer pass strict checking. The
+consumer uses actual representables in empty and mixed contexts, both
+moving parities, a parity-shifted module and the literal unit tensor, and
+audits all 15 owned declarations. Full integration remains pending.
+The remaining comparison identifies these direct triple-induction maps
+with the prefix and suffix of the selected negative double-induction
+crossing under the canonical flattenings; the final weight braid is not
+asserted by this direct-induction result.
