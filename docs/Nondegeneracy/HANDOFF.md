@@ -926,6 +926,12 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeReindexLoopAction` retains whole natural-transformation
+components under reindexing and the prescribed standard evaluated mate,
+with its original adjunctions and negative equal crossing. Strict mixed
+regular/parity-shifted consumers audit all sixteen declarations. Combine
+these with the loop charts for the canonical mate square; see
+[ProbeReindexLoopAction](ProbeReindexLoopAction.md).
 `ELVProbeReindexLoopComponents` identifies both selected even loop
 comparisons with the OLD maps used in the proved mate square. Strict
 reordered mixed/shifted/odd-input consumer checks audit all fourteen
