@@ -2027,3 +2027,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMate
 import OddMath.Algebra.HomogeneousSuperfunctorIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
