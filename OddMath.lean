@@ -2104,3 +2104,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteMatrixComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVParityMatrixSquares
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairQuadratic
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
