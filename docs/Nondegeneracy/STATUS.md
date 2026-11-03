@@ -322,8 +322,12 @@ local-inverse assembly, the corrected mixed polynomial field and the chosen
 mixed cap/bubble identification remain open.
 
 
-The next thirteen producers and their paired consumers pass strict checks;
-full integration is pending.
+The thirteen-producer integration [#1001](https://github.com/apellis/odd-lean/pull/1001)
+passed the full warning-free build, global axiom audit and all concrete
+consumers at `843401347c30507d55371912f4e03ccd77e67761`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41615387064)), integrated
+at `daffec02`. Its 354 owned declarations and 24 exact producer/consumer
+blobs also passed strict local checks and combined imports.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -332,6 +336,25 @@ full integration is pending.
 | Old missing-colour unit matrix and modules | The given old unit matrix is conjugated through the chosen FE/value charts, with exact forward unit columns and even inverse. `ELVContentMissingUnitModules` supplies its actual even module isomorphism for all old inputs, both parities and zero cutoff | Extract/bundle the native empty-edge inverse rows and construct the adjacent local records |
 | Given grid principal | `ELVInductionGridRouquierFields` identifies the actual Rouquier principal with the given negative-crossing grid mate as a whole transformation | Complete unit/cap forward fields, slides, square and braid for the concrete old local records |
 | Constructed local pre-Hom adjunction | `RouquierPreAdjunction`, `ELVProbeLocalPreAdjunction` use the existing adjacent-local constructor on the prescribed probe edge and identify the constructed counit with shiftedPreCap after both Koszul factors cancel | Adjacent local records remain explicit supplied inputs; the actual evaluated mixed bend and full swapped action are separate |
+
+
+The next integration has 26 scoped-checked producers, 49 exact producer/consumer
+blobs and 765 owned-declaration audits, with combined imports passing. Its
+full integration gate remains pending.
+
+| Interface | Established locally | Remaining scope |
+| --- | --- | --- |
+| Native mixed correction coordinates | Original-Sc ordered correction is identified in all three given dot positions, with all six independent crossing paths, at every supported output vector; its dotted whisker spelling is checked | Whole natural-map corrected braid and complete multicolour fields |
+| Full-arrow append/context comparisons | Content and weight append transport preserve arbitrary full old arrows, and the selected pair charts equal the recursively chosen whole charts | Recursive even-chart/native word evaluation and final observation recovery |
+| Exact weighted principal and common coordinates | The stored weighted mate equals the ordered native mate; actual principal, unit and cap fields use the same selected source/target coordinates. Parity-profile conversion preserves the inverse entries | Supported canonical principal square and complete local records |
+| Old inverse rows and native powers | Actual missing-unit inverse rows have finite module-map windows, sum-to-identity and signed input naturality; every native right-unit/counit dot power agrees with its grid column/row | Assemble actual old local records and their equations |
+| Both absent inverse orientations | Native absent invNeg families and height-zero absent invPos families retain prescribed forwards and actual counts | Supported sector and whole-weight family assembly |
+| Occupied tensor vacuum | `ELVVacuumTensor` supplies the actual probe-to-reservoir superfunctor, preserving the Koszul sign and a nonzero odd input map on surviving full A/T coefficients | Whole-module regular-vacuum scalar chart and final chosen action evaluation |
+| Evaluated mixed bend and inverse row | `ELVProbeCentralBend` and `ELVProbeCentralSlide` prove the actual evaluated A6 expansion and signed slide, keeping the raw pre-dot. `ELVContentVacuumCoefficientRows` identifies the transported weighted cap with any native absent inverse row | Compare the original global weighted vacuum extension, identify the prescribed full swapped inverse and attach bubble recovery |
+
+The new module-map inverse-row names use `unitColumnModuleInverse*`, distinct
+from the established vector-map `unitColumnInverse*` API. The combined import
+check caught and repaired that naming collision; statements are unchanged.
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
