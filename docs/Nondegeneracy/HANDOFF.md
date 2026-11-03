@@ -50,10 +50,15 @@ input projection and output zero extension, retains its selected objects
 and maps, and proves all four selected primitive E/F functor equalities,
 post E/F support, absent pre-E/post-F zero components and parity-shift
 support. Strict actual tensor/two-odd affine collision/nonzero exterior
-coefficient consumers audit all 35 declarations. Construct whole natural
-comparison isomorphisms and the generator-stable replete supported Hom
-category, then retain the selected inverse entries there. Use those squares to discharge absent
-native composites before transferring full factor inverses to the
+coefficient consumers audit all 35 declarations. `ELVContentHomClosure`
+now supplies the whole even comparison isomorphisms and the generator-
+stable full replete supported category, including parity closure and both
+whole absent native zero functors. `ELVContentHomVacuum` places the literal
+selectedHom in it using constructed all-input support. Strict paired
+collision consumers audit all 64 and 16 declarations. Attach formal-sector
+indices and restrict the chosen action; all inverse-entry arrows between
+supported endpoints are retained. Use the checked zero functors before
+transferring full factor inverses to the
 zero-padded central matrix. The tensor vacuum `selectedHom` is the
 supported initial family for this construction.
 
