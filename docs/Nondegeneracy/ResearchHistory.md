@@ -446,3 +446,19 @@ is outside the checked library; scoped checks and full integration are separate.
 | Old probe local records | [b826b2952d](https://github.com/apellis/odd-lean/commit/b826b2952d53245551ae30196839560c123c8b6c) | `4d30d6f0034eb84204045db18a7546d4d3f9e19f` | Grid input families are separately checked; complete old boundary window, decomposition and Rouquier field factories remain unverified. |
 | Local probe pre-Hom adjunction | [46db9c543d](https://github.com/apellis/odd-lean/commit/46db9c543dd11176e12ab9206b39545d1093c0df) | `6f0d300d5293fba2f1777e163cb5f1f3b9fb44a4` | Two producers and paired consumer pass; supplied adjacent local records remain explicit inputs, and full integration is separate. |
 | Released old boundary drafts | [7545bf1cfa](https://github.com/apellis/odd-lean/commit/7545bf1cfa910294e3926842fe28823e1bc6b865) | `402fbf170ede80959966c9c8a6732e2e28e566bf` | Complete earlier source tree including three proposed boundary draft files; their verification is not claimed. |
+
+## Principal, local-factor and vacuum comparison source trees
+
+Each exact tree copy has only the verified research parent. Proposed source
+is outside the checked library; scoped checks and full integration are separate.
+
+| Argument | Preserved tree | Source revision | Scope |
+| --- | --- | --- | --- |
+| Recursive word-chart parity | [2aad3d79dd](https://github.com/apellis/odd-lean/commit/2aad3d79dd7e2e13488b2ae144aa02de0b145602) | `d7c4f61797cf288cff861530bc4657da0793e7e3` | Direct cyclic-parity content producer passes; complete weight parity and paired consumer are not verified at this snapshot. |
+| Canonical principal mate comparison | [46a75426cc](https://github.com/apellis/odd-lean/commit/46a75426cc1c0a936eed8ee82f9300021efaada1) | `e75eac23b7797c10db2e895759eba48b7fea0cf5` | Literal crossing and endpoint fixes retained; latest folded evaluator header and paired consumer remain unverified. |
+| Whole corrected mixed braid | [60753fefc8](https://github.com/apellis/odd-lean/commit/60753fefc84d8b066e9ee769b39cd468836d7123) | `bf8473ef22be7fa5762974b9b348c4d5e714c6b7` | Supported pointwise relation separately checked; whole natural-map endpoint join and paired consumer remain unverified. |
+| Supported canonical local inverses | [b50ce4849e](https://github.com/apellis/odd-lean/commit/b50ce4849ef4f8089c516aa7d918f21b78866e88) | `a27134ad6685831cdd34225f8edf89f33cf8ab0e` | Proposed actual weighted-to-canonical From/To transport; principal-square dependency and complete paired consumer remain unverified. |
+| Absent-weight inverse development | [d354302888](https://github.com/apellis/odd-lean/commit/d354302888069f0a8bb6bc554c7a64fef09c97a0) | `544cbd0d4cd1a62d9d9be976820626e5122bd17f` | Checked topical pointwise/family absent inverses, product/profile and cap fields; curated integration evidence remains separate. |
+| Old probe boundary coefficients | [ca2f569853](https://github.com/apellis/odd-lean/commit/ca2f5698534758daf460d14b94fe56c16b379c20) | `3c6edc69f399c83fcbc3f398aeae254730773a2d` | Generic coefficient producer passes; actual old specialization, paired consumer and local record construction remain unverified. |
+| Evaluated mixed bend and native row | [b2e9e556a6](https://github.com/apellis/odd-lean/commit/b2e9e556a6b8faaa53071f19164b768db8fc6e10) | `b2efd3f300fcef878bf10c5a96c7b1854560cf37` | Scoped producers and occupied consumers pass; original global-vacuum extension comparison and whole swapped action remain separate. |
+| Tensor vacuum and proposed coordinates | [f07d19dfea](https://github.com/apellis/odd-lean/commit/f07d19dfea57e92771081ee4954042f3e561d325) | `c5c7d70b03621f5324978875ec4b2ea6cb00c478` | Tensor-vacuum core and occupied consumer pass; proposed whole-module scalar-coordinate extension remains unverified. |
