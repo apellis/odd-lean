@@ -1956,6 +1956,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixEntryComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedFiniteMatrixComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixComponentInverse
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
