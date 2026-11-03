@@ -43,6 +43,14 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ReservoirDistinctContextCoordinates.layerMap_reservoir_cross_ne_word`
+now identifies the literal distinct matrix with the original factor
+crossing in both reversed word contexts, retaining the actual right path
+reindexing and endpoint transports. Strict complete two-odd ELV-pair/
+nonempty-context consumer checks audit all sixteen declarations. All three
+upward generator comparisons are now available in word coordinates;
+specialize the intended tensor-vacuum and physical OLD quotient square.
+See [ReservoirDistinctContextCoordinates](ReservoirDistinctContextCoordinates.md).
 `ReservoirContextCoordinates` now identifies both actual reservoir path
 contexts with their prescribed reversed word contexts. Its generic square
 allows arbitrary inhomogeneous factor maps, and the literal dot and equal
