@@ -1895,6 +1895,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.Algebra.FiniteSupermoduleFunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
