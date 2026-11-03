@@ -959,6 +959,14 @@ all 36 declarations. Apply these to the selected stored local inverses
 before whole-weight product gluing; see
 [AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
 
+`ELVProbeWeightPathCoordinates` now retains the entire chosen pair and
+triple induction coordinates through specified supported intermediate
+blocks and the actual signed dot total. Strict occupied mixed/nonempty
+consumer checks retain nonzero append outputs and audit all eight
+declarations. Attach the crossing through common path vertices, then
+three-strand polynomials and exact global braid fields; see
+[ProbeWeightPathCoordinates](ProbeWeightPathCoordinates.md).
+
 `ELVProbeWeightLocalMateCoordinates.probeOldWeightRouquierMate_comparison`
 now identifies every parity component of the occupied global principal
 with its selected stored mate. The actual negative crossing and both
