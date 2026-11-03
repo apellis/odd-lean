@@ -2267,3 +2267,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuffixCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuffixComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentInductionTripleBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridPowerComparison
