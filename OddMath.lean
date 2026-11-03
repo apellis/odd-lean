@@ -2041,3 +2041,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoordinates
+import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
