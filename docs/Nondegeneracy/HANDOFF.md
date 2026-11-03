@@ -191,7 +191,34 @@ constructor with its prescribed unit and counit; both Koszul signs cancel
 in the evaluated counit. Its local records remain explicit intermediate
 inputs. The evaluated mixed bend must still be compared with the prescribed
 central entry, retaining the raw pre-dot and inverse-power signs.
-These thirteen-producer successors await their full integration gate.
+These thirteen producers passed full CI in #1001 at `84340134`
+(run 41615387064), integrated at `daffec02`.
+
+## Evaluated mixed entry and next concrete records
+
+The next scoped-checked integration includes the six given mixed crossing
+paths and the ordered original-Sc correction in all three native dots;
+finish the whole natural-map relation and remaining multicolour fields.
+The stored weighted principal now equals the ordered mate and uses exactly
+the same source/target charts as all native unit/cap powers. The supported
+canonical principal square remains the missing block before whole local
+inverse assembly; both absent inverse orientations are constructed.
+
+Old missing-unit module inverse rows have exact finite windows, sum identity
+and signed input naturality. Native dotted right-unit/counit families agree
+with the prescribed columns/rows. Their module APIs are named
+`unitColumnModuleInverse*` to retain the older vector APIs unchanged.
+Use these fields to construct the actual empty/one-colour old local records.
+
+The actual tensor-vacuum functor is occupied by a surviving exterior
+coefficient and preserves a nonzero odd input isomorphism. The evaluated
+A6 bend and signed slide now use the actual right unit, raw shifted pre-dot,
+reservoir dot and prescribed shifted cap; no slide or extractor is assumed.
+The normalized row is forced by joint-epi unit columns and the weighted
+coefficient map. Complete the global-vacuum extension and regular-probe
+module chart, then identify the actual swapped augmented inverse row and
+its bubble coefficients. Evaluated formulas alone are not the full swapped
+action or the final observation/recovery theorem.
 
 ## Current comparison interfaces
 
