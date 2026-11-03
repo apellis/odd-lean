@@ -46,7 +46,7 @@ The complete inventory of preserved topic variants is in
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full CI verified in #1014; use the selected factor in the swapped assembly |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs pass strict checks; finish chosen local records and remaining multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
@@ -118,6 +118,15 @@ presentation, prove the required extension and scalar comparisons, and check
 the all-even specialization against the cited even benchmark. No proof route
 for nonsymmetrizable data is to be developed. See
 [FieldScopeBoundary](FieldScopeBoundary.md).
+
+The selected vacuum values, evaluated local/braid records, representative
+tensor/dot/loop comparisons, rectangular slides and probe generator data
+passed the full build, global axiom audit and all consumers in
+[#1017](https://github.com/apellis/odd-lean/pull/1017) at `080bf70f`
+([run 41698364466](https://github.com/apellis/odd-lean/actions/runs/41698364466)),
+integrated at `88b36a6c`. Subsequent whole-weight distinct relations,
+reindexed inverse attachments and matrix entries retain the scoped-check
+boundaries stated below.
 
 ## Native probe normalization and remaining action fields
 
@@ -730,6 +739,18 @@ owned declarations. The original twenty-declaration form passed full CI
 in #1014; the shared-grid refactor passed full CI in #1016. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
+`ELVProbeReindexLocal` transports both evaluated inverse records through
+the even loop comparisons, preserving all finite identities and every
+indexed entry. Strict producer and mixed-representative/both-height
+consumer checks audit all 75 owned declarations. Forward mate and dotted
+row compatibility with the chosen target generators is still required;
+see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVProbeReindexPair` now gives the exact upper-then-lower append
+comparison on raw and evaluated modules, with evenness and an all-vector
+nested tensor formula retaining both coefficient arrows. Strict producer
+and mixed reordered-content/odd-input consumer checks audit all 67 owned
+declarations. Compare the selected pair crossing and distinct mate next;
+see [ProbeReindexPair](ProbeReindexPair.md).
 The prescribed lower and upper local loops now have even representative
 comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
 mixed-content consumer checks audit all 38 owned declarations. Attach
@@ -747,6 +768,49 @@ mixed/shifted/nested-tensor consumer pass strict checks and 38 owned
 audits. Restrict this equation to evaluated modules, then use the chosen
 canonical-content and weight coordinates. See [OldContentBraid](OldContentBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
+`ELVInductionRectangularTriple` now compares both independently whiskered
+rectangular crossings through one chosen triple flattening, even with
+different intermediate content categories. Strict producer and concrete
+mixed/three-odd/distinct-middle-category consumer checks audit all four
+owned declarations. Assemble the six signed braid paths and ordered
+correction next; see [InductionRectangularTriple](InductionRectangularTriple.md).
+`ELVInductionRectangularWhiskering` extends both chosen composition
+comparisons to whole maps with distinct source and target append functors.
+Strict producer and changing-content mixed/three-odd consumer checks audit
+all seven owned declarations. Use these squares for the six independent
+rectangular triple braid paths; see
+[InductionRectangularWhiskering](InductionRectangularWhiskering.md).
+`ELVModuleMulticolourBraid` proves the three-map balanced transfer with
+the matching superopposite signs in both path orders. Strict producer and
+concrete OLD-path consumer checks audit all four owned declarations.
+Attach the literal OLD braid and rectangular nested comparisons; see
+[ModuleMulticolourBraid](ModuleMulticolourBraid.md).
+`ELVOldNestedMulticolourBraid.normalizedNestedTripleCross_braid` now
+proves the actual nested uncorrected braid with independent pair
+whiskerings, negative equal and positive distinct crossings, through the
+six selected triple squares. Strict occupied mixed/three-odd/shifted
+consumer checks audit all nineteen owned declarations. Evaluated/canonical
+weight attachment and the original-Sc repeated-outer correction remain.
+See [OldNestedMulticolourBraid](OldNestedMulticolourBraid.md).
+`ELVOldMulticolourInduction.directTripleCross_braid` now proves the whole
+direct triple-module braid using the literal OLD source relation, with no
+braid premise. Strict occupied mixed/three-odd/shifted/interior-parameter
+consumer checks audit all four owned declarations. Attach the selected
+nested crossings and negative equal normalization; the repeated-outer
+correction remains separate. See [OldMulticolourInduction](OldMulticolourInduction.md).
+`ELVOldMulticolourBraid` proves both uncorrected and repeated-outer
+coefficient braids for the independently appended positive OLD crossings,
+including nonzero interior parameters. Strict producer and mixed/three-odd
+consumer checks audit all eleven owned declarations. Transfer through the
+changing-category balanced charts with their superopposite signs and
+negative equal crossings before asserting the original-Sc action fields.
+See [OldMulticolourBraid](OldMulticolourBraid.md).
+`ELVOldDistinctQuadratic` now proves the literal source square and
+original-Sc signed polynomial comparison, followed by the actual balanced
+double-induction tensor equation. Strict producer and mixed/interior/two-odd
+consumer checks audit all six owned declarations. The chosen changing-content
+flattenings and global probe quadratic remain. See
+[OldDistinctQuadratic](OldDistinctQuadratic.md).
 `ELVOldDistinctSlides` now supplies both distinct-colour coefficient
 slides for the literal OLD dots and positive crossing. Its producer and
 mixed/two-odd representable consumer pass strict checks and six owned
@@ -754,12 +818,75 @@ audits. `ELVModuleInductionSlides` now transfers a rectangular source
 slide to whole induced module maps, with strict concrete OLD checks and
 five owned audits. Apply the chosen pair flattenings before weight
 transport. See [OldDistinctSlides](OldDistinctSlides.md).
+`ELVProbeBlockDistinctQuadratic` now identifies the actual two selected
+positive crossings over `parameterTwist D Sc` with the balanced transform
+of the literal original-Sc signed polynomial. Its generic changing-content
+transport is `ELVInductionGridQuadratic`; both producers and the concrete
+mixed/interior/two-odd consumer pass strict checks and all 43 owned audits.
+Identify this polynomial with the two independently chosen dot operators,
+then assemble the global field including absent sectors. See
+[ProbeBlockDistinctQuadratic](ProbeBlockDistinctQuadratic.md).
+`ELVProbeWeightDistinctSlides` now proves both signed distinct slides
+for the actual global crossing and independently whiskered dots on all
+original weights, using both selected coordinates and the actual zero
+source at absent predecessors. Strict mixed/two-odd/shifted/absent
+consumer checks audit all ten owned declarations. Attach these fields
+to the complete probe presentation after the other fields are constructed.
+See [ProbeWeightDistinctSlides](ProbeWeightDistinctSlides.md).
+`ELVProbeBlockDistinctSlides` proves both distinct-colour slides of the
+prescribed stored-target crossing and independently whiskered dots, with
+strict mixed/two-odd/shifted consumer checks and all 40 owned audits.
+The same two product coordinates and absent predecessors are now
+handled by `ELVProbeWeightDistinctSlides`.
+See [ProbeBlockDistinctSlides](ProbeBlockDistinctSlides.md).
 `ELVInductionGridDistinctSlides` now supplies both rectangular pair
 slides through the selected flattenings, with arbitrary changing
 categories. Its producer and actual mixed/shifted OLD-content consumer
 pass strict checks and three owned audits. Restrict to evaluated modules
 and compare the independently chosen global dots in these same
 coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
+
+`SwappedAssembly.ReservoirDottedFactorCoordinates` now composes the full
+path transports and identifies every actual reservoir cap row/unit column
+with the prescribed `homContentPostCap/Cup` and literal factor adjunction
+and dot words. Strict producer and occupied two-odd consumer checks audit
+all 32 owned declarations. The pure principal crossing block, mixed blocks
+and full matrix square remain; see
+[ReservoirDottedFactorCoordinates](ReservoirDottedFactorCoordinates.md).
+
+`SwappedAssembly.ReservoirDottedAdjunctionRows` now computes the actual
+reservoir branches of every dotted cap row and cup column, including
+exponent zero, for arbitrary Hom inputs. Strict producer and occupied
+two-odd full-factor consumer checks audit all 19 owned declarations.
+The retained inner transports are now composed in
+`ReservoirDottedFactorCoordinates`; principal/mixed blocks and
+residual-error closure remain open. See
+[ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
+
+`ELVTensorHomEntries` now proves the surviving reservoir dot/crossing
+entry squares for arbitrary source Hom objects, whole input maps and
+every vector, using the same selected word charts. Strict occupied mixed
+and two-odd consumers audit all sixteen owned declarations. Its note gives
+the specified supported `Gs`/`Ys` recipe; further outer-E contexts, unique-path
+matrix transports and quotient-class attachment to `ev_layer` remain.
+Evaluation at the regular probe is not asserted faithful on all Hom
+transformations. See [ELVTensorHomEntries](ELVTensorHomEntries.md).
+
+`ELVTensorVacuumWords` now extends the literal chosen tensor Hom to every
+reservoir word context, with even value and full coefficient charts,
+all-vector dot/crossing formulas and whole Hom coordinates preserving
+every old-word generator. Strict occupied mixed/two-odd consumers in
+nonempty contexts audit all 46 owned declarations. Attach these exact
+comparisons to the layer matrices and literal `ev_layer`; the completed
+action record remains separate. See [ELVTensorVacuumWords](ELVTensorVacuumWords.md).
+
+`ELVTensorVacuumGenerators` now identifies the one-E dot and two-E
+equal/distinct crossing out of the selected tensor Hom vacuum with the
+prescribed reservoir word operators. The same `selectedIso` and literal
+regular probe are used, with all-vector formulas on every formal block.
+Strict producer and occupied two-odd consumer checks audit all 33 owned
+declarations. The arbitrary contexts are now checked above; attach to the completed
+record; see [ELVTensorVacuumGenerators](ELVTensorVacuumGenerators.md).
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
@@ -1147,9 +1274,9 @@ reservoir path value on the specified regular-power empty-word family
 with the reversed selected E-word value, retaining the existing even
 `pathChart`. Its producer and connected two-odd consumer pass strict
 checks and twenty owned audits; the independent odd-coefficient product
-and cyclic unit are nonzero in that same path value. Identify the eventual
-swapped tensor-vacuum Hom input with this initial family before using
-the comparison for observations. See [ELVReservoirWordValue](ELVReservoirWordValue.md).
+and cyclic unit are nonzero in that same path value. The specified tensor
+Hom input is now identified with this family by `ELVWeightTensorVacuum`;
+attach the resulting chosen word comparisons to the literal observations. See [ELVReservoirWordValue](ELVReservoirWordValue.md).
 
 `ELVWeightTensorVacuum` now constructs the full-product tensor Hom from
 the OLD probe category and its explicit regular evaluated probe, zero on
@@ -1158,16 +1285,18 @@ every nonempty formal block even when weights coincide. Its even
 `ReservoirWordValue.initialValue`, with the every-vector scalar/unitor
 formula and unchanged tensor coefficient. Producer and occupied two-odd
 consumer pass strict checks and 39 owned audits; the independent odd
-product remains nonzero. Carry the chosen reservoir dot/crossing maps
-through this same comparison, then attach the swapped layers. See
+product remains nonzero. `ELVTensorVacuumWords` now carries the chosen
+reservoir dot/crossing maps through this comparison in every word context;
+attach the literal swapped layers next. See
 [ELVWeightTensorVacuum](ELVWeightTensorVacuum.md).
 
 `ELVPowerWordHomCoordinates` now passes fresh strict producer and
 occupied-consumer checks, including all 48 owned audits. Its whole-Hom
 linear equivalence, arbitrary coefficient, dot and crossing formulas
 retain the selected word charts; the consumer has a nonzero two-odd Hom
-and cyclic unit. Attach this model to the selected swapped Hom vacuum
-input before asserting the final observation kernel. See
+and cyclic unit. `ELVTensorVacuumWords.homEquiv` now attaches these
+coordinates to the specified tensor Hom after evaluation at its regular
+probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
 ## Central augmented-matrix attachment
@@ -1175,9 +1304,12 @@ input before asserting the final observation kernel. See
 [CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
 remaining fixed-output-content comparison from the actual `augPosMat`
 and `augNegMat` to the two-sector model, including the negative signs,
-absent pure paths and height zero. First identify the entire prescribed
-reservoir cap rows and unit columns through the actual roundtrip-path
-charts, at every dot power. The subsequent residual argument needs the
+absent pure paths and height zero. `ReservoirDottedAdjunctionRows` now
+identifies every prescribed reservoir cap row and unit column through
+the actual roundtrip-path charts; `ReservoirDottedFactorCoordinates` now
+identifies these with the literal native factor words. Identify all
+principal/mixed entries next.
+The subsequent residual argument needs the
 literal mixed bend expansions and positive coefficient-ideal membership
 of the closed errors on every `Z : P.H t`. Existing contentwise nilpotent
 ideals do not supply those memberships or the matrix square. Assemble
