@@ -993,6 +993,14 @@ consumer and all eight owned audits pass strict checks. Compare both
 independent crossing whiskerings through this same coordinate for the
 global braid. See [ProbeWeightTripleInduction](ProbeWeightTripleInduction.md).
 
+`ELVProbeBlockBraid` proves the braid for the two independently chosen
+negative crossing whiskerings on the three stored-target block appends.
+The literal OLD quotient relation supplies the grid input; no braid or
+comparison premise remains. Its producer and occupied mixed/shifted
+consumer pass strict checks and all 23 owned audits. Identify both global
+whiskerings through the same triple coordinate next. See
+[ProbeBlockBraid](ProbeBlockBraid.md).
+
 `ELVProbeBlockNilHecke` proves both prescribed stored-target signed slides
 and identifies both global dot totals in the selected double-predecessor
 coordinate. Producer and occupied mixed/shifted consumer pass strict
