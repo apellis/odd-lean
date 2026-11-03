@@ -716,7 +716,10 @@ producer, concrete representable consumer and both owned audits pass
 strict scoped checks, with full CI verified in #1011. `oldTripleCross_braid` in `ELVOldInductionBraid` proves
 the subsequent whole-map braid on direct triple induction, with its
 superopposite signs; its producer, occupied consumer and all 15 owned
-audits also pass, with full CI verified in #1011. `ELVOldNestedBraid` now
+audits also pass, with full CI verified in #1011. The shared signed
+argument is now exposed in `ELVModuleInductionBraid` for the changing
+content grid; the extraction and unchanged OLD consumer pass fresh strict
+checks, with one plus fourteen owned audits. `ELVOldNestedBraid` now
 identifies both chosen negative prefix/suffix crossings through the same
 canonical triple flattening and proves their braid on every old module.
 Its producer, concrete consumer and all 20 owned audits pass strict

@@ -42,3 +42,12 @@ audits all 15 owned declarations. The full build, global axiom audit and all non
 the prefix and suffix of the selected negative double-induction crossing
 under the canonical flattenings, in strict paired checks. Restriction to
 evaluated fixed contents and weight products remains separate.
+
+The common signed transformation argument is now exposed as
+`BalancedInduction.transformComponent_braid` in
+`ELVModuleInductionBraid`, for the changing-content induction grid.
+`ELVOldInductionBraid` uses this same proof with unchanged hypotheses and
+conclusion. The generic producer and actual OLD consumer pass strict
+checks and audit its one owned declaration; the refactored OLD producer
+and consumer pass again, auditing its remaining fourteen declarations.
+Full integration of this extraction remains separate.

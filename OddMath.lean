@@ -123,6 +123,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldNestedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
