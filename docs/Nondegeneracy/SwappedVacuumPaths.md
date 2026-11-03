@@ -18,7 +18,10 @@ path from positive reservoir content to the empty sector and tests a
 nonzero finite-sum value. The producer and paired consumer pass strict
 scoped checks with the pinned toolchain, warnings as errors and both
 compatibility settings. The consumer audits all five owned declarations.
-Full integration verification remains separate.
+The full build, global axiom audit and all non-vacuity checks passed in
+[#1010](https://github.com/apellis/odd-lean/pull/1010), at source head
+`066fc97a28cb36b2034dc37e9913f6d958b08f62`
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41680334616)).
 
 The next attachment identifies the corresponding component of the
 literal swapped `layerMap` with the chosen word-module operators, using
