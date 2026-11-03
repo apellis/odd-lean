@@ -1772,6 +1772,15 @@ the intended factor, coefficient inverse and component bounds, then bend
 the sums and prove residual ideal membership. See
 [CrossCoeffExpansion](CrossCoeffExpansion.md).
 
+`Sigma.ReservoirToProbeBend` now identifies the reverse mixed entry
+with the prescribed probe-unit/conjugated-coefficient/reservoir-counit
+word. Both the PR-diagonal minus and negative augmented sign are retained,
+with only genuine path-existence conditions. Strict complete asymmetric
+two-odd ELV-pair consumers cover occupied height-zero sectors and a
+nonzero odd-product input, auditing all 53 declarations. Both mixed bends
+are now available; attach all probe rows, the complete augmented-matrix
+chart, finite expansions and residual ideal closure. See
+[ReservoirToProbeBend](ReservoirToProbeBend.md).
 `Sigma.ProbePrincipal` now identifies the literal pure probe entry with
 the chosen precomposition mate, and then with the specified multiple of
 negative `sigL`. The exceptional odd height-zero sign is retained. Strict
@@ -1792,7 +1801,7 @@ augmented sign is retained. Strict complete two-odd ELV-pair consumers
 cover height zero, absent pure corners and a nonzero odd-product input,
 auditing all 51 declarations. The coefficient remains specified data;
 attach its finite expansion after evaluation and prove residual ideal
-membership. The reverse bend and probe principal remain separate; see
+membership. The reverse bend and probe principal are constructed above; see
 [ProbeToReservoirBend](ProbeToReservoirBend.md).
 
 [CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
