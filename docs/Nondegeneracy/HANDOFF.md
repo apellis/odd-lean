@@ -734,6 +734,11 @@ mixed/shifted/nested-tensor consumer pass strict checks and 38 owned
 audits. Restrict this equation to evaluated modules, then use the chosen
 canonical-content and weight coordinates. See [OldContentBraid](OldContentBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
+`ELVOldDistinctSlides` now supplies both distinct-colour coefficient
+slides for the literal OLD dots and positive crossing. Its producer and
+mixed/two-odd representable consumer pass strict checks and six owned
+audits. Apply signed contravariant induction and the chosen pair
+flattenings before weight transport. See [OldDistinctSlides](OldDistinctSlides.md).
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
