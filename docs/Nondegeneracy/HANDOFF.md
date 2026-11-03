@@ -986,6 +986,14 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeWeightLocalInverse` now assembles the occupied and absent
+coordinates into both entire natural inverse records for the prescribed
+global principal and dotted rows. Strict mixed/positive/negative/both-
+zero-height consumer checks audit all 34 declarations. No finite-block
+or independent-root hypothesis is used. Attach these two records to
+the already chosen local generators to construct the probe family; see
+[ProbeWeightLocalInverse](ProbeWeightLocalInverse.md).
+
 `ELVProbeWeightSupportedInverse` now supplies both prescribed finite
 inverse orientations at every occupied output coordinate, using the
 checked stored inverses and exact principal/cap/unit charts. Strict
