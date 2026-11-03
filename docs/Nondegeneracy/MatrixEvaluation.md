@@ -20,5 +20,11 @@ a nonzero odd off-diagonal entry also nonzero after evaluation at the unit.
 It exercises both parity profiles and the even specialization.
 
 This is the naturality step needed after central matrix inversion at
-module/output/word coordinates. Product-coordinate inverse lifting and
+module/output/word coordinates. `MatrixProductEvaluation.isIso_of_components` now supplies the product
+step: the coordinate inverse entries assemble on the entire product,
+without finite output support. Its paired consumer uses an infinite
+family of invertible triangular rational-module matrices, with a nonzero
+off-diagonal entry at every natural-number coordinate. All three owned
+declarations pass strict paired checks and the axiom audit. Applying
+these lifts to the nested module/output/word evaluation and constructing
 the actual central evaluated inverse remain separate attachments.
