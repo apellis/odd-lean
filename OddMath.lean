@@ -1636,6 +1636,7 @@ import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.VacuumPaths
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirPaths
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
 import OddMath.QuiverHecke.SwappedAssembly.Generators.CupCap
