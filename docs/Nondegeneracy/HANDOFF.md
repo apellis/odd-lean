@@ -948,6 +948,12 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeWeightMixedMateComparison` now retains the actual upper unit
+and lower counit through the occupied mixed-coordinate equalities.
+Strict asymmetric two-odd regular/parity-shifted weight consumers audit
+all 61 declarations. Paste these with the selected crossing square and
+apply the stored mixed inverse; see
+[ProbeWeightMixedMateComparison](ProbeWeightMixedMateComparison.md).
 `ELVProbeWeightMixedCoordinates` identifies the occupied mixed-loop
 endpoints, arbitrary-target induction maps and the exact selected block
 crossing through the original product-coordinate equalities, at every
