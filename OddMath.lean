@@ -2535,3 +2535,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeStoredBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedStoredBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTriplePolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightSupportedInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorReservoirWords

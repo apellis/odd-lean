@@ -63,6 +63,16 @@ theorem's weight-group hypotheses.
 
 ## Exact source classes for power-word vectors
 
+`TensorReservoirWords.pathHomAt_eq_wordHom` now identifies the whole
+selected tensor Hom along any actual reservoir path ending at zero with
+the prescribed reversed-word Hom, using its proved original-weight
+endpoint. The even regular-probe chart retains all coefficient carriers.
+Strict connected mixed/two-odd/arbitrary-map/nil-path/nonzero-exterior-value
+consumers audit all 25 declarations. Identify outer reservoir words at
+arbitrary intermediate content with the chosen word-context functors,
+then splice these charts into the literal layer/source-class square;
+see [TensorReservoirWords](TensorReservoirWords.md).
+
 `ELVTensorLayerClasses` now identifies the actual chosen ELV dot/crossing
 Hom-entry evaluation under both word contexts with its physical OLD map
 and original coefficient-one affine-layer quotient class. Strict occupied
