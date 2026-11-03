@@ -923,7 +923,7 @@ occupied/empty/odd-input consumer and all 42 owned audits pass strict
 checks. Continue with stored-target and weight transport, the braid and
 the adjacent local record. See [ProbeEvaluatedCrossing](ProbeEvaluatedCrossing.md).
 
-`probeOldActionDotIso` in `ELVInductionGridRelations` proves both whole signed slides for the
+`ELVInductionGridRelations` proves both whole signed slides for the
 chosen negative crossing. `ELVInductionGridLocal` and `ELVOldContentLocal`
 assemble these with the prescribed actual matrix inverses into
 `oldContentLoc`, with no local-record or inverse premise. All three
@@ -932,7 +932,7 @@ audits. Restrict the exact record to the evaluated full subcategory,
 then handle canonical contents, absent predecessors and original weights.
 See [InductionGridLocal](InductionGridLocal.md).
 
-`ELVProbeWeightDotUnit` constructs the inverse of
+`probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
 odd homogeneous inverse and absent predecessors. Its producer and
 consumer pass strict checks and all 14 owned audits. The consumer retains
