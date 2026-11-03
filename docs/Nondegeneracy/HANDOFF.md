@@ -44,7 +44,7 @@ The complete inventory of preserved topic variants is in
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; finish whole-dot inverse, crossing/local-record transport and the actual adjacent record |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | Identify its iterated postcomposition functor and attach `layerMap_apply_append` to the chosen contextual dot/crossing operators; the constructed unique path alone is not an observation |
@@ -922,6 +922,14 @@ signed input naturality and square-zero equation. Its producer, concrete
 occupied/empty/odd-input consumer and all 42 owned audits pass strict
 checks. Continue with stored-target and weight transport, the braid and
 the adjacent local record. See [ProbeEvaluatedCrossing](ProbeEvaluatedCrossing.md).
+
+`ELVProbeWeightDotUnit.probeOldActionDotIso` constructs the inverse of
+the chosen whole-weight dot over arbitrary weight fibres, including its
+odd homogeneous inverse and absent predecessors. Its producer and
+consumer pass strict checks and all 14 owned audits. The consumer retains
+a nonzero actual induced unit vector at positive levels for both moving
+parities. Use this unit in the concrete probe and denominator inputs.
+See [ProbeWeightDotUnit](ProbeWeightDotUnit.md).
 
 `ELVProbeWeightCrossing` now supplies the chosen negative crossing on
 every original-weight fibre, including its stored-target formula, both
