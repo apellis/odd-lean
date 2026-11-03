@@ -23,6 +23,8 @@ private def letter (n : ℕ) (i : Bool) : ContentCategory D Sc (cut n) n (0 + ([
 example (n : ℕ) (i : Bool) := contentBlockMatrixDot_supernatural D Sc (cut n) n (0 + ([i] : Multiset Bool)) i
 example (n : ℕ) (i : Bool) (r : ℕ) (b : (M n i).obj (letter n i)) :=
   contentBlockUnitDot_square D Sc (cut n) n (0 + ([i] : Multiset Bool)) i (M n i) (letter n i) r b
+example (n : ℕ) (i : Bool) (r : ℕ) (b : (M n i).obj (letter n i)) :=
+  contentBlockUnitDotColumn_square D Sc (cut n) n (0 + ([i] : Multiset Bool)) i (M n i) (letter n i) r b
 example (i : Bool) (b : (M 0 i).obj (letter 0 i)) :=
   contentBlockUnitDot_square D Sc (cut 0) 0 (0 + ([i] : Multiset Bool)) i (M 0 i) (letter 0 i) 0 b
 private def vacuumModule (n : ℕ) := supermoduleParityObj
@@ -30,11 +32,16 @@ private def vacuumModule (n : ℕ) := supermoduleParityObj
     (WeightedAppendFixture.truncatedRepresentable D Sc (cut n) n ((Q n).obj ⟨[]⟩)))
 example (n : ℕ) (i : Bool) (r : ℕ) (b : (vacuumModule n).obj (empty n)) :=
   contentBlockUnitDot_square D Sc (cut n) n 0 i (vacuumModule n) (empty n) r b
+example (n : ℕ) (i : Bool) (r : ℕ) (b : (vacuumModule n).obj (empty n)) :=
+  contentBlockUnitDotColumn_square D Sc (cut n) n 0 i (vacuumModule n) (empty n) r b
 private def exterior (n : ℕ) : (⟨[true]⟩ : OldCategory D Sc (cut n)) ⟶ ⟨[true]⟩ :=
   (ideal D Sc (cut n) [true] [true]).mkQ
     (SKM.SYM.elvCoefficientQuotient D (cut n) (SKM.SYM.delta D ℚ ⟨true, rfl⟩) ⊗ₜ[ℚ]
       𝟙 ((pres D Sc).obj (ob D [true])))
 example (n : ℕ) (r : ℕ) := contentBlockUnitDot_square D Sc (cut n) n
+  (0 + ([true] : Multiset Bool)) true (M n true) (letter n true) r
+  ((Q n).map (𝟙 (⟨[true]⟩ : OldCategory D Sc (cut n)) + exterior n))
+example (n : ℕ) (r : ℕ) := contentBlockUnitDotColumn_square D Sc (cut n) n
   (0 + ([true] : Multiset Bool)) true (M n true) (letter n true) r
   ((Q n).map (𝟙 (⟨[true]⟩ : OldCategory D Sc (cut n)) + exterior n))
 example : D.parity true = 1 := by decide
