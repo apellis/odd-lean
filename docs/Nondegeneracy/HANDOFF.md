@@ -746,6 +746,13 @@ mixed/shifted/nested-tensor consumer pass strict checks and 38 owned
 audits. Restrict this equation to evaluated modules, then use the chosen
 canonical-content and weight coordinates. See [OldContentBraid](OldContentBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
+`ELVOldMulticolourBraid` proves both uncorrected and repeated-outer
+coefficient braids for the independently appended positive OLD crossings,
+including nonzero interior parameters. Strict producer and mixed/three-odd
+consumer checks audit all eleven owned declarations. Transfer through the
+changing-category balanced charts with their superopposite signs and
+negative equal crossings before asserting the original-Sc action fields.
+See [OldMulticolourBraid](OldMulticolourBraid.md).
 `ELVOldDistinctSlides` now supplies both distinct-colour coefficient
 slides for the literal OLD dots and positive crossing. Its producer and
 mixed/two-odd representable consumer pass strict checks and six owned
