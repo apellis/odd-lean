@@ -2115,3 +2115,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixMate
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCrossing
