@@ -2320,3 +2320,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTripleCorrectionPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTriplePolynomialComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapRowFamily
