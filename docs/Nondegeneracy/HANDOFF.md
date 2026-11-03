@@ -986,6 +986,15 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`probeOldRouquierFamily` now constructs the complete chosen local
+probe family on original weights, including both local inverses, with
+no factor or inverse premise. Its generators, restriction and right
+adjunction retain their literal definitions, and its dot remains a
+unit. Strict twisted mixed/normalized-left-adjunction consumer checks
+audit all nine declarations. Attach the two remaining multicolour braid
+fields to finish the complete factor presentation; see
+[ProbeRouquierFamily](ProbeRouquierFamily.md).
+
 `ELVProbeWeightLocalInverse` now assembles the occupied and absent
 coordinates into both entire natural inverse records for the prescribed
 global principal and dotted rows. Strict mixed/positive/negative/both-

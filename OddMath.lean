@@ -2537,3 +2537,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTriplePolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightSupportedInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorReservoirWords
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLocalInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierFamily
