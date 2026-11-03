@@ -2312,3 +2312,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitColumnModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitModules
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierFields
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightCross
