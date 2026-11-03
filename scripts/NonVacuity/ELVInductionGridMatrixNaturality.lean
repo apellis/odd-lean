@@ -43,12 +43,12 @@ private abbrev hOrd (μ : List Bool) (i : Bool) := probeMatrixOrdinaryCross_supe
 private abbrev dOld (μ : List Bool) (i : Bool) := probeOldContentAppendDot_supernatural D Sc m μ i
 private abbrev dOrd (μ : List Bool) (i : Bool) := probeOrdinaryAppendDot_supernatural D Sc m μ i
 /-- All dot powers, ordinary units and normalized caps are supernatural. -/
-example (i : Bool) (n : ℕ) := dotEnd_power_supernatural (J ν i) (dOld ν i) n
-example (i : Bool) (n : ℕ) := unitDotColumn_supernatural (J (i :: ν) i) (dOld (i :: ν) i) n
-example (i : Bool) (n : ℕ) := capDotRow_supernatural (J ν i) (dOld ν i) n
-example (i : Bool) (n : ℕ) := dotEnd_power_supernatural (T ν i) (dOrd ν i) n
-example (i : Bool) (n : ℕ) := unitDotColumn_supernatural (T (i :: ν) i) (dOrd (i :: ν) i) n
-example (i : Bool) (n : ℕ) := capDotRow_supernatural (T ν i) (dOrd ν i) n
+example (i : Bool) (n : ℕ) := gridDotEnd_power_supernatural (J ν i) (dOld ν i) n
+example (i : Bool) (n : ℕ) := gridUnitDotColumn_supernatural (J (i :: ν) i) (dOld (i :: ν) i) n
+example (i : Bool) (n : ℕ) := gridCapDotRow_supernatural (J ν i) (dOld ν i) n
+example (i : Bool) (n : ℕ) := gridDotEnd_power_supernatural (T ν i) (dOrd ν i) n
+example (i : Bool) (n : ℕ) := gridUnitDotColumn_supernatural (T (i :: ν) i) (dOrd (i :: ν) i) n
+example (i : Bool) (n : ℕ) := gridCapDotRow_supernatural (T ν i) (dOrd ν i) n
 /-- The natural transformations retain ALL literal prescribed fields. -/
 example (i : Bool) (b : ℕ) (a : Option (Fin b)) :=
   gridUnitMatrixEntryNatTrans_app (J ν i) (J (i :: ν) i) (hOld ν i) (dOld (i :: ν) i) b a (N1 i)
