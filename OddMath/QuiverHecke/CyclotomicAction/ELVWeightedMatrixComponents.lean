@@ -53,6 +53,36 @@ theorem orderedMateComponent_mem (M : Superfunctor k C (SVec k)) :
     (IsSuperfunctor.map_mem (F := restriction A)
       (IsSuperfunctor.map_mem (F := induction A) (adjunctionCounit_mem A M)))
 
+/-- The ordered cup-crossing-cap family retains the prescribed crossing minus. -/
+theorem orderedMateComponent_supernatural :
+    IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
+      (orderedMateComponent A hα) := by
+  change IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
+    (fun M => (adjunctionUnit A).app (induced A ((restriction A).obj M)) ≫
+      (restriction A).map (-doubleCrossComponent A hα ((restriction A).obj M)) ≫
+      (restriction A).map ((induction A).map ((adjunctionCounit A).app M)))
+  have hU := (isSupernatural_of_natTrans (R := k) (adjunctionUnit A)
+    (adjunctionUnit_mem A)).whiskerLeft (restriction A ⋙ induction A)
+  have hd := doubleCrossComponent_supernatural A hα
+  have hn : IsSupernatural k p (F := induction A ⋙ induction A)
+      (G := induction A ⋙ induction A) (fun M => -doubleCrossComponent A hα M) := {
+    mem := fun M => neg_mem (hd.mem M)
+    naturality := fun hf => by
+      rw [Preadditive.comp_neg, hd.naturality hf, Preadditive.neg_comp, smul_neg] }
+  have hX := (hn.whiskerLeft (restriction A)).whiskerRight (restriction A)
+  have hC := ((isSupernatural_of_natTrans (R := k) (adjunctionCounit A)
+    (adjunctionCounit_mem A)).whiskerRight (induction A)).whiskerRight (restriction A)
+  have h := hU.comp (hX.comp hC)
+  set_option backward.dsimp.instances true in
+    dsimp only [induction] at h ⊢
+  simpa only [Functor.comp_id, Functor.id_comp, Functor.comp_obj, zero_add, add_zero,
+    Category.assoc] using h
+
+/-- Regrading the prescribed crossing family changes no matrix mate map. -/
+theorem orderedMateComponent_supernatural_of_degree (r : ZMod 2) (hp : p = r) :
+    IsSupernatural k r (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
+      (orderedMateComponent A hα) := hp ▸ orderedMateComponent_supernatural A hα
+
 private theorem regrade {F G : Superfunctor k C (SVec k)} {q r : ZMod 2}
     {f : F ⟶ G} (h : q = r) (hf : f ∈ parity (R := k) _ _ q) :
     f ∈ parity (R := k) _ _ r := by
@@ -114,6 +144,13 @@ private def inductionMatrixDatum {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
   mate := homogeneousMate A hα M q hq
   columns n := ⟨unitColumnNative A hδ M n, unitColumnNative_mem A hδ M n⟩
   rows n := ⟨capRowNative A hδ M n, capRowNative_mem A hδ M n⟩
+
+/-- The chosen matrix datum mate retains input-module naturality before specialization. -/
+theorem inductionMatrixMate_supernatural {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) :
+    IsSupernatural k q (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
+      (fun M => (inductionMatrixDatum A hα hδ hq M).mate.val) :=
+  orderedMateComponent_supernatural_of_degree A hα q hq
 
 /-- The matrix mate is the given ordered mate on every coend vector. -/
 theorem inductionMatrixMate_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
