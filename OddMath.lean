@@ -2192,3 +2192,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
