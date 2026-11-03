@@ -2328,3 +2328,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitRows
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierPowers
 import OddMath.SKM.AugmentedInverseProfile
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCoherence
