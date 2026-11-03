@@ -1062,6 +1062,14 @@ consumers pass, including all eleven owned-declaration axiom checks; full CI ver
 factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
+`ELVPowerWordHomCoordinates` now passes fresh strict producer and
+occupied-consumer checks, including all 48 owned audits. Its whole-Hom
+linear equivalence, arbitrary coefficient, dot and crossing formulas
+retain the selected word charts; the consumer has a nonzero two-odd Hom
+and cyclic unit. Attach this model to the selected swapped Hom vacuum
+input before asserting the final observation kernel. See
+[PowerWordHomCoordinates](PowerWordHomCoordinates.md).
+
 ## Central augmented-matrix attachment
 
 [CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
