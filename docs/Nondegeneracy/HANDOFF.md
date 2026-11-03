@@ -43,6 +43,37 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ReservoirVacuumCrossing.postCrossNe_reservoirVacuum` now compares the
+prescribed distinct reservoir block with the factor crossing through the
+exact source/target pair charts and target-sector transport, on every Hom
+input. Strict complete two-odd ELV-pair checks audit all 17 declarations
+and retain a nonzero odd exterior input. The literal matrix attachment
+below retains both contexts; see
+[ReservoirVacuumCrossing](ReservoirVacuumCrossing.md).
+`ReservoirLayerDistinctCrossings.layerMap_reservoir_cross_ne` now proves
+the literal distinct crossing matrix square under both outer contexts,
+retaining the source endpoint cast and exact target-sector transport.
+Strict complete two-odd ELV-pair/nonempty-context consumer checks audit
+all twenty declarations. Join the word/context charts to the physical
+OLD quotient square; see
+[ReservoirLayerDistinctCrossings](ReservoirLayerDistinctCrossings.md).
+`ReservoirLayerCrossings.layerMap_reservoir_cross_same` now supplies
+the corresponding literal matrix-to-factor comparison for an equal-colour
+crossing under both arbitrary path contexts and an arbitrary input matrix.
+Strict complete two-odd ELV-pair/nonempty-context consumers audit all seven
+owned declarations. The distinct comparison above retains its target-sector
+transport; attach the intended OLD factor and quotient charts. The matrix fixture
+makes no nonzero-entry or mixed-inverse claim; see
+[ReservoirLayerCrossings](ReservoirLayerCrossings.md).
+`ReservoirLayerGenerators.layerMap_reservoir_dot` now compares the actual
+chosen upward-generator matrix with the prescribed reservoir factor dot,
+retaining both arbitrary path contexts, append charts and the input
+entry. Strict complete two-odd ELV-pair/contextual consumers audit all
+four declarations; that matrix fixture does not claim a nonzero entry or
+mixed inverse. Attach the intended OLD factor, word-functor charts and
+existing quotient-class square; see
+[ReservoirLayerGenerators](ReservoirLayerGenerators.md).
+
 `HalfTurn.PowerWordLayerClasses.affine_class_square` now proves the
 coefficient-one quotient-class square for every literal affine layer and
 arbitrary actual word vector, with only the input-class premise. The map
@@ -86,7 +117,14 @@ global axiom audit and all concrete consumers at source `a2e6b551`
 quadratic fields, the chosen reindexed crossing/mate and all dotted rows,
 the missing-colour boundary including zero height, direct corrected braid
 and triple-dot chart polynomial, both Hom contexts and exact every-vector
-power-word quotient coordinates. Later canonical/global local, nested braid,
+power-word quotient coordinates. Integration #1021 then passed the full
+warning-free build, global axiom audit and all concrete consumers at
+source `a4c9e781` (run 41710537064), integrated at `66fd1115`. It verifies
+product inverse gluing, zero-boundary and even-chart transport, chosen
+local generator/row components, the stored distinct-mate inverse,
+whole-weight absent mixed coordinates, corrected nested/grid braids,
+reservoir principal entries and the contextual source-layer class square.
+Later stored/global local,
 central matrix and literal layer additions retain their separate
 scoped-check/full-integration boundaries below.
 
@@ -836,12 +874,55 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeMissingStoredLocal.probeMissingStoredLoc` now constructs the
+selected missing-colour local inverse with the stored upper adjunction
+and dot and the constructed zero lower cell. Both zero-height orientations
+are retained. Strict mixed/nonempty/reordered/odd-input/zero-height
+consumer checks audit all 22 owned declarations and prove a nonzero
+output of the actual inverse top row. Attach the absent global coordinates
+and combine with the present-colour local records; see
+[ProbeMissingStoredLocal](ProbeMissingStoredLocal.md).
+`ELVProbeZeroBoundary` now constructs the zero object, endocell and
+even zero adjunction in every evaluated content category, with zero
+identity after any actual postcomposition. Strict mixed/nonempty/odd-map/
+zero-level consumers audit all thirty declarations and prove that the
+ambient vacuum and actual append identities remain nonzero. The stored
+local constructor above combines these with the boundary coefficients;
+identify the absent global coordinates; see [ProbeZeroBoundary](ProbeZeroBoundary.md).
+`ELVProbeMissingStoredCoefficients.probeMissingStoredCoefficients` now
+constructs the finite boundary record for the literal stored-target
+adjunction and dot, with the chart and every unit-column comparison
+proved. No compatibility or inverse premise remains; count zero is
+included. Strict mixed/nonempty/reordered/odd-input consumers prove a
+nonzero stored top-cap output and audit the construction. The stored
+local record above combines the zero lower cell; attach global coordinates; see
+[ProbeMissingStoredCoefficients](ProbeMissingStoredCoefficients.md).
+`ELVProbeMissingCoefficients.probeEvaluatedMissingCoefficients` now
+constructs the prescribed finite boundary record for the actual evaluated
+append adjunction and dot. All native row components and the top cap
+are retained, including count zero. Strict mixed/nonempty/odd-input/
+zero-count consumer checks prove a nonzero evaluated top-cap output and
+audit all 68 owned declarations. Transport these coefficients through
+the checked stored upper-loop chart, then attach the zero lower local
+record; see [ProbeMissingCoefficients](ProbeMissingCoefficients.md).
+`ELVProbeAppendUpperLoop` now supplies the selected even evaluated
+upper-loop chart and the whole unit-column square for every exponent,
+without a lower predecessor. Strict mixed/nonempty-missing/reordered/
+shifted consumer checks audit all 36 owned declarations. Transport the
+constructed evaluated missing-colour coefficients through this chart,
+then attach the actual zero lower cell and global coordinates; see
+[ProbeAppendUpperLoop](ProbeAppendUpperLoop.md).
 `ELVProbeReindexUnitColumns` now preserves the unit and every dotted
 column through a single arbitrary append comparison, without assuming
 a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeReindexLoopComponents` identifies both selected even loop
+comparisons with the OLD maps used in the proved mate square. Strict
+reordered mixed/shifted/odd-input consumer checks audit all fourteen
+owned declarations. Use them in the whole evaluated mate and dotted-row
+comparisons; see [ProbeReindexLoopComponents](ProbeReindexLoopComponents.md).
 `ELVProbeAppendToRows` now identifies every selected dotted unit/counit
 row with its prescribed OLD homogeneous components, for arbitrary stored
 targets, dot exponents and parities. Strict mixed reordered/odd-input
@@ -874,6 +955,18 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeWeightMixedMateComparison` now retains the actual upper unit
+and lower counit through the occupied mixed-coordinate equalities.
+Strict asymmetric mixed-parity regular/parity-shifted weight consumers audit
+all 61 declarations. Paste these with the selected crossing square and
+apply the stored mixed inverse; see
+[ProbeWeightMixedMateComparison](ProbeWeightMixedMateComparison.md).
+`ELVProbeWeightMixedCoordinates` identifies the occupied mixed-loop
+endpoints, arbitrary-target induction maps and the exact selected block
+crossing through the original product-coordinate equalities, at every
+parity. Strict asymmetric mixed-parity consumers audit all 63 declarations.
+Paste the actual cup and cap to attach the stored inverse to the global
+mixed mate; see [ProbeWeightMixedCoordinates](ProbeWeightMixedCoordinates.md).
 `ELVProbeWeightMixedMate` now defines the actual chosen global sideways
 mate, its parity and coordinate formula. Adding a distinct colour cannot
 create a missing predecessor, so both absent coordinates are zero and
@@ -946,6 +1039,33 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVProbeSlideFields` now proves the two exact bundled distinct slide
+fields for the selected probe data with twisted parameters. Strict
+connected mixed/interior/two-odd/disconnected-parameter consumers audit
+all eight declarations. Combine these fields with the separately proved
+quadratics and the remaining braid/inverse attachments; see
+[ProbeSlideFields](ProbeSlideFields.md).
+`ELVProbeWeightTripleCoordinates` now retains both intermediate canonical
+blocks and an arbitrary common final stored target for the whole supported
+triple induction coordinate. Strict occupied mixed-parity/nonempty and
+three-absent-case consumers audit all eight declarations. Use these
+coordinates for the chosen whole-weight braid fields; see
+[ProbeWeightTripleCoordinates](ProbeWeightTripleCoordinates.md).
+`ELVProbeEvaluatedStoredMixedBraid.probeStoredMixedBraid_polynomial`
+now proves the whole corrected braid in the full evaluated categories
+with arbitrary stored representatives and all seven chosen append edges.
+Strict occupied non-cons/mixed/three-odd/interior consumers audit all 89
+owned declarations and retain nonzero append outputs. Attach the selected
+whole-weight triple coordinates and exact presentation fields; see
+[ProbeEvaluatedStoredMixedBraid](ProbeEvaluatedStoredMixedBraid.md).
+`ELVProbeStoredMixedBraid.probeOldStoredMixedBraid_polynomial` now
+proves the whole corrected relation at arbitrary stored lists, with all
+seven append edges and the original-Sc correction in the actual nested
+dots. The source equation is discharged using the full-content forget
+map and literal OLD quotient; no relation premise remains. Strict
+non-cons stored/mixed/three-odd/interior consumers audit all 96 owned
+declarations. Lift to evaluated categories and whole-weight fields next;
+see [ProbeStoredMixedBraid](ProbeStoredMixedBraid.md).
 `ELVInductionCorrectedGrid` now retains seven different append edges
 and six categories in the whole chosen corrected braid, with three
 specified flattenings and independent nested dots. The intermediate
