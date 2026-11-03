@@ -870,12 +870,18 @@ evaluation. Both producers and mixed/interior/two-odd consumer pass strict
 checks and all 23 owned audits. Transport through the chosen flattening
 to the selected block and global dot operators; see
 [OldPairPolynomial](OldPairPolynomial.md).
+`ELVProbeQuadraticFields` now supplies both exact bundled presentation
+fields, `probeOldRouquierData_quadZero` and `probeOldRouquierData_quadNe`,
+using its literal crossing and independently whiskered dot powers with
+original Sc. Strict connected/interior/two-odd and disconnected parameter-2
+consumer checks audit all ten owned declarations. Assemble the remaining
+multicolour fields; see [ProbeQuadraticFields](ProbeQuadraticFields.md).
 `ELVProbeWeightQuadratic.probeOldActionDistinctCross_quadratic` now
 proves the whole original-weight crossing square as the ordered
 original-Sc polynomial of both actual global dots over `parameterTwist D Sc`.
 Closed block-natural and absent-source-zero cases are included. Strict
 mixed/interior/two-odd/shifted/absent consumer checks audit all seventeen
-owned declarations. Attach the exact presentation corollaries and complete
+owned declarations. The exact quadratic fields are checked above; complete the remaining
 multicolour fields; see [ProbeWeightQuadratic](ProbeWeightQuadratic.md).
 `ELVProbeBlockQuadraticDots` now identifies the actual selected crossing
 square with the original-Sc ordered polynomial of both independently

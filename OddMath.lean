@@ -2468,3 +2468,4 @@ import OddMath.QuiverHecke.SwappedAssembly.ReservoirLayerEntries
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldTriplePolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuadraticFields
