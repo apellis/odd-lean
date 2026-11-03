@@ -2293,3 +2293,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPolynomialCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCapWindows
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCross
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightCross
