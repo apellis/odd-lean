@@ -853,6 +853,14 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeMissingStoredCoefficients.probeMissingStoredCoefficients` now
+constructs the finite boundary record for the literal stored-target
+adjunction and dot, with the chart and every unit-column comparison
+proved. No compatibility or inverse premise remains; count zero is
+included. Strict mixed/nonempty/reordered/odd-input consumers prove a
+nonzero stored top-cap output and audit the construction. Combine with
+the evaluated zero lower cell, then attach global coordinates; see
+[ProbeMissingStoredCoefficients](ProbeMissingStoredCoefficients.md).
 `ELVProbeMissingCoefficients.probeEvaluatedMissingCoefficients` now
 constructs the prescribed finite boundary record for the actual evaluated
 append adjunction and dot. All native row components and the top cap
