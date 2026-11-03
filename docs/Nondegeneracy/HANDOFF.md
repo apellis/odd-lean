@@ -788,6 +788,13 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`SKM.RouquierZeroLocal.ofCoefficients` now constructs the local record
+from upper boundary coefficients and the actual lower-loop and double-cell
+zero identities, retaining every inverse row and both orientations at
+height zero. Strict mixed/nonempty/zero-height consumer checks include a
+nonzero inverse top-row output and audit all 35 owned declarations. Apply
+it to the selected evaluated/global loops using their computed zero
+comparisons; see [RouquierZeroLocal](RouquierZeroLocal.md).
 `SKM.RouquierProductInverse` now assembles both finite inverse orientations
 on arbitrary products at a common height, with literal coordinate inverse
 entries for every row index. Strict nonzero odd three-slot/two-block and
