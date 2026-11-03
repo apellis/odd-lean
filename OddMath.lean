@@ -1896,6 +1896,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.Algebra.FiniteSupermoduleFunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
@@ -2099,6 +2100,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockExtension
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
