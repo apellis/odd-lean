@@ -764,6 +764,11 @@ Strict producer and changing-content mixed/three-odd consumer checks audit
 all seven owned declarations. Use these squares for the six independent
 rectangular triple braid paths; see
 [InductionRectangularWhiskering](InductionRectangularWhiskering.md).
+`ELVModuleMulticolourBraid` proves the three-map balanced transfer with
+the matching superopposite signs in both path orders. Strict producer and
+concrete OLD-path consumer checks audit all four owned declarations.
+Attach the literal OLD braid and rectangular nested comparisons; see
+[ModuleMulticolourBraid](ModuleMulticolourBraid.md).
 `ELVOldMulticolourBraid` proves both uncorrected and repeated-outer
 coefficient braids for the independently appended positive OLD crossings,
 including nonzero interior parameters. Strict producer and mixed/three-odd
