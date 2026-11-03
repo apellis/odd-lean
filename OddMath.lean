@@ -2226,3 +2226,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightUnitPowers
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapPowers
 import OddMath.QuiverHecke.CyclotomicAction.ELVNormalizedGridMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridPowerComparison
