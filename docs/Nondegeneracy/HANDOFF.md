@@ -1805,6 +1805,15 @@ the intended factor, coefficient inverse and component bounds, then bend
 the sums and prove residual ideal membership. See
 [CrossCoeffExpansion](CrossCoeffExpansion.md).
 
+`ELVPostCoefficientEvaluation` now supplies the actual reservoir postdot
+bound after evaluation at each output block, in either parity, and the
+even finite expansion with that bound. Strict actual representable-array
+consumer checks audit all ten declarations. The generic odd expansion
+uses the same bound. Identify the supplied invertible probe operator and
+coefficient equation with the intended mixed coefficient; then bend the
+finite sums and prove residual ideal closure. No full-weight uniform
+bound is asserted; see [PostCoefficientEvaluation](PostCoefficientEvaluation.md).
+
 `Sigma.CentralPaths` now classifies both central path families and the
 identity-path index, retaining the absent reservoir source and absent
 probe target. `matrixEmbeddingIso` pads those missing indices by zero
