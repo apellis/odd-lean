@@ -2295,3 +2295,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightWhiskering
