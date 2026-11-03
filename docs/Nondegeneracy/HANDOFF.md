@@ -1934,7 +1934,11 @@ degree zero and derive degree `2*d_i` for both principal inverses. Strict
 paired checks include positive, negative and zero heights, off-content
 inputs and a proved nonzero odd inverse; all 79 owned declarations are
 audited. Identify these raw inverses with the chosen reservoir principal,
-then use Yoneda to realize the positive-degree closure on every module. Do not infer an
+then use Yoneda to realize the positive-degree closure on every module.
+`ELVContentPrincipalInverseCoordinates` supplies the content-to-weighted
+part of that connection for either orientation and arbitrary stored
+contents, using only the prescribed forward equations and inverse
+uniqueness. Its strict paired checks audit all 83 owned declarations. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
