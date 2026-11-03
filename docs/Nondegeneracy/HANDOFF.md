@@ -929,8 +929,12 @@ fields. See [ProbeWeightCrossing](ProbeWeightCrossing.md).
 `ELVProbeWeightPairInduction` supplies the literal supported two-step
 weight coordinate and both absent-predecessor zero cases. Its producer,
 concrete regular-probe consumer and all four owned audits pass strict
-checks. Use these coordinates for the chosen weight crossing.
-See [ProbeWeightPairInduction](ProbeWeightPairInduction.md).
+checks. `ELVProbeWeightDotWhiskering` identifies both independently
+whiskered dots in the same supported coordinates as the chosen crossing;
+its producer, concrete consumer and all four owned audits also pass.
+Use these common coordinates to transport both signed slides. See
+[ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
+[ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
 
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
