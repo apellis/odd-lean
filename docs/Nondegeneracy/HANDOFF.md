@@ -959,6 +959,13 @@ all 36 declarations. Apply these to the selected stored local inverses
 before whole-weight product gluing; see
 [AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
 
+`ELVProbeWeightTripleDots` now identifies all three independently
+whiskered chosen dots with their prescribed stored append components
+in one supported triple chart. Strict occupied mixed/three-odd consumers
+retain nonzero append outputs and audit all fifty declarations. Use
+these coordinates for the ordered correction polynomial, then attach
+both global braid fields; see [ProbeWeightTripleDots](ProbeWeightTripleDots.md).
+
 `ELVProbeWeightPathCoordinates` now retains the entire chosen pair and
 triple induction coordinates through specified supported intermediate
 blocks and the actual signed dot total. Strict occupied mixed/nonempty

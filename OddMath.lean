@@ -2526,3 +2526,4 @@ import OddMath.SKM.AugmentedInverseEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPathCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.CentralPaths
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.MatrixEmbedding
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleDots
