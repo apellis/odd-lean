@@ -6,28 +6,39 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-Exact trees below are reachable in history only. No proposed source is imported.
-Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+These exact source trees are reachable in history only; no unchecked source
+is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 
 | Argument | Preserved source tree | Scope at snapshot |
 | --- | --- | --- |
-| Word coefficient insertion | [7031748dc2](https://github.com/apellis/odd-lean/commit/7031748dc2e11aa2a1c5d6ae6aa151af425e8b56) (`docs/research/PowerWordCoefficientsDraft.md`) | Coefficient producer passes; occupied paired consumer and export remain unverified at this snapshot. |
-| Canonical principal mate square | [a3974aa58a](https://github.com/apellis/odd-lean/commit/a3974aa58a48894ee66aef4a0ddd675b47a2ca61) (`docs/Nondegeneracy/Proposed/ContentMatrixPrincipalSquare.md`) | Generic square kernel and proposed consumer retained; final ordinary/native coend equality join remains unverified. |
-| Supported content and weight local inverses | [aef85d4610](https://github.com/apellis/odd-lean/commit/aef85d46105f4f07c02b944235f550452635e316) (`docs/Nondegeneracy/ContentSupportedLocalInverse.md`) | Exact principal, unit and cap transport constructions retained; principal-square dependency and complete paired consumers remain unverified. |
-| Old probe local record | [45c1e80b68](https://github.com/apellis/odd-lean/commit/45c1e80b6844139989568a535ecefe34c8f68060) (`docs/Nondegeneracy/ContentVacuumCoefficients.md`) | Four producers pass; actual empty-content local inverse has no local-record premise. Paired occupied consumers remain unverified. |
-| Old probe inverse-family variant | [5a5b9ab3e7](https://github.com/apellis/odd-lean/commit/5a5b9ab3e792d125059bf3eed1aa3de39fcc014c) (`docs/Nondegeneracy/ContentVacuumCoefficients.md`) | Generic inverse families and boundary variants retained before module-row API renaming; complete paired consumers and upper record remain unverified. |
-| Probe local cap binding | [d7c3788c2e](https://github.com/apellis/odd-lean/commit/d7c3788c2e49e911bed0dfc608d46f6e42e1ecac) (`docs/Nondegeneracy/ProbeVacuumLocalCap.md`) | Producer passes: constructed old local record, regular and scalar evaluated cap identities, including F(E(T0)). Paired consumer and export remain unverified. |
+| Original-weight chosen dot | [0b26b3c1f7](https://github.com/apellis/odd-lean/commit/0b26b3c1f7c8e1a548d46d0b0293afefde62fba8) (`docs/Nondegeneracy/PowerWordWeightDotDraft.md`) | Producer passes; paired consumer and whole batch unverified. |
+| Canonical content unit and cap fields | [5754cbac96](https://github.com/apellis/odd-lean/commit/5754cbac968d56ba037a4d3dc751bd1006fb65a2) (`docs/Nondegeneracy/ContentBlockMatrixRows.md`) | Unit and dot prefixes pass; all-power chain and actual field specialization unverified. |
+| Native inverse coefficient caps | [ef8d91c005](https://github.com/apellis/odd-lean/commit/ef8d91c0058d8e88bb21995495267590318813d0) (`docs/Nondegeneracy/ProbeCapMaps.md`) | Bare producers pass; degree, paired consumers and scalar inverse-row binding unverified. |
+| Scalar left-cap field binding | [93af40181a](https://github.com/apellis/odd-lean/commit/93af40181a8b1d62ff882d73e62054fa763bfae1) (`docs/Nondegeneracy/ScalarLeftCapBinding.md`) | Literal dropped-row prefix passes; extended producer and paired consumer unverified. |
+
+## Ground-ring reduction already available
+
+The remaining construction may target characteristic-zero fields.
+`SKM.nondegeneracyConjecture_of_charZeroField` already transports that
+field theorem to every ordinary commutative ring with 2 invertible,
+for the same datum, homogeneous scalars and supplied CScalars. Do not
+list ring descent as an unfinished action or recovery obligation.
+The theorem uses actual presentation base change and universal-parameter
+separation; it adds no target-domain, reducedness or flatness hypothesis.
+See [GroundRingDescent](GroundRingDescent.md) and
+[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean).
 
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
-| Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
-| Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole weight adjunction/dot/crossing/local-record transport and the actual adjacent record |
-| Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
-| Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
-| Final nondegeneracy | Blocked on observations and field scope | Finite-colour reduction, upward/oriented equivalence, observation consumer and ground-ring descent | Supply observations for every required bound/word/weight, then address the explicitly broader source target |
+| Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
+| Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI verified in #972) |
+| Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit full-CI verified in #972 | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
+| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Transport the chosen arbitrary-module distinct inverse to exact content and weight; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
+| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical bridge full-CI verified (#973); actual word coordinates and odd series at the unit scoped-checked below. Finish full factors, arbitrary-vector cap/bubble operators and chosen-action evaluation/recovery |
+| Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
 ## Prescribed matrix and coefficient-row successors
 
@@ -74,7 +85,7 @@ The next locally checked sources supply both native multicolour quadratic
 fields, whole chosen weight-dot evaluation, every canonical-content unit-dot
 power through the selected full charts, exact scalar old inverse-row field
 binding, supported chosen weight unit/counit squares and even flattened
-weight-triple coordinates. Their full warning-free build, global axiom audit and every consumer passed in #991 at source head `c18b8721` (run 41588533754), integrated at `ea35e5ba`. Next attach
+weight-triple coordinates. Their full integration CI is pending. Next attach
 the native coefficient cap to its exact scalar inverse-row field and derive
 the normalized probe window. The whole original-weight distinct mate inverse
 and its parity now pass strict paired checks, including both round trips and
@@ -83,171 +94,6 @@ degree and a nonzero regular-probe value. Prove the native slide/braid fields,
 original-weight same-colour local inversions and canonical diagonal cap-row
 and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
-
-## Field-scope obligation
-
-The current field construction retains `sy : Symmetrizer D` and homogeneous
-parameters. With that fixed datum it must furnish `CharZeroFieldNondegeneracy D`;
-the existing ground-ring theorem then supplies ordinary rings with 2 invertible.
-For the broader §8 conjecture, obtain a source-backed input removing those
-extra hypotheses. They are not consequences of the current datum/scalar APIs.
-See [FieldScopeBoundary](FieldScopeBoundary.md). No broader scope is declared
-out of scope and no replacement route is selected.
-
-## Native probe normalization and remaining action fields
-
-The native left-cap field, all-row Kronecker window, SAME-dot signed probe
-polynomial, canonical counit/all cap rows, weight mate boundary, triple
-coherence and selected append-unit/cyclicity batches passed full CI in #993
-at `f0a2ed23` (run 41594069793). These are established dependencies.
-
-The #995 integration passed the full warning-free build, global axiom audit
-and all consumers at `a51a6f9a` (run 41605147758), integrated at `8f9ad250`.
-It proves the prescribed same-colour
-slides and braid and both distinct-colour slides on original weights, on all
-modules and outputs. It also identifies normalized crossing/mate maps and
-all native unit/cap powers with the old grid operators. Mixed-colour braid
-assembly remains open.
-
-Generic finite coordinate inverses now produce both local inversion structures,
-with exact given forward maps and homogeneous entries; the old grid isomorphisms
-supply constructed examples. All six canonical content chart isomorphisms are
-even in both directions and have exact total-component formulas. Transfer the
-given weighted local inverses through these charts, including the absent
-predecessor with zero EF but retained FE, then assemble input-supernatural
-inverse-entry families and the original-weight local inversion fields.
-
-The selected cap family is input-supernatural. Its native module window and
-literal pre-Hom cap are checked; shifted coordinate dot and raw pre-E dot
-differ by the proved Koszul factor, also at every power. The weighted inverse
-row has its actual homogeneous coefficient map, literal power-reservoir cap
-comparison and full A/T superlinearity, including nonzero odd products.
-The remaining obligations are concrete adjunction/factor assembly and the
-prescribed mixed slide and bubble operators. The generic adjacent Rouquier
-left-adjunction construction already exists in `RouquierFTriangle`; constructing
-its concrete local inputs remains necessary.
-
-The subsequent checked component inverses now include both `weightedContentLocalInverseFrom`
-and `weightedContentLocalInverseTo` with the prescribed forwards. Every canonical
-unit column and cap row has its whole chart square, and the absent-predecessor
-canonical inverse is constructed. The supported principal square and concrete input-family assembly remain
-open. `AugmentedInverseNaturality` now supplies both automatic inverse-entry
-family constructors from the given forward families and pointwise inverses,
-including canonical zero extension outside the finite window.
-`ELVGridLocalInverseFamilies` bundles both given grid inversion families,
-with the constructed old matrix natural isomorphisms as concrete inputs.
-Use these families to construct the prescribed adjacent old local records. All three positioned-dot comparisons and both adjacent crossing comparisons
-now pass through the same chosen triple chart. Attach the original-Sc
-correction polynomial to those operators.
-
-The existing adjacent-left-adjunction constructor is packaged with only two
-local records and the required square-zero/braid equations. Its regular-probe
-raw row is determined by the actual unit-column window; the native normalized
-counit and output-shifted pre-Hom signs cancel. Scalar-evaluation uniqueness
-extends to the occupied F(E T0), without assuming evaluation at T0 is faithful
-on every module. Construct the old-category empty and one-colour local records
-using the existing old grid natural isomorphisms, then apply that constructor.
-The given weighted unit and dot now satisfy the cap Kronecker window as
-whole content-zero module maps, also for the polynomial low window. These
-are the literal operators required by `InverseCapMoments`.
-Actual weighted all-power moments and χ/δ series hold on every coefficient
-vector. The polynomial module cap λ·(D²+1)^M has all closure formulas,
-including nonpositive first closure and a second closure distinguishing
-χ₁+2 from χ₁−2 on nonzero odd input. The prescribed swapped mixed inverse
-and bubble identification remain.
-
-Chosen append-unit calculation and full-coefficient cyclicity are established;
-finish the chosen whole crossing equality and final observation recovery.
-The local-inverse, triple-component and probe-adjunction integration #997
-passed all full-package gates at `679df033` (run 41607159909), integrated at
-`ce03b2b1`. Automatic inverse naturality, three triple-dot squares, literal weighted
-cap windows and grid inverse families passed full CI in #999 at `90c42b0b`
-(run 41610482426), integrated at `d02c6561`.
-
-## Chosen word evaluation and absent local families
-
-The chosen content and original-weight word-module crossing squares now
-hold for every full coefficient vector, including absent components; their
-occupied paired consumers retain a nonzero product of two odd coefficients.
-Finish append/context coherence before the final observation/recovery step.
-
-Actual absent-content and absent-weight input inverse families are constructed
-from the given forward maps; arbitrary heterogeneous product assembly retains
-the actual common height counts. The supported canonical principal square
-and its concrete block transport remain the central missing case.
-
-For the old probe, conjugating the existing missing-colour unit matrix through
-the chosen FE/value charts gives the exact unit-column matrix and its even
-module isomorphism for every old input, without scalar-evaluation hypotheses.
-Use its inverse rows and automatic naturality to construct the empty local
-record; the old grid natural isomorphisms and exact Rouquier-mate/grid equality
-supply the one-colour record. The earlier all-input identification with a
-preselected normalized cap is not a prerequisite: the checked row uniqueness
-at the regular probe and F(E T0) supplies the evaluations actually used.
-
-The local pre-Hom adjunction now comes from the existing two-adjacent-local
-constructor with its prescribed unit and counit; both Koszul signs cancel
-in the evaluated counit. Its local records remain explicit intermediate
-inputs. The evaluated mixed bend must still be compared with the prescribed
-central entry, retaining the raw pre-dot and inverse-power signs.
-These thirteen producers passed full CI in #1001 at `84340134`
-(run 41615387064), integrated at `daffec02`.
-
-## Factor families and evaluated-cap successors
-
-The supported canonical principal square, supported content/weight inverses
-and whole input-natural weight inverse families pass strict paired checks.
-`elvWeightRouquierLocal_nonempty` supplies the actual local records with
-exact cutoff/highest-weight compatibility. `elvRouquierFamily` now assembles
-the prescribed E/F, adjunction, signed dots, crossings, square, same-colour
-braid and these constructed local records on the original weight group.
-No inverse, compatibility or factor-action premise remains in this family.
-
-Both corrected and uncorrected native braid fields are checked on every
-input/output sector; the general consumer includes three distinct odd
-colours with nonzero pair Cartan entries. The exact presentation sideways
-crossing is identified with the constructed rectangular inverse. Assemble
-these fields with the established quadratic/slide relations into the complete
-multicolour structure, then connect the full factor to the swapped action.
-
-The evaluated old probe category is closed under prescribed E/F, parity and
-arbitrary products. Its entire signed induction dot has a constructed
-natural inverse, with the correct odd parity. The checked successors now
-supply canonical content reindexing, stored-target append/restriction,
-their actual balanced adjunction, their whole signed-dot inverse and
-original-weight E/F with genuine zero modules at absent predecessors.
-Complete the whole weight adjunction, dot unit, crossing and local inverse
-transport to construct the probe family; retain the same unit, cap and dot. The generic
-ProbeReservoir interface accepts these factors directly; the older ordinary
-polynomial-specific global constructor is not an additional requirement.
-Do not assert a dot unit on arbitrary old modules.
-
-The old empty-content local record and its regular/F(E(T0)) cap bindings
-are constructed. The remaining adjacent one-letter record needs literal
-old slide transport through the checked induction-composition chart; the
-given negative crossing square is checked. Then instantiate the existing
-adjacent-local left-adjunction constructor, retaining both prescribed Koszul
-factors and the raw shifted pre-dot.
-
-Even word charts, native contextual dots/crossings and full-A/T coefficient
-insertions are checked. The latter retain inhomogeneous arrows and the minus
-on reversing two odd insertions. Finish chosen Hom-action evaluation before
-using the established quotient/source windows as faithfulness.
-
-The tensor-vacuum module chart, prescribed inverse cap, negative-height
-polynomial annihilation and equal-level normalization use the same actual
-operators and have occupied odd consumers. Identify the chosen full swapped
-augmented inverse and its bubble/corner operators, then supply all-vector
-observations to the existing recovery theorem.
-
-PR #1003 passed its full build, axiom audit and all consumers at `72aa0c1c`
-(run 41625277102), integrated at `41673fa3`. PR #1005 passed the same gates
-at `a85d1660` (run 41626194575), integrated at `5695663e`.
-PR #1006 at `804dd66d` and the six probe successors at `04e78b61` pass strict
-local checks and combined imports; their full integration gates are pending.
-The latter have 12 exact source/consumer blobs and 214 owned-declaration
-audits. Ground-ring descent is already formalized; the broader field-scope
-boundary remains explicit.
 
 ## Current comparison interfaces
 
