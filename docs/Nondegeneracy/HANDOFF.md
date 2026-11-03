@@ -47,8 +47,8 @@ The complete inventory of preserved topic variants is in
 prescribed distinct reservoir block with the factor crossing through the
 exact source/target pair charts and target-sector transport, on every Hom
 input. Strict complete two-odd ELV-pair checks audit all 17 declarations
-and retain a nonzero odd exterior input. Attach the literal distinct
-matrix branch and both contexts; see
+and retain a nonzero odd exterior input. The literal matrix attachment
+below retains both contexts; see
 [ReservoirVacuumCrossing](ReservoirVacuumCrossing.md).
 `ReservoirLayerDistinctCrossings.layerMap_reservoir_cross_ne` now proves
 the literal distinct crossing matrix square under both outer contexts,
@@ -61,8 +61,8 @@ OLD quotient square; see
 the corresponding literal matrix-to-factor comparison for an equal-colour
 crossing under both arbitrary path contexts and an arbitrary input matrix.
 Strict complete two-odd ELV-pair/nonempty-context consumers audit all seven
-owned declarations. The distinct crossing needs its target-sector transport;
-then attach the intended OLD factor and quotient charts. The matrix fixture
+owned declarations. The distinct comparison above retains its target-sector
+transport; attach the intended OLD factor and quotient charts. The matrix fixture
 makes no nonzero-entry or mixed-inverse claim; see
 [ReservoirLayerCrossings](ReservoirLayerCrossings.md).
 `ReservoirLayerGenerators.layerMap_reservoir_dot` now compares the actual
@@ -117,7 +117,14 @@ global axiom audit and all concrete consumers at source `a2e6b551`
 quadratic fields, the chosen reindexed crossing/mate and all dotted rows,
 the missing-colour boundary including zero height, direct corrected braid
 and triple-dot chart polynomial, both Hom contexts and exact every-vector
-power-word quotient coordinates. Later canonical/global local, nested braid,
+power-word quotient coordinates. Integration #1021 then passed the full
+warning-free build, global axiom audit and all concrete consumers at
+source `a4c9e781` (run 41710537064), integrated at `66fd1115`. It verifies
+product inverse gluing, zero-boundary and even-chart transport, chosen
+local generator/row components, the stored distinct-mate inverse,
+whole-weight absent mixed coordinates, corrected nested/grid braids,
+reservoir principal entries and the contextual source-layer class square.
+Later stored/global local,
 central matrix and literal layer additions retain their separate
 scoped-check/full-integration boundaries below.
 
