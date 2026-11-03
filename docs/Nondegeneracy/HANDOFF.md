@@ -40,6 +40,20 @@ The complete inventory of preserved topic variants is in
 | Global probe adjunction and dot | [ef53181050](https://github.com/apellis/odd-lean/commit/ef53181050a914dcfb682c996412ae41326e85c0) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeWeightAdjunction.lean`) | Both global right-adjunction and signed-dot producer/consumer pairs passed scoped checks; whole weight dot-unit and complete probe-family assembly remain open. |
 | Local pre-adjunction preparation | [e661ef0b68](https://github.com/apellis/odd-lean/commit/e661ef0b682ae0876cbc60cdd4a038c65bd4df4c) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeVacuumPreAdjunction.lean`) | Private zero-lower braid and height-transport helpers checked; actual adjacent-record specialization and paired consumer remain pending. |
 
+## Exact source classes for power-word vectors
+
+`HalfTurn.PowerWordQuotientCoordinates.quotientEquiv` now identifies the
+full source Hom modulo the exact transformed boundary and elementary-power
+ideal with every actual regular-power word vector. Its inverse coordinate
+and the chronological square for the existing signed OLD source map are
+proved, including full inhomogeneous coefficient arrows and the literal
+source-order sign. Strict occupied mixed/two-odd consumers audit all
+eighteen declarations. Next identify the contextual append generators
+with the half-turn of the diagram layer, attach the actual layer matrix,
+and identify source-placed bubbles with coefficient insertion. The complete
+chosen factor and central matrix obligations remain prerequisites for an
+observation; see [PowerWordQuotientCoordinates](PowerWordQuotientCoordinates.md).
+
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
