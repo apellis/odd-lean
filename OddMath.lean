@@ -2064,3 +2064,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairCrossingTotals
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAppendMaps
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedMixedCross
+import OddMath.QuiverHecke.CyclotomicAction.ELVRestrictionCoendCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDistinctMate
