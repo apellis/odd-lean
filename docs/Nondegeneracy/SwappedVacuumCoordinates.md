@@ -395,8 +395,8 @@ provide an explicit kernel and recovery, rather than an assumed regular
 identification. They do not supply a new factor action or a new hypothesis
 for a nondegeneracy theorem. Remaining obligations are:
 
-* identify the literal reservoir Hom quotient with the formalized boundary
-  quotient and attach signed Hom-corner evaluation to the chosen functors;
+* extend the scoped-checked actual word-value coordinate kernels to signed
+  Hom/Yoneda charts and attach their evaluation to the chosen functors;
 * assemble the swapped normalized Hom action, including its full augmented
   inversion and all presentation relations, and verify that its surviving
   reservoir blocks are precisely those used in (1) and (7);

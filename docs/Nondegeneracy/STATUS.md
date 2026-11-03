@@ -155,9 +155,14 @@ including full build, axiom audit and all concrete consumers.
 
 | Chosen scalar ordinary mate | The prescribed category-changing old mate is transported through the selected append/restriction maps to the given ordinary grid mate, retaining the extra minus and actual unit/counit | `ELVProbeMateComparison`; producer and mixed/vacuum consumer pass strict checks and 44 owned audits, full CI pending. Normalized cap rows and prescribed matrix transport remain open |
 
-| Literal power-vacuum higher moments | Actual inverse rows on regular A/T give the ordered monic recurrence, coefficient Koszul law and all-exponent signed/raw conversion; the complete normalized remainder series is the inverse of the reversed literal monic polynomial | `ELVCoefficientPowerMoments`, `ELVCoefficientPowerRemainders`; strict paired occupied consumers and 76 owned audits pass; full CI pending. The coefficient ring remains the noncommutative A/T. Both independent odd colours have nonzero second signed moment −[δ_i]. Closed χ/δ decomposition and swapped cap/bubble attachment remain open |
+| Literal power-vacuum higher moments | Actual inverse rows on regular A/T give the ordered monic recurrence, coefficient Koszul law and all-exponent signed/raw conversion; the complete normalized remainder series is the inverse of the reversed literal monic polynomial | `ELVCoefficientPowerMoments`, `ELVCoefficientPowerRemainders`; strict paired occupied consumers and 76 owned audits pass; full CI pending. The coefficient ring remains the noncommutative A/T. Both independent odd colours have nonzero second signed moment −[δ_i]. Closed χ/δ values at the unit are scoped-checked below; arbitrary-vector and swapped cap/bubble attachment remain open |
 | Weighted matrix comparison charts | Selected source and target comparison maps are linear equivalences with their exact prescribed forward maps and both inverse products | `ELVWeightedMatrixCharts`; strict paired mixed/vacuum consumer and 28 owned audits pass; full CI pending. No additional invertibility premise. Complete finite matrix-entry comparison and transported inverse remain open |
 | Selected dot powers and output parity | Rectangular intertwiners transport every dot power; even superspace maps retain capRowSign and the whole output parity correction. The scalar selected append/restriction comparison transports mapped dots and all powers | `ELVOperatorPowerComparison`, `ELVProbeDottedComparison`; strict paired mixed/vacuum checks and 22 owned audits pass; full CI pending. Canonical normalized cap rows and full matrix attachment remain open |
+
+| Induced power-word coordinates | Actual balanced induction of regular A/T has the chosen vacuum at the empty word and selected append-composition isomorphisms. Its coend generator h tensor 1 has kernel exactly the independent two-sided elementary-power image; signed half-turn coordinates have the transformed-ideal kernel and explicit/scheduled bounded detection | `ELVPowerWordCoordinates`, `HalfTurn/PowerWordCoordinates`; strict paired occupied two-strand/full-exterior checks and 69 owned audits pass; full CI pending. This identifies source coordinates in actual word values. Signed Hom/Yoneda and chosen-action evaluation remain open |
+| Closed odd vacuum series | At every positive cutoff of an odd colour, actual signed even moments at the unit are the coefficients of 1/C(−z), and odd moments are (−1)^(N+1)δ times those coefficients | `ELVCoefficientPowerOddSeries`; strict occupied cutoffs-four/five consumer and 64 owned audits pass; full CI pending. The exterior coefficient stays in literal A/T. Arbitrary-vector operator identities, probe numerator and swapped bubble attachment remain open |
+| Ordered changing-category mate degree | The prescribed double crossing and unit–negative-crossing–induced-counit mate have exactly the given crossing degree, before any invertibility assertion | `ELVInductionGridMateParity`; strict old/ordinary mixed/vacuum consumer and 3 owned audits pass; full CI pending. The whole mate-family supernaturality and content matrix attachment remain separate |
+| Original-weight pair dots | The independently assembled inner and outer weight dots coincide with actual single-letter content dots under the chosen supported and canonical two-step object equalities | `ELVWeightPairDots`; strict repeated-colour/vacuum consumer and 9 owned audits pass; full CI pending. Crossing-square, absent-predecessor and triple relation assembly remain open |
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
@@ -329,10 +334,12 @@ and normalized content/weight transport are not asserted.
    are scoped-checked. Induction-dot nilpotence now follows through the proved
    weighted comparison at each formal content; no module dimension premise is
    used. Actual higher moments and their noncommutative inverse series are now scoped-checked.
-   Attach the prescribed swapped caps/bubbles and closed χ/δ series. The
+   Closed χ/δ values at the unit are scoped-checked; attach their arbitrary-vector
+   operator identities and the prescribed swapped caps/bubbles. The
    exact source/power kernels and signed half-turn detection in literal old Homs
-   are scoped-checked. Identify actual iterated vacuum word values with their
-   signed Hom coordinates and prove the chosen action evaluation identity. Prove
+   are scoped-checked. Actual iterated vacuum word values and their transformed coordinate kernels
+   are now scoped-checked. Construct signed Hom/Yoneda coordinates and prove
+   the chosen action evaluation identity on full coefficient vectors. Prove
    normalized bubble coefficients and bounded recovery for each requested weight,
    word pair and degree bound, then instantiate the
    observation, finite-colour and upward-to-oriented reductions.

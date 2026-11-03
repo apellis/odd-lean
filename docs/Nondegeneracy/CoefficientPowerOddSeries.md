@@ -45,8 +45,8 @@ mapped inverse of C(−z). Both formulas concern actual signed-dot moments
 of the ordinary unit and the prescribed inverse row. No independent
 moment formula is supplied as a premise.
 
-`signedMoment_first_odd` consequently proves, for every positive odd
-cutoff,
+`signedMoment_first_odd` consequently proves, for every positive
+cutoff of an odd colour,
 
     (lambda D^N u)(1) = (−1)^(N+1) [δ].
 

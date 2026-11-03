@@ -28,7 +28,7 @@ in the corresponding topic notes and current status.
 | Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit full-CI verified in #972 | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
 | Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Transport the chosen arbitrary-module distinct inverse to exact content and weight; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
-| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical weighted/power bridge scoped-checked; finish quotient-algebra identification, full factor and actual swapped caps, corner evaluation, all-height bubble series and bounded recovery identity |
+| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical bridge full-CI verified (#973); actual word coordinates and odd series at the unit scoped-checked below. Finish full factors, arbitrary-vector cap/bubble operators and chosen-action evaluation/recovery |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
 ## Current comparison interfaces
@@ -92,9 +92,10 @@ The source coefficient/cyclotomic quotient and literal scalar-power Hom spans
 now have exact kernel/image/preimage comparisons with the existing old Homs.
 The half-turn maps directly into those reversed/twisted OldCategory Homs,
 retains total-parity composition and the prescribed bounded reservoir schedule.
-The remaining coordinate task identifies actual iterated regular A/T vacuum
-word values and their signed Hom-Yoneda maps with those literal Hom quotients;
-no action-faithfulness premise is permitted.
+Actual iterated regular A/T vacuum word values and their precise transformed
+coordinate kernels are scoped-checked below. The remaining task constructs
+signed Hom-Yoneda maps and attaches chosen-action evaluation on every
+coefficient vector; no action-faithfulness premise is permitted.
 
 See [DistinctModuleIso](DistinctModuleIso.md),
 [CoefficientPowerVacuum](CoefficientPowerVacuum.md),
@@ -111,9 +112,9 @@ including the ordered recurrence and full coefficient parity law. Its
 normalized remainder series is the two-sided formal inverse of the reversed
 literal monic polynomial over A/T. The all-height signed moment is exactly
 the triangular sign times that remainder coefficient. Both independent odd
-colours retain a nonzero −[δ_i] second signed moment. The closed χ/δ
-decomposition and identification with the prescribed swapped caps/bubbles
-remain open; these series alone do not supply an action or recovery identity.
+colours retain a nonzero −[δ_i] second signed moment. The closed χ/δ values at the unit are now scoped-checked below;
+arbitrary-vector operator identities and identification with the prescribed
+swapped caps/bubbles remain open; these series alone do not supply an action or recovery identity.
 
 Selected weighted source/target charts are now genuine linear equivalences
 with the prescribed forward maps. The selected scalar comparison transports
@@ -133,6 +134,46 @@ already have those indices. Choose a sufficiently large scheduled reservoir
 for each requested window. No interface change or extension to every small
 cutoff is needed. Construct the actual action and its all-affine coordinate
 identity on that window; a stronger all-word fixed-cutoff family is optional.
+
+## Word coordinates and closed odd moments
+
+`powerWordModule` is actual balanced induction of the regular A/T module
+along coefficient insertion at each old word. Its empty value is the chosen
+vacuum, and `powerWordAppendIso` uses the selected induction-composition
+comparison. The generator h tensor 1 is onto; its kernel is exactly the
+independently defined two-sided elementary-power image, using the original
+coefficient order and no flatness. The actual word values belong to the
+literal T-annihilated category. Composing with the signed half-turn gives
+the transformed-ideal kernel and the prescribed bounded reservoir schedule.
+The consumer retains both independent odd exterior generators at an occupied
+two-strand word value. Both producers and the consumer are scoped-checked,
+with 69 owned declarations audited; full CI is pending.
+
+Next descend the existing enriched Yoneda formula through this proved
+generator kernel. Retain the parity of the complete old coefficient arrow,
+including the external A/T factor, and the chronological composition sign.
+Identify the chosen dot and crossing evaluations with these coordinates.
+The source-coordinate kernel theorem does not itself prove action evaluation.
+See [ELVPowerWordCoordinates](ELVPowerWordCoordinates.md) and
+[PowerWordHalfTurnCoordinates](PowerWordHalfTurnCoordinates.md).
+
+The complete odd series now has scoped-checked values at the actual unit:
+even moments are the coefficients of 1/C(−z), and odd moments are
+(−1)^(N+1)δ times those coefficients. The occupied consumer checks positive
+cutoffs of both parities, with nonzero δ, χ_1 and δχ_1. Next obtain the
+moment-map operator identities on arbitrary A/T vectors, then attach the
+prescribed probe numerator and swapped caps/bubbles. See
+[CoefficientPowerOddSeries](CoefficientPowerOddSeries.md).
+
+The ordered changing-category mate now has its prescribed homogeneous
+degree proved from the given crossing and even adjunction maps, without
+an inverse premise. The actual original-weight pair dots also agree with
+independent single-letter content dots under the selected canonical pair
+equality. Their paired consumers are scoped-checked, with 3 and 9 owned
+declarations audited respectively; full CI is pending. Finish the content
+matrix attachment and assemble the weight crossing-square and triple
+relations. See [InductionGridMateParity](InductionGridMateParity.md) and
+[WeightPairDots](WeightPairDots.md).
 
 ## Categorical inverse: precise interfaces
 
