@@ -248,8 +248,10 @@ integrated at `ea35e5ba`. All 11 producers, 20 exact source/consumer blobs and
 
 
 
-The following successors pass strict local producer/consumer checks and owned
-axiom audits; their full integration CI is pending.
+The following successors passed the full warning-free build, global axiom
+audit and every concrete consumer in [#993](https://github.com/apellis/odd-lean/pull/993),
+at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41594069793)).
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -258,6 +260,19 @@ axiom audits; their full integration CI is pending.
 | Same-colour weight principal and boundary | `ELVWeightMatrixBoundary` proves absent-predecessor zero EF and the required height/predecessor consequences with explicit cutoff compatibility; `ELVPiSCatRouquierMate`, `ELVWeightLocalMate` identify the GIVEN native Rouquier mate with the rectangular weight mate and its degree | Finite coordinate extraction and both native local inversion fields; FE is retained at absent predecessors |
 | Chosen triple coherence | `ELVWeightTripleCoherence` identifies both pair-flattening paths with the chosen whole triple chart, including the native component formulas | Crossing whisker equations and native braid fields |
 | Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
+
+
+The next integration has strict producer/consumer checks and owned axiom audits;
+its full-package CI remains the integration gate.
+
+| Interface | Established locally | Remaining scope |
+| --- | --- | --- |
+| Same-colour slides and braid on original weights | `ELVWeightNilHeckeRelation` and `ELVWeightBraid` prove the prescribed native relation fields at every module and output, including absent outputs | Mixed-colour braid fields and concrete local inverse families |
+| Distinct-colour slides on original weights | `ELVWeightDistinctSlideRelations` proves both prescribed signed slide fields using the independently specified positioned dots | Mixed-colour braid fields |
+| Normalized crossing, mate, unit and cap columns | Chosen normalized content/weight crossing formulas, native mate square and every unit/cap power are identified with the old grid maps | Transfer canonical local inverses and their input-supernatural entries |
+| Finite local inverse adapters and canonical charts | Even finite matrix isomorphisms produce `SuperSumInvFrom`/`To` with the prescribed forwards, degrees and identities; old grid isomorphisms instantiate this. Both directions of all six canonical content charts are even and have exact component formulas | Canonical supported/absent chart transport and original-weight local inversion fields |
+| Probe cap families and pre-Hom coordinates | `ELVContentCapNaturality` supplies input supernaturality; the native module window, literal cap precomposition, shifted coordinates and raw-dot Koszul powers are checked | Concrete local adjunction assembly, mixed slide and bubbles; coordinate dot and raw pre-E dot retain their proved sign difference |
+| Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
@@ -419,7 +434,7 @@ and normalized content/weight transport are not asserted.
    fixed-output-content naturality and literal forward maps are established
    (#951/#952/#961). Chosen content dot comparisons are verified in #973.
    Ordinary cup/cap compatibility and all-map EF/FE charts are now scoped-checked;
-   finish their signed crossing/mate and finite parity/product comparisons.
+   finish canonical local inverse transport and input-supernatural inverse-entry assembly. The generic finite adapters and six even chart comparisons are now scoped-checked.
    Retain exact target-fixed counts and the absent-predecessor zero cases.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The distinct
    ideal identity, PBW quotient decoder and actual representable mate inverse
@@ -428,7 +443,7 @@ and normalized content/weight transport are not asserted.
    input-module naturality passed full CI in #977. Finish exact-content/weight
    transport through the selected charts. Weight crossings/pair coherence are verified
    (#972); content braid is implemented (#933/#934). Transfer pair/triple
-   whiskering relations through the selected charts and retain the supplied
+   remaining mixed-colour braid relations through the selected charts; same-colour braid and both distinct-colour slides are now scoped-checked. Retain the supplied
    CScalars, original weight group and balanced schedule (#864).
 3. Assemble compatible factors and the swapped Hom action. Selected weighted
    restriction/counit and scalar ordinary counit are verified (#972/#973).
