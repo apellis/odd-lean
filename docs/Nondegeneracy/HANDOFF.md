@@ -1798,6 +1798,15 @@ the intended factor, coefficient inverse and component bounds, then bend
 the sums and prove residual ideal membership. See
 [CrossCoeffExpansion](CrossCoeffExpansion.md).
 
+`Sigma.CentralPaths` now classifies both central path families and the
+identity-path index, retaining the absent reservoir source and absent
+probe target. `matrixEmbeddingIso` pads those missing indices by zero
+objects; its inverse and map square are proved without a matrix
+invertibility premise. Strict occupied/empty/complementary-corner and
+nonzero rational-module consumers audit all 31 and 11 declarations.
+Apply these charts to the complete augmented matrix, including the
+height-zero sign; see [CentralPathCharts](CentralPathCharts.md).
+
 `Sigma.ReservoirToProbeBend` now identifies the reverse mixed entry
 with the prescribed probe-unit/conjugated-coefficient/reservoir-counit
 word. Both the PR-diagonal minus and negative augmented sign are retained,
