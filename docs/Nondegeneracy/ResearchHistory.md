@@ -664,3 +664,26 @@ source-layer class squares. Their verification belongs to their own
 integration PRs and STATUS; this preservation does not assert that the
 complete snapshot builds. Recover topical files with
 `git show a15c1058b0bdb96069baa88e54ca9170e0510323:<repository-path>`.
+
+## Supported presentation and represented degree argument tree
+
+The complete source tree [8bb3b36820](https://github.com/apellis/odd-lean/commit/8bb3b3682097d0d065d1c95d60979f02c74a680d) preserves the next proposed attachments.
+Its sole parent is the verified #1026 research integration `afd225cc`.
+Pending proof-integration heads are not ancestors of this snapshot.
+The preservation merge changes only this inventory and HANDOFF; its
+unfinished source is not imported into the checked library.
+
+The tree retains the chosen general/corrected braid and multicolour
+package drafts, actual probe–reservoir coefficient-field draft, formal
+supported-sector indexing, literal two-word reservoir dot/cross cells,
+and the represented integer-grading construction. Their incomplete
+verification remains explicit. The exact residual degree target is in
+`ReservoirClosureDegree.md`; parity-only inverse results do not discharge it.
+
+It also contains separately scoped-checked local probe family and inverse
+records, exact-content support/closure and selected vacuum, complete
+positive/negative central matrix comparisons, mixed denominator units and
+matrix inverse naturality. Their verification belongs to their own
+integration and STATUS. This snapshot does not claim that its complete
+source tree builds. Recover individual files with
+`git show 8bb3b3682097d0d065d1c95d60979f02c74a680d:<repository-path>`.
