@@ -20,7 +20,12 @@ truncated representable modules, the vacuum, zero bound, and an
 inhomogeneous coefficient containing an odd exterior input. Both producer
 modules are audited against the standard three-axiom allowlist.
 
-The total-component attachment to the given module columns, ordinary
-cap/dot rows, canonical parity coordinates, whole finite comparison, and
-chosen content inverse identification remain subsequent steps. These
-unit/dot squares alone do not complete those matrix comparisons.
+`contentBlockUnitDotColumn_square` attaches the same square to the literal
+total components of the specified ordinary module columns. Its conversion
+is proved with independent input and target modules before applying the
+chosen content extension. No total/linear compatibility hypothesis is
+supplied.
+
+Ordinary cap/dot rows, canonical parity coordinates, whole finite
+comparison, and chosen content inverse identification remain subsequent
+steps. These unit/dot squares alone do not complete those comparisons.
