@@ -1920,6 +1920,12 @@ uses the same bound. Identify the supplied invertible probe operator and
 coefficient equation with the intended mixed coefficient; then bend the
 finite sums and prove residual ideal closure. No full-weight uniform
 bound is asserted; see [PostCoefficientEvaluation](PostCoefficientEvaluation.md).
+`ELVShiftedCoefficientEvaluation` now retains these evaluations after either
+content parity shift and supplies the chosen postdot bound. Its even finite
+expansion passes strict paired checks and all 26 owned audits. The preunit
+and coefficient inverse equation remain explicit intermediate inputs until
+the intended probe–reservoir coefficient is attached; see
+[ShiftedCoefficientEvaluation](ShiftedCoefficientEvaluation.md).
 
 `epsEntry_probe_factor` and `etaEntry_probe_factor` now retain the
 canonical probe cap and cup rows at every exponent and every full Hom
