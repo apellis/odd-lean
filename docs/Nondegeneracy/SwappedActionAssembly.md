@@ -17,12 +17,8 @@ parameters of (1.2)–(1.4). Its exact library version is
 infinite colour sets and a supercommutative ground ring. Here the factor
 inputs require symmetrizability, homogeneous parameters, and a purely even
 field k with 2 invertible. These are restrictions of this construction,
-not extra conditions in the cited definition. Ordinary commutative-ring
-descent with 2 invertible is already formalized in
-`SKM.nondegeneracyConjecture_of_charZeroField`; completing the characteristic-zero
-field input suffices for that ring conclusion. This does not extend the
-construction to genuinely supercommutative base rings. Both even and odd
-colours, and connected mixed data, are retained.
+not extra conditions in the cited definition. Both even and odd colours,
+and connected mixed data, are retained.
 
 ## 1. Fixed factors and literal weight categories
 
