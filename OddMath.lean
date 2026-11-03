@@ -2553,3 +2553,14 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedFactorMatrix
 import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMixedDots
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategoryGrading
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRestriction
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldGeneratorDegrees
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixProductEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSteps
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentreDegree
+import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelInteger
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixNestedEvaluation
