@@ -1931,6 +1931,12 @@ expansion passes strict paired checks and all 26 owned audits. The preunit
 and coefficient inverse equation remain explicit intermediate inputs until
 the intended probe–reservoir coefficient is attached; see
 [ShiftedCoefficientEvaluation](ShiftedCoefficientEvaluation.md).
+`ELVProbeMixedDots` now constructs the actual prewhiskered probe dot unit
+and parity, both shifted mixed dots, and their even/odd denominator units
+from the standing symmetrizer and homogeneous parameters. Strict paired
+checks audit all 22 declarations. Substitute these literal maps into the
+completed factor package and its coefficient inverse equations; see
+[ProbeMixedDots](ProbeMixedDots.md).
 
 `epsEntry_probe_factor` and `etaEntry_probe_factor` now retain the
 canonical probe cap and cup rows at every exponent and every full Hom
