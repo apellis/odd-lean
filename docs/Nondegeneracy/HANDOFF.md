@@ -87,28 +87,38 @@ evaluation and final observation recovery remain separate obligations.
 
 ## Native probe normalization and remaining action fields
 
-The next strict locally checked integration identifies the native left cap
-with its prescribed ordinary inverse coefficient and proves the actual
-Kronecker window. On the regular probe its ground row extracts precisely
-the top dot coefficient, and the SAME native SVec dot satisfies the signed
-probe polynomial. Occupied levels one and two retain a nonzero top vector;
-at level one its dot square is minus itself. This closes the fixed-input
-native normalization window. Input-family supernaturality, pre-Hom parity
-transport and the final swapped mixed slide remain separate.
+The native left-cap field, all-row Kronecker window, SAME-dot signed probe
+polynomial, canonical counit/all cap rows, weight mate boundary, triple
+coherence and selected append-unit/cyclicity batches passed full CI in #993
+at `f0a2ed23` (run 41594069793). These are established dependencies.
 
-The chosen canonical ordinary counit and every literal dotted cap row now have
-their whole source-chart squares.
-The same-colour original-weight principal is the literal native Rouquier
-mate; the absent-predecessor EF boundary retains FE and uses the required
-cutoff compatibility to determine its height. Finish finite parity-coordinate assembly, canonical inverses, coordinate
-extraction and native local inversion fields.
+The next strict locally checked integration proves the prescribed same-colour
+slides and braid and both distinct-colour slides on original weights, on all
+modules and outputs. It also identifies normalized crossing/mate maps and
+all native unit/cap powers with the old grid operators. Mixed-colour braid
+assembly remains open.
 
-Both chosen triple-chart paths and their native component formulas agree.
-Prove the actual crossing whisker relations and braid fields in this chart.
-Full-coefficient cyclicity and the chosen append-unit calculation now have
-occupied paired checks; use them to evaluate the chosen crossing on ALL
-arrows, then finish the final observation recovery. These successors have
-strict producer/consumer and owned-declaration audits; full CI is pending.
+Generic finite coordinate inverses now produce both local inversion structures,
+with exact given forward maps and homogeneous entries; the old grid isomorphisms
+supply constructed examples. All six canonical content chart isomorphisms are
+even in both directions and have exact total-component formulas. Transfer the
+given weighted local inverses through these charts, including the absent
+predecessor with zero EF but retained FE, then assemble input-supernatural
+inverse-entry families and the original-weight local inversion fields.
+
+The selected cap family is input-supernatural. Its native module window and
+literal pre-Hom cap are checked; shifted coordinate dot and raw pre-E dot
+differ by the proved Koszul factor, also at every power. The weighted inverse
+row has its actual homogeneous coefficient map, literal power-reservoir cap
+comparison and full A/T superlinearity, including nonzero odd products.
+The remaining obligations are concrete adjunction/factor assembly and the
+prescribed mixed slide and bubble operators. The generic adjacent Rouquier
+left-adjunction construction already exists in `RouquierFTriangle`; constructing
+its concrete local inputs remains necessary.
+
+Chosen append-unit calculation and full-coefficient cyclicity are established;
+finish the chosen whole crossing equality and final observation recovery.
+These newer successors await their full-package integration gate.
 
 ## Current comparison interfaces
 
