@@ -478,3 +478,63 @@ source is imported; separately checked successors retain their own scope.
 | Old probe inverse-family variant | [5a5b9ab3e7](https://github.com/apellis/odd-lean/commit/5a5b9ab3e792d125059bf3eed1aa3de39fcc014c) | `243a19286f57c91c4dcdba2e98018275f328ebe9` | Generic inverse families and boundary variants retained before module-row API renaming; complete paired consumers and upper record remain unverified. |
 | Probe local cap binding | [d7c3788c2e](https://github.com/apellis/odd-lean/commit/d7c3788c2e49e911bed0dfc608d46f6e42e1ecac) | `2cc13fab37d13fc734a47444b75c2e1fe5d0e8dd` | Producer passes: constructed old local record, regular and scalar evaluated cap identities, including F(E(T0)). Paired consumer and export remain unverified. |
 | Corrected mixed braid field | [81767052fa](https://github.com/apellis/odd-lean/commit/81767052fae3eeaa110e25f1b6e7185231f49821) | `f5ec362fdb72bde950fc13b34409b9534bc3e825` | Five topical producer-consumer pairs pass strict scoped checks; exact original-parameter chosen braid field. Full integration gate remains separate. |
+
+## Complete argument source variants
+
+Every tree below is preserved exactly, including the mathematical source
+and notes not yet integrated into the checked library. Tree-copy commits
+have only the verified research parent; no pending proof head is made an
+ancestor through these copies. Identical trees share a preserved commit.
+The preservation itself changes only documentation in the checked tree.
+Historical source trees can contain proposed or failing arguments; their
+presence does not assert that the complete tree compiles.
+
+| Source variant | Source revision | Preserved full tree |
+| --- | --- | --- |
+| `research/content-matrix-comparison` (branch tip) | `6dc3b556f30485665db29b0a75777d80408984b1` | [5ab5223932](https://github.com/apellis/odd-lean/commit/5ab5223932bb3a171272f4dfbc7431d26a9d3ada) |
+| `research/content-principal-square` (branch tip) | `5e304448f794563ef5537d1cdb1f806c21f4f76f` | [2f5c8ebbcc](https://github.com/apellis/odd-lean/commit/2f5c8ebbcc06a40028eb511ac60410e9446111e6) |
+| `research/content-supported-local-inverse` (branch tip) | `8aaead55e7117762447b95120913942a67a11d2a` | [044d8ed6f9](https://github.com/apellis/odd-lean/commit/044d8ed6f900b43bef71481ba3cc6520fcc651d3) |
+| `research/elv-factor-family` (branch tip) | `804dd66d1867374289c9257a977486e43045cab8` | [b33ffd03ad](https://github.com/apellis/odd-lean/commit/b33ffd03ad0f1eb816d81b8e4f338f7dc8b860ab) |
+| `research/evaluated-old-probe` (branch tip) | `b1d8f3d8284a2584b4e324e61be3bd75fb34a218` | [296411e67b](https://github.com/apellis/odd-lean/commit/296411e67bbededb7c7e31ccdd6ffdac46f4dfdf) |
+| `research/module-zero-boundary` (branch tip) | `586adf8ad4255f7757a56a3458a8ffde1d057614` | [e6d7bc752c](https://github.com/apellis/odd-lean/commit/e6d7bc752c8ceb3f5b3592b3242f2439656e0a29) |
+| `research/old-affine-relations` (branch tip) | `7a5029a857d7a8ac03b8d6ae4ff1f62090d4c0fa` | [d66e4b253e](https://github.com/apellis/odd-lean/commit/d66e4b253e8416004d8c61886d8b6b271ee13062) |
+| `research/old-probe-local-record` (branch tip) | `e4bcb10d3c4d14ff924372ac0f1da2b82a46c1db` | [2cf3ffed79](https://github.com/apellis/odd-lean/commit/2cf3ffed792429c5f532e5d94b58da8dbd66d4aa) |
+| `research/probe-canonical-content` (branch tip) | `d3f2c454a6cd7422debc1b5166d8523bec9f0dc5` | [0c33e0c227](https://github.com/apellis/odd-lean/commit/0c33e0c227ed55b8ae29ef09c4913fd44bee9056) |
+| `research/probe-content-reindex` (branch tip) | `4d67b6db4b1ae8e5f70c34102a4c15fb9806ab5f` | [84f0c21f2e](https://github.com/apellis/odd-lean/commit/84f0c21f2e826b9a4c95591871eb8afddae7bce2) |
+| `research/probe-factor-assembly` (branch tip) | `04e78b6125474f59469e6164b107cd9c10d29e49` | [c12b47eff8](https://github.com/apellis/odd-lean/commit/c12b47eff8b8bc4e34853e92ae90068c170366bf) |
+| `research/probe-vacuum-loc-binding` (branch tip) | `c71712e411a0d33d6eafd3d722dc20f43563d728` | [e661ef0b68](https://github.com/apellis/odd-lean/commit/e661ef0b682ae0876cbc60cdd4a038c65bd4df4c) |
+| `research/rouquier-multicolour` (branch tip) | `804dd66d1867374289c9257a977486e43045cab8` | [b33ffd03ad](https://github.com/apellis/odd-lean/commit/b33ffd03ad0f1eb816d81b8e4f338f7dc8b860ab) |
+| `research/tensor-cap-transport` (branch tip) | `9c105a7504431a0ab882df7c74bcf08be1972ec2` | [09ef21d99c](https://github.com/apellis/odd-lean/commit/09ef21d99cd264a84ddcfaed2c074e7c64b49e2a) |
+| `research/vacuum-mixed-entry` (branch tip) | `dba765139fb2fe0a55384508ff87d5b43bd1ddd3` | [170b8fe3d6](https://github.com/apellis/odd-lean/commit/170b8fe3d6a559fc17707eb207d24b49d475904d) |
+| `research/vacuum-tensor-coordinates` (branch tip) | `9877e1da66c0bd159f3269d47d5b2ed23994af6f` | [9ceafbdc8c](https://github.com/apellis/odd-lean/commit/9ceafbdc8c2060e2b88ac62278d970b2de4870fb) |
+| `research/weight-dot-transport` (branch tip) | `a85d1660658639a335284a99175199e9f6e44fea` | [84f1bb220a](https://github.com/apellis/odd-lean/commit/84f1bb220ae300bef1a0233a856b3fcb58d5661c) |
+| `research/weight-local-inversion` (branch tip) | `f12d07a67cd88974e97c815e0430d453e0da28b6` | [1e4606bc38](https://github.com/apellis/odd-lean/commit/1e4606bc380efc250b1b77d76f2dd1422dd0b9c4) |
+| `research/weight-mixed-braid` (branch tip) | `ca70d90cd523cfc690e376a8ac74ec260e9bdf28` | [3ec189f1ce](https://github.com/apellis/odd-lean/commit/3ec189f1cec29d21a1b9a93fbddf3d0fc6dfefdc) |
+| `research/weight-mixed-braid-relation` (branch tip) | `f5ec362fdb72bde950fc13b34409b9534bc3e825` | [1090c95118](https://github.com/apellis/odd-lean/commit/1090c95118804db3fbeb62102d234e980fa070de) |
+| `research/weight-multicolour-braid` (branch tip) | `8e577d90469885f9d943e0daf9b2e8db860bf6ae` | [8b646cbc0e](https://github.com/apellis/odd-lean/commit/8b646cbc0e3592a62de3cbadea7f6847ca88260e) |
+| `research/weight-rouquier-local` (branch tip) | `650b9ebba2f1781ad8649943d9f986c6e9c1f27a` | [14018b14a4](https://github.com/apellis/odd-lean/commit/14018b14a40bc6ea06e6fc18a27a9640cd946a83) |
+| `research/weighted-polynomial-caps` (branch tip) | `57a61e0bfd4092e5fa9f503ec4ef63c53e086f15` | [1eef38b5c1](https://github.com/apellis/odd-lean/commit/1eef38b5c16cc6335e2cfa8603e64174ad8ebbe6) |
+| `research/word-chart-parity` (branch tip) | `d64a73f87fbeafd2402e2231021df6d38ff36324` | [58fa205b6d](https://github.com/apellis/odd-lean/commit/58fa205b6d18a487d5a637a840710861919c793c) |
+| `research/word-coefficients` (branch tip) | `d143a004bc056b37f85c584d45abc46427de7cd9` | [f2bfddc748](https://github.com/apellis/odd-lean/commit/f2bfddc74820ae174ee63106f0c0cd4bd3631e5c) |
+| `research/word-cross-evaluation` (branch tip) | `d2ea8420278b5b2e2900a40b900b8ea5d1e2f7eb` | [e19975dc1e](https://github.com/apellis/odd-lean/commit/e19975dc1e8a03991ec469e3576a4d2c9137b248) |
+| `research/word-evaluation` (branch tip) | `05c0492999b6976e9ffb8fe3e965e8062187e66e` | [d6d0f2de75](https://github.com/apellis/odd-lean/commit/d6d0f2de7506dad1c66d3273f9e5ce99bd83a568) |
+| `research/word-hom-coordinates` (branch tip) | `d143a004bc056b37f85c584d45abc46427de7cd9` | [f2bfddc748](https://github.com/apellis/odd-lean/commit/f2bfddc74820ae174ee63106f0c0cd4bd3631e5c) |
+| `research/word-weight-contexts` (branch tip) | `5aa89762b550c9a5350d36fb24bca2bd8cd2b2fa` | [d3411425e1](https://github.com/apellis/odd-lean/commit/d3411425e196d351f7e4fc3b49ce3cbf491dcf77) |
+| `research/content-supported-local-inverse (working source)` (working source) | `8aaead55e7117762447b95120913942a67a11d2a` | [c79b2902ba](https://github.com/apellis/odd-lean/commit/c79b2902ba59bedf70d451cae0d091d0ac74ea5c) |
+| `research/evaluated-old-probe (working source)` (working source) | `b1d8f3d8284a2584b4e324e61be3bd75fb34a218` | [b9d9298e04](https://github.com/apellis/odd-lean/commit/b9d9298e04ce7847dac48e8d8574b5c1123befa4) |
+| `research/word-cross-evaluation (working source)` (working source) | `d2ea8420278b5b2e2900a40b900b8ea5d1e2f7eb` | [7d2cfc6f3d](https://github.com/apellis/odd-lean/commit/7d2cfc6f3dc596b53784c9433f6701da30ab4a38) |
+| `research/probe-content-reindex (working source)` (working source) | `4d67b6db4b1ae8e5f70c34102a4c15fb9806ab5f` | [ef53181050](https://github.com/apellis/odd-lean/commit/ef53181050a914dcfb682c996412ae41326e85c0) |
+| `research/rouquier-multicolour (working source)` (working source) | `804dd66d1867374289c9257a977486e43045cab8` | [3a6240c6bd](https://github.com/apellis/odd-lean/commit/3a6240c6bdac98cfddc4f55a2614f73b96d2f894) |
+| `research/weight-mixed-braid (working source)` (working source) | `ca70d90cd523cfc690e376a8ac74ec260e9bdf28` | [f63420d8fb](https://github.com/apellis/odd-lean/commit/f63420d8fb5067d57e6ff580343efcc04eaf595b) |
+| `research/word-hom-coordinates (working source)` (working source) | `d143a004bc056b37f85c584d45abc46427de7cd9` | [6d07efe699](https://github.com/apellis/odd-lean/commit/6d07efe699314d60e0bcd12b685122434e62be3b) |
+| `origin/research/old-affine-relations` (remote tip) | `7a5029a857d7a8ac03b8d6ae4ff1f62090d4c0fa` | [d66e4b253e](https://github.com/apellis/odd-lean/commit/d66e4b253e8416004d8c61886d8b6b271ee13062) |
+| `origin/research/old-probe-local-record` (remote tip) | `51610015cb3d4bb4c015b3527a63000c8faea227` | [4f6b4dd2a4](https://github.com/apellis/odd-lean/commit/4f6b4dd2a49bcf061070cc5925bd2f663680b28d) |
+| `origin/research/probe-canonical-content` (remote tip) | `d3f2c454a6cd7422debc1b5166d8523bec9f0dc5` | [0c33e0c227](https://github.com/apellis/odd-lean/commit/0c33e0c227ed55b8ae29ef09c4913fd44bee9056) |
+| `origin/research/probe-factor-assembly` (remote tip) | `0034b2d87ccd3bb826a2b008c0f43874bfc9079b` | [a9f28fc676](https://github.com/apellis/odd-lean/commit/a9f28fc676ba6600c94668e3353ccae175273a77) |
+| `origin/research/weight-mixed-braid-relation` (remote tip) | `f5ec362fdb72bde950fc13b34409b9534bc3e825` | [1090c95118](https://github.com/apellis/odd-lean/commit/1090c95118804db3fbeb62102d234e980fa070de) |
+| `origin/research/weight-multicolour-braid` (remote tip) | `8e577d90469885f9d943e0daf9b2e8db860bf6ae` | [8b646cbc0e](https://github.com/apellis/odd-lean/commit/8b646cbc0e3592a62de3cbadea7f6847ca88260e) |
+| `origin/research/weight-rouquier-local` (remote tip) | `650b9ebba2f1781ad8649943d9f986c6e9c1f27a` | [14018b14a4](https://github.com/apellis/odd-lean/commit/14018b14a40bc6ea06e6fc18a27a9640cd946a83) |
+| `origin/research/word-chart-parity` (remote tip) | `d64a73f87fbeafd2402e2231021df6d38ff36324` | [58fa205b6d](https://github.com/apellis/odd-lean/commit/58fa205b6d18a487d5a637a840710861919c793c) |
+| `origin/research/word-coefficients` (remote tip) | `d143a004bc056b37f85c584d45abc46427de7cd9` | [f2bfddc748](https://github.com/apellis/odd-lean/commit/f2bfddc74820ae174ee63106f0c0cd4bd3631e5c) |
+| `origin/research/word-evaluation` (remote tip) | `05c0492999b6976e9ffb8fe3e965e8062187e66e` | [d6d0f2de75](https://github.com/apellis/odd-lean/commit/d6d0f2de7506dad1c66d3273f9e5ce99bd83a568) |
+| `origin/research/word-weight-contexts` (remote tip) | `5aa89762b550c9a5350d36fb24bca2bd8cd2b2fa` | [d3411425e1](https://github.com/apellis/odd-lean/commit/d3411425e196d351f7e4fc3b49ce3cbf491dcf77) |
