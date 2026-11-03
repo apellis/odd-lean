@@ -79,8 +79,15 @@ warning-free build, global axiom audit and all concrete consumers at source
 selected quadratic block, both global distinct slides, raw and nested
 uncorrected multicolour inputs, reindexed inverse entries and pair chart,
 all dotted reservoir rows, contextual vacuum words and Hom-entry evaluation.
-Later canonical local, corrected braid and quotient-coordinate additions
-retain their separate scoped-check/full-integration boundaries below.
+The subsequent #1020 integration passed the full warning-free build,
+global axiom audit and all concrete consumers at source `a2e6b551`
+(run 41706422096), integrated at `97ad3177`. It verifies both exact probe
+quadratic fields, the chosen reindexed crossing/mate and all dotted rows,
+the missing-colour boundary including zero height, direct corrected braid
+and triple-dot chart polynomial, both Hom contexts and exact every-vector
+power-word quotient coordinates. Later canonical/global local, nested braid,
+central matrix and literal layer additions retain their separate
+scoped-check/full-integration boundaries below.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
