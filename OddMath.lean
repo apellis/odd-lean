@@ -2329,3 +2329,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierPowers
 import OddMath.SKM.AugmentedInverseProfile
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCoherence
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCorrectionCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentNormalizedCorrection
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedPaths
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedPolynomial
