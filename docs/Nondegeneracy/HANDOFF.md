@@ -39,7 +39,9 @@ full build, global axiom audit and all consumers at source head `911f3e12`
 literal T-annihilated category, numerical ideal sandwich, content dots and
 scalar ordinary counit are established inputs.
 
-Current scoped-checked successors, all awaiting full CI, supply:
+The generator-comparison integration #976 passed its full build, global
+axiom audit and all consumers at source head `861aeadd`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41550563550)). It supplies:
 
 * actual A/T algebra presentation and bounded coefficient detection, parity and
   regular left coefficient module, retaining nonzero independent odd vectors;
@@ -56,7 +58,8 @@ Current scoped-checked successors, all awaiting full CI, supply:
 The actual arbitrary-module distinct forward identity and bundled homogeneous
 input-natural inverse are now scoped-checked.
 Content signed crossing/mate and finite parity/product attachment, category-
-changing scalar mate and weighted mate/matrix transport remain next. The
+changing scalar/weighted ordinary mate squares are scoped-checked below;
+normalized cap rows and complete matrix transport remain next. The
 literal old T-vacuum and contentwise induction-dot nilpotence are now
 scoped-checked. Actual word-value/Hom coordinate evaluation and normalized
 swapped bubble attachment remain open.
@@ -100,6 +103,36 @@ See [DistinctModuleIso](DistinctModuleIso.md),
 [SourceQuotientComparison](ELVSourceQuotientComparison.md),
 [SourcePowerComparison](ELVSourcePowerComparison.md) and
 [HalfTurnOldQuotient](HalfTurnOldQuotient.md).
+
+## Higher moments and matrix chart inputs
+
+The actual regular A/T vacuum now has scoped-checked higher moments,
+including the ordered recurrence and full coefficient parity law. Its
+normalized remainder series is the two-sided formal inverse of the reversed
+literal monic polynomial over A/T. The all-height signed moment is exactly
+the triangular sign times that remainder coefficient. Both independent odd
+colours retain a nonzero −[δ_i] second signed moment. The closed χ/δ
+decomposition and identification with the prescribed swapped caps/bubbles
+remain open; these series alone do not supply an action or recovery identity.
+
+Selected weighted source/target charts are now genuine linear equivalences
+with the prescribed forward maps. The selected scalar comparison transports
+mapped dots and all powers, and the generic power comparison retains the
+whole output parity involution. Next compare the actual normalized cap/unit
+matrix entries through these charts and transfer the proved inverses.
+See [CoefficientPowerMoments](CoefficientPowerMoments.md),
+[CoefficientPowerRemainders](CoefficientPowerRemainders.md),
+[WeightedMatrixCharts](WeightedMatrixCharts.md),
+[OperatorPowerComparison](OperatorPowerComparison.md) and
+[ProbeDottedComparison](ProbeDottedComparison.md). Full CI is pending for
+these successors.
+
+Recovery is required separately for each original weight, word pair and
+degree bound: `SwappedVacuumEvaluation` and `SwappedVacuumObservation`
+already have those indices. Choose a sufficiently large scheduled reservoir
+for each requested window. No interface change or extension to every small
+cutoff is needed. Construct the actual action and its all-affine coordinate
+identity on that window; a stronger all-word fixed-cutoff family is optional.
 
 ## Categorical inverse: precise interfaces
 
