@@ -2555,3 +2555,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMixedDots
 import OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCategoryGrading
+import OddMath.QuiverHecke.SwappedAssembly.SupportedRestriction
