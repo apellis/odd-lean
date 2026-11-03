@@ -19,7 +19,10 @@ The producer and paired consumer pass strict checks with warnings as
 errors and both compatibility settings. The consumer checks both moving parities,
 empty and mixed old contexts, and the actual representable action on
 every vector and an identity-plus-dot vector, and audits both owned
-declarations against the axiom allowlist. Full integration remains pending.
+declarations against the axiom allowlist. The full build, global axiom audit and all non-vacuity checks passed in
+[#1011](https://github.com/apellis/odd-lean/pull/1011), at source head
+`77756d711f4e30fa50de52363f3a3d84e3075b81`
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41684396198)).
 
 `ELVOldInductionBraid` supplies the subsequent direct-induction equation.
 `oldTriplePrefixCross` and `oldTripleSuffixCross` are the independent
@@ -31,7 +34,10 @@ agree on the two paths; no evenness of the crossing is assumed.
 This producer and its concrete consumer pass strict checking. The
 consumer uses actual representables in empty and mixed contexts, both
 moving parities, a parity-shifted module and the literal unit tensor, and
-audits all 15 owned declarations. Full integration remains pending.
+audits all 15 owned declarations. The full build, global axiom audit and all non-vacuity checks passed in
+[#1011](https://github.com/apellis/odd-lean/pull/1011), at source head
+`77756d711f4e30fa50de52363f3a3d84e3075b81`
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41684396198)).
 The remaining comparison identifies these direct triple-induction maps
 with the prefix and suffix of the selected negative double-induction
 crossing under the canonical flattenings; the final weight braid is not

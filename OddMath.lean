@@ -2392,6 +2392,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierBraidEquation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraidRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridCrossSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentReindex
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
@@ -2399,3 +2402,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPairInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCrossing
