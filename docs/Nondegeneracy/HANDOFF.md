@@ -901,6 +901,13 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVModuleCorrectedBraid` now transports the corrected relation across
+three different composite source functors to the whole module equation.
+Its source-coefficient equation is an explicit intermediate input,
+discharged by the actual OLD quotient relation in the strict mixed/
+three-odd/interior consumer; all eleven owned declarations are audited.
+Specialize the stored-target grid and discharge the same source equation
+before asserting an action field; see [ModuleCorrectedBraid](ModuleCorrectedBraid.md).
 `ELVOldCorrectedNestedBraid.oldNestedMixedBraidMap_polynomial` now proves
 the chosen nested corrected braid in the actual three independent dot
 whiskerings, with the explicit negative-equal/positive-distinct

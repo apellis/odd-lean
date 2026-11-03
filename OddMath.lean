@@ -2482,3 +2482,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldCorrectedNestedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToRows
 import OddMath.QuiverHecke.HalfTurn.ContextualOldGenerators
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCorrectedBraid
