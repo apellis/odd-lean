@@ -26,4 +26,4 @@ using the stored-target inverse on the whole supported mixed mate.
 The producer and paired concrete consumer pass the strict scoped checks.
 The consumer audits all 63 owned declarations against the repository axiom
 allowlist and checks the occupied coordinate maps, all-map induction formula
-and selected crossing on the asymmetric all-odd parameters.
+and selected crossing on the asymmetric mixed-parity parameters.

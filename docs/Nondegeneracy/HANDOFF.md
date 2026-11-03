@@ -950,14 +950,14 @@ before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
 `ELVProbeWeightMixedMateComparison` now retains the actual upper unit
 and lower counit through the occupied mixed-coordinate equalities.
-Strict asymmetric two-odd regular/parity-shifted weight consumers audit
+Strict asymmetric mixed-parity regular/parity-shifted weight consumers audit
 all 61 declarations. Paste these with the selected crossing square and
 apply the stored mixed inverse; see
 [ProbeWeightMixedMateComparison](ProbeWeightMixedMateComparison.md).
 `ELVProbeWeightMixedCoordinates` identifies the occupied mixed-loop
 endpoints, arbitrary-target induction maps and the exact selected block
 crossing through the original product-coordinate equalities, at every
-parity. Strict asymmetric two-odd consumers audit all 63 declarations.
+parity. Strict asymmetric mixed-parity consumers audit all 63 declarations.
 Paste the actual cup and cap to attach the stored inverse to the global
 mixed mate; see [ProbeWeightMixedCoordinates](ProbeWeightMixedCoordinates.md).
 `ELVProbeWeightMixedMate` now defines the actual chosen global sideways
@@ -1038,6 +1038,12 @@ connected mixed/interior/two-odd/disconnected-parameter consumers audit
 all eight declarations. Combine these fields with the separately proved
 quadratics and the remaining braid/inverse attachments; see
 [ProbeSlideFields](ProbeSlideFields.md).
+`ELVProbeWeightTripleCoordinates` now retains both intermediate canonical
+blocks and an arbitrary common final stored target for the whole supported
+triple induction coordinate. Strict occupied mixed-parity/nonempty and
+three-absent-case consumers audit all eight declarations. Use these
+coordinates for the chosen whole-weight braid fields; see
+[ProbeWeightTripleCoordinates](ProbeWeightTripleCoordinates.md).
 `ELVProbeEvaluatedStoredMixedBraid.probeStoredMixedBraid_polynomial`
 now proves the whole corrected braid in the full evaluated categories
 with arbitrary stored representatives and all seven chosen append edges.
