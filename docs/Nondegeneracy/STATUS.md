@@ -231,8 +231,10 @@ and full exterior coefficients.
 
 
 
-The next successors pass strict local producer/consumer checks and owned
-axiom audits. Their full integration CI is pending.
+The following successors passed the full warning-free build, global axiom
+audit and every consumer in #991 at source head `c18b8721` (run 41588533754),
+integrated at `ea35e5ba`. All 11 producers, 20 exact source/consumer blobs and
+277 owned declarations also pass the strict local checks and audits.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
