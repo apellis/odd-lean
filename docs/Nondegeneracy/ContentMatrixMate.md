@@ -26,3 +26,10 @@ naturality remain separate. The categories are full-coefficient,
 untruncated old content categories at explicit `i :: ν`; the theorem does
 not assert a whole native module-composite equality or handle an absent
 predecessor.
+
+The whole operator square is also public as
+`oldContentMatrixCharts_mate_comp`. Its old-side operator is
+`oldMatrixMateLinear`, with `oldMatrixMateLinear_apply` identifying every
+value with the same prescribed `matrixMateComponent.total`. These are the
+existing raw-coend formulation of the comparison, used by the finite
+parity-coordinate assembly without introducing another module composite.

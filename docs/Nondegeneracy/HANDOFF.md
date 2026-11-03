@@ -18,6 +18,18 @@ snapshots into evidence. Earlier variants remain in [ResearchHistory](ResearchHi
 | Probe row in native content coordinates | [49859b449f](https://github.com/apellis/odd-lean/commit/49859b449f1dc56b64cbdfaf73dc10334b081bea) (`docs/Nondegeneracy/ProbeVacuumRows.md`) | Whole source and consumer remain unverified at the raw-coend versus SVec-carrier specialization; the checked full-old extraction row is separate. |
 | Shifted old-content matrix entries | [de01095797](https://github.com/apellis/odd-lean/commit/de0109579791da62ac09119a762f3e7362b95fba) (`docs/Nondegeneracy/ContentMatrixEntriesProposal.md`) | Generic decoration prefixes pass; shifted-coordinate to prescribed old-field attachment and complete consumer remain unverified. |
 
+## Ground-ring reduction already available
+
+The remaining construction may target characteristic-zero fields.
+`SKM.nondegeneracyConjecture_of_charZeroField` already transports that
+field theorem to every ordinary commutative ring with 2 invertible,
+for the same datum, homogeneous scalars and supplied CScalars. Do not
+list ring descent as an unfinished action or recovery obligation.
+The theorem uses actual presentation base change and universal-parameter
+separation; it adds no target-domain, reducedness or flatness hypothesis.
+See [GroundRingDescent](GroundRingDescent.md) and
+[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean).
+
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
