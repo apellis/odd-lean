@@ -784,6 +784,13 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeAppendToLocalFields` now supplies the selected negative crossing
+and all-parity native component formulas for that crossing, every dot
+power and the literal chosen mate at stored targets. Strict mixed
+reordered/shifted consumer checks audit all 72 owned declarations. Use
+these component formulas with the even loop comparisons, then attach
+all dotted rows to the transported finite inverse; see
+[ProbeAppendToLocalFields](ProbeAppendToLocalFields.md).
 `ELVProbeReindexRows` now preserves both prescribed dotted unit/counit
 rows through the same append comparisons, for every exponent including
 zero and arbitrary module input. Strict mixed reordered-content/shifted
