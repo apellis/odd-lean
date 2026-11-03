@@ -961,6 +961,14 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVProbeStoredMixedBraid.probeOldStoredMixedBraid_polynomial` now
+proves the whole corrected relation at arbitrary stored lists, with all
+seven append edges and the original-Sc correction in the actual nested
+dots. The source equation is discharged using the full-content forget
+map and literal OLD quotient; no relation premise remains. Strict
+non-cons stored/mixed/three-odd/interior consumers audit all 96 owned
+declarations. Lift to evaluated categories and whole-weight fields next;
+see [ProbeStoredMixedBraid](ProbeStoredMixedBraid.md).
 `ELVInductionCorrectedGrid` now retains seven different append edges
 and six categories in the whole chosen corrected braid, with three
 specified flattenings and independent nested dots. The intermediate
