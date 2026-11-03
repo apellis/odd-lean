@@ -302,3 +302,4 @@ HANDOFF and the source notes; later checked successors are independent.
 | Canonical truncated-content block charts | [8e85113f3f](https://github.com/apellis/odd-lean/commit/8e85113f3f63edb2cea03919ca151fbc97cd4533) | `05fce4219e872534c7174475bcd5c783c6d17c85` |
 | Weighted finite matrix inverse | [b541461adf](https://github.com/apellis/odd-lean/commit/b541461adf01e76a6de90384cd9879bdbc649955) | `51b5cf9c7df26f12d5336f05d84975c6f86c3a6d` |
 | Occupied vacuum probe unit | [9aaeb5c826](https://github.com/apellis/odd-lean/commit/9aaeb5c826ebdff04b0eea92bbcf06f405434fec) | `e291c89bbbae8d50322b5d0a99b9cdc33d5a360b` |
+| Selected word-pair whole-coherence variant | [d1540e8957](https://github.com/apellis/odd-lean/commit/d1540e89579b73ef34f02b5bc5a3b520291e272e) | `95e6c84c2a87a35b58663e8ae69d9847c3950312` |
