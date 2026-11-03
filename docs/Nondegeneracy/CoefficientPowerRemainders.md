@@ -70,8 +70,6 @@ orders, the normalization at every l, and R_1=−[δ_i]≠0 for each independent
 odd colour. It recovers the actual signed second-dot moment as −[δ_i].
 It also checks the literal even-cutoff relation [δ_i e_(i,0)]=0.
 
-The closed odd-colour even/odd decomposition in terms of 1/C(−z) is
-proved in [CoefficientPowerOddSeries](CoefficientPowerOddSeries.md). The
-probe-polynomial numerator and final swapped bubble maps remain to be
-attached. No
+The closed even/odd decomposition in terms of 1/C(−z), the probe-polynomial
+numerator and the final swapped bubble maps remain to be attached. No
 vacuum evaluation-kernel identity or all-height bubble theorem is asserted.
