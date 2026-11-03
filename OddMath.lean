@@ -1990,3 +1990,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerQuotient
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerGrading
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVEmptyCoefficientEmbedding
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerVacuum
