@@ -1,4 +1,3 @@
-import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeShiftedCapComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendTensors

@@ -17,7 +17,7 @@ variable {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
   [Preadditive A] [Linear k A] [Supercategory k A]
   (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
   {p : ZMod 2} {α : ∀ s, J.obj s ⟶ J.obj s} (hα : IsSupernatural k p α)
-local instance shiftedUnitColumnsModulePi : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
+local instance : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
 
 /-- The actual unit/dot column with its canonical shifted source. -/
 def shiftedUnitDotColumn (M : Superfunctor k C (SVec k)) (n : ℕ) :
@@ -100,8 +100,8 @@ variable {k C D : Type u} [CommRing k] [Category.{u} C] [Category.{u} D]
   (Q : C ⥤ D) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
   (M : Superfunctor k D (SVec k)) (N : Superfunctor k C (SVec k))
   (e : (restriction Q).obj M ≅ N)
-local instance shiftedUnitCoordinateSourcePi : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
-local instance shiftedUnitCoordinateTargetPi : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
+local instance : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
+local instance : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
 private theorem unitRestriction_total {L L' : Superfunctor k D (SVec k)}
     (f : L ⟶ L') (w : C) : ((restriction Q).map f).total w = f.total (Q.obj w) := rfl
 
@@ -144,8 +144,8 @@ variable {k C A D B : Type u} [CommRing k]
   {β : ∀ s, T.obj s ⟶ T.obj s} (hβ : IsSupernatural k p β)
   (M : Superfunctor k D (SVec k)) (N : Superfunctor k C (SVec k))
   (e : (restriction Q).obj M ≅ N)
-local instance shiftedUnitComparisonSourcePi : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
-local instance shiftedUnitComparisonTargetPi : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
+local instance : PiSupercategory k (Superfunctor k C (SVec k)) := supermodulePiSupercategory
+local instance : PiSupercategory k (Superfunctor k D (SVec k)) := supermodulePiSupercategory
 
 /-- Canonical source parity coordinates preserve an actual unit/dot column
 comparison, including its specified output-object transport. -/
@@ -289,10 +289,10 @@ theorem probeAppendComparisonLinear_unitDotColumn
 
 
 local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m ν N hN)
-local instance scalarShiftedUnitOldPi : PiSupercategory k
+local instance : PiSupercategory k
     (Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) ν) (SVec k)) :=
   supermodulePiSupercategory
-local instance scalarShiftedUnitOrdinaryPi : PiSupercategory k
+local instance : PiSupercategory k
     (Superfunctor k (OrdinaryContentCategory D Sc
       (probePolynomial (k := k) (probeDotExponent D) m) ν) (SVec k)) :=
   supermodulePiSupercategory
@@ -341,7 +341,7 @@ namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance unitMatrixEntryComparisonPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 /-- The generic shifted column is literally the prescribed old unit-matrix
