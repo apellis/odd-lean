@@ -2268,3 +2268,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuffixComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentInductionTripleBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedLocalInverse
