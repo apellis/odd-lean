@@ -1814,6 +1814,15 @@ coefficient equation with the intended mixed coefficient; then bend the
 finite sums and prove residual ideal closure. No full-weight uniform
 bound is asserted; see [PostCoefficientEvaluation](PostCoefficientEvaluation.md).
 
+`epsEntry_probe_factor` and `etaEntry_probe_factor` now retain the
+canonical probe cap and cup rows at every exponent and every full Hom
+object. Their coordinate forms retain both parity signs, the inverse
+left-adjunction scalar and height-zero cases. Strict complete two-odd
+ELV/nonzero-coefficient-input/all-exponent/height-zero consumers audit
+all eighteen declarations. Combine these with the reservoir rows and
+four principal entries in the augmented matrix; see
+[ProbeDottedFactorCoordinates](ProbeDottedFactorCoordinates.md).
+
 `Sigma.CentralPaths` now classifies both central path families and the
 identity-path index, retaining the absent reservoir source and absent
 probe target. `matrixEmbeddingIso` pads those missing indices by zero

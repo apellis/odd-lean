@@ -2528,3 +2528,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.CentralPaths
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.MatrixEmbedding
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVPostCoefficientEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.ProbeDottedFactorCoordinates
