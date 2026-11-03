@@ -52,6 +52,13 @@ private theorem moduleSlide_of_squares {A E : Superfunctor k C (SVec k)}
     (e.hom.total w) v
   rw [map_sub, map_smul, ha', hb', hc', hd']
   exact LinearMap.congr_fun h ((e.hom.total w) v)
+private theorem moduleSlide_of_isZero {A : Superfunctor k C (SVec k)}
+    (hA : Limits.IsZero A) (a b c d : A ⟶ A) (w : C) (s : k) :
+    ModuleNilHeckeSlide a b c d w s := by
+  let := moduleValue_subsingleton_of_isZero hA w
+  apply LinearMap.ext
+  intro v
+  exact Subsingleton.elim _ _
 end Coordinates
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
@@ -181,4 +188,44 @@ theorem elvWeightCrossVia_slideRight
   · exact hc
   · exact hi
   · exact content_slide_right_to D Sc cutoff bound β.1 i ε.1 hs (M β) w
+theorem elvWeightCrossComponent_slideLeft
+    (M : ELVWeightProduct D Sc cutoff bound Λ x₀)
+    (ε : WeightBlocks D Λ x₂)
+    (w : ContentCategory D Sc cutoff bound ε.1) :
+    ModuleNilHeckeSlide
+      ((elvActionCross D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂).app
+        (D.parity i * D.parity i) M ε)
+      ((elvE D Sc cutoff bound i Λ h₁ ◁
+        elvActionDot D Sc cutoff bound i Λ h₂).app (D.parity i) M ε)
+      ((elvActionDot D Sc cutoff bound i Λ h₁ ▷
+        elvE D Sc cutoff bound i Λ h₂).app (D.parity i) M ε)
+      ((elvActionCross D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂).app
+        (D.parity i * D.parity i) M ε)
+      w (sign k (D.parity i * D.parity i)) := by
+  by_cases hε : ∃ β, blockSucc₂ D i i Λ h₁ h₂ β = ε
+  · obtain ⟨β, rfl⟩ := hε
+    exact elvWeightCrossVia_slideLeft D Sc cutoff bound i Λ h₁ h₂ β M w
+  · exact moduleSlide_of_isZero
+      (elvEFunctor_comp₂_isZero D Sc cutoff bound i i Λ h₁ h₂ ε hε M) _ _ _ _ w _
+
+theorem elvWeightCrossComponent_slideRight
+    (M : ELVWeightProduct D Sc cutoff bound Λ x₀)
+    (ε : WeightBlocks D Λ x₂)
+    (w : ContentCategory D Sc cutoff bound ε.1) :
+    ModuleNilHeckeSlide
+      ((elvE D Sc cutoff bound i Λ h₁ ◁
+        elvActionDot D Sc cutoff bound i Λ h₂).app (D.parity i) M ε)
+      ((elvActionCross D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂).app
+        (D.parity i * D.parity i) M ε)
+      ((elvActionCross D Sc cutoff bound i i Λ h₁ h₂ h₁ h₂).app
+        (D.parity i * D.parity i) M ε)
+      ((elvActionDot D Sc cutoff bound i Λ h₁ ▷
+        elvE D Sc cutoff bound i Λ h₂).app (D.parity i) M ε)
+      w (sign k (D.parity i * D.parity i)) := by
+  by_cases hε : ∃ β, blockSucc₂ D i i Λ h₁ h₂ β = ε
+  · obtain ⟨β, rfl⟩ := hε
+    exact elvWeightCrossVia_slideRight D Sc cutoff bound i Λ h₁ h₂ β M w
+  · exact moduleSlide_of_isZero
+      (elvEFunctor_comp₂_isZero D Sc cutoff bound i i Λ h₁ h₂ ε hε M) _ _ _ _ w _
+
 end OddMath.QuiverHecke.ELVOld
