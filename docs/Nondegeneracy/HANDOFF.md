@@ -778,6 +778,12 @@ audits. `ELVModuleInductionSlides` now transfers a rectangular source
 slide to whole induced module maps, with strict concrete OLD checks and
 five owned audits. Apply the chosen pair flattenings before weight
 transport. See [OldDistinctSlides](OldDistinctSlides.md).
+`ELVProbeBlockDistinctSlides` proves both distinct-colour slides of the
+prescribed stored-target crossing and independently whiskered dots, with
+strict mixed/two-odd/shifted consumer checks and all 40 owned audits.
+Compare the global maps through the same two product coordinates and
+treat absent predecessors before asserting the whole-weight equations.
+See [ProbeBlockDistinctSlides](ProbeBlockDistinctSlides.md).
 `ELVInductionGridDistinctSlides` now supplies both rectangular pair
 slides through the selected flattenings, with arbitrary changing
 categories. Its producer and actual mixed/shifted OLD-content consumer

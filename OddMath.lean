@@ -2442,3 +2442,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldMulticolourBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexLocal
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldDistinctQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDistinctSlides
