@@ -42,3 +42,9 @@ compatibility settings; the consumer audits all 42 owned declarations
 against the standard axiom allowlist. Full integration verification
 remains separate. Canonical stored-content transport, the other
 crossing fields, and the augmented inverse lift remain separate obligations.
+
+The source head `4da876539f5147f00b608e0f0abf9f53f5808a92` passed the
+full build, global axiom audit and every non-vacuity consumer in
+[#1013](https://github.com/apellis/odd-lean/pull/1013)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41687376775)),
+merged at `73318d56`.

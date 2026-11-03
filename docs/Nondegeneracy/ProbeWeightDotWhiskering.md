@@ -1,0 +1,5 @@
+# The two chosen global OLD probe dots
+
+`probeOldOuterDot_component` and `probeOldInnerDot_component` compare the independently whiskered global signed dots to the actual two chosen block inductions. Both use exactly `probeOldWeightPair_obj_eq`, the same supported coordinate equality used by the global equal crossing. The outer formula retains the chosen outer block dot at the true induced input; the inner formula retains the ordinary chosen outer induction map of the chosen inner block dot.
+
+These identities are for every parity component and every scalar-evaluated input module. The producer and paired consumer pass strict scoped verification with warnings as errors and both compatibility settings. All four owned declarations pass the standard axiom audit. Full package integration remains separate. The consumer tests both moving parities, nonempty mixed contents, and the parity-shifted regular vacuum. These comparison identities are the transport inputs for both global signed nilHecke slides; they do not themselves assert those slides.

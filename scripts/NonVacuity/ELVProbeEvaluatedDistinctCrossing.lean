@@ -22,6 +22,8 @@ example (i : Bool) := probeEvaluatedDistinctRectangularMate_eq D Sc m [false,tru
 example (i : Bool) := probeEvaluatedDistinctRectangularMate_isIso D Sc m [false,true]
   i (!i) (distinct i)
 example (i : Bool) := probeEvaluatedDistinctRectangularMate_isIso D Sc m [] i (!i) (distinct i)
+example (i : Bool) := probeEvaluatedDistinctCrossMate_eq D Sc m [false,true] i (!i)
+example (i : Bool) := probeEvaluatedDistinctCrossMate_isIso D Sc m [false,true] i (!i) (distinct i)
 
 private abbrev Do := AsymmetricParameters.datum
 private abbrev So := AsymmetricParameters.scalars
@@ -42,6 +44,8 @@ example := probeEvaluatedDistinctCross_mem Do So m [] false true
 example := (probeEvaluatedDistinctCross Do So m [] false true).naturality 1 oddInput oddInput_mem
 example := probeEvaluatedDistinctRectangularMate_eq Do So m [] false true
 example := probeEvaluatedDistinctRectangularMate_isIso Do So m [] false true (by decide)
+example := probeEvaluatedDistinctCrossMate_eq Do So m [] false true
+example := probeEvaluatedDistinctCrossMate_isIso Do So m [] false true (by decide)
 end ProbeEvaluatedDistinctCrossingConsumer
 open Lean Elab Command in
 run_cmd do
