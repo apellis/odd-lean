@@ -1896,6 +1896,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelMatrixBijective
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCoefficientCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixEntryNaturality
 import OddMath.Algebra.FiniteSupermoduleFunctor
 import OddMath.QuiverHecke.CyclotomicAction.ELVMatrixFunctorNaturality
@@ -2099,6 +2100,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockExtension
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
@@ -2176,3 +2178,25 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentRectangularCross
 import OddMath.Algebra.MatrixInverseTransport
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnInverseRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitInverseRows
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionSignedMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedCoordinates
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMatrixHeight
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRectangularCross
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftCapComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
