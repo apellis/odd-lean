@@ -2145,3 +2145,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingColourMatrix
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordComposition
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixEntries
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentFiniteMatrixComparison
