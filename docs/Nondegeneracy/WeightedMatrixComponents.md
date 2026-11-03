@@ -38,9 +38,3 @@ strict checks, including the allowlist audit of every owned declaration.
 No inverse of the quotient component matrices is claimed here. The next
 step is their exact finite coordinate square with the already constructed
 arbitrary-module old matrix inverses.
-
-The datum-level mate also retains input-module signed naturality.
-`orderedMateComponent_supernatural` keeps the negative flattened crossing;
-`inductionMatrixMate_supernatural` attaches that family to the chosen datum
-before quotient specialization. It supplies the principal fields in the
-natural transformations of `ELVWeightedMatrixFunctor`.
