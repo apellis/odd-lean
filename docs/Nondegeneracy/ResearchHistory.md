@@ -415,34 +415,3 @@ head becomes an ancestor through these copies. Checked successors are separate.
 | Probe coefficient-row uniqueness | [f515dd83a7](https://github.com/apellis/odd-lean/commit/f515dd83a7e1300be3a70e0d929b8470d064bfab) | `402fbf170ede80959966c9c8a6732e2e28e566bf` | Checked scalar-evaluation uniqueness includes the occupied F(E T0) module; concrete old probe local adjunction still to construct. |
 | Triple positioned dots | [ca89ee7221](https://github.com/apellis/odd-lean/commit/ca89ee7221c69c588b74abea9bff97645784fa89) | `5b31f0e6c6685d47dbb995fc856449687e0062b8` | All three literal positioned-dot components and paired consumer pass strict checks; C3 dot squares and corrected native polynomial remain open. |
 | Weighted polynomial cap | [aa78b6d857](https://github.com/apellis/odd-lean/commit/aa78b6d857b6eae810495e5db0cd9944e230fa9f) | `c7c0e568ca8ac62e861c97f3ba95dbb7e7787bf6` | Actual polynomial module-cap core passes producer checking; full closure and occupied consumer remain unverified at this snapshot. |
-
-## Released coefficient and braid source variants
-
-These exact tree copies have only the verified research parent. The checked
-library is unchanged; proposed auxiliary probes remain outside its imports.
-
-| Argument | Preserved tree | Source revision | Scope |
-| --- | --- | --- | --- |
-| Cap family development | [6c1684f1e0](https://github.com/apellis/odd-lean/commit/6c1684f1e059542a666cfa36bc72d5dd5d89947e) | `f4aecd998474841e4331bc900ac07121aacbe9db` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Native cap window development | [57cba88697](https://github.com/apellis/odd-lean/commit/57cba886977a4a69adb81cb6a1d5fc9802d12df5) | `817e6cfcf711677a34ea6fdc61853e2fd2888ea0` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Power and weighted row development | [eb64fe11f0](https://github.com/apellis/odd-lean/commit/eb64fe11f0cfea0324f9411d9eb1a493114d1a29) | `692e1c2740434211a9796723a2ba4d1ca450ebdf` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Weighted coefficient development | [95be31df42](https://github.com/apellis/odd-lean/commit/95be31df426052d5dacd79d3e63e2b3b0f295c9f) | `0999a8bae0fbd06f4b6ef947da34d1ede80a6d82` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Weighted moment development | [f1f3b8adbf](https://github.com/apellis/odd-lean/commit/f1f3b8adbf3e919cbf5dd2346dab35793ce41607) | `a8b6da1030f663553abc173c7797d6715627c119` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Same-colour braid development | [bfa0314597](https://github.com/apellis/odd-lean/commit/bfa03145976776c0b6751829e6cc28c47853d009) | `6735805da35ab8539077fbec34f5c64e9ed8b076` | Checked topical variant; curated theorem and integration boundaries are recorded in STATUS. |
-| Same-colour braid auxiliary probes | [886d83c0c6](https://github.com/apellis/odd-lean/commit/886d83c0c69528964406ebac5e8ac766d48da22a) | `6735805da35ab8539077fbec34f5c64e9ed8b076` | Complete source tree including three auxiliary Lean probes; probe verification is not claimed. |
-
-## Principal and local-factor restart trees
-
-Each exact tree copy has only the verified research parent. Proposed source
-is outside the checked library; scoped checks and full integration are separate.
-
-| Argument | Preserved tree | Source revision | Scope |
-| --- | --- | --- | --- |
-| Whole-word crossing unit calculation | [9a4f3b9ef2](https://github.com/apellis/odd-lean/commit/9a4f3b9ef2460f115d7a4d4efb8df512190149ec) | `05916a404a42982623a91af41d6c770a5c184a73` | Exact unit-image producer passes default kernel checking; complete paired whole-map claim is separate. |
-| Whole-word crossing comparison | [2378de18b1](https://github.com/apellis/odd-lean/commit/2378de18b1da4296f7fce05330c7e446ed0bac3b) | `4e143b04f02c4b0bf56d59ab5f46a887e88911e0` | Proposed whole-map cyclicity attachment; complete source and paired consumer remain unverified at this snapshot. |
-| Canonical principal mate square | [63b67f26f9](https://github.com/apellis/odd-lean/commit/63b67f26f94c9b0aad5a6295f0529f6a3e26cf16) | `e1a4bb37d98120b28fe60f9c6f031130a4793b39` | Literal crossing retyping and first target join pass; raw-mate value join and paired consumer remain unverified. |
-| Mixed triple correction polynomial | [f1c9d8b643](https://github.com/apellis/odd-lean/commit/f1c9d8b64319eb6c5ce955314c60b173d03f15d1) | `8318b76ad067e06420a2f98dbc6cb36735a12c62` | Indexed dot-coordinate pair passes; original-Sc polynomial producer passes, its consumer and native corrected-braid attachment remain unverified. |
-| Absent-content and weight inverse families | [4aadf2ad1a](https://github.com/apellis/odd-lean/commit/4aadf2ad1a01769225042735c76b0a506fee56e9) | `b8608826bf37aa92e8d2b8f5779518e704e0d734` | Content inverse family producer and pair pass; weight inverse producer passes, paired consumer remains unverified. |
-| Old probe local records | [b826b2952d](https://github.com/apellis/odd-lean/commit/b826b2952d53245551ae30196839560c123c8b6c) | `4d30d6f0034eb84204045db18a7546d4d3f9e19f` | Grid input families are separately checked; complete old boundary window, decomposition and Rouquier field factories remain unverified. |
-| Local probe pre-Hom adjunction | [46db9c543d](https://github.com/apellis/odd-lean/commit/46db9c543dd11176e12ab9206b39545d1093c0df) | `6f0d300d5293fba2f1777e163cb5f1f3b9fb44a4` | Two producers and paired consumer pass; supplied adjacent local records remain explicit inputs, and full integration is separate. |
-| Released old boundary drafts | [7545bf1cfa](https://github.com/apellis/odd-lean/commit/7545bf1cfa910294e3926842fe28823e1bc6b865) | `402fbf170ede80959966c9c8a6732e2e28e566bf` | Complete earlier source tree including three proposed boundary draft files; their verification is not claimed. |

@@ -284,12 +284,8 @@ producer/consumer blobs also passed strict local checks and combined imports.
 | Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
 
 
-The local-inverse and triple-comparison integration [#997](https://github.com/apellis/odd-lean/pull/997)
-passed the full warning-free build, global axiom audit and every concrete
-consumer at `679df03398fa4bbff3c16f36225ec21b0b3f6ad5`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41607159909)), integrated
-at `ce03b2b1`. Its 22 producers and 44 exact producer/consumer blobs also
-passed strict local checks and combined imports.
+The subsequent local-inverse and triple-comparison batch also passes strict
+producer/consumer checks and combined imports; full integration is pending.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -299,39 +295,6 @@ passed strict local checks and combined imports.
 | Triple crossing and dot operators | Selected first/last adjacent crossing comparisons pass through the common triple chart; the direct multicolour induction braid and all three literal native positioned-dot component formulas are checked | Three whole triple-dot chart squares and original-Sc corrected polynomial/native braid field |
 | Adjacent left adjunction and probe row | `negativeLeftAdjunction` packages the existing construction from two supplied local records, their square-zero and braid relations. The raw probe row is forced by the unit window; its normalized counit sign cancels the shifted pre-Hom sign. Scalar-evaluating inputs include the occupied F(E T0) | Construct the concrete old probe local records and their required relations; no unconditional left adjunction is claimed |
 | Weighted moments and polynomial cap | Actual weighted cap after every given unit/dot column equals the full-coefficient moment operator on every vector. `ELVWeightedPolynomialCaps` constructs λ·(D²+1)^M as a homogeneous module map and proves every closure, the nonpositive-height first closure and the sign-sensitive second closure on surviving odd input | Identify the prescribed mixed inverse and swapped bubble operators |
-
-
-The four-pair integration [#999](https://github.com/apellis/odd-lean/pull/999)
-passed the full warning-free build, global axiom audit and all concrete
-consumers at `90c42b0b615babe1215beb2285e0a2dc2f2f4e3b`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41610482426)), integrated
-at `d02c6561`. Its 124 owned declarations and eight exact producer/consumer
-blobs also pass strict scoped checks and combined imports. `AugmentedInverseNaturality` derives
-principal and finite auxiliary inverse-entry supernaturality from the given
-forward families and pointwise local inverses, then bundles both inversion
-structures. Auxiliary entries outside the finite window are canonically zero;
-no inverse-naturality premise is added. `ELVGridLocalInverseFamilies` applies
-these constructors to the given grid mate, unit and cap transformations;
-constructed old grid natural isomorphisms instantiate its paired examples.
-`ELVWeightTripleDotComparison` identifies
-all three literal positioned dots through the same chosen triple chart.
-`ELVWeightedCapWindows` identifies the actual weighted unit/dot cap window,
-including the polynomial low window, as whole content-zero module identities
-in exactly the operator form needed by `InverseCapMoments`. Concrete natural
-local-inverse assembly, the corrected mixed polynomial field and the chosen
-mixed cap/bubble identification remain open.
-
-
-The next thirteen producers and their paired consumers pass strict checks;
-full integration is pending.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Chosen content and original-weight word crossings | `ELVPowerWordContentCross` and `ELVPowerWordWeightCross` identify the prescribed crossing on the chosen word modules with the full signed old-Hom arrow operator, on every coefficient vector and all output components, including absent sectors; concrete double-E inputs with nonzero two-odd products are checked | Append/context coherence and final observation recovery |
-| Absent inverse families and weight products | `ELVContentAbsentUnitFamily`, `ELVWeightAbsentUnitFamily` construct the prescribed input-supernatural inverse families at absent predecessors; the native weight pointwise/fibre inverses and arbitrary heterogeneous product assembly retain actual common height counts | Supported canonical principal square and supported block transport, then whole-weight local records |
-| Old missing-colour unit matrix and modules | The given old unit matrix is conjugated through the chosen FE/value charts, with exact forward unit columns and even inverse. `ELVContentMissingUnitModules` supplies its actual even module isomorphism for all old inputs, both parities and zero cutoff | Extract/bundle the native empty-edge inverse rows and construct the adjacent local records |
-| Given grid principal | `ELVInductionGridRouquierFields` identifies the actual Rouquier principal with the given negative-crossing grid mate as a whole transformation | Complete unit/cap forward fields, slides, square and braid for the concrete old local records |
-| Constructed local pre-Hom adjunction | `RouquierPreAdjunction`, `ELVProbeLocalPreAdjunction` use the existing adjacent-local constructor on the prescribed probe edge and identify the constructed counit with shiftedPreCap after both Koszul factors cancel | Adjacent local records remain explicit supplied inputs; the actual evaluated mixed bend and full swapped action are separate |
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
