@@ -40,3 +40,9 @@ The specialization to the selected full-ELV regular-power word value
 remains open. It must retain the reverse
 word and the existing chosen chart, without assuming the desired vacuum
 comparison. No swapped observation or nondegeneracy conclusion is claimed.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.

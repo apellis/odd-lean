@@ -26,3 +26,9 @@ large action data; no verification budget is raised.
 This supplies the multicolour factor interface needed by the complete
 presentation action. The compatible probe factor, mixed normalization,
 swapped Hom action and final nondegeneracy synthesis remain separate.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.
