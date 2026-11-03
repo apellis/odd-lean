@@ -986,6 +986,15 @@ a nonzero actual induced unit vector at positive levels for both moving
 parities. Use this unit in the concrete probe and denominator inputs.
 See [ProbeWeightDotUnit](ProbeWeightDotUnit.md).
 
+`ELVProbeRouquierData` now assembles the selected E, dots and total
+equal/distinct crossing into the generator bundle with square and equal
+braid. The specified adjunction retains F, unit and counit; the existing
+finite-colour dot-unit result is attached. Producer and occupied
+mixed/absent consumer pass strict checks and fourteen owned audits.
+The unconditional RouquierFamily still requires canonical-weight local
+records; remaining multicolour relations are separate. See
+[ProbeRouquierData](ProbeRouquierData.md).
+
 `ELVProbeWeightCrossing` now supplies the chosen negative crossing on
 every original-weight fibre, including its stored-target formula, both
 absent predecessor cases and whole square-zero relation. Its producer,
