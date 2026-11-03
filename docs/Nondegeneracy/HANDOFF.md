@@ -744,6 +744,13 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVProbeReindexMate` now proves the all-vector chosen negative-mate
+square through the same two append comparisons, preserving every
+coefficient arrow and twist. Strict producer and mixed reordered-content/
+shifted consumer checks audit all 38 owned declarations. Lift to whole
+module/natural maps and attach the prescribed dotted unit/counit rows
+before constructing the canonical local record. See
+[ProbeReindexMate](ProbeReindexMate.md).
 `ELVProbeReindexPair` now gives the exact upper-then-lower append
 comparison on raw and evaluated modules, with evenness and an all-vector
 nested tensor formula retaining both coefficient arrows. Strict producer
