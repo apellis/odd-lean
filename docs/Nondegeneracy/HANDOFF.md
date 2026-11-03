@@ -752,6 +752,12 @@ mixed/shifted/nested-tensor consumer pass strict checks and 38 owned
 audits. Restrict this equation to evaluated modules, then use the chosen
 canonical-content and weight coordinates. See [OldContentBraid](OldContentBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
+`ELVInductionRectangularTriple` now compares both independently whiskered
+rectangular crossings through one chosen triple flattening, even with
+different intermediate content categories. Strict producer and concrete
+mixed/three-odd/distinct-middle-category consumer checks audit all four
+owned declarations. Assemble the six signed braid paths and ordered
+correction next; see [InductionRectangularTriple](InductionRectangularTriple.md).
 `ELVInductionRectangularWhiskering` extends both chosen composition
 comparisons to whole maps with distinct source and target append functors.
 Strict producer and changing-content mixed/three-odd consumer checks audit

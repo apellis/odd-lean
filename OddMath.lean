@@ -2444,3 +2444,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldDistinctQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWords
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularTriple
