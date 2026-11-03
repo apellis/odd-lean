@@ -2119,3 +2119,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossingSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierData
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMatrixHeight
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
