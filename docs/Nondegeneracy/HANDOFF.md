@@ -1694,6 +1694,16 @@ probe. The literal layer evaluation and final observation kernel remain. See
 
 ## Central augmented-matrix attachment
 
+`Sigma.ProbeToReservoirBend` now identifies the actual probe-to-reservoir
+mixed entry with its reservoir-unit/coefficient/probe-counit word through
+computed factor charts, for every sector and full Hom input. The negative
+augmented sign is retained. Strict complete two-odd ELV-pair consumers
+cover height zero, absent pure corners and a nonzero odd-product input,
+auditing all 51 declarations. The coefficient remains specified data;
+attach its finite expansion after evaluation and prove residual ideal
+membership. The reverse bend and probe principal remain separate; see
+[ProbeToReservoirBend](ProbeToReservoirBend.md).
+
 [CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
 remaining fixed-output-content comparison from the actual `augPosMat`
 and `augNegMat` to the two-sector model, including the negative signs,
