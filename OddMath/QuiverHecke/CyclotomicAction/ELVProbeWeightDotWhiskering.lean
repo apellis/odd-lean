@@ -42,6 +42,60 @@ private theorem innerDot_conjugate
   cases hW
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
 
+section Pair
+variable {I X k : Type u} [AddCommGroup X] [CommRing k]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
+  (i j : I) (Λ : X) {x₀ x₁ x₂ : X}
+  (h₁ : x₀ + D.α j = x₁) (h₂ : x₁ + D.α i = x₂)
+
+/-- The selected pair coordinate retains two independently chosen colours. -/
+theorem probeOldWeightPair₂_obj_eq (β : WeightBlocks D Λ x₀)
+    (M : ProbeOldWeightProduct D Sc m Λ x₀) :
+    (probeOldEFunctor D Sc m j Λ h₁ ⋙
+      (probeOldInductionComponent D Sc m i Λ h₂ (blockSucc₂ D i j Λ h₁ h₂ β)).toFunctor).obj M =
+      (probeOldBlockPairInd D Sc m i j Λ h₁ h₂ β).obj (M β) :=
+  congrArg (fun H => H.obj M) (probeOldEFunctor_comp₂_blockSucc D Sc m i j Λ h₁ h₂ β)
+
+/-- The outer independently chosen global dot uses the exact pair coordinate equality. -/
+theorem probeOldPairOuterDot_component (β : WeightBlocks D Λ x₀)
+    (p : ZMod 2) (M : ProbeOldWeightProduct D Sc m Λ x₀) :
+    ((probeOldE D Sc m j Λ h₁ ◁ probeOldActionDot D Sc m i Λ h₂).app p M)
+        (blockSucc₂ D i j Λ h₁ h₂ β) =
+      eqToHom (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M) ≫
+        (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).app p
+          ((probeOldBlockInd D Sc m j Λ h₁ β).obj (M β)) ≫
+        eqToHom (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M).symm := by
+  change probeOldWeightDotComponent D Sc m i Λ h₂ p
+    ((probeOldEFunctor D Sc m j Λ h₁).obj M) (blockSucc₂ D i j Λ h₁ h₂ β) = _
+  rw [probeOldWeightDotComponent_blockSucc]
+  exact outerDot_conjugate
+    (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).toFunctor
+    (probeOldInductionComponent_obj_blockSucc D Sc m j Λ h₁ β M) _
+    (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M)
+    (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)) p
+
+/-- The inner independently chosen global dot uses the identical pair coordinate equality. -/
+theorem probeOldPairInnerDot_component (β : WeightBlocks D Λ x₀)
+    (p : ZMod 2) (M : ProbeOldWeightProduct D Sc m Λ x₀) :
+    ((probeOldActionDot D Sc m j Λ h₁ ▷ probeOldE D Sc m i Λ h₂).app p M)
+        (blockSucc₂ D i j Λ h₁ h₂ β) =
+      eqToHom (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M) ≫
+        (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).map
+          ((probeOldBlockDot D Sc m j Λ h₁ β).app p (M β)) ≫
+        eqToHom (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M).symm := by
+  change (probeOldInductionComponent D Sc m i Λ h₂ (blockSucc₂ D i j Λ h₁ h₂ β)).map
+    ((probeOldActionDot D Sc m j Λ h₁).app p M) = _
+  rw [probeOldInductionComponent_map_blockSucc]
+  change eqToHom _ ≫ (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).map
+    (probeOldWeightDotComponent D Sc m j Λ h₁ p M (blockSucc D Λ j h₁ β)) ≫ eqToHom _ = _
+  rw [probeOldWeightDotComponent_blockSucc]
+  exact innerDot_conjugate
+    (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ j h₁ β)).toFunctor
+    (probeOldInductionComponent_obj_blockSucc D Sc m j Λ h₁ β M) _
+    (probeOldWeightPair₂_obj_eq D Sc m i j Λ h₁ h₂ β M) _
+
+end Pair
+
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m : I → ℕ)
   (i : I) (Λ : X) {x₀ x₁ x₂ : X}
@@ -55,15 +109,8 @@ theorem probeOldOuterDot_component (β : WeightBlocks D Λ x₀)
       eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M) ≫
         (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).app p
           ((probeOldBlockInd D Sc m i Λ h₁ β).obj (M β)) ≫
-        eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M).symm := by
-  change probeOldWeightDotComponent D Sc m i Λ h₂ p
-    ((probeOldEFunctor D Sc m i Λ h₁).obj M) (blockSucc₂ D i i Λ h₁ h₂ β) = _
-  rw [probeOldWeightDotComponent_blockSucc]
-  exact outerDot_conjugate
-    (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).toFunctor
-    (probeOldInductionComponent_obj_blockSucc D Sc m i Λ h₁ β M) _
-    (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M)
-    (probeOldBlockDot D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)) p
+        eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M).symm :=
+  probeOldPairOuterDot_component D Sc m i i Λ h₁ h₂ β p M
 
 /-- The inner independently chosen global dot uses the identical pair coordinate equality. -/
 theorem probeOldInnerDot_component (β : WeightBlocks D Λ x₀)
@@ -73,16 +120,7 @@ theorem probeOldInnerDot_component (β : WeightBlocks D Λ x₀)
       eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M) ≫
         (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).map
           ((probeOldBlockDot D Sc m i Λ h₁ β).app p (M β)) ≫
-        eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M).symm := by
-  change (probeOldInductionComponent D Sc m i Λ h₂ (blockSucc₂ D i i Λ h₁ h₂ β)).map
-    ((probeOldActionDot D Sc m i Λ h₁).app p M) = _
-  rw [probeOldInductionComponent_map_blockSucc]
-  change eqToHom _ ≫ (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).map
-    (probeOldWeightDotComponent D Sc m i Λ h₁ p M (blockSucc D Λ i h₁ β)) ≫ eqToHom _ = _
-  rw [probeOldWeightDotComponent_blockSucc]
-  exact innerDot_conjugate
-    (probeOldBlockInd D Sc m i Λ h₂ (blockSucc D Λ i h₁ β)).toFunctor
-    (probeOldInductionComponent_obj_blockSucc D Sc m i Λ h₁ β M) _
-    (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M) _
+        eqToHom (probeOldWeightPair_obj_eq D Sc m i Λ h₁ h₂ β M).symm :=
+  probeOldPairInnerDot_component D Sc m i i Λ h₁ h₂ β p M
 
 end OddMath.QuiverHecke

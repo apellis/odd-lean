@@ -726,9 +726,19 @@ canonical triple flattening and proves their braid on every old module.
 Its producer and concrete consumer pass strict checks; the shared-grid
 refactor retains the same statements and audits all sixteen remaining
 owned declarations. The original twenty-declaration form passed full CI
-in #1014; the shared-grid refactor awaits integration. Restriction to evaluated fixed contents and weight transport
+in #1014; the shared-grid refactor passed full CI in #1016. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
+The prescribed lower and upper local loops now have even representative
+comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
+mixed-content consumer checks audit all 38 owned declarations. Attach
+the chosen mate and dotted unit/counit maps before transporting the
+original inverse record. See [ProbeReindexLoops](ProbeReindexLoops.md).
+The signed probe slides, content braid, representative adjunction comparison,
+triple coordinates and whole-Hom word coordinates passed the full build,
+global axiom audit and all consumers in [#1016](https://github.com/apellis/odd-lean/pull/1016)
+at `cf38def4` ([run 41695267103](https://github.com/apellis/odd-lean/actions/runs/41695267103)).
+
 `ELVInductionGridBraid` and `ELVOldContentBraid` now supply the same
 comparison on four consecutive content categories and the prescribed
 negative braid on every old content module. Both producers and the
@@ -743,6 +753,12 @@ audits. `ELVModuleInductionSlides` now transfers a rectangular source
 slide to whole induced module maps, with strict concrete OLD checks and
 five owned audits. Apply the chosen pair flattenings before weight
 transport. See [OldDistinctSlides](OldDistinctSlides.md).
+`ELVInductionGridDistinctSlides` now supplies both rectangular pair
+slides through the selected flattenings, with arbitrary changing
+categories. Its producer and actual mixed/shifted OLD-content consumer
+pass strict checks and three owned audits. Restrict to evaluated modules
+and compare the independently chosen global dots in these same
+coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
@@ -958,6 +974,19 @@ audits, with full CI verified in #1014. Restrict the exact record to the evaluat
 then handle canonical contents, absent predecessors and original weights.
 See [InductionGridLocal](InductionGridLocal.md).
 
+`ELVProbeEvaluatedLocal.probeEvaluatedLoc` now restricts that adjacent
+record to the evaluated full subcategory with the original adjunction,
+dots and crossing. All four inverse-entry component comparisons retain
+the OLD maps definitionally for every row index. Producer and
+both-parity/height/zero-overlap regular-probe consumer pass strict checks
+and 182 owned audits. Transport this selected record through canonical
+representatives, then handle absent predecessors and original weights.
+See [ProbeEvaluatedLocal](ProbeEvaluatedLocal.md).
+`ELVProbeEvaluatedBraid` also supplies the module and whole-transformation
+equal braid for the selected evaluated negative crossings. Producer and
+mixed-content/shifted/odd-input consumer pass strict checks and 35 owned
+audits. See [ProbeEvaluatedBraid](ProbeEvaluatedBraid.md).
+
 `probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
 odd homogeneous inverse and absent predecessors. Its producer and
@@ -966,6 +995,15 @@ in #1014. The consumer retains
 a nonzero actual induced unit vector at positive levels for both moving
 parities. Use this unit in the concrete probe and denominator inputs.
 See [ProbeWeightDotUnit](ProbeWeightDotUnit.md).
+
+`ELVProbeRouquierData` now assembles the selected E, dots and total
+equal/distinct crossing into the generator bundle with square and equal
+braid. The specified adjunction retains F, unit and counit; the existing
+finite-colour dot-unit result is attached. Producer and occupied
+mixed/absent consumer pass strict checks and fourteen owned audits.
+The unconditional RouquierFamily still requires canonical-weight local
+records; remaining multicolour relations are separate. See
+[ProbeRouquierData](ProbeRouquierData.md).
 
 `ELVProbeWeightCrossing` now supplies the chosen negative crossing on
 every original-weight fibre, including its stored-target formula, both
@@ -987,6 +1025,11 @@ owned audits, and full CI in #1014. Use these common coordinates to transport bo
 slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
+The same module now exposes the supported pair coordinate and both dot
+components for arbitrary colours, retaining the equal-colour statements
+as specializations. Its generalized producer and extended mixed/shifted
+consumer pass strict checks and seven owned audits. Use these actual
+dot coordinates for the distinct-slide attachment.
 
 `ELVProbeWeightTripleInduction` supplies the chosen three-step weight
 coordinate with all stored intermediate targets and the actual zero module
@@ -1002,6 +1045,13 @@ comparison premise remains. Its producer and occupied mixed/shifted
 consumer pass strict checks and all 23 owned audits. Identify both global
 whiskerings through the same triple coordinate next. See
 [ProbeBlockBraid](ProbeBlockBraid.md).
+`ELVProbeWeightBraid.probeOldActionEqualCross_braid` now proves the
+whole-weight equal braid with the chosen associator, retaining both
+independent crossing whiskerings in the same triple coordinate and
+actual zero in every absent case. Producer and occupied/shifted consumer
+pass strict checks and 22 owned audits. The equal braid is now available
+for the probe family; local-record and multicolour assembly remain. See
+[ProbeWeightBraid](ProbeWeightBraid.md).
 
 `ELVProbeBlockNilHecke` proves both prescribed stored-target signed slides
 and identifies both global dot totals in the selected double-predecessor
@@ -1029,6 +1079,17 @@ nontrivial-representative/odd-input consumer and all 45 owned audits pass
 strict checks. Prove its tensor formula and dot/crossing comparisons,
 then use these same maps for canonical local and distinct inverse transport.
 See [ProbeReindexInduction](ProbeReindexInduction.md).
+`ELVProbeReindexTensors` now proves the canonical comparison sends each
+actual balanced tensor to the same arrow and vector at the reindexed
+source. Its producer and arbitrary-vector/nontrivial-representative
+consumer pass strict checks and 27 owned audits. Use this fixed comparison
+for dot and crossing compatibility before canonical inverse transport.
+See [ProbeReindexTensors](ProbeReindexTensors.md).
+`ELVProbeReindexDot` now proves that this same canonical comparison
+intertwines the chosen signed dot on every vector, whole module map and
+evaluated component. Producer and mixed-parity regular-probe consumer
+pass strict checks and 25 owned audits. The selected pair crossing and
+local/distinct inverse records remain. See [ProbeReindexDot](ProbeReindexDot.md).
 
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
@@ -1071,6 +1132,34 @@ consumers pass, including all eleven owned-declaration axiom checks; full CI ver
 [ELVRawCoefficientComparison](ELVRawCoefficientComparison.md). Finish compatible
 factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
+
+`ReservoirVacuumDot` proves the actual occupied `dotImage` entry equals
+postcomposition by the selected reservoir dot through the zero-probe
+shift chart, for every Hom object. Producer and complete-factor two-odd
+consumer pass strict checks and eight owned audits. The consumer retains
+an independently nonzero odd regular-power coefficient. Evaluate this
+whole-map square through the selected vacuum/word chart, then apply the
+existing dot-coordinate formula. See [ReservoirVacuumDot](ReservoirVacuumDot.md).
+
+`ELVReservoirWordValue.reservoirPath_value_heq` now identifies the
+reservoir path value on the specified regular-power empty-word family
+with the reversed selected E-word value, retaining the existing even
+`pathChart`. Its producer and connected two-odd consumer pass strict
+checks and twenty owned audits; the independent odd-coefficient product
+and cyclic unit are nonzero in that same path value. Identify the eventual
+swapped tensor-vacuum Hom input with this initial family before using
+the comparison for observations. See [ELVReservoirWordValue](ELVReservoirWordValue.md).
+
+`ELVWeightTensorVacuum` now constructs the full-product tensor Hom from
+the OLD probe category and its explicit regular evaluated probe, zero on
+every nonempty formal block even when weights coincide. Its even
+`selectedIso` identifies evaluation at that probe with the actual
+`ReservoirWordValue.initialValue`, with the every-vector scalar/unitor
+formula and unchanged tensor coefficient. Producer and occupied two-odd
+consumer pass strict checks and 39 owned audits; the independent odd
+product remains nonzero. Carry the chosen reservoir dot/crossing maps
+through this same comparison, then attach the swapped layers. See
+[ELVWeightTensorVacuum](ELVWeightTensorVacuum.md).
 
 `ELVPowerWordHomCoordinates` now passes fresh strict producer and
 occupied-consumer checks, including all 48 owned audits. Its whole-Hom
