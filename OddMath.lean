@@ -2203,3 +2203,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
 import OddMath.Algebra.FiniteSupermoduleCoordinates
 import OddMath.Algebra.FiniteSupermoduleInverseRows
 import OddMath.Algebra.FiniteSupermoduleInverseColumns
+import OddMath.SKM.FiniteModuleLocalInverse
