@@ -809,11 +809,18 @@ mixed/interior/two-odd consumer pass strict checks and all 43 owned audits.
 Identify this polynomial with the two independently chosen dot operators,
 then assemble the global field including absent sectors. See
 [ProbeBlockDistinctQuadratic](ProbeBlockDistinctQuadratic.md).
+`ELVProbeWeightDistinctSlides` now proves both signed distinct slides
+for the actual global crossing and independently whiskered dots on all
+original weights, using both selected coordinates and the actual zero
+source at absent predecessors. Strict mixed/two-odd/shifted/absent
+consumer checks audit all ten owned declarations. Attach these fields
+to the complete probe presentation after the other fields are constructed.
+See [ProbeWeightDistinctSlides](ProbeWeightDistinctSlides.md).
 `ELVProbeBlockDistinctSlides` proves both distinct-colour slides of the
 prescribed stored-target crossing and independently whiskered dots, with
 strict mixed/two-odd/shifted consumer checks and all 40 owned audits.
-Compare the global maps through the same two product coordinates and
-treat absent predecessors before asserting the whole-weight equations.
+The same two product coordinates and absent predecessors are now
+handled by `ELVProbeWeightDistinctSlides`.
 See [ProbeBlockDistinctSlides](ProbeBlockDistinctSlides.md).
 `ELVInductionGridDistinctSlides` now supplies both rectangular pair
 slides through the selected flattenings, with arbitrary changing
