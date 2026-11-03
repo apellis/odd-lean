@@ -142,7 +142,10 @@ extends to the occupied F(E T0), without assuming evaluation at T0 is faithful
 on every module. Construct the old-category empty and one-colour local records
 using the existing old grid natural isomorphisms, then apply that constructor.
 Actual weighted all-power moments and χ/δ series hold on every coefficient
-vector; the prescribed swapped mixed inverse and bubble identification remain.
+vector. The polynomial module cap λ·(D²+1)^M has all closure formulas,
+including nonpositive first closure and a second closure distinguishing
+χ₁+2 from χ₁−2 on nonzero odd input. The prescribed swapped mixed inverse
+and bubble identification remain.
 
 Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
