@@ -2117,3 +2117,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnMatrices
 import OddMath.Algebra.FiniteZeroCoordinate
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingColourMatrix
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingColourMatrix
