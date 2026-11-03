@@ -45,7 +45,7 @@ The complete inventory of preserved topic variants is in
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
 | Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
-| Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
+| Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | Identify its iterated postcomposition functor and attach `layerMap_apply_append` to the chosen contextual dot/crossing operators; the constructed unique path alone is not an observation |
 | Final Phase 1 nondegeneracy | Blocked on concrete observations | Finite-colour reduction, upward/oriented equivalence, observation consumer and proved ground-ring descent | Supply observations for every required bound/word/weight for symmetrizable homogeneous data; inhomogeneous parameters belong to Phase 2 and nonsymmetrizable data are excluded |
@@ -923,7 +923,7 @@ occupied/empty/odd-input consumer and all 42 owned audits pass strict
 checks. Continue with stored-target and weight transport, the braid and
 the adjacent local record. See [ProbeEvaluatedCrossing](ProbeEvaluatedCrossing.md).
 
-`ELVProbeWeightDotUnit.probeOldActionDotIso` constructs the inverse of
+`probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
 odd homogeneous inverse and absent predecessors. Its producer and
 consumer pass strict checks and all 14 owned audits. The consumer retains
@@ -990,6 +990,21 @@ consumers pass, including all eleven owned-declaration axiom checks; full CI ver
 [ELVRawCoefficientComparison](ELVRawCoefficientComparison.md). Finish compatible
 factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
+
+## Central augmented-matrix attachment
+
+[CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
+remaining fixed-output-content comparison from the actual `augPosMat`
+and `augNegMat` to the two-sector model, including the negative signs,
+absent pure paths and height zero. First identify the entire prescribed
+reservoir cap rows and unit columns through the actual roundtrip-path
+charts, at every dot power. The subsequent residual argument needs the
+literal mixed bend expansions and positive coefficient-ideal membership
+of the closed errors on every `Z : P.H t`. Existing contentwise nilpotent
+ideals do not supply those memberships or the matrix square. Assemble
+inverses componentwise, retaining bounds that vary with output content;
+do not assume a common exponent over an entire weight fibre. This note
+is a proposed attachment, not a constructed `CentralInvertible` instance.
 
 ## Final synthesis and verification
 
