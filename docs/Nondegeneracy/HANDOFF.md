@@ -43,6 +43,13 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ReservoirVacuumCrossing.postCrossNe_reservoirVacuum` now compares the
+prescribed distinct reservoir block with the factor crossing through the
+exact source/target pair charts and target-sector transport, on every Hom
+input. Strict complete two-odd ELV-pair checks audit all 17 declarations
+and retain a nonzero odd exterior input. Attach the literal distinct
+matrix branch and both contexts; see
+[ReservoirVacuumCrossing](ReservoirVacuumCrossing.md).
 `ReservoirLayerCrossings.layerMap_reservoir_cross_same` now supplies
 the corresponding literal matrix-to-factor comparison for an equal-colour
 crossing under both arbitrary path contexts and an arbitrary input matrix.
