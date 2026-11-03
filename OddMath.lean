@@ -2106,3 +2106,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVParityMatrixSquares
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerPolynomialCap
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
