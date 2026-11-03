@@ -1756,6 +1756,13 @@ the intended factor, coefficient inverse and component bounds, then bend
 the sums and prove residual ideal membership. See
 [CrossCoeffExpansion](CrossCoeffExpansion.md).
 
+`Sigma.ProbePrincipal` now identifies the literal pure probe entry with
+the chosen precomposition mate, and then with the specified multiple of
+negative `sigL`. The exceptional odd height-zero sign is retained. Strict
+complete asymmetric two-odd ELV-pair consumers retain a nonzero PBW input,
+check both odd zero-height slices and audit all 31 declarations. Attach
+the reverse mixed bend, probe rows and complete augmented-matrix chart;
+see [ProbePrincipal](ProbePrincipal.md).
 `Sigma.ProbeFactorCoordinates.probeCupFactorIso` now identifies the
 probe cup path with the canonical precomposition adjunction loop,
 retaining the chosen weight equation and endpoint transports. Strict
