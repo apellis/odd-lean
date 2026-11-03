@@ -2186,3 +2186,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRectangularCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCyclicity
