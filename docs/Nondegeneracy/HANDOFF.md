@@ -1924,8 +1924,8 @@ probe. The literal layer evaluation and final observation kernel remain. See
 
 The positive-degree residual closure remains a substantive proof target.
 [ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
-source-coefficient-image and representable evaluation forms. The existing
-finite kernel inverse comparisons prove parity only. The intrinsic integer
+source-coefficient-image and representable evaluation forms. The intrinsic represented inverse degree is now proved; its attachment
+to the chosen whole-weight closure remains open. The intrinsic integer
 grading of the literal represented lower-loop kernel is now checked in
 `ELVIndResKernelInteger`, with actual balance relations and an internal
 direct-sum decomposition (22 owned audits; full CI verified in #1029). `IntegerMatrixGrading` and `ELVKernelMatrixInteger` now construct independent
@@ -1933,7 +1933,10 @@ finite source/target shifts, prove both prescribed forward matrices have
 degree zero and derive degree `2*d_i` for both principal inverses. Strict
 paired checks include positive, negative and zero heights, off-content
 inputs and a proved nonzero odd inverse; all 79 owned declarations are
-audited. Identify these raw inverses with the chosen reservoir principal,
+audited. `ELVKernelClosureDegree` now proves the raw unit-inverse-cap
+coefficient degree `n + 2*d_i*(r+s+1)` and both OLD module evaluation
+equations, with 13 owned declarations audited by its strict paired
+consumer. Identify these raw inverses with the chosen reservoir principal,
 then use Yoneda to realize the positive-degree closure on every module.
 `ELVContentPrincipalInverseCoordinates` supplies the content-to-weighted
 part of that connection for either orientation and arbitrary stored
