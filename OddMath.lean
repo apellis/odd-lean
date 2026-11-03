@@ -2348,3 +2348,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentVacuumCoefficientRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitInverseNaturality
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalCoordinates
