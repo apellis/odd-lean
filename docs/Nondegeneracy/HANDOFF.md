@@ -134,7 +134,10 @@ unit column and cap row has its whole chart square, and the absent-predecessor
 canonical inverse is constructed. The supported principal square and concrete input-family assembly remain
 open. `AugmentedInverseNaturality` now supplies both automatic inverse-entry
 family constructors from the given forward families and pointwise inverses,
-including canonical zero extension outside the finite window. All three positioned-dot comparisons and both adjacent crossing comparisons
+including canonical zero extension outside the finite window.
+`ELVGridLocalInverseFamilies` bundles both given grid inversion families,
+with the constructed old matrix natural isomorphisms as concrete inputs.
+Use these families to construct the prescribed adjacent old local records. All three positioned-dot comparisons and both adjacent crossing comparisons
 now pass through the same chosen triple chart. Attach the original-Sc
 correction polynomial to those operators.
 
@@ -156,8 +159,11 @@ and bubble identification remain.
 
 Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
-The subsequent local-inverse, triple-component and probe-adjunction successors
-await their full-package integration gate; #995 is fully verified as recorded above.
+The local-inverse, triple-component and probe-adjunction integration #997
+passed all full-package gates at `679df033` (run 41607159909), integrated at
+`ce03b2b1`. Automatic inverse naturality, three triple-dot squares, literal
+weighted cap windows and grid inverse families are the next scoped-checked
+successors awaiting their full-package gate.
 
 ## Current comparison interfaces
 

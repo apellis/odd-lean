@@ -284,8 +284,12 @@ producer/consumer blobs also passed strict local checks and combined imports.
 | Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
 
 
-The subsequent local-inverse and triple-comparison batch also passes strict
-producer/consumer checks and combined imports; full integration is pending.
+The local-inverse and triple-comparison integration [#997](https://github.com/apellis/odd-lean/pull/997)
+passed the full warning-free build, global axiom audit and every concrete
+consumer at `679df03398fa4bbff3c16f36225ec21b0b3f6ad5`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41607159909)), integrated
+at `ce03b2b1`. Its 22 producers and 44 exact producer/consumer blobs also
+passed strict local checks and combined imports.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -297,12 +301,15 @@ producer/consumer checks and combined imports; full integration is pending.
 | Weighted moments and polynomial cap | Actual weighted cap after every given unit/dot column equals the full-coefficient moment operator on every vector. `ELVWeightedPolynomialCaps` constructs λ·(D²+1)^M as a homogeneous module map and proves every closure, the nonpositive-height first closure and the sign-sensitive second closure on surviving odd input | Identify the prescribed mixed inverse and swapped bubble operators |
 
 
-The next three producer/consumer pairs pass strict checks and combined imports;
+The next four producer/consumer pairs pass strict checks and combined imports;
 their full integration gate is pending. `AugmentedInverseNaturality` derives
 principal and finite auxiliary inverse-entry supernaturality from the given
 forward families and pointwise local inverses, then bundles both inversion
 structures. Auxiliary entries outside the finite window are canonically zero;
-no inverse-naturality premise is added. `ELVWeightTripleDotComparison` identifies
+no inverse-naturality premise is added. `ELVGridLocalInverseFamilies` applies
+these constructors to the given grid mate, unit and cap transformations;
+constructed old grid natural isomorphisms instantiate its paired examples.
+`ELVWeightTripleDotComparison` identifies
 all three literal positioned dots through the same chosen triple chart.
 `ELVWeightedCapWindows` identifies the actual weighted unit/dot cap window,
 including the polynomial low window, as whole content-zero module identities
