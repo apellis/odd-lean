@@ -2299,3 +2299,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitFamily
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapRowFamily
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentCapInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalCoordinates
