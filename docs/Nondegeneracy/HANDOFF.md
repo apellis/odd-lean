@@ -972,6 +972,10 @@ both-parity/height/zero-overlap regular-probe consumer pass strict checks
 and 182 owned audits. Transport this selected record through canonical
 representatives, then handle absent predecessors and original weights.
 See [ProbeEvaluatedLocal](ProbeEvaluatedLocal.md).
+`ELVProbeEvaluatedBraid` also supplies the module and whole-transformation
+equal braid for the selected evaluated negative crossings. Producer and
+mixed-content/shifted/odd-input consumer pass strict checks and 35 owned
+audits. See [ProbeEvaluatedBraid](ProbeEvaluatedBraid.md).
 
 `probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
