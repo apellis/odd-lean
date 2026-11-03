@@ -2096,3 +2096,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppendTensor
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixRows
