@@ -1920,6 +1920,13 @@ coordinates to the specified tensor Hom after evaluation at its regular
 probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
+The general probe braid is now attached in `ELVProbeWeightGeneralBraid`:
+`probeOldRouquierData_generalBraid` has exactly the uncorrected colour
+condition, retains all twelve weight edges and includes absent outputs.
+Its producer and mixed/asymmetric/repeated/interior-parameter consumer
+pass strict checks and all 53 owned audits. The corrected repeated-outer
+braid and complete multicolour factor assembly remain open.
+
 ## Central augmented-matrix attachment
 
 The positive-degree residual closure remains a substantive proof target.
