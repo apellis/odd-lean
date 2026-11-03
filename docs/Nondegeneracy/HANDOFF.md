@@ -13,10 +13,10 @@ variants remain linked in [ResearchHistory](ResearchHistory.md).
 
 | Argument | Preserved source tree | Scope at the snapshot |
 | --- | --- | --- |
-| Deferred native content-mate comparison | [f7d588fdb6](https://github.com/apellis/odd-lean/commit/f7d588fdb66975879ff4568586b1dc3288f84d84) (`docs/Nondegeneracy/ContentMateSquareProposal.md`) | Whole native mate and EF parity conversions are deferred and unverified; the direct component route is separate. |
-| Content dotted matrix rows | [a10a9f260d](https://github.com/apellis/odd-lean/commit/a10a9f260d0b7209a50139a3cac37ddfeaeaeeef) (`docs/Nondegeneracy/ContentMatrixRowsProposal.md`) | The preserved snapshot is proposed; the all-power unit conversion has a checked successor below. Cap attachment and inverse remain open. |
-| Selected power-word pair crossing | [d1540e8957](https://github.com/apellis/odd-lean/commit/d1540e89579b73ef34f02b5bc5a3b520291e272e) (`docs/Nondegeneracy/PowerWordPairCrossingDraft.md`) | Generic prefixes are checked; the closed selected pair and whole signed crossing square remain unverified. |
-| Weighted finite matrix inverse | [b541461adf](https://github.com/apellis/odd-lean/commit/b541461adf01e76a6de90384cd9879bdbc649955) (`docs/Nondegeneracy/WeightedMatrixInverse.md`) | Genuine coordinate and transport prefixes do not yet identify the whole prescribed forward matrix; the inverse remains unverified. |
+| Native weight crossing comparison | [78f211e13b](https://github.com/apellis/odd-lean/commit/78f211e13b210b93f7ed4c67867eac0919792e40) (`docs/Nondegeneracy/WeightPairCrossingProposal.md`) | The native-arrow variant is unverified; the separate linear-total route is scoped-checked and does not prove this variant. |
+| Chosen power-word append and dot | [16a56e818f](https://github.com/apellis/odd-lean/commit/16a56e818f35b7cd39b0b03ae28f8dbbf8dd2ecb) (`docs/Nondegeneracy/PowerWordAppendDotDraft.md`) | This proposed variant has unchecked selected-map endpoint conversions. Later checked successors are separate results. |
+| Shifted scalar cap coordinates | [cc3d58e58a](https://github.com/apellis/odd-lean/commit/cc3d58e58afba1238660cc7672c0b10b53fd13aa) (`docs/Nondegeneracy/ProbeShiftedCapComparison.md`) | This snapshot predates the checked shifted-cap successor; its coordinate conversion and missing consumer are explicitly proposed. |
+| Native distinct-mate bundling | [a6819398d1](https://github.com/apellis/odd-lean/commit/a6819398d133a24265de16ed08f44a7224efddab) (`docs/Nondegeneracy/ContentDistinctIso.md`) | Generic native module/functor bundling is unverified; concrete old-content application, truncation and weight transport remain separate. |
 
 ## Dependency order and readiness
 
@@ -27,7 +27,7 @@ variants remain linked in [ResearchHistory](ResearchHistory.md).
 | Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit full-CI verified in #972 | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
 | Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Transport the chosen arbitrary-module distinct inverse to exact content and weight; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
-| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical bridge full-CI verified (#973); actual word coordinates and odd series at the unit scoped-checked below. Finish full factors, arbitrary-vector cap/bubble operators and chosen-action evaluation/recovery |
+| Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical weighted/power bridge scoped-checked; finish quotient-algebra identification, full factor and actual swapped caps, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
 
 ## Current comparison interfaces
@@ -38,9 +38,7 @@ full build, global axiom audit and all consumers at source head `911f3e12`
 literal T-annihilated category, numerical ideal sandwich, content dots and
 scalar ordinary counit are established inputs.
 
-The generator-comparison integration #976 passed its full build, global
-axiom audit and all consumers at source head `861aeadd`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41550563550)). It supplies:
+Current scoped-checked successors, all awaiting full CI, supply:
 
 * actual A/T algebra presentation and bounded coefficient detection, parity and
   regular left coefficient module, retaining nonzero independent odd vectors;
@@ -55,10 +53,9 @@ axiom audit and all consumers at source head `861aeadd`
   all 332 owned declarations were rechecked; these are prior source results.
 
 The actual arbitrary-module distinct forward identity and bundled homogeneous
-input-natural inverse passed full CI in #977.
+input-natural inverse are now scoped-checked.
 Content signed crossing/mate and finite parity/product attachment, category-
-changing scalar/weighted ordinary mate squares are scoped-checked below;
-normalized cap rows and complete matrix transport remain next. The
+changing scalar mate and weighted mate/matrix transport remain next. The
 literal old T-vacuum and contentwise induction-dot nilpotence are now
 scoped-checked. Actual word-value/Hom coordinate evaluation and normalized
 swapped bubble attachment remain open.
@@ -71,9 +68,7 @@ See [HalfTurnHomogeneous](HalfTurnHomogeneous.md),
 
 ## Vacuum and mate attachments now available
 
-The interfaces integrated in #977 passed full build, global axiom audit
-and every consumer at source head `61f93b2e`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41554732093)). They give the distinct
+The next scoped-checked interfaces, awaiting full CI, give the actual distinct
 rectangular mate a bundled homogeneous inverse on all old modules, natural in
 arbitrary input-module maps. Its forward map is exactly the given mate and
 both inverse directions have parity p(i)p(j); transport to the chosen content
@@ -93,10 +88,9 @@ The source coefficient/cyclotomic quotient and literal scalar-power Hom spans
 now have exact kernel/image/preimage comparisons with the existing old Homs.
 The half-turn maps directly into those reversed/twisted OldCategory Homs,
 retains total-parity composition and the prescribed bounded reservoir schedule.
-Actual iterated regular A/T vacuum word values and their precise transformed
-coordinate kernels are scoped-checked below. The signed old-module Hom/Yoneda chart, native maps and selected dot
-comparison are scoped-checked below. Attach the pair crossing and the chosen
-swapped Hom-action evaluation on every coefficient vector; no action-faithfulness premise is permitted.
+The remaining coordinate task identifies actual iterated regular A/T vacuum
+word values and their signed Hom-Yoneda maps with those literal Hom quotients;
+no action-faithfulness premise is permitted.
 
 See [DistinctModuleIso](DistinctModuleIso.md),
 [CoefficientPowerVacuum](CoefficientPowerVacuum.md),
@@ -105,182 +99,6 @@ See [DistinctModuleIso](DistinctModuleIso.md),
 [SourceQuotientComparison](ELVSourceQuotientComparison.md),
 [SourcePowerComparison](ELVSourcePowerComparison.md) and
 [HalfTurnOldQuotient](HalfTurnOldQuotient.md).
-
-## Higher moments and matrix chart inputs
-
-The actual regular A/T vacuum now has scoped-checked higher moments,
-including the ordered recurrence and full coefficient parity law. Its
-normalized remainder series is the two-sided formal inverse of the reversed
-literal monic polynomial over A/T. The all-height signed moment is exactly
-the triangular sign times that remainder coefficient. Both independent odd
-colours retain a nonzero −[δ_i] second signed moment. The closed χ/δ values at the unit are now scoped-checked below;
-arbitrary-vector moment and coefficient operators are now scoped-checked
-below. Identification with the prescribed swapped caps/bubbles remains open; these series alone do not supply an action or recovery identity.
-
-Selected weighted source/target charts are now genuine linear equivalences
-with the prescribed forward maps. The selected scalar comparison transports
-mapped dots and all powers, and the generic power comparison retains the
-whole output parity involution. Next compare the actual normalized cap/unit
-matrix entries through these charts and transfer the proved inverses.
-See [CoefficientPowerMoments](CoefficientPowerMoments.md),
-[CoefficientPowerRemainders](CoefficientPowerRemainders.md),
-[WeightedMatrixCharts](WeightedMatrixCharts.md),
-[OperatorPowerComparison](OperatorPowerComparison.md) and
-[ProbeDottedComparison](ProbeDottedComparison.md). These inputs passed full
-CI through #982; the newer finite-family successors below await integration.
-
-Recovery is required separately for each original weight, word pair and
-degree bound: `SwappedVacuumEvaluation` and `SwappedVacuumObservation`
-already have those indices. Choose a sufficiently large scheduled reservoir
-for each requested window. No interface change or extension to every small
-cutoff is needed. Construct the actual action and its all-affine coordinate
-identity on that window; a stronger all-word fixed-cutoff family is optional.
-
-## Word coordinates and closed odd moments
-
-`powerWordModule` is actual balanced induction of the regular A/T module
-along coefficient insertion at each old word. Its empty value is the chosen
-vacuum, and `powerWordAppendIso` uses the selected induction-composition
-comparison. The generator h tensor 1 is onto; its kernel is exactly the
-independently defined two-sided elementary-power image, using the original
-coefficient order and no flatness. The actual word values belong to the
-literal T-annihilated category. Composing with the signed half-turn gives
-the transformed-ideal kernel and the prescribed bounded reservoir schedule.
-The consumer retains both independent odd exterior generators at an occupied
-two-strand word value. Both producers and the consumer are scoped-checked,
-with 69 owned declarations audited; full CI verified through #982.
-
-The enriched old-module Yoneda formula now descends through this proved
-generator kernel, retaining the parity of the complete old coefficient arrow,
-including the external A/T factor, and the chronological composition sign.
-Native maps agree with the existing balanced induction transformations, and
-the selected append comparison intertwines the actual dot on all vectors.
-Next attach the recursive selected pair crossing and the chosen swapped
-Hom-word functors to these coordinates.
-The source-coordinate kernel theorem does not itself prove action evaluation.
-See [ELVPowerWordCoordinates](ELVPowerWordCoordinates.md) and
-[PowerWordHalfTurnCoordinates](PowerWordHalfTurnCoordinates.md).
-
-The complete odd series now has scoped-checked values at the actual unit:
-even moments are the coefficients of 1/C(−z), and odd moments are
-(−1)^(N+1)δ times those coefficients. The occupied consumer checks positive
-cutoffs of both parities, with nonzero δ, χ_1 and δχ_1. The moment-map operator identities on arbitrary A/T vectors are now
-scoped-checked, as are the genuine native coefficient module actions and
-their induction/restriction comparison. Next attach the prescribed signed
-probe polynomial and the actual swapped caps/bubbles. See
-[CoefficientPowerOddSeries](CoefficientPowerOddSeries.md).
-
-The ordered changing-category mate now has its prescribed homogeneous
-degree proved from the given crossing and even adjunction maps, without
-an inverse premise. The actual original-weight pair dots also agree with
-independent single-letter content dots under the selected canonical pair
-equality. Their paired consumers are scoped-checked, with 3 and 9 owned
-declarations audited respectively; full CI verified through #982. Finish the content
-matrix attachment and assemble the weight crossing-square and triple
-relations. See [InductionGridMateParity](InductionGridMateParity.md) and
-[WeightPairDots](WeightPairDots.md).
-
-## Selected matrix entries and native word maps
-
-The old-content self-colour mate tensor square is scoped-checked on the
-unweighted, untruncated OldContentCategory module categories, through the
-chosen EF source and restriction target charts. The distinct-colour positive
-mate has a pointwise raw coend inverse there for every input module. The
-whole self-colour module square and prescribed finite inverse attachment
-remain next. Homogeneous old-content/global-truncated distinct inverse
-bundles, finite coordinates and canonical ContentModules E/F charts are
-scoped-checked below; canonical-content inverse and original-weight
-assembly remain separate. Neither result assumes a mate inverse or flatness.
-See [ContentAppendMate](ContentAppendMate.md) and
-[ContentDistinctMate](ContentDistinctMate.md).
-
-The selected weighted charts intertwine every prescribed unit/dot column
-and dot/counit row. Scalar transport also retains every canonical shifted
-cap target through an even parity/restriction isomorphism, natural on odd
-and inhomogeneous input maps. Its cap slots bind literally to the old finite
-cap-matrix fields; the original whole-output parity correction is retained.
-Next attach the unit source coordinates and finite inverse products using
-these same entries. See [WeightedMatrixRows](WeightedMatrixRows.md),
-[ProbeCapRowComparison](ProbeCapRowComparison.md),
-[ParityRestrictionComparison](ParityRestrictionComparison.md) and
-[ProbeShiftedCapComparison](ProbeShiftedCapComparison.md).
-
-The actual power-word module Hom chart is now a signed linear equivalence.
-Its native arrow maps have the full coefficient twist, signed composition
-and equality with the established induction transformation. The selected
-append comparison has its literal tensor formula and intertwines the
-actual dot on every vector. Finish the recursive selected two-append
-crossing with its equal-colour minus, then the chosen swapped Hom evaluation.
-See [PowerWordYoneda](PowerWordYoneda.md),
-[PowerWordMorphisms](PowerWordMorphisms.md) and
-[PowerWordAppendDot](PowerWordAppendDot.md).
-
-The inverse-row moment map on arbitrary A/T vectors is exactly left
-multiplication by its proved moment. Genuine coefficient module maps retain
-the original algebra order, descend literally to A/T and commute with append
-induction/restriction. The signed probe annihilator on the actual vacuum block is scoped-checked
-below. Attach the mixed inverse cap and source-placed bubbles.
-See [CoefficientPowerMomentMaps](CoefficientPowerMomentMaps.md),
-[CoefficientModuleMaps](CoefficientModuleMaps.md) and
-[CoefficientAppendMaps](CoefficientAppendMaps.md).
-
-The actual weight crossing's pointwise linear formula and two-crossing
-composition now use the selected source/target comparisons, including
-supported and absent-double-predecessor cases. Next attach the original-Sc
-polynomial in the independently defined weight dots and assemble the triple
-relation fields. See [WeightPairCrossingTotals](WeightPairCrossingTotals.md).
-These inputs passed full CI through #982 at `5d918b82`
-([build and audits](https://github.com/apellis/odd-lean/actions/runs/41568326406)).
-They do not construct the complete factor or swapped action.
-
-## Finite matrices, canonical truncated contents and probe attachment
-
-The following successors pass strict scoped producer/consumer checks and
-owned-declaration axiom audits; their full integration CI is pending.
-
-The old-content and global-truncated distinct rectangular mates now have
-homogeneous module and input-natural inverses with exactly the prescribed
-forward maps. They require no additional inverse or flatness hypothesis.
-The canonical coefficient-truncated content inclusion is fully faithful;
-supported extension has its selected counit isomorphism, and the chosen
-E/F charts have literal all-coefficient tensor formulas. Next transfer the
-global truncated distinct inverse through these exact content charts, then
-to the original weight products. See [TruncatedDistinctIso](TruncatedDistinctIso.md)
-and [ContentBlockAppend](ContentBlockAppend.md).
-
-The prescribed grid and weighted finite components now have their exact
-shifted mate/unit/cap entries. Genuine scalar E/F, F/E and value charts
-assemble into whole even finite-family equivalences. Every scalar entry
-and both whole finite matrix comparison squares now hold with no additional
-compatibility premise. Transport the prescribed old inverses through these
-same squares. The weighted all-vector mate and all-power unit/cap squares now hold, and
-finite parity products conjugate the given old matrix isomorphisms to the
-weighted spaces. Identify their forward maps with the independently
-prescribed weighted finite components before asserting those components
-are invertible. The old-content
-versions give genuine finite coordinates at explicit predecessor content
-i::ν. Finish the whole prescribed matrix comparison and transport the
-existing old matrix inverses. The absent-predecessor case must be proved
-separately or encoded with an actual predecessor fibre; it cannot be
-replaced silently by i::ν. See [InductionGridMatrixFamilies](InductionGridMatrixFamilies.md),
-[ProbeMatrixFamilyCharts](ProbeMatrixFamilyCharts.md),
-[ProbeFiniteMatrixComparison](ProbeFiniteMatrixComparison.md),
-[ContentGridMatrixCoordinates](ContentGridMatrixCoordinates.md) and
-[WeightedMatrixComponents](WeightedMatrixComponents.md) and
-[WeightedMatrixInverse](WeightedMatrixInverse.md).
-
-The actual empty-source one-letter probe vacuum satisfies (D²+1)^m=0
-for odd D, on the whole induced module and its supernatural-Hom
-precomposition action, both before and after scalar comparison. Its
-selected old and ordinary append-unit vectors are nonzero at every
-positive level; at level one D²v=−v. This settles the vacuum-block
-polynomial input and its occupation. It supplies neither the concrete
-mixed slide nor the final chosen swapped cap/bubble. Attach those exact
-maps and their source placements before claiming recovery; no identical
-last-dot exponent is asserted on arbitrary contents. See
-[ProbeVacuumPolynomial](ProbeVacuumPolynomial.md),
-[ProbeOldVacuumPolynomial](ProbeOldVacuumPolynomial.md) and
-[ProbeVacuumUnit](ProbeVacuumUnit.md).
 
 ## Categorical inverse: precise interfaces
 
