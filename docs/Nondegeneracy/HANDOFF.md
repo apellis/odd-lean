@@ -716,9 +716,13 @@ producer, concrete representable consumer and both owned audits pass
 strict scoped checks, with full CI verified in #1011. `oldTripleCross_braid` in `ELVOldInductionBraid` proves
 the subsequent whole-map braid on direct triple induction, with its
 superopposite signs; its producer, occupied consumer and all 15 owned
-audits also pass, with full CI verified in #1011. Transport this equation through the selected triple
-induction flattening and identify the prescribed negative prefix/suffix
-crossings; these results do not yet prove the probe weight braid.
+audits also pass, with full CI verified in #1011. `ELVOldNestedBraid` now
+identifies both chosen negative prefix/suffix crossings through the same
+canonical triple flattening and proves their braid on every old module.
+Its producer, concrete consumer and all 20 owned audits pass strict
+checks. Restriction to evaluated fixed contents and weight transport
+remain; these results do not yet prove the probe weight braid.
+See [OldNestedBraid](OldNestedBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
 
 The coefficient action remains literal ordinary precomposition on every

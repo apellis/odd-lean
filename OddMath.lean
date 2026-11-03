@@ -124,6 +124,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldNestedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
