@@ -14,9 +14,7 @@ all signs in its successive powers.
 `intertwine_sgn` states that an even superspace comparison commutes with the
 whole output parity involution. `intertwine_capRowSign_apply` retains exactly
 `capRowSign n` and output parity `(n + 1)` while transporting the given dot
-power. This is the odd correction in source (5); the even case has
-identity output correction and follows the ordinary power comparison. The
-general parity lemma permits every exponent. It is an identity of superspace maps. It does not treat the output
+power. It is an identity of superspace maps. It does not treat the output
 parity involution as an ordinary bimodule map or tensor it with an arbitrary
 module.
 
