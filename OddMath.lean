@@ -2018,3 +2018,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
