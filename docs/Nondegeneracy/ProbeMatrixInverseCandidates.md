@@ -18,14 +18,15 @@ height inequalities, zero and positive cap counts, and both inverse laws.
 It checks the empty predecessor ν=[] explicitly as output[i]. All 56 owned
 declarations pass the repository axiom allowlist audit.
 
-OPEN: the forward maps of these conjugates are not yet identified with the
-prescribed scalar matrix components. The checked scalar relative-grid
-matrix squares require the complementary relative-content-to-global old
-field square for this attachment. The content-matrix owner is supplying
-those actual mate and unit/dot/counit comparisons; no compatibility premise
-is substituted for them. A private generic attachment kernel is in place.
+The forward-map attachment is now supplied by
+`ELVProbeMatrixInverse.probeTransportedUnitMatrixIso_hom` and
+`probeTransportedCapMatrixIso_hom`. The relative-content-to-global and
+scalar whole finite matrix squares identify both existing conjugates with
+the independently prescribed components; no compatibility premise is used.
+The companion note `ProbeMatrixInverse.md` gives the argument and checked
+consumer scope.
 
-Output content in this module is i::ν. The empty-output and absent-i
-zero-predecessor branches remain separate obligations; the ν=[] consumer
-does not settle those branches. Preserve the normalized old kernel cap
-formula and its full output parity action during forward attachment.
+Output content of these constructors is i::ν. Genuine empty output and
+absent-i output are handled separately by `ELVProbeMissingColourMatrix`;
+the ν=[] consumer here denotes output[i]. The attachment retains the
+normalized old kernel cap formula and its full output parity action.
