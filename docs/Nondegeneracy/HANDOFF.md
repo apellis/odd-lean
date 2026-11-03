@@ -116,6 +116,24 @@ prescribed mixed slide and bubble operators. The generic adjacent Rouquier
 left-adjunction construction already exists in `RouquierFTriangle`; constructing
 its concrete local inputs remains necessary.
 
+The subsequent checked component inverses now include both `weightedContentLocalInverseFrom`
+and `weightedContentLocalInverseTo` with the prescribed forwards. Every canonical
+unit column and cap row has its whole chart square, and the absent-predecessor
+canonical inverse is constructed. The supported principal square and input-family
+assembly remain open. Three positioned-dot component formulas and both adjacent
+crossing comparisons are checked; attach their triple-chart squares to the
+original-Sc correction polynomial.
+
+The existing adjacent-left-adjunction constructor is packaged with only two
+local records and the required square-zero/braid equations. Its regular-probe
+raw row is determined by the actual unit-column window; the native normalized
+counit and output-shifted pre-Hom signs cancel. Scalar-evaluation uniqueness
+extends to the occupied F(E T0), without assuming evaluation at T0 is faithful
+on every module. Construct the old-category empty and one-colour local records
+using the existing old grid natural isomorphisms, then apply that constructor.
+Actual weighted all-power moments and χ/δ series hold on every coefficient
+vector; the prescribed swapped mixed inverse and bubble identification remain.
+
 Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
 These newer successors await their full-package integration gate.
