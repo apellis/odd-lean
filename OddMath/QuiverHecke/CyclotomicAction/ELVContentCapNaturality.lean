@@ -74,8 +74,7 @@ private theorem productMap_projection
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance coefficientCapNaturalityPi :
-    PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 private def unitCoefficientProjectionNatTrans (i : I) (m : ℕ) (r : Fin m) :
