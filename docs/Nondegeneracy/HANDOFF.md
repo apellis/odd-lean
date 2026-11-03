@@ -836,11 +836,17 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeReindexDistinctMate` now constructs the prescribed distinct-mate
+inverse on every stored-target OLD input and full evaluated category.
+`probeAppendToCrossMate_eq` and `_isIso` retain the chosen positive
+crossing and both selected right adjunctions; only distinctness is
+required. Strict mixed/two-odd/odd-input-natural consumer checks audit all
+132 owned declarations. Attach the absent and supported weight coordinates
+and global `invNe` field; see [ProbeReindexDistinctMate](ProbeReindexDistinctMate.md).
 `ELVProbeReindexCrossing` now identifies the prescribed positive crossing
 through the selected pair comparison on all raw vectors, whole module
 maps and full evaluated categories. Strict mixed regular-probe/odd-map
-consumer checks audit all 179 owned declarations. Attach the distinct
-mate inverse and negative equal normalization; see
+consumer checks audit all 179 owned declarations. The stored distinct-mate inverse is checked above; attach the weight coordinates and negative equal normalization; see
 [ProbeReindexCrossing](ProbeReindexCrossing.md).
 `ELVProbeReindexPair` now gives the exact upper-then-lower append
 comparison on raw and evaluated modules, with evenness and an all-vector
