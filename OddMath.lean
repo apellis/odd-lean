@@ -2119,3 +2119,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingColourMatrix
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingColourMatrix
+
+import OddMath.Algebra.MatrixInverseTransport
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnInverseRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitInverseRows
