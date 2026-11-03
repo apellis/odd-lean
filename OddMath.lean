@@ -2154,3 +2154,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentMatrixInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentFiniteMatrixComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentGridMatrixInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionMatrixNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixFunctor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixFunctorInverse
