@@ -2096,6 +2096,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumVector
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeExtensionPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockExtension
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
@@ -2135,3 +2137,20 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullContentMateSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContexts
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentUpperCharts
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperCharts
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnMatrices
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingColourMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordComposition
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixEntries
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContent
+import OddMath.Algebra.SupermoduleIsoOfBijectiveTotals
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentMatrixInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentFiniteMatrixComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentGridMatrixInverse
