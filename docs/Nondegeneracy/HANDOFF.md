@@ -722,8 +722,9 @@ content grid; the extraction and unchanged OLD consumer pass fresh strict
 checks, with one plus fourteen owned audits. `ELVOldNestedBraid` now
 identifies both chosen negative prefix/suffix crossings through the same
 canonical triple flattening and proves their braid on every old module.
-Its producer, concrete consumer and all 20 owned audits pass strict
-checks. Restriction to evaluated fixed contents and weight transport
+Its producer and concrete consumer pass strict checks; the shared-grid
+refactor retains the same statements and audits all sixteen remaining
+owned declarations. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
 `ELVInductionGridBraid` and `ELVOldContentBraid` now supply the same

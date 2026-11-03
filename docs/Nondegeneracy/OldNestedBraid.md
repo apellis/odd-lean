@@ -24,3 +24,9 @@ The results concern
 the untruncated old category; restriction to evaluated fixed contents and
 weight products is a separate attachment, and no complete probe family
 is asserted here.
+
+The common flattening, intertwining and conjugation proof is now reused
+from `ELVInductionGridBraid`. The old endofunctor statements and chosen
+maps are unchanged. The refactored producer and its existing concrete
+consumer pass fresh strict checks, auditing all sixteen remaining owned
+declarations. This refactor awaits its own full integration gate.
