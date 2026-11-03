@@ -347,11 +347,9 @@ absent inverse orientations, tensor vacuum and evaluated bend/row interfaces.
 The module-map inverse-row names are `unitColumnModuleInverse*`; the older
 vector-map `unitColumnInverse*` API is retained.
 
-PR #1005 passed the full warning-free build, global axiom audit and all
-concrete consumers at `a85d1660`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41626194575)), integrated
-at `5695663e`. Its 22 new producers include the supported principal square,
-corrected mixed braid, tensor-vacuum coordinates and cap comparisons.
+PR #1005 at `a85d1660` has 22 new producers, 40 exact source/consumer blobs,
+698 owned-declaration audits and passing combined imports. Its full
+integration CI is pending.
 
 The following interfaces pass strict local producer and paired consumer checks.
 Read the integration boundaries above and below for the full CI gate.
@@ -367,9 +365,9 @@ Read the integration boundaries above and below for the full CI gate.
 | Old inverse and affine fields | `ELVInductionGridRouquierInverse`, `ELVOldContentRouquierInverse` attach the constructed old matrix inverses to the prescribed principal/unit/cap fields. `ELVOldContentAffineRelations` proves both signed slides and crossing square zero in the literal old quotient | Adjacent one-letter old record, followed by its normalized left adjunction |
 | Constructed old left cap | `ELVProbeVacuumLocalCap` identifies the constructed empty-record cap with the prescribed regular and scalar-evaluating caps, including F(E(T0)), without a local-record premise; occupied odd components are nonzero | Adjacent-record left adjunction and full mixed inverse |
 
-PR #1006 at `804dd66d` has 15 producer successors, 30 exact source/consumer
-blobs, 404 owned-declaration audits and passing combined imports. Its full
-integration gate remains pending.
+The next 15 producer successors have 30 exact source/consumer blobs, 404
+owned-declaration audits and passing combined imports. Their full integration
+gate remains pending.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -380,17 +378,6 @@ integration gate remains pending.
 | Coefficient insertion in chosen words | `ELVPowerWordCoefficients` identifies actual full-A/T coefficient operators in literal chosen E-word values and arbitrary right contexts, retaining full parity twists, chronological product and reversal of two odd insertions | Chosen whole-Hom evaluation and observation recovery |
 | Evaluated old probe category | `ELVProbeEvaluatedCategory` restricts to the full coefficient-evaluating subcategory, closed under actual old induction/restriction, parity and products. `ELVProbeEvaluatedDotUnit` constructs the entire natural signed-dot inverse on every object of that category | Canonical-content/weight gluing and complete probe family; no all-old-modules dot unit is asserted |
 | Old induction composition and square | `ELVInductionGridDots` transports both given dots through flattening; `ELVInductionGridCrossSquare` proves square zero for the given negative crossing as a whole module transformation | Remaining slide transport and actual adjacent old local record |
-
-Six further probe producers at `04e78b61` pass strict producer and paired
-consumer checks, with 12 exact source/consumer blobs, 214 owned-declaration
-audits and passing combined imports. Their full integration gate is pending.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Evaluated probe adjunction | `ELVProbeEvaluatedAdjunction` retains the actual balanced unit, cap, evenness and triangles, with the literal native dot component | Global weight adjunction and local-record transport |
-| Canonical old content | `ELVProbeContentReindex` and `ELVProbeCanonicalContent` transport coefficient-evaluated modules between chosen representatives, preserving physical append/restriction, dots and equal crossings | Whole weight crossing and local inverse assembly |
-| Stored-target adjunction and dot inverse | `ELVProbeAppendToAdjunction` and `ELVProbeAppendToDotUnit` retain the actual maps at arbitrary stored target contents and construct their whole natural signed-dot inverse | Whole arbitrary-weight-fibre dot unit and chosen adjunction assembly |
-| Probe weight E/F | `ELVProbeWeightModules` constructs actual induction/restriction on all original-weight content blocks, with a zero module at absent predecessors and full even/odd input maps | Complete probe Rouquier family and multicolour relations |
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
