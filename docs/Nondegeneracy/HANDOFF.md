@@ -797,6 +797,13 @@ the matching superopposite signs in both path orders. Strict producer and
 concrete OLD-path consumer checks audit all four owned declarations.
 Attach the literal OLD braid and rectangular nested comparisons; see
 [ModuleMulticolourBraid](ModuleMulticolourBraid.md).
+`ELVInductionTripleCorrection` now constructs the source polynomial
+supernaturality and proves the whole ordered original-Sc correction
+operator equality, without a supplied naturality or braid premise.
+Strict mixed/three-odd/interior-parameter consumer checks audit all eight
+owned declarations. Identify the literal OLD coefficient correction and
+selected nested/evaluated braid difference; see
+[InductionTripleCorrection](InductionTripleCorrection.md).
 `ELVInductionTriplePolynomial` now evaluates the ordered original-Sc
 three-dot correction on every balanced tensor, retaining the reversed
 twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
