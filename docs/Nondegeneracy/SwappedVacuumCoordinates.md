@@ -1,13 +1,20 @@
 # Swapped Hom vacuum and bounded signed-corner recovery
 
-**Status: proposed written construction, not a Lean theorem.** The local
-coordinate construction below uses the existing left-module reservoir
-realization, not a replacement factor action. It is conditional on assembling
-the specified swapped Hom action with its unchanged all-reservoir upward
-blocks. In particular it does not prove the swapped augmented inversion,
-normalized bubbles, or nondegeneracy. The affine presentation and ideal
-calculations below are written arguments; their Lean implementation remains
-open.
+**Status: the reservoir/vacuum action construction remains proposed.** The
+signed affine presentation comparison, transformed-ideal identification and
+involution are formalized in `HalfTurn/{Mirror,SuperFlip,Composite,CornerIdeal,
+Involution,IdealIdentification,CoefficientGenerators}`. The full homogeneous
+coefficient composition, literal quotient equivalence and bounded class-map
+detection APIs also pass scoped producer/consumer checks; their combined full
+CI is pending. See [HalfTurnHomogeneous](HalfTurnHomogeneous.md) and
+[HalfTurnBoundedDetection](HalfTurnBoundedDetection.md).
+
+The local coordinate construction below uses the existing left-module
+reservoir realization and remains conditional on assembling the specified
+swapped Hom action with its prescribed all-reservoir upward blocks. It does
+not prove swapped augmented inversion, normalized bubbles or nondegeneracy.
+The remaining comparisons include the literal reservoir Hom quotient kernel
+and evaluation of the chosen functors and source-placed bubbles.
 
 The useful target is `ReservoirVacuumEvaluation.affine_coordinates`, not a
 global isomorphism with the first-boundary quotient and not necessarily
@@ -230,9 +237,12 @@ The inverse uses the identical generator table with Sc and S interchanged.
 The parameter involution is proved by `parameterTwist_involutive`. Reversal
 squares to identity, each ε occurs twice, the signed reversed-product signs
 occur twice, and coefficients are fixed. Both composites fix every generator.
-This proves the proposed affine presentation equivalence U. It does not
-assume an action is faithful. This full argument still needs formalization;
-`parameterTwist_involutive` alone is not that equivalence.
+This affine presentation equivalence is formalized by `halfTurnFunctor`,
+using the actual contextual relation descent in `Mirror` and `SuperFlip`.
+`htCoefEquiv` supplies the full coefficient linear equivalence, and
+`htCoef_comp` its total-parity composition law. No action faithfulness is
+assumed. The parameter involution alone is not used as a substitute for
+these comparison proofs.
 
 ## 5. Exact transformed ideal; no identical-boundary requirement
 
@@ -374,13 +384,13 @@ extension; no interface change or small-cutoff theorem is asserted in Lean.
 
 ## 8. Exact remaining boundary
 
-The proposed affine generator equivalence and whole-ideal transport above
+The formalized affine generator equivalence and whole-ideal transport above
 provide an explicit kernel and recovery, rather than an assumed regular
 identification. They do not supply a new factor action or a new hypothesis
 for a nondegeneracy theorem. Remaining obligations are:
 
-* formalize the affine presentation comparison, signed Hom-corner evaluation,
-  and bounded inverse-ideal argument;
+* identify the literal reservoir Hom quotient with the formalized boundary
+  quotient and attach signed Hom-corner evaluation to the chosen functors;
 * assemble the swapped normalized Hom action, including its full augmented
   inversion and all presentation relations, and verify that its surviving
   reservoir blocks are precisely those used in (1) and (7);
