@@ -43,10 +43,10 @@ The complete inventory of preserved topic variants is in
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole weight adjunction/dot/crossing/local-record transport and the actual adjacent record |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot pass strict paired checks; finish whole-dot inverse, crossing/local-record transport and the actual adjacent record |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
-| Vacuum path collapse | Producers and occupied consumers pass strict scoped checks; full integration verification pending | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | Identify its iterated postcomposition functor and attach `layerMap_apply_append` to the chosen contextual dot/crossing operators; the constructed unique path alone is not an observation |
+| Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | Identify its iterated postcomposition functor and attach `layerMap_apply_append` to the chosen contextual dot/crossing operators; the constructed unique path alone is not an observation |
 | Final Phase 1 nondegeneracy | Blocked on concrete observations | Finite-colour reduction, upward/oriented equivalence, observation consumer and proved ground-ring descent | Supply observations for every required bound/word/weight for symmetrizable homogeneous data; inhomogeneous parameters belong to Phase 2 and nonsymmetrizable data are excluded |
 
 ## Prescribed matrix and coefficient-row successors
@@ -708,6 +708,18 @@ Prove compatibility with the selected dot, crossing and adjunction maps
 before using these inverses in a full-ELV factor action. These old-category
 natural isomorphisms alone do not supply that action.
 
+`equalCrossComponent_braid` in `ELVOldAppendBraid` (in the
+`ELVOld.CyclotomicCrossingTensor` namespace) supplies the untruncated
+coefficient braid for the actual prefix and suffix equal crossings. Its
+producer, concrete representable consumer and both owned audits pass
+strict scoped checks. `oldTripleCross_braid` in `ELVOldInductionBraid` proves
+the subsequent whole-map braid on direct triple induction, with its
+superopposite signs; its producer, occupied consumer and all 15 owned
+audits also pass. Transport this equation through the selected triple
+induction flattening and identify the prescribed negative prefix/suffix
+crossings; these results do not yet prove the probe weight braid.
+See [OldAppendBraid](OldAppendBraid.md).
+
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
 with a supernatural representing map involving projection and twist.
@@ -898,6 +910,19 @@ unit for scalar-evaluated modules, with the canonical probe specialization
 full-CI verified and integrated in #927. Neither result requires finite
 dimension or a coend-comparison premise. The selected ordinary model still needs
 crossing, normalized-cap and inverse-matrix transport.
+
+`ELVProbeWeightPairInduction` supplies the literal supported two-step
+weight coordinate and both absent-predecessor zero cases. Its producer,
+concrete regular-probe consumer and all four owned audits pass strict
+checks. Use these coordinates for the chosen weight crossing.
+See [ProbeWeightPairInduction](ProbeWeightPairInduction.md).
+
+`ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
+distinct mate and its inverse to the evaluated probe. The producer and
+concrete mixed/two-odd consumer pass strict checks and all 54 owned
+audits. Identify this exact map with the evaluated presentation
+cup-crossing-cap, then transport stored contents and original weights.
+See [ProbeEvaluatedDistinctMate](ProbeEvaluatedDistinctMate.md).
 
 Scalar specialization is not faithful on the full coefficient algebra.
 Positive-weight coefficient truncation cannot specialize to nonnilpotent

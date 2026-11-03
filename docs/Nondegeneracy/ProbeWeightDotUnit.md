@@ -1,0 +1,7 @@
+# Whole signed-dot inverse on the OLD probe weight category
+
+`probeOldActionDotIso` assembles the inverse of the selected signed dot on the actual evaluated OLD weight-induction functor. At a predecessor block, `probeOldActionDot_total_blockSucc` identifies its total with conjugation of the prescribed stored-target append dot by the selected induction-component equality. `probeOldBlockDot_isUnit` uses the constructed scalar-quotient inverse; `probeOldActionDot_component_isUnit` retains that inverse and treats absent predecessors through the specified zero module.
+
+The product inverse allows an arbitrary original-weight fibre, including an infinite one. It requires no common nilpotence exponent. Homogeneous inversion then supplies a supernatural inverse of exactly the moving colour parity. `probeOldActionDotIso_hom` retains the literal chosen signed dot, and `probeOldActionDot_isUnit` asserts invertibility in its entire endomorphism ring.
+
+The producer passes strict scoped verification with warnings as errors and both compatibility settings. The paired consumer remains under verification. The consumer uses the regular probe with a nonzero empty-word PBW vector, both moving parities, nonempty mixed source contents, whole inverse laws, absent vacuum blocks and signed naturality against an actual odd input map. Full package integration and the complete probe-factor crossing/local-inverse fields remain separate obligations.
