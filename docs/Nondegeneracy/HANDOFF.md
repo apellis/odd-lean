@@ -1072,6 +1072,14 @@ consumers pass, including all eleven owned-declaration axiom checks; full CI ver
 factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
+`ReservoirVacuumDot` proves the actual occupied `dotImage` entry equals
+postcomposition by the selected reservoir dot through the zero-probe
+shift chart, for every Hom object. Producer and complete-factor two-odd
+consumer pass strict checks and eight owned audits. The consumer retains
+an independently nonzero odd regular-power coefficient. Evaluate this
+whole-map square through the selected vacuum/word chart, then apply the
+existing dot-coordinate formula. See [ReservoirVacuumDot](ReservoirVacuumDot.md).
+
 `ELVReservoirWordValue.reservoirPath_value_heq` now identifies the
 reservoir path value on the specified regular-power empty-word family
 with the reversed selected E-word value, retaining the existing even
