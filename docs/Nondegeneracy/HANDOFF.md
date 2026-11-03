@@ -967,6 +967,15 @@ all 36 declarations. Apply these to the selected stored local inverses
 before whole-weight product gluing; see
 [AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
 
+`ELVInductionBraidCube` and the ordinary/evaluated stored-target braid
+now retain all twelve append edges and the equal-colour minus on every
+crossing. `probeStoredBraid` has exactly the uncorrected colour condition
+and no supplied braid or comparison premise. Strict connected mixed/
+two-odd/repeated/all-equal/interior-parameter/nonzero-input consumer
+checks audit all 4, 92 and 89 declarations. Attach the six global
+crossing coordinates and assemble the exact uncorrected field; see
+[ProbeStoredBraid](ProbeStoredBraid.md).
+
 `ELVProbeWeightTripleDots` now identifies all three independently
 whiskered chosen dots with their prescribed stored append components
 in one supported triple chart. Strict occupied mixed/three-odd consumers
