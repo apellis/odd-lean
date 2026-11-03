@@ -67,6 +67,16 @@ theorem's weight-group hypotheses.
 
 ## Exact source classes for power-word vectors
 
+`ReservoirContexts.wordAt_eq_context` now identifies the entire actual
+outer reservoir word with the prescribed reversed-word context functor
+at arbitrary intermediate content, retaining its proved original-weight
+transport. Strict connected mixed/two-odd/nonzero-terminal-content/
+arbitrary-map/nonzero-exterior-output consumers audit all eighteen
+declarations. Combine this left-context equality with the selected
+right-Hom equality below, retaining the pair associator and endpoint
+transports around the literal dot/crossing cell; see
+[ReservoirContexts](ReservoirContexts.md).
+
 `TensorReservoirWords.pathHomAt_eq_wordHom` now identifies the whole
 selected tensor Hom along any actual reservoir path ending at zero with
 the prescribed reversed-word Hom, using its proved original-weight
