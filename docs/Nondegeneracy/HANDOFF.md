@@ -1938,8 +1938,14 @@ represented parity-component degree is equivalent to the degree of the
 recovered source coefficient, whose realization equals the whole natural
 transformation on every exact-content module. Strict nonzero odd
 positive-content checks audit all three declarations. The actual
-inverse-defined closure and its positive represented degree remain
-unsupplied; see [ModuleCentreDegree](ModuleCentreDegree.md).
+closures are now constructed in `ELVReservoirClosures`, retaining the
+literal `elvRouquierFamily.loc` principal fields. `ELVWeightCentreBlocks`
+proves their exact-content dependence by even inclusion naturality; the
+reconstructed coefficients act as those closures on every whole-weight
+input. Strict paired odd positive-content checks audit 24 and 15
+declarations. Their positive represented degree remains unsupplied; see
+[ModuleCentreDegree](ModuleCentreDegree.md) and
+[ReservoirClosures](ReservoirClosures.md).
 
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
