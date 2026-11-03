@@ -2141,3 +2141,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperCharts
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnMatrices
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingColourMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordComposition
