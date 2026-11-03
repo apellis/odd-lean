@@ -2287,3 +2287,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentUnitColumnSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedCapInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPolynomialCaps
