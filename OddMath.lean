@@ -2043,3 +2043,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoordinates
 import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionIsoComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentAppendTo
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
