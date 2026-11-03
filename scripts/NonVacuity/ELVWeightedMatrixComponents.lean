@@ -50,22 +50,6 @@ example (i : Bool) (w : OldCategory D Sc cut)
   BalancedInduction.inductionMatrixMate_value_apply (T i)
     (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
     (by cases i <;> decide) M (Q.obj w) (weightedMateSourceLinearEquiv D Sc cut 8 i M w x)
-example (i : Bool) (m : ℕ) (w : TruncatedCategory D Sc cut 8) :=
-  BalancedInduction.inductionUnitMatrixEntry_none_total (T i)
-    (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
-    (by cases i <;> decide) M m w
-example (i : Bool) (m : ℕ) (r : Fin m) (w : TruncatedCategory D Sc cut 8) :=
-  BalancedInduction.inductionUnitMatrixEntry_some_total (T i)
-    (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
-    (by cases i <;> decide) M m r w
-example (i : Bool) (m : ℕ) (w : TruncatedCategory D Sc cut 8) :=
-  BalancedInduction.inductionCapMatrixEntry_none_total (T i)
-    (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
-    (by cases i <;> decide) M m w
-example (i : Bool) (m : ℕ) (r : Fin m) (w : TruncatedCategory D Sc cut 8) :=
-  BalancedInduction.inductionCapMatrixEntry_some_total (T i)
-    (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
-    (by cases i <;> decide) M m r w
 /-- Both moving colours are present in the concrete datum. -/
 example : D.parity true = 1 := by decide
 example : D.parity false = 0 := by decide

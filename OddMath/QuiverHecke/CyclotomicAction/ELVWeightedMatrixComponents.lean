@@ -53,36 +53,6 @@ theorem orderedMateComponent_mem (M : Superfunctor k C (SVec k)) :
     (IsSuperfunctor.map_mem (F := restriction A)
       (IsSuperfunctor.map_mem (F := induction A) (adjunctionCounit_mem A M)))
 
-/-- The ordered cup-crossing-cap family retains the prescribed crossing minus. -/
-theorem orderedMateComponent_supernatural :
-    IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (orderedMateComponent A hα) := by
-  change IsSupernatural k p (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-    (fun M => (adjunctionUnit A).app (induced A ((restriction A).obj M)) ≫
-      (restriction A).map (-doubleCrossComponent A hα ((restriction A).obj M)) ≫
-      (restriction A).map ((induction A).map ((adjunctionCounit A).app M)))
-  have hU := (isSupernatural_of_natTrans (R := k) (adjunctionUnit A)
-    (adjunctionUnit_mem A)).whiskerLeft (restriction A ⋙ induction A)
-  have hd := doubleCrossComponent_supernatural A hα
-  have hn : IsSupernatural k p (F := induction A ⋙ induction A)
-      (G := induction A ⋙ induction A) (fun M => -doubleCrossComponent A hα M) := {
-    mem := fun M => neg_mem (hd.mem M)
-    naturality := fun hf => by
-      rw [Preadditive.comp_neg, hd.naturality hf, Preadditive.neg_comp, smul_neg] }
-  have hX := (hn.whiskerLeft (restriction A)).whiskerRight (restriction A)
-  have hC := ((isSupernatural_of_natTrans (R := k) (adjunctionCounit A)
-    (adjunctionCounit_mem A)).whiskerRight (induction A)).whiskerRight (restriction A)
-  have h := hU.comp (hX.comp hC)
-  set_option backward.dsimp.instances true in
-    dsimp only [induction] at h ⊢
-  simpa only [Functor.comp_id, Functor.id_comp, Functor.comp_obj, zero_add, add_zero,
-    Category.assoc] using h
-
-/-- Regrading the prescribed crossing family changes no matrix mate map. -/
-theorem orderedMateComponent_supernatural_of_degree (r : ZMod 2) (hp : p = r) :
-    IsSupernatural k r (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (orderedMateComponent A hα) := hp ▸ orderedMateComponent_supernatural A hα
-
 private theorem regrade {F G : Superfunctor k C (SVec k)} {q r : ZMod 2}
     {f : F ⟶ G} (h : q = r) (hf : f ∈ parity (R := k) _ _ q) :
     f ∈ parity (R := k) _ _ r := by
@@ -145,13 +115,6 @@ private def inductionMatrixDatum {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
   columns n := ⟨unitColumnNative A hδ M n, unitColumnNative_mem A hδ M n⟩
   rows n := ⟨capRowNative A hδ M n, capRowNative_mem A hδ M n⟩
 
-/-- The chosen matrix datum mate retains input-module naturality before specialization. -/
-theorem inductionMatrixMate_supernatural {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) :
-    IsSupernatural k q (F := restriction A ⋙ induction A) (G := induction A ⋙ restriction A)
-      (fun M => (inductionMatrixDatum A hα hδ hq M).mate.val) :=
-  orderedMateComponent_supernatural_of_degree A hα q hq
-
 /-- The matrix mate is the given ordered mate on every coend vector. -/
 theorem inductionMatrixMate_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
@@ -209,47 +172,6 @@ private theorem datumCapEntry_mem {q : ZMod 2} (B : MatrixDatum (k := k) (C := C
     dsimp only [datumCapEntry, datumCapFamily]
     simpa only [zmod2_add_self] using comp_mem (B.rows r.val).property
       ((SKM.homParityShiftDatum (k := k) (r.val • q)).inv_mem B.value)
-
-/-- The actual first source-shifted field evaluates to the prescribed raw mate. -/
-theorem inductionUnitMatrixEntry_none_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) (m : ℕ) (w : C) :
-    SVec.toLinearMap ((datumUnitEntry (inductionMatrixDatum A hα hδ hq M) m none).total w) =
-      orderedMateLinear A hα M w ∘ₗ
-        SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso
-          (induced A ((restriction A).obj M))).hom.total w) := by
-  dsimp only [datumUnitEntry]
-  rw [Superfunctor.comp_total]
-  rfl
-
-/-- Every actual source-shifted unit field evaluates to its unscaled raw unit/dot column. -/
-theorem inductionUnitMatrixEntry_some_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
-    (m : ℕ) (r : Fin m) (w : C) :
-    SVec.toLinearMap ((datumUnitEntry (inductionMatrixDatum A hα hδ hq M) m (some r)).total w) =
-      unitDotLinear A hδ M r.val w ∘ₗ
-        SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (r.val • q)).iso M).hom.total w) := by
-  dsimp only [datumUnitEntry, inductionMatrixDatum, unitColumnNative]
-  rw [Superfunctor.comp_total, SVec.toLinearMap_comp, unitDotColumn_total]
-
-/-- The actual first target-shifted field evaluates to the prescribed raw mate. -/
-theorem inductionCapMatrixEntry_none_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) (m : ℕ) (w : C) :
-    SVec.toLinearMap ((datumCapEntry (inductionMatrixDatum A hα hδ hq M) m none).total w) =
-      SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso
-        ((restriction A).obj (induced A M))).inv.total w) ∘ₗ orderedMateLinear A hα M w := by
-  dsimp only [datumCapEntry]
-  rw [Superfunctor.comp_total]
-  rfl
-
-/-- Every actual target-shifted cap field evaluates to its unscaled raw dot/counit row. -/
-theorem inductionCapMatrixEntry_some_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
-    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
-    (m : ℕ) (r : Fin m) (w : C) :
-    SVec.toLinearMap ((datumCapEntry (inductionMatrixDatum A hα hδ hq M) m (some r)).total w) =
-      SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (r.val • q)).iso M).inv.total w) ∘ₗ
-        capDotLinear A hδ M r.val w := by
-  dsimp only [datumCapEntry, inductionMatrixDatum, capRowNative]
-  rw [Superfunctor.comp_total, SVec.toLinearMap_comp, capDotRow_total]
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 

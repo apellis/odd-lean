@@ -6,27 +6,17 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-These exact source trees are reachable in history only; no unchecked source
-is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+These exact source trees are reachable in history only. No unchecked
+source is imported, and later checked successors do not turn these
+snapshots into evidence. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 
-| Argument | Preserved source tree | Scope at snapshot |
+| Argument | Preserved source tree | Scope at the snapshot |
 | --- | --- | --- |
-| Original-weight chosen dot | [0b26b3c1f7](https://github.com/apellis/odd-lean/commit/0b26b3c1f7c8e1a548d46d0b0293afefde62fba8) (`docs/Nondegeneracy/PowerWordWeightDotDraft.md`) | Producer passes; paired consumer and whole batch unverified. |
-| Canonical content unit and cap fields | [5754cbac96](https://github.com/apellis/odd-lean/commit/5754cbac968d56ba037a4d3dc751bd1006fb65a2) (`docs/Nondegeneracy/ContentBlockMatrixRows.md`) | Unit and dot prefixes pass; all-power chain and actual field specialization unverified. |
-| Native inverse coefficient caps | [ef8d91c005](https://github.com/apellis/odd-lean/commit/ef8d91c0058d8e88bb21995495267590318813d0) (`docs/Nondegeneracy/ProbeCapMaps.md`) | Bare producers pass; degree, paired consumers and scalar inverse-row binding unverified. |
-| Scalar left-cap field binding | [93af40181a](https://github.com/apellis/odd-lean/commit/93af40181a8b1d62ff882d73e62054fa763bfae1) (`docs/Nondegeneracy/ScalarLeftCapBinding.md`) | Literal dropped-row prefix passes; extended producer and paired consumer unverified. |
-
-## Ground-ring reduction already available
-
-The remaining construction may target characteristic-zero fields.
-`SKM.nondegeneracyConjecture_of_charZeroField` already transports that
-field theorem to every ordinary commutative ring with 2 invertible,
-for the same datum, homogeneous scalars and supplied CScalars. Do not
-list ring descent as an unfinished action or recovery obligation.
-The theorem uses actual presentation base change and universal-parameter
-separation; it adds no target-domain, reducedness or flatness hypothesis.
-See [GroundRingDescent](GroundRingDescent.md) and
-[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean).
+| Deferred native content-mate comparison | [f7d588fdb6](https://github.com/apellis/odd-lean/commit/f7d588fdb66975879ff4568586b1dc3288f84d84) (`docs/Nondegeneracy/ContentMateSquareProposal.md`) | Deferred alternate native mate and EF parity conversions remain unverified; the direct component route is separate. |
+| Selected power-word pair crossing | [8db0c869d7](https://github.com/apellis/odd-lean/commit/8db0c869d791b3587bab1c81bf9e8729cc68fbfa) (`docs/Nondegeneracy/PowerWordPairCrossingDraft.md`) | Closed pair and all-vector recast prefixes pass; the combined signed expression and complete consumer remain unverified. |
+| Canonical truncated-content mate | [5d38b48380](https://github.com/apellis/odd-lean/commit/5d38b4838006662a575d4e798ed7c04207842357) (`docs/Nondegeneracy/ContentBlockDistinctMate.md`) | Generic source comparison passes; canonical source tensor, whole mate square and inverse remain proposed. |
+| Weighted finite matrix entry comparison | [d22d9954dd](https://github.com/apellis/odd-lean/commit/d22d9954dda046fce9ecd4c6ce062a4c349e2784) (`docs/Nondegeneracy/WeightedMatrixEntryComparison.md`) | Supporting component checks pass; entry producer passes but its paired consumer and whole finite forward identification remain pending. |
+| Scalar finite inverse candidates | [56c2b1f6cb](https://github.com/apellis/odd-lean/commit/56c2b1f6cbc77ce21e7919343dbfefbe908fdf10) (`docs/Nondegeneracy/ProbeMatrixInverseCandidates.md`) | Concrete global-to-relative-to-scalar inverse candidates are proposed; the first strict producer check fails and complete prescribed forward identification remains open. |
 
 ## Dependency order and readiness
 
@@ -39,61 +29,6 @@ See [GroundRingDescent](GroundRingDescent.md) and
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical bridge full-CI verified (#973); actual word coordinates and odd series at the unit scoped-checked below. Finish full factors, arbitrary-vector cap/bubble operators and chosen-action evaluation/recovery |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
-
-## Prescribed matrix and coefficient-row successors
-
-The #988 source head `1f62b66a` passed the full warning-free build, global
-axiom audit and every concrete consumer (run 41581218832), and is integrated
-at `393fca27`. Its native RouquierData has the same-colour square field;
-its all-block quadratic component identity is also verified. The remaining
-native mixed/braid/slide and local-inverse fields are not supplied by that
-bundle.
-
-The next strict locally checked integration supplies relative-content
-finite matrix maps and both input-natural inverses, weighted fixed-output
-module inverses natural in global-truncated inputs, and both scalar
-prescribed forward identifications including the ordinary absent-colour
-unit boundary. Changing-content mate and matrix-entry supernaturality is
-retained. Complete canonical-content and original-weight endpoint/field
-transport remains necessary; use the selected full source/target charts.
-The canonical-content diagonal mate square now passes through those charts
-with its actual parity square. Attach its unit/dot and dot/counit fields
-before invoking the finite inverses for the chosen action.
-
-The signed source composition and chosen scheduled content/original-weight
-induction components are locally checked. The rectangular crossing is
-identified with its chosen content word counterpart. Complete chosen
-weight-action generator evaluation and relation-preserving factor assembly
-before using the source coordinate kernel as action faithfulness.
-
-The actual full-old probe extraction row has its signed polynomial and
-parity. The inverse-unit rows are now homogeneous content module maps,
-surjective on every component and equal to the prescribed module unit
-coefficient at empty output. Scalar inverse coefficient transport retains
-the canonical unshift and every row index. The next risk target is to
-identify their old-field/module-map specialization through the selected
-FE chart, then derive the normalized left-cap window and mixed slide.
-The ordinary right counit comparison does not discharge this obligation.
-
-These successor sources passed the full warning-free build, global axiom
-audit and every concrete consumer in #989 at source head `7ac6e4f9`
-(run 41585699842), integrated at `d73f2f2f`. All 40 producers and 75 exact
-producer/consumer blobs also passed strict local and combined-import checks.
-Exact module scope is in STATUS and the mathematical topic notes.
-
-The next locally checked sources supply both native multicolour quadratic
-fields, whole chosen weight-dot evaluation, every canonical-content unit-dot
-power through the selected full charts, exact scalar old inverse-row field
-binding, supported chosen weight unit/counit squares and even flattened
-weight-triple coordinates. Their full integration CI is pending. Next attach
-the native coefficient cap to its exact scalar inverse-row field and derive
-the normalized probe window. The whole original-weight distinct mate inverse
-and its parity now pass strict paired checks, including both round trips and
-odd-input naturality; the selected native coefficient cap has its prescribed
-degree and a nonzero regular-probe value. Prove the native slide/braid fields,
-original-weight same-colour local inversions and canonical diagonal cap-row
-and inverse fields. The chosen crossing
-evaluation and final observation recovery remain separate obligations.
 
 ## Current comparison interfaces
 
@@ -303,10 +238,8 @@ They do not construct the complete factor or swapped action.
 The following finite-family, truncated-content and probe inputs passed
 full build, global axiom audit and every consumer in #984 at `bf22957c`
 ([CI](https://github.com/apellis/odd-lean/actions/runs/41572490013)).
-The weight-coordinate and cap-attachment inputs also passed full build,
-global axiom audit and every consumer in #986 at `4279a451`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41575246618)).
-The newer successors below are scoped-checked until their own gate completes.
+The newer weight-coordinate and cap-attachment successors below are
+scoped-checked until their own integration gate completes.
 
 The old-content and global-truncated distinct rectangular mates now have
 homogeneous module and input-natural inverses with exactly the prescribed
@@ -359,10 +292,9 @@ polynomial at the actual output content under the selected pair chart.
 Both independently defined weight dots now intertwine through exactly
 that same chart, retaining the actual intermediate block. The complete
 component squares and their all-vector equations are scoped-checked.
-The positioned polynomial and absent-predecessor branch are now scoped-checked
-on every component; same-colour square zero also holds as a native
-two-morphism. Assemble the native mixed polynomial, braid and slides;
-no complete local inverse or RouquierFamily is yet claimed.
+Normalize the source whiskerings to the positioned dots, assemble the
+supported polynomial, then prove the absent-predecessor branch and global
+relation fields. No weight quadratic or triple field is yet claimed.
 See [WeightPairQuadratic](WeightPairQuadratic.md) and
 [WeightPairDotCoordinates](WeightPairDotCoordinates.md).
 
@@ -385,65 +317,6 @@ prove their slide and normalization, and only then use the existing
 principal/negative-cap recovery theorem to attach the candidate and the
 source-placed bubbles. See [CoefficientPowerPolynomialCap](CoefficientPowerPolynomialCap.md)
 and [CoefficientPowerNonpositiveCap](CoefficientPowerNonpositiveCap.md).
-
-## Prescribed inverses and chosen evaluation attachment
-
-The following successors pass strict scoped producer/consumer checks and
-owned-declaration axiom audits; their full integration CI is pending.
-
-The canonical truncated-content distinct mate is now an isomorphism of
-modules and of its whole input-natural family, with exactly the prescribed
-positive forward map and inverse degree p(i)p(j). Transport it through the
-actual weight adjunction/crossing components and prove the absent-colour
-sectors before asserting the original-weight inverse. See
-[ContentBlockDistinctMate](ContentBlockDistinctMate.md).
-
-Both complete prescribed weighted finite matrix squares now hold, and the
-actual forward components have explicit even inverses at their exact
-nonnegative/nonpositive heights. Both inverse identities use the given
-forward maps. Restrict to fixed output content to bundle module inverses,
-then prove input-module supernaturality. The whole old-content mate square
-also now holds on every coend vector, completing its three unshifted field
-comparisons; its shifted finite entry assembly remains separate. See
-[WeightedMatrixComponentInverse](WeightedMatrixComponentInverse.md) and
-[ContentMatrixMate](ContentMatrixMate.md).
-
-The scalar conjugated inverse candidates retain the given global old
-inverse. Their i-present prescribed forward identification is still open.
-At absent-i output, including genuine empty output, the old global EF
-source and principal slot are proved zero, height is nonnegative, and the
-given old unit inverse drops to exactly the remaining unit/dot columns.
-Finish the ordinary upper-F/E and value/column transport of that branch;
-do not confuse empty output with an empty predecessor. See
-[ProbeMatrixInverseCandidates](ProbeMatrixInverseCandidates.md) and
-[MissingColourMatrix](MissingColourMatrix.md).
-
-The independently chosen equal and distinct word crossings now agree
-with full-coefficient fromArrow under the recursive selected comparisons,
-including the equal-colour minus. Selected append and every right suffix
-intertwine arbitrary inhomogeneous old arrows. These are actual module-map
-identities. Next prove the signed source composition/U cancellation and
-attach the chosen upward evaluation through the scheduled old-to-truncated
-and content/weight charts. Source-coordinate kernels alone are not action
-faithfulness. See [PowerWordPairCrossing](PowerWordPairCrossing.md),
-[PowerWordDistinctCrossing](PowerWordDistinctCrossing.md) and
-[PowerWordContexts](PowerWordContexts.md).
-
-The original-Sc quadratic holds in the independent weight dots on all
-components, supported or absent. The actual PiSCat generator bundle
-`elvRouquierData` has its native same-colour square equation and retains
-the chosen right adjunction. Complete the native mixed relation, braid,
-slides and local inverse fields before constructing RouquierFamily. See
-[WeightQuadraticComponents](WeightQuadraticComponents.md) and
-[ELVRouquierData](ELVRouquierData.md).
-
-The probe's literal ground coordinate and full-old ground-valued last
-inverse row now have occupied consumers and exact all-scalar dot windows.
-Attach its intrinsic parity, the selected native coordinates and the
-normalization of the prescribed left cap. The actual mixed slide and
-source-placed bubble identification remain open. See
-[ProbeVacuumCoordinates](ProbeVacuumCoordinates.md) and
-[ProbeExtensionRows](ProbeExtensionRows.md).
 
 ## Categorical inverse: precise interfaces
 
