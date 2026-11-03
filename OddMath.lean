@@ -2200,3 +2200,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRouquierMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalMate
