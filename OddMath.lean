@@ -2425,3 +2425,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordHomCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirWordValue

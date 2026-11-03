@@ -1072,6 +1072,15 @@ consumers pass, including all eleven owned-declaration axiom checks; full CI ver
 factor-family identification and literal CrossCoeff input assembly. Do not assume a common exponent over
 all contents or add another conditional factor-family wrapper.
 
+`ELVReservoirWordValue.reservoirPath_value_heq` now identifies the
+reservoir path value on the specified regular-power empty-word family
+with the reversed selected E-word value, retaining the existing even
+`pathChart`. Its producer and connected two-odd consumer pass strict
+checks and twenty owned audits; the independent odd-coefficient product
+and cyclic unit are nonzero in that same path value. Identify the eventual
+swapped tensor-vacuum Hom input with this initial family before using
+the comparison for observations. See [ELVReservoirWordValue](ELVReservoirWordValue.md).
+
 `ELVPowerWordHomCoordinates` now passes fresh strict producer and
 occupied-consumer checks, including all 48 owned audits. Its whole-Hom
 linear equivalence, arbitrary coefficient, dot and crossing formulas
