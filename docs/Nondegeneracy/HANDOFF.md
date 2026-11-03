@@ -995,6 +995,14 @@ checks audit all 4, 92 and 89 declarations. Attach the six global
 crossing coordinates and assemble the exact uncorrected field; see
 [ProbeStoredBraid](ProbeStoredBraid.md).
 
+`probeOldWeightTriplePolynomial_component` now retains the entire
+ordered original-Sc correction through the same chosen triple chart,
+with the parameter-twisted acting family and all three prescribed dots.
+Strict mixed/three-odd/nonzero interior-parameter/nonzero-append
+consumer checks audit all 28 declarations. Combine this polynomial
+square with the six crossing squares and the stored corrected braid;
+see [ProbeWeightTriplePolynomial](ProbeWeightTriplePolynomial.md).
+
 `ELVProbeWeightTripleDots` now identifies all three independently
 whiskered chosen dots with their prescribed stored append components
 in one supported triple chart. Strict occupied mixed/three-odd consumers
