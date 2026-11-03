@@ -1945,6 +1945,11 @@ coefficient degree `n + 2*d_i*(r+s+1)` and both OLD module evaluation
 equations, with 13 owned declarations audited by its strict paired
 consumer. Identify these raw inverses with the chosen reservoir principal,
 then use Yoneda to realize the positive-degree closure on every module.
+`ELVWeightPrincipalInverseCoordinates` now identifies both literal chosen
+whole-weight principal inverses with content-target inverses on each
+supported block, using finite inverse uniqueness rather than unfolding
+its choice. The strict mixed-parity/all-height/nonzero odd singleton
+consumer audits all 46 owned declarations.
 `ELVContentPrincipalInverseCoordinates` supplies the content-to-weighted
 part of that connection for either orientation and arbitrary stored
 contents, using only the prescribed forward equations and inverse

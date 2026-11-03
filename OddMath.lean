@@ -2573,3 +2573,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentPrincipalInverseCoordinate
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInverseKernelCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelClosureDegree
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightGeneralBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPrincipalInverseCoordinates
