@@ -1035,6 +1035,12 @@ nontrivial-representative/odd-input consumer and all 45 owned audits pass
 strict checks. Prove its tensor formula and dot/crossing comparisons,
 then use these same maps for canonical local and distinct inverse transport.
 See [ProbeReindexInduction](ProbeReindexInduction.md).
+`ELVProbeReindexTensors` now proves the canonical comparison sends each
+actual balanced tensor to the same arrow and vector at the reindexed
+source. Its producer and arbitrary-vector/nontrivial-representative
+consumer pass strict checks and 27 owned audits. Use this fixed comparison
+for dot and crossing compatibility before canonical inverse transport.
+See [ProbeReindexTensors](ProbeReindexTensors.md).
 
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and

@@ -2428,3 +2428,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirWordValue
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirVacuumDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridDistinctSlides
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexTensors
