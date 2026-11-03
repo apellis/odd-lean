@@ -1,19 +1,84 @@
-# Field input and the scope of BE2 §8
+# Research scope, field input and the even benchmark
 
-The source target is Brundan–Ellis, *Super Kac–Moody 2-categories*,
-arXiv:1701.04133v2, §8, the conjecture following Theorem 8.1 (PDF p.33).
-The symmetrizability and scalar homogeneity assumptions introduced on
-pp.8–9 apply to the remainder of the introduction. Section 9 introduces
-these assumptions again with “Henceforth”; they are extra hypotheses
-relative to the §8 conjecture.
+## Branch goal and phases
 
-`Datum` in `SKM/Basic.lean` requires a generalized Cartan matrix and the
-odd-row evenness condition. It does not supply a `Symmetrizer`.
-`Scalars.Homogeneous` in `SKM/Grading.lean` constrains the supported
-nonzero interior coefficients; in particular it holds when all such
-coefficients vanish. It does not imply existence of a positive symmetrizer.
+The goal of `research/odd-nondegeneracy` is the odd/mixed analog of the most
+general known ordinary even nondegeneracy theorems, with the following order.
 
-For example, the all-odd Cartan pattern
+1. **Phase 1 (current):** prove nondegeneracy for symmetrizable Cartan superdata
+   and homogeneous admissible parameters over ordinary commutative rings with
+   2 invertible. Retain the odd-row evenness condition, separate odd-variable
+   exponent support, prescribed leading units and compatible `CScalars`.
+2. **Phase 2 (after Phase 1):** pursue inhomogeneous parameters, still for
+   symmetrizable data, until the parameter generality of the even benchmark
+   below is covered. Do not assume that the present graded proof or its
+   ground-ring reduction automatically supplies this extension.
+
+**No proof for nonsymmetrizable Cartan data is pursued on this branch.**
+Symmetrizability is an intended hypothesis in both phases. Further generality
+beyond the even benchmark is not a completion requirement. This scope governs
+all research documentation; historical open-step lists do not enlarge it.
+
+## Even benchmark and the meaning of inhomogeneous
+
+The comparison is full nondegeneracy for the ordinary Kac–Moody 2-category,
+including mixed upward/downward Hom spaces and bubble coefficients.
+
+- [Webster, arXiv:1603.06311v4](https://arxiv.org/pdf/1603.06311v4),
+  §2 and Theorem 3.13: the Cartan datum is symmetrizable; parameters are
+  homogeneous. The printed ring theorem requires invertible symmetrizers.
+- [Brundan–Wang–Webster, arXiv:2505.22929v2](https://arxiv.org/pdf/2505.22929v2),
+  Conventions, §§2.1–2.2 and Theorem 5.6: the ordinary 2-quantum-group basis
+  theorem uses symmetrizable data and an N-graded commutative coefficient ring,
+  with homogeneous Q-polynomials for the total grading. Positive-degree
+  coefficients allow terms of lower weighted dot degree. This theorem does
+  not require the symmetrizers to be units. Its root-datum hypotheses include
+  local finiteness and independent simple coroots.
+
+Phase 1 puts base coefficients in degree zero, as in `Scalars.Homogeneous`.
+Phase 2 must at least cover the graded-coefficient parameter generality in the
+second reference and the corresponding underlying ungraded basis statement.
+Here “inhomogeneous” means relaxing the Phase 1 condition on weighted dot
+degrees; the benchmark still has a total grading. Arbitrary polynomials with
+no compatible grading or degree bounds are not asserted to be known in the
+even literature, and proving that larger class is not required to finish.
+The precise extension of the current `Scalars` presentation and any scalar
+specialization argument must be proved, not inferred from the terminology.
+
+## Completion criterion and all-even specialization
+
+The branch is done when the verified odd/mixed theorem covers the cited even
+benchmark's admissible parameters, root/weight realizations and base rings,
+with the sole additional base-ring requirement that 2 be invertible, and a
+checked comparison at parity identically zero recovers its ordinary even
+basis theorem. “All Cartan data” here means all symmetrizable data allowed
+by that benchmark, not nonsymmetrizable matrices.
+
+The comparison must identify presentations, normalization conventions,
+decorated matching families and bubble coefficients, and recover the graded
+statement when the benchmark includes grading. A KL-only parameter example
+or the positive-half PBW theorem does not meet this criterion. Extra proof
+premises such as a supplied detecting action or vacuum observation must be
+discharged. Required builds, axiom audits and concrete consumers must pass.
+
+Supplied `CScalars` remain part of the current formulation. To claim recovery
+for every benchmark datum, supply the compatible normalizations under its
+realization hypotheses or prove the relevant change-of-normalization
+comparison. Do not assume they exist for arbitrary collapsed weight data.
+No theorem over characteristic two, genuinely supercommutative base rings,
+or realizations beyond the even benchmark is required by this branch goal.
+
+## Source boundary and existing field reduction
+
+Brundan–Ellis, *Super Kac–Moody 2-categories*,
+[arXiv:1701.04133v2](https://arxiv.org/pdf/1701.04133v2), §8,
+states a broader conjecture than this branch's chosen target. The
+symmetrizability and homogeneity assumptions on pp.8–9 apply to the remainder
+of the introduction, and Section 9 introduces them again. This scope decision
+is not an erratum to that conjecture or a claim to prove its entire scope.
+
+`Datum` in `SKM/Basic.lean` does not supply a `Symmetrizer`, and
+`Scalars.Homogeneous` does not imply one. For example, the all-odd pattern
 
 ```
   2  -2  -4
@@ -21,35 +86,23 @@ For example, the all-odd Cartan pattern
  -2  -4   2
 ```
 
-has even rows and the required generalized Cartan signs. Its symmetrizer
-equations imply d₁=2d₂, d₂=2d₃ and d₃=2d₁, contradicting positivity.
-This elementary calculation illustrates why a symmetrizer cannot be
-silently inferred from the current datum and homogeneous-parameter APIs.
-No additional Lean counterexample construction is claimed here.
+has even rows, but its symmetrizer equations force d₁=2d₂, d₂=2d₃ and
+d₃=2d₁, contradicting positivity. Such data are outside the research target;
+no additional Lean counterexample construction is claimed here.
 
-The current swapped construction explicitly uses a positive symmetrizer,
-including the coefficient-power induction-dot nilpotence input. Its intended
-field endpoint must therefore retain that hypothesis: for fixed `D` and
-`sy : Symmetrizer D`, prove `CharZeroFieldNondegeneracy D`.
-This predicate already quantifies over every characteristic-zero field,
-homogeneous `Sc` and supplied `CScalars Sc` for that same datum.
-
-`nondegeneracyConjecture_of_charZeroField` is already proved and then gives
-the ordinary commutative-ring conclusion with 2 invertible. It does not
-change the datum or remove assumptions used to establish its field input.
-There is no additional ground-ring descent obligation.
-
-The remaining source-fidelity question is: what source-backed input removes
-symmetrizability and the homogeneous-parameter restriction for the rest of
-BE2 §8? Until such an input is supplied, retain the explicit hypotheses on
-the field construction and track their removal separately. No replacement
-proof route or exclusion of the broader target is chosen here.
+For Phase 1, fix `D` and `sy : Symmetrizer D`, and prove
+`CharZeroFieldNondegeneracy D`. This predicate quantifies over every
+characteristic-zero field, homogeneous `Sc` and supplied `CScalars Sc` for D.
+`nondegeneracyConjecture_of_charZeroField` is already proved and supplies the
+ordinary commutative-ring conclusion with 2 invertible. There is no remaining
+Phase 1 ground-ring descent obligation. The reduction retains the datum and
+parameter restrictions; it does not establish Phase 2.
 
 The current full-ELV route has no extra even-height restriction. In the
 balanced schedule the probe level P is even and the reservoir level is
 N=P−hᵢ(μ), so N has the required parity. `ReservoirWeights.reservoir_parity`
-and the odd-pairing invariant retain the original weight coset. Both
-weighted component matrix-inverse APIs accept arbitrary cutoff parity;
-the polynomial-cap consumer includes occupied odd cutoff five. The older
+and the odd-pairing invariant retain the original weight coset. Both weighted
+component matrix-inverse APIs accept arbitrary cutoff parity; the
+polynomial-cap consumer includes occupied odd cutoff five. The older
 even-cutoff action note describes a narrower candidate. Constructing the
 chosen native factors remains open, including their arbitrary-height cases.

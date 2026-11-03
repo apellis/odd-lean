@@ -1,5 +1,11 @@
 # Ground-ring descent with dependent roots and normalization units
 
+The branch follows [FieldScopeBoundary](FieldScopeBoundary.md): symmetrizable
+homogeneous parameters first, inhomogeneous parameters second; no
+nonsymmetrizable proof is pursued. The endpoint is the odd analog of the cited
+even benchmark, with a checked all-even specialization and 2 invertible.
+Historical proposals below do not enlarge that scope.
+
 **Status: the conditional ground-ring descent is formalized in Lean.**
 This note supports Brundan–Ellis, *Super Kac–Moody 2-categories*,
 arXiv:1701.04133v2, Theorem 8.1 and the §8 Nondegeneracy Conjecture.

@@ -7,11 +7,20 @@ Topic notes record local arguments and their original claim boundaries;
 their historical “open” lists do not override this page. Earlier inventories
 and checkpoint narratives remain available in git history.
 
-**Full odd/mixed nondegeneracy is open in Lean.** The end-to-end written
+**The Phase 1 odd/mixed nondegeneracy theorem is open in Lean.** The end-to-end written
 argument is proposed. Its remaining constructions can still reveal mathematical
 gaps; “written proof” does not mean routine transcription.
 
 ## Scope
+
+**Phase 1:** symmetrizable data and homogeneous admissible parameters.
+**Phase 2:** after Phase 1, pursue inhomogeneous parameters while retaining
+symmetrizability. **Nonsymmetrizable Cartan data are out of scope.**
+The branch is complete once the odd theorem and its checked all-even
+specialization match the most general cited even nondegeneracy theorems,
+except for requiring 2 invertible in the base ring. The graded-coefficient
+parameter benchmark and exact completion criteria are in
+[FieldScopeBoundary](FieldScopeBoundary.md). Phase 2 is not yet established.
 
 The proposed construction uses a purely even field with 2 invertible,
 compatible symmetrizable Cartan superdata with positive integral symmetrizers,
@@ -32,10 +41,10 @@ homogeneity conditions and does not address genuinely supercommutative
 base rings or existence of CScalars for every weight realization.
 Intermediate lemmas may have broader scope. The field predicate fixes the datum;
 completing the present construction with a supplied positive symmetrizer
-therefore establishes that scoped case. Symmetrizability is not implied by
-`Datum`, homogeneous parameters or supplied normalizations. Removing these
-extra hypotheses for the broader §8 statement remains a separate open
-source-fidelity obligation; see [FieldScopeBoundary](FieldScopeBoundary.md).
+therefore establishes Phase 1. Symmetrizability is not implied by `Datum`,
+homogeneous parameters or supplied normalizations, and will remain an intended
+hypothesis. Relaxing parameter homogeneity belongs to Phase 2; proving the
+broader nonsymmetrizable §8 conjecture is not a branch obligation.
 
 ## Established reductions and concrete inputs
 

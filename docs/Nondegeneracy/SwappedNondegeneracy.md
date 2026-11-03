@@ -1,5 +1,10 @@
 # Nondegeneracy by bounded swapped Hom observations
 
+This is the **Phase 1** argument for symmetrizable data and homogeneous
+parameters. Phase 2 will pursue inhomogeneous parameters; neither phase
+pursues nonsymmetrizable Cartan data. Branch completion and the required
+all-even comparison are specified in [FieldScopeBoundary](FieldScopeBoundary.md).
+
 **Status: full written proof, proposed until checked in Lean.** This is the
 canonical theorem-and-proof entrypoint for the swapped Hom construction.
 The factor construction, conditional action assembly and bounded detecting

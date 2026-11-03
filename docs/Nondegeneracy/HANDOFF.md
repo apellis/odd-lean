@@ -1,5 +1,16 @@
 # Odd nondegeneracy: mathematical handoff
 
+## Research objective and order
+
+Finish **Phase 1**, the symmetrizable homogeneous-parameter theorem, using
+the dependencies below and the already-proved ground-ring reduction. Then
+begin **Phase 2**, inhomogeneous parameters for symmetrizable data. Do not
+pursue nonsymmetrizable Cartan data. Stop when the odd analog and its checked
+all-even specialization recover the most general cited even nondegeneracy
+theorems over rings with 2 invertible; see
+[FieldScopeBoundary](FieldScopeBoundary.md) for the parameter benchmark and
+completion checks. Phase 2 does not block completion of the Phase 1 proof.
+
 Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
 This file records next mathematical dependencies, not session telemetry.
@@ -92,15 +103,17 @@ original-weight same-colour local inversions and canonical diagonal cap-row
 and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
 
-## Field-scope obligation
+## Phase 1 field endpoint and Phase 2 boundary
 
 The current field construction retains `sy : Symmetrizer D` and homogeneous
 parameters. With that fixed datum it must furnish `CharZeroFieldNondegeneracy D`;
 the existing ground-ring theorem then supplies ordinary rings with 2 invertible.
-For the broader §8 conjecture, obtain a source-backed input removing those
-extra hypotheses. They are not consequences of the current datum/scalar APIs.
-See [FieldScopeBoundary](FieldScopeBoundary.md). No broader scope is declared
-out of scope and no replacement route is selected.
+Homogeneity is relaxed only in Phase 2; symmetrizability is retained in both
+phases. For Phase 2, specify the graded-coefficient/inhomogeneous parameter
+presentation, prove the required extension and scalar comparisons, and check
+the all-even specialization against the cited even benchmark. No proof route
+for nonsymmetrizable data is to be developed. See
+[FieldScopeBoundary](FieldScopeBoundary.md).
 
 ## Native probe normalization and remaining action fields
 
@@ -255,8 +268,9 @@ PR #1006 passed the full build, axiom audit and every consumer at
 `804dd66d` (run 41628541714), integrated at `e4374193`. The six probe
 successors passed the same gates in #1007 at `0034b2d8`
 (run 41630889345), integrated at `d783c565`; their checked source prefix
-is `04e78b61`, with 12 source/consumer blobs and 214 owned-declaration audits. Ground-ring descent is already formalized; the broader field-scope
-boundary remains explicit.
+is `04e78b61`, with 12 source/consumer blobs and 214 owned-declaration audits.
+Phase 1 ground-ring descent is already formalized; the separate Phase 2
+parameter extension and the exclusion of nonsymmetrizable data remain explicit.
 
 ## Current comparison interfaces
 

@@ -236,10 +236,11 @@ reservoirs; otherwise it is only a list of compatible-looking factors.
 This path deserves an independent stream, but not an exclusive commitment.
 It attacks exactly the categorical coefficient-separation gap left by upward
 PBW. Stop expanding its formal infrastructure if the first two-colour
-coupling fails. Even a successful symmetrizable homogeneous pilot does not
-settle all BE2 Section 8 data: nonsymmetrizable input, arbitrary permitted
-parameters, source supercommutative base rings, characteristic restrictions,
-and integral descent remain separate scope obligations.
+coupling fails. This is a Phase 1 route for symmetrizable homogeneous data.
+Phase 1 integral descent is already proved, conditional on the field input.
+Phase 2 pursues inhomogeneous parameters to match the cited even benchmark.
+Nonsymmetrizable data and genuinely supercommutative base rings are not branch
+completion obligations; see [FieldScopeBoundary](FieldScopeBoundary.md).
 
 ## The isomeric categorical bridge: useful but reduced
 

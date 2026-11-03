@@ -1,5 +1,11 @@
 # Nondegeneracy for symmetrizable Cartan superdata: proof and open steps
 
+The branch follows [FieldScopeBoundary](FieldScopeBoundary.md): symmetrizable
+homogeneous parameters first, inhomogeneous parameters second; no
+nonsymmetrizable proof is pursued. The endpoint is the odd analog of the cited
+even benchmark, with a checked all-even specialization and 2 invertible.
+Historical proposals below do not enlarge that scope.
+
 > **Historical route.** The current canonical theorem and full written proof
 > are in [SwappedNondegeneracy](SwappedNondegeneracy.md), with explicit field,
 > datum, parameter and CScalars hypotheses. That proof is proposed until
@@ -38,7 +44,8 @@ symmetrizable Cartan matrix `(a_ij)` with symmetrization `d_i a_ij = (α_i|α_j)
 ## 1. Statement
 
 **Theorem (Nondegeneracy).** For every symmetrizable Cartan superdatum `D`
-and admissible scalars `Sc`, `cs`, the conjecture `SKM.NondegeneracyConjecture
+and homogeneous admissible scalars `Sc`, supplied `cs`, over a purely even
+field with 2 invertible, the conjecture `SKM.NondegeneracyConjecture
 cs` (`OddMath/SKM/Nondegeneracy.lean`) holds. That is, for all words `a`, `b`
 of equal weight, every weight `μ` and every matching basis choice `F`, the
 decorated family `F` is a basis. This means it has unique finite `SYM`

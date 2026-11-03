@@ -1,5 +1,13 @@
 # odd-lean
 
+Research objective on `research/odd-nondegeneracy`: **Phase 1** proves odd/mixed
+nondegeneracy for symmetrizable data and homogeneous parameters; **Phase 2**
+pursues inhomogeneous parameters, retaining symmetrizability. No proof for
+nonsymmetrizable Cartan data is pursued. The endpoint is an odd analog of the
+most general cited even nondegeneracy theorems, with a checked all-even
+specialization over commutative rings with 2 invertible. See
+[scope and completion criteria](docs/Nondegeneracy/FieldScopeBoundary.md).
+
 A Lean 4 / Mathlib formalization of odd symmetric functions, the odd nilHecke algebra and the odd
 Littlewood–Richardson rule, together with machine-checked errata to the source papers.
 
@@ -9,7 +17,7 @@ The current matrix-assembly and input-module naturality boundary is detailed in 
 
 Research status is maintained only in [STATUS](docs/Nondegeneracy/STATUS.md);
 [HANDOFF](docs/Nondegeneracy/HANDOFF.md) gives the dependency order and next targets.
-Full odd/mixed nondegeneracy remains open in Lean. Research-related checkpoint
+The Phase 1 odd/mixed theorem remains open in Lean. Research-related checkpoint
 descriptions below are local inventories; STATUS supersedes historical open-step lists.
 
 ## Status

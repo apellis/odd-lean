@@ -13,7 +13,11 @@ The desired input is injectivity of every upward expansion at every external wei
 with coefficients in the abstract `SYM D k`, not merely scalar coefficients or the
 image of `betaSYM`. The output is `SKM.NondegeneracyConjecture cs`. Route A itself
 needs neither a field nor homogeneity, so it preserves any generality available in
-the upward input. The programme's symmetrizable finite-colour field scope is included.
+the upward input. Phase 1 uses symmetrizable homogeneous data, with proved
+finite-colour and ground-ring reductions supplying arbitrary colours and
+ordinary commutative rings with 2 invertible. Phase 2 pursues inhomogeneous
+parameters. The broader scope of this reduction does not make
+nonsymmetrizable data a research target; see [FieldScopeBoundary](FieldScopeBoundary.md).
 
 ## A. Contextual descent
 

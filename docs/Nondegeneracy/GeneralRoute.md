@@ -7,13 +7,15 @@ not establish a categorical action.
 
 ## Scope and the even comparison
 
-The target is finite-colour compatible symmetrizable Cartan superdata with
+This route supports Phase 1: compatible symmetrizable Cartan superdata with
 homogeneous scalar parameters, including mixed parity and adjacent odd colours.
-The ground field must satisfy the prescribed scalar-unit hypotheses, including
-invertibility of two when odd colours occur. First prove the field result; then
-prove presentation base change and integral descent over the appropriate universal
-parameter ring. Do not silently replace general homogeneous parameters by KL
-parameters or exclude odd coroot heights.
+Finite-colour field constructions feed the proved arbitrary-colour and
+ground-ring reductions. Presentation base change and the characteristic-zero
+field-to-ring reduction are already formalized; the field input remains open.
+Do not replace homogeneous parameters by KL parameters or exclude odd heights.
+Phase 2 pursues inhomogeneous parameters for symmetrizable data. No proof for
+nonsymmetrizable data is pursued. The even benchmark and branch completion
+criteria are in [FieldScopeBoundary](FieldScopeBoundary.md).
 
 The comparison is Webster, arXiv:1603.06311v3, Theorem 3.6 and its proof, pp. 37–39.
 There are two uses of spectral labels: independent bubble coordinates and isolation
@@ -243,19 +245,14 @@ as a theorem until A2 and C2 are established.**
 
 ### B2. Integral descent — B
 
-**Proposed statement.** Build the integral matching basis over the universal
-homogeneous-parameter ring (with the prescribed units), then identify
-specialization with the presented SKM Hom spaces. Deduce the same basis over
-all allowed ground rings. **Even analogue:** `IntegralSpanning.span_twoB`,
-`IntegralScalars.homBaseChange`, `integralNondegBasis`,
-`calculusNondeg_of_rational`. **Existing:** super spanning and abstract `SYM`
-coefficient bases; the even descent proof is a blueprint.
-**New:** super presentation base change and an integral independence argument
-for general scalar parameters. **Risk: medium/high.** Rational independence
-at one scalar specialization is not independence at every specialization;
-base change need not preserve an arbitrary injection. A universal-ring basis
-and the presentation comparison must be proved. Do not extend odd SKM claims
-to characteristic two against the prescribed unit hypothesis.
+**Proved conditional reduction.**
+`SKM.nondegeneracyConjecture_of_charZeroField` supplies the Phase 1 theorem
+over every ordinary commutative ring with 2 invertible from
+`CharZeroFieldNondegeneracy D`. Presentation base change and the universal
+homogeneous-parameter comparison are implemented; see
+[GroundRingDescent](GroundRingDescent.md). The field input remains open.
+Phase 2 must justify its own parameter extension and any required descent;
+the homogeneous theorem does not remove its own parameter hypothesis.
 
 ## Conditional reservoir-vacuum consumer
 

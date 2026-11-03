@@ -1,5 +1,24 @@
 # Contributor guide
 
+## Research nondegeneracy scope
+
+On `research/odd-nondegeneracy`, the maintainer-approved goal has two phases:
+first prove odd/mixed nondegeneracy for symmetrizable Cartan superdata and
+homogeneous admissible parameters over ordinary commutative rings with 2
+invertible; then pursue inhomogeneous parameters for symmetrizable data.
+Do not pursue a proof for nonsymmetrizable Cartan data. Symmetrizability is
+an intended hypothesis, not an intermediate restriction to remove on this branch.
+
+The branch is complete when its odd theorem matches the parameter, datum and
+base-ring generality of the strongest cited ordinary even nondegeneracy theorems,
+except for invertibility of 2, and a checked all-even specialization recovers
+those conclusions. Broader generality is not required. The precise benchmark,
+Phase 2 parameter boundary and completion criteria are in
+[FieldScopeBoundary](docs/Nondegeneracy/FieldScopeBoundary.md).
+This scope governs all research notes, including historical routes; it does not
+change existing theorem statements or claims about the scope of published sources.
+The current status and next dependencies remain in STATUS and HANDOFF.
+
 This repository is developed largely by AI agents under human direction. Everything here is
 public: keep it mathematical and technical.
 

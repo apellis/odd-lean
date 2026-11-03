@@ -1,5 +1,11 @@
 # Plan for the deformed action in Lean
 
+The branch follows [FieldScopeBoundary](FieldScopeBoundary.md): symmetrizable
+homogeneous parameters first, inhomogeneous parameters second; no
+nonsymmetrizable proof is pursued. The endpoint is the odd analog of the cited
+even benchmark, with a checked all-even specialization and 2 invertible.
+Historical proposals below do not enlarge that scope.
+
 ## Globalization: content and height-zero prerequisites
 
 The even `CyclotomicAction/Global.lean` starts with `CycKLR β` for every

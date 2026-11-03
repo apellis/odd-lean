@@ -11,8 +11,10 @@ Fix finite symmetrizable Cartan superdatum and homogeneous quiver Hecke
 superalgebra parameters in the scope of KKO, with invertible prescribed
 leading coefficients and `2` invertible. Use the polynomial parameters
 matching the native SKM upward presentation. This statement does not
-cover arbitrary nonsymmetrizable BE2 data or arbitrary nonhomogeneous
-`Scalars` merely because the native presentation permits them.
+cover arbitrary nonhomogeneous `Scalars` merely because the native
+presentation permits them. Parameter extensions belong to Phase 2;
+nonsymmetrizable data are not pursued. See the branch
+[scope and completion criteria](FieldScopeBoundary.md).
 
 Choose a dominant weight `Λ` whose odd-colour coordinates `N_i` are
 positive even integers, say `N_i=2m_i`. Over an even commutative graded

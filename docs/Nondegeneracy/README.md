@@ -1,5 +1,11 @@
 # Odd nondegeneracy research notes
 
+Branch scope: **Phase 1** is symmetrizable data with homogeneous parameters;
+**Phase 2** pursues inhomogeneous parameters for symmetrizable data.
+Nonsymmetrizable data are not pursued. Completion means matching the most
+general cited even theorem through a checked all-even specialization, with
+2 invertible in the base ring. See [FieldScopeBoundary](FieldScopeBoundary.md).
+
 Read [STATUS](STATUS.md) first, then [HANDOFF](HANDOFF.md) for prerequisites
 and next targets. The proposed end-to-end argument is
 [SwappedNondegeneracy](SwappedNondegeneracy.md).

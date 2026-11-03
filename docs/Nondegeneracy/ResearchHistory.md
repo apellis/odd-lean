@@ -1,5 +1,11 @@
 # Nondegeneracy source history
 
+The branch follows [FieldScopeBoundary](FieldScopeBoundary.md): symmetrizable
+homogeneous parameters first, inhomogeneous parameters second; no
+nonsymmetrizable proof is pursued. The endpoint is the odd analog of the cited
+even benchmark, with a checked all-even specialization and 2 invertible.
+Historical proposals below do not enlarge that scope.
+
 The primary branch is `research/odd-nondegeneracy`. Its consolidation retains
 every retired topic head below as a reachable ancestor, including superseded
 proofs and unfinished attempts. No source can be lost by deleting these branch
