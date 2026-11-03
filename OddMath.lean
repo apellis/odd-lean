@@ -2039,3 +2039,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
