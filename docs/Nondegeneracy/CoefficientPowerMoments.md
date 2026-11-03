@@ -59,7 +59,8 @@ This is the first moment above the extraction window, derived from the
 actual old relation. The consumer also instantiates the complete higher
 signed recurrence on this occupied vacuum.
 
-These are moments on the old literal power vacuum. Identifying the mixed
-inverse caps and the final swapped vacuum's bubbles with these maps is
-still required. No all-height bubble theorem or vacuum evaluation-kernel
+The complete ordinary remainder series is derived from these moments in
+[CoefficientPowerRemainders](CoefficientPowerRemainders.md), with its exact
+all-exponent signed normalization. Identifying the mixed inverse caps and
+the final swapped vacuum's bubbles with these maps is still required. No all-height bubble theorem or vacuum evaluation-kernel
 identity is asserted.
