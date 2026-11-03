@@ -44,6 +44,32 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ELVTensorLayerClasses` now identifies the actual chosen ELV dot/crossing
+Hom-entry evaluation under both word contexts with its physical OLD map
+and original coefficient-one affine-layer quotient class. Strict occupied
+connected mixed/two-odd/equal/distinct consumers prove nonzero normalized
+input vectors and quotient classes and audit all thirty declarations.
+Splice the selected tensor-vacuum word chart into the literal swapped
+matrix, then attach the supported family/action and source bubbles;
+no whole-Hom faithfulness is claimed. See
+[TensorLayerClasses](TensorLayerClasses.md).
+
+`ReservoirDistinctContextCoordinates.layerMap_reservoir_cross_ne_word`
+now identifies the literal distinct matrix with the original factor
+crossing in both reversed word contexts, retaining the actual right path
+reindexing and endpoint transports. Strict complete two-odd ELV-pair/
+nonempty-context consumer checks audit all sixteen declarations. All three
+upward generator comparisons are now available in word coordinates;
+specialize the intended tensor-vacuum and physical OLD quotient square.
+See [ReservoirDistinctContextCoordinates](ReservoirDistinctContextCoordinates.md).
+`ReservoirContextCoordinates` now identifies both actual reservoir path
+contexts with their prescribed reversed word contexts. Its generic square
+allows arbitrary inhomogeneous factor maps, and the literal dot and equal
+crossing matrices satisfy the resulting word-chart equations. Strict
+complete two-odd ELV-pair/nonempty-context consumers audit all thirteen
+declarations. Retain the distinct endpoint reindexing and attach the
+intended tensor-vacuum quotient square; see
+[ReservoirContextCoordinates](ReservoirContextCoordinates.md).
 `ReservoirVacuumCrossing.postCrossNe_reservoirVacuum` now compares the
 prescribed distinct reservoir block with the factor crossing through the
 exact source/target pair charts and target-sector transport, on every Hom
@@ -125,7 +151,13 @@ product inverse gluing, zero-boundary and even-chart transport, chosen
 local generator/row components, the stored distinct-mate inverse,
 whole-weight absent mixed coordinates, corrected nested/grid braids,
 reservoir principal entries and the contextual source-layer class square.
-Later stored/global local,
+Integration #1023 passed the full warning-free build, global axiom audit
+and all concrete consumers at source `18ca3caa` (run 41714507812),
+integrated at `17b99448`. It verifies stored missing-colour local inverses,
+the zero lower cell and evaluated coefficient transport, exact bundled
+slides, the evaluated stored corrected braid, occupied mixed/triple
+coordinates and literal dot/equal/distinct reservoir matrix comparisons.
+Later present/global local,
 central matrix and literal layer additions retain their separate
 scoped-check/full-integration boundaries below.
 
@@ -919,6 +951,48 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeWeightCapCoordinates.probeOldWeightCapPower_total_comparison`
+now retains the actual global dot-power/counit row through its exact
+predecessor equality at every exponent. Strict mixed regular/parity-
+shifted/nonempty/all-exponent consumer checks audit all 25 declarations.
+Together with the unit comparisons below, these supply every row needed
+for product inverse gluing. Attach the same-colour principal coordinate;
+see [ProbeWeightCapCoordinates](ProbeWeightCapCoordinates.md).
+`ELVProbeWeightUnitCoordinates.probeOldWeightUnitPower_total_comparison`
+now retains the actual global unit followed by every dot power through
+its selected successor coordinate, including missing lower predecessors.
+Strict mixed regular/parity-shifted/empty-content/all-exponent consumer
+checks audit all 27 declarations. Attach cap and principal coordinates,
+then glue the local inverses over the whole product; see
+[ProbeWeightUnitCoordinates](ProbeWeightUnitCoordinates.md).
+`ELVProbeAppendToLocalInverse.probeAppendToInvPos` and
+`probeAppendToInvNeg` now construct both prescribed finite inverses at
+arbitrary stored representatives. The chosen mate and rows agree with the
+transported original fields, and every inverse entry is retained literally.
+Strict pure/reordered mixed/both-height/zero-height/off-diagonal/all-index
+consumer checks audit all 64 declarations. Attach the whole-weight
+coordinates and glue products; local memberships/slides remain separate.
+See [ProbeAppendToLocalInverse](ProbeAppendToLocalInverse.md).
+`ELVProbeAppendToMateReindex.probeAppendToMate_reindex` now proves the
+whole selected evaluated mate square through the even lower and upper
+loop comparisons, retaining original source and stored target generators.
+Strict reordered mixed/odd-input/regular/parity-shifted consumers audit
+all 31 declarations. Together with the dotted-row squares below, copy both
+transported inverse orientations into the present-colour local record;
+see [ProbeAppendToMateReindex](ProbeAppendToMateReindex.md).
+`ELVProbeAppendToRowReindex` now proves both whole evaluated dotted-row
+squares for every exponent, and identifies the canonical source rows
+with the original evaluated adjunction/dot fields. Strict mixed/reordered/
+nonempty/all-exponent/odd-input consumer checks audit all 38 declarations.
+Combine with the selected mate square to construct the present-colour
+local record and whole-weight assembly; see
+[ProbeAppendToRowReindex](ProbeAppendToRowReindex.md).
+`ELVProbeReindexLoopAction` retains whole natural-transformation
+components under reindexing and the prescribed standard evaluated mate,
+with its original adjunctions and negative equal crossing. Strict mixed
+regular/parity-shifted consumers audit all sixteen declarations. Combine
+these with the loop charts for the canonical mate square; see
+[ProbeReindexLoopAction](ProbeReindexLoopAction.md).
 `ELVProbeReindexLoopComponents` identifies both selected even loop
 comparisons with the OLD maps used in the proved mate square. Strict
 reordered mixed/shifted/odd-input consumer checks audit all fourteen
@@ -956,6 +1030,14 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeWeightMixedMateInverse.probeOldRouquierData_invNe` now proves
+the exact bundled distinct sideways-crossing inversion on the whole
+weight product, from the chosen supported mate and both absent zero
+coordinates. It retains the natural inverse and its degree. Strict
+asymmetric two-odd/twisted/occupied/absent/odd-input consumers audit all 81
+declarations and both inverse identities. No mixed-inverse premise
+remains; complete the local family and remaining braid fields. See
+[ProbeWeightMixedMateInverse](ProbeWeightMixedMateInverse.md).
 `ELVProbeWeightMixedMateComparison` now retains the actual upper unit
 and lower counit through the occupied mixed-coordinate equalities.
 Strict asymmetric mixed-parity regular/parity-shifted weight consumers audit
@@ -1046,6 +1128,13 @@ connected mixed/interior/two-odd/disconnected-parameter consumers audit
 all eight declarations. Combine these fields with the separately proved
 quadratics and the remaining braid/inverse attachments; see
 [ProbeSlideFields](ProbeSlideFields.md).
+`ELVProbeWeightCrossCoordinates` now retains the selected weight crossing
+through its exact product coordinates as the stored-target crossing,
+with negative equal and positive distinct normalization. Strict occupied
+mixed/two-odd/equal/distinct consumers audit all 23 declarations and retain
+nonzero append outputs. Attach the whole-weight braid paths through the
+common triple coordinates; see
+[ProbeWeightCrossCoordinates](ProbeWeightCrossCoordinates.md).
 `ELVProbeWeightTripleCoordinates` now retains both intermediate canonical
 blocks and an arbitrary common final stored target for the whole supported
 triple induction coordinate. Strict occupied mixed-parity/nonempty and
@@ -1673,6 +1762,39 @@ probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
 ## Central augmented-matrix attachment
+
+`Generators.CrossCoeffExpansion` now proves the finite signed expansion
+after an arbitrary ring evaluation, and specializes it to the literal
+mixed coefficient from its inverse equations. Strict nonzero two-odd
+matrix tests over Z/9 audit all twelve declarations, including a product
+whose reservoir operator is not globally nilpotent but whose evaluated
+component is. These are intermediate component statements; instantiate
+the intended factor, coefficient inverse and component bounds, then bend
+the sums and prove residual ideal membership. See
+[CrossCoeffExpansion](CrossCoeffExpansion.md).
+
+`Sigma.ProbePrincipal` now identifies the literal pure probe entry with
+the chosen precomposition mate, and then with the specified multiple of
+negative `sigL`. The exceptional odd height-zero sign is retained. Strict
+complete asymmetric two-odd ELV-pair consumers retain a nonzero PBW input,
+check both odd zero-height slices and audit all 31 declarations. Attach
+the reverse mixed bend, probe rows and complete augmented-matrix chart;
+see [ProbePrincipal](ProbePrincipal.md).
+`Sigma.ProbeFactorCoordinates.probeCupFactorIso` now identifies the
+probe cup path with the canonical precomposition adjunction loop,
+retaining the chosen weight equation and endpoint transports. Strict
+asymmetric two-odd ELV-pair consumers retain a nonzero PBW input and audit
+all six declarations. Use this chart for the probe principal and reverse
+mixed bend; see [ProbeFactorCoordinates](ProbeFactorCoordinates.md).
+`Sigma.ProbeToReservoirBend` now identifies the actual probe-to-reservoir
+mixed entry with its reservoir-unit/coefficient/probe-counit word through
+computed factor charts, for every sector and full Hom input. The negative
+augmented sign is retained. Strict complete two-odd ELV-pair consumers
+cover height zero, absent pure corners and a nonzero odd-product input,
+auditing all 51 declarations. The coefficient remains specified data;
+attach its finite expansion after evaluation and prove residual ideal
+membership. The reverse bend and probe principal remain separate; see
+[ProbeToReservoirBend](ProbeToReservoirBend.md).
 
 [CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
 remaining fixed-output-content comparison from the actual `augPosMat`
