@@ -2114,3 +2114,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap
 
 import OddMath.Algebra.SupermoduleIsoOfBijectiveTotals
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentMatrixInverse
