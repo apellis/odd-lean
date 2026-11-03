@@ -145,15 +145,7 @@ including full build, axiom audit and all concrete consumers.
 | Literal coefficient power quotient | Actual A/T is algebra-isomorphic to SYM/(J+P), with both generator maps and roundtrips; its full bounded coefficient window injects. The quotient has its original parity and regular left A-module with whole T annihilation | `ELVCoefficientPowerQuotient`, `ELVCoefficientPowerGrading`; paired checks and 50 owned declarations pass. Five public forwarding declarations reuse the existing quotient grading proof, with all 56 foundation declarations audited. Full CI pending. Old-word vacuum extension, integer grading/nilpotence and evaluation kernel remain open |
 | Chosen content adjunction and E/F charts | Selected ordinary cup and whole cap squares, restriction naturality on all module maps, and chosen preceding EF/following FE natural-isomorphism charts with literal forward components | `ELVContentAppendAdjunction`, `ELVContentEFComparison`; paired mixed/odd/vacuum checks and all 69 owned declarations pass, full CI pending. Signed content crossing/mate and finite parity/product inverse attachment remain open |
 | Grid, iterated induction and crossings | Six-category grid flattening; chosen weighted iterated induction and prescribed equal-colour signed crossing conjugation; scalar selected iterated induction, transform and equal-colour signed crossing conjugation | Producers and paired mixed/odd/vacuum consumers scoped-checked, full CI pending. Category-changing mate and prescribed weighted mate/matrix transport remain open. [InductionGridComposition](InductionGridComposition.md), [WeightedDoubleCrossing](WeightedDoubleCrossing.md), [ProbeDoubleAppend](ProbeDoubleAppend.md) |
-| Ordinary-right distinct kernels | Two-functor IndRes kernel realization, full first-factor source comparison, constructed natural coefficient-kernel inverse and ordered native-coend mate comparison | Five producers and paired mixed/exterior/shifted consumers pass strict checks and all 108 owned-declaration audits; full CI pending. The arbitrary-module whole-map identity and bundled input-module inverse are now scoped-checked below; content/weight transport remains open. [DistinctMateKernel](DistinctMateKernel.md) |
-
-| Actual distinct-mate natural inverse | The explicit all-old-module coend inverse has exactly the actual rectangular-mate forward map; the bundled inverse is natural in every old input-module map, with both maps of parity p(i)p(j) | `ELVDistinctModuleInverse`, `HomogeneousSuperfunctorIso`, `ELVDistinctModuleIso`; all producer/consumer checks and 49 new owned-declaration audits pass, full CI pending. Shifted/mixed/exterior/empty consumers check both roundtrips and odd naturality. Exact-content and original-weight transport remain open |
-| Literal old power vacuum and extraction | Actual fully faithful empty coefficient embedding; balanced extension of regular A/T; even A/T empty-component iso, all nonempty components zero and whole T annihilation. Prescribed inverse rows give an all-vector dot window and full coefficient Koszul law on this exact vacuum | `ELVEmptyCoefficientEmbedding`, `ELVCoefficientPowerVacuum`, `ELVCoefficientPowerRows`; strict paired checks and 116 owned audits pass, full CI pending. Both independent odd coefficient vectors survive and the top-row sign is tested; no weighted replacement or cap rescaling |
-| Power-category induction-dot nilpotence | For finite colours with the standing symmetrizer/homogeneous-parameter data, a positive exponent at each fixed output content kills the original signed induction dot on every literal T-annihilated module | `ELVCoefficientPowerNilpotence`; 13 owned declarations and paired consumer scoped-checked, full CI pending. The consumer forces exponent greater than three on the occupied vacuum. No module finite-dimensionality assumption or uniform weight-fibre exponent |
-| Exact source/power presentation in old Homs | The actual coefficient and old cyclotomic quotient kernels are the literal source relation spans; actual old scalar powers have the precise source preimage. Signed U lands in existing reversed/twisted OldCategory Homs with exact transformed kernel and explicit/reservoir bounded detection | `ELVSourceQuotientComparison`, `ELVSourcePowerComparison`, `HalfTurn/OldQuotient`; strict paired checks and 34 owned audits pass, full CI pending. These are quotient-presentation kernels, not an assumed action evaluation kernel |
-| Chosen mate and chart tensor transport | The chosen weighted ordinary mate square, category-changing grid mate and raw total tensor API, and selected content EF/FE chart tensor formulas retain the prescribed components | `ELVWeightedMateComparison`, `ELVInductionGridMate`, `ELVInductionGridMateTensors`, `ELVContentEFChartTensors`; strict paired checks and 97 owned audits pass, full CI pending. Same-colour/content and distinct-content mate charts and finite parity/product matrix assembly remain open |
-
-| Chosen scalar ordinary mate | The prescribed category-changing old mate is transported through the selected append/restriction maps to the given ordinary grid mate, retaining the extra minus and actual unit/counit | `ELVProbeMateComparison`; producer and mixed/vacuum consumer pass strict checks and 44 owned audits, full CI pending. Normalized cap rows and prescribed matrix transport remain open |
+| Ordinary-right distinct kernels | Two-functor IndRes kernel realization, full first-factor source comparison, constructed natural coefficient-kernel inverse and ordered native-coend mate comparison | Five producers and paired mixed/exterior/shifted consumers pass strict checks and all 108 owned-declaration audits; full CI pending. The final equality of the arbitrary-module tensor inverse with the actual rectangular mate is still unverified and its producer is excluded. [DistinctMateKernel](DistinctMateKernel.md) |
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
@@ -306,9 +298,9 @@ and normalized content/weight transport are not asserted.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The distinct
    ideal identity, PBW quotient decoder and actual representable mate inverse
    are verified (#958/#972). Ordinary-right coefficient-kernel natural inverses
-   and arbitrary-module tensor realization are scoped-checked. The actual arbitrary-module whole equality, homogeneous module inverse and
-   input-module naturality are now scoped-checked. Finish exact-content/weight
-   transport through the selected charts. Weight crossings/pair coherence are verified
+   and arbitrary-module tensor realization are scoped-checked. The final whole
+   equality with the actual arbitrary-module mate remains unverified. Finish
+   exact-content/weight transport. Weight crossings/pair coherence are verified
    (#972); content braid is implemented (#933/#934). Transfer pair/triple
    whiskering relations through the selected charts and retain the supplied
    CScalars, original weight group and balanced schedule (#864).
@@ -321,13 +313,12 @@ and normalized content/weight transport are not asserted.
    CrossCoeff fields without a uniform exponent over weight fibres.
 4. Finish the literal power-reservoir vacuum and observations. The T-annihilated
    category and numerical weighted/power bridge are verified (#973). Actual
-   A/T presentation, the literal old regular vacuum and its inverse-row window
-   are scoped-checked. Induction-dot nilpotence now follows through the proved
-   weighted comparison at each formal content; no module dimension premise is
-   used. Attach higher moments and the prescribed swapped caps/bubbles. The
-   exact source/power kernels and signed half-turn detection in literal old Homs
-   are scoped-checked. Identify actual iterated vacuum word values with their
-   signed Hom coordinates and prove the chosen action evaluation identity. Prove
+   A/T coefficient presentation, parity and regular coefficient module are
+   scoped-checked. Extend to old words, establish the required integer grading
+   and contentwise nilpotence, and attach the verified inverse rows/moments
+   (#972) to the chosen swapped caps. The signed half-turn, ideal quotient and
+   bounded class-map detection are formalized; its exact comparison with actual
+   reservoir Hom quotients and vacuum evaluation is still required. Prove
    normalized bubble coefficients and bounded recovery, then instantiate the
    observation, finite-colour and upward-to-oriented reductions.
 
