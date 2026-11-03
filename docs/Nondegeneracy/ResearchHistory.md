@@ -640,3 +640,27 @@ the literal affine-layer quotient square. Their full verification belongs
 to their own integration PR and STATUS. This preservation does not assert
 that the complete snapshot builds. Recover topical files with
 `git show 1cc3b498df47550c84691cfbe58896cc6d0aecc0:<repository-path>`.
+
+## Whole-weight, central matrix and observation synthesis argument tree
+
+The complete source tree [a15c1058b0](https://github.com/apellis/odd-lean/commit/a15c1058b0bdb96069baa88e54ca9170e0510323) preserves the proposed next attachments.
+Its sole parent is the verified research integration of #1023. Pending
+proof-integration heads are not introduced as ancestors. The preservation
+merge changes only this inventory and HANDOFF; proposed source is not
+imported into the checked library.
+
+| Topic | Source files in the preserved tree | Scope at preservation |
+| --- | --- | --- |
+| Global local inverses | `ELVProbeWeightLocalMateCoordinates.lean`, `ELVProbeWeightAbsentInverse.lean`, `SKM/AugmentedInverseEvaluation.lean` | Proposed principal/absent coordinate attachment, pointwise evaluation and whole-product local inverse assembly. The complete probe family is not asserted. |
+| Whole-weight braid paths | `ELVProbeWeightPathCoordinates.lean`, `ELVProbeWeightTripleCrossCoordinates.lean`, `ELVProbeWeightTripleDots.lean` | Proposed shared path, independently whiskered crossing and dot coordinates. The remaining general/corrected whole-weight braid fields are not asserted. |
+| Central path matrix | `SwappedAssembly/Sigma/CentralPaths.lean` | Proposed path indices retaining absent pure corners before the whole augmented-matrix chart. Central invertibility remains open. |
+| Actual reservoir component bounds | `ELVPostCoefficientEvaluation.lean` | Proposed specialization of the checked finite coefficient expansion to the literal ELV output evaluation and its constructed nilpotence bound. Complete paired verification and shifted/bent attachment remain separate. |
+
+The tree also contains separately scoped-checked selected evaluated mate
+and row squares, present-colour inverse records, whole-weight distinct
+inversion and cap/unit coordinates, both pure principal entries, both
+mixed bends, contextual reservoir matrices, and concrete tensor-Hom
+source-layer class squares. Their verification belongs to their own
+integration PRs and STATUS; this preservation does not assert that the
+complete snapshot builds. Recover topical files with
+`git show a15c1058b0bdb96069baa88e54ca9170e0510323:<repository-path>`.
