@@ -75,9 +75,25 @@ identify their old-field/module-map specialization through the selected
 FE chart, then derive the normalized left-cap window and mixed slide.
 The ordinary right counit comparison does not discharge this obligation.
 
-These successor sources have strict paired local checks and owned-declaration
-axiom audits; their full integration CI is pending. Exact module scope is
-in the STATUS table and the mathematical topic notes.
+These successor sources passed the full warning-free build, global axiom
+audit and every concrete consumer in #989 at source head `7ac6e4f9`
+(run 41585699842), integrated at `d73f2f2f`. All 40 producers and 75 exact
+producer/consumer blobs also passed strict local and combined-import checks.
+Exact module scope is in STATUS and the mathematical topic notes.
+
+The next locally checked sources supply both native multicolour quadratic
+fields, whole chosen weight-dot evaluation, every canonical-content unit-dot
+power through the selected full charts, exact scalar old inverse-row field
+binding, supported chosen weight unit/counit squares and even flattened
+weight-triple coordinates. Their full integration CI is pending. Next attach
+the native coefficient cap to its exact scalar inverse-row field and derive
+the normalized probe window. The whole original-weight distinct mate inverse
+and its parity now pass strict paired checks, including both round trips and
+odd-input naturality; the selected native coefficient cap has its prescribed
+degree and a nonzero regular-probe value. Prove the native slide/braid fields,
+original-weight same-colour local inversions and canonical diagonal cap-row
+and inverse fields. The chosen crossing
+evaluation and final observation recovery remain separate obligations.
 
 ## Current comparison interfaces
 
