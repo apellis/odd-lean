@@ -44,11 +44,11 @@ The complete inventory of preserved topic variants is in
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
-| Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full integration of the multicolour constructor; use the selected factor in the swapped assembly |
+| Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full CI verified in #1014; use the selected factor in the swapped assembly |
 | Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
-| Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passes strict paired checks in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
+| Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
 | Final Phase 1 nondegeneracy | Blocked on concrete observations | Finite-colour reduction, upward/oriented equivalence, observation consumer and proved ground-ring descent | Supply observations for every required bound/word/weight for symmetrizable homogeneous data; inhomogeneous parameters belong to Phase 2 and nonsymmetrizable data are excluded |
 
 ## Prescribed matrix and coefficient-row successors
@@ -720,12 +720,13 @@ superopposite signs; its producer, occupied consumer and all 15 owned
 audits also pass, with full CI verified in #1011. The shared signed
 argument is now exposed in `ELVModuleInductionBraid` for the changing
 content grid; the extraction and unchanged OLD consumer pass fresh strict
-checks, with one plus fourteen owned audits. `ELVOldNestedBraid` now
+checks, with one plus fourteen owned audits, and full CI in #1014. `ELVOldNestedBraid` now
 identifies both chosen negative prefix/suffix crossings through the same
 canonical triple flattening and proves their braid on every old module.
 Its producer and concrete consumer pass strict checks; the shared-grid
 refactor retains the same statements and audits all sixteen remaining
-owned declarations. Restriction to evaluated fixed contents and weight transport
+owned declarations. The original twenty-declaration form passed full CI
+in #1014; the shared-grid refactor awaits integration. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
 `ELVInductionGridBraid` and `ELVOldContentBraid` now supply the same
@@ -826,9 +827,8 @@ dominant directions. Do not insert such an assumption on the original X.
 multicolour fields for the selected full-ELV family, with the standing
 highest-weight pairing and no supplied-family or inverse premise. The
 fresh producer and mixed/asymmetric-odd consumer checks pass, including
-all five owned audits. The factor acts with `parameterTwist D Sc` and
-retains original Sc in its presentation. Full integration and use in the
-compatible swapped pair remain. See [ELVRouquierMulticolour](ELVRouquierMulticolour.md).
+all five owned audits, with full CI verified in #1014. The factor acts with `parameterTwist D Sc` and
+retains original Sc in its presentation. Use in the compatible swapped pair remains. See [ELVRouquierMulticolour](ELVRouquierMulticolour.md).
 
 ## Weighted quotient and source detection
 
@@ -954,14 +954,15 @@ chosen negative crossing. `ELVInductionGridLocal` and `ELVOldContentLocal`
 assemble these with the prescribed actual matrix inverses into
 `oldContentLoc`, with no local-record or inverse premise. All three
 producers and both concrete consumers pass strict checks and 71 owned
-audits. Restrict the exact record to the evaluated full subcategory,
+audits, with full CI verified in #1014. Restrict the exact record to the evaluated full subcategory,
 then handle canonical contents, absent predecessors and original weights.
 See [InductionGridLocal](InductionGridLocal.md).
 
 `probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
 odd homogeneous inverse and absent predecessors. Its producer and
-consumer pass strict checks and all 14 owned audits. The consumer retains
+consumer pass strict checks and all 14 owned audits, with full CI verified
+in #1014. The consumer retains
 a nonzero actual induced unit vector at positive levels for both moving
 parities. Use this unit in the concrete probe and denominator inputs.
 See [ProbeWeightDotUnit](ProbeWeightDotUnit.md).
@@ -978,10 +979,11 @@ weight coordinate and both absent-predecessor zero cases. Its producer,
 concrete regular-probe consumer and all four owned audits pass strict
 checks and full CI in #1013. `ELVProbeWeightDotWhiskering` identifies both independently
 whiskered dots in the same supported coordinates as the chosen crossing;
-its producer, concrete consumer and all four owned audits also pass.
+its producer, concrete consumer and all four owned audits also pass,
+with full CI verified in #1014.
 `ELVProbeBlockDotComparison` identifies each selected stored-target dot
 with the native induction-grid dot, with strict paired checks and four
-owned audits. Use these common coordinates to transport both signed
+owned audits, and full CI in #1014. Use these common coordinates to transport both signed
 slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
@@ -1015,7 +1017,7 @@ all four owned audits. Braid and local/multicolour assembly remain. See
 `ELVProbeWeightDistinctCrossing` supplies the positive crossing on the
 selected weight E functors using all four stored-target appends. Its
 producer and connected mixed/two-odd consumer pass strict checks and
-all 72 owned audits. The exact components, supported conjugation and
+all 72 owned audits, with full CI verified in #1014. The exact components, supported conjugation and
 absent predecessors are retained. Transport the standard-cons mate
 inverse through arbitrary canonical representatives and the same chosen
 unit/counit maps. See [ProbeWeightDistinctCrossing](ProbeWeightDistinctCrossing.md).
@@ -1034,7 +1036,7 @@ upper j-adjunctions with the constructed invertible OLD mate. Its producer,
 concrete mixed/two-odd consumer now also check the presentation
 `crossMate` equality and invertibility. All 64 owned audits pass strict
 checks. The 62-declaration rectangular-mate core passed full CI in #1013;
-the two presentation corollaries await integration. Canonical-content and weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
+the two presentation corollaries passed full CI in #1014. Canonical-content and weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
 
 `ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
 distinct mate and its inverse to the evaluated probe. The producer and

@@ -30,3 +30,11 @@ from `ELVInductionGridBraid`. The old endofunctor statements and chosen
 maps are unchanged. The refactored producer and its existing concrete
 consumer pass fresh strict checks, auditing all sixteen remaining owned
 declarations. This refactor awaits its own full integration gate.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.
+This verifies the original twenty-declaration source; the subsequent
+shared-grid refactor has its separate strict paired check above.

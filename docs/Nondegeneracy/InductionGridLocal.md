@@ -32,3 +32,9 @@ and the constructed empty local record. Its prescribed normalized
 counit retains the fixed scalar relative to the raw top inverse row;
 the canonical pre-Hom comparison supplies the second scalar. None of
 these fields is rescaled.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.

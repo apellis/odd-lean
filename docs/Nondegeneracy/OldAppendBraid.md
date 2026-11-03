@@ -51,3 +51,9 @@ conclusion. The generic producer and actual OLD consumer pass strict
 checks and audit its one owned declaration; the refactored OLD producer
 and consumer pass again, auditing its remaining fourteen declarations.
 Full integration of this extraction remains separate.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.

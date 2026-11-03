@@ -31,3 +31,9 @@ still needs transport of the existing standard-cons OLD mate inverse
 through the arbitrary canonical representatives and the chosen global
 unit/counit squares. No inverse or compatibility premise is hidden in this
 crossing construction.
+
+The source head `2652d0a76a9ee31ee3c669eb1ad35736b837fee4` passed the
+full build, global axiom audit and all concrete consumers in
+[#1014](https://github.com/apellis/odd-lean/pull/1014)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
+merged at `2c1306c4`.
