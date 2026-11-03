@@ -2538,3 +2538,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightSupportedInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorReservoirWords
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierFamily
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SectorFamilyChart
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.MatrixEmbeddingEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorChart

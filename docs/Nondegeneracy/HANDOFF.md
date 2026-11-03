@@ -1908,6 +1908,17 @@ all eighteen declarations. Combine these with the reservoir rows and
 four principal entries in the augmented matrix; see
 [ProbeDottedFactorCoordinates](ProbeDottedFactorCoordinates.md).
 
+`Sigma.AugmentedSectorChart` now supplies all four factor-object charts
+for the evaluated positive and negative augmented path families, both
+literal conjugation squares and both two-sector block shapes. The
+source/target charts use the specified cap/cup factor isomorphisms;
+absent corners are padded by zero after evaluation. Strict actual
+evaluated two-odd ELV/occupied/empty-window and generic rational-module
+consumers audit all 24, 3 and 27 declarations. Identify every conjugated
+entry with the previously checked principal, bend and dotted-row
+formulas, then use exact-content support before transferring a native
+inverse at an absent corner; see [AugmentedSectorChart](AugmentedSectorChart.md).
+
 `Sigma.CentralPaths` now classifies both central path families and the
 identity-path index, retaining the absent reservoir source and absent
 probe target. `matrixEmbeddingIso` pads those missing indices by zero

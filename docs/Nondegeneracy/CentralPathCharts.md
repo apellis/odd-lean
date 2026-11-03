@@ -21,3 +21,12 @@ occupied sectors, the empty sector, and a mixed sector with complementary
 absent corners. Its matrix example pads a nonzero rational module by a
 zero module, checks both inverse equations and a nonzero retained entry,
 and applies the coordinate square to an arbitrary module matrix.
+
+`sectorFamilyIso` packages this padding with a classification into valid
+pure sides and window indices. Its pure objects and all their component
+charts are supplied explicitly; window objects have their specified
+charts too. `matrixEmbeddingMap_apply` identifies every retained matrix
+entry as source chart, original entry, inverse target chart. The paired
+`SwappedSectorFamilyChart` consumer covers each absent-corner pattern,
+both two-slot and empty windows, and arbitrary maps between these
+rational-module families.
