@@ -58,7 +58,11 @@ parity through its chosen even unit comparison.
 This is the regular power vacuum of the old full-coefficient module
 category, not yet the final swapped action's normalized vacuum. Attaching
 the inverse coefficient rows to this module is proved separately in
-[CoefficientPowerRows](CoefficientPowerRows.md). The mixed inverse caps,
-integer grading and explicit positive-dot bounds remain separate.
-No positive-dot nilpotence is inferred from finite dimension alone. The
-actual vacuum evaluation kernel and all-height bubble theorem remain open.
+[CoefficientPowerRows](CoefficientPowerRows.md). The mixed inverse caps and
+an explicit integer grading of this coefficient quotient remain separate.
+[CoefficientPowerNilpotence](CoefficientPowerNilpotence.md) proves the
+fixed-content positive-dot exponent on these literal power modules by
+transporting the existing integer-degree bound through the chosen weighted
+comparison. No positive-dot nilpotence is inferred from finite dimension
+alone. The actual vacuum evaluation kernel and all-height bubble theorem
+remain open.
