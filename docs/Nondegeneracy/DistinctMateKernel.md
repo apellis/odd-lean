@@ -46,8 +46,9 @@ distinct odd colours, ordinary-right exterior precomposition, empty words
 and zero cutoff, and audits all 108 owned declarations. Full CI remains
 the integration gate.
 
-The whole-map identity is supplied by the scoped-checked
-[DistinctModuleInverse](DistinctModuleInverse.md). Its homogeneous old-module
-inverse and arbitrary input-module naturality are supplied by
-[DistinctModuleIso](DistinctModuleIso.md). Exact-content/original-weight
-transport and the full factor family remain subsequent obligations.
+The final whole-map identity between the arbitrary-module tensor inverse
+and the actual rectangular mate is still proposed in
+`ELVDistinctModuleInverse`. Its source and target carrier normalization must
+be checked before claiming that action attachment. Exact-content and
+original-weight transport and the full factor family remain subsequent
+obligations.
