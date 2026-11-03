@@ -2212,3 +2212,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleComparisonCoherence
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitCoefficientWindow
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapWindow
