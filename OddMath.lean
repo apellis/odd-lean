@@ -1950,6 +1950,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixCharts
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -2032,3 +2033,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders
+import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
