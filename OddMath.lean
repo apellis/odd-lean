@@ -2047,3 +2047,5 @@ import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordYoneda
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordMorphisms
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
