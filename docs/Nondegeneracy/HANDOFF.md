@@ -985,6 +985,14 @@ absent predecessors are retained. Transport the standard-cons mate
 inverse through arbitrary canonical representatives and the same chosen
 unit/counit maps. See [ProbeWeightDistinctCrossing](ProbeWeightDistinctCrossing.md).
 
+`ELVProbeReindexInduction` constructs the canonical even append/reindex
+comparison on OLD and evaluated module categories, with the original
+composite unit/counit squares and both inverse identities. Its producer,
+nontrivial-representative/odd-input consumer and all 45 owned audits pass
+strict checks. Prove its tensor formula and dot/crossing comparisons,
+then use these same maps for canonical local and distinct inverse transport.
+See [ProbeReindexInduction](ProbeReindexInduction.md).
+
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
 upper j-adjunctions with the constructed invertible OLD mate. Its producer,
