@@ -768,6 +768,13 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`SKM.RouquierProductInverse` now assembles both finite inverse orientations
+on arbitrary products at a common height, with literal coordinate inverse
+entries for every row index. Strict nonzero odd three-slot/two-block and
+zero-window consumer checks audit all 42 owned declarations. Identify the
+coordinate products with the chosen global mate and dotted rows before
+using this for the weight local record; see
+[RouquierProductInverse](RouquierProductInverse.md).
 `ELVContentMissingLocal.contentMissingLoc` now constructs the untruncated
 local record at arbitrary content missing the moving colour, including
 both inverse orientations at height zero. Its coefficients are the
