@@ -1950,6 +1950,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixCharts
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixRows
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -1990,6 +1992,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFChartTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendMate
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
@@ -2032,3 +2035,32 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders
+import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateParity
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDots
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoordinates
+import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordYoneda
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordMorphisms
+import OddMath.QuiverHecke.CyclotomicAction.ELVParityRestrictionComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionIsoComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentAppendTo
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientModuleMaps
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeShiftedCapComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairCrossingTotals
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAppendMaps
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
