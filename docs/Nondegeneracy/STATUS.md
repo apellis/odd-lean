@@ -267,8 +267,12 @@ at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
 | Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
 
 
-The integration proposed in #995 has strict producer/consumer checks and owned
-axiom audits; its full-package CI remains the integration gate.
+The integration in [#995](https://github.com/apellis/odd-lean/pull/995) passed
+the full warning-free build, global axiom audit and every concrete consumer
+at source head `a51a6f9a80f5c0efbf367cc4d79a4d08f79b1f70`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41605147758)),
+and is integrated at `8f9ad250`. Its 36 changed producers and 66 exact
+producer/consumer blobs also passed strict local checks and combined imports.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |

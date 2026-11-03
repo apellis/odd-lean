@@ -102,7 +102,9 @@ polynomial, canonical counit/all cap rows, weight mate boundary, triple
 coherence and selected append-unit/cyclicity batches passed full CI in #993
 at `f0a2ed23` (run 41594069793). These are established dependencies.
 
-The next strict locally checked integration proves the prescribed same-colour
+The #995 integration passed the full warning-free build, global axiom audit
+and all consumers at `a51a6f9a` (run 41605147758), integrated at `8f9ad250`.
+It proves the prescribed same-colour
 slides and braid and both distinct-colour slides on original weights, on all
 modules and outputs. It also identifies normalized crossing/mate maps and
 all native unit/cap powers with the old grid operators. Mixed-colour braid
@@ -149,7 +151,8 @@ and bubble identification remain.
 
 Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
-These newer successors await their full-package integration gate.
+The subsequent local-inverse, triple-component and probe-adjunction successors
+await their full-package integration gate; #995 is fully verified as recorded above.
 
 ## Current comparison interfaces
 
