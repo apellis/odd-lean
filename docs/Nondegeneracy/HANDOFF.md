@@ -932,6 +932,13 @@ concrete regular-probe consumer and all four owned audits pass strict
 checks. Use these coordinates for the chosen weight crossing.
 See [ProbeWeightPairInduction](ProbeWeightPairInduction.md).
 
+`ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
+of the chosen positive evaluated crossing under the specified lower and
+upper j-adjunctions with the constructed invertible OLD mate. Its producer,
+concrete mixed/two-odd consumer and all 62 owned audits pass strict checks.
+The presentation `crossMate` convention comparison and canonical-content/
+weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
+
 `ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
 distinct mate and its inverse to the evaluated probe. The producer and
 concrete mixed/two-odd consumer pass strict checks and all 54 owned
