@@ -2066,3 +2066,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAppendMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionPolynomialSigns
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldVacuumPolynomial
