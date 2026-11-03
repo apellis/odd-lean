@@ -934,6 +934,14 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeAppendToLocalInverse.probeAppendToInvPos` and
+`probeAppendToInvNeg` now construct both prescribed finite inverses at
+arbitrary stored representatives. The chosen mate and rows agree with the
+transported original fields, and every inverse entry is retained literally.
+Strict pure/reordered mixed/both-height/zero-height/off-diagonal/all-index
+consumer checks audit all 64 declarations. Attach the whole-weight
+coordinates and glue products; local memberships/slides remain separate.
+See [ProbeAppendToLocalInverse](ProbeAppendToLocalInverse.md).
 `ELVProbeAppendToMateReindex.probeAppendToMate_reindex` now proves the
 whole selected evaluated mate square through the even lower and upper
 loop comparisons, retaining original source and stored target generators.
