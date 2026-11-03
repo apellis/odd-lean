@@ -99,20 +99,20 @@ private theorem inverseShiftRowNatTrans_mem (r : Fin m) (M : Superfunctor k C (S
 include he in
 /-- Input supernaturality of the given inverse rows follows from the forward
 unit matrix alone, retaining each original source-unshift sign. -/
-theorem unitColumnInverseRow_supernatural (r : Fin m) :
+theorem unitColumnModuleInverseRow_supernatural (r : Fin m) :
     IsSupernatural k (r.val • p) (F := induction (k := k) J ⋙ restriction (k := k) J)
-      (G := 𝟭 (Superfunctor k C (SVec k))) (fun M => unitColumnInverseRow J M m (e M) r) := by
+      (G := 𝟭 (Superfunctor k C (SVec k))) (fun M => unitColumnModuleInverseRow J M m (e M) r) := by
   have hi := isSupernatural_of_natTrans (R := k) (inverseShiftRowNatTrans J hα m e he r)
     (inverseShiftRowNatTrans_mem J hα m e he r)
   have hrow (M : Superfunctor k C (SVec k)) :
       (inverseShiftRowNatTrans J hα m e he r).app M ≫
         ((SKM.homParityShiftDatum (k := k) (r.val • p)).iso M).hom =
-          unitColumnInverseRow J M m (e M) r := Category.assoc _ _ _
+          unitColumnModuleInverseRow J M m (e M) r := Category.assoc _ _ _
   have hfun :
       (fun M : Superfunctor k C (SVec k) =>
         (inverseShiftRowNatTrans J hα m e he r).app M ≫
           ((SKM.homParityShiftDatum (k := k) (r.val • p)).iso M).hom) =
-      (fun M : Superfunctor k C (SVec k) => unitColumnInverseRow J M m (e M) r) := funext hrow
+      (fun M : Superfunctor k C (SVec k) => unitColumnModuleInverseRow J M m (e M) r) := funext hrow
   have h := hi.comp (SKM.homParityShiftDatum (k := k) (r.val • p)).supernatural
   have hs : IsSupernatural k (r.val • p)
       (F := induction (k := k) J ⋙ restriction (k := k) J)
@@ -123,16 +123,16 @@ theorem unitColumnInverseRow_supernatural (r : Fin m) :
   exact hfun ▸ hs
 
 /-- The inverse row as a homogeneous cell on all input modules. -/
-def unitColumnInverseTransformation (r : Fin m) :
+def unitColumnModuleInverseTransformation (r : Fin m) :
     (⟨induction (k := k) J ⋙ restriction (k := k) J⟩ :
       Superfunctor k (Superfunctor k C (SVec k)) (Superfunctor k C (SVec k))) ⟶
     Superfunctor.id k (Superfunctor k C (SVec k)) :=
-  (unitColumnInverseRow_supernatural J hα m e he r).toSuperNatTrans
+  (unitColumnModuleInverseRow_supernatural J hα m e he r).toSuperNatTrans
 
-theorem unitColumnInverseTransformation_total (r : Fin m) (M : Superfunctor k C (SVec k)) :
-    (unitColumnInverseTransformation J hα m e he r).total M = unitColumnInverseRow J M m (e M) r :=
+theorem unitColumnModuleInverseTransformation_total (r : Fin m) (M : Superfunctor k C (SVec k)) :
+    (unitColumnModuleInverseTransformation J hα m e he r).total M = unitColumnModuleInverseRow J M m (e M) r :=
   OddMath.HomogeneousSuperfunctorIso.homogeneous_total
     (F := ⟨induction (k := k) J ⋙ restriction (k := k) J⟩) (G := Superfunctor.id k (Superfunctor k C (SVec k)))
-    (unitColumnInverseRow_supernatural J hα m e he r) M
+    (unitColumnModuleInverseRow_supernatural J hα m e he r) M
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

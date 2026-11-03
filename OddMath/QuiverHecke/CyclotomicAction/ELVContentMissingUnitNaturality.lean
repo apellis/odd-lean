@@ -26,7 +26,7 @@ theorem contentMissingUnitRow_supernatural (r : Fin count) :
     IsSupernatural k (r.val • D.parity i) (F := induction K ⋙ restriction K)
       (G := 𝟭 (Superfunctor k (OldContentCategory D Sc cutoff γ) (SVec k)))
       (fun N => contentMissingUnitRow D Sc cutoff γ i hi N r) :=
-  unitColumnInverseRow_supernatural K hDot count
+  unitColumnModuleInverseRow_supernatural K hDot count
     (contentMissingUnitModuleIso D Sc cutoff γ i hi)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi) r
 
@@ -34,7 +34,7 @@ theorem contentMissingUnitRow_supernatural (r : Fin count) :
 def contentMissingUnitRowTransformation (r : Fin count) :
     inductionModuleCell (k := k) K ≫ restrictionModuleCell (k := k) K ⟶
       𝟙 (inductionModulePiCategory (k := k) (OldContentCategory D Sc cutoff γ)) :=
-  unitColumnInverseTransformation K hDot count
+  unitColumnModuleInverseTransformation K hDot count
     (contentMissingUnitModuleIso D Sc cutoff γ i hi)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi) r
 
@@ -43,7 +43,7 @@ theorem contentMissingUnitRowTransformation_total (r : Fin count)
     (N : Superfunctor k (OldContentCategory D Sc cutoff γ) (SVec k)) :
     (contentMissingUnitRowTransformation D Sc cutoff γ i hi r).total N =
       contentMissingUnitRow D Sc cutoff γ i hi N r :=
-  unitColumnInverseTransformation_total K hDot count
+  unitColumnModuleInverseTransformation_total K hDot count
     (contentMissingUnitModuleIso D Sc cutoff γ i hi)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi) r N
 

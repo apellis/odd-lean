@@ -3,7 +3,7 @@
 The even prescribed finite unit columns form an ordinary natural matrix
 on all input module maps. `unitColumnInputNatIso` assembles their constructed
 component inverses; projection followed by the original parity unshift
-proves `unitColumnInverseRow_supernatural`.
+proves `unitColumnModuleInverseRow_supernatural`.
 
 `contentMissingUnitRow_supernatural` supplies the constructed old
 missing-colour module inverse, without an inverse-naturality assumption.

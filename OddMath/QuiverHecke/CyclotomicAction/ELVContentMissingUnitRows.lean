@@ -25,12 +25,12 @@ local notation "count" => contentUnitCount D cutoff i (γ : Multiset I)
 restored to its unshifted value module. -/
 def contentMissingUnitRow (r : Fin count) :
     (restriction K).obj ((induction K).obj N) ⟶ N :=
-  unitColumnInverseRow K N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N) r
+  unitColumnModuleInverseRow K N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N) r
 
 /-- The original r-th source shift determines the row degree. -/
 theorem contentMissingUnitRow_mem (r : Fin count) :
     contentMissingUnitRow D Sc cutoff γ i hi N r ∈ parity (R := k) _ _ (r.val • D.parity i) :=
-  unitColumnInverseRow_mem K hDot N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N)
+  unitColumnModuleInverseRow_mem K hDot N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi N) r
 
 /-- Every prescribed unit/dot column pairs with its own coefficient row,
@@ -45,7 +45,7 @@ theorem contentMissingUnitColumn_row (a r : Fin count) :
 theorem contentMissingUnitRow_total :
     (∑ r : Fin count, contentMissingUnitRow D Sc cutoff γ i hi N r ≫ unitDotColumn K hDot N r.val) =
       𝟙 ((restriction K).obj ((induction K).obj N)) :=
-  sum_unitColumnInverseRow_unitDotColumn K hDot N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N)
+  sum_unitColumnModuleInverseRow_unitDotColumn K hDot N count (contentMissingUnitModuleIso D Sc cutoff γ i hi N)
     (contentMissingUnitModuleIso_hom D Sc cutoff γ i hi N)
 
 end OddMath.QuiverHecke.ELVOld

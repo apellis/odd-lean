@@ -1,6 +1,6 @@
 # Inverse rows of the old missing-colour unit matrix
 
-For Brundan–Ellis (1.13), `unitColumnInverseRow` projects the inverse of
+For Brundan–Ellis (1.13), `unitColumnModuleInverseRow` projects the inverse of
 the specified finite module unit matrix and removes its original source
 shift. Its degree, finite Kronecker window and reconstruction identity
 follow from the existing finite-module inverse-coordinate identities.
