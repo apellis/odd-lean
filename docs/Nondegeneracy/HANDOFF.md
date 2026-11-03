@@ -43,6 +43,14 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ReservoirContextCoordinates` now identifies both actual reservoir path
+contexts with their prescribed reversed word contexts. Its generic square
+allows arbitrary inhomogeneous factor maps, and the literal dot and equal
+crossing matrices satisfy the resulting word-chart equations. Strict
+complete two-odd ELV-pair/nonempty-context consumers audit all thirteen
+declarations. Retain the distinct endpoint reindexing and attach the
+intended tensor-vacuum quotient square; see
+[ReservoirContextCoordinates](ReservoirContextCoordinates.md).
 `ReservoirVacuumCrossing.postCrossNe_reservoirVacuum` now compares the
 prescribed distinct reservoir block with the factor crossing through the
 exact source/target pair charts and target-sector transport, on every Hom
