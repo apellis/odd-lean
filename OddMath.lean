@@ -2166,3 +2166,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateNaturality
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMatrixNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeight
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMatrixFunctor
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentGridMatrixFunctorInverse
