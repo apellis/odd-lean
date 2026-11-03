@@ -24,7 +24,7 @@ Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Canonical-content/weight gluing, actual adjacent local record and prescribed adjunction transport |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole weight adjunction/dot/crossing/local-record transport and the actual adjacent record |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Final nondegeneracy | Blocked on observations and field scope | Finite-colour reduction, upward/oriented equivalence, observation consumer and ground-ring descent | Supply observations for every required bound/word/weight, then address the explicitly broader source target |
@@ -212,9 +212,12 @@ multicolour structure, then connect the full factor to the swapped action.
 
 The evaluated old probe category is closed under prescribed E/F, parity and
 arbitrary products. Its entire signed induction dot has a constructed
-natural inverse, with the correct odd parity. Transport across canonical
-content representatives and weight products, preserving the given unit,
-cap, dot and crossing, to construct the complete probe family. The generic
+natural inverse, with the correct odd parity. The checked successors now
+supply canonical content reindexing, stored-target append/restriction,
+their actual balanced adjunction, their whole signed-dot inverse and
+original-weight E/F with genuine zero modules at absent predecessors.
+Complete the whole weight adjunction, dot unit, crossing and local inverse
+transport to construct the probe family; retain the same unit, cap and dot. The generic
 ProbeReservoir interface accepts these factors directly; the older ordinary
 polynomial-specific global constructor is not an additional requirement.
 Do not assert a dot unit on arbitrary old modules.
@@ -238,10 +241,13 @@ augmented inverse and its bubble/corner operators, then supply all-vector
 observations to the existing recovery theorem.
 
 PR #1003 passed its full build, axiom audit and all consumers at `72aa0c1c`
-(run 41625277102), integrated at `41673fa3`. PR #1005 at `a85d1660` and the
-15-producer factor/probe successors are strict locally checked; their full
-integration gates are pending. Ground-ring descent is already formalized;
-the broader field-scope boundary remains explicit.
+(run 41625277102), integrated at `41673fa3`. PR #1005 passed the same gates
+at `a85d1660` (run 41626194575), integrated at `5695663e`.
+PR #1006 at `804dd66d` and the six probe successors at `04e78b61` pass strict
+local checks and combined imports; their full integration gates are pending.
+The latter have 12 exact source/consumer blobs and 214 owned-declaration
+audits. Ground-ring descent is already formalized; the broader field-scope
+boundary remains explicit.
 
 ## Current comparison interfaces
 
