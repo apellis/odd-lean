@@ -4,6 +4,21 @@ Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
 This file records next mathematical dependencies, not session telemetry.
 
+## Proposed argument restart trees
+
+The following exact source trees are preserved in reachable history only.
+They are unverified proposals, are not imported by the checked library, and
+do not establish their headline conclusions. Checked successors are recorded
+in the corresponding topic notes and current status.
+
+| Argument | Preserved source tree | Scope at the snapshot |
+| --- | --- | --- |
+| Content pair crossing | [cef0b17b98](https://github.com/apellis/odd-lean/commit/cef0b17b98856f32f937b5510d70ab1c2feb546f) (`docs/Nondegeneracy/ContentPairComparisonProposal.md`) | Final pair tensor comparison is unverified. |
+| Content self-colour mate | [fc52dfd086](https://github.com/apellis/odd-lean/commit/fc52dfd086f11fab7b527cd9a3fbce808c689ff5) (`docs/Nondegeneracy/ContentAppendMateProposal.md`) | Source chart formulas are checked separately; the prescribed mate square and its consumer remain unverified. |
+| Distinct content mate | [cffb3ae4b2](https://github.com/apellis/odd-lean/commit/cffb3ae4b2f5c9471d5e6ef53d44222f6d0f4cc0) (`docs/Nondegeneracy/ContentDistinctMate.md`) | Generic rectangular formulas and chart prefixes are scoped-checked; the whole comparison and consumer remain unverified. |
+| Power-word coordinates | [41466e07a4](https://github.com/apellis/odd-lean/commit/41466e07a45207605231911c5f1d3f01a24021f9) (`docs/Nondegeneracy/ELVPowerWordCoordinates.md`) | The producer passed its scoped check; the consumer, occupied word evaluation and complete recovery attachment remain unverified at this snapshot. |
+| Weighted matrix rows | [dca80e84a0](https://github.com/apellis/odd-lean/commit/dca80e84a05f8f0777c55dced0fd3ac6fff8bdcb) (`docs/Nondegeneracy/WeightedMatrixRows.md`) | The proposed producer has an operator-power elaboration failure; the matrix row comparison and inverses remain unverified. |
+
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
