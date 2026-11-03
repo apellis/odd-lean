@@ -2050,3 +2050,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordYoneda
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordMorphisms
+import OddMath.QuiverHecke.CyclotomicAction.ELVParityRestrictionComparison
