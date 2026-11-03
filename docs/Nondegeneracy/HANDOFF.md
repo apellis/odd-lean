@@ -161,9 +161,37 @@ Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
 The local-inverse, triple-component and probe-adjunction integration #997
 passed all full-package gates at `679df033` (run 41607159909), integrated at
-`ce03b2b1`. Automatic inverse naturality, three triple-dot squares, literal
-weighted cap windows and grid inverse families are the next scoped-checked
-successors awaiting their full-package gate.
+`ce03b2b1`. Automatic inverse naturality, three triple-dot squares, literal weighted
+cap windows and grid inverse families passed full CI in #999 at `90c42b0b`
+(run 41610482426), integrated at `d02c6561`.
+
+## Chosen word evaluation and absent local families
+
+The chosen content and original-weight word-module crossing squares now
+hold for every full coefficient vector, including absent components; their
+occupied paired consumers retain a nonzero product of two odd coefficients.
+Finish append/context coherence before the final observation/recovery step.
+
+Actual absent-content and absent-weight input inverse families are constructed
+from the given forward maps; arbitrary heterogeneous product assembly retains
+the actual common height counts. The supported canonical principal square
+and its concrete block transport remain the central missing case.
+
+For the old probe, conjugating the existing missing-colour unit matrix through
+the chosen FE/value charts gives the exact unit-column matrix and its even
+module isomorphism for every old input, without scalar-evaluation hypotheses.
+Use its inverse rows and automatic naturality to construct the empty local
+record; the old grid natural isomorphisms and exact Rouquier-mate/grid equality
+supply the one-colour record. The earlier all-input identification with a
+preselected normalized cap is not a prerequisite: the checked row uniqueness
+at the regular probe and F(E T0) supplies the evaluations actually used.
+
+The local pre-Hom adjunction now comes from the existing two-adjacent-local
+constructor with its prescribed unit and counit; both Koszul signs cancel
+in the evaluated counit. Its local records remain explicit intermediate
+inputs. The evaluated mixed bend must still be compared with the prescribed
+central entry, retaining the raw pre-dot and inverse-power signs.
+These thirteen-producer successors await their full integration gate.
 
 ## Current comparison interfaces
 
