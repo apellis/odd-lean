@@ -2563,3 +2563,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirLayerCells
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPaths
 import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentreDegree
 import OddMath.QuiverHecke.CyclotomicAction.ELVIndResKernelInteger
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.MatrixNestedEvaluation

@@ -25,6 +25,15 @@ step: the coordinate inverse entries assemble on the entire product,
 without finite output support. Its paired consumer uses an infinite
 family of invertible triangular rational-module matrices, with a nonzero
 off-diagonal entry at every natural-number coordinate. All three owned
-declarations pass strict paired checks and the axiom audit. Applying
-these lifts to the nested module/output/word evaluation and constructing
-the actual central evaluated inverse remain separate attachments.
+declarations pass strict paired checks and the axiom audit. `MatrixNestedEvaluation` now composes these exact lifts at an input
+module, output block and represented word. Its target/source parity
+versions derive the whole natural inverse from those nested component
+inverses; inverse naturality is retained at both module layers.
+
+The nested consumer uses actual affine-collision ELV weight products,
+identity outer functors and a triangular matrix with explicit component
+inverses at every input, block and word. Both even parity profiles are
+instantiated, with no whole-matrix inverse premise. Its literal nested
+off-diagonal fixes an independently nonzero product of two odd
+coefficients. All three owned declarations pass strict paired checks
+and the axiom audit. The actual central evaluated inverse remains open.
