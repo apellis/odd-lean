@@ -42,6 +42,25 @@ The complete inventory of preserved topic variants is in
 | Global probe adjunction and dot | [ef53181050](https://github.com/apellis/odd-lean/commit/ef53181050a914dcfb682c996412ae41326e85c0) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeWeightAdjunction.lean`) | Both global right-adjunction and signed-dot producer/consumer pairs passed scoped checks; whole weight dot-unit and complete probe-family assembly remain open. |
 | Local pre-adjunction preparation | [e661ef0b68](https://github.com/apellis/odd-lean/commit/e661ef0b682ae0876cbc60cdd4a038c65bd4df4c) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeVacuumPreAdjunction.lean`) | Private zero-lower braid and height-transport helpers checked; actual adjacent-record specialization and paired consumer remain pending. |
 
+## Exact-content action attachment
+
+Retain the content categories required by `SwappedActionAssembly` F4 and
+(A1). Embed `SFun(T_b,W_c)` into the whole-weight Hom category by projection
+to the input block `b` and zero extension from the output block `c`. Prove
+closure and comparison squares for pre/post E and F, parity shifts and
+the selected inverse entries. Use those squares to discharge absent
+native composites before transferring full factor inverses to the
+zero-padded central matrix. The tensor vacuum `selectedHom` is the
+supported initial family for this construction.
+
+Do not infer a zero native composite from formal path absence on an
+arbitrary object of `ProbeReservoir.H`: content collisions at a fixed
+weight invalidate that inference. Existing `ELVWeightMatrixHeight` and
+`ELVPowerWordWeight` consumers retain such collisions, and the pairing
+extension does not remove them. This attachment realizes the approved
+exact-content construction; it does not require changing the final
+theorem's weight-group hypotheses.
+
 ## Exact source classes for power-word vectors
 
 `ELVTensorLayerClasses` now identifies the actual chosen ELV dot/crossing

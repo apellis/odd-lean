@@ -46,6 +46,26 @@ homogeneous parameters or supplied normalizations, and will remain an intended
 hypothesis. Relaxing parameter homogeneity belongs to Phase 2; proving the
 broader nonsymmetrizable §8 conjecture is not a branch obligation.
 
+## Exact-content support boundary
+
+The swapped construction in `SwappedActionAssembly` F4 and (A1) uses
+functors between the selected **content** blocks, with zero categories at
+absent contents. The current generic `ProbeReservoir.H` is a larger Hom
+category between whole weight products. When different contents have the
+same original weight, formal `bᵢ = 0` or `cᵢ = 0` does not imply that a
+native composite vanishes on every object of that larger category.
+`Global.exists_blockSucc_iff` detects absence in the evaluated content
+block; existing collision examples retain other occupied blocks at the
+same weight. The pairing extension preserves these collisions.
+
+The remaining attachment is the generator-stable exact-content Hom
+category, embedded by input projection and output zero extension. Its
+selected tensor vacuum already has the required initial support.
+Central path classification and zero padding remain valid, but moving a
+whole native inverse to an absent corner requires this concrete support
+argument. No independence of roots or extra hypothesis on the final
+nondegeneracy theorem is being asserted.
+
 ## Established reductions and concrete inputs
 
 “Implemented” means the named proof is present in the source; full-package
