@@ -2081,3 +2081,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldVacuumPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedMixedCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVRestrictionCoendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDistinctMate
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixFamilyCharts
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixEntryComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteMatrixComparison
