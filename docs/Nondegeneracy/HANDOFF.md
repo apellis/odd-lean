@@ -42,6 +42,16 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`HalfTurn.PowerWordLayerClasses.affine_class_square` now proves the
+coefficient-one quotient-class square for every literal affine layer and
+arbitrary actual word vector, with only the input-class premise. The map
+is the physical contextual OLD dot/crossing, identified with the original
+layer by proved half-turn and endpoint transports. Strict occupied mixed/
+two-odd/nonempty-context consumers audit all 25 owned declarations.
+Attach the selected supported family and actual swapped layer matrix,
+then source-positioned bubble/coefficient action; see
+[PowerWordLayerClasses](PowerWordLayerClasses.md).
+
 `HalfTurn.ContextualOldGenerators.dot` and `.cross` now identify the
 actual extended physical OLD generators with the half-turn of the
 original affine layer, retaining arbitrary contexts, exact endpoint
