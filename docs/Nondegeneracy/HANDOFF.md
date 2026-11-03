@@ -43,6 +43,14 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ReservoirLayerCrossings.layerMap_reservoir_cross_same` now supplies
+the corresponding literal matrix-to-factor comparison for an equal-colour
+crossing under both arbitrary path contexts and an arbitrary input matrix.
+Strict complete two-odd ELV-pair/nonempty-context consumers audit all seven
+owned declarations. The distinct crossing needs its target-sector transport;
+then attach the intended OLD factor and quotient charts. The matrix fixture
+makes no nonzero-entry or mixed-inverse claim; see
+[ReservoirLayerCrossings](ReservoirLayerCrossings.md).
 `ReservoirLayerGenerators.layerMap_reservoir_dot` now compares the actual
 chosen upward-generator matrix with the prescribed reservoir factor dot,
 retaining both arbitrary path contexts, append charts and the input
