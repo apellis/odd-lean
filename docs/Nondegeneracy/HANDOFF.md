@@ -1930,6 +1930,14 @@ all eighteen declarations. Combine these with the reservoir rows and
 four principal entries in the augmented matrix; see
 [ProbeDottedFactorCoordinates](ProbeDottedFactorCoordinates.md).
 
+`sectorFamilyMap_entry` now removes the finite enumeration from each
+retained matrix entry, leaving exactly its selected source chart,
+original entry and inverse target chart. Strict arbitrary rational-module
+map/absent-corner/window consumers audit all nineteen declarations.
+Specialize this formula to both actual augmented matrices and the
+checked native principal/bend/row entries; see
+[CentralPathCharts](CentralPathCharts.md).
+
 `Sigma.AugmentedSectorChart` now supplies all four factor-object charts
 for the evaluated positive and negative augmented path families, both
 literal conjugation squares and both two-sector block shapes. The

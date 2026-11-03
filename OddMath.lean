@@ -2544,3 +2544,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorChart
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomSupport
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirContexts
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCrossPathCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SectorFamilyEntries

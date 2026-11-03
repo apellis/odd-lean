@@ -30,3 +30,12 @@ entry as source chart, original entry, inverse target chart. The paired
 `SwappedSectorFamilyChart` consumer covers each absent-corner pattern,
 both two-slot and empty windows, and arbitrary maps between these
 rational-module families.
+
+`sectorFamilyMap_entry` removes the finite enumeration entirely: at each
+valid pure or window index its entry is the selected source component
+chart, the prescribed family entry, and the inverse selected target
+component chart. The accompanying component-iso formulas keep every
+endpoint equality transport explicit. This generic calculation is made
+before substituting native factor objects, so no quotient presentation
+is expanded while changing path indices. Its consumer covers arbitrary
+maps and each absent-corner and window pattern over rational modules.
