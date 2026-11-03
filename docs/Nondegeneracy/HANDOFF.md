@@ -934,6 +934,13 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeWeightCapCoordinates.probeOldWeightCapPower_total_comparison`
+now retains the actual global dot-power/counit row through its exact
+predecessor equality at every exponent. Strict mixed regular/parity-
+shifted/nonempty/all-exponent consumer checks audit all 25 declarations.
+Together with the unit comparisons below, these supply every row needed
+for product inverse gluing. Attach the same-colour principal coordinate;
+see [ProbeWeightCapCoordinates](ProbeWeightCapCoordinates.md).
 `ELVProbeWeightUnitCoordinates.probeOldWeightUnitPower_total_comparison`
 now retains the actual global unit followed by every dot power through
 its selected successor coordinate, including missing lower predecessors.
