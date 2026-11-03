@@ -2189,3 +2189,14 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRectangularCross
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftCapComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightDot
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
