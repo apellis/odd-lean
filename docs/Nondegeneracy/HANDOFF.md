@@ -909,6 +909,15 @@ The retained inner transports are now composed in
 residual-error closure remain open. See
 [ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
 
+`SwappedAssembly.ReservoirLayerEntries` now collapses the actual
+upward/probe-zero layer sums to the given single `layerEntry`, preserving
+both whiskers and every append transport. Strict producer and supplied
+complete-ELV-pair matrix consumer checks audit both declarations. This is
+a theorem about a supplied complete factor pair; the matrix fixture has
+no nonzero-vector claim. Attach the intended OLD record, chosen path
+coordinates and signed quotient/vacuum values next; see
+[ReservoirLayerEntries](ReservoirLayerEntries.md).
+
 `ELVTensorHomContexts` now retains both inner and further outer E-word
 contexts on the literal dot/crossing Hom entries, with the chosen context
 charts and all-vector formulas for arbitrary input Hom maps. Strict
