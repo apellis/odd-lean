@@ -50,6 +50,13 @@ input. Strict complete two-odd ELV-pair checks audit all 17 declarations
 and retain a nonzero odd exterior input. Attach the literal distinct
 matrix branch and both contexts; see
 [ReservoirVacuumCrossing](ReservoirVacuumCrossing.md).
+`ReservoirLayerDistinctCrossings.layerMap_reservoir_cross_ne` now proves
+the literal distinct crossing matrix square under both outer contexts,
+retaining the source endpoint cast and exact target-sector transport.
+Strict complete two-odd ELV-pair/nonempty-context consumer checks audit
+all twenty declarations. Join the word/context charts to the physical
+OLD quotient square; see
+[ReservoirLayerDistinctCrossings](ReservoirLayerDistinctCrossings.md).
 `ReservoirLayerCrossings.layerMap_reservoir_cross_same` now supplies
 the corresponding literal matrix-to-factor comparison for an equal-colour
 crossing under both arbitrary path contexts and an arbitrary input matrix.
