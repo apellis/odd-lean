@@ -400,10 +400,11 @@ from HANDOFF; preservation does not promote those drafts to proved results.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
-| Evaluated probe adjunction | `ELVProbeEvaluatedAdjunction` retains the actual balanced unit, cap, evenness and triangles, with the literal native dot component | Global weight adjunction and local-record transport |
+| Evaluated probe adjunction | `ELVProbeEvaluatedAdjunction` retains the actual balanced unit, cap, evenness and triangles, with the literal native dot component | Local-record transport; global weight adjunction is scoped-checked below |
 | Canonical old content | `ELVProbeContentReindex` and `ELVProbeCanonicalContent` transport coefficient-evaluated modules between chosen representatives, preserving physical append/restriction, dots and equal crossings | Whole weight crossing and local inverse assembly |
-| Stored-target adjunction and dot inverse | `ELVProbeAppendToAdjunction` and `ELVProbeAppendToDotUnit` retain the actual maps at arbitrary stored target contents and construct their whole natural signed-dot inverse | Whole arbitrary-weight-fibre dot unit and chosen adjunction assembly |
+| Stored-target adjunction and dot inverse | `ELVProbeAppendToAdjunction` and `ELVProbeAppendToDotUnit` retain the actual maps at arbitrary stored target contents and construct their whole natural signed-dot inverse | Whole arbitrary-weight-fibre dot unit; chosen weight adjunction is scoped-checked below |
 | Probe weight E/F | `ELVProbeWeightModules` constructs actual induction/restriction on all original-weight content blocks, with a zero module at absent predecessors and full even/odd input maps | Complete probe Rouquier family and multicolour relations |
+| Probe weight adjunction and signed dot | `ELVProbeWeightAdjunction.probeOldActionAdjunction` constructs the selected even right adjunction on every original-weight fibre; `ELVProbeWeightDot.probeOldActionDot` retains the chosen signed dot and odd-map naturality, including absent predecessors. Producers, concrete consumers and all 51 owned-declaration audits pass strict scoped checks | Full integration verification; whole-dot inverse, weight crossing/local records and complete probe family |
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product

@@ -2395,3 +2395,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCanonicalContent
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightModules
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightAdjunction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDot
