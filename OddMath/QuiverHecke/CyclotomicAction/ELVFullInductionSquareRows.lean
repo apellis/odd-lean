@@ -35,6 +35,12 @@ private theorem unitDot_apply
     (P : Superfunctor k C (SVec k)) (n : ℕ) (s : C) (b : P.obj s) :
     unitDotLinear J hα P n s b = ((transformLinear hα P (J.obj s)) ^ n) (unit J P.toFunctor s b) := rfl
 
+private theorem raw_pow_square {k V W : Type u} [CommRing k]
+    [AddCommMonoid V] [Module k V] [AddCommMonoid W] [Module k W]
+    (c : V →ₗ[k] W) (f : V →ₗ[k] V) (g : W →ₗ[k] W)
+    (h : c ∘ₗ f = g ∘ₗ c) (n : ℕ) : c ∘ₗ (f ^ n) = (g ^ n) ∘ₗ c :=
+  intertwine_pow c f g h n
+
 variable {k C A B E : Type u} [CommRing k]
   [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
   [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
@@ -102,18 +108,21 @@ theorem fullSquareTargetLinear_unitDot (s : C) (n : ℕ) (b : M.obj s)
       unitDotLinear T hβ (induced Q M) n (Q.obj s) (unit Q M.toFunctor s b) := by
   have hD := fullSquareTargetLinear_transform J U Q T h M hα hβ (J.obj s) (T.obj (Q.obj s))
     (congrArg (fun F : C ⥤ E => F.obj s) h) hCoeff
-  have hP := intertwine_pow
+  have hP := raw_pow_square
     (fullSquareTargetLinear J U Q T h M (J.obj s) (T.obj (Q.obj s))
       (congrArg (fun F : C ⥤ E => F.obj s) h))
     (transformLinear hα M (J.obj s)) (transformLinear hβ (induced Q M) (T.obj (Q.obj s)))
     hD n
   have hP' := LinearMap.congr_fun hP (unit J M.toFunctor s b)
+  simp only [LinearMap.comp_apply] at hP'
   have hR := congrArg ((transformLinear hβ (induced Q M) (T.obj (Q.obj s))) ^ n)
     (fullSquareTargetLinear_unit J U Q T h M s b)
   have hL := congrArg (fullSquareTargetLinear J U Q T h M (J.obj s) (T.obj (Q.obj s))
     (congrArg (fun F : C ⥤ E => F.obj s) h)) (unitDot_apply J hα M n s b)
   have hO := unitDot_apply T hβ (induced Q M) n (Q.obj s) (unit Q M.toFunctor s b)
-  have hFinal := hL.trans (hP'.trans (hR.trans hO.symm))
+  have hOut := hR.trans hO.symm
+  have hMid := hP'.trans hOut
+  have hFinal := hL.trans hMid
   exact hFinal
 
 end OddMath.QuiverHecke.ELVOld.BalancedInduction

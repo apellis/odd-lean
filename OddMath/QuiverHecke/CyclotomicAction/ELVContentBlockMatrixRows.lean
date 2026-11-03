@@ -4,7 +4,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixMate
 /-! # Dotted matrix fields through canonical content charts
 
 Brundan–Ellis (1.13)–(1.14): compare the prescribed ordinary unit/dot
-columns and dot/counit rows with the selected full-inclusion charts,
+columns with the selected full-inclusion charts,
 retaining arbitrary input vectors and every dot power.
 -/
 noncomputable section
@@ -42,7 +42,6 @@ theorem contentBlockUnitDot_square (M : ContentModules D Sc cutoff N β)
     rw [Functor.map_comp, map_twist]
     dsimp only [contentAppendTo, contentInclusion, contentAppendToComponent,
       Functor.comp_obj, Functor.comp_map]
-    simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
-    rfl)
+    simp only [eqToHom_refl, Category.id_comp, Category.comp_id])
 
 end OddMath.QuiverHecke.ELVOld
