@@ -1957,7 +1957,11 @@ uniqueness. Its strict paired checks audit all 83 owned declarations.
 `ELVModuleInverseKernelCoordinates` supplies the OLD module-to-kernel
 part, including both principal evaluations on arbitrary pure tensors and
 a nonzero odd input/inverse consumer; all eight owned declarations are
-audited. Do not infer an
+audited. `ELVWeightedInverseCoordinates` identifies both weighted inverse
+charts, exact-content components and their raw principal tensor values;
+its strict paired nonzero odd weighted-inverse consumer audits all 28
+owned declarations. The weighted local record-to-component extraction
+and complete chosen closure composition remain to be attached. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
