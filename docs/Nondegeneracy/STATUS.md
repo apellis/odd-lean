@@ -247,6 +247,19 @@ integrated at `ea35e5ba`. All 11 producers, 20 exact source/consumer blobs and
 | Native coefficient caps and probe row | `ELVContentCoefficientCaps`, `ELVProbeCapMaps` construct the selected inverse-coefficient cap, with its degree and surjective components; the actual regular-probe cap is nonzero and its ground row is surjective with degree (P−1)p | Exact scalar native-cap field and normalization window, then mixed slide and final swapped assembly |
 
 
+
+The following successors pass strict local producer/consumer checks and owned
+axiom audits; their full integration CI is pending.
+
+| Interface | Established locally | Remaining scope |
+| --- | --- | --- |
+| Native probe left-cap field and normalization | `ELVProbeLeftCapField` identifies the selected native cap with the actual ordinary inverse coefficient; `ELVProbeUnitCoefficientWindow` supplies the given-column Kronecker window; `ELVUnitDotComponents`, `ELVProbeCapWindow` give the native all-row window, actual regular-ground top extraction and the signed polynomial for the SAME native SVec dot | Input-family supernaturality, pre-Hom/parity transport, final swapped mixed slide and bubble attachment |
+| Canonical counit and all dotted cap rows | `ELVFullInductionSquareCounit`, `ELVContentBlockMatrixCaps`, `ELVFullInductionSquareSourceDots`, `ELVContentBlockCapPowers` compare the actual chosen counit and EVERY literal capDotRow.total through the same full source chart, with no compatibility premise | Finite parity-coordinate assembly and complete canonical inverses |
+| Same-colour weight principal and boundary | `ELVWeightMatrixBoundary` proves absent-predecessor zero EF and the required height/predecessor consequences with explicit cutoff compatibility; `ELVPiSCatRouquierMate`, `ELVWeightLocalMate` identify the GIVEN native Rouquier mate with the rectangular weight mate and its degree | Finite coordinate extraction and both native local inversion fields; FE is retained at absent predecessors |
+| Chosen triple coherence | `ELVWeightTripleCoherence` identifies both pair-flattening paths with the chosen whole triple chart, including the native component formulas | Crossing whisker equations and native braid fields |
+| Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
+
+
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
 after both coefficient and old cyclotomic quotients. Strict local checking

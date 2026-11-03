@@ -2216,3 +2216,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitCoefficientWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordAppendUnits
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSourceDots
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockCapPowers
