@@ -2230,3 +2230,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleBlockComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPrefixCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPrefixComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleLastBlockComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuffixCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSuffixComparison
