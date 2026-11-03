@@ -45,11 +45,20 @@ The complete inventory of preserved topic variants is in
 ## Exact-content action attachment
 
 Retain the content categories required by `SwappedActionAssembly` F4 and
-(A1). Embed `SFun(T_b,W_c)` into the whole-weight Hom category by projection
-to the input block `b` and zero extension from the output block `c`. Prove
-closure and comparison squares for pre/post E and F, parity shifts and
-the selected inverse entries. Use those squares to discharge absent
-native composites before transferring full factor inverses to the
+(A1). `ELVContentHomSupport` now realizes arbitrary `SFun(T_b,W_c)` by
+input projection and output zero extension, retains its selected objects
+and maps, and proves all four selected primitive E/F functor equalities,
+post E/F support, absent pre-E/post-F zero components and parity-shift
+support. Strict actual tensor/two-odd affine collision/nonzero exterior
+coefficient consumers audit all 35 declarations. `ELVContentHomClosure`
+now supplies the whole even comparison isomorphisms and the generator-
+stable full replete supported category, including parity closure and both
+whole absent native zero functors. `ELVContentHomVacuum` places the literal
+selectedHom in it using constructed all-input support. Strict paired
+collision consumers audit all 64 and 16 declarations. Attach formal-sector
+indices and restrict the chosen action; all inverse-entry arrows between
+supported endpoints are retained. Use the checked zero functors before
+transferring full factor inverses to the
 zero-padded central matrix. The tensor vacuum `selectedHom` is the
 supported initial family for this construction.
 
@@ -62,6 +71,26 @@ exact-content construction; it does not require changing the final
 theorem's weight-group hypotheses.
 
 ## Exact source classes for power-word vectors
+
+`ReservoirContexts.wordAt_eq_context` now identifies the entire actual
+outer reservoir word with the prescribed reversed-word context functor
+at arbitrary intermediate content, retaining its proved original-weight
+transport. Strict connected mixed/two-odd/nonzero-terminal-content/
+arbitrary-map/nonzero-exterior-output consumers audit all eighteen
+declarations. Combine this left-context equality with the selected
+right-Hom equality below, retaining the pair associator and endpoint
+transports around the literal dot/crossing cell; see
+[ReservoirContexts](ReservoirContexts.md).
+
+`TensorReservoirWords.pathHomAt_eq_wordHom` now identifies the whole
+selected tensor Hom along any actual reservoir path ending at zero with
+the prescribed reversed-word Hom, using its proved original-weight
+endpoint. The even regular-probe chart retains all coefficient carriers.
+Strict connected mixed/two-odd/arbitrary-map/nil-path/nonzero-exterior-value
+consumers audit all 25 declarations. Identify outer reservoir words at
+arbitrary intermediate content with the chosen word-context functors,
+then splice these charts into the literal layer/source-class square;
+see [TensorReservoirWords](TensorReservoirWords.md).
 
 `ELVTensorLayerClasses` now identifies the actual chosen ELV dot/crossing
 Hom-entry evaluation under both word contexts with its physical OLD map
@@ -182,9 +211,16 @@ integrated at `5bfa9b77`. It verifies stored present-colour local inverses,
 whole selected mate and dotted-row squares, exact global distinct probe
 inversion, global crossing/cap/unit coordinates, pure probe principal and
 probe-to-reservoir entries, evaluated finite coefficient expansions and
-literal reservoir-context/source-class comparisons. Later whole local,
-central matrix and supported-action additions retain their separate
-scoped-check/full-integration boundaries below.
+literal reservoir-context/source-class comparisons. Integration #1026
+passed the full warning-free build, global axiom audit and all concrete
+consumers at source `455117ec` (run 41721544509), integrated at
+`afd225cc`. Its fourteen producers verify occupied principal and absent
+local coordinates, evaluated finite inverses, specified weight paths and
+three dots, both stored general braid forms, the ordered correction,
+central path padding, the reverse mixed bend, probe dotted rows and
+component coefficient bounds. Later whole local, central matrix and
+supported-action additions retain their separate scoped-check/full-
+integration boundaries below.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
@@ -976,6 +1012,31 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`probeOldRouquierFamily` now constructs the complete chosen local
+probe family on original weights, including both local inverses, with
+no factor or inverse premise. Its generators, restriction and right
+adjunction retain their literal definitions, and its dot remains a
+unit. Strict twisted mixed/normalized-left-adjunction consumer checks
+audit all nine declarations. Attach the two remaining multicolour braid
+fields to finish the complete factor presentation; see
+[ProbeRouquierFamily](ProbeRouquierFamily.md).
+
+`ELVProbeWeightLocalInverse` now assembles the occupied and absent
+coordinates into both entire natural inverse records for the prescribed
+global principal and dotted rows. Strict mixed/positive/negative/both-
+zero-height consumer checks audit all 34 declarations. No finite-block
+or independent-root hypothesis is used. Attach these two records to
+the already chosen local generators to construct the probe family; see
+[ProbeWeightLocalInverse](ProbeWeightLocalInverse.md).
+
+`ELVProbeWeightSupportedInverse` now supplies both prescribed finite
+inverse orientations at every occupied output coordinate, using the
+checked stored inverses and exact principal/cap/unit charts. Strict
+regular mixed/positive/negative/both-zero-height consumers audit all
+53 declarations. Combine with the missing-predecessor inverses below
+to assemble the whole product and complete local record; see
+[ProbeWeightSupportedInverse](ProbeWeightSupportedInverse.md).
+
 `ELVProbeWeightAbsentInverse` now transports the missing stored local
 record to both exact global inverse orientations, retaining the actual
 zero lower coordinate and every unit/power column. Strict regular mixed/
@@ -991,6 +1052,14 @@ three-slot odd/empty-window consumers check both orientations and audit
 all 36 declarations. Apply these to the selected stored local inverses
 before whole-weight product gluing; see
 [AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
+
+`probeOldActionCross_via_total` now retains the actual selected crossing
+through arbitrary supported lower blocks and a common upper block, with
+the prescribed stored component and equal-colour minus. Strict nonempty
+mixed/two-odd/equal/distinct/nonzero-append consumer checks audit both
+declarations. Attach its two independently whiskered triple squares,
+then the corrected and general braid fields; see
+[ProbeWeightCrossPathCoordinates](ProbeWeightCrossPathCoordinates.md).
 
 `ELVInductionBraidCube` and the ordinary/evaluated stored-target braid
 now retain all twelve append edges and the equal-colour minus on every
@@ -1845,6 +1914,15 @@ probe. The literal layer evaluation and final observation kernel remain. See
 
 ## Central augmented-matrix attachment
 
+The positive-degree residual closure remains a substantive proof target.
+[ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
+source-coefficient-image and representable evaluation forms. The existing
+finite kernel inverse comparisons prove parity only. Construct integer
+gradings on the represented shifted kernels, prove that the prescribed
+forward matrix has degree zero, then use inverse homogeneity and Yoneda
+to realize the positive-degree closure on every module. Do not infer an
+integer grading on arbitrary ungraded module Homs.
+
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
 mixed coefficient from its inverse equations. Strict nonzero two-odd
@@ -1863,6 +1941,18 @@ uses the same bound. Identify the supplied invertible probe operator and
 coefficient equation with the intended mixed coefficient; then bend the
 finite sums and prove residual ideal closure. No full-weight uniform
 bound is asserted; see [PostCoefficientEvaluation](PostCoefficientEvaluation.md).
+`ELVShiftedCoefficientEvaluation` now retains these evaluations after either
+content parity shift and supplies the chosen postdot bound. Its even finite
+expansion passes strict paired checks and all 26 owned audits. The preunit
+and coefficient inverse equation remain explicit intermediate inputs until
+the intended probe–reservoir coefficient is attached; see
+[ShiftedCoefficientEvaluation](ShiftedCoefficientEvaluation.md).
+`ELVProbeMixedDots` now constructs the actual prewhiskered probe dot unit
+and parity, both shifted mixed dots, and their even/odd denominator units
+from the standing symmetrizer and homogeneous parameters. Strict paired
+checks audit all 22 declarations. Substitute these literal maps into the
+completed factor package and its coefficient inverse equations; see
+[ProbeMixedDots](ProbeMixedDots.md).
 
 `epsEntry_probe_factor` and `etaEntry_probe_factor` now retain the
 canonical probe cap and cup rows at every exponent and every full Hom
@@ -1872,6 +1962,29 @@ ELV/nonzero-coefficient-input/all-exponent/height-zero consumers audit
 all eighteen declarations. Combine these with the reservoir rows and
 four principal entries in the augmented matrix; see
 [ProbeDottedFactorCoordinates](ProbeDottedFactorCoordinates.md).
+
+`sectorFamilyMap_entry` now removes the finite enumeration from each
+retained matrix entry, leaving exactly its selected source chart,
+original entry and inverse target chart. Strict arbitrary rational-module
+map/absent-corner/window consumers audit all nineteen declarations.
+Specialize this formula to both actual augmented matrices and the
+checked native principal/bend/row entries; see
+[CentralPathCharts](CentralPathCharts.md).
+
+`Sigma.AugmentedSectorChart` now supplies all four factor-object charts
+for the evaluated positive and negative augmented path families, both
+literal conjugation squares and both two-sector block shapes. The
+source/target charts use the specified cap/cup factor isomorphisms;
+absent corners are padded by zero after evaluation. Strict actual
+evaluated two-odd ELV/occupied/empty-window and generic rational-module
+consumers audit all 24, 3 and 27 declarations. `AugmentedSectorEntries`
+and `AugmentedFactorMatrix` now identify every conjugated entry and
+the complete positive/negative matrices with the prescribed native
+principal, mixed bend and dotted-row maps. Strict paired consumers
+audit all 63 and 14 declarations, including complementary absent corners,
+height zero and physical heights ±2. Use exact-content support before
+transferring native factor inverses at absent corners, and prove residual
+coefficient memberships; see [AugmentedSectorChart](AugmentedSectorChart.md).
 
 `Sigma.CentralPaths` now classifies both central path families and the
 identity-path index, retaining the absent reservoir source and absent
