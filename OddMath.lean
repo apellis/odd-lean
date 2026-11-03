@@ -2225,3 +2225,5 @@ import OddMath.Algebra.FiniteSupermoduleCoordinates
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapModuleWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraidComponents
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapNaturality
