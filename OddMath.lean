@@ -1998,3 +1998,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMoments
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
