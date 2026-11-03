@@ -1032,6 +1032,13 @@ connected mixed/interior/two-odd/disconnected-parameter consumers audit
 all eight declarations. Combine these fields with the separately proved
 quadratics and the remaining braid/inverse attachments; see
 [ProbeSlideFields](ProbeSlideFields.md).
+`ELVProbeEvaluatedStoredMixedBraid.probeStoredMixedBraid_polynomial`
+now proves the whole corrected braid in the full evaluated categories
+with arbitrary stored representatives and all seven chosen append edges.
+Strict occupied non-cons/mixed/three-odd/interior consumers audit all 89
+owned declarations and retain nonzero append outputs. Attach the selected
+whole-weight triple coordinates and exact presentation fields; see
+[ProbeEvaluatedStoredMixedBraid](ProbeEvaluatedStoredMixedBraid.md).
 `ELVProbeStoredMixedBraid.probeOldStoredMixedBraid_polynomial` now
 proves the whole corrected relation at arbitrary stored lists, with all
 seven append edges and the original-Sc correction in the actual nested
