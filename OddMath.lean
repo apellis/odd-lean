@@ -1946,9 +1946,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCounitComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleCrossing
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -1986,32 +1983,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFComparison
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerQuotient
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridComposition
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerGrading
-import OddMath.SKM.PolynomialExteriorSupercomm
-
-import OddMath.QuiverHecke.HalfTurn.Homogeneous
-import OddMath.QuiverHecke.HalfTurn.QuotientEquivalence
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ELVMixedIndResKernel
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateKernelMap
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCoefficientIso
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVMixedMateLinear
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctMateKernel
-
-import OddMath.QuiverHecke.HalfTurn.BoundedDetection
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleAppend
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionDoubleTransform
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleCrossing
