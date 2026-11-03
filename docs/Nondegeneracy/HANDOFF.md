@@ -45,7 +45,7 @@ The complete inventory of preserved topic variants is in
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full CI verified in #1014; use the selected factor in the swapped assembly |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs pass strict checks; finish chosen local records and remaining multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
@@ -117,6 +117,15 @@ presentation, prove the required extension and scalar comparisons, and check
 the all-even specialization against the cited even benchmark. No proof route
 for nonsymmetrizable data is to be developed. See
 [FieldScopeBoundary](FieldScopeBoundary.md).
+
+The selected vacuum values, evaluated local/braid records, representative
+tensor/dot/loop comparisons, rectangular slides and probe generator data
+passed the full build, global axiom audit and all consumers in
+[#1017](https://github.com/apellis/odd-lean/pull/1017) at `080bf70f`
+([run 41698364466](https://github.com/apellis/odd-lean/actions/runs/41698364466)),
+integrated at `88b36a6c`. Subsequent whole-weight distinct relations,
+reindexed inverse attachments and matrix entries retain the scoped-check
+boundaries stated below.
 
 ## Native probe normalization and remaining action fields
 
