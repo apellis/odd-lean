@@ -44,12 +44,3 @@ symmetrizability and the homogeneous-parameter restriction for the rest of
 BE2 §8? Until such an input is supplied, retain the explicit hypotheses on
 the field construction and track their removal separately. No replacement
 proof route or exclusion of the broader target is chosen here.
-
-The current full-ELV route has no extra even-height restriction. In the
-balanced schedule the probe level P is even and the reservoir level is
-N=P−hᵢ(μ), so N has the required parity. `ReservoirWeights.reservoir_parity`
-and the odd-pairing invariant retain the original weight coset. Both
-weighted component matrix-inverse APIs accept arbitrary cutoff parity;
-the polynomial-cap consumer includes occupied odd cutoff five. The older
-even-cutoff action note describes a narrower candidate. Constructing the
-chosen native factors remains open, including their arbitrary-height cases.
