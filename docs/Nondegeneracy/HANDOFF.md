@@ -926,6 +926,13 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeAppendToMateReindex.probeAppendToMate_reindex` now proves the
+whole selected evaluated mate square through the even lower and upper
+loop comparisons, retaining original source and stored target generators.
+Strict reordered mixed/odd-input/regular/parity-shifted consumers audit
+all 31 declarations. Together with the dotted-row squares below, copy both
+transported inverse orientations into the present-colour local record;
+see [ProbeAppendToMateReindex](ProbeAppendToMateReindex.md).
 `ELVProbeAppendToRowReindex` now proves both whole evaluated dotted-row
 squares for every exponent, and identifies the canonical source rows
 with the original evaluated adjunction/dot fields. Strict mixed/reordered/
