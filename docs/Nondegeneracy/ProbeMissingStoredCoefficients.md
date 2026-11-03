@@ -6,4 +6,4 @@ The generic even-chart transport is fully instantiated here. No inverse, matrix 
 
 The producer and paired consumer pass strict checks; the single owned construction passes its standard axiom audit. The consumer covers both moving parities, nonempty missing-colour content with reordered upper representatives, arbitrary rows and their odd-input naturality, and count zero. The actual stored-target evaluated top cap is proved to extract a nonzero regular-probe vacuum vector from its selected dotted unit.
 
-Full integration verification remains separate. The next local-record constructor combines these coefficients with the constructed evaluated zero lower cell; whole-weight coordinate attachment remains a subsequent obligation.
+Full integration verification remains separate. `probeMissingStoredLoc` now combines these coefficients with the constructed evaluated zero lower cell; whole-weight coordinate attachment remains an obligation.

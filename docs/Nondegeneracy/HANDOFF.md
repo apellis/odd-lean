@@ -853,20 +853,28 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeMissingStoredLocal.probeMissingStoredLoc` now constructs the
+selected missing-colour local inverse with the stored upper adjunction
+and dot and the constructed zero lower cell. Both zero-height orientations
+are retained. Strict mixed/nonempty/reordered/odd-input/zero-height
+consumer checks audit all 22 owned declarations and prove a nonzero
+output of the actual inverse top row. Attach the absent global coordinates
+and combine with the present-colour local records; see
+[ProbeMissingStoredLocal](ProbeMissingStoredLocal.md).
 `ELVProbeZeroBoundary` now constructs the zero object, endocell and
 even zero adjunction in every evaluated content category, with zero
 identity after any actual postcomposition. Strict mixed/nonempty/odd-map/
 zero-level consumers audit all thirty declarations and prove that the
-ambient vacuum and actual append identities remain nonzero. Combine
-with the stored missing-boundary coefficients, then identify the absent
-global coordinates; see [ProbeZeroBoundary](ProbeZeroBoundary.md).
+ambient vacuum and actual append identities remain nonzero. The stored
+local constructor above combines these with the boundary coefficients;
+identify the absent global coordinates; see [ProbeZeroBoundary](ProbeZeroBoundary.md).
 `ELVProbeMissingStoredCoefficients.probeMissingStoredCoefficients` now
 constructs the finite boundary record for the literal stored-target
 adjunction and dot, with the chart and every unit-column comparison
 proved. No compatibility or inverse premise remains; count zero is
 included. Strict mixed/nonempty/reordered/odd-input consumers prove a
-nonzero stored top-cap output and audit the construction. Combine with
-the evaluated zero lower cell, then attach global coordinates; see
+nonzero stored top-cap output and audit the construction. The stored
+local record above combines the zero lower cell; attach global coordinates; see
 [ProbeMissingStoredCoefficients](ProbeMissingStoredCoefficients.md).
 `ELVProbeMissingCoefficients.probeEvaluatedMissingCoefficients` now
 constructs the prescribed finite boundary record for the actual evaluated
