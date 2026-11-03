@@ -46,7 +46,8 @@ The complete inventory of preserved topic variants is in
 | Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole weight adjunction/dot/crossing/local-record transport and the actual adjacent record |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
-| Final nondegeneracy | Blocked on observations and field scope | Finite-colour reduction, upward/oriented equivalence, observation consumer and ground-ring descent | Supply observations for every required bound/word/weight, then address the explicitly broader source target |
+| Vacuum path collapse | Producer and occupied consumer pass strict scoped checks; full integration verification pending | `SPath.subsingleton_of_upward_probe_zero` and `sum_of_upward_probe_zero` in `SwappedAssembly/VacuumPaths` | Attach `layerMap_apply_append` at the probe vacuum to the chosen contextual dot/crossing operators; path uniqueness alone is not an observation |
+| Final Phase 1 nondegeneracy | Blocked on concrete observations | Finite-colour reduction, upward/oriented equivalence, observation consumer and proved ground-ring descent | Supply observations for every required bound/word/weight for symmetrizable homogeneous data; inhomogeneous parameters belong to Phase 2 and nonsymmetrizable data are excluded |
 
 ## Prescribed matrix and coefficient-row successors
 
