@@ -760,6 +760,15 @@ pass strict checks and three owned audits. Restrict to evaluated modules
 and compare the independently chosen global dots in these same
 coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
 
+`SwappedAssembly.ReservoirDottedAdjunctionRows` now computes the actual
+reservoir branches of every dotted cap row and cup column, including
+exponent zero, for arbitrary Hom inputs. Strict producer and occupied
+two-odd full-factor consumer checks audit all 19 owned declarations.
+Compose the retained inner transports with the endpoint charts to reach
+`homContentPostCap/Cup` and their native factor formulas; principal/mixed
+blocks and residual-error closure remain open. See
+[ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
+
 `ELVTensorVacuumGenerators` now identifies the one-E dot and two-E
 equal/distinct crossing out of the selected tensor Hom vacuum with the
 prescribed reservoir word operators. The same `selectedIso` and literal
