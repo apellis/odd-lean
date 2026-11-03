@@ -2296,3 +2296,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCoherence
