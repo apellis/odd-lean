@@ -938,6 +938,14 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVInductionCorrectedGrid` now retains seven different append edges
+and six categories in the whole chosen corrected braid, with three
+specified flattenings and independent nested dots. The intermediate
+coefficient equation is discharged by the OLD quotient in the strict
+mixed/three-odd/interior consumer; all 25 owned declarations are audited.
+Specialize the stored-content grid and discharge its source equation,
+then attach the evaluated and whole-weight generators; see
+[InductionCorrectedGrid](InductionCorrectedGrid.md).
 `ELVModuleCorrectedBraid` now transports the corrected relation across
 three different composite source functors to the whole module equation.
 Its source-coefficient equation is an explicit intermediate input,
