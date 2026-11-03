@@ -92,6 +92,11 @@ private theorem capRowNative_mem {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     capRowNative A hδ M n ∈ parity (R := k) _ _ (n • q) :=
   capDotRow_mem A hδ M n
 
+private def moduleValue {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) (w : C) (x : F.obj w) : G.obj w :=
+  f.total w x
+private theorem moduleValue_total {F G : Superfunctor k C (SVec k)} (f : F ⟶ G) (w : C) (x : F.obj w) :
+    moduleValue f w x = f.total w x := rfl
+
 /-- Endpoint objects are fixed before assembling their canonical parity coordinates. -/
 private structure MatrixDatum (q : ZMod 2) where
   value : Superfunctor k C (SVec k)
@@ -115,6 +120,13 @@ theorem inductionMatrixMate_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
     (w : C) (x : Obj A ((restriction A).obj M).toFunctor w) :
     ((inductionMatrixDatum A hα hδ hq M).mate.val).total w x =
+      orderedMateLinear A hα M w x := rfl
+
+/-- Native module-value evaluation of the same prescribed mate, before selecting a quotient functor. -/
+theorem inductionMatrixMate_value_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
+    (w : C) (x : ((inductionMatrixDatum A hα hδ hq M).source).obj w) :
+    moduleValue ((inductionMatrixDatum A hα hδ hq M).mate.val) w x =
       orderedMateLinear A hα M w x := rfl
 
 local instance matrixDatumPi : PiSupercategory k (Superfunctor k C (SVec k)) :=
@@ -182,6 +194,15 @@ def weightedMatrixMate := (B).mate.val
 
 theorem weightedMatrixMate_mem : weightedMatrixMate D Sc cutoff N i M ∈ parity (R := k) _ _ (D.parity i) :=
   (B).mate.property
+
+/-- Evaluation retains the exact source and target module values of the chosen matrix mate. -/
+def weightedMatrixMateValue (w : TruncatedCategory D Sc cutoff N) (x : ((B).source).obj w) : ((B).target).obj w :=
+  BalancedInduction.moduleValue (weightedMatrixMate D Sc cutoff N i M) w x
+
+/-- The value evaluator is precisely the total component of the given matrix mate. -/
+theorem weightedMatrixMateValue_eq_total (w : TruncatedCategory D Sc cutoff N) (x : ((B).source).obj w) :
+    weightedMatrixMateValue D Sc cutoff N i M w x = (weightedMatrixMate D Sc cutoff N i M).total w x :=
+  BalancedInduction.moduleValue_total (weightedMatrixMate D Sc cutoff N i M) w x
 
 /-- Canonical source parity coordinates, including every unscaled unit column. -/
 def weightedUnitMatrixFamily (m : ℕ) := BalancedInduction.datumUnitFamily (B) m

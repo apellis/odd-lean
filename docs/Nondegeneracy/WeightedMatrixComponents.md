@@ -21,6 +21,13 @@ as the given ordered component on every coend vector, retaining its minus
 sign and original crossing parameter. The generic crossing-family and
 ordered-mate degree lemmas support these constructions.
 
+`weightedMatrixMateValue` retains the source and target module values.
+`weightedMatrixMateValue_eq_total` identifies it with the prescribed total
+component. `BalancedInduction.inductionMatrixMate_value_apply` identifies
+that evaluation with the raw ordered mate before choosing the append
+functor. These equations are used in the chosen matrix-chart comparison;
+they impose no compatibility premise.
+
 The producer and paired mixed-colour/vacuum consumer pass the pinned
 strict checks, including the allowlist audit of every owned declaration.
 No inverse of the quotient component matrices is claimed here. The next

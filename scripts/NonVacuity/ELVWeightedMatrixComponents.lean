@@ -39,6 +39,17 @@ example (i : Bool) (m : ℕ) := weightedUnitMatrixEntry_none D Sc cut 8 i M m
 example (i : Bool) (m : ℕ) (r : Fin m) := weightedUnitMatrixEntry_some D Sc cut 8 i M m r
 example (i : Bool) (m : ℕ) := weightedCapMatrixEntry_none D Sc cut 8 i M m
 example (i : Bool) (m : ℕ) (r : Fin m) := weightedCapMatrixEntry_some D Sc cut 8 i M m r
+example (i : Bool) (w : OldCategory D Sc cut)
+    (x : ((BalancedInduction.induction (J i)).obj
+      ((BalancedInduction.restriction (J i)).obj (weightedRestriction D Sc cut 8 M))).obj w) :=
+  weightedMatrixMateValue_eq_total D Sc cut 8 i M (Q.obj w)
+    (weightedMateSourceLinearEquiv D Sc cut 8 i M w x)
+example (i : Bool) (w : OldCategory D Sc cut)
+    (x : ((BalancedInduction.induction (J i)).obj
+      ((BalancedInduction.restriction (J i)).obj (weightedRestriction D Sc cut 8 M))).obj w) :=
+  BalancedInduction.inductionMatrixMate_value_apply (T i)
+    (truncatedEqualCross_supernatural D Sc cut 8 i) (truncatedDot_supernatural D Sc cut 8 i)
+    (by cases i <;> decide) M (Q.obj w) (weightedMateSourceLinearEquiv D Sc cut 8 i M w x)
 /-- Both moving colours are present in the concrete datum. -/
 example : D.parity true = 1 := by decide
 example : D.parity false = 0 := by decide
