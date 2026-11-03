@@ -17,3 +17,11 @@ remains separate. The source equations must next be passed through
 balanced induction, the chosen pair flattenings and the weight-product
 coordinates; these coefficient identities alone are not the global probe
 slides.
+
+`ELVModuleInductionSlides.transformComponent_rectangular_slide` now
+transfers a homogeneous rectangular source slide to whole induced module
+maps. Both superopposite composition signs cancel, retaining the given
+scalar. The generic producer and concrete OLD mixed/two-odd consumer
+pass strict paired checks and all five owned audits, with every source
+relation supplied by the literal quotient theorem above. The selected
+nested pair flattenings and global weight transport remain separate.

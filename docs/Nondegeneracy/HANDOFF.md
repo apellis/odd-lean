@@ -737,8 +737,10 @@ See [OldAppendBraid](OldAppendBraid.md).
 `ELVOldDistinctSlides` now supplies both distinct-colour coefficient
 slides for the literal OLD dots and positive crossing. Its producer and
 mixed/two-odd representable consumer pass strict checks and six owned
-audits. Apply signed contravariant induction and the chosen pair
-flattenings before weight transport. See [OldDistinctSlides](OldDistinctSlides.md).
+audits. `ELVModuleInductionSlides` now transfers a rectangular source
+slide to whole induced module maps, with strict concrete OLD checks and
+five owned audits. Apply the chosen pair flattenings before weight
+transport. See [OldDistinctSlides](OldDistinctSlides.md).
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently

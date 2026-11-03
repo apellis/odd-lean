@@ -2421,3 +2421,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightNilHecke
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldDistinctSlides
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionSlides
