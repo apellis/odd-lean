@@ -2020,3 +2020,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison
