@@ -2160,3 +2160,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctTargets
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentRectangularCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRectangularCross
