@@ -614,3 +614,29 @@ inverse entries, arbitrary-word tensor Hom coordinates and native reservoir
 cap/unit rows. Their full verification belongs to their own integration
 PR and STATUS. This preservation does not assert that the complete snapshot
 builds. Recover topical files with `git show 6b3aef99dfb2669bf55d73bf5ea6531fb39a4314:<repository-path>`.
+
+## Chosen local, mixed matrix and literal layer attachment argument tree
+
+The complete source tree [1cc3b498df](https://github.com/apellis/odd-lean/commit/1cc3b498df47550c84691cfbe58896cc6d0aecc0) preserves the next chosen-action,
+central-matrix and observation arguments. Its sole parent is the verified
+research integration of #1020. Pending proof integration heads are not
+introduced as ancestors by this copy. The history merge changes only
+this inventory and HANDOFF, without importing proposed source into the
+checked library.
+
+| Topic | Source files in the preserved tree | Scope at preservation |
+| --- | --- | --- |
+| Canonical local and missing boundary | `ELVProbeAppendToMateReindex.lean`, `ELVProbeAppendUpperLoop.lean`, `ELVProbeMissingCoefficients.lean` | Proposed chosen mate/upper-loop transport and evaluated missing-colour coefficients. Prefixes and individual producers have scoped evidence; complete paired checks and selected local records remain separate. |
+| Stored corrected braid | `ELVProbeStoredMixedBraid.lean` | Proposed literal stored-content corrected relation using the checked changing seven-edge grid; evaluated and weight fields remain open. |
+| Supported global distinct mate | `ELVProbeWeightMixedCoordinates.lean` | Proposed supported-coordinate identification with the constructed stored-target inverse. Global `invNe` is not asserted. |
+| Literal layer matrix | `SwappedAssembly/ReservoirLayerGenerators.lean` | Proposed actual layer-map comparison at zero probe content, with both contexts; no complete action observation is asserted. |
+| Probe-to-reservoir bend | `SwappedAssembly/Sigma/ProbeToReservoirBend.lean` | Proposed actual mixed diagonal bend with its selected shifted caps and coefficient chart. Complete matrix and residual ideal closure remain open. |
+
+The tree also contains separately scoped-checked stored-target distinct
+mate inverses and dotted rows, nested corrected braid and seven-edge
+transfer, product inverses, generic zero-loop and boundary-chart adapters,
+actual reservoir principal entry, contextual half-turn generators and
+the literal affine-layer quotient square. Their full verification belongs
+to their own integration PR and STATUS. This preservation does not assert
+that the complete snapshot builds. Recover topical files with
+`git show 1cc3b498df47550c84691cfbe58896cc6d0aecc0:<repository-path>`.
