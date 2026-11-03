@@ -2549,3 +2549,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightTripleCrossCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomClosure
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomVacuum
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedSectorEntries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.AugmentedFactorMatrix
