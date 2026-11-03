@@ -823,11 +823,16 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVInductionTripleDots` now supplies all three whole nested-dot squares
+through the same chosen triple flattening, across four arbitrary
+categories. Strict mixed/three-odd/changing-content/shifted consumer
+checks audit all five owned declarations. Use these to transport the
+entire ordered correction polynomial and combine the six crossing
+squares; see [InductionTripleDots](InductionTripleDots.md).
 `ELVOldCorrectedInductionBraid.oldDirectMixedBraid_polynomial` now proves
 the signed direct braid difference with its negative equal crossing and
 original-Sc ordered correction. Strict occupied mixed/three-odd/interior/
-odd-kernel consumer checks audit all sixteen owned declarations. Compare
-all three chosen nested dot whiskerings through the common triple chart,
+odd-kernel consumer checks audit all sixteen owned declarations. Use the three checked nested-dot squares to transport the correction,
 then lift the corrected relation to evaluated and weight functors; see
 [OldCorrectedInductionBraid](OldCorrectedInductionBraid.md).
 `ELVOldTriplePolynomial.oldTriplePolynomial_operator` now identifies the
