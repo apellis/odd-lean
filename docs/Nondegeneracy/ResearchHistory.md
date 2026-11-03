@@ -591,3 +591,26 @@ weight signed slides, representative adjunction comparison and content
 braid. Their integration evidence belongs to their own proof PRs and
 STATUS. This preservation is not evidence that the whole snapshot builds.
 Recover individual files with `git show 418df8069eb8cbc07b48201ad4fccde9907b3f59:<repository-path>`.
+
+## Canonical local and central matrix attachment argument tree
+
+The complete source tree [6b3aef99df](https://github.com/apellis/odd-lean/commit/6b3aef99dfb2669bf55d73bf5ea6531fb39a4314) preserves the next canonical local,
+multicolour polynomial and observation attachment arguments. Its sole
+parent is the verified research integration of #1017. Pending proof
+integration heads are not introduced as ancestors by this copy. The
+history merge changes only this inventory and HANDOFF, without importing
+proposed source into the checked library.
+
+| Topic | Source files in the preserved tree | Scope at preservation |
+| --- | --- | --- |
+| Selected canonical generators | `ELVProbeReindexMate.lean`, `ELVProbeReindexCrossing.lean`, `ELVProbeReindexRows.lean` | Proposed exact chosen mate/crossing and dotted unit/counit compatibility. Individual prefixes have scoped evidence; complete integration and target local records remain open. |
+| Independent-dot polynomials | `ELVInductionPairPolynomial.lean`, `ELVOldPairPolynomial.lean`, `ELVInductionTriplePolynomial.lean` | Proposed original-parameter pair/triple polynomial identifications; final selected whole-weight quadratic and repeated-outer braid fields remain open. |
+| Contextual Hom entries | `ELVTensorHomContexts.lean` | Proposed further outer-E context attachment to the same literal Hom-entry evaluation; no complete layer evaluation is asserted. |
+| Pure principal sigma entry | `SwappedAssembly/Sigma/ReservoirPrincipal.lean` and paired consumer | Proposed use of the existing finite-sum and mate formulas to identify the prescribed pure-factor principal entry; full matrix and residual closure remain open. |
+
+The tree also contains separately scoped-checked distinct slides, selected
+block quadratic, normalized nested multicolour braid, reindexed local
+inverse entries, arbitrary-word tensor Hom coordinates and native reservoir
+cap/unit rows. Their full verification belongs to their own integration
+PR and STATUS. This preservation does not assert that the complete snapshot
+builds. Recover topical files with `git show 6b3aef99dfb2669bf55d73bf5ea6531fb39a4314:<repository-path>`.
