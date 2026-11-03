@@ -2269,3 +2269,17 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentInductionTripleBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedLocalInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPowerMomentMaps
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVRestrictionMatrixCharts
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapUniqueness
+
+import OddMath.SKM.RouquierAdjacentLeftAdjunction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierCap
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficientCapUniqueness
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapRowSquare
