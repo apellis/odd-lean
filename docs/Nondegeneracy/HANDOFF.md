@@ -6,17 +6,27 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-Exact trees below are reachable in history only. No proposed source is imported.
-Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+These exact source trees are reachable in history only; no unchecked source
+is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 
 | Argument | Preserved source tree | Scope at snapshot |
 | --- | --- | --- |
-| Chosen word crossing | [87e8e0aa6c](https://github.com/apellis/odd-lean/commit/87e8e0aa6c064f45021b512286a1b8de2611c10d) (`docs/research/PowerWordContentCrossDraft.md`) | Producer prefixes pass; chosen old-word equality and complete paired batch remain unverified. |
-| Canonical finite matrix charts | [11b07774d0](https://github.com/apellis/odd-lean/commit/11b07774d06cfdd523495aa08395b65f032670fc) (`docs/Nondegeneracy/ContentBlockMatrixCharts.md`) | Generic evenness passes; native parity attachments and consumer unverified. |
-| Original-weight unit columns | [fe78dc3a8e](https://github.com/apellis/odd-lean/commit/fe78dc3a8eef7e652228630ea5fa616604363490) (`docs/Nondegeneracy/WeightUnitPowers.md`) | Actual unit/power source and consumer unverified at this snapshot; later checked successor separate. |
-| Raw shifted pre-Hom dot | [953872bb34](https://github.com/apellis/odd-lean/commit/953872bb34216c23da661c5aad2cd10bbe3e27d6) (`docs/Nondegeneracy/ProbeCapPreDotSigns.md`) | Raw Koszul-sign producer passes; paired consumer unverified at snapshot. |
-| Content induction braid | [11da074226](https://github.com/apellis/odd-lean/commit/11da074226aa4927c606ee647eb128dd574cd70f) (`docs/Nondegeneracy/ContentInductionBraidProposal.md`) | Direct content braid source and consumer unverified at snapshot. |
-| Distinct weight slides | [e9bb2e7a72](https://github.com/apellis/odd-lean/commit/e9bb2e7a721b2644eb56b1fa4f5bef3509f33e82) (`docs/Nondegeneracy/WeightDistinctSlidesProposal.md`) | Selected chart/dot squares pass; supported equations, native fields and consumer unfinished. |
+| Original-weight chosen dot | [0b26b3c1f7](https://github.com/apellis/odd-lean/commit/0b26b3c1f7c8e1a548d46d0b0293afefde62fba8) (`docs/Nondegeneracy/PowerWordWeightDotDraft.md`) | Producer passes; paired consumer and whole batch unverified. |
+| Canonical content unit and cap fields | [5754cbac96](https://github.com/apellis/odd-lean/commit/5754cbac968d56ba037a4d3dc751bd1006fb65a2) (`docs/Nondegeneracy/ContentBlockMatrixRows.md`) | Unit and dot prefixes pass; all-power chain and actual field specialization unverified. |
+| Native inverse coefficient caps | [ef8d91c005](https://github.com/apellis/odd-lean/commit/ef8d91c0058d8e88bb21995495267590318813d0) (`docs/Nondegeneracy/ProbeCapMaps.md`) | Bare producers pass; degree, paired consumers and scalar inverse-row binding unverified. |
+| Scalar left-cap field binding | [93af40181a](https://github.com/apellis/odd-lean/commit/93af40181a8b1d62ff882d73e62054fa763bfae1) (`docs/Nondegeneracy/ScalarLeftCapBinding.md`) | Literal dropped-row prefix passes; extended producer and paired consumer unverified. |
+
+## Ground-ring reduction already available
+
+The remaining construction may target characteristic-zero fields.
+`SKM.nondegeneracyConjecture_of_charZeroField` already transports that
+field theorem to every ordinary commutative ring with 2 invertible,
+for the same datum, homogeneous scalars and supplied CScalars. Do not
+list ring descent as an unfinished action or recovery obligation.
+The theorem uses actual presentation base change and universal-parameter
+separation; it adds no target-domain, reducedness or flatness hypothesis.
+See [GroundRingDescent](GroundRingDescent.md) and
+[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean).
 
 ## Dependency order and readiness
 
@@ -75,7 +85,7 @@ The next locally checked sources supply both native multicolour quadratic
 fields, whole chosen weight-dot evaluation, every canonical-content unit-dot
 power through the selected full charts, exact scalar old inverse-row field
 binding, supported chosen weight unit/counit squares and even flattened
-weight-triple coordinates. Their full warning-free build, global axiom audit and every consumer passed in #991 at source head `c18b8721` (run 41588533754), integrated at `ea35e5ba`. Next attach
+weight-triple coordinates. Their full integration CI is pending. Next attach
 the native coefficient cap to its exact scalar inverse-row field and derive
 the normalized probe window. The whole original-weight distinct mate inverse
 and its parity now pass strict paired checks, including both round trips and
@@ -84,31 +94,6 @@ degree and a nonzero regular-probe value. Prove the native slide/braid fields,
 original-weight same-colour local inversions and canonical diagonal cap-row
 and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
-
-## Native probe normalization and remaining action fields
-
-The next strict locally checked integration identifies the native left cap
-with its prescribed ordinary inverse coefficient and proves the actual
-Kronecker window. On the regular probe its ground row extracts precisely
-the top dot coefficient, and the SAME native SVec dot satisfies the signed
-probe polynomial. Occupied levels one and two retain a nonzero top vector;
-at level one its dot square is minus itself. This closes the fixed-input
-native normalization window. Input-family supernaturality, pre-Hom parity
-transport and the final swapped mixed slide remain separate.
-
-The chosen canonical ordinary counit and every literal dotted cap row now have
-their whole source-chart squares.
-The same-colour original-weight principal is the literal native Rouquier
-mate; the absent-predecessor EF boundary retains FE and uses the required
-cutoff compatibility to determine its height. Finish finite parity-coordinate assembly, canonical inverses, coordinate
-extraction and native local inversion fields.
-
-Both chosen triple-chart paths and their native component formulas agree.
-Prove the actual crossing whisker relations and braid fields in this chart.
-Full-coefficient cyclicity and the chosen append-unit calculation now have
-occupied paired checks; use them to evaluate the chosen crossing on ALL
-arrows, then finish the final observation recovery. These successors have
-strict producer/consumer and owned-declaration audits; full CI is pending.
 
 ## Current comparison interfaces
 
