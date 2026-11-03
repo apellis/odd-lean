@@ -7,17 +7,16 @@ This file records next mathematical dependencies, not session telemetry.
 ## Proposed argument restart trees
 
 The following exact source trees are preserved in reachable history only.
-They are unverified proposals, are not imported by the checked library, and
-do not establish their headline conclusions. Checked successors are recorded
-in the corresponding topic notes and current status.
+Each scope describes that proposed snapshot, independently of later checked
+successors. No proposed source is imported by this preservation. Earlier
+variants remain linked in [ResearchHistory](ResearchHistory.md).
 
 | Argument | Preserved source tree | Scope at the snapshot |
 | --- | --- | --- |
-| Content pair crossing | [cef0b17b98](https://github.com/apellis/odd-lean/commit/cef0b17b98856f32f937b5510d70ab1c2feb546f) (`docs/Nondegeneracy/ContentPairComparisonProposal.md`) | Final pair tensor comparison is unverified. |
-| Content self-colour mate | [fc52dfd086](https://github.com/apellis/odd-lean/commit/fc52dfd086f11fab7b527cd9a3fbce808c689ff5) (`docs/Nondegeneracy/ContentAppendMateProposal.md`) | Source chart formulas are checked separately; the prescribed mate square and its consumer remain unverified. |
-| Distinct content mate | [cffb3ae4b2](https://github.com/apellis/odd-lean/commit/cffb3ae4b2f5c9471d5e6ef53d44222f6d0f4cc0) (`docs/Nondegeneracy/ContentDistinctMate.md`) | Generic rectangular formulas and chart prefixes are scoped-checked; the whole comparison and consumer remain unverified. |
-| Power-word coordinates | [41466e07a4](https://github.com/apellis/odd-lean/commit/41466e07a45207605231911c5f1d3f01a24021f9) (`docs/Nondegeneracy/ELVPowerWordCoordinates.md`) | The producer passed its scoped check; the consumer, occupied word evaluation and complete recovery attachment remain unverified at this snapshot. |
-| Weighted matrix rows | [dca80e84a0](https://github.com/apellis/odd-lean/commit/dca80e84a05f8f0777c55dced0fd3ac6fff8bdcb) (`docs/Nondegeneracy/WeightedMatrixRows.md`) | The proposed producer has an operator-power elaboration failure; the matrix row comparison and inverses remain unverified. |
+| Native weight crossing comparison | [78f211e13b](https://github.com/apellis/odd-lean/commit/78f211e13b210b93f7ed4c67867eac0919792e40) (`docs/Nondegeneracy/WeightPairCrossingProposal.md`) | The native-arrow variant is unverified; the separate linear-total route is scoped-checked and does not prove this variant. |
+| Chosen power-word append and dot | [16a56e818f](https://github.com/apellis/odd-lean/commit/16a56e818f35b7cd39b0b03ae28f8dbbf8dd2ecb) (`docs/Nondegeneracy/PowerWordAppendDotDraft.md`) | This proposed variant has unchecked selected-map endpoint conversions. Later checked successors are separate results. |
+| Shifted scalar cap coordinates | [cc3d58e58a](https://github.com/apellis/odd-lean/commit/cc3d58e58afba1238660cc7672c0b10b53fd13aa) (`docs/Nondegeneracy/ProbeShiftedCapComparison.md`) | This snapshot predates the checked shifted-cap successor; its coordinate conversion and missing consumer are explicitly proposed. |
+| Native distinct-mate bundling | [a6819398d1](https://github.com/apellis/odd-lean/commit/a6819398d133a24265de16ed08f44a7224efddab) (`docs/Nondegeneracy/ContentDistinctIso.md`) | Generic native module/functor bundling is unverified; concrete old-content application, truncation and weight transport remain separate. |
 
 ## Dependency order and readiness
 
