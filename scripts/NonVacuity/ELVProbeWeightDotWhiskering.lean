@@ -41,6 +41,15 @@ example (i : Bool) (p : ZMod 2) := probeOldOuterDot_component D Sc m i Λ rfl rf
   (base []) p (shifted (w []))
 example (i : Bool) (p : ZMod 2) := probeOldInnerDot_component D Sc m i Λ rfl rfl
   (base []) p (shifted (w []))
+/-- Distinct colours use the same selected pair coordinate on both dots. -/
+example (i j : Bool) (p : ZMod 2) := probeOldPairOuterDot_component D Sc m i j Λ rfl rfl
+  (base [i,!i]) p (M (w [i,!i]))
+example (i j : Bool) (p : ZMod 2) := probeOldPairInnerDot_component D Sc m i j Λ rfl rfl
+  (base [i,!i]) p (M (w [i,!i]))
+example (i : Bool) (p : ZMod 2) := probeOldPairOuterDot_component D Sc m i (!i) Λ rfl rfl
+  (base []) p (shifted (w []))
+example (i : Bool) (p : ZMod 2) := probeOldPairInnerDot_component D Sc m i (!i) Λ rfl rfl
+  (base []) p (shifted (w []))
 example : D.parity true = 1 := by decide
 example : D.parity false = 0 := by decide
 end ProbeWeightDotWhiskeringConsumer

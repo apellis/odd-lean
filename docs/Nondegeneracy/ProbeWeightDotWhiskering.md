@@ -9,3 +9,13 @@ full build, global axiom audit and all concrete consumers in
 [#1014](https://github.com/apellis/odd-lean/pull/1014)
 ([CI run](https://github.com/apellis/odd-lean/actions/runs/41691819623)),
 merged at `2c1306c4`.
+
+The common proof now covers arbitrary colour pairs.
+`probeOldWeightPair₂_obj_eq` retains both chosen colours in the selected
+product coordinate; `probeOldPairOuterDot_component` and
+`probeOldPairInnerDot_component` identify the two independent dots there.
+The original equal-colour statements are unchanged specializations.
+The generalized producer and extended mixed/shifted regular-probe
+consumer pass strict checks, auditing all seven owned declarations.
+Full integration of this extension remains separate from #1014, which
+verified the earlier equal-colour source.

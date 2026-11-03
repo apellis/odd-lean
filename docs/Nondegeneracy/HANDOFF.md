@@ -1002,6 +1002,11 @@ owned audits, and full CI in #1014. Use these common coordinates to transport bo
 slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
+The same module now exposes the supported pair coordinate and both dot
+components for arbitrary colours, retaining the equal-colour statements
+as specializations. Its generalized producer and extended mixed/shifted
+consumer pass strict checks and seven owned audits. Use these actual
+dot coordinates for the distinct-slide attachment.
 
 `ELVProbeWeightTripleInduction` supplies the chosen three-step weight
 coordinate with all stored intermediate targets and the actual zero module
