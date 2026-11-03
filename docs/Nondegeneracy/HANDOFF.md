@@ -10,6 +10,10 @@ The exact source trees below are reachable from this research branch in
 history only. They include unfinished source and concrete consumer drafts;
 no proposed source is imported. Each linked commit contains a full source
 tree. Its stated scope is separate from full integration verification.
+For integration, restore the topical source, consumer and note onto a fresh
+branch from current `research/odd-nondegeneracy`; retain the current shared
+library prefix and add the needed exports. Do not merge a preserved full
+tree as an implementation change.
 The complete inventory of preserved topic variants is in
 [ResearchHistory](ResearchHistory.md#complete-argument-source-variants).
 
