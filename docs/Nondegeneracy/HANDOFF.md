@@ -75,6 +75,19 @@ retain their separate scoped-check/full-integration boundaries below.
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
 | Final Phase 1 nondegeneracy | Blocked on concrete observations | Finite-colour reduction, upward/oriented equivalence, observation consumer and proved ground-ring descent | Supply observations for every required bound/word/weight for symmetrizable homogeneous data; inhomogeneous parameters belong to Phase 2 and nonsymmetrizable data are excluded |
 
+## Reservoir principal matrix attachment
+
+`Sigma.ReservoirPrincipal.sigmaEntry_reservoir_mate` and
+`sigmaEntry_reservoir_coordinates` now identify the actual pure reservoir
+principal entry with the selected shifted-adjunction mate and literal
+factor `W.loc.sig`, through the prescribed cap/cup charts. Arbitrary full
+Hom inputs and probe content are retained; the source path requires its
+actual positive reservoir content. Strict two-odd full-factor consumer
+checks include an independently nonzero exterior input and audit all 27
+owned declarations. The probe principal and mixed bends, negative principal
+minus, absent paths, complete augmented-matrix square and residual ideal
+memberships remain separate. See [ReservoirPrincipal](ReservoirPrincipal.md).
+
 ## Prescribed matrix and coefficient-row successors
 
 The #988 source head `1f62b66a` passed the full warning-free build, global
