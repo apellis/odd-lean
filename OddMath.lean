@@ -2372,3 +2372,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumLocalCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentRouquierInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentPrincipalSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate
