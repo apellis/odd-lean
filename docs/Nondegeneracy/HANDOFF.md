@@ -936,7 +936,10 @@ concrete regular-probe consumer and all four owned audits pass strict
 checks. `ELVProbeWeightDotWhiskering` identifies both independently
 whiskered dots in the same supported coordinates as the chosen crossing;
 its producer, concrete consumer and all four owned audits also pass.
-Use these common coordinates to transport both signed slides. See
+`ELVProbeBlockDotComparison` identifies each selected stored-target dot
+with the native induction-grid dot, with strict paired checks and four
+owned audits. Use these common coordinates to transport both signed
+slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
 
