@@ -904,6 +904,11 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeReindexLoopComponents` identifies both selected even loop
+comparisons with the OLD maps used in the proved mate square. Strict
+reordered mixed/shifted/odd-input consumer checks audit all fourteen
+owned declarations. Use them in the whole evaluated mate and dotted-row
+comparisons; see [ProbeReindexLoopComponents](ProbeReindexLoopComponents.md).
 `ELVProbeAppendToRows` now identifies every selected dotted unit/counit
 row with its prescribed OLD homogeneous components, for arbitrary stored
 targets, dot exponents and parities. Strict mixed reordered/odd-input
