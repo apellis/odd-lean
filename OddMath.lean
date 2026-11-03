@@ -2015,3 +2015,6 @@ import OddMath.QuiverHecke.HalfTurn.BoundedDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionDoubleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleCrossing
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourceQuotientComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePowerComparison
