@@ -1,19 +1,15 @@
 # Ground-ring descent with dependent roots and normalization units
 
-**Status: the conditional ground-ring descent is formalized in Lean.**
-This note supports Brundan–Ellis, *Super Kac–Moody 2-categories*,
-arXiv:1701.04133v2, Theorem 8.1 and the §8 Nondegeneracy Conjecture.
-The implemented endpoint is
-[`SKM.nondegeneracyConjecture_of_charZeroField`](../../OddMath/SKM/GroundRingNondegeneracy.lean),
-with explicit hypothesis `CharZeroFieldNondegeneracy D`.
-Its actual presentation base change, universal parameter construction,
-separating characteristic-zero fields and coefficient/matching-family
-specialization are implemented. The importing consumer is
-`scripts/NonVacuity/GroundRingNondegeneracy.lean`.
-
-The field-case input itself remains open; the current proposed field
-argument is [SwappedNondegeneracy](SwappedNondegeneracy.md).
-The descent is not a proof that its factor actions and recovery maps exist.
+**Status: proposed mathematical deduction, not a Lean theorem.** This note
+supports Brundan–Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2,
+Theorem 8.1 and the Nondegeneracy Conjecture immediately following it.
+It proves the commutative-algebra reduction on paper and supplies a universal
+parameter construction, including the original weight group and supplied
+normalizations. Its nondegeneracy input is the written field candidate
+[SwappedNondegeneracy](SwappedNondegeneracy.md) at
+`22c0d052a31eb1607f84f139e7490d34fbcdbedb`, not an established Lean theorem.
+The candidate is unchanged. The presentation scalar-change interfaces below
+are mathematical constructions still to be implemented for SKM.
 
 ## 1. Exact conclusion and source boundary
 
@@ -422,8 +418,13 @@ The possible failure points have specific answers, not added hypotheses:
   localize the final target R. Positive odd characteristics dividing some
   d_i remain in the conclusion.
 
-The commutative-algebra descent and its actual SKM presentation interfaces
-are now formalized in `GroundRingNondegeneracy.lean`. The remaining proof
-boundary is exactly its characteristic-zero field input. Completing the
-factor action, chosen vacuum evaluation and recovery supplies that input;
-no additional ring-descent construction is required afterward.
+There is no remaining commutative-algebra obstruction in this proposed
+route. There is still a genuine proof boundary: the full field candidate
+is not a Lean theorem. In addition to that independent mathematical input,
+formal descent needs the universal group-algebra construction and separation
+lemma, the actual scalar-change equivalence and expansion square, and the
+short kernel argument of §6. A useful next bounded result is item 2 of §7
+for arbitrary coefficient maps, with the inverse tested on nonflat scalar
+extensions; then item 3 must include normalized bubbles and the full
+polynomial/exterior coefficient basis. No additional action construction
+or free-weight-realization comparison is required for those tasks.
