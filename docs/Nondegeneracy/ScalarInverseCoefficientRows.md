@@ -31,8 +31,9 @@ uses mixed regular scalar modules, both moving colours, all coefficient
 indices, proved existing top rows, genuine empty output, and the top row's
 actual even/odd parity. No right counit is substituted for an inverse row.
 
-Literal attachment of the old side to `contentUnitCoefficientMap`, and hence
-its empty-output `moduleUnitCoefficient` normalization, remains the next
-field-binding step. The final prescribed mixed left-cap datum, its module
-naturality, and the resulting representation/nondegeneracy theorem are not
-asserted by this component comparison alone.
+Literal attachment of the old side to `contentUnitCoefficientMap` and its
+empty-output `moduleUnitCoefficient` normalization is supplied by
+`ELVProbeLeftCapComparison`; see `ScalarLeftCapBinding.md`. Binding the native
+relative cap map, the final mixed left-cap datum, its module naturality, and
+the representation/nondegeneracy theorem remain separate from this component
+inverse-row comparison.
