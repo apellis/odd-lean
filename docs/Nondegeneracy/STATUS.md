@@ -338,30 +338,46 @@ blobs also passed strict local checks and combined imports.
 | Constructed local pre-Hom adjunction | `RouquierPreAdjunction`, `ELVProbeLocalPreAdjunction` use the existing adjacent-local constructor on the prescribed probe edge and identify the constructed counit with shiftedPreCap after both Koszul factors cancel | Adjacent local records remain explicit supplied inputs; the actual evaluated mixed bend and full swapped action are separate |
 
 
-[PR #1003](https://github.com/apellis/odd-lean/pull/1003), at `72aa0c1c`,
-has 26 scoped-checked producers, 49 exact producer/consumer blobs and 765
-owned-declaration audits, with combined imports passing. Full integration CI
-remains pending. Its original-parameter mixed components, full-arrow word
-comparisons, native matrix powers, absent inverse orientations, tensor
-vacuum and evaluated bend/row interfaces are inputs to the successors below.
+[PR #1003](https://github.com/apellis/odd-lean/pull/1003) passed the
+full warning-free build, global axiom audit and all concrete consumers at
+`72aa0c1c` ([CI](https://github.com/apellis/odd-lean/actions/runs/41625277102)),
+integrated at `41673fa3`. Its 26 producers retain the original-parameter
+mixed components, full-arrow word comparisons, native matrix powers, both
+absent inverse orientations, tensor vacuum and evaluated bend/row interfaces.
 The module-map inverse-row names are `unitColumnModuleInverse*`; the older
 vector-map `unitColumnInverse*` API is retained.
 
-The following 22 producer successors and their paired consumers pass strict
-local checks, with 40 exact source/consumer blobs, 698 owned-declaration
-audits and combined imports passing. Their full integration gate remains
-pending.
+PR #1005 at `a85d1660` has 22 new producers, 40 exact source/consumer blobs,
+698 owned-declaration audits and passing combined imports. Its full
+integration CI is pending.
+
+The following interfaces pass strict local producer and paired consumer checks.
+Read the integration boundaries above and below for the full CI gate.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
-| Whole corrected mixed braid field | `ELVWeightMixedModulePolynomial`, `ELVWeightMixedBraid`, `ELVRouquierMixedBraidEquation` and `ELVWeightMixedRelation` prove the exact original-parameter chosen dotted `RouquierMulticolour.braidEq`, on every input and output including absent sectors | Assemble the other general multicolour fields and the relation-preserving factor |
-| Supported canonical principal square | `ELVContentPrincipalSquare.contentPrincipalMate_square` compares the given negative-crossing grid mate through the chosen lower source and upper retarget charts, with no compatibility hypothesis, for arbitrary modules and bounds | Supported content/weight inverse transport and complete native local records |
+| Whole corrected mixed braid field | `ELVWeightMixedModulePolynomial`, `ELVWeightMixedBraid`, `ELVRouquierMixedBraidEquation` and `ELVWeightMixedRelation` prove the exact original-parameter chosen dotted `RouquierMulticolour.braidEq`, on every input and output including absent sectors | General multicolour braid is recorded below; assemble the complete multicolour structure and action |
+| Supported canonical principal square | `ELVContentPrincipalSquare.contentPrincipalMate_square` compares the given negative-crossing grid mate through the chosen lower source and upper retarget charts, with no compatibility hypothesis, for arbitrary modules and bounds | Constructed supported/whole-weight local records are recorded below; full factor assembly remains |
 | Chosen word charts and contexts | `ELVPowerWordChartParity`, `ELVPowerWordEvaluation` and `ELVPowerWordWeightContexts` give even recursive charts and actual dot/cross evaluation inside arbitrary right E-contexts and full old arrows | Full chosen Hom-action evaluation and observation recovery |
 | Regular tensor-vacuum coordinates | `ELVVacuumTensorCoordinates.probeVacuumIso` is an even module isomorphism from the actual tensor vacuum at the regular probe to the original weighted vacuum, sending v tensor 1 exactly to v | Full action evaluation and prescribed swapped inverse |
 | Tensor-vacuum cap and mixed polynomial | `ELVPowerVacuumContentRows`, `ELVTensorVacuumCap`, `ELVTensorVacuumPolynomialCap` and `ELVTensorVacuumPrincipalCap` identify the prescribed native inverse cap, prove the negative-height annihilation and equal-level normalization on the same occupied tensor probe | Identification with the chosen full swapped augmented inverse and bubble recovery |
 | Constructed empty old local record | `ELVModuleZeroBoundary`, `ELVModuleZeroLocalInverse` and `ELVContentVacuumLocalInverse` construct the empty-edge record from the actual old induction/adjunction/dot; finite coefficient windows have no inverse or local-record premise | Adjacent one-letter record and its transported nilHecke equations |
-| Old inverse and affine fields | `ELVInductionGridRouquierInverse`, `ELVOldContentRouquierInverse` attach the constructed old matrix inverses to the prescribed principal/unit/cap fields. `ELVOldContentAffineRelations` proves both signed slides and crossing square zero in the literal old quotient | Induction-composition transport into the adjacent one-letter local record |
+| Old inverse and affine fields | `ELVInductionGridRouquierInverse`, `ELVOldContentRouquierInverse` attach the constructed old matrix inverses to the prescribed principal/unit/cap fields. `ELVOldContentAffineRelations` proves both signed slides and crossing square zero in the literal old quotient | Adjacent one-letter old record, followed by its normalized left adjunction |
 | Constructed old left cap | `ELVProbeVacuumLocalCap` identifies the constructed empty-record cap with the prescribed regular and scalar-evaluating caps, including F(E(T0)), without a local-record premise; occupied odd components are nonzero | Adjacent-record left adjunction and full mixed inverse |
+
+The next 15 producer successors have 30 exact source/consumer blobs, 404
+owned-declaration audits and passing combined imports. Their full integration
+gate remains pending.
+
+| Interface | Established locally | Remaining scope |
+| --- | --- | --- |
+| Supported and whole-weight local inverses | `ELVContentSupportedLocalInverse`, `ELVWeightSupportedLocalInverse`, `ELVWeightLocalInverse` and `ELVWeightRouquierLocal` construct both prescribed inverse orientations, their input-natural families and the actual `SuperRouquierLoc`, including absent sectors | Full factor/presentation assembly |
+| Reservoir Rouquier family | `ELVRouquierFamily.elvRouquierFamily` retains the prescribed weight products, E/F, adjunction, dots and crossings, with constructed local records. Its sole standing cutoff condition is `∀ i, (cutoff i : ℤ) = D.h i Λ`; no factor or inverse premise | Complete multicolour structure and separating swapped action |
+| Exact sideways crossing | `ELVWeightCrossMate.elvActionCrossMate_isIso` identifies the presentation's four-corner `crossMate` with the constructed rectangular mate and inverts it, without a compatibility premise | Attach this field to the complete multicolour structure |
+| General multicolour braid | `ELVWeightBraidPathsComparison`, `ELVWeightMulticolourBraid`, `ELVRouquierBraidEquation` and `ELVWeightBraidRelation` prove the exact uncorrected braid field for all input modules/output sectors; three distinct connected odd colours are tested | Complete multicolour assembly; the corrected field is checked separately above |
+| Coefficient insertion in chosen words | `ELVPowerWordCoefficients` identifies actual full-A/T coefficient operators in literal chosen E-word values and arbitrary right contexts, retaining full parity twists, chronological product and reversal of two odd insertions | Chosen whole-Hom evaluation and observation recovery |
+| Evaluated old probe category | `ELVProbeEvaluatedCategory` restricts to the full coefficient-evaluating subcategory, closed under actual old induction/restriction, parity and products. `ELVProbeEvaluatedDotUnit` constructs the entire natural signed-dot inverse on every object of that category | Canonical-content/weight gluing and complete probe family; no all-old-modules dot unit is asserted |
+| Old induction composition and square | `ELVInductionGridDots` transports both given dots through flattening; `ELVInductionGridCrossSquare` proves square zero for the given negative crossing as a whole module transformation | Remaining slide transport and actual adjacent old local record |
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
 operator orders, their minus sign on reversal, and a nonzero ordered product
