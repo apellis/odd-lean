@@ -176,8 +176,14 @@ integrated at `17b99448`. It verifies stored missing-colour local inverses,
 the zero lower cell and evaluated coefficient transport, exact bundled
 slides, the evaluated stored corrected braid, occupied mixed/triple
 coordinates and literal dot/equal/distinct reservoir matrix comparisons.
-Later present/global local,
-central matrix and literal layer additions retain their separate
+Integration #1024 passed the full warning-free build, global axiom audit
+and all concrete consumers at source `362b01cf` (run 41718292713),
+integrated at `5bfa9b77`. It verifies stored present-colour local inverses,
+whole selected mate and dotted-row squares, exact global distinct probe
+inversion, global crossing/cap/unit coordinates, pure probe principal and
+probe-to-reservoir entries, evaluated finite coefficient expansions and
+literal reservoir-context/source-class comparisons. Later whole local,
+central matrix and supported-action additions retain their separate
 scoped-check/full-integration boundaries below.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
