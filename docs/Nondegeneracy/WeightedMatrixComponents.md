@@ -1,0 +1,28 @@
+# Weighted finite matrix components
+
+DeformedMatrixComparison (2), (4) needs the prescribed matrices on the
+coefficient quotient in the canonical parity coordinates of
+Brundan–Ellis (1.13)–(1.14).
+
+`ELVWeightedMatrixComponents` defines `weightedUnitMatrixFamily`,
+`weightedCapMatrixFamily`, their entries and the finite row/column
+assemblies. The entries use the given ordered cup-crossing-cap mate,
+ordinary unit and counit, and unscaled dot powers. The canonical parity
+isomorphisms are inserted on the prescribed sides. A private matrix datum
+fixes the module endpoints before assembling their shifted coordinates;
+it introduces no additional hypothesis.
+
+`weightedMatrixMate_mem`, `weightedUnitMatrixEntry_mem`,
+`weightedCapMatrixEntry_mem`, `weightedUnitMatrixComponent_even` and
+`weightedCapMatrixComponent_even` prove the required degrees. The public
+`*_Entry_none` and `*_Entry_some` equations identify the literal shifted
+entries. `BalancedInduction.inductionMatrixMate_apply` evaluates the mate
+as the given ordered component on every coend vector, retaining its minus
+sign and original crossing parameter. The generic crossing-family and
+ordered-mate degree lemmas support these constructions.
+
+The producer and paired mixed-colour/vacuum consumer pass the pinned
+strict checks, including the allowlist audit of every owned declaration.
+No inverse of the quotient component matrices is claimed here. The next
+step is their exact finite coordinate square with the already constructed
+arbitrary-module old matrix inverses.
