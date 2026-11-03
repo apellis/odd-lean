@@ -152,6 +152,12 @@ theorem inductionMatrixMate_supernatural {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A
       (fun M => (inductionMatrixDatum A hα hδ hq M).mate.val) :=
   orderedMateComponent_supernatural_of_degree A hα q hq
 
+/-- The given matrix datum retains the entire ordered mate before the
+functor and module parameters are specialized. -/
+theorem inductionMatrixMate_eq {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) :
+    (inductionMatrixDatum A hα hδ hq M).mate.val = orderedMateComponent A hα M := rfl
+
 /-- The matrix mate is the given ordered mate on every coend vector. -/
 theorem inductionMatrixMate_apply {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
     (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
@@ -272,6 +278,16 @@ def weightedMatrixMate := (B).mate.val
 
 theorem weightedMatrixMate_mem : weightedMatrixMate D Sc cutoff N i M ∈ parity (R := k) _ _ (D.parity i) :=
   (B).mate.property
+
+/-- The weighted matrix uses the literal prescribed ordered mate as a
+whole module map, with no change of sign or parity convention. -/
+theorem weightedMatrixMate_eq_ordered :
+    weightedMatrixMate D Sc cutoff N i M =
+      BalancedInduction.orderedMateComponent T
+        (truncatedEqualCross_supernatural D Sc cutoff N i) M :=
+  BalancedInduction.inductionMatrixMate_eq T
+    (truncatedEqualCross_supernatural D Sc cutoff N i)
+    (truncatedDot_supernatural D Sc cutoff N i) (parity_square (D.parity i)) M
 
 /-- Evaluation retains the exact source and target module values of the chosen matrix mate. -/
 def weightedMatrixMateValue (w : TruncatedCategory D Sc cutoff N) (x : ((B).source).obj w) : ((B).target).obj w :=

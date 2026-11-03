@@ -2295,22 +2295,3 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComparison
 import OddMath.SKM.AugmentedInverseNaturality
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVGridLocalInverseFamilies
-
-import OddMath.SKM.RouquierPreAdjunction
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLocalPreAdjunction
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitFamily
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitInverse
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCross
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightInverseProducts
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentFibreInverse
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitColumnModules
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitModules
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierFields
-import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightCross
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitFamily
