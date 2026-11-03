@@ -43,7 +43,7 @@ The complete inventory of preserved topic variants is in
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
-| Reservoir factor family | Constructed in strict paired checks | `elvRouquierFamily`, exact square/braid/slides and both local inverse families | Assemble the separately checked complete multicolour fields |
+| Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full integration of the multicolour constructor; use the selected factor in the swapped assembly |
 | Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Chosen whole-weight right adjunction and signed dot are full-CI verified in #1011; whole-dot inverse and equal crossing pass strict paired checks; finish signed slides, braid, local records and multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
@@ -803,6 +803,14 @@ the construction still needs the concrete extended factor family. Choose
 cofinal probe/reservoir weights by the written balanced schedule in the
 pairing extension; the original weight group need not contain cofinal
 dominant directions. Do not insert such an assumption on the original X.
+
+`ELVRouquierMulticolour.elvRouquierMulticolour` now constructs all seven
+multicolour fields for the selected full-ELV family, with the standing
+highest-weight pairing and no supplied-family or inverse premise. The
+fresh producer and mixed/asymmetric-odd consumer checks pass, including
+all five owned audits. The factor acts with `parameterTwist D Sc` and
+retains original Sc in its presentation. Full integration and use in the
+compatible swapped pair remain. See [ELVRouquierMulticolour](ELVRouquierMulticolour.md).
 
 ## Weighted quotient and source detection
 

@@ -384,7 +384,8 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
 | Supported and whole-weight local inverses | `ELVContentSupportedLocalInverse`, `ELVWeightSupportedLocalInverse`, `ELVWeightLocalInverse` and `ELVWeightRouquierLocal` construct both prescribed inverse orientations, their input-natural families and the actual `SuperRouquierLoc`, including absent sectors | Full factor/presentation assembly |
-| Reservoir Rouquier family | `ELVRouquierFamily.elvRouquierFamily` retains the prescribed weight products, E/F, adjunction, dots and crossings, with constructed local records. Its sole standing cutoff condition is `∀ i, (cutoff i : ℤ) = D.h i Λ`; no factor or inverse premise | Complete multicolour structure and separating swapped action |
+| Reservoir Rouquier family | `ELVRouquierFamily.elvRouquierFamily` retains the prescribed weight products, E/F, adjunction, dots and crossings, with constructed local records. Its sole standing cutoff condition is `∀ i, (cutoff i : ℤ) = D.h i Λ`; no factor or inverse premise | Its complete multicolour structure passes fresh strict paired checks below; separating swapped action remains |
+| Reservoir multicolour presentation | `elvRouquierMulticolour` supplies all seven original-Sc fields on the constructed family acting with `parameterTwist D Sc`, with only the standing highest-weight pairing. Fresh producer and occupied mixed/asymmetric-odd consumer checks pass, including all five owned audits | Full integration; compatible probe factor, mixed normalization and observation assembly |
 | Exact sideways crossing | `ELVWeightCrossMate.elvActionCrossMate_isIso` identifies the presentation's four-corner `crossMate` with the constructed rectangular mate and inverts it, without a compatibility premise | Attach this field to the complete multicolour structure |
 | General multicolour braid | `ELVWeightBraidPathsComparison`, `ELVWeightMulticolourBraid`, `ELVRouquierBraidEquation` and `ELVWeightBraidRelation` prove the exact uncorrected braid field for all input modules/output sectors; three distinct connected odd colours are tested | Complete multicolour assembly; the corrected field is checked separately above |
 | Coefficient insertion in chosen words | `ELVPowerWordCoefficients` identifies actual full-A/T coefficient operators in literal chosen E-word values and arbitrary right contexts, retaining full parity twists, chronological product and reversal of two odd insertions | Chosen whole-Hom evaluation and observation recovery |
@@ -615,8 +616,9 @@ and normalized content/weight transport are not asserted.
 
 The older `GlobalFactorNondegeneracy.globalProbeReservoir` accepts
 `I → Polynomial k` parameters and conditional local inversions. It is not a
-construction of the full exterior-coefficient reservoir. A compatible
-full-ELV family construction is a prerequisite for final synthesis.
+construction of the full exterior-coefficient reservoir. The full-ELV reservoir multicolour family now passes strict paired checks;
+the compatible probe factor and mixed assembly remain prerequisites for
+final synthesis.
 
 ## Verification
 

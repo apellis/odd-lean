@@ -2383,6 +2383,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRouquierLocal
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSupportedLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedCategory
