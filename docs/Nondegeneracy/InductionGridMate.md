@@ -12,15 +12,14 @@ restriction of `Ind_K` applied to the chosen `J`-adjunction counit, in that
 order. `gridDoubleCrossComponent` is the given homogeneous transformation
 conjugated by the two canonical induction flattenings.
 
-`orderedGridMateComponent_total_tensor` sends `[g ⊗ b]` to
+The proposed `orderedGridMateComponent_total_tensor` sends `[g ⊗ b]` to
 `-[α_s ≫ tw_p(K.map g) ⊗ b]` in the `K`-coend summand indexed by `J(s)`.
 It retains the extra minus and the complete coefficient twist. The paired
 consumer uses the literal old and ordinary scalar probe content categories,
 connected mixed regular modules, both moving colours, arbitrary coefficient
 arrows and vectors, and vacuum unit tensors.
 
-The producer and consumer pass the strict pinned checks, including the
-owned-declaration axiom audit. The selected old-to-ordinary
+This producer and consumer are being checked. The selected old-to-ordinary
 mate comparison and its matrix-entry attachment remain separate obligations.
 Normalized cap rows are distinct from the ordinary unshifted counit used in
 this mate.
