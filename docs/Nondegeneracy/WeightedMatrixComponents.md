@@ -28,19 +28,8 @@ that evaluation with the raw ordered mate before choosing the append
 functor. These equations are used in the chosen matrix-chart comparison;
 they impose no compatibility premise.
 
-The four `inductionUnitMatrixEntry_*_total` and
-`inductionCapMatrixEntry_*_total` formulas evaluate the actual shifted
-fields as the prescribed raw mate, unit/dot and dot/counit maps before
-choosing an append functor. They support the finite field comparison.
-
 The producer and paired mixed-colour/vacuum consumer pass the pinned
 strict checks, including the allowlist audit of every owned declaration.
 No inverse of the quotient component matrices is claimed here. The next
 step is their exact finite coordinate square with the already constructed
 arbitrary-module old matrix inverses.
-
-The datum-level mate also retains input-module signed naturality.
-`orderedMateComponent_supernatural` keeps the negative flattened crossing;
-`inductionMatrixMate_supernatural` attaches that family to the chosen datum
-before quotient specialization. It supplies the principal fields in the
-natural transformations of `ELVWeightedMatrixFunctor`.
