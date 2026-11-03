@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendBraid
-import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionRelations
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionBraid
 
 /-! # The old braid on direct triple induction
 
@@ -13,29 +13,6 @@ open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 open BalancedInduction
 universe u
-private theorem transformComponent_braid
-    {k C A : Type u} [CommRing k]
-    [Category.{u} C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category.{u} A] [Preadditive A] [Linear k A] [Supercategory k A]
-    (T : C ⥤ A) [T.Additive] [T.Linear k] [IsSuperfunctor k T]
-    {p : ZMod 2} {α β : ∀ s, T.obj s ⟶ T.obj s}
-    (hα : IsSupernatural k p α) (hβ : IsSupernatural k p β)
-    (hb : ∀ s, α s ≫ β s ≫ α s = β s ≫ α s ≫ β s)
-    (M : Superfunctor k C (SVec k)) :
-    transformComponent hα M ≫ transformComponent hβ M ≫ transformComponent hα M =
-      transformComponent hβ M ≫ transformComponent hα M ≫ transformComponent hβ M := by
-  have he : (fun s => (α s ≫ β s) ≫ α s) =
-      (fun s => (β s ≫ α s) ≫ β s) := by
-    funext s
-    simpa only [Category.assoc] using hb s
-  have ht : transformComponent ((hα.comp hβ).comp hα) M =
-      transformComponent ((hβ.comp hα).comp hβ) M := by
-    congr 1
-  rw [transformComponent_comp, transformComponent_comp,
-    Linear.comp_smul, Linear.comp_smul,
-    transformComponent_comp, transformComponent_comp]
-  exact congrArg (fun f => _ • (_ • f)) ht
-
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ) (i : I)
 

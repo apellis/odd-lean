@@ -123,7 +123,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVShiftedCoefficientModule
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionRepresentable
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldAppendBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleInductionBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldInductionBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldNestedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldModuleAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionCrossTensor
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMateTensors
@@ -2382,6 +2384,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightRouquierLocal
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightSupportedLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierFamily
+import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridDots
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedCategory
@@ -2391,6 +2394,9 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMulticolourBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVRouquierBraidEquation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightBraidRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridCrossSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRelations
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridLocal
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentLocal
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedCrossing
@@ -2402,5 +2408,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDot
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDotUnit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPairInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDotWhiskering
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDotComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctCrossing
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor

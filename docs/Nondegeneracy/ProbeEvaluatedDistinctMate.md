@@ -33,3 +33,9 @@ This constructs the chosen evaluated mate at stored contents; its
 identification with the complete probe Rouquier presentation still needs
 the independently chosen crossing/right-adjunction square and canonical
 content and weight transport. No probe braid field is claimed here.
+
+The source head `4da876539f5147f00b608e0f0abf9f53f5808a92` passed the
+full build, global axiom audit and every non-vacuity consumer in
+[#1013](https://github.com/apellis/odd-lean/pull/1013)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41687376775)),
+merged at `73318d56`.
