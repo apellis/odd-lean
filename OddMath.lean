@@ -2222,3 +2222,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockCapPowers
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHecke
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHeckeRelation
 import OddMath.Algebra.FiniteSupermoduleCoordinates
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapModuleWindow
