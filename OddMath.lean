@@ -2473,3 +2473,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldCorrectedInductionBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionTripleDots
 import OddMath.QuiverHecke.HalfTurn.PowerWordQuotientCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionTriplePolynomialMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingCoefficients
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingLocal

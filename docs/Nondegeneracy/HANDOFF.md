@@ -759,6 +759,15 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVContentMissingLocal.contentMissingLoc` now constructs the untruncated
+local record at arbitrary content missing the moving colour, including
+both inverse orientations at height zero. Its coefficients are the
+prescribed missing-colour inverse rows. Three changed producers and the
+mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
+74 owned declarations; the legacy vacuum consumer also passes. Restrict
+to evaluated modules, transport the upper append to its stored content,
+and compare the absent global lower loop with zero; see
+[ContentMissingLocal](ContentMissingLocal.md).
 `ELVProbeReindexRows` now preserves both prescribed dotted unit/counit
 rows through the same append comparisons, for every exponent including
 zero and arbitrary module input. Strict mixed reordered-content/shifted
