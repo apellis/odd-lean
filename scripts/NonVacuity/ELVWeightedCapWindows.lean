@@ -82,6 +82,23 @@ example :
   apply occupied_composite _ _ top_polynomial
   intro hz
   exact delta_ne_zero ((weightedEmptyEquiv D Sc cutoff L).injective (hz.trans (map_zero _).symm))
+
+/-- The same finite window uses the same ordinary unit and endpoint dot. -/
+example (i : Bool) (n : ℕ) (hn : n < cutoff i) :
+    weightedVacuumUnit D Sc cutoff L i ≫ (weightedVacuumDot D Sc cutoff L i ^ n) ≫
+      weightedCoefficientCap D Sc cutoff i L (positive i) =
+        if n + 1 = cutoff i then 𝟙 ((restriction CQ).obj WM) else 0 :=
+  weightedVacuumUnit_dot_cap_window D Sc cutoff L i (positive i) n hn
+
+/-- The negative-height final low column is identified in the exact dot
+powers and ordinary unit needed by the inverse-cap polynomial theorem. -/
+example :
+    weightedVacuumUnit D Sc cutoff L true ≫ (weightedVacuumDot D Sc cutoff L true ^ 1) ≫
+      ((weightedVacuumDot D Sc cutoff L true ^ 2 + 1) ^ 2) ≫
+        weightedCoefficientCap D Sc cutoff true L (positive true) = 𝟙 ((restriction CQ).obj WM) := by
+  simpa only [weightedUnitColumn_eq_unit_dot, weightedPolynomialCap_eq_dot_cap,
+    Category.assoc] using top_polynomial
+
 end NonVacuity.ELVWeightedCapWindows
 open Lean Elab Command in
 run_cmd do

@@ -12,7 +12,7 @@ noncomputable section
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld
 open BalancedInduction CyclotomicCrossingTensor
-universe u
+universe u v w v' w'
 
 private theorem if_identity_total_apply
     {k C : Type u} [CommRing k] [Category.{u} C] [Preadditive C]
@@ -24,6 +24,21 @@ private theorem if_identity_total_apply
       add_zero, SVec.id_apply]
   · simp only [SuperNatTrans.total, Superfunctor.zero_app, zero_add]
     rfl
+
+
+private theorem additiveFunctor_square_plus_one
+    {A : Type v} {B : Type w} [Category.{v'} A] [Category.{w'} B]
+    [Preadditive A] [Preadditive B] (F : A ⥤ B) [F.Additive]
+    {V : A} (x : End V) (m : ℕ) :
+    F.map ((x ^ 2 + 1) ^ m) = ((F.mapEnd V x) ^ 2 + 1) ^ m := by
+  let f : End V →+* End (F.obj V) := {
+    toFun := F.mapEnd V
+    map_one' := (F.mapEnd V).map_one
+    map_mul' := (F.mapEnd V).map_mul
+    map_zero' := F.map_zero V V
+    map_add' := fun _ _ => F.map_add }
+  change f ((x ^ 2 + 1) ^ m) = ((f x) ^ 2 + 1) ^ m
+  simp only [map_pow, map_add, map_one]
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
@@ -55,6 +70,34 @@ def weightedUnitColumn (i : I) (n : ℕ) :=
   (restriction Q₀).map
     (unitDotColumn (truncatedAppend D Sc cutoff bound [i])
       (truncatedDot_supernatural D Sc cutoff bound i) WM n)
+
+
+/-- The same ordinary unit, restricted to canonical content zero. -/
+def weightedVacuumUnit (i : I) :=
+  (restriction Q₀).map
+    ((adjunction (truncatedAppend D Sc cutoff bound [i])).unit.app WM)
+
+/-- The same restricted weighted dot, on the column's canonical endpoint. -/
+abbrev weightedVacuumDot (i : I) :=
+  (restriction Q₀).mapEnd _ (weightedModuleDot D Sc cutoff L i)
+
+/-- The column's powers are powers of the given restricted module dot,
+with exactly its given ordinary unit. -/
+theorem weightedUnitColumn_eq_unit_dot (i : I) (n : ℕ) :
+    weightedUnitColumn D Sc cutoff L i n =
+      weightedVacuumUnit D Sc cutoff L i ≫ weightedVacuumDot D Sc cutoff L i ^ n := by
+  rw [weightedUnitColumn, unitDotColumn_eq_restrictedDotEnd, Functor.map_comp]
+  congr 1
+  exact map_pow ((restriction Q₀).mapEnd _) (weightedModuleDot D Sc cutoff L i) n
+
+/-- The polynomial cap uses powers of precisely that same endpoint dot. -/
+theorem weightedPolynomialCap_eq_dot_cap (i : I) (hN : 0 < cutoff i) (M : ℕ) :
+    weightedPolynomialCap D Sc cutoff L i hN M =
+      ((weightedVacuumDot D Sc cutoff L i ^ 2 + 1) ^ M) ≫
+        weightedCoefficientCap D Sc cutoff i L hN := by
+  unfold weightedPolynomialCap weightedCapAfter
+  congr 1
+  exact additiveFunctor_square_plus_one (restriction Q₀) (weightedModuleDot D Sc cutoff L i) M
 
 /-- The given column followed by the prescribed weighted cap is exactly
 the finite inverse-row window as a module morphism, including odd inputs. -/
@@ -126,6 +169,17 @@ theorem weightedUnitColumn_polynomialCap (i : I) (hN : 0 < cutoff i)
   split_ifs
   · exact ((weightedEmptyEquiv D Sc cutoff L).symm_apply_apply a).symm
   · exact ((weightedEmptyEquiv D Sc cutoff L).symm.map_zero).symm
+
+
+/-- The literal unit/dot/extractor window needed by `InverseCapMoments`.
+Every operator is a given weighted module map, before Hom postcomposition. -/
+theorem weightedVacuumUnit_dot_cap_window (i : I) (hN : 0 < cutoff i)
+    (n : ℕ) (hn : n < cutoff i) :
+    weightedVacuumUnit D Sc cutoff L i ≫ (weightedVacuumDot D Sc cutoff L i ^ n) ≫
+        weightedCoefficientCap D Sc cutoff i L hN =
+      if n + 1 = cutoff i then 𝟙 ((restriction Q₀).obj WM) else 0 := by
+  rw [← Category.assoc, ← weightedUnitColumn_eq_unit_dot]
+  exact weightedUnitColumn_cap D Sc cutoff L i hN n hn
 
 end PowerVacuumCoefficient
 end OddMath.QuiverHecke.ELVOld
