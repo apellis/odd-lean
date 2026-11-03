@@ -729,6 +729,12 @@ owned declarations. The original twenty-declaration form passed full CI
 in #1014; the shared-grid refactor passed full CI in #1016. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
+`ELVProbeReindexLocal` transports both evaluated inverse records through
+the even loop comparisons, preserving all finite identities and every
+indexed entry. Strict producer and mixed-representative/both-height
+consumer checks audit all 75 owned declarations. Forward mate and dotted
+row compatibility with the chosen target generators is still required;
+see [ProbeReindexLocal](ProbeReindexLocal.md).
 The prescribed lower and upper local loops now have even representative
 comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
 mixed-content consumer checks audit all 38 owned declarations. Attach
