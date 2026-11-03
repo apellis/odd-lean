@@ -986,6 +986,13 @@ slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
 
+`ELVProbeWeightTripleInduction` supplies the chosen three-step weight
+coordinate with all stored intermediate targets and the actual zero module
+in each missing-predecessor case. Its producer, mixed-content regular-probe
+consumer and all eight owned audits pass strict checks. Compare both
+independent crossing whiskerings through this same coordinate for the
+global braid. See [ProbeWeightTripleInduction](ProbeWeightTripleInduction.md).
+
 `ELVProbeBlockNilHecke` proves both prescribed stored-target signed slides
 and identifies both global dot totals in the selected double-predecessor
 coordinate. Producer and occupied mixed/shifted consumer pass strict
