@@ -2257,3 +2257,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareParity
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCharts
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentUnitColumnSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedLocalInverse
