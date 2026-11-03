@@ -775,6 +775,13 @@ the matching superopposite signs in both path orders. Strict producer and
 concrete OLD-path consumer checks audit all four owned declarations.
 Attach the literal OLD braid and rectangular nested comparisons; see
 [ModuleMulticolourBraid](ModuleMulticolourBraid.md).
+`ELVOldNestedMulticolourBraid.normalizedNestedTripleCross_braid` now
+proves the actual nested uncorrected braid with independent pair
+whiskerings, negative equal and positive distinct crossings, through the
+six selected triple squares. Strict occupied mixed/three-odd/shifted
+consumer checks audit all nineteen owned declarations. Evaluated/canonical
+weight attachment and the original-Sc repeated-outer correction remain.
+See [OldNestedMulticolourBraid](OldNestedMulticolourBraid.md).
 `ELVOldMulticolourInduction.directTripleCross_braid` now proves the whole
 direct triple-module braid using the literal OLD source relation, with no
 braid premise. Strict occupied mixed/three-odd/shifted/interior-parameter
