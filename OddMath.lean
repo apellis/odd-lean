@@ -2032,3 +2032,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNilpotence
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders

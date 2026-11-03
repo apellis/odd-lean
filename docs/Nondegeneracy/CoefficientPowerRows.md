@@ -45,7 +45,9 @@ the top dotted ordinary unit extracts to the negative of its nonzero
 class. A mixed-datum instance also checks the same all-vector window
 for both an even and an odd moving colour.
 
-The functional belongs to the old literal power vacuum. Higher raw and
-signed moments, mixed inverse caps and the final swapped bubble action
-still require attachment to this module. No vacuum evaluation-kernel
-identity, integer support bound or all-height bubble theorem is asserted.
+The functional belongs to the old literal power vacuum. Its higher raw
+and signed moments are attached in
+[CoefficientPowerMoments](CoefficientPowerMoments.md). The mixed inverse
+caps and final swapped bubble action still require attachment. No vacuum
+evaluation-kernel identity, integer support bound or all-height bubble
+theorem is asserted.
