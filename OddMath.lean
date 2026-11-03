@@ -1993,3 +1993,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerGrading
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVEmptyCoefficientEmbedding
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerVacuum
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRows

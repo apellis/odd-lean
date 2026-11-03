@@ -57,7 +57,8 @@ parity through its chosen even unit comparison.
 
 This is the regular power vacuum of the old full-coefficient module
 category, not yet the final swapped action's normalized vacuum. Attaching
-the generic inverse coefficient rows to this module, the mixed inverse
-caps, integer grading and explicit positive-dot bounds remain separate.
+the inverse coefficient rows to this module is proved separately in
+[CoefficientPowerRows](CoefficientPowerRows.md). The mixed inverse caps,
+integer grading and explicit positive-dot bounds remain separate.
 No positive-dot nilpotence is inferred from finite dimension alone. The
 actual vacuum evaluation kernel and all-height bubble theorem remain open.
