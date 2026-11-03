@@ -2413,3 +2413,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDotWhiskering
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDotComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctCrossing
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor
