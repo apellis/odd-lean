@@ -877,11 +877,18 @@ The retained inner transports are now composed in
 residual-error closure remain open. See
 [ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
 
+`ELVTensorHomContexts` now retains both inner and further outer E-word
+contexts on the literal dot/crossing Hom entries, with the chosen context
+charts and all-vector formulas for arbitrary input Hom maps. Strict
+occupied nonempty mixed/two-odd consumers audit all 25 owned declarations.
+Transport through the actual path/layer matrices and attach the signed
+quotient classes to `ev_layer`; see [ELVTensorHomContexts](ELVTensorHomContexts.md).
+
 `ELVTensorHomEntries` now proves the surviving reservoir dot/crossing
 entry squares for arbitrary source Hom objects, whole input maps and
 every vector, using the same selected word charts. Strict occupied mixed
 and two-odd consumers audit all sixteen owned declarations. Its note gives
-the specified supported `Gs`/`Ys` recipe; further outer-E contexts, unique-path
+the specified supported `Gs`/`Ys` recipe; outer-E contexts are now checked above. Unique-path
 matrix transports and quotient-class attachment to `ev_layer` remain.
 Evaluation at the regular probe is not asserted faithful on all Hom
 transformations. See [ELVTensorHomEntries](ELVTensorHomEntries.md).
