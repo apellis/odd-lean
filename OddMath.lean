@@ -2000,3 +2000,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRemainders
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerOddSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientModuleMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAppendMaps
