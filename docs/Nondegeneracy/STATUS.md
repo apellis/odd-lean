@@ -13,13 +13,24 @@ gaps; “written proof” does not mean routine transcription.
 
 ## Scope
 
-The proposed theorem uses a purely even field with 2 invertible, compatible
-symmetrizable Cartan superdata with positive integral symmetrizers, homogeneous
-admissible parameters with separate odd-variable exponent support and the
-specified leading units, and supplied `cs : CScalars Sc`.
+The proposed construction uses a purely even field with 2 invertible,
+compatible symmetrizable Cartan superdata with positive integral symmetrizers,
+homogeneous admissible parameters with separate odd-variable exponent support
+and the specified leading units, and supplied `cs : CScalars Sc`.
 It includes connected data, repeated colours and arbitrary colour sets.
-It does not assert arbitrary-ground-ring nondegeneracy or existence of
-CScalars for every weight realization. Intermediate lemmas may have broader scope.
+
+**Ground-ring descent is already formalized.**
+`SKM.nondegeneracyConjecture_of_charZeroField` in
+[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean)
+reduces every ordinary commutative ring with 2 invertible to the
+characteristic-zero field case for the same datum and homogeneous parameters.
+It requires no domain, reducedness, flatness, finite-colour or independent-root
+hypothesis on the target ring. Thus proving that field input supplies the
+ordinary-ring conclusion; no additional ground-ring descent remains.
+The field input is still open. This reduction retains the datum and
+homogeneity conditions and does not address genuinely supercommutative
+base rings or existence of CScalars for every weight realization.
+Intermediate lemmas may have broader scope.
 
 ## Established reductions and concrete inputs
 
@@ -30,6 +41,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | --- | --- | --- |
 | Arbitrary oriented boundaries | Full nondegeneracy iff upward independence at every weight; source and target exchange, including same colours, are discharged | [UpwardNondegeneracyReduction](../../OddMath/SKM/UpwardNondegeneracyReduction.lean), `nondegeneracy_iff_upward_independence` |
 | Arbitrary colour sets | Finite-colour upward injectivity implies full nondegeneracy, retaining the original weight group | [FiniteColourNondegeneracy](../../OddMath/QuiverHecke/FiniteColourNondegeneracy.lean), `nondegeneracy_of_restrictColours_upward` |
+| Characteristic-zero field reduction | The characteristic-zero field case for a fixed datum implies nondegeneracy over every ordinary commutative ring with 2 invertible, for homogeneous parameters and supplied CScalars; no flatness or reducedness is needed | `SKM.nondegeneracyConjecture_of_charZeroField`, `nondegeneracyConjecture_scalarChange`; imported in OddMath and exercised by `NonVacuity/GroundRingNondegeneracy`. The unresolved input is `CharZeroFieldNondegeneracy D` |
 | Recovery consumer | Vacuum evaluations at all weights, word pairs and bounds imply nondegeneracy over a field | [SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean), `nondegeneracy_of_vacuum_evaluations`; evaluations remain hypotheses |
 | Observation assembly | Swapped observations imply nondegeneracy, including finite-colour form | [SwappedConditionalNondegeneracy](../../OddMath/QuiverHecke/SwappedConditionalNondegeneracy.lean); concrete observations remain hypotheses |
 | Full coefficient tensor separation | Entire bounded polynomial/exterior coefficient window remains injective after tensoring with each affine Hom, by its proved PBW freeness over the commutative ring; full-CI verified in [#812](https://github.com/apellis/odd-lean/pull/812) | `ELVCoefficientWindowTensor` |
