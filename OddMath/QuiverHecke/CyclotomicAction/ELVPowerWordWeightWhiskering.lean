@@ -114,4 +114,3 @@ theorem append_family_arrow (Λ : X) (s t : List I) (i : I) (x y : X)
     exact (append_source_isZero D Sc cutoff L Λ s i x y hxs hys h δ hd).eq_of_src _ _
 
 end OddMath.QuiverHecke.ELVOld.PowerWordWeightWhiskering
-
