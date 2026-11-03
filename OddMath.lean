@@ -2334,3 +2334,17 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentCorrectionCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentNormalizedCorrection
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedPaths
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedPolynomial
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralBend
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralSlide
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVTripleCorrectionWhiskering
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentVacuumCoefficientRows
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitInverseNaturality
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitNaturality
