@@ -20,7 +20,7 @@ variable {k C A : Type u} [CommRing k] [Category.{u} C] [Category.{u} A]
   [Preadditive A] [Linear k A] [Supercategory k A]
   (J : C ⥤ A) [J.Additive] [J.Linear k] [IsSuperfunctor k J]
   {p : ZMod 2} {α : ∀ s, J.obj s ⟶ J.obj s} (hα : IsSupernatural k p α)
-local instance : PiSupercategory k (Superfunctor k A (SVec k)) :=
+local instance shiftedCapRowsModulePi : PiSupercategory k (Superfunctor k A (SVec k)) :=
   supermodulePiSupercategory
 
 /-- The prescribed dot/counit row with its actual canonical shifted target. -/
@@ -58,9 +58,9 @@ variable {k A B : Type u} [CommRing k] [Category.{u} A] [Category.{u} B]
   (Q : A ⥤ B) [Q.Additive] [Q.Linear k] [IsSuperfunctor k Q]
   (M : Superfunctor k B (SVec k)) (N : Superfunctor k A (SVec k))
   (e : (restriction Q).obj M ≅ N)
-local instance : PiSupercategory k (Superfunctor k A (SVec k)) :=
+local instance shiftedCapCoordinateSourcePi : PiSupercategory k (Superfunctor k A (SVec k)) :=
   supermodulePiSupercategory
-local instance : PiSupercategory k (Superfunctor k B (SVec k)) :=
+local instance shiftedCapCoordinateTargetPi : PiSupercategory k (Superfunctor k B (SVec k)) :=
   supermodulePiSupercategory
 
 private theorem shiftedRestriction_total {L L' : Superfunctor k B (SVec k)}
@@ -105,8 +105,8 @@ variable {k C A D B : Type u} [CommRing k]
   {β : ∀ s, T.obj s ⟶ T.obj s} (hβ : IsSupernatural k p β)
   (M : Superfunctor k B (SVec k)) (N : Superfunctor k A (SVec k))
   (e : (restriction Q).obj M ≅ N)
-local instance : PiSupercategory k (Superfunctor k A (SVec k)) := supermodulePiSupercategory
-local instance : PiSupercategory k (Superfunctor k B (SVec k)) := supermodulePiSupercategory
+local instance shiftedCapComparisonSourcePi : PiSupercategory k (Superfunctor k A (SVec k)) := supermodulePiSupercategory
+local instance shiftedCapComparisonTargetPi : PiSupercategory k (Superfunctor k B (SVec k)) := supermodulePiSupercategory
 
 /-- An actual dot/counit comparison transports to its prescribed canonical
 shifted targets through the full parity/restriction module isomorphism. -/
@@ -152,10 +152,10 @@ local notation "R" => Functor.obj (restriction J) N
 local notation "hR" => probeOldRestriction_evaluatesCoefficients D Sc m ν i N hN
 local notation "c" => eqToIso (probeOrdinaryRestrictionModule_eq D Sc m ν i N hN)
 local notation "e" => eqToIso (probeOrdinaryModuleSuperfunctor_restrict D Sc m (i :: ν) N hN)
-local instance : PiSupercategory k
+local instance scalarShiftedCapOldPi : PiSupercategory k
     (Superfunctor k (ELVOld.OldContentCategory D Sc (probeCutoff D m) (i :: ν)) (SVec k)) :=
   supermodulePiSupercategory
-local instance : PiSupercategory k
+local instance scalarShiftedCapOrdinaryPi : PiSupercategory k
     (Superfunctor k (OrdinaryContentCategory D Sc
       (probePolynomial (k := k) (probeDotExponent D) m) (i :: ν)) (SVec k)) :=
   supermodulePiSupercategory
@@ -192,7 +192,7 @@ namespace OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 universe u
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
-local instance : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
+local instance capMatrixEntryComparisonPi : PiSupercategory k (Superfunctor k (OldCategory D Sc cutoff) (SVec k)) :=
   supermodulePiSupercategory
 
 /-- On the actual old append functor this is exactly the prescribed finite
