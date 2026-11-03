@@ -2204,3 +2204,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareCounit
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCyclicity
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftCapField
