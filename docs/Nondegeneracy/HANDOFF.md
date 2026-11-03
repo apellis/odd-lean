@@ -850,6 +850,13 @@ evaluation. Both producers and mixed/interior/two-odd consumer pass strict
 checks and all 23 owned audits. Transport through the chosen flattening
 to the selected block and global dot operators; see
 [OldPairPolynomial](OldPairPolynomial.md).
+`ELVProbeBlockQuadraticDots` now identifies the actual selected crossing
+square with the original-Sc ordered polynomial of both independently
+chosen dot totals on whole underlying module maps. Its generic chart
+transport is `ELVInductionPairPolynomialMaps`; both producers and the
+mixed/interior/two-odd consumer pass strict checks and all 36 owned audits.
+Lift to closed block-natural maps and all weight sectors next; see
+[ProbeBlockQuadraticDots](ProbeBlockQuadraticDots.md).
 `ELVProbeBlockDistinctQuadratic` now identifies the actual two selected
 positive crossings over `parameterTwist D Sc` with the balanced transform
 of the literal original-Sc signed polynomial. Its generic changing-content
