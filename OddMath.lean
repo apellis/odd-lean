@@ -2207,3 +2207,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCyclicity
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeLeftCapField
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMatrixBoundary
+import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRouquierMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalMate
