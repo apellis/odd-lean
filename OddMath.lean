@@ -2402,3 +2402,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightModules
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPairInduction
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCrossing
