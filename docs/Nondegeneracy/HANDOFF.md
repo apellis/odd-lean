@@ -1008,6 +1008,12 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVProbeSlideFields` now proves the two exact bundled distinct slide
+fields for the selected probe data with twisted parameters. Strict
+connected mixed/interior/two-odd/disconnected-parameter consumers audit
+all eight declarations. Combine these fields with the separately proved
+quadratics and the remaining braid/inverse attachments; see
+[ProbeSlideFields](ProbeSlideFields.md).
 `ELVProbeStoredMixedBraid.probeOldStoredMixedBraid_polynomial` now
 proves the whole corrected relation at arbitrary stored lists, with all
 seven append edges and the original-Sc correction in the actual nested
