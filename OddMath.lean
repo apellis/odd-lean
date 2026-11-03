@@ -2435,3 +2435,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierData
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTensorVacuum
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexLoops

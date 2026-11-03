@@ -726,9 +726,19 @@ canonical triple flattening and proves their braid on every old module.
 Its producer and concrete consumer pass strict checks; the shared-grid
 refactor retains the same statements and audits all sixteen remaining
 owned declarations. The original twenty-declaration form passed full CI
-in #1014; the shared-grid refactor awaits integration. Restriction to evaluated fixed contents and weight transport
+in #1014; the shared-grid refactor passed full CI in #1016. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
+The prescribed lower and upper local loops now have even representative
+comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
+mixed-content consumer checks audit all 38 owned declarations. Attach
+the chosen mate and dotted unit/counit maps before transporting the
+original inverse record. See [ProbeReindexLoops](ProbeReindexLoops.md).
+The signed probe slides, content braid, representative adjunction comparison,
+triple coordinates and whole-Hom word coordinates passed the full build,
+global axiom audit and all consumers in [#1016](https://github.com/apellis/odd-lean/pull/1016)
+at `cf38def4` ([run 41695267103](https://github.com/apellis/odd-lean/actions/runs/41695267103)).
+
 `ELVInductionGridBraid` and `ELVOldContentBraid` now supply the same
 comparison on four consecutive content categories and the prescribed
 negative braid on every old content module. Both producers and the
