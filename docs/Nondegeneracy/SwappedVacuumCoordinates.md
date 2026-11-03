@@ -13,8 +13,11 @@ The local coordinate construction below uses the existing left-module
 reservoir realization and remains conditional on assembling the specified
 swapped Hom action with its prescribed all-reservoir upward blocks. It does
 not prove swapped augmented inversion, normalized bubbles or nondegeneracy.
-The remaining comparisons include the literal reservoir Hom quotient kernel
-and evaluation of the chosen functors and source-placed bubbles.
+The actual old-Hom source and literal-power kernel comparisons now pass
+scoped checks in `ELVSourceQuotientComparison`, `ELVSourcePowerComparison` and
+`HalfTurn/OldQuotient`. The remaining comparisons identify actual iterated
+vacuum word values and their Hom coordinates, then evaluation of the chosen
+functors and source-placed bubbles.
 
 The useful target is `ReservoirVacuumEvaluation.affine_coordinates`, not a
 global isomorphism with the first-boundary quotient and not necessarily
