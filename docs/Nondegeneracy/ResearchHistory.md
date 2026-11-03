@@ -333,20 +333,3 @@ boundaries are recorded in STATUS.
 | Canonical truncated-content mate | [5d38b48380](https://github.com/apellis/odd-lean/commit/5d38b4838006662a575d4e798ed7c04207842357) | `d405729ef6a83ee4c56688eb8f1c3565c96a9490` | Generic source comparison passes; canonical source tensor, whole mate square and inverse remain proposed. |
 | Weighted finite matrix entry comparison | [d22d9954dd](https://github.com/apellis/odd-lean/commit/d22d9954dda046fce9ecd4c6ce062a4c349e2784) | `beffca26a752b1d4fa52c8fea83879b54e71b671` | Supporting component checks pass; entry producer passes but its paired consumer and whole finite forward identification remain pending. |
 | Scalar finite inverse candidates | [56c2b1f6cb](https://github.com/apellis/odd-lean/commit/56c2b1f6cbc77ce21e7919343dbfefbe908fdf10) | `5ca63614d9fa1bdef18c52724da96992ecacce6b` | Concrete global-to-relative-to-scalar inverse candidates are proposed; the first strict producer check fails and complete prescribed forward identification remains open. |
-
-## Evaluation and original-weight mate source variants
-
-These exact source-tree copies have only the verified research parent.
-No pending proof head becomes an ancestor through this preservation, and
-no unchecked declaration is imported. Scope describes each snapshot;
-later checked successors are recorded separately in STATUS.
-
-| Argument | Preserved tree commit | Source revision | Scope |
-| --- | --- | --- | --- |
-| Power-word signed composition | [d56d73f921](https://github.com/apellis/odd-lean/commit/d56d73f9213308b43e6f36d3663b8024b853f564) | `b107e5ac7cae3f029ce2c9e7ab97d741d2c2f937` | Whole homogeneous composition and scalar-linearity prefixes pass; complete consumer and chosen weight-action evaluation remain unverified. |
-| Original-weight distinct mate | [0acc801e1f](https://github.com/apellis/odd-lean/commit/0acc801e1f1dff93fd23cf81f238715556b35ec4) | `7214cf875695c6a25d4dc6ecb7852ac15011def6` | Four-corner PiSCat component prefix passes; degree recheck, concrete consumer and prescribed original-weight inverse remain proposed. |
-| Scalar unit-only finite comparison | [e5cd113828](https://github.com/apellis/odd-lean/commit/e5cd1138288ee5dcbf32214d748be23c405c9b7c) | `8c8c4e196a40b3ebe87af38e20fe6b59de3af01b` | This snapshot retains the then-unverified generic comparison and planned consumer; later checked successors are separate. |
-| Probe row in native content coordinates | [49859b449f](https://github.com/apellis/odd-lean/commit/49859b449f1dc56b64cbdfaf73dc10334b081bea) | `33144e55ebd0328d04b79e1eabfd4872f5f979c6` | Whole source and consumer remain unverified at the raw-coend versus SVec-carrier specialization; the checked full-old extraction row is separate. |
-| Shifted old-content matrix entries | [de01095797](https://github.com/apellis/odd-lean/commit/de0109579791da62ac09119a762f3e7362b95fba) | `fdc3d20c6508433249c10ebee71b31d8b9a5a369` | Generic decoration prefixes pass; shifted-coordinate to prescribed old-field attachment and complete consumer remain unverified. |
-| Earlier checked selected pair development | [010a21c22b](https://github.com/apellis/odd-lean/commit/010a21c22bf3be67dd99f518ae644166e5b81c69) | `a86b5333b329d58a01b0033ce4911dab8cf33e12` | Earlier scoped-checked development variant; current curated successor and integration status are in STATUS. |
-| Earlier checked canonical content inverse development | [a0c1689484](https://github.com/apellis/odd-lean/commit/a0c16894844fdd988ff46f16facef7df1001369d) | `bf7377a5a41c310fb90ff6e33dd525f96228af72` | Earlier scoped-checked development variant; current curated successor and integration status are in STATUS. |
