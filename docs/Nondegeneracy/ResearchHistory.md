@@ -580,7 +580,6 @@ and HANDOFF; proposed source is not imported into the checked library.
 | --- | --- | --- |
 | Evaluated local records | `ELVProbeEvaluatedLocal.lean` | Generic inverse restriction and several literal dot/mate comparisons pass in isolation; the complete producer and concrete consumer remain unverified. |
 | Representative generator comparison | `ELVProbeReindexTensors.lean` | Proposed tensor formula for the canonical append/reindex adjunction comparison; complete proof and consumer remain pending. |
-| Original-weight probe braid | `ELVProbeWeightBraid.lean`, if present | Draft triple coordinates and crossing whiskerings; no global braid verification is claimed. |
 | Selected reservoir word value | `ELVReservoirWordValue.lean` and paired consumer | Draft identification with the explicit regular-power empty-word family; whole check is pending and attachment to the swapped vacuum Hom input is separate. |
 | Reservoir vacuum dot | `SwappedAssembly/ReservoirVacuumDot.lean` and paired consumer | Generic zero-shift helpers pass in isolation; full generator attachment and actual-factor consumer remain pending. |
 | Whole-Hom word coordinates | `ELVPowerWordHomCoordinates.lean` and paired consumer | Exact restored proposal; fresh publication checks remain pending despite earlier scoped evidence. |
