@@ -911,6 +911,13 @@ full-CI verified and integrated in #927. Neither result requires finite
 dimension or a coend-comparison premise. The selected ordinary model still needs
 crossing, normalized-cap and inverse-matrix transport.
 
+`ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
+distinct mate and its inverse to the evaluated probe. The producer and
+concrete mixed/two-odd consumer pass strict checks and all 54 owned
+audits. Identify this exact map with the evaluated presentation
+cup-crossing-cap, then transport stored contents and original weights.
+See [ProbeEvaluatedDistinctMate](ProbeEvaluatedDistinctMate.md).
+
 Scalar specialization is not faithful on the full coefficient algebra.
 Positive-weight coefficient truncation cannot specialize to nonnilpotent
 binomial constants. Finite-dimensionality requires the independently proved
