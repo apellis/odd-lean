@@ -1724,6 +1724,16 @@ probe. The literal layer evaluation and final observation kernel remain. See
 
 ## Central augmented-matrix attachment
 
+`Generators.CrossCoeffExpansion` now proves the finite signed expansion
+after an arbitrary ring evaluation, and specializes it to the literal
+mixed coefficient from its inverse equations. Strict nonzero two-odd
+matrix tests over Z/9 audit all twelve declarations, including a product
+whose reservoir operator is not globally nilpotent but whose evaluated
+component is. These are intermediate component statements; instantiate
+the intended factor, coefficient inverse and component bounds, then bend
+the sums and prove residual ideal membership. See
+[CrossCoeffExpansion](CrossCoeffExpansion.md).
+
 `Sigma.ProbeFactorCoordinates.probeCupFactorIso` now identifies the
 probe cup path with the canonical precomposition adjunction loop,
 retaining the chosen weight equation and endpoint transports. Strict
