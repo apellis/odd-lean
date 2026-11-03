@@ -2114,3 +2114,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentUpperCharts
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperCharts
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnMatrices
+import OddMath.Algebra.FiniteZeroCoordinate
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentColour
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingColourMatrix
