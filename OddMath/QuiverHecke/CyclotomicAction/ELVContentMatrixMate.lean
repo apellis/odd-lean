@@ -55,29 +55,32 @@ local notation "J₁" => oldContentAppend D Sc cutoff (i :: ν) i
 local notation "Q₁" => oldContentInclusion D Sc cutoff (i :: ν)
 local notation "J" => append D Sc cutoff i
 
-private def matrixMateLinear
+/-- The prescribed old mate on the literal raw coend carriers. -/
+def oldMatrixMateLinear
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) :
     Obj J ((restriction J).obj M).toFunctor t →ₗ[k] Obj J M.toFunctor ((J).obj t) :=
   BalancedInduction.mateLinear J M (matrixMateComponent D Sc cutoff i M) t
 
-private theorem matrixMateLinear_apply
+/-- The raw map evaluates to the same prescribed module component. -/
+theorem oldMatrixMateLinear_apply
     (M : Superfunctor k (OldCategory D Sc cutoff) (SVec k))
     (t : OldCategory D Sc cutoff) (x : Obj J ((restriction J).obj M).toFunctor t) :
-    matrixMateLinear D Sc cutoff i M t x = (matrixMateComponent D Sc cutoff i M).total t x :=
+    oldMatrixMateLinear D Sc cutoff i M t x = (matrixMateComponent D Sc cutoff i M).total t x :=
   BalancedInduction.mateLinear_apply J M (matrixMateComponent D Sc cutoff i M) t x
 
-private theorem mateCharts_comp
+/-- The prescribed mate forms a whole linear-map square under the chosen charts. -/
+theorem oldContentMatrixCharts_mate_comp
     (N : Superfunctor k (OldContentCategory D Sc cutoff (i :: ν)) (SVec k))
     (t : OldContentCategory D Sc cutoff (i :: ν)) :
     (oldContentFELinearEquiv D Sc cutoff ν i N t).toLinearMap ∘ₗ
       orderedGridMateLinear J₀ J₁ (oldContentEqualCross_supernatural D Sc cutoff ν i) N t =
-    matrixMateLinear D Sc cutoff i (induced Q₁ N) t.obj ∘ₗ
+    oldMatrixMateLinear D Sc cutoff i (induced Q₁ N) t.obj ∘ₗ
       (oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap := by
   apply BalancedInduction.coendComp_ext J₀ ((restriction J₀).obj N).toFunctor
   intro s a b
   have h := oldContentMatrixCharts_mate_tensor D Sc cutoff ν i N s t a b
-  have hm := matrixMateLinear_apply D Sc cutoff i (induced Q₁ N) t.obj
+  have hm := oldMatrixMateLinear_apply D Sc cutoff i (induced Q₁ N) t.obj
     ((oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap
       (tensor J₀ ((restriction J₀).obj N).toFunctor s a b))
   exact h.trans hm.symm
@@ -92,8 +95,8 @@ theorem oldContentMatrixCharts_mate
       (orderedGridMateLinear J₀ J₁ (oldContentEqualCross_supernatural D Sc cutoff ν i) N t x) =
     (matrixMateComponent D Sc cutoff i (induced Q₁ N)).total t.obj
       ((oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap x) := by
-  have h := LinearMap.congr_fun (mateCharts_comp D Sc cutoff ν i N t) x
-  have hm := matrixMateLinear_apply D Sc cutoff i (induced Q₁ N) t.obj
+  have h := LinearMap.congr_fun (oldContentMatrixCharts_mate_comp D Sc cutoff ν i N t) x
+  have hm := oldMatrixMateLinear_apply D Sc cutoff i (induced Q₁ N) t.obj
     ((oldContentEFLinearEquiv D Sc cutoff ν i N t).toLinearMap x)
   dsimp only [LinearMap.comp_apply] at h
   exact h.trans hm
