@@ -173,6 +173,47 @@ private theorem datumCapEntry_mem {q : ZMod 2} (B : MatrixDatum (k := k) (C := C
     simpa only [zmod2_add_self] using comp_mem (B.rows r.val).property
       ((SKM.homParityShiftDatum (k := k) (r.val • q)).inv_mem B.value)
 
+/-- The actual first source-shifted field evaluates to the prescribed raw mate. -/
+theorem inductionUnitMatrixEntry_none_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) (m : ℕ) (w : C) :
+    SVec.toLinearMap ((datumUnitEntry (inductionMatrixDatum A hα hδ hq M) m none).total w) =
+      orderedMateLinear A hα M w ∘ₗ
+        SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso
+          (induced A ((restriction A).obj M))).hom.total w) := by
+  dsimp only [datumUnitEntry]
+  rw [Superfunctor.comp_total]
+  rfl
+
+/-- Every actual source-shifted unit field evaluates to its unscaled raw unit/dot column. -/
+theorem inductionUnitMatrixEntry_some_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
+    (m : ℕ) (r : Fin m) (w : C) :
+    SVec.toLinearMap ((datumUnitEntry (inductionMatrixDatum A hα hδ hq M) m (some r)).total w) =
+      unitDotLinear A hδ M r.val w ∘ₗ
+        SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (r.val • q)).iso M).hom.total w) := by
+  dsimp only [datumUnitEntry, inductionMatrixDatum, unitColumnNative]
+  rw [Superfunctor.comp_total, SVec.toLinearMap_comp, unitDotColumn_total]
+
+/-- The actual first target-shifted field evaluates to the prescribed raw mate. -/
+theorem inductionCapMatrixEntry_none_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k)) (m : ℕ) (w : C) :
+    SVec.toLinearMap ((datumCapEntry (inductionMatrixDatum A hα hδ hq M) m none).total w) =
+      SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) q).iso
+        ((restriction A).obj (induced A M))).inv.total w) ∘ₗ orderedMateLinear A hα M w := by
+  dsimp only [datumCapEntry]
+  rw [Superfunctor.comp_total]
+  rfl
+
+/-- Every actual target-shifted cap field evaluates to its unscaled raw dot/counit row. -/
+theorem inductionCapMatrixEntry_some_total {q : ZMod 2} {δ : ∀ s, A.obj s ⟶ A.obj s}
+    (hδ : IsSupernatural k q δ) (hq : p = q) (M : Superfunctor k C (SVec k))
+    (m : ℕ) (r : Fin m) (w : C) :
+    SVec.toLinearMap ((datumCapEntry (inductionMatrixDatum A hα hδ hq M) m (some r)).total w) =
+      SVec.toLinearMap (((SKM.homParityShiftDatum (k := k) (r.val • q)).iso M).inv.total w) ∘ₗ
+        capDotLinear A hδ M r.val w := by
+  dsimp only [datumCapEntry, inductionMatrixDatum, capRowNative]
+  rw [Superfunctor.comp_total, SVec.toLinearMap_comp, capDotRow_total]
+
 end OddMath.QuiverHecke.ELVOld.BalancedInduction
 
 namespace OddMath.QuiverHecke.ELVOld
