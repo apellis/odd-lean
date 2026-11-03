@@ -2303,3 +2303,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitFamily
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCross
