@@ -2147,3 +2147,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordComposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixEntries
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentFiniteMatrixComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentGridMatrixInverse
