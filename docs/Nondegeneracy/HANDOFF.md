@@ -853,6 +853,13 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeZeroBoundary` now constructs the zero object, endocell and
+even zero adjunction in every evaluated content category, with zero
+identity after any actual postcomposition. Strict mixed/nonempty/odd-map/
+zero-level consumers audit all thirty declarations and prove that the
+ambient vacuum and actual append identities remain nonzero. Combine
+with the stored missing-boundary coefficients, then identify the absent
+global coordinates; see [ProbeZeroBoundary](ProbeZeroBoundary.md).
 `ELVProbeMissingStoredCoefficients.probeMissingStoredCoefficients` now
 constructs the finite boundary record for the literal stored-target
 adjunction and dot, with the chart and every unit-column comparison
