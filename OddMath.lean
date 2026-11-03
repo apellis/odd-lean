@@ -2059,3 +2059,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientModuleMaps
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeShiftedCapComparison
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairCrossingTotals
