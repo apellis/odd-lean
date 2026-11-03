@@ -20,3 +20,11 @@ The paired consumer uses rational asymmetric parameters with two odd
 colours and symmetrizer `(2,1)`, both append colours, a mixed word,
 arbitrary homogeneous quotient arrows, identity degree zero, and
 independent total-parity projection.
+
+`ELVOldGeneratorDegrees` proves the inherited integer degrees of the
+literal chosen generators: `oldAppendDotComponent_degree` gives
+`2*sy.d i`, and `equalCrossComponent_degree` gives `-2*sy.d i`.
+These are quotient images of the original appended diagrams; their
+proofs do not use the finite matrix inverse or a transported grading.
+The paired consumer checks the two distinct symmetrizer degrees at
+both odd colours of a mixed word, despite their equal super parities.
