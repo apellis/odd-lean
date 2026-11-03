@@ -1089,6 +1089,13 @@ connected mixed/interior/two-odd/disconnected-parameter consumers audit
 all eight declarations. Combine these fields with the separately proved
 quadratics and the remaining braid/inverse attachments; see
 [ProbeSlideFields](ProbeSlideFields.md).
+`ELVProbeWeightCrossCoordinates` now retains the selected weight crossing
+through its exact product coordinates as the stored-target crossing,
+with negative equal and positive distinct normalization. Strict occupied
+mixed/two-odd/equal/distinct consumers audit all 23 declarations and retain
+nonzero append outputs. Attach the whole-weight braid paths through the
+common triple coordinates; see
+[ProbeWeightCrossCoordinates](ProbeWeightCrossCoordinates.md).
 `ELVProbeWeightTripleCoordinates` now retains both intermediate canonical
 blocks and an arbitrary common final stored target for the whole supported
 triple induction coordinate. Strict occupied mixed-parity/nonempty and
