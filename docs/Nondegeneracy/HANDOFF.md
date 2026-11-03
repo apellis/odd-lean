@@ -828,6 +828,12 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeReindexUnitColumns` now preserves the unit and every dotted
+column through a single arbitrary append comparison, without assuming
+a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
+consumer checks audit all 22 owned declarations. Lift the upper-loop
+chart to evaluated categories and transport the constructed missing
+boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
 `ELVProbeAppendToRows` now identifies every selected dotted unit/counit
 row with its prescribed OLD homogeneous components, for arbitrary stored
 targets, dot exponents and parities. Strict mixed reordered/odd-input
