@@ -800,12 +800,20 @@ Compose the retained inner transports with the endpoint charts to reach
 blocks and residual-error closure remain open. See
 [ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
 
+`ELVTensorVacuumWords` now extends the literal chosen tensor Hom to every
+reservoir word context, with even value and full coefficient charts,
+all-vector dot/crossing formulas and whole Hom coordinates preserving
+every old-word generator. Strict occupied mixed/two-odd consumers in
+nonempty contexts audit all 46 owned declarations. Attach these exact
+comparisons to the layer matrices and literal `ev_layer`; the completed
+action record remains separate. See [ELVTensorVacuumWords](ELVTensorVacuumWords.md).
+
 `ELVTensorVacuumGenerators` now identifies the one-E dot and two-E
 equal/distinct crossing out of the selected tensor Hom vacuum with the
 prescribed reservoir word operators. The same `selectedIso` and literal
 regular probe are used, with all-vector formulas on every formal block.
 Strict producer and occupied two-odd consumer checks audit all 33 owned
-declarations. Extend to longer contexts and attach to the completed
+declarations. The arbitrary contexts are now checked above; attach to the completed
 record; see [ELVTensorVacuumGenerators](ELVTensorVacuumGenerators.md).
 
 The coefficient action remains literal ordinary precomposition on every
