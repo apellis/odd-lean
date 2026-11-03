@@ -951,6 +951,14 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeWeightAbsentInverse` now transports the missing stored local
+record to both exact global inverse orientations, retaining the actual
+zero lower coordinate and every unit/power column. Strict regular mixed/
+missing/zero-height consumers audit all 65 declarations. The explicit
+cutoff compatibility identifies content and categorical heights. Finish
+the supported coordinate inverse and glue both cases over the whole
+weight product; see [ProbeWeightAbsentInverse](ProbeWeightAbsentInverse.md).
+
 `SuperSumInvTo.at` and `SuperSumInvFrom.at` now evaluate the complete
 finite inverse records at any object, retaining the principal parity
 component and every forward and inverse dotted total. Strict nonzero
