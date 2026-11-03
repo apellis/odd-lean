@@ -911,6 +911,12 @@ full-CI verified and integrated in #927. Neither result requires finite
 dimension or a coend-comparison premise. The selected ordinary model still needs
 crossing, normalized-cap and inverse-matrix transport.
 
+`ELVProbeWeightPairInduction` supplies the literal supported two-step
+weight coordinate and both absent-predecessor zero cases. Its producer,
+concrete regular-probe consumer and all four owned audits pass strict
+checks. Use these coordinates for the chosen weight crossing.
+See [ProbeWeightPairInduction](ProbeWeightPairInduction.md).
+
 `ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
 distinct mate and its inverse to the evaluated probe. The producer and
 concrete mixed/two-odd consumer pass strict checks and all 54 owned
