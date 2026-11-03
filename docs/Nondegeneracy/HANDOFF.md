@@ -1008,6 +1008,13 @@ comparison premise remains. Its producer and occupied mixed/shifted
 consumer pass strict checks and all 23 owned audits. Identify both global
 whiskerings through the same triple coordinate next. See
 [ProbeBlockBraid](ProbeBlockBraid.md).
+`ELVProbeWeightBraid.probeOldActionEqualCross_braid` now proves the
+whole-weight equal braid with the chosen associator, retaining both
+independent crossing whiskerings in the same triple coordinate and
+actual zero in every absent case. Producer and occupied/shifted consumer
+pass strict checks and 22 owned audits. The equal braid is now available
+for the probe family; local-record and multicolour assembly remain. See
+[ProbeWeightBraid](ProbeWeightBraid.md).
 
 `ELVProbeBlockNilHecke` proves both prescribed stored-target signed slides
 and identifies both global dot totals in the selected double-predecessor
