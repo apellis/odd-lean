@@ -2112,3 +2112,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentUpperCharts
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperCharts
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVUnitColumnMatrices
