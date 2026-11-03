@@ -2472,3 +2472,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeQuadraticFields
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldCorrectedInductionBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionTripleDots
 import OddMath.QuiverHecke.HalfTurn.PowerWordQuotientCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionTriplePolynomialMaps

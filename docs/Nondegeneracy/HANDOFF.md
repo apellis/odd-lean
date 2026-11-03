@@ -837,6 +837,13 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVInductionTriplePolynomialMaps.inductionTripleFlattening_polynomial`
+now transports the entire ordered original-Sc correction into the three
+independently whiskered nested dots through the same chart. Strict mixed/
+three-odd/interior/changing-content consumer checks audit all five owned
+declarations. Combine this with the signed direct braid and six crossing
+squares, then transfer to evaluated and weight functors; see
+[InductionTriplePolynomialMaps](InductionTriplePolynomialMaps.md).
 `ELVInductionTripleDots` now supplies all three whole nested-dot squares
 through the same chosen triple flattening, across four arbitrary
 categories. Strict mixed/three-odd/changing-content/shifted consumer
