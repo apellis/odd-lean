@@ -1988,6 +1988,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFChartTensors
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
