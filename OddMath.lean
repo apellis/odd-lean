@@ -2021,3 +2021,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVOperatorPowerComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDottedComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVParityRestrictionComparison
