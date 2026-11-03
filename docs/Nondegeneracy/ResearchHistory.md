@@ -286,3 +286,19 @@ HANDOFF and the source notes; later checked successors are independent.
 | Chosen power-word append and dot | [16a56e818f](https://github.com/apellis/odd-lean/commit/16a56e818f35b7cd39b0b03ae28f8dbbf8dd2ecb) | `807a911d31a89640c40fcaaf6f4a6fc64742b7b5` |
 | Shifted scalar cap coordinates | [cc3d58e58a](https://github.com/apellis/odd-lean/commit/cc3d58e58afba1238660cc7672c0b10b53fd13aa) | `cedc97cc9b6341d007440f6451ea613309e541b1` |
 | Native distinct-mate bundling | [a6819398d1](https://github.com/apellis/odd-lean/commit/a6819398d133a24265de16ed08f44a7224efddab) | `2555aa7c5ea38786ae67e68c380098442938f65a` |
+
+## Factor-chart and signed-window proposal source trees
+
+These full source-tree copies have only the verified research parent. They
+retain proposed variants without importing them or making a pending proof
+integration an ancestor of a history-only merge. Scope is recorded in
+HANDOFF and the source notes; later checked successors are independent.
+
+| Proposed argument | Preserved tree commit | Original proposal commit |
+| --- | --- | --- |
+| Deferred native content-mate comparison | [f7d588fdb6](https://github.com/apellis/odd-lean/commit/f7d588fdb66975879ff4568586b1dc3288f84d84) | `dafc0aec8479b89f8b090f46174b480b9abf680c` |
+| Content dotted matrix rows | [a10a9f260d](https://github.com/apellis/odd-lean/commit/a10a9f260d0b7209a50139a3cac37ddfeaeaeeef) | `0a185108b962966ded70137e0a976b86a9806520` |
+| Selected power-word pair crossing | [28e56575d8](https://github.com/apellis/odd-lean/commit/28e56575d8ae9778bd7e120b2a9b80ccadbc8625) | `947ed579e6e40e7641b0a9ab20f1f1dd6d01d758` |
+| Canonical truncated-content block charts | [8e85113f3f](https://github.com/apellis/odd-lean/commit/8e85113f3f63edb2cea03919ca151fbc97cd4533) | `05fce4219e872534c7174475bcd5c783c6d17c85` |
+| Weighted finite matrix inverse | [b541461adf](https://github.com/apellis/odd-lean/commit/b541461adf01e76a6de90384cd9879bdbc649955) | `51b5cf9c7df26f12d5336f05d84975c6f86c3a6d` |
+| Occupied vacuum probe unit | [9aaeb5c826](https://github.com/apellis/odd-lean/commit/9aaeb5c826ebdff04b0eea92bbcf06f405434fec) | `e291c89bbbae8d50322b5d0a99b9cdc33d5a360b` |
