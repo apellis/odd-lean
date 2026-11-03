@@ -395,8 +395,8 @@ provide an explicit kernel and recovery, rather than an assumed regular
 identification. They do not supply a new factor action or a new hypothesis
 for a nondegeneracy theorem. Remaining obligations are:
 
-* extend the scoped-checked actual word-value coordinate kernels to signed
-  Hom/Yoneda charts and attach their evaluation to the chosen functors;
+* attach the scoped-checked old-module Hom/Yoneda chart and append/dot
+  comparisons to the selected pair crossing and chosen swapped Hom functors;
 * assemble the swapped normalized Hom action, including its full augmented
   inversion and all presentation relations, and verify that its surviving
   reservoir blocks are precisely those used in (1) and (7);
