@@ -1041,6 +1041,14 @@ all 36 declarations. Apply these to the selected stored local inverses
 before whole-weight product gluing; see
 [AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
 
+`probeOldActionCross_via_total` now retains the actual selected crossing
+through arbitrary supported lower blocks and a common upper block, with
+the prescribed stored component and equal-colour minus. Strict nonempty
+mixed/two-odd/equal/distinct/nonzero-append consumer checks audit both
+declarations. Attach its two independently whiskered triple squares,
+then the corrected and general braid fields; see
+[ProbeWeightCrossPathCoordinates](ProbeWeightCrossPathCoordinates.md).
+
 `ELVInductionBraidCube` and the ordinary/evaluated stored-target braid
 now retain all twelve append edges and the equal-colour minus on every
 crossing. `probeStoredBraid` has exactly the uncorrected colour condition
