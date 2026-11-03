@@ -257,32 +257,3 @@ HANDOFF; later checked successors do not turn these variants into evidence.
 | Selected weighted mate transport | [829dabe55c](https://github.com/apellis/odd-lean/commit/829dabe55cf56cb35c459286f9fb7fd8aa7750ca) |
 | Old power-quotient vacuum | [e5b7b48a7d](https://github.com/apellis/odd-lean/commit/e5b7b48a7dce67e32b5cf4e5bac777282e7f3052) |
 | Reversed quotient bounded detection | [890307122c](https://github.com/apellis/odd-lean/commit/890307122c1de62321e20eea5fc14b9edccdc645) |
-
-## Mate and coordinate proposal source trees
-
-These copies preserve the exact source trees with a research-only parent.
-Pending proof integrations are not made ancestors of the research branch,
-and no proposed source enters the checked library through this preservation.
-The source notes describe the unfinished mathematical arguments.
-
-| Proposed argument | Preserved tree commit | Original proposal commit |
-| --- | --- | --- |
-| Content pair crossing | [cef0b17b98](https://github.com/apellis/odd-lean/commit/cef0b17b98856f32f937b5510d70ab1c2feb546f) | `3fbe4db1fc5d7013113f2e3ca66c21caf006b9db` |
-| Content self-colour mate | [fc52dfd086](https://github.com/apellis/odd-lean/commit/fc52dfd086f11fab7b527cd9a3fbce808c689ff5) | `73ccc7c454d6ef0e902c88efa4838aac1a46cc53` |
-| Distinct content mate | [cffb3ae4b2](https://github.com/apellis/odd-lean/commit/cffb3ae4b2f5c9471d5e6ef53d44222f6d0f4cc0) | `ced7fe6b8234b1ee29e9417d1dbb5957594cc807` |
-| Power-word coordinates | [41466e07a4](https://github.com/apellis/odd-lean/commit/41466e07a45207605231911c5f1d3f01a24021f9) | `91141513c94545c32b5fb9bcb9db4f001bc29d54` |
-| Weighted matrix rows | [dca80e84a0](https://github.com/apellis/odd-lean/commit/dca80e84a05f8f0777c55dced0fd3ac6fff8bdcb) | `4dc8f9fca8eb58057f5a750aeede6b909a39246f` |
-
-## Module-map and coordinate proposal source trees
-
-These full source-tree copies have only the verified research parent. They
-retain proposed variants without importing them or making a pending proof
-integration an ancestor of a history-only merge. Scope is recorded in
-HANDOFF and the source notes; later checked successors are independent.
-
-| Proposed argument | Preserved tree commit | Original proposal commit |
-| --- | --- | --- |
-| Native weight crossing comparison | [78f211e13b](https://github.com/apellis/odd-lean/commit/78f211e13b210b93f7ed4c67867eac0919792e40) | `75b20b0b5014793d7c2239042ddfd9f5e36cca45` |
-| Chosen power-word append and dot | [16a56e818f](https://github.com/apellis/odd-lean/commit/16a56e818f35b7cd39b0b03ae28f8dbbf8dd2ecb) | `807a911d31a89640c40fcaaf6f4a6fc64742b7b5` |
-| Shifted scalar cap coordinates | [cc3d58e58a](https://github.com/apellis/odd-lean/commit/cc3d58e58afba1238660cc7672c0b10b53fd13aa) | `cedc97cc9b6341d007440f6451ea613309e541b1` |
-| Native distinct-mate bundling | [a6819398d1](https://github.com/apellis/odd-lean/commit/a6819398d133a24265de16ed08f44a7224efddab) | `2555aa7c5ea38786ae67e68c380098442938f65a` |
