@@ -2210,3 +2210,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMatrixBoundary
 import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRouquierMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightLocalMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleComparisonCoherence
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUnitCoefficientWindow
