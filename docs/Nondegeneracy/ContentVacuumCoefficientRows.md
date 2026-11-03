@@ -33,7 +33,8 @@ the standard axiom audit.
 Full repository CI remains the integration gate.
 
 The weighted row here is evaluated on the canonical extension of `M`.
-Identifying this extension chart with the separately given global regular
-power vacuum is a further comparison; it is not inferred merely because
-the content-zero restrictions agree. The complete swapped mixed-inverse
+For the separately given global regular power vacuum,
+`ELVPowerVacuumContentRows` proves the comparison using its actual support
+and the chosen inclusion counit isomorphism; equality is not inferred merely
+because the content-zero restrictions agree. The complete swapped mixed-inverse
 and bubble identification also remains separate.

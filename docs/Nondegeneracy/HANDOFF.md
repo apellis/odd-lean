@@ -194,31 +194,49 @@ central entry, retaining the raw pre-dot and inverse-power signs.
 These thirteen producers passed full CI in #1001 at `84340134`
 (run 41615387064), integrated at `daffec02`.
 
-## Evaluated mixed entry and next concrete records
+## Principal, local-record and evaluated-cap successors
 
-The next scoped-checked integration includes the six given mixed crossing
-paths and the ordered original-Sc correction in all three native dots;
-finish the whole natural-map relation and remaining multicolour fields.
-The stored weighted principal now equals the ordered mate and uses exactly
-the same source/target charts as all native unit/cap powers. The supported
-canonical principal square remains the missing block before whole local
-inverse assembly; both absent inverse orientations are constructed.
+The corrected whole mixed braid field now passes strict producer and paired
+consumer checks: `ELVWeightMixedRelation` supplies exactly the chosen
+`RouquierMulticolour.braidEq` with the original scalar parameters. It retains
+all input modules and output sectors. The remaining general multicolour fields
+and full factor construction must still be assembled.
 
-Old missing-unit module inverse rows have exact finite windows, sum identity
-and signed input naturality. Native dotted right-unit/counit families agree
-with the prescribed columns/rows. Their module APIs are named
-`unitColumnModuleInverse*` to retain the older vector APIs unchanged.
-Use these fields to construct the actual empty/one-colour old local records.
+`ELVContentPrincipalSquare.contentPrincipalMate_square` also passes its paired
+checks. It compares the prescribed negative-crossing grid mate through the
+chosen source and retarget charts, without an extra compatibility premise.
+Use this exact square with the established unit-column and cap-row squares
+to complete supported canonical-content inverses, then transport to the
+original-weight fibres and combine with both absent inverse orientations.
+The complete supported local records are not yet claimed.
 
-The actual tensor-vacuum functor is occupied by a surviving exterior
-coefficient and preserves a nonzero odd input isomorphism. The evaluated
-A6 bend and signed slide now use the actual right unit, raw shifted pre-dot,
-reservoir dot and prescribed shifted cap; no slide or extractor is assumed.
-The normalized row is forced by joint-epi unit columns and the weighted
-coefficient map. Complete the global-vacuum extension and regular-probe
-module chart, then identify the actual swapped augmented inverse row and
-its bubble coefficients. Evaluated formulas alone are not the full swapped
-action or the final observation/recovery theorem.
+The chosen recursive word charts are even. Actual native word dots and
+crossings agree with the full-arrow operators in arbitrary right E-contexts.
+Finish chosen Hom-action evaluation and the relation-preserving factor before
+using the already proved quotient/source windows as faithfulness.
+
+The actual tensor vacuum at the regular probe now has an even whole-module
+isomorphism to the original weighted vacuum; v tensor 1 maps to v. The
+normalized inverse cap is transported through that same isomorphism.
+Negative-height polynomial annihilation and equal-level normalization hold
+for the same evaluated bend, dot and cap, with occupied odd examples.
+These are operator identities; identifying the chosen full swapped augmented
+inverse and its bubbles remains necessary.
+
+The old empty-content local record is now constructed from the actual old
+induction, right adjunction and dot, with a zero auxiliary lower edge and no
+local-record or inverse premise. Its constructed cap agrees with the
+prescribed cap at the regular probe and F(E(T0)); scalar closure is proved.
+The old matrix inverse fields and literal two-strand square/slide relations
+are checked. Complete their induction-composition transport to the adjacent
+one-letter record. Then the existing adjacent-local left-adjunction
+constructor removes the remaining local-record premises; retain its exact
+Koszul factors and the raw shifted pre-dot.
+
+All successors in this section are strict locally checked with concrete
+paired consumers; their full integration gate remains pending. The preceding
+26-producer batch is PR #1003 at `72aa0c1c`; its full CI is pending as well.
+Ground-ring descent and the broader field-scope boundary are unchanged.
 
 ## Current comparison interfaces
 
