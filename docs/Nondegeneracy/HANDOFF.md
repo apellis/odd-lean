@@ -1066,6 +1066,11 @@ source. Its producer and arbitrary-vector/nontrivial-representative
 consumer pass strict checks and 27 owned audits. Use this fixed comparison
 for dot and crossing compatibility before canonical inverse transport.
 See [ProbeReindexTensors](ProbeReindexTensors.md).
+`ELVProbeReindexDot` now proves that this same canonical comparison
+intertwines the chosen signed dot on every vector, whole module map and
+evaluated component. Producer and mixed-parity regular-probe consumer
+pass strict checks and 25 owned audits. The selected pair crossing and
+local/distinct inverse records remain. See [ProbeReindexDot](ProbeReindexDot.md).
 
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
