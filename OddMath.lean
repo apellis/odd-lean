@@ -2201,6 +2201,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
 
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHecke
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNilHeckeRelation
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareCounit
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContentCyclicity
