@@ -28,6 +28,11 @@ that evaluation with the raw ordered mate before choosing the append
 functor. These equations are used in the chosen matrix-chart comparison;
 they impose no compatibility premise.
 
+The four `inductionUnitMatrixEntry_*_total` and
+`inductionCapMatrixEntry_*_total` formulas evaluate the actual shifted
+fields as the prescribed raw mate, unit/dot and dot/counit maps before
+choosing an append functor. They support the finite field comparison.
+
 The producer and paired mixed-colour/vacuum consumer pass the pinned
 strict checks, including the allowlist audit of every owned declaration.
 No inverse of the quotient component matrices is claimed here. The next
