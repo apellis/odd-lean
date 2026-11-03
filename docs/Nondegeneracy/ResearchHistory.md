@@ -567,3 +567,28 @@ mate inverse and supported/absent pair-induction sources. Their integration
 claims belong in STATUS and their actual proof PRs. Preserving this tree
 is not evidence that the entire tree builds. Recover individual files with
 `git show 82ddc2011bb42715e1c5fb03359271160fa38a45:<repository-path>`.
+
+## Probe relations and selected vacuum attachment argument tree
+
+The complete source tree [418df8069e](https://github.com/apellis/odd-lean/commit/418df8069eb8cbc07b48201ad4fccde9907b3f59) retains the next probe relation and
+vacuum attachment arguments. Its sole parent is the verified research
+integration of #1013. Pending proof integration heads are not introduced
+as ancestors by this copy. The history merge changes only this inventory
+and HANDOFF; proposed source is not imported into the checked library.
+
+| Topic | Source files in the preserved tree | Scope at preservation |
+| --- | --- | --- |
+| Evaluated local records | `ELVProbeEvaluatedLocal.lean` | Generic inverse restriction and several literal dot/mate comparisons pass in isolation; the complete producer and concrete consumer remain unverified. |
+| Representative generator comparison | `ELVProbeReindexTensors.lean` | Proposed tensor formula for the canonical append/reindex adjunction comparison; complete proof and consumer remain pending. |
+| Original-weight probe braid | `ELVProbeWeightBraid.lean`, if present | Draft triple coordinates and crossing whiskerings; no global braid verification is claimed. |
+| Selected reservoir word value | `ELVReservoirWordValue.lean` and paired consumer | Draft identification with the explicit regular-power empty-word family; whole check is pending and attachment to the swapped vacuum Hom input is separate. |
+| Reservoir vacuum dot | `SwappedAssembly/ReservoirVacuumDot.lean` and paired consumer | Generic zero-shift helpers pass in isolation; full generator attachment and actual-factor consumer remain pending. |
+| Whole-Hom word coordinates | `ELVPowerWordHomCoordinates.lean` and paired consumer | Exact restored proposal; fresh publication checks remain pending despite earlier scoped evidence. |
+| Rectangular induction slides | `ELVModuleInductionSlides.lean` and paired consumer | Producer argument passes; a naming collision found by the consumer is being repaired. Fresh exact paired checks remain pending. |
+
+The tree also contains separately scoped-checked local records, the
+reservoir multicolour presentation, reservoir path functor, probe dot unit,
+weight signed slides, representative adjunction comparison and content
+braid. Their integration evidence belongs to their own proof PRs and
+STATUS. This preservation is not evidence that the whole snapshot builds.
+Recover individual files with `git show 418df8069eb8cbc07b48201ad4fccde9907b3f59:<repository-path>`.
