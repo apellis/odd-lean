@@ -2224,3 +2224,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNormalizedRectangularCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightNormalizedMateComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightUnitPowers
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapPowers
+import OddMath.QuiverHecke.CyclotomicAction.ELVNormalizedGridMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightGridMateComparison
