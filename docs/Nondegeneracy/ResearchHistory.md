@@ -386,3 +386,32 @@ Scope describes each snapshot, with checked successors recorded separately.
 | Earlier original-weight mate development | [85e53ce546](https://github.com/apellis/odd-lean/commit/85e53ce54667d8b46911ef798a86f1a368204d71) | `1917e6a166ae7697f6e1a3b8d0ed8502a4e9f4ec` | Checked topical variant; curated distinct inverse verified in #991. |
 | Released coefficient-cap copies | [3b976c809f](https://github.com/apellis/odd-lean/commit/3b976c809f4d28faaefb67799c6ff931e797b313) | `528a11bf58e5b67df0789741f829c71baa295f3a` | Six owned file copies equal the curated #991 blobs; earlier full development tree retained as history only. |
 | Scalar coefficient-window development | [a44d75451f](https://github.com/apellis/odd-lean/commit/a44d75451fd57fc44731958ab31f054b314a6451) | `08bd7aad89b0051bf5f114e80a8a0e1a8a07692e` | Checked topical producer and consumer; later integration gate is separate. |
+
+## Action-field restart trees
+
+Each exact tree copy has only the verified research parent; no pending proof
+head becomes an ancestor through these copies. Checked successors are separate.
+
+| Argument | Preserved tree | Source revision | Scope |
+| --- | --- | --- | --- |
+| Chosen word crossing | [87e8e0aa6c](https://github.com/apellis/odd-lean/commit/87e8e0aa6c064f45021b512286a1b8de2611c10d) | `6329a2e2c3a0600e6d93d0ae4ec30e884dcd3d42` | Producer prefixes pass; chosen old-word equality and complete paired batch remain unverified. |
+| Canonical finite matrix charts | [11b07774d0](https://github.com/apellis/odd-lean/commit/11b07774d06cfdd523495aa08395b65f032670fc) | `6a4a7a600fa6cdaff2e12108ac7859bff71554c3` | Generic evenness passes; native parity attachments and consumer unverified. |
+| Original-weight unit columns | [fe78dc3a8e](https://github.com/apellis/odd-lean/commit/fe78dc3a8eef7e652228630ea5fa616604363490) | `6b9c8dae0b4a8fe923d538bc76dbfe29a38ddc88` | Actual unit/power source and consumer unverified at this snapshot; later checked successor separate. |
+| Raw shifted pre-Hom dot | [953872bb34](https://github.com/apellis/odd-lean/commit/953872bb34216c23da661c5aad2cd10bbe3e27d6) | `9a25adac792b4442153eb3f07bc095e066ae9314` | Raw Koszul-sign producer passes; paired consumer unverified at snapshot. |
+| Content induction braid | [11da074226](https://github.com/apellis/odd-lean/commit/11da074226aa4927c606ee647eb128dd574cd70f) | `05f2db5ada7a79d727384cbf801c8b341ec89f2f` | Direct content braid source and consumer unverified at snapshot. |
+| Distinct weight slides | [e9bb2e7a72](https://github.com/apellis/odd-lean/commit/e9bb2e7a721b2644eb56b1fa4f5bef3509f33e82) | `1bd55960d578a026ee512cf192a0f172609236ae` | Selected chart/dot squares pass; supported equations, native fields and consumer unfinished. |
+| Literal power/weighted cap | [d0ac06491a](https://github.com/apellis/odd-lean/commit/d0ac06491a549e0cd1b77ba9ce3e9fe50faa6d1e) | `692e1c2740434211a9796723a2ba4d1ca450ebdf` | Checked topical source and occupied consumer; full integration gate and final chosen weight-cap attachment separate. |
+
+## Local-inverse and crossing restart trees
+
+Each exact tree copy has only the verified research parent; no pending proof
+head becomes an ancestor through these copies. Checked successors are separate.
+
+| Argument | Preserved tree | Source revision | Scope |
+| --- | --- | --- | --- |
+| Chosen whole-word crossing | [86120217f2](https://github.com/apellis/odd-lean/commit/86120217f2902f47356964da7c639850ca1ba0d7) | `c08b71a0847041a66c81b82c32b7615b9f8feb61` | Native unit-image join fails default kernel normalization; complete paired crossing remains unverified. Normalized crossing successors are separately checked. |
+| Canonical principal content square | [14bca9c8ee](https://github.com/apellis/odd-lean/commit/14bca9c8ee9d816b7c5e70761f963a649e732954) | `f919a42df347e22871c4635a2335bebef1d298c9` | Proposed raw-to-native principal evaluation join and consumer remain unverified; cap extraction is separate. |
+| Canonical absent-colour inverse | [229e677ff5](https://github.com/apellis/odd-lean/commit/229e677ff5f0a45e89c40419d8a8d66925934b1e) | `a9bdf1edd062248b20a97dd810db38022d5a1985` | Unit-column and absent-colour inverse producers and consumers pass strict checks; full integration and natural-family assembly remain separate. |
+| Probe coefficient-row uniqueness | [f515dd83a7](https://github.com/apellis/odd-lean/commit/f515dd83a7e1300be3a70e0d929b8470d064bfab) | `402fbf170ede80959966c9c8a6732e2e28e566bf` | Checked scalar-evaluation uniqueness includes the occupied F(E T0) module; concrete old probe local adjunction still to construct. |
+| Triple positioned dots | [ca89ee7221](https://github.com/apellis/odd-lean/commit/ca89ee7221c69c588b74abea9bff97645784fa89) | `5b31f0e6c6685d47dbb995fc856449687e0062b8` | All three literal positioned-dot components and paired consumer pass strict checks; C3 dot squares and corrected native polynomial remain open. |
+| Weighted polynomial cap | [aa78b6d857](https://github.com/apellis/odd-lean/commit/aa78b6d857b6eae810495e5db0cd9944e230fa9f) | `c7c0e568ca8ac62e861c97f3ba95dbb7e7787bf6` | Actual polynomial module-cap core passes producer checking; full closure and occupied consumer remain unverified at this snapshot. |
