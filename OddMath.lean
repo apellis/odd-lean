@@ -2102,10 +2102,3 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixEntryComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteMatrixComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVParityMatrixSquares
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairQuadratic
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixCaps
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerPolynomialCap
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap

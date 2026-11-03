@@ -6,17 +6,17 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-These exact source trees are reachable in history only. No unchecked
-source is imported, and later checked successors do not turn these
-snapshots into evidence. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+The following exact source trees are preserved in reachable history only.
+Each scope describes that proposed snapshot, independently of later checked
+successors. No proposed source is imported by this preservation. Earlier
+variants remain linked in [ResearchHistory](ResearchHistory.md).
 
 | Argument | Preserved source tree | Scope at the snapshot |
 | --- | --- | --- |
-| Deferred native content-mate comparison | [f7d588fdb6](https://github.com/apellis/odd-lean/commit/f7d588fdb66975879ff4568586b1dc3288f84d84) (`docs/Nondegeneracy/ContentMateSquareProposal.md`) | Deferred alternate native mate and EF parity conversions remain unverified; the direct component route is separate. |
-| Selected power-word pair crossing | [8db0c869d7](https://github.com/apellis/odd-lean/commit/8db0c869d791b3587bab1c81bf9e8729cc68fbfa) (`docs/Nondegeneracy/PowerWordPairCrossingDraft.md`) | Closed pair and all-vector recast prefixes pass; the combined signed expression and complete consumer remain unverified. |
-| Canonical truncated-content mate | [5d38b48380](https://github.com/apellis/odd-lean/commit/5d38b4838006662a575d4e798ed7c04207842357) (`docs/Nondegeneracy/ContentBlockDistinctMate.md`) | Generic source comparison passes; canonical source tensor, whole mate square and inverse remain proposed. |
-| Weighted finite matrix entry comparison | [d22d9954dd](https://github.com/apellis/odd-lean/commit/d22d9954dda046fce9ecd4c6ce062a4c349e2784) (`docs/Nondegeneracy/WeightedMatrixEntryComparison.md`) | Supporting component checks pass; entry producer passes but its paired consumer and whole finite forward identification remain pending. |
-| Scalar finite inverse candidates | [56c2b1f6cb](https://github.com/apellis/odd-lean/commit/56c2b1f6cbc77ce21e7919343dbfefbe908fdf10) (`docs/Nondegeneracy/ProbeMatrixInverseCandidates.md`) | Concrete global-to-relative-to-scalar inverse candidates are proposed; the first strict producer check fails and complete prescribed forward identification remains open. |
+| Deferred native content-mate comparison | [f7d588fdb6](https://github.com/apellis/odd-lean/commit/f7d588fdb66975879ff4568586b1dc3288f84d84) (`docs/Nondegeneracy/ContentMateSquareProposal.md`) | Whole native mate and EF parity conversions are deferred and unverified; the direct component route is separate. |
+| Content dotted matrix rows | [a10a9f260d](https://github.com/apellis/odd-lean/commit/a10a9f260d0b7209a50139a3cac37ddfeaeaeeef) (`docs/Nondegeneracy/ContentMatrixRowsProposal.md`) | The preserved snapshot is proposed; the all-power unit conversion has a checked successor below. Cap attachment and inverse remain open. |
+| Selected power-word pair crossing | [d1540e8957](https://github.com/apellis/odd-lean/commit/d1540e89579b73ef34f02b5bc5a3b520291e272e) (`docs/Nondegeneracy/PowerWordPairCrossingDraft.md`) | Generic prefixes are checked; the closed selected pair and whole signed crossing square remain unverified. |
+| Weighted finite matrix inverse | [b541461adf](https://github.com/apellis/odd-lean/commit/b541461adf01e76a6de90384cd9879bdbc649955) (`docs/Nondegeneracy/WeightedMatrixInverse.md`) | Genuine coordinate and transport prefixes do not yet identify the whole prescribed forward matrix; the inverse remains unverified. |
 
 ## Dependency order and readiness
 
@@ -235,11 +235,8 @@ They do not construct the complete factor or swapped action.
 
 ## Finite matrices, canonical truncated contents and probe attachment
 
-The following finite-family, truncated-content and probe inputs passed
-full build, global axiom audit and every consumer in #984 at `bf22957c`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41572490013)).
-The newer weight-coordinate and cap-attachment successors below are
-scoped-checked until their own integration gate completes.
+The following successors pass strict scoped producer/consumer checks and
+owned-declaration axiom audits; their full integration CI is pending.
 
 The old-content and global-truncated distinct rectangular mates now have
 homogeneous module and input-natural inverses with exactly the prescribed
@@ -284,39 +281,6 @@ last-dot exponent is asserted on arbitrary contents. See
 [ProbeVacuumPolynomial](ProbeVacuumPolynomial.md),
 [ProbeOldVacuumPolynomial](ProbeOldVacuumPolynomial.md) and
 [ProbeVacuumUnit](ProbeVacuumUnit.md).
-
-## Weight coordinates and polynomial cap attachment
-
-The two actual supported weight crossings give the original-Sc operator
-polynomial at the actual output content under the selected pair chart.
-Both independently defined weight dots now intertwine through exactly
-that same chart, retaining the actual intermediate block. The complete
-component squares and their all-vector equations are scoped-checked.
-Normalize the source whiskerings to the positioned dots, assemble the
-supported polynomial, then prove the absent-predecessor branch and global
-relation fields. No weight quadratic or triple field is yet claimed.
-See [WeightPairQuadratic](WeightPairQuadratic.md) and
-[WeightPairDotCoordinates](WeightPairDotCoordinates.md).
-
-All-power old-content cap rows are scoped-checked through the genuine
-selected E/F and inclusion-value charts, with no evenness, compatibility
-or invertibility premise. Together with the unit columns they supply both
-dotted sides of the relative-content finite matrix. Finish its whole mate
-square and finite assembly, then attach the given global old inverses
-through those exact fields. Retain the explicit i::ν predecessor scope;
-empty output and absent-i contents need their own branch. See
-[ContentMatrixCaps](ContentMatrixCaps.md).
-
-The actual polynomial functional λ(D²+1)^M on the power vacuum has its
-first normalized closure on every coefficient vector: for N≥2M and N>0,
-λ(D²+1)^M D^(N−2M)u=L_((-1)^(N+1)δ). The occupied two-odd consumers
-retain the original left multiplication order at zero and negative height.
-This computes the candidate, rather than identifying the prescribed mixed
-cap. Construct the actual probe extraction row and chosen mixed maps,
-prove their slide and normalization, and only then use the existing
-principal/negative-cap recovery theorem to attach the candidate and the
-source-placed bubbles. See [CoefficientPowerPolynomialCap](CoefficientPowerPolynomialCap.md)
-and [CoefficientPowerNonpositiveCap](CoefficientPowerNonpositiveCap.md).
 
 ## Categorical inverse: precise interfaces
 
