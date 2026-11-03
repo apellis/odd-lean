@@ -1928,10 +1928,13 @@ source-coefficient-image and representable evaluation forms. The existing
 finite kernel inverse comparisons prove parity only. The intrinsic integer
 grading of the literal represented lower-loop kernel is now checked in
 `ELVIndResKernelInteger`, with actual balance relations and an internal
-direct-sum decomposition (22 owned audits; full CI verified in #1029). Construct the finite source/
-target shifts, prove that the prescribed forward matrix has degree zero,
-then use inverse homogeneity and Yoneda
-to realize the positive-degree closure on every module. Do not infer an
+direct-sum decomposition (22 owned audits; full CI verified in #1029). `IntegerMatrixGrading` and `ELVKernelMatrixInteger` now construct independent
+finite source/target shifts, prove both prescribed forward matrices have
+degree zero and derive degree `2*d_i` for both principal inverses. Strict
+paired checks include positive, negative and zero heights, off-content
+inputs and a proved nonzero odd inverse; all 79 owned declarations are
+audited. Identify these raw inverses with the chosen reservoir principal,
+then use Yoneda to realize the positive-degree closure on every module. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
