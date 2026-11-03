@@ -2129,3 +2129,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWhiskering
 import OddMath.Algebra.FiniteZeroCoordinate
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentColour
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingColourMatrix
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSource
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullContentMateSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctInverse
