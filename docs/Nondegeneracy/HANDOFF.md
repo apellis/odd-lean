@@ -836,6 +836,14 @@ mixed/nonempty/shifted/zero-height consumer pass strict checks, auditing
 to evaluated modules, transport the upper append to its stored content,
 and compare the absent global lower loop with zero; see
 [ContentMissingLocal](ContentMissingLocal.md).
+`ELVProbeMissingCoefficients.probeEvaluatedMissingCoefficients` now
+constructs the prescribed finite boundary record for the actual evaluated
+append adjunction and dot. All native row components and the top cap
+are retained, including count zero. Strict mixed/nonempty/odd-input/
+zero-count consumer checks prove a nonzero evaluated top-cap output and
+audit all 68 owned declarations. Transport these coefficients through
+the checked stored upper-loop chart, then attach the zero lower local
+record; see [ProbeMissingCoefficients](ProbeMissingCoefficients.md).
 `ELVProbeAppendUpperLoop` now supplies the selected even evaluated
 upper-loop chart and the whole unit-column square for every exponent,
 without a lower predecessor. Strict mixed/nonempty-missing/reordered/
