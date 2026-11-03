@@ -991,6 +991,14 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeWeightMixedMateInverse.probeOldRouquierData_invNe` now proves
+the exact bundled distinct sideways-crossing inversion on the whole
+weight product, from the chosen supported mate and both absent zero
+coordinates. It retains the natural inverse and its degree. Strict
+asymmetric two-odd/twisted/occupied/absent/odd-input consumers audit all 81
+declarations and both inverse identities. No mixed-inverse premise
+remains; complete the local family and remaining braid fields. See
+[ProbeWeightMixedMateInverse](ProbeWeightMixedMateInverse.md).
 `ELVProbeWeightMixedMateComparison` now retains the actual upper unit
 and lower counit through the occupied mixed-coordinate equalities.
 Strict asymmetric mixed-parity regular/parity-shifted weight consumers audit
