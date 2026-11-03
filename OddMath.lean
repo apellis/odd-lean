@@ -2162,3 +2162,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctTargets
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateNaturality
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMatrixNaturality
