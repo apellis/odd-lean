@@ -211,9 +211,16 @@ integrated at `5bfa9b77`. It verifies stored present-colour local inverses,
 whole selected mate and dotted-row squares, exact global distinct probe
 inversion, global crossing/cap/unit coordinates, pure probe principal and
 probe-to-reservoir entries, evaluated finite coefficient expansions and
-literal reservoir-context/source-class comparisons. Later whole local,
-central matrix and supported-action additions retain their separate
-scoped-check/full-integration boundaries below.
+literal reservoir-context/source-class comparisons. Integration #1026
+passed the full warning-free build, global axiom audit and all concrete
+consumers at source `455117ec` (run 41721544509), integrated at
+`afd225cc`. Its fourteen producers verify occupied principal and absent
+local coordinates, evaluated finite inverses, specified weight paths and
+three dots, both stored general braid forms, the ordered correction,
+central path padding, the reverse mixed bend, probe dotted rows and
+component coefficient bounds. Later whole local, central matrix and
+supported-action additions retain their separate scoped-check/full-
+integration boundaries below.
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
@@ -1906,6 +1913,15 @@ probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
 ## Central augmented-matrix attachment
+
+The positive-degree residual closure remains a substantive proof target.
+[ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
+source-coefficient-image and representable evaluation forms. The existing
+finite kernel inverse comparisons prove parity only. Construct integer
+gradings on the represented shifted kernels, prove that the prescribed
+forward matrix has degree zero, then use inverse homogeneity and Yoneda
+to realize the positive-degree closure on every module. Do not infer an
+integer grading on arbitrary ungraded module Homs.
 
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
