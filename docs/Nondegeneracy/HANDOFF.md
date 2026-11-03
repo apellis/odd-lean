@@ -16,6 +16,18 @@ is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 | Native inverse coefficient caps | [ef8d91c005](https://github.com/apellis/odd-lean/commit/ef8d91c0058d8e88bb21995495267590318813d0) (`docs/Nondegeneracy/ProbeCapMaps.md`) | Bare producers pass; degree, paired consumers and scalar inverse-row binding unverified. |
 | Scalar left-cap field binding | [93af40181a](https://github.com/apellis/odd-lean/commit/93af40181a8b1d62ff882d73e62054fa763bfae1) (`docs/Nondegeneracy/ScalarLeftCapBinding.md`) | Literal dropped-row prefix passes; extended producer and paired consumer unverified. |
 
+## Ground-ring reduction already available
+
+The remaining construction may target characteristic-zero fields.
+`SKM.nondegeneracyConjecture_of_charZeroField` already transports that
+field theorem to every ordinary commutative ring with 2 invertible,
+for the same datum, homogeneous scalars and supplied CScalars. Do not
+list ring descent as an unfinished action or recovery obligation.
+The theorem uses actual presentation base change and universal-parameter
+separation; it adds no target-domain, reducedness or flatness hypothesis.
+See [GroundRingDescent](GroundRingDescent.md) and
+[GroundRingNondegeneracy](../../OddMath/SKM/GroundRingNondegeneracy.lean).
+
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
@@ -27,6 +39,45 @@ is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical bridge full-CI verified (#973); actual word coordinates and odd series at the unit scoped-checked below. Finish full factors, arbitrary-vector cap/bubble operators and chosen-action evaluation/recovery |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
+
+## Prescribed matrix and coefficient-row successors
+
+The #988 source head `1f62b66a` passed the full warning-free build, global
+axiom audit and every concrete consumer (run 41581218832), and is integrated
+at `393fca27`. Its native RouquierData has the same-colour square field;
+its all-block quadratic component identity is also verified. The remaining
+native mixed/braid/slide and local-inverse fields are not supplied by that
+bundle.
+
+The next strict locally checked integration supplies relative-content
+finite matrix maps and both input-natural inverses, weighted fixed-output
+module inverses natural in global-truncated inputs, and both scalar
+prescribed forward identifications including the ordinary absent-colour
+unit boundary. Changing-content mate and matrix-entry supernaturality is
+retained. Complete canonical-content and original-weight endpoint/field
+transport remains necessary; use the selected full source/target charts.
+The canonical-content diagonal mate square now passes through those charts
+with its actual parity square. Attach its unit/dot and dot/counit fields
+before invoking the finite inverses for the chosen action.
+
+The signed source composition and chosen scheduled content/original-weight
+induction components are locally checked. The rectangular crossing is
+identified with its chosen content word counterpart. Complete chosen
+weight-action generator evaluation and relation-preserving factor assembly
+before using the source coordinate kernel as action faithfulness.
+
+The actual full-old probe extraction row has its signed polynomial and
+parity. The inverse-unit rows are now homogeneous content module maps,
+surjective on every component and equal to the prescribed module unit
+coefficient at empty output. Scalar inverse coefficient transport retains
+the canonical unshift and every row index. The next risk target is to
+identify their old-field/module-map specialization through the selected
+FE chart, then derive the normalized left-cap window and mixed slide.
+The ordinary right counit comparison does not discharge this obligation.
+
+These successor sources have strict paired local checks and owned-declaration
+axiom audits; their full integration CI is pending. Exact module scope is
+in the STATUS table and the mathematical topic notes.
 
 ## Current comparison interfaces
 
