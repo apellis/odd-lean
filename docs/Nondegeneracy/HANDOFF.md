@@ -56,11 +56,20 @@ observation; see [PowerWordQuotientCoordinates](PowerWordQuotientCoordinates.md)
 
 ## Dependency order and readiness
 
+The distinct-relation and reservoir-row integration #1018 passed the full
+warning-free build, global axiom audit and all concrete consumers at source
+`e32a8614` (run 41701950651), integrated at `3014d062`. This verifies the
+selected quadratic block, both global distinct slides, raw and nested
+uncorrected multicolour inputs, reindexed inverse entries and pair chart,
+all dotted reservoir rows, contextual vacuum words and Hom-entry evaluation.
+Later canonical local, corrected braid and quotient-coordinate additions
+retain their separate scoped-check/full-integration boundaries below.
+
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
 | --- | --- | --- | --- |
 | Fixed-content/weight matrix inverse assembly | Constructed in strict paired checks | Prescribed principal/unit/cap squares, supported and absent inverses, whole input-natural product assembly | Full integration gate pending; use the chosen maps in the factor |
 | Reservoir factor family | Constructed in fresh strict paired checks | `elvRouquierFamily`, both local inverse families and all seven `elvRouquierMulticolour` fields with original Sc | Full CI verified in #1014; use the selected factor in the swapped assembly |
-| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs pass strict checks; finish chosen local records and remaining multicolour transport |
+| Global probe family | In progress | Evaluated old subcategory, E/F/parity/product closure, entire natural dot inverse, old quotient square/slides and matrix inverses | Whole-weight adjunction/dot, dot inverse, equal crossing/slides/braid and generator data are full-CI verified through #1017; distinct slides and selected quadratic/multicolour inputs passed full CI in #1018; finish chosen local records and remaining multicolour transport |
 | Concrete swapped action | Factor interfaces available; instantiation incomplete | Ordinary and transposed blockwise denominator units, generic braid/inverse assembly | Supply complete probe/reservoir factors and chosen mixed inverses/coefficients; prove the literal central augmented-matrix squares and residual closure memberships |
 | Vacuum and bubble recovery | Operator comparisons available; action attachment incomplete | Tensor-vacuum whole-module chart, prescribed cap polynomial identities, word/coefficient charts and joint source detection | Identify full chosen-action bubble/corner operators on every vector and construct observations |
 | Vacuum path collapse | Full build, global axiom audit and all non-vacuity checks verified in #1010 | `SPath.subsingleton_of_upward_probe_zero`, `sum_of_upward_probe_zero` and the constructed `reservoirPath` for every upward labelled word | The even whole-functor identification with reservoir postcomposition passed full CI in #1014 in `ReservoirWordFunctor`; attach the selected vacuum value and contextual dot/crossing operators before constructing an observation |
