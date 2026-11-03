@@ -257,18 +257,3 @@ HANDOFF; later checked successors do not turn these variants into evidence.
 | Selected weighted mate transport | [829dabe55c](https://github.com/apellis/odd-lean/commit/829dabe55cf56cb35c459286f9fb7fd8aa7750ca) |
 | Old power-quotient vacuum | [e5b7b48a7d](https://github.com/apellis/odd-lean/commit/e5b7b48a7dce67e32b5cf4e5bac777282e7f3052) |
 | Reversed quotient bounded detection | [890307122c](https://github.com/apellis/odd-lean/commit/890307122c1de62321e20eea5fc14b9edccdc645) |
-
-## Mate and coordinate proposal source trees
-
-These copies preserve the exact source trees with a research-only parent.
-Pending proof integrations are not made ancestors of the research branch,
-and no proposed source enters the checked library through this preservation.
-The source notes describe the unfinished mathematical arguments.
-
-| Proposed argument | Preserved tree commit | Original proposal commit |
-| --- | --- | --- |
-| Content pair crossing | [cef0b17b98](https://github.com/apellis/odd-lean/commit/cef0b17b98856f32f937b5510d70ab1c2feb546f) | `3fbe4db1fc5d7013113f2e3ca66c21caf006b9db` |
-| Content self-colour mate | [fc52dfd086](https://github.com/apellis/odd-lean/commit/fc52dfd086f11fab7b527cd9a3fbce808c689ff5) | `73ccc7c454d6ef0e902c88efa4838aac1a46cc53` |
-| Distinct content mate | [cffb3ae4b2](https://github.com/apellis/odd-lean/commit/cffb3ae4b2f5c9471d5e6ef53d44222f6d0f4cc0) | `ced7fe6b8234b1ee29e9417d1dbb5957594cc807` |
-| Power-word coordinates | [41466e07a4](https://github.com/apellis/odd-lean/commit/41466e07a45207605231911c5f1d3f01a24021f9) | `91141513c94545c32b5fb9bcb9db4f001bc29d54` |
-| Weighted matrix rows | [dca80e84a0](https://github.com/apellis/odd-lean/commit/dca80e84a05f8f0777c55dced0fd3ac6fff8bdcb) | `4dc8f9fca8eb58057f5a750aeede6b909a39246f` |
