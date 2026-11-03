@@ -964,6 +964,15 @@ audits, with full CI verified in #1014. Restrict the exact record to the evaluat
 then handle canonical contents, absent predecessors and original weights.
 See [InductionGridLocal](InductionGridLocal.md).
 
+`ELVProbeEvaluatedLocal.probeEvaluatedLoc` now restricts that adjacent
+record to the evaluated full subcategory with the original adjunction,
+dots and crossing. All four inverse-entry component comparisons retain
+the OLD maps definitionally for every row index. Producer and
+both-parity/height/zero-overlap regular-probe consumer pass strict checks
+and 182 owned audits. Transport this selected record through canonical
+representatives, then handle absent predecessors and original weights.
+See [ProbeEvaluatedLocal](ProbeEvaluatedLocal.md).
+
 `probeOldActionDotIso` in `ELVProbeWeightDotUnit` constructs the inverse of
 the chosen whole-weight dot over arbitrary weight fibres, including its
 odd homogeneous inverse and absent predecessors. Its producer and

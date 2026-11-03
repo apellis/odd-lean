@@ -2430,3 +2430,4 @@ import OddMath.QuiverHecke.SwappedAssembly.ReservoirVacuumDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexTensors
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedLocal
