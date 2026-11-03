@@ -2133,3 +2133,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquareSource
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVFullContentMateSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockDistinctInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContexts
