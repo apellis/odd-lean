@@ -823,12 +823,19 @@ twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
 interior-parameter consumer checks audit all ten owned declarations.
 Attach the whole operator and literal OLD braid difference; see
 [InductionTriplePolynomial](InductionTriplePolynomial.md).
+`ELVOldCorrectedInductionBraid.oldDirectMixedBraid_polynomial` now proves
+the signed direct braid difference with its negative equal crossing and
+original-Sc ordered correction. Strict occupied mixed/three-odd/interior/
+odd-kernel consumer checks audit all sixteen owned declarations. Compare
+all three chosen nested dot whiskerings through the common triple chart,
+then lift the corrected relation to evaluated and weight functors; see
+[OldCorrectedInductionBraid](OldCorrectedInductionBraid.md).
 `ELVOldTriplePolynomial.oldTriplePolynomial_operator` now identifies the
 whole original-Sc correction operator with the polynomial in all three
 independent OLD dots, retaining their exact source positions and every
 interior coefficient. Strict occupied mixed/three-odd consumer checks
-audit all twenty owned declarations. Combine with the signed direct braid
-difference and transfer the dots through the chosen nested charts; see
+audit all twenty owned declarations. The signed direct braid
+difference is checked above; transfer the dots through the chosen nested charts; see
 [OldTriplePolynomial](OldTriplePolynomial.md).
 `ELVOldNestedMulticolourBraid.normalizedNestedTripleCross_braid` now
 proves the actual nested uncorrected braid with independent pair
