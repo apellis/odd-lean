@@ -788,6 +788,13 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`SKM.RouquierBoundaryTransport.ofIso` now transports a boundary
+coefficient record through an even upper-loop chart, retaining every row
+as the inverse chart followed by the original row. The cup square is an
+explicit intermediate input; the single-edge append comparison must
+supply it in the probe application. Strict actual missing-boundary
+consumers, including nonzero top rows and count zero, audit all five
+owned declarations. See [RouquierBoundaryTransport](RouquierBoundaryTransport.md).
 `SKM.RouquierZeroLocal.ofCoefficients` now constructs the local record
 from upper boundary coefficients and the actual lower-loop and double-cell
 zero identities, retaining every inverse row and both orientations at
