@@ -30,7 +30,12 @@ ordinary-ring conclusion; no additional ground-ring descent remains.
 The field input is still open. This reduction retains the datum and
 homogeneity conditions and does not address genuinely supercommutative
 base rings or existence of CScalars for every weight realization.
-Intermediate lemmas may have broader scope.
+Intermediate lemmas may have broader scope. The field predicate fixes the datum;
+completing the present construction with a supplied positive symmetrizer
+therefore establishes that scoped case. Symmetrizability is not implied by
+`Datum`, homogeneous parameters or supplied normalizations. Removing these
+extra hypotheses for the broader §8 statement remains a separate open
+source-fidelity obligation; see [FieldScopeBoundary](FieldScopeBoundary.md).
 
 ## Established reductions and concrete inputs
 
@@ -262,8 +267,12 @@ at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
 | Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
 
 
-The next integration has strict producer/consumer checks and owned axiom audits;
-its full-package CI remains the integration gate.
+The integration in [#995](https://github.com/apellis/odd-lean/pull/995) passed
+the full warning-free build, global axiom audit and every concrete consumer
+at source head `a51a6f9a80f5c0efbf367cc4d79a4d08f79b1f70`
+([CI](https://github.com/apellis/odd-lean/actions/runs/41605147758)),
+and is integrated at `8f9ad250`. Its 36 changed producers and 66 exact
+producer/consumer blobs also passed strict local checks and combined imports.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -273,6 +282,19 @@ its full-package CI remains the integration gate.
 | Finite local inverse adapters and canonical charts | Even finite matrix isomorphisms produce `SuperSumInvFrom`/`To` with the prescribed forwards, degrees and identities; old grid isomorphisms instantiate this. Both directions of all six canonical content charts are even and have exact component formulas | Canonical supported/absent chart transport and original-weight local inversion fields |
 | Probe cap families and pre-Hom coordinates | `ELVContentCapNaturality` supplies input supernaturality; the native module window, literal cap precomposition, shifted coordinates and raw-dot Koszul powers are checked | Concrete local adjunction assembly, mixed slide and bubbles; coordinate dot and raw pre-E dot retain their proved sign difference |
 | Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
+
+
+The subsequent local-inverse and triple-comparison batch also passes strict
+producer/consumer checks and combined imports; full integration is pending.
+
+| Interface | Established locally | Remaining scope |
+| --- | --- | --- |
+| Prescribed weighted local inverses on content outputs | `weightedContentLocalInverseFrom` and `weightedContentLocalInverseTo` use the proved weighted matrix isomorphisms and literal mate/unit/cap maps, with no supplied inverse premise | Transport through supported canonical charts, input-supernatural inverse-entry families and original weights |
+| Canonical unit and absent predecessor | `ELVContentUnitColumnSquare` compares every unit/dot column through the selected charts; `ELVContentAbsentUnitInverse` constructs the canonical negative local inverse when the predecessor is absent, retaining FE | Supported principal chart square and natural-family assembly |
+| Canonical cap row | `contentMatrixCapDotRow_square` identifies every native cap row through the full source/value charts, with both directions even | Supported principal chart square and complete local inversion transport |
+| Triple crossing and dot operators | Selected first/last adjacent crossing comparisons pass through the common triple chart; the direct multicolour induction braid and all three literal native positioned-dot component formulas are checked | Three whole triple-dot chart squares and original-Sc corrected polynomial/native braid field |
+| Adjacent left adjunction and probe row | `negativeLeftAdjunction` packages the existing construction from two supplied local records, their square-zero and braid relations. The raw probe row is forced by the unit window; its normalized counit sign cancels the shifted pre-Hom sign. Scalar-evaluating inputs include the occupied F(E T0) | Construct the concrete old probe local records and their required relations; no unconditional left adjunction is claimed |
+| Weighted moments and polynomial cap | Actual weighted cap after every given unit/dot column equals the full-coefficient moment operator on every vector. `ELVWeightedPolynomialCaps` constructs λ·(D²+1)^M as a homogeneous module map and proves every closure, the nonpositive-height first closure and the sign-sensitive second closure on surviving odd input | Identify the prescribed mixed inverse and swapped bubble operators |
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient

@@ -85,6 +85,16 @@ original-weight same-colour local inversions and canonical diagonal cap-row
 and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
 
+## Field-scope obligation
+
+The current field construction retains `sy : Symmetrizer D` and homogeneous
+parameters. With that fixed datum it must furnish `CharZeroFieldNondegeneracy D`;
+the existing ground-ring theorem then supplies ordinary rings with 2 invertible.
+For the broader §8 conjecture, obtain a source-backed input removing those
+extra hypotheses. They are not consequences of the current datum/scalar APIs.
+See [FieldScopeBoundary](FieldScopeBoundary.md). No broader scope is declared
+out of scope and no replacement route is selected.
+
 ## Native probe normalization and remaining action fields
 
 The native left-cap field, all-row Kronecker window, SAME-dot signed probe
@@ -92,7 +102,9 @@ polynomial, canonical counit/all cap rows, weight mate boundary, triple
 coherence and selected append-unit/cyclicity batches passed full CI in #993
 at `f0a2ed23` (run 41594069793). These are established dependencies.
 
-The next strict locally checked integration proves the prescribed same-colour
+The #995 integration passed the full warning-free build, global axiom audit
+and all consumers at `a51a6f9a` (run 41605147758), integrated at `8f9ad250`.
+It proves the prescribed same-colour
 slides and braid and both distinct-colour slides on original weights, on all
 modules and outputs. It also identifies normalized crossing/mate maps and
 all native unit/cap powers with the old grid operators. Mixed-colour braid
@@ -116,9 +128,31 @@ prescribed mixed slide and bubble operators. The generic adjacent Rouquier
 left-adjunction construction already exists in `RouquierFTriangle`; constructing
 its concrete local inputs remains necessary.
 
+The subsequent checked component inverses now include both `weightedContentLocalInverseFrom`
+and `weightedContentLocalInverseTo` with the prescribed forwards. Every canonical
+unit column and cap row has its whole chart square, and the absent-predecessor
+canonical inverse is constructed. The supported principal square and input-family
+assembly remain open. Three positioned-dot component formulas and both adjacent
+crossing comparisons are checked; attach their triple-chart squares to the
+original-Sc correction polynomial.
+
+The existing adjacent-left-adjunction constructor is packaged with only two
+local records and the required square-zero/braid equations. Its regular-probe
+raw row is determined by the actual unit-column window; the native normalized
+counit and output-shifted pre-Hom signs cancel. Scalar-evaluation uniqueness
+extends to the occupied F(E T0), without assuming evaluation at T0 is faithful
+on every module. Construct the old-category empty and one-colour local records
+using the existing old grid natural isomorphisms, then apply that constructor.
+Actual weighted all-power moments and χ/δ series hold on every coefficient
+vector. The polynomial module cap λ·(D²+1)^M has all closure formulas,
+including nonpositive first closure and a second closure distinguishing
+χ₁+2 from χ₁−2 on nonzero odd input. The prescribed swapped mixed inverse
+and bubble identification remain.
+
 Chosen append-unit calculation and full-coefficient cyclicity are established;
 finish the chosen whole crossing equality and final observation recovery.
-These newer successors await their full-package integration gate.
+The subsequent local-inverse, triple-component and probe-adjunction successors
+await their full-package integration gate; #995 is fully verified as recorded above.
 
 ## Current comparison interfaces
 
