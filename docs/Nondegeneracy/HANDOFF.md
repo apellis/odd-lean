@@ -912,6 +912,13 @@ full-CI verified and integrated in #927. Neither result requires finite
 dimension or a coend-comparison premise. The selected ordinary model still needs
 crossing, normalized-cap and inverse-matrix transport.
 
+`ELVProbeEvaluatedCrossing` restricts the selected negative OLD crossing
+through the full evaluated subcategory, preserving its literal component,
+signed input naturality and square-zero equation. Its producer, concrete
+occupied/empty/odd-input consumer and all 42 owned audits pass strict
+checks. Continue with stored-target and weight transport, the braid and
+the adjacent local record. See [ProbeEvaluatedCrossing](ProbeEvaluatedCrossing.md).
+
 `ELVProbeWeightPairInduction` supplies the literal supported two-step
 weight coordinate and both absent-predecessor zero cases. Its producer,
 concrete regular-probe consumer and all four owned audits pass strict
