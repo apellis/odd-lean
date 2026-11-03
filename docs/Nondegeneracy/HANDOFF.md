@@ -708,6 +708,14 @@ Prove compatibility with the selected dot, crossing and adjunction maps
 before using these inverses in a full-ELV factor action. These old-category
 natural isomorphisms alone do not supply that action.
 
+`equalCrossComponent_braid` in `ELVOldAppendBraid` (in the
+`ELVOld.CyclotomicCrossingTensor` namespace) supplies the untruncated
+coefficient braid for the actual prefix and suffix equal crossings. Its
+producer, concrete representable consumer and both owned audits pass
+strict scoped checks. Transport this equation through the selected triple
+induction flattening; it does not yet prove the probe weight braid.
+See [OldAppendBraid](OldAppendBraid.md).
+
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
 with a supernatural representing map involving projection and twist.
