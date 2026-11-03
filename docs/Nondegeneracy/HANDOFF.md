@@ -743,6 +743,12 @@ audits. `ELVModuleInductionSlides` now transfers a rectangular source
 slide to whole induced module maps, with strict concrete OLD checks and
 five owned audits. Apply the chosen pair flattenings before weight
 transport. See [OldDistinctSlides](OldDistinctSlides.md).
+`ELVInductionGridDistinctSlides` now supplies both rectangular pair
+slides through the selected flattenings, with arbitrary changing
+categories. Its producer and actual mixed/shifted OLD-content consumer
+pass strict checks and three owned audits. Restrict to evaluated modules
+and compare the independently chosen global dots in these same
+coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
 
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
