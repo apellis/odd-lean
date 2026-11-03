@@ -2183,3 +2183,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedCoordinates
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMatrixHeight
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentComparisonParity
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
