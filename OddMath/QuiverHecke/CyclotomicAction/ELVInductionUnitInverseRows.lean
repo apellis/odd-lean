@@ -41,21 +41,21 @@ variable (e : OddMath.FiniteSupermodule.product (unitColumnModuleFamily p M m) �
   (he : e.hom = unitColumnModuleMap J hα M m)
 
 /-- The inverse row in the original unshifted value coordinates. -/
-def unitColumnModuleInverseRow (r : Fin m) :
+def unitColumnInverseRow (r : Fin m) :
     (restriction J).obj ((induction J).obj M) ⟶ M :=
   OddMath.FiniteSupermodule.inverseCoordinateRow rIso e r
 
 include he in
 /-- Restoring the r-th source shift retains exactly its prescribed degree. -/
-theorem unitColumnModuleInverseRow_mem (r : Fin m) :
-    unitColumnModuleInverseRow J M m e r ∈ parity (R := k) _ _ (r.val • p) :=
+theorem unitColumnInverseRow_mem (r : Fin m) :
+    unitColumnInverseRow J M m e r ∈ parity (R := k) _ _ (r.val • p) :=
   OddMath.FiniteSupermodule.inverseCoordinateRow_mem rIso rParity rMem column columnMem e
     (he.trans (unitModuleMap_restored J hα M m)) r
 
 include he in
 /-- The finite ordinary unit columns and extracted inverse rows are dual. -/
 theorem unitDotColumn_inverseRow (a r : Fin m) :
-    unitDotColumn J hα M a.val ≫ unitColumnModuleInverseRow J M m e r =
+    unitDotColumn J hα M a.val ≫ unitColumnInverseRow J M m e r =
       if a = r then 𝟙 M else 0 := by
   classical
   by_cases har : a = r
@@ -70,8 +70,8 @@ theorem unitDotColumn_inverseRow (a r : Fin m) :
 include he in
 /-- The extracted rows and prescribed ordinary columns give the finite
 boundary decomposition, including m=0. -/
-theorem sum_unitColumnModuleInverseRow_unitDotColumn :
-    (∑ r : Fin m, unitColumnModuleInverseRow J M m e r ≫ unitDotColumn J hα M r.val) =
+theorem sum_unitColumnInverseRow_unitDotColumn :
+    (∑ r : Fin m, unitColumnInverseRow J M m e r ≫ unitDotColumn J hα M r.val) =
       𝟙 ((restriction J).obj ((induction J).obj M)) :=
   OddMath.FiniteSupermodule.sum_inverseCoordinateRow_forward rIso rParity rMem column columnMem e
     (he.trans (unitModuleMap_restored J hα M m))
