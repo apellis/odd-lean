@@ -6,17 +6,15 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-These exact source trees are reachable in history only. No unchecked
-source is imported, and later checked successors do not turn these
-snapshots into evidence. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+These exact source trees are reachable in history only; no unchecked source
+is imported. Earlier variants remain in [ResearchHistory](ResearchHistory.md).
 
-| Argument | Preserved source tree | Scope at the snapshot |
+| Argument | Preserved source tree | Scope at snapshot |
 | --- | --- | --- |
-| Power-word signed composition | [d56d73f921](https://github.com/apellis/odd-lean/commit/d56d73f9213308b43e6f36d3663b8024b853f564) (`docs/Nondegeneracy/PowerWordCompositionDraft.md`) | Whole homogeneous composition and scalar-linearity prefixes pass; complete consumer and chosen weight-action evaluation remain unverified. |
-| Original-weight distinct mate | [0acc801e1f](https://github.com/apellis/odd-lean/commit/0acc801e1f1dff93fd23cf81f238715556b35ec4) (`docs/Nondegeneracy/WeightDistinctMate.md`) | Four-corner PiSCat component prefix passes; degree recheck, concrete consumer and prescribed original-weight inverse remain proposed. |
-| Scalar unit-only finite comparison | [e5cd113828](https://github.com/apellis/odd-lean/commit/e5cd1138288ee5dcbf32214d748be23c405c9b7c) (`docs/Nondegeneracy/UnitColumnMatrices.md`) | This snapshot retains the then-unverified generic comparison and planned consumer; later checked successors are separate. |
-| Probe row in native content coordinates | [49859b449f](https://github.com/apellis/odd-lean/commit/49859b449f1dc56b64cbdfaf73dc10334b081bea) (`docs/Nondegeneracy/ProbeVacuumRows.md`) | Whole source and consumer remain unverified at the raw-coend versus SVec-carrier specialization; the checked full-old extraction row is separate. |
-| Shifted old-content matrix entries | [de01095797](https://github.com/apellis/odd-lean/commit/de0109579791da62ac09119a762f3e7362b95fba) (`docs/Nondegeneracy/ContentMatrixEntriesProposal.md`) | Generic decoration prefixes pass; shifted-coordinate to prescribed old-field attachment and complete consumer remain unverified. |
+| Original-weight chosen dot | [0b26b3c1f7](https://github.com/apellis/odd-lean/commit/0b26b3c1f7c8e1a548d46d0b0293afefde62fba8) (`docs/Nondegeneracy/PowerWordWeightDotDraft.md`) | Producer passes; paired consumer and whole batch unverified. |
+| Canonical content unit and cap fields | [5754cbac96](https://github.com/apellis/odd-lean/commit/5754cbac968d56ba037a4d3dc751bd1006fb65a2) (`docs/Nondegeneracy/ContentBlockMatrixRows.md`) | Unit and dot prefixes pass; all-power chain and actual field specialization unverified. |
+| Native inverse coefficient caps | [ef8d91c005](https://github.com/apellis/odd-lean/commit/ef8d91c0058d8e88bb21995495267590318813d0) (`docs/Nondegeneracy/ProbeCapMaps.md`) | Bare producers pass; degree, paired consumers and scalar inverse-row binding unverified. |
+| Scalar left-cap field binding | [93af40181a](https://github.com/apellis/odd-lean/commit/93af40181a8b1d62ff882d73e62054fa763bfae1) (`docs/Nondegeneracy/ScalarLeftCapBinding.md`) | Literal dropped-row prefix passes; extended producer and paired consumer unverified. |
 
 ## Dependency order and readiness
 
