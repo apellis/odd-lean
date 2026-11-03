@@ -43,6 +43,16 @@ The complete inventory of preserved topic variants is in
 
 ## Exact source classes for power-word vectors
 
+`ELVTensorLayerClasses` now identifies the actual chosen ELV dot/crossing
+Hom-entry evaluation under both word contexts with its physical OLD map
+and original coefficient-one affine-layer quotient class. Strict occupied
+connected mixed/two-odd/equal/distinct consumers prove nonzero normalized
+input vectors and quotient classes and audit all thirty declarations.
+Splice the selected tensor-vacuum word chart into the literal swapped
+matrix, then attach the supported family/action and source bubbles;
+no whole-Hom faithfulness is claimed. See
+[TensorLayerClasses](TensorLayerClasses.md).
+
 `ReservoirDistinctContextCoordinates.layerMap_reservoir_cross_ne_word`
 now identifies the literal distinct matrix with the original factor
 crossing in both reversed word contexts, retaining the actual right path

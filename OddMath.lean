@@ -2519,3 +2519,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToLocalInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightUnitCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightCapCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbePrincipal
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorLayerClasses
