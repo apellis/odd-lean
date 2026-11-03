@@ -2284,3 +2284,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficientCapUniqueness
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapRowSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleDotComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentUnitColumnSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAbsentUnitInverse
