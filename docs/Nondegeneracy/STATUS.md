@@ -209,12 +209,9 @@ including full build, axiom audit and all concrete consumers.
 | Ground probe coordinate and extraction row | The literal height-zero probe algebra and regular empty component have their ground-scalar coordinate. The canonical full-old extension has the prescribed last inverse row to k with its exact signed-dot window on every scalar | `ELVProbeVacuumCoordinates`, `ELVProbeExtensionRows`; strict occupied levels-one/two consumers and 27+38 owned audits pass. The full-old coend has a nonzero vector with row value one. Native-content transport, parity/normalized-left-cap attachment and actual mixed slide remain separate; full CI verified in #988 |
 
 
-The following successors passed the full warning-free build, global axiom
-audit and every concrete consumer in #989 at source head `7ac6e4f9`
-(run 41585699842), integrated at `d73f2f2f`. Their 40 producer checks and
-75 exact source/consumer blobs also pass strict local checking and the
-combined import. They retain all height signs, zero counts, moving parities
-and full exterior coefficients.
+The following successors pass strict local producer/consumer checks and owned
+axiom audits; their combined full integration CI is pending. They retain all
+height signs, zero counts, moving parities and full exterior coefficients.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -223,56 +220,10 @@ and full exterior coefficients.
 | Canonical diagonal mate | `ELVContentBlockMatrixMate` compares the selected canonical-content same-colour negative mate with the ambient ordered mate through the same full source/target charts, retaining degree p(i)²=p(i) | Unit/dot and dot/counit fields through those same charts and complete inverse transport |
 | Scalar prescribed matrix inverses | `ELVProbeMatrixInverse` identifies both candidate forward maps exactly; `ELVProbeMissingColourMatrix` supplies the ordinary absent-colour unit inverse, with actual unit columns | Exact normalized-left-cap row attachment and final probe/swapped use |
 | Changing-content entry naturality | `ELVInductionGridMateNaturality`, `ELVInductionGridMatrixNaturality` retain input supernaturality of the prescribed mate and every matrix entry | Original-weight presentation assembly |
-| Original-weight mixed boundaries and coordinates | `ELVWeightMixedMate`, `ELVContentDistinctTargets`, `ELVWeightMixedCoordinates` give the actual mixed mate degree, both absent-sector zero inverses and supported source/target identifications; `ELVWeightRectangularCross` compares the independently selected crossing through those same coordinates | Supported original-weight chosen-mate comparison and whole inverse |
-| Chosen content crossing, dot and word evaluation | `ELVContentRectangularCross` compares the independently given rectangular crossing with the chosen content word crossing; `ELVPowerWordComposition`, `ELVPowerWordContent`, `ELVPowerWordWeight` identify signed source composition and all scheduled induction components; `ELVPowerWordContentDot` evaluates the chosen content dot on every source coefficient | Chosen weight dot/cross action evaluation, relation-preserving factor and recovery |
+| Original-weight mixed boundaries and coordinates | `ELVWeightMixedMate`, `ELVContentDistinctTargets`, `ELVWeightMixedCoordinates` give the actual mixed mate degree, both absent-sector zero inverses and supported source/target identifications | Supported original-weight chosen-mate comparison and whole inverse |
+| Chosen content crossing and word evaluation | `ELVContentRectangularCross` compares the independently given rectangular crossing with the chosen content word crossing; `ELVPowerWordComposition`, `ELVPowerWordContent`, `ELVPowerWordWeight` identify signed source composition and all scheduled induction components | Chosen dot/cross action evaluation, relation-preserving factor and recovery |
 | Full-old probe parity and polynomial | `ELVProbeExtensionParity`, `ELVProbeExtensionPolynomial` attach the extraction-row parity and signed polynomial to the actual full-old extension | Native-content coefficient cap and normalized mixed slide |
 | Inverse coefficient rows | `ELVContentCoefficientMaps` bundles homogeneous inverse-unit coefficient maps with surjective components and exact empty-output specialization; `ELVProbeUnitInverseRows` preserves every ordinary inverse coefficient with its canonical unshift | Identify the selected old field with the module-map API before claiming the prescribed left cap |
-| Matrix heights and selected chart parity | `ELVWeightMatrixHeight` identifies both finite counts on an entire original-weight fibre, without root independence; `ELVContentComparisonParity` gives even forward/inverse maps for the selected FE charts | Assemble original-weight matrices and normalized coefficient caps through those same charts |
-
-
-
-The following successors passed the full warning-free build, global axiom
-audit and every consumer in #991 at source head `c18b8721` (run 41588533754),
-integrated at `ea35e5ba`. All 11 producers, 20 exact source/consumer blobs and
-277 owned declarations also pass the strict local checks and audits.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Native quadratic fields | `ELVWeightQuadraticRelation` proves both exact native multicolour quadratic fields in the actual independently whiskered dots and original Sc, using faithful endomorphism evaluation from `ELVEndEvaluation`; connected mixed/interior-coefficient, asymmetric odd and disconnected odd consumers pass | Native slides, braids, local inversions and complete factor assembly |
-| Chosen whole weight dot | `ELVPowerWordWeightDot` evaluates the actual chosen action dot through the scheduled word comparison on every output component, including both absent and off-support sectors | Chosen whole crossing evaluation and recovery |
-| Canonical all-power unit columns | `ELVFullInductionSquareRows`, `ELVContentBlockMatrixRows` compare the literal canonical-content unitDotColumn.total with the prescribed ambient column for every power through the selected full charts | Corresponding cap-row comparison and complete canonical matrix inverses |
-| Scalar prescribed left row | `ELVProbeLeftCapComparison` identifies the literal old inverse coefficient module map through the selected scalar FE/value charts with every given ordinary inverse coefficient, including the exact empty-output moduleUnitCoefficient | Attach the selected native coefficient cap and normalized probe window |
-| Whole original-weight distinct inverse | `ELVWeightMixedMateComparison` compares both actual chosen unit and induction of the actual counit through the same coordinates as the crossing; `ELVWeightMixedMateInverse` supplies the whole given input-natural mate inverse, both round trips and inverse degree p(i)p(j), including absent sectors | Same-colour finite matrix/local inversion assembly and complete native factor |
-| Original-weight triple coordinates | `ELVWeightTripleInduction` retains all true intermediate successor blocks, canonical flattened content coordinates and both even comparison directions; actual vacuum and absent-sector consumers pass | Identify the independently chosen crossing whiskerings in these coordinates and prove native braid |
-| Native coefficient caps and probe row | `ELVContentCoefficientCaps`, `ELVProbeCapMaps` construct the selected inverse-coefficient cap, with its degree and surjective components; the actual regular-probe cap is nonzero and its ground row is surjective with degree (P−1)p | Exact scalar native-cap field and normalization window, then mixed slide and final swapped assembly |
-
-
-
-The following successors passed the full warning-free build, global axiom
-audit and every concrete consumer in [#993](https://github.com/apellis/odd-lean/pull/993),
-at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41594069793)).
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Native probe left-cap field and normalization | `ELVProbeLeftCapField` identifies the selected native cap with the actual ordinary inverse coefficient; `ELVProbeUnitCoefficientWindow` supplies the given-column Kronecker window; `ELVUnitDotComponents`, `ELVProbeCapWindow` give the native all-row window, actual regular-ground top extraction and the signed polynomial for the SAME native SVec dot | Input-family supernaturality, pre-Hom/parity transport, final swapped mixed slide and bubble attachment |
-| Canonical counit and all dotted cap rows | `ELVFullInductionSquareCounit`, `ELVContentBlockMatrixCaps`, `ELVFullInductionSquareSourceDots`, `ELVContentBlockCapPowers` compare the actual chosen counit and EVERY literal capDotRow.total through the same full source chart, with no compatibility premise | Finite parity-coordinate assembly and complete canonical inverses |
-| Same-colour weight principal and boundary | `ELVWeightMatrixBoundary` proves absent-predecessor zero EF and the required height/predecessor consequences with explicit cutoff compatibility; `ELVPiSCatRouquierMate`, `ELVWeightLocalMate` identify the GIVEN native Rouquier mate with the rectangular weight mate and its degree | Finite coordinate extraction and both native local inversion fields; FE is retained at absent predecessors |
-| Chosen triple coherence | `ELVWeightTripleCoherence` identifies both pair-flattening paths with the chosen whole triple chart, including the native component formulas | Crossing whisker equations and native braid fields |
-| Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
-
-
-The next integration has strict producer/consumer checks and owned axiom audits;
-its full-package CI remains the integration gate.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Same-colour slides and braid on original weights | `ELVWeightNilHeckeRelation` and `ELVWeightBraid` prove the prescribed native relation fields at every module and output, including absent outputs | Mixed-colour braid fields and concrete local inverse families |
-| Distinct-colour slides on original weights | `ELVWeightDistinctSlideRelations` proves both prescribed signed slide fields using the independently specified positioned dots | Mixed-colour braid fields |
-| Normalized crossing, mate, unit and cap columns | Chosen normalized content/weight crossing formulas, native mate square and every unit/cap power are identified with the old grid maps | Transfer canonical local inverses and their input-supernatural entries |
-| Finite local inverse adapters and canonical charts | Even finite matrix isomorphisms produce `SuperSumInvFrom`/`To` with the prescribed forwards, degrees and identities; old grid isomorphisms instantiate this. Both directions of all six canonical content charts are even and have exact component formulas | Canonical supported/absent chart transport and original-weight local inversion fields |
-| Probe cap families and pre-Hom coordinates | `ELVContentCapNaturality` supplies input supernaturality; the native module window, literal cap precomposition, shifted coordinates and raw-dot Koszul powers are checked | Concrete local adjunction assembly, mixed slide and bubbles; coordinate dot and raw pre-E dot retain their proved sign difference |
-| Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
@@ -434,7 +385,7 @@ and normalized content/weight transport are not asserted.
    fixed-output-content naturality and literal forward maps are established
    (#951/#952/#961). Chosen content dot comparisons are verified in #973.
    Ordinary cup/cap compatibility and all-map EF/FE charts are now scoped-checked;
-   finish canonical local inverse transport and input-supernatural inverse-entry assembly. The generic finite adapters and six even chart comparisons are now scoped-checked.
+   finish their signed crossing/mate and finite parity/product comparisons.
    Retain exact target-fixed counts and the absent-predecessor zero cases.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The distinct
    ideal identity, PBW quotient decoder and actual representable mate inverse
@@ -443,7 +394,7 @@ and normalized content/weight transport are not asserted.
    input-module naturality passed full CI in #977. Finish exact-content/weight
    transport through the selected charts. Weight crossings/pair coherence are verified
    (#972); content braid is implemented (#933/#934). Transfer pair/triple
-   remaining mixed-colour braid relations through the selected charts; same-colour braid and both distinct-colour slides are now scoped-checked. Retain the supplied
+   whiskering relations through the selected charts and retain the supplied
    CScalars, original weight group and balanced schedule (#864).
 3. Assemble compatible factors and the swapped Hom action. Selected weighted
    restriction/counit and scalar ordinary counit are verified (#972/#973).
