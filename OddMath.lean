@@ -2056,3 +2056,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionIsoComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldContentAppendTo
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionRectangularMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentDistinctMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientModuleMaps
