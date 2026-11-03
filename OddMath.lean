@@ -2455,3 +2455,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightDistinctSlides
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorHomEntries
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldNestedMulticolourBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionPairPolynomial
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldPairPolynomial
