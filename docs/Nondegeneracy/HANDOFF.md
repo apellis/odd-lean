@@ -981,7 +981,12 @@ slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 and identifies both global dot totals in the selected double-predecessor
 coordinate. Producer and occupied mixed/shifted consumer pass strict
 checks and all 37 owned audits, retaining a nonzero induced unit vector.
-The final global conjugation remains. See [ProbeBlockNilHecke](ProbeBlockNilHecke.md).
+`ELVProbeWeightNilHecke` now proves both global signed equations through
+that same coordinate equality, including actual zero in both absent cases.
+Its producer and occupied mixed/shifted consumer pass strict checks and
+all four owned audits. Braid and local/multicolour assembly remain. See
+[ProbeBlockNilHecke](ProbeBlockNilHecke.md) and
+[ProbeWeightNilHecke](ProbeWeightNilHecke.md).
 
 `ELVProbeWeightDistinctCrossing` supplies the positive crossing on the
 selected weight E functors using all four stored-target appends. Its
