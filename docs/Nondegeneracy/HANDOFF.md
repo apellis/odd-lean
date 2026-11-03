@@ -760,6 +760,14 @@ pass strict checks and three owned audits. Restrict to evaluated modules
 and compare the independently chosen global dots in these same
 coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
 
+`ELVTensorVacuumGenerators` now identifies the one-E dot and two-E
+equal/distinct crossing out of the selected tensor Hom vacuum with the
+prescribed reservoir word operators. The same `selectedIso` and literal
+regular probe are used, with all-vector formulas on every formal block.
+Strict producer and occupied two-odd consumer checks audit all 33 owned
+declarations. Extend to longer contexts and attach to the completed
+record; see [ELVTensorVacuumGenerators](ELVTensorVacuumGenerators.md).
+
 The coefficient action remains literal ordinary precomposition on every
 arrow, including inhomogeneous arrows. It must not be identified silently
 with a supernatural representing map involving projection and twist.
