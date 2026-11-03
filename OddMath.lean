@@ -2077,3 +2077,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixCharts
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMatrixFamilies
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixCharts
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldVacuumPolynomial
