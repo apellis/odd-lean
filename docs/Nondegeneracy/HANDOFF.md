@@ -745,6 +745,11 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVProbeReindexMateNatural` now proves the whole OLD module-map mate
+square through the exact lower append comparison and restricted upper
+comparison. Strict mixed reordered-content/shifted consumer checks audit
+all 39 owned declarations. Attach the dotted unit/counit rows and the
+canonical evaluated fields; see [ProbeReindexMateNatural](ProbeReindexMateNatural.md).
 `ELVProbeReindexMate` now proves the all-vector chosen negative-mate
 square through the same two append comparisons, preserving every
 coefficient arrow and twist. Strict producer and mixed reordered-content/
