@@ -726,6 +726,12 @@ Its producer, concrete consumer and all 20 owned audits pass strict
 checks. Restriction to evaluated fixed contents and weight transport
 remain; these results do not yet prove the probe weight braid.
 See [OldNestedBraid](OldNestedBraid.md).
+`ELVInductionGridBraid` and `ELVOldContentBraid` now supply the same
+comparison on four consecutive content categories and the prescribed
+negative braid on every old content module. Both producers and the
+mixed/shifted/nested-tensor consumer pass strict checks and 38 owned
+audits. Restrict this equation to evaluated modules, then use the chosen
+canonical-content and weight coordinates. See [OldContentBraid](OldContentBraid.md).
 See [OldAppendBraid](OldAppendBraid.md).
 
 The coefficient action remains literal ordinary precomposition on every
