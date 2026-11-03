@@ -41,12 +41,8 @@ notion of choice and expansion is that of
 
 There is no finite-type, disconnectedness, distinct-colour, or purely-even
 colour restriction. Repeated colours and connected mixed data are included.
-The field hypothesis belongs to this construction. Once its
-characteristic-zero field case is proved, the existing Lean theorem
-`SKM.nondegeneracyConjecture_of_charZeroField` gives the ordinary
-commutative-ring conclusion with 2 invertible, for the same datum and
-homogeneous parameters; no additional descent is pending.
-Symmetrizability remains a hypothesis of this field route. No factor-existence,
+The field and symmetrizability hypotheses belong to this proof; this is not
+an arbitrary-ground-ring nondegeneracy theorem. No factor-existence,
 fused-action, vacuum-identification or recovery predicate is an additional
 hypothesis of this final written statement.
 
