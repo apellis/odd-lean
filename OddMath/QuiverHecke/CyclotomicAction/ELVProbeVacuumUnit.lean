@@ -18,6 +18,12 @@ open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor
 open OddMath.QuiverHecke.ELVOld.CyclotomicCrossingTensor.TensorMatrixCoordinates
 namespace OddMath.QuiverHecke
 universe u
+private theorem linearEquiv_apply_ne_zero
+    {k V W : Type u} [CommRing k] [AddCommGroup V] [Module k V]
+    [AddCommGroup W] [Module k W] (e : V ≃ₗ[k] W) (z : V) (hz : z ≠ 0) : e z ≠ 0 := by
+  intro h
+  exact hz (e.injective (h.trans e.map_zero.symm))
+
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (cutoff : I → ℕ)
 
@@ -75,8 +81,23 @@ theorem oldContentVacuumInductionUnit_injective
   have hy := LinearMap.congr_fun (fullyFaithfulUnitInverse_unit J M.toFunctor s) y
   exact hx.symm.trans (hh.trans hy)
 
+private theorem appendLinearEquiv_unit (m : I → ℕ) (ν : List I)
+    (R : Superfunctor k (OldContentCategory D Sc (probeCutoff D m) ν) (SVec k))
+    (hR : ProbeEvaluatesCoefficients D m Sc ν R) (i : I)
+    (v : OldContentCategory D Sc (probeCutoff D m) ν) (b : R.obj v) :
+    probeAppendLinearEquiv D Sc m ν R hR i ((oldContentAppend D Sc (probeCutoff D m) ν i).obj v)
+      (unit (oldContentAppend D Sc (probeCutoff D m) ν i) R.toFunctor v b) =
+    unit (probeOrdinaryAppend D Sc m ν i)
+      (probeOrdinaryModuleSuperfunctor D Sc m ν R hR).toFunctor
+      ((probeOldOrdinaryFunctor D Sc m ν).obj v) b := by
+  change (probeAppendLinearEquiv D Sc m ν R hR i
+    ((oldContentAppend D Sc (probeCutoff D m) ν i).obj v)).toLinearMap _ = _
+  rw [probeAppendLinearEquiv_hom]
+  exact probeAppendOrdinaryModuleIso_hom_unit D Sc m ν R hR i v b
+
 variable [Fintype I] (m : I → ℕ)
 
+omit [Fintype I] in
 private theorem probeCutoff_pos (i : I) (hi : 0 < m i) : 0 < probeCutoff D m i := by
   change 0 < probeDotExponent D i * m i
   apply Nat.mul_pos _ hi
@@ -130,11 +151,10 @@ def probeOrdinaryVacuumAppendVector (i : I) :
 /-- The transported vector remains nonzero in the actual ordinary coend. -/
 theorem probeOrdinaryVacuumAppendVector_ne_zero [Nontrivial k] (i : I) (hi : 0 < m i) :
     probeOrdinaryVacuumAppendVector D Sc m i ≠ 0 := by
-  let e := probeAppendLinearEquiv D Sc m [] (probeOldVacuumRegular D Sc m)
+  change probeAppendLinearEquiv D Sc m [] (probeOldVacuumRegular D Sc m)
     (probeOldVacuumRegular_evaluates D Sc m) i (probeOldVacuumAppendTarget D Sc m i)
-  intro hz
-  have he : e (probeOldVacuumAppendVector D Sc m i) = e 0 := hz.trans e.map_zero.symm
-  exact probeOldVacuumAppendVector_ne_zero D Sc m i hi (e.injective he)
+      (probeOldVacuumAppendVector D Sc m i) ≠ 0
+  exact linearEquiv_apply_ne_zero _ _ (probeOldVacuumAppendVector_ne_zero D Sc m i hi)
 
 /-- The chosen scalar chart identifies the vector with the literal ordinary append unit. -/
 theorem probeOrdinaryVacuumAppendVector_eq_unit (i : I) :
@@ -142,10 +162,9 @@ theorem probeOrdinaryVacuumAppendVector_eq_unit (i : I) :
       unit (probeOrdinaryAppend D Sc m [] i) (probeOrdinaryVacuumRegular D Sc m).toFunctor
         ((probeOldOrdinaryFunctor D Sc m []).obj (probeOldVacuumObject D Sc m))
           (probeOldVacuumVector D Sc m) := by
-  change probeAppendComparisonLinear D Sc m [] (probeOldVacuumRegular D Sc m)
-    (probeOldVacuumRegular_evaluates D Sc m) i (probeOldVacuumAppendTarget D Sc m i)
-      (probeOldVacuumAppendVector D Sc m i) = _
-  exact probeAppendOrdinaryModuleIso_hom_unit D Sc m [] (probeOldVacuumRegular D Sc m)
+  dsimp only [probeOrdinaryVacuumAppendVector, probeOldVacuumAppendVector,
+    probeOldVacuumAppendTarget, probeOrdinaryVacuumRegular]
+  exact appendLinearEquiv_unit D Sc m [] (probeOldVacuumRegular D Sc m)
     (probeOldVacuumRegular_evaluates D Sc m) i (probeOldVacuumObject D Sc m)
       (probeOldVacuumVector D Sc m)
 

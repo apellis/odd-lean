@@ -36,7 +36,7 @@ private theorem signed_square : (d false ^ 2) (v false) = -(v false) := by
 example : d false (d false (v false)) = -(v false) := signed_square
 
 /-- The raw-minus polynomial fails on this same actual nonzero probe vector. -/
-example : (d false ^ 2 - 1) (v false) ≠ 0 := by
+example : (d false ^ 2 - 1 : Module.End ℚ (V false)) (v false) ≠ 0 := by
   intro h
   have hh : (d false ^ 2) (v false) - v false = 0 := h
   rw [signed_square] at hh
