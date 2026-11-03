@@ -2120,3 +2120,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordPairCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixInverseCandidates
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossingSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordDistinctCrossing
