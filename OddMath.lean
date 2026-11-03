@@ -2091,6 +2091,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentGridMatrixCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMatrixFamilyCharts
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumVector
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumUnit
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockExtension
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
@@ -2108,4 +2109,3 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerPolynomialCap
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap

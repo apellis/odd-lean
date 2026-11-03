@@ -303,33 +303,3 @@ HANDOFF and the source notes; later checked successors are independent.
 | Weighted finite matrix inverse | [b541461adf](https://github.com/apellis/odd-lean/commit/b541461adf01e76a6de90384cd9879bdbc649955) | `51b5cf9c7df26f12d5336f05d84975c6f86c3a6d` |
 | Occupied vacuum probe unit | [9aaeb5c826](https://github.com/apellis/odd-lean/commit/9aaeb5c826ebdff04b0eea92bbcf06f405434fec) | `e291c89bbbae8d50322b5d0a99b9cdc33d5a360b` |
 | Selected word-pair whole-coherence variant | [d1540e8957](https://github.com/apellis/odd-lean/commit/d1540e89579b73ef34f02b5bc5a3b520291e272e) | `95e6c84c2a87a35b58663e8ae69d9847c3950312` |
-
-## Content, crossing and finite-matrix source variants
-
-The following exact source trees are retained without importing their
-proposed declarations. New copies have only the verified research parent;
-pending proof integrations are not ancestors of this history-only merge.
-Earlier checked variants may have curated successors, whose current
-boundaries are recorded in STATUS.
-
-| Argument | Preserved tree commit | Source revision | Scope |
-| --- | --- | --- | --- |
-| Earlier coefficient-power vacuum | [bf0666174e](https://github.com/apellis/odd-lean/commit/bf0666174e082685d7f550b1c1ef3c5e276098f6) | `16af4f57532bf5428fb6fe119d8462aa34bbc43d` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier content distinct mate | [e6e83e6b2a](https://github.com/apellis/odd-lean/commit/e6e83e6b2ac62ed819b8f75e97d63a6e76ff631b) | `d8b8eaf6eb6cefb6e35b58b4c201fea128af0bc9` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier homogeneous content inverse | [97744bc30f](https://github.com/apellis/odd-lean/commit/97744bc30f7d4f52573f8db0cbf438c331e0b111) | `a635ac09e444464a3da406ed653a342f63ee2a29` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier rectangular module inverse | [3ce5c73a70](https://github.com/apellis/odd-lean/commit/3ce5c73a70c20d425fa97c94df479ec6cc3c6800) | `97dccb1f5074ee876b8a926180aa9ee7aa840e61` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier full-coefficient reversal | [3c4f5dc432](https://github.com/apellis/odd-lean/commit/3c4f5dc4323517392550ce30afec954c71da3e2a) | `2d425b9901907548cbad4361284be2000bc7ae78` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier induction grid comparison | [7611447f10](https://github.com/apellis/odd-lean/commit/7611447f10a215651a95109f422a71c89c10120f) | `98530d7938d92cda0d7e3cc31f802a5f1fd2cb1a` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier scalar ordinary mate | [2b66f27afe](https://github.com/apellis/odd-lean/commit/2b66f27afe28fad57a8959fa78a27d51cfd0981d) | `450ef8861184d889f9673fb56641a4935057a33d` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier scalar finite comparisons | [cbf61d60ae](https://github.com/apellis/odd-lean/commit/cbf61d60aefbc2209f398a0f3582f09461e532c1) | `863e24ac0637d40afb6388ef6594c0df5e19b8e0` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier truncated distinct decoder | [e7e6b85049](https://github.com/apellis/odd-lean/commit/e7e6b8504930beb2f78267c5a7f07be0c7a4a078) | `6c742cc80acef903ac0ca8d723bd48c7e1a766df` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier weight crossing components | [fa5405dcd9](https://github.com/apellis/odd-lean/commit/fa5405dcd9f3dbf5aded2a25d56a9cf48ecccfdc) | `b91425d61699cc1e59b0580520ea2f1d601d3101` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier weighted matrix chart comparison | [17ab46afaa](https://github.com/apellis/odd-lean/commit/17ab46afaab3809037140d99c2789fff55ab5dbf) | `c7a624c2d7061d2c72f08577c2efcec0a25cd4c2` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier weighted iterated induction | [ba7caeae43](https://github.com/apellis/odd-lean/commit/ba7caeae43546aa4ca3e142bd266ec236b2f2674) | `3aa737ace9a9322e50063b5ef2c78a86402e2503` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier power-word coordinates | [332f048f09](https://github.com/apellis/odd-lean/commit/332f048f0949221c74a3cd6fca500bad10865e35) | `9f59f2a9893b9d3e9627abf74f40378cdd624be1` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier source power kernel | [7ab1a95c01](https://github.com/apellis/odd-lean/commit/7ab1a95c01cccc904c1025633c8f4ccdbd4658b7) | `b736e758d8abbd878830e2edab52995ebc5de0d3` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Earlier source quotient kernel | [645e6335a6](https://github.com/apellis/odd-lean/commit/645e6335a699c7bdac51b9c8d4480a56d5363d37) | `96fa541c856f740b057799950de67fda1458a5ac` | Earlier source variant retained in history; current checked successor scope is in STATUS. |
-| Selected power-word pair crossing | [8db0c869d7](https://github.com/apellis/odd-lean/commit/8db0c869d791b3587bab1c81bf9e8729cc68fbfa) | `00f357cc352a3619107ec34273b96b73cd10130a` | Closed pair and all-vector recast prefixes pass; the combined signed expression and complete consumer remain unverified. |
-| Canonical truncated-content mate | [5d38b48380](https://github.com/apellis/odd-lean/commit/5d38b4838006662a575d4e798ed7c04207842357) | `d405729ef6a83ee4c56688eb8f1c3565c96a9490` | Generic source comparison passes; canonical source tensor, whole mate square and inverse remain proposed. |
-| Weighted finite matrix entry comparison | [d22d9954dd](https://github.com/apellis/odd-lean/commit/d22d9954dda046fce9ecd4c6ce062a4c349e2784) | `beffca26a752b1d4fa52c8fea83879b54e71b671` | Supporting component checks pass; entry producer passes but its paired consumer and whole finite forward identification remain pending. |
-| Scalar finite inverse candidates | [56c2b1f6cb](https://github.com/apellis/odd-lean/commit/56c2b1f6cbc77ce21e7919343dbfefbe908fdf10) | `5ca63614d9fa1bdef18c52724da96992ecacce6b` | Concrete global-to-relative-to-scalar inverse candidates are proposed; the first strict producer check fails and complete prescribed forward identification remains open. |
