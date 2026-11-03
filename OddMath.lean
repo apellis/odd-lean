@@ -1949,6 +1949,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleCrossing
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMateComparison
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMatrixCharts
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
