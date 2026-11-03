@@ -764,11 +764,17 @@ shifted consumer checks audit all 38 owned declarations. Lift to whole
 module/natural maps and attach the prescribed dotted unit/counit rows
 before constructing the canonical local record. See
 [ProbeReindexMate](ProbeReindexMate.md).
+`ELVProbeReindexCrossing` now identifies the prescribed positive crossing
+through the selected pair comparison on all raw vectors, whole module
+maps and full evaluated categories. Strict mixed regular-probe/odd-map
+consumer checks audit all 179 owned declarations. Attach the distinct
+mate inverse and negative equal normalization; see
+[ProbeReindexCrossing](ProbeReindexCrossing.md).
 `ELVProbeReindexPair` now gives the exact upper-then-lower append
 comparison on raw and evaluated modules, with evenness and an all-vector
 nested tensor formula retaining both coefficient arrows. Strict producer
 and mixed reordered-content/odd-input consumer checks audit all 67 owned
-declarations. Compare the selected pair crossing and distinct mate next;
+declarations. The selected positive crossing square is checked above; attach the distinct mate next;
 see [ProbeReindexPair](ProbeReindexPair.md).
 The prescribed lower and upper local loops now have even representative
 comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
