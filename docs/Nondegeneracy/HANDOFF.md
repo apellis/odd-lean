@@ -797,6 +797,12 @@ the matching superopposite signs in both path orders. Strict producer and
 concrete OLD-path consumer checks audit all four owned declarations.
 Attach the literal OLD braid and rectangular nested comparisons; see
 [ModuleMulticolourBraid](ModuleMulticolourBraid.md).
+`ELVInductionTriplePolynomial` now evaluates the ordered original-Sc
+three-dot correction on every balanced tensor, retaining the reversed
+twisted-source polynomial and entire kernel twist. Strict mixed/three-odd/
+interior-parameter consumer checks audit all ten owned declarations.
+Attach the whole operator and literal OLD braid difference; see
+[InductionTriplePolynomial](InductionTriplePolynomial.md).
 `ELVOldNestedMulticolourBraid.normalizedNestedTripleCross_braid` now
 proves the actual nested uncorrected braid with independent pair
 whiskerings, negative equal and positive distinct crossings, through the

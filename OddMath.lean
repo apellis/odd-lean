@@ -2459,3 +2459,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionPairPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldPairPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorHomContexts
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexMateNatural
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionTriplePolynomial
