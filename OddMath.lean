@@ -2111,3 +2111,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPairDotCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateNaturality
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMatrixNaturality
