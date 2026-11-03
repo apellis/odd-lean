@@ -950,6 +950,14 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`SuperSumInvTo.at` and `SuperSumInvFrom.at` now evaluate the complete
+finite inverse records at any object, retaining the principal parity
+component and every forward and inverse dotted total. Strict nonzero
+three-slot odd/empty-window consumers check both orientations and audit
+all 36 declarations. Apply these to the selected stored local inverses
+before whole-weight product gluing; see
+[AugmentedInverseEvaluation](AugmentedInverseEvaluation.md).
+
 `ELVProbeWeightLocalMateCoordinates.probeOldWeightRouquierMate_comparison`
 now identifies every parity component of the occupied global principal
 with its selected stored mate. The actual negative crossing and both

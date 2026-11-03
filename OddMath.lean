@@ -2522,3 +2522,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbePrincipal
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorLayerClasses
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirToProbeBend
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLocalMateCoordinates
+import OddMath.SKM.AugmentedInverseEvaluation
