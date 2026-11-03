@@ -1,0 +1,7 @@
+# Prescribed local inverses on the whole weight fibre
+
+The proposed `elvWeightLocalUnitInverse_nonempty` and `elvWeightLocalCapInverse_nonempty` use the constructed supported or absent inverse at every output block, then assemble over the entire weight fibre with the common categorical-height count. No finiteness or injectivity condition on the root map is imposed.
+
+The proposed whole input families `elvWeightLocalUnitFamily_nonempty` and `elvWeightLocalCapFamily_nonempty` retain the exact native Rouquier mate and literal unit/power or cap/power transformations, with the multiplication shift profile used by `SuperRouquierLoc`. Generic recovery identifies the supernatural packaging with those actual homogeneous maps before concrete weight functors are substituted. Signed naturality of inverse entries is derived from the given forward fields.
+
+The generic before-data recovery and exact-forward bundling kernel has passed a separate strict check. The whole module and its headline declarations remain unverified proposals, depending on the supported content and weight inverse drafts and ultimately the still-unchecked principal module square. Their concrete paired consumer is proposed for both moving parities and negative, zero and positive categorical heights. The separately checked absent families, product assembly, common coordinates and profile conversion are the constituent checked inputs. No completed local action is claimed here.

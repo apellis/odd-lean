@@ -1,0 +1,5 @@
+# Prescribed supported content local inverses
+
+The proposed `contentSupportedLocalInverseFrom_nonempty` and `contentSupportedLocalInverseTo_nonempty` transport the constructed weighted local inverses through the selected source, target and value module isomorphisms. The principal field is the literal given negative-crossing grid mate. The auxiliary fields are every ordinary unit/dot column and cap/dot row, with their exact common content counts.
+
+No inverse premise is added. The construction uses the whole principal, unit-column and cap-row chart squares. Its source is proposed and cannot yet be checked because the principal module square is still being formalized. A concrete paired consumer is also required before publication. The proposed `contentTargetsLocalInverseFrom_nonempty` and `contentTargetsLocalInverseTo_nonempty` retain arbitrary stored lower/upper successor contents, as required by the selected weight induction functors. Original-weight supported transport and whole-family assembly remain downstream.

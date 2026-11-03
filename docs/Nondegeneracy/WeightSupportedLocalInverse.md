@@ -1,0 +1,5 @@
+# Prescribed weight inverse transport on supported output blocks
+
+The proposed `elvWeightSupportedUnitInverse_nonempty` and `elvWeightSupportedCapInverse_nonempty` transport the constructed supported-content inverse to the literal selected weight Rouquier mate and unit/power or cap/power fields. The source and target coordinates are exactly those in the checked principal comparison and `ELVWeightLocalCoordinates`. The finite counts are identified with categorical height using the standing cutoff/highest-weight compatibility.
+
+No inverse premise is added. This proposed source depends on the supported-content construction, which in turn awaits the whole principal module square. None of these proposed weight declarations has passed Lean checking yet, and their concrete paired consumer is proposed for both moving parities and negative, zero and positive categorical heights. The separately checked absent inverse families supply both orientations of the other output-block case. Whole weight-product and input-natural assembly remain downstream.
