@@ -1724,6 +1724,12 @@ probe. The literal layer evaluation and final observation kernel remain. See
 
 ## Central augmented-matrix attachment
 
+`Sigma.ProbeFactorCoordinates.probeCupFactorIso` now identifies the
+probe cup path with the canonical precomposition adjunction loop,
+retaining the chosen weight equation and endpoint transports. Strict
+asymmetric two-odd ELV-pair consumers retain a nonzero PBW input and audit
+all six declarations. Use this chart for the probe principal and reverse
+mixed bend; see [ProbeFactorCoordinates](ProbeFactorCoordinates.md).
 `Sigma.ProbeToReservoirBend` now identifies the actual probe-to-reservoir
 mixed entry with its reservoir-unit/coefficient/probe-counit word through
 computed factor charts, for every sector and full Hom input. The negative
