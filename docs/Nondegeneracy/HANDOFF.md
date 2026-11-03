@@ -1140,6 +1140,17 @@ and cyclic unit are nonzero in that same path value. Identify the eventual
 swapped tensor-vacuum Hom input with this initial family before using
 the comparison for observations. See [ELVReservoirWordValue](ELVReservoirWordValue.md).
 
+`ELVWeightTensorVacuum` now constructs the full-product tensor Hom from
+the OLD probe category and its explicit regular evaluated probe, zero on
+every nonempty formal block even when weights coincide. Its even
+`selectedIso` identifies evaluation at that probe with the actual
+`ReservoirWordValue.initialValue`, with the every-vector scalar/unitor
+formula and unchanged tensor coefficient. Producer and occupied two-odd
+consumer pass strict checks and 39 owned audits; the independent odd
+product remains nonzero. Carry the chosen reservoir dot/crossing maps
+through this same comparison, then attach the swapped layers. See
+[ELVWeightTensorVacuum](ELVWeightTensorVacuum.md).
+
 `ELVPowerWordHomCoordinates` now passes fresh strict producer and
 occupied-consumer checks, including all 48 owned audits. Its whole-Hom
 linear equivalence, arbitrary coefficient, dot and crossing formulas
