@@ -2045,3 +2045,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordCoordinates
 import OddMath.QuiverHecke.HalfTurn.PowerWordCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapRowComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerMomentMaps
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordYoneda
