@@ -2297,3 +2297,4 @@ import OddMath.SKM.AugmentedInverseNaturality
 import OddMath.QuiverHecke.CyclotomicAction.ELVGridLocalInverseFamilies
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitFamily
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCapRowFamily
