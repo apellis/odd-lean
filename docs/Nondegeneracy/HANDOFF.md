@@ -931,7 +931,7 @@ crossing, normalized-cap and inverse-matrix transport.
 through the full evaluated subcategory, preserving its literal component,
 signed input naturality and square-zero equation. Its producer, concrete
 occupied/empty/odd-input consumer and all 42 owned audits pass strict
-checks. Continue with stored-target and weight transport, the braid and
+checks and full CI in #1013. Continue with stored-target and weight transport, the braid and
 the adjacent local record. See [ProbeEvaluatedCrossing](ProbeEvaluatedCrossing.md).
 
 `ELVInductionGridRelations` proves both whole signed slides for the
@@ -955,13 +955,13 @@ See [ProbeWeightDotUnit](ProbeWeightDotUnit.md).
 every original-weight fibre, including its stored-target formula, both
 absent predecessor cases and whole square-zero relation. Its producer,
 concrete mixed/odd-input consumer and all 55 owned audits pass strict
-checks. Finish the signed slides, braid, local records and multicolour
+checks and full CI in #1013. Finish the signed slides, braid, local records and multicolour
 fields. See [ProbeWeightCrossing](ProbeWeightCrossing.md).
 
 `ELVProbeWeightPairInduction` supplies the literal supported two-step
 weight coordinate and both absent-predecessor zero cases. Its producer,
 concrete regular-probe consumer and all four owned audits pass strict
-checks. `ELVProbeWeightDotWhiskering` identifies both independently
+checks and full CI in #1013. `ELVProbeWeightDotWhiskering` identifies both independently
 whiskered dots in the same supported coordinates as the chosen crossing;
 its producer, concrete consumer and all four owned audits also pass.
 `ELVProbeBlockDotComparison` identifies each selected stored-target dot
@@ -984,12 +984,13 @@ of the chosen positive evaluated crossing under the specified lower and
 upper j-adjunctions with the constructed invertible OLD mate. Its producer,
 concrete mixed/two-odd consumer now also check the presentation
 `crossMate` equality and invertibility. All 64 owned audits pass strict
-checks. Canonical-content and weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
+checks. The 62-declaration rectangular-mate core passed full CI in #1013;
+the two presentation corollaries await integration. Canonical-content and weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
 
 `ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
 distinct mate and its inverse to the evaluated probe. The producer and
 concrete mixed/two-odd consumer pass strict checks and all 54 owned
-audits. Its exact evaluated presentation cup-crossing-cap is identified
+audits, with full CI verified in #1013. Its exact evaluated presentation cup-crossing-cap is identified
 by `ELVProbeEvaluatedDistinctCrossing`; transport canonical stored
 contents and original weights next.
 See [ProbeEvaluatedDistinctMate](ProbeEvaluatedDistinctMate.md).

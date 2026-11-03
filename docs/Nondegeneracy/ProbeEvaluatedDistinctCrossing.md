@@ -31,3 +31,12 @@ and its paired consumer pass strict scoped checks with warnings as errors
 and both compatibility settings. The consumer audits all 64 owned
 declarations against the standard axiom allowlist. Full integration
 verification and canonical-content and weight transport remain separate.
+
+The source head `4da876539f5147f00b608e0f0abf9f53f5808a92` passed the
+full build, global axiom audit and every non-vacuity consumer in
+[#1013](https://github.com/apellis/odd-lean/pull/1013)
+([CI run](https://github.com/apellis/odd-lean/actions/runs/41687376775)),
+merged at `73318d56`.
+This verifies the 62-declaration rectangular-mate core; the two later
+presentation crossMate corollaries have strict paired checks and await
+their own integration gate.
