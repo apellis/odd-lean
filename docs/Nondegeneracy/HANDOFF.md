@@ -971,6 +971,12 @@ slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 [ProbeWeightPairInduction](ProbeWeightPairInduction.md) and
 [ProbeWeightDotWhiskering](ProbeWeightDotWhiskering.md).
 
+`ELVProbeBlockNilHecke` proves both prescribed stored-target signed slides
+and identifies both global dot totals in the selected double-predecessor
+coordinate. Producer and occupied mixed/shifted consumer pass strict
+checks and all 37 owned audits, retaining a nonzero induced unit vector.
+The final global conjugation remains. See [ProbeBlockNilHecke](ProbeBlockNilHecke.md).
+
 `ELVProbeWeightDistinctCrossing` supplies the positive crossing on the
 selected weight E functors using all four stored-target appends. Its
 producer and connected mixed/two-odd consumer pass strict checks and
