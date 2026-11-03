@@ -2113,3 +2113,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNonpositiveCap
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixMate
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticComponents
