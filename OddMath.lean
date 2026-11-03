@@ -2203,3 +2203,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVUnitDotComponents
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCapWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentCapNaturality
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedCoefficientRows
+import OddMath.QuiverHecke.CyclotomicAction.ELVPowerVacuumCapComparison
