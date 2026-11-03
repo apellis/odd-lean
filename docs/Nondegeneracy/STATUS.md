@@ -30,12 +30,7 @@ ordinary-ring conclusion; no additional ground-ring descent remains.
 The field input is still open. This reduction retains the datum and
 homogeneity conditions and does not address genuinely supercommutative
 base rings or existence of CScalars for every weight realization.
-Intermediate lemmas may have broader scope. The field predicate fixes the datum;
-completing the present construction with a supplied positive symmetrizer
-therefore establishes that scoped case. Symmetrizability is not implied by
-`Datum`, homogeneous parameters or supplied normalizations. Removing these
-extra hypotheses for the broader §8 statement remains a separate open
-source-fidelity obligation; see [FieldScopeBoundary](FieldScopeBoundary.md).
+Intermediate lemmas may have broader scope.
 
 ## Established reductions and concrete inputs
 
@@ -253,10 +248,8 @@ integrated at `ea35e5ba`. All 11 producers, 20 exact source/consumer blobs and
 
 
 
-The following successors passed the full warning-free build, global axiom
-audit and every concrete consumer in [#993](https://github.com/apellis/odd-lean/pull/993),
-at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41594069793)).
+The following successors pass strict local producer/consumer checks and owned
+axiom audits; their full integration CI is pending.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -265,73 +258,6 @@ at source head `f0a2ed23af1b3344419b86bf6726586f672012ef`
 | Same-colour weight principal and boundary | `ELVWeightMatrixBoundary` proves absent-predecessor zero EF and the required height/predecessor consequences with explicit cutoff compatibility; `ELVPiSCatRouquierMate`, `ELVWeightLocalMate` identify the GIVEN native Rouquier mate with the rectangular weight mate and its degree | Finite coordinate extraction and both native local inversion fields; FE is retained at absent predecessors |
 | Chosen triple coherence | `ELVWeightTripleCoherence` identifies both pair-flattening paths with the chosen whole triple chart, including the native component formulas | Crossing whisker equations and native braid fields |
 | Chosen append units and cyclicity | `ELVPowerWordContentCyclicity` extends equality at the even cyclic unit to all full-coefficient arrows; `ELVPowerWordAppendUnits` computes the literal selected weighted and content append comparisons, with a nonzero two-odd PBW-tail input and exact image | Actual chosen whole crossing evaluation and observation recovery |
-
-
-The integration in [#995](https://github.com/apellis/odd-lean/pull/995) passed
-the full warning-free build, global axiom audit and every concrete consumer
-at source head `a51a6f9a80f5c0efbf367cc4d79a4d08f79b1f70`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41605147758)),
-and is integrated at `8f9ad250`. Its 36 changed producers and 66 exact
-producer/consumer blobs also passed strict local checks and combined imports.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Same-colour slides and braid on original weights | `ELVWeightNilHeckeRelation` and `ELVWeightBraid` prove the prescribed native relation fields at every module and output, including absent outputs | Mixed-colour braid fields and concrete local inverse families |
-| Distinct-colour slides on original weights | `ELVWeightDistinctSlideRelations` proves both prescribed signed slide fields using the independently specified positioned dots | Mixed-colour braid fields |
-| Normalized crossing, mate, unit and cap columns | Chosen normalized content/weight crossing formulas, native mate square and every unit/cap power are identified with the old grid maps | Transfer canonical local inverses and their input-supernatural entries |
-| Finite local inverse adapters and canonical charts | Even finite matrix isomorphisms produce `SuperSumInvFrom`/`To` with the prescribed forwards, degrees and identities; old grid isomorphisms instantiate this. Both directions of all six canonical content charts are even and have exact component formulas | Canonical supported/absent chart transport and original-weight local inversion fields |
-| Probe cap families and pre-Hom coordinates | `ELVContentCapNaturality` supplies input supernaturality; the native module window, literal cap precomposition, shifted coordinates and raw-dot Koszul powers are checked | Concrete local adjunction assembly, mixed slide and bubbles; coordinate dot and raw pre-E dot retain their proved sign difference |
-| Weighted inverse row and power reservoir | The actual weighted matrix inverse gives homogeneous coefficient maps, the literal power/weighted cap comparison and full-coefficient superlinearity with nonzero odd products | Attach the chosen native inverse row and prescribed swapped bubble operators |
-
-
-The local-inverse and triple-comparison integration [#997](https://github.com/apellis/odd-lean/pull/997)
-passed the full warning-free build, global axiom audit and every concrete
-consumer at `679df03398fa4bbff3c16f36225ec21b0b3f6ad5`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41607159909)), integrated
-at `ce03b2b1`. Its 22 producers and 44 exact producer/consumer blobs also
-passed strict local checks and combined imports.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Prescribed weighted local inverses on content outputs | `weightedContentLocalInverseFrom` and `weightedContentLocalInverseTo` use the proved weighted matrix isomorphisms and literal mate/unit/cap maps, with no supplied inverse premise | Transport through supported canonical charts, input-supernatural inverse-entry families and original weights |
-| Canonical unit and absent predecessor | `ELVContentUnitColumnSquare` compares every unit/dot column through the selected charts; `ELVContentAbsentUnitInverse` constructs the canonical negative local inverse when the predecessor is absent, retaining FE | Supported principal chart square and natural-family assembly |
-| Canonical cap row | `contentMatrixCapDotRow_square` identifies every native cap row through the full source/value charts, with both directions even | Supported principal chart square and complete local inversion transport |
-| Triple crossing and dot operators | Selected first/last adjacent crossing comparisons pass through the common triple chart; the direct multicolour induction braid and all three literal native positioned-dot component formulas are checked | Three whole triple-dot chart squares and original-Sc corrected polynomial/native braid field |
-| Adjacent left adjunction and probe row | `negativeLeftAdjunction` packages the existing construction from two supplied local records, their square-zero and braid relations. The raw probe row is forced by the unit window; its normalized counit sign cancels the shifted pre-Hom sign. Scalar-evaluating inputs include the occupied F(E T0) | Construct the concrete old probe local records and their required relations; no unconditional left adjunction is claimed |
-| Weighted moments and polynomial cap | Actual weighted cap after every given unit/dot column equals the full-coefficient moment operator on every vector. `ELVWeightedPolynomialCaps` constructs λ·(D²+1)^M as a homogeneous module map and proves every closure, the nonpositive-height first closure and the sign-sensitive second closure on surviving odd input | Identify the prescribed mixed inverse and swapped bubble operators |
-
-
-The four-pair integration [#999](https://github.com/apellis/odd-lean/pull/999)
-passed the full warning-free build, global axiom audit and all concrete
-consumers at `90c42b0b615babe1215beb2285e0a2dc2f2f4e3b`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41610482426)), integrated
-at `d02c6561`. Its 124 owned declarations and eight exact producer/consumer
-blobs also pass strict scoped checks and combined imports. `AugmentedInverseNaturality` derives
-principal and finite auxiliary inverse-entry supernaturality from the given
-forward families and pointwise local inverses, then bundles both inversion
-structures. Auxiliary entries outside the finite window are canonically zero;
-no inverse-naturality premise is added. `ELVGridLocalInverseFamilies` applies
-these constructors to the given grid mate, unit and cap transformations;
-constructed old grid natural isomorphisms instantiate its paired examples.
-`ELVWeightTripleDotComparison` identifies
-all three literal positioned dots through the same chosen triple chart.
-`ELVWeightedCapWindows` identifies the actual weighted unit/dot cap window,
-including the polynomial low window, as whole content-zero module identities
-in exactly the operator form needed by `InverseCapMoments`. Concrete natural
-local-inverse assembly, the corrected mixed polynomial field and the chosen
-mixed cap/bubble identification remain open.
-
-
-The next thirteen producers and their paired consumers pass strict checks;
-full integration is pending.
-
-| Interface | Established locally | Remaining scope |
-| --- | --- | --- |
-| Chosen content and original-weight word crossings | `ELVPowerWordContentCross` and `ELVPowerWordWeightCross` identify the prescribed crossing on the chosen word modules with the full signed old-Hom arrow operator, on every coefficient vector and all output components, including absent sectors; concrete double-E inputs with nonzero two-odd products are checked | Append/context coherence and final observation recovery |
-| Absent inverse families and weight products | `ELVContentAbsentUnitFamily`, `ELVWeightAbsentUnitFamily` construct the prescribed input-supernatural inverse families at absent predecessors; the native weight pointwise/fibre inverses and arbitrary heterogeneous product assembly retain actual common height counts | Supported canonical principal square and supported block transport, then whole-weight local records |
-| Old missing-colour unit matrix and modules | The given old unit matrix is conjugated through the chosen FE/value charts, with exact forward unit columns and even inverse. `ELVContentMissingUnitModules` supplies its actual even module isomorphism for all old inputs, both parities and zero cutoff | Extract/bundle the native empty-edge inverse rows and construct the adjacent local records |
-| Given grid principal | `ELVInductionGridRouquierFields` identifies the actual Rouquier principal with the given negative-crossing grid mate as a whole transformation | Complete unit/cap forward fields, slides, square and braid for the concrete old local records |
-| Constructed local pre-Hom adjunction | `RouquierPreAdjunction`, `ELVProbeLocalPreAdjunction` use the existing adjacent-local constructor on the prescribed probe edge and identify the constructed counit with shiftedPreCap after both Koszul factors cancel | Adjacent local records remain explicit supplied inputs; the actual evaluated mixed bend and full swapped action are separate |
 
 
 The occupied two-odd-colour consumer additionally checks both vacuum coefficient
@@ -493,7 +419,7 @@ and normalized content/weight transport are not asserted.
    fixed-output-content naturality and literal forward maps are established
    (#951/#952/#961). Chosen content dot comparisons are verified in #973.
    Ordinary cup/cap compatibility and all-map EF/FE charts are now scoped-checked;
-   finish canonical local inverse transport and input-supernatural inverse-entry assembly. The generic finite adapters and six even chart comparisons are now scoped-checked.
+   finish their signed crossing/mate and finite parity/product comparisons.
    Retain exact target-fixed counts and the absent-predecessor zero cases.
 2. Complete multicolour/weight assembly with `parameterTwist Sc`. The distinct
    ideal identity, PBW quotient decoder and actual representable mate inverse
@@ -502,7 +428,7 @@ and normalized content/weight transport are not asserted.
    input-module naturality passed full CI in #977. Finish exact-content/weight
    transport through the selected charts. Weight crossings/pair coherence are verified
    (#972); content braid is implemented (#933/#934). Transfer pair/triple
-   remaining mixed-colour braid relations through the selected charts; same-colour braid and both distinct-colour slides are now scoped-checked. Retain the supplied
+   whiskering relations through the selected charts and retain the supplied
    CScalars, original weight group and balanced schedule (#864).
 3. Assemble compatible factors and the swapped Hom action. Selected weighted
    restriction/counit and scalar ordinary counit are verified (#972/#973).
