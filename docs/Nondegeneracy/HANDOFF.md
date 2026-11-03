@@ -4,21 +4,6 @@ Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
 This file records next mathematical dependencies, not session telemetry.
 
-## Proposed argument restart trees
-
-The following exact source trees are preserved in reachable history only.
-They are unverified proposals, are not imported by the checked library, and
-do not establish their headline conclusions. Checked successors are recorded
-in the corresponding topic notes and current status.
-
-| Argument | Preserved source tree | Scope at the snapshot |
-| --- | --- | --- |
-| Content pair crossing | [cef0b17b98](https://github.com/apellis/odd-lean/commit/cef0b17b98856f32f937b5510d70ab1c2feb546f) (`docs/Nondegeneracy/ContentPairComparisonProposal.md`) | Final pair tensor comparison is unverified. |
-| Content self-colour mate | [fc52dfd086](https://github.com/apellis/odd-lean/commit/fc52dfd086f11fab7b527cd9a3fbce808c689ff5) (`docs/Nondegeneracy/ContentAppendMateProposal.md`) | Source chart formulas are checked separately; the prescribed mate square and its consumer remain unverified. |
-| Distinct content mate | [cffb3ae4b2](https://github.com/apellis/odd-lean/commit/cffb3ae4b2f5c9471d5e6ef53d44222f6d0f4cc0) (`docs/Nondegeneracy/ContentDistinctMate.md`) | Generic rectangular formulas and chart prefixes are scoped-checked; the whole comparison and consumer remain unverified. |
-| Power-word coordinates | [41466e07a4](https://github.com/apellis/odd-lean/commit/41466e07a45207605231911c5f1d3f01a24021f9) (`docs/Nondegeneracy/ELVPowerWordCoordinates.md`) | The producer passed its scoped check; the consumer, occupied word evaluation and complete recovery attachment remain unverified at this snapshot. |
-| Weighted matrix rows | [dca80e84a0](https://github.com/apellis/odd-lean/commit/dca80e84a05f8f0777c55dced0fd3ac6fff8bdcb) (`docs/Nondegeneracy/WeightedMatrixRows.md`) | The proposed producer has an operator-power elaboration failure; the matrix row comparison and inverses remain unverified. |
-
 ## Dependency order and readiness
 
 | Target | Ready to start? | Established inputs | Completion criterion / blocker |
@@ -26,80 +11,10 @@ in the corresponding topic notes and current status.
 | Fixed-content/weight matrix inverse assembly | Arbitrary-module component inverses full-CI verified in #951/#952; whole fixed-output-content input-module natural inverses full-CI verified in #961 | Target-fixed coefficient bijectivity, balanced tensor transfer, exact forward identities and even inverse | Assemble natural isomorphisms on the actual content and weight functors; compare chosen generators and adjunction maps |
 | Independent content braid | Whole corrected polynomial lift and independent three-dot families implemented; original exact heads full-CI verified (#933/#934) | Canonical carriers/slides, prefix/suffix crossing families, corrected component relation and `contentMixedBraidTransform` | Transfer the content relations to actual weight functors; finish pair/triple whiskering comparisons (global crossing and whole canonical pair coherence scoped-checked; updated full CI verified in #972) |
 | Old/truncated action comparison | Chosen tensor/unit and signed-dot comparisons full-CI verified in #963; ordinary weighted restriction/counit full-CI verified in #972 | Weighted module descent (#825), quotient-induction counit module isomorphism (#835), induction preservation and append comparison (#840), input-module naturality (#868) | Finish double-append crossing/inverse and normalized content/weight transport; scalar ordinary adjunction remains separate |
-| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Transport the chosen arbitrary-module distinct inverse to exact content and weight; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
+| Full-ELV factor family | Categories, adjunction and same-colour old-module component inverses verified; distinct-colour literal mate inverse on old representable corners scoped-checked, full CI verified in #972 | Content parity (#755), weight E/F and adjunction (#757, #781), explicit mixed PBW quotient decoder, canonical J and rectangular mate comparison | Extend the distinct-colour inverse to arbitrary modules; content/weight inverse assembly, composed braid, naturality and degree transports; compare algebra parameters with parameterTwist Sc |
 | Concrete swapped action | Generic denominator interfaces verified; instantiation has prerequisites | Blockwise transpose (#790), transposed norm units (#811), inverse-unit mate criteria (#817), weak Sigma source-norm interface (#834), actual module-category universes (#861), all-position probe units (#807) | Even and odd literal source norms verified (#844/#882); prescribed coefficients, compatible factors, crossing coefficients and whole inverse/relation fields |
 | Vacuum and bubble recovery | Old-vacuum coefficient rows, signed extraction window and higher moments scoped-checked; full CI verified in #972; final instance blocked | Prescribed unit inverse, zero old mate source, canonical upper-Hom comparison, actual one-strand recurrence, joint full-coefficient source detection (#812, #819, #820) | Power category and numerical weighted/power bridge scoped-checked; finish quotient-algebra identification, full factor and actual swapped caps, corner evaluation, all-height bubble series and bounded recovery identity |
 | Final nondegeneracy | Blocked on observations | Finite-colour reduction, upward/oriented equivalence and observation consumer | Construct observations for every finite colour restriction, original weight, upward pair and bound |
-
-## Current comparison interfaces
-
-The ten coefficient-power/comparison producers integrated in #973 passed the
-full build, global axiom audit and all consumers at source head `911f3e12`
-([CI](https://github.com/apellis/odd-lean/actions/runs/41546394528)). The
-literal T-annihilated category, numerical ideal sandwich, content dots and
-scalar ordinary counit are established inputs.
-
-Current scoped-checked successors, all awaiting full CI, supply:
-
-* actual A/T algebra presentation and bounded coefficient detection, parity and
-  regular left coefficient module, retaining nonzero independent odd vectors;
-* chosen content ordinary cup/cap squares and EF/FE all-map natural charts;
-* six-category grid and scalar selected iterated/conjugated-transform formulas;
-  selected weighted iterated induction and its prescribed signed crossing;
-* ordinary-right mixed coefficient-kernel isomorphism and explicit tensor
-  realization, retaining exterior first-factor twists and no flatness premise;
-* full homogeneous half-turn composition, literal first/last-boundary quotient
-  equivalence and bounded injection of x mapped to [htCoef x] with the written
-  reservoir schedule. The seven earlier contextual reversal/ideal producers and
-  all 332 owned declarations were rechecked; these are prior source results.
-
-The actual arbitrary-module distinct forward identity and bundled homogeneous
-input-natural inverse are now scoped-checked.
-Content signed crossing/mate and finite parity/product attachment, category-
-changing scalar mate and weighted mate/matrix transport remain next. The
-literal old T-vacuum and contentwise induction-dot nilpotence are now
-scoped-checked. Actual word-value/Hom coordinate evaluation and normalized
-swapped bubble attachment remain open.
-See [HalfTurnHomogeneous](HalfTurnHomogeneous.md),
-[HalfTurnBoundedDetection](HalfTurnBoundedDetection.md),
-[CoefficientPowerQuotient](CoefficientPowerQuotient.md),
-[CoefficientPowerGrading](CoefficientPowerGrading.md),
-[ContentEFComparisons](ContentEFComparisons.md) and
-[DistinctMateKernel](DistinctMateKernel.md).
-
-## Vacuum and mate attachments now available
-
-The next scoped-checked interfaces, awaiting full CI, give the actual distinct
-rectangular mate a bundled homogeneous inverse on all old modules, natural in
-arbitrary input-module maps. Its forward map is exactly the given mate and
-both inverse directions have parity p(i)p(j); transport to the chosen content
-and original-weight functors remains to be completed.
-
-The literal old T-vacuum is now constructed by balanced extension along the
-fully faithful empty coefficient embedding (object-only universe lift).
-Its chosen empty component is evenly A/T, nonempty formal contents vanish,
-and every element of T acts by zero. Both independent odd coefficient vectors
-survive. Prescribed unit-inverse rows give the actual extraction window and
-coefficient sign law. The original signed induction dot has a positive
-contentwise exponent on every T-annihilated module, through the existing
-weighted nilpotence bound and the chosen dot comparison. Finite module
-dimension and a common weight-fibre exponent are not assumed.
-
-The source coefficient/cyclotomic quotient and literal scalar-power Hom spans
-now have exact kernel/image/preimage comparisons with the existing old Homs.
-The half-turn maps directly into those reversed/twisted OldCategory Homs,
-retains total-parity composition and the prescribed bounded reservoir schedule.
-The remaining coordinate task identifies actual iterated regular A/T vacuum
-word values and their signed Hom-Yoneda maps with those literal Hom quotients;
-no action-faithfulness premise is permitted.
-
-See [DistinctModuleIso](DistinctModuleIso.md),
-[CoefficientPowerVacuum](CoefficientPowerVacuum.md),
-[CoefficientPowerRows](CoefficientPowerRows.md),
-[CoefficientPowerNilpotence](CoefficientPowerNilpotence.md),
-[SourceQuotientComparison](ELVSourceQuotientComparison.md),
-[SourcePowerComparison](ELVSourcePowerComparison.md) and
-[HalfTurnOldQuotient](HalfTurnOldQuotient.md).
 
 ## Categorical inverse: precise interfaces
 
@@ -178,9 +93,8 @@ paired-consumer checks and all 64 owned-declaration axiom checks passed
 [full CI](https://github.com/apellis/odd-lean/actions/runs/41532403900)
 at source head `55c6d763`, integrated in #961. See [MatrixFunctorNaturality](MatrixFunctorNaturality.md).
 
-The chosen EF/FE charts and ordinary cup/cap comparison are now scoped-checked.
-Finish signed crossing/mate and finite parity/product compatibility, then
-transfer the literal matrix inverses to original-weight functors. Keep the target-fixed count,
+Next compare these natural isomorphisms with the actual fixed-content functors,
+then transfer to original-weight functors. Keep the target-fixed count,
 chosen source parity coordinates and literal ordinary unit/cap entries.
 Prove compatibility with the selected dot, crossing and adjunction maps
 before using these inverses in a full-ELV factor action. These old-category
@@ -206,12 +120,12 @@ coefficients are not a commutative ground ring.
 
 The selected old-content extension and restriction comparisons now intertwine
 signed dots on whole coends in both moving parities. Both producer/consumer
-pairs and all 23 owned declarations pass scoped checks; full CI verified in #973.
+pairs and all 23 owned declarations pass scoped checks; full CI is pending.
 See [ContentAppendDot](ContentAppendDot.md) and
 [ContentAppendRestrictionDot](ContentAppendRestrictionDot.md). The generic
 `ELVInductionSquareComposition` nested flattening formula and
 `ELVWeightedPairAppend` composed append comparison are also scoped-checked
-(70 owned declarations), with full CI verified in #973. Compare selected iterated
+(70 owned declarations), with full CI pending. Compare selected iterated
 induction and crossings using these exact maps; fixed-content edges require
 the changing-category grid, not an endofunctor identification. Chosen
 content unit/counit and literal matrix attachment remain open.
@@ -318,7 +232,7 @@ The literal `CoefficientPowerModules` category now restricts selected old E/F,
 ordinary unit/counit, dots, all module maps and supplied isomorphisms; parity
 closure and the inherited Pi structure are also scoped-checked. These additions
 retain full coefficients and need neither positive powers nor finite families
-for their category restrictions. full CI verified in #973. See
+for their category restrictions. Full CI is pending. See
 [CoefficientPowerModules](CoefficientPowerModules.md) and
 [CoefficientPowerParity](CoefficientPowerParity.md).
 
@@ -331,16 +245,14 @@ algebra, with the stated numerical lower-weight hypotheses. Quotient-algebra
 arrows point weighted(R+1) -> power(T) -> weighted(N0); actual module functors
 point weighted(N0)-modules -> T-modules -> weighted(R+1)-modules and retain
 every vector space and homogeneous map component. All paired checks and the
-48 owned-declaration audits pass; full CI verified in #973. See
+48 owned-declaration audits pass; full CI is pending. See
 [CoefficientPowers](CoefficientPowers.md),
 [CoefficientPowerComparison](CoefficientPowerComparison.md) and
 [CoefficientPowerSandwich](CoefficientPowerSandwich.md).
 
-The actual A/T identification with SYM/(J+P), bounded coefficient detection,
-parity and regular coefficient module are now scoped-checked. Extend this
-module along the fully faithful empty coefficient embedding to construct the
-chosen old power vacuum. Restrict finite-family/crossing inverse fields and
-prove integer grading and contentwise nilpotence. Do not infer injectivity after imposing another
+Next identify A/T with the universal quotient SYM/(J+P), transfer bounded
+coefficient detection, and restrict finite-family/crossing inverse fields to
+the literal power category. Do not infer injectivity after imposing another
 quotient. The arbitrary-T `TransformedIdeal` detection theorem still needs the
 actual vacuum evaluation-kernel identification and final action attachment.
 
@@ -366,7 +278,7 @@ zero and zero in parity one. The connected mixed/vacuum consumer and all 21
 owned declarations are full-CI verified in #972. `ELVProbeCounitComparison`
 now proves the selected ordinary counit composite equals the literal old counit
 on every scalar-evaluated old target module and output word. Its paired consumer
-and all 40 owned declarations pass strict scoped checks; full CI verified in #973.
+and all 40 owned declarations pass strict scoped checks; full CI is pending.
 Complete crossing, normalized cap and inverse-matrix transport. See
 [ProbeCounitComparison](ProbeCounitComparison.md).
 See [ProbeRestrictionComparison](ProbeRestrictionComparison.md).
@@ -463,6 +375,12 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
+| Arbitrary-module distinct mate identity | `a9c1dbe5935a884e944e6865bb759099933eb32c` | Five kernel producers checked; the final whole forward-map identity and its arbitrary-module consumer are unverified in this snapshot. |
+| Chosen content E/F charts | `d4b6bf20961c7fb3e0b99764013c15baa4c53078` | Proposed chart naturality and native component transports; the adjunction predecessor is separately scoped-checked. |
+| Selected scalar double append | `79f6c9ea86addb31fb53f3df83197e7d4e37c2b2` | Two proposed producers; final nested tensor and homogeneous transform conversions remain unverified. |
+| Selected weighted mate transport | `829dabe55cf56cb35c459286f9fb7fd8aa7750ca` | Proposed cup-crossing-cap transport; signed output coend comparison remains unverified. |
+| Old power-quotient vacuum | `e5b7b48a7dce67e32b5cf4e5bac777282e7f3052` | Empty coefficient embedding has a scoped producer check; universe packaging of the old regular vacuum and its consumer remain unverified. |
+| Reversed quotient bounded detection | `890307122c1de62321e20eea5fc14b9edccdc645` | Producer has a scoped check; concrete homogeneous coefficient-power consumers remain unverified in this snapshot. |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed source, superseded by the full-CI verified tensor/unit and signed-dot formulas (#963) and full-CI verified `ELVWeightedAppendAdjunction` restriction/counit formulas (#972). Double-append crossing, inverse and normalized content/weight transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 
