@@ -2194,3 +2194,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockMatrixRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightMixedMateComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightTripleInduction
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVEndEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightQuadraticRelation
