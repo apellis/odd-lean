@@ -5,18 +5,16 @@ signed affine presentation comparison, transformed-ideal identification and
 involution are formalized in `HalfTurn/{Mirror,SuperFlip,Composite,CornerIdeal,
 Involution,IdealIdentification,CoefficientGenerators}`. The full homogeneous
 coefficient composition, literal quotient equivalence and bounded class-map
-detection APIs passed full CI in #976. See [HalfTurnHomogeneous](HalfTurnHomogeneous.md) and
+detection APIs also pass scoped producer/consumer checks; their combined full
+CI is pending. See [HalfTurnHomogeneous](HalfTurnHomogeneous.md) and
 [HalfTurnBoundedDetection](HalfTurnBoundedDetection.md).
 
 The local coordinate construction below uses the existing left-module
 reservoir realization and remains conditional on assembling the specified
 swapped Hom action with its prescribed all-reservoir upward blocks. It does
 not prove swapped augmented inversion, normalized bubbles or nondegeneracy.
-The actual old-Hom source and literal-power kernel comparisons now pass
-scoped checks in `ELVSourceQuotientComparison`, `ELVSourcePowerComparison` and
-`HalfTurn/OldQuotient`. The remaining comparisons identify actual iterated
-vacuum word values and their Hom coordinates, then evaluation of the chosen
-functors and source-placed bubbles.
+The remaining comparisons include the literal reservoir Hom quotient kernel
+and evaluation of the chosen functors and source-placed bubbles.
 
 The useful target is `ReservoirVacuumEvaluation.affine_coordinates`, not a
 global isomorphism with the first-boundary quotient and not necessarily
@@ -371,22 +369,18 @@ It transfers detection from the actual last-boundary signed coordinates
 to the desired first-boundary quotient, without identifying their ideals.
 No global dot-intertwining law for (8) outside the window is claimed.
 
-For every fixed μ,s,t,d choose m with h=-D.h μ and
+For every fixed s,t,d choose m with h=-D.h μ and
 N_i=reservoirLevel h m i satisfying d+2 choose(length(s),2)<2m, and take
-sufficiently high coefficient truncation powers. The existing final consumers
-already permit this choice: `SwappedVacuumEvaluation D Sc cs μ s t d` and
-`SwappedVacuumObservation D Sc cs μ s t d` are indexed by this precise
-weight, word pair and degree bound. Their existence at each such tuple is the
-hypothesis of `nondegeneracy_of_vacuum_evaluations` and the observation
-consumer. No change to either interface is required.
-
-The construction must still supply the actual action, source-placed bubble
-normalization and all-affine coordinate identity (7) for the chosen tuple.
-A stronger fixed-cutoff `ReservoirVacuumEvaluation` has total windows over
-all word lengths; a zero-window extension at long words would need a separate
-kernel-compatibility proof. That extension is optional for the present route
-and is not established here. `regularVacuumWindow_covers` supplies cofinal
-admissible m for each requested pair and bound.
+sufficiently high coefficient truncation powers. This constructs every
+requested admissible bounded observation. It does not yet package a single
+everywhere-defined `ReservoirVacuumEvaluation`: its `window` field is total
+in all word lengths at a fixed cutoff. At the remaining long words its
+zero window still contains identities and crossing-only diagrams, so setting
+recover=0 is not justified. A zero-window extension requires a separate
+kernel-compatibility proof and has NOT been established here.
+`regularVacuumWindow_covers` supplies cofinal admissible m for every fixed
+s,t,d. A consumer formulated for admissible observations would avoid this
+extension; no interface change or small-cutoff theorem is asserted in Lean.
 
 ## 8. Exact remaining boundary
 
@@ -395,13 +389,13 @@ provide an explicit kernel and recovery, rather than an assumed regular
 identification. They do not supply a new factor action or a new hypothesis
 for a nondegeneracy theorem. Remaining obligations are:
 
-* attach the scoped-checked old-module Hom/Yoneda chart and append/dot
-  comparisons to the selected pair crossing and chosen swapped Hom functors;
+* identify the literal reservoir Hom quotient with the formalized boundary
+  quotient and attach signed Hom-corner evaluation to the chosen functors;
 * assemble the swapped normalized Hom action, including its full augmented
   inversion and all presentation relations, and verify that its surviving
   reservoir blocks are precisely those used in (1) and (7);
-* construct an observation for each weight, word pair and degree bound in
-  the existing indexed interface, choosing a sufficiently large reservoir;
+* package admissible bounded observations in the detection interface, or
+  prove the needed small-cutoff/zero-window extension rather than assuming it;
 * identify the actual source-placed bubbles with the constructed reservoir
   coefficient action, including any required normalization;
 * retain the scope of the supplied factor actions when passing beyond their
