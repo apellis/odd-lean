@@ -2081,3 +2081,10 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeOldVacuumPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedMixedCross
 import OddMath.QuiverHecke.CyclotomicAction.ELVRestrictionCoendCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVTruncatedDistinctMate
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockExtension
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppend
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockRestrictionTensor
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVFullInductionSquare
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentBlockAppendTensor
