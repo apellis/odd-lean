@@ -544,3 +544,26 @@ presence does not assert that the complete tree compiles.
 | `origin/research/word-coefficients` (remote tip) | `d143a004bc056b37f85c584d45abc46427de7cd9` | [f2bfddc748](https://github.com/apellis/odd-lean/commit/f2bfddc74820ae174ee63106f0c0cd4bd3631e5c) |
 | `origin/research/word-evaluation` (remote tip) | `05c0492999b6976e9ffb8fe3e965e8062187e66e` | [d6d0f2de75](https://github.com/apellis/odd-lean/commit/d6d0f2de7506dad1c66d3273f9e5ce99bd83a568) |
 | `origin/research/word-weight-contexts` (remote tip) | `5aa89762b550c9a5350d36fb24bca2bd8cd2b2fa` | [d3411425e1](https://github.com/apellis/odd-lean/commit/d3411425e196d351f7e4fc3b49ce3cbf491dcf77) |
+
+## Probe and vacuum assembly argument tree
+
+The complete source tree [82ddc2011b](https://github.com/apellis/odd-lean/commit/82ddc2011bb42715e1c5fb03359271160fa38a45) retains the next probe and vacuum
+arguments. Its sole parent is the verified research integration of #1010.
+No pending proof integration head becomes an ancestor through this copy.
+The history-preservation merge changes only this inventory and HANDOFF;
+no proposed source is imported into the checked library.
+
+| Topic | Source files in the preserved tree | Scope at preservation |
+| --- | --- | --- |
+| Probe weight dot inverse | `ELVProbeWeightDotUnit.lean` and paired consumer | Producer passes strict checking after the syntax repair; the concrete nonzero induced-vector consumer remains pending. |
+| Adjacent old local record | `ELVInductionGridRelations.lean`, `ELVInductionGridLocal.lean`, `ELVOldContentLocal.lean` and paired consumers | Restored proposal; the final whole-Pi slide lifts and complete producer/consumer checks remain pending. |
+| Evaluated and weight equal crossing | `ELVProbeEvaluatedCrossing.lean`, `ELVProbeWeightCrossing.lean` and paired consumers | Proposed full-subcategory restriction and weight-coordinate lift; complete checks remain pending. |
+| Reservoir path and dot attachment | `SwappedAssembly/ReservoirWordFunctor.lean`, `ReservoirVacuumDot.lean` and paired consumers | Generic word-comparison producer passes; its bare-generator reversal test does not test the full factor comparison. Complete concrete-factor consumer and vacuum-dot checks remain pending. |
+| Reservoir multicolour and whole-Hom coordinates | `ELVRouquierMulticolour.lean`, `ELVPowerWordHomCoordinates.lean` and paired consumers | Restored exact topical proposals; earlier scoped evidence is recorded separately, and fresh publication checks remain pending. |
+
+The tree also includes the separately scoped-checked probe weight
+adjunction/dot, old coefficient/direct-induction braid, evaluated distinct
+mate inverse and supported/absent pair-induction sources. Their integration
+claims belong in STATUS and their actual proof PRs. Preserving this tree
+is not evidence that the entire tree builds. Recover individual files with
+`git show 82ddc2011bb42715e1c5fb03359271160fa38a45:<repository-path>`.
