@@ -86,9 +86,13 @@ fields, whole chosen weight-dot evaluation, every canonical-content unit-dot
 power through the selected full charts, exact scalar old inverse-row field
 binding, supported chosen weight unit/counit squares and even flattened
 weight-triple coordinates. Their full integration CI is pending. Next attach
-the native coefficient cap and normalized probe window, compose the whole
-original-weight distinct mate inverse, and prove the native slide/braid
-fields and canonical diagonal cap-row/inverse fields. The chosen crossing
+the native coefficient cap to its exact scalar inverse-row field and derive
+the normalized probe window. The whole original-weight distinct mate inverse
+and its parity now pass strict paired checks, including both round trips and
+odd-input naturality; the selected native coefficient cap has its prescribed
+degree and a nonzero regular-probe value. Prove the native slide/braid fields,
+original-weight same-colour local inversions and canonical diagonal cap-row
+and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
 
 ## Current comparison interfaces
