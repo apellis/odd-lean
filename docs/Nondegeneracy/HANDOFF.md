@@ -759,6 +759,12 @@ consumer checks audit all eleven owned declarations. Transfer through the
 changing-category balanced charts with their superopposite signs and
 negative equal crossings before asserting the original-Sc action fields.
 See [OldMulticolourBraid](OldMulticolourBraid.md).
+`ELVOldDistinctQuadratic` now proves the literal source square and
+original-Sc signed polynomial comparison, followed by the actual balanced
+double-induction tensor equation. Strict producer and mixed/interior/two-odd
+consumer checks audit all six owned declarations. The chosen changing-content
+flattenings and global probe quadratic remain. See
+[OldDistinctQuadratic](OldDistinctQuadratic.md).
 `ELVOldDistinctSlides` now supplies both distinct-colour coefficient
 slides for the literal OLD dots and positive crossing. Its producer and
 mixed/two-odd representable consumer pass strict checks and six owned

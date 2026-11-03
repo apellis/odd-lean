@@ -2440,3 +2440,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumGenerators
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirDottedAdjunctionRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVOldMulticolourBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexLocal
+import OddMath.QuiverHecke.CyclotomicAction.ELVOldDistinctQuadratic
