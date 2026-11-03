@@ -170,7 +170,7 @@ private theorem lastDot_slide_source {i j : I} (hij : i ≠ j) :
   simp only [dotE_eq, crossTwo, cl_comp]
   exact slide_right_ne D Sc [] [] i j hij _ _
 
-theorem contentInduction_distinct_slide_left_linear (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
+private theorem block_slide_left (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
     (hij' : β + ([i,j] : Multiset I) = γ)
     (hji : β + ([j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
@@ -200,7 +200,7 @@ theorem contentInduction_distinct_slide_left_linear (β : Multiset I) {i j : I} 
     | exact contentPairDot_one_parity D Sc i j
     | exact contentPairDot_one_parity D Sc j i
 
-theorem contentInduction_distinct_slide_right_linear (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
+private theorem block_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j) (γ : Multiset I)
     (hij' : β + ([i,j] : Multiset I) = γ)
     (hji : β + ([j,i] : Multiset I) = γ)
     (M : ContentModules D Sc cutoff N β) (z : ContentCategory D Sc cutoff N γ) :
@@ -269,7 +269,7 @@ theorem contentEPair_distinct_slide_left (β : Multiset I) {i j : I} (hij : i �
     (pairInner_square D Sc cutoff N β i j γ hij' M z)
     (pairCross_square D Sc cutoff N β i j γ hij' hji M z)
     (pairOuter_square D Sc cutoff N β j i γ hji M z)
-    (contentInduction_distinct_slide_left_linear D Sc cutoff N β hij γ hij' hji M z)
+    (block_slide_left D Sc cutoff N β hij γ hij' hji M z)
 
 /-- Right slide, retaining the explicit common target content after swapping. -/
 theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i ≠ j)
@@ -281,7 +281,7 @@ theorem contentEPair_distinct_slide_right (β : Multiset I) {i j : I} (hij : i �
       sign k (D.parity i * D.parity j) •
         (contentPairOuterDotAt D Sc cutoff N β i j γ hij' M z).comp
           (contentEPairCross D Sc cutoff N β i j γ hij' hji M z) := by
-  have h := contentInduction_distinct_slide_right_linear D Sc cutoff N β hij γ hij' hji M z
+  have h := block_slide_right D Sc cutoff N β hij γ hij' hji M z
   have h' := congrArg (fun q => sign k (D.parity i * D.parity j) • q) h
   simp only [smul_smul, Supercategory.sign_mul_self, one_smul] at h'
   have H := transport_slide_square
