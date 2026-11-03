@@ -140,7 +140,13 @@ product inverse gluing, zero-boundary and even-chart transport, chosen
 local generator/row components, the stored distinct-mate inverse,
 whole-weight absent mixed coordinates, corrected nested/grid braids,
 reservoir principal entries and the contextual source-layer class square.
-Later stored/global local,
+Integration #1023 passed the full warning-free build, global axiom audit
+and all concrete consumers at source `18ca3caa` (run 41714507812),
+integrated at `17b99448`. It verifies stored missing-colour local inverses,
+the zero lower cell and evaluated coefficient transport, exact bundled
+slides, the evaluated stored corrected braid, occupied mixed/triple
+coordinates and literal dot/equal/distinct reservoir matrix comparisons.
+Later present/global local,
 central matrix and literal layer additions retain their separate
 scoped-check/full-integration boundaries below.
 
