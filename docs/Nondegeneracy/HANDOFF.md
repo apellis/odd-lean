@@ -85,6 +85,16 @@ original-weight same-colour local inversions and canonical diagonal cap-row
 and inverse fields. The chosen crossing
 evaluation and final observation recovery remain separate obligations.
 
+## Field-scope obligation
+
+The current field construction retains `sy : Symmetrizer D` and homogeneous
+parameters. With that fixed datum it must furnish `CharZeroFieldNondegeneracy D`;
+the existing ground-ring theorem then supplies ordinary rings with 2 invertible.
+For the broader §8 conjecture, obtain a source-backed input removing those
+extra hypotheses. They are not consequences of the current datum/scalar APIs.
+See [FieldScopeBoundary](FieldScopeBoundary.md). No broader scope is declared
+out of scope and no replacement route is selected.
+
 ## Native probe normalization and remaining action fields
 
 The native left-cap field, all-row Kronecker window, SAME-dot signed probe

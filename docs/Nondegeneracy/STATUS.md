@@ -30,7 +30,12 @@ ordinary-ring conclusion; no additional ground-ring descent remains.
 The field input is still open. This reduction retains the datum and
 homogeneity conditions and does not address genuinely supercommutative
 base rings or existence of CScalars for every weight realization.
-Intermediate lemmas may have broader scope.
+Intermediate lemmas may have broader scope. The field predicate fixes the datum;
+completing the present construction with a supplied positive symmetrizer
+therefore establishes that scoped case. Symmetrizability is not implied by
+`Datum`, homogeneous parameters or supplied normalizations. Removing these
+extra hypotheses for the broader §8 statement remains a separate open
+source-fidelity obligation; see [FieldScopeBoundary](FieldScopeBoundary.md).
 
 ## Established reductions and concrete inputs
 
