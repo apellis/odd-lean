@@ -367,9 +367,9 @@ Read the integration boundaries above and below for the full CI gate.
 | Old inverse and affine fields | `ELVInductionGridRouquierInverse`, `ELVOldContentRouquierInverse` attach the constructed old matrix inverses to the prescribed principal/unit/cap fields. `ELVOldContentAffineRelations` proves both signed slides and crossing square zero in the literal old quotient | Adjacent one-letter old record, followed by its normalized left adjunction |
 | Constructed old left cap | `ELVProbeVacuumLocalCap` identifies the constructed empty-record cap with the prescribed regular and scalar-evaluating caps, including F(E(T0)), without a local-record premise; occupied odd components are nonzero | Adjacent-record left adjunction and full mixed inverse |
 
-PR #1006 at `804dd66d` has 15 producer successors, 30 exact source/consumer
-blobs, 404 owned-declaration audits and passing combined imports. Its full
-integration gate remains pending.
+PR #1006 passed the full build, global axiom audit and every consumer at
+`804dd66d` (run 41628541714), integrated at `e4374193`. Its 15 producer
+successors have 30 source/consumer blobs and 404 owned-declaration audits.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |
@@ -381,9 +381,12 @@ integration gate remains pending.
 | Evaluated old probe category | `ELVProbeEvaluatedCategory` restricts to the full coefficient-evaluating subcategory, closed under actual old induction/restriction, parity and products. `ELVProbeEvaluatedDotUnit` constructs the entire natural signed-dot inverse on every object of that category | Canonical-content/weight gluing and complete probe family; no all-old-modules dot unit is asserted |
 | Old induction composition and square | `ELVInductionGridDots` transports both given dots through flattening; `ELVInductionGridCrossSquare` proves square zero for the given negative crossing as a whole module transformation | Remaining slide transport and actual adjacent old local record |
 
-Six further probe producers at `04e78b61` pass strict producer and paired
-consumer checks, with 12 exact source/consumer blobs, 214 owned-declaration
-audits and passing combined imports. Their full integration gate is pending.
+Six further probe producers passed the full build, global axiom audit
+and every concrete consumer in #1007 at `0034b2d8` (run 41630889345),
+integrated at `d783c565`. Their checked source prefix `04e78b61` has 12
+source/consumer blobs and 214 owned-declaration audits. Further unintegrated
+source and consumer drafts are preserved in the exact history trees linked
+from HANDOFF; preservation does not promote those drafts to proved results.
 
 | Interface | Established locally | Remaining scope |
 | --- | --- | --- |

@@ -6,17 +6,21 @@ This file records next mathematical dependencies, not session telemetry.
 
 ## Proposed argument restart trees
 
-Exact trees below are reachable in history only. No proposed source is imported.
-Earlier variants remain in [ResearchHistory](ResearchHistory.md).
+The exact source trees below are reachable from this research branch in
+history only. They include unfinished source and concrete consumer drafts;
+no proposed source is imported. Each linked commit contains a full source
+tree. Its stated scope is separate from full integration verification.
+The complete inventory of preserved topic variants is in
+[ResearchHistory](ResearchHistory.md#complete-argument-source-variants).
 
 | Argument | Preserved source tree | Scope at snapshot |
 | --- | --- | --- |
-| Word coefficient insertion | [7031748dc2](https://github.com/apellis/odd-lean/commit/7031748dc2e11aa2a1c5d6ae6aa151af425e8b56) (`docs/research/PowerWordCoefficientsDraft.md`) | Coefficient producer passes; occupied paired consumer and export remain unverified at this snapshot. |
-| Canonical principal mate square | [a3974aa58a](https://github.com/apellis/odd-lean/commit/a3974aa58a48894ee66aef4a0ddd675b47a2ca61) (`docs/Nondegeneracy/Proposed/ContentMatrixPrincipalSquare.md`) | Generic square kernel and proposed consumer retained; final ordinary/native coend equality join remains unverified. |
-| Supported content and weight local inverses | [aef85d4610](https://github.com/apellis/odd-lean/commit/aef85d46105f4f07c02b944235f550452635e316) (`docs/Nondegeneracy/ContentSupportedLocalInverse.md`) | Exact principal, unit and cap transport constructions retained; principal-square dependency and complete paired consumers remain unverified. |
-| Old probe local record | [45c1e80b68](https://github.com/apellis/odd-lean/commit/45c1e80b6844139989568a535ecefe34c8f68060) (`docs/Nondegeneracy/ContentVacuumCoefficients.md`) | Four producers pass; actual empty-content local inverse has no local-record premise. Paired occupied consumers remain unverified. |
-| Old probe inverse-family variant | [5a5b9ab3e7](https://github.com/apellis/odd-lean/commit/5a5b9ab3e792d125059bf3eed1aa3de39fcc014c) (`docs/Nondegeneracy/ContentVacuumCoefficients.md`) | Generic inverse families and boundary variants retained before module-row API renaming; complete paired consumers and upper record remain unverified. |
-| Probe local cap binding | [d7c3788c2e](https://github.com/apellis/odd-lean/commit/d7c3788c2e49e911bed0dfc608d46f6e42e1ecac) (`docs/Nondegeneracy/ProbeVacuumLocalCap.md`) | Producer passes: constructed old local record, regular and scalar evaluated cap identities, including F(E(T0)). Paired consumer and export remain unverified. |
+| Whole weight probe dot inverse | [b9d9298e04](https://github.com/apellis/odd-lean/commit/b9d9298e04ce7847dac48e8d8574b5c1123befa4) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeWeightDotUnit.lean`) | Unverified whole-weight unit draft; repair the omit/docstring syntax and remaining transport details, then check the entire producer and a concrete consumer. |
+| Adjacent old local record | [2cf3ffed79](https://github.com/apellis/odd-lean/commit/2cf3ffed792429c5f532e5d94b58da8dbd66d4aa) (`OddMath/QuiverHecke/CyclotomicAction/ELVInductionGridRelations.lean`) | Native module slides pass; the final two whole-Pi lifts remain unverified. Generic and concrete adjacent local constructors await complete paired checks. |
+| Native multicolour structure | [3a6240c6bd](https://github.com/apellis/odd-lean/commit/3a6240c6bdac98cfddc4f55a2614f73b96d2f894) (`OddMath/QuiverHecke/CyclotomicAction/ELVRouquierMulticolour.lean`) | All seven chosen original-parameter fields and a concrete consumer passed scoped checks; fresh publication repeat and full integration remain separate gates. |
+| Chosen whole-Hom word coordinates | [6d07efe699](https://github.com/apellis/odd-lean/commit/6d07efe699314d60e0bcd12b685122434e62be3b) (`OddMath/QuiverHecke/CyclotomicAction/ELVPowerWordHomCoordinates.lean`) | Producer and occupied consumer passed scoped checks, including a nonzero two-odd coefficient Hom; fresh publication repeat and full integration remain separate gates. |
+| Global probe adjunction and dot | [ef53181050](https://github.com/apellis/odd-lean/commit/ef53181050a914dcfb682c996412ae41326e85c0) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeWeightAdjunction.lean`) | Both global right-adjunction and signed-dot producer/consumer pairs passed scoped checks; whole weight dot-unit and complete probe-family assembly remain open. |
+| Local pre-adjunction preparation | [e661ef0b68](https://github.com/apellis/odd-lean/commit/e661ef0b682ae0876cbc60cdd4a038c65bd4df4c) (`OddMath/QuiverHecke/CyclotomicAction/ELVProbeVacuumPreAdjunction.lean`) | Private zero-lower braid and height-transport helpers checked; actual adjacent-record specialization and paired consumer remain pending. |
 
 ## Dependency order and readiness
 
@@ -243,10 +247,11 @@ observations to the existing recovery theorem.
 PR #1003 passed its full build, axiom audit and all consumers at `72aa0c1c`
 (run 41625277102), integrated at `41673fa3`. PR #1005 passed the same gates
 at `a85d1660` (run 41626194575), integrated at `5695663e`.
-PR #1006 at `804dd66d` and the six probe successors at `04e78b61` pass strict
-local checks and combined imports; their full integration gates are pending.
-The latter have 12 exact source/consumer blobs and 214 owned-declaration
-audits. Ground-ring descent is already formalized; the broader field-scope
+PR #1006 passed the full build, axiom audit and every consumer at
+`804dd66d` (run 41628541714), integrated at `e4374193`. The six probe
+successors passed the same gates in #1007 at `0034b2d8`
+(run 41630889345), integrated at `d783c565`; their checked source prefix
+is `04e78b61`, with 12 source/consumer blobs and 214 owned-declaration audits. Ground-ring descent is already formalized; the broader field-scope
 boundary remains explicit.
 
 ## Current comparison interfaces
