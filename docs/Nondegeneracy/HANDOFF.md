@@ -1928,7 +1928,7 @@ source-coefficient-image and representable evaluation forms. The existing
 finite kernel inverse comparisons prove parity only. The intrinsic integer
 grading of the literal represented lower-loop kernel is now checked in
 `ELVIndResKernelInteger`, with actual balance relations and an internal
-direct-sum decomposition (22 owned audits). Construct the finite source/
+direct-sum decomposition (22 owned audits; full CI verified in #1029). Construct the finite source/
 target shifts, prove that the prescribed forward matrix has degree zero,
 then use inverse homogeneity and Yoneda
 to realize the positive-degree closure on every module. Do not infer an
@@ -1937,7 +1937,7 @@ integer grading on arbitrary ungraded module Homs.
 represented parity-component degree is equivalent to the degree of the
 recovered source coefficient, whose realization equals the whole natural
 transformation on every exact-content module. Strict nonzero odd
-positive-content checks audit all three declarations. The actual
+positive-content checks audit all three declarations; full CI verified in #1029. The actual
 closures are now constructed in `ELVReservoirClosures`, retaining the
 literal `elvRouquierFamily.loc` principal fields. `ELVWeightCentreBlocks`
 proves their exact-content dependence by even inclusion naturality; the
