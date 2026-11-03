@@ -1949,7 +1949,6 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPairAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedAppendCrossing
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedDoubleCrossing
-import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedMateComparison
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctCrossingTensor
 
@@ -1990,6 +1989,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendRestrictionDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFComparison
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentEFChartTensors
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentAppendMate
 
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerSandwich
@@ -2017,18 +2017,3 @@ import OddMath.QuiverHecke.HalfTurn.BoundedDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleAppend
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionDoubleTransform
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDoubleCrossing
-
-import OddMath.QuiverHecke.CyclotomicAction.ELVEmptyCoefficientEmbedding
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerVacuum
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerRows
-import OddMath.QuiverHecke.CyclotomicAction.ELVSourceQuotientComparison
-import OddMath.QuiverHecke.CyclotomicAction.ELVSourcePowerComparison
-
-import OddMath.QuiverHecke.HalfTurn.OldQuotient
-import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleInverse
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMate
-import OddMath.Algebra.HomogeneousSuperfunctorIso
-import OddMath.QuiverHecke.CyclotomicAction.ELVDistinctModuleIso
-import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridMateTensors
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientPowerNilpotence
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMateComparison
