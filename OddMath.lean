@@ -2150,3 +2150,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordContent
 import OddMath.Algebra.SupermoduleIsoOfBijectiveTotals
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentMatrixInverse
+
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentFiniteMatrixComparison
