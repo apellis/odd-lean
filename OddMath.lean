@@ -2290,3 +2290,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentWeightedCapInverse
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedPolynomialCaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentUnitInverse
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightInverseProducts
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightAbsentFibreInverse
