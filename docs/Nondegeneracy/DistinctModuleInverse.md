@@ -58,6 +58,6 @@ The producer and its paired consumer pass strict scoped checks. The consumer
 uses parity-shifted old representables with both mixed moving parities,
 distinct odd colours, ordinary right precomposition by an odd exterior
 coefficient, and empty words at zero cutoff. Full CI remains the integration
-gate. Bundling the inverse as a homogeneous old-module natural map and
-transporting the chosen mate to exact content and original weight remain
-subsequent obligations.
+gate. [DistinctModuleIso](DistinctModuleIso.md) supplies the bundled homogeneous
+old-module inverse and arbitrary input-module naturality. Transport to the
+chosen exact-content and original-weight functors remains subsequent.
