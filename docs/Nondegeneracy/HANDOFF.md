@@ -735,6 +735,12 @@ indexed entry. Strict producer and mixed-representative/both-height
 consumer checks audit all 75 owned declarations. Forward mate and dotted
 row compatibility with the chosen target generators is still required;
 see [ProbeReindexLocal](ProbeReindexLocal.md).
+`ELVProbeReindexPair` now gives the exact upper-then-lower append
+comparison on raw and evaluated modules, with evenness and an all-vector
+nested tensor formula retaining both coefficient arrows. Strict producer
+and mixed reordered-content/odd-input consumer checks audit all 67 owned
+declarations. Compare the selected pair crossing and distinct mate next;
+see [ProbeReindexPair](ProbeReindexPair.md).
 The prescribed lower and upper local loops now have even representative
 comparison isomorphisms in `ELVProbeReindexLoops`; strict producer and
 mixed-content consumer checks audit all 38 owned declarations. Attach
