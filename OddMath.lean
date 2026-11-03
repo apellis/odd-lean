@@ -2327,3 +2327,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVInductionUnitInverseRows
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMissingUnitRows
 
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridRouquierPowers
+import OddMath.SKM.AugmentedInverseProfile
