@@ -2450,3 +2450,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVOldMulticolourInduction
 import OddMath.QuiverHecke.CyclotomicAction.ELVInductionGridQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBlockDistinctQuadratic
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReindexPair
+import OddMath.QuiverHecke.SwappedAssembly.ReservoirDottedFactorCoordinates

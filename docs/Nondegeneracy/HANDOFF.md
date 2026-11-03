@@ -822,13 +822,21 @@ pass strict checks and three owned audits. Restrict to evaluated modules
 and compare the independently chosen global dots in these same
 coordinates. See [InductionGridDistinctSlides](InductionGridDistinctSlides.md).
 
+`SwappedAssembly.ReservoirDottedFactorCoordinates` now composes the full
+path transports and identifies every actual reservoir cap row/unit column
+with the prescribed `homContentPostCap/Cup` and literal factor adjunction
+and dot words. Strict producer and occupied two-odd consumer checks audit
+all 32 owned declarations. The pure principal crossing block, mixed blocks
+and full matrix square remain; see
+[ReservoirDottedFactorCoordinates](ReservoirDottedFactorCoordinates.md).
+
 `SwappedAssembly.ReservoirDottedAdjunctionRows` now computes the actual
 reservoir branches of every dotted cap row and cup column, including
 exponent zero, for arbitrary Hom inputs. Strict producer and occupied
 two-odd full-factor consumer checks audit all 19 owned declarations.
-Compose the retained inner transports with the endpoint charts to reach
-`homContentPostCap/Cup` and their native factor formulas; principal/mixed
-blocks and residual-error closure remain open. See
+The retained inner transports are now composed in
+`ReservoirDottedFactorCoordinates`; principal/mixed blocks and
+residual-error closure remain open. See
 [ReservoirDottedAdjunctionRows](ReservoirDottedAdjunctionRows.md).
 
 `ELVTensorVacuumWords` now extends the literal chosen tensor Hom to every
@@ -1265,8 +1273,9 @@ remaining fixed-output-content comparison from the actual `augPosMat`
 and `augNegMat` to the two-sector model, including the negative signs,
 absent pure paths and height zero. `ReservoirDottedAdjunctionRows` now
 identifies every prescribed reservoir cap row and unit column through
-the actual roundtrip-path charts. Compose its retained inner transports
-with the native factor charts and identify all principal/mixed entries.
+the actual roundtrip-path charts; `ReservoirDottedFactorCoordinates` now
+identifies these with the literal native factor words. Identify all
+principal/mixed entries next.
 The subsequent residual argument needs the
 literal mixed bend expansions and positive coefficient-ideal membership
 of the closed errors on every `Z : P.H t`. Existing contentwise nilpotent

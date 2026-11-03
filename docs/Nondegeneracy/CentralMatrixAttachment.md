@@ -54,7 +54,9 @@ paths exist. The absent-path cases must then use the proved zero corners
 and their explicit charts. At `H = 0` the positive augmented map has an
 empty extra window; this case must remain in the result.
 
-The smallest next component is the reservoir window row. For every
+The reservoir window rows are now scoped-checked in
+`ReservoirDottedAdjunctionRows` and `ReservoirDottedFactorCoordinates`.
+Their strict concrete two-odd consumers retain arbitrary Hom inputs. For every
 `n : ℕ`, identify
 
     epsEntry c i n ν (reservoir-reservoir path) (empty path) Z
@@ -65,7 +67,8 @@ the `homContentPostCup ... n Z` columns. The statements include `n = 0`
 and the entire coefficient carriers. They require collapsing `compList`
 for the actual dot/cap or unit/dot word; the finite inverse theorem is
 not an input to this calculation. Neither entry uses the unknown mixed
-crossing coefficient. `RouquierHomPostPowers` already proves
+crossing coefficient. The resulting native factor coordinate corollaries apply the identities:
+`RouquierHomPostPowers` proves
 `homContentPostCap_coordinates` and `homContentPostCup_coordinates` for
 the prescribed adjunction. `ELVOld.elvRouquierFamily_adj` in
 `ELVRouquierFamily.lean` retains that adjunction definitionally.
