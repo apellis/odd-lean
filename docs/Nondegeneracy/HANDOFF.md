@@ -954,15 +954,16 @@ slides. See [ProbeBlockDotComparison](ProbeBlockDotComparison.md),
 `ELVProbeEvaluatedDistinctCrossing` identifies the actual rectangular mate
 of the chosen positive evaluated crossing under the specified lower and
 upper j-adjunctions with the constructed invertible OLD mate. Its producer,
-concrete mixed/two-odd consumer and all 62 owned audits pass strict checks.
-The presentation `crossMate` convention comparison and canonical-content/
-weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
+concrete mixed/two-odd consumer now also check the presentation
+`crossMate` equality and invertibility. All 64 owned audits pass strict
+checks. Canonical-content and weight transport remain. See [ProbeEvaluatedDistinctCrossing](ProbeEvaluatedDistinctCrossing.md).
 
 `ELVProbeEvaluatedDistinctMate` restricts the existing untruncated OLD
 distinct mate and its inverse to the evaluated probe. The producer and
 concrete mixed/two-odd consumer pass strict checks and all 54 owned
-audits. Identify this exact map with the evaluated presentation
-cup-crossing-cap, then transport stored contents and original weights.
+audits. Its exact evaluated presentation cup-crossing-cap is identified
+by `ELVProbeEvaluatedDistinctCrossing`; transport canonical stored
+contents and original weights next.
 See [ProbeEvaluatedDistinctMate](ProbeEvaluatedDistinctMate.md).
 
 Scalar specialization is not faithful on the full coefficient algebra.

@@ -20,10 +20,14 @@ counit; no scalar-evaluation faithfulness or normalization premise enters.
 already constructed OLD inverse to the actual bent crossing.
 
 The paired consumer covers connected mixed colours, distinct odd colours,
-actual regular probe inputs, and odd-input naturality. The producer and
-consumer pass strict scoped checks with warnings as errors and both
-compatibility settings; the consumer audits all 62 owned declarations
-against the standard axiom allowlist. Full integration verification remains
-separate. The presentation
-`crossMate` convention comparison and canonical-content/weight transport
-remain separate from this stored-content rectangular identity.
+actual regular probe inputs, and odd-input naturality.
+
+`probeEvaluatedDistinctCrossMate_eq` additionally uses the existing
+`crossMate_piscat_eq_rectangular` convention comparison to identify the
+presentation's actual ordered sideways crossing with the same OLD mate.
+`probeEvaluatedDistinctCrossMate_isIso` supplies its constructed inverse.
+The complete producer, including the presentation convention comparison,
+and its paired consumer pass strict scoped checks with warnings as errors
+and both compatibility settings. The consumer audits all 64 owned
+declarations against the standard axiom allowlist. Full integration
+verification and canonical-content and weight transport remain separate.

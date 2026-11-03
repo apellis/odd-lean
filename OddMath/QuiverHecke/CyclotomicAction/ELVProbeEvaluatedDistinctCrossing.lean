@@ -1,6 +1,7 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvaluatedDistinctMate
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeAppendToAdjunction
 import OddMath.QuiverHecke.CyclotomicAction.ELVPiSCatRectangularMate
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCrossMate
 
 /-! # The positive distinct crossing and its evaluated OLD mate
 
@@ -94,6 +95,21 @@ theorem probeEvaluatedDistinctRectangularMate_eq :
 theorem probeEvaluatedDistinctRectangularMate_isIso (hij : i ≠ j) :
     IsIso (SKM.rectangularMate A B Ei V (probeEvaluatedDistinctCross D Sc m ν i j)) := by
   rw [probeEvaluatedDistinctRectangularMate_eq,
+    ← probeEvaluatedDistinctMateIso_hom D Sc m ν i j hij]
+  infer_instance
+
+/-- The presentation's ordered sideways crossing is the same chosen OLD mate. -/
+theorem probeEvaluatedDistinctCrossMate_eq :
+    SKM.crossMate A B (probeEvaluatedDistinctCross D Sc m ν i j) =
+      probeEvaluatedDistinctMate D Sc m ν i j :=
+  (SKM.crossMate_piscat_eq_rectangular A B Ei V
+    (probeEvaluatedDistinctCross D Sc m ν i j)).trans
+    (probeEvaluatedDistinctRectangularMate_eq D Sc m ν i j)
+
+/-- The actual presentation sideways crossing has the constructed OLD inverse. -/
+theorem probeEvaluatedDistinctCrossMate_isIso (hij : i ≠ j) :
+    IsIso (SKM.crossMate A B (probeEvaluatedDistinctCross D Sc m ν i j)) := by
+  rw [probeEvaluatedDistinctCrossMate_eq,
     ← probeEvaluatedDistinctMateIso_hom D Sc m ν i j hij]
   infer_instance
 
