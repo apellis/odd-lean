@@ -950,12 +950,21 @@ a lower predecessor. Strict mixed/nonempty-missing/reordered/shifted
 consumer checks audit all 22 owned declarations. Lift the upper-loop
 chart to evaluated categories and transport the constructed missing
 boundary coefficients; see [ProbeReindexUnitColumns](ProbeReindexUnitColumns.md).
+`ELVProbeWeightLocalMateCoordinates.probeOldWeightRouquierMate_comparison`
+now identifies every parity component of the occupied global principal
+with its selected stored mate. The actual negative crossing and both
+chosen adjunctions are retained, with no inverse premise. Strict mixed
+regular/parity-shifted consumer checks audit all 55 declarations. Use
+this square together with the all-exponent rows to transport supported
+local inverses, then glue all weight coordinates; see
+[ProbeWeightLocalMateCoordinates](ProbeWeightLocalMateCoordinates.md).
+
 `ELVProbeWeightCapCoordinates.probeOldWeightCapPower_total_comparison`
 now retains the actual global dot-power/counit row through its exact
 predecessor equality at every exponent. Strict mixed regular/parity-
 shifted/nonempty/all-exponent consumer checks audit all 25 declarations.
 Together with the unit comparisons below, these supply every row needed
-for product inverse gluing. Attach the same-colour principal coordinate;
+for product inverse gluing. The principal coordinate is now checked above;
 see [ProbeWeightCapCoordinates](ProbeWeightCapCoordinates.md).
 `ELVProbeWeightUnitCoordinates.probeOldWeightUnitPower_total_comparison`
 now retains the actual global unit followed by every dot power through
