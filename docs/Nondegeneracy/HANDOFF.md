@@ -45,10 +45,14 @@ The complete inventory of preserved topic variants is in
 ## Exact-content action attachment
 
 Retain the content categories required by `SwappedActionAssembly` F4 and
-(A1). Embed `SFun(T_b,W_c)` into the whole-weight Hom category by projection
-to the input block `b` and zero extension from the output block `c`. Prove
-closure and comparison squares for pre/post E and F, parity shifts and
-the selected inverse entries. Use those squares to discharge absent
+(A1). `ELVContentHomSupport` now realizes arbitrary `SFun(T_b,W_c)` by
+input projection and output zero extension, retains its selected objects
+and maps, and proves all four selected primitive E/F functor equalities,
+post E/F support, absent pre-E/post-F zero components and parity-shift
+support. Strict actual tensor/two-odd affine collision/nonzero exterior
+coefficient consumers audit all 35 declarations. Construct whole natural
+comparison isomorphisms and the generator-stable replete supported Hom
+category, then retain the selected inverse entries there. Use those squares to discharge absent
 native composites before transferring full factor inverses to the
 zero-padded central matrix. The tensor vacuum `selectedHom` is the
 supported initial family for this construction.
