@@ -2593,3 +2593,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVKernelBoundaryEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedWindowInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedKernelBoundaryCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCentreWhiskering
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.FactorClosures
