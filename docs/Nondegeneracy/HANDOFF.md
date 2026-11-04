@@ -20,11 +20,143 @@ integrations through #1047 have passed the full warning-free build,
 global axiom audit and all concrete consumers; exact source heads and
 integration evidence are in STATUS. The final theorem is open. Restart
 with the canonical vacuum coefficient class and regular-probe chart
-coherence, the chosen inverse-row/bubble normalization, and exact
-pairing-extension quotient-kernel transport. The most recent unfinished
+coherence, the chosen inverse-row/bubble normalization, and sufficient
+pairing-extension observation transport. Before developing literal ideal
+comparisons, assess the simplification proposed below. The most recent unfinished
 source tree is `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`; its exact
 failure boundaries and paths appear below and in ResearchHistory.
 
+
+## Work backward from the final theorem
+
+**Recommended next approach: identify the smallest remaining inputs of the
+final recovery theorem before expanding the supporting library.** The
+suggestions below concern proof organization and possible simplifications;
+they are not new checked results or changes to the Phase 1 hypotheses.
+
+The factor, inverse and complete supported-action constructions have closed
+substantial obligations. However, earlier descriptions of the remaining work
+as observation, bubble attachment or final assembly concealed many separate
+comparisons between content categories, weight categories, functors, matrices,
+evaluated maps and quotient coordinates. A checked formula in one of these
+representations does not automatically identify the maps used by the final
+consumer. Repeatedly introducing intermediate comparison lemmas can enlarge
+the library without closing that consumer's missing fields.
+
+Start at `SKM.nondegeneracyConjecture_of_charZeroField` and retain its
+already-proved reduction to the field input. For that input, use the existing
+finite-colour and orientation reductions and
+`nondegeneracy_of_restrictColours_vacuum_evaluations`. Work backward through
+`UpwardModuleAction.toSwappedVacuumEvaluation` in
+[SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean).
+The complete supported action is already constructed; do not reopen its
+presentation relations or require the stronger global relation record in
+`SwappedVacuumObservation` merely to reach this endpoint.
+
+Maintain a short dependency checklist in the current critical chain. For
+each missing input, give its exact Lean statement, the chosen maps it must
+refer to, the existing results that supply its inputs, and the named final
+field that consumes it. Distinguish unproved mathematical equalities from
+encoding/elaboration failures and from optional stronger identifications.
+Do not count an intermediate theorem with an assumed compatibility equation
+as having discharged that equation. Every additional helper should have a
+specific consumer on this checklist.
+
+| Endpoint input | Boundary to preserve |
+| --- | --- |
+| `bubbles_eq` | Identify the presentation's source-placed normalized bubbles with the substituted coefficient action on the chosen action modules, in both parities and all required heights. Raw coefficient actions or candidate polynomial caps alone do not supply this equality. |
+| `evaluation` | Join the canonical vacuum coefficient class and contextual dot/crossing observations to the literal affine action, coefficient placement and chosen quotient coordinate map. |
+| `ideal`, `ideal_le`, `coordinate` | Supply a quotient with the required lower degree bound and actual evaluation formula. Audit whether a transported ideal suffices before requiring equality with a separately named ideal. |
+| Substitution, placement and bounds | Reuse the existing substitution, placement-sign and explicit parameter-schedule results, checking their compatibility with the selected coordinates. Their availability does not discharge the two observation equalities above. |
+
+An informative next milestone is one complete bounded recovery instance
+using the constructed supported action, its actual normalized bubbles and
+its coordinate map, with every hypothesis discharged. Choose connected
+mixed or two-odd data, retain nonzero independent odd coefficient directions,
+and include a word pair that exercises crossings. This is a diagnostic of
+the whole chain, not a replacement for the general theorem. The existing
+`scripts/NonVacuity/SwappedVacuumBlock.lean` conversion example accepts a
+vacuum block as an input; it does not itself construct such an instance.
+
+Prefer a focused proof attempt with an explicit endpoint over broad parallel
+helper development. Its outcome should be a closed final-field obligation,
+a complete bounded instance, or a precise obstruction explaining why the
+selected maps cannot yet satisfy the endpoint. If only further helpers
+accumulate, reassess the representation and dependency choices before
+expanding them again. Follow the existing encoding-redesign rule after
+repeated elaboration failures; do not raise proof budgets.
+
+Assess progress by closed endpoint obligations and newly discovered
+dependencies. Counts of files, declarations, audits or agreeing assessments
+do not supply a stable estimate of remaining effort. A passing build checks
+the committed statements, including their hypotheses; it does not establish
+that the missing inputs to a conditional recovery theorem can be constructed.
+
+## Potential simplifications to assess before further transport work
+
+### Pull back the observation ideal instead of identifying its generators
+
+**Proposed, not Lean-checked.** The `SwappedVacuumEvaluation` interface takes
+an arbitrary submodule `ideal`, its lower degree bound, and a coordinate map
+with the required evaluation equation. It does not require that submodule
+to be definitionally or propositionally equal to the named original-datum
+power-word kernel.
+
+Let `C` and `Cₑ` be the coefficient-extended affine Hom spaces before and
+after the pairing extension, and let
+`Φ := PairingExtension.coefficientHomEquiv D Sc s t : C ≃ₗ[k] Cₑ`.
+This equivalence, its `sourceCoefficientHom` square, basis compatibility and
+forward upper/lower filtration preservation are already checked in
+[PairingExtensionPBW](../../OddMath/QuiverHecke/PairingExtensionPBW.lean).
+Given the extended-datum observation submodule `Kₑ`, set
+
+```
+J := Submodule.comap Φ.toLinearMap Kₑ
+Φbar : C ⧸ J ≃ₗ[k] Cₑ ⧸ Kₑ
+coordinate := Φbar.symm.toLinearMap ∘ₗ coordinateₑ
+```
+
+The proposed argument still needs the following proofs:
+
+- Derive inverse filtration preservation from the checked basis-preserving
+  equivalence and degree equality. Forward preservation alone is insufficient.
+  Then `Kₑ ≤ ExtendedAtLeast ... bound` implies the corresponding bound for
+  `J`.
+- Construct the induced quotient equivalence `Φbar` and its quotient-map
+  formula; transport the literal evaluation equation through it using
+  `coefficientHomEquiv_source` and the checked affine/action pullback square.
+- Transport the coefficient action and substitution through
+  `SKM.PairingExtension.coefficientEquiv`, and either conjugate the placement
+  equivalence by `Φ` or prove agreement with the existing placement sign.
+  Retain the required filtration bounds and the checked bubble pullback square.
+
+If these supply the final evaluation interface, equality of `J` with the
+named original coefficient-power/transformed-boundary ideal is unnecessary
+for that route. In particular, do not automatically resume
+`PairingExtensionComposition` and `PairingExtensionPowerIdeal` just because
+their drafts exist. Determine which of their claims a final consumer still
+needs. This may avoid the generator-by-generator ideal transport and some
+coefficient-Hom composition work; it does not remove the extended-datum
+kernel bound, actual vacuum observation or normalized bubble obligations.
+
+### Keep comparisons as weak and local as their consumer permits
+
+The recovery interface is indexed by a fixed external weight, word pair
+and degree bound. Preserve the existing order in which those are chosen
+before the truncation parameters. Do not require a simultaneous fixed-cutoff
+evaluation on all words or a global first-boundary quotient identification
+unless a named consumer needs it. Similarly, bounded recovery does not require
+the bubble substitution to descend to an automorphism of the finite truncated
+coefficient algebra; use its checked untruncated equivalence and bounded
+filtration properties.
+
+The current `bubbles_eq` field is an operator equality on the whole chosen
+module. Checking a few vectors or only the vacuum is not a substitute for it.
+Any proposed reduction to a coefficient-generated cyclic subspace would first
+need a sufficient recovery criterion and the required invariance proofs;
+no such shortcut is asserted here. The highest-risk remaining equations are
+still the chosen inverse-row/bubble normalization and the actual canonical
+observation formulas.
 
 ## Proposed argument restart trees
 
@@ -2195,10 +2327,13 @@ Next discharge the following dependencies in order.
    exterior products. `PairingExtensionObservation` transports the action
    and coefficient filtrations; `PairingExtensionPBW` constructs the
    actual affine inverse and full coefficient/PBW equivalence, preserving
-   joint degree and both filtrations (nineteen owned audits). Next prove
-   composition compatibility, transport the literal coefficient-power and
-   transformed last-boundary ideals, and identify the exact observation
-   kernels. Filtration transport does not itself identify those kernels. Restricting the
+   joint degree and both filtrations (nineteen owned audits). Next assess
+   the pulled-back-ideal construction proposed above: the final consumer
+   needs sufficient observation transport and a lower degree bound, rather
+   than an identification with a prescribed original-datum ideal. Prove
+   literal composition and generator/ideal comparisons only where a named
+   remaining consumer requires them. Forward filtration transport alone
+   supplies neither the inverse bound nor the quotient evaluation equation. Restricting the
    factors separately loses the occupied extended coset with second
    coordinate `-P`; only the combined Hom heights cancel this coordinate.
 6. Fill `UpwardModuleAction.toSwappedVacuumEvaluation` with the constructed

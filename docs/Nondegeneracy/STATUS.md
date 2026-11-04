@@ -28,7 +28,7 @@ audit and every concrete consumer.
 
 The canonical vacuum quotient class, regular-probe compatibility of
 contextual charts, chosen all-height inverse-row/bubble normalization,
-exact power-quotient kernel transport and final bounded recovery remain
+sufficient quotient-observation transport and final bounded recovery remain
 open. Existing coefficient-action formulas alone do not identify the
 presentation's bubbles. Preserved drafts are not completed results.
 
@@ -103,7 +103,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Arbitrary oriented boundaries | Full nondegeneracy iff upward independence at every weight; source and target exchange, including same colours, are discharged | [UpwardNondegeneracyReduction](../../OddMath/SKM/UpwardNondegeneracyReduction.lean), `nondegeneracy_iff_upward_independence` |
 | Arbitrary colour sets | Finite-colour upward injectivity implies full nondegeneracy, retaining the original weight group | [FiniteColourNondegeneracy](../../OddMath/QuiverHecke/FiniteColourNondegeneracy.lean), `nondegeneracy_of_restrictColours_upward` |
 | Characteristic-zero field reduction | The characteristic-zero field case for a fixed datum implies nondegeneracy over every ordinary commutative ring with 2 invertible, for homogeneous parameters and supplied CScalars; no flatness or reducedness is needed | `SKM.nondegeneracyConjecture_of_charZeroField`, `nondegeneracyConjecture_scalarChange`; imported in OddMath and exercised by `NonVacuity/GroundRingNondegeneracy`. The unresolved input is `CharZeroFieldNondegeneracy D` |
-| Original-datum action pullback | `SKM.PairingExtension` embeds every region and defining relation along `μ ↦ (μ,0)`, descends to a linear presentation functor, and retains composition and normal-form diagrams. `UpwardModuleAction.restrictPairingExtension` pulls back the combined action with unchanged carriers. Strict producers and connected mixed/occupied-probe/coroot-kernel consumer pass, auditing 89 declarations | Affine and source-placed normalized bubble comparisons are now scoped-checked in `PairingExtensionAffine` and `PairingExtensionBubbles`; exact observation-kernel transport remains |
+| Original-datum action pullback | `SKM.PairingExtension` embeds every region and defining relation along `μ ↦ (μ,0)`, descends to a linear presentation functor, and retains composition and normal-form diagrams. `UpwardModuleAction.restrictPairingExtension` pulls back the combined action with unchanged carriers. Strict producers and connected mixed/occupied-probe/coroot-kernel consumer pass, auditing 89 declarations | Affine and source-placed normalized bubble comparisons are now scoped-checked in `PairingExtensionAffine` and `PairingExtensionBubbles`; sufficient observation-quotient transport remains; assess the proposed pulled-back ideal in HANDOFF |
 | Explicit vacuum parameters | `SwappedVacuumParameters` identifies the scheduled probe exponent with the actual factor cutoff and constructs highest weights `(0,P)` and `(-μ,P)`, with literal difference `(μ,0)`. Strict producer and connected mixed/repeated-word/coroot-kernel consumer pass, auditing all 22 declarations; the chosen coefficient powers discharge actual half-turn window injectivity | The action pullback and its affine/normalized-bubble comparisons are scoped-checked; transport exact observation kernels |
 | Recovery consumer | Vacuum evaluations at all weights, word pairs and bounds imply nondegeneracy over a field | [SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean), `nondegeneracy_of_vacuum_evaluations`; evaluations remain hypotheses |
 | Observation assembly | Swapped observations imply nondegeneracy, including finite-colour form | [SwappedConditionalNondegeneracy](../../OddMath/QuiverHecke/SwappedConditionalNondegeneracy.lean); concrete observations remain hypotheses |
@@ -572,7 +572,7 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Padded odd vacuum bend | `ELVProbeVacuumBendSeries` gives the finite evaluated sum; `ELVProbePaddedVacuumBend.paddedVacuumDx_odd` identifies the actual padded central entry through its displayed source/target charts. Strict two-odd, unequal-cutoff, nonzero-coefficient consumers and all eight/41 owned audits pass | Identify the chosen inverse rows and normalized presentation bubbles |
 | Even moving-colour vacuum caps | `ELVProbeEvenCentralBend`, `ELVProbeEvenCentralSlide` and `ELVTensorEvenVacuumCap` derive the finite negative geometric sum, actual slide, polynomial-cap annihilation below height zero and principal-cap equality at height zero. Strict connected mixed-data/nonzero-odd-input consumers and 15/18/27 owned audits pass | Actual padded/inverse-row attachment and all-height bubble normalization remain |
 | All-vector tensor polynomial windows | `ELVTensorVacuumPolynomialWindow` proves the whole-map low-unit closure window, including the final identity and earlier zero columns, retaining two independent exterior directions. Strict producer/consumer and 17 owned audits pass | Attach the chosen negative inverse row using actual padded unit charts |
-| Original-datum affine and coefficient transport | `PairingExtensionAffine.alpha_map`, `PairingExtensionBubbles.homMap_bubAt_betaSYM`, `PairingExtensionObservation` and `PairingExtensionPBW` retain the exact affine embedding, full normalized bubble coefficients, pulled-back action, full coefficient/PBW basis and both joint filtrations. Strict occupied mixed/two-odd/coroot-kernel consumers pass | Exact composition/ideal/kernel transport and canonical observation remain |
+| Original-datum affine and coefficient transport | `PairingExtensionAffine.alpha_map`, `PairingExtensionBubbles.homMap_bubAt_betaSYM`, `PairingExtensionObservation` and `PairingExtensionPBW` retain the exact affine embedding, full normalized bubble coefficients, pulled-back action, full coefficient/PBW basis and both joint filtrations. Strict occupied mixed/two-odd/coroot-kernel consumers pass | Sufficient quotient transport and canonical observation remain; HANDOFF proposes avoiding stronger literal ideal identifications |
 | Global/local dot and crossing charts | `SupportedTensorEntryLayerCharts` identifies all three actual native layer arrows and their conjugacies through the canonical whole-Hom row charts. Strict distinct/repeated two-odd nonzero-action consumers and all 118 owned audits pass. `ReservoirWordFunctor` exposes the chosen nil/cons components without changing its definitions | Compatibility of these chart changes after regular-probe evaluation remains open |
 | Presented single-layer action | `SupportedActionLayers.pointwiseUpwardModuleAction_act_layer` identifies the complete presentation action with the chosen restricted native matrix layer. Strict nonzero actual-action consumer and 20 owned audits pass | Canonical regular-probe/quotient layer observations remain |
 | Canonical vacuum row and source value | `SupportedTensorVacuumObservation.tensorOriginalWordEntry_vacuum` reads the exact original source isomorphism; its strict nonzero consumer audits 31 declarations. `SupportedTensorUnitObservation.tensorOriginalSourceUnit_wordValue` gives the literal word-unit normalization, with the extended strict consumer auditing 70 declarations | Full integration; finish target-label transport and the vacuum coefficient quotient class |
@@ -848,10 +848,14 @@ and normalized content/weight transport are not asserted.
    series in both parities and every height. These are substantive
    comparisons, not consequences of the coefficient action alone.
 3. The combined action pullback, exact affine map, source-placed normalized
-   bubble map and coefficient/PBW equivalences are checked. Prove
-   composition compatibility and transport the literal coefficient-power
-   and transformed last-boundary ideals, hence the actual observation
-   kernels. Joint degree-filtration transport alone is insufficient.
+   bubble map and coefficient/PBW equivalences are checked. Supply the
+   observation quotient and its lower degree bound on the original datum.
+   Before proving literal coefficient-power and transformed-boundary ideal
+   identifications, assess the proposed pulled-back ideal in
+   [HANDOFF](HANDOFF.md#potential-simplifications-to-assess-before-further-transport-work).
+   The final interface permits this choice, but its inverse filtration,
+   quotient and evaluation transport proofs remain unverified. No obligation
+   is closed by this proposal. Joint degree-filtration transport alone is insufficient.
    Restrict the combined action along `μ ↦ (μ,0)`; restricting its factors
    separately would lose the occupied extended coset of second coordinate
    `-P`. The explicit highest weights and cutoff bounds are already proved.
