@@ -39,21 +39,33 @@ private def capTotalEvaluation {k C A : Type*} [CommRing k]
   map_id F := SuperNatTrans.id_total F.toFunctor N
   map_comp f g := Superfunctor.comp_total f g N
 
-private theorem cap_total_pow {k C A : Type*} [CommRing k]
+private theorem total_pow_square {k C A : Type*} [CommRing k]
     [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
-    {F : Superfunctor k C A} (f : End F) (n : ℕ) (N : C) :
-    (f ^ n).total N = (f.total N) ^ n :=
-  map_pow ((capTotalEvaluation N).mapEnd F) f n
-
-private theorem power_square {C : Type*} [Category C] {A B : C}
-    (x : End A) (e : A ⟶ B) (y : End B) (h : x ≫ e = e ≫ y) (n : ℕ) :
-    (x ^ n) ≫ e = e ≫ (y ^ n) := by
+    {F : Superfunctor k C A} (f : End F) (N : C) {B : A} (e : F.obj N ⟶ B) (y : End B)
+    (h : f.total N ≫ e = e ≫ y) (n : ℕ) :
+    (f ^ n).total N ≫ e = e ≫ (y ^ n) := by
   induction n with
-  | zero => simp only [pow_zero, End.one_def, Category.id_comp, Category.comp_id]
+  | zero =>
+    rw [pow_zero, pow_zero, End.one_def, End.one_def]
+    change (capTotalEvaluation N).map (𝟙 F) ≫ e = e ≫ 𝟙 B
+    rw [Functor.map_id, Category.id_comp, Category.comp_id]
   | succ n ih =>
-    rw [pow_succ', pow_succ', End.mul_def, End.mul_def, Category.assoc, h,
-      ← Category.assoc, ih, Category.assoc]
+    rw [pow_succ, pow_succ, End.mul_def, End.mul_def]
+    change (capTotalEvaluation N).map (f ≫ f ^ n) ≫ e = e ≫ y ≫ y ^ n
+    rw [Functor.map_comp, Category.assoc]
+    change f.total N ≫ (f ^ n).total N ≫ e = _
+    rw [ih, ← Category.assoc, h, Category.assoc]
+
+/-- Chart bookkeeping for a cap row: a pulled-back square, a block
+selection and a normalized native identity compose. -/
+private theorem cap_charts_attach {C : Type*} [Category C]
+    {A X U U₀ U' Y V V' : C} (s : A ≅ X) (u : X ≅ U) (hU : U = U₀) (e : U₀ ≅ U')
+    (c : X ⟶ Y) (p : Y ⟶ V) (q : V ⟶ V') (c₀ : U ⟶ V) (c₁ : U₀ ⟶ V) (d : U' ⟶ V')
+    (hsq : c ≫ p = u.hom ≫ c₀) (hE : c₀ = eqToHom hU ≫ c₁) (hn : c₁ ≫ q = e.hom ≫ d) :
+    (s.hom ≫ c) ≫ p ≫ q = (s ≪≫ u ≪≫ (eqToIso hU ≪≫ e)).hom ≫ d := by
+  simp only [Iso.trans_hom, eqToIso.hom, Category.assoc]
+  rw [reassoc_of% hsq, hE, Category.assoc, hn]
 
 private def reservoirRow {k : Type u} [CommRing k]
     {A B R : PiSCat.{u,u,u+1} k} (E : A ⟶ B) (F : B ⟶ A) (Z : A ⟶ R)
@@ -147,10 +159,9 @@ theorem vacuumPreReservoirCap_native (hP : 0 < probeCutoff D m i) (n : ℕ) :
     (vacuumPreSourceIso D Sc m Λ hc W muM i h H).hom ≫
       (ProbeVacuumCap.shiftedPreDot D Sc m (W muM) i H ^ n) ≫
         ProbeVacuumCap.shiftedPreCap D Sc m (W muM) i hP H := by
-  have hd := power_square _ _ _ (vacuumPreDot_source D Sc m Λ hc W muM i h H hP) n
-  rw [← cap_total_pow] at hd
   rw [SKM.homReservoirCap, Superfunctor.comp_total, Category.assoc,
-    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP, ← Category.assoc, hd,
+    vacuumPreCounit_native D Sc m Λ hc W muM i h H hP, ← Category.assoc,
+    total_pow_square _ _ _ _ (vacuumPreDot_source D Sc m Λ hc W muM i h H hP) n,
     Category.assoc]
 
 end Regular
@@ -305,10 +316,7 @@ theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
     rw [dif_pos (show StepValid (up i) true (((0, 0) : Sector I)) from by trivial)]
     rfl
   rw [hcap]
-  simp only [paddedVacuumCapTargetIso, paddedVacuumSourceIso, vacuumPreBlockSourceIso,
-    Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom, Category.assoc]
-  erw [reassoc_of% hsq, hE, Category.assoc, hn]
-  rfl
+  exact cap_charts_attach _ _ hSrc _ _ _ _ _ _ _ hsq hE hn
 end Padded
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
