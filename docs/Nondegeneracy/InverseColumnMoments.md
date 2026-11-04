@@ -63,6 +63,17 @@ commutation of `e` with the polynomial coefficients is used.
 the shapes of `tensorPowerVacuumCap_moment_even` and
 `tensorPowerVacuumCap_moment_odd`, with `e = (-1)^(N+1) δ`.
 
+## Even colours: the substituted series
+
+`InverseColumnEvenSeries.lean` treats `q = 1` with the even probe
+`(x - 1)^P`, `H + N = P`. The reversed probe coefficients are `(1 - z)^P`
+(`reversed_sub_one_pow`), equal to the inverse probe series at an even
+colour (`probeSeriesInv_even`). If the reservoir moments `T_(N-1+l)` are the
+coefficients of `A = 1/E(-z)` mapped along `φ`, then
+`even_inverse_column_moments` gives `B_(H-1+s) = φ(coeff s (substitutedSeries
+(probeSeries P) i))`, the right side of `AdjunctionBubbleSeries.left_even`.
+The proof is the odd argument with `e = 0`.
+
 ## Remaining for item 2
 
 1. Instantiate `t`, `b`, `φ`, `e` on the tensor vacuum: `t` from
@@ -73,4 +84,5 @@ the shapes of `tensorPowerVacuumCap_moment_even` and
 2. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
    column moments to produce the `left_odd` field; the odd coefficients give
    the odd bubble.
-3. Even colours (`q = 1`, probe `(x - 1)^P`) and the other heights.
+3. The same instantiation for even colours (series step done above) and
+   the other heights.

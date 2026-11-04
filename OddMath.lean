@@ -1941,6 +1941,7 @@ import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnMoments
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 
