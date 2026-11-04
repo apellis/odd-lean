@@ -1937,236 +1937,104 @@ nilpotence premise. Their strict consumers audit 38 and 17 declarations.
 `SupportedFactorPaths` and `SupportedGeneratorEntries` identify its actual
 paths and restrict the literal generators, including the constructed mixed
 crossing; strict nonzero affine two-odd consumers audit 10 and 21 declarations.
-Next attach the supported matrix presentation, native inverse transfer and
-literal residual closure.
+These four producers passed full CI in #1033. Supported matrix-presentation
+transport and named native inverse data are now scoped-checked below; central
+inversion and the final observations remain open.
 
 ## Central augmented-matrix attachment
 
-The represented inverse-degree and raw closure calculations, together with
-the chosen weight/content/weighted/OLD inverse coordinates and literal
-closure reconstruction, are full-CI verified in #1030. The final chosen
-closure degree and central invertibility remain separate obligations.
+The chosen factor, its full multicolour records, actual mixed coefficient,
+inverse identities and supernaturality are constructed. Integrations #1032
+and #1033 passed full build, global axiom audit and every concrete consumer.
+#1033 verifies the component coefficient expansions, arbitrary stored-content
+closure/boundary coordinates, native coefficient contraction equations,
+output projection, supported paths/generators and all four supported pure
+factor inverse interfaces. Its source head is `928b4da392aa4b66a08f02c89f08fa3e0b1f14e2`,
+run 41753142717, merged at `55b95505ef22e26c520f836bb42018bab1ff648d`.
 
-The positive-degree residual closure remains a substantive proof target.
-[ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
-source-coefficient-image and representable evaluation forms. The intrinsic represented inverse degree is now proved; its attachment
-to the chosen whole-weight closure remains open. The intrinsic integer
-grading of the literal represented lower-loop kernel is now checked in
-`ELVIndResKernelInteger`, with actual balance relations and an internal
-direct-sum decomposition (22 owned audits; full CI verified in #1029). `IntegerMatrixGrading` and `ELVKernelMatrixInteger` now construct independent
-finite source/target shifts, prove both prescribed forward matrices have
-degree zero and derive degree `2*d_i` for both principal inverses. Strict
-paired checks include positive, negative and zero heights, off-content
-inputs and a proved nonzero odd inverse; all 79 owned declarations are
-audited. `ELVKernelClosureDegree` now proves the raw unit-inverse-cap
-coefficient degree `n + 2*d_i*(r+s+1)` and both OLD module evaluation
-equations, with 13 owned declarations audited by its strict paired
-consumer. Identify these raw inverses with the chosen reservoir principal,
-then use Yoneda to realize the positive-degree closure on every module.
-`ELVWeightPrincipalInverseCoordinates` now identifies both literal chosen
-whole-weight principal inverses with content-target inverses on each
-supported block, using finite inverse uniqueness rather than unfolding
-its choice. The strict mixed-parity/all-height/nonzero odd singleton
-consumer audits all 46 owned declarations.
-`ELVContentPrincipalInverseCoordinates` supplies the content-to-weighted
-part of that connection for either orientation and arbitrary stored
-contents, using only the prescribed forward equations and inverse
-uniqueness. Its strict paired checks audit all 83 owned declarations.
-`ELVModuleInverseKernelCoordinates` supplies the OLD module-to-kernel
-part, including both principal evaluations on arbitrary pure tensors and
-a nonzero odd input/inverse consumer; all eight owned declarations are
-audited. `ELVWeightedInverseCoordinates` identifies both weighted inverse
-charts, exact-content components and their raw principal tensor values;
-its strict paired nonzero odd weighted-inverse consumer audits all 28
-owned declarations. `ELVWeightedLocalInverseCoordinates` now extracts both selected local
-principal components (11 owned audits), and
-`ELVWeightedKernelClosureCoordinates` identifies their literal closure
-values at canonical OLD quotient words with the raw coefficient action
-(28 owned audits). Both passed full CI in #1032 with strict paired nonzero checks.
-`ELVWeightedContentKernelClosureCoordinates` now extends those actions to
-arbitrary stored contents and proves both source coefficient degrees.
-Its producer and signed-height/both-parity/nonzero consumer pass strict
-checks, auditing all 36 declarations. The final all-module chosen reservoir
-transport and complete reconstructed closure degree remain open. Do not infer an
-integer grading on arbitrary ungraded module Homs.
-`ELVModuleCentreDegree` now supplies the reconstruction implication:
-represented parity-component degree is equivalent to the degree of the
-recovered source coefficient, whose realization equals the whole natural
-transformation on every exact-content module. Strict nonzero odd
-positive-content checks audit all three declarations; full CI verified in #1029. The actual
-closures are now constructed in `ELVReservoirClosures`, retaining the
-literal `elvRouquierFamily.loc` principal fields. `ELVWeightCentreBlocks`
-proves their exact-content dependence by even inclusion naturality; the
-reconstructed coefficients act as those closures on every whole-weight
-input. Strict paired odd positive-content checks audit 24 and 15
-declarations. `ELVReservoirAbsentClosure` now proves both literal closures vanish at
-blocks without predecessors (two owned audits).
-`ELVModuleCentreTotalDegree` derives source coefficient degree from total
-represented evaluation, including both parity projections (three owned
-audits). Both passed full CI in #1032 with strict paired checks. The supported all-output degree
-attachment still requires its final coordinate validation; see
-[ModuleCentreDegree](ModuleCentreDegree.md) and
-[ReservoirClosures](ReservoirClosures.md).
+The following successor results pass strict producer/consumer checks;
+full integration remains a separate gate.
 
-`Sigma.FactorWindowInverse` and `SupportedFactorWindowInverse` now prove
-the four reservoir/probe cap/cup inverse interfaces on every supported
-sector, including all absent corners and empty height-zero windows. Native
-absence is derived from exact support, not the original-weight fibre. Strict
-nonzero two-odd collision-block consumers audit 40 and 15 declarations.
-The named reservoir principal/window coordinate attachment remains next;
-see [SupportedFactorWindowInverse](SupportedFactorWindowInverse.md).
+- `ELVReservoirClosureDegree` proves degree `2*d_i*(r+s+1)` for both
+  reconstructed source coefficients of the literal chosen principal
+  closures, on every output content. Its 150-declaration audit and concrete
+  consumers retain both height orientations, both parities, arbitrary
+  modules and all absent blocks. The coordinate chain uses inverse
+  uniqueness, weighted-to-OLD kernel comparison, and represented source
+  reconstruction; no integer grading on arbitrary module Homs is assumed.
+  See [ChosenReservoirClosureDegree](ChosenReservoirClosureDegree.md).
+- `ELVReservoirClosureIdeal` places the two coefficients in the content
+  coefficient grading and their literal native postcomposition closures,
+  after output projection, in level one of the jointly nilpotent ideal.
+  Arbitrary surrounding morphisms are allowed. All eight public APIs are
+  exercised on an occupied odd fixture; 15 declarations are audited.
+- `ELVWeightWindowInverseCoordinates` and `ELVAbsentWindowInverseCoordinates`
+  attach the chosen finite inverse slots. `ELVReservoirBoundaries` retains
+  the literal `W.loc.boundaryPos/boundaryNeg` and reconstructs their source
+  actions. `ELVReservoirBoundaryDegree` proves source degree `2*d_i*(r-j)`
+  on every stored output for finite inverse slot j, with 144 audited
+  declarations. The absent negative unit boundary can be nonzero: its
+  diagonal acts as identity on a proved nonzero vacuum vector. Preserve
+  this branch when using positivity for r>j. `ELVReservoirBoundaryIdeal`
+  now places these off-window actions and their literal native contractions
+  in level one, with arbitrary surrounding maps. Its strict paired consumer
+  exercises all eight public APIs and audits all 19 declarations.
+- `Sigma.ReservoirWindowInverseData` names the chosen padded reservoir
+  principal/window entries, their inverse equations and occupied/absent
+  coordinates. All 85 declarations are audited. Use these exact entries
+  with the native contraction equations in `CentralInverse.FactorClosures`
+  before applying the closure and off-window coefficient-ideal lemmas.
+- `ELVProbeBendEvaluation`, `Sigma.FiniteBendEvaluation` and
+  `ELVProbeFiniteBends` give both actual finite insertion series from the
+  constructed coefficient, probe unit and component reservoir bound.
+  `Sigma.BendDotCoordinates` identifies all four signed raw dot charts;
+  `SKM.RouquierHomBendMonomials`, `Sigma.BendSeriesAlgebra` and
+  `Sigma.BendWindowMonomials` give the separated native cap/cup monomials
+  and inverse-power algebra. Their paired consumers include nonzero
+  actual probe objects and noncommuting operator examples.
+- `SupportedMatrixModules` and `SupportedPresentation` transport the
+  literal matrix generators and every relation through the full supported
+  inclusion. Their constructor retains `SwappedObligations`, including
+  central inversion and closed moments. `SupportedTensorVacuum` supplies
+  the even supported path comparison for the selected tensor Hom; its
+  affine two-odd consumer proves a two-letter value is nonzero.
+  `SupportedTensorContexts` gives its factor-map square in both literal
+  selected-vacuum path contexts; strict nonzero coefficient-class consumers
+  audit all 20 declarations. Literal composed layer entries remain next.
 
-`CentralInverse.FactorClosures` now identifies both native principal
-closures and both finite inverse boundary contractions with the
-post-whiskering actions of the literal `W.loc` coefficients. The source
-and target chart pairs cancel exactly, before any output evaluation.
-Its constructed odd ELV/both-height-sign/both-zero-height consumer passes
-strict checks and audits all six declarations. Combine these equations
-with the named padded reservoir inverse fields and the content ideal;
-see [FactorClosures](FactorClosures.md).
+Next discharge the following dependencies in order.
 
-The finite-window attachment is independently scoped-checked in
-`ELVContentWindowInverseCoordinates`, `ELVKernelBoundaryDegrees`,
-`ELVKernelBoundaryEvaluation`, `ELVWeightedWindowInverseCoordinates` and
-`ELVWeightedKernelBoundaryCoordinates`. Their strict paired consumers audit
-77, 17, 6, 26 and 25 declarations. The literal weighted local boundary is
-represented by a source coefficient of degree `2*d_i*(r-j)`. `ELVWeightedContentKernelBoundaryCoordinates` now supplies the arbitrary
-stored-content action and degree transport; its strict paired consumer audits
-all 34 declarations. Next identify it with the chosen whole-weight reservoir
-boundary at every stored content.
-The absent positive-height cap branch vanishes, but the absent negative-height
-unit window can retain coefficients; use its chosen absent inverse coordinates.
-No reservoir boundary ideal membership is asserted yet. See
-[BoundaryCoefficientDegrees](BoundaryCoefficientDegrees.md).
+1. Attach the checked off-window boundary and principal closure ideal
+   memberships to the named padded inverse entries. Finite-window Kronecker equations come from the constructed
+   reservoir inverse; outside the window use the positive source degree.
+2. Finish the exact `hCx`/`hDx` separated sums with the prescribed signs
+   and negative probe Aut powers. Their required output category consists
+   of whole superfunctors to a fixed content module category. The existing
+   `ELVWeightDotBounds` supplies an exponent uniform in all input modules
+   at that fixed content. Preserve this witness through parity shifts,
+   restriction, precomposition and charts, then use
+   `RegularReservoir.evalHomFunctor`. A bound over the whole weight fibre
+   is unnecessary; pointwise evaluated-module sums alone do not establish
+   the required whole-functor ideal memberships.
+3. Attach the actual probe slide and cap/cup Aut windows in the supported
+   padded coordinates. Combine the separated sums, the reservoir closures
+   and the off-window contractions in the four `ResidualComparison` cases.
+   `contentModuleCoefficientIdeal` has all morphisms at level zero and is
+   jointly nilpotent by the source coefficient bound. This is the remaining
+   central inversion argument, not a supplied inverse hypothesis.
+4. Lift the resulting output-content matrix inverses and instantiate the
+   supported presentation. `MatrixEvaluation`, `MatrixProductEvaluation`
+   and `MatrixNestedEvaluation` provide inverse lifting; the augmented
+   sector charts and factor-matrix squares retain the actual native maps.
+   Then finish contextual tensor-vacuum layer and closed-moment/bubble
+   observations before applying the established recovery reductions.
 
-`WeightCentreBlocks.postCoeff_evaluate` now identifies output projection
-of any whole-weight coefficient action with the post-whiskering action of
-its restricted content coefficient. Its occupied odd closure/identity
-consumer and both owned audits pass strict checks. Combine this equality
-with the final chosen source degree and `comp_postCoeff_comp_mem` to put
-actual projected closure sandwiches in the contentwise ideal. See
-[WeightCentreWhiskering](WeightCentreWhiskering.md).
-
-`Generators.CrossCoeffExpansion` now proves the finite signed expansion
-after an arbitrary ring evaluation, and specializes it to the literal
-mixed coefficient from its inverse equations. Strict nonzero two-odd
-matrix tests over Z/9 audit all twelve declarations, including a product
-whose reservoir operator is not globally nilpotent but whose evaluated
-component is. The intended factor and its constructed coefficient are now
-instantiated by `ELVProbeDenominatorUnits` and `ELVProbeCoefficientExpansion`.
-The remaining step is to bend these exact sums into the separated cap/cup
-and probe inverse-power terms, then prove residual ideal membership. See
-[CrossCoeffExpansion](CrossCoeffExpansion.md).
-
-`ELVPostCoefficientEvaluation` now supplies the actual reservoir postdot
-bound after evaluation at each output block, in either parity, and the
-even finite expansion with that bound. Strict actual representable-array
-consumer checks audit all ten declarations. The generic odd expansion
-uses the same bound. Identify the supplied invertible probe operator and
-coefficient equation with the intended mixed coefficient; then bend the
-finite sums and prove residual ideal closure. No full-weight uniform
-bound is asserted; see [PostCoefficientEvaluation](PostCoefficientEvaluation.md).
-`ELVShiftedCoefficientEvaluation` now retains these evaluations after either
-content parity shift and supplies the chosen postdot bound. Its even finite
-expansion passes strict paired checks and all 26 owned audits. The preunit
-and coefficient inverse equation remain explicit intermediate inputs until
-the intended probe–reservoir coefficient is attached; see
-[ShiftedCoefficientEvaluation](ShiftedCoefficientEvaluation.md).
-`ELVProbeMixedDots` now constructs the actual prewhiskered probe dot unit
-and parity, both shifted mixed dots, and their even/odd denominator units
-from the standing symmetrizer and homogeneous parameters. Strict paired
-checks audit all 22 declarations. Substitute these literal maps into the
-completed factor package and its coefficient inverse equations; see
-[ProbeMixedDots](ProbeMixedDots.md).
-
-`epsEntry_probe_factor` and `etaEntry_probe_factor` now retain the
-canonical probe cap and cup rows at every exponent and every full Hom
-object. Their coordinate forms retain both parity signs, the inverse
-left-adjunction scalar and height-zero cases. Strict complete two-odd
-ELV/nonzero-coefficient-input/all-exponent/height-zero consumers audit
-all eighteen declarations. Combine these with the reservoir rows and
-four principal entries in the augmented matrix; see
-[ProbeDottedFactorCoordinates](ProbeDottedFactorCoordinates.md).
-
-`sectorFamilyMap_entry` now removes the finite enumeration from each
-retained matrix entry, leaving exactly its selected source chart,
-original entry and inverse target chart. Strict arbitrary rational-module
-map/absent-corner/window consumers audit all nineteen declarations.
-Specialize this formula to both actual augmented matrices and the
-checked native principal/bend/row entries; see
-[CentralPathCharts](CentralPathCharts.md).
-
-`Sigma.AugmentedSectorChart` now supplies all four factor-object charts
-for the evaluated positive and negative augmented path families, both
-literal conjugation squares and both two-sector block shapes. The
-source/target charts use the specified cap/cup factor isomorphisms;
-absent corners are padded by zero after evaluation. Strict actual
-evaluated two-odd ELV/occupied/empty-window and generic rational-module
-consumers audit all 24, 3 and 27 declarations. `AugmentedSectorEntries`
-and `AugmentedFactorMatrix` now identify every conjugated entry and
-the complete positive/negative matrices with the prescribed native
-principal, mixed bend and dotted-row maps. Strict paired consumers
-audit all 63 and 14 declarations, including complementary absent corners,
-height zero and physical heights ±2. Use exact-content support before
-transferring native factor inverses at absent corners, and prove residual
-coefficient memberships; see [AugmentedSectorChart](AugmentedSectorChart.md).
-
-`Sigma.CentralPaths` now classifies both central path families and the
-identity-path index, retaining the absent reservoir source and absent
-probe target. `matrixEmbeddingIso` pads those missing indices by zero
-objects; its inverse and map square are proved without a matrix
-invertibility premise. Strict occupied/empty/complementary-corner and
-nonzero rational-module consumers audit all 31 and 11 declarations.
-Apply these charts to the complete augmented matrix, including the
-height-zero sign; see [CentralPathCharts](CentralPathCharts.md).
-
-`Sigma.ReservoirToProbeBend` now identifies the reverse mixed entry
-with the prescribed probe-unit/conjugated-coefficient/reservoir-counit
-word. Both the PR-diagonal minus and negative augmented sign are retained,
-with only genuine path-existence conditions. Strict complete asymmetric
-two-odd ELV-pair consumers cover occupied height-zero sectors and a
-nonzero odd-product input, auditing all 53 declarations. Both mixed bends
-are now available; attach all probe rows, the complete augmented-matrix
-chart, finite expansions and residual ideal closure. See
-[ReservoirToProbeBend](ReservoirToProbeBend.md).
-`Sigma.ProbePrincipal` now identifies the literal pure probe entry with
-the chosen precomposition mate, and then with the specified multiple of
-negative `sigL`. The exceptional odd height-zero sign is retained. Strict
-complete asymmetric two-odd ELV-pair consumers retain a nonzero PBW input,
-check both odd zero-height slices and audit all 31 declarations. Attach
-the reverse mixed bend, probe rows and complete augmented-matrix chart;
-see [ProbePrincipal](ProbePrincipal.md).
-`Sigma.ProbeFactorCoordinates.probeCupFactorIso` now identifies the
-probe cup path with the canonical precomposition adjunction loop,
-retaining the chosen weight equation and endpoint transports. Strict
-asymmetric two-odd ELV-pair consumers retain a nonzero PBW input and audit
-all six declarations. Use this chart for the probe principal and reverse
-mixed bend; see [ProbeFactorCoordinates](ProbeFactorCoordinates.md).
-`Sigma.ProbeToReservoirBend` now identifies the actual probe-to-reservoir
-mixed entry with its reservoir-unit/coefficient/probe-counit word through
-computed factor charts, for every sector and full Hom input. The negative
-augmented sign is retained. Strict complete two-odd ELV-pair consumers
-cover height zero, absent pure corners and a nonzero odd-product input,
-auditing all 51 declarations. The coefficient remains specified data;
-attach its finite expansion after evaluation and prove residual ideal
-membership. The reverse bend and probe principal are constructed above; see
-[ProbeToReservoirBend](ProbeToReservoirBend.md).
-
-[CentralMatrixAttachment](CentralMatrixAttachment.md) specifies the
-remaining fixed-output-content comparison from the actual `augPosMat`
-and `augNegMat` to the two-sector model, including the negative signs,
-absent pure paths and height zero. `ReservoirDottedAdjunctionRows` now
-identifies every prescribed reservoir cap row and unit column through
-the actual roundtrip-path charts; `ReservoirDottedFactorCoordinates` now
-identifies these with the literal native factor words. Identify all
-principal/mixed entries next.
-The subsequent residual argument needs the
-literal mixed bend expansions and positive coefficient-ideal membership
-of the closed errors on every `Z : P.H t`. Existing contentwise nilpotent
-ideals do not supply those memberships or the matrix square. Assemble
-inverses componentwise, retaining bounds that vary with output content;
-do not assume a common exponent over an entire weight fibre. This note
-is a proposed attachment, not a constructed `CentralInvertible` instance.
+The whole original-weight Hom category can contain other occupied contents
+at an absent formal sector. Use the supported category's proved zero
+functors for padding; do not infer absence from a weight equality alone.
+The intended factor is `elvProbeReservoir`, with its full exterior-coefficient
+reservoir and untruncated evaluated OLD probe. Its construction does not
+by itself supply the swapped action or nondegeneracy theorem.
 
 ## Final synthesis and verification
 
