@@ -337,3 +337,12 @@ vacuum append vectors. Their owned-declaration axiom audits cover 5 and
 12 declarations respectively. These results supply actual cap tests and
 coefficients, but the finite left-column reduction and full all-weight
 canonical cap identity remain open.
+
+`RouquierDistinctCapPrincipal.lean` now proves the strictly negative
+principal left-hand test. `distinctMixedBraidOuterMate_monomial_cap_zero`
+shows every correction exponent below `d_ij` lies below the shifted cap
+boundary, and `distinctMixedBraidLeft_cap_of_neg` applies the actual mixed
+braid relation and vanishing second word. Its strict producer and paired
+two-odd constructed consumer pass, including an audit of all 10 owned
+declarations. This closes the strictly negative principal test, while
+the finite left cup-column tests and all-weight pitchfork remain open.
