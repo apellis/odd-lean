@@ -2663,3 +2663,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLeftCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingCapCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLeftCounit
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightVacuumCap
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryPullback
