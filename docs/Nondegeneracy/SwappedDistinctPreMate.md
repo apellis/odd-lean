@@ -335,8 +335,8 @@ strict pinned checks. The consumers use the constructed two-odd probe
 family, prove all height and exponent conditions, and retain nonzero
 vacuum append vectors. Their owned-declaration axiom audits cover 5 and
 12 declarations respectively. These results supply actual cap tests and
-coefficients, but the finite left-column reduction and full all-weight
-canonical cap identity remain open.
+coefficients. The later paragraphs below close the finite left-column
+reduction and nonpositive raw identity; the all-weight conclusion remains open.
 
 `RouquierDistinctCapPrincipal.lean` now proves the strictly negative
 principal left-hand test. `distinctMixedBraidOuterMate_monomial_cap_zero`
@@ -345,7 +345,8 @@ boundary, and `distinctMixedBraidLeft_cap_of_neg` applies the actual mixed
 braid relation and vanishing second word. Its strict producer and paired
 two-odd constructed consumer pass, including an audit of all 10 owned
 declarations. This closes the strictly negative principal test, while
-the finite left cup-column tests and all-weight pitchfork remain open.
+the finite left cup-column tests are supplied below; the all-weight
+pitchfork remains open.
 
 `RouquierDistinctPowerSlide.lean` checks both iterated dot slides,
 `RouquierMulticolour.slideLeft_power` and `slideRight_power`, for the
@@ -387,3 +388,20 @@ the same inverse mate followed by the raw cap. Both inverses use the
 actual `RouquierMulticolour.invNe` instance. The strict producer and
 constructed two-odd consumer pass, with all 3 owned declarations
 audited. This supplies the exact-map bridge to canonical left rotation.
+
+### Closed nonpositive raw cap identity
+
+`RouquierDistinctCapNonpositive.distinctCap_of_nonpos` now proves the
+entire actual raw cap identity at every nonpositive central height:
+`distinctCapLeft = t_ij • distinctCapRight`. The principal test uses the
+strictly negative calculation and the complete zero-height boundary;
+every finite column uses the literal dotted-unit reduction and
+`distinctCapQuadraticColumn_of_neg`. The nonpositive augmented inverse
+then detects equality. No cap or cyclicity hypothesis is added.
+
+Its strict producer and constructed two-odd consumer pass, including
+negative and zero central heights and an audit of all 6 owned
+declarations. Thus finite left columns and the nonpositive raw
+pitchfork are closed. The remaining all-weight obligation is the
+intermediate window and complementary cup range, followed by canonical
+normalization and the exact left-mate contraction.

@@ -2710,3 +2710,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
 import OddMath.SKM.RouquierDistinctCapInverseChart
 import OddMath.SKM.RouquierDistinctCapMiddle
 import OddMath.SKM.RouquierDistinctCapColumns
+import OddMath.SKM.RouquierDistinctCapNonpositive
