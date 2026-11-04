@@ -687,3 +687,23 @@ matrix inverse naturality. Their verification belongs to their own
 integration and STATUS. This snapshot does not claim that its complete
 source tree builds. Recover individual files with
 `git show 8bb3b3682097d0d065d1c95d60979f02c74a680d:<repository-path>`.
+
+## Chosen closure degree and probe presentation arguments
+
+The complete source tree [a43c488268](https://github.com/apellis/odd-lean/commit/a43c4882682c9adc9d8d6030879ebd8ebc444108) preserves the chosen closure and probe
+presentation attachment arguments. Its sole parent is the full-CI verified
+research integration of #1030. The history merge changes only this
+inventory and HANDOFF; it does not import proposed source into the library.
+
+The tree includes the proposed all-output `ELVReservoirClosureDegree`,
+`ELVWeightedContentKernelClosureCoordinates` and denominator coefficient
+attachment. It also retains separately scoped-checked corrected probe
+braid, dotted field, multicolour record, weighted local/kernel inverse,
+absent-closure and total coefficient reconstruction helpers. Their
+individual checks do not establish that the complete snapshot builds or
+that central invertibility and nondegeneracy have been proved. The
+weighted-content coordinate conversion and final closure chain remain
+explicit verification obligations.
+
+Recover topical sources with `git show a43c4882682c9adc9d8d6030879ebd8ebc444108:<repository-path>`.
+Checked successors and their integration status belong in STATUS and HANDOFF.
