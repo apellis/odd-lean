@@ -438,9 +438,11 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Evaluated upper-loop chart without a predecessor | `ELVProbeAppendUpperLoop` constructs the selected even upper-loop comparison at arbitrary central and stored upper contents, retains its native components, and proves the whole dotted-unit square for every exponent. Producer, mixed/nonempty-missing/reordered/shifted/all-exponent consumer and all 36 owned audits pass strict checks; full CI verified in #1023 | transport evaluated missing-boundary coefficients and attach the zero lower local record |
 | Single-edge dotted units at arbitrary content | `ELVProbeReindexUnitColumns` preserves the ordinary unit and all dotted columns under arbitrary central reindexing and a stored upper append, without a lower predecessor. Producer, mixed/nonempty-missing/reordered/shifted/all-exponent consumer and all 22 owned audits pass strict checks; full CI verified in #1021 | evaluated upper-loop chart and missing-boundary coefficient transport |
 | Evaluation of finite augmented inverses | `SuperSumInvTo.at` and `SuperSumInvFrom.at` evaluate all five natural inverse identities at any object and retain the exact principal and all dotted inverse entries, including outside the finite window. Producer, nonzero three-slot odd/both-orientations/empty-window consumer and all 36 owned audits pass strict checks; full CI verified in #1026 | use with supported and absent probe local inverses for product gluing |
-| Corrected whole-weight probe braid and dotted field | `probeOldActionCross_mixedBraid` and `probeOldRouquierData_braidEq` prove the original-parameter corrected relation for the literal parameter-twisted probe generators, all supported and absent outputs and all ordered correction terms. Both producers and mixed/two-odd/interior-parameter/nonzero-append consumers pass strict checks; all 107 and 53 owned declarations audited | Full integration; use the completed multicolour record below in the supported presentation |
-| Complete multicolour probe record | `probeOldRouquierMulticolour` assembles all seven prescribed fields, including both braids and distinct mate inversion, with no supplied relation or inverse premise. Producer and mixed/two-odd/highest-weight/nonzero-append consumer pass strict checks; all five owned declarations audited | Full integration; supported generator and relation restriction |
-| Intended probe-reservoir factor | `elvProbeReservoir` combines the untruncated evaluated OLD probe and truncated ELV reservoir, both full multicolour records, normalized shifted probe left adjunctions and original highest weights. Its actual probe dot is a unit. Producer and mixed/two-odd/nonzero-append/empty-sector consumer pass strict checks; all nine owned declarations audited | Full integration; construct the chosen mixed coefficient, restrict to support and prove central invertibility |
+| Corrected whole-weight probe braid and dotted field | `probeOldActionCross_mixedBraid` and `probeOldRouquierData_braidEq` prove the original-parameter corrected relation for the literal parameter-twisted probe generators, all supported and absent outputs and all ordered correction terms. Both producers and mixed/two-odd/interior-parameter/nonzero-append consumers pass strict checks; all 107 and 53 owned declarations audited; full CI verified in #1032 | use the completed multicolour record below in the supported presentation |
+| Complete multicolour probe record | `probeOldRouquierMulticolour` assembles all seven prescribed fields, including both braids and distinct mate inversion, with no supplied relation or inverse premise. Producer and mixed/two-odd/highest-weight/nonzero-append consumer pass strict checks; all five owned declarations audited; full CI verified in #1032 | supported generator and relation restriction |
+| Intended probe-reservoir factor | `elvProbeReservoir` combines the untruncated evaluated OLD probe and truncated ELV reservoir, both full multicolour records, normalized shifted probe left adjunctions and original highest weights. Its actual probe dot is a unit. Producer and mixed/two-odd/nonzero-append/empty-sector consumer pass strict checks; all nine owned declarations audited; full CI verified in #1032 | chosen mixed coefficient and supported generators are checked below; central invertibility remains open |
+| Chosen mixed coefficient and denominator units | `ELVProbeDenominatorUnits` constructs both literal denominator units and `elvProbeCrossCoeff`, its inverse identities and supernaturality from the standing symmetrizer and homogeneous parameters. Producer and mixed/two-odd/nonzero-vacuum consumer pass strict scoped checks; all 38 owned declarations audited | Full integration; use the chosen coefficient in the supported action and residual comparison |
+| Component expansion of the chosen mixed coefficient | `ELVProbeCoefficientExpansion` gives the exact even geometric and odd signed finite series at each reservoir output component. The constructed coefficient's inverse and local nilpotence inputs are discharged. Producer and mixed/asymmetric-two-odd consumer pass strict checks; all 17 owned declarations audited | Full integration; bend the series and identify the separated dotted cap/cup and probe inverse-power terms required by the residual comparison; no whole-weight nilpotence bound |
 | Constructed probe RouquierFamily | `probeOldRouquierFamily` assembles the actual evaluated probe induction, restriction, adjunction, signed dots, same-colour relations and both local inverse orientations at every original weight, with only the cutoff/highest-weight match. Generator, restriction and adjunction fields remain literal; its dot is a unit. Producer, twisted mixed/normalized-left-adjunction consumer and all nine owned audits pass strict checks; full CI verified in #1027 | both braids, complete multicolour record and intended factor are checked above; supported-action attachment remains |
 | Entire natural probe weight local inverses | `probeOldWeightLocalUnitFamily_nonempty` and `probeOldWeightLocalCapFamily_nonempty` assemble both whole natural finite inverse records for the literal selected principal and dotted rows, from occupied and absent coordinates. Producer, mixed/positive/negative/both-zero-height consumer and all 34 owned audits pass strict checks; full CI verified in #1027 | the concrete RouquierFamily is checked above; finish multicolour and supported-action attachment; no finite-block or independent-root premise |
 | Occupied probe weight local inverses | `ELVProbeWeightSupportedInverse` transports both constructed stored local inverses to the exact chosen whole-weight principal and all-exponent forward rows at each occupied block. Producer, regular mixed/positive/negative/both-zero-height-orientations consumer and all 53 owned audits pass strict checks; full CI verified in #1027 | global local gluing and the chosen family are checked above; finish the remaining multicolour attachment |
@@ -496,9 +498,15 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Probe cap and cup factor rows at every exponent | `epsEntry_probe_factor`, `etaEntry_probe_factor` and their coordinate forms identify the literal probe rows with the canonical precomposition dotted adjunction rows, retaining the parity signs, inverse left-adjunction scalar and height-zero cases. Producer, complete two-odd ELV/all-exponent/nonzero-coefficient-input/height-zero consumer and all eighteen owned audits pass strict checks; full CI verified in #1026 | complete augmented-matrix comparison and finite bend/residual ideal attachment |
 | Entries through pure/window family charts | `sectorFamilyMap_entry` identifies every retained conjugated entry with its selected source chart, original family entry and inverse target chart, eliminating finite enumeration while retaining all endpoint transports. Producer, arbitrary rational-module map/absent-corner/window consumer and all nineteen owned audits pass strict checks; full CI verified in #1027 | both prescribed augmented matrix comparisons are checked below; native inverse transfer and residual coefficient closure remain |
 | Represented unit-inverse-cap closure degree | `ELVKernelClosureDegree` proves that both prescribed raw coefficient closures have degree `n + 2*d_i*(r+s+1)`, a strictly positive shift, and identifies their action on every OLD module through the literal unit column, finite principal inverse and cap row. Producer and asymmetric/all-height/all-power/module-evaluation consumer pass strict checks; all 13 owned declarations audited; full CI verified in #1030 | identify the whole-weight chosen closure with these formulas before reconstructing its positive-degree central coefficient |
-| Weighted local principal and canonical closure evaluation | `weightedContentLocalInverseFrom_principal_total` and `weightedContentLocalInverseTo_principal_total` identify the selected local principal with its finite inverse coordinate. `weightedContentUnitClosureValue_atWord` and its cap companion evaluate the literal weighted closure at canonical OLD quotient words as the raw represented coefficient action. Both producers and mixed-parity/all-height/nonzero odd inverse/closure consumers pass strict checks; all 11 and 28 owned declarations audited | Full integration; extend evaluation to arbitrary stored content objects, then finish the chosen closure coefficient degree |
-| Total represented evaluation and coefficient degree | `ModuleCentre.reconstruct_total_evaluate` identifies the reconstructed source total with the whole transformation on the represented identity. `reconstruct_mem_degree_of_total_evaluation` recovers both parity components in the independent integer grading. Producer and nonzero odd positive-content consumer pass strict checks; all three owned declarations audited | Full integration; supply the represented total degree of the literal chosen closure |
-| Chosen closure without a predecessor | `ReservoirClosures.positive_total_absent` and `negative_total_absent` prove both literal chosen closures vanish at every output block lacking a predecessor, for arbitrary inputs and dot powers. Producer and even/odd/zero-height/strict-negative-height consumer pass strict checks; both owned declarations audited | Full integration; combine with the supported represented coefficient calculation for the all-output degree theorem |
+| Weighted local principal and canonical closure evaluation | `weightedContentLocalInverseFrom_principal_total` and `weightedContentLocalInverseTo_principal_total` identify the selected local principal with its finite inverse coordinate. `weightedContentUnitClosureValue_atWord` and its cap companion evaluate the literal weighted closure at canonical OLD quotient words as the raw represented coefficient action. Both producers and mixed-parity/all-height/nonzero odd inverse/closure consumers pass strict checks; all 11 and 28 owned declarations audited; full CI verified in #1032 | stored-content extension is checked below; finish the chosen closure coefficient degree |
+| Finite inverse window coordinates and boundary degrees | `ELVContentWindowInverseCoordinates`, `ELVKernelBoundaryDegrees`, `ELVKernelBoundaryEvaluation`, `ELVWeightedWindowInverseCoordinates` and `ELVWeightedKernelBoundaryCoordinates` identify chosen finite content/weighted `g'` slots, evaluate the OLD boundary contractions and prove source degree `2*d_i*(r-j)`. All five producers and both-sign/all-slot/both-parity/unequal-symmetrizer consumers pass strict checks; 77, 17, 6, 26 and 25 owned declarations audited | Full integration; attach the literal whole-weight reservoir `g'` boundaries at arbitrary stored contents and absent blocks. The absent negative-height unit window need not vanish; reservoir boundary ideal membership is not yet proved |
+| Stored-content inverse boundary coefficients | `ELVWeightedContentKernelBoundaryCoordinates` transports finite counts and inverse slots across arbitrary stored contents, identifying the chosen weighted boundary action and retaining source degree `2*d_i*(r-j)`. Producer and both-sign/both-parity/unequal-symmetrizer consumer pass strict checks; all 34 owned declarations audited | Full integration; chosen whole-weight boundary comparison and its absent unit branch remain |
+| Output projection of coefficient actions | `WeightCentreBlocks.postCoeff_evaluate` identifies the projected whole-weight post-whiskering action with the action of its restricted exact-content coefficient. Producer and occupied odd closure/identity consumer pass strict checks; both owned declarations audited | Full integration; combine chosen closure degree with the content coefficient ideal, preserving arbitrary surrounding Hom morphisms |
+| Stored-content closure coefficient evaluation | `ELVWeightedContentKernelClosureCoordinates` extends the canonical weighted principal closure to arbitrary stored contents using a generic content-recursion beta rule. Both coefficient actions and source degrees are retained. Producer and signed-height/both-parity/nonzero consumers pass strict checks; all 36 owned declarations audited | Full integration; finish the all-module chosen reservoir closure transport and reconstructed coefficient degree |
+| Native factor contractions as coefficient actions | `postCapInverse_closure`, `postCupInverse_closure`, `postCapInverse_boundary` and `postCupInverse_boundary` identify the literal native chosen inverse contractions with post-whiskering by the factor coefficients. Producer and constructed odd ELV/both-nonempty-window/both-zero-height consumer pass strict checks; all six owned declarations audited | Full integration; combine with chosen source degree and output projection, retaining the padded reservoir inverse charts |
+| Supported pure-factor window inverses | `FactorWindowInverse` transports the specified inverse through additive evaluation and corner charts. `SupportedFactorWindowInverse` discharges absent-corner zeros from exact support and supplies all four reservoir/probe cap/cup inverses, including height zero. Both producers and nonzero collision-block consumer pass strict checks; 40 and 15 owned declarations audited | Full integration; retain named chosen reservoir entries in the padded charts before applying closure/boundary membership and residual inversion |
+| Total represented evaluation and coefficient degree | `ModuleCentre.reconstruct_total_evaluate` identifies the reconstructed source total with the whole transformation on the represented identity. `reconstruct_mem_degree_of_total_evaluation` recovers both parity components in the independent integer grading. Producer and nonzero odd positive-content consumer pass strict checks; all three owned declarations audited; full CI verified in #1032 | supply the represented total degree of the literal chosen closure |
+| Chosen closure without a predecessor | `ReservoirClosures.positive_total_absent` and `negative_total_absent` prove both literal chosen closures vanish at every output block lacking a predecessor, for arbitrary inputs and dot powers. Producer and even/odd/zero-height/strict-negative-height consumer pass strict checks; both owned declarations audited; full CI verified in #1032 | combine with the supported represented coefficient calculation for the all-output degree theorem |
 | Weighted inverse principal in OLD and kernel coordinates | `ELVWeightedInverseCoordinates` proves both complete finite inverse chart squares, identifies exact-content inverse components and evaluates the weighted principal values on raw kernel tensors through the chosen OLD module inverse. Producer and mixed-parity/all-height/nonzero odd weighted-inverse consumer pass strict checks; all 28 owned declarations audited; full CI verified in #1030 | expose the weighted local record principal as these component inverses and compose the whole closure comparison |
 | OLD module inverse in balanced kernel coordinates | `ELVModuleInverseKernelCoordinates` identifies both selected OLD finite-matrix inverses with their balanced kernel inverse and evaluates both principal slots on every pure tensor. Producer and mixed-parity/all-height/nonzero odd input-and-inverse consumer pass strict checks; all eight owned declarations audited; full CI verified in #1030 | compose the weighted and chosen content charts with these kernel formulas |
 | Chosen weight principal in content coordinates | `elvChosenCapPrincipal_coordinates` and `elvChosenUnitPrincipal_coordinates` identify the literal `elvRouquierFamily.loc` principal on each supported block with a canonical content-target inverse, using only its forward equations and finite inverse identities. Producer and mixed-parity/all-height/nonzero odd singleton consumer pass strict checks; all 46 owned declarations audited; full CI verified in #1030 | compose the checked content and weighted-to-kernel charts to identify the whole chosen closure |
@@ -525,6 +533,7 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Reservoir native cap/unit rows | `SwappedAssembly.ReservoirDottedFactorCoordinates` composes all retained path transports and identifies every actual dotted cap row/unit column with the prescribed `homContentPostCap/Cup` and literal factor adjunction/dot words, for arbitrary Hom inputs. Producer, occupied two-odd consumer and all 32 owned audits pass strict checks; full CI verified in #1018 | mixed blocks, matrix chart square and residual closure; reservoir principal is checked above |
 | Reservoir dotted matrix rows | `SwappedAssembly.ReservoirDottedAdjunctionRows` identifies the actual augmented cap rows and cup columns for every dot exponent through their prescribed endpoint and return charts, with arbitrary full Hom input and probe content. Producer, occupied two-odd full-factor consumer and all 19 owned audits pass strict checks; full CI verified in #1018 | native factor comparison is checked above; principal/mixed blocks and residual-error closure remain |
 | Supported path inclusion | `SupportedPaths.pathFunctor_inclusion` identifies the whole included supported path functor with the recursively composed native path functor, retaining actual SPath endpoints and each parity-shift placement. Producer and occupied affine-collision/probe-cap/reservoir-cup/mixed-shift consumer pass strict checks and all ten owned audits; full CI verified in #1029 | identify these computed paths with the completed factor package and restrict its literal generator entries |
+| Chosen supported paths and generator entries | `SupportedFactorPaths` identifies the literal completed factor's paths with the computed supported paths. `SupportedGeneratorEntries` restricts its actual generator images, preserving parity, naturality and the exact upward entry. Both producers and a nonzero affine two-odd tensor consumer with the constructed mixed coefficient pass strict checks; 10 and 21 owned declarations audited | Full integration; transport matrix-module presentation relations and finish central inversion and closed-moment inputs |
 | Chosen primitive steps on supported sectors | `SupportedSteps.nativeStep_closed` proves closure for all four actual probe/reservoir E/F steps, retaining the prescribed input/output parity shifts and original weight certificates. `step` and `step_inclusion` give their canonical restricted functors and entire inclusion identities. Producer and occupied affine-collision/all-four-return-path/nonzero-content-shift consumer pass strict checks and all 19 owned audits; full CI verified in #1029 | attach the completed factor record to these literal steps, then restrict generator matrices and verified presentation relations |
 | Supported generator restriction | `SupportedRestriction` restricts native superfunctors preserving supported objects and their supernatural transformations, retaining literal included components, parity, linearity, identity/composition and both contexts. Producer and occupied collision/actual odd reservoir-dot/return-context consumer pass strict checks and all 21 owned audits; full CI verified in #1029 | attach formal-sector step functors and the completed factor package, then restrict generator matrices and verified relations |
 | Supported Hom categories at formal sectors | `SupportedSectors` constructs the selected probe/reservoir blocks at the literal sector weights, the supported category and its canonical full/faithful additive linear parity-preserving inclusion. Step validity is equivalent to selected-block membership, with all four successor equations. Producer and occupied affine-collision/two-odd consumers pass strict checks and all 35 owned audits; full CI verified in #1029 | restrict the chosen generator functors and natural transformations through these computed edges |
@@ -758,61 +767,52 @@ and normalized content/weight transport are not asserted.
 
 ## Remaining critical chain
 
-1. Attach the full-CI old-module unit/cap inverses to the chosen content and
-   original-weight functors. Both height signs, moving parities, zero counts,
-   fixed-output-content naturality and literal forward maps are established
-   (#951/#952/#961). Chosen content dot comparisons are verified in #973.
-   Ordinary cup/cap compatibility and all-map EF/FE charts are now scoped-checked;
-   finish canonical local inverse transport and input-supernatural inverse-entry assembly. The generic finite adapters and six even chart comparisons are now scoped-checked.
-   Retain exact target-fixed counts and the absent-predecessor zero cases.
-2. Complete multicolour/weight assembly with `parameterTwist Sc`. The distinct
-   ideal identity, PBW quotient decoder and actual representable mate inverse
-   are verified (#958/#972). Ordinary-right coefficient-kernel natural inverses
-   and arbitrary-module tensor realization are scoped-checked. The actual arbitrary-module whole equality, homogeneous module inverse and
-   input-module naturality passed full CI in #977. Finish exact-content/weight
-   transport through the selected charts. Weight crossings/pair coherence are verified
-   (#972); content braid is implemented (#933/#934). Transfer pair/triple
-   remaining mixed-colour braid relations through the selected charts; same-colour braid and both distinct-colour slides are now scoped-checked. Retain the supplied
-   CScalars, original weight group and balanced schedule (#864).
-3. Assemble compatible factors and the swapped Hom action. Selected weighted
-   restriction/counit and scalar ordinary counit are verified (#972/#973).
-   Iterated weighted signed crossing, scalar grid/composite crossings and selected
-   double-induction charts are scoped-checked; finish their literal mates,
-   normalized caps and prescribed matrix transport. The raw moving-parity mate
-   coefficients and source norms are verified; complete compatible factor and
-   CrossCoeff fields without a uniform exponent over weight fibres. The
-   literal central augmented-matrix square and the residual closure
-   memberships on arbitrary Hom-category objects remain explicit
-   obligations; see the proposed [CentralMatrixAttachment](CentralMatrixAttachment.md).
-4. Finish the literal power-reservoir vacuum and observations. The T-annihilated
-   category and numerical weighted/power bridge are verified (#973). Actual
-   A/T presentation, the literal old regular vacuum and its inverse-row window
-   are scoped-checked. Induction-dot nilpotence now follows through the proved
-   weighted comparison at each formal content; no module dimension premise is
-   used. Actual higher moments and their noncommutative inverse series are now scoped-checked.
-   Closed χ/δ values at the unit are scoped-checked; attach their arbitrary-vector
-   operator identities and the prescribed swapped caps/bubbles. The
-   exact source/power kernels and signed half-turn detection in literal old Homs
-   are scoped-checked. Actual iterated vacuum word values, transformed coordinate kernels, signed
-   old-module Hom/Yoneda maps and selected dot comparisons are scoped-checked.
-   Finish the selected pair crossing and compare with the chosen swapped
-   Hom action on full coefficient vectors. Prove
-   normalized bubble coefficients and bounded recovery for each requested weight,
-   word pair and degree bound, then instantiate the
-   observation, finite-colour and upward-to-oriented reductions.
+1. Finish the chosen principal closure coefficient degree at arbitrary stored
+   contents. The raw inverse grading, canonical closure evaluation, chosen
+   weight/content/principal comparisons, reconstruction and absent-closure
+   zeros are established at the boundaries recorded above. Use the final
+   source degree to place the literal projected closure actions in the
+   contentwise coefficient ideal; do not grade arbitrary module Homs.
+2. Attach the finite-window boundary degrees to the whole-weight reservoir's
+   chosen `g'` entries, including absent blocks. The raw, OLD and weighted
+   finite-window comparisons are scoped-checked. An absent negative-height
+   unit window may retain nonzero coefficients and requires its chosen
+   missing-predecessor inverse comparison, not a zero argument.
+3. Prove the concrete central augmented matrix invertible. The prescribed
+   factor pair, mixed coefficient, inverse identities and component finite
+   expansions are scoped-checked. Transfer factor inverses through supported
+   padded corners, retain the chosen principal/window coordinates, identify
+   the bent series with the exact separated residual terms, and prove their
+   positive coefficient-ideal memberships. Apply the four residual cases
+   and assemble the output-content inverses without a uniform weight bound;
+   see [CentralMatrixAttachment](CentralMatrixAttachment.md).
+4. Complete the supported swapped presentation. Literal supported paths and
+   generator entries are scoped-checked. Transport the available relations
+   through the full supported inclusion, retaining the chosen coefficient.
+   Central inversion and closed-moment/bubble inputs remain explicit until
+   supplied by their constructions.
+5. Finish the literal tensor-vacuum observations. Attach the selected
+   all-word and source-layer charts to the supported action, prove the
+   prescribed closed moments and normalized bubble coefficient operators
+   on all vectors, and supply bounded recovery for each weight, word pair
+   and degree bound. Then instantiate observation recovery, finite-colour,
+   upward-to-oriented and the already-proved ground-ring reductions, and
+   check the all-even specialization.
 
-The older `GlobalFactorNondegeneracy.globalProbeReservoir` accepts
-`I → Polynomial k` parameters and conditional local inversions. It is not a
-construction of the full exterior-coefficient reservoir. The full-ELV reservoir multicolour family now passes strict paired checks;
-the compatible probe factor and mixed assembly remain prerequisites for
-final synthesis.
+The older `GlobalFactorNondegeneracy.globalProbeReservoir` uses polynomial
+parameters and conditional local inversions. The intended factor for this
+construction is `elvProbeReservoir`, with its full exterior-coefficient
+reservoir and untruncated evaluated OLD probe. Neither that factor nor the
+checked generic matrix comparisons alone proves the swapped action.
 
 ## Verification
 
 The initial reviewed snapshot was e522e775; its cancelled build is not a
 verification claim. Subsequent integrations use their own exact-head CI.
-The latest integrated mathematical additions above passed full build with
-warnings as errors, axiom audit and concrete non-vacuity consumers before
-merge. Topic branches and proposed source are not established by submission
+The probe-factor and closure-helper integration #1032 passed full build
+with warnings as errors, global axiom audit and every non-vacuity consumer
+at head `323f56f83a0f5d5ad5a6704ab3ba605b12b3b783` (run 41751067495), merged
+at `2b304c174601e22fc106d4747b5905b20378cb00`. Newer entries marked scoped-checked
+await their own full integration. Topic branches and proposed source are not established by submission
 alone. Finite Python models are evidence about their instances, not proofs of
 the general action or conjecture.
