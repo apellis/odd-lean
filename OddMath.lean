@@ -2603,3 +2603,4 @@ import OddMath.SKM.RouquierHomBendMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBendEvaluation
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightWindowInverseCoordinates
