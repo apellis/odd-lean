@@ -2696,3 +2696,4 @@ import OddMath.SKM.RouquierDistinctCapBoundary
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureReservoirEntry
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorWordCoefficientChart
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorObservationLinearity
+import OddMath.SKM.RouquierDistinctPowerSlide

@@ -346,3 +346,10 @@ braid relation and vanishing second word. Its strict producer and paired
 two-odd constructed consumer pass, including an audit of all 10 owned
 declarations. This closes the strictly negative principal test, while
 the finite left cup-column tests and all-weight pitchfork remain open.
+
+`RouquierDistinctPowerSlide.lean` checks both iterated dot slides,
+`RouquierMulticolour.slideLeft_power` and `slideRight_power`, for the
+actual inherited distinct crossings. The strict producer and constructed
+two-odd consumer pass, with an audit of both declarations. These are the
+dot transports needed in the finite left-column reduction; the powers
+of the actual sign coefficient are retained explicitly.
