@@ -26,11 +26,22 @@ all-vector tensor polynomial windows passed full CI and are integrated in
 #1047. Both integrations include the warning-free full build, global axiom
 audit and every concrete consumer.
 
-The canonical vacuum quotient class, regular-probe compatibility of
-contextual charts, chosen all-height inverse-row/bubble normalization,
-sufficient quotient-observation transport and final bounded recovery remain
-open. Existing coefficient-action formulas alone do not identify the
-presentation's bubbles. Preserved drafts are not completed results.
+The final assembly is now a checked conditional theorem.
+`QuiverHecke.nondegeneracy_of_vacuum_route` (#1056) proves the Phase 1
+conjecture for a symmetrizable datum, over every commutative ring with `2`
+invertible and every homogeneous scalar system, from the named open
+hypotheses `VacuumRouteHypotheses D sy`. Its proof composes the checked
+ground-ring descent, finite-colour restriction, pairing-extension recovery
+at `(μ, 0)` (#1050) and bounded vacuum recovery. The route hypotheses are
+not discharged; they are listed under the remaining critical chain. The
+inverse-column moment identities of #1051–#1053 express the normalized
+left bubble moments through the reservoir moments as the substituted bubble
+series, at odd and even colours and positive height, for abstract inputs;
+their attachment to the constructed action is open. On purely even data
+with Khovanov–Lauda scalars and finitely many colours, the end theorem's
+conclusion is the checked even theorem (#1059); this compares conclusions
+and does not discharge the route hypotheses there. Preserved drafts are
+not completed results.
 
 ## Scope
 
@@ -832,44 +843,46 @@ and normalized content/weight transport are not asserted.
 
 ## Remaining critical chain
 
-1. Complete the canonical matrix observation laws for the constructed
-   `SupportedAction.pointwiseUpwardModuleAction`. Matrix coefficient
-   equivariance, source-unit normalization and the vacuum source-chart
-   identity are checked. Finish the vacuum coefficient quotient class and
-   regular-probe compatibility of global/local contextual layer charts.
-   The latter must retain the actual dot and both crossing maps.
-2. The finite odd vacuum bend and its actual padded matrix attachment are
-   checked in `ELVProbeVacuumBendSeries` and `ELVProbePaddedVacuumBend`.
-   The even probe polynomial/unit, bend expansion, slide and polynomial-cap
-   tests are checked in the four `Even` modules. All-vector odd polynomial
-   closure windows are checked in `ELVTensorVacuumPolynomialWindow`.
-   Identify the chosen principal and negative inverse rows, retain the
-   padded unit columns, and derive the normalized presentation bubble
-   series in both parities and every height. These are substantive
-   comparisons, not consequences of the coefficient action alone.
-3. The combined action pullback, exact affine map, source-placed normalized
-   bubble map and coefficient/PBW equivalences are checked. Supply the
-   observation quotient and its lower degree bound on the original datum.
-   Before proving literal coefficient-power and transformed-boundary ideal
-   identifications, assess the proposed pulled-back ideal in
-   [HANDOFF](HANDOFF.md#potential-simplifications-to-assess-before-further-transport-work).
-   The final interface permits this choice, but its inverse filtration,
-   quotient and evaluation transport proofs remain unverified. No obligation
-   is closed by this proposal. Joint degree-filtration transport alone is insufficient.
-   Restrict the combined action along `μ ↦ (μ,0)`; restricting its factors
-   separately would lose the occupied extended coset of second coordinate
-   `-P`. The explicit highest weights and cutoff bounds are already proved.
-4. Package bounded corner evaluation/recovery via
-   `UpwardModuleAction.toSwappedVacuumEvaluation`, apply the checked
-   finite-colour, orientation and ground-ring reductions, and check the
-   all-even specialization. The field nondegeneracy input remains open.
+The Phase 1 theorem follows from `QuiverHecke.nondegeneracy_of_vacuum_route`
+once `VacuumRouteHypotheses D sy` is proved. Its single field asks, over
+every characteristic-zero field, homogeneous scalar system, normalization,
+finite colour set `J`, equal-weight upward word pair, external weight `μ` and
+degree bound `d`, for a `VacuumRouteSector` of the pairing extension of the
+restriction to `J` at `(μ, 0)`. Beyond the action, vacuum vector and
+coefficient map, a sector consists of four open inputs:
+
+1. **Positive-height bubbles** (`VacuumBubblesPositiveHeight`): for colours
+   with `0 < ⟨hᵢ, μ⟩`, the normalized left bubbles act, in both parities, as
+   the coefficients of the substituted bubble series. The moment identities
+   `even_inverse_column_moments` and `odd_inverse_column_moments` are
+   checked for abstract inputs; their instantiation on the tensor vacuum is
+   in progress (#1055).
+2. **Nonpositive-height bubbles** (`VacuumBubblesNonpositiveHeight`): the
+   same identity for `⟨hᵢ, μ⟩ ≤ 0`, as reciprocal series; in progress
+   (#1057).
+3. **Vacuum coordinates** (`VacuumCoordinates`): an ideal of the
+   coefficient Hom space contained in weight at least
+   `vacuumCutoff t d - 2·C(|t|, 2)`, with a linear coordinate map from the
+   target sector to the quotient, from the canonical vacuum coefficient
+   quotient class; in progress (#1054).
+4. **Chart coherence** (`VacuumChartCoherence`): every presented upward
+   diagram applied to the substituted vacuum and read in these coordinates
+   gives the class of the placed, substituted source coefficient. This is
+   the compatibility of the contextual layer charts with the regular probe,
+   retaining the dot and both crossing maps; in progress (#1058).
+
+Items 1 and 2 together give `AdjunctionBubbleSeries` by
+`adjunctionBubbleSeries_of_heights`, and a sector converts to a
+`SwappedVacuumBlock` by `VacuumRouteSector.toSwappedVacuumBlock`. The
+reductions after a sector (finite colours, orientation, pairing extension,
+ground ring) are checked. The all-even comparison of the completion
+criterion is checked at the level of the conclusion
+(`vacuumRoute_conclusion_of_isEven`).
 
 The older `GlobalFactorNondegeneracy.globalProbeReservoir` uses polynomial
 parameters and conditional local inversions. The intended factor for this
 construction is `elvProbeReservoir`, with its full exterior-coefficient
-reservoir and untruncated evaluated OLD probe. Its supported action is now
-constructed; the field nondegeneracy theorem still needs the observation and
-bubble comparisons and bounded recovery listed above.
+reservoir and untruncated evaluated OLD probe.
 
 ## Verification
 
@@ -905,6 +918,22 @@ same full gates at `0bf4fb6edf7e6e70c9f8b091f6b9e99b8259f556`
 The bend, layer-chart and pairing-coordinate integration #1047 passed
 the same full gates at `bf98c1165799f84d20ae3108adc334f9c7c43baa`
 (run 41785832621), merged at `55583bc4f0a6d9911990eee0a655fc6576fd7612`.
+The pairing-extension recovery integration #1050 passed the full build,
+global axiom audit and every non-vacuity consumer at
+`a6944c894100105396c84c3207fcf6c9cbfbb950` (run 41869943013), merged at
+`14c902e03d191e859910a5ec8a5fa864ef6fcd82`. The inverse-column moment
+integrations passed the same gates: #1051 at
+`68a2a5ff26e04b5402ac8dc9d3c52d9eb2535205` (run 41896803197), merged at
+`4d32c9c7adcb575eead0a02824c64dcf822574f3`; #1052 at
+`e67ef7ae71273cead12b2a882071631b6a222f2d` (run 41897363808), merged at
+`d625130f07f87b5b07ab45bbb5565c288d5eff29`; #1053 at
+`f983102f24e178709bc98e3094e55841861144ae` (run 41905690031), merged at
+`cd614482e07243b270ed81b1e0dba330c62c096f`. The vacuum route end theorem
+#1056 passed at `c0eb704dbca15529f0bd1fbae30890c18a1ebb35`
+(run 41919214932), merged at `75fc4eb2a7f271cc5ac30c3f77d3dbda7e1b64cd`.
+The all-even comparison #1059 passed at
+`76135478ad984f3b069d9d5c2678a105d515a1da` (run 41922254626), merged at
+`da4974a20e3649e6ad1fb2d891bcc842d78053c9`.
 The unfinished snapshot `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`
 is reachable in primary history but is excluded from the checked tree.
 No verification claim applies to its draft proofs. Topic branches and proposed source are not established by submission
