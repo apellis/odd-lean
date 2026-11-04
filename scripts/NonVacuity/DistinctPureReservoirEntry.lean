@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureReservoirEntry
-import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSigmaPermutation
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeDenominatorUnits
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumUnit
 import NonVacuity.ELVWeightedAppendFixture
 import Lean.Util.CollectAxioms
