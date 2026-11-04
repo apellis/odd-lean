@@ -2636,3 +2636,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNegative
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotClasses
