@@ -30,15 +30,6 @@ local instance paddedVacuumCapHomPi {k : Type u} [CommRing k]
 
 section Generic
 
-private def capTotalEvaluation {k C A : Type*} [CommRing k]
-    [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
-    [Category A] [Preadditive A] [Linear k A] [Supercategory k A] (N : C) :
-    Superfunctor k C A ⥤ A where
-  obj F := F.obj N
-  map f := f.total N
-  map_id F := SuperNatTrans.id_total F.toFunctor N
-  map_comp f g := Superfunctor.comp_total f g N
-
 private theorem total_pow_square {k C A : Type*} [CommRing k]
     [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
@@ -48,14 +39,11 @@ private theorem total_pow_square {k C A : Type*} [CommRing k]
   induction n with
   | zero =>
     rw [pow_zero, pow_zero, End.one_def, End.one_def]
-    change (capTotalEvaluation N).map (𝟙 F) ≫ e = e ≫ 𝟙 B
-    rw [Functor.map_id, Category.id_comp, Category.comp_id]
+    exact (congrArg (fun w => w ≫ e) (SuperNatTrans.id_total F.toFunctor N)).trans
+      ((Category.id_comp e).trans (Category.comp_id e).symm)
   | succ n ih =>
-    rw [pow_succ, pow_succ, End.mul_def, End.mul_def]
-    change (capTotalEvaluation N).map (f ≫ f ^ n) ≫ e = e ≫ y ≫ y ^ n
-    rw [Functor.map_comp, Category.assoc]
-    change f.total N ≫ (f ^ n).total N ≫ e = _
-    rw [ih, ← Category.assoc, h, Category.assoc]
+    rw [pow_succ, pow_succ, End.mul_def, End.mul_def, Superfunctor.comp_total,
+      Category.assoc, ih, ← Category.assoc, h, Category.assoc]
 
 /-- Chart bookkeeping for a cap row: a pulled-back square, a block
 selection and a normalized native identity compose. -/
@@ -263,60 +251,63 @@ theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
           (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
           (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := by
   classical
+  let P := elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
   let E₀ := capVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR
+  let Z := vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H
+  let E := vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR
   let Z₀ := preCapInput D (parameterTwist D Sc) m ΛP hcP
     (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H
   let ha := capProbeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
   let hb := capReservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
-  let ep := (P).muP_preE i (0, 0)
-  let ep₀ : -ΛP + D.α i = -(P).muP (nextSector (true, i) true (((0, 0) : Sector I))) :=
+  let ep := P.muP_preE i (0, 0)
+  let ep₀ : -ΛP + D.α i = -P.muP (nextSector (true, i) true (((0, 0) : Sector I))) :=
     (congrArg (fun x : X => -x + D.α i) ha).symm.trans ep
-  have hsq := congrArg E₀.map
-    (homReservoirCap_weight_pullback_square (P).T (P).W ha hb Z₀ i ep n)
-  rw [Functor.map_comp, Functor.map_comp] at hsq
-  have hSrc : (((SKM.homContentPreE (P).T (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR)
-        i (-ΛR) ep₀).obj ((SKM.homContentPreF (P).T
+  let B₀ := vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H
+  let W₀ : X → PiSCat.{u,u,u+1} k :=
+    fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)
+  let N₀ := regularProbe D (parameterTwist D Sc) m ΛP
+  let s := P.centralSourceCornerIso i (0, 0) Z E ⟨true, by trivial⟩
+  let u := E₀.mapIso (SKM.homPreWeightPullbackIso P.T P.W ha hb i ep Z₀)
+  let e := vacuumPreSourceIso D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) i ep₀ B₀
+  let c := E₀.map ((SKM.homWeightEquivalence P.T P.W ha hb).functor.map
+    (SKM.homReservoirCap P.T P.W.obj i (P.muM (0, 0)) ep n
+      ((SKM.homWeightEquivalence P.T P.W ha hb).inverse.obj Z₀)))
+  let p := E₀.map (capPullbackSelfIso P.T P.W ha hb Z₀).hom
+  let q := B₀.toFunctor.map (eqToHom (emptyProbe_regular D (parameterTwist D Sc) m ΛP))
+  let c₀ := E₀.map (SKM.homReservoirCap P.T P.W.obj i (-ΛR) ep₀ n Z₀)
+  let c₁ := (SKM.homReservoirCap (probeOldRouquierFamily D (parameterTwist D Sc) m ΛP hcP)
+    W₀ i (-ΛR) ep₀ n (preCapInput D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) B₀)).total N₀
+  let d := (ProbeVacuumCap.shiftedPreDot D (parameterTwist D Sc) m
+      (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i B₀ ^ n) ≫
+    ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
+      (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP B₀
+  have hsq : c ≫ p = u.hom ≫ c₀ := by
+    have h := congrArg E₀.map
+      (homReservoirCap_weight_pullback_square P.T P.W ha hb Z₀ i ep n)
+    rw [Functor.map_comp, Functor.map_comp] at h
+    exact h
+  have hSrc : (((SKM.homContentPreE P.T (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR)
+        i (-ΛR) ep₀).obj ((SKM.homContentPreF P.T
           (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) i (-ΛR) ep₀).obj Z₀)).obj
-        (regularProbe D (parameterTwist D Sc) m ΛP)) (emptyBlock D ΛR) =
-      ((SKM.homContentPreE (P).T
-          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-          i (-ΛR) ep₀).obj ((SKM.homContentPreF (P).T
-          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-          i (-ΛR) ep₀).obj
-            (preCapInput D (parameterTwist D Sc) m ΛP hcP
-              (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-              (-ΛR) (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H)))).obj
-        (regularProbe D (parameterTwist D Sc) m ΛP) := by
+        N₀) (emptyBlock D ΛR) =
+      ((SKM.homContentPreE P.T W₀ i (-ΛR) ep₀).obj ((SKM.homContentPreF P.T W₀ i (-ΛR) ep₀).obj
+            (preCapInput D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) B₀))).obj N₀ := by
     simp only [SKM.homContentPreF, Functor.comp_obj, SKM.homParityShift]
     split_ifs <;> rfl
-  have hb₀ := reservoirCap_block D (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
-    (P).T i ep₀ Z₀ (regularProbe D (parameterTwist D Sc) m ΛP) hSrc n
-  have hn := vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP
-    (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-    (-ΛR) i ep₀ (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) hP n
-  have hE : E₀.map (SKM.homReservoirCap (P).T (P).W.obj i (-ΛR) ep₀ n Z₀) =
-      eqToHom hSrc ≫ (SKM.homReservoirCap (probeOldRouquierFamily D (parameterTwist D Sc) m ΛP hcP)
-        (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-        i (-ΛR) ep₀ n
-        (preCapInput D (parameterTwist D Sc) m ΛP hcP
-          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
-          (-ΛR) (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))).total
-          (regularProbe D (parameterTwist D Sc) m ΛP) :=
-    hb₀
-  have hcap : (P).centralPaddedCap i (((0, 0) : Sector I))
-        (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
-        (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n =
-      ((P).centralSourceCornerIso i (0, 0)
-          (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
-          (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) ⟨true, by trivial⟩).hom ≫
-        E₀.map ((SKM.homWeightEquivalence (P).T (P).W ha hb).functor.map
-          (SKM.homReservoirCap (P).T (P).W.obj i ((P).muM (0, 0)) ep n
-            ((SKM.homWeightEquivalence (P).T (P).W ha hb).inverse.obj Z₀))) := by
+  have hE : c₀ = eqToHom hSrc ≫ c₁ :=
+    reservoirCap_block D (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
+      P.T i ep₀ Z₀ N₀ hSrc n
+  have hn : c₁ ≫ q = e.hom ≫ d :=
+    vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP W₀ (-ΛR) i ep₀ B₀ hP n
+  have hs := cap_charts_attach s u hSrc e c p q c₀ c₁ d hsq hE hn
+  have hcap : P.centralPaddedCap i (((0, 0) : Sector I)) Z E true n = s.hom ≫ c := by
     unfold ProbeReservoir.centralPaddedCap
     rw [dif_pos (show StepValid (up i) true (((0, 0) : Sector I)) from by trivial)]
     rfl
   rw [hcap]
-  exact cap_charts_attach _ _ hSrc _ _ _ _ _ _ _ hsq hE hn
+  simpa only [s, u, e, c, p, q, d, E₀, Z, E, Z₀, P, B₀, W₀, N₀,
+    paddedVacuumSourceIso, paddedVacuumCapTargetIso, vacuumPreBlockSourceIso,
+    Functor.mapIso_hom, Iso.trans_hom, eqToIso.hom] using hs
 end Padded
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum

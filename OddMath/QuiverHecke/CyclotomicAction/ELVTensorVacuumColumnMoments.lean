@@ -132,9 +132,32 @@ theorem tensorVacuumEndDecode_apply (f : End V) (z : (V).obj star) :
 variable (i : I)
 local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 
+/-- An endomorphism whose evaluation at the vacuum point is read in the decode
+chart as `g` decodes to `g`. -/
+theorem tensorVacuumEndDecode_eq_of (f : End V) (g : Module.End k AQ)
+    (hfg : ∀ z, tensorVacuumDecodeLinear D Sc m cutoff L (f.total star z) =
+      g (tensorVacuumDecodeLinear D Sc m cutoff L z)) :
+    tensorVacuumEndDecode D Sc m cutoff L f = g := by
+  refine LinearMap.ext fun w => ?_
+  obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
+  exact (tensorVacuumEndDecode_apply D Sc m cutoff L f z).trans (hfg z)
+
+
 /-- Left multiplication by the polynomial coefficients on the coefficient quotient. -/
 private def coefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
   (Algebra.lmul k AQ).comp (polynomialToPower D cutoff L)
+
+private theorem coefficientLmul_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
+    coefficientLmul D cutoff L p w = polynomialToPower D cutoff L p * w := rfl
+
+private theorem coefficientLmul_ringHom_apply (p : MvPolynomial (I × ℕ) k) (w : AQ) :
+    (coefficientLmul D cutoff L).toRingHom p w = polynomialToPower D cutoff L p * w := rfl
+
+omit [Fintype I] in
+private theorem lmul_apply' (a w : AQ) : Algebra.lmul k AQ a w = a * w := rfl
+
+omit [Fintype I] in
+private theorem end_mul_apply' (f g : Module.End k AQ) (w : AQ) : (f * g) w = f (g w) := rfl
 
 private theorem unit_cap_closure (hN : 0 < cutoff i) (n : ℕ) :
     (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n) ≫
@@ -142,7 +165,38 @@ private theorem unit_cap_closure (hN : 0 < cutoff i) (n : ℕ) :
   rw [tensorUnitCapClosure, unitDotColumn_eq_restrictedDotEnd, Category.assoc]
   rfl
 
-include sy hc in
+omit [Fintype I] in
+private theorem odd_coefficient_commute (hi : D.parity i = 1) (p : MvPolynomial (I × ℕ) k) :
+    Commute (polynomialToPower D cutoff L p) ((-1 : k) ^ (cutoff i + 1) •
+      coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) :=
+  (((SKM.SYM.polynomialInclude_commute D k p (SKM.SYM.delta D k ⟨i, hi⟩)).map
+    (coefficientPowerQuotientMap D cutoff L)).smul_right _)
+
+private theorem reservoir_even_coefficient (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ) :
+    tensorVacuumEndDecode D Sc m cutoff L
+        ((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + 2 * r)) ≫
+          tensorPowerVacuumCap D Sc m cutoff L i hN) =
+      (coefficientLmul D cutoff L).toRingHom (PowerSeries.coeff r
+        (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
+  refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
+  rw [unit_cap_closure D Sc m cutoff L i hN, tensorPowerVacuumCap_moment_even D Sc m cutoff L i hi hN r z,
+    coefficientLmul_ringHom_apply, completeCoefficient]
+
+private theorem reservoir_odd_coefficient (hi : D.parity i = 1) (hN : 0 < cutoff i) (r : ℕ) :
+    tensorVacuumEndDecode D Sc m cutoff L
+        ((adjunction K).unit.app V ≫
+          (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + (2 * r + 1))) ≫
+          tensorPowerVacuumCap D Sc m cutoff L i hN) =
+      (coefficientLmul D cutoff L).toRingHom (PowerSeries.coeff r
+        (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) *
+        Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
+          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) := by
+  refine tensorVacuumEndDecode_eq_of D Sc m cutoff L _ _ fun z => ?_
+  rw [unit_cap_closure D Sc m cutoff L i hN, tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z,
+    end_mul_apply', lmul_apply', coefficientLmul_ringHom_apply, completeCoefficient, ← mul_assoc,
+    (odd_coefficient_commute D cutoff L i hi _).eq]
+  simp only [smul_mul_assoc]
+
 private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cutoff i) :
     PowerSeries.mk (fun l => tensorVacuumEndDecode D Sc m cutoff L
         ((adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ (cutoff i - 1 + l)) ≫
@@ -150,30 +204,46 @@ private theorem tensorVacuum_reservoir_series (hi : D.parity i = 1) (hN : 0 < cu
       PowerSeries.map (coefficientLmul D cutoff L).toRingHom (PowerSeries.expand 2 two_ne_zero
         (PowerSeries.invOfUnit (PowerSeries.rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) *
         (1 + PowerSeries.C (Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
-          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩))) * PowerSeries.X) := by
-  set δq : AQ := (-1 : k) ^ (cutoff i + 1) •
-    coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)
-  have hcomm (p : MvPolynomial (I × ℕ) k) : Commute (polynomialToPower D cutoff L p) δq :=
-    (((SKM.SYM.polynomialInclude_commute D k p (SKM.SYM.delta D k ⟨i, hi⟩)).map
-      (coefficientPowerQuotientMap D cutoff L)).smul_right _)
-  refine SwappedVacuum.mk_eq_expand_mul_one_add (coefficientLmul D cutoff L).toRingHom _ _ _
-    (fun r => ?_) (fun r => ?_)
-  · ext1 w
-    obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
-    change tensorVacuumEndDecode D Sc m cutoff L _ (tensorVacuumDecodeLinear D Sc m cutoff L z) = _
-    rw [unit_cap_closure D Sc m cutoff L i hN, tensorVacuumEndDecode_apply,
-      tensorPowerVacuumCap_moment_even D Sc m cutoff L i hi hN r z]
-    rfl
-  · ext1 w
-    obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
-    change tensorVacuumEndDecode D Sc m cutoff L _ (tensorVacuumDecodeLinear D Sc m cutoff L z) = _
-    rw [unit_cap_closure D Sc m cutoff L i hN, tensorVacuumEndDecode_apply,
-      tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z]
-    change _ = polynomialToPower D cutoff L _ * (δq * tensorVacuumDecodeLinear D Sc m cutoff L z)
-    rw [← mul_assoc, (hcomm _).eq]
-    simp only [δq, smul_mul_assoc]
-    rfl
+          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩))) * PowerSeries.X) :=
+  SwappedVacuum.mk_eq_expand_mul_one_add (coefficientLmul D cutoff L).toRingHom _ _ _
+    (reservoir_even_coefficient D Sc m cutoff L i hi hN)
+    (reservoir_odd_coefficient D Sc m cutoff L i hi hN)
 
+include sy hc in
+private theorem odd_slide_neg (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) :
+    evaluatedMixedBend D Sc m cutoff bound i hP H ≫ evaluatedPostDot D Sc m cutoff bound i H -
+      (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫ evaluatedMixedBend D Sc m cutoff bound i hP H) =
+      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
+  have hs := evaluatedMixedBend_odd_slide D Sc m cutoff bound sy hc i hi hP H
+  simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
+
+private theorem odd_probe_polynomial (hi : D.parity i = 1) (h : ℕ) (hhN : h + cutoff i = 2 * m i) :
+    SwappedVacuum.capPolynomial
+      (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ m i).coeff n) (h + cutoff i)
+      (shiftedPreDot D Sc m R₀ i H) = 0 := by
+  rw [hhN]
+  have hb : (Polynomial.X ^ 2 + 1 : Polynomial k).natDegree ≤ 2 :=
+    (Polynomial.natDegree_add_le _ _).trans
+      (max_le (Polynomial.natDegree_X_pow_le 2) (by simp))
+  have hd : ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ m i).natDegree ≤ 2 * m i := by
+    calc
+      _ ≤ m i * (Polynomial.X ^ 2 + 1 : Polynomial k).natDegree := Polynomial.natDegree_pow_le
+      _ ≤ m i * 2 := Nat.mul_le_mul_left (m i) hb
+      _ = 2 * m i := Nat.mul_comm _ _
+  rw [SwappedVacuum.capPolynomial,
+    ← Polynomial.aeval_eq_sum_range' (Nat.lt_succ_of_le hd) (shiftedPreDot D Sc m R₀ i H)]
+  simp only [map_pow, map_add, Polynomial.aeval_X, map_one]
+  exact shiftedPreDot_odd_polynomial D Sc m R₀ i hi H
+
+omit [Fintype I] in
+private theorem odd_coefficient_sq (hi : D.parity i = 1) :
+    Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
+        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+      Algebra.lmul k AQ ((-1 : k) ^ (cutoff i + 1) •
+        coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) = 0 := by
+  have h2 := SKM.SYM.delta_sq D k ⟨i, hi⟩
+  rw [pow_two] at h2
+  rw [← map_mul, smul_mul_smul_comm, ← map_mul, h2, map_zero, smul_zero, map_zero]
 
 include sy hc in
 /-- **Odd-colour column moments on the tensor vacuum.** For a column `a`
@@ -203,53 +273,22 @@ theorem tensorVacuumColumn_odd_moments
         (polynomialToPower D cutoff L (PowerSeries.coeff s
           (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i)) *
         tensorVacuumDecodeLinear D Sc m cutoff L z) := by
-  set δq : AQ := (-1 : k) ^ (cutoff i + 1) •
-    coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)
-  have hs := evaluatedMixedBend_odd_slide D Sc m cutoff bound sy hc i hi hP H
-  have hs' : evaluatedMixedBend D Sc m cutoff bound i hP H ≫
-        evaluatedPostDot D Sc m cutoff bound i H -
-      (-1 : k) • (shiftedPreDot D Sc m R₀ i H ≫
-        evaluatedMixedBend D Sc m cutoff bound i hP H) =
-      shiftedPreCap D Sc m R₀ i hP H ≫ (adjunction K).unit.app V := by
-    simpa only [hi, koszulSign_one_one, neg_one_zsmul, neg_one_smul] using hs
-  have hp : SwappedVacuum.capPolynomial
-      (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ m i).coeff n) (h + cutoff i)
-      (shiftedPreDot D Sc m R₀ i H) = 0 := by
-    rw [hhN]
-    have hb : (Polynomial.X ^ 2 + 1 : Polynomial k).natDegree ≤ 2 :=
-      (Polynomial.natDegree_add_le _ _).trans
-        (max_le (Polynomial.natDegree_X_pow_le 2) (by simp))
-    have hd : ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ m i).natDegree ≤ 2 * m i := by
-      calc
-        _ ≤ m i * (Polynomial.X ^ 2 + 1 : Polynomial k).natDegree := Polynomial.natDegree_pow_le
-        _ ≤ m i * 2 := Nat.mul_le_mul_left (m i) hb
-        _ = 2 * m i := Nat.mul_comm _ _
-    rw [SwappedVacuum.capPolynomial,
-      ← Polynomial.aeval_eq_sum_range' (Nat.lt_succ_of_le hd) (shiftedPreDot D Sc m R₀ i H)]
-    simp only [map_pow, map_add, Polynomial.aeval_X, map_one]
-    exact shiftedPreDot_odd_polynomial D Sc m R₀ i hi H
-  have hd0 : δq * δq = 0 := by
-    have h2 := SKM.SYM.delta_sq D k ⟨i, hi⟩
-    rw [pow_two] at h2
-    rw [smul_mul_smul_comm, ← map_mul, h2, map_zero, smul_zero]
-  have hdelta : Algebra.lmul k AQ δq * Algebra.lmul k AQ δq = 0 := by
-    rw [← map_mul, hd0, map_zero]
   have hwin : ∀ j < cutoff i, (adjunction K).unit.app V ≫
       (evaluatedPostDot D Sc m cutoff bound i H ^ j) ≫ tensorPowerVacuumCap D Sc m cutoff L i hN =
       if j + 1 = cutoff i then 𝟙 V else 0 :=
     fun j hj => tensorPowerVacuumCap_window D Sc m cutoff L i hN j hj
-  obtain ⟨h1, h2⟩ := column_moments_of_slide D (coefficientLmul D cutoff L)
+  have hmom := column_moments_of_slide D (coefficientLmul D cutoff L)
     (tensorVacuumEndDecode D Sc m cutoff L) m i hi h (cutoff i) hh hN hhN
-    (Algebra.lmul k AQ δq) hdelta (shiftedPreDot D Sc m R₀ i H)
+    _ (odd_coefficient_sq D cutoff L i hi) (shiftedPreDot D Sc m R₀ i H)
     (evaluatedPostDot D Sc m cutoff bound i H) (evaluatedMixedBend D Sc m cutoff bound i hP H)
     ((adjunction K).unit.app V) (shiftedPreCap D Sc m R₀ i hP H)
-    (tensorPowerVacuumCap D Sc m cutoff L i hN) a hs' has hp hcol hwin
-    (tensorVacuum_reservoir_series D Sc m cutoff L sy hc i hi hN) s
+    (tensorPowerVacuumCap D Sc m cutoff L i hN) a
+    (odd_slide_neg D Sc m cutoff L sy hc i hi hP) has
+    (odd_probe_polynomial D Sc m cutoff L i hi h hhN) hcol hwin
+    (tensorVacuum_reservoir_series D Sc m cutoff L i hi hN) s
   constructor
-  · rw [← tensorVacuumEndDecode_apply, h1]
-    rfl
-  · rw [← tensorVacuumEndDecode_apply, h2]
-    rfl
+  · rw [← tensorVacuumEndDecode_apply, hmom.1, coefficientLmul_apply]
+  · rw [← tensorVacuumEndDecode_apply, hmom.2, end_mul_apply', lmul_apply', coefficientLmul_apply]
 
 include sy hc in
 /-- **Chosen inverse column.** If the cap window `[bend; x^n ≫ v]_(n < h)` of the actual A6
