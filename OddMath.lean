@@ -2763,3 +2763,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
 import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
