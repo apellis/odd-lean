@@ -99,6 +99,7 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
 /-- The coefficient class along an arbitrary upward source path presentation. -/
+set_option diagnostics true in
 private theorem coefficient_class_of_path (l : List (Col I X))
     (hl : l.map (fun d => d.l.2) = s)
     (p : SPath l (0,cS) (0,0)) (hup : ∀ d ∈ l, d.l.1 = true)
@@ -115,22 +116,12 @@ private theorem coefficient_class_of_path (l : List (Col I X))
           (((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom βS).total wS z))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup = e at hu ⊢
-  clear he
-  generalize hA : (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R₀ = A at e z hu ⊢
-  clear hA
   exact coefficient_coordinate_unit_class D Sc cutoff L s (l.map (fun d => d.l.2)) hl ΛR
-    (ReservoirWord.weight D ΛR cS) βS.2 A e z a hu
+    (ReservoirWord.weight D ΛR cS) βS.2 _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup) z a hu
 
 example : (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR s := rfl
 
 example : tensorSourceWordBlock D ΛP ΛR s = ⟨s.reverse, (tensorSourceWordBlock D ΛP ΛR s).2⟩ := rfl
-
-example : tensorTargetWordQuotientEquiv D Sc cutoff L s
-      (t := (tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)) (tensorSourceLabels_colors D ΛP ΛR s) =
-    tensorTargetWordQuotientEquiv D Sc cutoff L s
-      (t := (SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2))
-      (tensorSourceLabels_colors D ΛP ΛR s) := rfl
 
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
@@ -148,7 +139,9 @@ theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
     tensorOriginalWordEntry_vacuum]
   unfold tensorSourcePathValueChart at hu
   refine coefficient_class_of_path D Sc cutoff L m ΛP ΛR s
-    (tensorSourceLabels D ΛP ΛR s) (tensorSourceLabels_colors D ΛP ΛR s)
+    (SKM.ob D (ΛP - ΛR) (upWord s)).word
+    (tensorSourceLabels_colors D ΛP ΛR s :
+      ((SKM.ob D (ΛP - ΛR) (upWord s)).word).map (fun d => d.l.2) = s)
     pS upS _ a ?_
   exact hu
 
