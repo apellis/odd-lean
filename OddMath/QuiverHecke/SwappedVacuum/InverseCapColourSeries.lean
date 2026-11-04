@@ -166,7 +166,7 @@ theorem odd_negative_cap_bubbles (D : SKM.Datum I X')
       (2 * P i) x = 0)
     (j : Y ⟶ X) (B : Fin (N - 2 * P i) → (Y ⟶ V))
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B)
-    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) =
+    (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
         (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
     (r : ℕ) :
@@ -194,7 +194,7 @@ theorem odd_zero_height_bubbles (D : SKM.Datum I X')
     (hwindow : ∀ a < 2 * P i, u ≫ (y ^ a) ≫ ell = if a + 1 = 2 * P i then 𝟙 V else 0)
     (hprobe : capPolynomial (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ P i).coeff n)
       (2 * P i) x = 0)
-    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (2 * P i - 1 + l)) ≫ ell : End V)) =
+    (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (2 * P i - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
         (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
     (r : ℕ) :
@@ -229,7 +229,7 @@ theorem even_negative_cap_bubbles (D : SKM.Datum I X')
       (P i) x = 0)
     (j : Y ⟶ X) (B : Fin (N - P i) → (Y ⟶ V))
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B)
-    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) =
+    (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1))
     (l : ℕ) :
     u ≫ (y ^ (N - P i - 1 + l)) ≫ B ⟨N - P i - 1, by omega⟩ =
@@ -252,7 +252,7 @@ theorem even_zero_height_bubbles (D : SKM.Datum I X')
     (hwindow : ∀ a < P i, u ≫ (y ^ a) ≫ ell = if a + 1 = P i then 𝟙 V else 0)
     (hprobe : capPolynomial (fun n => ((Polynomial.X - 1 : Polynomial k) ^ P i).coeff n)
       (P i) x = 0)
-    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (P i - 1 + l)) ≫ ell : End V)) =
+    (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (P i - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1))
     (l : ℕ) :
     u ≫ (y ^ l) ≫ s.inv ≫ v =
