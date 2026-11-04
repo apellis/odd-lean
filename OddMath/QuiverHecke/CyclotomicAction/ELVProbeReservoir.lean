@@ -16,7 +16,7 @@ open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke
 open ELVOld CyclotomicAction SwappedAssembly
 universe u
-local instance piSCatHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
+local instance elvProbeReservoirHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C
 
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
