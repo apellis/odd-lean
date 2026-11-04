@@ -85,7 +85,7 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] [Linear k C] {V X Y : C}
 
 /-- The linear scalar action on `V ⟶ V` is left multiplication by `algebraMap` in `End V`. -/
 theorem linear_smul_eq_algebraMap_mul (a : k) (f : V ⟶ V) :
-    a • f = (algebraMap k (End V) a * f : End V) := by
+    a • f = algebraMap k (End V) a * (show End V from f) := by
   have hr : algebraMap k (End V) a = a • 𝟙 V := Algebra.algebraMap_eq_smul_one a
   erw [hr, End.mul_def, Linear.comp_smul, Category.comp_id]
 
