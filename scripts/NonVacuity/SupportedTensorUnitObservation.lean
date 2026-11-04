@@ -104,6 +104,12 @@ example (M N₀ : probeOldWeightSpace D Sc m Λ (-Λ)) (f : M ⟶ N₀) :
   rw [TensorReservoirWords.pathHomAt_eq_wordHom]
   rfl
 example := TensorReservoirWords.valueChart_hom_mem D Sc m cutoff L Λ Λ path upward
+example := SupportedSectors.tensorPathValueChart_global_heq D originalSc m cutoff Λ Λ L path upward
+example := SupportedSectors.tensorPathValueChart_hom_mem D originalSc m cutoff Λ Λ L path upward
+example := SupportedSectors.tensorPathValueChart_global_heq D originalSc m cutoff Λ Λ L
+  (SPath.nil (0,0)) (by simp)
+example := SupportedSectors.tensorPathValueChart_hom_mem D originalSc m cutoff Λ Λ L
+  (SPath.nil (0,0)) (by simp)
 example : chosenVector ≠ 0 := chosenVector_ne_zero
 example : chosenEquiv chosenVector = contentVector := chosenEquiv.apply_symm_apply _
 
