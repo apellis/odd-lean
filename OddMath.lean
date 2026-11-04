@@ -2675,3 +2675,4 @@ import OddMath.SKM.RouquierDistinctCapDetection
 import OddMath.SKM.RouquierRectangularComposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumMomentMaps
 import OddMath.SKM.RouquierDistinctCupDetection
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorPairChartCoherence
