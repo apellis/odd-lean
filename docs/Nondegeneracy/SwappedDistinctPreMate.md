@@ -414,3 +414,12 @@ identity for `0 < h_i(a) < d_ij`. The factor is
 `sigL ≫ sig = -1` and cancels the actual isomorphic source chart.
 Its strict producer and supported two-odd `h=2<d=4` consumer pass, with
 all 3 owned declarations audited.
+
+`RouquierDistinctCanonicalRotation.leftCrossMate_isIso_of_raw_cap`
+transports any such exact raw cap identity with unit coefficient `u` to
+the canonical left adjunctions. Its normalization unit is exactly
+`leftAdjScalar(upper)⁻¹ * u * leftAdjScalar(lower)`; the crossing and the
+inverse of its prescribed right mate are unchanged. The strict producer
+and constructed two-odd consumer pass, with its owned declaration
+audited. The consumer supplies the raw cap identity from the proved
+nonpositive theorem, rather than leaving it as a fixture hypothesis.
