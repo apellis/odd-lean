@@ -532,13 +532,18 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Closed residual errors from separated sums | `CentralInverse.SeparatedClosures` derives all three residual closure memberships from the two finite bend series and chosen reservoir principal closure memberships. Strict producer and nonzero square-zero-ideal consumer over ZMod 9 pass; all nine declarations audited | Full integration; integral-height residual assembly and its concrete attachment |
 | Prescribed padded probe slide and Aut windows | `SKM.RouquierHomPrePointwiseSlide`, `SKM.RouquierHomPreAutWindows`, `Sigma.ProbeSlideWindow` and `Sigma.SupportedProbeSlideWindow` construct the chosen probe dot automorphisms, prove the actual signed slide and every nonnegative cap/unit power, and retain the native absent-target comparison. Strict paired nonzero/collision/occupied/zero-height consumer passes; all 57 declarations audited | Full integration; use these exact maps in the residual comparison |
 | Literal supported tensor-vacuum dot matrix | `SupportedTensorDotEntries.tensorLayerDot_square` identifies the actual composed layer matrix under the selected vacuum/path charts, retaining both nonempty word contexts. Producer and paired mixed-parity/nonzero coefficient-class consumer pass strict checks; 25 declarations audited | Full integration; both crossings and final quotient-class observation |
-| Chosen central augmented inverse on supported inputs | `SupportedSectors.centralFactorMatrix_content_isIso` and `centralAugmentedMatrix_isIso` in `Sigma.PaddedResidualInversion` derive the actual inverse from constructed data, all six signed-height residual cases and product assembly over output contents. Producer and nonzero two-odd collision consumer pass strict checks; all nine declarations audited | Full integration; supported leftward entries, offcentral matrices and presentation relations remain; no raw ambient `P.CentralInvertible` claim |
-| Supported leftward inverse entries | `PointwiseLeftwardInverse` constructs the raw chosen entries from the local matrix witnesses, and `SupportedPointwiseLeftwardInverse` proves all ten central inverse identities at every supported input. Strict nonzero positive/negative-height consumer passes; 42 generic and 14 supported declarations audited | Full integration; offcentral inverses and restricted supernaturality/interchange remain |
+| Chosen central augmented inverse on supported inputs | `SupportedSectors.centralFactorMatrix_content_isIso` and `centralAugmentedMatrix_isIso` derive both actual central inverses at every supported input from all six signed-height cases and output-product assembly. All nine declarations audited; full CI verified in #1037 | No raw ambient `P.CentralInvertible` claim; final presentation and observations remain |
+| Supported leftward inverse entries | `PointwiseLeftwardInverse` and `SupportedPointwiseLeftwardInverse` construct the chosen entries and prove all ten central identities (42 and 14 audited declarations; full CI #1037). `SupportedAugmentedInverse` now supplies both augmented inverses and all ten identities at every outer sector, using `OffCentralAugmentedMatrix` and constructed transpose norms. Strict nonzero consumer passes; 14 all-sector and six offcentral declarations audited | Full integration of all-sector extension; distinct-colour pure-probe inversion remains separate |
+| Chosen transpose norms and distinct mixed entries | `ELVProbeTransposeNorms` constructs the three norm-unit fields. `RouquierHomDistinctSourceUnits`, `Sigma.MixedEntrySourceUnits`, `ELVMixedSourcePolynomialUnits` and `ELVProbeSourcePolynomialUnits` invert the literal probe/reservoir distinct entry using output-component nilpotence and whole source-polynomial units. Strict paired checks pass; the source-unit packet audits 25 declarations | Full integration; this does not prove the pure probe/probe entry or `LeftMateInvertible` |
+| Restricted chosen leftward naturality | `Supernatural.RestrictedLeftward`, `SupportedSupernaturality` and `SupportedInterchange` derive parity/naturality on retained input categories and the exact native interchange law. Strict nonzero odd-input consumers pass; seven, 28 and four declarations audited | Full integration; concrete interchange still takes the distinct-colour permutation package |
+| Chosen tensor families and row action | `SupportedTensorFamilies` constructs whole-sector source/vacuum families and a proved nonzero cyclic matrix. `SupportedTensorRows`, `SupportedMatrixLayers` and `SupportedTensorRowLayers` identify its whole Hom row and the actual layer action. Strict paired consumers audit 50, 25, five and 18 declarations, including a nonzero external weight | Full integration; raw coefficient action and one coherent all-word coordinate map remain |
+| Original-word whole Hom entry | `SupportedTensorEntryPullback` constructs the canonical source and target word charts and the linear entry of the entire supported matrix in the original-word Hom, with whole-map injectivity. Strict nonzero cyclic consumer passes; 41 declarations audited | Full integration; cyclic coordinates and coherence with the local generator charts remain |
+| Whole-weight normalized probe vacuum cap | `ELVProbeWeightLeftCap`, `ELVProbeMissingCapCoordinates`, `ELVProbeWeightLeftCounit` and `ELVProbeWeightVacuumCap` identify the chosen whole-weight left counit, with its exact Koszul normalization, with the prescribed native vacuum cap through an even source chart. Strict two-odd/nonzero-cap consumers audit 15, 20, seven and 40 declarations | Full integration; insert this chart into the pre-Hom counit and finite evaluated bend, then attach all-vector moments |
 | Supported relation reduction | `SupportedWhiskerReduction` and `SupportedRelationLifting` reduce whole relations to local supported inputs using the checked path closure, with exact retained-input predicates. Strict paired consumer passes; 12 declarations audited | Attach the chosen local inverse and distinct-colour packages to obtain the presentation |
-| Vacuum inverse finite rows | `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract the finite rows from the chosen negative central inverse, remove the principal-column sign, and prove the inverse chart square to the actual augmented matrix; the height-zero principal map is invertible. Strict generic and actual nonzero two-odd collision consumers pass; 14 and 21 declarations audited | Identify the whole-weight probe counit under the local vacuum chart, then attach normalized cap moments and bubbles |
+| Vacuum inverse finite rows | `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract the finite rows of the chosen negative central inverse and prove its inverse chart square; height-zero principal invertibility included. Fourteen and 21 declarations audited; full CI #1037 | Attach the evaluated bend and normalized polynomial cap moments |
 | Chosen padded reservoir coefficient memberships | `Sigma.ReservoirWindowCoefficientIdeal` supplies J0 for every morphism and J1 for both principal signs, all off-window contractions and all-row Kronecker differences. Strict pair passes with 32 owned declarations, including each absent unit inverse row proved nonzero | Full integration; consumed by the checked supported central inverse |
 | All signed-height residual cases | `ResidualComparisonNegative` supplies both negative-probe attachments; `SignedResidualWindows` covers all six height-sign cases and derives mixed errors from the separated sums. Strict pairs audit five and 22 declarations with proved rational-module windows | Full integration; actual supported central specialization checked above |
-| Literal tensor-vacuum quotient-class squares | `SupportedTensorCrossEntries` attaches both crossing matrices; `SupportedTensorDotClasses` and `SupportedTensorCrossClasses` identify the literal charted dot/equal-cross/distinct-cross action with the original affine quotient class on every vector. Strict nonzero independent two-odd coefficient consumers pass; 70, 39 and 95 declarations audited | Full integration; package the chosen whole-sector families and final vacuum observation |
+| Literal tensor-vacuum quotient-class squares | `SupportedTensorCrossEntries`, `SupportedTensorDotClasses` and `SupportedTensorCrossClasses` identify the literal charted generator actions with the original affine quotient classes on every vector. Nonzero independent two-odd consumers audit 70, 39 and 95 declarations; full CI #1037 | Join local context charts to the canonical all-word observation |
 | Prescribed negative-height cap identification | `SwappedVacuum.negative_inverse_cap_eq_polynomial` identifies the last row of the given augmented inverse by its polynomial/extraction tests. Producer and nonzero rational-module consumer pass; six declarations audited | Full integration; attach the evaluated vacuum bend and bubble normalization |
 | Nested module/block/word matrix inversion | `MatrixNestedEvaluation.isIso_of_components_target` and `isIso_of_components_source` compose both supernatural inverse lifts and the product lift at the literal input module, output content and represented word. Producer and actual affine-collision ELV/triangular-matrix/all-components/nonzero two-odd-vector consumer pass strict checks and all three owned audits; full CI verified in #1029 | supply the actual central component inverses after support and residual coefficient closure |
 | Matrix inverse on arbitrary output products | `MatrixProductEvaluation.isIso_of_components` assembles all coordinate matrix inverses on the full product, and `map_ext` detects the whole matrix from those coordinates. Producer and infinite triangular rational-module family consumer with nonzero off-diagonal entries at every coordinate pass strict checks and all three owned audits; full CI verified in #1029 | combine with supernatural matrix inverse lifting at the actual module/output/word evaluation |
@@ -788,20 +793,25 @@ and normalized content/weight transport are not asserted.
 
 ## Remaining critical chain
 
-1. Extract supported leftward generator entries from the checked chosen
-   central augmented inverses. Complete offcentral inverse attachment from
-   the actual transpose norms, preserve path support, and derive the
-   whiskered inversion, parity and interchange relations. Do not promote
-   supported invertibility to every object of the larger ambient Hom category.
-2. Instantiate the supported presentation. Its transport and literal
-   upward generator/class squares are checked, but the remaining relation
-   obligations still need the constructed local inverse data.
-3. Assemble the whole-sector vacuum/source families and raw coefficient
-   action. Identify the chosen vacuum inverse rows with the evaluated
-   polynomial caps, prove all normalized bubble series on every vector,
-   and package the bounded corner evaluation/recovery. Then instantiate
-   observation, finite-colour, upward-to-oriented and already-proved
-   ground-ring reductions, and check the all-even specialization.
+1. Complete distinct-colour inversion. The actual mixed probe/reservoir
+   source polynomial units are scoped-checked. The pure probe/probe entry
+   still needs `LeftMateInvertible` for the canonical factor left adjunction.
+   `Cyclicity.rot_tau_left` is checked in the presented calculus, but its
+   transfer to the factor Rouquier family is not. Formalize the cited
+   canonical cap-pitchfork/rotation argument in `SwappedDistinctPreMate`;
+   do not replace it with invertibility of arbitrary partial mates.
+2. Instantiate the supported presentation. All-sector same-colour inverses
+   and restricted leftward naturality/parity are now scoped-checked;
+   interchange retains the distinct-colour permutation input. Generalize
+   the older braid declarations' universe binders to the chosen supercategory
+   and check their actual application. This changes no datum hypotheses.
+3. Complete the raw coefficient action and coherent all-word coordinates
+   on the constructed nonzero tensor matrix. Insert the checked normalized
+   vacuum cap chart into the actual pre-Hom bend, identify the chosen inverse
+   rows with polynomial caps, and prove all normalized bubble series on every
+   vector. Package bounded corner evaluation/recovery, then apply the checked
+   observation, finite-colour, orientation and ground-ring reductions and
+   check the all-even specialization.
 
 The older `GlobalFactorNondegeneracy.globalProbeReservoir` uses polynomial
 parameters and conditional local inversions. The intended factor for this
@@ -820,7 +830,12 @@ at `2b304c174601e22fc106d4747b5905b20378cb00`. The central-attachment integratio
 head `928b4da392aa4b66a08f02c89f08fa3e0b1f14e2` (run 41753142717), merged
 at `55b95505ef22e26c520f836bb42018bab1ff648d`. The chosen closure/boundary integration #1035 passed the same full checks
 at head `34fe3ca0bd1a2893bf0adab17c6da4fe71f6e035` (run 41756477511), merged
-at `bb83ab02b9811a59c9fc3ab03a33689f0da94cf7`. Newer entries marked scoped-checked
-await their own full integration. Topic branches and proposed source are not established by submission
+at `bb83ab02b9811a59c9fc3ab03a33689f0da94cf7`. The output-residual integration #1036 passed full build, global axiom audit
+and every non-vacuity consumer at head `574db3f5e32c87769c92da0a99deca8980985fbb`
+(run 41759194998), merged at `4ea37f355b648aacc37ddc558045a05dac015ebd`.
+The supported central inverse integration #1037 passed the same full checks
+at head `dc118ae687b77d8bc48ea01208635bdbce0bb8e6` (run 41761965036), merged
+at `399e94ee03eccc9e6d8eabe6bbd349819f73a656`. Newer entries marked
+scoped-checked await their own full integration. Topic branches and proposed source are not established by submission
 alone. Finite Python models are evidence about their instances, not proofs of
 the general action or conjecture.

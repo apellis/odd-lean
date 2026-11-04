@@ -2016,7 +2016,7 @@ object (7). `CentralInverse.SeparatedClosures` derives all three mixed
 closed-error memberships by finite sums (9), with a nonzero square-zero
 coefficient-ideal consumer. All these successor pairs await full integration.
 
-The chosen central inverse is now scoped-checked. `ReservoirWindowCoefficientIdeal`
+The chosen central inverse is now full-CI verified in #1037. `ReservoirWindowCoefficientIdeal`
 attaches J0/J1, both principal signs and every finite contraction to the named
 padded inverse (32 owned declarations). `ResidualComparisonNegative` and
 `SignedResidualWindows` cover all six signed-height cases (5 and 22).
@@ -2025,7 +2025,8 @@ padded inverse (32 owned declarations). `ResidualComparisonNegative` and
 supported input, including both height-zero orientations. Their strict
 nonzero two-odd collision consumer audits all nine declarations. No inverse,
 series, closure or nilpotence premise remains beyond the standing data,
-symmetrizer and homogeneous parameters. Full integration is still separate.
+symmetrizer and homogeneous parameters. The later all-sector extension below
+retains its separate scoped-check boundary.
 See [CentralMatrixAttachment](CentralMatrixAttachment.md).
 
 `SupportedTensorCrossEntries` now gives both literal crossing matrices
@@ -2036,31 +2037,37 @@ package the whole-sector observation.
 
 Next discharge the following dependencies in order.
 
-1. `PointwiseLeftwardInverse` and `SupportedPointwiseLeftwardInverse` now
-   construct the objectwise leftward entries, with zero elsewhere, and prove
-   all ten central inverse identities at every supported input (42 and 14
-   audited declarations, paired nonzero positive/negative-height consumer).
-   Attach the offcentral swapping matrices using actual transpose norms;
-   existing contentwise norm theorems avoid global weight nilpotence.
-2. `SupportedWhiskerReduction` and `SupportedRelationLifting` now lift local
-   identities along supported paths (12 audited declarations, strict paired
-   consumer). Derive the presentation obligations on the chosen supported
-   Gs/Ys families using the local inverses and distinct-colour permutations. `LeftwardData` stores
-   objectwise generator images, so no global ambient `P.CentralInvertible`
-   is needed merely to define it. Naturality/parity/interchange must still
-   be proved where the relation lifting uses them.
-3. Construct the whole-sector vacuum/source families and raw coefficient
-   action. Join the literal quotient-class squares to the matrix observation.
-   `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` now extract
-   the selected inverse's finite vacuum rows and prove its inverse chart square
-   (14 and 21 audited declarations, strict generic and occupied collision
-   consumers). Identify the whole-weight probe counit with the local vacuum
-   counit, compare the inverse with the evaluated polynomial cap, then attach
-   the all-vector moment maps and prescribed bubble normalization.
-   `SwappedVacuum.NegativeCapInverse` now proves generic last-row uniqueness
-   and polynomial identification (six audited declarations); it does not
-   replace that actual vacuum comparison.
-4. Complete bounded corner recovery and apply the existing observation,
+1. `SupportedAugmentedInverse` now constructs both augmented inverses and
+   all ten same-colour identities at every supported input and outer sector,
+   using `ELVProbeTransposeNorms` and `OffCentralAugmentedMatrix`. Its strict
+   nonzero consumer audits 14 declarations. `SupportedSupernaturality` and
+   `SupportedInterchange` supply restricted parity/naturality and interchange
+   (28 and four audited declarations); interchange retains the global
+   distinct-colour permutation input. No raw ambient inverse is asserted.
+2. Complete that distinct-colour package. `ELVProbeSourcePolynomialUnits`
+   proves the literal mixed entry invertible using contentwise source units
+   (25 declarations audited across the source-unit packet). The pure probe
+   entry still needs `LeftMateInvertible` for the canonical left adjunction.
+   The source `Cyclicity.rot_tau_left` theorem does not itself evaluate in the
+   factor Rouquier family: port its cap-pitchfork/rotation argument, as recorded
+   in `SwappedDistinctPreMate`, then attach the literal pure entries. The
+   older braid spine also requires universe-generalized declarations for the
+   actual supercategory; no mathematical hypotheses are being changed.
+3. `SupportedTensorFamilies`, `SupportedTensorRows`, `SupportedMatrixLayers`
+   and `SupportedTensorRowLayers` now construct the whole-sector nonzero
+   tensor matrix and prove its occupied row and literal layer-action formulas
+   (50, 25, five and 18 declarations audited). Complete its raw coefficient
+   action and coherent all-word coordinates. Local dot/crossing quotient-class
+   squares alone do not yet provide a single bounded observation.
+4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
+   the chosen finite vacuum rows (full CI #1037). The four modules described
+   in `ProbeWeightLeftCap` now identify the normalized whole-weight probe
+   counit with the native vacuum cap through an even source chart (strict
+   nonzero paired checks). Insert this chart into the actual pre-Hom counit,
+   then compare finite bend series and attach every polynomial cap moment and
+   prescribed bubble normalization. Generic last-row uniqueness in
+   `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
+5. Complete bounded corner recovery and apply the existing observation,
    finite-colour, orientation and ground-ring reductions, followed by the
    checked all-even specialization.
 
