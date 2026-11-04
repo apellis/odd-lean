@@ -5,6 +5,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumMomentMaps
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPrincipalCap
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.CapWindows
 
 /-! # Column moments of a positive-height inverse on the tensor vacuum
 
@@ -206,5 +207,39 @@ theorem tensorVacuumColumn_odd_moments
   · have h3 := congrArg (fun f : Module.End k AQ => f dz) h2
     simp only [ρ, dz, tensorVacuumEndDecode_apply] at h3
     exact h3
+
+include sy hc in
+/-- **Chosen inverse column.** If the cap window `[bend; x^n ≫ v]_(n < h)` of the actual A6
+bend has an entrywise inverse `(j, A)` (`IsCapInverse`), its last padded column `A (h - 1)`
+has the substituted-series moments of `tensorVacuumColumn_odd_moments`. -/
+theorem tensorVacuumCapInverse_odd_moments
+    (hi : D.parity i = 1) (hP : 0 < probeCutoff D m i) (hN : 0 < cutoff i)
+    (h : ℕ) (hh : 0 < h) (hhN : h + cutoff i = 2 * m i)
+    (jY : _ ⟶ shiftedPreSourceObject D Sc m R₀ i H)
+    (A : Fin h → (V ⟶ shiftedPreSourceObject D Sc m R₀ i H))
+    (hA : SwappedAssembly.ProbeWindow.IsCapInverse
+      (evaluatedMixedBend D Sc m cutoff bound i hP H)
+      (fun n : Fin h => (shiftedPreDot D Sc m R₀ i H ^ (n : ℕ)) ≫ shiftedPreCap D Sc m R₀ i hP H)
+      jY A)
+    (s : ℕ) (z : (V).obj star) :
+    tensorVacuumDecodeLinear D Sc m cutoff L
+        ((A ⟨h - 1, by omega⟩ ≫ (shiftedPreDot D Sc m R₀ i H ^ (h - 1 + 2 * s)) ≫
+          shiftedPreCap D Sc m R₀ i hP H).total star z) =
+      polynomialToPower D cutoff L (PowerSeries.coeff s
+          (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i)) *
+        tensorVacuumDecodeLinear D Sc m cutoff L z ∧
+    tensorVacuumDecodeLinear D Sc m cutoff L
+        ((A ⟨h - 1, by omega⟩ ≫ (shiftedPreDot D Sc m R₀ i H ^ (h + 2 * s)) ≫
+          shiftedPreCap D Sc m R₀ i hP H).total star z) =
+      ((-1 : k) ^ (cutoff i + 1) •
+          coefficientPowerQuotientMap D cutoff L (SKM.SYM.delta D k ⟨i, hi⟩)) *
+        (polynomialToPower D cutoff L (PowerSeries.coeff s
+          (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i)) *
+          tensorVacuumDecodeLinear D Sc m cutoff L z) :=
+  tensorVacuumColumn_odd_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN _ (hA.2.1 _)
+    (fun j hj => by
+      have := hA.2.2.2.1 ⟨h - 1, by omega⟩ ⟨j, hj⟩
+      rw [this]
+      exact if_congr (by simp only [Fin.ext_iff]; omega) rfl rfl) s z
 
 end OddMath.QuiverHecke.ELVOld
