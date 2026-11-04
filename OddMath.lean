@@ -2720,3 +2720,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowCoefficientAction
 import OddMath.SKM.RouquierDistinctCupTests
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientChart
 import OddMath.SKM.RouquierDistinctCanonicalCapRange
+import OddMath.SKM.RouquierHomWeightCoordinates
