@@ -2632,3 +2632,4 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SeparatedClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomZero
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowCoefficientIdeal
