@@ -34,7 +34,7 @@ theorem homMap_upwardCoefficientMap (μ : X) (t t' : List I)
         (upwardCoefficientMap D Sc cs μ t t' F) =
       upwardCoefficientMap Dₑ Scₑ csₑ (μ, 0) t t' (coefficientHomEquiv D Sc t t' F) := by
   obtain ⟨x, rfl⟩ := (sourceTensorEquiv D Sc t t').surjective F
-  induction x using TensorProduct.induction_on with
+  induction x using TensorProduct.inductionOn with
   | zero => simp only [map_zero]
   | tmul a f =>
     rw [sourceTensorEquiv_tmul, upwardCoefficientMap_source, coefficientHomEquiv_source,
