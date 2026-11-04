@@ -2641,3 +2641,5 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossClasses
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
 import OddMath.QuiverHecke.SwappedAssembly.SupportedWhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedRelationLifting
+import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
