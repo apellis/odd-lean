@@ -2764,3 +2764,4 @@ import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
 import OddMath.QuiverHecke.VacuumRouteEvenComparison
+import OddMath.QuiverHecke.VacuumRouteFields
