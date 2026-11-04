@@ -732,3 +732,18 @@ transport. Those additions retain their own full-integration boundary;
 history preservation does not verify them. Restore only the needed topical
 source, consumer and note onto the current verified library. No unchecked
 argument from this tree is imported by the preservation merge.
+
+## Supported action and vacuum normalization arguments
+
+The complete source tree [490680bf20](https://github.com/apellis/odd-lean/commit/490680bf20173f67e994d0a9c26b3656e6188e06) preserves proposed supported-action and
+vacuum-observation attachments. Its sole parent is the fully verified
+integration of #1036. The history merge changes only this inventory and
+HANDOFF; proposed source is not imported into the checked library.
+
+The snapshot includes the pointwise leftward generators, retained-input
+relation lifting, offcentral matrices, transpose and distinct-colour source
+polynomial units, chosen tensor families and row coordinates, vacuum inverse
+rows, and tensor moment maps. Some portions subsequently passed scoped checks
+or full CI; STATUS records those boundaries. The complete snapshot is not a
+verification claim. Recover individual files with
+`git show 490680bf20173f67e994d0a9c26b3656e6188e06:<repository-path>`.
