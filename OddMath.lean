@@ -2711,3 +2711,4 @@ import OddMath.SKM.RouquierDistinctCapInverseChart
 import OddMath.SKM.RouquierDistinctCapMiddle
 import OddMath.SKM.RouquierDistinctCapColumns
 import OddMath.SKM.RouquierDistinctCapNonpositive
+import OddMath.SKM.RouquierDistinctCapMiddleIdentity

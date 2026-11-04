@@ -402,6 +402,15 @@ then detects equality. No cap or cyclicity hypothesis is added.
 Its strict producer and constructed two-odd consumer pass, including
 negative and zero central heights and an audit of all 6 owned
 declarations. Thus finite left columns and the nonpositive raw
-pitchfork are closed. The remaining all-weight obligation is the
-intermediate window and complementary cup range, followed by canonical
-normalization and the exact left-mate contraction.
+pitchfork are closed. The intermediate identity and canonical normalization are supplied
+below; the complementary cup range remains the all-weight obligation.
+
+### Exact intermediate identity and canonical normalization
+
+`RouquierDistinctCapMiddleIdentity.distinctCap_of_middle` now converts
+the computed intermediate correction sum into the actual raw cap
+identity for `0 < h_i(a) < d_ij`. The factor is
+`zsign(p_i * h_i(a).toNat) * t_ij`. The proof uses the prescribed local
+`sigL ≫ sig = -1` and cancels the actual isomorphic source chart.
+Its strict producer and supported two-odd `h=2<d=4` consumer pass, with
+all 3 owned declarations audited.
