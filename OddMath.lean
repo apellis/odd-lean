@@ -1938,6 +1938,8 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVContentDotTransforms
 import OddMath.QuiverHecke.CyclotomicAction.ELVContentMixedBraidTransforms
 
 import OddMath.QuiverHecke.SwappedVacuum.InverseCapMoments
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapSeries
+import OddMath.QuiverHecke.SwappedVacuum.InverseCapColourSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnMoments
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
@@ -2765,3 +2767,5 @@ import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
+import OddMath.QuiverHecke.VacuumRouteEvenComparison
+import OddMath.QuiverHecke.VacuumRouteFields
