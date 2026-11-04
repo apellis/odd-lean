@@ -2716,3 +2716,4 @@ import OddMath.SKM.RouquierDistinctCanonicalRotation
 import OddMath.SKM.RouquierDistinctLeftCupRotation
 import OddMath.SKM.RouquierDistinctCanonicalNonpositive
 import OddMath.SKM.RouquierDistinctCupRows
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowCoefficientAction
