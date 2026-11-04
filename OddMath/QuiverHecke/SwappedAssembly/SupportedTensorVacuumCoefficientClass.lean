@@ -99,7 +99,7 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
-/-- The two presentations of the upward source labels give the same path chart. -/
+/-- The vacuum observation, read through its literal row chart. -/
 private theorem coefficient_vacuum_unfold (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
