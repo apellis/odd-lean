@@ -37,9 +37,10 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : SKM.Datum I X) (Sc : SKM.Scalars D k)
 
 /-- The base of a route sector: an upward module action at `μ` with a vacuum vector
-and a raw coefficient action on the source sector `V t`. -/
+and a raw coefficient action on the source sector `V t`. The modules live in
+`Type (u + 1)`, as for the swapped probe-reservoir action. -/
 structure VacuumRouteBase (μ : X) (t : List I) where
-  A : UpwardModuleAction.{u, u} D Sc μ
+  A : UpwardModuleAction.{u, u + 1} D Sc μ
   vacuum : A.V t
   raw : SKM.SYM D k →ₐ[k] Module.End k (A.V t)
 
