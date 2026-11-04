@@ -34,15 +34,23 @@ and the reservoir window `u ≫ y^i ≫ ell = δ(i, N-1)` for `i < N`
   `ĉ_r = c_(P-r)`, `G = ĉ · B` as power series. Hence `B` is determined
   by the reservoir moments: the `q`-twist of `ĉ · B` is the inverse of `T`.
 
-No support condition on the probe is needed (the `q^n s ≫ y^n` term is
+* `weightedColumn_eq_sum` and `reservoirSeries_mul_probe_mul_column`
+  (`InverseColumnSeries.lean`): as power series,
+  `T(z) · ĉ(z) · B(qz) = 1` with `ĉ_r = c_(H+N-r)`, provided
+  `q^r ĉ_r = ĉ_r`. `square_add_one_reversed_support` supplies this for the
+  odd probe `(x² + 1)^M`, `q = -1`; it is trivial for `q = 1`.
+
+No support condition on the probe is needed for the coefficient identity (the `q^n s ≫ y^n` term is
 killed by `a ≫ s = 0`); the high-degree terms of the probe relation
 (`Σ c_n b_(n+m) = 0`) cancel the coefficients `l > N`.
 
 ## Remaining for item 2
 
-1. Specialize `c` to the odd probe `(x² + 1)^M` (signed dot, `q = -1`)
-   and the even probe `(x - 1)^P` (`q = 1`), and identify `T` with the raw
-   coefficient moments of the reservoir (`signedMoment_recurrence`).
+1. Identify `T` with the raw coefficient moments of the reservoir
+   (`signedMoment_recurrence`), so that `T(z)⁻¹` is the coefficient series
+   `C_i(-z)` (odd) or `E_i(-z)` (even) of `AdjunctionBubbleSeries`, and
+   match `ĉ(z)·B(qz)` with `(1+z²)^M · B(-z)` (odd) or `(1-z)^P · B(z)`
+   (even).
 2. Attach `a` and its window to the actual inverse column
    (`ProbeWindow.IsCapInverse`) and the padded maps, producing the
    `left_even`/`left_odd` fields of `AdjunctionBubbleSeries`.
