@@ -1924,10 +1924,15 @@ The general probe braid is now attached in `ELVProbeWeightGeneralBraid`:
 `probeOldRouquierData_generalBraid` has exactly the uncorrected colour
 condition, retains all twelve weight edges and includes absent outputs.
 Its producer and mixed/asymmetric/repeated/interior-parameter consumer
-pass strict checks and all 53 owned audits. The corrected repeated-outer
+pass strict checks and all 53 owned audits; full CI verified in #1030. The corrected repeated-outer
 braid and complete multicolour factor assembly remain open.
 
 ## Central augmented-matrix attachment
+
+The represented inverse-degree and raw closure calculations, together with
+the chosen weight/content/weighted/OLD inverse coordinates and literal
+closure reconstruction, are full-CI verified in #1030. The final chosen
+closure degree and central invertibility remain separate obligations.
 
 The positive-degree residual closure remains a substantive proof target.
 [ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
