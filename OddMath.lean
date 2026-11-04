@@ -1946,6 +1946,7 @@ import OddMath.QuiverHecke.SwappedVacuum.InverseColumnSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnOddSeries
 import OddMath.QuiverHecke.SwappedVacuum.InverseColumnEvenSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumColumnMoments
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumCapMoments
 
 import OddMath.QuiverHecke.SwappedVacuum.NegativeCapMoments
 
