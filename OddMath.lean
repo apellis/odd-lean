@@ -2684,3 +2684,4 @@ import OddMath.SKM.RouquierDistinctMixedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightVacuumDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorWordCoefficientAction
 import OddMath.SKM.RouquierRectangularUnit
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorCoefficientNaturality
