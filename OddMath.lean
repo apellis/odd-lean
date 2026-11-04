@@ -2721,3 +2721,4 @@ import OddMath.SKM.RouquierDistinctCupTests
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientChart
 import OddMath.SKM.RouquierDistinctCanonicalCapRange
 import OddMath.SKM.RouquierHomWeightCoordinates
+import OddMath.SKM.RouquierDistinctCupInverseChart

@@ -452,3 +452,10 @@ range is needed for all-weight `LeftMateInvertible`; its equality
 boundary is not needed for this application. The all-weight theorem
 remains unclaimed until that native cup identity and its canonical
 application are checked.
+
+`RouquierDistinctCupInverseChart` now proves `distinctCupTarget_inv`
+and `distinctCupRight_eq_inverseMate`: the inverse target chart is the
+inverse associator followed by the prescribed inverse right mate
+whiskered by `E_i`. The strict producer and constructed two-odd consumer
+pass, with all 3 owned declarations audited. This supplies the exact-map
+bridge for the remaining canonical cup contraction.
