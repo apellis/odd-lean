@@ -7,9 +7,12 @@ scalar conventions. The producer and consumer pass strict checks;
 all nine owned declarations use only the standard allowed axioms.
 The categorical monomial evaluation in `Sigma/BendWindowMonomials` and
 its nonzero module consumer also pass strict scoped checks, auditing all
-three owned declarations. The combined separated-series assembly described
-below remains pending verification; it is not a checked consequence of
-these two helper modules.
+three owned declarations. `Sigma/SeparatedBendSeries.lean` now assembles
+the four separated series, and `Sigma/BendWindowEquations.lean` states
+them as the literal signed equations. Both producers and the concrete
+`ELVProbeSeparatedSeries` consumer pass strict scoped checks. The consumer
+audits all 93 declarations owned by the former module and all 41 owned by
+the latter, with only `propext`, `Classical.choice` and `Quot.sound` allowed.
 
 The target of `Sigma/SeparatedBendSeries.lean` is the pair of literal
 series in `CentralInverse/ResidualComparison.lean`:

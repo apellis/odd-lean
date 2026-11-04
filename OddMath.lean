@@ -2622,3 +2622,5 @@ import OddMath.SKM.RouquierHomPrePointwiseSlide
 import OddMath.SKM.RouquierHomPreAutWindows
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ProbeSlideWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedProbeSlideWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SeparatedBendSeries
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
