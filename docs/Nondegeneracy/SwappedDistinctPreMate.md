@@ -275,3 +275,15 @@ is obtained by the cup relation and the two triangles as in
 maps and the height-dependent normalization of §3. They are the
 remaining canonical factor obligation, not new hypotheses of the
 intended probe conclusion.
+
+The two-mate expansion needed for the correction identity is checked as
+`crossMate_comp_crossMate` in `RouquierRectangularComposition.lean`.
+For adjunctions `E₁⊣F₁`, `E₂⊣F₂`, `E₃⊣F₃` at six independent objects
+and crossings `t₁₂:G₁₂ E₂→E₁ H₁₂`,
+`t₂₃:G₂₃ E₃→E₂ H₂₃` of degrees `p,q`, it identifies the composite
+of their two prescribed right mates with `(-1)^(pq)` times the
+rectangular outer mate of `(G₁₂◁t₂₃);(t₁₂▷H₂₃)`, retaining all
+associators. `rectangularMateLinearMap` transports the correction sums
+linearly. This removes the same-colour restriction of
+`rouquierMate_comp_mate`; it does not evaluate the resulting terms
+against the canonical left caps.
