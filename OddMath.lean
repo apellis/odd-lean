@@ -2708,3 +2708,4 @@ import OddMath.SKM.RouquierDistinctCapColumnReduction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorWordObservation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
 import OddMath.SKM.RouquierDistinctCapInverseChart
+import OddMath.SKM.RouquierDistinctCapMiddle
