@@ -2604,3 +2604,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBendEvaluation
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightWindowInverseCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.SupportedMatrixModules
+import OddMath.QuiverHecke.SwappedAssembly.SupportedPresentation
