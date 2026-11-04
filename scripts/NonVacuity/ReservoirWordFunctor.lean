@@ -134,6 +134,15 @@ private def identityInput : P.H (0, 0) := by
 
 example := P.reservoirWordFunctorIso_hom_mem path upward identityInput
 
+example := P.reservoirWordFunctorIso_nil_hom_heq 0 identityInput
+
+private def oneOddContent : Bool →₀ ℕ := Finsupp.single true 1
+private theorem oneOdd_height : 1 ≤ oneOddContent true := by simp [oneOddContent]
+private def oddTail : SPath (X := Bool → ℤ) [] (0,oneOddContent - Finsupp.single true 1) (0,0) := by
+  simp only [oneOddContent,tsub_self]
+  exact SPath.nil _
+example := P.reservoirWordFunctorIso_cons_hom_heq true 0 oneOdd_height oddTail (by simp) identityInput
+
 end NonVacuity.ReservoirWordFunctorELV
 
 open Lean Elab Command in
