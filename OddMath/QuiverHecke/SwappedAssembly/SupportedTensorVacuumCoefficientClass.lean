@@ -98,17 +98,15 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
-/-- The coefficient class along an arbitrary upward source path presentation,
-with the unit-vector value supplied along a second, equal presentation. -/
-private theorem coefficient_class_of_path (l l' : List (Col I X)) (hll : l = l')
-    (hl : l.map (fun d => d.l.2) = s) (hl' : l'.map (fun d => d.l.2) = s)
+/-- The coefficient class along an arbitrary upward source path presentation. -/
+private theorem coefficient_class_of_path (l : List (Col I X))
+    (hl : l.map (fun d => d.l.2) = s)
     (p : SPath l (0,cS) (0,0)) (hup : ∀ d ∈ l, d.l.1 = true)
-    (p' : SPath l' (0,cS) (0,0)) (hup' : ∀ d ∈ l', d.l.1 = true)
     (z : (((TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R₀) βS).obj wS)
     (a : SYM D k)
-    (hu : ((tensorPathValueChart D Sc m cutoff ΛP ΛR L p' hup' ≪≫
+    (hu : ((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup ≪≫
       eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR
-        (ReservoirWord.weight D ΛR cS)) (congrArg List.reverse hl'))).hom βS).total wS z =
+        (ReservoirWord.weight D ΛR cS)) (congrArg List.reverse hl))).hom βS).total wS z =
       PowerWordYoneda.unitVector D Tw cutoff L s.reverse) :
     tensorTargetWordQuotientEquiv D Sc cutoff L s hl
       (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s (l.map (fun d => d.l.2))
@@ -117,18 +115,27 @@ private theorem coefficient_class_of_path (l l' : List (Col I X)) (hll : l = l')
           (((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom βS).total wS z))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  subst hll
-  obtain rfl : p' = p := (SPath.subsingleton_of_upward_probe_zero hup rfl).elim _ _
-  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L p' hup = e at hu ⊢
+  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup = e at hu ⊢
   clear he
-  generalize hA : (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p' hup).obj R₀ = A at e z hu ⊢
+  generalize hA : (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R₀ = A at e z hu ⊢
   clear hA
   exact coefficient_coordinate_unit_class D Sc cutoff L s (l.map (fun d => d.l.2)) hl ΛR
     (ReservoirWord.weight D ΛR cS) βS.2 A e z a hu
 
+example : (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR s := rfl
+
+example : tensorSourceWordBlock D ΛP ΛR s = ⟨s.reverse, (tensorSourceWordBlock D ΛP ΛR s).2⟩ := rfl
+
+example : tensorTargetWordQuotientEquiv D Sc cutoff L s
+      (t := (tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)) (tensorSourceLabels_colors D ΛP ΛR s) =
+    tensorTargetWordQuotientEquiv D Sc cutoff L s
+      (t := (SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2))
+      (tensorSourceLabels_colors D ΛP ΛR s) := rfl
+
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
 times identity. This does not identify presentation bubbles with that action. -/
+set_option diagnostics true in
 theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
@@ -141,9 +148,8 @@ theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
     tensorOriginalWordEntry_vacuum]
   unfold tensorSourcePathValueChart at hu
   refine coefficient_class_of_path D Sc cutoff L m ΛP ΛR s
-    (SKM.ob D (ΛP - ΛR) (upWord s)).word (tensorSourceLabels D ΛP ΛR s) rfl
-    (tensorSourceLabels_colors D ΛP ΛR s) (tensorSourceLabels_colors D ΛP ΛR s)
-    pS upS pS upS _ a ?_
+    (tensorSourceLabels D ΛP ΛR s) (tensorSourceLabels_colors D ΛP ΛR s)
+    pS upS _ a ?_
   exact hu
 
 /-- The coefficient-one specialization is the canonical source identity class. -/
