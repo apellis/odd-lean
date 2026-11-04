@@ -76,6 +76,9 @@ fibre. Exact support is retained on the input Hom object, and no
 injectivity of content-to-weight is used.
 
 `SeparatedClosures` and its concrete consumer pass strict scoped checks;
-all nine owned declarations pass the standard axiom audit. The other
-producer checks and concrete attachment retain their separate verification
-boundaries; full integration is not inferred from this pair.
+all nine owned declarations pass the standard axiom audit.
+`ResidualComparisonNegative` and its concrete pair pass with five audited
+declarations. `SignedResidualWindows` and its paired rational-module
+consumer pass with all 22 declarations audited, exercising both signed
+height theorems with every hypothesis proved. The actual supported ELV
+matrix attachment and full integration remain separate gates.
