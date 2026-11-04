@@ -98,6 +98,42 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
+theorem diagStep0 (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  rw [tensorWordQuotientObservation_apply]
+
+theorem diagStep1 (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation]
+
+theorem diagStep2 (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
+    tensorOriginalWordEntry_vacuum]
+
+theorem diagStep3 (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
+  rw [tensorSourceWordUnit_formula] at hu
+  unfold tensorSourcePathValueChart at hu
+  trivial
+
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
 times identity. This does not identify presentation bubbles with that action. -/
