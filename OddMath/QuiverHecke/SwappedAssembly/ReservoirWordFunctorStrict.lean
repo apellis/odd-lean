@@ -87,7 +87,7 @@ theorem reservoirWordFunctorIso_hom_app_eqToHom {l : List (Col I X)} {c d : I �
             (ReservoirWord.word_cons P.W.toRouquierData P.ΛR i r hv p ht))
           (P.reservoirWordFunctorIso_cons_hom_heq i r hv p ht Z) ?_
         exact exists_eqToHom_comp _ _
-          (exists_eqToHom_whiskerRight _ E (ih p ht Z)) ⟨rfl, rfl⟩
+          (exists_eqToHom_whiskerRight _ E (ih p ht)) ⟨rfl, rfl⟩
 
 end ProbeReservoir
 end OddMath.QuiverHecke.SwappedAssembly
