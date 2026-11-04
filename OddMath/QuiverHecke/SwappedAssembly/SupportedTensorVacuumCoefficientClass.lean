@@ -98,8 +98,8 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
-/-- The coefficient class along an arbitrary upward source path presentation. -/
 set_option diagnostics true in
+/-- The coefficient class along an arbitrary upward source path presentation. -/
 private theorem coefficient_class_of_path (l : List (Col I X))
     (hl : l.map (fun d => d.l.2) = s)
     (p : SPath l (0,cS) (0,0)) (hup : ∀ d ∈ l, d.l.1 = true)
@@ -123,10 +123,10 @@ example : (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR 
 
 example : tensorSourceWordBlock D ΛP ΛR s = ⟨s.reverse, (tensorSourceWordBlock D ΛP ΛR s).2⟩ := rfl
 
+set_option diagnostics true in
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
 times identity. This does not identify presentation bubbles with that action. -/
-set_option diagnostics true in
 theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
