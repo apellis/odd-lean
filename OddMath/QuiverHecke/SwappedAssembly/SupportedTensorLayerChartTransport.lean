@@ -327,20 +327,21 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
     homContentPostWordIso_hom_app]
   repeat' first
     | exact exists_eqToHom_self _
-    | exact homContentShift_zero D i
-    | with_reducible_and_instances apply exists_eqToHom_comp
-    | with_reducible_and_instances apply exists_eqToHom_map
-    | with_reducible_and_instances apply exists_eqToHom_associator
-    | with_reducible_and_instances apply exists_eqToHom_homShiftConjugationIso
-    | with_reducible_and_instances apply tensorContextIso_hom_eqToHom
-    | with_reducible_and_instances apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
-    | with_reducible_and_instances apply exists_eqToHom_whiskerRight
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
     | with_reducible_and_instances apply exists_eqToHom_mapIso
     | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
     | with_reducible_and_instances apply exists_eqToHom_app
+    | with_reducible_and_instances apply exists_eqToHom_comp
+    | with_reducible_and_instances apply exists_eqToHom_map
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRight
+  repeat' first
+    | exact homContentShift_zero D i
+    | apply tensorContextIso_hom_eqToHom
+    | apply exists_eqToHom_homShiftConjugationIso
+    | apply exists_eqToHom_associator
+    | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
 
 end Same
 
@@ -383,14 +384,19 @@ theorem tensorLayerCrossSourceIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirCrossSourceIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | with_reducible_and_instances apply tensorCrossContextIso_hom_eqToHom
-    | with_reducible_and_instances apply exists_eqToHom_associator
+    | exact exists_eqToHom_self _
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
     | with_reducible_and_instances apply exists_eqToHom_mapIso
     | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
     | with_reducible_and_instances apply exists_eqToHom_app
+    | with_reducible_and_instances apply exists_eqToHom_comp
+    | with_reducible_and_instances apply exists_eqToHom_map
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRight
+  repeat' first
+    | apply tensorCrossContextIso_hom_eqToHom
+    | apply exists_eqToHom_associator
 
 /-- The distinct-colour target chart is an equality transport. -/
 theorem tensorLayerCrossTargetIso_hom_eqToHom :
@@ -402,14 +408,19 @@ theorem tensorLayerCrossTargetIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirVacuumCrossTargetIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | with_reducible_and_instances apply tensorCrossContextIso_hom_eqToHom
-    | with_reducible_and_instances apply exists_eqToHom_associator
+    | exact exists_eqToHom_self _
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
     | with_reducible_and_instances apply exists_eqToHom_mapIso
     | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
     | with_reducible_and_instances apply exists_eqToHom_app
+    | with_reducible_and_instances apply exists_eqToHom_comp
+    | with_reducible_and_instances apply exists_eqToHom_map
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRight
+  repeat' first
+    | apply tensorCrossContextIso_hom_eqToHom
+    | apply exists_eqToHom_associator
 
 end Distinct
 end SupportedSectors
