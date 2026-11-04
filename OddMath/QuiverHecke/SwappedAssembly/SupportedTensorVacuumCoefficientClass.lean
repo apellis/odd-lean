@@ -60,11 +60,12 @@ private theorem coefficient_coordinate_unit_class (s t : List I) (h : t = s) (Λ
     (z : (A ⟨s.reverse,hβ⟩).obj
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
     (a : SYM D k)
-    (hUnit :
+    (hUnit : @Eq ((PowerWordWeight.wordFamily D Tw cutoff L Λ x s.reverse ⟨s.reverse,hβ⟩).obj
+        (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
       ((((e ≪≫ eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L Λ x)
         (congrArg List.reverse h))).hom ⟨s.reverse,hβ⟩).total
-          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) z) =
-      PowerWordYoneda.unitVector D Tw cutoff L s.reverse) :
+          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) z)
+      (PowerWordYoneda.unitVector D Tw cutoff L s.reverse)) :
     tensorTargetWordQuotientEquiv D Sc cutoff L s h
       (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s t
         ((tensorWordCoefficientArrow D Sc cutoff Λ L x t.reverse a ⟨s.reverse,hβ⟩).total
@@ -99,11 +100,6 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
 /-- The two presentations of the upward source labels give the same path chart. -/
-private theorem pathValueChart_labels :
-    tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (SKM.ob D (ΛP - ΛR) (upWord s)).word) pS upS =
-      tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (tensorSourceLabels D ΛP ΛR s)) pS upS := rfl
-
-/-- The vacuum observation, read through its literal row chart. -/
 private theorem coefficient_vacuum_unfold (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
@@ -119,45 +115,19 @@ private theorem coefficient_vacuum_unfold (a : SYM D k) :
     tensorOriginalWordEntry_vacuum]
   rfl
 
-local notation "βS'" => (⟨(s.reverse : Multiset I), (tensorSourceWordBlock D ΛP ΛR s).2⟩ :
-  WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))
-
-private theorem sourceWordBlock_eq : βS = βS' := rfl
-
+/-- The source chart sends the source unit to the word unit, in the value
+space of the source word block. -/
 private theorem source_unit_value :
-    ((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
-      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS).total wS
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) =
-      PowerWordYoneda.unitVector D Tw cutoff L s.reverse := by
+    @Eq ((PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS) s.reverse βS).obj wS)
+      (((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
+        eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
+          (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS).total wS
+        (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+          (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)))
+      (PowerWordYoneda.unitVector D Tw cutoff L s.reverse) := by
   have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
   unfold tensorSourcePathValueChart at hu
-  exact hu
-
-private theorem source_unit_value' :
-    ((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
-      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS').total wS
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS').total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) =
-      PowerWordYoneda.unitVector D Tw cutoff L s.reverse :=
-  source_unit_value D Sc cutoff L m ΛP ΛR hP hR s
-
-private theorem coefficient_vacuum_class' (a : SYM D k) :
-    tensorTargetWordQuotientEquiv D Sc cutoff L s (tensorSourceLabels_colors D ΛP ΛR s)
-      (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2))
-        ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
-          ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)).reverse a βS').total wS
-          (((tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (tensorSourceLabels D ΛP ΛR s)) pS upS).hom βS').total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS').total wS
-              (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) :=
-  coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
-    ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a
-    (source_unit_value' D Sc cutoff L m ΛP ΛR hP hR s)
+  exact hu.trans (tensorSourceWordUnit_formula D Sc cutoff ΛP ΛR L s)
 
 /-- The literal row chart sends the source unit to the coefficient class. -/
 private theorem coefficient_vacuum_class (a : SYM D k) :
@@ -169,8 +139,26 @@ private theorem coefficient_vacuum_class (a : SYM D k) :
             (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
               (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  have hu := source_unit_value D Sc cutoff L m ΛP ΛR hP hR s
+  delta tensorSourceWordBlock at hu ⊢
+  exact coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
+    ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a hu
+
+/-- Variant without unfolding the block. -/
+private theorem coefficient_vacuum_class_direct (a : SYM D k) :
+    tensorTargetWordQuotientEquiv D Sc cutoff L s (tensorSourceLabels_colors D ΛP ΛR s)
+      (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s ((SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2))
+        ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
+          ((SKM.ob D (ΛP - ΛR) (upWord s)).word.map (fun d => d.l.2)).reverse a βS).total wS
+          (((tensorPathValueChart D Sc m cutoff ΛP ΛR L (l := (SKM.ob D (ΛP - ΛR) (upWord s)).word) pS upS).hom βS).total wS
+            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+              (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) :=
-  coefficient_vacuum_class' D Sc cutoff L m ΛP ΛR hP hR s a
+  coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
+    ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a
+    (source_unit_value D Sc cutoff L m ΛP ΛR hP hR s)
 
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
