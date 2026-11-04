@@ -12,9 +12,9 @@ uses the actual mixed comparisons, including the equal-colour matrix entry.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u,u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -119,7 +119,7 @@ theorem repeatedOuter_other_left (hij : i ≠ j) :
       trivial trivial trivial trivial hs rfl rfl _ _ HEq.rfl
 end OuterEdges
 
-private lemma other_route {C : Type u} [Category C] [Preadditive C]
+private lemma other_route {C : Type*} [Category C] [Preadditive C]
     {A B V T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ B)
     (h : V ⟶ B) (j : B ⟶ V) (l : V ⟶ V) (r : B ⟶ T) (r' : V ⟶ T)
     (hf : f = 0) (hr : r' = 0) :

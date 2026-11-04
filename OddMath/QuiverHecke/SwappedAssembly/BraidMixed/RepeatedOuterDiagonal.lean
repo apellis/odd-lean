@@ -15,9 +15,9 @@ support of Q. Thus the raw three-crossing difference is the two signed sums.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -32,7 +32,7 @@ variable (P : ProbeReservoir k B D Sc)
 private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (h : P.CrossDenominatorUnits) (t : Sector I) (hv : StepValid (true, i) false t)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
-    {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
+    {C : Type*} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i t hv V) →ₐ[k] End Y) (f : End Y)
     (hx : φ (P.rpPreDot i t hv V) ≫ f = f ≫ φ (P.rpPreDot i t hv V))
     (hy : φ (P.rpPostDot i t hv V) ≫ f = f ≫ φ (P.rpPostDot i t hv V)) :
