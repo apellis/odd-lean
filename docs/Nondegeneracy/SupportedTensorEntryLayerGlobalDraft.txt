@@ -1,0 +1,102 @@
+Unchecked thin canonical global-wrapper attempts, preserved without imports.
+Restart in the variable/notation context of SupportedTensorEntryLayerCharts.lean.
+Producer reported success but these names were not declared even in the same-file #check.
+The paired consumer instead instantiates the checked generic conjugacies at tensorRowTargetIso.
+
+section GlobalDot
+variable (ν : X) (u v : List (Letter I)) (i : I)
+  {c : I →₀ ℕ} (hv : StepValid (true,i) false (0,c))
+  (pL : SPath (SKM.lay D ν u (.dot i) v).left (0,cS) (0,c))
+  (hl : ∀ a ∈ (SKM.lay D ν u (.dot i) v).left, a.l.1 = true)
+  (pR : SPath (SKM.lay D ν u (.dot i) v).right (0,c - Finsupp.single i 1) (0,0))
+  (hr : ∀ a ∈ (SKM.lay D ν u (.dot i) v).right, a.l.1 = true)
+local notation "pg" => SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv (SPath.nil _)
+local notation "p" => SPath.append (SPath.append pL pg) pR
+variable (hp : ∀ c ∈ (SKM.lay D ν u (.dot i) v).dom.word, c.l.1 = true)
+
+/-- The prescribed global row chart supplies the dot conjugacy without
+any additional target-chart or generator-comparison premise. -/
+theorem tensorOriginalWordLayer_dot_global (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    proofProposition (tensorOriginalWordLayer_dot D Sc m cutoff ΛP ΛR L hP hR
+      ν u v i (cL := cS) (c := c) hv pL hl pR hr
+      (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+      (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp) a leftward) :=
+  tensorOriginalWordLayer_dot D Sc m cutoff ΛP ΛR L hP hR
+    ν u v i (cL := cS) (c := c) hv pL hl pR hr
+    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp) a leftward
+end GlobalDot
+
+section GlobalSame
+variable (ν : X) (u v : List (Letter I)) (i : I)
+  {c : I →₀ ℕ} (hv : StepValid (true,i) false (0,c))
+  (hw : StepValid (true,i) false (nextSector (true,i) false (0,c)))
+  (pL : SPath (SKM.lay D ν u (.cross i i) v).left (0,cS) (0,c))
+  (hl : ∀ a ∈ (SKM.lay D ν u (.cross i i) v).left, a.l.1 = true)
+  (pR : SPath (SKM.lay D ν u (.cross i i) v).right
+    (0,c - Finsupp.single i 1 - Finsupp.single i 1) (0,0))
+  (hr : ∀ a ∈ (SKM.lay D ν u (.cross i i) v).right, a.l.1 = true)
+local notation "pg" => SPath.cons (Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]))
+  false (0,c) hv (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false _ hw (SPath.nil _))
+local notation "p" => SPath.append (SPath.append pL pg) pR
+local notation "h₁" => ProbeReservoir.reservoirVacuumEdge (P) i (c - Finsupp.single i 1) hw
+local notation "h₂" => ProbeReservoir.reservoirVacuumEdge (P) i c hv
+local notation "F" => ReservoirLayerCells.crossRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i i h₁ h₂
+local notation "Z" => ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)
+local notation "E0" => tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cS)
+local notation "e" => tensorLayerSameCrossIso D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr
+
+variable (hp : ∀ d ∈ (SKM.lay D ν u (.cross i i) v).dom.word, d.l.1 = true)
+
+/-- The prescribed global row chart supplies the equal-colour crossing
+conjugacy without an extra chart or generator-comparison premise. -/
+theorem tensorOriginalWordLayer_sameCross_global (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    proofProposition (tensorOriginalWordLayer_sameCross D Sc m cutoff ΛP ΛR L hP hR
+      ν u v i (cL := cS) (c := c) hv hw pL hl pR hr
+      (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+      (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp) a leftward) :=
+  tensorOriginalWordLayer_sameCross D Sc m cutoff ΛP ΛR L hP hR
+    ν u v i (cL := cS) (c := c) hv hw pL hl pR hr
+    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp) a leftward
+end GlobalSame
+
+section GlobalCross
+variable (ν : X) (u v : List (Letter I)) (i j : I)
+  {c : I →₀ ℕ}
+  (hv₁ : StepValid (true,i) false (0,c))
+  (hv₂ : StepValid (true,j) false (nextSector (true,i) false (0,c)))
+  (hw₁ : StepValid (true,j) false (0,c))
+  (hw₂ : StepValid (true,i) false (nextSector (true,j) false (0,c)))
+  (hEnd : nextSector (true,j) false (nextSector (true,i) false (0,c)) =
+    nextSector (true,i) false (nextSector (true,j) false (0,c)))
+  (pL : SPath (SKM.lay D ν u (.cross i j) v).left (0,cS) (0,c))
+  (hl : ∀ a ∈ (SKM.lay D ν u (.cross i j) v).left, a.l.1 = true)
+  (pR : SPath (SKM.lay D ν u (.cross i j) v).right
+    (0,c - Finsupp.single j 1 - Finsupp.single i 1) (0,0))
+  (hr : ∀ a ∈ (SKM.lay D ν u (.cross i j) v).right, a.l.1 = true)
+local notation "ps" => SPath.two (c₁ := Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]))
+  (c₂ := Col.mk (up j) (SKM.wt D ν v)) false false hv₁ hv₂ hEnd
+local notation "pt" => SPath.two (c₁ := Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]))
+  (c₂ := Col.mk (up i) (SKM.wt D ν v)) false false hw₁ hw₂ rfl
+local notation "p" => SPath.append (SPath.append pL ps) pR
+local notation "q" => SPath.append (SPath.append pL pt) pR
+variable (hp : ∀ d ∈ (SKM.lay D ν u (.cross i j) v).dom.word, d.l.1 = true)
+  (hq : ∀ d ∈ (SKM.lay D ν u (.cross i j) v).cod.word, d.l.1 = true)
+
+/-- Both prescribed global row charts supply the distinct-word crossing
+conjugacy, without any supplied generator-comparison equation. -/
+theorem tensorOriginalWordLayer_cross_global (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    proofProposition (tensorOriginalWordLayer_cross D Sc m cutoff ΛP ΛR L hP hR
+      ν u v i j (cL := cS) (c := c) hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr
+      (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+      (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR q hq)
+      (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp)
+      (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s q hq) a leftward) :=
+  tensorOriginalWordLayer_cross D Sc m cutoff ΛP ΛR L hP hR
+    ν u v i j (cL := cS) (c := c) hv₁ hv₂ hw₁ hw₂ hEnd pL hl pR hr
+    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hp)
+    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR q hq)
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hp)
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s q hq) a leftward
+end GlobalCross
