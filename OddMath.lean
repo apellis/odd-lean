@@ -2750,3 +2750,4 @@ import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralBend
+import OddMath.QuiverHecke.PairingExtensionObservation
