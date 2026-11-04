@@ -15,16 +15,16 @@ Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
 This file records next mathematical dependencies, not session telemetry.
 
-The checked action, vacuum/source, bend/layer and pairing-coordinate
-integrations through #1047 have passed the full warning-free build,
-global axiom audit and all concrete consumers; exact source heads and
-integration evidence are in STATUS. The final theorem is open. Restart
-with the canonical vacuum coefficient class and regular-probe chart
-coherence, the chosen inverse-row/bubble normalization, and sufficient
-pairing-extension observation transport. Before developing literal ideal
-comparisons, assess the simplification proposed below. The most recent unfinished
-source tree is `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`; its exact
-failure boundaries and paths appear below and in ResearchHistory.
+The final assembly is checked as a conditional theorem:
+`QuiverHecke.nondegeneracy_of_vacuum_route` proves the Phase 1 conjecture
+from the open hypotheses `VacuumRouteHypotheses D sy` (#1056); exact source
+heads and integration evidence are in STATUS. The final theorem is open.
+Restart with the four inputs of a `VacuumRouteSector` listed below. Each
+merged input should be wired into a corollary of
+`nondegeneracy_of_vacuum_route` with that input removed from the
+hypotheses. The most recent unfinished source tree is
+`0fe99e8dc4520ec9e8174c8e4604c3db181d0378`; its exact failure boundaries
+and paths appear below and in ResearchHistory.
 
 
 ## Work backward from the final theorem
@@ -62,12 +62,21 @@ Do not count an intermediate theorem with an assumed compatibility equation
 as having discharged that equation. Every additional helper should have a
 specific consumer on this checklist.
 
-| Endpoint input | Boundary to preserve |
+The endpoint is now `VacuumRouteHypotheses` in
+[VacuumRouteNondegeneracy](../../OddMath/QuiverHecke/VacuumRouteNondegeneracy.lean):
+for the pairing extension of each finite-colour restriction at `(μ, 0)`, a
+`VacuumRouteSector` on the constructed action. Its open inputs:
+
+| Sector field | Boundary to preserve |
 | --- | --- |
-| `bubbles_eq` | Identify the presentation's source-placed normalized bubbles with the substituted coefficient action on the chosen action modules, in both parities and all required heights. Raw coefficient actions or candidate polynomial caps alone do not supply this equality. |
-| `evaluation` | Join the canonical vacuum coefficient class and contextual dot/crossing observations to the literal affine action, coefficient placement and chosen quotient coordinate map. |
-| `ideal`, `ideal_le`, `coordinate` | Supply a quotient with the required lower degree bound and actual evaluation formula. Audit whether a transported ideal suffices before requiring equality with a separately named ideal. |
-| Substitution, placement and bounds | Reuse the existing substitution, placement-sign and explicit parameter-schedule results, checking their compatibility with the selected coordinates. Their availability does not discharge the two observation equalities above. |
+| `bubblesPositive : VacuumBubblesPositiveHeight` | Normalized left bubbles act as the substituted bubble series coefficients for `0 < ⟨hᵢ, μ⟩`, both parities. The inverse-column moment identities (#1051–#1053) hold for abstract inputs; instantiating the reservoir moments, column and probe on the tensor vacuum is the remaining step (#1055). |
+| `bubblesNonpositive : VacuumBubblesNonpositiveHeight` | The same for `⟨hᵢ, μ⟩ ≤ 0`, via reciprocal series (#1057). |
+| `coordinates : VacuumCoordinates` | An ideal contained in `ExtendedAtLeast D Sc t t' (vacuumCutoff t d - 2 * t.length.choose 2)` and a linear coordinate map from `A.V t'` to the quotient, from the canonical vacuum coefficient class (#1054). Audit whether a transported ideal suffices before requiring equality with a separately named ideal. |
+| `chart : VacuumChartCoherence` | `evaluation`: each presented upward diagram applied to the substituted vacuum, read in the coordinates, is the class of the placed, substituted source coefficient; this joins the contextual dot/crossing layer charts to the literal affine action and coefficient placement (#1058). |
+
+Raw coefficient actions or candidate polynomial caps alone do not supply the
+bubble fields; the substitution, placement-sign and parameter-schedule
+results do not discharge the coordinate or chart fields.
 
 An informative next milestone is one complete bounded recovery instance
 using the constructed supported action, its actual normalized bubbles and
@@ -96,7 +105,7 @@ that the missing inputs to a conditional recovery theorem can be constructed.
 
 ### Prove recovery natively in the pairing extension
 
-**Lean-checked consumer, pending CI.** `PairingExtensionRecovery` proves
+**Lean-checked, merged in #1050.** `PairingExtensionRecovery` proves
 `homMap_upwardCoefficientMap`: the upward coefficient evaluation of `D` at
 `μ`, followed by the exact presentation map, equals the evaluation of the
 pairing extension `Dₑ` at `(μ, 0)` after `coefficientHomEquiv`. Hence
