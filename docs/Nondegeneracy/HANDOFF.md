@@ -1921,26 +1921,62 @@ coordinates to the specified tensor Hom after evaluation at its regular
 probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
+The general probe braid is now attached in `ELVProbeWeightGeneralBraid`:
+`probeOldRouquierData_generalBraid` has exactly the uncorrected colour
+condition, retains all twelve weight edges and includes absent outputs.
+Its producer and mixed/asymmetric/repeated/interior-parameter consumer
+pass strict checks and all 53 owned audits. The corrected repeated-outer
+braid and complete multicolour factor assembly remain open.
+
 ## Central augmented-matrix attachment
 
 The positive-degree residual closure remains a substantive proof target.
 [ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
-source-coefficient-image and representable evaluation forms. The existing
-finite kernel inverse comparisons prove parity only. The intrinsic integer
+source-coefficient-image and representable evaluation forms. The intrinsic represented inverse degree is now proved; its attachment
+to the chosen whole-weight closure remains open. The intrinsic integer
 grading of the literal represented lower-loop kernel is now checked in
 `ELVIndResKernelInteger`, with actual balance relations and an internal
-direct-sum decomposition (22 owned audits). Construct the finite source/
-target shifts, prove that the prescribed forward matrix has degree zero,
-then use inverse homogeneity and Yoneda
-to realize the positive-degree closure on every module. Do not infer an
+direct-sum decomposition (22 owned audits; full CI verified in #1029). `IntegerMatrixGrading` and `ELVKernelMatrixInteger` now construct independent
+finite source/target shifts, prove both prescribed forward matrices have
+degree zero and derive degree `2*d_i` for both principal inverses. Strict
+paired checks include positive, negative and zero heights, off-content
+inputs and a proved nonzero odd inverse; all 79 owned declarations are
+audited. `ELVKernelClosureDegree` now proves the raw unit-inverse-cap
+coefficient degree `n + 2*d_i*(r+s+1)` and both OLD module evaluation
+equations, with 13 owned declarations audited by its strict paired
+consumer. Identify these raw inverses with the chosen reservoir principal,
+then use Yoneda to realize the positive-degree closure on every module.
+`ELVWeightPrincipalInverseCoordinates` now identifies both literal chosen
+whole-weight principal inverses with content-target inverses on each
+supported block, using finite inverse uniqueness rather than unfolding
+its choice. The strict mixed-parity/all-height/nonzero odd singleton
+consumer audits all 46 owned declarations.
+`ELVContentPrincipalInverseCoordinates` supplies the content-to-weighted
+part of that connection for either orientation and arbitrary stored
+contents, using only the prescribed forward equations and inverse
+uniqueness. Its strict paired checks audit all 83 owned declarations.
+`ELVModuleInverseKernelCoordinates` supplies the OLD module-to-kernel
+part, including both principal evaluations on arbitrary pure tensors and
+a nonzero odd input/inverse consumer; all eight owned declarations are
+audited. `ELVWeightedInverseCoordinates` identifies both weighted inverse
+charts, exact-content components and their raw principal tensor values;
+its strict paired nonzero odd weighted-inverse consumer audits all 28
+owned declarations. The weighted local record-to-component extraction
+and complete chosen closure composition remain to be attached. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
 recovered source coefficient, whose realization equals the whole natural
 transformation on every exact-content module. Strict nonzero odd
-positive-content checks audit all three declarations. The actual
-inverse-defined closure and its positive represented degree remain
-unsupplied; see [ModuleCentreDegree](ModuleCentreDegree.md).
+positive-content checks audit all three declarations; full CI verified in #1029. The actual
+closures are now constructed in `ELVReservoirClosures`, retaining the
+literal `elvRouquierFamily.loc` principal fields. `ELVWeightCentreBlocks`
+proves their exact-content dependence by even inclusion naturality; the
+reconstructed coefficients act as those closures on every whole-weight
+input. Strict paired odd positive-content checks audit 24 and 15
+declarations. Their positive represented degree remains unsupplied; see
+[ModuleCentreDegree](ModuleCentreDegree.md) and
+[ReservoirClosures](ReservoirClosures.md).
 
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
