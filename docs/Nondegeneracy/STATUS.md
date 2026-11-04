@@ -15,14 +15,21 @@ audit and every concrete consumer in #1044. The action has no additional
 relation or inverse premise. The full matrix coefficient observation and
 canonical source-unit normalization are also integrated.
 
-The successor vacuum-row/source-chart identification, exact source-unit
-word value, whole-Hom layer transport, evaluated cap monomials, principal
-factor coordinates and explicit parameter schedule pass strict paired
-checks. The even moving-colour probe annihilator and dot unit now pass
-mixed-data checks as well. These successor results await full integration.
-The vacuum quotient class, contextual affine evaluation, normalized bubble
-comparison, affine/bubble compatibility of the original-datum pullback and
-final bounded recovery remain.
+The vacuum-row/source-chart identification, exact source-unit word value,
+whole-Hom layer transport, evaluated cap monomials, principal factor
+coordinates, explicit parameter schedule and original-datum action pullback
+pass strict paired checks in #1046. The subsequent checked packets supply
+exact affine and normalized-bubble embedding maps, coefficient/PBW
+transport, the presented-layer action, the finite odd bend and its actual
+padded matrix attachment, even bend/slide/cap formulas on mixed data, and
+all-vector tensor polynomial windows. These additions retain their own
+full-CI integration gates below.
+
+The canonical vacuum quotient class, regular-probe compatibility of
+contextual charts, chosen all-height inverse-row/bubble normalization,
+exact power-quotient kernel transport and final bounded recovery remain
+open. Existing coefficient-action formulas alone do not identify the
+presentation's bubbles. Preserved drafts are not completed results.
 
 ## Scope
 
@@ -95,8 +102,8 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Arbitrary oriented boundaries | Full nondegeneracy iff upward independence at every weight; source and target exchange, including same colours, are discharged | [UpwardNondegeneracyReduction](../../OddMath/SKM/UpwardNondegeneracyReduction.lean), `nondegeneracy_iff_upward_independence` |
 | Arbitrary colour sets | Finite-colour upward injectivity implies full nondegeneracy, retaining the original weight group | [FiniteColourNondegeneracy](../../OddMath/QuiverHecke/FiniteColourNondegeneracy.lean), `nondegeneracy_of_restrictColours_upward` |
 | Characteristic-zero field reduction | The characteristic-zero field case for a fixed datum implies nondegeneracy over every ordinary commutative ring with 2 invertible, for homogeneous parameters and supplied CScalars; no flatness or reducedness is needed | `SKM.nondegeneracyConjecture_of_charZeroField`, `nondegeneracyConjecture_scalarChange`; imported in OddMath and exercised by `NonVacuity/GroundRingNondegeneracy`. The unresolved input is `CharZeroFieldNondegeneracy D` |
-| Original-datum action pullback | `SKM.PairingExtension` embeds every region and defining relation along `μ ↦ (μ,0)`, descends to a linear presentation functor, and retains composition and normal-form diagrams. `UpwardModuleAction.restrictPairingExtension` pulls back the combined action with unchanged carriers. Strict producers and connected mixed/occupied-probe/coroot-kernel consumer pass, auditing 89 declarations | Full integration; compare the affine embedding and source-placed normalized bubble maps before transporting observations |
-| Explicit vacuum parameters | `SwappedVacuumParameters` identifies the scheduled probe exponent with the actual factor cutoff and constructs highest weights `(0,P)` and `(-μ,P)`, with literal difference `(μ,0)`. Strict producer and connected mixed/repeated-word/coroot-kernel consumer pass, auditing all 22 declarations; the chosen coefficient powers discharge actual half-turn window injectivity | Full integration; the action pullback is scoped-checked below, while its affine and normalized bubble comparisons remain |
+| Original-datum action pullback | `SKM.PairingExtension` embeds every region and defining relation along `μ ↦ (μ,0)`, descends to a linear presentation functor, and retains composition and normal-form diagrams. `UpwardModuleAction.restrictPairingExtension` pulls back the combined action with unchanged carriers. Strict producers and connected mixed/occupied-probe/coroot-kernel consumer pass, auditing 89 declarations | Affine and source-placed normalized bubble comparisons are now scoped-checked in `PairingExtensionAffine` and `PairingExtensionBubbles`; exact observation-kernel transport remains |
+| Explicit vacuum parameters | `SwappedVacuumParameters` identifies the scheduled probe exponent with the actual factor cutoff and constructs highest weights `(0,P)` and `(-μ,P)`, with literal difference `(μ,0)`. Strict producer and connected mixed/repeated-word/coroot-kernel consumer pass, auditing all 22 declarations; the chosen coefficient powers discharge actual half-turn window injectivity | The action pullback and its affine/normalized-bubble comparisons are scoped-checked; transport exact observation kernels |
 | Recovery consumer | Vacuum evaluations at all weights, word pairs and bounds imply nondegeneracy over a field | [SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean), `nondegeneracy_of_vacuum_evaluations`; evaluations remain hypotheses |
 | Observation assembly | Swapped observations imply nondegeneracy, including finite-colour form | [SwappedConditionalNondegeneracy](../../OddMath/QuiverHecke/SwappedConditionalNondegeneracy.lean); concrete observations remain hypotheses |
 | Probe-vacuum summand paths | Upward paths ending at zero probe content use only reservoir summands, at arbitrary word length; the finite path sum reduces to its occupied term. The canonical reservoir path is constructed for every upward labelled word and terminal reservoir content. Producers and occupied repeated-colour consumers pass strict scoped checks; full build, global axiom audit and all non-vacuity checks passed in [#1010](https://github.com/apellis/odd-lean/pull/1010) | [SwappedAssembly/VacuumPaths](../../OddMath/QuiverHecke/SwappedAssembly/VacuumPaths.lean), `SPath.subsingleton_of_upward_probe_zero`, `SPath.sum_of_upward_probe_zero`; [ReservoirPaths](../../OddMath/QuiverHecke/SwappedAssembly/ReservoirPaths.lean), `SPath.reservoirPath`. The chosen-action generator evaluation remains to be attached |
@@ -558,9 +565,15 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Rectangular distinct mixed-braid and boundary detection | The native mixed braid, complete nonpositive cap identity, signed intermediate cap identity, and strict positive cup identity are checked using the prescribed principal and finite-row tests. `RouquierDistinctCanonicalCapRange` and `RouquierDistinctCanonicalPositive` retain the exact normalized left adjunctions. `RouquierCanonicalDistinctLeftMate.canonicalLeftMateInvertible` proves `LeftMateInvertible T T.leftAdjoints` from the actual multicolour record at every weight, with no additional mate premise. All strict producers, constructed two-odd consumers and owned audits pass | Full CI #1044; no factor left-mate proof obligation remains. A separate closed-delta scalar simplification is not needed for this invertibility result |
 | Tensor coefficient actions and moments | The full tensor and matrix coefficient actions and raw tensor moments are constructed. `SupportedTensorRowCoefficientAction` and `SupportedTensorMatrixRowCoefficients.tensorOriginalWordEntry_coefficient` intertwine the full matrix action with the exact original-weight path-Hom action. `SupportedTensorCoefficientChart` and `SupportedTensorCoefficientUnitObservation` prove its signed chart and quotient-coordinate formulas on every source vector, retaining mixed parity coefficients. All strict pairs and owned audits pass | Full CI #1044 for the squares and `SupportedTensorMatrixCoefficientObservation.tensorMatrixCoefficient_observation`; identify the vacuum source class and the chosen swapped cap with raw moments and bubble normalization |
 | Global word and matrix observation | Append/pair, arbitrary outer-context and actual path charts are checked. `SupportedTensorObservationLinearity` and `SupportedTensorWordObservation` give the exact word-indexed linear observation. `SupportedTensorUnitObservation` now proves canonical source-unit cancellation and its exact previous inverse-map formula through a checked whole-module chart; its extended consumer and affected word-observation checks pass | Full integration; prove the vacuum-unit quotient value, contextual layer and bubble laws. No faithfulness of observation on all matrices is asserted |
-| Pre-Hom cap and restricted dot charts | Normalized probe cap, pre-Hom dot/inverse powers and canonical dotted reservoir unit endpoints are checked. `RouquierHomWeightCoordinates` transports the prescribed cap/cup words through both Hom weights. `Sigma.PaddedBendWordSeries.centralPaddedDx_word_series` expands the actual padded central map in those negative-cap/post-unit words using constructed finite bounds; strict pairs and audits pass | The native monomials are now scoped-checked in `ELVProbeVacuumBendMonomials`, with a nonzero tensor/odd-coefficient consumer and 41 owned audits. Complete the finite bend and prescribed inverse-row cap moments |
+| Pre-Hom cap and restricted dot charts | Normalized probe cap, pre-Hom dot/inverse powers and canonical dotted reservoir unit endpoints are checked. `RouquierHomWeightCoordinates` transports the prescribed cap/cup words through both Hom weights. `Sigma.PaddedBendWordSeries.centralPaddedDx_word_series` expands the actual padded central map in those negative-cap/post-unit words using constructed finite bounds; strict pairs and audits pass | The native monomials are now scoped-checked in `ELVProbeVacuumBendMonomials`, with a nonzero tensor/odd-coefficient consumer and 41 owned audits. `ELVProbeVacuumBendSeries` and `ELVProbePaddedVacuumBend.paddedVacuumDx_odd` now identify the finite bend and the actual padded entry, without a compatibility premise. Prescribed inverse-row cap moments remain |
 | Distinct-colour permutation | `Sigma.DistinctReservoirShift` and `DistinctPureReservoirEntry` construct the pure reservoir entry. `Sigma.DistinctPureEntries` now has its canonical left-mate input discharged by the actual probe multicolour record in the native consumer. `ELVProbeSigmaPermutation.elvProbeSigmaPermutation` assembles all four entries with no pure-entry, mate, or permutation premise. Strict sources, both-colour-order consumers and all owned audits pass | Full CI #1044; attached to supported interchange and all presentation fields in `SupportedAction` |
 | Supported relation reduction | `SupportedWhiskerReduction` and `SupportedRelationLifting` reduce whole relations to local supported inputs using the checked path closure, with exact retained-input predicates. Strict paired consumer passes; 12 declarations audited | Attach the chosen local inverse and distinct-colour packages to obtain the presentation |
+| Padded odd vacuum bend | `ELVProbeVacuumBendSeries` gives the finite evaluated sum; `ELVProbePaddedVacuumBend.paddedVacuumDx_odd` identifies the actual padded central entry through its displayed source/target charts. Strict two-odd, unequal-cutoff, nonzero-coefficient consumers and all eight/41 owned audits pass | Identify the chosen inverse rows and normalized presentation bubbles |
+| Even moving-colour vacuum caps | `ELVProbeEvenCentralBend`, `ELVProbeEvenCentralSlide` and `ELVTensorEvenVacuumCap` derive the finite negative geometric sum, actual slide, polynomial-cap annihilation below height zero and principal-cap equality at height zero. Strict connected mixed-data/nonzero-odd-input consumers and 15/18/27 owned audits pass | Actual padded/inverse-row attachment and all-height bubble normalization remain |
+| All-vector tensor polynomial windows | `ELVTensorVacuumPolynomialWindow` proves the whole-map low-unit closure window, including the final identity and earlier zero columns, retaining two independent exterior directions. Strict producer/consumer and 17 owned audits pass | Attach the chosen negative inverse row using actual padded unit charts |
+| Original-datum affine and coefficient transport | `PairingExtensionAffine.alpha_map`, `PairingExtensionBubbles.homMap_bubAt_betaSYM`, `PairingExtensionObservation` and `PairingExtensionPBW` retain the exact affine embedding, full normalized bubble coefficients, pulled-back action, full coefficient/PBW basis and both joint filtrations. Strict occupied mixed/two-odd/coroot-kernel consumers pass | Exact composition/ideal/kernel transport and canonical observation remain |
+| Global/local dot and crossing charts | `SupportedTensorEntryLayerCharts` identifies all three actual native layer arrows and their conjugacies through the canonical whole-Hom row charts. Strict distinct/repeated two-odd nonzero-action consumers and all 118 owned audits pass. `ReservoirWordFunctor` exposes the chosen nil/cons components without changing its definitions | Compatibility of these chart changes after regular-probe evaluation remains open |
+| Presented single-layer action | `SupportedActionLayers.pointwiseUpwardModuleAction_act_layer` identifies the complete presentation action with the chosen restricted native matrix layer. Strict nonzero actual-action consumer and 20 owned audits pass | Canonical regular-probe/quotient layer observations remain |
 | Canonical vacuum row and source value | `SupportedTensorVacuumObservation.tensorOriginalWordEntry_vacuum` reads the exact original source isomorphism; its strict nonzero consumer audits 31 declarations. `SupportedTensorUnitObservation.tensorOriginalSourceUnit_wordValue` gives the literal word-unit normalization, with the extended strict consumer auditing 70 declarations | Full integration; finish target-label transport and the vacuum coefficient quotient class |
 | Whole-Hom layer transport | `SupportedTensorEntryLayers.tensorOriginalWordEntry_layer` identifies actual supported single-layer action with chronological postcomposition in the original-word Hom. Strict complete-action/nonzero-matrix consumer and 30 owned audits pass | Full integration; identify local dot/crossing chart changes after regular-probe evaluation and attach the presented action |
 | Even moving-colour probe polynomial | `ELVProbeEvenVacuumPolynomial` proves the actual shifted pre-dot annihilator `(x-1)^m=0` and invertibility, retaining balanced induction, old/ordinary comparison and source charts. Strict connected mixed-data consumer has nonzero even, odd and shifted-source vectors; 16 owned declarations audited | Full integration; even finite bend, slide and polynomial-cap normalization still require attachment |
@@ -819,25 +832,28 @@ and normalized content/weight transport are not asserted.
 ## Remaining critical chain
 
 1. Complete the canonical matrix observation laws for the constructed
-   `SupportedAction.pointwiseUpwardModuleAction`. Full matrix coefficients
-   already intertwine with the specified original-word entry and unchanged
-   quotient observation, including mixed parity; canonical source-unit
-   normalization and vacuum source-chart identity are checked. Finish the
-   vacuum quotient class and all contextual layer laws.
-2. Sum the checked native negative-cap/post-unit monomials to identify the
-   actual finite vacuum bend. The even moving-colour probe annihilator and
-   unit are also checked; retain its separate minus-one normalization. Identify the prescribed
-   inverse rows with polynomial caps and derive the normalized bubble series.
-   This compares the presentation's bubbles with the constructed coefficient
-   action; the latter alone is not that comparison.
-3. The combined supported action now pulls back along `μ ↦ (μ,0)` by
-   `UpwardModuleAction.restrictPairingExtension`, with strict paired checks.
-   Prove compatibility with the affine and normalized bubble maps before
-   transporting the vacuum observation. The factors occupy extended
-   weight cosets with second coordinate `-P`; restricting each factor to
-   second coordinate zero would lose the chosen vacuum. The explicit
-   highest weights, strict cutoff bounds and coefficient-power bounds are
-   now scoped-checked in `SwappedVacuumParameters`.
+   `SupportedAction.pointwiseUpwardModuleAction`. Matrix coefficient
+   equivariance, source-unit normalization and the vacuum source-chart
+   identity are checked. Finish the vacuum coefficient quotient class and
+   regular-probe compatibility of global/local contextual layer charts.
+   The latter must retain the actual dot and both crossing maps.
+2. The finite odd vacuum bend and its actual padded matrix attachment are
+   checked in `ELVProbeVacuumBendSeries` and `ELVProbePaddedVacuumBend`.
+   The even probe polynomial/unit, bend expansion, slide and polynomial-cap
+   tests are checked in the four `Even` modules. All-vector odd polynomial
+   closure windows are checked in `ELVTensorVacuumPolynomialWindow`.
+   Identify the chosen principal and negative inverse rows, retain the
+   padded unit columns, and derive the normalized presentation bubble
+   series in both parities and every height. These are substantive
+   comparisons, not consequences of the coefficient action alone.
+3. The combined action pullback, exact affine map, source-placed normalized
+   bubble map and coefficient/PBW equivalences are checked. Prove
+   composition compatibility and transport the literal coefficient-power
+   and transformed last-boundary ideals, hence the actual observation
+   kernels. Joint degree-filtration transport alone is insufficient.
+   Restrict the combined action along `μ ↦ (μ,0)`; restricting its factors
+   separately would lose the occupied extended coset of second coordinate
+   `-P`. The explicit highest weights and cutoff bounds are already proved.
 4. Package bounded corner evaluation/recovery via
    `UpwardModuleAction.toSwappedVacuumEvaluation`, apply the checked
    finite-colour, orientation and ground-ring reductions, and check the

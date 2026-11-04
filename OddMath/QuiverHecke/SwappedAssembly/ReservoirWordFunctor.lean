@@ -130,6 +130,89 @@ def reservoirWordFunctorIso {l : List (Col I X)} {c d : I →₀ ℕ}
       (ReservoirWord.word P.W.toRouquierData P.ΛR p hl) :=
   (P.reservoirWordComparison p hl).1
 
+private theorem mpr_heq_iff {α β γ : Sort w} (h : α = β) (b : β) (c : γ) :
+    HEq (h.mpr b) c ↔ HEq b c := by
+  cases h
+  rfl
+
+private theorem evenIso_app_heq {C : Type*} [Category* C]
+    {D₀ : Type*} [Category* D₀] [Preadditive D₀] [Linear k D₀] [Supercategory k D₀]
+    {F F' G G' : C ⥤ D₀} (hF : F = F') (hG : G = G')
+    (e : { e : F ≅ G // ∀ Z, e.hom.app Z ∈ parity (R := k) _ _ 0 })
+    (e' : { e : F' ≅ G' // ∀ Z, e.hom.app Z ∈ parity (R := k) _ _ 0 })
+    (he : HEq e e') (Z : C) : HEq (e.1.hom.app Z) (e'.1.hom.app Z) := by
+  cases hF
+  cases hG
+  cases eq_of_heq he
+  rfl
+
+/-- The empty comparison is the inverse right unitor, with only its
+prescribed equality transports suppressed. -/
+theorem reservoirWordFunctorIso_nil_hom_heq (d : I →₀ ℕ) (Z : P.H (0,d)) :
+    HEq ((P.reservoirWordFunctorIso (.nil (0,d)) (by simp)).hom.app Z)
+      (rightUnitor Z).inv := by
+  let e := (homPostId (k := k) (P.T.obj (-P.muP (0,d)))
+    (P.W.obj (P.muM (0,d)))).symm
+  have hm : ∀ Z, e.hom.app Z ∈ parity (R := k) _ _ 0 := fun Z =>
+    inv_mem (rightUnitor Z) (TwoSupercategory.rightUnitor_hom_mem (R := k) Z)
+  have he : HEq (P.reservoirWordComparison (.nil (0,d)) (by simp))
+      (⟨e,hm⟩ : { f : (𝟭 (P.H (0,d))) ≅ homPost (k := k)
+        (a := P.T.obj (-P.muP (0,d))) (𝟙 (P.W.obj (P.muM (0,d)))) //
+          ∀ Z, f.hom.app Z ∈ parity (R := k) _ _ 0 }) := by
+    unfold reservoirWordComparison
+    dsimp only
+    simp only [Prod.mk.noConfusion, Prod.noConfusion, id, mpr_heq_iff]
+    rfl
+  exact evenIso_app_heq rfl
+    (congrArg (homPost (k := k) (a := P.T.obj (-P.muP (0,d))))
+      (ReservoirWord.word_nil P.W.toRouquierData P.ΛR d))
+    (P.reservoirWordComparison (.nil (0,d)) (by simp)) ⟨e,hm⟩ he Z
+
+/-- The first upward letter appends the factor comparison and its
+associator, with only the prescribed equality transports suppressed. -/
+theorem reservoirWordFunctorIso_cons_hom_heq (i : I) (r : X)
+    {l : List (Col I X)} {c d : I →₀ ℕ} (hc : 1 ≤ c i)
+    (p : SPath l (0,c - Finsupp.single i 1) (0,d)) (hl : ∀ a ∈ l, a.l.1 = true)
+    (Z : P.H (0,d)) :
+    let E := P.W.E i (ReservoirWord.height P.ΛR i c hc)
+    HEq ((P.reservoirWordFunctorIso
+      (.cons ⟨(true,i),r⟩ false (0,c) hc p)
+      (by simp only [List.mem_cons,forall_eq_or_imp]; exact ⟨True.intro,hl⟩)).hom.app Z)
+      (((P.reservoirWordFunctorIso p hl).hom.app Z) ▷ E ≫
+        (associator Z (ReservoirWord.word P.W.toRouquierData P.ΛR p hl) E).hom) := by
+  dsimp only
+  let E := P.W.E i (ReservoirWord.height P.ΛR i c hc)
+  let e := Functor.isoWhiskerRight (P.reservoirWordComparison p hl).1 (homPost (k := k) E) ≪≫
+    homPostComp (ReservoirWord.word P.W.toRouquierData P.ΛR p hl) E
+  have hm : ∀ Z, e.hom.app Z ∈ parity (R := k) _ _ 0 := by
+    intro Z
+    change ((P.reservoirWordComparison p hl).1.hom.app Z) ▷ E ≫
+      (associator Z (ReservoirWord.word P.W.toRouquierData P.ΛR p hl) E).hom ∈ parity (R := k) _ _ 0
+    simpa only [zero_add] using comp_mem
+      (TwoSupercategory.whiskerRight_mem E ((P.reservoirWordComparison p hl).2 Z))
+      (TwoSupercategory.associator_hom_mem (R := k) Z
+        (ReservoirWord.word P.W.toRouquierData P.ΛR p hl) E)
+  have hF : P.pathFunctor (.cons ⟨(true,i),r⟩ false (0,c) hc p) =
+      P.pathFunctor p ⋙ homPost (k := k) E := by
+    rw [pathFunctor_cons]
+    congr 1
+  have hG := congrArg (homPost (k := k) (a := P.T.obj (-P.muP (0,d))))
+    (ReservoirWord.word_cons P.W.toRouquierData P.ΛR i r hc p hl)
+  have he : HEq (P.reservoirWordComparison (.cons ⟨(true,i),r⟩ false (0,c) hc p)
+      (by simp only [List.mem_cons,forall_eq_or_imp]; exact ⟨True.intro,hl⟩))
+      (⟨e,hm⟩ : { f : (P.pathFunctor p ⋙ homPost (k := k) E) ≅
+        homPost (k := k) (a := P.T.obj (-P.muP (0,d)))
+          (ReservoirWord.word P.W.toRouquierData P.ΛR p hl ≫ E) //
+            ∀ Z, f.hom.app Z ∈ parity (R := k) _ _ 0 }) := by
+    unfold reservoirWordComparison
+    dsimp only
+    simp only [Prod.mk.noConfusion, Prod.noConfusion, List.cons.noConfusion,
+      List.noConfusion, id, mpr_heq_iff]
+    rfl
+  exact evenIso_app_heq hF hG
+    (P.reservoirWordComparison (.cons ⟨(true,i),r⟩ false (0,c) hc p)
+      (by simp only [List.mem_cons,forall_eq_or_imp]; exact ⟨True.intro,hl⟩)) ⟨e,hm⟩ he Z
+
 /-- The comparison is even, so transporting odd dot and crossing entries
 through it introduces no new Koszul factor. -/
 theorem reservoirWordFunctorIso_hom_mem {l : List (Col I X)} {c d : I →₀ ℕ}
