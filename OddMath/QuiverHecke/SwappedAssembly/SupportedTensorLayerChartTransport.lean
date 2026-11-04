@@ -353,7 +353,7 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
   simp only [Iso.trans_hom, eqToIso.hom, Functor.mapIso_hom]
   repeat' first
     | with_reducible exact exists_eqToHom_self _
-    | with_reducible_and_instances apply homContentPostWordIso_zero_app_eqToHom
+    | (rw [(homContentPostWordIso_zero_app_eqToHom _ _ _ _ _ _ _).choose_spec]; exact ⟨_, rfl⟩)
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
