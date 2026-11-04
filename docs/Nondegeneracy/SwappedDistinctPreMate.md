@@ -309,3 +309,31 @@ independent corners and arbitrary crossing parity. It cancels the lower
 right-adjunction unit without changing the upward crossing. This is the
 unit-side input for the finite cup-column calculation; its consumer
 uses both ordered pairs of the same nonzero two-odd probe family.
+
+### Checked cap tests and correction-monomial coefficients
+
+`RouquierDistinctCapTests.lean` defines `distinctCapRight` using the inverse
+of the specified `distinctCapSource`, and proves `distinctCapSource_right`,
+`distinctCapRight_principal_of_neg`, `distinctCapRight_column_of_neg`, and
+`distinctMixedBraidRight_cap_of_neg`. The first two detection tests reduce
+to the actual inverse-defined local cap: the principal composite is zero
+at strictly negative height, and the finite cup columns are the boundary
+Kronecker coefficients. The second mixed-braid word also vanishes after
+its final negative-height cap. These are right-hand tests; they do not
+assert the missing left cap pitchfork.
+
+`RouquierDistinctCapMonomials.lean` proves
+`distinctMixedBraidOuterMate_monomial`, factoring the exact ordered
+correction monomial through the separated rectangular mate, and
+`distinctMixedBraidOuterMate_monomial_cap`, evaluating the final dotted
+cup against the prescribed cap throughout the negative-height window.
+The result is zero except at the precise boundary exponent, where the
+remaining dotted cap and middle dot power survive.
+
+Both producers and their paired `scripts/NonVacuity/` consumers pass the
+strict pinned checks. The consumers use the constructed two-odd probe
+family, prove all height and exponent conditions, and retain nonzero
+vacuum append vectors. Their owned-declaration axiom audits cover 5 and
+12 declarations respectively. These results supply actual cap tests and
+coefficients, but the finite left-column reduction and full all-weight
+canonical cap identity remain open.
