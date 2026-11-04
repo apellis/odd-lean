@@ -423,3 +423,12 @@ inverse of its prescribed right mate are unchanged. The strict producer
 and constructed two-odd consumer pass, with its owned declaration
 audited. The consumer supplies the raw cap identity from the proved
 nonpositive theorem, rather than leaving it as a fixture hypothesis.
+
+`RouquierDistinctCanonicalNonpositive.leftCrossMate_isIso_of_nonpos`
+now proves invertibility of the actual canonical distinct left mate for
+`h_i(a) ≤ 0`, with no cap-pitchfork or left-mate premise. It applies the
+checked raw identity and the canonical scalar-unit normalization. The
+strict producer and two-odd consumer at negative and zero central
+heights pass, including its owned-declaration audit. The positive
+ranges remain separate until the corresponding native identities are
+attached.
