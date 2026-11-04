@@ -2643,3 +2643,5 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedWhiskerReduction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedRelationLifting
 import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
+import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
