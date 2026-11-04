@@ -77,6 +77,26 @@ theorem chartChange_eqToHom {J : Type*} (C : J → Type*) [∀ j, Category (C j)
   simp only [chartChange, Functor.preimageIso_hom, Functor.map_preimage, Iso.trans_hom,
     Iso.symm_hom, he', hd', eqToHom_trans, eqToHom_map]
 
+/-- Two pulled-back arrows of the same whole-Hom map, in two pairs of charts
+that are all equality transports, agree up to equality transport. -/
+theorem arrow_eqToHom_conj {J : Type*} (C : J → Type*) [∀ j, Category (C j)]
+    {x y : J} (h : x = y) {X Y : C y} {A B A' B' : C x}
+    (e : X ≅ (Pi.eqToEquivalence C h).functor.obj A)
+    (d : Y ≅ (Pi.eqToEquivalence C h).functor.obj B)
+    (e' : X ≅ (Pi.eqToEquivalence C h).functor.obj A')
+    (d' : Y ≅ (Pi.eqToEquivalence C h).functor.obj B')
+    (he : ∃ h, e.hom = eqToHom h) (hd : ∃ h, d.hom = eqToHom h)
+    (he' : ∃ h, e'.hom = eqToHom h) (hd' : ∃ h, d'.hom = eqToHom h) (m : X ⟶ Y) :
+    ∃ (hA : A = A') (hB : B = B'),
+      arrow (Pi.eqToEquivalence C h) e d m =
+        eqToHom hA ≫ arrow (Pi.eqToEquivalence C h) e' d' m ≫ eqToHom hB.symm := by
+  obtain ⟨hA, hcA⟩ := chartChange_eqToHom C h e e' he he'
+  obtain ⟨hB, hcB⟩ := chartChange_eqToHom C h d d' hd hd'
+  refine ⟨hA, hB, ?_⟩
+  have sq := arrow_chartChange (Pi.eqToEquivalence C h) e d e' d' m
+  rw [hcA, hcB] at sq
+  rw [← Category.assoc, ← sq, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
+
 end SupportedSectors.TensorEntryPullback
 
 namespace SupportedSectors
@@ -165,6 +185,36 @@ theorem tensorLayerDot_chartChange_eqToHom
   unfold tensorHomEquivalence
   exact TensorEntryPullback.chartChange_eqToHom _ _ g _ hg
     (tensorLayerDotIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i hv pL hl pR hr)
+
+/-- **Dot layer coherence.** In every global chart that is an equality
+transport, the pulled-back literal dot layer of the full chosen action is the
+frozen local dot operator, up to equality transport of its endpoints. -/
+theorem tensorOriginalWordLayer_dot_transport
+    {G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
+      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
+    (g : ((P).pathFunctor (SPath.append (SPath.append pL
+        (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv (SPath.nil _))) pR)).obj
+          (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)) ≅
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)).functor.obj G)
+    (hg : ∃ h, g.hom = eqToHom h) (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    ∃ (h₁ : G = ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i
+          (ProbeReservoir.reservoirVacuumEdge (P) i c hv))
+      (h₂ : G = ReservoirLayerCells.dotRawHom D Sc m cutoff L ΛP ΛR pL hl pR hr i
+          (ProbeReservoir.reservoirVacuumEdge (P) i c hv)),
+      TensorEntryPullback.arrow
+          (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)) g g
+          ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.dot i) v)
+            (SPath.append (SPath.append pL
+              (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv (SPath.nil _))) pR)
+            (SPath.append (SPath.append pL
+              (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false (0,c) hv (SPath.nil _))) pR)
+            (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR))) =
+        eqToHom h₁ ≫ tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫
+          eqToHom h₂.symm := by
+  rw [tensorLayerDotRaw_arrow D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a leftward]
+  have he := tensorLayerDotIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i hv pL hl pR hr
+  unfold tensorHomEquivalence at g ⊢
+  exact TensorEntryPullback.arrow_eqToHom_conj _ _ g g _ _ hg hg he he _
 
 end Dot
 
