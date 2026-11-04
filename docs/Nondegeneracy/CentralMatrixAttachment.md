@@ -1,36 +1,31 @@
-# Attaching the actual central augmented matrix
+# The chosen central augmented inverse on supported inputs
 
-The literal matrix comparison is now proved in
-`Sigma/AugmentedSectorEntries` and `Sigma/AugmentedFactorMatrix` and
-full-CI verified in #1027. This note describes the remaining inverse
-attachment for SwappedActionAssembly §6 and SwappedHomInversion §§3–6.
-Native factor inverse transfer at absent corners, finite mixed-bend
-expansions and residual coefficient memberships remain obligations.
-No concrete ELV instance of `ProbeReservoir.CentralInvertible` is supplied
-by the comparison squares alone.
+`Sigma/PaddedResidualInversion` now proves
+`SupportedSectors.centralFactorMatrix_content_isIso` and
+`centralAugmentedMatrix_isIso` for the intended ELV probe/reservoir pair
+and its constructed mixed coefficient. The producer and concrete
+nonzero two-odd collision-block consumer pass strict checks; all nine
+owned declarations pass the standard axiom audit. Full integration is
+separate from this scoped evidence.
 
-Fix a colour `i`, a sector `t`, an object `Z : P.H t`, and the actual
-weight `ν = P.wt t`. Put `H = D.h i ν`. The restriction to this weight is
-essential: the fused window count belongs to this sector. The checked
-interface `ProbeReservoir.centralInvertible_of_isIso` in
-`Sigma/AugmentedMatrix.lean` still asks
-for invertibility of the actual `augPosMat` when `0 ≤ H` and `augNegMat`
-when `H < 0`, at every such `Z`.
+These results implement SwappedActionAssembly §6 and SwappedHomInversion
+§§3–6 at every supported input. They require the standing cutoff/weight
+matches, a positive integral symmetrizer and homogeneous parameters.
+No inverse, bend expansion, coefficient-ideal membership or nilpotence
+premise remains. Both height-zero orientations are included.
 
-Let `δ` be one output reservoir content block and let `Eδ` denote the
-induced evaluation functor on the finite matrix category. Name the pure
-reservoir and pure probe source objects `XR`, `XP`, and the corresponding
-target objects `YR`, `YP`; let `O` be the evaluated identity-path object.
-The checked path-to-factor comparisons give specified source and target
-matrix isomorphisms `S+`, `T+`, `S-`, `T-`. The checked literal squares
-are
+The input belongs to the exact-content supported full subcategory.
+This does not assert `P.CentralInvertible` on every object of the larger
+ambient `P.H t`. Root-weight collisions can leave other contents occupied
+at a formally absent corner. The checked support arguments supply the
+native zeros used for padding.
 
-    S+.hom ; Eδ(augPosMat c i ν t t Z) = M+ ; T+.hom,
-    S-.hom ; Eδ(augNegMat c i ν t t Z) = M- ; T-.hom.
+## The literal matrices
 
-Here `S` points from the model source to the evaluated path source, and
-`T` points from the model target to the evaluated path target. With
-matrix entries indexed by source and then target, the model maps are
+Fix colour i, sector t, a supported object Z, and ν=P.wt t. Let H=D.h i ν.
+At a fixed output content δ, evaluation retains the entire input
+superfunctor. The prescribed source and target charts identify the
+actual matrices with
 
     M+ : XR ⊕ XP → YR ⊕ YP ⊕ O^H,
           XR ↦ [sR, Cx, vR(a)],
@@ -41,89 +36,61 @@ matrix entries indexed by source and then target, the model maps are
           XP ↦ [-Dx, -sP],
           Oa ↦ [uR(a), colP(a)].
 
-The positive map is `ProbeWindow.posMap`. The negative map is
-`ProbeWindow.negMap` with the displayed negative principal entries;
-applying its inversion results must retain these signs, or prove the
-specified sign-diagonal comparison first. The minus in `augNegMat` is
-part of its definition. The equal-colour crossing signs and normalized
-probe left adjunction are also fixed by the existing constructions;
-they are not free matrix normalizations.
+`AugmentedSectorEntries` and `AugmentedFactorMatrix` retain every
+principal, mixed and finite-window entry in these squares. The negative
+matrix has all four principal entries negated and unchanged unit
+columns. `pureSourceSign` in `SeparatedClosures` is the prescribed source
+diagonal (-1,-1,1); its checked square is identity. This transfers
+invertibility after the normalized probe slide is used with its original
+sign. No sign is reassigned to the factor adjunction or dot.
 
-All path and window indices occur in these squares. The comparison
-retains explicit zero padding at absent pure corners and the empty
-positive window at `H = 0`. The native factor inverse must still be
-transferred to those zero corners using the supported object category;
-zero padding in the forward comparison does not establish that transfer.
+## The inverse inputs are constructed
 
-The reservoir window rows are checked in
-`ReservoirDottedAdjunctionRows` and `ReservoirDottedFactorCoordinates`.
-Their strict concrete two-odd consumers retain arbitrary Hom inputs. For every
-`n : ℕ`, identify
+`SupportedFactorWindowInverse` and `ReservoirWindowInverseData` supply
+the four factor windows and their named principal/finite-slot entries,
+including absent corners. `SupportedProbeSlideWindow` supplies the
+actual probe dot automorphisms, signed slide and every cap/unit power.
 
-    epsEntry c i n ν (reservoir-reservoir path) (empty path) Z
+The chosen reservoir principal closures have reconstructed source degree
+2*d_i*(r+s+1). The finite-slot boundary coefficient has degree
+2*d_i*(r-j), positive for r>j. `ELVReservoirClosureIdeal` and
+`ELVReservoirBoundaryIdeal` place the literal native actions in level one
+of the content coefficient ideal, with arbitrary surrounding maps.
+`ReservoirWindowCoefficientIdeal` attaches these to the named padded
+inverse entries. Its consumer retains a nonzero absent unit window;
+that branch is not replaced by zero. Finite-window contractions are the
+Kronecker equations of the specified inverse.
 
-with the prescribed `homContentPostCap ... n Z`, through the actual
-roundtrip-path endpoint chart. The companion `etaEntry` identity gives
-the `homContentPostCup ... n Z` columns. The statements include `n = 0`
-and the entire coefficient carriers. They require collapsing `compList`
-for the actual dot/cap or unit/dot word; the finite inverse theorem is
-not an input to this calculation. Neither entry uses the unknown mixed
-crossing coefficient. The resulting native factor coordinate corollaries apply the identities:
-`RouquierHomPostPowers` proves
-`homContentPostCap_coordinates` and `homContentPostCup_coordinates` for
-the prescribed adjunction. `ELVOld.elvRouquierFamily_adj` in
-`ELVRouquierFamily.lean` retains that adjunction definitionally.
-`ELVWeightCapRowFamily` and
-`ELVWeightLocalInverse` retain the whole chosen cap/unit windows and their
-input naturality; supported and absent-content inverse modules supply
-the corresponding boundary cases.
+`ELVProbeContentBends` and `ELVProbePaddedContentBends` give the exact
+signed separated sums for Cx and Dx. A common finite length is chosen
+uniformly over input modules at each fixed output content. It need only
+exceed the reservoir window length. Principal closure membership holds
+for every dotted index, so fused rows outside the series range remain
+covered. `SeparatedClosures` derives the three mixed closed-error
+memberships by finite sums without grading arbitrary module Homs.
 
-The principal entries and both mixed diagonal bends are identified in
-`AugmentedSectorEntries`, and `AugmentedFactorMatrix` assembles the
-complete model squares. The regular-probe formulas of
-`ELVProbeCentralBend` and `ELVProbeCentralSlide` describe separate
-specified evaluated bends. Their finite expansions still require an
-explicit comparison to the mixed coefficient of the chosen factor on
-arbitrary supported Hom objects; a regular-input formula alone does not
-supply that comparison.
+`SignedResidualWindows` covers all six combinations of fused, reservoir
+and probe height signs. In particular `ResidualComparisonNegative`
+attaches the negative probe-height subcases (b), (c). The reference
+inverse entries lie in level zero because the concrete content ideal
+contains every morphism there. Its joint nilpotence follows from the
+bounded source coefficient grading.
 
-After this square, `CentralInverse/TwoSector` performs the
-reservoir cap/cup elimination. `CentralInverse/ResidualComparison`
-compares its probe residual with the four invertible window reference
-maps. Its explicit obligations include the finite bend expansion
-(`hCx` or `hDx`), the off-window contractions (`hout`), and positive
-coefficient-ideal membership of the closed errors. In the positive
-cap-window case these include
+## Product assembly and remaining use
 
-    Dx ; jR ; Cx ∈ J1,
-    Dx ; jR ; vR(a) ∈ J1.
+`centralFactorMatrix_content_isIso` applies the signed residual theorem
+in the category of whole functors into the fixed-content module category.
+`centralAugmentedMatrix_isIso` then uses the literal augmented chart
+squares and `RegularReservoir.isIso_of_eval` to assemble over every output
+content. Each content may have its own series length and ideal bound.
+No uniform bound over an original-weight fibre, regular-input
+replacement or independence of roots is used.
 
-The negative cases also require the corresponding closures
-`uR(a) ; jR ; Cx ∈ J1`. The degree-zero memberships of window and
-inverse reference entries follow from `ProbeWindow.mem_coeffIdeal_zero`
-once the chosen content coefficient ideal and endpoint charts are
-identified. The existence of an ideal or a nilpotence bound does not
-establish the positive memberships for the actual mixed coefficient and
-chosen inverse `jR`.
-
-For homogeneous parameters and a positive symmetrizer,
-`ELVOld.contentModuleCoefficientIdeal` in `ELVCategoryCoefficients.lean` supplies a
-jointly nilpotent coefficient ideal on functors into the actual
-exact-content all-module category. Its bound comes from
-`contentCategory_end_bounded` and `contentModule_coefficient_eq_zero`.
-This avoids replacing the chosen category with an endomorphism algebra.
-`ELVContentModuleBound` supplies the corresponding bounded-support and
-coefficient-error results for the regular-algebra route when needed.
-
-These bounds may vary with `δ`. Use
-`RegularReservoir.isIso_of_component_coefficient_error` in
-`CentralInverse/ProductCoefficients.lean`
-where its product-module targets match, or its `isIso_of_eval` inverse
-assembly on the literal product. Inverses assemble after each content
-matrix is proved invertible. No common nilpotence exponent over an
-entire weight fibre is required. In particular,
-`ProbeReservoir.homCoefficientIdeal` in
-`CentralInverse/ReservoirCoefficients.lean` requires a
-`RouquierGrading.BoundedAbove` input on the whole weight object; that
-input is not supplied by the existing contentwise bounds and should not
-be assumed for this attachment.
+Next extract the leftward entries and presentation relations on supported
+inputs and their supported path values. `LeftwardData` stores objectwise
+generator images: an inverse-or-zero construction can define those
+images on the ambient category while proving the inverse identities
+only where supported invertibility is established. Offcentral sectors,
+whiskered relations and the final vacuum/bubble observations remain
+separate attachments. The central inverse alone is not the full swapped
+action or nondegeneracy theorem.
