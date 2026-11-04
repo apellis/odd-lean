@@ -2742,3 +2742,6 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuumObservation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenVacuumPolynomial
+import OddMath.SKM.PairingExtensionDiagrams
+import OddMath.SKM.PairingExtensionPresentation
+import OddMath.QuiverHecke.PairingExtensionAction
