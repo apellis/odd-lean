@@ -104,5 +104,7 @@ N=P−hᵢ(μ), so N has the required parity. `ReservoirWeights.reservoir_parity
 and the odd-pairing invariant retain the original weight coset. Both weighted
 component matrix-inverse APIs accept arbitrary cutoff parity; the
 polynomial-cap consumer includes occupied odd cutoff five. The older
-even-cutoff action note describes a narrower candidate. Constructing the
-chosen native factors remains open, including their arbitrary-height cases.
+even-cutoff action note describes a narrower candidate. The chosen native factors, canonical all-height distinct left mate and
+complete supported action are now scoped-checked. The remaining field input
+requires their vacuum/layer/bubble observations, restriction of the combined
+action to the original datum, and bounded recovery; see STATUS.

@@ -2123,9 +2123,29 @@ Next discharge the following dependencies in order.
    bend, then identify prescribed inverse rows with polynomial caps and
    attach the all-vector moments and bubble normalization. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
-5. Complete bounded corner recovery and apply the existing observation,
-   finite-colour, orientation and ground-ring reductions, followed by the
-   checked all-even specialization.
+   `ELVTensorVacuumWholeInput.tensorSectorInput_eq_supported` now identifies
+   the full tensor input with this supported vacuum through both weight
+   transports. `ELVTensorVacuumPrincipalFactor` removes both padding charts
+   from the chosen height-zero principal isomorphism and retains its exact
+   inverse-row formula. The two strict producers and occupied two-odd
+   consumer pass, auditing 62 declarations. Evaluate this inverse through
+   the same bend charts before applying the polynomial-cap comparison.
+5. `SwappedVacuumParameters` now constructs literal highest weights
+   `(0,P)` and `(-μ,P)` in the pairing extension, identifies the actual
+   probe cutoff with the existing schedule, and proves both factor bounds
+   and the coefficient-power window inequality. Its strict mixed,
+   repeated-word consumer retains a nonzero common-coroot-kernel coordinate
+   and applies actual half-turn injectivity; all 22 declarations are audited.
+   Pull back the combined presentation/action along `μ ↦ (μ,0)` and retain
+   the `alpha`, source-placement and `betaSYM` identities. Restricting the
+   factors separately loses the occupied extended coset with second
+   coordinate `-P`; only the combined Hom heights cancel this coordinate.
+6. Fill `UpwardModuleAction.toSwappedVacuumEvaluation` with the constructed
+   action, coefficient and bubble comparisons, bounded corner and exact
+   affine evaluation. Apply `nondegeneracy_of_restrictColours_vacuum_evaluations`
+   and the existing orientation and ground-ring reductions, followed by the
+   checked all-even specialization. This endpoint does not require the
+   stronger global relation record in `SwappedVacuumObservation`.
 
 The whole original-weight Hom category can contain other occupied contents
 at an absent formal sector. Use the supported category's proved zero
