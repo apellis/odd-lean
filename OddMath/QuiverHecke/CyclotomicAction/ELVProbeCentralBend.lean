@@ -159,7 +159,8 @@ private theorem dot_inverse_powers_exchange (M : Superfunctor k C (SVec k))
     (end_pow_mem (inverse_mem_of_isUnit x hx hm) (r + 1))
   simpa only [adjacent_parity_product_zero, sign_zero, one_smul] using h
 
-private theorem postBend_sum (M N : Superfunctor k C (SVec k))
+/-- Evaluation of a finite diagonal series retains its prescribed cap and post-unit. -/
+theorem postBend_sum (M N : Superfunctor k C (SVec k))
     (v : M ⟶ N) (hv : v ∈ parity (R := k) _ _ 0)
     (f : ℕ → End M) (c : ℕ → ℤ) (n : ℕ) :
     postBend J M N v (∑ r ∈ Finset.range n, c r • ((induction J).map (f r) ≫ dotEnd J hα M ^ r)) =
