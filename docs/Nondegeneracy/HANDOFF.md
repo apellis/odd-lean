@@ -2036,20 +2036,27 @@ package the whole-sector observation.
 
 Next discharge the following dependencies in order.
 
-1. Build objectwise leftward entries from the actual inverse where it exists,
-   with zero elsewhere, preserving off-weight zero. Prove inverse identities
-   at supported inputs using the checked central matrix and the offcentral
-   swapping matrices. The actual transpose-norm inputs use existing
-   contentwise norm theorems; no global weight nilpotence is needed.
-2. Lift those identities along supported paths and derive the presentation
-   obligations on the chosen supported Gs/Ys families. `LeftwardData` stores
+1. `PointwiseLeftwardInverse` and `SupportedPointwiseLeftwardInverse` now
+   construct the objectwise leftward entries, with zero elsewhere, and prove
+   all ten central inverse identities at every supported input (42 and 14
+   audited declarations, paired nonzero positive/negative-height consumer).
+   Attach the offcentral swapping matrices using actual transpose norms;
+   existing contentwise norm theorems avoid global weight nilpotence.
+2. `SupportedWhiskerReduction` and `SupportedRelationLifting` now lift local
+   identities along supported paths (12 audited declarations, strict paired
+   consumer). Derive the presentation obligations on the chosen supported
+   Gs/Ys families using the local inverses and distinct-colour permutations. `LeftwardData` stores
    objectwise generator images, so no global ambient `P.CentralInvertible`
    is needed merely to define it. Naturality/parity/interchange must still
    be proved where the relation lifting uses them.
 3. Construct the whole-sector vacuum/source families and raw coefficient
    action. Join the literal quotient-class squares to the matrix observation.
-   Compare the selected vacuum inverse with the evaluated polynomial cap,
-   then use the all-vector moment maps and prescribed bubble normalization.
+   `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` now extract
+   the selected inverse's finite vacuum rows and prove its inverse chart square
+   (14 and 21 audited declarations, strict generic and occupied collision
+   consumers). Identify the whole-weight probe counit with the local vacuum
+   counit, compare the inverse with the evaluated polynomial cap, then attach
+   the all-vector moment maps and prescribed bubble normalization.
    `SwappedVacuum.NegativeCapInverse` now proves generic last-row uniqueness
    and polynomial identification (six audited declarations); it does not
    replace that actual vacuum comparison.
