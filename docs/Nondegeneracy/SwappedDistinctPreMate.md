@@ -1,7 +1,8 @@
 # Distinct-colour precomposition mate
 
-**Status: proposed factor calculation with a checked conditional bicategorical
-contraction (§6); the canonical factor pitchfork is still open.** This evaluates
+**Status: canonical distinct left-mate invertibility is checked throughout
+the cap range `h_i(a) ≤ max(d_ij−1,0)`; the complementary strict cup
+range remains open.** This evaluates
 only the pre/pre entry (A8)–(A9) of `SwappedActionAssembly.md`, conditional
 on its specified full factor action. It supplies no new fused-action
 hypothesis and changes none of the assigned generators. In particular it
@@ -432,3 +433,22 @@ strict producer and two-odd consumer at negative and zero central
 heights pass, including its owned-declaration audit. The positive
 ranges remain separate until the corresponding native identities are
 attached.
+
+### Closed canonical cap range
+
+`RouquierDistinctCanonicalCapRange` proves
+`leftCrossMate_isIso_of_middle` and `leftCrossMate_isIso_of_capRange`.
+The latter gives the exact prescribed canonical left mate's
+invertibility for `h_i(a) ≤ max(d_ij−1,0)`, with no cap, cyclicity, or
+left-mate premise. The intermediate sign is realized as its explicit
+scalar unit before applying canonical normalization. The strict
+producer and supported two-odd `h=2<d=4` consumer pass, with all 4 owned
+declarations audited; the negative and zero cases have their separate
+checked consumer above.
+
+For the remaining weights, the cup relation is needed at the top of the
+first edge: `h_i(b)=h_i(a)+2>d_ij`. Thus only the strict positive cup
+range is needed for all-weight `LeftMateInvertible`; its equality
+boundary is not needed for this application. The all-weight theorem
+remains unclaimed until that native cup identity and its canonical
+application are checked.
