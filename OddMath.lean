@@ -2674,3 +2674,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryParity
 import OddMath.SKM.RouquierDistinctCapDetection
 import OddMath.SKM.RouquierRectangularComposition
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumMomentMaps
+import OddMath.SKM.RouquierDistinctCupDetection
