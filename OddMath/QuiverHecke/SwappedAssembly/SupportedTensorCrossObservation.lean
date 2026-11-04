@@ -191,27 +191,26 @@ omit [CommRing k] [Fintype I] in
 /-- The literal equal-colour crossing layer word, read through its outer contexts. -/
 theorem tensorSameCrossLayer_domWord :
     PowerWordLayerClasses.domWord νR ηL (.cross i i) =
-      (((Aℓ).left ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2) := by
-  simp [PowerWordLayerClasses.domWord, Shape.dom, List.map_append,
-    List.append_assoc]
+      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+  simp [PowerWordLayerClasses.domWord, Shape.dom]
 
 omit [CommRing k] [Fintype I] in
 theorem tensorSameCrossLayer_codWord :
     PowerWordLayerClasses.codWord νR ηL (.cross i i) =
-      (((Aℓ).left ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2) := by
-  simp [PowerWordLayerClasses.codWord, Shape.cod, List.map_append,
-    List.append_assoc]
+      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+  simp [PowerWordLayerClasses.codWord, Shape.cod]
 
 omit [CommRing k] [Fintype I] in
 private theorem samePathWord :
-    ((((Aℓ).left ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2)).reverse =
+    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [i]) ++ [i]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
-  simp [List.map_append, List.reverse_append, List.append_assoc]
+  simp
 
+include hv hw pL hl pR hr in
 /-- **Equal-colour crossing on the quotient observation.** The literal
 equal-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
@@ -304,36 +303,35 @@ omit [CommRing k] [Fintype I] in
 /-- The literal distinct-colour crossing source word. -/
 theorem tensorCrossLayer_domWord :
     PowerWordLayerClasses.domWord νR ηL (.cross i j) =
-      (((Aℓ).left ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
-        Col.mk (up j) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2) := by
-  simp [PowerWordLayerClasses.domWord, Shape.dom, List.map_append,
-    List.append_assoc]
+      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
+        Col.mk (up j) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+  simp [PowerWordLayerClasses.domWord, Shape.dom]
 
 omit [CommRing k] [Fintype I] in
 /-- The literal distinct-colour crossing target word. -/
 theorem tensorCrossLayer_codWord :
     PowerWordLayerClasses.codWord νR ηL (.cross i j) =
-      (((Aℓ).left ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2) := by
-  simp [PowerWordLayerClasses.codWord, Shape.cod, List.map_append,
-    List.append_assoc]
+      ((((Aℓ).left : List (Col I X)) ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2) := by
+  simp [PowerWordLayerClasses.codWord, Shape.cod]
 
 omit [CommRing k] [Fintype I] in
 private theorem crossSourcePathWord :
-    ((((Aℓ).left ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
-        Col.mk (up j) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2)).reverse =
+    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]),
+        Col.mk (up j) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [j]) ++ [i]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
-  simp [List.map_append, List.reverse_append, List.append_assoc]
+  simp
 
 omit [CommRing k] [Fintype I] in
 private theorem crossTargetPathWord :
-    ((((Aℓ).left ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
-        Col.mk (up i) (SKM.wt D ν v)]) ++ (Aℓ).right).map (fun a => a.l.2)).reverse =
+    (((((Aℓ).left : List (Col I X)) ++ [Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]),
+        Col.mk (up i) (SKM.wt D ν v)]) ++ ((Aℓ).right : List (Col I X))).map (fun a => a.l.2)).reverse =
       PowerWordContexts.extendedWord ((νR ++ [i]) ++ [j]) ηL := by
   rw [PowerWordContexts.extendedWord_eq]
-  simp [List.map_append, List.reverse_append, List.append_assoc]
+  simp
 
+include hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr in
 /-- **Distinct-colour crossing on the quotient observation.** The literal
 distinct-colour crossing layer of the full chosen action multiplies the
 canonical observed class on the right by the original affine crossing,
