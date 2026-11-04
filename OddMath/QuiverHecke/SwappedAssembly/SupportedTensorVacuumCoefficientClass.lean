@@ -31,7 +31,7 @@ private theorem wordCoefficientArrow_total (Λ x : X) (ν ρ : List I)
 
 private theorem coefficient_coordinate_reindex (s t r : List I) (h : t = r) (Λ x : X)
     (hβ : blockWeight D Λ (s.reverse : Multiset I) = x)
-    (A : ELVWeightProduct D Tw cutoff N Λ x)
+    (A : elvWeightSpace D Tw cutoff N Λ x)
     (e : A ≅ PowerWordWeight.wordFamily D Tw cutoff L Λ x t.reverse)
     (z : (A ⟨s.reverse,hβ⟩).obj
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
@@ -55,7 +55,7 @@ private theorem coefficient_coordinate_reindex (s t r : List I) (h : t = r) (Λ 
 
 private theorem coefficient_coordinate_unit_class (s t : List I) (h : t = s) (Λ x : X)
     (hβ : blockWeight D Λ (s.reverse : Multiset I) = x)
-    (A : ELVWeightProduct D Tw cutoff N Λ x)
+    (A : elvWeightSpace D Tw cutoff N Λ x)
     (e : A ≅ PowerWordWeight.wordFamily D Tw cutoff L Λ x t.reverse)
     (z : (A ⟨s.reverse,hβ⟩).obj
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
@@ -83,6 +83,30 @@ private theorem coefficient_coordinate_unit_class (s t : List I) (h : t = s) (Λ
   apply hcoord.trans
   rw [wordCoefficientArrow_total]
   exact PowerWordQuotientCoordinates.coefficient_unit_class D Sc cutoff L s a
+
+private theorem coefficient_coordinate_unit_class_of_chart (s t : List I) (h : t = s) (Λ x : X)
+    (hβ : blockWeight D Λ (s.reverse : Multiset I) = x)
+    (A : elvWeightSpace D Tw cutoff N Λ x)
+    (e : A ≅ PowerWordWeight.wordFamily D Tw cutoff L Λ x t.reverse)
+    (e' : A ≅ PowerWordWeight.wordFamily D Tw cutoff L Λ x s.reverse)
+    (he : e' = e ≪≫ eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L Λ x)
+      (congrArg List.reverse h)))
+    (z : (A ⟨s.reverse,hβ⟩).obj
+      (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
+    (a : SYM D k)
+    (hUnit : ((e'.hom ⟨s.reverse,hβ⟩).total
+          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) z =
+      PowerWordYoneda.unitVector D Tw cutoff L s.reverse) :
+    tensorTargetWordQuotientEquiv D Sc cutoff L s h
+      (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s t
+        ((tensorWordCoefficientArrow D Sc cutoff Λ L x t.reverse a ⟨s.reverse,hβ⟩).total
+          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
+          (((e.hom ⟨s.reverse,hβ⟩).total
+            (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) z))) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  subst he
+  exact coefficient_coordinate_unit_class D Sc cutoff L s t h Λ x hβ A e z a hUnit
 
 variable (m : I → ℕ) (ΛP ΛR : X)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
@@ -158,9 +182,11 @@ private theorem sourceBlock_weight :
     blockWeight D ΛR (s.reverse : Multiset I) = ReservoirWord.weight D ΛR cS :=
   (tensorSourceWordBlock D ΛP ΛR s).2
 
+omit [Fintype I] in
 /-- Probe K1. -/
 private theorem probe_block : βS = (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS)) := rfl
 
+omit [Fintype I] in
 /-- Probe K2. -/
 private theorem probe_labels :
     (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR s := rfl
@@ -233,37 +259,26 @@ private theorem probe_cls_lab (a : SYM D k) (H :
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) := H
 
-/-- Probe K7: the generic class lemma at the literal source block. -/
-private theorem probe_unit_class (a : SYM D k)
-    (hUnit : ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
-      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s))))).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
+/-- The source value at the literal source block. -/
+private theorem source_unit_literal :
+    (((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
       (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
         (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
-      PowerWordYoneda.unitVector D Tw cutoff L s.reverse) :
+      PowerWordYoneda.unitVector D Tw cutoff L s.reverse :=
+  source_unit_raw_value D Sc cutoff L m ΛP ΛR hP hR s
+
+/-- The coefficient class at the literal source block. -/
+private theorem coefficient_vacuum_class_literal (a : SYM D k) :
     tensorTargetWordQuotientEquiv D Sc cutoff L s (tensorSourceLabels_colors D ΛP ΛR s)
       (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2))
         ((tensorWordCoefficientArrow D Sc cutoff ΛR L (ReservoirWord.weight D ΛR cS)
-          ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)).reverse a (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-          ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS)).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-            (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))))) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) :=
-  coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
+          ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2)).reverse a (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s:=
+  coefficient_coordinate_unit_class_of_chart D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
     ΛR (ReservoirWord.weight D ΛR cS) (sourceBlock_weight D ΛP ΛR s) _
-    (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a hUnit
-
-/-- Probe K8: the source value at the literal block. -/
-private theorem probe_value_lit :
-    ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
-      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s))))).hom (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ (Subtype.mk (s.reverse : Multiset I) (sourceBlock_weight D ΛP ΛR s) : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS))).total wS
-        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) = PowerWordYoneda.unitVector D Tw cutoff L s.reverse := by
-  have hu := source_unit_unfolded D Sc cutoff L m ΛP ΛR hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
-  exact hu
+    (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS)
+    (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
+    (probe_chart D Sc cutoff L m ΛP ΛR s) _ a
+    (source_unit_literal D Sc cutoff L m ΛP ΛR hP hR s)
 
 /-- The literal row chart sends the source unit to the coefficient class. -/
 private theorem coefficient_vacuum_class (a : SYM D k) :
@@ -277,7 +292,7 @@ private theorem coefficient_vacuum_class (a : SYM D k) :
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) :=
   probe_cls_lit D Sc cutoff L m ΛP ΛR hP hR s a
-    (probe_unit_class D Sc cutoff L m ΛP ΛR hP hR s a (probe_value_lit D Sc cutoff L m ΛP ΛR hP hR s))
+    (coefficient_vacuum_class_literal D Sc cutoff L m ΛP ΛR hP hR s a)
 
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
