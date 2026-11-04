@@ -98,35 +98,7 @@ attribute [local irreducible] tensorPathValueChart tensorSourcePathValueChart te
   tensorOriginalWordEntry tensorOriginalRowSourceIso tensorSourceWordUnit tensorMatrixVacuum
   tensorMatrixCoefficientAction PowerWordQuotientCoordinates.coordinate
 
-theorem diagGen0 (a : SYM D k) :
-    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
-      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
-        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
-  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
-    tensorOriginalWordEntry_vacuum]
-  unfold tensorSourcePathValueChart at hu
-  trivial
-
-theorem diagGen1 (a : SYM D k) :
-    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
-      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
-        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
-  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
-    tensorOriginalWordEntry_vacuum]
-  unfold tensorSourcePathValueChart at hu
-  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS = e at hu ⊢
-  clear he
-  trivial
-
-theorem diagGen2 (a : SYM D k) :
+theorem diagV0 (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
         (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
@@ -141,49 +113,11 @@ theorem diagGen2 (a : SYM D k) :
   clear he
   generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
   clear hf
-  trivial
-
-theorem diagGen3 (a : SYM D k) :
-    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
-      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
-        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
-  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
-    tensorOriginalWordEntry_vacuum]
-  unfold tensorSourcePathValueChart at hu
-  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS = e at hu ⊢
-  clear he
-  generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
-  clear hf
-  generalize hv : tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s = v at hu ⊢
-  clear hv
-  trivial
-
-theorem diagGen4 (a : SYM D k) :
-    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
-      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
-        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
-      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
-        (sourceCoefficientHom D Sc a (𝟙 _)) := by
-  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  rw [tensorSourceWordUnit_formula] at hu
-  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
-    tensorOriginalWordEntry_vacuum]
-  unfold tensorSourcePathValueChart at hu
-  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS = e at hu ⊢
-  clear he
-  generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
-  clear hf
-  generalize hv : tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s = v at hu ⊢
-  clear hv
-  generalize hz : ((f.total R₀ βS).total wS v) = z at hu ⊢
+  generalize hz : ((f.total R₀ βS).total wS (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) = z at hu ⊢
   clear hz
   trivial
 
-theorem diagGen5 (a : SYM D k) :
+theorem diagV1 (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
         (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
@@ -198,15 +132,13 @@ theorem diagGen5 (a : SYM D k) :
   clear he
   generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
   clear hf
-  generalize hv : tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s = v at hu ⊢
-  clear hv
-  generalize hz : ((f.total R₀ βS).total wS v) = z at hu ⊢
+  generalize hz : ((f.total R₀ βS).total wS (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) = z at hu ⊢
   clear hz
   generalize hA : (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR pS upS).obj R₀ = A at e z hu ⊢
   clear hA
   trivial
 
-theorem diagDirect (a : SYM D k) :
+theorem diagV2 (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
         (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
@@ -217,10 +149,42 @@ theorem diagDirect (a : SYM D k) :
   rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
     tensorOriginalWordEntry_vacuum]
   unfold tensorSourcePathValueChart at hu
+  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS = e at hu ⊢
+  clear he
+  generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
+  clear hf
+  generalize hz : ((f.total R₀ βS).total wS (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) = z at hu ⊢
+  clear hz
+  generalize hA : (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR pS upS).obj R₀ = A at e z hu ⊢
+  clear hA
   exact coefficient_coordinate_unit_class D Sc cutoff L s
     ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2))
     (tensorSourceLabels_colors D ΛP ΛR s) ΛR (ReservoirWord.weight D ΛR cS) βS.2
-    _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a hu
+    _ e _ a hu
+
+theorem diagV3 (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
+  rw [tensorSourceWordUnit_formula] at hu
+  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
+    tensorOriginalWordEntry_vacuum]
+  unfold tensorSourcePathValueChart at hu
+  generalize he : tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS = e at hu ⊢
+  clear he
+  generalize hf : (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom = f at hu ⊢
+  clear hf
+  generalize hz : ((f.total R₀ βS).total wS (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)) = z at hu ⊢
+  clear hz
+  exact coefficient_coordinate_unit_class D Sc cutoff L s
+    ((tensorSourceLabels D ΛP ΛR s).map (fun d => d.l.2))
+    (tensorSourceLabels_colors D ΛP ΛR s) ΛR (ReservoirWord.weight D ΛR cS) βS.2
+    _ e _ a hu
+
+example : (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR s := rfl
 
 /-- The unchanged canonical observation of the full raw coefficient action
 on the actual matrix vacuum is the prescribed source class of coefficient
