@@ -1930,9 +1930,15 @@ dotted field pass strict paired checks with 107 and 53 owned audits.
 `elvProbeReservoir` constructs the intended untruncated OLD probe/truncated
 ELV reservoir factor with its normalized shifted left adjunctions and
 invertible probe dot. Their strict mixed/two-odd/nonzero-append consumers
-audit five and nine declarations. Full integration is pending for these
-new results. The next targets are the chosen coefficient, supported
-generator restriction, native inverse transfer and residual closure.
+audit five and nine declarations. All four additions passed full CI in #1032. `ELVProbeDenominatorUnits` now constructs the chosen mixed
+coefficient, its inverse and supernaturality; `ELVProbeCoefficientExpansion`
+proves both component finite series with no supplied inverse or global
+nilpotence premise. Their strict consumers audit 38 and 17 declarations.
+`SupportedFactorPaths` and `SupportedGeneratorEntries` identify its actual
+paths and restrict the literal generators, including the constructed mixed
+crossing; strict nonzero affine two-odd consumers audit 10 and 21 declarations.
+Next attach the supported matrix presentation, native inverse transfer and
+literal residual closure.
 
 ## Central augmented-matrix attachment
 
@@ -1976,8 +1982,12 @@ owned declarations. `ELVWeightedLocalInverseCoordinates` now extracts both selec
 principal components (11 owned audits), and
 `ELVWeightedKernelClosureCoordinates` identifies their literal closure
 values at canonical OLD quotient words with the raw coefficient action
-(28 owned audits). Both have strict paired nonzero checks. The arbitrary
-stored-content extension and complete chosen closure degree remain open. Do not infer an
+(28 owned audits). Both passed full CI in #1032 with strict paired nonzero checks.
+`ELVWeightedContentKernelClosureCoordinates` now extends those actions to
+arbitrary stored contents and proves both source coefficient degrees.
+Its producer and signed-height/both-parity/nonzero consumer pass strict
+checks, auditing all 36 declarations. The final all-module chosen reservoir
+transport and complete reconstructed closure degree remain open. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
@@ -1993,19 +2003,59 @@ declarations. `ELVReservoirAbsentClosure` now proves both literal closures vanis
 blocks without predecessors (two owned audits).
 `ELVModuleCentreTotalDegree` derives source coefficient degree from total
 represented evaluation, including both parity projections (three owned
-audits). Both pass strict paired checks. The supported all-output degree
+audits). Both passed full CI in #1032 with strict paired checks. The supported all-output degree
 attachment still requires its final coordinate validation; see
 [ModuleCentreDegree](ModuleCentreDegree.md) and
 [ReservoirClosures](ReservoirClosures.md).
+
+`Sigma.FactorWindowInverse` and `SupportedFactorWindowInverse` now prove
+the four reservoir/probe cap/cup inverse interfaces on every supported
+sector, including all absent corners and empty height-zero windows. Native
+absence is derived from exact support, not the original-weight fibre. Strict
+nonzero two-odd collision-block consumers audit 40 and 15 declarations.
+The named reservoir principal/window coordinate attachment remains next;
+see [SupportedFactorWindowInverse](SupportedFactorWindowInverse.md).
+
+`CentralInverse.FactorClosures` now identifies both native principal
+closures and both finite inverse boundary contractions with the
+post-whiskering actions of the literal `W.loc` coefficients. The source
+and target chart pairs cancel exactly, before any output evaluation.
+Its constructed odd ELV/both-height-sign/both-zero-height consumer passes
+strict checks and audits all six declarations. Combine these equations
+with the named padded reservoir inverse fields and the content ideal;
+see [FactorClosures](FactorClosures.md).
+
+The finite-window attachment is independently scoped-checked in
+`ELVContentWindowInverseCoordinates`, `ELVKernelBoundaryDegrees`,
+`ELVKernelBoundaryEvaluation`, `ELVWeightedWindowInverseCoordinates` and
+`ELVWeightedKernelBoundaryCoordinates`. Their strict paired consumers audit
+77, 17, 6, 26 and 25 declarations. The literal weighted local boundary is
+represented by a source coefficient of degree `2*d_i*(r-j)`. `ELVWeightedContentKernelBoundaryCoordinates` now supplies the arbitrary
+stored-content action and degree transport; its strict paired consumer audits
+all 34 declarations. Next identify it with the chosen whole-weight reservoir
+boundary at every stored content.
+The absent positive-height cap branch vanishes, but the absent negative-height
+unit window can retain coefficients; use its chosen absent inverse coordinates.
+No reservoir boundary ideal membership is asserted yet. See
+[BoundaryCoefficientDegrees](BoundaryCoefficientDegrees.md).
+
+`WeightCentreBlocks.postCoeff_evaluate` now identifies output projection
+of any whole-weight coefficient action with the post-whiskering action of
+its restricted content coefficient. Its occupied odd closure/identity
+consumer and both owned audits pass strict checks. Combine this equality
+with the final chosen source degree and `comp_postCoeff_comp_mem` to put
+actual projected closure sandwiches in the contentwise ideal. See
+[WeightCentreWhiskering](WeightCentreWhiskering.md).
 
 `Generators.CrossCoeffExpansion` now proves the finite signed expansion
 after an arbitrary ring evaluation, and specializes it to the literal
 mixed coefficient from its inverse equations. Strict nonzero two-odd
 matrix tests over Z/9 audit all twelve declarations, including a product
 whose reservoir operator is not globally nilpotent but whose evaluated
-component is. These are intermediate component statements; instantiate
-the intended factor, coefficient inverse and component bounds, then bend
-the sums and prove residual ideal membership. See
+component is. The intended factor and its constructed coefficient are now
+instantiated by `ELVProbeDenominatorUnits` and `ELVProbeCoefficientExpansion`.
+The remaining step is to bend these exact sums into the separated cap/cup
+and probe inverse-power terms, then prove residual ideal membership. See
 [CrossCoeffExpansion](CrossCoeffExpansion.md).
 
 `ELVPostCoefficientEvaluation` now supplies the actual reservoir postdot
