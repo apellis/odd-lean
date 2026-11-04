@@ -28,20 +28,20 @@ theorem exists_eqToHom_inv {C : Type*} [Category C] {A B : C} (e : A ≅ B)
   refine ⟨h.symm, ?_⟩
   rw [← cancel_mono e.hom, Iso.inv_hom_id, he, eqToHom_trans, eqToHom_refl]
 
+theorem exists_eqToHom_eqToIso {C : Type*} [Category C] {A B : C} (h : A = B) :
+    ∃ h', (eqToIso h).hom = eqToHom h' := ⟨h, rfl⟩
+
 /-- In the strict 2-supercategory `Π-𝔖ℭ𝔞𝔱` the associator is an equality transport. -/
 theorem exists_eqToHom_associator.{w} {k : Type w} [CommRing k]
     {a b c d : PiSCat.{w,w,w + 1} k}
     (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) : ∃ e, (associator f g h).hom = eqToHom e := by
   rw [BicategoryStruct.Strict.associator_eqToIso]
-  exact ⟨_, rfl⟩
+  exact exists_eqToHom_eqToIso _
 
 theorem exists_eqToHom_trans {C : Type*} [Category C] {A B B' : C} (e : A ≅ B) (e' : B ≅ B')
     (he : ∃ h, e.hom = eqToHom h) (he' : ∃ h, e'.hom = eqToHom h) :
     ∃ h, (e ≪≫ e').hom = eqToHom h :=
   exists_eqToHom_comp e.hom e'.hom he he'
-
-theorem exists_eqToHom_eqToIso {C : Type*} [Category C] {A B : C} (h : A = B) :
-    ∃ h', (eqToIso h).hom = eqToHom h' := ⟨h, rfl⟩
 
 theorem exists_eqToHom_symm {C : Type*} [Category C] {A B : C} (e : A ≅ B)
     (he : ∃ h, e.hom = eqToHom h) : ∃ h, e.symm.hom = eqToHom h :=
@@ -59,8 +59,8 @@ theorem exists_eqToHom_app {C C' : Type*} [Category C] [Category C'] {F G : C �
 theorem exists_eqToHom_whiskerRightIso.{w} {k : Type w} [CommRing k]
     {A B C : PiSCat.{w,w,w + 1} k} {F G : A ⟶ B}
     (e : F ≅ G) (E : B ⟶ C) (he : ∃ h, e.hom = eqToHom h) :
-    ∃ h, (TwoSupercategory.whiskerRightIso e E).hom = eqToHom h := by
-  rw [TwoSupercategory.whiskerRightIso_hom]
+    ∃ h, (TwoSupercategory.whiskerRightIso (R := k) e E).hom = eqToHom h := by
+  rw [TwoSupercategory.whiskerRightIso_hom (R := k)]
   exact exists_eqToHom_whiskerRight e.hom E he
 
 section Shift
@@ -328,19 +328,19 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
   repeat' first
     | exact exists_eqToHom_self _
     | exact homContentShift_zero D i
-    | apply exists_eqToHom_comp
-    | apply exists_eqToHom_map
-    | apply exists_eqToHom_associator
-    | apply exists_eqToHom_homShiftConjugationIso
-    | apply tensorContextIso_hom_eqToHom
-    | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
-    | apply exists_eqToHom_whiskerRight
-    | apply exists_eqToHom_trans
-    | apply exists_eqToHom_eqToIso
-    | apply exists_eqToHom_symm
-    | apply exists_eqToHom_mapIso
-    | apply exists_eqToHom_whiskerRightIso
-    | apply exists_eqToHom_app
+    | with_reducible_and_instances apply exists_eqToHom_comp
+    | with_reducible_and_instances apply exists_eqToHom_map
+    | with_reducible_and_instances apply exists_eqToHom_associator
+    | with_reducible_and_instances apply exists_eqToHom_homShiftConjugationIso
+    | with_reducible_and_instances apply tensorContextIso_hom_eqToHom
+    | with_reducible_and_instances apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRight
+    | with_reducible_and_instances apply exists_eqToHom_trans
+    | with_reducible_and_instances apply exists_eqToHom_eqToIso
+    | with_reducible_and_instances apply exists_eqToHom_symm
+    | with_reducible_and_instances apply exists_eqToHom_mapIso
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
+    | with_reducible_and_instances apply exists_eqToHom_app
 
 end Same
 
@@ -354,7 +354,7 @@ theorem tensorCrossContextIso_hom_eqToHom {l r : List (Col I X)} {cL cM cR cR' :
     (pL : SPath l (0,cL) (0,cM)) (hl : ∀ a ∈ l, a.l.1 = true)
     (pR : SPath r (0,cR') (0,0)) (hr : ∀ a ∈ r, a.l.1 = true)
     (A : (P).W.obj ((P).muM (0,cR)) ⟶ (P).W.obj ((P).muM (0,cM))) :
-    ∃ e, (tensorCrossContextIso D Sc m cutoff L ΛP ΛR hP hR h pL hl pR hr A).hom =
+    ∃ e, (OddMath.QuiverHecke.SwappedAssembly.SupportedSectors.tensorCrossContextIso D Sc m cutoff L ΛP ΛR hP hR h pL hl pR hr A).hom =
       eqToHom e := by
   cases h
   exact tensorContextIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR pL hl pR hr A
@@ -383,14 +383,14 @@ theorem tensorLayerCrossSourceIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirCrossSourceIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | apply tensorCrossContextIso_hom_eqToHom
-    | apply exists_eqToHom_associator
-    | apply exists_eqToHom_trans
-    | apply exists_eqToHom_eqToIso
-    | apply exists_eqToHom_symm
-    | apply exists_eqToHom_mapIso
-    | apply exists_eqToHom_whiskerRightIso
-    | apply exists_eqToHom_app
+    | with_reducible_and_instances apply tensorCrossContextIso_hom_eqToHom
+    | with_reducible_and_instances apply exists_eqToHom_associator
+    | with_reducible_and_instances apply exists_eqToHom_trans
+    | with_reducible_and_instances apply exists_eqToHom_eqToIso
+    | with_reducible_and_instances apply exists_eqToHom_symm
+    | with_reducible_and_instances apply exists_eqToHom_mapIso
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
+    | with_reducible_and_instances apply exists_eqToHom_app
 
 /-- The distinct-colour target chart is an equality transport. -/
 theorem tensorLayerCrossTargetIso_hom_eqToHom :
@@ -402,14 +402,14 @@ theorem tensorLayerCrossTargetIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirVacuumCrossTargetIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | apply tensorCrossContextIso_hom_eqToHom
-    | apply exists_eqToHom_associator
-    | apply exists_eqToHom_trans
-    | apply exists_eqToHom_eqToIso
-    | apply exists_eqToHom_symm
-    | apply exists_eqToHom_mapIso
-    | apply exists_eqToHom_whiskerRightIso
-    | apply exists_eqToHom_app
+    | with_reducible_and_instances apply tensorCrossContextIso_hom_eqToHom
+    | with_reducible_and_instances apply exists_eqToHom_associator
+    | with_reducible_and_instances apply exists_eqToHom_trans
+    | with_reducible_and_instances apply exists_eqToHom_eqToIso
+    | with_reducible_and_instances apply exists_eqToHom_symm
+    | with_reducible_and_instances apply exists_eqToHom_mapIso
+    | with_reducible_and_instances apply exists_eqToHom_whiskerRightIso
+    | with_reducible_and_instances apply exists_eqToHom_app
 
 end Distinct
 end SupportedSectors
