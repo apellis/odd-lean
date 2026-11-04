@@ -1,4 +1,5 @@
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirWordFunctor
+import StringDiagrams.Super.PiTwo
 
 /-! # The reservoir word comparison is an identity transport in `Π-𝔖ℭ𝔞𝔱`
 
