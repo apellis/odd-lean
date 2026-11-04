@@ -5,9 +5,11 @@ with `scripts/NonVacuity/BendSeriesAlgebra.lean`: inverse evaluation,
 the sign of consecutive negated monomials, and both residual-series
 scalar conventions. The producer and consumer pass strict checks;
 all nine owned declarations use only the standard allowed axioms.
-The categorical evaluation and combined separated-series assembly
-described below remain pending verification and are not asserted as
-checked consequences of this arithmetic module.
+The categorical monomial evaluation in `Sigma/BendWindowMonomials` and
+its nonzero module consumer also pass strict scoped checks, auditing all
+three owned declarations. The combined separated-series assembly described
+below remains pending verification; it is not a checked consequence of
+these two helper modules.
 
 The target of `Sigma/SeparatedBendSeries.lean` is the pair of literal
 series in `CentralInverse/ResidualComparison.lean`:

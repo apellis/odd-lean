@@ -2609,3 +2609,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedPresentation
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendDotCoordinates
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.ReservoirWindowInverseData
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendSeriesAlgebra
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowMonomials
