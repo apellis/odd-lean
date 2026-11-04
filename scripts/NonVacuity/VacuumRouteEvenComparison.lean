@@ -1,4 +1,5 @@
 import OddMath
+import NonVacuity.EvenNondegeneracy
 
 /-! Non-vacuity checks in `NonVacuity.VacuumRouteEvenComparison`: the all-even comparison for
 the vacuum route on the purely even datum of `sl₂`, with every hypothesis proved, over `ℚ` and
