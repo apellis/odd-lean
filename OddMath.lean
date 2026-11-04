@@ -2651,6 +2651,7 @@ import OddMath.QuiverHecke.SwappedAssembly.PointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedPointwiseLeftwardInverse
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumCapInverseWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeTransposeNorms
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
