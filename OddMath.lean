@@ -2581,3 +2581,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReservoir
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedLocalInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedKernelClosureCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVModuleCentreTotalDegree
