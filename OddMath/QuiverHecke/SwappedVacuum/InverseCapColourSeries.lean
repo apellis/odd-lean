@@ -100,10 +100,9 @@ theorem odd_cap_moments (D : SKM.Datum I X') {R : Type*} [Ring R] [Algebra k R]
           (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) := by
     rw [VacuumSeries.momentSeries, probeSeriesInv_odd D P i hi, map_mul, map_mul]
     congr 1
-    rw [map_expand, map_expand]
-    congr 1
-    ext n
-    simp [coeff_map]
+    rw [← map_expand, ← RingHom.comp_apply, ← PowerSeries.map_comp,
+      show φ.toRingHom.comp (algebraMap k (MvPolynomial (I × ℕ) k)) = algebraMap k R from
+        RingHom.ext fun a => by simp]
   have hKser : PowerSeries.mk K = PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
       (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i)) * (1 + C e * X) := by
     rw [hK, hhat, hT, hM, mul_assoc]
@@ -139,7 +138,7 @@ theorem even_cap_moments (D : SKM.Datum I X') {R : Type*} [Ring R] [Algebra k R]
     rw [VacuumSeries.momentSeries, probeSeriesInv_even D P i hi, map_mul]
     congr 1
     ext n
-    simp [coeff_map]
+    simp
   have hKser : PowerSeries.mk K = PowerSeries.map φ.toRingHom
       (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i) := by
     rw [hK, hhat, hT, hM]
@@ -168,7 +167,8 @@ theorem odd_negative_cap_bubbles (D : SKM.Datum I X')
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B)
     (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
-        (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
+        (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) *
+          (1 + PowerSeries.C e * PowerSeries.X))
     (r : ℕ) :
     u ≫ (y ^ (N - 2 * P i - 1 + 2 * r)) ≫ B ⟨N - 2 * P i - 1, by omega⟩ =
         φ (coeff r (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i)) ∧
@@ -196,7 +196,8 @@ theorem odd_zero_height_bubbles (D : SKM.Datum I X')
       (2 * P i) x = 0)
     (hT : PowerSeries.mk (R := End V) (fun l => u ≫ (y ^ (2 * P i - 1 + l)) ≫ ell) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
-        (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
+        (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) *
+          (1 + PowerSeries.C e * PowerSeries.X))
     (r : ℕ) :
     u ≫ (y ^ (2 * r)) ≫ s.inv ≫ v =
         φ (coeff r (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i)) * e ∧
