@@ -2577,3 +2577,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightPrincipalInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedInverseCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightMixedBraid
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightMixedBraidField
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierMulticolour
