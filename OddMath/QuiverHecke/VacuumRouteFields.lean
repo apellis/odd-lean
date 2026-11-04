@@ -108,7 +108,7 @@ abbrev cscalars : SKM.CScalars ι.scalars :=
     (ι.cs.restrictColours D ι.J ι.Sc)
 
 /-- The weight of the sector, `(μ, 0)`. -/
-abbrev weight := ((ι.μ, 0) : X × ℤ)
+abbrev weight : X × (ι.J → ℤ) := (ι.μ, 0)
 
 end VacuumRouteIndex
 
