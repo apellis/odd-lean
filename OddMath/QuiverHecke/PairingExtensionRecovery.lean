@@ -33,22 +33,14 @@ theorem homMap_upwardCoefficientMap (μ : X) (t t' : List I)
     SKM.PairingExtension.homMap D Sc μ (upWord t) (upWord t')
         (upwardCoefficientMap D Sc cs μ t t' F) =
       upwardCoefficientMap Dₑ Scₑ csₑ (μ, 0) t t' (coefficientHomEquiv D Sc t t' F) := by
-  have h : (SKM.PairingExtension.homMap D Sc μ (upWord t) (upWord t')).comp
-        ((upwardCoefficientMap D Sc cs μ t t').comp
-          (sourceTensorEquiv D Sc t t').toLinearMap) =
-      ((upwardCoefficientMap Dₑ Scₑ csₑ (μ, 0) t t').comp
-        (coefficientHomEquiv D Sc t t').toLinearMap).comp
-          (sourceTensorEquiv D Sc t t').toLinearMap := by
-    apply TensorProduct.ext'
-    intro a f
-    change SKM.PairingExtension.homMap D Sc μ (upWord t) (upWord t')
-        (upwardCoefficientMap D Sc cs μ t t' (sourceCoefficientHom D Sc a f)) =
-      upwardCoefficientMap Dₑ Scₑ csₑ (μ, 0) t t'
-        (coefficientHomEquiv D Sc t t' (sourceCoefficientHom D Sc a f))
-    rw [upwardCoefficientMap_source, coefficientHomEquiv_source, upwardCoefficientMap_source,
-      SKM.PairingExtension.homMap_comp, SKM.PairingExtension.homMap_bubAt_betaSYM, alpha_map]
-  have h' := LinearMap.congr_fun h ((sourceTensorEquiv D Sc t t').symm F)
-  simpa only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] using h'
+  obtain ⟨x, rfl⟩ := (sourceTensorEquiv D Sc t t').surjective F
+  induction x using TensorProduct.induction_on with
+  | zero => simp only [map_zero]
+  | tmul a f =>
+    rw [sourceTensorEquiv_tmul, upwardCoefficientMap_source, coefficientHomEquiv_source,
+      upwardCoefficientMap_source, SKM.PairingExtension.homMap_comp,
+      SKM.PairingExtension.homMap_bubAt_betaSYM, alpha_map]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 /-- Injectivity of the extended upward evaluation at `(μ, 0)` gives it at `μ`. -/
 theorem upwardCoefficientMap_injective_of_pairingExtension (μ : X) (t t' : List I)
@@ -80,6 +72,6 @@ theorem nondegeneracy_of_pairingExtension_vacuum_evaluations
   apply upward_independence_of_coefficientMap D Sc cs
   intro t t' hw μ
   exact PairingExtension.upwardCoefficientMap_injective_of_pairingExtension D Sc cs μ t t'
-    (upwardCoefficientMap_injective_of_vacuum_evaluations μ t t' (h t t' hw μ))
+    (upwardCoefficientMap_injective_of_vacuum_evaluations (μ, 0) t t' (h t t' hw μ))
 
 end OddMath.QuiverHecke
