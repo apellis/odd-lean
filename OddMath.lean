@@ -2596,3 +2596,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVWeightCentreWhiskering
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.FactorClosures
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelClosureCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedContentKernelBoundaryCoordinates
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
