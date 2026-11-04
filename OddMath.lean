@@ -2756,4 +2756,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorEvenVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
 import OddMath.QuiverHecke.PairingExtensionPBW
+import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
