@@ -2732,3 +2732,4 @@ import OddMath.SKM.RouquierCanonicalDistinctLeftMate
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureEntries
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSigmaPermutation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientUnitObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficientObservation
