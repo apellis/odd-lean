@@ -43,7 +43,7 @@ private theorem cap_total_pow {k C A : Type*} [CommRing k]
     [Category C] [Preadditive C] [Linear k C] [Supercategory k C]
     [Category A] [Preadditive A] [Linear k A] [Supercategory k A]
     {F : Superfunctor k C A} (f : End F) (n : ℕ) (N : C) :
-    (f ^ n).total N = ((capTotalEvaluation N).mapEnd F f) ^ n :=
+    (f ^ n).total N = (f.total N) ^ n :=
   map_pow ((capTotalEvaluation N).mapEnd F) f n
 
 private theorem power_square {C : Type*} [Category C] {A B : C}
@@ -278,8 +278,8 @@ theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
         (regularProbe D (parameterTwist D Sc) m ΛP) := by
     simp only [SKM.homContentPreF, Functor.comp_obj, SKM.homParityShift]
     split_ifs <;> rfl
-  have hb₀ := reservoirCap_block (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
-    D (P).T i ep₀ Z₀ (regularProbe D (parameterTwist D Sc) m ΛP) hSrc n
+  have hb₀ := reservoirCap_block D (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
+    (P).T i ep₀ Z₀ (regularProbe D (parameterTwist D Sc) m ΛP) hSrc n
   have hn := vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP
     (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
     (-ΛR) i ep₀ (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) hP n
