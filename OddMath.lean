@@ -2666,3 +2666,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightVacuumCap
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryPullback
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorWordChartCoherence
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPreCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLoopDot
