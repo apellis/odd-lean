@@ -142,11 +142,14 @@ def swappedVacuum (sy : SKM.Symmetrizer D) : (ι.swappedAction sy).V ι.t :=
     (SwappedAssembly.SupportedSectors.tensorMatrixVacuum ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power ι.t)
 
-/-- The raw coefficient action of the sector on the tensor matrix module. -/
-def swappedRaw (sy : SKM.Symmetrizer D) :
-    SKM.SYM ι.datum ι.K →ₐ[ι.K] Module.End ι.K ((ι.swappedAction sy).V ι.t) :=
-  SwappedAssembly.SupportedSectors.tensorMatrixCoefficientAction ι.datum ι.scalars ι.exponent
-    ι.level ι.probeHW ι.reservoirHW ι.power ι.t (SKM.ob ι.datum ι.weight (upWord ι.t))
+/-- The base of the sector: the swapped action, its vacuum, and the raw coefficient
+action on the tensor matrix module. -/
+def swappedBase (sy : SKM.Symmetrizer D) : VacuumRouteBase ι.datum ι.scalars ι.weight ι.t where
+  A := ι.swappedAction sy
+  vacuum := ι.swappedVacuum sy
+  raw := SwappedAssembly.SupportedSectors.tensorMatrixCoefficientAction ι.datum ι.scalars
+    ι.exponent ι.level ι.probeHW ι.reservoirHW ι.power ι.t
+    (SKM.ob ι.datum ι.weight (upWord ι.t))
 
 end VacuumRouteIndex
 
@@ -154,15 +157,12 @@ end VacuumRouteIndex
 probe-reservoir product of the sector, with the tensor matrix vacuum and the raw
 coefficient action. -/
 def swappedRouteBases (sy : SKM.Symmetrizer D) : VacuumRouteBases D := fun ι =>
-  ⟨ι.swappedAction sy, ι.swappedVacuum sy, ι.swappedRaw sy⟩
+  ι.swappedBase sy
 
 @[simp] theorem swappedRouteBases_A (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
     (swappedRouteBases sy ι).A = ι.swappedAction sy := rfl
 
 @[simp] theorem swappedRouteBases_vacuum (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
     (swappedRouteBases sy ι).vacuum = ι.swappedVacuum sy := rfl
-
-@[simp] theorem swappedRouteBases_raw (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
-    (swappedRouteBases sy ι).raw = ι.swappedRaw sy := rfl
 
 end OddMath.QuiverHecke
