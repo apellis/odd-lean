@@ -459,3 +459,20 @@ inverse associator followed by the prescribed inverse right mate
 whiskered by `E_i`. The strict producer and constructed two-odd consumer
 pass, with all 3 owned declarations audited. This supplies the exact-map
 bridge for the remaining canonical cup contraction.
+
+### Closed strict canonical cup range
+
+`RouquierDistinctCanonicalCupRotation.leftCrossMate_isIso_of_raw_cup`
+contracts the exact raw cup identity through the canonical left
+adjunctions. Since their units are the raw `leftCup`, no additional
+normalization factor enters this bridge. Its strict producer and
+constructed positive two-odd consumer pass, with its owned declaration
+audited; the raw cup identity is supplied by the checked native
+`distinctCupLeft_eq_of_gt` theorem.
+
+`RouquierDistinctCanonicalPositive.leftCrossMate_isIso_of_cupRange`
+therefore proves actual canonical left-mate invertibility whenever
+`d_ij < h_i(b)` at the top of the first edge. Its strict producer and
+constructed two-odd consumer pass, with both owned declarations
+audited. The consumer uses genuine root-content weights
+`-Λ + 5 α_i`, whose top height is 6, for both ordered pairs.

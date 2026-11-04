@@ -2726,3 +2726,5 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWordSeries
 import OddMath.SKM.RouquierDistinctCupRowTests
 import OddMath.SKM.RouquierDistinctCupPitchfork
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixRowCoefficients
+import OddMath.SKM.RouquierDistinctCanonicalCupRotation
+import OddMath.SKM.RouquierDistinctCanonicalPositive
