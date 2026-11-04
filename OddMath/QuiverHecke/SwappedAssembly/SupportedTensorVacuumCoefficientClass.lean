@@ -36,8 +36,8 @@ private theorem coefficient_coordinate_reindex (s t r : List I) (h : t = r) (Λ 
     (z : (A ⟨s.reverse,hβ⟩).obj
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
     (a : SYM D k) :
-    let e' := e ≪≫ eqToIso (congrArg (fun ρ : List I =>
-      PowerWordWeight.wordFamily D Tw cutoff L Λ x ρ.reverse) h)
+    let e' := e ≪≫ eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L Λ x)
+      (congrArg List.reverse h))
     tensorTargetWordQuotientEquiv D Sc cutoff L s h
       (PowerWordQuotientCoordinates.coordinate D Sc cutoff L s t
         ((tensorWordCoefficientArrow D Sc cutoff Λ L x t.reverse a ⟨s.reverse,hβ⟩).total
@@ -61,8 +61,8 @@ private theorem coefficient_coordinate_unit_class (s t : List I) (h : t = s) (Λ
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
     (a : SYM D k)
     (hUnit :
-      ((((e ≪≫ eqToIso (congrArg (fun ρ : List I =>
-        PowerWordWeight.wordFamily D Tw cutoff L Λ x ρ.reverse) h)).hom ⟨s.reverse,hβ⟩).total
+      ((((e ≪≫ eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L Λ x)
+        (congrArg List.reverse h))).hom ⟨s.reverse,hβ⟩).total
           (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) z) =
       PowerWordYoneda.unitVector D Tw cutoff L s.reverse) :
     tensorTargetWordQuotientEquiv D Sc cutoff L s h
@@ -119,15 +119,9 @@ private theorem coefficient_class_of_path (l : List (Col I X))
   exact coefficient_coordinate_unit_class D Sc cutoff L s (l.map (fun d => d.l.2)) hl ΛR
     (ReservoirWord.weight D ΛR cS) βS.2 _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup) z a hu
 
-example : (SKM.ob D (ΛP - ΛR) (upWord s)).word = tensorSourceLabels D ΛP ΛR s := rfl
-
-example : tensorSourceWordBlock D ΛP ΛR s = ⟨s.reverse, (tensorSourceWordBlock D ΛP ΛR s).2⟩ := rfl
-
 set_option diagnostics true in
-/-- The unchanged canonical observation of the full raw coefficient action
-on the actual matrix vacuum is the prescribed source class of coefficient
-times identity. This does not identify presentation bubbles with that action. -/
-theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
+/-- Variant through the path lemma. -/
+private theorem coefficient_vacuum_via_path (a : SYM D k) :
     tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
       (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
         (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
@@ -144,6 +138,25 @@ theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
       ((SKM.ob D (ΛP - ΛR) (upWord s)).word).map (fun d => d.l.2) = s)
     pS upS _ a ?_
   exact hu
+
+set_option diagnostics true in
+/-- The unchanged canonical observation of the full raw coefficient action
+on the actual matrix vacuum is the prescribed source class of coefficient
+times identity. This does not identify presentation bubbles with that action. -/
+theorem tensorWordQuotientObservation_coefficient_vacuum (a : SYM D k) :
+    tensorWordQuotientObservation D Sc cutoff L m ΛP ΛR hP hR s s pS
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s
+        (SKM.ob D (ΛP - ΛR) (upWord s)) a (tensorMatrixVacuum D Sc m cutoff ΛP ΛR L s)) =
+      (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
+        (sourceCoefficientHom D Sc a (𝟙 _)) := by
+  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
+  rw [tensorSourceWordUnit_formula] at hu
+  rw [tensorWordQuotientObservation_apply,tensorMatrixCoefficient_observation,
+    tensorOriginalWordEntry_vacuum]
+  unfold tensorSourcePathValueChart at hu
+  delta tensorSourceWordBlock at hu ⊢
+  exact coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
+    ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a hu
 
 /-- The coefficient-one specialization is the canonical source identity class. -/
 theorem tensorWordQuotientObservation_vacuum :
