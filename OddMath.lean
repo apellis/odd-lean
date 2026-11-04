@@ -2612,3 +2612,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendSeriesAlgebra
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowMonomials
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureDegree
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirClosureIdeal
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorVacuum
