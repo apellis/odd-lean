@@ -2649,3 +2649,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeTransposeNorms
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
 import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRows
