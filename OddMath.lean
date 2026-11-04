@@ -2729,3 +2729,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixRowCoefficients
 import OddMath.SKM.RouquierDistinctCanonicalCupRotation
 import OddMath.SKM.RouquierDistinctCanonicalPositive
 import OddMath.SKM.RouquierCanonicalDistinctLeftMate
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctPureEntries
