@@ -2003,6 +2003,13 @@ run 41756477511, merged at `bb83ab02b9811a59c9fc3ab03a33689f0da94cf7`.
   selected-vacuum path contexts; strict nonzero coefficient-class consumers
   audit all 20 declarations. Literal composed layer entries remain next.
 
+The cap-boundary and canonical word-observation integration #1043 passed
+the full warning-free build, global axiom audit and every concrete consumer
+at source `019a0ef4d12f4a8612f0e73e73b73f1a6196df3c` (run 41776984044),
+merged at `fe83891043af7ac2edf2de75c1b916243d8d2fe7`. The newer all-height
+canonical left-mate and complete distinct permutation packets below are
+scoped-checked and await their own full integration.
+
 The whole-output separated formulas are now scoped-checked in
 `ELVProbeContentBends` (50 owned declarations), with the fixed-exponent
 transport of `ELVOutputDotBounds` (10), the generic separated equations
@@ -2046,30 +2053,25 @@ Next discharge the following dependencies in order.
    `SupportedInterchange` supply restricted parity/naturality and interchange
    (28 and four audited declarations); interchange retains the global
    distinct-colour permutation input. No raw ambient inverse is asserted.
-2. Complete that distinct-colour package. `ELVProbeSourcePolynomialUnits`
-   proves the literal mixed entry invertible using contentwise source units
-   (25 declarations audited across the source-unit packet). The pure probe
-   entry still needs `LeftMateInvertible` for the canonical left adjunction.
-   The source `Cyclicity.rot_tau_left` theorem does not itself evaluate in the
-   factor Rouquier family. `RouquierDistinctMixedBraid` now supplies the exact
-   rectangular correction; `RouquierDistinctCapDetection` and
-   `RouquierDistinctCupDetection` supply the principal and finite boundary
-   tests. Their full integration is verified in #1041. The cap monomial
-   coefficients, negative/zero principal tests and finite-column word
-   reduction are now separately scoped-checked. `RouquierDistinctCapColumns`
-   evaluates all finite columns. `RouquierDistinctCapNonpositive` proves
-   the complete raw cap identity throughout the nonpositive range, and
-   `RouquierDistinctCapMiddle` proves the intermediate-positive cap
-   window with its exact height-parity sign. Attach the latter to the
-   prescribed source chart and apply canonical scalar normalization.
-   For the remaining heights, the same left mate uses a cup at the next
-   i-weight, strictly above the threshold; prove the strict-positive cup
-   tests and apply the cup-side rotation criterion.
-   `DistinctPureReservoirEntry` now proves the pure reservoir sigma entry
-   invertible with all coordinates discharged; only the pure probe entry
-   retains the canonical left-mate dependency. The
-   older braid spine also requires universe-generalized declarations for the
-   actual supercategory; no mathematical hypotheses are being changed.
+2. The distinct-colour package is now scoped-checked. The native cap proof
+   covers `h_i(a) ≤ max(d_ij−1,0)`; in the complementary range the next
+   i-weight has height strictly above `d_ij`, where the complete cup identity
+   applies. Both canonical contractions preserve the actual maps.
+   `RouquierCanonicalDistinctLeftMate.canonicalLeftMateInvertible` proves
+   `LeftMateInvertible T T.leftAdjoints` from the multicolour record at every
+   weight, with no extra premise. Its source and actual allweight two-odd
+   consumer pass, with both owned declarations audited.
+   `DistinctPureEntries` and `DistinctPureReservoirEntry` now have native
+   consumers for both pure entries. `ELVProbeSigmaPermutation` assembles
+   the full native permutation with no mate or pure-entry hypothesis;
+   its strict both-order consumer passes. Use this package directly in
+   supported interchange and presentation assembly. The older braid spine's
+   actual universe-generalized application now passes its constructed
+   supercategory consumer and audit of all 1,348 declarations across 98
+   modules; no mathematical hypothesis is changed. A standalone allweight cap identity and
+   closed-delta scalar simplification are not needed by this completed
+   invertibility argument.
+
 3. `SupportedTensorFamilies`, `SupportedTensorRows`, `SupportedMatrixLayers`
    and `SupportedTensorRowLayers` now construct the whole-sector nonzero
    tensor matrix and prove its occupied row and literal layer-action formulas
@@ -2085,8 +2087,18 @@ Next discharge the following dependencies in order.
    global coefficient square; `SupportedTensorMatrixCoefficients` acts
    on the entire matrix. `SupportedTensorObservationLinearity` and
    `SupportedTensorWordObservation` provide the exact word-indexed linear
-   observation. Identify its vacuum unit and prove matrix coefficient
-   equivariance and contextual layer laws. A nonzero cyclic input does
+   observation. `SupportedTensorRowCoefficientAction` and
+   `SupportedTensorMatrixRowCoefficients.tensorOriginalWordEntry_coefficient`
+   now prove exact whole-matrix coefficient equivariance through the
+   original-weight entry. `SupportedTensorCoefficientChart` and
+   `SupportedTensorCoefficientUnitObservation` give the all-vector signed
+   quotient formula. The canonical source-unit chart and its inverse-map
+   formula are checked, including the affected word-observation consumers.
+   `SupportedTensorMatrixCoefficientObservation.tensorMatrixCoefficient_observation`
+   now combines these into the unchanged canonical observation of the full
+   matrix coefficient action; its nonzero mixed-coefficient consumer passes.
+   Identify the vacuum quotient value and finish contextual layer laws.
+   A nonzero cyclic input does
    not establish injectivity of observation on all matrices.
 4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
    the chosen finite vacuum rows (full CI #1037). The four modules described
@@ -2100,8 +2112,12 @@ Next discharge the following dependencies in order.
    the signed source dot, all inverse powers and normalized pre-cap.
    `ELVReservoirPostUnitCoordinates` and `ELVReservoirPostUnitStandard`
    identify the chosen unit with its canonical dotted append formula.
-   Compose these endpoints into the finite bend, identify its series with
-   the raw moments, then attach prescribed bubble normalization. Generic last-row uniqueness in
+   `RouquierHomWeightCoordinates` now transports these words through both
+   Hom weights, and `Sigma.PaddedBendWordSeries` expands the actual padded
+   central map in the same cap/cup words using constructed finite bounds.
+   Identify each evaluated native vacuum monomial and the resulting finite
+   bend, then identify prescribed inverse rows with polynomial caps and
+   attach the all-vector moments and bubble normalization. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
 5. Complete bounded corner recovery and apply the existing observation,
    finite-colour, orientation and ground-ring reductions, followed by the
