@@ -707,3 +707,28 @@ explicit verification obligations.
 
 Recover topical sources with `git show a43c4882682c9adc9d8d6030879ebd8ebc444108:<repository-path>`.
 Checked successors and their integration status belong in STATUS and HANDOFF.
+
+## Chosen residual coefficient and bend argument source
+
+The full source tree [6a4a989b42](https://github.com/apellis/odd-lean/commit/6a4a989b4269fd2802bf1a9422230ed2b68f368c)
+has sole parent `2b304c174601e22fc106d4747b5905b20378cb00`, the verified #1032 integration.
+It preserves the proposed final `ELVReservoirClosureDegree` transport and
+`ELVReservoirClosureIdeal` attachment, `ELVReservoirBoundaryDegree`,
+`ELVAbsentWindowInverseCoordinates`, the named
+`Sigma/ReservoirWindowInverseData`, and the separated bend sources
+`BendDotCoordinates`, `BendSeriesAlgebra`, `BendWindowMonomials` and
+`SeparatedBendSeries`, with their available consumer and note drafts.
+
+The final all-module closure transport and named padded inverse assembly
+remain incompletely checked. The closure-ideal source still depends on that
+final degree theorem. The boundary argument must retain the absent negative
+unit window, and the finite bend insertion series must be identified with
+the separated residual hypotheses before central inversion follows.
+
+The tree also includes separately scoped-checked coefficient constructions,
+content and weighted boundary comparisons, supported factor inverses,
+finite bend series, native monomial separation and supported presentation
+transport. Those additions retain their own full-integration boundary;
+history preservation does not verify them. Restore only the needed topical
+source, consumer and note onto the current verified library. No unchecked
+argument from this tree is imported by the preservation merge.
