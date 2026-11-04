@@ -33,7 +33,7 @@ power of an endomorphism vanishes at every input after that projection,
 The total evaluation algebra homomorphism preserves powers and zero;
 parity projections detect the original supernatural transformation.
 
-The proposed `ELVProbeContentBends` attachment applies these bounds to
+`ELVProbeContentBends` applies these bounds to
 the literal two mixed coefficient charts. Conjugation by their stated
 isomorphisms preserves nilpotence. The generic separated-window
 identities can then be evaluated with `evalHomFunctor` itself, rather
@@ -42,6 +42,21 @@ therefore lie in exactly the Hom category of
 `contentModuleCoefficientIdeal`, retaining every probe input module.
 The two finite lengths can be increased to one common length above any
 specified minimum, separately for each fixed output content.
+
+The declarations `elvProbeDx_content_separated_windows` and
+`elvProbeCx_content_separated_windows` supply the two literal equations.
+`elvProbe_content_central_separated_windows_above` supplies them at one
+common length above any chosen minimum. Its arguments contain an output
+content but no input module. The named predicates
+`ELVProbeDxContentSeparatedAt` and `ELVProbeCxContentSeparatedAt` reduce
+to the exact `hDx` and `hCx` equations of `ResidualComparison`.
+
+The producer and paired consumer pass scoped checks with Lean 4.34.1,
+warnings as errors and both repository compatibility settings. The
+consumer checks both moving parities at a specified nonempty central
+sector, a common length at least seven, the source bound with its
+uniform quantifier order, and a detected nonzero probe vector. All 50
+owned declarations pass the standard axiom audit.
 
 This supplies the category needed to use the chosen closure sandwich
 lemmas and finite-sum closure of the first coefficient-ideal level.

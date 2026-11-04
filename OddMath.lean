@@ -2625,3 +2625,4 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedProbeSlideWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SeparatedBendSeries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.BendWindowEquations
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSeparatedBends
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentBends
