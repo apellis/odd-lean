@@ -2154,8 +2154,13 @@ Next discharge the following dependencies in order.
    and the coefficient-power window inequality. Its strict mixed,
    repeated-word consumer retains a nonzero common-coroot-kernel coordinate
    and applies actual half-turn injectivity; all 22 declarations are audited.
-   Pull back the combined presentation/action along `μ ↦ (μ,0)` and retain
-   the `alpha`, source-placement and `betaSYM` identities. Restricting the
+   `SKM.PairingExtensionDiagrams`, `PairingExtensionPresentation` and
+   `QuiverHecke.PairingExtensionAction` now construct the region/signature
+   map, transport all defining relations, descend to a linear presentation
+   functor and pull back the actual combined upward action, retaining its
+   carriers. Strict connected mixed/occupied-probe/coroot-kernel checks
+   audit 89 declarations. Next prove the `alpha`, source-placement and
+   `betaSYM` identities and transport the observation. Restricting the
    factors separately loses the occupied extended coset with second
    coordinate `-P`; only the combined Hom heights cancel this coordinate.
 6. Fill `UpwardModuleAction.toSwappedVacuumEvaluation` with the constructed

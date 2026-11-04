@@ -21,7 +21,8 @@ factor coordinates and explicit parameter schedule pass strict paired
 checks. The even moving-colour probe annihilator and dot unit now pass
 mixed-data checks as well. These successor results await full integration.
 The vacuum quotient class, contextual affine evaluation, normalized bubble
-comparison, original-datum action pullback and final bounded recovery remain.
+comparison, affine/bubble compatibility of the original-datum pullback and
+final bounded recovery remain.
 
 ## Scope
 
@@ -94,7 +95,8 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Arbitrary oriented boundaries | Full nondegeneracy iff upward independence at every weight; source and target exchange, including same colours, are discharged | [UpwardNondegeneracyReduction](../../OddMath/SKM/UpwardNondegeneracyReduction.lean), `nondegeneracy_iff_upward_independence` |
 | Arbitrary colour sets | Finite-colour upward injectivity implies full nondegeneracy, retaining the original weight group | [FiniteColourNondegeneracy](../../OddMath/QuiverHecke/FiniteColourNondegeneracy.lean), `nondegeneracy_of_restrictColours_upward` |
 | Characteristic-zero field reduction | The characteristic-zero field case for a fixed datum implies nondegeneracy over every ordinary commutative ring with 2 invertible, for homogeneous parameters and supplied CScalars; no flatness or reducedness is needed | `SKM.nondegeneracyConjecture_of_charZeroField`, `nondegeneracyConjecture_scalarChange`; imported in OddMath and exercised by `NonVacuity/GroundRingNondegeneracy`. The unresolved input is `CharZeroFieldNondegeneracy D` |
-| Explicit vacuum parameters | `SwappedVacuumParameters` identifies the scheduled probe exponent with the actual factor cutoff and constructs highest weights `(0,P)` and `(-μ,P)`, with literal difference `(μ,0)`. Strict producer and connected mixed/repeated-word/coroot-kernel consumer pass, auditing all 22 declarations; the chosen coefficient powers discharge actual half-turn window injectivity | Full integration; pull back the combined action from the pairing extension to the original datum, retaining affine and normalized bubble maps |
+| Original-datum action pullback | `SKM.PairingExtension` embeds every region and defining relation along `μ ↦ (μ,0)`, descends to a linear presentation functor, and retains composition and normal-form diagrams. `UpwardModuleAction.restrictPairingExtension` pulls back the combined action with unchanged carriers. Strict producers and connected mixed/occupied-probe/coroot-kernel consumer pass, auditing 89 declarations | Full integration; compare the affine embedding and source-placed normalized bubble maps before transporting observations |
+| Explicit vacuum parameters | `SwappedVacuumParameters` identifies the scheduled probe exponent with the actual factor cutoff and constructs highest weights `(0,P)` and `(-μ,P)`, with literal difference `(μ,0)`. Strict producer and connected mixed/repeated-word/coroot-kernel consumer pass, auditing all 22 declarations; the chosen coefficient powers discharge actual half-turn window injectivity | Full integration; the action pullback is scoped-checked below, while its affine and normalized bubble comparisons remain |
 | Recovery consumer | Vacuum evaluations at all weights, word pairs and bounds imply nondegeneracy over a field | [SwappedVacuumRecovery](../../OddMath/QuiverHecke/SwappedVacuumRecovery.lean), `nondegeneracy_of_vacuum_evaluations`; evaluations remain hypotheses |
 | Observation assembly | Swapped observations imply nondegeneracy, including finite-colour form | [SwappedConditionalNondegeneracy](../../OddMath/QuiverHecke/SwappedConditionalNondegeneracy.lean); concrete observations remain hypotheses |
 | Probe-vacuum summand paths | Upward paths ending at zero probe content use only reservoir summands, at arbitrary word length; the finite path sum reduces to its occupied term. The canonical reservoir path is constructed for every upward labelled word and terminal reservoir content. Producers and occupied repeated-colour consumers pass strict scoped checks; full build, global axiom audit and all non-vacuity checks passed in [#1010](https://github.com/apellis/odd-lean/pull/1010) | [SwappedAssembly/VacuumPaths](../../OddMath/QuiverHecke/SwappedAssembly/VacuumPaths.lean), `SPath.subsingleton_of_upward_probe_zero`, `SPath.sum_of_upward_probe_zero`; [ReservoirPaths](../../OddMath/QuiverHecke/SwappedAssembly/ReservoirPaths.lean), `SPath.reservoirPath`. The chosen-action generator evaluation remains to be attached |
@@ -828,9 +830,10 @@ and normalized content/weight transport are not asserted.
    inverse rows with polynomial caps and derive the normalized bubble series.
    This compares the presentation's bubbles with the constructed coefficient
    action; the latter alone is not that comparison.
-3. Pull back the combined supported action along the weight embedding
-   `μ ↦ (μ,0)` from the pairing extension to the original datum, retaining
-   the affine and normalized bubble maps. The factors occupy extended
+3. The combined supported action now pulls back along `μ ↦ (μ,0)` by
+   `UpwardModuleAction.restrictPairingExtension`, with strict paired checks.
+   Prove compatibility with the affine and normalized bubble maps before
+   transporting the vacuum observation. The factors occupy extended
    weight cosets with second coordinate `-P`; restricting each factor to
    second coordinate zero would lose the chosen vacuum. The explicit
    highest weights, strict cutoff bounds and coefficient-power bounds are

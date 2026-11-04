@@ -106,5 +106,6 @@ component matrix-inverse APIs accept arbitrary cutoff parity; the
 polynomial-cap consumer includes occupied odd cutoff five. The older
 even-cutoff action note describes a narrower candidate. The chosen native factors, canonical all-height distinct left mate and
 complete supported action are now scoped-checked. The remaining field input
-requires their vacuum/layer/bubble observations, restriction of the combined
-action to the original datum, and bounded recovery; see STATUS.
+requires their vacuum/layer/bubble observations, affine and bubble
+compatibility of the checked original-datum action pullback, and bounded
+recovery; see STATUS.

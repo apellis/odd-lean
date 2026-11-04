@@ -63,24 +63,14 @@ fields this supplies `SKM.CharZeroFieldNondegeneracy D`; the existing
 `SKM.nondegeneracyConjecture_of_charZeroField` then gives the stated
 homogeneous-parameter ground-ring theorem with `2` invertible.
 
-One distinct attachment remains between the extension-weight model and
-these original-weight endpoints. Its desired type is
-
-```
-A : UpwardModuleAction (pairingExtension D)
-      (pairingExtensionScalars D Sc) (μ,0)
-⊢ UpwardModuleAction D Sc μ
-```
-
-The carriers should remain `A.V t`, with the action pulled back along
-the SKM diagram map induced by `x ↦ (x,0)`. This needs the induced
-linear map on presented Homs and its compatibility with `alpha`,
-source placement, and `betaSYM` for the supplied units. The currently
-available `restrictRouquierFamily` and `restrictRouquierMulticolour`
-only restrict factor data. `pairingExtensionCScalars`,
-`pairingExtensionSymmetrizer`, `pairingExtensionScalars_homogeneous`,
-and `pairingExtensionScalars_parameterTwist` already provide the
-parameter and normalization transports. The `SigMap` and relation
-transport in `SKM.FiniteColourRestriction` give a reusable pattern for
-the missing presentation map; no faithfulness of the embedding is
-required for pulling back an action.
+The combined action now pulls back to the original datum through
+`UpwardModuleAction.restrictPairingExtension`; see
+[PairingExtensionAction](PairingExtensionAction.md). Its carriers remain
+unchanged, and the presented Hom map retains all original weight coordinates.
+The affine `alpha` and source-placed normalized `betaSYM` comparison equations
+remain to be attached before the observations feed the field endpoint.
+The two factors must not be restricted separately: their occupied weight
+cosets have second coordinate `-P`, which cancels only in the combined Hom
+heights. The parameter and normalization transports remain
+`pairingExtensionCScalars`, `pairingExtensionSymmetrizer`,
+`pairingExtensionScalars_homogeneous` and `pairingExtensionScalars_parameterTwist`.
