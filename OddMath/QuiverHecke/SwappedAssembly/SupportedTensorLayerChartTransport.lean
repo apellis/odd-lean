@@ -82,6 +82,17 @@ theorem exists_eqToHom_homShiftConjugationIso (F : C ⥤ C') [F.Additive] [F.Lin
   rw [F.map_id, Category.comp_id]
   rfl
 
+/-- The same transport with every instance argument read off from the goal
+rather than synthesized. -/
+theorem exists_eqToHom_homShiftConjugationIso_of {k : Type r} {_ : CommRing k} {C : Type u'}
+    {_ : Category.{v'} C} {_ : Preadditive C} {_ : Linear k C} {_ : Supercategory k C}
+    {_ : PiSupercategory k C} {C' : Type u'} {_ : Category.{v'} C'} {_ : Preadditive C'}
+    {_ : Linear k C'} {_ : Supercategory k C'} {_ : PiSupercategory k C'}
+    {F : C ⥤ C'} {_ : F.Additive} {_ : F.Linear k} {_ : IsSuperfunctor k F}
+    {p : ZMod 2} (hp : p = 0) {Z : C} :
+    ∃ h, (homShiftConjugationIso (k := k) F p Z).hom = eqToHom h :=
+  exists_eqToHom_homShiftConjugationIso F p hp Z
+
 end Shift
 
 theorem homContentShift_zero {I X : Type*} [AddCommGroup X] (D : Datum I X) (i : I) :
@@ -326,7 +337,7 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
   simp only [Iso.trans_hom, eqToIso.hom, Functor.mapIso_hom, Iso.app_hom,
     homContentPostWordIso_hom_app]
   repeat' first
-    | exact exists_eqToHom_self _
+    | with_reducible exact exists_eqToHom_self _
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
@@ -339,6 +350,7 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
   repeat' first
     | exact homContentShift_zero D i
     | apply tensorContextIso_hom_eqToHom
+    | apply exists_eqToHom_homShiftConjugationIso_of
     | apply exists_eqToHom_homShiftConjugationIso
     | apply exists_eqToHom_associator
     | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
@@ -384,7 +396,7 @@ theorem tensorLayerCrossSourceIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirCrossSourceIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | exact exists_eqToHom_self _
+    | with_reducible exact exists_eqToHom_self _
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
@@ -408,7 +420,7 @@ theorem tensorLayerCrossTargetIso_hom_eqToHom :
   unfold ProbeReservoir.reservoirVacuumCrossTargetIso
   unfold reservoirVacuumPairIso
   repeat' first
-    | exact exists_eqToHom_self _
+    | with_reducible exact exists_eqToHom_self _
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
