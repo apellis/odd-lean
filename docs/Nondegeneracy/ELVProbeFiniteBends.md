@@ -54,6 +54,18 @@ probe-dot unit is transported through the exact charts and lowering
 functor before taking the displayed inverse. The statements retain
 arbitrary input Hom objects and supported probe and reservoir inputs.
 
+`Sigma/BendDotCoordinates` now checks the four raw chart comparisons
+before lowering and evaluation. The XP-to-YR chart carries the inner
+probe dot to `ER.map (homReservoirDot U)` and the outer reservoir dot
+to `homContentPostDot (EP.obj U)`. The XR-to-YP chart carries them to
+`q • homReservoirDot (ER.obj U)` and
+`q • EP.map (homContentPostDot U)`, respectively, where
+`q = koszulSign (D.parity i) (D.parity i)`. Both signs therefore come
+from the prescribed mixed interchange. These comparisons retain the
+full transported input Hom object and require no new chart hypotheses.
+Their paired consumer uses the actual ELV factor at the specified
+lowered objects, including both parity corners at nonempty sectors.
+
 The remaining monomial comparison is separate: identify each insertion
 term with the separated chosen dotted reservoir cap/cup, probe unit/cap,
 and inverse probe-dot powers in the literal `hCx` and `hDx` hypotheses
