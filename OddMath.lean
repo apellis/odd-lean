@@ -2707,3 +2707,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightNegativeCap
 import OddMath.SKM.RouquierDistinctCapColumnReduction
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorWordObservation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
+import OddMath.SKM.RouquierDistinctCapInverseChart

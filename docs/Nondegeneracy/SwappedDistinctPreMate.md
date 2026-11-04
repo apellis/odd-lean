@@ -378,3 +378,12 @@ word, and the inverse-defined upper cap. The strict producer and
 constructed two-odd consumer pass, with all 6 owned declarations
 audited. The finite quadratic evaluation is the next input to the
 nonpositive cap identity; this reduction introduces no cap premise.
+
+`RouquierDistinctCapInverseChart.lean` proves `distinctCapSource_inv`
+and `distinctCapRight_eq_inverseMate`: the inverse source chart is
+exactly the associator, the whiskered inverse of the prescribed
+`crossMate`, and the inverse associator. The cap word is consequently
+the same inverse mate followed by the raw cap. Both inverses use the
+actual `RouquierMulticolour.invNe` instance. The strict producer and
+constructed two-odd consumer pass, with all 3 owned declarations
+audited. This supplies the exact-map bridge to canonical left rotation.
