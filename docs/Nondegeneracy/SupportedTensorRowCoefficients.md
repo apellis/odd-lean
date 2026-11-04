@@ -20,7 +20,7 @@ literal full-inclusion map followed by the factor-path object chart and
 the equality identifying the terminal family with the tensor vacuum.
 Naturality of the factor-path functor equality handles the former;
 equality induction on the terminal object handles the latter. Thus the
-proposed `tensorVacuumRowProjection_coefficient` identifies the projected
+checked `tensorVacuumRowProjection_coefficient` identifies the projected
 matrix coefficient action with postcomposition by the same ambient
 path-whiskered vacuum coefficient.
 
@@ -31,7 +31,10 @@ all 23 owned declarations. The consumer uses a nonzero two-odd tensor
 row with colliding root weights and the coefficient `1 + delta`; it
 proves the source row and the odd coefficient are nonzero.
 
-Once the second square is checked, the same pullback transports its composite. This argument supplies coefficient
+The second square also passes its strict producer and concrete consumer,
+with all 23 owned declarations audited. Its consumer uses the full
+matrix action of `1 + delta` on the nonzero chosen matrix vacuum.
+The same pullback can now transport the composite to the original Hom. This argument supplies coefficient
 equivariance of the specified row map; identifying its evaluation on the
 source unit and the subsequent quotient coordinates remains a separate
 observation step. The final observation law is not a premise of either
