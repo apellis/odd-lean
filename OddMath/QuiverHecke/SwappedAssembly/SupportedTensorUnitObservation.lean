@@ -23,17 +23,37 @@ private def chartAtOriginalWeight {k J I : Type u} [CommRing k]
   cases hFG
   exact e
 
+private theorem chartAtOriginalWeight_hom_heq {k J I : Type u} [CommRing k]
+    (A : PiSCat.{u,u,u + 1} k) (C : J → PiSCat.{u,u,u + 1} k)
+    (W : (x : J) → List I → C x) {x y : J} (h : x = y)
+    (F : A ⟶ C x) (G : A ⟶ C y) (hFG : HEq F G) (R : A) (ν : List I)
+    (e : G.obj R ≅ W y ν) :
+    HEq (chartAtOriginalWeight A C W h F G hFG R ν e).hom e.hom := by
+  subst y
+  cases hFG
+  rfl
+
+private theorem chartAtOriginalWeight_even {k J I : Type u} [CommRing k]
+    (A : PiSCat.{u,u,u + 1} k) (C : J → PiSCat.{u,u,u + 1} k)
+    (W : (x : J) → List I → C x) {x y : J} (h : x = y)
+    (F : A ⟶ C x) (G : A ⟶ C y) (hFG : HEq F G) (R : A) (ν : List I)
+    (e : G.obj R ≅ W y ν) (he : e.hom ∈ parity (R := k) _ _ 0) :
+    (chartAtOriginalWeight A C W h F G hFG R ν e).hom ∈ parity (R := k) _ _ 0 := by
+  subst y
+  cases hFG
+  exact he
+
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
 local notation "Tw" => parameterTwist D Sc
 local notation "N" => PowerWordContent.powerBound D cutoff L
-local notation "R" => WeightTensorVacuum.regularProbe D Tw m ΛP
+local notation "R₀" => WeightTensorVacuum.regularProbe D Tw m ΛP
 
 /-- The global path chart at its original reservoir weight, retaining
 all content blocks rather than selecting a weight representative. -/
 def tensorPathValueChart {l : List (Col I X)} {c : I →₀ ℕ}
     (p : SPath l (0,c) (0,0)) (hup : ∀ a ∈ l, a.l.1 = true) :
-    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R ≅
+    (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup).obj R₀ ≅
       PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR c)
         ((l.map (fun a => a.l.2)).reverse) := by
   have hw := TensorReservoirWords.path_weight D ΛR p hup
@@ -43,8 +63,28 @@ def tensorPathValueChart {l : List (Col I X)} {c : I →₀ ℕ}
     (fun x => elvWeightSpace D Tw cutoff N ΛR x)
     (PowerWordWeight.wordFamily D Tw cutoff L ΛR) hw
     (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR p hup)
-    (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν) hF R ν
+    (TensorVacuumWords.wordHom D Tw m cutoff L ΛP ΛR ν) hF R₀ ν
     (TensorVacuumWords.chart D Tw m cutoff L ΛP ΛR ν)
+
+/-- The original-weight supported path chart retains the global word chart
+under its proved endpoint and whole-functor transports. -/
+theorem tensorPathValueChart_global_heq {l : List (Col I X)} {c : I →₀ ℕ}
+    (p : SPath l (0,c) (0,0)) (hup : ∀ a ∈ l, a.l.1 = true) :
+    HEq (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom
+      (TensorVacuumWords.chart D Tw m cutoff L ΛP ΛR
+        (l.map (fun a => a.l.2)).reverse).hom := by
+  unfold tensorPathValueChart
+  dsimp only
+  apply chartAtOriginalWeight_hom_heq
+
+/-- The global path chart is even in every original content block. -/
+theorem tensorPathValueChart_hom_mem {l : List (Col I X)} {c : I →₀ ℕ}
+    (p : SPath l (0,c) (0,0)) (hup : ∀ a ∈ l, a.l.1 = true) :
+    (tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom ∈ parity (R := k) _ _ 0 := by
+  unfold tensorPathValueChart
+  dsimp only
+  apply chartAtOriginalWeight_even
+  exact TensorVacuumWords.chart_even D Tw m cutoff L ΛP ΛR (l.map (fun a => a.l.2)).reverse
 
 omit [Fintype I] in
 /-- Reading the literal source labels recovers the specified source word. -/
@@ -69,7 +109,7 @@ def tensorSourceWordBlock : WeightBlocks D ΛR (ReservoirWord.weight D ΛR cS) :
 /-- The same source path chart with its literal source-word labels read. -/
 def tensorSourcePathValueChart :
     (TensorReservoirWords.pathHom D Tw m cutoff L ΛP ΛR (tensorSourcePath D ΛP ΛR s)
-      (tensorSourceLabels_up D ΛP ΛR s)).obj R ≅
+      (tensorSourceLabels_up D ΛP ΛR s)).obj R₀ ≅
       PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS) s.reverse :=
   tensorPathValueChart D Sc m cutoff ΛP ΛR L (tensorSourcePath D ΛP ΛR s)
     (tensorSourceLabels_up D ΛP ΛR s) ≪≫
@@ -79,10 +119,10 @@ def tensorSourcePathValueChart :
 
 /-- The cyclic source unit in the unchanged original-input source functor. -/
 def tensorOriginalSourceUnit :
-    (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R)
+    (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀)
       (tensorSourceWordBlock D ΛP ΛR s)).obj
         (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) :=
-  (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R)
+  (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
     (tensorSourceWordBlock D ΛP ΛR s)).total
       (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
       ((moduleIsoLinearEquiv (Pi.isoApp (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
@@ -101,7 +141,7 @@ def tensorMatrixQuotientObservation {a : Obj (SKM.sig D)}
     ((((tensorPathValueChart D Sc m cutoff ΛP ΛR L p hup).hom
       (tensorSourceWordBlock D ΛP ΛR s)).total
         (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
-      (((((tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x).total R)
+      (((((tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x).total R₀)
         (tensorSourceWordBlock D ΛP ΛR s)).total
           (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
             (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)))

@@ -539,11 +539,11 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Chosen tensor families and row action | `SupportedTensorFamilies` constructs whole-sector source/vacuum families and a proved nonzero cyclic matrix. `SupportedTensorRows`, `SupportedMatrixLayers` and `SupportedTensorRowLayers` identify its whole Hom row and the actual layer action. Strict paired consumers audit 50, 25, five and 18 declarations, including a nonzero external weight | Full CI #1039; raw coefficient action and cyclic-unit observation are scoped-checked below; layer and bubble compatibility remain |
 | Original-word whole Hom entry | `SupportedTensorEntryPullback` constructs the canonical source and target word charts and the linear entry of the entire supported matrix in the original-word Hom, with whole-map injectivity. Strict nonzero cyclic consumer passes; 41 declarations audited | Full CI #1039; cyclic coordinates are scoped-checked below; coherence with every contextual generator chart remains |
 | Whole-weight normalized probe vacuum cap | `ELVProbeWeightLeftCap`, `ELVProbeMissingCapCoordinates`, `ELVProbeWeightLeftCounit` and `ELVProbeWeightVacuumCap` identify the chosen whole-weight left counit, with its exact Koszul normalization, with the prescribed native vacuum cap through an even source chart. Strict two-odd/nonzero-cap consumers audit 15, 20, seven and 40 declarations | Full CI #1039; pre-Hom cap transport and raw tensor moments are scoped-checked below; finite evaluated bend identification remains |
-| Rectangular distinct mixed-braid and boundary detection | `RouquierRectangularComposition` and `RouquierDistinctMixedBraid` derive the two-mate composition and correction from the actual multicolour braid, retaining every sign and independent weight corner. `RouquierDistinctCapDetection` and `RouquierDistinctCupDetection` give the prescribed principal/finite tests in both height ranges. All strict producer/consumer pairs and owned audits pass | Full integration; evaluate the tests for the canonical left cap. `RouquierDistinctLeftRotation` yields invertibility only after that pitchfork identity is supplied |
-| Tensor coefficient actions and moments | `ELVVacuumTensorCoefficientMaps`, `SupportedTensorCoefficientAction` and `ELVTensorWordCoefficientAction` construct the raw coefficient actions on the full tensor, all-sector path Homs and normalized words. `ELVTensorVacuumMomentMaps` proves raw monomial and polynomial moments on every vector. Strict pairs audit 89, 43, 33 and 102 declarations and retain nonzero odd coefficient action | Full integration; identify the chosen swapped inverse cap with these raw moments and attach bubble normalization |
-| Global word and matrix observation | `ELVTensorWordChartCoherence`, `ELVTensorPairChartCoherence` and `ELVTensorWordQuotientObservation` construct append/pair coherence and the regular-probe source-unit quotient observation. `SupportedTensorEntryParity` retains even global charts; `SupportedTensorUnitObservation` defines the actual full-matrix observation without a layer-comparison premise. All strict pairs pass | Full integration; arbitrary outer-context coherence, coefficient compatibility and all layer/bubble laws remain. Nonzero cyclic input does not assert nonzero observation output or matrix faithfulness |
-| Pre-Hom cap and restricted dot charts | `ELVProbeWeightPreCap` identifies the chosen pre-Hom counit with its normalized vacuum cap. `ELVProbeWeightLoopDot`, `ELVProbeUpperLoopDot` and `ELVProbeWeightVacuumDot` retain the raw dot through successor, upper-loop and full vacuum cap charts. Strict pairs audit 21, 12, 18 and 31 declarations | Full integration; finish the full pre-dot square and reservoir-unit attachment to the finite mixed bend |
-| Shifted pure-reservoir crossing | `Sigma.DistinctReservoirShift.postPairCrossing_eq` identifies the even beta/xi crossing comparison with the prescribed shifted post crossing and its exact sign. Strict nonzero odd crossing consumer audits both owned declarations | Full integration; use the comparison to prove the literal pure reservoir sigma entry invertible |
+| Rectangular distinct mixed-braid and boundary detection | Rectangular mate composition, mixed-braid correction and cap/cup detection are full-CI verified in #1041. `RouquierDistinctCapMonomials` evaluates every bent monomial at the cap boundary; `RouquierDistinctCapPrincipal`, `RouquierDistinctCapBoundary` and `RouquierDistinctConnectedCapBoundary` prove the actual negative- and zero-height principal values. `RouquierDistinctDottedUnit`, `RouquierDistinctCapColumnReduction` and `RouquierDistinctCapInverseChart` retain the prescribed finite-column and inverse-chart comparisons. `RouquierDistinctCapColumns` evaluates every finite column, `RouquierDistinctCapNonpositive.distinctCap_of_nonpos` proves the complete raw cap pitchfork at every nonpositive height, and `RouquierDistinctCapMiddle` proves the intermediate positive-height raw window with its exact sign. Strict pairs and owned audits pass | Full integration of the later tests; assemble the raw cap identities, canonical normalization and strict-positive cup range before deriving all-height left-mate invertibility |
+| Tensor coefficient actions and moments | `ELVVacuumTensorCoefficientMaps`, `SupportedTensorCoefficientAction`, `ELVTensorWordCoefficientAction` and `ELVTensorVacuumMomentMaps` are full-CI verified in #1041. `ELVTensorCoefficientNaturality`, `ELVTensorPathCoefficientCoherence` and `ELVTensorWordCoefficientChart` now prove raw coefficient naturality, path/word coherence and the global all-vector chart square. `SupportedTensorMatrixCoefficients` constructs the action on every whole-matrix index, with nonzero mixed-coefficient action. Strict pairs audit 13, 20, 23 and 23 declarations | Full integration of the later squares; attach matrix pullback equivariance and identify the chosen swapped cap with the raw moments/bubble normalization |
+| Global word and matrix observation | Append/pair charts, regular-probe quotient observation and canonical full-matrix observation are full-CI verified in #1041. `ELVTensorContextChartCoherence` and `SupportedTensorPathChartCoherence` now identify arbitrary context and actual original-weight path charts. `SupportedTensorObservationLinearity` and `SupportedTensorWordObservation` give a linear observation in the exact source/target quotient; additive path-chart/parity interfaces are checked. All strict pairs pass | Full integration of the later chart/linear wrappers; prove the vacuum-unit, contextual layer and bubble laws. No faithfulness of observation on all matrices is asserted |
+| Pre-Hom cap and restricted dot charts | Pre-Hom cap, successor, upper-loop and full vacuum dot charts are full-CI verified in #1041. `ELVProbeWeightPreDot` and `ELVProbeWeightNegativeCap` now identify the actual signed source dot, every inverse power and normalized negative pre-cap. `ELVReservoirPostUnitCoordinates` and `ELVReservoirPostUnitStandard` identify the actual post-unit with the canonical dotted append unit. Strict pairs audit 19, 21, six and nine declarations | Full integration of the later endpoint maps; compose them into the finite mixed bend and attach its coefficient moments |
+| Shifted pure-reservoir crossing | `Sigma.DistinctReservoirShift.postPairCrossing_eq` is full-CI verified in #1041. `Sigma.DistinctPureReservoirEntry.isIso_sigmaEntry_pure_reservoir` now proves the literal pure reservoir entry invertible from the original factor data and distinctness, with every coordinate transport discharged. Strict constructed mixed-data consumer audits all 25 declarations | Full integration of the pure reservoir entry; the pure probe entry still needs the canonical factor left-mate proof |
 | Supported relation reduction | `SupportedWhiskerReduction` and `SupportedRelationLifting` reduce whole relations to local supported inputs using the checked path closure, with exact retained-input predicates. Strict paired consumer passes; 12 declarations audited | Attach the chosen local inverse and distinct-colour packages to obtain the presentation |
 | Vacuum inverse finite rows | `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract the finite rows of the chosen negative central inverse and prove its inverse chart square; height-zero principal invertibility included. Fourteen and 21 declarations audited; full CI #1037 | Attach the evaluated bend and normalized polynomial cap moments |
 | Chosen padded reservoir coefficient memberships | `Sigma.ReservoirWindowCoefficientIdeal` supplies J0 for every morphism and J1 for both principal signs, all off-window contractions and all-row Kronecker differences. Strict pair passes with 32 owned declarations, including each absent unit inverse row proved nonzero | Full integration; consumed by the checked supported central inverse |
@@ -799,22 +799,26 @@ and normalized content/weight transport are not asserted.
 ## Remaining critical chain
 
 1. Complete distinct-colour inversion. The actual mixed probe/reservoir
-   source polynomial units are scoped-checked. The pure probe/probe entry
+   source polynomial units are full-CI verified in #1039. The pure probe/probe entry
    still needs `LeftMateInvertible` for the canonical factor left adjunction.
    `Cyclicity.rot_tau_left` is checked in the presented calculus, but its
-   transfer to the factor Rouquier family is not. Formalize the cited
-   canonical cap-pitchfork/rotation argument in `SwappedDistinctPreMate`;
-   do not replace it with invertibility of arbitrary partial mates.
+   transfer to the factor Rouquier family is not. The prescribed mixed braid, cap monomial evaluation and all nonpositive
+   principal tests are checked. The complete nonpositive raw cap identity and the intermediate
+   positive cap window are scoped-checked; complete canonical normalization and the
+   strict-positive cup tests in the cited argument
+   in `SwappedDistinctPreMate`; do not replace this with invertibility of
+   arbitrary partial mates. The pure reservoir entry is scoped-checked.
 2. Instantiate the supported presentation. All-sector same-colour inverses
-   and restricted leftward naturality/parity are now scoped-checked;
+   and restricted leftward naturality/parity are full-CI verified in #1039;
    interchange retains the distinct-colour permutation input. Generalize
    the older braid declarations' universe binders to the chosen supercategory
    and check their actual application. This changes no datum hypotheses.
-3. Attach the constructed raw coefficient action and cyclic-unit observation
-   to every contextual layer on the nonzero tensor matrix. The pre-Hom cap
-   comparison and raw all-vector moments are scoped-checked; complete their
-   dot/unit comparisons with the actual finite mixed bend, identify the chosen
-   inverse rows with polynomial caps, and prove the normalized bubble series. Package bounded corner evaluation/recovery, then apply the checked
+3. Attach the constructed whole-matrix raw coefficient action and word-indexed
+   linear observation to every contextual layer. Global word coefficient
+   squares and arbitrary context/path chart coherence are checked. Identify
+   the vacuum unit, then compose the checked inverse pre-dot/cap and reservoir
+   unit endpoints into the finite mixed bend, identify inverse rows with
+   polynomial caps, and prove the normalized bubble series. Package bounded corner evaluation/recovery, then apply the checked
    observation, finite-colour, orientation and ground-ring reductions and
    check the all-even specialization.
 
@@ -843,7 +847,10 @@ at head `dc118ae687b77d8bc48ea01208635bdbce0bb8e6` (run 41761965036), merged
 at `399e94ee03eccc9e6d8eabe6bbd349819f73a656`. The all-sector action, source-unit and tensor-row integration #1039 passed
 the full build, global axiom audit and all non-vacuity consumers at head
 `5a5e3199b5f8d8ae735f2816b39ee55a6a106eb7` (run 41767335348), merged at
-`1965b6f294d98613eb0c024154d6ab4c3920b908`. Newer entries marked
+`1965b6f294d98613eb0c024154d6ab4c3920b908`. The rectangular-cap and tensor-observation integration #1041 passed
+the full build, global axiom audit and every non-vacuity consumer at head
+`b7c34f99331eefb897199204e8d75ab06a896cbe` (run 41771332443), merged at
+`fe2fef3495250bc71ce4d0f01e7a3c5d4c5af63e`. Newer entries marked
 scoped-checked await their own full integration. Topic branches and proposed source are not established by submission
 alone. Finite Python models are evidence about their instances, not proofs of
 the general action or conjecture.

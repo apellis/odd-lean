@@ -302,3 +302,106 @@ The paired consumer applies this equation to both ordered pairs in the
 constructed nonzero two-odd probe family. Evaluation of these separated
 correction terms against the inverse-defined caps, and the finite
 cup-column tests, remain to be proved.
+
+The unit pitchfork for the prescribed right mate is also checked as
+`crossMate_pitchfork_unit` in `RouquierRectangularUnit.lean`, for four
+independent corners and arbitrary crossing parity. It cancels the lower
+right-adjunction unit without changing the upward crossing. This is the
+unit-side input for the finite cup-column calculation; its consumer
+uses both ordered pairs of the same nonzero two-odd probe family.
+
+### Checked cap tests and correction-monomial coefficients
+
+`RouquierDistinctCapTests.lean` defines `distinctCapRight` using the inverse
+of the specified `distinctCapSource`, and proves `distinctCapSource_right`,
+`distinctCapRight_principal_of_neg`, `distinctCapRight_column_of_neg`, and
+`distinctMixedBraidRight_cap_of_neg`. The first two detection tests reduce
+to the actual inverse-defined local cap: the principal composite is zero
+at strictly negative height, and the finite cup columns are the boundary
+Kronecker coefficients. The second mixed-braid word also vanishes after
+its final negative-height cap. These are right-hand tests; they do not
+assert the missing left cap pitchfork.
+
+`RouquierDistinctCapMonomials.lean` proves
+`distinctMixedBraidOuterMate_monomial`, factoring the exact ordered
+correction monomial through the separated rectangular mate, and
+`distinctMixedBraidOuterMate_monomial_cap`, evaluating the final dotted
+cup against the prescribed cap throughout the negative-height window.
+The result is zero except at the precise boundary exponent, where the
+remaining dotted cap and middle dot power survive.
+
+Both producers and their paired `scripts/NonVacuity/` consumers pass the
+strict pinned checks. The consumers use the constructed two-odd probe
+family, prove all height and exponent conditions, and retain nonzero
+vacuum append vectors. Their owned-declaration axiom audits cover 5 and
+12 declarations respectively. These results supply actual cap tests and
+coefficients. The later paragraphs below close the finite left-column
+reduction and nonpositive raw identity; the all-weight conclusion remains open.
+
+`RouquierDistinctCapPrincipal.lean` now proves the strictly negative
+principal left-hand test. `distinctMixedBraidOuterMate_monomial_cap_zero`
+shows every correction exponent below `d_ij` lies below the shifted cap
+boundary, and `distinctMixedBraidLeft_cap_of_neg` applies the actual mixed
+braid relation and vanishing second word. Its strict producer and paired
+two-odd constructed consumer pass, including an audit of all 10 owned
+declarations. This closes the strictly negative principal test, while
+the finite left cup-column tests are supplied below; the all-weight
+pitchfork remains open.
+
+`RouquierDistinctPowerSlide.lean` checks both iterated dot slides,
+`RouquierMulticolour.slideLeft_power` and `slideRight_power`, for the
+actual inherited distinct crossings. The strict producer and constructed
+two-odd consumer pass, with an audit of both declarations. These are the
+dot transports needed in the finite left-column reduction; the powers
+of the actual sign coefficient are retained explicitly.
+
+`RouquierRectangularDottedUnit.crossMate_pitchfork_unit_dotted` now
+checks the generic dotted-unit contraction: the homogeneous dot-slide
+sign and the interchange sign cancel exactly. Its strict producer and
+constructed two-odd consumer pass, with the single owned declaration
+audited. The consumer proves the upward slide from the actual
+multicolour relation and uses an odd dot and odd crossing, so the two
+minus signs are exercised rather than suppressed by an even fixture.
+
+`RouquierDistinctDottedUnit.distinctCrossMate_dottedUnit` discharges the
+generic dotted pitchfork's entire slide hypothesis for every actual dot
+power using `RouquierMulticolour.slideLeft_power`. Its strict producer
+and constructed two-odd consumer pass, with both owned declarations
+audited. Thus the finite-column cup transport now follows from the
+factor relations without a cyclicity or cap premise.
+
+`RouquierDistinctCapColumnReduction.lean` defines the exact
+`distinctCapLeft`, identifies its principal test with the checked
+mixed-braid word (`distinctCapLeft_principal_word`), and proves
+`distinctCapLeft_column_reduce`. Every normalized dotted cup-column is
+therefore the literal upper dotted cup, the inherited upward quadratic
+word, and the inverse-defined upper cap. The strict producer and
+constructed two-odd consumer pass, with all 6 owned declarations
+audited. The finite quadratic evaluation is the next input to the
+nonpositive cap identity; this reduction introduces no cap premise.
+
+`RouquierDistinctCapInverseChart.lean` proves `distinctCapSource_inv`
+and `distinctCapRight_eq_inverseMate`: the inverse source chart is
+exactly the associator, the whiskered inverse of the prescribed
+`crossMate`, and the inverse associator. The cap word is consequently
+the same inverse mate followed by the raw cap. Both inverses use the
+actual `RouquierMulticolour.invNe` instance. The strict producer and
+constructed two-odd consumer pass, with all 3 owned declarations
+audited. This supplies the exact-map bridge to canonical left rotation.
+
+### Closed nonpositive raw cap identity
+
+`RouquierDistinctCapNonpositive.distinctCap_of_nonpos` now proves the
+entire actual raw cap identity at every nonpositive central height:
+`distinctCapLeft = t_ij • distinctCapRight`. The principal test uses the
+strictly negative calculation and the complete zero-height boundary;
+every finite column uses the literal dotted-unit reduction and
+`distinctCapQuadraticColumn_of_neg`. The nonpositive augmented inverse
+then detects equality. No cap or cyclicity hypothesis is added.
+
+Its strict producer and constructed two-odd consumer pass, including
+negative and zero central heights and an audit of all 6 owned
+declarations. Thus finite left columns and the nonpositive raw
+pitchfork are closed. The remaining all-weight obligation is the
+intermediate window and complementary cup range, followed by canonical
+normalization and the exact left-mate contraction.

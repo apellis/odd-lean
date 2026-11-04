@@ -2054,10 +2054,20 @@ Next discharge the following dependencies in order.
    factor Rouquier family. `RouquierDistinctMixedBraid` now supplies the exact
    rectangular correction; `RouquierDistinctCapDetection` and
    `RouquierDistinctCupDetection` supply the principal and finite boundary
-   tests. These strict pairs are scoped-checked. Evaluate the tests for the
-   canonical cap, then use `RouquierDistinctLeftRotation` and attach the
-   literal pure entries. `DistinctReservoirShift` supplies the separate
-   pure-reservoir crossing comparison, but its sigma attachment remains. The
+   tests. Their full integration is verified in #1041. The cap monomial
+   coefficients, negative/zero principal tests and finite-column word
+   reduction are now separately scoped-checked. `RouquierDistinctCapColumns`
+   evaluates all finite columns. `RouquierDistinctCapNonpositive` proves
+   the complete raw cap identity throughout the nonpositive range, and
+   `RouquierDistinctCapMiddle` proves the intermediate-positive cap
+   window with its exact height-parity sign. Attach the latter to the
+   prescribed source chart and apply canonical scalar normalization.
+   For the remaining heights, the same left mate uses a cup at the next
+   i-weight, strictly above the threshold; prove the strict-positive cup
+   tests and apply the cup-side rotation criterion.
+   `DistinctPureReservoirEntry` now proves the pure reservoir sigma entry
+   invertible with all coordinates discharged; only the pure probe entry
+   retains the canonical left-mate dependency. The
    older braid spine also requires universe-generalized declarations for the
    actual supercategory; no mathematical hypotheses are being changed.
 3. `SupportedTensorFamilies`, `SupportedTensorRows`, `SupportedMatrixLayers`
@@ -2067,22 +2077,31 @@ Next discharge the following dependencies in order.
    `SupportedTensorCoefficientAction` now constructs its raw coefficient
    action on every path Hom; `SupportedTensorUnitObservation` defines its
    source-unit quotient observation. The global append/pair charts and
-   regular-probe observation are scoped-checked in
+   regular-probe observation are full-CI verified in #1041 in
    `ELVTensorWordChartCoherence`, `ELVTensorPairChartCoherence` and
-   `ELVTensorWordQuotientObservation`. Complete outer-context coherence and
-   the coefficient/layer comparison for this one observation. A nonzero
-   cyclic input does not establish injectivity of observation on matrices.
+   `ELVTensorWordQuotientObservation`. `ELVTensorContextChartCoherence` and
+   `SupportedTensorPathChartCoherence` now join every outer-context chart
+   to the actual path chart. `ELVTensorWordCoefficientChart` gives its
+   global coefficient square; `SupportedTensorMatrixCoefficients` acts
+   on the entire matrix. `SupportedTensorObservationLinearity` and
+   `SupportedTensorWordObservation` provide the exact word-indexed linear
+   observation. Identify its vacuum unit and prove matrix coefficient
+   equivariance and contextual layer laws. A nonzero cyclic input does
+   not establish injectivity of observation on all matrices.
 4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
    the chosen finite vacuum rows (full CI #1037). The four modules described
    in `ProbeWeightLeftCap` now identify the normalized whole-weight probe
    counit with the native vacuum cap through an even source chart (full CI
    #1039). `ELVProbeWeightPreCap` now inserts it into the actual pre-Hom
    counit; the successor, upper-loop and full vacuum dot charts are
-   scoped-checked.
+   full-CI verified in #1041.
    `ELVTensorVacuumMomentMaps` supplies raw moments on every input vector.
-   Finish the full pre-dot and reservoir-unit comparisons, identify the
-   finite bend series with those moments, then attach prescribed bubble
-   normalization. Generic last-row uniqueness in
+   `ELVProbeWeightPreDot` and `ELVProbeWeightNegativeCap` now identify
+   the signed source dot, all inverse powers and normalized pre-cap.
+   `ELVReservoirPostUnitCoordinates` and `ELVReservoirPostUnitStandard`
+   identify the chosen unit with its canonical dotted append formula.
+   Compose these endpoints into the finite bend, identify its series with
+   the raw moments, then attach prescribed bubble normalization. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
 5. Complete bounded corner recovery and apply the existing observation,
    finite-colour, orientation and ground-ring reductions, followed by the
