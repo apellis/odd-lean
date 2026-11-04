@@ -11,9 +11,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidEq.Algebra
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -71,7 +71,7 @@ theorem middleReservoir_routes (hij : i ≠ j) :
     simp only [probePairFirstIso, Functor.mapIso_inv, Functor.mapIso_hom, Functor.map_comp]
 
 
-private lemma middle_conjugate {C : Type u} [Category C] [Preadditive C]
+private lemma middle_conjugate {C : Type*} [Category C] [Preadditive C]
     {A B W : C} (J : A ≅ B) (K : B ≅ W) (S R : End A) (T : End W) (Q : End B)
     (h : S ≫ J.hom ≫ K.hom = J.hom ≫ K.hom ≫ T) :
     J.hom ≫ (((K.hom ≫ T) ≫ (K.inv ≫ Q)) -

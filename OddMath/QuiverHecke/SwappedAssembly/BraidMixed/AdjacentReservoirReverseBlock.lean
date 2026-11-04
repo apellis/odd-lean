@@ -8,9 +8,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirReverseCo
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -26,7 +26,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
     nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s)))
   (Z : P.H (nextSector (true, j) false (nextSector (true, i) false (nextSector (true, i) true s))))
 
-private lemma route_right {C : Type u} [Category C] [Preadditive C]
+private lemma route_right {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hf : f₁ = 0) (hg : g₀₁ = 0) :
@@ -36,7 +36,7 @@ private lemma route_right {C : Type u} [Category C] [Preadditive C]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero]
 
 
-private lemma square_route {C : Type u} [Category C] [Preadditive C]
+private lemma square_route {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hr : r₀ = 0) (hg : g₀₁ = 0) :
@@ -45,7 +45,7 @@ private lemma square_route {C : Type u} [Category C] [Preadditive C]
   rw [hr, hg]
   simp only [Limits.comp_zero, zero_add]
 
-private lemma route_reverse {C : Type u} [Category C] [Preadditive C]
+private lemma route_reverse {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hf : f₀ = 0) (hg : g₁₀ = 0) :
@@ -55,7 +55,7 @@ private lemma route_reverse {C : Type u} [Category C] [Preadditive C]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero, zero_add]
 
 
-private lemma remaining {C : Type u} [Category C] [Preadditive C]
+private lemma remaining {C : Type*} [Category C] [Preadditive C]
     {M A V U : C} (E : A ≅ M) (K : U ≅ V) (X : V ⟶ M) (Y : U ⟶ A)
     (a : M ⟶ M) (b : V ⟶ V)
     (hc : X ≫ a = b ≫ X) (hr : Y ≫ E.hom = K.hom ≫ X) :

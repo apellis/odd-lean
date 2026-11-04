@@ -13,7 +13,7 @@ No centrality assertion is made before the crossing slides are supplied.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir
 open CategoryTheory StringDiagrams OddMath.SKM
-universe u
+universe u uB vB wB
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   {D : Datum I X} (Sc : Scalars D k)
 
@@ -122,7 +122,7 @@ theorem qExpr_pair_eq_eval_product
     qExpr_eq_eval_of_compressed Sc c φ i r v b x₂ y hb hv, map_mul, End.mul_def]
 
 section ActualProbePair
-variable {B : Type u} [BicategoryStruct.{u, u} B]
+variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]

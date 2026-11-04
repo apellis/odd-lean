@@ -81,7 +81,7 @@ end QCompressedDots
 
 namespace OddMath.QuiverHecke.SwappedAssembly.ProbeReservoir
 open CategoryTheory StringDiagrams OddMath.SKM QCompressedDots Supercategory
-universe u
+universe u uB vB wB
 variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   {D : Datum I X} (Sc : Scalars D k)
 
@@ -132,7 +132,7 @@ theorem qExpr_pair_central
   exact hnorm
 
 section ProbePair
-variable {B : Type u} [BicategoryStruct.{u, u} B]
+variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]

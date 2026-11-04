@@ -10,9 +10,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidSame.SectorDots
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -20,7 +20,7 @@ variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
 
 namespace RepeatedOuterPost
 open ProbeReservoir
-private lemma reverse_conj {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma reverse_conj {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {V W : C} (K : V ≅ W) (x : End V) (y : End W) (ε : k)
     (hε : ε * ε = 1) (h : x ≫ K.hom = ε • (K.hom ≫ y)) :
     K.hom ≫ y ≫ K.inv = ε • x := by
@@ -141,7 +141,7 @@ lemma coefficientAlg_coeff (c : P.CrossCoeff Sc) :
         (c.a i (nextSector (true, j) false s) hi0 Z) ≫
       (comparison P i j s hj0 hi0 Z).inv := rfl
 
-private lemma alg_even {R T : Type u} [Ring R] [Ring T] [Algebra k R] [Algebra k T]
+private lemma alg_even {R T : Type wB} [Ring R] [Ring T] [Algebra k R] [Algebra k T]
     (φ : R →ₐ[k] T) (a x₀ z₀ : R) (x z : T)
     (hx : φ x₀ = x) (hz : φ z₀ = z) (ha : a * (z₀ - x₀) = 1) :
     (-1 : k) • φ a * (x - z) = 1 := by
@@ -150,7 +150,7 @@ private lemma alg_even {R T : Type u} [Ring R] [Ring T] [Algebra k R] [Algebra k
   rw [neg_one_smul, neg_mul, ← mul_neg, neg_sub]
   exact he
 
-private lemma alg_odd {R T : Type u} [Ring R] [Ring T] [Algebra k R] [Algebra k T]
+private lemma alg_odd {R T : Type wB} [Ring R] [Ring T] [Algebra k R] [Algebra k T]
     (φ : R →ₐ[k] T) (a x₀ z₀ : R) (x z : T) (ε : k) (hε : ε * ε = 1)
     (hx : φ x₀ = ε • x) (hz : φ z₀ = ε • z)
     (ha : a * (x₀ * x₀ - z₀ * z₀) = x₀ - z₀) :

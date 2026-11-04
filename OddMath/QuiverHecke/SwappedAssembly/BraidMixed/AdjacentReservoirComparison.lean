@@ -12,9 +12,9 @@ of Brundan–Ellis (1.9). The other entries of this block remain separate.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -92,7 +92,7 @@ end ReservoirEdges
 
 
 
-private lemma adjacent_left_sum {C : Type u} [Category C] [Preadditive C]
+private lemma adjacent_left_sum {C : Type*} [Category C] [Preadditive C]
     {A B V U W T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ U)
     (h : V ⟶ U) (j : B ⟶ W) (l : V ⟶ W) (r : U ⟶ T) (r' : W ⟶ T)
     (hh : h = 0) (hr : r' = 0) :
@@ -100,7 +100,7 @@ private lemma adjacent_left_sum {C : Type u} [Category C] [Preadditive C]
   rw [hh, hr]
   simp only [Limits.comp_zero, add_zero]
 
-private lemma adjacent_right_sum {C : Type u} [Category C] [Preadditive C]
+private lemma adjacent_right_sum {C : Type*} [Category C] [Preadditive C]
     {A B V U W T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ U)
     (h : V ⟶ U) (j : B ⟶ W) (l : V ⟶ W) (r : U ⟶ T) (r' : W ⟶ T)
     (hf : f = 0) (hh : h = 0) :

@@ -18,7 +18,7 @@ the reverse direction and diagonal corrections are separate obligations.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {D : Datum I X}
 namespace ProbeReservoir
 /-- The `i i j` endpoint supports exactly the two placements of the reservoir
@@ -135,7 +135,7 @@ theorem adjacentPost_jii_sum {M : Type*} [AddCommMonoid M] {ν : X} {i j : I} (h
   · exact False.elim (hp.2 h)
 
 variable {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -262,7 +262,7 @@ end ReservoirEdges
 
 
 
-private lemma reservoir_route {C : Type u} [Category C] [Preadditive C]
+private lemma reservoir_route {C : Type*} [Category C] [Preadditive C]
     {A B V T : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ B)
     (h : V ⟶ B) (j : B ⟶ V) (l : V ⟶ V) (r : B ⟶ T) (r' : V ⟶ T)
     (hf : f = 0) (hr : r' = 0) :

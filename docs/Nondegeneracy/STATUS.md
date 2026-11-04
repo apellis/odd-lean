@@ -9,7 +9,15 @@ and checkpoint narratives remain available in git history.
 
 **The Phase 1 odd/mixed nondegeneracy theorem is open in Lean.** The end-to-end written
 argument is proposed. Its remaining constructions can still reveal mathematical
-gaps; “written proof” does not mean routine transcription.
+gaps; “written proof” does not mean routine transcription. The canonical
+distinct left mate is now proved invertible at every weight, and the complete
+native distinct-colour permutation is scoped-checked with its constructed
+consumer. `SupportedAction.pointwiseObligations` and
+`pointwiseUpwardModuleAction` now construct the complete supported
+presentation and upward module action with no additional relation premise.
+Their strict producer and native consumer pass; full integration is pending. The full matrix coefficient
+observation and exact canonical source-unit normalization are also
+scoped-checked; vacuum/layer/bubble evaluation and bounded recovery remain.
 
 ## Scope
 
@@ -65,8 +73,8 @@ even whole-functor charts and closure of the full replete supported category
 under E/F and parity, including the two whole absent-boundary zeros.
 `ELVContentHomVacuum` places the literal selected tensor vacuum in this
 category using all-input support. Both producer/consumer pairs pass strict
-checks (64 and 16 owned audits). Formal-sector indexing and restriction of
-the chosen action remain to be attached.
+checks (64 and 16 owned audits). Formal-sector indexing and the chosen generator restrictions are constructed;
+the complete presentation is scoped-checked, while its final observation laws remain open.
 Central path classification and zero padding remain valid, but moving a
 whole native inverse to an absent corner requires this concrete support
 argument. No independence of roots or extra hypothesis on the final
@@ -98,7 +106,7 @@ verification is a separate gate. Read each declaration for its exact hypotheses.
 | Crossing column | A concrete decoder splits shortCross; its range is exactly the original append crossing span | [ELVCyclotomicCrossCoordinates](../../OddMath/QuiverHecke/CyclotomicAction/ELVCyclotomicCrossCoordinates.lean), `ShortCrossCoordinates.decode_comp_shortCross`, `shortCross_injective`, `crossingEquiv` |
 | Polynomial boundary | Actual corrected-row leading equivalences and division, with kernel/cokernel windows in both height ranges | [ELVBoundaryRowDivision](../../OddMath/QuiverHecke/CyclotomicAction/ELVBoundaryRowDivision.lean); these are not the categorical matrix inverse |
 | Induction and vacuum comparisons | Whole comparison coherence; independent triple dot/crossing comparisons; whole-word evaluation and combined Hom crossing | `ELVContentTensorCoherence`, `ELVVacuumWordPairing` and companion content comparison modules |
-| Swapped braid | All braid fields derived from inverse and coefficient inputs | `SwappedAssembly/BraidAssembly`, `crossBraidOfInputs`; concrete inputs remain to be supplied |
+| Swapped braid | All braid fields are derived from inverse and coefficient inputs; the universe-generalized spine and its actual ELV probe/reservoir application pass strict checking, with all 1,348 declarations across 98 braid modules audited | `SwappedAssembly/BraidAssembly`, `crossBraidOfInputs`; the native application is assembled in `SupportedAction` |
 | Probe kernel propagation | Ordinary kernel propagation and finite-dimensional unit corollaries; integrated after full CI in [#751](https://github.com/apellis/odd-lean/pull/751) | [ProbeDotPropagation](../../OddMath/QuiverHecke/CyclotomicAction/ProbeDotPropagation.lean) |
 | Actual probe corners | Literal unital End-to-corner map, exact same-colour relations, quadratic first-dot unit and second-dot injectivity; integrated after full CI in [#752](https://github.com/apellis/odd-lean/pull/752) | [ProbeWordCorner](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordCorner.lean) |
 | Rectangular probe cancellation | Actual entries and support, target-corner row cancellation and distinct-kernel criterion are full-CI verified in [#756](https://github.com/apellis/odd-lean/pull/756); actual slide/quadratic unit propagation and all mixed-word dot units are now verified in #807 | [ProbeWordEntries](../../OddMath/QuiverHecke/CyclotomicAction/ProbeWordEntries.lean) |
@@ -524,7 +532,8 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Chosen off-window reservoir coefficient ideal | `ELVReservoirBoundaryIdeal` puts both finite-slot boundary coefficients in their difference degree and their off-window actions in level one of the content coefficient ideal, including arbitrary surrounding maps and literal native inverse contractions. Producer and all-eight-API consumer pass strict checks; 19 declarations audited; full CI verified in #1035 | padded inverse attachment and residual equations |
 | Named padded reservoir inverse data | `Sigma.ReservoirWindowInverseData` retains chosen principal and finite window entries in all padded corners, supplies the inverse equations, and identifies occupied coordinates and absent cap/unit windows. Strict producer and nonzero collision consumer pass; 85 owned declarations audited; full CI verified in #1035 | attach projected closure and boundary coefficient-ideal membership |
 | Finite actual mixed bends and separated monomials | `ELVProbeBendEvaluation`, `Sigma.FiniteBendEvaluation` and `ELVProbeFiniteBends` derive both finite insertion series from the actual coefficient, probe unit and component bound. `Sigma.BendDotCoordinates`, `SKM.RouquierHomBendMonomials`, `Sigma.BendSeriesAlgebra` and `Sigma.BendWindowMonomials` identify dot charts, separated monomials and inverse-power signs. All producers and paired concrete consumers pass strict checks; full CI verified in #1035 | assemble exact separated sums and retain a common exponent over all input modules at a fixed output content |
-| Supported matrix presentation transport | `SupportedMatrixModules` and `SupportedPresentation` identify the literal supported matrix category, retain upward generators and transport/reflect every presentation relation. Paired nonzero affine two-odd checks pass; 21 and 30 declarations audited; full CI verified in #1035 | constructor still requires `SwappedObligations`, including central inversion and closed moments |
+| Supported matrix presentation transport | `SupportedMatrixModules` and `SupportedPresentation` identify the literal supported matrix category, retain upward generators and transport/reflect every presentation relation. Paired nonzero affine two-odd checks pass; 21 and 30 declarations audited; full CI verified in #1035 | the generic constructor requires `SwappedObligations`; the actual record is now supplied by `SupportedAction.pointwiseObligations` |
+| Complete supported upward action | `SupportedAction.pointwiseObligations` derives all seven presentation fields from the chosen factor data, central inverse and constructed distinct permutation on supported inputs. `pointwiseUpwardModuleAction` constructs `UpwardModuleAction D Sc μ` with no added mate, inversion, braid or action premise. Strict source and native mixed-parity tensor-family consumer pass, auditing 49 declarations across the action, inversion and supernaturality modules | Full integration; identify this action under the canonical vacuum, layer and bubble observations |
 | Supported tensor-vacuum path | `SupportedTensorVacuum` puts the literal selected tensor Hom in the supported sector and gives its even reservoir-word path chart. The affine two-odd consumer proves a two-letter path value is not zero, with independent odd coefficients; all 28 declarations audited; full CI verified in #1035 | contextual layer attachment and source bubble observations |
 | Selected tensor-vacuum context maps | `SupportedTensorContexts` gives the literal selected-vacuum comparison in both path contexts and its square for every unchanged middle factor map. Strict paired checks audit all 20 declarations and retain native raw dot/crossing Hom identifications and nonzero odd coefficient-class tests; full CI verified in #1035 | attach literal composed layer entries |
 | Whole-output mixed bend formulas | `ELVOutputDotBounds` preserves a fixed exponent uniformly over every input module at a fixed output content. `Sigma.SeparatedBendSeries`, `Sigma.BendWindowEquations`, `ELVProbeSeparatedBends` and `ELVProbeContentBends` give the exact separated signed cap/cup sums for the constructed coefficient, including a common length above any specified minimum. All strict pairs pass; 10, 93, 41, 25 and 50 owned declarations audited | Full integration; pad the exact formulas into the central matrix charts, with no whole-weight uniform bound |
@@ -535,15 +544,15 @@ successors have 30 source/consumer blobs and 404 owned-declaration audits.
 | Chosen central augmented inverse on supported inputs | `SupportedSectors.centralFactorMatrix_content_isIso` and `centralAugmentedMatrix_isIso` derive both actual central inverses at every supported input from all six signed-height cases and output-product assembly. All nine declarations audited; full CI verified in #1037 | No raw ambient `P.CentralInvertible` claim; final presentation and observations remain |
 | Supported leftward inverse entries | `PointwiseLeftwardInverse` and `SupportedPointwiseLeftwardInverse` construct the chosen entries and prove all ten central identities (42 and 14 audited declarations; full CI #1037). `SupportedAugmentedInverse` now supplies both augmented inverses and all ten identities at every outer sector, using `OffCentralAugmentedMatrix` and constructed transpose norms. Strict nonzero consumer passes; 14 all-sector and six offcentral declarations audited | Full CI #1039 for the all-sector extension; distinct-colour pure-probe inversion remains separate |
 | Chosen transpose norms and distinct mixed entries | `ELVProbeTransposeNorms` constructs the three norm-unit fields. `RouquierHomDistinctSourceUnits`, `Sigma.MixedEntrySourceUnits`, `ELVMixedSourcePolynomialUnits` and `ELVProbeSourcePolynomialUnits` invert the literal probe/reservoir distinct entry using output-component nilpotence and whole source-polynomial units. Strict paired checks pass; the source-unit packet audits 25 declarations | Full CI #1039; this does not prove the pure probe/probe entry or `LeftMateInvertible` |
-| Restricted chosen leftward naturality | `Supernatural.RestrictedLeftward`, `SupportedSupernaturality` and `SupportedInterchange` derive parity/naturality on retained input categories and the exact native interchange law. Strict nonzero odd-input consumers pass; seven, 28 and four declarations audited | Full CI #1039; concrete interchange still takes the distinct-colour permutation package |
+| Restricted chosen leftward naturality | `Supernatural.RestrictedLeftward`, `SupportedSupernaturality` and `SupportedInterchange` derive parity/naturality on retained input categories and the exact native interchange law. Strict nonzero odd-input consumers pass; seven, 28 and four declarations audited | Full CI #1039; `SupportedAction` now supplies the constructed distinct-colour permutation to this interchange law |
 | Chosen tensor families and row action | `SupportedTensorFamilies` constructs whole-sector source/vacuum families and a proved nonzero cyclic matrix. `SupportedTensorRows`, `SupportedMatrixLayers` and `SupportedTensorRowLayers` identify its whole Hom row and the actual layer action. Strict paired consumers audit 50, 25, five and 18 declarations, including a nonzero external weight | Full CI #1039; raw coefficient action and cyclic-unit observation are scoped-checked below; layer and bubble compatibility remain |
 | Original-word whole Hom entry | `SupportedTensorEntryPullback` constructs the canonical source and target word charts and the linear entry of the entire supported matrix in the original-word Hom, with whole-map injectivity. Strict nonzero cyclic consumer passes; 41 declarations audited | Full CI #1039; cyclic coordinates are scoped-checked below; coherence with every contextual generator chart remains |
 | Whole-weight normalized probe vacuum cap | `ELVProbeWeightLeftCap`, `ELVProbeMissingCapCoordinates`, `ELVProbeWeightLeftCounit` and `ELVProbeWeightVacuumCap` identify the chosen whole-weight left counit, with its exact Koszul normalization, with the prescribed native vacuum cap through an even source chart. Strict two-odd/nonzero-cap consumers audit 15, 20, seven and 40 declarations | Full CI #1039; pre-Hom cap transport and raw tensor moments are scoped-checked below; finite evaluated bend identification remains |
-| Rectangular distinct mixed-braid and boundary detection | Rectangular mate composition, mixed-braid correction and cap/cup detection are full-CI verified in #1041. `RouquierDistinctCapMonomials` evaluates every bent monomial at the cap boundary; `RouquierDistinctCapPrincipal`, `RouquierDistinctCapBoundary` and `RouquierDistinctConnectedCapBoundary` prove the actual negative- and zero-height principal values. `RouquierDistinctDottedUnit`, `RouquierDistinctCapColumnReduction` and `RouquierDistinctCapInverseChart` retain the prescribed finite-column and inverse-chart comparisons. `RouquierDistinctCapColumns` evaluates every finite column, `RouquierDistinctCapNonpositive.distinctCap_of_nonpos` proves the complete raw cap pitchfork at every nonpositive height, and `RouquierDistinctCapMiddle` proves the intermediate positive-height raw window with its exact sign. Strict pairs and owned audits pass | Full integration of the later tests; assemble the raw cap identities, canonical normalization and strict-positive cup range before deriving all-height left-mate invertibility |
-| Tensor coefficient actions and moments | `ELVVacuumTensorCoefficientMaps`, `SupportedTensorCoefficientAction`, `ELVTensorWordCoefficientAction` and `ELVTensorVacuumMomentMaps` are full-CI verified in #1041. `ELVTensorCoefficientNaturality`, `ELVTensorPathCoefficientCoherence` and `ELVTensorWordCoefficientChart` now prove raw coefficient naturality, path/word coherence and the global all-vector chart square. `SupportedTensorMatrixCoefficients` constructs the action on every whole-matrix index, with nonzero mixed-coefficient action. Strict pairs audit 13, 20, 23 and 23 declarations | Full integration of the later squares; attach matrix pullback equivariance and identify the chosen swapped cap with the raw moments/bubble normalization |
-| Global word and matrix observation | Append/pair charts, regular-probe quotient observation and canonical full-matrix observation are full-CI verified in #1041. `ELVTensorContextChartCoherence` and `SupportedTensorPathChartCoherence` now identify arbitrary context and actual original-weight path charts. `SupportedTensorObservationLinearity` and `SupportedTensorWordObservation` give a linear observation in the exact source/target quotient; additive path-chart/parity interfaces are checked. All strict pairs pass | Full integration of the later chart/linear wrappers; prove the vacuum-unit, contextual layer and bubble laws. No faithfulness of observation on all matrices is asserted |
-| Pre-Hom cap and restricted dot charts | Pre-Hom cap, successor, upper-loop and full vacuum dot charts are full-CI verified in #1041. `ELVProbeWeightPreDot` and `ELVProbeWeightNegativeCap` now identify the actual signed source dot, every inverse power and normalized negative pre-cap. `ELVReservoirPostUnitCoordinates` and `ELVReservoirPostUnitStandard` identify the actual post-unit with the canonical dotted append unit. Strict pairs audit 19, 21, six and nine declarations | Full integration of the later endpoint maps; compose them into the finite mixed bend and attach its coefficient moments |
-| Shifted pure-reservoir crossing | `Sigma.DistinctReservoirShift.postPairCrossing_eq` is full-CI verified in #1041. `Sigma.DistinctPureReservoirEntry.isIso_sigmaEntry_pure_reservoir` now proves the literal pure reservoir entry invertible from the original factor data and distinctness, with every coordinate transport discharged. Strict constructed mixed-data consumer audits all 25 declarations | Full integration of the pure reservoir entry; the pure probe entry still needs the canonical factor left-mate proof |
+| Rectangular distinct mixed-braid and boundary detection | The native mixed braid, complete nonpositive cap identity, signed intermediate cap identity, and strict positive cup identity are checked using the prescribed principal and finite-row tests. `RouquierDistinctCanonicalCapRange` and `RouquierDistinctCanonicalPositive` retain the exact normalized left adjunctions. `RouquierCanonicalDistinctLeftMate.canonicalLeftMateInvertible` proves `LeftMateInvertible T T.leftAdjoints` from the actual multicolour record at every weight, with no additional mate premise. All strict producers, constructed two-odd consumers and owned audits pass | Full integration of the all-height theorem; no factor left-mate proof obligation remains. A separate closed-delta scalar simplification is not needed for this invertibility result |
+| Tensor coefficient actions and moments | The full tensor and matrix coefficient actions and raw tensor moments are constructed. `SupportedTensorRowCoefficientAction` and `SupportedTensorMatrixRowCoefficients.tensorOriginalWordEntry_coefficient` intertwine the full matrix action with the exact original-weight path-Hom action. `SupportedTensorCoefficientChart` and `SupportedTensorCoefficientUnitObservation` prove its signed chart and quotient-coordinate formulas on every source vector, retaining mixed parity coefficients. All strict pairs and owned audits pass | Full integration of the new squares and `SupportedTensorMatrixCoefficientObservation.tensorMatrixCoefficient_observation`; identify the vacuum source class and the chosen swapped cap with raw moments and bubble normalization |
+| Global word and matrix observation | Append/pair, arbitrary outer-context and actual path charts are checked. `SupportedTensorObservationLinearity` and `SupportedTensorWordObservation` give the exact word-indexed linear observation. `SupportedTensorUnitObservation` now proves canonical source-unit cancellation and its exact previous inverse-map formula through a checked whole-module chart; its extended consumer and affected word-observation checks pass | Full integration; prove the vacuum-unit quotient value, contextual layer and bubble laws. No faithfulness of observation on all matrices is asserted |
+| Pre-Hom cap and restricted dot charts | Normalized probe cap, pre-Hom dot/inverse powers and canonical dotted reservoir unit endpoints are checked. `RouquierHomWeightCoordinates` transports the prescribed cap/cup words through both Hom weights. `Sigma.PaddedBendWordSeries.centralPaddedDx_word_series` expands the actual padded central map in those negative-cap/post-unit words using constructed finite bounds; strict pairs and audits pass | Identify each native evaluated vacuum monomial, then the finite bend and its prescribed inverse-row cap moments |
+| Distinct-colour permutation | `Sigma.DistinctReservoirShift` and `DistinctPureReservoirEntry` construct the pure reservoir entry. `Sigma.DistinctPureEntries` now has its canonical left-mate input discharged by the actual probe multicolour record in the native consumer. `ELVProbeSigmaPermutation.elvProbeSigmaPermutation` assembles all four entries with no pure-entry, mate, or permutation premise. Strict sources, both-colour-order consumers and all owned audits pass | Full integration; the constructed package is already attached to supported interchange and all presentation fields in `SupportedAction` |
 | Supported relation reduction | `SupportedWhiskerReduction` and `SupportedRelationLifting` reduce whole relations to local supported inputs using the checked path closure, with exact retained-input predicates. Strict paired consumer passes; 12 declarations audited | Attach the chosen local inverse and distinct-colour packages to obtain the presentation |
 | Vacuum inverse finite rows | `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract the finite rows of the chosen negative central inverse and prove its inverse chart square; height-zero principal invertibility included. Fourteen and 21 declarations audited; full CI #1037 | Attach the evaluated bend and normalized polynomial cap moments |
 | Chosen padded reservoir coefficient memberships | `Sigma.ReservoirWindowCoefficientIdeal` supplies J0 for every morphism and J1 for both principal signs, all off-window contractions and all-row Kronecker differences. Strict pair passes with 32 owned declarations, including each absent unit inverse row proved nonzero | Full integration; consumed by the checked supported central inverse |
@@ -798,35 +807,27 @@ and normalized content/weight transport are not asserted.
 
 ## Remaining critical chain
 
-1. Complete distinct-colour inversion. The actual mixed probe/reservoir
-   source polynomial units are full-CI verified in #1039. The pure probe/probe entry
-   still needs `LeftMateInvertible` for the canonical factor left adjunction.
-   `Cyclicity.rot_tau_left` is checked in the presented calculus, but its
-   transfer to the factor Rouquier family is not. The prescribed mixed braid, cap monomial evaluation and all nonpositive
-   principal tests are checked. The complete nonpositive raw cap identity and the intermediate
-   positive cap window are scoped-checked; complete canonical normalization and the
-   strict-positive cup tests in the cited argument
-   in `SwappedDistinctPreMate`; do not replace this with invertibility of
-   arbitrary partial mates. The pure reservoir entry is scoped-checked.
-2. Instantiate the supported presentation. All-sector same-colour inverses
-   and restricted leftward naturality/parity are full-CI verified in #1039;
-   interchange retains the distinct-colour permutation input. Generalize
-   the older braid declarations' universe binders to the chosen supercategory
-   and check their actual application. This changes no datum hypotheses.
-3. Attach the constructed whole-matrix raw coefficient action and word-indexed
-   linear observation to every contextual layer. Global word coefficient
-   squares and arbitrary context/path chart coherence are checked. Identify
-   the vacuum unit, then compose the checked inverse pre-dot/cap and reservoir
-   unit endpoints into the finite mixed bend, identify inverse rows with
-   polynomial caps, and prove the normalized bubble series. Package bounded corner evaluation/recovery, then apply the checked
-   observation, finite-colour, orientation and ground-ring reductions and
-   check the all-even specialization.
+1. Complete the canonical matrix observation laws for the constructed
+   `SupportedAction.pointwiseUpwardModuleAction`. Full matrix coefficients
+   already intertwine with the specified original-word entry and unchanged
+   quotient observation, including mixed parity; canonical source-unit
+   normalization is checked. Prove the vacuum source class and all contextual
+   layer laws.
+2. Compose the checked inverse pre-dot/cap, reservoir unit and weight-transport
+   endpoints into the actual finite vacuum bend. Identify the prescribed
+   inverse rows with polynomial caps and derive the normalized bubble series.
+   This compares the presentation's bubbles with the constructed coefficient
+   action; the latter alone is not that comparison.
+3. Package bounded corner evaluation/recovery, apply the checked observation,
+   finite-colour, orientation and ground-ring reductions, and check the
+   all-even specialization. The field nondegeneracy input remains open.
 
 The older `GlobalFactorNondegeneracy.globalProbeReservoir` uses polynomial
 parameters and conditional local inversions. The intended factor for this
 construction is `elvProbeReservoir`, with its full exterior-coefficient
-reservoir and untruncated evaluated OLD probe. Neither that factor nor the
-checked generic matrix comparisons alone proves the swapped action.
+reservoir and untruncated evaluated OLD probe. Its supported action is now
+constructed; the field nondegeneracy theorem still needs the observation and
+bubble comparisons and bounded recovery listed above.
 
 ## Verification
 
@@ -850,7 +851,10 @@ the full build, global axiom audit and all non-vacuity consumers at head
 `1965b6f294d98613eb0c024154d6ab4c3920b908`. The rectangular-cap and tensor-observation integration #1041 passed
 the full build, global axiom audit and every non-vacuity consumer at head
 `b7c34f99331eefb897199204e8d75ab06a896cbe` (run 41771332443), merged at
-`fe2fef3495250bc71ce4d0f01e7a3c5d4c5af63e`. Newer entries marked
+`fe2fef3495250bc71ce4d0f01e7a3c5d4c5af63e`. The cap-boundary, tensor coefficient and exact word-observation integration
+#1043 passed the full build, global axiom audit and every consumer at
+head `019a0ef4d12f4a8612f0e73e73b73f1a6196df3c` (run 41776984044),
+merged at `fe83891043af7ac2edf2de75c1b916243d8d2fe7`. Newer entries marked
 scoped-checked await their own full integration. Topic branches and proposed source are not established by submission
 alone. Finite Python models are evidence about their instances, not proofs of
 the general action or conjecture.

@@ -14,7 +14,7 @@ noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
 
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
   {D : Datum I X}
 
@@ -119,7 +119,7 @@ theorem qExpr_comp_sub_reverse (Sc : Scalars D k) (i j : I)
           (RepeatedOuterQCorrection.supported_inner_even Sc i j b c hs) (Sc.s i j b c)
 
 
-variable {B : Type u} [BicategoryStruct.{u, u} B]
+variable {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)] {Sc : Scalars D k}
@@ -175,7 +175,7 @@ theorem middleProbe_routes (hij : i ≠ j) :
     rw [P.reservoirPair_right_mixed ν j i s hv hw c L Z hij.symm,
       P.reservoirPair_left_same, P.reverseReservoirPair_right_mixed ν j i s hv hw c L Z hij.symm]
 
-private lemma middleProbe_conjugate {C : Type u} [Category C] [Preadditive C]
+private lemma middleProbe_conjugate {C : Type*} [Category C] [Preadditive C]
     {A B W : C} (J : A ≅ B) (K : B ≅ W) (S R : End A) (T : End W) (Q : End B)
     (h : S ≫ J.hom ≫ K.hom = J.hom ≫ K.hom ≫ T) :
     J.hom ≫ ((((J.inv ≫ R) ≫ S) ≫ J.hom) -

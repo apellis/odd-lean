@@ -8,9 +8,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterPreCoordinate
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -29,7 +29,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
 def probeReservoirCross := (P.step (true, i) true s trivial).map
   (P.postCrossNe i j (nextSector (true, i) true s) hi hj hj0 hi0 hs Y)
 
-private lemma scale_slide {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma scale_slide {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {A B : C} (x : End A) (y : End B) (f : A ⟶ B) (q ε : k)
     (h : x ≫ f = ε • (f ≫ y)) :
     (q • x) ≫ f = f ≫ ((q * ε) • y) := by
@@ -107,7 +107,7 @@ lemma probe_coeff_slide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
       (hx.trans (one_smul _ _).symm) (hz.trans (one_smul _ _).symm) ha hb
       (Units.map ψ.toMonoidHom (P.crossDenom h i (nextSector (true, j) false s) hi0 Y)) hd'
 
-private lemma rectangle_slide {C : Type u} [Category C]
+private lemma rectangle_slide {C : Type*} [Category C]
     {A M N B T : C} (J : A ≅ M) (K : M ≅ N) (L : B ≅ T)
     (F : A ⟶ B) (f : N ⟶ T) (a : End M) (b : End T)
     (hf : F ≫ L.hom = J.hom ≫ K.hom ≫ f)
@@ -144,7 +144,7 @@ lemma coeff_slide (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (reservoirCross P i j s hi hj hj0 hi0 Y hs0)
     (c.a i s hi (rest P i j s hj (hs ▸ Y)))
     ((P.step (true, j) false s hj0).map (c.a i (nextSector (true, j) false s) hi0 Y)) hf he
-private lemma rectangle_slide_back {C : Type u} [Category C]
+private lemma rectangle_slide_back {C : Type*} [Category C]
     {A M N B T : C} (J : A ≅ M) (K : M ≅ N) (L : B ≅ T)
     (F : B ⟶ A) (f : T ⟶ N) (a : End M) (b : End T)
     (hf : F ≫ J.hom ≫ K.hom = L.hom ≫ f)

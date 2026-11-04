@@ -9,9 +9,9 @@ Pi Ri Rj to Rj Pi Ri. This is not a global CrossBraid dispatcher. -/
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -46,7 +46,7 @@ lemma left_route (ν : X) (G : P.Generators) (hij : i ≠ j) :
   erw [hz, hf]
   simp only [Limits.comp_zero, zero_add]
 
-private lemma route_right {C : Type u} [Category C] [Preadditive C]
+private lemma route_right {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hf : f₀ = 0) (hg : g₁₀ = 0) :
@@ -90,7 +90,7 @@ lemma reservoir_edge (ν : X) (c : P.CrossCoeff Sc) (L : P.LeftwardData) (hij : 
       (RepeatedOuterPre.probeReservoirCross P i j s hi hj hj0 hi0 hs Y) := by
   exact P.distinctReservoir_right ν i i j s hi hj hj0 hi0 hs c L Y hij
 
-private lemma negate_slide {C : Type u} [Category C] [Preadditive C]
+private lemma negate_slide {C : Type*} [Category C] [Preadditive C]
     {A B T : C} (a : A ⟶ A) (f : A ⟶ B) (J : B ⟶ T) (b : T ⟶ T)
     (h : a ≫ f ≫ J = f ≫ J ≫ b) : (-a) ≫ f ≫ J = f ≫ J ≫ (-b) := by
   simpa only [Preadditive.neg_comp, Preadditive.comp_neg] using congrArg Neg.neg h

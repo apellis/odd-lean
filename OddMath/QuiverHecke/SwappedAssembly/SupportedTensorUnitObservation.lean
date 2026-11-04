@@ -14,6 +14,34 @@ open CyclotomicAction ELVOld
 universe u
 local instance tensorUnitObservationHomPi {k : Type u} [CommRing k] (A C : PiSCat.{u,u,u + 1} k) :
     PiSupercategory k (A ⟶ C) := PiTwoSupercategory.homPiLeft A C
+private structure ModuleChart {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    (M N : Superfunctor k C (SVec k)) (forward : M ⟶ N) (backward : N ⟶ M) where
+  iso : M ≅ N
+  hom_eq : iso.hom = forward
+  inv_eq : iso.inv = backward
+
+private theorem moduleChart_comp_apply {k : Type u} [CommRing k] {C : Type u} [Category.{u} C]
+    [Preadditive C] [Linear k C] [Supercategory k C]
+    {M N P : Superfunctor k C (SVec k)} (f : M ⟶ N) (g : N ⟶ P) {backward : P ⟶ M}
+    (c : ModuleChart M P (f ≫ g) backward) (w : C) (z : M.obj w) :
+    moduleIsoLinearEquiv c.iso w z = g.total w (f.total w z) := by
+  change c.iso.hom.total w z = _
+  rw [c.hom_eq,Superfunctor.comp_total]
+  rfl
+
+private def tensorValueIso {k : Type u} [CommRing k]
+    (A B : PiSCat.{u,u,u + 1} k) {F G : A ⟶ B} (e : F ≅ G) (R : A) :
+    F.obj R ≅ G.obj R where
+  hom := e.hom.total R
+  inv := e.inv.total R
+  hom_inv_id := by
+    rw [← Superfunctor.comp_total,e.hom_inv_id]
+    exact SuperNatTrans.id_total F.toFunctor R
+  inv_hom_id := by
+    rw [← Superfunctor.comp_total,e.inv_hom_id]
+    exact SuperNatTrans.id_total G.toFunctor R
+
 private def chartAtOriginalWeight {k J I : Type u} [CommRing k]
     (A : PiSCat.{u,u,u + 1} k) (C : J → PiSCat.{u,u,u + 1} k)
     (W : (x : J) → List I → C x) {x y : J} (h : x = y)
@@ -95,6 +123,11 @@ theorem tensorSourceLabels_colors (s : List I) :
   | cons i s ih =>
     simpa only [tensorSourceLabels, upWord, List.map_cons, wd_cons] using congrArg (List.cons i) ih
 
+private def wordVectorEquiv (ν ρ : List I) :
+    (PowerWordWeight.wordAt D Tw cutoff L ν (ρ : Multiset I)).obj
+      (PowerWordContentCyclicity.wordObject D Tw cutoff L ρ (ρ : Multiset I) rfl) ≃ₗ[k]
+    (powerWordModule D Tw cutoff L ν).obj (OldCategory.mk ρ) := LinearEquiv.refl k _
+
 variable (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR) (s : List I)
 local notation "cS" => tensorSourceContent D ΛP ΛR s
@@ -117,18 +150,118 @@ def tensorSourcePathValueChart :
         (ReservoirWord.weight D ΛR cS))
           (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))
 
-/-- The cyclic source unit in the unchanged original-input source functor. -/
-def tensorOriginalSourceUnit :
-    (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀)
-      (tensorSourceWordBlock D ΛP ΛR s)).obj
-        (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) :=
-  (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
-    (tensorSourceWordBlock D ΛP ΛR s)).total
-      (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
-      ((moduleIsoLinearEquiv (Pi.isoApp (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
+private opaque tensorSourceModuleChart :
+    ModuleChart
+      (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀)
         (tensorSourceWordBlock D ΛP ΛR s))
-        (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)).symm
-          (PowerWordYoneda.unitVector D Tw cutoff L s.reverse))
+      ((PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS) s.reverse)
+        (tensorSourceWordBlock D ΛP ΛR s))
+      ((((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀)
+        (tensorSourceWordBlock D ΛP ΛR s)) ≫
+        (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom
+          (tensorSourceWordBlock D ΛP ΛR s))
+      ((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).inv
+        (tensorSourceWordBlock D ΛP ΛR s) ≫
+        (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
+          (tensorSourceWordBlock D ΛP ΛR s))) :=
+  ⟨Pi.isoApp (tensorValueIso (probeOldWeightSpace D Tw m ΛP (-ΛP))
+    (elvWeightSpace D Tw cutoff N ΛR (ReservoirWord.weight D ΛR cS))
+    (tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s) R₀)
+      (tensorSourceWordBlock D ΛP ΛR s) ≪≫
+    Pi.isoApp (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
+      (tensorSourceWordBlock D ΛP ΛR s), rfl, rfl⟩
+
+/-- The original-weight source module isomorphism through the whole
+source chart and the normalized global word chart. -/
+def tensorOriginalSourceModuleIso :=
+  (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).iso
+
+private theorem tensorSourceModuleIso_hom :
+    (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).hom =
+      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀)
+        (tensorSourceWordBlock D ΛP ΛR s)) ≫
+        (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom
+          (tensorSourceWordBlock D ΛP ΛR s) :=
+  (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).hom_eq
+
+private theorem tensorSourceModuleIso_inv :
+    (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).inv =
+      (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).inv
+        (tensorSourceWordBlock D ΛP ΛR s) ≫
+        (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
+          (tensorSourceWordBlock D ΛP ΛR s)) :=
+  (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s).inv_eq
+
+/-- The old-word unit in the exact original-weight source-word value space. -/
+def tensorSourceWordUnit :
+    ((PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS) s.reverse)
+      (tensorSourceWordBlock D ΛP ΛR s)).obj
+      (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) :=
+  (wordVectorEquiv D Sc cutoff L s.reverse s.reverse).symm
+    (PowerWordYoneda.unitVector D Tw cutoff L s.reverse)
+
+theorem tensorSourceWordUnit_formula :
+    tensorSourceWordUnit D Sc cutoff ΛP ΛR L s =
+      PowerWordYoneda.unitVector D Tw cutoff L s.reverse := rfl
+
+attribute [local irreducible] tensorOriginalSourceModuleIso
+
+/-- The prescribed source unit, pulled back through the entire source
+module chart. -/
+def tensorOriginalSourceUnit :=
+  (moduleIsoLinearEquiv (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s)
+    (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)).symm
+    (tensorSourceWordUnit D Sc cutoff ΛP ΛR L s)
+
+/-- The whole source module chart sends the prescribed source unit to
+the source-word unit in its exact value space. -/
+theorem tensorOriginalSourceUnit_value :
+    moduleIsoLinearEquiv (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s)
+      (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
+      (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s) =
+      tensorSourceWordUnit D Sc cutoff ΛP ΛR L s :=
+  (moduleIsoLinearEquiv (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s)
+    (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)).apply_symm_apply _
+
+/-- The module chart evaluates every vector by the literal whole source
+chart followed by the normalized global word chart. -/
+theorem tensorOriginalSourceModuleIso_apply
+    (z : (((tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s).obj R₀)
+      (tensorSourceWordBlock D ΛP ΛR s)).obj
+        (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)) :
+    moduleIsoLinearEquiv (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s)
+      (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) z =
+      (((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom
+        (tensorSourceWordBlock D ΛP ΛR s)).total
+          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl))
+        ((((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀)
+          (tensorSourceWordBlock D ΛP ΛR s)).total
+            (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) z) := by
+  unfold tensorOriginalSourceModuleIso
+  exact moduleChart_comp_apply
+    (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀)
+      (tensorSourceWordBlock D ΛP ΛR s))
+    ((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom
+      (tensorSourceWordBlock D ΛP ΛR s))
+    (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s)
+    (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) z
+
+/-- The source unit agrees exactly with the prescribed inverse whole
+source and inverse global word-chart formula. -/
+theorem tensorOriginalSourceUnit_formula :
+    tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s =
+      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total R₀)
+        (tensorSourceWordBlock D ΛP ΛR s)).total
+          (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)
+          ((moduleIsoLinearEquiv (Pi.isoApp (tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s)
+            (tensorSourceWordBlock D ΛP ΛR s))
+            (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl)).symm
+              (PowerWordYoneda.unitVector D Tw cutoff L s.reverse)) := by
+  unfold tensorOriginalSourceUnit
+  change (tensorOriginalSourceModuleIso D Sc m cutoff ΛP ΛR L hP hR s).inv.total _
+    (tensorSourceWordUnit D Sc cutoff ΛP ΛR L s) = _
+  rw [tensorSourceModuleIso_inv,Superfunctor.comp_total,tensorSourceWordUnit_formula]
+  rfl
 
 /-- The actual supported tensor matrix observed through its canonical
 original-input row and global path chart, on its canonical cyclic source unit. -/
