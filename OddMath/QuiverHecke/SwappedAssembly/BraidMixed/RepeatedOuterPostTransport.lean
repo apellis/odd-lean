@@ -9,9 +9,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.SignedCoefficientTransport
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -53,7 +53,7 @@ lemma targetAlg_post :
   rw [koszulSign_smul_eq_zsign (k := k), SKM.zmod2_mul_self] at h
   exact h
 
-private lemma cancel_slide {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma cancel_slide {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {A B : C} (x : End A) (y : End B) (f : A ⟶ B) (q ε : k)
     (hε : ε * ε = 1) (h : x ≫ f = ε • (f ≫ y)) :
     ((q * ε) • x) ≫ f = f ≫ (q • y) := by

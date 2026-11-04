@@ -46,8 +46,9 @@ one-odd reservoir path using the half-turn coefficient coordinates.
 Its two colours have heights `2` and `-2`, so both finite windows are
 nonempty. The selected data satisfy all five identities in each sign,
 and their cup and cap families are each proved not identically zero.
-The consumer also checks the off-weight normalization and the local
-unwhiskered relation conversion under its stated local matrix inputs.
+The consumer also checks the off-weight normalization and derives all
+ten local unwhiskered presentation identities at every outer sector of
+this nonzero supported input, using `SupportedAugmentedInverse`.
 It audits all 42 declarations owned by `PointwiseLeftwardInverse` and
-all 14 owned by `SupportedPointwiseLeftwardInverse` against the standard
-axiom allowlist.
+all 14 owned by each of `SupportedPointwiseLeftwardInverse` and
+`SupportedAugmentedInverse` against the standard axiom allowlist.

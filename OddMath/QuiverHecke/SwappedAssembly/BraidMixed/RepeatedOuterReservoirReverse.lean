@@ -8,9 +8,9 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.AdjacentReservoirPreCoeffi
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -29,7 +29,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
 private lemma coefficient_alg_commute (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (h : P.CrossDenominatorUnits) (t : Sector I) (hv : StepValid (true, i) false t)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false t)))
-    {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
+    {C : Type*} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i t hv V) →ₐ[k] End Y) (f : End Y)
     (hx : φ (P.rpPreDot i t hv V) ≫ f = f ≫ φ (P.rpPreDot i t hv V))
     (hy : φ (P.rpPostDot i t hv V) ≫ f = f ≫ φ (P.rpPostDot i t hv V)) :
@@ -78,7 +78,7 @@ lemma mixedQ_coefficient_comm (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     simp only [mul_zero, Supercategory.sign_zero, one_smul] at he
     exact he.symm
 
-private lemma weighted_square {C : Type u} [Category C] [Preadditive C]
+private lemma weighted_square {C : Type*} [Category C] [Preadditive C]
     {A M N T U V : C} (E : A ≅ M) (J : M ≅ N) (H : T ≅ U) (K : U ≅ V)
     (F : A ⟶ T) (f : N ⟶ V) (a Q₀ : M ⟶ M) (b : V ⟶ V) (Q : T ⟶ T)
     (hr : F ≫ H.hom ≫ K.hom = E.hom ≫ J.hom ≫ f)
@@ -138,7 +138,7 @@ lemma weighted_entry
       (P.postCrossNe_qExpr_inner i i j s hi hj hj0 hi0 hij hs Y)
   · exact mixedQ_coefficient_comm P i j s hi hj c hc h (hs ▸ Y)
 
-private lemma route {C : Type u} [Category C] [Preadditive C]
+private lemma route {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hf : f₁ = 0) (hr : r₀ = 0) :

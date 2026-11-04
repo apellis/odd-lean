@@ -30,9 +30,6 @@ The complete inventory of preserved topic variants is in
 
 | Argument | Preserved source tree | Scope at snapshot |
 | --- | --- | --- |
-| Chosen residual coefficients and separated bend assembly | [6a4a989b42](https://github.com/apellis/odd-lean/commit/6a4a989b4269fd2802bf1a9422230ed2b68f368c) (complete source tree; sole parent is full-CI integration #1032) | Final chosen closure-degree transport, closure-ideal attachment, reservoir boundary degree, absent unit-window comparison, named padded inverse entries and separated bend/chart arguments remain incompletely checked. The tree also retains separately scoped-checked coefficient, support, finite-series and presentation additions awaiting their own full integration. Restore topical sources only. |
-| Chosen closure degree and complete probe presentation | [a43c488268](https://github.com/apellis/odd-lean/commit/a43c4882682c9adc9d8d6030879ebd8ebc444108) (complete source tree) | Preserves the proposed all-output chosen coefficient degree, weighted-content kernel evaluation and denominator attachment, together with separately scoped-checked corrected braid and inverse-coordinate helpers. The complete closure dependency chain and factor integration remain unchecked in this snapshot. Restore topical files only. |
-| Supported presentation, braids and represented degree | [8bb3b36820](https://github.com/apellis/odd-lean/commit/8bb3b3682097d0d065d1c95d60979f02c74a680d) (complete source tree) | Proposed general/corrected chosen braid fields, full probe package and coefficient fields, formal-sector support, literal two-context layer cells and represented integer grading retain incomplete checks. Separately scoped-checked local family, exact-content closure/vacuum and complete central matrix comparisons retain their own integration boundary. Restore topical files only. |
 | Whole-weight, central matrix and observation synthesis | [a15c1058b0](https://github.com/apellis/odd-lean/commit/a15c1058b0bdb96069baa88e54ca9170e0510323) (complete source tree) | Proposed global local/principal/absent coordinates, triple braid paths/dots, augmented inverse evaluation, central path indices and actual coefficient-component bounds remain incompletely checked. Separately scoped-checked selected inverses, matrix bends and tensor-layer classes retain their full integration boundary. Restore topical files only. |
 | Chosen local, mixed matrix and literal layer attachments | [1cc3b498df](https://github.com/apellis/odd-lean/commit/1cc3b498df47550c84691cfbe58896cc6d0aecc0) (complete source tree) | Canonical mate/upper-loop, evaluated missing-boundary, stored corrected-braid, supported mixed-coordinate, literal layer-matrix and probe-to-reservoir bend drafts retain incomplete checks. Separately scoped-checked stored inverse, nested braid, product/zero-boundary, principal reservoir and literal source-layer results retain their own full integration boundary. Restore topical files only. |
 | Canonical local and central matrix attachments | [6b3aef99df](https://github.com/apellis/odd-lean/commit/6b3aef99dfb2669bf55d73bf5ea6531fb39a4314) (complete source tree) | Reindexed mate/crossing/dotted-row, pair/triple polynomial, outer-context Hom-entry and pure principal sigma drafts are not fully integrated. Separately scoped-checked distinct relations, local inverse transports and reservoir cap/unit rows are included but retain their own integration boundary. Restore topical files only. |
@@ -2019,7 +2016,7 @@ object (7). `CentralInverse.SeparatedClosures` derives all three mixed
 closed-error memberships by finite sums (9), with a nonzero square-zero
 coefficient-ideal consumer. All these successor pairs await full integration.
 
-The chosen central inverse is now scoped-checked. `ReservoirWindowCoefficientIdeal`
+The chosen central inverse is now full-CI verified in #1037. `ReservoirWindowCoefficientIdeal`
 attaches J0/J1, both principal signs and every finite contraction to the named
 padded inverse (32 owned declarations). `ResidualComparisonNegative` and
 `SignedResidualWindows` cover all six signed-height cases (5 and 22).
@@ -2028,7 +2025,8 @@ padded inverse (32 owned declarations). `ResidualComparisonNegative` and
 supported input, including both height-zero orientations. Their strict
 nonzero two-odd collision consumer audits all nine declarations. No inverse,
 series, closure or nilpotence premise remains beyond the standing data,
-symmetrizer and homogeneous parameters. Full integration is still separate.
+symmetrizer and homogeneous parameters. The later all-sector extension below
+retains its separate scoped-check boundary.
 See [CentralMatrixAttachment](CentralMatrixAttachment.md).
 
 `SupportedTensorCrossEntries` now gives both literal crossing matrices
@@ -2039,31 +2037,37 @@ package the whole-sector observation.
 
 Next discharge the following dependencies in order.
 
-1. `PointwiseLeftwardInverse` and `SupportedPointwiseLeftwardInverse` now
-   construct the objectwise leftward entries, with zero elsewhere, and prove
-   all ten central inverse identities at every supported input (42 and 14
-   audited declarations, paired nonzero positive/negative-height consumer).
-   Attach the offcentral swapping matrices using actual transpose norms;
-   existing contentwise norm theorems avoid global weight nilpotence.
-2. `SupportedWhiskerReduction` and `SupportedRelationLifting` now lift local
-   identities along supported paths (12 audited declarations, strict paired
-   consumer). Derive the presentation obligations on the chosen supported
-   Gs/Ys families using the local inverses and distinct-colour permutations. `LeftwardData` stores
-   objectwise generator images, so no global ambient `P.CentralInvertible`
-   is needed merely to define it. Naturality/parity/interchange must still
-   be proved where the relation lifting uses them.
-3. Construct the whole-sector vacuum/source families and raw coefficient
-   action. Join the literal quotient-class squares to the matrix observation.
-   `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` now extract
-   the selected inverse's finite vacuum rows and prove its inverse chart square
-   (14 and 21 audited declarations, strict generic and occupied collision
-   consumers). Identify the whole-weight probe counit with the local vacuum
-   counit, compare the inverse with the evaluated polynomial cap, then attach
-   the all-vector moment maps and prescribed bubble normalization.
-   `SwappedVacuum.NegativeCapInverse` now proves generic last-row uniqueness
-   and polynomial identification (six audited declarations); it does not
-   replace that actual vacuum comparison.
-4. Complete bounded corner recovery and apply the existing observation,
+1. `SupportedAugmentedInverse` now constructs both augmented inverses and
+   all ten same-colour identities at every supported input and outer sector,
+   using `ELVProbeTransposeNorms` and `OffCentralAugmentedMatrix`. Its strict
+   nonzero consumer audits 14 declarations. `SupportedSupernaturality` and
+   `SupportedInterchange` supply restricted parity/naturality and interchange
+   (28 and four audited declarations); interchange retains the global
+   distinct-colour permutation input. No raw ambient inverse is asserted.
+2. Complete that distinct-colour package. `ELVProbeSourcePolynomialUnits`
+   proves the literal mixed entry invertible using contentwise source units
+   (25 declarations audited across the source-unit packet). The pure probe
+   entry still needs `LeftMateInvertible` for the canonical left adjunction.
+   The source `Cyclicity.rot_tau_left` theorem does not itself evaluate in the
+   factor Rouquier family: port its cap-pitchfork/rotation argument, as recorded
+   in `SwappedDistinctPreMate`, then attach the literal pure entries. The
+   older braid spine also requires universe-generalized declarations for the
+   actual supercategory; no mathematical hypotheses are being changed.
+3. `SupportedTensorFamilies`, `SupportedTensorRows`, `SupportedMatrixLayers`
+   and `SupportedTensorRowLayers` now construct the whole-sector nonzero
+   tensor matrix and prove its occupied row and literal layer-action formulas
+   (50, 25, five and 18 declarations audited). Complete its raw coefficient
+   action and coherent all-word coordinates. Local dot/crossing quotient-class
+   squares alone do not yet provide a single bounded observation.
+4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
+   the chosen finite vacuum rows (full CI #1037). The four modules described
+   in `ProbeWeightLeftCap` now identify the normalized whole-weight probe
+   counit with the native vacuum cap through an even source chart (strict
+   nonzero paired checks). Insert this chart into the actual pre-Hom counit,
+   then compare finite bend series and attach every polynomial cap moment and
+   prescribed bubble normalization. Generic last-row uniqueness in
+   `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
+5. Complete bounded corner recovery and apply the existing observation,
    finite-colour, orientation and ground-ring reductions, followed by the
    checked all-even specialization.
 
@@ -2134,7 +2138,6 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
-| Supported action and vacuum normalization | [490680bf20](https://github.com/apellis/odd-lean/commit/490680bf20173f67e994d0a9c26b3656e6188e06) (complete source tree) | Proposed all-sector inverse, restricted relation, source-polynomial unit, tensor-family and moment-map attachments. The snapshot is not asserted to build; restore topical files only and consult current STATUS for subsequently verified portions. |
 | Weighted append tensor/dot/adjunction comparison | `97e4256b` | Historical proposed source, superseded by the full-CI verified tensor/unit and signed-dot formulas (#963) and full-CI verified `ELVWeightedAppendAdjunction` restriction/counit formulas (#972). Double-append crossing, inverse and normalized content/weight transport remain open |
 | Scalar probe append tensor/dot comparison | `f145165c357d43b8241de20241cc6e911051f13e` | Historical proposed source; `ELVProbeAppendTensors` now has full-CI verified literal tensor/unit, parity and signed-dot comparison (#963). Chosen adjunction/inverse-matrix transport remains open |
 

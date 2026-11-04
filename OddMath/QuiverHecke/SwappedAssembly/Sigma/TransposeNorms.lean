@@ -58,6 +58,7 @@ theorem mixedPostSourcePostDot_isNilpotent {p : ZMod 2} {y : End E'}
   obtain ⟨n, hn⟩ := isNilpotent_rightTranspose_of_mem A hy hn
   refine ⟨n, ?_⟩
   rw [← rouquierPower_eq_pow] at hn
+  unfold mixedPostSourcePostDot
   rw [whiskerLeft_rouquierPower (k := k), rouquierPower_eq_pow,
     whiskerLeft_rouquierPower (k := k), hn]
   rw [whiskerLeft_zero' (k := k), whiskerLeft_zero' (k := k)]

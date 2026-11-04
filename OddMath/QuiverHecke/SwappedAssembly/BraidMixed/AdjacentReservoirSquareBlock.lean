@@ -10,9 +10,9 @@ of the Brundan–Ellis braid relation. -/
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -28,7 +28,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
     nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s)))
   (Y : P.H (nextSector (true, i) false (nextSector (true, j) false (nextSector (true, i) true s))))
 
-private lemma route_right {C : Type u} [Category C] [Preadditive C]
+private lemma route_right {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hf : f₁ = 0) (hg : g₀₁ = 0) :
@@ -38,7 +38,7 @@ private lemma route_right {C : Type u} [Category C] [Preadditive C]
   simp only [Limits.comp_zero, Limits.zero_comp, add_zero]
 
 
-private lemma square_route {C : Type u} [Category C] [Preadditive C]
+private lemma square_route {C : Type*} [Category C] [Preadditive C]
     {A B₀ B₁ C₀ C₁ T : C} (f₀ : A ⟶ B₀) (f₁ : A ⟶ B₁)
     (g₀₀ : B₀ ⟶ C₀) (g₁₀ : B₁ ⟶ C₀) (g₀₁ : B₀ ⟶ C₁) (g₁₁ : B₁ ⟶ C₁)
     (r₀ : C₀ ⟶ T) (r₁ : C₁ ⟶ T) (hr : r₀ = 0) (hg : g₀₁ = 0) :
@@ -85,7 +85,7 @@ lemma square_right_route (ν : X) (G : P.Generators) (hij : i ≠ j) :
   erw [adjacentPost_iji_sum hij hi hj hj0 hi0 hs rfl, adjacentPost_iji_sum hij hi hj hj0 hi0 hs rfl]
   exact route_right _ _ _ _ _ _ _ _ hf hg
 
-private lemma square {C : Type u} [Category C] [Preadditive C]
+private lemma square {C : Type*} [Category C] [Preadditive C]
     {A M N T U V : C} (E : A ≅ M) (J : M ≅ N) (H : T ≅ U) (K : U ≅ V)
     (F : A ⟶ T) (f : N ⟶ V) (a : M ⟶ M) (b : V ⟶ V)
     (hr : F ≫ H.hom ≫ K.hom = E.hom ≫ J.hom ≫ f)

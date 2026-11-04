@@ -18,7 +18,7 @@ No dot transport or braid is a hypothesis of any theorem below.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {D : Datum I X}
 namespace ProbeReservoir
 
@@ -126,7 +126,7 @@ theorem adjacentMixed_jii_sum {M : Type*} [AddCommMonoid M] {ν : X} {i j : I} (
   · exact False.elim (hp.2 h)
 
 
-variable {k : Type u} [CommRing k] {B : Type u} [BicategoryStruct.{u, u} B]
+variable {k : Type u} [CommRing k] {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)] {Sc : Scalars D k}

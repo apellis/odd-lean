@@ -16,15 +16,15 @@ This supplies one diagonal component, not yet the full CrossBraid producer.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 namespace ProbeReservoir
-private lemma route {C : Type u} [Category C] [Preadditive C]
+private lemma route {C : Type*} [Category C] [Preadditive C]
     {A B V : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ B)
     (h : V ⟶ B) (j : B ⟶ V) (l : V ⟶ V) (r : B ⟶ A) (r' : V ⟶ A)
     (hf : f = 0) (hr : r = 0) :
@@ -57,7 +57,7 @@ lemma separatedOuter_braidRight_route (G : P.Generators) (hij : i ≠ j) :
   erw [adjacentMixed_iij_sum hij hR rfl rfl, adjacentMixed_iij_sum hij hR rfl rfl]
   exact route _ _ _ _ _ _ _ _ hf hr
 
-private lemma comparison_conj {C : Type u} [Category C] [Preadditive C]
+private lemma comparison_conj {C : Type*} [Category C] [Preadditive C]
     {A B V : C} (K : A ≅ B) (H : B ≅ V) (a : End V) (q : End A) :
     (K.hom ≫ (-(H.hom ≫ a ≫ H.inv))) ≫ (K.inv ≫ q) =
       -((K.hom ≫ H.hom ≫ a ≫ H.inv ≫ K.inv) ≫ q) := by
@@ -114,12 +114,12 @@ private lemma map_neg_triple {C C' : Type u} [Category C] [Preadditive C]
     F.map (-(f ≫ g ≫ h)) = -(F.map f ≫ F.map g ≫ F.map h) := by
   simp only [Functor.map_neg, Functor.map_comp]
 
-private lemma neg_assoc {C : Type u} [Category C] [Preadditive C]
+private lemma neg_assoc {C : Type*} [Category C] [Preadditive C]
     {A B V W : C} (f : A ⟶ B) (g : B ⟶ V) (h : V ⟶ W) :
     f ≫ g ≫ (-h) = -((f ≫ g) ≫ h) := by
   simp only [Preadditive.comp_neg, Category.assoc]
 
-private lemma neg_slide {C : Type u} [Category C] [Preadditive C]
+private lemma neg_slide {C : Type*} [Category C] [Preadditive C]
     {A B : C} (a : End A) (b : End B) (f : A ⟶ B)
     (h : a ≫ f = f ≫ b) : (-a) ≫ f = f ≫ (-b) := by
   rw [Preadditive.neg_comp, Preadditive.comp_neg, h]
@@ -272,7 +272,7 @@ lemma separatedOuter_braidRight_qExpr (c : P.CrossCoeff Sc) (L : P.LeftwardData)
   exact (P.separatedOuter_braidRight ν i j s hR Z c L hij).trans
     (congrArg (fun q => -(P.repeatedOuterMixedSeparatedCoeff i j s hR Z c ≫ q))
       (P.separatedOuter_innerQ i j s hR Z))
-private lemma signed_reverse {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma signed_reverse {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {V : C} (x y : End V) (ε : k) (hε : ε * ε = 1)
     (h : x ≫ y = ε • (y ≫ x)) : y ≫ x = ε • (x ≫ y) := by
   rw [h, smul_smul, hε, one_smul]
@@ -321,7 +321,7 @@ lemma separatedOuter_z_innerQ :
     (fun n hn => by
       simpa only [mul_comm (D.parity i)] using
         (zsign_pow_of_mul_eq_zero (k := k) (D.parity j) (D.parity i) n hn))
-private lemma smul_commuting {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma smul_commuting {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {V : C} (x q : End V) (scalar : k) (h : x ≫ q = q ≫ x) :
     (scalar • x) ≫ q = q ≫ (scalar • x) := by
   rw [Linear.smul_comp, Linear.comp_smul, h]
@@ -329,7 +329,7 @@ private lemma smul_commuting {C : Type u} [Category C] [Preadditive C] [Linear k
 private lemma mapped_coefficient_commuting (c : P.CrossCoeff Sc) (hc : c.IsInverse)
     (h : P.CrossDenominatorUnits)
     (V : P.H (nextSector (true, i) true (nextSector (true, i) false s)))
-    {C : Type u} [Category C] [Preadditive C] [Linear k C] {Y : C}
+    {C : Type*} [Category C] [Preadditive C] [Linear k C] {Y : C}
     (φ : End (P.rpObj i i s hR V) →ₐ[k] End Y) (Q : End Y)
     (hx : φ (P.rpPreDot i s hR V) ≫ Q = Q ≫ φ (P.rpPreDot i s hR V))
     (hz : φ (P.rpPostDot i s hR V) ≫ Q = Q ≫ φ (P.rpPostDot i s hR V)) :
@@ -468,7 +468,7 @@ lemma separatedOuter_dotZ (c : P.CrossCoeff Sc) (L : P.LeftwardData) :
     ((P.step (true, j) true _ trivial).map f))
     (P.dotImage_reservoir i ν (nextSector (true, j) true (nextSector (true, i) true s))
       hR hR Z))
-private lemma correction_coordinates {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma correction_coordinates {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {V : C} (x y z x' y' z' : End V) (hx : x = x') (hy : y = y') (hz : z = z') :
     ((∑ a ∈ Finset.range (D.dn i j),
       (zsign k (D.parity i * (D.parity j + a)) * (Sc.t i j : k)) •

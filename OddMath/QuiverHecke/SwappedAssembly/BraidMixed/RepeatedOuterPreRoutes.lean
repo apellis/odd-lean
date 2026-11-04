@@ -9,9 +9,9 @@ The reservoir validity and endpoint hypotheses remain explicit. -/
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -24,7 +24,7 @@ variable (P : ProbeReservoir k B D Sc) (i j : I) (s : Sector I)
   (Z : P.H (nextSector (true, j) false
     (nextSector (true, i) false (nextSector (true, i) true s))))
 
-private lemma route {C : Type u} [Category C] [Preadditive C]
+private lemma route {C : Type*} [Category C] [Preadditive C]
     {A B V : C} (f : A ⟶ B) (f' : A ⟶ V) (g : B ⟶ B)
     (h : V ⟶ B) (j : B ⟶ V) (l : V ⟶ V) (r : B ⟶ A) (r' : V ⟶ A)
     (hf : f' = 0) (hr : r' = 0) :

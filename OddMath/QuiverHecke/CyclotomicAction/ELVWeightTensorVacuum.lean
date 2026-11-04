@@ -26,6 +26,12 @@ private def forgetEmptyFunctor (ν : List I) (h : ν = []) :
   subst ν
   exact ObjectProperty.ι _
 
+/-- The selected empty-word forgetting map, exposed for the native vacuum cap chart. -/
+abbrev emptyContentForget (ν : List I) (h : ν = []) :
+    ProbeEvaluatedModules D Sc m ν ⥤
+      Superfunctor k (OldContentCategory D Sc (probeCutoff D m) []) (SVec k) :=
+  forgetEmptyFunctor D Sc m ν h
+
 private instance (ν : List I) (h : ν = []) :
     (forgetEmptyFunctor D Sc m ν h).Additive := by
   subst ν

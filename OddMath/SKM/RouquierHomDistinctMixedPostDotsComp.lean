@@ -65,6 +65,7 @@ theorem homDistinctMixedMateDot_preDot_comp {x : E ⟶ E} (hx : x ∈ parity (R 
         (homParityShift (k := k) τ).map
           ((homParityShift (k := k) τ).map ((x ▷ ((homParityShift (k := k) κ).obj H ≫ F')) ▷ E')) ▷ F' :=
     (homShiftPostAdjunction A a τ).unit.naturality _
+  unfold mixedPostSourcePreDot
   rw [← reassoc_of% hn]
 
 /-- The post dot and the transposed post dot on the target of `J⁻¹` commute. -/
@@ -118,6 +119,7 @@ theorem homDistinctMixedMateDot_postDot_comp {y : E' ⟶ E'} (hy : y ∈ parity 
         (homParityShift (k := k) τ).map
           ((homParityShift (k := k) τ).map ((E ◁ ((homParityShift (k := k) κ).obj H ◁ SuperAdjunction.rightTranspose A A y)) ▷ E')) ▷ F' :=
     (homShiftPostAdjunction A a τ).unit.naturality _
+  unfold mixedPostSourcePostDot
   rw [← reassoc_of% hn]
 
 theorem homDistinctMixedMateDot_preDot_pow_comp {x : E ⟶ E} (hx : x ∈ parity (R := k) E E 0)
@@ -251,6 +253,7 @@ theorem homDistinctMixedMateDot_isIso_of_comp {x : E ⟶ E} (hx : x ∈ parity (
   have hb : IsNilpotent (mixedPostSourcePostDot (k := k) E κ H A y) := by
     obtain ⟨n, hn'⟩ := isNilpotent_rightTranspose A hy hn
     refine ⟨n, ?_⟩
+    unfold mixedPostSourcePostDot
     rw [← rouquierPower_eq_pow] at hn'
     rw [whiskerLeft_rouquierPower (k := k), rouquierPower_eq_pow,
       whiskerLeft_rouquierPower (k := k), hn']

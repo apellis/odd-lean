@@ -16,9 +16,9 @@ the remaining diagonal component of `CrossBraid`, not its matrix identification.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
@@ -33,7 +33,7 @@ def separatedOuterAlg :=
     (conjAlg (k := k)
       (P.mixedJ i i s hR ((P.step (true, j) true _ trivial).obj Z)).symm)
 
-private lemma reverse_conj {C : Type u} [Category C] [Preadditive C] [Linear k C]
+private lemma reverse_conj {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {V W : C} (K : V ≅ W) (x : End V) (y : End W) (ε : k)
     (hε : ε * ε = 1) (h : x ≫ K.hom = ε • (K.hom ≫ y)) :
     K.hom ≫ y ≫ K.inv = ε • x := by
@@ -82,7 +82,7 @@ lemma separatedOuterAlg_post :
   exact he.trans ((congrArg (fun a => zsign k (D.parity i) • a) hr).trans
     (smul_smul _ _ _))
 
-private lemma conj_chain {C : Type u} [Category C] {A B D : C}
+private lemma conj_chain {C : Type*} [Category C] {A B D : C}
     (K : A ≅ B) (H : B ≅ D) (a : End D) :
     K.hom ≫ (H.hom ≫ a ≫ H.inv) ≫ K.inv =
       K.hom ≫ H.hom ≫ a ≫ H.inv ≫ K.inv := by
