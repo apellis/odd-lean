@@ -71,12 +71,12 @@ abbrev mixedPostTargetPostDot (y : E' ⟶ E') :
   E ◁ (homParityShift (k := k) κ).map (((homParityShift (k := k) κ).obj H ≫ F') ◁ y)
 
 /-- The pre dot on the source of `U`. -/
-abbrev mixedPostSourcePreDot (x : E ⟶ E) :
+def mixedPostSourcePreDot (x : E ⟶ E) :
     End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) :=
   x ▷ ((homParityShift (k := k) κ).obj H ≫ F')
 
 /-- The transposed post dot on the source of `U`. -/
-abbrev mixedPostSourcePostDot (A : SuperAdjunction (k := k) E' F') (y : E' ⟶ E') :
+def mixedPostSourcePostDot (A : SuperAdjunction (k := k) E' F') (y : E' ⟶ E') :
     End (E ≫ ((homParityShift (k := k) κ).obj H ≫ F')) :=
   E ◁ ((homParityShift (k := k) κ).obj H ◁ SuperAdjunction.rightTranspose A A y)
 
@@ -116,9 +116,10 @@ theorem homDistinctMixedMateDot_pow_mul_pow (p q : ℕ) :
   have hB : mixedPostSourcePostDot (k := k) E κ H A y ^ q =
       E ◁ ((homParityShift (k := k) κ).obj H ◁
         rouquierPower (SuperAdjunction.rightTranspose A A y) q) := by
+    unfold mixedPostSourcePostDot
     rw [whiskerLeft_rouquierPower (k := k), rouquierPower_eq_pow,
       whiskerLeft_rouquierPower (k := k)]
-  rw [ht, hs, End.mul_def, End.mul_def, whiskerRight_rouquierPower (k := k),
+  rw [ht, hs, End.mul_def, End.mul_def, mixedPostSourcePreDot, whiskerRight_rouquierPower (k := k),
     whiskerRight_rouquierPower (k := k), hY, hB,
     homDistinctMixedMateDot_monomial E A κ τ H hxp hyq,
     SuperAdjunction.rightTranspose_power A hy q, koszulSign_zero_left, one_pow, one_smul]
@@ -179,6 +180,7 @@ theorem homDistinctMixedMateDot_isIso [IsIso x] (hn : IsNilpotent (show End E' f
   have hb : IsNilpotent (mixedPostSourcePostDot (k := k) E κ H A y) := by
     obtain ⟨n, hn'⟩ := isNilpotent_rightTranspose A hy hn
     refine ⟨n, ?_⟩
+    unfold mixedPostSourcePostDot
     rw [← rouquierPower_eq_pow] at hn'
     rw [whiskerLeft_rouquierPower (k := k), rouquierPower_eq_pow,
       whiskerLeft_rouquierPower (k := k), hn']
