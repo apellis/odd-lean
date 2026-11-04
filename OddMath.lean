@@ -2755,3 +2755,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorEvenVacuumCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPolynomialWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedVacuumBend
+import OddMath.QuiverHecke.PairingExtensionPBW
