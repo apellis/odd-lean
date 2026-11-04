@@ -2677,3 +2677,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumMomentMaps
 import OddMath.SKM.RouquierDistinctCupDetection
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorPairChartCoherence
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorUnitObservation
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperLoopDot
