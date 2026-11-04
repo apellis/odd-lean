@@ -166,7 +166,7 @@ theorem odd_negative_cap_bubbles (D : SKM.Datum I X')
       (2 * P i) x = 0)
     (j : Y ⟶ X) (B : Fin (N - 2 * P i) → (Y ⟶ V))
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B)
-    (hT : PowerSeries.mk (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) =
+    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
         (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
     (r : ℕ) :
@@ -175,8 +175,8 @@ theorem odd_negative_cap_bubbles (D : SKM.Datum I X')
       u ≫ (y ^ (N - 2 * P i - 1 + (2 * r + 1))) ≫ B ⟨N - 2 * P i - 1, by omega⟩ =
         φ (coeff r (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i)) * e :=
   odd_cap_moments D φ P i hi (N - 1) e
-    (fun l => u ≫ (y ^ (N - 2 * P i - 1 + l)) ≫ B ⟨N - 2 * P i - 1, by omega⟩)
-    (fun n => u ≫ (y ^ n) ≫ ell)
+    (fun l => (u ≫ (y ^ (N - 2 * P i - 1 + l)) ≫ B ⟨N - 2 * P i - 1, by omega⟩ : End V))
+    (fun n => (u ≫ (y ^ n) ≫ ell : End V))
     (negative_inverse_cap_series (-1) x y s u v ell N (2 * P i) hPN
         (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ P i).coeff n)
       (square_add_one_coeff_top (P i)) (fun n _ => square_add_one_coeff_mul_neg_one_pow (P i) n)
@@ -194,7 +194,7 @@ theorem odd_zero_height_bubbles (D : SKM.Datum I X')
     (hwindow : ∀ a < 2 * P i, u ≫ (y ^ a) ≫ ell = if a + 1 = 2 * P i then 𝟙 V else 0)
     (hprobe : capPolynomial (fun n => ((Polynomial.X ^ 2 + 1 : Polynomial k) ^ P i).coeff n)
       (2 * P i) x = 0)
-    (hT : PowerSeries.mk (fun l => u ≫ (y ^ (2 * P i - 1 + l)) ≫ ell) =
+    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (2 * P i - 1 + l)) ≫ ell : End V)) =
       PowerSeries.map φ.toRingHom (expand 2 two_ne_zero
         (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1)) * (1 + C e * X))
     (r : ℕ) :
@@ -208,13 +208,13 @@ theorem odd_zero_height_bubbles (D : SKM.Datum I X')
     (fun n _ => by rw [smul_eq_mul]; exact square_add_one_coeff_mul_neg_one_pow (P i) n)
     hslide hwindow hprobe
   have h₀ := (odd_cap_moments D φ P i hi (2 * P i - 1) e (zeroHeightMoment y s u v)
-      (fun n => u ≫ (y ^ n) ≫ ell)
+      (fun n => (u ≫ (y ^ n) ≫ ell : End V))
     hser hT r).2
   have h₁ := (odd_cap_moments D φ P i hi (2 * P i - 1) e (zeroHeightMoment y s u v)
-      (fun n => u ≫ (y ^ n) ≫ ell)
+      (fun n => (u ≫ (y ^ n) ≫ ell : End V))
     hser hT (r + 1)).1
-  rw [zeroHeightMoment, if_neg (by omega), show 2 * r + 1 - 1 = 2 * r by omega] at h₀
-  rw [zeroHeightMoment, if_neg (by omega), show 2 * (r + 1) - 1 = 2 * r + 1 by omega] at h₁
+  rw [zeroHeightMoment, ite_eq_right (by omega), show 2 * r + 1 - 1 = 2 * r by omega] at h₀
+  rw [zeroHeightMoment, ite_eq_right (by omega), show 2 * (r + 1) - 1 = 2 * r + 1 by omega] at h₁
   exact ⟨h₀, h₁⟩
 
 /-- **Even colour, negative height**, equation (12): the moments of the
@@ -229,14 +229,14 @@ theorem even_negative_cap_bubbles (D : SKM.Datum I X')
       (P i) x = 0)
     (j : Y ⟶ X) (B : Fin (N - P i) → (Y ⟶ V))
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B)
-    (hT : PowerSeries.mk (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) =
+    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) =
       PowerSeries.map φ.toRingHom (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1))
     (l : ℕ) :
     u ≫ (y ^ (N - P i - 1 + l)) ≫ B ⟨N - P i - 1, by omega⟩ =
       φ (coeff l (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k P) i)) :=
   even_cap_moments D φ P i hi (N - 1)
-    (fun l => u ≫ (y ^ (N - P i - 1 + l)) ≫ B ⟨N - P i - 1, by omega⟩)
-    (fun n => u ≫ (y ^ n) ≫ ell)
+    (fun l => (u ≫ (y ^ (N - P i - 1 + l)) ≫ B ⟨N - P i - 1, by omega⟩ : End V))
+    (fun n => (u ≫ (y ^ n) ≫ ell : End V))
     (negative_inverse_cap_series 1 x y s u v ell N (P i) hPN
         (fun n => ((Polynomial.X - 1 : Polynomial k) ^ P i).coeff n)
       (sub_one_pow_coeff_top (P i))
@@ -252,7 +252,7 @@ theorem even_zero_height_bubbles (D : SKM.Datum I X')
     (hwindow : ∀ a < P i, u ≫ (y ^ a) ≫ ell = if a + 1 = P i then 𝟙 V else 0)
     (hprobe : capPolynomial (fun n => ((Polynomial.X - 1 : Polynomial k) ^ P i).coeff n)
       (P i) x = 0)
-    (hT : PowerSeries.mk (fun l => u ≫ (y ^ (P i - 1 + l)) ≫ ell) =
+    (hT : PowerSeries.mk (fun l => (u ≫ (y ^ (P i - 1 + l)) ≫ ell : End V)) =
       PowerSeries.map φ.toRingHom (invOfUnit (rescale (-1) (SKM.SYM.generatorSeries k i)) 1))
     (l : ℕ) :
     u ≫ (y ^ l) ≫ s.inv ≫ v =
@@ -262,8 +262,8 @@ theorem even_zero_height_bubbles (D : SKM.Datum I X')
     (sub_one_pow_coeff_top (P i))
     (fun n _ => by rw [one_pow, smul_eq_mul, mul_one]) hslide hwindow hprobe
   have h := even_cap_moments D φ P i hi (P i - 1) (zeroHeightMoment y s u v)
-      (fun n => u ≫ (y ^ n) ≫ ell) hser hT (l + 1)
-  rwa [zeroHeightMoment, if_neg (by omega), Nat.add_sub_cancel] at h
+      (fun n => (u ≫ (y ^ n) ≫ ell : End V)) hser hT (l + 1)
+  rwa [zeroHeightMoment, ite_eq_right (by omega), Nat.add_sub_cancel] at h
 
 end Category
 

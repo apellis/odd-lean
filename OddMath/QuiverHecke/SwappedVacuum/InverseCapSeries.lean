@@ -113,12 +113,16 @@ theorem negative_inverse_cap_series (q : k) (x : End X) (y : End Y)
     (hprobe : capPolynomial c P x = 0)
     (j : Y ⟶ X) (B : Fin (N - P) → (Y ⟶ V))
     (H : ProbeWindow.IsCupInverse s (fun n => u ≫ (y ^ n.val)) j B) :
-    PowerSeries.mk (fun l => u ≫ (y ^ (N - P - 1 + l)) ≫ B ⟨N - P - 1, by omega⟩) =
+    PowerSeries.mk
+        (fun l => (u ≫ (y ^ (N - P - 1 + l)) ≫ B ⟨N - P - 1, by omega⟩ : End V)) =
       PowerSeries.mk (fun r => if r ≤ P then algebraMap k (End V) (c (P - r)) else 0) *
-        PowerSeries.mk (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) :=
-  capSeries_eq c P (N - 1) _ (fun i => u ≫ (y ^ i) ≫ ell)
-    (negative_inverse_cap_moment q x y s u v ell N P hPN c hmonic hsupport hslide hwindow
-      hprobe j B H)
+        PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) :=
+  capSeries_eq c P (N - 1)
+    (fun l => (u ≫ (y ^ (N - P - 1 + l)) ≫ B ⟨N - P - 1, by omega⟩ : End V))
+    (fun i => (u ≫ (y ^ i) ≫ ell : End V)) (fun l => by
+      rw [negative_inverse_cap_moment q x y s u v ell N P hPN c hmonic hsupport hslide hwindow
+        hprobe j B H l]
+      rfl)
 
 /-- The normalized zero-height moments: the fake value `K_0 = 1` and
 `K_l = u ≫ y^(l-1) ≫ j ≫ v` for `l ≥ 1`. -/
@@ -137,9 +141,11 @@ theorem zero_height_moment (q : k) (x : End X) (y : End Y)
     zeroHeightMoment y s u v l = ∑ r ∈ range (l + 1),
       if r ≤ N then c (N - r) • (u ≫ (y ^ (N - 1 + l - r)) ≫ ell) else 0 := by
   rcases l with _ | l
-  · rw [zeroHeightMoment, if_pos rfl, zero_add, sum_range_one, if_pos (Nat.zero_le _),
-      Nat.sub_zero, hmonic, one_smul, hwindow (N - 1 + 0) (by omega), if_pos (by omega)]
-  · rw [zeroHeightMoment, if_neg (Nat.succ_ne_zero l), Nat.add_sub_cancel,
+  · rw [zeroHeightMoment, ite_eq_left rfl, zero_add, sum_range_one,
+      ite_eq_left (Nat.zero_le _)]
+    simp only [Nat.sub_zero, Nat.add_zero]
+    rw [hmonic, one_smul, hwindow (N - 1) (by omega), ite_eq_left (by omega)]
+  · rw [zeroHeightMoment, ite_eq_right (Nat.succ_ne_zero l), Nat.add_sub_cancel,
       principal_inverse_right_moment q x y s u v ell N hN c hmonic hsupport hslide hwindow
         hprobe l]
     exact probe_cap_convolution c N (N - 1) l (l + 1) (by omega)
@@ -156,8 +162,10 @@ theorem zero_height_series (q : k) (x : End X) (y : End Y)
     (hprobe : capPolynomial c N x = 0) :
     PowerSeries.mk (zeroHeightMoment y s u v) =
       PowerSeries.mk (fun r => if r ≤ N then algebraMap k (End V) (c (N - r)) else 0) *
-        PowerSeries.mk (fun l => u ≫ (y ^ (N - 1 + l)) ≫ ell) :=
-  capSeries_eq c N (N - 1) _ (fun i => u ≫ (y ^ i) ≫ ell)
-    (zero_height_moment q x y s u v ell N hN c hmonic hsupport hslide hwindow hprobe)
+        PowerSeries.mk (fun l => (u ≫ (y ^ (N - 1 + l)) ≫ ell : End V)) :=
+  capSeries_eq c N (N - 1) (zeroHeightMoment y s u v)
+    (fun i => (u ≫ (y ^ i) ≫ ell : End V)) (fun l => by
+      rw [zero_height_moment q x y s u v ell N hN c hmonic hsupport hslide hwindow hprobe l]
+      rfl)
 
 end OddMath.QuiverHecke.SwappedVacuum
