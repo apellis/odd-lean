@@ -8,16 +8,16 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterReduction
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 namespace ProbeReservoir
 private theorem repeatedOuter_polynomial_heq
-    {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {C : Type*} [Category C] [Preadditive C] [Linear k C]
     (i j : I) {A A' : C} (e : A = A')
     {x y z : End A} {x' y' z' : End A'}
     (hx : HEq x x') (hy : HEq y y') (hz : HEq z z') :
@@ -34,7 +34,7 @@ private theorem repeatedOuter_polynomial_heq
   simp only [compPow_eq_pow, End.mul_def]
 
 private theorem repeatedOuter_sub_heq
-    {C : Type u} [Category C] [Preadditive C]
+    {C : Type*} [Category C] [Preadditive C]
     {A A' : C} (e : A = A') {l r : End A} {l' r' : End A'}
     (hl : HEq l l') (hr : HEq r r') : HEq (l - r) (l' - r') := by
   subst e

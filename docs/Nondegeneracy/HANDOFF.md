@@ -2028,8 +2028,7 @@ padded inverse (32 owned declarations). `ResidualComparisonNegative` and
 supported input, including both height-zero orientations. Their strict
 nonzero two-odd collision consumer audits all nine declarations. No inverse,
 series, closure or nilpotence premise remains beyond the standing data,
-symmetrizer and homogeneous parameters. The later all-sector extension below
-retains its separate scoped-check boundary.
+symmetrizer and homogeneous parameters. The all-sector extension below is full-CI verified in #1039.
 See [CentralMatrixAttachment](CentralMatrixAttachment.md).
 
 `SupportedTensorCrossEntries` now gives both literal crossing matrices
@@ -2052,23 +2051,38 @@ Next discharge the following dependencies in order.
    (25 declarations audited across the source-unit packet). The pure probe
    entry still needs `LeftMateInvertible` for the canonical left adjunction.
    The source `Cyclicity.rot_tau_left` theorem does not itself evaluate in the
-   factor Rouquier family: port its cap-pitchfork/rotation argument, as recorded
-   in `SwappedDistinctPreMate`, then attach the literal pure entries. The
+   factor Rouquier family. `RouquierDistinctMixedBraid` now supplies the exact
+   rectangular correction; `RouquierDistinctCapDetection` and
+   `RouquierDistinctCupDetection` supply the principal and finite boundary
+   tests. These strict pairs are scoped-checked. Evaluate the tests for the
+   canonical cap, then use `RouquierDistinctLeftRotation` and attach the
+   literal pure entries. `DistinctReservoirShift` supplies the separate
+   pure-reservoir crossing comparison, but its sigma attachment remains. The
    older braid spine also requires universe-generalized declarations for the
    actual supercategory; no mathematical hypotheses are being changed.
 3. `SupportedTensorFamilies`, `SupportedTensorRows`, `SupportedMatrixLayers`
    and `SupportedTensorRowLayers` now construct the whole-sector nonzero
    tensor matrix and prove its occupied row and literal layer-action formulas
-   (50, 25, five and 18 declarations audited). Complete its raw coefficient
-   action and coherent all-word coordinates. Local dot/crossing quotient-class
-   squares alone do not yet provide a single bounded observation.
+   (50, 25, five and 18 declarations audited; full CI #1039).
+   `SupportedTensorCoefficientAction` now constructs its raw coefficient
+   action on every path Hom; `SupportedTensorUnitObservation` defines its
+   source-unit quotient observation. The global append/pair charts and
+   regular-probe observation are scoped-checked in
+   `ELVTensorWordChartCoherence`, `ELVTensorPairChartCoherence` and
+   `ELVTensorWordQuotientObservation`. Complete outer-context coherence and
+   the coefficient/layer comparison for this one observation. A nonzero
+   cyclic input does not establish injectivity of observation on matrices.
 4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
    the chosen finite vacuum rows (full CI #1037). The four modules described
    in `ProbeWeightLeftCap` now identify the normalized whole-weight probe
-   counit with the native vacuum cap through an even source chart (strict
-   nonzero paired checks). Insert this chart into the actual pre-Hom counit,
-   then compare finite bend series and attach every polynomial cap moment and
-   prescribed bubble normalization. Generic last-row uniqueness in
+   counit with the native vacuum cap through an even source chart (full CI
+   #1039). `ELVProbeWeightPreCap` now inserts it into the actual pre-Hom
+   counit; the successor, upper-loop and full vacuum dot charts are
+   scoped-checked.
+   `ELVTensorVacuumMomentMaps` supplies raw moments on every input vector.
+   Finish the full pre-dot and reservoir-unit comparisons, identify the
+   finite bend series with those moments, then attach prescribed bubble
+   normalization. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
 5. Complete bounded corner recovery and apply the existing observation,
    finite-colour, orientation and ground-ring reductions, followed by the

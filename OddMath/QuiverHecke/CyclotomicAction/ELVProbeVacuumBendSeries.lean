@@ -1,0 +1,79 @@
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendMonomials
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCentralBend
+
+/-! # The ordered odd vacuum bend series
+
+SwappedHomInversion §3 (4)–(5): the finite ordered series of prescribed
+negative pre-caps and dotted post-units equals the evaluated A6 bend.
+-/
+noncomputable section
+open CategoryTheory StringDiagrams Supercategory BicategoryStruct
+namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
+open BalancedInduction CyclotomicAction
+universe u
+local instance bendSeriesHomPi {k : Type u} [CommRing k] (A B : PiSCat.{u,u,u+1} k) :
+    PiSupercategory k (A ⟶ B) := PiTwoSupercategory.homPiLeft A B
+variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
+  (ΛP ΛR : X)
+  (hcP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
+  (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
+  (i : I) {muP nuR : X} (edgeP : -ΛP + D.α i = -muP)
+  (edgeR : -ΛR + D.α i = nuR) (β : I →₀ ℕ)
+local notation "T" => probeOldRouquierFamily D Sc m ΛP hcP
+local notation "W" => elvRouquierFamily D Sc cutoff bound ΛR hcR
+local notation "N₀" => regularProbe D Sc m ΛP
+local notation "δ" => emptyBlock D ΛR
+local notation "R₀" => contentModuleTarget D Sc cutoff bound (0 : Multiset I)
+variable (H : ProbeVacuumCap.modulePiCategory D Sc m ⟶ (W).obj (-ΛR))
+local notation "H₀" => vacuumBendBlock D Sc m cutoff bound ΛR hcR H
+local notation "Z" => preCapInput D Sc m ΛP hcP (elvRouquierFamily D Sc cutoff bound ΛR hcR).obj (-ΛR) H
+local instance bendSeriesProbeDotIso : IsIso ((T).dot i edgeP) :=
+  (isUnit_iff_isIso _).mp (probeOldRouquierFamily_dot_isUnit D Sc m ΛP hcP i edgeP)
+
+/-- The given chronological series keeps each negative pre-cap and
+post-unit as the prescribed Hom maps before regular-probe evaluation. -/
+def vacuumBendWordSum (N : ℕ) :=
+  -∑ r ∈ Finset.range N, (koszulSign (D.parity i) (D.parity i)) ^ (r + 1) •
+    (((SKM.homPreNegativeCap T (W).obj i (-ΛR) edgeP (r + 1) Z ≫
+      SKM.homContentPostCup (T).obj W i β ΛP edgeR r Z).total N₀) δ)
+
+private theorem odd_coefficient (r : ℕ) :
+    -((koszulSign (1 : ZMod 2) 1) ^ (r + 1)) = (-1 : ℤ) ^ r := by
+  rw [koszulSign_one_one, pow_succ]
+  ring
+
+/-- At any given native reservoir nilpotence exponent, the actual
+finite pre-cap/post-unit word sum is exactly the evaluated odd A6 bend.
+The raw shifted pre-dot and raw reservoir unit/dot are retained. -/
+theorem vacuumBendWordSum_odd (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1)
+    (n : ℕ)
+    (hn : ProbeVacuumCap.diagonalPostDot D Sc m cutoff bound i H₀ ^ n = 0) :
+    vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H (2 * n) ≫
+      (vacuumBendPostTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
+    (vacuumPreSourceIso D Sc m ΛP hcP (fun _ => R₀) (-ΛR) i edgeP H₀).hom ≫
+      ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP H₀ := by
+  rw [ProbeVacuumCap.evaluatedMixedBend_odd_expansion D Sc m cutoff bound i hi hP H₀ n hn]
+  simp only [vacuumBendWordSum, Preadditive.neg_comp, Preadditive.sum_comp,
+    Preadditive.zsmul_comp, Preadditive.comp_sum, Preadditive.comp_zsmul,
+    ← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro r hr
+  rw [vacuumBendMonomial_native D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi (r + 1) r]
+  rw [← neg_zsmul, hi, odd_coefficient]
+  congr 1
+  rfl
+
+/-- Homogeneous symmetrizable reservoir parameters supply a positive
+finite series length for every full tensor input functor. -/
+theorem vacuumBendWordSum_odd_exists (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous)
+    (hP : 0 < probeCutoff D m i) (hi : D.parity i = 1) :
+    ∃ n : ℕ, 0 < n ∧
+      vacuumBendWordSum D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H (2 * n) ≫
+        (vacuumBendPostTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR i edgeR β H).hom =
+      (vacuumPreSourceIso D Sc m ΛP hcP (fun _ => R₀) (-ΛR) i edgeP H₀).hom ≫
+        ProbeVacuumCap.evaluatedMixedBend D Sc m cutoff bound i hP H₀ := by
+  obtain ⟨n, hn, hp⟩ := ProbeVacuumCap.diagonalPostDot_pow_zero D Sc m cutoff bound sy hc i
+  exact ⟨n, hn, vacuumBendWordSum_odd D Sc m cutoff bound ΛP ΛR hcP hcR i edgeP edgeR β H hP hi n (hp H₀)⟩
+
+end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum

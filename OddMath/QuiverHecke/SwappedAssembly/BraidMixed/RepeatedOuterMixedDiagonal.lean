@@ -16,9 +16,9 @@ finite-sum correction equation.
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 
-private lemma single_coeff {C : Type u} [Category C]
+private lemma single_coeff {C : Type*} [Category C]
     {A B T V W : C} (J : A ≅ B) (H : V ≅ W) (K : T ≅ V)
     (a : End B) (b : End W) (M : B ⟶ W) (f : A ⟶ T)
     (ha : a ≫ M = M ≫ b) (hj : J.hom ≫ M = (f ≫ K.hom) ≫ H.hom) :
@@ -33,14 +33,14 @@ private lemma single_coeff {C : Type u} [Category C]
   simp only [Category.assoc]
 
 private lemma normalized_signed_slide {k : Type u} [CommRing k]
-    {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {A B : C} (a : End A) (b : End B) (f : A ⟶ B) (q ε : k)
     (hε : ε * ε = 1) (h : a ≫ f = f ≫ b) :
     (q • a) ≫ f = ε • (f ≫ ((ε * q) • b)) := by
   rw [Linear.smul_comp, h, Linear.comp_smul, smul_smul, ← mul_assoc, hε, one_mul]
 
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]

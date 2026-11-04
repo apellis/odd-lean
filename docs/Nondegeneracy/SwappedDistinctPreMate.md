@@ -1,6 +1,7 @@
 # Distinct-colour precomposition mate
 
-**Status: proposed written proof, not a new Lean theorem.** This evaluates
+**Status: proposed factor calculation with a checked conditional bicategorical
+contraction (§6); the canonical factor pitchfork is still open.** This evaluates
 only the pre/pre entry (A8)–(A9) of `SwappedActionAssembly.md`, conditional
 on its specified full factor action. It supplies no new fused-action
 hypothesis and changes none of the assigned generators. In particular it
@@ -210,9 +211,160 @@ If both are odd, multiply that window sign by (-1)^(k+1).
 This is a written evaluation and two-sided inverse of the single prescribed
 pre/pre partial mate (A9), for both parities and every permitted height,
 using the existing full factor-action input. The new calculation is not
-kernel-checked. The cited pitchfork, rotation, and factor inverse relations
-have library declarations; they are not new Lean declarations in this note.
+kernel-checked in its entirety. The cited presented-calculus pitchfork,
+rotation, and factor inverse relations have library declarations. The
+bicategorical contraction in §6 is checked with its pitchfork hypothesis
+explicit.
 
 The pre/post and post/pre entries of (A8), full swapped presentation action,
 normalized vacuum bubbles, and bounded detecting consumer are not proved
 here. No whole-matrix, post/post, or nondegeneracy conclusion is asserted.
+
+## 6. Bicategorical contraction and the remaining canonical pitchfork
+
+`OddMath.SKM.leftCrossMate_eq_of_cap_pitchfork` is the bicategorical
+form of the last contraction in §4, in
+`OddMath/SKM/RouquierDistinctLeftRotation.lean`. Write `A_d`, `A_a` for
+the prescribed shifted left adjunctions, `U_d=A_d.unit`, and
+`V_d=A_d.counit`, `V_a=A_a.counit` for their normalized caps. For any
+degree-r map `ell:E_c F_a→F_d E_b`, the explicit hypothesis is
+
+    a(E_d,E_c,F_a)^(-1);(T▷F_a);a(E_b,E_a,F_a);
+      (E_b◁V_a);rho(E_b)
+      = q (E_d◁ell);a(E_d,F_d,E_b)^(-1);
+          (V_d▷E_b);lambda(E_b).                     (17)
+
+The theorem gives
+
+    leftCrossMate(A_d,A_a,T)=q (-1)^(sigma_d r) ell.   (18)
+
+Its proof uses `ShiftedSuperAdjunction.unit_slide` and
+`left_triangle_whiskerRight`. Thus the Koszul factor and the entire
+cup–crossing–cap word are retained. The companion
+`leftCrossMate_inv_products_of_cap_pitchfork` proves both inverse
+products with `q^(-1) (-1)^(sigma_d r) s` when `q` is a unit and `s`
+is a two-sided inverse of `ell`.
+`leftCrossMate_isIso_of_cap_pitchfork` packages these products.
+
+To obtain `LeftMateInvertible T T.leftAdjoints` for the probe family,
+(17) must still be derived for the following exact choices:
+
+* `T` in the mate is the inherited reversed-label upward crossing
+  `family.cross j i h₁ h₂ h₃ h₄`;
+* `A_d=family.leftAdjoints.adjL i h₁` and
+  `A_a=family.leftAdjoints.adjL i h₄`;
+* `s=crossMate (family.adj i h₁) (family.adj i h₄)
+  (family.cross i j h₃ h₄ h₁ h₂)` and `ell=inv s`;
+* `q=t_ij g(k-d_ij)/g(k)`, with the two separate top heights
+  `k=h_i(b)` and `k-d_ij=h_i(d)` of these edges.
+
+The existing multicolour `invNe` field supplies the inverse relations for
+these exact `s` and `ell`; it does not supply (17). In particular the
+checked `Cyclicity.rot_tau_left` has codomain `pres D Sc`, whereas the
+probe family has codomain `PiSCat k`. No interpretation from an arbitrary
+`RouquierFamily` and `RouquierMulticolour` into the presented calculus has
+yet been constructed. Therefore applying that source theorem to the
+probe is not a completed Lean argument.
+
+The direct cited route to (17) ports Lemma 7.1's cap pitchfork tests:
+`ext_FEE` for the nonpositive range, the mixed-braid correction identity
+used by `pf_a`, and the dotted quadratic calculation used by `pf_b`.
+The intermediate positive window uses `eq_7_3`; the complementary range
+is obtained by the cup relation and the two triangles as in
+`PitchforkCap.eq_7_5_a`. These inputs must retain the inverse-defined
+maps and the height-dependent normalization of §3. They are the
+remaining canonical factor obligation, not new hypotheses of the
+intended probe conclusion.
+
+The two-mate expansion needed for the correction identity is checked as
+`crossMate_comp_crossMate` in `RouquierRectangularComposition.lean`.
+For adjunctions `E₁⊣F₁`, `E₂⊣F₂`, `E₃⊣F₃` at six independent objects
+and crossings `t₁₂:G₁₂ E₂→E₁ H₁₂`,
+`t₂₃:G₂₃ E₃→E₂ H₂₃` of degrees `p,q`, it identifies the composite
+of their two prescribed right mates with `(-1)^(pq)` times the
+rectangular outer mate of `(G₁₂◁t₂₃);(t₁₂▷H₂₃)`, retaining all
+associators. `rectangularMateLinearMap` transports the correction sums
+linearly. This removes the same-colour restriction of
+`rouquierMate_comp_mate`; it does not evaluate the resulting terms
+against the canonical left caps.
+
+The resulting distinct mixed braid is checked as
+`RouquierFamily.distinctMixedBraid_correction` in
+`RouquierDistinctMixedBraid.lean`. It uses `RouquierMulticolour.braidEq`
+and the prescribed right mates, without a mixed-braid or cap-cyclicity
+premise. Its two words are `distinctMixedBraidLeft` and
+`distinctMixedBraidRight`; the correction terms are the linear outer
+mates of the original ordered dot powers. Their coefficients simplify
+to `(-1)^(p_i s)t_ij` and `(-1)^(p_i s)s_ij^(pq)`, respectively:
+the two-mate sign cancels the `p_i p_j` part of the upward braid
+coefficient. In particular the `s=0` boundary coefficient is `t_ij`.
+The paired consumer applies this equation to both ordered pairs in the
+constructed nonzero two-odd probe family. Evaluation of these separated
+correction terms against the inverse-defined caps, and the finite
+cup-column tests, remain to be proved.
+
+The unit pitchfork for the prescribed right mate is also checked as
+`crossMate_pitchfork_unit` in `RouquierRectangularUnit.lean`, for four
+independent corners and arbitrary crossing parity. It cancels the lower
+right-adjunction unit without changing the upward crossing. This is the
+unit-side input for the finite cup-column calculation; its consumer
+uses both ordered pairs of the same nonzero two-odd probe family.
+
+### Checked cap tests and correction-monomial coefficients
+
+`RouquierDistinctCapTests.lean` defines `distinctCapRight` using the inverse
+of the specified `distinctCapSource`, and proves `distinctCapSource_right`,
+`distinctCapRight_principal_of_neg`, `distinctCapRight_column_of_neg`, and
+`distinctMixedBraidRight_cap_of_neg`. The first two detection tests reduce
+to the actual inverse-defined local cap: the principal composite is zero
+at strictly negative height, and the finite cup columns are the boundary
+Kronecker coefficients. The second mixed-braid word also vanishes after
+its final negative-height cap. These are right-hand tests; they do not
+assert the missing left cap pitchfork.
+
+`RouquierDistinctCapMonomials.lean` proves
+`distinctMixedBraidOuterMate_monomial`, factoring the exact ordered
+correction monomial through the separated rectangular mate, and
+`distinctMixedBraidOuterMate_monomial_cap`, evaluating the final dotted
+cup against the prescribed cap throughout the negative-height window.
+The result is zero except at the precise boundary exponent, where the
+remaining dotted cap and middle dot power survive.
+
+Both producers and their paired `scripts/NonVacuity/` consumers pass the
+strict pinned checks. The consumers use the constructed two-odd probe
+family, prove all height and exponent conditions, and retain nonzero
+vacuum append vectors. Their owned-declaration axiom audits cover 5 and
+12 declarations respectively. These results supply actual cap tests and
+coefficients, but the finite left-column reduction and full all-weight
+canonical cap identity remain open.
+
+`RouquierDistinctCapPrincipal.lean` now proves the strictly negative
+principal left-hand test. `distinctMixedBraidOuterMate_monomial_cap_zero`
+shows every correction exponent below `d_ij` lies below the shifted cap
+boundary, and `distinctMixedBraidLeft_cap_of_neg` applies the actual mixed
+braid relation and vanishing second word. Its strict producer and paired
+two-odd constructed consumer pass, including an audit of all 10 owned
+declarations. This closes the strictly negative principal test, while
+the finite left cup-column tests and all-weight pitchfork remain open.
+
+`RouquierDistinctPowerSlide.lean` checks both iterated dot slides,
+`RouquierMulticolour.slideLeft_power` and `slideRight_power`, for the
+actual inherited distinct crossings. The strict producer and constructed
+two-odd consumer pass, with an audit of both declarations. These are the
+dot transports needed in the finite left-column reduction; the powers
+of the actual sign coefficient are retained explicitly.
+
+`RouquierRectangularDottedUnit.crossMate_pitchfork_unit_dotted` now
+checks the generic dotted-unit contraction: the homogeneous dot-slide
+sign and the interchange sign cancel exactly. Its strict producer and
+constructed two-odd consumer pass, with the single owned declaration
+audited. The consumer proves the upward slide from the actual
+multicolour relation and uses an odd dot and odd crossing, so the two
+minus signs are exercised rather than suppressed by an even fixture.
+
+`RouquierDistinctDottedUnit.distinctCrossMate_dottedUnit` discharges the
+generic dotted pitchfork's entire slide hypothesis for every actual dot
+power using `RouquierMulticolour.slideLeft_power`. Its strict producer
+and constructed two-odd consumer pass, with both owned declarations
+audited. Thus the finite-column cup transport now follows from the
+factor relations without a cyclicity or cap premise.
