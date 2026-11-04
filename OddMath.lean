@@ -2669,3 +2669,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightPreCap
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLoopDot
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorWordQuotientObservation
 import OddMath.SKM.RouquierDistinctLeftRotation
+import OddMath.QuiverHecke.CyclotomicAction.ELVVacuumTensorCoefficientMaps
