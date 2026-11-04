@@ -141,6 +141,7 @@ variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
   elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
 variable (sy : SKM.Symmetrizer D) (hc : Sc.Homogeneous) (i : I)
 
+include sy hc in
 /-- **The chosen vacuum cap inverse in the native chart (odd colour).** If the
 supported vacuum input is the given tensor input, the actual positive factor
 matrix supplies an entrywise inverse of the native cap window
