@@ -764,3 +764,9 @@ obligation. Some portions have separate scoped checks or later integration;
 STATUS records those boundaries. This snapshot is not a claim that all
 files compile. Recover individual files with
 `git show 685be86ce9e8a3eec9326ea611ce6cec7425e78b:<repository-path>`.
+
+## Cap-window and canonical observation attachments
+
+The complete source tree [dba1c00c6e](https://github.com/apellis/odd-lean/commit/dba1c00c6e915297859d33d11ec6e8b356feb413) preserves the proposed cap-window and observation attachments. Its sole parent is the verified primary integration through #1040. The history merge changes only this inventory and HANDOFF; unfinished sources are not imported.
+
+The tree retains the proposed intermediate-height cap identity, finite-column evaluation, positive cup rotation, canonical left-mate normalization, braid universe attachment, coherent global tensor coefficient and layer observations, and termwise native vacuum-bend comparisons. Some parts have independent strict producer/consumer checks or later full integration; STATUS records the current boundaries. Neither canonical all-height left-mate invertibility nor the full nondegeneracy theorem follows from this snapshot. Recover individual files with `git show dba1c00c6e915297859d33d11ec6e8b356feb413:<repository-path>` and recheck them against the current library.
