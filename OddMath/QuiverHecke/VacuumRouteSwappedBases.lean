@@ -120,7 +120,7 @@ theorem scalars_homogeneous : ι.scalars.Homogeneous :=
 
 /-- The swapped action on the probe-reservoir product of the sector, at weight `w`,
 with the tensor source and target families. -/
-abbrev actionAt (sy : SKM.Symmetrizer D) (w : X × (ι.J → ℤ)) :
+def actionAt (sy : SKM.Symmetrizer D) (w : X × (ι.J → ℤ)) :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars w :=
   SwappedAssembly.SupportedSectors.pointwiseUpwardModuleAction ι.datum ι.scalars ι.exponent
     ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing
@@ -131,7 +131,7 @@ abbrev actionAt (sy : SKM.Symmetrizer D) (w : X × (ι.J → ℤ)) :
       ι.probeHW ι.reservoirHW ι.power) w
 
 /-- The swapped action of the sector, at its weight `(μ, 0)`. -/
-abbrev swappedAction (sy : SKM.Symmetrizer D) :
+def swappedAction (sy : SKM.Symmetrizer D) :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars ι.weight :=
   ι.actionAt sy ι.weight
 
