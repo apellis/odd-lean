@@ -15,6 +15,17 @@ Start with [STATUS](STATUS.md) for established scope and claim boundaries.
 [SwappedNondegeneracy](SwappedNondegeneracy.md) is the proposed written proof.
 This file records next mathematical dependencies, not session telemetry.
 
+The checked action, vacuum/source, bend/layer and pairing-coordinate
+integrations through #1047 have passed the full warning-free build,
+global axiom audit and all concrete consumers; exact source heads and
+integration evidence are in STATUS. The final theorem is open. Restart
+with the canonical vacuum coefficient class and regular-probe chart
+coherence, the chosen inverse-row/bubble normalization, and exact
+pairing-extension quotient-kernel transport. The most recent unfinished
+source tree is `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`; its exact
+failure boundaries and paths appear below and in ResearchHistory.
+
+
 ## Proposed argument restart trees
 
 The exact source trees below are reachable from this research branch in

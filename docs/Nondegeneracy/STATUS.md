@@ -18,12 +18,13 @@ canonical source-unit normalization are also integrated.
 The vacuum-row/source-chart identification, exact source-unit word value,
 whole-Hom layer transport, evaluated cap monomials, principal factor
 coordinates, explicit parameter schedule and original-datum action pullback
-pass strict paired checks in #1046. The subsequent checked packets supply
-exact affine and normalized-bubble embedding maps, coefficient/PBW
-transport, the presented-layer action, the finite odd bend and its actual
+passed full CI and are integrated in #1046. The exact affine and normalized
+bubble embedding maps, coefficient/PBW transport, presented-layer action,
+global/local dot/crossing chart conjugacies, finite odd bend and actual
 padded matrix attachment, even bend/slide/cap formulas on mixed data, and
-all-vector tensor polynomial windows. These additions retain their own
-full-CI integration gates below.
+all-vector tensor polynomial windows passed full CI and are integrated in
+#1047. Both integrations include the warning-free full build, global axiom
+audit and every concrete consumer.
 
 The canonical vacuum quotient class, regular-probe compatibility of
 contextual charts, chosen all-height inverse-row/bubble normalization,
@@ -894,7 +895,14 @@ head `019a0ef4d12f4a8612f0e73e73b73f1a6196df3c` (run 41776984044),
 merged at `fe83891043af7ac2edf2de75c1b916243d8d2fe7`. The canonical distinct-permutation and complete supported-action
 integration #1044 passed the full build, global axiom audit and every
 consumer at `dfc547fd854300dc5f1a028aa0c299b011723f0b` (run 41779494448),
-merged at `775c1c59c8856c84af87efcd6ebf429553fe7bc5`. Newer entries marked
-scoped-checked await their own full integration. Topic branches and proposed source are not established by submission
+merged at `775c1c59c8856c84af87efcd6ebf429553fe7bc5`. The vacuum/source and original-datum action integration #1046 passed the
+same full gates at `0bf4fb6edf7e6e70c9f8b091f6b9e99b8259f556`
+(run 41782452605), merged at `852122db7c53bb8f1cfac7d30791e90bf51b6656`.
+The bend, layer-chart and pairing-coordinate integration #1047 passed
+the same full gates at `bf98c1165799f84d20ae3108adc334f9c7c43baa`
+(run 41785832621), merged at `55583bc4f0a6d9911990eee0a655fc6576fd7612`.
+The unfinished snapshot `0fe99e8dc4520ec9e8174c8e4604c3db181d0378`
+is reachable in primary history but is excluded from the checked tree.
+No verification claim applies to its draft proofs. Topic branches and proposed source are not established by submission
 alone. Finite Python models are evidence about their instances, not proofs of
 the general action or conjecture.
