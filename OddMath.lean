@@ -2652,3 +2652,6 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRows
 import OddMath.QuiverHecke.SwappedAssembly.SupportedMatrixLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowLayers
+import OddMath.QuiverHecke.SwappedAssembly.Supernatural.RestrictedLeftward
+import OddMath.QuiverHecke.SwappedAssembly.SupportedInterchange
+import OddMath.QuiverHecke.SwappedAssembly.SupportedSupernaturality
