@@ -2580,3 +2580,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightMixedBraidField
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeRouquierMulticolour
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeReservoir
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedLocalInverseCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedKernelClosureCoordinates
