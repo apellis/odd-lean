@@ -28,7 +28,7 @@ audit and every concrete consumer.
 
 The canonical vacuum quotient class, regular-probe compatibility of
 contextual charts, chosen all-height inverse-row/bubble normalization,
-exact power-quotient kernel transport and final bounded recovery remain
+sufficient quotient-observation transport and final bounded recovery remain
 open. Existing coefficient-action formulas alone do not identify the
 presentation's bubbles. Preserved drafts are not completed results.
 
@@ -848,10 +848,14 @@ and normalized content/weight transport are not asserted.
    series in both parities and every height. These are substantive
    comparisons, not consequences of the coefficient action alone.
 3. The combined action pullback, exact affine map, source-placed normalized
-   bubble map and coefficient/PBW equivalences are checked. Prove
-   composition compatibility and transport the literal coefficient-power
-   and transformed last-boundary ideals, hence the actual observation
-   kernels. Joint degree-filtration transport alone is insufficient.
+   bubble map and coefficient/PBW equivalences are checked. Supply the
+   observation quotient and its lower degree bound on the original datum.
+   Before proving literal coefficient-power and transformed-boundary ideal
+   identifications, assess the proposed pulled-back ideal in
+   [HANDOFF](HANDOFF.md#potential-simplifications-to-assess-before-further-transport-work).
+   The final interface permits this choice, but its inverse filtration,
+   quotient and evaluation transport proofs remain unverified. No obligation
+   is closed by this proposal. Joint degree-filtration transport alone is insufficient.
    Restrict the combined action along `μ ↦ (μ,0)`; restricting its factors
    separately would lose the occupied extended coset of second coordinate
    `-P`. The explicit highest weights and cutoff bounds are already proved.
