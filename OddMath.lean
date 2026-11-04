@@ -2722,3 +2722,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientChart
 import OddMath.SKM.RouquierDistinctCanonicalCapRange
 import OddMath.SKM.RouquierHomWeightCoordinates
 import OddMath.SKM.RouquierDistinctCupInverseChart
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWordSeries
