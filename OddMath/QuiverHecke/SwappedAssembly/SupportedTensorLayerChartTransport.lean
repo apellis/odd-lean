@@ -193,6 +193,22 @@ universe u
 local instance tensorLayerChartTransportHomPi {k : Type u} [CommRing k]
     (A C : PiSCat.{u,u,u + 1} k) : PiSupercategory k (A ⟶ C) :=
   PiTwoSupercategory.homPiLeft A C
+
+section PostWord
+variable {k : Type u} [CommRing k] {I X : Type*} [AddCommGroup X] {D : Datum I X}
+  (T : X → PiSCat.{u,u,u + 1} k) (W : RouquierFamily (k := k) (B := PiSCat.{u,u,u + 1} k) D)
+  (i : I) (muP : X) {muM nuM rhoM : X} (h : muM + D.α i = nuM) (h₂ : nuM + D.α i = rhoM)
+
+/-- At zero content the BB word comparison is an equality transport:
+the beta/xi conjugation is trivial and the associator is strict. -/
+theorem homContentPostWordIso_zero_app_eqToHom (Z : homWeightSector T W.obj muP muM) :
+    ∃ e, ((homContentPostWordIso T W i 0 muP h h₂).app Z).hom = eqToHom e := by
+  rw [Iso.app_hom, homContentPostWordIso_hom_app]
+  exact exists_eqToHom_comp _ _
+    (exists_eqToHom_homShiftConjugationIso _ _ (homContentShift_zero D i) _)
+    (exists_eqToHom_associator _ _ _)
+
+end PostWord
 variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
@@ -334,10 +350,10 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
     ∃ h, (tensorLayerSameCrossIso D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw pL hl pR hr).hom =
       eqToHom h := by
   unfold tensorLayerSameCrossIso ProbeReservoir.reservoirLayerSameCrossIso
-  simp only [Iso.trans_hom, eqToIso.hom, Functor.mapIso_hom, Iso.app_hom,
-    homContentPostWordIso_hom_app]
+  simp only [Iso.trans_hom, eqToIso.hom, Functor.mapIso_hom]
   repeat' first
     | with_reducible exact exists_eqToHom_self _
+    | with_reducible_and_instances apply homContentPostWordIso_zero_app_eqToHom
     | with_reducible_and_instances apply exists_eqToHom_trans
     | with_reducible_and_instances apply exists_eqToHom_eqToIso
     | with_reducible_and_instances apply exists_eqToHom_symm
