@@ -74,15 +74,42 @@ coefficients of `A = 1/E(-z)` mapped along `φ`, then
 (probeSeries P) i))`, the right side of `AdjunctionBubbleSeries.left_even`.
 The proof is the odd argument with `e = 0`.
 
+## Tensor vacuum and the actual positive inverse
+
+`ELVTensorVacuumColumnMoments.lean` instantiates the odd identity on the
+tensor vacuum. `tensorVacuumEndDecode` evaluates an endomorphism of the
+vacuum value at the vacuum point and conjugates by the decode chart.
+`tensorVacuumColumn_odd_moments` takes any column `a` with
+`a ≫ evaluatedMixedBend = 0` and `a ≫ x^j ≫ v = δ_(j,h-1)` for `j < h`
+(`x` the shifted pre dot, `v` the shifted pre cap) and gives the decoded
+moments `a ≫ x^(h-1+2s) ≫ v` and `a ≫ x^(h+2s) ≫ v` as left multiplication
+by the substituted-series coefficients of `left_odd`, the latter times
+`(-1)^(N+1) δ`. `tensorVacuumCapInverse_odd_moments` reads both column
+hypotheses off an `IsCapInverse` of the bend with windows `x^n ≫ v`.
+
+The actual inverse supplies such an `IsCapInverse`.
+`posMap_isCapInverse_of_zero_corners` (`CentralInverse/PositiveVacuumWindow.lean`)
+restricts the inverse of the positive two-sector matrix to the surviving cap
+window when the reservoir source and probe target are zero.
+`vacuumCapInverseData` (`Sigma/VacuumCapInverseWindow.lean`) applies it to the
+prescribed positive factor matrix at formal content zero, which
+`centralFactorMatrix_content_isIso` makes invertible for nonnegative height.
+Its principal entry and columns are literal entries of that inverse
+(`vacuumCapInverseData_principal`, `vacuumCapInverseData_window`). Its
+windows are the native probe caps `centralPaddedCap true n`.
+
 ## Remaining for item 2
 
-1. Instantiate `t`, `b`, `φ`, `e` on the tensor vacuum: `t` from
-   `tensorUnitCapClosure` (as left multiplication by its moment after the
-   decode chart), `b` from the chosen inverse column
-   (`ProbeWindow.IsCapInverse`) and the padded unit columns, checking the
-   slide and window hypotheses for the actual maps.
+1. Transport `vacuumCapInverseData` at the supported tensor vacuum
+   (`reservoirOutputEval` on the empty output block) to the regular probe
+   (`IsCapInverse.map` under evaluation at the regular probe), then along
+   the padded vacuum charts. `paddedVacuumDx_odd` identifies the bend with
+   `evaluatedMixedBend`. The analogous identification of
+   `centralPaddedCap true n` with `x^n ≫ v` is still to be proved, as is the
+   identification of the supported tensor input and of the evaluation
+   functors with those of `ELVProbePaddedVacuumBend`, including the content
+   bound and parameter twist used there.
 2. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
-   column moments to produce the `left_odd` field; the odd coefficients give
-   the odd bubble.
-3. The same instantiation for even colours (series step done above) and
-   the other heights.
+   column moments to produce the `left_odd` field.
+3. Even colours: the series step is done above. The tensor vacuum still lacks
+   the even reservoir moment lemmas.
