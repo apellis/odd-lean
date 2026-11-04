@@ -2629,3 +2629,5 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeContentBends
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotEntries
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedBendWindowEquations
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SeparatedClosures
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentHomZero
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbePaddedContentBends

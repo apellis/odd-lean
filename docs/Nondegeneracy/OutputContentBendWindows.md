@@ -58,6 +58,32 @@ sector, a common length at least seven, the source bound with its
 uniform quantifier order, and a detected nonzero probe vector. All 50
 owned declarations pass the standard axiom audit.
 
+`ELVContentHomZero` supplies the zero object required by the padded
+central charts in this exact category. It bundles the existing constant
+zero-module functor and proves that its identity is the zero
+supernatural transformation before any probe input is evaluated. The
+resulting `contentHom_hasZeroObject` instance adds no hypothesis and
+does not replace the coefficient category.
+
+`ELVProbePaddedContentBends` transports the two equations into the
+literal `centralPaddedSigma` entries used by the augmented central
+matrix. Its source and target automorphisms are precisely the raw OLD
+probe-dot units of `probeWindowX` and `probeWindowY`. Its undotted cap,
+normalized unit and dotted reservoir windows are the padded factor
+maps, with the signs `-q^(r+1)` for Dx and `q^(r+2)` for Cx retained.
+`elvProbe_content_padded_central_separated_windows_above` gives one
+common length above any minimum at every sector. If the reservoir
+source or probe target is absent, the Cx equation holds in the padded
+zero corner at every length, while Dx still supplies a sufficiently
+long finite series.
+
+Both additional producers and paired consumers pass the same scoped
+strict checks. Their axiom audits cover all seven owned zero-object
+declarations and all thirteen owned padded-bend declarations. The
+padded consumer retains both moving parities, a nonempty occupied
+central sector, both absent-corner branches, a common length at least
+seven and a detected nonzero probe vector.
+
 This supplies the category needed to use the chosen closure sandwich
 lemmas and finite-sum closure of the first coefficient-ideal level.
 It neither changes that ideal nor adds a global nilpotence hypothesis.
