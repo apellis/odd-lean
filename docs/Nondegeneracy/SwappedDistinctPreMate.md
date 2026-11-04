@@ -361,3 +361,10 @@ constructed two-odd consumer pass, with the single owned declaration
 audited. The consumer proves the upward slide from the actual
 multicolour relation and uses an odd dot and odd crossing, so the two
 minus signs are exercised rather than suppressed by an even fixture.
+
+`RouquierDistinctDottedUnit.distinctCrossMate_dottedUnit` discharges the
+generic dotted pitchfork's entire slide hypothesis for every actual dot
+power using `RouquierMulticolour.slideLeft_power`. Its strict producer
+and constructed two-odd consumer pass, with both owned declarations
+audited. Thus the finite-column cup transport now follows from the
+factor relations without a cyclicity or cap premise.
