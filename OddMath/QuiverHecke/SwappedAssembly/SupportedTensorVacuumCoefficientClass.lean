@@ -127,7 +127,9 @@ private theorem source_unit_raw :
 private theorem probe_chart :
     tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s = (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
       eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))) := rfl
+        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))) := by
+  unfold tensorSourcePathValueChart
+  rfl
 
 /-- Probe K3b: the unfolded source value, by rewriting. -/
 private theorem source_unit_unfolded :
