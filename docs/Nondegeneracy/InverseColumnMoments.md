@@ -98,18 +98,32 @@ Its principal entry and columns are literal entries of that inverse
 (`vacuumCapInverseData_principal`, `vacuumCapInverseData_window`). Its
 windows are the native probe caps `centralPaddedCap true n`.
 
+## Attachment to the vacuum adjunction (odd colours, positive height)
+
+`ELVProbePaddedVacuumCap.lean` identifies the prescribed padded cap rows
+`centralPaddedCap true n` at the vacuum sector with the native `x^n ≫ v`
+of the output block (`paddedVacuumCap_native`), through the same source
+chart as the padded Dx entry and the target chart
+`paddedVacuumCapTargetIso`. `vacuumPreReservoirCap_native` does this on the
+regular probe for every dotted reservoir cap, without parity.
+
+`ELVProbePaddedVacuumCapInverse.lean` transports `vacuumCapInverseData`
+entrywise (`IsCapInverse.map`, `.coordinates`, `.target`) to the native
+chart: `vacuumCapInverse_native_odd` is a cap inverse of
+`[evaluatedMixedBend; x^n ≫ v]_(n < h)` for the vacuum bend block of any
+input equal to the supported vacuum input.
+
+`ELVTensorVacuumCapInverseAttach.lean` takes the input to be the tensor input
+(`tensorSectorInput_eq_supported`), whose empty output block is the tensor
+vacuum probe functor (`tensorOutputAt_empty`), and the window length
+`h = P_i - N_i` (`vacuum_positive_window_length`). For an odd colour with
+`0 < N_i < P_i`, `tensorVacuum_chosenCapInverse_odd_moments` gives the chosen
+inverse `(j, A)` and the substituted-series moments of its last padded column
+`A (h-1)`. The column-moment step itself goes through the generic
+`column_moments_of_slide` (slide relation, probe polynomial and both windows).
+
 ## Remaining for item 2
 
-1. Transport `vacuumCapInverseData` at the supported tensor vacuum
-   (`reservoirOutputEval` on the empty output block) to the regular probe
-   (`IsCapInverse.map` under evaluation at the regular probe), then along
-   the padded vacuum charts. `paddedVacuumDx_odd` identifies the bend with
-   `evaluatedMixedBend`. The analogous identification of
-   `centralPaddedCap true n` with `x^n ≫ v` is still to be proved, as is the
-   identification of the supported tensor input and of the evaluation
-   functors with those of `ELVProbePaddedVacuumBend`, including the content
-   bound and parameter twist used there.
-2. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
+1. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
    column moments to produce the `left_odd` field.
-3. Even colours: the series step is done above. The tensor vacuum still lacks
-   the even reservoir moment lemmas.
+2. Even colours and nonpositive height are handled separately.
