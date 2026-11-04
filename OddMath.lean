@@ -2738,3 +2738,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedAction
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumWholeInput
 import OddMath.QuiverHecke.CyclotomicAction.ELVTensorVacuumPrincipalFactor
 import OddMath.QuiverHecke.SwappedVacuumParameters
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayers
