@@ -94,6 +94,21 @@ that the missing inputs to a conditional recovery theorem can be constructed.
 
 ## Potential simplifications to assess before further transport work
 
+### Prove recovery natively in the pairing extension
+
+**Lean-checked consumer, pending CI.** `PairingExtensionRecovery` proves
+`homMap_upwardCoefficientMap`: the upward coefficient evaluation of `D` at
+`μ`, followed by the exact presentation map, equals the evaluation of the
+pairing extension `Dₑ` at `(μ, 0)` after `coefficientHomEquiv`. Hence
+`nondegeneracy_of_pairingExtension_vacuum_evaluations`: vacuum evaluations
+for `Dₑ` at the original weights `(μ, 0)` imply `NondegeneracyConjecture cs`
+for `D`. The swapped action is already constructed on `Dₑ`, so the
+`SwappedVacuumEvaluation` can be built where the action lives. This removes
+the observation-quotient transport back to `D`, including the pulled-back
+ideal below and the `PairingExtensionComposition`/`PowerIdeal` drafts. It
+does not remove the extended-datum kernel bound, the vacuum observation or
+the normalized bubble obligation, which are now stated for `Dₑ`.
+
 ### Pull back the observation ideal instead of identifying its generators
 
 **Proposed, not Lean-checked.** The `SwappedVacuumEvaluation` interface takes
