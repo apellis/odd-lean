@@ -287,3 +287,18 @@ associators. `rectangularMateLinearMap` transports the correction sums
 linearly. This removes the same-colour restriction of
 `rouquierMate_comp_mate`; it does not evaluate the resulting terms
 against the canonical left caps.
+
+The resulting distinct mixed braid is checked as
+`RouquierFamily.distinctMixedBraid_correction` in
+`RouquierDistinctMixedBraid.lean`. It uses `RouquierMulticolour.braidEq`
+and the prescribed right mates, without a mixed-braid or cap-cyclicity
+premise. Its two words are `distinctMixedBraidLeft` and
+`distinctMixedBraidRight`; the correction terms are the linear outer
+mates of the original ordered dot powers. Their coefficients simplify
+to `(-1)^(p_i s)t_ij` and `(-1)^(p_i s)s_ij^(pq)`, respectively:
+the two-mate sign cancels the `p_i p_j` part of the upward braid
+coefficient. In particular the `s=0` boundary coefficient is `t_ij`.
+The paired consumer applies this equation to both ordered pairs in the
+constructed nonzero two-odd probe family. Evaluation of these separated
+correction terms against the inverse-defined caps, and the finite
+cup-column tests, remain to be proved.
