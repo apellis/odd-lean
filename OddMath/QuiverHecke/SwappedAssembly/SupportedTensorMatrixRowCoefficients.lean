@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowLayers
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorRowCoefficientAction
 
 /-! # Full source coefficients in the vacuum matrix row
 
@@ -116,5 +117,29 @@ theorem tensorVacuumRowProjection_coefficient (s : List I) {b : Obj (SKM.sig D)}
   rw [vacuumRow_apply, vacuumRow_apply, tensorMatrixCoefficientAction_apply,
     InducedCategory.comp_hom]
   exact composeSquares _ _ _ _ _ _ h₁ h₂
+
+/-- The specified original-weight whole-Hom entry intertwines the entire
+matrix coefficient action with the prescribed path-Hom coefficient action. -/
+theorem tensorOriginalWordEntry_coefficient (s : List I) {b : Obj (SKM.sig D)}
+    (hEnd : (ΛP - contentWeight D (0 : I →₀ ℕ)) + (-ΛR + contentWeight D (0 : I →₀ ℕ)) = b.endR)
+    (p : SPath b.word (0,tensorSourceContent D ΛP ΛR s) (0,0))
+    (hup : ∀ c ∈ b.word, c.l.1 = true) (a : SYM D k)
+    (x : matrixModule D Sc m cutoff N ΛP ΛR
+      (tensorSourceFamily D Sc m cutoff ΛP ΛR L s)
+      (tensorTargetFamily D Sc m cutoff ΛP ΛR L) b) :
+    tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s b a x) =
+    VacuumTensorCoefficientMaps.pathHomCoefficientAction D Tw m cutoff L ΛP ΛR p hup
+      (tensorOriginalRowSource D Sc m cutoff ΛP ΛR L s) a
+      (tensorOriginalWordEntry D Sc m cutoff ΛP ΛR L hP hR s hEnd p hup x) := by
+  change TensorEntryPullback.map
+    (tensorHomEquivalence D Sc m cutoff L ΛP ΛR
+      (ReservoirWord.weight D ΛR (tensorSourceContent D ΛP ΛR s)))
+    (tensorRowTargetIso D Sc m cutoff ΛP ΛR L hP hR s p hup)
+    (tensorVacuumRowProjection D Sc m cutoff ΛP ΛR L hP hR s hEnd p
+      (tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L s b a x)) = _
+  rw [tensorVacuumRowProjection_coefficient]
+  exact tensorRowPullback_coefficient D Sc m cutoff ΛP ΛR L hP hR s p hup a
+    (tensorVacuumRowProjection D Sc m cutoff ΛP ΛR L hP hR s hEnd p x)
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

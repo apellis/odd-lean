@@ -34,7 +34,11 @@ proves the source row and the odd coefficient are nonzero.
 The second square also passes its strict producer and concrete consumer,
 with all 23 owned declarations audited. Its consumer uses the full
 matrix action of `1 + delta` on the nonzero chosen matrix vacuum.
-The same pullback can now transport the composite to the original Hom. This argument supplies coefficient
+`tensorOriginalWordEntry_coefficient` now transports the composite to
+the specified original Hom: applying the full matrix coefficient action
+then observing the original entry is exactly path-Hom coefficient
+postcomposition of that entry. The extended producer and same occupied
+mixed-coefficient consumer pass, with all 24 owned declarations audited. This argument supplies coefficient
 equivariance of the specified row map; identifying its evaluation on the
 source unit and the subsequent quotient coordinates remains a separate
 observation step. The final observation law is not a premise of either

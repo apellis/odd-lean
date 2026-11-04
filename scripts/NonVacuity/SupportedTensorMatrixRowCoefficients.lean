@@ -247,6 +247,13 @@ example := SupportedSectors.tensorVacuumRowProjection_coefficient D originalSc m
   (SupportedSectors.tensorSourcePath D Λ Λ sourceWord) (1 + delta)
   (SupportedSectors.tensorMatrixVacuum D originalSc m cutoff Λ Λ L sourceWord)
 
+example := SupportedSectors.tensorOriginalWordEntry_coefficient D originalSc m cutoff Λ Λ L
+  probePairing reservoirPairing sourceWord (b := object)
+  (SupportedSectors.tensorWordVacuumEndpoint D Λ Λ sourceWord)
+  (SupportedSectors.tensorSourcePath D Λ Λ sourceWord)
+  (SupportedSectors.tensorSourceLabels_up D Λ Λ sourceWord) (1 + delta)
+  (SupportedSectors.tensorMatrixVacuum D originalSc m cutoff Λ Λ L sourceWord)
+
 end NonVacuity.SupportedTensorMatrixRowCoefficients
 open Lean Elab Command in
 run_cmd do
