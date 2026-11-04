@@ -1952,8 +1952,9 @@ output projection, supported paths/generators and all four supported pure
 factor inverse interfaces. Its source head is `928b4da392aa4b66a08f02c89f08fa3e0b1f14e2`,
 run 41753142717, merged at `55b95505ef22e26c520f836bb42018bab1ff648d`.
 
-The following successor results pass strict producer/consumer checks;
-full integration remains a separate gate.
+The following chosen closure/boundary and supported-vacuum results passed
+full CI in #1035 at source `34fe3ca0bd1a2893bf0adab17c6da4fe71f6e035`,
+run 41756477511, merged at `bb83ab02b9811a59c9fc3ab03a33689f0da94cf7`.
 
 - `ELVReservoirClosureDegree` proves degree `2*d_i*(r+s+1)` for both
   reconstructed source coefficients of the literal chosen principal
@@ -2002,13 +2003,29 @@ full integration remains a separate gate.
   selected-vacuum path contexts; strict nonzero coefficient-class consumers
   audit all 20 declarations. Literal composed layer entries remain next.
 
+The whole-output separated formulas are now scoped-checked in
+`ELVProbeContentBends` (50 owned declarations), with the fixed-exponent
+transport of `ELVOutputDotBounds` (10), the generic separated equations
+(93 and 41), and the component specialization (25). The common finite
+length is chosen before quantifying over input modules. The actual
+padded probe slide and every Aut cap/cup power are also scoped-checked
+in `SupportedProbeSlideWindow` and its three helpers (57 declarations).
+`SupportedTensorDotEntries` attaches the literal vacuum dot matrix in
+both nonempty contexts (25 declarations). `Sigma.PaddedBendWindowEquations`
+and `ELVProbePaddedContentBends` now attach both whole-output sums to the
+literal padded matrix entries, including both absent corners (10 and 13
+declarations). `ELVContentHomZero` constructs the needed canonical zero
+object (7). `CentralInverse.SeparatedClosures` derives all three mixed
+closed-error memberships by finite sums (9), with a nonzero square-zero
+coefficient-ideal consumer. All these successor pairs await full integration.
+
 Next discharge the following dependencies in order.
 
 1. Attach the checked off-window boundary and principal closure ideal
    memberships to the named padded inverse entries. Finite-window Kronecker equations come from the constructed
    reservoir inverse; outside the window use the positive source degree.
-2. Finish the exact `hCx`/`hDx` separated sums with the prescribed signs
-   and negative probe Aut powers. Their required output category consists
+2. Combine the checked padded `hCx`/`hDx` equations with the named reservoir
+   inverse coefficients, retaining their prescribed signs and probe Aut powers. Their required output category consists
    of whole superfunctors to a fixed content module category. The existing
    `ELVWeightDotBounds` supplies an exponent uniform in all input modules
    at that fixed content. Preserve this witness through parity shifts,
@@ -2016,9 +2033,10 @@ Next discharge the following dependencies in order.
    `RegularReservoir.evalHomFunctor`. A bound over the whole weight fibre
    is unnecessary; pointwise evaluated-module sums alone do not establish
    the required whole-functor ideal memberships.
-3. Attach the actual probe slide and cap/cup Aut windows in the supported
-   padded coordinates. Combine the separated sums, the reservoir closures
-   and the off-window contractions in the four `ResidualComparison` cases.
+3. Combine the checked padded probe slide and cap/cup Aut windows with
+   the separated sums, reservoir closures and off-window contractions.
+   Cover all signed heights in `ResidualComparison`, including the negative
+   probe-height subcases (b), (c) missing from its earlier applications.
    `contentModuleCoefficientIdeal` has all morphisms at level zero and is
    jointly nilpotent by the source coefficient bound. This is the remaining
    central inversion argument, not a supplied inverse hypothesis.
@@ -2026,8 +2044,14 @@ Next discharge the following dependencies in order.
    supported presentation. `MatrixEvaluation`, `MatrixProductEvaluation`
    and `MatrixNestedEvaluation` provide inverse lifting; the augmented
    sector charts and factor-matrix squares retain the actual native maps.
-   Then finish contextual tensor-vacuum layer and closed-moment/bubble
-   observations before applying the established recovery reductions.
+   The result is invertibility at every supported input. It does not assert
+   `P.CentralInvertible` on the larger ambient Hom category. Build objectwise
+   leftward entries conditionally from the actual matrix inverse, then prove
+   the relation equations on supported inputs and their supported paths.
+   `LeftwardData` stores objectwise generator images, so this construction
+   retains the current supported presentation interface. Then finish
+   contextual tensor-vacuum layer and closed-moment/bubble observations
+   before applying the established recovery reductions.
 
 The whole original-weight Hom category can contain other occupied contents
 at an absent formal sector. Use the supported category's proved zero
