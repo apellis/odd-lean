@@ -2699,3 +2699,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorObservationLinearity
 import OddMath.SKM.RouquierDistinctPowerSlide
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirPostUnitCoordinates
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirPostUnitStandard
+import OddMath.SKM.RouquierRectangularDottedUnit

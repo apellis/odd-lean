@@ -353,3 +353,11 @@ actual inherited distinct crossings. The strict producer and constructed
 two-odd consumer pass, with an audit of both declarations. These are the
 dot transports needed in the finite left-column reduction; the powers
 of the actual sign coefficient are retained explicitly.
+
+`RouquierRectangularDottedUnit.crossMate_pitchfork_unit_dotted` now
+checks the generic dotted-unit contraction: the homogeneous dot-slide
+sign and the interchange sign cancel exactly. Its strict producer and
+constructed two-odd consumer pass, with the single owned declaration
+audited. The consumer proves the upward slide from the actual
+multicolour relation and uses an odd dot and odd crossing, so the two
+minus signs are exercised rather than suppressed by an even fixture.
