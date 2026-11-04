@@ -26,5 +26,7 @@ The consumer uses the prescribed ELV probe/reservoir over the rational
 numbers with a connected mixed datum. Its concrete two-reservoir paths
 have positive raising content, and all path conditions are proved.
 The underlying probe vacuum append vectors are nonzero in both colours.
+The constructed crossing coefficients come from `ELVProbeDenominatorUnits`;
+neither the permutation assembly nor a probe left-mate hypothesis is needed.
 It audits all declarations of the entry module against the standard
 axiom allowlist.
