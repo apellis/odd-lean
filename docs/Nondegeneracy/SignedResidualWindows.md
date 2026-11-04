@@ -66,19 +66,38 @@ through the jointly nilpotent coefficient ideal. They do not assume
 residual invertibility. `J₀` is required to contain every morphism;
 this is supplied by the chosen content coefficient ideal.
 
-The intended concrete attachment is `Sigma/PaddedResidualInversion`.
-It uses the chosen ELV coefficient, the whole-output padded bend series,
-`ReservoirWindowCoefficientIdeal`, and the normalized OLD probe windows.
-The output content is fixed before choosing the series length and the
-coefficient-ideal bound. Product assembly of the resulting finite-matrix
-inverses therefore does not require a uniform bound over the weight
-fibre. Exact support is retained on the input Hom object, and no
-injectivity of content-to-weight is used.
+`Sigma/PaddedResidualInversion` attaches these statements to the chosen
+ELV coefficient. `SupportedSectors.centralFactorMatrix_content_isIso`
+proves both signs of the literal padded factor matrix on every supported
+Hom input and every output content, at the actual sector weight. Its
+inputs are the specified datum and parameters, a positive symmetrizer,
+homogeneity, and the supported input object; it assumes no bend,
+contraction, closure, residual inverse, or nilpotence equation. The
+finite index type used by the chosen factor construction is retained.
 
-`SeparatedClosures` and its concrete consumer pass strict scoped checks;
-all nine owned declarations pass the standard axiom audit.
-`ResidualComparisonNegative` and its concrete pair pass with five audited
-declarations. `SignedResidualWindows` and its paired rational-module
-consumer pass with all 22 declarations audited, exercising both signed
-height theorems with every hypothesis proved. The actual supported ELV
-matrix attachment and full integration remain separate gates.
+`SupportedSectors.centralAugmentedMatrix_isIso` then applies the literal
+factor comparison squares and `RegularReservoir.isIso_of_eval`. It gives
+invertibility of the actual `augPosMat` for nonnegative fused height and
+`augNegMat` for nonpositive fused height, including both zero-height
+maps. The output content is fixed before choosing the series length and
+the coefficient-ideal bound. Product assembly therefore requires no
+uniform bound over a weight fibre. The series length need only dominate
+the reservoir window size: all principal closures are available at
+arbitrary dotted indices, so fused windows longer than the series are
+also covered.
+
+The paired consumer retains the nonzero selected tensor path for two odd
+colours whose contents collide in root weight, and applies both concrete
+zero-height augmented inverses at the tensor vacuum. Exact support is
+retained on the input Hom object. The theorem neither identifies
+colliding content blocks nor supplies `ProbeReservoir.CentralInvertible`
+on arbitrary unsupported objects of the raw Hom category.
+
+The remaining presentation interface is objectwise leftward inverse
+extraction on supported inputs. The existing raw `Generators` and
+`LeftwardData` types allow conditional inverse entries at every object,
+with zero used when an augmented matrix is not invertible. On supported
+inputs the checked central matrices select the inverse branch; the
+remaining local inverse identities, their naturality and parity in
+supported contexts, and their attachment to the defining relations must
+retain that support restriction.

@@ -2638,3 +2638,4 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNega
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotClasses
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossClasses
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
