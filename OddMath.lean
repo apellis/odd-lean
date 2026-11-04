@@ -2704,3 +2704,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorPathChartCoherence
 import OddMath.SKM.RouquierDistinctDottedUnit
 import OddMath.SKM.RouquierDistinctConnectedCapBoundary
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightNegativeCap
+import OddMath.SKM.RouquierDistinctCapColumnReduction

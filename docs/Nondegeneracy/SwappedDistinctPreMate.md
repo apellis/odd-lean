@@ -368,3 +368,13 @@ power using `RouquierMulticolour.slideLeft_power`. Its strict producer
 and constructed two-odd consumer pass, with both owned declarations
 audited. Thus the finite-column cup transport now follows from the
 factor relations without a cyclicity or cap premise.
+
+`RouquierDistinctCapColumnReduction.lean` defines the exact
+`distinctCapLeft`, identifies its principal test with the checked
+mixed-braid word (`distinctCapLeft_principal_word`), and proves
+`distinctCapLeft_column_reduce`. Every normalized dotted cup-column is
+therefore the literal upper dotted cup, the inherited upward quadratic
+word, and the inverse-defined upper cap. The strict producer and
+constructed two-odd consumer pass, with all 6 owned declarations
+audited. The finite quadratic evaluation is the next input to the
+nonpositive cap identity; this reduction introduces no cap premise.
