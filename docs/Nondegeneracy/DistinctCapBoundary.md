@@ -20,13 +20,17 @@ For connected colours at height zero before the `j`-step, the subsequent
 height is `-d_ij`. The second mixed word vanishes. The monomial cap
 calculation kills all interior correction terms. In the leading sum,
 only zero source-dot exponent survives, with final exponent `d_ij - 1`;
-its coefficient is exactly `t_ij`. The proposed connected attachment is
-in `RouquierDistinctConnectedCapBoundary`, separately from the
-disconnected calculation.
+its coefficient is exactly `t_ij`. The connected attachment is checked in
+`RouquierDistinctConnectedCapBoundary`, separately from the disconnected
+calculation. `distinctMixedBraidLeft_cap_of_zero` combines both cases;
+`distinctCapRight_principal_of_zero` identifies the inverse-crossing
+side with the unscaled right counit.
 
 The disconnected boundary producer and its constructed two-odd consumer
 pass strict checks and the standard-axiom audit of all seven owned
-declarations. The connected boundary and its consumer are being checked.
+declarations. The connected boundary producer and its asymmetric
+two-odd consumer also pass strict checks and audit all twenty owned
+declarations.
 The disconnected consumer retains a nontrivial leading parameter equal
 to 2, proves both height conditions, and retains nonzero probe append
 vectors. The connected consumer uses asymmetric off-diagonal entries.
