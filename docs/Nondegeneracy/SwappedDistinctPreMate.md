@@ -302,3 +302,10 @@ The paired consumer applies this equation to both ordered pairs in the
 constructed nonzero two-odd probe family. Evaluation of these separated
 correction terms against the inverse-defined caps, and the finite
 cup-column tests, remain to be proved.
+
+The unit pitchfork for the prescribed right mate is also checked as
+`crossMate_pitchfork_unit` in `RouquierRectangularUnit.lean`, for four
+independent corners and arbitrary crossing parity. It cancels the lower
+right-adjunction unit without changing the upward crossing. This is the
+unit-side input for the finite cup-column calculation; its consumer
+uses both ordered pairs of the same nonzero two-odd probe family.
