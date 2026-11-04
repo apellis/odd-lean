@@ -2713,3 +2713,4 @@ import OddMath.SKM.RouquierDistinctCapColumns
 import OddMath.SKM.RouquierDistinctCapNonpositive
 import OddMath.SKM.RouquierDistinctCapMiddleIdentity
 import OddMath.SKM.RouquierDistinctCanonicalRotation
+import OddMath.SKM.RouquierDistinctLeftCupRotation
