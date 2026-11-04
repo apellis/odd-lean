@@ -2591,3 +2591,4 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedFactorPaths
 import OddMath.QuiverHecke.SwappedAssembly.SupportedGeneratorEntries
 import OddMath.QuiverHecke.CyclotomicAction.ELVKernelBoundaryEvaluation
 import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedWindowInverseCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVWeightedKernelBoundaryCoordinates
