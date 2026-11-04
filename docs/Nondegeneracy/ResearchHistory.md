@@ -747,3 +747,20 @@ rows, and tensor moment maps. Some portions subsequently passed scoped checks
 or full CI; STATUS records those boundaries. The complete snapshot is not a
 verification claim. Recover individual files with
 `git show 490680bf20173f67e994d0a9c26b3656e6188e06:<repository-path>`.
+
+## Canonical factor cyclicity and tensor observation arguments
+
+The complete source tree [685be86ce9](https://github.com/apellis/odd-lean/commit/685be86ce9e8a3eec9326ea611ce6cec7425e78b) preserves the proposed next factor-cyclicity
+and vacuum-observation arguments. Its sole parent is the verified primary
+integration through #1038. The history merge changes only this inventory and
+HANDOFF; it does not import unfinished sources.
+
+The preserved tree includes the proposed braid universe generalization,
+pure-entry sigma coordinates, rectangular mate/cap-pitchfork calculations,
+whole-input coefficient action, canonical tensor-word observations and chart
+coherence, and the native vacuum dot/cap/moment comparisons. The exact
+canonical left-mate cap-pitchfork input is still a mathematical proof
+obligation. Some portions have separate scoped checks or later integration;
+STATUS records those boundaries. This snapshot is not a claim that all
+files compile. Recover individual files with
+`git show 685be86ce9e8a3eec9326ea611ce6cec7425e78b:<repository-path>`.
