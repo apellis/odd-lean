@@ -44,13 +44,45 @@ No support condition on the probe is needed for the coefficient identity (the `q
 killed by `a ≫ s = 0`); the high-degree terms of the probe relation
 (`Σ c_n b_(n+m) = 0`) cancel the coefficients `l > N`.
 
+## Odd colours: the substituted series
+
+`odd_inverse_column_moments` (`InverseColumnOddSeries.lean`) solves the series
+identity at an odd colour. If the reservoir moments are
+`T(z) = A(z²)(1 + e z)` with `A(w) = 1/C(-w)` (mapped along an algebra map
+`φ` out of the polynomial generators) and `e² = 0`, the probe is
+`(x² + 1)^M` with `H + N = 2M`, and `q = -1`, then
+
+  `B(-z) = (1 - e z) · (C(-w)(1 + w)^(-M))|_(w = z²)`,
+
+so `B_(H-1+2s)` is `φ` of the `s`-th coefficient of
+`VacuumSeries.substitutedSeries k (SYM.probeSeries D k M) i` (the right side of
+`AdjunctionBubbleSeries.left_odd`) and `B_(H+2s)` is `e` times it. No
+commutation of `e` with the polynomial coefficients is used.
+`mk_eq_expand_mul_one_add` turns the coefficientwise moments
+`T_(2r) = φ(a_r)`, `T_(2r+1) = φ(a_r) e` into the series hypothesis; these are
+the shapes of `tensorPowerVacuumCap_moment_even` and
+`tensorPowerVacuumCap_moment_odd`, with `e = (-1)^(N+1) δ`.
+
+## Even colours: the substituted series
+
+`InverseColumnEvenSeries.lean` treats `q = 1` with the even probe
+`(x - 1)^P`, `H + N = P`. The reversed probe coefficients are `(1 - z)^P`
+(`reversed_sub_one_pow`), equal to the inverse probe series at an even
+colour (`probeSeriesInv_even`). If the reservoir moments `T_(N-1+l)` are the
+coefficients of `A = 1/E(-z)` mapped along `φ`, then
+`even_inverse_column_moments` gives `B_(H-1+s) = φ(coeff s (substitutedSeries
+(probeSeries P) i))`, the right side of `AdjunctionBubbleSeries.left_even`.
+The proof is the odd argument with `e = 0`.
+
 ## Remaining for item 2
 
-1. Identify `T` with the raw coefficient moments of the reservoir
-   (`signedMoment_recurrence`), so that `T(z)⁻¹` is the coefficient series
-   `C_i(-z)` (odd) or `E_i(-z)` (even) of `AdjunctionBubbleSeries`, and
-   match `ĉ(z)·B(qz)` with `(1+z²)^M · B(-z)` (odd) or `(1-z)^P · B(z)`
-   (even).
-2. Attach `a` and its window to the actual inverse column
-   (`ProbeWindow.IsCapInverse`) and the padded maps, producing the
-   `left_even`/`left_odd` fields of `AdjunctionBubbleSeries`.
+1. Instantiate `t`, `b`, `φ`, `e` on the tensor vacuum: `t` from
+   `tensorUnitCapClosure` (as left multiplication by its moment after the
+   decode chart), `b` from the chosen inverse column
+   (`ProbeWindow.IsCapInverse`) and the padded unit columns, checking the
+   slide and window hypotheses for the actual maps.
+2. Identify the normalized presentation bubbles `c⁻¹·bubLs(2s)` with these
+   column moments to produce the `left_odd` field; the odd coefficients give
+   the odd bubble.
+3. The same instantiation for even colours (series step done above) and
+   the other heights.
