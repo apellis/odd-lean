@@ -31,8 +31,37 @@ theorem exists_eqToHom_inv {C : Type*} [Category C] {A B : C} (e : A ≅ B)
 /-- In the strict 2-supercategory `Π-𝔖ℭ𝔞𝔱` the associator is an equality transport. -/
 theorem exists_eqToHom_associator.{w} {k : Type w} [CommRing k]
     {a b c d : PiSCat.{w,w,w + 1} k}
-    (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) : ∃ e, (associator f g h).hom = eqToHom e :=
-  ⟨_, by rw [BicategoryStruct.Strict.associator_eqToIso]; rfl⟩
+    (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) : ∃ e, (associator f g h).hom = eqToHom e := by
+  rw [BicategoryStruct.Strict.associator_eqToIso]
+  exact ⟨_, rfl⟩
+
+theorem exists_eqToHom_trans {C : Type*} [Category C] {A B B' : C} (e : A ≅ B) (e' : B ≅ B')
+    (he : ∃ h, e.hom = eqToHom h) (he' : ∃ h, e'.hom = eqToHom h) :
+    ∃ h, (e ≪≫ e').hom = eqToHom h :=
+  exists_eqToHom_comp e.hom e'.hom he he'
+
+theorem exists_eqToHom_eqToIso {C : Type*} [Category C] {A B : C} (h : A = B) :
+    ∃ h', (eqToIso h).hom = eqToHom h' := ⟨h, rfl⟩
+
+theorem exists_eqToHom_symm {C : Type*} [Category C] {A B : C} (e : A ≅ B)
+    (he : ∃ h, e.hom = eqToHom h) : ∃ h, e.symm.hom = eqToHom h :=
+  exists_eqToHom_inv e he
+
+theorem exists_eqToHom_mapIso {C C' : Type*} [Category C] [Category C'] (F : C ⥤ C')
+    {A B : C} (e : A ≅ B) (he : ∃ h, e.hom = eqToHom h) :
+    ∃ h, (F.mapIso e).hom = eqToHom h :=
+  exists_eqToHom_map F e.hom he
+
+theorem exists_eqToHom_app {C C' : Type*} [Category C] [Category C'] {F G : C ⥤ C'}
+    (α : F ≅ G) (Z : C) (h : ∃ h, α.hom.app Z = eqToHom h) :
+    ∃ h, (α.app Z).hom = eqToHom h := h
+
+theorem exists_eqToHom_whiskerRightIso.{w} {k : Type w} [CommRing k]
+    {A B C : PiSCat.{w,w,w + 1} k} {F G : A ⟶ B}
+    (e : F ≅ G) (E : B ⟶ C) (he : ∃ h, e.hom = eqToHom h) :
+    ∃ h, (TwoSupercategory.whiskerRightIso e E).hom = eqToHom h := by
+  rw [TwoSupercategory.whiskerRightIso_hom]
+  exact exists_eqToHom_whiskerRight e.hom E he
 
 section Shift
 universe r v' u'
@@ -76,6 +105,54 @@ theorem chartChange_eqToHom {J : Type*} (C : J → Type*) [∀ j, Category (C j)
   apply (Pi.eqToEquivalence C (rfl : x = x)).functor.map_injective
   simp only [chartChange, Functor.preimageIso_hom, Functor.map_preimage, Iso.trans_hom,
     Iso.symm_hom, he', hd', eqToHom_trans, eqToHom_map]
+
+/-- An equivalence whose functor pulls equality transports back to
+equality transports: Pi reindexing along an equality of indices. -/
+theorem preimage_eqToHom_of_pi {J : Type*} (C : J → Type*) [∀ j, Category (C j)]
+    {x y : J} (h : x = y) {A B : C x}
+    (h' : (Pi.eqToEquivalence C h).functor.obj A = (Pi.eqToEquivalence C h).functor.obj B) :
+    ∃ h'' : A = B, (Pi.eqToEquivalence C h).functor.preimage (eqToHom h') = eqToHom h'' := by
+  subst h
+  refine ⟨h', ?_⟩
+  apply (Pi.eqToEquivalence C (rfl : x = x)).functor.map_injective
+  rw [Functor.map_preimage, eqToHom_map]
+
+section General
+variable {C₁ : Type*} [Category C₁] {C₂ : Type*} [Category C₂] (E : C₁ ≌ C₂)
+  (hE : ∀ {A B : C₁} (h : E.functor.obj A = E.functor.obj B),
+    ∃ h' : A = B, E.functor.preimage (eqToHom h) = eqToHom h')
+include hE
+
+/-- A chart change between equality-transport charts is an equality transport. -/
+theorem chartChange_eqToHom_of {X : C₂} {A A' : C₁}
+    (e : X ≅ E.functor.obj A) (d : X ≅ E.functor.obj A')
+    (he : ∃ h, e.hom = eqToHom h) (hd : ∃ h, d.hom = eqToHom h) :
+    ∃ h', (chartChange E e d).hom = eqToHom h' := by
+  obtain ⟨h₁, he'⟩ := exists_eqToHom_inv e he
+  obtain ⟨h₂, hd'⟩ := hd
+  have hc : (chartChange E e d).hom = E.functor.preimage (eqToHom (h₁.trans h₂)) := by
+    simp only [chartChange, Functor.preimageIso_hom, Iso.trans_hom, Iso.symm_hom, he', hd',
+      eqToHom_trans]
+  rw [hc]
+  exact hE _
+
+/-- Pulled-back arrows in two pairs of equality-transport charts are
+conjugate by equality transports. -/
+theorem arrow_eqToHom_conj_of {X Y : C₂} {A B A' B' : C₁}
+    (e : X ≅ E.functor.obj A) (d : Y ≅ E.functor.obj B)
+    (e' : X ≅ E.functor.obj A') (d' : Y ≅ E.functor.obj B')
+    (he : ∃ h, e.hom = eqToHom h) (hd : ∃ h, d.hom = eqToHom h)
+    (he' : ∃ h, e'.hom = eqToHom h) (hd' : ∃ h, d'.hom = eqToHom h) (m : X ⟶ Y) :
+    ∃ (hA : A = A') (hB : B = B'),
+      arrow E e d m = eqToHom hA ≫ arrow E e' d' m ≫ eqToHom hB.symm := by
+  obtain ⟨hA, hcA⟩ := chartChange_eqToHom_of E hE e e' he he'
+  obtain ⟨hB, hcB⟩ := chartChange_eqToHom_of E hE d d' hd hd'
+  refine ⟨hA, hB, ?_⟩
+  have sq := arrow_chartChange E e d e' d' m
+  rw [hcA, hcB] at sq
+  rw [← Category.assoc, ← sq, Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
+
+end General
 
 /-- Two pulled-back arrows of the same whole-Hom map, in two pairs of charts
 that are all equality transports, agree up to equality transport. -/
@@ -123,6 +200,18 @@ theorem tensorRowTargetIso_hom_eqToHom {a : Obj (SKM.sig D)}
     | exact exists_eqToHom_self _
     | apply exists_eqToHom_comp
     | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
+
+/-- The vacuum input-weight equivalence pulls equality transports back to
+equality transports. -/
+theorem tensorHomEquivalence_preimage_eqToHom (z : X)
+    {A B : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
+      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR z}
+    (h : (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).functor.obj A =
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).functor.obj B) :
+    ∃ h' : A = B,
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR z).functor.preimage (eqToHom h) =
+        eqToHom h' :=
+  TensorEntryPullback.preimage_eqToHom_of_pi _ _ h
 
 section Context
 variable {l r : List (Col I X)} {cL cM cR : I →₀ ℕ}
@@ -182,8 +271,8 @@ theorem tensorLayerDot_chartChange_eqToHom
       (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)) g
       (tensorLayerDotIso D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr)).hom =
         eqToHom h := by
-  unfold tensorHomEquivalence
-  exact TensorEntryPullback.chartChange_eqToHom _ _ g _ hg
+  exact TensorEntryPullback.chartChange_eqToHom_of _
+    (tensorHomEquivalence_preimage_eqToHom D Sc m cutoff ΛP ΛR L _) g _ hg
     (tensorLayerDotIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i hv pL hl pR hr)
 
 /-- **Dot layer coherence.** In every global chart that is an equality
@@ -211,10 +300,10 @@ theorem tensorOriginalWordLayer_dot_transport
             (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR))) =
         eqToHom h₁ ≫ tensorLayerDotRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a ≫
           eqToHom h₂.symm := by
-  rw [tensorLayerDotRaw_arrow D Sc m cutoff L ΛP ΛR hP hR ν u v i hv pL hl pR hr a leftward]
+  rw [tensorLayerDotRaw_arrow (leftward := leftward)]
   have he := tensorLayerDotIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i hv pL hl pR hr
-  unfold tensorHomEquivalence at g ⊢
-  exact TensorEntryPullback.arrow_eqToHom_conj _ _ g g _ _ hg hg he he _
+  exact TensorEntryPullback.arrow_eqToHom_conj_of _
+    (tensorHomEquivalence_preimage_eqToHom D Sc m cutoff ΛP ΛR L _) g g _ _ hg hg he he _
 
 end Dot
 
@@ -244,10 +333,20 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
     | apply exists_eqToHom_associator
     | apply exists_eqToHom_homShiftConjugationIso
     | apply tensorContextIso_hom_eqToHom
+    | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
+    | apply exists_eqToHom_whiskerRight
+    | apply exists_eqToHom_trans
+    | apply exists_eqToHom_eqToIso
+    | apply exists_eqToHom_symm
+    | apply exists_eqToHom_mapIso
+    | apply exists_eqToHom_whiskerRightIso
+    | apply exists_eqToHom_app
 
 end Same
 
-open private tensorCrossContextIso in
+open private OddMath.QuiverHecke.SwappedAssembly.SupportedSectors.tensorCrossContextIso
+  from OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
+
 /-- The distinct-colour context chart, with its right-path reindexing, is an
 equality transport. -/
 theorem tensorCrossContextIso_hom_eqToHom {l r : List (Col I X)} {cL cM cR cR' : I →₀ ℕ}
@@ -279,30 +378,38 @@ variable (ν : X) (u v : List (Letter I)) (i j : I)
 theorem tensorLayerCrossSourceIso_hom_eqToHom :
     ∃ h, (tensorLayerCrossSourceIso D Sc m cutoff L ΛP ΛR hP hR ν u v i j
       hv₁ hv₂ hs pL hl pR hr).hom = eqToHom h := by
-  unfold tensorLayerCrossSourceIso ProbeReservoir.reservoirLayerCrossSourceIso
-    ProbeReservoir.reservoirCrossSourceIso reservoirVacuumPairIso
-  simp only [Iso.trans_hom, eqToIso.hom, Functor.mapIso_hom]
+  unfold tensorLayerCrossSourceIso
+  unfold ProbeReservoir.reservoirLayerCrossSourceIso
+  unfold ProbeReservoir.reservoirCrossSourceIso
+  unfold reservoirVacuumPairIso
   repeat' first
-    | exact exists_eqToHom_self _
-    | apply exists_eqToHom_comp
-    | apply exists_eqToHom_map
-    | apply exists_eqToHom_associator
     | apply tensorCrossContextIso_hom_eqToHom
+    | apply exists_eqToHom_associator
+    | apply exists_eqToHom_trans
+    | apply exists_eqToHom_eqToIso
+    | apply exists_eqToHom_symm
+    | apply exists_eqToHom_mapIso
+    | apply exists_eqToHom_whiskerRightIso
+    | apply exists_eqToHom_app
 
 /-- The distinct-colour target chart is an equality transport. -/
 theorem tensorLayerCrossTargetIso_hom_eqToHom :
     ∃ h, (tensorLayerCrossTargetIso D Sc m cutoff L ΛP ΛR hP hR ν u v i j
       hw₁ hw₂ hs pL hl pR hr).hom = eqToHom h := by
-  unfold tensorLayerCrossTargetIso ProbeReservoir.reservoirLayerCrossTargetIso
-    ProbeReservoir.reservoirVacuumCrossTargetIso reservoirVacuumPairIso
-  simp only [Iso.trans_hom, eqToIso.hom, eqToIso.inv, Iso.symm_hom, Functor.mapIso_hom,
-    Functor.mapIso_inv]
+  unfold tensorLayerCrossTargetIso
+  unfold ProbeReservoir.reservoirLayerCrossTargetIso
+  unfold ProbeReservoir.reservoirCrossTargetIso
+  unfold ProbeReservoir.reservoirVacuumCrossTargetIso
+  unfold reservoirVacuumPairIso
   repeat' first
-    | exact exists_eqToHom_self _
-    | apply exists_eqToHom_comp
-    | apply exists_eqToHom_map
-    | apply exists_eqToHom_associator
     | apply tensorCrossContextIso_hom_eqToHom
+    | apply exists_eqToHom_associator
+    | apply exists_eqToHom_trans
+    | apply exists_eqToHom_eqToIso
+    | apply exists_eqToHom_symm
+    | apply exists_eqToHom_mapIso
+    | apply exists_eqToHom_whiskerRightIso
+    | apply exists_eqToHom_app
 
 end Distinct
 end SupportedSectors
