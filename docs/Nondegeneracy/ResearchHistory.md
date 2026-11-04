@@ -497,6 +497,7 @@ presence does not assert that the complete tree compiles.
 
 | Source variant | Source revision | Preserved full tree |
 | --- | --- | --- |
+| Vacuum source classes and normalized cap moments | Proposed successor to the scoped-checked supported action and coefficient observation | [5c8d834f49](https://github.com/apellis/odd-lean/commit/5c8d834f493e58a278d34090759371b232fa8c3a); complete source tree, including unfinished attempts; sole parent is full-CI integration #1043 |
 | `research/content-matrix-comparison` (branch tip) | `6dc3b556f30485665db29b0a75777d80408984b1` | [5ab5223932](https://github.com/apellis/odd-lean/commit/5ab5223932bb3a171272f4dfbc7431d26a9d3ada) |
 | `research/content-principal-square` (branch tip) | `5e304448f794563ef5537d1cdb1f806c21f4f76f` | [2f5c8ebbcc](https://github.com/apellis/odd-lean/commit/2f5c8ebbcc06a40028eb511ac60410e9446111e6) |
 | `research/content-supported-local-inverse` (branch tip) | `8aaead55e7117762447b95120913942a67a11d2a` | [044d8ed6f9](https://github.com/apellis/odd-lean/commit/044d8ed6f900b43bef71481ba3cc6520fcc651d3) |
