@@ -115,19 +115,37 @@ private theorem coefficient_vacuum_unfold (a : SYM D k) :
     tensorOriginalWordEntry_vacuum]
   rfl
 
-/-- The source chart sends the source unit to the word unit, in the value
-space of the source word block. -/
+/-- The source chart sends the source unit to the source-word unit. -/
+private theorem source_unit_raw :
+    (((tensorSourcePathValueChart D Sc m cutoff ΛP ΛR L s).hom βS).total wS
+      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
+      tensorSourceWordUnit D Sc cutoff ΛP ΛR L s :=
+  tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
+
+/-- The same value with the source chart unfolded. -/
+private theorem source_unit_unfolded :
+    (((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
+      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
+        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS).total wS
+      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
+      tensorSourceWordUnit D Sc cutoff ΛP ΛR L s := by
+  have hu := source_unit_raw D Sc cutoff L m ΛP ΛR hP hR s
+  delta tensorSourcePathValueChart at hu
+  exact hu
+
+/-- The same value, with the word unit unfolded. -/
 private theorem source_unit_value :
-    @Eq ((PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS) s.reverse βS).obj wS)
-      (((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
-        eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
-          (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS).total wS
-        (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
-          (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)))
-      (PowerWordYoneda.unitVector D Tw cutoff L s.reverse) := by
-  have hu : _ = _ := tensorOriginalSourceUnit_wordValue D Sc m cutoff ΛP ΛR L hP hR s
-  unfold tensorSourcePathValueChart at hu
-  exact hu.trans (tensorSourceWordUnit_formula D Sc cutoff ΛP ΛR L s)
+    (((tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS ≪≫
+      eqToIso (congrArg (PowerWordWeight.wordFamily D Tw cutoff L ΛR (ReservoirWord.weight D ΛR cS))
+        (congrArg List.reverse (tensorSourceLabels_colors D ΛP ΛR s)))).hom βS).total wS
+      (((tensorOriginalRowSourceIso D Sc m cutoff ΛP ΛR L hP hR s).hom.total R₀ βS).total wS
+        (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s))) =
+      PowerWordYoneda.unitVector D Tw cutoff L s.reverse := by
+  have hu := source_unit_unfolded D Sc cutoff L m ΛP ΛR hP hR s
+  delta tensorSourceWordUnit at hu
+  exact hu
 
 /-- The literal row chart sends the source unit to the coefficient class. -/
 private theorem coefficient_vacuum_class (a : SYM D k) :
@@ -141,7 +159,7 @@ private theorem coefficient_vacuum_class (a : SYM D k) :
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) := by
   have hu := source_unit_value D Sc cutoff L m ΛP ΛR hP hR s
-  delta tensorSourceWordBlock at hu ⊢
+  delta tensorSourceWordBlock at *
   exact coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
     ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a hu
 
@@ -157,7 +175,8 @@ private theorem coefficient_vacuum_class_direct (a : SYM D k) :
       (PowerWordQuotientCoordinates.kernel D Sc cutoff L s s).mkQ
         (sourceCoefficientHom D Sc a (𝟙 _)) :=
   coefficient_coordinate_unit_class D Sc cutoff L s _ (tensorSourceLabels_colors D ΛP ΛR s)
-    ΛR _ _ _ (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a
+    ΛR (ReservoirWord.weight D ΛR cS) (tensorSourceWordBlock D ΛP ΛR s).2 _
+    (tensorPathValueChart D Sc m cutoff ΛP ΛR L pS upS) _ a
     (source_unit_value D Sc cutoff L m ΛP ΛR hP hR s)
 
 /-- The unchanged canonical observation of the full raw coefficient action
