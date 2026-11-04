@@ -271,6 +271,8 @@ example := SupportedSectors.tensorOriginalSourceUnit_formula D originalSc m cuto
 example := SupportedSectors.tensorOriginalSourceModuleIso_apply D originalSc m cutoff Λ Λ L
   probePairing reservoirPairing sourceWord
   (SupportedSectors.tensorOriginalSourceUnit D originalSc m cutoff Λ Λ L probePairing reservoirPairing sourceWord)
+example := SupportedSectors.tensorOriginalSourceUnit_wordValue D originalSc m cutoff Λ Λ L
+  probePairing reservoirPairing sourceWord
 example := SupportedSectors.tensorOriginalSourceUnit_value D originalSc m cutoff Λ Λ L
   probePairing reservoirPairing sourceWord
 
