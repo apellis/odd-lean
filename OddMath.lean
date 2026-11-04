@@ -2659,3 +2659,7 @@ import OddMath.SKM.RouquierHomDistinctSourceUnits
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.MixedEntrySourceUnits
 import OddMath.QuiverHecke.CyclotomicAction.ELVMixedSourcePolynomialUnits
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSourcePolynomialUnits
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLeftCap
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeMissingCapCoordinates
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightLeftCounit
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightVacuumCap
