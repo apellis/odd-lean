@@ -2752,3 +2752,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeVacuumBendSeries
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralBend
 import OddMath.QuiverHecke.PairingExtensionObservation
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenCentralSlide
+import OddMath.QuiverHecke.CyclotomicAction.ELVTensorEvenVacuumCap
