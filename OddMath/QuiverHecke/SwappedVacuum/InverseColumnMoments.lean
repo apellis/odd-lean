@@ -207,6 +207,37 @@ theorem column_slide (q : k) (hq : q * q = 1) (x : End X) (y : End Y)
         show d + 1 + (n - 1 - j) = d + (n + 1 - 1 - j) by omega]
     · rw [Nat.add_sub_cancel_left, pow_one, show d + (n + 1 - 1 - n) = d by omega]
 
+/-- The probe relation composed with the reservoir cap: the relation `hrel` of
+`reservoir_mul_weightedColumn` for the column and reservoir moments (in
+`End V` the product `t * b` is the composite `b ≫ t`). -/
+theorem column_reservoir_relation (q : k) (hq : q * q = 1) (x : End X) (y : End Y)
+    (s : X ⟶ Y) (u : V ⟶ Y) (v : X ⟶ V) (ell : Y ⟶ V) (a : V ⟶ X) (P : ℕ) (c : ℕ → k)
+    (hslide : s ≫ y - q • (x ≫ s) = v ≫ u) (has : a ≫ s = 0)
+    (hprobe : capPolynomial c P x = 0) (d : ℕ) :
+    ∑ n ∈ range (P + 1), c n • ∑ j ∈ range n, q ^ (n - j) •
+      ((a ≫ (x ^ j) ≫ v) ≫ u ≫ (y ^ (d + (n - 1 - j))) ≫ ell) = 0 := by
+  have h0 : a ≫ capPolynomial c P x ≫ s ≫ (y ^ d) ≫ ell = 0 := by
+    rw [hprobe, Limits.zero_comp, Limits.comp_zero]
+  rw [comp_capPolynomial_comp, ← neg_eq_zero, ← sum_neg_distrib] at h0
+  rw [← h0]
+  apply sum_congr rfl
+  intro n _
+  rw [column_slide q hq x y s u v ell a hslide has n d, smul_neg, neg_neg]
+
+/-- The probe relation composed with the column: the relation `hhigh` of
+`reservoir_mul_weightedColumn` for the column moments. -/
+theorem column_probe_relation (x : End X) (v : X ⟶ V) (a : V ⟶ X) (P : ℕ) (c : ℕ → k)
+    (hprobe : capPolynomial c P x = 0) (m : ℕ) :
+    ∑ n ∈ range (P + 1), c n • (a ≫ (x ^ (n + m)) ≫ v) = 0 := by
+  have h0 : a ≫ capPolynomial c P x ≫ (x ^ m) ≫ v = 0 := by
+    rw [hprobe, Limits.zero_comp, Limits.comp_zero]
+  rw [comp_capPolynomial_comp] at h0
+  rw [← h0]
+  apply sum_congr rfl
+  intro n _
+  rw [show x ^ (n + m) = (x ^ n) ≫ (x ^ m) by rw [add_comm, pow_add, End.mul_def],
+    Category.assoc]
+
 /-- Positive-height inverse column moments against the reservoir. With the
 column window `hcol`, `a ≫ s = 0`, the slide, the reservoir window and the
 monic probe of degree `H + N`, the reservoir right moments and the
@@ -223,24 +254,9 @@ theorem inverse_column_reservoir_series (q : k) (hq : q * q = 1) (x : End X)
         u ≫ (y ^ (N - 1 + (L - l))) ≫ ell = if L = 0 then 𝟙 V else 0 := by
   have h := reservoir_mul_weightedColumn (R := End V) q hq H N hH hN c hc
     (fun j => a ≫ (x ^ j) ≫ v) (fun i => u ≫ (y ^ i) ≫ ell) hcol hwindow
-    (fun d => ?_) (fun m => ?_) L
-  · simpa only [End.mul_def, End.one_def] using h
-  · have h0 : a ≫ capPolynomial c (H + N) x ≫ s ≫ (y ^ d) ≫ ell = 0 := by
-      rw [hprobe, Limits.zero_comp, Limits.comp_zero]
-    rw [comp_capPolynomial_comp, ← neg_eq_zero, ← sum_neg_distrib] at h0
-    rw [← h0]
-    apply sum_congr rfl
-    intro n _
-    rw [column_slide q hq x y s u v ell a hslide has n d, smul_neg, neg_neg]
-    rfl
-  · have h0 : a ≫ capPolynomial c (H + N) x ≫ (x ^ m) ≫ v = 0 := by
-      rw [hprobe, Limits.zero_comp, Limits.comp_zero]
-    rw [comp_capPolynomial_comp] at h0
-    rw [← h0]
-    apply sum_congr rfl
-    intro n _
-    rw [show x ^ (n + m) = (x ^ n) ≫ (x ^ m) by rw [add_comm, pow_add, End.mul_def],
-      Category.assoc]
+    (column_reservoir_relation q hq x y s u v ell a (H + N) c hslide has hprobe)
+    (column_probe_relation x v a (H + N) c hprobe) L
+  simpa only [End.mul_def, End.one_def] using h
 
 end Category
 
