@@ -31,6 +31,7 @@ window. See `docs/Nondegeneracy/InverseColumnMoments.md`.
 -/
 
 noncomputable section
+set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld
 open BalancedInduction CyclotomicCrossingTensor PowerVacuumCoefficient ProbeVacuumCap
@@ -53,7 +54,7 @@ local notation "AQ" => CoefficientPowerQuotient (k := k) D cutoff L
 
 /-- The decode chart of the tensor vacuum value, with its input chart as inverse. -/
 def tensorVacuumDecodeEquiv : (V).obj star ≃ₗ[k] AQ :=
-  LinearEquiv.ofLinear (tensorVacuumDecodeLinear D Sc m cutoff L)
+  LinearEquiv.ofLinearMap (tensorVacuumDecodeLinear D Sc m cutoff L)
     (tensorVacuumInputLinear D Sc m cutoff L)
     (LinearMap.ext (tensorVacuumDecode_input D Sc m cutoff L))
     (LinearMap.ext (tensorVacuumInput_decode D Sc m cutoff L))
@@ -78,7 +79,7 @@ local notation "K" => contentAppend D Sc cutoff bound (0 : Multiset I) [i]
 private def coefficientLmul : MvPolynomial (I × ℕ) k →ₐ[k] Module.End k AQ :=
   (Algebra.lmul k AQ).comp (polynomialToPower D cutoff L)
 
-private theorem unit_cap_closure (hN : 0 < cutoff i) (hP : 0 < probeCutoff D m i) (n : ℕ) :
+private theorem unit_cap_closure (hN : 0 < cutoff i) (n : ℕ) :
     (adjunction K).unit.app V ≫ (evaluatedPostDot D Sc m cutoff bound i H ^ n) ≫
       tensorPowerVacuumCap D Sc m cutoff L i hN = tensorUnitCapClosure D Sc m cutoff L i hN n := by
   rw [tensorUnitCapClosure, unitDotColumn_eq_restrictedDotEnd, Category.assoc]
@@ -186,14 +187,14 @@ theorem tensorVacuumColumn_odd_moments
         ext1 w
         obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
         change ρ _ (tensorVacuumDecodeLinear D Sc m cutoff L z) = _
-        rw [unit_cap_closure D Sc m cutoff L i hN hP, tensorVacuumEndDecode_apply,
+        rw [unit_cap_closure D Sc m cutoff L i hN, tensorVacuumEndDecode_apply,
           tensorPowerVacuumCap_moment_even D Sc m cutoff L i hi hN r z]
         rfl)
       (fun r => by
         ext1 w
         obtain ⟨z, rfl⟩ := (tensorVacuumDecodeEquiv D Sc m cutoff L).surjective w
         change ρ _ (tensorVacuumDecodeLinear D Sc m cutoff L z) = _
-        rw [unit_cap_closure D Sc m cutoff L i hN hP, tensorVacuumEndDecode_apply,
+        rw [unit_cap_closure D Sc m cutoff L i hN, tensorVacuumEndDecode_apply,
           tensorPowerVacuumCap_moment_odd D Sc m cutoff L i hi hN r z]
         change _ = polynomialToPower D cutoff L _ * (δq * tensorVacuumDecodeLinear D Sc m cutoff L z)
         rw [← mul_assoc, (hcomm _).eq]
@@ -237,9 +238,8 @@ theorem tensorVacuumCapInverse_odd_moments
           (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k m) i)) *
           tensorVacuumDecodeLinear D Sc m cutoff L z) :=
   tensorVacuumColumn_odd_moments D Sc m cutoff L sy hc i hi hP hN h hh hhN _ (hA.2.1 _)
-    (fun j hj => by
-      have := hA.2.2.2.1 ⟨h - 1, by omega⟩ ⟨j, hj⟩
-      rw [this]
-      exact if_congr (by simp only [Fin.ext_iff]; omega) rfl rfl) s z
+    (fun j hj => (hA.2.2.2.1 ⟨h - 1, by omega⟩ ⟨j, hj⟩).trans
+      (if_congr ⟨fun e => by rw [Fin.ext_iff] at e; dsimp only at e; omega,
+        fun e => Fin.ext (by dsimp only; omega)⟩ rfl rfl)) s z
 
 end OddMath.QuiverHecke.ELVOld
