@@ -2051,8 +2051,12 @@ Next discharge the following dependencies in order.
    using `ELVProbeTransposeNorms` and `OffCentralAugmentedMatrix`. Its strict
    nonzero consumer audits 14 declarations. `SupportedSupernaturality` and
    `SupportedInterchange` supply restricted parity/naturality and interchange
-   (28 and four audited declarations); interchange retains the global
-   distinct-colour permutation input. No raw ambient inverse is asserted.
+   (28 and four audited declarations). `SupportedAction.pointwiseObligations`
+   now supplies the constructed distinct-colour permutation and all remaining
+   relation fields; `pointwiseUpwardModuleAction` gives the complete supported
+   upward action with no extra relation premise. Its strict native tensor-family
+   consumer passes, auditing 49 declarations across the action, inversion and
+   supernaturality modules. No raw ambient inverse is asserted.
 2. The distinct-colour package is now scoped-checked. The native cap proof
    covers `h_i(a) ≤ max(d_ij−1,0)`; in the complementary range the next
    i-weight has height strictly above `d_ij`, where the complete cup identity
@@ -2064,8 +2068,8 @@ Next discharge the following dependencies in order.
    `DistinctPureEntries` and `DistinctPureReservoirEntry` now have native
    consumers for both pure entries. `ELVProbeSigmaPermutation` assembles
    the full native permutation with no mate or pure-entry hypothesis;
-   its strict both-order consumer passes. Use this package directly in
-   supported interchange and presentation assembly. The older braid spine's
+   its strict both-order consumer passes. This package is now used directly
+   in the checked supported interchange and presentation assembly. The older braid spine's
    actual universe-generalized application now passes its constructed
    supercategory consumer and audit of all 1,348 declarations across 98
    modules; no mathematical hypothesis is changed. A standalone allweight cap identity and
@@ -2127,8 +2131,9 @@ The whole original-weight Hom category can contain other occupied contents
 at an absent formal sector. Use the supported category's proved zero
 functors for padding; do not infer absence from a weight equality alone.
 The intended factor is `elvProbeReservoir`, with its full exterior-coefficient
-reservoir and untruncated evaluated OLD probe. Its construction does not
-by itself supply the swapped action or nondegeneracy theorem.
+reservoir and untruncated evaluated OLD probe. `SupportedAction` now supplies
+the complete supported upward action. The observation/bubble attachment and
+nondegeneracy theorem remain open.
 
 ## Final synthesis and verification
 
