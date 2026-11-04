@@ -26,6 +26,11 @@ and normalized global word chart. Its checked all-vector formula is
 `tensorOriginalSourceModuleIso_apply`. The source unit is obtained through
 this module isomorphism's inverse, and `tensorOriginalSourceUnit_value`
 proves cancellation in the exact original-weight value space.
+`tensorOriginalSourceUnit_wordValue` composes this identity with the
+all-vector formula to identify the literal whole-source/global-chart
+value directly with `tensorSourceWordUnit`, before any old-module or
+quotient transport. Its proposition is inferred from the two checked
+identities to retain their identical carrier presentation.
 `tensorOriginalSourceUnit_formula` identifies this presentation exactly
 with the previous inverse whole-source and inverse word-chart expression.
 The chart package records both whole-morphism formulas at construction;
@@ -34,7 +39,7 @@ no comparison premise is supplied by the caller.
 The canonical-observation, normalization and path-chart declarations passed
 strict pinned-toolchain producer and paired-consumer verification. The consumer applies the observation to the nonzero cyclic
 tensor matrix with two independent odd coefficients in a
-colliding-root-weight datum and audits all 68 producer declarations
+colliding-root-weight datum and audits all 70 producer declarations
 against the standard axiom allowlist. It does not assert
 injectivity or a nonzero output of regular-probe observation. Linearity is supplied by
 `SupportedTensorObservationLinearity`. Compatibility with the existing local dot and pair charts in arbitrary

@@ -2006,9 +2006,13 @@ run 41756477511, merged at `bb83ab02b9811a59c9fc3ab03a33689f0da94cf7`.
 The cap-boundary and canonical word-observation integration #1043 passed
 the full warning-free build, global axiom audit and every concrete consumer
 at source `019a0ef4d12f4a8612f0e73e73b73f1a6196df3c` (run 41776984044),
-merged at `fe83891043af7ac2edf2de75c1b916243d8d2fe7`. The newer all-height
-canonical left-mate and complete distinct permutation packets below are
-scoped-checked and await their own full integration.
+merged at `fe83891043af7ac2edf2de75c1b916243d8d2fe7`. The canonical all-height
+left mate, complete distinct permutation, native braid application, complete
+supported upward action and full matrix coefficient observation passed
+all the same gates in #1044 at `dfc547fd854300dc5f1a028aa0c299b011723f0b`
+(run 41779494448), merged at `775c1c59c8856c84af87efcd6ebf429553fe7bc5`.
+Subsequent vacuum-row, source-value, layer and moment attachments below
+retain their strict paired-check boundary until their own full integration.
 
 The whole-output separated formulas are now scoped-checked in
 `ELVProbeContentBends` (50 owned declarations), with the fixed-exponent
@@ -2101,7 +2105,15 @@ Next discharge the following dependencies in order.
    `SupportedTensorMatrixCoefficientObservation.tensorMatrixCoefficient_observation`
    now combines these into the unchanged canonical observation of the full
    matrix coefficient action; its nonzero mixed-coefficient consumer passes.
-   Identify the vacuum quotient value and finish contextual layer laws.
+   `SupportedTensorVacuumObservation.tensorOriginalWordEntry_vacuum` now
+   identifies the canonical vacuum row with its exact source isomorphism;
+   its strict consumer audits 31 declarations. The additive typed
+   `tensorOriginalSourceUnit_wordValue` normalization passes the extended
+   Unit consumer with 70 audits. `SupportedTensorEntryLayers` transports
+   the literal layer action to chronological whole-Hom postcomposition,
+   with a complete-action/nonzero-matrix consumer and 30 owned audits.
+   Finish the vacuum quotient value, local dot/crossing chart changes after
+   regular-probe evaluation, and the contextual layer laws.
    A nonzero cyclic input does
    not establish injectivity of observation on all matrices.
 4. `CentralInverse.VacuumWindow` and `Sigma.VacuumInverseWindow` extract
@@ -2119,13 +2131,44 @@ Next discharge the following dependencies in order.
    `RouquierHomWeightCoordinates` now transports these words through both
    Hom weights, and `Sigma.PaddedBendWordSeries` expands the actual padded
    central map in the same cap/cup words using constructed finite bounds.
-   Identify each evaluated native vacuum monomial and the resulting finite
+   `ELVProbeVacuumBendMonomials.vacuumBendMonomial_native` now identifies
+   every evaluated negative-cap/post-unit word, with a strict nonzero
+   tensor/odd-coefficient consumer and 41 owned audits. Compose the finite
    bend, then identify prescribed inverse rows with polynomial caps and
-   attach the all-vector moments and bubble normalization. Generic last-row uniqueness in
+   attach the all-vector moments and bubble normalization. The even moving
+   colour's actual shifted probe dot now has `(x-1)^m=0` and is invertible
+   in `ELVProbeEvenVacuumPolynomial`; its strict mixed-data/nonzero-source
+   consumer audits 16 declarations. Extend the evaluated bend and cap
+   formulas with this even normalization. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
-5. Complete bounded corner recovery and apply the existing observation,
-   finite-colour, orientation and ground-ring reductions, followed by the
-   checked all-even specialization.
+   `ELVTensorVacuumWholeInput.tensorSectorInput_eq_supported` now identifies
+   the full tensor input with this supported vacuum through both weight
+   transports. `ELVTensorVacuumPrincipalFactor` removes both padding charts
+   from the chosen height-zero principal isomorphism and retains its exact
+   inverse-row formula. The two strict producers and occupied two-odd
+   consumer pass, auditing 62 declarations. Evaluate this inverse through
+   the same bend charts before applying the polynomial-cap comparison.
+5. `SwappedVacuumParameters` now constructs literal highest weights
+   `(0,P)` and `(-μ,P)` in the pairing extension, identifies the actual
+   probe cutoff with the existing schedule, and proves both factor bounds
+   and the coefficient-power window inequality. Its strict mixed,
+   repeated-word consumer retains a nonzero common-coroot-kernel coordinate
+   and applies actual half-turn injectivity; all 22 declarations are audited.
+   `SKM.PairingExtensionDiagrams`, `PairingExtensionPresentation` and
+   `QuiverHecke.PairingExtensionAction` now construct the region/signature
+   map, transport all defining relations, descend to a linear presentation
+   functor and pull back the actual combined upward action, retaining its
+   carriers. Strict connected mixed/occupied-probe/coroot-kernel checks
+   audit 89 declarations. Next prove the `alpha`, source-placement and
+   `betaSYM` identities and transport the observation. Restricting the
+   factors separately loses the occupied extended coset with second
+   coordinate `-P`; only the combined Hom heights cancel this coordinate.
+6. Fill `UpwardModuleAction.toSwappedVacuumEvaluation` with the constructed
+   action, coefficient and bubble comparisons, bounded corner and exact
+   affine evaluation. Apply `nondegeneracy_of_restrictColours_vacuum_evaluations`
+   and the existing orientation and ground-ring reductions, followed by the
+   checked all-even specialization. This endpoint does not require the
+   stronger global relation record in `SwappedVacuumObservation`.
 
 The whole original-weight Hom category can contain other occupied contents
 at an absent formal sector. Use the supported category's proved zero

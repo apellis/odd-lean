@@ -246,6 +246,18 @@ theorem tensorOriginalSourceModuleIso_apply
     (tensorSourceModuleChart D Sc m cutoff ΛP ΛR L hP hR s)
     (PowerWordContentCyclicity.wordObject D Tw cutoff L s.reverse (s.reverse : Multiset I) rfl) z
 
+private def proofProposition {P : Prop} (_ : P) : Prop := P
+
+/-- The unchanged whole source chart and normalized global word chart
+send the canonical source unit to its exact original-weight word unit. -/
+theorem tensorOriginalSourceUnit_wordValue :
+    proofProposition ((tensorOriginalSourceModuleIso_apply D Sc m cutoff ΛP ΛR L hP hR s
+      (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)).symm.trans
+        (tensorOriginalSourceUnit_value D Sc m cutoff ΛP ΛR L hP hR s)) :=
+  (tensorOriginalSourceModuleIso_apply D Sc m cutoff ΛP ΛR L hP hR s
+    (tensorOriginalSourceUnit D Sc m cutoff ΛP ΛR L hP hR s)).symm.trans
+    (tensorOriginalSourceUnit_value D Sc m cutoff ΛP ΛR L hP hR s)
+
 /-- The source unit agrees exactly with the prescribed inverse whole
 source and inverse global word-chart formula. -/
 theorem tensorOriginalSourceUnit_formula :

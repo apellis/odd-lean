@@ -40,3 +40,18 @@ Nonzero probe append vectors in both colours are retained. Its audit
 checks all owned declarations of the supported inversion,
 supernaturality and action modules against the standard axiom
 allowlist.
+
+The stronger consumer `scripts/NonVacuity/SupportedTensorAction.lean`
+uses the two-odd collision datum with off-diagonal Cartan entries
+`-2`, symmetrizer one and homogeneous parameters with zero interior
+coefficients. The source word contains both odd colours. Its nonempty
+reservoir content has root weight zero, so weight alone cannot identify
+the source sector with the vacuum sector. Bounded coordinate
+injectivity proves that the product of the two odd coefficient
+generators is nonzero in the selected tensor row. This proves that the
+source object, the full tensor matrix vacuum and the corresponding
+vector in the complete action's module are nonzero. The same source
+and target families supply all presentation obligations, and the
+identity diagram acts nontrivially on this vector. The consumer audits
+both imported mathematical modules and the constructed nonzero-vector
+proofs.
