@@ -144,12 +144,14 @@ theorem homDistinctMixedMateDot_isIso_of_inverse_odd_units {x : E ⟶ E}
     ((hXX.symm.sub_right hYYX.symm)).sub_left (hXXY.symm.sub_right hYY.symm)
   have hSX2 : mixedPostSourcePreDot (k := k) E κ H (F' := F') (x ≫ x) =
       mixedPostSourcePreDot (k := k) E κ H (F' := F') x ^ 2 := by
-    rw [pow_two, End.mul_def, mixedPostSourcePreDot,
+    unfold mixedPostSourcePreDot
+    rw [pow_two, End.mul_def,
       TwoSupercategory.comp_whiskerRight (R := k)]
   have hSY2 : mixedPostSourcePostDot (k := k) E κ H A (y ≫ y) =
       -(mixedPostSourcePostDot (k := k) E κ H A y ^ 2) := by
     have hz : koszulSign (1 : ZMod 2) 1 = -1 := by simp [koszulSign]
-    rw [pow_two, End.mul_def, mixedPostSourcePostDot,
+    unfold mixedPostSourcePostDot
+    rw [pow_two, End.mul_def,
       SuperAdjunction.rightTranspose_comp A A A hy hy,
       hz, neg_one_zsmul, TwoSupercategory.whiskerLeft_neg (R := k),
       TwoSupercategory.whiskerLeft_neg (R := k),
