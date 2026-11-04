@@ -1922,14 +1922,23 @@ coordinates to the specified tensor Hom after evaluation at its regular
 probe. The literal layer evaluation and final observation kernel remain. See
 [PowerWordHomCoordinates](PowerWordHomCoordinates.md).
 
-The general probe braid is now attached in `ELVProbeWeightGeneralBraid`:
-`probeOldRouquierData_generalBraid` has exactly the uncorrected colour
-condition, retains all twelve weight edges and includes absent outputs.
-Its producer and mixed/asymmetric/repeated/interior-parameter consumer
-pass strict checks and all 53 owned audits. The corrected repeated-outer
-braid and complete multicolour factor assembly remain open.
+Both chosen probe braid equations are now attached. The general field is
+full-CI verified in #1030; the corrected whole-weight relation and literal
+dotted field pass strict paired checks with 107 and 53 owned audits.
+`probeOldRouquierMulticolour` assembles all seven prescribed fields, and
+`elvProbeReservoir` constructs the intended untruncated OLD probe/truncated
+ELV reservoir factor with its normalized shifted left adjunctions and
+invertible probe dot. Their strict mixed/two-odd/nonzero-append consumers
+audit five and nine declarations. Full integration is pending for these
+new results. The next targets are the chosen coefficient, supported
+generator restriction, native inverse transfer and residual closure.
 
 ## Central augmented-matrix attachment
+
+The represented inverse-degree and raw closure calculations, together with
+the chosen weight/content/weighted/OLD inverse coordinates and literal
+closure reconstruction, are full-CI verified in #1030. The final chosen
+closure degree and central invertibility remain separate obligations.
 
 The positive-degree residual closure remains a substantive proof target.
 [ReservoirClosureDegree](ReservoirClosureDegree.md) states its literal
@@ -1962,8 +1971,12 @@ a nonzero odd input/inverse consumer; all eight owned declarations are
 audited. `ELVWeightedInverseCoordinates` identifies both weighted inverse
 charts, exact-content components and their raw principal tensor values;
 its strict paired nonzero odd weighted-inverse consumer audits all 28
-owned declarations. The weighted local record-to-component extraction
-and complete chosen closure composition remain to be attached. Do not infer an
+owned declarations. `ELVWeightedLocalInverseCoordinates` now extracts both selected local
+principal components (11 owned audits), and
+`ELVWeightedKernelClosureCoordinates` identifies their literal closure
+values at canonical OLD quotient words with the raw coefficient action
+(28 owned audits). Both have strict paired nonzero checks. The arbitrary
+stored-content extension and complete chosen closure degree remain open. Do not infer an
 integer grading on arbitrary ungraded module Homs.
 `ELVModuleCentreDegree` now supplies the reconstruction implication:
 represented parity-component degree is equivalent to the degree of the
@@ -1975,7 +1988,12 @@ literal `elvRouquierFamily.loc` principal fields. `ELVWeightCentreBlocks`
 proves their exact-content dependence by even inclusion naturality; the
 reconstructed coefficients act as those closures on every whole-weight
 input. Strict paired odd positive-content checks audit 24 and 15
-declarations. Their positive represented degree remains unsupplied; see
+declarations. `ELVReservoirAbsentClosure` now proves both literal closures vanish at
+blocks without predecessors (two owned audits).
+`ELVModuleCentreTotalDegree` derives source coefficient degree from total
+represented evaluation, including both parity projections (three owned
+audits). Both pass strict paired checks. The supported all-output degree
+attachment still requires its final coordinate validation; see
 [ModuleCentreDegree](ModuleCentreDegree.md) and
 [ReservoirClosures](ReservoirClosures.md).
 

@@ -1,12 +1,13 @@
 # Attaching the actual central augmented matrix
 
-**Status: proposed written attachment, not a Lean theorem.** The abstract
-matrix inversion, chosen factor inverses and contentwise coefficient
-bounds listed below are established inputs. The literal comparison from
-the swapped forward matrix to those inputs, and its residual coefficient
-memberships, remain obligations of SwappedActionAssembly §6 and
-SwappedHomInversion §§3–6. In particular no concrete ELV instance of
-`ProbeReservoir.CentralInvertible` is supplied here.
+The literal matrix comparison is now proved in
+`Sigma/AugmentedSectorEntries` and `Sigma/AugmentedFactorMatrix` and
+full-CI verified in #1027. This note describes the remaining inverse
+attachment for SwappedActionAssembly §6 and SwappedHomInversion §§3–6.
+Native factor inverse transfer at absent corners, finite mixed-bend
+expansions and residual coefficient memberships remain obligations.
+No concrete ELV instance of `ProbeReservoir.CentralInvertible` is supplied
+by the comparison squares alone.
 
 Fix a colour `i`, a sector `t`, an object `Z : P.H t`, and the actual
 weight `ν = P.wt t`. Put `H = D.h i ν`. The restriction to this weight is
@@ -20,8 +21,8 @@ Let `δ` be one output reservoir content block and let `Eδ` denote the
 induced evaluation functor on the finite matrix category. Name the pure
 reservoir and pure probe source objects `XR`, `XP`, and the corresponding
 target objects `YR`, `YP`; let `O` be the evaluated identity-path object.
-The path-to-factor comparisons must give specified source and target
-matrix isomorphisms `S+`, `T+`, `S-`, `T-`. The required literal squares
+The checked path-to-factor comparisons give specified source and target
+matrix isomorphisms `S+`, `T+`, `S-`, `T-`. The checked literal squares
 are
 
     S+.hom ; Eδ(augPosMat c i ν t t Z) = M+ ; T+.hom,
@@ -48,13 +49,13 @@ part of its definition. The equal-colour crossing signs and normalized
 probe left adjunction are also fixed by the existing constructions;
 they are not free matrix normalizations.
 
-All path indices and all window indices must occur in these squares.
-For a first source comparison one may treat the case where both pure
-paths exist. The absent-path cases must then use the proved zero corners
-and their explicit charts. At `H = 0` the positive augmented map has an
-empty extra window; this case must remain in the result.
+All path and window indices occur in these squares. The comparison
+retains explicit zero padding at absent pure corners and the empty
+positive window at `H = 0`. The native factor inverse must still be
+transferred to those zero corners using the supported object category;
+zero padding in the forward comparison does not establish that transfer.
 
-The reservoir window rows are now scoped-checked in
+The reservoir window rows are checked in
 `ReservoirDottedAdjunctionRows` and `ReservoirDottedFactorCoordinates`.
 Their strict concrete two-odd consumers retain arbitrary Hom inputs. For every
 `n : ℕ`, identify
@@ -77,15 +78,16 @@ the prescribed adjunction. `ELVOld.elvRouquierFamily_adj` in
 input naturality; supported and absent-content inverse modules supply
 the corresponding boundary cases.
 
-The remaining principal matrix entries require the literal pure-factor
-mate comparisons and both mixed diagonal bends. The regular-probe
-formulas of `ELVProbeCentralBend` and `ELVProbeCentralSlide` identify
-specific evaluated bends, with their given dots, unit and cap. They do
-not give the required squares on every arbitrary `Z : P.H t` or every
-probe content. A regular-input formula alone cannot be substituted for
-that whole-map comparison without a proved detection argument.
+The principal entries and both mixed diagonal bends are identified in
+`AugmentedSectorEntries`, and `AugmentedFactorMatrix` assembles the
+complete model squares. The regular-probe formulas of
+`ELVProbeCentralBend` and `ELVProbeCentralSlide` describe separate
+specified evaluated bends. Their finite expansions still require an
+explicit comparison to the mixed coefficient of the chosen factor on
+arbitrary supported Hom objects; a regular-input formula alone does not
+supply that comparison.
 
-After the actual square, `CentralInverse/TwoSector` performs the
+After this square, `CentralInverse/TwoSector` performs the
 reservoir cap/cup elimination. `CentralInverse/ResidualComparison`
 compares its probe residual with the four invertible window reference
 maps. Its explicit obligations include the finite bend expansion
