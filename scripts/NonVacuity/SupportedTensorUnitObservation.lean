@@ -265,6 +265,15 @@ example := SupportedSectors.tensorPathValueChart D originalSc m cutoff Λ Λ L
   (SupportedSectors.tensorSourceLabels_up D Λ Λ sourceWord)
 example := SupportedSectors.tensorOriginalSourceUnit D originalSc m cutoff Λ Λ L
   probePairing reservoirPairing sourceWord
+example := SupportedSectors.tensorSourceWordUnit_formula D originalSc cutoff Λ Λ L sourceWord
+example := SupportedSectors.tensorOriginalSourceUnit_formula D originalSc m cutoff Λ Λ L
+  probePairing reservoirPairing sourceWord
+example := SupportedSectors.tensorOriginalSourceModuleIso_apply D originalSc m cutoff Λ Λ L
+  probePairing reservoirPairing sourceWord
+  (SupportedSectors.tensorOriginalSourceUnit D originalSc m cutoff Λ Λ L probePairing reservoirPairing sourceWord)
+example := SupportedSectors.tensorOriginalSourceUnit_value D originalSc m cutoff Λ Λ L
+  probePairing reservoirPairing sourceWord
+
 example := SupportedSectors.tensorMatrixQuotientObservation D originalSc m cutoff Λ Λ L
   probePairing reservoirPairing sourceWord (a := SKM.ob D (Λ - Λ) (upWord sourceWord))
   (SupportedSectors.tensorWordVacuumEndpoint D Λ Λ sourceWord)

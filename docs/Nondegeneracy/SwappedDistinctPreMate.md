@@ -1,7 +1,8 @@
 # Distinct-colour precomposition mate
 
-**Status: proposed factor calculation with a checked conditional bicategorical
-contraction (§6); the canonical factor pitchfork is still open.** This evaluates
+**Status: canonical distinct left-mate invertibility is checked at every
+weight from the existing Rouquier multicolour relations, with no new
+left-mate or cyclicity premise.** This evaluates
 only the pre/pre entry (A8)–(A9) of `SwappedActionAssembly.md`, conditional
 on its specified full factor action. It supplies no new fused-action
 hypothesis and changes none of the assigned generators. In particular it
@@ -220,7 +221,7 @@ The pre/post and post/pre entries of (A8), full swapped presentation action,
 normalized vacuum bubbles, and bounded detecting consumer are not proved
 here. No whole-matrix, post/post, or nondegeneracy conclusion is asserted.
 
-## 6. Bicategorical contraction and the remaining canonical pitchfork
+## 6. Bicategorical contraction and the canonical factor input
 
 `OddMath.SKM.leftCrossMate_eq_of_cap_pitchfork` is the bicategorical
 form of the last contraction in §4, in
@@ -246,8 +247,10 @@ products with `q^(-1) (-1)^(sigma_d r) s` when `q` is a unit and `s`
 is a two-sided inverse of `ell`.
 `leftCrossMate_isIso_of_cap_pitchfork` packages these products.
 
-To obtain `LeftMateInvertible T T.leftAdjoints` for the probe family,
-(17) must still be derived for the following exact choices:
+The cap-side formula (17) concerns the following exact choices. The
+checked all-weight invertibility proof below uses canonical scalar units
+and the complementary cup contraction; it does not require a separate
+Lean simplification to the closed coefficient in the final bullet:
 
 * `T` in the mate is the inherited reversed-label upward crossing
   `family.cross j i h₁ h₂ h₃ h₄`;
@@ -266,15 +269,14 @@ probe family has codomain `PiSCat k`. No interpretation from an arbitrary
 yet been constructed. Therefore applying that source theorem to the
 probe is not a completed Lean argument.
 
-The direct cited route to (17) ports Lemma 7.1's cap pitchfork tests:
+The checked direct route ports Lemma 7.1's cap pitchfork tests:
 `ext_FEE` for the nonpositive range, the mixed-braid correction identity
 used by `pf_a`, and the dotted quadratic calculation used by `pf_b`.
 The intermediate positive window uses `eq_7_3`; the complementary range
-is obtained by the cup relation and the two triangles as in
-`PitchforkCap.eq_7_5_a`. These inputs must retain the inverse-defined
-maps and the height-dependent normalization of §3. They are the
-remaining canonical factor obligation, not new hypotheses of the
-intended probe conclusion.
+uses the strict cup relation and its contraction directly. The proofs
+retain the inverse-defined maps and canonical normalization units. These
+inputs are derived from `RouquierMulticolour`, not added as hypotheses
+of the canonical factor conclusion.
 
 The two-mate expansion needed for the correction identity is checked as
 `crossMate_comp_crossMate` in `RouquierRectangularComposition.lean`.
@@ -402,6 +404,103 @@ then detects equality. No cap or cyclicity hypothesis is added.
 Its strict producer and constructed two-odd consumer pass, including
 negative and zero central heights and an audit of all 6 owned
 declarations. Thus finite left columns and the nonpositive raw
-pitchfork are closed. The remaining all-weight obligation is the
-intermediate window and complementary cup range, followed by canonical
-normalization and the exact left-mate contraction.
+pitchfork are closed. The intermediate identity and canonical normalization are supplied
+below; the complementary cup range remains the all-weight obligation.
+
+### Exact intermediate identity and canonical normalization
+
+`RouquierDistinctCapMiddleIdentity.distinctCap_of_middle` now converts
+the computed intermediate correction sum into the actual raw cap
+identity for `0 < h_i(a) < d_ij`. The factor is
+`zsign(p_i * h_i(a).toNat) * t_ij`. The proof uses the prescribed local
+`sigL ≫ sig = -1` and cancels the actual isomorphic source chart.
+Its strict producer and supported two-odd `h=2<d=4` consumer pass, with
+all 3 owned declarations audited.
+
+`RouquierDistinctCanonicalRotation.leftCrossMate_isIso_of_raw_cap`
+transports any such exact raw cap identity with unit coefficient `u` to
+the canonical left adjunctions. Its normalization unit is exactly
+`leftAdjScalar(upper)⁻¹ * u * leftAdjScalar(lower)`; the crossing and the
+inverse of its prescribed right mate are unchanged. The strict producer
+and constructed two-odd consumer pass, with its owned declaration
+audited. The consumer supplies the raw cap identity from the proved
+nonpositive theorem, rather than leaving it as a fixture hypothesis.
+
+`RouquierDistinctCanonicalNonpositive.leftCrossMate_isIso_of_nonpos`
+now proves invertibility of the actual canonical distinct left mate for
+`h_i(a) ≤ 0`, with no cap-pitchfork or left-mate premise. It applies the
+checked raw identity and the canonical scalar-unit normalization. The
+strict producer and two-odd consumer at negative and zero central
+heights pass, including its owned-declaration audit. The positive ranges are attached by the checked native identities
+below.
+
+### Closed canonical cap range
+
+`RouquierDistinctCanonicalCapRange` proves
+`leftCrossMate_isIso_of_middle` and `leftCrossMate_isIso_of_capRange`.
+The latter gives the exact prescribed canonical left mate's
+invertibility for `h_i(a) ≤ max(d_ij−1,0)`, with no cap, cyclicity, or
+left-mate premise. The intermediate sign is realized as its explicit
+scalar unit before applying canonical normalization. The strict
+producer and supported two-odd `h=2<d=4` consumer pass, with all 4 owned
+declarations audited; the negative and zero cases have their separate
+checked consumer above.
+
+For the remaining weights, the cup relation is needed at the top of the
+first edge: `h_i(b)=h_i(a)+2>d_ij`. Thus only the strict positive cup
+range is needed for all-weight `LeftMateInvertible`; its equality
+boundary is not needed for this application. The native strict cup identity and canonical application below close
+this remaining range.
+
+`RouquierDistinctCupInverseChart` now proves `distinctCupTarget_inv`
+and `distinctCupRight_eq_inverseMate`: the inverse target chart is the
+inverse associator followed by the prescribed inverse right mate
+whiskered by `E_i`. The strict producer and constructed two-odd consumer
+pass, with all 3 owned declarations audited. This supplies the exact-map
+bridge for the remaining canonical cup contraction.
+
+### Closed strict canonical cup range
+
+`RouquierDistinctCanonicalCupRotation.leftCrossMate_isIso_of_raw_cup`
+contracts the exact raw cup identity through the canonical left
+adjunctions. Since their units are the raw `leftCup`, no additional
+normalization factor enters this bridge. Its strict producer and
+constructed positive two-odd consumer pass, with its owned declaration
+audited; the raw cup identity is supplied by the checked native
+`distinctCupLeft_eq_of_gt` theorem.
+
+`RouquierDistinctCanonicalPositive.leftCrossMate_isIso_of_cupRange`
+therefore proves actual canonical left-mate invertibility whenever
+`d_ij < h_i(b)` at the top of the first edge. Its strict producer and
+constructed two-odd consumer pass, with both owned declarations
+audited. The consumer uses genuine root-content weights
+`-Λ + 5 α_i`, whose top height is 6, for both ordered pairs.
+
+### All-weight canonical input discharged
+
+`RouquierCanonicalDistinctLeftMate.lean` proves
+
+```lean
+T.canonicalLeftMateInvertible M : LeftMateInvertible T T.leftAdjoints
+```
+
+for every `RouquierFamily T` with its existing
+`M : RouquierMulticolour T Sc`. The cap range and shifted strict cup
+range cover every weight, and both use the exact inherited upward
+crossing and canonical left adjunctions. Their inverse is obtained from
+the prescribed right mate and the explicit scalar units. No new
+left-mate, cap, cup, cyclicity, or fused-action premise remains.
+
+The strict pinned producer and the constructed nonzero two-odd probe
+consumer both pass, with all 2 owned declarations audited. In the actual
+probe family the input is the already proved
+`probeOldRouquierMulticolour`; this discharges the factor condition used
+by the pure pre/pre entry and the global sigma assembly.
+
+The checked result is all-weight invertibility of the specified map.
+The displayed closed `delta_ij(k)` expression in (14) has not been
+separately simplified in Lean, and a standalone all-weight cap identity
+is not needed: the complementary range uses the cup contraction. These
+coefficient simplifications are not hypotheses or gaps in
+`canonicalLeftMateInvertible`. No full swapped presentation action or
+nondegeneracy theorem is claimed by this factor result.

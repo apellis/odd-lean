@@ -8,23 +8,23 @@ import OddMath.QuiverHecke.SwappedAssembly.BraidMixed.RepeatedOuterMixedDiagonal
 noncomputable section
 namespace OddMath.QuiverHecke.SwappedAssembly
 open CategoryTheory StringDiagrams OddMath.SKM BicategoryStruct Supercategory
-universe u
+universe u uB vB wB
 variable {I X : Type u} [AddCommGroup X] {k : Type u} [CommRing k]
-  {B : Type u} [BicategoryStruct.{u, u} B]
+  {B : Type uB} [BicategoryStruct.{wB, vB} B]
   [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
   [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
   [∀ a b : B, PiSupercategory k (a ⟶ b)]
   {D : Datum I X} {Sc : Scalars D k}
 namespace ProbeReservoir
 
-private lemma forward_route {C : Type u} [Category C] [Preadditive C]
+private lemma forward_route {C : Type*} [Category C] [Preadditive C]
     {A B V T : C} (f : A ⟶ B) (g : B ⟶ B) (r : B ⟶ T)
     (h : B ⟶ V) (r' : V ⟶ T) (hr : r = 0) :
     (f ≫ g) ≫ r + (f ≫ h) ≫ r' = (f ≫ h) ≫ r' := by
   rw [hr, Limits.comp_zero, zero_add]
 
 private lemma reverse_signed {k : Type u} [CommRing k]
-    {C : Type u} [Category C] [Preadditive C] [Linear k C]
+    {C : Type*} [Category C] [Preadditive C] [Linear k C]
     {A B : C} (f g : A ⟶ B) (ε : k) (hε : ε * ε = 1)
     (h : f = ε • g) : g = ε • f := by
   rw [h, smul_smul, hε, one_smul]
