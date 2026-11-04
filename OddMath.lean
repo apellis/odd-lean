@@ -2681,3 +2681,4 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeUpperLoopDot
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.DistinctReservoirShift
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCoefficientAction
 import OddMath.SKM.RouquierDistinctMixedBraid
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeWeightVacuumDot
