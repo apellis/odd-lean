@@ -2112,7 +2112,15 @@ Next discharge the following dependencies in order.
    Unit consumer with 70 audits. `SupportedTensorEntryLayers` transports
    the literal layer action to chronological whole-Hom postcomposition,
    with a complete-action/nonzero-matrix consumer and 30 owned audits.
-   Finish the vacuum quotient value, local dot/crossing chart changes after
+   `SupportedActionLayers` identifies the complete presented layer with
+   this native restriction/operation/extension map. `ReservoirWordFunctor`
+   now exposes its exact nil/cons comparison components (definitions
+   unchanged; 111 owned audits), needed for evaluation coherence.
+   `SupportedTensorEntryLayerCharts` now proves whole-Hom conjugacy for
+   the actual dot, equal crossing and distinct crossing, instantiated at
+   canonical row charts; repeated/distinct nonzero two-odd consumers and
+   all 118 owned audits pass. Finish the vacuum quotient value and the
+   compatibility of these chart changes after
    regular-probe evaluation, and the contextual layer laws.
    A nonzero cyclic input does
    not establish injectivity of observation on all matrices.
@@ -2133,13 +2141,24 @@ Next discharge the following dependencies in order.
    central map in the same cap/cup words using constructed finite bounds.
    `ELVProbeVacuumBendMonomials.vacuumBendMonomial_native` now identifies
    every evaluated negative-cap/post-unit word, with a strict nonzero
-   tensor/odd-coefficient consumer and 41 owned audits. Compose the finite
-   bend, then identify prescribed inverse rows with polynomial caps and
-   attach the all-vector moments and bubble normalization. The even moving
+   tensor/odd-coefficient consumer and 41 owned audits.
+   `ELVProbeVacuumBendSeries` now sums these words, and
+   `ELVProbePaddedVacuumBend.paddedVacuumDx_odd` identifies the actual
+   padded entry under its source/target charts; all 41 owned declarations
+   and a nonzero asymmetric two-odd consumer pass. Identify prescribed
+   inverse rows with polynomial caps and attach all-vector moments and
+   bubble normalization. The even moving
    colour's actual shifted probe dot now has `(x-1)^m=0` and is invertible
    in `ELVProbeEvenVacuumPolynomial`; its strict mixed-data/nonzero-source
-   consumer audits 16 declarations. Extend the evaluated bend and cap
-   formulas with this even normalization. Generic last-row uniqueness in
+   consumer audits 16 declarations. `ELVProbeEvenCentralBend`,
+   `ELVProbeEvenCentralSlide` and `ELVTensorEvenVacuumCap` now give the
+   actual even finite bend, slide, negative-height cap annihilation and
+   height-zero principal-cap equality (15/18/27 audited declarations),
+   with nonzero odd coefficient inputs in connected mixed data.
+   Attach these to the padded chosen inverse, retaining the even signs.
+   `ELVTensorVacuumPolynomialWindow` also proves the entire low-unit
+   closure window on all vectors (17 audits); actual padded unit-column
+   charts are still required to identify the chosen negative inverse row. Generic last-row uniqueness in
    `SwappedVacuum.NegativeCapInverse` does not replace that actual comparison.
    `ELVTensorVacuumWholeInput.tensorSectorInput_eq_supported` now identifies
    the full tensor input with this supported vacuum through both weight
@@ -2159,8 +2178,16 @@ Next discharge the following dependencies in order.
    map, transport all defining relations, descend to a linear presentation
    functor and pull back the actual combined upward action, retaining its
    carriers. Strict connected mixed/occupied-probe/coroot-kernel checks
-   audit 89 declarations. Next prove the `alpha`, source-placement and
-   `betaSYM` identities and transport the observation. Restricting the
+   audit 89 declarations. `PairingExtensionAffine.alpha_map` and
+   `PairingExtensionBubbles.homMap_bubAt_betaSYM` now prove the exact
+   affine and source-placed normalized bubble squares, including full
+   exterior products. `PairingExtensionObservation` transports the action
+   and coefficient filtrations; `PairingExtensionPBW` constructs the
+   actual affine inverse and full coefficient/PBW equivalence, preserving
+   joint degree and both filtrations (nineteen owned audits). Next prove
+   composition compatibility, transport the literal coefficient-power and
+   transformed last-boundary ideals, and identify the exact observation
+   kernels. Filtration transport does not itself identify those kernels. Restricting the
    factors separately loses the occupied extended coset with second
    coordinate `-P`; only the combined Hom heights cancel this coordinate.
 6. Fill `UpwardModuleAction.toSwappedVacuumEvaluation` with the constructed
@@ -2238,6 +2265,7 @@ The following are unfinished specializations, not completed inverse/action resul
 
 | Target | Preserved source commit | Remaining obligation |
 | --- | --- | --- |
+| Canonical vacuum class, principal cap and exact quotient transport | [0fe99e8dc4](https://github.com/apellis/odd-lean/commit/0fe99e8dc4520ec9e8174c8e4604c3db181d0378) (complete source tree) | Current unfinished `SupportedTensorVacuumCoefficientClass` producer fails on concrete normalization; `ELVTensorVacuumPrincipalInverse` fails on retained section binders, inverse-square elaboration and final parser alignment. Their consumers are not checked. `ReservoirWordStrictCoherence` and `PairingExtensionPowerIdeal` are untested; `PairingExtensionComposition` fails on the box-product target and tensor-induction API. The unused layer-wrapper attempt is also retained. Restore topical files only; the snapshot is not asserted to build. |
 | Vacuum source classes and normalized cap moments | [5c8d834f49](https://github.com/apellis/odd-lean/commit/5c8d834f493e58a278d34090759371b232fa8c3a) (complete source tree) | Proposed canonical vacuum/source-class evaluation, selected tensor input, padded native vacuum bend, chosen principal inverse and polynomial-cap/moment attachment remain incompletely checked. The snapshot also includes separately scoped-checked canonical permutation, supported action and matrix coefficient observation additions awaiting their own full integration. Restore topical files only; this full tree is not asserted to build. |
 | Cap windows and canonical tensor observations | [dba1c00c6e](https://github.com/apellis/odd-lean/commit/dba1c00c6e915297859d33d11ec6e8b356feb413) (complete source tree) | Proposed intermediate/positive-height cap and cup identities, finite-column reduction, canonical left-mate normalization, braid-universe attachment, global coefficient/layer observation and finite vacuum-bend comparisons. Strictly checked parts have separate topic evidence; this complete snapshot is not asserted to build. Restore topical files only. |
 | Canonical factor cyclicity and tensor observations | [685be86ce9](https://github.com/apellis/odd-lean/commit/685be86ce9e8a3eec9326ea611ce6cec7425e78b) (complete source tree) | Proposed braid-universe attachment, pure distinct-entry coordinates, canonical left-mate cap-pitchfork port, tensor coefficient/word observations and vacuum dot/bend comparisons. This complete snapshot is not asserted to build; restore topical files and consult STATUS for subsequently verified portions. |

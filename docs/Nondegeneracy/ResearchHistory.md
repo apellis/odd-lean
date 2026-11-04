@@ -12,7 +12,7 @@ proofs and unfinished attempts. No source can be lost by deleting these branch
 refs. Use `git show <commit>:<path>` or the commit link to inspect an attempt.
 
 This index records provenance, not completed results. Active mathematical scope
-and verification are in [STATUS](STATUS.md); the four current unfinished repair
+and verification are in [STATUS](STATUS.md); current unfinished repair
 restart points and next dependencies are in [HANDOFF](HANDOFF.md). Historical
 notes and PR descriptions do not override those files. Integration selected the
 checked successor sources rather than replacing them with older versions.
@@ -771,3 +771,36 @@ files compile. Recover individual files with
 The complete source tree [dba1c00c6e](https://github.com/apellis/odd-lean/commit/dba1c00c6e915297859d33d11ec6e8b356feb413) preserves the proposed cap-window and observation attachments. Its sole parent is the verified primary integration through #1040. The history merge changes only this inventory and HANDOFF; unfinished sources are not imported.
 
 The tree retains the proposed intermediate-height cap identity, finite-column evaluation, positive cup rotation, canonical left-mate normalization, braid universe attachment, coherent global tensor coefficient and layer observations, and termwise native vacuum-bend comparisons. Some parts have independent strict producer/consumer checks or later full integration; STATUS records the current boundaries. Neither canonical all-height left-mate invertibility nor the full nondegeneracy theorem follows from this snapshot. Recover individual files with `git show dba1c00c6e915297859d33d11ec6e8b356feb413:<repository-path>` and recheck them against the current library.
+
+## Vacuum observations, chosen cap and quotient transport
+
+The complete source tree [0fe99e8dc4](https://github.com/apellis/odd-lean/commit/0fe99e8dc4520ec9e8174c8e4604c3db181d0378) preserves the final unfinished attachments
+on top of the separately scoped-checked bend, layer and PBW additions.
+Its checked prefix has its own full integration gate; the complete snapshot
+is not asserted to compile. The history-parent attachment retains the
+checked library tree and does not import these proposed sources.
+
+- `OddMath/QuiverHecke/SwappedAssembly/SupportedTensorVacuumCoefficientClass.lean`,
+  its consumer and note: generic coordinate lemmas and the nonzero mixed
+  quotient fixture passed intermediate checks; the final concrete vacuum
+  specialization fails normalization, and the full consumer is unchecked.
+- `OddMath/QuiverHecke/CyclotomicAction/ELVTensorVacuumPrincipalInverse.lean`,
+  its consumer and note: the separate input/principal-factor helpers are
+  checked, but the final producer fails on omitted section binders,
+  inverse-square normalization and decoder-proof parsing. No final
+  inverse-row or normalized closure theorem is established by this draft.
+- `OddMath/QuiverHecke/SwappedAssembly/ReservoirWordStrictCoherence.lean`:
+  untested regular-probe chart coherence; no paired consumer.
+- `OddMath/QuiverHecke/PairingExtensionComposition.lean`: the affine parity
+  instance elaborates, but the box-product target and tensor-induction
+  cases remain unfinished.
+- `OddMath/QuiverHecke/PairingExtensionPowerIdeal.lean`: untested literal
+  coefficient-power and transformed last-boundary ideal transport; no
+  paired consumer. Exact observation-kernel transport remains open.
+- `docs/Nondegeneracy/SupportedTensorEntryLayerGlobalDraft.txt`: unused thin
+  wrappers, retained as an attempt. The checked consumer instead supplies
+  canonical row charts directly to the generic conjugacies.
+
+Recover individual files with `git show 0fe99e8dc4520ec9e8174c8e4604c3db181d0378:<repository-path>` and
+recheck them against the current library. The next dependencies and scope
+remain in HANDOFF and STATUS.
