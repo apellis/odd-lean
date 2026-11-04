@@ -155,4 +155,160 @@ theorem vacuumPreReservoirCap_native (hP : 0 < probeCutoff D m i) (n : ℕ) :
 
 end Regular
 
+section Pullback
+
+variable {k : Type*} [CommRing k] {B : Type*} [BicategoryStruct B]
+  [∀ a b : B, Preadditive (a ⟶ b)] [∀ a b : B, Linear k (a ⟶ b)]
+  [∀ a b : B, Supercategory k (a ⟶ b)] [TwoSupercategory k B]
+  [∀ a b : B, PiSupercategory k (a ⟶ b)]
+  {I X : Type*} [AddCommGroup X] {D : SKM.Datum I X}
+  (T W : SKM.RouquierFamily (k := k) (B := B) D)
+  {a a' b b' : X} (ha : a = a') (hb : b = b')
+  (Z' : SKM.homWeightSector T.obj W.obj a' b')
+
+/-- A pulled-back input returns to itself under the weight equivalence. -/
+def capPullbackSelfIso :
+    (SKM.homWeightEquivalence T W ha hb).functor.obj
+      ((SKM.homWeightEquivalence T W ha hb).inverse.obj Z') ≅ Z' := by
+  subst a'
+  subst b'
+  exact Iso.refl _
+
+/-- The dotted reservoir cap on a pulled-back input is the cap on the
+normalized input, through the source pullback chart and the return chart. -/
+theorem homReservoirCap_weight_pullback_square (i : I) {c : X}
+    (hp : -a + D.α i = -c) (n : ℕ) :
+    (SKM.homWeightEquivalence T W ha hb).functor.map
+        (SKM.homReservoirCap T W.obj i b hp n
+          ((SKM.homWeightEquivalence T W ha hb).inverse.obj Z')) ≫
+      (capPullbackSelfIso T W ha hb Z').hom =
+    (SKM.homPreWeightPullbackIso T W ha hb i hp Z').hom ≫
+      SKM.homReservoirCap T W.obj i b' (show -a' + D.α i = -c from ha ▸ hp) n Z' := by
+  subst a'
+  subst b'
+  change SKM.homReservoirCap T W.obj i b hp n Z' ≫ 𝟙 _ =
+    𝟙 _ ≫ SKM.homReservoirCap T W.obj i b hp n Z'
+  simp only [Category.comp_id, Category.id_comp]
+
+end Pullback
+
+section Padded
+
+variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
+  (D : SKM.Datum I X) (Sc : SKM.Scalars D k) (m cutoff : I → ℕ) (bound : ℕ)
+  (ΛP ΛR : X)
+  (hcP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
+  (hcR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
+
+omit [Fintype I] in
+private instance paddedCapZero (β : Multiset I) :
+    Limits.HasZeroObject (ContentModules D (parameterTwist D Sc) cutoff bound β) :=
+  ⟨⟨elvZeroModule D (parameterTwist D Sc) cutoff bound β,
+    elvZeroModule_isZero D (parameterTwist D Sc) cutoff bound β⟩⟩
+
+local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hcP hcR
+
+omit [Fintype I] in
+private theorem capProbeWeight_zero : (P).muP (((0, 0) : Sector I)) = ΛP := by
+  simp [ProbeReservoir.muP, elvProbeReservoir]
+omit [Fintype I] in
+private theorem capReservoirWeight_zero : (P).muM (((0, 0) : Sector I)) = -ΛR := by
+  simp [ProbeReservoir.muM, elvProbeReservoir]
+
+private def capVacuumEvaluation :
+    SKM.homWeightSector (P).T.obj (P).W.obj ΛP (-ΛR) ⥤
+      ContentModules D (parameterTwist D Sc) cutoff bound (0 : Multiset I) :=
+  homContentEvaluation D (parameterTwist D Sc) cutoff bound ΛR (-ΛR)
+    ((P).T.obj (-ΛP)) (regularProbe D (parameterTwist D Sc) m ΛP) (emptyBlock D ΛR)
+
+variable (H : ProbeVacuumCap.modulePiCategory D (parameterTwist D Sc) m ⟶
+  elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR (-ΛR))
+
+/-- The cap target comparison: return the pulled-back vacuum input to the
+normalized input, then apply the regular-input chart of the output block. -/
+def paddedVacuumCapTargetIso :=
+  (capVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR).mapIso
+      (capPullbackSelfIso (P).T (P).W
+        (capProbeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR)
+        (capReservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR)
+        (preCapInput D (parameterTwist D Sc) m ΛP hcP
+          (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H)) ≪≫
+    (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H).toFunctor.mapIso
+      (eqToIso (emptyProbe_regular D (parameterTwist D Sc) m ΛP))
+
+/-- The prescribed padded reservoir cap row `n` at the vacuum sector is the
+native `x ^ n ≫ v` of the output block, through the same source chart as the
+padded Dx entry. No parity, moment or cap compatibility is assumed. -/
+theorem paddedVacuumCap_native (i : I) (hP : 0 < probeCutoff D m i) (n : ℕ) :
+    (P).centralPaddedCap i (((0, 0) : Sector I))
+        (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+        (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n ≫
+      (paddedVacuumCapTargetIso D Sc m cutoff bound ΛP ΛR hcP hcR H).hom =
+    (paddedVacuumSourceIso D Sc m cutoff bound ΛP ΛR hcP hcR H i).hom ≫
+      (ProbeVacuumCap.shiftedPreDot D (parameterTwist D Sc) m
+          (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i
+          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) ^ n) ≫
+        ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m
+          (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i hP
+          (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) := by
+  classical
+  let E₀ := capVacuumEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR
+  let Z₀ := preCapInput D (parameterTwist D Sc) m ΛP hcP
+    (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) (-ΛR) H
+  let ha := capProbeWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
+  let hb := capReservoirWeight_zero D Sc m cutoff bound ΛP ΛR hcP hcR
+  let ep := (P).muP_preE i (0, 0)
+  let ep₀ : -ΛP + D.α i = -(P).muP (nextSector (true, i) true (((0, 0) : Sector I))) :=
+    (congrArg (fun x : X => -x + D.α i) ha).symm.trans ep
+  have hsq := congrArg E₀.map
+    (homReservoirCap_weight_pullback_square (P).T (P).W ha hb Z₀ i ep n)
+  rw [Functor.map_comp, Functor.map_comp] at hsq
+  have hSrc : (((SKM.homContentPreE (P).T (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR)
+        i (-ΛR) ep₀).obj ((SKM.homContentPreF (P).T
+          (elvWeightSpace D (parameterTwist D Sc) cutoff bound ΛR) i (-ΛR) ep₀).obj Z₀)).obj
+        (regularProbe D (parameterTwist D Sc) m ΛP)) (emptyBlock D ΛR) =
+      ((SKM.homContentPreE (P).T
+          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+          i (-ΛR) ep₀).obj ((SKM.homContentPreF (P).T
+          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+          i (-ΛR) ep₀).obj
+            (preCapInput D (parameterTwist D Sc) m ΛP hcP
+              (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+              (-ΛR) (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H)))).obj
+        (regularProbe D (parameterTwist D Sc) m ΛP) := by
+    simp only [SKM.homContentPreF, Functor.comp_obj, SKM.homParityShift]
+    split_ifs <;> rfl
+  have hb₀ := reservoirCap_block (parameterTwist D Sc) cutoff bound ΛR (-ΛR) (emptyBlock D ΛR)
+    D (P).T i ep₀ Z₀ (regularProbe D (parameterTwist D Sc) m ΛP) hSrc n
+  have hn := vacuumPreReservoirCap_native D (parameterTwist D Sc) m ΛP hcP
+    (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+    (-ΛR) i ep₀ (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H) hP n
+  have hE : E₀.map (SKM.homReservoirCap (P).T (P).W.obj i (-ΛR) ep₀ n Z₀) =
+      eqToHom hSrc ≫ (SKM.homReservoirCap (probeOldRouquierFamily D (parameterTwist D Sc) m ΛP hcP)
+        (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+        i (-ΛR) ep₀ n
+        (preCapInput D (parameterTwist D Sc) m ΛP hcP
+          (fun _ => contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I))
+          (-ΛR) (vacuumBendBlock D (parameterTwist D Sc) m cutoff bound ΛR H))).total
+          (regularProbe D (parameterTwist D Sc) m ΛP) :=
+    hb₀
+  have hcap : (P).centralPaddedCap i (((0, 0) : Sector I))
+        (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+        (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) true n =
+      ((P).centralSourceCornerIso i (0, 0)
+          (vacuumSectorInput D Sc m cutoff bound ΛP ΛR hcP hcR H)
+          (vacuumSectorEvaluation D Sc m cutoff bound ΛP ΛR hcP hcR) ⟨true, by trivial⟩).hom ≫
+        E₀.map ((SKM.homWeightEquivalence (P).T (P).W ha hb).functor.map
+          (SKM.homReservoirCap (P).T (P).W.obj i ((P).muM (0, 0)) ep n
+            ((SKM.homWeightEquivalence (P).T (P).W ha hb).inverse.obj Z₀))) := by
+    unfold ProbeReservoir.centralPaddedCap
+    rw [dif_pos (show StepValid (up i) true (((0, 0) : Sector I)) from by trivial)]
+    rfl
+  rw [hcap]
+  simp only [paddedVacuumCapTargetIso, paddedVacuumSourceIso, vacuumPreBlockSourceIso,
+    Iso.trans_hom, Functor.mapIso_hom, eqToIso.hom, Category.assoc]
+  erw [reassoc_of% hsq, hE, Category.assoc, hn]
+  rfl
+end Padded
+
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
