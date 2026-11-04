@@ -150,7 +150,7 @@ and raw coefficient action on the source sector `V t`, satisfying the four route
 hypotheses at the schedule of `SwappedVacuumBlock` (probe exponents
 `probeExponent D μ t d`, reservoir levels `reservoirLevel D μ t d`). -/
 structure VacuumRouteSector (μ : X) (t t' : List I) (d : ℕ) where
-  A : UpwardModuleAction.{u, u} D Sc μ
+  A : UpwardModuleAction.{u, w} D Sc μ
   vacuum : A.V t
   raw : SKM.SYM D k →ₐ[k] Module.End k (A.V t)
   bubblesPositive : VacuumBubblesPositiveHeight cs A t raw
@@ -192,7 +192,7 @@ theorem nondegeneracy_of_vacuum_route_sectors
     (h : ∀ (J : Finset I) (tJ t'J : List J),
       SKM.wt (D.restrictColours J) 0 (SKM.ups tJ) =
         SKM.wt (D.restrictColours J) 0 (SKM.ups t'J) →
-      ∀ (μ : X) (d : ℕ), Nonempty (VacuumRouteSector
+      ∀ (μ : X) (d : ℕ), Nonempty (VacuumRouteSector.{u, w}
         (ReservoirWeights.pairingExtension (D.restrictColours J))
         (ReservoirWeights.pairingExtensionScalars (D.restrictColours J) (Sc.restrictColours D J))
         (ReservoirWeights.pairingExtensionCScalars (D.restrictColours J)
@@ -212,13 +212,14 @@ of characteristic zero, for every homogeneous scalar system and every normalizat
 route sectors exist for the pairing extension of every finite-colour restriction, at
 every external weight `(μ, 0)`, equal-weight upward word pair and degree bound. The
 symmetrizer records the research scope: the route is to be completed for
-symmetrizable data only. -/
+symmetrizable data only. The sector modules live in `Type (u + 1)`, as do the
+modules of the swapped probe-reservoir action. -/
 structure VacuumRouteHypotheses (D : SKM.Datum I X) (sy : SKM.Symmetrizer D) : Prop where
   sectors : ∀ (K : Type u) [Field K] [CharZero K] (Sc : SKM.Scalars D K), Sc.Homogeneous →
     ∀ (cs : SKM.CScalars Sc) (J : Finset I) (tJ t'J : List J),
       SKM.wt (D.restrictColours J) 0 (SKM.ups tJ) =
         SKM.wt (D.restrictColours J) 0 (SKM.ups t'J) →
-      ∀ (μ : X) (d : ℕ), Nonempty (VacuumRouteSector
+      ∀ (μ : X) (d : ℕ), Nonempty (VacuumRouteSector.{u, u + 1}
         (ReservoirWeights.pairingExtension (D.restrictColours J))
         (ReservoirWeights.pairingExtensionScalars (D.restrictColours J) (Sc.restrictColours D J))
         (ReservoirWeights.pairingExtensionCScalars (D.restrictColours J)
