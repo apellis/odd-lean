@@ -2600,3 +2600,6 @@ import OddMath.QuiverHecke.SwappedAssembly.Sigma.FactorWindowInverse
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.SupportedFactorWindowInverse
 import OddMath.QuiverHecke.CyclotomicAction.ELVReservoirBoundaries
 import OddMath.SKM.RouquierHomBendMonomials
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeBendEvaluation
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.FiniteBendEvaluation
+import OddMath.QuiverHecke.CyclotomicAction.ELVProbeFiniteBends
