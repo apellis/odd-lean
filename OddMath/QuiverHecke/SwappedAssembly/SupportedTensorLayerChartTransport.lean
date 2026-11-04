@@ -366,10 +366,38 @@ theorem tensorLayerSameCrossIso_hom_eqToHom :
   repeat' first
     | exact homContentShift_zero D i
     | apply tensorContextIso_hom_eqToHom
-    | apply exists_eqToHom_homShiftConjugationIso_of
-    | apply exists_eqToHom_homShiftConjugationIso
-    | apply exists_eqToHom_associator
-    | apply ProbeReservoir.reservoirWordFunctorIso_hom_app_eqToHom
+
+/-- **Equal-colour crossing coherence.** In every global chart that is an
+equality transport, the pulled-back literal equal-colour crossing layer of the
+full chosen action is the frozen local crossing operator, up to equality
+transport of its endpoints. -/
+theorem tensorOriginalWordLayer_sameCross_transport
+    {G : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
+      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
+    (g : ((P).pathFunctor (SPath.append (SPath.append pL
+        (SPath.cons (Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i])) false (0,c) hv
+          (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false _ hw (SPath.nil _)))) pR)).obj
+          (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)) ≅
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)).functor.obj G)
+    (hg : ∃ h, g.hom = eqToHom h) (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    ∃ h₁ h₂,
+      TensorEntryPullback.arrow
+          (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)) g g
+          ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i i) v)
+            (SPath.append (SPath.append pL
+              (SPath.cons (Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i])) false (0,c) hv
+                (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false _ hw (SPath.nil _)))) pR)
+            (SPath.append (SPath.append pL
+              (SPath.cons (Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up i])) false (0,c) hv
+                (SPath.cons (Col.mk (up i) (SKM.wt D ν v)) false _ hw (SPath.nil _)))) pR)
+            (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR))) =
+        eqToHom h₁ ≫ tensorLayerSameCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i hv hw
+          pL hl pR hr a ≫ eqToHom (Eq.symm h₂) := by
+  rw [tensorLayerSameCrossRaw_arrow (leftward := leftward)]
+  have he := tensorLayerSameCrossIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i
+    hv hw pL hl pR hr
+  exact TensorEntryPullback.arrow_eqToHom_conj_of _
+    (tensorHomEquivalence_preimage_eqToHom D Sc m cutoff ΛP ΛR L _) g g _ _ hg hg he he _
 
 end Same
 
@@ -449,6 +477,46 @@ theorem tensorLayerCrossTargetIso_hom_eqToHom :
   repeat' first
     | apply tensorCrossContextIso_hom_eqToHom
     | apply exists_eqToHom_associator
+
+/-- **Distinct-colour crossing coherence.** In every pair of global charts
+that are equality transports, the pulled-back literal distinct-colour crossing
+layer of the full chosen action is the frozen local crossing operator between
+the two words, up to equality transport of its endpoints. -/
+theorem tensorOriginalWordLayer_cross_transport
+    {U V : probeOldWeightSpace D (parameterTwist D Sc) m ΛP (-ΛP) ⟶
+      elvWeightSpace D (parameterTwist D Sc) cutoff N ΛR (ReservoirWord.weight D ΛR cL)}
+    (gS : ((P).pathFunctor (SPath.append (SPath.append pL
+        (SPath.two (c₁ := Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]))
+          (c₂ := Col.mk (up j) (SKM.wt D ν v)) false false hv₁ hv₂ hs)) pR)).obj
+          (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)) ≅
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)).functor.obj U)
+    (gT : ((P).pathFunctor (SPath.append (SPath.append pL
+        (SPath.two (c₁ := Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]))
+          (c₂ := Col.mk (up i) (SKM.wt D ν v)) false false hw₁ hw₂ rfl)) pR)).obj
+          (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR)) ≅
+      (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)).functor.obj V)
+    (hgS : ∃ h, gS.hom = eqToHom h) (hgT : ∃ h, gT.hom = eqToHom h)
+    (a : (P).CrossCoeff) (leftward : (P).LeftwardData) :
+    ∃ h₁ h₂,
+      TensorEntryPullback.arrow
+          (tensorHomEquivalence D Sc m cutoff L ΛP ΛR (ReservoirWord.weight D ΛR cL)) gS gT
+          ((P).compLayer ((P).swappedGens a leftward) (SKM.lay D ν u (.cross i j) v)
+            (SPath.append (SPath.append pL
+              (SPath.two (c₁ := Col.mk (up i) (SKM.wt D (SKM.wt D ν v) [up j]))
+                (c₂ := Col.mk (up j) (SKM.wt D ν v)) false false hv₁ hv₂ hs)) pR)
+            (SPath.append (SPath.append pL
+              (SPath.two (c₁ := Col.mk (up j) (SKM.wt D (SKM.wt D ν v) [up i]))
+                (c₂ := Col.mk (up i) (SKM.wt D ν v)) false false hw₁ hw₂ rfl)) pR)
+            (ObjectProperty.FullSubcategory.obj (tensorVacuum D Sc m cutoff L ΛP ΛR))) =
+        eqToHom h₁ ≫ tensorLayerCrossRaw D Sc m cutoff L ΛP ΛR hP hR ν u v i j
+          hv₁ hv₂ hw₁ hw₂ hs pL hl pR hr a ≫ eqToHom (Eq.symm h₂) := by
+  rw [tensorLayerCrossRaw_arrow (leftward := leftward)]
+  exact TensorEntryPullback.arrow_eqToHom_conj_of _
+    (tensorHomEquivalence_preimage_eqToHom D Sc m cutoff ΛP ΛR L _) gS gT _ _ hgS hgT
+    (tensorLayerCrossSourceIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i j
+      hv₁ hv₂ hs pL hl pR hr)
+    (tensorLayerCrossTargetIso_hom_eqToHom D Sc m cutoff ΛP ΛR L hP hR ν u v i j
+      hw₁ hw₂ hs pL hl pR hr) _
 
 end Distinct
 end SupportedSectors
