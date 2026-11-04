@@ -32,3 +32,32 @@ the actual supported rightmost families and arbitrary valid contexts.
 The owned-declaration axiom audits cover both generic reduction
 declarations and all ten supported attachment declarations, using only
 the standard allowed axioms.
+
+Between distinct formal sectors, the identity-word path family is
+empty, while the two equal-colour crossing path families are
+subsingletons and are nonempty simultaneously. `OffCentralAugmentedMatrix`
+therefore identifies the whole positive augmented matrix with its
+invertible swapping entry and the negative one with minus that entry,
+retaining the literal finite-family indexing in both cases. Its unit
+hypotheses are local to the input matrix and require no central inverse.
+The paired consumer supplies them from the chosen ELV transposed source
+norms, constructs occupied paths in both families at each moving parity,
+and detects a nonzero probe vector. Both signs pass scoped strict
+checks, and all six owned declarations use only the standard axioms.
+
+`SupportedAugmentedInverse` supplies `augmentedMatrix_isIso`, combining these
+off-central matrices with `centralAugmentedMatrix_isIso` on supported
+inputs. It covers every outer sector, retaining the actual rightmost
+weight and the positive or negative height condition.
+`pointwiseLeftward_posInverseAt` and `pointwiseLeftward_negInverseAt`
+then supply the five component equations for the same raw chosen
+`pointwiseLeftwardData`; `pointwiseLeftward_isInverseAt` converts them
+to all ten unwhiskered equal-colour inversion relations. This local
+statement does not assert `LeftwardData.IsInverse` on the whole raw
+Hom category.
+
+The all-sector producer and its paired `PointwiseLeftwardInverse`
+consumer pass scoped strict checks. The consumer applies the local
+relation theorem to a proved nonzero one-odd supported path, with no
+supplied inverse hypothesis, and audits all fourteen owned declarations
+using only the standard axioms.

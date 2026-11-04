@@ -2647,3 +2647,5 @@ import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.VacuumWindow
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.VacuumInverseWindow
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeTransposeNorms
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorFamilies
+import OddMath.QuiverHecke.SwappedAssembly.Sigma.OffCentralAugmentedMatrix
+import OddMath.QuiverHecke.SwappedAssembly.SupportedAugmentedInverse
