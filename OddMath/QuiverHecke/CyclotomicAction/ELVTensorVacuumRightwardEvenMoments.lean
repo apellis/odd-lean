@@ -243,6 +243,30 @@ theorem tensorVacuum_rightward_even_bubbleEntries (hi : D.parity i = 0)
   exact hex
 
 include sy hc in
+/-- The decoded moments of the extreme column of an entrywise inverse of the native cup
+window of the tensor vacuum bend, at an even colour with `0 < M < N`. -/
+theorem tensorVacuum_rightward_even_extreme_moments (hi : D.parity i = 0)
+    (hP : 0 < probeCutoff D m i) (hPN : m i < cutoff i)
+    (j : _ ⟶ shiftedPreSourceObject D (parameterTwist D Sc) m
+        (contentModuleTarget D (parameterTwist D Sc) cutoff bound (0 : Multiset I)) i H)
+    (B : Fin (cutoff i - m i) → (_ ⟶ V))
+    (hB : ProbeWindow.IsCupInverse
+      (evaluatedMixedBend D (parameterTwist D Sc) m cutoff bound i hP H)
+      (fun n => (adjunction K).unit.app V ≫
+        (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^ n.val)) j B)
+    (l : ℕ) (z : (V).obj star) :
+    tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
+        (((adjunction K).unit.app V ≫
+          (evaluatedPostDot D (parameterTwist D Sc) m cutoff bound i H ^
+            (cutoff i - m i - 1 + l)) ≫
+            B ⟨cutoff i - m i - 1, by omega⟩).total star z) =
+      polynomialToPower D cutoff L (PowerSeries.coeff l
+          (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
+        tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z :=
+  tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L sy
+    (parameterTwist_homogeneous D Sc hc) i hi hP (by omega) hPN j B hB l z
+
+include sy hc in
 /-- **Even moments of the rightward vacuum bubble entries.** For an even colour with
 `0 < M < N`, leftward data satisfying the negative inverse equations at the tensor
 vacuum give an entrywise inverse `(j, B)` of the native cup window of the tensor
@@ -287,9 +311,7 @@ theorem tensorVacuum_rightward_even_moments (hi : D.parity i = 0)
             tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z := by
   obtain ⟨c, j, B, hB, hcup⟩ := tensorVacuum_rightward_even_bubbleEntries D Sc m cutoff L
     ΛP ΛR hcP hcR sy hc i hi hP Z hZ lc dc HN cc
-  have hN : 0 < cutoff i := by omega
   exact ⟨c, j, B, hB, hcup, fun l z =>
-    tensorVacuumNegativeCap_even_moments D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hP hN hPN j B hB l z⟩
+    tensorVacuum_rightward_even_extreme_moments D Sc m cutoff L sy hc i hi hP hPN j B hB l z⟩
 
 end OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
