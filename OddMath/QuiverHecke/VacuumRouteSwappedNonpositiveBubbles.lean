@@ -43,7 +43,7 @@ def SwappedRightEntriesField (sy : SKM.Symmetrizer D) : Prop :=
     SwappedAssembly.SupportedSectors.VacuumRightEntries (D := ι.datum) (Sc := ι.scalars)
       (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW) (ΛR := ι.reservoirHW)
       (L := ι.power) (hP := ι.probe_pairing) (hR := ι.reservoir_pairing)
-      (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous) ι.weight
+      (hF := ι.actionInputs sy) ι.weight
       (probeExponent ι.datum ι.weight ι.t ι.d) (reservoirLevel ι.datum ι.weight ι.t ι.d)
 
 /-- At a route index, a closed diagram whose vacuum entry is the coefficient action of `a`
@@ -53,14 +53,14 @@ theorem swappedRouteBases_closedAct_cl (sy : SKM.Symmetrizer D) (ι : VacuumRout
     (h : SwappedAssembly.SupportedSectors.VacuumEntry (D := ι.datum)
       (Sc := ι.scalars) (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW)
       (ΛR := ι.reservoirHW) (L := ι.power) (hP := ι.probe_pairing)
-      (hR := ι.reservoir_pairing) (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous)
+      (hR := ι.reservoir_pairing) (hF := ι.actionInputs sy)
       ι.weight M hM a) :
     (swappedRouteBases sy ι).A.closedAct ι.t (SKM.cl ι.datum ι.scalars ι.weight [] [] M) =
       (swappedRouteBases sy ι).raw a :=
   SwappedAssembly.SupportedSectors.closedAct_cl_eq_coefficient (D := ι.datum)
       (Sc := ι.scalars) (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW)
       (ΛR := ι.reservoirHW) (L := ι.power) (hP := ι.probe_pairing)
-      (hR := ι.reservoir_pairing) (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous)
+      (hR := ι.reservoir_pairing) (hF := ι.actionInputs sy)
       (sw := ι.t) ι.weight ι.t M hM a h
 
 /-- **The nonpositive-height bubble field of the swapped route bases**, from the vacuum entries

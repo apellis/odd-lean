@@ -21,21 +21,15 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (bound : ℕ) (ΛP ΛR : X)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  [Finite I] (hF : ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Q" => interpretation D Sc m cutoff bound ΛP ΛR hP hR Gs Ys gens
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)
-        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+        hF.window Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- A generating layer of `H`, pushed through `α` at weight `μ`, acts by the
@@ -48,7 +42,7 @@ theorem pointwiseUpwardModuleAction_act_ofLayer (μ : X)
       (Q).res (SKM.ob D μ (upWord L.cod.word)) ∘ₗ (Q).op ((QuiverHecke.label D μ).layer L) ∘ₗ
         (Q).ext (SKM.ob D μ (upWord L.dom.word)) := by
   rw [QuiverHecke.alpha_diag, LayerMap.map_ofLayer]
-  exact pointwiseUpwardModuleAction_act_layer D Sc m cutoff bound ΛP ΛR hP hR sy hc Gs Ys μ
+  exact pointwiseUpwardModuleAction_act_layer D Sc m cutoff bound ΛP ΛR hP hR hF Gs Ys μ
     L.dom.word L.cod.word _ _ _ _
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors

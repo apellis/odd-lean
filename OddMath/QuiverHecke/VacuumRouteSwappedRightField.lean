@@ -38,7 +38,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 set_option quotPrecheck false
 local notation "ν₀" => (elvProbeReservoir D Sc m cutoff (PowerWordContent.powerBound D cutoff L)
   ΛP ΛR hP hR).wt ((0, 0) : Sector I)
@@ -49,41 +49,41 @@ weight of the probe reservoir with probe exponents `m` and reservoir levels `cut
 probe cutoff of the colour is positive. Intermediate hypothesis. -/
 structure VacuumRightNegativeEntries : Prop where
   neg_even : ∀ i, D.parity i = 0 → 0 < probeCutoff D m i → D.h i ν₀ < 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.etaL i ((s : ℤ) - D.h i ν₀ - 1).toNat ++ SKM.dcapL i (-D.h i ν₀ - 1).toNat)
       ((SKM.sChain_etaL i _).append (SKM.sChain_dcapL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)))
   neg_odd : ∀ i, D.parity i = 1 → 0 < probeCutoff D m i → D.h i ν₀ < 0 → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.etaL i (((2 * s : ℕ) : ℤ) - D.h i ν₀ - 1).toNat ++ SKM.dcapL i (-D.h i ν₀ - 1).toNat)
       ((SKM.sChain_etaL i _).append (SKM.sChain_dcapL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)))
   odd_neg : ∀ i : {i : I // D.parity i = 1}, 0 < probeCutoff D m i.1 → D.h i.1 ν₀ < 0 →
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc ν₀
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF ν₀
       (SKM.etaL i.1 (((1 : ℕ) : ℤ) - D.h i.1 ν₀ - 1).toNat ++
         SKM.dcapL i.1 (-D.h i.1 ν₀ - 1).toNat)
       ((SKM.sChain_etaL i.1 _).append (SKM.sChain_dcapL i.1 _))
       (SKM.SYM.probeSign D k cutoff i • SKM.SYM.delta D k i)
 
-include sy hc in
+include hF in
 /-- **The right vacuum entries at nonpositive height** at the vacuum weight `ΛP - ΛR` of the
 probe reservoir, from the entries at negative height, for positive probe cutoffs and reservoir
 levels. The entries at zero height are `vacuumEntry_zero_even`, `vacuumEntry_zero_odd` and
 `vacuumEntry_odd_zero`. -/
 theorem vacuumRightEntries_of_negative
-    (hneg : VacuumRightNegativeEntries D Sc m cutoff ΛP ΛR L hP hR sy hc)
+    (hneg : VacuumRightNegativeEntries D Sc m cutoff ΛP ΛR L hP hR hF)
     (hPc : ∀ i, 0 < probeCutoff D m i) (hN : ∀ i, 0 < cutoff i) (μ : X) (hμ : ΛP - ΛR = μ) :
-    VacuumRightEntries D Sc m cutoff ΛP ΛR L hP hR sy hc μ m cutoff := by
+    VacuumRightEntries D Sc m cutoff ΛP ΛR L hP hR hF μ m cutoff := by
   have hw := (tensorVacuumWeight D Sc m cutoff ΛP ΛR L hP hR).trans hμ
   subst hw
   exact ⟨fun i hi h s => hneg.neg_even i hi (hPc i) h s,
-    fun i hi h s => vacuumEntry_zero_even D Sc m cutoff ΛP ΛR L hP hR sy hc i hi (hN i) h s,
+    fun i hi h s => vacuumEntry_zero_even D Sc m cutoff ΛP ΛR L hP hR hF i hi (hN i) h s,
     fun i hi h s => hneg.neg_odd i hi (hPc i) h s,
-    fun i hi h s => vacuumEntry_zero_odd D Sc m cutoff ΛP ΛR L hP hR sy hc i hi (hN i) h s,
+    fun i hi h s => vacuumEntry_zero_odd D Sc m cutoff ΛP ΛR L hP hR hF i hi (hN i) h s,
     fun i h => hneg.odd_neg i (hPc i.1) h,
-    fun i h => vacuumEntry_odd_zero D Sc m cutoff ΛP ΛR L hP hR sy hc i.1 i.2 (hN i.1) h⟩
+    fun i h => vacuumEntry_odd_zero D Sc m cutoff ΛP ΛR L hP hR hF i.1 i.2 (hN i.1) h⟩
 
 end SwappedAssembly.SupportedSectors
 
@@ -94,12 +94,14 @@ theorem rightVacuumEntrySupply_of_negative
     (h : ∀ {J Y k : Type u} [AddCommGroup Y] [CommRing k] [Fintype J]
       (E : SKM.Datum J Y) (Sc : SKM.Scalars E k) (m cutoff : J → ℕ) (ΛP ΛR : Y)
       (L : J × ℕ → ℕ) (hP : ∀ i, (probeCutoff E m i : ℤ) = E.h i ΛP)
-      (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR) (sy : SKM.Symmetrizer E) (hc : Sc.Homogeneous),
+      (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR)
+      (hF : SwappedAssembly.SupportedSectors.ProbeActionInputs E Sc m cutoff
+        (ELVOld.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
       SwappedAssembly.SupportedSectors.VacuumRightNegativeEntries E Sc m cutoff ΛP ΛR L hP hR
-        sy hc) :
+        hF) :
     RightVacuumEntrySupply.{u} := by
-  intro J Y k _ _ _ E Sc m cutoff ΛP ΛR L hP hR sy hc hPc hN
+  intro J Y k _ _ _ E Sc m cutoff ΛP ΛR L hP hR hF hPc hN
   exact SwappedAssembly.SupportedSectors.vacuumRightEntries_of_negative E Sc m cutoff ΛP ΛR L hP hR
-      sy hc (h E Sc m cutoff ΛP ΛR L hP hR sy hc) hPc hN _ rfl
+      hF (h E Sc m cutoff ΛP ΛR L hP hR hF) hPc hN _ rfl
 
 end OddMath.QuiverHecke

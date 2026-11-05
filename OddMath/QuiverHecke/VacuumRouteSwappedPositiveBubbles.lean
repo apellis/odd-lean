@@ -95,7 +95,7 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
 
 /-- **Vacuum entries of the bubbles at positive height.** The entries at the vacuum sector of
 the closed diagrams of `SKM.inv_smul_bubLs_of_pos` and `SKM.oddBubble_eq_cl_of_pos`, as
@@ -103,19 +103,19 @@ coefficient actions of the substituted-series coefficients of `probeSeries M` an
 `(-1)^(N_i+1) δ_i`. -/
 structure VacuumLeftEntries (μ : X) (M N : I → ℕ) : Prop where
   left_even : ∀ i, D.parity i = 0 → 0 < D.h i μ → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i ((s : ℤ) + D.h i μ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i)))
   left_odd : ∀ i, D.parity i = 1 → 0 < D.h i μ → ∀ s : ℕ,
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i (D.h i μ - 1).toNat ++ SKM.epsL i (((2 * s : ℕ) : ℤ) + D.h i μ - 1).toNat)
       ((SKM.sChain_dcupL i _).append (SKM.sChain_epsL i _))
       (SKM.SYM.polynomialInclude D k (PowerSeries.coeff s
         (VacuumSeries.substitutedSeries k (SKM.SYM.probeSeries D k M) i)))
   odd : ∀ i : {i : I // D.parity i = 1}, 0 < D.h i.1 μ →
-    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR sy hc μ
+    VacuumEntry D Sc m cutoff ΛP ΛR L hP hR hF μ
       (SKM.dcupL i.1 (D.h i.1 μ - 1).toNat ++ SKM.epsL i.1 (D.h i.1 μ).toNat)
       ((SKM.sChain_dcupL i.1 _).append (SKM.sChain_epsL i.1 _))
       (SKM.SYM.probeSign D k N i • SKM.SYM.delta D k i)
@@ -132,7 +132,7 @@ def SwappedLeftEntriesField (sy : SKM.Symmetrizer D) : Prop :=
     SwappedAssembly.SupportedSectors.VacuumLeftEntries (D := ι.datum) (Sc := ι.scalars)
       (m := ι.exponent) (cutoff := ι.level) (ΛP := ι.probeHW) (ΛR := ι.reservoirHW)
       (L := ι.power) (hP := ι.probe_pairing) (hR := ι.reservoir_pairing)
-      (sy := ι.symmetrizer sy) (hc := ι.scalars_homogeneous) ι.weight
+      (hF := ι.actionInputs sy) ι.weight
       (probeExponent ι.datum ι.weight ι.t ι.d) (reservoirLevel ι.datum ι.weight ι.t ι.d)
 
 /-- **The positive-height bubble field of the swapped route bases**, from the vacuum entries

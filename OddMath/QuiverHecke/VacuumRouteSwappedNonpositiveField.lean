@@ -52,9 +52,11 @@ def RightVacuumEntrySupply : Prop :=
   ∀ {J Y k : Type u} [AddCommGroup Y] [CommRing k] [Fintype J]
     (E : SKM.Datum J Y) (Sc : SKM.Scalars E k) (m cutoff : J → ℕ) (ΛP ΛR : Y)
     (L : J × ℕ → ℕ) (hP : ∀ i, (probeCutoff E m i : ℤ) = E.h i ΛP)
-    (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR) (sy : SKM.Symmetrizer E) (hc : Sc.Homogeneous),
+    (hR : ∀ i, (cutoff i : ℤ) = E.h i ΛR)
+      (hF : SwappedAssembly.SupportedSectors.ProbeActionInputs E Sc m cutoff
+        (ELVOld.PowerWordContent.powerBound E cutoff L) ΛP ΛR hP hR),
     (∀ i, 0 < probeCutoff E m i) → (∀ i, 0 < cutoff i) →
-      SwappedAssembly.SupportedSectors.VacuumRightEntries E Sc m cutoff ΛP ΛR L hP hR sy hc
+      SwappedAssembly.SupportedSectors.VacuumRightEntries E Sc m cutoff ΛP ΛR L hP hR hF
         (ΛP - ΛR) m cutoff
 
 /-- **The right vacuum entries at every route index** from the right vacuum entries of the probe
@@ -62,7 +64,7 @@ reservoirs, transported along `probeHW - reservoirHW = (μ, 0)`. -/
 theorem swappedRightEntriesField_of_supply (h : RightVacuumEntrySupply.{u})
     (sy : SKM.Symmetrizer D) : SwappedRightEntriesField sy := fun ι => by
   have e := h ι.datum ι.scalars ι.exponent ι.level ι.probeHW ι.reservoirHW ι.power
-    ι.probe_pairing ι.reservoir_pairing (ι.symmetrizer sy) ι.scalars_homogeneous
+    ι.probe_pairing ι.reservoir_pairing (ι.actionInputs sy)
     ι.probeCutoff_pos ι.level_pos
   rw [ι.weight_difference] at e
   exact e

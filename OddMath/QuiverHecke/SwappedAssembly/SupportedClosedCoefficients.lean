@@ -74,19 +74,13 @@ theorem entryEquiv_comp_map {w : List (Col I X)} {s t : Sector I} (p : SPath w s
   rw [InducedCategory.comp_hom, Category.assoc]
   exact congrArg (g.hom ≫ ·) hsq
 
-variable [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous)
+variable [Finite I] (hF : ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR)
   (Gs Ys : ∀ s, H D (parameterTwist D Sc) m cutoff bound ΛP ΛR s)
-local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) bound)
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff bound ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) bound)
-        (reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc) Gs Ys
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff bound ΛP ΛR hP hR hF.dot
+        hF.window Gs Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
 /-- **A closed diagram with supported sector entries.** If the entry of the closed diagram
@@ -113,21 +107,15 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k] [Fintype I]
   (D : Datum I X) (Sc : Scalars D k) (m cutoff : I → ℕ) (ΛP ΛR : X) (L : I × ℕ → ℕ)
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
-  (sy : Symmetrizer D) (hc : Sc.Homogeneous) (sw : List I)
+  (hF : ProbeActionInputs D Sc m cutoff (PowerWordContent.powerBound D cutoff L) ΛP ΛR hP hR)
+  (sw : List I)
 local notation "N" => PowerWordContent.powerBound D cutoff L
 local notation "P" => elvProbeReservoir D Sc m cutoff N ΛP ΛR hP hR
-local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR
-    (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-      (parameterTwist_homogeneous D Sc hc) N)
-local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) N)
+local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff N ΛP ΛR hP hR hF.dot
+local notation "leftward" => pointwiseLeftwardData D Sc m cutoff N ΛP ΛR hP hR hF.dot
 local notation "gens" => ProbeReservoir.swappedGens (P) c leftward
 local notation "Ys" => tensorTargetFamily D Sc m cutoff ΛP ΛR L
-local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR
-        (truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
-          (parameterTwist_homogeneous D Sc hc) N)
-        (reservoirWindowIdeal D Sc m cutoff N ΛP ΛR hP hR sy hc)
+local notation "action" => pointwiseUpwardModuleAction D Sc m cutoff N ΛP ΛR hP hR hF.dot hF.window
   (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys
 attribute [local irreducible] elvProbeCrossCoeffOf
 
@@ -145,7 +133,7 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient (μ : X) (t : Li
   classical
   apply LinearMap.ext
   intro x
-  rw [pointwiseUpwardModuleAction_act_bubAt_cl_eq D Sc m cutoff N ΛP ΛR hP hR sy hc
+  rw [pointwiseUpwardModuleAction_act_bubAt_cl_eq D Sc m cutoff N ΛP ΛR hP hR hF
     (tensorSourceFamily D Sc m cutoff ΛP ΛR L sw) Ys μ t M hM
     (fun s => tensorTargetFamilyCoefficientAction D Sc m cutoff L ΛP ΛR s a)]
   · rfl
@@ -172,7 +160,7 @@ theorem pointwiseUpwardModuleAction_act_bubAt_bubLs_eq_coefficient (cs : SKM.CSc
     (action μ).act t t (SKM.bubAt D Sc μ (upWord t) ((↑(cs.c μ i)⁻¹ : k) • SKM.bubLs cs i μ n)) =
       tensorMatrixCoefficientAction D Sc m cutoff ΛP ΛR L sw (SKM.ob D μ (upWord t)) a := by
   rw [SKM.inv_smul_bubLs_of_pos cs i μ h n]
-  exact pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR sy hc
+  exact pointwiseUpwardModuleAction_act_bubAt_cl_eq_coefficient D Sc m cutoff ΛP ΛR L hP hR hF
     sw μ t _ _ a hvac
 
 end Tensor

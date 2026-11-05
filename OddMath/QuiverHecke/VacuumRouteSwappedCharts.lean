@@ -50,7 +50,7 @@ def cornerEvaluationAt (w : X × (ι.J → ℤ)) (h : ι.probeHW - ι.reservoirH
   subst h
   exact SwappedAssembly.SupportedSectors.tensorCornerEvaluation ι.datum ι.scalars ι.exponent
     ι.level ι.probeHW ι.reservoirHW ι.power ι.probe_pairing ι.reservoir_pairing ι.t
-    (ι.symmetrizer sy) ι.scalars_homogeneous
+    (ι.actionInputs sy)
 
 /-- The ideal of the transported corner evaluation is the transformed ideal of the
 elementary powers. -/

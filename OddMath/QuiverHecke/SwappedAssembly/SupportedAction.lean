@@ -32,6 +32,22 @@ variable {I X k : Type u} [AddCommGroup X] [CommRing k]
   (hP : ∀ i, (probeCutoff D m i : ℤ) = D.h i ΛP)
   (hR : ∀ i, (cutoff i : ℤ) = D.h i ΛR)
 local notation "P" => elvProbeReservoir D Sc m cutoff bound ΛP ΛR hP hR
+
+/-- The two inputs of the supported action that are proved from homogeneity of the scalars
+over a field: nilpotence of the appended dots on the truncated content modules, and the
+coefficient ideal carrying the reservoir windows. -/
+structure ProbeActionInputs [Finite I] : Prop where
+  dot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound
+  window : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR
+
+/-- Over a field-type base with homogeneous scalars, both inputs of the supported action
+hold. -/
+theorem probeActionInputs [Finite I] (sy : Symmetrizer D) (hc : Sc.Homogeneous) :
+    ProbeActionInputs D Sc m cutoff bound ΛP ΛR hP hR :=
+  ⟨truncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff sy
+      (parameterTwist_homogeneous D Sc hc) bound,
+    reservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR sy hc⟩
+
 variable [Finite I] (hdot : TruncatedAppendDotNilpotent D (parameterTwist D Sc) cutoff bound)
   (hwin : ReservoirWindowIdeal D Sc m cutoff bound ΛP ΛR hP hR)
 local notation "c" => elvProbeCrossCoeffOf D Sc m cutoff bound ΛP ΛR hP hR hdot
