@@ -158,12 +158,12 @@ theorem centralPadded_zeroHeight_bubbleEntry (c : P.CrossCoeff) (i : I) (ν : X)
   obtain ⟨h1, -, -, -, h5⟩ :=
     P.isCupInverse_centralPadded_of_negInverseAt c i ν t Z E lc dc H hu hd
   have hn : (-D.h i ν).toNat = 0 := by simp [h0]
-  haveI : IsEmpty (Fin (-D.h i ν).toNat) := by rw [hn]; infer_instance
+  have : IsEmpty (Fin (-D.h i ν).toNat) := by rw [hn]; infer_instance
   simp only [Finset.univ_eq_empty, Finset.sum_empty, add_zero] at h5
   refine ⟨_, h1, h5, fun N => ?_⟩
   rw [P.map_etaEntry_dcap_eq_padded c i ν t Z E _ N,
     P.epsEntry_centralFactor c i ν t Z ⟨true, trivial⟩ 0, centralPaddedCap,
-    dif_pos (show StepValid (up i) true t from trivial)]
+    dite_eq_left (show StepValid (up i) true t from trivial)]
   simp only [Functor.map_comp, Functor.map_neg, Preadditive.neg_comp, Preadditive.comp_neg,
     neg_neg, Category.assoc, Iso.inv_hom_id_assoc]
 
@@ -244,7 +244,7 @@ theorem vacuumZeroHeight_bubbleEntries (Z : (P).H ((0, 0) : Sector I))
         -(unitDotColumn (contentAppend D (parameterTwist D Sc) cutoff bound (0 : Multiset I) [i])
             (canonicalAppendDot_supernatural D (parameterTwist D Sc) cutoff bound
               (0 : Multiset I) i)
-            (Hb.obj (probeOldVacuumRegular D (parameterTwist D Sc) m)) N ≫ j ≫
+            ((Hb).obj (probeOldVacuumRegular D (parameterTwist D Sc) m)) N ≫ j ≫
           ProbeVacuumCap.shiftedPreCap D (parameterTwist D Sc) m Kt i hP Hb) := by
   subst hZ
   have hu : ¬StepValid (SKM.up i) false ((0, 0) : Sector I) := by simp [StepValid]
