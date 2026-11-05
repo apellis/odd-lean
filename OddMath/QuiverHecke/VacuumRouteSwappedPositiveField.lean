@@ -18,7 +18,7 @@ The vacuum entries of the left bubbles and of the odd bubble at positive height
   reservoir, for positive reservoir levels;
 * `VacuumRouteIndex.level_pos`: the reservoir levels of every route index are positive;
 * `swappedLeftEntriesField`: the vacuum entries at every route index;
-* `positiveBubbleField_swappedRouteBases`: `PositiveBubbleField (swappedRouteBases sy)`;
+* `positiveBubbleField_swappedRouteBases`: `PositiveBubbleField (swappedRouteBases D)`;
 * `nondegeneracy_of_swapped_right_entries`: the conjecture from the right vacuum entries at
   nonpositive height alone.
 -/
@@ -63,24 +63,24 @@ theorem VacuumRouteIndex.level_pos (ι : VacuumRouteIndex D) (i : ι.J) : 0 < ι
 
 /-- **The vacuum entries of the bubbles at positive height** hold at every route index of the
 swapped route bases. -/
-theorem swappedLeftEntriesField (sy : SKM.Symmetrizer D) : SwappedLeftEntriesField sy :=
+theorem swappedLeftEntriesField (D : SKM.Datum I X) : SwappedLeftEntriesField D :=
   fun ι => SwappedAssembly.SupportedSectors.vacuumLeftEntries ι.datum ι.scalars ι.exponent
     ι.level ι.probeHW ι.reservoirHW ι.power ι.probe_pairing ι.reservoir_pairing
-    (ι.actionInputs sy) ι.level_pos ι.weight ι.weight_difference
+    (ι.actionInputs) ι.level_pos ι.weight ι.weight_difference
 
 /-- **The positive-height bubble field of the swapped route bases.** -/
-theorem positiveBubbleField_swappedRouteBases (sy : SKM.Symmetrizer D) :
-    PositiveBubbleField (swappedRouteBases sy) :=
-  positiveBubbleField_of_entries sy (swappedLeftEntriesField sy)
+theorem positiveBubbleField_swappedRouteBases (D : SKM.Datum I X) :
+    PositiveBubbleField (swappedRouteBases D) :=
+  positiveBubbleField_of_entries (swappedLeftEntriesField D)
 
 /-- **The conjecture from the right vacuum entries** of the bubbles at nonpositive height, for
 the swapped route bases. The hypothesis `SwappedRightEntriesField` is proved
 (`swappedRightEntriesField_of_supply`); the unconditional form is `nondegeneracy_of_symmetrizer`. -/
 theorem nondegeneracy_of_swapped_right_entries (sy : SKM.Symmetrizer D)
-    (hR : SwappedRightEntriesField sy)
+    (hR : SwappedRightEntriesField D)
     {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
     {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :
     SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_swapped_entries sy (swappedLeftEntriesField sy) hR h₂ hh cs
+  nondegeneracy_of_swapped_entries sy (swappedLeftEntriesField D) hR h₂ hh cs
 
 end OddMath.QuiverHecke

@@ -3,22 +3,25 @@ Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
+import OddMath.QuiverHecke.SwappedAssembly.SupportedAction
 
 /-! # The vacuum route hypotheses, field by field
 
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §8, the
 Nondegeneracy Conjecture, in the research scope of `FieldScopeBoundary.md`.
 
-`VacuumRouteHypotheses` asks for one `VacuumRouteSector` at every route index: a
-characteristic-zero field, homogeneous scalars, a normalization, a finite colour set
-`J`, an equal-weight upward word pair over `J`, an external weight `μ` and a degree
-bound `d`. A sector bundles an upward action with a vacuum and raw coefficient action
+`VacuumRouteHypotheses` asks for one `VacuumRouteSector` for every characteristic-zero
+field, homogeneous scalars, normalization, finite colour set `J`, equal-weight upward
+word pair over `J`, external weight `μ` and degree bound `d`. A sector bundles an upward action with a vacuum and raw coefficient action
 (the *base*) and four route inputs on that base. This file separates them, so that
 each input can be removed from the hypotheses of the end theorem as soon as it is
 proved for a fixed choice of bases:
 
 * `VacuumRouteIndex D` and `VacuumRouteBase`: the route indices and the base of a
-  sector;
+  sector. A route index is over a commutative ring and carries the two inputs of the
+  supported action (`SwappedAssembly.SupportedSectors.ProbeActionInputs`) for the sector
+  datum and scalars; over a field with homogeneous scalars they come from a symmetrizer
+  (`sectorActionInputs_of_homogeneous`), and over a graded base from the coefficient grading;
 * `PositiveBubbleField`, `NonpositiveBubbleField`, `CoordinateField` and
   `ChartField`: the four inputs at every index, for a fixed choice of bases;
 * `VacuumRouteHypotheses.of_fields` and `nondegeneracy_of_vacuum_route_fields`: the
@@ -69,21 +72,64 @@ def VacuumRouteBase.toSector (B : VacuumRouteBase D Sc μ t)
 
 end Base
 
+section Restriction
+variable {I X k : Type u} [AddCommGroup X] [CommRing k] {D : SKM.Datum I X}
+
+/-- The restriction of a symmetrizer to a finite colour set. -/
+def _root_.OddMath.SKM.Symmetrizer.restrictColours (sy : SKM.Symmetrizer D) (J : Finset I) :
+    SKM.Symmetrizer (D.restrictColours J) where
+  d i := sy.d i.val
+  pos i := sy.pos i.val
+  symm i j := sy.symm i.val j.val
+
+/-- Homogeneity is preserved by restriction to a finite colour set. -/
+theorem _root_.OddMath.SKM.Scalars.restrictColours_homogeneous {Sc : SKM.Scalars D k}
+    (hc : Sc.Homogeneous) (J : Finset I) : (Sc.restrictColours D J).Homogeneous :=
+  fun i j p q hp h₁ hq h₂ hs => hc i.val j.val p q hp h₁ hq h₂ hs
+
+end Restriction
+
 variable {I X : Type u} [AddCommGroup X]
 
-/-- **A route index** of `D`: the data over which `VacuumRouteHypotheses` quantifies. -/
+/-- **The supported-action inputs of a sector**: for scalars `Sc` of `D` and a finite
+colour set `J`, the two inputs of the supported action
+(`SwappedAssembly.SupportedSectors.ProbeActionInputs`) for the pairing extension of the
+restriction of `D` to `J`, at every exponent, level, degree bound and pair of highest
+weights. -/
+def SectorActionInputs {K : Type u} [CommRing K] (D : SKM.Datum I X) (Sc : SKM.Scalars D K)
+    (J : Finset I) : Prop :=
+  ∀ (m cutoff : J → ℕ) (bound : ℕ) (ΛP ΛR : X × (J → ℤ))
+    (hP : ∀ i, (probeCutoff (ReservoirWeights.pairingExtension (D.restrictColours J)) m i : ℤ) =
+      (ReservoirWeights.pairingExtension (D.restrictColours J)).h i ΛP)
+    (hR : ∀ i, (cutoff i : ℤ) =
+      (ReservoirWeights.pairingExtension (D.restrictColours J)).h i ΛR),
+    SwappedAssembly.SupportedSectors.ProbeActionInputs
+      (ReservoirWeights.pairingExtension (D.restrictColours J))
+      (ReservoirWeights.pairingExtensionScalars (D.restrictColours J) (Sc.restrictColours D J))
+      m cutoff bound ΛP ΛR hP hR
+
+/-- Over a field with homogeneous scalars, a symmetrizer supplies the sector inputs. -/
+theorem sectorActionInputs_of_homogeneous {K : Type u} [Field K] {D : SKM.Datum I X}
+    (sy : SKM.Symmetrizer D) {Sc : SKM.Scalars D K} (hh : Sc.Homogeneous) (J : Finset I) :
+    SectorActionInputs D Sc J := fun m cutoff bound ΛP ΛR hP hR =>
+  SwappedAssembly.SupportedSectors.probeActionInputs _ _ m cutoff bound ΛP ΛR hP hR
+    (ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours J) (sy.restrictColours J))
+    (ReservoirWeights.pairingExtensionScalars_homogeneous _ _
+      (SKM.Scalars.restrictColours_homogeneous hh J))
+
+/-- **A route index** of `D`: the data at which the route produces a sector. -/
 structure VacuumRouteIndex (D : SKM.Datum I X) where
-  /-- The ground field. -/
+  /-- The ground ring. -/
   K : Type u
-  [field : Field K]
-  [charZero : CharZero K]
-  /-- Homogeneous scalars over `K`. -/
+  [commRing : CommRing K]
+  /-- The scalars over `K`. -/
   Sc : SKM.Scalars D K
-  homogeneous : Sc.Homogeneous
   /-- The normalization. -/
   cs : SKM.CScalars Sc
   /-- The finite colour set. -/
   J : Finset I
+  /-- The inputs of the supported action of the sector. -/
+  inputs : SectorActionInputs D Sc J
   /-- The source word. -/
   t : List J
   /-- The target word. -/
@@ -95,7 +141,7 @@ structure VacuumRouteIndex (D : SKM.Datum I X) where
   /-- The degree bound. -/
   d : ℕ
 
-attribute [instance] VacuumRouteIndex.field VacuumRouteIndex.charZero
+attribute [instance] VacuumRouteIndex.commRing
 
 namespace VacuumRouteIndex
 variable {D : SKM.Datum I X} (ι : VacuumRouteIndex D)
@@ -146,7 +192,8 @@ theorem VacuumRouteHypotheses.of_fields {sy : SKM.Symmetrizer D}
     (hp : PositiveBubbleField B) (hn : NonpositiveBubbleField B) (Q : CoordinateField B)
     (hc : ChartField B Q) : VacuumRouteHypotheses D sy where
   sectors K _ _ Sc hh cs J tJ t'J hw μ d :=
-    let ι : VacuumRouteIndex D := ⟨K, Sc, hh, cs, J, tJ, t'J, hw, μ, d⟩
+    let ι : VacuumRouteIndex D :=
+      ⟨K, Sc, cs, J, sectorActionInputs_of_homogeneous sy hh J, tJ, t'J, hw, μ, d⟩
     ⟨(B ι).toSector (hp ι) (hn ι) (Q ι) (hc ι)⟩
 
 /-- **The conjecture from the four route fields** (Brundan–Ellis, arXiv:1701.04133v2,

@@ -12,12 +12,12 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorMatrixCoefficients
 J. Brundan, A. P. Ellis, *Super Kac–Moody 2-categories*, arXiv:1701.04133v2, §8, the
 Nondegeneracy Conjecture, in the research scope of `FieldScopeBoundary.md`.
 
-For a symmetrizer `sy` of `D`, `swappedRouteBases sy : VacuumRouteBases D` chooses at
+`swappedRouteBases : VacuumRouteBases D` chooses at
 every route index `ι` the base given by the swapped action on the probe-reservoir
 product (`SwappedAssembly.SupportedSectors.pointwiseUpwardModuleAction`):
 
 * the datum is the pairing extension of the restriction of `D` to `ι.J`, with the
-  restricted symmetrizer and homogeneous scalars;
+  restricted scalars, and the supported-action inputs are those carried by the index;
 * the probe and reservoir highest weights are `SwappedVacuumParameters.probeWeight`
   and `reservoirWeight`, with exponents `probeExponent` and levels `reservoirLevel`
   of the vacuum schedule, and the tensor source and target families with the
@@ -53,23 +53,6 @@ theorem reservoirLevel_pairingExtension (μ : X) (t : List I) (d : ℕ) :
   simp only [reservoirLevel, ReservoirWeights.pairingExtension_h, Pi.zero_apply, add_zero]
 
 end Schedule
-
-section Restriction
-variable {I X k : Type u} [AddCommGroup X] [CommRing k] {D : SKM.Datum I X}
-
-/-- The restriction of a symmetrizer to a finite colour set. -/
-def _root_.OddMath.SKM.Symmetrizer.restrictColours (sy : SKM.Symmetrizer D) (J : Finset I) :
-    SKM.Symmetrizer (D.restrictColours J) where
-  d i := sy.d i.val
-  pos i := sy.pos i.val
-  symm i j := sy.symm i.val j.val
-
-/-- Homogeneity is preserved by restriction to a finite colour set. -/
-theorem _root_.OddMath.SKM.Scalars.restrictColours_homogeneous {Sc : SKM.Scalars D k}
-    (hc : Sc.Homogeneous) (J : Finset I) : (Sc.restrictColours D J).Homogeneous :=
-  fun i j p q hp h₁ hq h₂ hs => hc i.val j.val p q hp h₁ hq h₂ hs
-
-end Restriction
 
 variable {I X : Type u} [AddCommGroup X] {D : SKM.Datum I X}
 
@@ -110,52 +93,42 @@ theorem reservoir_pairing (i : ι.J) : (ι.level i : ℤ) = ι.datum.h i ι.rese
 theorem weight_difference : ι.probeHW - ι.reservoirHW = ι.weight :=
   SwappedVacuumParameters.weight_difference (D.restrictColours ι.J) ι.μ ι.t ι.d
 
-/-- The symmetrizer of the sector datum. -/
-abbrev symmetrizer (sy : SKM.Symmetrizer D) : SKM.Symmetrizer ι.datum :=
-  ReservoirWeights.pairingExtensionSymmetrizer (D.restrictColours ι.J) (sy.restrictColours ι.J)
-
-theorem scalars_homogeneous : ι.scalars.Homogeneous :=
-  ReservoirWeights.pairingExtensionScalars_homogeneous _ _
-    (SKM.Scalars.restrictColours_homogeneous ι.homogeneous ι.J)
-
-/-- The inputs of the supported action of the sector, from the symmetrizer and the
-homogeneity of the sector scalars. -/
-theorem actionInputs (sy : SKM.Symmetrizer D) :
+/-- The inputs of the supported action of the sector, carried by the index. -/
+theorem actionInputs :
     SwappedAssembly.SupportedSectors.ProbeActionInputs ι.datum ι.scalars ι.exponent ι.level
       ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing :=
-  SwappedAssembly.SupportedSectors.probeActionInputs ι.datum ι.scalars ι.exponent ι.level
-    ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing (ι.symmetrizer sy)
-    ι.scalars_homogeneous
+  ι.inputs ι.exponent ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing
+    ι.reservoir_pairing
 
 /-- The swapped action on the probe-reservoir product of the sector, at weight `w`,
 with the tensor source and target families. -/
-def actionAt (sy : SKM.Symmetrizer D) (w : X × (ι.J → ℤ)) :
+def actionAt (w : X × (ι.J → ℤ)) :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars w :=
   SwappedAssembly.SupportedSectors.pointwiseUpwardModuleAction ι.datum ι.scalars ι.exponent
     ι.level ι.bound ι.probeHW ι.reservoirHW ι.probe_pairing ι.reservoir_pairing
-    (ι.actionInputs sy).dot (ι.actionInputs sy).window
+    (ι.actionInputs).dot (ι.actionInputs).window
     (SwappedAssembly.SupportedSectors.tensorSourceFamily ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power ι.t)
     (SwappedAssembly.SupportedSectors.tensorTargetFamily ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power) w
 
 /-- The swapped action of the sector, at its weight `(μ, 0)`. -/
-def swappedAction (sy : SKM.Symmetrizer D) :
+def swappedAction :
     UpwardModuleAction.{u, u + 1} ι.datum ι.scalars ι.weight :=
-  ι.actionAt sy ι.weight
+  ι.actionAt ι.weight
 
 /-- The vacuum of the sector: the tensor matrix vacuum of the source word,
 transported along `probeHW - reservoirHW = (μ, 0)`. -/
-def swappedVacuum (sy : SKM.Symmetrizer D) : (ι.swappedAction sy).V ι.t :=
-  cast (congrArg (fun w => (ι.actionAt sy w).V ι.t) ι.weight_difference)
+def swappedVacuum : (ι.swappedAction).V ι.t :=
+  cast (congrArg (fun w => (ι.actionAt w).V ι.t) ι.weight_difference)
     (SwappedAssembly.SupportedSectors.tensorMatrixVacuum ι.datum ι.scalars ι.exponent ι.level
       ι.probeHW ι.reservoirHW ι.power ι.t)
 
 /-- The base of the sector: the swapped action, its vacuum, and the raw coefficient
 action on the tensor matrix module. -/
-def swappedBase (sy : SKM.Symmetrizer D) : VacuumRouteBase ι.datum ι.scalars ι.weight ι.t where
-  A := ι.swappedAction sy
-  vacuum := ι.swappedVacuum sy
+def swappedBase : VacuumRouteBase ι.datum ι.scalars ι.weight ι.t where
+  A := ι.swappedAction
+  vacuum := ι.swappedVacuum
   raw := SwappedAssembly.SupportedSectors.tensorMatrixCoefficientAction ι.datum ι.scalars
     ι.exponent ι.level ι.probeHW ι.reservoirHW ι.power ι.t
     (SKM.ob ι.datum ι.weight (upWord ι.t))
@@ -165,13 +138,13 @@ end VacuumRouteIndex
 /-- **The swapped route bases**: at every route index, the swapped action on the
 probe-reservoir product of the sector, with the tensor matrix vacuum and the raw
 coefficient action. -/
-def swappedRouteBases (sy : SKM.Symmetrizer D) : VacuumRouteBases D := fun ι =>
-  ι.swappedBase sy
+def swappedRouteBases (D : SKM.Datum I X) : VacuumRouteBases D := fun ι =>
+  ι.swappedBase
 
-@[simp] theorem swappedRouteBases_A (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
-    (swappedRouteBases sy ι).A = ι.swappedAction sy := rfl
+@[simp] theorem swappedRouteBases_A (ι : VacuumRouteIndex D) :
+    (swappedRouteBases D ι).A = ι.swappedAction := rfl
 
-@[simp] theorem swappedRouteBases_vacuum (sy : SKM.Symmetrizer D) (ι : VacuumRouteIndex D) :
-    (swappedRouteBases sy ι).vacuum = ι.swappedVacuum sy := rfl
+@[simp] theorem swappedRouteBases_vacuum (ι : VacuumRouteIndex D) :
+    (swappedRouteBases D ι).vacuum = ι.swappedVacuum := rfl
 
 end OddMath.QuiverHecke

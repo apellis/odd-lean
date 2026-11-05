@@ -61,10 +61,10 @@ def RightVacuumEntrySupply : Prop :=
 
 /-- **The right vacuum entries at every route index** from the right vacuum entries of the probe
 reservoirs, transported along `probeHW - reservoirHW = (μ, 0)`. -/
-theorem swappedRightEntriesField_of_supply (h : RightVacuumEntrySupply.{u})
-    (sy : SKM.Symmetrizer D) : SwappedRightEntriesField sy := fun ι => by
+theorem swappedRightEntriesField_of_supply (h : RightVacuumEntrySupply.{u}) :
+    SwappedRightEntriesField D := fun ι => by
   have e := h ι.datum ι.scalars ι.exponent ι.level ι.probeHW ι.reservoirHW ι.power
-    ι.probe_pairing ι.reservoir_pairing (ι.actionInputs sy)
+    ι.probe_pairing ι.reservoir_pairing (ι.actionInputs)
     ι.probeCutoff_pos ι.level_pos
   rw [ι.weight_difference] at e
   exact e
@@ -75,6 +75,6 @@ theorem nondegeneracy_of_rightVacuumEntrySupply (h : RightVacuumEntrySupply.{u})
     (sy : SKM.Symmetrizer D) {R : Type w} [CommRing R] (h₂ : IsUnit (2 : R))
     {Sc : SKM.Scalars D R} (hh : Sc.Homogeneous) (cs : SKM.CScalars Sc) :
     SKM.NondegeneracyConjecture cs :=
-  nondegeneracy_of_swapped_right_entries sy (swappedRightEntriesField_of_supply h sy) h₂ hh cs
+  nondegeneracy_of_swapped_right_entries sy (swappedRightEntriesField_of_supply h) h₂ hh cs
 
 end OddMath.QuiverHecke

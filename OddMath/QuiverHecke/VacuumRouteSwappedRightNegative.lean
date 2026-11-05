@@ -56,8 +56,8 @@ theorem rightVacuumEntrySupply : RightVacuumEntrySupply.{u} := by
 variable {I X : Type u} [AddCommGroup X] {D : SKM.Datum I X}
 
 /-- **The right vacuum entries at every route index.** -/
-theorem swappedRightEntriesField (sy : SKM.Symmetrizer D) : SwappedRightEntriesField sy :=
-  swappedRightEntriesField_of_supply rightVacuumEntrySupply sy
+theorem swappedRightEntriesField (D : SKM.Datum I X) : SwappedRightEntriesField D :=
+  swappedRightEntriesField_of_supply rightVacuumEntrySupply
 
 /-- **The Nondegeneracy Conjecture** (Brundan–Ellis, arXiv:1701.04133v2, §8) for a
 symmetrizable Cartan superdatum and homogeneous parameters over a commutative ring in which `2`
