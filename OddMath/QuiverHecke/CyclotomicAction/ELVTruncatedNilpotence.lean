@@ -118,7 +118,7 @@ theorem truncatedAppendDot_pow_zero [Finite I] (ν : List I) (i : I) :
 /-- Nilpotence of the appended last-strand dot, with one exponent for each source content and
 appended colour. This is the only input on the parameters that the content-induction and
 reservoir dot nilpotence results use. -/
-abbrev TruncatedAppendDotNilpotent : Prop :=
+def TruncatedAppendDotNilpotent : Prop :=
   ∀ (ν : List I) (i : I), ∃ e : ℕ, 0 < e ∧ ∀ v : TruncatedCategory D Sc cutoff N,
     v.word.Perm ν →
       let f : TruncatedEnd D Sc cutoff N (v.word ++ [i]) :=

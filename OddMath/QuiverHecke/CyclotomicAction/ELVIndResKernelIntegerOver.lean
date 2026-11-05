@@ -47,18 +47,16 @@ def homTensorProj (X Y Z : D) (n : ℤ) :
     map_smul' := fun c y => GradedTensor.proj_smul 𝒜 _ _
       (fun hr hf => hD hr hf) (fun hr hf => hD hr hf) n c y }
 
+omit [Supercategory R D] in
 /-- A homogeneous pure tensor is fixed or killed by the degree projection. -/
 theorem homTensorProj_tmul (X Y Z : D) (n : ℤ) (g : Y ⟶ Z) (b : X ⟶ Y) {q r : ℤ}
     (hg : g ∈ degree (R := K) Y Z q) (hb : b ∈ degree (R := K) X Y r) :
     homTensorProj 𝒜 hD X Y Z n (g ⊗ₜ[R] b) = if q + r = n then g ⊗ₜ[R] b else 0 := by
-  letI := degreeDecomposition K Y Z
-  letI := degreeDecomposition K X Y
+  let _ := degreeDecomposition K Y Z
+  let _ := degreeDecomposition K X Y
   change GradedTensor.proj 𝒜 (degree (R := K) Y Z) (degree (R := K) X Y)
     (fun hr hf => hD hr hf) (fun hr hf => hD hr hf) n (g ⊗ₜ[R] b) = _
   rw [GradedTensor.proj_tmul, GradedTensor.projBihom_of_mem_of_mem _ _ hg hb]
-  by_cases hn : q + r = n
-  · rw [ite_eq_left hn, ite_eq_left hn]
-  · rw [ite_eq_right hn, ite_eq_right hn]
 
 /-- Project a tensor summand onto its sum integer degree, then descend to the balanced
 quotient. -/
@@ -74,7 +72,10 @@ theorem integerSummandOver_homogeneous (v t : D) (n : ℤ) (s : C)
     (hb : b ∈ degree (R := K) v (J.obj s) r) :
     integerSummandOver 𝒜 J hD v t n s (g ⊗ₜ[R] b) =
       if q + r = n then componentTensor (k := R) J v t s g b else 0 := by
-  rw [integerSummandOver, LinearMap.comp_apply, homTensorProj_tmul 𝒜 hD v (J.obj s) t n g b hg hb]
+  have h := homTensorProj_tmul 𝒜 hD v (J.obj s) t n g b hg hb
+  change BalancedInduction.inclusion J (J ⋙ homModule (k := R) v) t s
+      (homTensorProj 𝒜 hD v (J.obj s) t n (g ⊗ₜ[R] b)) = _
+  rw [h]
   by_cases hn : q + r = n
   · rw [ite_eq_left hn, ite_eq_left hn]
     rfl
@@ -184,7 +185,7 @@ theorem integerProjectionOver_inclusion (v t : D) (n : ℤ) (s : C)
       ((Submodule.Quotient.restrictScalarsEquiv K _).symm
         (Submodule.Quotient.mk (DirectSum.lof R C _ s y))) = _
   rw [Submodule.Quotient.restrictScalarsEquiv_symm_mk, Submodule.liftQ_apply]
-  exact DirectSum.toModule_lof K s y
+  exact DirectSum.toModule_lof K s _
 
 /-- A homogeneous pure tensor has the sum degree of its two Hom factors. -/
 theorem integerProjectionOver_tensor (v t : D) (n : ℤ) (s : C)
@@ -206,7 +207,8 @@ def integerDegreeOver (v t : D) (n : ℤ) : Submodule K (Component (k := R) J v 
       (degree (R := K) v (J.obj s)) n).map
     ((BalancedInduction.inclusion J (J ⋙ homModule (k := R) v) t s).restrictScalars K)
 
-omit [GradedAlgebra 𝒜] [J.Additive] in
+omit [GradedAlgebra 𝒜] [J.Additive] [Preadditive C] [Linear K C] [Supercategory K C]
+  [GradedSupercategory K C] in
 /-- The class of a homogeneous pure tensor has its sum degree. -/
 theorem componentTensor_mem_integerDegreeOver (v t : D) (s : C)
     (g : J.obj s ⟶ t) (b : v ⟶ J.obj s) {q r : ℤ}
@@ -254,7 +256,7 @@ theorem integerProjectionOver_of_mem (v t : D) {m n : ℤ}
   · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_left hmn, LinearMap.id_apply] using h
   · simpa only [LinearMap.mem_eqLocus, Q, ite_eq_right hmn, LinearMap.zero_apply] using h
 
-omit [GradedAlgebra 𝒜] in
+omit [GradedAlgebra 𝒜] [J.Additive] in
 /-- Every represented balanced tensor is a finite sum of integer-homogeneous classes. -/
 theorem iSup_integerDegreeOver_eq_top (v t : D) :
     (⨆ n : ℤ, integerDegreeOver (K := K) (R := R) J v t n) = ⊤ := by
@@ -276,8 +278,7 @@ theorem iSup_integerDegreeOver_eq_top (v t : D) :
         Submodule.add_mem S hg hg'
   have hs (s : C) (y : (J.obj s ⟶ t) ⊗[R] (v ⟶ J.obj s)) :
       BalancedInduction.inclusion J (J ⋙ homModule (k := R) v) t s y ∈ S := by
-    induction y using TensorProduct.induction_on with
-    | zero => rw [map_zero]; exact zero_mem S
+    induction y using TensorProduct.inductionOn with
     | tmul g b => exact ht s g b
     | add y y' hy hy' => rw [map_add]; exact add_mem hy hy'
   apply top_unique
@@ -289,6 +290,7 @@ theorem iSup_integerDegreeOver_eq_top (v t : D) :
     | of s y => exact hs s y
     | add x y hx hy => rw [Submodule.Quotient.mk_add]; exact add_mem hx hy
 
+include 𝒜 hJ hD in
 /-- The integer degrees form an internal direct sum on the represented balanced kernel. -/
 theorem integerDegreeOver_internal (v t : D) :
     DirectSum.IsInternal (integerDegreeOver (K := K) (R := R) J v t) := by

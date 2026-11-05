@@ -97,7 +97,7 @@ theorem pointwiseUpwardModuleAction_act_bubAt_cl_eq (μ : X) (t : List I)
         (pathFunctor D (parameterTwist D Sc) m cutoff bound ΛP ΛR p).map (f τ.1) := by
   apply (matrixEquiv D Sc m cutoff bound ΛP ΛR hP hR Gs Ys (SKM.ob D μ (upWord t))).injective
   funext s τ p
-  rw [pointwiseUpwardModuleAction_act_bubAt_cl (hM := hM), hf]
+  rw [pointwiseUpwardModuleAction_act_bubAt_cl (hF := hF) (hM := hM), hf]
   exact (entryEquiv_comp_map D Sc m cutoff bound ΛP ΛR hP hR p (Gs s) (Ys τ.1)
     (x s τ p) (f τ.1)).symm
 

@@ -49,7 +49,8 @@ theorem neg_one_pow_smul_mem_coefficientDegreePartOver {n : ℤ} {x : SYM D R}
     (-1 : R) ^ m • x ∈ coefficientDegreePartOver D sy 𝒜 n := by
   rcases neg_one_pow_eq_or R m with h | h
   · simpa [h] using hx
-  · simpa [h] using Submodule.neg_mem _ hx
+  · rw [h, neg_one_smul R x]
+    exact Submodule.neg_mem _ hx
 
 theorem elvChi_mem_coefficientDegreePartOver (i : {i : I // D.parity i = 1}) (r : ℕ) :
     elvChi D R i r ∈ coefficientDegreePartOver D sy 𝒜 (2 * sy.d i.1 * ((2 * r : ℕ) : ℤ)) := by
