@@ -40,8 +40,9 @@ Unused declarations inside the remaining research modules were then removed with
 graph of the reduced tree. A theorem or definition is removed only if no retained
 theorem and no declaration of a retained module depends on it, and its name occurs in no
 non-vacuity file, documentation note or remaining Lean code (outside comments). Structures,
-instances and examples are kept, and the removal is closed under dependencies. Modules
-left without declarations were then removed in the same way as unused modules.
+instances, examples and declarations carrying an attribute are kept, and the removal is
+closed under dependencies. Modules left without declarations were then removed in the
+same way as unused modules, unless a retained declaration still refers to them.
 
 ## Sizes
 
@@ -49,7 +50,7 @@ left without declarations were then removed in the same way as unused modules.
 |---|---|---|---|---|
 | research tip before cleanup | 3109 | 644,846 | 1383 | 116,479 |
 | after removing unused modules | 2929 | 621,573 | 103 | 4,620 |
-| after removing unused declarations (3236) and empty modules (37) | 2893 | 583,261 | 104 | 4,726 |
+| after removing unused declarations (1983) and empty modules (25) | 2904 | 596,582 | 104 | 4,726 |
 | `master` | 1321 | | 90 | |
 
 The Phase 1 theorem alone uses declarations from 1584 modules; the remaining research
@@ -269,7 +270,11 @@ which declarations prove them.
 * Inlining single-use wrappers and merging duplicate statements inside the retained
   route: not attempted beyond the removal of unused declarations.
 
-## Merging into `master` (proposal, not done)
+## Merging into `master` (on hold)
+
+The merge into `master` is on hold until the cleanup and simplification are finished, and
+possibly until further extensions (for example the integral form) are in place. The notes
+below record the state and the procedure for when it is taken up.
 
 State: `master` has 7 commits not on this branch (merge base `b8822997`): the revert of the
 exploratory nondegeneracy additions (`8a8b9820`, removing `Diagrams/OddNilHecke/ExteriorDeformation`,
@@ -297,5 +302,5 @@ Proposed procedure:
    topic branches against `master` (Alex's decision; AGENTS currently routes uncertain research
    to the research branch).
 
-Size after the cleanup: 2893 `OddMath` modules (583,261 lines) against 1321 on `master`;
-104 non-vacuity files against 90. About 1570 research modules would enter `master`.
+Size after the cleanup so far: 2904 `OddMath` modules (596,582 lines) against 1321 on
+`master`; 104 non-vacuity files against 90. About 1580 research modules would enter `master`.
