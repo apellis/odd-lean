@@ -1641,6 +1641,7 @@ import OddMath.QuiverHecke.UpwardModuleAction
 import OddMath.QuiverHecke.SwappedAssembly.Interpretation
 import OddMath.QuiverHecke.SwappedAssembly.Sectors
 import OddMath.QuiverHecke.SwappedAssembly.VacuumPaths
+import OddMath.QuiverHecke.SwappedAssembly.VacuumPathSplit
 import OddMath.QuiverHecke.SwappedAssembly.ReservoirPaths
 import OddMath.QuiverHecke.SwappedAssembly.Matrices
 import OddMath.QuiverHecke.SwappedAssembly.Generators.Dot
@@ -1826,6 +1827,7 @@ import OddMath.QuiverHecke.SwappedConditionalNondegeneracy
 import OddMath.QuiverHecke.GlobalFactorNondegeneracy
 import OddMath.QuiverHecke.SwappedVacuum.LayerAction
 import OddMath.QuiverHecke.SwappedVacuum.TransformedIdeal
+import OddMath.QuiverHecke.SwappedVacuum.CornerLayerSquare
 import OddMath.QuiverHecke.CyclotomicAction.ELVScalarPolynomial
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeCoefficients
 import OddMath.QuiverHecke.CyclotomicAction.ELVProbeSpecialization
@@ -2647,6 +2649,10 @@ import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossEntries
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.ResidualComparisonNegative
 import OddMath.QuiverHecke.SwappedAssembly.CentralInverse.SignedResidualWindows
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotClasses
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorDotObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossObservation
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerSquares
+import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCornerEvaluation
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorCrossClasses
 import OddMath.QuiverHecke.SwappedAssembly.Sigma.PaddedResidualInversion
 import OddMath.QuiverHecke.SwappedAssembly.SupportedWhiskerReduction
@@ -2756,6 +2762,7 @@ import OddMath.QuiverHecke.CyclotomicAction.ELVProbeEvenVacuumPolynomial
 import OddMath.SKM.PairingExtensionDiagrams
 import OddMath.SKM.PairingExtensionPresentation
 import OddMath.QuiverHecke.PairingExtensionAction
+import OddMath.QuiverHecke.SwappedAssembly.SupportedActionAlphaLayers
 import OddMath.QuiverHecke.SwappedAssembly.SupportedActionLayers
 import OddMath.SKM.PairingExtensionBubbles
 import OddMath.QuiverHecke.PairingExtensionAffine
@@ -2773,8 +2780,10 @@ import OddMath.QuiverHecke.PairingExtensionPBW
 import OddMath.QuiverHecke.PairingExtensionRecovery
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorEntryLayerCharts
 import OddMath.QuiverHecke.SwappedAssembly.SupportedTensorLayerChartTransport
+import OddMath.QuiverHecke.VacuumCornerChartCoherence
 import OddMath.QuiverHecke.VacuumRouteNondegeneracy
 import OddMath.QuiverHecke.VacuumRightBubbles
 import OddMath.QuiverHecke.VacuumRouteEvenComparison
 import OddMath.QuiverHecke.VacuumRouteFields
 import OddMath.QuiverHecke.VacuumRouteSwappedBases
+import OddMath.QuiverHecke.VacuumRouteSwappedCharts
