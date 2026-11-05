@@ -259,7 +259,7 @@ theorem extensionTruncation_of_mem {t t' : List I} {d : ℕ}
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨i, hi, rfl⟩ := hx
-    rw [extensionTruncation_basis, if_pos (show extensionDegree D i ≤ d from hi)]
+    rw [extensionTruncation_basis, ite_eq_left (show extensionDegree D i ≤ d from hi)]
   | zero => exact map_zero _
   | add x y _ _ hx hy => rw [map_add, hx, hy]
   | smul c x _ hx => rw [map_smul, hx]
@@ -271,8 +271,8 @@ theorem extensionTruncation_eq_zero {t t' : List I} {d : ℕ} {s : ℤ} (hs : (d
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨i, hi, rfl⟩ := hx
-    rw [extensionTruncation_basis, if_neg]
-    intro h
+    rw [extensionTruncation_basis]
+    refine ite_eq_right fun h => ?_
     have hi' : s ≤ (extensionDegree D i : ℤ) := hi
     have h' : (extensionDegree D i : ℤ) ≤ d := by exact_mod_cast h
     omega
