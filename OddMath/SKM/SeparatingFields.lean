@@ -2,7 +2,7 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.SKM.JointScalarDescent
+import Mathlib.LinearAlgebra.Basis.Basic
 import Mathlib.RingTheory.Spectrum.Prime.Basic
 import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Algebra.Ring.Prod

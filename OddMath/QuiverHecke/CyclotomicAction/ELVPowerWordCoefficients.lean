@@ -1,5 +1,5 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVPowerWordWeightContexts
-import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientAppendMaps
+import OddMath.QuiverHecke.CyclotomicAction.ELVCoefficientModuleMaps
 
 /-! # Coefficient insertion in signed word coordinates
 
