@@ -22,6 +22,7 @@ adjunction. No inverse, moment or bubble value is assumed.
 -/
 
 noncomputable section
+set_option quotPrecheck false
 open CategoryTheory StringDiagrams Supercategory
 namespace OddMath.QuiverHecke.ELVOld.WeightTensorVacuum
 open CyclotomicAction SwappedAssembly ProbeVacuumCap BalancedInduction PowerVacuumCoefficient
