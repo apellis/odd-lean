@@ -88,13 +88,13 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
       (z : (V).obj (⟨⟨[]⟩, rfl⟩ : ContentCategory D (parameterTwist D Sc) cutoff N 0)),
       (∀ (r : ℕ) (z : (V).obj (⟨⟨[]⟩, rfl⟩ :
           ContentCategory D (parameterTwist D Sc) cutoff N 0)),
-        ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B
-            (cutoff i - 2 * m i - 1 + 2 * r) z =
+        (∀ e', e' = cutoff i - 2 * m i - 1 + 2 * r →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
           polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
-            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z ∧
-        ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B
-            (cutoff i - 2 * m i - 1 + (2 * r + 1)) z =
+            tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L z) ∧
+        ∀ e', e' = cutoff i - 2 * m i - 1 + (2 * r + 1) →
+          ELVOld.rightwardLastColumnDecode D (parameterTwist D Sc) m cutoff L i hPN B e' z =
           ELVOld.rightwardOddScalar D cutoff L i hi *
             (polynomialToPower D cutoff L (PowerSeries.coeff r
               (VacuumSeries.momentSeries k (SYM.probeSeriesInv D k m) i)) *
@@ -125,10 +125,10 @@ private theorem vacuumEntry_odd_shift (hcoef : VacuumCoefficientDecode D Sc m cu
   refine (congrArg (fun f => tensorVacuumDecodeLinear D (parameterTwist D Sc) m cutoff L
     (f.total ⟨⟨[]⟩, rfl⟩ z)) (hcup ⟨cutoff i - 2 * m i - 1, by omega⟩ e).symm).trans ?_
   exact hmom c B z fun r z =>
-    ⟨ELVOld.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r z,
-     ELVOld.rightwardLastColumnDecode_odd D (parameterTwist D Sc) m cutoff L sy
-      (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r z⟩
+    ⟨fun e' he' => ELVOld.rightwardLastColumnDecode_even D (parameterTwist D Sc) m cutoff L sy
+      (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r e' he' z,
+     fun e' he' => ELVOld.rightwardLastColumnDecode_odd D (parameterTwist D Sc) m cutoff L sy
+      (parameterTwist_homogeneous D Sc hc) i hi hPi hPN j B hB r e' he' z⟩
 
 include sy hc in
 /-- **Odd right bubbles at negative height, moments.** For an odd colour `i` with
@@ -150,7 +150,7 @@ theorem vacuumEntry_neg_odd (i : I) (hi : D.parity i = 1) (hP0 : 0 < probeCutoff
   refine vacuumEntry_odd_shift D Sc m cutoff ΛP ΛR L hP hR sy hc
     (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i hi hP0 hh
     (by rw [hhe] at hh; omega) _ _
-    (by rw [hhe]; omega) _ (fun c B z hm => (hm s z).1)
+    (by rw [hhe]; omega) _ (fun c B z hm => (hm s z).1 _ rfl)
 
 include sy hc in
 /-- **Odd right bubbles at negative height, odd coefficient.** For an odd colour `i` with
@@ -173,7 +173,7 @@ theorem vacuumEntry_odd_neg (N' : I → ℕ) (i : {i : I // D.parity i = 1})
     (vacuumCoefficientDecode_holds D Sc m cutoff ΛP ΛR L hP hR) i.1 i.2 hP0 hh
     (by rw [hhe] at hh; omega) _ _
     (by rw [hhe]; omega) _ (fun c B z hm => ?_)
-  rw [(hm 0 z).2, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul,
+  rw [(hm 0 z).2 _ rfl, AdjunctionBubbleSeries.coeff_zero_momentSeries, map_one, one_mul,
     ELVOld.rightwardOddScalar_eq, hN']
 
 end OddMath.QuiverHecke.SwappedAssembly.SupportedSectors
