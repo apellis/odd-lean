@@ -133,7 +133,7 @@ theorem rightwardUnitColumn_odd_moments
 
 /-- The decoded value of the last unit column `η xᵉ ≫ B (N - 2M - 1)` at shift `e`. -/
 def rightwardLastColumnDecode (hPN : 2 * m i < cutoff i)
-    (B : Fin (cutoff i - 2 * m i) → (_ ⟶ V)) (e : ℕ) (z : (V).obj star) :
+    (B : Fin (cutoff i - 2 * m i) → ((induction K ⋙ restriction K).obj V ⟶ V)) (e : ℕ) (z : (V).obj star) :
     CoefficientPowerQuotient (k := k) D cutoff L :=
   tensorVacuumDecodeLinear D Sc m cutoff L
     ((rightwardUnitColumn ((adjunction K).unit.app V)
@@ -158,8 +158,10 @@ theorem rightwardLastColumnDecode_even
     rightwardLastColumnDecode D Sc m cutoff L i hPN B (cutoff i - 2 * m i - 1 + 2 * r) z =
       polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-        tensorVacuumDecodeLinear D Sc m cutoff L z :=
-  rightwardUnitColumn_odd_moments_even D Sc m cutoff L sy hc i hi hP hPN j B hB r z
+        tensorVacuumDecodeLinear D Sc m cutoff L z := by
+  unfold rightwardLastColumnDecode
+  exact tensorVacuumNegativeCap_odd_moments_even D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
 include sy hc in
 /-- `rightwardUnitColumn_odd_moments_odd` for `rightwardLastColumnDecode`. -/
@@ -176,7 +178,10 @@ theorem rightwardLastColumnDecode_odd
       rightwardOddScalar D cutoff L i hi *
         (polynomialToPower D cutoff L (PowerSeries.coeff r
           (VacuumSeries.momentSeries k (SKM.SYM.probeSeriesInv D k m) i)) *
-          tensorVacuumDecodeLinear D Sc m cutoff L z) :=
-  rightwardUnitColumn_odd_moments_odd D Sc m cutoff L sy hc i hi hP hPN j B hB r z
+          tensorVacuumDecodeLinear D Sc m cutoff L z) := by
+  unfold rightwardLastColumnDecode rightwardOddScalar
+  rw [map_smul]
+  exact tensorVacuumNegativeCap_odd_moments_odd D Sc m cutoff L sy hc i hi hP
+    (Nat.pos_of_ne_zero (by omega)) hPN j B hB r z
 
 end OddMath.QuiverHecke.ELVOld
