@@ -2,7 +2,8 @@
 Copyright (c) 2026 Alex Ellis. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
-import OddMath.QuiverHecke.CyclotomicAction.Comparison
+import OddMath.QuiverHecke.CyclotomicAction.Square
+import OddMath.QuiverHecke.CyclotomicAction.CrossingTransformation
 
 /-!
 # Mixed quadratic comparison on cyclotomic composition corners

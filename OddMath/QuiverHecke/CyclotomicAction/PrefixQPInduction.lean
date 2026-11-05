@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPRepeated
 import OddMath.QuiverHecke.CyclotomicAction.PrefixQPDistinct
-import OddMath.QuiverHecke.CyclotomicAction.LinearDotCancellation
+import OddMath.QuiverHecke.CyclotomicAction.PrependDotCancellation
+import OddMath.QuiverHecke.CyclotomicAction.IntertwinerContentDot
 
 /-!
 # Annihilators in the prescribed prepend target

@@ -1,5 +1,6 @@
 import OddMath.QuiverHecke.CyclotomicAction.ELVActualKernelMatrices
-import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixComponents
+import OddMath.QuiverHecke.CyclotomicAction.ELVContentMatrixHeight
+import OddMath.QuiverHecke.CyclotomicAction.ELVFiniteMatrixComponents
 
 /-! # Canonical coordinates for the actual coefficient-kernel matrices
 
